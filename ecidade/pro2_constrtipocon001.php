@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ $clrotulo->label("z01_nome");
       </tr>
       <tr>
         <td colspan="2">
-          <?
+          <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<strong>Tipo de Construção</strong>";
             $aux->codigo = "j31_codigo"; //chave de retorno da func

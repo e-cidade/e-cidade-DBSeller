@@ -384,12 +384,12 @@ class ProcessoCompras
         $sCampos .= ", pc11_numero as numero_exercicio, pc80_data as data, pc10_solicitacaotipo as tipo_solicitacao";
         $sCampos .= ", l44_descricao as tipo_compra, extract(year from pc80_data) as ano";
         $sSqlProcessos = $oDaoPCprocItem->sql_query_soljulg(null, $sCampos, "1",
-            "pc21_numcgm= {$iFornecedor} and ac23_sequencial is null  {$sWhere}");
+            "pc21_numcgm= {$iFornecedor} and ac23_sequencial is null and pc67_solicita is null  {$sWhere}");
 
         $rsProcessos = $oDaoPCprocItem->sql_record($sSqlProcessos);
         $processos = db_utils::getCollectionByRecord($rsProcessos, false, false, true);
 
-        if (!empty($processos) && array_first($processos)->tipo_solicitacao != 5) {
+        if (!empty($processos) && $processos[0]->tipo_solicitacao != 5) {
             return $processos;
         }
 
@@ -489,11 +489,9 @@ class ProcessoCompras
 
     public function getItensParaAutorizacao()
     {
-
-        $oDaoPcOrcamJulg = db_utils::getDao("pcorcamjulg");
-        $oDaoOrcReservaSol = db_utils::getDao("orcreservasol");
-        $this->oDaoParametros = db_utils::getDao("empparametro");
-        $oDaoPcProc = db_utils::getDao("pcproc");
+        $oDaoOrcReservaSol = new \cl_orcreservasol();
+        $this->oDaoParametros = new \cl_empparametro();
+        $oDaoPcProc = new \cl_pcproc();
 
         $sCampos = "pc11_seq,";
         $sCampos .= "pc01_codmater as codigomaterial,";
@@ -514,6 +512,7 @@ class ProcessoCompras
         $sCampos .= "pc23_valor as valorfornecedor,";
         $sCampos .= "pc11_resum as observacao,";
         $sCampos .= "pc10_resumo as observacao_solicita,";
+        $sCampos .= "pc10_solicitacaotipo as tiposolicitacao,";
         $sCampos .= "pc23_vlrun as valorunitariofornecedor,";
         $sCampos .= "pc23_quant as quantfornecedor,";
         $sCampos .= "z01_numcgm as codigofornecedor,";
@@ -582,9 +581,12 @@ class ProcessoCompras
                 $oDados->saldoautorizar = $oDados->valordotacao;
                 if (!empty($oDados->codigoitemprocesso)) {
 
-                    $oValoresAutorizados = $this->getValoresParciais($oDados->codigoitemprocesso,
+                    $oValoresAutorizados = $this->getValoresParciais(
+                        $oDados->codigoitemprocesso,
                         $oDados->codigodotacao,
-                        $oDados->contrapartida);
+                        $oDados->contrapartida,
+                        $oDados->tiposolicitacao
+                    );
 
                     $oDados->quantidadeautorizada = $oValoresAutorizados->iQuantidadeAutorizacao;
                     $oDados->valorautorizado = $oValoresAutorizados->nValorAutorizacao;
@@ -619,7 +621,12 @@ class ProcessoCompras
                 }
                 $oDados->autorizacaogeradas = array();
                 if (!empty($oDados->codigoitemprocesso)) {
-                    $oDados->autorizacaogeradas = licitacao::getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
+                    $oDados->autorizacaogeradas = licitacao::getAutorizacoes(
+                        $oDados->codigoitemprocesso,
+                        $oDados->codigodotacao,
+                        null,
+                        $oDados->tiposolicitacao
+                    );
                 }
                 /**
                  * busca o parametro de casas decimais para formatar o valor jogado na grid
@@ -654,7 +661,7 @@ class ProcessoCompras
      * @param integer_type $iOrcTipoRec
      * @return $oDadoValorParcial
      */
-    public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null)
+    public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null, $tipoSolicitacao = null)
     {
 
         if (empty($iCodigoItemProcesso)) {
@@ -673,8 +680,8 @@ class ProcessoCompras
             $sWhereContrapartida = " and e56_orctiporec = {$iOrcTipoRec}";
         }
 
-        $oDaoEmpAutItem = db_utils::getDao("empautitem");
-        $oDaoPcOrcam = db_utils::getDao("pcorcam");
+        $oDaoEmpAutItem = new cl_empautitem();
+        $oDaoPcOrcam = new cl_pcorcam();
 
         $oDadoValorParcial = new stdClass();
         $oDadoValorParcial->nValorAutorizacao = 0;
@@ -689,17 +696,37 @@ class ProcessoCompras
         $sCampos .= "sum(e55_quant) as quantidadeautorizacao           ";
         $sWhere = "          e73_pcprocitem = {$iCodigoItemProcesso} ";
         $sWhere .= "      and e56_coddot     = {$iCodigoDotacao}      ";
-        $sWhere .= "      and e54_anulad is null                      ";
+
+        if ($tipoSolicitacao === '5') {
+            $sqlPossuiEmpenho = "
+                select e73_sequencial existe from empautitempcprocitem
+                    join empautitem on empautitempcprocitem.e73_autori = e55_autori
+                        AND empautitempcprocitem.e73_sequen = e55_sequen
+                    join empautoriza on empautitem.e55_autori = e54_autori
+                    join empempaut on e54_autori = e61_autori
+                where e73_pcprocitem = {$iCodigoItemProcesso}
+            ";
+
+            $empenho = $oDaoEmpAutItem->sql_record($sqlPossuiEmpenho);
+            $empenho = db_utils::fieldsMemory($empenho, 0);
+
+            if ($empenho->existe) {
+                $sWhere .= " and e73_sequencial in ({$sqlPossuiEmpenho}) ";
+            } else {
+                $sWhere .= " and e54_anulad is null";
+            }
+        } else {
+            $sWhere .= " and e54_anulad is null ";
+        }
+
         $sWhere .= "      {$sWhereContrapartida}                      ";
         $sWhere .= " group by e55_vltot,                              ";
         $sWhere .= "          e55_quant                               ";
-        $sSqlAutorizacao = $oDaoEmpAutItem->sql_query_itemdot(null, null, $sCampos, null, $sWhere);
 
+        $sSqlAutorizacao = $oDaoEmpAutItem->sql_query_itemdot(null, null, $sCampos, null, $sWhere);
         $rsSqlAutorizacao = $oDaoEmpAutItem->sql_record($sSqlAutorizacao);
         if ($oDaoEmpAutItem->numrows > 0) {
-
             for ($iIndEmpAutItem = 0; $iIndEmpAutItem < $oDaoEmpAutItem->numrows; $iIndEmpAutItem++) {
-
                 $oAutorizacao = db_utils::fieldsMemory($rsSqlAutorizacao, $iIndEmpAutItem);
                 $oDadoValorParcial->nValorAutorizacao += $oAutorizacao->valorautorizacao;
                 $oDadoValorParcial->iQuantidadeAutorizacao += $oAutorizacao->quantidadeautorizacao;
@@ -720,9 +747,7 @@ class ProcessoCompras
         $sSqlPcOrcam = $oDaoPcOrcam->sql_query_valor_item_julgado_processocompra(null, $sCampos, null, $sWhere);
         $rsSqlPcOrcam = $oDaoPcOrcam->sql_record($sSqlPcOrcam);
         if ($oDaoPcOrcam->numrows > 0) {
-
             for ($iIndPcOrcam = 0; $iIndPcOrcam < $oDaoPcOrcam->numrows; $iIndPcOrcam++) {
-
                 $oItemJulgado = db_utils::fieldsMemory($rsSqlPcOrcam, $iIndPcOrcam);
                 $nPercentualDotacao = 100;
                 if ($oItemJulgado->pc11_vlrun > 0) {

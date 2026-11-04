@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\RecursosHumanos\Pessoal\Service\DecimoServidorService;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -44,9 +45,55 @@ db_selectmax("cfpess", " select * from cfpess " . bb_condicaosubpes("r11_"));
 db_inicio_transacao();
 
 global $opcao, $r110_lotaci, $r110_lotacf, $r110_regisi, $r110_regisf, $opcao_gml, $opcao_geral, $faixa_lotac, $faixa_regis;
-global $lotacao_faixa;
-
+global $lotacao_faixa, $instituicao, $ano, $data_decimo_13;
 db_postmemory($HTTP_POST_VARS);
+if (isset($selecao) && !empty($selecao)) {
+
+    //verificamos se foi informada selecao, buscamos a condicao e aplicamos na consulta
+    $oDaoRhPessoalMov = new cl_rhpessoalmov();
+    $oSelecao = new Selecao($selecao);
+    $sWhereServidores  = "     rh02_anousu = " . DBPessoal::getAnoFolha();
+    $sWhereServidores .= " and rh02_mesusu = " . DBPessoal::getMesFolha();
+    $sWhereServidores .= " and rh02_instit = " . db_getsession('DB_instit');
+    $sWhereServidores .= " 
+    and rh02_regist in (select rh02_regist 
+        from pessoal.rhpessoal
+            inner join cgm on rh01_numcgm = z01_numcgm
+            inner join pessoal.rhpessoalmov on rh01_regist = rh02_regist 
+                                    and rh02_anousu = " . DBPessoal::getAnoFolha(). "
+                                    and rh02_mesusu = " . DBPessoal::getMesFolha() . "
+                                    and rh02_instit = " . db_getsession("DB_instit") . "
+            left join pessoal.rhlota on rhlota.r70_codigo = rhpessoalmov.rh02_lota
+                            and rhlota.r70_instit = rhpessoalmov.rh02_instit
+            left join pessoal.rhregime on rhregime.rh30_codreg = rhpessoalmov.rh02_codreg
+            left join pessoal.rhpescargo on rhpescargo.rh20_seqpes = rhpessoalmov.rh02_seqpes
+            left join pessoal.rhpespadrao on rhpespadrao.rh03_seqpes = rhpessoalmov.rh02_seqpes             
+                                and rhpespadrao.rh03_anousu = rhpessoalmov.rh02_anousu             
+                                and rhpespadrao.rh03_mesusu = rhpessoalmov.rh02_mesusu
+            left join pessoal.rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes
+    where " . $oSelecao->getWhere() . ")";
+    $sSqlServidores = $oDaoRhPessoalMov->sql_query_file(null, null, 'rh02_regist', null, $sWhereServidores);
+    $rsServidores  = db_query($sSqlServidores);
+
+    if (!$rsServidores) {
+        throw new DBException("Ocorreu um erro ao buscar as matrï¿½culas da seleï¿½ï¿½o informada.");
+    }
+    $aMatriculas = db_utils::makeCollectionFromRecord($rsServidores, function($oResultado) {
+        return $oResultado->rh02_regist;
+    });
+
+    if (sizeof($aMatriculas) > 0) {
+        rsort($aMatriculas);
+        if (empty($faixa_regis)) {
+            $faixa_regis = implode(",", $aMatriculas);
+        } else {
+            $faixa_regis .= "," . implode(",", $aMatriculas);
+        }
+    } else {
+        throw new DBException("Nenhuma matrï¿½cula encontrada na seleï¿½ï¿½o informada.");
+    }
+    $opcao_gml = "m";
+}
 
 if (!isset($r110_lotaci)) {
     $r110_lotaci = '    ';
@@ -72,6 +119,17 @@ if ($faixa_lotac != " ") {
     $lotacao_faixa = $faixa_lotac;
 }
 
+if (!isset($instituicao)) {
+    $instituicao = "";
+}
+
+if (!isset($ano)) {
+    $ano = "";
+}
+
+if (!isset($data_decimo_13)) {
+    $data_decimo_13 = "";
+}
 
 //echo "faixa_lotac-->$faixa_lotac  r110_lotaci-->$r110_lotaci  r110_lotacf-->$r110_lotacf ";
 //
@@ -93,18 +151,16 @@ if ($faixa_lotac != " ") {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <br><br><br>
 <center>
-    <?
+    <?php
     db_criatermometro('calculo_folha', 'Concluido...', 'blue', 1, 'Efetuando Calculo ...');
     ?>
 </center>
-
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
   db_getsession("DB_instit"));
 ?>
 </body>
-<?
-
+<?php
 global $db_config;
 db_selectmax("db_config",
   "select lower(trim(munic)) as d08_carnes , db21_codcli as codcli, cgc from db_config where codigo = " . db_getsession("DB_instit"));
@@ -279,29 +335,28 @@ function diferenca_163()
 
 function gera_ponto()
 {
-
     require_once 'model/configuracao/DBLog.model.php';
 
     global $pagaradiantamentonovamente, $fracao_certa, $mesana, $d08_carnes, $db21_codcli;
 
-    global $subpes, $cfpess, $pessoal, $Ipessoal, $dias_pagamento, $db_config;
+    global $subpes, $cfpess, $pessoal, $Ipessoal, $dias_pagamento, $db_config, $instituicao, $ano, $data_decimo_13;;
 
     global $opcao, $opcao_filtro, $opcao_gml, $r110_regisi, $r110_regisf, $r110_lotaci,
            $r110_lotacf, $faixa_regis, $faixa_lotac;
 
     $dbLog = new DBLog('TXT', 'tmp/manutencao_13');
 
-    $dbLog->escreverLog("----- Filtros Início -----");
-    $dbLog->escreverLog("=> Opção: {$opcao} (1 - Adiantamento 13º / 2 - Saldo 13º / 3 - Complemento 13º)");
+    $dbLog->escreverLog("----- Filtros Inï¿½cio -----");
+    $dbLog->escreverLog("=> Opï¿½ï¿½o: {$opcao} (1 - Adiantamento 13ï¿½ / 2 - Saldo 13ï¿½ / 3 - Complemento 13ï¿½)");
     $dbLog->escreverLog("=> Pagar complemento de adiantamento: {$pagaradiantamentonovamente}");
-    $dbLog->escreverLog("=> Fração para pagamento: {$fracao_certa}");
-    $dbLog->escreverLog("=> Seleção: {$opcao_gml} (g - Geral / m - Matrícula / l - Lotação)");
+    $dbLog->escreverLog("=> Fraï¿½ï¿½o para pagamento: {$fracao_certa}");
+    $dbLog->escreverLog("=> Seleï¿½ï¿½o: {$opcao_gml} (g - Geral / m - Matrï¿½cula / l - Lotaï¿½ï¿½o)");
     $dbLog->escreverLog("----- Filtros Fim -----");
     $dbLog->escreverLog("");
 
     $subpes = db_anofolha() . '/' . db_mesfolha();
 
-    $dbLog->escreverLog("=> Ano/Mês folha: {$subpes}");
+    $dbLog->escreverLog("=> Ano/Mï¿½s folha: {$subpes}");
 
     $r11_sald13 = ($opcao == 1 ? '0' : '1');
     $matriz1 = array();
@@ -318,7 +373,6 @@ function gera_ponto()
 
     $condicaoaux = db_condicaoaux($opcao_filtro, $opcao_gml, "rh02_", $r110_regisi, $r110_regisf, $r110_lotaci,
       $r110_lotacf, $faixa_regis, str_replace("\\", "", $faixa_lotac));
-
     if ($opcao_gml == "l") {
         if ($opcao_filtro == "i") {
             $condicaoaux = " and r70_estrut between " . db_sqlformat($r110_lotaci);
@@ -347,17 +401,16 @@ function gera_ponto()
     $sql .= "             " . bb_condicaosubpes("rh02_") . $condicaoaux;
 
     $dbLog->escreverLog("");
-    $dbLog->escreverLog("##### [1] SQL Início - rhpessoal/rhpessoalmov/rhlota/rhpespadrao/rhpesrescisao #####");
+    $dbLog->escreverLog("##### [1] SQL Inï¿½cio - rhpessoal/rhpessoalmov/rhlota/rhpespadrao/rhpesrescisao #####");
     $dbLog->escreverLog($sql);
     $dbLog->escreverLog("##### [1] SQL FIM #####");
     $dbLog->escreverLog("");
 
     db_selectmax("pessoal", $sql);
 
-    $dbLog->escreverLog("##### Começando a percorrer os registros [1] #####");
+    $dbLog->escreverLog("##### Comeï¿½ando a percorrer os registros [1] #####");
     for ($Ipessoal = 0; $Ipessoal < count($pessoal); $Ipessoal++) {
-
-        $dbLog->escreverLog("----- Matrícula: {$pessoal[$Ipessoal]["r01_regist"]} -----");
+        $dbLog->escreverLog("----- Matrï¿½cula: {$pessoal[$Ipessoal]["r01_regist"]} -----");
 
         $m_rubric = array();
         $m_tipo = array();
@@ -381,10 +434,11 @@ function gera_ponto()
 
         if (db_delete("pontof13", bb_condicaosubpes("r34_") . $condicaoaux)) {
             $dbLog->escreverLog("");
-            $dbLog->escreverLog("  *** [1] if início ***");
+            $dbLog->escreverLog("  *** [1] if inï¿½cio ***");
             $dbLog->escreverLog("      => deletado da tabela pontof13... deletando da tabela gerfs13");
 
             db_delete("gerfs13", bb_condicaosubpes("r35_") . " and r35_regist = " . db_sqlformat($matric));
+            db_delete("gerfsad13", bb_condicaosubpes("r95_") . " and r95_regist = " . db_sqlformat($matric));
 
             $dbLog->escreverLog("  *** [1] if fim ***");
             $dbLog->escreverLog("");
@@ -395,13 +449,13 @@ function gera_ponto()
 
         $situa_func = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);
 
-        $dbLog->escreverLog("  => Situação Funcionário: {$situa_func}");
-        $dbLog->escreverLog("  => Rescisão(r01_recis): {$pessoal[$Ipessoal]["r01_recis"]}");
+        $dbLog->escreverLog("  => Situaï¿½ï¿½o Funcionï¿½rio: {$situa_func}");
+        $dbLog->escreverLog("  => Rescisï¿½o(r01_recis): {$pessoal[$Ipessoal]["r01_recis"]}");
         $dbLog->escreverLog("  => Dias de pagamento: {$dias_pagamento}");
 
         if (!db_empty($pessoal[$Ipessoal]["r01_recis"])) {
             $dbLog->escreverLog("");
-            $dbLog->escreverLog("  *** [2] if início ***");
+            $dbLog->escreverLog("  *** [2] if inï¿½cio ***");
             $dbLog->escreverLog("      => continue...");
             $dbLog->escreverLog("  *** [2] if fim ***");
             $dbLog->escreverLog("");
@@ -411,15 +465,15 @@ function gera_ponto()
 
         if ($opcao == 1 && $situa_func != 1 && $dias_pagamento == 0) {
             $dbLog->escreverLog("");
-            $dbLog->escreverLog("  *** [3] if início ***");
+            $dbLog->escreverLog("  *** [3] if inï¿½cio ***");
 
             if ($db21_codcli == "4" || $db21_codcli == "20") {
                 $dbLog->escreverLog("");
-                $dbLog->escreverLog("  *** [4] if início ***");
+                $dbLog->escreverLog("  *** [4] if inï¿½cio ***");
 
                 if ($pessoal[$Ipessoal]["r01_regime"] == 1 && ($situa_func != 6 && $situa_func != 5 && $situa_func != 3) && $pessoal[$Ipessoal]["r01_tbprev"] != $cfpess[0]["r11_tbprev"]) {
                     $dbLog->escreverLog("");
-                    $dbLog->escreverLog("  *** [5] if início ***");
+                    $dbLog->escreverLog("  *** [5] if inï¿½cio ***");
                     $dbLog->escreverLog("      => continue...");
                     $dbLog->escreverLog("  *** [5] if fim ***");
                     $dbLog->escreverLog("");
@@ -431,7 +485,7 @@ function gera_ponto()
                 $dbLog->escreverLog("");
             } else {
                 $dbLog->escreverLog("");
-                $dbLog->escreverLog("  *** [4] else início ***");
+                $dbLog->escreverLog("  *** [4] else inï¿½cio ***");
                 $dbLog->escreverLog("      => continue...");
                 $dbLog->escreverLog("  *** [4] else fim ***");
                 $dbLog->escreverLog("");
@@ -450,19 +504,19 @@ function gera_ponto()
         $dbLog->escreverLog("  => datp13dias: {$datp13dias}");
         $dbLog->escreverLog("  => datp13: {$datp13}");
         $dbLog->escreverLog("  => fracao: {$fracao}");
-        $dbLog->escreverLog("  => Admissão: {$pessoal[$Ipessoal]["r01_admiss"]}");
+        $dbLog->escreverLog("  => Admissï¿½o: {$pessoal[$Ipessoal]["r01_admiss"]}");
         $dbLog->escreverLog("  => db_val(db_substr(subpes, 1, 4)): " . db_val(db_substr($subpes, 1, 4)));
 
         if (db_year($pessoal[$Ipessoal]["r01_admiss"]) == db_val(db_substr($subpes, 1, 4))) {
             $dbLog->escreverLog("");
-            $dbLog->escreverLog("  *** [6] if início ***");
+            $dbLog->escreverLog("  *** [6] if inï¿½cio ***");
 
             $xdat = $pessoal[$Ipessoal]["r01_admiss"];
             $nm13 = db_month($datp13);
 
             if (db_day($xdat) > 16 && db_year($pessoal[$Ipessoal]["r01_admiss"]) == db_year($datp13)) {
                 $dbLog->escreverLog("");
-                $dbLog->escreverLog("  *** [7] if início ***");
+                $dbLog->escreverLog("  *** [7] if inï¿½cio ***");
 
                 $meses_admissao = db_month($pessoal[$Ipessoal]["r01_admiss"]);
 
@@ -471,7 +525,7 @@ function gera_ponto()
                 $dbLog->escreverLog("");
             } else {
                 $dbLog->escreverLog("");
-                $dbLog->escreverLog("  *** [7] else início ***");
+                $dbLog->escreverLog("  *** [7] else inï¿½cio ***");
 
                 $meses_admissao = db_month($pessoal[$Ipessoal]["r01_admiss"]) - 1;
 
@@ -484,7 +538,7 @@ function gera_ponto()
             $dbLog->escreverLog("");
         } else {
             $dbLog->escreverLog("");
-            $dbLog->escreverLog("  *** [6] else início ***");
+            $dbLog->escreverLog("  *** [6] else inï¿½cio ***");
 
             $xdat = db_ctod("01/01/" . db_substr(db_dtoc($datp13), 7, 4));
             $nm13 = db_month($datp13);
@@ -1160,6 +1214,15 @@ function gera_ponto()
                 }
                 $fracao = $fracao_old;
             }
+            if ($opcao == 2) {
+                $dados[] = [
+                        'instituicao' => $instituicao,
+                        'data_decimo_13' => $data_decimo_13,
+                        'ano' => $ano,
+                        'matriculas' => $pessoal[$Ipessoal]["r01_regist"]
+                    ];
+                DecimoServidorService::inserir($dados);
+            }
         }
 
         $dbLog->escreverLog('');
@@ -1327,7 +1390,6 @@ function calcula_afastamentos()
         if ($retorno < 0) {
             $retorno = 0;
         }
-
     }
 
     return $retorno;

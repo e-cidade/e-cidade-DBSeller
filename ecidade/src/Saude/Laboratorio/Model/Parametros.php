@@ -34,6 +34,7 @@ namespace ECidade\Saude\Laboratorio\Model;
 class Parametros
 {
     const INTEGRACAO_LUCKMANN = 1;
+    const INTEGRACAO_INFINITY = true;
 
     /**
      * @var int
@@ -64,6 +65,31 @@ class Parametros
      * @var bool
      */
     private $numeroControleInterno = false;
+
+    /**
+     * @var int
+     */
+    private $modeloLaudo;
+
+    /**
+     * @var bool
+     */
+    private $exibeLiberacaoPorExame = false;
+
+    /**
+     * @var double
+     */
+    private $espacoLinhas;
+
+    /**
+     * @var double
+     */
+    private $tamanhoFonte;
+
+    /**
+     * @var bool
+     */
+    private $integracaoInfinity = false;
 
     /**
      * @return int
@@ -159,5 +185,73 @@ class Parametros
     public function setNumeroControleInterno($numeroControleInterno)
     {
         $this->numeroControleInterno = $numeroControleInterno;
+    }
+
+    /**
+     * @return int
+     */
+    public function getModeloLaudo()
+    {
+        return $this->modeloLaudo;
+    }
+
+    /**
+     * @param int $modeloLaudo
+     */
+    public function setModeloLaudo($modeloLaudo)
+    {
+        $this->modeloLaudo = $modeloLaudo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExibeLiberacaoPorExame()
+    {
+        return $this->exibeLiberacaoPorExame;
+    }
+
+    /**
+     * @param bool $exibeLiberacaoPorExame
+     */
+    public function setExibeLiberacaoPorExame($exibeLiberacaoPorExame)
+    {
+        $this->exibeLiberacaoPorExame = $exibeLiberacaoPorExame;
+    }
+
+    public function getEspacoLinhas()
+    {
+        return $this->espacoLinhas;
+    }
+
+    public function setEspacoLinhas($espacoLinhas)
+    {
+        $this->espacoLinhas = $espacoLinhas;
+    }
+
+    public function getTamanhoFonte()
+    {
+        return $this->tamanhoFonte;
+    }
+
+    public function setTamanhoFonte($tamanhoFonte)
+    {
+        $this->tamanhoFonte = $tamanhoFonte;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIntegracaoInfinity()
+    {
+        return $this->integracaoInfinity;
+    }
+
+    /**
+     * @param bool $integracaoInfinity
+     */
+    public function setIntegracaoInfinity($integracaoInfinity)
+    {
+        $this->integracaoInfinity = $integracaoInfinity;
     }
 }

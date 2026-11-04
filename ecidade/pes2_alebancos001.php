@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
     <td>&nbsp;</td>
  </tr>
   <tr>
-    <?
+    <?php
   if(!isset($tipo)){
     $tipo = "g";
   }
@@ -113,15 +113,15 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?
+      <?php
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
@@ -133,7 +133,7 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

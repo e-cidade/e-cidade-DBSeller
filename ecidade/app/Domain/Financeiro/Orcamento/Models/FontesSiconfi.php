@@ -13,6 +13,8 @@ class FontesSiconfi extends Model
 {
     protected $table = 'orcamento.fontesiconfi';
     protected $primaryKey = 'codigo_siconfi';
+    protected $keyType = 'string';
+
     public $timestamps = false;
     public $incrementing = false;
 
@@ -23,5 +25,12 @@ class FontesSiconfi extends Model
     public function classificacao()
     {
         return $this->belongsTo(ClassificacaoFonteRecurso::class, 'classificacaofr_id', 'id');
+    }
+
+    public function toArray()
+    {
+        $return = parent::toArray();
+        $return['apresentar'] = "{$return['codigo_siconfi']} - {$return['descricao']}";
+        return $return;
     }
 }

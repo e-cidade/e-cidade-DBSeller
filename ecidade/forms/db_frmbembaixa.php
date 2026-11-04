@@ -88,7 +88,7 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
           <fieldset class="separator">
             <legend><?= $Lt55_obs ?></legend>
               <?php
-              db_textarea("t55_obs", 5, 50, $It55_obs, true, "text", $db_opcao);
+              db_textarea("t55_obs", 5, 50, $It55_obs, true, "text", $db_opcao, '', '', 'white');
               ?>
           </fieldset>
         </td>
@@ -116,6 +116,7 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
     const extensoesValidas = ['pdf', 'doc', 'docx']
 
     let extensaoArquivo = retorno.file.match(/\..+/)
+      retorno.file.replace(/'/g, '');
 
     if (extensaoArquivo === null) {
 
@@ -226,11 +227,6 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
     js_removeObj("msgBox");
     var oRetorno = JSON.parse(oJson.responseText);
 
-    if(oRetorno.status == 2) {
-      alert(oRetorno.message.urlDecode());
-      return false;
-    }
-
     $("t52_bem").value = oRetorno.dados.t52_bem;
     $("t52_descr").value = oRetorno.dados.t52_descr.urlDecode();
     if(oRetorno.dados.bembaixado) {
@@ -270,7 +266,6 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
 
     $('form1').reset();
     fileUpload.clear()
-
     js_pesquisa();
   }
 
@@ -281,6 +276,7 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
     oParam.aBens = new Array($F('t52_bem'));
     oParam.dtBaixa = $F('t55_baixa');
     oParam.iMotivo = $F('t55_motivo');
+    oParam.nomeArquivo = fileUpload.file
     oParam.sObservacao = encodeURIComponent(tagString($F('t55_obs')));
     oParam.caminhoArquivo = fileUpload.filePath !== undefined && !empty(fileUpload.filePath) ? fileUpload.filePath : null
     oParam.anexoObrigatorio = anexoObrigatorio
@@ -463,13 +459,15 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
     oParam.dtBaixa = $F('t55_baixa');
     oParam.iMotivo = $F('t55_motivo');
     oParam.sObservacao = encodeURIComponent(tagString($F('t55_obs')));
+    oParam.nomeArquivo = fileUpload.file
+    oParam.caminhoArquivo = fileUpload.filePath !== undefined && !empty(fileUpload.filePath) ? fileUpload.filePath : null
+    oParam.anexoObrigatorio = anexoObrigatorio
     oParam.aBens = new Array();
     var aItens = oDBGridBens.aRows;
     aItens.each(function(oLinha, iSeq) {
       oParam.aBens.push(oLinha.aCells[0].getValue());
     });
     if(!confirm(_M('patrimonial.patrimonio.db_frmbembaixa.confirma_baixa'))) {
-
       oWindowBensVinculados.destroy();
       return false;
     }
@@ -496,7 +494,7 @@ $oDataAtual = new DBDate(date("d/m/Y", db_getsession('DB_datausu')));
         parameters: 'json=' + Object.toJSON(oParam),
         onComplete: js_retornoBaixaBem
       });
-
+      oWindowBensVinculados.destroy();
   }
 </script>
 <script>

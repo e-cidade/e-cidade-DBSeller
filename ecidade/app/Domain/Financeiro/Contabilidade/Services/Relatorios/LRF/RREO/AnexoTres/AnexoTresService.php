@@ -5,6 +5,8 @@ namespace App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\Anexo
 use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Financeiro\Contabilidade\Relatorios\LRF\RREO\XlsAnexoTres;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\AnexosExecucaoMensalService;
+use PhpOffice\PhpWord\Settings;
+use NcJoes\OfficeConverter\OfficeConverter;
 use Exception;
 
 abstract class AnexoTresService extends AnexosExecucaoMensalService
@@ -81,7 +83,11 @@ abstract class AnexoTresService extends AnexosExecucaoMensalService
         $this->exercicio = $filtros['DB_anousu'];
         $this->emissor = \InstituicaoRepository::getInstituicaoByCodigo($filtros['DB_instit']);
         $this->constructAssinaturas($filtros['DB_instit']);
-        $this->constructInstituicoes(DBConfig::all());
+        if (isset($filtros["desvincularDadosInstituicaoCamara"]) && $filtros["desvincularDadosInstituicaoCamara"]) {
+            $this->constructInstituicoes(DBConfig::all()->where('db21_tipoinstit', '<>', 2));
+        } else {
+            $this->constructInstituicoes(DBConfig::all());
+        }
         $this->constructPeriodo($filtros['periodo']);
         $this->getMesesProcessar();
         $this->constructRelatorio($filtros['codigo_relatorio']);
@@ -125,9 +131,15 @@ abstract class AnexoTresService extends AnexosExecucaoMensalService
 
         $filename = $this->parser->gerar();
 
+        Settings::setTempDir('tmp/');
+        $filePdf = basename($filename, ".xlsx").".pdf";
+        $converter = new OfficeConverter($filename);
+        $converter->convertTo($filePdf);
+
         return [
             'xls' => $filename,
-            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename
+            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename,
+            'pdf' => Settings::getTempDir().$filePdf
         ];
     }
 
@@ -288,5 +300,11 @@ abstract class AnexoTresService extends AnexosExecucaoMensalService
             $linha->total_meses = abs($linha->total_meses);
             $linha->previsao_atualizada = abs($linha->previsao_atualizada);
         }
+    }
+    
+    public function getLinhasProcessadas()
+    {
+        $this->processar();
+        return $this->linhas;
     }
 }

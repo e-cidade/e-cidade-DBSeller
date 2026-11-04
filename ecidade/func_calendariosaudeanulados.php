@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -405,7 +405,7 @@ function janela(d,m,a,fechar,saldo){
      parent.document.form1.saldo.value=saldo;
   }       
  
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = (d<10?'0'+d:d);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";
@@ -436,7 +436,7 @@ function janela(d,m,a,fechar,saldo){
 
 
 function janela_zera(){ 
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = '';\n";

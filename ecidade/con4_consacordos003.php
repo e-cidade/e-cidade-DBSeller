@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,7 +54,7 @@ $tipoInstrumento = $tiposInstrumento[$clAcordo->getTipoInstrumento()];
 
 $estiloOrdemInicio = "document.getElementById('ordemInicio').style = 'display:none;'";
 if ($clAcordo->buscaEventosPorTipo(5) && $clAcordo->getDependeOrdemInicio() == 't') {
-  $estiloOrdemInicio = "document.getElementById('ordemInicio').style = 'display:table-row;'";
+    $estiloOrdemInicio = "document.getElementById('ordemInicio').style = 'display:table-row;'";
 }
 
 /**
@@ -65,11 +65,11 @@ if ($clAcordo->buscaEventosPorTipo(5) && $clAcordo->getDependeOrdemInicio() == '
 // Percorre as posições verificando se existem aditamentos de prazo ou renovação.
 $acordoPosicoes = $clAcordo->getPosicoes();
 $posicoes = [];
-foreach($acordoPosicoes as $acordoposicao){
-  $tipo = $acordoposicao->getTipo();
-  if (in_array($tipo, array(5, 6))) {
-    $posicoes[] = $tipo;
-  }
+foreach ($acordoPosicoes as $acordoposicao) {
+    $tipo = $acordoposicao->getTipo();
+    if (in_array($tipo, array(5, 6))) {
+        $posicoes[] = $tipo;
+    }
 }
 
 /**
@@ -80,33 +80,31 @@ $eventos = $clAcordo->getEventos();
 $datainicio = $clAcordo->getDataInicial();
 $datafim = $clAcordo->getDataFinal();
 $dataOrdemInicio = "";
-foreach($eventos as $evento) {
-  if($evento->getTipoEvento() == 5 && $clAcordo->getDependeOrdemInicio() == 't'){
-      if(count($posicoes) == 0) {
-        // Calcula o periodo usando como base a vigência de inclusão do acordo
-        $dataInicioAnterior = new DBDate($datainicio);
-        $dataFimAnterior = new DBDate($datafim);
-        $intervalo = DBDate::getIntervaloEntreDatas($dataInicioAnterior, $dataFimAnterior);
+foreach ($eventos as $evento) {
+    if ($evento->getTipoEvento() == 5 && $clAcordo->getDependeOrdemInicio() == 't') {
+        if (count($posicoes) == 0) {
+          // Calcula o periodo usando como base a vigência de inclusão do acordo
+            $dataInicioAnterior = new DBDate($datainicio);
+            $dataFimAnterior = new DBDate($datafim);
+            $intervalo = DBDate::getIntervaloEntreDatas($dataInicioAnterior, $dataFimAnterior);
 
-        // Calcula a data de fim usando como base a data da ordem de inicio
-        $oData = $evento->getData();
-        $datainicio = $oData->getDate('d/m/Y');
-        $dataOrdemInicio = $evento->getData();
-        $oData = new DBDate($datainicio);
-        $oData->modificarIntervalo('+' . $intervalo->days . ' days');
-        $datafim = $oData->getDate('d/m/Y');
+          // Calcula a data de fim usando como base a data da ordem de inicio
+            $oData = $evento->getData();
+            $datainicio = $oData->getDate('d/m/Y');
+            $dataOrdemInicio = $evento->getData();
+            $oData = new DBDate($datainicio);
+            $oData->modificarIntervalo('+' . $intervalo->days . ' days');
+            $datafim = $oData->getDate('d/m/Y');
+        } else {
+            $dataOrdemInicio = $evento->getData();
+        }
     }
-    else {
-      $dataOrdemInicio = $evento->getData();
-    }
-  }
 }
 
-if ($clAcordo->getInstit() != db_getsession('DB_instit') ) {
-
-  $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
-  $sMensagem = "Acordo de código {$oGet->ac16_sequencial} não pertence a instituição {$oInstituicao->getDescricao()}.";
-  header("Location: db_erros.php?db_erro={$sMensagem}");
+if ($clAcordo->getInstit() != db_getsession('DB_instit')) {
+    $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
+    $sMensagem = "Acordo de código {$oGet->ac16_sequencial} não pertence a instituição {$oInstituicao->getDescricao()}.";
+    header("Location: db_erros.php?db_erro={$sMensagem}");
 }
 
 db_app::import("configuracao.DBDepartamento");
@@ -152,18 +150,21 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
           <?php
             $oDaoAcordoGrupo       = db_utils::getDao("acordogrupo");
             $sWhereAcordoGrupo     = "ac02_sequencial = {$clAcordo->getGrupo()}";
-            $sSqlAcordoGrupo       = $oDaoAcordoGrupo->sql_query_file(null, "ac02_descricao",
-                                                                      null, $sWhereAcordoGrupo);
+            $sSqlAcordoGrupo       = $oDaoAcordoGrupo->sql_query_file(
+                null,
+                "ac02_descricao",
+                null,
+                $sWhereAcordoGrupo
+            );
             $rsSqlAcordoGrupo      = $oDaoAcordoGrupo->sql_record($sSqlAcordoGrupo);
             $iNumRowsAcordoGrupo   = $oDaoAcordoGrupo->numrows;
             $sDescricaoAcordoGrupo = "Não definido!";
             if ($iNumRowsAcordoGrupo > 0) {
-
-            	$oAcordoGrupo          = db_utils::fieldsMemory($rsSqlAcordoGrupo, 0);
-            	$sDescricaoAcordoGrupo = $oAcordoGrupo->ac02_descricao;
+                $oAcordoGrupo          = db_utils::fieldsMemory($rsSqlAcordoGrupo, 0);
+                $sDescricaoAcordoGrupo = $oAcordoGrupo->ac02_descricao;
             }
             echo "{$clAcordo->getGrupo()} - {$sDescricaoAcordoGrupo}";
-          ?>
+            ?>
         </td>
       </tr>
 
@@ -194,7 +195,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
             $rsOrigem   = $oDaoOrigem->sql_record($sSqlOrigem);
             $oOrigem    = db_utils::fieldsMemory($rsOrigem, 0);
             echo $iOrigem . " - " . $oOrigem->ac28_descricao;
-          ?>
+            ?>
         </td>
         <td width="150">
           <b>Data da Assinatura:</b>
@@ -215,7 +216,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
         </td>
         <td class="tdBgColor">
           <?php echo "{$datainicio} até {$datafim}";
-          ?>
+            ?>
         </td>
       </tr>
 
@@ -234,7 +235,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
             $iDepartamento = $clAcordo->getDepartamento();
             $oDepartamento = new DBDepartamento($iDepartamento);
             echo "{$iDepartamento} - {$oDepartamento->getNomeDepartamento()}";
-          ?>
+            ?>
         </td>
       </tr>
 
@@ -247,10 +248,10 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
         </td>
         <td class="tdBgColor">
           <?php
-          $iDepartamentoResponsavel = $clAcordo->getDepartamentoResponsavel();
-          $oDepartamento            = new DBDepartamento($iDepartamentoResponsavel);
-          echo "{$iDepartamentoResponsavel} - {$oDepartamento->getNomeDepartamento()}";
-          ?>
+            $iDepartamentoResponsavel = $clAcordo->getDepartamentoResponsavel();
+            $oDepartamento            = new DBDepartamento($iDepartamentoResponsavel);
+            echo "{$iDepartamentoResponsavel} - {$oDepartamento->getNomeDepartamento()}";
+            ?>
         </td>
       </tr>
 
@@ -268,7 +269,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
 
       <tr>
         <td class="tdWidth">
-          <b>Contratado:</b>
+          <?php db_ancora("<b>Contratado:</b>", "js_consultaCgm({$clAcordo->getContratado()->getCodigo()})", 1); ?>
         </td>
         <td colspan="" class="tdBgColor">
           <?php echo $clAcordo->getContratado()->getCodigo(); ?>
@@ -279,7 +280,25 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
       </tr>
 
       <tr>
-        <td class="tdWidth"><b>Processo:</b></td>
+        <td class="tdWidth">
+          <?php
+            $oDaoAcordoProc = new cl_acordoproc();
+            $sSqlAcordoProc = $oDaoAcordoProc->sql_query_file(
+                null,
+                "ac62_protprocesso",
+                null,
+                "ac62_acordo = {$clAcordo->getCodigoAcordo()}"
+            );
+            $rsAcordoProc = $oDaoAcordoProc->sql_record($sSqlAcordoProc);
+
+            if ($oDaoAcordoProc->numrows > 0) {
+                $codproc = db_utils::fieldsMemory($rsAcordoProc, 0)->ac62_protprocesso;
+                db_ancora("<b>Processo:</b>", "js_consultaProcesso($codproc)", 1);
+            } else {
+                echo "<b>Processo:</b>";
+            }
+            ?>
+        </td>
         <td class="tdBgColor" colspan="3"><?php echo $clAcordo->getProcesso();?></td>
       </tr>
 
@@ -295,16 +314,15 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
             $sRsAcordoCategoria  = $oDAOAcordoCategoria->sql_record($sSqlAcordoCategoria);
 
             if ($oDAOAcordoCategoria->numrows >0) {
-
-              $oStdCategoria = db_utils::fieldsMemory($sRsAcordoCategoria, 0);
-              echo $oStdCategoria->ac50_sequencial . " - " .$oStdCategoria->ac50_descricao;
+                $oStdCategoria = db_utils::fieldsMemory($sRsAcordoCategoria, 0);
+                echo $oStdCategoria->ac50_sequencial . " - " .$oStdCategoria->ac50_descricao;
             }
-          ?>
+            ?>
         </td>
       </tr>
       <tr>
         <td class="tdWidth"><b>Instrumento:</b></td>
-        <td class="tdBgColor" colspan="3"><?php echo strtoupper($tipoInstrumento) ?></td>
+        <td class="tdBgColor" colspan="3"><?php echo mb_strtoupper($tipoInstrumento) ?></td>
       </tr>
 
       <tr>
@@ -339,80 +357,115 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
  </table>
  <fieldset>
     <?php
-    $oTabDetalhes = new verticalTab("detalhesemp",300);
+    $oTabDetalhes = new verticalTab("detalhesemp", 300);
 
-    $oTabDetalhes->add("itens", "Itens",
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=itens");
+    $oTabDetalhes->add(
+        "itens",
+        "Itens",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=itens"
+    );
     /*
      * verificamos se a consulta vem do menu Empenho > Consultas > Consulta Empenho
      * caso venha, nao exibimos o botao empenhamentos
      */
 
     if (!isset($lEmpenho)) {
-
-      $oTabDetalhes->add("empenhamentos" , "Empenhamentos" ,
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=empenhamentos");
+        $oTabDetalhes->add(
+            "empenhamentos",
+            "Empenhamentos",
+            "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=empenhamentos"
+        );
     }
 
-    switch($iOrigem) {
+    switch ($iOrigem) {
+        case '1':
+            $oTabDetalhes->add(
+                "empenhamentos",
+                "Processo de Compras",
+                "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=processodecompras"
+            );
 
-      case '1':
+            break;
 
-        $oTabDetalhes->add("empenhamentos", "Processo de Compras",
-          "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=processodecompras");
+        case '2':
+            $oTabDetalhes->add(
+                "empenhamentos",
+                "Licitações",
+                "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=licitacoes"
+            );
 
-        break;
+            break;
+        case '3':
+          // Manual
 
-      case '2':
+            break;
+        case '4':
+          // Interno
 
-        $oTabDetalhes->add("empenhamentos", "Licitações",
-                           "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=licitacoes");
+            break;
 
-        break;
-      case '3':
+        case '5':
+          // Custo Fixo
 
-        // Manual
-
-        break;
-      case '4':
-
-        // Interno
-
-        break;
-
-      case '5':
-
-        // Custo Fixo
-
-        break;
+            break;
 
 
-      case '6':
-
-        $oTabDetalhes->add("empenhamentos", "Empenhos",
-                           "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=empenhos");
-        break;
+        case '6':
+            $oTabDetalhes->add(
+                "empenhamentos",
+                "Empenhos",
+                "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=empenhos"
+            );
+            break;
     }
 
-    $oTabDetalhes->add("posicoes" , "Posições" ,
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=aditamentos");
+    $oTabDetalhes->add(
+        "posicoes",
+        "Posições",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=aditamentos"
+    );
 
-    $oTabDetalhes->add("rescisoes" , "Rescisões" ,
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=rescisoes");
+    $oTabDetalhes->add(
+        "rescisoes",
+        "Rescisões",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=rescisoes"
+    );
 
-    $oTabDetalhes->add("paralisacoes" ,
-                       "Paralisações" ,
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=paralisacoes");
+    $oTabDetalhes->add(
+        "paralisacoes",
+        "Paralisações",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=paralisacoes"
+    );
 
+    $oTabDetalhes->add(
+        "anulacoes",
+        "Anulações",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=anulacoes"
+    );
 
-    $oTabDetalhes->add("anulacoes" , "Anulações" ,
-                       "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=anulacoes");
-    $oTabDetalhes->add("documentos" , "Documentos" ,
-                          "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=documentos");
+    $oTabDetalhes->add(
+        "documentos",
+        "Documentos",
+        "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=documentos"
+    );
 
     $iCodigoComissao = $clAcordo->getComissao()->getCodigo();
-    $oTabDetalhes->add("comissao" , "Comissões" ,
-                          "con4_consacordosdetalhecomissao001.php?iComissao={$iCodigoComissao}");
+    $oTabDetalhes->add(
+        "comissao",
+        "Comissões",
+        "con4_consacordosdetalhecomissao001.php?iComissao={$iCodigoComissao}"
+    );
+    if (isRioGrandeDoNorte()) {
+        $oTabDetalhes->add(
+            "execucao",
+            "Execuções",
+            "con4_consacordosdetalhes001.php?ac16_sequencial={$oGet->ac16_sequencial}&exec=execucoes"
+        );
+    }
+
+    $oTabDetalhes->add("imprimir", "Imprimir",
+       "con4_consacordosdetalhesimprimir001.php?ac16_sequencial={$oGet->ac16_sequencial}");
+
     $oTabDetalhes->show();
     ?>
 
@@ -504,6 +557,14 @@ function js_consultaLicitacao(iCodigoLicitacao) {
 
 function js_consultaProcessoCompras(iCodigoProcesso) {
   js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_pesquisa_processo', 'com3_pesquisaprocessocompras003.php?pc80_codproc=' + iCodigoProcesso, 'Pesquisa Processo de Compras', true);
+}
+
+function js_consultaCgm(iCodigoCgm) {
+    js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_cgm', 'prot3_consultacgmnovo002.php?numcgm=' + iCodigoCgm, 'Pesquisa CGM', true);
+}
+
+function js_consultaProcesso(iCodigoProcesso) {
+    js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_processo', 'pro3_consultaprocesso002.php?codproc=' + iCodigoProcesso, 'Consulta de Processo', true);
 }
 
 function js_showInfoItem(oDados) {

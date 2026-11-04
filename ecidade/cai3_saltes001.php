@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -33,138 +33,129 @@ include(modification("dbforms/db_funcoes.php"));
 ?>
 <html>
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-<script>
-  function js_relatorio(){
-    var F = document.form1;
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+    <script>
+        function js_relatorio() {
+            var F = document.form1;
 
-    ano = F.datai_ano.value;
-    mes = F.datai_mes.value;
-    dia = F.datai_dia.value;
+            ano = F.datai_ano.value;
+            mes = F.datai_mes.value;
+            dia = F.datai_dia.value;
 
-    if (dia == "" || mes == "" || ano == "") {
-      alert("Preencha a data!");
-      return false;
-    }
+            if (dia == "" || mes == "" || ano == "") {
+                alert("Preencha a data!");
+                return false;
+            }
 
-    tipo='null';
-    for(x=0; x < F.length ;x++){
-       if (F[x].type  == 'radio') {
-           if (F[x].checked == true){
-              tipo = F[x].value;
-	   }
-       }
-    }
-    jan = window.open('cai2_saltes003.php?datai_dia='+dia+'&datai_mes='+mes+'&datai_ano='+ano+'&tipo='+tipo,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    jan.moveTo(0,0);
-  }
-</script>
+            tipo = 'null';
+            for (x = 0; x < F.length; x++) {
+                if (F[x].type == 'radio') {
+                    if (F[x].checked == true) {
+                        tipo = F[x].value;
+                    }
+                }
+            }
+            jan = window.open('cai2_saltes003.php?datai_dia=' + dia + '&datai_mes=' + mes + '&datai_ano=' + ano + '&tipo=' + tipo, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
+            jan.moveTo(0, 0);
+        }
+    </script>
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  >
-<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr>
-    <td width="360" height="20">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<form name="form1" method="post" >
-<table width="100%" height="100%" border="2" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
-    <?php
-    if(!isset($tipo)){
-      $tipo = "conta";
-      $datai_dia = date('d',db_getsession("DB_datausu"));
-      $datai_mes = date('m',db_getsession("DB_datausu"));
-      $datai_ano = date('Y',db_getsession("DB_datausu"));
-    }
-    ?>
-  <tr height="5%" >
-    <td align="left" valign="top" >
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tr><td colspan='7'></td>
-          </tr>
-                 <tr>
-                    <td nowrap><strong>Data Final:</strong></td>
-                    <td nowrap>&nbsp;&nbsp;
-                      <?php db_inputdata("datai",@$datai_dia,@$datai_mes,@$datai_ano,true,'text',2)?>
-                    </td>
-		    <td>
-		    </td>
-		    <td nowrap>
-		    <strong>Soma por: </strong>
-		    </td>
-		    <td>
-		    <input name='tipo' value='conta' type='radio' <?php echo  (isset($tipo)&&$tipo=='conta'?"checked":(!isset($tipo)?"checked":"")) ?> onclick='document.form1.submit()'>
-		    Conta
-		    </td>
-		    <td>
-		    </td>
-		    <td>
-		    <input name='tipo' value='recurso' type='radio' onclick='document.form1.submit()' <?php echo (isset($tipo)&&$tipo=='recurso'?"checked":"")?>>
-		    Recurso
-            </td>
-		    <td>
-		    </td>
-		    <td>
-		    <input name='tipo' value='recurso_conta' type='radio' onclick='document.form1.submit()' <?php echo (isset($tipo)&&$tipo=='recurso_conta'?"checked":"")?>>
-		    Recurso/Conta
-            </td>
-            <td>
-		    <input name='tipo' value='instituicao' type='radio' onclick='document.form1.submit()' <?php echo (isset($tipo)&&$tipo=='instituicao'?"checked":"")?>>
-		    Instituição bancária
-            </td>
+<body >
+<br>
+<form name="form1" method="post">
+    <table width="100%" height="100%" border="2" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+        <?php
+        if (!isset($tipo)) {
+            $tipo = "conta";
+            $datai_dia = date('d', db_getsession("DB_datausu"));
+            $datai_mes = date('m', db_getsession("DB_datausu"));
+            $datai_ano = date('Y', db_getsession("DB_datausu"));
+        }
+        ?>
+        <tr height="5%">
+            <td align="left" valign="top">
+                <table border="0" cellspacing="0" cellpadding="0">
 
-            <td>
-		    <input name='tipo' value='domicilio_bancario' type='radio' onclick='document.form1.submit()' <?php echo (isset($tipo)&&$tipo=='domicilio_bancario'?"checked":"")?>>
-		    Domicílio Bancário/Conta
-            </td>
+                    <tr style="text-align: justify-all; vertical-align: middle">
+                        <td nowrap><strong>Data Final:</strong></td>
+                        <td nowrap>&nbsp;&nbsp;
+                            <?php db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 2) ?>
+                        </td>
+                        <td nowrap>
+                            &nbsp;<strong>Soma por: </strong>
+                        </td>
+                        <td>
+                            <input id="conta" name='tipo' value='conta'
+                                   type='radio' <?php echo(isset($tipo) && $tipo == 'conta' ? "checked" : (!isset($tipo) ? "checked" : "")) ?>
+                                   onclick='document.form1.submit()'>
+                            <label for="conta"> Conta</label>
+                        </td>
 
-            <td width="50px">
-		       &nbsp;
-		    </td>
-		    <td>
-		    <input type=button name=relatorio value='Emitir Relatorio' onClick='js_relatorio();'>
+                        <td>
+                            <input name='tipo' id="recurso" value='recurso' type='radio'
+                                   onclick='document.form1.submit()' <?php echo(isset($tipo) && $tipo == 'recurso' ? "checked" : "") ?>>
+                            <label for="recurso" >Recurso</label>
+                        </td>
+
+                        <td>
+                            <input name='tipo' value='recurso_conta' type='radio' id="recurso_conta"
+                                   onclick='document.form1.submit()' <?php echo(isset($tipo) && $tipo == 'recurso_conta' ? "checked" : "") ?>>
+                            <label for="recurso_conta">Recurso/Conta</label>
+                        </td>
+                        <td>
+                            <input name='tipo' value='instituicao' type='radio' id="instituicao"
+                                   onclick='document.form1.submit()' <?php echo(isset($tipo) && $tipo == 'instituicao' ? "checked" : "") ?>>
+                            <label for="instituicao">Instituição bancária</label>
+                        </td>
+
+                        <td>
+                            <input name='tipo' value='domicilio_bancario' type='radio' id="domicilio_bancario"
+                                   onclick='document.form1.submit()' <?php echo(isset($tipo) && $tipo == 'domicilio_bancario' ? "checked" : "") ?>>
+                            <label for="domicilio_bancario">Domicílio Bancário/Conta</label>
+                        </td>
+                        <td style="padding-left: 10px">
+                            <input type=button name=relatorio value='Emitir Relatorio' onClick='js_relatorio();'>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr height="80%">
+            <td align="center">
+                <?php
+                if (!isset($tipo)) {
+                    $tipo = "conta";
+                    $datai_dia = date('d', db_getsession("DB_datausu"));
+                    $datai_mes = date('m', db_getsession("DB_datausu"));
+                    $datai_ano = date('Y', db_getsession("DB_datausu"));
+                }
+                ?>
+                <iframe id="saldos" frameborder="0" name="iframe_saldos" leftmargin="0" topmargin="0"
+                        src="cai3_saltes002.php?datai_dia=<?php echo $datai_dia ?>&datai_mes=<?php echo $datai_mes ?>&datai_ano=<?php echo $datai_ano ?>&tipo=<?php echo($tipo) ?>"
+                        height="100%" width="95%">
+                </iframe>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" colspan=2 align="center">
+                <table bordercolor="#000000" style="font-size:12px" border="0" cellspacing="0" cellpadding="3">
+                    <td align="right"><b>Totais </b></td>
+                    <td align="right">Saldo.Ant <input align=right size=15 type=text name=tot_ant></td>
+                    <td align="right">Vlr.Deb <input align=right size=15 type=text name=tot_deb></td>
+                    <td align="right">Vlr.Cred <input align=right size=15 type=text name=tot_cred></td>
+                    <td align="right">Saldo atual <input align=right size=15 type=text name=tot_atual></td>
                     </td>
-                 </tr>
-      </table>
-    </td>
-    </tr>
-    <tr height="80%">
-    <td align="center">
-    <?php
-    if(!isset($tipo)){
-      $tipo = "conta";
-      $datai_dia = date('d',db_getsession("DB_datausu"));
-      $datai_mes = date('m',db_getsession("DB_datausu"));
-      $datai_ano = date('Y',db_getsession("DB_datausu"));
-    }
-    ?>
-    <iframe id="saldos" frameborder="0" name="iframe_saldos" leftmargin="0" topmargin="0"
-          src="cai3_saltes002.php?datai_dia=<?php echo $datai_dia?>&datai_mes=<?php echo $datai_mes?>&datai_ano=<?php echo $datai_ano?>&tipo=<?php echo ($tipo)?>"
-	  height="100%" width="100%">
-    </iframe>
-    </td>
-   </tr>
-   <tr>
-    <td valign="top" colspan=2 align="center">
-    <table bordercolor="#000000" style="font-size:12px" border="0" cellspacing="0" cellpadding="3">
-    <td align="right"><b>Totais  </b></td>
-	<td align="right">Saldo.Ant   <input align=right size=15 type=text name=tot_ant></td>
-	<td align="right">Vlr.Deb     <input align=right size=15 type=text name=tot_deb></td>
-	<td align="right">Vlr.Cred    <input align=right size=15  type=text name=tot_cred></td>
-	<td align="right">Saldo atual <input align=right size=15 type=text name=tot_atual></td> </td>
-      </table>
-    </td>
-  </tr>
-</table>
+                </table>
+            </td>
+        </tr>
+    </table>
 </form>
 <?php
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+db_menu();
 ?>
 </body>
 </html>

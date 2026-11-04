@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -58,22 +58,22 @@ $anousu = db_getsession("DB_anousu");
 <script>
  function js_conlancam(codlan,sequen){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_conlancamval','func_conlancamval002.php?chavepesquisa='+codlan+'&sequen='+sequen,'Pesquisa');
- }  
+ }
  function js_pesquisa(){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_conlancamdoc','func_conlancamdoc.php?funcao_js=parent.js_preenchepesquisa|c53_coddoc','Pesquisa',true);
  }
  function js_preenchepesquisa(chave){
      db_iframe_conlancamdoc.hide();
-    <?  
+    <?php
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codigo='+chave";
     ?>
  }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -81,34 +81,34 @@ $anousu = db_getsession("DB_anousu");
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <form name="form1" method="post" action="">
     <table border="0">
     <tr>
-      <td nowrap><? db_ancora("Codigo do Documento",'js_pesquisa();',1); ?> </td>
-      <td><?  db_input('codigo',12,"",true,'text',1);   ?> </td>
+      <td nowrap><?php db_ancora("Codigo do Documento",'js_pesquisa();',1); ?> </td>
+      <td><?php  db_input('codigo',12,"",true,'text',1);   ?> </td>
     </tr>
     <tr>
     <td nowrap>  Período   </td>
-       <td><? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+       <td><?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
           à
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
     </tr>
     </table>
     <input name="db_opcao" type="submit" id="db_opcao" value="Consultar">
     </form>
-    <?
+    <?php
         //-- apresenta resultados
         $data1="";  $data2="";
-        @$data1="$data_ini_ano-$data_ini_mes-$data_ini_dia"; 
-        @$data2="$data_fim_ano-$data_fim_mes-$data_fim_dia"; 
+        @$data1="$data_ini_ano-$data_ini_mes-$data_ini_dia";
+        @$data2="$data_fim_ano-$data_fim_mes-$data_fim_dia";
         if ((strlen($data1) < 7) || (strlen($data2) <7 )) {
             $data1=""; $data2="";
-        }  
+        }
 	//
 	$txt_where="";
 	if (isset($codigo) && ($codigo!="")){
@@ -117,7 +117,7 @@ $anousu = db_getsession("DB_anousu");
               $txt_where.="and c71_data >= '$data1' and c71_data <='$data2' ";
 	} else {
 	   $txt_where ="";
-	}  
+	}
 	if ($txt_where!=""){
           $sql="select c69_data,
                      c69_codlan,
@@ -128,19 +128,19 @@ $anousu = db_getsession("DB_anousu");
                      c69_debito,
                      c1.c60_descr as debito_descr,
                      c69_credito,
-                     c2.c60_descr as credito_descr 
+                     c2.c60_descr as credito_descr
               from conlancamdoc
-                  inner join conlancamval on c69_codlan  = c71_codlan       				   
-                  inner join conhist      on c50_codhist = conlancamval.c69_codhist   
+                  inner join conlancamval on c69_codlan  = c71_codlan
+                  inner join conhist      on c50_codhist = conlancamval.c69_codhist
                   inner join conplanoreduz r1 on r1.c61_reduz = c69_debito  and r1.c61_anousu =".db_getsession("DB_anousu")."
-                     inner join conplano c1 on c1.c60_codcon =r1.c61_codcon  and c1.c60_anousu =r1.c61_anousu 
-                  inner join conplanoreduz r2 on r2.c61_reduz = c69_credito and r2.c61_anousu = ".db_getsession("DB_anousu")." 
+                     inner join conplano c1 on c1.c60_codcon =r1.c61_codcon  and c1.c60_anousu =r1.c61_anousu
+                  inner join conplanoreduz r2 on r2.c61_reduz = c69_credito and r2.c61_anousu = ".db_getsession("DB_anousu")."
                      inner join conplano c2 on c2.c60_codcon =r2.c61_codcon and c2.c60_anousu=r2.c61_anousu
-              where $txt_where   
+              where $txt_where
 	      order by c69_sequen ";
 	   } else {
 	      $sql="";
-	   }  
+	   }
            $js_funcao="js_conlancam|c69_codlan|c69_sequen";
            db_lovrot($sql,15,"()","","$js_funcao");
      ?>

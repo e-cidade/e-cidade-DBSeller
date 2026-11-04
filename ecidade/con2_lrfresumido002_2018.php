@@ -51,7 +51,8 @@ $carregarLaravel = [
     $get->emite_rec_desp,
     $get->emite_mde,
     $get->emite_rcl,
-    $get->emite_resultado
+    $get->emite_resultado,
+    $get->emite_saude
 ];
 
 if (in_array(1, $carregarLaravel)) {
@@ -81,7 +82,6 @@ $quadros = array(
 );
 
 $relatorio = RelatorioFactory::getInstance($ano, $get->bimestre);
-
 $relatorio->setInstituicoes($instituicoes);
 $relatorio->setExibirRelatorios($quadros);
 

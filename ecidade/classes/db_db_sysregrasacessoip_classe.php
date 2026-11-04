@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,19 +48,19 @@ class cl_db_sysregrasacessoip {
    var $db48_tokenprivado = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db48_idacesso = int4 = Código da Regra 
-                 db48_ip = varchar(40) = Máscara do IP 
-                 db48_tokenpublico = varchar(64) = Token Publico 
-                 db48_tokenprivado = varchar(64) = Token Privado 
+                 db48_idacesso = int4 = Código da Regra
+                 db48_ip = varchar(40) = Máscara do IP
+                 db48_tokenpublico = varchar(64) = Token Publico
+                 db48_tokenprivado = varchar(64) = Token Privado
                  ";
    //funcao construtor da classe
-   function cl_db_sysregrasacessoip() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysregrasacessoip");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_sysregrasacessoip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db48_idacesso = ($this->db48_idacesso == ""?@$GLOBALS["HTTP_POST_VARS"]["db48_idacesso"]:$this->db48_idacesso);
        $this->db48_ip = ($this->db48_ip == ""?@$GLOBALS["HTTP_POST_VARS"]["db48_ip"]:$this->db48_ip);
@@ -80,7 +80,7 @@ class cl_db_sysregrasacessoip {
      }
    }
    // funcao para Inclusão
-   function incluir ($db48_idacesso){
+   public function incluir ($db48_idacesso){
       $this->atualizacampos();
      if($this->db48_ip == null ){
        $this->erro_sql = " Campo Máscara do IP não informado.";
@@ -101,16 +101,16 @@ class cl_db_sysregrasacessoip {
        return false;
      }
      $sql = "insert into db_sysregrasacessoip(
-                                       db48_idacesso 
-                                      ,db48_ip 
-                                      ,db48_tokenpublico 
-                                      ,db48_tokenprivado 
+                                       db48_idacesso
+                                      ,db48_ip
+                                      ,db48_tokenpublico
+                                      ,db48_tokenprivado
                        )
                 values (
-                                $this->db48_idacesso 
-                               ,'$this->db48_ip' 
-                               ,'$this->db48_tokenpublico' 
-                               ,'$this->db48_tokenprivado' 
+                                $this->db48_idacesso
+                               ,'$this->db48_ip'
+                               ,'$this->db48_tokenpublico'
+                               ,'$this->db48_tokenprivado'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -350,10 +350,10 @@ class cl_db_sysregrasacessoip {
       }
      return $result;
    }
-   function sql_query ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,7 +376,7 @@ class cl_db_sysregrasacessoip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,10 +385,10 @@ class cl_db_sysregrasacessoip {
      }
      return $sql;
   }
-   function sql_query_file ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db48_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,7 +409,7 @@ class cl_db_sysregrasacessoip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

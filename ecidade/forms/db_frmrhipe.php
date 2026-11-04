@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,37 +53,37 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
 <table border="0">
   <tr>
     <td>
-    <?
+    <?php
     db_input('rh14_sequencia',6,$Irh14_sequencia,true,'hidden',"3","")
     ?>
     <fieldset>
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Trh62_regist?>">
-           <?
+           <?php
            db_ancora(@$Lrh62_regist,"js_pesquisarh62_regist(true, false);",$db_opcao==1?"1":"3");
            ?>
         </td>
         <td colspan="3">
-    <?
+    <?php
     db_input('rh62_regist',6,$Irh62_regist,true,'text',$db_opcao==1?"1":"3"," onchange='js_pesquisarh62_regist(false, false);'")
     ?>
-           <?
+           <?php
     db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
            ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Trh63_numcgm?>">
-           <?
+           <?php
            db_ancora(@$Lrh63_numcgm,"js_pesquisarh63_numcgm(true);",$db_opcao==1?"1":"3");
            ?>
         </td>
         <td colspan="3">
-    <?
+    <?php
     db_input('rh63_numcgm',6,$Irh63_numcgm,true,'text',$db_opcao==1?"1":"3"," onchange='js_pesquisarh63_numcgm(false);'")
     ?>
-           <?
+           <?php
     db_input('z01_nome',40,$Iz01_nome,true,'text',3,'',"z01_nomecgm")
            ?>
         </td>
@@ -93,7 +93,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_matipe?>
         </td>
         <td>
-    <?
+    <?php
     db_input('rh14_matipe',13,$Irh14_matipe,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -101,7 +101,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_contrato?>
         </td>
         <td>
-    <?
+    <?php
     if(!isset($rh14_contrato) || (isset($rh14_contrato) && trim($rh14_contrato) == "")){
       $rh14_contrato = 0;
     }
@@ -114,7 +114,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_dtvinc?>
         </td>
         <td>
-    <?
+    <?php
     db_inputdata('rh14_dtvinc',@$rh14_dtvinc_dia,@$rh14_dtvinc_mes,@$rh14_dtvinc_ano,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -122,7 +122,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_valor?>
         </td>
         <td>
-    <?
+    <?php
     if(!isset($rh14_valor) || (isset($rh14_valor) && trim($rh14_valor) == "")){
       $rh14_valor = 0;
     }
@@ -135,7 +135,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_estado?>
         </td>
         <td colspan="3">
-    <?
+    <?php
     $arr_estado = Array (
                          "10" => "10 - Ativo",
                          "11" => "11 - Inativo",
@@ -154,7 +154,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
            <?=@$Lrh14_dtalt?>
         </td>
         <td colspan="3">
-    <?
+    <?php
     db_inputdata('rh14_dtalt',@$rh14_dtalt_dia,@$rh14_dtalt_mes,@$rh14_dtalt_ano,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -259,13 +259,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhipe.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if($chamarFuncao == true){
   echo "js_pesquisarh62_regist(false, true);";
 }

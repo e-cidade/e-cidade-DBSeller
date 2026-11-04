@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -193,13 +193,13 @@ function js_analitico_sintetico(){
              <td>&nbsp;</td>
           <tr>
          </tr>
-         <?
+         <?php
            $cor = '#E4F471';
            $sql = "select distinct (v01_exerc) as exerc from divida where v01_instit = ".db_getsession('DB_instit').' order by v01_exerc';
            $rs  = db_query($sql);
          ?>
          <tr style="cursor: hand; height: 20px" bgcolor="<?=$cor?>">
-         <? 
+         <?php 
            for($x = 0;$x < pg_num_rows($rs);$x++){
              if ($cor == '#E4F471'){
                $cor = '#EFE029';
@@ -216,7 +216,7 @@ function js_analitico_sintetico(){
              <input type="checkbox" value="<?=$exercicio?>" name="check<?=$i?>" 
                     checked onclick="js_verifica()"><?=$exercicio?>
            </td>
-         <?
+         <?php
            }
          ?>
          </tr>
@@ -233,7 +233,7 @@ function js_analitico_sintetico(){
               <strong>Considera Débitos Posteriores:</strong>
             </td>
             <td>
-              <?
+              <?php
                 $arr = array("0"=>"Não","1"=>"Sim");
                 db_select('considera_debitos',$arr,true,$db_opcao,"");
               ?>&nbsp;
@@ -244,7 +244,7 @@ function js_analitico_sintetico(){
               Tipo:
             </td>
             <td>
-              <?
+              <?php
                 $arr = array("0"=>"Sintético","1"=>"Analítico");
                 db_select('analitico',$arr,true,$db_opcao,"onclick='js_analitico_sintetico()'");
               ?>
@@ -255,11 +255,11 @@ function js_analitico_sintetico(){
               <strong>Valores de:</strong>
             </td>
             <td>
-              <?
+              <?php
                 $valor_inicial = 0;
                 db_input('valor_inicial',10,'',true,'text',$db_opcao);
               ?> A
-              <?
+              <?php
                 $valor_final   = 999999999999;
                 db_input('valor_final',10,'',true,'text',$db_opcao);
               ?>&nbsp;
@@ -270,7 +270,7 @@ function js_analitico_sintetico(){
               Tipo:
             </td>
             <td>
-              <?
+              <?php
                 $arr = array("numcgm"=>"Nome","matric"=>"Matrícula","inscr"=>"Inscrição");
                 db_select('tipo',$arr,true,$db_opcao,"");
               ?>
@@ -286,7 +286,7 @@ function js_analitico_sintetico(){
               Exercício
             </td>
             <td>
-              <?
+              <?php
                 $arr1 = array("N"=>"Não","S"=>"Sim");
                 db_select('agexerc',$arr1,true,$db_opcao,"");
               ?>
@@ -297,7 +297,7 @@ function js_analitico_sintetico(){
               Procedência
             </td>
             <td>
-              <?
+              <?php
                 $arr2 = array("N"=>"Não","S"=>"Sim");
                 db_select('agproced',$arr2,true,$db_opcao,"");
               ?>
@@ -308,7 +308,7 @@ function js_analitico_sintetico(){
               Registros a Listar:
             </td>
             <td>
-              <?
+              <?php
                 db_input('numerolista2',10,'',true,'text',$db_opcao);
               ?>
             </td>
@@ -350,13 +350,13 @@ function js_analitico_sintetico(){
           Opção de Seleção :
         </td>
         <td>
-          <?
+          <?php
             $x = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
             db_select('sele',$x,true,$db_opcao);
           ?>
         </td>
       </tr>
-        <?
+        <?php
           include(modification("dbforms/db_classesgenericas.php"));
           $aux = new cl_arquivo_auxiliar;
           $aux->cabecalho      = "Selecione uma procedência";
@@ -385,7 +385,7 @@ function js_analitico_sintetico(){
 <input name="db_opcao" type="button" id="db_opcao" value="Imprimir" onClick="js_emite();"
                 <?=($db_botao ? '' : 'disabled')?>>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -491,7 +491,7 @@ function js_mostralista1(chave1,chave2){
 
 
 </script>
-<?
+<?php
   $func_iframe = new janela('db_iframe','');
   $func_iframe->posX=1;
   $func_iframe->posY=20;

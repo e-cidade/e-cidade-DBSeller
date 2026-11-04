@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -208,7 +208,7 @@ if (isset($excluir)) {
         parent.iframe_c1.location = sUrl ;
         parent.mo_camada('c1');
       </script>
-      <?
+      <?php
     } else {
 
       if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {

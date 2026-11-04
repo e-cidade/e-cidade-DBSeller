@@ -25,6 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Financeiro\Empenho\Services\DocumentoService;
+use App\Domain\Patrimonial\Protocolo\Services\EmpenhoDocumentoService;
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
+use App\Domain\Saude\Farmacia\Services\EstoqueMovimentacaoBnafarService;
 
 require_once(modification("classes/materialestoque.model.php"));
 
@@ -34,7 +38,8 @@ require_once(modification("classes/materialestoque.model.php"));
  * @version $Revision: 1.123 $
  * @package material
  */
-class ordemCompra {
+class ordemCompra
+{
 
     const SERVICO_PRESTADO = 1;
 
@@ -90,7 +95,7 @@ class ordemCompra {
     private $lEncode = false;
 
     /**
-     * define se empenhjo da OC é resto a pagar
+     * define se empenho da OC é resto a pagar
      *
      * @var booelan
      */
@@ -103,6 +108,7 @@ class ordemCompra {
     private $aItensNota;
 
     private $outrosDados;
+    private $oDadosSigfis;
 
     /**
      * construtor
@@ -110,7 +116,8 @@ class ordemCompra {
      * @param  integer $iCodOrdem Codigo da ordem de compra
      * @return void
      */
-    function __construct($iCodOrdem) {
+    function __construct($iCodOrdem)
+    {
 
         $this->setOrdem((int) $iCodOrdem);
         //instanciamos as classes do db_portal referentes a ordem de compra
@@ -123,7 +130,8 @@ class ordemCompra {
      *
      * @param integer $iCodOrdem codigo da ordem de compta (matordem.m51_codord)
      */
-    function setOrdem($iCodOrdem) {
+    function setOrdem($iCodOrdem)
+    {
 
         (int) $this->iCodOrdem = (int) $iCodOrdem;
     }
@@ -133,7 +141,8 @@ class ordemCompra {
      *
      * @return integer
      */
-    function getOrdem() {
+    function getOrdem()
+    {
 
         return $this->iCodOrdem;
     }
@@ -142,7 +151,8 @@ class ordemCompra {
      * habilita a codificação de strings
      *
      */
-    function setEncodeON() {
+    function setEncodeON()
+    {
 
         $this->lEncode = true;
     }
@@ -150,7 +160,8 @@ class ordemCompra {
      * Cancela a codificação de strings
      *
      */
-    function setEncodeOff() {
+    function setEncodeOff()
+    {
 
         $this->lEncode = false;
     }
@@ -160,7 +171,8 @@ class ordemCompra {
      *
      * @return unknown
      */
-    function getEncode() {
+    function getEncode()
+    {
 
         return $this->lEncode;
     }
@@ -171,7 +183,8 @@ class ordemCompra {
      *
      */
 
-    function getDados() {
+    function getDados()
+    {
 
         $sSQLOrdem  = "select * ";
         $sSQLOrdem .= "  from matordem  ";
@@ -182,11 +195,9 @@ class ordemCompra {
 
         $rsOrdemCompra = $this->daoOrdemCompra->sql_record($sSQLOrdem);
         if ($this->daoOrdemCompra->numrows != 1) {
-
             $this->sErroMsg = "Não Foi possível consultar dados da Ordem ({$this->iCodOrdem}). ";
             $this->lSqlErro = true;
             return false;
-
         } else {
             $this->dadosOrdem = db_utils::fieldsMemory($rsOrdemCompra, 0, false, false, $this->getEncode());
             $this->verificarEmpenho();
@@ -199,7 +210,8 @@ class ordemCompra {
      * verifica a situacao do empenho no ano (restos a pagar)
      * @return boolean;
      */
-    function verificarEmpenho() {
+    function verificarEmpenho()
+    {
 
         $sSqlEmpenho  = "select e91_anousu,";
         $sSqlEmpenho .= "       e62_numemp ";
@@ -222,7 +234,8 @@ class ordemCompra {
      * @return mixed
      */
 
-    function getNotasOrdem($iCodNota = null) {
+    function getNotasOrdem($iCodNota = null)
+    {
 
         $this->usarDao("empnota");
         $sWhere = null;
@@ -235,11 +248,12 @@ class ordemCompra {
          */
         $this->daoEmpNota = new cl_empnota();
 
-        $sCamposNota  = "e69_codnota,e69_anousu,e69_numero,e69_dtnota,e69_dtrecebe,coalesce(e70_valor,0) as e70_valor, ";
+        $sCamposNota = "e69_codnota,e69_anousu,e69_numero,e69_dtnota,e69_dtrecebe,coalesce(e70_valor,0) as e70_valor, ";
         $sCamposNota .= " coalesce(e70_vlrliq,0) as e70_vlrliq ,coalesce(e70_vlranu,0) as e70_vlranu,e60_numemp,";
         $sCamposNota .= "m72_codordem,id_usuario,nome,coalesce(e53_vlrpag,0) as e53_vlrpag";
 
-        $sSqlDadosNota = $this->daoEmpNota->sql_query_nota(null,
+        $sSqlDadosNota = $this->daoEmpNota->sql_query_nota(
+            null,
             "$sCamposNota",
             "e69_codnota",
             "m72_codordem = {$this->iCodOrdem} {$sWhere}"
@@ -255,23 +269,19 @@ class ordemCompra {
              4 = normal    - nao possui nenhum valor pago, ou anulado.
              */
         if ($this->daoEmpNota->numrows > 0) {
-
-            for($iNota = 0; $iNota < $this->daoEmpNota->numrows; $iNota ++) {
-
+            for ($iNota = 0; $iNota < $this->daoEmpNota->numrows; $iNota ++) {
                 $objNotas = db_utils::fieldsMemory($rsNotasOrdem, $iNota, false, false, $this->getEncode());
-                for($iFlds = 0; $iFlds < pg_num_fields($rsNotasOrdem); $iFlds ++) {
-
+                for ($iFlds = 0; $iFlds < pg_num_fields($rsNotasOrdem); $iFlds ++) {
                     $fieldName                                          = pg_field_name($rsNotasOrdem, $iFlds);
                     $this->aNotas [$objNotas->e69_codnota] [$fieldName] = $objNotas->$fieldName;
-
                 }
                 (int) $iSituacaoNota = 4;
                 //verificamos os valores da nota e decidimos a situacao
                 if ($objNotas->e53_vlrpag != 0) {
                     $iSituacaoNota = 3; //Ha algum valor pago.
-                } else if ($objNotas->e70_vlrliq != 0) {
+                } elseif ($objNotas->e70_vlrliq != 0) {
                     $iSituacaoNota = 1; // ha algum valor liquidado
-                } else if ($objNotas->e70_vlranu != 0) {
+                } elseif ($objNotas->e70_vlranu != 0) {
                     $iSituacaoNota = 2; // ha algum valor anulado
                 }
                 $this->aNotas [$objNotas->e69_codnota] ["resto"] = $this->isRestoPagar;
@@ -291,7 +301,8 @@ class ordemCompra {
      * @return mixed
      */
 
-    function getItensOrdemEmEstoque($iCodNota) {
+    function getItensOrdemEmEstoque($iCodNota)
+    {
 
         $this->usarDao("matestoqueitemnota");
         $daoItensEstoque = new cl_matestoqueitemnota();
@@ -301,7 +312,8 @@ class ordemCompra {
         $sCampos .= "e69_codnota,m71_quant, m60_codmater, m60_descr, m75_quant,m71_quantatend,";
         $sCampos .= "m52_valor,m75_quantmult,m75_codmatunid, m71_codmatestoque,m70_quant,m70_valor";
 
-        $sSqlItens = $daoItensEstoque->sql_query_itensunid(null,
+        $sSqlItens = $daoItensEstoque->sql_query_itensunid(
+            null,
             null,
             $sCampos,
             "m71_codlanc",
@@ -310,9 +322,7 @@ class ordemCompra {
 
         $rsItensEstoque = $daoItensEstoque->sql_record($sSqlItens);
         if ($daoItensEstoque->numrows > 0) {
-
-            for($iItens = 0; $iItens < $daoItensEstoque->numrows; $iItens ++) {
-
+            for ($iItens = 0; $iItens < $daoItensEstoque->numrows; $iItens ++) {
                 $oItens = db_utils::fieldsMemory($rsItensEstoque, $iItens, false, false, $this->getEncode());
                 if ($oItens->pc01_servico == "t") {
                     $oItens->m70_quant = $oItens->m71_quant;
@@ -350,7 +360,8 @@ class ordemCompra {
      *  @desc   Metodo para converter consulta de ordens para uma string json;
      *  @param  integer iCodNota   - codigo da nota .
      */
-    function ordem2Json($iCodNota) {
+    function ordem2Json($iCodNota)
+    {
 
         $oJson = new services_json();
 
@@ -362,7 +373,6 @@ class ordemCompra {
         $sJson ["lEmpenhoMaterialPermanente"] = $lEmpenhoMaterialPermanente;
 
         if ($this->getDados()) {
-
             $sJson ["processoEntradaNota"] = ordemCompra::getProcessoEntradaNota($this->dadosOrdem->m51_codordem);
 
             $sJson ["m51_codordem"] = $this->dadosOrdem->m51_codordem;
@@ -372,7 +382,6 @@ class ordemCompra {
             $sJson ["totalItens"]   = 0;
             $sJson ["itens"]        = array ();
             if ($this->getNotasOrdem($iCodNota)) {
-
                 $sJson ["e69_codnota"]  = $this->aNotas [$iCodNota] ["e69_codnota"];
                 $sJson ["e69_numero"]   = $this->aNotas [$iCodNota] ["e69_numero"];
                 $sJson ["e69_dtnota"]   = db_formatar($this->aNotas [$iCodNota] ["e69_dtnota"], "d");
@@ -383,18 +392,15 @@ class ordemCompra {
                 $sJson ["situacaonota"] = $this->aNotas [$iCodNota] ["situacao"];
                 $sJson ["nome"]         = $this->aNotas [$iCodNota] ["nome"];
                 if ($this->getItensOrdemEmEstoque($iCodNota)) {
-
                     $sJson ["totalItens"] = count($this->aItensNota);
                     $sJson ["itens"]      = $this->aItensNota;
                 }
             }
         }
         if (! $this->lSqlErro) {
-
             $sJson ["status"]   = 1;
             $sJson ["mensagem"] = null;
         } else {
-
             $sJson ["status"]   = 2;
             $sJson ["mensagem"] = "Erro: " . urlencode($this->sErroMsg);
         }
@@ -403,11 +409,12 @@ class ordemCompra {
     }
 
     /**
-     * Método responsável por anular a entrada de uma ordem de compra no almoxarifado
+     * método responsável por anular a entrada de uma ordem de compra no almoxarifado
      * @param integer  iCodNota - codigo da nota a ser anulada
      *
      */
-    public function anularEntradaNota($iCodNota) {
+    public function anularEntradaNota($iCodNota)
+    {
         $this->sErroMsg = '';
 
         $clmatestoqueini      = new cl_matestoqueini();
@@ -422,47 +429,52 @@ class ordemCompra {
             $this->getDados();
 
             if ($this->getBensAtivoNota($iCodNota) != false) {
-                throw new BusinessException("Há bens referentes à nota de empenho ativos no patrimônio. Favor verificar.");
+                throw new BusinessException("há bens referentes à nota de empenho ativos no patrimônio. Favor verificar.");
             }
 
-            $oDataAtual = new DBDate( date('Y-m-d', db_getsession("DB_datausu")) );
+            $oDataAtual = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
             $oEstoqueMovimentoAnulacao = null;
             $aItensVerificar   = array();
             $aEmpenhoGrupoItem = array();
             $aItensLancamento  = array();
             $nTotalNota = 0;
 
+            $utilizaBnafar = FarmaciaHelper::utilizaIntegracaoBnafar();
+            $hasMaterialFarmacia = false;
             $empenhosEnvolvidos = array();
-            for($iItens = 0; $iItens < count($this->aItensNota); $iItens ++) {
-
+            for ($iItens = 0; $iItens < count($this->aItensNota); $iItens ++) {
                 $oItemAtivo = $this->aItensNota[$iItens];
 
                 $oEstoqueItem = new MaterialEstoqueItem($oItemAtivo["m71_codlanc"]);
                 $oEstoque     = $oEstoqueItem->getEstoque();
                 $oMaterial    = $oEstoque->getMaterial();
 
-                if ($oEstoqueItem->servico() && $oEstoqueItem->getQuantidade() == $oEstoqueItem->getQuantidadeAtendida()) {
+                if ($utilizaBnafar && FarmaciaHelper::isMaterialFarmacia($oMaterial->getCodigo())) {
+                    $hasMaterialFarmacia = true;
+                }
 
+                if ($oEstoqueItem->servico() && $oEstoqueItem->getQuantidade() == $oEstoqueItem->getQuantidadeAtendida()) {
                     $oMaterialEstoque  = new materialEstoque($oMaterial->getCodigo());
-                    $sSqlMatestoqueini = $clmatestoqueini->sql_query_mater(null,
+                    $sSqlMatestoqueini = $clmatestoqueini->sql_query_mater(
+                        null,
                         "*",
                         null,
                         "    m82_matestoqueitem={$oEstoqueItem->getCodigo()}
                                                                   and matestoqueini.m80_codtipo=20
                                                                   and (b.m80_codtipo<>6
-                                                                   or b.m80_codigo is null) ");
+                                                                   or b.m80_codigo is null) "
+                    );
 
                     $rsSaldoItens = $clmatestoqueinimei->sql_record($sSqlMatestoqueini);
                     if ($clmatestoqueinimei->numrows  > 0) {
-
                         $oSaidaMaterial = db_utils::fieldsMemory($rsSaldoItens, 0);
                         try {
-
-                            $oMaterialEstoque->cancelarSaidaMaterial( $oEstoqueItem->getQuantidade(),
+                            $oMaterialEstoque->cancelarSaidaMaterial(
+                                $oEstoqueItem->getQuantidade(),
                                 $oSaidaMaterial->m82_codigo,
-                                'Anulação de saída de serviço automático' );
+                                'Anulação de saída de serviço automático'
+                            );
                             $oEstoqueItem->setQuantidadeAtendida(0);
-
                         } catch (Exception $eErro) {
                             throw new Exception($eErro->getMessage());
                         }
@@ -491,7 +503,7 @@ class ordemCompra {
 
                 $iQuantidadeAnular = $oEstoqueItem->getQuantidade();
                 /**
-                 * Caso o item já tenha a quantidade total atendida, busca o próximo item mais antigo do material para lançar a anulação
+                 * Caso o item já tenha a quantidade total atendida, busca o próximo item mais antigo do material para lançar a Anulação
                  */
                 if ($oEstoqueItem->getQuantidade() == $oEstoqueItem->getQuantidadeAtendida()) {
                     $oEstoqueItem = $oEstoque->getItemComSaldo();
@@ -503,7 +515,7 @@ class ordemCompra {
 
                 $iSaldoItem   = $oEstoqueItem->getQuantidade() - $oEstoqueItem->getQuantidadeAtendida();
                 $iValorAnular = ($iSaldoItem > $iQuantidadeAnular ? $iQuantidadeAnular : $iSaldoItem);
-                $oEstoqueItem->setQuantidadeAtendida( $iValorAnular + $oEstoqueItem->getQuantidadeAtendida() );
+                $oEstoqueItem->setQuantidadeAtendida($iValorAnular + $oEstoqueItem->getQuantidadeAtendida());
                 $oEstoqueItem->salvar();
 
                 /**
@@ -556,15 +568,17 @@ class ordemCompra {
                 /**
                  * Anula o vinculo da entrada com o estoque
                  */
-                $sSqlOrdemCompra = $clmatestoqueitemoc->sql_query_OC_Nota( null,
+                $sSqlOrdemCompra = $clmatestoqueitemoc->sql_query_OC_Nota(
+                    null,
                     null,
                     "m73_codmatestoqueitem,m73_codmatordemitem",
                     null,
-                    "m52_codordem={$this->iCodOrdem} and m74_codempnota = {$iCodNota}" );
+                    "m52_codordem={$this->iCodOrdem} and m74_codempnota = {$iCodNota}"
+                );
                 $rsOc = $clmatestoqueitemoc->sql_record($sSqlOrdemCompra);
 
                 $iNumRows = $clmatestoqueitemoc->numrows;
-                for($iTot = 0; $iTot < $iNumRows; $iTot ++) {
+                for ($iTot = 0; $iTot < $iNumRows; $iTot ++) {
                     $oItemOC                                   = db_utils::fieldsMemory($rsOc, $iTot);
                     $clmatestoqueitemoc->m73_codmatordemitem   = $oItemOC->m73_codmatordemitem;
                     $clmatestoqueitemoc->m73_codmatestoqueitem = $oItemOC->m73_codmatestoqueitem;
@@ -582,7 +596,6 @@ class ordemCompra {
                 }
 
                 if (USE_PCASP) {
-
                     $oEmpenhoFinanceiro      = new EmpenhoFinanceiro($oItemAtivo['e60_numemp']);
                     $aItensEmpenhoFinanceiro = $oEmpenhoFinanceiro->getItens();
                     $iCodigoDesdobramento    = $aItensEmpenhoFinanceiro[0]->getCodigoElemento();
@@ -602,8 +615,15 @@ class ordemCompra {
                 }
             }
 
-            if ($this->dadosOrdem->m51_tipo == OrdemDeCompra::TIPO_NORMAL) {
+            if ($hasMaterialFarmacia) {
+                EstoqueMovimentacaoBnafarService::salvar((object)[
+                    'tipoMovimentacao' => 15, // Devolução de entrada de produto
+                    'cgm' => $this->dadosOrdem->z01_numcgm,
+                    'unidade' => null
+                ], $oEstoqueMovimentoAnulacao->getCodigo());
+            }
 
+            if ($this->dadosOrdem->m51_tipo == OrdemDeCompra::TIPO_NORMAL) {
                 $clempnotaele = $this->usarDao("empnotaele", true);
                 $clempnotaele->e70_codnota = $iCodNota;
                 $clempnotaele->e70_vlranu = $nTotalNota;
@@ -636,7 +656,7 @@ class ordemCompra {
 
                     $aItensSaldo   = db_utils::getCollectionByRecord($rsSaldoItens);
                     $nValorRateio  = $nDiferenca;
-                    if(count($aItensSaldo) == 0) {
+                    if (count($aItensSaldo) == 0) {
                         $verificaRequisicoes = true;
                     }
                     foreach ($aItensSaldo as $oItem) {
@@ -646,7 +666,6 @@ class ordemCompra {
                             if ($nValorRateio > $nSaldoItem) {
                                 $nValorAbater = $nSaldoItem;
                                 $nValorRateio -= $nSaldoItem;
-
                             } else {
                                 $nValorAbater = $nValorRateio;
                                 $nValorRateio = 0;
@@ -681,7 +700,7 @@ class ordemCompra {
                         }
                     }
 
-                    if (round($nValorRateio,2) > 0) {
+                    if (round($nValorRateio, 2) > 0) {
                         $erroAjusteSaldo = true;
                         $erroMsg .= "O item {$oItemVerificar->sDescricao} ficará com saldo inconsistente. Necessário {$nValorRateio} item no estoque.\n";
                         if ($verificaRequisicoes) {
@@ -707,8 +726,8 @@ class ordemCompra {
                                 throw new Exception("Erro ao buscar requisições do Item");
                             }
 
-                            if(pg_num_rows($rsItensRequisicao) > 0) {
-                                $erroMsg .= "Para realizar o cancelando da ordem, realize a devolução do item nas requisições:\n";
+                            if (pg_num_rows($rsItensRequisicao) > 0) {
+                                $erroMsg .= "Para realizar o cancelando da ordem, realize a Devolução do item nas requisições:\n";
                                 while ($requisicao = pg_fetch_object($rsItensRequisicao)) {
                                     $erroMsg .= "Requisição: {$requisicao->m41_codmatrequi} - Obs: {$requisicao->m82_codigo}\n";
                                 }
@@ -717,7 +736,7 @@ class ordemCompra {
                     }
                 }
             }
-            if($erroAjusteSaldo) {
+            if ($erroAjusteSaldo) {
                 throw new BusinessException($erroMsg);
             }
 
@@ -738,11 +757,11 @@ class ordemCompra {
                 }
             }
 
-            $dtAtual          = date("Y-m-d", db_getsession( 'DB_datausu' ));
+            $dtAtual          = date("Y-m-d", db_getsession('DB_datausu'));
             $oDataImplantacao = new DBDate($dtAtual);
             $oInstituicao     = new Instituicao(db_getsession('DB_instit'));
 
-            if (USE_PCASP && count($aEmpenhoGrupoItem) > 0  && (ParametroIntegracaoPatrimonial::possuiIntegracaoMaterial($oDataImplantacao, $oInstituicao)) ) {
+            if (USE_PCASP && count($aEmpenhoGrupoItem) > 0  && (ParametroIntegracaoPatrimonial::possuiIntegracaoMaterial($oDataImplantacao, $oInstituicao))) {
                 $this->processarLancamentosOrdemCompra($aEmpenhoGrupoItem, true);
             }
 
@@ -750,20 +769,22 @@ class ordemCompra {
                 self::excluirVinculoProcessoEntradaNota($numeroEmpenho);
             }
 
+            $oEmpenhoFinanceiro = $this->getEmpenhoFinanceiro();
+            $empenhoDocumentoService = new EmpenhoDocumentoService($oEmpenhoFinanceiro);
+            $documentoService = new DocumentoService();
+            if (!is_null($empenhoDocumentoService->getDocumentoAndamento())) {
+                $documentos = $documentoService->getDocumentos($iCodNota);
+                $documentoService->deleteDocumentos($documentos, true);
+            }
+
             db_fim_transacao(false);
-
         } catch (BusinessException $eErro) {
-
             db_fim_transacao(true);
             throw new BusinessException($eErro->getMessage());
-
         } catch (Exception $eErro) {
-
             db_fim_transacao(true);
             throw new Exception($eErro->getMessage());
-
         }
-
     }
 
 
@@ -771,7 +792,8 @@ class ordemCompra {
      * @desc Metodo para retornar o saldo dos itens da ordem de compra.
      * @return   mixed ;
      */
-    function getItensSaldo() {
+    function getItensSaldo()
+    {
 
         $sSQlSaldo = "select riseqitem     as e62_sequen,";
         $sSQlSaldo .= "       rinumemp     as e62_numemp,";
@@ -800,8 +822,7 @@ class ordemCompra {
         if ($rsSaldo) {
             //criamos uma colection com os objetos dos itens da ordem de compra (saldos)
             if ($this->daoOrdemCompra->numrows > 0) {
-
-                for($iLinha = 0; $iLinha < $this->daoOrdemCompra->numrows; $iLinha ++) {
+                for ($iLinha = 0; $iLinha < $this->daoOrdemCompra->numrows; $iLinha ++) {
                     $this->aItensOrdem [] = db_utils::fieldsMemory($rsSaldo, $iLinha, false, false, $this->getEncode());
                 }
             }
@@ -820,12 +841,12 @@ class ordemCompra {
      *                                  2 = Anulacao de valores
      * @return   void;
      */
-    function anularOrdem($aItens, $sMotivo = '', $iSolicitaAnulEmpenho = 0) {
+    function anularOrdem($aItens, $sMotivo = '', $iSolicitaAnulEmpenho = 0)
+    {
 
         if (! is_array($aItens)) {
-
             $this->lSqlErro = true;
-            $this->sErroMsg = "Erro [1]: Parametro aItens não e um array valido!\nContate Suporte";
+            $this->sErroMsg = "Erro [1]: Parametro aItens Não e um array valido!\nContate Suporte";
             return false;
         }
         //carregamos as daos necessarias
@@ -840,7 +861,7 @@ class ordemCompra {
         $clmatordemitemanu = new cl_matordemitemanu();
         $clempsolicitaanul = new cl_empsolicitaanul();
         $clempsolicitaanulitem = new cl_empsolicitaanulitem();
-        //incluimos a anulação da ordem na tablea matordemanul
+        //incluimos a Anulação da ordem na tablea matordemanul
         //percorremos os itens do array
         db_inicio_transacao();
         $clmatordemanul->m37_hora = db_hora();
@@ -851,23 +872,19 @@ class ordemCompra {
         $clmatordemanul->m37_tipo = 2; //anulacao parcial;
         $clmatordemanul->incluir(null);
         if ($clmatordemanul->erro_status == 0) {
-
             $this->lSqlErro = true;
             $this->sErroMsg = "Erro[2]: \n{$clmatordemanul->erro_msg}";
         }
 
         //foi solicitado a anulacao do empenho.incluimos a requisicao na tabela empsolicitaanul.
         if (! $this->lSqlErro) {
-
-            foreach ( $aItens as $itensAnulados ) {
-
+            foreach ($aItens as $itensAnulados) {
                 $clmatordemitemanu->m36_matordemanul = $clmatordemanul->m37_sequencial;
                 $clmatordemitemanu->m36_matordemitem = $itensAnulados->iCodItemOrdem;
                 $clmatordemitemanu->m36_vrlanu = $itensAnulados->nVlrAnu;
                 $clmatordemitemanu->m36_qtd = $itensAnulados->nQtdeAnu;
                 $clmatordemitemanu->incluir(null);
                 if ($clmatordemitemanu->erro_status == 0) {
-
                     $this->lSqlErro = true;
                     $this->sErroMsg = "Erro [4]:\n Não foi possível Anular item ({$itensAnulados->iCodItemOrdem})";
                     $this->sErroMsg .= "\nErro Sistema:{$clmatordemitemanu->erro_msg}";
@@ -875,9 +892,7 @@ class ordemCompra {
                 }
                 //caso tenha foi solicitado a anulacao do empenho, lancamos mas seguintes tabelas
                 if ($iSolicitaAnulEmpenho != 0 && ! $this->lSqlErro) {
-
                     if ($iNumEmpAnt != $itensAnulados->iNumEmp) {
-
                         $clempsolicitaanul->e35_numemp = $itensAnulados->iNumEmp;
                         $clempsolicitaanul->e35_usuario = db_getsession("DB_id_usuario");
                         $clempsolicitaanul->e35_hora = db_hora();
@@ -886,7 +901,6 @@ class ordemCompra {
                         $clempsolicitaanul->e35_situacao = 1; //1-Solicitada 2 -Realizada 3 - Cancelada
                         $clempsolicitaanul->incluir(null);
                         if ($clempsolicitaanul->erro_status == 0) {
-
                             $this->lSqlErro = true;
                             $this->sErroMsg = "Erro [5]:\n Não foi possível Anular item ({$itensAnulados->iCodItemOrdem})";
                             $this->sErroMsg .= "\nErro Sistema:{$clempsolicitaanul->erro_msg}";
@@ -899,7 +913,6 @@ class ordemCompra {
                     $clempsolicitaanulitem->e36_qtdanu = $itensAnulados->nQtdeAnu;
                     $clempsolicitaanulitem->incluir(null);
                     if ($clempsolicitaanulitem->erro_status == 0) {
-
                         $this->lSqlErro = true;
                         $this->sErroMsg = "Erro [6]:\n Não foi possível Anular item ({$itensAnulados->iCodItemOrdem})";
                         $this->sErroMsg .= "\nErro Sistema:{$clempsolicitaanulitem->erro_msg}";
@@ -917,14 +930,14 @@ class ordemCompra {
      * @desc Metodo para carregar o arquivo de definição da classe requerida;
      * @param  string sClasse - nome da classe a ser carregada
      */
-    function usarDao($sClasse, $rInstance = false) {
+    function usarDao($sClasse, $rInstance = false)
+    {
 
         if (! class_exists("cl_{$sClasse}")) {
             require_once modification("classes/db_{$sClasse}_classe.php");
         }
 
         if ($rInstance) {
-
             eval("\$objRet = new cl_{$sClasse};");
             return $objRet;
         }
@@ -935,9 +948,10 @@ class ordemCompra {
      *
      * @return object
      */
-    public function getInfoEntrada() {
+    public function getInfoEntrada()
+    {
 
-        if ( ! $this->getDados()) {
+        if (! $this->getDados()) {
             throw new Exception("Não foi possível Encontrar dados da ordem ({$this->iCodOrdem}).");
         }
 
@@ -946,30 +960,29 @@ class ordemCompra {
          * e acrescentamos informações sobre o item, com suas
          * ligações com o item do almoxarifado.
          */
-        if ( ! $this->getItensSaldo()) {
+        if (! $this->getItensSaldo()) {
             throw new Exception("Não foi possível Encontrar itens da ordem ({$this->iCodOrdem}).");
         }
 
         if ($this->dadosOrdem->m51_tipo == 2) {
-
-            $oDaoEmpNota = db_utils::getDao("empnota");
-            $rsNota      = $oDaoEmpNota->sql_record($oDaoEmpNota->sql_query_nota(null,
+            $oDaoEmpNota = new cl_empnota;
+            $rsNota      = $oDaoEmpNota->sql_record($oDaoEmpNota->sql_query_nota(
+                null,
                 "empnota.*,
                                                                             e70_valor",
                 null,
-                "m72_codordem = {$this->dadosOrdem->m51_codordem}"));
-            $oEmpNota = db_utils::fieldsMemory($rsNota, 0,false,false, $this->getEncode());
-            $this->dadosOrdem->e69_dtnota   = db_formatar($oEmpNota->e69_dtnota,"d");
-            $this->dadosOrdem->e69_dtrecebe = db_formatar($oEmpNota->e69_dtrecebe,"d");
+                "m72_codordem = {$this->dadosOrdem->m51_codordem}"
+            ));
+            $oEmpNota = db_utils::fieldsMemory($rsNota, 0, false, false, $this->getEncode());
+            $this->dadosOrdem->e69_dtnota   = db_formatar($oEmpNota->e69_dtnota, "d");
+            $this->dadosOrdem->e69_dtrecebe = db_formatar($oEmpNota->e69_dtrecebe, "d");
             $this->dadosOrdem->e69_numero   = $oEmpNota->e69_numero;
             $this->dadosOrdem->e70_valor    = $oEmpNota->e70_valor;
-
         }
-        $oDaoSolicitem  = db_utils::getDao("solicitem");
-        $oDaoTransMater = db_utils::getDao("transmater");
+        $oDaoSolicitem  = new cl_solicitem;
+        $oDaoTransMater = new cl_transmater;
         $iTotItens = count($this->aItensOrdem);
         for ($iInd = 0; $iInd < $iTotItens; $iInd++) {
-
             $this->dadosOrdem->itens[$iInd]->unidade        = 1;
             $this->dadosOrdem->itens[$iInd]->quantunidade   = 1;
             $this->dadosOrdem->itens[$iInd]->iIndiceEntrada = 0;
@@ -978,12 +991,15 @@ class ordemCompra {
              * de unidade cadastradas.
              */
             $rsSolicitem = $oDaoSolicitem->sql_record($oDaoSolicitem->sql_query_solunid(
-                null, "pc17_quant,pc17_unid", null, 'e62_sequencial = '.$this->dadosOrdem->itens[$iInd]->e62_sequencial));
+                null,
+                "pc17_quant,pc17_unid",
+                null,
+                'e62_sequencial = '.$this->dadosOrdem->itens[$iInd]->e62_sequencial
+            ));
 
             if ($oDaoSolicitem->numrows == 1) {
-
-                $this->dadosOrdem->itens[$iInd]->unidade      = db_utils::fieldsMemory($rsSolicitem,0)->pc17_unid;
-                $this->dadosOrdem->itens[$iInd]->quantunidade = db_utils::fieldsMemory($rsSolicitem,0)->pc17_quant;
+                $this->dadosOrdem->itens[$iInd]->unidade      = db_utils::fieldsMemory($rsSolicitem, 0)->pc17_unid;
+                $this->dadosOrdem->itens[$iInd]->quantunidade = db_utils::fieldsMemory($rsSolicitem, 0)->pc17_quant;
             }
 
             /*
@@ -996,23 +1012,33 @@ class ordemCompra {
             $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr       = "";
             //echo $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr;
 
-            $sSqlTransMater = $oDaoTransMater->sql_query(null,
+            $sSqlTransMater = $oDaoTransMater->sql_query(
+                null,
                 "m63_codmatmater,m60_descr,m60_controlavalidade",
                 null,
                 "m60_ativo is true
                         and m63_codpcmater={$this->dadosOrdem->itens[$iInd]->e62_item}
-                        and m60_servico = '{$this->dadosOrdem->itens[$iInd]->pc01_servico}'");
+                        and m60_servico = '{$this->dadosOrdem->itens[$iInd]->pc01_servico}'"
+            );
             $rsTransMater = $oDaoTransMater->sql_record($sSqlTransMater);
             if ($oDaoTransMater->numrows > 0) {
                 unset($this->dadosOrdem->itens[$iInd]->matmater);
-                for($iItens = 0; $iItens < $oDaoTransMater->numrows; $iItens++) {
-                    $this->dadosOrdem->itens[$iInd]->matmater[] = db_utils::fieldsMemory($rsTransMater, $iItens,false,false,$this->getEncode());
+                for ($iItens = 0; $iItens < $oDaoTransMater->numrows; $iItens++) {
+                    $this->dadosOrdem->itens[$iInd]->matmater[] = db_utils::fieldsMemory($rsTransMater, $iItens, false, false, $this->getEncode());
                 }
                 $oDaoTransMater->numrows = 0;
             }
-
             $oMaterial = new stdClass;
             $oMaterial->m63_codmatmater   = $this->dadosOrdem->itens[$iInd]->matmater[0]->m63_codmatmater;
+            $oMaterial->m60_descr         = $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr;
+            if (pg_num_rows($rsTransMater) > 1) {
+                $oMaterial->m63_codmatmater   = '';
+                $oMaterial->m60_descr         = '';
+            };
+            if ($this->dadosOrdem->itens[$iInd]->pc01_servico === 't') {
+                $oMaterial->m63_codmatmater   = $this->dadosOrdem->itens[$iInd]->matmater[0]->m63_codmatmater;
+                $oMaterial->m60_descr         = $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr;
+            }
             $oMaterial->m60_descr         = $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr;
             $oMaterial->pc01_descrmater   = $this->dadosOrdem->itens[$iInd]->pc01_descrmater;
             $oMaterial->pc01_codmater     = $this->dadosOrdem->itens[$iInd]->e62_item;
@@ -1036,14 +1062,13 @@ class ordemCompra {
             $oMaterial->checked           = "checked";
             $oMaterial->saldoitens        = $this->dadosOrdem->itens[$iInd]->saldoitens;
             $oMaterial->saldovalor        = $this->dadosOrdem->itens[$iInd]->saldovalor;
-            $oMaterial->fraciona          = false; //se o o item é fracionado.
+            $oMaterial->fraciona          = false; //se o  item é fracionado.
             $oMaterial->iTotalFracionados = 0;//Total de itens Fracionados
             $oMaterial->iIndiceEntrada    = 0;
             $oMaterial->cc08_sequencial   = "";
             $oMaterial->cc08_descricao    = "";
-            $this->saveMaterial($this->dadosOrdem->itens[$iInd]->m52_codlanc,$oMaterial);
-            unset ($oMaterial);
-
+            $this->saveMaterial($this->dadosOrdem->itens[$iInd]->m52_codlanc, $oMaterial, false);
+            unset($oMaterial);
         }
         return true;
     }
@@ -1051,10 +1076,10 @@ class ordemCompra {
      * Inicializa a sessão para a ordem
      *
      */
-    public function initSession() {
+    public function initSession()
+    {
 
         if (!isset($_SESSION["matordem{$this->iCodOrdem}"])) {
-
             $_SESSION["matordem{$this->iCodOrdem}"]= array();
         }
         return $_SESSION["matordem{$this->iCodOrdem}"];
@@ -1067,17 +1092,15 @@ class ordemCompra {
      * @param  object $oMaterial objeto com informações da entrada
      * @return unknown
      */
-    public function saveMaterial($iCodLanc, $oMaterial) {
-
+    public function saveMaterial($iCodLanc, $oMaterial, $validaMaterial = true)
+    {
         $oOrdemSession = $this->initSession();
         if (!isset($oOrdemSession[$iCodLanc])) {
-
             $oOrdemSession[$iCodLanc] = array();
         }
 
         //verificamos se o material do estoque ja foi incluido.
         foreach ($oOrdemSession[$iCodLanc] as $oLancamento) {
-
             if ($oMaterial->iIndiceEntrada != $oLancamento->iIndiceEntrada) {
                 if ($oLancamento->m63_codmatmater ==  $oMaterial->m63_codmatmater
                     && $oLancamento->m77_lote == $oMaterial->m77_lote) {
@@ -1086,34 +1109,32 @@ class ordemCompra {
             }
         }
 
+        if ($validaMaterial && FarmaciaHelper::validaMaterial($oMaterial, true)) {
+            FarmaciaHelper::validaQuantidade($oMaterial->m52_quant * $oMaterial->quantunidade);
+        }
+
         $oMaterial->pc01_descrmater = urlencode(urldecode($oMaterial->pc01_descrmater));
         $oMaterial->e62_descr       = urlencode(urldecode($oMaterial->e62_descr));
         $oMaterial->m76_nome        = urlencode(urldecode($oMaterial->m76_nome));
         $oMaterial->m60_descr       = urlencode(urldecode($oMaterial->m60_descr));
         if ($oMaterial->iIndiceEntrada != "") {
-
-
             $oOrdemSession[$iCodLanc][$oMaterial->iIndiceEntrada] = $oMaterial;
-
         } else {
-
             if ($oMaterial->fraciona) {
-
                 $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldoitens -= $oMaterial->quantidadeDebitar;
                 $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldovalor -= $oMaterial->valorDebitar;
                 $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->checked = " checked ";
                 if ($oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->m52_quant >
-                    $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldoitens ) {
+                    $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldoitens) {
                     $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->m52_quant -= $oMaterial->quantidadeDebitar;
                 }
 
                 if ($oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->m52_valor >
-                    $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldovalor ) {
+                    $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->saldovalor) {
                     $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->m52_valor -= $oMaterial->valorDebitar;
                 }
                 $oOrdemSession[$iCodLanc][$oMaterial->iIndiceDebitar]->iTotalFracionados++;
                 $oMaterial->iIndiceEntrada = $this->nextVal($iCodLanc);
-
             }
 
             $oMaterial->pc01_descrmater = urlencode(urldecode($oMaterial->pc01_descrmater));
@@ -1128,10 +1149,11 @@ class ordemCompra {
      *
      * @return boolean
      */
-    public function destroySession() {
+    public function destroySession()
+    {
 
         if (isset($_SESSION["matordem{$this->iCodOrdem}"])) {
-            unset ($_SESSION["matordem{$this->iCodOrdem}"]);
+            unset($_SESSION["matordem{$this->iCodOrdem}"]);
         }
         return true;
     }
@@ -1141,20 +1163,18 @@ class ordemCompra {
      *
      * @return unknown
      */
-    public function getDadosEntrada () {
+    public function getDadosEntrada()
+    {
 
         if (isset($_SESSION["matordem{$this->iCodOrdem}"])) {
-
             $aItensCadastrados = array();
             foreach ($_SESSION["matordem{$this->iCodOrdem}"] as $oItemOrdem) {
-
                 foreach ($oItemOrdem as $iCodLanc => $oItemLancado) {
                     $aItensCadastrados[] = $oItemLancado;
                 }
             }
         }
         return $aItensCadastrados;
-
     }
 
     /**
@@ -1165,25 +1185,26 @@ class ordemCompra {
      * @throws Exception
      * @return string
      */
-    public static function getServicoQuantidade($iSequencial) {
+    public static function getServicoQuantidade($iSequencial)
+    {
 
-        $oDaoEmpEmpItem = db_utils::getDao("empempitem");
+        $oDaoEmpEmpItem = new cl_empempitem;
 
-        $sSqlEmpEmpItem = $oDaoEmpEmpItem->sql_query_file(null, null,
+        $sSqlEmpEmpItem = $oDaoEmpEmpItem->sql_query_file(
+            null,
+            null,
             "e62_servicoquantidade",
             null,
             "e62_sequencial = {$iSequencial}"
         );
         $rsServicoQuantidade = $oDaoEmpEmpItem->sql_record($sSqlEmpEmpItem);
         if ($oDaoEmpEmpItem->numrows <= 0) {
-
             throw new Exception("ERRO [ 1 ] - erro ao pesquisar se o item pode ser controlado por quantidade.");
         }
 
         $sServicoQuantidade = db_utils::fieldsMemory($rsServicoQuantidade, 0)->e62_servicoquantidade;
 
         return $sServicoQuantidade;
-
     }
 
     /**
@@ -1193,32 +1214,38 @@ class ordemCompra {
      * @param integer $iIndice indice do fracionamento do item. todos os itens tem ao minimo  fracionamento
      * @return object
      */
-    function getInfoItem($iCodLanc,  $iIndice) {
+    function getInfoItem($iCodLanc, $iIndice)
+    {
 
         $oItemAtivo = $_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc][$iIndice];
 
         $_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc][$iIndice]->checked = " checked ";
         $oDaoTransMater = new cl_transmater();
         $aItensMaterial = array();
-        $sSqlTransMater = $oDaoTransMater->sql_query(null,
-            "m63_codmatmater,m60_descr,m60_controlavalidade, m60_codmatunid, m60_quantent, m60_servico",
+        $sSqlTransMater = $oDaoTransMater->sql_query(
+            null,
+            "m63_codmatmater,m60_descr,m60_controlavalidade, m60_codmatunid, m60_quantent, m60_servico, m61_usaquant",
             null,
             "m60_ativo is true
             and m63_codpcmater={$oItemAtivo->pc01_codmater}
-            and m60_servico = '{$oItemAtivo->pc01_servico}'");
+            and m60_servico = '{$oItemAtivo->pc01_servico}'"
+        );
         $rsTransMater = $oDaoTransMater->sql_record($sSqlTransMater);
         if ($oDaoTransMater->numrows > 0) {
-
-            for($iItens = 0; $iItens < $oDaoTransMater->numrows; $iItens++) {
+            for ($iItens = 0; $iItens < $oDaoTransMater->numrows; $iItens++) {
                 $aItensMaterial[] = db_utils::fieldsMemory($rsTransMater, $iItens, false, false, $this->getEncode());
             }
         }
 
         $iSequencialEmpEmpItem = $oItemAtivo->e62_sequencial;
 
-        if ( !empty($aItensMaterial) ) {
+        if (!empty($aItensMaterial)) {
             $oItemAtivo->unidade = $aItensMaterial[0]->m60_codmatunid;
-            $oItemAtivo->quantunidade = $aItensMaterial[0]->m60_quantent;
+            if ($aItensMaterial[0]->m61_usaquant == 't') {
+                $oItemAtivo->quantunidade = $aItensMaterial[0]->m60_quantent;
+            } else {
+                $oItemAtivo->quantunidade = 1;
+            }
         }
 
         $oItemAtivo->aMateriaisEstoque = $aItensMaterial;
@@ -1228,11 +1255,12 @@ class ordemCompra {
     /**
      * Cancela o fracionamento do Item passado;
      *
-     * @param integer $iCodLanc código do Lançamento do item
+     * @param integer $iCodLanc Código do lançamento do item
      * @param integer $iIndice indice do item
      * @return boolean
      */
-    function cancelarFracionamento($iCodLanc, $iIndice) {
+    function cancelarFracionamento($iCodLanc, $iIndice)
+    {
 
         $oItemAtivo = $_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc][$iIndice];
         $oItemPai   = $_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc][0];
@@ -1244,15 +1272,14 @@ class ordemCompra {
         return true;
     }
 
-    function nextVal($iCodLanc) {
+    function nextVal($iCodLanc)
+    {
 
         $iIndiceNovo = 0;
         foreach ($_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc] as $iIndice => $aItens) {
-
             if ($iIndice > $iIndiceNovo) {
                 $iIndiceNovo = $iIndice;
             }
-
         }
         return $iIndiceNovo+1;
     }
@@ -1265,10 +1292,12 @@ class ordemCompra {
         $aItens,
         $oInfoNota = null,
         $sObservacao,
-        $sNumeroProcesso=null,
+        $sNumeroProcesso = null,
         $oDataVencimento,
         $sLocalRecebimento = null,
-        $processoEntradaNota = null) {
+        $processoEntradaNota = null,
+        $arquivoNotaFiscal = null
+    ) {
 
         $notaBemIncorporavel = false;
         if (UTILIZA_INCORPORACAO_BEM) {
@@ -1286,13 +1315,12 @@ class ordemCompra {
 
         $aElementosConfiguradosVerificacaoPatrimonio = array();
         if (!USE_PCASP) {
-            $oDaoConfiguracaoDesdobramentoPatrimonio = db_utils::getDao('configuracaodesdobramentopatrimonio');
+            $oDaoConfiguracaoDesdobramentoPatrimonio = new cl_configuracaodesdobramentopatrimonio;
 
             $sWhere             = "o56_anousu = ".db_getsession("DB_anousu");
             $sSqlDesdobramentos = $oDaoConfiguracaoDesdobramentoPatrimonio->sql_query(null, "o56_codele", null, $sWhere);
             $rsDesdobramentos   = $oDaoConfiguracaoDesdobramentoPatrimonio->sql_record($sSqlDesdobramentos);
             if ($rsDesdobramentos && $oDaoConfiguracaoDesdobramentoPatrimonio->numrows > 0) {
-
                 $aDesdobramentos = db_Utils::getCollectionByRecord($rsDesdobramentos);
                 foreach ($aDesdobramentos as $oDesdobramento) {
                     $aElementosConfiguradosVerificacaoPatrimonio[] = $oDesdobramento->o56_codele;
@@ -1301,7 +1329,7 @@ class ordemCompra {
         }
         $aParamKeys = array(db_getsession("DB_anousu"));
 
-        $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
+        $aParametrosCustos   = db_stdClass::getParametro("parcustos", $aParamKeys);
         $iTipoControleCustos = 0;
 
         if (count($aParametrosCustos) > 0) {
@@ -1316,9 +1344,7 @@ class ordemCompra {
          */
         $nTotalEntrada = 0;
         for ($iEmp = 0; $iEmp < $iTotItens; $iEmp++) {
-
-            if ($aEntradas[$aItens[$iEmp]->iCodLanc][$aItens[$iEmp]->iIndiceEntrada] ) {
-
+            if ($aEntradas[$aItens[$iEmp]->iCodLanc][$aItens[$iEmp]->iIndiceEntrada]) {
                 //Pegamos o item ativo, pelo codigo do lançamento e do seu indice.
                 $oItemAtivo = $aEntradas[$aItens[$iEmp]->iCodLanc][$aItens[$iEmp]->iIndiceEntrada];
 
@@ -1327,18 +1353,18 @@ class ordemCompra {
                 }
 
                 $sWhereQuantItem = "m52_codordem = {$this->iCodOrdem} and m52_codlanc = {$oItemAtivo->m52_codlanc}";
-                $sSqlQuantItem = $this->daoOrdemCompra->sql_query_item(null,"m52_quant",null,$sWhereQuantItem);
+                $sSqlQuantItem = $this->daoOrdemCompra->sql_query_item(null, "m52_quant", null, $sWhereQuantItem);
                 $rsQuantItem = $this->daoOrdemCompra->sql_record($sSqlQuantItem);
-                $oQuantTotalItem = db_Utils::fieldsMemory($rsQuantItem,0);
+                $oQuantTotalItem = db_Utils::fieldsMemory($rsQuantItem, 0);
                 $iQuantTotalItem = $oQuantTotalItem->m52_quant;
 
                 $sWhereTotalLanc = "m52_codordem = {$this->iCodOrdem} and m52_codlanc = {$oItemAtivo->m52_codlanc} and m73_cancelado = 'f'";
-                $sSqlTotalLanc  = $this->daoOrdemCompra->sql_query_totalitemlanc(null,"sum(m71_quant) total_lanc",null,$sWhereTotalLanc);
+                $sSqlTotalLanc  = $this->daoOrdemCompra->sql_query_totalitemlanc(null, "sum(m71_quant) total_lanc", null, $sWhereTotalLanc);
                 $rsTotalLanc = $this->daoOrdemCompra->sql_record($sSqlTotalLanc);
 
                 $iTotalLancado = 0;
-                if($this->daoOrdemCompra->numrows > 0){
-                    $oTotalLancado = db_utils::fieldsMemory($rsTotalLanc,0);
+                if ($this->daoOrdemCompra->numrows > 0) {
+                    $oTotalLancado = db_utils::fieldsMemory($rsTotalLanc, 0);
                     $iTotalLancado = $oTotalLancado->total_lanc;
                 }
 
@@ -1365,7 +1391,7 @@ class ordemCompra {
             }
         }
 
-        if (round($nTotalEntrada,2) != round($nValorNota,2)) {
+        if (round($nTotalEntrada, 2) != round($nValorNota, 2)) {
             throw new Exception("o Valor total da Entrada($nTotalEntrada) da nota diferente do valor da nota ($nValorNota).");
         }
 
@@ -1380,14 +1406,14 @@ class ordemCompra {
             db_getsession("DB_instit")
         );
 
-        $aParametrosPit = db_stdClass::getParametro("matparaminstit",$aParamKeys);
+        $aParametrosPit = db_stdClass::getParametro("matparaminstit", $aParamKeys);
         if (count($aParametrosPit) > 0) {
             $iControlaPit = $aParametrosPit[0]->m10_controlapit;
         }
 
-        if($this->dadosOrdem->z01_incest == '' && ($iControlaPit == 1 && $oInfoNota->iTipoDocumentoFiscal == 50) ) {
+        if ($this->dadosOrdem->z01_incest == '' && ($iControlaPit == 1 && $oInfoNota->iTipoDocumentoFiscal == 50)) {
             $sMsg  = "O cgm (".urldecode($this->dadosOrdem->z01_numcgm)." - ".urldecode($this->dadosOrdem->z01_nome).") ";
-            $sMsg .= "não possui inscrição estadual cadastrada. para continuar essa rotina, informe a ";
+            $sMsg .= "Não possui inscrição estadual cadastrada. para continuar essa rotina, informe a ";
             $sMsg .= "inscrição estadual do fornecedor";
             throw new Exception($sMsg);
         }
@@ -1401,8 +1427,8 @@ class ordemCompra {
         }
 
         $iDepto                          = $this->dadosOrdem->m51_depto;
-        $oDaoMatestoqueIni               = db_utils::getDao("matestoqueini");
-        $oDaoMatestoqueIni->m80_data     = date('Y-m-d',db_getsession("DB_datausu"));
+        $oDaoMatestoqueIni               = new cl_matestoqueini;
+        $oDaoMatestoqueIni->m80_data     = date('Y-m-d', db_getsession("DB_datausu"));
         $oDaoMatestoqueIni->m80_hora     = date('H:i:s');
         $oDaoMatestoqueIni->m80_coddepto = $iDepto;
         $oDaoMatestoqueIni->m80_login    = db_getsession("DB_id_usuario");
@@ -1410,36 +1436,34 @@ class ordemCompra {
         $oDaoMatestoqueIni->m80_obs      = $sObservacao;
         $oDaoMatestoqueIni->incluir(null);
         if ($oDaoMatestoqueIni->erro_status == 0) {
-
             $sErroMsg  = "Erro [1] - Não foi possivel Iniciar Movimento no Estoque.\n";
             $sErroMsg .= "[Erro Técnico] - {$oDaoMatestoqueIni->erro_msg}";
             throw new Exception($sErroMsg);
         }
         $iCodMov = $oDaoMatestoqueIni->m80_codigo;
 
-        $clEmpEmpenho = db_utils::getDao('empempenho');
-
+        $utilizaBnafar = FarmaciaHelper::utilizaIntegracaoBnafar();
+        $hasMaterialFarmacia = false;
+        $clEmpEmpenho = new cl_empempenho;
         $aEmpenhoGrupoItem = array();
         for ($iItem = 0; $iItem < $iTotItens; $iItem++) {
-
-            if ($aEntradas[$aItens[$iItem]->iCodLanc][$aItens[$iItem]->iIndiceEntrada] ) {
+            if ($aEntradas[$aItens[$iItem]->iCodLanc][$aItens[$iItem]->iIndiceEntrada]) {
 
                 /**
                  * Pegamos o item ativo, pelo codigo do lançamento e do seu indice.
                  */
                 $oItemAtivo = $aEntradas[$aItens[$iItem]->iCodLanc][$aItens[$iItem]->iIndiceEntrada];
 
-
                 /**
                  * Verifica se a data da nota é inferior a do empenho
                  * caso seja então retorna erro
                  */
-                $sSqlValidaEmp   = $clEmpEmpenho->sql_query_file($oItemAtivo->e60_numemp,"e60_emiss");
+                $sSqlValidaEmp   = $clEmpEmpenho->sql_query_file($oItemAtivo->e60_numemp, "e60_emiss");
                 $rsValidaDataEmp = $clEmpEmpenho->sql_record($sSqlValidaEmp);
 
-                if ( pg_num_rows($rsValidaDataEmp) > 0 ) {
-                    $oDataEmpenho = db_utils::fieldsMemory($rsValidaDataEmp,0);
-                    if ( implode("-",array_reverse(explode("/",$dtDataNota))) < $oDataEmpenho->e60_emiss ) {
+                if (pg_num_rows($rsValidaDataEmp) > 0) {
+                    $oDataEmpenho = db_utils::fieldsMemory($rsValidaDataEmp, 0);
+                    if (implode("-", array_reverse(explode("/", $dtDataNota))) < $oDataEmpenho->e60_emiss) {
                         throw new Exception("Data da nota inferior a data do empenho!");
                     }
                 }
@@ -1449,14 +1473,13 @@ class ordemCompra {
                  * e o material for serviço, e nao foi informado o custo, devemos cancelar a entrada da ordem
                  */
                 if ($oItemAtivo->cc08_sequencial == "" && $iTipoControleCustos == 3 && $oItemAtivo->pc01_servico == "t") {
-
                     $sErroMsg  = "Erro [5] - Item ({$oItemAtivo->pc01_descrmater}) sem centro de custo .\n";
                     $sErroMsg .= "Operação Cancelada.";
                     throw new Exception($sErroMsg);
                 }
                 /**
                  * Verificamos se o usuário escolheu um item de entrada para o item.
-                 * caso nao, devemos incluir o ítem , com a descrição do módulo material.
+                 * caso nao, devemos incluir o item , com a descrição do módulo material.
                  */
                 if ($oItemAtivo->m63_codmatmater == "") {
                     $oDaoMatMater                       = new cl_matmater();
@@ -1513,17 +1536,15 @@ class ordemCompra {
                     $oDaoMatUnid->m62_codmatunid  = 1;
                     $oDaoMatUnid->incluir($oDaoMatMater->m60_codmater, 1);
                     if ($oDaoMatUnid->erro_status == 0) {
-
                         $sErroMsg  = "Erro [7] - Item ({$oItemAtivo->pc01_descrmater}) unidade de saida.\n";
                         $sErroMsg .= "Operação Cancelada.";
                         throw new Exception($sErroMsg);
                     }
-                    $oDaoTransMater = db_utils::getDao("transmater");
+                    $oDaoTransMater = new cl_transmater;
                     $oDaoTransMater->m63_codmatmater = $oItemAtivo->m63_codmatmater;
                     $oDaoTransMater->m63_codpcmater  = $oItemAtivo->pc01_codmater;
                     $oDaoTransMater->incluir();
                     if ($oDaoTransMater->erro_status == 0) {
-
                         $sErroMsg  = "Erro [13] - Item ({$oItemAtivo->pc01_descrmater}) Não foi possível incluir material.\n";
                         $sErroMsg .= "Operação Cancelada.";
                         throw new Exception($sErroMsg);
@@ -1537,12 +1558,12 @@ class ordemCompra {
                  */
                 if ($oItemAtivo->iTotalFracionados > 0) {
                     continue;
-                } else if ($oItemAtivo->iTotalFracionados == 0 && $oItemAtivo->m52_valor == 0) {
+                } elseif ($oItemAtivo->iTotalFracionados == 0 && $oItemAtivo->m52_valor == 0) {
                     throw new Exception("Item ({$oItemAtivo->pc01_descrmater} com valores inválidos.\Verifique)");
                 }
 
                 /*
-                 * verificamos se a ordem não é uma ordem automatica, caso verdadeiro,
+                 * verificamos se a ordem Não é uma ordem automatica, caso verdadeiro,
                  * devemos criar uma nota para o empenho.
                  * marcamos o elemento iCodNota do array aEmpenhos com o codigo da nota,
                  * e passamos a  usar essa nota para todas as entradas desse empenho.
@@ -1566,7 +1587,7 @@ class ordemCompra {
                     }
 
                     $oDaoEmpNota->incluir(null);
-                    if ($oDaoEmpNota->erro_status == 0 ) {
+                    if ($oDaoEmpNota->erro_status == 0) {
                         $sErroMsg  = "Erro [2] - Não foi possivel incluir nota fiscal.\n";
                         $sErroMsg .= "[Erro Técnico] - {$oDaoEmpNota->erro_msg}";
                         throw new Exception($sErroMsg);
@@ -1576,7 +1597,7 @@ class ordemCompra {
                     /**
                      * Vinculamos o processo informado na tela pelo usuário à nota de pagamento
                      */
-                    if ( !empty($sNumeroProcesso) ) {
+                    if (!empty($sNumeroProcesso)) {
                         $oDaoProcessoNota = new cl_empnotaprocesso();
                         $oDaoProcessoNota->e04_sequencial     = null;
                         $oDaoProcessoNota->e04_empnota        = $oDaoEmpNota->e69_codnota;
@@ -1588,7 +1609,7 @@ class ordemCompra {
                     }
 
                     //incluimos o elemento da nota;
-                    $oDaoElemento = db_utils::getDao("empelemento");
+                    $oDaoElemento = new cl_empelemento;
 
                     $sSqlElemento = $oDaoElemento->sql_query($oItemAtivo->e60_numemp);
                     $rsElemento   = $oDaoElemento->sql_record($sSqlElemento);
@@ -1601,36 +1622,36 @@ class ordemCompra {
                     $aEmpenhos[$oItemAtivo->e60_numemp]['elemento']        =  $oElemento->o56_elemento;
                     $aEmpenhos[$oItemAtivo->e60_numemp]['codigo_elemento'] =  $oElemento->o56_codele;
 
-                    $oDaoEmpNotaEle              = db_utils::getDao("empnotaele");
+                    $oDaoEmpNotaEle              = new cl_empnotaele;
                     $oDaoEmpNotaEle->e70_codele  = $oElemento->e64_codele;
                     $oDaoEmpNotaEle->e70_codnota = $oDaoEmpNota->e69_codnota;
-                    $oDaoEmpNotaEle->e70_valor   = round($aEmpenhos[$oItemAtivo->e60_numemp]["valor"],2);
+                    $oDaoEmpNotaEle->e70_valor   = round($aEmpenhos[$oItemAtivo->e60_numemp]["valor"], 2);
                     $oDaoEmpNotaEle->e70_vlrliq  = "0";
                     $oDaoEmpNotaEle->e70_vlranu  = "0";
                     $oDaoEmpNotaEle->incluir($oDaoEmpNota->e69_codnota, $oElemento->e64_codele);
                     if ($oDaoEmpNotaEle->erro_status == 0) {
-
                         $sErroMsg  = "Erro [4] - Não foi possivel incluir nota fiscal.\n";
                         $sErroMsg .= "[Erro Técnico] - {$oDaoEmpNotaEle->erro_msg}";
                         throw new Exception($sErroMsg);
                     }
 
-                    $oDaoEmpNotaOrd = db_utils::getDao("empnotaord");
+                    $oDaoEmpNotaOrd = new cl_empnotaord;
                     $oDaoEmpNotaOrd->incluir($oDaoEmpNota->e69_codnota, $this->dadosOrdem->m51_codordem);
-                } else if ($aEmpenhos[$oItemAtivo->e60_numemp]["iCodNota"] == ""
+                } elseif ($aEmpenhos[$oItemAtivo->e60_numemp]["iCodNota"] == ""
                     && $this->dadosOrdem->m51_tipo == 2) {
 
                     /**
                      * a nota é virtual, entao apenas pegamos o número da nota gerada .
                      */
-                    $oDaoEmpNota = db_utils::getDao("empnota");
-                    $rsNota      = $oDaoEmpNota->sql_record($oDaoEmpNota->sql_query_nota(null,
+                    $oDaoEmpNota = new cl_empnota;
+                    $rsNota      = $oDaoEmpNota->sql_record($oDaoEmpNota->sql_query_nota(
+                        null,
                         "e69_codnota, e70_codele",
                         null,
-                        "m72_codordem = {$this->dadosOrdem->m51_codordem}"));
+                        "m72_codordem = {$this->dadosOrdem->m51_codordem}"
+                    ));
                     if ($oDaoEmpNota->numrows == 1) {
-
-                        $oNotas   = db_utils::fieldsMemory($rsNota,0);
+                        $oNotas   = db_utils::fieldsMemory($rsNota, 0);
                         $aEmpenhos[$oItemAtivo->e60_numemp]["iCodNota"]        = $oNotas->e69_codnota;
                         $aEmpenhos[$oItemAtivo->e60_numemp]['codigo_elemento'] =  $oNotas->e70_codele;
                     } else {
@@ -1689,14 +1710,13 @@ class ordemCompra {
                 //incluimos na matestoqueitem
 
                 if (!empty($oGrupoConta) && $oGrupoConta->getCodigo() == 9 && $oItemAtivo->pc01_servico == "t") {
-
                     $sMensagem  = "O grupo do empenho está classificado como Despesa em Material Permanente (Grupo 9) e o material como serviço.\n\n";
-                    $sMensagem .= "Para realizar a entrada da O.C. é preciso configurar o grupo do empenho como Despesa com Serviços (Grupo 7).";
+                    $sMensagem .= "Para realizar a entrada da O.C. é preciso configurar o grupo do empenho como Despesa com serviços (Grupo 7).";
                     throw new BusinessException($sMensagem);
                 }
 
                 $quantidadeAtendida = "0";
-                if ((!empty($oGrupoConta) && $oGrupoConta->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM)){
+                if ((!empty($oGrupoConta) && $oGrupoConta->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM)) {
                     $quantidadeAtendida = ($oItemAtivo->m52_quant * $iQuantUnidade);
                 }
 
@@ -1714,21 +1734,20 @@ class ordemCompra {
                 $oDaoMatestoqueItem->m71_valor         = $oItemAtivo->m52_valor;
                 $oDaoMatestoqueItem->m71_servico       = $servico;
                 $oDaoMatestoqueItem->incluir(null);
-                if ($oDaoMatestoqueItem->erro_status == 0){
+                if ($oDaoMatestoqueItem->erro_status == 0) {
                     $sErroMsg  = "Erro [8] - Não foi possível iniciar estoque.\n";
                     $sErroMsg .= "[Erro Técnico] - {$oDaoMatestoqueItem->erro_msg}";
                     throw new Exception($sErroMsg);
                 }
 
                 //incluimos matestoqueitemunid
-                $oDaoMatUnid                        = db_utils::getDao("matestoqueitemunid");
+                $oDaoMatUnid                        = new cl_matestoqueitemunid;
                 $oDaoMatUnid->m75_codmatestoqueitem = $oDaoMatestoqueItem->m71_codlanc;
                 $oDaoMatUnid->m75_codmatunid        = $oItemAtivo->unidade;
                 $oDaoMatUnid->m75_quant             = $oItemAtivo->m52_quant * $iQuantUnidade;
                 $oDaoMatUnid->m75_quantmult         = $iQuantUnidade;
                 $oDaoMatUnid->incluir($oDaoMatestoqueItem->m71_codlanc);
-                if ($oDaoMatUnid->erro_status==0){
-
+                if ($oDaoMatUnid->erro_status==0) {
                     $sErroMsg  = "Erro [8]- Não foi possível iniciar estoque.\n";
                     $sErroMsg .= "[Erro Técnico] - {$oDaoMatUnid->erro_msg}";
                     throw new Exception($sErroMsg);
@@ -1736,7 +1755,7 @@ class ordemCompra {
                 /**
                  * incluimos a ligação da entrada da ordem de compra com o item do estoque
                  */
-                $oDaoMatItemOC = db_utils::getDao("matestoqueitemoc");
+                $oDaoMatItemOC = new cl_matestoqueitemoc;
                 $oDaoMatItemOC->incluir($oDaoMatestoqueItem->m71_codlanc, $oItemAtivo->m52_codlanc);
                 if ($oDaoMatItemOC->erro_status == 0) {
                     $sErroMsg  = "Erro [9]- Não foi possível iniciar estoque.\n";
@@ -1747,9 +1766,12 @@ class ordemCompra {
                  * Verificamos se foi definido uma apropriacao para o item da OC.
                  * Como foi realizado, devemos anular essa apropriação
                  */
-                $oDaoMatordemItemCustoCriterio = db_utils::getdao("matordemitemcustocriterio");
-                $sSqlApropria  = $oDaoMatordemItemCustoCriterio->sql_query_file(null,"cc11_sequencial",
-                    "cc11_matordemitem = {$oItemAtivo->m52_codlanc}");
+                $oDaoMatordemItemCustoCriterio = new cl_matordemitemcustocriterio;
+                $sSqlApropria  = $oDaoMatordemItemCustoCriterio->sql_query_file(
+                    null,
+                    "cc11_sequencial",
+                    "cc11_matordemitem = {$oItemAtivo->m52_codlanc}"
+                );
                 $rsApropria    = $oDaoMatordemItemCustoCriterio->sql_record($sSqlApropria);
 
                 /*
@@ -1757,19 +1779,22 @@ class ordemCompra {
                  * gravamos na matestoqueitemfabricante.
                  */
                 if (trim($oItemAtivo->m78_matfabricante) != '') {
-
-                    $oDaoMatFabricante = db_utils::getDao("matestoqueitemfabric");
+                    $oDaoMatFabricante = new cl_matestoqueitemfabric;
                     $oDaoMatFabricante->m78_matestoqueitem = $oDaoMatestoqueItem->m71_codlanc;
                     $oDaoMatFabricante->m78_matfabricante  = $oItemAtivo->m78_matfabricante;
                     $oDaoMatFabricante->incluir(null);
                     if ($oDaoMatFabricante->erro_status == 0) {
-
                         $sErroMsg  = "Erro [17] - Não foi possível Salvar informações do fabricante.\n";
                         $sErroMsg .= "[Erro Técnico] - {$oDaoMatFabricante->erro_msg}";
                         throw new Exception($sErroMsg);
-
                     }
                 }
+
+                if ($utilizaBnafar && FarmaciaHelper::isMaterialFarmacia($oItemAtivo->m63_codmatmater)) {
+                    FarmaciaHelper::validaQuantidade($oItemAtivo->m52_quant * $iQuantUnidade);
+                    $hasMaterialFarmacia = true;
+                }
+
                 /*
                  * Gravamos matestoqueinimei
                  */
@@ -1779,7 +1804,6 @@ class ordemCompra {
                 $oDaoMatestoqueIniMei->m82_quant          = ($oItemAtivo->m52_quant * $iQuantUnidade);
                 $oDaoMatestoqueIniMei->incluir(null);
                 if ($oDaoMatestoqueIniMei->erro_status == 0) {
-
                     $sErroMsg  = "Erro [11] - Não foi possível finalizar a inclusao da Ordem.\n";
                     $sErroMsg .= "[Erro Técnico] - ".str_replace("\\n", "\n", $oDaoMatestoqueIniMei->erro_msg);
                     throw new Exception($sErroMsg);
@@ -1796,7 +1820,6 @@ class ordemCompra {
                     $daoBemIncorporacao->incluir(null);
 
                     if ($daoBemIncorporacao->erro_status == 0) {
-
                         $sErroMsg  = "Erro [12] - Não foi possível incluir nota.\n";
                         $sErroMsg .= "[Erro Técnico] - ".str_replace("\\n", "\n", $daoBemIncorporacao->erro_msg);
                         throw new Exception($sErroMsg);
@@ -1806,8 +1829,7 @@ class ordemCompra {
                 /**
                  * Caso o material seje servico, já fizemos a saida automatica para esse material
                  */
-                if (($oItemAtivo->pc01_servico == "t" && !UTILIZA_INCORPORACAO_BEM) || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, array(self::SERVICO_PRESTADO))) ) {
-
+                if (($oItemAtivo->pc01_servico == "t" && !UTILIZA_INCORPORACAO_BEM) || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, array(self::SERVICO_PRESTADO)))) {
                     $oMaterialEstoque = new materialEstoque($oItemAtivo->m63_codmatmater);
                     if ($oItemAtivo->cc08_sequencial != "") {
                         $oMaterialEstoque->setCriterioRateioCusto($oItemAtivo->cc08_sequencial);
@@ -1819,15 +1841,14 @@ class ordemCompra {
                 /**
                  * Executa uma saída automática quando for material permanente
                  */
-                if ( (!empty($oGrupoConta) && $oGrupoConta->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM) ) {
-
+                if ((!empty($oGrupoConta) && $oGrupoConta->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM)) {
                     $oItemMovimentacao = new MaterialEstoqueMovimentacao(null);
                     $oItemMovimentacao->setDepartamento(DBDepartamentoRepository::getDBDepartamentoByCodigo($iDepto));
                     $oItemMovimentacao->setMovimento(new TipoMovimentacaoEstoque(24));
                     $oItemMovimentacao->setUsuario(UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')));
-                    $oItemMovimentacao->setData(new DBDate(date('Y-m-d',db_getsession("DB_datausu"))));
+                    $oItemMovimentacao->setData(new DBDate(date('Y-m-d', db_getsession("DB_datausu"))));
                     $oItemMovimentacao->setHora(date('H:i:s'));
-                    $oItemMovimentacao->setObservacao("Saída automática de Material Permanente");
+                    $oItemMovimentacao->setObservacao("saída automática de Material Permanente");
                     $oItemMovimentacao->salvar();
 
                     $oItemEstoque = new MaterialEstoqueItem($oDaoMatestoqueItem->m71_codlanc);
@@ -1840,27 +1861,23 @@ class ordemCompra {
                 /**
                  * incluimos ligacao do itemn com a nota fiscal
                  */
-                $oDaoMatItemNota  = db_utils::getDao("matestoqueitemnota");
+                $oDaoMatItemNota  = new cl_matestoqueitemnota;
                 $oDaoMatItemNota->incluir($oDaoMatestoqueItem->m71_codlanc, $aEmpenhos[$oItemAtivo->e60_numemp]["iCodNota"]);
                 if ($oDaoMatItemNota->erro_status == 0) {
-
                     $sErroMsg  = "Erro [10] - Não foi possível iniciar estoque.\n";
                     $sErroMsg .= "[Erro Técnico] - {$oDaoMatItemNota->erro_msg}";
                     throw new Exception($sErroMsg);
-
                 }
                 /**
                  * caso o usuário deu informações sobre o lote, salvamos na tabela matestoqueitemlote
                  */
                 if (trim($oItemAtivo->m77_lote) != "") {
-
-                    $oDaoMatestoqueItemLote = db_utils::getDao("matestoqueitemlote");
+                    $oDaoMatestoqueItemLote = new cl_matestoqueitemlote;
                     $oDaoMatestoqueItemLote->m77_dtvalidade     =  implode("-", array_reverse(explode("/", $oItemAtivo->m77_dtvalidade)));
                     $oDaoMatestoqueItemLote->m77_lote           = $oItemAtivo->m77_lote;
                     $oDaoMatestoqueItemLote->m77_matestoqueitem = $oDaoMatestoqueItem->m71_codlanc;
                     $oDaoMatestoqueItemLote->incluir(null);
                     if ($oDaoMatestoqueItemLote->erro_status == 0) {
-
                         $sErroMsg  = "Erro [13]- Não foi possível Salvar informações do lote.\n";
                         $sErroMsg .= "[Erro Técnico] - {$oDaoMatestoqueItemLote->erro_msg}";
                         throw new Exception($sErroMsg);
@@ -1870,17 +1887,14 @@ class ordemCompra {
 
 
             if (USE_PCASP) {
-
                 $oEmpenhoFinanceiro      = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($oItemAtivo->e60_numemp);
                 $aItensEmpenhoFinanceiro = $oEmpenhoFinanceiro->getItens();
                 $iCodigoContaElemento    = $aItensEmpenhoFinanceiro[0]->getCodigoElemento();
                 $oGrupoContaOrcamento    = GrupoContaOrcamento::getGrupoConta($iCodigoContaElemento, db_getsession("DB_anousu"));
 
                 if ($oGrupoContaOrcamento) {
-
                     $iGrupoContaOrcamento = $oGrupoContaOrcamento->getCodigo();
                     if (in_array($iGrupoContaOrcamento, array(7, 8, 10)) || (UTILIZA_INCORPORACAO_BEM)) {
-
                         $oMaterialEstoque             = new materialEstoque($oItemAtivo->m63_codmatmater);
                         $oGrupoMaterial               = $oMaterialEstoque->getGrupo();
                         $oItemAtivo->iCodigoDaNota    = $aEmpenhos[$oItemAtivo->e60_numemp]["iCodNota"];
@@ -1902,11 +1916,25 @@ class ordemCompra {
             }
         }
 
-        $dtAtual      = date("Y-m-d", db_getsession( 'DB_datausu' ));
+        if ($hasMaterialFarmacia) {
+            try {
+                EstoqueMovimentacaoBnafarService::salvar((object)[
+                    'tipoMovimentacao' => 5,
+                    'cgm' => $this->dadosOrdem->z01_numcgm, // Fornecedor
+                    'unidade' => null
+                ], $iCodMov);
+            } catch (Exception $e) {
+                $sErroMsg  = "Erro [11] - Nao foi possivel finalizar a inclusao da Ordem.\n";
+                $sErroMsg .= "[Erro Tecnico] - ".str_replace("\\n", "\n", $e->getMessage());
+                throw new Exception($sErroMsg);
+            }
+        }
+
+        $dtAtual      = date("Y-m-d", db_getsession('DB_datausu'));
         $oDataAtual   = new DBDate($dtAtual);
         $oInstituicao = new Instituicao(db_getsession('DB_instit'));
 
-        if ( USE_PCASP && count($aEmpenhoGrupoItem) > 0 &&
+        if (USE_PCASP && count($aEmpenhoGrupoItem) > 0 &&
             (ParametroIntegracaoPatrimonial::possuiIntegracaoMaterial($oDataAtual, $oInstituicao))
         ) {
             $this->processarLancamentosOrdemCompra($aEmpenhoGrupoItem);
@@ -1919,7 +1947,7 @@ class ordemCompra {
         $aParamKeys = array(
             db_getsession("DB_instit")
         );
-        $aParametrosPit   = db_stdClass::getParametro("matparaminstit",$aParamKeys);
+        $aParametrosPit   = db_stdClass::getParametro("matparaminstit", $aParamKeys);
         if (count($aParametrosPit) > 0) {
             $iControlaPit = $aParametrosPit[0]->m10_controlapit;
         }
@@ -1927,24 +1955,19 @@ class ordemCompra {
          * Incluimos os itens de cada nota, conforme a entrada dos mesmos no estoque
          */
         if ($iControlaPit == 1) {
-
             if ($oInfoNota->iTipoDocumentoFiscal == "") {
-
-                $sErroMsg  = "Erro [14]- Tipo de documento fiscal não informado.\n";
+                $sErroMsg  = "Erro [14]- Tipo de documento fiscal Não informado.\n";
                 throw new Exception($sErroMsg);
                 return false;
-
             }
 
             if ($oInfoNota->iTipoDocumentoFiscal == 50) {
-
                 if ($oInfoNota->iCfop == "") {
-
-                    $sErroMsg  = "Erro [15] - CFOP não informada.\n";
+                    $sErroMsg  = "Erro [15] - CFOP Não informada.\n";
                     throw new Exception($sErroMsg);
                 }
 
-                $oDaoEmpnotaDadosPit                                = db_utils::getDao("empnotadadospit");
+                $oDaoEmpnotaDadosPit                                = new cl_empnotadadospit;
                 $oDaoEmpnotaDadosPit->e11_cfop                      = $oInfoNota->iCfop;
                 $oDaoEmpnotaDadosPit->e11_seriefiscal               = $oInfoNota->sSerieFiscal;
                 $oDaoEmpnotaDadosPit->e11_inscricaosubstitutofiscal = $oInfoNota->iInscrSubstituto;
@@ -1954,7 +1977,6 @@ class ordemCompra {
                 $oDaoEmpnotaDadosPit->e11_valoricmssubstitutotrib   = "$oInfoNota->nValorICMSSubst";
                 $oDaoEmpnotaDadosPit->incluir(null);
                 if ($oDaoEmpnotaDadosPit->erro_status == 0) {
-
                     $sErroMsg  = "Erro [16] - Não foi possível Salvar informações da nota Fiscal.\n";
                     $sErroMsg .= "[Erro Técnico] - {$oDaoEmpnotaDadosPit->erro_msg}";
                     throw new Exception($sErroMsg);
@@ -1963,7 +1985,6 @@ class ordemCompra {
         }
 
         if ($this->dadosOrdem->m51_tipo == 1) {
-
             foreach ($aEmpenhos as $iEmpenho => $oNota) {
 
                 /**
@@ -1972,7 +1993,7 @@ class ordemCompra {
                  * entrada pode ser feita por unidade
                  */
                 $iCodNota      = $oNota["iCodNota"];
-                $clempnotaitem = db_utils::getDao("empnotaitem");
+                $clempnotaitem = new cl_empnotaitem;
                 $sSQlItens     = "SELECT sum(m71_quant / coalesce(m75_quantmult, 1)) as m71_quant,";
                 $sSQlItens    .= "       sum(m71_valor) as m71_valor,";
                 $sSQlItens    .= "       e62_sequencial, ";
@@ -1989,15 +2010,13 @@ class ordemCompra {
                 $sSQlItens    .= "  group by  e62_sequencial,e62_codele";
 
                 $rsItens       = db_query($sSQlItens);
-                if (! $rsItens ) {
-
+                if (! $rsItens) {
                     $sErroMsg  = "Erro[14] - Erro ao buscar os itens da entrada no estoque. \n";
                     $sErroMsg .= "[Erro Técnico] - ".pg_last_error();
                     throw new Exception($sErroMsg);
                 }
 
                 for ($iInd = 0; $iInd < pg_num_rows($rsItens); $iInd++) {
-
                     $oItens = db_utils::fieldsMemory($rsItens, $iInd);
 
                     $clempnotaitem->e72_codnota    = $iCodNota;
@@ -2006,7 +2025,6 @@ class ordemCompra {
                     $clempnotaitem->e72_valor      = $oItens->m71_valor;
                     $clempnotaitem->incluir(null);
                     if ($clempnotaitem->erro_status == 0) {
-
                         $sErroMsg  = "Erro[12] - Não foi possível incluir itens da nota.\n";
                         $sErroMsg .= "[Erro Técnico] - {$clempnotaitem->erro_msg}";
                         throw new Exception($sErroMsg);
@@ -2015,25 +2033,21 @@ class ordemCompra {
                     $oGrupo = GrupoContaOrcamento::getGrupoConta($oNota['codigo_elemento'], db_getsession("DB_anousu"));
 
                     $elementoConfigurado = in_array($oNota['codigo_elemento'], $aElementosConfiguradosVerificacaoPatrimonio);
-                    if (
-                        (!USE_PCASP && $elementoConfigurado && !UTILIZA_INCORPORACAO_BEM)
+                    if ((!USE_PCASP && $elementoConfigurado && !UTILIZA_INCORPORACAO_BEM)
                         ||
                         (USE_PCASP && $oGrupo instanceof GrupoContaOrcamento && $oGrupo->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM)
                         ||
                         (USE_PCASP && UTILIZA_INCORPORACAO_BEM && $processoEntradaNota === self::BEM_PERMANENTE)
                     ) {
-
                         $aLancamentos = explode("#", $oItens->m71_codlanc);
 
                         for ($i = 0; $i < count($aLancamentos); $i++) {
-
-                            $oDaoBensPendente                      = db_utils::getDao('empnotaitembenspendente');
+                            $oDaoBensPendente                      = new cl_empnotaitembenspendente;
                             $oDaoBensPendente->e137_sequencial     = null;
                             $oDaoBensPendente->e137_empnotaitem    = $clempnotaitem->e72_sequencial;
                             $oDaoBensPendente->e137_matestoqueitem = $aLancamentos[$i];
                             $oDaoBensPendente->incluir(null);
                             if ($oDaoBensPendente->erro_status == 0) {
-
                                 $sErroMsg  = "Erro[13] - Não foi possível incluir vínculo do empenho com o patrimônio.\n";
                                 $sErroMsg .= "[Erro Técnico] - {$oDaoBensPendente->erro_msg}";
                                 throw new Exception($sErroMsg);
@@ -2047,17 +2061,52 @@ class ordemCompra {
              * Vinculamos as notas ao empnotadadospit
              */
             if ($oInfoNota->iTipoDocumentoFiscal == 50) {
-
-                $oDaoEmpnotaDadosPitNota                      = db_utils::getDao("empnotadadospitnotas");
+                $oDaoEmpnotaDadosPitNota                      = new cl_empnotadadospitnotas;
                 $oDaoEmpnotaDadosPitNota->e13_empnota         = $oNota["iCodNota"];
                 $oDaoEmpnotaDadosPitNota->e13_empnotadadospit = $oDaoEmpnotaDadosPit->e11_sequencial;
                 $oDaoEmpnotaDadosPitNota->incluir(null);
                 if ($oDaoEmpnotaDadosPitNota->erro_status == 0) {
-
                     $sErroMsg  = "Erro[17] - Não foi possível incluir itens da nota.\n";
                     $sErroMsg .= "[Erro Técnico] - {$oDaoEmpnotaDadosPitNota->erro_msg}";
                     throw new Exception($sErroMsg);
                 }
+            }
+
+            /**
+             * Salva dados referente ao SIGFIS-RJ
+             */
+            if (isset($this->oDadosSigfis)) {
+                $oSigfis = $this->oDadosSigfis;
+
+                // Tipo de documento Liquidacao
+                if (isset($oSigfis->tipodocliquidacao)) {
+                    $oDaoEmpnotasigfistipodocliq = new cl_empnotasigfistipodocliquidacao;
+                    $oDaoEmpnotasigfistipodocliq->e178_empnota = $oNota["iCodNota"];
+                    $oDaoEmpnotasigfistipodocliq->e178_sigfistipodocliquidacao = $oSigfis->tipodocliquidacao;
+
+                    $oDaoEmpnotasigfistipodocliq->incluir(null);
+
+                    if ($oDaoEmpnotasigfistipodocliq->erro_status == 0) {
+                        throw new \BusinessException("[Tipo documento]" . $oDaoEmpnotasigfistipodocliq->erro_msg);
+                    }
+                }
+
+                // Atestadores da NF
+                if (isset($oSigfis->atestadores)) {
+                    foreach ($oSigfis->atestadores as $atestador) {
+                        $oDaoEmpnotaatestador = new cl_empnotaatestador;
+                        $oDaoEmpnotaatestador->e169_empnota = $oNota["iCodNota"];
+                        $oDaoEmpnotaatestador->e169_numcgm = $atestador->sCodigo;
+
+                        $oDaoEmpnotaatestador->incluir(null);
+
+                        if ($oDaoEmpnotaatestador->erro_status == 0) {
+                            throw new \BusinessException("[Atestadores]" . $oDaoEmpnotaatestador->erro_msg);
+                        }
+                    }
+                }
+
+                unset($oSigfis);
             }
         }
 
@@ -2072,10 +2121,11 @@ class ordemCompra {
      * @return $aItens
      */
 
-    public function getDesdobramentosLiberados($iEstrutural) {
+    public function getDesdobramentosLiberados($iEstrutural)
+    {
 
         $iAnoUso         = db_getsession("DB_anousu");
-        $oDaoOrcElemento = db_utils::getDao("orcelemento");
+        $oDaoOrcElemento = new cl_orcelemento;
         $aItens          = array();
 
         $sCampos  = " desdobramentosliberadosordemcompra.pc33_sequencial,                                                ";
@@ -2088,7 +2138,7 @@ class ordemCompra {
             $sWhere .= " and o56_elemento like '{$iEstrutural}%'";
         }
 
-        $sSqlOrcElemento  = $oDaoOrcElemento->sql_query_desdobramento_liberados(null, null,$sCampos,null,$sWhere);
+        $sSqlOrcElemento  = $oDaoOrcElemento->sql_query_desdobramento_liberados(null, null, $sCampos, null, $sWhere);
         $rsSqlOrcElemento = $oDaoOrcElemento->sql_record($sSqlOrcElemento);
         $aItens           = db_utils::getCollectionByRecord($rsSqlOrcElemento, true, false, true);
 
@@ -2101,31 +2151,29 @@ class ordemCompra {
      * @param  array $aDesdobramentos lista desdobramentos
      * @return ordemCompra
      */
-    public function liberarDesdobramentos($aDesdobramentos) {
+    public function liberarDesdobramentos($aDesdobramentos)
+    {
 
-        $oDaoDesdobramentoLiberado = db_utils::getDao("desdobramentosliberadosordemcompra");
+        $oDaoDesdobramentoLiberado = new cl_desdobramentosliberadosordemcompra;
         $iAnoUsu                   = db_getsession('DB_anousu');
         if (!db_utils::inTransaction()) {
             throw new Exception('Nao existe transação com o banco de dados ativa.');
         }
 
         $oDaoDesdobramentoLiberado->excluir(null, "pc33_anousu = {$iAnoUsu}");
-        if ( $oDaoDesdobramentoLiberado->erro_status == 0 ) {
+        if ($oDaoDesdobramentoLiberado->erro_status == 0) {
             throw new Exception($oDaoDesdobramentoLiberado->erro_msg);
         }
 
         foreach ($aDesdobramentos as $oDesdobramento) {
-
             if ($oDesdobramento->lLiberar) {
                 $oDaoDesdobramentoLiberado->pc33_codele = $oDesdobramento->iNumele;
                 $oDaoDesdobramentoLiberado->pc33_anousu = $iAnoUsu;
                 $oDaoDesdobramentoLiberado->incluir(null);
-                if ( $oDaoDesdobramentoLiberado->erro_status == 0 ){
+                if ($oDaoDesdobramentoLiberado->erro_status == 0) {
                     throw new Exception($oDaoDesdobramentoLiberado->erro_msg);
                 }
-
             }
-
         }
 
         return $this;
@@ -2136,20 +2184,24 @@ class ordemCompra {
      * @param integer $iCodigoNota Código da nota que deve ser usada na pesquisa de bens ativos por nota
      * @return mixed
      */
-    public function getBensAtivoNota($iCodigoNota) {
+    public function getBensAtivoNota($iCodigoNota)
+    {
 
-        $oDaoBensEmpNotaItem     = db_utils::getDao('bensempnotaitem');
+        $oDaoBensEmpNotaItem     = new cl_bensempnotaitem;
         $sCamposBuscaItensAtivos = "*";
         $sWhereBuscaItensAtivos  = "     empnotaitem.e72_codnota  = {$iCodigoNota} ";
         $sWhereBuscaItensAtivos .= " and bensbaix.t55_codbem is null ";
-        $sSqlBuscaItensAtivos    = $oDaoBensEmpNotaItem->sql_query_bens_ativos(null, $sCamposBuscaItensAtivos,
-            null, $sWhereBuscaItensAtivos);
+        $sSqlBuscaItensAtivos    = $oDaoBensEmpNotaItem->sql_query_bens_ativos(
+            null,
+            $sCamposBuscaItensAtivos,
+            null,
+            $sWhereBuscaItensAtivos
+        );
         $rsBuscaItensAtivos      = $oDaoBensEmpNotaItem->sql_record($sSqlBuscaItensAtivos);
         $aItensAtivos            = db_utils::getCollectionByRecord($rsBuscaItensAtivos);
         $iLinhas                 = $oDaoBensEmpNotaItem->numrows;
         $mRetorno                = array();
-        for($i = 0; $i < $iLinhas; $i++) {
-
+        for ($i = 0; $i < $iLinhas; $i++) {
             $oItemAtivo                     = db_utils::fieldsMemory($rsBuscaItensAtivos, $i);
             $oDadosItemAtivo                = new stdClass();
             $oDadosItemAtivo->iCodigoBem    = $oItemAtivo->t52_bem;
@@ -2172,10 +2224,11 @@ class ordemCompra {
      * @param integer $iCodigoNota
      * @return boolean
      */
-    public function houveDispensaTombamentoNoPatrimonio($iCodigoNota) {
+    public function houveDispensaTombamentoNoPatrimonio($iCodigoNota)
+    {
 
         /* Verificamos se houve dispensa de tombamento para os itens da nota */
-        $oDaoDispensaTombamento = db_utils::getDao("bensdispensatombamento");
+        $oDaoDispensaTombamento = new cl_bensdispensatombamento;
         $sSqlBuscaDispensa      = $oDaoDispensaTombamento->sql_query(null, "1", null, "empnotaitem.e72_codnota = {$iCodigoNota}");
         $rsBuscaDispensa        = $oDaoDispensaTombamento->sql_record($sSqlBuscaDispensa);
         if ($oDaoDispensaTombamento->numrows > 0) {
@@ -2193,7 +2246,8 @@ class ordemCompra {
      * @return bool
      * @throws BusinessException
      */
-    private function processarLancamentosOrdemCompra($aEmpenhoGrupoItem, $lEstorno = false) {
+    private function processarLancamentosOrdemCompra($aEmpenhoGrupoItem, $lEstorno = false)
+    {
 
         $iAnoUsu = db_getsession("DB_anousu");
 
@@ -2208,7 +2262,7 @@ class ordemCompra {
                 $oEmpenhoFinanceiro      = new EmpenhoFinanceiro($iSequencialEmpenho);
                 $aItensEmpenhoFinanceiro = $oEmpenhoFinanceiro->getItens();
                 $iCodigoContaElemento    = $aItensEmpenhoFinanceiro[0]->getCodigoElemento();
-                $sObservacaoLancamento   = "Lançamento em liquidação da ordem de compra {$this->getOrdem()}";
+                $sObservacaoLancamento   = "lançamento em liquidação da ordem de compra {$this->getOrdem()}";
 
                 $oStdDadosLancamento = new stdClass();
                 $oStdDadosLancamento->iCodigoOrdemCompra    = $this->getOrdem();
@@ -2229,15 +2283,14 @@ class ordemCompra {
                 if ($this->validaLancamentoMaterialPermanente($oStdDadosLancamento->iCodigoElemento, $iCodigoTipoDocumento) || UTILIZA_INCORPORACAO_BEM) {
                     LancamentoEmpenhoEmLiquidacao::processar($oStdDadosLancamento, $lEstorno);
                 }
-
             } // foreach
-
         } // foreach
 
         return true;
     }
 
-    private function validaLancamentoMaterialPermanente($iCodigoContaElemento, $iTipoDocumento) {
+    private function validaLancamentoMaterialPermanente($iCodigoContaElemento, $iTipoDocumento)
+    {
 
         $oDocumentoContabil = SingletonRegraDocumentoContabil::getDocumento($iTipoDocumento);
         $oDocumentoContabil->setValorVariavel("[desdobramento]", $iCodigoContaElemento);
@@ -2254,26 +2307,27 @@ class ordemCompra {
      * @return EmpenhoFinanceiro
      * @throws BusinessException
      */
-    public function getEmpenhoFinanceiro() {
+    public function getEmpenhoFinanceiro()
+    {
 
         if (empty($this->oEmpenhoFinanceiro)) {
             $oDaoOrdemItem = new cl_matordemitem();
             $sSqlBuscaItem = $oDaoOrdemItem->sql_query_file(null, "m52_numemp", null, "m52_codordem = {$this->iCodOrdem}");
             $rsBuscaOrdem  = $oDaoOrdemItem->sql_record($sSqlBuscaItem);
             if ($oDaoOrdemItem->erro_status == "0") {
-                throw new BusinessException("Empenho não encontrado para a ordem de compra {$this->iCodOrdem}.");
+                throw new BusinessException("Empenho Não encontrado para a ordem de compra {$this->iCodOrdem}.");
             }
             $iSequencial = db_utils::fieldsMemory($rsBuscaOrdem, 0)->m52_numemp;
             $this->setEmpenhoFinanceiro(EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($iSequencial));
         }
         return $this->oEmpenhoFinanceiro;
-
     }
 
     /**
      * @param EmpenhoFinanceiro $oEmpenho
      */
-    public function setEmpenhoFinanceiro(EmpenhoFinanceiro $oEmpenho) {
+    public function setEmpenhoFinanceiro(EmpenhoFinanceiro $oEmpenho)
+    {
         $this->oEmpenhoFinanceiro = $oEmpenho;
     }
 
@@ -2283,7 +2337,8 @@ class ordemCompra {
      * @return bool|int
      * @throws DBException
      */
-    public static function getProcessoEntradaNota($codigoOrdem) {
+    public static function getProcessoEntradaNota($codigoOrdem)
+    {
 
         $daoProcessoEntrada = new cl_matordemprocessoentrada();
         $buscaEntrada = $daoProcessoEntrada->sql_query_file(null, "*", null, "m57_matordem = {$codigoOrdem}");
@@ -2303,7 +2358,8 @@ class ordemCompra {
      * @param bool $restosPagar
      * @return int
      */
-    public static function getDocumentoPorProcessoEntrada($tipoEntrada, $restosPagar = false) {
+    public static function getDocumentoPorProcessoEntrada($tipoEntrada, $restosPagar = false)
+    {
 
         $documentos = array(
             1 => array('ex_atual' => 200, 'ex_anterior' => 216),
@@ -2371,11 +2427,11 @@ class ordemCompra {
         $sql = $dao->sqlOrdemProcessoEntradaNota('m57_processoentrada', "m72_codnota = {$codigoNota}");
         $rs = db_query($sql);
 
-        if(!$rs) {
+        if (!$rs) {
             throw new Exception('Erro ao buscar o processo de entrada,');
         }
 
-        if(pg_num_rows($rs) === 0) {
+        if (pg_num_rows($rs) === 0) {
             return null;
         }
 
@@ -2387,11 +2443,11 @@ class ordemCompra {
         $oTipoMovimentacao = new TipoMovimentacaoEstoque(TipoMovimentacaoEstoque::CODIGO_ANULACAO_ENTRADA_ORDEM_COMPRA);
 
         $oEstoqueMovimentoAnulacao = new MaterialEstoqueMovimentacao();
-        $oEstoqueMovimentoAnulacao->setData( $oDataAtual );
-        $oEstoqueMovimentoAnulacao->setHora( date('H:i:s') );
-        $oEstoqueMovimentoAnulacao->setCodigoDepartamento( db_getsession("DB_coddepto") );
-        $oEstoqueMovimentoAnulacao->setCodigoUsuario( db_getsession("DB_id_usuario") );
-        $oEstoqueMovimentoAnulacao->setMovimento( $oTipoMovimentacao );
+        $oEstoqueMovimentoAnulacao->setData($oDataAtual);
+        $oEstoqueMovimentoAnulacao->setHora(date('H:i:s'));
+        $oEstoqueMovimentoAnulacao->setCodigoDepartamento(db_getsession("DB_coddepto"));
+        $oEstoqueMovimentoAnulacao->setCodigoUsuario(db_getsession("DB_id_usuario"));
+        $oEstoqueMovimentoAnulacao->setMovimento($oTipoMovimentacao);
         $oEstoqueMovimentoAnulacao->setObservacao("Anulação da entrada de material.");
         $oEstoqueMovimentoAnulacao->salvar();
 
@@ -2475,5 +2531,17 @@ class ordemCompra {
     public function setOutrosDadosNota($outrosDadosNota)
     {
         $this->outrosDados = $outrosDadosNota;
+    }
+
+    /**
+     * Quando UF RJ Setar os
+     * dados referente ao TCE-RJ (Sigfis)
+     *
+     * @param object $data
+     * @return void
+     */
+    public function setDadosSigfis($data)
+    {
+        $this->oDadosSigfis = $data;
     }
 }

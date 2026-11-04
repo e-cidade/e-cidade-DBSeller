@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -109,7 +109,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC"> 
-	<?
+	<?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
 	     $sql = "SELECT codmodelo as Código, nomemodelo as nome,orientacao
               FROM db_carnesimg
@@ -131,15 +131,15 @@ if(isset($HTTP_POST_VARS["incluir"])) {
           </tr>
           <tr> 
             <td><strong>Orienta&ccedil;&atilde;o:&nbsp;</strong></td>
-            <td> <label for="ori1">paisagem</label> <input type="radio" name="orientacao" value="P" id="ori1" <? echo isset($orientacao)?($orientacao=="P"?"checked":""):"checked" ?>> 
-              <label for="ori2">retrato</label> <input name="orientacao" type="radio" id="ori2" value="R"  <? echo isset($orientacao)?($orientacao=="R"?"checked":""):"" ?>> 
+            <td> <label for="ori1">paisagem</label> <input type="radio" name="orientacao" value="P" id="ori1" <?php echo isset($orientacao)?($orientacao=="P"?"checked":""):"checked" ?>> 
+              <label for="ori2">retrato</label> <input name="orientacao" type="radio" id="ori2" value="R"  <?php echo isset($orientacao)?($orientacao=="R"?"checked":""):"" ?>> 
             </td>
           </tr>
           <tr>
             <td>Importar:</td>
             <td><select name="formulario" id="formulario" >
             <option value="0">Nenhum...</option>
-            <?
+            <?php
 			    $result = db_query("select codmodelo,nomemodelo from db_carnesimg");
 				$numrows = pg_numrows($result);
 				for($i = 0;$i < $numrows;$i++) {
@@ -150,22 +150,22 @@ if(isset($HTTP_POST_VARS["incluir"])) {
           </tr>
           <tr> 
             <td>&nbsp;</td>
-            <td> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+            <td> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
               &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar"> 
             </td>
           </tr>
         </table>
       </form>
-	  <?
+	  <?php
 	  }
 	  ?>
       <br>
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

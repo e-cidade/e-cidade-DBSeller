@@ -10,6 +10,7 @@
     <campo campo="db121_estrutural"                    label="cod_item_servico" />
     <campo campo="db121_descricao"                     label="desc_item_servico"/>
     <campo campo="q136_valor"                          label="aliq"             />
+    <campo campo="q136_retencao"                       label="retencao"         />
     <campo campo="q71_aliquota"                          label="aliq_cnae"             />
     <campo campo="case when q136_localpagamento = 1 then 'Sede Prestador'
                        when q136_localpagamento = 2 then 'Sede tomador'

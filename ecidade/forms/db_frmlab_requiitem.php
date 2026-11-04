@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("la22_i_codigo");
        <?=@$Lla21_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la21_i_codigo',10,$Ila21_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla21_i_requisicao?>">
-       <?
+       <?php
        db_ancora(@$Lla21_i_requisicao,"js_pesquisala21_i_requisicao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la21_i_requisicao',10,$Ila21_i_requisicao,true,'text',$db_opcao," onchange='js_pesquisala21_i_requisicao(false);'")
 ?>
-       <?
+       <?php
 db_input('la22_i_codigo',10,$Ila22_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('la22_i_codigo',10,$Ila22_i_codigo,true,'text',3,'')
        <?=@$Lla21_d_entrega?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('la21_d_entrega',@$la21_d_entrega_dia,@$la21_d_entrega_mes,@$la21_d_entrega_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('la21_d_entrega',@$la21_d_entrega_dia,@$la21_d_entrega_mes,@$la21_d
        <?=@$Lla21_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('la21_d_data',@$la21_d_data_dia,@$la21_d_data_mes,@$la21_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('la21_d_data',@$la21_d_data_dia,@$la21_d_data_mes,@$la21_d_data_ano
        <?=@$Lla21_c_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('la21_c_hora',5,$Ila21_c_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_requiitem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

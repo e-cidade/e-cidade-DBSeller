@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -38,105 +38,113 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 ini_set('error_reporting', E_ALL);
 
-use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 
 $daoSalarioEsocial = new \cl_rhreajustesalarialesocial;
-$clrhpessoal = new cl_rhpessoal;
-$clrhpessoalmov = new cl_rhpessoalmov;
-$clpadroes = new cl_padroes;
-$clpesdiver = new cl_pesdiver;
-$aux = new cl_arquivo_auxiliar;
-$clrotulo = new rotulocampo;
+$clrhpessoal       = new cl_rhpessoal;
+$clrhpessoalmov    = new cl_rhpessoalmov;
+$clpadroes         = new cl_padroes;
+$clpesdiver        = new cl_pesdiver;
+$aux               = new cl_arquivo_auxiliar;
+$clrotulo          = new rotulocampo;
+
 db_postmemory($HTTP_POST_VARS);
-if(isset($incluir)){
+
+if (isset($incluir)) {
   db_inicio_transacao();
   $sqlerro = false;
-  $dbwhere = " r02_anousu = ".$anofolha." and r02_mesusu = ".$mesfolha." and r02_instit = ".db_getsession("DB_instit")." " ;
-  if(isset($matini) || isset($matfim)){
-    if(trim($matini) != "" && trim($matfim) != ""){
-      $dbwhere.= " and rh02_regist between ".$matini." and ".$matfim; 
-    }else if(trim($matini) != ""){
-      $dbwhere.= " and rh02_regist >= ".$matini; 
-    }else if(trim($matfim) != ""){
-      $dbwhere.= " and rh02_regist <= ".$matfim; 
+  $dbwhere = " r02_anousu = " . $anofolha . " and r02_mesusu = " . $mesfolha . " and r02_instit = " . db_getsession("DB_instit") . " ";
+  if (isset($matini) || isset($matfim)) {
+    if (trim($matini) != "" && trim($matfim) != "") {
+      $dbwhere .= " and rh02_regist between " . $matini . " and " . $matfim;
+    } else if (trim($matini) != "") {
+      $dbwhere .= " and rh02_regist >= " . $matini;
+    } else if (trim($matfim) != "") {
+      $dbwhere .= " and rh02_regist <= " . $matfim;
     }
   }
-  if(isset($selmatri) && count($selmatri) > 0){
+  if (isset($selmatri) && count($selmatri) > 0) {
     $campo_auxilio_regi = "";
-    for($i=0; $i<count($selmatri); $i++){
-      $campo_auxilio_regi.= ($i==0?"":",").$selmatri[$i];
+    for ($i = 0; $i < count($selmatri); $i++) {
+      $campo_auxilio_regi .= ($i == 0 ? "" : ",") . $selmatri[$i];
     }
-    if(isset($campo_auxilio_regi) && trim($campo_auxilio_regi) != ""){
-      $dbwhere.= " and rh02_regist in (".$campo_auxilio_regi.") ";
-    }
-  }
-  if(isset($lotini) || isset($lotfim)){
-    if(trim($lotini) != "" && trim($lotfim) != ""){
-      $dbwhere.= " and r70_estrut between '".$lotini."' and '".$lotfim."' "; 
-    }else if(trim($lotini) != ""){
-      $dbwhere.= " and r70_estrut >= '".$lotini."' ";
-    }else if(trim($lotfim) != ""){
-      $dbwhere.= " and r70_estrut <= '".$lotfim."' ";
+    if (isset($campo_auxilio_regi) && trim($campo_auxilio_regi) != "") {
+      $dbwhere .= " and rh02_regist in (" . $campo_auxilio_regi . ") ";
     }
   }
-  if(isset($sellotac) && count($sellotac) > 0){
+  if (isset($lotini) || isset($lotfim)) {
+    if (trim($lotini) != "" && trim($lotfim) != "") {
+      $dbwhere .= " and r70_estrut between '" . $lotini . "' and '" . $lotfim . "' ";
+    } else if (trim($lotini) != "") {
+      $dbwhere .= " and r70_estrut >= '" . $lotini . "' ";
+    } else if (trim($lotfim) != "") {
+      $dbwhere .= " and r70_estrut <= '" . $lotfim . "' ";
+    }
+  }
+  if (isset($sellotac) && count($sellotac) > 0) {
     $campo_auxilio_lota = "";
-    for($i=0; $i<count($sellotac); $i++){
-      $campo_auxilio_lota.= ($i==0?"":",")."'".$sellotac[$i]."'";
+    for ($i = 0; $i < count($sellotac); $i++) {
+      $campo_auxilio_lota .= ($i == 0 ? "" : ",") . "'" . $sellotac[$i] . "'";
     }
-    if(isset($campo_auxilio_lota) && trim($campo_auxilio_lota) != ""){
-      $dbwhere.= " and r70_estrut in (".$campo_auxilio_lota.") ";
+    if (isset($campo_auxilio_lota) && trim($campo_auxilio_lota) != "") {
+      $dbwhere .= " and r70_estrut in (" . $campo_auxilio_lota . ") ";
     }
   }
-  $contador = 0;
-//echo "<br><br>". ($clpadroes->sql_query_cgmmovpad(null,null,null,null," distinct r02_codigo as pad, r02_regime as reg, r02_form, r02_valor","",$dbwhere));
 
-  $sSqlReajuste = $clpadroes->sql_reajusteAposentados($h12_tiporeajuste, " distinct r02_codigo as pad, r02_regime as reg, r02_form, r02_valor", "", $dbwhere);
+  $contador = 0;
+
+  if ($h12_tiporeajuste == 1) {
+    $sSqlReajuste = $clpadroes->sqlReajustePadraoTipoReal($anofolha, $mesfolha, db_getsession('DB_instit'));
+  } elseif ($h12_tiporeajuste == 2) {
+    $sSqlReajuste = $clpadroes->sqlReajustePadraoTipoParidade($anofolha, $mesfolha, db_getsession('DB_instit'));
+  } elseif ($h12_tiporeajuste == 0) {
+    $sSqlReajuste = $clpadroes->sqlReajustePadraoSemTipoDeReajuste($anofolha, $mesfolha, db_getsession('DB_instit'));
+  }
 
   $result_padrao = $clpadroes->sql_record($sSqlReajuste);
+
   $numrows_padrao = $clpadroes->numrows;
-  if($numrows_padrao == 0){
+  if ($numrows_padrao == 0) {
     $sMensagem = "Nenhum registro encontrado.";
     $sqlerro = true;
-  }else{
+  } else {
 
     $iCountAlterados = 0;
 
-    for($i=0;$i<$numrows_padrao;$i++){
+    for ($i = 0; $i < $numrows_padrao; $i++) {
       db_fieldsmemory($result_padrao, $i);
+
       $alterar_padrao = false;
-      if($lancar == "p" ){
+      if ($lancar == "p") {
         $r02_valor += ($r02_valor * ($rh02_salari / 100));
         $valorpadrao = "round($r02_valor, 2)";
         $alterar_padrao = true;
-      }else if($lancar == "f" && trim($r02_form) != ""){
-        $formpesdiver = explode("D",$r02_form);
-        for($ii=1; $ii<count($formpesdiver); $ii++){
-          $coddiver = "D".substr($formpesdiver[$ii],0,3);
-          $result_diverso = $clpesdiver->sql_record($clpesdiver->sql_query_file(db_anofolha(),db_mesfolha(),$coddiver,db_getsession("DB_instit"),"r07_valor"));
-          if($clpesdiver->numrows > 0){
-            db_fieldsmemory($result_diverso,0);
+      } else if ($lancar == "f" && trim($r02_form) != "") {
+        $formpesdiver = explode("D", $r02_form);
+        for ($ii = 1; $ii < count($formpesdiver); $ii++) {
+          $coddiver = "D" . substr($formpesdiver[$ii], 0, 3);
+          $result_diverso = $clpesdiver->sql_record($clpesdiver->sql_query_file(db_anofolha(), db_mesfolha(), $coddiver, db_getsession("DB_instit"), "r07_valor"));
+          if ($clpesdiver->numrows > 0) {
+            db_fieldsmemory($result_diverso, 0);
             $r02_form = str_replace($coddiver, $r07_valor, $r02_form);
           }
         }
         ob_start();
-        eval('$valorpadrao1 = round(('.$r02_form.'),2);');
+        eval('$valorpadrao1 = round((' . $r02_form . '),2);');
 
         $saida = ob_get_contents();
         ob_end_clean();
-        if(strpos($saida, "Parse error")>0) {
+        if (strpos($saida, "Parse error") > 0) {
           $sqlerro = true;
-
-           $erro_msg = "Erro na Formula : round((".$r02_form."),2) \\n\\n Padrao : ".$pad." \\n\\n Regime : ".$reg." \\n\\n Contate o Suporte !!";
-//           db_msgbox("Erro na Formula : round((".$r02_form."),2) \\n\\n Padrao : ".$pad." \\n\\n Regime : ".$reg." \\n\\n Contate o Suporte !!");
-           break;
-        }else{
-           $valorpadrao = "round((".$r02_form."),2)";
-           $alterar_padrao = true;
+          $erro_msg = "Erro na Formula : round((" . $r02_form . "),2) \\n\\n Padrao : " . $pad . " \\n\\n Regime : " . $reg . " \\n\\n Contate o Suporte !!";
+          break;
+        } else {
+          $valorpadrao = "round((" . $r02_form . "),2)";
+          $alterar_padrao = true;
         }
       }
-      if($alterar_padrao == true){
+      if ($alterar_padrao == true) {
         $clpadroes->r02_anousu = $anofolha;
         $clpadroes->r02_mesusu = $mesfolha;
         $clpadroes->r02_regime = $reg;
@@ -144,31 +152,35 @@ if(isset($incluir)){
         $clpadroes->r02_valor  = $valorpadrao;
         //echo "<BR> valorpadrao --> $valorpadrao";
         $clpadroes->r02_instit = db_getsession('DB_instit');
-        $clpadroes->alterar($anofolha, $mesfolha, $reg, $pad,db_getsession('DB_instit'));
-        
-        if($clpadroes->erro_status == "0"){
+        $clpadroes->alterar($anofolha, $mesfolha, $reg, $pad, db_getsession('DB_instit'));
+
+        if ($clpadroes->erro_status == "0") {
           $sMensagem = $clpadroes->erro_msg;
           $sqlerro = true;
         } else {
           $iCountAlterados++;
-          $sqlListaMatriculas = $clpadroes->sqlReajustePadraoByCompetencia($pad, $anofolha, $mesfolha);
+          $sqlListaMatriculas = $clpadroes->sqlReajustePadraoByCompetencia($pad, $anofolha, $mesfolha, db_getsession('DB_instit'));
           $resultadoListaMatriculas = $clpadroes->sql_record($sqlListaMatriculas);
-          if ($clpadroes->numrows > 0 ) {
-            for($z = 0; $z < $clpadroes->numrows; $z++){
+
+          if ($clpadroes->numrows > 0) {
+            for ($z = 0; $z < $clpadroes->numrows; $z++) {
               db_fieldsmemory($resultadoListaMatriculas, $z);
               /**
-              * Inclui dados do reajuste salarial padrão para o eSocial.
-              */
-              $camposReajuste = ['eso39_sequencial',
-                                 'eso39_matricula',
-                                 'eso39_dataefeito',
-                                 'eso39_tipo',
-                                 'eso39_descricao'
-            ];
-              $sqlVerificaReajuste = $daoSalarioEsocial->sql_query_file(null, 
-                implode(', ', $camposReajuste), 
+               * Inclui dados do reajuste salarial padrão para o eSocial.
+               */
+              $camposReajuste = [
+                'eso39_sequencial',
+                'eso39_matricula',
+                'eso39_dataefeito',
+                'eso39_tipo',
+                'eso39_descricao'
+              ];
+              $sqlVerificaReajuste = $daoSalarioEsocial->sql_query_file(
                 null,
-                "eso39_matricula = {$rh02_regist} and eso39_dataefeito = '{$eso39_dataefeito}' and eso39_tipo = '{$eso39_tipo}' ");
+                implode(', ', $camposReajuste),
+                null,
+                "eso39_matricula = {$rh02_regist} and eso39_dataefeito = '{$eso39_dataefeito}' and eso39_tipo = '{$eso39_tipo}' "
+              );
               $rsVerificaReajuste = $daoSalarioEsocial->sql_record($sqlVerificaReajuste);
 
               if ($daoSalarioEsocial->numrows == 0) {
@@ -177,7 +189,6 @@ if(isset($incluir)){
                 $daoSalarioEsocial->eso39_tipo = $eso39_tipo;
                 $daoSalarioEsocial->eso39_descricao = $eso39_descricao;
                 $daoSalarioEsocial->incluir(null);
-
                 $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh02_regist, Tipo::S2206);
                 $servidorAlteracao->setDataS2206(new DBDate($eso39_dataefeito));
                 $servidorAlteracao->save();
@@ -192,25 +203,27 @@ if(isset($incluir)){
 }
 ?>
 <html>
+
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/json2.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+  <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Expires" CONTENT="0">
+  <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/json2.js"></script>
+  <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+  <script type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
+  <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr>
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
+    <tr>
+      <td width="360" height="18">&nbsp;</td>
+      <td width="263">&nbsp;</td>
+      <td width="25">&nbsp;</td>
+      <td width="140">&nbsp;</td>
+    </tr>
+  </table>
   <tr>
     <td>
       <?php
@@ -218,17 +231,18 @@ if(isset($incluir)){
       ?>
     </td>
   </tr>
-</table>
-<?php
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>
+  </table>
+  <?php
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+  ?>
 </body>
+
 </html>
 <script>
-js_setfocus(true);
+  js_setfocus(true);
 </script>
 <?php
-if(isset($incluir)){
+if (isset($incluir)) {
   if (!$sqlerro) {
     $sMensagem = "Foram alterado(s) {$iCountAlterados} registro(s).";
   }

@@ -72,13 +72,13 @@ class cl_averbacao {
                  j75_responsavel = int4 =  Servidor Responsável
                  ";
    //funcao construtor da classe 
-   function cl_averbacao() { 
+   public function cl_averbacao() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_averbacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j75_codigo = ($this->j75_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j75_codigo"]:$this->j75_codigo);
        $this->j75_matric = ($this->j75_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j75_matric"]:$this->j75_matric);
@@ -117,7 +117,7 @@ class cl_averbacao {
      }
    }
    // funcao para inclusao
-   function incluir ($j75_codigo){ 
+   public function incluir ($j75_codigo){
       $this->atualizacampos();
      if($this->j75_matric == null ){ 
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -282,7 +282,7 @@ class cl_averbacao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j75_codigo=null) { 
+   public function alterar ($j75_codigo=null) {
       $this->atualizacampos();
      $sql = " update averbacao set ";
      $virgula = "";
@@ -484,11 +484,11 @@ class cl_averbacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j75_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j75_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j75_codigo));
      }else{ 
@@ -553,11 +553,11 @@ class cl_averbacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -579,10 +579,10 @@ class cl_averbacao {
       }
      return $result;
    }
-   function sql_query ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_averbacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,10 +616,10 @@ class cl_averbacao {
      }
      return $sql;
   }
-   function sql_query_file ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -632,15 +632,15 @@ class cl_averbacao {
      $sql2 = "";
      if($dbwhere==""){
        if($j75_codigo!=null ){
-         $sql2 .= " where averbacao.j75_codigo = $j75_codigo "; 
-       } 
+         $sql2 .= " where averbacao.j75_codigo = $j75_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,11 +649,11 @@ class cl_averbacao {
      }
      return $sql;
   }
-  
-  function sql_query_loteloc ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+  public function sql_query_loteloc ( $j75_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -680,7 +680,7 @@ class cl_averbacao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

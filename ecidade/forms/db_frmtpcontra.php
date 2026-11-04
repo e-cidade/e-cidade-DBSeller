@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltpcontra->rotulo->label();
        <?=@$Lh13_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('h13_codigo',2,$Ih13_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h13_codigo',2,$Ih13_codigo,true,'text',$db_opcao,"")
        <?=@$Lh13_regime?>
     </td>
     <td> 
-<?
+<?php
 $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file());
 db_selectrecord("h13_regime", $result_regime, true, $db_opcao);
 ?>
@@ -57,7 +57,7 @@ db_selectrecord("h13_regime", $result_regime, true, $db_opcao);
        <?=@$Lh13_tpcont?>
     </td>
     <td> 
-<?
+<?php
 db_input('h13_tpcont',2,$Ih13_tpcont,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('h13_tpcont',2,$Ih13_tpcont,true,'text',$db_opcao,"")
        <?=@$Lh13_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h13_descr',40,$Ih13_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tpcontra.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

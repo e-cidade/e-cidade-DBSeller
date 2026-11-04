@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempageconfgera->rotulo->label("e90_codmov");
               <?=$Le90_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e90_codmov",6,$Ie90_codmov,true,"text",4,"","chave_e90_codmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempageconfgera->rotulo->label("e90_codmov");
               <?=$Le90_codgera?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e90_codgera",6,$Ie90_codgera,true,"text",4,"","chave_e90_codgera");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clempageconfgera->rotulo->label("e90_codmov");
               <?=$Le90_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e90_codmov",6,$Ie90_codmov,true,"text",4,"","chave_e90_codmov");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clempageconfgera->rotulo->label("e90_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empageconfgera.php")==true){
@@ -129,12 +129,12 @@ $clempageconfgera->rotulo->label("e90_codmov");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

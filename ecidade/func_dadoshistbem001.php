@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ db_postmemory($HTTP_POST_VARS);
 	  <td nowrap bgcolor='#CDCDFF' align='center' title='Histórico do bem'                            ><b>Histórico               </b></td>
 	  <td nowrap bgcolor='#CDCDFF' align='center' title='Situação atual do bem'                       ><b>Situação do bem         </b></td>
 	</tr>
-      <?
+      <?php
         $cor1='#97B5E6';
 	$cor2='#E796A4';
         if(isset($t52_bem) && trim($t52_bem) != ''){	 
@@ -150,7 +150,7 @@ db_postmemory($HTTP_POST_VARS);
 	  	<td nowrap bgcolor='#CDCDFF' align='center' title="<?=$RLt41_placaseq?>"><b><?=$RLt41_placaseq?></b></td>
 	  	<td nowrap bgcolor='#CDCDFF' align='center' title="<?=$RLt41_obs?>"><b><?=$RLt41_obs?></b></td>	  	
 	</tr>
-<?
+<?php
 $cor1='#97B5E6';
 $cor2='#E796A4';
 if(isset($t52_bem) && trim($t52_bem) != ''){	

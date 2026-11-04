@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,37 +60,37 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd04_i_codigo?>
     </td>
     <td>
-       <?
+       <?php
          db_input('sd04_i_codigo',5,$Isd04_i_codigo,true,'text',3,"")
         ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd04_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd04_i_unidade',10,$Isd04_i_unidade,true,'text',3," onchange='js_pesquisasd04_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',80,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd04_i_medico?>">
-       <?
+       <?php
        db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd04_i_medico(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
               <?=$Lsd04_c_situacao?>
       </td>
       <td>
-              <?
+              <?php
                  $x = array("A"=>"Ativo","D"=>"Desativado");
                  db_select('sd04_c_situacao',$x,true,$db_opcao, "","",2);
               ?>
@@ -114,7 +114,7 @@ db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $x = "<script>parent.iframe_a1.document.form1.sd04_i_unidade.value</script>";
    $x = $sd04_i_unidade;
    $chavepri= array("sd04_i_codigo"=>@$sd04_i_codigo,"sd04_i_unidade"=>@$sd04_i_unidade,"sd04_i_medico"=>@$sd04_i_medico,"z01_nome"=>@$z01_nome, "sd04_c_situacao"=>@$sd04_c_situacao);
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_unidademedicos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -83,7 +83,7 @@ function js_AbreJanelaRelatorio() {
 	           <table>
 	             <tr>
 	               <td align="center">
-	        	  <?
+	        	  <?php
 	        	  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>TIPOS DE CÁLCULO</strong>";
 			  $aux->codigo = "q85_codigo";
@@ -110,7 +110,7 @@ function js_AbreJanelaRelatorio() {
 	       <tr>
 		  <td align="right"> <strong>Opção de Seleção :<strong></td>
 		  <td align="left">&nbsp;&nbsp;&nbsp;
-		    <?
+		    <?php
 		    $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 		    db_select('param_where',$xxx,true,2);
 		    ?>
@@ -128,7 +128,7 @@ function js_AbreJanelaRelatorio() {
      </td>
    </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clautonumpre= new cl_autonumpre;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 db_postmemory($HTTP_GET_VARS,0);
 $pesquisaLocalizada = false;
 if ($solicitacao == "Proced") {

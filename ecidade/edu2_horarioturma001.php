@@ -109,19 +109,28 @@ $clmatricula = new cl_matricula;
 </html>
 <script>
     const cboEscola = document.getElementById('selectEscola'),
-          ctnEscola = document.getElementById('ctnEscola'),
-          cboCalendario = document.getElementById('selectCalendario'),
-          cboTurma = document.getElementById('selectTurma'),
-          cboProfessor = document.getElementById('professor'),
-          ctnProfessor = document.getElementById('ctnProfessor'),
-          btnProcessar = document.getElementById('processar'),
-          inputSession = document.getElementById('session');
+        ctnEscola = document.getElementById('ctnEscola'),
+        cboCalendario = document.getElementById('selectCalendario'),
+        cboTurma = document.getElementById('selectTurma'),
+        cboProfessor = document.getElementById('professor'),
+        ctnProfessor = document.getElementById('ctnProfessor'),
+        btnProcessar = document.getElementById('processar'),
+        inputSession = document.getElementById('session');
+        codigoDepartamento = <?php echo $iEscola; ?>;
+
+    var turmas = []
+    var turmasSemRegente = []
 
     /* Carrega lista de escolas após carregar a página */
     window.onload = () => {
+        /* Implementei essa verificação, pois, o método js_buscaEscolas, mudou no arquivo edu_educacaobase.RPC.php */
         VerificaSeModuloSecretaria();
-        limpaEscola();
-        js_buscaEscolas();
+        if (!VerificaSeModuloSecretaria()) {
+            js_buscaCalendarios();
+        } else {
+            limpaEscola();
+            js_buscaEscolas();
+        }
     }
 
     cboEscola.addEventListener('change', () => {
@@ -129,7 +138,7 @@ $clmatricula = new cl_matricula;
             limpaEscola();
             return;
         }
-            js_buscaCalendarios();
+        js_buscaCalendarios();
     });
 
     cboCalendario.addEventListener('change', () => {
@@ -146,6 +155,25 @@ $clmatricula = new cl_matricula;
             cboProfessor.options.length = 0;
             cboProfessor.add(new Option('Selecione o professor', ''));
             ctnProfessor.style.display = 'none';
+            return;
+        }
+
+        if (cboTurma.value == 'TODAS') {
+            cboProfessor.options.length = 0;
+            cboProfessor.add(new Option('Selecione o professor', ''));
+            ctnProfessor.style.display = '';
+            cboProfessor.add(new Option('TODOS', ''));
+            btnProcessar.removeAttribute('disabled');
+            js_removeObj('msgBox');
+            return;
+        }
+
+        if (cboTurma.value == 'semRegente') {
+            cboProfessor.options.length = 0;
+            cboProfessor.add(new Option('Selecione o professor', ''));
+            ctnProfessor.style.display = 'none';
+            btnProcessar.removeAttribute('disabled');
+            js_removeObj('msgBox');
             return;
         }
 
@@ -200,7 +228,7 @@ $clmatricula = new cl_matricula;
 
         let oParametro = {};
         oParametro.exec = 'pesquisaCalendario';
-        oParametro.escola = cboEscola.value;
+        oParametro.escola = VerificaSeModuloSecretaria() ? cboEscola.value : codigoDepartamento;
 
         js_divCarregando("Aguarde, Buscando Calendários.", "msgBox");
 
@@ -242,7 +270,7 @@ $clmatricula = new cl_matricula;
 
         let oParametro = {};
         oParametro.exec = "pesquisaTurmaTipoGradeHorario";
-        oParametro.escola = cboEscola.value;
+        oParametro.escola =  VerificaSeModuloSecretaria() ? cboEscola.value : codigoDepartamento;
         oParametro.iCalendario = cboCalendario.value;
         oParametro.tipoVinculo = 2;
 
@@ -263,9 +291,12 @@ $clmatricula = new cl_matricula;
 
         cboTurma.options.length = 0;
         cboTurma.add(new Option('Selecione a turma', ''));
-
         if (oRetorno.dados.length > 0) {
+            cboTurma.add(new Option('TODAS', 'TODAS'));
+            cboTurma.add(new Option('TODAS TURMAS SEM REGENTE', 'semRegente'));
+            turmasSemRegente = oRetorno.turmasSemRegente;
             oRetorno.dados.each(function (oTurma) {
+                turmas.push(oTurma.ed220_i_codigo)
                 cboTurma.add(new Option(`${oTurma.ed57_c_descr.urlDecode()} - ${oTurma.ed11_c_descr.urlDecode()}`, oTurma.ed220_i_codigo));
             });
         } else {
@@ -277,12 +308,10 @@ $clmatricula = new cl_matricula;
     function js_buscaDocentes() {
         ctnProfessor.style.display = '';
         cboProfessor.options.length = 0;
-
         let oParametro = {};
         oParametro.exec = 'buscaProfessoresTurma';
-        oParametro.escola = cboEscola.value;
-        oParametro.iTurmaSerieRegimeMat = cboTurma.value;
-
+        oParametro.escola = VerificaSeModuloSecretaria() ? cboEscola.value : codigoDepartamento;
+        oParametro.iTurmaSerieRegimeMat = cboTurma.value == 'TODAS' ? turmas : cboTurma.value;
         js_divCarregando("Aguarde, Buscando Professores!.", "msgBox");
 
         new Ajax.Request(
@@ -312,13 +341,22 @@ $clmatricula = new cl_matricula;
             btnProcessar.removeAttribute('disabled');
         } else {
             cboProfessor.add(new Option('NENHUM PROFESSOR CADASTRADO PARA ESTA TURMA.', ''));
-            btnProcessar.setAttribute('disabled', 'disabled');
+            btnProcessar.removeAttribute('disabled');
         }
         js_removeObj('msgBox');
     }
 
     function js_imprimir() {
-        let sUrl = `edu2_horarioturma002.php?escola=${cboEscola.value}&professor=${cboProfessor.value}&turma=${cboTurma.value}`
+        if (cboTurma.value == 'TODAS') {
+            turma = turmas;
+        } else if (cboTurma.value == 'semRegente') {
+            turma = turmasSemRegente;
+        } else {
+            turma = cboTurma.value;
+        }
+        const codEscola = VerificaSeModuloSecretaria() ? cboEscola.value : codigoDepartamento;
+
+        let sUrl = `edu2_horarioturma002.php?escola=${codEscola}&professor=${cboProfessor.value}&turma=${turma}`
 
         let jan = window.open(
             sUrl,
@@ -367,6 +405,8 @@ $clmatricula = new cl_matricula;
 
         if (iModulo === '7159') {
             ctnEscola.style.display = '';
+            return true;
         }
+        return false;
     }
 </script>

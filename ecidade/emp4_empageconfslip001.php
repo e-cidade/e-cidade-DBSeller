@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -105,14 +105,14 @@ if (isset ($atualizar) || isset ($prever)) {
 	$vir = '';
 	$arr_chequeseq = array ();
 	for ($i = 0; $i < $cheques; $i ++) {
-		
-	  
+
+
 	  $cheque_seq .= $vir.$sequencia;
 	  $testa_sequencia_cheques .= $vir."'".$sequencia."'";
 	  $vir = ',';
 	  $arr_chequeseq[$i] = $sequencia;
 	  $sequencia++;
-	  	
+
 	}
     $result_cheques_emitidos = $clempageconfche->sql_record($clempageconfche->sql_query_cheques_cancelados(null,"e91_cheque,e91_codmov,e86_data","e91_cheque","e85_codtipo=$codtipo and e91_cheque in ($testa_sequencia_cheques) and e93_codcheque is null"));
     if($clempageconfche->numrows > 0){
@@ -124,7 +124,7 @@ if (isset ($atualizar) || isset ($prever)) {
       	$erro_compl .= "\n- Cheque $e91_cheque já impresso para o movimento $e91_codmov (".db_formatar($e86_data,"d").")";
       }
       $erro_msg.= $erro_compl;
-      $erro_msg = str_replace("\n","\\n",$erro_msg); 
+      $erro_msg = str_replace("\n","\\n",$erro_msg);
     }
   }else{
   	$erro_msg = "Conta pagadora não encontrada.";
@@ -135,11 +135,11 @@ if (isset ($atualizar) || isset ($prever)) {
     // Monta verso do cheque
     ///////////////////////////////////////////////////////////
 
-	//variaveis criadas para testar quantos cgm diferentes existem... 
+	//variaveis criadas para testar quantos cgm diferentes existem...
 	$cgmprinc = '';
 	$nome_nominal = false;
 
-	$arr = split("XX", $movs);
+	$arr =explode("XX", $movs);
 	$tot_valor = '';
 	$nomes = '';
 
@@ -154,9 +154,9 @@ if (isset ($atualizar) || isset ($prever)) {
                                                          "",
                                                          " e83_codtipo = ".$codtipo
                                                       );
-                                                      
+
     $result_valoConta = $clempagetipo->sql_record($sql_valorConta);
-    
+
     if($clempagetipo->numrows > 0){
       db_fieldsmemory($result_valoConta, 0);
     }else{
@@ -182,26 +182,26 @@ if (isset ($atualizar) || isset ($prever)) {
 
 		db_fieldsmemory($result, 0);
 
-		
+
 		    $sqlpar = "select k29_saldoemitechq from caiparametro where k29_instit = ".db_getsession("DB_instit");
         $resultpar = db_query($sqlpar);
         $linhaspar = pg_num_rows($resultpar);
         if($linhaspar>0){
           db_fieldsmemory($resultpar, 0);
           if($k29_saldoemitechq == 1){
-          
+
 	        ///////////////////////////////////////////////////////
 	        ///////////////////////////////////////////////////////
 	        ///////////////TESTAR VALOR DA CONTA///////////////////
 	        // VERIFICAR SE HÁ VALOR DISPONÍVEL PARA PAGAR O CHEQUE
          if ((round(trim($valor),2) > round(trim($valoratualsaltes),2)) && isset($atualizar)){
-	                      
+
 	          $sqlerro = true;
 	          $erro_msg = "Conta sem saldo disponível para este valor. Verifique.\\n\\nCheque não gerado.";
-            
+
 	          break;
 	        }
-	        
+
 	        ///////////////////////////////////////////////////////
 	        ///////////////////////////////////////////////////////
           }
@@ -209,7 +209,7 @@ if (isset ($atualizar) || isset ($prever)) {
         $valoratualsaltes -= $valor;
         $tot_valor        += $valor;
 
-		//rotina para pegar apenas os nomes diferentes 
+		//rotina para pegar apenas os nomes diferentes
 		if (!array_key_exists($numcgm_cre, $arr_m)) {
 			$arr_m[$numcgm_cre] = $numcgm_cre;
 			$nomes .= "     ".$nome_cre.' - '.$munic_cre.'\n';
@@ -238,7 +238,7 @@ if (isset ($atualizar) || isset ($prever)) {
 	}
 
 	$sql = "select c63_banco as codbco,
-                   k13_descr 
+                   k13_descr
 		       from conplanoreduz
 			    inner join conplanoconta on c61_codcon = c63_codcon and c61_anousu=c63_anousu and c63_reduz = c61_reduz
 			    inner join saltes        on  k13_conta = c61_reduz
@@ -373,7 +373,7 @@ if (isset ($atualizar) && isset($sqlerro) && $sqlerro == false){
 	//------------------------------------------------------------------------------------------
 	//valores
 
-	$arr = split("XX", $movs);
+	$arr =explode("XX", $movs);
 	$arr_movs = array ();
 	for ($i = 0; $i < count($arr); $i ++) {
 		$mov = $arr[$i];
@@ -402,7 +402,7 @@ if (isset ($atualizar) && isset($sqlerro) && $sqlerro == false){
 		}
 		$arr_cheque[$s] = $val;
 
-  
+
 		$vals .= $sep.$val;
 		$sep = '#';
 		$cheq = $arr_chequeseq[$s];
@@ -461,9 +461,9 @@ if (isset ($atualizar) && isset($sqlerro) && $sqlerro == false){
 		}
 	}
 
-	$arr_cods = split("#", $cods);
+	$arr_cods =explode("#", $cods);
 	for ($i = 0; $i < count($arr_cods); $i ++) {
-		$arr = split("-", $arr_cods[$i]);
+		$arr =explode("-", $arr_cods[$i]);
 		$cheq = $arr[0];
 		$mov = $arr[1];
 		$val = $arr[2];
@@ -496,7 +496,7 @@ if (isset ($atualizar) && isset($sqlerro) && $sqlerro == false){
 		}
 
 		if ($sqlerro == false) {
-			$arr = split("XX", $movs);
+			$arr =explode("XX", $movs);
 			for ($i = 0; $i < count($arr); $i ++) {
 				$mov = $arr[$i];
 				//inclui na tabela empageconf
@@ -571,19 +571,19 @@ $ip_imprime = db_getsession("DB_ip");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="800" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="375" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php
 
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("e80_data");
 
-//sempre que ja existir agenda entra nesta opcao  
+//sempre que ja existir agenda entra nesta opcao
 if (isset ($e80_codage) && empty ($pesquisar)) {
 	include(modification("forms/db_frmempageconfslip.php"));
 }
-?>    
+?>
     </td>
   </tr>
 </table>
@@ -596,10 +596,10 @@ function js_cria(campo,valor){
        obj.setAttribute('type','hidden');
        obj.setAttribute('value',valor);
        document.form1.appendChild(obj);
-}	   
+}
        function js_verso(ver){
        	 retorna = false;
-       <? 
+       <?php
 
 if (isset ($imprimirverso)) {
 	//echo "alert('olha, imprimir verso ta setado');\n";
@@ -616,10 +616,10 @@ if (isset ($imprimirverso)) {
 	   }else{
 	     parent.location.href='emp4_empage001.php?e80_codage=<?=$e80_codage?>&dtp_dia=<?=$dtin_dia?>&dtp_mes=<?=$dtin_mes?>&dtp_ano=<?=$dtin_ano?>';
 	   }
-      }	 
+      }
 </script>
 
-<?
+<?php
 // Rotina que alerta caso tenha ocorrido algum problema nas transações
 if(isset($atualizar) && $sqlerro == true){
   db_msgbox($erro_msg);
@@ -678,8 +678,8 @@ if (isset ($emite_vals) && $emite_vals != '' && empty ($prever)) {
 		    document.form1.verso_imp.value  = '$verso_imp';\n";
 	echo "</script>";
 
-	$arr_vals = split("#", $emite_vals);
-	$arr_cheque = split(",", $cheque_imp);
+	$arr_vals =explode("#", $emite_vals);
+	$arr_cheque =explode(",", $cheque_imp);
 
 	$tot_vals = '';
 	$tot_cheques = '';
@@ -734,7 +734,7 @@ if (isset ($emiteverso)) {
 	$ver = str_replace("\n", ' ###', $emiteverso);
 	$emiteverso = str_replace("\r", '', $ver);
 
-	$arr_i = split("###", $emiteverso);
+	$arr_i =explode("###", $emiteverso);
     if($k11_tipoimpcheque == 5){
       $fd = fsockopen($ip_imprime, $k11_portaimpcheque);
     //  $imprimir_ver = chr(27).chr(119).'1';
@@ -748,7 +748,7 @@ if (isset ($emiteverso)) {
         }
       }
       //$imprimir_ver .= chr(27).chr(119).'0';
-  
+
       fputs($fd, "$imprimir_ver");
       fclose($fd);
     }else{
@@ -774,7 +774,7 @@ if (isset ($emiteverso)) {
 			       document.form1.submit();\n
 			     }else{\n
 				   parent.location.href='emp4_empage001.php?e80_codage=$e80_codage';\n
-			     }\n   
+			     }\n
 			     </script>";
 	} else {
 	  echo "<script>parent.location.href='emp4_empage001.php?e80_codage=$e80_codage';</script>";
@@ -789,24 +789,24 @@ function js_empage(){
 
 function js_mostra(codage,data){
   arr = data.split('-');
-  
+
   obj = document.form1;
   obj.e80_data_ano.value = arr[0];
   obj.e80_data_mes.value = arr[1];
   obj.e80_data_dia.value = arr[2];
- 
+
   obj = document.createElement('input');
   obj.setAttribute('name','pri_codage');
   obj.setAttribute('type','hidden');
   obj.setAttribute('value',codage);
   document.form1.appendChild(obj);
   document.form1.pesquisar.click();
- 
-  db_iframe_empage.hide();  
+
+  db_iframe_empage.hide();
 }
 if(parent.document.form1.dtp_dia.value != ''){
-  document.form1.dtin_dia.value = parent.document.form1.dtp_dia.value; 
-  document.form1.dtin_mes.value = parent.document.form1.dtp_mes.value; 
-  document.form1.dtin_ano.value = parent.document.form1.dtp_ano.value; 
+  document.form1.dtin_dia.value = parent.document.form1.dtp_dia.value;
+  document.form1.dtin_mes.value = parent.document.form1.dtp_mes.value;
+  document.form1.dtin_ano.value = parent.document.form1.dtp_ano.value;
 }
 </script>

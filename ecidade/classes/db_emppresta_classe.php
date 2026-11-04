@@ -76,13 +76,13 @@ class cl_emppresta {
                  e45_datalimiteaplicacao = date = Data Limite para Aplicação
                  ";
    //funcao construtor da classe
-   function cl_emppresta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emppresta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -91,7 +91,7 @@ class cl_emppresta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e45_numemp = ($this->e45_numemp == ""?@$GLOBALS["HTTP_POST_VARS"]["e45_numemp"]:$this->e45_numemp);
        if($this->e45_data == ""){
@@ -136,7 +136,7 @@ class cl_emppresta {
      }
    }
    // funcao para inclusao
-   function incluir ($e45_sequencial){
+   public function incluir ($e45_sequencial){
       $this->atualizacampos();
      if($this->e45_numemp == null ){
        $this->erro_sql = " Campo Número do Empenho não informado.";
@@ -612,7 +612,7 @@ class cl_emppresta {
      return $sql;
   }
 
-   function sql_query_depto ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_depto ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -651,7 +651,7 @@ class cl_emppresta {
      }
      return $sql;
   }
-  function sql_query_depto_movimento ( $e45_numemp=null, $campos="*", $ordem=null, $group = null, $dbwhere=""){
+  public function sql_query_depto_movimento ( $e45_numemp=null, $campos="*", $ordem=null, $group = null, $dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -670,6 +670,11 @@ class cl_emppresta {
      $sql .= "      inner join cgm  on  cgm.z01_numcgm = empempenho.e60_numcgm";
      $sql .= "      left  join db_config  on  db_config.codigo = empempenho.e60_instit";
      $sql .= "      inner join empagemov on e81_numemp = e45_numemp";
+     $sql .= "      inner join empord on e82_codmov = e45_codmov ";
+     $sql .= "      inner join pagordemele  on  e53_codord = e82_codord ";
+
+
+
 
      $sql2 = "";
      if($dbwhere==""){
@@ -692,7 +697,7 @@ class cl_emppresta {
      return $sql;
   }
 
-   function sql_query_emp ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_emp ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -729,7 +734,7 @@ class cl_emppresta {
      return $sql;
   }
 
-  function sql_query_nota_empenho ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_nota_empenho ( $e45_numemp=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select {$campos} ";
 
@@ -768,4 +773,78 @@ class cl_emppresta {
      }
      return $sql;
   }
+public function sql_query_prest_contas($e45_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "")
+{
+
+  $sql  = "select {$campos}";
+  $sql .= "  from emppresta ";
+  $sql .= "      inner join empempenho  on  empempenho.e60_numemp = emppresta.e45_numemp";
+  $sql .= "      inner join empprestatip  on  empprestatip.e44_tipo = emppresta.e45_tipo";
+  $sql .= "      inner join cgm  on  cgm.z01_numcgm = empempenho.e60_numcgm";
+  $sql .= "      inner join db_config  on  db_config.codigo = empempenho.e60_instit";
+  $sql .= "      inner join orcdotacao  on  orcdotacao.o58_anousu = empempenho.e60_anousu and  orcdotacao.o58_coddot = empempenho.e60_coddot";
+  $sql .= "      inner join pctipocompra  on  pctipocompra.pc50_codcom = empempenho.e60_codcom";
+  $sql .= "      inner join emptipo  on  emptipo.e41_codtipo = empempenho.e60_codtipo";
+  $sql .= "      inner join empord on e82_codmov = e45_codmov ";
+  $sql .= "      inner join pagordemele  on  e53_codord = e82_codord ";
+
+  $sql2 = "";
+  if (empty($dbwhere)) {
+    if (!empty($e45_sequencial)) {
+      $sql2 .= " where emppresta.e45_sequencial = $e45_sequencial ";
+    }
+  } else if (!empty($dbwhere)) {
+    $sql2 = " where $dbwhere";
+  }
+  $sql .= $sql2;
+  if (!empty($ordem)) {
+    $sql .= " order by {$ordem}";
+  }
+  return $sql;
+}
+
+
+public function sql_query_prest_contas_conferidas($e45_sequencial = null,$campos = "*", $ordem = null, $dbwhere = "")
+{
+
+  $sql  = "select {$campos}";
+  $sql .= "  from emppresta ";
+  $sql .= "      inner join empempenho  on  empempenho.e60_numemp = emppresta.e45_numemp";
+  $sql .= "      inner join empprestatip  on  empprestatip.e44_tipo = emppresta.e45_tipo";
+  $sql .= "      inner join cgm  on  cgm.z01_numcgm = empempenho.e60_numcgm";
+  $sql .= "      inner join db_config  on  db_config.codigo = empempenho.e60_instit";
+  $sql .= "      inner join orcdotacao  on  orcdotacao.o58_anousu = empempenho.e60_anousu and  orcdotacao.o58_coddot = empempenho.e60_coddot";
+  $sql .= "      inner join pctipocompra  on  pctipocompra.pc50_codcom = empempenho.e60_codcom";
+  $sql .= "      inner join emptipo  on  emptipo.e41_codtipo = empempenho.e60_codtipo";
+  $sql .= "      inner join empord on e82_codmov = e45_codmov ";
+  $sql .= "      inner join pagordemele  on  e53_codord = e82_codord ";
+  
+  //$sql .= " join coremp p on p.k12_codord = e82_codord ";
+  //$sql .= " join  corrente r on r.k12_id = p.k12_id  ";
+  //$sql .= "                 and r.k12_data = p.k12_data  ";
+  //$sql .= "                 and r.k12_autent = p.k12_autent  ";
+  //$sql .= " inner join saltes on k13_conta = k12_conta  ";
+
+  $sql .= " join pagordemnota on e71_codord = e53_codord";
+  $sql .= " join empnotaele on e70_codnota = e71_codnota";
+  $sql .= " join empagemov on e81_numemp = e45_numemp";
+  $sql .= "               and e81_codmov = e45_codmov";
+
+  $sql2 = "";
+  if (empty($dbwhere)) {
+    if (!empty($e45_sequencial)) {
+      $sql2 .= " where emppresta.e45_sequencial = $e45_sequencial ";
+    }
+  } else if (!empty($dbwhere)) {
+    $sql2 = " where $dbwhere";
+  }
+  $sql .= $sql2;
+  if (!empty($ordem)) {
+    $sql .= " order by {$ordem}";
+  }
+  return $sql;
+}
+
+
+
 }

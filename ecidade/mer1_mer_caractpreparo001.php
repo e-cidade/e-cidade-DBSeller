@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -36,20 +36,20 @@ $clmer_caractpreparo = new cl_mer_caractpreparo;
 $db_opcao            = 1;
 $db_botao            = true;
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $clmer_caractpreparo->incluir($me06_i_codigo);
   db_fim_transacao();
-  
+
 } else if (isset($alterar)) {
-	
+
   $db_opcao = 2;
   db_inicio_transacao();
   $clmer_caractpreparo->alterar($me06_i_codigo);
   db_fim_transacao();
-  
+
 } else {
-	
+
   $result = $clmer_caractpreparo->sql_record(
                                               $clmer_caractpreparo->sql_query("",
                                                                               "*",
@@ -62,7 +62,7 @@ if (isset($incluir)) {
     $db_opcao = 2;
   } else {
     $db_opcao = 1;
- } 
+ }
 }
 ?>
 <html>
@@ -80,7 +80,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Característica do Preparo</b></legend>
-    <?include(modification("forms/db_frmmer_caractpreparo.php"));?>
+    <?php include(modification("forms/db_frmmer_caractpreparo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -91,27 +91,27 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me06_c_tempopreparo",true,1,"me06_c_tempopreparo",true);
 </script>
-<?
+<?php
 if (isset($incluir) || isset($alterar)) {
-	
+
   if ($clmer_caractpreparo->erro_status=="0") {
-  	
+
     $clmer_caractpreparo->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clmer_caractpreparo->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_caractpreparo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_caractpreparo->erro_campo.".focus();</script>";
-      
+
     }
   } else {
-  	
+
     $clmer_caractpreparo->erro(true,false);
     db_redireciona("mer1_mer_caractpreparo001.php?me06_i_cardapio=$me06_i_cardapio&me01_c_nome=$me01_c_nome&naopode=$naopode"
                   );
-    
+
   }
 }
 ?>

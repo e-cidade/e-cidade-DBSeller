@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $db_botao = true;
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 
-<?
+<?php
   db_app::load("scripts.js, 
                 prototype.js, 
                 strings.js, 
@@ -74,7 +74,7 @@ $db_botao = true;
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="1" marginheight="0" 
       onLoad="<?=isset($z06_numcgm) ? 'js_consultaDocumentos();':'';?>" >
-<?
+<?php
 //Se for uma consulta remove tabela de identação
   if (isset($consulta)) {
     if ($consulta == false) {
@@ -87,7 +87,7 @@ $db_botao = true;
           <td width="140">&nbsp;</td>
         </tr>
       </table>
-<?
+<?php
     }
   }
 ?>
@@ -95,7 +95,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-  <?
+  <?php
   include(modification("forms/db_frmlancdoc.php"));
   ?>
     </center>
@@ -104,7 +104,7 @@ $db_botao = true;
 </table>
 
 
-<?
+<?php
 //Se for uma consulta remove os menus
 if (isset($consulta)) {
   if ($consulta == false) {

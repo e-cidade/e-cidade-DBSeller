@@ -24,12 +24,17 @@ class ImportarPlanoDespesaService
     private $exercicio;
     private $filepath;
     private $uf;
+    /**
+     * @var bool
+     */
+    private $uniao;
 
     public function setFiltrosFromRequest(array $filtros)
     {
         $this->uf = getEstadoInstituicao();
         $this->plano = $filtros['plano'];
         $this->layout = new DespesaUniaoMapper();
+        $this->uniao = PlanoContas::PLANO_UNIAO === $this->plano;
 
         $this->exercicio = $filtros['exercicio'];
         $file = \JSON::create()->parse(str_replace('\"', '"', $filtros['file']));
@@ -41,32 +46,26 @@ class ImportarPlanoDespesaService
 
     public function processar()
     {
-        $this->validaImportacao();
-
-        $csv = new LerCsv($this->filepath);
-        $csv->setCsvControl(';');
-        $linha = $csv->read();
+        $linha = $this->getLinha();
 
         try {
             $dados = [];
             foreach ($linha as $key => $dadosLinha) {
-                if ($key < $this->layout->linhaInicio()) {
-                    continue;
-                }
-                // valida se tem dados na coluna em que deveria conter o código da conta
-                $conta = $dadosLinha[$this->layout->indexColunaConta()];
-                if (empty($conta)) {
+                if (!$this->validaLinhaCsv($key, $dadosLinha)) {
                     continue;
                 }
 
-                $builder = new PlanoOrcamentarioDespesaBuilder();
+                $dados[] = $this->buildDados($dadosLinha);
 
-                $dados[] = $builder
-                    ->addExercicio($this->exercicio)
-                    ->addTipoPlano($this->plano)
-                    ->addLayout($this->layout)
-                    ->addLinha($dadosLinha)
-                    ->build();
+                // remove do array as contas importadas
+                $dados = array_filter($dados, function ($contaImportar) {
+                    return PlanoDespesa::query()
+                            ->where('uniao', $this->uniao)
+                            ->where('exercicio', $this->exercicio)
+                            ->where('conta', $contaImportar['conta'])
+                            ->get()
+                            ->count() === 0;
+                });
 
                 if (count($dados) === 100) {
                     $this->inserir($dados);
@@ -88,21 +87,71 @@ class ImportarPlanoDespesaService
         $model->insert($dados);
     }
 
-    private function validaImportacao()
+    public function atualizar()
     {
-        $uniao = PlanoContas::PLANO_UNIAO === $this->plano;
-        $importado = PlanoDespesa::query()
-                ->where('uniao', $uniao)
-                ->where('exercicio', $this->exercicio)
-                ->get()
-                ->count() != 0;
+        $linha = $this->getLinha();
 
-        if ($importado) {
-            throw new Exception(sprintf(
-                'Já foi importado o plano de contas orçamentário da despesa do exercício %s %s',
-                $this->exercicio,
-                $uniao ? 'da união' : 'do tribunal regional'
-            ));
+        try {
+            foreach ($linha as $key => $dadosLinha) {
+                if (!$this->validaLinhaCsv($key, $dadosLinha)) {
+                    continue;
+                }
+
+                $dados = $this->buildDados($dadosLinha);
+                $campos = ['nome' => $dados['nome'], 'funcao' => $dados['funcao'], 'sintetica' => $dados['sintetica']];
+                PlanoDespesa::query()
+                    ->where('uniao', $this->uniao)
+                    ->where('exercicio', $this->exercicio)
+                    ->where('conta', $dados['conta'])
+                    ->update($campos);
+            }
+        } catch (Exception $exception) {
+            throw new Exception('Erro ao importar planilha. Contate o Suporte. ' . $exception->getMessage());
         }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public function getLinha()
+    {
+        $csv = new LerCsv($this->filepath);
+        $csv->setCsvControl(';');
+        $linha = $csv->read();
+        return $linha;
+    }
+
+    /**
+     * Valida se a linha do csv é uma linha valida para impressão
+     * @param integer $numeroLinha
+     * @param array $dadosLinha
+     * @return bool
+     */
+    protected function validaLinhaCsv($numeroLinha, $dadosLinha)
+    {
+        if ($numeroLinha < $this->layout->linhaInicio()) {
+            return false;
+        }
+        // valida se tem dados na coluna em que deveria conter o código da conta
+        $conta = $dadosLinha[$this->layout->indexColunaConta()];
+        if (empty($conta)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Recebe a linha do csv e retorna um arrary estruturado chave valor para manutenção na model
+     * @param array $dadosLinha
+     * @return array
+     */
+    public function buildDados($dadosLinha)
+    {
+        return (new PlanoOrcamentarioDespesaBuilder())
+            ->addExercicio($this->exercicio)
+            ->addTipoPlano($this->plano)
+            ->addLayout($this->layout)
+            ->addLinha($dadosLinha)
+            ->build();
     }
 }

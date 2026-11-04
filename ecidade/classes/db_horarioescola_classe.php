@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE horarioescola
 class cl_horarioescola { 
@@ -30,13 +30,13 @@ class cl_horarioescola {
                  ed123_horafim = varchar(5) = Horário Final 
                  ";
    //funcao construtor da classe 
-   function cl_horarioescola() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("horarioescola"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_horarioescola {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed123_sequencial = ($this->ed123_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed123_sequencial"]:$this->ed123_sequencial);
        $this->ed123_turnoreferencia = ($this->ed123_turnoreferencia == ""?@$GLOBALS["HTTP_POST_VARS"]["ed123_turnoreferencia"]:$this->ed123_turnoreferencia);
@@ -57,7 +57,7 @@ class cl_horarioescola {
      }
    }
    // funcao para inclusao
-   function incluir ($ed123_sequencial){ 
+   public function incluir ($ed123_sequencial){ 
       $this->atualizacampos();
      if($this->ed123_turnoreferencia == null ){ 
        $this->erro_sql = " Campo Turno de Referência não informado.";

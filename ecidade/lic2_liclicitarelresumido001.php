@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,13 +92,13 @@ function js_emite(){
       <tr> 
          <td  align="right" nowrap title="<?=$Tl03_codigo?>">
           <b>
-          <?
+          <?php
             db_ancora("Modalidade :","js_pesquisal03_codigo(true);",1);
           ?>
           </b>
          </td>
          <td  align="left" nowrap> 
-          <?
+          <?php
             db_input("l03_codigo",8,$Il03_codigo,true,"text",1,"onchange='js_pesquisal03_codigo(false);'");
             db_input("l03_descr",40,$Il03_descr,true,"text",3);
           ?>
@@ -107,13 +107,13 @@ function js_emite(){
       <tr> 
          <td  align="right" nowrap title="<?=$Tl20_numero?>">
 	 <b>
-	 <?
+	 <?php
 	    db_ancora($Ll20_numero,"js_pesquisal20_numero(true);",1);
 	 ?>
 	 </b>
 	 </td>
          <td  align="left" nowrap> 
-          <?
+          <?php
             db_input("l20_numero",8,$Il20_numero,true,"text",4);
           ?>
          </td>
@@ -121,13 +121,13 @@ function js_emite(){
       <tr> 
          <td  align="right" nowrap title="<?=$Tl20_codigo?>">
           <b>
-          <?
+          <?php
             db_ancora('Licitação :',"js_pesquisa_liclicita(true);",1);
           ?>
           </b>
          </td>
          <td align="left" nowrap>
-          <?
+          <?php
             db_input("l20_codigo",8,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
           ?>
          </td>
@@ -135,7 +135,7 @@ function js_emite(){
       <tr>
           <td nowrap align="right"><b>Período de:</b></td>
           <td  align="left" nowrap>
-           <?      
+           <?php      
        	     db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");
              echo " <b>ate:</b> ";
              db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
@@ -144,7 +144,7 @@ function js_emite(){
       </tr>
           <tr>
 					<td>
-					<?
+					<?php
 			  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>SITUAÇOES DA LICITAÇÃO</strong>";
 			  $aux->codigo = "l08_sequencial";
@@ -168,7 +168,7 @@ function js_emite(){
            <tr>
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 	    	 <td align="left">&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
 		   db_select('param_situacao',$xxx,true,2);
 		   ?>
@@ -186,7 +186,7 @@ function js_emite(){
 
   </form>
  </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

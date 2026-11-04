@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("o01_descricao");
        <?=@$Lo119_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o119_sequencial',10,$Io119_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To119_ppalei?>">
-       <?
+       <?php
        db_ancora(@$Lo119_ppalei,"js_pesquisao119_ppalei(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o119_ppalei',10,$Io119_ppalei,true,'text',$db_opcao," onchange='js_pesquisao119_ppalei(false);'")
 ?>
-       <?
+       <?php
 db_input('o01_descricao',100,$Io01_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To119_idusuario?>">
-       <?
+       <?php
        db_ancora(@$Lo119_idusuario,"js_pesquisao119_idusuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o119_idusuario',10,$Io119_idusuario,true,'text',$db_opcao," onchange='js_pesquisao119_idusuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lo119_versao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o119_versao',10,$Io119_versao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('o119_versao',10,$Io119_versao,true,'text',$db_opcao,"")
        <?=@$Lo119_finalizada?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('o119_finalizada',$x,true,$db_opcao,"");
 ?>
@@ -100,7 +100,7 @@ db_select('o119_finalizada',$x,true,$db_opcao,"");
        <?=@$Lo119_datainicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('o119_datainicio',@$o119_datainicio_dia,@$o119_datainicio_mes,@$o119_datainicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_inputdata('o119_datainicio',@$o119_datainicio_dia,@$o119_datainicio_mes,@$o11
        <?=@$Lo119_datatermino?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('o119_datatermino',@$o119_datatermino_dia,@$o119_datatermino_mes,@$o119_datatermino_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -120,7 +120,7 @@ db_inputdata('o119_datatermino',@$o119_datatermino_dia,@$o119_datatermino_mes,@$
        <?=@$Lo119_versaofinal?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('o119_versaofinal',$x,true,$db_opcao,"");
 ?>
@@ -183,7 +183,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ppaversao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

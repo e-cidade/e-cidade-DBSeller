@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempprestaitem->rotulo->label("e46_codigo");
               <?=$Le46_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e46_codigo",8,$Ie46_codigo,true,"text",4,"","chave_e46_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempprestaitem->rotulo->label("e46_codigo");
               <?=$Le46_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e46_codigo",8,$Ie46_codigo,true,"text",4,"","chave_e46_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempprestaitem->rotulo->label("e46_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empprestaitem.php")==true){
@@ -118,12 +118,12 @@ $clempprestaitem->rotulo->label("e46_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

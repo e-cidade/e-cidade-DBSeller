@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,56 +42,54 @@ $clrotulo->label("o106_descricao");
        <?=@$Lo99_sequencial?>
     </td>
     <td> 
-<?
-db_input('o99_sequencial',10,$Io99_sequencial,true,'text',$db_opcao,"")
+<?php
+db_input('o99_sequencial',10,$Io99_sequencial,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To99_projativ?>">
-       <?
+       <?php
        db_ancora(@$Lo99_projativ,"js_pesquisao99_projativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
-db_input('o99_projativ',10,$Io99_projativ,true,'text',$db_opcao," onchange='js_pesquisao99_projativ(false);'")
+<?php
+db_input('o99_projativ',10,$Io99_projativ,true,'text',$db_opcao," onchange='js_pesquisao99_projativ(false);'");
 ?>
-       <?
-db_input('o55_descr',40,$Io55_descr,true,'text',3,'')
-db_input('o55_descr',40,$Io55_descr,true,'text',3,'')
+       <?php
+db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To99_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lo99_anousu,"js_pesquisao99_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $o99_anousu = db_getsession('DB_anousu');
-db_input('o99_anousu',10,$Io99_anousu,true,'text',3," onchange='js_pesquisao99_anousu(false);'")
+db_input('o99_anousu',10,$Io99_anousu,true,'text',3," onchange='js_pesquisao99_anousu(false);'");
 ?>
-       <?
-db_input('o55_descr',40,$Io55_descr,true,'text',3,'')
-db_input('o55_descr',40,$Io55_descr,true,'text',3,'')
+       <?php
+db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To99_orcsubprojeto?>">
-       <?
+       <?php
        db_ancora(@$Lo99_orcsubprojeto,"js_pesquisao99_orcsubprojeto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
-db_input('o99_orcsubprojeto',10,$Io99_orcsubprojeto,true,'text',$db_opcao," onchange='js_pesquisao99_orcsubprojeto(false);'")
+<?php
+db_input('o99_orcsubprojeto',10,$Io99_orcsubprojeto,true,'text',$db_opcao," onchange='js_pesquisao99_orcsubprojeto(false);'");
 ?>
-       <?
-db_input('o106_descricao',50,$Io106_descricao,true,'text',3,'')
+       <?php
+db_input('o106_descricao',50,$Io106_descricao,true,'text',3,'');
        ?>
     </td>
   </tr>
@@ -221,7 +219,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcprojativsubprojeto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

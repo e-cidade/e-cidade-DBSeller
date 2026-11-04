@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clobrasenvioreg->rotulo->label("ob17_codobrasenvio");
               <?=$Lob17_codobrasenvioreg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob17_codobrasenvioreg",10,$Iob17_codobrasenvioreg,true,"text",4,"","chave_ob17_codobrasenvioreg");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clobrasenvioreg->rotulo->label("ob17_codobrasenvio");
               <?=$Lob17_codobrasenvio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob17_codobrasenvio",10,$Iob17_codobrasenvio,true,"text",4,"","chave_ob17_codobrasenvio");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clobrasenvioreg->rotulo->label("ob17_codobrasenvio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obrasenvioreg.php")==true){
@@ -118,12 +118,12 @@ $clobrasenvioreg->rotulo->label("ob17_codobrasenvio");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

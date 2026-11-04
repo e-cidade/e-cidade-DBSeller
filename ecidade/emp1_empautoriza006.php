@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -126,7 +126,7 @@ if(isset($anular)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmempautoriza_anulacao.php"));
 	?>
     </center>
@@ -135,7 +135,7 @@ if(isset($anular)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($anular) || isset($reativar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

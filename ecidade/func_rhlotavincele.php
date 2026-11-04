@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codlotavinc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh28_codlotavinc",6,$Irh28_codlotavinc,true,"text",4,"","chave_rh28_codlotavinc");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codeledef?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh28_codeledef",6,$Irh28_codeledef,true,"text",4,"","chave_rh28_codeledef");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codelenov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh28_codelenov",6,$Irh28_codelenov,true,"text",4,"","chave_rh28_codelenov");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotavincele.php")==true){
@@ -129,12 +129,12 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

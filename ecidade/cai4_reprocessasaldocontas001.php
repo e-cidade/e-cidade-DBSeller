@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ include(modification("classes/db_saltes_classe.php"));
             <table>
               <tr>
                 <td>
-		               <?
+		               <?php
 		                 $aux = new cl_arquivo_auxiliar;
 		                 $aux->cabecalho = "<strong>Contas Selecionadas</strong>";
 		                 $aux->codigo = "k13_conta";
@@ -97,7 +97,7 @@ include(modification("classes/db_saltes_classe.php"));
               <tr>
                 <td>
                    <b>Data Reprocessamento:</b>&nbsp;
-	                  <?
+	                  <?php
 	                    $dtDia     = db_getsession("DB_datausu");
 	                    $dDataBase = date("d/m/Y",mktime(0, 0, 0, Date("m", $dtDia), date("d", $dtDia)-1, date("Y", $dtDia)));
 	                    $dtPartes  = explode("/",$dDataBase); 
@@ -123,7 +123,7 @@ include(modification("classes/db_saltes_classe.php"));
   </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>  
 

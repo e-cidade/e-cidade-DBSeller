@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt 
  */
 
+//MODULO: pessoal
+//CLASSE DA ENTIDADE rhpesrescisao
 class cl_rhpesrescisao
 {
    // cria variaveis de erro 
@@ -88,23 +90,27 @@ class cl_rhpesrescisao
                  rh05_observacao = text = Observações 
                  ";
 
-    public function __construct()
+    //funcao construtor da classe
+    function cl_rhpesrescisao()
     {
+        //classes dos rotulos dos campos
         $this->rotulo = new rotulo("rhpesrescisao"); 
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
-    public function erro($mostra, $retorna)
+    //funcao erro
+    function erro($mostra, $retorna)
     {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\")</script>";
+            echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
      }
    }
 
-    public function atualizacampos($exclusao = false)
+    // funcao para atualizar campos
+    function atualizacampos($exclusao = false)
     {
      if($exclusao==false){
        $this->rh05_seqpes = ($this->rh05_seqpes == ""?@$GLOBALS["HTTP_POST_VARS"]["rh05_seqpes"]:$this->rh05_seqpes);
@@ -155,7 +161,8 @@ class cl_rhpesrescisao
      }
    }
 
-    public function incluir($rh05_seqpes)
+    // funcao para Inclusão
+    function incluir($rh05_seqpes)
     {
       $this->atualizacampos();
      if($this->rh05_recis == null ){ 
@@ -325,6 +332,7 @@ class cl_rhpesrescisao
      return true;
    } 
 
+    // funcao para alteracao
     public function alterar($rh05_seqpes=null)
     {
       $this->atualizacampos();
@@ -572,6 +580,7 @@ class cl_rhpesrescisao
      } 
    } 
 
+    // funcao para exclusao
     public function excluir($rh05_seqpes=null, $dbwhere = null)
     {
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -658,6 +667,7 @@ class cl_rhpesrescisao
      } 
    } 
 
+    // funcao do recordset
     public function sql_record($sql)
     {
      $result = db_query($sql);
@@ -682,7 +692,9 @@ class cl_rhpesrescisao
      return $result;
    }
 
-    public function sql_query($rh05_seqpes = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+    // funcao do sql
+    public function sql_query($rh05_seqpes = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
 
      $sql  = "select {$campos}";
      $sql .= "  from rhpesrescisao ";
@@ -701,6 +713,7 @@ class cl_rhpesrescisao
      return $sql;
   }
 
+    // funcao do sql
     public function sql_query_file($rh05_seqpes = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
@@ -724,13 +737,13 @@ class cl_rhpesrescisao
     function atualiza_incluir()
     {
   	 $this->incluir($this->rh05_seqpes);
-    }
+   }
 
     function sql_query_retorno($rh05_seqpes = null, $campos = "*", $ordem = null, $dbwhere = "", $anonovo, $mesnovo)
     {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -757,7 +770,7 @@ class cl_rhpesrescisao
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -771,7 +784,7 @@ class cl_rhpesrescisao
     {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -803,7 +816,7 @@ class cl_rhpesrescisao
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -813,11 +826,56 @@ class cl_rhpesrescisao
      return $sql;
   }
 
+    function sql_query_rescisao_esocial($rh05_seqpes = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*" ) {
+            $campos_sql = split("#",$campos);
+            $virgula = "";
+            for ($i=0;$i<sizeof($campos_sql);$i++) {
+                $sql .= $virgula.$campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+            $sql .= " from rhpesrescisao ";
+            $sql .= "      inner join rhpessoalmov  on  rhpessoalmov.rh02_seqpes = rhpesrescisao.rh05_seqpes";
+            $sql .= "      inner join tpcontra  on  tpcontra.h13_codigo = rhpessoalmov.rh02_tpcont";
+            $sql .= "      inner join rhregime  on  rhregime.rh30_codreg = rhpessoalmov.rh02_codreg
+                                            and  rhregime.rh30_instit = rhpessoalmov.rh02_instit ";
+            $sql .= "      inner join rescisao  on  rescisao.r59_anousu  = rhpessoalmov.rh02_anousu 
+                                            and  rescisao.r59_mesusu  = rhpessoalmov.rh02_mesusu 
+                                            and  rescisao.r59_regime  = rhregime.rh30_regime 
+                                            and  rescisao.r59_causa   = rhpesrescisao.rh05_causa
+                                            and  rescisao.r59_instit  = rhpessoalmov.rh02_instit ";
+                                        
+            $sql2 = "";
+        if ($dbwhere=="") {
+            if ($rh05_seqpes!=null ) {
+                $sql2 .= " where rhpesrescisao.rh05_seqpes = $rh05_seqpes "; 
+            } 
+        } else if($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null ) {
+            $sql .= " order by ";
+            $campos_sql = split("#",$ordem);
+            $virgula = "";
+            for ($i=0; $i<sizeof($campos_sql); $i++) {
+                $sql .= $virgula.$campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
     function sql_query_ngeraferias($rh05_seqpes = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -839,7 +897,7 @@ class cl_rhpesrescisao
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -948,4 +1006,41 @@ class cl_rhpesrescisao
 
         return $sql;
     }
+
+    function sql_query_rescisao_data($rh02_regist = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+     $sql = "select ";
+     if($campos != "*" ){
+       $campos_sql = split("#",$campos);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }else{
+       $sql .= $campos;
+     }
+     $sql .= " from rhpesrescisao ";
+     $sql .= "      inner join rhpessoalmov on rhpessoalmov.rh02_seqpes = rhpesrescisao.rh05_seqpes ";
+                                        
+     $sql2 = "";
+     if($dbwhere==""){
+       if($rh02_regist!=null ){
+         $sql2 .= " where rhpesrescisao.rh05_seqpes = $rh02_regist "; 
+       } 
+     }else if($dbwhere != ""){
+       $sql2 = " where $dbwhere";
+     }
+     $sql .= $sql2;
+     if($ordem != null ){
+       $sql .= " order by ";
+       $campos_sql = split("#",$ordem);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }
+     return $sql;
+  }
 }

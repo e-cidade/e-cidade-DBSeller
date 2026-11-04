@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $instit = db_getsession("DB_instit");
 <br>
 <br>
 
-<?
+<?php
 
 db_criatermometro('termometro', 'Concluido...', 'blue', 1);
 flush();

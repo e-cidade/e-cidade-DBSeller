@@ -153,6 +153,23 @@ class NotaLiquidacao
         }
     }
 
+
+    /**
+     * retorna instancia pela OP
+     */
+    public static function getInstancePorCodOrd($codOrd)
+    {
+        $pagordemnota = new cl_pagordemnota;
+        $sql = $pagordemnota->sql_query_file (null, null, "e71_codnota", null, "e71_codord = {$codOrd}");
+        $rs = $pagordemnota->sql_record($sql);
+        if ($pagordemnota->numrows > 0) {
+
+            $nota = db_utils::fieldsMemory($rs, 0)->e71_codnota;
+            return new NotaLiquidacao($nota);
+        }
+        throw new Exception("Erro ao buscar a Nota de Liquidação a pela ordem de pagamento.");
+    }
+
     public function getCodigoOrdemPagamento()
     {
         $iCodOrd = null;
@@ -166,16 +183,46 @@ class NotaLiquidacao
         return $iCodOrd;
     }
 
-    public function getRetencoes($iTipo = "E")
+    public function getRetencoes($iTipo = "E", $coddoc = "", $iLancamento = null)
     {
 
         $aRetencoes = array();
         $oDao = new cl_retencaoreceitas;
-        $sWhere = "  e69_codnota = {$this->getCodigoNota()} ";
-        $sWhere .= " and e23_ativo is true ";
-        $sWhere .= " and k02_tipo = '$iTipo' ";
 
-        $sql =  $oDao->sql_query_notasPlan( null, "*", null, $sWhere);
+        /**
+         * vamos tratar a condição de buscar retencao ativa sim ou nao
+         * o 6010 por exemplo, paga uma retencao, logo ela tem que estar ativa.
+         * o 6011 é o estorno, logo ela vai ta como ativa = false, estornada...
+         */
+        $ativo = "and e23_ativo is true";
+        $docsEstorno = [6003, 6005, 6009, 6011];
+        if (in_array($coddoc, $docsEstorno)) {
+            $ativo = "and e23_ativo is false";
+        }
+
+        $sWhere = "  e69_codnota = {$this->getCodigoNota()} ";
+        $sWhere .= " $ativo and tabplan.k02_anousu = ". db_getsession("DB_anousu");
+        $campos = "e21_sequencial, e21_retencaotipocalc, k02_reduz";
+        $sql =  $oDao->sql_query_notasPlan( null, $campos, null, $sWhere);
+
+        if (in_array($coddoc, [6004, 6005, 6010, 6011])) {
+            $campos = "e21_sequencial, e21_retencaotipocalc, c61_reduz as k02_reduz";
+            $sWhere = "  e69_codnota = {$this->getCodigoNota()} ";
+            $sWhere .= "  $ativo and taborc.k02_anousu = ". db_getsession("DB_anousu");
+            $sWhere .=  " and o70_anousu = " . db_getsession("DB_anousu");
+            $sqlorc =  $oDao->sql_query_notasOrc( null, $campos, null, $sWhere);
+            $sql = " $sql union  $sqlorc";
+        }
+
+        if ( !empty($iLancamento)) {
+
+            $sql = " select distinct e21_retencaotipocalc,
+                            k02_reduz
+                       from ($sql) as x
+                       join conlancamretencao on e21_sequencial = c127_retencaotiporec
+                      where c127_conlancam = {$iLancamento} ";
+        }
+
         $rs = $oDao->sql_record($sql);
         if ($oDao->numrows > 0 ) {
 

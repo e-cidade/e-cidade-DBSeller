@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,45 +25,47 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_utils.php"));
-include(modification("libs/db_usuariosonline.php"));
-require(modification("libs/db_sql.php"));
-//echo($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_sql.php"));
 
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css">
+<script>
+  function js_atualizaValorComDesconto(novoValor, id, vlrmin, possuiDesconto, percentualDesconto){
+    //if (possuiDesconto || Number(percentualDesconto) !== 1) {
+      document.getElementById('valorparcelamentocomdesconto').innerHTML = Number(novoValor).toFixed(2);
+    //}
+
+    parent.js_valparc(id, vlrmin, possuiDesconto, percentualDesconto);
+  }
+</script>
 <form name='form1' action=''>
 <table border="1">
 <tr align='center'>
 <td colspan="3">
 <input type='hidden' name='vt' value='<?=$valor?>'>
 <strong>Valor do parcelamento sem desconto: </strong><font id="vt"></font>
-<?
+<?php
 echo "<script>document.getElementById('vt').innerHTML = \"$valor\"</script>";
 ?>
 <br>
 <input type='hidden' name='vtcomdesconto' value='<?=$valorcomdesconto?>'>
 <input type='hidden' name='temdesconto' value='<?=$temdesconto?>'>
-<strong>Valor do parcelamento com desconto: </strong><font id="vtcomdesconto"></font>
-<?
-echo "<script>document.getElementById('vtcomdesconto').innerHTML = \"$valorcomdesconto\"</script>";
-echo "<script>document.getElementById('temdesconto').innerHTML = \"$temdesconto\"</script>";
-?>
+<font style="display: none;" id="vtcomdesconto"><?=$valorcomdesconto?></font>
+<strong>Valor do parcelamento com desconto: </strong><font id="valorparcelamentocomdesconto"><?=$valorcomdesconto?></font>
 </td>
 </tr>
 
-<?
+<?php
 
 echo "<tr bgcolor='#6699cc'> <pre>";
 $linha = -1;
 $tipo1 = explode("-",$tiposparc);
-
-//print_r($tipo1);
-//echo "<br><br>";
 
 $ultmaxparc = null;
 $ultparc    = null;
@@ -92,7 +94,9 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
 
 	$registros=explode("=", $valoresportipo);
 
-	$valtotal			= 0;
+	$valorTotal			       = 0;
+  $valorTotalParcelado   = 0;
+  $valorMinimoPorParcela = 0;
 
 	for ($x=0; $x < sizeof($registros); $x++) {
 
@@ -112,7 +116,40 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
 		$k00_desconto			= $valores[6];
 		$k00_total   			= $valores[7];
 
-    if ($k00_cadtipoparc > 0 && $k40_aplicacao != '2') {
+    $cltipoparc        = new cl_tipoparc();
+    $campos            = "tipoparc,descr,dtini,dtfim,maxparc,minparc,vlrmin,vlrmax,dtvlr,vlrmindeb,vlrmaxdeb,inflat,descvlr,descmul,descjur,k42_minentrada,cadtipoparc,k40_descr";
+    $sqlCaseTipoPessoa = ",case when tipopessoa = 0 then 'Todos' when tipopessoa = 1 then 'Física' when tipopessoa = 2 then 'Jurídica' ELSE '' END as tipopessoa";
+    $sqlTipoParc       = $cltipoparc->sql_query(null,$campos.$sqlCaseTipoPessoa,"tipoparc","cadtipoparc.k40_codigo=$k00_cadtipoparc and tipoparc.minparc > 1 and tipoparc = $tipoparc");
+    $rsTipoParc        = db_query($sqlTipoParc);
+
+    $regraParcelamento = db_utils::getCollectionByRecord($rsTipoParc)[0];
+
+    $dataAtual        = new DateTime('now');
+    $dataInicialRegra = DateTime::createFromFormat('Y-m-j H:i:s', $regraParcelamento->dtini . ' 00:00:01');
+    $dataFinalRegra   = DateTime::createFromFormat('Y-m-j H:i:s', $regraParcelamento->dtfim . ' 23:59:59');
+    $regraValida      = $dataInicialRegra <= $dataAtual && $dataAtual <= $dataFinalRegra;
+
+    if(!$regraValida){
+      continue;
+    }
+
+    $valorHistorico    = $k00_vlrhis;
+    $valorCorrigido    = $k00_vlrcor;
+    $juros             = $k00_juros;
+    $multa             = $k00_multa;
+    $desconto          = $k00_desconto;
+    $valorTotal       += $k00_total;
+
+    $percentualDescontoMulta = $regraParcelamento->descmul;
+    $percentualDescontoJuros = $regraParcelamento->descjur;
+    $multaTotal              = $multa * ((100 - $percentualDescontoMulta) / 100);
+    $jurosTotal              = $juros * ((100 - $percentualDescontoJuros) / 100);
+
+    $valorTotalParcelado          += $valorCorrigido + $multaTotal + $jurosTotal;
+    $valorMinimoPorParcela        += $regraParcelamento->vlrmin;
+    $aplicaRegraAntesDoLancamento = $regraParcelamento->k40_aplicacao == '2';
+
+    if ($k00_cadtipoparc > 0 && !$aplicaRegraAntesDoLancamento) {
 
       $valdescontocorrecao = 0;
       if ($tipovlr == 1) {
@@ -123,14 +160,16 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
 
 			$valdesconto	+= $valdescontocorrecao + ($k00_juros * $descjur / 100) + ($k00_multa * $descmul / 100);
 
-			//echo "<br>Desconto: ".$valdescontocorrecao." + (".$k00_juros." * ".$descjur." / 100) + (".$k00_multa." * ".$descmul." / 100) - VALOR:".$k00_vlrcor." + (".$k00_juros." + ".$k00_multa.") - ".$valdesconto."<br>";
-			$valtotal			+= $k00_vlrcor + ($k00_juros + $k00_multa) - $valdesconto;
+			$valorTotal			+= $k00_vlrcor + ($k00_juros + $k00_multa) - $valdesconto;
 
 		} else {
-			$valtotal			+= $k00_vlrcor + $k00_juros + $k00_multa;
+			$valorTotal			+= $k00_vlrcor + $k00_juros + $k00_multa;
 		}
-		//echo "k03_tipo: $k03_tipo - k00_cadtipoparc: $k00_cadtipoparc - descjur: $descjur - k00_vlrcor: $k00_vlrcor - valtotal: $valtotal - vlrmin: $vlrmin<br>";
-	}
+  }
+  
+  if ((float)$valorTotal > (float)$valor) {
+    $valorTotal = (float)$valor;
+  }
 
   if ($ultmaxparc == null) {
     $ultmaxparc = $ultparc;
@@ -142,13 +181,13 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
   $entradaminima = 0;
 
   if ($tipo2[4] > 0) {
-    $entradaminima = $valtotal * $tipo2[4] / 100;
+    $entradaminima = $valorTotal * $tipo2[4] / 100;
   }
 
-  $valtotal = $valtotal - $entradaminima;
+  $valorTotal = $valorTotal - $entradaminima;
 
 
-  if ( ( round($valtotal/$ultparc,2) >= $vlrmin ) and ( $ultparc >= $ultmaxparc ) ) {
+  if ( ( round($valorTotal/$ultparc,2) >= $vlrmin ) and ( $ultparc >= $ultmaxparc ) ) {
 
  $sSql = "select k40_controlavencimento
           from cadtipoparc
@@ -170,11 +209,10 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
       $i = $parcela;
 
       if ($i < $minparc) {
-      	continue;
+        continue;
       }
-      if (round($valtotal/$i,2) < $vlrmin) {
+      if (round($valorTotal/$i,2) < $vlrmin) {
 
-        //exit;
         break;
       }
 
@@ -188,24 +226,30 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
         echo "<tr bgcolor='$cor'>";
       }
 
-      if ($tipo2[4] > 0) {
-        $entradaminima = number_format($valtotal * $tipo2[4] / 100,2,",",".");
+      $entradaminima = calculaPercentual($regraParcelamento->k42_minentrada,$valorTotalParcelado);
+      $percentualDesconto = 1;
 
-      } else {
-        $entradaminima = number_format(($valtotal/$i),2,",",".");
+      if ((float)$valorTotalParcelado < (float)$valor) {
+        $percentualDesconto = (((float)$valorTotalParcelado * 100) / (float)$valor) / 100;
+      }
+
+      $valorTotalParceladoSemEntrada = $valorTotalParcelado - $entradaminima;
+      $valorMedioParcelas = $valorTotalParceladoSemEntrada / ($i - 1);
+
+      if (($valorMedioParcelas < $regraParcelamento->vlrmin || $valorTotalParcelado/$i < $regraParcelamento->vlrmin)){
+        continue;
       }
 
       echo "<td nowrap align='left' valign='top'>
-              <input type='radio' name='val' id='val$i' onClick=\"parent.document.form1.parc.value='".($i - 1)."';parent.js_valparc($i, $vlrmin,$temdesconto)\" value=''>$i X R$<font id='$i'></font>
+              <input type='radio' name='val' id='val$i' onClick=\"parent.document.form1.parc.value='".($i - 1)."';js_atualizaValorComDesconto($valorTotalParcelado, $i, $vlrmin,$temdesconto,$percentualDesconto);\" value=''>$i X R$<font id='$i'>
+                ".str_pad(number_format(($valorTotalParcelado/$i),2,",","."),strlen(round($valorTotalParcelado/$i)),",",STR_PAD_LEFT)."
+              </font>
             </td>";
       if ($linha == 2) {
         $linha = 0;
       } else{
         $linha +=1;
       }
-
-      echo "<script>document.getElementById('$i').innerHTML = \"".str_pad(number_format(($valtotal/$i),2,",","."),strlen(round($valtotal/$i)),",",STR_PAD_LEFT)."\"</script>";
-
     }
 
     $ultparc = $parcela;
@@ -213,6 +257,10 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
 
   }
 
+}
+
+function calculaPercentual($percentage, $total) {
+  return (int)$percentage ? (number_format($percentage, 2) / 100) * round((float)$total, 2) : 0;
 }
 
 ?>

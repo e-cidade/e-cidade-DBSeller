@@ -68,7 +68,7 @@ class cl_empautitem
                  ";
 
     //funcao construtor da classe
-    function cl_empautitem()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("empautitem");
@@ -76,7 +76,7 @@ class cl_empautitem
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -87,7 +87,7 @@ class cl_empautitem
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->e55_autori = ($this->e55_autori == "" ? @$GLOBALS["HTTP_POST_VARS"]["e55_autori"] : $this->e55_autori);
@@ -107,7 +107,7 @@ class cl_empautitem
     }
 
     // funcao para Inclusão
-    function incluir($e55_autori, $e55_sequen)
+    public function incluir($e55_autori, $e55_sequen)
     {
         $this->atualizacampos();
         if ($this->e55_item == null) {
@@ -119,12 +119,12 @@ class cl_empautitem
             $this->erro_status = "0";
             return false;
         }
-        if ($this->e55_quant == null) {
+        if ($this->e55_quant == null || $this->e55_quant <= 0 ) {
             $this->erro_sql = " Campo Quantidade não informado.";
             $this->erro_campo = "e55_quant";
             $this->erro_banco = "";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n A quantidade do item deve ser maior que zero. \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -302,12 +302,12 @@ class cl_empautitem
         if (trim($this->e55_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e55_quant"])) {
             $sql .= $virgula . " e55_quant = $this->e55_quant ";
             $virgula = ",";
-            if (trim($this->e55_quant) == null) {
+            if (trim($this->e55_quant) == null  || $this->e55_quant <= 0 ) {
                 $this->erro_sql = " Campo Quantidade não informado.";
                 $this->erro_campo = "e55_quant";
                 $this->erro_banco = "";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n A quantidade do item deve ser maior que zero. \\n"));
                 $this->erro_status = "0";
                 return false;
             }
@@ -557,7 +557,7 @@ class cl_empautitem
     }
 
     // funcao do sql
-    function sql_query($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -610,7 +610,7 @@ class cl_empautitem
     }
 
     // funcao do sql
-    function sql_query_anuaut($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_anuaut($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -663,7 +663,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_autoridot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_autoridot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -712,7 +712,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_autoriza($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_autoriza($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
 
@@ -757,7 +757,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_buscae54($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_buscae54($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -804,7 +804,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_buscaritemdot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_buscaritemdot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -851,7 +851,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_elemento($e55_autori = null, $e55_sequen = null, $ordem = null, $dbwhere = "")
+    public function sql_query_elemento($e55_autori = null, $e55_sequen = null, $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
 
@@ -888,7 +888,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_file($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -932,7 +932,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_itemdot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_itemdot($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -980,7 +980,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_lic($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_lic($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1029,7 +1029,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_processocompras($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_processocompras($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
@@ -1077,7 +1077,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_pcmaterele($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pcmaterele($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1129,7 +1129,7 @@ class cl_empautitem
         return $sql;
     }
 
-    function sql_query_item_pacto($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_item_pacto($e55_autori = null, $e55_sequen = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

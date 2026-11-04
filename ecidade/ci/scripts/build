@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+set -e
+#set -x
+
+TAG=$1
+ENVIRONMENT=''
+CUSTOM_ENVIRONMENT=${2:-$ENVIRONMENT}
+PHP=$(which php)
+COMPOSER=$(which composer)
+
+info() {
+  MESSAGE=$1
+  echo -e "\e[1m\e[32m$MESSAGE\e[0m\e[0m"
+}
+
+copyEnvironment() {
+  info "Copiando $1 para $2..."
+  cp -rp $1 $2
+  cd $2
+  rm -f .git/index.lock
+  rm -f .git/shallow.lock
+  rm -f .git/HEAD.lock
+  rm -f .git/hooks/post-checkout
+}
+
+permissions() {
+  info "Ajustando permissoes"
+  chown -R dbseller.www-data .
+  find . -type f -print | xargs -I% --max-args=1 --max-procs=100 chmod 664 "%"
+  find . -type d -print | xargs -I% --max-args=1 --max-procs=100 chmod 775 "%"
+}
+
+update() {
+  REF=$1
+  local _HORA_INICIO ; _HORA_INICIO=$(date +%s)
+  local _HORA_FIM ; _HORA_FIM=''
+  local _TEMPO ; _TEMPO=''
+  info "Atualizando $REF..."
+  git fetch origin --prune +refs/heads/${REF}:refs/remotes/origin/${REF} --depth 1
+  git checkout -f -q origin/${REF}
+  permissions
+  ${PHP} -d memory_limit=-1 ${COMPOSER} install --no-interaction --prefer-dist --no-progress --no-suggest
+}
+
+configure_laravel()
+{
+  info "Configurando Laravel"
+  cp .env.example .env
+  ${PHP} artisan cache:clear
+  ${PHP} artisan key:generate
+  ${PHP} artisan passport:keys
+}
+
+configure() {
+  permissions
+  info "Instalando dependencias..."
+  ${PHP} -d memory_limit=-1 ${COMPOSER} install --no-interaction --prefer-dist --no-progress --no-suggest
+  ${PHP} ${COMPOSER} -q install-desktop || info "Desktop installed"
+  ${PHP} ${COMPOSER} configure-desktop
+  mkdir -p extensions/log
+  touch extensions/log/error.log
+  chown dbseller.www-data extensions/log/error.log
+  chmod 775 extensions/log/error.log
+  cp libs/db_conn.php.dist libs/db_conn.php
+  echo "<?php include('../databases.php'); ?>" >>libs/db_conn.php
+  if [[ -d "app" ]]; then
+    configure_laravel
+  fi
+}
+
+if [[ ! -d "master" ]]; then
+  info "Criando a master..."
+  mkdir master
+  cd master
+  git init
+  git remote add origin git@gitlab.dbseller.com.br:DBSeller/e-cidade.git
+  git remote set-url origin git@gitlab.dbseller.com.br:DBSeller/e-cidade.git
+  # para uso local, usar https
+  #  git remote add origin https://gitlab.dbseller.com.br/DBSeller/e-cidade.git
+  #  git remote set-url origin https://gitlab.dbseller.com.br/DBSeller/e-cidade.git
+  update master
+  # configure
+  cd ..
+fi
+
+if [[ ${TAG} != "master" ]] && [[ ! -d "$TAG" ]]; then
+  copyEnvironment "master" ${TAG}
+  update ${TAG}
+  configure
+  permissions
+else
+  cd ${TAG}
+  update ${TAG}
+  if [[ ${TAG} != "master" ]]; then
+    cp config/plugins.json.dist config/plugins.json
+  fi
+  permissions
+fi
+
+if [[ "$CUSTOM_ENVIRONMENT" ]]; then
+  cd ..
+  copyEnvironment $TAG $CUSTOM_ENVIRONMENT
+  configure
+  permissions
+fi

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,7 +43,7 @@ if (!isset($db_opcao)) {
 }
 $db_botao = true;
 if (isset($opcao)) {
-	
+
   $campos = " mer_subitem.*, ";
   $campos.= " mer_cardapio.me01_c_nome, ";
   $campos.= " mer_alimento.me35_c_nomealimento, ";
@@ -54,37 +54,37 @@ if (isset($opcao)) {
     db_fieldsmemory($result1,0);
   }
   if ( $opcao == "alterar") {
-  	
+
     $db_opcao = 2;
     $db_botao1 = true;
-    
+
   } else {
-  	
+
     if ( $opcao=="excluir" || isset($db_opcao) && $db_opcao==3) {
-    	
+
       $db_opcao = 3;
       $db_botao1 = true;
-      
+
     } else {
       if (isset($alterar)) {
-      	
+
         $db_opcao = 2;
         $db_botao1 = true;
-        
+
       }
     }
-    
+
   }
-  
+
 }
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
  if ($me29_d_fim=="") {
- 	
+
    $me29_d_fim                = $me29_d_inicio;
    $clmer_subitem->me29_d_fim = $me29_d_inicio;
-   
+
  }
  $hoje   = date("d/m/Y",db_getsession("DB_datausu"));
  $hoje   = mktime(0,0,0,substr($hoje,3,2),substr($hoje,0,2),substr($hoje,6,4));
@@ -93,7 +93,7 @@ if (isset($incluir)) {
  $dat    = explode("/",$me29_d_fim);
  $fim    = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
  if ($fim>=$inicio) {
- 	
+
   if ($inicio>=$hoje) {
     $clmer_subitem->incluir($me29_i_codigo);
   } else {
@@ -105,9 +105,9 @@ if (isset($incluir)) {
  db_fim_transacao();
 }
 if (isset($alterar)) {
-	
+
   db_inicio_transacao();
-  $db_opcao = 2; 
+  $db_opcao = 2;
   $hoje     = date("d/m/Y",db_getsession("DB_datausu"));
   $oje      = mktime(0,0,0,substr($hoje,3,2),substr($hoje,0,2),substr($hoje,6,4));
   $at       = explode("/",$me29_d_inicio);
@@ -115,22 +115,22 @@ if (isset($alterar)) {
   $dat      = explode("/",$me29_d_fim);
   $fim      = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
   if ($inicio<$hoje) {
-  	
-    if ($fim>$hoje) {    	    	
+
+    if ($fim>$hoje) {
       $clmer_subitem->alterar($me29_i_codigo);  //Troca em progresso
     } else {
-   	
+
       db_msgbox("Será possível fazer a alteração da substituição somente na data inferior a data final");
       echo "<script>location.href='mer4_mer_subitens001.php'</script>";
-     
+
    }
   } else {
     $clmer_subitem->alterar($me29_i_codigo); //troca ainda não iniciada
   }
-  db_fim_transacao(); 
+  db_fim_transacao();
 }
 if (isset($excluir)) {
-	
+
   db_inicio_transacao();
   $db_opcao  = 3;
   $db_opcao1 = 3;
@@ -141,17 +141,17 @@ if (isset($excluir)) {
   $dat       = explode("/",$me29_d_fim);
   $fim       = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
   if ($inicio<$hoje) {
-  	
+
    if ($fim>$hoje) {
-   	
+
      $clmer_subitem->me29_d_fim=date("Y-m-d",db_getsession("DB_datausu")); //Troca em progresso
      $clmer_subitem->alterar($me29_i_codigo);
-     
+
    } else {
-   	
+
      db_msgbox("Será possível fazer a exclusão da substituição somente na data inferior a data final");
      echo "<script>location.href='mer4_mer_subitens001.php'</script>";
-     
+
   }
  } else {
    $clmer_subitem->excluir($me29_i_codigo); //troca ainda não iniciada
@@ -171,7 +171,7 @@ if(isset($me29_i_codigo)){
       $db_botao = true;
 
    } else {
-   	
+
       $db_opcao = 1;
 
    }
@@ -187,7 +187,7 @@ if(isset($me29_i_codigo)){
 <script type="text/javascript" src="scripts/prototype.js"></script>
 <script type="text/javascript">
 function js_carrega() {
-  if(document.form1.me29_i_alimentonovo.value != ''){	
+  if(document.form1.me29_i_alimentonovo.value != ''){
     new Ajax.Request('mer4_mer_subitem_ajax004.php?item='+document.form1.me29_i_alimentonovo.value,
 	  	            {
                      method : 'get',
@@ -211,17 +211,17 @@ function js_carrega() {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" >
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Substituição de alimentos</b></legend>
-    <?include(modification("forms/db_frmmer_subitem.php"));?>
+    <?php include(modification("forms/db_frmmer_subitem.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -232,52 +232,52 @@ function js_carrega() {
 <script>
 js_tabulacaoforms("form1","me29_i_refeicao",true,1,"me29_i_refeicao",true);
 </script>
-<?
+<?php
 if (isset($opcao)) {
   echo"<script>js_carrega(); js_validadata(1); </script>";
 }
 if (isset($incluir)) {
   if ($clmer_subitem->erro_status=="0") {
-  	
+
     $clmer_subitem->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clmer_subitem->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_subitem->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_subitem->erro_campo.".focus();</script>";
-      
+
     }
   } else {
     $clmer_subitem->erro(true,true);
  }
 }
 if (isset($alterar)) {
-	
+
  if ($clmer_subitem->erro_status=="0") {
- 	
+
    $clmer_subitem->erro(true,false);
    $db_botao=true;
    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-   
+
    if ($clmer_subitem->erro_campo!="") {
-   	
+
      echo "<script> document.form1.".$clmer_subitem->erro_campo.".style.backgroundColor='#99A9AE';</script>";
      echo "<script> document.form1.".$clmer_subitem->erro_campo.".focus();</script>";
-     
+
    }
- } else { 	
-   $clmer_subitem->erro(true,true);  
- } 
+ } else {
+   $clmer_subitem->erro(true,true);
+ }
 }
 if (isset($excluir)) {
-	
+
   if ($clmer_subitem->erro_status=="0") {
     $clmer_subitem->erro(true,false);
   } else {
     $clmer_subitem->erro(true,true);
   }
- 
+
 }
 ?>

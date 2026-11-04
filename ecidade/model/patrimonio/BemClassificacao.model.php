@@ -31,19 +31,20 @@
  * @package patrimonio
  * @version $Revision: 1.15 $
  */
-class BemClassificacao {
+class BemClassificacao
+{
 
   /**
    * Código da Classificacao
    * @var integer;
    */
-  protected $iCodigoClassificacao;
+    protected $iCodigoClassificacao;
 
   /**
    * Descrição da classificação
    * @var string
    */
-  protected $sDescricao;
+    protected $sDescricao;
 
   /**
    * Tipo do bem
@@ -52,95 +53,100 @@ class BemClassificacao {
    * 3 - SEMOVENTES
    * @var integer
    */
-  protected $iTipoBem;
+    protected $iTipoBem;
 
   /**
    * Descrição do tipo de classificação
    * @var string
    */
-  protected $sDescricaoTipo;
+    protected $sDescricaoTipo;
 
   /**
    * Classificação
    * @var string
    */
-  protected $sClassificacao;
+    protected $sClassificacao;
 
   /**
    * Utilizada para validar se a classificação é analitica ou sintética
    * @var boolean
    */
-  protected $lAnalitica;
+    protected $lAnalitica;
 
   /**
    * Tipo de depreciação associada a classificação.
    * @var integer
    */
-  protected $iTipoDepreciacao;
+    protected $iTipoDepreciacao;
 
   /**
    * Observações da classifcação do bem
    * @var string
    */
-  protected $sObservacao;
+    protected $sObservacao;
 
 
   /**
    * Vida útil que será replicada para os bens da classificação.
    * @var integer
    */
-  protected $iVidaUtil;
+    protected $iVidaUtil;
 
   /**
    * Valor Residual da classificação do bem
    * @var integer
    */
-  protected $iValorResidual;
+    protected $iValorResidual;
 
 
   /**
    * Instituicão da Classificação
    * @var integer
    */
-  protected $iInstituicao;
+    protected $iInstituicao;
 
 
   /**
    * Vinculo com as Contas (tabela clabensconplano)
    * @var Integer
    */
-  protected $iVinculoContas;
+    protected $iVinculoContas;
 
   /**
    * A que plano de contas a classificação está associada
    * @var integer
    */
-  protected $iPlanoConta;
+    protected $iPlanoConta;
 
   /**
    * Conta do plano de contas
    * @var ContaPlanoPCASP
    */
-  protected $oContaPCASP;
+    protected $oContaPCASP;
 
   /**
    * A que plano de contas a depreciação da classificação está associada
    * @var integer
    */
-  protected $iContaDepreciacao;
+    protected $iContaDepreciacao;
 
   /**
    * Conta Depreciacao do plano de contas
    * @var ContaPlanoPCASP
    */
-  protected $oContaDepreciacao;
+    protected $oContaDepreciacao;
 
   /**
    * Ano da Classificação (para vinculo com contas)
    * @var integer
    */
-  protected $iAno;
+    protected $iAno;
 
+  /**
+   * Status do bem: inativo ou ativo
+   * @var integer
+   */
+    protected $lStatus;
 
     /**
      * Constroi objeto referente a classificação
@@ -151,232 +157,272 @@ class BemClassificacao {
      * @throws Exception
      */
 
-  public function __construct($iCodigoClassificacao = null, $iAno = null) {
+    public function __construct($iCodigoClassificacao = null, $iAno = null)
+    {
 
-    if(!isset($iAno)) {
-        $iAno = db_getsession("DB_anousu");
+        if (!isset($iAno)) {
+            $iAno = db_getsession("DB_anousu");
+        }
+        $this->iAno = $iAno;
+
+        if ($iCodigoClassificacao != null) {
+            $sCampos  = "t64_codcla, t64_class, t64_bemtipos, t24_descricao, t64_descr, t64_analitica, t64_valorresidual,t64_ativa, ";
+            $sCampos .= "t64_benstipodepreciacao, t64_vidautil, t64_instit, t86_sequencial, t86_conplano, ";
+            $sCampos .= "t86_conplanodepreciacao ";
+
+            $oDaoClaBens          = new cl_clabens();
+            $sWhere               = " clabens.t64_codcla = {$iCodigoClassificacao}";
+            $sWhere              .= " and clabens.t64_instit = " . db_getsession("DB_instit");
+            $sSqlClassificacao    = $oDaoClaBens->sql_query_contas(null, $sCampos, null, $sWhere);
+            $rsDadosClassificacao = $oDaoClaBens->sql_record($sSqlClassificacao);
+
+            if ($oDaoClaBens->numrows > 0) {
+                $oDadosClassificacao        = db_utils::fieldsMemory($rsDadosClassificacao, 0);
+                $this->iCodigoClassificacao = $oDadosClassificacao->t64_codcla;
+                $this->sClassificacao       = $oDadosClassificacao->t64_class;
+                $this->iTipoBem             = $oDadosClassificacao->t64_bemtipos;
+                $this->sDescricaoTipo       = $oDadosClassificacao->t24_descricao;
+                $this->sDescricao           = $oDadosClassificacao->t64_descr;
+                $this->lAnalitica           = $oDadosClassificacao->t64_analitica=='t'?true:false;
+                $this->iTipoDepreciacao     = $oDadosClassificacao->t64_benstipodepreciacao;
+                $this->iVidaUtil            = $oDadosClassificacao->t64_vidautil;
+                $this->iValorResidual       = $oDadosClassificacao->t64_valorresidual;
+                $this->iInstituicao         = $oDadosClassificacao->t64_instit;
+                $this->lStatus              = $oDadosClassificacao->t64_ativa=='t'?true:false;
+
+
+              /**
+               * Dados retirados da tabela clabensconplano
+               */
+                $this->iVinculoContas       = $oDadosClassificacao->t86_sequencial;
+                $this->iPlanoConta          = $oDadosClassificacao->t86_conplano;
+                $this->iContaDepreciacao    = $oDadosClassificacao->t86_conplanodepreciacao;
+
+                unset($oDadosClassificacao);
+            }
+        }
     }
-    $this->iAno = $iAno;
-
-    if ($iCodigoClassificacao != null) {
-
-      $sCampos  = "t64_codcla, t64_class, t64_bemtipos, t24_descricao, t64_descr, t64_analitica, t64_valorresidual, ";
-      $sCampos .= "t64_benstipodepreciacao, t64_vidautil, t64_instit, t86_sequencial, t86_conplano, ";
-      $sCampos .= "t86_conplanodepreciacao ";
-
-      $oDaoClaBens          = new cl_clabens();
-      $sWhere               = " clabens.t64_codcla = {$iCodigoClassificacao}";
-      $sWhere              .= " and clabens.t64_instit = " . db_getsession("DB_instit");
-      $sSqlClassificacao    = $oDaoClaBens->sql_query_contas(null, $sCampos, null, $sWhere);
-      $rsDadosClassificacao = $oDaoClaBens->sql_record($sSqlClassificacao);
-
-      if ($oDaoClaBens->numrows > 0) {
-
-        $oDadosClassificacao        = db_utils::fieldsMemory($rsDadosClassificacao, 0);
-        $this->iCodigoClassificacao = $oDadosClassificacao->t64_codcla;
-        $this->sClassificacao       = $oDadosClassificacao->t64_class;
-        $this->iTipoBem             = $oDadosClassificacao->t64_bemtipos;
-        $this->sDescricaoTipo       = $oDadosClassificacao->t24_descricao;
-        $this->sDescricao           = $oDadosClassificacao->t64_descr;
-        $this->lAnalitica           = $oDadosClassificacao->t64_analitica=='t'?true:false;
-        $this->iTipoDepreciacao     = $oDadosClassificacao->t64_benstipodepreciacao;
-        $this->iVidaUtil            = $oDadosClassificacao->t64_vidautil;
-        $this->iValorResidual       = $oDadosClassificacao->t64_valorresidual;
-        $this->iInstituicao         = $oDadosClassificacao->t64_instit;
-
-
-        /**
-         * Dados retirados da tabela clabensconplano
-         */
-        $this->iVinculoContas       = $oDadosClassificacao->t86_sequencial;
-        $this->iPlanoConta          = $oDadosClassificacao->t86_conplano;
-        $this->iContaDepreciacao    = $oDadosClassificacao->t86_conplanodepreciacao;
-
-        unset($oDadosClassificacao);
-      }
-    }
-  }
   /**
    * Codigo da classificacao
    * @return integer;
    */
-  public function getCodigo() {
-    return $this->iCodigoClassificacao;
-  }
+    public function getCodigo()
+    {
+        return $this->iCodigoClassificacao;
+    }
 
   /**
    * Retorna o código da Instituicao
    * @return integer
    */
-  public function getInstituicao() {
-    return $this->iInstituicao;
-  }
+    public function getInstituicao()
+    {
+        return $this->iInstituicao;
+    }
+
+  /**
+   * Retorna o status do bem
+   * @return integer
+   */
+    public function getStatus()
+    {
+        return $this->lStatus;
+    }
 
   /**
    * Seta o código da Instituicao
    * @return integer
    */
-  public function setInstituicao($iInstituicao) {
-    return $this->iInstituicao = $iInstituicao;
-  }
+    public function setInstituicao($iInstituicao)
+    {
+        return $this->iInstituicao = $iInstituicao;
+    }
 
   /**
    * Seta valor na propriedade iVidaUtil
    * @param float $iVidaUtil
    */
-  public function setVidaUtil ($iVidaUtil) {
-    $this->iVidaUtil = $iVidaUtil;
-  }
+    public function setVidaUtil($iVidaUtil)
+    {
+        $this->iVidaUtil = $iVidaUtil;
+    }
 
   /**
   * Retorna a vida util
   * @return float;
   */
-  public function getVidaUtil() {
-    return $this->iVidaUtil;
-  }
+    public function getVidaUtil()
+    {
+        return $this->iVidaUtil;
+    }
 
   /**
    * Seta valor na propriedade iValorResidual
    * @param integer $iValorResidual
    */
-  public function setValorResidual ($iValorResidual) {
-    $this->iValorResidual = $iValorResidual;
-  }
+    public function setValorResidual($iValorResidual)
+    {
+        $this->iValorResidual = $iValorResidual;
+    }
 
   /**
   * Retorna o Valor Residual
   * @return float;
   */
-  public function getValorResidual() {
-    return $this->iValorResidual;
-  }
+    public function getValorResidual()
+    {
+        return $this->iValorResidual;
+    }
 
   /**
    * Seta valor na propriedade iCodigoClassificacao
    * @param integer $iCodigoClassificacao
    */
-  public function setCodigo ($iCodigoClassificacao) {
-    $this->iCodigoClassificacao = $iCodigoClassificacao;
-  }
+    public function setCodigo($iCodigoClassificacao)
+    {
+        $this->iCodigoClassificacao = $iCodigoClassificacao;
+    }
 
   /**
    * Seta valor na propriedade $iTipoBem
    * $param integer
    */
-  public function setTipoBem($iTipoBem) {
-    $this->iTipoBem = $iTipoBem;
-  }
+    public function setTipoBem($iTipoBem)
+    {
+        $this->iTipoBem = $iTipoBem;
+    }
 
   /**
    * Retorna o Codigo do tipo do bem
    * @return integer
    */
-  public function getTipoBem() {
-    return $this->iTipoBem;
-  }
+    public function getTipoBem()
+    {
+        return $this->iTipoBem;
+    }
 
+  /**
+   * Retorna o status do bem
+   * @return integer
+   */
+    public function setStatus($lStatus)
+    {
+        $this->lStatus = $lStatus;
+    }
 
   /**
    * Seta valor na propriedade lAnalitica
    * @param boolean $lAnalitica
    */
-  public function setAnalitica ($lAnalitica) {
-    $this->lAnalitica = $lAnalitica;
-  }
+    public function setAnalitica($lAnalitica)
+    {
+        $this->lAnalitica = $lAnalitica;
+    }
 
   /**
    * retorna a classificacao do Bem
    * @return boolean
    */
-  public function isAnalitica() {
-    return $this->lAnalitica;
-  }
+    public function isAnalitica()
+    {
+        return $this->lAnalitica;
+    }
 
   /**
   * Seta valor na propriedade sClassificacao
   * @param string $sClassificacao
   */
-  public function setClassificacao ($sClassificacao) {
-    $this->sClassificacao = $sClassificacao;
-  }
+    public function setClassificacao($sClassificacao)
+    {
+        $this->sClassificacao = $sClassificacao;
+    }
   /**
    * estrutural da classificacao do bem
    * @return string
    */
-  public function getClassificacao() {
-    return $this->sClassificacao;
-  }
+    public function getClassificacao()
+    {
+        return $this->sClassificacao;
+    }
 
   /**
    * Seta valor na propriedade sDescricao
    * @param string $sDescricao
    */
-  public function setDescricao($sDescricao) {
-    $this->sDescricao = $sDescricao;
-  }
+    public function setDescricao($sDescricao)
+    {
+        $this->sDescricao = $sDescricao;
+    }
   /**
    * @return string Descricao da classificacao
    */
-  public function getDescricao() {
-    return $this->sDescricao;
-  }
+    public function getDescricao()
+    {
+        return $this->sDescricao;
+    }
 
   /**
    * Descrição do tipo do bem
    * @return string
    */
-  public function getDescricaoTipoBem() {
-    return $this->sDescricaoTipo;
-  }
+    public function getDescricaoTipoBem()
+    {
+        return $this->sDescricaoTipo;
+    }
 
   /**
    * Seta valor na propriedade iTipoDepreciacao
    * @param integer $iTipoDepreciacao
    */
-  public function setTipoDepreciacao($iTipoDepreciacao) {
-    $this->iTipoDepreciacao = $iTipoDepreciacao;
-  }
+    public function setTipoDepreciacao($iTipoDepreciacao)
+    {
+        $this->iTipoDepreciacao = $iTipoDepreciacao;
+    }
 
   /**
    * Retorna valor na propriedade iTipoDepreciacao
    * @return integer $iTipoDepreciacao
    */
-  public function getTipoDepreciacao() {
-    return $this->iTipoDepreciacao;
-  }
+    public function getTipoDepreciacao()
+    {
+        return $this->iTipoDepreciacao;
+    }
 
   /**
   * Seta valor na propriedade sObservacao
   * @param string $sObservacao
   */
-  public function setObservacao($sObservacao) {
-    $this->sObservacao = $sObservacao;
-  }
+    public function setObservacao($sObservacao)
+    {
+        $this->sObservacao = $sObservacao;
+    }
 
   /**
    * Retorna valor na propriedade sObservacao
    * @return string $sObservacao
    */
-  public function getObservacao() {
-    return $this->sObservacao;
-  }
+    public function getObservacao()
+    {
+        return $this->sObservacao;
+    }
 
   /**
    * Seta valor na propriedade iPlanoConta
    * @param integer $iPlanoConta
    */
-  public function setPlanoConta($iPlanoConta) {
-    $this->iPlanoConta = $iPlanoConta;
-  }
+    public function setPlanoConta($iPlanoConta)
+    {
+        $this->iPlanoConta = $iPlanoConta;
+    }
 
   /**
    * Retorna valor na propriedade iPlanoConta
    * @return integer $iPlanoConta
    */
-  public function getPlanoConta() {
-    return $this->iPlanoConta;
-  }
+    public function getPlanoConta()
+    {
+        return $this->iPlanoConta;
+    }
 
 
 
@@ -384,17 +430,19 @@ class BemClassificacao {
    * Seta valor da Conta de depreciacao
    * @param integer $iConta
    */
-  public function setCodigoContaDepreciacao($iConta) {
-    $this->iContaDepreciacao = $iConta;
-  }
+    public function setCodigoContaDepreciacao($iConta)
+    {
+        $this->iContaDepreciacao = $iConta;
+    }
 
   /**
    * Retorna valor na propriedade iContaDepreciacao
    * @return integer $iContaDepreciacao
    */
-  public function getCodigoContaDepreciacao() {
-    return $this->iContaDepreciacao;
-  }
+    public function getCodigoContaDepreciacao()
+    {
+        return $this->iContaDepreciacao;
+    }
 
 
 
@@ -402,89 +450,97 @@ class BemClassificacao {
    * Metodo que salva ou altera uma classificação de um bem.
    * @throws Exception
    */
-  public function salvar() {
+    public function salvar()
+    {
 
-    if (!db_utils::inTransaction()) {
-      throw new Exception("Transação com o banco de dados não encontrada.");
+        if (!db_utils::inTransaction()) {
+            throw new Exception("Transação com o banco de dados não encontrada.");
+        }
+        $oDaoBens                             = new cl_bens();
+        $oDaoClaBens                          = new cl_clabens();
+        $oDaoClaBens->t64_codcla              = $this->getCodigo();
+        $oDaoClaBens->t64_class               = str_replace(".", "", $this->getClassificacao());
+        $oDaoClaBens->t64_descr               = $this->getDescricao();
+        $oDaoClaBens->t64_obs                 = $this->getObservacao();
+        $oDaoClaBens->t64_analitica           = $this->isAnalitica();
+        $oDaoClaBens->t64_bemtipos            = $this->getTipoBem();
+        $oDaoClaBens->t64_benstipodepreciacao = $this->getTipoDepreciacao();
+        $oDaoClaBens->t64_vidautil            = $this->getVidaUtil();
+        $oDaoClaBens->t64_valorresidual       = $this->getValorResidual();
+        $oDaoClaBens->t64_instit              = db_getsession("DB_instit");
+        $oDaoClaBens->t64_ativa               = $this->getStatus();
+
+        if (empty($oDaoClaBens->t64_codcla)) {
+            $oDaoClaBens->incluir(null);
+        } else {
+            if ($oDaoClaBens->t64_analitica == 'f' && $oDaoClaBens->t64_ativa == 'f') {
+                throw new Exception("Classificação Sintética não permitindo a inativação.");
+            }
+            $where = "{$oDaoClaBens->t64_codcla} =t64_codcla";
+            $sql = $oDaoBens->sql_query(null, "distinct t52_codcla as classif,clabens.*", "t64_class", $where);
+            $result = $oDaoBens->sql_record($sql);
+
+            if ($result && pg_num_rows($result) != 0 && $oDaoClaBens->t64_ativa == 'f') {
+                throw new Exception("Existem bens contidos nesta Classificação, não permitindo a inativação.");
+            }
+            $oDaoClaBens->alterar($oDaoClaBens->t64_codcla);
+        }
+
+        if ($oDaoClaBens->erro_status == 0) {
+            $sMsgErro  = "Classificação não pode ser salva.\\n\\n";
+            $sMsgErro .= "Erro Técnico 1: ".str_replace("\\n", "\n", $oDaoClaBens->erro_msg);
+            throw new Exception($sMsgErro);
+        }
+
+        $this->iCodigoClassificacao                   = $oDaoClaBens->t64_codcla;
+
+        $oDaoClaBensConplano                          = new cl_clabensconplano();
+        $oDaoClaBensConplano->t86_sequencial          = $this->iVinculoContas;
+        $oDaoClaBensConplano->t86_clabens             = $this->iCodigoClassificacao;
+        $oDaoClaBensConplano->t86_conplano            = $this->iPlanoConta;
+        $oDaoClaBensConplano->t86_anousu              = $this->iAno;
+        $oDaoClaBensConplano->t86_conplanodepreciacao = $this->iContaDepreciacao;
+        $oDaoClaBensConplano->t86_anousudepreciacao   = $this->iAno;
+
+        if ($oDaoClaBensConplano->t86_sequencial == null) {
+            $oDaoClaBensConplano->incluir(null);
+        } else {
+            $oDaoClaBensConplano->alterar($oDaoClaBensConplano->t86_sequencial);
+        }
+
+        if ($oDaoClaBensConplano->erro_status == 0) {
+            $sMsgErro  = "Classificação não pode ser salva.\\n\\n";
+            $sMsgErro .= "Erro Técnico 2: ".str_replace("\\n", "\n", $oDaoClaBensConplano->erro_msg);
+            throw new Exception($sMsgErro);
+        }
+
+        return true;
     }
-
-    $oDaoClaBens                          = new cl_clabens();
-    $oDaoClaBens->t64_codcla              = $this->getCodigo();
-    $oDaoClaBens->t64_class               = str_replace(".", "", $this->getClassificacao());
-    $oDaoClaBens->t64_descr               = $this->getDescricao();
-    $oDaoClaBens->t64_obs                 = $this->getObservacao();
-    $oDaoClaBens->t64_analitica           = $this->isAnalitica();
-    $oDaoClaBens->t64_bemtipos            = $this->getTipoBem();
-    $oDaoClaBens->t64_benstipodepreciacao = $this->getTipoDepreciacao();
-    $oDaoClaBens->t64_vidautil            = $this->getVidaUtil();
-    $oDaoClaBens->t64_valorresidual       = $this->getValorResidual();
-    $oDaoClaBens->t64_instit              = db_getsession("DB_instit");
-
-      if (empty($oDaoClaBens->t64_codcla)) {
-      $oDaoClaBens->incluir(null);
-    } else {
-      $oDaoClaBens->alterar($oDaoClaBens->t64_codcla);
-    }
-
-    if ($oDaoClaBens->erro_status == 0) {
-
-      $sMsgErro  = "Classificação não pode ser salva.\\n\\n";
-      $sMsgErro .= "Erro Técnico 1: ".str_replace("\\n", "\n", $oDaoClaBens->erro_msg);
-      throw new Exception($sMsgErro);
-    }
-
-
-
-    $this->iCodigoClassificacao                   = $oDaoClaBens->t64_codcla;
-
-    $oDaoClaBensConplano                          = db_utils::getDao("clabensconplano");
-    $oDaoClaBensConplano->t86_sequencial          = $this->iVinculoContas;
-    $oDaoClaBensConplano->t86_clabens             = $this->iCodigoClassificacao;
-    $oDaoClaBensConplano->t86_conplano            = $this->iPlanoConta;
-    $oDaoClaBensConplano->t86_anousu              = $this->iAno;
-    $oDaoClaBensConplano->t86_conplanodepreciacao = $this->iContaDepreciacao;
-    $oDaoClaBensConplano->t86_anousudepreciacao   = $this->iAno;
-
-    if ($oDaoClaBensConplano->t86_sequencial == null) {
-      $oDaoClaBensConplano->incluir(null);
-    } else {
-      $oDaoClaBensConplano->alterar($oDaoClaBensConplano->t86_sequencial);
-    }
-
-    if ($oDaoClaBensConplano->erro_status == 0) {
-
-      $sMsgErro  = "Classificação não pode ser salva.\\n\\n";
-      $sMsgErro .= "Erro Técnico 2: ".str_replace("\\n", "\n", $oDaoClaBensConplano->erro_msg);
-      throw new Exception($sMsgErro);
-    }
-
-    return true;
-  }
 
   /**
    * Retorna a conta vinculada a classificacao
    * @return ContaPlanoPCASP
    */
-  public function getContaContabil() {
+    public function getContaContabil()
+    {
 
-    if (empty($this->oContaPCASP)) {
-      $this->oContaPCASP = new ContaPlanoPCASP($this->iPlanoConta, $this->iAno, null);
+        if (empty($this->oContaPCASP)) {
+            $this->oContaPCASP = new ContaPlanoPCASP($this->iPlanoConta, $this->iAno, null);
+        }
+        return $this->oContaPCASP;
     }
-    return $this->oContaPCASP;
-  }
 
 
   /**
    * Retorna a conta de devinculada a classificacao
    * @return ContaPlanoPCASP
    */
-  public function getContaDepreciacao() {
+    public function getContaDepreciacao()
+    {
 
-    if (empty($this->oContaDepreciacao)) {
-      $this->oContaDepreciacao = new ContaPlanoPCASP($this->iContaDepreciacao, $this->iAno, null);
+        if (empty($this->oContaDepreciacao)) {
+            $this->oContaDepreciacao = new ContaPlanoPCASP($this->iContaDepreciacao, $this->iAno, null);
+        }
+        return $this->oContaDepreciacao;
     }
-    return $this->oContaDepreciacao;
-  }
-
 }
-?>

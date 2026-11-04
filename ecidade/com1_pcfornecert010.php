@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ if(isset($atualiza)){
     <center>
     <form name="form1" method="post">
     <table border='1' cellspacing="0" cellpadding="0">
-    <?
+    <?php
     $result = $clpccertif->sql_record($clpccertif->sql_query());
     if($clpccertif->numrows==0){
       echo "<tr>";
@@ -174,7 +174,7 @@ if(isset($atualiza)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($erro) ){
   
   $clpcfornecert->erro_msg = $db_msg;

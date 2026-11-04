@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -206,12 +206,12 @@ function js_emite(){
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
 	          db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao)
           ?>
         </td>
         <td>
-          <?
+          <?php
 	          db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
             db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -219,12 +219,12 @@ function js_emite(){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tk51_procede?>" >
-          <?
+          <?php
             db_ancora(@$Lk51_procede,"js_pesquisanotitipo(true);",$db_opcao)
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('k51_procede',10,$Ik51_procede,true,'text',$db_opcao,"onchange='js_pesquisanotitipo(false);'");
             db_input('k51_descr',40,$Ik51_descr,true,'text',3,'');
           ?>
@@ -235,7 +235,7 @@ function js_emite(){
           Opção de Seleção :
         </td>
         <td>
-         <?
+         <?php
            $x = array("2"=>"Somente Selecionados","3"=>"Menos os Selecionados");
            db_select('tipo',$x,true,$db_opcao);
          ?>
@@ -248,7 +248,7 @@ function js_emite(){
       			<table class="form-container">
          		  <tr>
            			<td nowrap title="<?=@$Tk00_tipo?>" colspan="2">
-		              <?
+		              <?php
 		                db_ancora('Contribuinte:',"js_pesquisadb02_idparag(true);",$db_opcao);
 		                db_input('codigo',10,'',true,'text',$db_opcao," onchange='js_pesquisadb02_idparag(false);'");
 		                db_input('descr',25,'',true,'text',3,'');
@@ -259,7 +259,7 @@ function js_emite(){
    				  <tr>
 	    			<td>
               		  <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              			<?
+              			<?php
               			  if(isset($chavepesquisa)){
 	         				$sql = "select matric as codigo,
                                						 numcgm,
@@ -303,7 +303,7 @@ function js_emite(){
                 <?=($db_botao==false?"disabled":"")?> >
   </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -407,7 +407,7 @@ function js_mostralista1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 
 if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir" ) {
 

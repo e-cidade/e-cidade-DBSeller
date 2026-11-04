@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -212,7 +212,7 @@ function js_lo5(){
         <?=@$Lj41_matric?>
         </td>
         <td> 
-<?
+<?php
   db_input('j41_matric',4,$Ij41_matric,true,'text',3," onchange='js_pesquisaj41_matric(false);'");
   db_input("z01_nome",45,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
 ?>
@@ -220,12 +220,12 @@ function js_lo5(){
       </tr>
       <tr> 
         <td nowrap title="<?=@$Tj41_numcgm?>">
-<?
+<?php
   db_ancora($Lj41_numcgm,' js_cgm(true); ',1);
 ?>
         </td>
         <td> 
-<?
+<?php
   db_input('j41_numcgm',4,$Ij41_numcgm,true,'text',$db_opcao,"onchange='js_cgm(false)'");
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"");
 ?>
@@ -236,7 +236,7 @@ function js_lo5(){
        <?=@$Lj41_promitipo?>
        </td>
        <td> 
-<?
+<?php
 $x = array("C"=>"Com contrato","S"=>"Sem contrato");
 db_select('j41_promitipo',$x,true,$db_opcao,"");
 ?>
@@ -247,7 +247,7 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
           <?=@$Lj41_tipopro?>
         </td>
         <td> 
-<?
+<?php
 $xy = array("f"=>"Secundário","t"=>"Principal");
 db_select('j41_tipopro',$xy,true,$db_opcao,"");
 ?>
@@ -266,7 +266,7 @@ db_select('j41_tipopro',$xy,true,$db_opcao,"");
         <td valign="top" bgcolor="#CCCCCC" colspan="2">
       <br>
          <center>
-<?
+<?php
  if($outros==true){
    $result = $clpromitente->sql_record($clpromitente->sql_query($j41_matric,"","promitente.*#cgm.z01_nome"));
    $num = $clpromitente->numrows;
@@ -300,7 +300,7 @@ db_select('j41_tipopro',$xy,true,$db_opcao,"");
       </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -398,7 +398,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("e04_destin");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To83_codres?>">
-       <?
+       <?php
        db_ancora(@$Lo83_codres,"js_pesquisao83_codres(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o83_codres',8,$Io83_codres,true,'text',$db_opcao," onchange='js_pesquisao83_codres(false);'")
 ?>
-       <?
+       <?php
 db_input('o80_descr',1,$Io80_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To83_autori?>">
-       <?
+       <?php
        db_ancora(@$Lo83_autori,"js_pesquisao83_autori(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o83_autori',6,$Io83_autori,true,'text',$db_opcao," onchange='js_pesquisao83_autori(false);'")
 ?>
-       <?
+       <?php
 db_input('e04_destin',40,$Ie04_destin,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcrservaaut.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -66,13 +66,13 @@ class cl_recibounica {
                  k00_sequencial = int4 = Código da arrecadação suspensa
                  ";
    //funcao construtor da classe
-   function cl_recibounica() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibounica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_recibounica {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        if($this->k00_dtvenc == ""){
@@ -109,7 +109,7 @@ class cl_recibounica {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_sequencial){
+   public function incluir ($k00_sequencial){
       $this->atualizacampos();
      if($this->k00_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -256,7 +256,7 @@ class cl_recibounica {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k00_sequencial=null) {
+   public function alterar ($k00_sequencial=null) {
       $this->atualizacampos();
      $sql = " update recibounica set ";
      $virgula = "";
@@ -439,7 +439,7 @@ class cl_recibounica {
      }
    }
    // funcao para exclusao
-   function excluir ($k00_sequencial=null,$dbwhere=null) {
+   public function excluir ($k00_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_sequencial));
      }else{
@@ -506,7 +506,7 @@ class cl_recibounica {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -529,10 +529,10 @@ class cl_recibounica {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,7 +555,7 @@ class cl_recibounica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,10 +565,10 @@ class cl_recibounica {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_recibounica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -606,7 +606,7 @@ class cl_recibounica {
    * @param  string  $sDataVencimento     Data de vencimento de recibounicageracao
    * @return string
    */
-  function excluir_unica_geral($iReciboUnicaGeracao, $iUsuario, $sDataVencimento){
+  public function excluir_unica_geral($iReciboUnicaGeracao, $iUsuario, $sDataVencimento){
 
     $sSql  = "delete from recibounica                                                            ";
     $sSql .= " where k00_recibounicageracao = (select ar40_sequencial                            ";
@@ -635,7 +635,7 @@ class cl_recibounica {
    * @param  string $sOrderby
    * @return string
    */
-  function sql_query_unica_parcial($sWhere = null, $sInnerJoin = null, $sOrderby = "k00_dtvenc"){
+  public function sql_query_unica_parcial($sWhere = null, $sInnerJoin = null, $sOrderby = "k00_dtvenc"){
 
     $sSql  = "  select k00_sequencial,                                                                                   ";
     $sSql .= "         k00_dtoper,                                                                                       ";

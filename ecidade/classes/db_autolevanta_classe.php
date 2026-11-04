@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,13 +52,13 @@ class cl_autolevanta {
                  y117_levanta = int4 = Levantamento
                  ";
    //funcao construtor da classe
-   function cl_autolevanta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolevanta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_autolevanta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y117_sequencial = ($this->y117_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["y117_sequencial"]:$this->y117_sequencial);
        $this->y117_auto = ($this->y117_auto == ""?@$GLOBALS["HTTP_POST_VARS"]["y117_auto"]:$this->y117_auto);
@@ -77,7 +77,7 @@ class cl_autolevanta {
      }
    }
    // funcao para inclusao
-   function incluir ($y117_sequencial=null){
+   public function incluir ($y117_sequencial=null){
       $this->atualizacampos();
      if($this->y117_auto == null ){
        $this->erro_sql = " Campo Auto de Infração não informado.";

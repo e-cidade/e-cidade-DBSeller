@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorcpparec->rotulo->label("o27_exercicio");
               <?=$Lo27_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o27_sequen",6,$Io27_sequen,true,"text",4,"","chave_o27_sequen");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcpparec->rotulo->label("o27_exercicio");
               <?=$Lo27_exercicio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o27_exercicio",4,$Io27_exercicio,true,"text",4,"","chave_o27_exercicio");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcpparec->rotulo->label("o27_exercicio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcpparec.php")==true){
@@ -118,12 +118,12 @@ $clorcpparec->rotulo->label("o27_exercicio");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -56,9 +56,9 @@ if(isset($dtini_dia) && $dtini_dia != "" && $dtfim_dia == ""){
   $where = " where j58_data <= '$dtfim'";
 }
 if($resumido == 't'){
-  $sql = "select j58_numcgm,count(x.totmat) as totmat from 
-  		(select count(j59_matric) as totmat,j59_codigo 
-			from massamat group by j59_matric,j59_codigo) as x 
+  $sql = "select j58_numcgm,count(x.totmat) as totmat from
+  		(select count(j59_matric) as totmat,j59_codigo
+			from massamat group by j59_matric,j59_codigo) as x
 			inner join massafalida on x.j59_codigo = j58_codigo group by totmat,j58_numcgm";
   $result = db_query($sql);
   $numrows = pg_numrows($result);
@@ -78,7 +78,7 @@ if($resumido == 't'){
 }else{
   $pdf->SetFont('Arial','B',9);
   $sql = "select j01_matric,z01_numcgm,z01_nome,j58_data from massamat
-                        inner join massafalida on j58_codigo = j59_codigo 
+                        inner join massafalida on j58_codigo = j59_codigo
 			inner join proprietario_nome on j59_matric = j01_matric $where order by $ordem $modo";
   $result = db_query($sql);
   $numrows = pg_numrows($result);
@@ -169,8 +169,8 @@ if(isset($chaves_caract) && $chaves_caract != ""){
 $pdf->MultiCell(280,05,"CARACTERÍSTICAS NÃO LISTADAS ->  ".@$cod,1,"L");
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves =explode(",",$setores);
+    $chaves1 =explode(",",$quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){

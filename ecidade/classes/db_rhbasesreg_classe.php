@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhbasesreg
-class cl_rhbasesreg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh54_seq = 0; 
-   var $rh54_regist = 0; 
-   var $rh54_base = null; 
-   var $rh54_rubric = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhbasesreg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh54_seq = 0;
+   var $rh54_regist = 0;
+   var $rh54_base = null;
+   var $rh54_rubric = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh54_seq = int8 = Sequencial 
-                 rh54_regist = int4 = Matrícula 
-                 rh54_base = varchar(4) = Base 
-                 rh54_rubric = varchar(4) = Rubrica 
+                 rh54_seq = int8 = Sequencial
+                 rh54_regist = int4 = Matrícula
+                 rh54_base = varchar(4) = Base
+                 rh54_rubric = varchar(4) = Rubrica
                  ";
-   //funcao construtor da classe 
-   function cl_rhbasesreg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhbasesreg"); 
+     $this->rotulo = new rotulo("rhbasesreg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_rhbasesreg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh54_seq = ($this->rh54_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["rh54_seq"]:$this->rh54_seq);
        $this->rh54_regist = ($this->rh54_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["rh54_regist"]:$this->rh54_regist);
@@ -80,9 +80,9 @@ class cl_rhbasesreg {
      }
    }
    // funcao para inclusao
-   function incluir ($rh54_seq){ 
+   public function incluir ($rh54_seq){
       $this->atualizacampos();
-     if($this->rh54_regist == null ){ 
+     if($this->rh54_regist == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "rh54_regist";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_rhbasesreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh54_base == null ){ 
+     if($this->rh54_base == null ){
        $this->erro_sql = " Campo Base nao Informado.";
        $this->erro_campo = "rh54_base";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_rhbasesreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh54_rubric == null ){ 
+     if($this->rh54_rubric == null ){
        $this->erro_sql = " Campo Rubrica nao Informado.";
        $this->erro_campo = "rh54_rubric";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_rhbasesreg {
        return false;
      }
      if($rh54_seq == "" || $rh54_seq == null ){
-       $result = db_query("select nextval('rhbasesreg_rh54_seq_seq')"); 
+       $result = db_query("select nextval('rhbasesreg_rh54_seq_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhbasesreg_rh54_seq_seq do campo: rh54_seq"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhbasesreg_rh54_seq_seq do campo: rh54_seq";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh54_seq = pg_result($result,0,0); 
+       $this->rh54_seq = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhbasesreg_rh54_seq_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh54_seq)){
@@ -130,10 +130,10 @@ class cl_rhbasesreg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh54_seq = $rh54_seq; 
+         $this->rh54_seq = $rh54_seq;
        }
      }
-     if(($this->rh54_seq == null) || ($this->rh54_seq == "") ){ 
+     if(($this->rh54_seq == null) || ($this->rh54_seq == "") ){
        $this->erro_sql = " Campo rh54_seq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_rhbasesreg {
        return false;
      }
      $sql = "insert into rhbasesreg(
-                                       rh54_seq 
-                                      ,rh54_regist 
-                                      ,rh54_base 
-                                      ,rh54_rubric 
+                                       rh54_seq
+                                      ,rh54_regist
+                                      ,rh54_base
+                                      ,rh54_rubric
                        )
                 values (
-                                $this->rh54_seq 
-                               ,$this->rh54_regist 
-                               ,'$this->rh54_base' 
-                               ,'$this->rh54_rubric' 
+                                $this->rh54_seq
+                               ,$this->rh54_regist
+                               ,'$this->rh54_base'
+                               ,'$this->rh54_rubric'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Bases por registro ($this->rh54_seq) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_rhbasesreg {
        $resac = db_query("insert into db_acount values($acount,1544,9022,'','".AddSlashes(pg_result($resaco,0,'rh54_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh54_seq=null) { 
+   public function alterar ($rh54_seq=null) {
       $this->atualizacampos();
      $sql = " update rhbasesreg set ";
      $virgula = "";
-     if(trim($this->rh54_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_seq"])){ 
+     if(trim($this->rh54_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_seq"])){
        $sql  .= $virgula." rh54_seq = $this->rh54_seq ";
        $virgula = ",";
-       if(trim($this->rh54_seq) == null ){ 
+       if(trim($this->rh54_seq) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh54_seq";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_rhbasesreg {
          return false;
        }
      }
-     if(trim($this->rh54_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_regist"])){ 
+     if(trim($this->rh54_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_regist"])){
        $sql  .= $virgula." rh54_regist = $this->rh54_regist ";
        $virgula = ",";
-       if(trim($this->rh54_regist) == null ){ 
+       if(trim($this->rh54_regist) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "rh54_regist";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_rhbasesreg {
          return false;
        }
      }
-     if(trim($this->rh54_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_base"])){ 
+     if(trim($this->rh54_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_base"])){
        $sql  .= $virgula." rh54_base = '$this->rh54_base' ";
        $virgula = ",";
-       if(trim($this->rh54_base) == null ){ 
+       if(trim($this->rh54_base) == null ){
          $this->erro_sql = " Campo Base nao Informado.";
          $this->erro_campo = "rh54_base";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_rhbasesreg {
          return false;
        }
      }
-     if(trim($this->rh54_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_rubric"])){ 
+     if(trim($this->rh54_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh54_rubric"])){
        $sql  .= $virgula." rh54_rubric = '$this->rh54_rubric' ";
        $virgula = ",";
-       if(trim($this->rh54_rubric) == null ){ 
+       if(trim($this->rh54_rubric) == null ){
          $this->erro_sql = " Campo Rubrica nao Informado.";
          $this->erro_campo = "rh54_rubric";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_rhbasesreg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Bases por registro nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh54_seq;
@@ -297,14 +297,14 @@ class cl_rhbasesreg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh54_seq=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh54_seq=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh54_seq));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_rhbasesreg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Bases por registro nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh54_seq;
@@ -361,11 +361,11 @@ class cl_rhbasesreg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,10 +387,10 @@ class cl_rhbasesreg {
       }
      return $result;
    }
-   function sql_query ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,15 +419,15 @@ class cl_rhbasesreg {
      $sql2 = "";
      if($dbwhere==""){
        if($rh54_seq!=null ){
-         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq "; 
-       } 
+         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,10 +436,10 @@ class cl_rhbasesreg {
      }
      return $sql;
   }
-   function sql_query_file ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,15 +452,15 @@ class cl_rhbasesreg {
      $sql2 = "";
      if($dbwhere==""){
        if($rh54_seq!=null ){
-         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq "; 
-       } 
+         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,10 +469,10 @@ class cl_rhbasesreg {
      }
      return $sql;
   }
-   function sql_query_base ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_base ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,22 +482,22 @@ class cl_rhbasesreg {
        $sql .= $campos;
      }
      $sql .= " from rhbasesreg ";
-     $sql .= "      inner join bases  on  r08_codigo = rhbasesreg.rh54_base  
+     $sql .= "      inner join bases  on  r08_codigo = rhbasesreg.rh54_base
                                      and  r08_anousu = ".db_anofolha()."
                                      and  r08_mesusu = ".db_mesfolha()."
 		                     and  r08_instit = ".db_getsession("DB_instit")." ";
      $sql2 = "";
      if($dbwhere==""){
        if($rh54_seq!=null ){
-         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq "; 
-       } 
+         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,10 +506,10 @@ class cl_rhbasesreg {
      }
      return $sql;
   }
-   function sql_query_dadosprinc ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_dadosprinc ( $rh54_seq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,15 +526,15 @@ class cl_rhbasesreg {
      $sql2 = "";
      if($dbwhere==""){
        if($rh54_seq!=null ){
-         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq "; 
-       } 
+         $sql2 .= " where rhbasesreg.rh54_seq = $rh54_seq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,28 +543,28 @@ class cl_rhbasesreg {
      }
      return $sql;
   }
-  
+
   /**
    * Retorna uma query com a junção de duas tabelas: rhbasesreg e basesr.
    * A união entre estas tabelas, encontra as rubricas da base do servidor
-   * 
+   *
    * @param Base $oBase
    * @param Servidor $oServidor
    * @return String
    */
   public function sql_query_base_servidor(Base $oBase, Servidor $oServidor) {
-    
+
     $sSqlRubrica  = "(select rh54_rubric ";
     $sSqlRubrica .= "     from rhbasesreg ";
-    $sSqlRubrica .= "   where rh54_base = '{$oBase->getCodigo()}') ";      
+    $sSqlRubrica .= "   where rh54_base = '{$oBase->getCodigo()}') ";
     $sSqlRubrica .= " union ";
     $sSqlRubrica .= "(select r09_rubric ";
     $sSqlRubrica .= "     from basesr ";
     $sSqlRubrica .= "   where r09_anousu  = {$oBase->getCompetencia()->getAno()} ";
     $sSqlRubrica .= "     and r09_mesusu  = {$oBase->getCompetencia()->getMes()} ";
     $sSqlRubrica .= "     and r09_base    = '{$oBase->getCodigo()}' ";
-    $sSqlRubrica .= "     and r09_instit  = {$oBase->getInstituicao()->getCodigo()}) ";  
-    
+    $sSqlRubrica .= "     and r09_instit  = {$oBase->getInstituicao()->getCodigo()}) ";
+
     return $sSqlRubrica;
   }
 }

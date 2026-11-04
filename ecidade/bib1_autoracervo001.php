@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -35,25 +35,25 @@ db_postmemory($HTTP_POST_VARS);
 $clautoracervo = new cl_autoracervo;
 $db_opcao = 1;
 $db_botao = true;
-if(isset($incluir)){
- db_inicio_transacao();
- $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
- $clautoracervo->incluir(null);
- db_fim_transacao();
+if (isset($incluir)) {
+    db_inicio_transacao();
+    $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
+    $clautoracervo->incluir(null);
+    db_fim_transacao();
 }
-if(isset($alterar)){
- db_inicio_transacao();
- $db_opcao = 2;
- $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
- $clautoracervo->alterar();
- db_fim_transacao();
+if (isset($alterar)) {
+    db_inicio_transacao();
+    $db_opcao = 2;
+    $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
+    $clautoracervo->alterar();
+    db_fim_transacao();
 }
-if(isset($excluir)){
- db_inicio_transacao();
- $db_opcao = 3;
- $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
- $clautoracervo->excluir("","bi21_acervo = $bi21_acervo and bi21_autor = $bi21_autor");
- db_fim_transacao();
+if (isset($excluir)) {
+    db_inicio_transacao();
+    $db_opcao = 3;
+    $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
+    $clautoracervo->excluir("", "bi21_acervo = $bi21_acervo and bi21_autor = $bi21_autor");
+    db_fim_transacao();
 }
 ?>
 <html>
@@ -71,7 +71,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Autores do Acervo</b></legend>
-    <?include(modification("forms/db_frmautoracervo.php"));?>
+    <?php include(modification("forms/db_frmautoracervo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -82,43 +82,43 @@ js_tabulacaoforms("form1","bi21_autor",true,1,"bi21_autor",true);
 </script>
 </body>
 </html>
-<?
-if(isset($incluir)){
-  if($clautoracervo->erro_status=="0"){
-    $clautoracervo->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if($clautoracervo->erro_campo!=""){
-      echo "<script> document.form1.".$clautoracervo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clautoracervo->erro_campo.".focus();</script>";
+<?php
+if (isset($incluir)) {
+    if ($clautoracervo->erro_status=="0") {
+        $clautoracervo->erro(true, false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($clautoracervo->erro_campo!="") {
+            echo "<script> document.form1.".$clautoracervo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clautoracervo->erro_campo.".focus();</script>";
+        };
+    } else {
+        $clautoracervo->erro(true, true);
     };
-  }else{
-    $clautoracervo->erro(true,true);
-  };
 };
 
-if(isset($alterar)){
-  if($clautoracervo->erro_status=="0"){
-    $clautoracervo->erro(true,false);
-    $db_botao=true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if($clautoracervo->erro_campo!=""){
-      echo "<script> document.form1.".$clautoracervo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clautoracervo->erro_campo.".focus();</script>";
+if (isset($alterar)) {
+    if ($clautoracervo->erro_status=="0") {
+        $clautoracervo->erro(true, false);
+        $db_botao=true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($clautoracervo->erro_campo!="") {
+            echo "<script> document.form1.".$clautoracervo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clautoracervo->erro_campo.".focus();</script>";
+        };
+    } else {
+        $clautoracervo->erro(true, true);
     };
-  }else{
-    $clautoracervo->erro(true,true);
-  };
 };
-if(isset($excluir)){
-  if($clautoracervo->erro_status=="0"){
-    $clautoracervo->erro(true,false);
-  }else{
-    $clautoracervo->erro(true,true);
-  };
+if (isset($excluir)) {
+    if ($clautoracervo->erro_status=="0") {
+        $clautoracervo->erro(true, false);
+    } else {
+        $clautoracervo->erro(true, true);
+    };
 };
-if(isset($cancelar)){
- $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
- echo "<script>location.href='".$clautoracervo->pagina_retorno."'</script>";
+if (isset($cancelar)) {
+    $clautoracervo->pagina_retorno = "bib1_autoracervo001.php?bi21_acervo=$bi21_acervo&bi06_titulo=$bi06_titulo";
+    echo "<script>location.href='".$clautoracervo->pagina_retorno."'</script>";
 }
 ?>

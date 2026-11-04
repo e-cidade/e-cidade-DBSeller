@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ if (!isset($pesquisar)) {
                <?=$Lpc80_codproc?>
              </td>
              <td>
-               <?
+               <?php
                  db_input("pc80_codproc",10,$Ipc80_codproc,true,"text",4,"","chave_pc80_codproc");
                ?>
              </td>
@@ -98,7 +98,7 @@ if (!isset($pesquisar)) {
                <?=$Lpc10_numero?>
              </td>
              <td>
-               <?
+               <?php
                  db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
                  db_input("param",10,"",false,"hidden",3);
                ?>
@@ -110,7 +110,7 @@ if (!isset($pesquisar)) {
                <b>Data Inicial:</b>
              </td>
              <td nowrap>
-               <?
+               <?php
                 db_inputdata("pc80_data",@$pc80_datai_dia,@$pc80_datai_mes,@$pc80_datai_ano,true,"text",1,"","pc80_datai");
                ?>
              </td>
@@ -121,7 +121,7 @@ if (!isset($pesquisar)) {
                <b>Data Final:</b>
              </td>
              <td nowrap>
-               <?
+               <?php
                 db_inputdata("pc80_data",@$pc80_dataf_dia,@$pc80_dataf_mes,@$pc80_dataf_ano,true,"text",1,"","pc80_dataf");
                ?>
              </td>
@@ -140,7 +140,7 @@ if (!isset($pesquisar)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
         if (isset($orc)) {
           $result_chave = $clpcprocitem->sql_record($clpcprocitem->sql_query_orcam(null," distinct pc81_codproc as chave_pc80_codproc",""," pc22_codorc=$orc "));
@@ -229,12 +229,12 @@ if (!isset($pesquisar)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

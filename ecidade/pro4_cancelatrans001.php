@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -118,7 +118,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Cancela
      </form>
        </tr>
        </table>
-       <?
+       <?php
          $sql = "select p62_codtran,nome,descrdepto
                  from   proctransfer inner join db_depart on p62_coddeptorec = coddepto 
                         left outer join db_usuarios on p62_id_usorec = id_usuario
@@ -132,7 +132,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Cancela
 	</td> 
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;

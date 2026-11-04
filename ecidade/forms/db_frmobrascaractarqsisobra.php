@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,19 +35,19 @@ $clobrascaractarqsisobra->rotulo->label();
 				<td nowrap title="<?=@$Tob23_sequencial?>">
 				</td>
 				<td> 
-					<?
+					<?php
 						db_input('ob23_sequencial',10,$Iob23_sequencial,true,'hidden',3,"")
 					?>
 				</td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tob23_caractorigem?>">
-					<?
+					<?php
 						db_ancora(@$Lob23_caractorigem,"js_consultaorigem(true);",$db_opcao);
 					?>
 				</td>
 				<td> 
-					<?
+					<?php
 						db_input('ob23_caractorigem',10,$Iob23_caractorigem,true,'text',$db_opcao,"onChange=js_consultaorigem(false);");
 						db_input('descrOrigem',40,$Iob23_caractorigem,true,'text',3,"");
 					?>
@@ -55,12 +55,12 @@ $clobrascaractarqsisobra->rotulo->label();
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tob23_caractdestino?>">
-					<?
+					<?php
 						db_ancora(@$Lob23_caractdestino,"js_consultadestino(true);",$db_opcao);
 					?>
 				</td>
 				<td> 
-					<?
+					<?php
 						db_input('ob23_caractdestino',10,$Iob23_caractdestino,true,'text',$db_opcao,"onChange=js_consultadestino(false);");
 						db_input('descrDestino',40,$Iob23_caractdestino,true,'text',3,"");
 					?>
@@ -129,7 +129,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrascaractarqsisobra.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

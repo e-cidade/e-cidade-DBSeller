@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $aux1  = new cl_arquivo_auxiliar;
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
   db_app::load("scripts.js, strings.js, prototype.js,");
   db_app::load("estilos.css");
   ?>
@@ -66,7 +66,7 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Considerar Data:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(1 => "Processamento", 2 => "Efetivo Pagamento");
                     db_select("cboData", $aSelect, true, 1, 'style="width:100%;"');
                     ?>
@@ -75,13 +75,13 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Período:</b></td>
                   <td>
-                    <?
+                    <?php
                     db_inputdata('dtini', null, null, null, true, 'text', 1, "");
                     ?>
                   </td>
                   <td align="center"><b>até</b></td>
                   <td>
-                    <?
+                    <?php
                     db_inputdata('dtfim', null, null, null, true, 'text', 1, "");
                     ?>
                   </td>
@@ -89,13 +89,13 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Valor Inicial:</b></td>
                   <td>
-                    <?
+                    <?php
                     db_input('vlinicial', 10, "", true, 'text', 1, '', '', '', 'width:100%');
                     ?>
                   </td>
                   <td><b>Valor Final:</b></td>
                   <td>
-                    <?
+                    <?php
                     db_input('vlfinal', 10, "", true, 'text', 1, '', '', '', 'width:100%');
                     ?>
                   </td>
@@ -103,7 +103,7 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Agrupamento:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(1 => "Tipo débito", 2 => "Receita", 3 => "Origem", 6 => "Estrutural Receita");
                     db_select("cboAgrupamento", $aSelect, true, 1,  'onChange="js_validaOrdenacao();" style="width:100%;"');
                     ?>
@@ -112,7 +112,7 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr id="trOrigem" style="display: none;">
                   <td><b>Origem:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(2 => "Matrícula", 3 => "Inscrição", 4 => "Somente CGM");
                     db_select("cboOrigem", $aSelect, true, 1, 'onChange="js_validaOrdenacao();" style="width:100%;"');
                     ?>
@@ -121,11 +121,11 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Ordenação:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(1 => "Tipo de Débito", 2 => "Valor");
                     db_select("cboOrdenacao", $aSelect, true, 1,  'onChange="js_cboOrdenacao();" style="width:100%;"');
                     ?>
-                    <?
+                    <?php
                     $aSelect = array(1 => "Crescente", 2 => "Decrescente");
                     db_select("cboOrdenacaoValor", $aSelect, true, 1,  'style="width:30%;display:none;"');
                     ?>
@@ -134,7 +134,7 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Demonstração:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(1 => "Ambos", 2 => "Imposto/Taxa", 3 => "Juro e Multa");
                     db_select("cboDemonstracao", $aSelect, true, 1, 'style="width:100%;"');
                     ?>
@@ -143,7 +143,7 @@ $aux1  = new cl_arquivo_auxiliar;
                 <tr>
                   <td><b>Totalização:</b></td>
                   <td colspan="3">
-                    <?
+                    <?php
                     $aSelect = array(
                       1 => "Imprimir Dados e Totalizações", 2 => "Imprimir Somente Totalizações",
                       3 => "Imprimir Somente Dados"
@@ -159,7 +159,7 @@ $aux1  = new cl_arquivo_auxiliar;
         <tr>
           <td>
 
-            <?
+            <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<b>Tipo de débito</b>";
             $aux->codigo = "k00_tipo"; //chave de retorno da func
@@ -186,7 +186,7 @@ $aux1  = new cl_arquivo_auxiliar;
         <tr>
           <td>
 
-            <?
+            <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux1->cabecalho = "<b>Receita</b>";
             $aux1->codigo = "k02_codigo"; //chave de retorno da func
@@ -223,7 +223,7 @@ $aux1  = new cl_arquivo_auxiliar;
     </form>
 
   </center>
-  <? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
+  <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
   <script type="text/javascript">
     function js_validaOrdenacao() {
 

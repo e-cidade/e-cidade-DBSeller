@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $oRotulo->label("o15_descr");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js, datagrid.widget.js, widgets/dbautocomplete.widget.js");
       db_app::load("estilos.css,grid.style.css");
@@ -60,7 +60,7 @@ $oRotulo->label("o15_descr");
                 <b>Recurso SigFis:</b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_input('codigorecursotce', 10, $Io15_codtri, true, "text", 3);
                   db_input('descricaorecursotce',  40, $Io15_descr, true, "text", 1);
                 ?>
@@ -68,11 +68,11 @@ $oRotulo->label("o15_descr");
             </tr> 
             <tr>
               <td>
-                <b><?
+                <b><?php
                 db_ancora($Lo15_codigo, 'js_pesquisa_recursos(true);', 1)?></b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_input('o15_codigo', 10, $Io15_codigo, true, "text", 1);
                   db_input('o15_descr',  40, $Io15_descr, true, "text", 3);
                 ?>
@@ -86,7 +86,7 @@ $oRotulo->label("o15_descr");
     </center>
   </body>
 </html>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>    
 <script>

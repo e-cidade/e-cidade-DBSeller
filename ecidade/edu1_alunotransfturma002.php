@@ -234,7 +234,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
              ?>
               <input name="regenciadestino" type="text" value="<?=$regenciadestino?>" size="10" readonly style="width:75px">
               <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>" size="30" readonly style="width:180px">
-             <?
+             <?php
            } else {
 
              $sSelectWhere  = "select ed232_i_codigo                                                    \n";
@@ -1784,7 +1784,7 @@ if (isset($incluir) ) {
     db_msgbox($sMsgSucesso);
   }
 
-  ?><script>parent.location.href = "edu1_alunotransfturma001.php";</script><?
+  ?><script>parent.location.href = "edu1_alunotransfturma001.php";</script><?php
 }
 
 if( isset( $incluir2 ) ) {

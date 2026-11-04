@@ -48,7 +48,7 @@ class CadastroBeneficiarioFormatter extends Formatter
     private $empregador;
 
     /**
-     * @param array $dados
+     * @param  array $dados
      * @return array|\Assentamento[]
      * @throws \DBException
      */
@@ -94,7 +94,7 @@ class CadastroBeneficiarioFormatter extends Formatter
             $dadoServidor->beneficiario["dtIncFisMen"] = $dataLaudo;
         }
         $dadoServidor->beneficiario["endereco"] = $this->montarGrupoEndereco();
-        $dependentes =$this->montarGrupoDependente();
+        $dependentes = $this->montarGrupoDependente();
         if (sizeof($dependentes) > 0) {
             $dadoServidor->beneficiario["dependente"] = $dependentes;
         }
@@ -109,21 +109,24 @@ class CadastroBeneficiarioFormatter extends Formatter
         if (empty($cgmServidor->getCodigoPaisExterior())) {
             $enderecoBrasil = new \stdClass();
             $enderecoBrasil->tpLograd = $endereco->getSiglaRua();
-            $enderecoBrasil->dscLograd = $cgmServidor->getLogradouro();
-            $enderecoBrasil->nrLograd = $cgmServidor->getNumero();
-            if (!empty($cgmServidor->getComplemento())) {
-                $enderecoBrasil->complemento = $cgmServidor->getComplemento();
+            $enderecoBrasil->dscLograd = $endereco->getDescricaoRua();
+            $enderecoBrasil->nrLograd = $endereco->getNumeroLocal();
+            if (!empty($endereco->getComplementoEndereco())) {
+                $enderecoBrasil->complemento = $endereco->getComplementoEndereco();
             }
-            if (!empty($cgmServidor->getBairro())) {
-                $enderecoBrasil->bairro = $cgmServidor->getBairro();
+            if (!empty($endereco->getDescricaoBairro())) {
+                $enderecoBrasil->bairro = $endereco->getDescricaoBairro();
             }
-            $enderecoBrasil->cep = $cgmServidor->getCep();
+            $enderecoBrasil->cep = $endereco->getCepEndereco();
             $codigoMunicipio = $endereco->getCodigoSistemaExterno();
             if (empty($codigoMunicipio)) {
-                $codigoMunicipio = \endereco::getCodigoExternoSistemaByCep($cgmServidor->getCep());
+                $codigoMunicipio = \endereco::getCodigoExternoSistemaByCep(
+                    $endereco->getCepEndereco(),
+                    $this->servidorAtual->getMatricula()
+                );
             }
             $enderecoBrasil->codMunic = $codigoMunicipio;
-            $enderecoBrasil->uf = $cgmServidor->getUf();
+            $enderecoBrasil->uf = $endereco->getSiglaEstado();
 
             $retornoEndereco['brasil'] = $enderecoBrasil;
         } else {
@@ -145,14 +148,22 @@ class CadastroBeneficiarioFormatter extends Formatter
     private function montarGrupoDependente()
     {
 
-        $retornoDependentes = array();
+        $retornoDependentes = [];
         foreach ($this->servidorAtual->getDependentes() as $dados) {
-            $dependente = array();
-            $tpDep = $this->deParaTipoDependente($dados->getGrauParentesco());
-            if ($tpDep) {
-                $dependente["tpDep"] = $tpDep;
+            $dependente = [];
+            $tpDep = "";
+            if (!empty($dados->getTipoParentesco())) {
+                $tpDep = $dados->getTipoParentesco();
+            } else {
+                $tpDep = $this->deParaTipoDependente($dados->getGrauParentesco());
             }
-            $dependente["nmDep"]     = $dados->getNome();
+            if (!empty($tpDep)) {
+                $dependente["tpDep"] = $tpDep;
+                if ($dependente["tpDep"] == "99") {
+                    $dependente['descrDep'] = $dados->getDescricaoParentesco();
+                }
+            }
+            $dependente["nmDep"] = $dados->getNome();
             if (!empty($dados->getDataNascimento())) {
                 $dependente["dtNascto"] = $dados->getDataNascimento()->getDate();
             }
@@ -334,8 +345,9 @@ class CadastroBeneficiarioFormatter extends Formatter
     private function verificaDeficiencia()
     {
         $retorno = "N";
-        if ($this->servidorAtual->movimentacao->isDeficienteFisico() == "t" ||
-            $this->servidorAtual->movimentacao->isPortadorMolestia() == "t") {
+        if ($this->servidorAtual->movimentacao->isDeficienteFisico() == "t"
+            || $this->servidorAtual->movimentacao->isPortadorMolestia() == "t"
+        ) {
             $retorno = "S";
         }
         return $retorno;
@@ -373,7 +385,7 @@ class CadastroBeneficiarioFormatter extends Formatter
     /**
      * Get the value of empregador
      *
-     * @return  CgmJuridico
+     * @return CgmJuridico
      */
     public function getEmpregador()
     {
@@ -383,9 +395,9 @@ class CadastroBeneficiarioFormatter extends Formatter
     /**
      * Set the value of empregador
      *
-     * @param  CgmJuridico  $empregador
+     * @param CgmJuridico $empregador
      *
-     * @return  self
+     * @return self
      */
     public function setEmpregador(CgmJuridico $empregador)
     {

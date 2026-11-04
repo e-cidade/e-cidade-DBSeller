@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
               <?=$Ls142_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		          db_input("s142_i_codigo",5,$Is142_i_codigo,true,"text",4,"","chave_s142_i_codigo");
               ?>
             </td>
@@ -67,7 +67,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	            db_input("z01_v_nome",55,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		          ?>
             </td>
@@ -85,7 +85,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_encaminhamentos.php")==true){
@@ -183,12 +183,12 @@ $oClcgs_und->rotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ td {
   </td>
 </tr>
 </table>
-<?   
+<?php   
       $sql = "select q03_ativ,q03_descr from ativid inner join clasativ on q82_ativ = q03_ativ where q82_classe in ($chaves1) order by q03_ativ";
       //echo($sql)."<br><br>";
       $cliframe_seleciona->sql=$sql;

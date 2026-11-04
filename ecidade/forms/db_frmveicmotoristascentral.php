@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
    db_input("ve41_veiccadcentral",10,0,true,"hidden",3);
    db_input("sequencial",         10,0,true,"hidden",3);
 ?>
@@ -39,17 +39,17 @@ $clrotulo->label("z01_nome");
 <table border="0" width="790">
   <tr>
     <td nowrap align="right" title="<?=@$Tve41_veicmotoristas?>">
-    <? 
+    <?php 
        db_ancora(@$Lve41_veicmotoristas,"js_pesquisave41_veicmotoristas(true);",$db_opcao) 
     ?>
     </td>
     <td nowrap width="10%">
-    <? 
+    <?php 
        db_input('ve41_veicmotoristas',10,$Ive41_veicmotoristas,true,'text',$db_opcao,"onChange='js_pesquisave41_veicmotoristas(false);'"); 
     ?>
     </td>
     <td nowrap>
-    <? 
+    <?php 
        db_input('z01_nome',40,0,true,'text',3); 
     ?>
     </td>
@@ -57,12 +57,12 @@ $clrotulo->label("z01_nome");
   <tr>
     <td nowrap align="right" title="<?=@$Tve41_dtini?>"><?=@$Lve41_dtini?></td>
     <td nowrap>
-    <?
+    <?php
        db_inputdata('ve41_dtini',@$ve41_dtini_dia,@$ve41_dtini_mes,@$ve41_dtini_ano,true,"text",$db_opcao,"")
     ?>
     </td>
     <td nowrap colspan="2" align="left" title="<?=@$Tve41_dtfim?>"><?=@$Lve41_dtfim?>
-    <?
+    <?php
        db_inputdata('ve41_dtfim',@$ve41_dtfim_dia,@$ve41_dtfim_mes,@$ve41_dtfim_ano,true,"text",$db_opcao,"")
     ?>
     </td>
@@ -74,18 +74,18 @@ $clrotulo->label("z01_nome");
           value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
   </tr>	
   <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
        $dbwhere = "";
        if (isset($ve41_veiccadcentral) && trim($ve41_veiccadcentral)!=""){
          $dbwhere = "ve41_veiccadcentral = $ve41_veiccadcentral";

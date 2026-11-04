@@ -113,7 +113,7 @@ if ( !isset($sd30_i_diasemana) ) {
                       <tr>
                         <td nowrap title="<?php echo @$Tsd30_i_tipoficha?>"><?php echo @$Lsd30_i_tipoficha?></td>
                         <td>
-                          <?
+                          <?php
                             $result = $clsau_tipoficha->sql_record($clsau_tipoficha->sql_query("","*"));
                             db_selectrecord("sd30_i_tipoficha",$result,true,$db_opcao,'','','','','',1);
                           ?>

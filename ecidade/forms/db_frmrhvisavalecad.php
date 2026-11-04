@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("rh01_numcgm");
       <?=@$Lrh49_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh49_codigo',10,$Irh49_codigo,true,'text',3,"")
       ?>
     </td>
@@ -52,7 +52,7 @@ $clrotulo->label("rh01_numcgm");
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($rh49_anousu)){
         $rh49_anousu = db_anofolha();
       }
@@ -62,25 +62,25 @@ $clrotulo->label("rh01_numcgm");
       db_input('rh49_anousu',4,$Irh49_anousu,true,'text',3,"")
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input('rh49_mesusu',2,$Irh49_mesusu,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh49_regist?>" align="right">
-      <?
+      <?php
       db_ancora(@$Lrh49_regist,"js_pesquisarh49_regist(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh49_regist',10,$Irh49_regist,true,'text',$db_opcao," onchange='js_pesquisarh49_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('rh49_numcgm',10,$Irh49_numcgm,true,'text',3," onchange='js_pesquisarh49_numcgm(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome',40,$Iz01_nome,true,'text',3," ")
       ?>
     </td>
@@ -90,7 +90,7 @@ $clrotulo->label("rh01_numcgm");
       <?=@$Lrh49_valor?>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($rh49_valor)){
       	$rh49_valor = 0;
       }
@@ -105,7 +105,7 @@ $clrotulo->label("rh01_numcgm");
        <?=@$Lrh49_perc?>
     </td>
     <td>
-<?
+<?php
 db_input('rh49_perc',10,$Irh49_perc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,7 +116,7 @@ db_input('rh49_perc',10,$Irh49_perc,true,'text',$db_opcao,"")
        <?=@$Lrh49_percdep?>
     </td>
     <td>
-		<?
+		<?php
 		  db_input('rh49_percdep',10,$Irh49_percdep,true,'text',$db_opcao,"");
 		?>
     </td>
@@ -127,7 +127,7 @@ db_input('rh49_perc',10,$Irh49_perc,true,'text',$db_opcao,"")
        <?=@$Lrh49_diasafasta?>
     </td>
     <td>
-<?
+<?php
 db_input('rh49_diasafasta',10,$Irh49_diasafasta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ db_input('rh49_diasafasta',10,$Irh49_diasafasta,true,'text',$db_opcao,"")
        <?=@$Lrh49_valormes?>
     </td>
     <td>
-<?
+<?php
 db_input('rh49_valormes',10,$Irh49_valormes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -202,7 +202,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhvisavalecad.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

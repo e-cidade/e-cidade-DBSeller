@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,7 +69,7 @@ if ($clparitbi->numrows > 0) {
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("datas"   =>"Datas",
                                        "dados"   =>"Dados do imovel",
                                        "transm"  =>"Transmitentes",
@@ -129,7 +129,7 @@ if ($clparitbi->numrows > 0) {
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

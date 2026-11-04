@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,7 +39,7 @@ $cltipoproc->rotulo->label();
       <?=@$Ldb112_sequencial?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db112_sequencial', 10, $Idb112_sequencial, true, 'text', 3, "");
       ?>
     </td>
@@ -49,7 +49,7 @@ $cltipoproc->rotulo->label();
       <b>Modulo</b>
     </td>
     <td>
-      <?
+      <?php
         db_select('db173_modulo', $modulos, true, 1);
       ?>
     </td>
@@ -59,7 +59,7 @@ $cltipoproc->rotulo->label();
       <b>Grupo do Tipo de Processo:</b>
     </td>
     <td>
-      <?
+      <?php
         db_select('p51_tipoprocgrupo', $grupos, true, 1);
       ?>
     </td>
@@ -69,7 +69,7 @@ $cltipoproc->rotulo->label();
       <?=@$Ldb112_descricao?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db112_descricao', 80, $Idb112_descricao, true, 'text', 1, "onchange='js_valordescricao();'");
       ?>
     </td>
@@ -79,7 +79,7 @@ $cltipoproc->rotulo->label();
       <b>Descrição do Processo de Protocolo:</b>
     </td>
     <td>
-      <?
+      <?php
         db_input('p51_descr', 80, $Ip51_descr, true, 'text', 1, "onchange='js_valordescricao();'");
       ?>
     </td>

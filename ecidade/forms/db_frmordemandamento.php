@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,14 +61,14 @@
 	  for(var i = 0;i < obj.length;i++)
 	   document.form1.usuarioescolhido.options[i] = new Option(obj[i], obj[i], false, false);
 	}
-	<?
+	<?php
     echo "\n</script>\n\n";
   
 ?>
   <form name="form1" method="post">
   <table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-      <td colspan="3" nowrap ><input name="codordem"  value="<? echo $cod_ord_and ?>" type="hidden" id="codordem2">
+      <td colspan="3" nowrap ><input name="codordem"  value="<?php echo $cod_ord_and ?>" type="hidden" id="codordem2">
       </td>
     </tr>
     <tr> 
@@ -80,7 +80,7 @@
           <tr> 
             <td width="12%" nowrap style="font-size:13px" >Data inicial:</td>
             <td width="34%" nowrap  style="font-size:13px"> 
-             <? include(modification("dbforms/db_funcoes.php")) ;
+             <?php include(modification("dbforms/db_funcoes.php")) ;
 		  db_data("dtini",date("d"),date("m"),date("Y"));
 		  ?>
             </td>
@@ -92,7 +92,7 @@
           <tr> 
             <td nowrap  style="font-size:13px">Data final:</td>
             <td nowrap  style="font-size:13px"> 
-              <? 
+              <?php 
 		  db_data("dtfim",date("d"),date("m"),date("Y"));
 		  ?>
             </td>
@@ -110,7 +110,7 @@
                   <td width="46%" nowrap style="font-size:13px" ><div align="right">Departamento:</div></td>
                   <td width="54%" nowrap style="font-size:13px" >
 				  <select name="depto" id="depto" onChange="vai(eval(this.options[this.selectedIndex].value))">
-				  <? 
+				  <?php 
 				    $descratual = pg_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
 					$numdep = pg_numrows($listaDepartamentos);
@@ -125,7 +125,7 @@
                 <tr> 
                   <td nowrap style="font-size:13px" ><div align="right">Usuario:</div></td>
                   <td nowrap style="font-size:13px" ><select name="usuarioescolhido" id="select">
-                    <? 
+                    <?php 
 					
 					$coddepartamento = pg_result($result,0,"coddepto");
 					$nome = pg_result($result,0,"nomeusureceb");
@@ -150,7 +150,7 @@
           <tr> 
             <td colspan="4" nowrap style="font-size:13px">Descri&ccedil;&atilde;o:</td>
           </tr>
-	  <?
+	  <?php
 		  if($dtrecebe!=null){
 	  ?>
           <tr> 
@@ -158,31 +158,31 @@
                 <textarea name="descr" cols="80" rows="5" id="descr"></textarea>
               </div></td>
           </tr>
-	   <?
+	   <?php
 	            }   
 	   ?>
         </table></td>
     </tr>
     <tr> 
       <td width="249" nowrap ><div align="center"> 
-	      <?
+	      <?php
 		  if($dtrecebe!=null){
 		  ?>
           <input name="incluir" type="submit" id="incluir" value="Incluir Andamento">
-		  <?
+		  <?php
 		  }
 		  ?>
         </div></td>
       <td width="232" nowrap ><div align="center"> 
-	      <?
+	      <?php
 		  if($dtrecebe!=null){
 		  ?>
           <input name="finaliza" type="submit" id="finaliza" value="Finalizar esta ordem" onClick="return confirm('Quer realmente finalizar esta ordem?')">
-		  <?
+		  <?php
 		  }else{
 		  ?>
           <input name="recebe" type="submit" id="recebe" value="Confirma Recebimento" >
-		  <?
+		  <?php
 		  }
 		  ?>
         </div></td>

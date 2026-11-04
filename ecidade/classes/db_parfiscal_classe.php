@@ -66,8 +66,9 @@ class cl_parfiscal {
    var $y32_templatealvarasanitarioprovisorio = 0;
    var $y32_templateautoinfracao = 0;
    var $y32_calculavistoriamei = 'f';
-   var $y32_tipodataoperacao = 0; 
-   var $y32_tipodatavencimento = 0; 
+   var $y32_tipodataoperacao = 0;
+   var $y32_tipodatavencimento = 0;
+   var $y32_calcprovisorio = 'f';
    // cria propriedade com as variaveis do arquivo
    var $campos = "
                  y32_instit = int4 = Código da Instituição
@@ -94,17 +95,18 @@ class cl_parfiscal {
                  y32_templatealvarasanitarioprovisorio = int4 = Template Padrão Alvará Sanitário Provisório
                  y32_templateautoinfracao = int4 = Modelo do Auto
                  y32_calculavistoriamei = bool = Calcula vistorias para MEI
-                 y32_tipodataoperacao = int4 = Tipo Data Operação 
-                 y32_tipodatavencimento = int4 = Tipo Data Vencimento 
+                 y32_tipodataoperacao = int4 = Tipo Data Operação
+                 y32_tipodatavencimento = int4 = Tipo Data Vencimento
+                 y32_calcprovisorio = bool = Calcula vist. alvará sanitário prov.
                  ";
    //funcao construtor da classe
-   function cl_parfiscal() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parfiscal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -113,7 +115,7 @@ class cl_parfiscal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y32_instit = ($this->y32_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["y32_instit"]:$this->y32_instit);
        $this->y32_tipo = ($this->y32_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["y32_tipo"]:$this->y32_tipo);
@@ -141,12 +143,13 @@ class cl_parfiscal {
        $this->y32_calculavistoriamei = ($this->y32_calculavistoriamei == "f"?@$GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"]:$this->y32_calculavistoriamei);
        $this->y32_tipodataoperacao = ($this->y32_tipodataoperacao == ""?@$GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"]:$this->y32_tipodataoperacao);
        $this->y32_tipodatavencimento = ($this->y32_tipodatavencimento == ""?@$GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"]:$this->y32_tipodatavencimento);
+       $this->y32_calcprovisorio = ($this->y32_calcprovisorio == "f"?@$GLOBALS["HTTP_POST_VARS"]["y32_calcprovisorio"]:$this->y32_calcprovisorio);
      }else{
        $this->y32_instit = ($this->y32_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["y32_instit"]:$this->y32_instit);
      }
    }
    // funcao para Inclusão
-   function incluir ($y32_instit){
+   public function incluir ($y32_instit){
       $this->atualizacampos();
      if($this->y32_tipo == null ){
        $this->erro_sql = " Campo Tipo de Débito não informado.";
@@ -331,7 +334,7 @@ class cl_parfiscal {
      if($this->y32_calculavistoriamei == null ){
        $this->y32_calculavistoriamei = "false";
      }
-     if($this->y32_tipodataoperacao == null ){ 
+     if($this->y32_tipodataoperacao == null ){
        $this->erro_sql = " Campo Tipo Data Operação nao Informado.";
        $this->erro_campo = "y32_tipodataoperacao";
        $this->erro_banco = "";
@@ -340,7 +343,7 @@ class cl_parfiscal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y32_tipodatavencimento == null ){ 
+     if($this->y32_tipodatavencimento == null ){
        $this->erro_sql = " Campo Tipo Data Vencimento nao Informado.";
        $this->erro_campo = "y32_tipodatavencimento";
        $this->erro_banco = "";
@@ -349,6 +352,15 @@ class cl_parfiscal {
        $this->erro_status = "0";
        return false;
      }
+     if($this->y32_calcprovisorio == null ){
+      $this->erro_sql = " Campo Calcula vist. alvará sanitário prov. não informado.";
+      $this->erro_campo = "y32_calcprovisorio";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
        $this->y32_instit = $y32_instit;
      if(($this->y32_instit == null) || ($this->y32_instit == "") ){
        $this->erro_sql = " Campo y32_instit não declarado.";
@@ -383,8 +395,9 @@ class cl_parfiscal {
                                       ,y32_templatealvarasanitarioprovisorio
                                       ,y32_templateautoinfracao
                                       ,y32_calculavistoriamei
-                                      ,y32_tipodataoperacao 
-                                      ,y32_tipodatavencimento 
+                                      ,y32_tipodataoperacao
+                                      ,y32_tipodatavencimento
+                                      ,y32_calcprovisorio
                        )
                 values (
                                 $this->y32_instit
@@ -412,7 +425,8 @@ class cl_parfiscal {
                                ,$this->y32_templateautoinfracao
                                ,'$this->y32_calculavistoriamei'
                                ,$this->y32_tipodataoperacao
-                               ,$this->y32_tipodatavencimento 
+                               ,$this->y32_tipodatavencimento
+                               ,'$this->y32_calcprovisorio'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -474,7 +488,8 @@ class cl_parfiscal {
          $resac = db_query("insert into db_acount values($acount,1103,20824,'','".AddSlashes(pg_result($resaco,0,'y32_templateautoinfracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_result($resaco,0,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-	 $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+	       $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,1014960,'','".AddSlashes(pg_result($resaco,0,'y32_calcprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -772,13 +787,13 @@ class cl_parfiscal {
        $sql  .= $virgula." y32_calculavistoriamei = $this->y32_calculavistoriamei ";
        $virgula = ",";
      }
-     if(trim($this->y32_tipodataoperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
-        if(trim($this->y32_tipodataoperacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
-           $this->y32_tipodataoperacao = "0" ; 
-        } 
+     if(trim($this->y32_tipodataoperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){
+        if(trim($this->y32_tipodataoperacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){
+           $this->y32_tipodataoperacao = "0" ;
+        }
        $sql  .= $virgula." y32_tipodataoperacao = $this->y32_tipodataoperacao ";
        $virgula = ",";
-       if(trim($this->y32_tipodataoperacao) == null ){ 
+       if(trim($this->y32_tipodataoperacao) == null ){
          $this->erro_sql = " Campo Tipo Data Operação nao Informado.";
          $this->erro_campo = "y32_tipodataoperacao";
          $this->erro_banco = "";
@@ -789,13 +804,13 @@ class cl_parfiscal {
        }
      }
 
-     if(trim($this->y32_tipodatavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
-        if(trim($this->y32_tipodatavencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
-           $this->y32_tipodatavencimento = "0" ; 
-        } 
+     if(trim($this->y32_tipodatavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){
+        if(trim($this->y32_tipodatavencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){
+           $this->y32_tipodatavencimento = "0" ;
+        }
        $sql  .= $virgula." y32_tipodatavencimento = $this->y32_tipodatavencimento ";
        $virgula = ",";
-       if(trim($this->y32_tipodatavencimento) == null ){ 
+       if(trim($this->y32_tipodatavencimento) == null ){
          $this->erro_sql = " Campo Tipo Data Vencimento nao Informado.";
          $this->erro_campo = "y32_tipodatavencimento";
          $this->erro_banco = "";
@@ -805,6 +820,20 @@ class cl_parfiscal {
          return false;
        }
      }
+
+     if(trim($this->y32_calcprovisorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_calcprovisorio"])){
+      $sql  .= $virgula." y32_calcprovisorio = '$this->y32_calcprovisorio' ";
+      $virgula = ",";
+      if(trim($this->y32_calcprovisorio) == null ){
+        $this->erro_sql = " Campo Calcula vist. alvará sanitário prov. não informado.";
+        $this->erro_campo = "y32_calcprovisorio";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
 
      $sql .= " where ";
      if($y32_instit!=null){
@@ -874,8 +903,10 @@ class cl_parfiscal {
 
            if(isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"]))
              $resac = db_query("insert into db_acount values($acount,1103,1013324,'".pg_result($resaco,0,'y32_tipodataoperacao')."','$this->y32_tipodataoperacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-	   if(isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"]))
+	         if(isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"]))
              $resac = db_query("insert into db_acount values($acount,1103,1013343,'".pg_result($resaco,0,'y32_tipodatavencimento')."','$this->y32_tipodatavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["y32_calcprovisorio"]) || $this->y32_calcprovisorio != "")
+             $resac = db_query("insert into db_acount values($acount,1103,1014960,'".AddSlashes(pg_result($resaco,$conresaco,'y32_calcprovisorio'))."','$this->y32_calcprovisorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -958,6 +989,7 @@ class cl_parfiscal {
            $resac  = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1103,1014960,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_calcprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1030,10 +1062,10 @@ class cl_parfiscal {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1069,7 +1101,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1078,10 +1110,10 @@ class cl_parfiscal {
      }
      return $sql;
   }
-   function sql_query_param ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_param ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1118,7 +1150,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1128,10 +1160,10 @@ class cl_parfiscal {
      return $sql;
   }
 
-   function sql_query_file ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1152,7 +1184,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

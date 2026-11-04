@@ -76,7 +76,6 @@ class AlteracaoContratualFormatter extends ServidorFormatter
         $novoDado->ideVinculo['matricula'] = $servidor->vinculo['matricula'];
 
         $this->atualizarDadosServidor($novoDado, $servidor);
-
         return $novoDado;
     }
 
@@ -99,7 +98,6 @@ class AlteracaoContratualFormatter extends ServidorFormatter
         $this->regTrab = $servidor->vinculo['tpRegTrab'];
 
         $novoDado->altContratual['vinculo']['tpRegPrev'] = $servidor->vinculo['tpRegPrev'];
-
         if (isset($novoDado->vinculo['infoRegimeTrab']['infoCeletista'])) {
             unset($novoDado->vinculo['infoRegimeTrab']['infoCeletista']['dtAdm']);
             unset($novoDado->vinculo['infoRegimeTrab']['infoCeletista']['tpAdmissao']);
@@ -163,6 +161,12 @@ class AlteracaoContratualFormatter extends ServidorFormatter
                 $novoDado->altContratual['vinculo']['infoRegimeTrab']['infoEstatutario']['indAbonoPerm'] = 'N';
             }
         }
+        
+        //(validação infoRegimeTrab) Removendo Alteração contratual
+        if ($servidor->vinculo['tpRegPrev'] == 1 && $servidor->vinculo['tpRegTrab'] == 2) {
+            unset($novoDado->altContratual['vinculo']['infoRegimeTrab']);
+        }
+
         // Adicionando regra conforme o layout que diz, quando for S-2006 deve ser informado o cnpj do empregador
         if (isset($novoDado->vinculo['infoContrato']['localTrabalho']) &&
             isset($novoDado->vinculo['infoContrato']['localTrabalho']['localTrabGeral'])) {
@@ -171,6 +175,10 @@ class AlteracaoContratualFormatter extends ServidorFormatter
             $novoDado->vinculo['infoContrato']['localTrabalho']['localTrabGeral']['tpInsc'] = 1; //CNPJ
         }
         $novoDado->altContratual['vinculo']['infoContrato'] = $novoDado->vinculo['infoContrato'];
+        
+        if (sizeof($novoDado->altContratual['vinculo']['infoContrato']['treiCap']) == 0) {
+            unset($novoDado->altContratual['vinculo']['infoContrato']['treiCap']);
+        }
     }
 
     private function removeOpcionais($novoDado)
@@ -209,8 +217,6 @@ class AlteracaoContratualFormatter extends ServidorFormatter
             && !empty($novoDado->altContratual['vinculo']['infoContrato']['remuneracao'])) {
             unset($novoDado->altContratual['vinculo']['infoContrato']['remuneracao']);
         }
-
-
         /**
          * Remove grupos pertencentes ao evt2200.
          */

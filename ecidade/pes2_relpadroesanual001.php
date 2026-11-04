@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,12 +73,12 @@ $oPost = db_utils::postMemory($_POST);
               <strong>Ano :&nbsp;&nbsp;</strong>
               </td>
               <td>
-                <?
+                <?php
                  $DBtxt23 = db_anofolha();
                  db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
                 ?>
                 &nbsp;&nbsp; a &nbsp;&nbsp;
-                <?
+                <?php
                  $anofinal = db_anofolha();
                  db_input('anofinal',4,'',true,'text',2,'')
                 ?>
@@ -87,12 +87,12 @@ $oPost = db_utils::postMemory($_POST);
             
             <tr> 
                 <td title="Informe o padrão ou deixe em branco para todos."> 
-                  <?
+                  <?php
                   db_ancora("Padrão:", "js_pesquisarpadrao(true);", 1);
                   ?>
                 </td>
                 <td> 
-                  <?
+                  <?php
                   db_input('r02_codigo', 8, $Ir02_codigo, true, 'text', 1, " onchange='js_pesquisarpadrao(false);'");
                   db_input('r02_descr', 30, $Ir02_descr,  true, 'text', 3, '');
                   ?>
@@ -102,7 +102,7 @@ $oPost = db_utils::postMemory($_POST);
             <tr title="Tipo de folha">
               <td><b>Regime :&nbsp;&nbsp;</b></td>
               <td>
-               <?
+               <?php
                  $x = array("t"=>"Todos","1"=>"Estatutários","2"=>"CLT","3"=>"Extra Quadro");
                  db_select('regime',$x,true,4,"");
                ?>
@@ -112,7 +112,7 @@ $oPost = db_utils::postMemory($_POST);
             <tr  title="Ordem">
               <td><b>Ordem :&nbsp;&nbsp;</b></td>
               <td>
-               <?
+               <?php
                  $x = array("p"=>"Padrão","r"=>"Regime");
                  db_select('ordem',$x,true,4,"");
                ?>
@@ -125,7 +125,7 @@ $oPost = db_utils::postMemory($_POST);
         <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
       </center>
     </form>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clsau_turnoatend->rotulo->label();
        <?=@$Lsd43_cod_turnat?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd43_cod_turnat',2,$Isd43_cod_turnat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('sd43_cod_turnat',2,$Isd43_cod_turnat,true,'text',$db_opcao,"")
        <?=@$Lsd43_v_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd43_v_descricao',60,$Isd43_v_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('sd43_v_descricao',60,$Isd43_v_descricao,true,'text',$db_opcao,"")
        <?=@$Lsd43_c_horainicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd43_c_horainicial',5,$Isd43_c_horainicial,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'sd43_c_horainicial', event)\" ")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('sd43_c_horainicial',5,$Isd43_c_horainicial,true,'text',$db_opcao,"onKe
        <?=@$Lsd43_c_horafinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd43_c_horafinal',5,$Isd43_c_horafinal,true,'text',$db_opcao," onKeyUp=\"mascara_hora(this.value,'sd43_c_horafinal', event)\" ")
 ?>
     </td>
@@ -94,7 +94,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_turnoatend.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

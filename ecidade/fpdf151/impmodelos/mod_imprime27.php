@@ -1,4 +1,4 @@
-<?
+<?php
 global $contapagina;
 	$contapagina=1;
 ////////// MODELO 26  -  TRANSFERÊNCIAS DE MATERIAIS
@@ -59,7 +59,7 @@ for ($iCopia = 0; $iCopia < $iTotalCopiasVia; $iCopia++) {
 	  $this->objpdf->setfillcolor(255,255,255);
 	  $this->objpdf->Setfont('Arial','B',11);
 	  $this->objpdf->text(110,$xlin-13,'TRANSFERÊNCIA DE MATERIAIS N'.chr(176).' '.$this->Rnumero);
-	  $this->objpdf->Image('imagens/files/logo_boleto.png',10,$xlin-17,12);
+	  $this->objpdf->Image('imagens/files/' . $this->logo,10,$xlin-17,12);
 
       $this->objpdf->Setfont('Arial', 'B', 9);
       $this->objpdf->text(30, $xlin - 15, $this->prefeitura);

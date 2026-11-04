@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,13 +55,13 @@ class cl_db_imgsitbi {
                  arq = oid = Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_imgsitbi() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_imgsitbi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_db_imgsitbi {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->matricula = ($this->matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["matricula"]:$this->matricula);
        if($this->data == ""){
@@ -86,7 +86,7 @@ class cl_db_imgsitbi {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->matricula == null ){ 
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -151,7 +151,7 @@ class cl_db_imgsitbi {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update db_imgsitbi set ";
      $virgula = "";
@@ -239,7 +239,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from db_imgsitbi
                     where ";
      $sql2 = "";
@@ -278,7 +278,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

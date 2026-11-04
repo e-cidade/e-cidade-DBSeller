@@ -2,8 +2,9 @@
 
 namespace App\Domain\Educacao\CentralMatriculas\Models;
 
-use App\Domain\Educacao\Escola\Models\Bairro;
+use \App\Domain\Tributario\Cadastro\Models\Bairro;
 use App\Domain\Educacao\Escola\Models\Escola as EscolaSede;
+use App\Domain\Tributario\Cadastro\Models\Ruas;
 use ECidade\Enum\Educacao\MatriculaOnline\TipoEscolaEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $mo53_cnpj
  * @property string $mo53_email
  * @property string $mo53_diretor
+ * @property string $mo53_acessibilidade
  * @property array $bairrosAtendidos
  */
 class Escola extends Model
@@ -284,6 +286,11 @@ class Escola extends Model
     public function bairro()
     {
         return $this->belongsTo(Bairro::class, 'mo53_bairro', 'j13_codi');
+    }
+
+    public function rua()
+    {
+        return $this->belongsTo(Ruas::class, 'mo53_ruas', 'j14_codigo');
     }
 
     public function bairrosAtendidos()

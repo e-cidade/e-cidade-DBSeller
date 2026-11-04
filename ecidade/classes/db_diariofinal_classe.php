@@ -68,13 +68,13 @@ class cl_diariofinal {
                  ed74_t_obs = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_diariofinal() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diariofinal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_diariofinal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed74_i_codigo = ($this->ed74_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed74_i_codigo"]:$this->ed74_i_codigo);
        $this->ed74_i_diario = ($this->ed74_i_diario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed74_i_diario"]:$this->ed74_i_diario);
@@ -101,7 +101,7 @@ class cl_diariofinal {
      }
    }
    // funcao para inclusao
-   function incluir ($ed74_i_codigo){
+   public function incluir ($ed74_i_codigo){
       $this->atualizacampos();
      if($this->ed74_i_diario == null ){
        $this->erro_sql = " Campo Diário de Classe nao Informado.";
@@ -230,7 +230,7 @@ class cl_diariofinal {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed74_i_codigo=null) {
+   public function alterar ($ed74_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update diariofinal set ";
      $virgula = "";
@@ -379,7 +379,7 @@ class cl_diariofinal {
      }
    }
    // funcao para exclusao
-   function excluir ($ed74_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed74_i_codigo=null,$dbwhere=null) {
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
        if($dbwhere==null || $dbwhere==""){
@@ -453,7 +453,7 @@ class cl_diariofinal {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -476,7 +476,7 @@ class cl_diariofinal {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed74_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed74_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -523,7 +523,7 @@ class cl_diariofinal {
      }
      return $sql;
   }
-   function sql_query_file ( $ed74_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed74_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

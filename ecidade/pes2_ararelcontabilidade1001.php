@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,12 +69,12 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Ano / Mês :</strong>
     </td>
     <td>
-        <?
+        <?php
          $DBtxt23 = db_anofolha();
          db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
         ?>
         &nbsp;/&nbsp;
-        <?
+        <?php
          $DBtxt25 = db_mesfolha();
          db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
         ?>
@@ -82,12 +82,12 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
   <tr> 
     <td align="right" nowrap title="Seleção:" >
-      <?
+      <?php
     	 db_ancora("<b>Seleção:</b>","js_pesquisasel(true)",1);
       ?>
     </td>
     <td>
-        <?
+        <?php
         db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
         db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
         ?>
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Banco :</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xxx = array("b"=>"Banco do Brasil","c"=>"CEF", "t"=>"Todos");
       db_select('xbanco',$xxx,true,1);
       ?>
@@ -109,7 +109,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Conta :</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xcc = array("cc"=>"Com Conta","sc"=>"Sem Conta", "t"=>"Todos");
       db_select('xconta',$xcc,true,1);
       ?>
@@ -120,7 +120,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Arquivo :</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xarq = array("s"=>"Salário",
                     "c"=>"Complementar", 
                     "d"=>"13o. Salário"
@@ -131,7 +131,7 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
   <tr>
     <td align="center" colspan="2">
-      <?
+      <?php
       $result_local = $clrhlocaltrab->sql_record($clrhlocaltrab->sql_query_file(null,db_getsession('DB_instit'), "rh55_codigo, rh55_codigo||'-'||rh55_descr as rh55_descr", "rh55_descr" ));
       db_multiploselect("rh55_codigo", "rh55_descr", "nselecionados", "sselecionados", $result_local, array(), 9, 250);
       ?>
@@ -144,7 +144,7 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

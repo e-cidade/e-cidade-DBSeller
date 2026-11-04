@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -106,7 +106,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     <td height="50" width="600" align="center" valign="top" bgcolor="#CCCCCC"> 
     <fieldset width="100%">
     <legend align="center">VISTORIA</legend>
-	<?
+	<?php
         $clvistorias->rotulo->label();
         db_ancora(@$Ly70_codvist,"js_vist('".@$y70_codvist."');",$db_opcao);
         db_input('y70_codvist',20,$Iy70_codvist,true,'text',3,"");
@@ -118,7 +118,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     <td height="230" width="100%" align="center" valign="top" bgcolor="#CCCCCC"> 
     <fieldset>
     <legend align="center">ANDAMENTO</legend>
-	<?
+	<?php
 	$db_opcao=2;
         if($db_opcao==2 && !isset($chavepesquisa)){
 	  $db_opcao=22;
@@ -141,7 +141,7 @@ function js_vist(codigo){
   js_OpenJanelaIframe('','db_iframe_vistorias','fis3_vistorias006.php?y70_codvist='+codigo,'Pesquisa',true);
 }
 </script>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);

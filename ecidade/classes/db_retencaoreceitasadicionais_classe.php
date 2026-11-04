@@ -43,7 +43,12 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
             $sql .= "$campos, ";
         }
         $sql .= "
-            cgmprestador.z01_numcgm as identificador_prestador,
+            case
+                when emptiposervicoobra.e154_tipo::integer > 0
+                then emptiposervicoobra.e154_cno
+                else cgmprestador.z01_cgccpf
+            end as identificador_prestador,
+            cgmprestador.z01_numcgm as cgm_prestador,
             cgmprestador.z01_cgccpf as cnpj_prestador,
             pc60_indicativocprb as indicativo_cprb,
             cgmcontribuinte.z01_cgccpf as cnpj_contribuinte,
@@ -56,6 +61,7 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
             e18_referencia as referencia_tipo_servico,
             retencaoreceitas.e23_valorretencao as valor_retencao,
             retencaoreceitas.e23_valorbase as valor_base_retido,
+            retencaoreceitas.e23_aliquota as aliquota,
             empnotaele.e70_vlrliq as valor_bruto,
             e19_valornaoretidoprincipal as valor_nao_retido_principal,
             e19_valorservico15 as valor_servicos_15,
@@ -74,7 +80,8 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
 		        d.e60_numcgm = cgmprestador.z01_numcgm and
 		        a.e69_numero = empnota.e69_numero and
 		        a.e69_codnota <> empnota.e69_codnota
-	        ) as notas_nao_retidas";
+	        ) as notas_nao_retidas,
+            count(e69_numero) over(partition by e69_numero, cgmprestador.z01_numcgm) as qnt_nota";
         $sql .= "
             FROM
                 retencaoreceitasadicionais
@@ -86,10 +93,6 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
                 INNER JOIN pagordemnota on e71_codord = pagordem.e50_codord
                 INNER JOIN empnota on empnota.e69_codnota = pagordemnota.e71_codnota and pagordemnota.e71_anulado is false
                 INNER JOIN empnotaele on empnotaele.e70_codnota = empnota.e69_codnota
-                INNER JOIN conlancamnota on conlancamnota.c66_codnota = empnota.e69_codnota
-                INNER JOIN conlancam on conlancam.c70_codlan = conlancamnota.c66_codlan
-                INNER JOIN conlancamdoc on conlancamdoc.c71_codlan = conlancam.c70_codlan
-                INNER JOIN conhistdoc on conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc
                 INNER JOIN empempenho on empempenho.e60_numemp = pagordem.e50_numemp
                 INNER JOIN db_config on db_config.codigo = empempenho.e60_instit
                 INNER JOIN cgm as cgmcontribuinte on cgmcontribuinte.z01_numcgm = db_config.numcgm
@@ -101,7 +104,7 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
                 LEFT JOIN pagordemconta on pagordemconta.e49_codord = pagordem.e50_codord
                 LEFT JOIN cgm as cgmprestador on cgmprestador.z01_numcgm = coalesce(pagordemconta.e49_numcgm, empempenho.e60_numcgm)
                 LEFT JOIN pcforne on pcforne.pc60_numcgm = cgmprestador.z01_numcgm
-            WHERE c53_tipo = 20 and e81_cancelado is null ";
+            WHERE e81_cancelado is null ";
         if(count($where) > 0) {
             $where = implode(" AND ", $where);
             $sql .= " AND {$where} ";

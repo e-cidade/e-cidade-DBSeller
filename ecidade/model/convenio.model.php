@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Tributario\Arrecadacao\Repositories\NumprefRepository;
 use ECidade\Tributario\Arrecadacao\Convenio as RegistroConvenio;
-use ECidade\V3\Extension\Registry;
 
 /**
  * Class convenio
@@ -72,8 +72,8 @@ class convenio {
   private $vencimento     = null;
 
 
-  function __construct($iCodConvenio="",$iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig, $dataVencimento = null) {
-    $this->custasHonorarios = (boolean) Registry::get('app.config')->get('custas_honorarios');
+  public function __construct($iCodConvenio="",$iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig, $dataVencimento = null) {
+    $this->custasHonorarios = (boolean) (new NumprefRepository())->buscaParametroCustasHonorarios();
     $oConvenio = new RegistroConvenio($iCodConvenio);
 
 	  $this->iModalidadeConvenio  = $oConvenio->getModalidadeConvenio();
@@ -115,6 +115,10 @@ class convenio {
       $data = str_replace("/","",$data);
     }
     $sDataVencimento = str_replace("-","",$data);
+
+    if ((strpos($dDataVenc, '-') === false) && (strpos($dDataVenc, '/') === false)) {
+       $dDataVenc = substr($dDataVenc, 0, 4) . '-' . substr($dDataVenc, 4, 2) . '-' .substr($dDataVenc, 6, 2);
+    }
 
     $this->vencimento = new \DBDate($dDataVenc);
 
@@ -231,7 +235,7 @@ class convenio {
   }
 
 
-  function getImagemBanco(){
+  public function getImagemBanco(){
 
     $sSqlBanco  = " select  * 						 			                  ";
     $sSqlBanco .= "   from db_bancos							                ";
@@ -277,67 +281,100 @@ class convenio {
 
   }
 
-  function getDigitoAgencia(){
+  public function getImagemBancoRecibo(){
+
+    $sSqlBanco  = " select  * 						 			                  ";
+    $sSqlBanco .= "   from db_bancos							                ";
+	  $sSqlBanco .= "  where db90_codban = '{$this->getCodBanco()}' ";
+
+    $rsBanco    	   = db_query($sSqlBanco);
+    $iNroLinhasBanco = pg_num_rows($rsBanco);
+
+    if($iNroLinhasBanco > 0 ){
+
+      $oBanco = db_utils::fieldsMemory($rsBanco,0);
+
+      $this->oBanco = $oBanco;
+
+      if($oBanco->db90_digban=="" || $oBanco->db90_abrev=="" || $oBanco->db90_logo=="")	{
+     	  throw new Exception("Configure o banco no Cadastro de Bancos!");
+   	  }
+
+  	  $sCaminho = "tmp/".$this->getCodBanco().".jpg";
+	    pg_lo_export  ( "$oBanco->db90_logo",$sCaminho);
+
+	    return $sCaminho;
+
+  	} else {
+  	  throw new Exception("Não existe Banco cadastrado para o código {$this->getCodBanco()}!");
+    }
+  }
+
+  public function getDigitoAgencia(){
   	return $this->iDigAgencia;
   }
 
-  function getDigitoCedente(){
+  public function getDigitoCedente(){
     return $this->sDigitoCedente;
   }
 
-  function getOperacao(){
+  public function getOperacao(){
   	return $this->sOperacao;
   }
 
-  function getLinhaDigitavel(){
+  public function getLinhaDigitavel(){
     return $this->sLinhaDigitavel;
   }
 
-  function getCodigoBarra(){
+  public function getCodigoBarra(){
   	return $this->sCodigoBarra;
   }
 
-  function getCodBanco(){
+  public function getCodBanco(){
   	return $this->iCodBanco;
   }
 
-  function getCodAgencia(){
+  public function getCodAgencia(){
   	return $this->iCodAgencia;
   }
 
-  function getCarteira(){
+  public function getCarteira(){
 	  return $this->sCarteira."-".str_pad($this->sVariacao.db_CalculaDV($this->sVariacao, 11),4,"0",STR_PAD_LEFT);
   }
 
-  function getCedente(){
+  public function getCodigoCarteira(){
+    return $this->sCarteira;
+  }
+
+  public function getCedente(){
   	return $this->sCedente;
   }
 
-  function getConvenioCobranca(){
+  public function getConvenioCobranca(){
   	return $this->sConvenioCobranca;
   }
 
-  function getConvenioArrecadacao(){
+  public function getConvenioArrecadacao(){
   	return $this->sConvenioArrecadacao;
   }
 
-  function getNossoNumero(){
+  public function getNossoNumero(){
   	return $this->sNossoNumero;
   }
 
-  function getCampoLivre(){
+  public function getCampoLivre(){
   	return $this->sCampoLivre;
   }
 
-  function getTipoConvenio(){
+  public function getTipoConvenio(){
   	return $this->sTipoConvenio;
   }
 
-  function getiCadTipoConvenio(){
+  public function getiCadTipoConvenio(){
   	return $this->iCadTipoConvenio;
   }
 
-  function getAgenciaCedente(){
+  public function getAgenciaCedente(){
     switch ($this->iCadTipoConvenio) {
     	case 5:
     	  $sCedente        = $this->getOperacao().$this->getCedente()."-".$this->getDigitoCedente();
@@ -362,7 +399,7 @@ class convenio {
    * Retorna Espécie do documento gerado.
    * @return string - Especie do documento
    */
-  function getEspecieDocumento() {
+  public function getEspecieDocumento() {
     return $this->sEspecie;
   }
 

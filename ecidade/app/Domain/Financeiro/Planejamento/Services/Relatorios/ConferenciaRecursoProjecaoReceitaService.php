@@ -4,8 +4,8 @@ namespace App\Domain\Financeiro\Planejamento\Services\Relatorios;
 
 use App\Domain\Financeiro\Planejamento\Relatorios\ConferenciaRecursoProjecaoReceitaPdf;
 use App\Domain\Financeiro\Planejamento\Relatorios\ConferenciaRecursoProjecaoReceitaPorRecursoPdf;
-use App\Domain\Financeiro\Planejamento\Relatorios\DemonstrativoProjecaoReceitaCsv;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita;
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceitaFormatter;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -97,7 +97,7 @@ class ConferenciaRecursoProjecaoReceitaService extends ReceitaService
     }
 
 
-    protected function builder(EstruturalReceita $estrutural, $descricao)
+    protected function builder(EstruturalReceitaFormatter $estrutural, $descricao)
     {
         $std = (object)[
             'orcfontes_id' => null,
@@ -124,10 +124,10 @@ class ConferenciaRecursoProjecaoReceitaService extends ReceitaService
 
     /**
      * @param $dadosEstimativa
-     * @param EstruturalReceita $estrutural
+     * @param EstruturalReceitaFormatter $estrutural
      * @return object
      */
-    protected function builderAnalitico($dadosEstimativa, EstruturalReceita $estrutural)
+    protected function builderAnalitico($dadosEstimativa, EstruturalReceitaFormatter $estrutural)
     {
         $estimativa = $this->builder($estrutural, $dadosEstimativa->descricao);
         $estimativa->sintetico = false;
@@ -164,7 +164,7 @@ class ConferenciaRecursoProjecaoReceitaService extends ReceitaService
         $recursos = [];
 
         foreach ($dadosEstimativas as $dadosEstimativa) {
-            $hash = "$dadosEstimativa->recurso_original#$dadosEstimativa->complemento";
+            $hash = "$dadosEstimativa->recurso#$dadosEstimativa->recurso_original#$dadosEstimativa->complemento";
             if (!array_key_exists($hash, $recursos)) {
                 $recursos[$hash] = $this->builderRecurso(
                     $dadosEstimativa->recurso,

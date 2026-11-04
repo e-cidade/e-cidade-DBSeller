@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -102,7 +102,7 @@ $hoje                   = $datavenc;
       <table height="100%" width="100%"  border="0" cellspacing="5" cellpadding="0">
 	    </td>
 	    <td align="center">
-	      <?
+	      <?php
 
 
 if (isset ($procreg) && $procreg != "") {
@@ -110,7 +110,7 @@ if (isset ($procreg) && $procreg != "") {
 }
 ?>
 	    </td>
-<?
+<?php
 
 
 $wherereceita = "";
@@ -182,6 +182,30 @@ if (isset ($chave_origem) && trim($chave_origem) != "" && isset ($chave_destino)
 		echo "<script>(window.CurrentWindow || parent.CurrentWindow).corpo.location.href='div4_importadivida001.php'</script>";
 
 	}
+
+    /**
+     * Vinculo de receita com procedencia
+     */
+    $sqlVinculoProced = "
+        select v03_codigo, v03_descr, k202_receita
+        from caixa.vinculoreceitaprocedencia
+        inner join proced on proced.v03_codigo = k202_proced
+        where v03_limite is null or v03_limite >= current_date
+    ";
+
+    $rsVinculoProced = db_query($sqlVinculoProced);
+    if (!$rsVinculoProced) {
+        db_erro("Erro ao buscar vinculo de receita com procedencia");
+    }
+
+    $aVinculoReceitaProced = [];
+    if (pg_num_rows($rsVinculoProced) > 0) {
+        for ($i = 0; $i < pg_num_rows($rsVinculoProced); $i++) {
+            $oDadosVinculo = db_utils::fieldsMemory($rsVinculoProced, $i);
+            $aVinculoReceitaProced[$oDadosVinculo->k202_receita] = $oDadosVinculo;
+        }
+    }
+
 	$sql1     = " select v03_codigo, v03_descr ";
 	$sql1    .= "   from proced ";
 	$sql1    .= "       inner join tabrec on k02_codigo = v03_receit ";
@@ -249,19 +273,32 @@ if (isset ($chave_origem) && trim($chave_origem) != "" && isset ($chave_destino)
 				db_input("$k02_drecei", 40, "", true, "text", 3, "", "k02_drecei");
 			echo " </td> ";
 			echo " <td>
-			           <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\">
+			           <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\" style=\"min-width: 200px;\">
 	               <option value=\"0\" >Escolha uma procedência</option>
 			         ";
-			for ($ii = 0; $ii < $numrows1; $ii ++) {
 
-			  db_fieldsmemory($result1, $ii);
-				echo " <option value=\"$v03_codigo\" >$v03_codigo - $v03_descr</option>";
-				if ($ii == 0) {
+            if (isset($aVinculoReceitaProced[$k02_codigo])) {
+                $vinculo = $aVinculoReceitaProced[$k02_codigo];
+                echo "
+                    <option value=\"{$vinculo->v03_codigo}\" selected>
+                        {$vinculo->v03_codigo} - {$vinculo->v03_descr}
+                    </option>
+                ";
+                $cod_v03_codigo .= $vir1.$vinculo->v03_codigo;
+                $vir1 = ",";
+            } else {
+                for ($ii = 0; $ii < $numrows1; $ii ++) {
 
-				  $cod_v03_codigo .= $vir1.$v03_codigo;
-					$vir1 = ",";
-				}
-			}
+                  db_fieldsmemory($result1, $ii);
+                    echo " <option value=\"$v03_codigo\" >$v03_codigo - $v03_descr</option>";
+                    if ($ii == 0) {
+
+                      $cod_v03_codigo .= $vir1.$v03_codigo;
+                        $vir1 = ",";
+                    }
+                }
+            }
+
 			echo " </select>
 			      </td>
 			      <td nowrap align='left' valign='top'>";
@@ -339,8 +376,9 @@ function js_troca(){
   document.form1.cod_v03_codigo.value = codigo;
   document.form1.codreceita.value     = codreceit;
 }
+js_troca();
 </script>
-<?
+<?php
 if (isset ($procreg) && $procreg == 't') {
 
   if (isset ($cod_k02_codigo) && trim($cod_k02_codigo) != "" && isset ($cod_v03_codigo) && trim($cod_v03_codigo) != "") {
@@ -404,13 +442,13 @@ if (isset ($procreg) && $procreg == 't') {
 					               k00_receit
                          $order_k00_numpar  ";
 		$result_pesq_divida = db_query($sql_pesq);
-		$numrows = pg_numrows($result_pesq_divida);
+		$numrows = pg_num_rows($result_pesq_divida);
 
 		if (isset ($numrows) && $numrows == 0) {
 			db_msgbox("Nenhum registro para o filtro selecionado !");
 		}
-		$codigo_k02 = split(",", $codreceita);
-		$codigo_v03 = split(",", $cod_v03_codigo);
+		$codigo_k02 = explode(",", $codreceita);
+		$codigo_v03 = explode(",", $cod_v03_codigo);
 		$sqlerro    = false;
 		$dataini    = date("Y-m-d", db_getsession('DB_datausu'));
 		$horaini    = db_hora();
@@ -435,6 +473,51 @@ if (isset ($procreg) && $procreg == 't') {
 		}
 		$iDivImporta = $cldivimporta->v02_divimporta ;
 
+
+        /**
+         * Busca o ultimo livro e folha do exercicio
+         */
+        $anoSessao = date('Y', db_getsession("DB_datausu"));
+        $sqlLivroFolha = "
+            select v01_livro,
+                    v01_folha,
+                    count(*) as total_registros
+                FROM divida
+            WHERE v01_livro = (SELECT max(v01_livro)
+                                    FROM divida
+                                WHERE extract(YEAR FROM v01_dtinclusao) = {$anoSessao}
+                                and v01_livro < 998 )
+            group by v01_livro, v01_folha
+            having v01_folha = max(v01_folha)
+            order by 2 desc
+            limit 1
+        ";
+
+        $buscaLivroExercicio = db_query($sqlLivroFolha);
+        if (!$buscaLivroExercicio) {
+            db_erro("Erro ao buscar livro e folha do exercicio");
+        }
+
+        $criaNovoLivro = false;
+        if (pg_num_rows($buscaLivroExercicio) == 0) {
+            $criaNovoLivro = true;
+        } else {
+            $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+            $criaNovoLivro = empty($livroExercicio);
+            unset($livroExercicio);
+        }
+
+        if ($criaNovoLivro) {
+            $novoLivro = db_query($cldivida->sql_query_file(null, "coalesce(max(v01_livro), 0) + 1 as v01_livro"));
+            $livroExercicio = \db_utils::fieldsMemory($novoLivro, 0)->v01_livro;
+            $folhaExercicio = 1;
+            $totalRegistrosPorFolha = 0;
+        } else {
+            $livroExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_livro;
+            $folhaExercicio = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->v01_folha;
+            $totalRegistrosPorFolha = \db_utils::fieldsMemory($buscaLivroExercicio, 0)->total_registros;
+        }
+
 		echo "<script>document.getElementById('filtro').style.visibility='hidden';</script>";
 
 		/*========================================   F O R   Q   I M P O R T A   O S   R E G I S T R O S   ====================================================================*/
@@ -444,7 +527,7 @@ if (isset ($procreg) && $procreg == 't') {
 		$percentualAnterior = 0;
         for ($i = 0; $i < $numrows; $i ++) {
             db_fieldsmemory($result_pesq_divida, $i, true);
-            
+
             $percentual = (int)($i * 100) / $numrows;
             if ($percentual > $percentualAnterior) {
                 $percentualAnterior = $percentual;
@@ -496,7 +579,7 @@ if (isset ($procreg) && $procreg == 't') {
 						$resultjadivida = db_query($sqljadivida);
 
 						$jaexiste        = false;
-						$numrowsjadivida = pg_numrows($resultjadivida);
+						$numrowsjadivida = pg_num_rows($resultjadivida);
 
 							// Trata tipo de Debito 20 - Saneamento Basico
 							if ($numrowsjadivida > 0 && $k03_tipo = 20) {
@@ -547,25 +630,26 @@ if (isset ($procreg) && $procreg == 't') {
 
 					/**
 					 * inclui na divida
-           */
-          $v01_obs                  = $cldivida->resumo_importacao($k00_numpre, $iCadTipo);
-          $exerc_div                = $cldivida->getExercicioDivida($k00_numpre, $iCadTipo, substr($k00_dtoper, 6, 4));
-          $cldivida->v01_exerc      = $exerc_div;
+                     *
+                    */
+                    $v01_obs                  = $cldivida->resumo_importacao($k00_numpre, $iCadTipo);
+                    $exerc_div                = $cldivida->getExercicioDivida($k00_numpre, $iCadTipo, substr($k00_dtoper, 6, 4));
+                    $cldivida->v01_exerc      = $exerc_div;
 					$cldivida->v01_instit     = db_getsession('DB_instit');
 					$cldivida->v01_numcgm     = $k00_numcgm;
 					$cldivida->v01_dtinsc     = date("Y-m-d",db_getsession('DB_datausu') );
 					$cldivida->v01_dtinclusao = date('Y-m-d',db_getsession('DB_datausu'));
 					$cldivida->v01_numpre     = $numpre_novo;
 
-          $dt_venc = explode("/", $k00_dtvenc);
+                    $dt_venc = explode("/", $k00_dtvenc);
 
-          if ( is_array($dt_venc) && count($dt_venc) > 1) {
-					  $dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
-          }else{
-            $dt_venc_data = $k00_dtvenc;
-          }
+                    if ( is_array($dt_venc) && count($dt_venc) > 1) {
+                                $dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
+                    }else{
+                        $dt_venc_data = $k00_dtvenc;
+                    }
 
-					$dt_oper = split("/", $k00_dtoper);
+					$dt_oper = explode("/", $k00_dtoper);
 					$dt_oper_data =  $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
 
 					if (isset ($uni) && $uni == 'p') {
@@ -582,13 +666,20 @@ if (isset ($procreg) && $procreg == 't') {
 						$cldivida->v01_dtoper = $dt_oper_data;
 					}
 
+                    // Controla quantidade de registros por folha
+                    $totalRegistrosPorFolha++;
+                    if ($totalRegistrosPorFolha > 30) {
+                        $totalRegistrosPorFolha = 1;
+                        $folhaExercicio++;
+                    }
+
 					$k00_numdig           = 1;
 					$cldivida->v01_numdig = $k00_numdig;
 					$cldivida->v01_vlrhis = $val;
 					$cldivida->v01_proced = $cod_v03_codigo;
 					$cldivida->v01_obs    = pg_escape_string($v01_obs);
-					$cldivida->v01_livro  = "";
-					$cldivida->v01_folha  = "";
+					$cldivida->v01_livro  = $livroExercicio;
+					$cldivida->v01_folha  = $folhaExercicio;
 					$cldivida->v01_valor  = $val;
 					$sqlcoddiv            = " select nextval('divida_v01_coddiv_seq') as v01_coddiv ";
 					$resultcoddiv         = db_query($sqlcoddiv) or die($sqlcoddiv);
@@ -612,7 +703,7 @@ if (isset ($procreg) && $procreg == 't') {
 						db_msgbox($erro_msg);
 						$sqlerro = true;
 						break;
-					} 					
+					}
 
 					/**
 					 * se o processo for interno
@@ -621,7 +712,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 					if ($lProcessoSistema == 1 && $iProcesso != null) {
 
-					  $oDaoDividaProtprocesso = db_utils::getDao('dividaprotprocesso');
+					  $oDaoDividaProtprocesso = new cl_dividaprotprocesso;
 					  $oDaoDividaProtprocesso->v88_divida       = $cldivida->v01_coddiv;
 					  $oDaoDividaProtprocesso->v88_protprocesso = $iProcesso;
 					  $oDaoDividaProtprocesso->incluir(null);
@@ -689,7 +780,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 					if ($sqlerro == false) {
 
-						$dataInsc = date("Y-m-d",db_getsession('DB_datausu'));					
+						$dataInsc = date("Y-m-d",db_getsession('DB_datausu'));
 						$usuario = db_getsession('DB_id_usuario');
 						$instit = db_getsession('DB_instit');
 						TermoInscricaoService::salvar($numpre_novo, $cldivida, $v03_receit, $dataInsc, $usuario, $instit);
@@ -704,7 +795,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 						$sqlBk = " select * from arrecad where k00_numpre = $k00_numpre and k00_receit = $k00_receit";
 						$rsBk  = db_query($sqlBk) or die($sqlBk);
-						$intBk = pg_numrows($rsBk);
+						$intBk = pg_num_rows($rsBk);
 
 						if ($intBk == 0) {
 
@@ -920,7 +1011,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 	$chave_origem = "";
 	$chave_destino = "";
-	
+
 	db_fim_transacao($sqlerro);
 }
 

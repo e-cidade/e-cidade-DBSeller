@@ -109,7 +109,7 @@ if(isset($alterar)){
        </tr>
        <tr>
         <td>
-		  <?
+		  <?php
 			$x = array('0'=>'Selecione','1'=>'Urbano','2'=>'Rural');
 			db_select('tp',$x,true,$db_opcao,"onchange='submit()'");
 		  ?>
@@ -117,7 +117,7 @@ if(isset($alterar)){
        </tr>
       </table>
      </form>
-     <?
+     <?php
       if(@$tp == 1){
        include(modification("forms/db_frmcemiteriocgm.php"));
       }else if(@$tp == 2){
@@ -128,12 +128,12 @@ if(isset($alterar)){
      </td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
  if($tp == 1){
   if($clcemiteriocgm->erro_status=="0"){

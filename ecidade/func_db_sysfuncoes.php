@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $cldb_sysfuncoes->rotulo->label("nomefuncao");
               <?=$Lcodfuncao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codfuncao",5,$Icodfuncao,true,"text",4,"","chave_codfuncao");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldb_sysfuncoes->rotulo->label("nomefuncao");
               <?=$Lnomefuncao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("nomefuncao",100,$Inomefuncao,true,"text",4,"","chave_nomefuncao");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldb_sysfuncoes->rotulo->label("nomefuncao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
       $chave_nomefuncao = addslashes($chave_nomefuncao);
 
@@ -149,7 +149,7 @@ $cldb_sysfuncoes->rotulo->label("nomefuncao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -166,7 +166,7 @@ if(!isset($pesquisa_chave)){
       
     })();
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

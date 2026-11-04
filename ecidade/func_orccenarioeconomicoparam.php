@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
               <?=$Lo03_sequencial?>
             </td>
             <td align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o03_sequencial",10,$Io03_sequencial,true,"text",4,"","chave_o03_sequencial");
 		       ?>
             </td>
@@ -63,7 +63,7 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
               <?=$Lo03_anoreferencia?>
             </td>
             <td align="right" nowrap> 
-              <?
+              <?php
 		       db_input("o03_anoreferencia",10,$Io03_anoreferencia,true,"text",4,"");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
               <?=$Lo03_descricao?>
             </td>
             <td align="left" nowrap colspan='3'> 
-              <?
+              <?php
 		       db_input("o03_descricao",50,$Io03_descricao,true,"text",4,"","chave_o03_descricao");
 		       ?>
             </td>
@@ -91,7 +91,7 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "o03_instit = ".db_getsession("DB_instit");
       if (isset($o03_anoreferencia) && $o03_anoreferencia != "") {
         $sWhere .= " and o03_anoreferencia = {$o03_anoreferencia}";
@@ -144,12 +144,12 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

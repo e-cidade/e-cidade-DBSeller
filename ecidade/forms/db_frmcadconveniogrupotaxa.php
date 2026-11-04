@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ar37_sequencial");
        <?=@$Lar39_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar39_sequencial',10,$Iar39_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tar39_cadconvenio?>">
-       <?
+       <?php
        db_ancora(@$Lar39_cadconvenio,"js_pesquisaar39_cadconvenio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar39_cadconvenio',10,$Iar39_cadconvenio,true,'text',$db_opcao," onchange='js_pesquisaar39_cadconvenio(false);'")
 ?>
-       <?
+       <?php
 db_input('ar11_nome',50,$Iar11_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tar39_grupotaxa?>">
-       <?
+       <?php
        db_ancora(@$Lar39_grupotaxa,"js_pesquisaar39_grupotaxa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar39_grupotaxa',10,$Iar39_grupotaxa,true,'text',$db_opcao," onchange='js_pesquisaar39_grupotaxa(false);'")
 ?>
-       <?
+       <?php
 db_input('ar37_sequencial',10,$Iar37_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadconveniogrupotaxa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

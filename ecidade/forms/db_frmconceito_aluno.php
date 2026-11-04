@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed30_c_letra");
        <?=@$Led06_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed06_i_codigo',5,$Ied06_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted06_i_conceito?>">
-       <?
+       <?php
        db_ancora(@$Led06_i_conceito,"js_pesquisaed06_i_conceito(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed06_i_conceito',5,$Ied06_i_conceito,true,'text',$db_opcao," onchange='js_pesquisaed06_i_conceito(false);'")
 ?>
-       <?
+       <?php
 db_input('ed30_c_letra',1,$Ied30_c_letra,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted06_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led06_i_matricula,"js_pesquisaed06_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed06_i_matricula',5,$Ied06_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed06_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        <?=@$Led06_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed06_d_data',@$ed06_d_data_dia,@$ed06_d_data_mes,@$ed06_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conceito_aluno.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

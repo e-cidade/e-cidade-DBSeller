@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,56 +42,54 @@ $clrotulo->label("o125_cronogramaperspectiva");
        <?=@$Lo126_sequencial?>
     </td>
     <td> 
-<?
-db_input('o126_sequencial',10,$Io126_sequencial,true,'text',$db_opcao,"")
+<?php
+db_input('o126_sequencial',10,$Io126_sequencial,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To126_codrec?>">
-       <?
+       <?php
        db_ancora(@$Lo126_codrec,"js_pesquisao126_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
-db_input('o126_codrec',10,$Io126_codrec,true,'text',$db_opcao," onchange='js_pesquisao126_codrec(false);'")
+<?php
+db_input('o126_codrec',10,$Io126_codrec,true,'text',$db_opcao," onchange='js_pesquisao126_codrec(false);'");
 ?>
-       <?
-db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'')
-db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'')
+       <?php
+db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'');
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To126_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lo126_anousu,"js_pesquisao126_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $o126_anousu = db_getsession('DB_anousu');
-db_input('o126_anousu',4,$Io126_anousu,true,'text',3," onchange='js_pesquisao126_anousu(false);'")
+db_input('o126_anousu',4,$Io126_anousu,true,'text',3," onchange='js_pesquisao126_anousu(false);'");
 ?>
-       <?
-db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'')
-db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'')
+       <?php
+db_input('o70_anousu',4,$Io70_anousu,true,'text',3,'');
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To126_cronogramabasecalculo?>">
-       <?
+       <?php
        db_ancora(@$Lo126_cronogramabasecalculo,"js_pesquisao126_cronogramabasecalculo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
-db_input('o126_cronogramabasecalculo',10,$Io126_cronogramabasecalculo,true,'text',$db_opcao," onchange='js_pesquisao126_cronogramabasecalculo(false);'")
+<?php
+db_input('o126_cronogramabasecalculo',10,$Io126_cronogramabasecalculo,true,'text',$db_opcao," onchange='js_pesquisao126_cronogramabasecalculo(false);'");
 ?>
-       <?
-db_input('o125_cronogramaperspectiva',10,$Io125_cronogramaperspectiva,true,'text',3,'')
+       <?php
+db_input('o125_cronogramaperspectiva',10,$Io125_cronogramaperspectiva,true,'text',3,'');
        ?>
     </td>
   </tr>
@@ -221,7 +219,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cronogramabasereceita.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

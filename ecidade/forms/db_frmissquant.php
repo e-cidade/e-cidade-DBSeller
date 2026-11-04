@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("q02_numcgm");
        <?=@$Lq30_anousu?>
     </td>
     <td> 
-<?
+<?php
 $q30_anousu = db_getsession('DB_anousu');
 db_input('q30_anousu',4,$Iq30_anousu,true,'text',$db_opcao,"")
 ?>
@@ -46,15 +46,15 @@ db_input('q30_anousu',4,$Iq30_anousu,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq30_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq30_inscr,"js_pesquisaq30_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q30_inscr',4,$Iq30_inscr,true,'text',$db_opcao," onchange='js_pesquisaq30_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',3,'')
        <?=@$Lq30_quant?>
     </td>
     <td> 
-<?
+<?php
 db_input('q30_quant',15,$Iq30_quant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('q30_quant',15,$Iq30_quant,true,'text',$db_opcao,"")
        <?=@$Lq30_mult?>
     </td>
     <td> 
-<?
+<?php
 db_input('q30_mult',15,$Iq30_mult,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('q30_mult',15,$Iq30_mult,true,'text',$db_opcao,"")
        <?=@$Lq30_area?>
     </td>
     <td> 
-<?
+<?php
 db_input('q30_area',15,$Iq30_area,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_issquant.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

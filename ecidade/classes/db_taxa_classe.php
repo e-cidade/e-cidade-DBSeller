@@ -28,33 +28,34 @@
 //CLASSE DA ENTIDADE taxa
 class cl_taxa {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ar36_sequencial = 0;
-   var $ar36_grupotaxa = 0;
-   var $ar36_receita = 0;
-   var $ar36_descricao = null;
-   var $ar36_perc = 0;
-   var $ar36_valor = 0;
-   var $ar36_valormin = 0;
-   var $ar36_valormax = 0;
-   var $ar36_debitoscomprocesso = 'f';
-   var $ar36_debitossemprocesso = 'f';
-   var $ar36_aplicajurosmulta = 'f';
-   var $ar36_honorario = 'f';
+   public $ar36_sequencial = 0;
+   public $ar36_grupotaxa = 0;
+   public $ar36_receita = 0;
+   public $ar36_descricao = null;
+   public $ar36_perc = 0;
+   public $ar36_valor = 0;
+   public $ar36_valormin = 0;
+   public $ar36_valormax = 0;
+   public $ar36_debitoscomprocesso = 'f';
+   public $ar36_debitossemprocesso = 'f';
+   public $ar36_aplicajurosmulta = 'f';
+   public $ar36_honorario = 'f';
+   public $ar36_permiteparcelamento = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ar36_sequencial = int4 = Sequencial
                  ar36_grupotaxa = int4 = Grupo de Tarifas
                  ar36_receita = int4 = Receita
@@ -67,15 +68,16 @@ class cl_taxa {
                  ar36_debitossemprocesso = bool = Cobrança Administrativa
                  ar36_aplicajurosmulta = bool = Aplica Juros e Multa
                  ar36_honorario = bool = Campo honorario
+                 ar36_permiteparcelamento = bool = Permite parcelamento de taxa
                  ";
    //funcao construtor da classe
-   function cl_taxa() {
+   public function cl_taxa() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +86,7 @@ class cl_taxa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar36_sequencial = ($this->ar36_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar36_sequencial"]:$this->ar36_sequencial);
        $this->ar36_grupotaxa = ($this->ar36_grupotaxa == ""?@$GLOBALS["HTTP_POST_VARS"]["ar36_grupotaxa"]:$this->ar36_grupotaxa);
@@ -98,12 +100,13 @@ class cl_taxa {
        $this->ar36_debitossemprocesso = (empty($this->ar36_debitossemprocesso) && isset($GLOBALS["HTTP_POST_VARS"]["ar36_debitossemprocesso"]) ? $GLOBALS["HTTP_POST_VARS"]["ar36_debitossemprocesso"] : $this->ar36_debitossemprocesso);
        $this->ar36_aplicajurosmulta = (empty($this->ar36_aplicajurosmulta) && isset($GLOBALS["HTTP_POST_VARS"]["ar36_aplicajurosmulta"]) ? $GLOBALS["HTTP_POST_VARS"]["ar36_aplicajurosmulta"] : $this->ar36_aplicajurosmulta);
        $this->ar36_honorario = (empty($this->ar36_honorario) && isset($GLOBALS["HTTP_POST_VARS"]["ar36_honorario"]) ? $GLOBALS["HTTP_POST_VARS"]["ar36_honorario"] : $this->ar36_honorario);
+       $this->ar36_permiteparcelamento = (empty($this->ar36_permiteparcelamento) && isset($GLOBALS["HTTP_POST_VARS"]["ar36_permiteparcelamento"]) ? $GLOBALS["HTTP_POST_VARS"]["ar36_permiteparcelamento"] : $this->ar36_permiteparcelamento);
      }else{
        $this->ar36_sequencial = ($this->ar36_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar36_sequencial"]:$this->ar36_sequencial);
      }
    }
    // funcao para Inclusão
-   function incluir ($ar36_sequencial){
+   public function incluir ($ar36_sequencial){
       $this->atualizacampos();
      if($this->ar36_grupotaxa == null ){
        $this->erro_sql = " Campo Grupo de Tarifas não informado.";
@@ -180,6 +183,15 @@ class cl_taxa {
        $this->erro_status = "0";
        return false;
      }
+     if($this->ar36_permiteparcelamento == null ){
+      $this->erro_sql = " Campo permite parcelamento não informado.";
+      $this->erro_campo = "ar36_permiteparcelamento";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+      return false;
+     }
      if($ar36_sequencial == "" || $ar36_sequencial == null ){
        $result = db_query("select nextval('taxa_ar36_sequencial_seq')");
        if($result==false){
@@ -225,6 +237,7 @@ class cl_taxa {
                                       ,ar36_debitossemprocesso
                                       ,ar36_aplicajurosmulta
                                       ,ar36_honorario
+                                      ,ar36_permiteparcelamento
                        )
                 values (
                                 $this->ar36_sequencial
@@ -239,6 +252,7 @@ class cl_taxa {
                                ,'$this->ar36_debitossemprocesso'
                                ,'$this->ar36_aplicajurosmulta'
                                ,'$this->ar36_honorario'
+                               ,'$this->ar36_permiteparcelamento'
                       )";
 
      $result = db_query($sql);
@@ -288,6 +302,7 @@ class cl_taxa {
          $resac = db_query("insert into db_acount values($acount,3221,1009488,'','".AddSlashes(pg_result($resaco,0,'ar36_debitossemprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,3221,1009597,'','".AddSlashes(pg_result($resaco,0,'ar36_aplicajurosmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,3221,1010594,'','".AddSlashes(pg_result($resaco,0,'ar36_honorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3221,1015237,'','".AddSlashes(pg_result($resaco,0,'ar36_permiteparcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -429,6 +444,19 @@ class cl_taxa {
         return false;
       }
     }
+    if(trim($this->ar36_permiteparcelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar36_permiteparcelamento"])){
+      $sql  .= $virgula." ar36_permiteparcelamento = '$this->ar36_permiteparcelamento' ";
+      $virgula = ",";
+      if(trim($this->ar36_permiteparcelamento) == null ){
+        $this->erro_sql = " Campo permite parcelamento não informado.";
+        $this->erro_campo = "ar36_permiteparcelamento";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
 
      $sql .= " where ";
      if($ar36_sequencial!=null){
@@ -471,6 +499,8 @@ class cl_taxa {
              $resac = db_query("insert into db_acount values($acount,3221,1009597,'".AddSlashes(pg_result($resaco,$conresaco,'ar36_aplicajurosmulta'))."','$this->ar36_aplicajurosmulta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ar36_honorario"]) || $this->ar36_honorario != "")
              $resac = db_query("insert into db_acount values($acount,3221,1010594,'".AddSlashes(pg_result($resaco,$conresaco,'ar36_honorario'))."','$this->ar36_honorario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ar36_permiteparcelamento"]) || $this->ar36_permiteparcelamento != "")
+             $resac = db_query("insert into db_acount values($acount,3221,1015237,'".AddSlashes(pg_result($resaco,$conresaco,'ar36_permiteparcelamento'))."','$this->ar36_permiteparcelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -540,6 +570,7 @@ class cl_taxa {
            $resac  = db_query("insert into db_acount values($acount,3221,1009488,'','".AddSlashes(pg_result($resaco,$iresaco,'ar36_debitossemprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,3221,1009597,'','".AddSlashes(pg_result($resaco,$iresaco,'ar36_aplicajurosmulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,3221,1010594,'','".AddSlashes(pg_result($resaco,$iresaco,'ar36_honorario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3221,1015237,'','".AddSlashes(pg_result($resaco,$iresaco,'ar36_permiteparcelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -655,4 +686,309 @@ class cl_taxa {
      return $sql;
   }
 
+  public function sql_taxas($sWhere)
+  {
+    $sql = "
+      select
+          *,
+          TO_CHAR(ar53_data::date, 'dd/mm/yyyy') as data,
+          ar53_sequencial as taxa
+      from
+          taxa
+          inner join custasparcelamento on custasparcelamento.ar53_taxa = taxa.ar36_sequencial
+          inner join db_usuarios on ar53_usuario = db_usuarios.id_usuario
+      where
+          1 = 1
+          $sWhere
+    ";
+
+    return $sql;
+  }
+
+  public function sql_taxasProcesso($processoDoForo = null, $inicial = null, $where = null)
+  {
+    $iInstituicao       = db_getsession('DB_instit');
+    $iAno               = db_getsession('DB_anousu');
+    $sWhere             = "";
+    $debitosComProcesso = "and ar36_debitoscomprocesso = 't'";
+
+    if (isset($processoDoForo)) {
+       $sWhere .= " and ar53_processoforo in ($processoDoForo) ";
+    }
+
+    if (isset($inicial)) {
+      $sWhere .= " and ar53_inicial in ($inicial) ";
+      $debitosComProcesso = "";
+    }
+
+    if (!empty($sWhere)) {
+      if (isset($where)) {
+        $sWhere .= " and $where";
+      }
+
+      $sWhere .= "and ar53_parcelamento is null ";
+    }
+
+    $sSql  = "with ";
+
+    if (isset($processoDoForo)) {
+      /**
+       * busca custas isentas
+       */
+      $sSql .= "custasisentas as ( ";
+      $sSql .= "  select ";
+      $sSql .= "      v77_taxa ";
+      $sSql .= "  from ";
+      $sSql .= "      processoforopartilhacusta ";
+      $sSql .= "  where ";
+      $sSql .= "      v77_processoforopartilha in ( ";
+      $sSql .= "          select ";
+      $sSql .= "              distinct processoforopartilha.v76_sequencial ";
+      $sSql .= "          from ";
+      $sSql .= "              processoforopartilha ";
+      $sSql .= "              inner join processoforopartilhacusta on v77_processoforopartilha = v76_sequencial ";
+      $sSql .= "          where ";
+      $sSql .= "              processoforopartilha.v76_processoforo in ($processoDoForo) ";
+      $sSql .= "              and processoforopartilha.v76_tipolancamento = 3 ";
+      $sSql .= "              and processoforopartilhacusta.v77_numnov = 0 ";
+      $sSql .= "      ) ";
+      $sSql .= "  ), ";
+    }
+
+    /**
+     * busca todas custas com processos
+     */
+    $sSql .= "custas as ( ";
+    $sSql .= "    select ";
+    $sSql .= "        ar36_sequencial, ";
+    $sSql .= "        ar36_grupotaxa, ";
+    $sSql .= "        ar36_receita, ";
+    $sSql .= "        ar36_descricao, ";
+    $sSql .= "        ar36_perc, ";
+    $sSql .= "        ar36_valor, ";
+    $sSql .= "        ar36_valormin, ";
+    $sSql .= "        ar36_valormax, ";
+    $sSql .= "        ar36_debitoscomprocesso, ";
+    $sSql .= "        ar36_debitossemprocesso, ";
+    $sSql .= "        ar36_aplicajurosmulta, ";
+    $sSql .= "        ar36_honorario, ";
+    $sSql .= "        ar36_permiteparcelamento ";
+    $sSql .= "    from ";
+    $sSql .= "        taxa ";
+    $sSql .= "    where ";
+    $sSql .= "        1 = 1 $debitosComProcesso ";
+    if(isset($processoDoForo)){
+    $sSql .= " and ar36_sequencial not in (select v77_taxa from custasisentas) ";
+    }
+    $sSql .= "), ";
+
+    /**
+     * extrai honorarios das custas
+     */
+    $sSql .= "honorarios as ( ";
+    $sSql .= "    select ";
+    $sSql .= "        ar36_sequencial, ";
+    $sSql .= "        ar36_grupotaxa, ";
+    $sSql .= "        ar36_receita, ";
+    $sSql .= "        ar36_descricao, ";
+    $sSql .= "        ar36_perc, ";
+    $sSql .= "        ar36_valor, ";
+    $sSql .= "        ar36_valormin, ";
+    $sSql .= "        ar36_valormax, ";
+    $sSql .= "        ar36_debitoscomprocesso, ";
+    $sSql .= "        ar36_debitossemprocesso, ";
+    $sSql .= "        ar36_aplicajurosmulta, ";
+    $sSql .= "        ar36_honorario, ";
+    $sSql .= "        ar36_permiteparcelamento ";
+    $sSql .= "    from ";
+    $sSql .= "        custas ";
+    $sSql .= "    where ";
+    $sSql .= "        ar36_honorario = 't' ";
+    $sSql .= "), ";
+  
+    /**
+     * extrai demais taxas das custas
+     */
+    $sSql .= "taxas as ( ";
+    $sSql .= "    select ";
+    $sSql .= "        ar36_sequencial, ";
+    $sSql .= "        ar36_grupotaxa, ";
+    $sSql .= "        ar36_receita, ";
+    $sSql .= "        ar36_descricao, ";
+    $sSql .= "        ar36_perc, ";
+    $sSql .= "        ar36_valor, ";
+    $sSql .= "        ar36_valormin, ";
+    $sSql .= "        ar36_valormax, ";
+    $sSql .= "        ar36_debitoscomprocesso, ";
+    $sSql .= "        ar36_debitossemprocesso, ";
+    $sSql .= "        ar36_aplicajurosmulta, ";
+    $sSql .= "        ar36_honorario, ";
+    $sSql .= "        ar36_permiteparcelamento ";
+    $sSql .= "    from ";
+    $sSql .= "        custas ";
+    $sSql .= "    where ";
+    $sSql .= "        ar36_honorario = 'f' ";
+    $sSql .= "), ";
+
+    /**
+     * busca regra de parcelamento de custas e honorarios que necessitam de autorizacao manual, modulo juridico
+     */
+    $sSql .= "parametrosjuridico as ( ";
+    $sSql .= "    select ";
+    $sSql .= "        v19_parcelacustasmanual as parcelacustasmanual, ";
+    $sSql .= "        v19_parcelahonorariosmanual as parcelahonorariosmanual ";
+    $sSql .= "    from ";
+    $sSql .= "        parjuridico ";
+    $sSql .= "    where ";
+    $sSql .= "        v19_anousu =  $iAno ";
+    $sSql .= "        and v19_instit = $iInstituicao ";
+    $sSql .= "    limit ";
+    $sSql .= "        1 ";
+    $sSql .= "), ";
+
+    /**
+     * busca custas que usuario cadastrou, dando autorizacao manual para parcelar
+     */
+    $sSql .= "custasparceladasmanualmente as ( ";
+    $sSql .= "    select ";
+    $sSql .= "        ar53_taxa, ";
+    $sSql .= "        ar53_parcelas ";
+    $sSql .= "    from ";
+    $sSql .= "        custasparcelamento ";
+    $sSql .= "    where 1 = 1 ";
+    $sSql .= "        $sWhere ";
+    $sSql .= ") ";
+
+    /**
+     * select de todas informacoes das custas com a informacao se pode ser feito parcelamento
+     * 
+     * permite parcelamento caso
+     *   1.a custa permite parcelamento e
+     *   2.a regra de parcelamento de custas e honorarios do modulo juridico nao necessite autorizacao manual
+     * 
+     * permite parcelamento caso
+     *   1.a custa permite parcelamento e
+     *   2.a regra de parcelamento de custas e honorarios do modulo juridico necessite autorizacao manual e
+     *   3.autorizacao manual foi dada
+     */
+    $sSql .= "select ";
+    $sSql .= "    case ";
+    $sSql .= "        when ( ";
+    $sSql .= "            ( ";
+    $sSql .= "                honorarios.ar36_permiteparcelamento = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        parcelahonorariosmanual ";
+    $sSql .= "                    from ";
+    $sSql .= "                        parametrosjuridico ";
+    $sSql .= "                ) = 'f' ";
+    $sSql .= "            ) ";
+    $sSql .= "            or ( ";
+    $sSql .= "                honorarios.ar36_permiteparcelamento = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        parcelahonorariosmanual ";
+    $sSql .= "                    from ";
+    $sSql .= "                        parametrosjuridico ";
+    $sSql .= "                ) = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        count(ar53_taxa) ";
+    $sSql .= "                    from ";
+    $sSql .= "                        custasparceladasmanualmente ";
+    $sSql .= "                    where ";
+    $sSql .= "                        ar53_taxa = honorarios.ar36_sequencial ";
+    $sSql .= "                ) > 0 ";
+    $sSql .= "            ) ";
+    $sSql .= "        ) then true ";
+    $sSql .= "        else false ";
+    $sSql .= "    end as permiteparcelamento, ";
+    $sSql .= "    ( ";
+    $sSql .= "        select ";
+    $sSql .= "            ar53_parcelas ";
+    $sSql .= "        from ";
+    $sSql .= "            custasparceladasmanualmente ";
+    $sSql .= "        where ";
+    $sSql .= "            ar53_taxa = honorarios.ar36_sequencial ";
+    $sSql .= "        order by ar53_parcelas desc ";
+    $sSql .= "        limit 1 ";
+    $sSql .= "    ) as numeromaximoparcelas, ";
+    $sSql .= "    honorarios.ar36_sequencial, ";
+    $sSql .= "    honorarios.ar36_grupotaxa, ";
+    $sSql .= "    honorarios.ar36_receita, ";
+    $sSql .= "    honorarios.ar36_descricao, ";
+    $sSql .= "    honorarios.ar36_perc, ";
+    $sSql .= "    honorarios.ar36_valor, ";
+    $sSql .= "    honorarios.ar36_valormin, ";
+    $sSql .= "    honorarios.ar36_valormax, ";
+    $sSql .= "    honorarios.ar36_debitoscomprocesso, ";
+    $sSql .= "    honorarios.ar36_debitossemprocesso, ";
+    $sSql .= "    honorarios.ar36_aplicajurosmulta, ";
+    $sSql .= "    honorarios.ar36_honorario, ";
+    $sSql .= "    honorarios.ar36_permiteparcelamento ";
+    $sSql .= "from ";
+    $sSql .= "    honorarios ";
+
+    $sSql .= "union all ";
+  
+    $sSql .= "select ";
+    $sSql .= "    case ";
+    $sSql .= "        when ( ";
+    $sSql .= "            ( ";
+    $sSql .= "                taxas.ar36_permiteparcelamento = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        parcelacustasmanual ";
+    $sSql .= "                    from ";
+    $sSql .= "                        parametrosjuridico ";
+    $sSql .= "                ) = 'f' ";
+    $sSql .= "            ) ";
+    $sSql .= "            or ( ";
+    $sSql .= "                taxas.ar36_permiteparcelamento = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        parcelacustasmanual ";
+    $sSql .= "                    from ";
+    $sSql .= "                        parametrosjuridico ";
+    $sSql .= "                ) = 't' ";
+    $sSql .= "                and ( ";
+    $sSql .= "                    select ";
+    $sSql .= "                        count(ar53_taxa) ";
+    $sSql .= "                    from ";
+    $sSql .= "                        custasparceladasmanualmente ";
+    $sSql .= "                    where ";
+    $sSql .= "                        ar53_taxa = taxas.ar36_sequencial ";
+    $sSql .= "                ) > 0 ";
+    $sSql .= "            ) ";
+    $sSql .= "        ) then true ";
+    $sSql .= "        else false ";
+    $sSql .= "    end as permiteparcelamento, ";
+    $sSql .= "    ( ";
+    $sSql .= "        select ";
+    $sSql .= "            ar53_parcelas ";
+    $sSql .= "        from ";
+    $sSql .= "            custasparceladasmanualmente ";
+    $sSql .= "        where ";
+    $sSql .= "            ar53_taxa = taxas.ar36_sequencial ";
+    $sSql .= "        order by ar53_parcelas desc ";
+    $sSql .= "        limit 1 ";
+    $sSql .= "    ) as numeromaximoparcelas, ";
+    $sSql .= "    taxas.ar36_sequencial, ";
+    $sSql .= "    taxas.ar36_grupotaxa, ";
+    $sSql .= "    taxas.ar36_receita, ";
+    $sSql .= "    taxas.ar36_descricao, ";
+    $sSql .= "    taxas.ar36_perc, ";
+    $sSql .= "    taxas.ar36_valor, ";
+    $sSql .= "    taxas.ar36_valormin, ";
+    $sSql .= "    taxas.ar36_valormax, ";
+    $sSql .= "    taxas.ar36_debitoscomprocesso, ";
+    $sSql .= "    taxas.ar36_debitossemprocesso, ";
+    $sSql .= "    taxas.ar36_aplicajurosmulta, ";
+    $sSql .= "    taxas.ar36_honorario, ";
+    $sSql .= "    taxas.ar36_permiteparcelamento ";
+    $sSql .= "from ";
+    $sSql .= "    taxas ";
+
+    return $sSql;
+  }
 }

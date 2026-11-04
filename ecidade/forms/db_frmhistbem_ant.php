@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clhistbem_ant->rotulo->label();
        <?=@$Lt05_class?>
     </td>
     <td> 
-<?
+<?php
 db_input('t05_class',13,$It05_class,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('t05_class',13,$It05_class,true,'text',$db_opcao,"")
        <?=@$Lt05_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t05_data',@$t05_data_dia,@$t05_data_mes,@$t05_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_inputdata('t05_data',@$t05_data_dia,@$t05_data_mes,@$t05_data_ano,true,'text'
        <?=@$Lt05_ccusto?>
     </td>
     <td> 
-<?
+<?php
 db_input('t05_ccusto',6,$It05_ccusto,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('t05_ccusto',6,$It05_ccusto,true,'text',$db_opcao,"")
        <?=@$Lt05_situac?>
     </td>
     <td> 
-<?
+<?php
 db_input('t05_situac',1,$It05_situac,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('t05_situac',1,$It05_situac,true,'text',$db_opcao,"")
        <?=@$Lt05_histor?>
     </td>
     <td> 
-<?
+<?php
 db_input('t05_histor',60,$It05_histor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_histbem_ant.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

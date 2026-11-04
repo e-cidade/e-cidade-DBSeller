@@ -119,6 +119,17 @@ if ( isset( $z01_numcgm) && $z01_numcgm != "" && $veinclu == false) {
   $sSql .= "                       WHERE k00_numpre = v01_numpre                                                      ";
   $sSql .= "                         AND k00_numcgm = {$z01_numcgm})                                                  ";
   $sSql .= "         UNION                                                                                            ";
+  $sSql .= "         select DISTINCT v14_certid                                                                       ";
+  $sSql .= "         from                                                                                             ";
+  $sSql .= "             (select                                                                                      ";
+  $sSql .= "              DISTINCT certter.v14_certid,                                                                ";
+  $sSql .= "              (select rinumpre as numpre from fc_parc_origem_completo(termo.v07_numpre) order by riseq desc limit 1) as numpre";
+  $sSql .= "         from termoreparc                                                                                 ";
+  $sSql .= "         inner join certter on certter.v14_parcel = termoreparc.v08_parcelorigem                          ";
+  $sSql .= "         inner join termo on termoreparc.v08_parcel = termo.v07_parcel                                    ";
+  $sSql .= "         where v07_situacao = 2 ) as termo                                                                ";
+  $sSql .= "         where exists(select 1 from arrenumcgm where k00_numpre = numpre and k00_numcgm = {$z01_numcgm})  ";
+  $sSql .= "         UNION                                                                                            ";
   $sSql .= "        select CERTID.V13_CERTID                                                                          ";
   $sSql .= "          FROM CERTID                                                                                     ";
   $sSql .= "               INNER JOIN CERTTER   ON CERTTER.V14_CERTID = CERTID.V13_CERTID                             ";

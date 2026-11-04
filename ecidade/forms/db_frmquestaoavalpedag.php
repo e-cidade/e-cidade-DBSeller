@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -73,7 +73,7 @@ if(isset($atualizar)){
       <?=@$Led108_i_codigo?>
      </td>
      <td>
-      <?db_input('ed108_i_codigo',10,$Ied108_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed108_i_codigo',10,$Ied108_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ if(isset($atualizar)){
       <?=@$Led108_t_descr?>
      </td>
      <td>
-      <?db_textarea('ed108_t_descr',2,80,$Ied108_t_descr,true,'text',$db_opcao,"")?>
+      <?php db_textarea('ed108_t_descr',2,80,$Ied108_t_descr,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@ if(isset($atualizar)){
       <?=@$Led108_c_ativo?>
      </td>
      <td>
-      <?
+      <?php
       $x = array('S'=>'SIM','N'=>'NÃO');
       db_select('ed108_c_ativo',$x,true,$db_opcao,"");
       ?>
@@ -108,7 +108,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed108_i_codigo"=>@$ed108_i_codigo,"ed108_t_descr"=>@$ed108_t_descr,"ed108_c_ativo"=>@$ed108_c_ativo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clquestaoaval->sql_query($ed108_i_codigo,"*","ed108_i_sequencia"," ed108_c_tipoaval = 'P'");
@@ -135,7 +135,7 @@ if(isset($atualizar)){
   <td>
    <b>Ordenar Questões:</b><br>
    <select name="campos[]" id="campos" size="4" style="width:500px" multiple>
-   <?
+   <?php
     $sql = "SELECT ed108_i_codigo,ed108_t_descr from questaoaval where ed108_c_tipoaval = 'P' order by ed108_i_sequencia";
     $query = db_query($sql);
     $linhas = pg_num_rows($query);

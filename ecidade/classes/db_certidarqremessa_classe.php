@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: juridico
 //CLASSE DA ENTIDADE certidarqremessa
-class cl_certidarqremessa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v83_sequencial = 0; 
-   var $v83_nomearq = null; 
-   var $v83_lista = 0; 
-   var $v83_dtgeracao_dia = null; 
-   var $v83_dtgeracao_mes = null; 
-   var $v83_dtgeracao_ano = null; 
-   var $v83_dtgeracao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_certidarqremessa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v83_sequencial = 0;
+   var $v83_nomearq = null;
+   var $v83_lista = 0;
+   var $v83_dtgeracao_dia = null;
+   var $v83_dtgeracao_mes = null;
+   var $v83_dtgeracao_ano = null;
+   var $v83_dtgeracao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v83_sequencial = int4 = Sequencial 
-                 v83_nomearq = varchar(50) = Nome do Arquivo 
-                 v83_lista = int4 = Lista 
-                 v83_dtgeracao = date = Data de Geração 
+                 v83_sequencial = int4 = Sequencial
+                 v83_nomearq = varchar(50) = Nome do Arquivo
+                 v83_lista = int4 = Lista
+                 v83_dtgeracao = date = Data de Geração
                  ";
-   //funcao construtor da classe 
-   function cl_certidarqremessa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("certidarqremessa"); 
+     $this->rotulo = new rotulo("certidarqremessa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_certidarqremessa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v83_sequencial = ($this->v83_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v83_sequencial"]:$this->v83_sequencial);
        $this->v83_nomearq = ($this->v83_nomearq == ""?@$GLOBALS["HTTP_POST_VARS"]["v83_nomearq"]:$this->v83_nomearq);
@@ -90,9 +90,9 @@ class cl_certidarqremessa {
      }
    }
    // funcao para inclusao
-   function incluir ($v83_sequencial){ 
+   public function incluir ($v83_sequencial){
       $this->atualizacampos();
-     if($this->v83_nomearq == null ){ 
+     if($this->v83_nomearq == null ){
        $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
        $this->erro_campo = "v83_nomearq";
        $this->erro_banco = "";
@@ -101,7 +101,7 @@ class cl_certidarqremessa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v83_lista == null ){ 
+     if($this->v83_lista == null ){
        $this->erro_sql = " Campo Lista nao Informado.";
        $this->erro_campo = "v83_lista";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_certidarqremessa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v83_dtgeracao == null ){ 
+     if($this->v83_dtgeracao == null ){
        $this->erro_sql = " Campo Data de Geração nao Informado.";
        $this->erro_campo = "v83_dtgeracao_dia";
        $this->erro_banco = "";
@@ -120,16 +120,16 @@ class cl_certidarqremessa {
        return false;
      }
      if($v83_sequencial == "" || $v83_sequencial == null ){
-       $result = db_query("select nextval('certidarqremessa_v83_sequencial_seq')"); 
+       $result = db_query("select nextval('certidarqremessa_v83_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: certidarqremessa_v83_sequencial_seq do campo: v83_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: certidarqremessa_v83_sequencial_seq do campo: v83_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->v83_sequencial = pg_result($result,0,0); 
+       $this->v83_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from certidarqremessa_v83_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $v83_sequencial)){
@@ -140,10 +140,10 @@ class cl_certidarqremessa {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->v83_sequencial = $v83_sequencial; 
+         $this->v83_sequencial = $v83_sequencial;
        }
      }
-     if(($this->v83_sequencial == null) || ($this->v83_sequencial == "") ){ 
+     if(($this->v83_sequencial == null) || ($this->v83_sequencial == "") ){
        $this->erro_sql = " Campo v83_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,19 +152,19 @@ class cl_certidarqremessa {
        return false;
      }
      $sql = "insert into certidarqremessa(
-                                       v83_sequencial 
-                                      ,v83_nomearq 
-                                      ,v83_lista 
-                                      ,v83_dtgeracao 
+                                       v83_sequencial
+                                      ,v83_nomearq
+                                      ,v83_lista
+                                      ,v83_dtgeracao
                        )
                 values (
-                                $this->v83_sequencial 
-                               ,'$this->v83_nomearq' 
-                               ,$this->v83_lista 
-                               ,".($this->v83_dtgeracao == "null" || $this->v83_dtgeracao == ""?"null":"'".$this->v83_dtgeracao."'")." 
+                                $this->v83_sequencial
+                               ,'$this->v83_nomearq'
+                               ,$this->v83_lista
+                               ,".($this->v83_dtgeracao == "null" || $this->v83_dtgeracao == ""?"null":"'".$this->v83_dtgeracao."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "certidarqremessa ($this->v83_sequencial) nao Incluído. Inclusao Abortada.";
@@ -199,16 +199,16 @@ class cl_certidarqremessa {
        $resac = db_query("insert into db_acount values($acount,3210,18173,'','".AddSlashes(pg_result($resaco,0,'v83_dtgeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v83_sequencial=null) { 
+   public function alterar ($v83_sequencial=null) {
       $this->atualizacampos();
      $sql = " update certidarqremessa set ";
      $virgula = "";
-     if(trim($this->v83_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_sequencial"])){ 
+     if(trim($this->v83_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_sequencial"])){
        $sql  .= $virgula." v83_sequencial = $this->v83_sequencial ";
        $virgula = ",";
-       if(trim($this->v83_sequencial) == null ){ 
+       if(trim($this->v83_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v83_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_certidarqremessa {
          return false;
        }
      }
-     if(trim($this->v83_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_nomearq"])){ 
+     if(trim($this->v83_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_nomearq"])){
        $sql  .= $virgula." v83_nomearq = '$this->v83_nomearq' ";
        $virgula = ",";
-       if(trim($this->v83_nomearq) == null ){ 
+       if(trim($this->v83_nomearq) == null ){
          $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
          $this->erro_campo = "v83_nomearq";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_certidarqremessa {
          return false;
        }
      }
-     if(trim($this->v83_lista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_lista"])){ 
+     if(trim($this->v83_lista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_lista"])){
        $sql  .= $virgula." v83_lista = $this->v83_lista ";
        $virgula = ",";
-       if(trim($this->v83_lista) == null ){ 
+       if(trim($this->v83_lista) == null ){
          $this->erro_sql = " Campo Lista nao Informado.";
          $this->erro_campo = "v83_lista";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_certidarqremessa {
          return false;
        }
      }
-     if(trim($this->v83_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"] !="") ){ 
+     if(trim($this->v83_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"] !="") ){
        $sql  .= $virgula." v83_dtgeracao = '$this->v83_dtgeracao' ";
        $virgula = ",";
-       if(trim($this->v83_dtgeracao) == null ){ 
+       if(trim($this->v83_dtgeracao) == null ){
          $this->erro_sql = " Campo Data de Geração nao Informado.";
          $this->erro_campo = "v83_dtgeracao_dia";
          $this->erro_banco = "";
@@ -256,11 +256,11 @@ class cl_certidarqremessa {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["v83_dtgeracao_dia"])){
          $sql  .= $virgula." v83_dtgeracao = null ";
          $virgula = ",";
-         if(trim($this->v83_dtgeracao) == null ){ 
+         if(trim($this->v83_dtgeracao) == null ){
            $this->erro_sql = " Campo Data de Geração nao Informado.";
            $this->erro_campo = "v83_dtgeracao_dia";
            $this->erro_banco = "";
@@ -293,7 +293,7 @@ class cl_certidarqremessa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certidarqremessa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v83_sequencial;
@@ -321,14 +321,14 @@ class cl_certidarqremessa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v83_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v83_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v83_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -357,7 +357,7 @@ class cl_certidarqremessa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certidarqremessa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v83_sequencial;
@@ -385,11 +385,11 @@ class cl_certidarqremessa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -411,11 +411,11 @@ class cl_certidarqremessa {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $v83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $v83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,15 +431,15 @@ class cl_certidarqremessa {
      $sql2 = "";
      if($dbwhere==""){
        if($v83_sequencial!=null ){
-         $sql2 .= " where certidarqremessa.v83_sequencial = $v83_sequencial "; 
-       } 
+         $sql2 .= " where certidarqremessa.v83_sequencial = $v83_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,11 +448,11 @@ class cl_certidarqremessa {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $v83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $v83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,15 +465,15 @@ class cl_certidarqremessa {
      $sql2 = "";
      if($dbwhere==""){
        if($v83_sequencial!=null ){
-         $sql2 .= " where certidarqremessa.v83_sequencial = $v83_sequencial "; 
-       } 
+         $sql2 .= " where certidarqremessa.v83_sequencial = $v83_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

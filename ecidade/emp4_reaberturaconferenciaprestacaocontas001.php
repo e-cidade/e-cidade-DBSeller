@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,13 +39,15 @@ $oEmpenho->label();
 
 $oEmpPresta = new rotulo("emppresta");
 $oEmpPresta->label();
+
+
 ?>
 <!DOCTYPE head PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, prototype.js, strings.js");
 db_app::load("estilos.css, AjaxRequest.js");
 ?>
@@ -56,7 +58,7 @@ db_app::load("estilos.css, AjaxRequest.js");
     <fieldset style="margin-top: 25px; width: 500px;">
       <legend><b>Processar Reabertura</b></legend>
       <table>
-        <tr style="display: none;">
+        <tr style="Display: none;">
           <td>
             <?php db_input('e45_sequencial', 10, $Ie45_sequencial, true, 'hidden', 3); ?>
           </td>
@@ -112,7 +114,7 @@ db_app::load("estilos.css, AjaxRequest.js");
     <input type="button" id='btnProcessar' name='btnProcessar' value='Processar'>
   </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -130,7 +132,7 @@ oBotaoProcessar.disabled = true;
  */
 function js_pesquisa() {
 
-  var sUrl  = 'func_emppresta.php?';
+  var sUrl  = 'func_emppresta_reabertura.php?';
   sUrl     += 'fechamento=notnull&acertoPrestacaoContas=notnull&exibeMovimento=1';
   sUrl     += '&funcao_js=parent.js_preenchePesquisa|e45_sequencial|e60_numemp|e45_codmov|z01_nome|e45_acerta';
 
@@ -159,7 +161,8 @@ function verificarDevolucaoAdiantamento() {
   var oParametro = {
     'exec' : 'verificaDevolucaoAdiantamento',
     'iCodigoEmpenho' : $F('e45_numemp'),
-    'iCodigoPrestacao' : $F('e45_sequencial')
+    'iCodigoPrestacao' : $F('e45_sequencial'),
+    'iMovimento' : $F('e45_codmov')
   };
 
   new AjaxRequest(sRpc, oParametro,
@@ -168,7 +171,7 @@ function verificarDevolucaoAdiantamento() {
       if (lErro) {
         return alert(oRetorno.mensagem.urlDecode());
       }
-
+      $('e45_sequencial').value = oRetorno.e45_sequencial;
       oBotaoProcessar.disabled = false;
       if (!oRetorno.lPodeReabrir) {
         oBotaoProcessar.disabled = true;
@@ -193,6 +196,7 @@ oBotaoProcessar.observe('click', function() {
   oObject.exec               = "reaberturaConferencia";
   oObject.iSequencialEmpenho = $F('e45_sequencial');
   oObject.iNumeroEmpenho     = $F('e45_numemp');
+  oObject.iMovimento = $F('e45_codmov');
   oObject.sComplemento       = encodeURIComponent(tagString($F('complementoReabertura')));
 
   js_divCarregando('Processando Reabertura da Conferência...','msgBox');

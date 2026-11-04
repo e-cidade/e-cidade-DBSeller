@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,7 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdf.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
 require_once(modification("libs/db_utils.php"));
 
 $Total = 0;
@@ -59,37 +62,39 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
 	  		left outer join conplanoexe   on tabplan.k02_reduz = conplanoexe.c62_reduz and tabplan.k02_anousu = conplanoexe.c62_anousu
 	  		left outer join conplanoreduz on conplanoexe.c62_reduz = conplanoreduz.c61_reduz and c61_anousu=c62_anousu";
 
-    $head3 = "Relatório de Receitas";
+    $pdf = new ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->addTitulo('Relatório de Receitas');
     if ($opcaoRelatorio == "todas") {
-        $head5 = "Receitas Orçamentárias e Extra-orçamentárias";
+        $pdf->addTitulo("Receitas Orçamentárias e Extra-orçamentárias", 'subtitulo');
         $where = " where o70_instit = " . db_getsession("DB_instit");
         $where .= " or c61_instit    = " . db_getsession("DB_instit");
         $where .= " and tabrec.k02_tipo = 'O' or  tabrec.k02_tipo = 'E'";
     }
     if ($opcaoRelatorio == "k02_estorc") {
-        $head5 = "Receitas Orçamentárias";
+        $pdf->addTitulo("Receitas Orçamentárias", 'subtitulo');
         $where = " where o70_instit    = " . db_getsession("DB_instit");
         $where .= " and tabrec.k02_tipo = 'O'";
     }
     if ($opcaoRelatorio == "k02_estpla") {
-        $head5 = "Receitas Extra-orçamentárias";
+        $pdf->addTitulo("Receitas Extra-orçamentárias", 'subtitulo');
         $where = " where c61_instit    = " . db_getsession("DB_instit");
         $where .= " and tabrec.k02_tipo = 'E'";
     }
     $sql .= $where;
     if ($opcaoOrdem == "alfabetica") {
-        $head6 = "Ordem alfabetica";
+        $ordem = "Ordem alfabetica";
         $sql .= " order by tabrec.k02_drecei ";
     } else if ($opcaoOrdem == "numerica") {
-        $head6 = "Ordem Numérica";
+        $ordem = "Ordem Numérica";
         $sql .= " order by tabrec.k02_codigo	";
     } else if ($opcaoOrdem == "estrutural") {
-        $head6 = "Ordem Numérica";
+        $ordem = "Ordem Numérica";
         $sql = "select xxx.*, case when k02_estorc is not null then k02_estorc else k02_estpla end as estrutural from ($sql) as xxx order by estrutural";
     }
-    $head7 = "Exercício: " . db_getsession("DB_anousu");
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf->addTitulo($ordem);
+    $pdf->addTitulo( "Exercício: " . db_getsession("DB_anousu"));
+
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->SetFont('Courier', '', 7);
     $pdf->SetTextColor(0, 0, 0);
@@ -108,12 +113,12 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $sql = "select * from ($sql) as x where (o70_instit = " . db_getsession("DB_instit") . " or c61_instit = " . db_getsession("DB_instit") . ")" . $where;
     //  echo $sql;exit;
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $linha = 0;
     $TPagina = 27;
     $preenc = 0;
     for ($i = 0; $i < $num; $i++) {
-        if ($pdf->gety() > $pdf->h - 30 || $linha == 0) {
+        if ($pdf->gety() > $pdf->getH() - 30 || $linha == 0) {
             $preenc = 1;
             $linha = 1;
             $pdf->AddPage();
@@ -137,11 +142,11 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
             $preenc = 0;
         }
         $pdf->SetFont('Courier', '', 7);
-        $pdf->Cell(12, 5, pg_result($result, $i, "k02_codigo"), 0, 0, "R", $preenc);
-        $pdf->Cell(3, 5, pg_result($result, $i, "k02_tipo"), 0, 0, "R", $preenc);
-        $pdf->Cell(10, 5, pg_result($result, $i, "k02_codrec"), 0, 0, "R", $preenc);
-        $k02_estorc = pg_result($result, $i, "k02_estorc");
-        $k02_estpla = pg_result($result, $i, "k02_estpla");
+        $pdf->Cell(12, 5, pg_fetch_result($result, $i, "k02_codigo"), 0, 0, "R", $preenc);
+        $pdf->Cell(3, 5, pg_fetch_result($result, $i, "k02_tipo"), 0, 0, "R", $preenc);
+        $pdf->Cell(10, 5, pg_fetch_result($result, $i, "k02_codrec"), 0, 0, "R", $preenc);
+        $k02_estorc = pg_fetch_result($result, $i, "k02_estorc");
+        $k02_estpla = pg_fetch_result($result, $i, "k02_estpla");
         if (trim($k02_estorc) != "") {
             $pdf->Cell(25, 5, $k02_estorc, 0, 0, "R", $preenc);
         } else if (trim($k02_estpla)) {
@@ -149,11 +154,11 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         } else {
             $pdf->Cell(25, 5, '', 0, 0, "R", $preenc);
         }
-        $pdf->Cell(25, 5, pg_result($result, $i, "k02_descr"), 0, 0, "L", $preenc);
-        $pdf->Cell(60, 5, pg_result($result, $i, "k02_drecei"), 0, 0, "L", $preenc);
-        $pdf->Cell(16, 5, db_formatar(pg_result($result, $i, "k02_limite"), 'd'), 0, 0, "L", $preenc);
-        $pdf->Cell(15, 5, pg_result($result, $i, "k02_recjur"), 0, 0, "R", $preenc);
-        $pdf->Cell(15, 5, pg_result($result, $i, "k02_recmul"), 0, 1, "R", $preenc);
+        $pdf->Cell(25, 5, pg_fetch_result($result, $i, "k02_descr"), 0, 0, "L", $preenc);
+        $pdf->Cell(60, 5, pg_fetch_result($result, $i, "k02_drecei"), 0, 0, "L", $preenc);
+        $pdf->Cell(16, 5, db_formatar(pg_fetch_result($result, $i, "k02_limite"), 'd'), 0, 0, "L", $preenc);
+        $pdf->Cell(15, 5, pg_fetch_result($result, $i, "k02_recjur"), 0, 0, "R", $preenc);
+        $pdf->Cell(15, 5, pg_fetch_result($result, $i, "k02_recmul"), 0, 1, "R", $preenc);
         $Total += 1;
 
     }
@@ -180,8 +185,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
 	  order by k02_codjm
 	  ";
     }
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage(); // adiciona uma pagina
 
@@ -192,15 +197,15 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k02_codjm"), $borda, 0, "C", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k02_corr"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "i01_descr"), 0, 35), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k02_codjm"), $borda, 0, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k02_corr"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "i01_descr"), 0, 35), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();
@@ -222,29 +227,33 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
                   c63_conta,
                   c63_dvconta,
                   o15_recurso,
-                  o15_descr
+                  orctiporec_id,
+                  gestao,
+                  o15_complemento,
+                  descricao
             from saltes
-                 inner join conplanoreduz   on k13_reduz     = c61_reduz
-                 inner join conplano        on c61_anousu    = c60_anousu and c61_codcon = c60_codcon
-                 inner join conplanoconta   on c60_anousu    = c63_anousu and c60_codcon = c63_codcon and c63_reduz = c61_reduz
-                 inner join orctiporec      on c61_codigo    = o15_codigo
+            join conplanoreduz on k13_reduz = c61_reduz
+            join conplano on c61_anousu = c60_anousu and c61_codcon = c60_codcon
+            join conplanoconta on c60_anousu = c63_anousu and c60_codcon = c63_codcon and c63_reduz = c61_reduz
+            join orctiporec on c61_codigo = o15_codigo
+            join fonterecurso on orctiporec_id = o15_codigo and exercicio = c61_anousu
            where  c61_anousu  = " . db_getsession("DB_anousu") . "
              and  c61_instit =  " . db_getsession("DB_instit");
 
-    $head5 = "Relatório das contas da tesouraria";
+    $pdf = new \ECidade\Pdf\Pdf();
+    $pdf->addTitulo("Relatório das contas da tesouraria");
 
     if ($opcaoOrdem == "alfabetica") {
-        $head6 = "Ordem Alfabética";
+        $ordem = "Ordem Alfabética";
         $sql .= " order by k13_descr ";
     } else {
-        $head6 = "Ordem Numérica";
+        $ordem = "Ordem Numérica";
         $sql .= " order by k13_conta ";
     }
+    $pdf->addTitulo($ordem);
+    $pdf->addTitulo("Exercício: " . db_getsession("DB_anousu"));
 
-    $head7 = "Exercício: " . db_getsession("DB_anousu");
-
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage("L"); // adiciona uma pagina
     $TPagina = 34;
@@ -259,13 +268,20 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(85, 4, "Recurso", "LTB", 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Arial', '', 7);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
         $oSaltes = db_utils::fieldsMemory($result, $i);
 
+        $recurso = sprintf(
+            '%s - %s - %s',
+            $oSaltes->gestao,
+            $oSaltes->o15_recurso,
+            str_pad($oSaltes->o15_complemento, 4, '0', STR_PAD_LEFT)
+        );
+        $pdf->SetFont('Arial', 'B', 7); // seta a fonte do relatorio
         $pdf->Cell(16, 4, $oSaltes->k13_reduz, "TRB", 0, "R", $preenc);
         $pdf->Cell(14, 4, $oSaltes->c63_banco, 1, 0, "R", $preenc);
         $pdf->Cell(80, 4, $oSaltes->c60_descr, 1, 0, "L", $preenc);
@@ -273,8 +289,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         $pdf->Cell(8, 4, $oSaltes->c63_dvagencia, 1, 0, "L", $preenc);
         $pdf->Cell(25, 4, $oSaltes->c63_conta, 1, 0, "R", $preenc);
         $pdf->Cell(10, 4, $oSaltes->c63_dvconta, 1, 0, "L", $preenc);
-        $pdf->Cell(30, 4, $oSaltes->o15_recurso, 1, 0, "C", $preenc);
-        $pdf->Cell(85, 4, $oSaltes->o15_descr, "LTB", 1, "L", $preenc);
+        $pdf->Cell(30, 4, $recurso, 1, 0, "C", $preenc);
+        $pdf->Cell(85, 4, substr($oSaltes->descricao, 0, 70), "LTB", 1, "L", $preenc);
 
         if ($linha++ > $TPagina) {
             $linha = 0;
@@ -288,6 +304,56 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
             $pdf->Cell(30, 4, "Cod.Recurso", $bordat, 0, "C", $preenc);
             $pdf->Cell(85, 4, "Recurso", "LTB", 1, "C", $preenc);
             $pdf->SetFont('Arial', '', 7);
+        }
+
+        if (isset($opcaoSelect) and $opcaoSelect == "sim") {
+            $pdf->SetFont('Arial', 'B', 8); // seta a fonte do relatorio
+            $pdf->Cell(30, 4, "Receita", "TRB", 0, "C", $preenc); // escreve a celula
+            $pdf->Cell(98, 4, "Descrição", $bordat, 0, "C", $preenc);
+            $pdf->Cell(35, 4, "Receita Tesouraria", $bordat, 0, "C", $preenc);
+            $pdf->Cell(30, 4, "Recurso", "LTB", 1, "C", $preenc);
+
+            $sqlRecursos = "
+                SELECT DISTINCT orcfontes.o57_fonte,
+                                orcfontes.o57_descr,
+                                taborc.k02_codigo,
+                                gestao,
+                                o15_recurso,
+                                o15_complemento
+                FROM   orcreceita
+                       JOIN orcfontes
+                         ON o57_anousu = o70_anousu
+                            AND o57_codfon = o70_codfon
+                       JOIN orctiporec
+                         ON o15_codigo = o70_codigo
+                       JOIN fonterecurso
+                         ON orctiporec_id = o15_codigo
+                            AND exercicio = o70_anousu
+                       JOIN taborc
+                         ON k02_anousu = o70_anousu
+                            AND k02_codrec = o70_codrec
+                WHERE  o70_codigo = {$oSaltes->orctiporec_id}
+                ORDER  BY o57_fonte";
+
+            $resultRecursos = db_query($sqlRecursos);
+            $numRec = pg_num_rows($resultRecursos);
+            for ($j = 0; $j < $numRec; $j++) {
+                $recursosDados = db_utils::fieldsMemory($resultRecursos, $j);
+                $o15_complemento = str_pad($recursosDados->o15_complemento, 4, "0", STR_PAD_LEFT);
+                $pdf->SetFont('Arial', 'B', 6); // seta a fonte do relatorio
+                $pdf->Cell(30, 4, $recursosDados->o57_fonte, "TRB", 0, "C", $preenc);
+                $pdf->Cell(98, 4, $recursosDados->o57_descr, 1, 0, "L", $preenc);
+                $pdf->Cell(35, 4, $recursosDados->k02_codigo, 1, 0, "C", $preenc);
+                $pdf->Cell(
+                    30,
+                    4,
+                    $recursosDados->gestao." - ".$recursosDados->o15_recurso." - ".$o15_complemento,
+                    1,
+                    1,
+                    "C",
+                    $preenc
+                );
+            }
         }
     }
 } elseif ($opcaoRelatorio == "cadban") {
@@ -310,8 +376,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         ";
     }
 
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage(); // adiciona uma pagina
 
@@ -321,14 +387,14 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Nome do Banco", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k15_codbco"), $borda, 0, "C", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k15_codage"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "z01_nome"), 0, 40), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k15_codbco"), $borda, 0, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k15_codage"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "z01_nome"), 0, 40), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();
@@ -358,8 +424,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         ";
     }
 
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage(); // adiciona uma pagina
     $Total = 0;
@@ -368,12 +434,12 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k00_tipo"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "k00_descr"), 0, 40), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k00_tipo"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "k00_descr"), 0, 40), $borda, 1, "L", $preenc);
         $Total += 1;
         if ($linha++ > $TPagina) {
             $linha = 0;
@@ -405,8 +471,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         ";
     }
 
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage(); // adiciona uma pagina
     $TPagina = 50;
@@ -417,16 +483,16 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(14, 4, "Tipo", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     // k01_codigo,k01_descr, k01_tipo
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k01_codigo"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "k01_descr"), 0, 40), $borda, 0, "L", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k01_tipo"), $borda, 1, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k01_codigo"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "k01_descr"), 0, 40), $borda, 0, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k01_tipo"), $borda, 1, "C", $preenc);
         $Total += 1;
         if ($linha++ > $TPagina) {
             $linha = 0;
@@ -460,8 +526,8 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         ";
     }
 
-    $pdf = new PDF(); // abre a classe
-    $pdf->Open(); // abre o relatorio
+    $pdf = new \ECidade\Pdf\Pdf(); // abre a classe
+    $pdf->init(false); // abre o relatorio
     $pdf->AliasNbPages(); // gera alias para as paginas
     $pdf->AddPage(); // adiciona uma pagina
     $TPagina = 50;
@@ -472,14 +538,14 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(20, 4, "Local", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k11_id"), $borda, 0, "C", $preenc);
-        $pdf->Cell(40, 4, pg_result($result, $i, "k11_ipterm"), $borda, 0, "L", $preenc);
-        $pdf->Cell(20, 4, pg_result($result, $i, "k11_local"), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k11_id"), $borda, 0, "C", $preenc);
+        $pdf->Cell(40, 4, pg_fetch_result($result, $i, "k11_ipterm"), $borda, 0, "L", $preenc);
+        $pdf->Cell(20, 4, pg_fetch_result($result, $i, "k11_local"), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();

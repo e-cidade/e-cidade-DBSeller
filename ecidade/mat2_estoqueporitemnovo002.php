@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -301,7 +301,7 @@ if ($iTotalItensEstoque > 0) {
             $oEstoque->aMovimentacoesEstoque          = array();
             $aEstoques[$oItemEstoque->iCodigoEstoque] = $oEstoque;
         }
-        $nQuatidadeEstoque = $oItemEstoque->iQuantidadeEstoque - $oItemEstoque->iQuantidadeAtendida;
+        $nQuatidadeEstoque = round($oItemEstoque->iQuantidadeEstoque - $oItemEstoque->iQuantidadeAtendida,3);
 
         $aEstoques[$oItemEstoque->iCodigoEstoque]->nQuantidadeEstoque     += $nQuatidadeEstoque;
         $aEstoques[$oItemEstoque->iCodigoEstoque]->nPrecoMedio             = $oItemEstoque->nPrecoMedio;
@@ -321,7 +321,7 @@ if ($iTotalItensEstoque > 0) {
             $oItem->nPrecoMedio                    = 0;
             $aDepartamentos[$oItemEstoque->iCodigoDepartamento][$oItemEstoque->iCodigoItem] = $oItem;
         }
-        $nQuatidadeEstoque = $oItemEstoque->iQuantidadeEstoque - $oItemEstoque->iQuantidadeAtendida;
+        $nQuatidadeEstoque = round($oItemEstoque->iQuantidadeEstoque - $oItemEstoque->iQuantidadeAtendida,3);
 
         $aDepartamentos[$oItemEstoque->iCodigoDepartamento][$oItemEstoque->iCodigoItem]->nQuantidadeEstoque     += $nQuatidadeEstoque;
         $aDepartamentos[$oItemEstoque->iCodigoDepartamento][$oItemEstoque->iCodigoItem]->nPrecoMedio             = $oItemEstoque->nPrecoMedio;
@@ -624,6 +624,7 @@ function getDadosSintetico($oPdf, $oMovimentos, $oTotalEstoqueSintetico, $oGet, 
     $oTotalEstoqueSintetico->iTotalEstoque += $oMovimentos->nQuantidadeEstoque;
     $oTotalEstoqueSintetico->iTotal += $nValorEstoque;
 
+
     $sDescricaoItem = substr($oMovimentos->sDescricaoItem, 0, 65);
 
     $oPdf->cell(30, $iAlturaLinha, $oMovimentos->iCodigoItem, $iBorda, 0, "R", $iPreenche);
@@ -650,7 +651,6 @@ function getDadosSintetico($oPdf, $oMovimentos, $oTotalEstoqueSintetico, $oGet, 
  */
 function getTotalizadorSintetico($oPdf, $oTotalEstoqueSintetico, $lSintetico = true)
 {
-
     $oPdf->ln(2);
     $oPdf->setfont('arial', 'B', 7);
 
@@ -665,6 +665,7 @@ function getTotalizadorSintetico($oPdf, $oTotalEstoqueSintetico, $lSintetico = t
     if (!$lSintetico) {
         $oPdf->cell(40 - $iLarguraLinha, 4, "", 'TB', 0, "R", 0);
     }
+
     $oPdf->cell(40 - $iLarguraLinha, 4, 'R$ ' . trim(db_formatar($oTotalEstoqueSintetico->iTotal, 'f')), 1, 1, "R", 0);
 
 }

@@ -47,8 +47,8 @@ class cl_db_sysarqarq
     public $codarq = 0;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 codarqpai = int4 = Código da Tabela Pai 
-                 codarq = int4 = Codigo Arquivo 
+                 codarqpai = int4 = Código da Tabela Pai
+                 codarq = int4 = Codigo Arquivo
                  ";
 
     //funcao construtor da classe
@@ -113,12 +113,12 @@ class cl_db_sysarqarq
             return false;
         }
         $sql = "insert into db_sysarqarq (
-                                       codarqpai 
-                                      ,codarq 
+                                       codarqpai
+                                      ,codarq
                        )
                 values (
-                                $this->codarqpai 
-                               ,$this->codarq 
+                                $this->codarqpai
+                               ,$this->codarq
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -421,7 +421,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -512,7 +512,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

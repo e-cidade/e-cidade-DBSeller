@@ -103,7 +103,7 @@ if(isset($opcao) && $opcao=="alterar"){
             <?=@$Lsd04_i_codigo?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd04_i_codigo',10,$Isd04_i_codigo,true,'hidden',3,"");
           db_input('sd27_i_codigo',10,$Isd27_i_codigo,true,'text',3,"");
           ?>
@@ -119,7 +119,7 @@ if(isset($opcao) && $opcao=="alterar"){
                            <?=@$Lsd04_i_horaamb?>
                         </td>
                         <td width="39%">
-                         <?
+                         <?php
                          db_input('sd04_i_horaamb',5,$Isd04_i_horaamb,true,'text',$db_opcao,"onKeyUp=mascara_hora(this.value,'sd04_i_horaamb',event,false)");
                          ?>
                         </td>
@@ -129,7 +129,7 @@ if(isset($opcao) && $opcao=="alterar"){
                            <?=@$Lsd04_i_horahosp?>
                         </td>
                         <td>
-                         <?
+                         <?php
                          db_input('sd04_i_horahosp',5,$Isd04_i_horahosp,true,'text',$db_opcao,"onKeyUp=mascara_hora(this.value,'sd04_i_horahosp',event,false)");
                          ?>
                         </td>
@@ -139,7 +139,7 @@ if(isset($opcao) && $opcao=="alterar"){
                            <?=@$Lsd04_i_horaoutros?>
                         </td>
                         <td>
-                         <?
+                         <?php
                          db_input('sd04_i_horaoutros',5,$Isd04_i_horaoutros,true,'text',$db_opcao,"onKeyUp=mascara_hora(this.value,'sd04_i_horaoutros',event,false)");
                          ?>
                         </td>
@@ -158,7 +158,7 @@ if(isset($opcao) && $opcao=="alterar"){
                            <?=@$Lsd27_c_situacao?>
                         </td>
                         <td width="42%">
-                         <?
+                         <?php
                          $x = array('A'=>'Ativo','D'=>'Desativado');
                          db_select('sd27_c_situacao',$x,true,$db_opcao,"");
                          ?>
@@ -170,7 +170,7 @@ if(isset($opcao) && $opcao=="alterar"){
                            <?=@$Lsd04_c_sus?>
                         </td>
                         <td>
-                         <?
+                         <?php
                          $x = array('N'=>'Não','S'=>'Sim');
                          db_select('sd04_c_sus',$x,true,$db_opcao,"");
                          ?>
@@ -186,30 +186,30 @@ if(isset($opcao) && $opcao=="alterar"){
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd04_i_medico?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",3);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',3," onchange='js_pesquisasd04_i_medico(false);'")
           ?>
-          <?
+          <?php
           db_input('z01_nome',60,$Iz01_nome,true,'text',3,'')
           ?>
          </td>
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd04_i_unidade?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",$iPermiteAlteracao);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd04_i_unidade',10,$Isd04_i_unidade,true,'text',$iPermiteAlteracao," onchange='js_pesquisasd04_i_unidade(false);'")
           ?>
-          <?
+          <?php
           db_input('descrdepto',60,$Idescrdepto,true,'text',3,'')
           ?>
          </td>
@@ -219,19 +219,19 @@ if(isset($opcao) && $opcao=="alterar"){
             <?=@$Lsd04_v_registroconselho?>
          </td>
          <td>
-            <?
+            <?php
             db_input('sd04_v_registroconselho',10,$Isd04_v_registroconselho,true,'text',$db_opcao,"");
             ?>
           </td>
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd04_v_registroconselho?>">
-            <?
+            <?php
               db_ancora(@$Lsd04_i_orgaoemissor,"js_pesquisasd04_i_orgaoemissor(true);",$db_opcao);
             ?>
          </td>
          <td>
-            <?
+            <?php
             db_input('sd04_i_orgaoemissor',10,$Isd04_i_orgaoemissor,true,'text',$db_opcao," onchange='js_pesquisasd04_i_orgaoemissor(false);'");
             db_input('sd51_v_descricao',60,$Isd51_v_descricao,true,'text',3,'');
             ?>
@@ -239,15 +239,15 @@ if(isset($opcao) && $opcao=="alterar"){
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd27_i_rhcbo?>">
-            <?
+            <?php
             db_ancora(@$Lsd27_i_rhcbo,"js_pesquisasd04_i_cbo(true);",$iPermiteAlteracao);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd27_i_rhcbo',10,$Isd27_i_rhcbo,true,'text',$iPermiteAlteracao," onchange='js_pesquisasd04_i_cbo(false);'")
           ?>
-          <?
+          <?php
           db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',3,'');
           db_input('rh70_descr',46,$Irh70_descr,true,'text',3,'');
           ?>
@@ -258,7 +258,7 @@ if(isset($opcao) && $opcao=="alterar"){
             <?=@$Lsd27_b_principal?>
          </td>
          <td>
-            <?
+            <?php
             $x = array('f'=>'Não','t'=>'Sim');
             db_select('sd27_b_principal',$x,true,$db_opcao,"");
             ?>
@@ -270,7 +270,7 @@ if(isset($opcao) && $opcao=="alterar"){
            <?=@$Lfa54_i_cbos?>
          </td>
          <td>
-           <?
+           <?php
            $sSql = $oDaoFarCbos->sql_query_file();
            $rs   = $oDaoFarCbos->sql_record($sSql);
            $aX   = array();
@@ -292,45 +292,45 @@ if(isset($opcao) && $opcao=="alterar"){
        
        <tr>
          <td nowrap title="<?=@$Tsd04_i_vinculo?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_vinculo,"js_pesquisasd04_i_vinculo(true);",$db_opcao);
             ?>
          </td>
          <td>
-           <?
+           <?php
            db_input('sd04_i_vinculo',10,$Isd04_i_vinculo,true,'text',$db_opcao," onchange='js_pesquisasd04_i_vinculo(false);'")
            ?>
-           <?
+           <?php
            db_input('sd52_v_descricao',60,$Isd52_v_descricao,true,'text',3,'')
            ?>
          </td>
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd04_i_tipovinc?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_tipovinc,"js_pesquisasd04_i_tipovinc(true);",$db_opcao);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd04_i_tipovinc',10,$Isd04_i_tipovinc,true,'text',$db_opcao," onchange='js_pesquisasd04_i_tipovinc(false);'")
           ?>
-           <?
+           <?php
            db_input('sd53_v_descrvinculo',60,$Isd53_v_descrvinculo,true,'text',3,'')
            ?>
          </td>
        </tr>
        <tr>
          <td nowrap title="<?=@$Tsd04_i_subtipovinc?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_subtipovinc,"js_pesquisasd04_i_subtipovinc(true);",$db_opcao);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd04_i_subtipovinc',10,$Isd04_i_subtipovinc,true,'text',$db_opcao," onchange=js_pesquisasd04_i_subtipovinc(false);")
           ?>
-           <?
+           <?php
            db_input('sd54_v_descricao',60,$Isd54_v_descricao,true,'text',3,'')
            ?>
          </td>
@@ -343,7 +343,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("sd27_i_codigo"=>@$sd27_i_codigo );
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clespecmedico->sql_query("","*",""," sd04_i_medico = $sd04_i_medico");
@@ -567,7 +567,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_unidademedicos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

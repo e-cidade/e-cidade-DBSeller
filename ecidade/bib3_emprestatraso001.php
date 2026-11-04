@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -70,7 +70,7 @@ if ($linhas != 0) {
       <br>
       <center>
       <fieldset style="width:90%"><legend><b>Consulta de Empréstimos em Atraso</b></legend>
-      <?
+      <?php
       $hoje = date("Y-m-d");
       $sSql = "SELECT bi23_codigo, bi06_titulo, bi18_retirada, bi18_devolucao, bi18_carteira, bi16_leitor, ov02_nome
                  FROM emprestimoacervo
@@ -79,7 +79,7 @@ if ($linhas != 0) {
                       inner join leitorcategoria  on bi07_codigo               = bi16_leitorcategoria
                       inner join biblioteca       on bi17_codigo               = bi07_biblioteca
                       inner join leitor           on bi10_codigo               = bi16_leitor
-                      left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo                   
+                      left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo
                       left  join cidadao          on cidadao.ov02_sequencial   = leitorcidadao.bi28_cidadao_sequencial
                                                  and cidadao.ov02_seq          = leitorcidadao.bi28_cidadao_seq
                       inner join exemplar         on bi23_codigo               = bi19_exemplar
@@ -104,9 +104,9 @@ if ($linhas != 0) {
               <td><b>Leitor</b></td>
               <td>&nbsp;</td>
             </tr>
-            <?
+            <?php
             for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
-     
+
              db_fieldsmemory($result, $x);
              ?>
              <tr bgcolor="#f3f3f3">
@@ -114,19 +114,19 @@ if ($linhas != 0) {
                <td><?=strlen($bi06_titulo)<16?$bi06_titulo:substr($bi06_titulo,0,15)."..."?></td>
                <td><?=db_formatar($bi18_retirada,'d')?></td>
                <td><?=db_formatar($bi18_devolucao,'d')?></td>
-               <td><a href="bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi16_leitor?>" 
+               <td><a href="bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi16_leitor?>"
                       title="Ver dados do leitor"><?=strlen($ov02_nome) < 33 ? $ov02_nome:substr($ov02_nome, 0, 32)."..."?></a>
                </td>
                <td>
-                 <input name="devolver" 
-                        type="button" 
-                        id="devolver" 
-                        value="Devolução" 
+                 <input name="devolver"
+                        type="button"
+                        id="devolver"
+                        value="Devolução"
                         onclick="location.href='bib1_devolucao001.php?bi18_carteira=<?=$bi18_carteira?>
                                                                      &ov02_nome=<?=$ov02_nome?>'">
                </td>
              </tr>
-             <?
+             <?php
             }
             ?>
          </table>
@@ -137,12 +137,12 @@ if ($linhas != 0) {
            <td>Nenhum empréstimo em atraso.</td>
          </tr>
        </table>
-     <?}?>
+     <?php }?>
      </fieldset>
      </center>
     </td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

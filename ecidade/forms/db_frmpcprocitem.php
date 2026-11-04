@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clrotulo = new rotulocampo;
@@ -45,7 +45,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
       <strong>Solicitação: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       $arr_numero = array();
       $arr_index  = array();
       $sql_solicita = $clsolicita->sql_record($clsolicita->sql_query_solicita(null,"distinct pc10_numero,pc10_data,pc10_resumo,descrdepto","pc10_numero"));
@@ -53,7 +53,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
 	db_fieldsmemory($sql_solicita,$i,true);
 	$arr_numero[$pc10_numero] = $pc10_numero;
 	$arr_index[$pc10_numero]  = $i;
-	$arr_data = split("/",$pc10_data);
+	$arr_data =explode("/",$pc10_data);
 	$pc10_data_dia = $arr_data[0];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[2];
@@ -72,7 +72,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
 		}
 	      </script>";
 	db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-	$arr_data = split("-",$pc10_data);
+	$arr_data =explode("-",$pc10_data);
 	$pc10_data_dia = $arr_data[2];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[0];
@@ -80,28 +80,28 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
     ?>
     </td>
     <td align="right" nowrap>
-      <strong>&nbsp;&nbsp;&nbsp;Data: </strong>      
+      <strong>&nbsp;&nbsp;&nbsp;Data: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
     ?>
     </td>
     <td align="right" nowrap>
-      <strong>&nbsp;&nbsp;&nbsp;Departamento: </strong>      
+      <strong>&nbsp;&nbsp;&nbsp;Departamento: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('descrdepto',40,$Idescrdepto,true,'text',3);
     ?>
     </td>
   </tr>
   <tr height="3%">
     <td align="right" nowrap>
-      <strong>&nbsp;&nbsp;&nbsp;Resumo: </strong>      
+      <strong>&nbsp;&nbsp;&nbsp;Resumo: </strong>
     </td>
     <td colspan="5" nowrap>
-    <?
+    <?php
       db_textarea('pc10_resumo',2,80,$Ipc10_resumo,true,'text',3,"")
     ?>
     </td>
@@ -120,8 +120,8 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
 <br><br><br>
 </form>
 <script>
-function js_mudasolicita(){  
-  parent.iframe_solicita.location.href = 'com1_pcproc004.php?pc10_numero='+document.form1.pc10_numero.value;  
+function js_mudasolicita(){
+  parent.iframe_solicita.location.href = 'com1_pcproc004.php?pc10_numero='+document.form1.pc10_numero.value;
 }
 if(document.form1.pc10_numero.value!=""){
   iframe_solicitem.location.href = 'com1_gerasolicitem.php?solicita='+document.form1.pc10_numero.value;

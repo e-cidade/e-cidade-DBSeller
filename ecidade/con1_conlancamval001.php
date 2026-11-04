@@ -176,31 +176,30 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
             $atributos = array($atributosDebito, $atributosCredito);
 
             foreach ($atributos as $indice => $atributo) {
-                $atributoDebito = $indice === 0;
+                $atributoDebito = $atributo[0]->sinal === 'D';
 
                 if (!empty($atributo)) {
                     $recurso = null;
-
                     foreach ($atributo as $stdDadosAtributo) {
                         foreach ($stdDadosAtributo->conta_corrente as $dadosContaCorrente) {
                             if (empty($dadosContaCorrente)) {
                                 continue;
                             }
-                            $atributosDebitoIndexado = array();
+
+                            $atributosDebitoIndexado = [];
+
                             foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                 $atributosDebitoIndexado[$dadosAtributos->sigla] = $dadosAtributos->valor;
-                                if ($dadosAtributos->sigla === "FR") {
+                                if ($dadosAtributos->sigla === "DDR") {
                                     $recurso = $dadosAtributos->valor;
-
-                                    $atributosDebitoIndexado[$dadosAtributos->sigla] =
-                                        obterCodigoRecursoPorFonte($dadosAtributos->valor);
+                                    $atributosDebitoIndexado[$dadosAtributos->sigla] =$dadosAtributos->valor;
                                 }
 
                                 if ($dadosAtributos->sigla === "RV") {
-                                    $atributosDebitoIndexado[$dadosAtributos->sigla] =
-                                        obterCodigoRecursoPorFonte($dadosAtributos->valor);
+                                    $atributosDebitoIndexado[$dadosAtributos->sigla] = $dadosAtributos->valor;
                                 }
                             }
+
                             DBContaCorrenteAtributos::salvarAtributos(
                                 $clconlancamval,
                                 $dadosContaCorrente->codigo,
@@ -211,27 +210,18 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
                     }
 
                     if (!empty($recurso)) {
-                        $recurso = obterCodigoRecursoPorFonte($recurso);
-            
-                        $naturezas = ['C', 'D'];
-                        foreach ($naturezas as $natureza) {
-                            $debito = $natureza == 'D';
-        
-                            DBContaCorrenteAtributos::salvarRecursoLancamento(
-                                $clconlancamval,
-                                $recurso,
-                                $debito
-                            );
-                        }
+                        DBContaCorrenteAtributos::salvarRecursoLancamento(
+                            $clconlancamval,
+                            $recurso,
+                            $atributoDebito
+                        );
                     }
                 }
             }
         }
 
-        //db_fim_transacao(true);
         db_fim_transacao($erro);
     } catch (Exception $e) {
-
         $erro = true;
         db_msgbox($e->getMessage());
         db_fim_transacao(true);
@@ -243,18 +233,20 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
+<body >
 
-<center>
+<div class="container">
     <?php
     require_once(modification("forms/db_frmconlancamval.php"));
     ?>
+</div>
 </body>
 </html>
 <?php

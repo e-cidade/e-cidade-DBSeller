@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clatendcadarea->rotulo->label();
        <?=@$Lat26_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('at26_sequencial',10,$Iat26_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -56,7 +56,7 @@ $clatendcadarea->rotulo->label();
        <?=@$Lat25_descr?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('at25_descr',30,$Iat25_descr,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -66,7 +66,7 @@ $clatendcadarea->rotulo->label();
        <?=@$Lat25_figura?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('at25_figura',40,0,true,'file',$db_opcao);
      ?>
     </td>
@@ -91,7 +91,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_atendcadarea.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

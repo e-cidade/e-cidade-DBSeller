@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,15 +25,15 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_stdlibwebseller.php"));
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_app.utils.php"));
-require_once(modification("std/DBDate.php"));
+require_once modification("libs/db_stdlibwebseller.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_app.utils.php");
+require_once modification("std/DBDate.php");
 
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
@@ -56,220 +56,228 @@ $clavalcompoeres         = new cl_avalcompoeres;
 
 $codescola               = db_getsession("DB_coddepto");
 $escola                  = db_getsession("DB_nomedepto");
-$result                  = $clregencia->sql_record($clregencia->sql_query("","*","","ed59_i_codigo = $regencia"));
-db_fieldsmemory( $result, 0 );
+$result                  = $clregencia->sql_record($clregencia->sql_query("", "*", "", "ed59_i_codigo = $regencia"));
+db_fieldsmemory($result, 0);
 
-$oEduParametros = loadConfig('edu_parametros','ed233_i_escola ='.$codescola);
+$oEduParametros = loadConfig('edu_parametros', 'ed233_i_escola ='.$codescola);
 
 $sql_max    = " SELECT max(ed41_i_sequencia) as seqmax ";
 $sql_max   .= "   FROM procavaliacao ";
 $sql_max   .= "  WHERE ed41_i_procedimento = {$ed220_i_procedimento} ";
 $result_max = db_query($sql_max);
-db_fieldsmemory($result_max,0);
+db_fieldsmemory($result_max, 0);
 
 $sql_seq    = " SELECT ed41_i_sequencia as seqatual ";
 $sql_seq   .= "   FROM procavaliacao ";
 $sql_seq   .= "  WHERE ed41_i_codigo = {$ed41_i_codigo} ";
 $result_seq = db_query($sql_seq);
-db_fieldsmemory($result_seq,0);
+db_fieldsmemory($result_seq, 0);
 
 $sql_nivel    = " SELECT ed37_c_descr as descr_verif, ed37_c_minimoaprov as min_verif,ed37_c_tipo as tip_verif ";
 $sql_nivel   .= "   FROM procavaliacao ";
 $sql_nivel   .= "        inner join formaavaliacao on ed37_i_codigo = ed41_i_formaavaliacao ";
 $sql_nivel   .= "  WHERE ed41_i_codigo = {$ed41_i_codigo} ";
 $result_nivel = db_query($sql_nivel);
-db_fieldsmemory($result_nivel,0);
+db_fieldsmemory($result_nivel, 0);
 
 if ($tip_verif == "NIVEL" && $min_verif == "0") {
 
-  $teste  = "<font color='red'><b>ATENÇÃO: Mínimo para aprovação desta forma de avaliação ($descr_verif) não foi ";
-  $teste .= "informado (Cadastros -> Tabelas -> Formas de Avaliação).</b></font>";
-  echo  $teste;
-  $nivel0 = 0;
+    $teste  = "<font color='red'><b>ATENÇÃO: Mínimo para aprovação desta forma de avaliação ($descr_verif) não foi ";
+    $teste .= "informado (Cadastros -> Tabelas -> Formas de Avaliação).</b></font>";
+    echo  $teste;
+    $nivel0 = 0;
 
 } else {
-  $nivel0 = 1;
+    $nivel0 = 1;
 }
 
 if (isset($salvartudo)) {
 
-  $sCampos  = " ed60_i_aluno, ed60_i_turma, ed60_i_numaluno, ed60_d_datamatricula, ed60_c_situacao, ed60_c_parecer, ";
-  $sCampos .= " ed60_c_ativa, ed47_v_nome, ed47_i_codigo, diario.*, diarioavaliacao.*, procavaliacao.*, formaavaliacao.*, ";
-  $sCampos .= " periodoavaliacao.*, amparo.*, abonofalta.*";
+    $sCampos  = " ed60_i_aluno, ed60_i_turma, ed60_i_numaluno, ed60_d_datamatricula, ed60_c_situacao, ed60_c_parecer, ";
+    $sCampos .= " ed60_c_ativa, ed47_v_nome, ed47_i_codigo, diario.*, diarioavaliacao.*, procavaliacao.*, formaavaliacao.*, ";
+    $sCampos .= " periodoavaliacao.*, amparo.*, abonofalta.*";
 
-  $sql  = " SELECT ".$sCampos ;
-  $sql .= "   FROM matricula ";
-  $sql .= "        inner join aluno            on ed47_i_codigo          = ed60_i_aluno ";
-  $sql .= "        inner join diario           on ed95_i_aluno           = ed47_i_codigo ";
-  $sql .= "        inner join matriculaserie   on ed221_i_matricula      = ed60_i_codigo ";
-  $sql .= "        inner join regencia         on ed59_i_codigo          = ed95_i_regencia ";
-  $sql .= "                                   and ed59_i_serie           = ed221_i_serie ";
-  $sql .= "        inner join diarioavaliacao  on ed72_i_diario          = ed95_i_codigo ";
-  $sql .= "        inner join procavaliacao    on ed41_i_codigo          = ed72_i_procavaliacao ";
-  $sql .= "        inner join formaavaliacao   on ed37_i_codigo          = ed41_i_formaavaliacao ";
-  $sql .= "        inner join periodoavaliacao on ed09_i_codigo          = ed41_i_periodoavaliacao ";
-  $sql .= "        left  join amparo           on ed81_i_diario          = ed95_i_codigo ";
-  $sql .= "        left  join abonofalta       on ed80_i_diarioavaliacao = ed72_i_codigo ";
-  $sql .= "  WHERE ed95_i_regencia      = {$regencia} ";
-  $sql .= "    AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
-  $sql .= "    AND ed60_i_turma         = {$ed59_i_turma} ";
-  $sql .= "    AND ed221_c_origem       = 'S' ";
+    $sql  = " SELECT ".$sCampos ;
+    $sql .= "   FROM matricula ";
+    $sql .= "        inner join aluno            on ed47_i_codigo          = ed60_i_aluno ";
+    $sql .= "        inner join diario           on ed95_i_aluno           = ed47_i_codigo ";
+    $sql .= "        inner join matriculaserie   on ed221_i_matricula      = ed60_i_codigo ";
+    $sql .= "        inner join regencia         on ed59_i_codigo          = ed95_i_regencia ";
+    $sql .= "                                   and ed59_i_serie           = ed221_i_serie ";
+    $sql .= "        inner join diarioavaliacao  on ed72_i_diario          = ed95_i_codigo ";
+    $sql .= "        inner join procavaliacao    on ed41_i_codigo          = ed72_i_procavaliacao ";
+    $sql .= "        inner join formaavaliacao   on ed37_i_codigo          = ed41_i_formaavaliacao ";
+    $sql .= "        inner join periodoavaliacao on ed09_i_codigo          = ed41_i_periodoavaliacao ";
+    $sql .= "        left  join amparo           on ed81_i_diario          = ed95_i_codigo ";
+    $sql .= "        left  join abonofalta       on ed80_i_diarioavaliacao = ed72_i_codigo ";
+    $sql .= "  WHERE ed95_i_regencia      = {$regencia} ";
+    $sql .= "    AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
+    $sql .= "    AND ed60_i_turma         = {$ed59_i_turma} ";
+    $sql .= "    AND ed221_c_origem       = 'S' ";
 
-  if ( $iTrocaTurma == 1 ) {
-    $sql .= "  AND ed60_c_situacao <> 'TROCA DE TURMA'";
-  }
-
-  $sql     .= "  ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome),ed60_c_ativa ";
-  $result1  = db_query($sql);
-  $linhas1  = pg_num_rows($result1);
-
-  for ($x = 0; $x < $linhas1; $x++) {
-
-    db_fieldsmemory($result1,$x);
-    if (trim($ed60_c_ativa) == "S") {
-
-      if ($ed60_c_parecer == "S") {
-        $ed37_c_tipo = "PARECER";
-      }
-      $sCampos    = "ed72_i_diario as diario,ed72_i_procavaliacao as avalia,ed41_i_formaavaliacao,ed37_c_minimoaprov";
-      $result_min = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("",
-                                                                                 $sCampos,
-                                                                                 "",
-                                                                                 " ed72_i_codigo = $ed72_i_codigo"
-                                                                                )
-                                                  );
-      db_fieldsmemory($result_min,0);
-      $faltas = "ed72_i_numfaltasX".$x;
-      if ($ed37_c_tipo == "NIVEL") {
-
-        $aprov    = "ed72_c_valorconceitoX".$x;
-        $conceito = $$aprov;
-        $nota     = "";
-        $parecer  = "";
-        $nfaltas  = $$faltas;
-
-        if ($conceito != "") {
-
-          $sWhere     = "ed39_i_formaavaliacao = $ed41_i_formaavaliacao AND ed39_c_conceito = '$conceito'";
-          $result_dig = $clconceito->sql_record($clconceito->sql_query("",
-                                                                       "ed39_i_sequencia as dig",
-                                                                       "",
-                                                                       $sWhere
-                                                                      )
-                                               );
-          db_fieldsmemory($result_dig,0);
-          $sWhere_reg = "ed39_i_formaavaliacao = $ed41_i_formaavaliacao AND ed39_c_conceito = '$ed37_c_minimoaprov'";
-          $result_reg = $clconceito->sql_record($clconceito->sql_query("",
-                                                                       "ed39_i_sequencia as reg",
-                                                                       "",
-                                                                       $sWhere_reg
-                                                                      )
-                                               );
-          if ($clconceito->numrows > 0) {
-            db_fieldsmemory($result_reg,0);
-          }
-          if (@$dig >= @$reg) {
-            $minimo = "S";
-          } else {
-            $minimo = "N";
-          }
-        } else {
-          $minimo = "N";
-        }
-
-      } else if ($ed37_c_tipo == "NOTA") {
-
-        $aprov    = "ed72_i_valornotaX".$x;
-        $nota     = @$$aprov;
-        $conceito = "";
-        $parecer  = "";
-        $nfaltas  = @$$faltas;
-
-        if ($nota != "") {
-
-          if ($nota >= $ed37_c_minimoaprov) {
-            $minimo = "S";
-          } else {
-            $minimo = "N";
-          }
-        } else {
-          $minimo = "N";
-        }
-      } else if ($ed37_c_tipo == "PARECER") {
-
-        $nota     = "";
-        $conceito = "";
-        $nfaltas  = $$faltas;
-        $minimo   = "S";
-
-      }
-      $nomediario = "ed72_i_diarioX".$x;
-      $coddiario  = $$nomediario;
-      $amparo     = "ed72_c_amparoX".$x;
-      $amparo     = $$amparo;
-
-      db_inicio_transacao();
-      $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-      $cldiarioavaliacao->ed72_i_procavaliacao = $ed41_i_codigo;
-      $cldiarioavaliacao->ed72_i_numfaltas     = $nfaltas;
-      $cldiarioavaliacao->ed72_i_valornota     = $nota;
-      $cldiarioavaliacao->ed72_t_parecer       = pg_escape_string($ed72_t_parecer);
-      $cldiarioavaliacao->ed72_c_valorconceito = $conceito;
-      $cldiarioavaliacao->ed72_c_aprovmin      = $minimo;
-      $cldiarioavaliacao->alterar($ed72_i_codigo);
-
-      if ( $conceito != '' || $nota != '' || $ed72_t_parecer != '') {
-
-
-        if ( $ed41_i_procresultvinc != '') {
-
-          $sWhereRecuperacao  = " (select ed73_i_codigo ";
-          $sWhereRecuperacao .= "    from  diarioresultado " ;
-          $sWhereRecuperacao .= "          inner join  diario on ed73_i_diario = ed95_i_codigo" ;
-          $sWhereRecuperacao .= "    where ed73_i_procresultado = {$ed41_i_procresultvinc}";
-          $sWhereRecuperacao .= "      and ed95_i_aluno         = {$ed95_i_aluno}";
-          $sWhereRecuperacao .= "      and ed73_i_diario        = {$ed95_i_codigo}";
-          $sWhereRecuperacao .= ")";
-
-          $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
-          $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado in $sWhereRecuperacao");
-        }
-      }
-       db_fim_transacao();
-
-      if ($cldiarioavaliacao->erro_status == "0") {
-        $cldiarioavaliacao->erro(true,false);
-      }
+    if ($iTrocaTurma == 1 ) {
+        $sql .= "  AND ed60_c_situacao <> 'TROCA DE TURMA'";
     }
-  }
-  $dataatualiz    = date("Y-m-d");
-  $sql            = " UPDATE regencia SET ";
-  $sql           .= "        ed59_d_dataatualiz = '{$dataatualiz}' ";
-  $sql           .= "  WHERE ed59_i_codigo = {$regencia} ";
-  $result         = db_query($sql);
-  $sWhere_result3 = "ed73_i_diario = $diario AND ed43_i_sequencia > $seqatual";
-  $result3        = $cldiarioresultado->sql_record($cldiarioresultado->sql_query("",
-                                                                                 "ed73_i_procresultado as resultaval",
-                                                                                 "ed43_i_sequencia",
-                                                                                  $sWhere_result3
-                                                                                )
-                                                  );
-  for ($y = 0; $y < $cldiarioresultado->numrows; $y++) {
 
-    db_fieldsmemory($result3,$y);
-    ?>
+    $sql     .= "  ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome),ed60_c_ativa ";
+    $result1  = db_query($sql);
+    $linhas1  = pg_num_rows($result1);
+
+    for ($x = 0; $x < $linhas1; $x++) {
+
+        db_fieldsmemory($result1, $x);
+        if (trim($ed60_c_ativa) == "S") {
+
+            if ($ed60_c_parecer == "S") {
+                $ed37_c_tipo = "PARECER";
+            }
+            $sCampos    = "ed72_i_diario as diario,ed72_i_procavaliacao as avalia,ed41_i_formaavaliacao,ed37_c_minimoaprov";
+            $result_min = $cldiarioavaliacao->sql_record(
+                $cldiarioavaliacao->sql_query(
+                    "",
+                    $sCampos,
+                    "",
+                    " ed72_i_codigo = $ed72_i_codigo"
+                )
+            );
+            db_fieldsmemory($result_min, 0);
+            $faltas = "ed72_i_numfaltasX".$x;
+            if ($ed37_c_tipo == "NIVEL") {
+
+                  $aprov    = "ed72_c_valorconceitoX".$x;
+                  $conceito = $$aprov;
+                  $nota     = "";
+                  $parecer  = "";
+                  $nfaltas  = $$faltas;
+
+                if ($conceito != "") {
+
+                    $sWhere     = "ed39_i_formaavaliacao = $ed41_i_formaavaliacao AND ed39_c_conceito = '$conceito'";
+                    $result_dig = $clconceito->sql_record(
+                        $clconceito->sql_query(
+                            "",
+                            "ed39_i_sequencia as dig",
+                            "",
+                            $sWhere
+                        )
+                    );
+                    db_fieldsmemory($result_dig, 0);
+                    $sWhere_reg = "ed39_i_formaavaliacao = $ed41_i_formaavaliacao AND ed39_c_conceito = '$ed37_c_minimoaprov'";
+                    $result_reg = $clconceito->sql_record(
+                        $clconceito->sql_query(
+                            "",
+                            "ed39_i_sequencia as reg",
+                            "",
+                            $sWhere_reg
+                        )
+                    );
+                    if ($clconceito->numrows > 0) {
+                                db_fieldsmemory($result_reg, 0);
+                    }
+                    if (@$dig >= @$reg) {
+                        $minimo = "S";
+                    } else {
+                        $minimo = "N";
+                    }
+                } else {
+                    $minimo = "N";
+                }
+
+            } else if ($ed37_c_tipo == "NOTA") {
+
+                $aprov    = "ed72_i_valornotaX".$x;
+                $nota     = @$$aprov;
+                $conceito = "";
+                $parecer  = "";
+                $nfaltas  = @$$faltas;
+
+                if ($nota != "") {
+
+                    if ($nota >= $ed37_c_minimoaprov) {
+                          $minimo = "S";
+                    } else {
+                            $minimo = "N";
+                    }
+                } else {
+                    $minimo = "N";
+                }
+            } else if ($ed37_c_tipo == "PARECER") {
+
+                $nota     = "";
+                $conceito = "";
+                $nfaltas  = $$faltas;
+                $minimo   = "S";
+
+            }
+            $nomediario = "ed72_i_diarioX".$x;
+            $coddiario  = $$nomediario;
+            $amparo     = "ed72_c_amparoX".$x;
+            $amparo     = $$amparo;
+
+            db_inicio_transacao();
+            $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+            $cldiarioavaliacao->ed72_i_procavaliacao = $ed41_i_codigo;
+            $cldiarioavaliacao->ed72_i_numfaltas     = $nfaltas;
+            $cldiarioavaliacao->ed72_i_valornota     = $nota;
+            $cldiarioavaliacao->ed72_t_parecer       = pg_escape_string($ed72_t_parecer);
+            $cldiarioavaliacao->ed72_c_valorconceito = $conceito;
+            $cldiarioavaliacao->ed72_c_aprovmin      = $minimo;
+            $cldiarioavaliacao->alterar($ed72_i_codigo);
+
+            if ($conceito != '' || $nota != '' || $ed72_t_parecer != '') {
+
+
+                if ($ed41_i_procresultvinc != '') {
+
+                    $sWhereRecuperacao  = " (select ed73_i_codigo ";
+                    $sWhereRecuperacao .= "    from  diarioresultado " ;
+                    $sWhereRecuperacao .= "          inner join  diario on ed73_i_diario = ed95_i_codigo" ;
+                    $sWhereRecuperacao .= "    where ed73_i_procresultado = {$ed41_i_procresultvinc}";
+                    $sWhereRecuperacao .= "      and ed95_i_aluno         = {$ed95_i_aluno}";
+                    $sWhereRecuperacao .= "      and ed73_i_diario        = {$ed95_i_codigo}";
+                    $sWhereRecuperacao .= ")";
+
+                    $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
+                    $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado in $sWhereRecuperacao");
+                }
+            }
+            db_fim_transacao();
+
+            if ($cldiarioavaliacao->erro_status == "0") {
+                $cldiarioavaliacao->erro(true, false);
+            }
+        }
+    }
+    $dataatualiz    = date("Y-m-d");
+    $sql            = " UPDATE regencia SET ";
+    $sql           .= "        ed59_d_dataatualiz = '{$dataatualiz}' ";
+    $sql           .= "  WHERE ed59_i_codigo = {$regencia} ";
+    $result         = db_query($sql);
+    $sWhere_result3 = "ed73_i_diario = $diario AND ed43_i_sequencia > $seqatual";
+    $result3        = $cldiarioresultado->sql_record(
+        $cldiarioresultado->sql_query(
+            "",
+            "ed73_i_procresultado as resultaval",
+            "ed43_i_sequencia",
+            $sWhere_result3
+        )
+    );
+    for ($y = 0; $y < $cldiarioresultado->numrows; $y++) {
+
+        db_fieldsmemory($result3, $y);
+        ?>
     <script>
-      parent.iframe_R<?=$resultaval?>.location.href = "edu1_diarioresultado001.php?regencia=<?=$regencia?>"+
-    	                                              "&ed43_i_codigo=<?=$resultaval?>";
+      parent.iframe_R<?php echo $resultaval?>.location.href = "edu1_diarioresultado001.php?regencia=<?php echo $regencia?>"+
+                                                      "&ed43_i_codigo=<?php echo $resultaval?>";
     </script>
-   <?
-  }
- ?>
+        <?php
+    }
+    ?>
   <script>
-   parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>";
+   parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?php echo $regencia?>";
   </script>
-  <?
-  db_msgbox("Alteração efetuada com sucesso!");
+    <?php
+    db_msgbox("Alteração efetuada com sucesso!");
 }
 
 $oTurma  = new Turma($ed59_i_turma);
@@ -307,15 +315,16 @@ $iAno    = $oTurma->getCalendario()->getAnoExecucao();
 </head>
 <body bgcolor="#cccccc" leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
 <form name="form1" method="post" action="">
-<?
+<?php
+<?php
   $sWhere  = "WHERE ed95_i_regencia      = {$regencia}";
   $sWhere .= "  AND ed72_i_procavaliacao = {$ed41_i_codigo}";
   $sWhere .= "  AND ed60_i_turma         = {$ed59_i_turma}";
   $sWhere .= "  AND ed221_c_origem       = 'S'";
 
-  if ( $iTrocaTurma == 1 ) {
+if ($iTrocaTurma == 1 ) {
     $sWhere .= "  AND ed60_c_situacao <> 'TROCA DE TURMA'";
-  }
+}
   $sql  = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_turma, ed60_i_numaluno, ed60_c_situacao";
   $sql .= "       , ed60_c_parecer, ed60_c_ativa, ed60_d_datamatricula, ed47_v_nome, ed47_i_codigo, diario.*";
   $sql .= "       , diarioavaliacao.*, procavaliacao.*, formaavaliacao.*, periodoavaliacao.*, amparo.*, convencaoamp.*";
@@ -365,19 +374,19 @@ $iAno    = $oTurma->getCalendario()->getAnoExecucao();
 
 $result1       = db_query($sql);
 $linhas1       = pg_num_rows($result1);
-$descr_periodo = pg_result($result1,0,'ed09_c_descr');
+$descr_periodo = pg_result($result1, 0, 'ed09_c_descr');
 ?>
 <table border='0px' width="98%" bgcolor="#cccccc" style="" cellspacing="0px">
  <tr>
   <td class='titulo'>
-   &nbsp;<?=$ed232_c_descr?> - <?=$descr_periodo?> | Turma <?=$ed57_c_descr?> - <?=$ed11_c_descr?> - Calendário <?=$ed52_c_descr?>
+   &nbsp;<?php echo $ed232_c_descr?> - <?php echo $descr_periodo?> | Turma <?php echo $ed57_c_descr?> - <?php echo $ed11_c_descr?> - Calendário <?php echo $ed52_c_descr?>
   </td>
   <td align="right" class='titulo'>
-   <?if(trim($ed59_c_freqglob)!='A'){?>
+   <?php if(trim($ed59_c_freqglob)!='A') {?>
     <input name="abono" value="Abonar Faltas" type="button"
-           onclick="js_abono(<?=$ed41_i_codigo?>,<?=$regencia?>,'<?=$descr_periodo?>');"
+           onclick="js_abono(<?php echo $ed41_i_codigo?>,<?php echo $regencia?>,'<?php echo $descr_periodo?>');"
            style="height:14px;border:1px outset #f3f3f3;font-size:11px;padding:0px;">
-   <?}?>
+   <?php }?>
   </td>
  </tr>
  <tr>
@@ -386,8 +395,8 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
     <tr>
      <td colspan="6" align="center" class='cabec1'>Alunos</td>
      <td class='cabec1'>&nbsp;</td>
-     <td colspan="<?=trim($ed59_c_freqglob)!='F'?'3':'2'?>" align="center"
-         class='cabec1'><?=pg_result($result1,0,'ed09_c_descr')?>
+     <td colspan="<?php echo trim($ed59_c_freqglob)!='F'?'3':'2'?>" align="center"
+         class='cabec1'><?php echo pg_result($result1, 0, 'ed09_c_descr')?>
      </td>
     </tr>
     <tr align="center">
@@ -398,768 +407,783 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
      <td class="cabec1">Dt. Saída</td>
      <td class="cabec1">Código</td>
      <td class="cabec1" width="5%">Origem</td>
-     <?if (trim($ed59_c_freqglob) != "F") {?>
-         <td class="cabec1"><?=pg_result($result1,0,'ed37_c_tipo')?></td>
-     <?}?>
-     <?if (trim($ed59_c_freqglob) != "A") {?>
+     <?php if (trim($ed59_c_freqglob) != "F") {?>
+         <td class="cabec1"><?php echo pg_result($result1, 0, 'ed37_c_tipo')?></td>
+     <?php }?>
+     <?php if (trim($ed59_c_freqglob) != "A") {?>
          <td class="cabec1">Faltas</td>
-     <?}?>
+     <?php }?>
+     <?php }?>
      <td class="cabec1">&nbsp;</td>
     </tr>
-    <?
-    if ( $linhas1 > 0 ) {
+    <?php
+    if ($linhas1 > 0 ) {
 
-      $cor1    = "#f3f3f3";
-      $cor2    = "#DBDBDB";
-      $cor     = "";
-      $somador = "";
+        $cor1    = "#f3f3f3";
+        $cor2    = "#DBDBDB";
+        $cor     = "";
+        $somador = "";
 
-      /* Define tabIndex */
-      $iTabIndex = 0;
+        /* Define tabIndex */
+        $iTabIndex = 0;
 
-      for ( $x = 0; $x < $linhas1; $x++ ) {
+        for ( $x = 0; $x < $linhas1; $x++ ) {
 
-        db_fieldsmemory($result1,$x);
+            db_fieldsmemory($result1, $x);
 
-        if ( $ed60_c_parecer == "S" ) {
+            if ($ed60_c_parecer == "S" ) {
 
-         $ed37_c_tipo_ant = $ed37_c_tipo;
-         $ed37_c_tipo     = "PARECER";
-         $up_diario       = db_query("UPDATE diarioavaliacao SET ed72_i_valornota = null,ed72_c_valorconceito = '' WHERE ed72_i_codigo = {$ed72_i_codigo}");
-        }
+                $ed37_c_tipo_ant = $ed37_c_tipo;
+                $ed37_c_tipo     = "PARECER";
+                $up_diario       = db_query("UPDATE diarioavaliacao SET ed72_i_valornota = null,ed72_c_valorconceito = '' WHERE ed72_i_codigo = {$ed72_i_codigo}");
+            }
 
-        if ( $cor == $cor1 ) {
-          $cor = $cor2;
-        } else {
-          $cor = $cor1;
-        }
+            if ($cor == $cor1 ) {
+                $cor = $cor2;
+            } else {
+                $cor = $cor1;
+            }
 
-        if ( trim( $ed60_c_situacao ) != "MATRICULADO" || trim( $ed72_c_amparo ) == "S" ) {
+            if (trim($ed60_c_situacao) != "MATRICULADO" || trim($ed72_c_amparo) == "S") {
+                if ((trim($ed60_c_situacao) == "TRANSFERIDO FORA" 
+                    || trim($ed60_c_situacao) == "CANCELADO" 
+                    || trim($ed60_c_situacao) == "EVADIDO" 
+                    || trim($ed60_c_situacao) == "ABANDONO ESCOLAR") && $ed60_c_ativa == "S" && $ed95_c_encerrado == "N"
+                ) {
+                    $disabled         = "readonly";
+                    $cordisabled      = "#FFD5AA";
+                    $ed95_c_encerrado = "N";
+                } else if (trim($ed60_c_situacao) == "TRANSFERIDO FORA" && $ed60_c_ativa == "N" ) {
 
-          if (    ( trim( $ed60_c_situacao ) == "TRANSFERIDO FORA" || trim( $ed60_c_situacao ) == "CANCELADO" || trim( $ed60_c_situacao ) == "EVADIDO" )
-               && $ed60_c_ativa == "S" && $ed95_c_encerrado == "N" ) {
+                    $disabled             = "readonly";
+                    $cordisabled          = "#FFD5AA";
+                    $ed72_i_valornota     = "";
+                    $ed72_c_valorconceito = "";
+                    $ed72_t_parecer       = "";
+                    $ed72_i_numfaltas     = "";
+                } else {
 
-            $disabled         = "readonly";
-            $cordisabled      = "#FFD5AA";
-            $ed95_c_encerrado = "N";
-          } else if ( trim( $ed60_c_situacao ) == "TRANSFERIDO FORA" && $ed60_c_ativa == "N" ) {
+                    $disabled    = "readonly";
+                    $cordisabled = "#FFD5AA";
+                }
+            } else {
 
-            $disabled             = "readonly";
-            $cordisabled          = "#FFD5AA";
-            $ed72_i_valornota     = "";
-            $ed72_c_valorconceito = "";
-            $ed72_t_parecer       = "";
-            $ed72_i_numfaltas     = "";
-          } else {
+                $disabled    = "";
+                $cordisabled = "#FFFFFF";
+                $somador++;
+            }
 
-           $disabled    = "readonly";
-           $cordisabled = "#FFD5AA";
-          }
-        } else {
+            if (( $ed72_i_escola != $codescola && $ed72_c_tipo == "M" ) || ( $ed72_c_tipo == "F" ) ) {
 
-         $disabled    = "";
-         $cordisabled = "#FFFFFF";
-         $somador++;
-        }
-
-        if ( ( $ed72_i_escola != $codescola && $ed72_c_tipo == "M" ) || ( $ed72_c_tipo == "F" ) ) {
-
-          $disabled    = "readonly";
-          $cordisabled = "#FFD5AA";
-        }
-      ?>
-       <tr bgcolor="<?=$cor?>" >
-        <td align="right" class='aluno'><?=$ed60_i_numaluno?></td>
+                $disabled    = "readonly";
+                $cordisabled = "#FFD5AA";
+            }
+            ?>
+       <tr bgcolor="<?php echo $cor?>" >
+        <td align="right" class='aluno'><?php echo $ed60_i_numaluno?></td>
         <td class='aluno'>
-         <a class="aluno" href="javascript:js_movimentos(<?=$ed60_i_codigo?>)"><?=$ed47_v_nome?></a>
-         <?=$ed60_c_parecer=="S"?"<b>&nbsp;&nbsp;&nbsp;(NEE - Parecer)</b>":""?>
-         <input type="hidden" value="<?=$ed72_i_diario?>" name="ed72_i_diarioX<?=$x?>">
-         <input type="hidden" value="<?=$ed72_c_amparo?>" name="ed72_c_amparoX<?=$x?>">
+         <a class="aluno" href="javascript:js_movimentos(<?php echo $ed60_i_codigo?>)"><?php echo $ed47_v_nome?></a>
+            <?php echo $ed60_c_parecer=="S"?"<b>&nbsp;&nbsp;&nbsp;(NEE - Parecer)</b>":""?>
+         <input type="hidden" value="<?php echo $ed72_i_diario?>" name="ed72_i_diarioX<?php echo $x?>">
+         <input type="hidden" value="<?php echo $ed72_c_amparo?>" name="ed72_c_amparoX<?php echo $x?>">
         </td>
         <td align="center" class='aluno'>
-         <?
-         if ( trim( $ed81_c_todoperiodo ) == "S" && $ed60_c_ativa == "S" ) {
+            <?php
+            if (trim($ed81_c_todoperiodo) == "S" && $ed60_c_ativa == "S" ) {
 
-           if ( $ed81_i_justificativa != "" ) {
-             echo "AMPARADO";
-           } else {
-             echo "$ed250_c_abrev";
-           }
-         } else {
-           echo Situacao( $ed60_c_situacao, $ed60_i_codigo );
-         }
-         $corlink = $ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"#FF0000":"#000000";
-         ?>
-        </td>
-        <td align="center" class='aluno'><?=db_formatar($ed60_d_datamatricula,'d')?></td>
-        <td align="center" class='aluno'><?=$datasaida==""?"&nbsp;":$datasaida?></td>
-        <td align="right" class='aluno'><b><?=$ed47_i_codigo?></b></td>
-        <td align="center" <?=$ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"onmouseover=\"js_mostra('tiponota$x')\" onmouseout=\"js_oculta('tiponota$x')\" ":""?>>
-         <?
-         if ( trim( $ed60_c_situacao ) != "MATRICULADO" || trim( $ed72_c_amparo ) == "S" || $ed81_c_todoperiodo == "S" ) {
-
-          if (    ( trim( $ed60_c_situacao ) == "TRANSFERIDO FORA" || trim( $ed60_c_situacao ) == "CANCELADO" || trim( $ed60_c_situacao ) == "EVADIDO")
-               && $ed60_c_ativa == "S" ) {
-
-            if ( trim( $ed37_c_tipo ) == "NOTA" ) {
-              $aprovperiodo = $ed72_i_valornota;
-            } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
-              $aprovperiodo = $ed72_c_valorconceito;
+                if ($ed81_i_justificativa != "" ) {
+                    echo "AMPARADO";
+                } else {
+                     echo "$ed250_c_abrev";
+                }
             } else {
-              $aprovperiodo = $ed72_t_parecer;
+                echo Situacao($ed60_c_situacao, $ed60_i_codigo);
             }
-           ?>
-           <a title="Alterar Origem" href="javascript:js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')" style="color:<?=$corlink?>;font-weight:bold;"><?=$ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"NE":"NI"?></a>
-           <table id="tiponota<?=$x?>" style="position:absolute;border:2px solid #444444;visibility:hidden;" cellspacing="1" cellpadding="5" bgcolor="#FF0000">
+            $corlink = $ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"#FF0000":"#000000";
+            ?>
+        </td>
+        <td align="center" class='aluno'><?php echo db_formatar($ed60_d_datamatricula, 'd')?></td>
+        <td align="center" class='aluno'><?php echo $datasaida==""?"&nbsp;":$datasaida?></td>
+        <td align="right" class='aluno'><b><?php echo $ed47_i_codigo?></b></td>
+        <td align="center" <?php echo $ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"onmouseover=\"js_mostra('tiponota$x')\" onmouseout=\"js_oculta('tiponota$x')\" ":""?>>
+            <?php
+            if (trim($ed60_c_situacao) != "MATRICULADO" || trim($ed72_c_amparo) == "S" || $ed81_c_todoperiodo == "S") {
+                if ((               trim($ed60_c_situacao) == "TRANSFERIDO FORA" 
+                    || trim($ed60_c_situacao) == "CANCELADO" 
+                    || trim($ed60_c_situacao) == "EVADIDO" 
+                    || trim($ed60_c_situacao) == "ABANDONO ESCOLAR"               ) && $ed60_c_ativa == "S"
+                ) {
+
+                    if (trim($ed37_c_tipo) == "NOTA" ) {
+                        $aprovperiodo = $ed72_i_valornota;
+                    } else if (trim($ed37_c_tipo) == "NIVEL" ) {
+                        $aprovperiodo = $ed72_c_valorconceito;
+                    } else {
+                        $aprovperiodo = $ed72_t_parecer;
+                    }
+                    ?>
+           <a title="Alterar Origem" href="javascript:js_tiponota('<?php echo $ed60_d_datamatricula?>',<?php echo $ed72_i_codigo?>,<?php echo $regencia?>,<?php echo $ed41_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $aprovperiodo?>')" style="color:<?php echo $corlink?>;font-weight:bold;"><?php echo $ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"NE":"NI"?></a>
+           <table id="tiponota<?php echo $x?>" style="position:absolute;border:2px solid #444444;visibility:hidden;" cellspacing="1" cellpadding="5" bgcolor="#FF0000">
             <tr>
              <td bgcolor="#FFCC00" style="border:1px solid #444444">
-              <b>Escola:</b> <?=$ed72_i_escola." - ".$nomeescola?><br>
-              <b>Cidade:</b> <?=$ed72_c_cidade." - ".$ed72_c_estado?><br>
-              <b>Tipo:</b> <?=$ed72_c_tipoescola?>
+              <b>Escola:</b> <?php echo $ed72_i_escola." - ".$nomeescola?><br>
+              <b>Cidade:</b> <?php echo $ed72_c_cidade." - ".$ed72_c_estado?><br>
+              <b>Tipo:</b> <?php echo $ed72_c_tipoescola?>
              </td>
             </tr>
            </table>
-          <?
-           } else {
-             echo "&nbsp";
-           }
-         } else {
+                    <?php
+                } else {
+                     echo "&nbsp";
+                }
+            } else {
 
-           if ( trim( $ed37_c_tipo ) == "NOTA" ) {
-             $aprovperiodo = $ed72_i_valornota;
-           } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
-             $aprovperiodo = $ed72_c_valorconceito;
-           } else {
-             $aprovperiodo = $ed72_t_parecer;
-           }
-          ?>
-          <a title="Alterar Origem" href="javascript:js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')" style="color:<?=$corlink?>;font-weight:bold;"><?=$ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"NE":"NI"?></a>
-          <table id="tiponota<?=$x?>" style="position:absolute;border:2px solid #444444;visibility:hidden;" cellspacing="1" cellpadding="5" bgcolor="#FF0000">
+                if (trim($ed37_c_tipo) == "NOTA" ) {
+                    $aprovperiodo = $ed72_i_valornota;
+                } else if (trim($ed37_c_tipo) == "NIVEL" ) {
+                    $aprovperiodo = $ed72_c_valorconceito;
+                } else {
+                    $aprovperiodo = $ed72_t_parecer;
+                }
+                ?>
+          <a title="Alterar Origem" href="javascript:js_tiponota('<?php echo $ed60_d_datamatricula?>',<?php echo $ed72_i_codigo?>,<?php echo $regencia?>,<?php echo $ed41_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $aprovperiodo?>')" style="color:<?php echo $corlink?>;font-weight:bold;"><?php echo $ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"NE":"NI"?></a>
+          <table id="tiponota<?php echo $x?>" style="position:absolute;border:2px solid #444444;visibility:hidden;" cellspacing="1" cellpadding="5" bgcolor="#FF0000">
            <tr>
             <td bgcolor="#FFCC00" style="border:1px solid #444444">
-             <b>Escola:</b> <?=$ed72_i_escola." - ".$nomeescola?><br>
-             <b>Cidade:</b> <?=$ed72_c_cidade." - ".$ed72_c_estado?><br>
-             <b>Tipo:</b> <?=$ed72_c_tipoescola?>
+             <b>Escola:</b> <?php echo $ed72_i_escola." - ".$nomeescola?><br>
+             <b>Cidade:</b> <?php echo $ed72_c_cidade." - ".$ed72_c_estado?><br>
+             <b>Tipo:</b> <?php echo $ed72_c_tipoescola?>
             </td>
            </tr>
           </table>
-         <?}?>
+            <?php }?>
         </td>
-        <?
-        $vinculo = false;
-        $semfoco = false;
+            <?php
+            $vinculo = false;
+            $semfoco = false;
 
-        if ( trim( $ed59_c_freqglob ) != "F" ) {
+            if (trim($ed59_c_freqglob) != "F" ) {
 
-         if ( trim( $ed72_c_amparo ) == "S" ) {
+                if (trim($ed72_c_amparo) == "S" ) {
 
-           $semfoco = true;
-           if ( $ed60_c_ativa == "S" ) {
+                      $semfoco = true;
+                    if ($ed60_c_ativa == "S" ) {
 
-             if ( $ed81_i_justificativa != "" ) {
-               ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?
-             } else if ( $ed81_i_convencaoamp != "" ) {
-              ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?
-             }
-           } else {
-            ?><td align="center" class='aluno'>&nbsp;</td><?
-           }
-         } else {
+                        if ($ed81_i_justificativa != "" ) {
+                            ?><td align="center" class='aluno'>Amparo - Justif. n° <?php echo trim($ed81_i_justificativa)?></td><?php
+                        } else if ($ed81_i_convencaoamp != "" ) {
+                            ?><td align="center" class='aluno'><?php echo $ed250_c_abrev?></td><?php
+                        }
+                    } else {
+                        ?><td align="center" class='aluno'>&nbsp;</td><?php
+                    }
+                } else {
 
-          if ( $ed41_i_procavalvinc != 0 ) {
+                    if ($ed41_i_procavalvinc != 0 ) {
 
-           $result_aval = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed09_c_abrev,ed72_c_aprovmin as aprovminaval,ed72_i_valornota as v_nota,ed72_c_valorconceito as v_conc,ed72_t_parecer as v_par",""," ed72_i_procavaliacao = $ed41_i_procavalvinc AND ed72_i_diario = $ed72_i_diario AND ed95_i_regencia = $regencia"));
-           db_fieldsmemory($result_aval,0);
+                          $result_aval = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("", "ed09_c_abrev,ed72_c_aprovmin as aprovminaval,ed72_i_valornota as v_nota,ed72_c_valorconceito as v_conc,ed72_t_parecer as v_par", "", " ed72_i_procavaliacao = $ed41_i_procavalvinc AND ed72_i_diario = $ed72_i_diario AND ed95_i_regencia = $regencia"));
+                          db_fieldsmemory($result_aval, 0);
 
-           if ( $v_nota == "" && $v_conc == "" && $v_par == "" ) {
+                        if ($v_nota == "" && $v_conc == "" && $v_par == "" ) {
 
-             $semfoco = true;
-             if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
+                            $semfoco = true;
+                            if (trim($ed60_c_situacao) != "MATRICULADO" ) {
 
-               ?>
+                                ?>
                <td class='aluno' align="center">
                 <table class='aluno' cellspacing="0" cellpading="0">
                  <tr>
                   <td width="50">
-                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>>
+                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?php echo $cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?php echo $disabled?>>
                   </td>
                   <td width="60">
                   </td>
                  </tr>
                 </table>
-               </td><?
-             } else {
-              ?><td class='aluno' align="center"><?=$ed09_c_abrev?> ainda não foi concluído.</td><?
-             }
-             $vinculo = true;
+               </td><?php
+                            } else {
+                                ?><td class='aluno' align="center"><?php echo $ed09_c_abrev?> ainda não foi concluído.</td><?php
+                            }
+                              $vinculo = true;
 
-             db_inicio_transacao();
-             $cldiarioavaliacao->ed72_t_obs           = "";
-             $cldiarioavaliacao->ed72_c_valorconceito = "";
-             $cldiarioavaliacao->ed72_i_valornota     = "";
-             $cldiarioavaliacao->ed72_t_parecer       = "";
-             $cldiarioavaliacao->ed72_i_numfaltas     = "";
-             $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-             $cldiarioavaliacao->alterar($ed72_i_codigo);
-             db_fim_transacao();
-           } else {
+                              db_inicio_transacao();
+                              $cldiarioavaliacao->ed72_t_obs           = "";
+                              $cldiarioavaliacao->ed72_c_valorconceito = "";
+                              $cldiarioavaliacao->ed72_i_valornota     = "";
+                              $cldiarioavaliacao->ed72_t_parecer       = "";
+                              $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                              $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                              $cldiarioavaliacao->alterar($ed72_i_codigo);
+                              db_fim_transacao();
+                        } else {
 
-             if ( $aprovminaval == "S" ) {
+                            if ($aprovminaval == "S" ) {
 
-               $semfoco = true;
-               if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
+                                 $semfoco = true;
+                                if (trim($ed60_c_situacao) != "MATRICULADO" ) {
 
-                ?>
+                                    ?>
                 <td class='aluno' align="center">
                 <table class='aluno' cellspacing="0" cellpading="0">
                  <tr>
                   <td width="50">
-                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>>
+                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?php echo $cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?php echo $disabled?>>
                   </td>
                   <td width="60">
                   </td>
                  </tr>
                 </table>
-                </td><?
-               } else {
-                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em <?=$ed09_c_abrev?></td><?
-               }
+                </td><?php
+                                } else {
+                                    ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em <?php echo $ed09_c_abrev?></td><?php
+                                }
 
-               $vinculo = true;
-               db_inicio_transacao();
-               $cldiarioavaliacao->ed72_t_obs           = "";
-               $cldiarioavaliacao->ed72_c_valorconceito = "";
-               $cldiarioavaliacao->ed72_i_valornota     = "";
-               $cldiarioavaliacao->ed72_t_parecer       = "";
-               $cldiarioavaliacao->ed72_i_numfaltas     = "";
-               $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-               $cldiarioavaliacao->alterar($ed72_i_codigo);
-               db_fim_transacao();
-             }
-           }
-          }
+                                $vinculo = true;
+                                db_inicio_transacao();
+                                $cldiarioavaliacao->ed72_t_obs           = "";
+                                $cldiarioavaliacao->ed72_c_valorconceito = "";
+                                $cldiarioavaliacao->ed72_i_valornota     = "";
+                                $cldiarioavaliacao->ed72_t_parecer       = "";
+                                $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                                $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                                $cldiarioavaliacao->alterar($ed72_i_codigo);
+                                db_fim_transacao();
+                            }
+                        }
+                    }
 
-          if ( $ed41_i_procresultvinc != 0 ) {
+                    if ($ed41_i_procresultvinc != 0 ) {
 
-            $sWhereResultado = " ed73_i_procresultado = {$ed41_i_procresultvinc} ";
+                        $sWhereResultado = " ed73_i_procresultado = {$ed41_i_procresultvinc} ";
 
-            $sSqlResultadoVinculado = $cldiarioresultado->sql_query("",
-                                                                    "ed42_c_abrev,
+                        $sSqlResultadoVinculado = $cldiarioresultado->sql_query(
+                            "",
+                            "ed42_c_abrev,
                                                                     ed73_c_aprovmin as aprovminres,
                                                                     ed73_i_valornota as v_nota,
                                                                     ed73_c_valorconceito as v_conc,
                                                                     ed73_t_parecer as v_par",
-                                                                    "",
-                                                                    $sWhereResultado." AND ed73_i_diario = {$ed72_i_diario}"
-            );
-            $result_res = $cldiarioresultado->sql_record($sSqlResultadoVinculado);
+                            "",
+                            $sWhereResultado." AND ed73_i_diario = {$ed72_i_diario}"
+                        );
+                        $result_res = $cldiarioresultado->sql_record($sSqlResultadoVinculado);
 
-            db_fieldsmemory($result_res,0);
-            $iTotalReprovacoes = 0;
-            $sWhereResultado .= " and ed95_i_aluno = {$ed95_i_aluno} and ed73_c_aprovmin = 'N'";
-            $sWhereResultado .= " and ed95_i_serie = {$ed95_i_serie} and ed95_c_encerrado = 'N'";
+                        db_fieldsmemory($result_res, 0);
+                        $iTotalReprovacoes = 0;
+                        $sWhereResultado .= " and ed95_i_aluno = {$ed95_i_aluno} and ed73_c_aprovmin = 'N'";
+                        $sWhereResultado .= " and ed95_i_serie = {$ed95_i_serie} and ed95_c_encerrado = 'N'";
 
-            if ( trim($ed37_c_tipo) == 'NOTA' ) {
-              $sWhereResultado .= " and ed73_i_valornota is not null ";
-            } else if ( trim($ed37_c_tipo) == 'NIVEL' ) {
-              $sWhereResultado .= " and ed73_c_valorconceito is not null ";
-            }else {
-              $sWhereResultado .= " and ed73_t_parecer is not null ";
-            }
+                        if (trim($ed37_c_tipo) == 'NOTA' ) {
+                                $sWhereResultado .= " and ed73_i_valornota is not null ";
+                        } else if (trim($ed37_c_tipo) == 'NIVEL' ) {
+                            $sWhereResultado .= " and ed73_c_valorconceito is not null ";
+                        }else {
+                            $sWhereResultado .= " and ed73_t_parecer is not null ";
+                        }
 
-            $sCampos = "diarioresultado.*";
-            $sSqlOutrasDisciplinas = $cldiarioresultado->sql_query_resultado_outras_disciplina_aluno(null,
-                                                                                                     $sCampos,
-                                                                                                     null,
-                                                                                                     $sWhereResultado
-            );
+                        $sCampos = "diarioresultado.*";
+                        $sSqlOutrasDisciplinas = $cldiarioresultado->sql_query_resultado_outras_disciplina_aluno(
+                            null,
+                            $sCampos,
+                            null,
+                            $sWhereResultado
+                        );
 
-            $rsOutrasDisciplinas = $cldiarioresultado->sql_record($sSqlOutrasDisciplinas);
-            $iTotalReprovacoes   = $cldiarioresultado->numrows;
+                        $rsOutrasDisciplinas = $cldiarioresultado->sql_record($sSqlOutrasDisciplinas);
+                        $iTotalReprovacoes   = $cldiarioresultado->numrows;
 
-            $aOutrasDisciplinasNaRecuperacao  = array();
-            $sSqlOutrasDisciplinasRecuperacao = $cldiarioavaliacao->sql_query_diario(null,
-                                                                                  "diarioavaliacao.*",
-                                                                                   null,
-                                                                                  "ed72_i_procavaliacao = {$ed72_i_procavaliacao}
+                        $aOutrasDisciplinasNaRecuperacao  = array();
+                        $sSqlOutrasDisciplinasRecuperacao = $cldiarioavaliacao->sql_query_diario(
+                            null,
+                            "diarioavaliacao.*",
+                            null,
+                            "ed72_i_procavaliacao = {$ed72_i_procavaliacao}
                                                                                    and ed95_i_aluno = {$ed95_i_aluno}"
-                                                                                   );
-            $rsOutrasDisciplinasNaRecuperacao = $cldiarioavaliacao->sql_record($sSqlOutrasDisciplinasRecuperacao);
-            $aOutrasDisciplinasNaRecuperacao  = db_utils::getCollectionByRecord($rsOutrasDisciplinasNaRecuperacao);
+                        );
+                        $rsOutrasDisciplinasNaRecuperacao = $cldiarioavaliacao->sql_record($sSqlOutrasDisciplinasRecuperacao);
+                        $aOutrasDisciplinasNaRecuperacao  = db_utils::getCollectionByRecord($rsOutrasDisciplinasNaRecuperacao);
 
-            if ( $v_nota == "" && $v_conc == "" && (trim( $ed37_c_tipo ) == "PARECER"  && ($aprovminres == 'S'))) {
+                        if ($v_nota == "" && $v_conc == "" && (trim($ed37_c_tipo) == "PARECER"  && ($aprovminres == 'S'))) {
 
-              $semfoco = true;
+                                $semfoco = true;
 
-              if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
+                            if (trim($ed60_c_situacao) != "MATRICULADO" ) {
 
-                ?>
+                                ?>
                 <td class='aluno' align="center">
                 <table class='aluno' cellspacing="0" cellpading="0">
                  <tr>
                   <td width="50">
-                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>>
+                   <input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?php echo $cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?php echo $disabled?>>
                   </td>
                   <td width="60">
                   </td>
                  </tr>
                 </table>
-                </td><?
-              } else {
-                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído</td><?
-              }
+                </td><?php
+                            } else {
+                                ?><td class='aluno' align="center"><?php echo $ed42_c_abrev?> ainda não foi concluído</td><?php
+                            }
 
-              $vinculo = true;
-              db_inicio_transacao();
-              $cldiarioavaliacao->ed72_t_obs           = "";
-              $cldiarioavaliacao->ed72_c_valorconceito = "";
-              $cldiarioavaliacao->ed72_i_valornota     = "";
-              $cldiarioavaliacao->ed72_t_parecer       = "";
-              $cldiarioavaliacao->ed72_c_aprovmin      = "N";
-              $cldiarioavaliacao->ed72_i_numfaltas     = "";
-              $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-              $cldiarioavaliacao->alterar($ed72_i_codigo);
-              db_fim_transacao();
-            } else {
+                             $vinculo = true;
+                             db_inicio_transacao();
+                             $cldiarioavaliacao->ed72_t_obs           = "";
+                             $cldiarioavaliacao->ed72_c_valorconceito = "";
+                             $cldiarioavaliacao->ed72_i_valornota     = "";
+                             $cldiarioavaliacao->ed72_t_parecer       = "";
+                             $cldiarioavaliacao->ed72_c_aprovmin      = "N";
+                             $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                             $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                             $cldiarioavaliacao->alterar($ed72_i_codigo);
+                             db_fim_transacao();
+                        } else {
 
-              if (empty($ed41_numerodisciplinasrecuperacao)) {
-                $ed41_numerodisciplinasrecuperacao = 999;
-              }
-              $sMensagem = "Aluno atingiu mínimo para aprovação em {$ed42_c_abrev}.";
+                            if (empty($ed41_numerodisciplinasrecuperacao)) {
+                                $ed41_numerodisciplinasrecuperacao = 999;
+                            }
+                            $sMensagem = "Aluno atingiu mínimo para aprovação em {$ed42_c_abrev}.";
 
-              if (    $iTotalReprovacoes > 0
-                   && $iTotalReprovacoes > $ed41_numerodisciplinasrecuperacao) {
+                            if ($iTotalReprovacoes > 0
+                                && $iTotalReprovacoes > $ed41_numerodisciplinasrecuperacao
+                            ) {
 
-                $sMensagem   = "Aluno possui reprovação em {$iTotalReprovacoes} Disciplinas. Limite {$ed41_numerodisciplinasrecuperacao}.";
-                $aprovminres = 'S';
-                db_inicio_transacao();
-                foreach ($aOutrasDisciplinasNaRecuperacao as $oDisciplina) {
+                                $sMensagem   = "Aluno possui reprovação em {$iTotalReprovacoes} Disciplinas. Limite {$ed41_numerodisciplinasrecuperacao}.";
+                                $aprovminres = 'S';
+                                db_inicio_transacao();
+                                foreach ($aOutrasDisciplinasNaRecuperacao as $oDisciplina) {
 
-                  $cldiarioavaliacao->ed72_t_obs           = "";
-                  $cldiarioavaliacao->ed72_c_valorconceito = "";
-                  $cldiarioavaliacao->ed72_i_valornota     = "";
-                  $cldiarioavaliacao->ed72_t_parecer       = "";
-                  $cldiarioavaliacao->ed72_c_aprovmin      = "N";
-                  $cldiarioavaliacao->ed72_i_numfaltas     = "";
-                  $cldiarioavaliacao->ed72_i_codigo        = $oDisciplina->ed72_i_codigo;
-                  $cldiarioavaliacao->alterar($oDisciplina->ed72_i_codigo);
+                                              $cldiarioavaliacao->ed72_t_obs           = "";
+                                              $cldiarioavaliacao->ed72_c_valorconceito = "";
+                                              $cldiarioavaliacao->ed72_i_valornota     = "";
+                                              $cldiarioavaliacao->ed72_t_parecer       = "";
+                                              $cldiarioavaliacao->ed72_c_aprovmin      = "N";
+                                              $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                                              $cldiarioavaliacao->ed72_i_codigo        = $oDisciplina->ed72_i_codigo;
+                                              $cldiarioavaliacao->alterar($oDisciplina->ed72_i_codigo);
 
-                }
+                                }
 
-                db_fim_transacao();
-                if (!empty($ed41_i_procresultvinc)) {
+                                db_fim_transacao();
+                                if (!empty($ed41_i_procresultvinc)) {
 
-                  $sWhereRecuperacao  = " (select ed73_i_codigo ";
-                  $sWhereRecuperacao .= "    from  diarioresultado " ;
-                  $sWhereRecuperacao .= "          inner join  diario on ed73_i_diario = ed95_i_codigo" ;
-                  $sWhereRecuperacao .= "    where ed73_i_procresultado = {$ed41_i_procresultvinc}";
-                  $sWhereRecuperacao .= "      and ed95_i_aluno         = {$ed95_i_aluno}";
-                  $sWhereRecuperacao .= ")";
+                                    $sWhereRecuperacao  = " (select ed73_i_codigo ";
+                                    $sWhereRecuperacao .= "    from  diarioresultado " ;
+                                    $sWhereRecuperacao .= "          inner join  diario on ed73_i_diario = ed95_i_codigo" ;
+                                    $sWhereRecuperacao .= "    where ed73_i_procresultado = {$ed41_i_procresultvinc}";
+                                    $sWhereRecuperacao .= "      and ed95_i_aluno         = {$ed95_i_aluno}";
+                                    $sWhereRecuperacao .= ")";
 
-                  $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
-                  $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado in $sWhereRecuperacao");
-                }
-              }
-              if ( $aprovminres == "S" ) {
+                                    $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
+                                    $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado in $sWhereRecuperacao");
+                                }
+                            }
+                            if ($aprovminres == "S" ) {
 
                 $semfoco = true;
                 if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                  ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
+                  ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php
                 } else {
-                  ?><td class='aluno' align="center"><?=$sMensagem?></td><?
+                  ?><td class='aluno' align="center"><?=$sMensagem?></td><?php
                 }
 
-                $vinculo = true;
-                db_inicio_transacao();
-                $cldiarioavaliacao->ed72_t_obs           = "";
-                $cldiarioavaliacao->ed72_c_valorconceito = "";
-                $cldiarioavaliacao->ed72_i_valornota     = "";
-                $cldiarioavaliacao->ed72_t_parecer       = "";
-                $cldiarioavaliacao->ed72_i_numfaltas     = "";
-                $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-                $cldiarioavaliacao->alterar($ed72_i_codigo);
-                db_fim_transacao();
-              }
-            }
-          }
+                                $vinculo = true;
+                                db_inicio_transacao();
+                                $cldiarioavaliacao->ed72_t_obs           = "";
+                                $cldiarioavaliacao->ed72_c_valorconceito = "";
+                                $cldiarioavaliacao->ed72_i_valornota     = "";
+                                $cldiarioavaliacao->ed72_t_parecer       = "";
+                                $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                                $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                                $cldiarioavaliacao->alterar($ed72_i_codigo);
+                                db_fim_transacao();
+                            }
+                        }
+                    }
 
-          $campo       = trim($ed37_c_tipo)=="NOTA"?"ed73_i_valornota":trim($ed37_c_tipo)=="NIVEL"?"ed73_c_valorconceito":"ed73_t_parecer";
+          $campo       = (trim($ed37_c_tipo) == "NOTA")
+            ? "ed73_i_valornota"
+            : (trim($ed37_c_tipo) == "NIVEL")
+              ? "ed73_c_valorconceito"
+              : "ed73_t_parecer";
           $result_ante = $cldiarioresultado->sql_record($cldiarioresultado->sql_query("","ed42_c_abrev,ed73_c_aprovmin as apvmin,$campo as tipovalor",""," ed43_i_sequencia < $ed41_i_sequencia AND ed73_i_diario = $ed72_i_diario"));
 
-          if ( $cldiarioresultado->numrows > 0 && $ed41_i_procresultvinc == 0 && $ed41_i_procavalvinc == 0 ) {
+                    if ($cldiarioresultado->numrows > 0 && $ed41_i_procresultvinc == 0 && $ed41_i_procavalvinc == 0 ) {
 
-            $semfoco = true;
-            db_fieldsmemory($result_ante,0);
+                        $semfoco = true;
+                        db_fieldsmemory($result_ante, 0);
 
-            if ( $apvmin == "S" && ( $seqatual >= $seqmax ) ) {
-
-              if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
-              } else {
-                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em  <?=$ed42_c_abrev?>.</td><?
-              }
-
-              $vinculo = true;
-              db_inicio_transacao();
-              $cldiarioavaliacao->ed72_t_obs           = "";
-              $cldiarioavaliacao->ed72_c_valorconceito = "";
-              $cldiarioavaliacao->ed72_i_valornota     = "";
-              $cldiarioavaliacao->ed72_t_parecer       = "";
-              $cldiarioavaliacao->ed72_i_numfaltas     = "";
-              $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-              $cldiarioavaliacao->alterar($ed72_i_codigo);
-              db_fim_transacao();
-            } else if ( $apvmin == "N" && $tipovalor == "" && ( $seqatual >= $seqmax ) ) {
+                        if ($apvmin == "S" && ( $seqatual >= $seqmax ) ) {
 
               if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
+                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php
               } else {
-                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído.</td><?
+                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em  <?=$ed42_c_abrev?>.</td><?php
               }
 
-              db_inicio_transacao();
-              $cldiarioavaliacao->ed72_t_obs           = "";
-              $cldiarioavaliacao->ed72_c_valorconceito = "";
-              $cldiarioavaliacao->ed72_i_valornota     = "";
-              $cldiarioavaliacao->ed72_t_parecer       = "";
-              $cldiarioavaliacao->ed72_i_numfaltas     = "";
-              $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
-              $cldiarioavaliacao->alterar($ed72_i_codigo);
-              db_fim_transacao();
-              $vinculo = true;
-            }
-          }
+                            $vinculo = true;
+                            db_inicio_transacao();
+                            $cldiarioavaliacao->ed72_t_obs           = "";
+                            $cldiarioavaliacao->ed72_c_valorconceito = "";
+                            $cldiarioavaliacao->ed72_i_valornota     = "";
+                            $cldiarioavaliacao->ed72_t_parecer       = "";
+                            $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                            $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                            $cldiarioavaliacao->alterar($ed72_i_codigo);
+                            db_fim_transacao();
+                        } else if ($apvmin == "N" && $tipovalor == "" && ( $seqatual >= $seqmax ) ) {
 
-          if ( $vinculo == false ) {
+              if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
+                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php
+              } else {
+                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído.</td><?php
+              }
 
-           $sql_cpr     = "SELECT ed44_i_procresultado as codprocres,ed43_c_obtencao as frmobtencao ";
-           $sql_cpr    .= "  FROM avalcompoeres ";
-           $sql_cpr    .= "       inner join procresultado on ed43_i_codigo = ed44_i_procresultado ";
-           $sql_cpr    .= " WHERE ed44_i_procavaliacao = {$ed41_i_codigo}";
-           $result_cpr  = db_query($sql_cpr);
+                            db_inicio_transacao();
+                            $cldiarioavaliacao->ed72_t_obs           = "";
+                            $cldiarioavaliacao->ed72_c_valorconceito = "";
+                            $cldiarioavaliacao->ed72_i_valornota     = "";
+                            $cldiarioavaliacao->ed72_t_parecer       = "";
+                            $cldiarioavaliacao->ed72_i_numfaltas     = "";
+                            $cldiarioavaliacao->ed72_i_codigo        = $ed72_i_codigo;
+                            $cldiarioavaliacao->alterar($ed72_i_codigo);
+                            db_fim_transacao();
+                            $vinculo = true;
+                        }
+                    }
 
-           if ( pg_num_rows( $result_cpr ) > 0 ) {
+                    if ($vinculo == false ) {
 
-             db_fieldsmemory($result_cpr,0);
-             if ( $ed233_c_avalalternativa == "S" && $frmobtencao == "SO" ) {
+                             $sql_cpr     = "SELECT ed44_i_procresultado as codprocres,ed43_c_obtencao as frmobtencao ";
+                             $sql_cpr    .= "  FROM avalcompoeres ";
+                             $sql_cpr    .= "       inner join procresultado on ed43_i_codigo = ed44_i_procresultado ";
+                             $sql_cpr    .= " WHERE ed44_i_procavaliacao = {$ed41_i_codigo}";
+                             $result_cpr  = db_query($sql_cpr);
 
-               $sql_alter     = "select array(SELECT ed41_i_codigo ";
-               $sql_alter    .= "  FROM diarioavaliacao ";
-               $sql_alter    .= "       inner join diario            on ed95_i_codigo           = ed72_i_diario ";
-               $sql_alter    .= "       inner join procavaliacao     on ed41_i_codigo           = ed72_i_procavaliacao ";
-               $sql_alter    .= "       inner join periodoavaliacao  on ed09_i_codigo           = ed41_i_periodoavaliacao ";
-               $sql_alter    .= "       inner join periodocalendario on ed53_i_periodoavaliacao = ed09_i_codigo ";
-               $sql_alter    .= "       inner join avalcompoeres     on ed44_i_procavaliacao    = ed41_i_codigo ";
-               $sql_alter    .= " WHERE ed53_i_calendario    = {$ed57_i_calendario} ";
-               $sql_alter    .= "   AND ed53_d_fim           < '{$ed60_d_datamatricula}' ";
-               $sql_alter    .= "   AND ed41_i_procedimento  = {$ed220_i_procedimento} ";
-               $sql_alter    .= "   AND ed95_i_aluno         = {$ed60_i_aluno} ";
-               $sql_alter    .= "   AND ed95_i_regencia      = {$regencia} ";
-               $sql_alter    .= "   AND ed72_i_valornota     is null ";
-               $sql_alter    .= "   AND ed44_i_procresultado = {$codprocres}) as codavalproc";
-               $result_alter  = db_query($sql_alter);
+                        if (pg_num_rows($result_cpr) > 0 ) {
 
-               if ( pg_num_rows( $result_alter ) > 0 ) {
+                            db_fieldsmemory($result_cpr, 0);
+                            if ($ed233_c_avalalternativa == "S" && $frmobtencao == "SO" ) {
 
-                 db_fieldsmemory($result_alter,0);
-                 $codavalproc = str_replace("{","",$codavalproc);
-                 $codavalproc = str_replace("}","",$codavalproc);
+                                 $sql_alter     = "select array(SELECT ed41_i_codigo ";
+                                 $sql_alter    .= "  FROM diarioavaliacao ";
+                                 $sql_alter    .= "       inner join diario            on ed95_i_codigo           = ed72_i_diario ";
+                                 $sql_alter    .= "       inner join procavaliacao     on ed41_i_codigo           = ed72_i_procavaliacao ";
+                                 $sql_alter    .= "       inner join periodoavaliacao  on ed09_i_codigo           = ed41_i_periodoavaliacao ";
+                                 $sql_alter    .= "       inner join periodocalendario on ed53_i_periodoavaliacao = ed09_i_codigo ";
+                                 $sql_alter    .= "       inner join avalcompoeres     on ed44_i_procavaliacao    = ed41_i_codigo ";
+                                 $sql_alter    .= " WHERE ed53_i_calendario    = {$ed57_i_calendario} ";
+                                 $sql_alter    .= "   AND ed53_d_fim           < '{$ed60_d_datamatricula}' ";
+                                 $sql_alter    .= "   AND ed41_i_procedimento  = {$ed220_i_procedimento} ";
+                                 $sql_alter    .= "   AND ed95_i_aluno         = {$ed60_i_aluno} ";
+                                 $sql_alter    .= "   AND ed95_i_regencia      = {$regencia} ";
+                                 $sql_alter    .= "   AND ed72_i_valornota     is null ";
+                                 $sql_alter    .= "   AND ed44_i_procresultado = {$codprocres}) as codavalproc";
+                                 $result_alter  = db_query($sql_alter);
 
-                 if ( $codavalproc != "" ) {
+                                if (pg_num_rows($result_alter) > 0 ) {
 
-                   $sql_alter1     = "SELECT count(*),ed282_i_procavalalternativa ";
-                   $sql_alter1    .= "  FROM procavalalternativaregra ";
-                   $sql_alter1    .= "       inner join procavalalternativa on ed281_i_codigo = ed282_i_procavalalternativa ";
-                   $sql_alter1    .= "       inner join procavaliacao       on ed41_i_codigo  = ed282_i_codavaliacao ";
-                   $sql_alter1    .= "       left  join formaavaliacao      on ed37_i_codigo  = ed282_i_formaavaliacao ";
-                   $sql_alter1    .= " WHERE ed281_i_procresultado = {$codprocres} ";
-                   $sql_alter1    .= "   AND ed282_i_tipoaval = 'A' ";
-                   $sql_alter1    .= "   AND ((ed282_i_codavaliacao in ({$codavalproc}) and ed37_i_menorvalor is null) ";
-                   $sql_alter1    .= "         OR ";
-                   $sql_alter1    .= "        (ed282_i_codavaliacao not in ({$codavalproc}) and ed37_i_menorvalor is not null)) ";
-                   $sql_alter1    .= "   AND exists(select * from procavalalternativaregra as b ";
-                   $sql_alter1    .= "              where b.ed282_i_codavaliacao in ({$codavalproc})) ";
-                   $sql_alter1    .= " GROUP BY ed282_i_procavalalternativa ";
-                   $sql_alter1    .= " ORDER BY count desc ";
-                   $sql_alter1    .= " LIMIT 1";
-                   $result_alter1  = db_query( $sql_alter1 );
+                                    db_fieldsmemory($result_alter, 0);
+                                    $codavalproc = str_replace("{", "", $codavalproc);
+                                    $codavalproc = str_replace("}", "", $codavalproc);
 
-                   if ( pg_num_rows( $result_alter1 ) > 0 ) {
+                                    if ($codavalproc != "" ) {
 
-                     db_fieldsmemory( $result_alter1, 0 );
-                     $sql_alter2     = "SELECT coalesce(ed37_i_menorvalor,0) as ed37_i_menorvalor, coalesce(ed37_i_maiorvalor,0) as ed37_i_maiorvalor,coalesce(ed37_i_variacao,0) as ed37_i_variacao ";
-                     $sql_alter2    .= "  FROM procavalalternativaregra ";
-                     $sql_alter2    .= "       inner join procavalalternativa on ed281_i_codigo = ed282_i_procavalalternativa ";
-                     $sql_alter2    .= "       inner join procavaliacao       on ed41_i_codigo  = ed282_i_codavaliacao ";
-                     $sql_alter2    .= "       left  join formaavaliacao      on ed37_i_codigo  = ed282_i_formaavaliacao ";
-                     $sql_alter2    .= " WHERE ed281_i_procresultado = {$codprocres} ";
-                     $sql_alter2    .= "   AND ed282_i_tipoaval = 'A' ";
-                     $sql_alter2    .= "   AND ed282_i_codavaliacao = {$ed41_i_codigo} ";
-                     $sql_alter2    .= "   AND ed282_i_procavalalternativa = {$ed282_i_procavalalternativa}";
-                     $result_alter2  = db_query( $sql_alter2 );
+                                          $sql_alter1     = "SELECT count(*),ed282_i_procavalalternativa ";
+                                          $sql_alter1    .= "  FROM procavalalternativaregra ";
+                                          $sql_alter1    .= "       inner join procavalalternativa on ed281_i_codigo = ed282_i_procavalalternativa ";
+                                          $sql_alter1    .= "       inner join procavaliacao       on ed41_i_codigo  = ed282_i_codavaliacao ";
+                                          $sql_alter1    .= "       left  join formaavaliacao      on ed37_i_codigo  = ed282_i_formaavaliacao ";
+                                          $sql_alter1    .= " WHERE ed281_i_procresultado = {$codprocres} ";
+                                          $sql_alter1    .= "   AND ed282_i_tipoaval = 'A' ";
+                                          $sql_alter1    .= "   AND ((ed282_i_codavaliacao in ({$codavalproc}) and ed37_i_menorvalor is null) ";
+                                          $sql_alter1    .= "         OR ";
+                                          $sql_alter1    .= "        (ed282_i_codavaliacao not in ({$codavalproc}) and ed37_i_menorvalor is not null)) ";
+                                          $sql_alter1    .= "   AND exists(select * from procavalalternativaregra as b ";
+                                          $sql_alter1    .= "              where b.ed282_i_codavaliacao in ({$codavalproc})) ";
+                                          $sql_alter1    .= " GROUP BY ed282_i_procavalalternativa ";
+                                          $sql_alter1    .= " ORDER BY count desc ";
+                                          $sql_alter1    .= " LIMIT 1";
+                                          $result_alter1  = db_query($sql_alter1);
 
-                     if ( pg_result( $result_alter2, 0, 1) > 0 ) {
-                       db_fieldsmemory( $result_alter2, 0);
-                     }
-                   }
-                 }
-               }
-             }
-           }
+                                        if (pg_num_rows($result_alter1) > 0 ) {
 
-           $sSqlParecerAval = $clpareceraval->sql_query( "", "ed93_i_codigo", "", "ed93_i_diarioavaliacao = {$ed72_i_codigo}");
-           $resultparecer   = $clpareceraval->sql_record( $sSqlParecerAval );
+                                            db_fieldsmemory($result_alter1, 0);
+                                            $sql_alter2     = "SELECT coalesce(ed37_i_menorvalor,0) as ed37_i_menorvalor, coalesce(ed37_i_maiorvalor,0) as ed37_i_maiorvalor,coalesce(ed37_i_variacao,0) as ed37_i_variacao ";
+                                            $sql_alter2    .= "  FROM procavalalternativaregra ";
+                                            $sql_alter2    .= "       inner join procavalalternativa on ed281_i_codigo = ed282_i_procavalalternativa ";
+                                            $sql_alter2    .= "       inner join procavaliacao       on ed41_i_codigo  = ed282_i_codavaliacao ";
+                                            $sql_alter2    .= "       left  join formaavaliacao      on ed37_i_codigo  = ed282_i_formaavaliacao ";
+                                            $sql_alter2    .= " WHERE ed281_i_procresultado = {$codprocres} ";
+                                            $sql_alter2    .= "   AND ed282_i_tipoaval = 'A' ";
+                                            $sql_alter2    .= "   AND ed282_i_codavaliacao = {$ed41_i_codigo} ";
+                                            $sql_alter2    .= "   AND ed282_i_procavalalternativa = {$ed282_i_procavalalternativa}";
+                                            $result_alter2  = db_query($sql_alter2);
 
-           if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
+                                            if (pg_result($result_alter2, 0, 1) > 0 ) {
+                                                db_fieldsmemory($result_alter2, 0);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-             $sSqlConceito = $clconceito->sql_query( "", "ed39_c_conceito", "ed39_i_sequencia", "ed39_i_formaavaliacao = {$ed41_i_formaavaliacao}");
-             $result3      = $clconceito->sql_record( $sSqlConceito );
-            ?>
+                        $sSqlParecerAval = $clpareceraval->sql_query("", "ed93_i_codigo", "", "ed93_i_diarioavaliacao = {$ed72_i_codigo}");
+                        $resultparecer   = $clpareceraval->sql_record($sSqlParecerAval);
+
+                        if (trim($ed37_c_tipo) == "NIVEL" ) {
+
+                            $sSqlConceito = $clconceito->sql_query("", "ed39_c_conceito", "ed39_i_sequencia", "ed39_i_formaavaliacao = {$ed41_i_formaavaliacao}");
+                            $result3      = $clconceito->sql_record($sSqlConceito);
+                            ?>
             <td class='aluno' align="center">
              <table class='aluno' cellspacing="0" cellpading="0">
               <tr>
                <td width="50">
-                <select name="ed72_c_valorconceitoX<?=$x?>" style="background:<?=$cordisabled?>;width:50px;height:17px;font-size:10px;text-align:center;padding:0px;" <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":""?> <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?> >
+                <select name="ed72_c_valorconceitoX<?php echo $x?>" style="background:<?php echo $cordisabled?>;width:50px;height:17px;font-size:10px;text-align:center;padding:0px;" <?php echo trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":""?> <?php echo trim($ed95_c_encerrado)=="S"?"readonly":$disabled?> >
                  <option value=""></option>
-                 <?php
-                   for ( $z = 0; $z < $clconceito->numrows; $z++ ) {
+                            <?php
+                            for ( $z = 0; $z < $clconceito->numrows; $z++ ) {
 
-                     db_fieldsmemory( $result3, $z );
-                 ?>
-                  <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($ed72_c_valorconceito)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
-                 <?}?>
+                                db_fieldsmemory($result3, $z);
+                                ?>
+                  <option value="<?php echo trim($ed39_c_conceito)?>" <?php echo trim($ed39_c_conceito)==trim($ed72_c_valorconceito)?"selected":""?>><?php echo trim($ed39_c_conceito)?></option>
+                            <?php }?>
                 </select>
                </td>
                <td width="60">
-                <?php
-                  if ( trim( $ed72_t_obs != "" ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {
-                ?>
+                            <?php
+                            if (trim($ed72_t_obs != "") && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {
+                                ?>
                  <b><a style="color:green;text-decoration:none;"
-                       href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');"
-                       title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
+                       href="javascript:js_observacoes(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>','<?php echo $ed72_t_parecer?>');"
+                       title="Aluno <?php echo $ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
+                            <?php }
 
-                  if ( ( trim($ed72_t_parecer) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {?>
-                    &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                            if (( trim($ed72_t_parecer) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {?>
+                    &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>');" title="Aluno <?php echo $ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
+                            <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?} else if ( trim( $ed37_c_tipo ) == "PARECER" ) { ?>
+                        <?php } else if (trim($ed37_c_tipo) == "PARECER" ) { ?>
 
             <td align="center">
              <table class='aluno' cellspacing="0" cellpading="0">
               <tr>
                <td width="50">
-                <input name="ed72_t_parecerX<?=$x?>" value="<?=@$ed72_t_parecer!=''?htmlspecialchars(substr(@$ed72_t_parecer,0,20).'...'):''?>" type="text" size="20" maxlength="20" style="background:<?=$cordisabled?>;height:14px;text-align:left;border: 1px solid #000000;font-size:11px;padding:0px;" onclick="js_parecer(this,<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=str_replace("'","",$ed47_v_nome);?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>);" readonly <?=$disabled?> >
+                <input name="ed72_t_parecerX<?php echo $x?>" value="<?php echo @$ed72_t_parecer!=''?htmlspecialchars(substr(@$ed72_t_parecer, 0, 20).'...'):''?>" type="text" size="20" maxlength="20" style="background:<?php echo $cordisabled?>;height:14px;text-align:left;border: 1px solid #000000;font-size:11px;padding:0px;" onclick="js_parecer(this,<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo str_replace("'", "", $ed47_v_nome);?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>);" readonly <?php echo $disabled?> >
                </td>
                <td width="60">
-                <?php
-                  if ( trim( $ed72_t_obs != "" ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
-                    &nbsp;<b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
+                            <?php
+                            if (trim($ed72_t_obs != "") && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
+                    &nbsp;<b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>','<?php echo $ed72_t_parecer?>');" title="Aluno <?php echo $ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
+                            <?php }
 
-                  if ( $clpareceraval->numrows > 0 && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
-                    &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecer(this,<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=str_replace("'","",$ed47_v_nome);?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>);" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                            if ($clpareceraval->numrows > 0 && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
+                    &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecer(this,<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo str_replace("'", "", $ed47_v_nome);?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>);" title="Aluno <?php echo $ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
+                            <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?} else if ( trim( $ed37_c_tipo ) == "NOTA" ) { ?>
+                        <?php } else if (trim($ed37_c_tipo) == "NOTA" ) { ?>
 
             <td class='aluno' align="center">
              <table class='aluno' cellspacing="0" cellpading="0">
               <tr>
                <td width="50">
-                <? if ( $resultedu == "S" ) { ?>
-                 <input name="ed72_i_valornotaX<?=$x?>"
-                        id="ed72_i_valornotaX<?=$x?>"
-                        value="<?=@$ed72_i_valornota?>"
+                            <?php if ($resultedu == "S" ) { ?>
+                 <input name="ed72_i_valornotaX<?php echo $x?>"
+                        id="ed72_i_valornotaX<?php echo $x?>"
+                        value="<?php echo @$ed72_i_valornota?>"
                         type="text"
                         size="6"
                         class='inputNotas'
                         maxlength="6"
-                        style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
-                        <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
-                        <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                        <?
-                          if (trim($ed95_c_encerrado) != "S") {
+                        style="background:<?php echo $cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
+                                <?php echo trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
+                                <?php echo trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
+                                <?php
+                                if (trim($ed95_c_encerrado) != "S") {
 
-                            if ($disabled == '') {
+                                    if ($disabled == '') {
 
-                              $iTabIndex++;
-                              echo ' tabindex="'.$iTabIndex.'" ';
-                            }
-                          }
-                        ?>
+                                        $iTabIndex++;
+                                        echo ' tabindex="'.$iTabIndex.'" ';
+                                    }
+                                }
+                                ?>
                  >
-                <?} else {?>
-                 <input name="ed72_i_valornotaX<?=$x?>"
-                        id="ed72_i_valornotaX<?=$x?>"
-                        value="<?=@$ed72_i_valornota?>"
+                            <?php } else {?>
+                 <input name="ed72_i_valornotaX<?php echo $x?>"
+                        id="ed72_i_valornotaX<?php echo $x?>"
+                        value="<?php echo @$ed72_i_valornota?>"
                         type="text"
                         class='inputNotas'
                         size="6"
                         maxlength="6"
-                        style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
-                        <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
-                        <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                        <?
-                          if (trim($ed95_c_encerrado) != "S") {
+                        style="background:<?php echo $cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
+                                <?php echo trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
+                                <?php echo trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
+                                <?php
+                                if (trim($ed95_c_encerrado) != "S") {
 
-                            if ($disabled == '') {
+                                    if ($disabled == '') {
 
-                              $iTabIndex++;
-                              echo ' tabindex="'.$iTabIndex.'" ';
-                            }
-                          }
-                        ?>
+                                        $iTabIndex++;
+                                        echo ' tabindex="'.$iTabIndex.'" ';
+                                    }
+                                }
+                                ?>
                  ></input>
-                <?}?>
+                            <?php }?>
                </td>
                <td width="60">
-                <?php
-                  if ( trim( $ed72_t_obs != "" )  && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
-                    <b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
-                  if ( ( trim( $ed72_t_parecer ) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
-                  &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=str_replace("'","",$ed47_v_nome);?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                            <?php
+                            if (trim($ed72_t_obs != "")  && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
+                    <b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>','<?php echo $ed72_t_parecer?>');" title="Aluno <?php echo $ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
+                            <?php }
+                            if (( trim($ed72_t_parecer) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
+                  &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo str_replace("'", "", $ed47_v_nome);?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>');" title="Aluno <?php echo $ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
+                            <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?}
-          }
-         }
-        }
+                        <?php }
+                    }
+                }
+            }
 
-        if ( trim( $ed59_c_freqglob ) != "A" ) {
+            if (trim($ed59_c_freqglob) != "A" ) {
 
-          $disabled    = $vinculo == true || trim( $ed60_c_situacao ) != "MATRICULADO" || trim( $ed72_c_amparo ) == "S" ? "readonly" : "";
-          $cordisabled = $vinculo == true || trim( $ed60_c_situacao ) != "MATRICULADO" || trim( $ed72_c_amparo ) == "S" ? "#FFD5AA" : "";
+                $disabled    = $vinculo == true || trim($ed60_c_situacao) != "MATRICULADO" || trim($ed72_c_amparo) == "S" ? "readonly" : "";
+                $cordisabled = $vinculo == true || trim($ed60_c_situacao) != "MATRICULADO" || trim($ed72_c_amparo) == "S" ? "#FFD5AA" : "";
 
-          if ( ( $ed72_i_escola != $codescola && $ed72_c_tipo == "M" ) || $ed81_c_todoperiodo == "S" ) {
+                if (( $ed72_i_escola != $codescola && $ed72_c_tipo == "M" ) || $ed81_c_todoperiodo == "S" ) {
 
-           $disabled    = "readonly";
-           $cordisabled = "#FFD5AA";
-          }
+                    $disabled    = "readonly";
+                    $cordisabled = "#FFD5AA";
+                }
 
-          if (    ( trim( $ed60_c_situacao ) == "TRANSFERIDO FORA" || trim( $ed60_c_situacao ) == "CANCELADO" || trim( $ed60_c_situacao ) == "EVADIDO")
-               && $ed60_c_ativa == "S" && $ed95_c_encerrado == "N" ) {
+                if ((trim($ed60_c_situacao) == "TRANSFERIDO FORA" 
+                    || trim($ed60_c_situacao) == "CANCELADO" 
+                    || trim($ed60_c_situacao) == "EVADIDO" 
+                    || trim($ed60_c_situacao) == "ABANDONO ESCOLAR") && $ed60_c_ativa == "S" && $ed95_c_encerrado == "N"
+                ) {
 
-           $disabled         = "readonly";
-           $cordisabled      = "#FFD5AA";
-           $ed95_c_encerrado = "N";
-          }
-         ?>
+                    $disabled         = "readonly";
+                    $cordisabled      = "#FFD5AA";
+                    $ed95_c_encerrado = "N";
+                }
+                ?>
          <td class='aluno' align="center">
           <table cellspacing="0" cellpading="0">
            <tr>
             <td class='aluno'>
-             <?php
-               if ( trim( $ed72_c_amparo ) == "S" ) {
+                <?php
+                if (trim($ed72_c_amparo) == "S" ) {
 
-                 $semfoco = true;
-                 if ( $ed60_c_ativa == "S" ) {
+                    $semfoco = true;
+                    if ($ed60_c_ativa == "S" ) {
 
-                   if ( $ed81_i_justificativa != "" ) {
-                     ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?
-                   } else if ( $ed81_i_convencaoamp != "" ) {
-                     ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?
-                   }
-                 } else {
-                   ?><td align="center" class='aluno'>&nbsp;</td><?
-                 }
-               } else {?>
-              <input name="ed72_i_numfaltasX<?=$x?>"
-                     id="ed72_i_numfaltasX<?=$x?>"
-                     value="<?=@$ed72_i_numfaltas?>"
+                        if ($ed81_i_justificativa != "" ) {
+                            ?><td align="center" class='aluno'>Amparo - Justif. n° <?php echo trim($ed81_i_justificativa)?></td><?php
+                        } else if ($ed81_i_convencaoamp != "" ) {
+                            ?><td align="center" class='aluno'><?php echo $ed250_c_abrev?></td><?php
+                        }
+                    } else {
+                        ?><td align="center" class='aluno'>&nbsp;</td><?php
+                    }
+                } else {?>
+              <input name="ed72_i_numfaltasX<?php echo $x?>"
+                     id="ed72_i_numfaltasX<?php echo $x?>"
+                     value="<?php echo @$ed72_i_numfaltas?>"
                      type="text"
                      size="4"
                      maxlength="3"
-                     style="background:<?=$cordisabled?>;width:25px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
-                     <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onchange=\"js_faltas(this,$ed72_i_procavaliacao,'$ed09_c_descr',$ed72_i_codigo,'$ed72_i_valornota','$ed72_c_valorconceito','$ed80_i_numfaltas','$ed59_c_freqglob',$linhas1,'$ed37_c_tipo');\""?>
-                     <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                     <?
-                       if (trim($ed95_c_encerrado) != "S") {
+                     style="background:<?php echo $cordisabled?>;width:25px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
+                     <?php echo trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onchange=\"js_faltas(this,$ed72_i_procavaliacao,'$ed09_c_descr',$ed72_i_codigo,'$ed72_i_valornota','$ed72_c_valorconceito','$ed80_i_numfaltas','$ed59_c_freqglob',$linhas1,'$ed37_c_tipo');\""?>
+                     <?php echo trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
+                     <?php
+                        if (trim($ed95_c_encerrado) != "S") {
 
-                         if ($disabled == '') {
+                            if ($disabled == '') {
 
-                           if ($oEduParametros->ed233_deslocamentocursor == 1) {
+                                if ($oEduParametros->ed233_deslocamentocursor == 1) {
 
-                             $iTabIndex++;
-                             echo ' tabindex="'.$iTabIndex.'" ';
+                                    $iTabIndex++;
+                                    echo ' tabindex="'.$iTabIndex.'" ';
 
-                           } else {
-                             echo ' tabindex="'.($iTabIndex+$linhas1).'" ';
-                           }
-                         }
-                       }
-                     ?>
+                                } else {
+                                    echo ' tabindex="'.($iTabIndex+$linhas1).'" ';
+                                }
+                            }
+                        }
+                        ?>
               >
-             <?}?>
+                <?php }?>
             </td>
             <td class='aluno' width="20" align="center">
-             <?=$ed80_i_numfaltas!=""?"<b>A</b>":"&nbsp;"?>
+                 <?php echo $ed80_i_numfaltas!=""?"<b>A</b>":"&nbsp;"?>
             </td>
            </tr>
           </table>
          </td>
          <td width="5%" align="center">
-          <?php
-            if ( trim( $ed60_c_situacao ) == "MATRICULADO" && trim( $ed72_c_amparo ) == "N") {
+                <?php
+                if (trim($ed60_c_situacao) == "MATRICULADO" && trim($ed72_c_amparo) == "N") {
 
-              if ( trim( $ed72_t_obs ) == "" && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
-                <b><a href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Incluir observações neste período de avaliação para <?=$ed47_v_nome?>">O</a></b>
-            <?} else {
-                echo"&nbsp;";
-              }
+                    if (trim($ed72_t_obs) == "" && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
+                <b><a href="javascript:js_observacoes(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>','<?php echo $ed72_t_parecer?>');" title="Incluir observações neste período de avaliação para <?php echo $ed47_v_nome?>">O</a></b>
+                    <?php } else {
+                        echo"&nbsp;";
+                    }
 
-              if ( trim( $ed37_c_tipo ) != "PARECER" ) {
+                    if (trim($ed37_c_tipo) != "PARECER" ) {
 
-                if ( ( trim( $ed72_t_parecer ) == "" && $clpareceraval->numrows == 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {?>
+                        if (( trim($ed72_t_parecer) == "" && $clpareceraval->numrows == 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {?>
 
                   &nbsp;&nbsp;
-                  <b><a href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Incluir parecer descritivo neste período de avaliação para <?=$ed47_v_nome?>">P</a></b>
-              <?} else {
-                  echo"&nbsp;";
-                }
-              }
-            } else {
-              echo"&nbsp;";
-            }?>
+                  <b><a href="javascript:js_parecerindividual(<?php echo $ed72_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $ed47_v_nome?>','<?php echo $ed72_i_numfaltas?>','<?php echo $ed95_c_encerrado?>',<?php echo $ed59_i_turma?>,<?php echo $ed47_i_codigo?>,<?php echo $ed72_i_procavaliacao?>,'<?php echo $ed72_i_valornota?>','<?php echo $ed72_c_valorconceito?>');" title="Incluir parecer descritivo neste período de avaliação para <?php echo $ed47_v_nome?>">P</a></b>
+                        <?php } else {
+                            echo"&nbsp;";
+                        }
+                    }
+                } else {
+                    echo"&nbsp;";
+                }?>
          </td>
-        <?}?>
+            <?php }?>
        </tr>
-      <?php
-        if ( $ed60_c_parecer == "S" ) {
-          $ed37_c_tipo = $ed37_c_tipo_ant;
-        }
-      }?>
+            <?php
+            if ($ed60_c_parecer == "S" ) {
+                $ed37_c_tipo = $ed37_c_tipo_ant;
+            }
+        }?>
       <tr>
        <td align="center" colspan="10">
 
-        <?if ($oEduParametros->ed233_deslocamentocursor == 1) {?>
-          <input type="submit" name="salvartudo" value="Salvar"  <?=$somador==0||$nivel0==0?"disabled":""?> tabindex =<?=$iTabIndex++?>>
-        <?} else {?>
-          <input type="submit" name="salvartudo" value="Salvar"  <?=$somador==0||$nivel0==0?"disabled":""?> tabindex =<?=($linhas1+$iTabIndex+1)?>>
-        <?}?>
-        <input type="button" name="mensagens" value="Ver Mensagens" style="visibility:hidden;" onclick="location.href='edu1_diarioavaliacao001.php?regencia=<?=$regencia?>&ed41_i_codigo=<?=$ed41_i_codigo?>'">
+        <?php if ($oEduParametros->ed233_deslocamentocursor == 1) {?>
+          <input type="submit" name="salvartudo" value="Salvar"  <?php echo $somador==0||$nivel0==0?"disabled":""?> tabindex =<?php echo $iTabIndex++?>>
+        <?php } else {?>
+          <input type="submit" name="salvartudo" value="Salvar"  <?php echo $somador==0||$nivel0==0?"disabled":""?> tabindex =<?php echo ($linhas1+$iTabIndex+1)?>>
+        <?php }?>
+        <input type="button" name="mensagens" value="Ver Mensagens" style="visibility:hidden;" onclick="location.href='edu1_diarioavaliacao001.php?regencia=<?php echo $regencia?>&ed41_i_codigo=<?php echo $ed41_i_codigo?>'">
        </td>
       </tr>
-     <?} else {?>
+    <?php } else {?>
 
         <tr>
           <td colspan="3" class='aluno' align="center">NENHUM ALUNO MATRICULADO NESTA TURMA.</td>
         </tr>
-     <?}?>
+    <?php }?>
     </table>
-   <input name="ed41_i_codigo" type="hidden" value="<?=$ed41_i_codigo?>">
-   <input name="regencia" type="hidden" value="<?=$regencia?>">
-   <input name="tipo" type="hidden" value="<?=$ed37_c_tipo?>">
+   <input name="ed41_i_codigo" type="hidden" value="<?php echo $ed41_i_codigo?>">
+   <input name="regencia" type="hidden" value="<?php echo $regencia?>">
+   <input name="tipo" type="hidden" value="<?php echo $ed37_c_tipo?>">
   </td>
  </tr>
 </table>
@@ -1171,12 +1195,12 @@ function js_focoinicial() {
 
   focoinicial = "";
 
-  for ( i = 0; i < <?=$linhas1?>; i++ ) {
+  for ( i = 0; i < <?php echo $linhas1?>; i++ ) {
 
   <?php
-    if ( trim( $ed59_c_freqglob ) != "F" && $semfoco == false ) {
+    if (trim($ed59_c_freqglob) != "F" && $semfoco == false ) {
 
-      if (trim( $ed37_c_tipo ) == "NOTA" ) { ?>
+        if (trim($ed37_c_tipo) == "NOTA" ) { ?>
 
         nomecampo = document.form1['ed72_i_valornotaX'+i];
         if ( nomecampo.readOnly == false ) {
@@ -1184,8 +1208,8 @@ function js_focoinicial() {
           focoinicial = "ed72_i_valornotaX"+i;
           break;
         }
-   <?php
-      } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) { ?>
+            <?php
+        } else if (trim($ed37_c_tipo) == "NIVEL" ) { ?>
 
         nomecampo = document.form1['ed72_c_valorconceitoX'+i];
         if ( nomecampo.disabled == false ) {
@@ -1193,8 +1217,8 @@ function js_focoinicial() {
           focoinicial = "ed72_c_valorconceitoX"+i;
           break;
         }
-   <?php
-      } else { ?>
+            <?php
+        } else { ?>
 
         nomecampo = document.form1['ed72_t_parecerX'+i];
         if ( nomecampo.disabled == false ) {
@@ -1202,8 +1226,8 @@ function js_focoinicial() {
           focoinicial = "ed72_t_parecerX"+i;
           break;
         }
-    <?}
-    } else if ( trim( $ed59_c_freqglob ) == "F" && $semfoco == false ) { ?>
+        <?php }
+    } else if (trim($ed59_c_freqglob) == "F" && $semfoco == false ) { ?>
 
       nomecampo = document.form1['ed72_i_numfaltasX'+i];
       if ( nomecampo.disabled == false ) {
@@ -1211,7 +1235,7 @@ function js_focoinicial() {
         focoinicial = "ed72_i_numfaltasX"+i;
         break;
       }
-  <?}?>
+    <?php }?>
   }
 
   if ( focoinicial != "" ) {
@@ -1230,11 +1254,13 @@ function js_cent( amount ) {
 
   //retorna o valor com 2 casas decimais
   return amount;
-  <? if ( $resultedu == "S" ) { ?>
+  <?php if ($resultedu == "S" ) { ?>
        return(amount == Math.floor(amount)) ? amount + '.00' : ( (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
-  <? } else { ?>
+  <?php } else { ?>
+  <?php } else { ?>
        return(amount == Math.floor(amount)) ? Math.floor(amount) : ( (amount*10 == Math.floor(amount*10)) ? Math.floor(amount) : Math.floor(amount));
-  <? } ?>
+  <?php } ?>
+  <?php } ?>
 }
 
 function js_dec( cantidad, decimales ) {
@@ -1360,7 +1386,7 @@ function js_faltas( campo, codperiodo, periodo, codigo, nota, conceito, abono, r
           campo.value = "";
           campo.focus();
         } else {
-        	document.form1.salvartudo.disabled =false;
+            document.form1.salvartudo.disabled =false;
         }
       }
     }
@@ -1369,8 +1395,8 @@ function js_faltas( campo, codperiodo, periodo, codigo, nota, conceito, abono, r
 
 function js_conceito( campo, codigo, faltas, tipo, regencia, qtdlinha ) {
 
-  location.href = "edu1_diarioavaliacao001.php?regencia=<?=$regencia?>";
-                                            +"&ed41_i_codigo=<?=$ed41_i_codigo?>";
+  location.href = "edu1_diarioavaliacao001.php?regencia=<?php echo $regencia?>";
+                                            +"&ed41_i_codigo=<?php echo $ed41_i_codigo?>";
                                             +"&tipo="+tipo
                                             +"&codigo="+codigo
                                             +"&valor="+campo.value
@@ -1509,7 +1535,8 @@ function js_oculta( id ) {
   document.getElementById(id).style.visibility = "hidden";
 }
 </script>
-<?
+<?php
+<?php
 $sql_r     = "SELECT DISTINCT max(ed09_i_sequencia) ";
 $sql_r    .= "  FROM diarioavaliacao ";
 $sql_r    .= "       inner join diario           on diario.ed95_i_codigo           = diarioavaliacao.ed72_i_diario ";
@@ -1520,74 +1547,74 @@ $sql_r    .= "   AND (    diarioavaliacao.ed72_i_numfaltas is not null ";
 $sql_r    .= "         OR diarioavaliacao.ed72_i_valornota is not null ";
 $sql_r    .= "         OR diarioavaliacao.ed72_c_valorconceito != '' ";
 $sql_r    .= "         OR diarioavaliacao.ed72_t_parecer != '')";
-$result_r  = db_query( $sql_r );
-$linhas    = pg_num_rows( $result_r );
-db_fieldsmemory( $result_r, 0 );
+$result_r  = db_query($sql_r);
+$linhas    = pg_num_rows($result_r);
+db_fieldsmemory($result_r, 0);
 
-if ( $max == "" ) {
+if ($max == "" ) {
 
-  db_inicio_transacao();
-  $clregencia->ed59_c_ultatualiz = "SI";
-  $clregencia->ed59_i_codigo     = $regencia;
-  $clregencia->alterar($regencia);
-  db_fim_transacao();
+    db_inicio_transacao();
+    $clregencia->ed59_c_ultatualiz = "SI";
+    $clregencia->ed59_i_codigo     = $regencia;
+    $clregencia->alterar($regencia);
+    db_fim_transacao();
 } else {
 
-  $sSqlPeriodoAvaliacao = $clperiodoavaliacao->sql_query_file( "", "ed09_c_abrev", "", "ed09_i_sequencia = {$max}");
-  $result_p             = $clperiodoavaliacao->sql_record( $sSqlPeriodoAvaliacao );
-  db_fieldsmemory( $result_p, 0 );
+    $sSqlPeriodoAvaliacao = $clperiodoavaliacao->sql_query_file("", "ed09_c_abrev", "", "ed09_i_sequencia = {$max}");
+    $result_p             = $clperiodoavaliacao->sql_record($sSqlPeriodoAvaliacao);
+    db_fieldsmemory($result_p, 0);
 
-  db_inicio_transacao();
-  $clregencia->ed59_c_ultatualiz = $ed09_c_abrev;
-  $clregencia->ed59_i_codigo     = $regencia;
-  $clregencia->alterar($regencia);
-  db_fim_transacao();
+    db_inicio_transacao();
+    $clregencia->ed59_c_ultatualiz = $ed09_c_abrev;
+    $clregencia->ed59_i_codigo     = $regencia;
+    $clregencia->alterar($regencia);
+    db_fim_transacao();
 }
 
-$sSqlProcAvaliacao = $clprocavaliacao->sql_query("","ed09_c_somach",""," ed41_i_codigo = $ed41_i_codigo");
-$result_per        = $clprocavaliacao->sql_record( $sSqlProcAvaliacao );
-db_fieldsmemory( $result_per, 0 );
+$sSqlProcAvaliacao = $clprocavaliacao->sql_query("", "ed09_c_somach", "", " ed41_i_codigo = $ed41_i_codigo");
+$result_per        = $clprocavaliacao->sql_record($sSqlProcAvaliacao);
+db_fieldsmemory($result_per, 0);
 
-if ( $ed09_c_somach == "S" ) {
+if ($ed09_c_somach == "S" ) {
 
- $contador                = 0;
- $sWherePeriodoCalendario = " ed53_i_calendario = {$ed57_i_calendario} AND ed53_i_periodoavaliacao = {$ed09_i_codigo}";
- $sSqlPeriodoCalendario   = $clperiodocalendario->sql_query_file( "", "ed53_d_fim,ed53_d_inicio", "", $sWherePeriodoCalendario);
- $rsPeriodoCalendario     = db_query($sSqlPeriodoCalendario);
+    $contador                = 0;
+    $sWherePeriodoCalendario = " ed53_i_calendario = {$ed57_i_calendario} AND ed53_i_periodoavaliacao = {$ed09_i_codigo}";
+    $sSqlPeriodoCalendario   = $clperiodocalendario->sql_query_file("", "ed53_d_fim,ed53_d_inicio", "", $sWherePeriodoCalendario);
+    $rsPeriodoCalendario     = db_query($sSqlPeriodoCalendario);
 
- if ($rsPeriodoCalendario && pg_num_rows($rsPeriodoCalendario) > 0) {
+    if ($rsPeriodoCalendario && pg_num_rows($rsPeriodoCalendario) > 0) {
 
-   db_fieldsmemory( $rsPeriodoCalendario, 0 );
-   $sql     = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_numaluno, ed60_c_situacao, ed47_v_nome";
-   $sql    .= "       , ed72_i_codigo, ed60_d_datamatricula, ed09_c_abrev, ed72_i_valornota, ed72_c_valorconceito";
-   $sql    .= "       ,ed72_t_parecer";
-   $sql    .= "  FROM matricula ";
-   $sql    .= "       inner join aluno            on ed47_i_codigo     = ed60_i_aluno ";
-   $sql    .= "       inner join diario           on ed95_i_aluno      = ed47_i_codigo ";
-   $sql    .= "       inner join matriculaserie   on ed221_i_matricula = ed60_i_codigo ";
-   $sql    .= "       inner join regencia         on ed59_i_codigo     = ed95_i_regencia ";
-   $sql    .= "                                  and ed59_i_serie      = ed221_i_serie ";
-   $sql    .= "       inner join diarioavaliacao  on ed72_i_diario     = ed95_i_codigo ";
-   $sql    .= "       inner join procavaliacao    on ed41_i_codigo     = ed72_i_procavaliacao ";
-   $sql    .= "       inner join formaavaliacao   on ed37_i_codigo     = ed41_i_formaavaliacao ";
-   $sql    .= "       inner join periodoavaliacao on ed09_i_codigo     = ed41_i_periodoavaliacao ";
-   $sql    .= " WHERE ed95_i_regencia      = {$regencia} ";
-   $sql    .= "   AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
-   $sql    .= "   AND ed60_i_turma         = {$ed59_i_turma} ";
-   $sql    .= "   AND ed60_d_datamatricula > '{$ed53_d_fim}' ";
-   $sql    .= "   AND ed72_i_escola        = ed95_i_escola ";
-   $sql    .= "   AND ed60_c_situacao      = 'MATRICULADO' ";
-   $sql    .= "   AND ed221_c_origem       = 'S' ";
-   $sql    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome) ";
-   $result  = db_query( $sql );
-   $linhas  = pg_num_rows( $result );
+        db_fieldsmemory($rsPeriodoCalendario, 0);
+        $sql     = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_numaluno, ed60_c_situacao, ed47_v_nome";
+        $sql    .= "       , ed72_i_codigo, ed60_d_datamatricula, ed09_c_abrev, ed72_i_valornota, ed72_c_valorconceito";
+        $sql    .= "       ,ed72_t_parecer";
+        $sql    .= "  FROM matricula ";
+        $sql    .= "       inner join aluno            on ed47_i_codigo     = ed60_i_aluno ";
+        $sql    .= "       inner join diario           on ed95_i_aluno      = ed47_i_codigo ";
+        $sql    .= "       inner join matriculaserie   on ed221_i_matricula = ed60_i_codigo ";
+        $sql    .= "       inner join regencia         on ed59_i_codigo     = ed95_i_regencia ";
+        $sql    .= "                                  and ed59_i_serie      = ed221_i_serie ";
+        $sql    .= "       inner join diarioavaliacao  on ed72_i_diario     = ed95_i_codigo ";
+        $sql    .= "       inner join procavaliacao    on ed41_i_codigo     = ed72_i_procavaliacao ";
+        $sql    .= "       inner join formaavaliacao   on ed37_i_codigo     = ed41_i_formaavaliacao ";
+        $sql    .= "       inner join periodoavaliacao on ed09_i_codigo     = ed41_i_periodoavaliacao ";
+        $sql    .= " WHERE ed95_i_regencia      = {$regencia} ";
+        $sql    .= "   AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
+        $sql    .= "   AND ed60_i_turma         = {$ed59_i_turma} ";
+        $sql    .= "   AND ed60_d_datamatricula > '{$ed53_d_fim}' ";
+        $sql    .= "   AND ed72_i_escola        = ed95_i_escola ";
+        $sql    .= "   AND ed60_c_situacao      = 'MATRICULADO' ";
+        $sql    .= "   AND ed221_c_origem       = 'S' ";
+        $sql    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome) ";
+        $result  = db_query($sql);
+        $linhas  = pg_num_rows($result);
 
-   if ( $linhas > 0 ) {
-    ?>
+        if ($linhas > 0 ) {
+            ?>
     <table id="tb_aviso" style="top:80px;left:50px;visibility:visible;position:absolute;width:700px;border:3px solid #444444 " cellspacing="0" cellpading="2" bgcolor="#f3f3f3">
      <tr>
       <td class="titulo" colspan="6" align="center">
-       Período: <?=$ed09_c_descr?> <?=db_formatar($ed53_d_inicio,'d')?> até <?=db_formatar($ed53_d_fim,'d')?>
+       Período: <?php echo $ed09_c_descr?> <?php echo db_formatar($ed53_d_inicio, 'd')?> até <?php echo db_formatar($ed53_d_fim, 'd')?>
       </td>
      </tr>
      <tr>
@@ -1608,59 +1635,59 @@ if ( $ed09_c_somach == "S" ) {
       <td>Data Matrícula</td>
       <td>&nbsp;</td>
      </tr>
-     <?
-     for ( $x = 0; $x < $linhas; $x++ ) {
+            <?php
+            for ( $x = 0; $x < $linhas; $x++ ) {
 
-      db_fieldsmemory( $result, $x );
-      $sql1    = "SELECT * FROM trocaserie WHERE ed101_i_aluno = {$ed60_i_aluno} AND extract(year from ed101_d_data) = '{$ed52_i_ano}'";
-      $result1 = db_query( $sql1 );
-      $linhas1 = pg_num_rows( $result1 );
+                 db_fieldsmemory($result, $x);
+                 $sql1    = "SELECT * FROM trocaserie WHERE ed101_i_aluno = {$ed60_i_aluno} AND extract(year from ed101_d_data) = '{$ed52_i_ano}'";
+                 $result1 = db_query($sql1);
+                 $linhas1 = pg_num_rows($result1);
 
-      $sql2     = "SELECT * ";
-      $sql2    .= "  FROM diarioavaliacao ";
-      $sql2    .= "       inner join diario     on ed95_i_codigo = ed72_i_diario ";
-      $sql2    .= "       inner join calendario on ed52_i_codigo = ed95_i_calendario ";
-      $sql2    .= " WHERE ed95_i_aluno     = {$ed60_i_aluno} ";
-      $sql2    .= "   AND ed52_i_ano       = {$ed52_i_ano} ";
-      $sql2    .= "   AND ed95_i_escola   != {$codescola} ";
-      $sql2    .= "   AND ed95_i_regencia  = {$regencia}";
-      $result2  = db_query( $sql2 );
-      $linhas2  = pg_num_rows( $result2 );
+                 $sql2     = "SELECT * ";
+                 $sql2    .= "  FROM diarioavaliacao ";
+                 $sql2    .= "       inner join diario     on ed95_i_codigo = ed72_i_diario ";
+                 $sql2    .= "       inner join calendario on ed52_i_codigo = ed95_i_calendario ";
+                 $sql2    .= " WHERE ed95_i_aluno     = {$ed60_i_aluno} ";
+                 $sql2    .= "   AND ed52_i_ano       = {$ed52_i_ano} ";
+                 $sql2    .= "   AND ed95_i_escola   != {$codescola} ";
+                 $sql2    .= "   AND ed95_i_regencia  = {$regencia}";
+                 $result2  = db_query($sql2);
+                 $linhas2  = pg_num_rows($result2);
 
-      $sql3     = "SELECT * ";
-      $sql3    .= "  FROM matricula ";
-      $sql3    .= "       inner join matriculaserie on ed221_i_matricula = ed60_i_codigo ";
-      $sql3    .= " WHERE ed60_i_aluno   = {$ed60_i_aluno} ";
-      $sql3    .= "   AND ed60_c_ativa   = 'N' ";
-      $sql3    .= "   AND ed60_i_turma   = {$ed57_i_codigo} ";
-      $sql3    .= "   AND ed221_i_serie  = {$ed59_i_serie} ";
-      $sql3    .= "   AND ed221_c_origem = 'S'";
-      $result3  = db_query( $sql3 );
-      $linhas3  = pg_num_rows( $result3 );
+                 $sql3     = "SELECT * ";
+                 $sql3    .= "  FROM matricula ";
+                 $sql3    .= "       inner join matriculaserie on ed221_i_matricula = ed60_i_codigo ";
+                 $sql3    .= " WHERE ed60_i_aluno   = {$ed60_i_aluno} ";
+                 $sql3    .= "   AND ed60_c_ativa   = 'N' ";
+                 $sql3    .= "   AND ed60_i_turma   = {$ed57_i_codigo} ";
+                 $sql3    .= "   AND ed221_i_serie  = {$ed59_i_serie} ";
+                 $sql3    .= "   AND ed221_c_origem = 'S'";
+                 $result3  = db_query($sql3);
+                 $linhas3  = pg_num_rows($result3);
 
-      if ( $linhas1 == 0 && $linhas2 == 0  && $linhas3 == 0 ) {
+                if ($linhas1 == 0 && $linhas2 == 0  && $linhas3 == 0 ) {
 
-        if ( trim( $ed37_c_tipo ) == "NOTA" ) {
-          $aprovperiodo = $ed72_i_valornota;
-        } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
-          $aprovperiodo = $ed72_c_valorconceito;
-        } else {
-          $aprovperiodo = $ed72_t_parecer;
-        }
-        $contador++;
-       ?>
+                    if (trim($ed37_c_tipo) == "NOTA" ) {
+                           $aprovperiodo = $ed72_i_valornota;
+                    } else if (trim($ed37_c_tipo) == "NIVEL" ) {
+                        $aprovperiodo = $ed72_c_valorconceito;
+                    } else {
+                        $aprovperiodo = $ed72_t_parecer;
+                    }
+                    $contador++;
+                    ?>
        <tr>
-        <td><?=$ed60_i_aluno?></td>
-        <td><?=$ed60_i_numaluno?></td>
-        <td><?=$ed47_v_nome?></td>
-        <td><?=$ed60_c_situacao?></td>
-        <td><?=db_formatar($ed60_d_datamatricula,'d')?></td>
-        <td><input type="button" value="Modificar" onclick="document.getElementById('tb_aviso').style.visibility = 'hidden';js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')"></td>
+        <td><?php echo $ed60_i_aluno?></td>
+        <td><?php echo $ed60_i_numaluno?></td>
+        <td><?php echo $ed47_v_nome?></td>
+        <td><?php echo $ed60_c_situacao?></td>
+        <td><?php echo db_formatar($ed60_d_datamatricula, 'd')?></td>
+        <td><input type="button" value="Modificar" onclick="document.getElementById('tb_aviso').style.visibility = 'hidden';js_tiponota('<?php echo $ed60_d_datamatricula?>',<?php echo $ed72_i_codigo?>,<?php echo $regencia?>,<?php echo $ed41_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $aprovperiodo?>')"></td>
        </tr>
-       <?
-      }
-     }
-     ?>
+                    <?php
+                }
+            }
+            ?>
      <tr>
       <td colspan="6" align="center">
        <br>
@@ -1670,55 +1697,55 @@ if ( $ed09_c_somach == "S" ) {
      <tr>
      <tr>
       <td colspan="6" align="right" class="aluno">
-       <b>Para ver esta janela novamente, clique na aba <?=$ed09_c_abrev?>.</b>
+       <b>Para ver esta janela novamente, clique na aba <?php echo $ed09_c_abrev?>.</b>
       </td>
      <tr>
     </table>
-    <?
-   }
- }
+            <?php
+        }
+    }
 
  if ( $contador == 0 && $linhas > 0 ) {
-   ?><script>document.getElementById('tb_aviso').style.visibility = 'hidden';</script><?
+   ?><script>document.getElementById('tb_aviso').style.visibility = 'hidden';</script><?php
  }
 
- $sql1     = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_numaluno, ed60_c_situacao, ed47_v_nome";
- $sql1    .= "       , ed72_i_codigo, ed60_d_datamatricula, ed09_c_abrev, ed72_i_valornota, ed72_c_valorconceito";
- $sql1    .= "       , ed72_t_parecer ";
- $sql1    .= "  FROM matricula ";
- $sql1    .= "       inner join aluno            on ed47_i_codigo     = ed60_i_aluno ";
- $sql1    .= "       inner join diario           on ed95_i_aluno      = ed47_i_codigo ";
- $sql1    .= "       inner join matriculaserie   on ed221_i_matricula = ed60_i_codigo ";
- $sql1    .= "       inner join regencia         on ed59_i_codigo     = ed95_i_regencia ";
- $sql1    .= "                                  and ed59_i_serie      = ed221_i_serie ";
- $sql1    .= "       inner join diarioavaliacao  on ed72_i_diario     = ed95_i_codigo ";
- $sql1    .= "       inner join procavaliacao    on ed41_i_codigo     = ed72_i_procavaliacao ";
- $sql1    .= "       inner join formaavaliacao   on ed37_i_codigo     = ed41_i_formaavaliacao ";
- $sql1    .= "       inner join periodoavaliacao on ed09_i_codigo     = ed41_i_periodoavaliacao ";
- $sql1    .= " WHERE ed95_i_regencia      = {$regencia} ";
- $sql1    .= "   AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
- $sql1    .= "   AND ed60_i_turma         = {$ed59_i_turma} ";
- $sql1    .= "   AND ed72_c_convertido    = 'S' ";
- $sql1    .= "   AND ed60_c_situacao      = 'MATRICULADO' ";
- $sql1    .= "   AND ed72_c_amparo        = 'N' ";
- $sql1    .= "   AND ed221_c_origem       = 'S' ";
- $sql1    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome)";
- $result1  = db_query( $sql1 );
- $linhas1  = pg_num_rows( $result1 );
+    $sql1     = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_numaluno, ed60_c_situacao, ed47_v_nome";
+    $sql1    .= "       , ed72_i_codigo, ed60_d_datamatricula, ed09_c_abrev, ed72_i_valornota, ed72_c_valorconceito";
+    $sql1    .= "       , ed72_t_parecer ";
+    $sql1    .= "  FROM matricula ";
+    $sql1    .= "       inner join aluno            on ed47_i_codigo     = ed60_i_aluno ";
+    $sql1    .= "       inner join diario           on ed95_i_aluno      = ed47_i_codigo ";
+    $sql1    .= "       inner join matriculaserie   on ed221_i_matricula = ed60_i_codigo ";
+    $sql1    .= "       inner join regencia         on ed59_i_codigo     = ed95_i_regencia ";
+    $sql1    .= "                                  and ed59_i_serie      = ed221_i_serie ";
+    $sql1    .= "       inner join diarioavaliacao  on ed72_i_diario     = ed95_i_codigo ";
+    $sql1    .= "       inner join procavaliacao    on ed41_i_codigo     = ed72_i_procavaliacao ";
+    $sql1    .= "       inner join formaavaliacao   on ed37_i_codigo     = ed41_i_formaavaliacao ";
+    $sql1    .= "       inner join periodoavaliacao on ed09_i_codigo     = ed41_i_periodoavaliacao ";
+    $sql1    .= " WHERE ed95_i_regencia      = {$regencia} ";
+    $sql1    .= "   AND ed72_i_procavaliacao = {$ed41_i_codigo} ";
+    $sql1    .= "   AND ed60_i_turma         = {$ed59_i_turma} ";
+    $sql1    .= "   AND ed72_c_convertido    = 'S' ";
+    $sql1    .= "   AND ed60_c_situacao      = 'MATRICULADO' ";
+    $sql1    .= "   AND ed72_c_amparo        = 'N' ";
+    $sql1    .= "   AND ed221_c_origem       = 'S' ";
+    $sql1    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome)";
+    $result1  = db_query($sql1);
+    $linhas1  = pg_num_rows($result1);
 
- if ( $linhas1 > 0 ) {
+    if ($linhas1 > 0 ) {
 
-  ?>
+        ?>
   <script>
    document.form1.salvartudo.disabled = true;
-   <?if ( $contador > 0 ) {?>
+        <?php if ($contador > 0 ) {?>
        document.getElementById('tb_aviso').style.visibility = 'hidden';
-   <?}?>
+        <?php }?>
   </script>
   <table id="tb_aviso1" style="top:80px;left:50px;visibility:visible;position:absolute;width:700px;border:3px solid #444444 " cellspacing="0" cellpading="2" bgcolor="#f3f3f3">
    <tr>
     <td class="titulo" colspan="6" align="center">
-     Período: <?=$ed09_c_descr?> <?=db_formatar($ed53_d_inicio,'d')?> até <?=db_formatar($ed53_d_fim,'d')?>
+     Período: <?php echo $ed09_c_descr?> <?php echo db_formatar($ed53_d_inicio, 'd')?> até <?php echo db_formatar($ed53_d_fim, 'd')?>
     </td>
    </tr>
    <tr>
@@ -1739,35 +1766,35 @@ if ( $ed09_c_somach == "S" ) {
     <td>Aproveitamento</td>
     <td>&nbsp;</td>
    </tr>
-   <?
-   for ( $x = 0; $x < $linhas1; $x++ ) {
+        <?php
+        for ( $x = 0; $x < $linhas1; $x++ ) {
 
-     db_fieldsmemory( $result1, $x );
+            db_fieldsmemory($result1, $x);
 
-     if ( trim( $ed37_c_tipo ) == "NOTA" ) {
-       $aprovperiodo = $ed72_i_valornota;
-     } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
-       $aprovperiodo = $ed72_c_valorconceito;
-     } else {
-       $aprovperiodo = $ed72_t_parecer;
-     }
+            if (trim($ed37_c_tipo) == "NOTA" ) {
+                  $aprovperiodo = $ed72_i_valornota;
+            } else if (trim($ed37_c_tipo) == "NIVEL" ) {
+                $aprovperiodo = $ed72_c_valorconceito;
+            } else {
+                $aprovperiodo = $ed72_t_parecer;
+            }
 
-     $contador++;
-    ?>
+            $contador++;
+            ?>
     <tr>
-     <td><?=$ed60_i_aluno?></td>
-     <td><?=$ed60_i_numaluno?></td>
-     <td><?=$ed47_v_nome?></td>
-     <td><?=db_formatar($ed60_d_datamatricula,'d')?></td>
-     <td><?=$aprovperiodo?></td>
+     <td><?php echo $ed60_i_aluno?></td>
+     <td><?php echo $ed60_i_numaluno?></td>
+     <td><?php echo $ed47_v_nome?></td>
+     <td><?php echo db_formatar($ed60_d_datamatricula, 'd')?></td>
+     <td><?php echo $aprovperiodo?></td>
      <td>
        <input type="button"
               value="Converter"
-              onclick="document.getElementById('tb_aviso1').style.visibility = 'hidden';js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')"></td>
+              onclick="document.getElementById('tb_aviso1').style.visibility = 'hidden';js_tiponota('<?php echo $ed60_d_datamatricula?>',<?php echo $ed72_i_codigo?>,<?php echo $regencia?>,<?php echo $ed41_i_codigo?>,'<?php echo $ed09_c_descr?>','<?php echo $aprovperiodo?>')"></td>
     </tr>
-    <?
-   }
-   ?>
+            <?php
+        }
+        ?>
    <tr>
     <td colspan="6" align="center">
      <br>
@@ -1777,27 +1804,27 @@ if ( $ed09_c_somach == "S" ) {
    <tr>
    <tr>
     <td colspan="6" align="right" class="aluno">
-     <b>Para ver esta janela novamente, clique na aba <?=$ed09_c_abrev?>.</b>
+     <b>Para ver esta janela novamente, clique na aba <?php echo $ed09_c_abrev?>.</b>
     </td>
    <tr>
   </table>
-  <?
- }
+        <?php
+    }
 
- if ( $contador > 0 || $linhas1 > 0 ) {
+    if ($contador > 0 || $linhas1 > 0 ) {
 
-   ?>
+        ?>
    <script>
      document.form1.mensagens.style.visibility = "visible";
    </script>
-   <?
- }
+        <?php
+    }
 }
 ?>
 <script>
 
   var aInputsNota = $$('input.inputNotas');
   for (var i = 0; i < aInputsNota.length; i++) {
-    js_observeMascaraNota(aInputsNota[i], '<?=ArredondamentoNota::getMascara($iAno);?>');
+    js_observeMascaraNota(aInputsNota[i], '<?php echo ArredondamentoNota::getMascara($iAno);?>');
   }
 </script>

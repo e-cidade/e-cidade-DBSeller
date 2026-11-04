@@ -40,8 +40,10 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
             <button type="button" class="btn" id="zoomIn"><i class="fas fa-search-minus"></i></button>
             <button type="button" class="btn" id="rotateH"><i class="fas fa-share"></i></button>
             <button type="button" class="btn inverse" id="rotateA"><i class="fas fa-share"></i></button>
-            <button type="button" class="btn" id="download" title="Download aquivo selecionado"><i class="fas fa-file-download"></i></button>
-            <button type="button" class="btn" id="download_todos_arquivos" title="Download todos os arquivos"><i class="fas fa-file-download"></i></button>
+            <button type="button" class="btn" id="download" title="Download aquivo selecionado"><i
+                        class="fas fa-file-download"></i></button>
+            <button type="button" class="btn" id="download_todos_arquivos" title="Download todos os arquivos"><i
+                        class="fas fa-file-download"></i></button>
         </div>
         <nav id="buttons">
             <button type="button" class="btn" id="prev"><i class="fas fa-arrow-circle-left"></i></button>
@@ -55,7 +57,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
 <script language="JavaScript" type="text/javascript" src="scripts/viewerjs.js"></script>
 <script type="text/javascript">
 
-    var visualizarEmOutraJanela = <?=$visualizarEmOutraJanela?>;
+    var visualizarEmOutraJanela = "<?php echo $visualizarEmOutraJanela; ?>";
     var galley = document.getElementById('galley');
     var viewIndex = 0;
     const fileIds = document.getElementById('fileIds').value;
@@ -71,11 +73,11 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         url: 'data-original',
         title: function (image) {
             const me = this;
-            var key =  imagensIds.findIndex(element=>{
+            var key = imagensIds.findIndex(element => {
                 return element == viewer.images[me.index].id;
             });
             var nameImage = image.alt;
-            return `nameImage  (${key+1}) / (${totalImagens})`;
+            return `nameImage  (${key + 1}) / (${totalImagens})`;
         },
         transition: false,
         movable: true,
@@ -129,19 +131,19 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
 
     document.getElementById('download_todos_arquivos').addEventListener('click', () => {
         const documentos = document.querySelectorAll("#pictures img");
-        var imagens =  [];
+        var imagens = [];
 
-        documentos.forEach(el =>{
-            imagens.push(encodeURI('arquivos[]='+el.getAttribute('data-original')));  
+        documentos.forEach(el => {
+            imagens.push(encodeURI('arquivos[]=' + el.getAttribute('data-original')));
         });
 
-        if(imagens.length > 1){
+        if (imagens.length > 1) {
             const params = imagens.join("&");
-            window.open(`db_download_todos_arquivos_visualizador.php?${params}`,'_blank');
-        }else{
+            window.open(`db_download_todos_arquivos_visualizador.php?${params}`, '_blank');
+        } else {
             alert("Não foi possivel identificar arquivos.");
         }
-          
+
     });
 
 
@@ -151,7 +153,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         imageItem.setAttribute('data-original', imagem.original);
         imageItem.setAttribute('data-file', imagem.download);
         imageItem.setAttribute('alt', imagem.descricao);
-        imageItem.setAttribute("id",imagem.id);
+        imageItem.setAttribute("id", imagem.id);
         const item = document.createElement('li');
         item.appendChild(imageItem);
         pictures.prepend(item);
@@ -166,7 +168,7 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
     const js_download = (el) => {
         const arquivo = el.getAttribute('data-file');
 
-        if (visualizarEmOutraJanela) {
+        if (visualizarEmOutraJanela == "true") {
             window.open('db_download.php?arquivo=' + arquivo);
         } else {
             js_OpenJanelaIframe(
@@ -179,12 +181,12 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         }
     };
 
-    async function getImagens(fileIds,loading = true) {
+    async function getImagens(fileIds, loading = true) {
         const formData = new FormData();
         formData.append('acao', 'buscar_imagens');
         formData.append('fileIds', fileIds);
         formData.append('descricoes', descricoes);
-        const response = await HttpClient.post('db_visualizador.RPC.php', {body: formData,reportProgress:false});
+        const response = await HttpClient.post('db_visualizador.RPC.php', {body: formData, reportProgress: false});
         if (response.erro) {
             return;
         }
@@ -210,9 +212,9 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         }
 
         js_ajax_msg(`1 Carregando...`);
-        const carregamento = await  getImagens(imagens.join(","));
+        await getImagens(imagens.join(","));
         js_remove_ajax_msg();
-        while(imagensFaltamPesquisar  > 0){
+        while (imagensFaltamPesquisar > 0) {
             imagens = [];
             for (i = 0; i < IMAGEMS_POR_CARREGAMENTO; i++) {
                 let id = imagensIds[--imagensFaltamPesquisar];
@@ -221,11 +223,11 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
                 }
             }
 
-            if(imagens.length > 0){
-                getImagens(imagens.join(","),false);
+            if (imagens.length > 0) {
+                await getImagens(imagens.join(","), false);
             }
-        }
 
+        }
     }
 
     main();

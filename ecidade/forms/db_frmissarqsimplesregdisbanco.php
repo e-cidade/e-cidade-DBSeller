@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k00_numbco");
        <?=@$Lq44_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q44_sequencial',8,$Iq44_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq44_issarqsimplesreg?>">
-       <?
+       <?php
        db_ancora(@$Lq44_issarqsimplesreg,"js_pesquisaq44_issarqsimplesreg(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q44_issarqsimplesreg',8,$Iq44_issarqsimplesreg,true,'text',$db_opcao," onchange='js_pesquisaq44_issarqsimplesreg(false);'")
 ?>
-       <?
+       <?php
 db_input('q23_issarqsimples',8,$Iq23_issarqsimples,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq44_disbanco?>">
-       <?
+       <?php
        db_ancora(@$Lq44_disbanco,"js_pesquisaq44_disbanco(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q44_disbanco',6,$Iq44_disbanco,true,'text',$db_opcao," onchange='js_pesquisaq44_disbanco(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_numbco',15,$Ik00_numbco,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issarqsimplesregdisbanco.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

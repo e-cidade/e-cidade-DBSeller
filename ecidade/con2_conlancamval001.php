@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -93,7 +93,7 @@ variavel = 1;
     <form name="form1" method="post" action="con2_conlancamval002.php">
       <tr>
         <td align="center" colspan="2">
-         <?
+         <?php
           db_selinstit();
          ?>
         </td>
@@ -103,7 +103,7 @@ variavel = 1;
        <table border="0"  align="center">
        <tr>
           <td align="center" >
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Históricos</strong>";
                  $aux->codigo = "c50_codhist"; //chave de retorno da func
@@ -132,7 +132,7 @@ variavel = 1;
      <tr>
        <td nowrap align="right" title="<?=@$TDBtxt21?>">
         <?=@$LDBtxt21?>
-         <?
+         <?php
           $DBtxt21_ano = db_getsession("DB_anousu");
           $DBtxt21_mes = '01';
           $DBtxt21_dia = '01';
@@ -141,7 +141,7 @@ variavel = 1;
        </td>
        <td nowrap align="right" title="<?=@$TDBtxt22?>">
         <?=@$LDBtxt22?>
-         <?
+         <?php
           $DBtxt22_ano = db_getsession("DB_anousu"); 
           $DBtxt22_mes = date("m",db_getsession("DB_datausu"));
           $DBtxt22_dia = date("d",db_getsession("DB_datausu"));
@@ -161,6 +161,6 @@ variavel = 1;
 
   </form>
     </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

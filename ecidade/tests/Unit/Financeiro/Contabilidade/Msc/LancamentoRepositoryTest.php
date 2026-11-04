@@ -12,7 +12,7 @@ class LancamentoRepositoryTest extends TestCase
      */
     public $lancamentoRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->lancamentoRepository = LancamentoRepository::getInstance();
         $this->lancamentoRepository->setDeParaPo(array(
@@ -44,8 +44,8 @@ class LancamentoRepositoryTest extends TestCase
      */
     public function testDeParaAtributoFR()
     {
-        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '001'), '1001');
-        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '0040'), '1004');
-        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '050'), '050');
+        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '1001'), '1001');
+        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '1004'), '1004');
+        $this->assertEquals($this->lancamentoRepository->transformarAtributosSiconfi('FR', '1500'), '1500');
     }
 }

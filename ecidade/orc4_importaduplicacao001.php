@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -135,7 +135,7 @@ if (isset($p->processa)){
                 $iNumRowsContrapartida = $clorcdotacaocontr->numrows;
                 for ($iInd = 0; $iInd < $iNumRowsContrapartida; $iInd++) {
                   
-                  $oContrapartida = db_utils::fieldsMemory($rsContrapartida);
+                  $oContrapartida = db_utils::fieldsMemory($rsContrapartida,0);
                   $clorcdotacaocontr->o61_anousu = $iAnoDestino;
                   $clorcdotacaocontr->o61_coddot = $oContrapartida->o61_coddot;
                   $clorcdotacaocontr->o61_codigo = $oContrapartida->o61_codigo;
@@ -162,7 +162,7 @@ if (isset($p->processa)){
 
         $lSqlErro = true;
         $sErro    = $clconaberturaexe->erro_msg;
-        break;
+        return false;
 
       }
     }
@@ -223,7 +223,7 @@ if (isset($p->processa)){
 
         $lSqlErro = true;
         $sErro    = $clconaberturaexe->erro_msg;
-        break;
+        return false;
 
       }
     }
@@ -299,7 +299,7 @@ if (isset($g->chavepesquisa) && $g->chavepesquisa != ''){
 <?=@$Lc91_anousuorigem?>
 </td>
 <td> 
-<?
+<?php
 db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
 ?>
 </td>
@@ -309,7 +309,7 @@ db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
 <?=@$Lc91_anousudestino?>
 </td>
 <td> 
-<?
+<?php
 db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
 ?>
 </td>
@@ -319,7 +319,7 @@ db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
      <b>Total de <?=$sDescr?>(s) a importar: </b>
   </td>
   <td>
-     <?
+     <?php
      db_input('iTotalRegistos',5,'',true,'text',3,"");
      ?>
   </td>
@@ -340,7 +340,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_duplicacao.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&tipo=$iTipo'";
     }
@@ -351,14 +351,14 @@ function js_geraImp(){
   return (confirm('Confirma o processamento ?'));
 }
 </script>
-<?
+<?php
 if($db_opcao==22){
   echo "<script>js_pesquisa();</script>";
 }
 ?>
 <table cellspacing="0" cellpadding="0">
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

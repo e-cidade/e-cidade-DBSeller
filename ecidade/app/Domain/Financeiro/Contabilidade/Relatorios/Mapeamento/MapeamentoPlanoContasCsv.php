@@ -63,37 +63,30 @@ class MapeamentoPlanoContasCsv extends Dumper
             ['Plano', $this->tipoPlano],
         ];
 
-        if (!empty($this->contasSemVinculo)) {
-            $dadosImprimir[] = [];
-            $dadosImprimir[] = ['', 'Contas do e-cidade com Movimentação não vinculadas ao plano de governo'];
-            $dadosImprimir[] = ['Estrutural', 'Nome'];
-            foreach ($this->contasSemVinculoComMovimentacao as $conta) {
-                $dadosImprimir[] = [$conta->c60_estrut, $conta->c60_descr];
-            }
+        $dadosImprimir[] = [];
+        $dadosImprimir[] = ['', 'Contas do e-cidade com Movimentação não vinculadas ao plano de governo'];
+        $dadosImprimir[] = ['Estrutural', 'Nome'];
+        foreach ($this->contasSemVinculoComMovimentacao as $conta) {
+            $dadosImprimir[] = [$conta->c60_estrut, $conta->c60_descr];
         }
 
-        if (!empty($this->contasSemVinculo)) {
-            $dadosImprimir[] = [];
-            $dadosImprimir[] = ['', 'Contas do e-cidade não vinculadas ao plano de governo'];
-            $dadosImprimir[] = ['Estrutural', 'Nome'];
-            foreach ($this->contasSemVinculo as $conta) {
-                $dadosImprimir[] = [$conta->c60_estrut, $conta->c60_descr];
-            }
+        $dadosImprimir[] = [];
+        $dadosImprimir[] = ['', 'Contas do e-cidade não vinculadas ao plano de governo'];
+        $dadosImprimir[] = ['Estrutural', 'Nome'];
+        foreach ($this->contasSemVinculo as $conta) {
+            $dadosImprimir[] = [$conta->c60_estrut, $conta->c60_descr];
         }
 
-        if (!empty($this->contasComVinculo)) {
-            $dadosImprimir[] = [];
-            $dadosImprimir[] = ['', 'Contas do e-cidade vinculadas ao plano de governo'];
-
-            $dadosImprimir[] = ['Estrutural e-Cidade', 'Nome e-Cidade', 'Estrutural Governo', 'Nome Governo'];
-            foreach ($this->contasComVinculo as $conta) {
-                $dadosImprimir[] = [
-                    $conta->estrutural_ecidade,
-                    $conta->nome_ecidade,
-                    $conta->estrutural_governo,
-                    $conta->nome_governo
-                ];
-            }
+        $dadosImprimir[] = [];
+        $dadosImprimir[] = ['', 'Contas do e-cidade vinculadas ao plano de governo'];
+        $dadosImprimir[] = ['Estrutural e-Cidade', 'Nome e-Cidade', 'Estrutural Governo', 'Nome Governo'];
+        foreach ($this->contasComVinculo as $conta) {
+            $dadosImprimir[] = [
+                $conta->estrutural_ecidade,
+                $conta->nome_ecidade,
+                $conta->estrutural_governo,
+                $conta->nome_governo
+            ];
         }
 
         return $dadosImprimir;

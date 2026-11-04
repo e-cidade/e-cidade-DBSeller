@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -156,15 +156,15 @@ if(pg_numrows($result) > 0)
             <tr> 
               <td nowrap title='<?=$Tk03_impend?>'><?=$Lk03_impend?></td>
               <td nowrap><select name="k03_impend" id="k03_impend">
-                  <option value="f" <? echo isset($k03_impend)?($k03_impend=="f"?"selected":""):"" ?>>N&atilde;o</option>
-                  <option value="t" <? echo isset($k03_impend)?($k03_impend=="t"?"selected":""):"" ?>>Sim</option>
+                  <option value="f" <?php echo isset($k03_impend)?($k03_impend=="f"?"selected":""):"" ?>>N&atilde;o</option>
+                  <option value="t" <?php echo isset($k03_impend)?($k03_impend=="t"?"selected":""):"" ?>>Sim</option>
                 </select></td>
             </tr>
             <tr> 
               <td nowrap title='<?=$Tk03_unipri?>'><?=$Lk03_unipri?></td>
               <td nowrap><select name="k03_unipri" id="k03_unipri">
-                  <option value="f" <? echo isset($k03_unipri)?($k03_unipri=="f"?"selected":""):"" ?>>N&atilde;o</option>
-                  <option value="t" <? echo isset($k03_unipri)?($k03_unipri=="t"?"selected":""):"" ?>>Sim</option>
+                  <option value="f" <?php echo isset($k03_unipri)?($k03_unipri=="f"?"selected":""):"" ?>>N&atilde;o</option>
+                  <option value="t" <?php echo isset($k03_unipri)?($k03_unipri=="t"?"selected":""):"" ?>>Sim</option>
                 </select></td>
             </tr>
             <tr> 
@@ -182,8 +182,8 @@ if(pg_numrows($result) > 0)
             <tr> 
               <td nowrap title='<?=$Tk03_calrec?>'><?=$Lk03_calrec?></td>
               <td nowrap><select name="k03_calrec" id="k03_calrec">
-                  <option value="f" <? echo isset($k03_calrec)?($k03_calrec=="f"?"selected":""):"" ?>>N&atilde;o</option>
-                  <option value="t" <? echo isset($k03_calrec)?($k03_calrec=="t"?"selected":""):"" ?>>Sim</option>
+                  <option value="f" <?php echo isset($k03_calrec)?($k03_calrec=="f"?"selected":""):"" ?>>N&atilde;o</option>
+                  <option value="t" <?php echo isset($k03_calrec)?($k03_calrec=="t"?"selected":""):"" ?>>Sim</option>
                 </select></td>
             </tr>
 <!-- ********************************************************************************************************************************** -->
@@ -192,7 +192,7 @@ if(pg_numrows($result) > 0)
 				   <?=@$Lk03_reccert?>
 				</td>
 				<td>
-				<?
+				<?php
 				$x = array("f"=>"NAO","t"=>"SIM");
 				db_select('k03_reccert',$x,true,$db_opcao,"");
 				?>
@@ -200,15 +200,15 @@ if(pg_numrows($result) > 0)
 			</tr>
 			<tr>
 				<td nowrap colspan=2 title="<?=@$Tk03_taxagrupo?>">
-				   <?
+				   <?php
 				   db_ancora(@$Lk03_taxagrupo,"js_pesquisak03_taxagrupo(true);",$db_opcao);
 				   ?>
 <!--				</td>
 				<td> -->
-				   <?
+				   <?php
 			    	db_input('k03_taxagrupo',10,$Ik03_taxagrupo,true,'text',$db_opcao," onchange='js_pesquisak03_taxagrupo(false);'")
 		    		?>
-				   <?
+				   <?php
           			db_input('k06_descr',50,$Ik06_descr,true,'text',3,'')
 				   ?>
 				</td>
@@ -218,8 +218,8 @@ if(pg_numrows($result) > 0)
             <tr> 
               <td nowrap title='<?=$Tk03_certissvar?>'><?=$Lk03_certissvar?></td>
               <td nowrap><select name="k03_certissvar" id="k03_certissvar">
-                  <option value="f" <? echo isset($k03_certissvar)?($k03_certissvar=="f"?"selected":""):"" ?>>N&atilde;o</option>
-                  <option value="t" <? echo isset($k03_certissvar)?($k03_certissvar=="t"?"selected":""):"" ?>>Sim</option>
+                  <option value="f" <?php echo isset($k03_certissvar)?($k03_certissvar=="f"?"selected":""):"" ?>>N&atilde;o</option>
+                  <option value="t" <?php echo isset($k03_certissvar)?($k03_certissvar=="t"?"selected":""):"" ?>>Sim</option>
                 </select></td>
             </tr>
 
@@ -237,7 +237,7 @@ if(pg_numrows($result) > 0)
 	</td>
   </tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

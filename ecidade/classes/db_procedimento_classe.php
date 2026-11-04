@@ -34,13 +34,13 @@ class cl_procedimento {
                  ed40_desativado = bool = Desativado
                  ";
    //funcao construtor da classe
-   function cl_procedimento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procedimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -49,7 +49,7 @@ class cl_procedimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed40_i_codigo = ($this->ed40_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed40_i_codigo"]:$this->ed40_i_codigo);
        $this->ed40_i_formaavaliacao = ($this->ed40_i_formaavaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed40_i_formaavaliacao"]:$this->ed40_i_formaavaliacao);
@@ -63,7 +63,7 @@ class cl_procedimento {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed40_i_codigo){
+   public function incluir ($ed40_i_codigo){
       $this->atualizacampos();
      if($this->ed40_i_formaavaliacao == null ){
        $this->erro_sql = " Campo Forma de Avaliação não informado.";
@@ -498,7 +498,7 @@ class cl_procedimento {
      return $sql;
   }
   // funcao do sql
-  function sql_query_file ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -531,7 +531,7 @@ class cl_procedimento {
      }
      return $sql;
   }
-   function sql_query_procturma ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_procturma ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -568,7 +568,7 @@ class cl_procedimento {
      }
      return $sql;
   }
-   function sql_query_formaavaliacao ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_formaavaliacao ( $ed40_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,15 +44,15 @@ if($db_opcao==1){
   <tr>
     <td nowrap title="<?=@$Tpc82_numcgm?>">
     &nbsp;
-    <?
+    <?php
     db_ancora("<b>Fornecedor</b>","js_pesquisapc82_numcgm(true);",$db_opcao);
     ?>
     </td>
     <td> 
-    <?
+    <?php
     db_input('pc82_numcgm',10,$Ipc82_numcgm,true,'text',$db_opcao," onchange='js_pesquisapc82_numcgm(false);'")
     ?>
-    <?
+    <?php
     db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
     ?>
     </td>
@@ -67,7 +67,7 @@ if($db_opcao==1){
 		       <?//=@$Lpc82_sequencial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('pc82_sequencial',10,$Ipc82_sequencial,true,'hidden',3,"")
 					?>
 		    </td>
@@ -75,12 +75,12 @@ if($db_opcao==1){
 		  <tr>
 		    <td colspan="2">
 		       <b>Período Liberação:</b>&nbsp;
-		       <?
+		       <?php
            db_inputdata('pc82_dataini',@$pc82_dataini_dia,@$pc82_dataini_mes,@$pc82_dataini_ano,true,'text',$db_opcao,"");
            ?>
 		     
 		      &nbsp;<b>à</b>&nbsp;
-				  <?
+				  <?php
           db_inputdata('pc82_datafim',@$pc82_datafim_dia,@$pc82_datafim_mes,@$pc82_datafim_ano,true,'text',$db_opcao,"")
           ?>
 		    </td>
@@ -88,7 +88,7 @@ if($db_opcao==1){
 		  <tr>
         
         <td nowrap title="<?=@$Tpc82_liberasol?>" align="left" colspan="2"> 
-        <?
+        <?php
         $selecionado = "";
         if(isset($pc82_liberasol) && $pc82_liberasol == 't') $selecionado = "checked";
         db_input("pc82_liberasol",20,0,true,"checkbox", $db_opcao," $selecionado onChange='js_onChangeCheckBox(this)'");
@@ -99,7 +99,7 @@ if($db_opcao==1){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tpc82_liberaproc?>" align="left" colspan="2"> 
-        <?
+        <?php
         $selecionado = "";
         if(isset($pc82_liberaproc) && $pc82_liberaproc == 't') $selecionado = "checked";
         db_input("pc82_liberaproc",20,0,true,"checkbox", $db_opcao," $selecionado onChange='js_onChangeCheckBox(this)'");
@@ -110,7 +110,7 @@ if($db_opcao==1){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tpc82_liberaaut?>" align="left" colspan="2"> 
-        <?
+        <?php
         $selecionado = "";
         if(isset($pc82_liberaaut) && $pc82_liberaaut == 't') $selecionado = "checked";
         db_input("pc82_liberaaut",20,0,true,"checkbox", $db_opcao," $selecionado onChange='js_onChangeCheckBox(this)'");
@@ -128,7 +128,7 @@ if($db_opcao==1){
 		  <tr> 
         <td colspan="2">
                
-        <?
+        <?php
         db_textarea('pc82_obs',5,60,$Ipc82_obs,true,'text',$db_opcao,"");
         ?>
         </td>
@@ -141,11 +141,11 @@ if($db_opcao==1){
 </table>
 </center>
 <input onclick='return js_valida();' name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Cancelar"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if($db_opcao != 1){
 	?> 
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-  <?
+  <?php
 }
 ?>
 </form>
@@ -236,7 +236,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_liberafornecedor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

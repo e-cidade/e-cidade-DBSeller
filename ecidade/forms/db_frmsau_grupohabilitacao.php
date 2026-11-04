@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("sd75_c_nome");
        <?=@$Lsd76_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd76_i_codigo',5,$Isd76_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -48,22 +48,22 @@ db_input('sd76_i_codigo',5,$Isd76_i_codigo,true,'text',3,"")
        <?=@$Lsd76_c_grupohabilitacao?>
     </td>
     <td>
-<?
+<?php
 db_input('sd76_c_grupohabilitacao',20,$Isd76_c_grupohabilitacao,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd76_i_habilitacao?>">
-       <?
+       <?php
        db_ancora(@$Lsd76_i_habilitacao,"js_pesquisasd76_i_habilitacao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd76_i_habilitacao',5,$Isd76_i_habilitacao,true,'text',$db_opcao," onchange='js_pesquisasd76_i_habilitacao(false);'")
 ?>
-       <?
+       <?php
 db_input('sd75_c_nome',50,$Isd75_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -73,7 +73,7 @@ db_input('sd75_c_nome',50,$Isd75_c_nome,true,'text',3,'')
        <?=@$Lsd76_c_descricao?>
     </td>
     <td>
-<?
+<?php
 db_input('sd76_c_descricao',62,$Isd76_c_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_grupohabilitacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

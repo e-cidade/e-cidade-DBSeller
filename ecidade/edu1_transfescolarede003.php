@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -334,7 +334,7 @@ if (isset($incluir)) {
    <table border="0" align="left">
     </tr>
      <td colspan="2">
-      <?
+      <?php
       $sCampos                  = " ed103_i_codigo,ed47_i_codigo,ed47_v_nome,ed103_d_data, ";
       $sCampos                 .= " escoladestino.ed18_c_nome as escoladestino";
       $sWhere                   = "     ed103_i_escolaorigem = $iEscola AND ed103_c_situacao = 'A'";
@@ -344,7 +344,7 @@ if (isset($incluir)) {
       ?>
       <b>Alunos Transferidos:</b>
       <select name="aluno" style="font-size:9px;" onchange="js_pesquisa(this.value);">
-       <?
+       <?php
        if ($oDaoTransfEscolaRede->numrows == 0) {
          echo "<option value=''>Nenhum registro de transferência em aberto.</option>";
        } else {
@@ -365,7 +365,7 @@ if (isset($incluir)) {
       </select>
      </td>
     </tr>
-    <?
+    <?php
       if (isset($aluno)) {
 
         $sCamposTransfEscolaRede  = " transfescolarede.ed103_d_data,transfescolarede.ed103_c_situacao, ";
@@ -431,7 +431,7 @@ if (isset($incluir)) {
            <b>Escola:</b>
           </td>
           <td>
-           <?db_input('descrescolaorig', 40, $Ied18_c_nome,true, 'text', 3, '');?>
+           <?php db_input('descrescolaorig', 40, $Ied18_c_nome,true, 'text', 3, '');?>
           </td>
          </tr>
          <tr>
@@ -439,13 +439,13 @@ if (isset($incluir)) {
            <b>Matrícula:</b>
           </td>
           <td>
-           <? db_input('codescolaorig', 15, $Ied18_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('codbaseorig', 15, $Ied31_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('codcalendarioorig', 15, $Ied52_i_codigo,true, 'hidden', 3 ,'');?>
-           <? db_input('codturnoorig', 15, $Ied15_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('codserieorig', 15, $Ied11_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('codcursoorig', 15, $Ied29_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('matriculaorig', 15, $Ied60_i_codigo,true, 'text', 3, '');?>
+           <?php db_input('codescolaorig', 15, $Ied18_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('codbaseorig', 15, $Ied31_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('codcalendarioorig', 15, $Ied52_i_codigo,true, 'hidden', 3 ,'');?>
+           <?php db_input('codturnoorig', 15, $Ied15_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('codserieorig', 15, $Ied11_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('codcursoorig', 15, $Ied29_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('matriculaorig', 15, $Ied60_i_codigo,true, 'text', 3, '');?>
           </td>
          </tr>
          <tr>
@@ -453,7 +453,7 @@ if (isset($incluir)) {
            <b>Situação:</b>
           </td>
           <td>
-           <? db_input('situacaoorig', 40, $Ied60_c_situacao,true, 'text', 3, '');?>
+           <?php db_input('situacaoorig', 40, $Ied60_c_situacao,true, 'text', 3, '');?>
           </td>
          </tr>
          <tr>
@@ -461,7 +461,7 @@ if (isset($incluir)) {
            <b>Concluida:</b>
           </td>
           <td>
-           <? db_input('conclusaoorig', 40, $Ied60_c_concluida,true, 'text', 3, '');?>
+           <?php db_input('conclusaoorig', 40, $Ied60_c_concluida,true, 'text', 3, '');?>
           </td>
          </tr>
          <tr>
@@ -469,8 +469,8 @@ if (isset($incluir)) {
            <b>Etapa:</b>
           </td>
           <td>
-           <? db_input('codserieorig', 15, $Ied11_i_codigo,true, 'hidden', 3, ''); ?>
-           <? db_input('descrserieorig', 40, $Ied11_c_descr,true, 'text', 3, '');?>
+           <?php db_input('codserieorig', 15, $Ied11_i_codigo,true, 'hidden', 3, ''); ?>
+           <?php db_input('descrserieorig', 40, $Ied11_c_descr,true, 'text', 3, '');?>
           </td>
          </tr>
          <tr>
@@ -478,8 +478,8 @@ if (isset($incluir)) {
            <b>Turma:</b>
           </td>
           <td>
-           <? db_input('codturmaorig', 15, $Ied57_i_codigo,true, 'hidden', 3, '');?>
-           <? db_input('descrturmaorig',40,$Ied57_c_descr,true, 'text', 3, '');?>
+           <?php db_input('codturmaorig', 15, $Ied57_i_codigo,true, 'hidden', 3, '');?>
+           <?php db_input('descrturmaorig',40,$Ied57_c_descr,true, 'text', 3, '');?>
           </td>
          </tr>
         </table>
@@ -493,7 +493,7 @@ if (isset($incluir)) {
            <b>Escola:</b>
           </td>
           <td>
-           <?db_input('descrescoladest', 40, $Ied18_c_nome, true, 'text', 3, '')?>
+           <?php db_input('descrescoladest', 40, $Ied18_c_nome, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -501,7 +501,7 @@ if (isset($incluir)) {
            <b>Calendário:</b>
           </td>
           <td>
-           <?db_input('descrcalendariodest', 40, $Ied52_c_descr, true, 'text', 3, '')?>
+           <?php db_input('descrcalendariodest', 40, $Ied52_c_descr, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -509,7 +509,7 @@ if (isset($incluir)) {
            <b>Base:</b>
           </td>
           <td>
-           <?db_input('descrbasedest', 40, $Ied31_c_descr, true, 'text', 3, '')?>
+           <?php db_input('descrbasedest', 40, $Ied31_c_descr, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -517,7 +517,7 @@ if (isset($incluir)) {
            <b>Etapa:</b>
           </td>
           <td>
-           <?db_input('descrseriedest', 40, $Ied11_c_descr, true, 'text', 3, '')?>
+           <?php db_input('descrseriedest', 40, $Ied11_c_descr, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -525,7 +525,7 @@ if (isset($incluir)) {
            <b>Turno:</b>
           </td>
           <td>
-           <?db_input('descrturnodest', 40, $Ied15_c_nome, true, 'text', 3, '')?>
+           <?php db_input('descrturnodest', 40, $Ied15_c_nome, true, 'text', 3, '')?>
           </td>
          </tr>
          <tr>
@@ -533,7 +533,7 @@ if (isset($incluir)) {
            <b>Transferido em:</b>
           </td>
           <td>
-          <?db_input('ed103_d_data', 10, @$Ied103_d_data, true, 'text', 3, '')?>
+          <?php db_input('ed103_d_data', 10, @$Ied103_d_data, true, 'text', 3, '')?>
           </td>
          </tr>
         </table>
@@ -542,7 +542,7 @@ if (isset($incluir)) {
     </tr>
     <tr>
      <td colspan="2">
-      <?
+      <?php
       $lErro              = false;
       $sCampos            = "ed18_c_nome,ed56_c_situacao,ed11_c_descr";
       $sWhere             = "ed56_i_aluno = ".$oDadosTransf->codigoaluno."AND ed56_i_calendario = ";
@@ -592,14 +592,14 @@ if (isset($incluir)) {
              onclick="return js_confirma();" <?=$lErro?"disabled":""?>>
      </td>
     </tr>
-    <?}?>
+    <?php }?>
    </table>
    </fieldset>
   </td>
  </tr>
 </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),

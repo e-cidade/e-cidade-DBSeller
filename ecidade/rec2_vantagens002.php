@@ -480,7 +480,6 @@ if( !db_selectmax("work_","select * from " .$arq_work .$indice )){
 
 $passou = false;
 
-$max_conta = count();
 $Iwork = 0;
 for($Iwork=0;$Iwork< count($work_);$Iwork++){
 
@@ -579,27 +578,27 @@ if( strtolower($tipo_vantagem) == strtolower($leis[0]["h08_tipo"]) ){
             $mar1 = array();
 	    $mar2 = array();
 	    
-            $mar1[01] = "wv_regist";
-            $mar1[02] = "wv_lotac";
-            $mar1[03] = "wv_dtbase";
-            $mar1[04] = "wv_dtvant";
-            $mar1[05] = "wv_anos";
-            $mar1[06] = "wv_perc";
-            $mar1[07] = "wv_tipo";
-            $mar1[08] = "wv_protel";
-            $mar1[09] = "wv_inf";
+            $mar1[1] = "wv_regist";
+            $mar1[2] = "wv_lotac";
+            $mar1[3] = "wv_dtbase";
+            $mar1[4] = "wv_dtvant";
+            $mar1[5] = "wv_anos";
+            $mar1[6] = "wv_perc";
+            $mar1[7] = "wv_tipo";
+            $mar1[8] = "wv_protel";
+            $mar1[9] = "wv_inf";
             $mar1[10] = "wv_lei";
             $mar1[11] = "wv_nome";
             
-            $mar2[01] = $pessoal[0]["r01_regist"];
-            $mar2[02] = $pessoal[0]["r01_lotac"] ;
-            $mar2[03] = $data_admissao;
-            $mar2[04] = $data_consessao;
-            $mar2[05] = $anos_perc;
-            $mar2[06] = $percentual;
-            $mar2[07] = $tipo_vantagem;
-            $mar2[08] = $dias_protelar;
-            $mar2[09] = $inform;
+            $mar2[1] = $pessoal[0]["r01_regist"];
+            $mar2[2] = $pessoal[0]["r01_lotac"] ;
+            $mar2[3] = $data_admissao;
+            $mar2[4] = $data_consessao;
+            $mar2[5] = $anos_perc;
+            $mar2[6] = $percentual;
+            $mar2[7] = $tipo_vantagem;
+            $mar2[8] = $dias_protelar;
+            $mar2[9] = $inform;
             $mar2[10] = bb_space(6);
             $mar2[11] = $cgm[0]["z01_nome"];
             

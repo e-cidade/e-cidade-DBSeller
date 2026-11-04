@@ -131,26 +131,23 @@ class LinhaTransporte {
    */
   public function getItinerarios() {
 
-    if (count($this->aItinerarios) == 0 && $this->getCodigo() != '') {
+      if (count($this->aItinerarios) == 0 && $this->getCodigo() != '') {
+          $oDaoLinhaItinerario = new cl_linhatransporteitinerario();
+          $sWhereLinhaItinerario = "tre09_linhatransporte = {$this->getCodigo()}";
+          $sSqlLinhaItinerario   = $oDaoLinhaItinerario->sql_query_file(null,
+                                                                         "tre09_sequencial",
+                                                                         "tre09_sequencial",
+                                                                         $sWhereLinhaItinerario);
+          $rsLinhaItinerario     = $oDaoLinhaItinerario->sql_record($sSqlLinhaItinerario);
+          $iQuantidadeLinhaItinerario = $oDaoLinhaItinerario->numrows;
 
-      $oDaoLinhaItinerario   = db_utils::getDao('linhatransporteitinerario');
-      $sWhereLinhaItinerario = "tre09_linhatransporte = {$this->getCodigo()}";
-      $sSqlLinhaItinerario   = $oDaoLinhaItinerario->sql_query_file (null,
-                                                                     "tre09_sequencial",
-                                                                     "tre09_sequencial",
-                                                                     $sWhereLinhaItinerario);
-      $rsLinhaItinerario     = $oDaoLinhaItinerario->sql_record($sSqlLinhaItinerario);
-
-      $iQuantidadeLinhaItinerario = $oDaoLinhaItinerario->numrows;
-
-      for ($iIndice = 0; $iIndice < $iQuantidadeLinhaItinerario; $iIndice++) {
-
-        $iLinhaItinerario     = db_utils::fieldsMemory($rsLinhaItinerario, $iIndice)->tre09_sequencial;
-        $oLinhaItinerario     = new LinhaItinerario($iLinhaItinerario);
-        $this->aItinerarios[] = $oLinhaItinerario;
+          for ($iIndice = 0; $iIndice < $iQuantidadeLinhaItinerario; $iIndice++) {
+              $iLinhaItinerario     = db_utils::fieldsMemory($rsLinhaItinerario, $iIndice)->tre09_sequencial;
+              $oLinhaItinerario     = new LinhaItinerario($iLinhaItinerario);
+              $this->aItinerarios[] = $oLinhaItinerario;
+          }
       }
-    }
-    return $this->aItinerarios;
+      return $this->aItinerarios;
   }
 
   /**

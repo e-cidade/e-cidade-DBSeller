@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,19 +44,19 @@ $descrdepto   = $_SESSION['DB_nomedepto'];
     <table>
       <tr>
         <td nowrap title="<?=@$Ty29_codtipo?>"><?=@$Ly29_codtipo?></td>
-        <td><? db_input('y29_codtipo',20,$Iy29_codtipo,true,'text',3,"") ?></td>
+        <td><?php db_input('y29_codtipo',20,$Iy29_codtipo,true,'text',3,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ty29_dias?>"><?=@$Ly29_dias?></td>
-        <td><? db_input('y29_dias',9,$Iy29_dias,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('y29_dias',9,$Iy29_dias,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ty29_descr?>"><?=@$Ly29_descr?></td>
-        <td><? db_input('y29_descr',63,$Iy29_descr,true,'text',$db_opcao,"") ?>
+        <td><?php db_input('y29_descr',63,$Iy29_descr,true,'text',$db_opcao,"") ?>
         </td>
       </tr>
       <tr>
-        <td nowrap title="<?=@$Ty29_coddepto?>"><? db_ancora(@$Ly29_coddepto,null,3); ?>
+        <td nowrap title="<?=@$Ty29_coddepto?>"><?php db_ancora(@$Ly29_coddepto,null,3); ?>
         </td>
         <td>
         <?php
@@ -67,24 +67,24 @@ $descrdepto   = $_SESSION['DB_nomedepto'];
       </tr>
       <tr>
         <td nowrap title="<?=@$Ty29_descr_obs?>"><?=@$Ly29_descr_obs?></td>
-        <td><? db_textarea('y29_descr_obs',7,61,$Iy29_descr_obs,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_textarea('y29_descr_obs',7,61,$Iy29_descr_obs,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ty29_tipoandam?>">
-          <? db_ancora(@$Ly29_tipoandam,"js_pesquisay29_tipoandam(true);",$db_opcao); ?>
+          <?php db_ancora(@$Ly29_tipoandam,"js_pesquisay29_tipoandam(true);",$db_opcao); ?>
           </td>
         <td>
-        <? db_input('y29_tipoandam',9,$Iy29_tipoandam,true,'text',$db_opcao," onchange='js_pesquisay29_tipoandam(false);'") ?>
-        <? db_input('y41_descr',50,$Iy41_descr,true,'text',3,'')  ?>
+        <?php db_input('y29_tipoandam',9,$Iy29_tipoandam,true,'text',$db_opcao," onchange='js_pesquisay29_tipoandam(false);'") ?>
+        <?php db_input('y41_descr',50,$Iy41_descr,true,'text',3,'')  ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Ty29_tipofisc?>">
-         <? db_ancora(@$Ly29_tipofisc,"js_pesquisa_tipofisc(true);",$db_opcao);  ?>
+         <?php db_ancora(@$Ly29_tipofisc,"js_pesquisa_tipofisc(true);",$db_opcao);  ?>
         </td>
         <td>
-         <? db_input('y29_tipofisc',9,$Iy29_tipofisc,true,'text',$db_opcao," onchange='js_pesquisa_tipofisc(false);'") ?>
-         <? db_input('y27_descr',50,$Iy27_descr,true,'text',3,'')     ?>
+         <?php db_input('y29_tipofisc',9,$Iy29_tipofisc,true,'text',$db_opcao," onchange='js_pesquisa_tipofisc(false);'") ?>
+         <?php db_input('y27_descr',50,$Iy27_descr,true,'text',3,'')     ?>
         </td>
       </tr>
       <tr>
@@ -92,7 +92,7 @@ $descrdepto   = $_SESSION['DB_nomedepto'];
            <strong>Tipo de Procedimento:</strong>
         </td>
         <td nowrap>
-           <?
+           <?php
              $tipo = array("N"=>"Notificação","A"=>"Auto");
     	       db_select("y29_tipoproced",$tipo,true,$db_opcao);
             ?>
@@ -102,10 +102,10 @@ $descrdepto   = $_SESSION['DB_nomedepto'];
        <!-- Campo retirado por não ser utilizado -->
        <tr style="display:none;">
         <td nowrap title="<?=@$Ty61_codpa ?>">
-         <? db_ancora(@$Ly61_codpa,"js_pesquisa_codpa(true);",$db_opcao);  ?>
+         <?php db_ancora(@$Ly61_codpa,"js_pesquisa_codpa(true);",$db_opcao);  ?>
         </td>
         <td>
-         <?
+         <?php
             /**
              * Quando essa notificação gerar um auto, indica aqui qual o codigo do auto que será gerado
              */
@@ -213,7 +213,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe_fiscalprocdepto.hide();
-  <?
+  <?php
   if($db_opcao == 2 || $db_opcao == 22){
     echo " location.href = 'fis1_fiscalproc002.php?abas=1&chavepesquisa='+chave;";
   }elseif($db_opcao == 33 || $db_opcao == 3){

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clextrato->rotulo->label("k85_nomearq");
               <?=$Lk85_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k85_sequencial",10,$Ik85_sequencial,true,"text",4,"","chave_k85_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clextrato->rotulo->label("k85_nomearq");
               <?=$Lk85_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k85_nomearq",50,$Ik85_nomearq,true,"text",4,"","chave_k85_nomearq");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clextrato->rotulo->label("k85_nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_extrato.php")==true){
@@ -122,12 +122,12 @@ $clextrato->rotulo->label("k85_nomearq");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,0 +1,1 @@
+grant usage on sequence integra_infisc.integra_eventuais_sequencial_seq to integrainfisc;

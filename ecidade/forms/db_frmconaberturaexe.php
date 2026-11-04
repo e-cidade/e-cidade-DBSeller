@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nome");
        <?=@$Lc97_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('c97_sequencial',5,$Ic97_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc97_instit?>">
-       <?
+       <?php
        db_ancora(@$Lc97_instit,"js_pesquisac97_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c97_instit',5,$Ic97_instit,true,'text',$db_opcao," onchange='js_pesquisac97_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc91_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lc91_id_usuario,"js_pesquisac91_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c91_id_usuario',5,$Ic91_id_usuario,true,'text',$db_opcao," onchange='js_pesquisac91_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lc91_anousuorigem?>
     </td>
     <td> 
-<?
+<?php
 $c91_anousuorigem = db_getsession('DB_anousu');
 db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
 ?>
@@ -90,7 +90,7 @@ db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
        <?=@$Lc91_anousudestino?>
     </td>
     <td> 
-<?
+<?php
 $c91_anousudestino = db_getsession('DB_anousu');
 db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
 ?>
@@ -101,7 +101,7 @@ db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
        <?=@$Lc91_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('c91_data',@$c91_data_dia,@$c91_data_mes,@$c91_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_inputdata('c91_data',@$c91_data_dia,@$c91_data_mes,@$c91_data_ano,true,'text'
        <?=@$Lc91_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('c91_hora',5,$Ic91_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ db_input('c91_hora',5,$Ic91_hora,true,'text',$db_opcao,"")
        <?=@$Lc91_situacao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Ativo','2'=>'Processado','3'=>'Cancelado');
 db_select('c91_situacao',$x,true,$db_opcao,"");
 ?>
@@ -132,7 +132,7 @@ db_select('c91_situacao',$x,true,$db_opcao,"");
        <?=@$Lc91_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Contábil','2'=>'Dotações','3'=>'Receitas');
 db_select('c91_tipo',$x,true,$db_opcao,"");
 ?>
@@ -143,7 +143,7 @@ db_select('c91_tipo',$x,true,$db_opcao,"");
        <?=@$Lc91_ppa?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Com PPA','2'=>'Sem PPA');
 db_select('c91_ppa',$x,true,$db_opcao,"");
 ?>
@@ -154,7 +154,7 @@ db_select('c91_ppa',$x,true,$db_opcao,"");
        <?=@$Lc91_origem?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Previsão Inicial','2'=>'Previsão Atualizada');
 db_select('c91_origem',$x,true,$db_opcao,"");
 ?>
@@ -217,7 +217,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conaberturaexe.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

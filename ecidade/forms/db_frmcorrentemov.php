@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("k11_local");
        <?=@$Lk12_idmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('k12_idmov',6,$Ik12_idmov,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk12_idautent?>">
-       <?
+       <?php
        db_ancora(@$Lk12_idautent,"js_pesquisak12_idautent(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k12_idautent',6,$Ik12_idautent,true,'text',$db_opcao," onchange='js_pesquisak12_idautent(false);'")
 ?>
-       <?
+       <?php
 db_input('k11_local',30,$Ik11_local,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k11_local',30,$Ik11_local,true,'text',3,'')
        <?=@$Lk12_dtmov?>
     </td>
     <td> 
-<?
+<?php
 $k12_dtmov_dia = date('d');
 $k12_dtmov_mes = date('m');
 $k12_dtmov_ano = date('Y');
@@ -78,7 +78,7 @@ db_inputdata('k12_dtmov',@$k12_dtmov_dia,@$k12_dtmov_mes,@$k12_dtmov_ano,true,'t
        <?=@$Lk12_horamov?>
     </td>
     <td> 
-<?
+<?php
 db_input('k12_horamov',5,$Ik12_horamov,true,'text',3,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('k12_horamov',5,$Ik12_horamov,true,'text',3,"")
        <?=@$Lk12_valormov?>
     </td>
     <td> 
-<?
+<?php
 db_input('k12_valormov',15,$Ik12_valormov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_input('k12_valormov',15,$Ik12_valormov,true,'text',$db_opcao,"")
        <?=@$Lk12_tipomov?>
     </td>
     <td> 
-      <?
+      <?php
         $x = array("0"=>"Débito","1"=>"Crédito");
 	db_select('k12_tipomov',$x,true,$db_opcao);
 				
@@ -111,7 +111,7 @@ db_input('k12_valormov',15,$Ik12_valormov,true,'text',$db_opcao,"")
        <?=@$Lk12_obsmov?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k12_obsmov',6,70,$Ik12_obsmov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -155,7 +155,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

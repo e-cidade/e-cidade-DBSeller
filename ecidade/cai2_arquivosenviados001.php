@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,12 +73,12 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td align="right" nowrap><strong>Data inicial:</strong></td>
     <td align="left" nowrap>
-    <?
+    <?php
     $datai_dia = date("d",db_getsession("DB_datausu"));
     $datai_mes = date("m",db_getsession("DB_datausu"));
     $datai_ano = date("Y",db_getsession("DB_datausu"));
     ?>
-    <?
+    <?php
     db_inputdata("datai",$datai_dia,$datai_mes,$datai_ano,true,"text",1);
     ?>
     </td>
@@ -86,19 +86,19 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td align="right" nowrap><strong>Data final:</strong></td>
     <td align="left" nowrap>
-    <?
+    <?php
     $dataf_dia = date("d",db_getsession("DB_datausu"));
     $dataf_mes = date("m",db_getsession("DB_datausu"));
     $dataf_ano = date("Y",db_getsession("DB_datausu"));
     ?>
-    <?
+    <?php
     db_inputdata("dataf",$dataf_dia,$dataf_mes,$dataf_ano,true,"text",1);
     ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-      <?
+      <?php
       $aux = new cl_arquivo_auxiliar;
       $aux->cabecalho = "<strong>CONTAS SELECIONADAS</strong>";
       $aux->codigo = "e83_codtipo";
@@ -123,7 +123,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr>
     <td align="right" nowrap><strong>Opções:</strong></td>
     <td align="left" nowrap>
-      <?
+      <?php
 	  $arr_opcoes = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
 	  db_select('opcoes',$arr_opcoes,true,2);
 	  ?>
@@ -137,7 +137,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_gerarel(){
   document.form1.selecionadas.value = ""; 

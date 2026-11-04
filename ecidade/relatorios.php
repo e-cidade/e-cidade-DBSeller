@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,10 +55,10 @@ if(!isset($munic)){
   </tr>
   <tr bgcolor="#ACB0DF"> 
     <td height="331" colspan="2"><!-- InstanceBeginEditable name="corpo" -->
-      <table width="100%" align="center" id="tabela_rel" <? if($libera_relatorio==false) echo "style=\"visibility:hidden\""?>>
+      <table width="100%" align="center" id="tabela_rel" <?php if($libera_relatorio==false) echo "style=\"visibility:hidden\""?>>
         <tr> 
           <td align="center"><font size="+1" face="Arial, Helvetica, sans-serif">
-		  <?
+		  <?php
 		  $result = pg_exec("select * from municipio where substr(cgcte,1,3)= '$munic'");
           if(pg_numrows($result) ==0){
             echo "<script>alert('Municipio Inválido.');location.href=index.php;</script>";

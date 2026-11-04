@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clfar_classeterapeutica->rotulo->label("fa18_c_classetera");
               <?=$Lfa18_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa18_i_codigo",10,$Ifa18_i_codigo,true,"text",4,"","chave_fa18_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfar_classeterapeutica->rotulo->label("fa18_c_classetera");
               <?=$Lfa18_c_classetera?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa18_c_classetera",20,$Ifa18_c_classetera,true,"text",4,"","chave_fa18_c_classetera");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfar_classeterapeutica->rotulo->label("fa18_c_classetera");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_classeterapeutica.php")==true){
@@ -122,12 +122,12 @@ $clfar_classeterapeutica->rotulo->label("fa18_c_classetera");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

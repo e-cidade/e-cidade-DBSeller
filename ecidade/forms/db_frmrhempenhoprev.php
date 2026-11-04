@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,12 +41,12 @@ $clrotulo->label('DBtxt25');
 			      <b>Ano / Mês :</b>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			        $anofolha = db_anofolha();
 			        db_input('anofolha',4,$IDBtxt23,true,'text',2,"");
 			      ?>
 			        &nbsp;/&nbsp;
-			      <?
+			      <?php
 			        $mesfolha = db_mesfolha();
 			        db_input('mesfolha',2,$IDBtxt25,true,'text',2,"");
 			      ?>
@@ -57,7 +57,7 @@ $clrotulo->label('DBtxt25');
 			      <b>Ponto:</b>
 			    </td>
 			    <td>
-			     <?
+			     <?php
 			     
 			       $aSigla = array( "m"=>"Mensal",
 					                    "d"=>"13o. Salário");
@@ -68,7 +68,7 @@ $clrotulo->label('DBtxt25');
 		    </tr>
 	      <tr>
 	        <td align="center" colspan="2" >
-	         <?
+	         <?php
 		         $sql  = "select distinct r33_codtab,              ";
 		         $sql .= "                r33_nome                 ";
 		         $sql .= "           from inssirf                  ";

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,13 +52,13 @@ class cl_issarquivoretencaoregistroissbase {
                  q128_issarquivoretencaoregistro = int4 = Código Registro Retencão
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencaoregistroissbase() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencaoregistroissbase");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_issarquivoretencaoregistroissbase {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q128_sequencial = ($this->q128_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q128_sequencial"]:$this->q128_sequencial);
        $this->q128_inscr = ($this->q128_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["q128_inscr"]:$this->q128_inscr);
@@ -77,7 +77,7 @@ class cl_issarquivoretencaoregistroissbase {
      }
    }
    // funcao para inclusao
-   function incluir ($q128_sequencial){
+   public function incluir ($q128_sequencial){
       $this->atualizacampos();
      if($this->q128_inscr == null ){
        $this->erro_sql = " Campo Inscrição não informado.";

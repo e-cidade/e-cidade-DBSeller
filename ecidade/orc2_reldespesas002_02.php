@@ -80,7 +80,7 @@ $qunidade = 0;
 $head1 = "DEMONSTRATIVO DA DESPESA";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -391,7 +391,7 @@ $pdf->cell(20,$alt,db_formatar($totorgaoatual,'f'),0,1,"R",0);
   if($nivela == 1){
     $where .= " w.o58_orgao in ($xcampos)";
   }elseif($nivela == 2){
-    $xunid = split(",",$xcampos);
+    $xunid =explode(",",$xcampos);
     $virgula = "";
     for($xu=0;$xu < sizeof($xunid);$xu++){
       @$xxcampos .= $virgula."'".$xunid[$xu]."'";

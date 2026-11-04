@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     	  parent.alert('Erro ao gerar autenticacao. Verifique :<?=str_replace("\n", '\\n', $oBusinessException->getMessage())?>');
     	  document.location.href = 'cai4_arrecada005.php';
     	  </script>
-    	  <?
+    	  <?php
   	    exit;
       } catch (Exception $oBusinessException) {
 
@@ -117,7 +117,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     	  parent.alert('Erro ao gerar autenticacao. Verifique :<?=str_replace("\n", '\\n', $oBusinessException->getMessage())?>');
     	  document.location.href = 'cai4_arrecada005.php';
     	  </script>
-    	  <?
+    	  <?php
   	    exit;
 
       }
@@ -145,7 +145,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </form>
 </body>
 </html>
-<?
+<?php
 
    if(isset($HTTP_POST_VARS["reautentica"])){
      $fc_autentica = $HTTP_POST_VARS["reautentica"];

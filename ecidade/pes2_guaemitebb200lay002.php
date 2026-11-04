@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -53,19 +53,19 @@ $sqlerro = false;
 
 db_sel_instit(db_getsession("DB_instit"));
 
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
   db_fieldsmemory($result_arqbanco,0);
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag =explode('-',$datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad =explode('-',$datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -75,7 +75,7 @@ if($clrharqbanco->numrows>0){
 
   $adatadegeracao = $datag_ano."-".$datag_mes."-".$datag_dia;
   $datadedeposito = $datad_ano."-".$datad_mes."-".$datad_dia;
-  $dt_gravacao    = str_pad($datag_dia,2,"0",0).str_pad($datag_mes,2,"0",0).str_pad($datag_ano,2,"0",0); 
+  $dt_gravacao    = str_pad($datag_dia,2,"0",0).str_pad($datag_mes,2,"0",0).str_pad($datag_ano,2,"0",0);
   $dt_debito      = str_pad($datad_dia,2,"0",0).str_pad($datad_mes,2,"0",0).str_pad($datad_ano,2,"0",0);
 
   $anomesgera = $datadedeposito;
@@ -103,33 +103,33 @@ if($sqlerro == false){
   }
 
   if (!empty($rh34_where)) {
-    $rh34_where .= ' and '; 
+    $rh34_where .= ' and ';
   }
-  
+
   $rh34_where .= " r38_liq > 0";
   if($sqlerro == false){
-    
+
 //echo "<BR> $sql";exit;
-  $campos = "  
-               r38_regist, 
-               r38_nome,   
-               r38_numcgm, 
-               r38_regime, 
-               r38_lotac,  
-               r38_vincul, 
-               r38_padrao, 
-               r38_salari, 
-               r38_funcao, 
-               r38_banco , 
-               r38_agenc , 
+  $campos = "
+               r38_regist,
+               r38_nome,
+               r38_numcgm,
+               r38_regime,
+               r38_lotac,
+               r38_vincul,
+               r38_padrao,
+               r38_salari,
+               r38_funcao,
+               r38_banco ,
+               r38_agenc ,
                case when trim(r38_conta) = '' or r38_conta is null then '0' else r38_conta end as ver_conta,
-               r38_conta, 
-               r38_situac, 
-               r38_previd, 
-               r38_liq   , 
-               r38_prov  , 
-               r38_desc  , 
-               r38_proc ,      
+               r38_conta,
+               r38_situac,
+               r38_previd,
+               r38_liq   ,
+               r38_prov  ,
+               r38_desc  ,
+               r38_proc ,
                z01_nome,
                z01_cgccpf,
                z01_numcgm
@@ -140,24 +140,24 @@ if($sqlerro == false){
                                              r38_liq as valorori",
                                             "r38_banco,r38_agenc,r38_conta",
                                             "$rh34_where");
-  $sql1 = "select  
-               r38_regist, 
-               r38_nome,   
-               r38_numcgm, 
-               r38_regime, 
-               r38_lotac,  
-               r38_vincul, 
-               r38_padrao, 
-               r38_salari, 
-               r38_funcao, 
-               r38_agenc , 
-               case when to_number(ver_conta,'999999999999999') = 0 then '0' else r38_banco end as r38_banco , 
-               r38_conta, 
-               r38_situac, 
-               r38_previd, 
-               r38_liq   , 
-               r38_prov  , 
-               r38_desc  , 
+  $sql1 = "select
+               r38_regist,
+               r38_nome,
+               r38_numcgm,
+               r38_regime,
+               r38_lotac,
+               r38_vincul,
+               r38_padrao,
+               r38_salari,
+               r38_funcao,
+               r38_agenc ,
+               case when to_number(ver_conta,'999999999999999') = 0 then '0' else r38_banco end as r38_banco ,
+               r38_conta,
+               r38_situac,
+               r38_previd,
+               r38_liq   ,
+               r38_prov  ,
+               r38_desc  ,
                r38_proc  ,
                z01_nome,
                z01_cgccpf,
@@ -165,8 +165,8 @@ if($sqlerro == false){
                length(trim(r38_agenc)) as qtddigitosagencia,
                r70_descr,
                length(trim(z01_cgccpf)) as tam,
-               r38_liq as valorori      
-           from ($sql) as x 
+               r38_liq as valorori
+           from ($sql) as x
            order by r38_banco,r38_agenc, r38_conta ";
     $result  = $clfolha->sql_record($sql1);
     $numrows =  $clfolha->numrows;
@@ -179,7 +179,7 @@ if($sqlerro == false){
       if(!is_writable("/tmp/")){
         $sqlerro= true;
         $erro_msg = 'Sem permissão de gravar o arquivo. Contate suporte.';
-      }  
+      }
 
       $pdf1 = new PDF();
       $pdf1->Open();
@@ -217,7 +217,7 @@ if($sqlerro == false){
 
         if($entrar == true || $pdf->gety() > $pdf->h - 30){
           $pdf->addpage();
-   
+
           $head3 = "ARQUIVO PAGAMENTO FOLHA";
           $head5 = "SEQUENCIAL DO ARQUIVO  :  ".$sequenciaarqui;
           $head6 = "GERAÇÃO  :  ".db_formatar($datagera,"d").' AS '.$ahoradegeracao.' HS';
@@ -269,7 +269,7 @@ if($sqlerro == false){
       $pdf->cell(20,$alt,$totalquant,"TB",0,"R",1);
       $pdf->cell(20,$alt,db_formatar($totalvalor,"f"),"TB",0,"C",1);
       $pdf->cell(50,$alt,"","RTB",1,"C",1);
-      
+
     $pdf1->cell(80,$alt,"Credor",1,0,"C",1);
     $pdf1->cell(30, $alt, "Número de funcionários",1,0,"C",1);
     $pdf1->cell(30, $alt, "Valor total",1,1,"C",1);

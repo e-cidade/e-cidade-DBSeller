@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,19 +25,22 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_orcunidade_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_orcunidade_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+
 $clorcunidade = new cl_orcunidade;
+
 $db_botao = false;
 $db_opcao = 33;
+
 if(isset($excluir)){
-	$lerro = false;
+  $lerro = false;
   db_inicio_transacao();
   $db_opcao = 3;
   
@@ -55,15 +58,18 @@ if(isset($excluir)){
   	}
   	$aAnousu .= ")";
   	
-  	$sSqlUnidadePpa = "select * from  ppadotacao
-  													where o08_unidade = $o41_unidade and o08_orgao = $o41_orgao and o08_ano in $aAnousu";
+  	$sSqlUnidadePpa = "select o08_sequencial 
+                         from ppadotacao
+  						where o08_unidade = $o41_unidade and o08_orgao = $o41_orgao and o08_ano in $aAnousu";
   	$rsSqlUnidadePpa = db_query($sSqlUnidadePpa);
   	if(pg_num_rows($rsSqlUnidadePpa) > 0){
   		$lerro = true;
   		$mensagem = "Usuário:\\n\\nUnidade encontra-se em estimativas do ppa\\n\\n";
   	}
-  	$sSqlUnidadeDotacao = "select * from  orcdotacao
-  													where o58_unidade = $o41_unidade and o58_orgao = $o41_orgao and o58_anousu in $aAnousu";
+  	
+  	$sSqlUnidadeDotacao = "select o58_coddot 
+                             from orcdotacao
+  							where o58_unidade = $o41_unidade and o58_orgao = $o41_orgao and o58_anousu in $aAnousu";
   	$rsSqlUnidadeDotacao = db_query($sSqlUnidadeDotacao);
   	if(pg_num_rows($rsSqlUnidadeDotacao) > 0){
   		$lerro = true;
@@ -75,14 +81,12 @@ if(isset($excluir)){
   if (!$lerro) {
   	$sWhereExcluir = "o41_unidade = $o41_unidade and o41_orgao = $o41_orgao and o41_anousu in $aAnousu";
   	$clorcunidade->excluir(null,null,null,$sWhereExcluir);
-  
   	if($clorcunidade->numrows == "0"){
   		$mensagem = $clorcunidade->erro_msg;
   		$lerro = true;
   	}
   }
   
-  //$clorcunidade->excluir($o41_anousu,$o41_orgao,$o41_unidade);
   db_fim_transacao($lerro);
 }else if(isset($chavepesquisa)){
    $db_opcao = 3;
@@ -99,32 +103,14 @@ if(isset($excluir)){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmorcunidade.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<body>
+<?php
+  include(modification("forms/db_frmorcunidade.php"));
+  db_menu();
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir) && $lerro == true){
 	db_msgbox($mensagem);
 }else if(isset($excluir)){

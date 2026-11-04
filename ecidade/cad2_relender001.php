@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Cgm's</strong>";
                  $aux->codigo = "z01_numcgm"; //chave de retorno da func
@@ -102,7 +102,7 @@ $aux = new cl_arquivo_auxiliar;
          <b>Ordenar por :</b>
         </td>
         <td nowrap>  <br> 
-	<?
+	<?php
           $y = array("m"=>"Matrícula","d"=>"Destinatário","e"=>"Endereço","c"=>"CEP","s"=>"Setor","p"=>"Municipio");
           db_select("tipo_ordem",$y,true,2); 
 	?>

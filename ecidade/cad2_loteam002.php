@@ -129,8 +129,8 @@ if(isset($setor) && $setor != ""){
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
 
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  =explode(",",$setor);
+      $chaves1 =explode(",",$quadra);
       $and   = "";
       $setor = "( ";
       for($i=0;$i<sizeof($chaves);$i++){
@@ -313,8 +313,8 @@ if(isset($j34_loteam) && $j34_loteam != ""){
 
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves =explode(",",$setores);
+    $chaves1 =explode(",",$quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){

@@ -1,0 +1,1104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:element name="Anexo14">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="CodigoUnidadeJurisdicionada">
+          <xs:simpleType>
+            <xs:restriction base="xs:positiveInteger">
+              <xs:minInclusive value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element type="tipoData" name="DataPeriodoInicial"/>
+        <xs:element type="tipoData" name="DataPeriodoFinal"/>
+        <xs:element name="SistemaGerador">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="300"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        
+        <xs:element name="ListaPessoa" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pessoa" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="TipoDocumentoPessoa">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="4"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoDocumentoPessoa" name="NumeroDocumentoPessoa"/>
+                    <xs:element name="NomePessoa">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="300"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaEmpenho" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Empenho" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroProcessoDespesa">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="30"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TipoProcedimentoLicitatorio">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="50"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroReciboAnexo38" maxOccurs="1" nillable="true">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:token">
+                          <xs:pattern value="^$|^[1-9]\d*$" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroReciboAnexo23" maxOccurs="1" nillable="true">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:token">
+                          <xs:pattern value="^$|^[1-9]\d*$" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TipoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="3"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoData" name="DataEmpenho"/>
+                    <xs:element type="tipoValorDecimal" name="ValorEmpenho"/>
+                    <xs:element name="CodigoInstrumentoPrograma">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="5"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NaturezaDespesa" maxOccurs="1" minOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="1" minOccurs="1" type="tipoCategoriaEconomica" name="CategoriaEconomica"/>
+                          <xs:element maxOccurs="1" minOccurs="1" type="tipoGrupoDespesa" name="GrupoDespesa"/>
+                          <xs:element maxOccurs="1" minOccurs="1" type="tipoModalidadeAplicacao" name="ModalidadeAplicacao"/>
+                          <xs:element maxOccurs="1" minOccurs="1" type="tipoElementoDespesa" name="ElementoDespesa"/>
+                          <xs:element maxOccurs="1" minOccurs="1" type="tipoDesdobramentoDespesa" name="DesdobramentoDespesa"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="tipoCPF" name="NumeroDocumentoOrdenador"/>
+                    <xs:element type="xs:nonNegativeInteger" name="PrazoMaximoLiquidacao"/>
+                    <xs:element name="Justificativa">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ClassificacaoFuncional">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="tipoCodigoFuncao" name="CodigoFuncao"/>
+                          <xs:element type="tipoCodigoSubfuncao" name="CodigoSubFuncao"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="FonteRecurso">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="tipoCodigoGrupoExercicioFonte" name="CodigoGrupoExercicioFonte"/>
+                          <xs:element type="tipoCodigoClassificacaoFonte" name="CodigoClassificacaoFonte"/>
+                          <xs:element type="tipoCodigoDetalhamentoFonte" name="CodigoDetalhamentoFonte"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="tipoDocumentoPessoa" name="NumeroDocumentoCredorEmpenho"/>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaReforcoEmpenho" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReforcoEmpenho" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoEmpenhoOriginal">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoReforcoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoData" name="DataReforcoEmpenho"/>
+                    <xs:element type="tipoValorDecimal" name="ValorReforcoEmpenho"/>
+                    <xs:element name="JustificativaReforcoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="FonteRecurso">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element type="tipoCodigoGrupoExercicioFonte" name="CodigoGrupoExercicioFonte"/>
+                          <xs:element type="tipoCodigoClassificacaoFonte" name="CodigoClassificacaoFonte"/>
+                          <xs:element type="tipoCodigoDetalhamentoFonte" name="CodigoDetalhamentoFonte"/>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaAnulacaoEmpenho" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AnulacaoEmpenho" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoEmpenhoOriginal">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoAnulacaoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoValorDecimal" name="ValorAnulacaoEmpenho"/>
+                    <xs:element type="tipoData" name="DataAnulacaoEmpenho"/>
+                    <xs:element name="MotivoAnulacaoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaLiquidacao" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Liquidacao" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoEmpenho">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroProcessoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="30"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoValorDecimal" name="ValorLiquidacao"/>
+                    <xs:element type="tipoData" name="DataLiquidacao"/>
+                    <xs:element type="tipoCPF" name="NumeroDocumentoResponsavelAtesto"/>
+                    <xs:element name="ListaNotaFiscal">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="NotaFiscal" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="NumeroDocumentoLiquidacao">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="15"/>
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                                <xs:element type="tipoTipoDocumentoFiscal" name="TipoDocumentoFiscal"/>
+                                <xs:element name="NumeroDocumentoFiscal">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="9"/>
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                                <xs:element name="NumeroSerieDocumentoFiscal">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="3"/>
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                                <xs:element type="tipoData" name="DataEmissaoDocumentoFiscal"/>
+                                <xs:element name="ChaveAcessoNFE">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="44"/>
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                                <xs:element type="tipoValorDecimal" name="ValorDocumentoFiscal"/>
+                                <xs:element type="tipoData" name="DataRecebimentoDocumentoFiscal"/>
+                                <xs:element type="tipoData" name="DataAtestoDocumentoFiscal"/>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ListaAnulacaoLiquidacao" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AnulacaoLiquidacao" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoAnulacaoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoValorDecimal" name="ValorAnulacaoLiquidacao"/>
+                    <xs:element type="tipoData" name="DataAnulacaoLiquidacao"/>
+                    <xs:element name="MotivoAnulacaoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaPagamento" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Pagamento" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TipoDocumentoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="001"/>
+                          <xs:enumeration value="002"/>
+                          <xs:enumeration value="003"/>
+                          <xs:enumeration value="999"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoData" name="DataPagamento"/>
+                    <xs:element type="tipoValorDecimal" name="ValorPagamento"/>
+                    <xs:element type="tipoData" name="DataEfetivaTransferenciaValor"/>
+                    <xs:element name="JustificativaQuebraOrdem">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoCPF" name="NumeroDocumentoOrdenador"/>
+                    <xs:element type="tipoDocumentoPessoa" name="NumeroDocumentoCredorPagamento"/>
+                    <xs:element name="ContaBancaria">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CodigoBanco">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="3"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="NumeroAgencia">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="6"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                          <xs:element name="NumeroConta">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:maxLength value="13"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ListaAnulacaoPagamento" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AnulacaoPagamento" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoPagamentoOriginal">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoAnulacaoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoValorDecimal" name="ValorAnulacaoPagamento"/>
+                    <xs:element type="tipoData" name="DataAnulacaoPagamento"/>
+                    <xs:element name="MotivoAnulacaoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <xs:element name="ListaRetencaoPagamento" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RetencaoPagamento" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoCodigoRetencao" name="CodigoRetencao"/>
+                    <xs:element type="tipoValorDecimal" name="ValorRetencao"/>
+                    <xs:element type="tipoData" name="DataRetencao"/>
+                    <xs:element type="tipoDocumentoPessoa" name="NumeroDocumentoPessoaRetencaoPagamento"/>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ListaAnulacaoRetencaoPagamento" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AnulacaoRetencao" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="NumeroClassificacaoInstitucional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="11"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoLiquidacao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="NumeroDocumentoPagamento">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="15"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element type="tipoCodigoRetencao" name="CodigoRetencao"/>
+                    <xs:element type="tipoValorDecimal" name="ValorAnulacaoRetencao"/>
+                    <xs:element type="tipoData" name="DataAnulacaoRetencao"/>
+                    <xs:element name="MotivoAnulacaoRetencao">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="500"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  
+
+  <xs:simpleType name="tipoDocumentoPessoa">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="^(\d{11}|\d{14})$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCPF">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="tipoValorDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0.00"/>
+      <xs:maxInclusive value="99999999999999.99"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="tipoData">
+    <xs:restriction base="xs:date">
+      <xs:pattern value="^(\d{4}-\d{2}-\d{2})$" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="tipoCategoriaEconomica">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="9"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoGrupoDespesa">
+    <xs:restriction base="xs:integer">
+      <xs:enumeration value="0"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+      <xs:enumeration value="6"/>
+      <xs:enumeration value="9"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoModalidadeAplicacao">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="10"/>
+      <xs:enumeration value="20"/>
+      <xs:enumeration value="22"/>
+      <xs:enumeration value="30"/>
+      <xs:enumeration value="31"/>
+      <xs:enumeration value="32"/>
+      <xs:enumeration value="35"/>
+      <xs:enumeration value="36"/>
+      <xs:enumeration value="40"/>
+      <xs:enumeration value="41"/>
+      <xs:enumeration value="42"/>
+      <xs:enumeration value="45"/>
+      <xs:enumeration value="46"/>
+      <xs:enumeration value="50"/>
+      <xs:enumeration value="59"/>
+      <xs:enumeration value="60"/>
+      <xs:enumeration value="70"/>
+      <xs:enumeration value="71"/>
+      <xs:enumeration value="72"/>
+      <xs:enumeration value="73"/>
+      <xs:enumeration value="74"/>
+      <xs:enumeration value="75"/>
+      <xs:enumeration value="76"/>
+      <xs:enumeration value="80"/>
+      <xs:enumeration value="90"/>
+      <xs:enumeration value="91"/>
+      <xs:enumeration value="95"/>
+      <xs:enumeration value="96"/>
+      <xs:enumeration value="98"/>
+      <xs:enumeration value="99"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoElementoDespesa">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="01"/>
+      <xs:enumeration value="03"/>
+      <xs:enumeration value="04"/>
+      <xs:enumeration value="05"/>
+      <xs:enumeration value="06"/>
+      <xs:enumeration value="07"/>
+      <xs:enumeration value="08"/>
+      <xs:enumeration value="09"/>
+      <xs:enumeration value="10"/>
+      <xs:enumeration value="11"/>
+      <xs:enumeration value="12"/>
+      <xs:enumeration value="13"/>
+      <xs:enumeration value="14"/>
+      <xs:enumeration value="15"/>
+      <xs:enumeration value="16"/>
+      <xs:enumeration value="17"/>
+      <xs:enumeration value="18"/>
+      <xs:enumeration value="19"/>
+      <xs:enumeration value="20"/>
+      <xs:enumeration value="21"/>
+      <xs:enumeration value="22"/>
+      <xs:enumeration value="23"/>
+      <xs:enumeration value="24"/>
+      <xs:enumeration value="25"/>
+      <xs:enumeration value="26"/>
+      <xs:enumeration value="27"/>
+      <xs:enumeration value="28"/>
+      <xs:enumeration value="29"/>
+      <xs:enumeration value="30"/>
+      <xs:enumeration value="31"/>
+      <xs:enumeration value="32"/>
+      <xs:enumeration value="33"/>
+      <xs:enumeration value="34"/>
+      <xs:enumeration value="35"/>
+      <xs:enumeration value="36"/>
+      <xs:enumeration value="37"/>
+      <xs:enumeration value="38"/>
+      <xs:enumeration value="39"/>
+      <xs:enumeration value="40"/>
+      <xs:enumeration value="41"/>
+      <xs:enumeration value="42"/>
+      <xs:enumeration value="43"/>
+      <xs:enumeration value="45"/>
+      <xs:enumeration value="46"/>
+      <xs:enumeration value="47"/>
+      <xs:enumeration value="48"/>
+      <xs:enumeration value="49"/>
+      <xs:enumeration value="51"/>
+      <xs:enumeration value="52"/>
+      <xs:enumeration value="53"/>
+      <xs:enumeration value="54"/>
+      <xs:enumeration value="55"/>
+      <xs:enumeration value="56"/>
+      <xs:enumeration value="57"/>
+      <xs:enumeration value="58"/>
+      <xs:enumeration value="59"/>
+      <xs:enumeration value="61"/>
+      <xs:enumeration value="62"/>
+      <xs:enumeration value="63"/>
+      <xs:enumeration value="64"/>
+      <xs:enumeration value="65"/>
+      <xs:enumeration value="66"/>
+      <xs:enumeration value="67"/>
+      <xs:enumeration value="70"/>
+      <xs:enumeration value="71"/>
+      <xs:enumeration value="72"/>
+      <xs:enumeration value="73"/>
+      <xs:enumeration value="74"/>
+      <xs:enumeration value="75"/>
+      <xs:enumeration value="76"/>
+      <xs:enumeration value="77"/>
+      <xs:enumeration value="81"/>
+      <xs:enumeration value="91"/>
+      <xs:enumeration value="92"/>
+      <xs:enumeration value="93"/>
+      <xs:enumeration value="94"/>
+      <xs:enumeration value="95"/>
+      <xs:enumeration value="96"/>
+      <xs:enumeration value="97"/>
+      <xs:enumeration value="99"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoDesdobramentoDespesa">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="99"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoFuncao">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="01"/>
+      <xs:enumeration value="02"/>
+      <xs:enumeration value="03"/>
+      <xs:enumeration value="04"/>
+      <xs:enumeration value="05"/>
+      <xs:enumeration value="06"/>
+      <xs:enumeration value="07"/>
+      <xs:enumeration value="08"/>
+      <xs:enumeration value="09"/>
+      <xs:enumeration value="10"/>
+      <xs:enumeration value="11"/>
+      <xs:enumeration value="12"/>
+      <xs:enumeration value="13"/>
+      <xs:enumeration value="14"/>
+      <xs:enumeration value="15"/>
+      <xs:enumeration value="16"/>
+      <xs:enumeration value="17"/>
+      <xs:enumeration value="18"/>
+      <xs:enumeration value="19"/>
+      <xs:enumeration value="20"/>
+      <xs:enumeration value="21"/>
+      <xs:enumeration value="22"/>
+      <xs:enumeration value="23"/>
+      <xs:enumeration value="24"/>
+      <xs:enumeration value="25"/>
+      <xs:enumeration value="26"/>
+      <xs:enumeration value="27"/>
+      <xs:enumeration value="28"/>
+      <xs:enumeration value="99"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoSubfuncao">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="031"/>
+      <xs:enumeration value="032"/>
+      <xs:enumeration value="061"/>
+      <xs:enumeration value="062"/>
+      <xs:enumeration value="091"/>
+      <xs:enumeration value="092"/>
+      <xs:enumeration value="121"/>
+      <xs:enumeration value="122"/>
+      <xs:enumeration value="123"/>
+      <xs:enumeration value="124"/>
+      <xs:enumeration value="125"/>
+      <xs:enumeration value="126"/>
+      <xs:enumeration value="127"/>
+      <xs:enumeration value="128"/>
+      <xs:enumeration value="129"/>
+      <xs:enumeration value="130"/>
+      <xs:enumeration value="131"/>
+      <xs:enumeration value="151"/>
+      <xs:enumeration value="152"/>
+      <xs:enumeration value="153"/>
+      <xs:enumeration value="181"/>
+      <xs:enumeration value="182"/>
+      <xs:enumeration value="183"/>
+      <xs:enumeration value="211"/>
+      <xs:enumeration value="212"/>
+      <xs:enumeration value="241"/>
+      <xs:enumeration value="242"/>
+      <xs:enumeration value="243"/>
+      <xs:enumeration value="244"/>
+      <xs:enumeration value="271"/>
+      <xs:enumeration value="272"/>
+      <xs:enumeration value="273"/>
+      <xs:enumeration value="274"/>
+      <xs:enumeration value="301"/>
+      <xs:enumeration value="302"/>
+      <xs:enumeration value="303"/>
+      <xs:enumeration value="304"/>
+      <xs:enumeration value="305"/>
+      <xs:enumeration value="306"/>
+      <xs:enumeration value="331"/>
+      <xs:enumeration value="332"/>
+      <xs:enumeration value="333"/>
+      <xs:enumeration value="334"/>
+      <xs:enumeration value="361"/>
+      <xs:enumeration value="362"/>
+      <xs:enumeration value="363"/>
+      <xs:enumeration value="364"/>
+      <xs:enumeration value="365"/>
+      <xs:enumeration value="366"/>
+      <xs:enumeration value="367"/>
+      <xs:enumeration value="368"/>
+      <xs:enumeration value="391"/>
+      <xs:enumeration value="392"/>
+      <xs:enumeration value="421"/>
+      <xs:enumeration value="422"/>
+      <xs:enumeration value="423"/>
+      <xs:enumeration value="451"/>
+      <xs:enumeration value="452"/>
+      <xs:enumeration value="453"/>
+      <xs:enumeration value="481"/>
+      <xs:enumeration value="482"/>
+      <xs:enumeration value="511"/>
+      <xs:enumeration value="512"/>
+      <xs:enumeration value="541"/>
+      <xs:enumeration value="542"/>
+      <xs:enumeration value="543"/>
+      <xs:enumeration value="544"/>
+      <xs:enumeration value="545"/>
+      <xs:enumeration value="571"/>
+      <xs:enumeration value="572"/>
+      <xs:enumeration value="573"/>
+      <xs:enumeration value="605"/>
+      <xs:enumeration value="606"/>
+      <xs:enumeration value="607"/>
+      <xs:enumeration value="608"/>
+      <xs:enumeration value="609"/>
+      <xs:enumeration value="631"/>
+      <xs:enumeration value="632"/>
+      <xs:enumeration value="661"/>
+      <xs:enumeration value="662"/>
+      <xs:enumeration value="663"/>
+      <xs:enumeration value="664"/>
+      <xs:enumeration value="665"/>
+      <xs:enumeration value="691"/>
+      <xs:enumeration value="692"/>
+      <xs:enumeration value="693"/>
+      <xs:enumeration value="694"/>
+      <xs:enumeration value="695"/>
+      <xs:enumeration value="721"/>
+      <xs:enumeration value="722"/>
+      <xs:enumeration value="751"/>
+      <xs:enumeration value="752"/>
+      <xs:enumeration value="753"/>
+      <xs:enumeration value="754"/>
+      <xs:enumeration value="781"/>
+      <xs:enumeration value="782"/>
+      <xs:enumeration value="783"/>
+      <xs:enumeration value="784"/>
+      <xs:enumeration value="785"/>
+      <xs:enumeration value="811"/>
+      <xs:enumeration value="812"/>
+      <xs:enumeration value="813"/>
+      <xs:enumeration value="841"/>
+      <xs:enumeration value="842"/>
+      <xs:enumeration value="843"/>
+      <xs:enumeration value="844"/>
+      <xs:enumeration value="845"/>
+      <xs:enumeration value="846"/>
+      <xs:enumeration value="847"/>
+      <xs:enumeration value="999"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoGrupoExercicioFonte">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoClassificacaoFonte">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="001"/>
+      <xs:enumeration value="090"/>
+      <xs:enumeration value="111"/>
+      <xs:enumeration value="112"/>
+      <xs:enumeration value="113"/>
+      <xs:enumeration value="114"/>
+      <xs:enumeration value="115"/>
+      <xs:enumeration value="116"/>
+      <xs:enumeration value="117"/>
+      <xs:enumeration value="120"/>
+      <xs:enumeration value="121"/>
+      <xs:enumeration value="122"/>
+      <xs:enumeration value="123"/>
+      <xs:enumeration value="124"/>
+      <xs:enumeration value="125"/>
+      <xs:enumeration value="130"/>
+      <xs:enumeration value="140"/>
+      <xs:enumeration value="150"/>
+      <xs:enumeration value="151"/>
+      <xs:enumeration value="152"/>
+      <xs:enumeration value="190"/>
+      <xs:enumeration value="211"/>
+      <xs:enumeration value="212"/>
+      <xs:enumeration value="213"/>
+      <xs:enumeration value="214"/>
+      <xs:enumeration value="215"/>
+      <xs:enumeration value="220"/>
+      <xs:enumeration value="230"/>
+      <xs:enumeration value="240"/>
+      <xs:enumeration value="250"/>
+      <xs:enumeration value="290"/>
+      <xs:enumeration value="311"/>
+      <xs:enumeration value="312"/>
+      <xs:enumeration value="390"/>
+      <xs:enumeration value="410"/>
+      <xs:enumeration value="420"/>
+      <xs:enumeration value="430"/>
+      <xs:enumeration value="510"/>
+      <xs:enumeration value="520"/>
+      <xs:enumeration value="530"/>
+      <xs:enumeration value="540"/>
+      <xs:enumeration value="610"/>
+      <xs:enumeration value="620"/>
+      <xs:enumeration value="630"/>
+      <xs:enumeration value="910"/>
+      <xs:enumeration value="920"/>
+      <xs:enumeration value="930"/>
+      <xs:enumeration value="940"/>
+      <xs:enumeration value="950"/>
+      <xs:enumeration value="961"/>
+      <xs:enumeration value="962"/>
+      <xs:enumeration value="971"/>
+      <xs:enumeration value="972"/>
+      <xs:enumeration value="979"/>
+      <xs:enumeration value="980"/>
+      <xs:enumeration value="990"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoDetalhamentoFonte">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0000"/>
+      <xs:enumeration value="0040"/>
+      <xs:enumeration value="0060"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoTipoDocumentoFiscal">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="001"/>
+      <xs:enumeration value="002"/>
+      <xs:enumeration value="003"/>
+      <xs:enumeration value="004"/>
+      <xs:enumeration value="005"/>
+      <xs:enumeration value="006"/>
+      <xs:enumeration value="007"/>
+      <xs:enumeration value="008"/>
+      <xs:enumeration value="009"/>
+      <xs:enumeration value="010"/>
+      <xs:enumeration value="011"/>
+      <xs:enumeration value="012"/>
+      <xs:enumeration value="013"/>
+      <xs:enumeration value="014"/>
+      <xs:enumeration value="015"/>
+      <xs:enumeration value="016"/>
+      <xs:enumeration value="017"/>
+      <xs:enumeration value="018"/>
+      <xs:enumeration value="019"/>
+      <xs:enumeration value="020"/>
+      <xs:enumeration value="021"/>
+      <xs:enumeration value="022"/>
+      <xs:enumeration value="023"/>
+      <xs:enumeration value="024"/>
+      <xs:enumeration value="025"/>
+      <xs:enumeration value="026"/>
+      <xs:enumeration value="027"/>
+      <xs:enumeration value="028"/>
+      <xs:enumeration value="029"/>
+      <xs:enumeration value="030"/>
+      <xs:enumeration value="031"/>
+      <xs:enumeration value="032"/>
+      <xs:enumeration value="033"/>
+      <xs:enumeration value="034"/>
+      <xs:enumeration value="035"/>
+      <xs:enumeration value="036"/>
+      <xs:enumeration value="037"/>
+      <xs:enumeration value="038"/>
+      <xs:enumeration value="039"/>
+      <xs:enumeration value="040"/>
+      <xs:enumeration value="041"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoCodigoRetencao">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="001"/>
+      <xs:enumeration value="002"/>
+      <xs:enumeration value="003"/>
+      <xs:enumeration value="004"/>
+      <xs:enumeration value="005"/>
+      <xs:enumeration value="006"/>
+      <xs:enumeration value="007"/>
+      <xs:enumeration value="008"/>
+      <xs:enumeration value="009"/>
+      <xs:enumeration value="010"/>
+      <xs:enumeration value="011"/>
+      <xs:enumeration value="012"/>
+      <xs:enumeration value="013"/>
+      <xs:enumeration value="014"/>
+      <xs:enumeration value="015"/>
+      <xs:enumeration value="016"/>
+      <xs:enumeration value="017"/>
+      <xs:enumeration value="018"/>
+      <xs:enumeration value="019"/>
+      <xs:enumeration value="020"/>
+      <xs:enumeration value="021"/>
+      <xs:enumeration value="022"/>
+      <xs:enumeration value="023"/>
+      <xs:enumeration value="024"/>
+      <xs:enumeration value="025"/>
+      <xs:enumeration value="026"/>
+      <xs:enumeration value="027"/>
+      <xs:enumeration value="028"/>
+      <xs:enumeration value="029"/>
+      <xs:enumeration value="030"/>
+      <xs:enumeration value="031"/>
+      <xs:enumeration value="032"/>
+      <xs:enumeration value="033"/>
+      <xs:enumeration value="034"/>
+      <xs:enumeration value="035"/>
+      <xs:enumeration value="036"/>
+      <xs:enumeration value="900"/>
+      <xs:enumeration value="901"/>
+      <xs:enumeration value="902"/>
+      <xs:enumeration value="903"/>
+      <xs:enumeration value="904"/>
+      <xs:enumeration value="905"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

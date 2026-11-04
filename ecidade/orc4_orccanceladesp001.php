@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -163,7 +163,7 @@ if (isset($get->chavepesquisa) && $get->chavepesquisa != ''){
                  <?=@$Lc91_anousuorigem?>
                 </td> 
                  <td> 
-                 <?
+                 <?php
                    db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
                  ?>
 								</td>
@@ -173,7 +173,7 @@ if (isset($get->chavepesquisa) && $get->chavepesquisa != ''){
                  <?=@$Lc91_anousudestino?>
               </td> 
               <td> 
-                 <?
+                 <?php
                    db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
                  ?>
 							</td>
@@ -186,7 +186,7 @@ if (isset($get->chavepesquisa) && $get->chavepesquisa != ''){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -198,7 +198,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_duplicacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -209,7 +209,7 @@ function js_cancela(){
  return (confirm('Confirma o cancelamento?'));
 }
 </script>
-<?
+<?php
 if($db_opcao==22){
   echo "<script>document.form1.pesquisar.click();</script>";
 }

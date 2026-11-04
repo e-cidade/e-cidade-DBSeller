@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -47,13 +47,13 @@ $clrotulo->label("ed57_i_nummatr");
    <table border="0">
     <tr>
      <td nowrap title="<?=@$Ted60_i_turma?>">
-      <?db_ancora(@$Led60_i_turma,"js_pesquisaed60_i_turma();",$db_opcao==3?$db_opcao1:$db_opcao);?>
+      <?php db_ancora(@$Led60_i_turma,"js_pesquisaed60_i_turma();",$db_opcao==3?$db_opcao1:$db_opcao);?>
      </td>
      <td>
-      <?db_input('ed60_i_turma',10,$Ied60_i_turma,true,'text',3,'')?>
-      <?db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
+      <?php db_input('ed60_i_turma',10,$Ied60_i_turma,true,'text',3,'')?>
+      <?php db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
       <?=@$Led57_i_calendario?>
-      <?db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
+      <?php db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
@@ -61,11 +61,11 @@ $clrotulo->label("ed57_i_nummatr");
       <?=@$Led31_i_curso?>
      </td>
      <td>
-      <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+      <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
       <?=@$Led57_i_serie?>
-      <?db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
+      <?php db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
       <?=@$Led57_i_turno?>
-      <?db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
+      <?php db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
@@ -73,23 +73,23 @@ $clrotulo->label("ed57_i_nummatr");
       <?=@$Led57_i_numvagas?>
      </td>
      <td>
-      <?db_input('ed57_i_numvagas',10,@$Ied57_i_numvagas,true,'text',3,'')?>
+      <?php db_input('ed57_i_numvagas',10,@$Ied57_i_numvagas,true,'text',3,'')?>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <?=@$Led57_i_nummatr?>
-      <?db_input('ed57_i_nummatr',10,@$Ied57_i_nummatr,true,'text',3,'')?>
+      <?php db_input('ed57_i_nummatr',10,@$Ied57_i_nummatr,true,'text',3,'')?>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <b>Vagas Disponíveis:</b>
-      <?db_input('restantes',10,@$Irestantes,true,'text',3,'')?>
+      <?php db_input('restantes',10,@$Irestantes,true,'text',3,'')?>
      </td>
     </tr>
    </table>
    </fieldset>
   </td>
  </tr>
- <?if(isset($chavepesquisa) && $db_opcao==1){?>
+ <?php if(isset($chavepesquisa) && $db_opcao==1){?>
  <tr>
   <td valign="top">
-   <?
+   <?php
    $result = $clturma->sql_record($clturma->sql_query("","ed57_i_base as base,ed57_i_escola as escola,ed57_i_serie as serie,ed57_i_turno as turno,ed57_i_calendario as calendario",""," ed57_i_codigo = $ed60_i_turma"));
    db_fieldsmemory($result,0);
    $result = $clcalendario->sql_record($clcalendario->sql_query_file("","ed52_i_calendant",""," ed52_i_codigo = $calendario"));
@@ -100,7 +100,7 @@ $clrotulo->label("ed57_i_nummatr");
    ?>
    <b>Alunos em condição de matrícula:</b>
    <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:180px" multiple>
-    <?
+    <?php
     if($claluno->numrows>0){
      for($i=0;$i<$claluno->numrows;$i++) {
       db_fieldsmemory($result1,$i);
@@ -156,43 +156,43 @@ $clrotulo->label("ed57_i_nummatr");
    </table>
   </td>
  </tr>
- <?}?>
- <?if($db_opcao==3){
+ <?php }?>
+ <?php if($db_opcao==3){
  $excluir = "yes";?>
  <tr>
   <td width="15%" nowrap title="<?=@$Ted60_matricula?>" colspan="2">
    <?=@$Led60_matricula?>
-   <?db_input('ed60_matricula',10,$Ied60_matricula,true,'text',3,"")?>
+   <?php db_input('ed60_matricula',10,$Ied60_matricula,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted60_i_aluno?>">
-   <?db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_alunoexc(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_alunoexc(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed60_i_aluno',10,$Ied60_i_aluno,true,'text',$db_opcao1," onchange='js_pesquisaed60_i_alunoexc(false);'")?>
-   <?db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed60_i_aluno',10,$Ied60_i_aluno,true,'text',$db_opcao1," onchange='js_pesquisaed60_i_alunoexc(false);'")?>
+   <?php db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <script>
  js_tabulacaoforms("form1","ed60_i_aluno",true,1,"ed60_i_aluno",true);
  </script>
- <?}?>
- <?if($db_opcao==2){
+ <?php }?>
+ <?php if($db_opcao==2){
  $excluir = "no";?>
  <tr>
   <td width="15%" nowrap title="<?=@$Ted60_matricula?>" colspan="2">
    <?=@$Led60_matricula?>
-   <?db_input('ed60_matricula',10,$Ied60_matricula,true,'text',3,"")?>
+   <?php db_input('ed60_matricula',10,$Ied60_matricula,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted60_i_aluno?>">
-   <?db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_aluno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_aluno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed60_i_aluno',10,$Ied60_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed60_i_aluno(false);'")?>
-   <?db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed60_i_aluno',10,$Ied60_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed60_i_aluno(false);'")?>
+   <?php db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -200,7 +200,7 @@ $clrotulo->label("ed57_i_nummatr");
    <b>Situação Atual:</b>
   </td>
   <td>
-   <?db_input('ed60_c_situacaoatual',20,'',true,'text',3,'')?>
+   <?php db_input('ed60_c_situacaoatual',20,'',true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -208,7 +208,7 @@ $clrotulo->label("ed57_i_nummatr");
    <?=@$Led60_c_situacao?>
   </td>
   <td>
-   <?
+   <?php
    $x = array();
    db_select('ed60_c_situacao',$x,true,$db_opcao," disabled");
    ?>
@@ -217,25 +217,25 @@ $clrotulo->label("ed57_i_nummatr");
  <script>
  js_tabulacaoforms("form1","ed60_i_aluno",true,1,"ed60_i_aluno",true);
  </script>
- <?}?>
- <?if($db_opcao==1){?>
+ <?php }?>
+ <?php if($db_opcao==1){?>
  <tr>
   <td nowrap title="<?=@$Ted60_d_datamatricula?>" colspan="2">
    <?=@$Led60_d_datamatricula?>
-   <?db_inputdata('ed60_d_datamatricula',@$ed60_d_datamatricula_dia,@$ed60_d_datamatricula_mes,@$ed60_d_datamatricula_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed60_d_datamatricula',@$ed60_d_datamatricula_dia,@$ed60_d_datamatricula_mes,@$ed60_d_datamatricula_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
- <?}?>
- <?if($db_opcao==2){?>
+ <?php }?>
+ <?php if($db_opcao==2){?>
  <tr>
   <td nowrap title="<?=@$Ted60_d_datamodif?>">
    <?=@$Led60_d_datamodif?>
   </td>
   <td>
-   <?db_inputdata('ed60_d_datamodif',@$ed60_d_datamodif_dia,@$ed60_d_datamodif_mes,@$ed60_d_datamodif_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed60_d_datamodif',@$ed60_d_datamodif_dia,@$ed60_d_datamodif_mes,@$ed60_d_datamodif_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
- <?}?>
+ <?php }?>
  <tr>
   <td>
    <iframe name="verifmatricula" id="verifmatricula" src="" width="0" height="0" style="visibility:hidden;position:absolute;"></iframe>
@@ -331,7 +331,7 @@ function js_pesquisaed60_i_turma(){
 }
 function js_preenchepesquisaturma(chave){
  db_iframe_turma.hide();
- <?
+ <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  ?>
 }
@@ -348,10 +348,10 @@ function js_situacao(atual){
   F.options[i] = null;
  }
  if(atual=="MATRICULADO"){
-  opcoes = new Array("CANCELADO","FALECIDO","EVADIDO");
+  opcoes = new Array("CANCELADO","FALECIDO","EVADIDO", "ABANDONO ESCOLAR");
  }else if(atual=="CANCELADO"){
-  opcoes = new Array("MATRICULADO","FALECIDO","EVADIDO");
- }else if(atual=="EVADIDO"){
+  opcoes = new Array("MATRICULADO","FALECIDO","EVADIDO", "ABANDONO ESCOLAR");
+ }else if(atual=="EVADIDO" || atual=="ABANDONO ESCOLAR"){
   opcoes = new Array("MATRICULADO","FALECIDO","CANCELADO");
  }else if(atual=="FALECIDO"){
   opcoes = new Array("FALECIDO");
@@ -469,17 +469,17 @@ function js_desabexc(){
   }
  }
 }
-<?if($db_opcao==1 && isset($chavepesquisa)){?>
+<?php if($db_opcao==1 && isset($chavepesquisa)){?>
 if(document.form1.alunospossib.length==0){
  document.form1.incluirtodos.disabled = true;
 }
-<?}?>
+<?php }?>
 if(document.form1.ed57_i_numvagas.value-document.form1.ed57_i_nummatr.value<0){
  document.form1.restantes.value = 0;
 }else{
  document.form1.restantes.value = document.form1.ed57_i_numvagas.value-document.form1.ed57_i_nummatr.value;
 }
-<?if($db_opcao==1 && isset($chavepesquisa)){?>
+<?php if($db_opcao==1 && isset($chavepesquisa)){?>
 if(document.form1.restantes.value==0){
  alert("Não há vagas disponíveis nesta turma!");
  document.form1.incluirtodos.disabled = true;
@@ -488,5 +488,5 @@ if(document.form1.restantes.value==0){
  document.form1.alunospossib.style.background = "#CCCCCC";
  document.form1.alunos.style.background = "#CCCCCC";
 }
-<?}?>
+<?php }?>
 </script>

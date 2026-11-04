@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //include(modification("dbforms/db_classesgenericas.php"));
@@ -44,7 +44,7 @@ $result_servico = $clpcmater->sql_record($clpcmater->sql_query($pc16_codmater,"p
 
 $result_valorquant = $clsolicitem->sql_record($clsolicitem->sql_query_file($pc13_codigo,"pc11_vlrun,pc11_quant"));
 if($clsolicitem->numrows>0){
-  db_fieldsmemory($result_valorquant,0);  
+  db_fieldsmemory($result_valorquant,0);
 }
 $result_dotacvlqnt = $clpcdotac->sql_record($clpcdotac->sql_query_file($pc13_codigo,null,null,"sum(pc13_quant) as pc13_quantmax,sum(pc13_valor) as pc13_valormax"));
 if($clpcdotac->numrows>0){
@@ -69,11 +69,11 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
 }
 ?>
 <form name="form1">
-<? $pc13_anousu = db_getsession("DB_anousu"); ?>
-<? db_input('pc13_anousu',4,$Ipc13_anousu,true,'hidden',3); ?>
-<? db_input('pc11_numero',4,$Ipc11_numero,true,'hidden',3); ?>
-<? db_input('pc16_codmater',10,$Ipc16_codmater,true,'hidden',3); ?>
-<?
+<?php $pc13_anousu = db_getsession("DB_anousu"); ?>
+<?php db_input('pc13_anousu',4,$Ipc13_anousu,true,'hidden',3); ?>
+<?php db_input('pc11_numero',4,$Ipc11_numero,true,'hidden',3); ?>
+<?php db_input('pc16_codmater',10,$Ipc16_codmater,true,'hidden',3); ?>
+<?php
    $where_codmater = "";
    if(isset($pc16_codmater) && trim($pc16_codmater)!=""){
      $where_codmater = " pc01_codmater=$pc16_codmater ";
@@ -88,67 +88,67 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
    if(isset($pc13_codele) && trim($pc13_codele)!=""){
      $o56_elemento = $pc13_codele;
    }
-   
+
 ?>
 <center>
 <table height="20" border="0">
   <tr>
     <td nowrap title="<?=@$Tpc13_coddot?>">
-      <?db_ancora(@$Lpc13_coddot,"js_pesquisapc13_coddot(true);",($db_opcao!=1?"3":"1"));?>
+      <?php db_ancora(@$Lpc13_coddot,"js_pesquisapc13_coddot(true);",($db_opcao!=1?"3":"1"));?>
     </td>
     <td nowrap>
-      <? db_input('pc13_coddot',8,$Ipc13_coddot,true,'text',3); ?>
+      <?php db_input('pc13_coddot',8,$Ipc13_coddot,true,'text',3); ?>
     </td>
     <td nowrap title="<?=@$Tpc13_codigo?>">
-     <? db_ancora(@$Lpc11_codigo,"",3); ?>
+     <?php db_ancora(@$Lpc11_codigo,"",3); ?>
     </td>
     <td nowrap>
-     <? db_input('pc13_codigo',8,$Ipc13_codigo,true,'text',3); ?>
+     <?php db_input('pc13_codigo',8,$Ipc13_codigo,true,'text',3); ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc13_depto?>">
-       <?
+       <?php
        db_ancora(@$Lpc13_depto,"",3);
        ?>
     </td>
     <td nowrap colspan="3">
-       <?
+       <?php
        db_input('pc13_depto',8,$Ipc13_depto,true,'text',3)
        ?>
-       <?
+       <?php
        db_input('descrdepto',30,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
   </tr>
-       <?
+       <?php
        if($numrows_materele>0){
        ?>
   <tr>
     <td nowrap title="<?=@$To56_elemento?>">
-       <?
+       <?php
        db_ancora($Lo56_elemento,"",3);
        ?>
     </td>
     <td nowrap colspan="3">
-       <?
+       <?php
        db_select("o56_elemento",$dad_select,true,2);
        ?>
     </td>
   </tr>
-       <?}?>
+       <?php }?>
   <tr>
     <td nowrap title="Quantidade não incluída em dotações">
-     <? db_ancora("<b>Quant. disp.:</b>","",3); ?>
+     <?php db_ancora("<b>Quant. disp.:</b>","",3); ?>
     </td>
     <td nowrap>
-     <? db_input('pc13_quantmax',10,0,true,'text',3); ?>
+     <?php db_input('pc13_quantmax',10,0,true,'text',3); ?>
     </td>
     <td nowrap title="Valor não incluído em dotações">
-     <? db_ancora("<b>Val. disp.:</b>","",3); ?>
+     <?php db_ancora("<b>Val. disp.:</b>","",3); ?>
     </td>
     <td nowrap>
-     <? db_input('pc13_valormax',10,0,true,'text',3); ?>
+     <?php db_input('pc13_valormax',10,0,true,'text',3); ?>
     </td>
   </tr>
   <tr>
@@ -156,7 +156,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
       <?=@$Lpc13_quant?>
     </td>
     <td>
-      <?
+      <?php
       db_input('pc13_quant',10,$Ipc13_quant,true,'text',$db_opcao,"onchange='js_calcquant(this.value,this.name);'");
       ?>
     </td>
@@ -164,50 +164,50 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
       <?=@$Lpc13_valor?>
     </td>
     <td nowrap>
-      <?
-      db_input('pc13_valor',10,$Ipc13_valor,true,'text',3,"onchange='js_calcvalor(this.value,this.name);");      
+      <?php
+      db_input('pc13_valor',10,$Ipc13_valor,true,'text',3,"onchange='js_calcvalor(this.value,this.name);");
       ?>
-      <?
+      <?php
       if($db_opcao!=1){
         echo "<input name='novo' type='button' id='novo' value='Novo' onclick='document.location.href=\"com1_seldotac001.php?pc13_codigo=$pc13_codigo&pc11_numero=$pc11_numero&pc16_codmater=$pc16_codmater\"'>";
       }
       ?>
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>>
       <input name="voltar" type="button" id="db_opcao" value="Voltar" onClick='location.href="com1_liberasol001.php?codigo=<?=@$numero?>"' >
-      <?
+      <?php
       if($db_opcao!=1){
         echo "<input name='novo' type='button' id='novo' value='Novo' onclick='document.location.href=\"com1_seldotac001.php?pc13_codigo=$pc13_codigo&pc11_numero=$pc11_numero&pc16_codmater=$pc16_codmater\"'>";
       }
       ?>
     </td>
   </tr>
-  <?
+  <?php
   $result_gerareserva = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_gerareserva"));
   db_fieldsmemory($result_gerareserva,0);
   if($pc30_gerareserva=='t'){
-  ?>  
+  ?>
   <tr>
     <td nowrap><strong>Saldo da dotação: </strong></td>
     <td nowrap>
-       <?
+       <?php
        db_input('atual',10,0,true,'text',3)
        ?>
     </td>
     <td nowrap><strong>Saldo reservado: </strong></td>
     <td nowrap>
-       <?
+       <?php
        db_input('reservado',10,0,true,'text',3)
        ?>
     </td>
     <td nowrap><strong>Valor disponível: </strong></td>
     <td nowrap>
-       <?
+       <?php
        db_input('atual_menos_reservado',10,0,true,'text',3);
        ?>
-       <?
+       <?php
        if($db_opcao!=1 && isset($pc13_coddot) && isset($pc13_codigo)){
 	 $result_pesq_pcdotac = $clorcreservasol->sql_record($clorcreservasol->sql_query_orcreserva(null,null,"o82_codres","","o82_solicitem=$pc13_codigo and o80_coddot=$pc13_coddot and o80_anousu=$pc13_anousu"));
-	 if($clorcreservasol->numrows>0){	   
+	 if($clorcreservasol->numrows>0){
 	   echo "<strong>Saldo reservado</strong>";
 	 }else{
 	   echo "<strong>Saldo não reservado</strong>";
@@ -216,10 +216,10 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
        ?>
     </td>
   </tr>
-  <?
+  <?php
   }
   ?>
-  
+
 </table>
 <center>
 <table width="100%" height="20" border="0">
@@ -229,7 +229,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
       <table border = "0">
         <tr align="center">
 	  <td align="center">
-	  <?
+	  <?php
 	  $where_coddot = "";
 	  if(isset($pc13_coddot) && $pc13_coddot && !isset($incluir) && !isset($alterar) && !isset($excluir)){
 	    $where_coddot = " and pc13_coddot<>$pc13_coddot";
@@ -265,16 +265,16 @@ function js_dot(){
 }
 function js_pesquisapc13_coddot(mostra){
   qry= 'obriga_depto=sim';
-  <?if($numrows_materele>0){?>
+  <?php if($numrows_materele>0){?>
   qry+= '&elemento='+document.form1.o56_elemento.value;
-  <?}?>
+  <?php }?>
   qry+= '&departamento=<?=(db_getsession("DB_coddepto"))?>';
   qry+= '&retornadepart=true';
   if(mostra==true){
     qry+= '&funcao_js=parent.js_mostraorcdotacao1|o58_coddot';
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcdotacao','func_permorcdotacao.php?'+qry,'Pesquisa',true);
   }else{
-    qry+= '&pesquisa_chave='+document.form1.pc13_coddot; 
+    qry+= '&pesquisa_chave='+document.form1.pc13_coddot;
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcdotacao','func_permorcdotacao.php?'+qry+'&funcao_js=parent.js_mostraorcdotacao','Pesquisa',false);
   }
 }

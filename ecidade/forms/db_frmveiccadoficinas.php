@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lve27_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve27_codigo',10,$Ive27_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve27_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lve27_numcgm,"js_pesquisave27_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve27_numcgm',10,$Ive27_numcgm,true,'text',$db_opcao," onchange='js_pesquisave27_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiccadoficinas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("at01_nomecli");
        <?=@$Ldb19_sequen?>
     </td>
     <td> 
-<?
+<?php
 db_input('db19_sequen',6,$Idb19_sequen,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb19_codver?>">
-       <?
+       <?php
        db_ancora(@$Ldb19_codver,"js_pesquisadb19_codver(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db19_codver',6,$Idb19_codver,true,'text',$db_opcao," onchange='js_pesquisadb19_codver(false);'")
 ?>
-       <?
+       <?php
 db_input('db30_codversao',6,$Idb30_codversao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb19_codcli?>">
-       <?
+       <?php
        db_ancora(@$Ldb19_codcli,"js_pesquisadb19_codcli(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db19_codcli',4,$Idb19_codcli,true,'text',$db_opcao," onchange='js_pesquisadb19_codcli(false);'")
 ?>
-       <?
+       <?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        <?=@$Ldb19_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('db19_data',@$db19_data_dia,@$db19_data_mes,@$db19_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('db19_data',@$db19_data_dia,@$db19_data_mes,@$db19_data_ano,true,'t
        <?=@$Ldb19_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db19_obs',0,0,$Idb19_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_versaoclientes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

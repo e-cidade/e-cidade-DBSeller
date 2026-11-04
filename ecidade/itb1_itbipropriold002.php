@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($Alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbipropriold.php"));
 	?>
     </center>
@@ -71,7 +71,7 @@ if(isset($Alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($Alterar)){
   if($clitbipropriold->erro_status=="0"){
     $clitbipropriold->erro(true,false);

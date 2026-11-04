@@ -483,7 +483,7 @@ foreach ($aDadosAcordo as $oDadoAcordo) {
         $oPdf->Cell(63 ,$iAlt,substr(urldecode($oDadoAcordoItem->getDescricaoMaterial), 0, 32)     ,1,0,'L',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,$oDadoAcordoItem->getQuantidade                                      ,1,0,'R',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,$oDadoAcordoItem->getUnidade                                         ,1,0,'R',$iCorFundo);
-        $oPdf->Cell(28 ,$iAlt,trim(db_formatar($oDadoAcordoItem->getValorUnitario,'f'))            ,1,0,'R',$iCorFundo);
+        $oPdf->Cell(28 ,$iAlt,trim(db_formatar($oDadoAcordoItem->getValorUnitario,'f', " ", 0, 'e', 4))            ,1,0,'R',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,trim(db_formatar($oDadoAcordoItem->getValorTotal,'f'))               ,1,0,'R',$iCorFundo);
 
         $sVirgula  = '';

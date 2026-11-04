@@ -170,7 +170,7 @@ if ($oDaoParJuridico->numrows > 0) {
     $sSqlReparcelamento .= " where v07_numpre = $numpre and v07_instit = " . db_getsession('DB_instit');
 
     $rsReparc = db_query($sSqlReparcelamento);
-    $intNumrows = pg_numrows($rsReparc);
+    $intNumrows = pg_num_rows($rsReparc);
 
 
     if ($intNumrows > 0) {
@@ -198,7 +198,7 @@ if ($oDaoParJuridico->numrows > 0) {
               </tr>
               <tr>
                 <td align="right">Valor Total Parcelado:</td>
-                <td>&nbsp; <? echo db_formatar($v07_valor, 'f'); ?></td>
+                <td>&nbsp; <?php echo db_formatar($v07_valor, 'f'); ?></td>
               </tr>
               <tr>
                 <td align="right">Valor Entrada:</td>
@@ -246,7 +246,7 @@ if ($oDaoParJuridico->numrows > 0) {
               </tr>
               <tr>
                 <td align="right">Hist&oacute;rico:</td>
-                <td> &nbsp; <?php echo @$v07_hist; ?> Protocolo: <?php echo $oProtocolo->v27_protprocesso; ?></td>
+                <td> &nbsp; <?php echo @$v07_hist; ?> Protocolo: <?php echo $oProtocolo->numerodoprocesso; ?></td>
               </tr>
               <tr>
                 <td align="right">Matr&iacute;cula Im&oacute;vel:</td>
@@ -272,7 +272,7 @@ if ($oDaoParJuridico->numrows > 0) {
           </td>
         </tr>
       </table>
-        <?
+        <?php
     } else {
 
         if ($k03_tipo == 1) {
@@ -331,7 +331,12 @@ if ($oDaoParJuridico->numrows > 0) {
 
                                             // Débito tipo 20 - Saneamento Básico
                                             require_once(modification("forms/db_frmgerfinanctipo137.php"));
-                                        }
+                                        } else {
+                                          if ($k03_tipo == 11) {
+                                              // Débito tipo 11 - Saneamento Básico
+                                              require_once(modification("forms/db_frmgerfinanctipo8.php"));
+                                          }
+                                      }
                                     }
                                 }
                             }

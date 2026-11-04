@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -64,7 +64,7 @@ if (isset($emite)){
         if (isset($z01_numcgm)&&$z01_numcgm!=""){
             $clcorchequecgm->k12_numcgm = $z01_numcgm;
             $clcorchequecgm->k12_codcorcheque = $clcorcheque->k12_codcorcheque;
-            $clcorchequecgm->incluir($clcorcheque->k12_codcorcheque);            
+            $clcorchequecgm->incluir($clcorcheque->k12_codcorcheque);
             if ($clcorchequecgm->erro_status==0){
                 $sqlerro=true;
                 $erro_msg=$clcorchequecgm->erro_msg;
@@ -83,7 +83,7 @@ if (isset($emite)){
             echo "<script>parent.db_iframe_emite.hide();</script>";
             exit;
         }
-        
+
         if ($k12_nominal=='t'){
             $nome = $z01_nome;
         }else{
@@ -95,7 +95,7 @@ if (isset($emite)){
         if ($valor-$k12_vlrcheque>=0){
             $k12_vlrcheque = $valor-$k12_vlrcheque;
         }
-    }        
+    }
 }
 
 ?>
@@ -110,7 +110,7 @@ if (isset($emite)){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
  <table  align="center">
     <form name="form1" method="post" action="">
-    <?db_input('valor',10,"",true,'hidden',3);?>
+    <?php db_input('valor',10,"",true,'hidden',3);?>
       <br>
       <br>
       <br>
@@ -120,24 +120,24 @@ if (isset($emite)){
          <td >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
-      <tr>   
+      <tr>
         <td align="right">
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
       </td>
         <td colspan=3 align="left">
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',40,0,true,'text',3);
       ?>
-      </td>        
+      </td>
       </tr>
       <tr>
         <td align="right" >&nbsp;&nbsp;<strong>Banco:</strong>
         </td>
-        <td > 
-        <?
+        <td >
+        <?php
         $result_banco = $clbancos->sql_record($clbancos->sql_query());
         db_selectrecord("k12_banco",$result_banco,true,"text")
         ?>
@@ -145,41 +145,41 @@ if (isset($emite)){
         <td align="right"><strong>Agência:</strong>
         </td>
         <td >
-        <?db_input("k12_agencia",7,@$Ik12_agencia,true,"text",1);?>  &nbsp;</td>
+        <?php db_input("k12_agencia",7,@$Ik12_agencia,true,"text",1);?>  &nbsp;</td>
       </tr>
       <tr>
         <td align="right"><strong>Nominal:</strong>
         </td>
         <td >
-        <?
-        $xxx=array("f"=>"Não","t"=>"Sim"); 
+        <?php
+        $xxx=array("f"=>"Não","t"=>"Sim");
         db_select ("k12_nominal",$xxx,true,"text",1);
         ?>  &nbsp;&nbsp;</td>
         <td align="right"><strong>N° Cheque:</strong></td>
-        <td ><?db_input("k12_numero",22,"",true,"text",1);?> &nbsp;</td>
+        <td ><?php db_input("k12_numero",22,"",true,"text",1);?> &nbsp;</td>
       </tr>
       <tr>
         <td align="right" >&nbsp;&nbsp;<strong>Data:</strong>
         </td>
-        <td > 
-        <?
+        <td >
+        <?php
          if (!isset($k12_dtcheque_ano)){
             $k12_dtcheque_ano = date('Y',db_getsession("DB_datausu"));
             $k12_dtcheque_mes = date('m',db_getsession("DB_datausu"));
             $k12_dtcheque_dia = date('d',db_getsession("DB_datausu"));
-         }     
-        db_inputdata("k12_dtcheque",@$k12_dtcheque_dia,@$k12_dtcheque_mes,@$k12_dtcheque_ano,true,"text",1);        
+         }
+        db_inputdata("k12_dtcheque",@$k12_dtcheque_dia,@$k12_dtcheque_mes,@$k12_dtcheque_ano,true,"text",1);
         ?>
         </td>
         <td align="right"><strong>Valor:</strong>
         </td>
         <td >
-        <?
+        <?php
         if (!isset($k12_vlrcheque)){
-            $k12_vlrcheque = @$valor;            
+            $k12_vlrcheque = @$valor;
         }
         db_input("k12_vlrcheque",10,"",true,"text",1);?>  &nbsp;</td>
-              </tr>      
+              </tr>
       <tr>
         <td >&nbsp;</td>
         <td >&nbsp;</td>
@@ -187,7 +187,7 @@ if (isset($emite)){
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="4" align = "center"> 
+        <td colspan="4" align = "center">
           <input  name="emite" id="emite" type="submit" value="Emite Cheque" >
         </td>
       </tr>
@@ -210,10 +210,10 @@ function js_mostracgm(chave1,chave2){
   db_iframe_cgm.hide();
 }
 function js_mostracgm1(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.z01_numcgm.focus(); 
-    document.form1.z01_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.z01_numcgm.focus();
+    document.form1.z01_numcgm.value = '';
   }
 }
 </script>

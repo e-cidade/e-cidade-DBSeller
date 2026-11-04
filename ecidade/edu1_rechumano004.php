@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,19 +68,19 @@ if(isset($censouf1)){
   i--;
  }
  </script>
- <?
+ <?php
  if($censouf1==""){
   ?>
   <script>
   parent.document.form1.elements["<?=$campomunic?>"].options[0] = new Option("Selecione o Estado"," ");
   </script>
-  <?
+  <?php
  }else{
   ?>
   <script>
   parent.document.form1.elements["<?=$campomunic?>"].options[0] = new Option(""," ");
   </script>
-  <?
+  <?php
   $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $censouf1"));
   for($x=0;$x<$clcensomunic->numrows;$x++){
    db_fieldsmemory($result_munic,$x);
@@ -88,7 +88,7 @@ if(isset($censouf1)){
    <script>
    parent.document.form1.elements["<?=$campomunic?>"].options[<?=($x+1)?>] = new Option("<?=$ed261_c_nome?>",<?=$ed261_i_codigo?>);
    </script>
-   <?
+   <?php
   }
  }
 }
@@ -100,7 +100,7 @@ if(isset($nacionalidade1)){
   <script>
    parent.document.form1.ed20_i_nacionalidade.value = 1;
   </script>
-  <?
+  <?php
  }
 }
 ?>

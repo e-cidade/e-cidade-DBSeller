@@ -53,13 +53,13 @@ class cl_rhpessoalmovcontabancaria {
                  rh138_instit = int4 = Insituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhpessoalmovcontabancaria() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpessoalmovcontabancaria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_rhpessoalmovcontabancaria {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh138_sequencial = ($this->rh138_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh138_sequencial"]:$this->rh138_sequencial);
        $this->rh138_rhpessoalmov = ($this->rh138_rhpessoalmov == ""?@$GLOBALS["HTTP_POST_VARS"]["rh138_rhpessoalmov"]:$this->rh138_rhpessoalmov);
@@ -79,7 +79,7 @@ class cl_rhpessoalmovcontabancaria {
      }
    }
    // funcao para inclusao
-   function incluir ($rh138_sequencial){ 
+   public function incluir ($rh138_sequencial){ 
       $this->atualizacampos();
      if($this->rh138_rhpessoalmov == null ){ 
        $this->erro_sql = " Campo Pessoalmov não informado.";
@@ -196,7 +196,7 @@ class cl_rhpessoalmovcontabancaria {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($rh138_sequencial=null) { 
+   public function alterar ($rh138_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update rhpessoalmovcontabancaria set ";
      $virgula = "";
@@ -313,7 +313,7 @@ class cl_rhpessoalmovcontabancaria {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($rh138_sequencial=null,$dbwhere=null) { 
+   public function excluir ($rh138_sequencial=null,$dbwhere=null) { 
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -386,7 +386,7 @@ class cl_rhpessoalmovcontabancaria {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -409,7 +409,7 @@ class cl_rhpessoalmovcontabancaria {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $rh138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -450,7 +450,7 @@ class cl_rhpessoalmovcontabancaria {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $rh138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh138_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -484,7 +484,7 @@ class cl_rhpessoalmovcontabancaria {
      return $sql;
   }
 
-  function sql_query_retorno ( $rh138_rhpessoalmov=null,$campos="*",$ordem=null,$dbwhere="",$anonovo="",$mesnovo=""){ 
+  public function sql_query_retorno ( $rh138_rhpessoalmov=null,$campos="*",$ordem=null,$dbwhere="",$anonovo="",$mesnovo=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

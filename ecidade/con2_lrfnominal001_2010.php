@@ -73,7 +73,7 @@ if(db_getsession('DB_anousu') == 2017){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-        <?
+        <?php
         $clcriaabas->identifica = array("relatorio" => "Relatório",
                                         "notas"     => "Fonte/Notas Explicativas",
                                         "parametro" => "Parâmetros");
@@ -97,7 +97,7 @@ if(db_getsession('DB_anousu') == 2017){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

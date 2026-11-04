@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,13 +69,13 @@ class cl_traconduttaxi {
                  tr22_complem = varchar(255) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_traconduttaxi() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("traconduttaxi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_traconduttaxi {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tr22_id = ($this->tr22_id == ""?@$GLOBALS["HTTP_POST_VARS"]["tr22_id"]:$this->tr22_id);
        $this->tr22_numcgm = ($this->tr22_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["tr22_numcgm"]:$this->tr22_numcgm);
@@ -108,7 +108,7 @@ class cl_traconduttaxi {
      }
    }
    // funcao para inclusao
-   function incluir ($tr22_id){ 
+   public function incluir ($tr22_id){ 
       $this->atualizacampos();
      if($this->tr22_numcgm == null ){ 
        $this->erro_sql = " Campo CGM nao Informado.";
@@ -256,7 +256,7 @@ class cl_traconduttaxi {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($tr22_id=null) { 
+   public function alterar ($tr22_id=null) { 
       $this->atualizacampos();
      $sql = " update traconduttaxi set ";
      $virgula = "";
@@ -446,7 +446,7 @@ class cl_traconduttaxi {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($tr22_id=null,$dbwhere=null) { 
+   public function excluir ($tr22_id=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($tr22_id));
      }else{ 
@@ -516,7 +516,7 @@ class cl_traconduttaxi {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

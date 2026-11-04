@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -61,7 +61,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
       <?=$Led12_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
+      <?php db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
        <?=$Led232_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed232_c_descr",30,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
+      <?php db_input("ed232_c_descr",30,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -127,7 +127,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
       if (db_getsession("DB_itemmenu_acessado") != 8123) {
           $where .= " AND ed12_matrizcurricular is true";
       }
-      
+
       if (isset($chave_ed12_i_codigo) && (trim($chave_ed12_i_codigo)!="") ) {
         $sql = $cldisciplina->sql_query("", $campos, $sOrder," ed12_i_codigo = $chave_ed12_i_codigo AND ed12_i_codigo not in ($disciplinas)".$where);
       } else if(isset($chave_ed232_c_descr) && (trim($chave_ed232_c_descr)!="") ){
@@ -135,7 +135,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
       } else {
         $sql = $cldisciplina->sql_query("", $campos, $sOrder, " ed12_i_codigo not in ($disciplinas)".$where);
       }
-     
+
       db_lovrot($sql,15,"()","",$funcao_js);
     } else {
 

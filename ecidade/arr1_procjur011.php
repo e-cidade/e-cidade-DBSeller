@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,14 +123,14 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-	  <?
+	  <?php
 	    include(modification("forms/db_frmprocjur.php"));
 	  ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php
 if(isset($oPost->incluir)){
 	
   if ($lSqlErro){

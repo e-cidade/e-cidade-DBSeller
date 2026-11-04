@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -98,7 +98,7 @@ if(isset($atualizar)){
   $sqlerro = false;
   db_inicio_transacao();
 
-  $arr_valores = split("XX",$ords);
+  $arr_valores =explode("XX",$ords);
   $movimentoss = "";
   $virgulamovi = "";
   /*
@@ -136,7 +136,7 @@ if(isset($atualizar)){
 
   for($i=0;$i<sizeof($arr_valores);$i++) {
 
-    $arr_dados = split("-",$arr_valores[$i]);
+    $arr_dados =explode("-",$arr_valores[$i]);
     $agenda    = $arr_dados[0];
     $aordem    = $arr_dados[1];
     $numemp    = $arr_dados[2];
@@ -376,7 +376,7 @@ db_app::load("widgets/DBViewConfiguracaoEnvioTransmissao.js");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="450" align="left" valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php
     $oDaoEmpParametro = new cl_empparametro;
     $rsParam  = $oDaoEmpParametro->sql_record($oDaoEmpParametro->sql_query_file(db_getsession("DB_anousu")));
     $oParam   = db_utils::fieldsMemory($rsParam, 0);
@@ -390,7 +390,7 @@ db_app::load("widgets/DBViewConfiguracaoEnvioTransmissao.js");
   </tr>
 </table>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
@@ -403,7 +403,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     }
 </script>
 </html>
-<?
+<?php
 if(isset($atualizar) && $sqlerro==true){
   db_msgbox($erro_msg);
 }

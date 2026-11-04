@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -417,7 +417,7 @@ $anousu = db_getsession("DB_anousu");
   function js_mandadados(){
 
     tipoemp=document.form1.tipoemp.value;
-    <?
+    <?php
       if ($testdt=='com'){
     ?>
     jan = window.open('emp2_relempenho002.php?tipoemp='+tipoemp
@@ -438,7 +438,7 @@ $anousu = db_getsession("DB_anousu");
       +'&tipo='+document.form1.tipo.value
       +'&hist='+document.form1.hist.checked
       +'&mostraritem='+document.form1.mostraritem.checked,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    <?
+    <?php
       }else{
     ?>
     jan = window.open('emp2_relempenho002.php?tipoemp='+tipoemp
@@ -457,7 +457,7 @@ $anousu = db_getsession("DB_anousu");
       +'&tipo='+document.form1.tipo.value
       +'&hist='+document.form1.hist.checked
       +'&mostraritem='+document.form1.mostraritem.checked,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    <?
+    <?php
       }
     ?>
     jan.moveTo(0,0);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,12 +59,12 @@ if (isset($lBuscaCgs)) {
         <table width="100%">
           <tr>
             <td nowrap title="<?=@$Tfa50_i_cgsund?>">
-              <?
+              <?php
               db_ancora(@$Lfa50_i_cgsund, "js_pesquisafa50_i_cgsund(true);", $iOpcaoCgs);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('fa50_i_cgsund', 10, $Ifa50_i_cgsund, true, 'text', $iOpcaoCgs,
                        'onChange="js_pesquisafa50_i_cgsund(false);"');
               db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
@@ -88,12 +88,12 @@ if (isset($lBuscaCgs)) {
               ?>
             </td>
             <td nowrap title="<?=@$Ts152_d_dataconsulta?>" align="right">
-              <?
+              <?php
               echo $Ls152_d_dataconsulta;
               ?>
             </td>
             <td nowrap>
-              <?
+              <?php
               if (!isset($s152_d_dataconsulta)) {
                 
                 $aDataAtual = explode('/', date('d/m/Y', db_getsession('DB_datausu')));
@@ -117,7 +117,7 @@ if (isset($lBuscaCgs)) {
   <tr>
     <td valign="top" nowrap width="15%">
       <fieldset style='width: 75%;'> <legend><b>Dados Clínicos</b></legend>
-        <?
+        <?php
         db_input('statusHipertensao', 1, '', true, 'checkbox', $db_opcao, '');
         echo '<b>Hipertensão</b>';
         db_input('statusDiabetes', 1, '', true, 'checkbox', $db_opcao, '');
@@ -131,7 +131,7 @@ if (isset($lBuscaCgs)) {
                <?=@$Ls152_i_pressaosistolica?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_i_pressaosistolica', 3, $Is152_i_pressaosistolica, true, 'text', $db_opcao, "");
               ?>
             </td>
@@ -141,7 +141,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_i_pressaodiastolica?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_i_pressaodiastolica', 3, $Is152_i_pressaodiastolica, true, 'text', $db_opcao, "");
               ?>
             </td>
@@ -151,7 +151,7 @@ if (isset($lBuscaCgs)) {
     </td>
 
     <td rowspan="2" valign="top">
-      <?
+      <?php
       if ($lCadastrado && (!isset($fa50_i_tipo) || $fa50_i_tipo == 2)) {
 
         $sTituloFieldset = 'Intercorrências desde a última consulta referida pelo paciente';
@@ -171,7 +171,7 @@ if (isset($lBuscaCgs)) {
       ?>
       <fieldset style='width: 75%;'> <legend><b><?=$sTituloFieldset?></b></legend>
         <table>
-          <?
+          <?php
           for ($iCont = 0; $iCont < $oDaoFarComplicacoes->numrows; $iCont++) {
 
             $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -184,7 +184,7 @@ if (isset($lBuscaCgs)) {
               <?=$oDados->fa51_c_descr?>
             </td>
           </tr>
-          <?
+          <?php
           }
           ?>
           <tr style="display: none;">
@@ -197,7 +197,7 @@ if (isset($lBuscaCgs)) {
     </td>
 
     <td rowspan="2" valign="top">
-      <?
+      <?php
       $sSql = $oDaoFarMedicamentoHiperdia->sql_query_file(null, '*', 'fa43_c_codhiperdia',
                                                           "fa43_c_codhiperdia != '00'"
                                                          );
@@ -212,7 +212,7 @@ if (isset($lBuscaCgs)) {
               Não Medicamentoso
             </td>
           </tr>
-          <?
+          <?php
           $iNumSelects = 0;
           for ($iCont = 0; $iCont < $oDaoFarMedicamentoHiperdia->numrows; $iCont++) {
 
@@ -220,12 +220,12 @@ if (isset($lBuscaCgs)) {
           ?>
           <tr>
             <td nowrap>
-              <?
+              <?php
               echo $oDados->fa43_c_descr;
               ?>
             </td>
             <td nowrap>
-              <?
+              <?php
               if ($oDados->fa43_c_codhiperdia != '06') { // Todos os medicamentos menos insulina
 
                 echo '<select id="selMed'.$iNumSelects.'">';
@@ -261,7 +261,7 @@ if (isset($lBuscaCgs)) {
               ?>
             </td>
           </tr>
-          <?
+          <?php
           } // fim do for que gera as informações dos medicamentos
           ?>
           <tr>
@@ -292,7 +292,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_i_cintura?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_i_cintura', 3, $Is152_i_cintura, true, 'text', $db_opcao, "");
               ?>
             </td>
@@ -300,7 +300,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_n_temperatura?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_n_temperatura', 3, $Is152_n_temperatura, true, 'text', $db_opcao, "");
               ?>
             </td>
@@ -310,7 +310,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_n_peso?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_n_peso', 3, $Is152_n_peso, true, 'text', $db_opcao, 'onchange="js_imc();"');
               ?>
             </td>
@@ -318,7 +318,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_i_altura?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_i_altura', 3, $Is152_i_altura, true, 'text', $db_opcao, 'onchange="js_imc();"');
               ?>
             </td>
@@ -328,7 +328,7 @@ if (isset($lBuscaCgs)) {
               <b>IMC:</b>
             </td>
             <td colspan="3" nowrap>
-              <?
+              <?php
               db_input('imc', 3, '', true, 'text', 3, "");
               db_input('descrimc', 16, '', true, 'text', 3, "");
               ?>
@@ -340,7 +340,7 @@ if (isset($lBuscaCgs)) {
   </tr>
 
 
-  <?
+  <?php
   // No cadastro de paciente, não possuir informação de exames realizados
   $sStyle = $lCadastrado && (!isset($fa50_i_tipo) || $fa50_i_tipo == 2) ? '' : 'display: none;';
   ?>
@@ -349,7 +349,7 @@ if (isset($lBuscaCgs)) {
       <fieldset style='width: 75%;'> <legend><b>Exames Realizados</b></legend>
         <table>
           <tr>
-            <?
+            <?php
             $sSql = $oDaoFarExames->sql_query_file(null, '*', 'fa47_i_codigo');
             $rs   = $oDaoFarExames->sql_record($sSql);
             for ($iCont = 0; $iCont < $oDaoFarExames->numrows; $iCont++) {
@@ -362,7 +362,7 @@ if (isset($lBuscaCgs)) {
                   <?=isset($opcao) ? (in_array($oDados->fa47_i_codigo, $aExamesAltExc) ? 'checked' : '') : ''?>>
                 <?=$oDados->fa47_c_descr?>
               </td>
-            <?
+            <?php
             }
             ?>
           </tr>
@@ -381,7 +381,7 @@ if (isset($lBuscaCgs)) {
               <?=@$Ls152_i_glicemia?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('s152_i_glicemia', 3, $Is152_i_glicemia, true, 'text', $db_opcao, 
                        ' onkeypress="js_glicemia();" onkeyup="js_glicemia();" '
                       );
@@ -406,12 +406,12 @@ if (isset($lBuscaCgs)) {
         <table>
           <tr>
             <td nowrap title="<?=@$Ts152_i_cbosprofissional?>">
-              <?
+              <?php
               db_ancora(@$Lsd03_i_codigo, "js_pesquisaprofissional(true);", $db_opcao);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('sd03_i_codigo', 10, $Isd03_i_codigo, true, 'text', $db_opcao, 
                        " onchange='js_pesquisaprofissional(false);'"
                       );
@@ -421,12 +421,12 @@ if (isset($lBuscaCgs)) {
           </tr>
           <tr>
             <td nowrap title="<?=@$Ts152_i_cbosprofissional?>">
-              <?
+              <?php
               db_ancora(@$Lsd04_i_unidade, "js_pesquisaunidade(true);", $db_opcao);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('sd04_i_unidade', 10, $Isd04_i_unidade, true, 'text', $db_opcao, 
                        " onchange='js_pesquisaunidade(false);'"
                       );
@@ -437,12 +437,12 @@ if (isset($lBuscaCgs)) {
           </tr>
           <tr>
             <td nowrap title="<?=@$Ts152_i_cbosprofissional?>">
-              <?
+              <?php
               db_ancora(@$Ls152_i_cbosprofissional, '', 3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               $sSql = $oDaoFarCbos->sql_query_file();
               $rs   = $oDaoFarCbos->sql_record($sSql);
               $aX   = array();
@@ -475,9 +475,9 @@ if (isset($lBuscaCgs)) {
 <input name="limpar" type="button" id="limpar" value="Limpar" onclick="js_limpar();" 
   <?=isset($lDesabilita) ? 'disabled' : ''?>>
 <input name="fatorrisco" id="fatorrisco" type="button" value="Fatores de Risco" onclick="js_fatoresRisco();">
-<? if ($iModulo == 1) { ?>
+<?php if ($iModulo == 1) { ?>
 <input name="fechar" id="fechar" type="button" value="Fechar" onclick="parent.db_iframe_acompanhamento.hide();">
-<? } ?>
+<?php } ?>
 </form>
 
 <!-- Tabela do Grid -->
@@ -499,7 +499,7 @@ if (isset($lBuscaCgs)) {
 js_verificaHipertensaoDiabetes();
 oDBGridAcompanhamento = js_criaDataGrid();
 js_getAcompanhamentos();
-<?
+<?php
 if (isset($opcao) && $fa50_i_naomedicamentoso == 1) {
   echo "$('ckNaoMedicamentoso').click();";
 } elseif (isset($opcao) && $fa50_i_naomedicamentoso == 2) {
@@ -1152,7 +1152,7 @@ function js_altExc(iCodigo, sOperacao) {
 
 function js_limpar() {
 
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).
        "?iCgs='+\$F('fa50_i_cgsund')+'&iRetirada='+\$F('fa55_i_retirada')+".
        "'&lDesabilita=true';";

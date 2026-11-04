@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -103,7 +103,7 @@ $anousu = db_getsession("DB_anousu");
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
 <center>
     <form name="form1" method="post" action="con2_opercredito002.php" >
-      <?
+      <?php
       if ($anousu < 2010) {
         ?>
           <table  align="center">
@@ -113,7 +113,7 @@ $anousu = db_getsession("DB_anousu");
               </tr>
               <tr>
                   <td align="center" colspan="3">
-                    <? db_selinstit('',300,100); ?>
+                    <?php db_selinstit('',300,100); ?>
                   </td>
               </tr>
 
@@ -139,7 +139,7 @@ $anousu = db_getsession("DB_anousu");
                   </td>
               </tr>
           </table>
-        <?
+        <?php
       } else {
         ?>
           <table  align="center">
@@ -155,7 +155,7 @@ $anousu = db_getsession("DB_anousu");
                                       <b>Período:</b>
                                   </td>
                                   <td>
-                                    <?
+                                    <?php
                                     $aPeriodos = $oRelatorio->getPeriodos();
                                     $aListaPeriodos = array();
                                     $aListaPeriodos[0] = "Selecione";
@@ -178,7 +178,7 @@ $anousu = db_getsession("DB_anousu");
                   </td>
               </tr>
           </table>
-        <?
+        <?php
       }
       ?>
     </form>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $cldb_config = new cl_db_config;
 
@@ -86,7 +86,7 @@ $linha1 =  $this->objpdf->gety();
 $linha = $linha+10;
 $this->objpdf->sety($linha);
 $pos = $linha;
-$alt = 10; 
+$alt = 10;
 //	  $this->objpdf->roundedrect($coluna-2,$linha-1,187,20,2,'1234');
 $this->objpdf->SetFont('Arial','B',12);
 $this->objpdf->Ln(2);
@@ -150,9 +150,9 @@ if ($this->impobsativ == 't'){
 $linha += 16;
 $yyy = $this->objpdf->gety();
 $obs='';
-$this->objpdf->roundedrect($coluna-2,$pos+1,187,$alt+4,2,'1234');	  
+$this->objpdf->roundedrect($coluna-2,$pos+1,187,$alt+4,2,'1234');
 
-//========================= ATIVIDADE SECUNDARIAS ========================================================================================	  
+//========================= ATIVIDADE SECUNDARIAS ========================================================================================
 $this->objpdf->setx(15);
 $yyy = $this->objpdf->gety();
 $linha = $this->objpdf->gety() + 5;
@@ -163,7 +163,7 @@ $y=$linha+1;
 //========================================================================================================================================================================
 if ($num_outras >0) {
   $x=$x+4;
-  reset($this->outrasativs); 
+  reset($this->outrasativs);
   $this->objpdf->Ln(4);
   $this->objpdf->setx(15);
   $yyy = $this->objpdf->gety() + 7;
@@ -176,7 +176,7 @@ if ($num_outras >0) {
   //========================================================================================================================================================================
   //define em qual celula vai quebrar a linha
   $iNumColuna = 0;
-  $iQuebra    = 0;      
+  $iQuebra    = 0;
   $this->objpdf->setx(15);
 
   foreach ($this->aCodigosCnae as $iCodCnae ) {
@@ -187,22 +187,22 @@ if ($num_outras >0) {
     if( $iQuebra == 1 ) {
       $this->objpdf->setx(15);
     }
-    
+
     if( $iNumColuna == 6 ) {
       $iQuebra    = 1;
       $iNumColuna = 0;
     } else {
-      $iQuebra    = 0;      
+      $iQuebra    = 0;
     }
 
     $yyyatual = $this->objpdf->gety();
-    if  ($yyyatual >= 200){ 
+    if  ($yyyatual >= 200){
       break;
-    }  
+    }
 
   }
   $this->objpdf->SetFont('Arial','B',10);
-  //=====================================================================================================================================================	   
+  //=====================================================================================================================================================
   $this->objpdf->roundedrect($coluna-2,$y,187,31,2,'1234'); // descricao da atividade secundaria
   $y = $y + 35;
 }
@@ -224,7 +224,7 @@ if(isset($this->impobslanc) && $this->impobslanc == 't'){
   }
 }
 $data= date("Y-m-d",db_getsession("DB_datausu"));
-$dataex = split("-",$data);
+$dataex = explode("-",$data);
 $dia= $dataex[2];
 $mes= $dataex[1];
 $ano= $dataex[0];
@@ -237,16 +237,16 @@ $this->objpdf->setfont('arial','',9);
 
 //  $this->objpdf->SetXY($coluna,264);
 
-/******************************************** ASSINATURAS ************************************************************************************/	
+/******************************************** ASSINATURAS ************************************************************************************/
 //select * from where tipodoc = 1010 and db02_descr = 'ASSINATURAS_CODIGOPHP';
 //se achou da eval no texto, senao faz como atualmente...
 $sqlass = "
 select *
-from db_documento 
+from db_documento
 inner join db_docparag on db03_docum = db04_docum
 inner join db_tipodoc on db08_codigo  = db03_tipodoc
-inner join db_paragrafo on db04_idparag = db02_idparag 
-where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")." 
+inner join db_paragrafo on db04_idparag = db02_idparag
+where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")."
 and db02_descr = 'ASSINATURAS_CODIGOPHP' ";
 //die($sqlass);
 $resultass = db_query($sqlass);
@@ -259,12 +259,12 @@ if ($linhasass>0){
   // QUANDO NÃO TIVER "ASSINATURAS_CODIGOPHP" CADASTRADAS NA DB_DOCUMENTOS pegar o modo antigo.
   //  for pegando as assinaturas do alvara
   $sqlparag = "select *
-    from db_documento 
+    from db_documento
     inner join db_docparag on db03_docum = db04_docum
     inner join db_tipodoc on db08_codigo  = db03_tipodoc
-    inner join db_paragrafo on db04_idparag = db02_idparag 
-    where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")." 
-    and db02_descr ilike 'assinatura_%' 
+    inner join db_paragrafo on db04_idparag = db02_idparag
+    where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")."
+    and db02_descr ilike 'assinatura_%'
     order by db04_ordem ";
   $resparag = db_query($sqlparag);
 
@@ -290,7 +290,7 @@ if ($linhasass>0){
       $linha += 10;
     }
   }
-}	
+}
 $this->objpdf->SetAutoPageBreak('on',0);
 
 ?>

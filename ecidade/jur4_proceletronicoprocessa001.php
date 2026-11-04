@@ -1,4 +1,4 @@
-<?
+<?php
 set_time_limit(0);
 require_once ("libs/db_stdlib.php");
 require_once ("libs/db_conecta.php");
@@ -56,10 +56,10 @@ db_app::load("strings.js");
       <table class="form-container">
         <tr>
           <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-            <?db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
+            <?php db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
               db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -70,17 +70,17 @@ db_app::load("strings.js");
 	    <?=$Lk31_situacao?>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("k31_situacao",  40, $Ik31_situacao,  true, "text", 3, "");
             ?>
 	    <input type="button" id="detalhes"  value="Exibir Detalhes da Lista" onclick="js_pesquisadetalhes();">
           </td>
         </tr>
       </table>
-    </fieldset> 
+    </fieldset>
     <input type="button" id="processar"  value="Processar" onclick="js_processar();">
   </form>
-<? 
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
@@ -94,27 +94,27 @@ function js_processar(){
 
   var iLista                             = $F('k60_codigo');
   var oParametros                        = new Object();
-  oParametros.exec                       = 'processar';  
-  oParametros.iLista                     = iLista;   
+  oParametros.exec                       = 'processar';
+  oParametros.iLista                     = iLista;
   js_divCarregando(_M('tributario.juridico.jur4_certidarqremessa001.processando_arquivo'),'msgBox');
-   
+
    var oAjaxLista  = new Ajax.Request(sUrlRPC,
                                              {method: "post",
                                               parameters:'json='+Object.toJSON(oParametros),
                                               onComplete: js_retornoProcessar
-                                             }); 
+                                             });
 
 }
 function js_retornoProcessar(oAjax){
 
     js_removeObj('msgBox');
     var oRetorno = JSON.parse(oAjax.responseText);
-    
+
     if (oRetorno.status == 1) {
-     
+
       alert(oRetorno.message);
       location.href = "jur4_proceletronicoprocessa001.php";
-    
+
     }
 
 }

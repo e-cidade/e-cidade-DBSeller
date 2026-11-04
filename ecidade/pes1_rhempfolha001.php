@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -519,19 +519,19 @@ if(isset($confirma) || isset($gera)){
 <table align="center">
   <tr>
     <td>
-    <?
+    <?php
     include(modification("forms/db_frmrhempfolha.php"));
     ?>
     </td>
   </tr>
   <tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($gera) || isset($confirma)){
   if($passa == true && !isset($confirma)){
   echo "

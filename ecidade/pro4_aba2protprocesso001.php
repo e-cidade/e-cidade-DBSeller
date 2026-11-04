@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -142,7 +142,7 @@ if (isset($oPost->opcao) && $oPost->opcao == 'excluir') {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-      <?
+      <?php
          include(modification("forms/db_frmprotprocessoapensados.php"));
       ?>
     </td>
@@ -151,7 +151,7 @@ if (isset($oPost->opcao) && $oPost->opcao == 'excluir') {
 </center>
 </form>
 </body>
-<?
+<?php
 if (isset($oPost->opcao) && $oPost->opcao != "") {
    if ( isset($sMsgErro) && $lSqlErro == true) {
       db_msgbox($sMsgErro);

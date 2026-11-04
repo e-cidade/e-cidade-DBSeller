@@ -47,10 +47,13 @@ if (isset($oPost->lancar)) {
     $bErro              = true;        
     
     db_inicio_transacao();
-    
     $oCancelamentoISSQNVariavel = new CancelamentoISSQNVariavel();
     $oCancelamentoISSQNVariavel->setObservacao($oPost->k00_histtxt);
-    $oCancelamentoISSQNVariavel->setEmpresa(new Empresa($oPost->inscricao));
+    if($oPost->inscricao){
+      $oCancelamentoISSQNVariavel->setEmpresa(new Empresa($oPost->inscricao));
+    } else if($oPost->z_numcgm){
+      $oCancelamentoISSQNVariavel->setEmpresa(new Empresa(null,$oPost->z_numcgm));
+    }
     
     if (count($aItensIssVarSemMov) > 0) {
       
@@ -61,9 +64,9 @@ if (isset($oPost->lancar)) {
         $oCancelamentoISSQNVariavel->addDebito($iNumpre, $iNumpar);
       }
     }
-    
+
     $bSucesso = $oCancelamentoISSQNVariavel->incluirCancelamento();
-    
+
     db_fim_transacao( false );
   } catch ( ParameterException $oErro ) {
 

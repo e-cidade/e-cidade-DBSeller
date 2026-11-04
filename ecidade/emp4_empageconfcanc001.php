@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,22 +55,22 @@ if(isset($atualizar)){
 
   db_inicio_transacao();
   $sqlerro=false;
-  
-    
 
-    $arr =  split("XX",$movs);
+
+
+    $arr = explode("XX",$movs);
     $tot_valor ='';
     for($i=0; $i<count($arr); $i++ ){
-       $mov = $arr[$i];  
-       //--------------------------------- 
+       $mov = $arr[$i];
+       //---------------------------------
        //inclui na tabela empageconfchecanc
          //echo "<br><br>".($clempageconfche->sql_query_file(null,"*","","e91_codmov=$mov"));
          $result = $clempageconfche->sql_record($clempageconfche->sql_query_file(null,"*","","e91_codmov=$mov"));
 	 $numrows = $clempageconfche->numrows;
 	 if($numrows > 0){
            for($t=0; $t<$numrows; $t++){
-	      db_fieldsmemory($result,$t); 
-              
+	      db_fieldsmemory($result,$t);
+
 	      // echo "<BR><BR>".($clcorconf->sql_query_file(null,"k12_codmov","","k12_codmov=$e91_codcheque"));
 	      $clcorconf->sql_record($clcorconf->sql_query_file(null, null, null,"k12_codmov","","k12_codmov=$e91_codcheque and k12_ativo is true"));
 	      if($clcorconf->numrows>0){
@@ -87,20 +87,20 @@ if(isset($atualizar)){
 		$erro_msg = $clempageconfchecanc->erro_msg;
 		if($clempageconfchecanc->erro_status==0){
 		  $sqlerro = true;
-		}     
-              }		
+		}
+              }
 	   }
            if($sqlerro == false){
 	     $clempageconfche->excluir(null,"e91_codmov=$mov");
 	     $erro_msg = $clempageconfche->erro_msg;
 	     if($clempageconfche->erro_status==0){
 		 $sqlerro = true;
-	     }     
-	  }   
-         }  
-        //-------------------------------------- 
-       
-       
+	     }
+	  }
+         }
+        //--------------------------------------
+
+
        //-----------------------------------
        //inclui na tabela empageconfcanc
        if($sqlerro==false){
@@ -114,7 +114,7 @@ if(isset($atualizar)){
    	    db_fieldsmemory($result,0);
 	  }else{
 	    $e90_codgera = '0';
-	  }  
+	  }
 
 	 $clempageconfcanc->e88_codmov  = $mov;
 	 $clempageconfcanc->e88_data    = "$e86_data";
@@ -126,10 +126,10 @@ if(isset($atualizar)){
 	 if($clempageconfcanc->erro_status==0){
 	 	//db_msgbox($erro_msg);
 	       $sqlerro = true;
-	 }     
-       }  
+	 }
+       }
        //-----------------------------------
-       
+
        //-----------------------------------
        if($sqlerro==false){
           $result = $clempageconfgera->sql_record($clempageconfgera->sql_query_file(null,null,"e90_codmov as movimento,e90_codgera as gerado","","e90_codmov=$mov and e90_correto='t'"));
@@ -139,11 +139,11 @@ if(isset($atualizar)){
 	     $erro_msg = $clempageconfgera->erro_msg;
 	     if($clempageconfgera->erro_status==0){
 	        $sqlerro = true;
-	     }     
-	  }   
-       }  
-       //------------------------------------------------ 
-      
+	     }
+	  }
+       }
+       //------------------------------------------------
+
        //-------------------------------------
        //exclui no empageconf
        if($sqlerro==false){
@@ -151,26 +151,26 @@ if(isset($atualizar)){
 	 $erro_msg = $clempageconf->erro_msg;
 	 if($clempageconf->erro_status==0){
 	       $sqlerro = true;
-	 }     
-       }  
+	 }
+       }
        //---------------
        /**
         * Exlcuimos o movimento da ordem de pagamento;
-        * 
+        *
         */
-       
+
       $sSqlEmpAgeNota= $oDaoEmpAgeNota->sql_query_file(null,"*",null,"e43_empagemov= {$mov}");
-      $rsEmpageNota  = $oDaoEmpAgeNota->sql_record($sSqlEmpAgeNota); 
+      $rsEmpageNota  = $oDaoEmpAgeNota->sql_record($sSqlEmpAgeNota);
       if ($oDaoEmpAgeNota->numrows  > 0) {
-        
+
         $oDaoEmpAgeNota->excluir(null,"e43_empagemov = {$mov}");
         if ($oDaoEmpAgeNota->erro_status == 0) {
-      
+
           $sqlerro  = true;
-          $erro_msg = $oDaoEmpAgeNota->erro_msg; 
+          $erro_msg = $oDaoEmpAgeNota->erro_msg;
         }
       }
-   }  
+   }
   db_fim_transacao($sqlerro);
 
 
@@ -192,16 +192,16 @@ function js_atualizar(){
 	if(canc.document.form1){
           obj = canc.document.form1;
 	  var coluna='';
-	  var sep=''; 
+	  var sep='';
 	  for(i=0; i<obj.length; i++){
-	    nome = obj[i].name.substr(0,5);  
-	    
+	    nome = obj[i].name.substr(0,5);
+
 	    if(nome=="CHECK" && obj[i].checked==true){
 	      ord = obj[i].name.substring(6);
 	      coluna += sep+obj[i].value;
 	      sep= "XX";
 	    }
-	  } 
+	  }
 	  if(coluna==''){
 	    alert("Selecione um movimento!");
 	    return false;
@@ -210,7 +210,7 @@ function js_atualizar(){
 	  return true;
         }else{
 	  return false;
-	}	  
+	}
 	//return coluna ;
 
 }
@@ -228,8 +228,8 @@ function js_pesquisar_slip(){
 <form name='form1' method="post">
 <table width="765" border="0" cellspacing="0" cellpadding="0">
   <?=db_input('movs',10,'',true,'hidden',10);?>
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
       <table>
 	<tr>
 	   <td colspan='2' align='center'>
@@ -239,12 +239,12 @@ function js_pesquisar_slip(){
 		<input name="fechar" type="button" id="pesquisar" value="Fechar" onclick='parent.db_iframe_cheque.hide();'>
 	    <b>Total: </b>
 	     <?=db_input('total',10,'',true,'text',3)?>
-	   </td>  
-	</tr>     
+	   </td>
+	</tr>
 	<tr>
 	  <td>
            <iframe name="canc"  src="emp4_empageconfcanc002.php?e80_codage=<?=$e80_codage?>"  width="755" height="340" marginwidth="0" marginheight="0" frameborder="0">
-              
+
            </iframe>
 	  </td>
 	</tr>
@@ -260,12 +260,12 @@ function js_pesquisar_slip(){
 </form
 </body>
 </html>
-<?
+<?php
 if(isset($atualizar)){
   if($sqlerro == true){
     db_msgbox($erro_msg);
   }else{
-           
+
   echo "<script>";
 echo "           parent.location.href='emp4_empage001.php?e80_codage=$e80_codage';\n";
   echo "</script>";
@@ -274,7 +274,7 @@ echo "           parent.location.href='emp4_empage001.php?e80_codage=$e80_codage
   db_msgbox($erro_msg);
   echo "<script>";
   echo "  parent.db_iframe_cheque.hide();";
-  
+
   echo "</script>";
   */
   }

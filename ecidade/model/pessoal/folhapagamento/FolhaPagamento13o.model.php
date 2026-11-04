@@ -190,7 +190,7 @@ class FolhaPagamento13o extends FolhaPagamento {
           $oFolha13oSalario->setCompetenciaFolha($oCompetencia);
           $oFolha13oSalario->setCompetenciaReferencia($oCompetencia);
           $oFolha13oSalario->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit')));
-          $oFolha13oSalario->setDescricao("Folha Rescisão - {$oCompetencia->getAno()}/{$oCompetencia->getMes()}");
+          $oFolha13oSalario->setDescricao("Folha 13 salario - {$oCompetencia->getAno()}/{$oCompetencia->getMes()}");
           $oFolha13oSalario->salvar();
 
           /**

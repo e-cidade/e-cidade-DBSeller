@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,30 +39,30 @@ $clrotulo->label("k01_descr");
   <tr>
     <td nowrap title="<?=@$Tq60_receit?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lq60_receit,"js_pesquisaq60_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q60_receit',10,$Iq60_receit,true,'text',$db_opcao," onchange='js_pesquisaq60_receit(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq60_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lq60_tipo,"js_pesquisaq60_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q60_tipo',4,$Iq60_tipo,true,'text',$db_opcao," onchange='js_pesquisaq60_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -72,37 +72,37 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        <?=@$Lq60_aliq?>
     </td>
     <td> 
-<?
+<?php
 db_input('q60_aliq',4,$Iq60_aliq,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq60_codvencvar?>">
-       <?
+       <?php
        db_ancora(@$Lq60_codvencvar,"js_pesquisaq60_codvencvar(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q60_codvencvar',4,$Iq60_codvencvar,true,'text',$db_opcao," onchange='js_pesquisaq60_codvencvar(false);'")
 ?>
-       <?
+       <?php
 db_input('q92_descr',40,$Iq92_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq60_histsemmov?>">
-       <?
+       <?php
        db_ancora(@$Lq60_histsemmov,"js_pesquisaq60_histsemmov(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q60_histsemmov',4,$Iq60_histsemmov,true,'text',$db_opcao," onchange='js_pesquisaq60_histsemmov(false);'")
 ?>
-       <?
+       <?php
 db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
@@ -112,7 +112,7 @@ db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
        <?=@$Lq60_impcodativ?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('q60_impcodativ',$x,true,$db_opcao,"");
 ?>
@@ -123,7 +123,7 @@ db_select('q60_impcodativ',$x,true,$db_opcao,"");
        <?=@$Lq60_impobsativ?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('q60_impobsativ',$x,true,$db_opcao,"");
 ?>
@@ -134,7 +134,7 @@ db_select('q60_impobsativ',$x,true,$db_opcao,"");
        <?=@$Lq60_impdatas?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('q60_impdatas',$x,true,$db_opcao,"");
 ?>
@@ -145,7 +145,7 @@ db_select('q60_impdatas',$x,true,$db_opcao,"");
        <?=@$Lq60_impobsissqn?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('q60_impobsissqn',$x,true,$db_opcao,"");
 ?>
@@ -254,7 +254,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parissqn.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Compras
 //CLASSE DA ENTIDADE pcfornecertif
-class cl_pcfornecertif { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc74_codigo = 0; 
-   var $pc74_pcforne = 0; 
-   var $pc74_pctipocertif = 0; 
-   var $pc74_solicitante = null; 
-   var $pc74_usuario = 0; 
-   var $pc74_data_dia = null; 
-   var $pc74_data_mes = null; 
-   var $pc74_data_ano = null; 
-   var $pc74_data = null; 
-   var $pc74_hora = null; 
-   var $pc74_coddepto = 0; 
-   var $pc74_validade_dia = null; 
-   var $pc74_validade_mes = null; 
-   var $pc74_validade_ano = null; 
-   var $pc74_validade = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pcfornecertif {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc74_codigo = 0;
+   var $pc74_pcforne = 0;
+   var $pc74_pctipocertif = 0;
+   var $pc74_solicitante = null;
+   var $pc74_usuario = 0;
+   var $pc74_data_dia = null;
+   var $pc74_data_mes = null;
+   var $pc74_data_ano = null;
+   var $pc74_data = null;
+   var $pc74_hora = null;
+   var $pc74_coddepto = 0;
+   var $pc74_validade_dia = null;
+   var $pc74_validade_mes = null;
+   var $pc74_validade_ano = null;
+   var $pc74_validade = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc74_codigo = int4 = Cod. Certificado 
-                 pc74_pcforne = int4 = Fornecedor 
-                 pc74_pctipocertif = int4 = Cod. Tipo Certificado 
-                 pc74_solicitante = varchar(40) = Solicitante 
-                 pc74_usuario = int4 = Cod. Usuário 
-                 pc74_data = date = Data 
-                 pc74_hora = char(5) = Hora 
-                 pc74_coddepto = int4 = Departamento 
-                 pc74_validade = date = Data de Validade 
+                 pc74_codigo = int4 = Cod. Certificado
+                 pc74_pcforne = int4 = Fornecedor
+                 pc74_pctipocertif = int4 = Cod. Tipo Certificado
+                 pc74_solicitante = varchar(40) = Solicitante
+                 pc74_usuario = int4 = Cod. Usuário
+                 pc74_data = date = Data
+                 pc74_hora = char(5) = Hora
+                 pc74_coddepto = int4 = Departamento
+                 pc74_validade = date = Data de Validade
                  ";
-   //funcao construtor da classe 
-   function cl_pcfornecertif() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcfornecertif"); 
+     $this->rotulo = new rotulo("pcfornecertif");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_pcfornecertif {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc74_codigo = ($this->pc74_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["pc74_codigo"]:$this->pc74_codigo);
        $this->pc74_pcforne = ($this->pc74_pcforne == ""?@$GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"]:$this->pc74_pcforne);
@@ -115,9 +115,9 @@ class cl_pcfornecertif {
      }
    }
    // funcao para inclusao
-   function incluir ($pc74_codigo){ 
+   public function incluir ($pc74_codigo){
       $this->atualizacampos();
-     if($this->pc74_pcforne == null ){ 
+     if($this->pc74_pcforne == null ){
        $this->erro_sql = " Campo Fornecedor nao Informado.";
        $this->erro_campo = "pc74_pcforne";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc74_pctipocertif == null ){ 
+     if($this->pc74_pctipocertif == null ){
        $this->erro_sql = " Campo Cod. Tipo Certificado nao Informado.";
        $this->erro_campo = "pc74_pctipocertif";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc74_usuario == null ){ 
+     if($this->pc74_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "pc74_usuario";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc74_data == null ){ 
+     if($this->pc74_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "pc74_data_dia";
        $this->erro_banco = "";
@@ -153,7 +153,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc74_hora == null ){ 
+     if($this->pc74_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "pc74_hora";
        $this->erro_banco = "";
@@ -162,7 +162,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc74_coddepto == null ){ 
+     if($this->pc74_coddepto == null ){
        $this->erro_sql = " Campo Departamento nao Informado.";
        $this->erro_campo = "pc74_coddepto";
        $this->erro_banco = "";
@@ -171,7 +171,7 @@ class cl_pcfornecertif {
        $this->erro_status = "0";
        return false;
      }
-/*     if($this->pc74_validade == null ){ 
+/*     if($this->pc74_validade == null ){
        $this->erro_sql = " Campo Data de Validade nao Informado.";
        $this->erro_campo = "pc74_validade_dia";
        $this->erro_banco = "";
@@ -181,16 +181,16 @@ class cl_pcfornecertif {
        return false;
      }*/
      if($pc74_codigo == "" || $pc74_codigo == null ){
-       $result = db_query("select nextval('pcfornecertif_pc74_codigo_seq')"); 
+       $result = db_query("select nextval('pcfornecertif_pc74_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pcfornecertif_pc74_codigo_seq do campo: pc74_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pcfornecertif_pc74_codigo_seq do campo: pc74_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc74_codigo = pg_result($result,0,0); 
+       $this->pc74_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcfornecertif_pc74_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc74_codigo)){
@@ -201,10 +201,10 @@ class cl_pcfornecertif {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc74_codigo = $pc74_codigo; 
+         $this->pc74_codigo = $pc74_codigo;
        }
      }
-     if(($this->pc74_codigo == null) || ($this->pc74_codigo == "") ){ 
+     if(($this->pc74_codigo == null) || ($this->pc74_codigo == "") ){
        $this->erro_sql = " Campo pc74_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -213,29 +213,29 @@ class cl_pcfornecertif {
        return false;
      }
      $sql = "insert into pcfornecertif(
-                                       pc74_codigo 
-                                      ,pc74_pcforne 
-                                      ,pc74_pctipocertif 
-                                      ,pc74_solicitante 
-                                      ,pc74_usuario 
-                                      ,pc74_data 
-                                      ,pc74_hora 
-                                      ,pc74_coddepto 
-                                      ,pc74_validade 
+                                       pc74_codigo
+                                      ,pc74_pcforne
+                                      ,pc74_pctipocertif
+                                      ,pc74_solicitante
+                                      ,pc74_usuario
+                                      ,pc74_data
+                                      ,pc74_hora
+                                      ,pc74_coddepto
+                                      ,pc74_validade
                        )
                 values (
-                                $this->pc74_codigo 
-                               ,$this->pc74_pcforne 
-                               ,$this->pc74_pctipocertif 
-                               ,'$this->pc74_solicitante' 
-                               ,$this->pc74_usuario 
-                               ,".($this->pc74_data == "null" || $this->pc74_data == ""?"null":"'".$this->pc74_data."'")." 
-                               ,'$this->pc74_hora' 
-                               ,$this->pc74_coddepto 
-                               ,".($this->pc74_validade == "null" || $this->pc74_validade == ""?"null":"'".$this->pc74_validade."'")." 
+                                $this->pc74_codigo
+                               ,$this->pc74_pcforne
+                               ,$this->pc74_pctipocertif
+                               ,'$this->pc74_solicitante'
+                               ,$this->pc74_usuario
+                               ,".($this->pc74_data == "null" || $this->pc74_data == ""?"null":"'".$this->pc74_data."'")."
+                               ,'$this->pc74_hora'
+                               ,$this->pc74_coddepto
+                               ,".($this->pc74_validade == "null" || $this->pc74_validade == ""?"null":"'".$this->pc74_validade."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "certificados de um fornecedor ($this->pc74_codigo) nao Incluído. Inclusao Abortada.";
@@ -275,16 +275,16 @@ class cl_pcfornecertif {
        $resac = db_query("insert into db_acount values($acount,1305,16550,'','".AddSlashes(pg_result($resaco,0,'pc74_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc74_codigo=null) { 
+   public function alterar ($pc74_codigo=null) {
       $this->atualizacampos();
      $sql = " update pcfornecertif set ";
      $virgula = "";
-     if(trim($this->pc74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_codigo"])){ 
+     if(trim($this->pc74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_codigo"])){
        $sql  .= $virgula." pc74_codigo = $this->pc74_codigo ";
        $virgula = ",";
-       if(trim($this->pc74_codigo) == null ){ 
+       if(trim($this->pc74_codigo) == null ){
          $this->erro_sql = " Campo Cod. Certificado nao Informado.";
          $this->erro_campo = "pc74_codigo";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_pcforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"])){ 
+     if(trim($this->pc74_pcforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pcforne"])){
        $sql  .= $virgula." pc74_pcforne = $this->pc74_pcforne ";
        $virgula = ",";
-       if(trim($this->pc74_pcforne) == null ){ 
+       if(trim($this->pc74_pcforne) == null ){
          $this->erro_sql = " Campo Fornecedor nao Informado.";
          $this->erro_campo = "pc74_pcforne";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pctipocertif"])){ 
+     if(trim($this->pc74_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_pctipocertif"])){
        $sql  .= $virgula." pc74_pctipocertif = $this->pc74_pctipocertif ";
        $virgula = ",";
-       if(trim($this->pc74_pctipocertif) == null ){ 
+       if(trim($this->pc74_pctipocertif) == null ){
          $this->erro_sql = " Campo Cod. Tipo Certificado nao Informado.";
          $this->erro_campo = "pc74_pctipocertif";
          $this->erro_banco = "";
@@ -320,14 +320,14 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_solicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_solicitante"])){ 
+     if(trim($this->pc74_solicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_solicitante"])){
        $sql  .= $virgula." pc74_solicitante = '$this->pc74_solicitante' ";
        $virgula = ",";
      }
-     if(trim($this->pc74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_usuario"])){ 
+     if(trim($this->pc74_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_usuario"])){
        $sql  .= $virgula." pc74_usuario = $this->pc74_usuario ";
        $virgula = ",";
-       if(trim($this->pc74_usuario) == null ){ 
+       if(trim($this->pc74_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "pc74_usuario";
          $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"] !="") ){ 
+     if(trim($this->pc74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"] !="") ){
        $sql  .= $virgula." pc74_data = '$this->pc74_data' ";
        $virgula = ",";
-       if(trim($this->pc74_data) == null ){ 
+       if(trim($this->pc74_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "pc74_data_dia";
          $this->erro_banco = "";
@@ -349,11 +349,11 @@ class cl_pcfornecertif {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_data_dia"])){
          $sql  .= $virgula." pc74_data = null ";
          $virgula = ",";
-         if(trim($this->pc74_data) == null ){ 
+         if(trim($this->pc74_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "pc74_data_dia";
            $this->erro_banco = "";
@@ -364,10 +364,10 @@ class cl_pcfornecertif {
          }
        }
      }
-     if(trim($this->pc74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_hora"])){ 
+     if(trim($this->pc74_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_hora"])){
        $sql  .= $virgula." pc74_hora = '$this->pc74_hora' ";
        $virgula = ",";
-       if(trim($this->pc74_hora) == null ){ 
+       if(trim($this->pc74_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "pc74_hora";
          $this->erro_banco = "";
@@ -377,10 +377,10 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_coddepto"])){ 
+     if(trim($this->pc74_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_coddepto"])){
        $sql  .= $virgula." pc74_coddepto = $this->pc74_coddepto ";
        $virgula = ",";
-       if(trim($this->pc74_coddepto) == null ){ 
+       if(trim($this->pc74_coddepto) == null ){
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "pc74_coddepto";
          $this->erro_banco = "";
@@ -390,11 +390,11 @@ class cl_pcfornecertif {
          return false;
        }
      }
-     if(trim($this->pc74_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"] !="") ){ 
+     if(trim($this->pc74_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"] !="") ){
        $sql  .= $virgula." pc74_validade = '$this->pc74_validade' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) || $this->pc74_validade == null){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc74_validade_dia"]) || $this->pc74_validade == null){
          $sql  .= $virgula." pc74_validade = null ";
          $virgula = ",";
        }
@@ -431,7 +431,7 @@ class cl_pcfornecertif {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certificados de um fornecedor nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc74_codigo;
@@ -459,14 +459,14 @@ class cl_pcfornecertif {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc74_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc74_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc74_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -500,7 +500,7 @@ class cl_pcfornecertif {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "certificados de um fornecedor nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc74_codigo;
@@ -528,11 +528,11 @@ class cl_pcfornecertif {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -554,11 +554,11 @@ class cl_pcfornecertif {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,15 +578,15 @@ class cl_pcfornecertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc74_codigo!=null ){
-         $sql2 .= " where pcfornecertif.pc74_codigo = $pc74_codigo "; 
-       } 
+         $sql2 .= " where pcfornecertif.pc74_codigo = $pc74_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -595,11 +595,11 @@ class cl_pcfornecertif {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $pc74_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -612,15 +612,15 @@ class cl_pcfornecertif {
      $sql2 = "";
      if($dbwhere==""){
        if($pc74_codigo!=null ){
-         $sql2 .= " where pcfornecertif.pc74_codigo = $pc74_codigo "; 
-       } 
+         $sql2 .= " where pcfornecertif.pc74_codigo = $pc74_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

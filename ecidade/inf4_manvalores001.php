@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -33,7 +33,6 @@ require_once(modification("classes/db_infla_classe.php"));
 require_once(modification("classes/db_inflan_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-// dd(date('Y-m-d', db_getsession('DB_datausu')));
 $tod = 'f';
 $subsequentes = 'f';
 parse_str($_SERVER["QUERY_STRING"]);

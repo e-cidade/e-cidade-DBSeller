@@ -1,28 +1,28 @@
 <?php
 /**
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -40,7 +40,7 @@ $clrhpessoal             = new cl_rhpessoal;
 $clportariaassenta       = new cl_portariaassenta;
 $clportariatipo          = new cl_portariatipo;
 $classentamentofuncional = new cl_assentamentofuncional;
-          
+
 
 $db_botao = false;
 $db_opcao = 33;
@@ -58,8 +58,8 @@ try {
      * Excluindo a situação
      */
     $situacaoPortaria = new cl_portariaassentasituacao();
-    $situacaoPortaria->excluir(null, "rh236_portariaassenta IN (select h33_sequencial 
-                                                                  from portariaassenta 
+    $situacaoPortaria->excluir(null, "rh236_portariaassenta IN (select h33_sequencial
+                                                                  from portariaassenta
                                                                  where h33_portaria = {$h31_sequencial})");
     if($situacaoPortaria->erro_status == 0) {
       throw new Exception($situacaoPortaria->erro_msg);
@@ -73,9 +73,9 @@ try {
     $oDaoAssentaLoteRegistroPonto = new cl_assentaloteregistroponto();
     $sSqlAssentaLoteRegistroPonto = $oDaoAssentaLoteRegistroPonto->sql_query_file(null, "rh160_sequencial", null, "rh160_assentamento = {$h16_codigo}");
     $rsAssentaLoteRegistroPonto   = db_query($sSqlAssentaLoteRegistroPonto);
-   
+
     if (pg_num_rows($rsAssentaLoteRegistroPonto) > 0) {
-      
+
       db_msgbox("Assentamento já possuí evento financeiro, exclusão não permitida.");
       db_redireciona("");
     }
@@ -92,12 +92,12 @@ try {
     if($rsAssentamentoSubstituicao && $oDaoAssentamentoSubstituicao->numrows > 0){
       $oDaoAssentamentoSubstituicao->excluir($h16_codigo);
     }
-    
+
     $clportariaassenta->excluir(null,"h33_portaria = $h31_sequencial ");
     if($classenta->erro_status !='0') {
       $classentamentofuncional->excluir($h16_codigo);
     }
-          
+
 
     if ($clportariaassenta->erro_status == "0"){
          $sqlerro  = true;
@@ -168,7 +168,7 @@ try {
            $erro_msg = $classenta->erro_msg;
       }
     }
-    
+
     db_fim_transacao($sqlerro);
   }else if(isset($chavepesquisa)){
      $db_opcao = 3;
@@ -180,12 +180,12 @@ try {
      if($rsAssentamentoFuncional && pg_num_rows($rsAssentamentoFuncional) > 0) {
        $sOpcaoAssentamento    = 2;
      }
-           
+
      db_fieldsmemory($result,0);
      $db_botao = true;
 
      if(isset($h16_regist) && !empty($h16_regist)) {
-      
+
       $oServidor = ServidorRepository::getInstanciaByCodigo($h16_regist, DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
 
       if($oServidor instanceof Servidor) {
@@ -194,11 +194,11 @@ try {
     }
 
     if ($result && pg_numrows($result) > 0) {
-    
+
       $res_portariaassenta = $clportariaassenta->sql_record($clportariaassenta->sql_query_file(null,"h33_assenta",null,"h33_portaria = {$h31_sequencial}"));
 
       db_fieldsmemory($res_portariaassenta,0);
-             
+
       $oDaoAssentaAttr = new cl_assentadb_cadattdinamicovalorgrupo();
       $rsComplemento   = db_query($oDaoAssentaAttr->sql_query(null,null, "h80_db_cadattdinamicovalorgrupo", null, "h80_assenta = {$h33_assenta}"));
       if (pg_num_rows($rsComplemento) > 0) {
@@ -229,7 +229,7 @@ try {
 
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clportaria->erro_status=="0"){
     $clportaria->erro(true,false);

@@ -308,7 +308,7 @@ $oRotulo->label('sd04_i_cbo');
   } else if( isset($lConsulta) && $lConsulta == 'true' ) {
   ?>
     <input id="fechar" type="button" value="Fechar"  onclick="parent.db_iframe_triagemavulsa.hide();">
-  <?
+  <?php
   } else if (isset($lLancamentoFaa) && $lLancamentoFaa == 'true') {
   ?>
     <input name="<?=($db_opcao == 1 ? 'incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'alterar' : 'excluir'))?>"

@@ -113,7 +113,6 @@ $sCamposProntuarios .= ' m.z01_nome as profissional                             
 $sWhereProntuarios   = " {$sWhereProntProced}";
 
 $sSqlProntuarios = $oDaoProntproced->sql_query_prontuario('', $sCamposProntuarios, 'sd29_d_data DESC , sd29_c_hora DESC, sd29_i_codigo', $sWhereProntuarios);
-
 $rsProntuarios   = $oDaoProntproced->sql_record($sSqlProntuarios);
 
 $linhas1   = $oDaoProntproced->numrows;
@@ -127,7 +126,7 @@ if($linhas == 0 && $linhas1 == 0 ){
 $pdf = new pdf();
 $pdf->Open();
 $pdf->AliasNbPages();
-$head2 = "                                  Prontuário Eletrônico";
+$head2 = "                                  Prontuário Paciente";
 if (isset($oGet->dIni) && !empty($oGet->dIni) && isset($oGet->dFim) && !empty($oGet->dFim)) {
   $head4 = "Período: $oGet->dIni a $oGet->dFim";
 } elseif (isset($oGet->dFim) && !empty($oGet->dFim)) {
@@ -553,9 +552,9 @@ $pdf->Output();
 
 function cabecalho($pdf, $result, $pri) {
 
-  global $z01_i_numcgs, $z01_v_nome, $z01_v_sexo, $z01_d_nasc, $z01_c_naturalidade, $z01_v_pai, $z01_v_mae,
-         $z01_v_ender, $z01_i_numero, $z01_v_compl;
-  global $z01_v_telef, $z01_v_bairro, $ec, $z01_v_ident, $z01_c_cartaosus, $ec_cgs, $z01_i_estciv, $sexo_cgs, $z01_v_sexo;
+  global $z01_i_numcgs, $z01_v_nome, $z01_v_sexo, $z01_d_nasc, $z01_v_pai, $z01_v_mae,
+         $z01_v_ender, $z01_i_numero, $z01_v_compl,$sd114_unidadesorigem,$sd113_descricao,$z01_v_municnasc;
+  global $z01_v_telef, $z01_v_bairro, $ec, $z01_v_ident, $s115_c_cartaosus, $ec_cgs, $z01_i_estciv, $sexo_cgs, $z01_v_sexo;
 
   if (  ($pdf->gety() > $pdf->h -30) || $pri) {
 
@@ -567,7 +566,7 @@ function cabecalho($pdf, $result, $pri) {
     $pdf->setfont( 'arial', 'b', 12 );
     $pdf->roundedrect( 10, 43, 192, 28, 2, 'DF', '1234' );
 
-    $pdf->cell( 192, 8, "PRONTUÁRIO ELETRÔNICO", 0, 1, "C", 0 );
+    $pdf->cell( 192, 8, "PRONTUÁRIO PACIENTE", 0, 1, "C", 0 );
 
     $pdf->setfont( 'arial', 'b', 7 );
 
@@ -575,41 +574,45 @@ function cabecalho($pdf, $result, $pri) {
     $pdf->cell( 66, 4, $z01_i_numcgs . "-" . trim( $z01_v_nome ), 0, 1, "L", 0 );
 
     $pdf->cell( 30, 4, "Sexo :",                0, 0, "R", 0 );
-    $pdf->cell( 66, 4, @$sexo_cgs[$z01_v_sexo], 0, 1, "L", 0 );
+    $pdf->cell( 66, 4, @$sexo_cgs[$z01_v_sexo], 0, 0, "L", 0 );
+
+    $pdf->cell( 30, 4, "Endereço : ",                                             0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $z01_v_ender . ", " . $z01_i_numero . ", " . $z01_v_compl, 0, 1, "L", 0 );
 
     $pdf->cell( 30, 4, "Data de Nasc : ",               0, 0, "R", 0 );
     $pdf->cell( 66, 4, db_formatar( $z01_d_nasc, 'd' ), 0, 0, "T", 0 );
 
-    $pdf->cell( 30, 4, "Munic. Nasc : ",    0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_c_naturalidade, 0, 1, "L", 0 );
+    $pdf->cell( 30, 4, "Bairro : ",   0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $z01_v_bairro, 0, 1, "L", 0 );    
 
-    $pdf->cell( 30, 4, "Nome do Pai : ", 0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_v_pai,       0, 0, "L", 0 );
+    $pdf->cell( 30, 4, "Munic. Nasc : ",    0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $z01_v_municnasc, 0, 0, "L", 0 );
+
+    $pdf->cell( 30, 4, "Unidade de Origem : ",    0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $sd113_descricao, 0, 1, "L", 0 );    
+
+    $pdf->cell( 30, 4, "RG : ", 0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $z01_v_ident, 0, 0, "L", 0 );    
 
     $pdf->cell( 30, 4, "Nome da Mãe : ", 0, 0, "R", 0 );
     $pdf->cell( 66, 4, $z01_v_mae,       0, 1, "L", 0 );
 
-    $pdf->cell( 30, 4, "Endereço : ",                                             0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_v_ender . ", " . $z01_i_numero . ", " . $z01_v_compl, 0, 0, "L", 0 );
+
+    $pdf->cell( 30, 4, "Cartão SUS : ",  0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $s115_c_cartaosus, 0, 0, "L", 0 );
+
+    $pdf->cell( 30, 4, "Nome do Pai : ", 0, 0, "R", 0 );
+    $pdf->cell( 66, 4, $z01_v_pai,       0, 1, "L", 0 );
+
+
+    $pdf->cell( 30, 4, "Estado Civil : ",       0, 0, "R", 0 );
+    $pdf->cell( 66, 4, @$ec_cgs[$z01_i_estciv], 0, 0, "L", 0 );
 
     $pdf->cell( 30, 4, "Telefone : ", 0, 0, "R", 0 );
     $pdf->cell( 66, 4, $z01_v_telef,  0, 1, "L", 0 );
 
-    $pdf->cell( 30, 4, "Bairro : ",   0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_v_bairro, 0, 0, "L", 0 );
-
-    $pdf->cell( 30, 4, "Estado Civil : ",       0, 0, "R", 0 );
-    $pdf->cell( 66, 4, @$ec_cgs[$z01_i_estciv], 0, 1, "L", 0 );
-
-    $pdf->cell( 30, 4, "Doc. RG : ", 0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_v_ident, 0, 0, "L", 0 );
-
-    $pdf->cell( 30, 4, "Cartão SUS : ",  0, 0, "R", 0 );
-    $pdf->cell( 66, 4, $z01_c_cartaosus, 0, 1, "L", 0 );
-
     $head1 = str_pad( "Continuação", 50, " ", STR_PAD_LEFT );
     $head7 = "Nome: " . $z01_i_numcgs . "-" . $z01_v_nome;
-
 
 
     $alt = $pdf->getY() + 4;

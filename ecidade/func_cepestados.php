@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcepestados->rotulo->label("cp03_estado");
               <?=$Lcp03_sigla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cp03_sigla",2,$Icp03_sigla,true,"text",4,"","chave_cp03_sigla");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcepestados->rotulo->label("cp03_estado");
               <?=$Lcp03_estado?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cp03_estado",70,$Icp03_estado,true,"text",4,"","chave_cp03_estado");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcepestados->rotulo->label("cp03_estado");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cepestados.php")==true){
@@ -122,12 +122,12 @@ $clcepestados->rotulo->label("cp03_estado");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

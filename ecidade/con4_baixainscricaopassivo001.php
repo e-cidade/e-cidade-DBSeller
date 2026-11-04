@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,13 +86,13 @@ $oUsuario = new UsuarioSistema(db_getsession("DB_id_usuario"));
         <!-- Inscricao Passivo -->
         <tr>
           <td>
-            <?
+            <?php
             db_ancora("<b>Inscricao Passivo:<b>", "js_pesquisaInscricaoPassivo(true);", 1);
             ?>
           </td>
           
           <td>
-            <?
+            <?php
             $funcaoJsInscricaoPassivo = "onchange = 'js_pesquisaInscricao(false);'";
             db_input('c36_sequencial', 10, $Ic36_sequencial, true, 'text', 3, $funcaoJsInscricaoPassivo);
             ?>
@@ -106,7 +106,7 @@ $oUsuario = new UsuarioSistema(db_getsession("DB_id_usuario"));
           </td>
           <td>
           
-            <? 
+            <?php 
             $nome_usuario    = $oUsuario->getIdUsuario() . " - " . $oUsuario->getNome();
             db_input('nome_usuario', 47, "", true, 'text', 3);
             ?>
@@ -119,7 +119,7 @@ $oUsuario = new UsuarioSistema(db_getsession("DB_id_usuario"));
           <b>Data:</b>
           </td>
           <td>
-            <? 
+            <?php 
             $c39_data = date("d/m/Y", db_getsession("DB_datausu"));
             db_input('c39_data', 10, $Ic39_data, true, 'text', 3);
             ?>
@@ -143,7 +143,7 @@ $oUsuario = new UsuarioSistema(db_getsession("DB_id_usuario"));
   
   </center>
 </body>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>      

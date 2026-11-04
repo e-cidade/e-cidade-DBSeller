@@ -56,7 +56,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
       <label for="chave_ed52_i_codigo"><?=$Led52_i_codigo?></label>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed52_i_codigo",10,$Ied52_i_codigo,true,"text",4,"","chave_ed52_i_codigo");?>
+      <?php db_input("ed52_i_codigo",10,$Ied52_i_codigo,true,"text",4,"","chave_ed52_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
       <label for="chave_ed52_c_descr"><?=$Led52_c_descr?></label>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed52_c_descr",20,$Ied52_c_descr,true,"text",4,"","chave_ed52_c_descr");?>
+      <?php db_input("ed52_c_descr",20,$Ied52_c_descr,true,"text",4,"","chave_ed52_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){

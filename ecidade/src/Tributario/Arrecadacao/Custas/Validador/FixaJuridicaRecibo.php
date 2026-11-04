@@ -27,11 +27,12 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Validador;
 
+use db_utils;
 use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
 use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 use \Recibo;
 
-final class FixaJuridicaRecibo implements Interfaces\Validador 
+final class FixaJuridicaRecibo implements Interfaces\Validador
 {
     private $validacao;
 
@@ -48,42 +49,43 @@ final class FixaJuridicaRecibo implements Interfaces\Validador
     public function processarValidacao()
     {
         // |-0.5 Processo do foro tem termotaxafixa de termo nao anulado?
-        // |--sim               
+        // |--sim
         // |  | remove as fixas
-        // |--nao               
+        // |--nao
         // |  | continua processamento
-        // | 
+        // |
         // |-1 Eu recibo tenho todos os debitos desse processo que não esteja parcelado?
-        // |--sim               
-        // |  | mantem as fixas              
-        // |--nao                                 
-        // |  |-2 O ultimo recibo valido com custas fixas tem todos os debitos nao parcelados do processo?                         
-        // |  |--sim                          
-        // |  |  |-3 Todos os debitos do processo nao parcelados tem recibos sem custas depois do recibo geral?       
-        // |  |  |--sim                        
-        // |  |  |  | mantem as fixas                     
-        // |  |  |--nao                        
-        // |  |  |  | remove as fixas     
-        // |  |--nao                          
-        // |  |  |-4 Eu tenho debitos do processo do ultimo recibo valido com custas?                        
-        // |  |  |--sim                        
-        // |  |  |  | mantem as fixas                     
-        // |  |  |--nao                        
-        // |  |  |  |-5 Todos os debitos tem recibo valido?                        
-        // |  |  |  |--nao      
-        // |  |  |  |  | remove as fixas            
-        // |  |  |  |--sim      
-        // |  |  |  |  |-6 Eu tenho os ultimos debitos sem recibo?                        
-        // |  |  |  |  |--sim                        
-        // |  |  |  |  |  | mantem as fixas                     
-        // |  |  |  |  |--nao       
-        // |  |  |  |  |  | remove as fixas     
+        // |--sim
+        // |  | mantem as fixas
+        // |--nao
+        // |  |-2 O ultimo recibo valido com custas fixas tem todos os debitos nao parcelados do processo?
+        // |  |--sim
+        // |  |  |-3 Todos os debitos do processo nao parcelados tem recibos sem custas depois do recibo geral?
+        // |  |  |--sim
+        // |  |  |  | mantem as fixas
+        // |  |  |--nao
+        // |  |  |  | remove as fixas
+        // |  |--nao
+        // |  |  |-4 Eu tenho debitos do processo do ultimo recibo valido com custas?
+        // |  |  |--sim
+        // |  |  |  | mantem as fixas
+        // |  |  |--nao
+        // |  |  |  |-5 Todos os debitos tem recibo valido?
+        // |  |  |  |--nao
+        // |  |  |  |  | remove as fixas
+        // |  |  |  |--sim
+        // |  |  |  |  |-6 Eu tenho os ultimos debitos sem recibo?
+        // |  |  |  |  |--sim
+        // |  |  |  |  |  | mantem as fixas
+        // |  |  |  |  |--nao
+        // |  |  |  |  |  | remove as fixas
         
         $remover = true;
 
         $numnov = $this->recibo->getNumpreRecibo();
         $processoForo = $this->processoForo->getCodigo();
-
+       
+        
         $sql = "select 1 as total 
                   from termotaxafixa 
                        inner join termo on termo.v07_parcel = termotaxafixa.ar42_parcel
@@ -125,13 +127,10 @@ final class FixaJuridicaRecibo implements Interfaces\Validador
         $result = pg_fetch_object($resource, 0);
 
         if ($result->total == 0) {
-
             $this->log("1");
 
             $remover = false;
-
         } else {
-
             $this->log("2");
 
             // 2
@@ -179,7 +178,6 @@ final class FixaJuridicaRecibo implements Interfaces\Validador
             $result = pg_fetch_object($resource, 0);
 
             if ($result->total == 0) {
-
                 $this->log("3");
 
                 // 3
@@ -255,9 +253,7 @@ select count(distinct inicial.v50_inicial)
                 } else {
                     $remover = true;
                 }
-
             } else {
-
                 //4
 
                 $this->log("4");
@@ -303,7 +299,6 @@ select count(distinct inicial.v50_inicial)
                 if (pg_num_rows($resource) > 0) {
                     $remover = false;
                 } else {
-
                     $this->log("5");
                     $sql = "
                             select (
@@ -341,9 +336,12 @@ select count(distinct inicial.v50_inicial)
                     $result = pg_fetch_object($resource, 0);
 
                     if ($result->todos_tem != 't') {
-                        $remover = true;
+                        if (db_utils::ativaParcelamentoCustas()) {
+                            $remover = false;
+                        } else {
+                            $remover = true;
+                        }
                     } else {
-
                         $this->log("6");
                         // 6
                         $sql = "
@@ -398,7 +396,6 @@ select count(distinct inicial.v50_inicial)
                             $remover = false;
                         }
                     }
-
                 }
             }
         }

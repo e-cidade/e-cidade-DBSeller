@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcids->rotulo->label("sd22_v_descr");
               <?=$Lsd22_c_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd22_c_codigo",6,$Isd22_c_codigo,true,"text",4,"","chave_sd22_c_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clcids->rotulo->label("sd22_v_descr");
               <?=$Lsd22_v_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd22_v_descr",100,$Isd22_v_descr,true,"text",4,"","chave_sd22_v_descr");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clcids->rotulo->label("sd22_v_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cids.php")==true){
@@ -122,12 +122,12 @@ $clcids->rotulo->label("sd22_v_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

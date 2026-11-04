@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -31,20 +31,21 @@ require_once(modification("model/configuracao/Instituicao.model.php"));
 
 /**
  * Patrametros de integracao da contabilidade com modulos do patrimonio
- * 
+ *
  * @author Jeferson Belmiro <jeferson.belmiro@dbseller.com.br>
  * @author Bruno de Boni <bruno.boni@dbseller.com.br>
  * @package contabilidade
  * @version $Revision: 1.5 $
  */
 class ParametroIntegracaoPatrimonial {
-  
+
   /**
    * Modulos
    */
   const CONTRATO   = 1;
   const MATERIAL   = 2;
   const PATRIMONIO = 3;
+  const APROPRIACAO = 4;
 
   /**
    * Codigo do parametro
@@ -75,12 +76,12 @@ class ParametroIntegracaoPatrimonial {
    * @param integer $iCodigo
    */
   public function __construct($iCodigo = 0) {
-    
+
     if (empty($iCodigo)) {
       return;
     }
 
-    $rsBuscarParametro = self::buscarParametro($iCodigo);   
+    $rsBuscarParametro = self::buscarParametro($iCodigo);
     $oDadosParametros  = db_utils::fieldsMemory($rsBuscarParametro, 0);
 
     $this->iCodigo          = $iCodigo;
@@ -97,7 +98,7 @@ class ParametroIntegracaoPatrimonial {
     return $this->iCodigo;
   }
 
-  /**  
+  /**
    * Retorna a data de implantação
    * @return DBDate
    */
@@ -123,7 +124,7 @@ class ParametroIntegracaoPatrimonial {
 
   /**
    * Define a instituicao
-   * @param Instituicao $oInstituicao 
+   * @param Instituicao $oInstituicao
    */
   public function setInstituicao($oInstituicao) {
     $this->oInstituicao = $oInstituicao;
@@ -139,7 +140,7 @@ class ParametroIntegracaoPatrimonial {
 
   /**
    * Define modulo
-   * @param integer $iModulo 
+   * @param integer $iModulo
    */
   public function setModulo($iModulo) {
     $this->iModulo = $iModulo;
@@ -151,21 +152,21 @@ class ParametroIntegracaoPatrimonial {
    */
   public function salvar() {
 
-    $oDaoParametroIntegracaoPatrimonial = db_utils::getDao('parametrointegracaopatrimonial');
+    $oDaoParametroIntegracaoPatrimonial = new cl_parametrointegracaopatrimonial();
     $oDaoParametroIntegracaoPatrimonial->c01_data = $this->getDataImplantacao()->getDate();
     $oDaoParametroIntegracaoPatrimonial->c01_instit = $this->getInstituicao()->getCodigo();
     $oDaoParametroIntegracaoPatrimonial->c01_modulo = $this->getModulo();
     $oDaoParametroIntegracaoPatrimonial->incluir(null);
-    
+
     if ($oDaoParametroIntegracaoPatrimonial->erro_status == "0") {
       throw new Exception ($oDaoParametroIntegracaoPatrimonial->erro_msg);
     }
   }
 
-  /** 
+  /**
    * Retorna patametros de uma instituição
    * @param  Instituicao $oInstituicao
-   * @return array                   
+   * @return array
    */
   public static function getParametroPorInstituicao(Instituicao $oInstituicao) {
 
@@ -181,18 +182,18 @@ class ParametroIntegracaoPatrimonial {
   }
 
   /**
-   * Busca patrametros 
-   * 
-   * @param  integer $iCodigo         
+   * Busca patrametros
+   *
+   * @param  integer $iCodigo
    * @param  Instituicao $oInstituicao
    * @param  DBDate $oDataImplantacao
-   * @param  integer $iModulo 
+   * @param  integer $iModulo
    * @return Resource
    */
   private static function buscarParametro($iCodigo = null, Instituicao $oInstituicao = null, DBDate $oDataImplantacao = null, $iModulo = null) {
 
     $aWhereParametro = array();
-    $oDaoParametroIntegracaoPatrimonial = db_utils::getDao('parametrointegracaopatrimonial');
+    $oDaoParametroIntegracaoPatrimonial = new cl_parametrointegracaopatrimonial();
 
     if (! empty($iCodigo)) {
       $aWhereParametro[] = " c01_sequencial = {$iCodigo}";
@@ -211,7 +212,7 @@ class ParametroIntegracaoPatrimonial {
     }
 
     $sWhereBuscarParametro = implode(' and ', $aWhereParametro);
-    
+
     $sSqlBuscarParametro = $oDaoParametroIntegracaoPatrimonial->sql_query_file(null, "*", null, $sWhereBuscarParametro);
     $rsBuscarParametro = db_query($sSqlBuscarParametro);
 
@@ -219,15 +220,15 @@ class ParametroIntegracaoPatrimonial {
       throw new BusinessException (_M("financeiro.contabilidade.ParametroIntegracaoPatrimonial.erro_buscar_parametros"));
     }
 
-    return $rsBuscarParametro;   
+    return $rsBuscarParametro;
   }
 
   /**
    * Valida implantacao do modulo
-   * 
+   *
    * @param  DBDATE      $oDataImplantacao
-   * @param  Instituicao $oInstituicao     
-   * @param  integer     $iModulo          
+   * @param  Instituicao $oInstituicao
+   * @param  integer     $iModulo
    * @return boolean
    */
   public static function validarImplantacao(DBDate $oDataImplantacao, Instituicao $oInstituicao, $iModulo) {
@@ -243,7 +244,7 @@ class ParametroIntegracaoPatrimonial {
    * @return boolean
    */
   public static function possuiIntegracaoContrato(DBDate $oDataImplantacao, Instituicao $oInstituicao) {
-    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::CONTRATO);    
+    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::CONTRATO);
   }
 
   /**
@@ -253,7 +254,7 @@ class ParametroIntegracaoPatrimonial {
    * @return boolean
    */
   public static function possuiIntegracaoMaterial(DBDate $oDataImplantacao, Instituicao $oInstituicao) {
-    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::MATERIAL);    
+    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::MATERIAL);
   }
 
   /**
@@ -263,7 +264,6 @@ class ParametroIntegracaoPatrimonial {
    * @return boolean
    */
   public static function possuiIntegracaoPatrimonio(DBDate $oDataImplantacao, Instituicao $oInstituicao) {
-    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::PATRIMONIO);    
+    return self::validarImplantacao($oDataImplantacao, $oInstituicao, self::PATRIMONIO);
   }
-
 }

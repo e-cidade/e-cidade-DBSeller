@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
               <?=$Lrh10_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh10_mesusu",2,$Irh10_mesusu,true,"text",4,"","chave_rh10_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
               <?=$Lrh10_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh10_regist",6,$Irh10_regist,true,"text",4,"","chave_rh10_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
               <?=$Lrh10_lotac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh10_lotac",6,$Irh10_lotac,true,"text",4,"","chave_rh10_lotac");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
               <?=$Lrh10_percrateio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh10_percrateio",3,$Irh10_percrateio,true,"text",4,"","chave_rh10_percrateio");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpeslota.php")==true){
@@ -141,12 +141,12 @@ $clrhpeslota->rotulo->label("rh10_percrateio");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

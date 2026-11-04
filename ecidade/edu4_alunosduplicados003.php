@@ -69,7 +69,7 @@ $oDaoRegistrosInconsistentes->rotulo->label();
 					       <?=@$Ldb136_sequencial?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 									db_input('db136_sequencial', 10, $Idb136_sequencial, true, 'text', 3, "");
 								?>
 					    </td>
@@ -77,7 +77,7 @@ $oDaoRegistrosInconsistentes->rotulo->label();
 		        <tr>
 		          <td><b>Nome do Aluno: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_input('nomeAluno', 50, 'nomeAluno', true, 'text', 3);
 		            ?>
 		          </td>
@@ -85,7 +85,7 @@ $oDaoRegistrosInconsistentes->rotulo->label();
 		        <tr>
 		          <td><b>Nome da Mãe: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_input('nomeMae', 50, 'nomeMae', true, 'text', 3);
 		            ?>
 		          </td>
@@ -93,7 +93,7 @@ $oDaoRegistrosInconsistentes->rotulo->label();
 		        <tr>
 		          <td><b>Data de Nascimento: </b></td>
 		          <td>
-		            <?
+		            <?php
 		              db_inputdata('dataNascimento', '', '', '', true, 'text', 3);
 		            ?>
 		          </td>

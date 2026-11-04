@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -337,7 +337,7 @@ if (isset($oPost->incluir)) {
 
           foreach ( $aListaCaracUtil as $aChave ) {
 
-            $aListaDadosCaracUtil = split("X", $aChave);
+            $aListaDadosCaracUtil =explode("X", $aChave);
 
             // $aListaDadosCaracUtil[0] -- Código da Característica
             // $aListaDadosCaracUtil[1] -- Valor  da Característica
@@ -597,7 +597,7 @@ if (isset($oPost->incluir)) {
 
     foreach ( $aListaFormaPag as $aChave ) {
 
-      $aListaValorFormaPag = split("X", $aChave);
+      $aListaValorFormaPag =explode("X", $aChave);
 
       // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
       // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -735,6 +735,7 @@ else if ((!isset($oGet->pri) && $oGet->tipo == "urbano") || (!isset($oGet->pri) 
      $db_opcao_plugin_rural = 3;
  }
 */
+
     /* M16507 - ajustacadastroitbi - Plugin que ajusta os campos do ITBI para Porto Velho */
 ?>
 <html>
@@ -828,11 +829,13 @@ if (isset($oPost->incluir)) {
             parent.document.formaba.inter.disabled    = false;
             parent.document.formaba.compnome.disabled = false;
             parent.document.formaba.constr.disabled   = false;
+            parent.document.formaba.anexo.disabled   = false;
 
    		      parent.iframe_dados.location.href 	 = 'itb1_itbidadosimovel002.php?chavepesquisa=" . $clitbi->it01_guia . "&abas=1&tipo=" . $oGet->tipo . "';
             parent.iframe_transm.location.href 	 = 'itb1_itbinome001.php?tiponome=t&it03_guia=" . $clitbi->it01_guia . "';
             parent.iframe_compnome.location.href = 'itb1_itbinomecomp001.php?tiponome=c&it03_guia=" . $clitbi->it01_guia . "';
             parent.iframe_constr.location.href 	 = 'itb1_itbiconstr001.php?it08_guia=" . $clitbi->it01_guia . "&tipo=" . $oGet->tipo . "';
+            parent.iframe_anexo.location.href 	 = 'itb1_itbianexo001.php?itbi_guia=" . $clitbi->it01_guia . "';
 
 			      parent.mo_camada('transm');
           </script>";

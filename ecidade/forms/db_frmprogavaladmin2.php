@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,12 +46,12 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted116_i_progmatricula?>">
-   <?db_ancora(@$Led116_i_progmatricula,"js_pesquisaed116_i_progmatricula(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led116_i_progmatricula,"js_pesquisaed116_i_progmatricula(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed116_i_progmatricula',10,@$Ied116_i_progmatricula,true,'hidden',3,"")?>
-   <?db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
-   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed116_i_progmatricula',10,@$Ied116_i_progmatricula,true,'hidden',3,"")?>
+   <?php db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
+   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -59,10 +59,10 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
+   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
    <?=@$Led112_i_progclasse?>
-   <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
-   <?if($db_opcao!=1){
+   <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+   <?php if($db_opcao!=1){
     if(@$ed112_c_situacao=="A"){
      $ed112_c_situacao = "ABERTA";
     }elseif(@$ed112_c_situacao=="I"){
@@ -73,7 +73,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
     ?>
     <?=@$Led112_c_situacao?>
     <input name="ed112_c_situacao" type="text" value="<?=@$ed112_c_situacao?>" style="background:#DEB887;" readonly>
-   <?}?>
+   <?php }?>
   </td>
  </tr>
  <tr>
@@ -81,10 +81,10 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
    <?=@$Led116_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed116_d_data',@$ed116_d_data_dia,@$ed116_d_data_mes,@$ed116_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
+   <?php db_inputdata('ed116_d_data',@$ed116_d_data_dia,@$ed116_d_data_mes,@$ed116_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
    &nbsp;&nbsp;&nbsp;&nbsp;
    <?=@$Led116_i_ano?>
-   <?db_input('ed116_i_ano',4,$Ied116_i_ano,true,'text',$db_opcao," onChange='js_valida(this.value);'")?>
+   <?php db_input('ed116_i_ano',4,$Ied116_i_ano,true,'text',$db_opcao," onChange='js_valida(this.value);'")?>
   </td>
  </tr>
  <tr>
@@ -92,18 +92,18 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
    <?=@$Led116_c_tipo?>
   </td>
   <td>
-   <?
+   <?php
    $x = array(''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO');
    db_select('ed116_c_tipo',$x,true,$db_opcao1,"");
    ?>
    <b>Pontuação:</b>
-   <?
+   <?php
    if(@isset($ed112_i_rhpessoal)){
     $result3 = $clprogavaladmin->sql_record($clprogavaladmin->sql_query("","sum(ed106_f_pontuacao) as pontuacao",""," ed116_i_ano = $ed116_i_ano AND ed116_i_progmatricula = $ed116_i_progmatricula AND ed116_c_tipo = '$ed116_c_tipo' AND ed108_c_tipoaval = 'A'"));
     db_fieldsmemory($result3,0);
    }
    ?>
-   <?db_input('pontuacao',4,@$pontuacao,true,'text',3,"")?>
+   <?php db_input('pontuacao',4,@$pontuacao,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -114,7 +114,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
       <b>Questões:</b>
      </td>
     </tr>
-    <?
+    <?php
     $cor1 = "#f3f3f3";
     $cor2 = "#DBDBDB";
     $cor = "";
@@ -133,7 +133,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
       <tr bgcolor="<?=$cor?>">
        <td style="font-size:10px">
         <?=($x+1)." - ".$ed108_t_descr?><br>
-        <?
+        <?php
         $result1 = $clopcaoquestao->sql_record($clopcaoquestao->sql_query("","*","ed106_i_sequencia"," ed106_c_ativo = 'S'"));
         if($clopcaoquestao->numrows>0){
          echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -143,7 +143,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
           ?>
           <input type="radio" name="ed116_i_opcaoquestao<?=$x?>" value="<?=$ed106_i_codigo?>" <?=$checked?> onclick="js_pontuacao(<?=$clprogavaladmin->numrows?>,<?=$clopcaoquestao->numrows?>)">
           <input type="hidden" name="ed116_i_opcaovalor<?=$x?>" value="<?=$ed106_f_pontuacao?>">
-          <?
+          <?php
           echo $ed106_c_descr."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
          }
         }else{
@@ -152,7 +152,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
         ?>
        </td>
       </tr>
-      <?
+      <?php
      }
     }else{
      ?>
@@ -161,7 +161,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
        Nenhuma questão cadastrada.
       </td>
      </tr>
-     <?
+     <?php
     }
     ?>
    </table>
@@ -242,7 +242,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave1,chave2,chave3){
  db_iframe_progavaladmin.hide();
- <?
+ <?php
  if($db_opcao!=1){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ed112_i_rhpessoal='+chave1+'&ed116_i_ano='+chave2+'&ed116_c_tipo='+chave3";
  }

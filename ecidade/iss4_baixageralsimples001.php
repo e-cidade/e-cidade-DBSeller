@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ if (isset($post->processar)){
        <?=@$Lq39_dtbaixa?>
     </td>
     <td> 
-<?
+<?php
 if (!isset($q39_dtbaixa)){
   
 	$q39_dtbaixa_dia = 31;
@@ -123,7 +123,7 @@ db_inputdata('q39_dtbaixa',@$q39_dtbaixa_dia,@$q39_dtbaixa_mes,@$q39_dtbaixa_ano
        <?=@$Lq39_issmotivobaixa?>
     </td>
     <td> 
-       <?
+       <?php
        include(modification("classes/db_issmotivobaixa_classe.php"));
        $clissmotivobaixa = new cl_issmotivobaixa;
        $result = $clissmotivobaixa->sql_record($clissmotivobaixa->sql_query("","*"));
@@ -136,7 +136,7 @@ db_inputdata('q39_dtbaixa',@$q39_dtbaixa_dia,@$q39_dtbaixa_mes,@$q39_dtbaixa_ano
        <?=@$Lq39_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q39_obs',3,60,$Iq39_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,7 +159,7 @@ db_textarea('q39_obs',3,60,$Iq39_obs,true,'text',$db_opcao,"")
        <td class='cab'>Data Inicial</td>
    </tr>
     <tbody  style='height:250;overflow:scroll;border:1px inset black;overflow-x:hidden'>
-    <?
+    <?php
        $sSql = "select z01_nome,
 			                  q38_sequencial,
 					 					    q38_dtinicial,
@@ -194,7 +194,7 @@ db_textarea('q39_obs',3,60,$Iq39_obs,true,'text',$db_opcao,"")
 	 </table>
 	 </form>
  </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

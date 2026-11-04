@@ -1,13 +1,417 @@
+;(function (global) {
+
+    // script ja carregado
+    if (global.CurrentWindow) {
+        return false;
+    }
+
+    var
+
+        // confirm() builtin do navegador
+        _confirm = global.confirm,
+
+        // tanta buscar a variavel CurrentWindow do parent
+        CurrentWindow = global.CurrentWindow || parent.CurrentWindow || window.frameElement.CurrentWindow,
+
+        /**
+         * @param {String} message
+         * @param {Function} done
+         * @return {Boolean}
+         */
+        confirm = function (message, done) {
+
+            if (!done) {
+                return _confirm.call(global, message);
+            }
+
+            return CurrentWindow.confirm.call(global, message, done);
+        }
+    ;
+
+    global.CurrentWindow = CurrentWindow;
+    global.Desktop = CurrentWindow.Desktop;
+    global.alert = CurrentWindow.alert;
+    global.confirm = confirm;
+
+    document.addEventListener('mousedown', CurrentWindow._eventHandler);
+
+})(this);
 /**
  * Promise Pollyfill
  */
-!function(t){function e(){}function n(t,e){return function(){t.apply(e,arguments)}}function o(t){if("object"!=typeof this)throw new TypeError("Promises must be constructed via new");if("function"!=typeof t)throw new TypeError("not a function");this._state=0,this._handled=!1,this._value=void 0,this._deferreds=[],s(t,this)}function r(t,e){for(;3===t._state;)t=t._value;return 0===t._state?void t._deferreds.push(e):(t._handled=!0,void a(function(){var n=1===t._state?e.onFulfilled:e.onRejected;if(null===n)return void(1===t._state?i:f)(e.promise,t._value);var o;try{o=n(t._value)}catch(r){return void f(e.promise,r)}i(e.promise,o)}))}function i(t,e){try{if(e===t)throw new TypeError("A promise cannot be resolved with itself.");if(e&&("object"==typeof e||"function"==typeof e)){var r=e.then;if(e instanceof o)return t._state=3,t._value=e,void u(t);if("function"==typeof r)return void s(n(r,e),t)}t._state=1,t._value=e,u(t)}catch(i){f(t,i)}}function f(t,e){t._state=2,t._value=e,u(t)}function u(t){2===t._state&&0===t._deferreds.length&&a(function(){t._handled||d(t._value)});for(var e=0,n=t._deferreds.length;n>e;e++)r(t,t._deferreds[e]);t._deferreds=null}function c(t,e,n){this.onFulfilled="function"==typeof t?t:null,this.onRejected="function"==typeof e?e:null,this.promise=n}function s(t,e){var n=!1;try{t(function(t){n||(n=!0,i(e,t))},function(t){n||(n=!0,f(e,t))})}catch(o){if(n)return;n=!0,f(e,o)}}var l=setTimeout,a="function"==typeof setImmediate&&setImmediate||function(t){l(t,0)},d=function(t){"undefined"!=typeof console&&console&&console.warn("Possible Unhandled Promise Rejection:",t)};o.prototype["catch"]=function(t){return this.then(null,t)},o.prototype.then=function(t,n){var o=new this.constructor(e);return r(this,new c(t,n,o)),o},o.all=function(t){var e=Array.prototype.slice.call(t);return new o(function(t,n){function o(i,f){try{if(f&&("object"==typeof f||"function"==typeof f)){var u=f.then;if("function"==typeof u)return void u.call(f,function(t){o(i,t)},n)}e[i]=f,0===--r&&t(e)}catch(c){n(c)}}if(0===e.length)return t([]);for(var r=e.length,i=0;i<e.length;i++)o(i,e[i])})},o.resolve=function(t){return t&&"object"==typeof t&&t.constructor===o?t:new o(function(e){e(t)})},o.reject=function(t){return new o(function(e,n){n(t)})},o.race=function(t){return new o(function(e,n){for(var o=0,r=t.length;r>o;o++)t[o].then(e,n)})},o._setImmediateFn=function(t){a=t},o._setUnhandledRejectionFn=function(t){d=t},"undefined"!=typeof module&&module.exports?module.exports=o:t.Promise||(t.Promise=o)}(this);
+!function (t) {
+    function e() {
+    }
+
+    function n(t, e) {
+        return function () {
+            t.apply(e, arguments)
+        }
+    }
+
+    function o(t) {
+        if ("object" != typeof this) throw new TypeError("Promises must be constructed via new");
+        if ("function" != typeof t) throw new TypeError("not a function");
+        this._state = 0, this._handled = !1, this._value = void 0, this._deferreds = [], s(t, this)
+    }
+
+    function r(t, e) {
+        for (; 3 === t._state;) t = t._value;
+        return 0 === t._state ? void t._deferreds.push(e) : (t._handled = !0, void a(function () {
+            var n = 1 === t._state ? e.onFulfilled : e.onRejected;
+            if (null === n) return void (1 === t._state ? i : f)(e.promise, t._value);
+            var o;
+            try {
+                o = n(t._value)
+            } catch (r) {
+                return void f(e.promise, r)
+            }
+            i(e.promise, o)
+        }))
+    }
+
+    function i(t, e) {
+        try {
+            if (e === t) throw new TypeError("A promise cannot be resolved with itself.");
+            if (e && ("object" == typeof e || "function" == typeof e)) {
+                var r = e.then;
+                if (e instanceof o) return t._state = 3, t._value = e, void u(t);
+                if ("function" == typeof r) return void s(n(r, e), t)
+            }
+            t._state = 1, t._value = e, u(t)
+        } catch (i) {
+            f(t, i)
+        }
+    }
+
+    function f(t, e) {
+        t._state = 2, t._value = e, u(t)
+    }
+
+    function u(t) {
+        2 === t._state && 0 === t._deferreds.length && a(function () {
+            t._handled || d(t._value)
+        });
+        for (var e = 0, n = t._deferreds.length; n > e; e++) r(t, t._deferreds[e]);
+        t._deferreds = null
+    }
+
+    function c(t, e, n) {
+        this.onFulfilled = "function" == typeof t ? t : null, this.onRejected = "function" == typeof e ? e : null, this.promise = n
+    }
+
+    function s(t, e) {
+        var n = !1;
+        try {
+            t(function (t) {
+                n || (n = !0, i(e, t))
+            }, function (t) {
+                n || (n = !0, f(e, t))
+            })
+        } catch (o) {
+            if (n) return;
+            n = !0, f(e, o)
+        }
+    }
+
+    var l = setTimeout, a = "function" == typeof setImmediate && setImmediate || function (t) {
+        l(t, 0)
+    }, d = function (t) {
+        "undefined" != typeof console && console && console.warn("Possible Unhandled Promise Rejection:", t)
+    };
+    o.prototype["catch"] = function (t) {
+        return this.then(null, t)
+    }, o.prototype.then = function (t, n) {
+        var o = new this.constructor(e);
+        return r(this, new c(t, n, o)), o
+    }, o.all = function (t) {
+        var e = Array.prototype.slice.call(t);
+        return new o(function (t, n) {
+            function o(i, f) {
+                try {
+                    if (f && ("object" == typeof f || "function" == typeof f)) {
+                        var u = f.then;
+                        if ("function" == typeof u) return void u.call(f, function (t) {
+                            o(i, t)
+                        }, n)
+                    }
+                    e[i] = f, 0 === --r && t(e)
+                } catch (c) {
+                    n(c)
+                }
+            }
+
+            if (0 === e.length) return t([]);
+            for (var r = e.length, i = 0; i < e.length; i++) o(i, e[i])
+        })
+    }, o.resolve = function (t) {
+        return t && "object" == typeof t && t.constructor === o ? t : new o(function (e) {
+            e(t)
+        })
+    }, o.reject = function (t) {
+        return new o(function (e, n) {
+            n(t)
+        })
+    }, o.race = function (t) {
+        return new o(function (e, n) {
+            for (var o = 0, r = t.length; r > o; o++) t[o].then(e, n)
+        })
+    }, o._setImmediateFn = function (t) {
+        a = t
+    }, o._setUnhandledRejectionFn = function (t) {
+        d = t
+    }, "undefined" != typeof module && module.exports ? module.exports = o : t.Promise || (t.Promise = o)
+}(this);
 /** window.fetch polyfill */
-!function(a){"use strict";function f(a){if("string"!=typeof a&&(a=String(a)),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(a))throw new TypeError("Invalid character in header field name");return a.toLowerCase()}function g(a){return"string"!=typeof a&&(a=String(a)),a}function h(a){var c={next:function(){var b=a.shift();return{done:void 0===b,value:b}}};return b.iterable&&(c[Symbol.iterator]=function(){return c}),c}function i(a){this.map={},a instanceof i?a.forEach(function(a,b){this.append(b,a)},this):a&&Object.getOwnPropertyNames(a).forEach(function(b){this.append(b,a[b])},this)}function j(a){return a.bodyUsed?Promise.reject(new TypeError("Already read")):void(a.bodyUsed=!0)}function k(a){return new Promise(function(b,c){a.onload=function(){b(a.result)},a.onerror=function(){c(a.error)}})}function l(a){var b=new FileReader,c=k(b);return b.readAsArrayBuffer(a),c}function m(a){var b=new FileReader,c=k(b);return b.readAsText(a),c}function n(a){for(var b=new Uint8Array(a),c=new Array(b.length),d=0;d<b.length;d++)c[d]=String.fromCharCode(b[d]);return c.join("")}function o(a){if(a.slice)return a.slice(0);var b=new Uint8Array(a.byteLength);return b.set(new Uint8Array(a)),b.buffer}function p(){return this.bodyUsed=!1,this._initBody=function(a){if(this._bodyInit=a,a)if("string"==typeof a)this._bodyText=a;else if(b.blob&&Blob.prototype.isPrototypeOf(a))this._bodyBlob=a;else if(b.formData&&FormData.prototype.isPrototypeOf(a))this._bodyFormData=a;else if(b.searchParams&&URLSearchParams.prototype.isPrototypeOf(a))this._bodyText=a.toString();else if(b.arrayBuffer&&b.blob&&d(a))this._bodyArrayBuffer=o(a.buffer),this._bodyInit=new Blob([this._bodyArrayBuffer]);else{if(!b.arrayBuffer||!ArrayBuffer.prototype.isPrototypeOf(a)&&!e(a))throw new Error("unsupported BodyInit type");this._bodyArrayBuffer=o(a)}else this._bodyText="";this.headers.get("content-type")||("string"==typeof a?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):b.searchParams&&URLSearchParams.prototype.isPrototypeOf(a)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"))},b.blob&&(this.blob=function(){var a=j(this);if(a)return a;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(new Blob([this._bodyArrayBuffer]));if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this._bodyArrayBuffer?j(this)||Promise.resolve(this._bodyArrayBuffer):this.blob().then(l)}),this.text=function(){var a=j(this);if(a)return a;if(this._bodyBlob)return m(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(n(this._bodyArrayBuffer));if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)},b.formData&&(this.formData=function(){return this.text().then(t)}),this.json=function(){return this.text().then(JSON.parse)},this}function r(a){var b=a.toUpperCase();return q.indexOf(b)>-1?b:a}function s(a,b){b=b||{};var c=b.body;if("string"==typeof a)this.url=a;else{if(a.bodyUsed)throw new TypeError("Already read");this.url=a.url,this.credentials=a.credentials,b.headers||(this.headers=new i(a.headers)),this.method=a.method,this.mode=a.mode,c||null==a._bodyInit||(c=a._bodyInit,a.bodyUsed=!0)}if(this.credentials=b.credentials||this.credentials||"omit",!b.headers&&this.headers||(this.headers=new i(b.headers)),this.method=r(b.method||this.method||"GET"),this.mode=b.mode||this.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&c)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(c)}function t(a){var b=new FormData;return a.trim().split("&").forEach(function(a){if(a){var c=a.split("="),d=c.shift().replace(/\+/g," "),e=c.join("=").replace(/\+/g," ");b.append(decodeURIComponent(d),decodeURIComponent(e))}}),b}function u(a){var b=new i;return a.split("\r\n").forEach(function(a){var c=a.split(":"),d=c.shift().trim();if(d){var e=c.join(":").trim();b.append(d,e)}}),b}function v(a,b){b||(b={}),this.type="default",this.status="status"in b?b.status:200,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in b?b.statusText:"OK",this.headers=new i(b.headers),this.url=b.url||"",this._initBody(a)}if(!a.fetch){var b={searchParams:"URLSearchParams"in a,iterable:"Symbol"in a&&"iterator"in Symbol,blob:"FileReader"in a&&"Blob"in a&&function(){try{return new Blob,!0}catch(a){return!1}}(),formData:"FormData"in a,arrayBuffer:"ArrayBuffer"in a};if(b.arrayBuffer)var c=["[object Int8Array]","[object Uint8Array]","[object Uint8ClampedArray]","[object Int16Array]","[object Uint16Array]","[object Int32Array]","[object Uint32Array]","[object Float32Array]","[object Float64Array]"],d=function(a){return a&&DataView.prototype.isPrototypeOf(a)},e=ArrayBuffer.isView||function(a){return a&&c.indexOf(Object.prototype.toString.call(a))>-1};i.prototype.append=function(a,b){a=f(a),b=g(b);var c=this.map[a];this.map[a]=c?c+","+b:b},i.prototype.delete=function(a){delete this.map[f(a)]},i.prototype.get=function(a){return a=f(a),this.has(a)?this.map[a]:null},i.prototype.has=function(a){return this.map.hasOwnProperty(f(a))},i.prototype.set=function(a,b){this.map[f(a)]=g(b)},i.prototype.forEach=function(a,b){for(var c in this.map)this.map.hasOwnProperty(c)&&a.call(b,this.map[c],c,this)},i.prototype.keys=function(){var a=[];return this.forEach(function(b,c){a.push(c)}),h(a)},i.prototype.values=function(){var a=[];return this.forEach(function(b){a.push(b)}),h(a)},i.prototype.entries=function(){var a=[];return this.forEach(function(b,c){a.push([c,b])}),h(a)},b.iterable&&(i.prototype[Symbol.iterator]=i.prototype.entries);var q=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];s.prototype.clone=function(){return new s(this,{body:this._bodyInit})},p.call(s.prototype),p.call(v.prototype),v.prototype.clone=function(){return new v(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new i(this.headers),url:this.url})},v.error=function(){var a=new v(null,{status:0,statusText:""});return a.type="error",a};var w=[301,302,303,307,308];v.redirect=function(a,b){if(w.indexOf(b)===-1)throw new RangeError("Invalid status code");return new v(null,{status:b,headers:{location:a}})},a.Headers=i,a.Request=s,a.Response=v,a.fetch=function(a,c){return new Promise(function(d,e){var f=new s(a,c),g=new XMLHttpRequest;g.onload=function(){var a={status:g.status,statusText:g.statusText,headers:u(g.getAllResponseHeaders()||"")};a.url="responseURL"in g?g.responseURL:a.headers.get("X-Request-URL");var b="response"in g?g.response:g.responseText;d(new v(b,a))},g.onerror=function(){e(new TypeError("Network request failed"))},g.ontimeout=function(){e(new TypeError("Network request failed"))},g.open(f.method,f.url,!0),"include"===f.credentials&&(g.withCredentials=!0),"responseType"in g&&b.blob&&(g.responseType="blob"),f.headers.forEach(function(a,b){g.setRequestHeader(b,a)}),g.send("undefined"==typeof f._bodyInit?null:f._bodyInit)})},a.fetch.polyfill=!0}}("undefined"!=typeof self?self:this);
+!function (a) {
+    "use strict";
+
+    function f(a) {
+        if ("string" != typeof a && (a = String(a)), /[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(a)) throw new TypeError("Invalid character in header field name");
+        return a.toLowerCase()
+    }
+
+    function g(a) {
+        return "string" != typeof a && (a = String(a)), a
+    }
+
+    function h(a) {
+        var c = {
+            next: function () {
+                var b = a.shift();
+                return {done: void 0 === b, value: b}
+            }
+        };
+        return b.iterable && (c[Symbol.iterator] = function () {
+            return c
+        }), c
+    }
+
+    function i(a) {
+        this.map = {}, a instanceof i ? a.forEach(function (a, b) {
+            this.append(b, a)
+        }, this) : a && Object.getOwnPropertyNames(a).forEach(function (b) {
+            this.append(b, a[b])
+        }, this)
+    }
+
+    function j(a) {
+        return a.bodyUsed ? Promise.reject(new TypeError("Already read")) : void (a.bodyUsed = !0)
+    }
+
+    function k(a) {
+        return new Promise(function (b, c) {
+            a.onload = function () {
+                b(a.result)
+            }, a.onerror = function () {
+                c(a.error)
+            }
+        })
+    }
+
+    function l(a) {
+        var b = new FileReader, c = k(b);
+        return b.readAsArrayBuffer(a), c
+    }
+
+    function m(a) {
+        var b = new FileReader, c = k(b);
+        return b.readAsText(a), c
+    }
+
+    function n(a) {
+        for (var b = new Uint8Array(a), c = new Array(b.length), d = 0; d < b.length; d++) c[d] = String.fromCharCode(b[d]);
+        return c.join("")
+    }
+
+    function o(a) {
+        if (a.slice) return a.slice(0);
+        var b = new Uint8Array(a.byteLength);
+        return b.set(new Uint8Array(a)), b.buffer
+    }
+
+    function p() {
+        return this.bodyUsed = !1, this._initBody = function (a) {
+            if (this._bodyInit = a, a) if ("string" == typeof a) this._bodyText = a; else if (b.blob && Blob.prototype.isPrototypeOf(a)) this._bodyBlob = a; else if (b.formData && FormData.prototype.isPrototypeOf(a)) this._bodyFormData = a; else if (b.searchParams && URLSearchParams.prototype.isPrototypeOf(a)) this._bodyText = a.toString(); else if (b.arrayBuffer && b.blob && d(a)) this._bodyArrayBuffer = o(a.buffer), this._bodyInit = new Blob([this._bodyArrayBuffer]); else {
+                if (!b.arrayBuffer || !ArrayBuffer.prototype.isPrototypeOf(a) && !e(a)) throw new Error("unsupported BodyInit type");
+                this._bodyArrayBuffer = o(a)
+            } else this._bodyText = "";
+            this.headers.get("content-type") || ("string" == typeof a ? this.headers.set("content-type", "text/plain;charset=UTF-8") : this._bodyBlob && this._bodyBlob.type ? this.headers.set("content-type", this._bodyBlob.type) : b.searchParams && URLSearchParams.prototype.isPrototypeOf(a) && this.headers.set("content-type", "application/x-www-form-urlencoded;charset=UTF-8"))
+        }, b.blob && (this.blob = function () {
+            var a = j(this);
+            if (a) return a;
+            if (this._bodyBlob) return Promise.resolve(this._bodyBlob);
+            if (this._bodyArrayBuffer) return Promise.resolve(new Blob([this._bodyArrayBuffer]));
+            if (this._bodyFormData) throw new Error("could not read FormData body as blob");
+            return Promise.resolve(new Blob([this._bodyText]))
+        }, this.arrayBuffer = function () {
+            return this._bodyArrayBuffer ? j(this) || Promise.resolve(this._bodyArrayBuffer) : this.blob().then(l)
+        }), this.text = function () {
+            var a = j(this);
+            if (a) return a;
+            if (this._bodyBlob) return m(this._bodyBlob);
+            if (this._bodyArrayBuffer) return Promise.resolve(n(this._bodyArrayBuffer));
+            if (this._bodyFormData) throw new Error("could not read FormData body as text");
+            return Promise.resolve(this._bodyText)
+        }, b.formData && (this.formData = function () {
+            return this.text().then(t)
+        }), this.json = function () {
+            return this.text().then(JSON.parse)
+        }, this
+    }
+
+    function r(a) {
+        var b = a.toUpperCase();
+        return q.indexOf(b) > -1 ? b : a
+    }
+
+    function s(a, b) {
+        b = b || {};
+        var c = b.body;
+        if ("string" == typeof a) this.url = a; else {
+            if (a.bodyUsed) throw new TypeError("Already read");
+            this.url = a.url, this.credentials = a.credentials, b.headers || (this.headers = new i(a.headers)), this.method = a.method, this.mode = a.mode, c || null == a._bodyInit || (c = a._bodyInit, a.bodyUsed = !0)
+        }
+        if (this.credentials = b.credentials || this.credentials || "omit", !b.headers && this.headers || (this.headers = new i(b.headers)), this.method = r(b.method || this.method || "GET"), this.mode = b.mode || this.mode || null, this.referrer = null, ("GET" === this.method || "HEAD" === this.method) && c) throw new TypeError("Body not allowed for GET or HEAD requests");
+        this._initBody(c)
+    }
+
+    function t(a) {
+        var b = new FormData;
+        return a.trim().split("&").forEach(function (a) {
+            if (a) {
+                var c = a.split("="), d = c.shift().replace(/\+/g, " "), e = c.join("=").replace(/\+/g, " ");
+                b.append(decodeURIComponent(d), decodeURIComponent(e))
+            }
+        }), b
+    }
+
+    function u(a) {
+        var b = new i;
+        return a.split("\r\n").forEach(function (a) {
+            var c = a.split(":"), d = c.shift().trim();
+            if (d) {
+                var e = c.join(":").trim();
+                b.append(d, e)
+            }
+        }), b
+    }
+
+    function v(a, b) {
+        b || (b = {}), this.type = "default", this.status = "status" in b ? b.status : 200, this.ok = this.status >= 200 && this.status < 300, this.statusText = "statusText" in b ? b.statusText : "OK", this.headers = new i(b.headers), this.url = b.url || "", this._initBody(a)
+    }
+
+    if (!a.fetch) {
+        var b = {
+            searchParams: "URLSearchParams" in a,
+            iterable: "Symbol" in a && "iterator" in Symbol,
+            blob: "FileReader" in a && "Blob" in a && function () {
+                try {
+                    return new Blob, !0
+                } catch (a) {
+                    return !1
+                }
+            }(),
+            formData: "FormData" in a,
+            arrayBuffer: "ArrayBuffer" in a
+        };
+        if (b.arrayBuffer) var c = ["[object Int8Array]", "[object Uint8Array]", "[object Uint8ClampedArray]", "[object Int16Array]", "[object Uint16Array]", "[object Int32Array]", "[object Uint32Array]", "[object Float32Array]", "[object Float64Array]"],
+            d = function (a) {
+                return a && DataView.prototype.isPrototypeOf(a)
+            }, e = ArrayBuffer.isView || function (a) {
+                return a && c.indexOf(Object.prototype.toString.call(a)) > -1
+            };
+        i.prototype.append = function (a, b) {
+            a = f(a), b = g(b);
+            var c = this.map[a];
+            this.map[a] = c ? c + "," + b : b
+        }, i.prototype.delete = function (a) {
+            delete this.map[f(a)]
+        }, i.prototype.get = function (a) {
+            return a = f(a), this.has(a) ? this.map[a] : null
+        }, i.prototype.has = function (a) {
+            return this.map.hasOwnProperty(f(a))
+        }, i.prototype.set = function (a, b) {
+            this.map[f(a)] = g(b)
+        }, i.prototype.forEach = function (a, b) {
+            for (var c in this.map) this.map.hasOwnProperty(c) && a.call(b, this.map[c], c, this)
+        }, i.prototype.keys = function () {
+            var a = [];
+            return this.forEach(function (b, c) {
+                a.push(c)
+            }), h(a)
+        }, i.prototype.values = function () {
+            var a = [];
+            return this.forEach(function (b) {
+                a.push(b)
+            }), h(a)
+        }, i.prototype.entries = function () {
+            var a = [];
+            return this.forEach(function (b, c) {
+                a.push([c, b])
+            }), h(a)
+        }, b.iterable && (i.prototype[Symbol.iterator] = i.prototype.entries);
+        var q = ["DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT"];
+        s.prototype.clone = function () {
+            return new s(this, {body: this._bodyInit})
+        }, p.call(s.prototype), p.call(v.prototype), v.prototype.clone = function () {
+            return new v(this._bodyInit, {
+                status: this.status,
+                statusText: this.statusText,
+                headers: new i(this.headers),
+                url: this.url
+            })
+        }, v.error = function () {
+            var a = new v(null, {status: 0, statusText: ""});
+            return a.type = "error", a
+        };
+        var w = [301, 302, 303, 307, 308];
+        v.redirect = function (a, b) {
+            if (w.indexOf(b) === -1) throw new RangeError("Invalid status code");
+            return new v(null, {status: b, headers: {location: a}})
+        }, a.Headers = i, a.Request = s, a.Response = v, a.fetch = function (a, c) {
+            return new Promise(function (d, e) {
+                var f = new s(a, c), g = new XMLHttpRequest;
+                g.onload = function () {
+                    var a = {status: g.status, statusText: g.statusText, headers: u(g.getAllResponseHeaders() || "")};
+                    a.url = "responseURL" in g ? g.responseURL : a.headers.get("X-Request-URL");
+                    var b = "response" in g ? g.response : g.responseText;
+                    d(new v(b, a))
+                }, g.onerror = function () {
+                    e(new TypeError("Network request failed"))
+                }, g.ontimeout = function () {
+                    e(new TypeError("Network request failed"))
+                }, g.open(f.method, f.url, !0), "include" === f.credentials && (g.withCredentials = !0), "responseType" in g && b.blob && (g.responseType = "blob"), f.headers.forEach(function (a, b) {
+                    g.setRequestHeader(b, a)
+                }), g.send("undefined" == typeof f._bodyInit ? null : f._bodyInit)
+            })
+        }, a.fetch.polyfill = !0
+    }
+}("undefined" != typeof self ? self : this);
 /** Object.assign Polyfill */
-Object.assign||Object.defineProperty(Object,"assign",{enumerable:!1,configurable:!0,writable:!0,value:function(e){"use strict";if(void 0===e||null===e)throw new TypeError("Cannot convert first argument to object");for(var r=Object(e),t=1;t<arguments.length;t++){var n=arguments[t];if(void 0!==n&&null!==n){n=Object(n);for(var o=Object.keys(Object(n)),c=0,i=o.length;c<i;c++){var a=o[c],b=Object.getOwnPropertyDescriptor(n,a);void 0!==b&&b.enumerable&&(r[a]=n[a])}}}return r}});
+Object.assign || Object.defineProperty(Object, "assign", {
+    enumerable: !1,
+    configurable: !0,
+    writable: !0,
+    value: function (e) {
+        "use strict";
+        if (void 0 === e || null === e) throw new TypeError("Cannot convert first argument to object");
+        for (var r = Object(e), t = 1; t < arguments.length; t++) {
+            var n = arguments[t];
+            if (void 0 !== n && null !== n) {
+                n = Object(n);
+                for (var o = Object.keys(Object(n)), c = 0, i = o.length; c < i; c++) {
+                    var a = o[c], b = Object.getOwnPropertyDescriptor(n, a);
+                    void 0 !== b && b.enumerable && (r[a] = n[a])
+                }
+            }
+        }
+        return r
+    }
+});
 
 var CurrentWindow = CurrentWindow || top;
+var JANS = [];
 
 if (CurrentWindow.TopWindow === undefined) {
     CurrentWindow.TopWindow = top;
@@ -38,7 +442,7 @@ if (window.Element && !Element.prototype.closest) {
 /**
  * @deprecated
  */
-function js_cria_objeto_div(idobjeto,texto) {
+function js_cria_objeto_div(idobjeto, texto) {
     return console.error('js_cria_objeto_div is deprecated!');
 }
 
@@ -49,8 +453,8 @@ function js_remove_objeto_div(idobjeto) {
     return console.error('js_remove_objeto_div is deprecated!');
 }
 
-function js_seleciona_combo(campoform){
-    for(var i=0; i<campoform.length; i++){
+function js_seleciona_combo(campoform) {
+    for (var i = 0; i < campoform.length; i++) {
         campoform.options[i].selected = true;
     }
 }
@@ -78,53 +482,52 @@ function js_seleciona_combo(campoform){
 // teste = js_diferenca_datas('2006-03-05','2005-01-01','d');   ** teste = 429;
 // teste = js_diferenca_datas('2006-03-05','2005-01-01','amd'); ** teste = '1 2 9'; ** 1 ano, 2 meses e 9 dias
 
-function js_diferenca_datas(data1,data2,opcao){
-    dataT1 = new Date(data1.substring(0,4),(data1.substring(5,7) - 1),data1.substring(8,10));
-    dataT2 = new Date(data2.substring(0,4),(data2.substring(5,7) - 1),data2.substring(8,10));
+function js_diferenca_datas(data1, data2, opcao) {
+    dataT1 = new Date(data1.substring(0, 4), (data1.substring(5, 7) - 1), data1.substring(8, 10));
+    dataT2 = new Date(data2.substring(0, 4), (data2.substring(5, 7) - 1), data2.substring(8, 10));
     maior = dataT1;
     menor = dataT2;
-    if(dataT1 > dataT2){
-        if(opcao == 1){
+    if (dataT1 > dataT2) {
+        if (opcao == 1) {
             return data1;
-        }else if(opcao == 2){
+        } else if (opcao == 2) {
             return data2;
-        }else if(opcao == 3){
+        } else if (opcao == 3) {
             return true;
         }
-    }else if(dataT2 > dataT1){
+    } else if (dataT2 > dataT1) {
         maior = dataT2;
         menor = dataT1;
-        if(opcao == 1){
+        if (opcao == 1) {
             return data2;
-        }else if(opcao == 2){
+        } else if (opcao == 2) {
             return data1;
-        }else if(opcao == 3){
+        } else if (opcao == 3) {
             return false;
         }
-    }else if(opcao == 1 || opcao == 2 || opcao == 3){
+    } else if (opcao == 1 || opcao == 2 || opcao == 3) {
         return 'i';
     }
     dias = (((maior - menor) / 86400000) + 1);
-    dias = js_round(dias,0);
+    dias = js_round(dias, 0);
     mess = (dias / 30);
     anos = (mess / 12);
-    if(opcao == "d"){
+    if (opcao == "d") {
         return parseInt(dias);
-    }else if(opcao == "m"){
+    } else if (opcao == "m") {
         return parseInt(mess);
-    }else if(opcao == "a"){
+    } else if (opcao == "a") {
         return parseInt(anos);
-    }else if(opcao == "amd"){
-        return anos+' '+mess+' '+dias;
+    } else if (opcao == "amd") {
+        return anos + ' ' + mess + ' ' + dias;
     }
 }
 
 
-
 // procura um valor em um array
-function js_search_in_array(arr,valor){
-    for(var ix=0; ix<arr.length; ix++){
-        if(arr[ix] == valor){
+function js_search_in_array(arr, valor) {
+    for (var ix = 0; ix < arr.length; ix++) {
+        if (arr[ix] == valor) {
             return true;
         }
     }
@@ -138,147 +541,148 @@ function js_search_in_array(arr,valor){
 // inicio - índice inicial da tabulação. Caso passado 0 (zero), a função começará do 1 (um)
 // campo  - campo que receberá o foco ao sair do último campo
 // tcampo - true se programador quer usar a variável campo
-function js_tabulacaoforms(form,foco,tfoco,inicio,campo,tcampo){
-    eval("var xxi = document."+form+";");
+function js_tabulacaoforms(form, foco, tfoco, inicio, campo, tcampo) {
+    eval("var xxi = document." + form + ";");
 
-    if(inicio <= 0){  // Seta índice inicial
+    if (inicio <= 0) {  // Seta índice inicial
         indx = 1;
-    }else{
+    } else {
         indx = inicio;
     }
     mark = 0;
-    for(var i=0; i<xxi.length; i++){
-        if(xxi.elements[i].disabled == false){                // Se campo estiver desabilitado, não recebe tabIndex
-            array_types = new Array('select-one','text','checkbox','radio','button','submit','reset','textarea','file');
-            valor_types = js_search_in_array(array_types,xxi.elements[i].type);
-            if(valor_types == true){
+    for (var i = 0; i < xxi.length; i++) {
+        if (xxi.elements[i].disabled == false) {                // Se campo estiver desabilitado, não recebe tabIndex
+            array_types = new Array('select-one', 'text', 'checkbox', 'radio', 'button', 'submit', 'reset', 'textarea', 'file');
+            valor_types = js_search_in_array(array_types, xxi.elements[i].type);
+            if (valor_types == true) {
                 campo_ok = true;
-                if(xxi.elements[i].type == 'text'){
-                    if(xxi.elements[i].readOnly == true){
+                if (xxi.elements[i].type == 'text') {
+                    if (xxi.elements[i].readOnly == true) {
                         campo_ok = false;
                     }
-                }else if(xxi.elements[i].type == 'button'){
-                    if(xxi.elements[i].value == "D"){
+                } else if (xxi.elements[i].type == 'button') {
+                    if (xxi.elements[i].value == "D") {
                         campo_ok = false;
                     }
                 }
-                if(campo_ok == true){
+                if (campo_ok == true) {
                     xxi.elements[i].tabIndex = indx;
-                    indx ++;
+                    indx++;
                     mark = i;
-                }else{
+                } else {
                     xxi.elements[i].tabIndex = 0;
                 }
             }
-        }else{
+        } else {
             xxi.elements[i].tabIndex = 0;
         }
     }
-    if(tfoco == true){                                    // Se programador quer focar o campo informado, entrará
-        camporecebe = eval("xxi."+foco);
-        camporecebe.focus();
-        if(camporecebe.value != "" && camporecebe.type == "text"){
-            camporecebe.select();
-        }
+    if (tfoco == true) {                                    // Se programador quer focar o campo informado, entrará
+        try {
+            camporecebe = eval("xxi." + foco);
+            camporecebe.focus();
+            if (camporecebe.value != "" && camporecebe.type == "text") {
+                camporecebe.select();
+            }
+        } catch(e){}
     }
 }
 
 // Monta lista de arquivos para download
-function js_montarlista(lista,form,callback){
-    if(lista != "" && form != ""){
-        if(eval("document."+form+".query_arquivo")){
-            eval("document."+form+".query_arquivo.value = lista");
-        }else{
-            obj=document.createElement('input');
-            obj.setAttribute('name','query_arquivo');
-            obj.setAttribute('type','hidden');
-            obj.setAttribute('value',lista);
-            eval("document."+form+".appendChild(obj)");
+function js_montarlista(lista, form, callback) {
+    if (lista != "" && form != "") {
+        if (eval("document." + form + ".query_arquivo")) {
+            eval("document." + form + ".query_arquivo.value = lista");
+        } else {
+            obj = document.createElement('input');
+            obj.setAttribute('name', 'query_arquivo');
+            obj.setAttribute('type', 'hidden');
+            obj.setAttribute('value', lista);
+            eval("document." + form + ".appendChild(obj)");
         }
 
         var callbackName = typeof callback == 'function' ? callback.name : callback;
 
-        jan = window.open('db_listaarquivos.php?callbackName='+(callbackName||'')+'&form='+form,'','width=400,height=400,scrollbars=1,location=0');
-        jan.moveTo(0,0);
-    }else{
+        jan = window.open('db_listaarquivos.php?callbackName=' + (callbackName || '') + '&form=' + form, '', 'width=400,height=400,scrollbars=1,location=0');
+        jan.moveTo(0, 0);
+    } else {
         alert("Sem parâmetros para gerar lista de downloads.");
     }
 }
 
 
 // Função para completar com zeros à esquerda o código das rubricas
-function js_completa_rubricas(campo){
+function js_completa_rubricas(campo) {
     valor = campo.value;
     numval = new Number(valor);
-    if(valor != "" && numval > 0){
+    if (valor != "" && numval > 0) {
         quantcaracteres = valor.length;
-        for(i=quantcaracteres; i<4; i++){
+        for (i = quantcaracteres; i < 4; i++) {
             campo.value = '0' + campo.value;
         }
-    }else{
+    } else {
         campo.value = '';
     }
 }
 
 // Forçar download de arquivos
-function js_arquivo_abrir(selecionado){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_download','db_download.php?arquivo='+selecionado,'Download de arquivos',false);
+function js_arquivo_abrir(selecionado) {
+    js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_download', 'db_download.php?arquivo=' + selecionado, 'Download de arquivos', false);
 }
-
 
 
 function db_mes(xmes) {
 
     var Mes = '';
-    if ( xmes == '1' || xmes == '01') {
+    if (xmes == '1' || xmes == '01') {
         Mes = 'Janeiro';
     }
-    if ( xmes == '2' || xmes == '02') {
+    if (xmes == '2' || xmes == '02') {
         Mes = 'Fevereiro';
     }
-    if ( xmes == '3' || xmes == '03') {
+    if (xmes == '3' || xmes == '03') {
         Mes = 'Março';
     }
-    if ( xmes == '4' || xmes == '04') {
+    if (xmes == '4' || xmes == '04') {
         Mes = 'Abril';
     }
-    if ( xmes == '5' || xmes == '05') {
+    if (xmes == '5' || xmes == '05') {
         Mes = 'Maio';
     }
-    if ( xmes == '6' || xmes == '06') {
+    if (xmes == '6' || xmes == '06') {
         Mes = 'Junho';
     }
-    if ( xmes == '7' || xmes == '07') {
+    if (xmes == '7' || xmes == '07') {
         Mes = 'Julho';
     }
-    if ( xmes == '8' || xmes == '08') {
+    if (xmes == '8' || xmes == '08') {
         Mes = 'Agosto';
     }
-    if ( xmes == '9' || xmes == '09') {
+    if (xmes == '9' || xmes == '09') {
         Mes = 'Setembro';
     }
-    if ( xmes == '10') {
+    if (xmes == '10') {
         Mes = 'Outubro';
     }
-    if ( xmes == '11') {
+    if (xmes == '11') {
         Mes = 'Novembro';
     }
-    if ( xmes == '12') {
+    if (xmes == '12') {
         Mes = 'Dezembro';
     }
     return Mes;
 }
 
-function js_verifica_objeto(nome){
-    if(!document.getElementById(nome)){
+function js_verifica_objeto(nome) {
+    if (!document.getElementById(nome)) {
         alert('Sem permissão de acesso.');
         return false;
-    }else{
+    } else {
         return true;
     }
 }
 
-function buttonHelp(pagina,item,modulo,helpversao){
+function buttonHelp(pagina, item, modulo, helpversao) {
 //#01#//buttonHelp
 //#10#//Funcao para abrir o help do sistema
 //#15#//buttonHelp(pagina,item,modulo);
@@ -298,9 +702,9 @@ function buttonHelp(pagina,item,modulo,helpversao){
         }
 
         var oRequisicao = {
-            method       : 'POST',
-            asynchronous : true,
-            parameters   : 'json='+JSON.stringify(oParametros)
+            method: 'POST',
+            asynchronous: true,
+            parameters: 'json=' + JSON.stringify(oParametros)
         }
 
         new Ajax.Request("con1_usuariosistema.RPC.php", oRequisicao);
@@ -309,64 +713,65 @@ function buttonHelp(pagina,item,modulo,helpversao){
 
     // alvo e a variavel para indicar onde criar o iframe
     var qual_alvo = 'CurrentWindow.corpo';
-    if(document.form_iframes){
+    if (document.form_iframes) {
         var divs = document.getElementsByTagName('IFRAME');
-        for (var j = 0; j < divs.length; j++){
-            qual_div = 'div_'+divs[j].id;
-            if( eval(qual_div+'.style.display') == 'block'){
+        for (var j = 0; j < divs.length; j++) {
+            qual_div = 'div_' + divs[j].id;
+            if (eval(qual_div + '.style.display') == 'block') {
                 qual_alvo = divs[j].name;
             }
         }
-        if(helpversao==true)
-            js_OpenJanelaIframe(qual_alvo,'db_janelaHelp_OnLine','con1_help001.php?pagina='+pagina+'&item='+item+'&modulo='+modulo,'Help On Line do Sistema',true,0);
+        if (helpversao == true)
+            js_OpenJanelaIframe(qual_alvo, 'db_janelaHelp_OnLine', 'con1_help001.php?pagina=' + pagina + '&item=' + item + '&modulo=' + modulo, 'Help On Line do Sistema', true, 0);
         else
-            js_OpenJanelaIframe(qual_alvo,'db_janelaVersao_OnLine','con3_versao001.php?pagina='+pagina+'&item='+item+'&modulo='+modulo,'Atualização de Versão do Sistema',true,0);
-    }else{
-        if(helpversao==true)
-            js_OpenJanelaIframe(qual_alvo,'db_janelaHelp_OnLine','con1_help001.php?pagina='+pagina+'&item='+item+'&modulo='+modulo,'Help On Line do Sistema');
+            js_OpenJanelaIframe(qual_alvo, 'db_janelaVersao_OnLine', 'con3_versao001.php?pagina=' + pagina + '&item=' + item + '&modulo=' + modulo, 'Atualização de Versão do Sistema', true, 0);
+    } else {
+        if (helpversao == true)
+            js_OpenJanelaIframe(qual_alvo, 'db_janelaHelp_OnLine', 'con1_help001.php?pagina=' + pagina + '&item=' + item + '&modulo=' + modulo, 'Help On Line do Sistema');
         else
-            js_OpenJanelaIframe(qual_alvo,'db_janelaVersao_OnLine','con3_versao001.php?pagina='+pagina+'&item='+item+'&modulo='+modulo,'Atualização de Versão do Sistema');
+            js_OpenJanelaIframe(qual_alvo, 'db_janelaVersao_OnLine', 'con3_versao001.php?pagina=' + pagina + '&item=' + item + '&modulo=' + modulo, 'Atualização de Versão do Sistema');
 
     }
 
 }
 
-function js_retornadata(dia,mes,ano){
+function js_retornadata(dia, mes, ano) {
 //#01#//js_retornadata
 //#10#//Funcao para retornar uma data
 //#15#//js_retornadata(dia,mes,ano);
 //#20#//dia     : Dia
 //#20#//mes     : Mes
 //#20#//ano     : Ano
-    x = new Date(ano,mes,dia);
-    m = x.getMonth()+1;
-    if(m!=mes){
-        while(m!=mes){
-            dia=dia-1;
-            x = new Date(ano,mes,dia);
-            m = x.getMonth()+1;
+    x = new Date(ano, mes, dia);
+    m = x.getMonth() + 1;
+    if (m != mes) {
+        while (m != mes) {
+            dia = dia - 1;
+            x = new Date(ano, mes, dia);
+            m = x.getMonth() + 1;
         }
     }
-    return  x;
+    return x;
 }
+
 // variavel com os nomes dos campos a serem testados no botao incluir/alterar/excluir e outros
 var DB_valida_campos_numerico = "";
 var DB_valida_campos_alfa = "";
 
-function js_verifica_campos_digitados(){
+function js_verifica_campos_digitados() {
 
     var campos = DB_valida_campos_numerico.split("#");
-    if(DB_valida_campos_numerico != ""){
-        for(x=0;x<campos.length;x++){
-            if(eval('document.form1.'+campos[x]+'.type')!='hidden'){
-                if(eval('document.form1.'+campos[x]+'.value')==''){
-                    eval('document.form1.'+campos[x]+'.value=0');
+    if (DB_valida_campos_numerico != "") {
+        for (x = 0; x < campos.length; x++) {
+            if (eval('document.form1.' + campos[x] + '.type') != 'hidden') {
+                if (eval('document.form1.' + campos[x] + '.value') == '') {
+                    eval('document.form1.' + campos[x] + '.value=0');
                 }
-                var campo = new Number(eval('document.form1.'+campos[x]+'.value'));
-                if(isNaN(campo)){
+                var campo = new Number(eval('document.form1.' + campos[x] + '.value'));
+                if (isNaN(campo)) {
                     alert('Campo Inválido.');
-                    eval('document.form1.'+campos[x]+'.focus()');
-                    eval('document.form1.'+campos[x]+'.select()');
+                    eval('document.form1.' + campos[x] + '.focus()');
+                    eval('document.form1.' + campos[x] + '.select()');
                     return false;
                 }
             }
@@ -375,15 +780,15 @@ function js_verifica_campos_digitados(){
 
     //alert(DB_valida_campos_alfa);
     var campos = DB_valida_campos_alfa.split("#");
-    if(DB_valida_campos_alfa != ""){
-        for(x=0;x<campos.length;x++){
-            if(eval('document.form1.'+campos[x]+'.type')!='hidden'){
-                var campo = eval('document.form1.'+campos[x]+'.value');
+    if (DB_valida_campos_alfa != "") {
+        for (x = 0; x < campos.length; x++) {
+            if (eval('document.form1.' + campos[x] + '.type') != 'hidden') {
+                var campo = eval('document.form1.' + campos[x] + '.value');
                 var expr = new RegExp("[^A-Za-z0-9à-úÁ-ÚüÜ \.,;:@&%-\_]+");
-                if(campo=="" || campo.match(expr)){
+                if (campo == "" || campo.match(expr)) {
                     alert('Campo Inválido.');
-                    eval('document.form1.'+campos[x]+'.focus()');
-                    eval('document.form1.'+campos[x]+'.select()');
+                    eval('document.form1.' + campos[x] + '.focus()');
+                    eval('document.form1.' + campos[x] + '.select()');
                     return false;
                 }
             }
@@ -392,7 +797,7 @@ function js_verifica_campos_digitados(){
     return true;
 }
 
-function js_controla_tecla_enter(obj,evt){
+function js_controla_tecla_enter(obj, evt) {
 //#01#//js_controla_tecla_enter
 //#10#//Funcao para controlar quando a tecla enter é precionada
 //#15#//js_controla_tecla_enter(obj,evt);
@@ -402,7 +807,7 @@ function js_controla_tecla_enter(obj,evt){
 
     var evt = (evt) ? evt : (window.event) ? window.event : "";
 
-    if(evt.keyCode==13){
+    if (evt.keyCode == 13) {
 
         return false;
 
@@ -415,72 +820,74 @@ function js_controla_tecla_enter(obj,evt){
 /////////////////////////////////////////////////////////////////
 // funcoes de consistencia de cgc e cpf
 /////////////////////////////////////////////////////////////////
-function js_LimpaCampo(sValor,iBase){
+function js_LimpaCampo(sValor, iBase) {
 
     var tam = sValor.length;
     var saida = new String;
-    for (i=0;i<tam;i++)
-        if (!isNaN(parseInt(sValor.substr(i,1),iBase)))
-            saida = saida + String(sValor.substr(i,1));
+    for (i = 0; i < tam; i++)
+        if (!isNaN(parseInt(sValor.substr(i, 1), iBase)))
+            saida = saida + String(sValor.substr(i, 1));
     return (saida);
 }
-function js_TestaNI(cNI,iTipo){
+
+function js_TestaNI(cNI, iTipo) {
     var NI;
-    NI = js_LimpaCampo(cNI.value,10);
+    NI = js_LimpaCampo(cNI.value, 10);
     switch (iTipo) {
         case 1:
-            if (NI.length != 14){
+            if (NI.length != 14) {
                 alert('O número do CNPJ informado está incorreto');
                 cNI.select();
                 cNI.focus();
-                return(false);
+                return (false);
             }
 
-            if (NI.substr(12,2) != js_CalculaDV(NI.substr(0,12), 9)){
+            if (NI.substr(12, 2) != js_CalculaDV(NI.substr(0, 12), 9)) {
                 alert('O número do CNPJ informado está incorreto');
                 cNI.select();
                 cNI.focus();
-                return(false);
+                return (false);
             }
             break;
 
         case 2:
 
-            if (NI.length != 11){
+            if (NI.length != 11) {
                 alert('O número do CPF informado está incorreto');
                 cNI.select();
                 cNI.focus();
-                return(false);
+                return (false);
             }
 
-            if (NI.substr(9,2) != js_CalculaDV(NI.substr(0,9), 11)){
+            if (NI.substr(9, 2) != js_CalculaDV(NI.substr(0, 9), 11)) {
                 alert('O número do CPF informado está incorreto');
                 cNI.select();
                 cNI.focus();
-                return(false);
+                return (false);
             }
             break;
 
         default:
-            return(false);
+            return (false);
     }
     return (true);
 }
+
 /////////////////////////////////////////////////////////////////
 
-function js_verificaCGCCPF(obcgc){
+function js_verificaCGCCPF(obcgc) {
 //#01#//js_verificaCGCCPF
 //#10#//Funcao para verificar se o CNPJ ou CPF são válidos
 //#15#//js_verificaCGCCPF(obcgc);
 //#20#//objcgc : Objeto que esta utilizando a função
 //#30#//Retorna false quando não esta no formato ou true se estiver correto
 //#99#//A função verifica pelo tamanho da string passada, caso 14 testa cnpj ou 11 testa cpf senão mostra erro
-    if (obcgc.value.length == 14){
-        return js_TestaNI(obcgc,1);
-    }else if (obcgc.value.length == 11){
-        return js_TestaNI(obcgc,2);
+    if (obcgc.value.length == 14) {
+        return js_TestaNI(obcgc, 1);
+    } else if (obcgc.value.length == 11) {
+        return js_TestaNI(obcgc, 2);
     }
-    if(obcgc.value!=""){
+    if (obcgc.value != "") {
         alert('Valor Informado não é Válido para CNPJ ou CPF.');
         obcgc.select();
         obcgc.focus();
@@ -488,7 +895,7 @@ function js_verificaCGCCPF(obcgc){
     return false;
 }
 
-function js_CalculaDV(sCampo, iPeso){
+function js_CalculaDV(sCampo, iPeso) {
 //#01#//js_CalculaDV
 //#10#//Funcao para calcular o digito verificador de uma sequencia de números
 //#15#//js_CalculaDV(sCampo, iPeso);
@@ -499,13 +906,13 @@ function js_CalculaDV(sCampo, iPeso){
     var iTamCampo;
     var iPosicao, iDigito;
     var iSoma1 = 0;
-    var iSoma2=0;
+    var iSoma2 = 0;
     var iDV1, iDV2;
     iTamCampo = sCampo.length;
-    for (iPosicao=1; iPosicao<=iTamCampo; iPosicao++){
-        iDigito = sCampo.substr(iPosicao-1, 1);
-        iSoma1 = parseInt(iSoma1,10) + parseInt((iDigito * js_Calcular_Peso(iTamCampo - iPosicao, iPeso)),10);
-        iSoma2 = parseInt(iSoma2,10) + parseInt((iDigito * js_Calcular_Peso(iTamCampo - iPosicao + 1, iPeso)),10);
+    for (iPosicao = 1; iPosicao <= iTamCampo; iPosicao++) {
+        iDigito = sCampo.substr(iPosicao - 1, 1);
+        iSoma1 = parseInt(iSoma1, 10) + parseInt((iDigito * js_Calcular_Peso(iTamCampo - iPosicao, iPeso)), 10);
+        iSoma2 = parseInt(iSoma2, 10) + parseInt((iDigito * js_Calcular_Peso(iTamCampo - iPosicao + 1, iPeso)), 10);
     }
     iDV1 = 11 - (iSoma1 % 11);
     if (iDV1 > 9)
@@ -514,27 +921,30 @@ function js_CalculaDV(sCampo, iPeso){
     iDV2 = 11 - (iSoma2 % 11);
     if (iDV2 > 9)
         iDV2 = 0;
-    Ret = (parseInt(iDV1 * 10,10) + parseInt(iDV2));
+    Ret = (parseInt(iDV1 * 10, 10) + parseInt(iDV2));
     Ret = "0" + Ret;
-    Ret = Ret.substr(Ret.length - 2,Ret.length);
-    return(Ret);
+    Ret = Ret.substr(Ret.length - 2, Ret.length);
+    return (Ret);
 }
-function js_Calcular_Peso(iPosicao, iPeso){
+
+function js_Calcular_Peso(iPosicao, iPeso) {
 //Pesos
 //CPF 11
 //CNPJ 9
     return (iPosicao % (iPeso - 1)) + 2;
 }
+
 /////////////////////////////////////////////////////////////////
 
 
 controlaMenuModulos = 1;
+
 function someFrame(evt) {
 
     evt = (evt) ? evt : (window.event) ? window.event : "";
-    if(!document.getElementById('menuSomeTela')) {
+    if (!document.getElementById('menuSomeTela')) {
         var menu = new Object();
-        if(controlaMenuModulos) {
+        if (controlaMenuModulos) {
             menu.innerHTML = "Tela";
             controlaMenuModulos = 0;
         } else {
@@ -544,8 +954,8 @@ function someFrame(evt) {
     } else
         var menu = document.getElementById('menuSomeTela');
 
-    if(evt.keyCode == 113 || someFrame.arguments[1] == 1) {
-        if(menu.innerHTML == "Tela") {
+    if (evt.keyCode == 113 || someFrame.arguments[1] == 1) {
+        if (menu.innerHTML == "Tela") {
 
             oElement = CurrentWindow.frames.document.getElementById("quadroprincipal");
 
@@ -561,32 +971,28 @@ function someFrame(evt) {
             menu.innerHTML = "Tela";
         }
     }
-    if(evt.keyCode >= 112 && evt.keyCode <= 123)
+    if (evt.keyCode >= 112 && evt.keyCode <= 123)
         return false;
-}
-if(CurrentWindow.corpo==null){
-    location.href='index.php';
-}else{
-    if(CurrentWindow.corpo.document)
-        CurrentWindow.corpo.document.onkeyup = function(event) { someFrame(event); };
 }
 
 
 ///// funcoes pra cookies ////////
 ///para um help destas funcoes, olhe pagina 392 da biblia do javascript
-function getCookieVal (offset) {
-    var endstr = document.cookie.indexOf (";", offset);
+function getCookieVal(offset) {
+    var endstr = document.cookie.indexOf(";", offset);
     if (endstr == -1)
         endstr = document.cookie.length;
     return unescape(document.cookie.substring(offset, endstr));
 }
-function FixCookieDate (date) {
+
+function FixCookieDate(date) {
     var base = new Date(0);
     var skew = base.getTime(); // dawn of (Unix) time - should be 0
     if (skew > 0)  // Except on the Mac - ahead of its time
-        date.setTime (date.getTime() - skew);
+        date.setTime(date.getTime() - skew);
 }
-function GetCookie (name) {
+
+function GetCookie(name) {
     var arg = name + "=";
     var alen = arg.length;
     var clen = document.cookie.length;
@@ -594,43 +1000,46 @@ function GetCookie (name) {
     while (i < clen) {
         var j = i + alen;
         if (document.cookie.substring(i, j) == arg)
-            return getCookieVal (j);
+            return getCookieVal(j);
         i = document.cookie.indexOf(" ", i) + 1;
         if (i == 0) break;
     }
     return null;
 }
-function SetCookie (name,value,expires,path,domain,secure) {
-    document.cookie = name + "=" + escape (value) +
+
+function SetCookie(name, value, expires, path, domain, secure) {
+    document.cookie = name + "=" + escape(value) +
         ((expires) ? "; expires=" + expires.toGMTString() : "") +
-        ((path) ? "; path=" + path : "") +
+        ((path) ? "; path=" + path : "") + ';SameSite=Lax' +
         ((domain) ? "; domain=" + domain : "") +
         ((secure) ? "; secure" : "");
 }
-function DeleteCookie (name,path,domain) {
+
+function DeleteCookie(name, path, domain) {
     if (GetCookie(name)) {
         document.cookie = name + "=" +
-            ((path) ? "; path=" + path : "") +
+            ((path) ? "; path=" + path : "") + ';SameSite=Lax' +
             ((domain) ? "; domain=" + domain : "") +
             "; expires=Thu, 01-Jan-70 00:00:01 GMT";
     }
 }
+
 function js_obj(obj) {
-    if(typeof(obj) != "object") {
+    if (typeof (obj) != "object") {
         alert("O parametro passado, não parece ser um objeto!");
         return false;
     }
     var args = js_obj.arguments;
-    var F = (typeof(args[1])=="undefined" || args[1]=="")?5:args[1];
-    var temp ="";
+    var F = (typeof (args[1]) == "undefined" || args[1] == "") ? 5 : args[1];
+    var temp = "";
     var l = 0;
     var i;
     var x;
-    for( i in obj) {
+    for (i in obj) {
         temp += obj + "   " + i + "  ==> " + obj[i] + "\n";
-        if(l++ == F) {
+        if (l++ == F) {
             x = confirm(temp);
-            if(x == false)
+            if (x == false)
                 break;
             temp = "";
             l = 0;
@@ -640,37 +1049,35 @@ function js_obj(obj) {
 }
 
 
-
-
 // FUNCAO DE VALIDACAOM USADO PELA FUNCAO db_text() do php
 //variavel tipo:
 // 1 só pode numeros
 // 2 só pode letras
 // 3 pode numeros, letras, espaço, virgula
 // 4 só pode número do tipó ponto flutuante
-function js_ValidaCamposText(obj,tipo) {
+function js_ValidaCamposText(obj, tipo) {
     // função descontinuada
-    if(tipo == 4) {
+    if (tipo == 4) {
         var expr = new RegExp("[^0-9\.]+");
-        if(obj.value.match(expr)) {
+        if (obj.value.match(expr)) {
             alert("Este campo deve ser preenchido somente com números decimais!");
             obj.select();
         }
-    } else if(tipo == 1) {
+    } else if (tipo == 1) {
         var expr = new RegExp("[^0-9]+");
-        if(obj.value.match(expr)) {
+        if (obj.value.match(expr)) {
             alert("Este campo deve ser preenchido somente com números!");
             obj.select();
         }
-    } else if(tipo == 2) {
+    } else if (tipo == 2) {
         var expr = new RegExp("%[^A-Za-zà-úÁ-ÚüÜ]+");
-        if(obj.value.match(expr)) {
+        if (obj.value.match(expr)) {
             alert("Este campo deve ser preenchido somente com Letras!");
             obj.select();
         }
-    } else if(tipo == 3) {
+    } else if (tipo == 3) {
         var expr = new RegExp("[^A-Za-z0-9à-úÁ-ÚüÜ \.,;:@&%-\_]+");
-        if(obj.value.match(expr)) {
+        if (obj.value.match(expr)) {
             alert("Este campo deve ser preenchido somente com Letras, números, espaço, virgula, ponto-e-virgula, hífen,2 pontos,arroba,sublinhado!");
             obj.select();
         }
@@ -684,15 +1091,16 @@ function js_ValidaCamposText(obj,tipo) {
  * maiusculo String  Se maiusculo ou não (t = verdadeiro e f = falso )
  * evt       Event
  */
-function js_ValidaMaiusculo(obj,maiusculo,evt) {
+function js_ValidaMaiusculo(obj, maiusculo, evt) {
 
     var evt = evt || event || null;
     if (evt.keyCode < 37 || evt.keyCode > 40) {
-        if (maiusculo =='t') {
+        if (maiusculo == 't') {
             obj.value.toUpperCase();
         }
     }
 }
+
 ////////////////////////////////////
 function js_ValidaPaste(elemento, tipo, evt) {
     //#01#//js_ValidaPaste
@@ -708,27 +1116,28 @@ function js_ValidaPaste(elemento, tipo, evt) {
     //#20#//              5 - Campo deve ser somente falso ou verdadeiro = RegExp("fmFM")
     //#20#//evt         : este parâmetro não deve ser passado para a função, pois é automático do javascript
 
-    evt        = (evt)?evt:(event)?event:'';
-    var dados  = evt.clipboardData.getData('text/plain');
+    evt = (evt) ? evt : (event) ? event : '';
+    var dados = evt.clipboardData.getData('text/plain');
 
     if (tipo == 1) {
-        return  /^[0-9]+$/.test(dados);
+        return /^[0-9]+$/.test(dados);
     } else if (tipo == 2) {
-        return  /^[a-z,A-Z,à-ú,Á-ÚüÜ]+$/.test(dados);
-    } else  if (tipo == 3) {
-        return  /^[A-Z,a-z,0-9,à-ú,Á-ÚüÜ \.,;:@&%-\_]+$/.test(dados);
-    } else  if (tipo == 4) {
+        return /^[a-z,A-Z,à-ú,Á-ÚüÜ]+$/.test(dados);
+    } else if (tipo == 3) {
+        return /^[A-Z,a-z,0-9,à-ú,Á-ÚüÜ \.,;:@&%-\_]+$/.test(dados);
+    } else if (tipo == 4) {
 
         if (elemento.value.indexOf('.') !== -1) {
             return false;
         }
 
-        return  /^[0-9\.,-]+/.test(dados);
+        return /^[0-9\.,-]+/.test(dados);
     } else if (tipo == 5) {
-        return  /^[f|F|m|M]+$/.test(dados);
+        return /^[f|F|m|M]+$/.test(dados);
     }
 
 }
+
 ////////////////////////////////////
 function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
 
@@ -748,28 +1157,28 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
     //#20#//Aceitanuulo : Se aceita o campo nulo ou não true = aceita false = não aceita
     //#20#//Maiusculo   : Se campo deve ser maiusculo, quando digita a sistema troca para maiusculo
     //#20#//evt         : este parâmetro não deve ser passado para a função, pois é automático do javascript
-    if ( typeof(evt) != 'undefined' ){
+    if (typeof (evt) != 'undefined') {
         evt = (evt) ? evt : (event) ? event : '';
     }
 
-    if (maiusculo =='t') {
+    if (maiusculo == 't') {
 
         var iPosicaoInicial = obj.selectionStart;
-        var iPosicaoFim     = obj.selectionEnd;
+        var iPosicaoFim = obj.selectionEnd;
 
         var maiusc = new String(obj.value);
-        obj.value  = maiusc.toUpperCase();
+        obj.value = maiusc.toUpperCase();
 
         obj.selectionStart = iPosicaoInicial;
-        obj.selectionEnd   = iPosicaoFim;
+        obj.selectionEnd = iPosicaoFim;
     }
 
     if (tipo == 1) {
         var expr = new RegExp("[^0-9]+");
         if (obj.value.match(expr)) {
-            if (obj.value!= '') {
+            if (obj.value != '') {
                 obj.disabled = true;
-                alert(nome+" deve ser preenchido somente com números!");
+                alert(nome + " deve ser preenchido somente com números!");
                 obj.disabled = false;
                 obj.value = '';
                 obj.focus();
@@ -780,7 +1189,7 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
         var expr = new RegExp("[^A-Za-zà-úÁ-ÚüÜ %]+");
         if (obj.value.match(expr)) {
             obj.disabled = true;
-            alert(nome+" deve ser preenchido somente com letras!");
+            alert(nome + " deve ser preenchido somente com letras!");
             obj.disabled = false;
             obj.value = '';
             //select();
@@ -792,7 +1201,7 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
         var expr = new RegExp("[^A-Za-z0-9à-úÁ-ÚüÜ \.,;:@&%-\_]+");
         if (obj.value.match(expr)) {
             obj.disabled = true;
-            alert(nome+" deve ser preenchido somente com letras, números, espaço, vírgula, ponto-e-vírgula, hífen, 2 pontos, arroba, sublinhado!");
+            alert(nome + " deve ser preenchido somente com letras, números, espaço, vírgula, ponto-e-vírgula, hífen, 2 pontos, arroba, sublinhado!");
             obj.disabled = false;
             obj.value = '';
             //select();
@@ -801,7 +1210,7 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
 
         }
     } else if (tipo == 4) {
-        if( obj.value != '' ) {
+        if (obj.value != '') {
 
             // Verifica ocorrencias de Virgula...
 
@@ -810,7 +1219,7 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
 
 
             // Se existir mais de um ponto...
-            if( js_countOccurs(obj.value, '.') > 1 ) {
+            if (js_countOccurs(obj.value, '.') > 1) {
                 // Erro e retorna valor anterior
                 alert("Decimal já digitado!");
                 obj.value = js_getInputValue(obj.name) || null;
@@ -823,9 +1232,9 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
             //if (obj.value.match(expr)) {
             var regDecimal = /^(-|)(|[0-9]+)(|(\.|,)(|[0-9]+))$/;
 
-            if ( !regDecimal.test(obj.value) ) {
+            if (!regDecimal.test(obj.value)) {
                 obj.disabled = true;
-                alert( nome + " deve ser preenchido somente com números decimais!" );
+                alert(nome + " deve ser preenchido somente com números decimais!");
                 obj.disabled = false;
                 obj.value = '';
                 obj.focus();
@@ -836,7 +1245,7 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
         var expr = new RegExp("fmFM");
         if (obj.value.match(expr)) {
             obj.disabled = true;
-            alert(nome+" deve ser preenchido somente com falso ou verdadeiro!");
+            alert(nome + " deve ser preenchido somente com falso ou verdadeiro!");
             obj.disabled = false;
             obj.value = '';
             obj.focus();
@@ -852,38 +1261,38 @@ function js_ValidaCampos(obj, tipo, nome, aceitanulo, maiusculo, evt) {
 /*
  * Funções para controle do numero de caracteres permitidos para digitação nos textarea
  */
-function js_maxlenghttextarea(elem, event, iLimite){
+function js_maxlenghttextarea(elem, event, iLimite) {
 
-    var sValorCampo   = new String(elem.value);
+    var sValorCampo = new String(elem.value);
     var iTamanhoCampo = sValorCampo.length;
 
-    document.getElementById( elem.id + 'errobar').innerHTML = '';
+    document.getElementById(elem.id + 'errobar').innerHTML = '';
 
-    if (event.keyCode != 8 && event.keyCode != 16 && event.keyCode != 20 && event.keyCode != 18 && event.keyCode != 46){
+    if (event.keyCode != 8 && event.keyCode != 16 && event.keyCode != 20 && event.keyCode != 18 && event.keyCode != 46) {
 
-        if ( iTamanhoCampo > iLimite ) {
+        if (iTamanhoCampo > iLimite) {
 
-            elem.value = sValorCampo.substr(0,iLimite);
-            document.getElementById(elem.id+'errobar').innerHTML = 'Máximo '+iLimite+' caracteres!';
+            elem.value = sValorCampo.substr(0, iLimite);
+            document.getElementById(elem.id + 'errobar').innerHTML = 'Máximo ' + iLimite + ' caracteres!';
         }
     }
 
-    document.getElementById( elem.id + 'obsdig').value = elem.value.length;
+    document.getElementById(elem.id + 'obsdig').value = elem.value.length;
 }
 
 /********************************* FUNCOES PARA O NOVO DB_INPUTDATA **********************************/
 function js_validaDbData(obj) {
 
     var strValor = obj.value;
-    if (strValor == '' || strValor == null){
+    if (strValor == '' || strValor == null) {
         return false;
     }
     // 01/01/2007
-    var Dia = strValor.substr(0,2);
-    var Mes = strValor.substr(3,2);
-    var Ano = strValor.substr(6,4);
+    var Dia = strValor.substr(0, 2);
+    var Mes = strValor.substr(3, 2);
+    var Ano = strValor.substr(6, 4);
 
-    if ( strValor.substr(2,1) != '/' ) {
+    if (strValor.substr(2, 1) != '/') {
 
         alert("Dia Inválido!");
         obj.value = '';
@@ -891,19 +1300,19 @@ function js_validaDbData(obj) {
         return false;
     }
 
-    var data = new Date(Ano,(Mes-1),Dia);
+    var data = new Date(Ano, (Mes - 1), Dia);
 
     if (checkleapyear(Ano)) {
         var fev = 29;
-    }else{
+    } else {
         var fev = 28;
     }
 
     //                  01  02 03 04 05 06 07 08 09 10 11 12
-    var dia = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
+    var dia = new Array(31, fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
     //  var diaexpr = new RegExp("[0-"+(mes==1?2:3)+"][0-9]");
     var diaexpr = new RegExp("[0-3][0-9]");
-    if(Dia.match(diaexpr) == null || Dia > dia[Mes-1] || Dia == "00") {
+    if (Dia.match(diaexpr) == null || Dia > dia[Mes - 1] || Dia == "00") {
         alert("Dia Inválido!");
         obj.value = '';
 //      obj.focus();
@@ -912,7 +1321,7 @@ function js_validaDbData(obj) {
     }
 
     var mesexpr = new RegExp("[01][0-9]");
-    if(Mes.match(mesexpr) == null ||  Mes > 12 || Mes == "00") {
+    if (Mes.match(mesexpr) == null || Mes > 12 || Mes == "00") {
         alert("Mês inválido!");
         obj.value = '';
 //      obj.focus();
@@ -921,7 +1330,7 @@ function js_validaDbData(obj) {
     }
 
     var anoexpr = new RegExp("[12][0-9][0-9][0-9]");
-    if(Ano.match(anoexpr) == null) {
+    if (Ano.match(anoexpr) == null) {
         alert("Ano inválido!");
         obj.value = '';
         obj.select();
@@ -933,148 +1342,148 @@ function js_validaDbData(obj) {
 }
 
 
-function js_mascaraData(campo,evt){
+function js_mascaraData(campo, evt) {
 
-    var strAux           = '';
-    var tecla            = evt.keyCode;
-    var valor            = campo.value;
-    var exprLiterais     = new RegExp("[^0-9]+");
+    var strAux = '';
+    var tecla = evt.keyCode;
+    var valor = campo.value;
+    var exprLiterais = new RegExp("[^0-9]+");
 
     // constante array com o codigo das teclas a serem ignoradas
-    const teclasNaoFormatadas = new Array(8,13,35,36,37,38,39,40,45,46);
+    const teclasNaoFormatadas = new Array(8, 13, 35, 36, 37, 38, 39, 40, 45, 46);
 
-    valor  = valor.replace(".", ""); // tira ponto "."
-    valor  = valor.replace("-", ""); // tira traco "-"
-    valor  = valor.replace("/", ""); //
-    valor  = valor.replace("/", "");
-    valor  = valor.replace("/", "");
+    valor = valor.replace(".", ""); // tira ponto "."
+    valor = valor.replace("-", ""); // tira traco "-"
+    valor = valor.replace("/", ""); //
+    valor = valor.replace("/", "");
+    valor = valor.replace("/", "");
 
-    if(tecla == 8 || tecla == 46 ){
-        var tmpstr = js_colocaBarras(campo,valor,true);
+    if (tecla == 8 || tecla == 46) {
+        var tmpstr = js_colocaBarras(campo, valor, true);
         return true;
     }
 
-    if (!js_search_in_array(teclasNaoFormatadas,tecla)){
+    if (!js_search_in_array(teclasNaoFormatadas, tecla)) {
         // tira os caracteres literais
-        for(i=0; i < valor.length; i++){
-            if(!valor[i].match(exprLiterais)){
+        for (i = 0; i < valor.length; i++) {
+            if (!valor[i].match(exprLiterais)) {
                 strAux += valor[i];
-            }else{
-                strAux  = '';
+            } else {
+                strAux = '';
             }
         }
-        campo.value = js_colocaBarras(campo,strAux,false);
+        campo.value = js_colocaBarras(campo, strAux, false);
         return true;
     }
 }
 
 /*--------------------------------------------------------------------------------------*/
 
-function js_colocaBarras(obj,strValor,apagando){
+function js_colocaBarras(obj, strValor, apagando) {
 
-    var strRetorno      = '';
+    var strRetorno = '';
     var strNumDigitados = strValor.length;
-    var strRetorno      = '';
-    var aValorAnt       =  new String(obj.value).split('/');
+    var strRetorno = '';
+    var aValorAnt = new String(obj.value).split('/');
 
-    if ( aValorAnt.length > 1 ) {
-        if ( aValorAnt.length == 3 ) {
-            if ( aValorAnt[0].length < 2 || aValorAnt[1].length < 2 || aValorAnt[2].length < 4 ) {
+    if (aValorAnt.length > 1) {
+        if (aValorAnt.length == 3) {
+            if (aValorAnt[0].length < 2 || aValorAnt[1].length < 2 || aValorAnt[2].length < 4) {
                 return obj.value;
             }
         } else {
-            if ( aValorAnt[1].length == 1 ) {
+            if (aValorAnt[1].length == 1) {
                 return obj.value;
             }
         }
     }
 
-    if(!apagando){
-        if(strNumDigitados >= 2 && strNumDigitados < 4){
-            strRetorno = strValor.substr(0,2)+'/'+strValor.substr(2,strNumDigitados-1);
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,strNumDigitados-1),'');
-        }else if(strNumDigitados >= 4 && strNumDigitados < 8){
-            var fev        = 29;
-            var diaatual   = new Number(strValor.substr(0,2));
-            var mesatual   = new Number(strValor.substr(2,2));
+    if (!apagando) {
+        if (strNumDigitados >= 2 && strNumDigitados < 4) {
+            strRetorno = strValor.substr(0, 2) + '/' + strValor.substr(2, strNumDigitados - 1);
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, strNumDigitados - 1), '');
+        } else if (strNumDigitados >= 4 && strNumDigitados < 8) {
+            var fev = 29;
+            var diaatual = new Number(strValor.substr(0, 2));
+            var mesatual = new Number(strValor.substr(2, 2));
             mesatual--;
             //                  01  02 03 04 05 06 07 08 09 10 11 12
-            var dia = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
-            if(diaatual > dia[mesatual]) {
-                strRetorno = dia[mesatual]+'/'+strValor.substr(2,2)+'/'+strValor.substr(4,strNumDigitados-1);
-            }else {
-                strRetorno = strValor.substr(0,2)+'/'+strValor.substr(2,2)+'/'+strValor.substr(4,strNumDigitados-1);
+            var dia = new Array(31, fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+            if (diaatual > dia[mesatual]) {
+                strRetorno = dia[mesatual] + '/' + strValor.substr(2, 2) + '/' + strValor.substr(4, strNumDigitados - 1);
+            } else {
+                strRetorno = strValor.substr(0, 2) + '/' + strValor.substr(2, 2) + '/' + strValor.substr(4, strNumDigitados - 1);
             }
 
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,2),strValor.substr(4,strNumDigitados-1));
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, 2), strValor.substr(4, strNumDigitados - 1));
 
-        }else if(strNumDigitados == 8){
+        } else if (strNumDigitados == 8) {
 
-            var diaatual = new Number(strValor.substr(0,2));
-            var mesatual = new Number(strValor.substr(2,2));
+            var diaatual = new Number(strValor.substr(0, 2));
+            var mesatual = new Number(strValor.substr(2, 2));
             mesatual--;
-            if (checkleapyear(strValor.substr(4,4))) {
+            if (checkleapyear(strValor.substr(4, 4))) {
                 var fev = 29;
-            }else{
+            } else {
                 var fev = 28;
             }
 
-            var dia = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
-            var ano = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
-            if(diaatual > dia[mesatual]) {
-                strRetorno = dia[mesatual]+'/'+strValor.substr(2,2)+'/'+strValor.substr(4,4);
-            }else {
-                strRetorno = strValor.substr(0,2)+'/'+strValor.substr(2,2)+'/'+strValor.substr(4,4);
+            var dia = new Array(31, fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+            var ano = new Array(31, fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+            if (diaatual > dia[mesatual]) {
+                strRetorno = dia[mesatual] + '/' + strValor.substr(2, 2) + '/' + strValor.substr(4, 4);
+            } else {
+                strRetorno = strValor.substr(0, 2) + '/' + strValor.substr(2, 2) + '/' + strValor.substr(4, 4);
             }
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,2),strValor.substr(4,4));
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, 2), strValor.substr(4, 4));
 
-        }else{
+        } else {
             return strValor;
         }
         return strRetorno;
-    }else{
-        if(strNumDigitados <= 2){
-            js_setDiaMesAno(obj,strValor.substr(0,strNumDigitados-1),'','');
-        }else if(strNumDigitados >= 2 && strNumDigitados < 4){
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,strNumDigitados-1),'');
-        }else if(strNumDigitados >= 4 && strNumDigitados < 8){
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,2),strValor.substr(4,strNumDigitados-1));
-        }else if(strNumDigitados == 8){
-            js_setDiaMesAno(obj,strValor.substr(0,2),strValor.substr(2,2),strValor.substr(4,4));
+    } else {
+        if (strNumDigitados <= 2) {
+            js_setDiaMesAno(obj, strValor.substr(0, strNumDigitados - 1), '', '');
+        } else if (strNumDigitados >= 2 && strNumDigitados < 4) {
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, strNumDigitados - 1), '');
+        } else if (strNumDigitados >= 4 && strNumDigitados < 8) {
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, 2), strValor.substr(4, strNumDigitados - 1));
+        } else if (strNumDigitados == 8) {
+            js_setDiaMesAno(obj, strValor.substr(0, 2), strValor.substr(2, 2), strValor.substr(4, 4));
         }
 
         return '';
     }
 }
 
-function js_setDiaMesAutomatico(obj,Dia,Mes){
+function js_setDiaMesAutomatico(obj, Dia, Mes) {
     var strRetorno = '';
-    var fev        = 29;
-    var diaatual   = new Number(Dia);
-    var mesatual   = new Number(Mes);
+    var fev = 29;
+    var diaatual = new Number(Dia);
+    var mesatual = new Number(Mes);
     mesatual++;
     //                  01  02 03 04 05 06 07 08 09 10 11 12
-    var dia = new Array(31,fev,31,30,31,30,31,31,30,31,30,31);
-    if(diaatual > dia[mesatual]) {
+    var dia = new Array(31, fev, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    if (diaatual > dia[mesatual]) {
         strRetorno = dia[mesatual];
     }
     return strRetorno;
 }
 
-function js_bloqueiaSelecionar(obj){
+function js_bloqueiaSelecionar(obj) {
     obj.selectionStart = null;
-    obj.selectionEnd   = null;
+    obj.selectionEnd = null;
     return false;
 }
 
-function js_validaEntrada(obj){
+function js_validaEntrada(obj) {
 }
 
-function js_setDiaMesAno(obj,dia,mes,ano){
+function js_setDiaMesAno(obj, dia, mes, ano) {
     // alimenta os hiddens para manter a compatibilidade
-    document.getElementById(obj.name+'_dia').value = dia;
-    document.getElementById(obj.name+'_mes').value = mes;
-    document.getElementById(obj.name+'_ano').value = ano;
+    document.getElementById(obj.name + '_dia').value = dia;
+    document.getElementById(obj.name + '_mes').value = mes;
+    document.getElementById(obj.name + '_ano').value = ano;
 }
 
 /********************************************************************************************************/
@@ -1082,7 +1491,7 @@ function js_setDiaMesAno(obj,dia,mes,ano){
 ////////////////////////////////////
 ///////////////////////////////////
 //FUNCOES PARA A FUNCAO DB_DATA DO PHP. VALIDAM A DATA E PASSA O FOCO PRO OUTRO CAMPO
-function js_VerDaTa(nome,Dia,Mes,Ano) {
+function js_VerDaTa(nome, Dia, Mes, Ano) {
 //#01#//js_VerDaTa
 //#10#//Funcões para validar o campo *db_inputdata* e trocar de campo
 //#15#//js_VerDaTa(nome,Dia,Mes,Ano);
@@ -1090,35 +1499,35 @@ function js_VerDaTa(nome,Dia,Mes,Ano) {
 //#20#//Dia    : Objeto dia para testar a data
 //#20#//Mes    : Objeto mes para testar a data
 //#20#//Ano    : Objeto ano para testar a data
-    var data        = new Date(Ano,Mes,Dia);
-    var F           = document.form1;
-    var str         = new String(F.elements[nome].value);
-    var strPartTipo = nome.substr((nome.length-4),4);
+    var data = new Date(Ano, Mes, Dia);
+    var F = document.form1;
+    var str = new String(F.elements[nome].value);
+    var strPartTipo = nome.substr((nome.length - 4), 4);
 
-    if(strPartTipo == "_dia") {
+    if (strPartTipo == "_dia") {
         var mes = data.getMonth();
         mes += 1;
-        var expr = new RegExp("[0-"+(mes==1?2:3)+"][0-9]");
+        var expr = new RegExp("[0-" + (mes == 1 ? 2 : 3) + "][0-9]");
         //                  01 02 03 04 05 06 07 08 09 10 11 12
-        var dia = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+        var dia = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
-        if(str.match(expr) == null || str > 31 || str == "00") {
+        if (str.match(expr) == null || str > 31 || str == "00") {
             alert("Dia Inválido!");
             F.elements[nome].select();
             return false;
         } else
             return true;
-    } else if(strPartTipo == "_mes") {
+    } else if (strPartTipo == "_mes") {
         var expr = new RegExp("[01][0-9]");
-        if(str.match(expr) == null || str > 12 || str == 00) {
+        if (str.match(expr) == null || str > 12 || str == 0 || str == '00') {
             alert("Mes inválido");
             F.elements[nome].select();
             return false;
         } else
             return true;
-    } else if(strPartTipo == "_ano")  {
+    } else if (strPartTipo == "_ano") {
         var expr = new RegExp("[12][0-9][0-9][0-9]");
-        if(str.match(expr) == null) {
+        if (str.match(expr) == null) {
             alert("Ano inválido");
             F.elements[nome].select();
             return false;
@@ -1129,69 +1538,72 @@ function js_VerDaTa(nome,Dia,Mes,Ano) {
 }
 
 ContrlDigitos = 0;
-function js_getIndex(F,nome) {
-    for(var i = 0;i < F.elements.length;i++)
-        if(F.elements[i].name == nome) {
+
+function js_getIndex(F, nome) {
+    for (var i = 0; i < F.elements.length; i++)
+        if (F.elements[i].name == nome) {
             var index = i;
             break;
         }
     return index;
 }
-function js_Passa(nome,Dia,Mes,Ano,evt) {
+
+function js_Passa(nome, Dia, Mes, Ano, evt) {
     var evt = (evt) ? evt : (window.event) ? window.event : "";
     var F = document.form1;
     var index = -1;
-    if(evt.keyCode == 37) {
-        index = js_getIndex(F,nome) - 1;
+    if (evt.keyCode == 37) {
+        index = js_getIndex(F, nome) - 1;
 
-    } else if(evt.keyCode == 39) {
-        index = js_getIndex(F,nome) + 1;
-    } else if(++ContrlDigitos >= F.elements[nome].size && F.elements[nome].value.length == F.elements[nome].size && js_VerDaTa(nome,Dia,Mes,Ano) == true) {
+    } else if (evt.keyCode == 39) {
+        index = js_getIndex(F, nome) + 1;
+    } else if (++ContrlDigitos >= F.elements[nome].size && F.elements[nome].value.length == F.elements[nome].size && js_VerDaTa(nome, Dia, Mes, Ano) == true) {
         ContrlDigitos = 0;
-        index = js_getIndex(F,nome) + 1;
+        index = js_getIndex(F, nome) + 1;
     }
 
-    if(index != -1) {
+    if (index != -1) {
         try {
             F.elements[index].select();
-        } catch(e) {
+        } catch (e) {
             F.elements[index].focus();
         }
     }
 }
+
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
 
 //verifica se o elemento existe no array
-function js_in_array(elem,vetor) {
-    return js_search_in_array(vetor,elem);
+function js_in_array(elem, vetor) {
+    return js_search_in_array(vetor, elem);
 }
 
 //tipo o parse int, só que pega o numero se tiver na final da straing tb!!
 function js_parse_int(str) {
-    var num = new Array("0","1","2","3","4","5","6","7","8","9");
+    var num = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     var tam = str.length;
     var aux = "";
-    for(var i = 0;i < tam;i++) {
-        if(js_search_in_array(num,str.substr(i,1)))
-            aux += str.substr(i,1);
+    for (var i = 0; i < tam; i++) {
+        if (js_search_in_array(num, str.substr(i, 1)))
+            aux += str.substr(i, 1);
     }
     return aux;
 }
 
 //funcao para a funcao db_getfile() do php.
 //pega o caminho na variavel nome e bota o seu basename no campo seguinte.
-function js_preencheCampo(nome,campo) {
-    var ind = (nome.lastIndexOf('\\') == -1?nome.lastIndexOf('/'):nome.lastIndexOf('\\'));
+function js_preencheCampo(nome, campo) {
+    var ind = (nome.lastIndexOf('\\') == -1 ? nome.lastIndexOf('/') : nome.lastIndexOf('\\'));
     ind += 1;
     var valor = "";
     var aux = new String(nome.substr(ind));
-    for(var i = 0; i < aux.length;i++)
-        if(aux.substr(i,1) == " ")
+    for (var i = 0; i < aux.length; i++)
+        if (aux.substr(i, 1) == " ")
             valor += "_";
         else
-            valor += aux.substr(i,1);
+            valor += aux.substr(i, 1);
     document.form1.elements[campo].value = valor;
 }
 
@@ -1205,42 +1617,44 @@ function js_preencheCampo(nome,campo) {
 //5 altura da janela
 function js_lista() {
     var args = js_lista.arguments;
-    var X = (typeof(args[3])=="undefined" || args[3]=="")?100:args[3];
-    var Y = (typeof(args[4])=="undefined" || args[4]=="")?100:args[4];
-    var W = (typeof(args[5])=="undefined" || args[5]=="")?400:args[5];
-    var E = (typeof(args[6])=="undefined" || args[6]=="")?420:args[6];
-    jan = window.open(args[0] + '?arg=' + args[1] + '&campo=' + args[2],'','width='+W+',height='+E+',location=0,scrollbars=1,resizable=1');
-    jan.moveTo(X,Y);
+    var X = (typeof (args[3]) == "undefined" || args[3] == "") ? 100 : args[3];
+    var Y = (typeof (args[4]) == "undefined" || args[4] == "") ? 100 : args[4];
+    var W = (typeof (args[5]) == "undefined" || args[5] == "") ? 400 : args[5];
+    var E = (typeof (args[6]) == "undefined" || args[6] == "") ? 420 : args[6];
+    jan = window.open(args[0] + '?arg=' + args[1] + '&campo=' + args[2], '', 'width=' + W + ',height=' + E + ',location=0,scrollbars=1,resizable=1');
+    jan.moveTo(X, Y);
 }
+
 function js_lista_blur() {
     var args = js_lista_blur.arguments;
-    if(document.form1.elements['db_' + args[2]].value != '' && document.form1.elements['db_' + args[8]].value != '' ){
+    if (document.form1.elements['db_' + args[2]].value != '' && document.form1.elements['db_' + args[8]].value != '') {
         document.form1.elements['db_' + args[2]].value = '';
         document.form1.elements['db_' + args[8]].value = '';
         return false;
     }
-    var X = (typeof(args[3])=="undefined" || args[3]=="")?100:args[3];
-    var Y = (typeof(args[4])=="undefined" || args[4]=="")?100:args[4];
-    var W = (typeof(args[5])=="undefined" || args[5]=="")?400:args[5];
-    var E = (typeof(args[6])=="undefined" || args[6]=="")?420:args[6];
-    var L = (typeof(args[9])=="undefined")?"":args[9];
-    jan = window.open(args[0] + '?arg=' + document.form1.elements['db_' + args[2]].value + '&campo=' + args[2] +'&argaux=' + document.form1.elements['db_' + args[8]].value + '&campoaux=' + args[8] + '&lista=' + L ,'','width='+W+',height='+E+',location=0,scrollbars=1,resizable=1');
-    jan.moveTo(X,Y);
+    var X = (typeof (args[3]) == "undefined" || args[3] == "") ? 100 : args[3];
+    var Y = (typeof (args[4]) == "undefined" || args[4] == "") ? 100 : args[4];
+    var W = (typeof (args[5]) == "undefined" || args[5] == "") ? 400 : args[5];
+    var E = (typeof (args[6]) == "undefined" || args[6] == "") ? 420 : args[6];
+    var L = (typeof (args[9]) == "undefined") ? "" : args[9];
+    jan = window.open(args[0] + '?arg=' + document.form1.elements['db_' + args[2]].value + '&campo=' + args[2] + '&argaux=' + document.form1.elements['db_' + args[8]].value + '&campoaux=' + args[8] + '&lista=' + L, '', 'width=' + W + ',height=' + E + ',location=0,scrollbars=1,resizable=1');
+    jan.moveTo(X, Y);
 }
 
 ///Pega o indice do campo e passa o foco pro campo seguinte
 function js_Ipassacampo() {
-    if(document.forms[0]) {
-        for(var i = 0;i < document.forms[0].elements.length;i++)
+    if (document.forms[0]) {
+        for (var i = 0; i < document.forms[0].elements.length; i++)
             document.forms[0].elements[i].onkeyup = js_passacampo;
     }
 }
+
 function js_passacampo(evt) {
     evt = (evt) ? evt : (window.event) ? window.event : "";
-    if(evt.keyCode == 13) {
-        var campo = (evt.srcElement)?evt.srcElement.name:evt.target.name;
-        for(var i = 0;i < document.forms[0].elements.length;i++) {
-            if(document.forms[0].elements[i].name == campo) {
+    if (evt.keyCode == 13) {
+        var campo = (evt.srcElement) ? evt.srcElement.name : evt.target.name;
+        for (var i = 0; i < document.forms[0].elements.length; i++) {
+            if (document.forms[0].elements[i].name == campo) {
                 var indice = i + 1;
                 break;
             }
@@ -1248,6 +1662,7 @@ function js_passacampo(evt) {
         document.forms[0].elements[indice].focus();
     }
 }
+
 //window.onload=js_Ipassacampo;
 ///////////////////////////////////////////////
 
@@ -1259,6 +1674,7 @@ function js_msg_status(msg) {
 //#20#//msg   : Mensagem para a barra de status
     parent.bstatus.document.getElementById('st').innerHTML = '&nbsp;&nbsp;' + msg;
 }
+
 //Limpa a barra de status.
 function js_lmp_status() {
 //#01#//js_lmp_status
@@ -1275,6 +1691,7 @@ function js_msg_status_data(msg) {
 //#20#//msg   : Mensagem para a  data da barra de status
     parent.bstatus.document.getElementById('dthr').innerHTML = '&nbsp;&nbsp;' + msg;
 }
+
 //Limpa a barra de status.
 function js_lmp_status_data() {
 //#01#//js_lmp_status_data
@@ -1286,7 +1703,7 @@ function js_lmp_status_data() {
 //pesquisa uma string dentro de um campo select
 //para usar, use:
 //<input name="procura" type="text" id="procura" onKeyUp="js_pesquisa(this.value.toLowerCase(),document.form1.itens)" size="35">
-function js_pesquisa(arg,obj,evt) {
+function js_pesquisa(arg, obj, evt) {
 //#01#//js_pesquisa
 //#10#//Funcão para pesquisar em um select uma determinada descrição
 //#15#//js_pesquisa(arg,obj,evt);
@@ -1298,25 +1715,25 @@ function js_pesquisa(arg,obj,evt) {
     evt = (evt) ? evt : (window.event) ? window.event : "";
     var tecla = evt.keyCode;
     var F = obj;
-    if(tecla == 38 || tecla == 40)
+    if (tecla == 38 || tecla == 40)
         F.focus();
     else {
         var tamvet = F.length;
         var tamarg = arg.length;
-        for(var i = 0;i < tamvet;i++) {
+        for (var i = 0; i < tamvet; i++) {
             var texto = F.options[i].text.toLowerCase();
             var ajuda = new String(F.options[i].value.substr(F.options[i].value.search('##') + 2));
             ///// gambiarra pra pegar uma substring, porque o search não acha o ||
             aux = "";
-            for(var j = 0;j < ajuda.length;j++) {
-                if(ajuda.substr(j,1) != '|')
-                    aux += ajuda.substr(j,1);
+            for (var j = 0; j < ajuda.length; j++) {
+                if (ajuda.substr(j, 1) != '|')
+                    aux += ajuda.substr(j, 1);
                 else
                     break;
             }
             ajuda = aux;
             /////
-            if(arg.substr(0,tamarg) == texto.substr(0,tamarg)) {
+            if (arg.substr(0, tamarg) == texto.substr(0, tamarg)) {
                 F.options[i].selected = true;
                 js_msg_status(ajuda);
                 break;
@@ -1330,13 +1747,13 @@ function js_trocacordeselect() {
 //#10#//Funcão para trocar a cor dos select do formulário para as cores padrões do sistema
 //#15#//js_trocacordeselect();
 //#99#//Esta função deve ser utilizada na propriedade onload do objeto body do formulário
-    if(document.form1) {
+    if (document.form1) {
         var CorF1 = "#F8EC07";
-        for(i = 0;i < document.form1.elements.length;i++) {
+        for (i = 0; i < document.form1.elements.length; i++) {
             var str = new String(document.form1.elements[i].type);
-            if(str.indexOf("select-") != -1) {
-                for(j = 0;j < document.form1.elements[i].length;j++) {
-                    document.form1.elements[i].options[j].style.backgroundColor = CorF1 = (CorF1=="#D7CC06"?"#F8EC07":"#D7CC06");
+            if (str.indexOf("select-") != -1) {
+                for (j = 0; j < document.form1.elements[i].length; j++) {
+                    document.form1.elements[i].options[j].style.backgroundColor = CorF1 = (CorF1 == "#D7CC06" ? "#F8EC07" : "#D7CC06");
                 }
             }
         }
@@ -1384,7 +1801,7 @@ function js_CalculaDV(sCampo, iPeso){
 */
 // funcao de data
 // onclick="show_calendar('form1.calend1')"
-var weekend = [0,6];
+var weekend = [0, 6];
 var weekendColor = "#e0e0e0";
 var fontface = "Verdana";
 var fontsize = 1;
@@ -1408,7 +1825,7 @@ Calendar.lDOMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function Calendar(p_item, p_WinCal, p_month, p_year, p_format) {
 
-    if ((p_month == null) && (p_year == null))  return;
+    if ((p_month == null) && (p_year == null)) return;
 
     if (p_WinCal == null)
         this.gWinCal = ggWinCal;
@@ -1461,8 +1878,7 @@ function Calendar_calc_month_year(p_Month, p_Year, incr) {
         if (p_Month == 0) {
             ret_arr[0] = 11;
             ret_arr[1] = parseInt(p_Year) - 1;
-        }
-        else {
+        } else {
             ret_arr[0] = parseInt(p_Month) - 1;
             ret_arr[1] = parseInt(p_Year);
         }
@@ -1471,8 +1887,7 @@ function Calendar_calc_month_year(p_Month, p_Year, incr) {
         if (p_Month == 11) {
             ret_arr[0] = 0;
             ret_arr[1] = parseInt(p_Year) + 1;
-        }
-        else {
+        } else {
             ret_arr[0] = parseInt(p_Month) + 1;
             ret_arr[1] = parseInt(p_Year);
         }
@@ -1493,8 +1908,7 @@ function Calendar_calc_month_year(p_Month, p_Year, incr) {
         if (p_Month == 0) {
             ret_arr[0] = 11;
             ret_arr[1] = parseInt(p_Year) - 1;
-        }
-        else {
+        } else {
             ret_arr[0] = parseInt(p_Month) - 1;
             ret_arr[1] = parseInt(p_Year);
         }
@@ -1503,8 +1917,7 @@ function Calendar_calc_month_year(p_Month, p_Year, incr) {
         if (p_Month == 11) {
             ret_arr[0] = 0;
             ret_arr[1] = parseInt(p_Year) + 1;
-        }
-        else {
+        } else {
             ret_arr[0] = parseInt(p_Month) + 1;
             ret_arr[1] = parseInt(p_Year);
         }
@@ -1515,7 +1928,7 @@ function Calendar_calc_month_year(p_Month, p_Year, incr) {
 
 new Calendar();
 
-Calendar.prototype.getMonthlyCalendarCode = function() {
+Calendar.prototype.getMonthlyCalendarCode = function () {
     var vCode = "";
     var vHeader_Code = "";
     var vData_Code = "";
@@ -1532,11 +1945,10 @@ Calendar.prototype.getMonthlyCalendarCode = function() {
     return vCode;
 }
 
-Calendar.prototype.show = function() {
+Calendar.prototype.show = function () {
     var vCode = "";
 
     this.gWinCal.document.open();
-
 
 
     this.wwrite("<html>");
@@ -1565,13 +1977,13 @@ Calendar.prototype.show = function() {
 
     this.wwrite("<A HREF=\"" +
         "javascript:parent.Build(" +
-        "'" + this.gReturnItem + "', '" + this.gMonth + "', '" + (parseInt(this.gYear)-1) + "', '" + this.gFormat + "'" +
+        "'" + this.gReturnItem + "', '" + this.gMonth + "', '" + (parseInt(this.gYear) - 1) + "', '" + this.gFormat + "'" +
         ");" +
         "\"> &lt;&lt; ");
     this.wwrite("<FONT FACE='" + fontface + "' size=1><B>" + this.gYear);
     this.wwrite("<A HREF=\"" +
         "javascript:parent.Build(" +
-        "'" + this.gReturnItem + "', '" + this.gMonth + "', '" + (parseInt(this.gYear)+1) + "', '" + this.gFormat + "'" +
+        "'" + this.gReturnItem + "', '" + this.gMonth + "', '" + (parseInt(this.gYear) + 1) + "', '" + this.gFormat + "'" +
         ");" +
         "\"> &gt;&gt; <\/A></TD></TR><tr><td align=center>");
 
@@ -1580,7 +1992,7 @@ Calendar.prototype.show = function() {
         "'" + this.gReturnItem + "', '" + prevMM + "', '" + prevYYYY + "', '" + this.gFormat + "'" +
         ");" +
         "\"> &lt;&lt; <\/A>");
-    this.wwrite("<FONT FACE='" + fontface + "' size=1><B>" +this.gMonthName);
+    this.wwrite("<FONT FACE='" + fontface + "' size=1><B>" + this.gMonthName);
     this.wwrite("<A HREF=\"" +
         "javascript:parent.Build(" +
         "'" + this.gReturnItem + "', '" + nextMM + "', '" + nextYYYY + "', '" + this.gFormat + "'" +
@@ -1599,7 +2011,7 @@ Calendar.prototype.show = function() {
     this.gWinCal.document.close();
 }
 
-Calendar.prototype.showY = function() {
+Calendar.prototype.showY = function () {
     var vCode = "";
     var i;
     var vr, vc, vx, vy;   // Row, Column, X-coord, Y-coord
@@ -1615,12 +2027,12 @@ Calendar.prototype.showY = function() {
     this.wwrite("<html>");
     this.wwrite("<head><title>Calendar</title>");
     this.wwrite("<style type='text/css'>\n<!--");
-    for (i=0; i<12; i++) {
+    for (i = 0; i < 12; i++) {
         vc = i % 3;
-        if (i>=0 && i<= 2)  vr = 0;
-        if (i>=3 && i<= 5)  vr = 1;
-        if (i>=6 && i<= 8)  vr = 2;
-        if (i>=9 && i<= 11) vr = 3;
+        if (i >= 0 && i <= 2) vr = 0;
+        if (i >= 3 && i <= 5) vr = 1;
+        if (i >= 6 && i <= 8) vr = 2;
+        if (i >= 9 && i <= 11) vr = 3;
 
         vx = parseInt(vxf * vc) + vxm;
         vy = parseInt(vyf * vr) + vym;
@@ -1658,7 +2070,7 @@ Calendar.prototype.showY = function() {
 
     // Get the complete calendar code for each month..
     var j;
-    for (i=11; i>=0; i--) {
+    for (i = 11; i >= 0; i--) {
         if (isIE)
             this.wwrite("<DIV ID=\"layer" + i + "\" CLASS=\"lclass" + i + "\">");
         else if (isNav)
@@ -1680,15 +2092,15 @@ Calendar.prototype.showY = function() {
     this.gWinCal.document.close();
 }
 
-Calendar.prototype.wwrite = function(wtext) {
+Calendar.prototype.wwrite = function (wtext) {
     this.gWinCal.document.writeln(wtext);
 }
 
-Calendar.prototype.wwriteA = function(wtext) {
+Calendar.prototype.wwriteA = function (wtext) {
     this.gWinCal.document.write(wtext);
 }
 
-Calendar.prototype.cal_header = function() {
+Calendar.prototype.cal_header = function () {
     var vCode = "";
 
     vCode = vCode + "<TR><CENTER>";
@@ -1702,7 +2114,7 @@ Calendar.prototype.cal_header = function() {
         this.gReturnItem +
         "_mes.value='';parent.document." +
         this.gReturnItem +
-        "_ano.value='';parent.DataJavaScript.hide();return false\">" +'Zera Data' +
+        "_ano.value='';parent.DataJavaScript.hide();return false\">" + 'Zera Data' +
         "</A>" +
         "</FONT>";
 
@@ -1721,16 +2133,16 @@ Calendar.prototype.cal_header = function() {
     return vCode;
 }
 
-Calendar.prototype.cal_data = function() {
+Calendar.prototype.cal_data = function () {
     var vDate = new Date();
     vDate.setDate(1);
     vDate.setMonth(this.gMonth);
     vDate.setFullYear(this.gYear);
 
-    var vFirstDay=vDate.getDay();
-    var vDay=1;
-    var vLastDay=Calendar.get_daysofmonth(this.gMonth, this.gYear);
-    var vOnLastDay=0;
+    var vFirstDay = vDate.getDay();
+    var vDay = 1;
+    var vLastDay = Calendar.get_daysofmonth(this.gMonth, this.gYear);
+    var vOnLastDay = 0;
     var vCode = "";
 
     /*
@@ -1739,32 +2151,32 @@ Calendar.prototype.cal_data = function() {
     */
 
     vCode = vCode + "<TR>";
-    for (i=0; i<vFirstDay; i++) {
+    for (i = 0; i < vFirstDay; i++) {
         vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(i) + "><FONT SIZE='1' FACE='" + fontface + "'> </FONT></TD>";
     }
 
     // Write rest of the 1st week
-    for (j=vFirstDay; j<7; j++) {
+    for (j = vFirstDay; j < 7; j++) {
         vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j) + "><FONT SIZE='1' FACE='" + fontface + "'>" +
             "<A HREF='#' " +
-            "onClick=\"parent.document." + this.gReturnItem + "_dia.value='" +  this.format_data(vDay,'d') +          "';parent.document." + this.gReturnItem + "_mes.value='" + this.format_data(vDay,'m') +         "';parent.document." + this.gReturnItem + "_ano.value='" +  this.format_data(vDay,'y') +          "';parent.DataJavaScript.hide();return false\">" +        this.format_day(vDay) +
+            "onClick=\"parent.document." + this.gReturnItem + "_dia.value='" + this.format_data(vDay, 'd') + "';parent.document." + this.gReturnItem + "_mes.value='" + this.format_data(vDay, 'm') + "';parent.document." + this.gReturnItem + "_ano.value='" + this.format_data(vDay, 'y') + "';parent.DataJavaScript.hide();return false\">" + this.format_day(vDay) +
             "</A>" +
             "</FONT></TD>";
-        vDay=vDay + 1;
+        vDay = vDay + 1;
     }
     vCode = vCode + "</TR>";
 
     // Write the rest of the weeks
-    for (k=2; k<7; k++) {
+    for (k = 2; k < 7; k++) {
         vCode = vCode + "<TR>";
 
-        for (j=0; j<7; j++) {
+        for (j = 0; j < 7; j++) {
             vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j) + "><FONT SIZE='1' FACE='" + fontface + "'>" +
                 "<A HREF='#' " +
-                "onClick=\"parent.document." + this.gReturnItem + "_dia.value='" +  this.format_data(vDay,'d') +          "';parent.document." + this.gReturnItem + "_mes.value='" + this.format_data(vDay,'m') +         "';parent.document." + this.gReturnItem + "_ano.value='" +  this.format_data(vDay,'y') +          "';parent.DataJavaScript.hide();return false\">" +        this.format_day(vDay) +
+                "onClick=\"parent.document." + this.gReturnItem + "_dia.value='" + this.format_data(vDay, 'd') + "';parent.document." + this.gReturnItem + "_mes.value='" + this.format_data(vDay, 'm') + "';parent.document." + this.gReturnItem + "_ano.value='" + this.format_data(vDay, 'y') + "';parent.DataJavaScript.hide();return false\">" + this.format_day(vDay) +
                 "</A>" +
                 "</FONT></TD>";
-            vDay=vDay + 1;
+            vDay = vDay + 1;
 
             if (vDay > vLastDay) {
                 vOnLastDay = 1;
@@ -1779,12 +2191,12 @@ Calendar.prototype.cal_data = function() {
     }
 
     // Fill up the rest of last week with proper blanks, so that we get proper square blocks
-    for (m=1; m<(7-j); m++) {
+    for (m = 1; m < (7 - j); m++) {
         if (this.gYearly)
-            vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j+m) +
+            vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j + m) +
                 "><FONT SIZE='1' FACE='" + fontface + "' COLOR='gray'> </FONT></TD>";
         else
-            vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j+m) +
+            vCode = vCode + "<TD WIDTH='14%'" + this.write_weekend_string(j + m) +
                 "><FONT SIZE='1' FACE='" + fontface + "' COLOR='gray'>" + m + "</FONT></TD>";
     }
 
@@ -1792,7 +2204,7 @@ Calendar.prototype.cal_data = function() {
     return vCode;
 }
 
-Calendar.prototype.format_day = function(vday) {
+Calendar.prototype.format_day = function (vday) {
     var vNowDay = gNow.getDate();
     var vNowMonth = gNow.getMonth();
     var vNowYear = gNow.getFullYear();
@@ -1803,11 +2215,11 @@ Calendar.prototype.format_day = function(vday) {
         return (vday);
 }
 
-Calendar.prototype.write_weekend_string = function(vday) {
+Calendar.prototype.write_weekend_string = function (vday) {
     var i;
 
     // Return special formatting for the weekend day.
-    for (i=0; i<weekend.length; i++) {
+    for (i = 0; i < weekend.length; i++) {
         if (vday == weekend[i])
             return (" BGCOLOR=\"" + weekendColor + "\"");
     }
@@ -1815,23 +2227,23 @@ Calendar.prototype.write_weekend_string = function(vday) {
     return "";
 }
 
-Calendar.prototype.format_data = function(p_day,qual) {
+Calendar.prototype.format_data = function (p_day, qual) {
     var vData;
     var vMonth = 1 + this.gMonth;
     vMonth = (vMonth.toString().length < 2) ? "0" + vMonth : vMonth;
-    var vMon = Calendar.get_month(this.gMonth).substr(0,3).toUpperCase();
+    var vMon = Calendar.get_month(this.gMonth).substr(0, 3).toUpperCase();
     var vFMon = Calendar.get_month(this.gMonth).toUpperCase();
     var vY4 = new String(this.gYear);
-    var vY2 = new String(this.gYear.substr(2,2));
+    var vY2 = new String(this.gYear.substr(2, 2));
     var vDD = (p_day.toString().length < 2) ? "0" + p_day : p_day;
 
-    if(qual =='d'){
+    if (qual == 'd') {
         return vDD;
-    }else if(qual == 'm'){
-        return vMonth ;
-    }else if(qual == 'y'){
+    } else if (qual == 'm') {
+        return vMonth;
+    } else if (qual == 'y') {
         return vY4;
-    }else{
+    } else {
         switch (this.gFormat) {
             case "MM\/DD\/YYYY" :
                 vData = vMonth + "\/" + vDD + "\/" + vY4;
@@ -1901,17 +2313,17 @@ function Build(p_item, p_month, p_year, p_format) {
     gCal = new Calendar(p_item, p_WinCal, p_month, p_year, p_format);
 
     // Customize your Calendar here..
-    gCal.gBGColor="white";
-    gCal.gLinkColor="black";
-    gCal.gTextColor="black";
-    gCal.gHeaderColor="darkgreen";
+    gCal.gBGColor = "white";
+    gCal.gLinkColor = "black";
+    gCal.gTextColor = "black";
+    gCal.gHeaderColor = "darkgreen";
 
     // Choose appropriate show function
     if (gCal.gYearly) gCal.showY();
-    else  gCal.show();
+    else gCal.show();
 }
 
-function js_JanelaAutomatica(qjanela,qchave,anousu){
+function js_JanelaAutomatica(qjanela, qchave, anousu) {
 //#01#//js_JanelaAutomatica
 //#10#//Funcão para gerar uma janela de iframe automática, quando o usuário executa uma consulta pela função *db_lovrot*
 //#15#//js_JanelaAutomatica(qjanela,qchave);
@@ -1921,54 +2333,53 @@ function js_JanelaAutomatica(qjanela,qchave,anousu){
 //#20#//          issbase   iss3_consinscr003.php
 //#20#//qchave  : Chave de acesso para passar ao programa para ele executar a função e mostrar os dados
 //#99#//Esta função deve ser utilizada na propriedade onload do objeto body do formulário
-    if (qchave != ''){
-        if(qjanela=='cgm'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaCgm','prot1_cadgeralmunic005.php?fechar=CurrentWindow.corpo.db_janelaCgm&chavepesquisa='+qchave,'Dados Cadastrais');
+    if (qchave != '') {
+        if (qjanela == 'cgm') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaCgm', 'prot1_cadgeralmunic005.php?fechar=CurrentWindow.corpo.db_janelaCgm&chavepesquisa=' + qchave, 'Dados Cadastrais');
         }
-        if(qjanela=='iptubase'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaIptubase','cad3_conscadastro_002.php?fechar=CurrentWindow.corpo.db_janelaIptubase&cod_matricula='+qchave,'Dados Cadastrais do Imóvel');
+        if (qjanela == 'iptubase') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaIptubase', 'cad3_conscadastro_002.php?fechar=CurrentWindow.corpo.db_janelaIptubase&cod_matricula=' + qchave, 'Dados Cadastrais do Imóvel');
         }
-        if(qjanela=='issbase'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaIssbase','iss3_consinscr003.php?fechar=CurrentWindow.corpo.db_janelaIssbase&numeroDaInscricao='+qchave,'Dados Cadastrais do Issqn');
+        if (qjanela == 'issbase') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaIssbase', 'iss3_consinscr003.php?fechar=CurrentWindow.corpo.db_janelaIssbase&numeroDaInscricao=' + qchave, 'Dados Cadastrais do Issqn');
         }
-        if(qjanela=='orcdotacao'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaDotacao','func_saldoorcdotacao.php?fechar=CurrentWindow.corpo.db_janelaDotacao&coddot='+qchave+'&anousu='+anousu,'Dados Cadastrais da Dotação');
+        if (qjanela == 'orcdotacao') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaDotacao', 'func_saldoorcdotacao.php?fechar=CurrentWindow.corpo.db_janelaDotacao&coddot=' + qchave + '&anousu=' + anousu, 'Dados Cadastrais da Dotação');
         }
-        if(qjanela=='orcreceita'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaReceita','func_saldoorcreceita.php?fechar=CurrentWindow.corpo.db_janelaReceita&codrec='+qchave+'&anousu='+anousu,'Dados Cadastrais da Receita');
+        if (qjanela == 'orcreceita') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaReceita', 'func_saldoorcreceita.php?fechar=CurrentWindow.corpo.db_janelaReceita&codrec=' + qchave + '&anousu=' + anousu, 'Dados Cadastrais da Receita');
         }
-        if(qjanela=='empempenho'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaReceita','func_empempenho001.php?fechar=CurrentWindow.corpo.db_janelaReceita&e60_numemp='+qchave,'Dados Cadastrais do Empenho');
+        if (qjanela == 'empempenho') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaReceita', 'func_empempenho001.php?fechar=CurrentWindow.corpo.db_janelaReceita&e60_numemp=' + qchave, 'Dados Cadastrais do Empenho');
         }
-        if(qjanela=='empautoriza'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaReceita','func_empempenhoaut001.php?fechar=CurrentWindow.corpo.db_janelaReceita&e54_autori='+qchave,'Dados Cadastrais da Autorização');
+        if (qjanela == 'empautoriza') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaReceita', 'func_empempenhoaut001.php?fechar=CurrentWindow.corpo.db_janelaReceita&e54_autori=' + qchave, 'Dados Cadastrais da Autorização');
         }
-        if(qjanela=='bem'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaBem','func_consbens001.php?fechar=CurrentWindow.corpo.db_janelaReceita&t52_bem='+qchave,'Dados Cadastrais do Bem');
+        if (qjanela == 'bem') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaBem', 'func_consbens001.php?fechar=CurrentWindow.corpo.db_janelaReceita&t52_bem=' + qchave, 'Dados Cadastrais do Bem');
         }
-        if(qjanela=='matestoquedev'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelamatestoquedev','mat3_consultadevolucao001.php?fechar=CurrentWindow.corpo.db_janelamatestoquedev&codigo='+qchave,'Consulta Devolução',true);
+        if (qjanela == 'matestoquedev') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelamatestoquedev', 'mat3_consultadevolucao001.php?fechar=CurrentWindow.corpo.db_janelamatestoquedev&codigo=' + qchave, 'Consulta Devolução', true);
         }
-        if(qjanela=='atendrequi'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaatendrequi','mat3_consultaatendrequi001.php?fechar=CurrentWindow.corpo.db_janelaatendrequi&codigo='+qchave,'Consulta Atendimento',true);
+        if (qjanela == 'atendrequi') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaatendrequi', 'mat3_consultaatendrequi001.php?fechar=CurrentWindow.corpo.db_janelaatendrequi&codigo=' + qchave, 'Consulta Atendimento', true);
         }
-        if(qjanela=='matrequi'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelamatrequi','mat3_consultarequi001.php?fechar=CurrentWindow.corpo.db_janelamatrequi&codigo='+qchave,'Consulta Requisição',true);
+        if (qjanela == 'matrequi') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelamatrequi', 'mat3_consultarequi001.php?fechar=CurrentWindow.corpo.db_janelamatrequi&codigo=' + qchave, 'Consulta Requisição', true);
         }
-        if(qjanela=='matestoqueini'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelamatestoqueni','mat3_matconsultaiframe003.php?fechar=CurrentWindow.corpo.db_janelamatestoqueini&codigo='+qchave,'Consulta Lançamento',true);
+        if (qjanela == 'matestoqueini') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelamatestoqueni', 'mat3_matconsultaiframe003.php?fechar=CurrentWindow.corpo.db_janelamatestoqueini&codigo=' + qchave, 'Consulta Lançamento', true);
         }
-        if(qjanela=='empsolicita'){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_janelaempsolicita','com3_conssolic002.php?cons=item&fechar=CurrentWindow.corpo.db_janelaempsolicitai&pc10_numero='+qchave,'Consulta Solicitações',true);
+        if (qjanela == 'empsolicita') {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_janelaempsolicita', 'com3_conssolicitacao002.php?cons=item&fechar=CurrentWindow.corpo.db_janelaempsolicitai&pc10_numero=' + qchave, 'Consulta Solicitações', true);
         }
 
     }
 
 
-
 }
 
-function js_OpenJanelaIframe(aondeJanela,nomeJanela,arquivoJanela,tituloJanela,mostraJanela,topoJanela,leftJanela,widthJanela,heigthJanela){
+function js_OpenJanelaIframe(aondeJanela, nomeJanela, arquivoJanela, tituloJanela, mostraJanela, topoJanela, leftJanela, widthJanela, heigthJanela) {
 //#01#//js_OpenJanelaIframe
 //#10#//Funcão para gerar uma janela de iframe automática
 //#15#//js_OpenJanelaIframe(aondeJanela,nomeJanela,arquivoJanela,tituloJanela,mostraJanela,topoJanela,leftJanela,widthJanela,heigthJanela);
@@ -2028,41 +2439,78 @@ function js_OpenJanelaIframe(aondeJanela,nomeJanela,arquivoJanela,tituloJanela,m
         aondeJanela = aondeJanela.replace('top.', 'CurrentWindow.');
     }
 
-    var margin = {top : 20, left : 10};
+    var margin = {top: 0, left: 0};
 
-    if(mostraJanela==undefined)
+    if (mostraJanela == undefined)
         mostraJanela = true;
-    if(topoJanela==undefined)
-        topoJanela = '20';
-    if(leftJanela==undefined)
+    if (topoJanela == undefined)
+        topoJanela = '0';
+    if (leftJanela == undefined)
         leftJanela = '0';
-    if(widthJanela==undefined)
+    if (widthJanela == undefined)
         //   widthJanela = '780';
-        widthJanela =  CurrentWindow.corpo.innerWidth - margin.left;
-    if(heigthJanela==undefined)
+        widthJanela = CurrentWindow.corpo.innerWidth - margin.left;
+    if (heigthJanela == undefined)
         heigthJanela = CurrentWindow.corpo.innerHeight - margin.top;
     //    heigthJanela = '430';
 
     // if(eval((aondeJanela!=""?aondeJanela+".":"document.")+nomeJanela)){
-    if( document.getElementById('Jan'+nomeJanela) != null ){
+    if (document.getElementById('Jan' + nomeJanela) != null) {
 
-        var executa = (aondeJanela!=""?aondeJanela+".":"")+nomeJanela+".jan.location.href = '"+arquivoJanela+"'";
+        var executa = (aondeJanela != "" ? aondeJanela + "." : "") + nomeJanela + ".jan.location.href = '" + arquivoJanela + "'";
         executa = eval(executa);
 
-    }else{
+    } else {
 
-        var executa = (aondeJanela!=""?aondeJanela+".":"")+"criaJanela('"+nomeJanela+"','"+arquivoJanela+"','"+tituloJanela+"',"+mostraJanela+","+topoJanela+","+leftJanela+","+widthJanela+","+heigthJanela+")";
+        var executa = (aondeJanela != "" ? aondeJanela + "." : "") + "criaJanela('" + nomeJanela + "','" + arquivoJanela + "','" + tituloJanela + "'," + mostraJanela + "," + topoJanela + "," + leftJanela + "," + widthJanela + "," + heigthJanela + ")";
         executa = eval(executa);
 
     }
 
     var oJanela = executa;
-    if(mostraJanela==true){
+    if (mostraJanela == true) {
 
-        var executa  = (aondeJanela!=""?aondeJanela+".":"")+nomeJanela+".mostraMsg(0,'white',"+widthJanela+","+heigthJanela+",0,0);";
-        executa += (aondeJanela!=""?aondeJanela+".":"")+nomeJanela+".show();";
-        executa += (aondeJanela!=""?aondeJanela+".":"")+nomeJanela+".focus();";
-        executa  = eval(executa);
+        var executa = (aondeJanela != "" ? aondeJanela + "." : "") + nomeJanela + ".mostraMsg(0,'white'," + widthJanela + "," + heigthJanela + ",0,0);";
+        executa += (aondeJanela != "" ? aondeJanela + "." : "") + nomeJanela + ".show();";
+        executa += (aondeJanela != "" ? aondeJanela + "." : "") + nomeJanela + ".focus();";
+        executa = eval(executa);
+
+        var boxJanela = (aondeJanela ? eval(aondeJanela + '.' + nomeJanela) : eval(nomeJanela))['moldura'];
+        var boxCalendar = boxJanela.id.indexOf('Janiframe_data_') === 0;
+
+        boxJanela._fix = {
+            height: 15,
+            width: 25,
+            top: (eval(aondeJanela) || window).scrollY,
+            left: (eval(aondeJanela) || window).scrollX + 10,
+        };
+
+        if (!boxCalendar && window.frameElement.getAttribute('class') == 'bordasi') {
+            boxJanela._fix.height = 45;
+        }
+
+        if (!boxCalendar) {
+
+            var _maxWidth = CurrentWindow.corpo.innerWidth - boxJanela._fix.width;
+            var _maxHeight = CurrentWindow.corpo.innerHeight - boxJanela._fix.height;
+
+            boxJanela.style.width = _maxWidth + 'px';
+            boxJanela.style.height = _maxHeight + 'px';
+
+            if (widthJanela && Number(widthJanela) < _maxWidth) {
+                boxJanela.style.width = widthJanela + 'px';
+            }
+
+            if (heigthJanela && Number(heigthJanela) < _maxHeight) {
+                boxJanela.style.height = heigthJanela + 'px';
+            }
+
+            boxJanela.style.top = boxJanela._fix.top + 'px';
+            boxJanela.style.left = boxJanela._fix.left + 'px';
+
+            CurrentWindow.fixSize.divIframe[boxJanela.id] = boxJanela;
+        }
+
 
     }
 
@@ -2099,7 +2547,7 @@ function js_visualizarPDF(documentPath, width, height, flagPercentage = false) {
 
 function pegaPosMouse(evt) {
 //  evt = (evt) ? evt : (window.event) ? window.event : "NAO DEU CERTO O EVENTO";
-    if( typeof(event) != "object" ) {
+    if (typeof (event) != "object") {
         PosMouseX = evt.layerX;
         PosMouseY = evt.layerY;
     } else {
@@ -2116,7 +2564,7 @@ var windowCalendar = null;
  * @param {Function} shutdown_function -  função ao ser executada no final da
  *     execução do calendário
  */
-function show_calendar(obj, shutdown_function) {
+function show_calendar(obj, shutdown_function, event = null) {
     const x = PosMouseX - window.scrollX;
     const y = PosMouseY - window.scrollY;
 
@@ -2130,6 +2578,11 @@ function show_calendar(obj, shutdown_function) {
 
     if (PosMouseY < 0) {
         PosMouseY = 50;
+    }
+
+    if (event != null) {
+        PosMouseX = event.clientX;
+        PosMouseY = event.clientY;
     }
 
     require_once('scripts/widgets/windowAux.widget.js');
@@ -2153,19 +2606,19 @@ function show_calendar(obj, shutdown_function) {
         275
     );
     windowCalendar.setContent(iframe);
-    windowCalendar.show(PosMouseY, PosMouseX, false);
+    windowCalendar.show(PosMouseY, PosMouseX, false, null, true);
 }
 
-function showCalendarioSaudeTodosDias(obj,shutdown_function, especmed) {
+function showCalendarioSaudeTodosDias(obj, shutdown_function, especmed) {
 
-    if(PosMouseY >= 270) {
+    if (PosMouseY >= 270) {
         PosMouseY = 270;
     }
-    if(PosMouseX >= 600){
+    if (PosMouseX >= 600) {
         PosMouseX = 600;
     }
 
-    js_OpenJanelaIframe('','iframe_data_'+obj,'func_agendamedica.php?nome_objeto_data='+obj+'&shutdown_function='+shutdown_function+'&sd27_i_codigo='+especmed+'&fechar=true','Calendário Agendamento',true,PosMouseY,PosMouseX,400,270);
+    js_OpenJanelaIframe('', 'iframe_data_' + obj, 'func_agendamedica.php?nome_objeto_data=' + obj + '&shutdown_function=' + shutdown_function + '&sd27_i_codigo=' + especmed + '&fechar=true', 'Calendário Agendamento', true, PosMouseY, PosMouseX, 400, 270);
 
 }
 
@@ -2174,9 +2627,9 @@ function show_calendar_javascript() {
 //#01#//show_calendar
 //#10#//Funcão para mostrar o calendário do sistema
 //#15#//show_calendar()
-    if(PosMouseY >= 270)
+    if (PosMouseY >= 270)
         PosMouseY = 270;
-    if(PosMouseX >= 600)
+    if (PosMouseX >= 600)
         PosMouseX = 600;
     DataJavaScript.setPosX(PosMouseX + 20);
     DataJavaScript.setPosY(PosMouseY - 30);
@@ -2202,6 +2655,7 @@ function show_calendar_javascript() {
 
     Build(p_item, p_month, p_year, p_format);
 }
+
 /*
 Yearly Calendar Code Starts here
 */
@@ -2230,34 +2684,34 @@ function show_yearly_calendar(p_item, p_year, p_format) {
 // Code to determine the browser and version.
 //----------------------------------------------------------------------------
 function js_hideshowselect(v) {
-    if(document.forms.length > 0) {
-        for(var i = 0;i < document.forms.length;i++) {
+    if (document.forms.length > 0) {
+        for (var i = 0; i < document.forms.length; i++) {
             var tam = document.forms[i].elements.length;
-            for(var j = 0;j < tam;j++) {
+            for (var j = 0; j < tam; j++) {
                 try {
                     var str = new String(document.forms[i].elements[j].type);
-                } catch(e) {
+                } catch (e) {
                     var str = "";
                 }
-                if(str.indexOf("select") != -1) {
+                if (str.indexOf("select") != -1) {
                     document.forms[i].elements[j].style.display = v;
                 }
             }
         }
     }
-    var fram = (frames.length==0)?1:frames.length;
-    for(var x = 0;x < fram;x++) {
-        var F = (frames.length > 0)?(frames[x].document.forms):(document.forms);
+    var fram = (frames.length == 0) ? 1 : frames.length;
+    for (var x = 0; x < fram; x++) {
+        var F = (frames.length > 0) ? (frames[x].document.forms) : (document.forms);
         var qf = F.length;
-        for(var i = 0;i < qf;i++) {
+        for (var i = 0; i < qf; i++) {
             var tam = F[i].elements.length;
-            for(var j = 0;j < tam;j++) {
+            for (var j = 0; j < tam; j++) {
                 try {
                     var str = new String(F[i].elements[j].type);
-                } catch(e) {
+                } catch (e) {
                     var str = "";
                 }
-                if(str.indexOf("select") != -1) {
+                if (str.indexOf("select") != -1) {
                     F[i].elements[j].style.display = v;
                 }
             }
@@ -2269,11 +2723,11 @@ function Browser() {
 
     var ua, s, i;
 
-    this.isIE    = false;  // Internet Explorer
-    this.isNS    = false;  // Netscape
+    this.isIE = false;  // Internet Explorer
+    this.isNS = false;  // Netscape
     this.version = null;
-    this.name    = null;
-    this.system  = null;
+    this.name = null;
+    this.system = null;
 
     ua = navigator.userAgent;
 
@@ -2325,7 +2779,6 @@ var activeButton = null;
 // deactivated.
 
 
-
 function getPageOffsetLeft(el) {
 
     var x;
@@ -2354,7 +2807,7 @@ function getPageOffsetTop(el) {
 
 // testa se página aceita cookies
 
-function testa_cookie(){
+function testa_cookie() {
 //#01#//testa_cookie
 //#10#//Funcão para testar se o browse esta habilitado para receber cookie, caso não esteja, mostra help
 //#15#//testa_cookie();
@@ -2362,82 +2815,82 @@ function testa_cookie(){
     var resposta;
     // Esta funcao testa se os cookies sao aceitos
     // Tenta escrever um cookie.
-    document.cookie = 'aceita_cookie=sim;path=/;';
+    document.cookie = 'aceita_cookie=sim;path=/;SameSite=Lax;';
     // Checa se conseguiu
-    if(document.cookie == '') {
-        document.write ('<CENTER>');
-        document.write ('<p><font face="Arial" size="4" color="#000080">Certidão Negativa de Débitos de Tributos e Contribuições Federais</font></p>');
-        document.write ('<TABLE cellSpacing=2 cellPadding=0 width=590 border=0>');
-        document.write ('<TBODY>');
-        document.write ('<TR>');
-        document.write ('<TD style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px" bgColor=#93bee2>');
-        document.write ('<FONT face="verdana"><B>Erro: Navegador não suporta Cookie</B></FONT></TD>');
-        document.write ('<TD vAlign=top></TD>');
-        document.write ('</TR>');
-        document.write ('<TR><TD height=6></TD></TR>');
-        document.write ('<TR vAlign=top><TD>');
-        document.write ('<TABLE borderColor=#000080 cellSpacing=0 cellPadding=3 border=1>');
-        document.write ('<TBODY>');
-        document.write ('<TR><TD><FONT face="verdana" size=2 color=#000080><B>O navegador que você está usando não dá suporte a Cookie ou talvez você o tenha desativado.</B></FONT></TD></TR>');
-        document.write ('</TBODY>');
-        document.write ('</TABLE>');
-        document.write ('</TD>');
-        document.write ('</TR>');
-        document.write ('</TBODY>');
-        document.write ('</TABLE>');
-        document.write ('<P>');
-        document.write ('<TABLE width=590>');
-        document.write ('<TBODY>');
-        document.write ('<TR><TD>');
-        document.write ('<FONT face="verdana" size=2>');
-        document.write ('<B>Você está usando um navegador que não dá suporte a Cookie?</B>');
-        document.write ('<UL>Se o seu navegador não der suporte a Cookie, você poderá atualizar para um navegador mais recente.</UL>');
-        document.write ('<B>O Cookie está desativado?</B>');
-        document.write ('<DL><DD>Se o Cookie estiver desativado, você deverá ativá-lo para entrar na rede. As instruções estão a seguir.');
-        document.write ('<P><B>Como ativar o Cookie</B></P>');
-        document.write ('<P>Internet Explorer 5 ou superior</P>');
-        document.write ('<OLi');
-        document.write ('<LI>Clique em <B>Ferramentas</B> e em <B>Opções da Internet</B>.</LI>');
-        document.write ('<LI>Clique na guia <B>Segurança</B>.</LI>');
-        document.write ('<LI>Clique no botão <B>Nível personalizado</B>.</LI>');
-        document.write ('<LI>Role para a seção <B>Cookie</B>. Sob <B>Permitir cookies por sessão(não armazenados)</B> e <B>Permitir cookies que estão armazenados no computador</B>, selecione <B>Ativar</B>.</LI>');
-        document.write ('<LI>Clique no botão <B>OK</B>. </LI>');
-        document.write ('<OL>');
-        document.write ('<P>Internet Explorer 4.x</P>');
-        document.write ('<OL>');
-        document.write ('<LI>Clique em <B>Exibir</B> e em <B>Opções da Internet</B>.</LI>');
-        document.write ('<LI>Clique na guia <B>Segurança</B>.</LI>');
-        document.write ('<LI>Clique no botão <B>Configurações</B>.</LI>');
-        document.write ('<LI>Role para a seção <B>Cookies</B>.</LI>');
-        document.write ('<LI>Selecione <B>Permitir cookies por sessão</B> e <B>Permitir cookies que estão armazenados no computador</B>.</LI>');
-        document.write ('<LI>Clique no botão <B>OK</B>.</LI>');
-        document.write ('</OL>');
-        document.write ('<P>Netscape 6</P>');
-        document.write ('<OL>');
-        document.write ('<LI>Clique em <B>Editar</B> e em <B>Preferências</B>.</LI>');
-        document.write ('<LI>Clique em <B>Avançado</B>.</LI>');
-        document.write ('<LI>Clique em <B>Cookies</B>.</LI>');
-        document.write ('<LI>Habilite a opção <B>Permitir todos os cookies</B>.</LI>');
-        document.write ('<LI>Clique no botão <B>OK</B>. </LI></OL>');
-        document.write ('<LI>Clique no botão <B>OK</B>. </LI></OL>');
-        document.write ('<UL>Para saber se o seu navegador dá suporte a Cookie e obter instruções detalhadas sobre como ativar este recurso, consulte a Ajuda on-line para seu navegador.</UL>');
-        document.write ('</DD></DL>');
-        document.write ('<P></FONT>&nbsp;</P>');
-        document.write ('</TD>');
-        document.write ('</TR>');
-        document.write ('</TBODY>');
-        document.write ('</TABLE>');
-        document.write ('</CENTER>');
+    if (document.cookie == '') {
+        document.write('<CENTER>');
+        document.write('<p><font face="Arial" size="4" color="#000080">Certidão Negativa de Débitos de Tributos e Contribuições Federais</font></p>');
+        document.write('<TABLE cellSpacing=2 cellPadding=0 width=590 border=0>');
+        document.write('<TBODY>');
+        document.write('<TR>');
+        document.write('<TD style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px" bgColor=#93bee2>');
+        document.write('<FONT face="verdana"><B>Erro: Navegador não suporta Cookie</B></FONT></TD>');
+        document.write('<TD vAlign=top></TD>');
+        document.write('</TR>');
+        document.write('<TR><TD height=6></TD></TR>');
+        document.write('<TR vAlign=top><TD>');
+        document.write('<TABLE borderColor=#000080 cellSpacing=0 cellPadding=3 border=1>');
+        document.write('<TBODY>');
+        document.write('<TR><TD><FONT face="verdana" size=2 color=#000080><B>O navegador que você está usando não dá suporte a Cookie ou talvez você o tenha desativado.</B></FONT></TD></TR>');
+        document.write('</TBODY>');
+        document.write('</TABLE>');
+        document.write('</TD>');
+        document.write('</TR>');
+        document.write('</TBODY>');
+        document.write('</TABLE>');
+        document.write('<P>');
+        document.write('<TABLE width=590>');
+        document.write('<TBODY>');
+        document.write('<TR><TD>');
+        document.write('<FONT face="verdana" size=2>');
+        document.write('<B>Você está usando um navegador que não dá suporte a Cookie?</B>');
+        document.write('<UL>Se o seu navegador não der suporte a Cookie, você poderá atualizar para um navegador mais recente.</UL>');
+        document.write('<B>O Cookie está desativado?</B>');
+        document.write('<DL><DD>Se o Cookie estiver desativado, você deverá ativá-lo para entrar na rede. As instruções estão a seguir.');
+        document.write('<P><B>Como ativar o Cookie</B></P>');
+        document.write('<P>Internet Explorer 5 ou superior</P>');
+        document.write('<OLi');
+        document.write('<LI>Clique em <B>Ferramentas</B> e em <B>Opções da Internet</B>.</LI>');
+        document.write('<LI>Clique na guia <B>Segurança</B>.</LI>');
+        document.write('<LI>Clique no botão <B>Nível personalizado</B>.</LI>');
+        document.write('<LI>Role para a seção <B>Cookie</B>. Sob <B>Permitir cookies por sessão(não armazenados)</B> e <B>Permitir cookies que estão armazenados no computador</B>, selecione <B>Ativar</B>.</LI>');
+        document.write('<LI>Clique no botão <B>OK</B>. </LI>');
+        document.write('<OL>');
+        document.write('<P>Internet Explorer 4.x</P>');
+        document.write('<OL>');
+        document.write('<LI>Clique em <B>Exibir</B> e em <B>Opções da Internet</B>.</LI>');
+        document.write('<LI>Clique na guia <B>Segurança</B>.</LI>');
+        document.write('<LI>Clique no botão <B>Configurações</B>.</LI>');
+        document.write('<LI>Role para a seção <B>Cookies</B>.</LI>');
+        document.write('<LI>Selecione <B>Permitir cookies por sessão</B> e <B>Permitir cookies que estão armazenados no computador</B>.</LI>');
+        document.write('<LI>Clique no botão <B>OK</B>.</LI>');
+        document.write('</OL>');
+        document.write('<P>Netscape 6</P>');
+        document.write('<OL>');
+        document.write('<LI>Clique em <B>Editar</B> e em <B>Preferências</B>.</LI>');
+        document.write('<LI>Clique em <B>Avançado</B>.</LI>');
+        document.write('<LI>Clique em <B>Cookies</B>.</LI>');
+        document.write('<LI>Habilite a opção <B>Permitir todos os cookies</B>.</LI>');
+        document.write('<LI>Clique no botão <B>OK</B>. </LI></OL>');
+        document.write('<LI>Clique no botão <B>OK</B>. </LI></OL>');
+        document.write('<UL>Para saber se o seu navegador dá suporte a Cookie e obter instruções detalhadas sobre como ativar este recurso, consulte a Ajuda on-line para seu navegador.</UL>');
+        document.write('</DD></DL>');
+        document.write('<P></FONT>&nbsp;</P>');
+        document.write('</TD>');
+        document.write('</TR>');
+        document.write('</TBODY>');
+        document.write('</TABLE>');
+        document.write('</CENTER>');
         return (false);
     } else {
         // Apaga o cookie.
-        document.cookie = 'aceita_cookie=sim; expires=Fri, 13-Apr-1970 00:00:00 GMT';
+        document.cookie = 'aceita_cookie=sim;SameSite=Lax; expires=Fri, 13-Apr-1970 00:00:00 GMT';
         return (true);
     }
 }
 
 
-function js_ajax_msg(mensagem){
+function js_ajax_msg(mensagem) {
 
     tipo_msg = 0; // alerta siples
     if (mensagem.substr(0, 1) != 0) {
@@ -2470,23 +2923,25 @@ function js_ajax_msg(mensagem){
 
     document.body.appendChild(camada);
 }
-function js_remove_ajax_msg(){
+
+function js_remove_ajax_msg() {
     obj = document.getElementById("id_ajax_msg");
     document.body.removeChild(obj);
 }
+
 function js_round(valor, casas) {
     return Number(valor).toFixed(casas);
 }
 
-function checkleapyear(datea){
+function checkleapyear(datea) {
     datea = parseInt(datea);
-    if(datea%4 == 0){
-        if(datea%100 != 0){
+    if (datea % 4 == 0) {
+        if (datea % 100 != 0) {
             return true;
-        }else{
-            if(datea%400 == 0){
+        } else {
+            if (datea % 400 == 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
@@ -2494,14 +2949,14 @@ function checkleapyear(datea){
     return false;
 }
 
-function js_teclas(event){
+function js_teclas(event) {
 
     var sMask = '';
 
-    var obj   = event.srcElement ? event.srcElement : event.currentTarget;
-    var t     = document.all ? event.keyCode : event.which;
+    var obj = event.srcElement ? event.srcElement : event.currentTarget;
+    var t = document.all ? event.keyCode : event.which;
     if (t == 44) {
-        if ( obj.value.indexOf(".") == -1) {
+        if (obj.value.indexOf(".") == -1) {
             obj.value += ".";
         }
     }
@@ -2514,80 +2969,98 @@ function js_teclas(event){
     sMask = "0-9|.";
     return js_mask(event, sMask);
 }
-function js_getElementbyClass(rootobj, classname, sParam){
+
+function js_getElementbyClass(rootobj, classname, sParam) {
 
     var temparray = new Array();
-    var inc       = 0;
-    var rootlength=rootobj.length;
-    for (i=0; i<rootlength; i++){
+    var inc = 0;
+    var rootlength = rootobj.length;
+    for (i = 0; i < rootlength; i++) {
         //$('debug').innerHTML += rootobj.elements[i].className;
         if (rootobj[i].className == classname) {
-            if (typeof(sParam) != 'undefined') {
+            if (typeof (sParam) != 'undefined') {
                 with (rootobj[i]) {
-                    if (eval(sParam)){
-                        temparray[inc++]=rootobj[i];
+                    if (eval(sParam)) {
+                        temparray[inc++] = rootobj[i];
                     }
                 }
             } else {
-                temparray[inc++]=rootobj[i];
+                temparray[inc++] = rootobj[i];
             }
         }
     }
     return temparray;
 }
 
-function js_ChecaPIS(pis){
+function js_ChecaPIS(pis) {
 
-    ftap="3298765432";
-    total=0;
-    i= 0;
-    resto=0;
-    numPIS=0;
-    total=0;
-    resto=0;
-    numPIS=0;
-    strResto="";
+    ftap = "3298765432";
+    total = 0;
+    i = 0;
+    resto = 0;
+    numPIS = 0;
+    total = 0;
+    resto = 0;
+    numPIS = 0;
+    strResto = "";
 
-    numPIS=pis;
-    if (numPIS=="" || numPIS==null) {
+    numPIS = pis;
+    if (numPIS == "" || numPIS == null) {
 
         return false;
 
     }
-    for (i=0;i<=9;i++){
-        resultado = (numPIS.slice(i,i+1))*(ftap.slice(i,i+1));
-        total=total+resultado;
+    for (i = 0; i <= 9; i++) {
+        resultado = (numPIS.slice(i, i + 1)) * (ftap.slice(i, i + 1));
+        total = total + resultado;
     }
 
     resto = (total % 11);
-    if (resto != 0){
-        resto=11-resto;
+    if (resto != 0) {
+        resto = 11 - resto;
     }
-    if (resto==10 || resto==11){
-        strResto=resto+"";
-        resto = strResto.slice(1,2);
+    if (resto == 10 || resto == 11) {
+        strResto = resto + "";
+        resto = strResto.slice(1, 2);
     }
-    if (resto!=(numPIS.slice(10,11))){
+    if (resto != (numPIS.slice(10, 11))) {
         return false;
     }
     return true;
 }
 
-function js_validaPis(pis){
+function js_validaPis(pis) {
 
-    if (pis != ''){
-        if (!js_ChecaPIS(pis)){
+    if (pis != '') {
+        if (!js_ChecaPIS(pis)) {
             alert("Pis inválido.Verifique.");
-            document.getElementById('db_opcao').disabled=true;
+            document.getElementById('db_opcao').disabled = true;
             return false;
         } else {
-            document.getElementById('db_opcao').disabled=false;
+            document.getElementById('db_opcao').disabled = false;
             return true;
         }
     }
 }
 
-function js_divCarregando(mensagem,id, lBloqueia){
+function js_divCarregando(mensagem, id, lBloqueia) {
+    var loader = window.frameElement && window.frameElement.loader ? window.frameElement.loader : CurrentWindow.loader;
+
+    loader.message.add({
+        id: id, html: mensagem.replace(/\\n\\n/gm, '<br>')
+    });
+
+    try {
+        var obj = document.createElement('div');
+        obj.setAttribute('id', id);
+        obj.style.display = 'none';
+        document.body.appendChild(obj);
+    } catch(e) {}
+
+    return loader.show();
+}
+
+function js_divCarregando_old(mensagem, id, lBloqueia) {
 
     var corpo = CurrentWindow.corpo;
 
@@ -2595,23 +3068,23 @@ function js_divCarregando(mensagem,id, lBloqueia){
         lBloqueia = true;
     }
     var expReg = /\\n\\n/gm;
-    mensagem = mensagem.replace(expReg,'<br>');
+    mensagem = mensagem.replace(expReg, '<br>');
 
     var camada = corpo.document.createElement("DIV");
-    camada.setAttribute("id",id);
-    camada.setAttribute("align","center");
-    camada.style.position        = "absolute";
+    camada.setAttribute("id", id);
+    camada.setAttribute("align", "center");
+    camada.style.position = "absolute";
     // mensagem no meio da tela
-    camada.style.left       = ((corpo.document.body.clientWidth / 2 ) - 100 )+'px';
-    camada.style.top        = ((corpo.CurrentWindow.corpo.innerHeight-450)/2)+'px';
-    camada.style.zIndex     = "11000";
+    camada.style.left = ((corpo.document.body.clientWidth / 2) - 100) + 'px';
+    camada.style.top = ((corpo.CurrentWindow.corpo.innerHeight - 450) / 2) + 'px';
+    camada.style.zIndex = "11000";
     camada.style.display = 'block';
-    camada.style.width      = "200px";
-    camada.className        = "DivCarregando";
-    camada.style.height     = "60px";
+    camada.style.width = "200px";
+    camada.className = "DivCarregando";
+    camada.style.height = "60px";
     camada.style.fontFamily = 'Verdana, Arial, Helvetica, sans-serif';
-    camada.style.fontSize   = '15px';
-    camada.style.border     = '1px solid';
+    camada.style.fontSize = '15px';
+    camada.style.border = '1px solid';
 
     if (lBloqueia) {
 
@@ -2620,14 +3093,14 @@ function js_divCarregando(mensagem,id, lBloqueia){
          */
         var oDisableBody = corpo.document.createElement("DIV");
         oDisableBody.style.backgroundColor = "transparent";
-        oDisableBody.id                    = id+"modal";
-        oDisableBody.style.top             = "25px";
-        oDisableBody.style.left            = "0";
-        oDisableBody.style.width           = "99%";
-        oDisableBody.style.height          = "100%";
-        oDisableBody.style.position        = 'absolute';
-        oDisableBody.style.zIndex          = '99999999';
-        oDisableBody.style.opacity         = '0.0';
+        oDisableBody.id = id + "modal";
+        oDisableBody.style.top = "25px";
+        oDisableBody.style.left = "0";
+        oDisableBody.style.width = "99%";
+        oDisableBody.style.height = "100%";
+        oDisableBody.style.position = 'absolute';
+        oDisableBody.style.zIndex = '99999999';
+        oDisableBody.style.opacity = '0.0';
         corpo.document.body.appendChild(oDisableBody);
 
         /*
@@ -2637,29 +3110,29 @@ function js_divCarregando(mensagem,id, lBloqueia){
         oDbMenu = corpo.document.getElementById('db-menu');
         oDisableMenu = corpo.document.createElement("DIV");
         oDisableMenu.style.backgroundColor = "transparent";
-        oDisableMenu.id                    = id+"disabledmenu";
+        oDisableMenu.id = id + "disabledmenu";
 
-        if  (oDbMenu != null) {
+        if (oDbMenu != null) {
 
-            oDisableMenu.style.top=oDbMenu.style.top;
-            oDisableMenu.style.left=oDbMenu.style.left;
-            oDisableMenu.style.width=oDbMenu.offsetWidth;
+            oDisableMenu.style.top = oDbMenu.style.top;
+            oDisableMenu.style.left = oDbMenu.style.left;
+            oDisableMenu.style.width = oDbMenu.offsetWidth;
 
         } else {
 
-            oDisableMenu.style.top="0px";
-            oDisableMenu.style.left="0px";
-            oDisableMenu.style.width="99%";
+            oDisableMenu.style.top = "0px";
+            oDisableMenu.style.left = "0px";
+            oDisableMenu.style.width = "99%";
 
         }
 
-        oDisableMenu.style.height          = "20px";
-        oDisableMenu.style.position        = 'absolute';
-        oDisableMenu.style.zIndex          = '99999999';
+        oDisableMenu.style.height = "20px";
+        oDisableMenu.style.position = 'absolute';
+        oDisableMenu.style.zIndex = '99999999';
         corpo.document.body.appendChild(oDisableMenu);
-        oDisableMenu.onclick=function () {
+        oDisableMenu.onclick = function () {
 
-            var sMsg  = "Há Operações sendo Executadas.\nSaindo da rotina, as informações correntes serão perdidas.\n";
+            var sMsg = "Há Operações sendo Executadas.\nSaindo da rotina, as informações correntes serão perdidas.\n";
             if (confirm(sMsg)) {
 
                 corpo.document.body.removeChild(oDisableMenu);
@@ -2672,15 +3145,15 @@ function js_divCarregando(mensagem,id, lBloqueia){
 
         if (CurrentWindow.topo) {
 
-            var oDivModalTopo                   = CurrentWindow.topo.document.createElement("div");
-            oDivModalTopo.id                    = id+'modalTop';
-            oDivModalTopo.style.height          = '100%';
-            oDivModalTopo.style.position        = 'absolute';
-            oDivModalTopo.style.top             = '0px';
-            oDivModalTopo.style.left            = '0px';
-            oDivModalTopo.style.width           = '100%';
+            var oDivModalTopo = CurrentWindow.topo.document.createElement("div");
+            oDivModalTopo.id = id + 'modalTop';
+            oDivModalTopo.style.height = '100%';
+            oDivModalTopo.style.position = 'absolute';
+            oDivModalTopo.style.top = '0px';
+            oDivModalTopo.style.left = '0px';
+            oDivModalTopo.style.width = '100%';
             oDivModalTopo.style.backgroundColor = 'transparent';
-            oDivModalTopo.style.zIndex          = '1900000';
+            oDivModalTopo.style.zIndex = '1900000';
             oTopoMenu = CurrentWindow.topo.document.getElementById('menuTopo');
             oTopoMenu.appendChild(oDivModalTopo);
 
@@ -2692,15 +3165,15 @@ function js_divCarregando(mensagem,id, lBloqueia){
 // style = "font-size: 5px; solid #000000; visibility:visible">
 
     camada.innerHTML = ' <table border="0" width= "100%" height="100%" style="background-color: #FFFFCC; border-collapse: collapse;"> '
-        +'    <tr> '
-        +'      <td class="DivCarregandoMensagem" align= "center" style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #000000; font-weight: bold;"> '
-        +'        '+mensagem+''
-        +'      </td> '
-        +'      <td > '
-        +'        <img src="imagens/files/loading.gif" /> '
-        +'      </td> '
-        +'    </tr> '
-        +' </table> ';
+        + '    <tr> '
+        + '      <td class="DivCarregandoMensagem" align= "center" style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #000000; font-weight: bold;"> '
+        + '        ' + mensagem + ''
+        + '      </td> '
+        + '      <td > '
+        + '        <img src="imagens/files/loading.gif" /> '
+        + '      </td> '
+        + '    </tr> '
+        + ' </table> ';
     corpo.document.body.appendChild(camada);
 }
 
@@ -2709,19 +3182,30 @@ function js_fadeModal(element) {
     if (iFadeStep == 'undefined') {
         iFadeStep = 1;
     }
-    iOpacity = js_round(iFadeStep/5,0);
-    element.style.opacity = '0.'+iFadeStep;
+    iOpacity = js_round(iFadeStep / 5, 0);
+    element.style.opacity = '0.' + iFadeStep;
     if (iFadeStep == 7) {
 
         clearTimeout(oTimerModal);
         return false;
     }
 
-    iFadeStep ++;
-    oTimerModal = setTimeout("js_fadeModal(CurrentWindow.corpo.document.getElementById('"+element.id+"'))", 10);
+    iFadeStep++;
+    oTimerModal = setTimeout("js_fadeModal(CurrentWindow.corpo.document.getElementById('" + element.id + "'))", 10);
 }
 
 function js_removeObj(idObj) {
+    var loader = window.frameElement && window.frameElement.loader ? window.frameElement.loader : CurrentWindow.loader;
+    loader.message.remove(idObj);
+    loader.hide();
+
+    var obj = document.getElementById(idObj);
+    if (obj) {
+        document.body.removeChild(obj);
+    }
+}
+
+function js_removeObj_old(idObj) {
 
     var obj = CurrentWindow.corpo.document.getElementById(idObj);
 
@@ -2729,73 +3213,73 @@ function js_removeObj(idObj) {
         CurrentWindow.corpo.document.body.removeChild(obj);
     }
 
-    if (CurrentWindow.corpo.document.getElementById(idObj+"modal")) {
+    if (CurrentWindow.corpo.document.getElementById(idObj + "modal")) {
 
-        var objModal = CurrentWindow.corpo.document.getElementById(idObj+"modal");
+        var objModal = CurrentWindow.corpo.document.getElementById(idObj + "modal");
         CurrentWindow.corpo.document.body.removeChild(objModal);
 
     }
 
-    if (CurrentWindow.topo && CurrentWindow.topo.document.getElementById(idObj+"modalTop")) {
+    if (CurrentWindow.topo && CurrentWindow.topo.document.getElementById(idObj + "modalTop")) {
 
-        var objModal = CurrentWindow.topo.document.getElementById(idObj+"modalTop");
+        var objModal = CurrentWindow.topo.document.getElementById(idObj + "modalTop");
         objParent = objModal.parentNode;
         objParent.removeChild(objModal);
 
     }
-    if (CurrentWindow.corpo.document.getElementById(idObj+"disabledmenu")) {
+    if (CurrentWindow.corpo.document.getElementById(idObj + "disabledmenu")) {
 
-        var objModal = CurrentWindow.corpo.document.getElementById(idObj+"disabledmenu");
+        var objModal = CurrentWindow.corpo.document.getElementById(idObj + "disabledmenu");
         CurrentWindow.corpo.document.body.removeChild(objModal);
 
     }
 }
 
-Number.prototype.toFixed = function(casas){
-    if(typeof(casas) =='undefined'){
+Number.prototype.toFixed = function (casas) {
+    if (typeof (casas) == 'undefined') {
         casas = 0;
     }
-    var valor    = new Number( this );
-    var base     = new Number( Math.pow(10,casas) );
-    var valorArr = (Math.round(valor * base) / base );
+    var valor = new Number(this);
+    var base = new Number(Math.pow(10, casas));
+    var valorArr = (Math.round(valor * base) / base);
     return valorArr;
 };
 
 
-
-function js_comparadata(data1,data2,comparar){
+function js_comparadata(data1, data2, comparar) {
 
 
     if (data1 == '' || data2 == '') {
         return false;
     }
 
-    if (data1.indexOf('/') != -1){
+    if (data1.indexOf('/') != -1) {
 
         datepart = data1.split('/');
-        pYear    = datepart[2];
-        pMonth   = datepart[1];
-        pDay     = datepart[0];
+        pYear = datepart[2];
+        pMonth = datepart[1];
+        pDay = datepart[0];
     }
-    data1 = new Date(pYear, pMonth-1, pDay);
+    data1 = new Date(pYear, pMonth - 1, pDay);
     data1 = data1.getTime();
     if (data2.indexOf('/') != -1) {
         datepart = data2.split('/');
-        pYear    = datepart[2];
-        pMonth   = datepart[1];
-        pDay     = datepart[0];
+        pYear = datepart[2];
+        pMonth = datepart[1];
+        pDay = datepart[0];
     }
-    nDay   = new String(pDay);
+    nDay = new String(pDay);
     nMonth = new String(pMonth);
-    nYear  = new String(pYear);
-    data2  = new Date(pYear,pMonth-1,pDay);
-    data2  = data2.getTime();
-    if (eval(data1+" "+comparar+" "+data2)) {
+    nYear = new String(pYear);
+    data2 = new Date(pYear, pMonth - 1, pDay);
+    data2 = data2.getTime();
+    if (eval(data1 + " " + comparar + " " + data2)) {
         return true;
     } else {
         return false;
     }
 }
+
 /**
  * Funcao para bloquear menus.
  * @param boolean lBloqueia se bloqueia, ou libera os Menus
@@ -2804,6 +3288,10 @@ function js_comparadata(data1,data2,comparar){
  * @todo alterar aqui os impactos
  */
 function js_bloqueiaMenus(lBloqueia, sCallBack) {
+    return true;
+}
+
+function js_bloqueiaMenus_old(lBloqueia, sCallBack) {
 
     if (lBloqueia) {
 
@@ -2813,25 +3301,25 @@ function js_bloqueiaMenus(lBloqueia, sCallBack) {
             oDbMenu = CurrentWindow.corpo.document.getElementById('db-menu');
             disableMenu = CurrentWindow.corpo.document.createElement("DIV");
             disableMenu.style.backgroundColor = "transparent";
-            disableMenu.id                    = "divdbmenu";
+            disableMenu.id = "divdbmenu";
 
-            if  (oDbMenu != null) {
+            if (oDbMenu != null) {
 
-                disableMenu.style.top   = oDbMenu.style.top;
-                disableMenu.style.left  = oDbMenu.style.left;
+                disableMenu.style.top = oDbMenu.style.top;
+                disableMenu.style.left = oDbMenu.style.left;
                 disableMenu.style.width = oDbMenu.offsetWidth;
 
             } else {
 
-                disableMenu.style.top   = "0px";
-                disableMenu.style.left  = "0px";
+                disableMenu.style.top = "0px";
+                disableMenu.style.left = "0px";
                 disableMenu.style.width = "99%";
 
             }
 
-            disableMenu.style.height   = "20px";
+            disableMenu.style.height = "20px";
             disableMenu.style.position = 'absolute';
-            disableMenu.style.zIndex   = '100';
+            disableMenu.style.zIndex = '100';
             if (sCallBack != null) {
                 disableMenu.onclick = sCallBack;
             }
@@ -2844,26 +3332,26 @@ function js_bloqueiaMenus(lBloqueia, sCallBack) {
             oTopoMenu = CurrentWindow.topo.document.getElementById('menuTopo');
             oDisabledTopoMenu = CurrentWindow.topo.document.createElement("DIV");
             oDisabledTopoMenu.style.backgroundColor = "transparent";
-            oDisabledTopoMenu.id                    = "divmenuTopo";
+            oDisabledTopoMenu.id = "divmenuTopo";
 
-            if  (oDbMenu != null) {
+            if (oDbMenu != null) {
 
-                disableMenu.style.top   = oDbMenu.style.top;
-                disableMenu.style.left  = oDbMenu.style.left;
+                disableMenu.style.top = oDbMenu.style.top;
+                disableMenu.style.left = oDbMenu.style.left;
                 disableMenu.style.width = oDbMenu.style.width;
 
             } else {
 
-                disableMenu.style.top   = "0px";
-                disableMenu.style.left  = "0px";
+                disableMenu.style.top = "0px";
+                disableMenu.style.left = "0px";
                 disableMenu.style.width = "99%";
 
             }
 
-            oDisabledTopoMenu.style.height ="100%";
-            oDisabledTopoMenu.style.width  ="100%";
-            oDisabledTopoMenu.style.position='absolute';
-            oDisabledTopoMenu.style.zIndex='100';
+            oDisabledTopoMenu.style.height = "100%";
+            oDisabledTopoMenu.style.width = "100%";
+            oDisabledTopoMenu.style.position = 'absolute';
+            oDisabledTopoMenu.style.zIndex = '100';
             oTopoMenu.appendChild(oDisabledTopoMenu);
         }
     } else {
@@ -2890,8 +3378,8 @@ function js_countOccurs(sString, cCharacter) {
     var iLength = sString.length;
     var indx = 0;
 
-    for(indx = 0; indx < iLength; indx++) {
-        if(sString[indx] == cCharacter) {
+    for (indx = 0; indx < iLength; indx++) {
+        if (sString[indx] == cCharacter) {
             iOccurs++;
         }
     }
@@ -2919,71 +3407,72 @@ function js_putInputValue(sIndex, xValue) {
 function js_getInputValue(sIndex) {
     return aInputValues[sIndex];
 }
+
 function js_objectToJson(oObject) {
     return JSON.stringify(oObject);
 }
 
-function js_mask(e,teclas) {
+function js_mask(e, teclas) {
 
-    var ini  ='';
-    var fim  = '';
+    var ini = '';
+    var fim = '';
     var aval = '';
-    var or   ='';
-    var and  = '';
-    var t    = document.all ? event.keyCode : e.which;
+    var or = '';
+    var and = '';
+    var t = document.all ? event.keyCode : e.which;
 
-    var ta   = teclas.split("|");
-    for (var i = 0;i < ta.length;i++){
+    var ta = teclas.split("|");
+    for (var i = 0; i < ta.length; i++) {
 
         if (ta[i].indexOf("-") != "-1" && ta[i].length == 1) {
 
-            and = i > 0?' ||  ':'';
-            aval += and+' t == '+ta[i].charCodeAt();
+            and = i > 0 ? ' ||  ' : '';
+            aval += and + ' t == ' + ta[i].charCodeAt();
             and = ' ||';
 
-        } else  if (ta[i].indexOf("-") != "-1"){
+        } else if (ta[i].indexOf("-") != "-1") {
 
             vchars = ta[i].split("-");
-            or = i > 0?'|| ':'';
+            or = i > 0 ? '|| ' : '';
 
-            if (vchars.length > 1){
+            if (vchars.length > 1) {
 
                 ini = vchars[0].charCodeAt();
                 fim = vchars[1].charCodeAt();
 
-                aval += or+' (t >='+ini+' && t <='+fim+')';
+                aval += or + ' (t >=' + ini + ' && t <=' + fim + ')';
                 or = " ||";
 
-            }else{
-                aval += ' && t ='+vchars[0];
+            } else {
+                aval += ' && t =' + vchars[0];
             }
 
-        }else{
+        } else {
 
             if (ta[i].indexOf("\-")) {
-                ta[i] = ta[i].replace("\\","");
+                ta[i] = ta[i].replace("\\", "");
             }
-            and = i > 0?' ||  ':'';
-            aval += and+' t == '+ta[i].charCodeAt();
+            and = i > 0 ? ' ||  ' : '';
+            aval += and + ' t == ' + ta[i].charCodeAt();
             and = ' ||';
 
         }
 
     }
 
-    if (eval(aval)){
+    if (eval(aval)) {
         return true;
     } else {
         if (t != 8 && t != 0 && t != 13 && t != 9) { // backspace
             return false;
-        } else{
+        } else {
             return true;
         }
     }
 }
 
 
-getElementsByClass = function ( searchClass, domNode, tagName) {
+getElementsByClass = function (searchClass, domNode, tagName) {
 
     if (domNode == null) {
         domNode = document;
@@ -2995,8 +3484,8 @@ getElementsByClass = function ( searchClass, domNode, tagName) {
 
     var el = new Array();
     var tags = domNode.getElementsByTagName(tagName);
-    var tcl = " "+searchClass+" ";
-    for (i=0,j=0; i<tags.length; i++) {
+    var tcl = " " + searchClass + " ";
+    for (i = 0, j = 0; i < tags.length; i++) {
 
         var test = " " + tags[i].className + " ";
         if (test.indexOf(tcl) != -1) {
@@ -3025,34 +3514,34 @@ function js_somarDiasVigencia(sDataInicio, sDataFim) {
                 /**
                  * Data de inicio da vigência.
                  **/
-                var aDataInicio  = sDataInicio.split('/');
-                var iDiaInicio   = aDataInicio[0];
-                var iMesInicio   = new Number(aDataInicio[1]);
-                iMesInicio  -= 1;
-                var iAnoInicio   = aDataInicio[2];
+                var aDataInicio = sDataInicio.split('/');
+                var iDiaInicio = aDataInicio[0];
+                var iMesInicio = new Number(aDataInicio[1]);
+                iMesInicio -= 1;
+                var iAnoInicio = aDataInicio[2];
 
                 /**
                  * Data de fim da vigência.
                  **/
-                var aDataFim     = sDataFim.split('/');
-                var iDiaFim      = aDataFim[0];
-                var iMesFim      = new Number(aDataFim[1]);
-                iMesFim     -= 1;
-                var iAnoFim      = aDataFim[2];
+                var aDataFim = sDataFim.split('/');
+                var iDiaFim = aDataFim[0];
+                var iMesFim = new Number(aDataFim[1]);
+                iMesFim -= 1;
+                var iAnoFim = aDataFim[2];
 
                 var dtDataInicio = new Date(iAnoInicio, iMesInicio, iDiaInicio);
-                var dtDataFim    = new Date(iAnoFim, iMesFim, iDiaFim);
+                var dtDataFim = new Date(iAnoFim, iMesFim, iDiaFim);
                 if (dtDataFim >= dtDataInicio) {
 
                     /**
                      * Somas os dias de vigência do contrato.
                      **/
-                    var iSomaDias  = dtDataFim - dtDataInicio;
-                    iSomaDias  = iSomaDias / 86400000;
-                    var iSomaDias  = new Number(iSomaDias);
+                    var iSomaDias = dtDataFim - dtDataInicio;
+                    iSomaDias = iSomaDias / 86400000;
+                    var iSomaDias = new Number(iSomaDias);
                     iSomaDias += 1;
-                    var iSomaDias  = iSomaDias.toFixed(0);
-                    var lRetorno   = true;
+                    var iSomaDias = iSomaDias.toFixed(0);
+                    var lRetorno = true;
                 }
             }
         }
@@ -3067,6 +3556,7 @@ function js_somarDiasVigencia(sDataInicio, sDataFim) {
         return false;
     }
 }
+
 /*
  * Calcula a altura do utils do documento(ViewPort)
  * @return float
@@ -3086,7 +3576,7 @@ function getDocHeight() {
  * @param Array inputArr
  */
 
-function array_unique (inputArr) {
+function array_unique(inputArr) {
     /**
      * @version: 1107.2516
      * @discuss at: http:*phpjs.org/functions/array_unique    * +   original by:
@@ -3107,12 +3597,13 @@ function array_unique (inputArr) {
      *     'blue', 2: 'red'});
      * *     returns 2: {a: 'green', 0: 'red', 1: 'blue'}
      */
-    var key = '',        tmp_arr2 = {},
+    var key = '', tmp_arr2 = {},
         val = '';
 
     var __array_search = function (needle, haystack) {
 
-        var fkey = '';        for (fkey in haystack) {
+        var fkey = '';
+        for (fkey in haystack) {
 
             if (haystack.hasOwnProperty(fkey)) {
 
@@ -3141,12 +3632,14 @@ function array_unique (inputArr) {
  *     desabilitados
  * @param lBloquear Recebe um boolean utilizado como parametro para o readOnly
  *     e disabled
+ * @param listaIdsElementosNaoDesabilitar Recebe um array com lista de elementos que
+ *     nao devem mudar o seu estado para disabled
  */
-function setFormReadOnly(oElemento, lBloquear) {
+function setFormReadOnly(oElemento, lBloquear, listaIdsElementosNaoDesabilitar = []) {
 
-    var iTamanho                  = oElemento.length;
-    var aElementosCorFixa         = new Array("submit", "button", "fieldset");
-    var aElementosParaDesabilitar = new Array("select-one", "select_multiple", "submit", "button" ,"checkbox");
+    var iTamanho = oElemento.length;
+    var aElementosCorFixa = new Array("submit", "button", "fieldset");
+    var aElementosParaDesabilitar = new Array("select-one", "select_multiple", "submit", "button", "checkbox");
 
     for (var iContador = 0; iContador < iTamanho; iContador++) {
 
@@ -3165,14 +3658,15 @@ function setFormReadOnly(oElemento, lBloquear) {
 
         oElemento.elements[iContador].readOnly = lBloquear;
 
-        if (js_search_in_array(aElementosParaDesabilitar, oElemento.elements[iContador].type)) {
+        if (js_search_in_array(aElementosParaDesabilitar, oElemento.elements[iContador].type)
+            && !js_search_in_array(listaIdsElementosNaoDesabilitar, oElemento.elements[iContador].id)) {
             oElemento.elements[iContador].disabled = lBloquear;
         }
     }
     /**
      * Remove as ancoras
      */
-    $$('.dbancora').each( function (oElement) {
+    $$('.dbancora').each(function (oElement) {
 
         var sValor = oElement.textContent;
         oElement.parentNode.innerHTML = sValor;
@@ -3180,30 +3674,30 @@ function setFormReadOnly(oElemento, lBloquear) {
     });
 }
 
-var F2        = 113;
-var F3        = 114;
-var F4        = 115;
-var F5        = 116;
-var F6        = 117;
-var F7        = 118;
-var F8        = 119;
-var F9        = 120;
-var F10       = 121;
-var F11       = 122;
-var F13       = 123;
-var ESC       = 27;
-var KEY_S     = 83;
-var KEY_R     = 82;
-var KEY_LEFT  = 37;
-var KEY_UP    = 38;
-var KEY_DOWN  = 40;
+var F2 = 113;
+var F3 = 114;
+var F4 = 115;
+var F5 = 116;
+var F6 = 117;
+var F7 = 118;
+var F8 = 119;
+var F9 = 120;
+var F10 = 121;
+var F11 = 122;
+var F13 = 123;
+var ESC = 27;
+var KEY_S = 83;
+var KEY_R = 82;
+var KEY_LEFT = 37;
+var KEY_UP = 38;
+var KEY_DOWN = 40;
 var KEY_RIGTH = 39;
 var KEY_ENTER = 13; // Tecla ENTER
 
-window.addEventListener('keydown', function(Event) {
+window.addEventListener('keydown', function (Event) {
 
     var iTeclaPressionada = Event.which;
-    switch(iTeclaPressionada) {
+    switch (iTeclaPressionada) {
 
         case F5:
 
@@ -3241,50 +3735,47 @@ var __Requisicoes__ = {};
  * @param sArquivo - caminho do arquivo relativo a raiz do e-Cidade
  * @returns {Boolean}
  */
-function require( sArquivo ) {
+function require(sArquivo) {
     "use strict";
 
-    if ( __Requisicoes__[sArquivo] ) {
-        return;
+    if (__Requisicoes__[sArquivo]) {
+        return true;
     }
+    const isV3 = typeof CurrentWindow !== 'undefined' && typeof CurrentWindow.resolveUrl === 'function';
+    const url = isV3 ? CurrentWindow.resolveUrl(sArquivo) : sArquivo;
 
-    var oRequisicao = new XMLHttpRequest();
-    oRequisicao.open('GET',
-        sArquivo,
-        false);
+    const oRequisicao = new XMLHttpRequest();
+    oRequisicao.open('GET', url, false);
 
-    var sContentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
+    const sContentType = "application/x-www-form-urlencoded; charset=ISO-8859-1";
     oRequisicao.setRequestHeader("Content-type", sContentType);
     oRequisicao.overrideMimeType(sContentType);
     oRequisicao.send(null);
 
-
-    if ( oRequisicao.status === 200 ) {
-
-        var aDadosArquivo = sArquivo.split(".");
-        var iUltimoIndice = aDadosArquivo.length - 1;
-        var sExtensao     = aDadosArquivo[ iUltimoIndice ];
-        var oHead         = document.getElementsByTagName("head")[0]
-        switch (sExtensao) {
-
-            case "js":
-
-                var oScript  = document.createElement("script");
-                oScript.type = "text/javascript";
-                oScript.innerHTML = oRequisicao.responseText;
-                oHead.appendChild( oScript );
-                break;
-            case "css":
-
-                var oScript       = document.createElement("style");
-                oScript.innerHTML = oRequisicao.responseText;
-                oHead.appendChild( oScript );
-                break;
-        }
-        __Requisicoes__[sArquivo] = sArquivo;
-        return true;
+    if (oRequisicao.status !== 200) {
+        throw "Arquivo não pode ser carregado.";
     }
-    throw "Arquivo não pode ser carregado.";
+
+    const aDadosArquivo = sArquivo.split(".");
+    const iUltimoIndice = aDadosArquivo.length - 1;
+    const sExtensao = aDadosArquivo[iUltimoIndice];
+    const oHead = document.getElementsByTagName("head")[0];
+    switch (sExtensao) {
+        case "js":
+            const oScript = document.createElement("script");
+            oScript.type = "text/javascript";
+            oScript.innerHTML = oRequisicao.responseText;
+            oHead.appendChild(oScript);
+            break;
+
+        case "css":
+            const oStyle = document.createElement("style");
+            oStyle.innerHTML = oRequisicao.responseText;
+            oHead.appendChild(oStyle);
+            break;
+    }
+    __Requisicoes__[sArquivo] = sArquivo;
+    return true;
 }
 
 /**
@@ -3294,11 +3785,12 @@ function require( sArquivo ) {
  */
 function require_once(sArquivo) {
 
-    if ( __Requisicoes__[sArquivo] ) {
+    if (__Requisicoes__[sArquivo]) {
         return;
     }
-    return require( sArquivo );
+    return require(sArquivo);
 }
+
 /**
  * Retorna o numero de dias, no mes e ano passados como parametros
  * @param integer iMes Mes para verificação
@@ -3337,7 +3829,7 @@ function js_idade(iDia, iMes, iAno) {
     /**
      * Dados referente a data atual
      */
-    var oDataDia  = new Date();
+    var oDataDia = new Date();
     var iAnoAtual = oDataDia.getFullYear();
     var iMesAtual = oDataDia.getMonth() + 1;
     var iDiaAtual = oDataDia.getDate();
@@ -3379,7 +3871,7 @@ function js_idade(iDia, iMes, iAno) {
     var iDias = iDiaAtual - iDiaNascimento;
     if (iDiaNascimento > iDiaAtual) {
 
-        iDia  = js_getNumeroDeDiaNoMes(iMesAtual, iAnoAtual);
+        iDia = js_getNumeroDeDiaNoMes(iMesAtual, iAnoAtual);
         iDias = (iDia - iDiaNascimento) + iDiaAtual;
         iMes--;
         if (iMes < 0) {
@@ -3394,27 +3886,28 @@ function js_idade(iDia, iMes, iAno) {
      */
     var sStringIdade = '';
     if (iAnos > 0) {
-        sStringIdade += iAnos+' ano'+(iAnos > 1 ? 's':'');
+        sStringIdade += iAnos + ' ano' + (iAnos > 1 ? 's' : '');
     }
     if (iMes > 0) {
 
-        if (sStringIdade !='') {
-            sStringIdade +=", ";
+        if (sStringIdade != '') {
+            sStringIdade += ", ";
         }
-        sStringIdade += iMes+(iMes > 1 ? ' meses':' mês');
+        sStringIdade += iMes + (iMes > 1 ? ' meses' : ' mês');
     }
     if (iDias > 0) {
 
-        if (sStringIdade !='') {
-            sStringIdade +=", ";
+        if (sStringIdade != '') {
+            sStringIdade += ", ";
         }
-        sStringIdade += iDias+' dia'+(iDias > 1 ? 's':'');
+        sStringIdade += iDias + ' dia' + (iDias > 1 ? 's' : '');
     }
 
     /**
      * Objeto com os dados a serem retornados
      */
-    var oIdade = {ano: iAnos,
+    var oIdade = {
+        ano: iAnos,
         mes: iMes,
         dia: iDias,
         string: sStringIdade
@@ -3430,9 +3923,9 @@ function js_idade(iDia, iMes, iAno) {
  * @param sTarget
  * @returns Boolean
  */
-function js_empty (sTarget) {
+function js_empty(sTarget) {
 
-    if ( sTarget == '' || sTarget == null) {
+    if (sTarget == '' || sTarget == null) {
         return true;
     }
     return false;
@@ -3455,10 +3948,10 @@ function _M(sCaminhoMensagem, oVariaveis) {
     try {
 
         var oDBMensagem = new DBMensagem();
-        var sMensagem   = oDBMensagem.getMensagem(sCaminhoMensagem);
-        sMensagem       = oDBMensagem.aplicarVariaveis(sMensagem, oVariaveis);
+        var sMensagem = oDBMensagem.getMensagem(sCaminhoMensagem);
+        sMensagem = oDBMensagem.aplicarVariaveis(sMensagem, oVariaveis);
 
-    } catch ( oErro ) {
+    } catch (oErro) {
         alert('Ocorreu um erro Inesperado.\nContate suporte.');
     }
 
@@ -3487,7 +3980,7 @@ function _M(sCaminhoMensagem, oVariaveis) {
  * @param mixed_var
  * @returns {Boolean}
  */
-function empty (mixed_var) {
+function empty(mixed_var) {
 
     var undef, key, i, len;
     var emptyValues = [undef, null, false, 0, "", "0"];
@@ -3519,29 +4012,29 @@ function empty (mixed_var) {
  */
 function validaCPF(oCpf) {
 
-    expr = new  RegExp("0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}");
-    if (oCpf.value.match(expr)){
+    expr = new RegExp("0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}");
+    if (oCpf.value.match(expr)) {
 
         oCpf.value = "";
         oCpf.focus();
         return false;
     }
-    if (isNaN(oCpf.value) || oCpf.value.length != 11){
+    if (isNaN(oCpf.value) || oCpf.value.length != 11) {
         return false;
     }
 
-    for (var vdigpos = 10; vdigpos < 12; vdigpos++ ){
+    for (var vdigpos = 10; vdigpos < 12; vdigpos++) {
 
         var vdig = 0;
         var vpos = 0;
-        for (var vfator = vdigpos;vfator >= 2; vfator-- ){
+        for (var vfator = vdigpos; vfator >= 2; vfator--) {
 
-            vdig = eval(vdig + oCpf.value.substr(vpos,1) * vfator);
+            vdig = eval(vdig + oCpf.value.substr(vpos, 1) * vfator);
             vpos++;
 
         }
-        vdig  = eval(11 -(vdig % 11)) < 10 ? eval(11 - vdig % 11) : 0;
-        if (vdig != eval(oCpf.value.substr(vdigpos-1,1))) {
+        vdig = eval(11 - (vdig % 11)) < 10 ? eval(11 - vdig % 11) : 0;
+        if (vdig != eval(oCpf.value.substr(vdigpos - 1, 1))) {
 
             oCpf.value = "";
             oCpf.focus();
@@ -3558,27 +4051,27 @@ function validaCPF(oCpf) {
  */
 function validaCNPJ(oCnpj) {
 
-    if (isNaN(oCnpj.value) || oCnpj.value.length != 14){
+    if (isNaN(oCnpj.value) || oCnpj.value.length != 14) {
         return false;
     }
-    for (var vdigpos = 13; vdigpos < 15; vdigpos++ ){
+    for (var vdigpos = 13; vdigpos < 15; vdigpos++) {
 
         var vdig = 0;
         var vpos = 0;
-        for (var vfator = vdigpos - 8 ;vfator >= 2; vfator-- ){
+        for (var vfator = vdigpos - 8; vfator >= 2; vfator--) {
 
-            vdig = eval(vdig + oCnpj.value.substr(vpos,1) * vfator);
+            vdig = eval(vdig + oCnpj.value.substr(vpos, 1) * vfator);
             vpos++;
 
         }
-        for (var vfator = 9 ;vfator >= 2; vfator-- ){
+        for (var vfator = 9; vfator >= 2; vfator--) {
 
-            vdig = eval(vdig + oCnpj.value.substr(vpos,1) * vfator);
+            vdig = eval(vdig + oCnpj.value.substr(vpos, 1) * vfator);
             vpos++;
 
         }
-        vdig  = eval(11 -(vdig % 11)) < 10 ? eval(11 - vdig % 11) : 0;
-        if (vdig != eval(oCnpj.value.substr(vdigpos-1,1))) {
+        vdig = eval(11 - (vdig % 11)) < 10 ? eval(11 - vdig % 11) : 0;
+        if (vdig != eval(oCnpj.value.substr(vdigpos - 1, 1))) {
             return false;
         }
     }
@@ -3612,9 +4105,9 @@ function validaCpfCnpj(oObjeto) {
  *     true
  * @returns {boolean}
  */
-function validaEmail(sEmail, lMostraMensagem){
+function validaEmail(sEmail, lMostraMensagem) {
 
-    var regExpEmail     = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/,
+    var regExpEmail = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/,
         lMostraMensagem = lMostraMensagem === undefined ? true : lMostraMensagem;
 
     if (!regExpEmail.test(sEmail)) {
@@ -3634,13 +4127,13 @@ function validaEmail(sEmail, lMostraMensagem){
     return true;
 }
 
-function autoCompleteMenu(){
+function autoCompleteMenu() {
 
     require_once("scripts/strings.js");
     require_once("scripts/widgets/dbautocomplete.widget.js");
     require_once("scripts/json2.js");
 
-    var oAutoComplete = new dbAutoComplete(autoCompleteMenus,'sys4_itensmenus.RPC.php');
+    var oAutoComplete = new dbAutoComplete(autoCompleteMenus, 'sys4_itensmenus.RPC.php');
     oAutoComplete.setTxtFieldId(autoCompleteMenus.id);
     oAutoComplete.show();
     oAutoComplete.setLoader(true);
@@ -3649,24 +4142,21 @@ function autoCompleteMenu(){
     autoCompleteMenus.focus();
 
     oAutoComplete.setQueryStringFunction(
-
         function () {
 
             var oParametros = {}
             oParametros.sConteudo = autoCompleteMenus.value;
             oParametros.sExecucao = 'getItens';
 
-            var sQuery  = 'json='+JSON.stringify(oParametros);
+            var sQuery = 'json=' + JSON.stringify(oParametros);
             return sQuery;
         }
     );
 
     oAutoComplete.setCallBackFunction(
+        function (id, label) {
 
-
-        function(id,label) {
-
-            aId           = id.urlDecode().split(':');
+            aId = id.urlDecode().split(':');
             location.href = aId;
         }
     );
@@ -3749,7 +4239,7 @@ function Menu_verifySize(parent) {
     }
 
     var ulChildren = parent.querySelectorAll('ul')[0];
-    var ulSize     = ulChildren.getBoundingClientRect().width;
+    var ulSize = ulChildren.getBoundingClientRect().width;
     var windowSize = document.body.getBoundingClientRect().width
 
     var ulPos = parent.getBoundingClientRect().right + ulSize + 10;
@@ -3799,50 +4289,12 @@ function Menu_removeChildrensClass(parent, sClass, lRecursive, caller) {
 }
 
 
-
 /**
  * INICIO FUNCOES PARA JANELA
  */
 
+function janela(janP, cFt, Iframe) {
 
-function janela(janP,cFt,Iframe) {
-
-    this.moldura    = janP;
-    this.jan        = Iframe;
-    this.janFrame   = Iframe.frameElement;
-    this.nomeJanela = janP.id.substr(3);
-    this.titulo     = new String(cFt.firstChild.innerHTML);
-    this.onJanHide  = null;                  //@TODO onHide
-    document.cookie = "modulo=" + janP.id;
-    netscape        = navigator.appName == "Netscape" ? 1 : 0; //@TODO Remove THIS
-
-    if( typeof(JANS)=="undefined" ) {
-
-        JANS         = new Array();
-        JANS.isModal = 0;
-
-    } else {
-
-        for(var i = 0;i < JANS.length;i++) {
-            JANS[i].guardaCorFundoTitulo = JANS[i].corFundoTitulo;
-            JANS[i].setCorFundoTitulo("#A6A6A6");
-        }
-    }
-    JANS[this.nomeJanela] = this;
-    JANS.push(this);
-
-    /**
-     * Atributos
-     */
-    this.posX                   = janP.style.left;
-    this.posY                   = janP.style.top;
-    this.largura                = janP.style.width;
-    this.altura                 = janP.style.height;
-    this.corFundoTitulo         = cFt.style.backgroundColor;
-    this.corTitulo              = cFt.firstChild.style.color;
-    this.fonteTitulo            = cFt.firstChild.style.fontFamily;
-    this.tamTitulo              = cFt.firstChild.style.fontSize;
-    this.titulo                 = new String(cFt.firstChild.innerHTML);
 
     /**
      * Métodos
@@ -3850,26 +4302,62 @@ function janela(janP,cFt,Iframe) {
      * Adicionado Prototype, para que seja possivel ser feita sobrecarga dos
      * mesmos
      */
-    janela.prototype.setTarget             = this.setTarget             = setTarget;
-    janela.prototype.setTitulo             = this.setTitulo             = setTitulo;
-    janela.prototype.setCorFundoTitulo     = this.setCorFundoTitulo     = setCorFundoTitulo;
-    janela.prototype.setCorTitulo          = this.setCorTitulo          = setCorTitulo;
-    janela.prototype.setFonteTitulo        = this.setFonteTitulo        = setFonteTitulo;
-    janela.prototype.setTamTitulo          = this.setTamTitulo          = setTamTitulo;
-    janela.prototype.setPosX               = this.setPosX               = setPosX;
-    janela.prototype.setLargura            = this.setLargura            = setLargura;
-    janela.prototype.setAltura             = this.setAltura             = setAltura;
-    janela.prototype.setPosY               = this.setPosY               = setPosY;
-    janela.prototype.setModal              = this.setModal              = setModal;
-    janela.prototype.setNoModal            = this.setNoModal            = setNoModal;
-    janela.prototype.show                  = this.show                  = show;
-    janela.prototype.focus                 = this.focus                 = focus;
-    janela.prototype.hide                  = this.hide                  = hide;
-    janela.prototype.limpaTela             = this.limpaTela             = limpaTela;
-    janela.prototype.mostraMsg             = this.mostraMsg             = mostraMsg;
-    janela.prototype.setJanBotoes          = this.setJanBotoes          = setJanBotoes;
+    janela.prototype.setTarget = this.setTarget = setTarget;
+    janela.prototype.setTitulo = this.setTitulo = setTitulo;
+    janela.prototype.setCorFundoTitulo = this.setCorFundoTitulo = setCorFundoTitulo;
+    janela.prototype.setCorTitulo = this.setCorTitulo = setCorTitulo;
+    janela.prototype.setFonteTitulo = this.setFonteTitulo = setFonteTitulo;
+    janela.prototype.setTamTitulo = this.setTamTitulo = setTamTitulo;
+    janela.prototype.setPosX = this.setPosX = setPosX;
+    janela.prototype.setLargura = this.setLargura = setLargura;
+    janela.prototype.setAltura = this.setAltura = setAltura;
+    janela.prototype.setPosY = this.setPosY = setPosY;
+    janela.prototype.setModal = this.setModal = setModal;
+    janela.prototype.setNoModal = this.setNoModal = setNoModal;
+    janela.prototype.show = this.show = show;
+    janela.prototype.focus = this.focus = focus;
+    janela.prototype.hide = this.hide = hide;
+    janela.prototype.limpaTela = this.limpaTela = limpaTela;
+    janela.prototype.mostraMsg = this.mostraMsg = mostraMsg;
+    janela.prototype.setJanBotoes = this.setJanBotoes = setJanBotoes;
     janela.prototype.liberarJanBTMaximizar = this.liberarJanBTMaximizar = liberarJanBTMaximizar;
-    janela.prototype.liberarJanBTFechar    = this.liberarJanBTFechar    = liberarJanBTFechar;
+    janela.prototype.liberarJanBTFechar = this.liberarJanBTFechar = liberarJanBTFechar;
+
+    this.moldura = janP;
+    this.jan = Iframe;
+    this.janFrame = Iframe.frameElement;
+    this.nomeJanela = janP.id.substr(3);
+    this.onJanHide = null;                  //@TODO onHide
+    document.cookie = "modulo=" + janP.id + ';SameSite=Lax';
+    netscape = navigator.appName == "Netscape" ? 1 : 0; //@TODO Remove THIS
+    if (!(JANS instanceof Array)) {
+        JANS = [];
+        JANS.isModal = 0;
+
+    } else {
+        JANS.forEach(el => {
+            el.guardaCorFundoTitulo = el.corFundoTitulo;
+            el.setCorFundoTitulo("#A6A6A6");
+        })
+    }
+    JANS[this.nomeJanela] = this;
+    JANS.push(this);
+
+    /**
+     * Atributos
+     */
+    this.posX = janP.style.left;
+    this.posY = janP.style.top;
+    this.largura = janP.style.width;
+    this.altura = janP.style.height;
+
+    this.corFundoTitulo = cFt.style.backgroundColor;
+    if (cFt.firstChild.style) {
+        this.corTitulo = cFt.firstChild.style.color;
+        this.fonteTitulo = cFt.firstChild.style.fontFamily;
+        this.tamTitulo = cFt.firstChild.style.fontSize;
+        this.titulo = new String(cFt.firstChild.innerHTML);
+    }
 
     /**
      * setTarget
@@ -3879,7 +4367,7 @@ function janela(janP,cFt,Iframe) {
      */
     function setTarget() {
         var args = setTarget.arguments;
-        var F = (typeof(args[0])=="undefined" || args[0]=="")?"form1":args[0];
+        var F = (typeof (args[0]) == "undefined" || args[0] == "") ? "form1" : args[0];
         document.forms[F].target = Iframe.name;
     }
 
@@ -3966,7 +4454,7 @@ function janela(janP,cFt,Iframe) {
      * @return void
      */
     function setPosY(pos) {
-        if(typeof(pos)!='undefined' && pos<20){
+        if (typeof (pos) != 'undefined' && pos < 20) {
             pos = 20;
         }
         janP.style.top = pos;
@@ -4015,16 +4503,18 @@ function janela(janP,cFt,Iframe) {
      */
     function show() {
 
-        empilhaJanelas(this.nomeJanela);
+        try {
+            empilhaJanelas(this.nomeJanela);
 
-        if(JANS.length > 1)
-            JANS[JANS.length-2].setCorFundoTitulo("#A6A6A6");
-        if(JANS[this.nomeJanela].GuardaAlt) {
-            setAltura(JANS[this.nomeJanela].GuardaAlt);
-            setLargura(JANS[this.nomeJanela].GuardaLar);
-            setPosX(JANS[this.nomeJanela].GuardaPoX);
-            setPosY(JANS[this.nomeJanela].GuardaPoY);
-        }
+            if (JANS.length > 1)
+            JANS[JANS.length - 2].setCorFundoTitulo("#A6A6A6");
+            if (JANS[this.nomeJanela].GuardaAlt) {
+                setAltura(JANS[this.nomeJanela].GuardaAlt);
+                setLargura(JANS[this.nomeJanela].GuardaLar);
+                setPosX(JANS[this.nomeJanela].GuardaPoX);
+                setPosY(JANS[this.nomeJanela].GuardaPoY);
+            }
+        } catch(error) {}
         janP.style.display = 'block';
     }
 
@@ -4036,34 +4526,39 @@ function janela(janP,cFt,Iframe) {
      */
     function hide() {
 
-        var aux = JANS[JANS.length-1];
-        for(var i = JANS.length-1;i > 0;i--) {
-            JANS[i] = JANS[i - 1];
+        try {
+            var aux = JANS[JANS.length - 1];
+            for (var i = JANS.length - 1; i > 0; i--) {
+                JANS[i] = JANS[i - 1];
+            }
+            JANS[0] = aux;
+            JANS[JANS.length - 1].setCorFundoTitulo("#326094");
+            janP.style.display = 'none';
+            JANS[this.nomeJanela].GuardaAlt = this.altura;
+            JANS[this.nomeJanela].GuardaLar = this.largura;
+            JANS[this.nomeJanela].GuardaPoX = this.posX;
+            JANS[this.nomeJanela].GuardaPoY = this.posY;
+        } catch (error){
+            janP.style.display = 'none';
         }
-        JANS[0] = aux;
-        JANS[JANS.length-1].setCorFundoTitulo("#326094");
-        janP.style.display = 'none';
-        JANS[this.nomeJanela].GuardaAlt = this.altura;
-        JANS[this.nomeJanela].GuardaLar = this.largura;
-        JANS[this.nomeJanela].GuardaPoX = this.posX;
-        JANS[this.nomeJanela].GuardaPoY = this.posY;
     }
 
-    function procuraNo(obj,nome) {
+    function procuraNo(obj, nome) {
         nome = nome.toUpperCase();
 
-        if(obj.childNodes.length > 0) {
+        if (obj.childNodes.length > 0) {
 
-            for(var i = 0;i < obj.childNodes.length;i++) {
+            for (var i = 0; i < obj.childNodes.length; i++) {
 
-                if(obj.childNodes[i].nodeName == nome) {
+                if (obj.childNodes[i].nodeName == nome) {
 
                     try {
                         ObjRet = obj.childNodes[i];
-                    } catch(e) {}
+                    } catch (e) {
+                    }
                     return true;
                 }
-                procuraNo(obj.childNodes[i],nome);
+                procuraNo(obj.childNodes[i], nome);
             }
         }
     }
@@ -4075,14 +4570,14 @@ function janela(janP,cFt,Iframe) {
      * @return void
      */
     function limpaTela() {
-        procuraNo(Iframe.document,"body");
+        procuraNo(Iframe.document, "body");
         corpo = ObjRet;//vem da funcao procuraNo
         var documento = corpo.childNodes;
         do {
-            for(var i = 0;i < documento.length;i++) {
+            for (var i = 0; i < documento.length; i++) {
                 corpo.removeChild(documento[i]);
             }
-        } while(documento.length != 0);
+        } while (documento.length != 0);
     }
 
     /**
@@ -4094,33 +4589,31 @@ function janela(janP,cFt,Iframe) {
     function mostraMsg() {
 
         var args = mostraMsg.arguments;
-        var msg  = (typeof(args[0])=="undefined" || args[0]=="")?"Processando...":args[0];
-        var cor  = (typeof(args[1])=="undefined" || args[1]=="")?"white":args[1];
-        var Larg = (typeof(args[2])=="undefined" || args[2]=="")?this.moldura.style.width:args[2];
-        var Alt  = (typeof(args[3])=="undefined" || args[3]=="")?this.moldura.style.height:args[3];
-        var PosX = (typeof(args[4])=="undefined" || args[4]=="")?"0":args[4];
-        var PosY = (typeof(args[5])=="undefined" || args[5]=="")?"0":args[5];
+        var msg = (typeof (args[0]) == "undefined" || args[0] == "") ? "Processando..." : args[0];
+        var cor = (typeof (args[1]) == "undefined" || args[1] == "") ? "white" : args[1];
+        var Larg = (typeof (args[2]) == "undefined" || args[2] == "") ? this.moldura.style.width : args[2];
+        var Alt = (typeof (args[3]) == "undefined" || args[3] == "") ? this.moldura.style.height : args[3];
+        var PosX = (typeof (args[4]) == "undefined" || args[4] == "") ? "0" : args[4];
+        var PosY = (typeof (args[5]) == "undefined" || args[5] == "") ? "0" : args[5];
 
-        if(elem = document.getElementById("mensagem") )
+        if (elem = document.getElementById("mensagem"))
             elem.parentNode.removeChild(elem);
         var camada = Iframe.document.createElement("DIV");
-        camada.setAttribute("id","mensagem");
+        camada.setAttribute("id", "mensagem");
 
-        procuraNo(Iframe.document,"body");
+        procuraNo(Iframe.document, "body");
         try {
             ObjRet.appendChild(camada);
             var elem = Iframe.document.getElementById("mensagem");
-            elem.innerHTML = "<table border='0' cellpadding='0' cellspacing='0'><tr><td width='" + Larg + "' height='" + Alt + "' align='center' valign='middle'><strong>" + msg + "</strong></td></tr></table>";
-            elem.style.backgroundColor = cor;
-            elem.style.layerBackgroundColor = cor;
+            elem.style.background = '#e1dede';
             elem.style.position = "absolute";
             elem.style.left = "0px";
             elem.style.top = "0px";
             elem.style.zIndex = "100";
             elem.style.visibility = 'visible';
-            elem.style.width = Larg;
-            elem.style.height = Alt;
-        } catch(e) {
+            elem.style.width = '100%';
+            elem.style.height = '100%';
+        } catch (e) {
         }
     }
 
@@ -4133,86 +4626,88 @@ function janela(janP,cFt,Iframe) {
      * @return void
      */
     function setJanBotoes(str) {
-
-        var s          = new String(str);
-        var img1       = cFt.childNodes[1].childNodes[0];
-        var img2       = cFt.childNodes[1].childNodes[1];
-        var img3       = cFt.childNodes[1].childNodes[2];
+        var s = new String(str);
+        var img1 = cFt.childNodes[1].childNodes[0];
+        var img2 = cFt.childNodes[1].childNodes[1];
+        var img3 = cFt.childNodes[1].childNodes[2];
         this.btnFechar = img3;
 
-        kp       = 0x4;
-        m        = kp & s;
-        kp     >>= 1;
-        img1.src = m ? "skins/img.php?file=Controles/jan_mini_on.png":"skins/img.php?file=Controles/jan_mini_off.png";
+        kp = 0x4;
+        m = kp & s;
+        kp >>= 1;
+        img1.src = m ? "skins/img.php?file=Controles/jan_mini_on.png" : "skins/img.php?file=Controles/jan_mini_off.png";
 
-        m        = kp & s;
-        kp     >>= 1;
-        img2.src = m ? "skins/img.php?file=Controles/jan_max_on.png":"skins/img.php?file=Controles/jan_max_off.png";
+        m = kp & s;
+        kp >>= 1;
+        img2.src = m ? "skins/img.php?file=Controles/jan_max_on.png" : "skins/img.php?file=Controles/jan_max_off.png";
 
-        m        = kp & s;
-        kp     >>= 1;
-        img3.src = m ? "skins/img.php?file=Controles/jan_fechar_on.png":"skins/img.php?file=Controles/jan_fechar_off.png";
+        m = kp & s;
+        kp >>= 1;
+        img3.src = m ? "skins/img.php?file=Controles/jan_fechar_on.png" : "skins/img.php?file=Controles/jan_fechar_off.png";
     }
 
 
-    function liberarJanBTMinimizar(liberar){
+    function liberarJanBTMinimizar(liberar) {
 
         var img1 = cFt.childNodes[1].childNodes[0];
-        if(liberar == true){
+        if (liberar == true) {
 
-            img1.src   = "skins/img.php?file=Controles/jan_mini_on.png";
+            img1.src = "skins/img.php?file=Controles/jan_mini_on.png";
             img1.title = "Minimizar";
-        }else{
+        } else {
 
-            img1.src   = "skins/img.php?file=Controles/jan_mini_off.png";
+            img1.src = "skins/img.php?file=Controles/jan_mini_off.png";
             img1.title = "Minimizar desabilitado";
         }
     }
 
     this.liberarJanBTMinimizar = liberarJanBTMinimizar;
 
-    function liberarJanBTMaximizar(liberar){
+    function liberarJanBTMaximizar(liberar) {
         var img2 = cFt.childNodes[1].childNodes[1];
-        if(liberar == true){
-            img2.src   = "skins/img.php?file=Controles/jan_max_on.png";
+        if (liberar == true) {
+            img2.src = "skins/img.php?file=Controles/jan_max_on.png";
             img2.title = "Maximizar";
-        }else{
-            img2.src   = "skins/img.php?file=Controles/jan_max_off.png";
+        } else {
+            img2.src = "skins/img.php?file=Controles/jan_max_off.png";
             img2.title = "Maximizar desabilitado";
         }
     }
 
 
-    function liberarJanBTFechar(liberar){
+    function liberarJanBTFechar(liberar) {
         var img3 = cFt.childNodes[1].childNodes[1];
-        if(liberar == true){
-            img3.src   = "skins/img.php?file=Controles/jan_fechar_on.png";
+        if (liberar == true) {
+            img3.src = "skins/img.php?file=Controles/jan_fechar_on.png";
             img3.title = "Fechar";
-        }else{
-            img3.src   = "skins/img.php?file=Controles/jan_fechar_off.png";
+        } else {
+            img3.src = "skins/img.php?file=Controles/jan_fechar_off.png";
             img3.title = "Fechar desabilitado";
-            img3.onclick = function() { return false };
+            img3.onclick = function () {
+                return false
+            };
         }
     }
-
 
 
     function setModal() {
         JANS.isModal = 1;
     }
+
     function setNoModal() {
         JANS.isModal = 0;
     }
 }//fim da classe janela
+
 
 var engaged = false;
 var offsetX = 0;
 var offsetY = 0;
 var Zindex = 5;
 
-function js_dragIt(obj,evt) {
+function js_dragIt(obj, evt) {
     evt = (evt) ? evt : (window.event) ? window.event : "";
-    if(engaged) {
+    if (engaged) {
         var jAn = eval(obj);
         if (evt.pageX) {
             jAn.setPosX(evt.pageX - offsetX + "px");
@@ -4224,12 +4719,13 @@ function js_dragIt(obj,evt) {
         return false;
     }
 }
-function js_engage(obj,evt) {
+
+function js_engage(obj, evt) {
 
     //evt = (evt) ? evt : (window.event) ? window.event : "SEM EVENTO";
     evt = evt || window.event || "SEM EVENTO";
 
-    if(JANS.isModal == 1) {
+    if (JANS.isModal == 1) {
         return false;
     }
 
@@ -4241,7 +4737,7 @@ function js_engage(obj,evt) {
 
     empilhaJanelas(obj.id.substr(3));
 
-    for(var i = 0;i < JANS.length - 1;i++) {
+    for (var i = 0; i < JANS.length - 1; i++) {
         JANS[i].guardaCorFundoTitulo = JANS[i].corFundoTitulo;
         JANS[i].setCorFundoTitulo("#A6A6A6");
     }
@@ -4265,61 +4761,65 @@ function js_engage(obj,evt) {
     }
     return false;
 }
-function js_release(obj,evt) {
+
+function js_release(obj, evt) {
     evt = (evt) ? evt : (window.event) ? window.event : "";
     engaged = false;
 }
+
 function empilhaJanelas(nomeJan) {
-    for(var i = 0;i < JANS.length;i++)
-        if(JANS[i].nomeJanela == nomeJan) {
+    for (var i = 0; i < JANS.length; i++)
+        if (JANS[i].nomeJanela == nomeJan) {
             var indice = i;
             aux = JANS[i];
             break;
         }
-    for(i = indice;i < JANS.length - 1;i++)
-        JANS[i] = JANS[i+1];
+    for (i = indice; i < JANS.length - 1; i++)
+        JANS[i] = JANS[i + 1];
     JANS[i] = aux;
-    if(typeof(pos)!='undefined' && pos<20){
+    if (typeof (pos) != 'undefined' && pos < 20) {
         pos = 20;
-    };
+    }
+    ;
 }
-function js_MaximizarJan(img,cod) {
-    if(JANS.isModal == 1)
+
+function js_MaximizarJan(img, cod) {
+    if (JANS.isModal == 1)
         return false;
     var str = new String(img.src);
-    if(str.indexOf("on") == -1)
+    if (str.indexOf("on") == -1)
         return false;
 }
 
-function js_MinimizarJan(img,JanElA) {
+function js_MinimizarJan(img, JanElA) {
     var janela = eval(JanElA);
-    if(JANS.isModal == 1)
+    if (JANS.isModal == 1)
         return false;
 
     var str = new String(img.src);
-    if(str.indexOf("on") == -1)
+    if (str.indexOf("on") == -1)
         return false;
     else {
-        if(janela.nomeJanela == JANS[JANS.length-1].nomeJanela) {
-            JANS[JANS.length-1].guardaCorFundoTitulo = JANS[JANS.length-1].corFundoTitulo;
-            JANS[JANS.length-1].setCorFundoTitulo("#A6A6A6");
-            var aux = JANS[JANS.length-1];
-            for(var i = JANS.length-1;i > 0;i--) {
+        if (janela.nomeJanela == JANS[JANS.length - 1].nomeJanela) {
+            JANS[JANS.length - 1].guardaCorFundoTitulo = JANS[JANS.length - 1].corFundoTitulo;
+            JANS[JANS.length - 1].setCorFundoTitulo("#A6A6A6");
+            var aux = JANS[JANS.length - 1];
+            for (var i = JANS.length - 1; i > 0; i--) {
                 JANS[i] = JANS[i - 1];
             }
             JANS[0] = aux;
-            JANS[JANS.length-1].setCorFundoTitulo("#326094");
+            JANS[JANS.length - 1].setCorFundoTitulo("#326094");
 
         }
         str = new String(img.src);
-        if(str.indexOf("max") == -1) {
-            JanPosX = (typeof(JanPosX)=="undefined" || JanPosX=="")?1:JanPosX;
-            JanPosY = (typeof(JanPosY)=="undefined" || JanPosY=="")?400:JanPosY;
-            if(JanPosX >= 600) {
+        if (str.indexOf("max") == -1) {
+            JanPosX = (typeof (JanPosX) == "undefined" || JanPosX == "") ? 1 : JanPosX;
+            JanPosY = (typeof (JanPosY) == "undefined" || JanPosY == "") ? 400 : JanPosY;
+            if (JanPosX >= 600) {
                 JanPosX = 1;
                 JanPosY = JanPosY - 27;
             }
-            if(typeof(janela.px) == "undefined" && typeof(janela.py) == "undefined") {
+            if (typeof (janela.px) == "undefined" && typeof (janela.py) == "undefined") {
                 janela.px = JanPosX;
                 janela.py = JanPosY;
                 janela.Wi = janela.moldura.style.width;
@@ -4340,33 +4840,33 @@ function js_MinimizarJan(img,JanElA) {
             janela.setPosX(janela.Pl);
             janela.setPosY(janela.Pt);
             janela.focus();
-            SetCookie("modulo",janela.nomeJanela);
+            SetCookie("modulo", janela.nomeJanela);
 
             var aux = JANS[janela.nomeJanela];
             var j = 0;
-            for(var i = 0;i < JANS.length;i++) {
-                if(aux.nomeJanela != JANS[i].nomeJanela)
+            for (var i = 0; i < JANS.length; i++) {
+                if (aux.nomeJanela != JANS[i].nomeJanela)
                     JANS[j++] = JANS[i];
             }
-            JANS[JANS.length-2].guardaCorFundoTitulo = JANS[JANS.length-2].corFundoTitulo;
-            JANS[JANS.length-2].setCorFundoTitulo("#A6A6A6");
-            JANS[JANS.length-1] = aux;
-            JANS[JANS.length-1].setCorFundoTitulo("#326094");
+            JANS[JANS.length - 2].guardaCorFundoTitulo = JANS[JANS.length - 2].corFundoTitulo;
+            JANS[JANS.length - 2].setCorFundoTitulo("#A6A6A6");
+            JANS[JANS.length - 1] = aux;
+            JANS[JANS.length - 1].setCorFundoTitulo("#326094");
         }
     }
 }
 
-function js_FecharJan(iMgsSs,JanElAaX) {
+function js_FecharJan(iMgsSs, JanElAaX) {
     var StRrINNgs = new String(iMgsSs.src);
-    if(StRrINNgs.indexOf("on") == -1)
+    if (StRrINNgs.indexOf("on") == -1)
         return false;
     else {
-        if(JANS.isModal == 1) {
-            if(JANS[JANS.length-1].nomeJanela != this.nomeJanela)
+        if (JANS.isModal == 1) {
+            if (JANS[JANS.length - 1].nomeJanela != this.nomeJanela)
                 return false;
         }
         var jAaneEllAa = eval(JanElAaX);
-        if(jAaneEllAa.onJanHide != null) {
+        if (jAaneEllAa.onJanHide != null) {
             eval(jAaneEllAa.onJanHide);
             return false;
         }
@@ -4375,55 +4875,59 @@ function js_FecharJan(iMgsSs,JanElAaX) {
     }
 }
 
-function criaJanela(nomeJan,arquivo,cabecalho,visivel,topo,esquerda,altura,largura) {
-
-    var camada  = document.createElement("DIV");
+function criaJanela(nomeJan, arquivo, cabecalho, visivel, topo, esquerda, altura, largura) {
+    const urlEcidade = CurrentWindow.corpo.Desktop.requestPath;
+    var camada = document.createElement("DIV");
     var tabela1 = document.createElement("TABLE");
     var tabela2 = document.createElement("TABLE");
-    var quadro  = document.createElement("IFRAME");
-    var img1    = document.createElement("IMG");
-    this.img3   = document.createElement("IMG");
+    var quadro = document.createElement("IFRAME");
+    var img1 = document.createElement("IMG");
+    this.img3 = document.createElement("IMG");
 
-    img3.setAttribute("src","skins/img.php?file=Controles/jan_fechar_on.png");
-    img3.setAttribute("title","Fechar");
-    img3.setAttribute("id","fechar"+nomeJan);
+    img3.setAttribute("src", urlEcidade + "skins/img.php?file=Controles/jan_fechar_on.png");
+    img3.setAttribute("title", "Fechar");
+    img3.setAttribute("id", "fechar" + nomeJan);
     img3.setAttribute("style", "margin-left: 2px; margin-right: 2px;");
-    img3.setAttribute("border","0");
+    img3.setAttribute("border", "0");
 
-    img3.onclick = function() { js_FecharJan(this,nomeJan); };
+    img3.onclick = function () {
+        js_FecharJan(this, nomeJan);
+    };
     this.btnFechar = img3;
 
-    img1.setAttribute("src","skins/img.php?file=Controles/jan_mini_on.png");
-    img1.setAttribute("title","Minimizar");
-    img1.setAttribute("border","0");
-    img1.setAttribute("id","minimizar"+nomeJan);
+    img1.setAttribute("src", urlEcidade + "skins/img.php?file=Controles/jan_mini_on.png");
+    img1.setAttribute("title", "Minimizar");
+    img1.setAttribute("border", "0");
+    img1.setAttribute("id", "minimizar" + nomeJan);
 
-    img1.onclick = function() { js_MinimizarJan(this,nomeJan); };
+    img1.onclick = function () {
+        js_MinimizarJan(this, nomeJan);
+    };
 
-    camada.setAttribute("id","Jan" + nomeJan);
-    camada.setAttribute("class","DBJanelaIframe");
-    camada.setAttribute("framename", "IF"+nomeJan);
-    tabela1.setAttribute("cellSpacing",0);
-    tabela1.setAttribute("cellPadding",2);
-    tabela1.setAttribute("border",0);
-    tabela1.setAttribute("width","100%");
-    tabela1.setAttribute("height","100%");
+    camada.setAttribute("id", "Jan" + nomeJan);
+    camada.setAttribute("class", "DBJanelaIframe");
+    camada.setAttribute("framename", "IF" + nomeJan);
+    tabela1.setAttribute("cellSpacing", 0);
+    tabela1.setAttribute("cellPadding", 2);
+    tabela1.setAttribute("border", 0);
+    tabela1.setAttribute("width", "100%");
+    tabela1.setAttribute("height", "100%");
 
     tabela1.style.borderColor = "#f0f0f0 #606060 #404040 #d0d0d0";
     tabela1.style.borderStyle = "solid";
     tabela1.style.borderWidth = "2px";
 
-    tabela2.setAttribute("cellSpacing",0);
-    tabela2.setAttribute("cellPadding",0);
-    tabela2.setAttribute("border",0);
-    tabela2.setAttribute("width","100%");
+    tabela2.setAttribute("cellSpacing", 0);
+    tabela2.setAttribute("cellPadding", 0);
+    tabela2.setAttribute("border", 0);
+    tabela2.setAttribute("width", "100%");
 
-    quadro.setAttribute("frameBorder","1");
-    quadro.setAttribute("height","100%");
-    quadro.setAttribute("width","100%");
-    quadro.setAttribute("id","IF" + nomeJan);
-    quadro.setAttribute("name","IF" + nomeJan);
-    quadro.setAttribute("scrolling","auto");
+    quadro.setAttribute("frameBorder", "1");
+    quadro.setAttribute("height", "100%");
+    quadro.setAttribute("width", "100%");
+    quadro.setAttribute("id", "IF" + nomeJan);
+    quadro.setAttribute("name", "IF" + nomeJan);
+    quadro.setAttribute("scrolling", "auto");
 
     var tab1Linha1 = tabela1.insertRow(0);
     var tab1Linha2 = tabela1.insertRow(1);
@@ -4434,41 +4938,49 @@ function criaJanela(nomeJan,arquivo,cabecalho,visivel,topo,esquerda,altura,largu
     var tab2Coluna1 = tab2Linha1.insertCell(0);
     var tab2Coluna2 = tab2Linha1.insertCell(1);
 
-    tab2Linha1.setAttribute("id","CF" + nomeJan);
+    tab2Linha1.setAttribute("id", "CF" + nomeJan);
     tab2Linha1.style.backgroundColor = '#326094';
     tab1Linha1.style.backgroundColor = '#c0c0c0';
     tab2Coluna1.style.whiteSpace = "nowrap";
-    tab2Coluna1.onmousedown = function(event) { js_engage(document.getElementById('Jan' + nomeJan),event);};
-    tab2Coluna1.onmouseup = function(event) { js_release(document.getElementById('Jan' + nomeJan),event);};
-    tab2Coluna1.onmousemove = function(event) { js_dragIt(nomeJan,event);};
-    tab2Coluna1.onmouseout = function(event) { js_release(document.getElementById('Jan' + nomeJan),event);};
-    tab2Coluna1.setAttribute("width","80%");
+    tab2Coluna1.onmousedown = function (event) {
+        js_engage(document.getElementById('Jan' + nomeJan), event);
+    };
+    tab2Coluna1.onmouseup = function (event) {
+        js_release(document.getElementById('Jan' + nomeJan), event);
+    };
+    tab2Coluna1.onmousemove = function (event) {
+        js_dragIt(nomeJan, event);
+    };
+    tab2Coluna1.onmouseout = function (event) {
+        js_release(document.getElementById('Jan' + nomeJan), event);
+    };
+    tab2Coluna1.setAttribute("width", "80%");
 
     tab2Coluna1.style.fontWeight = 'bold';
     tab2Coluna1.style.color = 'white';
-    tab2Coluna1.className  = 'DBJanelaIframeTitulo';
+    tab2Coluna1.className = 'DBJanelaIframeTitulo';
     tab2Coluna1.style.fontFamily = 'Arial, Helvetica, sans-serif';
     tab2Coluna1.style.fontSize = '11px';
-    tab2Coluna1.innerHTML =  (typeof(cabecalho)=="undefined" || cabecalho=="")?'&nbsp; DBSeller Informática Ltda':('&nbsp;' + cabecalho);
+    tab2Coluna1.innerHTML = (typeof (cabecalho) == "undefined" || cabecalho == "") ? '&nbsp; DBSeller Informática Ltda' : ('&nbsp;' + cabecalho);
 
-    tab2Coluna1.setAttribute("nowrap","1");
-    tab2Coluna2.setAttribute("nowrap","1");
-    tab2Coluna2.setAttribute("width","20%");
-    tab2Coluna2.setAttribute("align","right");
-    tab2Coluna2.setAttribute("valign","middle");
+    tab2Coluna1.setAttribute("nowrap", "1");
+    tab2Coluna2.setAttribute("nowrap", "1");
+    tab2Coluna2.setAttribute("width", "20%");
+    tab2Coluna2.setAttribute("align", "right");
+    tab2Coluna2.setAttribute("valign", "middle");
 
-    tab1Coluna2.setAttribute("width","100%");
-    tab1Coluna2.setAttribute("height","100%");
-    camada.style.backgroundColor      = "#c0c0c0";
+    tab1Coluna2.setAttribute("width", "100%");
+    tab1Coluna2.setAttribute("height", "100%");
+    camada.style.backgroundColor = "#c0c0c0";
     camada.style.layerBackgroundColor = "#c0c0c0";
-    camada.style.border               = "0px outset #666666";
-    camada.style.position             = "absolute";
-    camada.style.left                 = esquerda;
-    camada.style.top                  = topo;
-    camada.style.zIndex               = "100";
-    camada.style.display              = 'none';
-    camada.style.width                = altura;
-    camada.style.height               = largura;
+    camada.style.border = "0px outset #666666";
+    camada.style.position = "absolute";
+    camada.style.left = esquerda;
+    camada.style.top = topo;
+    camada.style.zIndex = "100";
+    camada.style.display = 'none';
+    camada.style.width = altura;
+    camada.style.height = largura;
     tab2Coluna2.appendChild(img1);
     tab2Coluna2.appendChild(img3);
     tab1Coluna1.appendChild(tabela2);
@@ -4477,6 +4989,9 @@ function criaJanela(nomeJan,arquivo,cabecalho,visivel,topo,esquerda,altura,largu
     document.body.appendChild(camada);
 
     eval(nomeJan + " = new janela(document.getElementById('Jan" + nomeJan + "'),document.getElementById('CF" + nomeJan + "'),IF" + nomeJan + ")");
+
+    CurrentWindow.createLoading(document.getElementById('IF' + nomeJan), tab1Linha2);
+
     document.getElementById('IF' + nomeJan).src = arquivo;
 
     eval(nomeJan + ".focus()");
@@ -4488,36 +5003,6 @@ function criaJanela(nomeJan,arquivo,cabecalho,visivel,topo,esquerda,altura,largu
  * FIM DAS FUNÇÔES PARA JANELA
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-
-    if (!this['Ajax']) {
-        return;
-    }
-
-    var oParametros = {
-        screen: {
-            width: CurrentWindow.screen.width,
-            height: CurrentWindow.screen.height,
-            availWidth: CurrentWindow.screen.availWidth,
-            availHeight: CurrentWindow.screen.availHeight
-        },
-        userAgent: CurrentWindow.navigator.userAgent,
-        exec: "coletaInfoCliente"
-    }
-
-    if (CurrentWindow.performance && CurrentWindow.performance.timing) {
-        oParametros.timing = CurrentWindow.performance.timing;
-    }
-
-    var oRequisicao = {
-        method       : 'POST',
-        asynchronous : true,
-        parameters   : 'json='+JSON.stringify(oParametros)
-    }
-
-    new Ajax.Request("con1_usuariosistema.RPC.php", oRequisicao);
-
-});
 
 /**
  * Carrega a resposta da url informada por parâmetro no respectivo elemento.
@@ -4534,7 +5019,8 @@ document.addEventListener('DOMContentLoaded', function() {
 Element.prototype.load = function (sUrl, fCallback) {
 
     "use strict";
-    fCallback = fCallback || function(){};
+    fCallback = fCallback || function () {
+    };
     var oElemento = this;
 
     var oRequisicao = new XMLHttpRequest();
@@ -4543,7 +5029,7 @@ Element.prototype.load = function (sUrl, fCallback) {
     oRequisicao.overrideMimeType("application/x-www-form-urlencoded; charset=ISO-8859-1");
     oRequisicao.send(null);
 
-    if ( oRequisicao.status >= 400 ) {
+    if (oRequisicao.status >= 400) {
 
         console.error('Não foi possível carregar o conteúdo solicitado.');
 
@@ -4554,7 +5040,7 @@ Element.prototype.load = function (sUrl, fCallback) {
         return false;
     }
 
-    var sHtml                = oRequisicao.responseText;
+    var sHtml = oRequisicao.responseText;
     oElemento.innerHTML += sHtml;
 
     if (fCallback !== null) {
@@ -4565,26 +5051,26 @@ Element.prototype.load = function (sUrl, fCallback) {
 }
 
 var loaded = false;
-window.onload= function () {
+window.onload = function () {
     loaded = true;
 }
 
-function tratamentoMascaraTelefone( mValor,  isOnBlur ) {
+function tratamentoMascaraTelefone(mValor, isOnBlur) {
 
-    if ( mValor != '' ) {
+    if (mValor != '') {
 
-        mValor = mValor.replace(/\D/g,"");
+        mValor = mValor.replace(/\D/g, "");
 
-        if( isOnBlur ) {
+        if (isOnBlur) {
 
-            if ( mValor.length < 10 ) {
+            if (mValor.length < 10) {
 
-                alert("O formato do telefone deve iniciar com o DDD seguido de 8 ou 9 digitos. " )
+                alert("O formato do telefone deve iniciar com o DDD seguido de 8 ou 9 digitos. ")
                 return mValor;
             }
 
-            mValor = mValor.replace(/^(\d{2})(\d)/g,"($1) $2");
-            mValor = mValor.replace(/(\d)(\d{4})$/,"$1-$2");
+            mValor = mValor.replace(/^(\d{2})(\d)/g, "($1) $2");
+            mValor = mValor.replace(/(\d)(\d{4})$/, "$1-$2");
         }
     }
 
@@ -4596,19 +5082,19 @@ function tratamentoMascaraTelefone( mValor,  isOnBlur ) {
  * Formato: (xx)xxxx-xxxx | (xx)xxxxx-xxxx
  * @param oElemento - Elemento HTML que contem o telefone a ser digitado
  */
-function mascaraTelefone( oElemento) {
+function mascaraTelefone(oElemento) {
 
-    oElemento.onfocus = function() {
+    oElemento.onfocus = function () {
 
         oElemento.maxLength = 11;
-        var valor  = this.value;
-        this.value = tratamentoMascaraTelefone( this.value, false );
+        var valor = this.value;
+        this.value = tratamentoMascaraTelefone(this.value, false);
     }
 
     oElemento.onkeypress = function (evt) {
 
         oElemento.maxLength = 11;
-        var code  = (window.event)? window.event.keyCode : evt.which;
+        var code = (window.event) ? window.event.keyCode : evt.which;
         var valor = this.value;
 
         /**
@@ -4617,16 +5103,16 @@ function mascaraTelefone( oElemento) {
          *
          * code == 8 : BackSpace
          */
-        if((code > 57) || (code < 48 && code != 8 && code != 0 ) )  {
+        if ((code > 57) || (code < 48 && code != 8 && code != 0)) {
             return false;
         }
-        this.value = tratamentoMascaraTelefone( this.value, false );
+        this.value = tratamentoMascaraTelefone(this.value, false);
     };
 
-    oElemento.onblur = function() {
+    oElemento.onblur = function () {
 
         oElemento.maxLength = 15;
-        this.value = tratamentoMascaraTelefone( this.value, true );
+        this.value = tratamentoMascaraTelefone(this.value, true);
     };
 }
 
@@ -4646,20 +5132,20 @@ function validaMonetario(obj, e) {
         return false;
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
 
         mValor = obj.value;
-        mValor = mValor.replace(/\D/g,"");
-        mValor = mValor.replace(/(\d)(\d{2})$/,"$1.$2");
+        mValor = mValor.replace(/\D/g, "");
+        mValor = mValor.replace(/(\d)(\d{2})$/, "$1.$2");
         obj.value = mValor;
         return true;
     }, 1);
 
     var regDecimal = /^(|[0-9]+)(|(\.|,)(|[0-9]+))$/;
 
-    if ( !regDecimal.test(obj.value) ) {
+    if (!regDecimal.test(obj.value)) {
         obj.disabled = true;
-        alert("Este campo deve ser preenchido somente com números decimais!" );
+        alert("Este campo deve ser preenchido somente com números decimais!");
         obj.disabled = false;
         obj.value = '';
         obj.focus();
@@ -4716,16 +5202,15 @@ function bloquearBotoesTela(bloquear = true, naoBloquear = []) {
         }
  */
 
-function js_verificaCampoObrigatorio(aExcecoes = [])
-{
+function js_verificaCampoObrigatorio(aExcecoes = []) {
     var obrigatorio = document.querySelectorAll('[isMandatory="true"]');
     var erro = false;
 
-    obrigatorio.forEach(function(elemento){
+    obrigatorio.forEach(function (elemento) {
         if (((aExcecoes.length == 0) || !aExcecoes.includes(elemento.name)) && elemento.value == "" && !erro) {
             var campo = elemento.getAttribute("labelValidacao");
 
-            alert("Campo "+campo+" não preenchido.");
+            alert("Campo " + campo + " não preenchido.");
 
             erro = true;
         }
@@ -4740,58 +5225,58 @@ function js_verificaCampoObrigatorio(aExcecoes = [])
  */
 
 function js_adicionaMascaraMoeda(objTextBox, SeparadorMilesimo, SeparadorDecimal, e, fnCallBack = "") {
-  var sep = 0;
-  var key = '';
-  var i = j = 0;
-  var len = len2 = 0;
-  var strCheck = '0123456789';
-  var aux = aux2 = '';
-  var whichCode = (window.Event) ? e.which : e.keyCode;
-  if (whichCode == 13) return true;
-  key = String.fromCharCode(whichCode); // Valor para o código da Chave
-  if (strCheck.indexOf(key) == -1) return false; // Chave inválida
-  len = objTextBox.value.length;
-  for (i = 0; i < len; i++)
-      if ((objTextBox.value.charAt(i) != '0') && (objTextBox.value.charAt(i) != SeparadorDecimal)) break;
-  aux = '';
-  for (; i < len; i++)
-      if (strCheck.indexOf(objTextBox.value.charAt(i)) != -1) aux += objTextBox.value.charAt(i);
-  aux += key;
-  len = aux.length;
-  if (len == 0) objTextBox.value = '';
-  if (len == 1) objTextBox.value = '0' + SeparadorDecimal + '0' + aux;
-  if (len == 2) objTextBox.value = '0' + SeparadorDecimal + aux;
-  if (len > 2) {
-      aux2 = '';
-      for (j = 0, i = len - 3; i >= 0; i--) {
-          if (j == 3) {
-              aux2 += SeparadorMilesimo;
-              j = 0;
-          }
-          aux2 += aux.charAt(i);
-          j++;
-      }
-      objTextBox.value = '';
-      len2 = aux2.length;
-      for (i = len2 - 1; i >= 0; i--)
-          objTextBox.value += aux2.charAt(i);
-      objTextBox.value += SeparadorDecimal + aux.substr(len - 2, len);
-      // console.log(objTextBox.value);
-  }
+    var sep = 0;
+    var key = '';
+    var i = j = 0;
+    var len = len2 = 0;
+    var strCheck = '0123456789';
+    var aux = aux2 = '';
+    var whichCode = (window.Event) ? e.which : e.keyCode;
+    if (whichCode == 13) return true;
+    key = String.fromCharCode(whichCode); // Valor para o código da Chave
+    if (strCheck.indexOf(key) == -1) return false; // Chave inválida
+    len = objTextBox.value.length;
+    for (i = 0; i < len; i++)
+        if ((objTextBox.value.charAt(i) != '0') && (objTextBox.value.charAt(i) != SeparadorDecimal)) break;
+    aux = '';
+    for (; i < len; i++)
+        if (strCheck.indexOf(objTextBox.value.charAt(i)) != -1) aux += objTextBox.value.charAt(i);
+    aux += key;
+    len = aux.length;
+    if (len == 0) objTextBox.value = '';
+    if (len == 1) objTextBox.value = '0' + SeparadorDecimal + '0' + aux;
+    if (len == 2) objTextBox.value = '0' + SeparadorDecimal + aux;
+    if (len > 2) {
+        aux2 = '';
+        for (j = 0, i = len - 3; i >= 0; i--) {
+            if (j == 3) {
+                aux2 += SeparadorMilesimo;
+                j = 0;
+            }
+            aux2 += aux.charAt(i);
+            j++;
+        }
+        objTextBox.value = '';
+        len2 = aux2.length;
+        for (i = len2 - 1; i >= 0; i--)
+            objTextBox.value += aux2.charAt(i);
+        objTextBox.value += SeparadorDecimal + aux.substr(len - 2, len);
+        // console.log(objTextBox.value);
+    }
 
-  if (fnCallBack != "") {
-      window[fnCallBack]();
-  }
+    if (fnCallBack != "") {
+        window[fnCallBack]();
+    }
 
-  return false;
+    return false;
 }
 
-function uniqid(){
+function uniqid() {
     var dt = new Date().getTime();
-    var uuid = 'xxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    var uuid = 'xxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
 }
@@ -4802,17 +5287,16 @@ function uniqid(){
  * <input type="text" onkeyup="jsFormataMoeda(this, (nValor) => {console.log(nValor);})">
  * @author Natanael Giacomini (natanael.giacomini@dbseller.com.br)
  */
-function jsFormataMoeda(oCampo, fnCallback = null)
-{
+function jsFormataMoeda(oCampo, fnCallback = null) {
     const iValor = oCampo.value;
     var nNovoValor = 0;
 
-    nNovoValor = iValor.replace(/\D/g,""); // permite digitar apenas numero
-    nNovoValor = nNovoValor.replace(/(\d{1})(\d{14})$/,"$1.$2"); // coloca ponto antes dos ultimos 14 digitos
-    nNovoValor = nNovoValor.replace(/(\d{1})(\d{11})$/,"$1.$2"); // coloca ponto antes dos ultimos 11 digitos
-    nNovoValor = nNovoValor.replace(/(\d{1})(\d{8})$/,"$1.$2"); // coloca ponto antes dos ultimos 8 digitos
-    nNovoValor = nNovoValor.replace(/(\d{1})(\d{5})$/,"$1.$2"); // coloca ponto antes dos ultimos 5 digitos
-    nNovoValor = nNovoValor.replace(/(\d{1})(\d{1,2})$/,"$1,$2"); // coloca virgula antes dos ultimos 2 digitos
+    nNovoValor = iValor.replace(/\D/g, ""); // permite digitar apenas numero
+    nNovoValor = nNovoValor.replace(/(\d{1})(\d{14})$/, "$1.$2"); // coloca ponto antes dos ultimos 14 digitos
+    nNovoValor = nNovoValor.replace(/(\d{1})(\d{11})$/, "$1.$2"); // coloca ponto antes dos ultimos 11 digitos
+    nNovoValor = nNovoValor.replace(/(\d{1})(\d{8})$/, "$1.$2"); // coloca ponto antes dos ultimos 8 digitos
+    nNovoValor = nNovoValor.replace(/(\d{1})(\d{5})$/, "$1.$2"); // coloca ponto antes dos ultimos 5 digitos
+    nNovoValor = nNovoValor.replace(/(\d{1})(\d{1,2})$/, "$1,$2"); // coloca virgula antes dos ultimos 2 digitos
 
     oCampo.value = nNovoValor;
 

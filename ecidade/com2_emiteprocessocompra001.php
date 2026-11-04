@@ -54,10 +54,10 @@ $clrotulo->label("pc80_codproc");
   		<table>
         <tr>
           <td style="font-weight: bolder;" >
-            <? db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
+            <?php db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
           </td>
           <td>
-            <?
+            <?php
               db_input("pc80_codproc", 10, $Ipc80_codproc, 
                        true, 
                        "text", 
@@ -68,10 +68,10 @@ $clrotulo->label("pc80_codproc");
             ?>
           </td>
           <td style="font-weight: bolder;">
-            <? db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?> 
+            <?php db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?> 
           </td>
           <td>
-            <?
+            <?php
               db_input("pc80_codproc_fim", 10, $Ipc80_codproc, 
                        true, 
                        "text", 

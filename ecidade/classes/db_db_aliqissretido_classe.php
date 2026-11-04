@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_db_aliqissretido {
                  w14_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_db_aliqissretido() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_aliqissretido"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_db_aliqissretido {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w14_codigo = ($this->w14_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["w14_codigo"]:$this->w14_codigo);
        $this->w14_valor = ($this->w14_valor == ""?@$GLOBALS["HTTP_POST_VARS"]["w14_valor"]:$this->w14_valor);
@@ -74,7 +74,7 @@ class cl_db_aliqissretido {
      }
    }
    // funcao para inclusao
-   function incluir ($w14_codigo){ 
+   public function incluir ($w14_codigo){ 
       $this->atualizacampos();
      if($this->w14_valor == null ){ 
        $this->erro_sql = " Campo Valor nao Informado.";
@@ -161,7 +161,7 @@ class cl_db_aliqissretido {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($w14_codigo=null) { 
+   public function alterar ($w14_codigo=null) { 
       $this->atualizacampos();
      $sql = " update db_aliqissretido set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_db_aliqissretido {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($w14_codigo=null,$dbwhere=null) { 
+   public function excluir ($w14_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($w14_codigo));
      }else{ 
@@ -303,7 +303,7 @@ class cl_db_aliqissretido {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

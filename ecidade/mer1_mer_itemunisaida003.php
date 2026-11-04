@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if (isset($excluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Exclusão Unidade de Saída</b></legend>
-	<? 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
+	<?php 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -74,7 +74,7 @@ if (isset($excluir)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
 	
   if ($clmer_itemunisaida->erro_status=="0") {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
               <?=$Lo149_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o149_sequencial",10,$Io149_sequencial,true,"text",4,"","chave_o149_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
               <?=$Lo149_iniciativa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o149_iniciativa",10,$Io149_iniciativa,true,"text",4,"","chave_o149_iniciativa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orciniciativavinculoprojativ.php")==true){
@@ -122,12 +122,12 @@ $clorciniciativavinculoprojativ->rotulo->label("o149_iniciativa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -56,13 +56,13 @@ class cl_concarpeculiar {
                  c58_estrutural = varchar(100) = Código
                  ";
    //funcao construtor da classe
-   function cl_concarpeculiar() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concarpeculiar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_concarpeculiar {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c58_sequencial = ($this->c58_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c58_sequencial"]:$this->c58_sequencial);
        $this->c58_descr = ($this->c58_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["c58_descr"]:$this->c58_descr);
@@ -83,7 +83,7 @@ class cl_concarpeculiar {
      }
    }
    // funcao para inclusao
-   function incluir ($c58_sequencial){
+   public function incluir ($c58_sequencial){
       $this->atualizacampos();
      if($this->c58_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -183,7 +183,7 @@ class cl_concarpeculiar {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c58_sequencial=null) {
+   public function alterar ($c58_sequencial=null) {
       $this->atualizacampos();
      $sql = " update concarpeculiar set ";
      $virgula = "";
@@ -308,7 +308,7 @@ class cl_concarpeculiar {
      }
    }
    // funcao para exclusao
-   function excluir ($c58_sequencial=null,$dbwhere=null) {
+   public function excluir ($c58_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c58_sequencial));
      }else{
@@ -373,7 +373,7 @@ class cl_concarpeculiar {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -396,7 +396,7 @@ class cl_concarpeculiar {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -431,7 +431,7 @@ class cl_concarpeculiar {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -473,7 +473,7 @@ class cl_concarpeculiar {
    * @param string $dbwhere
    * @return string
    */
-  function buscaDadosCaracteristica( $c58_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "" ){
+  public function buscaDadosCaracteristica( $c58_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "" ){
 
      $sql = "select ";
      if($campos != "*" ){

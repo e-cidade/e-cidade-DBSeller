@@ -52,13 +52,13 @@ $clrotulo->label('z01_nome');
           <table>
             <tr>
               <td nowrap title="<?php echo $Tq02_inscr; ?>">
-              <?
+              <?php
               db_input('alterar',100,0,true,'hidden',1);
               db_ancora($Lq02_inscr,' js_inscr(true); ',1);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
               db_input('z01_nome',40,0,true,'text',3,"");
               ?>
@@ -69,7 +69,7 @@ $clrotulo->label('z01_nome');
       <input name="entrar" type="button" id="pesquisa" value="Pesquisar" onclick="js_checa()" disabled="disabled">
     </form>
   </div>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
@@ -134,7 +134,7 @@ $clrotulo->label('z01_nome');
     }
   }
 </script>
-<?
+<?php
   if(isset($invalido)){
     db_msgbox("Inscrição inválida.");
   }

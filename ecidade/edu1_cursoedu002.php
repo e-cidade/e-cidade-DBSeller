@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,7 +94,7 @@ if (isset($alterar)) {
    </tr>
    <tr>
     <td valign="top" align="center">
-     <?
+     <?php
        $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo, 
                         "ed71_i_escola"=>@$ed71_i_escola, 
                         "ed18_c_nome"=>@$ed18_c_nome, 
@@ -124,14 +124,14 @@ if (isset($alterar)) {
     </td>
    </tr>
   </table>
-   <?
+   <?php
      db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
              db_getsession("DB_anousu"), db_getsession("DB_instit")
             );
    ?>
  </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 	
   if ($clcurso->erro_status == "0") {

@@ -131,4 +131,42 @@ class Rescisao extends \BaseClassRepository
 
         return self::make($dadosRescisao);
     }
+
+    /**
+     * @param Servidor $servidor
+     * @return RescisaoModel|null
+     * @throws DBException
+     * @throws \BusinessException
+     */
+    public function getRescisaoPorServidorEsocial(Servidor $servidor)
+    {
+        $rescisaoModel = self::getRescisaoByServidor($servidor);
+        if ($rescisaoModel instanceof RescisaoModel) {
+            return $rescisaoModel;
+        }
+
+        $where = array(
+          'rh02_anousu = ' . $servidor->getAnoCompetencia(),
+          'rh02_mesusu = ' . $servidor->getMesCompetencia(),
+          'rh02_instit = ' . $servidor->getInstituicao()->getCodigo(),
+          'rh02_regist = ' . $servidor->getMatricula()
+        );
+
+        $dao = new cl_rhpesrescisao();
+        $sql = $dao->sql_query_rescisao_esocial(null, '*', null, implode(" and ", $where));
+        $rs = db_query($sql);
+
+        if (!$rs) {
+            throw new DBException('Erro ao buscar a rescisão do servidor ' .  $servidor->getMatricula());
+        }
+
+        if (pg_num_rows($rs) == 0) {
+            return null;
+        }
+
+        $dadosRescisao = db_utils::fieldsMemory($rs, 0);
+        $dadosRescisao->competencia = new DBCompetencia($servidor->getAnoCompetencia(), $servidor->getMesCompetencia());
+
+        return self::make($dadosRescisao);
+    }
 }

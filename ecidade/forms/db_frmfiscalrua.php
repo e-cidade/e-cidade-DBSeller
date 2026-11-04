@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("j14_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty33_codnoti?>">
-       <?
+       <?php
        db_ancora(@$Ly33_codnoti,"js_pesquisay33_codnoti(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y33_codnoti',20,$Iy33_codnoti,true,'text',$db_opcao," onchange='js_pesquisay33_codnoti(false);'")
 ?>
-       <?
+       <?php
 db_input('y30_data',10,$Iy30_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty33_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ly33_codigo,"js_pesquisay33_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y33_codigo',7,$Iy33_codigo,true,'text',$db_opcao," onchange='js_pesquisay33_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Ly33_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('y33_numero',10,$Iy33_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('y33_numero',10,$Iy33_numero,true,'text',$db_opcao,"")
        <?=@$Ly33_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('y33_compl',20,$Iy33_compl,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_fiscalrua.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

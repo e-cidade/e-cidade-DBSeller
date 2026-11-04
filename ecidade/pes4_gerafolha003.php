@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -82,7 +82,6 @@ define('TIPO_CALCULO_PARCIAL', 1);
    global $cfpess;
    global $carregarubricas;
    global $chamada_geral;
-   global $quais_diversos;
    global $db_debug;
    global $db21_codcli;
    global $r110_regisi;
@@ -107,8 +106,6 @@ define('TIPO_CALCULO_PARCIAL', 1);
    } else {
      $db_debug = false;
    }
-
-   $pcount = func_get_args();
 
    if ($opcao_gml == 'g') {
      $opcao_tipo = 2; // tipo geral
@@ -138,7 +135,7 @@ define('TIPO_CALCULO_PARCIAL', 1);
 
    }
 
- if (count($pcount) == 0) {
+ if (func_num_args() == 0) {
 
    LogCalculoFolha::write("Executando quando parâmetros não foram passados.");
 
@@ -753,7 +750,7 @@ define('TIPO_CALCULO_PARCIAL', 1);
               $rubrica_desconto = db_substr( trim($cfpess[0]["r11_desliq"]), $ix+1, 4 ) ;
 
               $calcula_valor = "calcula_valor_".$rubrica_desconto ;
-              global $$calcula_valor;
+              global ${$calcula_valor};
               $$calcula_valor = false;
 
               $rubricas_in .= "'".$rubrica_desconto."',";

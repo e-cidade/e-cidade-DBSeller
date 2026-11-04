@@ -14,4 +14,5 @@
   ,"itens_salvo" : "Item(ns) vinculado(s) ao fornecedor com sucesso."
   ,"valida_exclusao_profissional" : "Fornecedor não pode ser removido pois já possui acordo ou a Licitação possui autorização de empenho."
   ,"erro_alterar_licitacao"       : "Não foi possível atualizar a licitação."
+  ,"erro_excluir_fornecedor_habilitado" : "Erro ao excluir o fornecedor, verifique a habilitação de fornecedores."
 }

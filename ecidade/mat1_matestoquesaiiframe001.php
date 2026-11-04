@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -56,23 +56,23 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_valores = split(",",$valores);
+  $arr_valores =explode(",",$valores);
   $sqlerro     = false;
   for($i=0;$i<count($arr_valores);$i++){
     $nomecampo    = $arr_valores[$i];
-    $separacampo  = split("_",$arr_valores[$i]);
+    $separacampo  =explode("_",$arr_valores[$i]);
     $m70_codigo   = $separacampo[1];
     $m70_coddepto = $separacampo[2];
     $m80_codtipo  = 5;      // matestoquetipo = 4 - Saída manual
-    
+
     $m80_login    = db_getsession("DB_id_usuario");
     $m80_data     = date("Y-m-d",db_getsession("DB_datausu"));
     $m80_coddepto = db_getsession("DB_coddepto");
     $m80_hora     = date('H:i:s');
-    
+
     $result_matestoque  = $clmatestoqueitem->sql_record($clmatestoqueitem->sql_query(null,"distinct m70_codigo,m70_codmatmater,m70_quant,m70_valor,m70_coddepto,m71_codlanc,m71_valor,m71_quant,m71_quantatend,m71_data as dataimprime,m71_valor as valorimprime","m71_data desc","m70_codigo=$m70_codigo and m70_coddepto=$m70_coddepto and m71_quant>m71_quantatend"));
     $numrows_matestoque = $clmatestoqueitem->numrows;
-    
+
     $arr_oqueaindafalta = $$nomecampo;
     $arr_estoquediminui = Array();
     $arr_vlorquediminui = Array();
@@ -101,26 +101,26 @@ if(isset($incluir)){
       if($sqlerro == false && $naoatendida>0 && $arr_oqueaindafalta>0){
         if($arr_oqueaindafalta>=$naoatendida){
           $clmatestoqueitem->m71_quantatend = $naoatendida + $m71_quantatend;
-          $retirar = $naoatendida; 
+          $retirar = $naoatendida;
           $arr_oqueaindafalta -= $naoatendida;
         }else{
           $clmatestoqueitem->m71_quantatend = $m71_quantatend + $arr_oqueaindafalta;
-          $retirar = $arr_oqueaindafalta; 
+          $retirar = $arr_oqueaindafalta;
           $arr_oqueaindafalta -= $arr_oqueaindafalta;
         }
-        
+
         if($sqlerro == false){
           $clmatestoque->m70_codigo = $m70_codigo;
           $quantretira = $arr_estoquediminui[$m70_codigo] - $retirar;
           $valorretira = 0 + db_formatar(($arr_vlorquediminui[$m70_codigo]-($retirar*$valorunitario)),'p',' ',0,'e',4);
-          
+
           if ($valorretira < 0){
             $valorretira *= -1;
           }
           if ($quantretira == 0){
             $valorretira = 0;
           }
-          
+
           $clmatestoque->m70_quant  = "$quantretira";
           $clmatestoque->m70_valor  = "$valorretira";
           $arr_estoquediminui[$m70_codigo] -= $retirar;
@@ -221,12 +221,12 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
 <table width="750" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="290" align="left" valign="top" bgcolor="#CCCCCC"> 
+<tr>
+<td height="290" align="left" valign="top" bgcolor="#CCCCCC">
 <form name="form1" method="post" action="">
 <center>
 <table border='0'>
-<?
+<?php
 if(isset($msgalert) && trim($msgalert)!=""){
   echo $msgalert;
   $scriptextra = "<script>parent.document.getElementById('db_opcao').disabled=true;</script>";
@@ -274,12 +274,12 @@ if(isset($msgalert) && trim($msgalert)!=""){
     $valor = 1;
     if(($i+1)==$numrows_matestoque){
       $valor = 0;
-    } 
+    }
     db_input($matitem,10,$Im70_quant,true,"text",4,"onchange='js_proximocampo(this.name,$valor,$m70_quant);'");
     echo "
     </td>
     </tr>
-    ";	  
+    ";
   }
 }
 db_input('m82_matestoqueini',40,0,true,"hidden",3);
@@ -326,7 +326,7 @@ function js_proximocampo(nome,valor,quant){
   }
 }
 </script>
-<?
+<?php
 if(isset($incluir)){
   db_msgbox($erro_msg);
 }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -61,12 +61,12 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_valores = split(",",$valores);
+  $arr_valores =explode(",",$valores);
   $sqlerro     = false;
   $codigoanterior = "";
   for($i=0;$i<count($arr_valores);$i++){
     $nomecampo    = $arr_valores[$i];
-    $separacampo  = split("_",$arr_valores[$i]);
+    $separacampo  =explode("_",$arr_valores[$i]);
     $m80_codigo   = $separacampo[2];
     $m82_codigo   = $separacampo[1];
 //    echo($clmatestoqueini->sql_query_mater(null,"m71_codlanc,m71_quant,m71_valor,(m71_valor/m71_quant) as valorunitario,m82_quant,matestoqueini.m80_codigo,m70_quant,m70_valor,m70_codigo","","m82_codigo=$m82_codigo and  matestoqueini.m80_codtipo=5 and m86_codigo is null"));
@@ -90,7 +90,7 @@ if(isset($incluir)){
 	$m80_data     = date("Y-m-d",db_getsession("DB_datausu"));
 	$m80_coddepto = db_getsession("DB_coddepto");
 	$m80_hora     = date('H:i:s');
-      
+
 	$clmatestoqueini->m80_login          = $m80_login;
 	$clmatestoqueini->m80_data           = $m80_data;
 	$clmatestoqueini->m80_hora           = $m80_hora;
@@ -117,7 +117,7 @@ if(isset($incluir)){
       $codigoanterior = $m80_codigo;
     }
 
-   
+
     for($ii=0;$ii<$numrows_matestoque;$ii++){
       db_fieldsmemory($result_matestoque,$ii);
       if($sqlerro == false){
@@ -161,7 +161,7 @@ if(isset($incluir)){
 }
 if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
   $where_deptodestino = "";
-  $where_deptodestino = " and m70_coddepto=".db_getsession("DB_coddepto"); 
+  $where_deptodestino = " and m70_coddepto=".db_getsession("DB_coddepto");
   $result_matestoque = $clmatestoqueini->sql_record($clmatestoqueini->sql_query_mater(null,"matestoqueini.m80_codigo,m71_codlanc,nome,descrdepto,matestoqueini.m80_data,matestoqueini.m80_obs,m82_codigo,m82_quant","matestoqueini.m80_codigo","m70_codmatmater=$m70_codmatmater $where_deptodestino and matestoqueini.m80_codtipo=5 and (b.m80_codtipo<>6 or b.m80_codigo is null) "));
   $numrows_matestoque= $clmatestoqueini->numrows;
   if($numrows_matestoque==0){
@@ -220,12 +220,12 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
 <table width="750" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="290" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="290" align="left" valign="top" bgcolor="#CCCCCC">
     <form name="form1" method="post" action="">
     <center>
     <table border='0'>
-      <?
+      <?php
       if(isset($msgalert) && trim($msgalert)!=""){
 	echo $msgalert;
         $scriptextra = "<script>parent.document.getElementById('db_opcao').disabled=true;</script>";
@@ -268,7 +268,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 	  echo "
 	    </td>
 	  </tr>
-	  ";	  
+	  ";
 	}
       }
       db_input('valores',40,0,true,"hidden",3);
@@ -285,7 +285,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 </html>
 <script>
 </script>
-<?
+<?php
 if(isset($incluir)){
   db_msgbox($erro_msg);
 }

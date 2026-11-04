@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -152,8 +152,8 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
     #rh02_abonopermanencia {
         width: 115px;
     }
-
-
+    /* The Modal (background) */
+}
 </style>
 <form name="form1" method="post" action="">
     <center>
@@ -541,13 +541,31 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                             $regimeJornadaSelecionado = $servidorMovimentacao->getRegimeJornadaTrabalho();
                                                         }
 
-                                                        $regimesJornada = RegimeJornadaTrabalhoEnum::todas();
-
-                                                        foreach ($regimesJornada as $valor => $regimeJornada) : ?>
-                                                            <option value="<?php echo $valor; ?>" <?php echo $valor === $regimeJornadaSelecionado ? 'selected' : ''; ?>>
-                                                                <?php echo $regimeJornada; ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
+                                                        // $regimesJornada = RegimeJornadaTrabalhoEnum::todas();
+                                                        // $regimesJornada = RegimeJornadaTrabalhoEnum::todas();
+                                                        // foreach ($regimesJornada as $valor => $regimeJornada) : ?>
+                                                            <!-- <option value="<?php //echo $valor; ?>" <?php //echo $valor === $regimeJornadaSelecionado ? 'selected' : ''; ?>> -->
+                                                                <?php //echo $regimeJornada; ?>
+                                                            <!-- </option> -->
+                                                        <?php //endforeach; ?>
+                                                        <?php
+                                                        $regimes = [
+                                                            '0' => 'Nenhum',
+                                                            '1' => '1 - Submetidos a Horário de Trabalho (Cap. II da CLT)',
+                                                            '2' => '2 - Atividade Externa especificada no Inciso I do Art. 62 da CLT',
+                                                            '3' => '3 - Funções especificadas no Inciso II do Art. 62 da CLT',
+                                                            '4' => '4 - Teletrabalho, previsto no Inciso III do Art. 62 da CLT'
+                                                        ];
+                                                        foreach ($regimes as $valor => $regime) { ?>
+                                                            <option value="<?php echo $valor; ?>"
+                                                        <?php
+                                                            if (!empty( $regimeJornadaSelecionado)) {
+                                                                echo $valor === $regimeJornadaSelecionado ? 'selected' : '';
+                                                            }
+                                                                ?> >
+                                                            <?php echo $regime; ?>
+                                                        </option>
+                                                      <?php  } ?>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -795,7 +813,13 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                     ?>
                                                 </td>
                                             </tr>
-                                            <tr id="row_rh02_tipodeficiencia" <? echo ($GLOBALS['rh02_deficientefisico'] == 't') ? '' : 'style="display: none;"' ?> >
+                                            <tr id="row_rh02_tipodeficiencia" <?php
+                                            if (isset($GLOBALS['rh02_deficientefisico']) || $GLOBALS['rh02_deficientefisico'] == 't') {
+                                                $GLOBALS['rh02_deficientefisico'] = '';
+                                            } else {
+                                                echo 'style="display: none;"';
+                                            }
+                                            ?>>
                                                 <td nowrap title="<?= @$Trh02_tipodeficiencia ?>" align="left">
                                                     <?= @$Lrh02_tipodeficiencia ?>
                                                 </td>
@@ -1244,6 +1268,8 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                 </tbody>
             </table>
         </div>
+
+</div>
         <?php
 
         db_app::load("DBHint.widget.js");
@@ -1268,6 +1294,8 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
             const cargoOriginal = inputCargoOriginal.value;
 
             var localLookUP = "<?php echo (!isset($lCadastroManutencao))?'CurrentWindow.corpo.iframe_rhpessoalmov':''?>";
+
+
 
             function carregaDadosCompetenciaAnterior() {
 

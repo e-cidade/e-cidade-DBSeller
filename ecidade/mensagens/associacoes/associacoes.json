@@ -17,8 +17,8 @@
     ,{  "fonte" : "educacao/escola/DBViewParecerTurma.json",                                           "menus" : [7169,7168]  }
     ,{  "fonte" : "educacao/escola/DadosAluno.json",                                                   "menus" : [9868]  }
     ,{  "fonte" : "educacao/escola/ListaDisciplinas.json",                                             "menus" : [6865,9941,9938,1100957,9633,9352]  }
-    ,{  "fonte" : "educacao/escola/ListaPeriodoAvaliacao.json",                                        "menus" : [9941]  }
-    ,{  "fonte" : "educacao/escola/ListaTurma.json",                                                   "menus" : [7011,1101087,1101086,1101039,9796,1100875,9928,9941,9938,1100957,9993,2000210,2000211,2000212]  }
+    ,{  "fonte" : "educacao/escola/ListaPeriodoAvaliacao.json",                                        "menus" : [9941,228234]  }
+    ,{  "fonte" : "educacao/escola/ListaTurma.json",                                                   "menus" : [7011,1101087,1101086,1101039,9796,1100875,9928,9941,9938,1100957,9993,2000210,2000211,2000212,10542]  }
     ,{  "fonte" : "educacao/escola/Proporcionalidade_classe.json",                                     "menus" : [9645]  }
     ,{  "fonte" : "educacao/escola/SituacaoEducacao.json",                                             "menus" : [9871]  }
     ,{  "fonte" : "educacao/escola/db_frmalunocurso.json",                                             "menus" : [1100827]  }
@@ -43,7 +43,7 @@
     ,{  "fonte" : "educacao/escola/edu2_atareclassificacao001.json",                                   "menus" : [9865]  }
     ,{  "fonte" : "educacao/escola/edu2_atestadofrequencia.json",                                      "menus" : [7011,9865]  }
     ,{  "fonte" : "educacao/escola/edu2_diarioclasse001.json",                                         "menus" : [1100958]  }
-    ,{  "fonte" : "educacao/escola/edu2_diarioclassenovo001.json",                                     "menus" : [9941]  }
+    ,{  "fonte" : "educacao/escola/edu2_diarioclassenovo001.json",                                     "menus" : [9941,228234]  }
     ,{  "fonte" : "educacao/escola/edu2_fichaqualitativa001.json",                                     "menus" : [9928]  }
     ,{  "fonte" : "educacao/escola/edu2_listaoficial001.json",                                         "menus" : [1101039]  }
     ,{  "fonte" : "educacao/escola/edu2_qdresultadofinal001.json",                                     "menus" : [1101043]  }
@@ -57,6 +57,7 @@
     ,{  "fonte" : "educacao/escola/edu4_trocaturmasemmovimentacao001.json",                            "menus" : [9632]  }
     ,{  "fonte" : "educacao/escola/edu_historico000.json",                                             "menus" : [8123]  }
     ,{  "fonte" : "educacao/secretariaeducacao/edu4_ensinoturnointegral001.json",                      "menus" : [9899]  }
+    ,{  "fonte" : "educacao/transporteescolar/db_frmpontosparada.json",                                "menus" : [9771,9772,9773,9774]  }
     ,{  "fonte" : "educacao/transporteescolar/db_frmlinhastransporte.json",                            "menus" : [9778,9777]  }
     ,{  "fonte" : "educacao/transporteescolar/db_frmvinculoveiculolinha.json",                         "menus" : [9782]  }
     ,{  "fonte" : "educacao/transporteescolar/tre4_vinculapontoparada.json",                           "menus" : [9781]  }
@@ -119,7 +120,7 @@
     ,{  "fonte" : "patrimonial/material/db_frmsolicitem.json",                                         "menus" : [3486]  }
     ,{  "fonte" : "patrimonial/material/mat2_fichafinanceira001.json",                                 "menus" : [9952]  }
     ,{  "fonte" : "patrimonial/material/mat4_processafechamentomaterial004.json",                      "menus" : [9870]  }
-    ,{  "fonte" : "patrimonial/ouvidoria/DBViewCidadao_cidadao.json",                                  "menus" : [1100826]  }
+    ,{  "fonte" : "patrimonial/ouvidoria/DBViewCidadao_cidadao.json",                                  "menus" : [1100826,1100827]  }
     ,{  "fonte" : "patrimonial/patrimonio/Bem.json",                                                   "menus" : [9447,9448,9459,9460,9465,9466,9096,9468,9471,9133,7795,9152,9473,9474,9498,9499,3938]  }
     ,{  "fonte" : "patrimonial/patrimonio/CalculoBem.json",                                            "menus" : [9447,9448,9459,9460,9465,9466,9096,9473,9474,9498,9499]  }
     ,{  "fonte" : "patrimonial/patrimonio/DBViewNotasPendentes.json",                                  "menus" : [3648,3840,3504,9830,10168]  }
@@ -266,8 +267,8 @@
     ,{  "fonte" : "saude/ambulatorial/sau4_bpa_2013.json",                                             "menus" : [9825]  }
     ,{  "fonte" : "saude/ambulatorial/sau4_consultamedica001.json",                                    "menus" : [6828]  }
     ,{  "fonte" : "saude/ambulatorio/sau4_bpa_2013.json",                                              "menus" : [9825]  }
-    ,{  "fonte" : "saude/laboratorio/LancamentoExameLaboratorio.json",                                 "menus" : [8347]  }
-    ,{  "fonte" : "saude/laboratorio/db_frmlab_conferencia.json",                                      "menus" : [8348]  }
+    ,{  "fonte" : "saude/laboratorio/LancamentoExameLaboratorio.json",                                 "menus" : [8347,228173]  }
+    ,{  "fonte" : "saude/laboratorio/db_frmlab_conferencia.json",                                      "menus" : [8348,228173]  }
     ,{  "fonte" : "saude/laboratorio/db_frmlab_requisicao.json",                                       "menus" : [8220]  }
     ,{  "fonte" : "saude/laboratorio/lab4_geraarquivobpamagnetico001.json",                            "menus" : [8457]  }
     ,{  "fonte" : "saude/psf/CabecalhoFichasPSF.json",                                                 "menus" : [2000414]  }
@@ -405,7 +406,7 @@
     ,{  "fonte" : "tributario/projetos/pro4_reemissaotxtinss001.json",                                 "menus" : [9149]  }
     ,{  "fonte" : "tributario/projetos/pro4_txtINSS.json",                                             "menus" : [4190,9149]  }
     ,{  "fonte" : "tributario/recursoshumanos/pessoal/pes1_rhcontasrec.json",                          "menus" : [4776]  }
-    ,{  "fonte" : "saude/ambulatorial/DBViewMotivosAlta.json",                                         "menus" : [7649]  }
+    ,{  "fonte" : "saude/ambulatorial/DBViewMotivosAlta.json",                                         "menus" : [7649,8080,6828,6825]  }
     ,{  "fonte" : "saude/ambulatorial/db_frmfichaatendcgs_und.json",                                   "menus" : [7649]  }
     ,{  "fonte" : "saude/ambulatorial/sau1_manutencaocgs001.json",                                     "menus" : [10239,6898]  }
     ,{  "fonte" : "financeiro/empenho/emp1_classificacaocredores001.json",                             "menus" : [10242,10243]  }
@@ -431,4 +432,10 @@
     ,{  "fonte" : "saude/laboratorio/db_frmlab_controlefisicofinanceiro.json",                         "menus" : [8810]  }
     ,{  "fonte" : "saude/tfd/tfd2_porpedido.json",                                                     "menus" : [9813]  }
     ,{  "fonte" : "saude/laboratorio/db_frmlab_autoriza.json",                                         "menus" : [8344]  }
+    ,{  "fonte" : "educacao/escola/edu4_exportarsituacaoalunonovo001.json",                            "menus" : [8043]  }
+    ,{  "fonte" : "educacao/escola/edu1_matricula004.json",                                            "menus" : [1100875]  }
+    ,{  "fonte" : "saude/farmacia/far4_exportacaohorus001.json",                                       "menus" : [10115]  }
+    ,{  "fonte" : "educacao/escola/DBViewRemocaoPeriodoGradeHorario.json",                             "menus" : [1100875]  }
+    ,{  "fonte" : "configuracao/configuracao/con1_importarformulario001.json",                         "menus" : [10442]  }
+    ,{  "fonte" : "recursoshumanos/pessoal/db_frmrhslipfolha.json",                                    "menus" : [7759]  }
 ]}

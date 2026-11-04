@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $aux = new cl_arquivo_auxiliar;
        </tr>       
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Classes</strong>";
                  $aux->codigo = "q12_classe"; //chave de retorno da func

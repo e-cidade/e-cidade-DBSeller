@@ -166,13 +166,13 @@ function js_emite(){
                 $arr_colunas_final   = Array();
                 $arr_colunas_inicial = Array();
                 if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-                   $colunas_sselecionados = split(",",$colunas_sselecionados);
+                   $colunas_sselecionados = explode(",",$colunas_sselecionados);
                    for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
                       $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
                    }
                 }
                 if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-                   $colunas_nselecionados = split(",",$colunas_nselecionados);
+                   $colunas_nselecionados = explode(",",$colunas_nselecionados);
                    for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
                       $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
                    }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("d03_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Td04_contri?>">
-       <?
+       <?php
        db_ancora(@$Ld04_contri,"js_pesquisad04_contri(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d04_contri',4,$Id04_contri,true,'text',$db_opcao," onchange='js_pesquisad04_contri(false);'")
 ?>
-       <?
+       <?php
 db_input('d02_codedi',4,$Id02_codedi,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td04_tipos?>">
-       <?
+       <?php
        db_ancora(@$Ld04_tipos,"js_pesquisad04_tipos(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d04_tipos',4,$Id04_tipos,true,'text',$db_opcao," onchange='js_pesquisad04_tipos(false);'")
 ?>
-       <?
+       <?php
 db_input('d03_descr',40,$Id03_descr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('d03_descr',40,$Id03_descr,true,'text',3,'')
        <?=@$Ld04_quant?>
     </td>
     <td> 
-<?
+<?php
 db_input('d04_quant',15,$Id04_quant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('d04_quant',15,$Id04_quant,true,'text',$db_opcao,"")
        <?=@$Ld04_vlrcal?>
     </td>
     <td> 
-<?
+<?php
 db_input('d04_vlrcal',15,$Id04_vlrcal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -145,7 +145,7 @@ function js_preenchepesquisa(chave,chave1){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

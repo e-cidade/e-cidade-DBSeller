@@ -6,9 +6,11 @@ use App\Domain\Patrimonial\Protocolo\Repository\CgmRepository;
 use App\Domain\Tributario\Arrecadacao\Models\Arretipo;
 use App\Domain\Patrimonial\Protocolo\Model\Cgm;
 use App\Domain\Tributario\Arrecadacao\Models\Arretipopix;
+use App\Domain\Tributario\Arrecadacao\Models\Arretipopixasso;
 use App\Domain\Tributario\Arrecadacao\Models\Modcarnepadraopix;
 use App\Domain\Tributario\Arrecadacao\Models\Recibobarpix;
 use App\Domain\Tributario\Arrecadacao\Models\Recibopaga;
+use App\Domain\Tributario\Arrecadacao\Pix\Bancos\BancoFactory;
 use App\Domain\Tributario\Arrecadacao\Pix\Bancos\BancoDoBrasil;
 use App\Domain\Tributario\Arrecadacao\Pix\Bancos\Banrisul;
 use App\Domain\Tributario\Arrecadacao\Repositories\RecibobarpixRepository;
@@ -16,6 +18,7 @@ use Exception;
 use recibo;
 use regraEmissao;
 use convenio;
+use Illuminate\Support\Facades\DB;
 
 final class ArrecadacaoPixService
 {
@@ -32,6 +35,26 @@ final class ArrecadacaoPixService
     private $instit  = null;
     private $ip      = null;
     private $datausu = null;
+
+    /**
+     * @var convenio
+     */
+    protected $modelConvenio;
+
+    /**
+     * @var recibo
+     */
+    protected $modelRecibo;
+
+    /**
+     * @var Cgm
+     */
+    protected $modelCgm;
+
+    /**
+     * @var Arretipo
+     */
+    protected $tipoDebito;
 
     public function seInstit($value)
     {
@@ -51,21 +74,20 @@ final class ArrecadacaoPixService
     public function gerarPix()
     {
         if (empty($this->getCodigoArrecadacao())) {
-            throw new Exception("Recibo não informado!");
+            throw new Exception("Recibo não informado!", 500);
         }
 
         $regraemissao = new regraEmissao(
             $this->getTipoDebito(),
             $this->getModelo(),
-            $this->instit,
-            date("Y-m-d", $this->datausu),
-            $this->ip,
+            \db_getsession('DB_instit'),
+            date("Y-m-d", \db_getsession("DB_datausu")),
+            \db_getsession('DB_ip'),
             true,
             false,
             $this->getParcelaInicio(),
             $this->getParcelaFim()
         );
-
 
         if (!self::validaEmissaoPix(
             $this->getTipoDebito(),
@@ -82,11 +104,13 @@ final class ArrecadacaoPixService
             $this->getCodigoArrecadacao()
         );
 
+        $recibo->setTipoEmissao(2);
+
 
         $repositoryCgm = new CgmRepository();
         $cgm = $repositoryCgm->getByNumcgm($recibo->getCgm());
 
-        $tipoDebito = Arretipo::where(
+        $this->tipoDebito = Arretipo::where(
             'k00_tipo',
             $this->getTipoDebito()
         )->first();
@@ -106,13 +130,16 @@ final class ArrecadacaoPixService
             $valorRecibo,
             $valorCodigoBarras,
             $this->getVencimento(),
-            $tipoDebito->k00_tercdigrecnormal
+            $this->tipoDebito->k00_tercdigrecnormal
         );
+        $this->modelConvenio = $convenio;
+        $this->modelRecibo = $recibo;
+        $this->modelCgm = $cgm;
 
-        $this->geraPixBanco($convenio, $cgm, $valorRecibo);
+        return $this->geraPixBanco($convenio, $cgm, $valorRecibo);
     }
 
-    public function geraPixCarne($convenio, $numpre, $numpar, $numcgm, $valor, $codigoBarras = null)
+    public function geraPixCarne(convenio $convenio, $numpre, $numpar, $numcgm, $valor, $codigoBarras = null)
     {
         $repositoryCgm = new CgmRepository();
         $cgm = $repositoryCgm->getByNumcgm($numcgm);
@@ -134,10 +161,9 @@ final class ArrecadacaoPixService
         }
 
         $arretipopix = Arretipopix::query()->where("k00_tipo", $this->getTipoDebito())->first();
-
         $arretipopixbancogeracaoService = new ArretipopixbancogeracaoService();
-        $bankCode = $arretipopixbancogeracaoService->chooseBankToGeneratePix($arretipopix, true, false);
 
+        $bankCode = $arretipopixbancogeracaoService->chooseBankToGeneratePix($arretipopix, true, false);
         switch ($bankCode) {
             case BancoDoBrasil::BANK_CODE:
                 $banco = new BancoDoBrasil();
@@ -149,6 +175,9 @@ final class ArrecadacaoPixService
                 throw new \BusinessException("Verifique as configurações do PIX, banco {$bankCode} não configurado.");
         }
 
+        //$tipoPixBanco = $this->getBancoEmissao();
+        //$banco = BancoFactory::getByBanco($tipoPixBanco->db90_codban);
+
         $banco->setConvenio($convenio);
         $banco->setCodigoBarras($codigoBarras ? $codigoBarras : $convenio->getCodigoBarra());
         $banco->setCgm($cgm);
@@ -156,7 +185,10 @@ final class ArrecadacaoPixService
         $banco->setCodigoArrecadacao($this->getCodigoArrecadacao());
         $banco->setParcela($this->getParcelaArrecadacao());
         $banco->setVencimento($this->getVencimento());
+
         $banco->gerarPix();
+
+        return true;
     }
 
     protected function validaEmissaoReciboBarPix($codigoBarras)
@@ -262,9 +294,9 @@ final class ArrecadacaoPixService
         if ($tipoDebito && $regraEmissaoPix) {
             if (!empty($tipoDebito->dtini) && !empty($tipoDebito->dtfim)) {
                 $dadosReciboPaga = Recibopaga::where(["k00_numnov" => $numpre])
-                ->where("k00_dtvenc", "<", "'{$tipoDebito->dtini}'")
-                ->where("k00_dtvenc", ">", "'{$tipoDebito->dtfim}'")
-                ->get();
+                    ->where("k00_dtvenc", "<", "'{$tipoDebito->dtini}'")
+                    ->where("k00_dtvenc", ">", "'{$tipoDebito->dtfim}'")
+                    ->get();
 
                 if (!$dadosReciboPaga->isEmpty()) {
                     return false;
@@ -275,5 +307,105 @@ final class ArrecadacaoPixService
         }
 
         return false;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function build()
+    {
+        $repository = new RecibobarpixRepository();
+        $pix = $repository->getByCodBar($this->modelConvenio->getCodigoBarra());
+
+        if (empty($pix)) {
+            $sMsg  = "Não foi possivel se comunicar com api do pix, ";
+            $sMsg .= "pois o cadastro encontra-se desatualizado. ";
+            $sMsg .= "Regularize o cadastro junto a Secretaria de Fazenda do Município.";
+
+            throw new \Exception($sMsg);
+        }
+
+        $imagemQRCode = "tmp/pix_arrecadacao_{$this->codigo_arrecadacao}" . time() . ".png";
+        $url = $pix->k00_qrcode;
+        \PHPQRCode\QRcode::png($url, $imagemQRCode, 'L', 4, 2);
+
+        return [
+            'url_qrcode'       => ECIDADE_REQUEST_PATH . $imagemQRCode,
+            'codigo_barras'    => $this->modelConvenio->getCodigoBarra(),
+            'linha_digitavel'  => $this->modelConvenio->getLinhaDigitavel(),
+            'link_qrcode'      => $pix->k00_linkqrcode,
+            'qrcode'           => $pix->k00_qrcode,
+            'data_criacao'     => $pix->k00_criacaosolicitacao,
+            'tipo_debito'      => $this->tipoDebito->k00_tipo,
+            'descr_debito'     => $this->tipoDebito->k00_descr,
+            'valor_debito'     => $this->modelRecibo->getTotalRecibo(),
+            'data_vencimento'  => $this->modelRecibo->getDataVencimento(),
+            'numero_documento' => $this->modelRecibo->getNumpreRecibo(),
+            'nome_devedor'     => $this->modelCgm->z01_nome,
+            'debitos'          => $this->buildDebitos()
+        ];
+    }
+
+    private function buildDebitos()
+    {
+        $sql = <<<SQL
+        select
+            k00_numpre as debito,
+            k00_numpar as parcela,
+            k00_hist,
+            sum(k00_valor) as valor_debito,
+            (
+                select
+                    j20_anousu
+                from
+                    iptunump
+                where
+                    j20_numpre = k00_numpre
+                union
+                all
+                select
+                    v01_exerc
+                from
+                    divida
+                where
+                    v01_numpre = k00_numpre
+                union
+                all
+                select
+                    dv05_exerc
+                from
+                    diversos
+                where
+                    dv05_numpre = k00_numpre
+            ) as exercicio,
+            fc_origem_numpre(k00_numpre, 1, '') as origem
+        from
+            recibopaga
+        where
+            k00_numnov = {$this->modelRecibo->getNumpreRecibo()}
+        group by
+            1,
+            2,
+            3
+        order by k00_hist, k00_numpar;
+SQL;
+        return DB::select($sql);
+    }
+
+    /**
+     * @return Arretipopixasso
+     */
+    protected function getBancoEmissao()
+    {
+        if (empty($this->getTipoDebito())) {
+            throw new \Exception('Tipo De Débito Para Geração do Pix Não Informado');
+        }
+
+        $tipodebitoBanco = Arretipopixasso::where([
+            "k00_tipo" => $this->getTipoDebito()
+        ])->first();
+
+        return $tipodebitoBanco;
     }
 }

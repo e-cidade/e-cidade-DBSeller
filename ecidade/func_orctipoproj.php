@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorctipoproj->rotulo->label("o38_descr");
               <?=$Lo38_tipoproj?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o38_tipoproj",8,$Io38_tipoproj,true,"text",4,"","chave_o38_tipoproj");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorctipoproj->rotulo->label("o38_descr");
               <?=$Lo38_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o38_descr",50,$Io38_descr,true,"text",4,"","chave_o38_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorctipoproj->rotulo->label("o38_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orctipoproj.php")==true){
@@ -118,12 +118,12 @@ $clorctipoproj->rotulo->label("o38_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

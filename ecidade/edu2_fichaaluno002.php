@@ -752,9 +752,17 @@ try {
           } else {
 
             if ($ed60_c_concluida == "S") {
-              $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo)."(CONCLUÍDA)";
+              if (trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA - CURSANDO)";
+              } else {
+                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA)";
+              }
             } else {
-              $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+              if (trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CURSANDO)";
+              } else {
+                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+              }
             }
           }
 

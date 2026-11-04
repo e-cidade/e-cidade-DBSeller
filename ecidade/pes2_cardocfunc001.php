@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,12 +90,12 @@ function js_emite(){
         <strong>Ano / Mês :</strong>
         </td>
         <td>&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -105,7 +105,7 @@ function js_emite(){
         <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
             $xx = array("n"=>"Numérica","a"=>"Alfabética");
             db_select('ordem',$xx,true,4,"");
 	  ?>
@@ -115,7 +115,7 @@ function js_emite(){
         <td align="right" nowrap title="Regime do funcionário" ><strong>Regime : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
 	    $sql = "select rh30_codreg,rh30_descr from rhregime where rh30_instit = ".db_getsession('DB_instit')." order by rh30_codreg";
 	    $res = db_query($sql);
             db_selectrecord('reg', $res, true, 4,'','','','0');
@@ -126,7 +126,7 @@ function js_emite(){
         <td align="right" nowrap  ><strong>Listar Demitidos : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
             $xy = array("n"=>"Nao","s"=>"Sim");
             db_select('demit',$xy,true,4,"");
 	  ?>
@@ -136,7 +136,7 @@ function js_emite(){
         <td align="right" nowrap  ><strong>Listar Cargo : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
             $xyy = array("n"=>"Nao","s"=>"Sim");
             db_select('cargo',$xyy,true,4,"");
 	  ?>
@@ -154,7 +154,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

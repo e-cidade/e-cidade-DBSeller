@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ if($db_opcao==1){
        <?=@$Lcodfuncao?>
     </td>
     <td> 
-<?
+<?php
 db_input('codfuncao',5,$Icodfuncao,true,'text',3,"")
 ?>
     </td>
@@ -61,7 +61,7 @@ db_input('codfuncao',5,$Icodfuncao,true,'text',3,"")
        <?=@$Lnomefuncao?>
     </td>
     <td> 
-<?
+<?php
 db_input('nomefuncao',50,$Inomefuncao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,15 +70,15 @@ db_input('nomefuncao',50,$Inomefuncao,true,'text',$db_opcao,"")
 
  <tr>
     <td nowrap title="<?=@$Tdb41_cliente?>">
-       <?
+       <?php
        db_ancora(@$Ldb41_cliente,"js_pesquisadb41_cliente(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('db41_cliente',4,$Idb41_cliente,true,'text',$db_opcao," onchange='js_pesquisadb41_cliente(false);'")
       ?>
-      <?
+      <?php
       db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
       ?>
     </td>
@@ -90,7 +90,7 @@ db_input('nomefuncao',50,$Inomefuncao,true,'text',$db_opcao,"")
        <b> Arquivo com o codigo fonte : </b>
     </td>
     <td> 
-    <?
+    <?php
       db_input('arquivo',43,'',true,'file',$db_opcao,"class='borda'",'','','');
     ?>
     <input name="carregar" type="Submit" id="carregar" value="Carregar" onclick=" return js_carregar();" >
@@ -101,7 +101,7 @@ db_input('nomefuncao',50,$Inomefuncao,true,'text',$db_opcao,"")
        <?=@$Lnomearquivo?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('nomearquivo',50,$Inomearquivo,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -111,7 +111,7 @@ db_input('nomefuncao',50,$Inomefuncao,true,'text',$db_opcao,"")
        <?=@$Ltriggerfuncao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('0'=>'Função','1'=>'Trigger','2'=>'View');
 db_select('triggerfuncao',$x,true,$db_opcao,"");
 ?>
@@ -122,7 +122,7 @@ db_select('triggerfuncao',$x,true,$db_opcao,"");
        <?=@$Lobsfuncao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('obsfuncao',5,50,$Iobsfuncao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ db_textarea('obsfuncao',5,50,$Iobsfuncao,true,'text',$db_opcao,"")
        <?=@$Lcorpofuncao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('corpofuncao',20,100,$Icorpofuncao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_sysfuncoes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

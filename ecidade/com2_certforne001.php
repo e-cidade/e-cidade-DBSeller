@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,12 +94,12 @@ function js_emite(){
       </tr>
       <tr>
          <td nowrap title="<?=@$Tpc74_codigo?>" align="right">
-           <?
+           <?php
            db_ancora(@ $Lpc74_codigo, "js_pesquisapc74_codigo(true);", 1);
            ?>
          </td>
          <td>
-           <?
+           <?php
            db_input('pc74_codigo', 4, $Ipc74_codigo, true, 'text', 1, " onchange='js_pesquisapc74_codigo(false);'");
            
            ?>
@@ -107,14 +107,14 @@ function js_emite(){
       </tr>
       <tr>
       	<td align="right">Período:</td>
-      	<td><? db_inputdata('dtInicio','','','',true,'text',1); ?>	à 
-      			<? db_inputdata('dtFim','','','',true,'text',1); ?>
+      	<td><?php db_inputdata('dtInicio','','','',true,'text',1); ?>	à 
+      			<?php db_inputdata('dtFim','','','',true,'text',1); ?>
       	</td>
       </tr>
       <tr>
         <td align="right">Imprimir Objeto Social:</td>
         <td >
-        	<?
+        	<?php
         	$db_matriz = array("0"=>'Sim',"1"=>"Não");
          	db_select('oSocial',$db_matriz,TRUE,1); 
          	?>
@@ -123,7 +123,7 @@ function js_emite(){
       <tr>
         <td align="right">Imprimir Grupos de Fornecimento:</td>
         <td >
-        	<?
+        	<?php
         	$db_matriz = array("0"=>'Sim',"1"=>"Não");
          	db_select('gFornecimento',$db_matriz,TRUE,1); 
          	?>
@@ -144,7 +144,7 @@ function js_emite(){
       </tr>
   </form>
 </table>
-<?
+<?php
 
  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>

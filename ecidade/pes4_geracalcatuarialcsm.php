@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ $oPost = db_utils::postMemory($_POST);
 <table>
 <tr height=25><td>&nbsp;</td></tr>
 </table>
-<?
+<?php
 db_postmemory($HTTP_POST_VARS);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
@@ -251,7 +251,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
 ?>
 <form name='form1' id='form1'></form>
-<?
+<?php
 if ($rsCalculo) {
 
   echo "<script>";

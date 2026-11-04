@@ -27,54 +27,54 @@
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE rhparam
-class cl_rhparam { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h36_modtermoposse = 0; 
-   var $h36_instit = 0; 
-   var $h36_modportariacoletiva = 0; 
-   var $h36_modportariaindividual = 0; 
-   var $h36_ultimaportaria = 0; 
-   var $h36_intersticio = 0; 
-   var $h36_pontuacaominpromocao = 0; 
-   var $h36_tempocontribuicaorgps = 0; 
-   var $h36_tempocontribuicaorpps = 0; 
-   var $h36_temposficticios = 0; 
-   var $h36_temposemcontribuicao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhparam {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h36_modtermoposse = 0;
+   var $h36_instit = 0;
+   var $h36_modportariacoletiva = 0;
+   var $h36_modportariaindividual = 0;
+   var $h36_ultimaportaria = 0;
+   var $h36_intersticio = 0;
+   var $h36_pontuacaominpromocao = 0;
+   var $h36_tempocontribuicaorgps = 0;
+   var $h36_tempocontribuicaorpps = 0;
+   var $h36_temposficticios = 0;
+   var $h36_temposemcontribuicao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h36_modtermoposse = int4 = Modelo Posse 
-                 h36_instit = int4 = Instituição 
-                 h36_modportariacoletiva = int4 = Modelo Portaria Coletiva 
-                 h36_modportariaindividual = int4 = Modelo Portaria Individual 
-                 h36_ultimaportaria = int4 = Última Portaria 
-                 h36_intersticio = int4 = Interstício (Anos) 
-                 h36_pontuacaominpromocao = int4 = Pontuação Min. 
-                 h36_tempocontribuicaorgps = int4 = Tempo de Contribuição RGPS 
-                 h36_tempocontribuicaorpps = int4 = Tempo de Contribuição RPPS 
-                 h36_temposficticios = int4 = Tempos Fictícios 
-                 h36_temposemcontribuicao = int4 = Tempo sem Contribuição 
+                 h36_modtermoposse = int4 = Modelo Posse
+                 h36_instit = int4 = Instituição
+                 h36_modportariacoletiva = int4 = Modelo Portaria Coletiva
+                 h36_modportariaindividual = int4 = Modelo Portaria Individual
+                 h36_ultimaportaria = int4 = Última Portaria
+                 h36_intersticio = int4 = Interstício (Anos)
+                 h36_pontuacaominpromocao = int4 = Pontuação Min.
+                 h36_tempocontribuicaorgps = int4 = Tempo de Contribuição RGPS
+                 h36_tempocontribuicaorpps = int4 = Tempo de Contribuição RPPS
+                 h36_temposficticios = int4 = Tempos Fictícios
+                 h36_temposemcontribuicao = int4 = Tempo sem Contribuição
                  ";
-   //funcao construtor da classe 
-   function cl_rhparam() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhparam"); 
+     $this->rotulo = new rotulo("rhparam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_rhparam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h36_modtermoposse = ($this->h36_modtermoposse == ""?@$GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"]:$this->h36_modtermoposse);
        $this->h36_instit = ($this->h36_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["h36_instit"]:$this->h36_instit);
@@ -101,21 +101,21 @@ class cl_rhparam {
      }
    }
    // funcao para Inclusão
-   function incluir ($h36_instit){ 
+   public function incluir ($h36_instit){
       $this->atualizacampos();
-     if($this->h36_modtermoposse == null ){ 
+     if($this->h36_modtermoposse == null ){
        $this->h36_modtermoposse = "0";
      }
-     if($this->h36_modportariacoletiva == null ){ 
+     if($this->h36_modportariacoletiva == null ){
        $this->h36_modportariacoletiva = "0";
      }
-     if($this->h36_modportariaindividual == null ){ 
+     if($this->h36_modportariaindividual == null ){
        $this->h36_modportariaindividual = "0";
      }
-     if($this->h36_ultimaportaria == null ){ 
+     if($this->h36_ultimaportaria == null ){
        $this->h36_ultimaportaria = "0";
      }
-     if($this->h36_intersticio == null ){ 
+     if($this->h36_intersticio == null ){
        $this->erro_sql = " Campo Interstício (Anos) não informado.";
        $this->erro_campo = "h36_intersticio";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_rhparam {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h36_pontuacaominpromocao == null ){ 
+     if($this->h36_pontuacaominpromocao == null ){
        $this->erro_sql = " Campo Pontuação Min. não informado.";
        $this->erro_campo = "h36_pontuacaominpromocao";
        $this->erro_banco = "";
@@ -133,20 +133,20 @@ class cl_rhparam {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h36_tempocontribuicaorgps == null ){ 
+     if($this->h36_tempocontribuicaorgps == null ){
        $this->h36_tempocontribuicaorgps = 'null';
      }
-     if($this->h36_tempocontribuicaorpps == null ){ 
+     if($this->h36_tempocontribuicaorpps == null ){
        $this->h36_tempocontribuicaorpps = 'null';
      }
-     if($this->h36_temposficticios == null ){ 
+     if($this->h36_temposficticios == null ){
        $this->h36_temposficticios = 'null';
      }
-     if($this->h36_temposemcontribuicao == null ){ 
+     if($this->h36_temposemcontribuicao == null ){
        $this->h36_temposemcontribuicao = 'null';
      }
-       $this->h36_instit = $h36_instit; 
-     if(($this->h36_instit == null) || ($this->h36_instit == "") ){ 
+       $this->h36_instit = $h36_instit;
+     if(($this->h36_instit == null) || ($this->h36_instit == "") ){
        $this->erro_sql = " Campo h36_instit não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -155,33 +155,33 @@ class cl_rhparam {
        return false;
      }
      $sql = "insert into rhparam(
-                                       h36_modtermoposse 
-                                      ,h36_instit 
-                                      ,h36_modportariacoletiva 
-                                      ,h36_modportariaindividual 
-                                      ,h36_ultimaportaria 
-                                      ,h36_intersticio 
-                                      ,h36_pontuacaominpromocao 
-                                      ,h36_tempocontribuicaorgps 
-                                      ,h36_tempocontribuicaorpps 
-                                      ,h36_temposficticios 
-                                      ,h36_temposemcontribuicao 
+                                       h36_modtermoposse
+                                      ,h36_instit
+                                      ,h36_modportariacoletiva
+                                      ,h36_modportariaindividual
+                                      ,h36_ultimaportaria
+                                      ,h36_intersticio
+                                      ,h36_pontuacaominpromocao
+                                      ,h36_tempocontribuicaorgps
+                                      ,h36_tempocontribuicaorpps
+                                      ,h36_temposficticios
+                                      ,h36_temposemcontribuicao
                        )
                 values (
-                                $this->h36_modtermoposse 
-                               ,$this->h36_instit 
-                               ,$this->h36_modportariacoletiva 
-                               ,$this->h36_modportariaindividual 
-                               ,$this->h36_ultimaportaria 
-                               ,$this->h36_intersticio 
-                               ,$this->h36_pontuacaominpromocao 
-                               ,$this->h36_tempocontribuicaorgps 
-                               ,$this->h36_tempocontribuicaorpps 
-                               ,$this->h36_temposficticios 
-                               ,$this->h36_temposemcontribuicao 
+                                $this->h36_modtermoposse
+                               ,$this->h36_instit
+                               ,$this->h36_modportariacoletiva
+                               ,$this->h36_modportariaindividual
+                               ,$this->h36_ultimaportaria
+                               ,$this->h36_intersticio
+                               ,$this->h36_pontuacaominpromocao
+                               ,$this->h36_tempocontribuicaorgps
+                               ,$this->h36_tempocontribuicaorpps
+                               ,$this->h36_temposficticios
+                               ,$this->h36_temposemcontribuicao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Parametros RH ($this->h36_instit) não Incluído. Inclusão Abortada.";
@@ -229,23 +229,23 @@ class cl_rhparam {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($h36_instit=null) { 
+   public function alterar ($h36_instit=null) {
       $this->atualizacampos();
      $sql = " update rhparam set ";
      $virgula = "";
-     if(trim($this->h36_modtermoposse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
-        if(trim($this->h36_modtermoposse)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
-           $this->h36_modtermoposse = "0" ; 
-        } 
+     if(trim($this->h36_modtermoposse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){
+        if(trim($this->h36_modtermoposse)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){
+           $this->h36_modtermoposse = "0" ;
+        }
        $sql  .= $virgula." h36_modtermoposse = $this->h36_modtermoposse ";
        $virgula = ",";
      }
-     if(trim($this->h36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_instit"])){ 
+     if(trim($this->h36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_instit"])){
        $sql  .= $virgula." h36_instit = $this->h36_instit ";
        $virgula = ",";
-       if(trim($this->h36_instit) == null ){ 
+       if(trim($this->h36_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "h36_instit";
          $this->erro_banco = "";
@@ -255,31 +255,31 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_modportariacoletiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
-        if(trim($this->h36_modportariacoletiva)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
-           $this->h36_modportariacoletiva = "0" ; 
-        } 
+     if(trim($this->h36_modportariacoletiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){
+        if(trim($this->h36_modportariacoletiva)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){
+           $this->h36_modportariacoletiva = "0" ;
+        }
        $sql  .= $virgula." h36_modportariacoletiva = $this->h36_modportariacoletiva ";
        $virgula = ",";
      }
-     if(trim($this->h36_modportariaindividual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
-        if(trim($this->h36_modportariaindividual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
-           $this->h36_modportariaindividual = "0" ; 
-        } 
+     if(trim($this->h36_modportariaindividual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){
+        if(trim($this->h36_modportariaindividual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){
+           $this->h36_modportariaindividual = "0" ;
+        }
        $sql  .= $virgula." h36_modportariaindividual = $this->h36_modportariaindividual ";
        $virgula = ",";
      }
-     if(trim($this->h36_ultimaportaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
-        if(trim($this->h36_ultimaportaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
-           $this->h36_ultimaportaria = "0" ; 
-        } 
+     if(trim($this->h36_ultimaportaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){
+        if(trim($this->h36_ultimaportaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){
+           $this->h36_ultimaportaria = "0" ;
+        }
        $sql  .= $virgula." h36_ultimaportaria = $this->h36_ultimaportaria ";
        $virgula = ",";
      }
-     if(trim($this->h36_intersticio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_intersticio"])){ 
+     if(trim($this->h36_intersticio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_intersticio"])){
        $sql  .= $virgula." h36_intersticio = $this->h36_intersticio ";
        $virgula = ",";
-       if(trim($this->h36_intersticio) == null ){ 
+       if(trim($this->h36_intersticio) == null ){
          $this->erro_sql = " Campo Interstício (Anos) não informado.";
          $this->erro_campo = "h36_intersticio";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_pontuacaominpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_pontuacaominpromocao"])){ 
+     if(trim($this->h36_pontuacaominpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_pontuacaominpromocao"])){
        $sql  .= $virgula." h36_pontuacaominpromocao = $this->h36_pontuacaominpromocao ";
        $virgula = ",";
-       if(trim($this->h36_pontuacaominpromocao) == null ){ 
+       if(trim($this->h36_pontuacaominpromocao) == null ){
          $this->erro_sql = " Campo Pontuação Min. não informado.";
          $this->erro_campo = "h36_pontuacaominpromocao";
          $this->erro_banco = "";
@@ -302,31 +302,31 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_tempocontribuicaorgps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
-        if(trim($this->h36_tempocontribuicaorgps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
+     if(trim($this->h36_tempocontribuicaorgps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){
+        if(trim($this->h36_tempocontribuicaorgps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){
            $this->h36_tempocontribuicaorgps = 'null' ;
-        } 
+        }
        $sql  .= $virgula." h36_tempocontribuicaorgps = $this->h36_tempocontribuicaorgps ";
        $virgula = ",";
      }
-     if(trim($this->h36_tempocontribuicaorpps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
-        if(trim($this->h36_tempocontribuicaorpps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
+     if(trim($this->h36_tempocontribuicaorpps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){
+        if(trim($this->h36_tempocontribuicaorpps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){
            $this->h36_tempocontribuicaorpps = 'null' ;
-        } 
+        }
        $sql  .= $virgula." h36_tempocontribuicaorpps = $this->h36_tempocontribuicaorpps ";
        $virgula = ",";
      }
-     if(trim($this->h36_temposficticios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
-        if(trim($this->h36_temposficticios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
+     if(trim($this->h36_temposficticios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){
+        if(trim($this->h36_temposficticios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){
            $this->h36_temposficticios = 'null' ;
-        } 
+        }
        $sql  .= $virgula." h36_temposficticios = $this->h36_temposficticios ";
        $virgula = ",";
      }
-     if(trim($this->h36_temposemcontribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
-        if(trim($this->h36_temposemcontribuicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
+     if(trim($this->h36_temposemcontribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){
+        if(trim($this->h36_temposemcontribuicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){
            $this->h36_temposemcontribuicao = 'null' ;
-        } 
+        }
        $sql  .= $virgula." h36_temposemcontribuicao = $this->h36_temposemcontribuicao ";
        $virgula = ",";
      }
@@ -373,7 +373,7 @@ class cl_rhparam {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Parametros RH não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h36_instit;
@@ -401,11 +401,11 @@ class cl_rhparam {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($h36_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h36_instit=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -414,7 +414,7 @@ class cl_rhparam {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($h36_instit));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -453,7 +453,7 @@ class cl_rhparam {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Parametros RH não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h36_instit;
@@ -481,11 +481,11 @@ class cl_rhparam {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -507,8 +507,8 @@ class cl_rhparam {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($h36_instit = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($h36_instit = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from rhparam ";
@@ -523,8 +523,8 @@ class cl_rhparam {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($h36_instit)) {
-         $sql2 .= " where rhparam.h36_instit = $h36_instit "; 
-       } 
+         $sql2 .= " where rhparam.h36_instit = $h36_instit ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -534,7 +534,7 @@ class cl_rhparam {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($h36_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -542,8 +542,8 @@ class cl_rhparam {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($h36_instit)){
-         $sql2 .= " where rhparam.h36_instit = $h36_instit "; 
-       } 
+         $sql2 .= " where rhparam.h36_instit = $h36_instit ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -554,10 +554,10 @@ class cl_rhparam {
      return $sql;
   }
 
-  function sql_query_rhparam ( $oid = null,$campos="rhparam.oid,*",$ordem=null,$dbwhere=""){
+  public function sql_query_rhparam ( $oid = null,$campos="rhparam.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_rhparam {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: issqn
@@ -41,7 +41,7 @@ if(isset($seq) && $seq!="" && isset($op) && $op!=""){
   $result20=$cltabativtipcalc->sql_record($cltabativtipcalc->sql_query($inscr,$seq,'q81_descr,q11_tipcalc'));
   if($cltabativtipcalc->numrows>0){
     db_fieldsmemory($result20,0);
-  }  
+  }
   $result21=$clativprinc->sql_record($clativprinc->sql_query($q07_inscr,"q88_seq"));
   if($clativprinc->numrows>0){
     db_fieldsmemory($result21,0);
@@ -49,7 +49,7 @@ if(isset($seq) && $seq!="" && isset($op) && $op!=""){
         $princ='t';
     }else{
         $princ='f';
-    }  
+    }
   }else{
     $princ='f';
   }
@@ -65,8 +65,8 @@ if(isset($seq) && $seq!="" && isset($op) && $op!=""){
     <td nowrap title="<?=@$Tq07_seq?>">
        <?=$Lq07_seq?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('q07_seq',6,$Iq07_seq,true,'text',3);
 ?>
     </td>
@@ -75,26 +75,26 @@ db_input('q07_seq',6,$Iq07_seq,true,'text',3);
     <td nowrap title="<?=@$Tq07_inscr?>">
        <?=$Lq07_inscr?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('q07_inscr',6,$Iq07_inscr,true,'text',3);
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq07_ativ?>">
-       <?
+       <?php
        db_ancora(@$Lq07_ativ,"js_pesquisaq07_ativ(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('q07_ativ',6,$Iq07_ativ,true,'text',$db_opcao," onchange='js_pesquisaq07_ativ(false);'")
 ?>
-       <?
+       <?php
 db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
        ?>
     </td>
@@ -103,8 +103,8 @@ db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
     <td nowrap title="Atividade principal">
       <b>Atividade principal:</b>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $xq = array("f"=>"NÃO","t"=>"SIM");
  db_select('princ',$xq,true,$db_opcao);
 if(isset($pods) && $pods=="nops"){
@@ -117,11 +117,11 @@ if(isset($pods) && $pods=="nops"){
     <td nowrap title="<?=@$Tq07_quant?>">
        <?=@$Lq07_quant?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 if(empty($q07_quant)){
   $q07_quant=1;
-}  
+}
 db_input('q07_quant',6,$Iq07_quant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -130,8 +130,8 @@ db_input('q07_quant',6,$Iq07_quant,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Tq07_perman?>">
        <?=@$Lq07_perman?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 $xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
 db_select('q07_perman',$xe,true,$db_opcao);
 ?>
@@ -141,13 +141,13 @@ db_select('q07_perman',$xe,true,$db_opcao);
     <td nowrap title="<?=@$Tq07_datain?>">
        <?=@$Lq07_datain?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 if(empty($q07_datain_dia)){
   $q07_datain_dia = date("d",db_getsession("DB_datausu"));
   $q07_datain_mes = date("m",db_getsession("DB_datausu"));
   $q07_datain_ano = date("Y",db_getsession("DB_datausu"));
-} 
+}
 db_inputdata('q07_datain',@$q07_datain_dia,@$q07_datain_mes,@$q07_datain_ano,true,'text',$db_opcao);
 ?>
     </td>
@@ -156,23 +156,23 @@ db_inputdata('q07_datain',@$q07_datain_dia,@$q07_datain_mes,@$q07_datain_ano,tru
     <td nowrap title="<?=@$Tq07_datafi?>">
        <?=@$Lq07_datafi?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_inputdata('q07_datafi',@$q07_datafi_dia,@$q07_datafi_mes,@$q07_datafi_ano,true,'text',$db_opcao,"","","E6E4F1")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq11_tipcalc?>">
-       <?
+       <?php
        db_ancora(@$Lq11_tipcalc,"js_tipcalc(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
   db_input('q11_tipcalc',6,$Iq07_inscr,true,'text',$db_opcao,'onchange="js_tipcalc(false);"');
 ?>
-       <?
+       <?php
 db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
        ?>
     </td>
@@ -187,14 +187,14 @@ db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
    <td valign="top">
      <center>
      <fieldset><Legend align="center"><b>ATIVIDADES CADASTRADAS</b></Legend>
-     <?
+     <?php
       if(isset($seq) && $seq!="" && isset($op) && $op!=""){
-     ?>	
+     ?>
         <iframe id="ativ"  class="bordasi"  frameborder="0" name="ativ"   leftmargin="0" topmargin="0" src="iss1_tabativ014.php?seqno=<?=$seq?><?=(isset($q07_inscr)?"&q07_inscr=$q07_inscr":"")?>" height="200" width="740">
-    <?}else{?>           
+    <?}else{?>
         <iframe id="ativ"  class="bordasi"  frameborder="0" name="ativ"   leftmargin="0" topmargin="0" src="iss1_tabativ014.php?a=1<?=(isset($q07_inscr)?"&q07_inscr=$q07_inscr":"")?><?=(isset($db_opcaoal)?"&db_opcaoal=3":"")?>" height="200" width="740">
-    <?}?>           
-       </iframe> 
+    <?php }?>
+       </iframe>
      </fieldset>
      </center>
    </td>
@@ -203,33 +203,33 @@ db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
 </form>
 <script>
 function js_xx(){
-  alert("Não pods");  
+  alert("Não pods");
   return false;
 }
-<?
+<?php
 if(isset($q07_inscr)){
   $clativprinc->sql_record($clativprinc->sql_query_file($q07_inscr,"q88_inscr"));
   if($clativprinc->numrows==0){
   echo "
         function js_re(){
-          document.getElementById('princ').options[1].selected=true; 	
+          document.getElementById('princ').options[1].selected=true;
 	}
 	js_re();
       ";
   }
-}  
+}
 ?>
-<?
+<?php
  if(isset($pods) && $pods=="nops"){
     echo "document.form1.princ.disabled=true;\n\n";
  }
-  
+
 if(isset($q07_inscr) && $q07_inscr!=""){
 ?>
 function js_cancelar(){
   location.href='iss1_tabativ004.php?q07_inscr=<?=$q07_inscr?>&z01_nome=<?=$z01_nome?>';
 }
-<?
+<?php
 }
 ?>
 function js_tipcalc(mostra){
@@ -240,10 +240,10 @@ function js_tipcalc(mostra){
   }
 }
 function js_mostratip(chave,erro){
-  document.form1.q81_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.q11_tipcalc.focus(); 
-    document.form1.q11_tipcalc.value = ''; 
+  document.form1.q81_descr.value = chave;
+  if(erro==true){
+    document.form1.q11_tipcalc.focus();
+    document.form1.q11_tipcalc.value = '';
   }
 }
 function js_mostratip1(chave1,chave2){
@@ -259,10 +259,10 @@ function js_pesquisaq07_ativ(mostra){
   }
 }
 function js_mostraativid(chave,erro){
-  document.form1.q03_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.q07_ativ.focus(); 
-    document.form1.q07_ativ.value = ''; 
+  document.form1.q03_descr.value = chave;
+  if(erro==true){
+    document.form1.q07_ativ.focus();
+    document.form1.q07_ativ.value = '';
   }
 }
 function js_mostraativid1(chave1,chave2){

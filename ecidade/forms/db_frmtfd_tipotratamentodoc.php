@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,19 +39,19 @@ $clrotulo->label("tf04_c_descr");
       <?=@$Ltf06_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf06_i_codigo',10,$Itf06_i_codigo,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf06_i_tipotratamento?>">
-      <?
+      <?php
       db_ancora(@$Ltf06_i_tipotratamento,"js_pesquisatf06_i_tipotratamento(true);",3);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf06_i_tipotratamento',10,'',true,'text',3,'');
       db_input('tf04_c_descr',50,'',true,'text',3,'');
       ?>
@@ -59,12 +59,12 @@ $clrotulo->label("tf04_c_descr");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf06_i_documento?>">
-      <?
+      <?php
       db_ancora(@$Ltf06_i_documento,"js_pesquisatf06_i_documento(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf06_i_documento',10,$Itf06_i_documento,true,'text',$db_opcao," onchange='js_pesquisatf06_i_documento(false);'");
       db_input('tf07_c_descr',50,$Itf07_c_descr,true,'text',3,'');
       ?>
@@ -75,7 +75,7 @@ $clrotulo->label("tf04_c_descr");
       <?=@$Ltf06_i_obrigatorio?>
     </td>
     <td>
-      <?
+      <?php
       $aX = array('1'=>'SIM', '2'=>'NÃO');
       db_select('tf06_i_obrigatorio',$aX,true,$db_opcao,'');
       ?>
@@ -91,7 +91,7 @@ $clrotulo->label("tf04_c_descr");
   <table width="100%">
 	  <tr>
 		  <td valign="top"><br>
-        <?
+        <?php
 				$aChavepri = array ('tf06_i_codigo' => @$tf06_i_codigo,
                             'tf06_i_documento' => @$tf06_i_documento, 
                             'tf06_i_tipotratamento' => @$tf06_i_tipotratamento, 
@@ -145,7 +145,7 @@ function js_novo() {
 
 function js_cancelar() {
 
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf06_i_tipotratamento=$tf06_i_tipotratamento&tf04_c_descr=$tf04_c_descr'";
   ?>
 
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_tipotratamentodoc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

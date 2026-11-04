@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=7.4",
         "ext-bcmath": "*",
         "ext-calendar": "*",
         "ext-curl": "*",
@@ -24,45 +24,45 @@
         "aferrandini/phpqrcode": "^1.0",
         "barryvdh/laravel-ide-helper": "^2.4",
         "dbseller/legacy": "^1.0",
-        "dbseller/phinx_postgres": "^1.3",
-        "dbseller/sdk-api-pix-bb": "^1.0",
+        "dbseller/sdk-api-pix-bb": "^2.0",
         "dbseller/session": "dev-master",
         "doctrine/dbal": "2.*",
         "dompdf/dompdf": "^0.8.3",
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "7.5.0",
         "intervention/image": "^2.7",
         "jeremeamia/superclosure": "^2.0",
-        "laravel/framework": "5.4.*",
-        "laravel/passport": "^4.0",
-        "laravel/tinker": "~1.0",
-        "lcobucci/jwt": "3.3.3",
+        "laravel/framework": "^8.0",
+        "laravel/passport": "^10.0",
+        "laravel/tinker": "^2.6",
+        "lcobucci/jwt": "3.4",
         "league/fractal": "0.11.0",
         "michelf/php-markdown": "^1.6",
         "mormat/php-formula-interpreter": "1.0.0",
-        "mpdf/mpdf": "v7.1.9",
-        "ncjoes/office-converter": "^1.0",
+        "mpdf/mpdf": "^8.0",
         "nfephp-org/sped-common": "~5.0.40",
         "phpmailer/phpmailer": "^6.5",
         "phpoffice/phpspreadsheet": "^1.08",
-        "phpoffice/phpword": "v0.17.*",
-        "proner/phppimaco": "1.3.0",
-        "pusher/pusher-php-server": "~2.6",
-        "silex/silex": "^2.0",
-        "symfony/console": "~3.2",
-        "symfony/filesystem": "~3.2",
+        "phpoffice/phpword": "v0.18.*",
+        "proner/phppimaco": "1.4.5",
+        "pusher/pusher-php-server": "7.2.2",
+        "symfony/console": "v5.3.7",
+        "symfony/filesystem": "v5.4.12",
         "symfony/polyfill-php56": "^1.1",
         "symfony/polyfill-php70": "^1.1",
-        "symfony/process": "~3.2",
-        "symfony/validator": "~3.2",
-        "symfony/yaml": "~3.2",
+        "symfony/process": "v5.3.7",
+        "symfony/yaml": "v5.4.12",
         "vlucas/valitron": "^1.4",
-        "zendframework/zend-eventmanager": "2.2.10"
+        "zendframework/zend-eventmanager": "2.2.10",
+        "ncjoes/office-converter": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.8",
         "filp/whoops": "^2.5",
         "fzaninotto/faker": "^1.9",
         "mockery/mockery": "1.3.0",
-        "phpunit/phpunit": "^5.7",
+        "perftools/php-profiler": "^1.1",
+        "phpstan/phpstan": "^1.2",
+        "phpunit/phpunit": "^8.5",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "secure-http": false,
@@ -74,7 +74,11 @@
             "app/Helpers/Orcamento/FiltrosOrcamento.php",
             "app/Helpers/Orcamento/FuncoesOrcamento.php",
             "app/Helpers/Planejamento/FiltrosDespesaPlanejamento.php",
-            "app/Helpers/Contabilidade/FuncoesContabilidade.php"
+            "app/Helpers/Configuracao/VerificaEstado.php",
+            "app/Helpers/Configuracao/VerificaMunicipio.php",
+            "app/Helpers/Contabilidade/FuncoesContabilidade.php",
+            "app/Helpers/Contabilidade/FuncoesRelatorios.php",
+            "app/Helpers/Educacao/VerificaValidadeNumeroMatriculaCertidao.php"
         ],
         "classmap": [
             "database"
@@ -94,45 +98,41 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "merge-ecidade-3": [
-            "$(which php5.6) bin/console modification:refresh-metadata",
-            "$(which php5.6) bin/console modification:refresh-cache",
+            "$(which php7.4) bin/console modification:refresh-metadata",
+            "$(which php7.4) bin/console modification:refresh-cache",
             "echo 'DONE!'"
         ],
-        "install-desktop": [
-            "$(which php5.6) bin/console extension:pack Desktop",
-            "$(which php5.6) bin/console extension:unpack desktop-package.tar.gz --force",
-            "$(which php5.6) bin/console extension:install Desktop dbseller"
+        "install-dbug": [
+            "$(which php7.4) bin/console extension:pack DBug",
+            "$(which php7.4) bin/console extension:unpack dbug-package.tar.gz --force",
+            "$(which php7.4) bin/console extension:install DBug"
         ],
         "configure-desktop": [
-            "$(which php5.6) -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "$(which php5.6) -r \"file_exists('libs/db_conn.php') || copy('libs/db_conn.php.dist', 'libs/db_conn.php');\"",
-            "$(which php5.6) -r \"file_exists('config/ecidade_config.php') || copy('config/ecidade_config.php.dist', 'config/ecidade_config.php');\"",
-            "$(which php5.6) -r \"file_exists('config/application.php') || copy('config/application.default.php', 'config/application.php');\""
+            "App\\Domain\\Core\\Config\\Desktop::config"
         ],
-        "install-dbug": [
-            "$(which php5.6) bin/console extension:pack DBug",
-            "$(which php5.6) bin/console extension:unpack dbug-package.tar.gz --force",
-            "$(which php5.6) bin/console extension:install DBug"
-        ],
-
         "sniff-check": [
-            "sniff_check() { $(which php) -d memory_limit=-1 vendor/bin/phpcs --standard=ci/phpcs/ruleset.xml --colors \"$@\"; }; sniff_check"
+            "sniff_check() { $(which php7.4) -d memory_limit=-1 vendor/bin/phpcs --standard=ci/phpcs/ruleset.xml --colors \"$@\"; }; sniff_check"
         ],
         "psrcheck": [
             "ci/scripts/sniff.sh"
         ],
+        "post-root-package-install": [
+            "$(which php7.4) -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
         "post-create-project-cmd": [
-            "$(which php5.6) artisan key:generate"
+            "$(which php7.4) artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "$(which php5.6) artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "$(which php5.6) artisan optimize",
-            "$(which php5.6) artisan ide-helper:generate",
-            "$(which php5.6) artisan ide-helper:meta"
+            "$(which php7.4) artisan ide-helper:generate",
+            "$(which php7.4) artisan ide-helper:meta"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "$(which php7.4) artisan package:discover"
         ]
     },
     "config": {
@@ -140,7 +140,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "kylekatarnls/update-helper": true
+            "kylekatarnls/update-helper": true,
+            "symfony/flex": true
         }
     }
 }

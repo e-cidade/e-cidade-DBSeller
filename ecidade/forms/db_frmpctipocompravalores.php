@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,7 +79,7 @@ fieldset table td:first-child {
           <?=@$Lpc85_valorminimo?>
         </td>
         <td width="30%">
-          <?
+          <?php
             db_input('pc85_sequencial',10,$Ipc85_sequencial,true,'hidden',$db_opcao,"");
             db_input('pc85_valorminimo',10,$Ipc85_valorminimo,true,'text',$db_opcao,"");
           ?>
@@ -88,7 +88,7 @@ fieldset table td:first-child {
           <?=@$Lpc85_valormaximo?>
         </td>
         <td>
-          <?
+          <?php
             db_input('pc85_valormaximo',10,$Ipc85_valormaximo,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -98,7 +98,7 @@ fieldset table td:first-child {
 		       <?=@$Lpc85_datainicial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_inputdata('pc85_datainicial',@$pc85_datainicial_dia,@$pc85_datainicial_mes,@$pc85_datainicial_ano,true,
 					               'text',$db_opcao);
 					?>
@@ -107,7 +107,7 @@ fieldset table td:first-child {
            <?=@$Lpc85_datafinal?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('pc85_datafinal',@$pc85_datafinal_dia,@$pc85_datafinal_mes,@$pc85_datafinal_ano,true,
                          'text',$db_opcao);
           ?>
@@ -136,7 +136,7 @@ fieldset table td:first-child {
 	<table>
 	  <tr>
 	    <td valign="top"  align="center">  
-		    <?
+		    <?php
            $chavepri  = array("pc85_sequencial" => @$pc85_sequencial);
            $sCampos   = "pc85_sequencial,pc85_codtipocompra,pc85_valorminimo,pc85_valormaximo,pc85_datainicial,pc85_datafinal";
            $sWhere    = "pc85_codtipocompra = {$pc50_codcom}";

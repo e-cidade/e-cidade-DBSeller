@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_cfveic {
                  u08_abast = int4 = Numero da Ordem de Abastecim 
                  ";
    //funcao construtor da classe 
-   function cl_cfveic() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfveic"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cfveic {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->u08_codvei = ($this->u08_codvei == ""?@$GLOBALS["HTTP_POST_VARS"]["u08_codvei"]:$this->u08_codvei);
        $this->u08_nmanut = ($this->u08_nmanut == ""?@$GLOBALS["HTTP_POST_VARS"]["u08_nmanut"]:$this->u08_nmanut);
@@ -76,7 +76,7 @@ class cl_cfveic {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->u08_codvei == null ){ 
        $this->erro_sql = " Campo Parametro sequencial para o ca nao Informado.";
@@ -141,7 +141,7 @@ class cl_cfveic {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update cfveic set ";
      $virgula = "";
@@ -215,7 +215,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from cfveic
                     where ";
      $sql2 = "";
@@ -254,7 +254,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,14 +58,14 @@ require_once(modification("libs/db_liborcamento.php"));
               <tr>
                 <td width="100"><strong>Período de: </strong></td>
                 <td>
-                  <? db_inputdata('sDataInicial', '', '', '', true, 'text', 1); ?>&nbsp;
-                  <b>até:</b> <? db_inputdata('sDataFinal', '', '', '', true, 'text', 1); ?>
+                  <?php db_inputdata('sDataInicial', '', '', '', true, 'text', 1); ?>&nbsp;
+                  <b>até:</b> <?php db_inputdata('sDataFinal', '', '', '', true, 'text', 1); ?>
                 </td>
               </tr>
               <tr>
                 <td><strong>Tipo de Usuário:</strong></td>
                 <td>
-                  <?
+                  <?php
                     $aTiposUsuario = array ('t' => 'Todos', 
                                             '0' => 'Internos', 
                                             '1' => 'Externos');
@@ -76,7 +76,7 @@ require_once(modification("libs/db_liborcamento.php"));
               <tr>
                 <td><strong>Somente Ativos:</strong></td>
                 <td>
-                  <?
+                  <?php
                     $aSomenteAtivos = array(1 => 'Sim', 0 => 'Não');
                     db_select('iSomenteAtivo', $aSomenteAtivos, true, 1,"style='width:125px'");
                   ?>
@@ -84,7 +84,7 @@ require_once(modification("libs/db_liborcamento.php"));
               </tr>
               <tr>
                 <td colspan="2" align="center">
-                  <?
+                  <?php
                     db_selinstit("", 300, 100);
                   ?>
                 </td>
@@ -100,7 +100,7 @@ require_once(modification("libs/db_liborcamento.php"));
       </tr>
     </table>    
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,87 +1,87 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE vistorias
-class cl_vistorias { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $y70_codvist = 0; 
-   var $y70_data_dia = null; 
-   var $y70_data_mes = null; 
-   var $y70_data_ano = null; 
-   var $y70_data = null; 
-   var $y70_hora = null; 
-   var $y70_obs = null; 
-   var $y70_contato = null; 
-   var $y70_tipovist = 0; 
-   var $y70_ultandam = 0; 
-   var $y70_id_usuario = 0; 
-   var $y70_coddepto = 0; 
-   var $y70_numbloco = null; 
-   var $y70_parcial = 'f'; 
-   var $y70_ativo = 'f'; 
-   var $y70_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 y70_codvist = int4 = Código da Vistoria 
-                 y70_data = date = Data da Vistorias 
-                 y70_hora = char(5) = Hora da Vistoria 
-                 y70_obs = text = Observações 
-                 y70_contato = varchar(50) = Contato 
-                 y70_tipovist = int4 = Código do Tipo 
-                 y70_ultandam = int8 = Codigo do Último Andamento Gerado 
-                 y70_id_usuario = int4 = Cod. Usuário 
-                 y70_coddepto = int4 = Código 
-                 y70_numbloco = varchar(20) = Número do Bloco 
-                 y70_parcial = bool = Vistoria parcial 
-                 y70_ativo = bool = Ativo 
-                 y70_instit = int4 = Cod. Instituição 
+class cl_vistorias {
+   // cria variaveis de erro
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria variaveis do arquivo
+   public $y70_codvist = 0;
+   public $y70_data_dia = null;
+   public $y70_data_mes = null;
+   public $y70_data_ano = null;
+   public $y70_data = null;
+   public $y70_hora = null;
+   public $y70_obs = null;
+   public $y70_contato = null;
+   public $y70_tipovist = 0;
+   public $y70_ultandam = 0;
+   public $y70_id_usuario = 0;
+   public $y70_coddepto = 0;
+   public $y70_numbloco = null;
+   public $y70_parcial = 'f';
+   public $y70_ativo = 'f';
+   public $y70_instit = 0;
+   // cria propriedade com as variaveis do arquivo
+   public $campos = "
+                 y70_codvist = int4 = Código da Vistoria
+                 y70_data = date = Data da Vistorias
+                 y70_hora = char(5) = Hora da Vistoria
+                 y70_obs = text = Observações
+                 y70_contato = varchar(50) = Contato
+                 y70_tipovist = int4 = Código do Tipo
+                 y70_ultandam = int8 = Codigo do Último Andamento Gerado
+                 y70_id_usuario = int4 = Cod. Usuário
+                 y70_coddepto = int4 = Código
+                 y70_numbloco = varchar(20) = Número do Bloco
+                 y70_parcial = bool = Vistoria parcial
+                 y70_ativo = bool = Ativo
+                 y70_instit = int4 = Cod. Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_vistorias() { 
+   //funcao construtor da classe
+   public function cl_vistorias() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("vistorias"); 
+     $this->rotulo = new rotulo("vistorias");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_vistorias {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y70_codvist = ($this->y70_codvist == ""?@$GLOBALS["HTTP_POST_VARS"]["y70_codvist"]:$this->y70_codvist);
        if($this->y70_data == ""){
@@ -117,9 +117,9 @@ class cl_vistorias {
      }
    }
    // funcao para inclusao
-   function incluir ($y70_codvist){ 
+   public function incluir ($y70_codvist){
       $this->atualizacampos();
-     if($this->y70_data == null ){ 
+     if($this->y70_data == null ){
        $this->erro_sql = " Campo Data da Vistorias nao Informado.";
        $this->erro_campo = "y70_data_dia";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_hora == null ){ 
+     if($this->y70_hora == null ){
        $this->erro_sql = " Campo Hora da Vistoria nao Informado.";
        $this->erro_campo = "y70_hora";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_tipovist == null ){ 
+     if($this->y70_tipovist == null ){
        $this->erro_sql = " Campo Código do Tipo nao Informado.";
        $this->erro_campo = "y70_tipovist";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_ultandam == null ){ 
+     if($this->y70_ultandam == null ){
        $this->erro_sql = " Campo Codigo do Último Andamento Gerado nao Informado.";
        $this->erro_campo = "y70_ultandam";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_id_usuario == null ){ 
+     if($this->y70_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "y70_id_usuario";
        $this->erro_banco = "";
@@ -164,7 +164,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_coddepto == null ){ 
+     if($this->y70_coddepto == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "y70_coddepto";
        $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_numbloco == null ){ 
+     if($this->y70_numbloco == null ){
        $this->y70_numbloco = "0";
      }
-     if($this->y70_parcial == null ){ 
+     if($this->y70_parcial == null ){
        $this->erro_sql = " Campo Vistoria parcial nao Informado.";
        $this->erro_campo = "y70_parcial";
        $this->erro_banco = "";
@@ -185,7 +185,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_ativo == null ){ 
+     if($this->y70_ativo == null ){
        $this->erro_sql = " Campo Ativo nao Informado.";
        $this->erro_campo = "y70_ativo";
        $this->erro_banco = "";
@@ -194,7 +194,7 @@ class cl_vistorias {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y70_instit == null ){ 
+     if($this->y70_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "y70_instit";
        $this->erro_banco = "";
@@ -204,16 +204,16 @@ class cl_vistorias {
        return false;
      }
      if($y70_codvist == "" || $y70_codvist == null ){
-       $result = db_query("select nextval('vistorias_y70_codvist_seq')"); 
+       $result = db_query("select nextval('vistorias_y70_codvist_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: vistorias_y70_codvist_seq do campo: y70_codvist"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: vistorias_y70_codvist_seq do campo: y70_codvist";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->y70_codvist = pg_result($result,0,0); 
+       $this->y70_codvist = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from vistorias_y70_codvist_seq");
        if(($result != false) && (pg_result($result,0,0) < $y70_codvist)){
@@ -224,10 +224,10 @@ class cl_vistorias {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->y70_codvist = $y70_codvist; 
+         $this->y70_codvist = $y70_codvist;
        }
      }
-     if(($this->y70_codvist == null) || ($this->y70_codvist == "") ){ 
+     if(($this->y70_codvist == null) || ($this->y70_codvist == "") ){
        $this->erro_sql = " Campo y70_codvist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -236,37 +236,37 @@ class cl_vistorias {
        return false;
      }
      $sql = "insert into vistorias(
-                                       y70_codvist 
-                                      ,y70_data 
-                                      ,y70_hora 
-                                      ,y70_obs 
-                                      ,y70_contato 
-                                      ,y70_tipovist 
-                                      ,y70_ultandam 
-                                      ,y70_id_usuario 
-                                      ,y70_coddepto 
-                                      ,y70_numbloco 
-                                      ,y70_parcial 
-                                      ,y70_ativo 
-                                      ,y70_instit 
+                                       y70_codvist
+                                      ,y70_data
+                                      ,y70_hora
+                                      ,y70_obs
+                                      ,y70_contato
+                                      ,y70_tipovist
+                                      ,y70_ultandam
+                                      ,y70_id_usuario
+                                      ,y70_coddepto
+                                      ,y70_numbloco
+                                      ,y70_parcial
+                                      ,y70_ativo
+                                      ,y70_instit
                        )
                 values (
-                                $this->y70_codvist 
-                               ,".($this->y70_data == "null" || $this->y70_data == ""?"null":"'".$this->y70_data."'")." 
-                               ,'$this->y70_hora' 
-                               ,'$this->y70_obs' 
-                               ,'$this->y70_contato' 
-                               ,$this->y70_tipovist 
-                               ,$this->y70_ultandam 
-                               ,$this->y70_id_usuario 
-                               ,$this->y70_coddepto 
-                               ,'$this->y70_numbloco' 
-                               ,'$this->y70_parcial' 
-                               ,'$this->y70_ativo' 
-                               ,$this->y70_instit 
+                                $this->y70_codvist
+                               ,".($this->y70_data == "null" || $this->y70_data == ""?"null":"'".$this->y70_data."'")."
+                               ,'$this->y70_hora'
+                               ,'$this->y70_obs'
+                               ,'$this->y70_contato'
+                               ,$this->y70_tipovist
+                               ,$this->y70_ultandam
+                               ,$this->y70_id_usuario
+                               ,$this->y70_coddepto
+                               ,'$this->y70_numbloco'
+                               ,'$this->y70_parcial'
+                               ,'$this->y70_ativo'
+                               ,$this->y70_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "vistorias ($this->y70_codvist) nao Incluído. Inclusao Abortada.";
@@ -310,16 +310,16 @@ class cl_vistorias {
        $resac = db_query("insert into db_acount values($acount,669,10665,'','".AddSlashes(pg_result($resaco,0,'y70_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($y70_codvist=null) { 
+   public function alterar ($y70_codvist=null) {
       $this->atualizacampos();
      $sql = " update vistorias set ";
      $virgula = "";
-     if(trim($this->y70_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_codvist"])){ 
+     if(trim($this->y70_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_codvist"])){
        $sql  .= $virgula." y70_codvist = $this->y70_codvist ";
        $virgula = ",";
-       if(trim($this->y70_codvist) == null ){ 
+       if(trim($this->y70_codvist) == null ){
          $this->erro_sql = " Campo Código da Vistoria nao Informado.";
          $this->erro_campo = "y70_codvist";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"] !="") ){ 
+     if(trim($this->y70_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"] !="") ){
        $sql  .= $virgula." y70_data = '$this->y70_data' ";
        $virgula = ",";
-       if(trim($this->y70_data) == null ){ 
+       if(trim($this->y70_data) == null ){
          $this->erro_sql = " Campo Data da Vistorias nao Informado.";
          $this->erro_campo = "y70_data_dia";
          $this->erro_banco = "";
@@ -341,11 +341,11 @@ class cl_vistorias {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["y70_data_dia"])){
          $sql  .= $virgula." y70_data = null ";
          $virgula = ",";
-         if(trim($this->y70_data) == null ){ 
+         if(trim($this->y70_data) == null ){
            $this->erro_sql = " Campo Data da Vistorias nao Informado.";
            $this->erro_campo = "y70_data_dia";
            $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_vistorias {
          }
        }
      }
-     if(trim($this->y70_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_hora"])){ 
+     if(trim($this->y70_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_hora"])){
        $sql  .= $virgula." y70_hora = '$this->y70_hora' ";
        $virgula = ",";
-       if(trim($this->y70_hora) == null ){ 
+       if(trim($this->y70_hora) == null ){
          $this->erro_sql = " Campo Hora da Vistoria nao Informado.";
          $this->erro_campo = "y70_hora";
          $this->erro_banco = "";
@@ -369,18 +369,18 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_obs"])){ 
+     if(trim($this->y70_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_obs"])){
        $sql  .= $virgula." y70_obs = '$this->y70_obs' ";
        $virgula = ",";
      }
-     if(trim($this->y70_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_contato"])){ 
+     if(trim($this->y70_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_contato"])){
        $sql  .= $virgula." y70_contato = '$this->y70_contato' ";
        $virgula = ",";
      }
-     if(trim($this->y70_tipovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_tipovist"])){ 
+     if(trim($this->y70_tipovist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_tipovist"])){
        $sql  .= $virgula." y70_tipovist = $this->y70_tipovist ";
        $virgula = ",";
-       if(trim($this->y70_tipovist) == null ){ 
+       if(trim($this->y70_tipovist) == null ){
          $this->erro_sql = " Campo Código do Tipo nao Informado.";
          $this->erro_campo = "y70_tipovist";
          $this->erro_banco = "";
@@ -390,10 +390,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_ultandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_ultandam"])){ 
+     if(trim($this->y70_ultandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_ultandam"])){
        $sql  .= $virgula." y70_ultandam = $this->y70_ultandam ";
        $virgula = ",";
-       if(trim($this->y70_ultandam) == null ){ 
+       if(trim($this->y70_ultandam) == null ){
          $this->erro_sql = " Campo Codigo do Último Andamento Gerado nao Informado.";
          $this->erro_campo = "y70_ultandam";
          $this->erro_banco = "";
@@ -403,10 +403,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_id_usuario"])){ 
+     if(trim($this->y70_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_id_usuario"])){
        $sql  .= $virgula." y70_id_usuario = $this->y70_id_usuario ";
        $virgula = ",";
-       if(trim($this->y70_id_usuario) == null ){ 
+       if(trim($this->y70_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "y70_id_usuario";
          $this->erro_banco = "";
@@ -416,10 +416,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_coddepto"])){ 
+     if(trim($this->y70_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_coddepto"])){
        $sql  .= $virgula." y70_coddepto = $this->y70_coddepto ";
        $virgula = ",";
-       if(trim($this->y70_coddepto) == null ){ 
+       if(trim($this->y70_coddepto) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "y70_coddepto";
          $this->erro_banco = "";
@@ -429,14 +429,14 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_numbloco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_numbloco"])){ 
+     if(trim($this->y70_numbloco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_numbloco"])){
        $sql  .= $virgula." y70_numbloco = '$this->y70_numbloco' ";
        $virgula = ",";
      }
-     if(trim($this->y70_parcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_parcial"])){ 
+     if(trim($this->y70_parcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_parcial"])){
        $sql  .= $virgula." y70_parcial = '$this->y70_parcial' ";
        $virgula = ",";
-       if(trim($this->y70_parcial) == null ){ 
+       if(trim($this->y70_parcial) == null ){
          $this->erro_sql = " Campo Vistoria parcial nao Informado.";
          $this->erro_campo = "y70_parcial";
          $this->erro_banco = "";
@@ -446,10 +446,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_ativo"])){ 
+     if(trim($this->y70_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_ativo"])){
        $sql  .= $virgula." y70_ativo = '$this->y70_ativo' ";
        $virgula = ",";
-       if(trim($this->y70_ativo) == null ){ 
+       if(trim($this->y70_ativo) == null ){
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "y70_ativo";
          $this->erro_banco = "";
@@ -459,10 +459,10 @@ class cl_vistorias {
          return false;
        }
      }
-     if(trim($this->y70_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_instit"])){ 
+     if(trim($this->y70_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y70_instit"])){
        $sql  .= $virgula." y70_instit = $this->y70_instit ";
        $virgula = ",";
-       if(trim($this->y70_instit) == null ){ 
+       if(trim($this->y70_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "y70_instit";
          $this->erro_banco = "";
@@ -512,7 +512,7 @@ class cl_vistorias {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "vistorias nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->y70_codvist;
@@ -540,14 +540,14 @@ class cl_vistorias {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($y70_codvist=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($y70_codvist=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y70_codvist));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -585,7 +585,7 @@ class cl_vistorias {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "vistorias nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$y70_codvist;
@@ -613,11 +613,11 @@ class cl_vistorias {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -639,18 +639,18 @@ class cl_vistorias {
       }
      return $result;
    }
-   function sql_calculo ( $y70_codvist=""){
-   	
+   public function sql_calculo ( $y70_codvist=""){
+
    	$sSqlCalculo = "select fc_vistorias($y70_codvist)";
     $result      =  db_query($sSqlCalculo) or die ($sSqlCalculo);
     return $result;
-    
+
    }
-   
-   function sql_query ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,15 +672,15 @@ class cl_vistorias {
      $sql2 = "";
      if($dbwhere==""){
        if($y70_codvist!=null ){
-         $sql2 .= " where vistorias.y70_codvist = $y70_codvist "; 
-       } 
+         $sql2 .= " where vistorias.y70_codvist = $y70_codvist ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -689,7 +689,7 @@ class cl_vistorias {
      }
      return $sql;
   }
-   function sql_query_busca ( $y70_codvist=null,$db_where=""){
+   public function sql_query_busca ( $y70_codvist=null,$db_where=""){
      $sql = "select y70_codvist,dl_Identificação,dl_Código,x.z01_numcgm,cgm.z01_nome,y77_descricao,y70_data,y70_hora,y39_codandam,y70_coddepto
 		           from (
              select y70_codvist,y70_data,y70_hora,y70_obs,y77_descricao,y39_codandam,y70_coddepto,y70_id_usuario,y70_instit,y70_ativo,
@@ -724,10 +724,10 @@ class cl_vistorias {
                     left join vistsanitario on y74_codvist = y70_codvist
                     left join issbase on y71_inscr = q02_inscr
 										left join iptubase on j01_matric = y72_matric
-                    left join sanitario on y80_codsani = y74_codsani 
+                    left join sanitario on y80_codsani = y74_codsani
                     inner join tipovistorias  on  tipovistorias.y77_codtipo = vistorias.y70_tipovist
                     inner join fandam  on  fandam.y39_codandam = vistorias.y70_ultandam
-              ) as x 
+              ) as x
 							inner join cgm on cgm.z01_numcgm = x.z01_numcgm ";
      $sql2 = "";
      if($db_where==""){
@@ -741,7 +741,7 @@ class cl_vistorias {
 
      return $sql;
   }
-   function sql_querycgm ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_querycgm ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
        $sql = "select ";
      $sql .= " case when q02_numcgm is not null then q02_numcgm else
                         (case when j01_numcgm is not null then j01_numcgm else
@@ -760,10 +760,10 @@ class cl_vistorias {
      return $sql;
 
   }
-   function sql_query_cons ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cons ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -798,7 +798,7 @@ class cl_vistorias {
      $sql .= $sql2;
   if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -807,10 +807,10 @@ class cl_vistorias {
      }
      return $sql;
   }
-   function sql_query_deb ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_deb ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -835,15 +835,15 @@ class cl_vistorias {
      $sql2 = "";
      if($dbwhere==""){
        if($y70_codvist!=null ){
-         $sql2 .= " where vistorias.y70_codvist = $y70_codvist "; 
-       } 
+         $sql2 .= " where vistorias.y70_codvist = $y70_codvist ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -852,10 +852,10 @@ class cl_vistorias {
      }
      return $sql;
   }
-   function sql_query_file ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -868,15 +868,15 @@ class cl_vistorias {
      $sql2 = "";
      if($dbwhere==""){
        if($y70_codvist!=null ){
-         $sql2 .= " where vistorias.y70_codvist = $y70_codvist "; 
-       } 
+         $sql2 .= " where vistorias.y70_codvist = $y70_codvist ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -885,40 +885,40 @@ class cl_vistorias {
      }
      return $sql;
   }
-   function sql_query_info ( $y70_codvist=null,$campos="*",$ordem=null,$db_where=""){ 
+   public function sql_query_info ( $y70_codvist=null,$campos="*",$ordem=null,$db_where=""){
      $sql = "select $campos from (
              select vistorias.*,
-                    case when q02_numcgm is not null then 'Inscrição' else 
-			    		(case when j01_numcgm is not null then 'Matrícula' else 
+                    case when q02_numcgm is not null then 'Inscrição' else
+			    		(case when j01_numcgm is not null then 'Matrícula' else
 				    		(case when y73_numcgm is not null then 'CGM' else
-					    		(case when y80_numcgm is not null then 'Sanitário' else 'Nenhum' 
+					    		(case when y80_numcgm is not null then 'Sanitário' else 'Nenhum'
 					    		end)
 				    		end)
 			    		end)
 		    		end as identificacao ,
-                    case when y71_inscr is not null then y71_inscr else 
-			    		(case when y72_matric is not null then y72_matric else 
+                    case when y71_inscr is not null then y71_inscr else
+			    		(case when y72_matric is not null then y72_matric else
 				    		(case when y73_numcgm is not null then y73_numcgm else
 					    		(case when y74_codsani is not null then y74_codsani
 					    		end)
 				    		end)
 			    		end)
 		    		end as codigo,
-                    case when q02_numcgm is not null then q02_numcgm else 
-			    		(case when j01_numcgm is not null then j01_numcgm else 
+                    case when q02_numcgm is not null then q02_numcgm else
+			    		(case when j01_numcgm is not null then j01_numcgm else
 				    		(case when y73_numcgm is not null then y73_numcgm else
-					    		(case when y80_numcgm is not null then y80_numcgm else q02_numcgm 
+					    		(case when y80_numcgm is not null then y80_numcgm else q02_numcgm
 					    		end)
 				    		end)
 			    		end)
-		    		end as z01_numcgm 
-	      	from vistorias 
-		    	left outer join vistinscr on y71_codvist = y70_codvist 
-		    	left join vistmatric on y72_codvist = y70_codvist 
-		    	left join vistcgm on y73_codvist = y70_codvist 
-		    	left join vistsanitario on y74_codvist = y70_codvist 
-		    	left join issbase on y71_inscr = q02_inscr 
-		    	left join iptubase on j01_matric = y72_matric 
+		    		end as z01_numcgm
+	      	from vistorias
+		    	left outer join vistinscr on y71_codvist = y70_codvist
+		    	left join vistmatric on y72_codvist = y70_codvist
+		    	left join vistcgm on y73_codvist = y70_codvist
+		    	left join vistsanitario on y74_codvist = y70_codvist
+		    	left join issbase on y71_inscr = q02_inscr
+		    	left join iptubase on j01_matric = y72_matric
 		    	left join sanitario on y80_codsani = y74_codsani ) as x
 
 				inner join cgm on cgm.z01_numcgm = x.z01_numcgm
@@ -932,15 +932,15 @@ class cl_vistorias {
      $sql2 = "";
      if($db_where==""){
        if($y70_codvist!=null ){
-         $sql2 .= " where y70_codvist = $y70_codvist "; 
-       } 
+         $sql2 .= " where y70_codvist = $y70_codvist ";
+       }
      }else if($db_where != ""){
         $sql2 = " where $db_where";
      }
      $sql .= $sql2;
 	 if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -949,10 +949,10 @@ class cl_vistorias {
      }
      return $sql;
   }
-   function sql_querylocal ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_querylocal ( $y70_codvist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -982,7 +982,7 @@ class cl_vistorias {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -990,6 +990,33 @@ class cl_vistorias {
        }
      }
      return $sql;
+ }
+
+ public function sql_verifica_cgm_possui_calculo($cgm)
+ {
+    $schema = 'fiscal';
+    $sql = "
+        with inscricao_cgm as (
+                select y71_codvist from issbase
+                inner join {$schema}.vistinscr on y71_inscr = q02_inscr
+                where q02_numcgm = {$cgm}
+        ),
+        sanitario_cgm as (
+                select y74_codvist from {$schema}.sanitario
+                inner join {$schema}.vistsanitario on y74_codsani = y80_codsani
+                where y80_numcgm = {$cgm}
+        ),
+        vistorias_cgm AS (
+                select y71_codvist as codvist from inscricao_cgm
+                union
+                select y74_codvist from sanitario_cgm
+        )
+        select vistoriacalculo.y123_codvist
+        from {$schema}.vistoriacalculo
+        inner join vistorias_cgm on vistoriacalculo.y123_codvist = vistorias_cgm.codvist
+        limit 1
+    ";
+    return $sql;
  }
 }
 ?>

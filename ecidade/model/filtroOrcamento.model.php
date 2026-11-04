@@ -29,166 +29,186 @@
  * controla filtros para relatorios de orcamento
  *
  */
-class filtroOrcamento {
+class filtroOrcamento
+{
 
-  private $aInstituicoes = array();
-  /**
-   * Enter description here...
-   *
-   * @param array $aInstituicoes lista com as instituicoes
-   */
-  function __construct($aInstituicoes = null) {
-    $this->aInstituicoes = $aInstituicoes ;
-  }
+    private $aInstituicoes = array();
 
-  /**
-   * Retorna os orgaos
-   * @return array lista dos orgaos
-   */
-  function getOrgaos($iAnoUsu) {
+    /**
+     * @param array $aInstituicoes lista com as instituicoes
+     */
+    public function __construct($aInstituicoes = null)
+    {
+        $this->aInstituicoes = $aInstituicoes;
+    }
 
-    $oDaoOrcOrgao = db_utils::getDao("orcorgao");
-    $sSqlOrgaos   = $oDaoOrcOrgao->sql_query_file($iAnoUsu,null,"o40_orgao as orgao, o40_descr as descricao","1");
-    $rsOrgaos     = $oDaoOrcOrgao->sql_record($sSqlOrgaos);
-    $aOrgaos      = db_utils::getCollectionByRecord($rsOrgaos,false, false, true);
-    return $aOrgaos;
+    /**
+     * Retorna os orgaos
+     * @return array lista dos orgaos
+     */
+    public function getOrgaos($iAnoUsu)
+    {
+        $oDaoOrcOrgao = new cl_orcorgao;
+        $sSqlOrgaos = $oDaoOrcOrgao->sql_query_file($iAnoUsu, null, "o40_orgao as orgao, o40_descr as descricao", "1");
+        $rsOrgaos = $oDaoOrcOrgao->sql_record($sSqlOrgaos);
 
-  }
+        return db_utils::getCollectionByRecord($rsOrgaos, false, false, true);
+    }
 
-  /**
-   * Retorna as Unidades
-   * @param integer $iAnoUsu ano base
-   * @return array lista das unidades
-   */
-  function getUnidades($iAnoUsu) {
-
-    $oDaoOrcunidade = db_utils::getDao("orcunidade");
-    $sSqlUnidades   = $oDaoOrcunidade->sql_query($iAnoUsu,
-                                                 null,null,
-                                                 "o41_orgao as orgao,
+    /**
+     * Retorna as Unidades
+     * @param integer $iAnoUsu ano base
+     * @return array lista das unidades
+     */
+    public function getUnidades($iAnoUsu)
+    {
+        $oDaoOrcunidade = new cl_orcunidade;
+        
+        $sSqlUnidades = $oDaoOrcunidade->sql_query(
+            $iAnoUsu,
+            null,
+            null,
+            "o41_orgao as orgao,
                                                   o41_unidade as unidade,
                                                   o41_descr as descricao",
-                                                  "o41_orgao, o41_unidade");
-    $rsUnidades     = $oDaoOrcunidade->sql_record($sSqlUnidades);
-    $aUnidades      = db_utils::getCollectionByRecord($rsUnidades,false, false, true);
-    return $aUnidades;
+            "o41_orgao, o41_unidade"
+        );
+        $rsUnidades = $oDaoOrcunidade->sql_record($sSqlUnidades);
+        
+        return db_utils::getCollectionByRecord($rsUnidades, false, false, true);
+    }
 
-  }
+    /**
+     * Retorna as funcoes
+     *
+     * @param integer $iAnoUsu ano corrente
+     * @return array lista de funcoes
+     */
+    public function getFuncoes($iAnoUsu)
+    {
+        $oDaoOrcFuncao = new cl_orcfuncao;
 
-  /**
-   * Retorna as funcoes
-   *
-   * @param  integer $iAnoUsu ano corrente
-   * @return array lista de funcoes
-   */
-  function getFuncoes($iAnoUsu) {
-
-    $oDaoOrcFuncao = db_utils::getDao("orcfuncao");
-    $sSqlFuncao    = $oDaoOrcFuncao->sql_query_file(null,
-                                                    "o52_funcao as funcao,
+        $sSqlFuncao = $oDaoOrcFuncao->sql_query_file(
+            null,
+            "o52_funcao as funcao,
                                                     o52_descr as descricao",
-                                                    "o52_funcao"
-                                                   );
-    $rsFuncao      = $oDaoOrcFuncao->sql_record($sSqlFuncao);
-    $aFuncoes      = db_utils::getCollectionByRecord($rsFuncao, false, false, true);
-    return $aFuncoes;
+            "o52_funcao"
+        );
+        $rsFuncao = $oDaoOrcFuncao->sql_record($sSqlFuncao);
 
-  }
+        return db_utils::getCollectionByRecord($rsFuncao, false, false, true);
+    }
 
-  /**
-   * Retorna as subfuncoes
-   *
-   * @param  integer $iAnoUsu ano corrente
-   * @return array lista de subfuncoes
-   */
-  function getSubFuncoes($iAnoUsu) {
+    /**
+     * Retorna as subfuncoes
+     *
+     * @param integer $iAnoUsu ano corrente
+     * @return array lista de subfuncoes
+     */
+    public function getSubFuncoes($iAnoUsu)
+    {
+        $oDaoOrcSubFuncao = new cl_orcsubfuncao;
 
-    $oDaoOrcSubFuncao = db_utils::getDao("orcsubfuncao");
-    $sSqlSubFuncao    = $oDaoOrcSubFuncao->sql_query_file(null,
-                                                          "o53_subfuncao as subfuncao,
+        $sSqlSubFuncao = $oDaoOrcSubFuncao->sql_query_file(
+            null,
+            "o53_subfuncao as subfuncao,
                                                            o53_descr as descricao",
-                                                          "o53_subfuncao"
-                                                         );
-    $rsSubFuncao      = $oDaoOrcSubFuncao->sql_record($sSqlSubFuncao);
-    $aSubFuncoes      = db_utils::getCollectionByRecord($rsSubFuncao, false, false, true);
-    return $aSubFuncoes;
+            "o53_subfuncao"
+        );
+        $rsSubFuncao = $oDaoOrcSubFuncao->sql_record($sSqlSubFuncao);
 
-  }
+        return db_utils::getCollectionByRecord($rsSubFuncao, false, false, true);
+    }
 
-  /**
-   * Retorna os programas
-   *
-   * @param integer $iAnousu ano acorrente
-   * @return array lista de programas
-   */
-  function getProgramas($iAnousu) {
+    /**
+     * Retorna os programas
+     *
+     * @param integer $iAnousu ano acorrente
+     * @return array lista de programas
+     */
+    public function getProgramas($iAnousu)
+    {
+        $oDaoOrcPrograma = new cl_orcprograma;
 
-    $oDaoOrcPrograma = db_utils::getDao("orcprograma");
-    $sSqlPrograma    = $oDaoOrcPrograma->sql_query_file($iAnousu,
-                                                        null,
-                                                        "o54_programa as programa, o54_descr as descricao",
-                                                        "o54_programa"
-                                                       );
-    $rsPrograma      = $oDaoOrcPrograma->sql_record($sSqlPrograma);
-    $aProgramas      = db_utils::getCollectionByRecord($rsPrograma, false, false, true);
-    return $aProgramas;
+        $sSqlPrograma = $oDaoOrcPrograma->sql_query_file(
+            $iAnousu,
+            null,
+            "o54_programa as programa, o54_descr as descricao",
+            "o54_programa"
+        );
+        $rsPrograma = $oDaoOrcPrograma->sql_record($sSqlPrograma);
 
-  }
+        return db_utils::getCollectionByRecord($rsPrograma, false, false, true);
+    }
 
-  /**
-   * Retorna os projetos/atividades
-   *
-   * @param integer $iAnousu ano acorrente
-   * @return array lista de projetos atividades
-   */
-  function getProjAtiv($iAnousu) {
+    /**
+     * Retorna os projetos/atividades
+     *
+     * @param integer $iAnousu ano acorrente
+     * @return array lista de projetos atividades
+     */
+    public function getProjAtiv($iAnousu)
+    {
+        $oDaoOrcProjAtiv = new cl_orcprojativ;
 
-    $oDaoOrcProjAtiv = db_utils::getDao("orcprojativ");
-    $sSqlProjAtiv    = $oDaoOrcProjAtiv->sql_query_file($iAnousu,
-                                                        null,
-                                                        "o55_Projativ as projativ, o55_descr as descricao",
-                                                        "o55_projativ"
-                                                       );
-    $rsProjAtiv      = $oDaoOrcProjAtiv->sql_record($sSqlProjAtiv);
-    $aProjAtivs      = db_utils::getCollectionByRecord($rsProjAtiv, false, false, true);
-    return $aProjAtivs;
+        $sSqlProjAtiv = $oDaoOrcProjAtiv->sql_query_file(
+            $iAnousu,
+            null,
+            "o55_Projativ as projativ, o55_descr as descricao",
+            "o55_projativ"
+        );
+        $rsProjAtiv = $oDaoOrcProjAtiv->sql_record($sSqlProjAtiv);
 
-  }
+        return db_utils::getCollectionByRecord($rsProjAtiv, false, false, true);
+    }
 
-  function getElementos($iAnoUsu) {
+    public function getElementos($iAnoUsu)
+    {
+        $oDaoOrcElemento = new cl_orcelemento;
 
-    $sWhere          = "o58_anousu = {$iAnoUsu}";
-    $oDaoOrcElemento = db_utils::getDao("orcelemento");
-    $sSqlElemento    = $oDaoOrcElemento->sql_query_dotacao(null,
-                                                           "distinct o56_elemento as elemento, o56_descr as descricao",
-                                                           "o56_elemento",
-                                                           $sWhere
-                                                          );
-    $rsElemento      = $oDaoOrcElemento->sql_record($sSqlElemento);
-    $aElementos      = db_utils::getCollectionByRecord($rsElemento, false, false, true);
-    return $aElementos;
-  }
-  /**
-   * Retorna os recursos
-   *
-   * @return array lista de recursos
-   */
-  function getRecursos() {
-      $dataSessao = date('Y-m-d', db_getsession('DB_datausu'));
-      $where = "(o15_datalimite is null or o15_datalimite > '{$dataSessao}')";
+        $sWhere = "o58_anousu = {$iAnoUsu}";
+        $sSqlElemento = $oDaoOrcElemento->sql_query_dotacao(
+            null,
+            "distinct o56_elemento as elemento, o56_descr as descricao",
+            "o56_elemento",
+            $sWhere
+        );
+        $rsElemento = $oDaoOrcElemento->sql_record($sSqlElemento);
 
-    $oDaoOrcRecurso = db_utils::getDao("orctiporec");
-    $sSqlRecurso    = $oDaoOrcRecurso->sql_query_file(
-        null,
-        "o15_codigo as recurso, o15_descr as descricao",
-        "o15_codigo",
-        $where
-    );
-    $rsRecurso      = $oDaoOrcRecurso->sql_record($sSqlRecurso);
-    $aRecursos      = db_utils::getCollectionByRecord($rsRecurso, false, false, true);
-    return $aRecursos;
+        return db_utils::getCollectionByRecord($rsElemento, false, false, true);
+    }
 
-  }
+    /**
+     * Retorna os recursos
+     *
+     * @return array lista de recursos
+     */
+    public function getRecursos($anoUsu, $apenasAtivos = true)
+    {
+        $oDaoOrcRecurso = new cl_orctiporec;
+
+        $dataSessao = date('Y-m-d', db_getsession('DB_datausu'));
+        $where = " exercicio = {$anoUsu} ";
+        if ($apenasAtivos) {
+            $where = " and (o15_datalimite is null or o15_datalimite > '{$dataSessao}')";
+            $ordem = "o15_recurso, o15_complemento, gestao";
+        } else {
+            $ordem = "o15_datalimite desc, o15_recurso, o15_complemento, gestao";
+        }
+
+        $campos = "o15_codigo as recurso, ";
+        $campos .= "o15_recurso as fonte, ";
+        $campos .= "descricao, gestao, ";
+        $campos .= "codigo_siconfi, ";
+        $campos .= "o15_complemento as complemento, ";
+        $campos .= "case ";
+        $campos .= "  when (o15_datalimite is null or o15_datalimite > '{$dataSessao}') ";
+        $campos .= "    then true ";
+        $campos .= "  else false ";
+        $campos .= "end as ativo ";
+        
+        $sSqlRecurso = $oDaoOrcRecurso->sqlNovaFonteRecurso(null, $campos, $ordem, $where);
+        $rsRecurso = $oDaoOrcRecurso->sql_record($sSqlRecurso);
+        return db_utils::getCollectionByRecord($rsRecurso, false, false, true);
+    }
 }
-
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,12 +85,12 @@ function js_emite() {
 <table> 
   <tr>
     <td nowrap title="<?=@$Tid_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lnome,"js_usu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_usuario',7,$Iid_usuario,true,'text',$db_opcao," onchange='js_usu(false);'");
 db_input('nome',40,$Inome,true,'text',3,'');
 ?>
@@ -98,12 +98,12 @@ db_input('nome',40,$Inome,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcoddepto?>">
-       <?
+       <?php
        db_ancora(@$Lcoddepto,"js_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('coddepto',7,$Icoddepto,true,'text',$db_opcao," onchange='js_coddepto(false);'");
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
 ?>
@@ -113,7 +113,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
   <tr>
     <td nowrap title="Situcão Usuários"><b>Listar Usuários:</b></td>
     <td> 
-      <?
+      <?php
         $listar = 1; // Por padrão Listar Ativos
         $x = array( 
           "0" => "Todos",
@@ -195,7 +195,7 @@ function js_mostracoddepto(chave,erro) {
 document.form1.id_usuario.focus();
 </script>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

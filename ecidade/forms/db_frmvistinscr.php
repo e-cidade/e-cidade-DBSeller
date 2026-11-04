@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("q02_numcgm");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty71_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly71_codvist,"js_pesquisay71_codvist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y71_codvist',10,$Iy71_codvist,true,'text',$db_opcao," onchange='js_pesquisay71_codvist(false);'")
 ?>
-       <?
+       <?php
 db_input('y70_data',10,$Iy70_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty71_inscr?>">
-       <?
+       <?php
        db_ancora(@$Ly71_inscr,"js_pesquisay71_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y71_inscr',10,$Iy71_inscr,true,'text',$db_opcao," onchange='js_pesquisay71_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',6,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vistinscr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

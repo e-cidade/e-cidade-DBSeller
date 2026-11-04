@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_dose.php"));
 	?>
     </center>
@@ -77,7 +77,7 @@ if (isset($incluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -89,7 +89,7 @@ db_menu(db_getsession("DB_id_usuario"),
 <script>
 js_tabulacaoforms("form1", "vc03_c_codpni", true, 1, "vc03_c_codpni", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clvac_dose->erro_status == "0") {

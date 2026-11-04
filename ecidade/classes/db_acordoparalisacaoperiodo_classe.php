@@ -1,40 +1,40 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoparalisacaoperiodo
-class cl_acordoparalisacaoperiodo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ac49_sequencial = 0; 
-   var $ac49_acordoparalisacao = 0; 
-   var $ac49_acordoposicaoperiodo = 0; 
-   var $ac49_tipoperiodo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_acordoparalisacaoperiodo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ac49_sequencial = 0;
+   var $ac49_acordoparalisacao = 0;
+   var $ac49_acordoposicaoperiodo = 0;
+   var $ac49_tipoperiodo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ac49_sequencial = int4 = Sequencial Periodo da Paralisacao 
-                 ac49_acordoparalisacao = int4 = Sequencial da Paralisação 
-                 ac49_acordoposicaoperiodo = int4 = Codigo Sequencial 
-                 ac49_tipoperiodo = int4 = Tipo de Periodo 
+                 ac49_sequencial = int4 = Sequencial Periodo da Paralisacao
+                 ac49_acordoparalisacao = int4 = Sequencial da Paralisação
+                 ac49_acordoposicaoperiodo = int4 = Codigo Sequencial
+                 ac49_tipoperiodo = int4 = Tipo de Periodo
                  ";
-   //funcao construtor da classe 
-   function cl_acordoparalisacaoperiodo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("acordoparalisacaoperiodo"); 
+     $this->rotulo = new rotulo("acordoparalisacaoperiodo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_acordoparalisacaoperiodo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac49_sequencial = ($this->ac49_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac49_sequencial"]:$this->ac49_sequencial);
        $this->ac49_acordoparalisacao = ($this->ac49_acordoparalisacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ac49_acordoparalisacao"]:$this->ac49_acordoparalisacao);
@@ -54,9 +54,9 @@ class cl_acordoparalisacaoperiodo {
      }
    }
    // funcao para inclusao
-   function incluir ($ac49_sequencial){ 
+   public function incluir ($ac49_sequencial){
       $this->atualizacampos();
-     if($this->ac49_acordoparalisacao == null ){ 
+     if($this->ac49_acordoparalisacao == null ){
        $this->erro_sql = " Campo Sequencial da Paralisação não informado.";
        $this->erro_campo = "ac49_acordoparalisacao";
        $this->erro_banco = "";
@@ -65,7 +65,7 @@ class cl_acordoparalisacaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac49_acordoposicaoperiodo == null ){ 
+     if($this->ac49_acordoposicaoperiodo == null ){
        $this->erro_sql = " Campo Codigo Sequencial não informado.";
        $this->erro_campo = "ac49_acordoposicaoperiodo";
        $this->erro_banco = "";
@@ -74,7 +74,7 @@ class cl_acordoparalisacaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac49_tipoperiodo == null ){ 
+     if($this->ac49_tipoperiodo == null ){
        $this->erro_sql = " Campo Tipo de Periodo não informado.";
        $this->erro_campo = "ac49_tipoperiodo";
        $this->erro_banco = "";
@@ -84,16 +84,16 @@ class cl_acordoparalisacaoperiodo {
        return false;
      }
      if($ac49_sequencial == "" || $ac49_sequencial == null ){
-       $result = db_query("select nextval('acordoparalisacaoperiodo_ac49_sequencial_seq')"); 
+       $result = db_query("select nextval('acordoparalisacaoperiodo_ac49_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoparalisacaoperiodo_ac49_sequencial_seq do campo: ac49_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoparalisacaoperiodo_ac49_sequencial_seq do campo: ac49_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ac49_sequencial = pg_result($result,0,0); 
+       $this->ac49_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from acordoparalisacaoperiodo_ac49_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ac49_sequencial)){
@@ -104,10 +104,10 @@ class cl_acordoparalisacaoperiodo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ac49_sequencial = $ac49_sequencial; 
+         $this->ac49_sequencial = $ac49_sequencial;
        }
      }
-     if(($this->ac49_sequencial == null) || ($this->ac49_sequencial == "") ){ 
+     if(($this->ac49_sequencial == null) || ($this->ac49_sequencial == "") ){
        $this->erro_sql = " Campo ac49_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,19 +116,19 @@ class cl_acordoparalisacaoperiodo {
        return false;
      }
      $sql = "insert into acordoparalisacaoperiodo(
-                                       ac49_sequencial 
-                                      ,ac49_acordoparalisacao 
-                                      ,ac49_acordoposicaoperiodo 
-                                      ,ac49_tipoperiodo 
+                                       ac49_sequencial
+                                      ,ac49_acordoparalisacao
+                                      ,ac49_acordoposicaoperiodo
+                                      ,ac49_tipoperiodo
                        )
                 values (
-                                $this->ac49_sequencial 
-                               ,$this->ac49_acordoparalisacao 
-                               ,$this->ac49_acordoposicaoperiodo 
-                               ,$this->ac49_tipoperiodo 
+                                $this->ac49_sequencial
+                               ,$this->ac49_acordoparalisacao
+                               ,$this->ac49_acordoposicaoperiodo
+                               ,$this->ac49_tipoperiodo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Periodo da Paralisação ($this->ac49_sequencial) nao Incluído. Inclusao Abortada.";
@@ -169,16 +169,16 @@ class cl_acordoparalisacaoperiodo {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ac49_sequencial=null) { 
+   public function alterar ($ac49_sequencial=null) {
       $this->atualizacampos();
      $sql = " update acordoparalisacaoperiodo set ";
      $virgula = "";
-     if(trim($this->ac49_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_sequencial"])){ 
+     if(trim($this->ac49_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_sequencial"])){
        $sql  .= $virgula." ac49_sequencial = $this->ac49_sequencial ";
        $virgula = ",";
-       if(trim($this->ac49_sequencial) == null ){ 
+       if(trim($this->ac49_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial Periodo da Paralisacao não informado.";
          $this->erro_campo = "ac49_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_acordoparalisacaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac49_acordoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_acordoparalisacao"])){ 
+     if(trim($this->ac49_acordoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_acordoparalisacao"])){
        $sql  .= $virgula." ac49_acordoparalisacao = $this->ac49_acordoparalisacao ";
        $virgula = ",";
-       if(trim($this->ac49_acordoparalisacao) == null ){ 
+       if(trim($this->ac49_acordoparalisacao) == null ){
          $this->erro_sql = " Campo Sequencial da Paralisação não informado.";
          $this->erro_campo = "ac49_acordoparalisacao";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_acordoparalisacaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac49_acordoposicaoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_acordoposicaoperiodo"])){ 
+     if(trim($this->ac49_acordoposicaoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_acordoposicaoperiodo"])){
        $sql  .= $virgula." ac49_acordoposicaoperiodo = $this->ac49_acordoposicaoperiodo ";
        $virgula = ",";
-       if(trim($this->ac49_acordoposicaoperiodo) == null ){ 
+       if(trim($this->ac49_acordoposicaoperiodo) == null ){
          $this->erro_sql = " Campo Codigo Sequencial não informado.";
          $this->erro_campo = "ac49_acordoposicaoperiodo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_acordoparalisacaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac49_tipoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_tipoperiodo"])){ 
+     if(trim($this->ac49_tipoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac49_tipoperiodo"])){
        $sql  .= $virgula." ac49_tipoperiodo = $this->ac49_tipoperiodo ";
        $virgula = ",";
-       if(trim($this->ac49_tipoperiodo) == null ){ 
+       if(trim($this->ac49_tipoperiodo) == null ){
          $this->erro_sql = " Campo Tipo de Periodo não informado.";
          $this->erro_campo = "ac49_tipoperiodo";
          $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_acordoparalisacaoperiodo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Periodo da Paralisação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ac49_sequencial;
@@ -284,11 +284,11 @@ class cl_acordoparalisacaoperiodo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ac49_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ac49_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -297,7 +297,7 @@ class cl_acordoparalisacaoperiodo {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($ac49_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -329,7 +329,7 @@ class cl_acordoparalisacaoperiodo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Periodo da Paralisação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ac49_sequencial;
@@ -357,11 +357,11 @@ class cl_acordoparalisacaoperiodo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -383,11 +383,11 @@ class cl_acordoparalisacaoperiodo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ac49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ac49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,15 +404,15 @@ class cl_acordoparalisacaoperiodo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac49_sequencial!=null ){
-         $sql2 .= " where acordoparalisacaoperiodo.ac49_sequencial = $ac49_sequencial "; 
-       } 
+         $sql2 .= " where acordoparalisacaoperiodo.ac49_sequencial = $ac49_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,11 +421,11 @@ class cl_acordoparalisacaoperiodo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ac49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ac49_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_acordoparalisacaoperiodo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac49_sequencial!=null ){
-         $sql2 .= " where acordoparalisacaoperiodo.ac49_sequencial = $ac49_sequencial "; 
-       } 
+         $sql2 .= " where acordoparalisacaoperiodo.ac49_sequencial = $ac49_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

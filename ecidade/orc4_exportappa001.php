@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -209,7 +209,7 @@ if (isset ($exportar) && $exportar == "Exportar") {
   <form name="form1" method="post" action="" >
   <tr>
     <td nowrap title="<?=@$To21_codleippa?>" align='right'>
-      <?
+      <?php
 
 
 
@@ -217,20 +217,20 @@ db_ancora(@ $Lo21_codleippa, "js_pesquisao21_codleippa(true);", 1);
 ?>
     </td>
     <td align='left' colspan=2> 
-      <?
+      <?php
 
 
 
 db_input('o21_codleippa', 8, $Io21_codleippa, true, 'text', 1, " onchange='js_pesquisao21_codleippa(true);'")
 ?>
-      <?
+      <?php
 
  db_input('o21_descr', 40, $Io21_descr, true, 'text', 3, '')
 ?>
     </td>
   </tr>
       
-<? 
+<?php 
  if (isset ($chavepesquisa) && $chavepesquisa != "") {
 
 	echo "<tr><td>Exercicio para exportação  </td>";
@@ -253,27 +253,27 @@ db_input('o21_codleippa', 8, $Io21_codleippa, true, 'text', 1, " onchange='js_pe
 	echo "</td></tr>";
 ?>
     <tr>
-          <td><? db_ancora("Exportar fontes da Receita","js_fontes()",1);   ?> </td>
+          <td><?php db_ancora("Exportar fontes da Receita","js_fontes()",1);   ?> </td>
             <td ><select name="exporta_fontes">
                       <option value="nao">Não </option>
                       <option value="sim">Sim </option>
                      </select>
             </td>
         <td align=left>
-             <? db_ancora("Fontes que não serão exportados","js_fontes_nao_exportados()",1);   ?>
+             <?php db_ancora("Fontes que não serão exportados","js_fontes_nao_exportados()",1);   ?>
           </td>    
     </tr>
     
     
     <tr>
-            <td><? db_ancora("Exportar elementos de Despesa","js_elementos()",1);   ?> </td>
+            <td><?php db_ancora("Exportar elementos de Despesa","js_elementos()",1);   ?> </td>
             <td colspan=1><select name=exporta_elementos>
                       <option value=nao>Não </option>
                       <option value=sim>Sim </option>
                      </select>
             </td>
             <td align=left>
-             <? db_ancora("Elementos que não serão exportados","js_elementos_nao_exportados()",1);   ?>
+             <?php db_ancora("Elementos que não serão exportados","js_elementos_nao_exportados()",1);   ?>
           </td>
     </tr>
     
@@ -287,7 +287,7 @@ db_input('o21_codleippa', 8, $Io21_codleippa, true, 'text', 1, " onchange='js_pe
        </td>       
     </tr>
     
-    <?
+    <?php
 
 
 
@@ -296,7 +296,7 @@ db_input('o21_codleippa', 8, $Io21_codleippa, true, 'text', 1, " onchange='js_pe
   
 </form>
 </table>
-<?
+<?php
 
 
 

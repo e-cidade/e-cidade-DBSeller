@@ -227,11 +227,11 @@ class Escola implements IEscola {
    * atributos
    * @param integer $iCodigoEscola
    */
+
   function __construct($iCodigoEscola = null) {
 
     if (!empty($iCodigoEscola)) {
-
-      $oDaoEscola = db_utils::getDao("escola");
+      $oDaoEscola = new cl_escola;
       $sSqlEscola = $oDaoEscola->sql_query_estado($iCodigoEscola);
       $rsEscola   = $oDaoEscola->sql_record($sSqlEscola);
 

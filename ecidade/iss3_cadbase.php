@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ include(modification("libs/db_sql.php"));
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
         <form name="form1" method="post">
-          <? include(modification("dbforms/db_funcoes.php")) ?>
+          <?php include(modification("dbforms/db_funcoes.php")) ?>
           <table width="50%" border="0" cellspacing="0" cellpadding="0">
             <tr> 
               <td> 
@@ -76,7 +76,7 @@ include(modification("libs/db_sql.php"));
     </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

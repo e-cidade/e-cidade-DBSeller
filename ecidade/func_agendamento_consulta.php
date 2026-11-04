@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -62,7 +62,7 @@ a:active {
   font-size: 11;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -91,7 +91,7 @@ a:active {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
 
-<?
+<?php
 
 
 db_postmemory($HTTP_POST_VARS);
@@ -180,7 +180,7 @@ echo "</script>";
 		cellpadding="1px"
 		bgcolor="#cccccc"
 >
-<?
+<?php
 
 
 //Ausências
@@ -197,7 +197,7 @@ if( $clausencias->numrows > 0 ){
 				<font size="4"  color="red">Situação do Profissional: <?=$obj_ausencias->sd06_c_tipo ?></font>
 			</td>
 		</tr>
-	<?
+	<?php
 }else{
 	for( $xHora=0; $xHora < $clundmedhorario->numrows; $xHora++ ){
 
@@ -265,7 +265,7 @@ if( $clausencias->numrows > 0 ){
 
 			</tr>
 
-		<?
+		<?php
 		for( $h=0; $h < $nro_fichas; $h++){
 		    $nro_ficha = str_pad($h,3,0,"str_pad_left");
 		    $id_ficha  = 0;
@@ -325,7 +325,7 @@ if( $clausencias->numrows > 0 ){
 					<a title='Emissão do Prontuário Médico' href='#' onclick='js_emissaopm(<?=$cgs?>);return false;'>&nbsp;P&nbsp;</a>
 				</td>
 			</tr>
-			<?
+			<?php
 		    if( $intervalo != 0){
 				$hora_ini    = $clagendamentos->somahora($hora_ini,($intervalo+$mi_interva2));
 				$mi_interva1 = -1;

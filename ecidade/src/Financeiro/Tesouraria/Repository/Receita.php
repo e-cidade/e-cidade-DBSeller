@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -28,25 +28,27 @@ namespace ECidade\Financeiro\Tesouraria\Repository;
 
 use ECidade\Financeiro\Tesouraria\Receita as ReceitaModel;
 
-class Receita extends \BaseClassRepository {
+class Receita extends \BaseClassRepository
+{
 
-  protected static $itens = array();
+    protected static $itens = array();
   
   /**
    * Sobrescreve o atributo da classe pai para
    * manter apenas as referências da classe atual
    *@var ReceitaInfracao
    */
-  protected static $oInstance;
+    protected static $oInstance;
 
   /**
    * @param $codigo
    * @return \ECidade\Financeiro\Tesouraria\Receita
    * @throws \BusinessException
    */
-  public static function getById($codigo) {
-    return self::getInstanciaPorCodigo($codigo);
-  }
+    public static function getById($codigo)
+    {
+        return self::getInstanciaPorCodigo($codigo);
+    }
 
 
   /**
@@ -54,24 +56,25 @@ class Receita extends \BaseClassRepository {
    * @param $codigo
    * @return \ECidade\Financeiro\Tesouraria\Receita
    */
-  protected function make($codigo) {
+    protected function make($codigo)
+    {
     
-    if (empty($codigo)) {
-      throw new \BusinessException('Não foi informado o código da receita.');
+        if (empty($codigo)) {
+            throw new \BusinessException('Não foi informado o código da receita.');
+        }
+
+        $oDaoTabRec = new \cl_tabrec();
+        $oDados = \db_utils::getRowFromDao($oDaoTabRec, array($codigo));
+        if (empty($oDados)) {
+            throw new \BusinessException('Não existe receita cadastrada com o código '.$codigo);
+        }
+
+        $oReceita = new ReceitaModel();
+        $oReceita->setCodigo($oDados->k02_codigo);
+        $oReceita->setNome($oDados->k02_descr);
+        $oReceita->setDescricao($oDados->k02_drecei);
+        $oReceita->setDadosReceita($oDados);
+
+        return $oReceita;
     }
-
-    $oDaoTabRec = new \cl_tabrec();
-    $oDados = \db_utils::getRowFromDao($oDaoTabRec, array($codigo));
-    if (empty($oDados)) {
-      throw new \BusinessException('Não existe receita cadastrada com o código '.$codigo);
-    }
-
-    $oReceita = new ReceitaModel();
-    $oReceita->setCodigo($oDados->k02_codigo);
-    $oReceita->setNome($oDados->k02_descr);
-    $oReceita->setDescricao($oDados->k02_drecei);
-    $oReceita->setDadosReceita($oDados);
-
-    return $oReceita;
-  }
 }

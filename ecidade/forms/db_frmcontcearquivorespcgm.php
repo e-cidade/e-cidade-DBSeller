@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("z01_nome");
        <?=@$Lc13_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('c13_sequencial',10,$Ic13_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc13_contcearquivoresp?>">
-       <?
+       <?php
        db_ancora(@$Lc13_contcearquivoresp,"js_pesquisac13_contcearquivoresp(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c13_contcearquivoresp',10,$Ic13_contcearquivoresp,true,'text',$db_opcao," onchange='js_pesquisac13_contcearquivoresp(false);'")
 ?>
-       <?
+       <?php
 db_input('c12_nome',30,$Ic12_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc13_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lc13_numcgm,"js_pesquisac13_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c13_numcgm',10,$Ic13_numcgm,true,'text',$db_opcao," onchange='js_pesquisac13_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contcearquivorespcgm.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

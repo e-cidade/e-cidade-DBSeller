@@ -54,10 +54,10 @@ $oRotulo->label("pc80_codproc");
       <table>
         <tr>
           <td style="font-weight: bolder;">
-            <? db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
+            <?php db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>
           </td>
           <td>
-            <?
+            <?php
               db_input("pc80_codproc", 10, $Ipc80_codproc, 
                        true, 
                        "text", 
@@ -68,10 +68,10 @@ $oRotulo->label("pc80_codproc");
             ?>
           </td>
           <td style="font-weight: bolder;">
-            <? db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?> 
+            <?php db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?> 
           </td>
           <td>
-            <?
+            <?php
               db_input("pc80_codproc_fim", 10, $Ipc80_codproc, 
                        true, 
                        "text", 
@@ -87,7 +87,7 @@ $oRotulo->label("pc80_codproc");
             <b>Data de:</b>
           </td>
           <td>
-            <?
+            <?php
               db_inputdata('datainicial',null ,null, null,true,'text',1);
             ?>
           </td>
@@ -95,7 +95,7 @@ $oRotulo->label("pc80_codproc");
             <b> até:</b>
           </td>
           <td>
-            <?
+            <?php
               db_inputdata('datafinal',null ,null, null,true,'text',1);
             ?>
           </td>
@@ -105,7 +105,7 @@ $oRotulo->label("pc80_codproc");
             <b>Situação:</b>
           </td>
           <td>
-            <?
+            <?php
               $x = array("0"=>"Todos",
               					 "1"=>"Em Análise",
                          "2"=>"Autorizado",
@@ -120,7 +120,7 @@ $oRotulo->label("pc80_codproc");
   </form>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

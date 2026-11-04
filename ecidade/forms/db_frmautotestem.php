@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,15 +45,15 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty24_codauto?>">
-       <?
+       <?php
        db_ancora(@$Ly24_codauto,"js_pesquisay24_codauto(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y24_codauto',10,$Iy24_codauto,true,'text',3," onchange='js_pesquisay24_codauto(false);'")
 ?>
-       <?
+       <?php
 db_input('y50_nome',40,$Iy50_nome,true,'text',3,'');
 echo "<script>js_OpenJanelaIframe('','db_iframe_auto','func_auto.php?pesquisa_chave=$y24_codauto&funcao_js=parent.js_mostraauto','Pesquisa',false);</script>";
        ?>
@@ -61,19 +61,19 @@ echo "<script>js_OpenJanelaIframe('','db_iframe_auto','func_auto.php?pesquisa_ch
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty24_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Ly24_numcgm,"js_pesquisay24_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y24_numcgm',10,$Iy24_numcgm,true,'text',$db_opcao," onchange='js_pesquisay24_numcgm(false);'");
 if($db_opcao == 2){
   db_input('y24_numcgm',10,$Iy24_numcgm,true,'hidden',$db_opcao," ","y24_numcgm_old");
   echo "<script>document.form1.y24_numcgm_old.value='$y24_numcgm'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -81,18 +81,18 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="center" colspan="2">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_autotestem001.php?y24_codauto=<?=$y24_codauto?>'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("y24_codauto"=>$y24_codauto,"y24_numcgm"=>@$y24_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y24_codauto,y24_numcgm,z01_nome";
@@ -158,7 +158,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_autotestem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

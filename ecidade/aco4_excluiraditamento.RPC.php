@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -116,19 +116,19 @@ try {
             $sql = "delete from acordoitemexecutadoempautitem where ac19_acordoitemexecutado in (select ac29_sequencial from acordoitemexecutado where ac29_acordoitem in(select ac20_sequencial from acordoitem where ac20_acordoposicao = {$iAcordoPosicao}));";
             $rs = db_query($sql);
             if (!$rs) {
-                throw new Exception(pg_lasterror());
+                throw new Exception(pg_last_error());
             }
 
             $sql = "delete from acordoitemexecutadomatordemitem where ac30_acordoitemexecutado in (select ac29_sequencial from acordoitemexecutado where ac29_acordoitem in(select ac20_sequencial from acordoitem where ac20_acordoposicao = {$iAcordoPosicao}));";
             $rs = db_query($sql);
             if (!$rs) {
-                throw new Exception(pg_lasterror());
+                throw new Exception(pg_last_error());
             }
 
             $sql = "delete from acordoitemexecutadoperiodo where ac38_acordoitemexecutado in (select ac29_sequencial from acordoitemexecutado where ac29_acordoitem in(select ac20_sequencial from acordoitem where ac20_acordoposicao = {$iAcordoPosicao}));";
             $rs = db_query($sql);
             if (!$rs) {
-                throw new Exception(pg_lasterror());
+                throw new Exception(pg_last_error());
             }
 
             $aTabelasExcluirItem = array(
@@ -146,7 +146,9 @@ try {
             $aTabelasExcluirPosicao = array(
                 'acordoitem' => 'ac20_acordoposicao',
                 'acordoposicaoacordomovimentacao' => 'ac31_acordoposicao',
+                'acordoalteracaocontratado' => 'ac60_posicao',
                 'acordoposicaoaditamento' => 'ac35_acordoposicao',
+                'acordoposicaoevento' => 'ac56_acordoposicao',
                 'acordoposicaoperiodo' => 'ac36_acordoposicao',
                 'acordovigencia' => 'ac18_acordoposicao',
                 'acordoposicao' => 'ac26_sequencial',
@@ -156,7 +158,7 @@ try {
             $sSqlItensPosicao = "select ac20_sequencial from acordoitem where ac20_acordoposicao = {$iAcordoPosicao}";
             foreach ($aTabelasExcluirItem as $sTabela => $sCampo) {
 
-                $sComandoSql = "delete from {$sTabela} where {$sCampo} in($sSqlItensPosicao)";
+                $sComandoSql = "delete from {$sTabela} where {$sCampo} in ($sSqlItensPosicao)";
                 $aComandosSql[] = $sComandoSql;
             }
             foreach ($aTabelasExcluirPosicao as $sTabela => $sCampo) {

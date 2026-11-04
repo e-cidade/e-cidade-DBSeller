@@ -94,7 +94,6 @@ db_postmemory($HTTP_POST_VARS);
   function js_abre() {
     if (document.form1.z01_numcgm.value != "") {
       js_OpenJanelaIframe('CurrentWindow.corpo', 'func_nome', 'prot3_consultacgmnovo002.php?numcgm=' + document.form1.z01_numcgm.value, 'Pesquisa', true);
-      //alert('NUMCGM:'+document.form1.z01_numcgm.value+' - '+document.form1.z01_nome.value)
     } else {
       alert('Informe um número de cgm!');
     }
@@ -131,5 +130,4 @@ db_postmemory($HTTP_POST_VARS);
     document.form1.z01_nome.value = chave2;
     func_nome.hide();
   }
-  
-  </script>
+</script>

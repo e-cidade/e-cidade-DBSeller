@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldisbanco->rotulo->label("k00_numbco");
               <?=$Lidret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("idret",6,$Iidret,true,"text",4,"","chave_idret");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldisbanco->rotulo->label("k00_numbco");
               <?=$Lk00_numbco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k00_numbco",15,$Ik00_numbco,true,"text",4,"","chave_k00_numbco");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldisbanco->rotulo->label("k00_numbco");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disbanco.php")==true){
@@ -118,12 +118,12 @@ $cldisbanco->rotulo->label("k00_numbco");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

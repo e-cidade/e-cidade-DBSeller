@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -240,7 +240,7 @@ if ($db_opcao == 1) {
                   <td>
                       <?php
                       if (empty($v01_dtvenc_dia) && $db_opcao == 1) {
-                          $data = split("-", verifica_data($dia, $mes, $ano));
+                          $data =explode("-", verifica_data($dia, $mes, $ano));
                           $v01_dtvenc_dia = $dia;
                           $v01_dtvenc_mes = $mes;
                           $v01_dtvenc_ano = $ano;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -24,42 +24,63 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use ECidade\Pdf\Pdf;
 
-include(modification("fpdf151/pdf1.php"));
-include(modification("fpdf151/assinatura.php"));
-include(modification("libs/db_app.utils.php"));
-include(modification("libs/db_utils.php"));
-include(modification("classes/db_orcsuplem_classe.php"));
-include(modification("libs/db_liborcamento.php"));
-include(modification("classes/db_db_config_classe.php"));
-include(modification("classes/db_db_paragrafo_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_app.utils.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_liborcamento.php"));
+require_once(modification("fpdf151/assinatura.php"));
+require_once(modification("classes/db_orcsuplem_classe.php"));
+require_once(modification("classes/db_db_config_classe.php"));
+require_once(modification("classes/db_db_paragrafo_classe.php"));
+
 db_app::import("orcamento.suplementacao.*");
+
+parse_str($_SERVER["QUERY_STRING"]);
+
 $classinatura = new cl_assinatura;
 $cldbconfig = new cl_db_config;
 $cldbparagrafo = new cl_db_paragrafo;
 $auxiliar = new cl_orcsuplem;
 $aux = new cl_orcsuplem;
 $clorcsuplem = new cl_orcsuplem;
-$anousu = db_getsession("DB_anousu");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+
 $projeto = (isset($o46_codlei) && !empty($o46_codlei)) ? $o46_codlei : 'null';
 $anousu = db_getsession("DB_anousu");
 $tem_superavit = false;
 
-$pdf = new PDF1();
-$pdf->Open();
+$pdf = new PDF();
+$pdf->init(false, false);
 $pdf->AliasNbPages();
 $pdf->AddPage("P");
+
+$sql = "select nomeinst,
+               db12_extenso
+          from db_config
+               inner join db_uf on db12_uf = uf
+          where codigo = ".db_getsession("DB_instit");
+$result = db_query($sql);
+db_fieldsmemory($result,0);
+/// seta a margem esquerda que veio do relatorio
+$pdf->SetLeftMargin(10);
+
+$pdf->Ln(1);
+$pdf->SetFont("Times",'',10);
+$pdf->MultiCell(0,4,$db12_extenso,0,"C",0);
+$pdf->SetFont("Times",'B',13);
+$pdf->MultiCell(0,6,$nomeinst,0,"C",0);
+$pdf->Ln(10);
+
 // monta cabecalho do relatório
 $pdf->SetFillColor(235);
 $pdf->SetFont('Arial', '', 9);
 $pdf->setY(60);
 $pdf->setX(5);
+
 $artigo = 0;
-
-
 $sPrefeito = "PREFEITO";
-
 
 /**
  * vai montar o texto baseado na assinatura do prefeito
@@ -70,7 +91,6 @@ $sPrefeito = "PREFEITO";
  * strtoupper(trim($munic)) == "SAPIRANGA")
  *
  */
-
 $sPrefeitoDeTal = "";
 $aTexto = array();
 $sQuery =  "select db_paragrafo.*
@@ -92,9 +112,6 @@ if (pg_numrows($rsPrefeito) > 0) {
     $sPrefeitoDeTal = implode(", ", $aTexto);
 
 }
-
-
-
 
 /**
  * executa select para saber se é suplementação ou crédito especial
@@ -155,7 +172,6 @@ $sql = "select sum(0) as total_suplementado,
          ";
 
 $res = $auxiliar->sql_record($sql);
-//  db_criatabela($res);exit;
 if ($auxiliar->numrows > 0) {
     db_fieldsmemory($res, 0, true);
     global $projeto_tipo, $total_suplementado, $o39_numero, $o39_data;
@@ -183,7 +199,6 @@ else
     $projeto_tipo_texto = "PROJETO DE LEI";
 //
 $pdf->setX(20);
-//    $pdf->Cell(170,4,$projeto_tipo_texto." ".($projeto_tipo == 1?$o39_numero."/".substr($o39_data,6,4):''),0,1,"C",'1');
 $pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero : '') . strtoupper(" de " . substr($o39_data, 0, 2) . " de " . db_mes(substr($o39_data, 3, 2)) . " de " . substr($o39_data, 6, 4)), 0, 1, "C", '1');
 $pdf->Ln(7);
 ///////
@@ -197,10 +212,6 @@ if ($projeto_tipo == "1") { // decreto
     $res = $cldbconfig->sql_record($cldbconfig->sql_query(db_getsession("DB_instit")));
     db_fieldsmemory($res, 0);
     $pdf->setX(20);
-    /*
-           $pref = strtoupper($pref);
-           $txt="$pref, PREFEITO MUNICIPAL DE $munic, $uf, no uso de suas atribuições legais";
-    */
     $pref = ucfirst($pref);
     $txt = "$sPrefeitoDeTal, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei";
 
@@ -246,21 +257,21 @@ $sql = "select
               o47_coddot,
               o58_orgao,
               o58_unidade,
-	      fc_estruturaldotacao(o47_anousu,o47_coddot) as estrutural,
+          fc_estruturaldotacao(o47_anousu,o47_coddot) as estrutural,
               o47_anousu,
-	      o47_valor
+          o47_valor
          from orcprojeto
               inner join orcsuplem on o46_codlei = orcprojeto.o39_codproj
               inner join orcsuplemval on o47_codsup = orcsuplem.o46_codsup
                                       and orcsuplemval.o47_valor > 0
-	      inner join orcdotacao on o58_coddot = o47_coddot and o58_anousu = " . db_getsession("DB_anousu") . "
+          inner join orcdotacao on o58_coddot = o47_coddot and o58_anousu = " . db_getsession("DB_anousu") . "
               inner join orcsuplemtipo on o48_tiposup = orcsuplem.o46_tiposup
                                       and orcsuplemtipo.o48_coddocsup >  0
          where o39_codproj=$projeto
 
          ";
 $sSqlDotacaoPPA = "select
-	            o39_codproj,
+                o39_codproj,
               o46_codsup,
               o46_tiposup,
               o48_descr,
@@ -280,7 +291,6 @@ $sSqlDotacaoPPA = "select
           where o39_codproj=$projeto
          order by o58_orgao,o58_unidade ";
 $res = $auxiliar->sql_record($sql . " union all {$sSqlDotacaoPPA}");
-// db_criatabela($res);exit;
 $total = 0;
 if ($auxiliar->numrows > 0) {
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
@@ -306,11 +316,11 @@ $sql = " select
               o39_codproj,
               o46_codsup,
               o46_tiposup,
-	      o46_obs as text_observacao_superavit,
+          o46_obs as text_observacao_superavit,
               o48_descr,
               o47_coddot,
               o47_anousu,
-	      o47_valor
+          o47_valor
          from orcprojeto
               inner join orcsuplem on o46_codlei = orcprojeto.o39_codproj
               inner join orcsuplemval on o47_codsup = orcsuplem.o46_codsup
@@ -326,25 +336,13 @@ if ($auxiliar->numrows > 0) {
     ///////////////////////////
 
     // pega o texto da ultima informação
-    /*
-    $r_obs = $clorcsuplem->sql_record("select max(o46_codsup) as mcodsup from orcsuplem where o46_codlei=$projeto");
-    if ($clorcsuplem->numrows > 0){
-   db_fieldsmemory($r_obs,0);
-       $rr_obs = $clorcsuplem->sql_record("select o46_obs from orcsuplem where o46_codsup=$mcodsup");
-       if ($clorcsuplem->numrows > 0){
-        db_fieldsmemory($rr_obs,0);
-          $texto_observacao_superavit = $o46_obs;
-       };
-    };
-    */
     $sql = "select o39_texto
               from orcprojeto
-	      where o39_codproj=$projeto ";
+          where o39_codproj=$projeto ";
     $res = $auxiliar->sql_record($sql);
     db_fieldsmemory($res, 0);
     $txt = pg_result($res, 0, "o39_texto");
 
-    //      $text_observacao_superavit = pg_result($res,0,"text_observacao_superavit");
     $pdf->Ln(4);
     $artigo = $artigo + 1;
     $txt = "$txt";
@@ -352,22 +350,6 @@ if ($auxiliar->numrows > 0) {
 
     $pdf->multicell(170, 4, $txt, '0', 'J', '0', 20);
     $pdf->Ln(4);
-    ////////////////////
-    /*
-    for ($x=0;$x < $auxiliar->numrows ;$x++){
-      db_fieldsmemory($res,$x);
-          db_query("BEGIN");
-          $r_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o47_coddot and o58_anousu =$o47_anousu ");
-      db_query("ROLLBACK");
-          if(pg_numrows($r_dot)>0){
-              db_fieldsmemory($r_dot,0,true);
-          $pdf->setX(20);
-              $pdf->Cell(120,4,"$o58_codigo - $o15_descr",0,0,"L",'0');
-            $pdf->Cell(30,4,db_formatar($o47_valor,'f'),0,1,"R",'0');
-          $pdf->setX(20);
-          $pdf->Ln();
-         }
-    }*/
 }
 
 /// reducoes
@@ -379,7 +361,7 @@ $sql = "select
               o47_coddot,
               o47_anousu,
               fc_estruturaldotacao(o47_anousu,o47_coddot) as estrutural,
-	      o47_valor
+          o47_valor
          from orcprojeto
               inner join orcsuplem on o46_codlei = orcprojeto.o39_codproj
               inner join orcsuplemval on o47_codsup = orcsuplem.o46_codsup
@@ -388,9 +370,7 @@ $sql = "select
                                       and orcsuplemtipo.o48_coddocred >  0
           where o39_codproj=$projeto
          ";
-//echo $sql;exit;
 $res = $auxiliar->sql_record($sql);
-// db_criatabela($res);
 
 //////////  artigo + 1 , paragrafo das reduções
 ////////////////////////////////////////////////
@@ -401,7 +381,7 @@ if ($tem_superavit == false) {
         "será usado como recurso, as seguintes reduções orçamentárias :";
     $sqltxt = "select o39_texto
               from orcprojeto
-	      where o39_codproj=$projeto ";
+          where o39_codproj=$projeto ";
     $resTxt = db_query($sqltxt);
     db_fieldsmemory($resTxt, 0);
     if ($o39_texto != '') {
@@ -417,8 +397,8 @@ if ($auxiliar->numrows > 0) {
     $total = 0;
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
         db_fieldsmemory($res, $x);
-        $pdf->setX(50);
-        $pdf->Cell(70, 4, $estrutural, 0, 0, "L", '0');
+        $pdf->setX(40);
+        $pdf->Cell(80, 4, $estrutural, 0, 0, "L", '0');
         $pdf->Cell(20, 4, " ( $o47_coddot ) ", 0, 0, "L", '0');
         $pdf->Cell(30, 4, db_formatar(abs($o47_valor), 'f'), 0, 1, "R", '0');
         $pdf->setX(20);
@@ -478,12 +458,6 @@ if ($auxiliar->numrows > 0  && strtoupper(trim($munic)) != "SAPIRANGA"  ) {
     //////////  artigo + 1 , paragrafo das receitas
     ////////////////////////////////////////////////
     $pdf->Ln(4);
-//      $artigo = $artigo +1;
-//      $txt="Art $artigo. -  Para cobertura do $tipo_sup aberto no artigo primeiro ".
-//           "será usado como recurso, as receitas conforme a seguinte classificação: ";
-//      $pdf->setX(20);
-//      $pdf->multicell(170,4,$txt,'0','J','0',20);
-//     $pdf->Ln(4);
     //////// imprime receitas
     ///////////////////////////////////////////////
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
@@ -500,10 +474,6 @@ if ($auxiliar->numrows > 0  && strtoupper(trim($munic)) != "SAPIRANGA"  ) {
 /*
  * Total da receita
  */
-/*
-$pdf->Cell(130,4,'',0,0,"L",'0');
-$pdf->Cell(30,4,db_formatar(abs($total),'f'),"T",1,"R",'0');
-$pdf->setX(20);  */
 
 //////////  artigo + 1 , paragrafo das receitas
 ////////////////////////////////////////////////
@@ -544,31 +514,6 @@ $pdf->multicell(180, 4, "REGISTRE-SE E PUBLIQUE-SE:", '0', 'L', '0', 10);
 $ass_sec =strtoupper($ass_sec);
 $pdf->multicell(0,4,"\n\n\n"."{$ass_sec}",'0','L','0');
 
-
-
-
-
-/*
-   if ($projeto_tipo == "1"){
-  // texto de sapiranga
-      $pdf->Ln(10);
-      $artigo = $artigo +1;
-      $txt="Art $artigo. - Este Decreto entrara em vigor na data de sua publicação.";
-      $artigo += 1;
-      $pdf->setX(40);
-      $pdf->multicell(170,4,$txt,'0','J','0',20);
-
-      $pdf->Ln(5);
-      $txt = "GABINETE DO PREFEITO MUNICIPAL DE ".strtoupper($munic)." AOS ".date('d')." DIAS DO MÊS DE ".strtoupper(db_mes(date('m')))." DE ".date('Y').".";
-      $pdf->multicell(180,4,$txt,'0','J','0',20);
-      $pdf->Ln(10);
-      $pdf->multicell(0,4,$pref."\n"."PREFEITO MUNICIPAL",'0','C','0');
-      $pdf->Ln(10);
-      $pdf->multicell(0,4,"Registre-se e cumpra-se",'0','L','0');
-      $pdf->multicell(0,4,"\n\n\n"."FERNANDO FERREIRA DA CUNHA"."\n"."Secretario Municipal de Administração",'0','L','0');
-   }
-
-*/
 if (($projeto_tipo == "1") && strtoupper(trim($munic)) == "ELDORADO DO SUL") {
 
     $faz = "";
@@ -576,11 +521,7 @@ if (($projeto_tipo == "1") && strtoupper(trim($munic)) == "ELDORADO DO SUL") {
     $ass_faz = $classinatura->assinatura(1002, $faz);
     $ass_adm = $classinatura->assinatura(1003, $adm);
 
-    //  $pdf->Ln(5);
-    //  $txt = "GABINETE DO PREFEITO MUNICIPAL DE ".strtoupper($munic)." AOS ".substr($xdata,8,2)." DIAS DO MÊS DE ".strtoupper(db_mes(substr($xdata,5,2)))." DE ".substr($xdata,0,4).".";
-    //  $pdf->multicell(180,4,$txt,'0','J','0',10);
-    //   $pdf->Ln(3);
-    if ($pdf->gety() > $pdf->h - 60) {
+    if ($pdf->getY() > $pdf->getH() - 60) {
         $pdf->addpage();
     }
     //  $pdf->multicell(180,4,"REGISTRE-SE E PUBLIQUE-SE:",'0','L','0',10);
@@ -596,4 +537,3 @@ if (($projeto_tipo == "1") && strtoupper(trim($munic)) == "ELDORADO DO SUL") {
 
 
 $pdf->Output();
-?>

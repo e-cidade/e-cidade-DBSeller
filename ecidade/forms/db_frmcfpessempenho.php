@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@ $clrotulo->label("o56_descr");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-  <?
+  <?php
   $r11_anousu = db_anofolha();
   $r11_mesusu = db_mesfolha();
   db_input('r11_anousu',4,$Ir11_anousu,true,'hidden',$db_opcao,"");
@@ -41,12 +41,12 @@ $clrotulo->label("o56_descr");
   ?>
   <tr>
     <td nowrap align="right" title="<?=@$Tr11_eleina?>">
-      <?
+      <?php
       db_ancora(@$Lr11_eleina,"js_pesquisar11_eleina(true)",1);
       ?>
     </td>
     <td> 
-      <?
+      <?php
 //      db_input('r11_eleina',12,$Ir11_eleina,true,'text',$db_opcao);
       db_input('r11_eleina',12,$Ir11_eleina,true,'text',$db_opcao,"onchange='js_pesquisar11_eleina(false)'");
       db_input("o56_descr",30,$Io56_descr,true,"text",3,"","o56_descr1");
@@ -55,12 +55,12 @@ $clrotulo->label("o56_descr");
   </tr>
   <tr>
     <td nowrap align="right" title="<?=@$Tr11_elepen?>">
-      <?
+      <?php
       db_ancora(@$Lr11_elepen,"js_pesquisar11_elepen(true)",1);
       ?>
     </td>
     <td> 
-      <?
+      <?php
 //      db_input('r11_elepen',12,$Ir11_elepen,true,'text',$db_opcao);
       db_input('r11_elepen',12,$Ir11_elepen,true,'text',$db_opcao,"onchange='js_pesquisar11_elepen(false)'");
       db_input("o56_descr",30,$Io56_descr,true,"text",3,"","o56_descr2");
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_cfpess.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

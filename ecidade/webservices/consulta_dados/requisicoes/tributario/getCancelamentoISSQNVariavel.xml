@@ -10,6 +10,7 @@
     <campo campo="issvar.q05_aliq"     label="aliquota"            />
     <campo campo="issvar.q05_bruto"    label="valor_bruto"         />
     <campo campo="issvar.q05_vlrinf"   label="valor_contribuinte"  />
+    <campo campo="cancdebitosreg.k21_receit" label="receita"  />
   </campos>
   <from tabela="arreinscr" />
   <juncoes>

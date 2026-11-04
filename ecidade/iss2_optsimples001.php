@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ include(modification("dbforms/db_funcoes.php"));
 						  <b>Período Inclusão:</b>
 						</td>
 						<td>
-						  <?
+						  <?php
                 db_inputdata('dataincini','','','',true,'text',1,"");
 
                 echo "&nbsp;<b>á</b>&nbsp;";
@@ -69,7 +69,7 @@ include(modification("dbforms/db_funcoes.php"));
               <b>Período Baixa:</b>
             </td>
             <td>
-              <?
+              <?php
                 db_inputdata('databaixaini','','','',true,'text',1,"");
 
                 echo "&nbsp;<b>á</b>&nbsp;";
@@ -83,7 +83,7 @@ include(modification("dbforms/db_funcoes.php"));
 						 <b>Considerar Inscrições:</b>
 						</td>
 						<td>
-							<?
+							<?php
 								$aSituacaoInscr = array("0"=>"Todas",
 								                        "1"=>"Ativas",
 								                        "2"=>"Baixadas");
@@ -96,7 +96,7 @@ include(modification("dbforms/db_funcoes.php"));
              <b>Categoria:</b>
             </td>
             <td>
-              <?
+              <?php
 								$aCategorias = array('0'=>'Todas',
 								                     '1'=>'Micro Empresa',
 							          						 '2'=>'Empresa de Pequeno Porte',
@@ -113,7 +113,7 @@ include(modification("dbforms/db_funcoes.php"));
              <b>Ordernar:</b>
             </td>
             <td>
-              <?
+              <?php
                 $aOrdem = array('0'=>'Inscrição',
                                 '1'=>'Nome',
                                 '2'=>'Atividade');
@@ -133,7 +133,7 @@ include(modification("dbforms/db_funcoes.php"));
 	</tr>
 </table>
 </form>
- <?
+ <?php
 	 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
  ?>
 </body>

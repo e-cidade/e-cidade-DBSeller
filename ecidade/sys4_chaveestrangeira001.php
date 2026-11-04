@@ -119,7 +119,7 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
       ";
                 } else {
                     echo "
-          if(typeof((str = PriKeys[document.form1.dbh_tabela.options[document.form1.dbh_tabela.length - 1].value])) != \"undefined\")     
+          if(typeof((str = PriKeys[document.form1.dbh_tabela.options[document.form1.dbh_tabela.length - 1].value])) != \"undefined\")
             document.form1.campop.value = str;
           else
             document.form1.campop.value = \"\";
@@ -220,7 +220,7 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                                             onChange="js_insereTabelas(this.form,this.options[this.selectedIndex].text)">
                                         <?php
                                         echo '<option value="0">Todas Tabelas</option>' . "\n";
-                $result = db_query("SELECT m.codmod,m.nomemod 
+                $result = db_query("SELECT m.codmod,m.nomemod
                        FROM db_sysmodulo m
                        INNER JOIN db_sysarqmod s
                        ON s.codmod = m.codmod
@@ -279,10 +279,10 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                 $groupCampos = db_query("SELECT codarq FROM db_sysprikey GROUP BY codarq");
                 $numGroupCampos = pg_numrows($groupCampos);
                 for ($i = 0; $i < $numGroupCampos; $i++) {
-                    $result = db_query("select p.codarq,c.nomecam 
-                          from db_sysprikey p 
-                          inner join db_syscampo c 
-                          on c.codcam = p.codcam 
+                    $result = db_query("select p.codarq,c.nomecam
+                          from db_sysprikey p
+                          inner join db_syscampo c
+                          on c.codcam = p.codcam
                           where p.codarq = " . pg_result($groupCampos, $i, "codarq") . "
                           order by p.sequen");
                     $aux = "";
@@ -330,14 +330,14 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
             } else {
                 if ($ref == 0) {
                     $result = db_query("
-            select codarq 
-            from db_sysarquivo 
+            select codarq
+            from db_sysarquivo
             where nomearq = '$tabela'");
                     $ref = pg_result($result, 0, 0);
                 }
                 if (isset($HTTP_POST_VARS["b_ex"])) {
                     $result = db_query("
-            delete from db_sysforkey 
+            delete from db_sysforkey
             where codarq = $tabela
             and referen = $ref");
                     db_redireciona("sys3_campos001.php?" . base64_encode("tabela=$tabela"));
@@ -370,7 +370,7 @@ if (!isset($ref) && isset($HTTP_POST_VARS["ref"])) {
                     }
                 } else {
                     db_postmemory($HTTP_POST_VARS);
-                    $campos = split("\r\n", $alt_ind);
+                    $campos =explode("\r\n", $alt_ind);
                     db_query("BEGIN");
                     $result = db_query("delete from db_sysforkey where codarq = $tabela and referen = $ref") or die("Erro(122) excluindo db_sysforkey");
                     for ($i = 0; $i < sizeof($campos) - 1; $i++) {

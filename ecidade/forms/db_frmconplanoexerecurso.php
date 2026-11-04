@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("c60_descr");
 <center>
 <table border="0">
   <tr>
-    <td nowrap title="<?=@$Tc89_anousu?>"><? db_ancora(@$Lc89_anousu,"",$db_opcao); ?> </td>
-    <td><?
+    <td nowrap title="<?=@$Tc89_anousu?>"><?php db_ancora(@$Lc89_anousu,"",$db_opcao); ?> </td>
+    <td><?php
             $c89_anousu = db_getsession('DB_anousu');
             db_input('c89_anousu',4,$Ic89_anousu,true,'text',3);
         ?>
     </td>
   </tr>
-  <?  if ($db_opcao==2) 
+  <?php  if ($db_opcao==2) 
          $op = 3;
       else 
 	 $op = $db_opcao;
   ?>
   <tr>
-    <td nowrap title="<?=@$Tc89_recurso?>"><? db_ancora(@$Lc89_recurso,"js_pesquisac89_recurso(true);",$op); ?></td>
-    <td><?  db_input('c89_recurso',4,$Ic89_recurso,true,'text',$op," onchange='js_pesquisac89_recurso(false);'"); ?>
-       <?   db_input('o15_descr',60,$Io15_descr,true,'text',3,'');     ?>
+    <td nowrap title="<?=@$Tc89_recurso?>"><?php db_ancora(@$Lc89_recurso,"js_pesquisac89_recurso(true);",$op); ?></td>
+    <td><?php  db_input('c89_recurso',4,$Ic89_recurso,true,'text',$op," onchange='js_pesquisac89_recurso(false);'"); ?>
+       <?php   db_input('o15_descr',60,$Io15_descr,true,'text',3,'');     ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tc89_reduz?>"><? db_ancora(@$Lc89_reduz,"js_pesquisac89_reduz(true);",$op);?></td>
-    <td><? db_input('c89_reduz',6,$Ic89_reduz,true,'text',$op," onchange='js_pesquisac89_reduz(false);'") ?>
-        <? db_input('c60_descr',20,$Ic60_descr,true,'text',3,'');   ?>
+    <td nowrap title="<?=@$Tc89_reduz?>"><?php db_ancora(@$Lc89_reduz,"js_pesquisac89_reduz(true);",$op);?></td>
+    <td><?php db_input('c89_reduz',6,$Ic89_reduz,true,'text',$op," onchange='js_pesquisac89_reduz(false);'") ?>
+        <?php db_input('c60_descr',20,$Ic60_descr,true,'text',3,'');   ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc89_vlrcre?>"><?=@$Lc89_vlrcre?> </td>
-    <td><? db_input('c89_vlrcre',15,$Ic89_vlrcre,true,'text',1,""); ?></td>
+    <td><?php db_input('c89_vlrcre',15,$Ic89_vlrcre,true,'text',1,""); ?></td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc89_vlrdeb?>"><?=@$Lc89_vlrdeb?> </td>
-    <td><? db_input('c89_vlrdeb',15,$Ic89_vlrdeb,true,'text',1,""); ?> </td>
+    <td><?php db_input('c89_vlrdeb',15,$Ic89_vlrdeb,true,'text',1,""); ?> </td>
   </tr>
   </table>
 
@@ -129,7 +129,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_conplanoexerecurso.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

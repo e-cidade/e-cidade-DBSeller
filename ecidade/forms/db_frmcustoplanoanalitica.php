@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("cc01_descricao");
        <?=@$Lcc04_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc04_sequencial',10,$Icc04_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc04_custoplano?>">
-       <?
+       <?php
        db_ancora(@$Lcc04_custoplano,"js_pesquisacc04_custoplano(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc04_custoplano',10,$Icc04_custoplano,true,'text',$db_opcao," onchange='js_pesquisacc04_custoplano(false);'")
 ?>
-       <?
+       <?php
 db_input('cc01_descricao',50,$Icc01_descricao,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoplanoanalitica.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

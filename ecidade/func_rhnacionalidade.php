@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
               <?=$Lrh06_nacionalidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh06_nacionalidade",6,$Irh06_nacionalidade,true,"text",4,"","chave_rh06_nacionalidade");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
               <?=$Lrh06_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh06_descr",40,$Irh06_descr,true,"text",4,"","chave_rh06_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhnacionalidade.php")==true){
@@ -118,12 +118,12 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

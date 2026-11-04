@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $db_opcao = 22;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
 	 $clcriaabas->identifica = array("a1"=>"Prontuario","a2"=>"Procedimentos");
 	 $clcriaabas->src = array("a1"=>"sau1_prontuarios007.php");
 	 $clcriaabas->disabled   =  array("a2"=>"true");
@@ -65,7 +65,7 @@ $db_opcao = 22;
        </td>
     </tr>
   </table>
-  <?
+  <?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>

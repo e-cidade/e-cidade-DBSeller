@@ -235,12 +235,15 @@ class S2205
      *
      * @return array
      */
-    public function getCamposControleAlteracao()
+    public static function getCamposControleAlteracao()
     {
         $campos = [
             //Dados Pessoais
-            'rh01_nome', 'rh01_sexo', 'rh01_raca', 'rh01_estciv', 'rh01_instru', 'rh01_nacion',
-            'z04_nomesocial', 'rh01_natura',
+            'z01_cpf', 'z01_ident', 'z01_numcgm', 'z01_nome', 'rh01_nome',
+            'z01_nomecomple', 'z01_pai', 'z01_mae', 'z01_nasc',
+            'z01_dtfalecimento', 'z01_estciv', 'rh01_sexo',
+            'rh01_raca', 'rh01_estciv', 'rh01_instru', 'rh01_nacion',
+            'z04_nomesocial', 'rh01_natura', 'z01_sexo', 'z01_estciv',
             //Dados Endereço
             'z01_ender', 'z01_numero', 'z01_compl', 'z01_bairro', 'z01_cep', 'z01_munic', 'z01_uf',
             //Dados Endereço Exterior
@@ -253,7 +256,7 @@ class S2205
             'rh253_reabilitado', 'rh253_cota', 'rh253_observacao',
             //Dados Dependentes
             'rh31_tipoparentesco', 'rh31_nome', 'rh31_dtnasc', 'dp01_cpf', 'dp01_sexo', 'rh31_irf',
-            'rh31_depend', 'rh31_especi',
+            'rh31_depend', 'rh31_especi', 'rh31_descricaoparentesco',
             //Dados Contato
             'z01_telef', 'z01_email'
         ];

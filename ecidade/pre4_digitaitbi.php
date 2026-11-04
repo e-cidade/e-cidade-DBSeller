@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -379,55 +379,55 @@ function js_link(arq) {
                                        <td ><strong>&nbsp;&nbsp;UF:</strong></td>
                                        <td> 
                                               <select name="ufcomprador">
-                                                <option value="RS" <? echo @$ufcomprador=="RS"?"selected":"" ?>> 
+                                                <option value="RS" <?php echo @$ufcomprador=="RS"?"selected":"" ?>> 
                                                 RS </option>
-                                                <option value="AC" <? echo @$ufcomprador=="AC"?"selected":"" ?>> 
+                                                <option value="AC" <?php echo @$ufcomprador=="AC"?"selected":"" ?>> 
                                                 AC </option>
-                                                <option value="AL" <? echo @$ufcomprador=="AL"?"selected":"" ?>> 
+                                                <option value="AL" <?php echo @$ufcomprador=="AL"?"selected":"" ?>> 
                                                 AL </option>
-                                                <option value="AM" <? echo @$ufcomprador=="AM"?"selected":"" ?>> 
+                                                <option value="AM" <?php echo @$ufcomprador=="AM"?"selected":"" ?>> 
                                                 AM </option>
-                                                <option value="AP" <? echo @$ufcomprador=="AP"?"selected":"" ?>> 
+                                                <option value="AP" <?php echo @$ufcomprador=="AP"?"selected":"" ?>> 
                                                 AP </option>
-                                                <option value="BA" <? echo @$ufcomprador=="BA"?"selected":"" ?>> 
+                                                <option value="BA" <?php echo @$ufcomprador=="BA"?"selected":"" ?>> 
                                                 BA </option>
-                                                <option value="CE" <? echo @$ufcomprador=="CE"?"selected":"" ?>> 
+                                                <option value="CE" <?php echo @$ufcomprador=="CE"?"selected":"" ?>> 
                                                 CE </option>
-                                                <option value="DF" <? echo @$ufcomprador=="DF"?"selected":"" ?>> 
+                                                <option value="DF" <?php echo @$ufcomprador=="DF"?"selected":"" ?>> 
                                                 DF </option>
-                                                <option value="ES" <? echo @$ufcomprador=="ES"?"selected":"" ?>> 
+                                                <option value="ES" <?php echo @$ufcomprador=="ES"?"selected":"" ?>> 
                                                 ES </option>
-                                                <option value="GO" <? echo @$ufcomprador=="GO"?"selected":"" ?>> 
+                                                <option value="GO" <?php echo @$ufcomprador=="GO"?"selected":"" ?>> 
                                                 GO </option>
-                                                <option value="MA" <? echo @$ufcomprador=="MA"?"selected":"" ?>> 
+                                                <option value="MA" <?php echo @$ufcomprador=="MA"?"selected":"" ?>> 
                                                 MA </option>
-                                                <option value="MG" <? echo @$ufcomprador=="MG"?"selected":"" ?>> 
+                                                <option value="MG" <?php echo @$ufcomprador=="MG"?"selected":"" ?>> 
                                                 MG </option>
-                                                <option value="MS" <? echo @$ufcomprador=="MS"?"selected":"" ?>> 
+                                                <option value="MS" <?php echo @$ufcomprador=="MS"?"selected":"" ?>> 
                                                 MS </option>
-                                                <option value="MT" <? echo @$ufcomprador=="MT"?"selected":"" ?>> 
+                                                <option value="MT" <?php echo @$ufcomprador=="MT"?"selected":"" ?>> 
                                                 MT </option>
-                                                <option value="PA" <? echo @$ufcomprador=="PA"?"selected":"" ?>> 
+                                                <option value="PA" <?php echo @$ufcomprador=="PA"?"selected":"" ?>> 
                                                 PA </option>
-                                                <option value="PB" <? echo @$ufcomprador=="PB"?"selected":"" ?>> 
+                                                <option value="PB" <?php echo @$ufcomprador=="PB"?"selected":"" ?>> 
                                                 PB </option>
-                                                <option value="PE" <? echo @$ufcomprador=="PE"?"selected":"" ?>> 
+                                                <option value="PE" <?php echo @$ufcomprador=="PE"?"selected":"" ?>> 
                                                 PE </option>
-                                                <option value="PI" <? echo @$ufcomprador=="PI"?"selected":"" ?>> 
+                                                <option value="PI" <?php echo @$ufcomprador=="PI"?"selected":"" ?>> 
                                                 PI </option>
-                                                <option value="PR" <? echo @$ufcomprador=="PR"?"selected":"" ?>> 
+                                                <option value="PR" <?php echo @$ufcomprador=="PR"?"selected":"" ?>> 
                                                 PR </option>
-                                                <option value="RJ" <? echo @$ufcomprador=="RJ"?"selected":"" ?>> 
+                                                <option value="RJ" <?php echo @$ufcomprador=="RJ"?"selected":"" ?>> 
                                                 RJ </option>
-                                                <option value="RN" <? echo @$ufcomprador=="RN"?"selected":"" ?>> 
+                                                <option value="RN" <?php echo @$ufcomprador=="RN"?"selected":"" ?>> 
                                                 RN </option>
-                                                <option value="RO" <? echo @$ufcomprador=="RO"?"selected":"" ?>> 
+                                                <option value="RO" <?php echo @$ufcomprador=="RO"?"selected":"" ?>> 
                                                 RO </option>
-                                                <option value="RR" <? echo @$ufcomprador=="RR"?"selected":"" ?>> 
+                                                <option value="RR" <?php echo @$ufcomprador=="RR"?"selected":"" ?>> 
                                                 RR </option>
-                                                <option value="SC" <? echo @$ufcomprador=="SC"?"selected":"" ?>> 
+                                                <option value="SC" <?php echo @$ufcomprador=="SC"?"selected":"" ?>> 
                                                 SC </option>
-                                                <option value="SE" <? echo @$ufcomprador=="SE"?"selected":"" ?>> 
+                                                <option value="SE" <?php echo @$ufcomprador=="SE"?"selected":"" ?>> 
                                                 SE </option>
                                                 <option value="SP" echo @$ufcomprador=="SP"?"selected":"" ?>> 
                                                 SP </option>
@@ -483,11 +483,11 @@ function js_link(arq) {
 			      <td  nowrap><strong>Tipo de Transa&ccedil;&atilde;o:</strong></td>
 				<td> 
 				  <select name="tipotransacao">
-				    <option <? echo @$tipotransacao=="Venda"?"selected":"" ?>>Venda</option>
-				    <option <? echo @$tipotransacao=="Venda Parcial"?"selected":"" ?>>Venda 
+				    <option <?php echo @$tipotransacao=="Venda"?"selected":"" ?>>Venda</option>
+				    <option <?php echo @$tipotransacao=="Venda Parcial"?"selected":"" ?>>Venda 
 				    Parcial</option>
-				    <option <? echo @$tipotransacao=="Doacao"?"selected":"" ?>>Doacao</option>
-				    <option <? echo @$tipotransacao=="Partilha de bens"?"selected":"" ?>>Partilha 
+				    <option <?php echo @$tipotransacao=="Doacao"?"selected":"" ?>>Doacao</option>
+				    <option <?php echo @$tipotransacao=="Partilha de bens"?"selected":"" ?>>Partilha 
 				    de bens</option>
 				  </select>
 				  </td>
@@ -507,7 +507,7 @@ function js_link(arq) {
 				  </td>
 			      </tr>
 			      <!--select name="caracteristicas"-->
-			      <?
+			      <?php
 						    if(@$id_itbi == "")
 						      $result = db_query("select * from db_caritbi");
 						    else
@@ -561,7 +561,7 @@ function js_link(arq) {
 	  </table>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

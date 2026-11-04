@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
   }
  	if (!$lSqlErro) {
 		for($iInd = $anousu_atual; $iInd <= $maxo55_anousu; $iInd++){
-			$anoUsu = $iInd;	
+		
+		  $anoUsu = $iInd;	
 		  $clorcprojativprogramfisica->excluir(null,"o28_orcprojativ = {$o55_projativ} and o28_anousu = $anoUsu");
 		  
 		  if ( $clorcprojativprogramfisica->erro_status == "0" ) {
@@ -110,10 +111,18 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 		  
 		    if ( $clorcprojativunidaderesp->erro_status == 0 ) {
 		      $lSqlErro = true;	
-		      $sMsgErro = $clorcprojativunidaderesp->erro_msg;
-		      //die($sMsgErro);exit();
+		      $sMsgErro = $clorcprojativunidaderesp->erro_msg;		      
 		    }  
-		  
+			
+			if(!$lSqlErro && isRioDeJaneiro()){
+				$clOrcprojativunidademedida = new cl_orcprojativunidademedida;
+				$clOrcprojativunidademedida->excluir(null," o221_orcprojativ = {$o55_projativ} and o221_anousu = $anoUsu");
+				if ( $clOrcprojativunidademedida->erro_status == 0 ) {
+					$lSqlErro = true;	
+					$sMsgErro = $clOrcprojativunidademedida->erro_msg;				
+				}				
+			} 
+
 		    if ( !$lSqlErro ) {
 		      $clorcprojativ->excluir($anoUsu,$o55_projativ);
 		  
@@ -133,8 +142,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
    db_fieldsmemory($result,0);
    $db_botao = true;
       
-   $digito = ($o55_projativ{0}*1000);
-   
+   $digito = ($o55_projativ[0]*1000);
 }
 ?>
 <html>
@@ -150,7 +158,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
   <tr> 
     <td> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcprojativ.php"));
 	?>
     </center>
@@ -159,7 +167,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir" && $lSqlErro == true){
 	db_msgbox($sMsgErro);	
 }else if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){

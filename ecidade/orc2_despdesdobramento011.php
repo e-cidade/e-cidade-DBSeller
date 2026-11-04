@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ function js_emite(){
       </tr>
       <tr>
          <td align="center" colspan="3">
-         <?
+         <?php
            db_selinstit('parent.js_limpa',300,100);
           // ja tem instituição na aba filtros
          ?>
@@ -88,7 +88,7 @@ function js_emite(){
             <?=$LDBtxt21?>
           </td>
           <td>
-	    <?
+	    <?php
               $DBtxt21_ano = db_getsession("DB_anousu");
               $DBtxt21_mes = '01';
               $DBtxt21_dia = '01';
@@ -101,7 +101,7 @@ function js_emite(){
           <?=$LDBtxt22?>
         </td>
         <td>
-	  <?
+	  <?php
             $DBtxt22_ano = date("Y",db_getsession("DB_datausu"));
             $DBtxt22_mes = date("m",db_getsession("DB_datausu"));
             $DBtxt22_dia = date("d",db_getsession("DB_datausu"));

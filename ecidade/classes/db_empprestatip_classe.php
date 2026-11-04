@@ -54,13 +54,13 @@ class cl_empprestatip {
                  e44_diaria = bool = Diária 
                  ";
    //funcao construtor da classe 
-   function cl_empprestatip() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empprestatip"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_empprestatip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e44_tipo = ($this->e44_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["e44_tipo"]:$this->e44_tipo);
        $this->e44_descr = ($this->e44_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["e44_descr"]:$this->e44_descr);
@@ -81,7 +81,7 @@ class cl_empprestatip {
      }
    }
    // funcao para Inclusão
-   function incluir ($e44_tipo){ 
+   public function incluir ($e44_tipo){ 
       $this->atualizacampos();
      if($this->e44_descr == null ){ 
        $this->erro_sql = " Campo Descrição do Evento não informado.";

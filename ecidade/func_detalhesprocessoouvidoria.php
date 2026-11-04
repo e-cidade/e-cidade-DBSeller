@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -94,7 +94,7 @@ $codigo_tipo_processo = $oAtendimento->codigo_tipo_processo;
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
   db_app::load('strings.js');
   db_app::load('scripts.js');
   db_app::load('prototype.js');
@@ -109,9 +109,9 @@ $codigo_tipo_processo = $oAtendimento->codigo_tipo_processo;
 </head>
 <body bgcolor="#CCCCCC">
 <table width="100%" border="0">
-  <? db_input('numero_processo',10,0,false,'hidden',3,""); ?>
-  <? db_input('numero_atendimento',10,0,false,'hidden',3,""); ?>
-  <? db_input('codigo_tipo_processo',10,0,false,'hidden',3,""); ?>
+  <?php db_input('numero_processo',10,0,false,'hidden',3,""); ?>
+  <?php db_input('numero_atendimento',10,0,false,'hidden',3,""); ?>
+  <?php db_input('codigo_tipo_processo',10,0,false,'hidden',3,""); ?>
 	<tr>
 	  <td style="width: 40%;" valign="top">
     	<fieldset>
@@ -218,7 +218,7 @@ $codigo_tipo_processo = $oAtendimento->codigo_tipo_processo;
   <legend>
     <b>Detalhamento</b>
   </legend>
-	<?
+	<?php
 		$oTabDetalhes = new verticalTab("detalhesProcesso",300);
 
 		/*

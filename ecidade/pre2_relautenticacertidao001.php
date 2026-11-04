@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,7 +98,7 @@ function js_emite(){
          <b>Intervalo de Datas&nbsp;:&nbsp;</b>
         </td>
         <td>
-         <? 
+         <?php 
            db_inputdata('dtini','','','',true,'text',1,"");   		          
            echo "<b> a </b> ";
            db_inputdata('dtfim','','','',true,'text',1,"");
@@ -127,7 +127,7 @@ function js_emite(){
       </tr>
    </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

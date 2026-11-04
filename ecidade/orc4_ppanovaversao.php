@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,7 +81,7 @@ $db_opcao = 3;
                     <b>Perspectiva Atual:</b>
                   </td>
                   <td>
-                   <?
+                   <?php
                     db_input('o119_sequencial',10,$Io119_versao,true,'hidden',$db_opcao,"");
                     db_input('o119_versao',10,$Io119_versao,true,'text',$db_opcao,"");
                    ?>
@@ -92,7 +92,7 @@ $db_opcao = 3;
                     <?=@$Lo119_datainicio?>
                  </td>
                  <td>
-                   <?
+                   <?php
                     db_inputdata('o119_datainicio',null,null,null,true,'text',$db_opcao,"");
                    ?>
                   </td>
@@ -102,7 +102,7 @@ $db_opcao = 3;
                     <?=@$Lo119_datatermino?>
                  </td>
                  <td>
-                   <?
+                   <?php
                     db_inputdata('o119_datatermino',null,null,null,true,'text',$db_opcao,"");
                    ?>
                   </td>
@@ -112,7 +112,7 @@ $db_opcao = 3;
                     <b>Próxima Versão:</b>
                   </td>
                   <td>
-                   <?
+                   <?php
                     db_input('proximaversao',10,$Io119_versao,true,'text',$db_opcao,"");
                    ?>
                   </td>
@@ -132,7 +132,7 @@ $db_opcao = 3;
     </center>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

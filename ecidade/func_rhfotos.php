@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhfotos->rotulo->label("rh50_oid");
               <?=$Lrh50_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh50_regist",6,$Irh50_regist,true,"text",4,"","chave_rh50_regist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhfotos->rotulo->label("rh50_oid");
               <?=$Lrh50_oid?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh50_oid",1,$Irh50_oid,true,"text",4,"","chave_rh50_oid");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhfotos->rotulo->label("rh50_oid");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhfotos.php")==true){
@@ -118,12 +118,12 @@ $clrhfotos->rotulo->label("rh50_oid");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

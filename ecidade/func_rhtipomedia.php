@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhtipomedia->rotulo->label("rh29_descr");
               <?=$Lrh29_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh29_tipo",2,$Irh29_tipo,true,"text",4,"","chave_rh29_tipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhtipomedia->rotulo->label("rh29_descr");
               <?=$Lrh29_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh29_descr",40,$Irh29_descr,true,"text",4,"","chave_rh29_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhtipomedia->rotulo->label("rh29_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhtipomedia.php")==true){
@@ -118,12 +118,12 @@ $clrhtipomedia->rotulo->label("rh29_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

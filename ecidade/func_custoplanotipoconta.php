@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcustoplanotipoconta->rotulo->label("cc03_custoplanoanalitica");
               <?=$Lcc03_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc03_sequencial",10,$Icc03_sequencial,true,"text",4,"","chave_cc03_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcustoplanotipoconta->rotulo->label("cc03_custoplanoanalitica");
               <?=$Lcc03_custoplanoanalitica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc03_custoplanoanalitica",10,$Icc03_custoplanoanalitica,true,"text",4,"","chave_cc03_custoplanoanalitica");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcustoplanotipoconta->rotulo->label("cc03_custoplanoanalitica");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_custoplanotipoconta.php")==true){
@@ -122,12 +122,12 @@ $clcustoplanotipoconta->rotulo->label("cc03_custoplanoanalitica");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

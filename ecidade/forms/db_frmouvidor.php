@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,22 +41,22 @@ $clrotulo->label("nome");
 		    <td >
 		    </td>
 		    <td> 
-				<?
+				<?php
 				db_input('ov21_sequencial',10,$Iov21_sequencial,true,'hidden',3,"")
 				?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tov21_db_usuario?>">
-		       <?
+		       <?php
 		       db_ancora(@$Lov21_db_usuario,"js_pesquisaov21_db_usuario(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-		<?
+		<?php
 		db_input('ov21_db_usuario',10,$Iov21_db_usuario,true,'text',$db_opcao," onchange='js_pesquisaov21_db_usuario(false);'")
 		?>
-		       <?
+		       <?php
 		db_input('nome',40,$Inome,true,'text',3,'')
 		       ?>
 		    </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ouvidor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -237,6 +237,7 @@
   height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
   padding-right: 15px;
+  overflow: auto;
 }
 
 .menu-list span{
@@ -299,6 +300,10 @@
   /*text-decoration: underline;*/
 }
 
+.icone-estrela-preenchida {
+    color: #c1aa00;
+}
+
 .menu-list span.disabled {
   color : #999;
 }
@@ -314,6 +319,37 @@
   top: 3px;
   bottom: 0;
   line-height: 20px;
+}
+
+.menu-list span > .estrela{
+    background-repeat: no-repeat;
+    display: block;
+    position: absolute;
+    right: 2px;
+    top: 3px;
+    bottom: 0;
+    line-height: 20px;
+    cursor:pointer;
+}
+
+.rotating-icon {
+    display: inline-block;
+    animation: rotation 1s infinite linear;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 2px;
+    bottom: 0;
+    line-height: 20px;
+    cursor:pointer;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .menu-pager {

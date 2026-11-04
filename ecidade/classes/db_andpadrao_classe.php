@@ -84,19 +84,19 @@ class cl_andpadrao {
    function incluir ($p53_codigo,$p53_ordem){
       $this->atualizacampos();
      if($this->p53_coddepto == null ){
-       $this->erro_sql = " Campo c?digo do departamento nao Informado.";
+       $this->erro_sql = " Campo código do departamento não Informado.";
        $this->erro_campo = "p53_coddepto";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($this->p53_dias == null ){
-       $this->erro_sql = " Campo quantidade de dias nao Informado.";
+       $this->erro_sql = " Campo quantidade de dias não Informado.";
        $this->erro_campo = "p53_dias";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -104,17 +104,17 @@ class cl_andpadrao {
        $this->p53_codigo = $p53_codigo;
        $this->p53_ordem = $p53_ordem;
      if(($this->p53_codigo == null) || ($this->p53_codigo == "") ){
-       $this->erro_sql = " Campo p53_codigo nao declarado.";
+       $this->erro_sql = " Campo p53_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if(($this->p53_ordem == null) || ($this->p53_ordem == "") ){
-       $this->erro_sql = " Campo p53_ordem nao declarado.";
+       $this->erro_sql = " Campo p53_ordem não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -137,13 +137,13 @@ class cl_andpadrao {
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Andamento Padr?o do Processo ($this->p53_codigo."-".$this->p53_ordem) nao Inclu?do. Inclusao Abortada.";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "Andamento Padr?o do Processo j? Cadastrado";
+         $this->erro_sql   = "Andamento Padrão do Processo ($this->p53_codigo."-".$this->p53_ordem) nao Incluído. Inclusão Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_banco = "Andamento Padrão do Processo já Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "Andamento Padr?o do Processo ($this->p53_codigo."-".$this->p53_ordem) nao Inclu?do. Inclusao Abortada.";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = "Andamento Padrão do Processo ($this->p53_codigo."-".$this->p53_ordem) nao Incluído. Inclusão Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
        $this->erro_status = "0";
@@ -151,9 +151,9 @@ class cl_andpadrao {
        return false;
      }
      $this->erro_banco = "";
-     $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
+     $this->erro_sql = "Inclusão efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->p53_codigo."-".$this->p53_ordem;
-     $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
@@ -180,10 +180,10 @@ class cl_andpadrao {
        $sql  .= $virgula." p53_codigo = $this->p53_codigo ";
        $virgula = ",";
        if(trim($this->p53_codigo) == null ){
-         $this->erro_sql = " Campo c?digo do tipo nao Informado.";
+         $this->erro_sql = " Campo código do tipo não Informado.";
          $this->erro_campo = "p53_codigo";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -193,10 +193,10 @@ class cl_andpadrao {
        $sql  .= $virgula." p53_coddepto = $this->p53_coddepto ";
        $virgula = ",";
        if(trim($this->p53_coddepto) == null ){
-         $this->erro_sql = " Campo c?digo do departamento nao Informado.";
+         $this->erro_sql = " Campo código do departamento não Informado.";
          $this->erro_campo = "p53_coddepto";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -206,10 +206,10 @@ class cl_andpadrao {
        $sql  .= $virgula." p53_dias = $this->p53_dias ";
        $virgula = ",";
        if(trim($this->p53_dias) == null ){
-         $this->erro_sql = " Campo quantidade de dias nao Informado.";
+         $this->erro_sql = " Campo quantidade de dias não Informado.";
          $this->erro_campo = "p53_dias";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -222,7 +222,7 @@ class cl_andpadrao {
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "p53_ordem";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -256,9 +256,9 @@ class cl_andpadrao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Andamento Padr?o do Processo nao Alterado. Alteracao Abortada.\\n";
+       $this->erro_sql   = "Andamento Padrão do Processo não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->p53_codigo."-".$this->p53_ordem;
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_alterar = 0;
@@ -266,18 +266,18 @@ class cl_andpadrao {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Andamento Padr?o do Processo nao foi Alterado. Alteracao Executada.\\n";
+         $this->erro_sql = "Andamento Padrão do Processo não foi Alterado. Alteração Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->p53_codigo."-".$this->p53_ordem;
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Altera??o efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->p53_codigo."-".$this->p53_ordem;
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
@@ -327,9 +327,9 @@ class cl_andpadrao {
      $result = db_query($sql.$sql2);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Andamento Padr?o do Processo nao Exclu?do. Exclus?o Abortada.\\n";
+       $this->erro_sql   = "Andamento Padrão do Processo não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$p53_codigo."-".$p53_ordem;
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_excluir = 0;
@@ -337,18 +337,18 @@ class cl_andpadrao {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Andamento Padr?o do Processo nao Encontrado. Exclus?o n?o Efetuada.\\n";
+         $this->erro_sql = "Andamento Padrão do Processo não Encontrado. Exclusão não Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$p53_codigo."-".$p53_ordem;
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Exclus?o efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$p53_codigo."-".$p53_ordem;
-         $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
@@ -363,7 +363,7 @@ class cl_andpadrao {
        $this->numrows    = 0;
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -372,7 +372,7 @@ class cl_andpadrao {
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:andpadrao";
-        $this->erro_msg   = "Usu?rio: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "0";
         return false;
@@ -382,7 +382,7 @@ class cl_andpadrao {
    function sql_query ( $p53_codigo=null,$p53_ordem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_andpadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_andpadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

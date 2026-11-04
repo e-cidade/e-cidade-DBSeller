@@ -2,18 +2,21 @@
 
 namespace ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2020;
 
-use ECidade\Financeiro\Contabilidade\Calculo\ReceitaCorrenteLiquida;
-use ECidade\Financeiro\Contabilidade\Relatorio\RREO\Factory\AnexoIII as ReceitaCorrenteFactory;
-use ECidade\Tributario\Configuracao\Entity\Repository\InstituicaoRepository;
+use App\Domain\Financeiro\Contabilidade\Factories\AnexoTresFactory;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTresInRsService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresMdfService;
+use ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\AnexoXIII as AnexoXIII2018;
+use Exception;
+use InstituicaoRepository;
 use Periodo;
-use setasign\Fpdi\PdfParser\Filter\Lzw;
 
 /**
  * Class AnexoXIII
  *
  * @package ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2020
  */
-class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\AnexoXIII
+class AnexoXIII extends AnexoXIII2018
 {
 
     /**
@@ -23,7 +26,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
 
     /**
      * @return array
-     * @throws \DBException
+     * @throws \Exception
      */
     public function getLinhas()
     {
@@ -33,7 +36,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
     }
 
     /**
-     * @throws \DBException
+     * @throws \Exception
      */
     protected function processar()
     {
@@ -76,30 +79,32 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
         $anoAnterior = ($this->iAnoUsu - 1);
         $instituicoes = \InstituicaoRepository::getInstituicoes();
         $codigoInstituicoes = implode(',', array_keys($instituicoes));
-
-        $rclAnterior = ReceitaCorrenteFactory::getInstance($anoAnterior, Periodo::SEXTO_BIMESTRE);
-        $rclAnterior->setInstituicoes($codigoInstituicoes);
-        $stdDadosRCLAnterior = $rclAnterior->getDadosSimplificado();
-
-        $rclExercicio = ReceitaCorrenteFactory::getInstance($this->getAno(), $this->getPeriodo()->getCodigo());
-        $rclExercicio->setInstituicoes($codigoInstituicoes);
-        $stdDadosRCL = $rclExercicio->getDadosSimplificado();
-
+    
         $calc = $this->linhasAdicionadasEnteFederado + $this->linhasAdicionadasEstatais - 2;
         $linhaReceitaCorrenteLiquidaAtualizada = static::LINHA_RECEITA_CORRENTE_LIQUIDA_RCL_III + $calc;
         $linhaReceitaCorrenteLiquida = $this->aLinhasConsistencia[$linhaReceitaCorrenteLiquidaAtualizada];
         if ($this->getAno() >= 2020) {
             $linhaReceitaCorrenteLiquida = $this->aLinhasConsistencia[$linhaRCL];
         }
-        $linhaReceitaCorrenteLiquida->exercicio_anterior = $stdDadosRCLAnterior->valor_rcl_mdf;
-        $linhaReceitaCorrenteLiquida->exercicio_corrente = $stdDadosRCL->valor_rcl_mdf;
+
+        if (empty($linhaReceitaCorrenteLiquida->exercicio_anterior)) {
+            $serviceRCLAnterior = $this->getServiceNovoRCL(Periodo::SEGUNDO_SEMESTRE, $this->getAno() -1);
+            $simplificadoAnterior = $serviceRCLAnterior->processaLinhasSimplificado();
+            $linhaReceitaCorrenteLiquida->exercicio_anterior = $simplificadoAnterior[0]->ate_bimestre;
+        }
+
+        if (empty($linhaReceitaCorrenteLiquida->exercicio_corrente)) {
+            $serviceRCLExercicio = $this->getServiceNovoRCL($this->getPeriodo()->getCodigo(), $this->getAno());
+            $simplificadoExercicio = $serviceRCLExercicio->processaLinhasSimplificado();
+            $linhaReceitaCorrenteLiquida->exercicio_corrente = $simplificadoExercicio[0]->ate_bimestre;
+        }
     }
 
     protected function calcularTotalizadorLinhasDinamicas($dePara)
     {
         $colunas = array(
-            'exercicio_anterior',
-            'exercicio_corrente'
+        'exercicio_anterior',
+        'exercicio_corrente'
         );
         for ($i = 1; $i <= 9; $i++) {
             $colunas[] = "exercicio_corrente_{$i}";
@@ -115,7 +120,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
             $this->aLinhasConsistencia[$dePara[15]]->$nomeColuna = round($linhaFilha1 + $linhaFilha2, 2);
 
             $valor = $this->aLinhasConsistencia[$dePara[12]]->$nomeColuna +
-                $this->aLinhasConsistencia[$dePara[15]]->$nomeColuna;
+            $this->aLinhasConsistencia[$dePara[15]]->$nomeColuna;
             $this->aLinhasConsistencia[$dePara[18]]->$nomeColuna = round($valor, 2);
 
             $this->aLinhasConsistencia[$dePara[20]]->$nomeColuna = $this->aLinhasConsistencia[$dePara[12]]->$nomeColuna;
@@ -166,7 +171,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
         $rsDespesasPPEnteFederado = db_query($sql);
 
         if (!$rsDespesasPPEnteFederado) {
-            throw new DBException('N?o foi poss?vel buscar as linhas dos entes federados.');
+            throw new Exception('Não foi possível buscar as linhas dos entes federados.');
         }
 
         $aLinhasRetornadas = array();
@@ -199,5 +204,22 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
             }
         }
         return $linhasAdicionadas;
+    }
+
+    /**
+     * @param $codigoPeriodo
+     * @param $exercicio
+     * @return AnexoTresService
+     * @throws Exception
+     */
+    private function getServiceNovoRCL($codigoPeriodo, $exercicio)
+    {
+        $filtros = [
+        'codigo_relatorio' => AnexoTresFactory::getCodigoRelatorio($exercicio),
+        'periodo' => AnexoTresFactory::transformPeriodo($codigoPeriodo),
+        'DB_anousu' => $exercicio,
+        'DB_instit' => db_getsession('DB_instit')
+        ];
+        return AnexoTresFactory::getService($exercicio, $filtros);
     }
 }

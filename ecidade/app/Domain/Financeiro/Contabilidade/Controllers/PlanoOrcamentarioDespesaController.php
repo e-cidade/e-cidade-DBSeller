@@ -20,7 +20,7 @@ class PlanoOrcamentarioDespesaController extends Controller
     public function getDespesasSemUso($estrutural, $exercicio)
     {
         $service = new ManutencaoPlanoOrcamentarioDespesaService();
-        $receitasExcluir = $service->buscarDespesasParaExcluisao($estrutural, $exercicio);
+        $receitasExcluir = $service->buscarDespesasParaExclusao($estrutural, $exercicio);
         return new DBJsonResponse(array_values($receitasExcluir->toArray()), 'Receitas a serem excluídas.');
     }
 
@@ -103,6 +103,13 @@ class PlanoOrcamentarioDespesaController extends Controller
     {
         $service = new MapeamentoPlanoDespesaService();
         $service->filtros($request->all());
-        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vículadas.');
+        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vinculadas.');
+    }
+
+    public function importarVinculo(Request $request)
+    {
+        $service = new VincularPlanoOrcamentarioDespesaService();
+        $service->importarVinculo($request->all());
+        return new DBJsonResponse([], 'Mapeamento executado com base no exercício anterior');
     }
 }

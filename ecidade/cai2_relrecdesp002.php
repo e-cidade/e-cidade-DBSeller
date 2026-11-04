@@ -25,13 +25,18 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdf.php"));
-require_once(modification("libs/db_sql.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_liborcamento.php"));
-require_once(modification("libs/db_libcontabilidade.php"));
-require_once(modification("classes/db_orctiporec_classe.php"));
-require_once(modification("model/relatorioContabil.model.php"));
+use App\Domain\Financeiro\Orcamento\Models\FonteRecurso;
+use ECidade\Financeiro\Orcamento\Recurso\Origem;
+
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_sql.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_liborcamento.php");
+require_once modification("libs/db_libcontabilidade.php");
+require_once modification("model/relatorioContabil.model.php");
 
 $sAgrupa = 1;
 db_postmemory($_POST);
@@ -39,19 +44,14 @@ $opcao = 3;
 $oRelataorioContabil = new relatorioContabil(75);
 $clorctiporec = new cl_orctiporec;
 
-$head1 = "DEMONSTRATIVO DE DESPESAS E RECEITAS ";
-$head2 = "EXERCÍCIO: " . db_getsession("DB_anousu");
 $clselorcdotacao = new cl_selorcdotacao();
-
 $clselorcdotacao->setDados($filtra_despesa);
-// passa os parametros vindos da
 
-// $instits = $clselorcdotacao->getInstit();
 $instits = "(" . str_replace('-', ', ', $db_selinstit) . ")";
 $resultinst = db_query("select codigo, nomeinstabrev from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
@@ -61,16 +61,12 @@ $mesini = 1;
 $aDataFinalPartes = explode("/", $dtDataFinal);
 $mesfin = $aDataFinalPartes[1];
 
-$head3 = "INSTITUIÇÕES : " . $descr_inst;
-$head4 = "Posição Até: {$posicaoate}";
+
 $sStringHead6 = $deficitsuperavit == "e" ? "Empenhado" : "Liquidado";
 $sStringHead7 = $quebrarporrecurso == "s" ? "Sim" : "Não";
 $sStringHead8 = $consideraextra == "s" ? "Sim" : "Não";
 $sStringHead9 = $sAgrupa == "2" ? "Sim" : "Não";
-$head5 = "Deficit/Superavit: {$sStringHead6}";
-$head6 = "Quebra Por Recurso: {$sStringHead7}";
-$head7 = "Considerar Extra-Orçamentaria:  {$sStringHead8}";
-$head8 = "Totalizacao Acumulada:  {$sStringHead9}";
+
 if ($quebrarporrecurso == "n") {
     if ($clselorcdotacao->recurso != "") {
         $sele_recursos = " and e91_recurso in $clselorcdotacao->recurso ";
@@ -88,43 +84,52 @@ if ($clselorcdotacao->unidade != '') {
 
 $iAnousu = db_getsession("DB_anousu");
 
-$origemEmpenho = \ECidade\Financeiro\Orcamento\Recurso\Origem::EMISSAO_EMPENHO;
+$origemEmpenho = Origem::EMISSAO_EMPENHO;
 
 $sqlRec = "
-    select distinct o15_codigo ,
-           o15_recurso,
-           o206_complementorecurso,
-           o200_descricao,
-           o15_codtri,
-           o15_descr as descr_rec
+    select distinct
+           case when o206_sequencial is null then rdot.o15_codigo else remp.o15_codigo end as o15_codigo,
+           case when o206_sequencial is null then frdot.gestao else fremp.gestao end as gestao,
+           case when o206_sequencial is null then frdot.descricao else fremp.descricao end as descr_rec
       from orcdotacao
-      inner join orcorgao on o58_anousu = o40_anousu
-                          and o58_orgao=o40_orgao
-      inner join orcunidade on o58_anousu = o41_anousu
-                       and o58_unidade = o41_unidade
-      inner join orctiporec on o58_codigo = o15_codigo
-      inner join complementofonterecurso on o200_sequencial = o15_complemento
+      join orcorgao on orcdotacao.o58_anousu = orcorgao.o40_anousu
+           and orcdotacao.o58_orgao = orcorgao.o40_orgao
+      join orcunidade on o58_anousu = o41_anousu
+           and o58_unidade = o41_unidade
+      join orctiporec rdot on rdot.o15_codigo = o58_codigo
+      join fonterecurso frdot on frdot.orctiporec_id = rdot.o15_codigo
+           and frdot.exercicio = o58_anousu
       left  join empempenho on e60_anousu = o58_anousu
-                       and e60_coddot = o58_coddot
-      left  join origemcomplementorecurso on o15_codigo = o206_recurso
-                                    and o206_numero = e60_numemp
-                                    and o206_origem = {$origemEmpenho}
+            and e60_coddot = o58_coddot
+      left  join origemcomplementorecurso on o206_numero = e60_numemp
+             and o206_origem = {$origemEmpenho}
+      left join orctiporec remp on remp.o15_codigo = o206_recurso
+      left join fonterecurso fremp on fremp.orctiporec_id = remp.o15_codigo
+           and fremp.exercicio = o58_anousu
       where o58_anousu = $iAnousu
         and o41_anousu = $iAnousu";
 if (!empty($clselorcdotacao->recurso)) {
-    $sqlRec .= " and o15_codigo in {$clselorcdotacao->recurso} ";
+    $sqlRec .= " and rdot.o15_codigo in {$clselorcdotacao->recurso} ";
 }
 $sqlRec .= $whUnidade;
-$sqlRec .= " order by o15_codigo";
+$sqlRec .= " order by 1";
 
 $result_orctiporec = $clorctiporec->sql_record($sqlRec);
 
-
 $sele_instit = " and e60_instit in $instits ";
 
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new \ECidade\Pdf\Pdf();
+$pdf->init(false);
 $pdf->AliasNbPages();
+$pdf->addTitulo("DEMONSTRATIVO DE DESPESAS E RECEITAS ");
+$pdf->addTitulo("EXERCÍCIO: " . db_getsession("DB_anousu"));
+$pdf->addTitulo("INSTITUIÇÕES : " . $descr_inst);
+$pdf->addTitulo("Posição Até: {$posicaoate}");
+$pdf->addTitulo("Deficit/Superavit: {$sStringHead6}");
+$pdf->addTitulo("Quebra Por Recurso: {$sStringHead7}");
+$pdf->addTitulo("Considerar Extra-Orçamentaria:  {$sStringHead8}");
+$pdf->addTitulo("Totalizacao Acumulada:  {$sStringHead9}");
+
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial', '', 8);
@@ -138,10 +143,10 @@ $tottotal = 0;
 
 $pdf->addpage("L");
 
-for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
-    db_fieldsmemory($result_orctiporec, $orctiporec);
+for ($i = 0; $i < $clorctiporec->numrows; $i++) {
+    db_fieldsmemory($result_orctiporec, $i);
 
-    $dados = db_utils::fieldsMemory($result_orctiporec, $orctiporec);
+    $dados = db_utils::fieldsMemory($result_orctiporec, $i);
 
     if ($quebrarporrecurso == "n") {
         $sele_recursos = " ";
@@ -149,16 +154,10 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $sele_work_rec = $clselorcdotacao->getDadosReceita("d") . " and d.o70_instit in $instits ";
     } else {
         $sele_recursos = " and e91_recurso = $o15_codigo";
-        //$sele_work     = $clselorcdotacao->getDadosComplemento()." and w.o58_instit in $instits and w.o58_codigo = $o15_codigo ";
-        //$sele_work_rec = $clselorcdotacao->getDadosReceita("d")." and d.o70_instit in $instits and d.o70_codigo = $o15_codigo ";
         $sele_work = $clselorcdotacao->getDadosComplemento() . " and w.o58_instit in $instits ";
         $sele_work_rec = $clselorcdotacao->getDadosReceita("d") . " and d.o70_instit in $instits  ";
     }
 
-
-    //echo "::".$sele_recursos; die();
-
-    //
     $receita_arre = array();
     $despesa_arre = array();
     //
@@ -202,7 +201,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
     $nTotal_totalArrecadado = 0;
 
     for ($rel = 0; $rel < 2; $rel++) {
-
         $valor_arrecadado = 0;
         $valor_empenhado = 0;
         $total_despesa_liquidada = 0;
@@ -226,20 +224,18 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $colrec = 275;
         }
 
-
         if ($quebrarporrecurso == "n") {
             $pdf->cell($colrec, $alt, "RECURSOS MARCADOS", 1, 1, "L", 0);
         } else {
-            $pdf->cell($colrec, $alt, $o15_recurso . ' - ' . $descr_rec . ' - ' .$o200_descricao , 1, 1, "L", 0);
+            $recurso = "$dados->gestao - $dados->descr_rec";
+            $pdf->multiCell($colrec, $alt, $recurso, 0, "L");
         }
         $pdf->setfont('arial', 'b', 8);
         $pdf->cell(40, $alt, "MÊS", 1, 0, "L", 0);
         $pdf->setfont('arial', '', 8);
         for ($mes = $mesi; $mes <= $mesf; $mes++) {
-
             $pdf->cell(22, $alt, strtoupper(db_mes($mes)), 1, 0, "R", 0);
             $pdf->cell(13, $alt, "VAR", 1, 0, "R", 0);
-
         }
         $pdf->cell(25, $alt, 'TOTAL GERAL', 1, 1, "R", 0);
         $pdf->cell(40, $alt, "RECEITA ARRECADADA", 1, 0, "L", 0);
@@ -250,11 +246,9 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             if ($aDataFinalPartes[1] == $mes) {
                 $datafim = $ano . "-" . $aDataFinalPartes[1] . "-" . $aDataFinalPartes[0];
             } else {
-
                 $sql = "select '$ano-" . ($mes == 12 ? 1 : $mes + 1) . "-01'::date - '1 days'::interval as datafim";
                 $result = db_query($sql);
                 db_fieldsmemory($result, 0);
-
             }
 
             $dataini = db_getsession("DB_anousu") . "-$mes-01";
@@ -267,7 +261,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
 
             //      db_criatabela($result); exit;
 
-            for ($i = 0; $i < pg_numrows($result); $i++) {
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
                 db_fieldsmemory($result, $i);
                 if (db_conplano_grupo($anousu, $o57_fonte, 9004) == true) {
                     $valor_arrecadado += $saldo_arrecadado;
@@ -290,12 +284,11 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $arrecadado_ant = $receita_arre[$mes];
 
             db_query("rollback");
-
         }
         $nTotal_valor_arrecadado += $valor_arrecadado;
         if ($sAgrupa == '1' || $rel == 0) {
             $pdf->cell(25, $alt, db_formatar($valor_arrecadado, 'f'), 1, 1, "R", 0);
-        } else if ($sAgrupa == '2' && $rel == 1) {
+        } elseif ($sAgrupa == '2' && $rel == 1) {
             $pdf->cell(25, $alt, db_formatar($nTotal_valor_arrecadado, 'f'), 1, 1, "R", 0);
         }
         // fim da receita arrecadada
@@ -320,7 +313,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $saldo_liquidado = 0;
                 $saldo_empenhado = 0;
                 $saldo_pago = 0;
-                for ($i = 0; $i < pg_numrows($result); $i++) {
+                for ($i = 0; $i < pg_num_rows($result); $i++) {
                     db_fieldsmemory($result, $i);
                     $saldo_liquidado += $liquidado;
                     $saldo_empenhado += ($empenhado - $anulado);
@@ -342,7 +335,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $empenhado_ant = $saldo_empenhado;
 
                 db_query("rollback");
-
             } else {
                 $despesa_paga[$mes] = 0;
                 $despesa_liquidada[$mes] = 0;
@@ -351,12 +343,11 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $pdf->cell(22, $alt, db_formatar(0, 'f'), 1, 0, "R", 0);
                 $pdf->cell(13, $alt, db_formatar(0, 'f'), 1, 0, "R", 0);
             }
-
         }
         $nTotal_valor_empenhado += $valor_empenhado;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, db_formatar($valor_empenhado, 'f'), 1, 1, "R", 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, db_formatar($nTotal_valor_empenhado, 'f'), 1, 1, "R", 0);
         }
 
@@ -378,7 +369,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $nTotal_total_despesa_liquidada += $total_despesa_liquidada;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($total_despesa_liquidada, 'f') : ""), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_total_despesa_liquidada, 'f') : ""), 1, 1, 'R', 0);
         }
 
@@ -392,7 +383,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $totalRecAnt = 0;
         $totalRec = 0;
         for ($mes = $mesi; $mes <= $mesf; $mes++) {
-
             $ano = db_getsession("DB_anousu") + ($mes == 12 ? 1 : 0);
             if ($aDataFinalPartes[1] == $mes) {
                 $datafim = $ano . "-" . $aDataFinalPartes[1] . "-" . $aDataFinalPartes[0];
@@ -406,7 +396,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $wh = " c61_instit in $instits ";
             } else {
                 $wh = " c61_codigo = $o15_codigo and c61_instit in $instits ";
-
             }
 
             // Para Testes
@@ -449,12 +438,11 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $totalReceitaExtra += $totalRecp;
             $totalRecAnt = $totalRecp;
             $totalRecMes[$mes] = $totalRecp;
-
         }
         $nTotal_total_receita_arre += $totalReceitaExtra;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($totalReceitaExtra, 'f') : ""), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_total_receita_arre, 'f') : ""), 1, 1, 'R', 0);
         }
         $pdf->cell(40, $alt, "DESPESA EXTRA", 1, 0, "L", 0);
@@ -463,7 +451,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         //$totalDes          = 0;
         $totalExtra = 0;
         for ($mes = $mesi; $mes <= $mesf; $mes++) {
-
             $ano = db_getsession("DB_anousu") + ($mes == 12 ? 1 : 0);
             if ($aDataFinalPartes[1] == $mes) {
                 $datafim = $ano . "-" . $aDataFinalPartes[1] . "-" . $aDataFinalPartes[0];
@@ -528,13 +515,12 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $pdf->cell(13, $alt, trim(db_formatar($variacao, 'p')), 1, 0, "R", 0);
             $totalDespesaExtra += $totalDesp;
             $totalDesAnt = $totalDesp;
-
         }
         $nTotal_totalExtra += $totalDespesaExtra;
         //$totalExtra = $totalRec-$totalDes;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($totalDespesaExtra, 'f') : ""), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_totalExtra, 'f') : ""), 1, 1, 'R', 0);
         }
         $pdf->cell(40, $alt, "DEFICIT/SUPERAVIT", 1, 0, "L", 0);
@@ -556,7 +542,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $nTotal_totalArrecadado += $total_receita_arre;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($total_receita_arre, 'f') : ""), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_totalArrecadado, 'f') : ""), 1, 1, 'R', 0);
         }
 
@@ -578,7 +564,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $nTotal_total_despesa_paga += $total_despesa_paga;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($total_despesa_paga, 'f') : ""), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_total_despesa_paga, 'f') : ""), 1, 1, 'R', 0);
         }
 
@@ -586,7 +572,6 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         // restos a pagar pago
         for ($mes = $mesi; $mes <= $mesf; $mes++) {
             if ($mes >= $mesini && $mes <= $mesfin) {
-
                 $ano = db_getsession("DB_anousu") + ($mes == 12 ? 1 : 0);
                 if ($aDataFinalPartes[1] == $mes) {
                     $datafim = $ano . "-" . $aDataFinalPartes[1] . "-" . $aDataFinalPartes[0];
@@ -616,10 +601,11 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 $result = db_query($sql);
                 db_fieldsmemory($result, 0);
                 $tot_pago += $pago - $estorno;
-                if (!isset($despesa_paga_rp[$mes]))
+                if (!isset($despesa_paga_rp[$mes])) {
                     $despesa_paga_rp[$mes] = 0;
-                else
+                } else {
                     $despesa_paga_rp[$mes] += $pago - $estorno;
+                }
 
                 $pdf->cell(22, $alt, db_formatar($pago - $estorno, 'f'), 1, 0, "R", 0);
 
@@ -630,24 +616,22 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
                 }
                 $pdf->cell(13, $alt, trim(db_formatar($variacao, 'p')), 1, 0, "R", 0);
                 $restospago_ant = $despesa_paga_rp[$mes];
-
             } else {
                 $tot_pago += 0;
-                if (!isset($despesa_paga_rp[$mes]))
+                if (!isset($despesa_paga_rp[$mes])) {
                     $despesa_paga_rp[$mes] = 0;
-                else
+                } else {
                     $despesa_paga_rp[$mes] += 0;
+                }
 
                 $pdf->cell(22, $alt, db_formatar(0, 'f'), 1, 0, "R", 0);
                 $pdf->cell(13, $alt, db_formatar($var, 'f'), 1, 0, "R", 0);
             }
-
-
         }
         $nTotal_tot_pago += $tot_pago;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($tot_pago, 'f') : ""), 1, 1, "R", 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_tot_pago, 'f') : ""), 1, 1, "R", 0);
         }
 
@@ -672,7 +656,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         $nTotal_total_despesa_paga_geral += $total_despesa_paga_geral;
         if ($sAgrupa == 1 || $rel == 0) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($total_despesa_paga_geral, 'f') : "0"), 1, 1, 'R', 0);
-        } else if ($sAgrupa == 2 && $rel == 1) {
+        } elseif ($sAgrupa == 2 && $rel == 1) {
             $pdf->cell(25, $alt, ($mostrartotal == true ? db_formatar($nTotal_total_despesa_paga_geral, 'f') : "0"), 1, 1, 'R', 0);
         }
 
@@ -681,35 +665,35 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
         if ($mesfin <= 6) {
             break;
         }
-
     }
 
     if ($quebrarporrecurso == "n") {
         break;
     }
-
 }
 $pdf->ln();
 $oRelataorioContabil->getNotaExplicativa($pdf, 1);
 $pdf->ln();
-
 if (!empty($clselorcdotacao->recurso)) {
-    $ids = explode(',', str_replace(['(', ')'], ['', ''], $clselorcdotacao->recurso));
+    $ids = explode(',', str_replace([' ', '(', ')'], ['', '', ''], $clselorcdotacao->recurso));
 
-    $recursos = array_map(function($codigo) {
-        $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($codigo);
-        return sprintf(
-            '%s - %s - %s',
-            $recurso->getFonteDeRecurso(),
-            $recurso->getDescricao(),
-            $recurso->getComplementoRecursoVinculado()->getDescricao()
-        );
-    }, $ids);
+    $recursos = FonteRecurso::query()
+        ->whereIn('orctiporec_id', $ids)
+        ->where('exercicio', $iAnousu)
+        ->get()
+        ->map(function (FonteRecurso $fonteRecurso) {
+            return sprintf(
+                '%s - %s - %s',
+                $fonteRecurso->gestao,
+                $fonteRecurso->recurso->o15_complemento,
+                $fonteRecurso->descricao
+            );
+        })->toArray();
 
     $recursos = implode("\n", $recursos);
-    $pdf->multicell(260,$alt,"Recursos selecionados: {$recursos}", 1, 1);
+    $pdf->multicell(260, $alt, "Recursos selecionados: {$recursos}", 1, 1);
 } else {
-    $pdf->multicell(260,$alt,"Recursos selecionados: TODOS", 1, 1);
+    $pdf->multicell(260, $alt, "Recursos selecionados: TODOS", 1, 1);
 }
 
-$pdf->Output();
+$pdf->Output('I');

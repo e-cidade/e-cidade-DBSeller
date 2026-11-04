@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
               <?=$Lcm17_i_funeraria?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("cm17_i_funeraria",10,$Icm17_i_funeraria,true,"text",4,"","chave_cm17_i_funeraria");
                        ?>
             </td>
@@ -63,7 +63,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
               <strong>Nome/Razão</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("z01_nome",40,"",true,"text",4,"","chave_cm17_c_nome");
                        ?>
             </td>
@@ -81,7 +81,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_funerarias.php")==true){
@@ -117,12 +117,12 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

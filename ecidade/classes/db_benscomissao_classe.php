@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrim
 //CLASSE DA ENTIDADE benscomissao
-class cl_benscomissao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $t60_codcom = 0; 
-   var $t60_dataini_dia = null; 
-   var $t60_dataini_mes = null; 
-   var $t60_dataini_ano = null; 
-   var $t60_dataini = null; 
-   var $t60_datafim_dia = null; 
-   var $t60_datafim_mes = null; 
-   var $t60_datafim_ano = null; 
-   var $t60_datafim = null; 
-   var $t60_id_usuario = 0; 
-   var $t60_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_benscomissao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $t60_codcom = 0;
+   var $t60_dataini_dia = null;
+   var $t60_dataini_mes = null;
+   var $t60_dataini_ano = null;
+   var $t60_dataini = null;
+   var $t60_datafim_dia = null;
+   var $t60_datafim_mes = null;
+   var $t60_datafim_ano = null;
+   var $t60_datafim = null;
+   var $t60_id_usuario = 0;
+   var $t60_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 t60_codcom = int8 = Código da comissão 
-                 t60_dataini = date = Data de início 
-                 t60_datafim = date = Data final 
-                 t60_id_usuario = int4 = Cod. Usuário 
-                 t60_instit = int4 = Instituição 
+                 t60_codcom = int8 = Código da comissão
+                 t60_dataini = date = Data de início
+                 t60_datafim = date = Data final
+                 t60_id_usuario = int4 = Cod. Usuário
+                 t60_instit = int4 = Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_benscomissao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("benscomissao"); 
+     $this->rotulo = new rotulo("benscomissao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_benscomissao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t60_codcom = ($this->t60_codcom == ""?@$GLOBALS["HTTP_POST_VARS"]["t60_codcom"]:$this->t60_codcom);
        if($this->t60_dataini == ""){
@@ -103,9 +103,9 @@ class cl_benscomissao {
      }
    }
    // funcao para inclusao
-   function incluir ($t60_codcom){ 
+   public function incluir ($t60_codcom){
       $this->atualizacampos();
-     if($this->t60_dataini == null ){ 
+     if($this->t60_dataini == null ){
        $this->erro_sql = " Campo Data de início nao Informado.";
        $this->erro_campo = "t60_dataini_dia";
        $this->erro_banco = "";
@@ -114,7 +114,7 @@ class cl_benscomissao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t60_datafim == null ){ 
+     if($this->t60_datafim == null ){
        $this->erro_sql = " Campo Data final nao Informado.";
        $this->erro_campo = "t60_datafim_dia";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_benscomissao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t60_id_usuario == null ){ 
+     if($this->t60_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "t60_id_usuario";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_benscomissao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t60_instit == null ){ 
+     if($this->t60_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "t60_instit";
        $this->erro_banco = "";
@@ -142,16 +142,16 @@ class cl_benscomissao {
        return false;
      }
      if($t60_codcom == "" || $t60_codcom == null ){
-       $result = db_query("select nextval('benscomissao_t60_codcom_seq')"); 
+       $result = db_query("select nextval('benscomissao_t60_codcom_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: benscomissao_t60_codcom_seq do campo: t60_codcom"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: benscomissao_t60_codcom_seq do campo: t60_codcom";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->t60_codcom = pg_result($result,0,0); 
+       $this->t60_codcom = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from benscomissao_t60_codcom_seq");
        if(($result != false) && (pg_result($result,0,0) < $t60_codcom)){
@@ -162,10 +162,10 @@ class cl_benscomissao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->t60_codcom = $t60_codcom; 
+         $this->t60_codcom = $t60_codcom;
        }
      }
-     if(($this->t60_codcom == null) || ($this->t60_codcom == "") ){ 
+     if(($this->t60_codcom == null) || ($this->t60_codcom == "") ){
        $this->erro_sql = " Campo t60_codcom nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,21 +174,21 @@ class cl_benscomissao {
        return false;
      }
      $sql = "insert into benscomissao(
-                                       t60_codcom 
-                                      ,t60_dataini 
-                                      ,t60_datafim 
-                                      ,t60_id_usuario 
-                                      ,t60_instit 
+                                       t60_codcom
+                                      ,t60_dataini
+                                      ,t60_datafim
+                                      ,t60_id_usuario
+                                      ,t60_instit
                        )
                 values (
-                                $this->t60_codcom 
-                               ,".($this->t60_dataini == "null" || $this->t60_dataini == ""?"null":"'".$this->t60_dataini."'")." 
-                               ,".($this->t60_datafim == "null" || $this->t60_datafim == ""?"null":"'".$this->t60_datafim."'")." 
-                               ,$this->t60_id_usuario 
-                               ,$this->t60_instit 
+                                $this->t60_codcom
+                               ,".($this->t60_dataini == "null" || $this->t60_dataini == ""?"null":"'".$this->t60_dataini."'")."
+                               ,".($this->t60_datafim == "null" || $this->t60_datafim == ""?"null":"'".$this->t60_datafim."'")."
+                               ,$this->t60_id_usuario
+                               ,$this->t60_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Comissao de bens ($this->t60_codcom) nao Incluído. Inclusao Abortada.";
@@ -224,16 +224,16 @@ class cl_benscomissao {
        $resac = db_query("insert into db_acount values($acount,920,9804,'','".AddSlashes(pg_result($resaco,0,'t60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($t60_codcom=null) { 
+   public function alterar ($t60_codcom=null) {
       $this->atualizacampos();
      $sql = " update benscomissao set ";
      $virgula = "";
-     if(trim($this->t60_codcom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_codcom"])){ 
+     if(trim($this->t60_codcom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_codcom"])){
        $sql  .= $virgula." t60_codcom = $this->t60_codcom ";
        $virgula = ",";
-       if(trim($this->t60_codcom) == null ){ 
+       if(trim($this->t60_codcom) == null ){
          $this->erro_sql = " Campo Código da comissão nao Informado.";
          $this->erro_campo = "t60_codcom";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_benscomissao {
          return false;
        }
      }
-     if(trim($this->t60_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"] !="") ){ 
+     if(trim($this->t60_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"] !="") ){
        $sql  .= $virgula." t60_dataini = '$this->t60_dataini' ";
        $virgula = ",";
-       if(trim($this->t60_dataini) == null ){ 
+       if(trim($this->t60_dataini) == null ){
          $this->erro_sql = " Campo Data de início nao Informado.";
          $this->erro_campo = "t60_dataini_dia";
          $this->erro_banco = "";
@@ -255,11 +255,11 @@ class cl_benscomissao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["t60_dataini_dia"])){
          $sql  .= $virgula." t60_dataini = null ";
          $virgula = ",";
-         if(trim($this->t60_dataini) == null ){ 
+         if(trim($this->t60_dataini) == null ){
            $this->erro_sql = " Campo Data de início nao Informado.";
            $this->erro_campo = "t60_dataini_dia";
            $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_benscomissao {
          }
        }
      }
-     if(trim($this->t60_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"] !="") ){ 
+     if(trim($this->t60_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"] !="") ){
        $sql  .= $virgula." t60_datafim = '$this->t60_datafim' ";
        $virgula = ",";
-       if(trim($this->t60_datafim) == null ){ 
+       if(trim($this->t60_datafim) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "t60_datafim_dia";
          $this->erro_banco = "";
@@ -282,11 +282,11 @@ class cl_benscomissao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["t60_datafim_dia"])){
          $sql  .= $virgula." t60_datafim = null ";
          $virgula = ",";
-         if(trim($this->t60_datafim) == null ){ 
+         if(trim($this->t60_datafim) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "t60_datafim_dia";
            $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_benscomissao {
          }
        }
      }
-     if(trim($this->t60_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_id_usuario"])){ 
+     if(trim($this->t60_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_id_usuario"])){
        $sql  .= $virgula." t60_id_usuario = $this->t60_id_usuario ";
        $virgula = ",";
-       if(trim($this->t60_id_usuario) == null ){ 
+       if(trim($this->t60_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "t60_id_usuario";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_benscomissao {
          return false;
        }
      }
-     if(trim($this->t60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_instit"])){ 
+     if(trim($this->t60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t60_instit"])){
        $sql  .= $virgula." t60_instit = $this->t60_instit ";
        $virgula = ",";
-       if(trim($this->t60_instit) == null ){ 
+       if(trim($this->t60_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "t60_instit";
          $this->erro_banco = "";
@@ -347,7 +347,7 @@ class cl_benscomissao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Comissao de bens nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->t60_codcom;
@@ -375,14 +375,14 @@ class cl_benscomissao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($t60_codcom=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($t60_codcom=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t60_codcom));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -412,7 +412,7 @@ class cl_benscomissao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Comissao de bens nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t60_codcom;
@@ -440,11 +440,11 @@ class cl_benscomissao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -466,10 +466,10 @@ class cl_benscomissao {
       }
      return $result;
    }
-   function sql_query ( $t60_codcom=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t60_codcom=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,15 +485,15 @@ class cl_benscomissao {
      $sql2 = "";
      if($dbwhere==""){
        if($t60_codcom!=null ){
-         $sql2 .= " where benscomissao.t60_codcom = $t60_codcom "; 
-       } 
+         $sql2 .= " where benscomissao.t60_codcom = $t60_codcom ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,10 +502,10 @@ class cl_benscomissao {
      }
      return $sql;
   }
-   function sql_query_file ( $t60_codcom=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t60_codcom=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,15 +518,15 @@ class cl_benscomissao {
      $sql2 = "";
      if($dbwhere==""){
        if($t60_codcom!=null ){
-         $sql2 .= " where benscomissao.t60_codcom = $t60_codcom "; 
-       } 
+         $sql2 .= " where benscomissao.t60_codcom = $t60_codcom ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

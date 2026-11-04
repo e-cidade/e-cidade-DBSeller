@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,30 +56,30 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc61_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lpc61_numcgm,"js_pesquisapc61_numcgm(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc61_numcgm',8,$Ipc61_numcgm,true,'text',3," onchange='js_pesquisapc61_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('pc60_dtlanc',10,$Ipc60_dtlanc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc61_certif?>">
-       <?
+       <?php
        db_ancora(@$Lpc61_certif,"js_pesquisapc61_certif(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc61_certif',6,$Ipc61_certif,true,'text',$db_opcao," onchange='js_pesquisapc61_certif(false);'")
 ?>
-       <?
+       <?php
 db_input('pc59_descr',40,$Ipc59_descr,true,'text',3,'')
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('pc59_descr',40,$Ipc59_descr,true,'text',3,'')
        <?=@$Lpc61_vencim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('pc61_vencim',@$pc61_vencim_dia,@$pc61_vencim_mes,@$pc61_vencim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_inputdata('pc61_vencim',@$pc61_vencim_dia,@$pc61_vencim_mes,@$pc61_vencim_ano
        <?=@$Lpc61_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('pc61_obs',3,40,$Ipc61_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_textarea('pc61_obs',3,40,$Ipc61_obs,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("pc61_numcgm"=>@$pc61_numcgm,"pc61_certif"=>@$pc61_certif);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clpcfornecert->sql_query_file($pc61_numcgm);

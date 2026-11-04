@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,6 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-
 db_postmemory( $_POST );
 
 $escola = db_getsession("DB_coddepto");
@@ -236,20 +235,20 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
               ?>
               </td>
             </tr>
-            <?}?>
+            <?php }?>
             <?php
               if( $t < $clrechumano->numrows - 1 ) {
             ?>
             <tr>
               <td>&nbsp;</td>
             </tr>
-            <?}?>
-          <?}?>
+            <?php }?>
+          <?php }?>
           </table>
         </fieldset>
       </td>
     </tr>
-    <?}?>
+    <?php }?>
     <?php
       if( $evento == 2 ) {
 
@@ -396,7 +395,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
         </fieldset>
       </td>
     </tr>
-    <?}?>
+    <?php }?>
     <tr>
       <td valign="top">
         <?php
@@ -451,7 +450,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
             </tr>
           </table>
         </fieldset>
-        <?}?>
+        <?php }?>
       </td>
     </tr>
   </table>

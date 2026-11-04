@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("y70_id_usuario");
   <tr>
     <td nowrap title="<?=@$Ty92_termovist?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Ly92_termovist,"js_pesquisay92_termovist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y92_termovist',10,$Iy92_termovist,true,'text',$db_opcao," onchange='js_pesquisay92_termovist(false);'")
 ?>
-       <?
+       <?php
 db_input('y91_datatermo',8,$Iy91_datatermo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty92_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly92_codvist,"js_pesquisay92_codvist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y92_codvist',10,$Iy92_codvist,true,'text',$db_opcao," onchange='js_pesquisay92_codvist(false);'")
 ?>
-       <?
+       <?php
 db_input('y70_id_usuario',10,$Iy70_id_usuario,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_termovistlanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ include(modification("classes/db_iptubase_classe.php"));
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
-<?
+<?php
   $alterando=true;
 ?>
 function js_parentiframe(iframe,confere){
@@ -226,7 +226,7 @@ a:active {
 </form>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

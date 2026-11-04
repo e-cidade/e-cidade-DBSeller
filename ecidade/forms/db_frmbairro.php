@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,19 +34,19 @@ $clbairro->rotulo->label();
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Tj13_codi?>"><?=@$Lj13_codi?></td>
-        <td><? db_input('j13_codi',4,$Ij13_codi,true,'text',3,"") ?></td>
+        <td><?php db_input('j13_codi',4,$Ij13_codi,true,'text',3,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj13_descr?>"><?=@$Lj13_descr?></td>
-        <td><? db_input('j13_descr',40,$Ij13_descr,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j13_descr',40,$Ij13_descr,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj13_codant?>"><?=@$Lj13_codant?></td>
-        <td><? db_input('j13_codant',10,$Ij13_codant,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('j13_codant',10,$Ij13_codant,true,'text',$db_opcao,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj13_rural?>"><?=@$Lj13_rural?></td>
-        <td><?
+        <td><?php
             $x = array("f"=>"NAO","t"=>"SIM");
             db_select('j13_rural',$x,true,$db_opcao,"");
             ?>
@@ -63,7 +63,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bairro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,139 +1,139 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: prefeitura
 //CLASSE DA ENTIDADE db_itbi
-class cl_db_itbi { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $matricula = 0; 
-   var $areaterreno = 0; 
-   var $areaedificada = 0; 
-   var $nomecomprador = null; 
-   var $cgccpfcomprador = null; 
-   var $enderecocomprador = null; 
-   var $municipiocomprador = null; 
-   var $bairrocomprador = null; 
-   var $cepcomprador = null; 
-   var $ufcomprador = null; 
-   var $tipotransacao = null; 
-   var $valortransacao = 0; 
-   var $caracteristicas = null; 
-   var $mfrente = 0; 
-   var $mladodireito = 0; 
-   var $mfundos = 0; 
-   var $mladoesquerdo = 0; 
-   var $email = null; 
-   var $obs = null; 
-   var $liberado = 0; 
-   var $datavencimento_dia = null; 
-   var $datavencimento_mes = null; 
-   var $datavencimento_ano = null; 
-   var $datavencimento = null; 
-   var $aliquota = 0; 
-   var $id_itbi = 0; 
-   var $dataliber_dia = null; 
-   var $dataliber_mes = null; 
-   var $dataliber_ano = null; 
-   var $dataliber = null; 
-   var $valoravaliacao = 0; 
-   var $valorpagamento = 0; 
-   var $obsliber = null; 
-   var $loginn = null; 
-   var $numpre = null; 
-   var $datasolicitacao_dia = null; 
-   var $datasolicitacao_mes = null; 
-   var $datasolicitacao_ano = null; 
-   var $datasolicitacao = null; 
-   var $libpref = 0; 
-   var $valoravterr = 0; 
-   var $valoravconst = 0; 
-   var $numerocomprador = 0; 
-   var $complcomprador = null; 
-   var $cxpostcomprador = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_itbi {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $matricula = 0;
+   var $areaterreno = 0;
+   var $areaedificada = 0;
+   var $nomecomprador = null;
+   var $cgccpfcomprador = null;
+   var $enderecocomprador = null;
+   var $municipiocomprador = null;
+   var $bairrocomprador = null;
+   var $cepcomprador = null;
+   var $ufcomprador = null;
+   var $tipotransacao = null;
+   var $valortransacao = 0;
+   var $caracteristicas = null;
+   var $mfrente = 0;
+   var $mladodireito = 0;
+   var $mfundos = 0;
+   var $mladoesquerdo = 0;
+   var $email = null;
+   var $obs = null;
+   var $liberado = 0;
+   var $datavencimento_dia = null;
+   var $datavencimento_mes = null;
+   var $datavencimento_ano = null;
+   var $datavencimento = null;
+   var $aliquota = 0;
+   var $id_itbi = 0;
+   var $dataliber_dia = null;
+   var $dataliber_mes = null;
+   var $dataliber_ano = null;
+   var $dataliber = null;
+   var $valoravaliacao = 0;
+   var $valorpagamento = 0;
+   var $obsliber = null;
+   var $loginn = null;
+   var $numpre = null;
+   var $datasolicitacao_dia = null;
+   var $datasolicitacao_mes = null;
+   var $datasolicitacao_ano = null;
+   var $datasolicitacao = null;
+   var $libpref = 0;
+   var $valoravterr = 0;
+   var $valoravconst = 0;
+   var $numerocomprador = 0;
+   var $complcomprador = null;
+   var $cxpostcomprador = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 matricula = int4 = Matrícula 
-                 areaterreno = float8 = Área terreno 
-                 areaedificada = float8 = Área edificada 
-                 nomecomprador = varchar(40) = Comprador 
-                 cgccpfcomprador = varchar(14) = CGC/CPF 
-                 enderecocomprador = varchar(40) = Endereço 
-                 municipiocomprador = varchar(20) = Município 
-                 bairrocomprador = varchar(20) = Bairro 
-                 cepcomprador = char(8) = CEP 
-                 ufcomprador = char(2) = UF 
-                 tipotransacao = varchar(20) = Transação 
-                 valortransacao = float8 = Valor 
-                 caracteristicas = varchar(20) = Características 
-                 mfrente = float8 = Frente 
-                 mladodireito = float8 = Direito 
-                 mfundos = float8 = Fundos 
-                 mladoesquerdo = float8 = Esquerdo 
-                 email = varchar(50) = email 
-                 obs = text = Observação 
-                 liberado = int4 = Liberado 
-                 datavencimento = date = Data 
-                 aliquota = float8 = Aliquota 
-                 id_itbi = int4 = Guia 
-                 dataliber = date = Data Liber 
-                 valoravaliacao = float8 = Valor avaliado 
-                 valorpagamento = float8 = Valor pago 
-                 obsliber = text = Obs Liberação 
-                 loginn = char(10) = Login 
-                 numpre = char(15) = Nº arrecadação 
-                 datasolicitacao = date = Data solic 
-                 libpref = float8 = Liberação da Prefeitura 
-                 valoravterr = float8 = Valor Avaliação Terreno 
-                 valoravconst = float8 = Valor Avaliação Prédio 
-                 numerocomprador = int4 = Número 
-                 complcomprador = varchar(20) = Complemento 
-                 cxpostcomprador = varchar(20) = Caixa Postal 
+                 matricula = int4 = Matrícula
+                 areaterreno = float8 = Área terreno
+                 areaedificada = float8 = Área edificada
+                 nomecomprador = varchar(40) = Comprador
+                 cgccpfcomprador = varchar(14) = CGC/CPF
+                 enderecocomprador = varchar(40) = Endereço
+                 municipiocomprador = varchar(20) = Município
+                 bairrocomprador = varchar(20) = Bairro
+                 cepcomprador = char(8) = CEP
+                 ufcomprador = char(2) = UF
+                 tipotransacao = varchar(20) = Transação
+                 valortransacao = float8 = Valor
+                 caracteristicas = varchar(20) = Características
+                 mfrente = float8 = Frente
+                 mladodireito = float8 = Direito
+                 mfundos = float8 = Fundos
+                 mladoesquerdo = float8 = Esquerdo
+                 email = varchar(50) = email
+                 obs = text = Observação
+                 liberado = int4 = Liberado
+                 datavencimento = date = Data
+                 aliquota = float8 = Aliquota
+                 id_itbi = int4 = Guia
+                 dataliber = date = Data Liber
+                 valoravaliacao = float8 = Valor avaliado
+                 valorpagamento = float8 = Valor pago
+                 obsliber = text = Obs Liberação
+                 loginn = char(10) = Login
+                 numpre = char(15) = Nº arrecadação
+                 datasolicitacao = date = Data solic
+                 libpref = float8 = Liberação da Prefeitura
+                 valoravterr = float8 = Valor Avaliação Terreno
+                 valoravconst = float8 = Valor Avaliação Prédio
+                 numerocomprador = int4 = Número
+                 complcomprador = varchar(20) = Complemento
+                 cxpostcomprador = varchar(20) = Caixa Postal
                  ";
-   //funcao construtor da classe 
-   function cl_db_itbi() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_itbi"); 
+     $this->rotulo = new rotulo("db_itbi");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -142,7 +142,7 @@ class cl_db_itbi {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->matricula = ($this->matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["matricula"]:$this->matricula);
        $this->areaterreno = ($this->areaterreno == ""?@$GLOBALS["HTTP_POST_VARS"]["areaterreno"]:$this->areaterreno);
@@ -206,9 +206,9 @@ class cl_db_itbi {
      }
    }
    // funcao para inclusao
-   function incluir ($matricula){ 
+   public function incluir ($matricula){
       $this->atualizacampos();
-     if($this->areaterreno == null ){ 
+     if($this->areaterreno == null ){
        $this->erro_sql = " Campo Área terreno nao Informado.";
        $this->erro_campo = "areaterreno";
        $this->erro_banco = "";
@@ -217,7 +217,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->areaedificada == null ){ 
+     if($this->areaedificada == null ){
        $this->erro_sql = " Campo Área edificada nao Informado.";
        $this->erro_campo = "areaedificada";
        $this->erro_banco = "";
@@ -226,7 +226,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->nomecomprador == null ){ 
+     if($this->nomecomprador == null ){
        $this->erro_sql = " Campo Comprador nao Informado.";
        $this->erro_campo = "nomecomprador";
        $this->erro_banco = "";
@@ -235,7 +235,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cgccpfcomprador == null ){ 
+     if($this->cgccpfcomprador == null ){
        $this->erro_sql = " Campo CGC/CPF nao Informado.";
        $this->erro_campo = "cgccpfcomprador";
        $this->erro_banco = "";
@@ -244,7 +244,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->enderecocomprador == null ){ 
+     if($this->enderecocomprador == null ){
        $this->erro_sql = " Campo Endereço nao Informado.";
        $this->erro_campo = "enderecocomprador";
        $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->municipiocomprador == null ){ 
+     if($this->municipiocomprador == null ){
        $this->erro_sql = " Campo Município nao Informado.";
        $this->erro_campo = "municipiocomprador";
        $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->bairrocomprador == null ){ 
+     if($this->bairrocomprador == null ){
        $this->erro_sql = " Campo Bairro nao Informado.";
        $this->erro_campo = "bairrocomprador";
        $this->erro_banco = "";
@@ -271,7 +271,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cepcomprador == null ){ 
+     if($this->cepcomprador == null ){
        $this->erro_sql = " Campo CEP nao Informado.";
        $this->erro_campo = "cepcomprador";
        $this->erro_banco = "";
@@ -280,7 +280,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ufcomprador == null ){ 
+     if($this->ufcomprador == null ){
        $this->erro_sql = " Campo UF nao Informado.";
        $this->erro_campo = "ufcomprador";
        $this->erro_banco = "";
@@ -289,7 +289,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tipotransacao == null ){ 
+     if($this->tipotransacao == null ){
        $this->erro_sql = " Campo Transação nao Informado.";
        $this->erro_campo = "tipotransacao";
        $this->erro_banco = "";
@@ -298,7 +298,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->valortransacao == null ){ 
+     if($this->valortransacao == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "valortransacao";
        $this->erro_banco = "";
@@ -307,7 +307,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->caracteristicas == null ){ 
+     if($this->caracteristicas == null ){
        $this->erro_sql = " Campo Características nao Informado.";
        $this->erro_campo = "caracteristicas";
        $this->erro_banco = "";
@@ -316,7 +316,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->mfrente == null ){ 
+     if($this->mfrente == null ){
        $this->erro_sql = " Campo Frente nao Informado.";
        $this->erro_campo = "mfrente";
        $this->erro_banco = "";
@@ -325,7 +325,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->mladodireito == null ){ 
+     if($this->mladodireito == null ){
        $this->erro_sql = " Campo Direito nao Informado.";
        $this->erro_campo = "mladodireito";
        $this->erro_banco = "";
@@ -334,7 +334,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->mfundos == null ){ 
+     if($this->mfundos == null ){
        $this->erro_sql = " Campo Fundos nao Informado.";
        $this->erro_campo = "mfundos";
        $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->mladoesquerdo == null ){ 
+     if($this->mladoesquerdo == null ){
        $this->erro_sql = " Campo Esquerdo nao Informado.";
        $this->erro_campo = "mladoesquerdo";
        $this->erro_banco = "";
@@ -352,7 +352,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->obs == null ){ 
+     if($this->obs == null ){
        $this->erro_sql = " Campo Observação nao Informado.";
        $this->erro_campo = "obs";
        $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->liberado == null ){ 
+     if($this->liberado == null ){
        $this->erro_sql = " Campo Liberado nao Informado.";
        $this->erro_campo = "liberado";
        $this->erro_banco = "";
@@ -370,7 +370,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->datavencimento == null ){ 
+     if($this->datavencimento == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "datavencimento_dia";
        $this->erro_banco = "";
@@ -379,7 +379,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->aliquota == null ){ 
+     if($this->aliquota == null ){
        $this->erro_sql = " Campo Aliquota nao Informado.";
        $this->erro_campo = "aliquota";
        $this->erro_banco = "";
@@ -388,7 +388,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->id_itbi == null ){ 
+     if($this->id_itbi == null ){
        $this->erro_sql = " Campo Guia nao Informado.";
        $this->erro_campo = "id_itbi";
        $this->erro_banco = "";
@@ -397,7 +397,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dataliber == null ){ 
+     if($this->dataliber == null ){
        $this->erro_sql = " Campo Data Liber nao Informado.";
        $this->erro_campo = "dataliber_dia";
        $this->erro_banco = "";
@@ -406,7 +406,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->valoravaliacao == null ){ 
+     if($this->valoravaliacao == null ){
        $this->erro_sql = " Campo Valor avaliado nao Informado.";
        $this->erro_campo = "valoravaliacao";
        $this->erro_banco = "";
@@ -415,7 +415,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->valorpagamento == null ){ 
+     if($this->valorpagamento == null ){
        $this->erro_sql = " Campo Valor pago nao Informado.";
        $this->erro_campo = "valorpagamento";
        $this->erro_banco = "";
@@ -424,7 +424,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->obsliber == null ){ 
+     if($this->obsliber == null ){
        $this->erro_sql = " Campo Obs Liberação nao Informado.";
        $this->erro_campo = "obsliber";
        $this->erro_banco = "";
@@ -433,7 +433,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->loginn == null ){ 
+     if($this->loginn == null ){
        $this->erro_sql = " Campo Login nao Informado.";
        $this->erro_campo = "loginn";
        $this->erro_banco = "";
@@ -442,7 +442,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->numpre == null ){ 
+     if($this->numpre == null ){
        $this->erro_sql = " Campo Nº arrecadação nao Informado.";
        $this->erro_campo = "numpre";
        $this->erro_banco = "";
@@ -451,7 +451,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->datasolicitacao == null ){ 
+     if($this->datasolicitacao == null ){
        $this->erro_sql = " Campo Data solic nao Informado.";
        $this->erro_campo = "datasolicitacao_dia";
        $this->erro_banco = "";
@@ -460,7 +460,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->libpref == null ){ 
+     if($this->libpref == null ){
        $this->erro_sql = " Campo Liberação da Prefeitura nao Informado.";
        $this->erro_campo = "libpref";
        $this->erro_banco = "";
@@ -469,7 +469,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->valoravterr == null ){ 
+     if($this->valoravterr == null ){
        $this->erro_sql = " Campo Valor Avaliação Terreno nao Informado.";
        $this->erro_campo = "valoravterr";
        $this->erro_banco = "";
@@ -478,7 +478,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->valoravconst == null ){ 
+     if($this->valoravconst == null ){
        $this->erro_sql = " Campo Valor Avaliação Prédio nao Informado.";
        $this->erro_campo = "valoravconst";
        $this->erro_banco = "";
@@ -487,7 +487,7 @@ class cl_db_itbi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->numerocomprador == null ){ 
+     if($this->numerocomprador == null ){
        $this->erro_sql = " Campo Número nao Informado.";
        $this->erro_campo = "numerocomprador";
        $this->erro_banco = "";
@@ -497,16 +497,16 @@ class cl_db_itbi {
        return false;
      }
      if($id_itbi == "" || $id_itbi == null ){
-       $result = db_query("select nextval('db_itbi_id_itbi_seq')"); 
+       $result = db_query("select nextval('db_itbi_id_itbi_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_itbi_id_itbi_seq do campo: id_itbi"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_itbi_id_itbi_seq do campo: id_itbi";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->id_itbi = pg_result($result,0,0); 
+       $this->id_itbi = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_itbi_id_itbi_seq");
        if(($result != false) && (pg_result($result,0,0) < $id_itbi)){
@@ -517,10 +517,10 @@ class cl_db_itbi {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->id_itbi = $id_itbi; 
+         $this->id_itbi = $id_itbi;
        }
      }
-     if(($this->matricula == null) || ($this->matricula == "") ){ 
+     if(($this->matricula == null) || ($this->matricula == "") ){
        $this->erro_sql = " Campo matricula nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -529,83 +529,83 @@ class cl_db_itbi {
        return false;
      }
      $sql = "insert into db_itbi(
-                                       matricula 
-                                      ,areaterreno 
-                                      ,areaedificada 
-                                      ,nomecomprador 
-                                      ,cgccpfcomprador 
-                                      ,enderecocomprador 
-                                      ,municipiocomprador 
-                                      ,bairrocomprador 
-                                      ,cepcomprador 
-                                      ,ufcomprador 
-                                      ,tipotransacao 
-                                      ,valortransacao 
-                                      ,caracteristicas 
-                                      ,mfrente 
-                                      ,mladodireito 
-                                      ,mfundos 
-                                      ,mladoesquerdo 
-                                      ,email 
-                                      ,obs 
-                                      ,liberado 
-                                      ,datavencimento 
-                                      ,aliquota 
-                                      ,id_itbi 
-                                      ,dataliber 
-                                      ,valoravaliacao 
-                                      ,valorpagamento 
-                                      ,obsliber 
-                                      ,loginn 
-                                      ,numpre 
-                                      ,datasolicitacao 
-                                      ,libpref 
-                                      ,valoravterr 
-                                      ,valoravconst 
-                                      ,numerocomprador 
-                                      ,complcomprador 
-                                      ,cxpostcomprador 
+                                       matricula
+                                      ,areaterreno
+                                      ,areaedificada
+                                      ,nomecomprador
+                                      ,cgccpfcomprador
+                                      ,enderecocomprador
+                                      ,municipiocomprador
+                                      ,bairrocomprador
+                                      ,cepcomprador
+                                      ,ufcomprador
+                                      ,tipotransacao
+                                      ,valortransacao
+                                      ,caracteristicas
+                                      ,mfrente
+                                      ,mladodireito
+                                      ,mfundos
+                                      ,mladoesquerdo
+                                      ,email
+                                      ,obs
+                                      ,liberado
+                                      ,datavencimento
+                                      ,aliquota
+                                      ,id_itbi
+                                      ,dataliber
+                                      ,valoravaliacao
+                                      ,valorpagamento
+                                      ,obsliber
+                                      ,loginn
+                                      ,numpre
+                                      ,datasolicitacao
+                                      ,libpref
+                                      ,valoravterr
+                                      ,valoravconst
+                                      ,numerocomprador
+                                      ,complcomprador
+                                      ,cxpostcomprador
                        )
                 values (
-                                $this->matricula 
-                               ,$this->areaterreno 
-                               ,$this->areaedificada 
-                               ,'$this->nomecomprador' 
-                               ,'$this->cgccpfcomprador' 
-                               ,'$this->enderecocomprador' 
-                               ,'$this->municipiocomprador' 
-                               ,'$this->bairrocomprador' 
-                               ,'$this->cepcomprador' 
-                               ,'$this->ufcomprador' 
-                               ,'$this->tipotransacao' 
-                               ,$this->valortransacao 
-                               ,'$this->caracteristicas' 
-                               ,$this->mfrente 
-                               ,$this->mladodireito 
-                               ,$this->mfundos 
-                               ,$this->mladoesquerdo 
-                               ,'$this->email' 
-                               ,'$this->obs' 
-                               ,$this->liberado 
-                               ,".($this->datavencimento == "null" || $this->datavencimento == ""?"null":"'".$this->datavencimento."'")." 
-                               ,$this->aliquota 
-                               ,$this->id_itbi 
-                               ,".($this->dataliber == "null" || $this->dataliber == ""?"null":"'".$this->dataliber."'")." 
-                               ,$this->valoravaliacao 
-                               ,$this->valorpagamento 
-                               ,'$this->obsliber' 
-                               ,'$this->loginn' 
-                               ,'$this->numpre' 
-                               ,".($this->datasolicitacao == "null" || $this->datasolicitacao == ""?"null":"'".$this->datasolicitacao."'")." 
-                               ,$this->libpref 
-                               ,$this->valoravterr 
-                               ,$this->valoravconst 
-                               ,$this->numerocomprador 
-                               ,'$this->complcomprador' 
-                               ,'$this->cxpostcomprador' 
+                                $this->matricula
+                               ,$this->areaterreno
+                               ,$this->areaedificada
+                               ,'$this->nomecomprador'
+                               ,'$this->cgccpfcomprador'
+                               ,'$this->enderecocomprador'
+                               ,'$this->municipiocomprador'
+                               ,'$this->bairrocomprador'
+                               ,'$this->cepcomprador'
+                               ,'$this->ufcomprador'
+                               ,'$this->tipotransacao'
+                               ,$this->valortransacao
+                               ,'$this->caracteristicas'
+                               ,$this->mfrente
+                               ,$this->mladodireito
+                               ,$this->mfundos
+                               ,$this->mladoesquerdo
+                               ,'$this->email'
+                               ,'$this->obs'
+                               ,$this->liberado
+                               ,".($this->datavencimento == "null" || $this->datavencimento == ""?"null":"'".$this->datavencimento."'")."
+                               ,$this->aliquota
+                               ,$this->id_itbi
+                               ,".($this->dataliber == "null" || $this->dataliber == ""?"null":"'".$this->dataliber."'")."
+                               ,$this->valoravaliacao
+                               ,$this->valorpagamento
+                               ,'$this->obsliber'
+                               ,'$this->loginn'
+                               ,'$this->numpre'
+                               ,".($this->datasolicitacao == "null" || $this->datasolicitacao == ""?"null":"'".$this->datasolicitacao."'")."
+                               ,$this->libpref
+                               ,$this->valoravterr
+                               ,$this->valoravconst
+                               ,$this->numerocomprador
+                               ,'$this->complcomprador'
+                               ,'$this->cxpostcomprador'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itbi ($this->matricula) nao Incluído. Inclusao Abortada.";
@@ -672,16 +672,16 @@ class cl_db_itbi {
        $resac = db_query("insert into db_acount values($acount,185,2509,'','".AddSlashes(pg_result($resaco,0,'cxpostcomprador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($matricula=null) { 
+   public function alterar ($matricula=null) {
       $this->atualizacampos();
      $sql = " update db_itbi set ";
      $virgula = "";
-     if(trim($this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){ 
+     if(trim($this->matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matricula"])){
        $sql  .= $virgula." matricula = $this->matricula ";
        $virgula = ",";
-       if(trim($this->matricula) == null ){ 
+       if(trim($this->matricula) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "matricula";
          $this->erro_banco = "";
@@ -691,10 +691,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->areaterreno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["areaterreno"])){ 
+     if(trim($this->areaterreno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["areaterreno"])){
        $sql  .= $virgula." areaterreno = $this->areaterreno ";
        $virgula = ",";
-       if(trim($this->areaterreno) == null ){ 
+       if(trim($this->areaterreno) == null ){
          $this->erro_sql = " Campo Área terreno nao Informado.";
          $this->erro_campo = "areaterreno";
          $this->erro_banco = "";
@@ -704,10 +704,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->areaedificada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["areaedificada"])){ 
+     if(trim($this->areaedificada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["areaedificada"])){
        $sql  .= $virgula." areaedificada = $this->areaedificada ";
        $virgula = ",";
-       if(trim($this->areaedificada) == null ){ 
+       if(trim($this->areaedificada) == null ){
          $this->erro_sql = " Campo Área edificada nao Informado.";
          $this->erro_campo = "areaedificada";
          $this->erro_banco = "";
@@ -717,10 +717,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->nomecomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomecomprador"])){ 
+     if(trim($this->nomecomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomecomprador"])){
        $sql  .= $virgula." nomecomprador = '$this->nomecomprador' ";
        $virgula = ",";
-       if(trim($this->nomecomprador) == null ){ 
+       if(trim($this->nomecomprador) == null ){
          $this->erro_sql = " Campo Comprador nao Informado.";
          $this->erro_campo = "nomecomprador";
          $this->erro_banco = "";
@@ -730,10 +730,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->cgccpfcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgccpfcomprador"])){ 
+     if(trim($this->cgccpfcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgccpfcomprador"])){
        $sql  .= $virgula." cgccpfcomprador = '$this->cgccpfcomprador' ";
        $virgula = ",";
-       if(trim($this->cgccpfcomprador) == null ){ 
+       if(trim($this->cgccpfcomprador) == null ){
          $this->erro_sql = " Campo CGC/CPF nao Informado.";
          $this->erro_campo = "cgccpfcomprador";
          $this->erro_banco = "";
@@ -743,10 +743,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->enderecocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["enderecocomprador"])){ 
+     if(trim($this->enderecocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["enderecocomprador"])){
        $sql  .= $virgula." enderecocomprador = '$this->enderecocomprador' ";
        $virgula = ",";
-       if(trim($this->enderecocomprador) == null ){ 
+       if(trim($this->enderecocomprador) == null ){
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "enderecocomprador";
          $this->erro_banco = "";
@@ -756,10 +756,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->municipiocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["municipiocomprador"])){ 
+     if(trim($this->municipiocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["municipiocomprador"])){
        $sql  .= $virgula." municipiocomprador = '$this->municipiocomprador' ";
        $virgula = ",";
-       if(trim($this->municipiocomprador) == null ){ 
+       if(trim($this->municipiocomprador) == null ){
          $this->erro_sql = " Campo Município nao Informado.";
          $this->erro_campo = "municipiocomprador";
          $this->erro_banco = "";
@@ -769,10 +769,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->bairrocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bairrocomprador"])){ 
+     if(trim($this->bairrocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bairrocomprador"])){
        $sql  .= $virgula." bairrocomprador = '$this->bairrocomprador' ";
        $virgula = ",";
-       if(trim($this->bairrocomprador) == null ){ 
+       if(trim($this->bairrocomprador) == null ){
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "bairrocomprador";
          $this->erro_banco = "";
@@ -782,10 +782,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->cepcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cepcomprador"])){ 
+     if(trim($this->cepcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cepcomprador"])){
        $sql  .= $virgula." cepcomprador = '$this->cepcomprador' ";
        $virgula = ",";
-       if(trim($this->cepcomprador) == null ){ 
+       if(trim($this->cepcomprador) == null ){
          $this->erro_sql = " Campo CEP nao Informado.";
          $this->erro_campo = "cepcomprador";
          $this->erro_banco = "";
@@ -795,10 +795,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->ufcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ufcomprador"])){ 
+     if(trim($this->ufcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ufcomprador"])){
        $sql  .= $virgula." ufcomprador = '$this->ufcomprador' ";
        $virgula = ",";
-       if(trim($this->ufcomprador) == null ){ 
+       if(trim($this->ufcomprador) == null ){
          $this->erro_sql = " Campo UF nao Informado.";
          $this->erro_campo = "ufcomprador";
          $this->erro_banco = "";
@@ -808,10 +808,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->tipotransacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipotransacao"])){ 
+     if(trim($this->tipotransacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipotransacao"])){
        $sql  .= $virgula." tipotransacao = '$this->tipotransacao' ";
        $virgula = ",";
-       if(trim($this->tipotransacao) == null ){ 
+       if(trim($this->tipotransacao) == null ){
          $this->erro_sql = " Campo Transação nao Informado.";
          $this->erro_campo = "tipotransacao";
          $this->erro_banco = "";
@@ -821,10 +821,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->valortransacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valortransacao"])){ 
+     if(trim($this->valortransacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valortransacao"])){
        $sql  .= $virgula." valortransacao = $this->valortransacao ";
        $virgula = ",";
-       if(trim($this->valortransacao) == null ){ 
+       if(trim($this->valortransacao) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "valortransacao";
          $this->erro_banco = "";
@@ -834,10 +834,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->caracteristicas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["caracteristicas"])){ 
+     if(trim($this->caracteristicas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["caracteristicas"])){
        $sql  .= $virgula." caracteristicas = '$this->caracteristicas' ";
        $virgula = ",";
-       if(trim($this->caracteristicas) == null ){ 
+       if(trim($this->caracteristicas) == null ){
          $this->erro_sql = " Campo Características nao Informado.";
          $this->erro_campo = "caracteristicas";
          $this->erro_banco = "";
@@ -847,10 +847,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->mfrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mfrente"])){ 
+     if(trim($this->mfrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mfrente"])){
        $sql  .= $virgula." mfrente = $this->mfrente ";
        $virgula = ",";
-       if(trim($this->mfrente) == null ){ 
+       if(trim($this->mfrente) == null ){
          $this->erro_sql = " Campo Frente nao Informado.";
          $this->erro_campo = "mfrente";
          $this->erro_banco = "";
@@ -860,10 +860,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->mladodireito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mladodireito"])){ 
+     if(trim($this->mladodireito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mladodireito"])){
        $sql  .= $virgula." mladodireito = $this->mladodireito ";
        $virgula = ",";
-       if(trim($this->mladodireito) == null ){ 
+       if(trim($this->mladodireito) == null ){
          $this->erro_sql = " Campo Direito nao Informado.";
          $this->erro_campo = "mladodireito";
          $this->erro_banco = "";
@@ -873,10 +873,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->mfundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mfundos"])){ 
+     if(trim($this->mfundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mfundos"])){
        $sql  .= $virgula." mfundos = $this->mfundos ";
        $virgula = ",";
-       if(trim($this->mfundos) == null ){ 
+       if(trim($this->mfundos) == null ){
          $this->erro_sql = " Campo Fundos nao Informado.";
          $this->erro_campo = "mfundos";
          $this->erro_banco = "";
@@ -886,10 +886,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->mladoesquerdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mladoesquerdo"])){ 
+     if(trim($this->mladoesquerdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mladoesquerdo"])){
        $sql  .= $virgula." mladoesquerdo = $this->mladoesquerdo ";
        $virgula = ",";
-       if(trim($this->mladoesquerdo) == null ){ 
+       if(trim($this->mladoesquerdo) == null ){
          $this->erro_sql = " Campo Esquerdo nao Informado.";
          $this->erro_campo = "mladoesquerdo";
          $this->erro_banco = "";
@@ -899,14 +899,14 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["email"])){ 
+     if(trim($this->email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["email"])){
        $sql  .= $virgula." email = '$this->email' ";
        $virgula = ",";
      }
-     if(trim($this->obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obs"])){ 
+     if(trim($this->obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obs"])){
        $sql  .= $virgula." obs = '$this->obs' ";
        $virgula = ",";
-       if(trim($this->obs) == null ){ 
+       if(trim($this->obs) == null ){
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "obs";
          $this->erro_banco = "";
@@ -916,10 +916,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->liberado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["liberado"])){ 
+     if(trim($this->liberado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["liberado"])){
        $sql  .= $virgula." liberado = $this->liberado ";
        $virgula = ",";
-       if(trim($this->liberado) == null ){ 
+       if(trim($this->liberado) == null ){
          $this->erro_sql = " Campo Liberado nao Informado.";
          $this->erro_campo = "liberado";
          $this->erro_banco = "";
@@ -929,10 +929,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"] !="") ){ 
+     if(trim($this->datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"] !="") ){
        $sql  .= $virgula." datavencimento = '$this->datavencimento' ";
        $virgula = ",";
-       if(trim($this->datavencimento) == null ){ 
+       if(trim($this->datavencimento) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "datavencimento_dia";
          $this->erro_banco = "";
@@ -941,11 +941,11 @@ class cl_db_itbi {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["datavencimento_dia"])){
          $sql  .= $virgula." datavencimento = null ";
          $virgula = ",";
-         if(trim($this->datavencimento) == null ){ 
+         if(trim($this->datavencimento) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "datavencimento_dia";
            $this->erro_banco = "";
@@ -956,10 +956,10 @@ class cl_db_itbi {
          }
        }
      }
-     if(trim($this->aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["aliquota"])){ 
+     if(trim($this->aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["aliquota"])){
        $sql  .= $virgula." aliquota = $this->aliquota ";
        $virgula = ",";
-       if(trim($this->aliquota) == null ){ 
+       if(trim($this->aliquota) == null ){
          $this->erro_sql = " Campo Aliquota nao Informado.";
          $this->erro_campo = "aliquota";
          $this->erro_banco = "";
@@ -969,10 +969,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->id_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_itbi"])){ 
+     if(trim($this->id_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_itbi"])){
        $sql  .= $virgula." id_itbi = $this->id_itbi ";
        $virgula = ",";
-       if(trim($this->id_itbi) == null ){ 
+       if(trim($this->id_itbi) == null ){
          $this->erro_sql = " Campo Guia nao Informado.";
          $this->erro_campo = "id_itbi";
          $this->erro_banco = "";
@@ -982,10 +982,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->dataliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"] !="") ){ 
+     if(trim($this->dataliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"] !="") ){
        $sql  .= $virgula." dataliber = '$this->dataliber' ";
        $virgula = ",";
-       if(trim($this->dataliber) == null ){ 
+       if(trim($this->dataliber) == null ){
          $this->erro_sql = " Campo Data Liber nao Informado.";
          $this->erro_campo = "dataliber_dia";
          $this->erro_banco = "";
@@ -994,11 +994,11 @@ class cl_db_itbi {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["dataliber_dia"])){
          $sql  .= $virgula." dataliber = null ";
          $virgula = ",";
-         if(trim($this->dataliber) == null ){ 
+         if(trim($this->dataliber) == null ){
            $this->erro_sql = " Campo Data Liber nao Informado.";
            $this->erro_campo = "dataliber_dia";
            $this->erro_banco = "";
@@ -1009,10 +1009,10 @@ class cl_db_itbi {
          }
        }
      }
-     if(trim($this->valoravaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravaliacao"])){ 
+     if(trim($this->valoravaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravaliacao"])){
        $sql  .= $virgula." valoravaliacao = $this->valoravaliacao ";
        $virgula = ",";
-       if(trim($this->valoravaliacao) == null ){ 
+       if(trim($this->valoravaliacao) == null ){
          $this->erro_sql = " Campo Valor avaliado nao Informado.";
          $this->erro_campo = "valoravaliacao";
          $this->erro_banco = "";
@@ -1022,10 +1022,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->valorpagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valorpagamento"])){ 
+     if(trim($this->valorpagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valorpagamento"])){
        $sql  .= $virgula." valorpagamento = $this->valorpagamento ";
        $virgula = ",";
-       if(trim($this->valorpagamento) == null ){ 
+       if(trim($this->valorpagamento) == null ){
          $this->erro_sql = " Campo Valor pago nao Informado.";
          $this->erro_campo = "valorpagamento";
          $this->erro_banco = "";
@@ -1035,10 +1035,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->obsliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsliber"])){ 
+     if(trim($this->obsliber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsliber"])){
        $sql  .= $virgula." obsliber = '$this->obsliber' ";
        $virgula = ",";
-       if(trim($this->obsliber) == null ){ 
+       if(trim($this->obsliber) == null ){
          $this->erro_sql = " Campo Obs Liberação nao Informado.";
          $this->erro_campo = "obsliber";
          $this->erro_banco = "";
@@ -1048,10 +1048,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->loginn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["loginn"])){ 
+     if(trim($this->loginn)!="" || isset($GLOBALS["HTTP_POST_VARS"]["loginn"])){
        $sql  .= $virgula." loginn = '$this->loginn' ";
        $virgula = ",";
-       if(trim($this->loginn) == null ){ 
+       if(trim($this->loginn) == null ){
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "loginn";
          $this->erro_banco = "";
@@ -1061,10 +1061,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){ 
+     if(trim($this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){
        $sql  .= $virgula." numpre = '$this->numpre' ";
        $virgula = ",";
-       if(trim($this->numpre) == null ){ 
+       if(trim($this->numpre) == null ){
          $this->erro_sql = " Campo Nº arrecadação nao Informado.";
          $this->erro_campo = "numpre";
          $this->erro_banco = "";
@@ -1074,10 +1074,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->datasolicitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"] !="") ){ 
+     if(trim($this->datasolicitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"] !="") ){
        $sql  .= $virgula." datasolicitacao = '$this->datasolicitacao' ";
        $virgula = ",";
-       if(trim($this->datasolicitacao) == null ){ 
+       if(trim($this->datasolicitacao) == null ){
          $this->erro_sql = " Campo Data solic nao Informado.";
          $this->erro_campo = "datasolicitacao_dia";
          $this->erro_banco = "";
@@ -1086,11 +1086,11 @@ class cl_db_itbi {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["datasolicitacao_dia"])){
          $sql  .= $virgula." datasolicitacao = null ";
          $virgula = ",";
-         if(trim($this->datasolicitacao) == null ){ 
+         if(trim($this->datasolicitacao) == null ){
            $this->erro_sql = " Campo Data solic nao Informado.";
            $this->erro_campo = "datasolicitacao_dia";
            $this->erro_banco = "";
@@ -1101,10 +1101,10 @@ class cl_db_itbi {
          }
        }
      }
-     if(trim($this->libpref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["libpref"])){ 
+     if(trim($this->libpref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["libpref"])){
        $sql  .= $virgula." libpref = $this->libpref ";
        $virgula = ",";
-       if(trim($this->libpref) == null ){ 
+       if(trim($this->libpref) == null ){
          $this->erro_sql = " Campo Liberação da Prefeitura nao Informado.";
          $this->erro_campo = "libpref";
          $this->erro_banco = "";
@@ -1114,10 +1114,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->valoravterr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravterr"])){ 
+     if(trim($this->valoravterr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravterr"])){
        $sql  .= $virgula." valoravterr = $this->valoravterr ";
        $virgula = ",";
-       if(trim($this->valoravterr) == null ){ 
+       if(trim($this->valoravterr) == null ){
          $this->erro_sql = " Campo Valor Avaliação Terreno nao Informado.";
          $this->erro_campo = "valoravterr";
          $this->erro_banco = "";
@@ -1127,10 +1127,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->valoravconst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravconst"])){ 
+     if(trim($this->valoravconst)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valoravconst"])){
        $sql  .= $virgula." valoravconst = $this->valoravconst ";
        $virgula = ",";
-       if(trim($this->valoravconst) == null ){ 
+       if(trim($this->valoravconst) == null ){
          $this->erro_sql = " Campo Valor Avaliação Prédio nao Informado.";
          $this->erro_campo = "valoravconst";
          $this->erro_banco = "";
@@ -1140,10 +1140,10 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->numerocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numerocomprador"])){ 
+     if(trim($this->numerocomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numerocomprador"])){
        $sql  .= $virgula." numerocomprador = $this->numerocomprador ";
        $virgula = ",";
-       if(trim($this->numerocomprador) == null ){ 
+       if(trim($this->numerocomprador) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "numerocomprador";
          $this->erro_banco = "";
@@ -1153,11 +1153,11 @@ class cl_db_itbi {
          return false;
        }
      }
-     if(trim($this->complcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["complcomprador"])){ 
+     if(trim($this->complcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["complcomprador"])){
        $sql  .= $virgula." complcomprador = '$this->complcomprador' ";
        $virgula = ",";
      }
-     if(trim($this->cxpostcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cxpostcomprador"])){ 
+     if(trim($this->cxpostcomprador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cxpostcomprador"])){
        $sql  .= $virgula." cxpostcomprador = '$this->cxpostcomprador' ";
        $virgula = ",";
      }
@@ -1247,7 +1247,7 @@ class cl_db_itbi {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itbi nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->matricula;
@@ -1275,14 +1275,14 @@ class cl_db_itbi {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($matricula=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($matricula=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($matricula));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -1343,7 +1343,7 @@ class cl_db_itbi {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itbi nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$matricula;
@@ -1371,11 +1371,11 @@ class cl_db_itbi {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -1397,10 +1397,10 @@ class cl_db_itbi {
       }
      return $result;
    }
-   function sql_query ( $matricula=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $matricula=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1413,15 +1413,15 @@ class cl_db_itbi {
      $sql2 = "";
      if($dbwhere==""){
        if($matricula!=null ){
-         $sql2 .= " where db_itbi.matricula = $matricula "; 
-       } 
+         $sql2 .= " where db_itbi.matricula = $matricula ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1430,10 +1430,10 @@ class cl_db_itbi {
      }
      return $sql;
   }
-   function sql_query_file ( $matricula=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $matricula=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1446,15 +1446,15 @@ class cl_db_itbi {
      $sql2 = "";
      if($dbwhere==""){
        if($matricula!=null ){
-         $sql2 .= " where db_itbi.matricula = $matricula "; 
-       } 
+         $sql2 .= " where db_itbi.matricula = $matricula ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1463,10 +1463,10 @@ class cl_db_itbi {
      }
      return $sql;
   }
-   function sql_query_itbi ( $j01_matric=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_itbi ( $j01_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1493,7 +1493,7 @@ class cl_db_itbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

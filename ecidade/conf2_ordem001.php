@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ function js_emite(){
       <tr>
         <td align='center'  colspan=2 >
          <b> Data da Ordem : </b>
-         <? 
+         <?php 
          db_inputdata('data1','','','',true,'text',1,"");   		          
          echo "<b> a </b> ";
          db_inputdata('data2','','','',true,'text',1,"");
@@ -106,7 +106,7 @@ function js_emite(){
       <tr>
          <td ><b>Origem  : </b></td>
          <td >
-         <?
+         <?php
           $result=$cldb_ordemorigem->sql_record($cldb_ordemorigem->sql_query_file(null,"*","or11_codigo"));
           db_selectrecord("codorigem",$result,true,$db_opcao,"","","","0");
          ?>   
@@ -143,7 +143,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

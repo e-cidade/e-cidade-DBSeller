@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -105,12 +105,12 @@ function js_emite(){
   <form name="form1" method="post" action="">
   <tr>
     <td nowrap title="<?=@$To21_codleippa?>" align='right'>
-      <?
+      <?php
       db_ancora(@$Lo21_codleippa,"js_pesquisao21_codleippa(true);",1);
       ?>
     </td>
     <td align='left' colspan='1'> 
-      <?
+      <?php
       db_input('o21_codleippa',8,$Io21_codleippa,true,'text',1," onchange='js_pesquisao21_codleippa(false);'");
       db_input('o21_descr',40,$Io21_descr,true,'text',3,'');
       ?>
@@ -119,13 +119,13 @@ function js_emite(){
   <tr>
     <td align='right'><?=$Lo23_orgao?></td>
     <td>
-      <?
+      <?php
       $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
       db_selectrecord("o23_orgao",$result,true,2,"","","","0"," js_reload();");
       ?>
     </td>
   </tr>
-  <?
+  <?php
   $disabled = "disabled";
   if(isset($o21_codleippa) && trim($o21_codleippa)!=""){
   echo "
@@ -181,7 +181,7 @@ function js_emite(){
   </tr>
 </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

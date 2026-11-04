@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("yy_nome");
        <?=@$Lyx_coditem?>
     </td>
     <td> 
-<?
+<?php
 db_input('yx_coditem',4,$Iyx_coditem,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tyx_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lyx_codigo,"js_pesquisayx_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('yx_codigo',4,$Iyx_codigo,true,'text',$db_opcao," onchange='js_pesquisayx_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('yy_nome',40,$Iyy_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('yy_nome',40,$Iyy_nome,true,'text',3,'')
        <?=@$Lyx_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('yx_valor',15,$Iyx_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('yx_valor',15,$Iyx_valor,true,'text',$db_opcao,"")
        <?=@$Lyx_sexo?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('yx_sexo',$x,true,$db_opcao,"");
 ?>
@@ -84,7 +84,7 @@ db_select('yx_sexo',$x,true,$db_opcao,"");
        <?=@$Lyx_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Casado','2'=>'Solteiro');
 db_select('yx_tipo',$x,true,$db_opcao,"");
 ?>
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tnomeitem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

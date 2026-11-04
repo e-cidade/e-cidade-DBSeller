@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipoandam->rotulo->label("y41_descr");
               <?=$Ly41_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y41_codtipo",10,$Iy41_codtipo,true,"text",4,"","chave_y41_codtipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoandam->rotulo->label("y41_descr");
               <?=$Ly41_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y41_descr",50,$Iy41_descr,true,"text",4,"","chave_y41_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoandam->rotulo->label("y41_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoandam.php")==true){
@@ -118,12 +118,12 @@ $cltipoandam->rotulo->label("y41_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -152,7 +152,7 @@ class EnsinoRepository
      */
     public static function getEnsinoByEscola($escola)
     {
-        $campos = "ensino.ed10_i_codigo";
+        $campos = "distinct ensino.ed10_i_codigo";
         $where = "cursoescola.ed71_i_escola = {$escola}";
         $dao = new cl_ensino();
         $sql = $dao->sql_query_curso(null, $campos, null, $where);

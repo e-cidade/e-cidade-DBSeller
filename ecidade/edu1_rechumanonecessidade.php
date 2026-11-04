@@ -66,14 +66,14 @@ include(modification("dbforms/db_funcoes.php"));
         <legend>
             <b>Registro de Vacinas</b>
         </legend>
-        <div id="ctnAdicionarVacina">
+        <div id="ctnAdicionarVacina" style="70%">
             <table class="form-container">
                 <tr>
                     <td>
                         <label for="vacina">Vacina: </label>
                     </td>
                     <td>
-                        <select name="vacina" id="vacina">
+                        <select name="vacina" id="vacina" style="width: auto">
                             <option value="">Selecione</option>
                         </select>
                     </td>
@@ -224,7 +224,7 @@ include(modification("dbforms/db_funcoes.php"));
                 cboVacinas.length = 0;
                 cboVacinas.options.add(new Option('Selecione', ''));
                 vacinas.map((vacina) => {
-                    cboVacinas.options.add(new Option(vacina.ed178_descricao, vacina.ed178_codigo));
+                    cboVacinas.options.add(new Option(vacina.ed178_descricao.trim(), vacina.ed178_codigo));
                 });
             });
         });

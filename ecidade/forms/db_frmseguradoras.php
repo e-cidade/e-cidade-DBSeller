@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("z01_nome");
           <?=@$Lt80_segura?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t80_segura',8,$It80_segura,true,'text',3,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt80_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lt80_numcgm,"js_pesquisat80_numcgm(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t80_numcgm',8,$It80_numcgm,true,'text',$db_opcao," onchange='js_pesquisat80_numcgm(false);'")
           ?>
-          <?
+          <?php
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
           ?>
         </td>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
           <?=@$Lt80_contato?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t80_contato',51,$It80_contato,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -103,7 +103,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_seguradoras.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

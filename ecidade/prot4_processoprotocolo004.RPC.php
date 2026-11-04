@@ -52,12 +52,12 @@ try {
 
       $iAnoSessao     = db_getsession("DB_anousu");
       $aDadosProcesso = explode("/", $oParametro->sNumeroProcesso);
-      
+
       if (count($aDadosProcesso) == 2) {
         $iAnoSessao = $aDadosProcesso[1];
       }
       $oInstituicao       = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
-      $oProcessoProtocolo = processoProtocolo::getInstanciaPorNumeroEAno($aDadosProcesso[0], $iAnoSessao, $oInstituicao); 
+      $oProcessoProtocolo = processoProtocolo::getInstanciaPorNumeroEAno($aDadosProcesso[0], $iAnoSessao, $oInstituicao);
       if(isset($oParametro->sCodigoProcesso)) {
 
         $oProcessoProtocolo = new processoProtocolo($oParametro->sCodigoProcesso);
@@ -78,7 +78,7 @@ try {
 
       require_once modification("model/protocolo/RefactorConsultaProcessoProtocolo.model.php");
 
-      $oRefactorProcessoProtocolo = new RefactorConsultaProcessoProtocolo($oParametro->iCodigoProcesso);
+      $oRefactorProcessoProtocolo = new RefactorConsultaProcessoProtocolo($oParametro);
       $aMovimentacoes = $oRefactorProcessoProtocolo->getMovimentacoes();
       $oRetorno->aMovimentacoes = array();
 

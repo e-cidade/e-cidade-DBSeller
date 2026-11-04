@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -82,10 +82,10 @@ if(isset($opcao) && $opcao=="excluir"){
       <strong>Departamento origem:</strong>
     </td>
     <td align="left" nowrap colspan='3'>
-       <? 
+       <?php 
 db_input('coddepto',10,$Idescrdepto,true,"text",3,"","departamentoorigem");
        ?>
-       <? 
+       <?php 
 db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem");
        ?>
     </td>
@@ -95,30 +95,30 @@ db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem")
       <strong>Departamento destino:</strong>
     </td>
     <td align="left" nowrap colspan='3'>
-       <? 
+       <?php 
 	     db_input('coddepto',10,$Idescrdepto,true,"text",3,"","departamentodestino");
        ?>
-       <? 
+       <?php 
 		 db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentodestino");
        ?>
     </td>
   </tr>
   <tr>
     <td align='right' nowrap title="<?=@$Tm60_codmater?>">
-       <?
+       <?php
        db_ancora(@$Lm60_codmater,"js_pesquisam60_codmater(true);",(isset($opcao)&&($opcao=='alterar'||$opcao=='excluir')?"3":"1"));
        ?>
     </td>
     <td align='left' nowrap colspan='3'>
-       <?
+       <?php
          db_input('m60_codmater',10,$Im60_codmater,true,'text',(isset($opcao)&&($opcao=='alterar'||$opcao=='excluir')?"3":"1")," onchange='js_pesquisam60_codmater(false);'")
        ?>
-       <?
+       <?php
          db_input('m60_descr',43,$Im60_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?
+  <?php
   if(isset($m60_codmater) || (isset($opcao) && isset($m80_codigo))){
     if(isset($m60_codmater) && !isset($opcao)){
       $result_quantidades = $clmatestoqueitem->sql_record($clmatestoqueitem->sql_query(null,"m70_codigo,(sum(m71_quant)-sum(m71_quantatend)) as quantdis",""," m70_codmatmater=$m60_codmater and m70_coddepto=$departamentoorigem group by m70_codigo"));
@@ -198,7 +198,7 @@ db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem")
   </fieldset>
   </td>
   </tr>
-  <?
+  <?php
   echo "
   <tr>
     <td colspan='4' align='center'>
@@ -277,7 +277,7 @@ function js_verificaquantidade(valor){
 }
 function js_pesquisam60_codmater(mostra){
   qry  = "&codigododepartamento=<?=($departamentoorigem)?>";
-  <?
+  <?php
   if(!isset($opcao)){
     if(isset($valores)){
 

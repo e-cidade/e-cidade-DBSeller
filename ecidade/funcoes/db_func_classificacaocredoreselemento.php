@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "classificacaocredoreselemento.cc32_sequencial,classificacaocredoreselemento.cc32_classificacaocredores,classificacaocredoreselemento.cc32_codcon,classificacaocredoreselemento.cc32_exclusao,classificacaocredoreselemento.cc32_anousu as db_cc32_anousu";
 ?>

@@ -95,19 +95,23 @@ class RecursoRepository
     }
 
     /**
+     * @param string $gestao
      * @param string $codigoRecurso
      * @param integer $complemento
+     * @param integer $exercicio
      * @return Recurso
      * @throws Exception
      */
-    public static function getRecursoPorCodigoRecursoAndComplemento($codigoRecurso, $complemento)
+    public static function getRecursoPorCodigoRecursoAndComplemento($gestao, $codigoRecurso, $complemento, $exercicio)
     {
         $where = [
             "o15_complemento = {$complemento}",
-            "o15_recurso = '{$codigoRecurso}'"
+            "o15_recurso = '{$codigoRecurso}'",
+            "gestao = '$gestao'",
+            "exercicio = $exercicio",
         ];
         $dao = new cl_orctiporec();
-        $sql = $dao->sql_query_file(null, '*', null, implode(' and ', $where));
+        $sql = $dao->sqlNovaFonteRecurso(null, 'orctiporec.*', null, implode(' and ', $where));
         $rs = db_query($sql);
         if (!$rs) {
             throw new Exception("Erro ao buscar recurso.");

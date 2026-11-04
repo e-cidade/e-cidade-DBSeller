@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_caritbi->rotulo->label("descricao");
               <?=$Lcodcaritbi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codcaritbi",4,$Icodcaritbi,true,"text",4,"","chave_codcaritbi");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_caritbi->rotulo->label("descricao");
               <?=$Ldescricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("descricao",40,$Idescricao,true,"text",4,"","chave_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_caritbi->rotulo->label("descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "db_caritbi.*";
@@ -110,14 +110,14 @@ $cldb_caritbi->rotulo->label("descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_codcaritbi.focus();
 document.form2.chave_codcaritbi.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

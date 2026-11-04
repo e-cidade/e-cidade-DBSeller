@@ -114,6 +114,29 @@ class DependenteRepository
     }
 
     /**
+     * @param string $irrfComplementar
+     * @param string $operator
+     * @return $this
+     */
+    public function scopeIrrfComplemetar($irrfComplementar, $operator = '=')
+    {
+        $this->scopes['rh31_irfcomplementar'] = "rh31_irfcomplementar {$operator} {$irrfComplementar}";
+        return $this;
+    }
+
+    /**
+     * @param string $irf
+     * @param string $operator
+     * @return $this
+     */
+    public function scopeIrf($irrf, $operator = '=')
+    {
+        $this->scopes['rh31_irf'] = "rh31_irf {$operator} '{$irrf}'";
+        return $this;
+    }
+
+
+    /**
      * @param $id
      * @param array $columns
      * @return bool|Dependente
@@ -124,7 +147,6 @@ class DependenteRepository
         $dao = new cl_rhdepend();
         $sql = $dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
-
         if (!$rs) {
             throw new Exception("Não foi possível buscar o dependente.\nContate o suporte.");
         }
@@ -186,5 +208,59 @@ class DependenteRepository
         }
 
         return $registros;
+    }
+
+     /**
+     * @param int $codigo
+     * @return Dependente
+     * @throws Exception
+     */
+    public function getDadosDependente($codigo = null)
+    {
+        $dependente = new Dependente();
+        if (empty($codigo)) {
+            throw new Exception("Não foi possível encontrar dados do dependente.\nFavor revisar.");
+        }
+        $sql = "select
+                    rh31_codigo,
+                    rh31_regist,
+                    rh31_nome,
+                    rh31_dtnasc,
+                    rh31_gparen,
+                    rh31_depend,
+                    rh31_irf,
+                    rh31_especi,
+                    rh31_fins_previdenciarios,
+                    rh31_tipoparentesco,
+                    rh31_descricaoparentesco,
+                    rh31_irfcomplementar,
+                    dp01_codigo,
+                    dp01_rhdepend,
+                    dp01_regist,
+                    dp01_processo,
+                    dp01_instit,
+                    dp01_cpf,
+                    dp01_sexo
+                from
+                    pessoal.rhdepend
+                left join pessoal.rhdependeplug on
+                    dp01_rhdepend = rh31_codigo
+                where
+                    rh31_codigo = {$codigo}";
+
+        $resultado = db_query($sql);
+
+        if (!$resultado) {
+            throw new Exception("Não foi possível dados encontrar do dependente.\nContate o suporte.");
+        }
+
+        if (pg_num_rows($resultado) === 0) {
+            return $dependente;
+        }
+
+        $coluna = pg_fetch_array($resultado);
+        $dependente = Dependente::fromState($coluna);
+
+        return $dependente;
     }
 }

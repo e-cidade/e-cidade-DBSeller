@@ -132,6 +132,7 @@ $descricao = $formulario->getNome();
 <?php
 db_menu();
 ?>
+<script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
 <script>
 
     var viewAvaliacao = null;
@@ -495,66 +496,76 @@ db_menu();
                 $('btnPaginaAnterior').disable();
             }
             $('numeroPagina').innerHTML = pagina;
-            request.send('api/v1/configuracao/formulario/' + iCodigoFormulario + '/instituicao/' + instituicao, {
-                filter: filter,
-                page: {number: pagina, size: 15}
-            }).then(function (data) {
+            
+            let rota = 'configuracao/formulario/' + iCodigoFormulario + '/instituicao/' + instituicao;
+            //let rota = 'configuracao/formulario'
+            let formData = new FormData();
+            formData.append('filter', filter);
+            formData.append('number_page', pagina);
+            formData.append('size_page', 15);
+            let URL  ="<?= ECIDADE_REQUEST_PATH ?>v4/api/"+rota;
+           
+            HttpClient.post(URL, {body: formData}).then(response => {
+                if (response.error) {
+                    js_removeObj('msgDiv');
+                    alert(response.message);
+                } else {
+                    let data = response.data;
+                    totalPaginas = data.meta.pagination.total;
+                    $('numeroTotalPaginas').innerHTML = totalPaginas;
 
-                totalPaginas = data.meta.pagination.total;
-                $('numeroTotalPaginas').innerHTML = totalPaginas;
+                    js_removeObj('msgDiv');
+                    if (buildGrid) {
 
-                js_removeObj('msgDiv');
-                if (buildGrid) {
+                        var iTamanho = (100 / data.meta.fields.length);
 
-                    var iTamanho = (100 / data.meta.fields.length);
-
-                    for (field of data.meta.fields) {
-
-                        if (field.identificador == 'id_grupo_resposta') {
-                            continue;
+                        for (field of data.meta.fields) {
+    
+                            if (field.identificador == 'id_grupo_resposta') {
+                                continue;
+                            }
+                            var alinhamento = 'left';
+                            switch (field.tipo) {
+                                case '8':
+                                case '6':
+                                    alinhamento = 'right';
+                                    break;
+                                case '2':
+                                case '3':
+                                case '4':
+                                case '5':
+                                case '9':
+                                    alinhamento = 'center';
+                                    break;
+                            }
+                            // Diminui perguntas extensas para nao quebrar a grid
+                            descricao = field.descricao;
+    
+                            if (descricao.length > 25) {
+                                descricao = descricao.substr(0, 25) + '...';
+                            }
+                            oDataGridDadosFormulario.addColumn(field.identificador, {
+                                'label': descricao,
+                                'width': iTamanho + "%",
+                                'align': alinhamento
+                            });
                         }
-                        var alinhamento = 'left';
-                        switch (field.tipo) {
-                            case '8':
-                            case '6':
-                                alinhamento = 'right';
-                                break;
-                            case '2':
-                            case '3':
-                            case '4':
-                            case '5':
-                            case '9':
-                                alinhamento = 'center';
-                                break;
-                        }
-                        // Diminui perguntas extensas para nao quebrar a grid
-                        descricao = field.descricao;
-
-                        if (descricao.length > 25) {
-                            descricao = descricao.substr(0, 25) + '...';
-                        }
-                        oDataGridDadosFormulario.addColumn(field.identificador, {
-                            'label': descricao,
-                            'width': iTamanho + "%",
-                            'align': alinhamento
-                        });
                     }
+                    $('btnProximaPagina').enable();
+                    if (data.data.length < 15) {
+                        $('btnProximaPagina').disable();
+                    }
+                    for (dados of (data.data)) {
+                        oCollectionDados.add(dados);
+                    }
+                    if (buildGrid) {
+                        oDataGridDadosFormulario.show($('divGridContainer'));
+                    }
+                    oDataGridDadosFormulario.reload();
+
                 }
-                $('btnProximaPagina').enable();
-                if (data.data.length < 15) {
-                    $('btnProximaPagina').disable();
-                }
-                for (dados of (data.data)) {
-                    oCollectionDados.add(dados);
-                }
-                if (buildGrid) {
-                    oDataGridDadosFormulario.show($('divGridContainer'));
-                }
-                oDataGridDadosFormulario.reload();
-            }).catch(function (message) {
-                js_removeObj('msgDiv');
-                console.error(message);
             });
+
         }
 
         exports.controlarBotoes = controlarBotoes;

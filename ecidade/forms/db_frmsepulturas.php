@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lcm05_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('cm05_i_codigo',12,$Icm05_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -55,37 +55,37 @@ db_input('cm05_i_codigo',12,$Icm05_i_codigo,true,'text',3,"")
        <strong>Numero:</strong>
     </td>
     <td>
-<?
+<?php
 db_input('cm05_c_numero',10,@$cm05_c_numero,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm05_i_campa?>">
-       <?
+       <?php
        db_ancora(@$Lcm05_i_campa,"js_pesquisacm05_i_campa(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('cm05_i_campa',10,$Icm05_i_campa,true,'text',$db_opcao," onchange='js_pesquisacm05_i_campa(false);'")
 ?>
-       <?
+       <?php
 db_input('cm19_c_descr',40,$Icm19_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm05_i_lotecemit?>">
-       <?
+       <?php
        db_ancora(@$Lcm05_i_lotecemit,"js_pesquisacm05_i_lotecemit(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('cm05_i_lotecemit',10,$Icm05_i_lotecemit,true,'hidden',$db_opcao," onchange='js_pesquisacm05_i_lotecemit(false);'")
 ?>
-       <?
+       <?php
 db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        ?>
     </td>
@@ -96,7 +96,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        <?=@$Lcm23_i_quadracemit?>
     </td>
     <td>
-       <?
+       <?php
          db_input('cm23_i_quadracemit',10,$Icm23_i_quadracemit,true,'hidden',3,"");
          db_input('cm22_c_quadra',10,$Icm22_c_quadra,true,'text',3,"");
        ?>
@@ -107,7 +107,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
        <?=@$Lcm22_i_cemiterio?>
     </td>
     <td>
-       <?
+       <?php
          db_input('cm22_i_cemiterio',10,$Icm22_i_cemiterio,true,'text',3,"");
          db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
        ?>
@@ -177,7 +177,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sepulturas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

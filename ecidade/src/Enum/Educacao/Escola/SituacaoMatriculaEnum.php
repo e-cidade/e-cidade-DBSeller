@@ -32,6 +32,7 @@ use Exception;
 
 /**
  * Class SituacaoMatriculaEnum
+ *
  * @package ECidade\Enum\Educacao\Escola
  */
 class SituacaoMatriculaEnum extends Enum
@@ -50,6 +51,8 @@ class SituacaoMatriculaEnum extends Enum
     const RECLASSIFICADO = 'RECLASSIFICADO';
     const DESISTENTE = 'DESISTENTE';
     const CLASSIFICADO = 'CLASSIFICADO';
+    const INFREQUENTE = 'INFREQUENTE';
+    const ABANDONO_ESCOLAR = 'ABANDONO ESCOLAR';
 
     /**
      * @return string
@@ -64,6 +67,7 @@ class SituacaoMatriculaEnum extends Enum
             self::TRANSFERIDO_REDE => 'TR',
             self::TRANSFERIDO_FORA => 'TF',
             self::EVADIDO => 'EV',
+            self::ABANDONO_ESCOLAR => 'AE',
             self::FALECIDO => 'FA',
             self::TROCA_TURMA => 'TT',
             self::TROCA_MODALIDADE => 'TM',
@@ -71,7 +75,8 @@ class SituacaoMatriculaEnum extends Enum
             self::MATRICULA_TRANCADA => 'MT',
             self::RECLASSIFICADO => 'RE',
             self::DESISTENTE => 'DE',
-            self::CLASSIFICADO => 'CL'
+            self::CLASSIFICADO => 'CL',
+            self::INFREQUENTE => 'INF'
          );
 
         if (empty($data[$this->getValue()])) {

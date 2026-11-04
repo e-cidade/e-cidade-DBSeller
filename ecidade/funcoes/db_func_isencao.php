@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "isencao.v10_sequencial,isencao.v10_isencaotipo,isencao.v10_dtisen,isencao.v10_dtlan,isencao.v10_usuario";
+$campos = "isencao.v10_sequencial,isencao.v10_isencaotipo,isencao.v10_anoinicial,isencao.v10_anofinal,isencao.v10_observacao,isencao.v10_dtlan,isencao.v10_usuario";
 ?>

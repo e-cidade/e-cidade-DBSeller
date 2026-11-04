@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,19 +52,19 @@ $o17_descricao = @$o54_descr;
 				      <?=@$Lo87_sequencial?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('o87_sequencial',10,$Io87_sequencial,true,'text',3,"");
 							?>
 				    </td>
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_pactoplano?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_pactoplano,"js_pesquisao87_pactoplano(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 						  	db_input('o87_pactoplano',10,$Io87_pactoplano,true,'text',$db_opcao," onchange='js_pesquisao87_pactoplano(false);'");
 				        db_input('o74_descricao' ,50,"",true,'text',3,'');
 				      ?>
@@ -72,12 +72,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_pactoprograma?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_pactoprograma,"js_pesquisao87_pactoprograma(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('o87_pactoprograma',10,$Io87_pactoprograma,true,'text',$db_opcao," onchange='js_pesquisao87_pactoprograma(false);'");
 				        db_input('o107_descricao',50,$Io107_descricao,true,'text',3,'');
 				      ?>
@@ -85,12 +85,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_orcprojativativprojeto?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_orcprojativativprojeto,"js_pesquisao87_orcprojativativprojeto(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('o87_orcprojativativprojeto',10,$Io87_orcprojativativprojeto,true,'text',$db_opcao," onchange='js_pesquisao87_orcprojativativprojeto(false);'");
 				        db_input('o55_descr',50,$Io55_descr,true,'text',3,'');
 						  	db_input('o87_orcprojativanoprojeto',4,"",true,'hidden',$db_opcao);
@@ -99,12 +99,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_pactoatividade?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_pactoatividade,"js_pesquisao87_pactoatividade(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 						  	db_input('o87_pactoatividade',10,$Io87_pactoatividade,true,'text',$db_opcao," onchange='js_pesquisao87_pactoatividade(false);'");
 				  			db_input('o104_descricao',50,$Io104_descricao,true,'text',3,'');
 					    ?>
@@ -112,12 +112,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_pactoacoes?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_pactoacoes,"js_pesquisao87_pactoacoes(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 						  	db_input('o87_pactoacoes',10,$Io87_pactoacoes,true,'text',$db_opcao," onchange='js_pesquisao87_pactoacoes(false);'");
 					  		db_input('o79_descricao',50,$Io79_descricao,true,'text',3,'');
 					    ?>
@@ -125,12 +125,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_categoriapacto?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_categoriapacto,"js_pesquisao87_categoriapacto(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 							  db_input('o87_categoriapacto',10,$Io87_categoriapacto,true,'text',$db_opcao," onchange='js_pesquisao87_categoriapacto(false);'");
 				  			db_input('o31_descricao',50,$Io31_descricao,true,'text',3,'');
 					    ?>
@@ -138,12 +138,12 @@ $o17_descricao = @$o54_descr;
 				  </tr>
 				  <tr>
 				    <td nowrap title="<?=@$To87_pactoitem?>">
-				      <?
+				      <?php
 				        db_ancora(@$Lo87_pactoitem,"js_pesquisao87_pactoitem(true);",$db_opcao);
 				      ?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 								db_input('o87_pactoitem',10,$Io87_pactoitem,true,'text',$db_opcao," onchange='js_pesquisao87_pactoitem(false);'");
 								db_input('o109_descricao',50,$Io109_descricao,true,'text',3,'');
 					    ?>
@@ -154,7 +154,7 @@ $o17_descricao = @$o54_descr;
 				      <?=@$Lo87_quantidade?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 						  	db_input('o87_quantidade',10,$Io87_quantidade,true,'text',$db_opcao,"");
 							?>
 				    </td>
@@ -164,7 +164,7 @@ $o17_descricao = @$o54_descr;
 				      <?=@$Lo87_vlraproximado?>
 				    </td>
 				    <td> 
-							<?
+							<?php
 						  	db_input('o87_vlraproximado',10,$Io87_vlraproximado,true,'text',$db_opcao,"");
 							?>
 				    </td>
@@ -176,9 +176,9 @@ $o17_descricao = @$o54_descr;
 </table>        
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<? if ( $db_opcao != 1 ) { ?>
+<?php if ( $db_opcao != 1 ) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa(); ">
-<? } ?>
+<?php } ?>
 </form>
 <script>
 
@@ -366,7 +366,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactovalor.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

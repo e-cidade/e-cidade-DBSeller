@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ input {
 </head>
 
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
   $sql = "  select aa01_nome,w12_descr, to_char(ag40_data,'DD-MM-YYYY') as ag40_data,ag40_hora ,ag40_press,ag40_pulso,ag40_diag,ag40_recei,ag40_obser 
                    from agenate				   				   
 	  		       inner join atendmed
@@ -126,8 +126,8 @@ input {
         &nbsp; 
         <input name="doencas" onClick="parent.js_abrir(this.form.doenR,0)" type="button" id="doencas" value="Doen&ccedil;as">
         <input name="doenR" type="hidden" id="doenR" value="do R">
-		<input type="hidden" name="antprox" value="<? echo isset($HTTP_POST_VARS["antprox"])?$HTTP_POST_VARS["antprox"]:"0" ?>">
-		<input type="hidden" name="totreg" value="<? echo isset($HTTP_POST_VARS["totreg"])?$HTTP_POST_VARS["totreg"]:$totreg ?>">
+		<input type="hidden" name="antprox" value="<?php echo isset($HTTP_POST_VARS["antprox"])?$HTTP_POST_VARS["antprox"]:"0" ?>">
+		<input type="hidden" name="totreg" value="<?php echo isset($HTTP_POST_VARS["totreg"])?$HTTP_POST_VARS["totreg"]:$totreg ?>">
       </form>
 	  <script>
 	  if(document.form1.antprox.value != (document.form1.totreg.value - 1))
@@ -137,17 +137,17 @@ input {
   </tr>
 </table>
 </center>
-<?   
+<?php   
   }//fim do else do   if(pg_numrows($result) == 0) {
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($DB_MSG)) {
   ?>
   <script>
     parent.alert('<?=$DB_MSG?>');
   </script>
-  <?
+  <?php
 }
 ?>

@@ -1,79 +1,79 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE inscricaopassivo
-class cl_inscricaopassivo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c36_sequencial = 0; 
-   var $c36_cgm = 0; 
-   var $c36_db_usuarios = 0; 
-   var $c36_instit = 0; 
-   var $c36_codele = 0; 
-   var $c36_anousu = 0; 
-   var $c36_conhist = 0; 
-   var $c36_observacaoconhist = null; 
-   var $c36_data_dia = null; 
-   var $c36_data_mes = null; 
-   var $c36_data_ano = null; 
-   var $c36_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_inscricaopassivo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c36_sequencial = 0;
+   var $c36_cgm = 0;
+   var $c36_db_usuarios = 0;
+   var $c36_instit = 0;
+   var $c36_codele = 0;
+   var $c36_anousu = 0;
+   var $c36_conhist = 0;
+   var $c36_observacaoconhist = null;
+   var $c36_data_dia = null;
+   var $c36_data_mes = null;
+   var $c36_data_ano = null;
+   var $c36_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c36_sequencial = int4 = Inscrição Passiva 
-                 c36_cgm = int4 = Favorecido 
-                 c36_db_usuarios = int4 = Usuário 
-                 c36_instit = int4 = Instituição 
-                 c36_codele = int4 = Desdobramento 
-                 c36_anousu = int4 = Ano 
-                 c36_conhist = int4 = Histórico 
-                 c36_observacaoconhist = text = Observação do Histórico 
-                 c36_data = date = Data Inscricao 
+                 c36_sequencial = int4 = Inscrição Passiva
+                 c36_cgm = int4 = Favorecido
+                 c36_db_usuarios = int4 = Usuário
+                 c36_instit = int4 = Instituição
+                 c36_codele = int4 = Desdobramento
+                 c36_anousu = int4 = Ano
+                 c36_conhist = int4 = Histórico
+                 c36_observacaoconhist = text = Observação do Histórico
+                 c36_data = date = Data Inscricao
                  ";
-   //funcao construtor da classe 
-   function cl_inscricaopassivo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("inscricaopassivo"); 
+     $this->rotulo = new rotulo("inscricaopassivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_inscricaopassivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c36_sequencial = ($this->c36_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c36_sequencial"]:$this->c36_sequencial);
        $this->c36_cgm = ($this->c36_cgm == ""?@$GLOBALS["HTTP_POST_VARS"]["c36_cgm"]:$this->c36_cgm);
@@ -105,9 +105,9 @@ class cl_inscricaopassivo {
      }
    }
    // funcao para inclusao
-   function incluir ($c36_sequencial){ 
+   public function incluir ($c36_sequencial){
       $this->atualizacampos();
-     if($this->c36_cgm == null ){ 
+     if($this->c36_cgm == null ){
        $this->erro_sql = " Campo Favorecido nao Informado.";
        $this->erro_campo = "c36_cgm";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_db_usuarios == null ){ 
+     if($this->c36_db_usuarios == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "c36_db_usuarios";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_instit == null ){ 
+     if($this->c36_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "c36_instit";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_codele == null ){ 
+     if($this->c36_codele == null ){
        $this->erro_sql = " Campo Desdobramento nao Informado.";
        $this->erro_campo = "c36_codele";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_anousu == null ){ 
+     if($this->c36_anousu == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "c36_anousu";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_conhist == null ){ 
+     if($this->c36_conhist == null ){
        $this->erro_sql = " Campo Histórico nao Informado.";
        $this->erro_campo = "c36_conhist";
        $this->erro_banco = "";
@@ -161,7 +161,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_observacaoconhist == null ){ 
+     if($this->c36_observacaoconhist == null ){
        $this->erro_sql = " Campo Observação do Histórico nao Informado.";
        $this->erro_campo = "c36_observacaoconhist";
        $this->erro_banco = "";
@@ -170,7 +170,7 @@ class cl_inscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c36_data == null ){ 
+     if($this->c36_data == null ){
        $this->erro_sql = " Campo Data Inscricao nao Informado.";
        $this->erro_campo = "c36_data_dia";
        $this->erro_banco = "";
@@ -180,16 +180,16 @@ class cl_inscricaopassivo {
        return false;
      }
      if($c36_sequencial == "" || $c36_sequencial == null ){
-       $result = db_query("select nextval('inscricaopassivo_c36_sequencial_seq')"); 
+       $result = db_query("select nextval('inscricaopassivo_c36_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: inscricaopassivo_c36_sequencial_seq do campo: c36_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: inscricaopassivo_c36_sequencial_seq do campo: c36_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->c36_sequencial = pg_result($result,0,0); 
+       $this->c36_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from inscricaopassivo_c36_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $c36_sequencial)){
@@ -200,10 +200,10 @@ class cl_inscricaopassivo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->c36_sequencial = $c36_sequencial; 
+         $this->c36_sequencial = $c36_sequencial;
        }
      }
-     if(($this->c36_sequencial == null) || ($this->c36_sequencial == "") ){ 
+     if(($this->c36_sequencial == null) || ($this->c36_sequencial == "") ){
        $this->erro_sql = " Campo c36_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,29 +212,29 @@ class cl_inscricaopassivo {
        return false;
      }
      $sql = "insert into inscricaopassivo(
-                                       c36_sequencial 
-                                      ,c36_cgm 
-                                      ,c36_db_usuarios 
-                                      ,c36_instit 
-                                      ,c36_codele 
-                                      ,c36_anousu 
-                                      ,c36_conhist 
-                                      ,c36_observacaoconhist 
-                                      ,c36_data 
+                                       c36_sequencial
+                                      ,c36_cgm
+                                      ,c36_db_usuarios
+                                      ,c36_instit
+                                      ,c36_codele
+                                      ,c36_anousu
+                                      ,c36_conhist
+                                      ,c36_observacaoconhist
+                                      ,c36_data
                        )
                 values (
-                                $this->c36_sequencial 
-                               ,$this->c36_cgm 
-                               ,$this->c36_db_usuarios 
-                               ,$this->c36_instit 
-                               ,$this->c36_codele 
-                               ,$this->c36_anousu 
-                               ,$this->c36_conhist 
-                               ,'$this->c36_observacaoconhist' 
-                               ,".($this->c36_data == "null" || $this->c36_data == ""?"null":"'".$this->c36_data."'")." 
+                                $this->c36_sequencial
+                               ,$this->c36_cgm
+                               ,$this->c36_db_usuarios
+                               ,$this->c36_instit
+                               ,$this->c36_codele
+                               ,$this->c36_anousu
+                               ,$this->c36_conhist
+                               ,'$this->c36_observacaoconhist'
+                               ,".($this->c36_data == "null" || $this->c36_data == ""?"null":"'".$this->c36_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Inscrição do Passivos sem Suporte Orçamentário ($this->c36_sequencial) nao Incluído. Inclusao Abortada.";
@@ -274,16 +274,16 @@ class cl_inscricaopassivo {
        $resac = db_query("insert into db_acount values($acount,3378,19010,'','".AddSlashes(pg_result($resaco,0,'c36_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c36_sequencial=null) { 
+   public function alterar ($c36_sequencial=null) {
       $this->atualizacampos();
      $sql = " update inscricaopassivo set ";
      $virgula = "";
-     if(trim($this->c36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_sequencial"])){ 
+     if(trim($this->c36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_sequencial"])){
        $sql  .= $virgula." c36_sequencial = $this->c36_sequencial ";
        $virgula = ",";
-       if(trim($this->c36_sequencial) == null ){ 
+       if(trim($this->c36_sequencial) == null ){
          $this->erro_sql = " Campo Inscrição Passiva nao Informado.";
          $this->erro_campo = "c36_sequencial";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_cgm"])){ 
+     if(trim($this->c36_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_cgm"])){
        $sql  .= $virgula." c36_cgm = $this->c36_cgm ";
        $virgula = ",";
-       if(trim($this->c36_cgm) == null ){ 
+       if(trim($this->c36_cgm) == null ){
          $this->erro_sql = " Campo Favorecido nao Informado.";
          $this->erro_campo = "c36_cgm";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_db_usuarios"])){ 
+     if(trim($this->c36_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_db_usuarios"])){
        $sql  .= $virgula." c36_db_usuarios = $this->c36_db_usuarios ";
        $virgula = ",";
-       if(trim($this->c36_db_usuarios) == null ){ 
+       if(trim($this->c36_db_usuarios) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "c36_db_usuarios";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_instit"])){ 
+     if(trim($this->c36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_instit"])){
        $sql  .= $virgula." c36_instit = $this->c36_instit ";
        $virgula = ",";
-       if(trim($this->c36_instit) == null ){ 
+       if(trim($this->c36_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "c36_instit";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_codele"])){ 
+     if(trim($this->c36_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_codele"])){
        $sql  .= $virgula." c36_codele = $this->c36_codele ";
        $virgula = ",";
-       if(trim($this->c36_codele) == null ){ 
+       if(trim($this->c36_codele) == null ){
          $this->erro_sql = " Campo Desdobramento nao Informado.";
          $this->erro_campo = "c36_codele";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_anousu"])){ 
+     if(trim($this->c36_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_anousu"])){
        $sql  .= $virgula." c36_anousu = $this->c36_anousu ";
        $virgula = ",";
-       if(trim($this->c36_anousu) == null ){ 
+       if(trim($this->c36_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "c36_anousu";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_conhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_conhist"])){ 
+     if(trim($this->c36_conhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_conhist"])){
        $sql  .= $virgula." c36_conhist = $this->c36_conhist ";
        $virgula = ",";
-       if(trim($this->c36_conhist) == null ){ 
+       if(trim($this->c36_conhist) == null ){
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "c36_conhist";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_observacaoconhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_observacaoconhist"])){ 
+     if(trim($this->c36_observacaoconhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_observacaoconhist"])){
        $sql  .= $virgula." c36_observacaoconhist = '$this->c36_observacaoconhist' ";
        $virgula = ",";
-       if(trim($this->c36_observacaoconhist) == null ){ 
+       if(trim($this->c36_observacaoconhist) == null ){
          $this->erro_sql = " Campo Observação do Histórico nao Informado.";
          $this->erro_campo = "c36_observacaoconhist";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_inscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c36_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"] !="") ){ 
+     if(trim($this->c36_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"] !="") ){
        $sql  .= $virgula." c36_data = '$this->c36_data' ";
        $virgula = ",";
-       if(trim($this->c36_data) == null ){ 
+       if(trim($this->c36_data) == null ){
          $this->erro_sql = " Campo Data Inscricao nao Informado.";
          $this->erro_campo = "c36_data_dia";
          $this->erro_banco = "";
@@ -396,11 +396,11 @@ class cl_inscricaopassivo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c36_data_dia"])){
          $sql  .= $virgula." c36_data = null ";
          $virgula = ",";
-         if(trim($this->c36_data) == null ){ 
+         if(trim($this->c36_data) == null ){
            $this->erro_sql = " Campo Data Inscricao nao Informado.";
            $this->erro_campo = "c36_data_dia";
            $this->erro_banco = "";
@@ -443,7 +443,7 @@ class cl_inscricaopassivo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscrição do Passivos sem Suporte Orçamentário nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c36_sequencial;
@@ -471,14 +471,14 @@ class cl_inscricaopassivo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c36_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c36_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c36_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -512,7 +512,7 @@ class cl_inscricaopassivo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inscrição do Passivos sem Suporte Orçamentário nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c36_sequencial;
@@ -540,11 +540,11 @@ class cl_inscricaopassivo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -566,11 +566,11 @@ class cl_inscricaopassivo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $c36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $c36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -590,15 +590,15 @@ class cl_inscricaopassivo {
      $sql2 = "";
      if($dbwhere==""){
        if($c36_sequencial!=null ){
-         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial "; 
-       } 
+         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,11 +607,11 @@ class cl_inscricaopassivo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $c36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $c36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -624,15 +624,15 @@ class cl_inscricaopassivo {
      $sql2 = "";
      if($dbwhere==""){
        if($c36_sequencial!=null ){
-         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial "; 
-       } 
+         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,15 +649,15 @@ class cl_inscricaopassivo {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_novo ($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-    
+  public function sql_query_novo ($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if ($campos != "*" ) {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -675,7 +675,7 @@ class cl_inscricaopassivo {
     $sql .= "      inner join conhist            on  conhist.c50_codhist       = inscricaopassivo.c36_conhist";
     $sql2 = "";
     if ($dbwhere == "") {
-      
+
       if ($c36_sequencial != null) {
         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
       }
@@ -684,27 +684,27 @@ class cl_inscricaopassivo {
     }
     $sql .= $sql2;
     if ($ordem != null) {
-      
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }
     }
     return $sql;
   }
-   function sql_query_informacoes_inscricao($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-    
+   public function sql_query_informacoes_inscricao($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if($campos != "*" ) {
-      
-      $campos_sql  = split("#",$campos);
+
+      $campos_sql  = explode("#",$campos);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -715,7 +715,7 @@ class cl_inscricaopassivo {
     $sql .= " inner join cgm 					 on cgm.z01_numcgm             = inscricaopassivo.c36_cgm";
     $sql .= " inner join db_usuarios   on db_usuarios.id_usuario     = inscricaopassivo.c36_db_usuarios";
     $sql .= " inner join db_config     on db_config.codigo           = inscricaopassivo.c36_instit";
-    $sql .= " inner join orcelemento   on orcelemento.o56_codele     = inscricaopassivo.c36_codele "; 
+    $sql .= " inner join orcelemento   on orcelemento.o56_codele     = inscricaopassivo.c36_codele ";
     $sql .= "                         and orcelemento.o56_anousu     = inscricaopassivo.c36_anousu";
     $sql .= " inner join db_tipoinstit on db_tipoinstit.db21_codtipo = db_config.db21_tipoinstit";
     $sql .= " inner join conhist       on  conhist.c50_codhist       = inscricaopassivo.c36_conhist";
@@ -723,7 +723,7 @@ class cl_inscricaopassivo {
     $sql .= " left join empautorizainscricaopassivo on e16_inscricaopassivo = c36_sequencial";
     $sql2 = "";
     if ($dbwhere == "") {
-      
+
       if ($c36_sequencial != null) {
         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
       }
@@ -732,31 +732,31 @@ class cl_inscricaopassivo {
     }
     $sql .= $sql2;
     if ($ordem != null) {
-      
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
     }
     return $sql;
   }
-  
+
   /**
    * Método para buscar os dados da conta crédito do lancamento da inscricao passaiva
    */
-  function sql_lancamento_inscricao ($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-  
+  public function sql_lancamento_inscricao ($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if ($campos != "*" ) {
-  
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-  
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -776,9 +776,9 @@ class cl_inscricaopassivo {
     $sql .= "      inner join conplano                     on   c60_codcon           = conplanoreduz.c61_codcon";
     $sql .= "                                              and  c60_anousu           =".db_getsession("DB_anousu");
     $sql2 = "";
-    
+
     if ($dbwhere == "") {
-  
+
       if ($c36_sequencial != null) {
         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
       }
@@ -787,28 +787,28 @@ class cl_inscricaopassivo {
     }
     $sql .= $sql2;
     if ($ordem != null) {
-  
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-  
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }
     }
     return $sql;
   }
-  
-  function sql_query_inscricao_baixapagamento($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-  
+
+  public function sql_query_inscricao_baixapagamento($c36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if($campos != "*" ) {
-  
-      $campos_sql  = split("#",$campos);
+
+      $campos_sql  = explode("#",$campos);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-  
+
         $sql .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -826,10 +826,10 @@ class cl_inscricaopassivo {
     $sql .= " left join inscricaopassivaanulada on c39_inscricaopassivo = c36_sequencial";
     $sql .= " left join empautorizainscricaopassivo on e16_inscricaopassivo = c36_sequencial";
     $sql .= " left join inscricaopassivoslip    on  c36_sequencial = c109_inscricaopassiva";
-    
+
     $sql2 = "";
     if ($dbwhere == "") {
-  
+
       if ($c36_sequencial != null) {
         $sql2 .= " where inscricaopassivo.c36_sequencial = $c36_sequencial ";
       }
@@ -838,18 +838,18 @@ class cl_inscricaopassivo {
     }
     $sql .= $sql2;
     if ($ordem != null) {
-  
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-  
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
     }
     return $sql;
   }
-  
+
 }
 ?>

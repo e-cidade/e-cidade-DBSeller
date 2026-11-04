@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -34,8 +34,12 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
+
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
+
+$labelBotao = 'Alterar';
+
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacaocontr = new cl_orcdotacaocontr;
 $clorcelemento = new cl_orcelemento;
@@ -49,17 +53,36 @@ $clorcparametro = new cl_orcparametro;
 $clorctiporec = new cl_orctiporec;
 $db_opcao = 22;
 $db_botao = false;
+$opcao = 2;
 if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
     try {
         db_inicio_transacao();
         $erro_trans = false;
-        $result = $clorcparametro->sql_record($clorcparametro->sql_query_file(db_getsession('DB_anousu'), 'o50_subelem'));
+        $result = $clorcparametro->sql_record(
+            $clorcparametro->sql_query_file(db_getsession('DB_anousu'), 'o50_subelem')
+        );
         db_fieldsmemory($result, 0);
         if ($o50_subelem == 'f') {
             $o56_elemento = substr($o56_elemento, 0, 7) . "000000";
-            $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_codele', 'o56_elemento', " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "));
+            $result = $clorcelemento->sql_record(
+                $clorcelemento->sql_query_file(
+                    null,
+                    null,
+                    'o56_codele',
+                    'o56_elemento',
+                    " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "
+                )
+            );
         } else {
-            $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_codele', '', " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "));
+            $result = $clorcelemento->sql_record(
+                $clorcelemento->sql_query_file(
+                    null,
+                    null,
+                    'o56_codele',
+                    '',
+                    " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "
+                )
+            );
         }
 
         if ($result == false || $clorcelemento->numrows == 0) {
@@ -68,7 +91,6 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 
         db_fieldsmemory($result, 0);
         $clorcdotacao->o58_codele = $o56_codele;
-        $clorcdotacao->o58_esferaorcamentaria = $esferaOrcamentaria;
         $clorcdotacao->o58_localizadorgastos = $o58_localizadorgastos;
         $clorcdotacao->o58_programa = $o58_programa;
 
@@ -119,37 +141,61 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 
     db_fim_transacao($erro_trans);
     $db_opcao = 2;
-} else if (isset($chavepesquisa)) {
+} elseif (isset($chavepesquisa)) {
     $db_opcao = 2;
     if (!isset($o58_coddot)) {
-        $result = $clorcdotacaocontr->sql_record($clorcdotacaocontr->sql_query_file($chavepesquisa, $chavepesquisa1, 'o61_codigo'));
-        $result = $clorcdotacao->sql_record($clorcdotacao->sql_query($chavepesquisa, $chavepesquisa1));
+        $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2($chavepesquisa, $chavepesquisa1));
         db_fieldsmemory($result, 0);
+
+        if ($o58_valor > 0) {
+            $db_opcao = 3;
+        }
+
+        if ($o58_valor == 0) {
+            $where = "c73_anousu = {$chavepesquisa} and c73_coddot = {$chavepesquisa1}";
+            $dao = new cl_conlancamdot();
+            $sql = $dao->sql_query_file(null, '1', null, $where);
+            $rs = db_query($sql);
+            if (pg_num_rows($rs) > 0) {
+                $db_opcao = 3;
+            }
+        }
+
+        $dao = new cl_db_usuarios();
+        $rs = db_query($dao->sql_query_file($_SESSION['DB_id_usuario'], 'administrador'));
+
+        if (pg_num_rows($rs) > 0 && db_utils::fieldsMemory($rs, 0)->administrador == 1) {
+            $db_opcao = 2;
+        }
     }
-    $db_botao = true;
+
+    $db_botao = $db_opcao === 2;
 }
 
 ?>
 <html>
+
 <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
-<div class="container">
-    <?php
-    include(modification("forms/db_frmorcdotacao001.php"));
-    ?>
-</div>
+    <div class="container">
+        <?php
+        include_once(modification("forms/db_frmorcdotacao001.php"));
+        ?>
+    </div>
+
 </html>
 <?php
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clorcdotacao->erro_status == "0") {
         $clorcdotacao->erro(true, false);
         $db_botao = true;

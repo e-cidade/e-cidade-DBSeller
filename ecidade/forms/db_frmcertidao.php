@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("nome");
        <?=@$Lp50_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('p50_sequencial',10,$Ip50_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp50_idusuario?>">
-       <?
+       <?php
        db_ancora(@$Lp50_idusuario,"js_pesquisap50_idusuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p50_idusuario',10,$Ip50_idusuario,true,'text',$db_opcao," onchange='js_pesquisap50_idusuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lp50_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('p50_tipo',1,$Ip50_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('p50_tipo',1,$Ip50_tipo,true,'text',$db_opcao,"")
        <?=@$Lp50_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('p50_data',@$p50_data_dia,@$p50_data_mes,@$p50_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('p50_data',@$p50_data_dia,@$p50_data_mes,@$p50_data_ano,true,'text'
        <?=@$Lp50_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('p50_hora',10,$Ip50_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('p50_hora',10,$Ip50_hora,true,'text',$db_opcao,"")
        <?=@$Lp50_ip?>
     </td>
     <td> 
-<?
+<?php
 db_input('p50_ip',16,$Ip50_ip,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('p50_ip',16,$Ip50_ip,true,'text',$db_opcao,"")
        <?=@$Lp50_hist?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('p50_hist',0,0,$Ip50_hist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_textarea('p50_hist',0,0,$Ip50_hist,true,'text',$db_opcao,"")
        <?=@$Lp50_web?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('p50_web',$x,true,$db_opcao,"");
 ?>
@@ -153,7 +153,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_certidao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprotprocesso->rotulo->label("p58_requer");
               <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprotprocesso->rotulo->label("p58_requer");
               <?=$Lp58_requer?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p58_requer",50,$Ip58_requer,true,"text",4,"","chave_p58_requer");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprotprocesso->rotulo->label("p58_requer");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       die($clproctransferintand->sql_query_file());
       $result_proctransferintand = $clproctransferintand->sql_record($clproctransferintand->sql_query_file());
 
@@ -124,14 +124,14 @@ $clprotprocesso->rotulo->label("p58_requer");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p58_codproc.focus();
 document.form2.chave_p58_codproc.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

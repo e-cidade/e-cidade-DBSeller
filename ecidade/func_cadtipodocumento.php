@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadtipodocumento->rotulo->label("db123_tipo");
               <?=$Ldb123_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db123_sequencial",10,$Idb123_sequencial,true,"text",4,"","chave_db123_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadtipodocumento->rotulo->label("db123_tipo");
               <?=$Ldb123_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db123_tipo",45,$Idb123_tipo,true,"text",4,"","chave_db123_tipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadtipodocumento->rotulo->label("db123_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipodocumento.php")==true){
@@ -122,12 +122,12 @@ $clcadtipodocumento->rotulo->label("db123_tipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

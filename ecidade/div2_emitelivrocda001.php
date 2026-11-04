@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $ano = date("Y", db_getsession("DB_datausu"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
    db_app::load("scripts.js, estilos.css, prototype.js, strings.js");
   ?>
  </head>
@@ -70,7 +70,7 @@ $ano = date("Y", db_getsession("DB_datausu"));
           Tipo:
         </td>
         <td>
-          <?
+          <?php
             $aTipos = array( 
                             1 => "Completo",
                             2 => "Resumido",
@@ -92,7 +92,7 @@ $ano = date("Y", db_getsession("DB_datausu"));
           Livro:
         </td> 
         <td>
-          <?
+          <?php
             db_input("livro",10,4,true,"text",1);
           ?>
         </td>
@@ -102,7 +102,7 @@ $ano = date("Y", db_getsession("DB_datausu"));
           Imprimir Origem da CDA:
         </td>
         <td>
-          <?
+          <?php
             $aTipos = array( 
                             1 => "Sim",
                             2 => "Não",
@@ -116,7 +116,7 @@ $ano = date("Y", db_getsession("DB_datausu"));
   <input type='button' value='Processar Livro' id='processar' onclick='js_emitirLivro()'>
 </form>
 
-  <? 
+  <?php 
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
  </body>

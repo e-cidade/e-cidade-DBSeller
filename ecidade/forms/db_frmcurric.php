@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,22 +46,22 @@ $clrotulo->label("h01_descr");
        <?=@$Lh03_seq?>
     </td>
     <td> 
-				<?
+				<?php
 				  db_input('h03_seq',10,$Ih03_seq,true,'text',3,"")
 				?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th03_numcgm?>">
-       <?
+       <?php
         db_ancora(@$Lh03_numcgm,"js_pesquisah03_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-				<?
+				<?php
 				  db_input('h03_numcgm',10,$Ih03_numcgm,true,'text',$db_opcao," onchange='js_pesquisah03_numcgm(false);'")
 				?>
-       <?
+       <?php
           db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -71,22 +71,22 @@ $clrotulo->label("h01_descr");
        <?=@$Lh03_data?>
     </td>
     <td> 
-				<?
+				<?php
 				  db_inputdata('h03_data',@$h03_data_dia,@$h03_data_mes,@$h03_data_ano,true,'text',$db_opcao,"")
 				?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th03_codigo?>">
-       <?
+       <?php
         db_ancora(@$Lh03_codigo,"js_pesquisah03_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-				<?
+				<?php
 				  db_input('h03_codigo',10,$Ih03_codigo,true,'text',$db_opcao," onchange='js_pesquisah03_codigo(false);'")
 				?>
-       <?
+       <?php
         db_input('h01_descr',50,$Ih01_descr,true,'text',3,'')
        ?>
     </td>
@@ -96,7 +96,7 @@ $clrotulo->label("h01_descr");
        <?=@$Lh03_descr?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('h03_descr',62,$Ih03_descr,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -105,7 +105,7 @@ $clrotulo->label("h01_descr");
   <tr>
     <td><B>Carga Horária :</B></td>
     <td>
-      <? db_input('h03_cargahoraria',10,'Carga horária',true,'text',$db_opcao,""); ?>
+      <?php db_input('h03_cargahoraria',10,'Carga horária',true,'text',$db_opcao,""); ?>
     </td>
   </tr>  
   
@@ -115,7 +115,7 @@ $clrotulo->label("h01_descr");
        <?=@$Lh03_tipopartic?>
     </td>
     <td> 
-			<?
+			<?php
 
 			     $oRhtipoparticipacaocurso    = new cl_rhtipoparticipacaocurso;
 			     $sSqlRhtipoparticipacaocurso = $oRhtipoparticipacaocurso->sql_query(null, " h67_sequencial, h67_descricao ", 'h67_sequencial', '');
@@ -129,7 +129,7 @@ $clrotulo->label("h01_descr");
        <?=@$Lh03_detalh?>
     </td>
     <td> 
-			<?
+			<?php
 			db_textarea('h03_detalh', 5, 60,$Ih03_detalh,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_curric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,86 +1,86 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 class cl_pcfornecon
 {
-   // cria variaveis de erro 
-    public $rotulo = null; 
-    public $query_sql = null; 
-    public $numrows = 0; 
-    public $numrows_incluir = 0; 
-    public $numrows_alterar = 0; 
-    public $numrows_excluir = 0; 
-    public $erro_status = null; 
-    public $erro_sql = null; 
-    public $erro_banco = null;  
-    public $erro_msg = null;  
-    public $erro_campo = null;  
-    public $pagina_retorno = null; 
+   // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     /* Variáveis do Arquivo */
-    public $pc63_contabanco = 0; 
-    public $pc63_numcgm = 0; 
-    public $pc63_banco = null; 
-    public $pc63_agencia = null; 
-    public $pc63_conta = null; 
-    public $pc63_id_usuario = 0; 
-    public $pc63_cnpjcpf = null; 
-    public $pc63_agencia_dig = null; 
-    public $pc63_conta_dig = null; 
-    public $pc63_dataconf_dia = null; 
-    public $pc63_dataconf_mes = null; 
-    public $pc63_dataconf_ano = null; 
-    public $pc63_dataconf = null; 
-    public $pc63_identcli = null; 
-    public $pc63_codigooperacao = null; 
-    public $pc63_tipoconta = 0; 
-    public $pc63_tipopix = null; 
-    public $pc63_chavepix = null; 
-   // cria propriedade com as variaveis do arquivo 
+    public $pc63_contabanco = 0;
+    public $pc63_numcgm = 0;
+    public $pc63_banco = null;
+    public $pc63_agencia = null;
+    public $pc63_conta = null;
+    public $pc63_id_usuario = 0;
+    public $pc63_cnpjcpf = null;
+    public $pc63_agencia_dig = null;
+    public $pc63_conta_dig = null;
+    public $pc63_dataconf_dia = null;
+    public $pc63_dataconf_mes = null;
+    public $pc63_dataconf_ano = null;
+    public $pc63_dataconf = null;
+    public $pc63_identcli = null;
+    public $pc63_codigooperacao = null;
+    public $pc63_tipoconta = 0;
+    public $pc63_tipopix = null;
+    public $pc63_chavepix = null;
+   // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 pc63_contabanco = int4 = Código Conta 
-                 pc63_numcgm = int4 = Fornecedor 
-                 pc63_banco = varchar(10) = Banco 
-                 pc63_agencia = varchar(10) = Agência 
-                 pc63_conta = varchar(40) = Conta 
-                 pc63_id_usuario = int4 = Usuário 
-                 pc63_cnpjcpf = varchar(15) = CNPJ/CPF 
-                 pc63_agencia_dig = varchar(2) = Dígito verificador da agência 
-                 pc63_conta_dig = varchar(2) = Dígito verificador da conta 
-                 pc63_dataconf = date = Conferido 
-                 pc63_identcli = varchar(20) = Identificação do cliente 
-                 pc63_codigooperacao = varchar(4) = Código da Operação 
-                 pc63_tipoconta = int4 = Tipo da Conta 
-                 pc63_tipopix = int4 = Tipo de Chave PIX 
-                 pc63_chavepix = text = Chave PIX 
+                 pc63_contabanco = int4 = Código Conta
+                 pc63_numcgm = int4 = Fornecedor
+                 pc63_banco = varchar(10) = Banco
+                 pc63_agencia = varchar(10) = Agência
+                 pc63_conta = varchar(40) = Conta
+                 pc63_id_usuario = int4 = Usuário
+                 pc63_cnpjcpf = varchar(15) = CNPJ/CPF
+                 pc63_agencia_dig = varchar(2) = Dígito verificador da agência
+                 pc63_conta_dig = varchar(2) = Dígito verificador da conta
+                 pc63_dataconf = date = Conferido
+                 pc63_identcli = varchar(20) = Identificação do cliente
+                 pc63_codigooperacao = varchar(4) = Código da Operação
+                 pc63_tipoconta = int4 = Tipo da Conta
+                 pc63_tipopix = int4 = Tipo de Chave PIX
+                 pc63_chavepix = text = Chave PIX
                  ";
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("pcfornecon"); 
+        $this->rotulo = new rotulo("pcfornecon");
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
@@ -128,7 +128,7 @@ class cl_pcfornecon
     public function incluir($pc63_contabanco)
     {
       $this->atualizacampos();
-     if($this->pc63_numcgm == null ){ 
+     if($this->pc63_numcgm == null ){
        $this->erro_sql = " Campo Fornecedor não informado.";
        $this->erro_campo = "pc63_numcgm";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_banco == null ){ 
+     if($this->pc63_banco == null ){
        $this->erro_sql = " Campo Banco não informado.";
        $this->erro_campo = "pc63_banco";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_agencia == null ){ 
+     if($this->pc63_agencia == null ){
        $this->erro_sql = " Campo Agência não informado.";
        $this->erro_campo = "pc63_agencia";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_id_usuario == null ){ 
+     if($this->pc63_id_usuario == null ){
        $this->erro_sql = " Campo Usuário não informado.";
        $this->erro_campo = "pc63_id_usuario";
        $this->erro_banco = "";
@@ -164,10 +164,10 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_cnpjcpf == null ){ 
+     if($this->pc63_cnpjcpf == null ){
        $this->pc63_cnpjcpf = "0";
      }
-     if($this->pc63_agencia_dig == null ){ 
+     if($this->pc63_agencia_dig == null ){
        $this->erro_sql = " Campo Dígito verificador da agência não informado.";
        $this->erro_campo = "pc63_agencia_dig";
        $this->erro_banco = "";
@@ -176,7 +176,7 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_conta_dig == null ){ 
+     if($this->pc63_conta_dig == null ){
        $this->erro_sql = " Campo Dígito verificador da conta não informado.";
        $this->erro_campo = "pc63_conta_dig";
        $this->erro_banco = "";
@@ -185,26 +185,26 @@ class cl_pcfornecon
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc63_dataconf == null ){ 
+     if($this->pc63_dataconf == null ){
        $this->pc63_dataconf = "null";
      }
-     if($this->pc63_tipoconta == null ){ 
+     if($this->pc63_tipoconta == null ){
        $this->pc63_tipoconta = "1";
      }
-     if($this->pc63_tipopix == null ){ 
+     if($this->pc63_tipopix == null ){
        $this->pc63_tipopix = "null";
      }
      if($pc63_contabanco == "" || $pc63_contabanco == null ){
-       $result = db_query("select nextval('pcfornecon_pc63_contabanco_seq')"); 
+       $result = db_query("select nextval('pcfornecon_pc63_contabanco_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pcfornecon_pc63_contabanco_seq do campo: pc63_contabanco"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pcfornecon_pc63_contabanco_seq do campo: pc63_contabanco";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc63_contabanco = pg_result($result,0,0); 
+       $this->pc63_contabanco = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcfornecon_pc63_contabanco_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc63_contabanco)){
@@ -215,10 +215,10 @@ class cl_pcfornecon
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc63_contabanco = $pc63_contabanco; 
+         $this->pc63_contabanco = $pc63_contabanco;
        }
      }
-     if(($this->pc63_contabanco == null) || ($this->pc63_contabanco == "") ){ 
+     if(($this->pc63_contabanco == null) || ($this->pc63_contabanco == "") ){
        $this->erro_sql = " Campo pc63_contabanco não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -227,41 +227,41 @@ class cl_pcfornecon
        return false;
      }
      $sql = "insert into pcfornecon(
-                                       pc63_contabanco 
-                                      ,pc63_numcgm 
-                                      ,pc63_banco 
-                                      ,pc63_agencia 
-                                      ,pc63_conta 
-                                      ,pc63_id_usuario 
-                                      ,pc63_cnpjcpf 
-                                      ,pc63_agencia_dig 
-                                      ,pc63_conta_dig 
-                                      ,pc63_dataconf 
-                                      ,pc63_identcli 
-                                      ,pc63_codigooperacao 
-                                      ,pc63_tipoconta 
-                                      ,pc63_tipopix 
-                                      ,pc63_chavepix 
+                                       pc63_contabanco
+                                      ,pc63_numcgm
+                                      ,pc63_banco
+                                      ,pc63_agencia
+                                      ,pc63_conta
+                                      ,pc63_id_usuario
+                                      ,pc63_cnpjcpf
+                                      ,pc63_agencia_dig
+                                      ,pc63_conta_dig
+                                      ,pc63_dataconf
+                                      ,pc63_identcli
+                                      ,pc63_codigooperacao
+                                      ,pc63_tipoconta
+                                      ,pc63_tipopix
+                                      ,pc63_chavepix
                        )
                 values (
-                                $this->pc63_contabanco 
-                               ,$this->pc63_numcgm 
-                               ,'$this->pc63_banco' 
-                               ,'$this->pc63_agencia' 
-                               ,'$this->pc63_conta' 
-                               ,$this->pc63_id_usuario 
-                               ,'$this->pc63_cnpjcpf' 
-                               ,'$this->pc63_agencia_dig' 
-                               ,'$this->pc63_conta_dig' 
-                               ,".($this->pc63_dataconf == "null" || $this->pc63_dataconf == ""?"null":"'".$this->pc63_dataconf."'")." 
-                               ,'$this->pc63_identcli' 
-                               ,'$this->pc63_codigooperacao' 
-                               ,$this->pc63_tipoconta 
-                               ,$this->pc63_tipopix 
-                               ,'$this->pc63_chavepix' 
+                                $this->pc63_contabanco
+                               ,$this->pc63_numcgm
+                               ,'$this->pc63_banco'
+                               ,'$this->pc63_agencia'
+                               ,'$this->pc63_conta'
+                               ,$this->pc63_id_usuario
+                               ,'$this->pc63_cnpjcpf'
+                               ,'$this->pc63_agencia_dig'
+                               ,'$this->pc63_conta_dig'
+                               ,".($this->pc63_dataconf == "null" || $this->pc63_dataconf == ""?"null":"'".$this->pc63_dataconf."'")."
+                               ,'$this->pc63_identcli'
+                               ,'$this->pc63_codigooperacao'
+                               ,$this->pc63_tipoconta
+                               ,$this->pc63_tipopix
+                               ,'$this->pc63_chavepix'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Contas banco dos fornecedores ($this->pc63_contabanco) não Incluído. Inclusão Abortada.";
@@ -313,17 +313,17 @@ class cl_pcfornecon
        }
      }
      return true;
-   } 
+   }
 
     public function alterar($pc63_contabanco=null)
     {
       $this->atualizacampos();
      $sql = " update pcfornecon set ";
      $virgula = "";
-     if(trim($this->pc63_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_contabanco"])){ 
+     if(trim($this->pc63_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_contabanco"])){
        $sql  .= $virgula." pc63_contabanco = $this->pc63_contabanco ";
        $virgula = ",";
-       if(trim($this->pc63_contabanco) == null ){ 
+       if(trim($this->pc63_contabanco) == null ){
          $this->erro_sql = " Campo Código Conta não informado.";
          $this->erro_campo = "pc63_contabanco";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_numcgm"])){ 
+     if(trim($this->pc63_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_numcgm"])){
        $sql  .= $virgula." pc63_numcgm = $this->pc63_numcgm ";
        $virgula = ",";
-       if(trim($this->pc63_numcgm) == null ){ 
+       if(trim($this->pc63_numcgm) == null ){
          $this->erro_sql = " Campo Fornecedor não informado.";
          $this->erro_campo = "pc63_numcgm";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_banco"])){ 
+     if(trim($this->pc63_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_banco"])){
        $sql  .= $virgula." pc63_banco = '$this->pc63_banco' ";
        $virgula = ",";
-       if(trim($this->pc63_banco) == null ){ 
+       if(trim($this->pc63_banco) == null ){
          $this->erro_sql = " Campo Banco não informado.";
          $this->erro_campo = "pc63_banco";
          $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_agencia"])){ 
+     if(trim($this->pc63_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_agencia"])){
        $sql  .= $virgula." pc63_agencia = '$this->pc63_agencia' ";
        $virgula = ",";
-       if(trim($this->pc63_agencia) == null ){ 
+       if(trim($this->pc63_agencia) == null ){
          $this->erro_sql = " Campo Agência não informado.";
          $this->erro_campo = "pc63_agencia";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_conta"])){ 
+     if(trim($this->pc63_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_conta"])){
        $sql  .= $virgula." pc63_conta = '$this->pc63_conta' ";
        $virgula = ",";
-       if(trim($this->pc63_conta) == null ){ 
+       if(trim($this->pc63_conta) == null ){
          $this->erro_sql = " Campo Conta não informado.";
          $this->erro_campo = "pc63_conta";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_id_usuario"])){ 
+     if(trim($this->pc63_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_id_usuario"])){
        $sql  .= $virgula." pc63_id_usuario = $this->pc63_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc63_id_usuario) == null ){ 
+       if(trim($this->pc63_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "pc63_id_usuario";
          $this->erro_banco = "";
@@ -398,14 +398,14 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_cnpjcpf"])){ 
+     if(trim($this->pc63_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_cnpjcpf"])){
        $sql  .= $virgula." pc63_cnpjcpf = '$this->pc63_cnpjcpf' ";
        $virgula = ",";
      }
-     if(trim($this->pc63_agencia_dig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_agencia_dig"])){ 
+     if(trim($this->pc63_agencia_dig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_agencia_dig"])){
        $sql  .= $virgula." pc63_agencia_dig = '$this->pc63_agencia_dig' ";
        $virgula = ",";
-       if(trim($this->pc63_agencia_dig) == null ){ 
+       if(trim($this->pc63_agencia_dig) == null ){
          $this->erro_sql = " Campo Dígito verificador da agência não informado.";
          $this->erro_campo = "pc63_agencia_dig";
          $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_conta_dig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_conta_dig"])){ 
+     if(trim($this->pc63_conta_dig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_conta_dig"])){
        $sql  .= $virgula." pc63_conta_dig = '$this->pc63_conta_dig' ";
        $virgula = ",";
-       if(trim($this->pc63_conta_dig) == null ){ 
+       if(trim($this->pc63_conta_dig) == null ){
          $this->erro_sql = " Campo Dígito verificador da conta não informado.";
          $this->erro_campo = "pc63_conta_dig";
          $this->erro_banco = "";
@@ -428,38 +428,38 @@ class cl_pcfornecon
          return false;
        }
      }
-     if(trim($this->pc63_dataconf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"] !="") ){ 
+     if(trim($this->pc63_dataconf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"] !="") ){
        $sql  .= $virgula." pc63_dataconf = '$this->pc63_dataconf' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc63_dataconf_dia"])){
          $sql  .= $virgula." pc63_dataconf = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->pc63_identcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_identcli"])){ 
+     if(trim($this->pc63_identcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_identcli"])){
        $sql  .= $virgula." pc63_identcli = '$this->pc63_identcli' ";
        $virgula = ",";
      }
-     if(trim($this->pc63_codigooperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_codigooperacao"])){ 
+     if(trim($this->pc63_codigooperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_codigooperacao"])){
        $sql  .= $virgula." pc63_codigooperacao = '$this->pc63_codigooperacao' ";
        $virgula = ",";
      }
-     if(trim($this->pc63_tipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipoconta"])){ 
-        if(trim($this->pc63_tipoconta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipoconta"])){ 
-           $this->pc63_tipoconta = "0" ; 
-        } 
+     if(trim($this->pc63_tipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipoconta"])){
+        if(trim($this->pc63_tipoconta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipoconta"])){
+           $this->pc63_tipoconta = "0" ;
+        }
        $sql  .= $virgula." pc63_tipoconta = $this->pc63_tipoconta ";
        $virgula = ",";
      }
-     if(trim($this->pc63_tipopix)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipopix"])){ 
-        if(trim($this->pc63_tipopix)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipopix"])){ 
-           $this->pc63_tipopix = "null" ; 
-        } 
+     if(trim($this->pc63_tipopix)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipopix"])){
+        if(trim($this->pc63_tipopix)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc63_tipopix"])){
+           $this->pc63_tipopix = "null" ;
+        }
        $sql  .= $virgula." pc63_tipopix = $this->pc63_tipopix ";
        $virgula = ",";
      }
-     if(trim($this->pc63_chavepix)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_chavepix"])){ 
+     if(trim($this->pc63_chavepix)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc63_chavepix"])){
        $sql  .= $virgula." pc63_chavepix = '$this->pc63_chavepix' ";
        $virgula = ",";
      }
@@ -514,7 +514,7 @@ class cl_pcfornecon
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contas banco dos fornecedores não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc63_contabanco;
@@ -542,9 +542,9 @@ class cl_pcfornecon
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function excluir($pc63_contabanco=null, $dbwhere = null)
     {
@@ -555,7 +555,7 @@ class cl_pcfornecon
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($pc63_contabanco));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -598,7 +598,7 @@ class cl_pcfornecon
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contas banco dos fornecedores não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc63_contabanco;
@@ -626,12 +626,11 @@ class cl_pcfornecon
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-
-    public function sql_record($sql)
-    {
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -654,7 +653,7 @@ class cl_pcfornecon
      return $result;
    }
 
-    public function sql_query($pc63_contabanco = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($pc63_contabanco = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from pcfornecon ";
@@ -663,8 +662,8 @@ class cl_pcfornecon
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc63_contabanco)) {
-         $sql2 .= " where pcfornecon.pc63_contabanco = $pc63_contabanco "; 
-       } 
+         $sql2 .= " where pcfornecon.pc63_contabanco = $pc63_contabanco ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -682,8 +681,8 @@ class cl_pcfornecon
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc63_contabanco)){
-         $sql2 .= " where pcfornecon.pc63_contabanco = $pc63_contabanco "; 
-       } 
+         $sql2 .= " where pcfornecon.pc63_contabanco = $pc63_contabanco ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -693,8 +692,7 @@ class cl_pcfornecon
      }
      return $sql;
   }
-
-   function sql_query_conta ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_conta ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -730,7 +728,7 @@ class cl_pcfornecon
      }
      return $sql;
   }
-   function sql_query_empenho ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_empenho ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -765,7 +763,7 @@ class cl_pcfornecon
      }
      return $sql;
   }
-   function sql_query_padrao ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_padrao ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -799,7 +797,7 @@ class cl_pcfornecon
      }
      return $sql;
   }
-   function sql_query_lefpadrao ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_lefpadrao ( $pc63_contabanco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

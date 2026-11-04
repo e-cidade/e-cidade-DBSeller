@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ if (isset($incluir)) {
     
     $clissarqsimplesreg->incluir($q23_sequencial);
     if ($clissarqsimplesreg->erro_status==0) {
-      throw Exception ("Erro ao incluir registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
+      throw new Exception ("Erro ao incluir registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
     }
     
     /**
@@ -112,7 +112,7 @@ if (isset($incluir)) {
       }
     }
     if ($clissarqsimplesreg->erro_status == 0) {
-      throw Exception ("Erro ao alterar registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
+      throw new Exception ("Erro ao alterar registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
     } else {
       $erro_msg = $clissarqsimplesreg->erro_msg;
     }
@@ -128,7 +128,7 @@ if (isset($incluir)) {
     db_inicio_transacao();
     $clissarqsimplesreg->excluir($q23_sequencial);
     if($clissarqsimplesreg->erro_status==0){
-      throw Exception ("Erro ao excluir registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
+      throw new Exception ("Erro ao excluir registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
     }
     db_fim_transacao();
   } catch(Exception $oException) {
@@ -156,7 +156,7 @@ $db_botao = false;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmissarqsimplesreg.php"));
 	?>
     </center>
@@ -165,7 +165,7 @@ $db_botao = false;
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clissarqsimplesreg->erro_campo!=""){

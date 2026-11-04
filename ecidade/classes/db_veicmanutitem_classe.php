@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -71,13 +71,13 @@ class cl_veicmanutitem {
                  ve63_numeronota = varchar(10) = Número da Nota
                  ";
    //funcao construtor da classe
-   function cl_veicmanutitem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmanutitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_veicmanutitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ve63_codigo = ($this->ve63_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ve63_codigo"]:$this->ve63_codigo);
        $this->ve63_veicmanut = ($this->ve63_veicmanut == ""?@$GLOBALS["HTTP_POST_VARS"]["ve63_veicmanut"]:$this->ve63_veicmanut);
@@ -111,7 +111,7 @@ class cl_veicmanutitem {
      }
    }
    // funcao para Inclusão
-   function incluir ($ve63_codigo){
+   public function incluir ($ve63_codigo){
       $this->atualizacampos();
      if($this->ve63_veicmanut == null ){
        $this->erro_sql = " Campo Manutenção não informado.";
@@ -602,8 +602,8 @@ class cl_veicmanutitem {
      $sql  = "select {$campos}";
      $sql .= "  from veicmanutitem ";
      $sql .= "      inner join veicmanut  on  veicmanut.ve62_codigo = veicmanutitem.ve63_veicmanut";
-     $sql .= "      inner join veiccadtiposervico  on  veiccadtiposervico.ve28_codigo = veicmanut.ve62_veiccadtiposervico";
      $sql .= "      inner join veiculos  on  veiculos.ve01_codigo = veicmanut.ve62_veiculos";
+     $sql .= "      left join veiccadtiposervico  on  veiccadtiposervico.ve28_codigo = veicmanut.ve62_veiccadtiposervico";
      $sql .= "      left  join matunid  on  matunid.m61_codmatunid = veicmanutitem.ve63_unidade";
      $sql2 = "";
      if (empty($dbwhere)) {
@@ -639,10 +639,10 @@ class cl_veicmanutitem {
      return $sql;
   }
 
-   function sql_query_pcmater ( $ve63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pcmater ( $ve63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -668,7 +668,7 @@ class cl_veicmanutitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -678,10 +678,10 @@ class cl_veicmanutitem {
      return $sql;
   }
 
- function sql_query_info ( $ve62_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+ public function sql_query_info ( $ve62_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -701,10 +701,10 @@ class cl_veicmanutitem {
    * @param String  $dbwhere
    * @return String
    */
-  function sql_query_ItensManutencao ( $ve62_codigo=null, $campos="*", $ordem=null, $dbwhere=""){
+  public function sql_query_ItensManutencao ( $ve62_codigo=null, $campos="*", $ordem=null, $dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -726,7 +726,7 @@ class cl_veicmanutitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

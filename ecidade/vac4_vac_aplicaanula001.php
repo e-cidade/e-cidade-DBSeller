@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,7 @@ if (isset($anular)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br><br>
-<?if ($oDaoVacSala->numrows == 0) {
+<?php if ($oDaoVacSala->numrows == 0) {
 
     echo"<br><br><center><strong><b> Departamento não é um sala de vacinação! </b></strong></center></center></center>";
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
@@ -81,7 +81,7 @@ if (isset($anular)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
         <fieldset style='width: 60%;'> <legend><b>Anular Aplicação de Vacina</b></legend>
-	        <?
+	        <?php
 	        require_once(modification("forms/db_frmvac_aplicaanula.php"));
 	        ?>
         </fieldset>
@@ -93,12 +93,12 @@ if (isset($anular)) {
   js_tabulacaoforms("form1", "vc16_i_cgs", true, 1, "vc16_i_cgs", true);
 </script>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($anular)) {
 
   if ($oDaoVacAplicaanula->erro_status == '0') {

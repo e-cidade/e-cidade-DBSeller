@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -71,7 +71,7 @@ if(isset($alterar)){
   parent.parent.iframe_A<?=$ed41_i_codigo?>.location.href = "edu1_diarioavaliacao001.php?regencia=<?=$regencia?>&ed41_i_codigo=<?=$ed41_i_codigo?>";
   parent.db_iframe_tiponota.hide();
  </script>
- <?
+ <?php
  exit;
 }
 if(isset($retornar)){
@@ -86,7 +86,7 @@ if(isset($retornar)){
   parent.parent.iframe_A<?=$ed41_i_codigo?>.location.href = "edu1_diarioavaliacao001.php?regencia=<?=$regencia?>&ed41_i_codigo=<?=$ed41_i_codigo?>";
   parent.db_iframe_tiponota.hide();
  </script>
- <?
+ <?php
  exit;
 }
 if(isset($converter)){
@@ -107,7 +107,7 @@ if(isset($converter)){
   parent.parent.iframe_A<?=$ed41_i_codigo?>.location.href = "edu1_diarioavaliacao001.php?regencia=<?=$regencia?>&ed41_i_codigo=<?=$ed41_i_codigo?>";
   parent.db_iframe_tiponota.hide();
  </script>
- <?
+ <?php
  exit;
 }
 $sql1 = "SELECT ed53_d_inicio,ed53_d_fim,ed95_i_aluno,ed95_i_regencia,ed72_i_escola,ed37_c_tipo as tpdestino,
@@ -216,7 +216,7 @@ if(($cltransfescolarede->numrows>0) || ($clalunotransfturma->numrows>0&&$cltrans
 </style>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 $campos = "case when ed72_c_tipo = 'M'
             then escolaorigem.ed18_i_codigo else escolaproc.ed82_i_codigo end as ed72_i_escola,
            case when ed72_c_tipo = 'M'
@@ -275,8 +275,8 @@ if ($ed72_c_tipo == 'M') {
       <b>Escola:</b>
      </td>
      <td>
-      <?db_input('ed72_i_escola',15,$Ied72_i_escola,true,'text',3,"")?>
-      <?db_input('nomeescola',50,@$Inomeescola,true,'text',3,"")?>
+      <?php db_input('ed72_i_escola',15,$Ied72_i_escola,true,'text',3,"")?>
+      <?php db_input('nomeescola',50,@$Inomeescola,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -284,7 +284,7 @@ if ($ed72_c_tipo == 'M') {
       <b>Tipo:</b>
      </td>
      <td>
-      <?db_input('ed72_c_tipodescr',20,@$Ied72_c_tipodescr,true,'text',3,"")?>
+      <?php db_input('ed72_c_tipodescr',20,@$Ied72_c_tipodescr,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -292,12 +292,12 @@ if ($ed72_c_tipo == 'M') {
       <b>Município:</b>
      </td>
      <td>
-      <?db_input('ed72_c_cidade',40,@$Ied72_c_cidade,true,'text',3,"")?>
+      <?php db_input('ed72_c_cidade',40,@$Ied72_c_cidade,true,'text',3,"")?>
       <b>Estado:</b>
-      <?db_input('ed72_c_estado',2,@$Ied72_c_estado,true,'text',3,"")?>
+      <?php db_input('ed72_c_estado',2,@$Ied72_c_estado,true,'text',3,"")?>
      </td>
     </tr>
-    <?if($cltransfaprov->numrows && $ed72_i_escola!=$escola){
+    <?php if($cltransfaprov->numrows && $ed72_i_escola!=$escola){
     $intervaloorigem = isset($menororigem)?$menororigem." a ".$maiororigem:"";
     ?>
     <tr>
@@ -305,10 +305,10 @@ if ($ed72_c_tipo == 'M') {
       <b>Forma de Avaliação:</b>
      </td>
      <td>
-     <?db_input("tporigem",10,@$tporigem,true,'text',3,"")?>
-     <?if(@$tporigem=="NOTA"){?>
-      <?db_input("intervaloorigem",10,@$intervaloorigem,true,'text',3,"")?>
-     <?}?>
+     <?php db_input("tporigem",10,@$tporigem,true,'text',3,"")?>
+     <?php if(@$tporigem=="NOTA"){?>
+      <?php db_input("intervaloorigem",10,@$intervaloorigem,true,'text',3,"")?>
+     <?php }?>
      </td>
     </tr>
     <tr>
@@ -316,7 +316,7 @@ if ($ed72_c_tipo == 'M') {
       <b>Aproveitamento:</b>
      </td>
      <td>
-     <?
+     <?php
      if(trim(@$tporigem)=="NOTA"){
       $aprovorigem = @$ntorigem;
       echo db_input("aprovorigem",10,@$aprovorigem,true,'text',3,"");
@@ -326,12 +326,12 @@ if ($ed72_c_tipo == 'M') {
       ?>
       <select name="aprovorigem" style="background:#DEB887;width:50px;height:17px;font-size:10px;text-align:center;padding:0px;" disabled>
        <option value=""></option>
-       <?for($z=0;$z<$clconceito->numrows;$z++){
+       <?php for($z=0;$z<$clconceito->numrows;$z++){
         db_fieldsmemory($result3,$z);?>
         <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($aprovorigem)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
-       <?}?>
+       <?php }?>
       </select>
-      <?
+      <?php
      }else{
       $aprovorigem = @$prorigem;
       echo db_textarea('aprovorigem',3,50,$aprovorigem,true,'text',3,"");
@@ -339,21 +339,21 @@ if ($ed72_c_tipo == 'M') {
      ?>
      </td>
     </tr>
-    <?}?>
-    <?if(($ed72_c_tipo=="F" || $ed72_i_escola==$escola) || ($ed72_c_tipo=="M" && $ed72_i_escola!=$escola && $cltransfaprov->numrows==0)){
+    <?php }?>
+    <?php if(($ed72_c_tipo=="F" || $ed72_i_escola==$escola) || ($ed72_c_tipo=="M" && $ed72_i_escola!=$escola && $cltransfaprov->numrows==0)){
      $db_botao = false;
      ?>
      <tr>
       <td colspan="2">
-       <?db_ancora("<b>Modificar Escola de Origem</b>","js_pesquisaed72_i_escolafora(true);",$ed95_c_encerrado=="S"?3:$db_opcao);?>
+       <?php db_ancora("<b>Modificar Escola de Origem</b>","js_pesquisaed72_i_escolafora(true);",$ed95_c_encerrado=="S"?3:$db_opcao);?>
       </td>
      </tr>
      <tr>
       <td colspan="2">
       <input name='alterar' type='submit' value='Alterar' <?=$ed95_c_encerrado=="S"||$db_botao==false?"disabled":""?> onclick="return js_validar(<?=str_replace('-','',$ed53_d_fim)?>);">
-      <?if($ed72_i_escola!=$escola){?>
+      <?php if($ed72_i_escola!=$escola){?>
        <input name='retornar' type='submit' value='Retornar para Nota Interna' <?=$ed95_c_encerrado=="S"?"disabled":""?> onclick="return js_validar(<?=str_replace('-','',$ed53_d_fim)?>);">
-      <?}?>
+      <?php }?>
       <input name='fechar' type='button' value='Fechar' onclick='parent.db_iframe_tiponota.hide();'>
      </tr>
     <?}else{
@@ -361,24 +361,24 @@ if ($ed72_c_tipo == 'M') {
     }?>
     </table>
    </fieldset>
-   <?if($cltransfaprov->numrows && $ed72_c_tipo=="M" && $ed72_i_escola!=$escola){
+   <?php if($cltransfaprov->numrows && $ed72_c_tipo=="M" && $ed72_i_escola!=$escola){
    $intervalodestino = $menordestino." a ".$maiordestino;
    ?>
    <fieldset style="width:95%"><legend><b>Aproveitamento nesta escola - <?=db_getsession("DB_nomedepto")?></b></legend>
    <table width="98%" border="0" cellspacing="1" cellpadding="3" align="center">
     <tr>
      <td colspan="2">
-      <?if((@$tporigem==$tpdestino && $maiordestino!=@$maiororigem)||@$tporigem!=$tpdestino||isset($ed69_i_codigo)){?>
-       <?if($ed72_c_convertido=="S"){?>
-        <?if(isset($ed69_i_codigo)){?>
+      <?php if((@$tporigem==$tpdestino && $maiordestino!=@$maiororigem)||@$tporigem!=$tpdestino||isset($ed69_i_codigo)){?>
+       <?php if($ed72_c_convertido=="S"){?>
+        <?php if(isset($ed69_i_codigo)){?>
          <font color="red"><b>* Forma de avaliação diferente da origem (Turma <?=$trocaturmaorigem?> desta escola) - Aproveitamento precisa ser convertido</b></font>
         <?}else{?>
          <font color="red"><b>* Forma de avaliação diferente da origem - Aproveitamento precisa ser convertido</b></font>
-        <?}?>
+        <?php }?>
        <?}else{?>
         <font color="red"><b>* Aproveitamento já convertido</b></font>
-       <?}?>
-      <?}?>
+       <?php }?>
+      <?php }?>
      </td>
     </tr>
     <tr>
@@ -386,10 +386,10 @@ if ($ed72_c_tipo == 'M') {
       <b>Forma de Avaliação:</b>
      </td>
      <td>
-     <?db_input("tpdestino",10,@$tpdestino,true,'text',3,"")?>
-     <?if($tpdestino=="NOTA"){?>
-      <?db_input("intervalodestino",10,@$intervalodestino,true,'text',3,"")?>
-     <?}?>
+     <?php db_input("tpdestino",10,@$tpdestino,true,'text',3,"")?>
+     <?php if($tpdestino=="NOTA"){?>
+      <?php db_input("intervalodestino",10,@$intervalodestino,true,'text',3,"")?>
+     <?php }?>
      </td>
     </tr>
     <tr>
@@ -397,7 +397,7 @@ if ($ed72_c_tipo == 'M') {
       <b>Aproveitamento:</b>
      </td>
      <td>
-     <?
+     <?php
      $disabled = $aprovperiodo==""?"":"disabled";
      $habilitar = (@$tporigem==$tpdestino && $maiordestino!=@$maiororigem)||($lMigrarMascarar)
                    ||@$tporigem!=$tpdestino || $aprovperiodo==""|| isset($ed69_i_codigo)?1:3;
@@ -409,12 +409,12 @@ if ($ed72_c_tipo == 'M') {
       ?>
       <select name="aprovperiodo" style="background:#DEB887;width:50px;height:17px;font-size:10px;text-align:center;padding:0px;" <?=$disabled?>>
        <option value=""></option>
-       <?for($z=0;$z<$clconceito->numrows;$z++){
+       <?php for($z=0;$z<$clconceito->numrows;$z++){
         db_fieldsmemory($result3,$z);?>
         <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($aprovperiodo)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
-       <?}?>
+       <?php }?>
       </select>
-      <?
+      <?php
      }else{
       echo db_textarea('aprovperiodo',3,50,$aprovperiodo,true,'text',$habilitar,"");
      }
@@ -423,25 +423,25 @@ if ($ed72_c_tipo == 'M') {
     </tr>
     <tr>
      <td colspan="2"">
-       <?if((@$tporigem==$tpdestino && $maiordestino!=@$maiororigem) || @$tporigem!=$tpdestino || $aprovperiodo=="" || isset($ed69_i_codigo) || $lMigrarMascarar){?>
+       <?php if((@$tporigem==$tpdestino && $maiordestino!=@$maiororigem) || @$tporigem!=$tpdestino || $aprovperiodo=="" || isset($ed69_i_codigo) || $lMigrarMascarar){?>
         <input type="submit" value="Alterar" name="converter" onclick="return js_conversao()" <?=$ed95_c_encerrado=="S"?"disabled":""?>>
-       <?}?>
+       <?php }?>
        <input name='fechar' type='button' value='Fechar' onclick='parent.db_iframe_tiponota.hide();'>
      <td>
     </tr>
    </table>
    </fieldset>
-   <?}?>
+   <?php }?>
    <table>
     <tr>
      <td>
-     <?db_input('ed72_c_tipo',2,@$Ied72_c_tipo,true,'hidden',3,"")?>
-     <?db_input('validar',20,@$Ivalidar,true,'hidden',3,"")?>
-     <?db_input('datamatricula',20,@$datamatricula,true,'hidden',3,"")?>
-     <?db_input('maiororigem',20,@$maiororigem,true,'hidden',3,"")?>
-     <?db_input('maiordestino',20,@$maiordestino,true,'hidden',3,"")?>
-     <?db_input('tporigem',20,@$tporigem,true,'hidden',3,"")?>
-     <?db_input('tpdestino',20,@$tpdestino,true,'hidden',3,"")?>
+     <?php db_input('ed72_c_tipo',2,@$Ied72_c_tipo,true,'hidden',3,"")?>
+     <?php db_input('validar',20,@$Ivalidar,true,'hidden',3,"")?>
+     <?php db_input('datamatricula',20,@$datamatricula,true,'hidden',3,"")?>
+     <?php db_input('maiororigem',20,@$maiororigem,true,'hidden',3,"")?>
+     <?php db_input('maiordestino',20,@$maiordestino,true,'hidden',3,"")?>
+     <?php db_input('tporigem',20,@$tporigem,true,'hidden',3,"")?>
+     <?php db_input('tpdestino',20,@$tpdestino,true,'hidden',3,"")?>
      </td>
     </tr>
    </table>
@@ -451,9 +451,9 @@ if ($ed72_c_tipo == 'M') {
 </form>
 </body>
 </html>
-<?
+<?php
 if($ed72_i_valornota=="" && $ed72_c_valorconceito=="" && $ed72_t_parecer==""){
- ?><script>document.form1.validar.value="T";</script><?
+ ?><script>document.form1.validar.value="T";</script><?php
 }
 ?>
 <script>

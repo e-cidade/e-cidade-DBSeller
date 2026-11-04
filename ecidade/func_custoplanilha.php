@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcustoplanilha->rotulo->label("cc15_sequencial");
               <?=$Lcc15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc15_sequencial",10,$Icc15_sequencial,true,"text",4,"","chave_cc15_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcustoplanilha->rotulo->label("cc15_sequencial");
               <?=$Lcc15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cc15_sequencial",10,$Icc15_sequencial,true,"text",4,"","chave_cc15_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcustoplanilha->rotulo->label("cc15_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere  = " cc15_situacao = 1";
       if (isset($situacao) && $situacao != "") {
         $sWhere  = " cc15_situacao = {$situacao}";
@@ -136,12 +136,12 @@ $clcustoplanilha->rotulo->label("cc15_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

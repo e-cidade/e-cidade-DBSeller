@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_fechaiframe(){
 <table border="0">
   <tr>
     <td nowrap colspan="2">
-    <?
+    <?php
   $gform->selecao = true;
   $gform->desabam = false;
   $gform->manomes = true;
@@ -95,7 +95,7 @@ function js_fechaiframe(){
         <td nowrap align="left" title="Bancos">
         </td>
         <td> 
-          <?
+          <?php
           $x = array("1"=>"Banco do Brasil","2"=>"Caixa Federal");
           db_select('banco',$x,true,2,"");
           ?>
@@ -113,7 +113,7 @@ function js_fechaiframe(){
 
     </table>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

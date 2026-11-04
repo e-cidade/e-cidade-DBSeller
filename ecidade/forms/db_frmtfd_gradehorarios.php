@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,19 +39,19 @@ $clrotulo->label("tf03_c_descr");
        <?=@$Ltf02_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf02_i_codigo',10,$Itf02_i_codigo,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf02_i_destino?>">
-      <?
+      <?php
       db_ancora(@$Ltf02_i_destino,"js_pesquisatf02_i_destino(true);",$db_opcao);
       ?>
     </td>
     <td nowrap> 
-      <?
+      <?php
       db_input('tf02_i_destino',10,$Itf02_i_destino,true,'text',$db_opcao," onchange='js_pesquisatf02_i_destino(false);' ");
       db_input('tf03_c_descr',50,$Itf03_c_descr,true,'text',3,'');
       ?>
@@ -83,14 +83,14 @@ $clrotulo->label("tf03_c_descr");
           <tr>
             <td nowrap title="<?=@$Ttf02_c_horario?>" width="5%">
               <?=@$Ltf02_c_horario?>&nbsp;&nbsp;&nbsp;
-              <?
+              <?php
               db_input('tf02_c_horario',5,$Itf02_c_horario,true,'text',$db_opcao," onKeyUp=\"mascara_hora(this.value,'tf02_c_horario', event)\" ")
               ?>
               &nbsp;&nbsp;&nbsp;
             </td>
             <td nowrap title="<?=@$Ttf02_i_lotacao?>">
               <?=@$Ltf02_i_lotacao?>&nbsp;&nbsp;&nbsp;
-              <?
+              <?php
               db_input('tf02_i_lotacao',5,$Itf02_i_lotacao,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -104,7 +104,7 @@ $clrotulo->label("tf03_c_descr");
                       <?=@$Ltf02_d_validadeini?>
                     </td>
                     <td colspan="3"> 
-                      <?
+                      <?php
                       if(isset($tf02_d_validadeini) && !empty($tf02_d_validadeini)) {
 
                         $dTmp = explode('/', $tf02_d_validadeini);
@@ -124,7 +124,7 @@ $clrotulo->label("tf03_c_descr");
                       <?=@$Ltf02_d_validadefim?>
                     </td>
                     <td colspan="3"> 
-                      <?
+                      <?php
                       if(isset($tf02_d_validadefim) && !empty($tf02_d_validadefim)) {
 
                         $dTmp = explode('/', $tf02_d_validadefim);
@@ -148,7 +148,7 @@ $clrotulo->label("tf03_c_descr");
           <tr>
             <td nowrap title="<?=@$Ttf02_c_localsaida?>" colspan="2">
               <?=@$Ltf02_c_localsaida?>&nbsp;&nbsp;&nbsp;
-              <?
+              <?php
               db_input('tf02_c_localsaida',50,$Itf02_c_localsaida,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -168,7 +168,7 @@ $clrotulo->label("tf03_c_descr");
         <table width="100%">
        	  <tr>
 		        <td valign="top"><br>
-              <?
+              <?php
 			       	$aChavepri = array ('tf02_i_codigo' => @$tf02_i_codigo,
                                   'tf02_i_diasemana' => @$tf02_i_diasemana, 
                                   'tf02_i_destino' => @$tf02_i_destino, 
@@ -223,7 +223,7 @@ $clrotulo->label("tf03_c_descr");
 
 function js_cancelar() {
 
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 
@@ -372,7 +372,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_gradehorarios.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

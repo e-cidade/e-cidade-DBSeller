@@ -30,4 +30,22 @@ class NumprefRepository
             $ano
         )->select($campos)->first();
     }
+
+    /**
+     * @return bool
+     */
+    public function buscaParametroCustasHonorarios()
+    {
+        $ano = db_getsession("DB_anousu");
+        $instit = db_getsession("DB_instit");
+        $sSqlParCustasHonorarios = "SELECT k03_custashonorarios 
+                                      FROM numpref 
+                                     WHERE k03_anousu = {$ano} 
+                                       AND k03_instit = {$instit}";
+
+        $rsParCustasHonorarios = db_query($sSqlParCustasHonorarios);
+        $k03_custashonorarios = pg_fetch_result($rsParCustasHonorarios, 0, "k03_custashonorarios");
+        
+        return ($k03_custashonorarios) ? true : false;
+    }
 }

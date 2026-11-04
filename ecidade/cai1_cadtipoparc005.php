@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,22 +25,25 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_cadtipoparc_classe.php"));
-include(modification("classes/db_cadtipoparcdeb_classe.php"));
-include(modification("classes/db_cadtipoparcrec_classe.php"));
-include(modification("classes/db_tipoparc_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_cadtipoparc_classe.php"));
+require_once(modification("classes/db_cadtipoparcdeb_classe.php"));
+require_once(modification("classes/db_cadtipoparcrec_classe.php"));
+require_once(modification("classes/db_tipoparc_classe.php"));
 
 $clcadtipoparc = new cl_cadtipoparc;
-
+$clnumpref = new cl_numpref;
 $clcadtipoparc -> k40_instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
+
+db_postmemory($_POST);
+
 $db_opcao = 22;
 $db_botao = false;
+
 if(isset($alterar)){
   $sqlerro=false;
   db_inicio_transacao();
@@ -74,7 +77,7 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-  <?
+  <?php
   include(modification("forms/db_frmcadtipoparc.php"));
   ?>
     </center>
@@ -83,7 +86,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

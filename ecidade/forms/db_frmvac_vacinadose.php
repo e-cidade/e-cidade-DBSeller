@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('vc07_i_codigo',8,$Ivc07_i_codigo,true,'text',3,"");
       ?>
     </td>
@@ -51,7 +51,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_i_vacina?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('vc07_i_vacina',8,$Ivc07_i_vacina,true,'text',3,
                  " onchange='js_pesquisavc07_i_vacina(false);'");
         db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')
@@ -60,12 +60,12 @@ $clrotulo->label("vc05_c_descr");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc07_i_dose?>">
-      <?
+      <?php
       db_ancora(@$Lvc07_i_dose,"js_pesquisavc07_i_dose(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('vc07_i_dose',8,$Ivc07_i_dose,true,'text',$db_opcao,
                   " onchange='js_pesquisavc07_i_dose(false);'");
         db_input('vc03_c_descr',40,$Ivc03_c_descr,true,'text',3,'');
@@ -74,12 +74,12 @@ $clrotulo->label("vc05_c_descr");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc07_i_calendario?>">
-      <?
+      <?php
       db_ancora(@$Lvc07_i_calendario,"js_pesquisavc07_i_calendario(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('vc07_i_calendario',8,$Ivc07_i_calendario,true,'text',$db_opcao,
                  " onchange='js_pesquisavc07_i_calendario(false);'");
         db_input('vc05_c_descr',40,$Ivc05_c_descr,true,'text',3,'');
@@ -91,7 +91,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_c_nome?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('vc07_c_nome',50,$Ivc07_c_nome,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -101,7 +101,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_n_quant?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('vc07_n_quant',10,$Ivc07_n_quant,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -111,7 +111,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_c_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('vc07_c_descr',50,$Ivc07_c_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -121,7 +121,7 @@ $clrotulo->label("vc05_c_descr");
       <?=@$Lvc07_i_situacao?>
     </td>
     <td> 
-      <?
+      <?php
          $aX = array('1'=>'ATIVA', '2'=>'INATIVA');
          db_select('vc07_i_situacao', $aX, true, $db_opcao,"");
       ?>
@@ -144,7 +144,7 @@ $clrotulo->label("vc05_c_descr");
 </fieldset>
 <br><br>
 
-<?
+<?php
   $chavepri= array("vc07_i_codigo"=>@$vc07_i_codigo);
   $cliframe_alterar_excluir->chavepri     = $chavepri;
   $cliframe_alterar_excluir->sql          = $clvac_vacinadose->sql_query2(null,
@@ -276,7 +276,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_vacinadose.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

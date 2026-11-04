@@ -2,32 +2,68 @@
 /.settings
 /cache
 /extension/data
-/extension/modification
-/extension/log
+/extension/package/Desktop/assets/img/Window/background.jpg
+
+apidoc
 
 config/application.php
 config/ecidade_config.php
 config/plugins.json
 config/preferencias.json
 config/require_extensions.xml
+config/patrimonio/incorporacao_bem.ini
 config/saude/laboratorio/integracao/luckmann/config.json
+config/saude/laboratorio/integracao/infinity/configInfinity.json
+config/xhprof.php
 
 libs/db_acessa.php
 libs/db_conn.php
 debug.php
 libs/config.mail.php
 
+integracao_externa/portal_transparencia/log/
+integracao_externa/portal_transparencia/libs/config.ini
+integracao_externa/portal_transparencia/libs/db_config.ini
 integracao_externa/debitos/lib/debitos.conf
+integracao_externa/debitos/log/
+# imagens personalizadas pelo cliente
+imagens/ecidade/login/logotipo_ecidade.png
+imagens/ecidade/login/imagem-01.jpg
+imagens/ecidade/login/imagem-02.jpg
+imagens/ecidade/login/imagem-03.jpg
+imagens/ecidade/login/imagem-04.jpg
+
+# ignora tudo que for colocado via rotina
+imagens/files/*
+# menos as imagens default.
+!imagens/files/bb.jpg
+!imagens/files/Brasao.default.jpg
+!imagens/files/Brasao.default.png
+!imagens/files/index.php
+!imagens/files/loading.gif
+!imagens/files/logo_ar.jpg
+!imagens/files/logo_boleto.default.jpg
+!imagens/files/logo_boleto.default.png
+!imagens/files/correios.default.jpg
+!imagens/files/logo_correios.jpg
+
+# skins personalizadas
+skins/*
+!skins/default/*
+!skins/estilos.php
+!skins/img.php
+!skins/js.php
 
 .*.swp
 .php_cs.cache
 
+.GerenciadorTarefas.lock.xml
+backup.log
+dumps/
+
 dbug-package.tar.gz
-desktop-package.tar.gz
-debug.php
 
 # Laravel
-
 /node_modules
 /public/hot
 /public/storage
@@ -43,7 +79,27 @@ yarn-error.log
 /.phpstorm.meta.php
 /_ide_helper.php
 integracao_externa/luckman/
+integracao_externa/infinity/
 
 tests/cypress/screenshots
 tests/cypress/videos
 cypress.env.json
+
+# front-end
+/public/css/*.css
+/public/vue/css/*.css
+/public/vue/js/*.js
+/public/vue/js/app.js.LICENSE.txt
+/public/vue/modulo
+/public/extension
+/public/fonts
+/public/images
+/public/js/*.js
+/public/js/app.js.LICENSE.txt
+/public/trumbowyg
+/public/mix-manifest.json
+/public/primevue.css
+yarn.lock
+
+#arquivos da folha
+fim_calculo.php

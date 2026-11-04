@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -181,7 +181,7 @@ class FUNC {
 		$ret = false;
 		if(is_string($addr) && $addr != ""){
 			$regs = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$';
-			if(eregi($regs, $addr)){
+			if(preg_match($regs, $addr)){
 				if(is_bool($vermx)){
 					if($vermx){
 						$exp = explode('@', $addr);
@@ -290,7 +290,7 @@ class FUNC {
 							if($multipart2 == "mixed" || $multipart2 == "related" || $multipart2 == "alternative"){
 								$exp6 = explode('boundary=', $data);
 								$exp7 = explode("\n", $exp6[1]);
-								$exp8 = explode("\r\n", $exp6[1]);
+								$exp8 = explode("\n", $exp6[1]);
 								$boundary2 = (strlen($exp7[0]) <= strlen($exp8[0])) ? $exp7[0] : $exp8[0];
 								$boundary2 = str_replace('"', '', $boundary2);
 								if($boundary2 != "") $ret = FUNC::split_reverse($part, $multipart.', '.$multipart2, $boundary2);
@@ -355,56 +355,56 @@ class FUNC {
 	function mimetype($filename){
 		$retm = "application/octet-stream";
 		$mime = array(
-			'z'    => "application/x-compress", 
-			'xls'  => "application/x-excel", 
-			'gtar' => "application/x-gtar", 
-			'gz'   => "application/x-gzip", 
-			'cgi'  => "application/x-httpd-cgi", 
-			'php'  => "application/x-httpd-php", 
-			'js'   => "application/x-javascript", 
-			'swf'  => "application/x-shockwave-flash", 
-			'tar'  => "application/x-tar", 
-			'tgz'  => "application/x-tar", 
-			'tcl'  => "application/x-tcl", 
-			'src'  => "application/x-wais-source", 
-			'zip'  => "application/zip", 
-			'kar'  => "audio/midi", 
-			'mid'  => "audio/midi", 
-			'midi' => "audio/midi", 
-			'mp2'  => "audio/mpeg", 
-			'mp3'  => "audio/mpeg", 
-			'mpga' => "audio/mpeg", 
-			'ram'  => "audio/x-pn-realaudio", 
-			'rm'   => "audio/x-pn-realaudio", 
-			'rpm'  => "audio/x-pn-realaudio-plugin", 
-			'wav'  => "audio/x-wav", 
-			'bmp'  => "image/bmp", 
-			'fif'  => "image/fif", 
-			'gif'  => "image/gif", 
-			'ief'  => "image/ief", 
-			'jpe'  => "image/jpeg", 
-			'jpeg' => "image/jpeg", 
-			'jpg'  => "image/jpeg", 
-			'png'  => "image/png", 
-			'tif'  => "image/tiff", 
-			'tiff' => "image/tiff", 
-			'css'  => "text/css", 
-			'htm'  => "text/html", 
-			'html' => "text/html", 
-			'txt'  => "text/plain", 
-			'rtx'  => "text/richtext", 
-			'vcf'  => "text/x-vcard", 
-			'xml'  => "text/xml", 
-			'xsl'  => "text/xsl", 
-			'mpe'  => "video/mpeg", 
-			'mpeg' => "video/mpeg", 
-			'mpg'  => "video/mpeg", 
-			'mov'  => "video/quicktime", 
-			'qt'   => "video/quicktime", 
-			'asf'  => "video/x-ms-asf", 
-			'asx'  => "video/x-ms-asf", 
-			'avi'  => "video/x-msvideo", 
-			'vrml' => "x-world/x-vrml", 
+			'z'    => "application/x-compress",
+			'xls'  => "application/x-excel",
+			'gtar' => "application/x-gtar",
+			'gz'   => "application/x-gzip",
+			'cgi'  => "application/x-httpd-cgi",
+			'php'  => "application/x-httpd-php",
+			'js'   => "application/x-javascript",
+			'swf'  => "application/x-shockwave-flash",
+			'tar'  => "application/x-tar",
+			'tgz'  => "application/x-tar",
+			'tcl'  => "application/x-tcl",
+			'src'  => "application/x-wais-source",
+			'zip'  => "application/zip",
+			'kar'  => "audio/midi",
+			'mid'  => "audio/midi",
+			'midi' => "audio/midi",
+			'mp2'  => "audio/mpeg",
+			'mp3'  => "audio/mpeg",
+			'mpga' => "audio/mpeg",
+			'ram'  => "audio/x-pn-realaudio",
+			'rm'   => "audio/x-pn-realaudio",
+			'rpm'  => "audio/x-pn-realaudio-plugin",
+			'wav'  => "audio/x-wav",
+			'bmp'  => "image/bmp",
+			'fif'  => "image/fif",
+			'gif'  => "image/gif",
+			'ief'  => "image/ief",
+			'jpe'  => "image/jpeg",
+			'jpeg' => "image/jpeg",
+			'jpg'  => "image/jpeg",
+			'png'  => "image/png",
+			'tif'  => "image/tiff",
+			'tiff' => "image/tiff",
+			'css'  => "text/css",
+			'htm'  => "text/html",
+			'html' => "text/html",
+			'txt'  => "text/plain",
+			'rtx'  => "text/richtext",
+			'vcf'  => "text/x-vcard",
+			'xml'  => "text/xml",
+			'xsl'  => "text/xsl",
+			'mpe'  => "video/mpeg",
+			'mpeg' => "video/mpeg",
+			'mpg'  => "video/mpeg",
+			'mov'  => "video/quicktime",
+			'qt'   => "video/quicktime",
+			'asf'  => "video/x-ms-asf",
+			'asx'  => "video/x-ms-asf",
+			'avi'  => "video/x-msvideo",
+			'vrml' => "x-world/x-vrml",
 			'wrl'  => "x-world/x-vrml"
 		);
 		if(is_string($filename)){

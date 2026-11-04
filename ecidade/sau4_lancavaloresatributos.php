@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ db_app::load("estilos.css");
 ?>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-    <div style="border-bottom: 2px groove white; background-color: white;width: 100%;height: 8%;tex-align:left">
+    <div style="border-bottom: 2px groove white; background-color: white;width: 100%;height: 8%;text-align:left">
     <b>informe os valores para os Atributos do Exame</b>
     </div>
     <br>
@@ -68,7 +68,7 @@ db_app::load("estilos.css");
        
     </tr>
     <tbody style='background-color: white;height:100px;width: 100%;overflow: scroll; overflow-x: hidden'>   
-    <?
+    <?php
      $sWhere         = " s131_i_exames  = {$oGet->iCodigoExame}";
      $iCodigoConfirmaExame = null;
      

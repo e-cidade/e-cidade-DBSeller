@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -165,18 +165,18 @@ function js_emite(opcao,origem){
 
           <table border="1">
           <tr>
-             <td><? db_ancora("Codigo da Receita",'js_pesquisa();',1); ?>
-                 <? db_input('o70_codrec',8,"",true,'text',1);  ?>
-	         <? db_input('o57_fonte',20,"",true,'text',3);  ?>
-                 <? db_input('o57_descr' ,30,"",true,'text',3);  ?>
+             <td><?php db_ancora("Codigo da Receita",'js_pesquisa();',1); ?>
+                 <?php db_input('o70_codrec',8,"",true,'text',1);  ?>
+	         <?php db_input('o57_fonte',20,"",true,'text',3);  ?>
+                 <?php db_input('o57_descr' ,30,"",true,'text',3);  ?>
 
   	    </td>
        	  </tr>
 	  </tr>
-   	     <td><? db_selorcbalanco(true,false); ?> </td>
+   	     <td><?php db_selorcbalanco(true,false); ?> </td>
            </tr>
            </table>
-       <? 
+       <?php 
 
 	if (isset($sql1)) {
 	   $js_funcao="";
@@ -189,10 +189,10 @@ function js_emite(opcao,origem){
    </td>
   </tr>
  </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
-<?
+<?php
  if($db_opcao==22){
     echo "<script>   js_pesquisa();    </script>";
  }

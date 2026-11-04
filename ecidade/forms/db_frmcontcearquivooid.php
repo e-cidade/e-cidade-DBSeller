@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("c11_id_usuario");
        <?=@$Lc14_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('c14_sequencial',10,$Ic14_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc14_contcearquivo?>">
-       <?
+       <?php
        db_ancora(@$Lc14_contcearquivo,"js_pesquisac14_contcearquivo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c14_contcearquivo',10,$Ic14_contcearquivo,true,'text',$db_opcao," onchange='js_pesquisac14_contcearquivo(false);'")
 ?>
-       <?
+       <?php
 db_input('c11_id_usuario',10,$Ic11_id_usuario,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('c11_id_usuario',10,$Ic11_id_usuario,true,'text',3,'')
        <?=@$Lc14_arquivo?>
     </td>
     <td> 
-<?
+<?php
 db_input('c14_arquivo',1,$Ic14_arquivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contcearquivooid.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

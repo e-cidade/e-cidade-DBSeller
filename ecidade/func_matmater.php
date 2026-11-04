@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,8 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-
-
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_utils.php"));
 require(modification("libs/db_conecta.php"));
@@ -41,7 +39,6 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
 $clmatmater         = new cl_matmater;
 $clmatparamconsulta = new cl_matparamconsulta;
-
 
 $clmatmater->rotulo->label("m60_codmater");
 $clmatmater->rotulo->label("m60_descr");
@@ -69,13 +66,11 @@ if ($clmatparam->numrows) {
 ?>
 
 <html>
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <link href="estilos.css" rel="stylesheet" type="text/css">
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
-
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
   <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr>
@@ -92,7 +87,7 @@ if ($clmatparam->numrows) {
                 <?= $Lm60_codmater ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+              <?php
                 db_input("m60_codmater", 10, $Im60_codmater, true, "text", 4, "", "chave_m60_codmater");
                 ?>
               </td>
@@ -103,7 +98,7 @@ if ($clmatparam->numrows) {
                 <?= $Lm60_descr ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+              <?php
                 db_input("m60_descr", 40, $Im60_descr, true, "text", 4, "", "chave_m60_descr");
                 ?>
               </td>
@@ -114,7 +109,7 @@ if ($clmatparam->numrows) {
                 <b> Mostrar apenas itens da instituição: </b>
               </td>
               <td>
-                <?
+						<?php
                 $x = array('1' => 'Não', '2' => 'Sim');
                 db_select('m38_visualizacaoitens', $x, true, 2, "");
                 ?>
@@ -132,7 +127,7 @@ if ($clmatparam->numrows) {
                 ?>
               </td>
               <td>
-                <?
+						<?php
                 $x = array('f' => 'Não', 't' => 'Sim');
                 db_select('m38_visualizacaomatestoque', $x, true, 1);
                 ?>
@@ -177,7 +172,7 @@ if ($clmatparam->numrows) {
 
           // visualizar apenas com movimentação na instituição que está sendo acessada
           if ($m38_visualizacaoitens == 2) {
-            $where[] = "( instit = " . db_getsession("DB_instit") . " or instit is null ) ";
+            $where[] = "( db_depart.instit = " . db_getsession("DB_instit") . " or db_depart.instit is null ) ";
           }
 
           if (isset($chave_m60_codmater) && (trim($chave_m60_codmater) != "")) {
@@ -284,14 +279,13 @@ if ($clmatparam->numrows) {
     </tr>
   </table>
 </body>
-
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 ?>
   <script>
   </script>
-<?
+  <?php
 }
 ?>
 <script type="text/javascript">

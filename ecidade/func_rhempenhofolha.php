@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhempenhofolha->rotulo->label("rh72_codele");
               <?=$Lrh72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh72_sequencial",10,$Irh72_sequencial,true,"text",4,"","chave_rh72_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhempenhofolha->rotulo->label("rh72_codele");
               <?=$Lrh72_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh72_codele",6,$Irh72_codele,true,"text",4,"","chave_rh72_codele");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhempenhofolha->rotulo->label("rh72_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhempenhofolha.php")==true){
@@ -122,12 +122,12 @@ $clrhempenhofolha->rotulo->label("rh72_codele");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

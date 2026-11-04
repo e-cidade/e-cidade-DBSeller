@@ -63,7 +63,7 @@ team = new Array(
 
   $sql_result = db_query($sql);
   $num        = pg_num_rows($sql_result);
-  $conta      = "";
+  $conta      = 0;
 
 while ($row = pg_fetch_array($sql_result)) {
     $conta     = $conta+1;
@@ -85,7 +85,7 @@ while ($row = pg_fetch_array($sql_result)) {
       # Se achar alguma base para o curso, marca a palavra Todas
         echo "new Array(\"\", ''),\n";
         echo "new Array(\"TODOS\", 'T'),\n";
-        $conta_sub = "";
+        $conta_sub = 0;
 
         while ($rowx = pg_fetch_array($sub_result)) {
             $codigo_serie = $rowx["ed29_i_codigo"];
@@ -94,7 +94,7 @@ while ($row = pg_fetch_array($sql_result)) {
 
             if ($conta_sub == $num_sub) {
                 echo "new Array(\"$serie_nome\", $codigo_serie)\n";
-                $conta_sub = "";
+                $conta_sub = 0;
             } else {
                 echo "new Array(\"$serie_nome\", $codigo_serie),\n";
             }
@@ -329,6 +329,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         <td align="center">
           <br/>
           <table border="0">
+          <br><br><br>
            <tr>
              <td>
                <input name="incluirum" title="Incluir" type="button" value=">" onclick="js_incluir();" style="border:1px outset;border-top-color:#f3f3f3;border-left-color:#f3f3f3;background:#cccccc;font-size:12px;font-weight:bold;width:30px;height:15px;padding:0px;" disabled>
@@ -664,7 +665,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                     </tr>
                     <tr>
                       <td valign="top">
-                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos" value="case when ed47_c_bolsafamilia='S' then 'SIM - '||trim(ed47_c_nis) else 'NÃO' end" onclick="VerificaTamanho(11);"> Auxílio Brasil
+                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos" value="case when ed47_c_bolsafamilia='S' then 'SIM - '||trim(ed47_c_nis) else 'NÃO' end" onclick="VerificaTamanho(11);"> Bolsa Família
                         <input type="hidden" name="largura" id="largura" value="30">
                         <input type="hidden" name="cabecalho" value="Bolsa Família"><br/>
                       </td>
@@ -902,7 +903,9 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                     </tr>
                     <tr>
                       <td valign="top">
-                        <input type="checkbox" id="campos<?php echo $iCampoCount++; ?>" name="campos" value="case when ed76_c_tipo = 'M' then substr(escolaprimat.ed18_c_nome,0,35) else substr(escolaproc.ed82_c_nome,0,35) end as nomeescola" onclick="VerificaTamanho(25);"> Local de Procedência
+                        <input type="checkbox" id="campos<?php echo $iCampoCount++; ?>" name="campos"
+                                value="case when ed76_c_tipo = 'M' then substr(escolaprimat.ed18_c_nome,0,35) else substr(escolaproc.ed82_c_nome,0,35) end as nomeescola"
+                                onclick="VerificaTamanho(25);"> Local de Procedência
                         <input type="hidden" name="largura" id="largura" value="60">
                         <input type="hidden" name="cabecalho" value="Local de Procedência"><br/>
                       </td>
@@ -1194,7 +1197,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                     </tr>
                     <tr>
                       <td valign="top">
-                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos" 
+                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos"
                           value="ed228_c_descr"
                           onclick="VerificaTamanho(42);"> País de Residência
                         <input type="hidden" name="largura" id="largura" value="40">
@@ -1213,7 +1216,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                     </tr>
                     <tr>
                       <td valign="top">
-                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos" 
+                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos"
                           value="ed47_localizacaodiferenciada"
                           onclick="VerificaTamanho(43);"> Localização Diferenciada
                         <input type="hidden" name="largura" id="largura" value="80">
@@ -1248,6 +1251,46 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                         </select>
                       </td>
                     </tr>
+                    <tr>
+                      <td valign="top">
+                        <input type="checkbox" id="campos<?php echo $iCampoCount++ ?>" name="campos"
+                                value="(select distinct ed214_i_aluno
+                                        from alunonecessidade
+                                        where aluno.ed47_i_codigo = alunonecessidade.ed214_i_aluno
+                                      ) as ed214_i_aluno"
+                                onclick="VerificaTamanho(45);">PcD / Altas Habilidades
+                        <input type="hidden" name="largura" id="largura" value="5">
+                        <input type="hidden" name="cabecalho" value="PcD"><br />
+                      </td>
+                      <td>
+                        5
+                      </td>
+                      <td>
+                        <select name="alinhamento">
+                          <option value="L">ESQUERDO</option>
+                          <option value="C" selected>CENTRALIZADO</option>
+                          <option value="R">DIREITO</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign ="top">
+                        <input type="checkbox" id="" name="campos"
+                              value="ed47_c_raca" onclick="VerificaTamanho(46);">Raça
+                        <input type="hidden" name="largura" id="largura" value="25">
+                        <input type="hidden" name="cabecalho" value="Raça"><br />
+                      </td>
+                      <td>
+                        25
+                      </td>
+                      <td>
+                        <select name="alinhamento">
+                          <option value="L">ESQUERDO</option>
+                          <option value="C" selected>CENTRALIZADO</option>
+                          <option value="R">DIREITO</option>
+                        </select>
+                      </td>
+                    <tr>
                   </table>
                 </div>
               </td>
@@ -1412,6 +1455,7 @@ function js_botao(valor){
 
   <?php
     if (isset($curso)) {?>
+
       qtd = document.form1.alunosdiario.length;
 
       for (i = 0; i < qtd; i++) {

@@ -3,6 +3,8 @@
 namespace App\Domain\Tributario\ITBI\Repositories;
 
 use App\Domain\Tributario\ITBI\Models\Itbi;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 final class ItbiRepository
 {
@@ -18,8 +20,10 @@ final class ItbiRepository
 
     /**
      * Busca os dados com base no número da guia
+     *
      * @param $guia
-     * @return Itbi|\Illuminate\Database\Eloquent\Model
+     *
+     * @return Itbi|Model
      * @throws \Exception
      */
     public function getByGuia($guia)
@@ -39,9 +43,11 @@ final class ItbiRepository
 
     /**
      * Retorna todos os dados necessários para a guia de ITBI informada
+     *
      * @param $guia
      * @param string[] $campos
-     * @return Itbi|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder
+     *
+     * @return Itbi|Model|Builder
      * @throws \Exception
      */
     public function getAllByGuia($guia, $campos = ["*"])
@@ -116,6 +122,11 @@ final class ItbiRepository
             "setorloc.j05_codigo",
             "=",
             "loteloc.j06_setorloc"
+        )->leftJoin(
+            "itbidadosimovelsetorloc",
+            "itbidadosimovelsetorloc.it29_itbidadosimovel",
+            "=",
+            "itbidadosimovel.it22_sequencial"
         )->where(
             "itbi.it01_guia",
             "=",
@@ -156,6 +167,7 @@ final class ItbiRepository
         $clitbi->it01_tituprocesso = $entity->getTituprocesso();
         $clitbi->it01_dtprocesso = $entity->getDtprocesso();
         $clitbi->it01_cartorioextra = $entity->getCartorioextra();
+        $clitbi->it01_protprocesso = $entity->getProcessoSequencial();
 
         if (!empty($clitbi->it01_guia)) {
             $clitbi->alterar($clitbi->it01_guia);

@@ -3,19 +3,15 @@
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
 use AssentamentoRepository;
-use CgmFisico;
+use CgmJuridico;
+use DBDate;
+use DBPessoal;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-use stdClass;
-use CgmJuridico;
-use DBDate;
-use ServidorRepository;
-use DBPessoal;
-use TipoAssentamento;
-use TipoAssentamentoRepository;
-use Exception;
 use LotacaoRepository;
+use ServidorRepository;
+use stdClass;
 
 /**
  * Formata os dados do Cargo
@@ -320,6 +316,9 @@ class TSVEInicialFormatter extends Formatter
         if ($this->validaEnvioMatricula($this->servidorAtual->getMatricula(), $this->getEmpregador())) {
             $dadoServidor->infoTSVInicio['matricula'] = $dadosTVSEInicio['matricula'];
         }
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->infoTSVInicio['matricula'] = $this->servidorAtual->getMatriculaAnterior();
+        }
         $dadosTVSEInicio = $servidorEntity->getContratoTrabalho();
         $dadoServidor->infoTSVInicio['codCateg'] = $dadosTVSEInicio['codCateg'];
         $dadoServidor->infoTSVInicio['natAtividade'] = 1; // 1 - Trabalho urbano 2 - Trabalho rural
@@ -429,21 +428,54 @@ class TSVEInicialFormatter extends Formatter
 
         //Informações relativas a servidor público estagiário.
         $dadosEstagiario = $servidorEntity->getEstagiario();
-
-
-        $dadoServidor->infoTSVInicio['infoComplementares'] = $dadosEstagiario;
+        $dadoServidor->infoTSVInicio['infoComplementares']['infoEstagiario'] = [];
+        if (sizeof($dadosEstagiario) > 0) {
+            $dadoServidor->infoTSVInicio['infoComplementares']['infoEstagiario'] = $dadosEstagiario['infoEstagiario'];
+        }
 
         $this->regraEstagiario($dadoServidor);
+
+        $dadosLocalTrabalho = $servidorEntity->getLocalTrabalhoContrato();
+        $codigoCategoria = (int) $dadoServidor->infoTSVInicio["codCateg"];
+        $codigoCategoriaValidos = [304, 305, 721, 722, 723, 731, 734, 738, 761, 771, 901, 902, 906];
+
+        $obrigatorio = false;
+
+        switch ((int) $codigoCategoria) {
+            case ($codigoCategoria >= 200 && $codigoCategoria <= 299):
+                $obrigatorio = true;
+                break;
+            case ($codigoCategoria >= 400 && $codigoCategoria <= 499):
+                $obrigatorio = true;
+                break;
+            case in_array($codigoCategoria, $codigoCategoriaValidos):
+                $obrigatorio = true;
+                break;
+            default:
+                $obrigatorio = false;
+        }
+        if ($obrigatorio) {
+            $dadoServidor->infoTSVInicio['infoComplementares']['localTrabGeral'] = [];
+            if (sizeof($dadosLocalTrabalho) > 0 && $obrigatorio) {
+                $dado = $dadosLocalTrabalho['localTrabGeral'];
+                $dadoServidor->infoTSVInicio['infoComplementares']['localTrabGeral'] = $dado;
+            }
+        }
+
 
         if (empty($dadoServidor->infoTSVInicio['infoComplementares'])) {
             unset($dadoServidor->infoTSVInicio['infoComplementares']);
         }
 
         if ($this->servidorAtual->getVinculo()->getCodigoCategoria() == '410') {
-            $dadoServidor->infoTSVInicio['infoComplementares']['cargoFuncao']['nmFuncao'] =
-            $dadosCargoFuncao['nmFuncao'];
-            $dadoServidor->infoTSVInicio['infoComplementares']['cargoFuncao']['CBOFuncao'] =
-            $dadosCargoFuncao['CBOFuncao'];
+            if (isset($dadosCargoFuncao['nmFuncao'])) {
+                $dadoServidor->infoTSVInicio['infoComplementares']['cargoFuncao']['nmFuncao'] =
+                    $dadosCargoFuncao['nmFuncao'];
+            }
+            if (isset($dadosCargoFuncao['CBOFuncao'])) {
+                $dadoServidor->infoTSVInicio['infoComplementares']['cargoFuncao']['CBOFuncao'] =
+                    $dadosCargoFuncao['CBOFuncao'];
+            }
         } else {
             $dadoServidor->infoTSVInicio['infoComplementares']['cargoFuncao']['nmCargo'] =
             $dadosCargoFuncao['nmCargo'];

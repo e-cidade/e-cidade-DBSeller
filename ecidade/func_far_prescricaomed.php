@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
               <?=$Lfa31_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa31_i_codigo",10,$Ifa31_i_codigo,true,"text",4,"","chave_fa31_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
               <?=$Lfa20_c_prescricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa20_c_prescricao",30,@$Ifa20_c_prescricao,true,"text",4,"","chave_fa20_c_prescricao");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_prescricaomed.php")==true){
@@ -124,12 +124,12 @@ $clfar_prescricaomedica->rotulo->label("fa20_c_prescricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

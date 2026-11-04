@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -91,7 +91,7 @@ function js_horario(sQuadro, lRegenteSelecionado, lHorarioDisponivel, lHorarioMa
 }
 </script>
 
-<?
+<?php
 if (isset($chavepesquisa)) {
   
   try {
@@ -243,7 +243,7 @@ if (isset($chavepesquisa)) {
        parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>"+parent.document.form1.z01_nome.value+"</font>";
        parent.document.getElementById("codrh<?=$quadro?>").innerHTML = <?=$rechumano?>;
       </script>
-      <?
+      <?php
     } // Fecha else não tem mensagem de erro
   } catch (Exception $oExcecao) {
     echo "<script>alert('".str_replace("'", "\'", $oExcecao->getMessage())."');</script>";

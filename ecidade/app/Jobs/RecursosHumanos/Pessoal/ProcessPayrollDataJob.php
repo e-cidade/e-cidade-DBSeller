@@ -22,6 +22,7 @@ class ProcessPayrollDataJob implements ShouldQueue
      * @var int
      */
     private $chunkIn = 200;
+    public $timeout = 7200;
 
     /**
      * @var int

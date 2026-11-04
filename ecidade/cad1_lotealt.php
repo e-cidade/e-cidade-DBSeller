@@ -91,11 +91,11 @@ $cltesinterlote    = new cl_tesinterlote;
 $cltesinteroutros  = new cl_tesinteroutros;
 $cltesinter        = new cl_tesinter;
 $clcaracter        = new cl_caracter;
-$cliptuant 		   = new cl_iptuant;
+$cliptuant         = new cl_iptuant;
 
 $parametrosNumeroCadastral = new App\Domain\Tributario\Cadastro\Models\ParametrosNumeroCadastral();
-if($parametrosNumeroCadastral->existeParametro(db_getsession("DB_instit"))) {
-	$db_opcaorefant = 3;  
+if ($parametrosNumeroCadastral->existeParametro(db_getsession("DB_instit"))) {
+    $db_opcaorefant = 3;
 }
 
 $cllotedist->rotulo->label();
@@ -274,6 +274,9 @@ if ($replote == true) {
         $j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
         $cllote->j34_lote = $j34_lote;
         $cllote->j34_areapreservada = $j34_areapreservada;
+        $cllote->j34_areaprivativa = $j34_areaprivativa;
+        $cllote->j34_areausocomum = $j34_areausocomum;
+        $cllote->j34_zonadesurb = $j225_sequencial;
         if ($cllote->incluir(null) == true) {
             $j34_idbql = $cllote->j34_idbql;
 
@@ -568,6 +571,9 @@ if ($replote == true) {
         $j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
         $cllote->j34_lote = $j34_lote;
         $cllote->j34_areapreservada = $j34_areapreservada;
+        $cllote->j34_areaprivativa = $j34_areaprivativa;
+        $cllote->j34_areausocomum = $j34_areausocomum;
+        $cllote->j34_zonadesurb = $j225_sequencial;
         $cllote->alterar($j34_idbql);
         if ($cllote->erro_status == 0) {
             db_msgbox($cllote->erro_msg);
@@ -668,7 +674,7 @@ if ($replote == true) {
                                     j39_sequencial";
                         $sSqlTesinter = $cltesinter->sql_query_file($j39_sequencial, $sCampos);
                         $rsTesinter = $cltesinter->sql_record($sSqlTesinter);
-      
+
                         if ($cltesinter->numrows > 0) {
                             db_fieldsmemory($rsTesinter, 0);
                             $tesinterExiste = true;
@@ -679,7 +685,6 @@ if ($replote == true) {
                         (isset($j84_tesintertipo) && $j84_tesintertipo != '0')) {
                         if ($j39_sequencial != "" && $j39_sequencial != "0" && $tesinterExiste == true
                             && $tesinter_excluida != "1") { //se não foi excluída verifica alteracoes
-
                             if ($verifica_idbql != $j39_idbql ||
                                 $verifica_orientacao != $j39_orientacao ||
                                 $verifica_testad != $j39_testad ||
@@ -727,7 +732,6 @@ if ($replote == true) {
                                     $cltesinteroutros->j84_tesinter = $j39_sequencial;
                                     $cltesinteroutros->alterar($oid_tesinteroutros);
                                 }
-                                
                             }
                         } else {
                             if (((isset($idbqlInterLote) && $idbqlInterLote != 0 && $idbqlInterLote != "") ||
@@ -741,7 +745,7 @@ if ($replote == true) {
                                 $j84_observacao = (isset($dadosTestadaInterna[5]) ? $dadosTestadaInterna[5] : "");
                                 $tesinter_excluida = (isset($dadosTestadaInterna[6]) ? $dadosTestadaInterna[6] : "0");
                                 $j39_sequencial = $dadosTestadaInterna[7];
-                                
+
                                 if (!empty($j39_sequencial)) {
                                     //se não existe no exercício mas existe na matriz então replica
                                     if (!isset($j39_orientacao) || $j39_orientacao == "") {
@@ -1085,16 +1089,18 @@ if ($replote == true) {
                 $sWhere = 'j35_caract not in (' . $matriz . ') and j35_idbql = ' . $j34_idbql;
                 $sqlExclusao = $clcarlote->sql_query(null, null, "j35_idbql, j35_caract", null, $sWhere);
                 $rsExclusao = $clcarlote->sql_record($sqlExclusao);
+                $numRowsExclusao = $clcarlote->numrows;
                 if ($clcarlote->numrows > 0) {
-                    for ($i = 0; $i < $clcarlote->numrows; $i++) {
-                        db_fieldsmemory($rsExclusao, $i);
-                        $clcarlote->j35_idbql = $j35_idbql;
-                        $clcarlote->j35_caract = $j35_caract;
-                        $clcarlote->excluir($j35_idbql, $j35_caract);
+                    for ($x = 0; $x < $numRowsExclusao; $x++) {
+                        $result = db_utils::fieldsMemory($rsExclusao, $x);
+                        $clcarlote->j35_idbql = $result->j35_idbql;
+                        $clcarlote->j35_caract = $result->j35_caract;
+                        $clcarlote->excluir($result->j35_idbql, $result->j35_caract);
                         if ($clcarlote->erro_status == 0) {
                             $sqlerro = true;
                         }
                     }
+
                 }
             }
 
@@ -1107,7 +1113,7 @@ if ($replote == true) {
                     "j91_idbql = " . $cllote->j34_idbql
                 );
                 $resultGetSetorFiscal = $cllotesetorfiscal->sql_record($sqlGetSetorFiscal);
-                $numlinesGetSetorFiscal = $cllotesetorfiscal->numrows;
+                $numlinesGetSetorFiscal = pg_num_rows($resultGetSetorFiscal);
                 if ((isset($j91_codigo) && $j91_codigo != "") && $numlinesGetSetorFiscal > 0) {
                     $cllotesetorfiscal->j91_idbql = $cllote->j34_idbql;
                     $cllotesetorfiscal->j91_codigo = $j91_codigo;
@@ -1136,15 +1142,14 @@ if ($replote == true) {
         }
 
         if (isParaiba() && isset($idmatricu)) {
-
             $resultFace = $clface->sql_record($clface->sql_query($cartestpri, '*'));
             if ($resultFace && $clface->numrows > 0) {
-               db_fieldsmemory($resultFace,0);
+                db_fieldsmemory($resultFace, 0);
             }
 
             $result = $cliptuant->sql_record($cliptuant->sql_query($idmatricu));
             if ($result != false && $cliptuant->numrows > 0) {
-               db_fieldsmemory($result,0);
+                db_fieldsmemory($result, 0);
             }
 
             $numeroCadastral = $parametrosNumeroCadastral->montaNumero(db_getsession("DB_instit"), $idmatricu);
@@ -1165,7 +1170,6 @@ if ($replote == true) {
             db_query("select fc_delsession('DB_anoretroativo')");
         }
     }
-
 } elseif (isset($j34_idbql) || isset($alterando) || isset($chavepesquisa) && !isset($incluquadra)) {
     if (isset($chavepesquisa)) {
         $j34_idbql = $chavepesquisa;
@@ -1183,7 +1187,7 @@ if ($replote == true) {
         }
     }
     //setor fiscal =====================================================================================================
-    $rsResultsetfis = $cllotesetorfiscal->sql_record(
+    $rsResultsetfis = db_query(
         $cllotesetorfiscal->sql_query(
             "",
             "j91_codigo,
@@ -1192,7 +1196,7 @@ if ($replote == true) {
             " j91_idbql = $j34_idbql"
         )
     );
-    if ($cllotesetorfiscal->numrows != 0) {
+    if (pg_num_rows($rsResultsetfis) != 0) {
         db_fieldsmemory($rsResultsetfis, 0);
         $j91_codigo = $j91_codigo;
     }
@@ -1266,9 +1270,9 @@ if ($replote == true) {
         $sqlTestadaNumero = " select coalesce(
             ( select j15_numero from testadanumero where j15_idbql=$j34_idbql and j15_face=$j36_face ),0) as j15_numero,
             case
-              when (select j15_compl 
+              when (select j15_compl
                      from testadanumero where j15_idbql=$j34_idbql and j15_face=$j36_face ) is null then '0'
-              else (select j15_compl 
+              else (select j15_compl
                       from testadanumero where j15_idbql=$j34_idbql and j15_face=$j36_face )
             end as j15_compl";
 

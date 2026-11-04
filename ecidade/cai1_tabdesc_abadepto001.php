@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,18 +52,18 @@ if(isset($incluir) or isset($alterar)){
 	db_inicio_transacao();
 	$erro = false;
 	$db_opcao= 2 ;
-	
+
 	$cltabdescdepto->k69_tabdesc  = $codsubrec;
 	$cltabdescdepto->excluir(null, " k69_tabdesc = $codsubrec ");
 	if($cltabdescdepto->erro_status="0"){
   	    $erro = true;
 		    $msgerro = $cltabdescdepto->erro_msg;
 	}
-	
-	$depto = split("#",$chaves); 
+
+	$depto =explode("#",$chaves);
   for($w=0;$w<count($depto);$w++){
     if($erro==false){
-    	
+
 			$cltabdescdepto->k69_tabdesc  = $codsubrec;
 	    $cltabdescdepto->k69_coddepto = $depto[$w];
       $cltabdescdepto->incluir(null);
@@ -72,14 +72,14 @@ if(isset($incluir) or isset($alterar)){
 		    $msgerro = $cltabdescdepto->erro_msg;
 				break;
       }
-	  }  
+	  }
  	}
   db_fim_transacao($erro);
 }else if(isset($excluir)){
 	db_inicio_transacao();
 	$erro = false;
 	$db_opcao= 3 ;
-	
+
 	$cltabdescdepto->k69_tabdesc  = $codsubrec;
 	$cltabdescdepto->excluir(null, " k69_tabdesc = $codsubrec ");
 	if($cltabdescdepto->erro_status="0"){
@@ -111,24 +111,24 @@ if(isset($incluir) or isset($alterar)){
     <td nowrap title="<?=@$Tcodsubrec?>"   >
        <?=@$Lcodsubrec?>
     </td>
-    <td> 
-			<?
+    <td>
+			<?php
 			db_input('codsubrec',10,$Icodsubrec,true,'text',3,"")
 			?>
-			<?
+			<?php
       db_input('k07_descr',50,$Ik07_descr,true,'text',3,"")
       ?>
     </td>
   </tr>
 	<tr>
 		<td colspan="2" align="center">
-		   <?
-			
+		   <?php
+
 			$sql = "select coddepto,descrdepto from db_depart where instit = ".db_getsession("DB_instit")." order by descrdepto";
-			$sqlmarca = "select coddepto,descrdepto 
-			             from db_depart 
-			             inner join tabdescdepto on coddepto = k69_coddepto  
-			             where instit      = ".db_getsession("DB_instit")." 
+			$sqlmarca = "select coddepto,descrdepto
+			             from db_depart
+			             inner join tabdescdepto on coddepto = k69_coddepto
+			             where instit      = ".db_getsession("DB_instit")."
 									   and k69_tabdesc = $codsubrec
 									 order by descrdepto";
 			$cliframe_seleciona->chaves  = "coddepto";
@@ -139,25 +139,25 @@ if(isset($incluir) or isset($alterar)){
       $cliframe_seleciona->iframe_height ="300";
       $cliframe_seleciona->iframe_width  ="400";
       //$cliframe_seleciona->dbscript      = "";
-      $cliframe_seleciona->iframe_nome ="deptos"; 
+      $cliframe_seleciona->iframe_nome ="deptos";
       $cliframe_seleciona->iframe_seleciona($db_opcao);
-      
+
       ?>
 	  </td>
 	</tr>
-	
+
 	<tr>
-		<td colspan="2" align="center"> 
-		<? if($db_opcao==3){ $db_botao = false; }?>
+		<td colspan="2" align="center">
+		<?php if($db_opcao==3){ $db_botao = false; }?>
  			<input name="<?=($db_opcao==1?"incluir":($db_opcao==2?"alterar":"excluir"))?>" type="submit" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='js_gera_chaves();' >
 		</td>
 	</tr>
 </table>
-</form>	
+</form>
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) or isset($alterar) or isset($excluir)){
   if($erro==true){
 	  db_msgbox($msgerro);

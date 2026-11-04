@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcppalei->rotulo->label();
        <?=@$Lo21_codleippa?>
     </td>
     <td> 
-<?
+<?php
 db_input('o21_codleippa',10,$Io21_codleippa,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o21_codleippa',10,$Io21_codleippa,true,'text',3,"")
        <?=@$Lo21_anoini?>
     </td>
     <td> 
-<?
+<?php
 db_input('o21_anoini',4,$Io21_anoini,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('o21_anoini',4,$Io21_anoini,true,'text',$db_opcao,"")
        <?=@$Lo21_anofim?>
     </td>
     <td> 
-<?
+<?php
 db_input('o21_anofim',4,$Io21_anofim,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('o21_anofim',4,$Io21_anofim,true,'text',$db_opcao,"")
        <?=@$Lo21_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('o21_descr',40,$Io21_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('o21_descr',40,$Io21_descr,true,'text',$db_opcao,"")
        <?=@$Lo21_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('o21_numero',10,$Io21_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcppalei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

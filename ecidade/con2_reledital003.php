@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,12 +73,12 @@ function js_relatorio1() {
       <tr>
       <br>
         <td nowrap title="<?=@$Td01_codedi?>">
-        <?
+        <?php
           db_ancora(@$Ld01_codedi,"js_edi(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('d01_codedi',6,$Id01_codedi,true,'text',$db_opcao," onchange='js_edi(false);'");
       db_input('d01_descr',40,$Id01_descr,true,'text',3);
          ?>
@@ -88,7 +88,7 @@ function js_relatorio1() {
       <br>
         <td colspan="2" height="25">
            <strong>Ordem: </strong>
-            <?
+            <?php
               $aOrdem = array(0 => "Matrícula",
                               1 => "Nome",
                               2 => "Nome e Matrícula");
@@ -107,12 +107,12 @@ function js_relatorio1() {
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ function js_emite(){
     jan.moveTo(0,0);
     document.form1.l20_codigo.value='';
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -72,21 +72,21 @@ function js_emite(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-  <tr> 
+  <tr>
     <td  align="left" nowrap title="<?=$Tl20_codigo?>">
       <b>
-      <?db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
-      </b> 
+      <?php db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
+      </b>
     </td>
-    
+
     <td align="left" nowrap>
-      <?db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");?>
+      <?php db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap><b>Separador Colunas :</b></td>
     <td align="left" nowrap>
-      <?
+      <?php
         if(!isset($separador)) {
           $separador = ";";
         }
@@ -97,7 +97,7 @@ function js_emite(){
   <tr>
     <td align="left" nowrap><b>Delimitador de Campos :</b></td>
     <td align="left" nowrap>
-      <?
+      <?php
         $aDelimitador = array("1" => "Aspas Duplas",
                               "2" => "Aspas Simples");
         db_select('delimitador', $aDelimitador, true, 1, "");
@@ -107,7 +107,7 @@ function js_emite(){
   <tr>
     <td align="left" nowrap><b>Layout:</b></td>
     <td align="left" nowrap>
-      <?
+      <?php
         $aLayout= array("1" => "Layout 1",
                               "2" => "Layout 2 (sem seq item)");
         db_select('layout', $aLayout, true, 1, "");
@@ -120,14 +120,14 @@ function js_emite(){
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
         </td>
       </tr>
 
   </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -137,22 +137,22 @@ function js_pesquisa_liclicita(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_liclicita','func_liclicita.php?funcao_js=parent.js_mostraliclicita1|l20_codigo','Pesquisa',true);
   }else{
-     if(document.form1.l20_codigo.value != ''){ 
+     if(document.form1.l20_codigo.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_liclicita','func_liclicita.php?pesquisa_chave='+document.form1.l20_codigo.value+'&funcao_js=parent.js_mostraliclicita','Pesquisa',false);
      }else{
-       document.form1.l20_codigo.value = ''; 
+       document.form1.l20_codigo.value = '';
      }
   }
 }
 function js_mostraliclicita(chave,erro){
-  document.form1.l20_codigo.value = chave; 
-  if(erro==true){ 
-    document.form1.l20_codigo.value = ''; 
-    document.form1.l20_codigo.focus(); 
+  document.form1.l20_codigo.value = chave;
+  if(erro==true){
+    document.form1.l20_codigo.value = '';
+    document.form1.l20_codigo.focus();
   }
 }
 function js_mostraliclicita1(chave1){
-   document.form1.l20_codigo.value = chave1;  
+   document.form1.l20_codigo.value = chave1;
    db_iframe_liclicita.hide();
    //js_emite();
 }

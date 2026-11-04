@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,7 +73,7 @@ $cont_veic_comb = 0;
     <td nowrap align="center" class="bordas" width="50">Padrão</td>
     </td>
  </tr>
- <?
+ <?php
 if (isset($ve06_veiculos)){
 $sSqlVeiculos  = " select (select ve06_sequencial ";
 $sSqlVeiculos .= "           from veiculoscomb ";
@@ -116,7 +116,7 @@ $iNumRows = pg_num_rows($rsVeiculos);
        <input  name='rd_comb' type='radio' value="<?=$value?>"  <?=$radiomarcado?>>
      </td>
    </tr>
-<? 
+<?php 
 }
 }
 else{
@@ -138,7 +138,7 @@ else{
        <input  name='rd_comb' type='radio' value="<?=$value?>"  >
      </td>
    </tr>
-<?
+<?php
 }
 }
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if(isset($db_opcaoal)){
        <?=@$Ly107_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('y107_sequencial',10,$Iy107_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_input('y107_sequencial',10,$Iy107_sequencial,true,'text',3,"")
       <b>TIAF:</b> 
     </td>
     <td> 
-<?
+<?php
 db_input('y107_procfiscalfases',10,$Iy107_procfiscalfases,true,'text',3)
 ?>
 
@@ -82,7 +82,7 @@ db_input('y107_procfiscalfases',10,$Iy107_procfiscalfases,true,'text',3)
        <?=@$Ly107_documento?>
     </td>
     <td> 
-<?
+<?php
 
 db_input("anexoarq",30,0,true,"file",1);
 ?>
@@ -99,7 +99,7 @@ db_input("anexoarq",30,0,true,"file",1);
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $sql = "select * from procfiscalfasesdoc where y107_procfiscalfases = $y107_procfiscalfases";
 	 $chavepri= array("y107_sequencial"=>@$y107_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

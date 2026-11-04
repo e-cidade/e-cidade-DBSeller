@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,19 +60,19 @@
           <?=@$Lx04_codhidrometro?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_codhidrometro', 6, $Ix04_codhidrometro, true, 'text', ($db_opcao == 1 ? 1 : 3), "")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap align="right" title="<?=@$Tx04_matric?>">
-          <?
+          <?php
             db_ancora(@$Lx04_matric, "js_pesquisax04_matric(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_matric', 6, $Ix04_matric, true, 'text', $db_opcao, " onchange='js_pesquisax04_matric(false);'");
             db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
           ?>
@@ -83,19 +83,19 @@
           <?=@$Lx04_nrohidro?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_nrohidro', 20, $Ix04_nrohidro, true, 'text', $db_opcao, "")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap align="right" title="<?=@$Tx04_coddiametro?>">
-          <?
+          <?php
             db_ancora(@$Lx04_coddiametro, "js_pesquisax04_coddiametro(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_coddiametro', 6, $Ix04_coddiametro,
                      true, 'text', $db_opcao, " onchange='js_pesquisax04_coddiametro(false);'");
             
@@ -105,12 +105,12 @@
       </tr>
       <tr>
         <td nowrap align="right" title="<?=@$Tx04_codmarca?>">
-          <?
+          <?php
             db_ancora(@$Lx04_codmarca, "js_pesquisax04_codmarca(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_codmarca', 6, $Ix04_codmarca,
                      true, 'text', $db_opcao, " onchange='js_pesquisax04_codmarca(false);'");
             
@@ -123,7 +123,7 @@
           <?=@$Lx04_qtddigito?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x04_qtddigito', 6, $Ix04_qtddigito, true, 'text', $db_opcao, "")
           ?>
         </td>
@@ -133,7 +133,7 @@
           <?=@$Lx04_dtinst?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('x04_dtinst', @$x04_dtinst_dia, @$x04_dtinst_mes, @$x04_dtinst_ano, true, 'text', $db_opcao, "")
           ?>
         </td>
@@ -143,7 +143,7 @@
           <?=@$Lx04_leitinicial?>
         </td>
         <td> 
-          <?
+          <?php
             //db_input('x04_leitinicial',15,$Ix04_leitinicial,true,'text',$db_opcao==1?1:3,"")
             db_input('x04_leitinicial', 15, $Ix04_leitinicial, true, 'text', $existe_leitura_posterior, "")
           ?>
@@ -154,7 +154,7 @@
           <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?>:</b>  
         </td>
         <td nowrap> 
-          <?
+          <?php
             if (!isset($x21_exerc) || (isset($x21_exerc) && trim($x21_exerc) == "")) {
               $x21_exerc = db_getsession("DB_anousu");
             }
@@ -163,7 +163,7 @@
             db_input('x21_exerc', 4, $Ix21_exerc, true, 'text', $existe_leitura_posterior, "");
           ?>
           <b>&nbsp;/&nbsp;</b>  
-          <?
+          <?php
             if (!isset($x21_mes) || (isset($x21_mes) && trim($x21_mes) == "")) {
               $x21_mes = date("m",db_getsession("DB_datausu"));
             }
@@ -175,13 +175,13 @@
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx21_situacao?>" align="right">
-          <?
+          <?php
             //db_ancora(@$Lx21_situacao,"js_pesquisax21_situacao(true);",$db_opcao);
             db_ancora(@$Lx21_situacao, "js_pesquisax21_situacao(true);", $existe_leitura_posterior);
           ?>
         </td>
         <td nowrap colspan="5"> 
-          <?
+          <?php
             //db_input('x21_situacao',8,$Ix21_situacao,true,'text',$db_opcao==1?1:3,"onchange='js_pesquisax21_situacao(false);'","");
             db_input('x21_situacao', 6, $Ix21_situacao,
                      true, 'text', $existe_leitura_posterior, "onchange='js_pesquisax21_situacao(false);'", "");
@@ -195,7 +195,7 @@
           <?=@$Lx04_avisoleiturista?>
         </td>
         <td>
-          <?
+          <?php
             db_input('x04_avisoleiturista', 48, $Ix04_avisoleiturista,
                      true, 'text', $db_opcao, "", "","","", "198");
           ?>
@@ -206,7 +206,7 @@
           <?=@$Lx04_observacao?>
         </td>
         <td>
-          <?
+          <?php
             db_textarea('x04_observacao', 4, 48, $Ix04_observacao, true, 'text', $db_opcao);
           ?>
         </td>
@@ -343,7 +343,7 @@
 	
   function js_preenchepesquisa(chave) {
 	  db_iframe_aguahidromatric.hide();
-    <?
+    <?php
       if ($db_opcao != 1) {
         echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }

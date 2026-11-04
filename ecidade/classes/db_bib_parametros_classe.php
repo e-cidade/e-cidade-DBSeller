@@ -28,13 +28,13 @@ class cl_bib_parametros {
                  bi26_impressora = int4 = Impressão de Comprovantes 
                  ";
    //funcao construtor da classe 
-   function cl_bib_parametros() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bib_parametros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_bib_parametros {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi26_codigo = ($this->bi26_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi26_codigo"]:$this->bi26_codigo);
        $this->bi26_biblioteca = ($this->bi26_biblioteca == ""?@$GLOBALS["HTTP_POST_VARS"]["bi26_biblioteca"]:$this->bi26_biblioteca);
@@ -54,7 +54,7 @@ class cl_bib_parametros {
      }
    }
    // funcao para Inclusão
-   function incluir ($bi26_codigo){ 
+   public function incluir ($bi26_codigo){ 
       $this->atualizacampos();
      if($this->bi26_biblioteca == null ){ 
        $this->erro_sql = " Campo Biblioteca não informado.";

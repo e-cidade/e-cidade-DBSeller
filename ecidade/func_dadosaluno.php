@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -59,9 +59,9 @@ $oDaoSerie = new cl_serie();
           <?=$Led47_i_codigo?>
         </td>
         <td align="left" nowrap title="<?=$Ted47_v_nome?>">
-          <?db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
+          <?php db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
           <?=$Led47_v_nome?>
-          <?db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+          <?php db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
         </td>
       </tr>
       <tr>
@@ -69,15 +69,15 @@ $oDaoSerie = new cl_serie();
           <?=$Led223_i_serie?>
         </td>
         <td align="left" nowrap>
-          <?
+          <?php
           $sCampoSerie = "ed11_i_codigo,ed11_c_descr||' - '||ed10_c_descr as serie,ed11_i_ensino,ed11_i_sequencia";
           $sSqlSerie   = $oDaoSerie->sql_query_equiv("", $sCampoSerie, " ed11_i_ensino,ed11_i_sequencia");
           $rsSerie     = $oDaoSerie ->sql_record($sSqlSerie);
           $iLinhas     = $oDaoSerie->numrows;
-          
+
           $aDadosSerie = array('' => '');
           for ($i = 0; $i < $iLinhas; $i++) {
-             
+
             $oDadosSerie   = db_utils::fieldsMemory($rsSerie, $i);
             $aDadosSerie[$oDadosSerie->ed11_i_codigo] = $oDadosSerie->serie;
           }
@@ -93,10 +93,10 @@ $oDaoSerie = new cl_serie();
   </div>
   <div class='container'>
     <br />
-    <?php 
-    
+    <?php
+
     if ( !isset($oGet->pesquisa_chave) ) {
-       
+
       $sSql  = " SELECT *                                                                                                   ";
       $sSql .= "   FROM (                                                                                                   ";
       $sSql .= "         SELECT distinct on (aluno.ed47_i_codigo) aluno.ed47_i_codigo,                                      ";
@@ -139,21 +139,21 @@ $oDaoSerie = new cl_serie();
       $sSql .= "          left join cursoedu    on  cursoedu.ed29_i_codigo        = base.ed31_i_curso                       ";
       $sSql .= "          left join alunopossib on  alunopossib.ed79_i_alunocurso = alunocurso.ed56_i_codigo                ";
       $sSql .= "          left join serie       on  serie.ed11_i_codigo           = alunopossib.ed79_i_serie                ";
-    
+
       if (isset($chave_ed47_i_codigo)) {
-    
+
         $aRepassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,
             "chave_ed47_v_nome"=>$chave_ed47_v_nome,
             "chave_ed223_i_serie"=>$chave_ed223_i_serie,
             "situacao"=>$situacao);
       }
-      
+
       $aWhere = array();
       if (isset($situacao) && (trim($situacao) != "")) {
 
         $aWhere[] = " trim(ed56_c_situacao) = '{$oGet->situacao}' ";
       }
-    
+
     	$sFiltraEscola = " ed18_i_codigo = " . db_getsession("DB_coddepto");
       if (isset($iEscola) && trim($iEscola) != '') {
         $sFiltraEscola = " ed18_i_codigo = {$iEscola} ";
@@ -162,11 +162,11 @@ $oDaoSerie = new cl_serie();
       $sOrder   = " ";
       if (isset($chave_ed47_i_codigo) && (trim($chave_ed47_i_codigo)!="") ){
         $aWhere[] = "ed47_i_codigo = {$chave_ed47_i_codigo} ";
-      } 
+      }
       if (isset($chave_ed47_v_nome) && (trim($chave_ed47_v_nome)!="") ){
-    
+
         $aWhere[] = " to_ascii(ed47_v_nome) like '".TiraAcento($chave_ed47_v_nome)."%' ";
-      } 
+      }
       if (isset($chave_ed223_i_serie) && (trim($chave_ed223_i_serie)!="") ){
         $aWhere[] = " ed79_i_serie = {$chave_ed223_i_serie} ";
       }
@@ -175,9 +175,9 @@ $oDaoSerie = new cl_serie();
       $sSql   .= $sWhere;
       $sSql   .= " ORDER BY to_ascii(ed47_v_nome) ";
       db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $aRepassa);
-    
+
     } elseif ( isset($oGet->pesquisa_chave) && !empty($oGet->pesquisa_chave) ) {
-      
+
       $sWhere    = "ed47_i_codigo = $oGet->pesquisa_chave";
       $oDaoAluno = new cl_aluno();
       $rsAluno   = $oDaoAluno->sql_record($oDaoAluno->sql_query_file("", "*", "", $sWhere));
@@ -188,8 +188,8 @@ $oDaoSerie = new cl_serie();
       }else{
         echo "<script>".$funcao_js."('', 'Chave (".$pesquisa_chave.") não Encontrado', true);</script>";
       }
-    } 
-    ?>    
+    }
+    ?>
   </div>
 </body>
 </html>

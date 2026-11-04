@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,19 +25,19 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_levinscr_classe.php"));
-include(modification("classes/db_levcgm_classe.php"));
-include(modification("classes/db_levanta_classe.php"));
-include(modification("classes/db_levantanotas_classe.php"));
-include(modification("classes/db_levvalor_classe.php"));
-include(modification("classes/db_levusu_classe.php"));
-include(modification("classes/db_levvalorpgtos_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_levinscr_classe.php"));
+require_once(modification("classes/db_levcgm_classe.php"));
+require_once(modification("classes/db_levanta_classe.php"));
+require_once(modification("classes/db_levantanotas_classe.php"));
+require_once(modification("classes/db_levvalor_classe.php"));
+require_once(modification("classes/db_levusu_classe.php"));
+require_once(modification("classes/db_levvalorpgtos_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
 $cllevanta = new cl_levanta;
 $cllevantanotas = new cl_levantanotas;
@@ -46,8 +46,10 @@ $cllevusu = new cl_levusu;
 $cllevinscr = new cl_levinscr;
 $cllevcgm = new cl_levcgm;
 $cllevvalorpgtos = new cl_levvalorpgtos;
+$clprocfiscallevanta = new cl_procfiscallevanta;
 $db_opcao = 33;
 $db_botao = false;
+
 if(isset($excluir)){
 
   $sqlerro=false;
@@ -121,6 +123,16 @@ if(isset($excluir)){
       $sqlerro=true;
     }  
   }
+
+    //rotina para excluir do procfiscallevanta se existir
+    $result = $clprocfiscallevanta->sql_record($clprocfiscallevanta->sql_query_file(null, 'y112_sequencial', null, "y112_levanta = {$y60_codlev}")); 
+    if($clprocfiscallevanta->numrows>0 && $sqlerro==false){
+      $clprocfiscallevanta->excluir(null, "y112_levanta = {$y60_codlev}");
+      $erro_msg= $clprocfiscallevanta->erro_msg;
+      if($clprocfiscallevanta->erro_status==0){
+        $sqlerro=true;
+      }  
+    }
   
   if(!$sqlerro){
     $cllevanta->excluir($y60_codlev);
@@ -139,6 +151,7 @@ if(isset($excluir)){
    $db_botao = true;
 }
 ?>
+
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -148,20 +161,15 @@ if(isset($excluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmlevanta.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
+  <div class="container">
+    <?php
+	    include(modification("forms/db_frmlevanta.php"));
+	  ?>
+  </div>
 </body>
 </html>
-<?
+
+<?php
 if (@$y60_importado == 't'){
 
 	echo "<script>document.getElementById('db_opcao').disabled=true;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ db_app::load("estilos.css");
 <table height='' width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr><td></td></tr>
 </table>
-      <?
+      <?php
       $clrotulo = new rotulocampo;
       $clrotulo->label("e80_data");
 
@@ -156,7 +156,7 @@ function js_cria(campo,valor){
 }	   
 function js_verso(ver){
   retorna = false;
-  <?
+  <?php
   if(isset($imprimirverso)){
     echo "retorna = confirm('Emitir o verso do cheque?');\n";
   }
@@ -177,7 +177,7 @@ function js_verso(ver){
 }	 
 </script>
 <script>
-<?
+<?php
 if (!$lLiberado) {
 
   echo "\$('processar').disabled = true;\n";

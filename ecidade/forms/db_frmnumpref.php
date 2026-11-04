@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,6 +37,7 @@ $clrotulo->label("k03_receitapadraocredito");
 $clrotulo->label("k02_drecei");
 $clrotulo->label("k03_diasvalidadecertidao");
 $clrotulo->label("k03_diasreemissaocertidao");
+$clrotulo->label('k03_usagrupotaxa');
 
 if (empty($k03_diasreemissaocertidao) || !DBNumber::isInteger(trim($k03_diasreemissaocertidao))) {
     $k03_diasreemissaocertidao = '';
@@ -266,17 +267,6 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                         </tr>
                         <tr>
-                            <td title="<?= @$Tk03_separajurmulparc ?>">
-                                <?= @$Lk03_separajurmulparc ?>
-                            </td>
-                            <td colspan='3'>
-                                <?php
-                                $x = array('2' => 'NÃO', '1' => 'SIM');
-                                db_select('k03_separajurmulparc', $x, true, $db_opcao, "style='width:125px'");
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td title="<?= @$Tk03_respcgm ?>">
                                 <?php
                                 db_ancora(@$Lk03_respcgm, "js_pesquisak03_respcgm(true);", $db_opcao);
@@ -290,9 +280,8 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                         </tr>
                         <tr>
-                            <td
-                            ="" title="<?= @$Tk03_respcargo ?>">
-                            <?
+                            <td title="<?= @$Tk03_respcargo ?>">
+                            <?php
                             db_ancora(@$Lk03_respcargo, "js_pesquisak03_respcargo(true)", $db_opcao);
                             ?>
                             </td>
@@ -310,7 +299,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                 ?>
                             </td>
                             <td colspan='3'>
-                                <?
+                                <?php
                                 db_input('k03_taxagrupo', 15, $Ik03_taxagrupo, true, 'text', $db_opcao, " onchange='js_pesquisak03_taxagrupo(false);'");
                                 db_input('k06_descr', 48, $Ik06_descr, true, 'text', 3, '');
                                 ?>
@@ -397,6 +386,19 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                 ?>
                             </td>
                         </tr>
+
+                        <tr>
+                            <td title="<?= @$Tk03_tipoinscricao ?>">
+                                <?= @$Lk03_tipoinscricao ?>
+                            </td>
+                            <td colspan="3">
+                                <?php
+                                $aTipoInscricao = array("0" => "Não informado", "1" => "Cobranca Administrativa", "2" => "Divida Ativa");
+                                db_select('k03_tipoinscricao', $aTipoInscricao, true, $db_opcao, "style='width:350px'");
+                                ?>
+                            </td>
+                        </tr>
+
                         <tr>
                             <td title="<?= @$Tk03_filtrarreceita ?>" width="35%">
                                        <?= @$Lk03_filtrarreceita ?>
@@ -405,8 +407,43 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                        <?php   $x = array("f" => "NÃO", "t" => "SIM");
                                             db_select('k03_filtrarreceita', $x, true, $db_opcao, "style='width:125px'");
                                         ?>
-                            </td>                        
+                            </td>
                         </tr>
+                        <tr>
+                            <td title="<?= $Tk03_usagrupotaxa ?>" width="35%">
+                                <?= $Lk03_usagrupotaxa ?>
+                            </td>
+                            <td width="20%">
+                                <?php
+                                    $opcoesUsaGrupoTaxa = array("f" => "NÃO", "t" => "SIM");
+                                    db_select('k03_usagrupotaxa', $opcoesUsaGrupoTaxa, true, $db_opcao, "style='width:125px'");
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td title="<?= $Tk03_processoparcelamento ?>" width="35%">
+                                <?= $Lk03_processoparcelamento ?>
+                            </td>
+                            <td width="20%">
+                                <?php
+                                    $opcoesUsaGrupoTaxa = array("f" => "NÃO", "t" => "SIM");
+                                    db_select('k03_processoparcelamento', $opcoesUsaGrupoTaxa, true, $db_opcao, "style='width:125px'");
+                                ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td title="<?= $Tk03_custashonorarios ?>" width="35%">
+                                <?= $Lk03_custashonorarios ?>
+                            </td>
+                            <td width="20%">
+                                <?php
+                                    $opcoesUsaGrupoTaxa = array("f" => "NÃO", "t" => "SIM");
+                                    db_select('k03_custashonorarios', $opcoesUsaGrupoTaxa, true, $db_opcao, "style='width:125px'");
+                                ?>
+                            </td>
+                        </tr>
+
                         <tr>
                             <td colspan="4">
                                 <fieldset align="left">
@@ -444,12 +481,33 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                                 db_select('k03_imprimecancdebitos', $x, true, $db_opcao, "style='width:125px'");
                                                 ?>
                                             </td>
-                                        </tr>    
+                                        </tr>
                                     </table>
                                 </fieldset>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td colspan="4">
+                                <fieldset align="left">
+                                    <legend>
+                                        <b>Aplica juros e multa</b>
+                                    </legend>
+                                    <table border='0' width="100%">
+                                        <tr>
+                                            <td title="<?= @$Tk03_encargoscarneunica ?>" width="35%">
+                                                <?= @$Lk03_encargoscarneunica?>
+                                            </td>
+                                            <td width="20%">
+                                                <?php
+                                                $x = array("f" => "NÃO", "t" => "SIM");
+                                                db_select('k03_encargoscarneunica', $x, true, $db_opcao, "style='width:125px'");
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset>
+                            </td>
+                        </tr>
                     </table>
                 </fieldset>
             </td>
@@ -641,7 +699,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                                 <?php db_input("k03_".$campos["campo"], 2, $Ik03_.$campos["campo"],true,'text',$db_opcao, "", '', '', '', 3) ?>
                                             </td>
                                             <td nowrap="nowrap" title="<?= @$Tk03_.$campos["campo"] ?>" width="20%">
-                                                <?
+                                                <?php
                                                 db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumento(true, '".$campos["campoTemplate"]."');",$db_opcao);
                                                 ?>
                                             </td>
@@ -949,6 +1007,12 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
             $('k03_diasreemissaocertidao').focus();
             return false;
         }
+
+        if ($F('k03_tipoinscricao').trim() == "0") {
+            alert(_M(MENSAGENS + "campo_nao_informado", {sCampo: "Tipo Inscrição"}));
+            $('k03_tipoinscricao').focus();
+            return false;
+        }
     }
 
     var chave_k03_tipo = 14;
@@ -1070,7 +1134,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
         db_iframe_numpref.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+            echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }
         ?>
     }

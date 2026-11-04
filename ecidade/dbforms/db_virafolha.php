@@ -34,18 +34,6 @@ use ECidade\RecursosHumanos\Pessoal\Service\ServidorOutrosVinculosService;
 use ECidade\RecursosHumanos\Pessoal\Service\ServidorProcessosJudiciaisFolhaService;
 use ECidade\RecursosHumanos\Pessoal\Service\DataPagamentoFolhaService;
 
-?>
-<html>
-<head>
-    <title>Virada Anual</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <meta http-equiv="Expires" CONTENT="0">
-    <link href="../estilos.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="../scripts/scripts.js"></script>
-    <script type="text/javascript" src="../scripts/classes/http/http.js"></script>
-</head>
-<body>
-<?php
 set_time_limit(0);
 require_once(modification("./libs/db_stdlib.php"));
 require_once(modification("./libs/db_conecta.php"));
@@ -107,7 +95,7 @@ require_once(modification("./classes/db_rhpessoalmovcontabancaria_classe.php"));
 require_once(modification("./libs/db_utils.php"));
 require_once(modification("./libs/db_app.utils.php"));
 require_once(modification("./classes/db_tomador_classe.php"));
-
+require_once(modification("./classes/db_rhteutri_classe.php"));
 
 $clpadroes = new cl_padroes;
 $clcargo = new cl_cargo;
@@ -162,84 +150,15 @@ $clvtfdias = new cl_vtfdias;
 $clpensaoretencao = new cl_pensaoretencao;
 $clrhpesrubcalc = new cl_rhpesrubcalc;
 $cltomador = new \cl_tomador();
-
+$clrheutri = new cl_rhteutri;
 
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
-
 
 $periodoini1 = $dataii_dia . "/" . $dataii_mes . "/" . $dataii_ano;
 $periodoini2 = $dataif_dia . "/" . $dataif_mes . "/" . $dataif_ano;
 $periodofim1 = $datafi_dia . "/" . $datafi_mes . "/" . $datafi_ano;
 $periodofim2 = $dataff_dia . "/" . $dataff_mes . "/" . $dataff_ano;
-
-$sqlerro = false;
-
-$instituicaoSessao = InstituicaoRepository::getInstituicaoSessao();
-
-$controleAfastamentoDao = new cl_controleafastamento();
-$controleAfastamentoRepository = new ControleAfastamentoRepository($controleAfastamentoDao);
-$controleAfastamentoService = new ControleAfastamentoService($controleAfastamentoRepository);
-
-$controleHoraExtraDao = new cl_controlehorasextras();
-$controleHoraExtraRepository = new ControleRubricasParametrosRepository($controleHoraExtraDao);
-$controleHoraExtraService = new ControleRubricasParametrosService($controleHoraExtraRepository);
-
-
-if (!isset($desprocess)) {
-
-    db_inicio_transacao();
-
-    if (!$sqlerro) {
-        try {
-            $competencia = DBCompetencia::folha();
-            $controleHoraExtraService->atualizaCompetenciaControleHoraExtra($instituicaoSessao, $competencia);
-            $controleAfastamentoService->atualizaCompetenciaControleAfastamentos($instituicaoSessao, $dataii_ano, $dataii_mes);
-        } catch (Exception $exception) {
-            $sqlerro = true;
-        }
-    }
-
-    if ($sqlerro == false) {
-
-        $sWhere = "r66_anousu = {$dataii_ano} and r66_mesusu = {$dataii_mes} and ";
-        $sWhere .= " not exists (select 1 from codmovsefip v where v.r66_anousu = {$datafi_ano} and v.r66_mesusu = {$datafi_mes} and v.r66_codigo = codmovsefip.r66_codigo)";
-        $sql1 = $clcodmovsefip->sql_query_file(null, null, null, "*", null, $sWhere);
-        $retorno = db_incluir_sql($sql1, $clcodmovsefip, "codmovsefip");
-
-        if ($retorno != '1' && $retorno != '2') {
-            $sqlerro = true;
-            //echo "<BR> erro 7";
-            //}
-        }
-    }
-
-    if ($sqlerro == false) {
-
-        $sWhere = " r67_anousu = {$dataii_ano} and r67_mesusu = {$dataii_mes} and ";
-        $sWhere .= " not exists (select 1 from movcasadassefip v where v.r67_anousu = {$datafi_ano} and v.r67_mesusu = {$datafi_mes}";
-        $sWhere .= "and v.r67_afast = movcasadassefip.r67_afast and v.r67_reto = movcasadassefip.r67_reto)";
-        $sSqlSefip = $clmovcasadassefip->sql_query_file(null, null, null, null, "*", null, $sWhere);
-        $retorno = db_incluir_sql($sSqlSefip, $clmovcasadassefip, "movcasadassefip");
-        if ($retorno != '1' && $retorno != '2') {
-            $sqlerro = true;
-        }
-    }
-
-    if ($sqlerro == false) {
-
-        $sWhereCargo = " r65_anousu = {$dataii_ano} and r65_mesusu= {$dataii_mes} ";
-        $sWhereCargo .= " and not exists (select 1 from cargo v where v.r65_anousu = {$datafi_ano} and v.r65_mesusu = {$datafi_mes} and v.r65_cargo = cargo.r65_cargo)";
-        $sql1 = $clcargo->sql_query_file(null, null, null, "*", null, $sWhereCargo);
-        $retorno = db_incluir_sql($sql1, $clcargo, "cargo");
-        if ($retorno != '1' && $retorno != '2') {
-            $sqlerro = true;
-        }
-    }
-
-    db_fim_transacao($sqlerro);
-}
-
 
 //FUNÇÃO PARA INCLUSO NAS TABELAS.
 // $sql1    = SQL de onde vem os dados para virada de ms da folha.
@@ -259,7 +178,6 @@ function db_incluir_sql($sql1, $table, $trigger)
     global $clrhpesbanco;
     global $clrhpespadrao;
     global $clrhpesrescisao;
-
 
     global $dataii_dia;
     global $dataii_mes;
@@ -288,9 +206,7 @@ function db_incluir_sql($sql1, $table, $trigger)
     $datai = $datafi_ano . "-" . $datafi_mes . "-" . $datafi_dia;
     $dataf = $dataff_ano . "-" . $dataff_mes . "-" . $dataff_dia;
 
-
     // Testa se existem dados para serem includos.
-
 
     $result_tabela1 = $table->sql_record($sql1);
     $numrows_tabela1 = $table->numrows;
@@ -308,7 +224,7 @@ function db_incluir_sql($sql1, $table, $trigger)
     $colunas = pg_num_fields($result_tabela1);
 
     for ($ii = 0; $ii < $colunas; $ii++) {
-        $dcoluna = pg_fieldname($result_tabela1, $ii);   // Nome do campo corrente.
+        $dcoluna = pg_field_name($result_tabela1, $ii);   // Nome do campo corrente.
         // Testa se o campo  o anousu, se for, seta o ano do novo perodo da folha.
         if (strpos($dcoluna, "anousu") || (strpos($dcoluna, "ano") && $trigger == "baserhcadregime")) {
             $dcoluna = $ano;
@@ -320,25 +236,25 @@ function db_incluir_sql($sql1, $table, $trigger)
             $dcoluna = "'" . $datai . "'";
         } else if ($dcoluna == "r11_dataf") {
             $dcoluna = "'" . $dataf . "'";
-            // Testa se  a tabela rhpessoalmov para pegar a sequencia do seqpes.
+            // Testa se a tabela rhpessoalmov para pegar a sequencia do seqpes.
         } else if ($dcoluna == "rh02_seqpes") {
             $dcoluna = "nextval('rhpessoalmov_rh02_seqpes_seq')";
-            // Testa se  a tabela rhpesbanco, rhpesrescisao, rhpespadrao, rhpescargo, inssoutros, rhpesprogres, rhpesponto e rhpeslocaltrab para pegar o novo seqpes.
+            // Testa se a tabela rhpesbanco, rhpesrescisao, rhpespadrao, rhpescargo, inssoutros, rhpesprogres, rhpesponto e rhpeslocaltrab para pegar o novo seqpes.
         } else if ($dcoluna == "rh44_seqpes" || $dcoluna == "rh03_seqpes"  || $dcoluna == "rh05_seqpes" || $dcoluna == "rh20_seqpes"
             || $dcoluna == "rh51_seqpes" || $dcoluna == "rh06_seqpes" || $dcoluna == "rh07_seqpes" || $dcoluna == "rh56_seqpes" || $dcoluna == "rh138_rhpessoalmov") {
             $dcoluna = "a.rh02_seqpes";
-            // Testa se  a tabela rhpessoalmovcontabancaria.
+            // Testa se a tabela rhpessoalmovcontabancaria.
         } else if ($dcoluna == "rh138_sequencial") {
             $dcoluna = "nextval('rhpessoalmovcontabancaria_rh138_sequencial_seq')";
-            // Testa se  a tabela pensaoncontabancaria.
+            // Testa se a tabela pensaoncontabancaria.
         } else if ($dcoluna == "r52_sequencial") {
             $dcoluna = "nextval('pensao_r52_sequencial_seq')";
         } else if ($dcoluna == "rh139_sequencial") {
             $dcoluna = "nextval('pensaocontabancaria_rh139_sequencial_seq')";
-            // Testa se  a tabela rhvisavalecad.
+            // Testa se a tabela rhvisavalecad.
         } else if ($dcoluna == "rh49_codigo") {
             $dcoluna = "nextval('rhvisavalecad_rh49_codigo_seq')";
-            // Testa se  a tabela inssirf.
+            // Testa se a tabela inssirf.
         } else if ($dcoluna == "r33_codigo") {
             /** Deixa uma flag na string para dar replace depois **/
             $dcoluna = "#CHAVE#";
@@ -357,6 +273,8 @@ function db_incluir_sql($sql1, $table, $trigger)
             $dcoluna = "nextval('tipoassefinanceiro_rh165_sequencial_seq')";
         } else if ($dcoluna == "rh167_sequencial") {
             $dcoluna = "nextval('tipoasseexterno_rh167_sequencial_seq')";
+        } else if ($dcoluna == "rh67_sequencial") {
+            $dcoluna = "nextval('rhteutri_seq_seq')"; 
         }
         $campos .= $virgula . $dcoluna;
         $virgula = ",";
@@ -392,6 +310,8 @@ function db_incluir_sql($sql1, $table, $trigger)
         $sql_insert = "insert into " . $trigger . " " . str_replace("rhpessoalmovcontabancaria.*", $campos, $sql1);
     } else if ($trigger == "pensaocontabancaria") {
         $sql_insert = "insert into " . $trigger . " " . str_replace("pensaocontabancaria.*", $campos, $sql1);
+    } else if ($trigger == "rhteutri") {
+        $sql_insert = "insert into " . $trigger . " " . str_replace("rhteutri.*", $campos, $sql1);
     } else if ($trigger == "inssirf") {
 
         $sql_insert = "";
@@ -454,6 +374,70 @@ function db_incluir_sql($sql1, $table, $trigger)
 
 
 db_inicio_transacao();
+
+$sqlerro = false;
+
+$instituicaoSessao = InstituicaoRepository::getInstituicaoSessao();
+
+$controleAfastamentoDao = new cl_controleafastamento();
+$controleAfastamentoRepository = new ControleAfastamentoRepository($controleAfastamentoDao);
+$controleAfastamentoService = new ControleAfastamentoService($controleAfastamentoRepository);
+
+$controleHoraExtraDao = new cl_controlehorasextras();
+$controleHoraExtraRepository = new ControleRubricasParametrosRepository($controleHoraExtraDao);
+$controleHoraExtraService = new ControleRubricasParametrosService($controleHoraExtraRepository);
+
+
+if (!isset($desprocess)) {
+    if (!$sqlerro) {
+        try {
+            $competencia = DBCompetencia::folha();
+            $controleHoraExtraService->atualizaCompetenciaControleHoraExtra($instituicaoSessao, $competencia);
+            $controleAfastamentoService->atualizaCompetenciaControleAfastamentos($instituicaoSessao, $dataii_ano, $dataii_mes);
+        } catch (Exception $exception) {
+            $retorno = $exception->getMessage();
+            $sqlerro = true;
+        }
+    }
+
+    if ($sqlerro == false) {
+
+        $sWhere = "r66_anousu = {$dataii_ano} and r66_mesusu = {$dataii_mes} and ";
+        $sWhere .= " not exists (select 1 from codmovsefip v where v.r66_anousu = {$datafi_ano} and v.r66_mesusu = {$datafi_mes} and v.r66_codigo = codmovsefip.r66_codigo)";
+        $sql1 = $clcodmovsefip->sql_query_file(null, null, null, "*", null, $sWhere);
+        $retorno = db_incluir_sql($sql1, $clcodmovsefip, "codmovsefip");
+
+        if ($retorno != '1' && $retorno != '2') {
+            $sqlerro = true;
+            //echo "<BR> erro 7";
+            //}
+        }
+    }
+
+    if ($sqlerro == false) {
+
+        $sWhere = " r67_anousu = {$dataii_ano} and r67_mesusu = {$dataii_mes} and ";
+        $sWhere .= " not exists (select 1 from movcasadassefip v where v.r67_anousu = {$datafi_ano} and v.r67_mesusu = {$datafi_mes}";
+        $sWhere .= "and v.r67_afast = movcasadassefip.r67_afast and v.r67_reto = movcasadassefip.r67_reto)";
+        $sSqlSefip = $clmovcasadassefip->sql_query_file(null, null, null, null, "*", null, $sWhere);
+        $retorno = db_incluir_sql($sSqlSefip, $clmovcasadassefip, "movcasadassefip");
+        if ($retorno != '1' && $retorno != '2') {
+            $sqlerro = true;
+        }
+    }
+
+    if ($sqlerro == false) {
+
+        $sWhereCargo = " r65_anousu = {$dataii_ano} and r65_mesusu= {$dataii_mes} ";
+        $sWhereCargo .= " and not exists (select 1 from cargo v where v.r65_anousu = {$datafi_ano} and v.r65_mesusu = {$datafi_mes} and v.r65_cargo = cargo.r65_cargo)";
+        $sql1 = $clcargo->sql_query_file(null, null, null, "*", null, $sWhereCargo);
+        $retorno = db_incluir_sql($sql1, $clcargo, "cargo");
+        if ($retorno != '1' && $retorno != '2') {
+            $sqlerro = true;
+        }
+    }
+}
+
 if (UTILIZAR_NOVO_CADASTRO_FERIAS and !isset($desprocess)) {
 
     require_once(modification("./model/pessoal/ferias/PeriodoAquisitivoFerias.model.php"));
@@ -634,19 +618,20 @@ if (isset($desprocess) && $desprocess == "true") {
     }
 
     $arr_tabelas_exclui = Array(
-        "AFASTA", "AJUSTEIR", "BASESR", "BASES", "CADFERIA", "CALFOLHA", "CEDULAS", "CFPESS",
-        "CHEQUES", "DEPEND", "DESCONTO", "PESDIVER", "EFETIV", "FOLHAEMP", "GERFSAL",
-        "GERFFER", "GERFS13", "GERFADI", "GERFFX", "GERFRES", "GERFCOM", "HISTORIC", "INSSIRF",
-        "IPE", "LANDESC", "LOTATIV", "PENSAORETENCAO", "PENSAO", "PONTOFX", "PONTOFS", "PONTOFA", "PONTOF13", "PONTOFR",
-        "PONTOFE", "PONTOCOM", "VTFDIAS", "VTFFUNC ", "PREVIDEN", "REPOSIC", "PESSOAL",
-        "PROGRESS", "PADROES", "CARGO", "FUNCAO", "RUBRICAS", "RESCISAO", "MOVCASADASSEFIP",
-        "TIPOASSEEXTERNO", "CODMOVSEFIP", "VTFEMPR", "RHPESSOALMOV", "RHVISAVALECAD", "TIPOASSEFINANCEIRO"
+        "AFASTA", "AJUSTEIR", "BASESR", "BASES", "CADFERIA", "CALFOLHA", "CEDULAS", "CFPESS", 
+        "CHEQUES", "DEPEND", "DESCONTO", "PESDIVER", "EFETIV", "FOLHAEMP", "GERFSAL", "GERFFER", 
+        "GERFS13", "GERFADI", "GERFFX", "GERFRES", "GERFCOM", "HISTORIC", "INSSIRF", "IPE", 
+        "LANDESC", "LOTATIV", "PENSAORETENCAO", "PENSAO", "PONTOFX", "PONTOFS", "PONTOFA", "PONTOF13", 
+        "PONTOFR", "PONTOFE", "PONTOCOM", "VTFDIAS", "VTFFUNC ", "PREVIDEN", "REPOSIC", "PESSOAL", 
+        "PROGRESS", "PADROES", "CARGO", "FUNCAO", "RUBRICAS", "RESCISAO", "MOVCASADASSEFIP", "TIPOASSEEXTERNO", 
+        "CODMOVSEFIP", "VTFEMPR", "RHVISAVALECAD", "TIPOASSEFINANCEIRO", "RHTEUTRI", "RHPESSOALMOV"
     );
     $arr_siglass_exclui = Array(
         "r45", "r61", "r09", "r08", "r30", "r51", "r05", "r11", "r12", "r03", "r27", "r07", "r57",
-        "r42", "r14", "r31", "r35", "r22", "r53", "r20", "r48", "r25", "r33", "r36", "r28", "r41", "rh77", "r52",
-        "r90", "r10", "r21", "r34", "r19", "r29", "r47", "r63", "r17", "r60", "r64", "r01", "r24",
-        "r02", "r65", "r37", "r06", "r59", "r67", "rh167", "r66", "r16", "rh02", "rh49", "rh165"
+        "r42", "r14", "r31", "r35", "r22", "r53", "r20", "r48", "r25", "r33", "r36", "r28", "r41", 
+        "rh77", "r52","r90", "r10", "r21", "r34", "r19", "r29", "r47", "r63", "r17", "r60", "r64", 
+        "r01", "r24","r02", "r65", "r37", "r06", "r59", "r67", "rh167", "r66", "r16", "rh49", "rh165", 
+        "rh67", "rh02"
     );
     $exist_virada = false;
     $result_exist_virada = $clcfpess->sql_record($clcfpess->sql_query_file(null, null, null, "*", null, "r11_instit<>" . db_getsession("DB_instit") . " and r11_anousu=$dataii_ano and r11_mesusu=$dataii_mes"));
@@ -790,7 +775,7 @@ if (isset($desprocess) && $desprocess == "true") {
             $ano_mes = $dataii_ano . "/" . $dataii_mes;
             $sigla .= "_";
             $where = bb_condicaosubpesproc($sigla, $ano_mes);
-            if ($table != 'VTFEMPR' && $table != "PENSAORETENCAO" && $table != "CADFERIA" && $table != "AFASTA") {
+            if ($table != 'VTFEMPR' && $table != "PENSAORETENCAO" && $table != "CADFERIA" && $table != "AFASTA" && $table != "RHTEUTRI") {
 
                 if ($table == "INSSIRF") {
 
@@ -828,7 +813,6 @@ if (isset($desprocess) && $desprocess == "true") {
                         $sqlerro = true;
                         break;
                     }
-
                 }
 
                 $sql_exc = "delete from  $table  $where";
@@ -837,34 +821,31 @@ if (isset($desprocess) && $desprocess == "true") {
 
                 if ($res_exc == false) {
 
-                    //  die($sql_exc);
+                    //die($sql_exc);
                     $retorno = "Erro ao excluir na tabela " . $table . ".\\n\\nCancelamento da folha cancelado.\\nPeríodo: " . $periodoini1 . " a " . $periodoini2 . ".";
                     $sqlerro = true;
                     break;
                 }
-
             } else if ($table == "PENSAORETENCAO") {
 
-                $sql_exc10 = "delete from pensaoretencao ";
-                $sql_exc10 .= " where  rh77_anousu = {$dataii_ano}    ";
-                $sql_exc10 .= "   and  rh77_mesusu = {$dataii_mes}      ";
-                $sql_exc10 .= "   and  rh77_regist in ( select rh02_regist ";
-                $sql_exc10 .= "                           from rhpessoalmov ";
-                $sql_exc10 .= "                          where rh02_anousu = {$dataii_ano}";
-                $sql_exc10 .= "                            and rh02_mesusu = {$dataii_mes} ";
-                $sql_exc10 .= "                            and rh02_instit = " . db_getsession("DB_instit") . ")";
-                $res_exc10 = db_query($sql_exc10, null, "");
-                if ($res_exc10 == false) {
+                $sSqlDeletaPensaoRetencao = "delete from pensaoretencao ";
+                $sSqlDeletaPensaoRetencao .= " where  rh77_anousu = {$dataii_ano}    ";
+                $sSqlDeletaPensaoRetencao .= "   and  rh77_mesusu = {$dataii_mes}      ";
+                $sSqlDeletaPensaoRetencao .= "   and  rh77_regist in ( select rh02_regist ";
+                $sSqlDeletaPensaoRetencao .= "                           from rhpessoalmov ";
+                $sSqlDeletaPensaoRetencao .= "                          where rh02_anousu = {$dataii_ano}";
+                $sSqlDeletaPensaoRetencao .= "                            and rh02_mesusu = {$dataii_mes} ";
+                $sSqlDeletaPensaoRetencao .= "                            and rh02_instit = " . db_getsession("DB_instit") . ")";
+                $rdDeletaPensaoRetencao = db_query($sSqlDeletaPensaoRetencao, null, "");
+                if ($rdDeletaPensaoRetencao == false) {
 
                     $retorno = pg_last_error() . "\\nErro ao excluir na tabela pensaoretencao.\\n\\nCancelamento da folha cancelado.\\nPeríodo: " . $periodoini1 . " a " . $periodoini2 . ".";
                     $sqlerro = true;
                     break;
-
                 }
-
             } else if ($table == "CADFERIA") {
 
-                $sSqlDeletaCadFeria = "DELETE FROM cadferia";
+                $sSqlDeletaCadFeria = "delete from cadferia";
                 $sSqlDeletaCadFeria .= " where r30_anousu = {$dataii_ano} ";
                 $sSqlDeletaCadFeria .= "   and r30_mesusu = {$dataii_mes} ";
                 $sSqlDeletaCadFeria .= "   and exists ( select 1 ";
@@ -881,13 +862,14 @@ if (isset($desprocess) && $desprocess == "true") {
                 }
             } else if ($table == "AFASTA") {
 
-                $sSqlDeleteAfastaAssenta = " delete                                                  ";
-                $sSqlDeleteAfastaAssenta .= "   from afastaassenta                                    ";
-                $sSqlDeleteAfastaAssenta .= "  where h81_afasta in (select r45_codigo                 ";
-                $sSqlDeleteAfastaAssenta .= "                         from afasta                     ";
-                $sSqlDeleteAfastaAssenta .= "                        where r45_anousu = {$dataii_ano} ";
-                $sSqlDeleteAfastaAssenta .= "                          and r45_mesusu = {$dataii_mes} ";
-                $sSqlDeleteAfastaAssenta .= "                      )                                  ";
+                $sSqlDeleteAfastaAssenta =  " delete                                                                        ";
+                $sSqlDeleteAfastaAssenta .= "   from afastaassenta                                                          ";
+                $sSqlDeleteAfastaAssenta .= "  where h81_afasta in (select r45_codigo                                       ";
+                $sSqlDeleteAfastaAssenta .= "                         from afasta                                           ";
+                $sSqlDeleteAfastaAssenta .= "                         inner join rhpessoal on rh01_regist = r45_regist      ";
+                $sSqlDeleteAfastaAssenta .= "                        where r45_anousu = {$dataii_ano}                       ";
+                $sSqlDeleteAfastaAssenta .= "                          and r45_mesusu = {$dataii_mes}                       ";
+                $sSqlDeleteAfastaAssenta .= "                          and rh01_instit = " . db_getsession("DB_instit") . ")";
                 $rsDeleteAfastaAssenta = db_query($sSqlDeleteAfastaAssenta);
                 if (!$rsDeleteAfastaAssenta) {
 
@@ -911,30 +893,46 @@ if (isset($desprocess) && $desprocess == "true") {
                     $sqlerro = true;
                     break;
                 }
+            } else if ($table == "RHTEUTRI") {
 
+                $sSqlDeletaRhteutri = "delete from rhteutri";
+                $sSqlDeletaRhteutri .= " where  rh67_anousu = {$dataii_ano}    ";
+                $sSqlDeletaRhteutri .= "   and  rh67_mesusu = {$dataii_mes}      ";
+                $sSqlDeletaRhteutri .= "   and  rh67_regist in ( select rh02_regist ";
+                $sSqlDeletaRhteutri .= "                           from rhpessoalmov ";
+                $sSqlDeletaRhteutri .= "                          where rh02_anousu = {$dataii_ano}";
+                $sSqlDeletaRhteutri .= "                            and rh02_mesusu = {$dataii_mes} ";
+                $sSqlDeletaRhteutri .= "                            and rh02_instit = " . db_getsession("DB_instit") . ")";
+
+                $rsDeletaRhteutri = db_query($sSqlDeletaRhteutri, null, "");
+                if ($rsDeletaRhteutri == false) {
+
+                    $retorno = pg_last_error() . "\\nErro ao excluir na tabela rhteutri.\\n\\nCancelamento da folha cancelado.\\nPeríodo: " . $periodoini1 . " a " . $periodoini2 . ".";
+                    $sqlerro = true;
+                    break;
+                }
             } else {
-
-
                 $sql_dias = "select *
-          from vtffunc
-          inner join rhpessoalmov on rh02_anousu = r17_anousu
-          and rh02_mesusu = r17_mesusu
-          and rh02_regist = r17_regist
-          where rh02_anousu = $dataii_ano
-          and rh02_mesusu = $dataii_mes
-          and rh02_instit = " . db_getsession("DB_instit") . "
-          limit 1";
+                                from vtffunc
+                            inner join rhpessoalmov on rh02_anousu = r17_anousu
+                            and rh02_mesusu = r17_mesusu
+                            and rh02_regist = r17_regist
+                            where rh02_anousu = $dataii_ano
+                            and rh02_mesusu = $dataii_mes
+                            and rh02_instit = " . db_getsession("DB_instit") . "
+                            limit 1";
                 $res_dias = db_query("$sql_dias");
-                if (pg_numrows($res_dias) > 0) {
+
+                if (pg_num_rows($res_dias) > 0) {
                     $sql_exc1 = "delete from vtfdias
-    where r63_anousu = $dataii_ano
-    and r63_mesusu = $dataii_mes
-    and r63_regist in ( select rh02_regist
-    from rhpessoalmov
-    where rh02_anousu =  $dataii_ano
-    and rh02_mesusu = $dataii_mes
-    and rh02_instit = " . db_getsession("DB_instit") . "
-  )";
+                                    where r63_anousu = $dataii_ano
+                                    and r63_mesusu = $dataii_mes
+                                    and r63_regist in ( select rh02_regist
+                                    from rhpessoalmov
+                                    where rh02_anousu =  $dataii_ano
+                                    and rh02_mesusu = $dataii_mes
+                                    and rh02_instit = " . db_getsession("DB_instit") . "
+                )";
                     $res_exc1 = db_query($sql_exc1, null, "");
                     if ($res_exc1 == false) {
                         //die($sql_exc);
@@ -944,14 +942,14 @@ if (isset($desprocess) && $desprocess == "true") {
                     }
 
                     $sql_exc2 = "delete from vtffunc
-  where r17_anousu = $dataii_ano
-  and r17_mesusu = $dataii_mes
-  and r17_regist in ( select rh02_regist
-  from rhpessoalmov
-  where rh02_anousu =  $dataii_ano
-  and rh02_mesusu = $dataii_mes
-  and rh02_instit = " . db_getsession("DB_instit") . "
-)";
+                                    where r17_anousu = $dataii_ano
+                                    and r17_mesusu = $dataii_mes
+                                    and r17_regist in ( select rh02_regist
+                                    from rhpessoalmov
+                                    where rh02_anousu =  $dataii_ano
+                                    and rh02_mesusu = $dataii_mes
+                                    and rh02_instit = " . db_getsession("DB_instit") . "
+                    )";
                     $res_exc2 = db_query($sql_exc2, null, "");
                     if ($res_exc2 == false) {
                         //die($sql_exc);
@@ -964,19 +962,16 @@ if (isset($desprocess) && $desprocess == "true") {
                 $sql_exc = "delete from  $table  $where";
 
                 $res_exc = db_query($sql_exc, null, "");
-//echo "<BR> $res_exc";
+                //echo "<BR> $res_exc";
                 if ($res_exc == false) {
                     //  die($sql_exc);
                     $retorno = "Erro ao excluir na tabela " . $table . ".\\n\\nCancelamento da folha cancelado.\\nPeríodo: " . $periodoini1 . " a " . $periodoini2 . ".";
                     $sqlerro = true;
                     break;
                 }
-
             }
-
         }
     }
-
 
     /**
      * Remove os lotes dos registros do ponto, conforme a instituição e a competência da folha.
@@ -995,7 +990,6 @@ if (isset($desprocess) && $desprocess == "true") {
         $rsLoteRegistroPonto = db_query($sSqlLoteRegistroPonto);
 
         if (!$rsLoteRegistroPonto) {
-
             $retorno = "Erro ao excluir os lotes dos registros do ponto.\\n\\nCancelamento da folha cancelado.\\nPeríodo: " . $periodoini1 . " a " . $periodoini2 . ".";
             $sqlerro = true;
         }
@@ -1016,7 +1010,6 @@ if (isset($desprocess) && $desprocess == "true") {
             }
         }
     }
-
 
     /**
      * Remove os consignados
@@ -1055,22 +1048,23 @@ if (isset($desprocess) && $desprocess == "true") {
 
             $retorno = $ex->getMessage();
             $sqlerro = true;
-            break;
+            return;
         }
     }
     flush();
 
     try {
         $competenciaAtual = new DBCompetencia($dataii_ano, $dataii_mes);
+        $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
         $servidorOperadoraSaudeService = new ServidorOperadoraSaudeService();
-        $servidorOperadoraSaudeService->voltarCompetencia($competenciaAtual);
+        $servidorOperadoraSaudeService->voltarCompetencia($competenciaAtual, $instituicao);
 
         $servidorOutrosVinculosService = new ServidorOutrosVinculosService();
-        $servidorOutrosVinculosService->voltarCompetencia($competenciaAtual);
+        $servidorOutrosVinculosService->voltarCompetencia($competenciaAtual, $instituicao);
 
         $servidorProcessosJudiciaisFolhaService = new ServidorProcessosJudiciaisFolhaService();
-        $servidorProcessosJudiciaisFolhaService->voltarCompetencia($competenciaAtual);
+        $servidorProcessosJudiciaisFolhaService->voltarCompetencia($competenciaAtual, $instituicao);
 
         $dataPagamentoFolhaService = new DataPagamentoFolhaService();
         $dataPagamentoFolhaService->voltarCompetencia($competenciaAtual->getCompetenciaAnterior());
@@ -1187,8 +1181,8 @@ if (isset($desprocess) && $desprocess == "true") {
 
             $numdias = db_dias_mes($ano, $mes);
 
-            $arr_data1 = split("-", $inici_1_periodo);
-            $arr_data2 = split("-", $final_1_periodo);
+            $arr_data1 =explode("-", $inici_1_periodo);
+            $arr_data2 =explode("-", $final_1_periodo);
 
             $anomesi = $arr_data1[1] . $arr_data1[2];
             $anomesf = $arr_data2[1] . $arr_data2[2];
@@ -1255,7 +1249,6 @@ if (isset($desprocess) && $desprocess == "true") {
         }
     }
 
-
     if ($sqlerro == false) {
 
         $sWhereAfasta = "     r45_anousu = " . $ano;
@@ -1280,7 +1273,7 @@ if (isset($desprocess) && $desprocess == "true") {
             // }
 
             /**
-             * Pegamos os afastamentos com assentamentos vínculados para mantermos os novos vínculos após a virada mensal
+             * Pegamos os afastamentos com assentamentos vinculados para mantermos os novos vínculos após a virada mensal
              */
             $sWhereAfastamentoAssentamento = "     r45_anousu = " . $dataii_ano;
             $sWhereAfastamentoAssentamento .= " and r45_mesusu = " . $dataii_mes;
@@ -1585,24 +1578,25 @@ if (isset($desprocess) && $desprocess == "true") {
 
     if ($sqlerro == false) {
 
-
         $sWherePensaoContaBancaria = "rh139_anousu = $ano and rh139_mesusu = $mes";
         $sWherePensaoContaBancaria .= " and not exists (select 1 ";
         $sWherePensaoContaBancaria .= "               from pensaocontabancaria as pc ";
         $sWherePensaoContaBancaria .= "              where
-      pc.rh139_anousu = $dataii_ano and pc.rh139_mesusu = $dataii_mes
-      and pensaocontabancaria.rh139_anousu = pc.rh139_anousu
-      and pensaocontabancaria.rh139_mesusu = pc.rh139_mesusu
-      and pensaocontabancaria.rh139_regist = pc.rh139_regist
-      and pensaocontabancaria.rh139_numcgm = pc.rh139_numcgm )         ";
+        pc.rh139_anousu = $dataii_ano and pc.rh139_mesusu = $dataii_mes
+        and pensaocontabancaria.rh139_anousu = pc.rh139_anousu
+        and pensaocontabancaria.rh139_mesusu = pc.rh139_mesusu
+        and pensaocontabancaria.rh139_regist = pc.rh139_regist
+        and pensaocontabancaria.rh139_cgmalimentado = pc.rh139_cgmalimentado
+        and pensaocontabancaria.rh139_numcgm = pc.rh139_numcgm )         ";
         $sWherePensaoContaBancaria .= " and exists (select 1 ";
         $sWherePensaoContaBancaria .= "               from pensao as p ";
         $sWherePensaoContaBancaria .= "              where p.r52_anousu = $dataii_ano
-  and p.r52_mesusu = $dataii_mes
-  and pensaocontabancaria.rh139_anousu = p.r52_anousu
-  and pensaocontabancaria.rh139_mesusu = p.r52_mesusu
-  and pensaocontabancaria.rh139_regist = p.r52_regist
-  and pensaocontabancaria.rh139_numcgm = p.r52_numcgm )         ";
+        and p.r52_mesusu = $dataii_mes
+        and pensaocontabancaria.rh139_anousu = p.r52_anousu
+        and pensaocontabancaria.rh139_mesusu = p.r52_mesusu
+        and pensaocontabancaria.rh139_regist = p.r52_regist
+        and pensaocontabancaria.rh139_cgmalimentado = p.r52_cgmalimentado
+        and pensaocontabancaria.rh139_numcgm = p.r52_numcgm )         ";
         $sqlPensaoContaBancaria = $clpensaocontabancaria->sql_query_file(null, 'pensaocontabancaria.*', null, $sWherePensaoContaBancaria);
         $retorno = db_incluir_sql($sqlPensaoContaBancaria, $clpensaocontabancaria, "pensaocontabancaria");
 
@@ -1610,7 +1604,6 @@ if (isset($desprocess) && $desprocess == "true") {
             $sqlerro = true;
         }
     }
-
 
     if ($sqlerro == false) {
         $sql1 = $clpontofa->sql_query_file(null, null, null, null, "* ", "", " r21_anousu = $dataii_ano and r21_mesusu = $dataii_mes and r21_instit = $instit  ");
@@ -1621,7 +1614,6 @@ if (isset($desprocess) && $desprocess == "true") {
             //echo "<BR> erro 27";
         }
     }
-
 
     if ($sqlerro == false) {
         $sql1 = $clpontofx->sql_query_rescis(null, null, null, null, " pontofx.* ", "", " r90_anousu = $dataii_ano and r90_mesusu = $dataii_mes and rh05_recis is null and r90_instit = $instit ");
@@ -1786,16 +1778,23 @@ if (isset($desprocess) && $desprocess == "true") {
     }
 
     if ($sqlerro == false) {
+        $sql1 = $clrheutri->sql_query_retorno(null, "rhteutri.*", "", " rhpessoalmov.rh02_instit = $instit and rhpessoalmov.rh02_anousu=" . $dataii_ano . " and rhpessoalmov.rh02_mesusu=" . $dataii_mes);
+        $retorno = db_incluir_sql($sql1, $clrheutri, "rhteutri");
 
-        $sql1 = $clpensaoretencao->sql_query_retorno(null, "pensaoretencao.*", "", "
-      rhpessoalmov.rh02_instit = $instit
-      and rhpessoalmov.rh02_anousu=" . $dataii_ano . "
-      and rhpessoalmov.rh02_mesusu=" . $dataii_mes);
-        $retorno = db_incluir_sql($sql1, $clpensaoretencao, "pensaoretencao");
-        //echo "<br> 0.40 - " . pg_last_error();
+        //echo "<br> 0.42 - " . pg_last_error();
         if ($retorno != '1' && $retorno != '2') {
             $sqlerro = true;
-            //echo "<BR> erro 40";
+            //echo "<BR> erro 42";
+        }
+    }
+
+    if ($sqlerro == false) {
+        $sql1 = $clpensaoretencao->sql_query_retorno(null, "pensaoretencao.*", "", " rhpessoalmov.rh02_instit = $instit and rhpessoalmov.rh02_anousu=" . $dataii_ano . " and rhpessoalmov.rh02_mesusu=" . $dataii_mes);
+        $retorno = db_incluir_sql($sql1, $clpensaoretencao, "pensaoretencao");
+        //echo "<br> 0.43 - " . pg_last_error();
+        if ($retorno != '1' && $retorno != '2') {
+            $sqlerro = true;
+            //echo "<BR> erro 43";
         }
     }
 
@@ -1855,18 +1854,18 @@ if (isset($desprocess) && $desprocess == "true") {
         flush();
         echo "<script>parent.js_mostrardiv(true,'Atualizando dados da tabela <font color=\"red\">Pensao</font>');</script>";
         $update = "update pensao
-      set r52_valor  = 0,
-      r52_valcom = 0,
-      r52_valres = 0,
-      r52_valfer = 0,
-      r52_val13  = 0
-      from rhpessoalmov
-      where r52_anousu = rh02_anousu
-      and r52_mesusu = rh02_mesusu
-      and r52_regist = rh02_regist
-      and rh02_instit = " . $instit . "
-      and r52_anousu = " . $datafi_ano . "
-      and r52_mesusu = " . $datafi_mes;
+                    set r52_valor  = 0,
+                    r52_valcom = 0,
+                    r52_valres = 0,
+                    r52_valfer = 0,
+                    r52_val13  = 0
+                    from rhpessoalmov
+                    where r52_anousu = rh02_anousu
+                    and r52_mesusu = rh02_mesusu
+                    and r52_regist = rh02_regist
+                    and rh02_instit = " . $instit . "
+                    and r52_anousu = " . $datafi_ano . "
+                    and r52_mesusu = " . $datafi_mes;
 
         //echo "<BR><BR> $update";
         $execut = db_query($update);
@@ -1892,7 +1891,7 @@ if (isset($desprocess) && $desprocess == "true") {
 
         if ($retorno != '1' && $retorno != '2') {
             $sqlerro = true;
-            //echo "<BR> erro 40";
+            //echo "<BR> erro 45";
         }
     }
 
@@ -1911,7 +1910,7 @@ if (isset($desprocess) && $desprocess == "true") {
 
         if ($retorno != '1' && $retorno != '2') {
             $sqlerro = true;
-            //echo "<BR> erro 40";
+            //echo "<BR> erro 46";
         }
     }
 
@@ -1934,26 +1933,28 @@ if (isset($desprocess) && $desprocess == "true") {
     }
     flush();
 
-    try {
-        $competenciaAtual = new DBCompetencia($dataii_ano, $dataii_mes);
-        $competenciaNova = new DBCompetencia($datafi_ano, $datafi_mes);
-        $instituicao = InstituicaoRepository::getInstituicaoSessao();
+    if ($sqlerro == false) {
+        try {
+            $competenciaAtual = new DBCompetencia($dataii_ano, $dataii_mes);
+            $competenciaNova = new DBCompetencia($datafi_ano, $datafi_mes);
+            $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
-        $servidorOperadoraSaudeService = new ServidorOperadoraSaudeService();
-        $servidorOperadoraSaudeService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
+            $servidorOperadoraSaudeService = new ServidorOperadoraSaudeService();
+            $servidorOperadoraSaudeService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
 
-        $servidorOutrosVinculosService = new ServidorOutrosVinculosService();
-        $servidorOutrosVinculosService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
+            $servidorOutrosVinculosService = new ServidorOutrosVinculosService();
+            $servidorOutrosVinculosService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
 
-        $servidorProcessosJudiciaisFolhaService = new ServidorProcessosJudiciaisFolhaService();
-        $servidorProcessosJudiciaisFolhaService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
+            $servidorProcessosJudiciaisFolhaService = new ServidorProcessosJudiciaisFolhaService();
+            $servidorProcessosJudiciaisFolhaService->virarCompetencia($competenciaAtual, $competenciaNova, $instituicao);
 
-        $dataPagamentoFolhaService = new DataPagamentoFolhaService();
-        $dataPagamentoFolhaService->virarCompetencia($competenciaAtual, $dataPagamento);
+            $dataPagamentoFolhaService = new DataPagamentoFolhaService();
+            $dataPagamentoFolhaService->virarCompetencia($competenciaAtual, $dataPagamento);
 
-    } catch (Exception $exception) {
-        $sqlerro = true;
-        $retorno = $exception->getMessage();
+        } catch (Exception $exception) {
+            $sqlerro = true;
+            $retorno = $exception->getMessage();
+        }
     }
 
     if ($sqlerro == true) {
@@ -1964,7 +1965,7 @@ if (isset($desprocess) && $desprocess == "true") {
 
         if ($retorno_cfpess === false) {
             $sqlerro = true;
-            //echo "<BR> erro 45";
+            //echo "<BR> erro 47";
             $retorno = "Ocorreram problemas no fechamento. Contate o suporte.";
         } else {
             echo "<script>parent.js_mostrardiv(true,'Processamento concluído com sucesso');</script>";
@@ -2005,7 +2006,7 @@ if (isset($desprocess) && $desprocess == "true") {
         if (!$rs) {
             $sqlerro = true;
             $retorno = "Erro ao atualizar tabela tomador.";
-            //echo "<BR> erro 40";
+            //echo "<BR> erro 48";
         }
     }
 }
@@ -2044,5 +2045,14 @@ if (isset($desprocess) && $desprocess == "true") {
     echo "<script>parent.location.href = '../pes1_virafolha001.php'</script>";
 }
 ?>
+<html>
+<head>
+    <title>Virada Anual</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <link href="../estilos.css" rel="stylesheet" type="text/css">
+    <script language="JavaScript" type="text/javascript" src="../scripts/scripts.js"></script>
+</head>
+<body>
 </body>
 </html>

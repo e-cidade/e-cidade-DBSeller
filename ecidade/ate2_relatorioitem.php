@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label('at05_data');
        <?=$Lat05_data?>
     </td>
     <td> 
-<?
+<?php
 $at05_data_dia = date("d",db_getsession("DB_datausu"));
 $at05_data_mes = date("m",db_getsession("DB_datausu"));
 $at05_data_ano = date("Y",db_getsession("DB_datausu"));
@@ -79,7 +79,7 @@ function js_relatorio(){
 }
 </script>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

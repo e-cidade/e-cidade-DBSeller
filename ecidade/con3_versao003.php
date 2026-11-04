@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ function js_troca_cor(idobj){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name="form1" method="post">
-   <?
+   <?php
    $cldb_itensmenu = new cl_db_itensmenu;
    $cldb_versaoant = new cl_db_versaoant;
    $resant = $cldb_versaoant->sql_record($cldb_versaoant->sql_query());

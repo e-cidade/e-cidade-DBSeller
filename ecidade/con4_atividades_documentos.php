@@ -5,10 +5,6 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-
-$dotenv = new \Dotenv\Dotenv('./');
-$dotenv->load();
-
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -18,6 +14,7 @@ $dotenv->load();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DBSeller Informática Ltda</title>
+    <meta name="ECIDADE_REQUEST_PATH" content="<?= ECIDADE_REQUEST_PATH ?>">
     <script type="text/javascript" src="scripts/scripts.js"></script>
     <script type="text/javascript" src="scripts/strings.js"></script>
     <script type="text/javascript" src="scripts/classes/http/http.js"></script>
@@ -28,6 +25,8 @@ $dotenv->load();
     <link type="text/css" href="assets/bootstrap-table/css/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" href="assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/bootstrap-table/extensions/reorder-rows/bootstrap-table-reorder-rows.css">
+    <script src="public/js/app.js"></script>
+
     <style>
         .columns {
             width: 75%;
@@ -102,11 +101,43 @@ $dotenv->load();
     <div class="alert alert-primary text-left" role="alert">
         Verifique seus documentos pendentes de atividade
     </div>
+    <fieldset id="filtro" style="display:none">
+        <legend>Filtro <span id="filtro_legenda"></span>
+        </legend>
+        <div id="filtroForm"></div>
+    </fieldset>
     <fieldset>
         <legend>Lista de Documentos</legend>
         <div style="width: 1000px">
+            <div id="toolbar">
+                <b>Tipo de documento</b>
+                 <select id="tipo_documento">
+                       <option value="">--TODOS--</option>
+                       <option value="6">EMPENHO</option>
+                       <option value="7">PORTARIAS</option>
+                 </select>
+                <b>Data</b>
+                <input type="date"
+                       id="data_inicio"
+                       placeholder="Data Inicio"
+                >
+                <b>à</b>
+                <input type="date"
+                       id="data_fim"
+                       placeholder="Data Fim"
+                >
+                <button id="button"
+                        class="btn btn-secondary"
+                        onclick="buscarDocumentosUsuario()"
+                        style="float:right;margin-right: 5px"
+                >
+                    Pesquisar
+                </button>
+
+            </div>
             <table id="data-table"
                    class="table table-sm"
+                   data-toolbar="#toolbar"
                    data-height="500"
                    data-virtual-scroll="true"
                    style="width: 100%;">
@@ -157,33 +188,110 @@ $dotenv->load();
 <script type="text/javascript" src="scripts/session.js"></script>
 <script type="text/javascript" src="scripts/socket.io.js"></script>
 <script type="text/javascript">
+
     var urlApi;
     var urlApiProtocolo;
     var signerConfig;
     var timeoutHandle;
+    const inputDataInicio = document.getElementById("data_inicio");
+    const inputDataFim = document.getElementById("data_fim");
+    const selectOrgao = document.getElementById("orgao");
+    const selectTipoDocumento = document.getElementById("tipo_documento");
+    const filtroLegenda = document.getElementById("filtro_legenda");
+    const filtro = document.getElementById("filtro");
+    const filtroDocumento = document.getElementById("tipo_documento");
+    const filtroForm = document.getElementById("filtroForm");
+    selectTipoDocumento.addEventListener("change",function(e){
+        filtro.style.display = 'none';
+        filtroForm.innerHTML = '';
+        switch(e.target.value){
+             case '6':
+                 filtroEmpenho();
+                 break;
+         }
+    });
+
+    const filtroEmpenho = () =>{
+        filtro.style.display = 'block';
+        filtroLegenda.innerText = 'Empenho';
+        filtroForm.innerHTML = `
+            <form id="form_filtro">
+                <b>Orgão:</b>
+                <select id="orgao" name="orgao">
+                </select>
+            <form>
+        `;
+        buscarOrgao();
+    }
 
     window.addEventListener('load', () => {
         PHPSession.loadData().then(() => {
             urlApi = PHPSession.requestApi;
             urlApiProtocolo = `${urlApi}/patrimonial/protocolo`;
-            buscarDocumentosUsuario();
+            buscarDocumentosUsuario({limit:100});
             buscarConfiguracaoAssinador();
         });
     });
 
-    const buscarDocumentosUsuario = () => {
-        const formData = new FormData();
-        PHPSession.appendFormData(formData);
-        HttpClient.post(`${urlApiProtocolo}/documentos/usuario`, {body: formData})
-            .then((response) => {
-                if (response.error) {
-                    alert(response.message);
-                    return;
-                }
-                const documentos = response.data;
-                table.bootstrapTable('load', documentos);
-            });
+    const buscarOrgao  = async () =>{
+        js_divCarregando('Carregando orgãos', 'orgao_loading');
+        try {
+            const selectOrgao = document.getElementById("orgao");
+            const resp  = await window.axios.get(`${window.urlApi}/patrimonial/protocolo/documentos/usuario/orgaos`);
+            const data  = await resp.data;
+            let optionsSelect = [];
+            optionsSelect.push(`<option value="null">--TODOS--</option>`);
+            if(data.error === false){
+                data.data.forEach(el => {
+                    optionsSelect.push(
+                        `<option value="${el.o40_orgao}">${el.o40_orgao} - ${el.o40_descr}</option>`
+                    );
+                });
+            }
+            selectOrgao.innerHTML = optionsSelect.join("");
+            js_removeObj("orgao_loading");
+        }catch (e) {
+            js_removeObj("orgao_loading");
+        }
     }
+
+    const buscarDocumentosUsuario = async (options = {limit:null}) => {
+
+        const form = {};
+        form.data_inicio = inputDataInicio.value;
+        form.data_fim = inputDataFim.value;
+        form.filtro = {};
+        form.filtro.tipo = filtroDocumento.value;
+        form.limit = options.limit;
+        const formFiltro =  document.getElementById("form_filtro");
+        if(formFiltro){
+            formFiltro.forEach(el =>{
+                console.log(el.name,el.value);
+                 form.filtro[el.name] = el.value;
+            });
+        }
+
+
+        table.bootstrapTable('showLoading');
+
+        const resp = await window.axios.post(
+            `${window.urlApi}/patrimonial/protocolo/documentos/usuario`,
+            form
+        );
+
+        table.bootstrapTable('hideLoading');
+
+       const data = await resp.data;
+
+       if(data.error){
+           table.bootstrapTable('load', []);
+           alert(response.message);
+           return;
+       }
+        const documentos = data.data;
+        table.bootstrapTable('load', documentos);
+    }
+
     const buscarConfiguracaoAssinador = () => {
         const formData = new FormData();
         PHPSession.appendFormData(formData);
@@ -194,7 +302,8 @@ $dotenv->load();
                     return;
                 }
                 signerConfig = response.data;
-            });
+            })
+
     }
 
     const containerDetalhes = document.getElementById('detalhes_documento');
@@ -298,7 +407,6 @@ $dotenv->load();
         },
         'click .executarAtividade': function (e, value, row, index) {
             let atividadeExecutar = row.proxima_atividade.atividade;
-
             if (atividadeExecutar.p114_codigo === 2) {
                 let selecionados = table.bootstrapTable('getSelections').map((documento) => {
                     if (documento.proxima_atividade.p118_atividadesexecucao != 2) {
@@ -337,6 +445,7 @@ $dotenv->load();
                         qrcode_hash: documento.p116_qrcode
                     };
                 });
+
                 selecionados = selecionados.filter(item => item != null);
 
                 const elementoClicado = selecionados.filter(item => item.documento_andamento === row.p116_codigo);
@@ -445,7 +554,7 @@ $dotenv->load();
         buttonsAlign: 'left',
         buttons: buttons,
         class: "table table-sm",
-        search: true,
+        search: false,
         detailView: true,
         detailFormatter: detailFormatter,
         checkbox: true,

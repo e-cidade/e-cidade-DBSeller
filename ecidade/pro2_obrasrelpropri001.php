@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ if (!isset($testdt)){
     <legend>Relatórios - Obras</legend>
     <table class="form-container">
       <tr> 
-        <?
+        <?php
           db_input('testdt',10,"",true,"hidden",1);
         ?>
         <td>
@@ -86,7 +86,7 @@ if (!isset($testdt)){
       </tr>
       <tr>
          <td colspan="2">
-              <?
+              <?php
                 // $aux = new cl_arquivo_auxiliar;
                 $aux->cabecalho = "<strong>Proprietário</strong>";
                 $aux->codigo = "ob03_numcgm"; //chave de retorno da func
@@ -113,7 +113,7 @@ if (!isset($testdt)){
 	        Data da Construção de:
 	      </td>
 	      <td>
-	        <?
+	        <?php
             db_inputdata('dtobra1',"","","",true,'text',1);
 		        echo "<b>ate:</b>";
             db_inputdata('dtobra2',"","","",true,'text',1);
@@ -137,13 +137,13 @@ if (!isset($testdt)){
           Alvará:
         </td>
         <td>
-  	      <?
+  	      <?php
             $x = array("t"=>"Todas","c"=>"com Alvará","s"=>"sem Alvará");
             db_select('alvara',$x,true,1,"onchange='js_testadata(this.value);'");
           ?>
 	      </td>
 	    </tr>
-	    <?
+	    <?php
 	      if ($testdt=='com'){
 	    ?>
 	      <tr>
@@ -151,14 +151,14 @@ if (!isset($testdt)){
 	          Alvará de:
 	        </td>
 	        <td>
-	          <?
+	          <?php
               db_inputdata('data1',"","","",true,'text',1);
 		          echo "<b>ate:</b>";
               db_inputdata('data2',"","","",true,'text',1);
 	          ?>
 	        </td>
 	      </tr>
-      <?
+      <?php
         }
       ?>
     </table>

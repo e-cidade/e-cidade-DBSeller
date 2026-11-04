@@ -99,7 +99,7 @@ class cl_veiculos
                  ";
 
     //funcao construtor da classe
-    function cl_veiculos()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veiculos");
@@ -107,7 +107,7 @@ class cl_veiculos
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -118,7 +118,7 @@ class cl_veiculos
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve01_codigo = ($this->ve01_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve01_codigo"] : $this->ve01_codigo);
@@ -160,7 +160,7 @@ class cl_veiculos
     }
 
     // funcao para inclusao
-    function incluir($ve01_codigo)
+    public function incluir($ve01_codigo)
     {
         $this->atualizacampos();
         if ($this->ve01_placa == null) {
@@ -594,7 +594,7 @@ class cl_veiculos
     }
 
     // funcao para alteracao
-    function alterar($ve01_codigo = null)
+    public function alterar($ve01_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update veiculos set ";
@@ -1148,7 +1148,7 @@ class cl_veiculos
     }
 
     // funcao para exclusao
-    function excluir($ve01_codigo = null, $dbwhere = null)
+    public function excluir($ve01_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ve01_codigo));
@@ -1288,7 +1288,7 @@ class cl_veiculos
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -1317,7 +1317,7 @@ class cl_veiculos
         return $result;
     }
 
-    function sql_query($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1370,7 +1370,7 @@ class cl_veiculos
         return $sql;
     }
 
-    function sql_query_central($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_central($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1423,7 +1423,7 @@ class cl_veiculos
         return $sql;
     }
 
-    function sql_query_file($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1461,7 +1461,7 @@ class cl_veiculos
         return $sql;
     }
 
-    function sql_query_veiculo($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_veiculo($ve01_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1714,7 +1714,7 @@ class cl_veiculos
         return $sqlproximamedida;
     }
 
-    function sql_query_medida_between($ve01_codigo = null, $dDataInicial, $sHoraInicial, $dDataFinal, $sHoraFinal)
+    public function sql_query_medida_between($ve01_codigo = null, $dDataInicial, $sHoraInicial, $dDataFinal, $sHoraFinal)
     {
         // Select para Buscar Medida da Ultima Retirada, Ultima Devolução ou Ultimo Abastecimento com base numa Data e Hora
         $sqlultimamedida = "select * ";

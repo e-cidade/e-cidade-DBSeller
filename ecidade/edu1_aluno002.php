@@ -31,11 +31,12 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("libs/db_jsplibwebseller.php"));
-use App\Domain\Configuracao\Helpers\StorageHelper;
 
-parse_str( $_SERVER["QUERY_STRING"] );
-db_postmemory( $_POST );
+use App\Domain\Configuracao\Helpers\StorageHelper;
+use FormulaInterpreter\Executable;
+
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $oDaoAluno           = new cl_aluno();
 $oDaoAlunoAltera     = new cl_alunoaltera();
@@ -48,135 +49,247 @@ $db_opcao = 2;
 $db_botao = true;
 
 if (isset($alterar)) {
+    $db_opcao = 2;
+    $db_botao = true;
+    try {
+        db_inicio_transacao();
 
-  $db_opcao = 2;
-  $db_botao = true;
-    $cartorio = $_POST['matri_cartorio'];
-    if (!empty($cartorio)){
-      $dao = new cl_censocartorio();
-      $sql = $dao->sql_query_file(null, '*', null, " ed291_i_serventia = {$cartorio}");
-      $rs = db_query($sql);
-      if ($rs && pg_num_rows($rs) === 0) {
-          $dao->ed291_i_codigo = null;
-          $dao->ed291_c_nome = $_POST['nome_cartorio'];
-          $dao->ed291_i_serventia = $_POST['matri_cartorio'];
-          $dao->ed291_i_censomunic = $_POST['ed47_i_censomuniccert'];
-          $dao->ed291_i_codigocenso = null;
+        if (!empty($ed47_certidaomatricula)) {
+            if (!verificaValidadeNumeroMatriculaCertidao($ed47_certidaomatricula)) {
+                throw new Exception("Campo matrícula inválido, verifique o número da matrícula antes de prosseguir!");
+            }
 
-          $dao->incluir(null);
-          if($dao->erro_status == 0) {
-              db_msgbox( "Erro ao inserir novo cartório." . $dao->erro_msg);
-              $_rollback = true;
-          }
-          $oDaoAluno->ed47_i_censocartorio = $dao->ed291_i_codigo;
-      }
+            $sWhere = " trim(ed47_certidaomatricula) = trim('{$ed47_certidaomatricula}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com o mesmo numero da matricula da certidão:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+      /*
+       * Verificamos se os documentos
+       *  N Identidade
+       *  N CNH
+       *  CPF
+       *  Cartão SUS
+       *  Passaporte
+       * Existem em outro cadastro de aluno, caso existirem, não é permitido o cadastro
+       */
+        if (!empty($ed47_v_ident)) {
+            $sWhere = " trim(ed47_v_ident) = trim('{$ed47_v_ident}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com o mesmo numero de identidade:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+        if (!empty($ed47_v_cnh)) {
+            $sWhere = " trim(ed47_v_cnh) = trim('{$ed47_v_cnh}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com mesmo numero de CNH:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+        if (!empty($ed47_v_cpf)) {
+            $sWhere = " trim(ed47_v_cpf) = trim('{$ed47_v_cpf}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com o mesmo numero de CPF:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+        if (!empty($ed47_cartaosus)) {
+            $sWhere = " trim(ed47_cartaosus) = trim('{$ed47_cartaosus}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com o mesmo numero do cartão SUS:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+
+        if (!empty($ed47_c_passaporte)) {
+            $sWhere = " trim(ed47_c_passaporte) = trim('{$ed47_c_passaporte}')";
+            $sWhere .= " and ed47_i_codigo <> {$ed47_i_codigo}";
+
+            $sSqlAlunos = $oDaoAluno->sql_query_file(null, "ed47_i_codigo, ed47_v_nome", "ed47_v_nome", $sWhere);
+            $rsAlunos = $oDaoAluno->sql_record($sSqlAlunos);
+            if ($oDaoAluno->numrows > 0) {
+                $aAlunos = db_utils::getCollectionByRecord($rsAlunos);
+                $sMsg  = "Alteração não pode ser realizada.\\n";
+                $sMsg .= "Encontrado(s) aluno(s) com o mesmo numero de Passaporte:\\n";
+                foreach ($aAlunos as $oAluno) {
+                    $sMsg .= "{$oAluno->ed47_i_codigo} - {$oAluno->ed47_v_nome}\\n";
+                }
+                throw new Exception($sMsg);
+            }
+        }
+
+
+        if (!empty($matri_cartorio)) {
+            $censocartorio = new cl_censocartorio();
+
+            $rsCartorio = $censocartorio->sql_record(
+                $censocartorio->sql_query_file(
+                    null,
+                    '*',
+                    null,
+                    " ed291_i_serventia = {$matri_cartorio} "
+                )
+            );
+            if ($censocartorio->numrows === 0) {
+                $censocartorio = new cl_censocartorio();
+                $censocartorio->ed291_i_codigo = null;
+                $censocartorio->ed291_c_nome = trim($nome_cartorio);
+                $censocartorio->ed291_i_serventia = $matri_cartorio;
+                $censocartorio->ed291_i_censomunic = $ed47_i_censomuniccert;
+                $censocartorio->ed291_i_codigocenso = null;
+                $censocartorio->incluir(null);
+                if ($censocartorio->erro_status == 0) {
+                    throw new Exception("Erro ao inserir novo cartório." . $censocartorio->erro_msg);
+                }
+                $oDaoAluno->ed47_i_censocartorio = $censocartorio->ed291_i_codigo;
+            }
+        }
+      /**
+       * Valida se o cartão do SUS é válido conforme funções
+       */
+        if (isset($ed47_cartaosus)
+         && !empty($ed47_cartaosus)
+         && !validaCnsDefinitivo($ed47_cartaosus)
+         && !validaCnsProvisorio($ed47_cartaosus)) {
+             throw new Exception("Número do cartão do SUS não é válido.");
+        }
+
+        $rs = db_query($oDaoAluno->sql_query_file($ed47_i_codigo));
+        $dados = db_utils::fieldsMemory($rs, 0);
+        $oDaoAluno->ed47_paisresidencia = $dados->ed47_paisresidencia;
+        $oDaoAluno->ed47_localizacaodiferenciada = $dados->ed47_localizacaodiferenciada;
+
+        if (!isset($ed47_c_certidaocart)) {
+            $oDaoAluno->ed47_c_certidaocart = '';
+        }
+
+        if (!isset($ed47_i_censomuniccert)) {
+            $oDaoAluno->ed47_i_censomuniccert = null;
+        }
+
+        if (!isset($ed47_i_censoufcert)) {
+            $oDaoAluno->ed47_i_censoufcert = null;
+        }
+
+        if (!isset($ed47_i_censoufident)) {
+            $oDaoAluno->ed47_i_censoufident = null;
+        }
+
+        if (!isset($ed47_i_censoorgemissrg) || $ed47_i_censoorgemissrg == ' ') {
+            $oDaoAluno->ed47_i_censoorgemissrg = null;
+        }
+
+        $oDaoAluno->ed47_visto = $ed47_visto;
+        $oDaoAluno->ed47_rnm = $ed47_rnm;
+        $oDaoAluno->ed47_certidaomatricula = $ed47_certidaomatricula;
+        $oDaoAluno->alterar($ed47_i_codigo);
+        if ($oDaoAluno->erro_status == "0") {
+            throw new Exception($oDaoAluno->erro_msg);
+        }
+
+        $arquivoCertidao = "";
+        $rs = db_query($oDaoAluno->sql_query_file(
+            null,
+            "ed47_i_certidado_estorage as idCertidao",
+            null,
+            "ed47_i_codigo = $chavepesquisa"
+        ));
+        
+        $dados = db_utils::fieldsMemory($rs, 0);
+        $arquivoCertidao = !empty($dados->idcertidao) ? StorageHelper::downloadArquivo($dados->idcertidao) : "";
+        $namecertidao = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCertidao"]);
+
+        if ($namecertidao != "" && $arquivoCertidao != $namecertidao) {
+            $idFileCertidao = StorageHelper::uploadArquivo($namecertidao, null, true);
+            $sqlAlunoCertidao   = "UPDATE escola.aluno set ed47_i_certidado_estorage = {$idFileCertidao} ";
+            $sqlAlunoCertidao  .= "where ed47_i_codigo = $chavepesquisa";
+            $rs = db_query($sqlAlunoCertidao);
+        }
+
+        $arquivoCpf = "";
+        $rs = db_query($oDaoAluno->sql_query_file(
+            null,
+            "ed47_i_cpf_estorage as idCpf",
+            null,
+            "ed47_i_codigo = $chavepesquisa"
+        ));
+        $dados = db_utils::fieldsMemory($rs, 0);
+        $arquivoCpf = !empty($dados->idcpf) ? StorageHelper::downloadArquivo($dados->idcpf) : "";
+        $namecpf = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCPF"]);
+
+        if ($namecpf != "" && $arquivoCpf != $namecpf) {
+            $idFileCpf = StorageHelper::uploadArquivo($namecpf, null, true);
+            $sqlAlunoCpf   = "UPDATE escola.aluno set ed47_i_cpf_estorage = {$idFileCpf} ";
+            $sqlAlunoCpf  .= "where ed47_i_codigo = $chavepesquisa";
+            $rs = db_query($sqlAlunoCpf);
+        }
+
+        db_fim_transacao();
+    } catch (Exception $oErro) {
+        db_fim_transacao(true);
+        $oDaoAluno->erro_status = "0";
+        $oDaoAluno->erro_msg = $oErro->getMessage();
     }
-  /**
-   * Valida se o cartão do SUS é válido conforme funções
-   */
-  if (    isset( $ed47_cartaosus )
-       && !empty( $ed47_cartaosus )
-       && !validaCnsDefinitivo( $ed47_cartaosus )
-       && !validaCnsProvisorio( $ed47_cartaosus ) ) {
-
-
-    db_msgbox( "Número do cartão do SUS não é válido." );
-    db_redireciona( "edu1_aluno002.php?chavepesquisa={$chavepesquisa}" );
-  }
-
-  db_inicio_transacao();
-    $rs = db_query($oDaoAluno->sql_query_file($ed47_i_codigo));
-    $dados = db_utils::fieldsMemory($rs, 0);
-    $oDaoAluno->ed47_paisresidencia = $dados->ed47_paisresidencia;
-    $oDaoAluno->ed47_localizacaodiferenciada = $dados->ed47_localizacaodiferenciada;
-
-  if( !isset( $ed47_c_certidaocart ) ) {
-    $oDaoAluno->ed47_c_certidaocart = '';
-  }
-
-  if( !isset( $ed47_i_censomuniccert ) ) {
-    $oDaoAluno->ed47_i_censomuniccert = null;
-  }
-
-  if( !isset( $ed47_i_censoufcert ) ) {
-    $oDaoAluno->ed47_i_censoufcert = null;
-  }
-
-  if( !isset( $ed47_i_censoufident ) ) {
-    $oDaoAluno->ed47_i_censoufident = null;
-  }
-
-  if( !isset( $ed47_i_censoorgemissrg ) ) {
-    $oDaoAluno->ed47_i_censoorgemissrg = null;
-  }
-
-  $oDaoAluno->ed47_visto = $ed47_visto;
-  $oDaoAluno->ed47_rnm = $ed47_rnm;
-  $oDaoAluno->ed47_certidaomatricula = $ed47_certidaomatricula;
-  $oDaoAluno->alterar($ed47_i_codigo);
-
-  if ($oDaoAluno->erro_status == "0") {
-
-    $_rollback = true;
-
-  } else {
-    $_rollback = false;
-  }
-
-  db_fim_transacao($_rollback);
-
-  try {
-    db_query("begin");
-    $arquivoCertidao = "";
-    $rs = db_query($oDaoAluno->sql_query_file(null,"ed47_i_certidado_estorage  as idCertidao",null, "ed47_i_codigo = $chavepesquisa"));
-    $dados = db_utils::fieldsMemory($rs, 0);
-    $arquivoCertidao = !empty($dados->idcertidao) ? StorageHelper::downloadArquivo($dados->idcertidao) : "";
-    $namecertidao = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCertidao"]);
-
-    if ($namecertidao != "" && $arquivoCertidao != $namecertidao) {
-      $idFileCertidao = StorageHelper::uploadArquivo($namecertidao, null, true);
-      $sqlAlunoCertidao   = "UPDATE escola.aluno set ed47_i_certidado_estorage = {$idFileCertidao} ";
-      $sqlAlunoCertidao  .= "where ed47_i_codigo = $chavepesquisa";
-      $rs = pg_query($sqlAlunoCertidao);
-      // if(pg_numrows($rs)!=false) {
-      //   throw new Exception("Erro ao atualizar imagem certidão de Nascimento");
-      // }
-
-    }
-
-    $arquivoCpf = "";
-    $rs = db_query($oDaoAluno->sql_query_file(null,"ed47_i_cpf_estorage  as idCpf",null, "ed47_i_codigo = $chavepesquisa"));
-    $dados = db_utils::fieldsMemory($rs, 0);
-    $arquivoCpf = !empty($dados->idcpf) ? StorageHelper::downloadArquivo($dados->idcpf) : "";
-    $namecpf = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCPF"]);
-
-    if ($namecpf != "" && $arquivoCpf != $namecpf) {
-      $idFileCpf = StorageHelper::uploadArquivo($namecpf, null, true);
-      $sqlAlunoCpf   = "UPDATE escola.aluno set ed47_i_cpf_estorage = {$idFileCpf} ";
-      $sqlAlunoCpf  .= "where ed47_i_codigo = $chavepesquisa";
-      $rs = pg_query($sqlAlunoCpf);
-
-      // if(pg_numrows($rs)!=false) {
-      //   throw new Exception("Erro ao atualizar imagem cpf");
-      // }
-
-    }
-
-    db_query("end");
-  } catch (Exception $oErro) {
-    db_query("rollback");
-    print_r($oErro->getMessage());
-    db_msgbox($oErro->getMessage());
-  }
 }
 
 if (isset($chavepesquisa)) {
-
-  $db_opcao = 2;
-  $sSql     = $oDaoAluno->sql_query($chavepesquisa);
-  $rsResult = $oDaoAluno->sql_record($sSql);
-  db_fieldsmemory($rsResult,0);
-  $db_botao = true;
+    $db_opcao = 2;
+    $sSql     = $oDaoAluno->sql_query($chavepesquisa);
+    $rsResult = $oDaoAluno->sql_record($sSql);
+    db_fieldsmemory($rsResult, 0);
+    $db_botao = true;
 }
 ?>
 <html>
@@ -187,70 +300,58 @@ if (isset($chavepesquisa)) {
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-  <script language="JavaScript" type="text/javascript" src="scripts/webseller.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <center>
-          <fieldset style="width:95%">
-            <legend><b>Documentos</b></legend>
-            <b>Situação da Documentação:</b>
-            <select id="possuiDocumentacao">
-              <option value="0">Aluno possui documentação</option>
-              <option value="1">Aluno não possui documentação</option>
-              <option value="2">Escola não possui informação de documentação do aluno</option>
-            </select>
-          </fieldset>
-          <fieldset style="width:95%"><legend><b>Documentação do Aluno</b></legend>
-            <?include(modification("forms/db_frmaluno.php"));?>
-          </fieldset>
-        </center>
-      </td>
-    </tr>
-  </table>
+<body >
+  <div class="container" style="width:95%">
+    <fieldset style="width:100%">
+      <legend>Documentos</legend>
+      Situação da Documentação:
+      <select id="possuiDocumentacao">
+        <option value="0">Aluno possui documentação</option>
+        <option value="1">Aluno não possui documentação</option>
+        <option value="2">Escola não possui informação de documentação do aluno</option>
+      </select>
+    </fieldset>
+    <fieldset style="width:100%">
+      <legend>Documentação do Aluno</legend>
+      <?php include(modification("forms/db_frmaluno.php")); ?>
+    </fieldset>
+  </div>
 </body>
 </html>
 <?php
 if (isset($alterar)) {
+    if ($oDaoAluno->erro_status == "0") {
+        $oDaoAluno->erro(true, false);
+        $db_botao = true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
-  if ($oDaoAluno->erro_status == "0") {
-
-    $oDaoAluno->erro(true,false);
-    $db_botao = true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-
-    if ($oDaoAluno->erro_campo != "") {
-
-      echo "<script> document.form1.".$oDaoAluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$oDaoAluno->erro_campo.".focus();</script>";
-
+        if ($oDaoAluno->erro_campo != "") {
+            echo "<script> document.form1.".$oDaoAluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$oDaoAluno->erro_campo.".focus();</script>";
+        }
+    } else {
+        $oDaoAluno->erro(true, false);
+        db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
     }
-
-  } else {
-
-    $oDaoAluno->erro(true,false);
-    db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
-  }
 }
 
 if (isset($excluirfoto)) {
-  db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
+    db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
 }
 
-if ( isset( $excluircpf ) ) {
-  $sqlAlunoCpf   = "UPDATE escola.aluno set ed47_i_cpf_estorage = null ";
-  $sqlAlunoCpf  .= "where ed47_i_codigo = $chavepesquisa";
-  $rs = pg_query($sqlAlunoCpf);
-  db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
+if (isset($excluircpf)) {
+    $sqlAlunoCpf   = "UPDATE escola.aluno set ed47_i_cpf_estorage = null ";
+    $sqlAlunoCpf  .= "where ed47_i_codigo = $chavepesquisa";
+    $rs = db_query($sqlAlunoCpf);
+    db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
 }
-if ( isset( $excluircertidao ) ) {
-  $sqlAlunoCertidao   = "UPDATE escola.aluno set ed47_i_certidado_estorage = null ";
-  $sqlAlunoCertidao  .= "where ed47_i_codigo = $chavepesquisa";
-  $rs = pg_query($sqlAlunoCertidao);
-  db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
+if (isset($excluircertidao)) {
+    $sqlAlunoCertidao   = "UPDATE escola.aluno set ed47_i_certidado_estorage = null ";
+    $sqlAlunoCertidao  .= "where ed47_i_codigo = $chavepesquisa";
+    $rs = db_query($sqlAlunoCertidao);
+    db_redireciona("edu1_aluno002.php?chavepesquisa=$chavepesquisa");
 }
 
 ?>
@@ -262,19 +363,17 @@ if ( isset( $excluircertidao ) ) {
  * 1 ou 2: Aluno não possui documentacao ou Escola nao possui informacao de documentacao do aluno - todos os campos sao
  * bloqueados
  */
-function js_verificaOpcaoSelecionada() {
-
+function js_verificaOpcaoSelecionada()
+{
   var lDesabilitaCampos = false;
   var iNacionalidade    = <?=$ed47_i_nacion?>;
-
   if ($('possuiDocumentacao').value != '0') {
     lDesabilitaCampos = true;
   }
-
-  setFormReadOnly($('frmDocumentacaoAluno'), lDesabilitaCampos);
+  const listaElementosIdsNaoDesabilitar = ['alterar'];
+  setFormReadOnly($('frmDocumentacaoAluno'), lDesabilitaCampos, listaElementosIdsNaoDesabilitar);
 
   if (!lDesabilitaCampos) {
-
     $('ed47_i_codigo').readOnly                     = true;
     $('ed47_i_codigo').style.backgroundColor        = '#DEB887';
     $('ed47_v_nome').readOnly                       = true;
@@ -293,21 +392,19 @@ function js_verificaOpcaoSelecionada() {
     $('ed47_d_dtemissao').style.backgroundColor     = '#E6E4F1';
     $('ed47_d_dtvencimento').style.backgroundColor  = '#E6E4F1';
     $('ed47_v_cpf').style.backgroundColor           = '#E6E4F1';
-    $('ed47_cartaosus').style.backgroundColor           = '#E6E4F1';
-    $('ed47_rnm').readOnly                 = true;
-    $('ed47_rnm').style.backgroundColor           = '#DEB887';
-    $('ed47_visto').readOnly                 = true;
+    $('ed47_cartaosus').style.backgroundColor       = '#E6E4F1';
+    $('ed47_rnm').readOnly                          = true;
+    $('ed47_rnm').style.backgroundColor             = '#DEB887';
+    $('ed47_visto').readOnly                        = true;
     $('ed47_visto').style.backgroundColor           = '#DEB887';
     if (iNacionalidade != 3) {
-
       $('ed47_c_passaporte').readOnly               = true;
       $('ed47_c_passaporte').style.backgroundColor  = '#DEB887';
     }
   }
-console.log(iNacionalidade);
-  if (iNacionalidade == 3 && $('possuiDocumentacao').value == '0') {
 
-	  setFormReadOnly($('frmDocumentacaoAluno'), true);
+  if (iNacionalidade == 3 && $('possuiDocumentacao').value == '0') {
+      setFormReadOnly($('frmDocumentacaoAluno'), true);
       $('ed47_c_passaporte').readOnly               = false;
       $('ed47_c_passaporte').style.backgroundColor  = '#E6E4F1';
 
@@ -323,16 +420,15 @@ console.log(iNacionalidade);
       $('ed47_cartaosus').readOnly               = false;
       $('ed47_cartaosus').style.backgroundColor  = '#E6E4F1';
   }
-    if (iNacionalidade == 3 && $('possuiDocumentacao').value == '0') {
 
-    }
-  $('alterar').disabled                 = false;
+  <?php if($db_botao):?>
+    $('alterar').disabled = false;
+  <?php endif;?>
   $('ed47_t_obs').style.backgroundColor = "#E6E4F1";
   $('ed47_t_obs').readOnly              = false;
 
   $('ed47_v_contato').style.backgroundColor = "#E6E4F1";
   $('ed47_v_contato').readOnly              = false;
-
 }
 
 $('possuiDocumentacao').observe("change", function() {
@@ -346,12 +442,11 @@ $('possuiDocumentacao').observe("change", function() {
  * Verificamos a situacao da documentacao do aluno. Caso seja igual a 0, bloqueamos as outras opcoes de selecao, pois o
  * aluno ja possui documento
  */
-function js_verificaSituacaoDocumentacao() {
-
+function js_verificaSituacaoDocumentacao()
+{
   var oParametro    = new Object();
   oParametro.exec   = 'verificaSituacaoDocumentacao';
   oParametro.iAluno = $F('ed47_i_codigo');
-
   var oAjax = new Ajax.Request(
                                'edu4_escola.RPC.php',
                                {
@@ -362,21 +457,15 @@ function js_verificaSituacaoDocumentacao() {
                               );
 }
 
-function js_retornoVerificaSituacaoDocumentacao(oResponse) {
-
+function js_retornoVerificaSituacaoDocumentacao(oResponse)
+{
   var oRetorno = JSON.parse(oResponse.responseText);
-
-
   if (oRetorno.iStatus == 1) {
-
     $('possuiDocumentacao').value = oRetorno.iSituacaoDocumentacao;
 
     if ($('possuiDocumentacao').value == "0" && oRetorno.lBloqueiaDocumentacao) {
-
       var iTotalDocumentacao = $('possuiDocumentacao').length;
-
       for (var iContador = 0; iContador < iTotalDocumentacao; iContador++) {
-
         if ($('possuiDocumentacao')[iContador].value != '0') {
           $('possuiDocumentacao')[iContador].disabled = true;
         }
@@ -384,14 +473,13 @@ function js_retornoVerificaSituacaoDocumentacao(oResponse) {
     }
     js_verificaOpcaoSelecionada();
   } else {
-
     alert(oRetorno.sMessage.urlDecode());
     return false;
   }
 }
 
-function js_salvaSituacao() {
-
+function js_salvaSituacao()
+{
   var oParametro                   = new Object();
   oParametro.exec                  = 'salvaSituacaoDocumentacao';
   oParametro.iAluno                = $F('ed47_i_codigo');
@@ -407,16 +495,13 @@ function js_salvaSituacao() {
                               );
 }
 
-function js_retornoSalvaSituacao(oResponse) {
-
+function js_retornoSalvaSituacao(oResponse)
+{
   var oRetorno = JSON.parse(oResponse.responseText);
-
   if (oRetorno.iStatus != 1) {
-
     alert(oRetorno.sMessage.urlDecode());
     return false;
   }
-
   js_verificaSituacaoDocumentacao();
   return true;
 }

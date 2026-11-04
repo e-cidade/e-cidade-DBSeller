@@ -58,7 +58,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
               <?=$Lla08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("la08_i_codigo",10,$Ila08_i_codigo,true,"text",4,"","chave_la08_i_codigo");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
               <?=$Lla08_c_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("la08_c_descr",40,@$Ila08_c_descr,true,"text",4,"","chave_la08_c_descr");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            //if(file_exists("funcoes/db_func_lab_requiitem.php")==true){
@@ -98,9 +98,12 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
         $where="";
         $sep="";
         if(isset($la21_i_requisicao)){
-               $where=" la21_i_requisicao=$la21_i_requisicao ";
-               $sep=" and ";
+          $where=" la21_i_requisicao=$la21_i_requisicao ";
+          $sep=" and ";
         }
+        if(isset($la24_i_setor)){
+          $where = "$where$sep la24_i_setor = $la24_i_setor ";
+        }          
         if(isset($sSituacao)){
         	$aSituacao=explode(",",$sSituacao);
         	if(count($aSituacao)==1){
@@ -139,9 +142,12 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
           $where="";
           $sep="";
           if(isset($la21_i_requisicao)){
-               $where=" la21_i_requisicao=$la21_i_requisicao ";
-               $sep=" and ";
+            $where=" la21_i_requisicao=$la21_i_requisicao ";
+            $sep=" and ";
           }
+          if(isset($la24_i_setor)){
+            $where = "$where$sep la24_i_setor = $la24_i_setor ";
+          }           
           if(isset($sSituacao)){
         	   $aSituacao=explode(",",$sSituacao);
         	   if(count($aSituacao)==1){

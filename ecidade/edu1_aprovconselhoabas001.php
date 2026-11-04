@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php
    MsgAviso(db_getsession("DB_coddepto"),"escola");
    $clcriaabas->identifica = array("a1"=>"Alterar Resultado Final","a2"=>"Excluir Alteração de Resultado");
    $clcriaabas->sizecampo  = array("a1"=>"30","a2"=>"30");

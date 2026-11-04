@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clrotulo = new rotulocampo;
@@ -41,12 +41,12 @@ $clrotulo->label("e87_descgera");
 <script>
 function js_mascara(evt){
   var evt = (evt) ? evt : (window.event) ? window.event : "";
-  
-  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:. 
+
+  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:.
     return true;
   }else{
     return false;
-  }  
+  }
 }
 
 function js_pesquisar(form){
@@ -76,7 +76,7 @@ function js_atualizar(){
 	      coluna += sep+obj[i].value;
 	      sep= "XX";
 	    }
-	  } 
+	  }
 	  if(coluna==''){
 	    alert("Selecione um movimento!");
 	    return false;
@@ -94,8 +94,8 @@ function js_atualizar(){
 }
 
 function js_ver(){
-  
-  
+
+
   query = "?e80_codage=<?=$e80_codage?>";
   if(document.form1.e83_codtipo.value!=0){
     query += "&e83_codtipo="+document.form1.e83_codtipo.value;
@@ -103,8 +103,8 @@ function js_ver(){
   js_OpenJanelaIframe('','db_iframe_anula','func_empageconf001.php'+query,'Pesquisa',true);
 }
 function js_gerar(){
-  
-  
+
+
   query = "?e80_codage=<?=$e80_codage?>";
   if(document.form1.e83_codtipo.value!=0){
     query += "&e83_codtipo="+document.form1.e83_codtipo.value;
@@ -112,8 +112,8 @@ function js_gerar(){
   js_OpenJanelaIframe('','db_iframe_gerar','emp4_empageconflay003.php'+query,'Pesquisa',true);
 }
 function js_anular(){
-  
-  
+
+
   query = "?e80_codage=<?=$e80_codage?>";
   if(document.form1.e83_codtipo.value!=0){
     query += "&e83_codtipo="+document.form1.e83_codtipo.value;
@@ -129,67 +129,67 @@ function js_anular(){
 
 <center>
   <table border='0' cellpadding='0' cellspacing='0'>
-      <tr>     
+      <tr>
         <td>
-          <table>  
+          <table>
 	    <tr>
 	      <td nowrap title="<?=@$Te80_codage?>" align='right'>
 	      <?=$Le80_codage?>
-	      </td>	
+	      </td>
 	      <td nowrap>
-		 <? db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
+		 <?php db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
 	      <?=$Le80_data?>
-	       <?
+	       <?php
                   $result07= $clempage->sql_record($clempage->sql_query_file(null, "*", null, " e80_codage = $e80_codage and e80_instit = " . db_getsession("DB_instit")));
-                  db_fieldsmemory($result07,0);    
-                   $arr_x  = split("-",$e80_data);
+                  db_fieldsmemory($result07,0);
+                   $arr_x  =explode("-",$e80_data);
 		   $e80_data_ano = $arr_x[0];
 		   $e80_data_mes = $arr_x[1];
 		   $e80_data_dia = $arr_x[2];
-	         
+
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 
 
 		 $result05 = $clempagemod->sql_record($clempagemod->sql_query_file($e84_codmod));
 		 db_fieldsmemory($result05,0);
-	
+
 	         echo  $Le84_codmod;
 		 db_input('e84_codmod',20,'',true,'hidden',3);
 		 db_input('e84_descr',20,'',true,'text',3);
-		 
+
 	       ?>
 	      </td>
 	    </tr>
 	    <tr>
 	      <td>
 	         <?=$Le87_descgera?>
-	      </td> 
+	      </td>
 	      <td>
-		 <?db_input('e87_descgera',40,'',true,'text',1);?>
+		 <?php db_input('e87_descgera',40,'',true,'text',1);?>
 	      </td>
 	    </tr>
-	</table>  
-	
-      </td>  
+	</table>
+
+      </td>
       <td align='left'>
         <table width='100%' cellpadding='0' cellspacing='0' >
 	  <tr>
 	    <td nowrap><b>Data geração:</b></td>
 	    <td>
-              <?db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
-	    </td>  
-	  </tr>  
+              <?php db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+	    </td>
+	  </tr>
 	  <tr>
 	    <td><b>Data depósito:</b></td>
 	    <td>
-              <?db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+              <?php db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td><b>Convênio:</b></td>
 	    <td>
-	    <?
-            $result =  $clempagetipo->sql_record($clempagetipo->sql_query($e83_codtipo,'e83_convenio as e83_conv'));  
+	    <?php
+            $result =  $clempagetipo->sql_record($clempagetipo->sql_query($e83_codtipo,'e83_convenio as e83_conv'));
 	    if($clempagetipo->numrows>0){
 	      db_fieldsmemory($result,0);
 	    }else{
@@ -199,22 +199,22 @@ function js_anular(){
 	    ?>
 	    </td>
 	  </tr>
-	   
+
 	</table>
       </td>
     </tr>
     <tr>
       <td colspan='2' align='center'>
-      <?if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
+      <?php if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
 	<input name="emite" type="button" id="pesquisar" value="Reemitir arquivo" onclick='return js_emitir();'>
-      <?}?>  	
+      <?php }?>
 	<input name="atualizar" type="submit" id="pesquisar" value="Gerar arquivo" onclick='return js_atualizar();'>
 	<input name="entrar_codord" type="button" id="pesquisar" value="Pesquisar" onclick='js_pesquisar(this.form);' >
 	<input name="fechar" type="button"  value="Fechar" onclick='parent.db_iframe_gerar.hide();' >
 
 	    <b>Total: </b>
 	     <?=db_input('total',10,'',true,'text',3)?>
-	
+
       </td>
     </tr>
    <tr>
@@ -252,9 +252,9 @@ function js_pesquisae60_numemp(mostra){
 
 //------------------------------------------------------------
 function js_mostraempempenho(chave,erro){
-  if(erro==true){ 
-    document.form1.e60_numemp.focus(); 
-    document.form1.e60_numemp.value = ''; 
+  if(erro==true){
+    document.form1.e60_numemp.focus();
+    document.form1.e60_numemp.value = '';
   }
 }
 function js_mostraempempenho1(chave1){
@@ -272,17 +272,17 @@ function js_pesquisae82_codord(mostra){
     ord02 = new Number(document.form1.e82_codord02.value);
     if(ord01 > ord02 && ord01 != "" && ord02 != ""){
       alert("Selecione uma ordem menor que a segunda!");
-      document.form1.e82_codord.focus(); 
-      document.form1.e82_codord.value = ''; 
+      document.form1.e82_codord.focus();
+      document.form1.e82_codord.value = '';
       return false;
     }
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+ord01+'&funcao_js=parent.js_mostrapagordem','Pesquisa',false);
   }
 }
 function js_mostrapagordem(chave,erro){
-  if(erro==true){ 
-    document.form1.e82_codord.focus(); 
-    document.form1.e82_codord.value = ''; 
+  if(erro==true){
+    document.form1.e82_codord.focus();
+    document.form1.e82_codord.value = '';
   }
 }
 function js_mostrapagordem1(chave1,chave2){
@@ -299,17 +299,17 @@ function js_pesquisae82_codord02(mostra){
     ord02 = new Number(document.form1.e82_codord02.value);
     if(ord01 > ord02 && ord02 != ""  && ord01 != ""){
       alert("Selecione uma ordem maior que a primeira");
-      document.form1.e82_codord02.focus(); 
-      document.form1.e82_codord02.value = ''; 
+      document.form1.e82_codord02.focus();
+      document.form1.e82_codord02.value = '';
       return false;
     }
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+ord02+'&funcao_js=parent.js_mostrapagordem02','Pesquisa',false);
   }
 }
 function js_mostrapagordem02(chave,erro){
-  if(erro==true){ 
-    document.form1.e82_codord02.focus(); 
-    document.form1.e82_codord02.value = ''; 
+  if(erro==true){
+    document.form1.e82_codord02.focus();
+    document.form1.e82_codord02.value = '';
   }
 }
 function js_mostrapagordem102(chave1,chave2){
@@ -322,18 +322,18 @@ function js_pesquisaz01_numcgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.z01_numcgm.value != ''){ 
+     if(document.form1.z01_numcgm.value != ''){
         js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.z01_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.z01_nome.value = ''; 
+       document.form1.z01_nome.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.z01_numcgm.focus(); 
-    document.form1.z01_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.z01_numcgm.focus();
+    document.form1.z01_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){

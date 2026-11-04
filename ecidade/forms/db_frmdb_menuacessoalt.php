@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -109,7 +109,7 @@ return true;
 <table border="0" width="60%">
   <tr>
     <td align="left" nowrap title="<?=@$Tdb06_idtipo?>">
-       <?
+       <?php
          db_ancora(@$Ldb06_idtipo,"js_pesquisadb06_idtipo(true);",$db_opcao);
          db_input('db06_idtipo',6,$Idb06_idtipo,true,'text',$db_opcao," onchange='js_pesquisadb06_idtipo(false);'");
          db_input('db05_descr',40,$Idb05_descr,true,'text',3,'');
@@ -122,7 +122,7 @@ return true;
         <table border="0">
           <tr>
             <td nowrap title="<?=@$Tdb06_m_codigo?>" colspan="2">
-              <?
+              <?php
                 db_ancora(@$Ldb06_m_codigo,"js_pesquisadb06_m_codigo(true);",$db_opcao);
                 db_input('db06_m_codigo',6,$Idb06_m_codigo,true,'text',$db_opcao," onchange='js_pesquisadb06_m_codigo(false);'");
                 db_input('m_descricao',40,$Im_descricao,true,'text',3,'');
@@ -136,7 +136,7 @@ return true;
 	  <tr align="center">
 	    <td align="right" colspan="" width="80%">
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php
               if(isset($chavepesquisa)){
 	        $resulta = $cldb_menupref->sql_record($cldb_menupref->sql_queryacesso("","*"," inner join db_menuacesso on db06_m_codigo = m_codigo", "m_codigo"," db06_idtipo = $chavepesquisa1"));
 	        if($cldb_menupref->numrows!=0){
@@ -167,7 +167,7 @@ return true;
   </td>
 </tr>
 </table>
-<?
+<?php
 if(isset($chavepesquisa)){
   echo "<input type=\"hidden\" name=\"chavepesquisa1\" value=\"$chavepesquisa1\">\n";
 }
@@ -176,7 +176,7 @@ if(isset($chavepesquisa)){
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
-<?
+<?php
 if(isset($chavepesquisa)){
   echo "document.form1.db06_m_codigo.value = '';\n";
   echo "document.form1.m_descricao.value = '';\n";
@@ -241,7 +241,7 @@ function js_preenchepesquisa(chave,chave1){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

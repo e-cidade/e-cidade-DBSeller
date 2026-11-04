@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ function js_imprimir() {
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Receitas</strong>";
                  $aux->codigo = "o70_codrec"; //chave de retorno da func
@@ -133,7 +133,7 @@ function js_imprimir() {
       <tr>
           <td nowrap colspan=3>
                <b> Período </b>
-               <? 
+               <?php 
 	          $dia= date("d",db_getsession("DB_datausu"));
 		  $mes= date("m",db_getsession("DB_datausu"));
 		  $ano= db_getsession("DB_anousu");

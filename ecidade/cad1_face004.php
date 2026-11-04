@@ -61,7 +61,7 @@ if (isset ($incluir)) {
 	}
 	$erro_msg = $clface->erro_msg;
 	$j37_face = $clface->j37_face;
-	$matriz = split("X", $caracteristica);
+	$matriz =explode("X", $caracteristica);
 	for ($i = 0; $i < sizeof($matriz); $i++) {
 		$j38_caract = $matriz[$i];
 		if ($j38_caract != "") {

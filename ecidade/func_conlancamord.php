@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconlancamord->rotulo->label("c80_codord");
               <?=$Lc80_codlan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c80_codlan",8,$Ic80_codlan,true,"text",4,"","chave_c80_codlan");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconlancamord->rotulo->label("c80_codord");
               <?=$Lc80_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c80_codord",6,$Ic80_codord,true,"text",4,"","chave_c80_codord");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconlancamord->rotulo->label("c80_codord");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamord.php")==true){
@@ -118,12 +118,12 @@ $clconlancamord->rotulo->label("c80_codord");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

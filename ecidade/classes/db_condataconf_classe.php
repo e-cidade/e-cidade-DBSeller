@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE condataconf
-class cl_condataconf { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c99_anousu = 0; 
-   var $c99_instit = 0; 
-   var $c99_data_dia = null; 
-   var $c99_data_mes = null; 
-   var $c99_data_ano = null; 
-   var $c99_data = null; 
-   var $c99_usuario = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_condataconf {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c99_anousu = 0;
+   var $c99_instit = 0;
+   var $c99_data_dia = null;
+   var $c99_data_mes = null;
+   var $c99_data_ano = null;
+   var $c99_data = null;
+   var $c99_usuario = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c99_anousu = int4 = Exercício 
-                 c99_instit = int4 = Instittuição 
-                 c99_data = date = Data Limite 
-                 c99_usuario = int4 = Usuário 
+                 c99_anousu = int4 = Exercício
+                 c99_instit = int4 = Instittuição
+                 c99_data = date = Data Limite
+                 c99_usuario = int4 = Usuário
                  ";
-   //funcao construtor da classe 
-   function cl_condataconf() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("condataconf"); 
+     $this->rotulo = new rotulo("condataconf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_condataconf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c99_anousu = ($this->c99_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c99_anousu"]:$this->c99_anousu);
        $this->c99_instit = ($this->c99_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["c99_instit"]:$this->c99_instit);
@@ -91,12 +91,12 @@ class cl_condataconf {
      }
    }
    // funcao para inclusao
-   function incluir ($c99_anousu,$c99_instit){ 
+   public function incluir ($c99_anousu,$c99_instit){
       $this->atualizacampos();
-     if($this->c99_data == null ){ 
+     if($this->c99_data == null ){
        $this->c99_data = "null";
      }
-     if($this->c99_usuario == null ){ 
+     if($this->c99_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "c99_usuario";
        $this->erro_banco = "";
@@ -105,9 +105,9 @@ class cl_condataconf {
        $this->erro_status = "0";
        return false;
      }
-       $this->c99_anousu = $c99_anousu; 
-       $this->c99_instit = $c99_instit; 
-     if(($this->c99_anousu == null) || ($this->c99_anousu == "") ){ 
+       $this->c99_anousu = $c99_anousu;
+       $this->c99_instit = $c99_instit;
+     if(($this->c99_anousu == null) || ($this->c99_anousu == "") ){
        $this->erro_sql = " Campo c99_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -115,7 +115,7 @@ class cl_condataconf {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->c99_instit == null) || ($this->c99_instit == "") ){ 
+     if(($this->c99_instit == null) || ($this->c99_instit == "") ){
        $this->erro_sql = " Campo c99_instit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -124,19 +124,19 @@ class cl_condataconf {
        return false;
      }
      $sql = "insert into condataconf(
-                                       c99_anousu 
-                                      ,c99_instit 
-                                      ,c99_data 
-                                      ,c99_usuario 
+                                       c99_anousu
+                                      ,c99_instit
+                                      ,c99_data
+                                      ,c99_usuario
                        )
                 values (
-                                $this->c99_anousu 
-                               ,$this->c99_instit 
-                               ,".($this->c99_data == "null" || $this->c99_data == ""?"null":"'".$this->c99_data."'")." 
-                               ,$this->c99_usuario 
+                                $this->c99_anousu
+                               ,$this->c99_instit
+                               ,".($this->c99_data == "null" || $this->c99_data == ""?"null":"'".$this->c99_data."'")."
+                               ,$this->c99_usuario
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Configuracao Data ($this->c99_anousu."-".$this->c99_instit) nao Incluído. Inclusao Abortada.";
@@ -172,16 +172,16 @@ class cl_condataconf {
        $resac = db_query("insert into db_acount values($acount,1350,8874,'','".AddSlashes(pg_result($resaco,0,'c99_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c99_anousu=null,$c99_instit=null) { 
+   public function alterar ($c99_anousu=null,$c99_instit=null) {
       $this->atualizacampos();
      $sql = " update condataconf set ";
      $virgula = "";
-     if(trim($this->c99_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_anousu"])){ 
+     if(trim($this->c99_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_anousu"])){
        $sql  .= $virgula." c99_anousu = $this->c99_anousu ";
        $virgula = ",";
-       if(trim($this->c99_anousu) == null ){ 
+       if(trim($this->c99_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c99_anousu";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_condataconf {
          return false;
        }
      }
-     if(trim($this->c99_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_instit"])){ 
+     if(trim($this->c99_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_instit"])){
        $sql  .= $virgula." c99_instit = $this->c99_instit ";
        $virgula = ",";
-       if(trim($this->c99_instit) == null ){ 
+       if(trim($this->c99_instit) == null ){
          $this->erro_sql = " Campo Instittuição nao Informado.";
          $this->erro_campo = "c99_instit";
          $this->erro_banco = "";
@@ -204,19 +204,19 @@ class cl_condataconf {
          return false;
        }
      }
-     if(trim($this->c99_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"] !="") ){ 
+     if(trim($this->c99_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"] !="") ){
        $sql  .= $virgula." c99_data = '$this->c99_data' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c99_data_dia"])){
          $sql  .= $virgula." c99_data = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->c99_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_usuario"])){ 
+     if(trim($this->c99_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c99_usuario"])){
        $sql  .= $virgula." c99_usuario = $this->c99_usuario ";
        $virgula = ",";
-       if(trim($this->c99_usuario) == null ){ 
+       if(trim($this->c99_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "c99_usuario";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_condataconf {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuracao Data nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c99_anousu."-".$this->c99_instit;
@@ -280,14 +280,14 @@ class cl_condataconf {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c99_anousu=null,$c99_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c99_anousu=null,$c99_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c99_anousu,$c99_instit));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_condataconf {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuracao Data nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c99_anousu."-".$c99_instit;
@@ -351,11 +351,11 @@ class cl_condataconf {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,11 +377,11 @@ class cl_condataconf {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $c99_anousu=null,$c99_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $c99_anousu=null,$c99_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,23 +397,23 @@ class cl_condataconf {
      $sql2 = "";
      if($dbwhere==""){
        if($c99_anousu!=null ){
-         $sql2 .= " where condataconf.c99_anousu = $c99_anousu "; 
-       } 
+         $sql2 .= " where condataconf.c99_anousu = $c99_anousu ";
+       }
        if($c99_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " condataconf.c99_instit = $c99_instit "; 
-       } 
+         }
+         $sql2 .= " condataconf.c99_instit = $c99_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,11 +422,11 @@ class cl_condataconf {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $c99_anousu=null,$c99_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $c99_anousu=null,$c99_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,23 +439,23 @@ class cl_condataconf {
      $sql2 = "";
      if($dbwhere==""){
        if($c99_anousu!=null ){
-         $sql2 .= " where condataconf.c99_anousu = $c99_anousu "; 
-       } 
+         $sql2 .= " where condataconf.c99_anousu = $c99_anousu ";
+       }
        if($c99_instit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " condataconf.c99_instit = $c99_instit "; 
-       } 
+         }
+         $sql2 .= " condataconf.c99_instit = $c99_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,6 +464,6 @@ class cl_condataconf {
      }
      return $sql;
   }
-  
+
 }
 ?>

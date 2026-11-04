@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -87,7 +87,7 @@ if (isset($abast) && $abast != "") {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC style='margin-top: 25px'topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-	<?
+	<?php
 	include(modification("forms/db_frmveicabastanu.php"));
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
@@ -96,7 +96,7 @@ if (isset($abast) && $abast != "") {
 <script>
 js_tabulacaoforms("form1","ve74_veicabast",true,1,"ve74_veicabast",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clveicabastanu->erro_status=="0"||$sqlerro==true){
     //$clveicabastanu->erro(true,false);

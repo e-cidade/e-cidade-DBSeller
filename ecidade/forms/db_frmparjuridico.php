@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,14 +36,14 @@ $clparjuridico->rotulo->label();
 
 if ($db_opcao == 1) {
     ?>
-    <div style="color: ;">
+    <div>
         <strong>Sem parâmetros para o Exercício de <?php echo $v19_anousu; ?>, favor incluir.</strong>
     </div>
     <?php
 }
 ?>
 <form class="container" name="form1" id="form_parametros" method="post" action="" onsubmit=" return js_validaDados();">
-    <fieldset style="width:730px; !important">
+    <fieldset style="width:730px;">
         <legend>Manutenção de Parâmetros</legend>
         <table>
             <tr>
@@ -109,6 +109,26 @@ if ($db_opcao == 1) {
                 <td>
                     <?php
                     db_select('v19_consultaanaliticainicial', array('f' => 'Não', 't' => 'Sim'), "", $db_opcao);
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?php echo @$Tv19_parcelahonorariosmanual; ?>">
+                    <?php echo @$Lv19_parcelahonorariosmanual; ?>
+                </td>
+                <td>
+                    <?php
+                    db_select('v19_parcelahonorariosmanual', array('t' => 'Sim', 'f' => 'Não'), "", $db_opcao);
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap title="<?php echo @$Tv19_parcelacustasmanual; ?>">
+                    <?php echo @$Lv19_parcelacustasmanual; ?>
+                </td>
+                <td>
+                    <?php
+                    db_select('v19_parcelacustasmanual', array('t' => 'Sim', 'f' => 'Não'), "", $db_opcao);
                     ?>
                 </td>
             </tr>

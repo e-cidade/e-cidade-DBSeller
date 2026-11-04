@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -38,19 +38,19 @@ $clmer_nutriente = new cl_mer_nutriente;
 $db_opcao        = 22;
 $db_botao        = false;
 if (isset($alterar)) {
-	
+
   $db_opcao = 2;
   db_inicio_transacao();
   $clmer_nutriente->alterar($me09_i_codigo);
   db_fim_transacao();
-  
+
 } elseif (isset($chavepesquisa)) {
-	
+
   $db_opcao = 2;
   $result   = $clmer_nutriente->sql_record($clmer_nutriente->sql_query($chavepesquisa));
   db_fieldsmemory($result,0);
   $db_botao = true;
-  
+
 }
 ?>
 <html>
@@ -72,17 +72,17 @@ if (isset($alterar)) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Nutriente</b></legend>
-    <?include(modification("forms/db_frmmer_nutriente.php"));?>
+    <?php include(modification("forms/db_frmmer_nutriente.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -90,24 +90,24 @@ if (isset($alterar)) {
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
-	
+
   if ($clmer_nutriente->erro_status=="0") {
-  	
+
     $clmer_nutriente->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clmer_nutriente->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_nutriente->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_nutriente->erro_campo.".focus();</script>";
-      
+
     }
   } else {
    $clmer_nutriente->erro(true,true);
- } 
+ }
 }
 if ($db_opcao==22) {
   echo "<script>document.form1.pesquisar.click();</script>";

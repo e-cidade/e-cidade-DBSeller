@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ if($clparecerresult->numrows>0){
 <form name="form1" method="post" action="" onsubmit="return js_check();">
 <fieldset style="width:95%"><legend><b>Parecer Padronizado</b></legend>
  <table border="1" width="100%" cellspacing="0" cellpading="0">
-  <?
+  <?php
   $escola = db_getsession("DB_coddepto");
   $result = $clparecerturma->sql_record($clparecerturma->sql_query("","*","ed92_i_sequencial"," ed105_i_turma = $turma"));
   $cor1 = "#f3f3f3";
@@ -55,7 +55,7 @@ if($clparecerresult->numrows>0){
     <td class='cabec1'>Parecer</td>
     <td class='cabec1'>Resultado</td>
    </tr>
-   <?
+   <?php
    for($x=0;$x<$clparecerturma->numrows;$x++){
     db_fieldsmemory($result,$x);
     $result1 = $clparecerresult->sql_record($clparecerresult->sql_query_file("","*","","ed63_i_parecer = $ed92_i_codigo AND ed63_i_diarioresultado = $ed63_i_diarioresultado"));
@@ -80,19 +80,19 @@ if($clparecerresult->numrows>0){
      <td>
       <select name="ed63_i_parecerlegenda<?=$x?>" <?=$disabled?> <?=$encerrado=="S"?"disabled style=\"background:#f3f3f3;\"":"style=\"height:17px;font-size:10px;padding:0px;\""?>>
       <option value=""></option>
-      <?
+      <?php
       $result_leg = $clparecerlegenda->sql_record($clparecerlegenda->sql_query("","ed91_i_codigo,ed91_c_descr","ed91_c_descr desc"," ed91_i_escola = $escola"));
       for($y=0;$y<$clparecerlegenda->numrows;$y++){
        db_fieldsmemory($result_leg,$y);
        ?>
         <option value="<?=$ed91_i_codigo?>" <?=@$ed63_i_parecerlegenda==$ed91_i_codigo?"selected":""?>><?=trim($ed91_c_descr)?></option>
-       <?
+       <?php
       }
       ?>
       </td>
      </td>
     </tr>
-    <?
+    <?php
     $ed63_i_parecerlegenda = "";
    }
   }
@@ -105,9 +105,9 @@ if($clparecerresult->numrows>0){
  <table border="0" width="100%" cellspacing="0" cellpading="0">
   <tr>
    <td colspan="4" align="center">
-   <?db_textarea('ed73_t_parecer',5,120,@$Ied73_t_parecer,true,'text',$db_opcao,@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":"")?>
+   <?php db_textarea('ed73_t_parecer',5,120,@$Ied73_t_parecer,true,'text',$db_opcao,@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":"")?>
     <br><br>
-    <?
+    <?php
     $sql = "SELECT ed59_i_codigo,ed232_c_descr,ed59_i_ordenacao
             FROM regencia
              inner join disciplina on ed12_i_codigo = ed59_i_disciplina
@@ -129,17 +129,17 @@ if($clparecerresult->numrows>0){
      ?>
      <b>Selecione outras disciplinas para conter<br>este parecer no período <?=$periodo?></b>:<br>
      <select name="reg_outras[]" id="reg_outras" size="10" style="width:200px;font-size:10px;padding:0px;" multiple <?=@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":""?> >
-     <?
+     <?php
      for($r=0;$r<$linhas;$r++){
       db_fieldsmemory($result,$r);
       ?>
        <option value="<?=$ed59_i_codigo?>"> <?=$ed232_c_descr?></option>
-      <?
+      <?php
      }
      ?>
      </select>
      <br><br>
-    <?}?>
+    <?php }?>
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Salvar":"Excluir"))?>" <?=($db_botao==false||@$encerrado=="S"?"disabled":"")?>>
    </td>
   </tr>

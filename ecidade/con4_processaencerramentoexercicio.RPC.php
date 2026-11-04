@@ -48,77 +48,73 @@ $data = "{$anoSessao}-12-31";
 $dataEncerramento = new DBDate($data);
 
 try {
-
     db_inicio_transacao();
 
     switch ($oParam->exec) {
-
-
-
         case "buscarLog":
-
-
             // log de negativos para o 1025
             $oRetorno->lRegistros = false;
 
             $sql = <<<SQL
 
               select e60_codemp || '/' || e60_anousu  as numero ,
-                     x.*
+                     x.*,
+                     o15_recurso,
+                     codigo_siconfi,
+                     o15_complemento
                 from ( select *
                          from fc_valores_encerramento_empenho_rp('6221302%', false)
                     ) as x
                 inner join empempenho on e60_numemp = empenho
-              where valor < 0;
-
+                join orctiporec on o15_codigo = codigo_recurso
+                join fonterecurso on orctiporec_id = o15_codigo and exercicio = e60_anousu
+              where valor != 0
+              order by empenho;
 SQL;
 
+            $sHora = date('hms');
+            $pArquivoLog = "tmp/Log_encerramento{$sHora}_.csv";
 
-             $sHora = date('hms');
-             $pArquivoLog = "tmp/Log_encerramento{$sHora}_.csv";
+            $rs = db_query($sql);
+            $aDadosLog = [];
 
-             $rs = db_query($sql);
-             $aDadosLog = [];
+            $aDadosLog[] = "Empenho";
+            $aDadosLog[] = "Numero";
+            $aDadosLog[] = "Siconfi";
+            $aDadosLog[] = "Subrecurso";
+            $aDadosLog[] = "Complemento";
+            $aDadosLog[] = "Valor Credito";
+            $aDadosLog[] = "Valor Debito";
+            $aDadosLog[] = "Valor a Liquidar";
+            $aDadosLog[] = "Valor";
 
-             $aDadosLog[] = "Empenho";
-             $aDadosLog[] = "Numero";
-             $aDadosLog[] = "Valor Credito";
-             $aDadosLog[] = "Valor Debito";
-             $aDadosLog[] = "Valor a Liquidar";
-             $aDadosLog[] = "Valor";
+            $sLinha = implode(";", $aDadosLog);
+            file_put_contents($pArquivoLog, "$sLinha \n", FILE_APPEND);
 
-             $sLinha = implode(";",$aDadosLog);
-             file_put_contents($pArquivoLog, "$sLinha \n", FILE_APPEND);
-
-             if (pg_numrows($rs) > 0 ) {
-
+            if (pg_num_rows($rs) > 0) {
                 $oRetorno->lRegistros = true;
 
-                for ( $i = 0; $i < pg_numrows($rs); $i++) {
-
+                for ($i = 0; $i < pg_num_rows($rs); $i++) {
                     $oDados = db_utils::fieldsMemory($rs, $i);
                     $aDadosLog = [];
                     $aDadosLog[] = $oDados->empenho;//"Empenho";
                     $aDadosLog[] = $oDados->numero;//"Numero";
-                    $aDadosLog[] = db_formatar( $oDados->valor_credito, "f" );
-                    $aDadosLog[] = db_formatar( $oDados->valor_debito, "f" );
-                    $aDadosLog[] = db_formatar( $oDados->valor_a_liquidar_empenho, "f" );
-                    $aDadosLog[] = db_formatar( $oDados->valor, "f" );
+                    $aDadosLog[] = $oDados->codigo_siconfi;
+                    $aDadosLog[] = $oDados->o15_recurso;
+                    $aDadosLog[] = $oDados->o15_complemento;
+                    $aDadosLog[] = db_formatar($oDados->valor_credito, "f");
+                    $aDadosLog[] = db_formatar($oDados->valor_debito, "f");
+                    $aDadosLog[] = db_formatar($oDados->valor_a_liquidar_empenho, "f");
+                    $aDadosLog[] = db_formatar($oDados->valor, "f");
 
-                    $sLinha = implode(";",$aDadosLog);
+                    $sLinha = implode(";", $aDadosLog);
                     file_put_contents($pArquivoLog, "$sLinha \n", FILE_APPEND);
                 }
-
-             }
+            }
             $oRetorno->arquivoLog = $pArquivoLog;
-        break;
-
-
-
-
+            break;
 
         case "processarEncerramento":
-
             if ($oParam->encerramento) {
                 $consistencia = ConsistenciaEncerramento::getInstance();
                 $consistencias = $consistencia->getArquivosConsistenciaPorTipo(
@@ -150,7 +146,6 @@ SQL;
 
             $encerramento->setTipoEncerramento($oParam->tipoProcessamento);
             $encerramento->encerrar($oParam->documentos);
-
             $oRetorno->encerrouTodosDocumentos = true;
 
             /**
@@ -161,15 +156,14 @@ SQL;
             $documentos = getDadosDocumentos(array_keys($encerramento->getDocumentosParaProcessamento()));
 
             if ($oParam->tipoProcessamento == "ExecucaoOrcamentaria") {
-
-                $documentos = getDadosDocumentos(array_keys($encerramento->getDocumentosParaProcessamentoEncerramentoOrcamentario()));
+                $documentos = getDadosDocumentos(
+                    array_keys($encerramento->getDocumentosParaProcessamentoEncerramentoOrcamentario())
+                );
             }
 
             $oRetorno->mensagem = "O encerramento foi processado com sucesso.";
-            //$oRetorno->sTipo = $oParam->tipoProcessamento;
-
-            foreach ($documentos as $documento){
-                if ($documento['processado'] === false){
+            foreach ($documentos as $documento) {
+                if ($documento['processado'] === false) {
                     $oRetorno->encerrouTodosDocumentos = false;
                     break;
                 }
@@ -178,20 +172,19 @@ SQL;
             break;
 
         case "fecharPeriodoContabil":
-
             $usuario = UsuarioSistemaRepository::getUsuarioSessao();
             $periodoContabil = new \ECidade\Financeiro\Contabilidade\Encerramento\PeriodoContabil(
                 InstituicaoRepository::getInstituicaoSessao(),
                 $dataEncerramento,
                 $usuario,
-                $anoSessao);
+                $anoSessao
+            );
             $periodoContabil->encerrar();
             $oRetorno->mensagem = "O período contábil foi fechado com sucesso.";
             break;
 
 
         case "cancelarEncerramento":
-
             $encerramento = new Encerramento(
                 db_getsession("DB_anousu"),
                 new DBDate($data),
@@ -209,8 +202,6 @@ SQL;
 
             break;
 
-
-
         case 'getDocumentosEncerramento':
             $encerramento = new Encerramento(
                 db_getsession("DB_anousu"),
@@ -222,27 +213,24 @@ SQL;
             $oRetorno->documentos = $documentos;
             break;
 
-
         case 'getDocumentosEncerramentoOrcamentaria':
-
             $encerramento = new Encerramento(
                 db_getsession("DB_anousu"),
                 new DBDate($data),
                 InstituicaoRepository::getInstituicaoSessao()
             );
             $documentos = getDadosDocumentos(
-                array_keys($encerramento->getDocumentosParaProcessamentoEncerramentoOrcamentario()));
+                array_keys($encerramento->getDocumentosParaProcessamentoEncerramentoOrcamentario())
+            );
 
             //verifica se há encerramento para os doc, se existe não pode encerrar encerrar o 1024, 1025, 1026 antes
             $aDocumentosEncerramentoExercicio = getDadosDocumentos(
-                array_keys($encerramento->getDocumentosParaProcessamento()));
+                array_keys($encerramento->getDocumentosParaProcessamento())
+            );
 
             $lLiberarCancelamento = true;
-
-
-            foreach($aDocumentosEncerramentoExercicio as $aDocumentos){
+            foreach ($aDocumentosEncerramentoExercicio as $aDocumentos) {
                 if ($aDocumentos["processado"]) {
-
                     $lLiberarCancelamento = false;
                     break;
                 }
@@ -251,13 +239,35 @@ SQL;
             $oRetorno->documentos = $documentos;
             $oRetorno->lLiberarCancelamento = $lLiberarCancelamento;
             break;
+        case 'verificaViradaRp':
+            $oRetorno->viradaRps = false;
+            $ano = db_getsession("DB_anousu");
+            $mes = date("m", db_getsession("DB_datausu"));
+            $sql = <<<SQL
+                select
+                    *
+                from
+                    configuracoes.db_virada
+                    inner join configuracoes.db_viradaitem on c31_db_virada = c30_sequencial
+                where
+                    c31_db_viradacaditem = 13
+                    and (
+                        c30_anoorigem = {$ano}
+                    )
+SQL;
+            $rs = db_query($sql);
+            if (!$rs) {
+                throw new DBException("Erro ao verificar a virada anual dos Restos a Pagar.");
+            }
 
+            if (pg_num_rows($rs) > 0) {
+                $oRetorno->viradaRps = true;
+            }
+            break;
     }
 
     db_fim_transacao(false);
-
 } catch (Exception $eErro) {
-
     db_fim_transacao(true);
 
     $oRetorno->erro = true;
@@ -273,14 +283,16 @@ function getDadosDocumentos($documentos)
     $anousu = db_getsession('DB_anousu');
     $daoConhistDoc = new \cl_conhistdoc();
     $where = "c53_coddoc in(" . implode(', ', $documentos) . ")";
-    $sqlTipoDocumento = $daoConhistDoc->sql_query_file(null,
+    $sqlTipoDocumento = $daoConhistDoc->sql_query_file(
+        null,
         "c53_descr as descricao, c53_coddoc as codigo,
         exists(select 1 from conencerramento
                 where c42_coddoc = c53_coddoc
                   and c42_anousu = {$anousu}
                   and c42_instit = {$instituicao}
                   ) as processado",
-        '', $where
+        '',
+        $where
     );
     $rsTipoDocumento = db_query($sqlTipoDocumento);
     if (!$rsTipoDocumento || pg_num_rows($rsTipoDocumento) == 0) {
@@ -289,7 +301,6 @@ function getDadosDocumentos($documentos)
     $documentos = array_flip($documentos);
     $dados = \db_utils::getCollectionByRecord($rsTipoDocumento);
     foreach ($dados as $documentosConsulta) {
-
         $documentos[$documentosConsulta->codigo] = array();
         $documentos[$documentosConsulta->codigo]["codigo"] = $documentosConsulta->codigo;
         $documentos[$documentosConsulta->codigo]["descricao"] = $documentosConsulta->descricao;
@@ -302,6 +313,6 @@ function getDadosDocumentos($documentos)
         }
         $documentosRetorno[] = $documento;
     }
-    $documentos  = array_values($documentosRetorno);
+    $documentos = array_values($documentosRetorno);
     return $documentos;
 }

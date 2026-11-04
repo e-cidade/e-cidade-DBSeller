@@ -77,8 +77,8 @@ class GerarOrcamentoService
 
     public function gerar()
     {
-        $anoAtual = date('Y');
-        if ($anoAtual >= $this->exercicio && $this->existeOrcamento()) {
+
+        if ($this->existeOrcamento()) {
             throw new Exception("Já existe orçamento para o exercício {$this->exercicio}.");
         }
 
@@ -131,7 +131,8 @@ class GerarOrcamentoService
         $exercicio = $this->planejamento->pl2_ano_inicial;
         $dotacao = DotacaoApi::query()->where('o58_anousu', '=', $exercicio)->first();
         $receita = ReceitaApi::query()->where('o70_anousu', '=', $exercicio)->first();
-        if (is_null($dotacao) && is_null($receita)) {
+
+        if (!is_null($dotacao) && !is_null($receita)) {
             return true;
         }
 

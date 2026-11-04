@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if(isset($db_opcaoal)){
        <?=@$Lx42_codmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('x42_codmov',10,$Ix42_codmov,true,'text',3,"")
 ?>
     </td>
@@ -77,10 +77,10 @@ db_input('x42_codmov',10,$Ix42_codmov,true,'text',3,"")
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x42_codcortemat',10,$Ix42_codcortemat,true,'text',3," onchange='js_pesquisax42_codcortemat(false);'")
 ?>
-       <?
+       <?php
 //db_input('x41_matric',10,$Ix41_matric,true,'text',3,'')
        ?>
     </td>
@@ -88,15 +88,15 @@ db_input('x42_codcortemat',10,$Ix42_codcortemat,true,'text',3," onchange='js_pes
 
   <tr>
     <td nowrap title="<?=@$Tx42_codsituacao?>">
-       <?
+       <?php
        db_ancora(@$Lx42_codsituacao,"js_pesquisax42_codsituacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x42_codsituacao',10,$Ix42_codsituacao,true,'text',$db_opcao," onchange='js_pesquisax42_codsituacao(false);'")
 ?>
-       <?
+       <?php
 db_input('x43_descr',40,$Ix43_descr,true,'text',3,'')
        ?>
     </td>
@@ -106,7 +106,7 @@ db_input('x43_descr',40,$Ix43_descr,true,'text',3,'')
     <td nowrap title="<?=@$Tx42_leitura?>">
        <?=@$Lx42_leitura?>
     </td>
-    <td><? 
+    <td><?php 
     db_input('x42_leitura',10,$Ix42_leitura, true,'text',$db_opcao);
     ?></td>
     </tr> 
@@ -116,7 +116,7 @@ db_input('x43_descr',40,$Ix43_descr,true,'text',3,'')
        <?=@$Lx42_historico?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('x42_historico',4,60,$Ix42_historico,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ db_textarea('x42_historico',4,60,$Ix42_historico,true,'text',$db_opcao,"")
        <?=@$Lx42_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x42_data',@$x42_data_dia,@$x42_data_mes,@$x42_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -136,7 +136,7 @@ db_inputdata('x42_data',@$x42_data_dia,@$x42_data_mes,@$x42_data_ano,true,'text'
        <?=@$Lx42_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('x42_usuario',10,$Ix42_usuario,true,'text',3,"");
 db_input('nome',40,$Inome,true,'text',3,'');
 ?>
@@ -152,7 +152,7 @@ db_input('nome',40,$Inome,true,'text',3,'');
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x42_codmov"=>@$x42_codmov);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacortematmov->sql_query(null,"*","x42_codmov desc, x42_data desc","x42_codcortemat=".$x42_codcortemat);

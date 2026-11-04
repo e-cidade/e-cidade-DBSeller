@@ -169,14 +169,24 @@ class RecursoRepository
      * @param string $codigoRecurso
      * @return stdClass[]
      */
-    public static function getComplementos($codigoRecurso)
+    public static function getComplementos($codigoRecurso, $dataLimite = null)
     {
+        if (empty($dataLimite)) {
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
+        }
+
+        $filtro = [
+            "o15_recurso = '{$codigoRecurso}'",
+            "(o15_datalimite is null or o15_datalimite > '$dataLimite')"
+        ];
+
+        $where = implode(' and ', $filtro);
         $busca = "
             select o15_complemento as codigo, o200_sequencial||' - '||o200_descricao as descricao,
                    o15_codigo as id_recurso
               from orctiporec
               join complementofonterecurso on o200_sequencial = o15_complemento
-             where o15_recurso = '{$codigoRecurso}'
+             where $where
              order by 1
         ";
 
@@ -185,14 +195,48 @@ class RecursoRepository
     }
 
     /**
-     * @param string $fonteRecurso
+     * Busca os complementos existentes para o código de recurso (o15_recurso)
+     * @param string $gestao
+     * @return stdClass[]
+     */
+    public static function getComplementosByGestao($gestao, $subrecurso, $exercicio, $dataLimite = null)
+    {
+        if (empty($dataLimite)) {
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
+        }
+
+        $filtro = [
+            "gestao = '{$gestao}'",
+            "o15_recurso = '{$subrecurso}'",
+            "(o15_datalimite is null or o15_datalimite > '$dataLimite')"
+        ];
+
+        $where = implode(' and ', $filtro);
+        $busca = "
+            select distinct o15_complemento as codigo, o200_sequencial||' - '||o200_descricao as descricao,
+                   o15_codigo as id_recurso
+              from orctiporec
+              join fonterecurso on orctiporec_id = o15_codigo and exercicio = $exercicio
+              join complementofonterecurso on o200_sequencial = o15_complemento
+             where $where
+             order by 1
+        ";
+
+        $res = db_query($busca);
+        return db_utils::getCollectionByRecord($res);
+    }
+
+    /**
+     * @param string $subrecurso
      * @param string $outrosFiltros
      * @return array
      * @throws Exception
+     * @deprecated O uso dessa função pode retornar recurso de outras fontes de gestão/siconfi depois das alterações
+     * no cadastro de recurso para 2023. A partir de 2023 sempre devemos tratar a fonte de gestão com o subrecurso
      */
-    public static function getRecursosValidosPorFonteRecurso($fonteRecurso, $outrosFiltros = null)
+    public static function getRecursosValidosPorSubrecurso($subrecurso, $outrosFiltros = null)
     {
-        $where = " o15_recurso = '{$fonteRecurso}'";
+        $where = " o15_recurso = '{$subrecurso}'";
         if (!empty($outrosFiltros)) {
             $where .= " and {$outrosFiltros} ";
         }
@@ -213,16 +257,58 @@ class RecursoRepository
         return $recursos;
     }
 
+    public static function getRecursosValidosGestaoSubrecurso($gestao, $subrecurso, $exercicio, $outrosFiltros = null)
+    {
+        $filtro = [
+            "gestao = {$gestao}",
+            "o15_recurso = '{$subrecurso}'",
+            "exercicio = '{$exercicio}'",
+        ];
+        if (!empty($outrosFiltros)) {
+            $filtro[] = "{$outrosFiltros} ";
+        }
+
+        $where = implode(' and ', $filtro);
+        $dao = new \cl_orctiporec();
+        $sql = $dao->sqlNovaFonteRecurso(null, 'o15_codigo', 'o15_codigo', $where);
+        $rs = db_query($sql);
+
+        if (!$rs && pg_num_rows($rs) == 0) {
+            throw new Exception("Não foi encontrado um recurso para os filtros informados.");
+        }
+
+        $recursos = [];
+        while ($state = pg_fetch_object($rs)) {
+            $recursos[] = $state;
+        }
+
+        return $recursos;
+    }
+
+
+
     /**
-     * @param string $fonteRecurso
+     * @param string $subrecurso
      * @param string $outrosFiltros
      * @return array
      * @throws Exception
+     * @deprecated O uso dessa função pode retornar recurso de outras fontes de gestão/siconfi depois das alterações
+     * no cadastro de recurso para 2023. A partir de 2023 sempre devemos tratar a fonte de gestão com o subrecurso
+     *
+     * @see self::getIdsRecursoPorGestaoSubrecurso
      */
-    public static function getIdsRecursoPorFonteRecurso($fonteRecurso, $outrosFiltros = null)
+    public static function getIdsRecursoPorSubrecurso($subrecurso, $outrosFiltros = null)
     {
-        $recursos = self::getRecursosValidosPorFonteRecurso($fonteRecurso, $outrosFiltros);
+        $recursos = self::getRecursosValidosPorSubrecurso($subrecurso, $outrosFiltros);
 
+        return array_map(function ($recurso) {
+            return $recurso->o15_codigo;
+        }, $recursos);
+    }
+
+    public static function getIdsRecursoPorGestaoSubrecurso($gestao, $subrecurso, $exercicio, $outrosFiltros = null)
+    {
+        $recursos = self::getRecursosValidosGestaoSubrecurso($gestao, $subrecurso, $exercicio, $outrosFiltros = null);
         return array_map(function ($recurso) {
             return $recurso->o15_codigo;
         }, $recursos);

@@ -1,7 +1,7 @@
 <?php
     /*
      *     E-cidade Software Publico para Gestao Municipal
-     *  Copyright (C) 2014  DBSeller Servicos de Informatica
+     *  Copyright (C) 2009  DBSeller Servicos de Informatica
      *                            www.dbseller.com.br
      *                         e-cidade@dbseller.com.br
      *
@@ -63,7 +63,7 @@
                         <strong>Código:</strong>
                     </td>
                     <td>
-                        <?
+                        <?php
                             db_input("j167_sequencial", 5, @$Ij167_sequencial, "j167_sequencial", "text", 3);
                         ?>
                     </td>
@@ -73,22 +73,22 @@
                         <?= @$Lj167_descricao ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                             db_input("j167_descricao", 50, @$Ij167_descricao, "j167_descricao", "text", $db_opcao);
                         ?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Tj167_numcgm?>">
-                        <?
+                        <?php
                             db_ancora(@$Lj167_numcgm,"js_pesquisaNumcgm(true);",$db_opcao);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                             db_input('j167_numcgm',5,$Ij167_numcgm,true,'text',$db_opcao," onchange='js_pesquisaNumcgm(false);'")
                         ?>
-                        <?
+                        <?php
                             db_input('z01_nome',41,$Iz01_nome,true,'text',3,'')
                         ?>
                     </td>
@@ -103,7 +103,7 @@
                     <td nowrap title="<?=@$Tj167_observacao?>" colspan="2">
                         <fieldset class="separator">
                             <legend><label for='j167_observacao'><?=@$Lj167_observacao?></label></legend>
-                            <?
+                            <?php
                                 db_textarea('j167_observacao',5,50,$Ij167_observacao,true,'text',$db_opcao,"")
                             ?>
                         </fieldset>
@@ -117,7 +117,7 @@
         <?php endif; ?>
     </form>
 </div>
-<? db_menu(); ?>
+<?php db_menu(); ?>
 </body>
 </html>
 <script>

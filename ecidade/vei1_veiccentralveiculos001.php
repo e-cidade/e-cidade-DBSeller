@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,13 +146,13 @@ unset($ve40_veiculos);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0">
-	<?
+	<?php
 	include(modification("forms/db_frmveiccentral.php"));
 	?>
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)||isset($excluir)){
   if($sqlerro == true){
     $db_botao=true;

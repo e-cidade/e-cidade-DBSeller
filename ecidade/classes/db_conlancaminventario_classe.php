@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancaminventario
-class cl_conlancaminventario { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c85_sequencial = 0; 
-   var $c85_codlan = 0; 
-   var $c85_escriturainventario = 0; 
-   var $c85_reduz = 0; 
-   var $c85_anousu = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conlancaminventario {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c85_sequencial = 0;
+   var $c85_codlan = 0;
+   var $c85_escriturainventario = 0;
+   var $c85_reduz = 0;
+   var $c85_anousu = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c85_sequencial = int4 = Sequencia lançamento inventario 
-                 c85_codlan = int4 = Lançamento 
-                 c85_escriturainventario = int4 = Escritura Inventário 
-                 c85_reduz = int4 = Reduzido 
-                 c85_anousu = int4 = Exercício 
+                 c85_sequencial = int4 = Sequencia lançamento inventario
+                 c85_codlan = int4 = Lançamento
+                 c85_escriturainventario = int4 = Escritura Inventário
+                 c85_reduz = int4 = Reduzido
+                 c85_anousu = int4 = Exercício
                  ";
-   //funcao construtor da classe 
-   function cl_conlancaminventario() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conlancaminventario"); 
+     $this->rotulo = new rotulo("conlancaminventario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_conlancaminventario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c85_sequencial = ($this->c85_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c85_sequencial"]:$this->c85_sequencial);
        $this->c85_codlan = ($this->c85_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c85_codlan"]:$this->c85_codlan);
@@ -83,9 +83,9 @@ class cl_conlancaminventario {
      }
    }
    // funcao para inclusao
-   function incluir ($c85_sequencial){ 
+   public function incluir ($c85_sequencial){
       $this->atualizacampos();
-     if($this->c85_codlan == null ){ 
+     if($this->c85_codlan == null ){
        $this->erro_sql = " Campo Lançamento nao Informado.";
        $this->erro_campo = "c85_codlan";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_conlancaminventario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c85_escriturainventario == null ){ 
+     if($this->c85_escriturainventario == null ){
        $this->erro_sql = " Campo Escritura Inventário nao Informado.";
        $this->erro_campo = "c85_escriturainventario";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_conlancaminventario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c85_reduz == null ){ 
+     if($this->c85_reduz == null ){
        $this->erro_sql = " Campo Reduzido nao Informado.";
        $this->erro_campo = "c85_reduz";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_conlancaminventario {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c85_anousu == null ){ 
+     if($this->c85_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "c85_anousu";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_conlancaminventario {
        return false;
      }
      if($c85_sequencial == "" || $c85_sequencial == null ){
-       $result = db_query("select nextval('conlancaminventario_c85_sequencial_seq')"); 
+       $result = db_query("select nextval('conlancaminventario_c85_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: conlancaminventario_c85_sequencial_seq do campo: c85_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: conlancaminventario_c85_sequencial_seq do campo: c85_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->c85_sequencial = pg_result($result,0,0); 
+       $this->c85_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from conlancaminventario_c85_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $c85_sequencial)){
@@ -142,10 +142,10 @@ class cl_conlancaminventario {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->c85_sequencial = $c85_sequencial; 
+         $this->c85_sequencial = $c85_sequencial;
        }
      }
-     if(($this->c85_sequencial == null) || ($this->c85_sequencial == "") ){ 
+     if(($this->c85_sequencial == null) || ($this->c85_sequencial == "") ){
        $this->erro_sql = " Campo c85_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -153,23 +153,23 @@ class cl_conlancaminventario {
        $this->erro_status = "0";
        return false;
      }
-     
+
      $sql = "insert into conlancaminventario(
-                                       c85_sequencial 
-                                      ,c85_codlan 
-                                      ,c85_escriturainventario 
-                                      ,c85_reduz 
-                                      ,c85_anousu 
+                                       c85_sequencial
+                                      ,c85_codlan
+                                      ,c85_escriturainventario
+                                      ,c85_reduz
+                                      ,c85_anousu
                        )
                 values (
-                                $this->c85_sequencial 
-                               ,$this->c85_codlan 
-                               ,$this->c85_escriturainventario 
-                               ,$this->c85_reduz 
-                               ,$this->c85_anousu 
+                                $this->c85_sequencial
+                               ,$this->c85_codlan
+                               ,$this->c85_escriturainventario
+                               ,$this->c85_reduz
+                               ,$this->c85_anousu
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lançamento inventário ($this->c85_sequencial) nao Incluído. Inclusao Abortada.";
@@ -205,16 +205,16 @@ class cl_conlancaminventario {
        $resac = db_query("insert into db_acount values($acount,3452,19510,'','".AddSlashes(pg_result($resaco,0,'c85_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c85_sequencial=null) { 
+   public function alterar ($c85_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conlancaminventario set ";
      $virgula = "";
-     if(trim($this->c85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_sequencial"])){ 
+     if(trim($this->c85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_sequencial"])){
        $sql  .= $virgula." c85_sequencial = $this->c85_sequencial ";
        $virgula = ",";
-       if(trim($this->c85_sequencial) == null ){ 
+       if(trim($this->c85_sequencial) == null ){
          $this->erro_sql = " Campo Sequencia lançamento inventario nao Informado.";
          $this->erro_campo = "c85_sequencial";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_codlan"])){ 
+     if(trim($this->c85_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_codlan"])){
        $sql  .= $virgula." c85_codlan = $this->c85_codlan ";
        $virgula = ",";
-       if(trim($this->c85_codlan) == null ){ 
+       if(trim($this->c85_codlan) == null ){
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "c85_codlan";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_escriturainventario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_escriturainventario"])){ 
+     if(trim($this->c85_escriturainventario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_escriturainventario"])){
        $sql  .= $virgula." c85_escriturainventario = $this->c85_escriturainventario ";
        $virgula = ",";
-       if(trim($this->c85_escriturainventario) == null ){ 
+       if(trim($this->c85_escriturainventario) == null ){
          $this->erro_sql = " Campo Escritura Inventário nao Informado.";
          $this->erro_campo = "c85_escriturainventario";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_reduz"])){ 
+     if(trim($this->c85_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_reduz"])){
        $sql  .= $virgula." c85_reduz = $this->c85_reduz ";
        $virgula = ",";
-       if(trim($this->c85_reduz) == null ){ 
+       if(trim($this->c85_reduz) == null ){
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "c85_reduz";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_anousu"])){ 
+     if(trim($this->c85_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_anousu"])){
        $sql  .= $virgula." c85_anousu = $this->c85_anousu ";
        $virgula = ",";
-       if(trim($this->c85_anousu) == null ){ 
+       if(trim($this->c85_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c85_anousu";
          $this->erro_banco = "";
@@ -300,7 +300,7 @@ class cl_conlancaminventario {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamento inventário nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c85_sequencial;
@@ -328,14 +328,14 @@ class cl_conlancaminventario {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c85_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c85_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c85_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -365,7 +365,7 @@ class cl_conlancaminventario {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamento inventário nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c85_sequencial;
@@ -393,11 +393,11 @@ class cl_conlancaminventario {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -419,11 +419,11 @@ class cl_conlancaminventario {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,15 +445,15 @@ class cl_conlancaminventario {
      $sql2 = "";
      if($dbwhere==""){
        if($c85_sequencial!=null ){
-         $sql2 .= " where conlancaminventario.c85_sequencial = $c85_sequencial "; 
-       } 
+         $sql2 .= " where conlancaminventario.c85_sequencial = $c85_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,11 +462,11 @@ class cl_conlancaminventario {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,15 +479,15 @@ class cl_conlancaminventario {
      $sql2 = "";
      if($dbwhere==""){
        if($c85_sequencial!=null ){
-         $sql2 .= " where conlancaminventario.c85_sequencial = $c85_sequencial "; 
-       } 
+         $sql2 .= " where conlancaminventario.c85_sequencial = $c85_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -99,7 +99,7 @@ $vc16_n_quant            = 1;
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?db_input('vc16_i_codigo',10,$Ivc16_i_codigo,true,'hidden',$db_opcao,'');
+<?php db_input('vc16_i_codigo',10,$Ivc16_i_codigo,true,'hidden',$db_opcao,'');
   db_input('vc16_i_dosevacina',10,$Ivc16_i_dosevacina,true,'hidden',$db_opcao,'');
   db_input('vc16_i_cgs',10,$Ivc16_i_cgs,true,'hidden',$db_opcao,'');
   db_input('iVacina',10,"",true,'hidden',$db_opcao,'');
@@ -112,15 +112,15 @@ $vc16_n_quant            = 1;
   <tr>
      <td align="right" nowrap><b>Vacina:</b></td>
      <td>
-        <?db_input('sVacinaDose',28,"",true,'text',3,'');?>
+        <?php db_input('sVacinaDose',28,"",true,'text',3,'');?>
      </td>
   <tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tvc16_i_dosevacina?>" >
-       <?db_ancora(@$Lvc17_i_sala,"parent.js_pesquisavc17_i_sala(true);",$db_opcao);?>
+       <?php db_ancora(@$Lvc17_i_sala,"parent.js_pesquisavc17_i_sala(true);",$db_opcao);?>
     </td>
-    <td> 
-      <?db_input('vc17_i_sala',5,$Ivc17_i_sala,true,'text',$db_opcao," onchange='parent.js_pesquisavc17_i_sala(false);'");
+    <td>
+      <?php db_input('vc17_i_sala',5,$Ivc17_i_sala,true,'text',$db_opcao," onchange='parent.js_pesquisavc17_i_sala(false);'");
         db_input('vc01_c_nome',20,$Ivc01_c_nome,true,'text',3,'');?>
     </td>
   </tr>
@@ -129,32 +129,32 @@ $vc16_n_quant            = 1;
        <?=@$Lm61_descr?>
     </td>
     <td>
-      <?db_input('m61_descr',10,$Im61_descr,true,'text',3,"")?>
+      <?php db_input('m61_descr',10,$Im61_descr,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tvc16_n_quant?>">
        <?=@$Lvc16_n_quant?>
     </td>
-    <td> 
-      <?db_input('vc16_n_quant',10,$Ivc16_n_quant,true,'text',$db_opcao,"")?>
+    <td>
+      <?php db_input('vc16_n_quant',10,$Ivc16_n_quant,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tvc16_d_dataaplicada?>">
       <?=@$Lvc16_d_dataaplicada?>
     </td>
-    <td> 
-      <?db_inputdata('vc16_d_dataaplicada',@$vc16_d_dataaplicada_dia,@$vc16_d_dataaplicada_mes,@$vc16_d_dataaplicada_ano,
+    <td>
+      <?php db_inputdata('vc16_d_dataaplicada',@$vc16_d_dataaplicada_dia,@$vc16_d_dataaplicada_mes,@$vc16_d_dataaplicada_ano,
                      true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tvc17_i_matetoqueitemlote?>">
-       <?db_ancora(@$Lvc17_i_matetoqueitemlote,"parent.js_pesquisavc17_i_vacinalote(true);",$db_opcao);?>
+       <?php db_ancora(@$Lvc17_i_matetoqueitemlote,"parent.js_pesquisavc17_i_vacinalote(true);",$db_opcao);?>
     </td>
     <td>
-      <?db_input('vc17_i_matetoqueitemlote',10,$Ivc17_i_matetoqueitemlote,true,'hidden',$db_opcao,'');
+      <?php db_input('vc17_i_matetoqueitemlote',10,$Ivc17_i_matetoqueitemlote,true,'hidden',$db_opcao,'');
         db_input('m77_lote',10,$Im77_lote,true,'text',$db_opcao," onchange='parent.js_pesquisavc17_i_vacinalote(false);'");
         echo"<strong><b>Saldo:</b></strong>";
         db_input('saldo',5,"",true,'text',3,'');?>
@@ -165,30 +165,30 @@ $vc16_n_quant            = 1;
       <?=@$Lm77_dtvalidade?>
     </td>
     <td>
-      <?db_inputdata('m77_dtvalidade',@$m77_dtvalidade_dia,@$m77_dtvalidade_mes,@$m77_dtvalidade_ano,true,'text',3,"")?>
+      <?php db_inputdata('m77_dtvalidade',@$m77_dtvalidade_dia,@$m77_dtvalidade_mes,@$m77_dtvalidade_ano,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tvc16_t_obs?>">
       <?=@$Lvc16_t_obs?>
     </td>
-    <td> 
-      <?db_textarea('vc16_t_obs',2,20,$Ivc16_t_obs,true,'text',$db_opcao,"")?>
+    <td>
+      <?php db_textarea('vc16_t_obs',2,20,$Ivc16_t_obs,true,'text',$db_opcao,"")?>
     </td>
   </tr>
 </table>
 </center>
-<input name = "<?=($db_opcao==1?"incluir":"alterar")?>" type = "submit" id = "db_opcao" 
+<input name = "<?=($db_opcao==1?"incluir":"alterar")?>" type = "submit" id = "db_opcao"
        value = "<?=($db_opcao==1?"Aplicar":"Alterar")?>" onClick = "return js_valida()" <?=$sTrava?>
        <?=($db_opcao==3?'style="display: none;"':'')?> >
-<input name = "anula"  type = "button" id = "anula"  value = "Anular"   
-       onClick = "parent.js_CancelaAplica(document.form1.vc16_i_codigo.value,<?=$vc16_i_cgs?>)" 
+<input name = "anula"  type = "button" id = "anula"  value = "Anular"
+       onClick = "parent.js_CancelaAplica(document.form1.vc16_i_codigo.value,<?=$vc16_i_cgs?>)"
        <?=($db_opcao==1?"disabled":"")?> <?=$sTrava?> >
 <input name = "cancela" type = "button" id = "canela" value = "Cancelar" onClick = "parent.js_fechaAplica(2)" >
 </form>
 <script>
   function js_valida() {
-    
+
     aVet = document.form1.vc16_d_dataaplicada.value.split('/');
     data = new Date(aVet[2],aVet[1],aVet[0]);
     hoje = new Date(<?=date("Y",db_getsession("DB_datausu"))?>,
@@ -200,7 +200,7 @@ $vc16_n_quant            = 1;
       return false;
 
     }
-    
+
     if (document.form1.vc16_n_quant.value > document.form1.saldo.value) {
 
       alert('Quantidade aplicada não pode ser maior que o saldo!');

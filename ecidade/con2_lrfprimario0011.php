@@ -114,13 +114,13 @@ $sLabelMsg = "Anexo VI - Demonstrativo do Resultado Primário";
                     <table align="center">
                         <tr>
                             <td align="center" colspan="3">
-                                <? db_selinstit('', 300, 100); ?>
+                                <?php db_selinstit('', 300, 100); ?>
                             </td>
                         </tr>
 
                         <tr>
                             <td colspan=2 nowrap><b>Período :</b>
-                                <?
+                                <?php
                                 if ($anousu < 2010) {
 
                                     $aListaPeriodos = array(

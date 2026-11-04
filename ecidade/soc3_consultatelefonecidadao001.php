@@ -42,7 +42,7 @@ require_once(modification("model/social/CidadaoTelefone.model.php"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
   db_app::load("scripts.js, prototype.js, strings.js, dates.js, datagrid.widget.js");
   db_app::load("estilos.css, grid.style.css");
   ?>

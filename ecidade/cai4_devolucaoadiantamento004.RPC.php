@@ -185,6 +185,14 @@ try {
         throw new BusinessException( _M("financeiro.caixa.cai4_devolucaoadiantamento004.movimento_nao_encontrado") );
       }
 
+      $codigoOrdem = "";
+      $empord = new cl_empord();
+      $sqlOrdem = $empord->sql_query_file( null, null, "e82_codord", null, "e82_codmov = {$oParam->iCodigoMovimentacao}");
+      $rsOrdem = $empord->sql_record($sqlOrdem);
+      if ($empord->numrows > 0) {
+        $codigoOrdem = db_utils::fieldsMemory($rsOrdem, 0)->e82_codord;
+      }
+
       $oEmpenhoQuery      = db_utils::fieldsMemory($rsEmpenho, 0);
       $oEmpenhoFinanceiro = new EmpenhoFinanceiro($oEmpenhoQuery->e45_numemp);
       $oDataEmissao       = new DBDate($oEmpenhoFinanceiro->getDataEmissao());
@@ -196,6 +204,7 @@ try {
       $oRetorno->iCgmFornecedor       = $oEmpenhoFinanceiro->getFornecedor()->getCodigo();
       $oRetorno->sNomeFornecedor      = $oEmpenhoFinanceiro->getFornecedor()->getNome();
       $oRetorno->lHabilitaEstorno     = ($oDataEmissao->getAno() == db_getsession("DB_anousu"));
+      $oRetorno->iCodigoOrdem = $codigoOrdem;
 
       break;
 

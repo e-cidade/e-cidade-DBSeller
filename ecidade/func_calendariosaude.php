@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
- 
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -90,7 +90,7 @@ class calendario{
 
     return false;
   }
-   
+
 	function cria($dia, $mes, $ano, $marca = 0, $sd27_i_codigo, $datafinal, $result_unidademedico, $fechar = false) {
 
 		$this->inicializa();
@@ -113,14 +113,14 @@ class calendario{
 			$valor = $this->sem[$diasem] - 1;
 			$str   = "<tr align=center >".$this->aux($valor);
 		}
-		
+
 		//Pega os dias da semana
 		for( $x = 0; $x < pg_num_rows( $result_unidademedico ); $x++) {
 
 			$obj_result   = db_utils::fieldsMemory($result_unidademedico,$x);
 			$arr_diasem[] = $obj_result->sd30_i_diasemana;
 		}
-		
+
 		for($i = 1; $i < ($last + 1); $i++) {       //; pega todos os dias do mes informado....
 
 			$diasem = date ("D", mktime (0,0,0,$mes,$i,$ano));
@@ -135,7 +135,7 @@ class calendario{
 
 			$data_script = "$ano-$mes-$s";
 			$str        .= "<td     ";
-			
+
 			if($marca != 0) {  // marca o dia atual em laranja
 				$str .= "onmouseover=\"js_mostra('parecerr".$i."',event); \" onmouseout=\"js_oculta('parecerr".$i."',event);\" ";
 			}
@@ -143,9 +143,9 @@ class calendario{
 			if($this->sem[$diasem] == 1 || $this->sem[$diasem] == 7) {
 				$str.="  bgcolor=#CCCCCC ";
 			}
-			
+
 			$str .=" width=\"25\" ";
-			
+
 			if( ( $ano.str_pad($mes,2,'0',STR_PAD_LEFT).str_pad($i,2,'0',STR_PAD_LEFT) >= date("Ymd") ) &&
 				( isset($arr_diasem) && $this->arr_search( $arr_diasem, $this->sem[$diasem] ) )
 			) {
@@ -179,9 +179,9 @@ class calendario{
 				$str_query .= "         or ( sd30_d_valfinal is not null and sd30_d_valfinal > '{$ano}/{$mes}/{$s}' ) ) ";
 				$str_query .= "   and (    sd30_d_valinicial is null ";
 				$str_query .= "         or ( sd30_d_valinicial is not null and sd30_d_valinicial <= '{$ano}/{$mes}/{$s}' ) )";
-             	
+
 				$result_undmedhorario = db_query( $str_query ) or die( "ERRO: <p> $str_query ");
-				
+
 				$str_query  = "select *, case when sd06_i_tipo = 1 then ";
         $str_query .= "                  'Folga' ";
         $str_query .= "               else ";
@@ -190,7 +190,7 @@ class calendario{
         $str_query .= " from ausencias ";
 				$str_query .= "where sd06_i_especmed = {$sd27_i_codigo} ";
         $str_query .= "  and '{$ano}/{$mes}/{$s}' between sd06_d_inicio and sd06_d_fim";
-            				  
+
 				$result_ausencias = db_query( $str_query );
 				$booMostradiv     = false;
 
@@ -228,12 +228,12 @@ class calendario{
 							$str_cor = " bgcolor=yellow > ";  // marcar o dia atual
 						}
 					}
-					
+
 					$str    .= $str_cor;
 					$str    .=" <a href=\"\" onclick=\"return janela($s,$mes,$ano,$fechar,".($obj_undmedhorario->sd30_i_fichas - $obj_undmedhorario->total_agendado ).");\"><font size='4'> $s</a> ";
 					$booMostradiv = true;
 				}
-				
+
 				if( $booMostradiv ) {
 
 					//*Div
@@ -264,14 +264,14 @@ class calendario{
 			} else {
         $str .="><font size='4'> $s";
 			}
-			
+
 			$str .= "</font> </td>";
-			
+
 			if($this->sem[$diasem] == 7) {
 				$str .= "</tr>";
 			}
 		}
-		
+
 		$diasem = date ("D", mktime (0,0,0,$mes,$last,$ano));
 
 		if($this->sem[$diasem] != 7) {
@@ -291,7 +291,7 @@ class calendario{
 			        <FONT SIZE='1' FACE='Verdana' COLOR='black'>
 			           <a href=\"func_calendariosaude.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&mes_solicitado=".($mes)."&ano_solicitado=".($ano-1)."&sd27_i_codigo=".@$sd27_i_codigo." \"> << </a>
 			           	   $ano
-				         <a href=\"func_calendariosaude.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&mes_solicitado=".($mes)."&ano_solicitado=".($ano+1)."&sd27_i_codigo=".@$sd27_i_codigo." \"> >> </a>   
+				         <a href=\"func_calendariosaude.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&mes_solicitado=".($mes)."&ano_solicitado=".($ano+1)."&sd27_i_codigo=".@$sd27_i_codigo." \"> >> </a>
 			        </font>
 			       </td>
 			     </tr>
@@ -301,8 +301,8 @@ class calendario{
 			         <a href=\"func_calendariosaude.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&ano_solicitado=".($ano)."&mes_solicitado=".($mes-1)."&sd27_i_codigo=".@$sd27_i_codigo." \"> << </a>
 			         ".$this->mes[$mes]."
 			         <a href=\"func_calendariosaude.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&ano_solicitado=".($ano)."&mes_solicitado=".($mes+1)."&sd27_i_codigo=".@$sd27_i_codigo." \"> >> </a>
-			
-				</FONT> 
+
+				</FONT>
 			       </td>
 			     </tr>
 			     <tr align=\"center\">
@@ -322,13 +322,13 @@ class calendario{
 			       <td bgcolor='white'><font size=1>Férias</td>
 			       <td bgcolor='#00FF00'><font size=1>Liberado</td>
 			       <td bgcolor='yellow'><font size=1>Marcado</td>
-			       <td bgcolor='red'><font size=1>Lotado</td>			       			       			       
+			       <td bgcolor='red'><font size=1>Lotado</td>
 			     </tr>
 			    </table>
 			     ";
-		echo $str; 
-	} //fim function 
-} 
+		echo $str;
+	} //fim function
+}
 
 $clcalendario = new calendario;
 
@@ -357,7 +357,7 @@ if( isset($sd27_i_codigo) && (int)@$sd27_i_codigo != 0 ) {
 	$strData .= date("$mes_solicitado")."/";
 	$strData .= date( "t", mktime(0, 0, 0, $mes_solicitado, 1, $ano_solicitado) );
 	//Pega total de dias para agendamentos
-	
+
 	$str_query  = "select *, current_date + sd04_i_numerodias as datafinal ";
   $str_query .= "  from undmedhorario ";
 	$str_query .= "       inner join especmedico    on sd27_i_codigo = sd30_i_undmed ";
@@ -388,7 +388,7 @@ if( isset($sd27_i_codigo) && (int)@$sd27_i_codigo != 0 ) {
 		echo "Nenhuma informação encontrada";
 	}
 } else {
-	echo "Não foi informado Profissional."; 
+	echo "Não foi informado Profissional.";
 }
 ?>
 
@@ -430,14 +430,14 @@ function janela(d, m, a, fechar, saldo) {
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";
   echo "parent.js_comparaDatas".$nome_objeto_data."((d<10?'0'+d:d),(m<10?'0'+m:m),a);\n";
-  
+
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').setfocus;\n";
-  
+
   if (isset($shutdown_function) && ($shutdown_function!='none')){
     echo $shutdown_function."\n";
   }
   ?>
-  
+
   if( fechar == true ) {
 
   	x = 'parent.iframe_data_<?=$nome_objeto_data?>.hide();\n';

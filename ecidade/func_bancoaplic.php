@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clbancoaplic->rotulo->label("k90_id");
               <?=$Lk90_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k90_id",10,$Ik90_id,true,"text",4,"","chave_k90_id");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbancoaplic->rotulo->label("k90_id");
               <?=$Lk90_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k90_id",10,$Ik90_id,true,"text",4,"","chave_k90_id");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbancoaplic->rotulo->label("k90_id");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bancoaplic.php")==true){
@@ -118,12 +118,12 @@ $clbancoaplic->rotulo->label("k90_id");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

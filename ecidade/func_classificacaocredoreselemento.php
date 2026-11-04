@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clclassificacaocredoreselemento->rotulo->label("cc32_classificacaocredores");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lcc32_sequencial?></label></td>
-          <td><? db_input("cc32_sequencial",10,$Icc32_sequencial,true,"text",4,"","chave_cc32_sequencial"); ?></td>
+          <td><?php db_input("cc32_sequencial",10,$Icc32_sequencial,true,"text",4,"","chave_cc32_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lcc32_classificacaocredores?></label></td>
-          <td><? db_input("cc32_classificacaocredores",10,$Icc32_classificacaocredores,true,"text",4,"","chave_cc32_classificacaocredores");?></td>
+          <td><?php db_input("cc32_classificacaocredores",10,$Icc32_classificacaocredores,true,"text",4,"","chave_cc32_classificacaocredores");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clclassificacaocredoreselemento->rotulo->label("cc32_classificacaocredores");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_classificacaocredoreselemento.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classificacaocredoreselemento.php")==true){
@@ -78,12 +78,12 @@ $clclassificacaocredoreselemento->rotulo->label("cc32_classificacaocredores");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

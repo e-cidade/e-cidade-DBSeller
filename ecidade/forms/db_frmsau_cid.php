@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clsau_cid->rotulo->label();
        <?=@$Lsd70_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd70_i_codigo',5,$Isd70_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd70_i_codigo',5,$Isd70_i_codigo,true,'text',3,"")
        <?=@$Lsd70_c_cid?>
     </td>
     <td>
-<?
+<?php
 db_input('sd70_c_cid',4,$Isd70_c_cid,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('sd70_c_cid',4,$Isd70_c_cid,true,'text',$db_opcao,"")
        <?=@$Lsd70_c_nome?>
     </td>
     <td>
-<?
+<?php
 db_input('sd70_c_nome',60,$Isd70_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('sd70_c_nome',60,$Isd70_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd70_i_agravo?>
     </td>
     <td>
-      <?
+      <?php
        include(modification("classes/db_sau_agravo_classe.php"));
        $clsau_agravo = new cl_sau_agravo;
        $result = $clsau_agravo->sql_record($clsau_agravo->sql_query("","*"));
@@ -79,7 +79,7 @@ db_input('sd70_c_nome',60,$Isd70_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd70_c_sexo?>
     </td>
     <td>
-<?
+<?php
 $x = array('F'=>'Feminino','I'=>'Indiferente/Ambos','M'=>'Masculino');
 db_select('sd70_c_sexo',$x,true,$db_opcao,"");
 ?>
@@ -96,7 +96,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_cid.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

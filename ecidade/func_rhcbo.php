@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhcbo->rotulo->label("rh70_descr");
               <?=$Lrh70_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("rh70_sequencial",10,$Irh70_sequencial,true,"text",4,"","chave_rh70_sequencial");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clrhcbo->rotulo->label("rh70_descr");
               <?=$Lrh70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("rh70_descr",40,$Irh70_descr,true,"text",4,"","chave_rh70_descr");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clrhcbo->rotulo->label("rh70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhcbo.php")==true){
@@ -160,12 +160,12 @@ $clrhcbo->rotulo->label("rh70_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

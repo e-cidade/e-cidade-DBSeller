@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
       </table>
     </fieldset>
   </td>
-<?
+<?php
 }
 
 ?>
@@ -101,7 +101,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                 <b>Profissional:</b>
               </td>
               <td nowrap>
-                <?
+                <?php
                 db_input('sd06_i_medico', 10, '', true, 'text', 3);
                 db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, '');
                 ?>
@@ -113,7 +113,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                 <b>Unidade:</b>
               </td>
               <td nowrap>
-                <?
+                <?php
                 db_input('sd06_i_unidade', 10, '', true, 'text', 3);
                 db_input('descrdepto', 50, $Idescrdepto, true, 'text', 3, '');
                 ?>
@@ -125,7 +125,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                 <?=$Lsd06_i_especmed?>
               </td>
               <td nowrap>
-                <?
+                <?php
                 db_input('sd06_i_especmed', 10, $Isd06_i_especmed, true, 'text', 3);
                 db_input('rh70_descr', 50, $Irh70_descr, true, 'text', 3, '');
                 ?>
@@ -137,7 +137,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                 <?=$Lsd06_i_tipo?>
               </td>
               <td>
-                <?
+                <?php
                 $sSql = $oDaoSauMotivoAusencia->sql_query_file(null, 's139_i_codigo, s139_c_descr', 's139_i_codigo');
                 $rs   = $oDaoSauMotivoAusencia->sql_record($sSql);
                 if ($oDaoSauMotivoAusencia->numrows > 0) {
@@ -161,7 +161,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                               <?=$Lsd06_d_inicio?>
                             </td>
                             <td>
-                               <?
+                               <?php
                                if (isset($sd06_d_inicio)) {
 
                                  $aHora = explode('-', $sd06_d_inicio);
@@ -188,7 +188,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                               <?=$Lsd06_d_fim?>
                             </td>
                             <td>
-                              <?
+                              <?php
                               if (isset($sd06_d_fim)) {
 
                                  $aHora = explode('-', $sd06_d_fim);
@@ -213,7 +213,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                         </table>
                       </fieldset>
                     </td>
-                    <?
+                    <?php
                     $aHoraIni = explode(',', $sd06_c_horainicio);
                     $aHoraFim = explode(',', $sd06_c_horafim);
                     $iTam     = count($aHoraFim);
@@ -246,7 +246,7 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
 </tr>
 </table>
 </center>
-<?
+<?php
 /*
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")

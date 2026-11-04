@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed82_i_codigo");
        <?=@$Led222_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed222_i_codigo',10,$Ied222_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_itinerario?>">
-       <?
+       <?php
        db_ancora(@$Led222_i_itinerario,"js_pesquisaed222_i_itinerario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed222_i_itinerario',10,$Ied222_i_itinerario,true,'text',$db_opcao," onchange='js_pesquisaed222_i_itinerario(false);'")
 ?>
-       <?
+       <?php
 db_input('ed218_i_codigo',10,$Ied218_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_escolaproc?>">
-       <?
+       <?php
        db_ancora(@$Led222_i_escolaproc,"js_pesquisaed222_i_escolaproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed222_i_escolaproc',10,$Ied222_i_escolaproc,true,'text',$db_opcao," onchange='js_pesquisaed222_i_escolaproc(false);'")
 ?>
-       <?
+       <?php
 db_input('ed82_i_codigo',20,$Ied82_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itinerarioescolaproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

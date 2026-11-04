@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE tipoassunto
 class cl_tipoassunto { 
@@ -24,13 +24,13 @@ class cl_tipoassunto {
                  bi30_descricao = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassunto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassunto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_tipoassunto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi30_sequencial = ($this->bi30_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["bi30_sequencial"]:$this->bi30_sequencial);
        $this->bi30_descricao = ($this->bi30_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["bi30_descricao"]:$this->bi30_descricao);
@@ -48,7 +48,7 @@ class cl_tipoassunto {
      }
    }
    // funcao para Inclusão
-   function incluir ($bi30_sequencial){ 
+   public function incluir ($bi30_sequencial){ 
       $this->atualizacampos();
      if($this->bi30_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

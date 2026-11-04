@@ -50,7 +50,7 @@ try {
     case 'tiposDocumento':
 
       $oDaoTipoDocumento = new cl_lab_tipodocumento();
-      $sSqlTipoDocumento = $oDaoTipoDocumento->sql_query_file();
+      $sSqlTipoDocumento = $oDaoTipoDocumento->sql_query_file(null,"*",null,"lab_tipodocumento.la33_ativo = 't'");
       $rsTipoDocumento   = db_query( $sSqlTipoDocumento );
 
       if( !$rsTipoDocumento ) {

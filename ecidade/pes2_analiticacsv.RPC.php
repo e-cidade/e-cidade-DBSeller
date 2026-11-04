@@ -24,18 +24,18 @@
  * Copia da licenca no diretorio licenca/licenca_en.txt
  * licenca/licenca_pt.txt
  */
-require_once (modification("dbforms/db_funcoes.php"));
-require_once (modification("libs/JSON.php"));
-require_once (modification("libs/db_stdlib.php"));
-require_once (modification("libs/db_utils.php"));
-require_once (modification("libs/db_app.utils.php"));
-require_once (modification("std/db_stdClass.php"));
-require_once (modification("libs/db_conecta_plugin.php"));
-require_once (modification("libs/db_sessoes.php"));
-require_once (modification("model/pessoal/relatorios/RelatorioFolhaSinteticoAnalitico.model.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/JSON.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_app.utils.php"));
+require_once(modification("std/db_stdClass.php"));
+require_once(modification("libs/db_conecta_plugin.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("model/pessoal/relatorios/RelatorioFolhaSinteticoAnalitico.model.php"));
 
 $oJson = new services_json();
-$oParam = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\", "", $_POST["json"])));
+$oParam = $oJson->decode(db_stdClass::db_stripTagsJsonSemEscape(str_replace("\\", "", $_POST["json"])));
 
 $oRetorno = new stdClass();
 $oRetorno->status = 1;
@@ -50,12 +50,9 @@ $iAgrupador = "";
 $aSelecionados = "";
 
 try {
-
     switch ($oParam->exec) {
-
         case 'gerarCsv':
-
-            $aRubricasFamilia = array(
+            $aRubricasFamilia = [
                 '0014',
                 'R918',
                 'R920',
@@ -71,42 +68,34 @@ try {
                 '0143',
                 'R919',
                 'R918'
-            );
+            ];
 
-            $aRubricaPrevidencia = array(
+            $aRubricaPrevidencia = [
                 "R993"
-            );
-            $aRubricasIrrf = array(
+            ];
+            $aRubricasIrrf = [
                 "R913",
                 "R914",
                 "R915"
-            );
+            ];
 
             $sCampos = "distinct rhpessoal.* ";
 
             if ($oParam->sFaixareg != "") {
-
                 $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixareg));
             } elseif ($oParam->sFaixalot != "") {
-
                 $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixalot));
             } elseif ($oParam->sFaixaloc != "") {
-
                 $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixaloc));
             } elseif ($oParam->sFaixaorg != "") {
-
                 $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixaorg));
             } elseif (! empty($oParam->iRegini) && ! (empty($oParam->iRegfim))) {
-
                 $oDadosCsv->setFiltroAgrupador($oParam->iRegini, $oParam->iRegfim);
             } elseif (! empty($oParam->iLotini) && ! (empty($oParam->iLotfim))) {
-
                 $oDadosCsv->setFiltroAgrupador($oParam->iLotini, $oParam->iLotfim);
             } elseif (! empty($oParam->iLocini) && ! (empty($oParam->iLocfim))) {
-
                 $oDadosCsv->setFiltroAgrupador($oParam->iLocini, $oParam->iLocfim);
             } elseif (! empty($oParam->iOrgini) && ! (empty($oParam->iOrgfim))) {
-
                 $oDadosCsv->setFiltroAgrupador($oParam->iOrgini, $oParam->iOrgfim);
             }
 
@@ -179,16 +168,18 @@ try {
 
             $tem_selecao = 'Nao';
             if ($oParam->sSel != '') {
-                $sql_selecao = "select r44_descr from selecao where r44_selec = " . $oParam->sSel . " and r44_instit = " . db_getsession('DB_instit');
+                $sql_selecao = "select r44_descr 
+                                  from selecao 
+                                 where r44_selec = " . $oParam->sSel . " 
+                                   and r44_instit = " . db_getsession('DB_instit');
                 $res_selecao = pg_query($sql_selecao);
-                if (pg_numrows($res_selecao) > 0) {
+                if (pg_num_rows($res_selecao) > 0) {
                     $tem_selecao = 'Sim';
                     db_fieldsmemory($res_selecao, 0);
                 }
             }
 
             if ($iTipoFolha == "2") {
-
                 // setamos o ponto complementar
                 $oDadosCsv->setCodigoComplementar($oParam->sSemest);
             }
@@ -226,6 +217,7 @@ try {
             $aDadosRelatorio["sInstrucao"]         = "Instrucao";
             $aDadosRelatorio["iCodigoPadrao"]      = "Cód. Padrão";
             $aDadosRelatorio["sDescricaoPadrao"]   = "Descrição Padrão";
+            $aDadosRelatorio["iTabelaPrevidencia"] = "Tabela da Previdência";
             $aDadosRelatorio["sBanco"]             = "Banco";
             $aDadosRelatorio["sAgencia"]           = "Agencia";
             $aDadosRelatorio["sConta"]             = "Conta";
@@ -234,7 +226,6 @@ try {
                     $aDadosRelatorio["quant_{$oRubrica->rubrica}"] = "Quant_{$oRubrica->rubrica}";
                     $aDadosRelatorio["valor_{$oRubrica->rubrica}"] = "Valor_{$oRubrica->rubrica}";
                 }
-                
             } else {
                 $aDadosRelatorio["nPrevidenciaSintetico"] = "Previdência";
                 $aDadosRelatorio["nIrrfSintetico"]        = "I.R.R.F";
@@ -274,6 +265,7 @@ try {
                 $aDadosRelatorio["sInstrucao"]         = $oDadosServidor->instrucao;
                 $aDadosRelatorio["iCodigoPadrao"]      = $oDadosServidor->codigo_padrao;
                 $aDadosRelatorio["sDescricaoPadrao"]   = $oDadosServidor->descr_padrao;
+                $aDadosRelatorio["iTabelaPrevidencia"] = $oDadosServidor->tabela_previdencia;
                 $aDadosRelatorio["sBanco"]             = $oDadosServidor->banco;
                 $aDadosRelatorio["sAgencia"]           = $oDadosServidor->agencia;
                 $aDadosRelatorio["sConta"]             = $oDadosServidor->conta;
@@ -299,9 +291,9 @@ try {
 
                 if ($oDadosServidor->reajuste_paridade == 0) {
                     $aDadosRelatorio["sReajusteParidade"] = "";
-                } else if ($oDadosServidor->reajuste_paridade == 1) {
+                } elseif ($oDadosServidor->reajuste_paridade == 1) {
                     $aDadosRelatorio["sReajusteParidade"] = "Real";
-                } else if ($oDadosServidor->reajuste_paridade == 2) {
+                } elseif ($oDadosServidor->reajuste_paridade == 2) {
                     $aDadosRelatorio["sReajusteParidade"] = "Paridade";
                 }
                 /**

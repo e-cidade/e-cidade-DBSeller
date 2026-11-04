@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagemovconta
-class cl_empagemovconta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e98_codmov = 0; 
-   var $e98_contabanco = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_empagemovconta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e98_codmov = 0;
+   var $e98_contabanco = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e98_codmov = int4 = Movimento 
-                 e98_contabanco = int4 = Código Conta 
+                 e98_codmov = int4 = Movimento
+                 e98_contabanco = int4 = Código Conta
                  ";
-   //funcao construtor da classe 
-   function cl_empagemovconta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("empagemovconta"); 
+     $this->rotulo = new rotulo("empagemovconta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_empagemovconta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e98_codmov = ($this->e98_codmov == ""?@$GLOBALS["HTTP_POST_VARS"]["e98_codmov"]:$this->e98_codmov);
        $this->e98_contabanco = ($this->e98_contabanco == ""?@$GLOBALS["HTTP_POST_VARS"]["e98_contabanco"]:$this->e98_contabanco);
@@ -74,9 +74,9 @@ class cl_empagemovconta {
      }
    }
    // funcao para inclusao
-   function incluir ($e98_codmov){ 
+   public function incluir ($e98_codmov){
       $this->atualizacampos();
-     if($this->e98_contabanco == null ){ 
+     if($this->e98_contabanco == null ){
        $this->erro_sql = " Campo Código Conta nao Informado.";
        $this->erro_campo = "e98_contabanco";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_empagemovconta {
        $this->erro_status = "0";
        return false;
      }
-       $this->e98_codmov = $e98_codmov; 
-     if(($this->e98_codmov == null) || ($this->e98_codmov == "") ){ 
+       $this->e98_codmov = $e98_codmov;
+     if(($this->e98_codmov == null) || ($this->e98_codmov == "") ){
        $this->erro_sql = " Campo e98_codmov nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_empagemovconta {
        return false;
      }
      $sql = "insert into empagemovconta(
-                                       e98_codmov 
-                                      ,e98_contabanco 
+                                       e98_codmov
+                                      ,e98_contabanco
                        )
                 values (
-                                $this->e98_codmov 
-                               ,$this->e98_contabanco 
+                                $this->e98_codmov
+                               ,$this->e98_contabanco
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Contas em que os movimentos foram depositados ($this->e98_codmov) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_empagemovconta {
        $resac = db_query("insert into db_acount values($acount,1175,7101,'','".AddSlashes(pg_result($resaco,0,'e98_contabanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e98_codmov=null) { 
+   public function alterar ($e98_codmov=null) {
       $this->atualizacampos();
      $sql = " update empagemovconta set ";
      $virgula = "";
-     if(trim($this->e98_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_codmov"])){ 
+     if(trim($this->e98_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_codmov"])){
        $sql  .= $virgula." e98_codmov = $this->e98_codmov ";
        $virgula = ",";
-       if(trim($this->e98_codmov) == null ){ 
+       if(trim($this->e98_codmov) == null ){
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "e98_codmov";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_empagemovconta {
          return false;
        }
      }
-     if(trim($this->e98_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_contabanco"])){ 
+     if(trim($this->e98_contabanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e98_contabanco"])){
        $sql  .= $virgula." e98_contabanco = $this->e98_contabanco ";
        $virgula = ",";
-       if(trim($this->e98_contabanco) == null ){ 
+       if(trim($this->e98_contabanco) == null ){
          $this->erro_sql = " Campo Código Conta nao Informado.";
          $this->erro_campo = "e98_contabanco";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_empagemovconta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contas em que os movimentos foram depositados nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e98_codmov;
@@ -214,14 +214,14 @@ class cl_empagemovconta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e98_codmov=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e98_codmov=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e98_codmov));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_empagemovconta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Contas em que os movimentos foram depositados nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e98_codmov;
@@ -276,11 +276,11 @@ class cl_empagemovconta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_empagemovconta {
       }
      return $result;
    }
-   function sql_query ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -324,15 +324,15 @@ class cl_empagemovconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e98_codmov!=null ){
-         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov "; 
-       } 
+         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -341,10 +341,10 @@ class cl_empagemovconta {
      }
      return $sql;
   }
-   function sql_query_conta ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_conta ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,15 +359,15 @@ class cl_empagemovconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e98_codmov!=null ){
-         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov "; 
-       } 
+         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -376,10 +376,10 @@ class cl_empagemovconta {
      }
      return $sql;
   }
-   function sql_query_contausada ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_contausada ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,15 +394,15 @@ class cl_empagemovconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e98_codmov!=null ){
-         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov "; 
-       } 
+         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,10 +411,10 @@ class cl_empagemovconta {
      }
      return $sql;
   }
-   function sql_query_file ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e98_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,15 +427,15 @@ class cl_empagemovconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e98_codmov!=null ){
-         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov "; 
-       } 
+         $sql2 .= " where empagemovconta.e98_codmov = $e98_codmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

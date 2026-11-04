@@ -34,7 +34,13 @@ class AlunoRepository extends Repository
             return null;
         }
 
-        return Aluno::fromState(pg_fetch_array($rs));
+        $aluno = Aluno::fromState(pg_fetch_array($rs));
+
+        $alunoNecessidadeRepository = new AlunoNecessidadeEspecialRepository();
+        $necessidades = $alunoNecessidadeRepository->scopeAluno($aluno)->get();
+        $aluno->setNecessidades($necessidades);
+
+        return $aluno;
     }
 
     /**

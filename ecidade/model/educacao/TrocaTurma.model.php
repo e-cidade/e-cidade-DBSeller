@@ -97,7 +97,7 @@ class TrocaTurma
         $iMatricula = $this->getMatricula()->getMatricula();
         $oDaoMatriculaAnterior = new cl_matricula();
         $sCamposMatriculaAnterior = "ed60_i_codigo, ed60_i_turma";
-        $sWhereMatriculaAnterior = "ed60_c_situacao = 'TROCA DE TURMA' AND ed60_matricula = {$iMatricula}";
+        $sWhereMatriculaAnterior = "(ed60_c_situacao = 'TROCA DE TURMA' or ed60_c_situacao = 'TROCA DE MODALIDADE') AND ed60_matricula = {$iMatricula}";
         $sSqlMatriculaAnterior = $oDaoMatriculaAnterior->sql_query_file(
             null,
             $sCamposMatriculaAnterior,
@@ -146,9 +146,9 @@ class TrocaTurma
 
         //removendo registro na tabela alunotransfturma
         $daoAlunoTransfTurma = new cl_alunotransfturma();
-        $codigoMatricula = $oMatriculaAnterior->getMatricula();
+        $codigoMatricula = $oMatriculaAnterior->getCodigo();
         $codigoTurma = $oMatriculaAnterior->getTurma()->getCodigo();
-      
+
         $where = "ed69_i_turmaorigem = {$codigoTurma} and ed69_i_matricula = {$codigoMatricula}";
         $daoAlunoTransfTurma->excluir(null, $where);
 
@@ -156,6 +156,7 @@ class TrocaTurma
          * Alteramos a situacao da matricula anterior para MATRICULADO
          */
         $oMatriculaAnterior->setSituacao("MATRICULADO");
+        $oMatriculaAnterior->setConcluida(false);
         $oMatriculaAnterior->setAtiva(true);
 
         /**
@@ -180,7 +181,7 @@ class TrocaTurma
         $oMatriculaAnterior->setDataEncerramento(null);
         $oMatriculaAnterior->salvar();
         $oMatriculaAnterior->getDiarioDeClasse()->getDiarioAlunoService()->cancelarEncerramento();
-       
+
     }
 
     /**
@@ -444,7 +445,7 @@ class TrocaTurma
             $this->getTurma()->getDescricao()
         );
 
-        
+
         $novaMatricula->atualizarMovimentacao($mensagemTroca, 'TROCAR ALUNO DE TURMA', $dataModificacao);
         /* Atualizam a movimentacao na tabela alunotransfturma */
         $novaMatricula->atualizarMovimentacaoAlunoTransfTurma($dataModificacao);

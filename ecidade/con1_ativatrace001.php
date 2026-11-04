@@ -209,7 +209,7 @@ if (!empty($lParametroExibeMenu) && $lParametroExibeMenu === "false") {
   <input type="BUTTON" id="btnAcompanharTraceLog" value="Acompanhar TraceLog"   />
 </div>
 
-  <?
+  <?php
   if ($lMostrarMenu) {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }

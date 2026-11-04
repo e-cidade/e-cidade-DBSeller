@@ -25,17 +25,17 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_sepultamentos_classe.php"));
-include(modification("classes/db_renovacoes_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_sepultamentos_classe.php"));
+require_once(modification("classes/db_renovacoes_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clsepultamentos = new cl_sepultamentos;
 $clrenovacoes 	 = new cl_renovacoes;

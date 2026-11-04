@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clrotulo->label("pc60_numcgm");
               <?=$Lpc74_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc74_codigo",8,$Ipc74_codigo,true,"text",4,"","chave_pc74_codigo");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clrotulo->label("pc60_numcgm");
               <?=$Lpc60_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc60_numcgm",8,$Ipc60_numcgm,true,"text",4,"","chave_pc60_numcgm");
 		        db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
@@ -86,7 +86,7 @@ $clrotulo->label("pc60_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
       $DB_coddepto = db_getsession("DB_coddepto");
       $sWhereDepto = "pc74_coddepto = {$DB_coddepto} ";
@@ -129,12 +129,12 @@ $clrotulo->label("pc60_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

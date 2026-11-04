@@ -249,7 +249,7 @@ class AnexoCincoService extends AnexosService
         foreach ($colunasCalcular as $colunaCalcular) {
             $this->redefineConfiguracaoLinha($linha, $colunaCalcular);
 
-            foreach ($this->balanceteVerificacao as $conta) {
+            foreach ($this->balanceteVerificacao[$this->exercicio] as $conta) {
                 if (!$this->matchBalanceteVerificacao($conta, $linha)) {
                     continue;
                 }
@@ -286,7 +286,7 @@ class AnexoCincoService extends AnexosService
         foreach ($colunasCalcular as $colunaCalcular) {
             $this->redefineConfiguracaoLinha($linha, $colunaCalcular);
 
-            foreach ($this->restosPagar as $conta) {
+            foreach ($this->restosPagar[$this->exercicio] as $conta) {
                 if (!$this->matchResto($conta, $linha)) {
                     continue;
                 }
@@ -311,7 +311,7 @@ class AnexoCincoService extends AnexosService
         foreach ($colunasCalcular as $colunaCalcular) {
             $this->redefineConfiguracaoLinha($linha, $colunaCalcular);
 
-            foreach ($this->balanceteDespesa as $conta) {
+            foreach ($this->balanceteDespesa[$this->exercicio] as $conta) {
                 if (!$this->matchResto($conta, $linha)) {
                     continue;
                 }
@@ -379,16 +379,16 @@ class AnexoCincoService extends AnexosService
 
         $recursosComExecucao = [];
 
-        foreach ($this->balanceteVerificacao as $execucao) {
+        foreach ($this->balanceteVerificacao[$this->exercicio] as $execucao) {
             if (!$this->estruturalCalculado($execucao->estrutural)) {
                 continue;
             }
             $recursosComExecucao[] = $execucao->fonte_recurso;
         }
-        foreach ($this->restosPagar as $conta) {
+        foreach ($this->restosPagar[$this->exercicio] as $conta) {
             $recursosComExecucao[] = $conta->fonte_recurso;
         }
-        foreach ($this->balanceteDespesa as $conta) {
+        foreach ($this->balanceteDespesa[$this->exercicio] as $conta) {
             $recursosComExecucao[] = $conta->fonte_recurso;
         }
 
@@ -480,7 +480,7 @@ class AnexoCincoService extends AnexosService
         $this->processar();
 
         $linha = $this->linhas[$this->linhaSimplificado];
-        return (object) array (
+        return (object)array(
             'rp_nao_processado' => $linha->a_liquidar,
             'disponibilidade_caixa_liquida' => $linha->disp_caixa
         );

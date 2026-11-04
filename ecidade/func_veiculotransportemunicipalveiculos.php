@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
               <?=$Ltre02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tre02_sequencial",10,$Itre02_sequencial,true,"text",4,"","chave_tre02_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
               <?=$Ltre02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tre02_sequencial",10,$Itre02_sequencial,true,"text",4,"","chave_tre02_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiculotransportemunicipalveiculos.php")==true){
@@ -122,12 +122,12 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

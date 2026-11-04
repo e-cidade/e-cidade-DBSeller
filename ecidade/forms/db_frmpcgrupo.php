@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clpcgrupo->rotulo->label();
        <?=@$Lpc03_codgrupo?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc03_codgrupo',6,$Ipc03_codgrupo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('pc03_codgrupo',6,$Ipc03_codgrupo,true,'text',3,"")
        <?=@$Lpc03_descrgrupo?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc03_descrgrupo',40,$Ipc03_descrgrupo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('pc03_descrgrupo',40,$Ipc03_descrgrupo,true,'text',$db_opcao,"")
        <?=@$Lpc03_ativo?>
     </td>
     <td> 
-<?
+<?php
 $xx = array("t"=>"SIM","f"=>"NAO");
 db_select('pc03_ativo',$xx,true,$db_opcao,"");
 ?>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcgrupo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

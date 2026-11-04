@@ -254,10 +254,10 @@
 }
 
 /** MATRICULA ONLINE E-CIDADE**/
-#modulos span.modulo_10094::after {
+#modulos span.modulo_228923::after {
     background-position: -115px -265px;
 }
-#modulos span.active.modulo_10094::after {
+#modulos span.active.modulo_228923::after {
     background-position: -344px -265px;
 }
 
@@ -621,4 +621,12 @@
 }
 #modulos span.active.modulo_10216::after {
   background-position: -375px -265px;
+}
+
+/** FISCALIZACAO **/
+#modulos span.modulo_229038::after {
+  background-position: -213px -199px;
+}
+#modulos span.active.modulo_229038::after {
+  background-position: -442px -199px;
 }

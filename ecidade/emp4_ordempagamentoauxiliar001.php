@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -92,7 +92,7 @@ $oRotuloCampos->label("e42_dtpagamento");
                    </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata("e42_dtpagamento", null,null,null,true,"text",1);
                   ?>
                 </td>
@@ -121,7 +121,7 @@ $oRotuloCampos->label("e42_dtpagamento");
   </form>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
   db_getsession("DB_modulo"),
   db_getsession("DB_anousu"),

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_cadenderruacep {
                  db86_cep = char(8) = Cep 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderruacep() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderruacep"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cadenderruacep {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db86_sequencial = ($this->db86_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db86_sequencial"]:$this->db86_sequencial);
        $this->db86_cadenderrua = ($this->db86_cadenderrua == ""?@$GLOBALS["HTTP_POST_VARS"]["db86_cadenderrua"]:$this->db86_cadenderrua);
@@ -77,7 +77,7 @@ class cl_cadenderruacep {
      }
    }
    // funcao para inclusao
-   function incluir ($db86_sequencial){ 
+   public function incluir ($db86_sequencial){ 
       $this->atualizacampos();
      if($this->db86_cadenderrua == null ){ 
        $this->erro_sql = " Campo Código da Rua nao Informado.";
@@ -176,7 +176,7 @@ class cl_cadenderruacep {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db86_sequencial=null) { 
+   public function alterar ($db86_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update cadenderruacep set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_cadenderruacep {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db86_sequencial=null,$dbwhere=null) { 
+   public function excluir ($db86_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db86_sequencial));
      }else{ 
@@ -334,7 +334,7 @@ class cl_cadenderruacep {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,7 +357,7 @@ class cl_cadenderruacep {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -393,7 +393,7 @@ class cl_cadenderruacep {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $db86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -456,7 +456,7 @@ class cl_cadenderruacep {
   }
 
 
-  function sql_query_cepSemCadEnderLocal ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  public function sql_query_cepSemCadEnderLocal ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -511,7 +511,7 @@ class cl_cadenderruacep {
 
 
 
-   function sql_query_cep ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_cep ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -556,7 +556,7 @@ class cl_cadenderruacep {
      return $sql;
   }
 
-  function sql_query_cep_sistema_externo ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_cep_sistema_externo ( $db75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){

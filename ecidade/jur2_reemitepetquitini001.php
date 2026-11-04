@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -68,31 +68,31 @@ $oParametrosJuridico = $aParametrosJuridico[0];
   <fieldset>
     <legend>Relatórios - Reemite Petição - Inicial Quitada</legend>
     <table class="form-container">
-    <? 
+    <?php
       if ( ( isset($oPost->inicial) && !empty($oPost->inicial) ) &&  isset($oPost->emite) ) {
-        
+
         $rsInicial       = $clinicial->sql_record( $clinicial->sql_query_file($inicial,"1", null) );
         $iNumRowsInicial = $clinicial->numrows;
-        
+
         /**
          * Valida se a inical existe
          */
         if ( $iNumRowsInicial == 0 ) {
-          
+
           db_msgbox(_M('tributario.juridico.jur2_reemitepetquitini001.inicial_nao_existe'));
           db_redireciona();
         }
-      
+
         $sWhere                       = "processoforoinicial.v71_inicial = {$inicial} and processoforoinicial.v71_anulado is false";
         $rsProcessoForoInicial        = $clprocessoforoinicial->sql_record($clprocessoforoinicial->sql_query(null,"v70_codforo",null,$sWhere));
         $iNumRowsProcessoForoInicial  = $clprocessoforoinicial->numrows;
-        
+
         if ( $iNumRowsProcessoForoInicial == 0 ) {
-          
+
           db_msgbox(_M('tributario.juridico.jur2_reemitepetquitini001.inicial_sem_codigo_processo'));
           db_redireciona();
         }
-      
+
         $sSqlDadosInicial =" select case when k00_inscr is not null                              \n";
         $sSqlDadosInicial.="             then 'inscricao'                                        \n";
         $sSqlDadosInicial.="             when k00_matric is not null                             \n";
@@ -110,23 +110,23 @@ $oParametrosJuridico = $aParametrosJuridico[0];
         $sSqlDadosInicial.="        left  join arreinscr   on arreinscr.k00_numpre  = v59_numpre \n";
         $sSqlDadosInicial.="        left  join arrematric  on arrematric.k00_numpre = v59_numpre \n";
         $sSqlDadosInicial.="  where v59_inicial = $inicial                                       \n";
-        
+
         $rsDadosInicial   = db_query($sSqlDadosInicial);
-        
+
         if ( $rsDadosInicial && pg_num_rows($rsDadosInicial) > 0){
           $oDadosInicial =  db_utils::fieldsMemory( $rsDadosInicial, 0 );
         }
-      
+
         $iChave             = $oDadosInicial->chave_pesquisa;
         $iInicial           = $oDadosInicial->v59_inicial;
         $sTipo              = $oDadosInicial->tipo;
         $sDadosIni          = "xx".$iInicial."ww".$iChave."ww".$sTipo;
         $sQueryString       = "iCodigoPeticao={$v60_peticao}&dadosini={$sDadosIni}&sTipoPeticao=inicialquitada";
         $sProgramaRelatorio = empty($oParametrosJuridico->v19_templateinicialquitada) ? "jur2_inicialquit002.php" : "jur2_peticao003.php";
-      
+
         /**
          * Abre janela do relatório
-         */   
+         */
         echo " <script>                                                                                                            \n";
         echo "   jan = window.open('{$sProgramaRelatorio}?{$sQueryString}&fazparcela=true',                                         \n";
         echo "                     '',                                                                                             \n";
@@ -137,52 +137,52 @@ $oParametrosJuridico = $aParametrosJuridico[0];
     ?>
       <tr>
         <td>
-          <?db_ancora('Petições:','js_pesquisa(true);',$db_opcao);?>
+          <?php db_ancora('Petições:','js_pesquisa(true);',$db_opcao);?>
         </td>
         <td>
-		      <? db_input('v60_peticao',8,$Iv60_peticao,true,'text',$db_opcao,"onchange='js_pesquisa(false);'")?>
-		      <? db_input('inicial',8,$Iv60_inicial,true,'hidden',$db_opcao)?>
+		      <?php db_input('v60_peticao',8,$Iv60_peticao,true,'text',$db_opcao,"onchange='js_pesquisa(false);'")?>
+		      <?php db_input('inicial',8,$Iv60_inicial,true,'hidden',$db_opcao)?>
         </td>
       </tr>
     </table>
   </fieldset>
-  <input  name="emite" id="emite" type="submit" value="Emitir" <? echo $db_opcao == 3 ? "disabled" : ""; ?> >
+  <input  name="emite" id="emite" type="submit" value="Emitir" <?php echo $db_opcao == 3 ? "disabled" : ""; ?> >
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 function js_pesquisa(mostra){
-  
+
   if (mostra) {
-      
+
     db_iframe.jan.location.href = 'func_jurpeticoes.php?tipo=q&funcao_js=parent.js_mostra1|0|1';
     db_iframe.mostraMsg();
     db_iframe.show();
     db_iframe.focus();
-    
+
   } else {
     db_iframe.jan.location.href = 'func_jurpeticoes.php?tipo=q&pesquisa_chave='+document.form1.v60_peticao.value+'&funcao_js=parent.js_mostra';
   }
 }
 function js_mostra(chave, chave1, erro) {
-	
+
   if (erro) {
-	  
+
     document.form1.v60_peticao.value = "";
     document.form1.v60_peticao.focus();
     document.form1.inicial.value     = "";
   }else{
-	  
+
     document.form1.v60_peticao.value = chave;
     document.form1.inicial.value     = chave1;
   }
 }
 
 function js_mostra1(chave1, chave2){
-	
+
   document.form1.v60_peticao.value = chave1;
   document.form1.inicial.value     = chave2;
   db_iframe.hide();
@@ -190,12 +190,12 @@ function js_mostra1(chave1, chave2){
 </script>
 
 
-<?
+<?php
 if ( isset($ordem) ) {
-	
+
   echo " <script>      \n";
   echo "   js_emite(); \n";
-  echo " </script>     \n";  
+  echo " </script>     \n";
 }
 $func_iframe                 = new janela('db_iframe','');
 $func_iframe->posX           = 1;

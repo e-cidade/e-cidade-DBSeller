@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,12 +56,12 @@
           <table class="form-container">
             <tr>
               <td nowrap title="<?=@$Tparcel?>" >
-              <?
+              <?php
                db_ancora(@$Lv07_parcel,"js_pesquisaparcel(true);",4)
               ?>
               </td>
               <td>
-              <?
+              <?php
               db_input('v07_parcel',10,$Iv07_parcel,true,'text',4,"onchange='js_pesquisaparcel(false);'")
               ?>
               </td>
@@ -81,7 +81,7 @@
               <table id="container-filtros" style="display:none" class="form-container">
                 <tr>
                   <td nowrap title="Tipo(k00_tipo) que ficará as dividas removidas">
-                    <?
+                    <?php
                      db_ancora("Tipo Débito Destino:","js_pesquisadb02_idparag(true);",4)
                     ?>
                   </td>
@@ -120,7 +120,7 @@
       <input name="desfazer_parcelamento" type="button" id="desfazer_parcelamento" value="Executar">
    </form>
 
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
     $func_iframe = new janela('db_iframe','');

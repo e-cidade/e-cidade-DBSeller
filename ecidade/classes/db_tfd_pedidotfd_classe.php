@@ -91,13 +91,13 @@ class cl_tfd_pedidotfd {
                  tf01_rhcbosolicitante = int4 = Código cbo do solicitante
                  ";
    //funcao construtor da classe
-   function cl_tfd_pedidotfd() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_pedidotfd");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -106,7 +106,7 @@ class cl_tfd_pedidotfd {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf01_i_codigo = ($this->tf01_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["tf01_i_codigo"]:$this->tf01_i_codigo);
        $this->tf01_i_cgsund = ($this->tf01_i_cgsund == ""?@$GLOBALS["HTTP_POST_VARS"]["tf01_i_cgsund"]:$this->tf01_i_cgsund);
@@ -152,7 +152,7 @@ class cl_tfd_pedidotfd {
      }
    }
    // funcao para inclusao
-   function incluir ($tf01_i_codigo){
+   public function incluir ($tf01_i_codigo){
       $this->atualizacampos();
      if($this->tf01_i_cgsund == null ){
        $this->erro_sql = " Campo CGS não informado.";
@@ -404,7 +404,7 @@ class cl_tfd_pedidotfd {
      return true;
    }
    // funcao para alteracao
-   function alterar ($tf01_i_codigo=null) {
+   public function alterar ($tf01_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update tfd_pedidotfd set ";
      $virgula = "";
@@ -740,7 +740,7 @@ class cl_tfd_pedidotfd {
      }
    }
    // funcao para exclusao
-   function excluir ($tf01_i_codigo=null,$dbwhere=null) {
+   public function excluir ($tf01_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -827,7 +827,7 @@ class cl_tfd_pedidotfd {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -850,10 +850,10 @@ class cl_tfd_pedidotfd {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -887,7 +887,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -897,10 +897,10 @@ class cl_tfd_pedidotfd {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -921,7 +921,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -931,10 +931,10 @@ class cl_tfd_pedidotfd {
      return $sql;
   }
    // função sql para o grid da aba pedido do procedimento pedido tfd -> lança e manutanção
-   function sql_query_grid( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_grid( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -951,6 +951,8 @@ class cl_tfd_pedidotfd {
      $sql .= "      inner join tfd_situacaotfd  on  tfd_situacaotfd.tf26_i_codigo = tfd_pedidotfd.tf01_i_situacao";
      $sql .= "      inner join tfd_tipotransporte  on  tfd_tipotransporte.tf27_i_codigo = tfd_pedidotfd.tf01_i_tipotransporte";
      $sql .= "      inner join cgs_und  on  cgs_und.z01_i_cgsund = tfd_pedidotfd.tf01_i_cgsund";
+     $sql .= "      inner join tfd_procpedidotfd ON tfd_procpedidotfd.tf23_i_pedidotfd = tfd_pedidotfd.tf01_i_codigo";
+     $sql .= "      inner join sau_procedimento ON sau_procedimento.sd63_i_codigo = tfd_procpedidotfd.tf23_i_procedimento";
      $sql .= "      left join tfd_agendamentoprestadora  on  tfd_agendamentoprestadora.tf16_i_pedidotfd = tfd_pedidotfd.tf01_i_codigo";
      $sql .= "      left join tfd_prestadoracentralagend  on  tfd_prestadoracentralagend.tf10_i_codigo = tfd_agendamentoprestadora.tf16_i_prestcentralagend";
      $sql .= "      left join tfd_prestadora  on  tfd_prestadora.tf25_i_codigo = tfd_prestadoracentralagend.tf10_i_prestadora";
@@ -968,7 +970,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -978,10 +980,10 @@ class cl_tfd_pedidotfd {
      return $sql;
   }
    // funcao do sql
-   function sql_query_protocolo ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_protocolo ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1017,7 +1019,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1026,10 +1028,10 @@ class cl_tfd_pedidotfd {
      }
      return $sql;
   }
-   function sql_query_regulado ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_regulado ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1062,7 +1064,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1076,7 +1078,7 @@ class cl_tfd_pedidotfd {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -1135,7 +1137,7 @@ class cl_tfd_pedidotfd {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -1149,12 +1151,12 @@ class cl_tfd_pedidotfd {
     return $sSql;
   }
 
-  function sql_query_pedido_prestadora( $tf01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_pedido_prestadora( $tf01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1179,7 +1181,7 @@ class cl_tfd_pedidotfd {
     if ($ordem != null) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1190,12 +1192,12 @@ class cl_tfd_pedidotfd {
     return $sql;
   }
 
-  function sql_query_pedido_fechamento($tf32_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_pedido_fechamento($tf32_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1220,7 +1222,7 @@ class cl_tfd_pedidotfd {
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1236,7 +1238,7 @@ class cl_tfd_pedidotfd {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -1281,7 +1283,7 @@ class cl_tfd_pedidotfd {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
 
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
@@ -1297,12 +1299,12 @@ class cl_tfd_pedidotfd {
   /**
    * Query para buscar os dados do agendamento de saida vinculados ao pedido
    */
-  function sql_query_pedido_saida($iCodigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_pedido_saida($iCodigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sSql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1341,7 +1343,7 @@ class cl_tfd_pedidotfd {
     if ($ordem != null ) {
 
       $sSql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1388,12 +1390,12 @@ class cl_tfd_pedidotfd {
   /**
    * Query para buscar os dados do regulador
    */
-  function sql_query_pedido_regulado($iCodigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_pedido_regulado($iCodigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sSql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1424,7 +1426,7 @@ class cl_tfd_pedidotfd {
     if ($ordem != null ) {
 
       $sSql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -1435,10 +1437,10 @@ class cl_tfd_pedidotfd {
     return $sSql;
   }
 
-  function sql_query_protocolo_emissao ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_protocolo_emissao ( $tf01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1478,7 +1480,7 @@ class cl_tfd_pedidotfd {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1493,7 +1495,7 @@ class cl_tfd_pedidotfd {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -1554,7 +1556,7 @@ class cl_tfd_pedidotfd {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

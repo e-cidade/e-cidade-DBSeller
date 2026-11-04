@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ $cl_prontproced = new cl_prontproced_ext;
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
 <br>
-<?
+<?php
 if(isset($z01_i_cgsund)){
 
    $campos=" prontuarios.sd24_i_codigo,

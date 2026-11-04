@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -47,7 +47,7 @@ $tipo_impressao = 1;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg      = '';
@@ -92,9 +92,9 @@ if ($flag_abrev == false){
 
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages();	
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(241);
 $pdf->setfont('arial','b',8);
@@ -114,8 +114,8 @@ if ($impressao=='paisagem'){
     $tm_valor =24;
     $tm_descr = 90;
     $tm_estrut = 33;
-    $tm_reduz = 15;    
-} 	
+    $tm_reduz = 15;
+}
 
 //$sql = "select * from work order by elemento";
 //$result = db_query($sql);
@@ -124,7 +124,7 @@ $dataini = $perini;
 $datafin = $perfin;
 
 $result = db_receitasaldo(11,1,$opcao,true,$db_filtro,$anousu,$dataini,$datafin);
- 
+
 
 //db_criatabela($result);exit;
 $total_saldo_inicial              =0;
@@ -144,7 +144,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $total_saldo_a_arrecadar          = $saldo_a_arrecadar;
     break;
   }
-}	
+}
 
 
 $pagina = 1;
@@ -154,14 +154,14 @@ for($i=0;$i<pg_numrows($result);$i++){
   db_fieldsmemory($result,$i);
   $elemento = $o57_fonte;
   $descr    = $o57_descr;
-     
+
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     $pagina = 0;
     if ($impressao=='paisagem'){
          $pdf->addpage('L');
     }else {
     	$pdf->addpage();
-    } 	
+    }
     $pdf->setfont('arial','b',$tm_fonte);
     $pdf->cell($tm_estrut,$alt,"RECEITA",0,0,"L",0);
     $pdf->cell($tm_descr,$alt,"DESCRIÇÃO",0,0,"L",0);
@@ -179,7 +179,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     }
     $pdf->cell(10,$alt,"Perc",0,1,"R",0);
     $pdf->ln(3);
-  
+
   }
   /**
    *  contas analiticas possuem "o70_codrec" e serão apresentadas sombeadas
@@ -188,7 +188,7 @@ for($i=0;$i<pg_numrows($result);$i++){
   	 $fundo=1;
   }else {
   	 $fundo=0;
-  }		
+  }
   $pdf->setfont('arial','',$tm_fonte);
   $pdf->cell($tm_estrut,$alt,db_formatar($elemento,'receita'),0,0,"L",$fundo);
   $pdf->cell($tm_descr,$alt,$descr,0,0,"L",$fundo);
@@ -218,7 +218,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $pdf->cell($tm_reduz,$alt,db_formatar( $saldo_arrecadado_acumulado / ($saldo_inicial + $saldo_prevadic_acum ) *100,'f'),0,1,"R",$fundo);
   else
     $pdf->cell($tm_reduz,$alt,db_formatar(0,'f'),0,1,"R",$fundo);
-     
+
 }
 $pdf->setfont('arial','B',$tm_fonte);
 $pdf->cell($tm_estrut,$alt,'',0,0,"L",0);
@@ -237,7 +237,7 @@ if($origem == "O"){
     $pdf->cell($tm_reduz,$alt,db_formatar( $total_saldo_arrecadado_acumulado / ($total_saldo_inicial + $total_saldo_prevadic_acum ) *100,'f'),0,1,"R",0);
   else
     $pdf->cell($tm_reduz,$alt,db_formatar(0,'f'),0,1,"R",0);
- 
+
 }
 
 $tes =  "______________________________"."\n"."Tesoureiro";

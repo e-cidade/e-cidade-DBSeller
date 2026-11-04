@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,13 +55,13 @@ class cl_carface {
                  j38_datalancamento = date = Date de Lançamento
                  ";
    //funcao construtor da classe
-   function cl_carface() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carface");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_carface {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j38_face = ($this->j38_face == ""?@$GLOBALS["HTTP_POST_VARS"]["j38_face"]:$this->j38_face);
        $this->j38_caract = ($this->j38_caract == ""?@$GLOBALS["HTTP_POST_VARS"]["j38_caract"]:$this->j38_caract);
@@ -88,7 +88,7 @@ class cl_carface {
      }
    }
    // funcao para inclusao
-   function incluir ($j38_face,$j38_caract){
+   public function incluir ($j38_face,$j38_caract){
       $this->atualizacampos();
      if($this->j38_datalancamento == null ){
        $this->j38_datalancamento = "null";

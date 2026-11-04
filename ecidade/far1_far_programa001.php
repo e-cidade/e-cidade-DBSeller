@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,19 +25,24 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_far_programa_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-require(modification("libs/db_stdlibwebseller.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_far_programa_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlibwebseller.php"));
 db_postmemory($HTTP_POST_VARS);
 $clfar_programa = new cl_far_programa;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
+  if(isset($fa12_ativo)){
+    $clfar_programa->fa12_ativo = 't';
+  } else {
+    $clfar_programa->fa12_ativo = 'f';
+  }  
   $clfar_programa->incluir($fa12_i_codigo);
   db_fim_transacao();
 }
@@ -57,7 +62,7 @@ if(isset($incluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Inclusão de Programas</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmfar_programa.php"));
 	?>
    </fieldset>
@@ -65,7 +70,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -73,7 +78,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","fa12_c_descricao",true,1,"fa12_c_descricao",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clfar_programa->erro_status=="0"){
     $clfar_programa->erro(true,false);

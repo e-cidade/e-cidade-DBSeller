@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -543,7 +543,7 @@ $aDescricoes = array(
 $pdf = new PDF("L");
 $pdf->Open();
 $pdf->AliasNbPages();
-$pdf->SetAutoPageBreak(false);;
+$pdf->SetAutoPageBreak(false);
 $pdf->setfillcolor(235);
 $imprime_cabecalho = true;
 $iAlt = 4;
@@ -588,7 +588,11 @@ foreach ($aAgrupador as $iAgrupador => $oAgrupador) {
   $pdf->setfont($sFonte, 'b', 8);
   $pdf->cell(50, $iAlt, 'Funcionário', "TBR", 0, "C", 1);
   $pdf->cell(50, $iAlt, 'Período Aquisitivo', 1, 0, "C", 1);
-  $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+  if((isNiteroi() && db_getsession("DB_instit") != 4)) {
+    // $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+    // $pdf->cell(15, $iAlt, $oPeriodo->diasgozados, "LR", 0, "C");
+    $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+  } 
   $pdf->cell(15, $iAlt, 'A Gozar', 1, 0, "C", 1);
   $pdf->cell(20, $iAlt, 'Limite', "TBL", 0, "C", 1);
   $pdf->cell(50, $iAlt, 'Programação', 1, 0, "C", 1);
@@ -622,7 +626,11 @@ foreach ($aAgrupador as $iAgrupador => $oAgrupador) {
       $pdf->setfont($sFonte, 'b', 8);
       $pdf->cell(50, $iAlt, 'Funcionário', "TBR", 0, "C", 1);
       $pdf->cell(50, $iAlt, 'Período Aquisitivo', 1, 0, "C", 1);
-      $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+      if((isNiteroi() && db_getsession("DB_instit") != 4)) {
+        // $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+        // $pdf->cell(15, $iAlt, $oPeriodo->diasgozados, "LR", 0, "C");
+        $pdf->cell(15, $iAlt, 'Gozados', "TBR", 0, "C", 1);
+      } 
       $pdf->cell(15, $iAlt, 'A Gozar', 1, 0, "C", 1);
       $pdf->cell(20, $iAlt, 'Limite', "TBL", 0, "C", 1);
       $pdf->cell(50, $iAlt, 'Programação', 1, 0, "C", 1);
@@ -632,46 +640,52 @@ foreach ($aAgrupador as $iAgrupador => $oAgrupador) {
     }
 
     $iAltura = $pdf->getY(); 
-    $pdf->cell(50, $iAlt, substr(($oFuncionario->matricula." - ".$oFuncionario->nome),0, 33), "TR", 1, "L");
+    
+    $pdf->cell(50, $iAlt, substr(($oFuncionario->matricula." - ".$oFuncionario->nome),0, 33), "T", 1, "L");
     $sPeriodoGozado =  "Último Gozo: {$oFuncionario->periodogozadoinicial} a {$oFuncionario->periodogozadofinal}";
-    $pdf->cell(50, $iAlt, $sPeriodoGozado, "R", 1, "C");
+    $pdf->cell(50, $iAlt, $sPeriodoGozado, "", 1, "C");
     $iAlturaGozo   = $pdf->getY();
     $pdf->setxy(60, $iAltura);
-
     foreach ($oFuncionario->periodosvencidos as $oPeriodo) {
       
       $pdf->setx(60);
       $sPeriodoAquisitivo = db_formatar($oPeriodo->datainicial, "d")." - ".db_formatar($oPeriodo->datafinal, "d");
-      $pdf->cell(50, $iAlt, $sPeriodoAquisitivo, "LR", 0, "C");
-      $pdf->cell(15, $iAlt, $oPeriodo->diasgozados, "LR", 0, "C");
-      $pdf->cell(15, $iAlt, ($oPeriodo->diasgozo - $oPeriodo->diasgozados - $oPeriodo->diasabono), "LR", 0, "C");
-      $pdf->cell(20, $iAlt, db_formatar($oPeriodo->limite, "d"), "LR", 0, "C");
-      $pdf->cell(50, $iAlt, "____/____/_______ a ____/____/______", "LR", 0, "C");
-      $pdf->cell(15, $iAlt, $oPeriodo->diasabono, "LR", 0, "C");
-      $pdf->cell(60, $iAlt, "", "L", 0, "C");
+      $pdf->cell(50, $iAlt, $sPeriodoAquisitivo, "", 0, "C");
+      if((isNiteroi() && db_getsession("DB_instit") != 4)) {
+        // $pdf->cell(15, $iAlt, 'Gozados', 1, 0, "C", 1);
+        $pdf->cell(15, $iAlt, $oPeriodo->diasgozados, "", 0, "C");
+      } 
+      // $pdf->cell(15, $iAlt, $oPeriodo->diasgozados, "LR", 0, "C");
+      $pdf->cell(15, $iAlt, ($oPeriodo->diasgozo - $oPeriodo->diasgozados - $oPeriodo->diasabono), "", 0, "C");
+      $pdf->cell(20, $iAlt, db_formatar($oPeriodo->limite, "d"), "", 0, "C");
+      $pdf->cell(50, $iAlt, "____/____/_______ a ____/____/______", "", 0, "C");
+      $pdf->cell(15, $iAlt, $oPeriodo->diasabono, "", 0, "C");
+      $pdf->cell(60, $iAlt, "", "B", 0, "C");
       $pdf->ln();
     }
 
-    $iAlturaLinha = $pdf->GetY(); 
+    // $iAlturaLinha = $pdf->GetY(); 
 
-    if ($iAlturaGozo > $pdf->GetY()) {
+    // if ($iAlturaGozo > $pdf->GetY()) {
       
-      $pdf->ln();
-      $iAlturaLinha = $iAlturaGozo;
-      $pdf->Line(110, $iAltura, 110, $iAlturaGozo);
-      $pdf->Line(125, $iAltura, 125, $iAlturaGozo);
-      $pdf->Line(140, $iAltura, 140, $iAlturaGozo);
-      $pdf->Line(160, $iAltura, 160, $iAlturaGozo);
-      $pdf->Line(210, $iAltura, 210, $iAlturaGozo);
-      $pdf->Line(225, $iAltura, 225, $iAlturaGozo);
-    }
+    //   $pdf->ln();
+    //   $iAlturaLinha = $iAlturaGozo;
+    //   $pdf->Line(110, $iAltura, 110, $iAlturaGozo);
+    //   $pdf->Line(125, $iAltura, 125, $iAlturaGozo);
+    //   $pdf->Line(140, $iAltura, 140, $iAlturaGozo);
+    //   $pdf->Line(160, $iAltura, 160, $iAlturaGozo);
+    //   $pdf->Line(210, $iAltura, 210, $iAlturaGozo);
+    //   $pdf->Line(225, $iAltura, 225, $iAlturaGozo);
+    // }
 
-    $pdf->Line(10, $iAlturaLinha, 285, $iAlturaLinha);
-    $pdf->Line(10, $iAltura, 285, $iAltura);
+    // $pdf->Line(10, $iAlturaLinha, 285, $iAlturaLinha);
+    // $pdf->Line(10, $iAltura, 285, $iAltura);
     
     $pdf->ln();
   }
-
+  $pdf->getY()+7;
+  $pdf->cell(50, $iAlt, '----------------------------------------------------------------------------', "", 0, "C");
+  $pdf->ln();
   $pdf->setfont($sFonte, 'b', 8);
   $pdf->cell(0, $iAlt, "Total de Funcionários: " . $iTotalFuncionariosFeriasVencidas, '0', 0, "L", 0);
   $pdf->setfont($sFonte, '', 7);

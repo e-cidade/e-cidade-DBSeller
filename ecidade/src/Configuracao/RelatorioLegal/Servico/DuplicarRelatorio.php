@@ -175,29 +175,23 @@ class DuplicarRelatorio
         $colunasDePara = array();
 
         $daoColuna = new \cl_orcparamseqcoluna();
-        $where = "o115_relatorio = {$this->relatorioBase->getSequencial()}";
-        $consultaColunasRelatorio = $daoColuna->sql_query_file(null, "*", null, $where);
+
+        $consultaColunasRelatorio = "
+            SELECT DISTINCT o115_sequencial,
+                            o115_anousu,
+                            o115_descricao,
+                            o115_tipo,
+                            o115_valoresdefault,
+                            o115_nomecoluna,
+                            o115_formula,
+                            o115_origem,
+                            o115_relatorio
+            FROM orcparamseqcoluna
+            INNER JOIN orcparamseqorcparamseqcoluna ON o116_orcparamseqcoluna = o115_sequencial
+            WHERE o116_codparamrel = {$this->relatorioBase->getSequencial()}
+        ";
         $resultadoConsultaColunas = db_query($consultaColunasRelatorio);
         $quantidadeLinhasConsulta = pg_num_rows($resultadoConsultaColunas);
-
-        if ($quantidadeLinhasConsulta == 0) {
-            $consultaColunasRelatorio = "
-                SELECT DISTINCT o115_sequencial,
-                                o115_anousu,
-                                o115_descricao,
-                                o115_tipo,
-                                o115_valoresdefault,
-                                o115_nomecoluna,
-                                o115_formula,
-                                o115_origem,
-                                o115_relatorio
-                FROM orcparamseqcoluna
-                INNER JOIN orcparamseqorcparamseqcoluna ON o116_orcparamseqcoluna = o115_sequencial
-                WHERE o116_codparamrel = {$this->relatorioBase->getSequencial()}
-            ";
-            $resultadoConsultaColunas = db_query($consultaColunasRelatorio);
-            $quantidadeLinhasConsulta = pg_num_rows($resultadoConsultaColunas);
-        }
 
         if (!$resultadoConsultaColunas) {
             throw new DBException("Ocorreu um erro ao buscar as colunas do relatório base.");

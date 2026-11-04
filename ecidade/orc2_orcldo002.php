@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -47,7 +47,7 @@ if (!isset ($lei)) {
 
 $ano1 = $ano;
 $ano = substr(str_replace('-', ',', $ano1), 1);
-$ano_arr = split(',', $ano);
+$ano_arr =explode(',', $ano);
 $anoini = $ano_arr[0];
 $anofim = $ano_arr[count($ano_arr) - 1];
 //print($anofim);exit;
@@ -81,7 +81,7 @@ for ($s = $anoini; $s <= $anofim; $s ++) {
   $arr_qua[$s] = 0;
 }
 //print_r($tottlorgao);exit;
-//print($ano);exit;      
+//print($ano);exit;
 
 db_fieldsmemory($result01, 0);
 $head2 = "LDO";
@@ -122,10 +122,10 @@ $texto_livre_contador=0;
       $total_orgao_quant = array();;
 for ($x = 0; $x < $numrows01; $x ++) {
   db_fieldsmemory($result01, $x);
-  //----------------------------------------------------------------------------------------------------------------------------------------------------------      
-  //----------------------------------------------------------------------------------------------------------------------------------------------------------      
-  //----------------------------------------------------------------------------------------------------------------------------------------------------------      
-  
+  //----------------------------------------------------------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------------------------------------------------------
+
   $arr_ano_livre = array ();
   $arr_ano_outro = array ();
   $arr_qua = array ();
@@ -134,9 +134,9 @@ for ($x = 0; $x < $numrows01; $x ++) {
     $arr_ano_outro[$s] = '0.00';
     $arr_qua[$s] = 0;
   }
-  
+
   $sql = $clorcppaval->sql_query_dad(null, "o24_exercicio,o24_quantmed,o26_codigo,sum(o24_valor) as o24_valor", "", "o23_codppa=$o23_codppa and o24_exercicio in($ano) group by o24_exercicio,o24_quantmed,o26_codigo");
-  
+
   $result04 = $clorcppaval->sql_record($sql);
   $numrows04 = $clorcppaval->numrows;
   for ($t = 0; $t < $numrows04; $t ++) {
@@ -154,7 +154,7 @@ for ($x = 0; $x < $numrows01; $x ++) {
     }
     $arr_qua[$o24_exercicio] = $o24_quantmed;
   }
-  
+
   $tot_livre = 0;
   $tot_outro = 0;
   $total_teste = 0;
@@ -170,21 +170,21 @@ for ($x = 0; $x < $numrows01; $x ++) {
   }
   if ($o23_orgao != $orgao_antigo) {
     if ($orgao_antigo != "") {
-      
+
       db_fieldsmemory($result01, ($x -1));
       $pdf->ln(3);
       $pdf->setfont('arial', 'b', 10);
-      
+
       $pdf->multicell(280, 6, "Totalização por órgão", 1, "L", 1);
       $pdf->cell(280, 7, "$RLo23_orgao:$o23_orgao - $o40_descr", 1, 1, "L", 1);
-      
+
       $pdf->cell(110, $alt, '', 0, 0, "R", 0);
       $pdf->cell(25, $alt, "Ano", 1, 0, "C", 0);
       $pdf->cell(25, $alt, "Quant.Fisíca", 1, 0, "C", 0);
       $pdf->cell(40, $alt, "Próprios", 1, 0, "C", 0);
       $pdf->cell(40, $alt, "Outros", 1, 0, "C", 0);
       $pdf->cell(40, $alt, "Total", 1, 1, "C", 0);
-      
+
       $arr_ano_livre = array ();
       $arr_ano_outro = array ();
       $arr_qua = array ();
@@ -199,13 +199,13 @@ for ($x = 0; $x < $numrows01; $x ++) {
         $arr_ano_outro[$s] = 0;
         $arr_qua[$s] = 0;
       }
-      
+
       //$sql = $clorcppaval->sql_query_dad(null,"o24_exercicio,o24_quantmed,o26_codigo,sum(o24_valor) as o24_valor",
       //				    "","o23_orgao=$orgao_antigo and o24_exercicio in($ano) group by o24_exercicio,o24_quantmed,o26_codigo");
       //echo($dbwhere);
       $sql = $clorcppaval->sql_query_dad(null, "o24_exercicio,o24_quantmed,o26_codigo,sum(o24_valor) as o24_valor", "", " o24_exercicio in($ano)  and o23_orgao=$orgao_antigo and $dbwhere group by o24_exercicio,o24_quantmed,o26_codigo");
       $result04 = $clorcppaval->sql_record($sql);
-      
+
       $numrows04 = $clorcppaval->numrows;
       for ($t = 0; $t < $numrows04; $t ++) {
         db_fieldsmemory($result04, $t);
@@ -277,7 +277,7 @@ for ($x = 0; $x < $numrows01; $x ++) {
     $pdf->setfont('arial', 'b', 9);
     $pdf->cell(280, 4, "$RLo23_funcao:$o23_funcao - $o52_descr  $RLo23_subfuncao:$o23_subfuncao - $o53_descr  ", 1, 1, "L", 1);
   }
-  
+
   $pdf->setfont('arial', '', 8);
   if (($o23_programa != $prog_antigo) && $prog_antigo != "" || $passar == true) {
     $passar = false;
@@ -295,30 +295,30 @@ for ($x = 0; $x < $numrows01; $x ++) {
     $pdf->cell(280, 4, "$RLo23_programa:$o23_programa - $o54_descr ", 1, 1, "L", 1);
     $pdf->multicell(280, $alt, $o23_programatxt, 1, "L", 1);
   }
-  
+
   $pdf->ln(3);
-  
-  
+
+
   /* quando imprimir texto livre, pediram em guaiba, silvio pra por somente duas ações por páginas */
   if (isset($texto_livre) && $texto_livre=='s'){
     $texto_livre_contador++;
-    
-    
-    if ($texto_livre_contador>2){ 
+
+
+    if ($texto_livre_contador>2){
       $pdf->AddPage("L");
       $texto_livre_contador=1;
-    }	   
+    }
   }
-  
-  
+
+
   $pdf->multicell(280, 4, "Ação: $o23_acao-$o55_descr  Descr: $o23_acaotxt   ", 1, "L", 1);
-  
-  
+
+
   // texto_livre
   if (isset($texto_livre) && $texto_livre=='s'){
     $pdf->multicell(280, 35, "", 1, "L", 0);
-  }	
-  
+  }
+
   // $pdf->cell(110, 6, "$RLo23_produto: $o22_descrprod  $RLo23_unidade: $o23_unidade ", 1, 0, "L", 0);
   // sapiranga pediu as modificações abaixo
   if (isset($texto_livre) && $texto_livre=='s'){
@@ -327,10 +327,10 @@ for ($x = 0; $x < $numrows01; $x ++) {
     }
   }
   $pdf->cell(110, 6, "$RLo23_produto: $o22_descrprod  $RLo23_unidade: $o23_unimed ", 1, 0, "L", 0);
-  
+
   $pdf->cell(50, 6, "Meta", 1, 0, "C", 0);
   $pdf->cell(120, 6, "Custos Previsto p/ o exercício", 1, 1, "C", 0);
-  
+
   $pdf->cell(110, $alt, '', 0, 0, "R", 0);
   $pdf->cell(25, $alt, "Ano", 1, 0, "C", 0);
   $pdf->cell(25, $alt, "Quant.Fisíca", 1, 0, "C", 0);
@@ -345,9 +345,9 @@ for ($x = 0; $x < $numrows01; $x ++) {
     $arr_ano_outro[$s] = '0.00';
     $arr_qua[$s] = 0;
   }
-  
+
   $sql = $clorcppaval->sql_query_dad(null, "o24_exercicio,o24_quantmed,o26_codigo,sum(o24_valor) as o24_valor", "", "o23_codppa=$o23_codppa and o24_exercicio in($ano) group by o24_exercicio,o24_quantmed,o26_codigo");
-  
+
   $result04 = $clorcppaval->sql_record($sql);
   $numrows04 = $clorcppaval->numrows;
   for ($t = 0; $t < $numrows04; $t ++) {
@@ -365,11 +365,11 @@ for ($x = 0; $x < $numrows01; $x ++) {
     }
     $arr_qua[$o24_exercicio] = $o24_quantmed;
   }
-  
+
   $tot_livre = 0;
   $tot_outro = 0;
   $total_teste = 0;
-  
+
   for ($s = $anoini; $s <= $anofim; $s ++) {
     if (isset($texto_livre) && $texto_livre=='s'){
       if ($pdf->gety() > $pdf->h - 30){
@@ -397,12 +397,12 @@ for ($x = 0; $x < $numrows01; $x ++) {
     $tot_livre += $arr_ano_livre[$s];
     $tot_outro += $arr_ano_outro[$s];
 		if (array_key_exists($s,$total_orgao)){
-	 	  $total_orgao[$s] += $arr_ano_livre[$s] + $arr_ano_outro[$s];   
+	 	  $total_orgao[$s] += $arr_ano_livre[$s] + $arr_ano_outro[$s];
 		  $total_orgao_livre[$s] += $arr_ano_livre[$s] ;
 		  $total_orgao_outro[$s] += $arr_ano_outro[$s];
 		  $total_orgao_quant[$s] += $arr_qua[$s];
-		}else{   
-			$total_orgao[$s] = $arr_ano_livre[$s] + $arr_ano_outro[$s];   
+		}else{
+			$total_orgao[$s] = $arr_ano_livre[$s] + $arr_ano_outro[$s];
 			$total_orgao_livre[$s] = $arr_ano_livre[$s] ;
 			$total_orgao_outro[$s] = $arr_ano_outro[$s];
 			$total_orgao_quant[$s] = $arr_qua[$s];
@@ -414,23 +414,23 @@ for ($x = 0; $x < $numrows01; $x ++) {
 
 if (isset ($orgao_antigo)) {
   if ($orgao_antigo != "") {
-    
+
     if (isset($texto_livre) && $texto_livre=='s'){
       $pdf->AddPage("L");
     }
-    
+
     $pdf->ln(6);
     $pdf->setfont('arial', 'b', 10);
     $pdf->multicell(280, 7, "Totalização por órgão", 1, "L", 1);
     $pdf->cell(280, 7, "$RLo23_orgao:$o23_orgao - $o40_descr", 1, 1, "L", 1);
-    
+
     $pdf->cell(110, $alt, '', 0, 0, "R", 0);
     $pdf->cell(25, $alt, "Ano", 1, 0, "C", 0);
     $pdf->cell(25, $alt, "Quant.Fisíca", 1, 0, "C", 0);
     $pdf->cell(40, $alt, "Próprios", 1, 0, "C", 0);
     $pdf->cell(40, $alt, "Outros", 1, 0, "C", 0);
     $pdf->cell(40, $alt, "Total", 1, 1, "C", 0);
-    
+
     $arr_ano_livre = array ();
     $arr_ano_outro = array ();
     $arr_qua = array ();
@@ -439,13 +439,13 @@ if (isset ($orgao_antigo)) {
       $arr_ano_outro[$s] = '0.00';
       $arr_qua[$s] = 0;
     }
-    
+
     $sql = $clorcppaval->sql_query_dad(null, "o24_exercicio,o24_quantmed,o26_codigo,sum(o24_valor) as o24_valor", "", "o23_orgao=$orgao_antigo and o24_exercicio in($ano) group by o24_exercicio,o24_quantmed,o26_codigo");
-    
+
     $result04 = $clorcppaval->sql_record($sql);
     //echo($sql);
     $numrows04 = $clorcppaval->numrows;
-    
+
     for ($t = 0; $t < $numrows04; $t ++) {
       db_fieldsmemory($result04, $t);
       if ($o26_codigo == 1) {
@@ -461,7 +461,7 @@ if (isset ($orgao_antigo)) {
       }
       $arr_qua[$o24_exercicio] = $o24_quantmed;
     }
-    
+
     $tot_livre = 0;
     $tot_outro = 0;
     for ($s = $anoini; $s <= $anofim; $s ++) {
@@ -473,7 +473,7 @@ if (isset ($orgao_antigo)) {
       $pdf->cell(40, $alt, db_formatar($arr_ano_livre[$s] + $arr_ano_outro[$s], 'f'), 1, 1, "R", 0);
       $tot_livre += $arr_ano_livre[$s];
       $tot_outro += $arr_ano_outro[$s];
-      
+
     }
   }
 }

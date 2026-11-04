@@ -1,38 +1,38 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE sau_proccbo
 require_once(modification("classes/db_sau_proccbo_classe.php"));
-class cl_sau_proccbo_ext extends cl_sau_proccbo  { 
+class cl_sau_proccbo_ext extends cl_sau_proccbo  {
    function sql_query_ext ( $sd96_i_codigo=null,$campos="*",$ordem=null,$dbwhere="", $intUnidade, $lFiltraServico = true){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -57,7 +57,7 @@ class cl_sau_proccbo_ext extends cl_sau_proccbo  {
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
-     
+
      //Sau_Config
      $clsau_config  = db_utils::getDao("sau_config_ext");
      $resSau_config = $clsau_config->sql_record($clsau_config->sql_query_ext());
@@ -68,13 +68,13 @@ class cl_sau_proccbo_ext extends cl_sau_proccbo  {
 	     $clsau_atualiza  = db_utils::getDao("sau_atualiza");
 	     $resSau_atualiza = $clsau_atualiza->sql_record($clsau_atualiza->sql_query(null, "*", "s100_i_codigo desc limit 1"));
 	     $objSau_atualiza = db_utils::fieldsMemory($resSau_atualiza,0);
-	      
-	     $sql2 .= " and sd96_i_anocomp    = {$objSau_atualiza->s100_i_anocomp}"; 
-	     $sql2 .= " and sd96_i_mescomp    = {$objSau_atualiza->s100_i_mescomp}"; 
+
+	     $sql2 .= " and sd96_i_anocomp    = {$objSau_atualiza->s100_i_anocomp}";
+	     $sql2 .= " and sd96_i_mescomp    = {$objSau_atualiza->s100_i_mescomp}";
      }
      if( $objSau_config->s103_c_servicoproc == 'S' && $lFiltraServico){
-     	$intUnidade = (int)$intUnidade==0?DB_getsession("DB_coddepto"):$intUnidade; 
-     	$sql2 .= "and sau_procedimento.sd63_i_codigo in ( ";     	
+     	$intUnidade = (int)$intUnidade==0?DB_getsession("DB_coddepto"):$intUnidade;
+     	$sql2 .= "and sau_procedimento.sd63_i_codigo in ( ";
      	$sql2 .="select sd88_i_procedimento
                  from sau_procservico
                  inner join (select (select sd87_i_codigo
@@ -97,12 +97,12 @@ class cl_sau_proccbo_ext extends cl_sau_proccbo  {
                                   ) as x
                             ) as y on sau_procservico.sd88_i_classificacao = y.sd87_i_codigo)";
         }
-     
+
      $sql .= $sql2;
 
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

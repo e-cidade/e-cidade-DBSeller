@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,22 +41,22 @@ $clrotulo->label("nomeinst");
           <?=@$Lt59_sequencial?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t59_sequencial',10,$It59_sequencial,true,'text',3,"")
           ?>
         </td>
       </tr>
       <tr style="display: none;">
         <td nowrap title="<?=@$Tt59_instituicao?>">
-          <?
+          <?php
             db_ancora(@$Lt59_instituicao,"js_pesquisat59_instituicao(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t59_instituicao',10,$It59_instituicao,true,'text',$db_opcao," onchange='js_pesquisat59_instituicao(false);'")
           ?>
-          <?
+          <?php
             db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
           ?>
         </td>
@@ -66,7 +66,7 @@ $clrotulo->label("nomeinst");
           Data da implantação:
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('t59_dataimplanatacaodepreciacao', 
                          @$t59_dataimplanatacaodepreciacao_dia,
                          @$t59_dataimplanatacaodepreciacao_mes,
@@ -117,7 +117,7 @@ $clrotulo->label("nomeinst");
 
   function js_preenchepesquisa(chave) {
     db_iframe_cfpatriinstituicao.hide();
-    <?
+    <?php
     if($db_opcao!=1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

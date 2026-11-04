@@ -29,14 +29,14 @@ class cl_classificacaocredoreselemento {
                  cc32_anousu = int4 = Conta
                  cc32_exclusao = bool = Exclus?o
                  ";
-   //funcao construtor da classe
-   function cl_classificacaocredoreselemento() {
+   //funcao construtor da classe 
+   public function __construct() { 
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("classificacaocredoreselemento");
+     $this->rotulo = new rotulo("classificacaocredoreselemento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro
-   function erro($mostra,$retorna) {
+   //funcao erro 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_classificacaocredoreselemento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cc32_sequencial = ($this->cc32_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cc32_sequencial"]:$this->cc32_sequencial);
        $this->cc32_classificacaocredores = ($this->cc32_classificacaocredores == ""?@$GLOBALS["HTTP_POST_VARS"]["cc32_classificacaocredores"]:$this->cc32_classificacaocredores);
@@ -57,7 +57,7 @@ class cl_classificacaocredoreselemento {
      }
    }
    // funcao para Inclusão
-   function incluir ($cc32_sequencial){
+   public function incluir ($cc32_sequencial){ 
       $this->atualizacampos();
      if($this->cc32_classificacaocredores == null ){
        $this->erro_sql = " Campo Lista não informado.";

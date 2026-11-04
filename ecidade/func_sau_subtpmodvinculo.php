@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
               <?=$Lsd54_i_vinculacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd54_i_vinculacao",2,$Isd54_i_vinculacao,true,"text",4,"","chave_sd54_i_vinculacao");
                  ?>
             </td>
@@ -68,7 +68,7 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
               <?=$Lsd54_i_tpvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd54_i_tpvinculo",2,$Isd54_i_tpvinculo,true,"text",4,"","chave_sd54_i_tpvinculo");
                  ?>
             </td>
@@ -79,7 +79,7 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
               <?=$Lsd54_i_tpsubvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd54_i_tpsubvinculo",2,$Isd54_i_tpsubvinculo,true,"text",4,"","chave_sd54_i_tpsubvinculo");
                  ?>
             </td>
@@ -89,7 +89,7 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
               <?=$Lsd54_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd54_v_descricao",60,$Isd54_v_descricao,true,"text",4,"","chave_sd54_v_descricao");
                  ?>
             </td>
@@ -107,7 +107,7 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_subtpmodvinculo.php")==true){
@@ -147,12 +147,12 @@ $clsau_subtpmodvinculo->rotulo->label("sd54_v_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

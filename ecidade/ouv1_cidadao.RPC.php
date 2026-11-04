@@ -187,7 +187,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaotiporetorno->erro_msg);
         $lerro             = true;
-        break;
+        return false;
       }
     } else {
 
@@ -290,7 +290,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
         $lerro             = true;
-        break;
+        return false;
       }
       $oRetorno->iTipoFamiliar = $iTipoFamiliar;
     } else {
@@ -306,7 +306,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaofamilia->erro_msg);
         $lerro             = true;
-        break;
+        return false;
       }
 
       $clcidadaocomposicaofamiliar->as03_cidadao        = $oRetorno->iCodCidadao;
@@ -319,7 +319,7 @@ if ($oParam->acao == "incluir") {
 
         $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
         $lerro             = true;
-        break;
+        return false;
       }
 
       $oDataVinculo                = new DBDate(date("d/m/Y"));
@@ -578,7 +578,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
             $lerro             = true;
-            break;
+            return false;
           }
 
         } else {
@@ -594,7 +594,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaofamilia->erro_msg);
             $lerro             = true;
-            break;
+            return false;
           }
 
           $clcidadaocomposicaofamiliar->as03_sequencial     = $oParam->cidadao->as03_sequencial;
@@ -608,7 +608,7 @@ if ($oParam->acao == "incluir") {
 
             $oRetorno->message = urlencode($clcidadaocomposicaofamiliar->erro_msg);
             $lerro             = true;
-            break;
+            return false;
           }
 
           $sWhereLocalAtendimentoFamilia = "as23_cidadaofamilia = {$oParam->cidadao->iCidadaoFamilia}";
@@ -678,7 +678,6 @@ if ($oParam->acao == "incluir") {
       if($iNumRows > 0){
 
         $oAlteraCidadao = db_utils::fieldsMemory($rsCidadao,0);
-        //var_dump($oAlteraCidadao);
         $clcidadao->ov02_ativo = 'false';
         $clcidadao->ov02_sequencial = $oAlteraCidadao->ov02_sequencial;
         $clcidadao->ov02_seq			  = $oAlteraCidadao->ov02_seq;
@@ -828,7 +827,6 @@ if ($oParam->acao == "incluir") {
   }else{
     $oRetorno->status	= 1;
     $oRetorno->message = urlencode("\\n\\nUsuário:\\n\\nFalha ao localizar os dados do cidadao = $oParam->cidadao->ov02_sequencial\\n\\nAdministrador:");
-    //$oRetorno->message = "Falha ao localizar os dados do cidadão de código = $oParam->chave";
   }
 
 } else if ($oParam->acao == "pesquisaCGM"){

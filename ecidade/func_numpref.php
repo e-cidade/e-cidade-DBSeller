@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clnumpref->rotulo->label("k03_anousu");
               <?=$Lk03_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k03_instit",10,$Ik03_instit,true,"text",4,"","chave_k03_instit");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clnumpref->rotulo->label("k03_anousu");
               <?=$Lk03_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k03_anousu",4,$Ik03_anousu,true,"text",4,"","chave_k03_anousu");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clnumpref->rotulo->label("k03_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_numpref.php")==true){
@@ -123,12 +123,12 @@ $clnumpref->rotulo->label("k03_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -158,7 +158,7 @@ if ( isset($oPost->incluir) ) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <center>
-	<?
+	<?php
   	include(modification("forms/db_frmrecreparcori.php"));
 	?>
   </center>
@@ -167,7 +167,7 @@ if ( isset($oPost->incluir) ) {
 <script type="text/javascript">
   js_tabulacaoforms("form1","k70_recori",true,1,"k70_recori",true);
 </script>
-<?
+<?php
 if ( isset($oPost->incluir) ) {
 	
   if( $lSqlErro ){

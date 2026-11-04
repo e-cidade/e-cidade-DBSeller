@@ -35,6 +35,9 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use stdClass;
 use ParameterException;
 use ParametrosPessoalRepository;
+use InstituicaoRepository;
+use ServidorRepository;
+use Exception;
 
 /**
  * Class RemuneracaoBeneficioEntePublic
@@ -107,6 +110,22 @@ class RemuneracaoBeneficioEntePublico extends ProcessamentoAbstract implements P
 
         if ($dados->indApuracao === 1 && !empty($this->mes)) {
             $dados->perApur .= "-{$this->mes}";
+        }
+
+        if (!empty($this->selecao)) {
+            try {
+                $instituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
+
+                $this->servidores = ServidorRepository::getServidoresBySelecao(
+                    $this->ano,
+                    $this->mes,
+                    $this->selecao,
+                    $instituicao->getCodigo()
+                );
+                $this->servidores = array_values($this->servidores);
+            } catch (Exception $e) {
+                throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
+            }
         }
 
         $competencia =  new DBCompetencia($this->ano, $this->mes);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if ($db_opcao != 1 && $lib != 4){
     <tr>
 	    <td nowrap align="right" title="<?=@$Tm64_matmater?>"><?=@$Lm64_matmater?></td>
       <td>
-        <?
+        <?php
            $result_descr=$clmatmater->sql_record($clmatmater->sql_query_file($m64_matmater,"m60_descr"));
            if ($clmatmater->numrows>0){
                 db_fieldsmemory($result_descr,0);
@@ -83,7 +83,7 @@ if ($db_opcao != 1 && $lib != 4){
     <tr>
 	    <td nowrap align="right" title="<?=@$Tm64_estoqueminimo?>"><?=@$Lm64_estoqueminimo?></td>
       <td>
-        <?
+        <?php
            db_input("m64_estoqueminimo",15,@$Im64_estoqueminimo,true,"text",$db_opcao);
         ?>
       </td>
@@ -91,7 +91,7 @@ if ($db_opcao != 1 && $lib != 4){
     <tr>
 	    <td nowrap align="right" title="<?=@$Tm64_estoquemaximo?>"><?=@$Lm64_estoquemaximo?></td>
       <td>
-        <?
+        <?php
            db_input("m64_estoquemaximo",15,@$Im64_estoquemaximo,true,"text",$db_opcao);
         ?>
       </td>
@@ -99,7 +99,7 @@ if ($db_opcao != 1 && $lib != 4){
     <tr>
 	    <td nowrap align="right" title="<?=@$Tm64_pontopedido?>"><?=@$Lm64_pontopedido?></td>
       <td>
-        <?
+        <?php
            db_input("m64_pontopedido",15,@$Im64_pontopedido,true,"text",$db_opcao);
         ?>
       </td>
@@ -107,7 +107,7 @@ if ($db_opcao != 1 && $lib != 4){
      <tr>
       <td nowrap align="right" title="<?=@$Tm64_localizacao ?>"><?=@$Lm64_localizacao?></td>
       <td>
-        <?
+        <?php
            db_input("m64_localizacao",15,@$Im64_localizacao,true,"text",$db_opcao);
         ?>
       </td>
@@ -115,18 +115,18 @@ if ($db_opcao != 1 && $lib != 4){
 	  <tr>
 	    <td colspan="2" align="center">
 	      <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onClick="return js_verifica_dados();">
-        <?
+        <?php
            if($db_opcao != 1){
         ?>
            <input name="novo" type="submit" id="novo" value="Novo">
-        <?
+        <?php
            }
         ?>
       </td>
     </tr>
     <tr>
       <td valign="top" colspan="2"> 
-      <?
+      <?php
      $chavepri= array("m64_sequencial"=>@$m64_sequencial,"m64_matmater"=>@$m64_matmater);
 
      $cliframe_alterar_excluir->chavepri=$chavepri;

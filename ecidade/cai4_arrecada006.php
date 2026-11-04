@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -28,65 +28,80 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"]);
 ?>
 <html>
 <head>
 <title>Documento sem t&iacute;tulo</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-<!--
-.cancelapagto {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	height: 15px;
-	width: 100px;
-	background-color: #AAAF96;
-	border: none;
-}
--->
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<style>
+    table.tableRegistros {
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid threedshadow;
+        background-color: #EEE;
+        border-spacing: 1;
+        min-width: 650px;
+    }
+
+    table.tableRegistros th {
+        background-color: #CCC;
+        height: 30px;
+    }
+
+    table.tableRegistros td {
+        height: 20px;
+    }
+
+    .totalizador {
+        height: 30px;
+        text-align: right;
+        font-weight: bold;
+        background-color: #CCC;
+    }    
 </style>
 </head>
-<body bgcolor=#CCCCCC bgcolor="#AAAF96" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<center>
-
-  <table width="597" height="19" border="0" cellpadding="0" cellspacing="0" id="tab">
-    <tr bgcolor="#BDC6BD">
-      <th width="80" align="left" nowrap style="font-size:12px"> Receita</th>
-      <th width="198" align="left" nowrap style="font-size:12px">Descri&ccedil;&atilde;o</th>
-      <th width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px">Valor Corrigido</th>
-    </tr>
-    <?
-	if(isset($codcla)){
-	  $result = db_query("select *
+<body>
+  <table class="tableRegistros" id="tab">
+    <thead>
+        <tr>
+          <th width="15%" nowrap style="text-align: left;"> Receita</th>
+          <th width="60%" nowrap style="text-align: left;">Descri&ccedil;&atilde;o</th>
+          <th width="25%" nowrap style="text-align: right;">Valor Corrigido</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php
+    if (isset($codcla)) {
+        $result = db_query("select *
 	                     from disrec
 						      inner join tabrec on k00_receit = k02_codigo
 				    	 where codcla = $codcla");
-	  if(pg_numrows($result)!=0){
-        $totalvlr = 0;
-	    for($i=0;$i<pg_numrows($result);$i++){
-		  db_fieldsmemory($result,$i);
-		  $totalvlr += $vlrrec;
-		  ?>
-          <tr bgcolor="#BDC6BD">
-            <td width="80" align="left" nowrap style="font-size:12px"><?=$k00_receit?></td>
-            <td width="198" nowrap style="font-size:12px"><?=$k02_drecei?></td>
-            <td width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px"><?=db_formatar($vlrrec,'f')?></td>
+        if (pg_num_rows($result)!=0) {
+            $totalvlr = 0;
+            for ($i=0; $i<pg_num_rows($result); $i++) {
+                db_fieldsmemory($result, $i);
+                $totalvlr += $vlrrec;
+                ?>
+          <tr>
+            <td style="text-align: left;"><?=$k00_receit?></td>
+            <td><?=$k02_drecei?></td>
+            <td style="text-align: right;"><?=db_formatar($vlrrec, 'f')?></td>
           </tr>
-		  <?
-		}
- 	    ?>
-        <tr bgcolor="#BDC6BD">
-          <td width="80" align="left" nowrap style="font-size:12px"></td>
-          <td width="198" nowrap style="font-size:12px"><b>Total :</b></td>
-          <td width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px"><b><?=db_formatar($totalvlr,'f')?></b></td>
+                <?php
+            }
+            ?>
+        <tr class="totalizador">
+          <td colspan=2>Total :</td>
+          <td><?=db_formatar($totalvlr, 'f')?></td>
         </tr>
-		<?
-	  }
-	}
-	?>
+            <?php
+        }
+    }
+    ?>
+    </tbody>
   </table>
-</center>
 </body>
 </html>
 <script>

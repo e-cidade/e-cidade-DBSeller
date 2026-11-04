@@ -54,7 +54,7 @@ class cl_bensmotbaixa
                  ";
 
     //funcao construtor da classe
-    function cl_bensmotbaixa()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("bensmotbaixa");
@@ -62,7 +62,7 @@ class cl_bensmotbaixa
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -73,7 +73,7 @@ class cl_bensmotbaixa
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->t51_motivo = ($this->t51_motivo == "" ? @$GLOBALS["HTTP_POST_VARS"]["t51_motivo"] : $this->t51_motivo);
@@ -85,7 +85,7 @@ class cl_bensmotbaixa
     }
 
     // funcao para inclusao
-    function incluir($t51_motivo)
+    public function incluir($t51_motivo)
     {
         $this->atualizacampos();
         if ($this->t51_descr == null) {
@@ -193,7 +193,7 @@ class cl_bensmotbaixa
     }
 
     // funcao para alteracao
-    function alterar($t51_motivo = null)
+    public function alterar($t51_motivo = null)
     {
         $this->atualizacampos();
         $sql = " update bensmotbaixa set ";
@@ -300,7 +300,7 @@ class cl_bensmotbaixa
     }
 
     // funcao para exclusao
-    function excluir($t51_motivo = null, $dbwhere = null)
+    public function excluir($t51_motivo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($t51_motivo));
@@ -377,7 +377,7 @@ class cl_bensmotbaixa
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -406,7 +406,7 @@ class cl_bensmotbaixa
         return $result;
     }
 
-    function sql_query($t51_motivo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($t51_motivo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -444,7 +444,7 @@ class cl_bensmotbaixa
         return $sql;
     }
 
-    function sql_query_file($t51_motivo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($t51_motivo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

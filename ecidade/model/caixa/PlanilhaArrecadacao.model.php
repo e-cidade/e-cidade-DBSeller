@@ -26,7 +26,7 @@
  */
 
 require_once modification("model/configuracao/InstituicaoRepository.model.php");
-
+ 
 /**
  * Planilha de Arrecadacao
  * Eh um conjunto de receita do municipio para fins de arrecadacao.
@@ -82,16 +82,14 @@ class PlanilhaArrecadacao
     {
 
         if (!empty($iCodigo)) {
-
             $oDaoPlanilha = new cl_placaixa();
             $sSqlPlanilha = $oDaoPlanilha->sql_query_processo($iCodigo);
             $rsPlanilha = $oDaoPlanilha->sql_record($sSqlPlanilha);
 
             if ($rsPlanilha && $oDaoPlanilha->numrows > 0) {
-
                 $oPlanilha = db_utils::fieldsMemory($rsPlanilha, 0);
                 $this->iCodigo = $oPlanilha->k80_codpla;
-                $this->iInstituicao = InstituicaoRepository::getInstituicaoByCodigo($oPlanilha->k80_instit);
+                $this->oInstituicao = InstituicaoRepository::getInstituicaoByCodigo($oPlanilha->k80_instit);
                 $this->oDataCriacao = new DBDate($oPlanilha->k80_data);
 
                 if (!empty($oPlanilha->k80_dtaut)) {
@@ -178,12 +176,11 @@ class PlanilhaArrecadacao
     /**
      * Retorna uma colecao de receitas vinculadas a planilha
      * @return ReceitaPlanilha[]
+     * @throws BusinessException
      */
     public function getReceitasPlanilha()
     {
-
         if (!empty($this->iCodigo) && count($this->aReceitaPlanilha) == 0) {
-
             $oDaoPlanilhaReceita = new cl_placaixarec;
             $sWhere = " k81_codpla = {$this->iCodigo}";
             $sSqlPlanilhaReceita = $oDaoPlanilhaReceita->sql_query_file(null, " k81_seqpla ", "k81_seqpla", $sWhere);
@@ -191,9 +188,7 @@ class PlanilhaArrecadacao
             $iNumeroRegistro = $oDaoPlanilhaReceita->numrows;
 
             if ($rsPlanilhaReceita && $iNumeroRegistro > 0) {
-
                 for ($i = 0; $i < $iNumeroRegistro; $i++) {
-
                     $oReceitaPlanilha = new ReceitaPlanilha(db_utils::fieldsMemory($rsPlanilhaReceita, $i)->k81_seqpla);
                     $this->aReceitaPlanilha[] = $oReceitaPlanilha;
                 }
@@ -201,6 +196,7 @@ class PlanilhaArrecadacao
         }
         return $this->aReceitaPlanilha;
     }
+
 
     /**
      * Adiciona uma instacia de ReceitaPlanilha a Planilha
@@ -214,8 +210,8 @@ class PlanilhaArrecadacao
 
     /**
      * Persiste a planilha no banco
-     * @throws BusinessException em caso de erro
      * @return boolean
+     * @throws BusinessException em caso de erro
      */
     public function salvar()
     {
@@ -227,13 +223,18 @@ class PlanilhaArrecadacao
         $oDaoPlanilha = new cl_placaixa;
 
         if (empty($this->iCodigo)) {
-
             $oDaoPlanilha->k80_instit = $this->oInstituicao->getSequencial();
             $oDaoPlanilha->k80_data = $this->oDataCriacao->getDate();
             $oDaoPlanilha->incluir(null);
             $this->iCodigo = $oDaoPlanilha->k80_codpla;
-        } else {
 
+            $placaixaUsu = new cl_placaixausu;
+            $placaixaUsu->k214_sequencial = null;
+            $placaixaUsu->k214_placaixa = $this->iCodigo;
+            $placaixaUsu->k214_db_usuario = db_getsession('DB_id_usuario');
+            $placaixaUsu->k214_db_depart = db_getsession('DB_coddepto');
+            $placaixaUsu->incluir(null);
+        } else {
             $oDaoPlanilha->k80_codpla = $this->iCodigo;
             $oDaoPlanilha->alterar($this->iCodigo);
         }
@@ -245,9 +246,7 @@ class PlanilhaArrecadacao
 
         $this->salvarProcessoAdministrativo();
 
-
         if (count($this->aReceitaPlanilha) > 0) {
-
             foreach ($this->aReceitaPlanilha as $oReceitaPlanilha) {
                 $oReceitaPlanilha->salvar($this->iCodigo);
             }
@@ -262,28 +261,26 @@ class PlanilhaArrecadacao
      * ele gera um slip com receitas agrupadas
      * criamos essa estrutura diferente para guardar somente os que são de extra
      */
-    public function getSlipsAutomaticosDasExtras($situacao = null){
+    public function getSlipsAutomaticosDasExtras($situacao = null)
+    {
 
-      $oDao = new cl_slipplacaixarec;
-      $aWhere = array();
-      $aWhere[] = "k81_codpla = {$this->getCodigo()}";
-      if (!empty($situacao)) {
-        $aWhere[] = "k17_situacao = {$situacao}";
-      }
-      $sWhere = implode(" and ", $aWhere);
-      $sql = $oDao->sql_query(null, "k207_slip, placaixarec.*", "k207_slip", $sWhere);
-      $rs = $oDao->sql_record($sql);
-      $aSlips = array();
-      if ($oDao->numrows > 0) {
-
-        for ($i = 0; $i < $oDao->numrows; $i++) {
-          $aSlips[] = db_utils::fieldsMemory($rs, $i)->k207_slip;
+        $oDao = new cl_slipplacaixarec;
+        $aWhere = array();
+        $aWhere[] = "k81_codpla = {$this->getCodigo()}";
+        if (!empty($situacao)) {
+            $aWhere[] = "k17_situacao = {$situacao}";
         }
-
-      }
-      return $aSlips;
+        $sWhere = implode(" and ", $aWhere);
+        $sql = $oDao->sql_query(null, "k207_slip, placaixarec.*", "k207_slip", $sWhere);
+        $rs = $oDao->sql_record($sql);
+        $aSlips = array();
+        if ($oDao->numrows > 0) {
+            for ($i = 0; $i < $oDao->numrows; $i++) {
+                $aSlips[] = db_utils::fieldsMemory($rs, $i)->k207_slip;
+            }
+        }
+        return $aSlips;
     }
-
 
 
     /**
@@ -339,7 +336,6 @@ class PlanilhaArrecadacao
     }
 
 
-
     /**
      * Método que verifica se as receitas da planilha possuem lancamento contabil
      * @return boolean
@@ -349,8 +345,14 @@ class PlanilhaArrecadacao
 
         $oDaoCorPlaCaixa = new cl_corplacaixa;
         $sWherePlanilha = "placaixarec.k81_codpla = {$this->getCodigo()}";
-        $sSqlBuscaAutenticacao = $oDaoCorPlaCaixa->sql_query_planilha_receita(null, null, null, "*", null,
-            $sWherePlanilha);
+        $sSqlBuscaAutenticacao = $oDaoCorPlaCaixa->sql_query_planilha_receita(
+            null,
+            null,
+            null,
+            "*",
+            null,
+            $sWherePlanilha
+        );
         $rsBuscaAutenticacao = $oDaoCorPlaCaixa->sql_record($sSqlBuscaAutenticacao);
         if ($oDaoCorPlaCaixa->numrows == 0) {
             return false;
@@ -374,6 +376,8 @@ class PlanilhaArrecadacao
         $this->excluirProcessoAdministrativo();
 
         $oDaoPlacaixa = new cl_placaixa;
+        $clPlanilhaDepartamento = new cl_placaixausu();
+        $clPlanilhaDepartamento->excluir(null, "k214_placaixa = {$this->getCodigo()}");
         $oDaoPlacaixa->excluir($this->getCodigo());
         if ($oDaoPlacaixa->erro_status == '0' || $oDaoPlacaixa->erro_status == 0) {
             throw new DBException("Não foi possível excluir a planilha.");
@@ -391,7 +395,6 @@ class PlanilhaArrecadacao
 
         $aReceitas = $this->getReceitasPlanilha();
         if (count($aReceitas) > 0) {
-
             foreach ($aReceitas as $oReceitaPlanilha) {
                 $oReceitaPlanilha->excluir();
             }
@@ -428,5 +431,75 @@ class PlanilhaArrecadacao
     public function getProcessoAdministrativo()
     {
         return $this->sProcessoAdministrativo;
+    }
+
+    public function validaReceitasInativas()
+    {
+        $ano = db_getsession('DB_anousu');
+        $data = date('Y-m-d', db_getsession("DB_datausu"));
+
+        $sql = "
+            select distinct o57_fonte
+              from placaixarec
+              join tabrec on k02_codigo = k81_receita
+              join taborc ON tabrec.k02_codigo = taborc.k02_codigo
+                   and taborc.k02_anousu = {$ano}
+              join orcreceita on (o70_anousu, o70_codrec) = (k02_anousu, k02_codrec)
+              join orcfontes on (o57_codfon, o57_anousu) = (o70_codfon, o70_anousu)
+            where k81_codpla = {$this->iCodigo}
+              and (k02_limite is not null and k02_limite <= '{$data}')
+        ";
+
+        $rs = db_query($sql);
+        return db_utils::makeCollectionFromRecord($rs, function ($data) {
+            return $data->o57_fonte;
+        });
+    }
+
+    public function validaContasExtas()
+    {
+        $problemas = [];
+        if (self::devePrepararSlipsParaCoberturaExtraOrcamentaria()) {
+            $receitas = $this->getReceitasPlanilha();
+            foreach ($receitas as $receita) {
+                if (ReceitaExtraOrcamentaria::isExtra($receita->getTipoReceita())) {
+                    $contaTesouraria = $receita->getContaTesouraria();
+                    $contaDebito = $contaTesouraria->getContaExtra();
+
+                    if (empty($contaDebito)) {
+                        $problemas[$contaTesouraria->getCodigoConta()] = $contaTesouraria->getCodigoConta();
+                    }
+                }
+            }
+        }
+
+        if (!empty($problemas)) {
+            throw new Exception(sprintf(
+                'Conta bancária sem vínculo com conta extra: %s',
+                implode(', ', $problemas)
+            ));
+        }
+        return true;
+    }
+
+    /**
+     * Validação se o sistema deve preparar os slips para cobertura Extra-Orçamentária
+     * Quando o cliente POSSUI Apropriação de retenção ativa e os parâmetros abaixo estiverem configurados como
+     * demonstrado:
+     * - k29_gerarslipautomaticoreceitaretencao: 0 (Não gera Slips automaticamente)
+     * - k29_utilizarcontaextra: t (SIM)
+     * Devemos prepara os dados para gerar o slip de transferência para cobertura extra orçamentária
+     * @return bool
+     */
+    public static function devePrepararSlipsParaCoberturaExtraOrcamentaria()
+    {
+        $parametros = slip::getParametros();
+        if (APROPRIACAO_RETENCAO &&
+            $parametros->k29_gerarslipautomaticoreceitaretencao == 0 &&
+            $parametros->k29_utilizarcontaextra == 't') {
+            return true;
+        }
+
+        return false;
     }
 }

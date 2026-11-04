@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $oGet = db_utils::postmemory($_GET);
 <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr>
         <td align="center" valign="top">
-            <?
+            <?php
             $sSqlSusp = " select distinct 										                                    									          ";
             $sSqlSusp .= "        arresusp.k00_numpre, 		                                        													  ";
             $sSqlSusp .= "        arresusp.k00_numpar, 		                                        													  ";

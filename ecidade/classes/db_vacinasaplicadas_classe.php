@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE vacinasaplicadas
-class cl_vacinasaplicadas { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd08_c_vacina = null; 
-   var $sd08_i_unidade = 0; 
-   var $sd08_i_cgm = 0; 
-   var $sd08_d_data_dia = null; 
-   var $sd08_d_data_mes = null; 
-   var $sd08_d_data_ano = null; 
-   var $sd08_d_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_vacinasaplicadas {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd08_c_vacina = null;
+   var $sd08_i_unidade = 0;
+   var $sd08_i_cgm = 0;
+   var $sd08_d_data_dia = null;
+   var $sd08_d_data_mes = null;
+   var $sd08_d_data_ano = null;
+   var $sd08_d_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd08_c_vacina = char(10) = Vacina 
-                 sd08_i_unidade = int4 = Unidade 
-                 sd08_i_cgm = int4 = Cgm 
-                 sd08_d_data = date = Data 
+                 sd08_c_vacina = char(10) = Vacina
+                 sd08_i_unidade = int4 = Unidade
+                 sd08_i_cgm = int4 = Cgm
+                 sd08_d_data = date = Data
                  ";
-   //funcao construtor da classe 
-   function cl_vacinasaplicadas() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("vacinasaplicadas"); 
+     $this->rotulo = new rotulo("vacinasaplicadas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_vacinasaplicadas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd08_c_vacina = ($this->sd08_c_vacina == ""?@$GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"]:$this->sd08_c_vacina);
        $this->sd08_i_unidade = ($this->sd08_i_unidade == ""?@$GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"]:$this->sd08_i_unidade);
@@ -93,13 +93,13 @@ class cl_vacinasaplicadas {
      }
    }
    // funcao para inclusao
-   function incluir ($sd08_c_vacina,$sd08_i_unidade,$sd08_i_cgm,$sd08_d_data){ 
+   public function incluir ($sd08_c_vacina,$sd08_i_unidade,$sd08_i_cgm,$sd08_d_data=null){
       $this->atualizacampos();
-       $this->sd08_c_vacina = $sd08_c_vacina; 
-       $this->sd08_i_unidade = $sd08_i_unidade; 
-       $this->sd08_i_cgm = $sd08_i_cgm; 
-       $this->sd08_d_data = $sd08_d_data; 
-     if(($this->sd08_c_vacina == null) || ($this->sd08_c_vacina == "") ){ 
+       $this->sd08_c_vacina = $sd08_c_vacina;
+       $this->sd08_i_unidade = $sd08_i_unidade;
+       $this->sd08_i_cgm = $sd08_i_cgm;
+       $this->sd08_d_data = $sd08_d_data;
+     if(($this->sd08_c_vacina == null) || ($this->sd08_c_vacina == "") ){
        $this->erro_sql = " Campo sd08_c_vacina nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -107,7 +107,7 @@ class cl_vacinasaplicadas {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->sd08_i_unidade == null) || ($this->sd08_i_unidade == "") ){ 
+     if(($this->sd08_i_unidade == null) || ($this->sd08_i_unidade == "") ){
        $this->erro_sql = " Campo sd08_i_unidade nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -115,7 +115,7 @@ class cl_vacinasaplicadas {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->sd08_i_cgm == null) || ($this->sd08_i_cgm == "") ){ 
+     if(($this->sd08_i_cgm == null) || ($this->sd08_i_cgm == "") ){
        $this->erro_sql = " Campo sd08_i_cgm nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -123,7 +123,7 @@ class cl_vacinasaplicadas {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->sd08_d_data == null) || ($this->sd08_d_data == "") ){ 
+     if(($this->sd08_d_data == null) || ($this->sd08_d_data == "") ){
        $this->erro_sql = " Campo sd08_d_data nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -132,19 +132,19 @@ class cl_vacinasaplicadas {
        return false;
      }
      $sql = "insert into vacinasaplicadas(
-                                       sd08_c_vacina 
-                                      ,sd08_i_unidade 
-                                      ,sd08_i_cgm 
-                                      ,sd08_d_data 
+                                       sd08_c_vacina
+                                      ,sd08_i_unidade
+                                      ,sd08_i_cgm
+                                      ,sd08_d_data
                        )
                 values (
-                                '$this->sd08_c_vacina' 
-                               ,$this->sd08_i_unidade 
-                               ,$this->sd08_i_cgm 
-                               ,".($this->sd08_d_data == "null" || $this->sd08_d_data == ""?"null":"'".$this->sd08_d_data."'")." 
+                                '$this->sd08_c_vacina'
+                               ,$this->sd08_i_unidade
+                               ,$this->sd08_i_cgm
+                               ,".($this->sd08_d_data == "null" || $this->sd08_d_data == ""?"null":"'".$this->sd08_d_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Vacinas Aplicadas ($this->sd08_c_vacina."-".$this->sd08_i_unidade."-".$this->sd08_i_cgm."-".$this->sd08_d_data) nao Incluído. Inclusao Abortada.";
@@ -182,16 +182,16 @@ class cl_vacinasaplicadas {
        $resac = db_query("insert into db_acount values($acount,100020,100112,'','".AddSlashes(pg_result($resaco,0,'sd08_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$sd08_d_data=null) { 
+   public function alterar ($sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$sd08_d_data=null) {
       $this->atualizacampos();
      $sql = " update vacinasaplicadas set ";
      $virgula = "";
-     if(trim($this->sd08_c_vacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"])){ 
+     if(trim($this->sd08_c_vacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"])){
        $sql  .= $virgula." sd08_c_vacina = '$this->sd08_c_vacina' ";
        $virgula = ",";
-       if(trim($this->sd08_c_vacina) == null ){ 
+       if(trim($this->sd08_c_vacina) == null ){
          $this->erro_sql = " Campo Vacina nao Informado.";
          $this->erro_campo = "sd08_c_vacina";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"])){ 
+     if(trim($this->sd08_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"])){
        $sql  .= $virgula." sd08_i_unidade = $this->sd08_i_unidade ";
        $virgula = ",";
-       if(trim($this->sd08_i_unidade) == null ){ 
+       if(trim($this->sd08_i_unidade) == null ){
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "sd08_i_unidade";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_cgm"])){ 
+     if(trim($this->sd08_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_cgm"])){
        $sql  .= $virgula." sd08_i_cgm = $this->sd08_i_cgm ";
        $virgula = ",";
-       if(trim($this->sd08_i_cgm) == null ){ 
+       if(trim($this->sd08_i_cgm) == null ){
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "sd08_i_cgm";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"] !="") ){ 
+     if(trim($this->sd08_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"] !="") ){
        $sql  .= $virgula." sd08_d_data = '$this->sd08_d_data' ";
        $virgula = ",";
-       if(trim($this->sd08_d_data) == null ){ 
+       if(trim($this->sd08_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "sd08_d_data_dia";
          $this->erro_banco = "";
@@ -239,11 +239,11 @@ class cl_vacinasaplicadas {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"])){
          $sql  .= $virgula." sd08_d_data = null ";
          $virgula = ",";
-         if(trim($this->sd08_d_data) == null ){ 
+         if(trim($this->sd08_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "sd08_d_data_dia";
            $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_vacinasaplicadas {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Vacinas Aplicadas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd08_c_vacina."-".$this->sd08_i_unidade."-".$this->sd08_i_cgm."-".$this->sd08_d_data;
@@ -316,14 +316,14 @@ class cl_vacinasaplicadas {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$sd08_d_data=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$sd08_d_data=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd08_c_vacina,$sd08_i_unidade,$sd08_i_cgm,$sd08_d_data));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -373,7 +373,7 @@ class cl_vacinasaplicadas {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Vacinas Aplicadas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd08_c_vacina."-".$sd08_i_unidade."-".$sd08_i_cgm."-".$sd08_d_data;
@@ -401,11 +401,11 @@ class cl_vacinasaplicadas {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -427,10 +427,10 @@ class cl_vacinasaplicadas {
       }
      return $result;
    }
-   function sql_query ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,31 +446,31 @@ class cl_vacinasaplicadas {
      $sql2 = "";
      if($dbwhere==""){
        if($sd08_c_vacina!=null ){
-         $sql2 .= " where vacinasaplicadas.sd08_c_vacina = '$sd08_c_vacina' "; 
-       } 
+         $sql2 .= " where vacinasaplicadas.sd08_c_vacina = '$sd08_c_vacina' ";
+       }
        if($sd08_i_unidade!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vacinasaplicadas.sd08_i_unidade = $sd08_i_unidade "; 
-       } 
+         }
+         $sql2 .= " vacinasaplicadas.sd08_i_unidade = $sd08_i_unidade ";
+       }
        if($sd08_i_cgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vacinasaplicadas.sd08_i_cgm = $sd08_i_cgm "; 
-       } 
+         }
+         $sql2 .= " vacinasaplicadas.sd08_i_cgm = $sd08_i_cgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,10 +479,10 @@ class cl_vacinasaplicadas {
      }
      return $sql;
   }
-   function sql_query_file ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,31 +495,31 @@ class cl_vacinasaplicadas {
      $sql2 = "";
      if($dbwhere==""){
        if($sd08_c_vacina!=null ){
-         $sql2 .= " where vacinasaplicadas.sd08_c_vacina = '$sd08_c_vacina' "; 
-       } 
+         $sql2 .= " where vacinasaplicadas.sd08_c_vacina = '$sd08_c_vacina' ";
+       }
        if($sd08_i_unidade!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vacinasaplicadas.sd08_i_unidade = $sd08_i_unidade "; 
-       } 
+         }
+         $sql2 .= " vacinasaplicadas.sd08_i_unidade = $sd08_i_unidade ";
+       }
        if($sd08_i_cgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " vacinasaplicadas.sd08_i_cgm = $sd08_i_cgm "; 
-       } 
+         }
+         $sql2 .= " vacinasaplicadas.sd08_i_cgm = $sd08_i_cgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

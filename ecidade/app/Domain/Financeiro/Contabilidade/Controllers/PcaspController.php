@@ -4,6 +4,9 @@ namespace App\Domain\Financeiro\Contabilidade\Controllers;
 
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
 use App\Domain\Financeiro\Contabilidade\Models\Conplano;
+use App\Domain\Financeiro\Contabilidade\Models\Pcasp;
+use App\Domain\Financeiro\Contabilidade\Models\PlanoDespesa;
+use App\Domain\Financeiro\Contabilidade\Models\PlanoReceita;
 use App\Domain\Financeiro\Contabilidade\Models\Sistema;
 use App\Domain\Financeiro\Contabilidade\Models\SistemaConta;
 use App\Domain\Financeiro\Contabilidade\Requests\ExcluirReduzidoRequest;
@@ -144,13 +147,53 @@ class PcaspController extends Controller
         $service = new ManutencaoPlanoContasService();
         $service->excluirContas($contas);
 
-//        die('morre');
-        $retorno = [];
-//        $msgLog = $service->getLog();
-//
-//        if (!empty($msgLog)) {
-//            $retorno = ['logs' => $msgLog];
-//        }
-        return new DBJsonResponse($retorno, 'Contas excluídas com sucesso.');
+        return new DBJsonResponse([], 'Contas excluídas com sucesso.');
+    }
+
+
+    public function mapeamentosRealizados($tipo, $exercicio)
+    {
+        $tipo = $tipo === 'uniao';
+
+        $map = (object)[
+            'pcasp' => false,
+            'despesa' => false,
+            'receita' => false,
+        ];
+
+        $map->pcasp = Pcasp::query()
+                ->where('uniao', $tipo)
+                ->where('exercicio', $exercicio)
+                ->whereRaw('exists(select 1 from pcaspconplano where pcasp_id = pcasp.id)')
+                ->get()
+                ->count() > 0;
+
+        $map->despesa = PlanoDespesa::query()
+                ->where('uniao', $tipo)
+                ->where('exercicio', $exercicio)
+                ->whereRaw('
+                exists(select 1 from planodespesaconplanoorcamento where planodespesa_id = planodespesa.id)
+                ')
+                ->get()
+                ->count() > 0;
+
+
+        $map->receita = PlanoReceita::query()
+                ->where('uniao', $tipo)
+                ->where('exercicio', $exercicio)
+                ->whereRaw('
+                exists(select 1 from planoreceitaconplanoorcamento where planoreceita_id = planoreceita.id)
+                ')
+                ->get()
+                ->count() > 0;
+
+        return new DBJsonResponse($map, '');
+    }
+
+    public function importarVinculo(Request $request)
+    {
+        $service = new VincularPcaspService();
+        $service->importarVinculo($request->all());
+        return new DBJsonResponse([], 'Mapeamento executado com base no exercício anterior');
     }
 }

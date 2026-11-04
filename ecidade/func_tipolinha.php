@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipolinha->rotulo->label("ed226_c_descr");
               <?=$Led226_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed226_i_codigo",10,$Ied226_i_codigo,true,"text",4,"","chave_ed226_i_codigo");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $cltipolinha->rotulo->label("ed226_c_descr");
               <?=$Led226_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed226_c_descr",10,$Ied226_c_descr,true,"text",4,"","chave_ed226_c_descr");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $cltipolinha->rotulo->label("ed226_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipolinha.php")==true){
@@ -122,12 +122,12 @@ $cltipolinha->rotulo->label("ed226_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

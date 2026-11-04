@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -607,9 +607,20 @@ $aOperacoes = $operacoestefRepository->get();
                             <?= @$Lk00_bloqnutil ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             $x = array("f" => "NAO", "t" => "SIM");
                             db_select('k00_bloqnutil', $x, true, $db_opcao, "");
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bold">
+                            Permite cobrança de taxa Administrativa:
+                        </td>
+                        <td>
+                            <?php
+                            $x = array("f" => "NAO", "t" => "SIM");
+                            db_select('k00_taxaadm', $x, true, $db_opcao, "");
                             ?>
                         </td>
                     </tr>
@@ -801,7 +812,7 @@ $aOperacoes = $operacoestefRepository->get();
             </fieldset>
         </div>
         <div id="tef">
-          <? db_input('k196_sequencial', 10, $Ik196_sequencial, true, 'hidden', $db_opcao) ?>
+          <?php db_input('k196_sequencial', 10, $Ik196_sequencial, true, 'hidden', $db_opcao) ?>
           <fieldset class="fieldsetPrincipal" style="width:451px;">
               <legend>Configuração TEF</legend>
               <table>

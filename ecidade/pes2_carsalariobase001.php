@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,12 +69,12 @@ $iInstit = db_getsession("DB_instit");
         <strong>Ano / Mês :</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -85,7 +85,7 @@ $iInstit = db_getsession("DB_instit");
       <strong>Ordem:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $array_ordem = array("n"=>"Numérica","a"=>"Alfabética");
       db_select('ordem',$array_ordem,true,1);
       ?>
@@ -96,7 +96,7 @@ $iInstit = db_getsession("DB_instit");
       <strong>Emite Salário:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $array_sal = array("t"=>"Sim","f"=>"Não");
       db_select('salario',$array_sal,true,1);
       ?>
@@ -107,7 +107,7 @@ $iInstit = db_getsession("DB_instit");
       <strong>Opção:</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $xx = array("p"=>"Professores","d"=>"Demais Funcionários","t"=>"Todos");
       db_select('prof',$xx,true,1);
       ?>
@@ -118,7 +118,7 @@ $iInstit = db_getsession("DB_instit");
         <?=$LDBtxt27?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt27',4,$IDBtxt27,true,'text',2,'')
           ?>
 	</td>
@@ -128,14 +128,14 @@ $iInstit = db_getsession("DB_instit");
         <?=$LDBtxt28?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt28',4,$IDBtxt28,true,'text',2,'')
           ?>
 	</td>
       </tr>
     <tr>
       <td align="center" colspan="2">
-      <?
+      <?php
         $sWhere        = "rh30_instit = {$iInstit}";
         $sSqlRhRegime  = $clrhregime->sql_query_file(null, "rh30_codreg, rh30_descr", "rh30_descr", $sWhere);
         $rsSqlRhRegime = $clrhregime->sql_record($sSqlRhRegime);
@@ -151,7 +151,7 @@ $iInstit = db_getsession("DB_instit");
   </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

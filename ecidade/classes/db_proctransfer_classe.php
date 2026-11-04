@@ -566,6 +566,168 @@ class cl_proctransfer {
      }
      return $sql;
   }
+
+    function sql_query_despachos($p61_codandam = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos !== "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " FROM procandamint ";
+        $sql .= " JOIN tipodespacho ON tipodespacho.p100_sequencial = procandamint.p78_tipodespacho";
+        $sql .= " JOIN procandam ON procandam.p61_codandam = procandamint.p78_codandam ";
+        $sql .= " JOIN db_usuarios ON db_usuarios.id_usuario = procandamint.p78_usuario ";
+        $sql .= " JOIN db_depart ON db_depart.coddepto = procandam.p61_coddepto ";
+        $sql .= " JOIN db_config ON db_config.codigo = db_depart.instit";
+        if ($dbwhere == "") {
+            if ($p61_codandam != null) {
+                $sql .= " where procandamint.p78_codandam = $p61_codandam ";
+                $sql .= " and procandamint.p78_transint IS FALSE";
+            }
+        }
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    function sql_query_transferencias_internas($p61_codandam = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos !== "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " FROM proctransferintand ";
+        $sql .= "      left join proctransferint on proctransferint.p88_codigo = proctransferintand.p87_codtransferint";
+        $sql .= "      left join proctransferintusu ON proctransferintusu.p89_codtransferint = proctransferint.p88_codigo";
+        $sql .= "      left join procandamintand as recebimento_transferencia_interna on recebimento_transferencia_interna.p86_codtrans = proctransferint.p88_codigo ";
+        $sql .= "      left join procandam on procandam.p61_codandam = proctransferintand.p87_codandam ";
+        $sql .= "      left join db_usuarios ON db_usuarios.id_usuario = procandam.p61_id_usuario";
+        $sql .= "      left join db_usuarios AS usuario_destino ON usuario_destino.id_usuario = proctransferintusu.p89_usuario";
+        $sql .= "      left join db_depart ON db_depart.coddepto = procandam.p61_coddepto";
+        $sql .= "      left join db_config ON db_config.codigo = db_depart.instit";
+        if ($dbwhere == "") {
+            if ($p61_codandam != null) {
+                $sql .= " where proctransferintand.p87_codandam = $p61_codandam ";
+            }
+        }
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    function sql_query_andamentos_internos($p61_codandam = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos !== "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " FROM procandamint ";
+        $sql .= "      JOIN db_usuarios ON db_usuarios.id_usuario = procandamint.p78_usuario";
+        if ($dbwhere == "") {
+            if ($p61_codandam != null) {
+                $sql .= " where procandamint.p78_codandam = $p61_codandam ";
+            }
+        }
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+   function sql_query_movimentacoes ( $p62_codtran=null,$campos="*",$ordem=null,$dbwhere=""){
+        $sql = "select ";
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
+            $virgula = "";
+            for($i=0;$i<sizeof($campos_sql);$i++){
+                $sql .= $virgula.$campos_sql[$i];
+                $virgula = ",";
+            }
+        }else{
+            $sql .= $campos;
+        }
+        $sql .= " from proctransfer ";
+        $sql .= "      inner join db_depart as atual  on  atual.coddepto = proctransfer.p62_coddepto";
+        $sql .= "      inner join db_config as instiatual  on  atual.instit = instiatual.codigo";
+        $sql .= "      inner join db_depart as destino on  destino.coddepto = proctransfer.p62_coddeptorec";
+        $sql .= "      inner join db_config as destinoinst  on  atual.instit = destinoinst.codigo";
+        $sql .= "      inner join db_usuarios as usu_atual  on  usu_atual.id_usuario = proctransfer.p62_id_usuario";
+        $sql .= "      inner join proctransferproc on proctransferproc.p63_codtran = proctransfer.p62_codtran";
+        $sql .= "      left join proctransand on proctransand.p64_codtran = proctransfer.p62_codtran";
+        $sql .= "      left join procandam on procandam.p61_codandam = proctransand.p64_codandam";
+        $sql .= "      left join arqandam on arqandam.p69_codandam = procandam.p61_codandam";
+        $sql .= "      left join db_usuarios as usu_destino  on  usu_destino.id_usuario = proctransfer.p62_id_usorec";
+        $sql .= "      left join db_depart as depto_andam ON depto_andam.coddepto = procandam.p61_coddepto";
+        $sql .= "      left join db_config as instit_andam ON instit_andam.codigo = depto_andam.instit";
+        $sql .= "      left join db_usuarios as usu_andam on usu_andam.id_usuario = procandam.p61_id_usuario";
+        $sql .= "
+      LEFT JOIN db_departorg
+        ON db01_coddepto = atual.coddepto AND db01_anousu = ". db_getsession('DB_anousu') ."
+      LEFT JOIN orcorgao
+          ON o40_orgao = db01_orgao and o40_anousu = ". db_getsession('DB_anousu') ."
+     ";
+        $sql2 = "";
+        if($dbwhere==""){
+            if($p62_codtran!=null ){
+                $sql2 .= " where proctransfer.p62_codtran = $p62_codtran ";
+            }
+        }else if($dbwhere != ""){
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if($ordem != null ){
+            $sql .= " order by ";
+            $campos_sql = explode("#",$ordem);
+            $virgula = "";
+            for($i=0;$i<sizeof($campos_sql);$i++){
+                $sql .= $virgula.$campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
    function sql_query_file ( $p62_codtran=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){

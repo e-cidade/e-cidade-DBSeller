@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,14 +44,14 @@ if(isset($e80_codage) && $e80_codage != ""){
         $dbwhere = " e82_codord = $e50_codord ";
    }
    if(isset($e60_codemp) && $e60_codemp!="" ){
-     $arr = split("/",$e60_codemp);
+     $arr =explode("/",$e60_codemp);
      $dbwhere_ano = "";
      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
         $dbwhere_ano = " and e60_anousu = ".$arr[1];
      }
       $dbwhere .=  " and  e60_codemp =  '".$arr[0]."' $dbwhere_ano";
-   }   
-   
+   }
+
    if(isset($cheque) && $cheque != '' ){
         $dbwhere .= "  and e91_cheque = $cheque or e86_cheque = $cheque";
    }
@@ -73,11 +73,11 @@ if(isset($e80_codage) && $e80_codage != ""){
    if(isset($valor) && $valor != '' ){
       $dbwhere .= "  and e81_valor = $valor or k17_valor = $valor";
    }
-   
+
    if(!isset($k17_codigo) && !isset($e80_data)){
     $dbwhere .= "and (e53_vlranu < e53_valor)";
    }
-   
+
 }
 
 
@@ -98,7 +98,7 @@ $sql = $clempage->sql_query_cons(null,"e60_anousu,
                                        slip.k17_codigo,
 					                   slip.k17_debito,
 					                   slip.k17_credito","",$dbwhere);
-							   
+
 $sql = "select distinct e60_anousu as db_e60_anousu,
                e80_codage,
                e80_data,
@@ -107,7 +107,7 @@ $sql = "select distinct e60_anousu as db_e60_anousu,
        	       case when e89_codmov is null then e60_numemp end as db_numemp,
 	           case when e89_codmov is null then e82_codord else k17_debito end,
 	           case when e89_codmov is null then z01_numcgm else k17_credito end,
-               e86_cheque, 
+               e86_cheque,
                z01_nome,
  	       case when e86_codmov is null then 'NÃO' else 'SIM' end as db_m_Emitido,
 	       case when e86_codmov is null then '0.00' else e81_valor end as e81_valor
@@ -129,23 +129,23 @@ function js_consultar(){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <table>
        <tr>
 	 <td colspan="2" align="center">
 	   <br>
-	   <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_consultar.hide();"> 
-	 </td>	
+	   <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_consultar.hide();">
+	 </td>
        </tr>
        <tr>
-	 <td align='left'>  
-	 <?
+	 <td align='left'>
+	 <?php
         db_lovrot($sql,15,"","",'');
 	 ?>
 	 </td>
        </tr>
-      </table>  
+      </table>
     </td>
   </tr>
 </table>

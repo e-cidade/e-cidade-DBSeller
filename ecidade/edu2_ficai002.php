@@ -144,7 +144,7 @@ try {
     estiloFonte($pdf);
 
     $bolsaFamilia = $dadosAluno->isBolsafamilia() ? 'X' : '';
-    $pdf->Cell(35, 5, "( {$bolsaFamilia} ) Auxílio Brasil/BVJ");
+    $pdf->Cell(35, 5, "( {$bolsaFamilia} ) Bolsa Família/BVJ");
     $pdf->Cell(30, 5, '(   ) Renda Melhor');
     $pdf->Cell(35, 5, '(   ) Renda Melhor Jovem', 0, 1);
 

@@ -11,7 +11,7 @@ use Rubrica;
 use RubricaRepository;
 use Servidor;
 use ServidorRepository;
-use ServidorOperadoraSaudeDependente;
+use ServidorOperadoraSaudeDependente as ServidorDependente;
 
 /**
  * Class ServidorOperadoraSaude
@@ -52,7 +52,7 @@ class ServidorOperadoraSaude
      */
     private $rubrica;
     /**
-     * @var ServidorOperadoraSaudeDependente[]
+     * @var ServidorDependente[]
      */
     private $servidorOperadoraSaudeDependente;
 
@@ -65,7 +65,6 @@ class ServidorOperadoraSaude
     {
         if ($id) {
             $servidorOperadoraSaude = ServidorOperadoraSaudeRepository::find($id);
-
             $this->sequencial = $servidorOperadoraSaude->getSequencial();
             $this->valor = $servidorOperadoraSaude->getValor();
             $this->ano = $servidorOperadoraSaude->getAno();
@@ -207,7 +206,7 @@ class ServidorOperadoraSaude
     }
 
     /**
-     * @return ServidorOperadoraSaudeDependente[]
+     * @return ServidorDependente[]
      */
     public function getServidorOperadoraSaudeDependente()
     {
@@ -215,7 +214,7 @@ class ServidorOperadoraSaude
     }
 
     /**
-     * @param ServidorOperadoraSaudeDependente[] $servidorOperadoraSaudeDependente
+     * @param ServidorDependente[] $servidorOperadoraSaudeDependente
      */
     public function setServidorOperadoraSaudeDependente($servidorOperadoraSaudeDependente)
     {
@@ -248,7 +247,9 @@ class ServidorOperadoraSaude
         }
 
         if (array_key_exists('rh222_instituicao', $state)) {
-            $servidorOperadoraSaude->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo($state['rh222_instituicao']));
+            $servidorOperadoraSaude->setInstituicao(
+                InstituicaoRepository::getInstituicaoByCodigo($state['rh222_instituicao'])
+            );
         }
 
         if (array_key_exists('rh222_operadorasaude', $state)) {
@@ -288,8 +289,8 @@ class ServidorOperadoraSaude
             'servidorOperadoraSaudeDependentes' => array()
         );
         $dependentes = $this->getServidorOperadoraSaudeDependente();
-        if(count($dependentes) > 0){
-            foreach($dependentes as $dependente) {
+        if (count($dependentes) > 0) {
+            foreach ($dependentes as $dependente) {
                 $retorno['servidorOperadoraSaudeDependentes'][] = $dependente->toArray();
             }
         }

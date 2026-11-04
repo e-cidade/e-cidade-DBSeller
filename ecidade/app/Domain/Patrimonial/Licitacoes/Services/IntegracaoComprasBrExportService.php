@@ -23,6 +23,13 @@ class IntegracaoComprasBrExportService
     public $licitacaoItens;
 
     /**
+     * Numero de casas decimais
+     *
+     * @var int|null
+     */
+    public $casasDecimais= null;
+
+    /**
      * Exportar arquivo para pregao compras BR
      *
      * @param int $licitacao Codigo da licitacao (l20_codigo)
@@ -36,6 +43,18 @@ class IntegracaoComprasBrExportService
         $data = $this->buildDataLicitacao();
 
         return $this->processFileExport($data);
+    }
+
+    /**
+     * Seta numero de casas decimais
+     * no valor unitario dos itens
+     *
+     * @param int $casasDecimais
+     * @return void
+     */
+    public function setCasasDecimais($casasDecimais)
+    {
+        $this->casasDecimais = $casasDecimais;
     }
 
     /**
@@ -105,6 +124,11 @@ class IntegracaoComprasBrExportService
             $itemTitulo      = urldecode($itemSolicitacao->getDescricaoMaterial());
             $itemDescr       = urldecode($itemSolicitacao->getResumo());
 
+            $preco = $itemSolicitacao->getValorUnitario();
+            $preco = ($this->casasDecimais)
+                ? number_format($preco, $this->casasDecimais, '.', '')
+                : $preco;
+
             // lote por item
             if ($tipoJulgamento != 2) {
                 $data[] = $this->buildLote($lote->getCodigo(), $lote->getDescricao());
@@ -118,7 +142,7 @@ class IntegracaoComprasBrExportService
                 'numero_item'      => $item->getOrdem(),
                 'unidade'          => $unidade->m61_abrev,
                 'quantidade'       => $itemSolicitacao->getQuantidade(),
-                'preco_referencia' => $itemSolicitacao->getValorUnitario(),
+                'preco_referencia' => $preco,
                 'especificacao'    => (empty($itemDescr)) ? $itemTitulo : $itemTitulo . ' (' . $itemDescr . ')'
             ];
         }

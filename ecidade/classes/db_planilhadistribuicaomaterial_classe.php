@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: material
 //CLASSE DA ENTIDADE planilhadistribuicaomaterial
 class cl_planilhadistribuicaomaterial { 
@@ -26,13 +26,13 @@ class cl_planilhadistribuicaomaterial {
                  pd03_material = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_planilhadistribuicaomaterial() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("planilhadistribuicaomaterial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_planilhadistribuicaomaterial {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pd03_sequencial = ($this->pd03_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pd03_sequencial"]:$this->pd03_sequencial);
        $this->pd03_planilhadistribuicao = ($this->pd03_planilhadistribuicao == ""?@$GLOBALS["HTTP_POST_VARS"]["pd03_planilhadistribuicao"]:$this->pd03_planilhadistribuicao);
@@ -51,7 +51,7 @@ class cl_planilhadistribuicaomaterial {
      }
    }
    // funcao para Inclusão
-   function incluir ($pd03_sequencial){ 
+   public function incluir ($pd03_sequencial){ 
       $this->atualizacampos();
      if($this->pd03_planilhadistribuicao == null ){ 
        $this->erro_sql = " Campo Planilha de Distribuição não informado.";

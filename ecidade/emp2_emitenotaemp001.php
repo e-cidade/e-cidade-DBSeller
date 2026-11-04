@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -30,7 +30,6 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-
 $clrotulo = new rotulocampo;
 $clrotulo->label("e60_numemp");
 $clrotulo->label("e60_codemp");
@@ -107,25 +106,24 @@ function js_abre(){
           <table>
             <tr>
               <td nowrap title="<?=@$Te60_codemp?>">
-                <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+                <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
               </td>
               <td>
-                <? db_input('e60_codemp',15,$Ie60_codemp,true,'text',$db_opcao,"")  ?>
-                <strong> <? db_ancora("Até","js_pesquisae60_codemp_fim(true);",1); ?></strong>
-                <? db_input('e60_codemp_fim',15,$Ie60_codemp,true,'text',$db_opcao,"")  ?>
+                <?php db_input('e60_codemp',15,$Ie60_codemp,true,'text',$db_opcao,"")  ?>
+                  <strong> <? db_ancora("Até","js_pesquisae60_codemp_fim(true);",1); ?></strong>
+                  <?php db_input('e60_codemp_fim',15,$Ie60_codemp,true,'text',$db_opcao,"")  ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Te60_numemp?>">
-                <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
+                <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
               </td>
               <td>
-                <? db_input('e60_numemp',15,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
-                <strong> <? db_ancora("Até","js_pesquisae60_numemp_fim(true);",1); ?></strong>
-                <? db_input('e60_numemp_fim',15,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp_fim(false);'")  ?>
+                <?php db_input('e60_numemp',15,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+                <strong> <?php db_ancora("Até","js_pesquisae60_numemp_fim(true);",1); ?></strong>
+                <?php db_input('e60_numemp_fim',15,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp_fim(false);'")  ?>
               </td>
             </tr>
-
             <tr>
               <td nowrap >
                 <?php
@@ -145,7 +143,7 @@ function js_abre(){
                 <strong>Período:</strong>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");
                   echo "<strong> a </strong>";
                   db_inputdata('dtfim',@$dia,@$mes,@$ano,true,'text',1,"");
@@ -163,7 +161,7 @@ function js_abre(){
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -207,9 +205,6 @@ function js_pesquisae60_codemp(mostra){
   }
 }
 
-
-
-
 function js_pesquisae60_numemp_fim(mostra){
   if(mostra==true){
     var sUrl = 'func_empempenho.php?funcao_js=parent.js_mostraempempenho1_fim|e60_numemp';
@@ -223,7 +218,6 @@ function js_pesquisae60_numemp_fim(mostra){
      }
   }
 }
-
 
 function js_pesquisae60_codemp_fim(mostra){
   if(mostra==true){

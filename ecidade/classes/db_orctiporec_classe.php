@@ -98,7 +98,7 @@ class cl_orctiporec
 
     public function incluir($o15_codigo)
     {
-         $this->atualizacampos();
+        $this->atualizacampos();
 
         if ($this->o15_descr == null) {
             $this->erro_sql = " Campo Descrição do Recurso não informado.";
@@ -157,7 +157,7 @@ class cl_orctiporec
         if ($this->o15_loagrupo === '' or is_null($this->o15_loagrupo)) {
             $this->o15_loagrupo = "null";
         }
-        if ($this->o15_loaespecificacao === ''or is_null($this->o15_loaespecificacao)) {
+        if ($this->o15_loaespecificacao === '' or is_null($this->o15_loaespecificacao)) {
             $this->o15_loaespecificacao = "null";
         }
 
@@ -252,33 +252,7 @@ class cl_orctiporec
         $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
         $this->erro_status = "1";
         $this->numrows_incluir = pg_affected_rows($result);
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
 
-            $resaco = $this->sql_record($this->sql_query_file($this->o15_codigo));
-            if (($resaco != false) || ($this->numrows != 0)) {
-
-                $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
-                $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                $resac = db_query("insert into db_acountkey values($acount,3347,'$this->o15_codigo','I')");
-                $resac = db_query("insert into db_acount values($acount,749,3347,'','" . AddSlashes(pg_result($resaco, 0, 'o15_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,3348,'','" . AddSlashes(pg_result($resaco, 0, 'o15_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,3350,'','" . AddSlashes(pg_result($resaco, 0, 'o15_codtri')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,3351,'','" . AddSlashes(pg_result($resaco, 0, 'o15_finali')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,11898,'','" . AddSlashes(pg_result($resaco, 0, 'o15_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,13689,'','" . AddSlashes(pg_result($resaco, 0, 'o15_datalimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,18132,'','" . AddSlashes(pg_result($resaco, 0, 'o15_db_estruturavalor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1009636,'','" . AddSlashes(pg_result($resaco, 0, 'o15_codigosiconfi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1010114,'','" . AddSlashes(pg_result($resaco, 0, 'o15_loaidentificadoruso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1010116,'','" . AddSlashes(pg_result($resaco, 0, 'o15_loatipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1010117,'','" . AddSlashes(pg_result($resaco, 0, 'o15_loagrupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1010118,'','" . AddSlashes(pg_result($resaco, 0, 'o15_loaespecificacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1011286,'','" . AddSlashes(pg_result($resaco, 0, 'o15_complemento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,749,1011803,'','" . AddSlashes(pg_result($resaco, 0, 'o15_recurso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            }
-        }
         return true;
     }
 
@@ -397,7 +371,7 @@ class cl_orctiporec
         $sql .= $virgula . " o15_loagrupo = $this->o15_loagrupo ";
         $virgula = ",";
 
-        if (trim($this->o15_loaespecificacao) === ""  or is_null($this->o15_loaespecificacao)) {
+        if (trim($this->o15_loaespecificacao) === "" or is_null($this->o15_loaespecificacao)) {
             $this->o15_loaespecificacao = "null";
         }
         $sql .= $virgula . " o15_loaespecificacao = '$this->o15_loaespecificacao' ";
@@ -416,51 +390,6 @@ class cl_orctiporec
         $sql .= " where ";
         if ($o15_codigo != null) {
             $sql .= " o15_codigo = $this->o15_codigo";
-        }
-
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
-
-            $resaco = $this->sql_record($this->sql_query_file($this->o15_codigo));
-            if ($this->numrows > 0) {
-
-                for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-
-                    $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
-                    $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                    $resac = db_query("insert into db_acountkey values($acount,3347,'$this->o15_codigo','A')");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_codigo"]) || $this->o15_codigo != "")
-                        $resac = db_query("insert into db_acount values($acount,749,3347,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_codigo')) . "','$this->o15_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_descr"]) || $this->o15_descr != "")
-                        $resac = db_query("insert into db_acount values($acount,749,3348,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_descr')) . "','$this->o15_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_codtri"]) || $this->o15_codtri != "")
-                        $resac = db_query("insert into db_acount values($acount,749,3350,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_codtri')) . "','$this->o15_codtri'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_finali"]) || $this->o15_finali != "")
-                        $resac = db_query("insert into db_acount values($acount,749,3351,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_finali')) . "','$this->o15_finali'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_tipo"]) || $this->o15_tipo != "")
-                        $resac = db_query("insert into db_acount values($acount,749,11898,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_tipo')) . "','$this->o15_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_datalimite"]) || $this->o15_datalimite != "")
-                        $resac = db_query("insert into db_acount values($acount,749,13689,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_datalimite')) . "','$this->o15_datalimite'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_db_estruturavalor"]) || $this->o15_db_estruturavalor != "")
-                        $resac = db_query("insert into db_acount values($acount,749,18132,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_db_estruturavalor')) . "','$this->o15_db_estruturavalor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_codigosiconfi"]) || $this->o15_codigosiconfi != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1009636,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_codigosiconfi')) . "','$this->o15_codigosiconfi'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_loaidentificadoruso"]) || $this->o15_loaidentificadoruso != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1010114,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_loaidentificadoruso')) . "','$this->o15_loaidentificadoruso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_loatipo"]) || $this->o15_loatipo != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1010116,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_loatipo')) . "','$this->o15_loatipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_loagrupo"]) || $this->o15_loagrupo != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1010117,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_loagrupo')) . "','$this->o15_loagrupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_loaespecificacao"]) || $this->o15_loaespecificacao != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1010118,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_loaespecificacao')) . "','$this->o15_loaespecificacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_complemento"]) || $this->o15_complemento != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1011286,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_complemento')) . "','$this->o15_complemento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["o15_recurso"]) || $this->o15_recurso != "")
-                        $resac = db_query("insert into db_acount values($acount,749,1011803,'" . AddSlashes(pg_result($resaco, $conresaco, 'o15_recurso')) . "','$this->o15_recurso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                }
-            }
         }
 
         $result = db_query($sql);
@@ -498,43 +427,7 @@ class cl_orctiporec
 
     public function excluir($o15_codigo = null, $dbwhere = null)
     {
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
-
-            if (empty($dbwhere)) {
-
-                $resaco = $this->sql_record($this->sql_query_file($o15_codigo));
-            } else {
-                $resaco = $this->sql_record($this->sql_query_file(null, "*", null, $dbwhere));
-            }
-            if (($resaco != false) || ($this->numrows != 0)) {
-
-                for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-
-                    $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
-                    $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                    $resac = db_query("insert into db_acountkey values($acount,3347,'$o15_codigo','E')");
-                    $resac = db_query("insert into db_acount values($acount,749,3347,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,3348,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,3350,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_codtri')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,3351,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_finali')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,11898,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,13689,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_datalimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,18132,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_db_estruturavalor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1009636,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_codigosiconfi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1010114,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_loaidentificadoruso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1010116,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_loatipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1010117,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_loagrupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1010118,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_loaespecificacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1011286,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_complemento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,749,1011803,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o15_recurso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                }
-            }
-        }
-        $sql = " delete from orctiporec
-                    where ";
+        $sql = " delete from orctiporec where ";
         $sql2 = "";
         if (empty($dbwhere)) {
             if (!empty($o15_codigo)) {
@@ -690,6 +583,52 @@ class cl_orctiporec
 
             $sql2 .= "(('{$sDataini}' between o16_dtvigenciaini and o16_dtvigenciafim) or ";
             $sql2 .= "('{$sDataini}' between o16_dtprorrogacaoini and o16_dtprorrogacaofim))";
+
+        } else {
+
+            $sql2 .= "((o16_dtvigenciaini <= '{$sDataini}' and o16_dtvigenciafim >= '{$sDataFim}') or ";
+            $sql2 .= "(o16_dtprorrogacaoini <= '{$sDataini}' and o16_dtprorrogacaofim >= '{$sDataFim}'))";
+
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    function sql_query_conveniosGestao($sDataini, $sDataFim = null, $campos = "*", $ordem = "o15_codigo", $dbwhere = "")
+    {
+        if (empty($sDataini)) {
+            return false;
+        }
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from orctiporec ";
+        $sql .= "      inner join orctiporecconvenio   on o15_codigo = o16_orctiporec";
+        $sql .= "  join fonterecurso on orctiporec_id = o15_codigo ";
+        $sql .= "  join complementofonterecurso on o200_sequencial = o15_complemento ";
+        $sql2 = " where ";
+        if ($sDataFim == null) {
+
+            $sql2 .= "(('{$sDataini}' between o16_dtvigenciaini and o16_dtvigenciafim) or ";
+            $sql2 .= "('{$sDataini}' between o16_dtprorrogacaoini and o16_dtprorrogacaofim))";
+            $sql2 .= " and exercicio = " . db_getsession("DB_anousu");
 
         } else {
 
@@ -893,13 +832,13 @@ class cl_orctiporec
 
     public function sql_query_fonte_recurso($o15_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
-        $sql  = "select {$campos} ";
+        $sql = "select {$campos} ";
         $sql .= "  from orctiporec ";
         $sql .= "  join complementofonterecurso on o15_complemento = o200_sequencial ";
         $sql2 = "";
         if (empty($dbwhere)) {
-            if (!empty($ed161_codigo)){
-                $sql2 .= " where diarioaluno.ed161_codigo = $o15_codigo ";
+            if (!empty($ed161_codigo)) {
+                $sql2 .= " where orctiporec.o15_codigo = $o15_codigo ";
             }
         } else if (!empty($dbwhere)) {
             $sql2 = " where $dbwhere";
@@ -911,16 +850,23 @@ class cl_orctiporec
         return $sql;
     }
 
-    public function sqlRecursos2022($o15_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    /**
+     * @param $o15_codigo
+     * @param $campos
+     * @param $ordem
+     * @param $dbwhere
+     * @return string
+     */
+    public function sqlNovaFonteRecurso($o15_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
-        $sql  = "select {$campos} ";
+        $sql = "select {$campos} ";
         $sql .= "  from orctiporec ";
         $sql .= "  join fonterecurso on orctiporec_id = o15_codigo ";
         $sql .= "  join complementofonterecurso on o200_sequencial = o15_complemento ";
         $sql2 = "";
         if (empty($dbwhere)) {
-            if (!empty($ed161_codigo)){
-                $sql2 .= " where diarioaluno.ed161_codigo = $o15_codigo ";
+            if (!empty($ed161_codigo)) {
+                $sql2 .= " where orctiporec.o15_codigo = $o15_codigo ";
             }
         } else if (!empty($dbwhere)) {
             $sql2 = " where $dbwhere";

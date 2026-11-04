@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsolicitempcmater->rotulo->label("pc16_solicitem");
               <?=$Lpc16_codmater?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc16_codmater",6,$Ipc16_codmater,true,"text",4,"","chave_pc16_codmater");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsolicitempcmater->rotulo->label("pc16_solicitem");
               <?=$Lpc16_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc16_solicitem",10,$Ipc16_solicitem,true,"text",4,"","chave_pc16_solicitem");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clsolicitempcmater->rotulo->label("pc16_solicitem");
               <?=$Lpc16_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc16_solicitem",10,$Ipc16_solicitem,true,"text",4,"","chave_pc16_solicitem");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clsolicitempcmater->rotulo->label("pc16_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitempcmater.php")==true){
@@ -129,12 +129,12 @@ $clsolicitempcmater->rotulo->label("pc16_solicitem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

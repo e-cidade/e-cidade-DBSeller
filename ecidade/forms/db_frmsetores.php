@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,7 +34,7 @@ $clsetor->rotulo->label();
         <?=$Lj30_codi?>
       </td>
       <td>
-        <?
+        <?php
 	if(isset($chavepesquisa)&&($db_opcao!=1)){
 		db_input('j30_codi',5,$Ij30_codi,true,'text',3);
 	}else{
@@ -48,7 +48,7 @@ $clsetor->rotulo->label();
         <?=$Lj30_descr?>
       </td>
       <td> 
-        <?
+        <?php
 		  db_input('j30_descr',41,$Ij30_descr,true,'text',$db_opcao);
 		  ?>
       </td>
@@ -58,7 +58,7 @@ $clsetor->rotulo->label();
         <?=$Lj30_alipre?>
       </td>
       <td> 
-        <?
+        <?php
 		  db_input('j30_alipre',16,$Ij30_alipre,true,'text',$db_opcao);
 		  ?>
       </td>
@@ -68,7 +68,7 @@ $clsetor->rotulo->label();
         <?=$Lj30_aliter?>
       </td>
       <td> 
-        <?
+        <?php
 		  db_input('j30_aliter',16,$Ij30_aliter,true,'text',$db_opcao);
 		  ?>
       </td>
@@ -94,7 +94,7 @@ function js_func_nome(){
   func_setores.focus();
 }
 </script>
-<?
+<?php
   $func_setores = new janela("func_setores","");
   $func_setores ->posX=1;
   $func_setores ->posY=20;

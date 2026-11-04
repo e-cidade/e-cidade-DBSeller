@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,6 +27,7 @@
 
 //MODULO: compras
 require_once(modification("dbforms/db_classesgenericas.php"));
+
 $clpcfornecon->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc60_dtlanc");
@@ -35,37 +36,37 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("pc64_contabanco");
 
 if (isset($db_opcaoal)) {
-  $db_opcao = 33;
-  $db_botao = false;
-} else if (isset($opcao) && $opcao == "alterar") {
-  $db_botao = true;
-  $db_opcao = 2;
-} else if (isset($opcao) && $opcao == "excluir") {
-  $db_opcao = 3;
-  $db_botao = true;
+    $db_opcao = 33;
+    $db_botao = false;
+} elseif (isset($opcao) && $opcao == "alterar") {
+    $db_botao = true;
+    $db_opcao = 2;
+} elseif (isset($opcao) && $opcao == "excluir") {
+    $db_opcao = 3;
+    $db_botao = true;
 } else {
-  $db_opcao = 1;
-  $db_botao = true;
-  if (isset($novo) || (isset($alterar) ||   isset($excluir) || isset($incluir) && $sqlerro == false)) {
-    $pc63_banco = "";
-    $pc63_agencia = "";
-    $pc63_agencia_dig = "";
-    $pc63_conta = "";
-    $pc63_conta_dig = "";
-    $pc63_id_usuario = "";
-    $pc63_cnpjcpf = "";
-    $pc63_tipoconta = "1";
-    $pc63_tipopix = "1";
-    $pc63_chavepix = "";
-    unset($pc64_contabanco);
-  }
+    $db_opcao = 1;
+    $db_botao = true;
+    if (isset($novo) || (isset($alterar) ||   isset($excluir) || isset($incluir) && $sqlerro == false)) {
+        $pc63_banco = "";
+        $pc63_agencia = "";
+        $pc63_agencia_dig = "";
+        $pc63_conta = "";
+        $pc63_conta_dig = "";
+        $pc63_id_usuario = "";
+        $pc63_cnpjcpf = "";
+        $pc63_tipoconta = "1";
+        $pc63_tipopix = "1";
+        $pc63_chavepix = "";
+        unset($pc64_contabanco);
+    }
 }
 
 if ($db_opcao == 1) {
-  $resultx =  $clpcforne->sql_record($clpcforne->sql_query($pc63_numcgm, "z01_cgccpf as pc63_cnpjcpf, z01_nome"));
-  if ($clpcforne->numrows > 0) {
-    db_fieldsmemory($resultx, 0);
-  }
+    $resultx =  $clpcforne->sql_record($clpcforne->sql_query($pc63_numcgm, "z01_cgccpf as pc63_cnpjcpf, z01_nome"));
+    if ($clpcforne->numrows > 0) {
+        db_fieldsmemory($resultx, 0);
+    }
 }
 ?>
 
@@ -94,7 +95,7 @@ if ($db_opcao == 1) {
           <td colspan="3">
             <?php
             if (isset($submita)) {
-              db_input('submita', 6, 0, true, 'hidden', 3, "");
+                db_input('submita', 6, 0, true, 'hidden', 3, "");
             }
             db_input('pc63_contabanco', 6, $Ipc63_contabanco, true, 'hidden', 3, "");
             db_input('pc63_numcgm', 8, $Ipc63_numcgm, true, 'text', 3, " onchange='js_pesquisapc63_numcgm(false);'");
@@ -161,7 +162,13 @@ if ($db_opcao == 1) {
           </td>
           <td>
             <?php
-            db_select('pc63_tipoconta', array("1" => "Conta Corrente", "2" => "Conta poupança"), true, 'text', $db_opcao, "");
+            $aTipoConta[1] = 'Conta Corrente';
+            $aTipoConta[2] = 'Conta Poupança';
+            $aTipoConta[3] = 'Conta FGTS';
+            $aTipoConta[4] = 'Conta Eletrônica';
+            $aTipoConta[5] = 'Conta Salário';
+            $aTipoConta[6] = 'Débito em Conta';
+            db_select('pc63_tipoconta', $aTipoConta, true, 'text', $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -190,12 +197,12 @@ if ($db_opcao == 1) {
           <td>
             <?php
             if (!isset($pc64_contabanco)) {
-              $result_contapadrao = db_query($clpcfornecon->sql_query_padrao(null, "pc63_contabanco", "", "pc63_numcgm=$pc63_numcgm"));
-              if (pg_num_rows($result_contapadrao) > 0) {
-                $pc64_contabanco = "f";
-              } else {
-                $pc64_contabanco = "t";
-              }
+                $result_contapadrao = db_query($clpcfornecon->sql_query_padrao(null, "pc63_contabanco", "", "pc63_numcgm=$pc63_numcgm"));
+                if (pg_num_rows($result_contapadrao) > 0) {
+                    $pc64_contabanco = "f";
+                } else {
+                    $pc64_contabanco = "t";
+                }
             }
             $x = array("t" => "SIM", "f" => "NÃO");
             db_select('pc64_contabanco', $x, true, $db_opcao, "")
@@ -209,12 +216,12 @@ if ($db_opcao == 1) {
             <?php
             $checked = "";
             if (isset($pc63_dataconf) && trim($pc63_dataconf) != "") {
-              $checked = "checked";
+                $checked = "checked";
             }
 
             $disabled = "";
             if ($db_opcao == 3 || $db_opcao == 33) {
-              $disabled = "disabled";
+                $disabled = "disabled";
             }
             ?>
             <input type='checkbox' name="conferido" <?php echo $checked ?> <?php echo $disabled ?>>
@@ -258,9 +265,9 @@ if ($db_opcao == 1) {
     <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?php echo ($db_opcao == 1 || isset($db_opcaoal) ? "style='visibility:hidden;'" : "") ?>>
     <?php
     if (isset($submita)) {
-    ?>
+        ?>
       <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_pcfornecon.hide();">
-    <?php
+        <?php
     }
     ?>
   </div>
@@ -279,10 +286,10 @@ if ($db_opcao == 1) {
   </table>
 
   <?php
-  if (isset($submita)) {
-    db_input('submita', 10, 0, true, 'hidden', 3, "");
-  }
-  ?>
+    if (isset($submita)) {
+        db_input('submita', 10, 0, true, 'hidden', 3, "");
+    }
+    ?>
 </form>
 </body>
 

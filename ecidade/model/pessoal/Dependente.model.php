@@ -161,6 +161,18 @@ class Dependente
     private $tipoParentesco;
 
     /**
+     * @column rh31_descricaoparentesco
+     * @var string
+     */
+    private $descricaoParentesco;
+
+    /**
+     * @column rh31_irfcomplementar
+     * @var string
+     */
+    private $irfComplementar;
+
+    /**
      * Dependente constructor.
      * @param int $iDependente
      * @throws DBException
@@ -396,10 +408,34 @@ class Dependente
             $dependente->setTipoParentesco($state['rh31_tipoparentesco']);
         }
 
+        if (array_key_exists('rh31_descricaoparentesco', $state)) {
+            $dependente->setDescricaoParentesco($state['rh31_descricaoparentesco']);
+        }
+
+        if (array_key_exists('rh31_irfcomplementar', $state)) {
+            $dependente->setIrfComplementar($state['rh31_irfcomplementar'] === 't');
+        }
+
         return $dependente;
     }
 
     /**
+     * @return string
+     */
+    public function getDescricaoParentesco()
+    {
+        return $this->descricaoParentesco;
+    }
+
+    /**
+     * @param string $descricaooParentesco
+     */
+    public function setDescricaoParentesco($descricaoParentesco)
+    {
+        $this->descricaoParentesco = $descricaoParentesco;
+    }
+
+        /**
      * @return string
      */
     public function getTipoParentesco()
@@ -414,6 +450,23 @@ class Dependente
     {
         $this->tipoParentesco = $tipoParentesco;
     }
+
+    /**
+     * @return bool
+     */
+    public function isIrfComplementar()
+    {
+        return $this->irfComplementar;
+    }
+
+    /**
+     * @param  bool  $irfComplementar
+     */
+    public function setIrfComplementar($irfComplementar)
+    {
+        $this->irfComplementar = $irfComplementar;
+    }
+
 
     /**
      * @return array
@@ -433,7 +486,8 @@ class Dependente
             'cpf' => $this->getCpf(),
             'finsPrevidenciarios' => $this->isFinsPrevidenciarios(),
             'sexo' => $this->getSexo(),
-            'instituicao' => $this->getInstituicao()
+            'instituicao' => $this->getInstituicao(),
+            'irfComplementar' => $this->isIrfComplementar()
         );
     }
 
@@ -573,6 +627,7 @@ class Dependente
         $rhdepend->rh31_gparen = $this->getGrauParentesco();
         $rhdepend->rh31_depend = $this->getSalarioFamilia();
         $rhdepend->rh31_tipoparentesco = $this->getTipoParentesco();
+        $rhdepend->rh31_irfcomplementar = ($this->isIrfComplementar() === true ? "t" :  "f");
 
         $rhdependeplug = new cl_rhdependeplug();
         $rhdependeplug->dp01_regist = $this->getMatricula();

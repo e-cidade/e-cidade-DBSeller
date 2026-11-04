@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("ar38_descricao");
        <?=@$Lar37_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar37_sequencial',10,$Iar37_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tar37_grupotaxatipo?>">
-       <?
+       <?php
        db_ancora(@$Lar37_grupotaxatipo,"js_pesquisaar37_grupotaxatipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar37_grupotaxatipo',10,$Iar37_grupotaxatipo,true,'text',$db_opcao," onchange='js_pesquisaar37_grupotaxatipo(false);'")
 ?>
-       <?
+       <?php
 db_input('ar38_descricao',40,$Iar38_descricao,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('ar38_descricao',40,$Iar38_descricao,true,'text',3,'')
        <?=@$Lar37_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ar37_descricao',54,$Iar37_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_grupotaxa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

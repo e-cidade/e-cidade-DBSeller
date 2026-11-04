@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_syscadproced
-class cl_db_syscadproced { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codproced = 0; 
-   var $descrproced = null; 
-   var $obsproced = null; 
-   var $codmod = 0; 
-   var $codarea = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_syscadproced {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codproced = 0;
+   var $descrproced = null;
+   var $obsproced = null;
+   var $codmod = 0;
+   var $codarea = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codproced = int4 = Código 
-                 descrproced = varchar(60) = Descrição 
-                 obsproced = text = Observações 
-                 codmod = int4 = Módulo 
-                 codarea = int4 = Área 
+                 codproced = int4 = Código
+                 descrproced = varchar(60) = Descrição
+                 obsproced = text = Observações
+                 codmod = int4 = Módulo
+                 codarea = int4 = Área
                  ";
-   //funcao construtor da classe 
-   function cl_db_syscadproced() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_syscadproced"); 
+     $this->rotulo = new rotulo("db_syscadproced");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_syscadproced {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codproced = ($this->codproced == ""?@$GLOBALS["HTTP_POST_VARS"]["codproced"]:$this->codproced);
        $this->descrproced = ($this->descrproced == ""?@$GLOBALS["HTTP_POST_VARS"]["descrproced"]:$this->descrproced);
@@ -83,9 +83,9 @@ class cl_db_syscadproced {
      }
    }
    // funcao para inclusao
-   function incluir ($codproced){ 
+   public function incluir ($codproced){
       $this->atualizacampos();
-     if($this->descrproced == null ){ 
+     if($this->descrproced == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "descrproced";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_db_syscadproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->obsproced == null ){ 
+     if($this->obsproced == null ){
        $this->erro_sql = " Campo Observações nao Informado.";
        $this->erro_campo = "obsproced";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_db_syscadproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->codmod == null ){ 
+     if($this->codmod == null ){
        $this->erro_sql = " Campo Módulo nao Informado.";
        $this->erro_campo = "codmod";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_db_syscadproced {
        $this->erro_status = "0";
        return false;
      }
-     if($this->codarea == null ){ 
+     if($this->codarea == null ){
        $this->erro_sql = " Campo Área nao Informado.";
        $this->erro_campo = "codarea";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_db_syscadproced {
        return false;
      }
      if($codproced == "" || $codproced == null ){
-       $result = db_query("select nextval('db_syscadproced_codproced_seq')"); 
+       $result = db_query("select nextval('db_syscadproced_codproced_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_syscadproced_codproced_seq do campo: codproced"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_syscadproced_codproced_seq do campo: codproced";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->codproced = pg_result($result,0,0); 
+       $this->codproced = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_syscadproced_codproced_seq");
        if(($result != false) && (pg_result($result,0,0) < $codproced)){
@@ -142,10 +142,10 @@ class cl_db_syscadproced {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->codproced = $codproced; 
+         $this->codproced = $codproced;
        }
      }
-     if(($this->codproced == null) || ($this->codproced == "") ){ 
+     if(($this->codproced == null) || ($this->codproced == "") ){
        $this->erro_sql = " Campo codproced nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_db_syscadproced {
        return false;
      }
      $sql = "insert into db_syscadproced(
-                                       codproced 
-                                      ,descrproced 
-                                      ,obsproced 
-                                      ,codmod 
-                                      ,codarea 
+                                       codproced
+                                      ,descrproced
+                                      ,obsproced
+                                      ,codmod
+                                      ,codarea
                        )
                 values (
-                                $this->codproced 
-                               ,'$this->descrproced' 
-                               ,'$this->obsproced' 
-                               ,$this->codmod 
-                               ,$this->codarea 
+                                $this->codproced
+                               ,'$this->descrproced'
+                               ,'$this->obsproced'
+                               ,$this->codmod
+                               ,$this->codarea
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de procedimentos ($this->codproced) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_db_syscadproced {
        $resac = db_query("insert into db_acount values($acount,1537,9966,'','".AddSlashes(pg_result($resaco,0,'codarea'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codproced=null) { 
+   public function alterar ($codproced=null) {
       $this->atualizacampos();
      $sql = " update db_syscadproced set ";
      $virgula = "";
-     if(trim($this->codproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codproced"])){ 
+     if(trim($this->codproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codproced"])){
        $sql  .= $virgula." codproced = $this->codproced ";
        $virgula = ",";
-       if(trim($this->codproced) == null ){ 
+       if(trim($this->codproced) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codproced";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_db_syscadproced {
          return false;
        }
      }
-     if(trim($this->descrproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrproced"])){ 
+     if(trim($this->descrproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrproced"])){
        $sql  .= $virgula." descrproced = '$this->descrproced' ";
        $virgula = ",";
-       if(trim($this->descrproced) == null ){ 
+       if(trim($this->descrproced) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descrproced";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_db_syscadproced {
          return false;
        }
      }
-     if(trim($this->obsproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsproced"])){ 
+     if(trim($this->obsproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsproced"])){
        $sql  .= $virgula." obsproced = '$this->obsproced' ";
        $virgula = ",";
-       if(trim($this->obsproced) == null ){ 
+       if(trim($this->obsproced) == null ){
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "obsproced";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_db_syscadproced {
          return false;
        }
      }
-     if(trim($this->codmod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmod"])){ 
+     if(trim($this->codmod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmod"])){
        $sql  .= $virgula." codmod = $this->codmod ";
        $virgula = ",";
-       if(trim($this->codmod) == null ){ 
+       if(trim($this->codmod) == null ){
          $this->erro_sql = " Campo Módulo nao Informado.";
          $this->erro_campo = "codmod";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_db_syscadproced {
          return false;
        }
      }
-     if(trim($this->codarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarea"])){ 
+     if(trim($this->codarea)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarea"])){
        $sql  .= $virgula." codarea = $this->codarea ";
        $virgula = ",";
-       if(trim($this->codarea) == null ){ 
+       if(trim($this->codarea) == null ){
          $this->erro_sql = " Campo Área nao Informado.";
          $this->erro_campo = "codarea";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_db_syscadproced {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de procedimentos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codproced;
@@ -327,14 +327,14 @@ class cl_db_syscadproced {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codproced=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codproced=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codproced));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_db_syscadproced {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de procedimentos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codproced;
@@ -392,11 +392,11 @@ class cl_db_syscadproced {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +418,10 @@ class cl_db_syscadproced {
       }
      return $result;
    }
-   function sql_query ( $codproced=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $codproced=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,15 +436,15 @@ class cl_db_syscadproced {
      $sql2 = "";
      if($dbwhere==""){
        if($codproced!=null ){
-         $sql2 .= " where db_syscadproced.codproced = $codproced "; 
-       } 
+         $sql2 .= " where db_syscadproced.codproced = $codproced ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,10 +453,10 @@ class cl_db_syscadproced {
      }
      return $sql;
   }
-   function sql_query_file ( $codproced=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $codproced=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,15 +469,15 @@ class cl_db_syscadproced {
      $sql2 = "";
      if($dbwhere==""){
        if($codproced!=null ){
-         $sql2 .= " where db_syscadproced.codproced = $codproced "; 
-       } 
+         $sql2 .= " where db_syscadproced.codproced = $codproced ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

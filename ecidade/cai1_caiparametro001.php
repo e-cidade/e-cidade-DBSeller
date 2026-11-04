@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,8 +29,11 @@ require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_caiparametro_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
+
 db_postmemory($_SERVER);
 db_postmemory($_POST);
 
@@ -84,10 +87,10 @@ $db_botao = true;
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body style="background-color: #CCCCCC;">
+<body>
 <div class="container">
     <?php
-    require_once(modification("forms/db_frmcaiparametro.php"));
+      require_once(modification("forms/db_frmcaiparametro.php"));
     ?>
 </div>
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,12 +86,12 @@ function js_limpa(){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td nowrap align="right" title="<?=@$Tz01_numcgm?>">
-      <?
+      <?php
       db_ancora($Lz01_numcgm,"js_pesquisa()",2)
       ?>        
     </td>
     <td align="left"> 
-      <?
+      <?php
       db_input('z01_numcgm', 13, $Iz01_numcgm, true, 'text', 3);
       db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
       ?>
@@ -101,7 +101,7 @@ function js_limpa(){
     <td nowrap align="right" title="Valor a Anular"><strong>Valor do Anular:</strong>
     </td>
     <td align="left"> 
-      <?
+      <?php
       db_input('valor_anular', 13, 4, true, 'text', 2)
       ?>
     </td>
@@ -111,7 +111,7 @@ function js_limpa(){
     <strong>Histórico:</strong>
     </td>
     <td align="left"> 
-      <?
+      <?php
       db_textarea('historico_anular', 6,60,0,true,'text', 2)
       ?>
     </td>
@@ -125,7 +125,7 @@ function js_limpa(){
   </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

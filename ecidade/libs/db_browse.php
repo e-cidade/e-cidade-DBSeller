@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ include(modification("libs/db_usuariosonline.php"));
 <table scrolling="auto" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
-      <?
+      <?php
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 //$query ,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe" 
 

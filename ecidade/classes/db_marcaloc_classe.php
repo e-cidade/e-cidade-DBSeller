@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: marcas
 //CLASSE DA ENTIDADE marcaloc
-class cl_marcaloc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ma05_i_codigo = 0; 
-   var $ma05_i_local = 0; 
-   var $ma05_i_marca = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_marcaloc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ma05_i_codigo = 0;
+   var $ma05_i_local = 0;
+   var $ma05_i_marca = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ma05_i_codigo = int4 = Código 
-                 ma05_i_local = int4 = Código da Localidade 
-                 ma05_i_marca = int4 = Código da Marca 
+                 ma05_i_codigo = int4 = Código
+                 ma05_i_local = int4 = Código da Localidade
+                 ma05_i_marca = int4 = Código da Marca
                  ";
-   //funcao construtor da classe 
-   function cl_marcaloc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("marcaloc"); 
+     $this->rotulo = new rotulo("marcaloc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_marcaloc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ma05_i_codigo = ($this->ma05_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ma05_i_codigo"]:$this->ma05_i_codigo);
        $this->ma05_i_local = ($this->ma05_i_local == ""?@$GLOBALS["HTTP_POST_VARS"]["ma05_i_local"]:$this->ma05_i_local);
@@ -77,9 +77,9 @@ class cl_marcaloc {
      }
    }
    // funcao para inclusao
-   function incluir ($ma05_i_codigo){ 
+   public function incluir ($ma05_i_codigo){
       $this->atualizacampos();
-     if($this->ma05_i_local == null ){ 
+     if($this->ma05_i_local == null ){
        $this->erro_sql = " Campo Código da Localidade nao Informado.";
        $this->erro_campo = "ma05_i_local";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_marcaloc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ma05_i_marca == null ){ 
+     if($this->ma05_i_marca == null ){
        $this->erro_sql = " Campo Código da Marca nao Informado.";
        $this->erro_campo = "ma05_i_marca";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_marcaloc {
        return false;
      }
      if($ma05_i_codigo == "" || $ma05_i_codigo == null ){
-       $result = db_query("select nextval('marcaloc_ma05_i_codigo_seq')"); 
+       $result = db_query("select nextval('marcaloc_ma05_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: marcaloc_ma05_i_codigo_seq do campo: ma05_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: marcaloc_ma05_i_codigo_seq do campo: ma05_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ma05_i_codigo = pg_result($result,0,0); 
+       $this->ma05_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from marcaloc_ma05_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ma05_i_codigo)){
@@ -118,10 +118,10 @@ class cl_marcaloc {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ma05_i_codigo = $ma05_i_codigo; 
+         $this->ma05_i_codigo = $ma05_i_codigo;
        }
      }
-     if(($this->ma05_i_codigo == null) || ($this->ma05_i_codigo == "") ){ 
+     if(($this->ma05_i_codigo == null) || ($this->ma05_i_codigo == "") ){
        $this->erro_sql = " Campo ma05_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_marcaloc {
        return false;
      }
      $sql = "insert into marcaloc(
-                                       ma05_i_codigo 
-                                      ,ma05_i_local 
-                                      ,ma05_i_marca 
+                                       ma05_i_codigo
+                                      ,ma05_i_local
+                                      ,ma05_i_marca
                        )
                 values (
-                                $this->ma05_i_codigo 
-                               ,$this->ma05_i_local 
-                               ,$this->ma05_i_marca 
+                                $this->ma05_i_codigo
+                               ,$this->ma05_i_local
+                               ,$this->ma05_i_marca
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "localidades de cada marca ($this->ma05_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_marcaloc {
        $resac = db_query("insert into db_acount values($acount,1819,10537,'','".AddSlashes(pg_result($resaco,0,'ma05_i_marca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ma05_i_codigo=null) { 
+   public function alterar ($ma05_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update marcaloc set ";
      $virgula = "";
-     if(trim($this->ma05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_codigo"])){ 
+     if(trim($this->ma05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_codigo"])){
        $sql  .= $virgula." ma05_i_codigo = $this->ma05_i_codigo ";
        $virgula = ",";
-       if(trim($this->ma05_i_codigo) == null ){ 
+       if(trim($this->ma05_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ma05_i_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_marcaloc {
          return false;
        }
      }
-     if(trim($this->ma05_i_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_local"])){ 
+     if(trim($this->ma05_i_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_local"])){
        $sql  .= $virgula." ma05_i_local = $this->ma05_i_local ";
        $virgula = ",";
-       if(trim($this->ma05_i_local) == null ){ 
+       if(trim($this->ma05_i_local) == null ){
          $this->erro_sql = " Campo Código da Localidade nao Informado.";
          $this->erro_campo = "ma05_i_local";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_marcaloc {
          return false;
        }
      }
-     if(trim($this->ma05_i_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_marca"])){ 
+     if(trim($this->ma05_i_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma05_i_marca"])){
        $sql  .= $virgula." ma05_i_marca = $this->ma05_i_marca ";
        $virgula = ",";
-       if(trim($this->ma05_i_marca) == null ){ 
+       if(trim($this->ma05_i_marca) == null ){
          $this->erro_sql = " Campo Código da Marca nao Informado.";
          $this->erro_campo = "ma05_i_marca";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_marcaloc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "localidades de cada marca nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ma05_i_codigo;
@@ -267,14 +267,14 @@ class cl_marcaloc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ma05_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ma05_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ma05_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_marcaloc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "localidades de cada marca nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ma05_i_codigo;
@@ -330,11 +330,11 @@ class cl_marcaloc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_marcaloc {
       }
      return $result;
    }
-   function sql_query ( $ma05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ma05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,15 +375,15 @@ class cl_marcaloc {
      $sql2 = "";
      if($dbwhere==""){
        if($ma05_i_codigo!=null ){
-         $sql2 .= " where marcaloc.ma05_i_codigo = $ma05_i_codigo "; 
-       } 
+         $sql2 .= " where marcaloc.ma05_i_codigo = $ma05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,10 +392,10 @@ class cl_marcaloc {
      }
      return $sql;
   }
-   function sql_query_file ( $ma05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ma05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,15 +408,15 @@ class cl_marcaloc {
      $sql2 = "";
      if($dbwhere==""){
        if($ma05_i_codigo!=null ){
-         $sql2 .= " where marcaloc.ma05_i_codigo = $ma05_i_codigo "; 
-       } 
+         $sql2 .= " where marcaloc.ma05_i_codigo = $ma05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

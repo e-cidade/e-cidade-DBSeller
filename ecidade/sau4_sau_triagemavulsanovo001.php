@@ -63,6 +63,7 @@ $iModelo                 = $oParametrosConfiguracao->s103_i_modelofaa;
 <script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
 <script language="JavaScript" type="text/javascript" src="scripts/classes/saude/ambulatorial/DBViewTriagem.classe.js"></script>
+<script type="text/javascript" language="JavaScript" src="scripts/AjaxRequest.js"> </script>
 <script>
 $.noConflict();
 const oTriagem = new DBViewTriagem( DBViewTriagem.prototype.TELA_TRIAGEM );
@@ -72,4 +73,5 @@ oTriagem.exibirBotaoEmitirFAA( true, <?=$iModelo;?> );
 oTriagem.origemAgenda( true );
 oTriagem.show($('cntTriagem'));
 oTriagem.consultarFaa();
+
 </script>

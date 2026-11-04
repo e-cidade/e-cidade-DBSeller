@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace ECidade\Tributario\Cadastro\Repository;
 
@@ -49,7 +49,7 @@ final class IptucadtaxaexeRepository extends Repository
 
         $result = $this->dataBase->execute($sql);
 
-        $object = $this->dataBase->fetchRow($result);
+        $object = $this->dataBase->fetchRow($result, 0);
 
         return $this->make($object);
     }

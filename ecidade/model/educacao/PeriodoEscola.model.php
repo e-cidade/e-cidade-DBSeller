@@ -1,4 +1,5 @@
 <?php
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,7 +26,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-define( 'MENSAGEM_PERIODOESCOLA_MODEL', 'educacao.escola.PeriodoEscola.' );
+const MENSAGEM_PERIODOESCOLA_MODEL = "educacao.escola.PeriodoEscola.";
 
 /**
  * Representação de um período na escola

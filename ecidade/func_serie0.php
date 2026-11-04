@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,17 +60,17 @@ $clrotulo->label("ed11_i_ensino");
       <?=$Led11_i_ensino?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?
+      <?php
       $result0 = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
       ?>
       <select name="chave_ed11_i_ensino" id="chave_ed11_i_ensino">
        <option value="">TODOS</option>
-       <?
+       <?php
        for($x=0;$x<$clensino->numrows;$x++){
         db_fieldsmemory($result0,$x);
         ?>
         <option value="<?=$ed10_i_codigo?>" <?=$ed10_i_codigo==@$chave_ed11_i_ensino?"selected":""?> > <?=$ed10_c_descr?></option>
-        <?
+        <?php
        }
        ?>
       </select>
@@ -89,7 +89,7 @@ $clrotulo->label("ed11_i_ensino");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if(!isset($pesquisa_chave)){
     $condicao = "";
     if(isset($chave_ed11_i_ensino) && (trim($chave_ed11_i_ensino)!="") ){

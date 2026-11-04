@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
@@ -59,7 +59,7 @@ function js_incluir(){
     obj.y68_pgto_dia.focus();
     return false;
   }
-  
+
   valor=valor.toFixed(2);
   data=d+'/'+m+'/'+a;
   js_incluirlinhas(valor,data);
@@ -81,7 +81,7 @@ function js_fechar(){
            valores+= espa+matriz[0]+'-'+matriz[1];
 	   espa='HHH';
 	   str=new Number(matriz[0]);
-	   pago=(pago+str); 
+	   pago=(pago+str);
 	   inputs[i].value='';
 	}
     }
@@ -101,8 +101,8 @@ function js_fechar(){
     <td nowrap title="<?=@$Ty68_valor?>">
        <?=@$Ly68_valor?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('y68_valor',10,$Iy68_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,8 +111,8 @@ db_input('y68_valor',10,$Iy68_valor,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Ty68_pgto?>">
        <?=@$Ly68_pgto?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,19 +129,19 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
 </form>
   </center>
   </td>
-</tr>  
+</tr>
 <tr>
-  <td valign="top">  
-   <?
+  <td valign="top">
+   <?php
 	   $cliframe_alterar_excluir_html->colunas =array("y68_valor"=>$Ly68_valor,"y68_pgto"=>$Ly68_pgto);
 	   $cliframe_alterar_excluir_html->iframe_width ="350";
 	   $cliframe_alterar_excluir_html->iframe_nome ="criatabela";
 	   $cliframe_alterar_excluir_html->iframe_height="185";
 	   $cliframe_alterar_excluir_html->load="parent.js_monta();";
-           if($db_opcao==3){ 
+           if($db_opcao==3){
   	     $cliframe_alterar_excluir_html->db_opcao="3";
-           } 
-           if(isset($sql)){ 
+           }
+           if(isset($sql)){
   	     $cliframe_alterar_excluir_html->sql=$sql;
            }
 	   $cliframe_alterar_excluir_html->iframe_alterar_excluir_html();
@@ -149,23 +149,23 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
    ?>
    </td>
   </tr>
-</table>  
+</table>
 <script>
 function js_monta(){
-<?
+<?php
 if(isset($valores)){
-  $matriz01=split('HHH',$valores);
+  $matriz01= explode('HHH',$valores);
   for($i=0; $i<count($matriz01); $i++){
-    $matriz=split('-',$matriz01[$i]);
+    $matriz= explode('-',$matriz01[$i]);
     if($db_opcao==33){
       echo " js_incluirlinhas_disabled('".$matriz[0]."','".$matriz[1]."');\n\n  ";
     }else{
       echo " js_incluirlinhas('".$matriz[0]."','".$matriz[1]."');\n\n  ";
-    }  
-     
+    }
+
   }
-  
-}  
+
+}
 ?>
 }
 </script>

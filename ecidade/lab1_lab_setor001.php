@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if(isset($incluir)){
     <center>
       <fieldset style='width: 75%;'> 
         <legend><b>Setor</b></legend>
-          <?
+          <?php
           include(modification("forms/db_frmlab_setor.php"));
           ?>
       </fieldset>
@@ -75,7 +75,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -83,7 +83,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","la23_c_descr",true,1,"la23_c_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cllab_setor->erro_status=="0"){
     $cllab_setor->erro(true,false);

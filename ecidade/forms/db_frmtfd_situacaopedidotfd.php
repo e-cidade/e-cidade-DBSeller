@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf28_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf28_i_codigo',10,$Itf28_i_codigo,true,'text',3,'');
       ?>
     </td>
@@ -50,19 +50,19 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf28_i_pedidotfd?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf28_i_pedidotfd',10,$Itf01_i_codigo,true,'text',3,'');
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf01_i_cgsund?>">
-      <?
+      <?php
       echo $Ltf01_i_cgsund;
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf01_i_cgsund',10,$Itf01_i_cgsund,true,'text',3,'');
       db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
       ?>
@@ -73,7 +73,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf28_i_situacao?>
     </td>
     <td> 
-      <?
+      <?php
       $aX = array();
       $sSql = $oDaotfd_situacaotfd->sql_query_file(null, ' * ', ' tf26_i_codigo ');
       $rs = $oDaotfd_situacaotfd->sql_record($sSql);
@@ -93,7 +93,7 @@ $clrotulo->label("z01_v_nome");
        <?=@$Ltf28_c_obs?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf28_c_obs',80,$Itf28_c_obs,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -108,7 +108,7 @@ $clrotulo->label("z01_v_nome");
   <table width="100%">
 	  <tr>
 		  <td valign="top"><br>
-        <?
+        <?php
 				$aChavepri = array ('tf28_i_codigo' => @$tf28_i_codigo,
                             'tf28_i_pedidotfd' => @$tf28_i_pedidotfd, 
                             'tf28_i_situacao' => @$tf28_i_situacao, 
@@ -156,7 +156,7 @@ $clrotulo->label("z01_v_nome");
 
 <script>
 
-<?
+<?php
   if(isset($opcao)) {
     
     if(isset($tf28_i_login) && db_getsession('DB_id_usuario') != $tf28_i_login) {
@@ -175,7 +175,7 @@ function js_desabilitaAlteracao() {
 
 function js_cancelar() {
  
-  <?
+  <?php
   echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf28_i_pedidotfd='.
                           $tf28_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'

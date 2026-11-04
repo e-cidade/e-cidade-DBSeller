@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -166,7 +166,7 @@ db_postmemory($_POST);
                                                         db_inputdata('pc10_data', @$pc10_data_dia, @$pc10_data_mes, @$pc10_data_ano, true, 'text', 1, "", "pc10_dataINI")
                                                         ?>
                                                         <strong>&nbsp;À&nbsp;</strong>
-                                                        <?
+                                                        <?php
                                                         db_inputdata('pc10_data', @$pc10_data_dia, @$pc10_data_mes, @$pc10_data_ano, true, 'text', 1, "", "pc10_dataFIM")
                                                         ?>
                                                     </td>

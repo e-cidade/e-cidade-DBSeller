@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,14 +44,14 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     <strong>Ano / Mês :&nbsp;&nbsp;</strong>
     </td>
     <td>
-      <?
+      <?php
        if(!isset($DBtxt23) || (isset($DBtxt23) && (trim($DBtxt23) == "" || $DBtxt23 == 0))){
          $DBtxt23 = db_anofolha();
        }
        db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
        if(!isset($DBtxt25) || (isset($DBtxt23) && (trim($DBtxt25) == "" || $DBtxt25 == 0))){
          $DBtxt25 = db_mesfolha();
        }
@@ -62,13 +62,13 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   <tr>
     <td align="right"><b>Ponto:</b></td>
     <td>
-     <?
+     <?php
        $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
        db_select('ponto',$x,true,4,"onchange='return js_verifica();'");
      ?>
     </td>
      </tr>
-     <?
+     <?php
      if(isset($ponto) && $ponto == "c"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest as seq"));
        if($clgerfcom->numrows > 0){
@@ -111,7 +111,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   </tr>
   <tr>
     <td colspan="2">
-<?    
+<?php    
   if ($mostra == true){
     $sql          = $clrhsolicita->sql_query_pcproc(null,"distinct pc10_numero,pc80_codproc","pc10_numero","rh33_anousu   = $ano and
                                                                                                             rh33_mesusu   = $mes and

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ $db_opcao = 3;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	$consulta = 1;
 	include(modification("forms/db_frmauto.php"));
 	echo "<script>document.form1.db_opcao.type='hidden'</script>"; 

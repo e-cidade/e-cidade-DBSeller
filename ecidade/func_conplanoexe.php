@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -68,7 +68,7 @@ if (isset($db_instit) && $db_instit!=''){
                 <?=$Lc62_reduz?>
               </td>
               <td width="96%" align="left" nowrap>
-                <? db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
+                <?php db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
               </td>
             </tr>
             <tr>
@@ -76,7 +76,7 @@ if (isset($db_instit) && $db_instit!=''){
                 <?=$Lc60_estrut?>
               </td>
               <td width="96%" align="left" nowrap>
-                <? db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
+                <?php db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
               </td>
             </tr>
             <tr>
@@ -84,7 +84,7 @@ if (isset($db_instit) && $db_instit!=''){
                 <?=$Lc60_descr?>&nbsp;
               </td>
               <td width="96%" align="left" nowrap>
-                <?  db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
+                <?php  db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
               </td>
             </tr>
             <tr>
@@ -100,7 +100,7 @@ if (isset($db_instit) && $db_instit!=''){
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php
         $campos = "c62_reduz,c60_estrut,c60_descr ";
         if(!isset($pesquisa_chave)){
           if(isset($campos)==false){
@@ -156,12 +156,12 @@ if (isset($db_instit) && $db_instit!=''){
   </table>
   </body>
   </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

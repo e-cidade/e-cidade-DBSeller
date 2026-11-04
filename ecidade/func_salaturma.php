@@ -62,7 +62,7 @@ db_fieldsmemory($result,0);
           <label for="chave_ed16_i_codigo"><?=$Led16_i_codigo?> </label>
         </td>
         <td width="96%" align="left" nowrap>
-          <?db_input("ed16_i_codigo",10,$Ied16_i_codigo,true,"text",4,"","chave_ed16_i_codigo");?>
+          <?php db_input("ed16_i_codigo",10,$Ied16_i_codigo,true,"text",4,"","chave_ed16_i_codigo");?>
         </td>
       </tr>
       <tr>
@@ -70,7 +70,7 @@ db_fieldsmemory($result,0);
           <label for="chave_ed16_c_descr" ><?=$Led16_c_descr?></label>
         </td>
         <td width="96%" align="left" nowrap>
-          <?db_input("ed16_c_descr",20,$Ied16_c_descr,true,"text",4,"","chave_ed16_c_descr");?>
+          <?php db_input("ed16_c_descr",20,$Ied16_c_descr,true,"text",4,"","chave_ed16_c_descr");?>
         </td>
       </tr>
       <tr>
@@ -86,7 +86,7 @@ db_fieldsmemory($result,0);
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $escola = db_getsession("DB_coddepto");
    $result = $clcursoescola->sql_record($clcursoescola->sql_query("","ed71_c_turmasala",""," ed71_i_escola = $escola AND ed71_i_curso = $curso"));
    if($clcursoescola->numrows>0){

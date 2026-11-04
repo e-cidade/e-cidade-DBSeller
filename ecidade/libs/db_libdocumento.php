@@ -27,27 +27,52 @@
 
 class libdocumento {
 
-  public $iTipoDoc      = 0;
-  public $iCodDoc       = 0;
-  public $aParagrafos     = array();
-  public $aParametros     = array();
-  public $aCampos       = array();
-  public $iInstit       = null;
-  public $strDocHTML    = null;
-  public $oDbDocumentoDAO   = null;
-  public $oDbDocParagDAO  = null;
-  public $sCamposParagrafo  = "";
-  public $sCamposDocumento  = "";
-  public $sCamposDocParag   = "";
-  public $sNomeCampoTipodoc = "";
-  public $sNomeCampoCoddoc  = "";
-  public $sNomeCampoOrdem   = "";
-  public $sNomeCampoInstit  = "";
-  public $lDocumentoPadrao  = false;
-  public $lErro       = false;
-  public $sMsgErro      = "";
-  private $lCache       = false;
-  private $sTempoCache    = "+1 hour";
+  public  $iTipoDoc                 = 0;
+  public  $iCodDoc                  = 0;
+  public  $aParagrafos              = array();
+  public  $aParametros              = array();
+  public  $aCampos                  = array();
+  public  $iInstit                  = null;
+  public  $strDocHTML               = null;
+  public  $oDbDocumentoDAO          = null;
+  public  $oDbDocParagDAO           = null;
+  public  $sCamposParagrafo         = "";
+  public  $sCamposDocumento         = "";
+  public  $sCamposDocParag          = "";
+  public  $sNomeCampoTipodoc        = "";
+  public  $sNomeCampoCoddoc         = "";
+  public  $sNomeCampoOrdem          = "";
+  public  $sNomeCampoInstit         = "";
+  public  $lDocumentoPadrao         = false;
+  public  $lErro                    = false;
+  public  $sMsgErro                 = "";
+  public  $cgc                      = '';
+  public  $uf                       = '';
+  public  $munic                    = '';
+  public  $ender                    = '';
+  public  $xender                   = '';
+  public  $Valor                    = '';
+  public  $Valorext                 = '';
+  public  $Certidao                 = '';
+  public  $xinscr                   = '';
+  public  $ximovel                  = '';
+  public  $xmatric                  = '';
+  public  $processoforo             = '';
+  public  $numeroinicial            = '';
+  public  $dataporextenso           = '';
+  public  $oab_advogado             = '';
+  public  $nome_advogado            = '';
+  public  $vara_descricao           = '';
+  public  $local_descricao          = '';
+  public  $inscricao_matricula_cgm  = '';
+  public  $parcelamentos            = '';
+  public  $Exercicio                = '';
+  public  $Procedencias             = '';
+  private $lCache                   = false;
+  private $sTempoCache              = "+1 hour";
+  private $cldb_documento;
+  private $cldb_documentopadrao;
+  private $rsParag;
 
   const TIPO_TEXTO = 1;
   const TIPO_TABELA = 2;
@@ -338,7 +363,7 @@ class libdocumento {
       if (substr($txt[$x], 0, 1) == "$") {
 
         $txt1 = substr($txt[$x], 1);
-        global $$txt1;
+        global ${$txt1};
         $texto1 .= $$txt1;
       } else {
 

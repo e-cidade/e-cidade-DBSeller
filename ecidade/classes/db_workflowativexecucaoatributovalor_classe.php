@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE workflowativexecucaoatributovalor
-class cl_workflowativexecucaoatributovalor { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db111_sequencial = 0; 
-   var $db111_workflowativexec = 0; 
-   var $db111_cadattdinamicovalorgrupo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_workflowativexecucaoatributovalor {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db111_sequencial = 0;
+   var $db111_workflowativexec = 0;
+   var $db111_cadattdinamicovalorgrupo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db111_sequencial = int4 = Código Sequencial 
-                 db111_workflowativexec = int4 = Código Work Flow Atividade Execução 
-                 db111_cadattdinamicovalorgrupo = int4 = Grupo de Valores de um Atributo 
+                 db111_sequencial = int4 = Código Sequencial
+                 db111_workflowativexec = int4 = Código Work Flow Atividade Execução
+                 db111_cadattdinamicovalorgrupo = int4 = Grupo de Valores de um Atributo
                  ";
-   //funcao construtor da classe 
-   function cl_workflowativexecucaoatributovalor() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("workflowativexecucaoatributovalor"); 
+     $this->rotulo = new rotulo("workflowativexecucaoatributovalor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_workflowativexecucaoatributovalor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db111_sequencial = ($this->db111_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db111_sequencial"]:$this->db111_sequencial);
        $this->db111_workflowativexec = ($this->db111_workflowativexec == ""?@$GLOBALS["HTTP_POST_VARS"]["db111_workflowativexec"]:$this->db111_workflowativexec);
@@ -77,9 +77,9 @@ class cl_workflowativexecucaoatributovalor {
      }
    }
    // funcao para inclusao
-   function incluir ($db111_sequencial){ 
+   public function incluir ($db111_sequencial){
       $this->atualizacampos();
-     if($this->db111_workflowativexec == null ){ 
+     if($this->db111_workflowativexec == null ){
        $this->erro_sql = " Campo Código Work Flow Atividade Execução nao Informado.";
        $this->erro_campo = "db111_workflowativexec";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_workflowativexecucaoatributovalor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db111_cadattdinamicovalorgrupo == null ){ 
+     if($this->db111_cadattdinamicovalorgrupo == null ){
        $this->erro_sql = " Campo Grupo de Valores de um Atributo nao Informado.";
        $this->erro_campo = "db111_cadattdinamicovalorgrupo";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_workflowativexecucaoatributovalor {
        return false;
      }
      if($db111_sequencial == "" || $db111_sequencial == null ){
-       $result = db_query("select nextval('workflowativexecucaoatributovalor_db111_sequencial_seq')"); 
+       $result = db_query("select nextval('workflowativexecucaoatributovalor_db111_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: workflowativexecucaoatributovalor_db111_sequencial_seq do campo: db111_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: workflowativexecucaoatributovalor_db111_sequencial_seq do campo: db111_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db111_sequencial = pg_result($result,0,0); 
+       $this->db111_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from workflowativexecucaoatributovalor_db111_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db111_sequencial)){
@@ -118,10 +118,10 @@ class cl_workflowativexecucaoatributovalor {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db111_sequencial = $db111_sequencial; 
+         $this->db111_sequencial = $db111_sequencial;
        }
      }
-     if(($this->db111_sequencial == null) || ($this->db111_sequencial == "") ){ 
+     if(($this->db111_sequencial == null) || ($this->db111_sequencial == "") ){
        $this->erro_sql = " Campo db111_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_workflowativexecucaoatributovalor {
        return false;
      }
      $sql = "insert into workflowativexecucaoatributovalor(
-                                       db111_sequencial 
-                                      ,db111_workflowativexec 
-                                      ,db111_cadattdinamicovalorgrupo 
+                                       db111_sequencial
+                                      ,db111_workflowativexec
+                                      ,db111_cadattdinamicovalorgrupo
                        )
                 values (
-                                $this->db111_sequencial 
-                               ,$this->db111_workflowativexec 
-                               ,$this->db111_cadattdinamicovalorgrupo 
+                                $this->db111_sequencial
+                               ,$this->db111_workflowativexec
+                               ,$this->db111_cadattdinamicovalorgrupo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "workflowativexecucaoatributovalor ($this->db111_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_workflowativexecucaoatributovalor {
        $resac = db_query("insert into db_acount values($acount,3157,17906,'','".AddSlashes(pg_result($resaco,0,'db111_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db111_sequencial=null) { 
+   public function alterar ($db111_sequencial=null) {
       $this->atualizacampos();
      $sql = " update workflowativexecucaoatributovalor set ";
      $virgula = "";
-     if(trim($this->db111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_sequencial"])){ 
+     if(trim($this->db111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_sequencial"])){
        $sql  .= $virgula." db111_sequencial = $this->db111_sequencial ";
        $virgula = ",";
-       if(trim($this->db111_sequencial) == null ){ 
+       if(trim($this->db111_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "db111_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_workflowativexecucaoatributovalor {
          return false;
        }
      }
-     if(trim($this->db111_workflowativexec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_workflowativexec"])){ 
+     if(trim($this->db111_workflowativexec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_workflowativexec"])){
        $sql  .= $virgula." db111_workflowativexec = $this->db111_workflowativexec ";
        $virgula = ",";
-       if(trim($this->db111_workflowativexec) == null ){ 
+       if(trim($this->db111_workflowativexec) == null ){
          $this->erro_sql = " Campo Código Work Flow Atividade Execução nao Informado.";
          $this->erro_campo = "db111_workflowativexec";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_workflowativexecucaoatributovalor {
          return false;
        }
      }
-     if(trim($this->db111_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_cadattdinamicovalorgrupo"])){ 
+     if(trim($this->db111_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db111_cadattdinamicovalorgrupo"])){
        $sql  .= $virgula." db111_cadattdinamicovalorgrupo = $this->db111_cadattdinamicovalorgrupo ";
        $virgula = ",";
-       if(trim($this->db111_cadattdinamicovalorgrupo) == null ){ 
+       if(trim($this->db111_cadattdinamicovalorgrupo) == null ){
          $this->erro_sql = " Campo Grupo de Valores de um Atributo nao Informado.";
          $this->erro_campo = "db111_cadattdinamicovalorgrupo";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_workflowativexecucaoatributovalor {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "workflowativexecucaoatributovalor nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db111_sequencial;
@@ -267,14 +267,14 @@ class cl_workflowativexecucaoatributovalor {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db111_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db111_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db111_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_workflowativexecucaoatributovalor {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "workflowativexecucaoatributovalor nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db111_sequencial;
@@ -330,11 +330,11 @@ class cl_workflowativexecucaoatributovalor {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_workflowativexecucaoatributovalor {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,15 +377,15 @@ class cl_workflowativexecucaoatributovalor {
      $sql2 = "";
      if($dbwhere==""){
        if($db111_sequencial!=null ){
-         $sql2 .= " where workflowativexecucaoatributovalor.db111_sequencial = $db111_sequencial "; 
-       } 
+         $sql2 .= " where workflowativexecucaoatributovalor.db111_sequencial = $db111_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,11 +394,11 @@ class cl_workflowativexecucaoatributovalor {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_workflowativexecucaoatributovalor {
      $sql2 = "";
      if($dbwhere==""){
        if($db111_sequencial!=null ){
-         $sql2 .= " where workflowativexecucaoatributovalor.db111_sequencial = $db111_sequencial "; 
-       } 
+         $sql2 .= " where workflowativexecucaoatributovalor.db111_sequencial = $db111_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,11 +429,11 @@ class cl_workflowativexecucaoatributovalor {
      return $sql;
   }
 
-  // funcao do sql 
-  function sql_query_atributos ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  // funcao do sql
+  public function sql_query_atributos ( $db111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_workflowativexecucaoatributovalor {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -101,13 +101,13 @@ class cl_disbanco {
                  agenciapagamento = varchar = Agência Pagamento
                  ";
    //funcao construtor da classe
-   function cl_disbanco() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disbanco");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -116,7 +116,7 @@ class cl_disbanco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numbco = ($this->k00_numbco == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numbco"]:$this->k00_numbco);
        $this->k15_codbco = ($this->k15_codbco == ""?@$GLOBALS["HTTP_POST_VARS"]["k15_codbco"]:$this->k15_codbco);
@@ -167,7 +167,7 @@ class cl_disbanco {
      }
    }
    // funcao para inclusao
-   function incluir ($idret){
+   public function incluir ($idret){
       $this->atualizacampos();
      if($this->k15_codbco == null ){
        $this->erro_sql = " Campo Banco nao Informado.";
@@ -438,7 +438,7 @@ class cl_disbanco {
      return true;
    }
    // funcao para alteracao
-   function alterar ($idret=null) {
+   public function alterar ($idret=null) {
       $this->atualizacampos();
      $sql = " update disbanco set ";
      $virgula = "";
@@ -835,7 +835,7 @@ class cl_disbanco {
      }
    }
    // funcao para exclusao
-   function excluir ($idret=null,$dbwhere=null) {
+   public function excluir ($idret=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($idret));
      }else{
@@ -918,7 +918,7 @@ class cl_disbanco {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -941,10 +941,10 @@ class cl_disbanco {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -971,7 +971,7 @@ class cl_disbanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -981,10 +981,10 @@ class cl_disbanco {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1005,7 +1005,7 @@ class cl_disbanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1014,10 +1014,10 @@ class cl_disbanco {
      }
      return $sql;
   }
-   function sql_query_cadastro ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_cadastro ( $idret=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1041,7 +1041,7 @@ class cl_disbanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1059,7 +1059,7 @@ class cl_disbanco {
    * @access public
    * @return string
    */
-  function sql_queryDadosBaixa( $iNumpre, $iNumpar ) {
+  public function sql_queryDadosBaixa( $iNumpre, $iNumpar ) {
 
 		$sSql  = " select pg.k00_numpre       as numpre,                                           ";
 		$sSql .= " 			  pg.k00_numpar        as numpar,                                          ";
@@ -1127,7 +1127,7 @@ class cl_disbanco {
 	 * @access public
 	 * @return void
 	 */
-	function sql_queryLancamentosEfetuados( $iNumpre ) {
+	public function sql_queryLancamentosEfetuados( $iNumpre ) {
 
 		$sSql  = " select case                                                                      ";
 		$sSql .= "      		when q21_tipolanc = 1                                                   ";
@@ -1171,7 +1171,7 @@ class cl_disbanco {
      * @param $parcelamento
      * @return string
      */
-    function sql_query_disbanco_mais_recente_por_parcelamento($parcelamento)
+    public function sql_query_disbanco_mais_recente_por_parcelamento($parcelamento)
     {
         $sql = "
             select
@@ -1190,7 +1190,7 @@ class cl_disbanco {
         return $sql;
     }
 
-    function sql_query_disbanco_por_arrepaga($numpre, $numpar)
+    public function sql_query_disbanco_por_arrepaga($numpre, $numpar)
     {
         $sql = "
             select distinct

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcgm->rotulo->label("z01_numcgm");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
                        ?>
             </td>
@@ -74,7 +74,7 @@ $clcgm->rotulo->label("z01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where = "ma01_c_ativo = 'N'";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -104,12 +104,12 @@ $clcgm->rotulo->label("z01_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

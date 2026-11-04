@@ -690,7 +690,7 @@ if ($lErroConf == true) {
         <td id=lista_pendente_td>Configurações OK.</td>
       </tr>
     </table>
-    <?} ?>
+    <?php } ?>
   </div>
     </td>
   </tr>
@@ -743,8 +743,8 @@ function getBrowser()  {
 function db_compara_conf_php($sValorIni, $sValorConfig, $lBoolean, $sOperacao='==') {
 
   if ($lBoolean == 'false') {
-    $sValorIni    = ereg_replace('[^0-9]', '', $sValorIni);
-    $sValorConfig = ereg_replace('[^0-9]', '', $sValorConfig);
+    $sValorIni    = preg_replace('[^0-9]', '', $sValorIni);
+    $sValorConfig = preg_replace('[^0-9]', '', $sValorConfig);
   }
 
   $nValorIni    = (trim($sValorIni)=='')?0:$sValorIni;

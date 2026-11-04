@@ -135,7 +135,7 @@ $db_opcao = 1;
 
                     <tr>
                         <td colspan="2">
-                            <fieldset style="">
+                            <fieldset>
                                 <legend>Observação</legend>
                                 <?php db_textarea("v76_obs", 3, 50, "", true, "text", $db_opcao, "", "", "", 400); ?>
                             </fieldset>

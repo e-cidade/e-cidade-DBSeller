@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -57,7 +57,7 @@ $clpcandpadraodepto = new cl_pcandpadraodepto;
 $clsolandpadrao = new cl_solandpadrao;
 $clsolandpadraodepto = new cl_solandpadraodepto;
 $clsolandam = new cl_solandam;
-$clsolandamand = new cl_solandamand; 
+$clsolandamand = new cl_solandamand;
 $db_opcao = 1;
 $db_botao = true;
 
@@ -68,23 +68,23 @@ if (isset ($chaves)) {
 	for($w=0;$w<$clpcprocitem->numrows;$w++){
 		db_fieldsmemory($result_itens,$w);
 	if ($cods!=""){
-		$cod=split(',',$cods);
+		$cod= explode(',',$cods);
 	  	$new_cods="";
 	  	$vir="";
 	   	for($x=0;$x<count($cod);$x++){
 			$pci=$cod[$x];
 			if ($pc81_codprocitem!=$pci){
 				$new_cods .= $vir.$pci;
-			    $vir=",";	    			
+			    $vir=",";
 			}
 		}
 		$cods=$new_cods;
 	 }
-	
+
 	}
 	}
 	*/
-	$info = split('#', $chaves);
+	$info =explode('#', $chaves);
 	if (trim($cods) != "") {
 		$vir = ",";
 	} else {
@@ -106,7 +106,7 @@ if (isset ($chaves)) {
 	if (isset ($incluir) && trim($incluir) != "") {
 		$sqlerro = false;
 		db_inicio_transacao();
-		$dados = split(',', $cods);
+		$dados =explode(',', $cods);
 		if (count($dados)) {
 			$result_deptorec = $clpcandpadraodepto->sql_record($clpcandpadraodepto->sql_query(null, "*", null, "pc45_ordem = 2 and pc45_instit=".db_getsession("DB_instit")));
 			if ($clpcandpadraodepto->numrows > 0) {
@@ -168,7 +168,7 @@ if (isset ($chaves)) {
 							      $erro_msg=$clsolandpadraodepto->erro_msg;
 							      //db_msgbox("5");
 							      break;
-							      
+
 						        }
 							}
 						}
@@ -183,7 +183,7 @@ if (isset ($chaves)) {
 						$sqlerro = true;
 						$erro_msg=$clsolandam->erro_msg;
 						//db_msgbox("6");
-						break;						
+						break;
 					}
 				}
 			}
@@ -210,7 +210,7 @@ if (isset ($chaves)) {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
-function js_submit_form(){ 
+function js_submit_form(){
   document.form1.codsolant.value=document.form1.codsol.value;
   js_gera_chaves();
 }
@@ -240,10 +240,10 @@ function js_submit_form(){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1" >
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <? 
+    <?php
 
 
 db_input('incluir', 10, '', true, 'hidden', 3);
@@ -253,7 +253,7 @@ db_input('cods', 10, '', true, 'hidden', 3);
 if (isset ($codsol) && $codsol != "") {
 	//$sql = $clsolicitem->sql_query_prot(null, "distinct pc11_numero,pc11_codigo,pc11_quant,pc11_seq,pc11_vlrun,pc11_resum,pc01_codmater,pc01_descrmater,pc05_servico,pc17_unid,pc17_quant,m61_descr,m61_usaquant", null, "pc11_numero=$codsol");
 	$sql = "select distinct pc11_numero,pc11_codigo,pc11_quant,pc11_seq,pc11_vlrun,pc11_resum,pc01_codmater,pc01_descrmater,pc01_servico,pc17_unid,pc17_quant,m61_descr,m61_usaquant
-	 from solicitem 
+	 from solicitem
 	         inner join solicita on  solicita.pc10_numero = solicitem.pc11_numero
 	         inner join db_depart  on  db_depart.coddepto = solicita.pc10_depto
 	         left  join solicitempcmater  on  solicitempcmater.pc16_solicitem = solicitem.pc11_codigo
@@ -270,7 +270,7 @@ if (isset ($codsol) && $codsol != "") {
 	where p61_codandam is null and p63_codproc is null and pc11_numero=$codsol
 	union
 	select  distinct pc11_numero,pc11_codigo,pc11_quant,pc11_seq,pc11_vlrun,pc11_resum,pc01_codmater,pc01_descrmater,pc01_servico,pc17_unid,pc17_quant,m61_descr,m61_usaquant
-	
+
 	       from solicitem
 	         inner join solicita on  solicita.pc10_numero = solicitem.pc11_numero
 	         inner join db_depart  on  db_depart.coddepto = solicita.pc10_depto
@@ -284,7 +284,7 @@ if (isset ($codsol) && $codsol != "") {
              inner join solicitemprot  on solicitemprot.pc49_solicitem  = solicitem.pc11_codigo
 	  		 inner join protprocesso  on solicitemprot.pc49_protprocesso  = protprocesso.p58_codproc
 	         inner join proctransferproc  on proctransferproc.p63_codproc  = protprocesso.p58_codproc
-	         inner join proctransand  on proctransand.p64_codtran   = proctransferproc.p63_codtran     
+	         inner join proctransand  on proctransand.p64_codtran   = proctransferproc.p63_codtran
 	 where pc11_numero=$codsol
 	";
 	if (isset ($cods) && $cods != "") {

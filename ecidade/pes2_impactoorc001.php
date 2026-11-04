@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -71,7 +71,7 @@ function js_emite(){
   qry += '&selecao='+document.form1.selecao.value;
   qry += '&tiposa='+document.form1.tiposa.value;
   qry += "&selec="+ selecionados;
-  
+
   if(document.form1.selcargo){
     if(document.form1.selcargo.length > 0){
       faixacargo = js_campo_recebe_valores();
@@ -87,7 +87,7 @@ function js_emite(){
   jan.moveTo(0,0);
 }
 
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -107,7 +107,7 @@ function js_emite(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-        <?
+        <?php
 if(!isset($tipo)){
    $tipo = "c";
  }
@@ -137,7 +137,7 @@ if(!isset($filtro)){
             <Legend align="left">
               <b>Selecione os Vinculos</b>
             </Legend>
-            <?
+            <?php
             db_input("valor", 3, 0, true, 'hidden', 3);
             db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
             db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -151,15 +151,15 @@ if(!isset($filtro)){
               $arr_colunas_final   = Array();
               $arr_colunas_inicial = Array();
               if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-                 $colunas_sselecionados = split(",",$colunas_sselecionados);
+                 $colunas_sselecionados =explode(",",$colunas_sselecionados);
                  for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
-                    $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
+                    $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]];
                  }
               }
               if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-                 $colunas_nselecionados = split(",",$colunas_nselecionados);
+                 $colunas_nselecionados =explode(",",$colunas_nselecionados);
                  for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
-                    $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
+                    $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]];
                  }
               }
               if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
@@ -173,16 +173,16 @@ if(!isset($filtro)){
   </tr>
       <tr>
           <td nowrap title="Padrão" align="right">
-            <?
+            <?php
             $db_opcao = 2;
             db_ancora("<B>Código do Padrão :</B>","js_pesquisarh03_padrao(true);",$db_opcao);
             ?>
           </td>
           <td nowrap>
-            <?
+            <?php
             db_input('rh03_padrao',10,"",true,'text',$db_opcao,"onchange='js_pesquisarh03_padrao(false);'")
             ?>
-            <?
+            <?php
             db_input('r02_descr',29,"",true,'text',3,'');
             ?>
           </td>
@@ -192,7 +192,7 @@ if(!isset($filtro)){
 	     <td align="right"><strong>Tipo de Relatório :</strong>&nbsp;
        </td>
        <td align="left">
-         <?
+         <?php
            $x = array("f"=>"Sintético","t"=>"Analítico");
            db_select('tiposa',$x,true,4,"");
          ?>
@@ -203,7 +203,7 @@ if(!isset($filtro)){
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="relatorio" id="relatorio" type="button" value="Relatório" onclick="js_emite();" >
         </td>
       </tr>
@@ -211,7 +211,7 @@ if(!isset($filtro)){
 </table>
   </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -221,19 +221,19 @@ function js_pesquisarh03_padrao(mostra){
     if(mostra==true){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_padroes','func_padroes.php?funcao_js=parent.js_mostrapadrao1|r02_codigo|r02_descr&chave_r02_anousu='+document.form1.anofolha.value+'&chave_r02_mesusu='+document.form1.mesfolha.value,'Pesquisa',true,'0');
     }else{
-      if(document.form1.rh03_padrao.value != ''){ 
+      if(document.form1.rh03_padrao.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_padroes','func_padroes.php?pesquisa_chave='+document.form1.rh03_padrao.value+'&funcao_js=parent.js_mostrapadrao&chave_r02_anousu='+document.form1.anofolha.value+'&chave_r02_mesusu='+document.form1.mesfolha.value,'Pesquisa',false,'0');
       }else{
         document.form1.rh03_padrao.value = '';
         document.form1.r02_descr.value  = '';
       }
-    }  
+    }
 }
 function js_mostrapadrao(chave,erro){
-  document.form1.r02_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.rh03_padrao.focus(); 
-    document.form1.rh03_padrao.value = ''; 
+  document.form1.r02_descr.value = chave;
+  if(erro==true){
+    document.form1.rh03_padrao.focus();
+    document.form1.rh03_padrao.value = '';
   }
 }
 function js_mostrapadrao1(chave1,chave2){

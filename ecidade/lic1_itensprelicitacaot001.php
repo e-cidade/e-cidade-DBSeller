@@ -70,8 +70,8 @@ require_once(modification("dbforms/db_funcoes.php"));
               <option value="">Selecione</option>
             </select>
 
-          </td>  
-          
+          </td>
+
           </tr>
           <tr>
           <td><label for="quantidade">Quantidade:</label></td>
@@ -80,7 +80,9 @@ require_once(modification("dbforms/db_funcoes.php"));
           </td>
           <td><label for="valorunitario">Vlr. unit estimado:</label></td>
           <td title="Nesse campo deverá ser informado o valor unitário estimado para a licitação, ou o valor unitário mínimo de arrematação, ou o valor unitário da remuneração/prêmio ou, ainda, o valor unitário contratado, de acordo com o Critério de Julgamento tipo de licitação/forma de contratação">
-            <input type="text" name="valorunitario" id='valorunitario' class="field-size2"/>
+            <input type="text" name="valorunitario" id='valorunitario'
+                   oninput="this.value = this.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                   class="field-size2"/>
           </td>
         </tr>
       </table>
@@ -152,9 +154,8 @@ $('btnAdicionar').addEventListener('click', function() {
     alert ( _M(FonteMsg + 'informe_quantidade') );
     return;
   }
-  
-  if ( $F('valorunitario').trim() == '' || isNaN($F('valorunitario').trim()) == true ) {
 
+  if ( document.getElementById('valorunitario').value === '') {
     alert ( _M(FonteMsg + 'informe_valorunitario'));
     return;
   }

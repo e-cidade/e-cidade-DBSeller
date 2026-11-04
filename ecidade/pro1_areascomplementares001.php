@@ -152,7 +152,7 @@ $codigoobra = isset($codigoobra) ? $codigoobra : '';
               <?= $Lob08_ocupacao ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_ocupacao", $rsCaracterOcupacao, true, 1, "", "ob08_ocupacao");
               ?>
           </td>
@@ -162,7 +162,7 @@ $codigoobra = isset($codigoobra) ? $codigoobra : '';
               <?= $Lob08_tipoconstr ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_tipoconstr", $rsCaracterConstrucao, true, 1, "", "ob08_tipoconstr");
               ?>
           </td>
@@ -172,7 +172,7 @@ $codigoobra = isset($codigoobra) ? $codigoobra : '';
               <?= $Lob08_tipolanc ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_tipolanc", $rsCaracterLancamento, true, 1, "", "ob08_tipolanc");
               ?>
           </td>

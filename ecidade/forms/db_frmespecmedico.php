@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("sd04_i_codigo");
        <?=@$Lsd27_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 $x = array(''=>'');
 db_select('sd27_i_codigo',$x,true,$db_opcao,"");
 ?>
@@ -47,12 +47,12 @@ db_select('sd27_i_codigo',$x,true,$db_opcao,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd27_i_rhcbo?>">
-       <?
+       <?php
        db_ancora(@$Lsd27_i_rhcbo,"js_pesquisasd27_i_rhcbo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $x = array(''=>'');
 db_select('sd27_i_rhcbo',$x,true,$db_opcao," onchange='js_pesquisasd27_i_rhcbo(false);'");
 ?>
@@ -60,12 +60,12 @@ db_select('sd27_i_rhcbo',$x,true,$db_opcao," onchange='js_pesquisasd27_i_rhcbo(f
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd27_i_undmed?>">
-       <?
+       <?php
        db_ancora(@$Lsd27_i_undmed,"js_pesquisasd27_i_undmed(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $x = array(''=>'');
 db_select('sd27_i_undmed',$x,true,$db_opcao," onchange='js_pesquisasd27_i_undmed(false);'");
 ?>
@@ -76,7 +76,7 @@ db_select('sd27_i_undmed',$x,true,$db_opcao," onchange='js_pesquisasd27_i_undmed
        <?=@$Lsd27_b_principal?>
     </td>
     <td> 
-<?
+<?php
 $x = array(''=>'');
 db_select('sd27_b_principal',$x,true,$db_opcao,"");
 ?>
@@ -139,7 +139,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_especmedico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

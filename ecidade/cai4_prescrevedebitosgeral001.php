@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,12 +95,12 @@ function js_emite(){
       </tr>
       <tr >
         <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
       	   db_ancora('<b>Lista de débitos : </b>',"js_pesquisalista(true);",4)
           ?>
         </td>
         <td align="left">
-          <?
+          <?php
       	  db_input('k60_codigo',4,$Ik60_codigo,true,'text',4,"onchange='js_pesquisalista(false);'");
           db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -109,14 +109,14 @@ function js_emite(){
       <tr>
         <td align="right"  ><b>Prescrever Débitos Notificados: </b></td>
         <td  align="left" > 
-				<?
+				<?php
 				$arr_op = array("n"=>"Não","s"=>"Sim");
 				db_select("prescrnoti",$arr_op,true,"text");
 				?>&nbsp;</td>
       </tr>
           <tr>
             <td align="right" ><b> <?=@$Lk31_obs?></b></td>
-						<td align="left" ><? db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
+						<td align="left" ><?php db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
           </tr>
       <tr>
         <td colspan="2" align = "center"> 
@@ -126,7 +126,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -171,7 +171,7 @@ function js_mostralista1(chave1,chave2){
 
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

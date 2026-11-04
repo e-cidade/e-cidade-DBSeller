@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clitbiavalia->rotulo->label("it14_dtvenc");
               <?=$Lit14_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it14_guia",10,$Iit14_guia,true,"text",4,"","chave_it14_guia");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbiavalia->rotulo->label("it14_dtvenc");
               <?=$Lit14_dtvenc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it14_dtvenc",10,$Iit14_dtvenc,true,"text",4,"","chave_it14_dtvenc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbiavalia->rotulo->label("it14_dtvenc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiavalia.php")==true){
@@ -122,12 +122,12 @@ $clitbiavalia->rotulo->label("it14_dtvenc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

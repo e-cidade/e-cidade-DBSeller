@@ -1,4 +1,4 @@
-<?
+<?php
 $campos  = "  censoetapa.ed266_i_codigo ";
 $campos .= " ,censoetapa.ed266_c_descr ";
 $campos .= " ,censoetapamediacaodidaticopedagogica.ed131_regular ";

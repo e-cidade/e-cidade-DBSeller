@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhipenumcgm->rotulo->label("rh63_numcgm");
               <?=$Lrh63_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh63_sequencia",6,$Irh63_sequencia,true,"text",4,"","chave_rh63_sequencia");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhipenumcgm->rotulo->label("rh63_numcgm");
               <?=$Lrh63_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh63_numcgm",10,$Irh63_numcgm,true,"text",4,"","chave_rh63_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhipenumcgm->rotulo->label("rh63_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhipenumcgm.php")==true){
@@ -122,12 +122,12 @@ $clrhipenumcgm->rotulo->label("rh63_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,11 +51,11 @@ $clconlancamrec->rotulo->label("c74_codrec");
 	     <form name="form2" method="post" action="" >
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc74_codlan?>"><?=$Lc74_codlan?></td>
-             <td width="96%" align="left" nowrap><? db_input("c74_codlan",8,$Ic74_codlan,true,"text",4,"","chave_c74_codlan"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c74_codlan",8,$Ic74_codlan,true,"text",4,"","chave_c74_codlan"); ?> </td>
           </tr>
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc74_codrec?>"><?=$Lc74_codrec?></td>
-             <td width="96%" align="left" nowrap><? db_input("c74_codrec",6,$Ic74_codrec,true,"text",4,"","chave_c74_codrec"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c74_codrec",6,$Ic74_codrec,true,"text",4,"","chave_c74_codrec"); ?> </td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -70,7 +70,7 @@ $clconlancamrec->rotulo->label("c74_codrec");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos="distinct(c74_codrec),o70_codrec,o70_codfon, orcfontes.o57_fonte, orcfontes.o57_descr, o70_codigo,o70_valor,o70_instit ";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -107,12 +107,12 @@ $clconlancamrec->rotulo->label("c74_codrec");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

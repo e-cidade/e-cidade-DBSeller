@@ -33,8 +33,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("dbforms/db_funcoes.php"));
 
+require_once(modification("dbforms/db_funcoes.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -89,7 +89,7 @@ $dao->rotulo->label("o15_descr");
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="codigo_siconfi">Recursos Siconfi:</label></td>
+                    <td><label for="chave_codigo_siconfi">Recursos Siconfi:</label></td>
                     <td>
                         <?php
                         $fontesSiconfi = ["" => 'Selecione'];
@@ -101,7 +101,7 @@ $dao->rotulo->label("o15_descr");
                             );
                         });
 
-                        echo "<select id='codigo_siconfi' name='codigo_siconfi'>";
+                        echo "<select id='chave_codigo_siconfi' name='chave_codigo_siconfi'>";
                         foreach ($fontesSiconfi as $value => $label) {
                             echo "<option value='{$value}' >{$label}</option>";
                         }
@@ -130,6 +130,20 @@ $dao->rotulo->label("o15_descr");
                         ?>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>
+                        <label for="mostrarRegistros">
+                            <strong>Mostrar Registros:</strong>
+                        </label>
+                    </td>
+                    <td>
+                        <?php
+                        $opcoes = ["ativos" => "Apenas Ativos", "inativos" => "Apenas Inativos", "todos" => "Todos"];
+                        db_select("mostrarRegistrosPorValidade", $opcoes, true, 1);
+                        ?>
+                    </td>
+                </tr>
             </table>
 
         </fieldset>
@@ -145,12 +159,24 @@ $chave_o15_descr = addslashes($chave_o15_descr);
 
 $where = ["exercicio = {$exercicio}"];
 
+if (!empty($codigo) && empty($_POST)) {
+    $where[] = "o15_codigo = {$codigo}";
+}
+
 if (isset($sem_recurso) && trim($sem_recurso) != "") {
     $where[] = "o15_codigo not in (" . $sem_recurso . ")";
 }
 
-if (!isset($oGet->ativo) || (isset($oGet->ativo) && $oGet->ativo == 0)) {
+if ((!isset($oGet->ativo) && !isset($mostrarRegistrosPorValidade))|| (isset($oGet->ativo) && $oGet->ativo == 0)) {
     $where[] = "(o15_datalimite is null or o15_datalimite > '{$dataSessao}')";
+}
+
+if (isset($mostrarRegistrosPorValidade)) {
+    if ($mostrarRegistrosPorValidade == "ativos") {
+        $where[] = "(o15_datalimite is null or o15_datalimite >= '{$dataSessao}')";
+    } elseif ($mostrarRegistrosPorValidade == "inativos") {
+        $where[] = "(o15_datalimite < '{$dataSessao}')";
+    }
 }
 
 if (!empty($_POST['classificacao_recurso'])) {
@@ -158,22 +184,39 @@ if (!empty($_POST['classificacao_recurso'])) {
 }
 
 if (isset($codigo_siconfi) && $codigo_siconfi !== '') {
-    $where[] = "codigo_siconfi = '{$codigo_siconfi}'";
+    $where[] = "fonterecurso.codigo_siconfi = '{$codigo_siconfi}'";
+}
+
+if (isset($gestao) && $gestao !== '') {
+    $where[] = "fonterecurso.gestao = '{$gestao}'";
+}
+
+if (isset($o15_recurso) && $o15_recurso !== '') {
+    $where[] = "o15_recurso = '{$o15_recurso}'";
 }
 
 if (isset($o15_complemento) && $o15_complemento !== '') {
     $where[] = "o15_complemento = {$o15_complemento}";
 }
-
+$campos = "
+    o15_codigo,
+    fonterecurso.codigo_siconfi,
+    fonterecurso.gestao,
+    o15_recurso,
+    fonterecurso.descricao,
+    o15_complemento,
+    o200_descricao
+";
+$orderBy = 'fonterecurso.gestao, o15_codigo';
 if (!isset($pesquisa_chave)) {
-    $campos = "o15_codigo, codigo_siconfi, gestao, descricao, o15_complemento, o200_descricao ";
-    $orderBy = 'gestao, o15_codigo';
-
     if (isset($chave_o15_descr) && (trim($chave_o15_descr) != "")) {
         $where[] = "descricao like '$chave_o15_descr%'";
     }
+    if (isset($chave_codigo_siconfi) && (trim($chave_codigo_siconfi) != "")) {
+        $where[] = "fonterecurso.codigo_siconfi like '_{$chave_codigo_siconfi}'";
+    }
 
-    $sql = $dao->sqlRecursos2022("", $campos, $orderBy, implode(' and ', $where));
+    $sql = $dao->sqlNovaFonteRecurso("", $campos, $orderBy, implode(' and ', $where));
 
     if (isset($chave_o15_descr)) {
         $chave_o15_descr = str_replace("\\", "", $chave_o15_descr);
@@ -185,33 +228,24 @@ if (!isset($pesquisa_chave)) {
     echo '  </fieldset> ';
     echo '</div> ';
 } else {
-//    if (isset($pesquisa_conta)) {
-//        if ($pesquisa_chave != null && $pesquisa_chave != "") {
-//            $where[] = "o15_codigo = {$pesquisa_chave}";
-//            $sql1 = $dao->sql_query(null, " * ", "", implode(' and ', $where));
-//            $result = $dao->sql_record($sql1);
-//
-//            if ($dao->numrows != 0) {
-//                db_fieldsmemory($result, 0);
-//                echo "<script>" . $funcao_js . "('$pesquisa_chave','$o15_descr');</script>";
-//            }
-//        }
-//    } else {
-//        // aqui continua a funçao normalmente
-//        if ($pesquisa_chave != null && $pesquisa_chave != "") {
-//            $where[] = "o15_codigo = {$pesquisa_chave}";
-//            $sql2 = $dao->sql_query(null, " * ", "", implode(' and ', $where));
-//            $result = $dao->sql_record($sql2);
-//            if ($dao->numrows != 0) {
-//                db_fieldsmemory($result, 0);
-//                echo "<script>" . $funcao_js . "('$o15_descr',false);</script>";
-//            } else {
-//                echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
-//            }
-//        } else {
-//            echo "<script>" . $funcao_js . "('',false);</script>";
-//        }
-//    }
+    if (!empty($pesquisa_chave)) {
+        $where = [
+            "fonterecurso.exercicio = {$exercicio}",
+            "o15_codigo = {$pesquisa_chave}"
+        ];
+
+        $sql = $dao->sqlNovaFonteRecurso(null, $campos, "", implode(' and ', $where));
+        $rs = db_query($sql);
+        if (pg_num_rows($rs) != 0) {
+            db_fieldsmemory($rs, 0);
+
+            echo "<script>" . $funcao_js . "(false, '$gestao', '$descricao',$o15_codigo, $o15_complemento, '$o200_descricao', '$o15_recurso');</script>";
+        } else {
+            echo "<script>" . $funcao_js . "(true, '', 'Chave(" . $pesquisa_chave . ") não Encontrado');</script>";
+        }
+    } else {
+        echo "<script>" . $funcao_js . "(false, '');</script>";
+    }
 }
 ?>
 </body>

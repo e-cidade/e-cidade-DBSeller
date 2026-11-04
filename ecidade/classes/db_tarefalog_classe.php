@@ -1,90 +1,90 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: atendimento
 //CLASSE DA ENTIDADE tarefalog
-class cl_tarefalog { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $at43_sequencial = 0; 
-   var $at43_tarefa = 0; 
-   var $at43_descr = null; 
-   var $at43_obs = null; 
-   var $at43_problema = 'f'; 
-   var $at43_avisar = 0; 
-   var $at43_progresso = 0; 
-   var $at43_usuario = 0; 
-   var $at43_diaini_dia = null; 
-   var $at43_diaini_mes = null; 
-   var $at43_diaini_ano = null; 
-   var $at43_diaini = null; 
-   var $at43_diafim_dia = null; 
-   var $at43_diafim_mes = null; 
-   var $at43_diafim_ano = null; 
-   var $at43_diafim = null; 
-   var $at43_horainidia = null; 
-   var $at43_horafim = null; 
-   var $at43_tipomov = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tarefalog {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $at43_sequencial = 0;
+   var $at43_tarefa = 0;
+   var $at43_descr = null;
+   var $at43_obs = null;
+   var $at43_problema = 'f';
+   var $at43_avisar = 0;
+   var $at43_progresso = 0;
+   var $at43_usuario = 0;
+   var $at43_diaini_dia = null;
+   var $at43_diaini_mes = null;
+   var $at43_diaini_ano = null;
+   var $at43_diaini = null;
+   var $at43_diafim_dia = null;
+   var $at43_diafim_mes = null;
+   var $at43_diafim_ano = null;
+   var $at43_diafim = null;
+   var $at43_horainidia = null;
+   var $at43_horafim = null;
+   var $at43_tipomov = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 at43_sequencial = int4 = Codigo de Andamento 
-                 at43_tarefa = int4 = Tarefa 
-                 at43_descr = text = Descricao 
-                 at43_obs = text = Obs. 
-                 at43_problema = bool = Problema 
-                 at43_avisar = int4 = Avisar 
-                 at43_progresso = float8 = Progresso da tarefa 
-                 at43_usuario = int4 = Cod. Usuário 
-                 at43_diaini = date = Data de início 
-                 at43_diafim = date = Data final previsto 
-                 at43_horainidia = char(5) = Hora inicial 
-                 at43_horafim = char(5) = Hora final 
-                 at43_tipomov = int4 = Movimento 
+                 at43_sequencial = int4 = Codigo de Andamento
+                 at43_tarefa = int4 = Tarefa
+                 at43_descr = text = Descricao
+                 at43_obs = text = Obs.
+                 at43_problema = bool = Problema
+                 at43_avisar = int4 = Avisar
+                 at43_progresso = float8 = Progresso da tarefa
+                 at43_usuario = int4 = Cod. Usuário
+                 at43_diaini = date = Data de início
+                 at43_diafim = date = Data final previsto
+                 at43_horainidia = char(5) = Hora inicial
+                 at43_horafim = char(5) = Hora final
+                 at43_tipomov = int4 = Movimento
                  ";
-   //funcao construtor da classe 
-   function cl_tarefalog() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tarefalog"); 
+     $this->rotulo = new rotulo("tarefalog");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_tarefalog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->at43_sequencial = ($this->at43_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["at43_sequencial"]:$this->at43_sequencial);
        $this->at43_tarefa = ($this->at43_tarefa == ""?@$GLOBALS["HTTP_POST_VARS"]["at43_tarefa"]:$this->at43_tarefa);
@@ -127,9 +127,9 @@ class cl_tarefalog {
      }
    }
    // funcao para inclusao
-   function incluir ($at43_sequencial){ 
+   public function incluir ($at43_sequencial){
       $this->atualizacampos();
-     if($this->at43_tarefa == null ){ 
+     if($this->at43_tarefa == null ){
        $this->erro_sql = " Campo Tarefa nao Informado.";
        $this->erro_campo = "at43_tarefa";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_descr == null ){ 
+     if($this->at43_descr == null ){
        $this->erro_sql = " Campo Descricao nao Informado.";
        $this->erro_campo = "at43_descr";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_problema == null ){ 
+     if($this->at43_problema == null ){
        $this->erro_sql = " Campo Problema nao Informado.";
        $this->erro_campo = "at43_problema";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_avisar == null ){ 
+     if($this->at43_avisar == null ){
        $this->erro_sql = " Campo Avisar nao Informado.";
        $this->erro_campo = "at43_avisar";
        $this->erro_banco = "";
@@ -165,7 +165,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_progresso == null ){ 
+     if($this->at43_progresso == null ){
        $this->erro_sql = " Campo Progresso da tarefa nao Informado.";
        $this->erro_campo = "at43_progresso";
        $this->erro_banco = "";
@@ -174,7 +174,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_usuario == null ){ 
+     if($this->at43_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "at43_usuario";
        $this->erro_banco = "";
@@ -183,7 +183,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_diaini == null ){ 
+     if($this->at43_diaini == null ){
        $this->erro_sql = " Campo Data de início nao Informado.";
        $this->erro_campo = "at43_diaini_dia";
        $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_diafim == null ){ 
+     if($this->at43_diafim == null ){
        $this->erro_sql = " Campo Data final previsto nao Informado.";
        $this->erro_campo = "at43_diafim_dia";
        $this->erro_banco = "";
@@ -201,7 +201,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_horainidia == null ){ 
+     if($this->at43_horainidia == null ){
        $this->erro_sql = " Campo Hora inicial nao Informado.";
        $this->erro_campo = "at43_horainidia";
        $this->erro_banco = "";
@@ -210,7 +210,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_horafim == null ){ 
+     if($this->at43_horafim == null ){
        $this->erro_sql = " Campo Hora final nao Informado.";
        $this->erro_campo = "at43_horafim";
        $this->erro_banco = "";
@@ -219,7 +219,7 @@ class cl_tarefalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at43_tipomov == null ){ 
+     if($this->at43_tipomov == null ){
        $this->erro_sql = " Campo Movimento nao Informado.";
        $this->erro_campo = "at43_tipomov";
        $this->erro_banco = "";
@@ -229,16 +229,16 @@ class cl_tarefalog {
        return false;
      }
      if($at43_sequencial == "" || $at43_sequencial == null ){
-       $result = db_query("select nextval('tarefalog_at43_sequencial_seq')"); 
+       $result = db_query("select nextval('tarefalog_at43_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tarefalog_at43_sequencial_seq do campo: at43_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tarefalog_at43_sequencial_seq do campo: at43_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->at43_sequencial = pg_result($result,0,0); 
+       $this->at43_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tarefalog_at43_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $at43_sequencial)){
@@ -249,10 +249,10 @@ class cl_tarefalog {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->at43_sequencial = $at43_sequencial; 
+         $this->at43_sequencial = $at43_sequencial;
        }
      }
-     if(($this->at43_sequencial == null) || ($this->at43_sequencial == "") ){ 
+     if(($this->at43_sequencial == null) || ($this->at43_sequencial == "") ){
        $this->erro_sql = " Campo at43_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -261,37 +261,37 @@ class cl_tarefalog {
        return false;
      }
      $sql = "insert into tarefalog(
-                                       at43_sequencial 
-                                      ,at43_tarefa 
-                                      ,at43_descr 
-                                      ,at43_obs 
-                                      ,at43_problema 
-                                      ,at43_avisar 
-                                      ,at43_progresso 
-                                      ,at43_usuario 
-                                      ,at43_diaini 
-                                      ,at43_diafim 
-                                      ,at43_horainidia 
-                                      ,at43_horafim 
-                                      ,at43_tipomov 
+                                       at43_sequencial
+                                      ,at43_tarefa
+                                      ,at43_descr
+                                      ,at43_obs
+                                      ,at43_problema
+                                      ,at43_avisar
+                                      ,at43_progresso
+                                      ,at43_usuario
+                                      ,at43_diaini
+                                      ,at43_diafim
+                                      ,at43_horainidia
+                                      ,at43_horafim
+                                      ,at43_tipomov
                        )
                 values (
-                                $this->at43_sequencial 
-                               ,$this->at43_tarefa 
-                               ,'$this->at43_descr' 
-                               ,'$this->at43_obs' 
-                               ,'$this->at43_problema' 
-                               ,$this->at43_avisar 
-                               ,$this->at43_progresso 
-                               ,$this->at43_usuario 
-                               ,".($this->at43_diaini == "null" || $this->at43_diaini == ""?"null":"'".$this->at43_diaini."'")." 
-                               ,".($this->at43_diafim == "null" || $this->at43_diafim == ""?"null":"'".$this->at43_diafim."'")." 
-                               ,'$this->at43_horainidia' 
-                               ,'$this->at43_horafim' 
-                               ,$this->at43_tipomov 
+                                $this->at43_sequencial
+                               ,$this->at43_tarefa
+                               ,'$this->at43_descr'
+                               ,'$this->at43_obs'
+                               ,'$this->at43_problema'
+                               ,$this->at43_avisar
+                               ,$this->at43_progresso
+                               ,$this->at43_usuario
+                               ,".($this->at43_diaini == "null" || $this->at43_diaini == ""?"null":"'".$this->at43_diaini."'")."
+                               ,".($this->at43_diafim == "null" || $this->at43_diafim == ""?"null":"'".$this->at43_diafim."'")."
+                               ,'$this->at43_horainidia'
+                               ,'$this->at43_horafim'
+                               ,$this->at43_tipomov
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registros da tarefa ($this->at43_sequencial) nao Incluído. Inclusao Abortada.";
@@ -335,16 +335,16 @@ class cl_tarefalog {
        $resac = db_query("insert into db_acount values($acount,1368,9998,'','".AddSlashes(pg_result($resaco,0,'at43_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($at43_sequencial=null) { 
+   public function alterar ($at43_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tarefalog set ";
      $virgula = "";
-     if(trim($this->at43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_sequencial"])){ 
+     if(trim($this->at43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_sequencial"])){
        $sql  .= $virgula." at43_sequencial = $this->at43_sequencial ";
        $virgula = ",";
-       if(trim($this->at43_sequencial) == null ){ 
+       if(trim($this->at43_sequencial) == null ){
          $this->erro_sql = " Campo Codigo de Andamento nao Informado.";
          $this->erro_campo = "at43_sequencial";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_tarefa"])){ 
+     if(trim($this->at43_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_tarefa"])){
        $sql  .= $virgula." at43_tarefa = $this->at43_tarefa ";
        $virgula = ",";
-       if(trim($this->at43_tarefa) == null ){ 
+       if(trim($this->at43_tarefa) == null ){
          $this->erro_sql = " Campo Tarefa nao Informado.";
          $this->erro_campo = "at43_tarefa";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_descr"])){ 
+     if(trim($this->at43_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_descr"])){
        $sql  .= $virgula." at43_descr = '$this->at43_descr' ";
        $virgula = ",";
-       if(trim($this->at43_descr) == null ){ 
+       if(trim($this->at43_descr) == null ){
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "at43_descr";
          $this->erro_banco = "";
@@ -380,14 +380,14 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_obs"])){ 
+     if(trim($this->at43_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_obs"])){
        $sql  .= $virgula." at43_obs = '$this->at43_obs' ";
        $virgula = ",";
      }
-     if(trim($this->at43_problema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_problema"])){ 
+     if(trim($this->at43_problema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_problema"])){
        $sql  .= $virgula." at43_problema = '$this->at43_problema' ";
        $virgula = ",";
-       if(trim($this->at43_problema) == null ){ 
+       if(trim($this->at43_problema) == null ){
          $this->erro_sql = " Campo Problema nao Informado.";
          $this->erro_campo = "at43_problema";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_avisar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_avisar"])){ 
+     if(trim($this->at43_avisar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_avisar"])){
        $sql  .= $virgula." at43_avisar = $this->at43_avisar ";
        $virgula = ",";
-       if(trim($this->at43_avisar) == null ){ 
+       if(trim($this->at43_avisar) == null ){
          $this->erro_sql = " Campo Avisar nao Informado.";
          $this->erro_campo = "at43_avisar";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_progresso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_progresso"])){ 
+     if(trim($this->at43_progresso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_progresso"])){
        $sql  .= $virgula." at43_progresso = $this->at43_progresso ";
        $virgula = ",";
-       if(trim($this->at43_progresso) == null ){ 
+       if(trim($this->at43_progresso) == null ){
          $this->erro_sql = " Campo Progresso da tarefa nao Informado.";
          $this->erro_campo = "at43_progresso";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_usuario"])){ 
+     if(trim($this->at43_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_usuario"])){
        $sql  .= $virgula." at43_usuario = $this->at43_usuario ";
        $virgula = ",";
-       if(trim($this->at43_usuario) == null ){ 
+       if(trim($this->at43_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "at43_usuario";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_diaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"] !="") ){ 
+     if(trim($this->at43_diaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"] !="") ){
        $sql  .= $virgula." at43_diaini = '$this->at43_diaini' ";
        $virgula = ",";
-       if(trim($this->at43_diaini) == null ){ 
+       if(trim($this->at43_diaini) == null ){
          $this->erro_sql = " Campo Data de início nao Informado.";
          $this->erro_campo = "at43_diaini_dia";
          $this->erro_banco = "";
@@ -448,11 +448,11 @@ class cl_tarefalog {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["at43_diaini_dia"])){
          $sql  .= $virgula." at43_diaini = null ";
          $virgula = ",";
-         if(trim($this->at43_diaini) == null ){ 
+         if(trim($this->at43_diaini) == null ){
            $this->erro_sql = " Campo Data de início nao Informado.";
            $this->erro_campo = "at43_diaini_dia";
            $this->erro_banco = "";
@@ -463,10 +463,10 @@ class cl_tarefalog {
          }
        }
      }
-     if(trim($this->at43_diafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"] !="") ){ 
+     if(trim($this->at43_diafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"] !="") ){
        $sql  .= $virgula." at43_diafim = '$this->at43_diafim' ";
        $virgula = ",";
-       if(trim($this->at43_diafim) == null ){ 
+       if(trim($this->at43_diafim) == null ){
          $this->erro_sql = " Campo Data final previsto nao Informado.";
          $this->erro_campo = "at43_diafim_dia";
          $this->erro_banco = "";
@@ -475,11 +475,11 @@ class cl_tarefalog {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["at43_diafim_dia"])){
          $sql  .= $virgula." at43_diafim = null ";
          $virgula = ",";
-         if(trim($this->at43_diafim) == null ){ 
+         if(trim($this->at43_diafim) == null ){
            $this->erro_sql = " Campo Data final previsto nao Informado.";
            $this->erro_campo = "at43_diafim_dia";
            $this->erro_banco = "";
@@ -490,10 +490,10 @@ class cl_tarefalog {
          }
        }
      }
-     if(trim($this->at43_horainidia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_horainidia"])){ 
+     if(trim($this->at43_horainidia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_horainidia"])){
        $sql  .= $virgula." at43_horainidia = '$this->at43_horainidia' ";
        $virgula = ",";
-       if(trim($this->at43_horainidia) == null ){ 
+       if(trim($this->at43_horainidia) == null ){
          $this->erro_sql = " Campo Hora inicial nao Informado.";
          $this->erro_campo = "at43_horainidia";
          $this->erro_banco = "";
@@ -503,10 +503,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_horafim"])){ 
+     if(trim($this->at43_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_horafim"])){
        $sql  .= $virgula." at43_horafim = '$this->at43_horafim' ";
        $virgula = ",";
-       if(trim($this->at43_horafim) == null ){ 
+       if(trim($this->at43_horafim) == null ){
          $this->erro_sql = " Campo Hora final nao Informado.";
          $this->erro_campo = "at43_horafim";
          $this->erro_banco = "";
@@ -516,10 +516,10 @@ class cl_tarefalog {
          return false;
        }
      }
-     if(trim($this->at43_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_tipomov"])){ 
+     if(trim($this->at43_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at43_tipomov"])){
        $sql  .= $virgula." at43_tipomov = $this->at43_tipomov ";
        $virgula = ",";
-       if(trim($this->at43_tipomov) == null ){ 
+       if(trim($this->at43_tipomov) == null ){
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "at43_tipomov";
          $this->erro_banco = "";
@@ -569,7 +569,7 @@ class cl_tarefalog {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros da tarefa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->at43_sequencial;
@@ -597,14 +597,14 @@ class cl_tarefalog {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($at43_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($at43_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($at43_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -642,7 +642,7 @@ class cl_tarefalog {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros da tarefa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$at43_sequencial;
@@ -670,11 +670,11 @@ class cl_tarefalog {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -697,7 +697,7 @@ class cl_tarefalog {
      return $result;
    }
 
-  function enviar_email($para,$assunto,$mensagem) {
+  public function enviar_email($para,$assunto,$mensagem) {
     if(!class_exists("Smtp")) {
       $header = 'Content-type: text/html; charset=iso-8859-1'."\r\n";
       return(mail($para,$assunto,$mensagem,$header));
@@ -709,10 +709,10 @@ class cl_tarefalog {
     }
   }
 
-   function sql_query ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -727,15 +727,15 @@ class cl_tarefalog {
      $sql2 = "";
      if($dbwhere==""){
        if($at43_sequencial!=null ){
-         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial "; 
-       } 
+         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -744,10 +744,10 @@ class cl_tarefalog {
      }
      return $sql;
   }
-   function sql_query_file ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -760,15 +760,15 @@ class cl_tarefalog {
      $sql2 = "";
      if($dbwhere==""){
        if($at43_sequencial!=null ){
-         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial "; 
-       } 
+         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -777,10 +777,10 @@ class cl_tarefalog {
      }
      return $sql;
   }
-   function sql_query_usua ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_usua ( $at43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -792,20 +792,20 @@ class cl_tarefalog {
      $sql .= " from tarefalog ";
      $sql .= "      inner join tarefa  on  tarefa.at40_sequencial = tarefalog.at43_tarefa";
      $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = tarefalog.at43_usuario";
-     $sql .= "       left join tarefalogsituacao  on  at48_tarefalog = at43_sequencial";     
-     $sql .= "       left join tarefacadsituacao  on  at46_codigo = at48_situacao";     
+     $sql .= "       left join tarefalogsituacao  on  at48_tarefalog = at43_sequencial";
+     $sql .= "       left join tarefacadsituacao  on  at46_codigo = at48_situacao";
      $sql2 = "";
      if($dbwhere==""){
        if($at43_sequencial!=null ){
-         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial "; 
-       } 
+         $sql2 .= " where tarefalog.at43_sequencial = $at43_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

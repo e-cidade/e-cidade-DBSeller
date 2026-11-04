@@ -50,7 +50,7 @@ $iBloqueia = 3;
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -85,7 +85,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <b>Código:</b>
               </td>
               <td  colspan="2">
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -95,13 +95,13 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Data Vigência:</b>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
                   $recebedata = $pc10_data;
                 }
-                $arr_data = split("-",$recebedata);
+                $arr_data =explode("-",$recebedata);
                 @$pc10_datadia = $arr_data[2];
                 @$pc10_datames = $arr_data[1];
                 @$pc10_dataano = $arr_data[0];
@@ -115,7 +115,7 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Resumo:</b>
               </td>
               <td colspan='3'>
-              <?
+              <?php
                @$pc10_resumo = htmlspecialchars_decode(stripslashes($pc10_resumo));
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
@@ -123,17 +123,17 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                 <?
+                 <?php
                  db_ancora("<b>Abertura de Preço:</b>", "js_pesquisaaberturaprecos(true);", $iBloqueia);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('pc54_solicita', 8, $Ipc54_solicita, true, 'text', 3, "");
                 ?>
               </td>
               <td>
-                <input type="button" value='visualizar Itens' id='btnVisualizarItens'>
+                <input type="button" value='Visualizar Itens' id='btnVisualizarItens'>
               </td>
             </tr>
           </table>
@@ -150,8 +150,8 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 <script>
 var sUrlRC     = 'com4_solicitacaoComprasRegistroPreco.RPC.php';
@@ -309,15 +309,33 @@ function js_processarCompilacao() {
 }
 
 function js_retornoProcessarCompilacao(oAjax) {
+    js_removeObj("msgBox");
+    let oRetorno = JSON.parse(oAjax.responseText);
 
-  js_removeObj("msgBox");
-  var oRetorno = JSON.parse(oAjax.responseText);
-  if (oRetorno.status == 1) {
+    if (oRetorno.status == 1) {
+        let codigoProcessoCompra = oRetorno.iProcessoCompras;
 
-   alert('Compilacao Processada com sucesso!\nProcesso de Compras Gerado: '+oRetorno.iProcessoCompras);
-  } else {
-    alert(oRetorno.message.urlDecode());
-  }
+        let msgConfirmaEmissaoDocumento = "Compilacao processada com sucesso! ";
+        msgConfirmaEmissaoDocumento += `\nProcesso de compras: ${codigoProcessoCompra}`;
+        msgConfirmaEmissaoDocumento += "\nDeseja emitir o documento?";
+
+        if (confirm(msgConfirmaEmissaoDocumento)) {
+            let jan = window.open(
+                'com2_emiteprocessocompra002.php?'
+                + `pc80_codproc_inicial=${codigoProcessoCompra}`
+                + `&pc80_codproc_final=${codigoProcessoCompra}`,
+                '',
+                'width=' + (screen.availWidth - 5),
+                'height=' + (screen.availHeight - 40) + ',scrollbars=1, location=0'
+            );
+
+            jan.moveTo(0, 0);
+        }
+    }
+
+    if (oRetorno.status != 1) {
+        alert(oRetorno.message.urlDecode());
+    }
 }
 function js_limpar() {
 

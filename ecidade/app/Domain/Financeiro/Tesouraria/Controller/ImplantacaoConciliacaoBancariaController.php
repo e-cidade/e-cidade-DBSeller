@@ -20,7 +20,8 @@ class ImplantacaoConciliacaoBancariaController extends Controller
 
     public function contasPendentes(Request $request)
     {
-
+        $this->service->setAno($request->DB_anousu);
+        $this->service->setInstituicao($request->DB_instit);
         $aRegistros = $this->service->getRegistrosImplantar();
         return new DBJsonResponse($aRegistros);
     }

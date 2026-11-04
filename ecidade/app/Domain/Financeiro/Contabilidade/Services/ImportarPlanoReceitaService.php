@@ -30,12 +30,18 @@ class ImportarPlanoReceitaService
      * @var string
      */
     private $uf;
+    /**
+     * @var bool
+     */
+    private $uniao;
 
     public function setFiltrosFromRequest(array $filtros)
     {
         $this->uf = getEstadoInstituicao();
         $this->plano = $filtros['plano'];
         $this->layout = new ReceitaUniaoMapper();
+
+        $this->uniao = PlanoContas::PLANO_UNIAO == $this->plano;
 
         $this->exercicio = $filtros['exercicio'];
         $file = \JSON::create()->parse(str_replace('\"', '"', $filtros['file']));
@@ -47,38 +53,26 @@ class ImportarPlanoReceitaService
 
     public function processar()
     {
-        $this->validaImportacao();
-
-        $csv = new LerCsv($this->filepath);
-        $csv->setCsvControl(';');
-        $linha = $csv->read();
+        $linha = $this->getLinha();
         try {
             $dados = [];
+
             foreach ($linha as $key => $dadosLinha) {
-                if ($key < $this->layout->linhaInicio()) {
-                    continue;
-                }
-                // valida se tem dados na coluna em que deveria conter o código da conta
-                $conta = $dadosLinha[$this->layout->indexColunaConta()];
-                if (empty($conta)) {
+                if (!$this->validaLinhaCsv($key, $dadosLinha)) {
                     continue;
                 }
 
-                $builder = new PlanoOrcamentarioReceitaBuilder();
-                if ($this->uf === 'RS' && PlanoContas::PLANO_UNIAO !== $this->plano) {
-                    $builder = new PlanoOrcamentarioReceitaRSBuilder();
-                }
-                if ($this->uf === 'RO' && PlanoContas::PLANO_UNIAO !== $this->plano) {
-                    $builder = new PlanoOrcamentarioReceitaROBuilder();
-                }
+                $dadoBuild = $this->buildaDados($dadosLinha);
 
-                // usando BULK inserts
-                $dadoBuild = $builder
-                    ->addExercicio($this->exercicio)
-                    ->addTipoPlano($this->plano)
-                    ->addLayout($this->layout)
-                    ->addLinha($dadosLinha)
-                    ->build();
+                // remove do array as contas importadas
+                $dadoBuild = array_filter($dadoBuild, function ($contaImportar) {
+                    return PlanoReceita::query()
+                            ->where('uniao', $this->uniao)
+                            ->where('exercicio', $this->exercicio)
+                            ->where('conta', $contaImportar['conta'])
+                            ->get()
+                            ->count() === 0;
+                });
 
                 $dados = array_merge($dados, $dadoBuild);
                 if (count($dados) >= 100) {
@@ -95,27 +89,104 @@ class ImportarPlanoReceitaService
         }
     }
 
+    public function atualizar()
+    {
+        $linha = $this->getLinha();
+        try {
+            foreach ($linha as $key => $dadosLinha) {
+                if (!$this->validaLinhaCsv($key, $dadosLinha)) {
+                    continue;
+                }
+
+                $dadoBuild = $this->buildaDados($dadosLinha);
+                foreach ($dadoBuild as $dados) {
+                    $this->update($dados);
+                }
+            }
+        } catch (Exception $exception) {
+            throw new Exception('Erro ao importar planilha. Contate o Suporte.' . $exception->getMessage());
+        }
+    }
+
     private function inserir($dados)
     {
         $model = new PlanoReceita();
         $model->insert($dados);
     }
 
-    private function validaImportacao()
+    private function update($dados)
     {
-        $uniao = PlanoContas::PLANO_UNIAO == $this->plano;
-        $importado = PlanoReceita::query()
-                ->where('uniao', $uniao)
-                ->where('exercicio', $this->exercicio)
-                ->get()
-                ->count() != 0;
+        PlanoReceita::query()
+            ->where('uniao', $this->uniao)
+            ->where('exercicio', $this->exercicio)
+            ->where('conta', $dados['conta'])
+            ->update(['nome' => $dados['nome'], 'funcao' => $dados['funcao'], 'sintetica' => $dados['sintetica']]);
+    }
 
-        if ($importado) {
-            throw new Exception(sprintf(
-                'Já foi importado o plano de contas orçamentário da receita do exercício %s %s',
-                $this->exercicio,
-                $uniao ? 'da união' : 'do tribunal regional'
-            ));
+    /**
+     * @param $builder
+     * @param array $dadosLinha
+     * @return mixed
+     */
+    protected function preparaDados($builder, array $dadosLinha)
+    {
+        return $builder
+            ->addExercicio($this->exercicio)
+            ->addTipoPlano($this->plano)
+            ->addLayout($this->layout)
+            ->addLinha($dadosLinha)
+            ->build();
+    }
+
+
+
+    /**
+     * @return \Generator
+     */
+    public function getLinha()
+    {
+        $csv = new LerCsv($this->filepath);
+        $csv->setCsvControl(';');
+        $linha = $csv->read();
+        return $linha;
+    }
+
+    /**
+     * Valida se a linha do csv é uma linha valida para impressão
+     * @param integer $numeroLinha
+     * @param array $dadosLinha
+     * @return bool
+     */
+    protected function validaLinhaCsv($numeroLinha, $dadosLinha)
+    {
+        if ($numeroLinha < $this->layout->linhaInicio()) {
+            return false;
         }
+        // valida se tem dados na coluna em que deveria conter o código da conta
+        $conta = $dadosLinha[$this->layout->indexColunaConta()];
+        if (empty($conta)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $dadosLinha
+     * @return mixed
+     */
+    public function buildaDados($dadosLinha)
+    {
+        $builder = new PlanoOrcamentarioReceitaBuilder();
+        if ($this->uf === 'RS' && PlanoContas::PLANO_UNIAO !== $this->plano) {
+            $builder = new PlanoOrcamentarioReceitaRSBuilder();
+        }
+        if ($this->uf === 'RO' && PlanoContas::PLANO_UNIAO !== $this->plano) {
+            $builder = new PlanoOrcamentarioReceitaROBuilder();
+        }
+
+        // usando BULK inserts
+        $dadoBuild = $this->preparaDados($builder, $dadosLinha);
+        return $dadoBuild;
     }
 }

@@ -70,15 +70,15 @@ function js_pesquisa() {
   </tr>
   <tr> 
     <td nowrap title="<?=@$Trh01_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",1);
       ?>
     </td>
     <td nowrap>
-      <?
+      <?php
       db_input('rh01_regist',6,$Irh01_regist,true,'text',1,"onchange='js_pesquisarh01_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
@@ -90,7 +90,7 @@ function js_pesquisa() {
   </tr>
 </table>
 </form>
-<? 
+<?php
 db_menu();
 ?>
 </body>

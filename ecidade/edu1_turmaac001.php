@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -62,21 +62,21 @@ $ed255_i_aee              = $oEscola->ofereceEducacaoEspecializada();
  */
 $sMensagemAtividadeComplementar = '';
 switch($ed255_i_ativcomplementar) {
-  
+
   case 1:
-    
+
     $sMensagemAtividadeComplementar  = "<b>* Escola oferece EXCLUSIVAMENTE Atividade Complementar (Cadastros -> ";
     $sMensagemAtividadeComplementar .= "Dados da Escola -> Aba Infra Estrutura)</b>";
     break;
-    
+
   case 2:
-    
+
     $sMensagemAtividadeComplementar  = "<b>* Escola oferece Atividade Complementar (Cadastros -> ";
     $sMensagemAtividadeComplementar .= "Dados da Escola -> Aba Infra Estrutura)</b>";
     break;
-    
+
   case 3:
-  
+
     $sMensagemAtividadeComplementar  = "<b>* Escola NÃO oferece Atividade Complementar (Cadastros -> ";
     $sMensagemAtividadeComplementar .= "Dados da Escola -> Aba Infra Estrutura)</b>";
     break;
@@ -116,28 +116,28 @@ echo $sMensagemEducacaoEspecializada."<br>";
 echo "</div>";
 
 if ($ed255_i_aee == 3 && $ed255_i_ativcomplementar == 3) {
-	
+
   $db_botao  = false;
   $db_botao2 = false;
-  
+
 }
 
 function PegaValores($array,$tamanho) {
-    
+
   $retorno = "";
   for ($x = 1; $x <= $tamanho; $x++) {
-  	
+
     $tem = false;
     for ($y = 0; $y < count($array); $y++) {
-    	
+
       if ($array[$y] == $x) {
-      	
+
         $retorno .= "1";
         $tem      = true;
         break;
-        
+
       }
-      
+
     }
     if ($tem == false) {
       $retorno .= "0";
@@ -147,17 +147,18 @@ function PegaValores($array,$tamanho) {
 }
 
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   if ($ed268_i_tipoatend == 5) {
-    
+
     $ed268_c_aee                = PegaValores($ed268_c_aee,15);
     $ed268_programamaiseducacao = null;
   } else {
     $ed268_c_aee = "";
   }
-  
+
   $clturmaac->ed268_programamaiseducacao = $ed268_programamaiseducacao;
+  $clturmaac->ed268_is_bilingue = $ed268_is_bilingue;
   $clturmaac->ed268_c_aee                = $ed268_c_aee;
   $clturmaac->ed268_c_descr              = trim($ed268_c_descr);
   $clturmaac->incluir($ed268_i_codigo);
@@ -182,7 +183,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Turma com Atividade Complementar / AEE</b></legend>
-    <?include(modification("forms/db_frmturmaac.php"));?>
+    <?php include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -193,32 +194,31 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","ed268_c_descr",true,1,"ed268_c_descr",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-	
+
   if ($clturmaac->erro_status == "0") {
-  	
+
     $clturmaac->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clturmaac->erro_campo != "") {
-    	
+
       echo "<script> document.form1.".$clturmaac->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clturmaac->erro_campo.".focus();</script>";
-      
+
     };
-    
+
   } else {
-  	
+
     $clturmaac->erro(true,false);
     $ultimo = $clturmaac->ed268_i_codigo;
     ?>
      <script>
       parent.location.href = "edu1_turmaacabas002.php?chavepesquisa=<?=$ultimo?>&tipoatendimento=<?=$ed268_i_tipoatend?>";
      </script>
-    <?
-    
+    <?php
   }
 }
 ?>

@@ -97,6 +97,18 @@ if (isset($incluir)) {
         if (!$sqlerro) {
             db_inicio_transacao();
 
+            if ((!isset($j02_dtbaixa_ano) || empty($j02_dtbaixa_ano)) ||
+            (!isset($j02_dtbaixa_mes) || empty($j02_dtbaixa_mes)) ||
+            (!isset($j02_dtbaixa_dia) || empty($j02_dtbaixa_dia))
+            ) {
+                $j02_dtbaixa_ano = $j02_data_ano;
+                $_POST['j02_dtbaixa_ano'] = $j02_data_ano;
+                $j02_dtbaixa_mes = $j02_data_mes;
+                $_POST['j02_dtbaixa_mes'] = $j02_data_mes;
+                $j02_dtbaixa_dia = $j02_data_dia;
+                $_POST['j02_dtbaixa_dia'] = $j02_data_dia;
+            }
+            
             // update na iptubase setando j01_baixa com a data da baixa
             $sqlUpdate  = " update iptubase set j01_baixa = '{$j02_dtbaixa_ano}-{$j02_dtbaixa_mes}-{$j02_dtbaixa_dia}'";
             $sqlUpdate .= " where j01_matric = {$j02_matric}";

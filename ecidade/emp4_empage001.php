@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-  
+
 include(modification("classes/db_empage_classe.php"));
 include(modification("classes/db_empagetipo_classe.php"));
 include(modification("classes/db_empagemov_classe.php"));
@@ -170,9 +170,9 @@ if(isset($atualizar)){
   //-----------------------------------
   //rotina que inclui os movimentos
   if($sqlerro==false && $ords !=''){
-    $arr =  split("XX",$ords);
+    $arr = explode("XX",$ords);
     for($i=0; $i<count($arr); $i++ ){
-       $dad = split("-",$arr[$i]);
+       $dad =explode("-",$arr[$i]);
        $ord = $dad[0];
        $emp = $dad[1];
        $val = $dad[2];
@@ -264,10 +264,10 @@ if(isset($atualizar)){
     $result03  = $clempagemov->sql_record($clempagemov->sql_query_ord(null," distinct e81_codmov,e81_cancelado,e86_correto,e82_codord as ordslip ","","e81_codage=$e80_codage and e82_codord in ($tords) and (e86_codmov is null or ((e86_codmov is not null and e86_correto='f') and e81_cancelado is null)) "));
   }else{
     $result03  = $clempagemov->sql_record($clempagemov->sql_query_slip(null," distinct e81_codmov,e81_cancelado,e86_correto,e89_codigo as ordslip ","","e81_codage=$e80_codage and e89_codigo in ($tords) and (e86_codmov is null or (e86_codmov is not null and e86_correto='f') and e81_cancelado is null)) "));
-  }  
+  }
   $numrows03 = $clempagemov->numrows;
   $arr_movimentosag = Array();
-  for($im=0;$im<$numrows03;$im++){  	
+  for($im=0;$im<$numrows03;$im++){
     db_fieldsmemory($result03,$im);
     if(trim($e86_correto)!="f"){
       $arr_movimentosag[$e81_codmov] = $ordslip;
@@ -286,18 +286,18 @@ if(isset($atualizar)){
   //rotina que inclui os movimentos
   if($sqlerro==false && $ords !=''){
     $ords = str_replace("XX",",",$ords);
-    $arr =  split(",",$ords);
+    $arr = explode(",",$ords);
     $arr_movok = Array();
     if($sqlerro==false){
       for($i=0; $i<count($arr); $i++){
-	$dad = split("-",$arr[$i]);  
+	$dad =explode("-",$arr[$i]);
 	$ord = $dad[0];
 	$emp = $dad[1];
 	$val = $dad[2];
 	$tip = $dad[3];
 	$caminho = false;
 	if($sqlerro==false){
-	  $movimentoaltera = array_search($ord,$arr_movimentosag);	  
+	  $movimentoaltera = array_search($ord,$arr_movimentosag);
 	  $clempagemov->e81_codage = $e80_codage;
 	  $clempagemov->e81_numemp = "$emp";
 	  $clempagemov->e81_valor  = "$val";
@@ -312,7 +312,7 @@ if(isset($atualizar)){
 	      $sqlerro = true;
 	      break;
 	    }
-	    
+
 	    $clempagemov->e81_cancelado = null;
 	    $clempagemov->e81_codmov    = $movimentoaltera;
 	    $clempagemov->alterardata($movimentoaltera,null);
@@ -321,7 +321,7 @@ if(isset($atualizar)){
 	      $sqlerro = true;
 	      break;
 	    }
-	    
+
 	    //---------------------------
 	    //exclui as contas dos movimentos
 	    if($sqlerro==false){
@@ -365,7 +365,7 @@ if(isset($atualizar)){
 		if($clempord->erro_status==0){
 		  $erro_msg = $clempord->erro_msg;
 		  $sqlerro = true;
-		}     
+		}
 	      }
 	      //---------------------------
 	    }else{
@@ -378,10 +378,10 @@ if(isset($atualizar)){
 		if($clempageslip->erro_status==0){
 		  $erro_msg = $clempageslip->erro_msg;
 		  $sqlerro = true;
-		}     
+		}
 	      }
 	      //---------------------------
-	    } 
+	    }
 	  }
 	  //---------------------------
 	  //inclui contas dos fornecedores
@@ -407,7 +407,7 @@ if(isset($atualizar)){
 	    if($clempagepag->erro_status==0){
 	      $erro_msg = $clempagepag->erro_msg;
 	      $sqlerro = true;
-	    }     
+	    }
 	  }
 	  //---------------------------
 	}
@@ -435,7 +435,7 @@ if(isset($data)){
 if(isset($nova)){
   db_inicio_transacao();
   $sqlerro=false;
-  
+
   $clempage->e80_data = $data;
 	$clempage->e80_instit = db_getsession("DB_instit");
   $clempage->incluir(null);
@@ -443,7 +443,7 @@ if(isset($nova)){
        $sqlerro = true;
   }else{
     $e80_codage = $clempage->e80_codage;
-  }	 
+  }
 //  $sqlerro = true;
   db_fim_transacao($sqlerro);
 }
@@ -459,7 +459,7 @@ if(isset($nova)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="if(document.form1.e50_codord)document.form1.e50_codord.focus();" >
   <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-    <tr> 
+    <tr>
       <td width="360" height="18">&nbsp;</td>
       <td width="263">&nbsp;</td>
       <td width="25">&nbsp;</td>
@@ -467,33 +467,33 @@ if(isset($nova)){
     </tr>
   </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-   <?
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
+   <?php
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
-   
-//sempre que ja existir agenda entra nesta opcao  
- if(isset($e80_codage) && empty($pesquisar)){  
+
+//sempre que ja existir agenda entra nesta opcao
+ if(isset($e80_codage) && empty($pesquisar)){
 	include(modification("forms/db_frmempage.php"));
 
-//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda 
+//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda
 //entra nesta opcao para escolher uma das agendas ou então selecionar uma jah existente
    }else{?>
     <center>
       <table>
         <tr>
 	  <td>
-       <fieldset><legend><b>Manutenção de agenda</b></legend> 
+       <fieldset><legend><b>Manutenção de agenda</b></legend>
         <form name="form1" method="post" action="">
 	      <br>
          <table>
 	   <tr>
 	      <td nowrap title="<?=@$Te80_data?>" align='right'>
 	      <?=$Le80_data?>
-	      </td>	
-	      <td>	
-	       <?
+	      </td>
+	      <td>
+	       <?php
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
 	       ?>
 	      	<input name="pesquisar" type="submit"    value="Pesquisar">
@@ -501,54 +501,54 @@ if(isset($nova)){
 	   </tr>
            <tr>
 	     <td class='bordas' align='right'>
-                 <? db_ancora("Agendas","js_empage();",$db_opcao);  ?>
+                 <?php db_ancora("Agendas","js_empage();",$db_opcao);  ?>
 	     </td>
-<?
+<?php
           if($numrows01!=0){
 	     for($i=0; $i<$numrows01; $i++){
 	       db_fieldsmemory($result01,$i);
 	       $arr[$e80_codage] = $e80_codage;
 	     }
-	  }  
+	  }
 ?>
              <td class='bordas'><small>
-<?
-          //variavel setada apenas quando o usuario pesquisar na func 
+<?php
+          //variavel setada apenas quando o usuario pesquisar na func
           if(isset($pri_codage)){
 	    $e80_codage = $pri_codage;
-	  } 
+	  }
 
           if($numrows01==0){
-	    echo "Nenhuma encontrado";  
-	  }else{  
+	    echo "Nenhuma encontrado";
+	  }else{
 	       db_select("e80_codage",$arr,true,1);
 	  }
-?>	   
-	       
+?>
+
 	     </small></td>
             </tr>
             <tr>
               <td colspan="2" align="center">
 	      <br>
 	      	<input name="alterar" type="submit" value="Atualizar selecionada" <?=($numrows01==0?"disabled":"")?> >
-	 	<input name="nova" type="submit" value="Incluir nova"> 
-	      </td>	
+	 	<input name="nova" type="submit" value="Incluir nova">
+	      </td>
             </tr>
 
 	 </table>
-       </form>	 
+       </form>
        </fieldset>
        </td>
-     </tr>  
-   </table>  
+     </tr>
+   </table>
     </center>
-<?   	
-   }  
+<?php
+   }
 ?>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -560,14 +560,14 @@ function js_empage(){
 }
 function js_mostra(codage,data){
   arr = data.split('-');
-  
+
   obj = document.form1;
 
   obj.e80_data_ano.value = arr[0];
   obj.e80_data_mes.value = arr[1];
   obj.e80_data_dia.value = arr[2];
   obj.e80_data.value = arr[2]+'/'+arr[1]+'/'+arr[0];
- 
+
             obj=document.createElement('input');
             obj.setAttribute('name','pri_codage');
             obj.setAttribute('type','hidden');
@@ -575,14 +575,14 @@ function js_mostra(codage,data){
             document.form1.appendChild(obj);
 
   document.form1.pesquisar.click();
- 
+
   db_iframe_empage.hide();
-  
+
 }
 </script>
 
 
-<?
+<?php
 if(isset($atualizar) && $sqlerro==true){
   db_msgbox($erro_msg);
 }

@@ -6,6 +6,8 @@ use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Financeiro\Contabilidade\Factories\TemplateFactory;
 use App\Domain\Financeiro\Contabilidade\Relatorios\LRF\RREO\XlsAnexoSeis;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\AnexosService;
+use PhpOffice\PhpWord\Settings;
+use NcJoes\OfficeConverter\OfficeConverter;
 use DBDate;
 
 class AnexoSeisService extends AnexosService
@@ -109,33 +111,24 @@ class AnexoSeisService extends AnexosService
             $this->parser->addCollection($section, $linhas);
         }
 
-        $mesesPeriodo = sprintf(
-            '%s - %s',
-            DBDate::getMesExtenso($this->periodo->getMesInicial()),
-            DBDate::getMesExtenso($this->periodo->getMesFinal())
-        );
+        $this->addParserVariaveisFixas();
 
-        $this->parser->setVariavel('valor_manual1', $this->valorManual1);
-        $this->parser->setVariavel('valor_manual2', $this->valorManual2);
-        $this->parser->setVariavel('vlr_previsao_atualizada', $this->valorPrevisaoAtualizada);
-        $this->parser->setVariavel('vlr_saldo_anterior_acumulado', $this->valorSaldoFinalAcumulado);
-        $this->parser->setVariavel('vlr_total_creditos', $this->valorSaldoInicial);
-
-        $this->parser->setEnteFederativo($this->enteFederativo);
-        $this->parser->setEmissor($this->emissor);
-        $this->parser->setPeriodo($this->periodo->getDescricao());
-        $this->parser->setExercicio($this->exercicio);
-        $this->parser->setExercicioAnterior($this->exercicio - 1);
-        $this->parser->setMesesPeriodo($mesesPeriodo);
-        $this->parser->setNotaExplicativa($this->getNotaExplicativa());
-        $this->parser->setNomePrefeito($this->assinatura->assinaturaPrefeito());
-        $this->parser->setNomeContador($this->assinatura->assinaturaContador());
-        $this->parser->setNomeOrdenador($this->assinatura->assinaturaSecretarioFazenda());
         $filename = $this->parser->gerar();
+        
+        Settings::setTempDir('tmp/');
+        $filePdf = basename($filename, ".xlsx").".pdf";
+        $converter = new OfficeConverter($filename);
+        $converter->convertTo($filePdf);
 
         return [
             'xls' => $filename,
-            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename
+            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename,
+            'outros' => [
+                [
+                  'documento' => Settings::getTempDir().$filePdf,
+                  'nome' => 'Anexo VI - Demonstrativo dos Resultados Primário e Nominal (PDF)'
+                ]
+            ]
         ];
     }
 
@@ -196,7 +189,7 @@ class AnexoSeisService extends AnexosService
         $this->posTotalizar();
     }
 
-    private function posTotalizar()
+    protected function posTotalizar()
     {
         $this->calcularSubtracao();
 
@@ -294,7 +287,7 @@ class AnexoSeisService extends AnexosService
         $this->linhas[79]->valor = $this->linhas[78]->valor - ($valor);
     }
 
-    private function getObjetoSimplificado($string)
+    protected function getObjetoSimplificado($string)
     {
         return (object)[
             "descricao" => $string,
@@ -312,7 +305,7 @@ class AnexoSeisService extends AnexosService
      * @param integer $ordemMeta ordem da linha onde contém o valor
      * @return \stdClass
      */
-    private function calculaSimplificado($std, $ordemResultadoApurado, $ordemMeta)
+    protected function calculaSimplificado($std, $ordemResultadoApurado, $ordemMeta)
     {
         $std->resultado_apurado_ate_bimestre = $this->linhas[$ordemResultadoApurado]->valor;
         $std->meta_fixada_anexo_metas_fiscais = $this->linhas[$ordemMeta]->valor;
@@ -324,5 +317,42 @@ class AnexoSeisService extends AnexosService
             );
         }
         return $std;
+    }
+
+    /**
+     * @return void
+     * @throws \ParameterException
+     * @throws Exception
+     */
+    protected function addParserVariaveisFixas()
+    {
+        $this->parser->setVariavel('valor_manual1', $this->valorManual1);
+        $this->parser->setVariavel('valor_manual2', $this->valorManual2);
+        $this->parser->setVariavel('vlr_previsao_atualizada', $this->valorPrevisaoAtualizada);
+        $this->parser->setVariavel('vlr_saldo_anterior_acumulado', $this->valorSaldoFinalAcumulado);
+        $this->parser->setVariavel('vlr_total_creditos', $this->valorSaldoInicial);
+
+        $mesesPeriodo = sprintf(
+            '%s - %s',
+            DBDate::getMesExtenso($this->periodo->getMesInicial()),
+            DBDate::getMesExtenso($this->periodo->getMesFinal())
+        );
+
+        $this->parser->setEnteFederativo($this->enteFederativo);
+        $this->parser->setEmissor($this->emissor);
+        $this->parser->setPeriodo($this->periodo->getDescricao());
+        $this->parser->setExercicio($this->exercicio);
+        $this->parser->setExercicioAnterior($this->exercicio - 1);
+        $this->parser->setMesesPeriodo($mesesPeriodo);
+        $this->parser->setNotaExplicativa($this->getNotaExplicativa());
+        $this->parser->setNomePrefeito($this->assinatura->assinaturaPrefeito());
+        $this->parser->setNomeContador($this->assinatura->assinaturaContador());
+        $this->parser->setNomeOrdenador($this->assinatura->assinaturaSecretarioFazenda());
+    }
+    
+    public function getLinhasProcessadas()
+    {
+        $this->processar();
+        return $this->linhas;
     }
 }

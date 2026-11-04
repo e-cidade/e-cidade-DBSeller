@@ -19,7 +19,7 @@ class ControleRubricasParametrosTest extends TestCase
      */
     private $ControleRubricasParametrosRubricas;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->ControleRubricasParametros = new ControleRubricasParametros();

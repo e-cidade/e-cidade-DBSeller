@@ -1,75 +1,75 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pcproc
-class cl_pcproc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc80_codproc = 0; 
-   var $pc80_data_dia = null; 
-   var $pc80_data_mes = null; 
-   var $pc80_data_ano = null; 
-   var $pc80_data = null; 
-   var $pc80_usuario = 0; 
-   var $pc80_depto = 0; 
-   var $pc80_resumo = null; 
-   var $pc80_situacao = 0; 
-   var $pc80_tipoprocesso = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pcproc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc80_codproc = 0;
+   var $pc80_data_dia = null;
+   var $pc80_data_mes = null;
+   var $pc80_data_ano = null;
+   var $pc80_data = null;
+   var $pc80_usuario = 0;
+   var $pc80_depto = 0;
+   var $pc80_resumo = null;
+   var $pc80_situacao = 0;
+   var $pc80_tipoprocesso = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc80_codproc = int8 = Código do Processo de Compras 
-                 pc80_data = date = Data do Processo de Compras 
-                 pc80_usuario = int4 = Cod. Usuário 
-                 pc80_depto = int4 = Departamento 
-                 pc80_resumo = text = Resumo do Processo de Compras 
-                 pc80_situacao = int4 = Situação 
-                 pc80_tipoprocesso = int4 = Tipo de Processo 
+                 pc80_codproc = int8 = Código do Processo de Compras
+                 pc80_data = date = Data do Processo de Compras
+                 pc80_usuario = int4 = Cod. Usuário
+                 pc80_depto = int4 = Departamento
+                 pc80_resumo = text = Resumo do Processo de Compras
+                 pc80_situacao = int4 = Situação
+                 pc80_tipoprocesso = int4 = Tipo de Processo
                  ";
-   //funcao construtor da classe 
-   function cl_pcproc() { 
+   //funcao construtor da classe
+   function cl_pcproc() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcproc"); 
+     $this->rotulo = new rotulo("pcproc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_pcproc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc80_codproc = ($this->pc80_codproc == ""?@$GLOBALS["HTTP_POST_VARS"]["pc80_codproc"]:$this->pc80_codproc);
        if($this->pc80_data == ""){
@@ -99,9 +99,9 @@ class cl_pcproc {
      }
    }
    // funcao para inclusao
-   function incluir ($pc80_codproc){ 
+   function incluir ($pc80_codproc){
       $this->atualizacampos();
-     if($this->pc80_data == null ){ 
+     if($this->pc80_data == null ){
        $this->erro_sql = " Campo Data do Processo de Compras não informado.";
        $this->erro_campo = "pc80_data_dia";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_pcproc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc80_usuario == null ){ 
+     if($this->pc80_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário não informado.";
        $this->erro_campo = "pc80_usuario";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_pcproc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc80_depto == null ){ 
+     if($this->pc80_depto == null ){
        $this->erro_sql = " Campo Departamento não informado.";
        $this->erro_campo = "pc80_depto";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_pcproc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc80_situacao == null ){ 
+     if($this->pc80_situacao == null ){
        $this->erro_sql = " Campo Situação não informado.";
        $this->erro_campo = "pc80_situacao";
        $this->erro_banco = "";
@@ -137,20 +137,20 @@ class cl_pcproc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc80_tipoprocesso == null ){ 
+     if($this->pc80_tipoprocesso == null ){
        $this->pc80_tipoprocesso = "1";
      }
      if($pc80_codproc == "" || $pc80_codproc == null ){
-       $result = db_query("select nextval('pcproc_pc80_codproc_seq')"); 
+       $result = db_query("select nextval('pcproc_pc80_codproc_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pcproc_pc80_codproc_seq do campo: pc80_codproc"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pcproc_pc80_codproc_seq do campo: pc80_codproc";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc80_codproc = pg_result($result,0,0); 
+       $this->pc80_codproc = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcproc_pc80_codproc_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc80_codproc)){
@@ -161,10 +161,10 @@ class cl_pcproc {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc80_codproc = $pc80_codproc; 
+         $this->pc80_codproc = $pc80_codproc;
        }
      }
-     if(($this->pc80_codproc == null) || ($this->pc80_codproc == "") ){ 
+     if(($this->pc80_codproc == null) || ($this->pc80_codproc == "") ){
        $this->erro_sql = " Campo pc80_codproc nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -173,25 +173,25 @@ class cl_pcproc {
        return false;
      }
      $sql = "insert into pcproc(
-                                       pc80_codproc 
-                                      ,pc80_data 
-                                      ,pc80_usuario 
-                                      ,pc80_depto 
-                                      ,pc80_resumo 
-                                      ,pc80_situacao 
-                                      ,pc80_tipoprocesso 
+                                       pc80_codproc
+                                      ,pc80_data
+                                      ,pc80_usuario
+                                      ,pc80_depto
+                                      ,pc80_resumo
+                                      ,pc80_situacao
+                                      ,pc80_tipoprocesso
                        )
                 values (
-                                $this->pc80_codproc 
-                               ,".($this->pc80_data == "null" || $this->pc80_data == ""?"null":"'".$this->pc80_data."'")." 
-                               ,$this->pc80_usuario 
-                               ,$this->pc80_depto 
-                               ,'$this->pc80_resumo' 
-                               ,$this->pc80_situacao 
-                               ,$this->pc80_tipoprocesso 
+                                $this->pc80_codproc
+                               ,".($this->pc80_data == "null" || $this->pc80_data == ""?"null":"'".$this->pc80_data."'")."
+                               ,$this->pc80_usuario
+                               ,$this->pc80_depto
+                               ,'$this->pc80_resumo'
+                               ,$this->pc80_situacao
+                               ,$this->pc80_tipoprocesso
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Processo de compras ($this->pc80_codproc) nao Incluído. Inclusao Abortada.";
@@ -235,16 +235,16 @@ class cl_pcproc {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($pc80_codproc=null) { 
+   public function alterar ($pc80_codproc=null) {
       $this->atualizacampos();
      $sql = " update pcproc set ";
      $virgula = "";
-     if(trim($this->pc80_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_codproc"])){ 
+     if(trim($this->pc80_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_codproc"])){
        $sql  .= $virgula." pc80_codproc = $this->pc80_codproc ";
        $virgula = ",";
-       if(trim($this->pc80_codproc) == null ){ 
+       if(trim($this->pc80_codproc) == null ){
          $this->erro_sql = " Campo Código do Processo de Compras não informado.";
          $this->erro_campo = "pc80_codproc";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_pcproc {
          return false;
        }
      }
-     if(trim($this->pc80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"] !="") ){ 
+     if(trim($this->pc80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"] !="") ){
        $sql  .= $virgula." pc80_data = '$this->pc80_data' ";
        $virgula = ",";
-       if(trim($this->pc80_data) == null ){ 
+       if(trim($this->pc80_data) == null ){
          $this->erro_sql = " Campo Data do Processo de Compras não informado.";
          $this->erro_campo = "pc80_data_dia";
          $this->erro_banco = "";
@@ -266,11 +266,11 @@ class cl_pcproc {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc80_data_dia"])){
          $sql  .= $virgula." pc80_data = null ";
          $virgula = ",";
-         if(trim($this->pc80_data) == null ){ 
+         if(trim($this->pc80_data) == null ){
            $this->erro_sql = " Campo Data do Processo de Compras não informado.";
            $this->erro_campo = "pc80_data_dia";
            $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_pcproc {
          }
        }
      }
-     if(trim($this->pc80_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_usuario"])){ 
+     if(trim($this->pc80_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_usuario"])){
        $sql  .= $virgula." pc80_usuario = $this->pc80_usuario ";
        $virgula = ",";
-       if(trim($this->pc80_usuario) == null ){ 
+       if(trim($this->pc80_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário não informado.";
          $this->erro_campo = "pc80_usuario";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_pcproc {
          return false;
        }
      }
-     if(trim($this->pc80_depto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_depto"])){ 
+     if(trim($this->pc80_depto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_depto"])){
        $sql  .= $virgula." pc80_depto = $this->pc80_depto ";
        $virgula = ",";
-       if(trim($this->pc80_depto) == null ){ 
+       if(trim($this->pc80_depto) == null ){
          $this->erro_sql = " Campo Departamento não informado.";
          $this->erro_campo = "pc80_depto";
          $this->erro_banco = "";
@@ -307,14 +307,14 @@ class cl_pcproc {
          return false;
        }
      }
-     if(trim($this->pc80_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_resumo"])){ 
+     if(trim($this->pc80_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_resumo"])){
        $sql  .= $virgula." pc80_resumo = '$this->pc80_resumo' ";
        $virgula = ",";
      }
-     if(trim($this->pc80_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_situacao"])){ 
+     if(trim($this->pc80_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_situacao"])){
        $sql  .= $virgula." pc80_situacao = $this->pc80_situacao ";
        $virgula = ",";
-       if(trim($this->pc80_situacao) == null ){ 
+       if(trim($this->pc80_situacao) == null ){
          $this->erro_sql = " Campo Situação não informado.";
          $this->erro_campo = "pc80_situacao";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_pcproc {
          return false;
        }
      }
-     if(trim($this->pc80_tipoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_tipoprocesso"])){ 
-        if(trim($this->pc80_tipoprocesso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc80_tipoprocesso"])){ 
-           $this->pc80_tipoprocesso = "1" ; 
-        } 
+     if(trim($this->pc80_tipoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc80_tipoprocesso"])){
+        if(trim($this->pc80_tipoprocesso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc80_tipoprocesso"])){
+           $this->pc80_tipoprocesso = "1" ;
+        }
        $sql  .= $virgula." pc80_tipoprocesso = $this->pc80_tipoprocesso ";
        $virgula = ",";
      }
@@ -366,7 +366,7 @@ class cl_pcproc {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo de compras nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc80_codproc;
@@ -394,11 +394,11 @@ class cl_pcproc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($pc80_codproc=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc80_codproc=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -407,7 +407,7 @@ class cl_pcproc {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($pc80_codproc));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -442,7 +442,7 @@ class cl_pcproc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo de compras nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc80_codproc;
@@ -470,11 +470,11 @@ class cl_pcproc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -496,8 +496,8 @@ class cl_pcproc {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($pc80_codproc = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($pc80_codproc = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from pcproc ";
@@ -509,8 +509,8 @@ class cl_pcproc {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc80_codproc)) {
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -520,7 +520,7 @@ class cl_pcproc {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($pc80_codproc = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -528,8 +528,8 @@ class cl_pcproc {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc80_codproc)){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -540,7 +540,7 @@ class cl_pcproc {
      return $sql;
   }
 
-  function sql_query_autitem ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  function sql_query_autitem ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -559,7 +559,7 @@ class cl_pcproc {
      $sql .= "      left  join acordopcprocitem     on pcprocitem.pc81_codprocitem         = acordopcprocitem.ac23_pcprocitem";
      $sql .= "      inner join solicitem            on solicitem.pc11_codigo               = pcprocitem.pc81_solicitem";
      $sql .= "      inner join solicita             on solicita.pc10_numero                = solicitem.pc11_numero";
-     $sql .= "      left  join empautitempcprocitem on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";    
+     $sql .= "      left  join empautitempcprocitem on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";
      $sql .= "      left  join empautitem           on empautitem.e55_autori               = empautitempcprocitem.e73_autori";
      $sql .= "                                     and empautitem.e55_sequen               = empautitempcprocitem.e73_sequen";
      $sql .= "      left  join empautoriza          on empautoriza.e54_autori              = empautitem.e55_autori";
@@ -568,8 +568,8 @@ class cl_pcproc {
      $sql2 = "";
      if($dbwhere==""){
        if($pc80_codproc!=null ){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -586,7 +586,7 @@ class cl_pcproc {
      return $sql;
   }
 
-   function sql_query_aut ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query_aut ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -607,11 +607,13 @@ class cl_pcproc {
      $sql .= "      left  join solicitem    on solicitem.pc11_codigo  = pcprocitem.pc81_solicitem ";
      $sql .= "      left  join solicita     on solicita.pc10_numero   = solicitem.pc11_numero ";
      $sql .= "      left  join solicitaregistropreco on solicita.pc10_numero  = solicitaregistropreco.pc54_solicita ";
+     $sql .= "      left join liclicitem on pcprocitem.pc81_codprocitem = liclicitem.l21_codpcprocitem ";
+     $sql .= "      left join liclicita on liclicitem.l21_codliclicita = liclicita.l20_codigo ";
      $sql2 = "";
      if($dbwhere==""){
        if($pc80_codproc!=null ){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -628,7 +630,7 @@ class cl_pcproc {
      return $sql;
   }
 
-  function sql_query_proc ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_proc ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -651,11 +653,11 @@ class cl_pcproc {
      $sql .= "      left  join solicitem             on solicitem.pc11_codigo               = pcprocitem.pc81_solicitem";
      $sql .= "      left  join solicita              on solicita.pc10_numero                = solicitem.pc11_numero";
      $sql .= "      left  join liclicitem            on pcprocitem.pc81_codprocitem         = liclicitem.l21_codpcprocitem ";
-     $sql .= "      left  join empautitempcprocitem  on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";    
+     $sql .= "      left  join empautitempcprocitem  on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";
      $sql .= "      left  join empautitem            on empautitem.e55_autori               = empautitempcprocitem.e73_autori";
      $sql .= "                                      and empautitem.e55_sequen               = empautitempcprocitem.e73_sequen";
-     $sql .= "      left  join empautoriza           on empautoriza.e54_autori              = empautitem.e55_autori "; 
-     $sql .= "      left  join cgm                   on empautoriza.e54_numcgm              = cgm.z01_numcgm "; 
+     $sql .= "      left  join empautoriza           on empautoriza.e54_autori              = empautitem.e55_autori ";
+     $sql .= "      left  join cgm                   on empautoriza.e54_numcgm              = cgm.z01_numcgm ";
      $sql2 = "";
      if($dbwhere==""){
         if($pc80_codproc!=null ){
@@ -677,7 +679,7 @@ class cl_pcproc {
      return $sql;
   }
 
-  function sql_query_proc_solicita ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_proc_solicita ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
        $sql = "select ";
     if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -714,7 +716,7 @@ class cl_pcproc {
        }
   return $sql;
   }
-  
+
   function sql_query_proc_and ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
@@ -743,10 +745,10 @@ class cl_pcproc {
 	   $sql .= "      left  join proctransand         on proctransand.p64_codtran            = proctransfer.p62_codtran";
      $sql .= "      left  join solicita             on solicita.pc10_numero                = solicitem.pc11_numero";
      $sql .= "      left  join liclicitem           on pcprocitem.pc81_codprocitem         = liclicitem.l21_codpcprocitem";
-     $sql .= "      left  join empautitempcprocitem on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";    
+     $sql .= "      left  join empautitempcprocitem on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";
      $sql .= "      left  join empautitem           on empautitem.e55_autori               = empautitempcprocitem.e73_autori";
      $sql .= "                                     and empautitem.e55_sequen               = empautitempcprocitem.e73_sequen";
-     $sql .= "      left  join empautoriza          on empautoriza.e54_autori              = empautitem.e55_autori"; 
+     $sql .= "      left  join empautoriza          on empautoriza.e54_autori              = empautitem.e55_autori";
      $sql2 = "";
      if($dbwhere==""){
         if($pc80_codproc!=null ){
@@ -768,8 +770,8 @@ class cl_pcproc {
      return $sql;
   }
 
-    
-  function sql_query_usudepart ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+  function sql_query_usudepart ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -787,8 +789,8 @@ class cl_pcproc {
      $sql2 = "";
      if($dbwhere==""){
        if($pc80_codproc!=null ){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -805,7 +807,7 @@ class cl_pcproc {
      return $sql;
   }
 
-   function sql_query_soland( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query_soland( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -817,7 +819,7 @@ class cl_pcproc {
      }else{
        $sql .= $campos;
      }
-     
+
 		 $sql .= " from pcproc                                                                                                      ";
 		 $sql .= "      inner join pcprocitem            on pcproc.pc80_codproc                 = pcprocitem.pc81_codproc            ";
 		 $sql .= "      left  join solicitem             on solicitem.pc11_codigo               = pcprocitem.pc81_solicitem          ";
@@ -833,50 +835,11 @@ class cl_pcproc {
 		 $sql .= "                     from solandam                                                                                ";
 		 $sql .= "                 group by pc43_solicitem  )  as  x  on x.codigo = pc43_codigo                                     ";
      $sql2 = "";
-     
+
      if($dbwhere==""){
        if($pc80_codproc!=null ){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
        }
-     }
-     return $sql;
-  }
-   
-   function sql_query_leftprocitem($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     
-   $sql .= "      from pcproc                                                                           ";
-   $sql .= "           left join pcprocitem  on pcproc.pc80_codproc = pcprocitem.pc81_codproc      ";
-   $sql .= "           left join solicitem   on pc81_solicitem      = pc11_codigo      ";
-     
-     $sql2 = "";
-     
-     if($dbwhere==""){
-       if($pc80_codproc!=null ){
-         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -893,9 +856,48 @@ class cl_pcproc {
      return $sql;
   }
 
-    
-  public function sql_query_gerautproc($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
-    
+   function sql_query_leftprocitem($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+     $sql = "select ";
+     if($campos != "*" ){
+       $campos_sql = explode("#",$campos);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }else{
+       $sql .= $campos;
+     }
+
+   $sql .= "      from pcproc                                                                           ";
+   $sql .= "           left join pcprocitem  on pcproc.pc80_codproc = pcprocitem.pc81_codproc      ";
+   $sql .= "           left join solicitem   on pc81_solicitem      = pc11_codigo      ";
+
+     $sql2 = "";
+
+     if($dbwhere==""){
+       if($pc80_codproc!=null ){
+         $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+       }
+     }else if($dbwhere != ""){
+       $sql2 = " where $dbwhere";
+     }
+     $sql .= $sql2;
+     if($ordem != null ){
+       $sql .= " order by ";
+       $campos_sql = explode("#",$ordem);
+       $virgula = "";
+       for($i=0;$i<sizeof($campos_sql);$i++){
+         $sql .= $virgula.$campos_sql[$i];
+         $virgula = ",";
+       }
+     }
+     return $sql;
+  }
+
+
+  public function sql_query_gerautproc($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -907,7 +909,7 @@ class cl_pcproc {
     }else{
       $sql .= $campos;
     }
-     
+
     $sql .= "  from pcproc ";
     $sql .= "       inner join pcprocitem           on pcprocitem.pc81_codproc = pcproc.pc80_codproc";
     $sql .= "       inner join solicitem            on solicitem.pc11_codigo = pcprocitem.pc81_solicitem";
@@ -938,8 +940,8 @@ class cl_pcproc {
     $sql2 = "";
     if($dbwhere==""){
       if($pc80_codproc!=null ){
-        $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-      } 
+        $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+      }
     }else if($dbwhere != ""){
       $sql2 = " where $dbwhere";
     }
@@ -956,8 +958,8 @@ class cl_pcproc {
     return $sql;
   }
 
-  public function sql_query_dados_item($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){ 
-    
+  public function sql_query_dados_item($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -969,7 +971,7 @@ class cl_pcproc {
     }else{
       $sql .= $campos;
     }
-     
+
     $sql .= "  from pcproc 																																														";
     $sql .= "       inner join pcprocitem           on pcprocitem.pc81_codproc            = pcproc.pc80_codproc       ";
     $sql .= "       inner join solicitem            on solicitem.pc11_codigo              = pcprocitem.pc81_solicitem ";
@@ -983,8 +985,8 @@ class cl_pcproc {
     $sql2 = "";
     if($dbwhere==""){
       if($pc80_codproc!=null ){
-        $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc "; 
-      } 
+        $sql2 .= " where pcproc.pc80_codproc = $pc80_codproc ";
+      }
     }else if($dbwhere != ""){
       $sql2 = " where $dbwhere";
     }
@@ -1000,9 +1002,9 @@ class cl_pcproc {
     }
     return $sql;
   }
-  
+
   public function sql_query_dados_licitacao($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere="") {
-    
+
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1041,8 +1043,8 @@ class cl_pcproc {
      }
      return $sql;
   }
-    
-    
+
+
   function sql_query_empenho ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
@@ -1065,13 +1067,13 @@ class cl_pcproc {
      $sql .= "      inner join pcprocitem            on pcprocitem.pc81_codproc             = pcproc.pc80_codproc ";
      $sql .= "      inner  join solicitem             on solicitem.pc11_codigo               = pcprocitem.pc81_solicitem";
      $sql .= "      inner  join solicita              on solicita.pc10_numero                = solicitem.pc11_numero";
-     $sql .= "      inner  join empautitempcprocitem  on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";    
+     $sql .= "      inner  join empautitempcprocitem  on empautitempcprocitem.e73_pcprocitem = pcprocitem.pc81_codprocitem";
      $sql .= "      inner  join empautitem            on empautitem.e55_autori               = empautitempcprocitem.e73_autori";
      $sql .= "                                      and empautitem.e55_sequen               = empautitempcprocitem.e73_sequen";
-     $sql .= "      inner  join empautoriza           on empautoriza.e54_autori              = empautitem.e55_autori "; 
+     $sql .= "      inner  join empautoriza           on empautoriza.e54_autori              = empautitem.e55_autori ";
      $sql .= "      inner  join empempaut             on empautoriza.e54_autori              = empempaut.e61_autori ";
      $sql .= "      inner  join empempenho            on empempenho.e60_numemp               = empempaut.e61_numemp ";
-     $sql .= "      inner  join cgm                   on empempenho.e60_numcgm               = cgm.z01_numcgm "; 
+     $sql .= "      inner  join cgm                   on empempenho.e60_numcgm               = cgm.z01_numcgm ";
      $sql2 = "";
      if($dbwhere==""){
         if($pc80_codproc!=null ){
@@ -1093,7 +1095,7 @@ class cl_pcproc {
      return $sql;
   }
 
-  function sql_query_tipocompra ($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_tipocompra ($pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
     	$sql = "select ";
     	if($campos != "*" ){
     		$campos_sql = explode("#",$campos);
@@ -1111,8 +1113,8 @@ class cl_pcproc {
     	$sql .= "      inner join solicita     on solicita.pc10_numero = solicitem.pc11_numero";
     	$sql .= "      inner join solicitatipo on solicitatipo.pc12_numero = solicita.pc10_numero";
     	$sql .= "      inner join pctipocompra on pctipocompra.pc50_codcom = solicitatipo.pc12_tipo";
-    	
-    	
+
+
     	$sql2 = "";
     	if($dbwhere==""){
     		if($pc80_codproc!=null ){
@@ -1133,9 +1135,9 @@ class cl_pcproc {
     	}
     	return $sql;
     }
-   
-   
-   
+
+
+
    function sql_query_proc_solicita_abertura ( $pc80_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
       $sql = "select ";
       if($campos != "*" ){

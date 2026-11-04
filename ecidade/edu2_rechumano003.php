@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,30 +24,21 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-include(modification("fpdf151/pdfwebseller.php"));
-include(modification("classes/db_atividaderh_classe.php"));
+
+use ECidade\Pdf\Pdf;
+
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("classes/db_atividaderh_classe.php"));
+
 $clatividaderh = new cl_atividaderh;
 $escola = db_getsession("DB_coddepto");
-$head2 = "Atividade(s): ";
+
 $sep = "";
 $result3 = $clatividaderh->sql_record($clatividaderh->sql_query("","ed01_c_descr","ed01_c_descr"," ed01_i_codigo in ($atividades)"));
 
 $rsTotAtiv = pg_query("select ed01_i_codigo from atividaderh");
-if($clatividaderh->numrows == pg_num_rows($rsTotAtiv)){
-    $head2 .= "TODAS AS ATIVIDADES";
-} else {
-
-    for($c=0;$c<$clatividaderh->numrows;$c++){
-        db_fieldsmemory($result3,$c);
-        $head2 .= $sep.$ed01_c_descr;
-        $sep = ", ";
-    }
-
-}
-if(strlen($head2)> 345){
-    $head2 = substr($head2,0,345)."...";
-}
-
 $instit = db_getsession("DB_instit");
 $ano = db_anofolha();
 $mes = db_mesfolha();
@@ -66,7 +57,8 @@ $sql = "SELECT distinct case when ed20_i_tiposervidor = 1 then rechumanopessoal.
                 then regimerh.rh30_descr
                 else regimecgm.rh30_descr
                end as rh30_descr,
-               ed75_i_saidaescola
+               ed75_i_saidaescola,
+               z04_nomesocial
         FROM rechumano
          inner join rechumanoescola on ed75_i_rechumano = ed20_i_codigo
          left join rechumanoativ on ed22_i_rechumanoescola = ed75_i_codigo
@@ -82,6 +74,7 @@ $sql = "SELECT distinct case when ed20_i_tiposervidor = 1 then rechumanopessoal.
          left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo
          left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm
          left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime
+         left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm
         WHERE $where
         ORDER BY $ordem
        ";
@@ -100,13 +93,34 @@ if($linhas==0){?>
             </td>
         </tr>
     </table>
-    <?
+    <?php
     exit;
 }
+
 $pdf = new PDF();
-$pdf->Open();
+$pdf->init(false);
 $pdf->AliasNbPages();
-$head1 = "RELATÓRIO RECURSOS HUMANOS POR ATIVIDADE";
+$pdf->addTitulo("RELATÓRIO RECURSOS HUMANOS POR ATIVIDADE");
+$atividadeCabecalho003 = "Atividade(s): ";
+
+if ($clatividaderh->numrows == pg_num_rows($rsTotAtiv)) {
+    $atividadeCabecalho003 .= "TODAS AS ATIVIDADES";
+} else {
+    for ($c=0;$c<$clatividaderh->numrows;$c++) {
+        db_fieldsmemory($result3,$c);
+        $atividadeCabecalho003 .= $sep.$ed01_c_descr;
+        $sep = ", ";
+    }
+
+}
+
+if (strlen($atividadeCabecalho003) > 320) {
+    $pdf->addTitulo(substr($atividadeCabecalho003,0,320)."...");
+} else {
+    $pdf->addTitulo($atividadeCabecalho003);
+}
+
+
 $pdf->ln(5);
 $troca = 1;
 $cor1 = "0";
@@ -115,74 +129,81 @@ $cor = "";
 $cont = 0;
 $contat = 0;
 $continat = 0;
-for($c=0;$c<$linhas;$c++){
+
+for ($c=0;$c<$linhas;$c++) {
+    $linhasAssinatura = array(25, 40, 60, 13);
     db_fieldsmemory($result,$c);
-    if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
+
+    if ($pdf->gety() > $pdf->getH() - 30 || $troca != 0 ) {
         $pdf->addpage('L');
         $pdf->setfillcolor(215);
         $pdf->setfont('arial','b',8);
 
-        if($saida == "N"){
-            $pdf->cell(25,4,"Matrícula/CGM",1,0,"C",1);
-            $pdf->cell(70,4,"Nome",1,0,"L",1);
+        if ($saida == "N") {
+            $pdf->cell($linhasAssinatura[0],4,"Matrícula/CGM",1,0,"C",1);
+            $pdf->cell($linhasAssinatura[2],4,"Nome",1,0,"L",1);
+            $pdf->cell($linhasAssinatura[2],4,"Nome Social",1,0,"L",1);
 
-            $pdf->cell(40,4,"Atividade",1,0,"C",1);
-            $pdf->cell(35,4,"Regime",1,0,"C",1);
-            $pdf->cell($pdf->getAvailWidth(),4,"Assinatura",1,1,"C",1);
+            $pdf->cell($linhasAssinatura[1],4,"Atividade",1,0,"C",1);
+            $pdf->cell($linhasAssinatura[1],4,"Regime",1,0,"C",1);
+            $pdf->cell($pdf->SetWidths($w),4,"Assinatura",1,1,"C",1);
 
         } else {
             $pdf->cell(22,4,"Matrícula/CGM",1,0,"C",1);
-            $pdf->cell(60,4,"Nome",1,0,"L",1);
-            $pdf->cell(40,4,"Atividade",1,0,"C",1);
-            $pdf->cell(35,4,"Regime",1,0,"C",1);
-            $pdf->cell(13,4,"Dt. Saída",1,0,"C",1);
-            $pdf->cell($pdf->getAvailWidth(),4,"Assinatura",1,1,"C",1);
+            $pdf->cell($linhasAssinatura[2],4,"Nome",1,0,"L",1);
+            $pdf->cell($linhasAssinatura[2],4,"Nome Social",1,0,"L",1);
+            $pdf->cell($linhasAssinatura[1],4,"Atividade",1,0,"C",1);
+            $pdf->cell($linhasAssinatura[1],4,"Regime",1,0,"C",1);
+            $pdf->cell($linhasAssinatura[3],4,"Dt. Saída",1,0,"C",1);
+            $pdf->cell($pdf->SetWidths($w),4,"Assinatura",1,1,"C",1);
 
         }
         $troca = 0;
     }
-    if($cor==$cor1){
+
+    if ($cor==$cor1) {
         $cor = $cor2;
-    }else{
+    } else {
         $cor = $cor1;
     }
     $pdf->setfillcolor(240);
     $pdf->setfont('arial','',7);
 
-    if($saida == "N"){
-        $pdf->cell(25,4,$ed20_i_codigo,'B',0,"C",$cor);
-        $pdf->cell(70,4,$z01_nome,'B',0,"L",$cor);
-//   $pdf->cell(20,4,$z01_cgccpf,0,0,"C",$cor);
-        $pdf->cell(40,4,$ed01_c_descr==""?"Não informado":$ed01_c_descr,'B',0,"C",$cor);
-        $pdf->cell(35,4,$rh30_descr,'B',0,"C",$cor);
+    if ($saida == "N") {
+        $pdf->cell($linhasAssinatura[0],4,$ed20_i_codigo,'B',0,"C",$cor);
+        $pdf->cell($linhasAssinatura[2],4,mb_strimwidth($z01_nome, 0, 40),'B',0,"L",$cor);
+        $pdf->cell($linhasAssinatura[2],4,mb_strimwidth($z04_nomesocial, 0, 38),'B',0,"L",$cor);
+        $pdf->cell($linhasAssinatura[1],4,$ed01_c_descr==""?"Não informado":$ed01_c_descr,'B',0,"C",$cor);
+        $pdf->cell($linhasAssinatura[1],4,$rh30_descr,'B',0,"C",$cor);
     } else {
         $pdf->cell(22,4,$ed20_i_codigo,'B',0,"C",$cor);
-        $pdf->cell(60,4,$z01_nome,'B',0,"L",$cor);
+        $pdf->cell($linhasAssinatura[2],4,mb_strimwidth($z01_nome, 0, 41),'B',0,"L",$cor);
+        $pdf->cell($linhasAssinatura[2],4,mb_strimwidth($z04_nomesocial, 0, 38),'B',0,"L",$cor);
 
-        $pdf->cell(40,4,$ed01_c_descr==""?"Não informado":$ed01_c_descr,'B',0,"C",$cor);
-        $pdf->cell(35,4,$rh30_descr,'B',0,"C",$cor);
+        $pdf->cell($linhasAssinatura[1],4,$ed01_c_descr==""?"Não informado":$ed01_c_descr,'B',0,"C",$cor);
+        $pdf->cell($linhasAssinatura[1],4,$rh30_descr,'B',0,"C",$cor);
 
-        if(!empty($ed75_i_saidaescola)){
+        if (!empty($ed75_i_saidaescola)) {
             $dtsaida = date('d/m/Y', strtotime($ed75_i_saidaescola));
-            $pdf->cell(13,4,$dtsaida,'B',0,"C",$cor);
+            $pdf->cell($linhasAssinatura[3],4,$dtsaida,'B',0,"C",$cor);
             $continat++;
         } else {
-            $pdf->cell(13,4,'---','B',0,"C",$cor);
+            $pdf->cell($linhasAssinatura[3],4,'---','B',0,"C",$cor);
             $contat++;
         }
 
     }
-    $pdf->cell($pdf->getAvailWidth(),4,"",'B',1,"C",$cor);
+    $pdf->cell($pdf->SetWidths($w),4,"",'B',1,"C",$cor);
 
     $cont++;
 }
 $pdf->setfont('arial','b',7);
 
-if($saida == "S"){
-    $pdf->cell($pdf->getAvailWidth(),5,"Total de Recursos Humanos Ativos: $contat",1,1,"L",0);
-    $pdf->cell($pdf->getAvailWidth(),5,"Total de Recursos Humanos Inativos: $continat",1,1,"L",0);
+if ($saida == "S") {
+    $pdf->cell($pdf->SetWidths($w),5,"Total de Recursos Humanos Ativos: $contat",1,1,"L",0);
+    $pdf->cell($pdf->SetWidths($w),5,"Total de Recursos Humanos Inativos: $continat",1,1,"L",0);
 }
 
-$pdf->cell($pdf->getAvailWidth(),5,"Total de Recursos Humanos: $cont",1,1,"L",0);
+$pdf->cell($pdf->SetWidths($w),5,"Total de Recursos Humanos: $cont",1,1,"L",0);
 $pdf->Output();
 ?>

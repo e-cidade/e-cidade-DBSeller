@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE avaliacao_matric
-class cl_avaliacao_matric { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed29_i_codigo = 0; 
-   var $ed29_i_avaliacao = 0; 
-   var $ed29_i_matricula = 0; 
-   var $ed29_f_nota = 0; 
-   var $ed29_l_presente = 'f'; 
-   var $ed29_c_descr = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_avaliacao_matric {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed29_i_codigo = 0;
+   var $ed29_i_avaliacao = 0;
+   var $ed29_i_matricula = 0;
+   var $ed29_f_nota = 0;
+   var $ed29_l_presente = 'f';
+   var $ed29_c_descr = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed29_i_codigo = int8 = Código 
-                 ed29_i_avaliacao = int8 = Avaliação 
-                 ed29_i_matricula = int8 = Matrícula 
-                 ed29_f_nota = float4 = Nota 
-                 ed29_l_presente = bool = Presente 
-                 ed29_c_descr = char(50) = Descrição 
+                 ed29_i_codigo = int8 = Código
+                 ed29_i_avaliacao = int8 = Avaliação
+                 ed29_i_matricula = int8 = Matrícula
+                 ed29_f_nota = float4 = Nota
+                 ed29_l_presente = bool = Presente
+                 ed29_c_descr = char(50) = Descrição
                  ";
-   //funcao construtor da classe 
-   function cl_avaliacao_matric() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("avaliacao_matric"); 
+     $this->rotulo = new rotulo("avaliacao_matric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_avaliacao_matric {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed29_i_codigo = ($this->ed29_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed29_i_codigo"]:$this->ed29_i_codigo);
        $this->ed29_i_avaliacao = ($this->ed29_i_avaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed29_i_avaliacao"]:$this->ed29_i_avaliacao);
@@ -86,9 +86,9 @@ class cl_avaliacao_matric {
      }
    }
    // funcao para inclusao
-   function incluir ($ed29_i_codigo){ 
+   public function incluir ($ed29_i_codigo){
       $this->atualizacampos();
-     if($this->ed29_i_avaliacao == null ){ 
+     if($this->ed29_i_avaliacao == null ){
        $this->erro_sql = " Campo Avaliação nao Informado.";
        $this->erro_campo = "ed29_i_avaliacao";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_avaliacao_matric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed29_i_matricula == null ){ 
+     if($this->ed29_i_matricula == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "ed29_i_matricula";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_avaliacao_matric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed29_f_nota == null ){ 
+     if($this->ed29_f_nota == null ){
        $this->erro_sql = " Campo Nota nao Informado.";
        $this->erro_campo = "ed29_f_nota";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_avaliacao_matric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed29_l_presente == null ){ 
+     if($this->ed29_l_presente == null ){
        $this->erro_sql = " Campo Presente nao Informado.";
        $this->erro_campo = "ed29_l_presente";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_avaliacao_matric {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed29_c_descr == null ){ 
+     if($this->ed29_c_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "ed29_c_descr";
        $this->erro_banco = "";
@@ -133,8 +133,8 @@ class cl_avaliacao_matric {
        $this->erro_status = "0";
        return false;
      }
-       $this->ed29_i_codigo = $ed29_i_codigo; 
-     if(($this->ed29_i_codigo == null) || ($this->ed29_i_codigo == "") ){ 
+       $this->ed29_i_codigo = $ed29_i_codigo;
+     if(($this->ed29_i_codigo == null) || ($this->ed29_i_codigo == "") ){
        $this->erro_sql = " Campo ed29_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -143,23 +143,23 @@ class cl_avaliacao_matric {
        return false;
      }
      $sql = "insert into avaliacao_matric(
-                                       ed29_i_codigo 
-                                      ,ed29_i_avaliacao 
-                                      ,ed29_i_matricula 
-                                      ,ed29_f_nota 
-                                      ,ed29_l_presente 
-                                      ,ed29_c_descr 
+                                       ed29_i_codigo
+                                      ,ed29_i_avaliacao
+                                      ,ed29_i_matricula
+                                      ,ed29_f_nota
+                                      ,ed29_l_presente
+                                      ,ed29_c_descr
                        )
                 values (
-                                $this->ed29_i_codigo 
-                               ,$this->ed29_i_avaliacao 
-                               ,$this->ed29_i_matricula 
-                               ,$this->ed29_f_nota 
-                               ,'$this->ed29_l_presente' 
-                               ,'$this->ed29_c_descr' 
+                                $this->ed29_i_codigo
+                               ,$this->ed29_i_avaliacao
+                               ,$this->ed29_i_matricula
+                               ,$this->ed29_f_nota
+                               ,'$this->ed29_l_presente'
+                               ,'$this->ed29_c_descr'
                       )";
-     $result = @db_query($sql); 
-     if($result==false){ 
+     $result = @db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Avaliação para Matrícula ($this->ed29_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -195,16 +195,16 @@ class cl_avaliacao_matric {
        $resac = db_query("insert into db_acount values($acount,1006023,1006194,'','".AddSlashes(pg_result($resaco,0,'ed29_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed29_i_codigo=null) { 
+   public function alterar ($ed29_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update avaliacao_matric set ";
      $virgula = "";
-     if(trim($this->ed29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_codigo"])){ 
+     if(trim($this->ed29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_codigo"])){
        $sql  .= $virgula." ed29_i_codigo = $this->ed29_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed29_i_codigo) == null ){ 
+       if(trim($this->ed29_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed29_i_codigo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_avaliacao_matric {
          return false;
        }
      }
-     if(trim($this->ed29_i_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_avaliacao"])){ 
+     if(trim($this->ed29_i_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_avaliacao"])){
        $sql  .= $virgula." ed29_i_avaliacao = $this->ed29_i_avaliacao ";
        $virgula = ",";
-       if(trim($this->ed29_i_avaliacao) == null ){ 
+       if(trim($this->ed29_i_avaliacao) == null ){
          $this->erro_sql = " Campo Avaliação nao Informado.";
          $this->erro_campo = "ed29_i_avaliacao";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_avaliacao_matric {
          return false;
        }
      }
-     if(trim($this->ed29_i_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_matricula"])){ 
+     if(trim($this->ed29_i_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_i_matricula"])){
        $sql  .= $virgula." ed29_i_matricula = $this->ed29_i_matricula ";
        $virgula = ",";
-       if(trim($this->ed29_i_matricula) == null ){ 
+       if(trim($this->ed29_i_matricula) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "ed29_i_matricula";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_avaliacao_matric {
          return false;
        }
      }
-     if(trim($this->ed29_f_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_f_nota"])){ 
+     if(trim($this->ed29_f_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_f_nota"])){
        $sql  .= $virgula." ed29_f_nota = $this->ed29_f_nota ";
        $virgula = ",";
-       if(trim($this->ed29_f_nota) == null ){ 
+       if(trim($this->ed29_f_nota) == null ){
          $this->erro_sql = " Campo Nota nao Informado.";
          $this->erro_campo = "ed29_f_nota";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_avaliacao_matric {
          return false;
        }
      }
-     if(trim($this->ed29_l_presente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_l_presente"])){ 
+     if(trim($this->ed29_l_presente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_l_presente"])){
        $sql  .= $virgula." ed29_l_presente = '$this->ed29_l_presente' ";
        $virgula = ",";
-       if(trim($this->ed29_l_presente) == null ){ 
+       if(trim($this->ed29_l_presente) == null ){
          $this->erro_sql = " Campo Presente nao Informado.";
          $this->erro_campo = "ed29_l_presente";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_avaliacao_matric {
          return false;
        }
      }
-     if(trim($this->ed29_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_c_descr"])){ 
+     if(trim($this->ed29_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed29_c_descr"])){
        $sql  .= $virgula." ed29_c_descr = '$this->ed29_c_descr' ";
        $virgula = ",";
-       if(trim($this->ed29_c_descr) == null ){ 
+       if(trim($this->ed29_c_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ed29_c_descr";
          $this->erro_banco = "";
@@ -304,7 +304,7 @@ class cl_avaliacao_matric {
        }
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Avaliação para Matrícula nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed29_i_codigo;
@@ -332,14 +332,14 @@ class cl_avaliacao_matric {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed29_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed29_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed29_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -369,7 +369,7 @@ class cl_avaliacao_matric {
        $sql2 = $dbwhere;
      }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Avaliação para Matrícula nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed29_i_codigo;
@@ -397,11 +397,11 @@ class cl_avaliacao_matric {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -423,11 +423,11 @@ class cl_avaliacao_matric {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,15 +446,15 @@ class cl_avaliacao_matric {
      $sql2 = "";
      if($dbwhere==""){
        if($ed29_i_codigo!=null ){
-         $sql2 .= " where avaliacao_matric.ed29_i_codigo = $ed29_i_codigo "; 
-       } 
+         $sql2 .= " where avaliacao_matric.ed29_i_codigo = $ed29_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,11 +463,11 @@ class cl_avaliacao_matric {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,15 +480,15 @@ class cl_avaliacao_matric {
      $sql2 = "";
      if($dbwhere==""){
        if($ed29_i_codigo!=null ){
-         $sql2 .= " where avaliacao_matric.ed29_i_codigo = $ed29_i_codigo "; 
-       } 
+         $sql2 .= " where avaliacao_matric.ed29_i_codigo = $ed29_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

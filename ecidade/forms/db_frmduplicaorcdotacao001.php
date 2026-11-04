@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,16 +48,16 @@ $clrotulo->label("DB_txtdotacao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To58_anousu?>">
-       <?
+       <?php
        echo $Lo58_anousu;
        ?>
     </td>
     <td> 
-<?
+<?php
 $o58_instit = db_getsession('DB_instit');
 db_input('o58_instit',4,$Io58_instit,true,'hidden',3,"")
 ?>
-<?
+<?php
 $o58_anousu = db_getsession('DB_anousu');
 db_input('o58_anousu',4,$Io58_anousu,true,'text',3,"")
 ?>
@@ -65,13 +65,13 @@ db_input('o58_anousu',4,$Io58_anousu,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="Percentual de correção">
-       <?
+       <?php
        echo "<strong>Percentual:</strong>";
        ?>
     </td>
     <td> 
 
-<?
+<?php
 db_input('percentual',4,0,true,'text',2,"")
 ?>
     </td>
@@ -79,12 +79,12 @@ db_input('percentual',4,0,true,'text',2,"")
 
   <tr>
     <td nowrap title="<?=@$To58_orgao?>">
-       <?
+       <?php
        echo $Lo58_orgao;
        ?>
     </td>
     <td> 
-<?
+<?php
 $matr = array();
 $clorcorgao = new cl_orcorgao;
 $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"*","o40_orgao"," o40_anousu = ".db_getsession("DB_anousu")." and o40_instit = ".db_getsession("DB_instit")));

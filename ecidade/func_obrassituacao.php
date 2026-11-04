@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clobrassituacao->rotulo->label("ob28_descricao");
               <?=$Lob28_sequencial?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 		       db_input("ob28_sequencial",10,$Iob28_sequencial,true,"text",4,"","chave_ob28_sequencial");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clobrassituacao->rotulo->label("ob28_descricao");
               <?=$Lob28_descricao?>
             </td>
             <td nowrap> 
-              <?
+              <?php
 		       db_input("ob28_descricao",55,$Iob28_descricao,true,"text",4,"","chave_ob28_descricao");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clobrassituacao->rotulo->label("ob28_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?      
+      <?php      
       if ( isset($oGet->exclusaoSituacao) ) {
         $sWhere = " not exists(select 1 from obrassituacaolog where ob29_obrassituacao = obrassituacao.ob28_sequencial )";
       }else {
@@ -151,12 +151,12 @@ $clobrassituacao->rotulo->label("ob28_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

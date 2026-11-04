@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clorcelemento->rotulo->label("o56_descr");
               <?=$Lo56_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	      db_input("o56_codele",6,$Io56_codele,true,"text",4,"","chave_o56_codele");
 	      ?>
             </td>
@@ -65,7 +65,7 @@ $clorcelemento->rotulo->label("o56_descr");
               <?=$Lo56_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");
 	      ?>
             </td>
@@ -75,7 +75,7 @@ $clorcelemento->rotulo->label("o56_descr");
               <?=$Lo56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("o56_descr",15,$Io56_descr,true,"text",4,"","chave_o56_descr");
 	      ?>
             </td>
@@ -94,7 +94,7 @@ $clorcelemento->rotulo->label("o56_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcelemento.php")==true){
@@ -136,12 +136,12 @@ $clorcelemento->rotulo->label("o56_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

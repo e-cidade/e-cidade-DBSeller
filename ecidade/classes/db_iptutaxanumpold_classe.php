@@ -1,26 +1,26 @@
-<?
+<?php
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptutaxanumpold
 class cl_iptutaxanumpold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j159_sequencial = 0; 
-   var $j159_codigo = 0; 
-   var $j159_matric = 0; 
-   var $j159_numpre = 0; 
-   var $j159_iptucadtaxaexe = 0; 
-   var $j159_iptucalclog = 0; 
+   public $j159_sequencial = 0; 
+   public $j159_codigo = 0; 
+   public $j159_matric = 0; 
+   public $j159_numpre = 0; 
+   public $j159_iptucadtaxaexe = 0; 
+   public $j159_iptucalclog = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j159_sequencial = int4 = Sequencial itputaxanumpold 
                  j159_codigo = int4 = Código 
                  j159_matric = int4 = Matrícula 

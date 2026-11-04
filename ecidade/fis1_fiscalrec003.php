@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ if(isset($db_opcao) && $db_opcao == "Excluir"){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmfiscalrec.php"));
 	?>
     </center>
@@ -73,7 +73,7 @@ if(isset($db_opcao) && $db_opcao == "Excluir"){
 <script>
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
-<?
+<?php
 if(isset($db_opcao) && $db_opcao == "Excluir"){
   if($clfiscalrec->erro_status=="0"){
     $clfiscalrec->erro(true,false);

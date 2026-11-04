@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,7 +52,7 @@ if (isset($l07_motivo) && trim(@$l07_motivo) != ""){
 
      db_inicio_transacao();
 
-     $vetor_itens = split(",",$coditens);
+     $vetor_itens =explode(",",$coditens);
      for($i = 0; $i < count($vetor_itens); $i++){
           $clliclicitemanu->l07_usuario    = db_getsession("DB_id_usuario");
           $clliclicitemanu->l07_data       = date("Y-m-d",db_getsession("DB_datausu"));
@@ -68,9 +68,9 @@ if (isset($l07_motivo) && trim(@$l07_motivo) != ""){
           }
 
           if ($sqlerro == false){
-               $clliclicitem->l21_codigo   = trim($vetor_itens[$i]); 
+               $clliclicitem->l21_codigo   = trim($vetor_itens[$i]);
                $clliclicitem->l21_situacao = 1;
-               
+
                $clliclicitem->alterar(trim($vetor_itens[$i]));
                if ($clliclicitem->erro_status == 0){
                     $sqlerro  = true;
@@ -134,7 +134,7 @@ function js_confirmar(){
   if (erro == true){
        document.form2.coditens.value = lista_itens;
        document.form2.submit();
-  }    
+  }
 
   return erro;
 }
@@ -156,18 +156,18 @@ function js_confirmar(){
 <table border='0'>
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr>
-<?
+<?php
 db_input("l20_codigo",10,"",true,"hidden",3);
 
 if (isset($confirmar) && trim(@$confirmar) != ""){
 ?>
     <td nowrap><b>Itens anulados:</b></td>
     <td nowrap><table>
-<?
+<?php
       $tam = strlen(trim($coditens));
       db_input("coditens",$tam,"",true,"hidden",3);
 
-      $vetor_itens = split(",",$coditens);
+      $vetor_itens =explode(",",$coditens);
       for($i = 0; $i < count($vetor_itens); $i++){
            $res_itens = $clliclicitem->sql_record($clliclicitem->sql_query_sol(trim($vetor_itens[$i]),"l21_codigo,pc01_descrmater","l21_codigo"));
            if ($clliclicitem->numrows > 0){
@@ -189,18 +189,18 @@ if (isset($confirmar) && trim(@$confirmar) != ""){
     <tr>
     <td nowrap title="<?=$Tl07_motivo?>"><?=$Ll07_motivo?></td>
     <td nowrap>
-<?
+<?php
       db_textarea("l07_motivo",10,80,@$Il07_motivo,true,"text",1);
 ?>
     </td>
-<?
+<?php
 }
 
 if (isset($l20_codigo) && trim($l20_codigo) != "" &&
     !isset($confirmar) && trim(@$confirmar) == ""){
 ?>
     <td colspan="2">
-<?
+<?php
      $campos        = "l21_codigo,pc01_descrmater,pc11_resum";
      $sql           = $clliclicitem->sql_query_anulados(null,"$campos","l21_codigo","l21_codliclicita=$l20_codigo and l08_altera is true");
      $sql_disabled  = $clliclicitem->sql_query_anulados(null,"$campos","l21_codigo","l21_codliclicita=$l20_codigo and l08_altera is true and l21_situacao = 1");
@@ -226,21 +226,21 @@ if (isset($l20_codigo) && trim($l20_codigo) != "" &&
      $cliframe_seleciona_itens->iframe_seleciona(1);
 ?>
     </td>
-<?    
+<?php
 }
 ?>
   </tr>
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr>
     <td colspan="2" align="center">
-<?
+<?php
 db_input("coditens",500,"",true,"hidden",3);
 if (isset($l20_codigo) && trim($l20_codigo) != "" &&
     !isset($confirmar) && trim(@$confirmar) == ""){
 ?>
       <input name="confirmar" type="submit" onClick="return js_confirmar();" value="Confirmar" <?=($db_botao == true?"disabled":"")?>>
       <input name="voltar"    type="button" onClick="location.href='lic1_liclicitemanu001.php';" value="Voltar">
-<?
+<?php
      if (trim(@$erro_msg) != ""){
           db_msgbox($erro_msg);
      }
@@ -249,7 +249,7 @@ if (isset($l20_codigo) && trim($l20_codigo) != "" &&
 if (isset($confirmar) && trim(@$confirmar) != ""){
 ?>
       <input name="incluir" type="button" onClick="js_incluir();" value="Incluir">
-<?
+<?php
 }
 ?>
     </td>
@@ -257,7 +257,7 @@ if (isset($confirmar) && trim(@$confirmar) != ""){
 </table>
 </form>
 </center>
-<? 
+<?php
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

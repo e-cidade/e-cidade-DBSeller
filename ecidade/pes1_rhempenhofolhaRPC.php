@@ -24,6 +24,9 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use App\Domain\Financeiro\Tesouraria\Helpers\SaltesHelper;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -441,8 +444,9 @@ try {
 
             $sCamposSlip = "
                 distinct rh79_recurso as recurso,
-                o15_recurso as fonte_recurso,
-                o15_descr as descricao_recurso,
+                gestao as fonte_recurso,
+                o15_recurso as subrecurso,
+                descricao as descricao_recurso,
                 o200_descricao as complemento,
                 c61_reduz as conta_debito,
                 rh41_conta as conta_credito,
@@ -455,8 +459,9 @@ try {
 
             $sGroupSlip = "
                 group by rh79_recurso,
+                gestao,
                 o15_recurso,
-                o15_descr,
+                descricao,
                 o200_descricao,
                 conta_debito,
                 conta_credito,
@@ -484,8 +489,18 @@ try {
 
             $sWhereSlip .= $sGroupSlip;
             $sql = $clrhslipfolha->sql_query_slip(null, $sCamposSlip, null, $sWhereSlip);
+
             $rsSlips = $clrhslipfolha->sql_record($sql);
             $aListaSlips = db_utils::getCollectionByRecord($rsSlips, false, false, true);
+
+            if (SaltesHelper::usaContaExtraPlanilhaSlipFolha(db_getsession("DB_instit"))) {
+                foreach ($aListaSlips as $lista) {
+                    $lista->conta_credito = SaltesHelper::getContaPlanilhaSlipFolha(
+                        $lista->conta_credito,
+                        db_getsession("DB_instit")
+                    );
+                }
+            }
 
             $lLiberada = $oDadosEmpenhoFolha->isLiberada(
                 $oPost->sSigla,
@@ -626,7 +641,6 @@ try {
             db_inicio_transacao();
 
             if ($oPost->sSigla == 'r20') {
-
                 $oDadosEmpenhoFolha = new dadosEmpenhoFolhaRescisao;
                 $sSemestre = explode(",", $oPost->sRescisoes);
             }

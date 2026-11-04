@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clretencaotipodeducao->rotulo->label("e24_descricao");
               <?=$Le24_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e24_sequencial",10,$Ie24_sequencial,true,"text",4,"","chave_e24_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clretencaotipodeducao->rotulo->label("e24_descricao");
               <?=$Le24_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e24_descricao",40,$Ie24_descricao,true,"text",4,"","chave_e24_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clretencaotipodeducao->rotulo->label("e24_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_retencaotipodeducao.php")==true){
@@ -122,12 +122,12 @@ $clretencaotipodeducao->rotulo->label("e24_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

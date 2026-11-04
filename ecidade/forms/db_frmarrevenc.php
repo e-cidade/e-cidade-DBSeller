@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -229,7 +229,7 @@ function carregaDadosSelect(oResposta) {
 	    }
   	}
 		objParcelas.disabled = false;
-		<?
+		<?php
 
 		if(isset($k00_numpar) && $k00_numpar!=""){
 			echo " document.form1.k00_numpar.value = $k00_numpar; ";

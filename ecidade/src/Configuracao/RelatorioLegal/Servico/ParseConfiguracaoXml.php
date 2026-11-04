@@ -105,7 +105,7 @@ class ParseConfiguracaoXml
      *
      *
      */
-    public function buscarContas($estrutural)
+    public function buscarContas($estrutural, $indicadorSuperavit = null)
     {
         $ateNivel = estruturalAteNivel($estrutural);
         switch ($this->linha->origem) {
@@ -115,7 +115,7 @@ class ParseConfiguracaoXml
             case 4:
                 return $this->getEstruturaisDespesa($ateNivel);
             case 3:
-                return $this->getEstruturaisVerificacao($ateNivel);
+                return $this->getEstruturaisVerificacao($ateNivel, $indicadorSuperavit);
             default:
                 return [$estrutural];
         }
@@ -147,11 +147,12 @@ class ParseConfiguracaoXml
     /**
      * Retorna os estruturais do balancete de verificação compatíveis com o configurado na linha
      * @param $ateNivel
+     * @param $indicadorSuperavit
      * @return array
      */
-    private function getEstruturaisVerificacao($ateNivel)
+    private function getEstruturaisVerificacao($ateNivel, $indicadorSuperavit = null)
     {
-        $contas = contasBalanceteVerificacao($this->exercicio - 1, '>=');
+        $contas = contasBalanceteVerificacao($this->exercicio - 1, '>=', $indicadorSuperavit);
         return $this->matchEstrutural($contas, $ateNivel);
     }
 
@@ -244,8 +245,8 @@ class ParseConfiguracaoXml
             if ($oConta->getAttribute("exclusao") != "false") {
                 continue;
             }
-
-            $estruturais = array_merge($estruturais, $this->buscarContas($oConta->getAttribute("estrutural")));
+            $estrut = $this->buscarContas($oConta->getAttribute("estrutural"), $oConta->getAttribute("indicador"));
+            $estruturais = array_merge($estruturais, $estrut);
         }
 
         // processa todas contas de exclusão removendo do array
@@ -273,7 +274,8 @@ class ParseConfiguracaoXml
             $estruturais[] = (object)[
                 'estrutural' => $estrutural,
                 'exclusao' => $oConta->getAttribute("exclusao") == "true",
-                'estruturalAteNivel' =>estruturalAteNivel($estrutural)
+                'estruturalAteNivel' => estruturalAteNivel($estrutural),
+                'indicadorSuparavit' => $oConta->getAttribute("indicador")
             ];
         }
         return $estruturais;

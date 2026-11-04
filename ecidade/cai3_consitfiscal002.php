@@ -1,31 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-  require(modification("libs/db_stdlib.php"));
+use App\Domain\Tributario\Fiscalizacao\Services\CheckUseModuloFiscalizacaoService;
+
+require(modification("libs/db_stdlib.php"));
   require(modification("libs/db_conecta.php"));
   include(modification("libs/db_sessoes.php"));
   include(modification("libs/db_usuariosonline.php"));
@@ -54,81 +56,83 @@
      }
 
   $result= db_query($sql);
-  $num= pg_numrows($result);
+  $num= pg_num_rows($result);
+
+  $urlDetalheFiscal = (CheckUseModuloFiscalizacaoService::verify())
+    ? 'cai3_fis_consitfiscal_detalhes.php'
+    : 'cai3_consitfiscal_detalhes.php';
 }
 
 ?>
 <html>
-<head> 
+<head>
 <title>Dados da Inscri&ccedil;&atilde;o - BCI</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body>
-<?
+<?php
 if (isset($tipo)){
-  if ($num > 0) { 
+  if ($num > 0) {
     db_fieldsmemory($result,0,1);
     if ($tipo == "PARCEL"){
       $z01_nome=$nome;
       $z01_numcgm=$cgm;
      }
 ?>
-<table width="750" border="0" align="center" cellpadding="0" cellspacing="2">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="2">
   <tr bgcolor="#CCCCCC"> 
     <td colspan="4" align="center"><font color="#333333"><strong>&nbsp;SITUAÇÃO FISCAL&nbsp;</strong></font><font color="#666666"><strong> 
       </strong></font></td>
   </tr>
-  <tr> 
+  <tr>
     <td align="right" nowrap bgcolor="#CCCCCC">&nbsp;<?=@$label_tipo?> n&ordm;:&nbsp;</td>
-    <td width="356" align="left" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp; 
+    <td width="356" align="left" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;
       <?=$cod?>
       &nbsp; </strong></font></td>
       <td align="right" nowrap bgcolor="#CCCCCC">&nbsp;Nome:&nbsp; </td>
-    <td align="left" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp; 
+    <td align="left" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;
       <?=$z01_nome?>
       &nbsp; </strong></font></td>    
   </tr>   
-    <td colspan="4" align="left"><table width="100%" height="100%" border="0" align="left" cellpadding="0" cellspacing="0">
-        <tr valign="bottom"> 
-          <td width="12%"><table width="80%" border="0" cellspacing="2" cellpadding="0">
-	          <tr>                
-                <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand" ><a href="cai3_consitfiscal_detalhes.php?solicitacao=VISTORIA&cod=<?=$cod?>&tipo=<?=$tipo?>" target="iframeDetalhes">&nbsp;Vistorias&nbsp;</a></td>
-              </tr>
-              <tr> 
-                <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="cai3_consitfiscal_detalhes.php?cod=<?=$cod?>&solicitacao=NOTIFICA&tipo=<?=$tipo?>" target="iframeDetalhes">&nbsp;Notificação&nbsp;</a></td>
-              </tr>
-              <tr> 
-                <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="cai3_consitfiscal_detalhes.php?cod=<?=$cod?>&solicitacao=AUTO&tipo=<?=$tipo?>" target="iframeDetalhes">&nbsp;Auto de Infração&nbsp;</a></td>
-              </tr>
-              <tr> 
-                <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="cai3_consitfiscal_detalhes.php?cod=<?=$cod?>&solicitacao=LEVANTA&tipo=<?=$tipo?>" target="iframeDetalhes">&nbsp;Levantamento&nbsp;</a></td>
-              </tr>      
-            </table></td>
-          <td width="88%" align="left"> <iframe align="middle" height="100%" frameborder="0" marginheight="0" marginwidth="0" name="iframeDetalhes" width="100%"> 
+  <td colspan="4" align="left"><table width="100%" height="300" border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr valign="top"> 
+          <td width="12%"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+            <tr>
+                <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand">
+                  <a href="cai3_consitfiscal_detalhes.php?solicitacao=VISTORIA&cod=<?= $cod ?>&tipo=<?= $tipo ?>" target="iframeDetalhes">&nbsp;Vistorias&nbsp;</a>
+                  <a href="cai3_consitfiscal_detalhes.php?cod=<?= $cod ?>&solicitacao=NOTIFICA&tipo=<?= $tipo ?>" target="iframeDetalhes">&nbsp;Notificao&nbsp;</a>
+                  <a href="cai3_consitfiscal_detalhes.php?cod=<?= $cod ?>&solicitacao=AUTO&tipo=<?= $tipo ?>" target="iframeDetalhes">&nbsp;Auto de Infrao&nbsp;</a>
+                  <a href="cai3_consitfiscal_detalhes.php?cod=<?= $cod ?>&solicitacao=LEVANTA&tipo=<?= $tipo ?>" target="iframeDetalhes">&nbsp;Levantamento&nbsp;</a>
+                </td>
+            </tr>     
+          </td>
+        </tr>
+        <tr valign="middle">
+          <td width="100%" align="left"> <iframe align="middle" height="100%" frameborder="0" marginheight="0" marginwidth="0" name="iframeDetalhes" width="100%">
             </iframe> </td>
         </tr>
       </table></td>
   </tr>
 </table>
-<?
+<?php
 }  
   }else{ 
 ?>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
+  <tr>
     <td align="center">&nbsp;</td>
   </tr>
-  <tr> 
+  <tr>
     <td align="center"><strong>Pesquisa da(o) <?=@$label_tipo?> n&deg;
       &nbsp;<?=$cod?>&nbsp;
       n&atilde;o retornou nenhum registro.</strong></td>
   </tr>
 </table>
-<? 
+<?php
   }
-  
+
 ?>
 </body>
 </html>

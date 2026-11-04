@@ -53,11 +53,11 @@ if ($escola->ofereceAtividadeComplementar() == ESCOLA::NAO_OFERECE_ATIVIDADE_COM
 
         <tr>
             <td nowrap title="<?=$Ted146_censoativcompl?>">
-                <?db_ancora($Led146_censoativcompl,"js_persquisaed146_censoativcompl(true);",1);?>
+                <?php db_ancora($Led146_censoativcompl,"js_persquisaed146_censoativcompl(true);",1);?>
             </td>
             <td>
-                <?db_input('ed146_censoativcompl',10,@$Ied57_i_codigo,true,'text',3,"")?>
-                <?db_input('ed133_c_descr',50,@$Ied268_c_descr,true,'text',3,'')?>
+                <?php db_input('ed146_censoativcompl',10,@$Ied57_i_codigo,true,'text',3,"")?>
+                <?php db_input('ed133_c_descr',50,@$Ied268_c_descr,true,'text',3,'')?>
             </td>
         </tr>
 

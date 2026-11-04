@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
     <td nowrap title="">
     </td>
     <td> 
-<?
+<?php
 db_input('k14_sequencial',10,$Ik14_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk14_cadtipo?>">
-       <?
+       <?php
        db_ancora(@$Lk14_cadtipo,"",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k14_cadtipo',3,$Ik14_cadtipo,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('k03_tipo',3,$Ik03_tipo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk14_cadorigem?>">
-       <?
+       <?php
        db_ancora(@$Lk14_cadorigem,"js_pesquisak14_cadorigem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k14_cadorigem',10,$Ik14_cadorigem,true,'text',$db_opcao," onchange='js_pesquisak14_cadorigem(false);'")
 ?>
-       <?
+       <?php
 db_input('k33_descr',40,$Ik33_descr,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k33_descr',40,$Ik33_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("k14_sequencial"=>@$k14_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 echo $clcadtipoorigem->sql_query_file(null,"*",null," k14_cadtipo = $k14_cadtipo ");

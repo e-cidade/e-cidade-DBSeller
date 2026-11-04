@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Ambulatorial
@@ -39,18 +39,18 @@ $clrotulo->label("vc01_i_unidade");
           <table border="0">
             <tr>
               <td colspan="3">
-                <?
+                <?php
                   db_ancora($Ls163_i_upsprestadora, "js_pesquisas163_i_upsprestadora(true);", $db_opcao);
-                  $sWhere     = " EXISTS (select * from sau_cotasagendamento where s163_i_upsprestadora = "; 
+                  $sWhere     = " EXISTS (select * from sau_cotasagendamento where s163_i_upsprestadora = ";
                   $sWhere    .= " sd02_i_codigo)";
-                  $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo as cod,descrdepto as desc", "descrdepto", 
+                  $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo as cod,descrdepto as desc", "descrdepto",
                                                          $sWhere
                                                         );
                   $rsUnidades = $oDaoUnidades->sql_record($sSql);
                   $aOptions   = array();
                   $aOptions2  = array();
                   for ($iInd=0; $iInd < $oDaoUnidades->numrows; $iInd++) {
-                     
+
                    $oUnidade                  = db_utils::fieldsmemory($rsUnidades,$iInd);
                    $aOptions[$oUnidade->cod]  = $oUnidade->desc;
                    $aOptions2[$oUnidade->cod] = $oUnidade->cod;
@@ -73,7 +73,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_mescomp?>
                     </td>
                     <td>
-                      <?
+                      <?php
                         $aOptions = array();
                         for ($iMes=1; $iMes <= 12; $iMes++) {
 
@@ -88,7 +88,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_anocomp?>
                     </td>
                     <td>
-                      <?db_input('s163_i_anocomp',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
+                      <?php db_input('s163_i_anocomp',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
                     </td>
                   <tr>
                 </table>
@@ -103,7 +103,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_mescomp?>
                     </td>
                     <td>
-                      <?
+                      <?php
                         if ($s163_i_mescomp == 12) {
 
                           $s163_i_mescomp2 = 1;
@@ -122,7 +122,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_anocomp?>
                     </td>
                     <td>
-                      <?db_input('s163_i_anocomp2',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
+                      <?php db_input('s163_i_anocomp2',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
                     </td>
                   <tr>
                 </table>
@@ -168,7 +168,7 @@ var aCotas = new Array();
 oDBGridDistri = jsCriaDataGridDistri();
 oDBGridEspec  = jsCriaGridEspec();
 function jsCriaDataGridDistri() {
-  
+
   oDBGrid                = new DBGrid('gridDistri');
   oDBGrid.nameInstance   = 'oDBGridDistri';
   oDBGrid.hasTotalizador = false;
@@ -190,7 +190,7 @@ function jsCriaDataGridDistri() {
   aAligns[2]  = 'left';
   aAligns[3]  = 'left';
   aAligns[4]  = 'center';
-  
+
   oDBGrid.setCellAlign(aAligns);
   oDBGrid.show($('dDistri'));
   sStr = '* Obs: registros em amarelo: cota ja foi duplicada (valor pode ser alterado).';
@@ -201,7 +201,7 @@ function jsCriaDataGridDistri() {
 
 }
 function jsCriaGridEspec() {
-    
+
     oDBGrid                = new DBGrid('gridEspec');
     oDBGrid.nameInstance   = 'oDBGridEspec';
     oDBGrid.hasTotalizador = false;
@@ -242,7 +242,7 @@ function js_pesquisar() {
 
   }
   if ( (parseInt($F('s163_i_anocomp').trim(),10) > parseInt($F('s163_i_anocomp2').trim(),10))
-         || 
+         ||
          (parseInt($F('s163_i_anocomp').trim(),10) == parseInt($F('s163_i_anocomp2').trim(),10)
           && parseInt($F('s163_i_mescomp').trim(),10) >= parseInt($F('s163_i_mescomp2').trim(),10))
        ) {
@@ -253,7 +253,7 @@ function js_pesquisar() {
           alert('Competência anterior não pode ser igual a próxima competência!');
           return false;
 
-        }  
+        }
         alert('Compêtencia anterior não pode ser maior que próxima competência!');
         return false;
 
@@ -266,7 +266,7 @@ function js_pesquisar() {
   oParam.iAnocompAlvo = $F('s163_i_anocomp2');
   oParam.iUps         = $F('s163_i_upsprestadora');
   js_webajax(oParam, 'js_retornoPesquisar', 'sau4_ambulatorial.RPC.php');
-  
+
 }
 function js_retornoPesquisar(oRetorno){
 
@@ -478,7 +478,7 @@ function js_alteraValor(oQuant, iEspec, iProf, iEspecCod, iProfCod) {
         }
       } else {
 
-        //qundo for diminuir a quantidade de cotas para especialidade tem que verificar se a quantidade não é menor do 
+        //qundo for diminuir a quantidade de cotas para especialidade tem que verificar se a quantidade não é menor do
         //que ja foi distribuido para os profissionais
         iQuantCotasProf = 0;
         for (iZ=0; iZ < aCotas[iEspec].aProf.length; iZ++) {
@@ -512,7 +512,7 @@ function js_alteraValor(oQuant, iEspec, iProf, iEspecCod, iProfCod) {
 }
 
 function js_processar() {
-  
+
   if ($F('s163_i_anocomp').trim() == '' || $F('s163_i_anocomp2').trim() == '') {
 
     alert('Entre com o ano da competência!');
@@ -527,7 +527,7 @@ function js_processar() {
 
   }
   if ( (parseInt($F('s163_i_anocomp').trim(),10) > parseInt($F('s163_i_anocomp2').trim(),10))
-       || 
+       ||
        (parseInt($F('s163_i_anocomp').trim(),10) == parseInt($F('s163_i_anocomp2').trim(),10)
         && parseInt($F('s163_i_mescomp').trim(),10) >= parseInt($F('s163_i_mescomp2').trim(),10))
      ) {
@@ -537,8 +537,8 @@ function js_processar() {
 
         alert('Competência anterior não pode ser igual a proxima competência!');
         return false;
-      
-      }  
+
+      }
       alert('Competência anterior não pode ser maior que proxima competência!');
       return false;
 
@@ -616,7 +616,7 @@ function js_retornoProcessar(oRetorno) {
 
 }
 /*
- * BUSCAR UPS 
+ * BUSCAR UPS
  */
 function js_pesquisas163_i_upsprestadora () {
   js_OpenJanelaIframe('', 'db_iframe_unidades',

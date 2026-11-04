@@ -78,7 +78,7 @@ $db_botao = true;
   <table width="790" border="0" cellspacing="0" cellpadding="0">
     <tr> 
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <?
+    <?php
     include(modification("forms/db_frmliclicitemalt.php"));
     ?>
     </td>

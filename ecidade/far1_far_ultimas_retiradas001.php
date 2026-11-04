@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -43,7 +43,7 @@ $sql="select * from far_retiradaitens";
 	<table border="0">
 			  <tr>
 			    <td>
-			      <?
+			      <?php
 			          $sql="select fa04_i_codigo,fa07_i_matrequi,fa04_d_data,m77_lote,fa06_t_posologia,fa06_f_quant from far_retiradaitens
                                inner join far_retirada on fa06_i_retirada=fa04_i_codigo
                                inner join far_matersaude on fa06_i_matersaude=fa01_i_codigo

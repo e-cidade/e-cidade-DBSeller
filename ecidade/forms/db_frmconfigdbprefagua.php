@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,31 +63,31 @@ if(isset($db_opcaoal)){
 		       <?=@$Lw16_sequencial?>
 		    </td>
 		    <td> 
-				<?
+				<?php
 				db_input('w16_sequencial',10,$Iw16_sequencial,true,'text',3,"")
 				?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tw16_instit?>">
-		       <?
+		       <?php
 		       echo @$Lw16_instit;
 		       //db_ancora(@$Lw16_instit,"js_pesquisaw16_instit(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					$w16_instit = db_getsession('DB_instit');
 					db_input('w16_instit',10,$Iw16_instit,true,'text',3," onchange='js_pesquisaw16_instit(false);'")
 					?>
-				  <?
+				  <?php
 					db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
 		      ?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tw16_aguacortesituacao?>">
-		       <?
+		       <?php
 		       	if($db_opcao == 2){
 							$db_opcao1 = 3;
 						}else{
@@ -97,11 +97,11 @@ if(isset($db_opcaoal)){
 		       ?>
 		    </td>
 		    <td> 
-				<?
+				<?php
 				
 				db_input('w16_aguacortesituacao',10,$Iw16_aguacortesituacao,true,'text',$db_opcao1," onchange='js_pesquisaw16_aguacortesituacao(false);'")
 				?>
-		    <?
+		    <?php
 				db_input('x43_descr',50,$Ix43_descr,true,'text',3,'')
 		    ?>
 		    </td>
@@ -111,7 +111,7 @@ if(isset($db_opcaoal)){
 		       <?=@$Lw16_recibodbpref?>
 		    </td>
 		    <td>
-		    <?
+		    <?php
 				    $aTipoDebito = array("1"=>"mostra os débitos e permite emitir recibo",
 				    										 "2"=>"mostra os débitos, mas não permite emitir recibo",
 				    										 "3"=>"não mostra os débitos");
@@ -132,7 +132,7 @@ if(isset($db_opcaoal)){
   <table>
   	  <tr>
 	    <td valign="top"  align="center">  
-	      <?
+	      <?php
 	                    
 		 	$chavepri= array("w16_sequencial"=>@$w16_sequencial);
 		 	$cliframe_alterar_excluir->chavepri=$chavepri;
@@ -203,7 +203,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_configdbprefagua.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

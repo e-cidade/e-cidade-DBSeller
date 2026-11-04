@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alter
 	bgcolor="#5786B2">
 	<tr>
 		<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-		<center><?
+		<center><?php
 		include(modification("forms/db_frmsaniatividade.php"));
 		?></center>
 		</td>
@@ -128,7 +128,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alter
 </table>
 </body>
 </html>
-		<?
+		<?php
 		if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Alterar"){
 		  if($clsaniatividade->erro_status=="0"&&$sqlerro==true){
 		    $clsaniatividade->erro(true,false);

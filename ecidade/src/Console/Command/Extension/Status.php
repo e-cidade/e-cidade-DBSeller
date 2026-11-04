@@ -1,4 +1,5 @@
 <?php
+
 namespace ECidade\Console\Command\Extension;
 
 use Symfony\Component\Console\Command\Command;
@@ -26,28 +27,24 @@ class Status extends Command
         $output->writeln(sprintf("\n Extensões instaladas: %s\n", count($paths)));
 
         foreach ($paths as $path) {
-
             $id = preg_replace('/(.*)\/(.*).data/', '$2', $path);
             $data = ExtensionData::restore($id);
             $output->write(sprintf(" - %s <blue>%s</blue>", $data->getId(), $data->getVersion()));
 
-            if ($data->isUserType()) {
-                echo $output->writeln("");
-                foreach($data->getUsersStatus() as $user => $status) {
-                    $output->writeln(sprintf("   %s(%s)", $data->isEnabled($user) ? '<green>ativa</green>' : '<yellow>desativada</yellow>', $user));
-                }
-            } else {
-                $output->write(sprintf(" %s", $data->isEnabled() ? '<green>ativa</green>' : '<yellow>desativada</yellow>'));
-            }
+            $output->write(sprintf(" %s", $data->isEnabled() ? '<green>ativa</green>' : '<yellow>desativada</yellow>'));
 
             $output->writeln("");
 
-            $modifications = $this->get_modifications($id);
+            $modifications = $this->getModifications($id);
 
-            $output->writeln(sprintf("   modifications: %s", count(array_merge($modifications['user'], $modifications['global']))));
+            $output->writeln(sprintf("   modifications: %s", count($modifications['global'])));
 
-            foreach($modifications['global'] as $id => $modification) {
-                $output->write(sprintf("   - %s: %s", $id, $modification['status'] ? '<green>ativa</green>' : '<yellow>desativada</yellow>'));
+            foreach ($modifications['global'] as $id => $modification) {
+                $output->write(sprintf(
+                    "   - %s: %s",
+                    $id,
+                    $modification['status'] ? '<green>ativa</green>' : '<yellow>desativada</yellow>'
+                ));
                 if ($modification['errors']['warning'] > 0) {
                     $output->write(sprintf(" -- <yellow>%s</yellow> warnings", $modification['errors']['warning']));
                 }
@@ -57,33 +54,13 @@ class Status extends Command
                 $output->writeln("");
             }
 
-            foreach($modifications['user'] as $id => $data) {
-                foreach ($data as $user => $modification) {
-                    $output->write(
-                        sprintf(
-                            "   - %s(%s): %s",
-                            $id,
-                            $user,
-                            $modification['status'] ? '<green>ativa</green>' : '<yellow>desativada</yellow>'
-                        )
-                    );
-                    if ($modification['errors']['warning'] > 0) {
-                        $output->write(sprintf(" -- <yellow>%s</yellow> warnings", $modification['errors']['warning']));
-                    }
-                    if ($modification['errors']['error'] > 0) {
-                        $output->write(sprintf(" | <red>%s</red> errors\n", $modification['errors']['error']));
-                    }
-                    $output->writeln("");
-                }
-            }
-
             $output->writeln("");
         }
 
         $output->writeln("");
     }
 
-    private function get_modifications($id)
+    private function getModifications($id)
     {
         $data = array();
         $modifications = array();
@@ -105,55 +82,41 @@ class Status extends Command
             }
         }
 
-        return $this->modifications_instaled($modifications);
+        return $this->modificationsInstaled($modifications);
     }
 
-    private function modification_parse($path)
+    private function modificationParse($path)
     {
         $manager = new ModificationManager();
         $parse = $manager->parse($path);
         return ModificationData::restore($parse->getId());
     }
 
-    private function modifications_instaled($modications)
+    private function modificationsInstaled($modications)
     {
         $data = array(
             'global' => array(),
-            'user' => array(),
             'parse_error' => array(),
         );
 
         foreach ($modications as $path) {
-
             try {
-
                 if (!file_exists($path)) {
                     continue;
                 }
 
-                $modification = $this->modification_parse($path);
+                $modification = $this->modificationParse($path);
 
                 if (!$modification->exists()) {
                     continue;
                 }
 
-                $errors = $this->modification_extract_errros($modification);
-
-                if ($modification->isUserType()) {
-                    foreach ($modification->getUsersStatus() as $user => $status) {
-                        $data['user'][$modification->getId()][$user] = array(
-                            'status' => $modification->isEnabled($user),
-                            'errors' => $errors,
-                        );
-                    }
-                    continue;
-                }
+                $errors = $this->modificationExtractErrors($modification);
 
                 $data['global'][$modification->getId()] = array(
                     'status' => $modification->isEnabled(),
                     'errors' => $errors,
                 );
-
             } catch (\Exception $e) {
                 $data['parse_error'][$path] = $e->getMessage();
             }
@@ -163,14 +126,14 @@ class Status extends Command
         return $data;
     }
 
-    private function modification_extract_errros($modification)
+    private function modificationExtractErrors($modification)
     {
         $data = array(
             'error' => 0,
             'warning' => 0,
         );
-        foreach($modification->getFilesErrors() as $file => $errors) {
-            foreach($errors as $error) {
+        foreach ($modification->getFilesErrors() as $file => $errors) {
+            foreach ($errors as $error) {
                 if ($error['type'] === ModificationOperation::ERROR_ABORT) {
                     $data['error']++;
                 }
@@ -181,5 +144,4 @@ class Status extends Command
         }
         return $data;
     }
-
 }

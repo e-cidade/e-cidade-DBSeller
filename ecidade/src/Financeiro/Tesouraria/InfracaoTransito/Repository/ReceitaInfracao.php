@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -54,7 +54,7 @@ class ReceitaInfracao extends \BaseClassRepository
     protected function make($dados)
     {
         if (empty($dados)) {
-            return NULL;
+            return null;
         }
 
         $oReceitaInfracao = new ReceitaInfracaoModel();
@@ -84,7 +84,6 @@ class ReceitaInfracao extends \BaseClassRepository
             throw new \DBException("Houve uma falha ao buscar a configuração com o código {$codigo}.");
         }
         return $this->make($oDados);
-
     }
 
     /**
@@ -127,7 +126,8 @@ class ReceitaInfracao extends \BaseClassRepository
         $rsReceitas = db_query($sSqlReceitas);
 
         if (!$rsReceitas) {
-            throw new \DBException("Não foi possível pesquisar as receitas do ano {$ano} e nível {$nivel}.\nTente novamente.");
+            $sMsg = "Não foi possível pesquisar as receitas do ano {$ano} e nível {$nivel}.\nTente novamente.";
+            throw new \DBException($sMsg);
         }
 
         $oDados = pg_fetch_object($rsReceitas);
@@ -149,7 +149,10 @@ class ReceitaInfracao extends \BaseClassRepository
 
         $dadoReceitaInfracao->validaReceitas();
 
-        $oReceitasInfracao = $this->getByAnoNivel($dadoReceitaInfracao->getExercicio(), $dadoReceitaInfracao->getNivel());
+        $oReceitasInfracao = $this->getByAnoNivel(
+            $dadoReceitaInfracao->getExercicio(),
+            $dadoReceitaInfracao->getNivel()
+        );
 
         $oDao = new \cl_receitainfracao();
         $oDao->i06_receitaprincipal = $dadoReceitaInfracao->getReceitaPrincipal();
@@ -158,14 +161,12 @@ class ReceitaInfracao extends \BaseClassRepository
         $oDao->i06_conta = $dadoReceitaInfracao->getConta();
 
         if (empty($oReceitasInfracao)) {
-
             $oDao->i06_anousu = $dadoReceitaInfracao->getExercicio();
 
             if (!$oDao->incluir()) {
                 throw new \Exception("Ocorreu um erro ao incluir a configuração." . $oDao->erro_msg);
             }
         } else {
-
             $oDao->i06_sequencial = $oReceitasInfracao->getId();
             $oDao->i06_anousu = $oReceitasInfracao->getExercicio();
 
@@ -203,7 +204,6 @@ class ReceitaInfracao extends \BaseClassRepository
         $aNivelConfig = \db_utils::getCollectionByRecord($rsNivel);
 
         foreach ($aNivelConfig as $key => $value) {
-
             if ($aNivel[$value->i06_nivel]) {
                 unset($aNivel[$value->i06_nivel]);
             }
@@ -227,7 +227,7 @@ class ReceitaInfracao extends \BaseClassRepository
         $aReceitas = pg_fetch_all($rsResult);
 
         if (empty($aReceitas)) {
-            return NULL;
+            return null;
         }
 
         foreach ($aReceitas as $aReceita) {

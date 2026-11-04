@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $claprovconselhotipo->rotulo->label("ed122_descricao");
               <?=$Led122_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed122_sequencial",10,$Ied122_sequencial,true,"text",4,"","chave_ed122_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claprovconselhotipo->rotulo->label("ed122_descricao");
               <?=$Led122_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed122_descricao",70,$Ied122_descricao,true,"text",4,"","chave_ed122_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claprovconselhotipo->rotulo->label("ed122_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aprovconselhotipo.php")==true){
@@ -122,12 +122,12 @@ $claprovconselhotipo->rotulo->label("ed122_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

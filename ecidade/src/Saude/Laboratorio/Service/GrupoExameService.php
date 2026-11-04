@@ -32,7 +32,6 @@ use ECidade\Saude\Laboratorio\Repository\GrupoExameRepository;
 use ECidade\Saude\Laboratorio\Repository\SetorExameRepository;
 use ECidade\Saude\Laboratorio\Model\GrupoExame;
 use Exception;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * Class GrupoExameService
@@ -43,7 +42,7 @@ class GrupoExameService
     private $repositorio;
 
     private $setorExameRepository;
-    
+
     /**
      * GrupoExameService constructor.
      * @param GrupoExameRepository $repositorio
@@ -79,11 +78,28 @@ class GrupoExameService
             "la67_laboratorio=".$parametros->laboratorio." and la67_grupo=".$parametros->grupo
         );
         for ($i = 0; $i < count($examesGrupo); $i++) {
-            $setorExame = $this->setorExameRepository->buscar("la09_i_codigo", "la02_i_codigo = "
-            . $parametros->laboratorio . " and la08_i_codigo = " . $examesGrupo[$i]['codigoexame']);
-            $examesGrupo[$i]['codigosetorexame'] = $setorExame[0]['la09_i_codigo'];
+            $camposSetorExame = "la09_i_codigo,la09_i_ativo,la08_i_ativo,la03_i_laboratorio";
+            $whereSetorExame = " la02_i_codigo = ".$parametros->laboratorio;
+            $whereSetorExame .= " and la08_i_codigo = " . $examesGrupo[$i]['codigoexame'];
+            $whereSetorExame .= " and la03_i_departamento = ".db_getsession('DB_coddepto');
+            
+            $setorExame = $this->setorExameRepository->buscarSetorDepartamento($camposSetorExame, $whereSetorExame);
+            
+            $exameAtivo = false;
+            $examesGrupo[$i]['codigosetorexame'] = null;
+            if (count($setorExame) > 0) {
+                if ($setorExame[0]['la09_i_ativo'] == 1 && $setorExame[0]['la08_i_ativo'] == 1) {
+                    $exameAtivo = true;
+                }
+                $examesGrupo[$i]['codigosetorexame'] = $setorExame[0]['la09_i_codigo'];
+            }
+            
+            $examesGrupo[$i]['exameativo'] = $exameAtivo;
             $examesGrupo[$i]['descricao'] = urlencode($examesGrupo[$i]['descricao']);
             $examesGrupo[$i]['descricaolaboratorio'] = urlencode($examesGrupo[$i]['descricaolaboratorio']);
+            $examesGrupo[$i]['obriga_peso'] = urlencode($examesGrupo[$i]['obriga_peso']);
+            $examesGrupo[$i]['obriga_altura'] = urlencode($examesGrupo[$i]['obriga_altura']);
+            $examesGrupo[$i]['obriga_volume_amostra'] = urlencode($examesGrupo[$i]['obriga_volume_amostra']);
         }
         return $examesGrupo;
     }

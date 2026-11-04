@@ -38,7 +38,7 @@ $iAnoAtual         = db_getsession('DB_anousu');
 db_inicio_transacao();
 $temEsquemaSetado = !empty($_GET["schema"]);
 if (!$temEsquemaSetado) {
-
+    db_query("select fc_putsession('DB_Gerafinanc','0')");
     $sSqlCalculo = "select fc_calculoiptu({$parametro}::integer,{$iAnoAtual}::integer,true::boolean,false::boolean,false::boolean,false::boolean,false::boolean,array['0','0','0'])";
     $rsCalculo = db_query($sSqlCalculo);
 }
@@ -227,7 +227,7 @@ if (pg_numrows($result) == 0) {
 
 ?>
 <div class='subcontainer' style="width:100%">
-<?
+<?php
 if (pg_numrows($result) != 0) {
 
     $sSqlIptucalcpadrao = " SELECT j10_vlrter , j11_vlrcons FROM iptucalcpadrao  INNER JOIN iptucalcpadraoconstr 
@@ -365,7 +365,7 @@ if (pg_numrows($result) != 0) {
                             <?= db_formatar(($j21_valor - abs($j21_valorisen)), 'f') ?>
                         </td>
                     </tr>
-                    <?
+                    <?php
                 }
                 $iSomaPercentualIsencao = (100 * $somaisen) / $somacalc;
                 ?>
@@ -388,7 +388,7 @@ if (pg_numrows($result) != 0) {
 
             </table>
         </fieldset>
-    <?
+    <?php
     }
     ?>
         <fieldset>
@@ -825,16 +825,16 @@ if (pg_numrows($result) != 0) {
                                         <?= $caracteristica->j31_pontos ?>
                                     </td>
                                 </tr>
-                                <?
+                                <?php
                             }
                             ?>
                         </table>
                     </fieldset>
-                    <?
+                    <?php
                 }
                 ?>
             </fieldset>
-            <?
+            <?php
             }
             ?>
         </div>

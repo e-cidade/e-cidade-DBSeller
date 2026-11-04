@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,12 +63,12 @@ $clrotulo->label('r70_descr');
 		        <strong>Ano / Mês :&nbsp;&nbsp;</strong>
 		        </td>
 		        <td>
-		          <?
+		          <?php
 		           $DBtxt23 = db_anofolha();
 		           db_input('iAno', 4, $IDBtxt23, true, 'text', 1, '')
 		          ?>
 		          &nbsp;/&nbsp;
-		          <?
+		          <?php
 		           $DBtxt25 = db_mesfolha();
 		           db_input('iMes', 2, $IDBtxt25, true, 'text', 1, '')
 		          ?>
@@ -164,7 +164,7 @@ $clrotulo->label('r70_descr');
 			<input name="conferencia" id="conferencia" type="button" value="Conferência" onclick="js_relatorio('Conferencia');">
 	  </center>
   </form>
-	<?
+	<?php
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
 <script>

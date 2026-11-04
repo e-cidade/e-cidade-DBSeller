@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE averbatipo
-class cl_averbatipo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j93_codigo = 0; 
-   var $j93_descr = null; 
-   var $j93_regra = 0; 
-   var $j93_datalimite_dia = null; 
-   var $j93_datalimite_mes = null; 
-   var $j93_datalimite_ano = null; 
-   var $j93_datalimite = null; 
-   var $j93_averbagrupo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_averbatipo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j93_codigo = 0;
+   var $j93_descr = null;
+   var $j93_regra = 0;
+   var $j93_datalimite_dia = null;
+   var $j93_datalimite_mes = null;
+   var $j93_datalimite_ano = null;
+   var $j93_datalimite = null;
+   var $j93_averbagrupo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j93_codigo = int4 = Código 
-                 j93_descr = varchar(20) = Descrição 
-                 j93_regra = int4 = Regra 
-                 j93_datalimite = date = Data limite 
-                 j93_averbagrupo = int4 = Grupo 
+                 j93_codigo = int4 = Código
+                 j93_descr = varchar(20) = Descrição
+                 j93_regra = int4 = Regra
+                 j93_datalimite = date = Data limite
+                 j93_averbagrupo = int4 = Grupo
                  ";
-   //funcao construtor da classe 
-   function cl_averbatipo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("averbatipo"); 
+     $this->rotulo = new rotulo("averbatipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_averbatipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j93_codigo = ($this->j93_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j93_codigo"]:$this->j93_codigo);
        $this->j93_descr = ($this->j93_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j93_descr"]:$this->j93_descr);
@@ -93,9 +93,9 @@ class cl_averbatipo {
      }
    }
    // funcao para inclusao
-   function incluir ($j93_codigo){ 
+   public function incluir ($j93_codigo){
       $this->atualizacampos();
-     if($this->j93_descr == null ){ 
+     if($this->j93_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "j93_descr";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_averbatipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j93_regra == null ){ 
+     if($this->j93_regra == null ){
        $this->erro_sql = " Campo Regra nao Informado.";
        $this->erro_campo = "j93_regra";
        $this->erro_banco = "";
@@ -113,10 +113,10 @@ class cl_averbatipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j93_datalimite == null ){ 
+     if($this->j93_datalimite == null ){
        $this->j93_datalimite = "null";
      }
-     if($this->j93_averbagrupo == null ){ 
+     if($this->j93_averbagrupo == null ){
        $this->erro_sql = " Campo Grupo nao Informado.";
        $this->erro_campo = "j93_averbagrupo";
        $this->erro_banco = "";
@@ -126,16 +126,16 @@ class cl_averbatipo {
        return false;
      }
      if($j93_codigo == "" || $j93_codigo == null ){
-       $result = db_query("select nextval('averbatipo_j93_codigo_seq')"); 
+       $result = db_query("select nextval('averbatipo_j93_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: averbatipo_j93_codigo_seq do campo: j93_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: averbatipo_j93_codigo_seq do campo: j93_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j93_codigo = pg_result($result,0,0); 
+       $this->j93_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from averbatipo_j93_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $j93_codigo)){
@@ -146,10 +146,10 @@ class cl_averbatipo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j93_codigo = $j93_codigo; 
+         $this->j93_codigo = $j93_codigo;
        }
      }
-     if(($this->j93_codigo == null) || ($this->j93_codigo == "") ){ 
+     if(($this->j93_codigo == null) || ($this->j93_codigo == "") ){
        $this->erro_sql = " Campo j93_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,21 +158,21 @@ class cl_averbatipo {
        return false;
      }
      $sql = "insert into averbatipo(
-                                       j93_codigo 
-                                      ,j93_descr 
-                                      ,j93_regra 
-                                      ,j93_datalimite 
-                                      ,j93_averbagrupo 
+                                       j93_codigo
+                                      ,j93_descr
+                                      ,j93_regra
+                                      ,j93_datalimite
+                                      ,j93_averbagrupo
                        )
                 values (
-                                $this->j93_codigo 
-                               ,'$this->j93_descr' 
-                               ,$this->j93_regra 
-                               ,".($this->j93_datalimite == "null" || $this->j93_datalimite == ""?"null":"'".$this->j93_datalimite."'")." 
-                               ,$this->j93_averbagrupo 
+                                $this->j93_codigo
+                               ,'$this->j93_descr'
+                               ,$this->j93_regra
+                               ,".($this->j93_datalimite == "null" || $this->j93_datalimite == ""?"null":"'".$this->j93_datalimite."'")."
+                               ,$this->j93_averbagrupo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "tipos de averbação ($this->j93_codigo) nao Incluído. Inclusao Abortada.";
@@ -208,16 +208,16 @@ class cl_averbatipo {
        $resac = db_query("insert into db_acount values($acount,1665,11737,'','".AddSlashes(pg_result($resaco,0,'j93_averbagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j93_codigo=null) { 
+   public function alterar ($j93_codigo=null) {
       $this->atualizacampos();
      $sql = " update averbatipo set ";
      $virgula = "";
-     if(trim($this->j93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_codigo"])){ 
+     if(trim($this->j93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_codigo"])){
        $sql  .= $virgula." j93_codigo = $this->j93_codigo ";
        $virgula = ",";
-       if(trim($this->j93_codigo) == null ){ 
+       if(trim($this->j93_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j93_codigo";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_descr"])){ 
+     if(trim($this->j93_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_descr"])){
        $sql  .= $virgula." j93_descr = '$this->j93_descr' ";
        $virgula = ",";
-       if(trim($this->j93_descr) == null ){ 
+       if(trim($this->j93_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "j93_descr";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_regra"])){ 
+     if(trim($this->j93_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_regra"])){
        $sql  .= $virgula." j93_regra = $this->j93_regra ";
        $virgula = ",";
-       if(trim($this->j93_regra) == null ){ 
+       if(trim($this->j93_regra) == null ){
          $this->erro_sql = " Campo Regra nao Informado.";
          $this->erro_campo = "j93_regra";
          $this->erro_banco = "";
@@ -253,19 +253,19 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"] !="") ){ 
+     if(trim($this->j93_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"] !="") ){
        $sql  .= $virgula." j93_datalimite = '$this->j93_datalimite' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"])){
          $sql  .= $virgula." j93_datalimite = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->j93_averbagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_averbagrupo"])){ 
+     if(trim($this->j93_averbagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_averbagrupo"])){
        $sql  .= $virgula." j93_averbagrupo = $this->j93_averbagrupo ";
        $virgula = ",";
-       if(trim($this->j93_averbagrupo) == null ){ 
+       if(trim($this->j93_averbagrupo) == null ){
          $this->erro_sql = " Campo Grupo nao Informado.";
          $this->erro_campo = "j93_averbagrupo";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_averbatipo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tipos de averbação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j93_codigo;
@@ -327,14 +327,14 @@ class cl_averbatipo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j93_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j93_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j93_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_averbatipo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tipos de averbação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j93_codigo;
@@ -392,11 +392,11 @@ class cl_averbatipo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +418,10 @@ class cl_averbatipo {
       }
      return $result;
    }
-   function sql_query ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,15 +435,15 @@ class cl_averbatipo {
      $sql2 = "";
      if($dbwhere==""){
        if($j93_codigo!=null ){
-         $sql2 .= " where averbatipo.j93_codigo = $j93_codigo "; 
-       } 
+         $sql2 .= " where averbatipo.j93_codigo = $j93_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,10 +452,10 @@ class cl_averbatipo {
      }
      return $sql;
   }
-   function sql_query_file ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,15 +468,15 @@ class cl_averbatipo {
      $sql2 = "";
      if($dbwhere==""){
        if($j93_codigo!=null ){
-         $sql2 .= " where averbatipo.j93_codigo = $j93_codigo "; 
-       } 
+         $sql2 .= " where averbatipo.j93_codigo = $j93_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

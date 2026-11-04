@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -32,28 +32,20 @@ $clrotulo->label("nomeinst");
 $clrotulo->label("k13_descr");
 $clrotulo->label("o15_recurso");
 $clrotulo->label("o15_descr");
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_app.utils.php"));
-db_app::load("scripts.js");
-db_app::load("prototype.js");
 
 $oParametrosCaixa = new ParametroCaixa();
 $tipo_transmissao = $oParametrosCaixa->getTipoTransmissaoPadrao();
 $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
 ?>
 <form name="form1" method="post" action="">
-
-
-    <fieldset style="margin-top: 20px; width: 750px;">
+    <fieldset>
         <legend>
             <strong>Parâmetros Financeiro</strong>
         </legend>
-
-        <table border="0" align='left'>
-
+        <table class="form-container">
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_boletimzerado ?>">
-                    <?php echo  @$Lk29_boletimzerado ?>
+                <td title="<?=$Tk29_boletimzerado ?>">
+                    <?=$Lk29_boletimzerado ?>
                 </td>
                 <td>
                     <?php
@@ -63,8 +55,8 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_modslipnormal ?>">
-                    <?php echo  @$Lk29_modslipnormal ?>
+                <td title="<?=$Tk29_modslipnormal ?>">
+                    <?=$Lk29_modslipnormal ?>
                 </td>
                 <td>
                     <?php
@@ -74,8 +66,8 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_modsliptransf ?>">
-                    <?php echo  @$Lk29_modsliptransf ?>
+                <td title="<?=$Tk29_modsliptransf ?>">
+                    <?=$Lk29_modsliptransf ?>
                 </td>
                 <td>
                     <?php
@@ -85,18 +77,27 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_chqemitidonaoautent ?>">
-                    <?php echo  @$Lk29_chqemitidonaoautent ?>
+                <td title="<?=$Tk29_chqemitidonaoautent ?>">
+                    <?=$Lk29_chqemitidonaoautent ?>
                 </td>
                 <td>
                     <?php
-                    db_inputdata('k29_chqemitidonaoautent', @$k29_chqemitidonaoautent_dia, @$k29_chqemitidonaoautent_mes, @$k29_chqemitidonaoautent_ano, true, 'text', $db_opcao, "")
+                    db_inputdata(
+                        'k29_chqemitidonaoautent',
+                        (!isset($k29_chqemitidonaoautent_dia)?null:$k29_chqemitidonaoautent_dia),
+                        (!isset($k29_chqemitidonaoautent_mes)?null:$k29_chqemitidonaoautent_mes),
+                        (!isset($k29_chqemitidonaoautent_ano)?null:$k29_chqemitidonaoautent_ano),
+                        true,
+                        'text',
+                        $db_opcao,
+                        ""
+                    );
                     ?>
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_saldoemitechq ?>">
-                    <?php echo  @$Lk29_saldoemitechq ?>
+                <td title="<?=$Tk29_saldoemitechq ?>">
+                    <?=$Lk29_saldoemitechq ?>
                 </td>
                 <td>
                     <?php
@@ -106,21 +107,27 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_datasaldocontasextra ?>">
-                    <?php echo  @$Lk29_datasaldocontasextra ?>
+                <td title="<?=$Tk29_datasaldocontasextra ?>">
+                    <?=$Lk29_datasaldocontasextra ?>
                 </td>
                 <td>
                     <?php
-                    db_inputdata('k29_datasaldocontasextra',
-                        @$k29_datasaldocontasextra_dia,
-                        @$k29_datasaldocontasextra_mes, @$k29_datasaldocontasextra_ano,
-                        true, 'text', $db_opcao, "")
+                    db_inputdata(
+                        'k29_datasaldocontasextra',
+                        (!isset($k29_datasaldocontasextra_dia)?null:$k29_datasaldocontasextra_dia),
+                        (!isset($k29_datasaldocontasextra_mes)?null:$k29_datasaldocontasextra_mes),
+                        (!isset($k29_datasaldocontasextra_ano)?null:$k29_datasaldocontasextra_ano),
+                        true,
+                        'text',
+                        $db_opcao,
+                        ""
+                    )
                     ?>
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_trazdatacheque ?>">
-                    <?php echo  @$Lk29_trazdatacheque ?>
+                <td title="<?=$Tk29_trazdatacheque ?>">
+                    <?=$Lk29_trazdatacheque ?>
                 </td>
                 <td>
                     <?php
@@ -130,8 +137,8 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$Tk29_contassemmovimento ?>">
-                    <?php echo  @$Lk29_contassemmovimento ?>
+                <td title="<?=$Tk29_contassemmovimento ?>">
+                    <?=$Lk29_contassemmovimento ?>
                 </td>
                 <td>
                     <?php
@@ -140,51 +147,77 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                     ?>
                 </td>
             </tr>
-
+            <tr>
+                <td nowrap title="<?php echo  @$Tk29_fr_contapagadora ?>">
+                    <?php echo  @$Lk29_fr_contapagadora ?>
+                </td>
+                <td>
+                    <?php
+                        $x = array('1' => 'Fonte de Recurso', '2' => 'Subfonte');
+                        db_select('k29_fr_contapagadora', $x, true, $db_opcao, "");
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td title="<?=$Tk29_filtrocontasdepartamento ?>">
+                    <?=$Lk29_filtrocontasdepartamento ?>
+                </td>
+                <td>
+                    <?php
+                    $x = array('f' => 'Não', 't' => 'Sim');
+                    db_select('k29_filtrocontasdepartamento', $x, true, $db_opcao, "");
+                    ?>
+                </td>
+            </tr>
             <tr>
                 <td><a id='ancoraRecurso' href="#">Recurso:</a></td>
                 <td>
                     <?php
                     db_input('k29_orctiporecfundeb', 10, $Ik29_orctiporecfundeb, true, 'hidden', 3);
-                    db_input('o15_recurso', 10, $Io15_recurso, true, 'text', 1);
-                    db_input('o15_descr', 10, $Io15_descr, true, 'text', 3);
+                    db_input('o15_recurso', 10, $Io15_recurso, true, 'text', $db_opcao);
+                    db_input('o15_descr', 40, $Io15_descr, true, 'text', 3);
                     ?>
 
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?php echo  @$k29_contapadraoslip ?>">
-                    <?
+                <td title="<?=$Tk29_contapadraoslip?>">
+                    <?php
                     db_ancora("<b>Conta padrão slip:</b>", "js_pesquisak29_contapadraoslip(true);", $db_opcao);
                     ?>
                 </td>
                 <td>
-                    <?
-                    db_input('k29_contapadraoslip', 10, $Ik29_contapadraoslip, true, 'text', $db_opcao, " onchange='js_pesquisak29_contapadraoslip(false);'");
+                    <?php
+                    db_input(
+                        'k29_contapadraoslip',
+                        10,
+                        $Ik29_contapadraoslip,
+                        true,
+                        'text',
+                        $db_opcao,
+                        " onchange='js_pesquisak29_contapadraoslip(false);'"
+                    );
                     db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3, '');
                     ?>
                 </td>
             </tr>
-
-        </table>
-        <br/>
-        <fieldset style="width: 97%; border-left: none; border-right: none; border-bottom: none;">
-            <legend class="bold">Agenda de Pagamentos</legend>
-
-            <table>
+       </table>
+        <fieldset>
+            <legend>Agenda de Pagamentos</legend>
+            <table class="form-container">
                 <tr>
-                    <td nowrap title="<?php echo  @$Tk29_chqduplicado ?>" class="bold">
+                    <td title="<?=$Tk29_chqduplicado ?>">
                         Permitir cheques duplicados:
                     </td>
                     <td>
-                        <?
+                        <?php
                         $x = array("f" => "NAO", "t" => "SIM");
                         db_select('k29_chqduplicado', $x, true, $db_opcao, "");
                         ?>
                     </td>
                 </tr>
                 <tr>
-                    <td class="bold">
+                    <td>
                         Tipo de Transmissão:
                     </td>
                     <td>
@@ -197,23 +230,49 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="bold" for="convenio_banco">Convênio com Banco:</label></td>
+                    <td><label for="convenio_banco">Convênio com Banco:</label></td>
                     <td>
                         <input size="8" maxlength="8" id="convenio_banco" name="convenio_banco"
-                               value="<?php echo  $sConvenioBanco ?>" class="field-size3" type="text"/>
+                               value="<?=$sConvenioBanco ?>" type="text" />
                     </td>
                 </tr>
                 <tr>
-                    <td nowrap title="<?php echo  @$Tk29_gerarslipautomaticoreceitaretencao ?>" class="bold">
+                    <td title="<?=$Tk29_gerarslipautomaticoreceitaretencao ?>">
                         Gerar Slip Automático das Retenções:
                     </td>
                     <td>
                         <?php
-                        $x = array("f" => "NAO", "t" => "SIM");
+                        $x = array("0" => "Não gera Slips automaticamente",
+                                   "1" => "SIM - no momento da apropriação da retenção",
+                                   "2" => "SIM - na atualização do movimento na agenda");
                         db_select('k29_gerarslipautomaticoreceitaretencao', $x, true, $db_opcao, "");
                         ?>
                     </td>
                 </tr>
+                <tr>
+                    <td nowrap title="<?php echo  @$Tk29_utilizarcontaextra ?>" class="bold">
+                        Utiliza Conta Extra Orçamentária:
+                    </td>
+                    <td>
+                        <?php
+                        $x = array("f" => "NAO", "t" => "SIM");
+                        db_select('k29_utilizarcontaextra', $x, true, $db_opcao, "");
+                        ?>
+                    </td>
+                </tr>
+
+                <tr title="Impacta apenas na geração do Slip e PLanilha da Folha. Se configurado como não usará a conta principal." >
+                    <td nowrap class="bold">
+                        Utiliza Conta Extra nas Planilhas e Slips da folha:
+                    </td>
+                    <td>
+                        <?php
+                        $x = array("f" => "NAO", "t" => "SIM");
+                        db_select('k29_folhautilizarcontaextra', $x, true, $db_opcao, "");
+                        ?>
+                    </td>
+                </tr>
+
                 <tr>
                     <td nowrap title="<?php echo  @$Tk29_validadatacreditobaixabanco ?>" class="bold">
                         Validar data Crédito da Baixa de Banco:
@@ -231,12 +290,12 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
 
     </fieldset>
 
-    <div style='margin-top:10px;'>
-        <input name="<?php echo ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>"
-               type="submit" id="db_opcao"
-               value="<?php echo ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?php echo ($db_botao == false ? "disabled" : "") ?> >
+    <input name="<?=($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>"
+           type="submit"
+           id="db_opcao"
+           value="<?=($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>"
+           <?=($db_botao == false ? "disabled" : "") ?> />
         <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-    </div>
 
 </form>
 <script>
@@ -267,22 +326,24 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
         $('o15_descr').value = descricao;
     };
 
-    $('k29_boletimzerado').style.width = '155px';
-    $('k29_saldoemitechq').style.width = '155px';
-    $('k29_trazdatacheque').style.width = '155px';
-    $('k29_contassemmovimento').style.width = '155px';
-    $('k29_chqduplicado').style.width = '130px';
-    $('tipo_transmissao').style.width = '130px';
     $('k29_contapadraoslip').className = 'field-size2';
     $('k13_descr').className = 'field-size8';
 
 
     function js_pesquisak29_instit(mostra) {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_db_config', 'func_db_config.php?funcao_js=parent.js_mostradb_config1|codigo|nomeinst', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo',
+                                'db_iframe_db_config',
+                                'func_db_config.php?funcao_js=parent.js_mostradb_config1|codigo|nomeinst',
+                                'Pesquisa',
+                                true);
         } else {
             if (document.form1.k29_instit.value != '') {
-                js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_db_config', 'func_db_config.php?pesquisa_chave=' + document.form1.k29_instit.value + '&funcao_js=parent.js_mostradb_config', 'Pesquisa', false);
+                js_OpenJanelaIframe('CurrentWindow.corpo',
+                                    'db_iframe_db_config',
+                                    'func_db_config.php?pesquisa_chave=' + document.form1.k29_instit.value + '&funcao_js=parent.js_mostradb_config',
+                                    'Pesquisa',
+                                    false);
             } else {
                 document.form1.nomeinst.value = '';
             }
@@ -304,7 +365,11 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
     }
 
     function js_pesquisa() {
-        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_caiparametro', 'func_caiparametro.php?funcao_js=parent.js_preenchepesquisa|k29_instit', 'Pesquisa', true);
+        js_OpenJanelaIframe('CurrentWindow.corpo',
+                            'db_iframe_caiparametro',
+                            'func_caiparametro.php?funcao_js=parent.js_preenchepesquisa|k29_instit',
+                            'Pesquisa',
+                            true);
     }
 
     function js_preenchepesquisa(chave) {
@@ -318,10 +383,18 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
 
     function js_pesquisak29_contapadraoslip(mostra) {
         if (mostra == true) {
-            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_saltes', 'func_saltes.php?funcao_js=parent.js_mostrasaltes1|k13_conta|k13_descr', 'Pesquisa', true);
+            js_OpenJanelaIframe('CurrentWindow.corpo',
+                                'db_iframe_saltes',
+                                'func_saltes.php?funcao_js=parent.js_mostrasaltes1|k13_conta|k13_descr',
+                                'Pesquisa',
+                                true);
         } else {
             if (document.form1.k29_contapadraoslip.value != '') {
-                js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_saltes', 'func_saltes.php?pesquisa_chave=' + document.form1.k29_contapadraoslip.value + '&funcao_js=parent.js_mostrasaltes', 'Pesquisa', false);
+                js_OpenJanelaIframe('CurrentWindow.corpo',
+                                    'db_iframe_saltes',
+                                    'func_saltes.php?pesquisa_chave=' + document.form1.k29_contapadraoslip.value + '&funcao_js=parent.js_mostrasaltes',
+                                    'Pesquisa',
+                                    false);
             } else {
                 document.form1.k13_descr.value = '';
             }

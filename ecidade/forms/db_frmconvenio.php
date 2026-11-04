@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clconvenio->rotulo->label();
        <?=@$Lr56_codrel?>
     </td>
     <td> 
-<?
+<?php
 db_input('r56_codrel',4,$Ir56_codrel,true,'text',($db_opcao==1?"1":"3"),"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('r56_codrel',4,$Ir56_codrel,true,'text',($db_opcao==1?"1":"3"),"")
        <?=@$Lr56_descr?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_descr',40,$Ir56_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('r56_descr',40,$Ir56_descr,true,'text',$db_opcao,"")
        <?=@$Lr56_local?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_local',40,$Ir56_local,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('r56_local',40,$Ir56_local,true,'text',$db_opcao,"")
        <?=@$Lr56_dirarq?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_dirarq',40,$Ir56_dirarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('r56_dirarq',40,$Ir56_dirarq,true,'text',$db_opcao,"")
        <?=@$Lr56_linhasheader?>
     </td>
     <td> 
-<?
+<?php
 db_input('r56_linhasheader',2,$Ir56_linhasheader,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('r56_linhasheader',2,$Ir56_linhasheader,true,'text',$db_opcao,"")
        <?=@$Lr56_linhastrailler?>
     </td>
     <td> 
-<?
+<?php
 db_input('r56_linhastrailler',2,$Ir56_linhastrailler,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('r56_linhastrailler',2,$Ir56_linhastrailler,true,'text',$db_opcao,"")
        <?=@$Lr56_posano?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_posano1',4,$Ir56_posano,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do ano\",\"f\",\"t\",event);'");
 db_input('r56_posano2',4,$Ir56_posano,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do ano\",\"f\",\"t\",event);'");
 ?>
@@ -105,7 +105,7 @@ db_input('r56_posano2',4,$Ir56_posano,true,'text',$db_opcao,"onChange='js_preenc
        <?=@$Lr56_posmes?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_posmes1',4,$Ir56_posmes,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do mês\",\"f\",\"t\",event);'");
 db_input('r56_posmes2',4,$Ir56_posmes,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do mês\",\"f\",\"t\",event);'");
 ?>
@@ -116,7 +116,7 @@ db_input('r56_posmes2',4,$Ir56_posmes,true,'text',$db_opcao,"onChange='js_preenc
        <?=@$Lr56_posreg?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_posreg1',4,$Ir56_posreg,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do funcionário\",\"f\",\"t\",event);'");
 db_input('r56_posreg2',4,$Ir56_posreg,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de leitura do funcionário\",\"f\",\"t\",event);'");
 ?>
@@ -127,7 +127,7 @@ db_input('r56_posreg2',4,$Ir56_posreg,true,'text',$db_opcao,"onChange='js_preenc
        <?=@$Lr56_poseve?>
     </td>
     <td colspan="3"> 
-<?
+<?php
 db_input('r56_poseve1',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição do código do relacionamento\",\"f\",\"t\",event);'");
 db_input('r56_poseve2',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição de código do relacionamento\",\"f\",\"t\",event);'");
 ?>
@@ -143,13 +143,13 @@ db_input('r56_poseve2',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenc
                <strong>01:</strong>
             </td>
             <td> 
-        <?
+        <?php
         db_input('r56_posq011',4,$Ir56_posq01,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 1\",\"f\",\"t\",event);'");
         db_input('r56_posq012',4,$Ir56_posq01,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 1\",\"f\",\"t\",event);'");
         ?>
             </td>
             <td> 
-        <?
+        <?php
         $arr_quantval = array("f"=>"Valor","t"=>"Quantidade");
         db_select('r56_vq01',$arr_quantval,true,$db_opcao,"");
         ?>
@@ -160,13 +160,13 @@ db_input('r56_poseve2',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenc
                <strong>02:</strong>
             </td>
             <td> 
-        <?
+        <?php
         db_input('r56_posq021',4,$Ir56_posq02,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 2\",\"f\",\"t\",event);'");
         db_input('r56_posq022',4,$Ir56_posq02,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 2\",\"f\",\"t\",event);'");
         ?>
             </td>
             <td> 
-        <?
+        <?php
         db_select('r56_vq02',$arr_quantval,true,$db_opcao,"");
         ?>
             </td>
@@ -176,13 +176,13 @@ db_input('r56_poseve2',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenc
                <strong>03:</strong>
             </td>
             <td> 
-        <?
+        <?php
         db_input('r56_posq031',4,$Ir56_posq03,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 3\",\"f\",\"t\",event);'");
         db_input('r56_posq032',4,$Ir56_posq03,true,'text',$db_opcao,"onChange='js_preenche_zeros(this.name);' onKeyUp='js_controla_campo(this.name);js_ValidaCampos(this,1,\"Posição da rubrica 3\",\"f\",\"t\",event);'");
         ?>
             </td>
             <td> 
-        <?
+        <?php
         db_select('r56_vq03',$arr_quantval,true,$db_opcao,"");
         ?>
             </td>
@@ -281,7 +281,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_convenio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

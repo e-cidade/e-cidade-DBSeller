@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -87,7 +87,7 @@ if (isset($ordenar)) {
     parent.db_iframe_ordenar.hide();
 
   </script>
-<?
+<?php
 
 }
 
@@ -117,7 +117,7 @@ if (isset($ordenar)) {
                     <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:300px"
                             onClick="js_selecionaUm('ordenar');" >
 
-                      <?
+                      <?php
                         echo getOptionsArquivos($iCodAtoLegal);
                       ?>
 

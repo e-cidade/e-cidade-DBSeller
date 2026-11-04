@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -463,64 +463,64 @@ function js_hist_cheque(query){
  						<tr>
  							<td><b>Número do cheque:</b></td>
  							<td>
- 								<?
+ 								<?php
  									db_input('e86_cheque',13,1,true,"text",1);
  								?></td>
  							<td></td>
  							<td></td>
  						</tr>
  						<tr>
- 							<td><? db_ancora(@$Le60_codemp,"js_pesquisae60_codempini(true);",1);  ?></td>
+ 							<td><?php db_ancora(@$Le60_codemp,"js_pesquisae60_codempini(true);",1);  ?></td>
  							<td>
- 									<?
+ 									<?php
  										$e60_codempini = "";
  										db_input("e60_codempini",13,$e60_codempini,true,"text",4);
  									?>
  							</td>
- 							<td><? db_ancora("<b>Até</b>","js_pesquisae60_codempfim(true);",1);  ?></td>
+ 							<td><?php db_ancora("<b>Até</b>","js_pesquisae60_codempfim(true);",1);  ?></td>
  							<td>
- 									<?
+ 									<?php
  										$e60_codempfim = "";
  										db_input("e60_codempfim",13,$e60_codempfim,true,"text",4);
  									?>
  							</td>
  						</tr>
  						<tr>
- 							<td><? db_ancora(@$Le50_codord,"js_pesquisae50_codordini(true);",$db_opcao);  ?></td>
+ 							<td><?php db_ancora(@$Le50_codord,"js_pesquisae50_codordini(true);",$db_opcao);  ?></td>
  							<td>
- 									<?
+ 									<?php
  									$Ie50_codordini = "";
  									db_input('e50_codordini',13,$Ie50_codordini,true,'text',$db_opcao," onchange='js_pesquisae50_codordini(false);'");
  									?>
  							</td>
- 							<td><? db_ancora("<b>Até</b>","js_pesquisae50_codordfim(true);",$db_opcao);  ?></td>
+ 							<td><?php db_ancora("<b>Até</b>","js_pesquisae50_codordfim(true);",$db_opcao);  ?></td>
  							<td>
- 									<?
+ 									<?php
  									$Ie50_codordfim = "";
  									db_input('e50_codordfim',13,$Ie50_codordfim,true,'text',$db_opcao," onchange='js_pesquisae50_codordfim(false);'");
  									?>
  							</td>
  						</tr>
  						<tr>
- 							<td><? db_ancora(@$Lk17_codigo,"js_pesquisak17_codigoini(true);",$db_opcao);  ?></td>
+ 							<td><?php db_ancora(@$Lk17_codigo,"js_pesquisak17_codigoini(true);",$db_opcao);  ?></td>
  							<td>
- 									<?
+ 									<?php
  										$Ik17_codigoini = "";
  										db_input('k17_codigoini',13,$Ik17_codigoini,true,'text',$db_opcao," onchange='js_pesquisak17_codigoini(false);'");
  									?>
  							</td>
- 							<td><? db_ancora("<b>Até</b>","js_pesquisak17_codigofim(true);",$db_opcao);  ?></td>
+ 							<td><?php db_ancora("<b>Até</b>","js_pesquisak17_codigofim(true);",$db_opcao);  ?></td>
  							<td>
- 									<?
+ 									<?php
  										$Ik17_codigofim = "";
  										db_input('k17_codigofim',13,$Ik17_codigofim,true,'text',$db_opcao," onchange='js_pesquisak17_codigofim(false);'");
  									?>
  							</td>
  						</tr>
  						<tr>
- 							<td><?db_ancora("<b>Credor:</b>","js_pesquisa_cgm(true);",1);?></td>
+ 							<td><?php db_ancora("<b>Credor:</b>","js_pesquisa_cgm(true);",1);?></td>
  							<td colspan="3">
- 									<?
+ 									<?php
  									db_input("z01_numcgm",6,1,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
 	      					db_input("z01_nome2",30,"",true,"text",3);
       						?>
@@ -534,17 +534,17 @@ function js_hist_cheque(query){
  					<table>
  						<tr>
  							<td><b>Data inicial:</b></td>
- 							<td><? db_inputdata("dtini","","","",true,"text",1); ?></td>
+ 							<td><?php db_inputdata("dtini","","","",true,"text",1); ?></td>
  							<td><b>Data final:</b></td>
- 							<td><? db_inputdata("dtfim","","","",true,"text",1); ?></td>
+ 							<td><?php db_inputdata("dtfim","","","",true,"text",1); ?></td>
  						</tr>
  					</table>
  				</fieldset>
  				<table>
  					<tr>
- 						<td><?db_ancora("<b>Conta Pagadora:</b>","js_pesquisa_contapagadora(true);",1);?></td>
+ 						<td><?php db_ancora("<b>Conta Pagadora:</b>","js_pesquisa_contapagadora(true);",1);?></td>
  						<td>
- 							<?
+ 							<?php
 
 	      			db_input("e83_conta",6,1,true,"text",4,"onchange='js_pesquisa_contapagadora(false);'");
 	      			db_input("e83_descr",30,"",true,"text",3);
@@ -552,9 +552,9 @@ function js_hist_cheque(query){
  						</td>
  					</tr>
  					<tr>
- 						<td><?db_ancora("<b>Banco:</b>","js_pesquisa_banco(true);",1);?></td>
+ 						<td><?php db_ancora("<b>Banco:</b>","js_pesquisa_banco(true);",1);?></td>
  						<td>
- 							<?
+ 							<?php
  							$Idb90_codban = "";
 	      			db_input("db90_codban",6,1,true,"text",4,"onchange='js_pesquisa_banco(false);'");
 	      			db_input("db90_descr",30,"",true,"text",3);
@@ -604,7 +604,7 @@ function js_hist_cheque(query){
  </tr>
 </table>
 
-<?
+<?php
   db_menu();
 ?>
 </body>

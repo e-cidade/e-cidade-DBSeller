@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
               <?=$Ldb20_codperm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db20_codperm",6,$Idb20_codperm,true,"text",4,"","chave_db20_codperm");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
               <?=$Ldb20_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db20_anousu",4,$Idb20_anousu,true,"text",4,"","chave_db20_anousu");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_permemp.php")==true){
@@ -118,12 +118,12 @@ $cldb_permemp->rotulo->label("db20_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

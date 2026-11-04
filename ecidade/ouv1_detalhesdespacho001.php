@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -83,7 +83,7 @@ if ( $lDeptoSessao ) {
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
    <tr>
        <td>
-        <?
+        <?php
           $clcriaabas->identifica = array("listadespacho" => "Despachos do Processo",
                                           "despachoatual" => "Despacho Atual",
                                           "anexardocumentos" => "Anexar Documentos");
@@ -126,7 +126,7 @@ if ( $lDeptoSessao ) {
     parent.db_iframe_detalhes.hide();
   }
 
-  <?
+  <?php
     if ( $lDeptoSessao && isset($oGet->lRecebido) && $oGet->lRecebido == 'false' ) {
 	    if (!$lErro) {
 	    	echo "parent.js_pesquisar();";

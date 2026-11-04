@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,13 +63,13 @@ class cl_db_ordemagenda {
                  data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordemagenda() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordemagenda"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_db_ordemagenda {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sequencia = ($this->sequencia == ""?@$GLOBALS["HTTP_POST_VARS"]["sequencia"]:$this->sequencia);
        $this->codordem = ($this->codordem == ""?@$GLOBALS["HTTP_POST_VARS"]["codordem"]:$this->codordem);
@@ -99,7 +99,7 @@ class cl_db_ordemagenda {
      }
    }
    // funcao para inclusao
-   function incluir ($sequencia){ 
+   public function incluir ($sequencia){ 
       $this->atualizacampos();
      if($this->codordem == null ){ 
        $this->erro_sql = " Campo Código nao Informado.";
@@ -246,7 +246,7 @@ class cl_db_ordemagenda {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($sequencia=null) { 
+   public function alterar ($sequencia=null) { 
       $this->atualizacampos();
      $sql = " update db_ordemagenda set ";
      $virgula = "";
@@ -415,7 +415,7 @@ class cl_db_ordemagenda {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($sequencia=null,$dbwhere=null) { 
+   public function excluir ($sequencia=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sequencia));
      }else{ 
@@ -482,7 +482,7 @@ class cl_db_ordemagenda {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

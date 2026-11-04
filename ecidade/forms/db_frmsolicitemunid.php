@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("pc11_numero");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc17_unid?>">
-       <?
+       <?php
        db_ancora(@$Lpc17_unid,"js_pesquisapc17_unid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc17_unid',10,$Ipc17_unid,true,'text',$db_opcao," onchange='js_pesquisapc17_unid(false);'")
 ?>
-       <?
+       <?php
 db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        ?>
     </td>
@@ -54,22 +54,22 @@ db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        <?=@$Lpc17_quant?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc17_quant',15,$Ipc17_quant,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc17_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lpc17_codigo,"js_pesquisapc17_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc17_codigo',10,$Ipc17_codigo,true,'text',$db_opcao," onchange='js_pesquisapc17_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('pc11_numero',10,$Ipc11_numero,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_solicitemunid.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,15 +48,15 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tz11_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lz11_codigo,"js_pesquisaz11_codigo(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('z11_codigo',10,$Iz11_codigo,true,'text',3," onchange='js_pesquisaz11_codigo(false);'");
 ?>
-       <?
+       <?php
 db_input('z10_numcgm',8,$Iz10_numcgm,true,'hidden',3,'');
 echo "<script>js_OpenJanelaIframe('','db_iframe_cgmcorreto','func_cgmcorreto.php?pesquisa_chave='+document.form1.z11_codigo.value+'&funcao_js=parent.js_mostracgmcorreto','Pesquisa',false);</script>";
        ?>
@@ -64,19 +64,19 @@ echo "<script>js_OpenJanelaIframe('','db_iframe_cgmcorreto','func_cgmcorreto.php
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz11_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lz11_numcgm,"js_pesquisaz11_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('z11_numcgm',8,$Iz11_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz11_numcgm(false);'");
 if($db_opcao == 2){
   db_input('z11_numcgm',8,$Iz11_numcgm,true,'hidden',3,'','z11_numcgm_old');
   echo "<script>document.form1.z11_numcgm_old.value='$z11_numcgm'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('z11_nome',40,$Iz11_nome,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('z11_nome',40,$Iz11_nome,true,'text',3,'')
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?  
+   <?php  
    $sql="select * from cgmerrado where z11_codigo=$z11_codigo"; 
    //$sql="$clcgmerrado->sql_query("","","cgmerrado.z11_numcgm,cgm.z01_nome,cgmerrado.z11_codigo",""," cgmerrado.z11_codigo = ".@$z11_codigo."")";
    //die($sql);

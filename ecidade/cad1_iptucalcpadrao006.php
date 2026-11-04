@@ -86,7 +86,7 @@ if(isset($excluir)){
   </div>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

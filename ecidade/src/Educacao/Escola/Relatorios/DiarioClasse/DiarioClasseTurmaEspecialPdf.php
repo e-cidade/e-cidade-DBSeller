@@ -36,7 +36,7 @@ use ECidade\Educacao\Escola\Relatorios\DiarioClasse\Model\DadosDiarioClasse;
 class DiarioClasseTurmaEspecialPdf extends DiarioClassePdf
 {
 
-    protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse)
+    protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse, $request = null)
     {
         $this->cabecalhoDadosInstituicao($dadosDiarioClasse);
         $calendario = $dadosDiarioClasse->getCalendario();

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,7 +146,7 @@ if( isset($chavepesquisacgs) && $chavepesquisacgs != 0 ){
 		parent.iframe_a2.location.href='sau4_agendaexterna004.php?chavepesquisacgs=<?=$s118_i_numcgs?>&s124_i_numcgs=<?=$s118_i_numcgs?>&z01_v_nome=<?=$z01_v_nome?>';
 		//parent.mo_camada('a4');
 	</script>
-	<?
+	<?php
 }
 
 ?>
@@ -175,14 +175,14 @@ if( isset($chavepesquisacgs) && $chavepesquisacgs != 0 ){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmagendaexterna.php"));
         ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 // db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -191,7 +191,7 @@ if( isset($chavepesquisacgs) && $chavepesquisacgs != 0 ){
   js_tabulacaoforms("form1","s118_i_numcgs",true,1,"s118_i_numcgs",true);
 </script>
 
-<?
+<?php
 if(isset($incluir) || isset($alterar) ){
 	if(( isset($incluir) && $clsau_agendaexterna->numrows_incluir==0)  || (isset($alterar) && $clsau_agendaexterna->numrows_alterar==0) ){
 		$clsau_agendaexterna->erro(true,false);

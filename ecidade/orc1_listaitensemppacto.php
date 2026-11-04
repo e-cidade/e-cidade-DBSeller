@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ $numemp       = $oGet->numemp;
 	          <th class="table_header" width="12px" ><b>&nbsp;</b></th>
 	        </tr>  
 	        <tbody id="listaItensEmp" style=" height:300px; overflow:scroll; overflow-x:hidden; background-color:white"  >
-			      <?
+			      <?php
 		 		      if(isset($oGet->numemp)){
 					      	
 					      if ( isset($oGet->numemp) && trim($oGet->numemp) != "" ) {

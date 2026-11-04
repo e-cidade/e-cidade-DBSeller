@@ -1,0 +1,16 @@
+<?xml version='1.0' ?>
+<consulta distinct="true">
+  <campos>
+    <campo campo="db121_estrutural"                    label="cod_item_servico" />
+    <campo campo="db121_descricao"                     label="desc_item_servico"/>
+  </campos>
+  <from tabela="db_estruturavalor"/>
+  <juncoes>
+  </juncoes>
+  <filtros>
+    <filtro condicao="db121_db_estrutura = 150000" />
+    <filtro label="itemservico" condicao="db121_estrutural = '$itemservico'" obrigatorio="true"/>
+  </filtros>
+  <agrupamento campos="" />
+  <ordenacao   campos="" />
+</consulta>

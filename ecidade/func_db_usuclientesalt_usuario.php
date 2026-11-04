@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -143,7 +143,7 @@ if( isset($incluir) ){
               <?=$Lat10_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cliente",10,$Iat10_codcli,true,"text",3);
 		       ?>
             </td>
@@ -153,7 +153,7 @@ if( isset($incluir) ){
               <?=$Lat10_login?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at10_login",20,$Iat10_login,true,"text",2);
 		       ?>
             </td>
@@ -163,13 +163,13 @@ if( isset($incluir) ){
               <?=$Lat10_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at10_nome",40,$Iat10_nome,true,"text",2);
 		       ?>
             </td>
           </tr>
 
-         <?
+         <?php
               if( isset($pesquisa) ){
        ?>
           
@@ -178,7 +178,7 @@ if( isset($incluir) ){
               <strong>Nascimento:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_inputdata("rh01_nasc",substr(@$rh01_nasc,8,2),substr(@$rh01_nasc,5,2),substr(@$rh01_nasc,0,4),true,"text",2);
 		       ?>
             </td>
@@ -189,7 +189,7 @@ if( isset($incluir) ){
               <strong>Sexo:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                $itens = array("F"=>"Feminino","M"=>"Masculino");
 		       db_select("rh01_sexo",$itens,true,"text",2);
 		       ?>
@@ -197,13 +197,13 @@ if( isset($incluir) ){
           </tr>
 
 
-        <?
+        <?php
         }
         ?>
 
           <tr> 
             <td colspan="2" align="center"> 
-              <?
+              <?php
               if( isset($pesquisa) ){
                 echo '<input name="at10_usuario" type="hidden" id="at10_usuario" value="'.$at10_usuario.'"> ';
                 echo '<input name="alterar" type="submit" id="alterar" value="Alterar"> ';
@@ -221,7 +221,7 @@ if( isset($incluir) ){
 </table>
 </body>
 </html>
-<?
+<?php
 if( isset($alterar) || isset($incluir) ){
   echo "<script>document.form1.fechar.click();</script>";  
 }

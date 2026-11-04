@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -124,7 +124,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
   <tr>
     <td title="<?=$Tt52_bem?>"><?=$Lt52_bem?></td>
     <td>
-    <?
+    <?php
       db_input('t52_bem',8,$It52_bem,true,"text",3,"");
     ?>
     </td>
@@ -156,14 +156,14 @@ if ($t07_confplaca==1||$t07_confplaca==2||$db_opcao!=1){
   if ($t07_confplaca==3) {
     ?>
 
-	<?db_ancora(@$Lt52_ident,"js_pesquisa_texto(true);",$opc); ?>
+	<?php db_ancora(@$Lt52_ident,"js_pesquisa_texto(true);",$opc); ?>
 
 <?$fj=" ";
   }else{
     ?>
 <?=@$Lt52_ident?></td><td>
-<?}?>
-       <?
+<?php }?>
+       <?php
 db_input('t52_ident',20,$It52_ident,true,'text',$iOpcaoPlaca, " onchange='js_buscplaca(document.form1.t52_ident.value);'");
 if ($t07_confplaca==3&&($db_opcao==1||$db_opcao==11)){
      db_input('t52_ident_seq',8,"",true,'text',3,"");
@@ -171,7 +171,7 @@ if ($t07_confplaca==3&&($db_opcao==1||$db_opcao==11)){
        ?>
     </td>
   </tr>
-<?
+<?php
 
 if ($db_opcao == 2 || $db_opcao == 22){
 //  $t52_ident_atual = $t52_ident;
@@ -191,7 +191,7 @@ db_input("tipo_inclui",10,"",true,"hidden",3,"");
        <?=@$Lt52_descr?>
     </td>
    <td>
-<?
+<?php
 if (isset($t52_descr)) {
   $t52_descr = htmlspecialchars($t52_descr);
 }
@@ -202,12 +202,12 @@ db_input('t52_descr',51,$It52_descr,true,'text',$db_opcao,$fj)
   </tr>
     <tr>
     <td nowrap title="<?=@$Tt64_class?>">
-       <?
+       <?php
          db_ancora(@$Lt64_class,"js_pesquisat64_class(true);",(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
        ?>
     </td>
     <td>
-<?
+<?php
     $cldb_estrut->autocompletar = true;
     $cldb_estrut->mascara = false;
     $cldb_estrut->input   = true;
@@ -222,22 +222,22 @@ db_input('t52_descr',51,$It52_descr,true,'text',$db_opcao,$fj)
       db_msgbox($msg_erro);
     }
    ?>
-       <?
+       <?php
         db_input('t64_descr',40,$It64_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt52_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lt52_numcgm,"js_pesquisat52_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('t52_numcgm',8,$It52_numcgm,true,'text',$db_opcao," onchange='js_pesquisat52_numcgm(false);'")
 			?>
-			       <?
+			       <?php
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 			       ?>
     </td>
@@ -274,7 +274,7 @@ db_input('t52_descr',51,$It52_descr,true,'text',$db_opcao,$fj)
        <?=@$Lt52_valaqu?>
     </td>
     <td>
-<?
+<?php
 db_input('t52_valaqu',15,$It52_valaqu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -284,12 +284,12 @@ db_input('t52_valaqu',15,$It52_valaqu,true,'text',$db_opcao,"")
        <?=@$Lt52_dtaqu?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',$db_opcao,"");
 ?>
     </td>
   </tr>
-  
+
   <tr>
     <td nowrap title="<?=@$Tt52_dtinclusao?>">
        <?=@$Lt52_dtinclusao?>
@@ -298,7 +298,7 @@ db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'t
 <?
   $data = date('d/m/Y', db_getsession('DB_datausu'));
   if($db_opcao != 1) {
-                        
+
     $data = $t52_dtinclusao;
   }
   echo "<input type='text' id='t52_dtinclusao' name='t52_dtinclusao' value='{$data}' size='10' style='background-color: #DEB887' readonly />";
@@ -311,7 +311,7 @@ db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'t
        <?=@$Lt52_obs?>
     </td>
     <td>
-<?
+<?php
 db_textarea('t52_obs',3,48,$It52_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -339,41 +339,41 @@ db_textarea('t52_obs',3,48,$It52_obs,true,'text',$db_opcao,"")
   ?>
   <tr>
   	<td><b>Órgão:</b></td>
-  	<td><? db_input('o40_descr',50,$Io40_descr,3,'text',3); ?></td>
+  	<td><?php db_input('o40_descr',50,$Io40_descr,3,'text',3); ?></td>
   </tr>
   <tr>
   	<td><b>Unidade:</b></td>
-  	<td><? db_input('o41_descr',50,$Io41_descr,3,'text',3); ?></td>
+  	<td><?php db_input('o41_descr',50,$Io41_descr,3,'text',3); ?></td>
   </tr>
   <?php
   }
   ?>
    <td nowrap title="<?=@$Tt52_depart?>">
-       <?
+       <?php
        db_ancora(@$Lt52_depart,"js_pesquisat52_depart(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('t52_depart',8,$It52_depart,true,'text',$db_opcao," onchange='js_pesquisat52_depart(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?if (isset($t52_depart)&&$t52_depart!=""){?>
+  <?php if (isset($t52_depart)&&$t52_depart!=""){?>
   <tr>
     <td nowrap title="Divisão do Depart.">
       <b> Divisão:</b>
     </td>
-    <?
+    <?php
       if($db_opcao != 3) {
     ?>
       <td>
       <select name='t33_divisao'>
       <option value=''>Nenhuma</option>
-      <?
+      <?php
         $sCamposDepartDivisao = "t30_codigo,t30_descr";
         $sWhereDepartDivisao  = "t30_ativo = true and t30_depto=$t52_depart";
         $sSqlDepartDivisao = $cldepartdiv->sql_query_file(null,$sCamposDepartDivisao ,null,$sWhereDepartDivisao);
@@ -391,28 +391,28 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
  	    ?>
       </select>
     </td>
-  <?
+  <?php
     } else {
   ?>
   	<td>
-      <?
+      <?php
         db_input('t33_divisao',8,$It33_divisao,true,'text',$db_opcao,"");
         db_input('t30_descr',40,$It30_descr,true,'text',$db_opcao,"");
       ?>
     </td>
-  <?
+  <?php
     }
   ?>
   </tr>
-  	<?  }?>
+  	<?php  }?>
   	<tr>
     <td nowrap title="<?="Convênio"?>">
-       <?
+       <?php
        db_ancora("<b>Convênio:</b>","js_pesquisat04_sequencial(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 			if(isset($t52_bem)){
 				$result_benscedente = $clbenscedente->sql_record($clbenscedente->sql_query(null,"t09_benscadcedente,a.z01_nome as z01_nome_convenio",null,"t09_bem = $t52_bem"));
 
@@ -427,27 +427,27 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
 			}
 			db_input('t04_sequencial',8,$It04_sequencial,true,'text',$db_opcao," onchange='js_pesquisat04_sequencial(false);'")
 			?>
-	    <?
+	    <?php
 			db_input('z01_nome_convenio',40,'',true,'text',3,'')
 	    ?>
     </td>
   </tr>
 
   <tr>
-<?
+<?php
 if($db_opcao == 1 || (isset($tipo_inclui)&&trim($tipo_inclui)!="")){
 ?>
   <tr>
     <td nowrap title="<?=@$Tt56_situac?>">
-       <?
+       <?php
        db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",1);
        ?>
     </td>
     <td>
-				<?
+				<?php
 				db_input('t56_situac',8,$It56_situac,true,'text',1," onchange='js_pesquisat56_situac(false);'")
 				?>
-       <?
+       <?php
         db_input('t70_descr',40,$It70_descr,true,'text',3,'');
     }
   ?>
@@ -458,7 +458,7 @@ if($db_opcao == 1 || (isset($tipo_inclui)&&trim($tipo_inclui)!="")){
         <b>Placa de Identificação:</b>
     </td>
     <td>
-       <?
+       <?php
         if($db_opcao == 1 ){
           $placaidentificacao = "Não";
         }else if($db_opcao > 1){
@@ -487,21 +487,21 @@ if($db_opcao == 1 || (isset($tipo_inclui)&&trim($tipo_inclui)!="")){
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> <?=((isset($tipo_inclui)&&$tipo_inclui=="true"))?"onclick='return js_pesquisa_bens();'":""?>>
 <!--"-->
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?=($msg_erro==""?"":"disabled")?> >
-<?if($db_opcao==2){?>
+<?php if($db_opcao==2){?>
 	<input name="novo" type="button" id="novo" value="Novo" onclick="parent.location.href='pat1_bens001.php';" <?=($msg_erro==""?"":"disabled")?> >
 <?}
 
   if($db_opcao==1||$db_opcao==11){
 ?>
 <input name="importar" type="button" id="importar" value="Importação" onClick="js_importacao();">
-<?
+<?php
   }
 ?>
 </center>
 </form>
 <script>
 function js_importacao(){
-<?
+<?php
    if(isset($tipo_inclui)&&$tipo_inclui==true){
        $funcao = "func_benslotealt.php";
    } else {
@@ -512,7 +512,7 @@ function js_importacao(){
 }
 function js_mostrarbem(chave){
   db_iframe_bens.hide();
-<?
+<?php
     if(isset($tipo_inclui)&&$tipo_inclui==true) {
         $global = "&tipo_inclui=$tipo_inclui";
     } else {
@@ -531,12 +531,12 @@ function js_mostratext(placa){
 function js_retplaca(placa,seq){
 	//alert(placa);
 	//alert(seq);
-	<?if ($t07_confplaca==2){?>
+	<?php if ($t07_confplaca==2){?>
 		document.form1.t52_ident.value = placa+seq;
 	<?}else if ($t07_confplaca==3){?>
 		document.form1.t52_ident.value = placa;
 		document.form1.t52_ident_seq.value = seq;
-	<?}?>
+	<?php }?>
 }
 function js_buscplaca(classif){
 	    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_bens','db_iframe_bp','pat1_retseqplaca.php?classif='+classif,'',false);
@@ -628,9 +628,9 @@ function js_pesquisat64_class(mostra){
        }
        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_bens','db_iframe_clabens','func_clabens.php?pesquisa_chave='+testa+'&lClass=true&funcao_js=parent.js_mostraclabens&analitica=true','Pesquisa',false);
      }else{
-     	<?if ($t07_confplaca==2&&$db_opcao==1){?>
+     	<?php if ($t07_confplaca==2&&$db_opcao==1){?>
 		document.form1.t52_ident.value ="";
-	<?}?>
+	<?php }?>
        document.form1.t64_descr.value = '';
      }
   }
@@ -640,21 +640,21 @@ function js_mostraclabens(chave,erro){
   if(erro==true){
     document.form1.t64_class.value = '';
     document.form1.t64_class.focus();
-     	<?if ($t07_confplaca==2&&$db_opcao==1){?>
+     	<?php if ($t07_confplaca==2&&$db_opcao==1){?>
 		document.form1.t52_ident.value ="";
-	<?}?>
+	<?php }?>
   }else{
-  	<?if ($t07_confplaca==2&&$db_opcao==1){?>
+  	<?php if ($t07_confplaca==2&&$db_opcao==1){?>
 	js_buscplaca(document.form1.t64_class.value);
-	<?}?>
+	<?php }?>
   }
 }
 function js_mostraclabens1(chave1,chave2){
   document.form1.t64_class.value = chave1;
   document.form1.t64_descr.value = chave2;
-  <?if ($t07_confplaca==2&&$db_opcao==1){?>
+  <?php if ($t07_confplaca==2&&$db_opcao==1){?>
 	js_buscplaca(document.form1.t64_class.value);
-  <?}?>
+  <?php }?>
   db_iframe_clabens.hide();
 }
 function js_pesquisat52_codmat(mostra){
@@ -753,7 +753,7 @@ function js_mostradb_depart1(chave1,chave2){
   document.form1.submit();
 }
 function js_pesquisa(){
-  <?
+  <?php
      if(isset($tipo_inclui)&&$tipo_inclui==true){
          $url = "func_benslotealt.php?funcao_js=parent.js_preenchepesquisa|t42_codigo";
      } else {
@@ -764,13 +764,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if(isset($chavepesquisa)){
       echo "\njs_mascara03_t64_class(document.form1.t64_class.value);\n";
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("pc01_descrmater");
        <?=@$Lrh13_rubric?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh13_rubric',4,$Irh13_rubric,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh13_item?>">
-       <?
+       <?php
        db_ancora(@$Lrh13_item,"js_pesquisarh13_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh13_item',6,$Irh13_item,true,'text',$db_opcao," onchange='js_pesquisarh13_item(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhrubitem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

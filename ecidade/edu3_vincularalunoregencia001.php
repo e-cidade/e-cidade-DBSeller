@@ -54,7 +54,7 @@ $clrotulo->label("ed57_i_nummatr");
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	  db_app::load("scripts.js");
 	  db_app::load("prototype.js");
 	  db_app::load("widgets/windowAux.widget.js");
@@ -87,17 +87,17 @@ $clrotulo->label("ed57_i_nummatr");
         <tr>
           </td>
           <td>
-            <?db_ancora($Led60_i_turma, "js_pesquisaed60_i_turma();", '');?>
+            <?php db_ancora($Led60_i_turma, "js_pesquisaed60_i_turma();", '');?>
           </td>
           <td colspan='3'>
-            <?db_input('ed60_i_turma', 10, $Ied60_i_turma, true, 'text', 3, '')?>
-            <?db_input('ed57_c_descr', 30, $Ied57_c_descr, true, 'text', 3, '')?>
+            <?php db_input('ed60_i_turma', 10, $Ied60_i_turma, true, 'text', 3, '')?>
+            <?php db_input('ed57_c_descr', 30, $Ied57_c_descr, true, 'text', 3, '')?>
           </td>
           <td>
             <?=$Led57_i_calendario?>
           </td>
           <td>
-            <?db_input('ed52_c_descr', 20, $Ied52_c_descr, true, 'text', 3, '')?>
+            <?php db_input('ed52_c_descr', 20, $Ied52_c_descr, true, 'text', 3, '')?>
           </td>
         </tr>
         <tr>
@@ -105,13 +105,13 @@ $clrotulo->label("ed57_i_nummatr");
             <?=$Led31_i_curso?>
           </td>
           <td colspan='3'>
-            <?db_input('ed29_c_descr', '40', $Ied29_c_descr, true, 'text', 3, '')?>
+            <?php db_input('ed29_c_descr', '40', $Ied29_c_descr, true, 'text', 3, '')?>
           </td>
           <td>
             <?=$Led223_i_serie?>
           </td>
           <td>
-            <?db_input('ed11_c_descr', 10, $Ied11_c_descr, true, 'text', 3, '')?>
+            <?php db_input('ed11_c_descr', 10, $Ied11_c_descr, true, 'text', 3, '')?>
           </td>
         </tr>
         <tr id="linhaTurno">
@@ -119,7 +119,7 @@ $clrotulo->label("ed57_i_nummatr");
             <?=$Led57_i_turno?>
           </td>
           <td colspan='3'>
-            <?db_input('ed15_c_nome', 20, $Ied15_c_nome, true, 'text', 3, '')?>
+            <?php db_input('ed15_c_nome', 20, $Ied15_c_nome, true, 'text', 3, '')?>
           </td>
         </tr>
       </table>
@@ -139,7 +139,7 @@ $clrotulo->label("ed57_i_nummatr");
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

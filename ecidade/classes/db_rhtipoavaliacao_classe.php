@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE rhtipoavaliacao
-class cl_rhtipoavaliacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h69_sequencial = 0; 
-   var $h69_descricao = null; 
-   var $h69_rhgrupotipoavaliacao = 0; 
-   var $h69_quantminima = 0; 
-   var $h69_quantmaxima = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhtipoavaliacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h69_sequencial = 0;
+   var $h69_descricao = null;
+   var $h69_rhgrupotipoavaliacao = 0;
+   var $h69_quantminima = 0;
+   var $h69_quantmaxima = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h69_sequencial = int4 = sequencial 
-                 h69_descricao = varchar(150) = Descrição 
-                 h69_rhgrupotipoavaliacao = int4 = Grupo de tipo de avaliação 
-                 h69_quantminima = int4 = Quantidade minima 
-                 h69_quantmaxima = int4 = Quantidade máxima 
+                 h69_sequencial = int4 = sequencial
+                 h69_descricao = varchar(150) = Descrição
+                 h69_rhgrupotipoavaliacao = int4 = Grupo de tipo de avaliação
+                 h69_quantminima = int4 = Quantidade minima
+                 h69_quantmaxima = int4 = Quantidade máxima
                  ";
-   //funcao construtor da classe 
-   function cl_rhtipoavaliacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhtipoavaliacao"); 
+     $this->rotulo = new rotulo("rhtipoavaliacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_rhtipoavaliacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h69_sequencial = ($this->h69_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["h69_sequencial"]:$this->h69_sequencial);
        $this->h69_descricao = ($this->h69_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["h69_descricao"]:$this->h69_descricao);
@@ -83,9 +83,9 @@ class cl_rhtipoavaliacao {
      }
    }
    // funcao para inclusao
-   function incluir ($h69_sequencial){ 
+   public function incluir ($h69_sequencial){
       $this->atualizacampos();
-     if($this->h69_descricao == null ){ 
+     if($this->h69_descricao == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "h69_descricao";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_rhtipoavaliacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h69_rhgrupotipoavaliacao == null ){ 
+     if($this->h69_rhgrupotipoavaliacao == null ){
        $this->erro_sql = " Campo Grupo de tipo de avaliação nao Informado.";
        $this->erro_campo = "h69_rhgrupotipoavaliacao";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_rhtipoavaliacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h69_quantminima == null ){ 
+     if($this->h69_quantminima == null ){
        $this->erro_sql = " Campo Quantidade minima nao Informado.";
        $this->erro_campo = "h69_quantminima";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_rhtipoavaliacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h69_quantmaxima == null ){ 
+     if($this->h69_quantmaxima == null ){
        $this->erro_sql = " Campo Quantidade máxima nao Informado.";
        $this->erro_campo = "h69_quantmaxima";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_rhtipoavaliacao {
        return false;
      }
      if($h69_sequencial == "" || $h69_sequencial == null ){
-       $result = db_query("select nextval('rhtipoavaliacao_h69_sequencial_seq')"); 
+       $result = db_query("select nextval('rhtipoavaliacao_h69_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhtipoavaliacao_h69_sequencial_seq do campo: h69_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhtipoavaliacao_h69_sequencial_seq do campo: h69_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->h69_sequencial = pg_result($result,0,0); 
+       $this->h69_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhtipoavaliacao_h69_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $h69_sequencial)){
@@ -142,10 +142,10 @@ class cl_rhtipoavaliacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->h69_sequencial = $h69_sequencial; 
+         $this->h69_sequencial = $h69_sequencial;
        }
      }
-     if(($this->h69_sequencial == null) || ($this->h69_sequencial == "") ){ 
+     if(($this->h69_sequencial == null) || ($this->h69_sequencial == "") ){
        $this->erro_sql = " Campo h69_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_rhtipoavaliacao {
        return false;
      }
      $sql = "insert into rhtipoavaliacao(
-                                       h69_sequencial 
-                                      ,h69_descricao 
-                                      ,h69_rhgrupotipoavaliacao 
-                                      ,h69_quantminima 
-                                      ,h69_quantmaxima 
+                                       h69_sequencial
+                                      ,h69_descricao
+                                      ,h69_rhgrupotipoavaliacao
+                                      ,h69_quantminima
+                                      ,h69_quantmaxima
                        )
                 values (
-                                $this->h69_sequencial 
-                               ,'$this->h69_descricao' 
-                               ,$this->h69_rhgrupotipoavaliacao 
-                               ,$this->h69_quantminima 
-                               ,$this->h69_quantmaxima 
+                                $this->h69_sequencial
+                               ,'$this->h69_descricao'
+                               ,$this->h69_rhgrupotipoavaliacao
+                               ,$this->h69_quantminima
+                               ,$this->h69_quantmaxima
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipos de avaliação ($this->h69_sequencial) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_rhtipoavaliacao {
        $resac = db_query("insert into db_acount values($acount,3312,18702,'','".AddSlashes(pg_result($resaco,0,'h69_quantmaxima'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($h69_sequencial=null) { 
+   public function alterar ($h69_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhtipoavaliacao set ";
      $virgula = "";
-     if(trim($this->h69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_sequencial"])){ 
+     if(trim($this->h69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_sequencial"])){
        $sql  .= $virgula." h69_sequencial = $this->h69_sequencial ";
        $virgula = ",";
-       if(trim($this->h69_sequencial) == null ){ 
+       if(trim($this->h69_sequencial) == null ){
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "h69_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_rhtipoavaliacao {
          return false;
        }
      }
-     if(trim($this->h69_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_descricao"])){ 
+     if(trim($this->h69_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_descricao"])){
        $sql  .= $virgula." h69_descricao = '$this->h69_descricao' ";
        $virgula = ",";
-       if(trim($this->h69_descricao) == null ){ 
+       if(trim($this->h69_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "h69_descricao";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_rhtipoavaliacao {
          return false;
        }
      }
-     if(trim($this->h69_rhgrupotipoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_rhgrupotipoavaliacao"])){ 
+     if(trim($this->h69_rhgrupotipoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_rhgrupotipoavaliacao"])){
        $sql  .= $virgula." h69_rhgrupotipoavaliacao = $this->h69_rhgrupotipoavaliacao ";
        $virgula = ",";
-       if(trim($this->h69_rhgrupotipoavaliacao) == null ){ 
+       if(trim($this->h69_rhgrupotipoavaliacao) == null ){
          $this->erro_sql = " Campo Grupo de tipo de avaliação nao Informado.";
          $this->erro_campo = "h69_rhgrupotipoavaliacao";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_rhtipoavaliacao {
          return false;
        }
      }
-     if(trim($this->h69_quantminima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_quantminima"])){ 
+     if(trim($this->h69_quantminima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_quantminima"])){
        $sql  .= $virgula." h69_quantminima = $this->h69_quantminima ";
        $virgula = ",";
-       if(trim($this->h69_quantminima) == null ){ 
+       if(trim($this->h69_quantminima) == null ){
          $this->erro_sql = " Campo Quantidade minima nao Informado.";
          $this->erro_campo = "h69_quantminima";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_rhtipoavaliacao {
          return false;
        }
      }
-     if(trim($this->h69_quantmaxima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_quantmaxima"])){ 
+     if(trim($this->h69_quantmaxima)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h69_quantmaxima"])){
        $sql  .= $virgula." h69_quantmaxima = $this->h69_quantmaxima ";
        $virgula = ",";
-       if(trim($this->h69_quantmaxima) == null ){ 
+       if(trim($this->h69_quantmaxima) == null ){
          $this->erro_sql = " Campo Quantidade máxima nao Informado.";
          $this->erro_campo = "h69_quantmaxima";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_rhtipoavaliacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipos de avaliação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h69_sequencial;
@@ -327,14 +327,14 @@ class cl_rhtipoavaliacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($h69_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h69_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h69_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_rhtipoavaliacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipos de avaliação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h69_sequencial;
@@ -392,11 +392,11 @@ class cl_rhtipoavaliacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -419,11 +419,11 @@ class cl_rhtipoavaliacao {
      return $result;
    }
 
-   // funcao do sql 
-   function sql_query ( $h69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $h69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,15 +437,15 @@ class cl_rhtipoavaliacao {
      $sql2 = "";
      if($dbwhere==""){
        if($h69_sequencial!=null ){
-         $sql2 .= " where rhtipoavaliacao.h69_sequencial = $h69_sequencial "; 
-       } 
+         $sql2 .= " where rhtipoavaliacao.h69_sequencial = $h69_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,11 +454,11 @@ class cl_rhtipoavaliacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $h69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $h69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,15 +471,15 @@ class cl_rhtipoavaliacao {
      $sql2 = "";
      if($dbwhere==""){
        if($h69_sequencial!=null ){
-         $sql2 .= " where rhtipoavaliacao.h69_sequencial = $h69_sequencial "; 
-       } 
+         $sql2 .= " where rhtipoavaliacao.h69_sequencial = $h69_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,11 +489,11 @@ class cl_rhtipoavaliacao {
      return $sql;
   }
 
-  
+
   /**
    * Retorna os tipos de avaliação selecionada, totalizando seus pontos
-   */   
-  function sql_query_somaRequisitos($iCodigoPromocao){
+   */
+  public function sql_query_somaRequisitos($iCodigoPromocao){
 
     $sSql = "select                                                                                                                   ";
     $sSql .= "   h69_sequencial,                                                                                                      ";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lk15_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_codigo',6,$Ik15_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk15_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lk15_numcgm,"js_pesquisak15_numcgm(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_numcgm',10,$Ik15_numcgm,true,'text',3," onchange='js_pesquisak15_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lk15_codbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_codbco',4,$Ik15_codbco,true,'text',3,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('k15_codbco',4,$Ik15_codbco,true,'text',3,"")
        <?=@$Lk15_conv1?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_conv1',7,$Ik15_conv1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('k15_conv1',7,$Ik15_conv1,true,'text',$db_opcao,"")
        <?=@$Lk15_conv2?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_conv2',7,$Ik15_conv2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('k15_conv2',7,$Ik15_conv2,true,'text',$db_opcao,"")
        <?=@$Lk15_conv3?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_conv3',7,$Ik15_conv3,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k15_conv3',7,$Ik15_conv3,true,'text',$db_opcao,"")
        <?=@$Lk15_conv4?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_conv4',7,$Ik15_conv4,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('k15_conv4',7,$Ik15_conv4,true,'text',$db_opcao,"")
        <?=@$Lk15_conv5?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_conv5',7,$Ik15_conv5,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('k15_conv5',7,$Ik15_conv5,true,'text',$db_opcao,"")
        <?=@$Lk15_seq1?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_seq1',4,$Ik15_seq1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('k15_seq1',4,$Ik15_seq1,true,'text',$db_opcao,"")
        <?=@$Lk15_seq2?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_seq2',4,$Ik15_seq2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('k15_seq2',4,$Ik15_seq2,true,'text',$db_opcao,"")
        <?=@$Lk15_seq3?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_seq3',4,$Ik15_seq3,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('k15_seq3',4,$Ik15_seq3,true,'text',$db_opcao,"")
        <?=@$Lk15_seq4?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_seq4',4,$Ik15_seq4,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('k15_seq4',4,$Ik15_seq4,true,'text',$db_opcao,"")
        <?=@$Lk15_seq5?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_seq5',4,$Ik15_seq5,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ db_input('k15_seq5',4,$Ik15_seq5,true,'text',$db_opcao,"")
        <?=@$Lk15_ceden1?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_ceden1',6,$Ik15_ceden1,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ db_input('k15_ceden1',6,$Ik15_ceden1,true,'text',$db_opcao,"")
        <?=@$Lk15_ceden2?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_ceden2',6,$Ik15_ceden2,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -193,7 +193,7 @@ db_input('k15_ceden2',6,$Ik15_ceden2,true,'text',$db_opcao,"")
        <?=@$Lk15_ceden3?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_ceden3',6,$Ik15_ceden3,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -203,7 +203,7 @@ db_input('k15_ceden3',6,$Ik15_ceden3,true,'text',$db_opcao,"")
        <?=@$Lk15_ceden4?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_ceden4',6,$Ik15_ceden4,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -213,7 +213,7 @@ db_input('k15_ceden4',6,$Ik15_ceden4,true,'text',$db_opcao,"")
        <?=@$Lk15_ceden5?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_ceden5',6,$Ik15_ceden5,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -252,7 +252,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadban.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

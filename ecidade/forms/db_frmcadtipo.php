@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clcadtipo->rotulo->label();
        <?=@$Lk03_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('k03_tipo',3,$Ik03_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('k03_tipo',3,$Ik03_tipo,true,'text',$db_opcao,"")
        <?=@$Lk03_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('k03_descr',40,$Ik03_descr,true,'text',3,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k03_descr',40,$Ik03_descr,true,'text',3,"")
        <?=@$Lk03_parcano?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k03_parcano',$x,true,$db_opcao,"");
 ?>
@@ -74,7 +74,7 @@ db_select('k03_parcano',$x,true,$db_opcao,"");
        <?=@$Lk03_parcelamento?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k03_parcelamento',$x,true,$db_opcao,"");
 ?>
@@ -85,7 +85,7 @@ db_select('k03_parcelamento',$x,true,$db_opcao,"");
        <?=@$Lk03_permparc?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k03_permparc',$x,true,$db_opcao,"");
 ?>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadtipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

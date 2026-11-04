@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -51,9 +51,9 @@ $receitas              = $orcparamrel->sql_parametro('12','0'); // grupo das rec
 $desp_ef               = $orcparamrel->sql_parametro('12','1'); // despesas com ensino funcamental
 $desp_pgt              = $orcparamrel->sql_parametro('12','4'); // pgto de profissionais do magistério
 $desp_pgto             = $orcparamrel->sql_parametro('12','5'); // Demais de profissionais do magistério
-$desp_social           = $orcparamrel->sql_parametro('12','6'); 
+$desp_social           = $orcparamrel->sql_parametro('12','6');
 $desp_credito          = $orcparamrel->sql_parametro('12','7');
-$desp_edu              = $orcparamrel->sql_parametro('12','8'); 
+$desp_edu              = $orcparamrel->sql_parametro('12','8');
 $desp_parcela          = $orcparamrel->sql_parametro('12','9'); //
 $desp_fundamental      = $orcparamrel->sql_parametro('12','10'); //
 $desp_infantil         = $orcparamrel->sql_parametro('12','11'); //
@@ -66,18 +66,18 @@ $rp_ensino             = $orcparamrel->sql_parametro('12','17'); // ensino funda
 $saldo_fundef          = $orcparamrel->sql_parametro('12','18'); // ensino fundamental
 $sem_uso               = $orcparamrel->sql_parametro('12','19'); // ensino fundamental
 // receitas
-$rec_impostos          = $orcparamrel->sql_parametro('12','20'); // 
-$rec_ativa             = $orcparamrel->sql_parametro('12','21'); // 
-$rec_multas            = $orcparamrel->sql_parametro('12','22'); // 
-$rec_cota_fpm          = $orcparamrel->sql_parametro('12','23'); // 
-$rec_cota_icms         = $orcparamrel->sql_parametro('12','24'); // 
-$rec_parte_icms        = $orcparamrel->sql_parametro('12','25'); // 
-$rec_parte_ipi         = $orcparamrel->sql_parametro('12','26'); // 
-$rec_parcela           = $orcparamrel->sql_parametro('12','27'); // 
-$rec_itr               = $orcparamrel->sql_parametro('12','28'); // 
-$rec_ouro              = $orcparamrel->sql_parametro('12','29'); // 
+$rec_impostos          = $orcparamrel->sql_parametro('12','20'); //
+$rec_ativa             = $orcparamrel->sql_parametro('12','21'); //
+$rec_multas            = $orcparamrel->sql_parametro('12','22'); //
+$rec_cota_fpm          = $orcparamrel->sql_parametro('12','23'); //
+$rec_cota_icms         = $orcparamrel->sql_parametro('12','24'); //
+$rec_parte_icms        = $orcparamrel->sql_parametro('12','25'); //
+$rec_parte_ipi         = $orcparamrel->sql_parametro('12','26'); //
+$rec_parcela           = $orcparamrel->sql_parametro('12','27'); //
+$rec_itr               = $orcparamrel->sql_parametro('12','28'); //
+$rec_ouro              = $orcparamrel->sql_parametro('12','29'); //
 $rec_ipva              = $orcparamrel->sql_parametro('12','30'); //
-$rec_transf_fundef     = $orcparamrel->sql_parametro('12','31'); // 
+$rec_transf_fundef     = $orcparamrel->sql_parametro('12','31'); //
 $rec_transf_recurso    = $orcparamrel->sql_parametro('12','32'); // transferencias de recursos do FUNDEF
 $rec_complementacao    = $orcparamrel->sql_parametro('12','33'); //
 $rec_salario           = $orcparamrel->sql_parametro('12','34'); // cota-parte contribuição social do salário-Educação
@@ -98,10 +98,10 @@ $RP_MDE_APURADA = 0;
 $RP_MDE_INSCRITO= 0;
 $RP_FUNDEF_MINIMA  = 0;
 $RP_FUNDEF_APURADA = 0;
-$RP_FUNDEF_INSCRITO= 0; 
+$RP_FUNDEF_INSCRITO= 0;
 $res = $clconrelinfo->sql_record(
        $clconrelinfo->sql_query_valores(12,str_replace('-',',',$db_selinstit)));
-       
+
 if ($clconrelinfo->numrows > 0 ){
   for ($x=0;$x < $clconrelinfo->numrows;$x++){
      db_fieldsmemory($res,$x);
@@ -118,20 +118,20 @@ if ($clconrelinfo->numrows > 0 ){
      } else if ($c83_codigo ==6 ){
         $COMPENSACAO_RP_FUNDEF  = $c83_informacao;
      } else if ($c83_codigo ==251 ){
-        $RP_MDE_MINIMA   = $c83_informacao;   
+        $RP_MDE_MINIMA   = $c83_informacao;
      } else if ($c83_codigo ==252 ){
         $RP_MDE_APURADA  = $c83_informacao;
      } else if ($c83_codigo ==253 ){
         $RP_MDE_INSCRITO  = $c83_informacao;
      } else if ($c83_codigo ==254 ){
-        $RP_FUNDEF_MINIMA  = $c83_informacao;   
+        $RP_FUNDEF_MINIMA  = $c83_informacao;
      } else if ($c83_codigo ==255 ){
         $RP_FUNDEF_APURADA  = $c83_informacao;
      } else if ($c83_codigo ==256 ){
         $RP_FUNDEF_INSCRITO = $c83_informacao;
-     }      
+     }
   }
-}  
+}
 //-------------------------------------------------------------------------------------------------
 // totalizadores dos relatorios
 $somador_I_inicial = 0;
@@ -165,7 +165,7 @@ $db_filtro = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 $result = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
 
 $sql_dotacao = db_dotacaosaldo(8,1,4,true,' o58_instit in ('.str_replace('-',', ',$db_selinstit).') ',$anousu,$dt_ini,$dt_fin,'8','0',true);
-$sql = " select 
+$sql = " select
              (o58_elemento||'00') as o58_elemento,
 	         o56_descr,
 	         dot_ini,
@@ -184,14 +184,14 @@ $sql = " select
 	    inner join conplano on c60_anousu = $anousu and substr(conplano.c60_estrut,1,13)=x.o58_elemento
 	";
  $result_desp = db_query($sql);
- 
+
  $result_subfunc = db_dotacaosaldo(4,3,2,true,"o58_codigo=20 and o58_instit in (".str_replace('-',', ',$db_selinstit)." ) ",$anousu,$dt_ini,$dt_fin);
 
- 
+
  $result_bal = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
  //db_criatabela($result_bal);
  //exit;
- // nao e usada 
+ // nao e usada
 
  ////////
  // recorset usados para controle de rp inscritos em exec.anteriores vinculados a educação
@@ -201,7 +201,7 @@ $sql = " select
                              $db_filtro,
 			     $anousu.'-01-01',
 			     $dt_fin,
-                             " o58_codigo=20 and vlranu > 0 "); 
+                             " o58_codigo=20 and vlranu > 0 ");
  $result_rp_fundef = db_rpsaldo($anousu,
                                 $db_filtro,
 				$anousu.'-01-01',
@@ -217,16 +217,16 @@ $INTERFERENCIA_FUNDEF_DEMAIS = 0;
 @db_query("drop table work_pl");
 $result_bal_mde = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
 for($i=0;$i<pg_numrows($result_bal_mde);$i++){
-  db_fieldsmemory($result_bal_mde,$i);  
-  if (in_array($estrutural,$desp_ef)){     
+  db_fieldsmemory($result_bal_mde,$i);
+  if (in_array($estrutural,$desp_ef)){
      $INTERFERENCIA_MDE += $saldo_final ;
   }
-  if (in_array($estrutural,$desp_pgt)){ 
-  	 $INTERFERENCIA_FUNDEF += $saldo_final ;     
+  if (in_array($estrutural,$desp_pgt)){
+  	 $INTERFERENCIA_FUNDEF += $saldo_final ;
   }
-  if (in_array($estrutural,$desp_pgto)){ 
-  	 $INTERFERENCIA_FUNDEF_DEMAIS += $saldo_final ;     
-  } 
+  if (in_array($estrutural,$desp_pgto)){
+  	 $INTERFERENCIA_FUNDEF_DEMAIS += $saldo_final ;
+  }
 }
 @db_query("drop table work_pl");
 $data_inicial = $anousu."-01-01";
@@ -235,16 +235,16 @@ $INTERFERENCIA_MDE_AC = 0;
 $INTERFERENCIA_FUNDEF_AC= 0;
 $INTERFERENCIA_FUNDEF_DEMAIS_AC =0;
 for($i=0;$i<pg_numrows($result_bal_acumulado);$i++){
-  db_fieldsmemory($result_bal_acumulado,$i);  
-  if (in_array($estrutural,$desp_ef)){     
+  db_fieldsmemory($result_bal_acumulado,$i);
+  if (in_array($estrutural,$desp_ef)){
      $INTERFERENCIA_MDE_AC += $saldo_final ;
   }
-  if (in_array($estrutural,$desp_pgt)){ 
-     $INTERFERENCIA_FUNDEF_AC += $saldo_final ;     
-  } 
-  if (in_array($estrutural,$desp_pgto)){ 
-  	 $INTERFERENCIA_FUNDEF_DEMAIS_AC += $saldo_final;     
-  } 
+  if (in_array($estrutural,$desp_pgt)){
+     $INTERFERENCIA_FUNDEF_AC += $saldo_final ;
+  }
+  if (in_array($estrutural,$desp_pgto)){
+  	 $INTERFERENCIA_FUNDEF_DEMAIS_AC += $saldo_final;
+  }
 }
 
 
@@ -261,7 +261,7 @@ $total_saldo_arrecadado          =0;
 $total_saldo_arrecadado_acumulado=0;
 $total_saldo_a_arrecadar        = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -289,18 +289,18 @@ $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS COM DESENVOLVIMENTO E MANUTENÇÃO DO ENSINO -MDE";
 $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  =explode("-",$dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head5 = "$txt";
 
 ///////////////////////////////////////
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $troca = 1;
@@ -323,7 +323,7 @@ $pdf->cell(90,($alt*2),"RECEITAS",'TBR',0,"L",0);
 $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
 $pdf->cell(20,($alt*2),"ATUALIZADA(a)",1,0,"C",0);
 $pdf->cell(60,($alt),"RECEITAS ATUALIZADAS",'TB',1,"C",0);  //br
-$pdf->setX(140); 
+$pdf->setX(140);
 $pdf->cell(20,$alt,"No Bimestre",1,0,"C",0);
 $pdf->cell(20,$alt,"Até o Bimestre(b)",1,0,"C",0);
 $pdf->cell(20,$alt,"% (b/a)",'TB',0,"C",0);
@@ -362,9 +362,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Impostos",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -389,9 +389,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Divida Ativa dos Impostos",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -417,9 +417,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Multas,Juros de Mora e outros Encargos de Impostos e da Dívida Ativa de Impostos",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -469,9 +469,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte FPM (85%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar(($tot_rec_inicial*0.85),'f'),'R',0,"R",0);
@@ -489,7 +489,7 @@ $pdf->Ln();
   $v_I_nobimestre  = $tot_rec_bim*.85;
   $v_I_atebimestre = $tot_rec_atebim*.85;
 
- 
+
 //--------------------
 $tot_rec_inicial=0;
 $tot_rec_atual=0;
@@ -502,9 +502,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Transferencia Financeira ICMS-Desoneração - LC n 87/96 (85%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial*0.85,'f'),'R',0,"R",0);
@@ -535,9 +535,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte ICMS (85%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial*0.85,'f'),'R',0,"R",0);
@@ -568,9 +568,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte IPI-Exportação (85%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial*0.85,'f'),'R',0,"R",0);
@@ -597,13 +597,13 @@ $tot_rec_atebim =0;
 for($i=0;$i<pg_numrows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
-  if (in_array($estrutural,$rec_parcela)){ 
+  if (in_array($estrutural,$rec_parcela)){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Parcela das Transferências destinada à Formação do FUNDEF(II)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -640,9 +640,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte ITR (100%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -670,13 +670,13 @@ $tot_rec_atebim =0;
 for($i=0;$i<pg_numrows($result);$i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
-  if (in_array($estrutural,$rec_ouro)){ 
+  if (in_array($estrutural,$rec_ouro)){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte IOF-Ouro (100%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -689,7 +689,7 @@ $pdf->Ln();
   $somador_I_atualizada  += $tot_rec_atual;
   $somador_I_nobimestre  += $tot_rec_bim;
   $somador_I_atebimestre += $tot_rec_atebim;
-  
+
   $v_I_inicial     += $tot_rec_inicial;
   $v_I_atualizada  += $tot_rec_atual;
   $v_I_nobimestre  += $tot_rec_bim;
@@ -707,9 +707,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Cota-Parte IPVA (100%)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -777,9 +777,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Trasferencias de Recursos do FUNDEF (V)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -816,9 +816,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n2)."Complementação da União so FUNDEF",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -863,9 +863,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n1)."Cota-Parte Contribuição Social do Salário-Educação",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -891,9 +891,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n1)."Transferências do FNDE",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -919,9 +919,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n1)."Transferências de Convênios destinadas a Programas de Educação",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -947,9 +947,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n1)."Receitas de Operações de Crédito destinada à Educação",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -975,9 +975,9 @@ for($i=0;$i<pg_numrows($result);$i++){
     $tot_rec_inicial += $saldo_inicial;
     $tot_rec_atual   += $saldo_inicial_prevadic; //$saldo_prevadic_acum;
     $tot_rec_bim     += $saldo_arrecadado ;
-    $tot_rec_atebim  += $saldo_arrecadado_acumulado;   
+    $tot_rec_atebim  += $saldo_arrecadado_acumulado;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(90,$alt,espaco($n1)."Outras Receitas Vinculadas à Educação",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_rec_inicial,'f'),'R',0,"R",0);
@@ -1061,7 +1061,7 @@ $pdf->cell(90,($alt*2),"DESPESAS COM ENSINO POR VINCULAÇÃO",'TBR',0,"L",0);
 $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
 $pdf->cell(20,($alt*2),"ATUALIZADA(c)",1,0,"C",0);
 $pdf->cell(60,($alt),"DESPESAS LIQUIDADAS",'TB',1,"C",0);  //br
-$pdf->setX(140); 
+$pdf->setX(140);
 $pdf->cell(20,$alt,"No Bimestre",1,0,"C",0);
 $pdf->cell(20,$alt,"Até o Bimestre(d)",1,0,"C",0);
 $pdf->cell(20,$alt,"% (d/c)",'TB',0,"C",0);
@@ -1085,7 +1085,7 @@ for($i=0;$i<pg_numrows($result_free);$i++){
   db_fieldsmemory($result_free,$i);
   if ($o58_subfuncao==999) {
   	 $RESERVA_MDE= $dot_ini;
-  }	  	
+  }
 }
 
 $result_free = db_dotacaosaldo(4,3,2,true," o58_codigo=30 and o58_instit in (".str_replace('-',', ',$db_selinstit)." ) ",$anousu,$dt_ini,$dt_fin);
@@ -1109,7 +1109,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,espaco($n1)."Despesas com Ensino Fundamental (VII)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini+$RESERVA_MDE,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu +$RESERVA_MDE,'f'),'R',0,"R",0);
@@ -1144,7 +1144,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,espaco($n1)."Despesas com Educação Infantil em Creches e Pré-Escolas (VIII) ",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu,'f'),'R',0,"R",0);
@@ -1171,16 +1171,16 @@ $tot_atebim =0;
 for($i=0;$i<pg_numrows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   if ( $o58_funcao ==12
-       && $o58_subfuncao != 361  
-       && $o58_subfuncao != 365 
-       && $o58_codigo !=20  
+       && $o58_subfuncao != 361
+       && $o58_subfuncao != 365
+       && $o58_codigo !=20
        && $o58_codigo !=30 ){
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,espaco($n1)."Outras Despesas com Ensino ",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu,'f'),'R',0,"R",0);
@@ -1230,16 +1230,16 @@ $tot_atebim =0;
 for($i=0;$i<pg_numrows($result_desp);$i++){
    db_fieldsmemory($result_desp,$i);
    if ( $o58_funcao   ==12
-        && $o58_subfuncao == 361 
+        && $o58_subfuncao == 361
         && $o58_codigo == 30
-        && substr($o58_elemento,0,6)=='331901'   
-      ) {        
+        && substr($o58_elemento,0,6)=='331901'
+      ) {
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,espaco($n1)."Pagamento dos profissionais do magistério do ensino fundamental (X)",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini+$RESERVA_FUNDEF,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu+$RESERVA_FUNDEF,'f'),'R',0,"R",0);
@@ -1265,16 +1265,16 @@ $tot_atebim =0;
 for($i=0;$i<pg_numrows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
    if ( $o58_funcao   ==12
-        && $o58_subfuncao == 361 
+        && $o58_subfuncao == 361
         && $o58_codigo == 30
-        && substr($o58_elemento,0,6)!='331901'   
-      ) {        
+        && substr($o58_elemento,0,6)!='331901'
+      ) {
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,espaco($n1)."Outras Despesas no Ensino Fundamental",'R',0,"l",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini+$RESERVA_FUNDEF,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu+$RESERVA_FUNDEF,'f'),'R',0,"R",0);
@@ -1319,7 +1319,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,"VINCULADAS À CONTRIBUIÇÃO SOCIAL DO SALÁRIO-EDUCAÇÃO",'R',0,"l",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu,'f'),'R',0,"R",0);
@@ -1348,7 +1348,7 @@ $tot_atebim =0;
 //     $tot_bim    += $liquidado;
 //     $tot_atebim += $liquidado_acumulado;
 //  }
-//} 
+//}
 $pdf->cell(90,$alt,"FINANCIADAS COM RECURSOS DE OPERAÇÕES DE CRÉDITO",'R',0,"l",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu,'f'),'R',0,"R",0);
@@ -1372,23 +1372,23 @@ $tot_atebim =0;
 
 for($i=0;$i<pg_numrows($result_desp);$i++){
    db_fieldsmemory($result_desp,$i);
-   if ( 
+   if (
 	$o58_funcao== 12
-	&& $o58_codigo > 0 
+	&& $o58_codigo > 0
 	&& (
-	    $o58_codigo != 20 && 
+	    $o58_codigo != 20 &&
 	    $o58_codigo != 30 &&
 	    $o58_codigo != 1002 &&
 	    $o58_codigo != 1037
 
 	    )
-      ) {       
+      ) {
      $tot_ini    += $dot_ini;
      $tot_atu    += $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
      $tot_bim    += $liquidado;
      $tot_atebim += $liquidado_acumulado;
   }
-} 
+}
 $pdf->cell(90,$alt,"FINANCIADAS COM OUTROS RECURSOS VINCULADOS À EDUCAÇÃO",'R',0,"l",0);
 $pdf->cell(20,$alt,db_formatar($tot_ini,'f'),'R',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($tot_atu,'f'),'R',0,"R",0);
@@ -1420,7 +1420,7 @@ if ($somador_II_atebimestre > $somador_IV_atebimestre ){
    $somador_XII_atebimestre =  $somador_II_atebimestre - $somador_IV_atebimestre ;
 } else {
    $ganho_fundef =  $somador_IV_atebimestre - $somador_II_atebimestre ;
-}  
+}
 $pdf->Ln(3);
 $pdf->setfont('arial','',6);
 $pdf->cell(150,$alt,'PERDA/GANHO NAS TRANSFERÊNCIAS DO FUNDEF','TBR',0,"L",0);
@@ -1432,7 +1432,7 @@ $pdf->cell(40,$alt,db_formatar($ganho_fundef,'f'),'BL',1,"R",0);
 
 // -----------------------------------------------------------------------
 // variaveis
-$total_XVI_valor = 0; 
+$total_XVI_valor = 0;
 
 $pdf->Ln(3);
 $pdf->setfont('arial','',6);
@@ -1441,8 +1441,8 @@ $pdf->cell(40,$alt,'VALOR','TB',1,"R",0);
 
 //////////////
 // se houver ganho nas transferencias para o funde, e a variavel estiver zerado, sera usado o ganho
-if ($ganho_fundef > 0  && $GANHO_COMPLEM_FUNDEF+0==0) {	
-    $GANHO_COMPLEM_FUNDEF = $ganho_fundef;	     
+if ($ganho_fundef > 0  && $GANHO_COMPLEM_FUNDEF+0==0) {
+    $GANHO_COMPLEM_FUNDEF = $ganho_fundef;
 }
 if  (( $GANHO_COMPLEM_FUNDEF+0) < 0){
        $GANHO_COMPLEM_FUNDEF = 0;
@@ -1502,12 +1502,12 @@ $pdf->setX(140);
 $pdf->cell(40,$alt,"Inscritos em 31/12/".($anousu-1),1,0,"C",0);
 $pdf->cell(20,$alt,"Cancelados em $anousu",'TB',0,"C",0);
 $pdf->ln();
-// 
+//
 $tot_cancelado=0;
 for($i=0;$i<pg_numrows($result_rp_mde);$i++){
   db_fieldsmemory($result_rp_mde,$i);
   $tot_cancelado += $vlranu;
-} 
+}
 $pdf->cell(90,$alt,'RP DE DESPESAS COM MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO','0',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($RP_MDE_MINIMA,'f'),'RL',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($RP_MDE_APURADA,'f'),'RL',0,"R",0);
@@ -1518,7 +1518,7 @@ $tot_cancelado=0;
 for($i=0;$i<pg_numrows($result_rp_fundef);$i++){
   db_fieldsmemory($result_rp_fundef,$i);
   $tot_cancelado += $vlranu;
-} 
+}
 $pdf->cell(90,$alt,'RP DE DESPESAS COM ENSINO FUNDAMENTAL',0,0,"L",0);
 $pdf->cell(20,$alt,db_formatar($RP_FUNDEF_MINIMA,'f'),'RL',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($RP_FUNDEF_APURADA,'f'),'RL',0,"R",0);
@@ -1547,10 +1547,10 @@ $pdf->cell(150,$alt,'ENSINO FUNCAMENTAL (XVIII)','BR',0,"L",0);
 //--------------------------------------------
 // total das despesas consideradas para find do limite
 // VII+VIII+IXI+XII)-XVI]
-$total_XIX_valor = 
-         ($somador_VII_atebimestre  
-          + $somador_VIII_atebimestre 
-          + $somador_IX_atebimestre    
+$total_XIX_valor =
+         ($somador_VII_atebimestre
+          + $somador_VIII_atebimestre
+          + $somador_IX_atebimestre
           + $somador_XII_atebimestre ) - $total_XVI_valor ;
 $pdf->Ln(3);
 $pdf->cell(150,$alt,'TOTAL DAS DESPESAS CONSIDERADAS PARA FINS DE LIMITE CONSTITUCIONAL (XIX) = [(VII+VIII+IX+XII)-XVI]','TBR',0,"L",0);
@@ -1593,18 +1593,18 @@ $tot_valor = 0;
 $tot_ant   = 0;
 
 for($i=0;$i<pg_numrows($result_bal);$i++){
-  db_fieldsmemory($result_bal,$i);  
-  if (in_array($estrutural,$saldo_fundef)){ 
+  db_fieldsmemory($result_bal,$i);
+  if (in_array($estrutural,$saldo_fundef)){
      $tot_valor  += $saldo_final ;
      $tot_ant    += $saldo_anterior ;
   }
-  if (in_array($estrutural,$desp_ef)){     
+  if (in_array($estrutural,$desp_ef)){
      $INTERFERENCIA_MDE += $saldo_final ;
   }
-  if (in_array($estrutural,$desp_pgt)){ 
-  	 $INTERFERENCIA_FUNDEF += $saldo_final ;     
-  }  
-} 
+  if (in_array($estrutural,$desp_pgt)){
+  	 $INTERFERENCIA_FUNDEF += $saldo_final ;
+  }
+}
 $pdf->cell(90,($alt*2),'SALDO FINANCEIRO DO FUNDEF','TBR',0,"L",0);
 $pdf->cell(60,$alt,"Em 31/dez/".($anousu-1),'TBR',0,"C",0);
 $pdf->cell(40,$alt,"Até o Bimestre",'TB',1,"C",0);
@@ -1620,12 +1620,12 @@ $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
 $pdf->cell(20,($alt*2),"ATUALIZADA(h)",1,0,"C",0);
 $pdf->cell(60,($alt),"DESPESAS LIQUIDADAS",'TB',1,"C",0);  //br
 $pdf->cell(90,($alt),"POR SUBFUNÇÃO",'B',0,"C",0);
-$pdf->setX(140); 
+$pdf->setX(140);
 $pdf->cell(20,$alt,"No Bimestre",1,0,"C",0);
 $pdf->cell(20,$alt,"Até o Bimestre(i)",1,0,"C",0);
 $pdf->cell(20,$alt,"% (i/h)",'TB',0,"C",0);
 $pdf->ln();
-// 
+//
 // lista despesas por subfunção
 // aqui tem lixo, nunca copie esse codigo inutil
 // lista ensino fundamental + reserva de contingencia
@@ -1638,8 +1638,8 @@ $tot_dot_liquidado_acumulado=0;
 for($i=0;$i< pg_numrows($result_subfunc);$i++) {
     db_fieldsmemory($result_subfunc,$i);
     $vatual = $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
-    if ($o58_subfuncao==361){   
-    
+    if ($o58_subfuncao==361){
+
       $atual = $dot_ini + ($suplementado_acumulado-$reduzido_acumulado);
       $pdf->cell(90,$alt,"$o53_descr",'R',0,"L",0);
       $pdf->cell(20,$alt,db_formatar($dot_ini + $RESERVA_MDE,'f'),'R',0,"R",0);
@@ -1651,11 +1651,11 @@ for($i=0;$i< pg_numrows($result_subfunc);$i++) {
       $pdf->Ln();
       $tot_dot_ini         += $dot_ini + $RESERVA_MDE;
       $tot_dot_atual       += ($vatual  + $RESERVA_MDE);
-      $tot_dot_liquidado   += $SOMADOR_SUBFUNCAO_MDE_BIMESTRAL; // GAMBIARRA, nao siga este mau exemplo ! 
+      $tot_dot_liquidado   += $SOMADOR_SUBFUNCAO_MDE_BIMESTRAL; // GAMBIARRA, nao siga este mau exemplo !
       $tot_dot_liquidado_acumulado += $liquidado_acumulado+ $INTERFERENCIA_MDE_AC;
       continue;
-    }       
-    if ($o58_subfuncao==365){   
+    }
+    if ($o58_subfuncao==365){
       $pdf->cell(90,$alt,"$o53_descr",'R',0,"L",0);
       $pdf->cell(20,$alt,db_formatar($dot_ini,'f'),'R',0,"R",0);
       $pdf->cell(20,$alt,db_formatar($vatual,'f'),'R',0,"R",0);

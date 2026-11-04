@@ -3,6 +3,9 @@
 namespace App\Domain\Educacao\Escola\Models;
 
 use App\Domain\Configuracao\Departamento\Models\Departamento;
+use \App\Domain\Educacao\CentralMatriculas\Models\Escola as EscolaFilial;
+use App\Domain\Tributario\Cadastro\Models\Bairro;
+use App\Domain\Tributario\Cadastro\Models\Ruas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -48,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $ed18_longitude
  * @property integer $ed18_codigoreferencia
  * @property integer $ed18_i_esferaadministrativa
+ * @property integer $ed18_i_tipoescola
  */
 class Escola extends Model
 {
@@ -55,6 +59,7 @@ class Escola extends Model
     protected $primaryKey = 'ed18_i_codigo';
     public $timestamps = false;
     public $incrementing = false;
+    protected $appends = ['endereco'];
 
     /**
      * @var array
@@ -151,5 +156,37 @@ class Escola extends Model
     public function departamento()
     {
         return $this->belongsTo(Departamento::class, 'ed18_i_codigo', 'coddepto');
+    }
+
+    public function rua()
+    {
+        return $this->belongsTo(Ruas::class, 'ed18_i_rua', 'j14_codigo');
+    }
+
+    public function bairro()
+    {
+        return $this->belongsTo(Bairro::class, 'ed18_i_bairro', 'j13_codi');
+    }
+
+    public function getEnderecoAttribute()
+    {
+
+        if (is_null($this->rua) && !is_null($this->bairro)) {
+            return "Rua Não Cadastrada - {$this->bairro->j13_descr}";
+        }
+
+        if (!is_null($this->rua) && is_null($this->bairro)) {
+            return "{$this->rua->j14_nome} - Bairro não informado";
+        }
+        if (is_null($this->rua) && is_null($this->bairro)) {
+            return null;
+        }
+
+        return "{$this->rua->j14_nome} - {$this->bairro->j13_descr}";
+    }
+
+    public function escolasFiliais()
+    {
+        return $this->hasMany(EscolaFilial::class, 'mo53_escola', 'ed18_i_codigo');
     }
 }

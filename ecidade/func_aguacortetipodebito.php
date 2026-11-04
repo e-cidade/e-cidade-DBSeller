@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $claguacortetipodebito->rotulo->label("x45_tipo");
               <?=$Lx45_codcortetipodebito?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x45_codcortetipodebito",5,$Ix45_codcortetipodebito,true,"text",4,"","chave_x45_codcortetipodebito");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguacortetipodebito->rotulo->label("x45_tipo");
               <?=$Lx45_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x45_tipo",5,$Ix45_tipo,true,"text",4,"","chave_x45_tipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguacortetipodebito->rotulo->label("x45_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacortetipodebito.php")==true){
@@ -118,12 +118,12 @@ $claguacortetipodebito->rotulo->label("x45_tipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

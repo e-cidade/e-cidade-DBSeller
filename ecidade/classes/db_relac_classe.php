@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -17,7 +17,7 @@
  *  detalhes.                                                         
  *                                                                    
  *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
+ *  junto com este programa; se não, escreva para a Free Software     
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
  *  02111-1307, USA.                                                  
  *  
@@ -90,7 +90,7 @@ class cl_relac {
    function incluir ($r55_codeve,$r55_instit){ 
       $this->atualizacampos();
      if($this->r55_descr == null ){ 
-       $this->erro_sql = " Campo relacionamento nao Informado.";
+       $this->erro_sql = " Campo relacionamento não Informado.";
        $this->erro_campo = "r55_descr";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -101,7 +101,7 @@ class cl_relac {
        $this->r55_codeve = $r55_codeve; 
        $this->r55_instit = $r55_instit; 
      if(($this->r55_codeve == null) || ($this->r55_codeve == "") ){ 
-       $this->erro_sql = " Campo r55_codeve nao declarado.";
+       $this->erro_sql = " Campo r55_codeve não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -109,7 +109,7 @@ class cl_relac {
        return false;
      }
      if(($this->r55_instit == null) || ($this->r55_instit == "") ){ 
-       $this->erro_sql = " Campo r55_instit nao declarado.";
+       $this->erro_sql = " Campo r55_instit não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -136,12 +136,12 @@ class cl_relac {
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Arquivo de relacionamento ($this->r55_codeve."-".$this->r55_instit) nao Incluído. Inclusao Abortada.";
+         $this->erro_sql   = "Arquivo de relacionamento ($this->r55_codeve."-".$this->r55_instit) não Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivo de relacionamento já Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "Arquivo de relacionamento ($this->r55_codeve."-".$this->r55_instit) nao Incluído. Inclusao Abortada.";
+         $this->erro_sql   = "Arquivo de relacionamento ($this->r55_codeve."-".$this->r55_instit) não Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
@@ -181,7 +181,7 @@ class cl_relac {
        $sql  .= $virgula." r55_instit = $this->r55_instit ";
        $virgula = ",";
        if(trim($this->r55_instit) == null ){ 
-         $this->erro_sql = " Campo Cod. Instituição nao Informado.";
+         $this->erro_sql = " Campo Cod. Instituição não Informado.";
          $this->erro_campo = "r55_instit";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_relac {
        $sql  .= $virgula." r55_codeve = '$this->r55_codeve' ";
        $virgula = ",";
        if(trim($this->r55_codeve) == null ){ 
-         $this->erro_sql = " Campo relacionamento nao Informado.";
+         $this->erro_sql = " Campo relacionamento não Informado.";
          $this->erro_campo = "r55_codeve";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -207,7 +207,7 @@ class cl_relac {
        $sql  .= $virgula." r55_descr = '$this->r55_descr' ";
        $virgula = ",";
        if(trim($this->r55_descr) == null ){ 
-         $this->erro_sql = " Campo relacionamento nao Informado.";
+         $this->erro_sql = " Campo relacionamento não Informado.";
          $this->erro_campo = "r55_descr";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -260,7 +260,7 @@ class cl_relac {
      $result = db_query($sql);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Arquivo de relacionamento nao Alterado. Alteracao Abortada.\\n";
+       $this->erro_sql   = "Arquivo de relacionamento não Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r55_codeve."-".$this->r55_instit;
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -270,7 +270,7 @@ class cl_relac {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Arquivo de relacionamento nao foi Alterado. Alteracao Executada.\\n";
+         $this->erro_sql = "Arquivo de relacionamento não foi Alterado. Alteracao Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->r55_codeve."-".$this->r55_instit;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -333,7 +333,7 @@ class cl_relac {
      $result = db_query($sql.$sql2);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Arquivo de relacionamento nao Excluído. Exclusão Abortada.\\n";
+       $this->erro_sql   = "Arquivo de relacionamento não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r55_codeve."-".$r55_instit;
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -343,7 +343,7 @@ class cl_relac {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Arquivo de relacionamento nao Encontrado. Exclusão não Efetuada.\\n";
+         $this->erro_sql = "Arquivo de relacionamento não Encontrado. Exclusão não Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$r55_codeve."-".$r55_instit;
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -362,7 +362,7 @@ class cl_relac {
        } 
      } 
    } 
-   // funcao do recordset 
+   // funcão do recordset 
    function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
@@ -485,13 +485,14 @@ class cl_relac {
      $sql .= "      left join rhrubricas a on a.rh27_rubric::char(4) = relac.r55_rubr01 and a.rh27_instit = " . db_getsession("DB_instit");
      $sql .= "      left join rhrubricas b on b.rh27_rubric::char(4) = relac.r55_rubr02 and b.rh27_instit = " . db_getsession("DB_instit");
      $sql .= "      left join rhrubricas c on c.rh27_rubric::char(4) = relac.r55_rubr03 and c.rh27_instit = " . db_getsession("DB_instit");
+     $sql .= "      where r55_instit = " . db_getsession("DB_instit");
      $sql2 = "";
      if($dbwhere==""){
        if($r55_codeve!=null ){
-         $sql2 .= " where relac.r55_codeve = '$r55_codeve' "; 
-       } 
+         $sql2 .= " and relac.r55_codeve = '$r55_codeve' "; 
+       }
      }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
+       $sql2 = " and $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){

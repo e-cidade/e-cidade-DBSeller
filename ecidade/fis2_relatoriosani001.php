@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,24 +73,24 @@ $db_opcao=1;
 					<table border="0">
 						<tr>
 							<td nowrap title="<?=@$Ty80_codsani?>">
-								<?
+								<?php
 									db_ancora(@$Ly80_codsani,"js_pesquisa(true);",1);
 								?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('y80_codsani',10,$Iy80_codsani,true,'text',$db_opcao," onchange='js_pesquisa(false);'")
 								?>
 							</td>
 						</tr>
 						<tr>
 							<td nowrap title="<?=@$Tz01_nome?>">
-							  <?
+							  <?php
 									db_ancora(@$Lz01_nome,"js_pesquisay80_numcgm(true);",$db_opcao);
 							  ?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('y80_numcgm',10,$Iy80_numcgm,true,'text',$db_opcao," onchange='js_pesquisay80_numcgm(false);'");
 								
 									db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
@@ -100,13 +100,13 @@ $db_opcao=1;
 						<tr>
 							<td nowrap title="Atividades">
 								<strong>
-									<?
+									<?php
 										db_ancora("Atividade","js_pesquisay83_ativ(true);",$db_opcao);
 									?>
 								</strong>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('ativ',10,"",true,'text',$db_opcao," onchange='js_pesquisay83_ativ(false);'");
 								
 									db_input('q03_descr',40,$Iq03_descr,true,'text',3,'');
@@ -115,12 +115,12 @@ $db_opcao=1;
 						</tr>
 						<tr>
 							<td nowrap title="<?=@$Tj14_nome?>">
-								<?
+								<?php
 									db_ancora(@$Lj14_nome,"js_pesquisaruas(true);",($db_opcao == 3 || $db_opcao == 33)?3:1);
 								?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('y80_codrua',10,$Iy80_codrua,true,'text',$db_opcao," onChange='js_pesquisaruas(false)'");
 								
 									db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
@@ -129,12 +129,12 @@ $db_opcao=1;
 						</tr>
 						<tr>
 						 	<td nowrap title="<?=@$Tj13_descr?>">
-								<?
+								<?php
 									db_ancora(@$Lj13_descr,"js_pesquisabairro(true);",($db_opcao == 3 || $db_opcao == 33)?3:1);
 								?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('y80_codbairro',10,$Iy80_codbairro,true,'text',$db_opcao," onChange='js_pesquisabairro(false)'");
 										 
 									db_input('j13_descr',40,$Ij13_descr,true,'text',3,'');
@@ -148,7 +148,7 @@ $db_opcao=1;
 								 <b>Mês:</b>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('mes',5,$mes,true,'text',$db_opcao);
 								?>
 							</td>
@@ -160,11 +160,11 @@ $db_opcao=1;
 								 <?=@$Ly80_data?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',$db_opcao,"");
 								?>
 								&nbsp;&nbsp;À&nbsp;&nbsp;
-								<?
+								<?php
 									db_inputdata('a',@$diaa,@$mesa,@$anoa,true,'text',$db_opcao,"");
 								?>
 							</td>
@@ -231,7 +231,7 @@ $db_opcao=1;
 		<input name="consultar" type="button" value="Relatório" onClick="js_consultasani();js_limpacampos();" >
  </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

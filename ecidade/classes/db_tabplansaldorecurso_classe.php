@@ -1,84 +1,84 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Caixa
 //CLASSE DA ENTIDADE tabplansaldorecurso
-class cl_tabplansaldorecurso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k111_sequencial = 0; 
-   var $k111_tabplan = 0; 
-   var $k111_recurso = 0; 
-   var $k111_dataimplantacao_dia = null; 
-   var $k111_dataimplantacao_mes = null; 
-   var $k111_dataimplantacao_ano = null; 
-   var $k111_dataimplantacao = null; 
-   var $k111_creditoinicial = 0; 
-   var $k111_debitoinicial = 0; 
-   var $k111_anousu = 0; 
-   var $k111_dataatualizacao_dia = null; 
-   var $k111_dataatualizacao_mes = null; 
-   var $k111_dataatualizacao_ano = null; 
-   var $k111_dataatualizacao = null; 
-   var $k111_creditoatualizado = 0; 
-   var $k111_debitoatualizado = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tabplansaldorecurso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k111_sequencial = 0;
+   var $k111_tabplan = 0;
+   var $k111_recurso = 0;
+   var $k111_dataimplantacao_dia = null;
+   var $k111_dataimplantacao_mes = null;
+   var $k111_dataimplantacao_ano = null;
+   var $k111_dataimplantacao = null;
+   var $k111_creditoinicial = 0;
+   var $k111_debitoinicial = 0;
+   var $k111_anousu = 0;
+   var $k111_dataatualizacao_dia = null;
+   var $k111_dataatualizacao_mes = null;
+   var $k111_dataatualizacao_ano = null;
+   var $k111_dataatualizacao = null;
+   var $k111_creditoatualizado = 0;
+   var $k111_debitoatualizado = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k111_sequencial = int4 = Código Sequencial 
-                 k111_tabplan = int4 = Receita Extra 
-                 k111_recurso = int4 = Recurso 
-                 k111_dataimplantacao = date = Data da Implantação do Saldo 
-                 k111_creditoinicial = float8 = Crédito Inicial da Conta 
-                 k111_debitoinicial = float8 = Débito Inicial 
-                 k111_anousu = int4 = Ano 
-                 k111_dataatualizacao = date = Data da Atualização do Saldo 
-                 k111_creditoatualizado = float4 = Crédito Atualizado 
-                 k111_debitoatualizado = float8 = Débito Atualizado 
+                 k111_sequencial = int4 = Código Sequencial
+                 k111_tabplan = int4 = Receita Extra
+                 k111_recurso = int4 = Recurso
+                 k111_dataimplantacao = date = Data da Implantação do Saldo
+                 k111_creditoinicial = float8 = Crédito Inicial da Conta
+                 k111_debitoinicial = float8 = Débito Inicial
+                 k111_anousu = int4 = Ano
+                 k111_dataatualizacao = date = Data da Atualização do Saldo
+                 k111_creditoatualizado = float4 = Crédito Atualizado
+                 k111_debitoatualizado = float8 = Débito Atualizado
                  ";
-   //funcao construtor da classe 
-   function cl_tabplansaldorecurso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tabplansaldorecurso"); 
+     $this->rotulo = new rotulo("tabplansaldorecurso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_tabplansaldorecurso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k111_sequencial = ($this->k111_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k111_sequencial"]:$this->k111_sequencial);
        $this->k111_tabplan = ($this->k111_tabplan == ""?@$GLOBALS["HTTP_POST_VARS"]["k111_tabplan"]:$this->k111_tabplan);
@@ -118,9 +118,9 @@ class cl_tabplansaldorecurso {
      }
    }
    // funcao para inclusao
-   function incluir ($k111_sequencial){ 
+   public function incluir ($k111_sequencial){
       $this->atualizacampos();
-     if($this->k111_tabplan == null ){ 
+     if($this->k111_tabplan == null ){
        $this->erro_sql = " Campo Receita Extra nao Informado.";
        $this->erro_campo = "k111_tabplan";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_recurso == null ){ 
+     if($this->k111_recurso == null ){
        $this->erro_sql = " Campo Recurso nao Informado.";
        $this->erro_campo = "k111_recurso";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_dataimplantacao == null ){ 
+     if($this->k111_dataimplantacao == null ){
        $this->erro_sql = " Campo Data da Implantação do Saldo nao Informado.";
        $this->erro_campo = "k111_dataimplantacao_dia";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_creditoinicial == null ){ 
+     if($this->k111_creditoinicial == null ){
        $this->erro_sql = " Campo Crédito Inicial da Conta nao Informado.";
        $this->erro_campo = "k111_creditoinicial";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_debitoinicial == null ){ 
+     if($this->k111_debitoinicial == null ){
        $this->erro_sql = " Campo Débito Inicial nao Informado.";
        $this->erro_campo = "k111_debitoinicial";
        $this->erro_banco = "";
@@ -165,7 +165,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_anousu == null ){ 
+     if($this->k111_anousu == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "k111_anousu";
        $this->erro_banco = "";
@@ -174,7 +174,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_dataatualizacao == null ){ 
+     if($this->k111_dataatualizacao == null ){
        $this->erro_sql = " Campo Data da Atualização do Saldo nao Informado.";
        $this->erro_campo = "k111_dataatualizacao_dia";
        $this->erro_banco = "";
@@ -183,7 +183,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_creditoatualizado == null ){ 
+     if($this->k111_creditoatualizado == null ){
        $this->erro_sql = " Campo Crédito Atualizado nao Informado.";
        $this->erro_campo = "k111_creditoatualizado";
        $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k111_debitoatualizado == null ){ 
+     if($this->k111_debitoatualizado == null ){
        $this->erro_sql = " Campo Débito Atualizado nao Informado.";
        $this->erro_campo = "k111_debitoatualizado";
        $this->erro_banco = "";
@@ -202,16 +202,16 @@ class cl_tabplansaldorecurso {
        return false;
      }
      if($k111_sequencial == "" || $k111_sequencial == null ){
-       $result = db_query("select nextval('tabplansaldorecurso_k111_sequencial_seq')"); 
+       $result = db_query("select nextval('tabplansaldorecurso_k111_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: tabplansaldorecurso_k111_sequencial_seq do campo: k111_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: tabplansaldorecurso_k111_sequencial_seq do campo: k111_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k111_sequencial = pg_result($result,0,0); 
+       $this->k111_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabplansaldorecurso_k111_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k111_sequencial)){
@@ -222,10 +222,10 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k111_sequencial = $k111_sequencial; 
+         $this->k111_sequencial = $k111_sequencial;
        }
      }
-     if(($this->k111_sequencial == null) || ($this->k111_sequencial == "") ){ 
+     if(($this->k111_sequencial == null) || ($this->k111_sequencial == "") ){
        $this->erro_sql = " Campo k111_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -234,31 +234,31 @@ class cl_tabplansaldorecurso {
        return false;
      }
      $sql = "insert into tabplansaldorecurso(
-                                       k111_sequencial 
-                                      ,k111_tabplan 
-                                      ,k111_recurso 
-                                      ,k111_dataimplantacao 
-                                      ,k111_creditoinicial 
-                                      ,k111_debitoinicial 
-                                      ,k111_anousu 
-                                      ,k111_dataatualizacao 
-                                      ,k111_creditoatualizado 
-                                      ,k111_debitoatualizado 
+                                       k111_sequencial
+                                      ,k111_tabplan
+                                      ,k111_recurso
+                                      ,k111_dataimplantacao
+                                      ,k111_creditoinicial
+                                      ,k111_debitoinicial
+                                      ,k111_anousu
+                                      ,k111_dataatualizacao
+                                      ,k111_creditoatualizado
+                                      ,k111_debitoatualizado
                        )
                 values (
-                                $this->k111_sequencial 
-                               ,$this->k111_tabplan 
-                               ,$this->k111_recurso 
-                               ,".($this->k111_dataimplantacao == "null" || $this->k111_dataimplantacao == ""?"null":"'".$this->k111_dataimplantacao."'")." 
-                               ,$this->k111_creditoinicial 
-                               ,$this->k111_debitoinicial 
-                               ,$this->k111_anousu 
-                               ,".($this->k111_dataatualizacao == "null" || $this->k111_dataatualizacao == ""?"null":"'".$this->k111_dataatualizacao."'")." 
-                               ,$this->k111_creditoatualizado 
-                               ,$this->k111_debitoatualizado 
+                                $this->k111_sequencial
+                               ,$this->k111_tabplan
+                               ,$this->k111_recurso
+                               ,".($this->k111_dataimplantacao == "null" || $this->k111_dataimplantacao == ""?"null":"'".$this->k111_dataimplantacao."'")."
+                               ,$this->k111_creditoinicial
+                               ,$this->k111_debitoinicial
+                               ,$this->k111_anousu
+                               ,".($this->k111_dataatualizacao == "null" || $this->k111_dataatualizacao == ""?"null":"'".$this->k111_dataatualizacao."'")."
+                               ,$this->k111_creditoatualizado
+                               ,$this->k111_debitoatualizado
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Saldos dos recursos ($this->k111_sequencial) nao Incluído. Inclusao Abortada.";
@@ -299,16 +299,16 @@ class cl_tabplansaldorecurso {
        $resac = db_query("insert into db_acount values($acount,2559,14530,'','".AddSlashes(pg_result($resaco,0,'k111_debitoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k111_sequencial=null) { 
+   public function alterar ($k111_sequencial=null) {
       $this->atualizacampos();
      $sql = " update tabplansaldorecurso set ";
      $virgula = "";
-     if(trim($this->k111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_sequencial"])){ 
+     if(trim($this->k111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_sequencial"])){
        $sql  .= $virgula." k111_sequencial = $this->k111_sequencial ";
        $virgula = ",";
-       if(trim($this->k111_sequencial) == null ){ 
+       if(trim($this->k111_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "k111_sequencial";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_tabplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_tabplan"])){ 
+     if(trim($this->k111_tabplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_tabplan"])){
        $sql  .= $virgula." k111_tabplan = $this->k111_tabplan ";
        $virgula = ",";
-       if(trim($this->k111_tabplan) == null ){ 
+       if(trim($this->k111_tabplan) == null ){
          $this->erro_sql = " Campo Receita Extra nao Informado.";
          $this->erro_campo = "k111_tabplan";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_recurso"])){ 
+     if(trim($this->k111_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_recurso"])){
        $sql  .= $virgula." k111_recurso = $this->k111_recurso ";
        $virgula = ",";
-       if(trim($this->k111_recurso) == null ){ 
+       if(trim($this->k111_recurso) == null ){
          $this->erro_sql = " Campo Recurso nao Informado.";
          $this->erro_campo = "k111_recurso";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_dataimplantacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"] !="") ){ 
+     if(trim($this->k111_dataimplantacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"] !="") ){
        $sql  .= $virgula." k111_dataimplantacao = '$this->k111_dataimplantacao' ";
        $virgula = ",";
-       if(trim($this->k111_dataimplantacao) == null ){ 
+       if(trim($this->k111_dataimplantacao) == null ){
          $this->erro_sql = " Campo Data da Implantação do Saldo nao Informado.";
          $this->erro_campo = "k111_dataimplantacao_dia";
          $this->erro_banco = "";
@@ -356,11 +356,11 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"])){
          $sql  .= $virgula." k111_dataimplantacao = null ";
          $virgula = ",";
-         if(trim($this->k111_dataimplantacao) == null ){ 
+         if(trim($this->k111_dataimplantacao) == null ){
            $this->erro_sql = " Campo Data da Implantação do Saldo nao Informado.";
            $this->erro_campo = "k111_dataimplantacao_dia";
            $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_tabplansaldorecurso {
          }
        }
      }
-     if(trim($this->k111_creditoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoinicial"])){ 
+     if(trim($this->k111_creditoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoinicial"])){
        $sql  .= $virgula." k111_creditoinicial = $this->k111_creditoinicial ";
        $virgula = ",";
-       if(trim($this->k111_creditoinicial) == null ){ 
+       if(trim($this->k111_creditoinicial) == null ){
          $this->erro_sql = " Campo Crédito Inicial da Conta nao Informado.";
          $this->erro_campo = "k111_creditoinicial";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_debitoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoinicial"])){ 
+     if(trim($this->k111_debitoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoinicial"])){
        $sql  .= $virgula." k111_debitoinicial = $this->k111_debitoinicial ";
        $virgula = ",";
-       if(trim($this->k111_debitoinicial) == null ){ 
+       if(trim($this->k111_debitoinicial) == null ){
          $this->erro_sql = " Campo Débito Inicial nao Informado.";
          $this->erro_campo = "k111_debitoinicial";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_anousu"])){ 
+     if(trim($this->k111_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_anousu"])){
        $sql  .= $virgula." k111_anousu = $this->k111_anousu ";
        $virgula = ",";
-       if(trim($this->k111_anousu) == null ){ 
+       if(trim($this->k111_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "k111_anousu";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"] !="") ){ 
+     if(trim($this->k111_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"] !="") ){
        $sql  .= $virgula." k111_dataatualizacao = '$this->k111_dataatualizacao' ";
        $virgula = ",";
-       if(trim($this->k111_dataatualizacao) == null ){ 
+       if(trim($this->k111_dataatualizacao) == null ){
          $this->erro_sql = " Campo Data da Atualização do Saldo nao Informado.";
          $this->erro_campo = "k111_dataatualizacao_dia";
          $this->erro_banco = "";
@@ -422,11 +422,11 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"])){
          $sql  .= $virgula." k111_dataatualizacao = null ";
          $virgula = ",";
-         if(trim($this->k111_dataatualizacao) == null ){ 
+         if(trim($this->k111_dataatualizacao) == null ){
            $this->erro_sql = " Campo Data da Atualização do Saldo nao Informado.";
            $this->erro_campo = "k111_dataatualizacao_dia";
            $this->erro_banco = "";
@@ -437,10 +437,10 @@ class cl_tabplansaldorecurso {
          }
        }
      }
-     if(trim($this->k111_creditoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoatualizado"])){ 
+     if(trim($this->k111_creditoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoatualizado"])){
        $sql  .= $virgula." k111_creditoatualizado = $this->k111_creditoatualizado ";
        $virgula = ",";
-       if(trim($this->k111_creditoatualizado) == null ){ 
+       if(trim($this->k111_creditoatualizado) == null ){
          $this->erro_sql = " Campo Crédito Atualizado nao Informado.";
          $this->erro_campo = "k111_creditoatualizado";
          $this->erro_banco = "";
@@ -450,10 +450,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_debitoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoatualizado"])){ 
+     if(trim($this->k111_debitoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoatualizado"])){
        $sql  .= $virgula." k111_debitoatualizado = $this->k111_debitoatualizado ";
        $virgula = ",";
-       if(trim($this->k111_debitoatualizado) == null ){ 
+       if(trim($this->k111_debitoatualizado) == null ){
          $this->erro_sql = " Campo Débito Atualizado nao Informado.";
          $this->erro_campo = "k111_debitoatualizado";
          $this->erro_banco = "";
@@ -497,7 +497,7 @@ class cl_tabplansaldorecurso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Saldos dos recursos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k111_sequencial;
@@ -525,14 +525,14 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k111_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k111_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k111_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -567,7 +567,7 @@ class cl_tabplansaldorecurso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Saldos dos recursos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k111_sequencial;
@@ -595,11 +595,11 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -621,11 +621,11 @@ class cl_tabplansaldorecurso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -641,15 +641,15 @@ class cl_tabplansaldorecurso {
      $sql2 = "";
      if($dbwhere==""){
        if($k111_sequencial!=null ){
-         $sql2 .= " where tabplansaldorecurso.k111_sequencial = $k111_sequencial "; 
-       } 
+         $sql2 .= " where tabplansaldorecurso.k111_sequencial = $k111_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -658,11 +658,11 @@ class cl_tabplansaldorecurso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -675,15 +675,15 @@ class cl_tabplansaldorecurso {
      $sql2 = "";
      if($dbwhere==""){
        if($k111_sequencial!=null ){
-         $sql2 .= " where tabplansaldorecurso.k111_sequencial = $k111_sequencial "; 
-       } 
+         $sql2 .= " where tabplansaldorecurso.k111_sequencial = $k111_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

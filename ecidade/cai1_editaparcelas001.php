@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -125,7 +125,7 @@ if(isset($incluir)){
                      Valor
                    </td>
                   <td>
-                    <?
+                    <?php
                       echo '<input type="text" name="'.'k189_valor'.$parcela.'" id="'.'k189_valor'.$parcela.'" class="field-size2" maxlength="10" '.$valor_disabled.'>';
                       echo '<input type="hidden" name="'.'k189_valorparcela'.$parcela.'" id="'.'k189_valorparcela'.$parcela.'" class="field-size2" maxlength="10" value="'.$valorparc.'">';
                       echo '<input type="hidden" name="k40_controlavencimento" id="k40_controlavencimento" class="field-size2" maxlength="10" value="'.$k40_controlavencimento.'">';
@@ -135,7 +135,7 @@ if(isset($incluir)){
                      Vencimento
                    </td>
                   <td>
-                    <?
+                    <?php
                     db_inputdata('k189_data'.$parcela,@$k189_data_dia,@$k189_data_mes,@$k189_data_ano,true,'text',$permite_edit_data,"")
                     ?>
                   </td>

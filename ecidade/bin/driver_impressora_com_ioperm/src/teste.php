@@ -1,4 +1,4 @@
-<?
+<?php
   $r = "abcdefghijklmn";
 
   set_time_limit(0);

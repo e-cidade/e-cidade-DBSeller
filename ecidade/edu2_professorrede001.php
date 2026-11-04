@@ -52,7 +52,7 @@ $clrotulo->label("ac16_resumoobjeto");
     ?>
 </head>
 <body bgcolor="#cccccc" style='margin-top: 30px'>
-<? //MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php //MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <center>
     <div id='divContainer' style="width: 500px;">
         <form id='formPadrao' action="">
@@ -119,7 +119,7 @@ $clrotulo->label("ac16_resumoobjeto");
         </form>
     </div>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 
 ?>

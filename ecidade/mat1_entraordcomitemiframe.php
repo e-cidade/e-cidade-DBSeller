@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -128,7 +128,7 @@ $numdec = 2;
 <center>
 <table border='0' >   
 
-<?
+<?php
 
 
 
@@ -479,7 +479,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         ?>
         <td class='bordas_corp' align='center' nowrap ><small>
         <input name='Incluir' type='button' value='Incluir' onclick='js_novomatmater(<?=@$pc01_codmater?>,<?=@$e62_numemp?>,<?=@$e62_sequen?>);' >	       
-        <?
+        <?php
         
         
         

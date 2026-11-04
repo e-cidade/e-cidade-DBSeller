@@ -59,12 +59,52 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
+<style>
+  @import url("assets/model_esocial.css");
+</style>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center><br />
 <table width="60%" border="0" cellspacing="4" cellpadding="0">
   <tr><td colspan="2">&nbsp;</td></tr>
   <form name="form1" method="post" action="">
+  <div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content" style="border: 0 !important;">
+  <!-- <div class="loader"></div> -->
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Processamento e Envio do 13º</h2>
+    </div>
+    <div class="modal-body">
+      <div class="form-conteudo">
+      <fieldset>
+        <legend class="legend-border">Data do pagamento do 13º salário:</legend>
+        <label class="label_form">*</label>
+        <?php 
+        $instituicao = db_getsession('DB_instit');
+        $dia = date("01");
+        $ano = date('Y');
+        $mesIni = $ano.'-12-'.$dia; 
+
+        //http://php.net/manual/pt_BR/function.cal-days-in-month.php
+        $qnt_dias_mes = cal_days_in_month(CAL_GREGORIAN, '12', $ano);		
+  
+        $mesFinal = $ano.'-12-'.(string)$qnt_dias_mes;
+        ?>
+        <input type="hidden" name="instituicao" id="instituicao" value="<?= $instituicao; ?>">
+        <input type="hidden" name="ano" id="ano" value="<?= $ano; ?>">
+        <input type="date" id="data_decimo_13" name="data_decimo_13" value="<?= $mesIni; ?>" min="<?= $mesIni; ?>" max="<?= $mesFinal; ?>" class="input_form" style="padding: 15px 15px 30px 15px !important;">
+      </fieldset>
+    </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id="btnSalvar" type="submit" onclick="js_enviar_dados()">Confirmar</button>
+          <!--  -->
+          <button class="btn btn-info"  id="myBtn" type="button">Cancelar</button>
+        </div>
+      </div>
+  </div>
+</div>
   <tr>
     <td align="right" width="40%">
       <b>Opção:</b>
@@ -87,15 +127,14 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
   if(isset($opcao) && $opcao != 0){
 
     if($opcao == 1 || $opcao == 2){
-
-      if($mesfolha != $r11_mes13 && $opcao == 2){
-        $sql_erro = true;
-        $erro_msg = $arr_opcoes[$opcao]." só pode ser pago no mês ".$r11_mes13." / ".$anofolha.".";
-      }else if($mesfolha >= $r11_mes13 && $opcao == 1){
-        $sql_erro = true;
-        $erro_msg = $arr_opcoes[$opcao]." só pode ser pago antes de ".$r11_mes13." / ".$anofolha.".";
-      }
-
+        if($mesfolha != $r11_mes13 && $opcao == 2) {
+          $sql_erro = true;
+          $erro_msg = $arr_opcoes[$opcao]." só pode ser pago no mês ".$r11_mes13." / ".$anofolha.".";
+        }else if($mesfolha >= $r11_mes13 && $opcao == 1){
+          $sql_erro = true;
+          $erro_msg = $arr_opcoes[$opcao]." só pode ser pago antes de ".$r11_mes13." / ".$anofolha.".";
+        }
+      
       $opcao_fracao = 3;
       $fracao_certa = 100;
       if($opcao == 1){
@@ -173,6 +212,7 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
     
     $geraform->usaregi = true;                      // PERMITIR SELEÇÃO DE MATRÍCULAS
     $geraform->usalota = true;                      // PERMITIR SELEÇÃO DE LOTAÇÕES
+    $geraform->selecao = true;                      // PERMITIR SELEÇÃO DE LOTAÇÕES
     
     $geraform->re1nome = "r110_regisi";             // NOME DO CAMPO DA MATRÍCULA INICIAL
     $geraform->re2nome = "r110_regisf";             // NOME DO CAMPO DA MATRÍCULA FINAL
@@ -193,8 +233,8 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
                                                     //                                       m - Matrícula,
                                                     //                                       l - Lotação
     $geraform->testarescisaoregi = "r";
-    $geraform->onchpad      = true;                 // MUDAR AS OPÇÕES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
-    $geraform->tipresumo    = "Seleção";            // LABEL DA SELEÇÃO
+    $geraform->onchpad = true;                 // MUDAR AS OPÇÕES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
+    $geraform->tipresumo = "Selecione";          // LABEL DA SELEÇÃO
     $geraform->gera_form(null,null);
     ?>
   <?php if($opcao == 3 && $mesfolha != $r11_mes13){?>
@@ -204,7 +244,13 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
   <?php } ?>
   <tr>
     <td colspan='2' align='center'>
-      <input type="submit" name="processar" value="Processar" onclick="return js_enviar_dados();">
+      <!--onclick="return (); " js_enviar_dados--> 
+      <?php 
+      if ($opcao == 2): ?>
+        <input type="button" name="processar" value="Processar" onclick="js_modal()">
+      <?php else: ?>
+          <input type="submit" name="processar" value="Processar" onclick="js_enviar_dados()">
+      <?php endif;?>
     </td>
   </tr>
   <?php
@@ -218,6 +264,28 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 <script>
+
+// Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0]; 
+
+span.onclick = function() {
+  modal.style.display = "none";
+  servidor.innerHTML = "";
+}
+
+btn.onclick = function() {
+  modal.style.display = "none";
+}
+
+function js_modal() {
+  modal.style.display = "block";
+}
+
+
 function js_opcao_selecionada(){
   document.form1.submit();
 }
@@ -231,6 +299,7 @@ function js_enviar_dados(){
     }
     document.form1.faixa_regis.value = valores;
     document.form1.selregist.selected = 0;
+    
   }else if(document.form1.sellotac){
     valores = '';
     virgula = '';
@@ -241,7 +310,7 @@ function js_enviar_dados(){
     document.form1.faixa_lotac.value = valores;
     document.form1.sellotac.selected = 0;
   }
-
+  
   if(document.form1.informe){
     okSubmit = false;
     for(i=0; i<document.form1.informe.length; i++){
@@ -261,8 +330,8 @@ function js_enviar_dados(){
       return false;
     }
   }
-
   document.form1.action = 'pes4_manut13o002.php';
+
   return true;
 }
 js_trocacordeselect();
@@ -274,3 +343,9 @@ if($sql_erro == true){
   echo "<script>location.href = 'pes4_manut13o001.php'</script>";
 }
 ?>
+
+<style>
+  tr strong {
+    float: right;
+  }
+</style>

@@ -20,8 +20,13 @@ echo " "
 echo "========================================================================================"
 echo "================================ Criando Banco de Dados ================================"
 echo "========================================================================================"
+# PostgreSQL 16 removed table OIDs and changed polymorphic array signatures.
 psql -U ${DB_USERNAME} -h ${DB_HOST} -f docker/init.sql && \
-psql -U ${DB_USERNAME} -h ${DB_HOST} ${DB_DATABASE} -f docker/ecidade_base.sql && \
+sed -e 's/^SET default_with_oids = true;$/SET default_with_oids = false;/' \
+    -e '/^GRANT SELECT ON TABLE pg_catalog.pg_pltemplate TO plugin;$/d' \
+    -e '/^CREATE AGGREGATE public.array_accum(anyelement)/,/^);$/ { s/anyelement/anycompatible/g; s/anyarray/anycompatiblearray/g; }' \
+    -e 's/^ALTER AGGREGATE public.array_accum(anyelement)/ALTER AGGREGATE public.array_accum(anycompatible)/' \
+    docker/ecidade_base.sql | psql -v ON_ERROR_STOP=1 -U ${DB_USERNAME} -h ${DB_HOST} ${DB_DATABASE} && \
 psql -U ${DB_USERNAME} -h ${DB_HOST} ${DB_DATABASE} -f docker/pos.sql && \
 echo -e "${VERDE}[OK] - Banco de dados criado${FIN}" || echo -e "${VERMELHO}[ERROR] - Problema ao criar o banco de dados${FIN}"
 
@@ -51,8 +56,10 @@ echo "==========================================================================
 echo "================================ Instalando Dependencias ================================"
 echo "========================================================================================="
 composer install && \
-composer install-desktop || true && \
 composer configure-desktop && \
+chgrp -R www-data storage bootstrap/cache tmp && \
+chmod -R g+rwX storage bootstrap/cache tmp && \
+find storage bootstrap/cache tmp -type d -exec chmod g+s {} + && \
 php artisan cache:clear && \
 php artisan key:generate && \
 php artisan passport:keys && \

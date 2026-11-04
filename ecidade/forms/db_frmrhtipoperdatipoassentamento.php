@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,38 +72,38 @@ if (isset($db_opcaoal)) {
 		       <?=@$Lh71_sequencial?>
 		    </td>
 		    <td> 
-				<?
+				<?php
 				  db_input('h71_sequencial',10,$Ih71_sequencial,true,'text',3,"")
 				?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Th71_rhtipoperda?>">
-		       <?
+		       <?php
 		       //db_ancora(@$Lh71_rhtipoperda,"js_pesquisah71_rhtipoperda(true);",$db_opcao);
 		       echo @$Lh71_rhtipoperda;
 		       ?>
 		    </td>
 		    <td> 
-						<?
+						<?php
 						  db_input('h71_rhtipoperda',10,$Ih71_rhtipoperda,true,'text', 3," onchange='js_pesquisah71_rhtipoperda(false);'")
 						?>
-		       <?
+		       <?php
 		          db_input('h70_descricao',60,$Ih70_descricao,true,'text',3,'')
 		       ?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Th71_tipoassentamento?>">
-		       <?
+		       <?php
 		         db_ancora(@$Lh71_tipoassentamento,"js_pesquisah71_tipoassentamento(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-						<?
+						<?php
 						  db_input('h71_tipoassentamento',10,$Ih71_tipoassentamento,true,'text',$db_opcao," onchange='js_pesquisah71_tipoassentamento(false);'")
 						?>
-		       <?
+		       <?php
 		          db_input('h12_descr',60,"Descrição",true,'text',3,'')
 		       ?>
 		    </td>
@@ -127,7 +127,7 @@ if (isset($db_opcaoal)) {
  <table style="margin-top: 10px;">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
     
 			 $chavepri = array("h71_sequencial"=>@$h71_sequencial);
 			 $cliframe_alterar_excluir->chavepri      = $chavepri;

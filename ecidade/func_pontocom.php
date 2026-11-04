@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clpontocom->rotulo->label("r47_regist");
               <?=$Lr47_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r47_mesusu",2,$Ir47_mesusu,true,"text",4,"","chave_r47_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clpontocom->rotulo->label("r47_regist");
               <?=$Lr47_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r47_regist",6,$Ir47_regist,true,"text",4,"","chave_r47_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clpontocom->rotulo->label("r47_regist");
               <?=$Lr47_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r47_rubric",4,$Ir47_rubric,true,"text",4,"","chave_r47_rubric");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clpontocom->rotulo->label("r47_regist");
               <?=$Lr47_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r47_regist",6,$Ir47_regist,true,"text",4,"","chave_r47_regist");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clpontocom->rotulo->label("r47_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontocom.php")==true){
@@ -141,12 +141,12 @@ $clpontocom->rotulo->label("r47_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

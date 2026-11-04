@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,19 +41,19 @@ $clrotulo->label("pc01_descrmater");
        <?=@$Lrh38_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh38_seq',6,$Irh38_seq,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh38_codele?>">
-       <?
+       <?php
        db_ancora(@$Lrh38_codele,"js_pesquisarh38_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 
 if ($db_opcao == 2 || $db_opcao == 22){
   $db_opcao02 = 3;
@@ -67,22 +67,22 @@ if ($db_opcao == 1 || $db_opcao == 11){
 }
 db_input('rh38_anousu',10,"",true,"hidden",3,"");
 ?>
-       <?
+       <?php
 db_input('o56_descr',50,$Io56_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh36_pcmater?>">
-       <?
+       <?php
        db_ancora(@$Lrh36_pcmater,"js_pesquisarh36_pcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh36_pcmater',10,$Irh36_pcmater,true,'text',$db_opcao," onchange='js_pesquisarh36_pcmater(false);'");
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',50,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhelementoemp.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

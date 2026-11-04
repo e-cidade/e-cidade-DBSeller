@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,22 +64,22 @@ global $o135_sequencial;
        <?=@$Lo135_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o135_sequencial',10,$Io135_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To135_orcsuplementacaoparametro?>">
-       <?
+       <?php
        db_ancora(@$Lo135_orcsuplementacaoparametro,"js_pesquisao135_orcsuplementacaoparametro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o135_orcsuplementacaoparametro',10,$Io135_orcsuplementacaoparametro,true,'text',3," onchange='js_pesquisao135_orcsuplementacaoparametro(false);'")
 ?>
-       <?
+       <?php
 db_input('o134_anousu',10,$Io134_anousu,true,'text',3,'',"","","display:none;")
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('o134_anousu',10,$Io134_anousu,true,'text',3,'',"","","display:none;")
        <?=@$Lo135_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o135_descricao',50,$Io135_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('o135_descricao',50,$Io135_descricao,true,'text',$db_opcao,"")
        <?=@$Lo135_nivel?>
     </td>
     <td> 
-<?
+<?php
 $x = array('6'=>'Ação','7'=>'Elemento','3'=>'Função','5'=>'Programa','8'=>'Recurso','1'=>'Órgão','4'=>'Subfunção','2'=>'Unidade');
 db_select('o135_nivel',$x,true,$db_opcao,"onchange='valida_nivel_valor();'");
 ?>
@@ -110,7 +110,7 @@ db_select('o135_nivel',$x,true,$db_opcao,"onchange='valida_nivel_valor();'");
        <?=@$Lo135_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o135_valor',50,$Io135_valor,true,'text',3,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('o135_valor',50,$Io135_valor,true,'text',3,"")
     <td colspan="2" align="center" nowrap title="<?=@$To135_fundamentacaolegal?>"> 
       <fieldset style="width: 460px; margin-top: 20px;">
         <legend><b><?=@$Lo135_fundamentacaolegal?></b></legend> 
-          <?
+          <?php
             db_textarea('o135_fundamentacaolegal',10,47,$Io135_fundamentacaolegal,true,'text',$db_opcao,"");
           ?>
           
@@ -143,7 +143,7 @@ db_input('o135_valor',50,$Io135_valor,true,'text',3,"")
  <table style="margin-top: 15px;">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
    $iAnoUsu     = db_getsession("DB_anousu");
 	 $chavepri= array("o135_sequencial"=>@$o135_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -199,7 +199,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcsuplementacaoparametrocriterio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

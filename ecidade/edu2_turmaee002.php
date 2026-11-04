@@ -297,8 +297,10 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
   $pdf->setfont( 'arial', 'b', 8 );
 
   //aqui verificar o tipo de atendimento
-  $pdf->cell(  20, 4, "Matrícula/CGM", 1, 0, "C", 1 );
-  $pdf->cell( 170, 4, "Docentes",      1, 1, "C", 1 );
+  $cols = [22, 88, 80];
+  $pdf->cell( $cols[0], 4, "Matrícula/CGM", 1, 0, "C", 1 );
+  $pdf->cell( $cols[1], 4, "Docentes",      1, 0, "C", 1 );
+  $pdf->cell( $cols[2], 4, "Nome Social",      1, 1, "C", 1 );
 
   $sCamposTurmaACHorario  = "distinct case ";
   $sCamposTurmaACHorario .= "           when ed20_i_tiposervidor = 1 ";
@@ -309,7 +311,8 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
   $sCamposTurmaACHorario .= "  when ed20_i_tiposervidor = 1 ";
   $sCamposTurmaACHorario .= "       then cgmrh.z01_nome  ";
   $sCamposTurmaACHorario .= "       else cgmcgm.z01_nome  ";
-  $sCamposTurmaACHorario .= "   end as z01_nome";
+  $sCamposTurmaACHorario .= "   end as z01_nome,";
+  $sCamposTurmaACHorario .= "z04_nomesocial";
   $sWhereTurmaACHorario  = "ed268_i_codigo = {$ed268_i_codigo}";
 
   $sSqlTurmaACHorario = $oDaoTurmaACHorarioProfissional->sql_query_vinculo_profissional(
@@ -326,11 +329,13 @@ for( $x = 0; $x < $clturmaac->numrows; $x++ ) {
 
       db_fieldsmemory( $resultturmaac, $w );
 
-      $pdf->cell(  20, 4, $identificacao, 1, 0, "C", 0 );
-      $pdf->cell( 170, 4, $z01_nome,      1, 1, "C", 0 );
+      $pdf->cell(  $cols[0], 4, $identificacao, 1, 0, "C", 0 );
+      if (!is_null())
+      $pdf->cell( $cols[1], 4, mb_strimwidth("${z01_nome}", 0, 40),      1, 0, "C", 0 );
+      $pdf->cell( $cols[2], 4, mb_strimwidth("${z04_nomesocial}", 0, 40),      1, 1, "C", 0 );
     }
   } else {
-  	$pdf->cell( 190, 4, "NENHUM PROFISSIONAL/MONITOR INFORMADO.", 1, 1, "C", 0 );
+  	$pdf->cell( $cols[0] + $cols[1] + $cols[2], 4, "NENHUM PROFISSIONAL/MONITOR INFORMADO.", 1, 1, "C", 0 );
   }
 
   if( $ed268_i_tipoatend == 4 ) {

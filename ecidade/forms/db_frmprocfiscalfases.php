@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,22 +46,22 @@ $clrotulo->label("z01_nome");
        <b>TIAF</b>
     </td>
     <td> 
-<?
+<?php
 db_input('y108_sequencial',10,$Iy108_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty108_procfiscal?>">
-       <?
+       <?php
        db_ancora(@$Ly108_procfiscal,"js_pesquisay108_procfiscal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y108_procfiscal',10,$Iy108_procfiscal,true,'text',$db_opcao," onchange='js_pesquisay108_procfiscal(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -71,7 +71,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Ly108_dtcriacao?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y108_dtcriacao',@$y108_dtcriacao_dia,@$y108_dtcriacao_mes,@$y108_dtcriacao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -81,22 +81,22 @@ db_inputdata('y108_dtcriacao',@$y108_dtcriacao_dia,@$y108_dtcriacao_mes,@$y108_d
        <?=@$Ly108_dtassinatura?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y108_dtassinatura',@$y108_dtassinatura_dia,@$y108_dtassinatura_mes,@$y108_dtassinatura_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty108_responsavel?>">
-       <?
+       <?php
        db_ancora(@$Ly108_responsavel,"js_pesquisay108_responsavel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y108_responsavel',10,$Iy108_responsavel,true,'text',$db_opcao," onchange='js_pesquisay108_responsavel(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -159,7 +159,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procfiscalfases.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

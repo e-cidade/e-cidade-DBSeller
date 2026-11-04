@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("m60_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tm63_codmatmater?>">
-       <?
+       <?php
        db_ancora(@$Lm63_codmatmater,"js_pesquisam63_codmatmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m63_codmatmater',10,$Im63_codmatmater,true,'text',$db_opcao," onchange='js_pesquisam63_codmatmater(false);'")
 ?>
-       <?
+       <?php
 db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm63_codpcmater?>">
-       <?
+       <?php
        db_ancora(@$Lm63_codpcmater,"js_pesquisam63_codpcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m63_codpcmater',10,$Im63_codpcmater,true,'text',$db_opcao," onchange='js_pesquisam63_codpcmater(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_transmater.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

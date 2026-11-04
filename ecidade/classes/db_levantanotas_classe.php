@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE levantanotas
-class cl_levantanotas { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $y79_codigo = 0; 
-   var $y79_sequencia = 0; 
-   var $y79_ordem = 0; 
-   var $y79_documento = null; 
-   var $y79_valor = 0; 
-   var $y79_data_dia = null; 
-   var $y79_data_mes = null; 
-   var $y79_data_ano = null; 
-   var $y79_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_levantanotas {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $y79_codigo = 0;
+   var $y79_sequencia = 0;
+   var $y79_ordem = 0;
+   var $y79_documento = null;
+   var $y79_valor = 0;
+   var $y79_data_dia = null;
+   var $y79_data_mes = null;
+   var $y79_data_ano = null;
+   var $y79_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 y79_codigo = int8 = Sequencial de notas 
-                 y79_sequencia = int4 = Sequencial 
-                 y79_ordem = int8 = Ordem 
-                 y79_documento = varchar(20) = Documento 
-                 y79_valor = float8 = Valor 
-                 y79_data = date = Data 
+                 y79_codigo = int8 = Sequencial de notas
+                 y79_sequencia = int4 = Sequencial
+                 y79_ordem = int8 = Ordem
+                 y79_documento = varchar(20) = Documento
+                 y79_valor = float8 = Valor
+                 y79_data = date = Data
                  ";
-   //funcao construtor da classe 
-   function cl_levantanotas() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("levantanotas"); 
+     $this->rotulo = new rotulo("levantanotas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_levantanotas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y79_codigo = ($this->y79_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["y79_codigo"]:$this->y79_codigo);
        $this->y79_sequencia = ($this->y79_sequencia == ""?@$GLOBALS["HTTP_POST_VARS"]["y79_sequencia"]:$this->y79_sequencia);
@@ -96,9 +96,9 @@ class cl_levantanotas {
      }
    }
    // funcao para inclusao
-   function incluir ($y79_codigo){ 
+   public function incluir ($y79_codigo){
       $this->atualizacampos();
-     if($this->y79_sequencia == null ){ 
+     if($this->y79_sequencia == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "y79_sequencia";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_levantanotas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y79_ordem == null ){ 
+     if($this->y79_ordem == null ){
        $this->erro_sql = " Campo Ordem nao Informado.";
        $this->erro_campo = "y79_ordem";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_levantanotas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y79_documento == null ){ 
+     if($this->y79_documento == null ){
        $this->erro_sql = " Campo Documento nao Informado.";
        $this->erro_campo = "y79_documento";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_levantanotas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y79_valor == null ){ 
+     if($this->y79_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "y79_valor";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_levantanotas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->y79_data == null ){ 
+     if($this->y79_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "y79_data_dia";
        $this->erro_banco = "";
@@ -144,16 +144,16 @@ class cl_levantanotas {
        return false;
      }
      if($y79_codigo == "" || $y79_codigo == null ){
-       $result = db_query("select nextval('levantanotas_y79_codigo_seq')"); 
+       $result = db_query("select nextval('levantanotas_y79_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: levantanotas_y79_codigo_seq do campo: y79_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: levantanotas_y79_codigo_seq do campo: y79_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->y79_codigo = pg_result($result,0,0); 
+       $this->y79_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from levantanotas_y79_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $y79_codigo)){
@@ -164,10 +164,10 @@ class cl_levantanotas {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->y79_codigo = $y79_codigo; 
+         $this->y79_codigo = $y79_codigo;
        }
      }
-     if(($this->y79_codigo == null) || ($this->y79_codigo == "") ){ 
+     if(($this->y79_codigo == null) || ($this->y79_codigo == "") ){
        $this->erro_sql = " Campo y79_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,23 +176,23 @@ class cl_levantanotas {
        return false;
      }
      $sql = "insert into levantanotas(
-                                       y79_codigo 
-                                      ,y79_sequencia 
-                                      ,y79_ordem 
-                                      ,y79_documento 
-                                      ,y79_valor 
-                                      ,y79_data 
+                                       y79_codigo
+                                      ,y79_sequencia
+                                      ,y79_ordem
+                                      ,y79_documento
+                                      ,y79_valor
+                                      ,y79_data
                        )
                 values (
-                                $this->y79_codigo 
-                               ,$this->y79_sequencia 
-                               ,$this->y79_ordem 
-                               ,'$this->y79_documento' 
-                               ,$this->y79_valor 
-                               ,".($this->y79_data == "null" || $this->y79_data == ""?"null":"'".$this->y79_data."'")." 
+                                $this->y79_codigo
+                               ,$this->y79_sequencia
+                               ,$this->y79_ordem
+                               ,'$this->y79_documento'
+                               ,$this->y79_valor
+                               ,".($this->y79_data == "null" || $this->y79_data == ""?"null":"'".$this->y79_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Notas do levantamento ($this->y79_codigo) nao Incluído. Inclusao Abortada.";
@@ -229,16 +229,16 @@ class cl_levantanotas {
        $resac = db_query("insert into db_acount values($acount,1074,6532,'','".AddSlashes(pg_result($resaco,0,'y79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($y79_codigo=null) { 
+   public function alterar ($y79_codigo=null) {
       $this->atualizacampos();
      $sql = " update levantanotas set ";
      $virgula = "";
-     if(trim($this->y79_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_codigo"])){ 
+     if(trim($this->y79_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_codigo"])){
        $sql  .= $virgula." y79_codigo = $this->y79_codigo ";
        $virgula = ",";
-       if(trim($this->y79_codigo) == null ){ 
+       if(trim($this->y79_codigo) == null ){
          $this->erro_sql = " Campo Sequencial de notas nao Informado.";
          $this->erro_campo = "y79_codigo";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_levantanotas {
          return false;
        }
      }
-     if(trim($this->y79_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_sequencia"])){ 
+     if(trim($this->y79_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_sequencia"])){
        $sql  .= $virgula." y79_sequencia = $this->y79_sequencia ";
        $virgula = ",";
-       if(trim($this->y79_sequencia) == null ){ 
+       if(trim($this->y79_sequencia) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "y79_sequencia";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_levantanotas {
          return false;
        }
      }
-     if(trim($this->y79_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_ordem"])){ 
+     if(trim($this->y79_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_ordem"])){
        $sql  .= $virgula." y79_ordem = $this->y79_ordem ";
        $virgula = ",";
-       if(trim($this->y79_ordem) == null ){ 
+       if(trim($this->y79_ordem) == null ){
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "y79_ordem";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_levantanotas {
          return false;
        }
      }
-     if(trim($this->y79_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_documento"])){ 
+     if(trim($this->y79_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_documento"])){
        $sql  .= $virgula." y79_documento = '$this->y79_documento' ";
        $virgula = ",";
-       if(trim($this->y79_documento) == null ){ 
+       if(trim($this->y79_documento) == null ){
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "y79_documento";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_levantanotas {
          return false;
        }
      }
-     if(trim($this->y79_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_valor"])){ 
+     if(trim($this->y79_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_valor"])){
        $sql  .= $virgula." y79_valor = $this->y79_valor ";
        $virgula = ",";
-       if(trim($this->y79_valor) == null ){ 
+       if(trim($this->y79_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "y79_valor";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_levantanotas {
          return false;
        }
      }
-     if(trim($this->y79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"] !="") ){ 
+     if(trim($this->y79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"] !="") ){
        $sql  .= $virgula." y79_data = '$this->y79_data' ";
        $virgula = ",";
-       if(trim($this->y79_data) == null ){ 
+       if(trim($this->y79_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "y79_data_dia";
          $this->erro_banco = "";
@@ -312,11 +312,11 @@ class cl_levantanotas {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["y79_data_dia"])){
          $sql  .= $virgula." y79_data = null ";
          $virgula = ",";
-         if(trim($this->y79_data) == null ){ 
+         if(trim($this->y79_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "y79_data_dia";
            $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_levantanotas {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Notas do levantamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->y79_codigo;
@@ -381,14 +381,14 @@ class cl_levantanotas {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($y79_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($y79_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y79_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -419,7 +419,7 @@ class cl_levantanotas {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Notas do levantamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$y79_codigo;
@@ -447,11 +447,11 @@ class cl_levantanotas {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -473,10 +473,10 @@ class cl_levantanotas {
       }
      return $result;
    }
-   function sql_query ( $y79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $y79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,15 +491,15 @@ class cl_levantanotas {
      $sql2 = "";
      if($dbwhere==""){
        if($y79_codigo!=null ){
-         $sql2 .= " where levantanotas.y79_codigo = $y79_codigo "; 
-       } 
+         $sql2 .= " where levantanotas.y79_codigo = $y79_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,10 +508,10 @@ class cl_levantanotas {
      }
      return $sql;
   }
-   function sql_query_file ( $y79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $y79_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -524,15 +524,15 @@ class cl_levantanotas {
      $sql2 = "";
      if($dbwhere==""){
        if($y79_codigo!=null ){
-         $sql2 .= " where levantanotas.y79_codigo = $y79_codigo "; 
-       } 
+         $sql2 .= " where levantanotas.y79_codigo = $y79_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

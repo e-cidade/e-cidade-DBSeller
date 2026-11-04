@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@
       <td>
         <input name="transf" type="submit"  value="Transferência em Lote" onClick="return js_valida();"    >
         <input name="rel"    type="button"  value="Relatório"             onClick="js_imprime();" disabled >
-        <?
+        <?php
           db_input("t95_codtran",10,"",true,"hidden");
           db_input("lista"      ,10,"",true,"hidden");
         ?>

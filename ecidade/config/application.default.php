@@ -41,14 +41,25 @@ Registry::get('app.config')->merge(array(
             'grant_type' => '', // tipo de credenciais do e-Storage
             'client_id' => '', // login do e-Storage
             'client_secret' => '', // senha do e-Storage
-            'client_id_ouvidoria' => '' //login do Ouvidoria no storage
+            'client_id_ouvidoria' => '', //login do Ouvidoria no storage
+            "disableSSLverification"=> false,
+            // Sem url/client_id/client_secret, o storage usa disco local (fallback)
+            'local_path' => 'storage/estorage' // diret?rio para persist?ncia local
         ),
         'eauth' => array(
             "url" => "",
             "client_id"=> "",
             "client_secret"=> "",
             "grant_type"=> "client_credentials",
-            "municipio"=>""
+            "municipio"=>"",
+            "frontend_client_id"=>"",
+            "disableSSLverification"=> false
+        ),
+        'processoeletronico' => array(
+            "url" => "http://",
+            "client_id"=> "",
+            "client_secret"=> "",
+            "grant_type"=> "client_credentials"
         )
     ),
 
@@ -156,11 +167,4 @@ Registry::get('app.config')->merge(array(
      * @see https://laravel.com/docs/5.4/passport
      */
     'api.client.secret' => '4ed0NUlmQI20AbQZCrzeXxOOlDfjB73ib6juqqpS',
-
-    /**
-     * @var boolean
-     *
-     */
-    'custas_honorarios'=>false,
-
 ));

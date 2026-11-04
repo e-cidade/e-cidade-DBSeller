@@ -2,6 +2,7 @@
 
 namespace App\Domain\Educacao\CentralMatriculas\Models;
 
+use App\Domain\Tributario\Cadastro\Models\Bairro;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,4 +18,14 @@ class EscolaBairro extends Model
     protected $primaryKey = 'mo08_codigo';
     public $timestamps = false;
     public $incrementing = false;
+
+    public function escola()
+    {
+        return $this->belongsTo(Escola::class, 'mo08_escola', 'mo53_codigo');
+    }
+
+    public function bairro()
+    {
+        return $this->belongsTo(Bairro::class, 'mo08_bairro', 'j13_codi');
+    }
 }

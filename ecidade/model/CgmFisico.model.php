@@ -31,7 +31,7 @@ use ECidade\RecursosHumanos\ESocial\Transformer\S2205;
 
 /**
  * model para cgm
- *@package Protocolo
+ * @package Protocolo
  */
 class CgmFisico extends CgmBase
 {
@@ -326,7 +326,7 @@ class CgmFisico extends CgmBase
      */
     protected $genero;
 
-    const NACIONALIDADE_BRASILEIRA  = 1;
+    const NACIONALIDADE_BRASILEIRA = 1;
     const NACIONALIDADE_ESTRANGEIRA = 2;
 
     function __construct($iCgm = null)
@@ -338,7 +338,7 @@ class CgmFisico extends CgmBase
 
             $oDaoCgm = new cl_cgm();
             $sSqlCgm = $oDaoCgm->sql_query_file($iCgm);
-            $rsCgm   = $oDaoCgm->sql_record($sSqlCgm);
+            $rsCgm = $oDaoCgm->sql_record($sSqlCgm);
 
             if ($oDaoCgm->numrows > 0) {
                 $oDadosCgm = db_utils::fieldsMemory($rsCgm, 0);
@@ -364,24 +364,24 @@ class CgmFisico extends CgmBase
                 $this->setIdentOrgao($oDadosCgm->z01_identorgao);
                 $this->setLocalTrabalho($oDadosCgm->z01_localtrabalho);
                 $this->setRenda($oDadosCgm->z01_renda);
-                $this->setTrabalha($oDadosCgm->z01_trabalha=='t'?true:false);
+                $this->setTrabalha($oDadosCgm->z01_trabalha == 't' ? true : false);
                 $this->setPIS($oDadosCgm->z01_pis);
                 $this->setObs($oDadosCgm->z01_obs);
                 $this->setNomeCompleto(!empty($oDadosCgm->z01_nomecomple) ? $oDadosCgm->z01_nomecomple : $oDadosCgm->z01_nome);
                 $this->setGenero($oDadosCgm->z01_genero);
 
                 $oDaoCgmFisico = new cl_cgmfisico();
-                $sCampos       = "z04_rhcbo, ";
-                $sCampos      .= "z04_nomesocial, ";
-                $sCampos      .= "z04_paisnascimento, ";
-                $sCampos      .= "paisnascimento.db70_descricao as descr_paisnasc, ";
-                $sCampos      .= "substr(paisnascimentocodigo.db135_codigo, 2, 3) as cod_paisnasc, ";
-                $sCampos      .= "z04_paisnacionalidade, ";
-                $sCampos      .= "paisnacionalidade.db70_descricao as descr_paisnac,";
-                $sCampos      .= "substr(paisnacionalidadecodigo.db135_codigo, 2, 3) as cod_paisnac";
+                $sCampos = "z04_rhcbo, ";
+                $sCampos .= "z04_nomesocial, ";
+                $sCampos .= "z04_paisnascimento, ";
+                $sCampos .= "paisnascimento.db70_descricao as descr_paisnasc, ";
+                $sCampos .= "substr(paisnascimentocodigo.db135_codigo, 2, 3) as cod_paisnasc, ";
+                $sCampos .= "z04_paisnacionalidade, ";
+                $sCampos .= "paisnacionalidade.db70_descricao as descr_paisnac,";
+                $sCampos .= "substr(paisnacionalidadecodigo.db135_codigo, 2, 3) as cod_paisnac";
 
                 $sSqlCgmFisico = $oDaoCgmFisico->sql_query(null, $sCampos, null, "z04_numcgm = {$iCgm}");
-                $rsCgmFisico   = db_query($sSqlCgmFisico);
+                $rsCgmFisico = db_query($sSqlCgmFisico);
 
                 if (is_resource($rsCgmFisico)) {
                     $oDaoCgmFisico->numrows = pg_num_rows($rsCgmFisico);
@@ -396,9 +396,9 @@ class CgmFisico extends CgmBase
                     $this->setNomeSocial($oCgmFisico->z04_nomesocial);
                     $this->setPaisNascimento($oCgmFisico->z04_paisnascimento);
                     $this->setPaisNacionalidade($oCgmFisico->z04_paisnacionalidade);
-                    $this->sPaisNascimento          = $oCgmFisico->descr_paisnasc;
-                    $this->sCodigoPaisNascimento    = $oCgmFisico->cod_paisnasc;
-                    $this->sPaisNacionalidade       = $oCgmFisico->descr_paisnac;
+                    $this->sPaisNascimento = $oCgmFisico->descr_paisnasc;
+                    $this->sCodigoPaisNascimento = $oCgmFisico->cod_paisnasc;
+                    $this->sPaisNacionalidade = $oCgmFisico->descr_paisnac;
                     $this->sCodigoPaisNacionalidade = $oCgmFisico->cod_paisnac;
                     /**
                      *  Campos para e-social - Fim
@@ -406,7 +406,7 @@ class CgmFisico extends CgmBase
                 }
 
                 $oDaoCgmEnderecoExterior = new cl_cgmenderecoexterior();
-                $sCampo  = "z19_pais, ";
+                $sCampo = "z19_pais, ";
                 $sCampo .= "z19_logradouro, ";
                 $sCampo .= "z19_numero, ";
                 $sCampo .= "z19_complemento, ";
@@ -417,7 +417,7 @@ class CgmFisico extends CgmBase
                 $sCampo .= "substr(db135_codigo, 2, 3) as cod_paisendereco";
                 $sSqlCgmEnderecoExterior = $oDaoCgmEnderecoExterior->sql_query(null, $sCampo, null, "z19_numcgm = {$iCgm}");
 
-                $rsCgmEnderecoExterior   = db_query($sSqlCgmEnderecoExterior);
+                $rsCgmEnderecoExterior = db_query($sSqlCgmEnderecoExterior);
 
                 if (is_resource($rsCgmEnderecoExterior)) {
                     $oDaoCgmEnderecoExterior->numrows = pg_num_rows($rsCgmEnderecoExterior);
@@ -425,7 +425,7 @@ class CgmFisico extends CgmBase
 
                 if ($oDaoCgmEnderecoExterior->numrows > 0) {
                     $oDadosCgmEnderecoExterior = db_utils::fieldsMemory($rsCgmEnderecoExterior, 0);
-                    $this->sPaisExterior       = $oDadosCgmEnderecoExterior->descr_paisendereco;
+                    $this->sPaisExterior = $oDadosCgmEnderecoExterior->descr_paisendereco;
                     $this->sCodigoPaisExterior = $oDadosCgmEnderecoExterior->cod_paisendereco;
                     $this->setPaisExterior($oDadosCgmEnderecoExterior->z19_pais);
                     $this->setLogradouroExterior($oDadosCgmEnderecoExterior->z19_logradouro);
@@ -673,8 +673,17 @@ class CgmFisico extends CgmBase
             case '4':
                 $sEstadoCivil = 'Divorciado';
                 break;
+            case '5':
+                $sEstadoCivil = 'Separado Consensual';
+                break;
+            case '6':
+                $sEstadoCivil = 'Separado Judicial';
+                break;
+            case '7':
+                $sEstadoCivil = 'União Estavel';
+                break;
             default:
-                $sEstadoCivil='';
+                $sEstadoCivil = '';
                 break;
         }
         return $sEstadoCivil;
@@ -876,12 +885,12 @@ class CgmFisico extends CgmBase
         if (!empty($this->iSituacaoCpf)) {
             return $this->iSituacaoCpf;
         } else {
-            $cl_situacao     = new cl_cgmsituacaocpf();
-            $sSqlSituacao    = $cl_situacao->sql_query("", "*", "", "z01_numcgm = {$this->getCodigo()}");
-            $rsSituacao      = $cl_situacao->sql_record($sSqlSituacao);
-            $aListaSituacao  = db_utils::getCollectionByRecord($rsSituacao);
-            $iSituacao       = count($aListaSituacao);
-            if ($iSituacao == 0 ||$iSituacao == '0') {
+            $cl_situacao = new cl_cgmsituacaocpf();
+            $sSqlSituacao = $cl_situacao->sql_query("", "*", "", "z01_numcgm = {$this->getCodigo()}");
+            $rsSituacao = $cl_situacao->sql_record($sSqlSituacao);
+            $aListaSituacao = db_utils::getCollectionByRecord($rsSituacao);
+            $iSituacao = count($aListaSituacao);
+            if ($iSituacao == 0 || $iSituacao == '0') {
                 return false;
             } else {
                 return $aListaSituacao[0]->z17_situacao;
@@ -1074,7 +1083,6 @@ class CgmFisico extends CgmBase
     }
 
 
-
     /**
      * Salva os dados informados do CGM, caso o CGM já exista então
      * é alterado o registro apartir do código (numcgm) informado
@@ -1091,67 +1099,67 @@ class CgmFisico extends CgmBase
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        $oDaoCgm         = new cl_cgm();
-        $oDaoCgmCpf      = new cl_db_cgmcpf();
-        $oDaoCgmFisico   = new cl_cgmfisico();
+        $oDaoCgm = new cl_cgm();
+        $oDaoCgmCpf = new cl_db_cgmcpf();
+        $oDaoCgmFisico = new cl_cgmfisico();
         $oDaoCgmJuridico = new cl_cgmjuridico();
         $oDaoCgmEnderecoExterior = new cl_cgmenderecoexterior();
 
-        $oDaoCgm->z01_nome       = addslashes(substr($this->getNome(), 0, 40));
+        $oDaoCgm->z01_nome = addslashes(substr($this->getNome(), 0, 40));
         $oDaoCgm->z01_nomecomple = addslashes(substr($this->getNomeCompleto(), 0, 100));
-        $oDaoCgm->z01_ender      = addslashes($this->getLogradouro());
-        $oDaoCgm->z01_numero     = $this->getNumero();
-        $oDaoCgm->z01_compl      = addslashes($this->getComplemento());
-        $oDaoCgm->z01_bairro     = addslashes($this->getBairro());
-        $oDaoCgm->z01_munic      = addslashes($this->getMunicipio());
-        $oDaoCgm->z01_uf         = $this->getUf();
-        $oDaoCgm->z01_cep        = $this->getCep();
-        $oDaoCgm->z01_cxpostal   = $this->getCaixaPostal();
-        $oDaoCgm->z01_telef      = $this->getTelefone();
-        $oDaoCgm->z01_incest     = $this->getInscricaoEstadual();
-        $oDaoCgm->z01_telcel     = $this->getCelular();
-        $oDaoCgm->z01_email      = addslashes($this->getEmail());
-        $oDaoCgm->z01_endcon     = addslashes($this->getLogradouroComercial());
-        $oDaoCgm->z01_numcon     = $this->getNumeroComercial();
-        $oDaoCgm->z01_comcon     = addslashes($this->getComplementoComercial());
-        $oDaoCgm->z01_baicon     = addslashes($this->getBairroComercial());
-        $oDaoCgm->z01_muncon     = addslashes($this->getMunicipioComercial());
-        $oDaoCgm->z01_ufcon      = $this->getUfComercial();
-        $oDaoCgm->z01_cepcon     = $this->getCepComercial();
-        $oDaoCgm->z01_cxposcon   = $this->getCaixaPostalComercial();
-        $oDaoCgm->z01_telcon     = $this->getTelefoneComercial();
-        $oDaoCgm->z01_celcon     = $this->getCelularComercial();
-        $oDaoCgm->z01_emailc     = addslashes($this->getEmailComercial());
-        $oDaoCgm->z01_fax        = $this->getFax();
-        $oDaoCgm->z01_login      = db_getsession('DB_id_usuario');
-        $oDaoCgm->z01_obs        = $this->getObs();
-        $oDaoCgm->z01_hora       = db_hora();
-        $oDaoCgm->z01_numcgm        = $this->getCodigo();
-        $oDaoCgm->z01_cgccpf        = $this->getCpf();
-        $oDaoCgm->z01_cnh           = $this->getCnh();
-        $oDaoCgm->z01_categoria     = $this->getCategoriaCnh();
-        $oDaoCgm->z01_dtemissao     = $this->getDataEmissaoCnh();
+        $oDaoCgm->z01_ender = addslashes($this->getLogradouro());
+        $oDaoCgm->z01_numero = $this->getNumero();
+        $oDaoCgm->z01_compl = addslashes($this->getComplemento());
+        $oDaoCgm->z01_bairro = addslashes($this->getBairro());
+        $oDaoCgm->z01_munic = addslashes($this->getMunicipio());
+        $oDaoCgm->z01_uf = $this->getUf();
+        $oDaoCgm->z01_cep = $this->getCep();
+        $oDaoCgm->z01_cxpostal = $this->getCaixaPostal();
+        $oDaoCgm->z01_telef = $this->getTelefone();
+        $oDaoCgm->z01_incest = $this->getInscricaoEstadual();
+        $oDaoCgm->z01_telcel = $this->getCelular();
+        $oDaoCgm->z01_email = addslashes($this->getEmail());
+        $oDaoCgm->z01_endcon = addslashes($this->getLogradouroComercial());
+        $oDaoCgm->z01_numcon = $this->getNumeroComercial();
+        $oDaoCgm->z01_comcon = addslashes($this->getComplementoComercial());
+        $oDaoCgm->z01_baicon = addslashes($this->getBairroComercial());
+        $oDaoCgm->z01_muncon = addslashes($this->getMunicipioComercial());
+        $oDaoCgm->z01_ufcon = $this->getUfComercial();
+        $oDaoCgm->z01_cepcon = $this->getCepComercial();
+        $oDaoCgm->z01_cxposcon = $this->getCaixaPostalComercial();
+        $oDaoCgm->z01_telcon = $this->getTelefoneComercial();
+        $oDaoCgm->z01_celcon = $this->getCelularComercial();
+        $oDaoCgm->z01_emailc = addslashes($this->getEmailComercial());
+        $oDaoCgm->z01_fax = $this->getFax();
+        $oDaoCgm->z01_login = db_getsession('DB_id_usuario');
+        $oDaoCgm->z01_obs = $this->getObs();
+        $oDaoCgm->z01_hora = db_hora();
+        $oDaoCgm->z01_numcgm = $this->getCodigo();
+        $oDaoCgm->z01_cgccpf = $this->getCpf();
+        $oDaoCgm->z01_cnh = $this->getCnh();
+        $oDaoCgm->z01_categoria = $this->getCategoriaCnh();
+        $oDaoCgm->z01_dtemissao = $this->getDataEmissaoCnh();
         $oDaoCgm->z01_dthabilitacao = $this->getDataHabilitacaoCnh();
-        $oDaoCgm->z01_dtvencimento  = $this->getDataVencimentoCnh();
+        $oDaoCgm->z01_dtvencimento = $this->getDataVencimentoCnh();
         $oDaoCgm->z01_dtfalecimento = $this->getDataFalecimento();
-        $oDaoCgm->z01_nasc          = $this->getDataNascimento();
-        $oDaoCgm->z01_pai           = addslashes($this->getNomePai());
-        $oDaoCgm->z01_mae           = addslashes($this->getNomeMae());
-        $oDaoCgm->z01_sexo          = $this->getSexo();
-        $oDaoCgm->z01_profis        = addslashes($this->getProfissao());
-        $oDaoCgm->z01_nacion        = $this->getNacionalidade();
-        $oDaoCgm->z01_estciv        = $this->getEstadoCivil();
-        $oDaoCgm->z01_ident         = $this->getIdentidade();
-        $oDaoCgm->z01_ultalt        = date('Y-m-d', db_getsession('DB_datausu'));
-        $oDaoCgm->z01_identorgao    = $this->getIdentOrgao();
-        $oDaoCgm->z01_identdtexp    = $this->getIdentDataExp();
-        $oDaoCgm->z01_naturalidade  = $this->getNaturalidade();
-        $oDaoCgm->z01_escolaridade  = $this->getEscolaridade();
-        $oDaoCgm->z01_trabalha      = $this->getTrabalha()?"true":"false";
+        $oDaoCgm->z01_nasc = $this->getDataNascimento();
+        $oDaoCgm->z01_pai = addslashes($this->getNomePai());
+        $oDaoCgm->z01_mae = addslashes($this->getNomeMae());
+        $oDaoCgm->z01_sexo = $this->getSexo();
+        $oDaoCgm->z01_profis = addslashes($this->getProfissao());
+        $oDaoCgm->z01_nacion = $this->getNacionalidade();
+        $oDaoCgm->z01_estciv = $this->getEstadoCivil();
+        $oDaoCgm->z01_ident = $this->getIdentidade();
+        $oDaoCgm->z01_ultalt = date('Y-m-d', db_getsession('DB_datausu'));
+        $oDaoCgm->z01_identorgao = $this->getIdentOrgao();
+        $oDaoCgm->z01_identdtexp = $this->getIdentDataExp();
+        $oDaoCgm->z01_naturalidade = $this->getNaturalidade();
+        $oDaoCgm->z01_escolaridade = $this->getEscolaridade();
+        $oDaoCgm->z01_trabalha = $this->getTrabalha() ? "true" : "false";
         $oDaoCgm->z01_localtrabalho = $this->getLocalTrabalho();
-        $oDaoCgm->z01_renda         = $this->getRenda();
-        $oDaoCgm->z01_pis           = $this->getPIS();
-        $oDaoCgm->z01_obs           = $this->getObs();
+        $oDaoCgm->z01_renda = $this->getRenda();
+        $oDaoCgm->z01_pis = $this->getPIS();
+        $oDaoCgm->z01_obs = $this->getObs();
         $oDaoCgm->z01_genero = $this->getGenero();
 
         if (!empty($oDaoCgm->z01_numcgm)) {
@@ -1189,14 +1197,14 @@ class CgmFisico extends CgmBase
         }
 
         /**
-        * inseri registro na cgmendereco {Secundário}
-        */
+         * inseri registro na cgmendereco {Secundário}
+         */
         $oDaoCgmEndereco = new \cl_cgmendereco();
 
         if ($this->getEnderecoSecundario() != "" && $this->getEnderecoSecundario() != null) {
             $this->salvaCgmEnderecoSecundario();
         } elseif ($this->getEnderecoSecundario() == "") {
-            $sWhereCgmEnderSecundario = "z07_numcgm=".$this->getCodigo()." and z07_tipo = 'S' ";
+            $sWhereCgmEnderSecundario = "z07_numcgm=" . $this->getCodigo() . " and z07_tipo = 'S' ";
             $oDaoCgmEndereco->excluir(null, $sWhereCgmEnderSecundario);
 
             if ($oDaoCgmEndereco->erro_status == '0') {
@@ -1210,7 +1218,7 @@ class CgmFisico extends CgmBase
         }
 
         $oDaoCgmCpf->z01_numcgm = $this->getCodigo();
-        $oDaoCgmCpf->z01_cpf    = $this->getCpf();
+        $oDaoCgmCpf->z01_cpf = $this->getCpf();
 
         $oDaoCgmCpf->incluir($this->getCodigo());
 
@@ -1233,14 +1241,14 @@ class CgmFisico extends CgmBase
             throw new Exception("Erro ao excluir cgm {$this->getCodigo()} da tabela cgmfisico.");
         }
 
-        $oDaoCgmFisico->z04_numcgm            = $this->getCodigo();
-        $oDaoCgmFisico->z04_rhcbo             = $this->getCBO();
+        $oDaoCgmFisico->z04_numcgm = $this->getCodigo();
+        $oDaoCgmFisico->z04_rhcbo = $this->getCBO();
 
         /**
          *  Campos para e-social - Inicio
          */
-        $oDaoCgmFisico->z04_nomesocial        = $this->getNomeSocial();
-        $oDaoCgmFisico->z04_paisnascimento    = $this->getPaisNascimento();
+        $oDaoCgmFisico->z04_nomesocial = $this->getNomeSocial();
+        $oDaoCgmFisico->z04_paisnascimento = $this->getPaisNascimento();
         $oDaoCgmFisico->z04_paisnacionalidade = $this->getPaisNacionalidade();
         /**
          *  Campos para e-social - Fim
@@ -1261,14 +1269,14 @@ class CgmFisico extends CgmBase
         }
 
         if ($this->getPaisExterior() != null) {
-            $oDaoCgmEnderecoExterior->z19_numcgm            = $this->getCodigo();
-            $oDaoCgmEnderecoExterior->z19_pais              = $this->getPaisExterior();
-            $oDaoCgmEnderecoExterior->z19_logradouro        = $this->getLogradouroExterior();
-            $oDaoCgmEnderecoExterior->z19_numero            = $this->getNumeroExterior();
-            $oDaoCgmEnderecoExterior->z19_complemento       = $this->getComplementoExterior();
-            $oDaoCgmEnderecoExterior->z19_bairro            = $this->getBairroExterior();
-            $oDaoCgmEnderecoExterior->z19_cidade            = $this->getCidadeExterior();
-            $oDaoCgmEnderecoExterior->z19_codigopostal      = $this->getCodigoPostalExterior();
+            $oDaoCgmEnderecoExterior->z19_numcgm = $this->getCodigo();
+            $oDaoCgmEnderecoExterior->z19_pais = $this->getPaisExterior();
+            $oDaoCgmEnderecoExterior->z19_logradouro = $this->getLogradouroExterior();
+            $oDaoCgmEnderecoExterior->z19_numero = $this->getNumeroExterior();
+            $oDaoCgmEnderecoExterior->z19_complemento = $this->getComplementoExterior();
+            $oDaoCgmEnderecoExterior->z19_bairro = $this->getBairroExterior();
+            $oDaoCgmEnderecoExterior->z19_cidade = $this->getCidadeExterior();
+            $oDaoCgmEnderecoExterior->z19_codigopostal = $this->getCodigoPostalExterior();
 
             $oDaoCgmEnderecoExterior->incluir(null);
 
@@ -1314,9 +1322,9 @@ class CgmFisico extends CgmBase
          */
         $iCodigoFamilia = null;
         $oDaoCgmFamilia = db_utils::getDao("cgmcomposicaofamiliar");
-        $sWhere         = "z15_numcgm = {$this->getCodigo()}";
-        $sSqlFamilia    = $oDaoCgmFamilia->sql_query_file(null, "z15_cgmfamilia", null, $sWhere);
-        $rsFamilia      = db_query($sSqlFamilia);
+        $sWhere = "z15_numcgm = {$this->getCodigo()}";
+        $sSqlFamilia = $oDaoCgmFamilia->sql_query_file(null, "z15_cgmfamilia", null, $sWhere);
+        $rsFamilia = db_query($sSqlFamilia);
 
         if (!$rsFamilia) {
             throw new DBException("Ocorreu um erro ao verificar os familiares");
@@ -1325,19 +1333,19 @@ class CgmFisico extends CgmBase
         $oDaoCgmFamilia->numrows = pg_num_rows($rsFamilia);
 
         if ($oDaoCgmFamilia->numrows > 0) {
-            $oDadosFamilia  = db_utils::fieldsMemory($rsFamilia, 0);
+            $oDadosFamilia = db_utils::fieldsMemory($rsFamilia, 0);
             $iCodigoFamilia = $oDadosFamilia->z15_cgmfamilia;
         }
         if (empty($iCodigoFamilia)) {
             $oDaoCgmCodigoFamilia = db_utils::getDao("cgmfamilia");
             $oDaoCgmCodigoFamilia->incluir(null);
-            $iCodigoFamilia  = $oDaoCgmCodigoFamilia->z13_sequencial;
+            $iCodigoFamilia = $oDaoCgmCodigoFamilia->z13_sequencial;
         }
         $oDaoCgmFamilia->excluir(null, "z15_cgmfamilia = {$iCodigoFamilia}");
         foreach ($this->aFamiliares as $oFamilia) {
             $oDaoCgmFamilia->z15_cgmtipofamiliar = $oFamilia->iTipo;
-            $oDaoCgmFamilia->z15_cgmfamilia      = $iCodigoFamilia;
-            $oDaoCgmFamilia->z15_numcgm          = $oFamilia->iCgm;
+            $oDaoCgmFamilia->z15_cgmfamilia = $iCodigoFamilia;
+            $oDaoCgmFamilia->z15_numcgm = $oFamilia->iCgm;
             $oDaoCgmFamilia->incluir(null);
             if ($oDaoCgmFamilia->erro_status == 0) {
                 throw new Exception("Erro ao incluir familiar!\n{$oDaoCgmFamilia->erro_msg}");
@@ -1353,24 +1361,24 @@ class CgmFisico extends CgmBase
 
         $iCodigoFamilia = null;
         $oDaoCgmFamilia = db_utils::getDao("cgmcomposicaofamiliar");
-        $sWhere         = "z15_numcgm = {$this->getCodigo()}";
-        $sSqlFamilia    = $oDaoCgmFamilia->sql_query_file(null, "z15_cgmfamilia", null, $sWhere);
-        $rsFamilia      = db_query($sSqlFamilia);
+        $sWhere = "z15_numcgm = {$this->getCodigo()}";
+        $sSqlFamilia = $oDaoCgmFamilia->sql_query_file(null, "z15_cgmfamilia", null, $sWhere);
+        $rsFamilia = db_query($sSqlFamilia);
 
         if (is_resource($rsFamilia)) {
             $oDaoCgmFamilia->numrows = pg_num_rows($rsFamilia);
         }
 
         if ($oDaoCgmFamilia->numrows > 0) {
-            $oDadosFamilia  = db_utils::fieldsMemory($rsFamilia, 0);
+            $oDadosFamilia = db_utils::fieldsMemory($rsFamilia, 0);
             $iCodigoFamilia = $oDadosFamilia->z15_cgmfamilia;
         }
 
         if (!empty($iCodigoFamilia)) {
-            $sWhere      = "z15_cgmfamilia  = {$iCodigoFamilia}";
+            $sWhere = "z15_cgmfamilia  = {$iCodigoFamilia}";
             $sSqlFamilia = $oDaoCgmFamilia->sql_query(null, "*", null, $sWhere);
-            $rsFamilia   = null;
-            $rsFamilia   = db_query($sSqlFamilia);
+            $rsFamilia = null;
+            $rsFamilia = db_query($sSqlFamilia);
             $oDaoCgmFamilia->numrows = 0;
 
             if (is_resource($rsFamilia)) {
@@ -1378,18 +1386,19 @@ class CgmFisico extends CgmBase
             }
 
             for ($i = 0; $i < $oDaoCgmFamilia->numrows; $i++) {
-                $oFamiliaCadastrada  = db_utils::fieldsMemory($rsFamilia, $i);
-                $oFamiliar           = new stdClass();
-                $oFamiliar->iCgm     = $oFamiliaCadastrada->z01_numcgm;
-                $oFamiliar->sNome    = $oFamiliaCadastrada->z01_nome;
-                $oFamiliar->iTipo    = $oFamiliaCadastrada->z15_cgmtipofamiliar;
-                $oFamiliar->sTipo    = $oFamiliaCadastrada->z14_descricao;
+                $oFamiliaCadastrada = db_utils::fieldsMemory($rsFamilia, $i);
+                $oFamiliar = new stdClass();
+                $oFamiliar->iCgm = $oFamiliaCadastrada->z01_numcgm;
+                $oFamiliar->sNome = $oFamiliaCadastrada->z01_nome;
+                $oFamiliar->iTipo = $oFamiliaCadastrada->z15_cgmtipofamiliar;
+                $oFamiliar->sTipo = $oFamiliaCadastrada->z14_descricao;
 
                 $this->aFamiliares[] = $oFamiliar;
             }
         }
         return $this->aFamiliares;
     }
+
     function removerFamiliares()
     {
         $this->aFamiliares = array();
@@ -1404,22 +1413,22 @@ class CgmFisico extends CgmBase
     private function salvarSituacaoCpf()
     {
 
-        $iCgm                      = $this->getCodigo();
-        $iSituacao                 = $this->getSituacao();
-        $sMsgErro                  = 'Falha ao Atualizar a Situação do CPF ';
-        $sSqlSalvaSituacao         = "";
+        $iCgm = $this->getCodigo();
+        $iSituacao = $this->getSituacao();
+        $sMsgErro = 'Falha ao Atualizar a Situação do CPF ';
+        $sSqlSalvaSituacao = "";
 
         /*
          * verificamos se ja existe registro na tabela cgmsituacaocpf, referente ao cgm consultado
          * se existe definimos o metodo alterar() da classe, se não existe utilizamos incluir()
          */
-        $cl_situacao               = db_utils::getDao('cgmsituacaocpf');
-        $sSqlVerSituacao           = $cl_situacao->sql_query("", "*", "", "z17_numcgm = {$this->getCodigo()}");
-        $rsVerSituacao             = $cl_situacao->sql_record($sSqlVerSituacao);
-        $aListaVerSituacao         = db_utils::getCollectionByRecord($rsVerSituacao);
-        $iVerSituacao              = count($aListaVerSituacao);
+        $cl_situacao = db_utils::getDao('cgmsituacaocpf');
+        $sSqlVerSituacao = $cl_situacao->sql_query("", "*", "", "z17_numcgm = {$this->getCodigo()}");
+        $rsVerSituacao = $cl_situacao->sql_record($sSqlVerSituacao);
+        $aListaVerSituacao = db_utils::getCollectionByRecord($rsVerSituacao);
+        $iVerSituacao = count($aListaVerSituacao);
 
-        $cl_situacao->z17_numcgm   = $iCgm;
+        $cl_situacao->z17_numcgm = $iCgm;
         $cl_situacao->z17_situacao = $iSituacao;
 
         if ($iVerSituacao == 0) {
@@ -1444,7 +1453,7 @@ class CgmFisico extends CgmBase
     public function preencheuEsocial()
     {
 
-        $sSqlAvaliacaoRespostaCgm  = " select                                                                                                                           ";
+        $sSqlAvaliacaoRespostaCgm = " select                                                                                                                           ";
         $sSqlAvaliacaoRespostaCgm .= "   db103_sequencial as codigo_pergunta,                                                                                           ";
         $sSqlAvaliacaoRespostaCgm .= "   db103_descricao as pergunta,                                                                                                   ";
         $sSqlAvaliacaoRespostaCgm .= "   array_accum(distinct db103_avaliacaogrupopergunta) as grupo_pergunta,                                                          ";
@@ -1469,7 +1478,7 @@ class CgmFisico extends CgmBase
         $sSqlAvaliacaoRespostaCgm .= "                             from                                                                                                 ";
         $sSqlAvaliacaoRespostaCgm .= "                               rhpessoal                                                                                          ";
         $sSqlAvaliacaoRespostaCgm .= "                             where                                                                                                ";
-        $sSqlAvaliacaoRespostaCgm .= "                               rh01_numcgm = ". $this->getCodigo()."                                                              ";
+        $sSqlAvaliacaoRespostaCgm .= "                               rh01_numcgm = " . $this->getCodigo() . "                                                              ";
         $sSqlAvaliacaoRespostaCgm .= "                           )                                                                                                      ";
         $sSqlAvaliacaoRespostaCgm .= "         or db106_sequencial is null                                                                                              ";
         $sSqlAvaliacaoRespostaCgm .= "       )                                                                                                                          ";
@@ -1490,7 +1499,7 @@ class CgmFisico extends CgmBase
         $sSqlAvaliacaoRespostaCgm .= "                                                         from                                                                     ";
         $sSqlAvaliacaoRespostaCgm .= "                                                           rhpessoal                                                              ";
         $sSqlAvaliacaoRespostaCgm .= "                                                         where                                                                    ";
-        $sSqlAvaliacaoRespostaCgm .= "                                                           rh01_numcgm = ". $this->getCodigo()."                                  ";
+        $sSqlAvaliacaoRespostaCgm .= "                                                           rh01_numcgm = " . $this->getCodigo() . "                                  ";
         $sSqlAvaliacaoRespostaCgm .= "                                                       )                                                                          ";
         $sSqlAvaliacaoRespostaCgm .= "                                   and db106_resposta IS NOT NULL                                                                 ";
         $sSqlAvaliacaoRespostaCgm .= "                                   and db106_resposta <> ''                                                                       ";
@@ -1503,7 +1512,7 @@ class CgmFisico extends CgmBase
         $sSqlAvaliacaoRespostaCgm .= "   grupo_pergunta,                                                                                                                ";
         $sSqlAvaliacaoRespostaCgm .= "   pergunta                                                                                                                       ";
 
-        $rsAvaliacaoRespostaCgm   = db_query($sSqlAvaliacaoRespostaCgm);
+        $rsAvaliacaoRespostaCgm = db_query($sSqlAvaliacaoRespostaCgm);
 
         if (!$rsAvaliacaoRespostaCgm) {
             throw new DBException("Ocorreu um erro ao verificar se o usuario respondeu ao eSocial");
@@ -1585,7 +1594,7 @@ class CgmFisico extends CgmBase
         if (empty($this->sPaisEstrangeiro) && $this->iNacionalidade == self::NACIONALIDADE_ESTRANGEIRA) {
             $oDaoDocumento = new cl_cgmestrangeiro();
             $sSqlDocumento = $oDaoDocumento->sql_query_file(null, "*", null, "z09_numcgm = {$this->iCodigo}");
-            $rsDocumento   = db_query($sSqlDocumento);
+            $rsDocumento = db_query($sSqlDocumento);
             if (!$rsDocumento) {
                 throw new Exception("Ocorreu um erro ao buscar o número do documento estrangeiro.");
             }
@@ -1623,10 +1632,10 @@ class CgmFisico extends CgmBase
         }
 
         $oDaoDocumento->z09_sequencial = null;
-        $oDaoDocumento->z09_numcgm     = $this->iCodigo;
-        $oDaoDocumento->z09_documento  = $this->sDocumentoEstrangeiro;
-        $oDaoDocumento->z09_pais       = $this->sPaisEstrangeiro;
-        $oDaoDocumento->z09_cidade     = $this->sCidadeEstrangeiro;
+        $oDaoDocumento->z09_numcgm = $this->iCodigo;
+        $oDaoDocumento->z09_documento = $this->sDocumentoEstrangeiro;
+        $oDaoDocumento->z09_pais = $this->sPaisEstrangeiro;
+        $oDaoDocumento->z09_cidade = $this->sCidadeEstrangeiro;
         $oDaoDocumento->incluir($oDaoDocumento->z09_sequencial);
         if ($oDaoDocumento->erro_status == "0") {
             throw new Exception("Não foi possível vincular o documento do CGM estrangeiro.");
@@ -1652,21 +1661,22 @@ class CgmFisico extends CgmBase
     private function validaDadosS2205($dados)
     {
 
-        $clcgmfisico           = new cl_cgmfisico();
+        $clcgmfisico = new cl_cgmfisico();
         $clcgmenderecoexterior = new cl_cgmenderecoexterior();
-        $clrhpessoal           = new cl_rhpessoal;
+        $clrhpessoal = new cl_rhpessoal;
 
         // Apontando dados de outras tabelas referentes ao CGM
-        $dados->z04_nomesocial   = $this->getNomeSocial();
-        $dados->z19_pais         = $this->getPaisExterior();
-        $dados->z19_logradouro   = $this->getLogradouroExterior();
-        $dados->z19_numero       = $this->getNumeroExterior();
-        $dados->z19_complemento  = $this->getComplementoExterior();
-        $dados->z19_bairro       = $this->getBairroExterior();
-        $dados->z19_cidade       = $this->getCidadeExterior();
+        $dados->z04_nomesocial = $this->getNomeSocial();
+        $dados->z19_pais = $this->getPaisExterior();
+        $dados->z19_logradouro = $this->getLogradouroExterior();
+        $dados->z19_numero = $this->getNumeroExterior();
+        $dados->z19_complemento = $this->getComplementoExterior();
+        $dados->z19_bairro = $this->getBairroExterior();
+        $dados->z19_cidade = $this->getCidadeExterior();
         $dados->z19_codigopostal = $this->getCodigoPostalExterior();
+        $dados->z01_nome = $this->getNome();
 
-        $sqlRH  = $clrhpessoal->sql_query(null, '*', null, "rh01_numcgm =  {$this->getCodigo()}");
+        $sqlRH = $clrhpessoal->sql_query(null, '*', null, "rh01_numcgm =  {$this->getCodigo()}");
         $result = $clrhpessoal->sql_record($sqlRH);
 
         if ($clrhpessoal->numrows > 0) {
@@ -1675,14 +1685,13 @@ class CgmFisico extends CgmBase
             $sqlCgm = $clcgmfisico->sql_query(null, '*', null, "z01_numcgm =  {$this->getCodigo()}");
             $result = $clcgmfisico->sql_record($sqlCgm);
 
-            $sqlEndExt    = $clcgmenderecoexterior->sql_query(null, '*', null, "z19_numcgm =  {$this->getCodigo()}");
+            $sqlEndExt = $clcgmenderecoexterior->sql_query(null, '*', null, "z19_numcgm =  {$this->getCodigo()}");
             $resultEndExt = $clcgmenderecoexterior->sql_record($sqlEndExt);
 
             if ($clcgmfisico->numrows > 0 || $clcgmenderecoexterior->numrows > 0) {
-                if ($result and $resultEndExt) {
-                    $dadosAtuais    = pg_fetch_object($result, 0);
-                    $dadosExtAtuais = pg_fetch_object($resultEndExt, 0);
-
+                if ($result || $resultEndExt) {
+                    $dadosAtuais = pg_fetch_object($result, 0);
+                    $dadosExtAtuais = empty($resultEndExt) ? new stdClass() : pg_fetch_object($resultEndExt, 0);
                     foreach (S2205::getCamposControleAlteracao() as $campo) {
                         if (isset($dados->$campo)) {
                             if (isset($dadosAtuais->$campo) && $dadosAtuais->$campo != $dados->$campo ||

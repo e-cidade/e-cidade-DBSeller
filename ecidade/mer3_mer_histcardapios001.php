@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ $codescola              = db_getsession("DB_coddepto");
 
 
 if (!isset($fim)) {
-	
+
   $fim_dia    = date("d",db_getsession("DB_datausu"));
   $fim_mes    = date("m",db_getsession("DB_datausu"));
   $fim_ano    = date("Y",db_getsession("DB_datausu"));
@@ -62,9 +62,9 @@ if (!isset($fim)) {
   $inicio_mes = date("m",db_getsession("DB_datausu"));
   $inicio_ano = date("Y",db_getsession("DB_datausu"));
   $inicio     = $inicio_dia."/".$inicio_mes."/".$inicio_ano;
-  
+
 } else {
-	
+
   $fim_dia     = substr($fim,8,2);
   $fim_mes     = substr($fim,5,2);
   $fim_ano     = substr($fim,0,4);
@@ -73,7 +73,7 @@ if (!isset($fim)) {
   $inicio_mes  = substr($inicio,5,2);
   $inicio_ano  = substr($inicio,0,4);
   $inicio      = $inicio_dia."/".$inicio_mes."/".$inicio_ano;
-  
+
 }
 ?>
 <html>
@@ -111,7 +111,7 @@ if (!isset($fim)) {
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Consumo de Refeições</b></legend>
@@ -141,9 +141,9 @@ if (!isset($fim)) {
         <table border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td><b>De&nbsp;&nbsp;</b></td>
-          <td><?db_inputdata('inicio',@$inicio_dia,@$inicio_mes,@$inicio_ano,true,'text',1,"");?></td>
+          <td><?php db_inputdata('inicio',@$inicio_dia,@$inicio_mes,@$inicio_ano,true,'text',1,"");?></td>
 	      <td><b>&nbsp;&nbsp;até&nbsp;&nbsp;</b></td>
-	      <td><?db_inputdata('fim',@$fim_dia,@$fim_mes,@$fim_ano,true,'text',1,"");?></td>
+	      <td><?php db_inputdata('fim',@$fim_dia,@$fim_mes,@$fim_ano,true,'text',1,"");?></td>
           <td><input name="consultar" type="button" value="Consultar" onclick="js_consulta2()"></td>
          </tr>
         </table>
@@ -156,14 +156,14 @@ if (!isset($fim)) {
   </td>
  </tr>
 </table>
-<?
+<?php
 if (isset($opcao)) {
-	
+
   if ($opcao==1) {
-  	
+
   //Automatico
     if ($periodo==1) {
-    	
+
    //Semana
       $ano    = date("Y",db_getsession("DB_datausu"));
       $mes    = date("m",db_getsession("DB_datausu"));
@@ -171,24 +171,24 @@ if (isset($opcao)) {
       $weeke  = date("w", mktime(0,0,0,$mes,$dia,$ano));
       $inicio = date("Y-m-d",mktime(0, 0, 0, $mes, $dia+(2-($weeke+1)), $ano));
       $fim    = date("Y-m-d",mktime(0, 0, 0, $mes, $dia+(6-($weeke+1)), $ano));
-      
+
     } else {
    //Mês
       $ano    = date("Y",db_getsession("DB_datausu"));
       $mes    = date("m",db_getsession("DB_datausu"));
       $inicio = $ano."-".$mes."-01";
       $fim    = date("Y-m-t", mktime(0, 0, 0, $mes, 1, $ano));
-      
+
     }
   }
   if ($opcao==2) {
-  	
+
     $inicio = substr($inicio,6,4)."-".substr($inicio,3,2)."-".substr($inicio,0,2);
     $fim    = substr($fim,6,4)."-".substr($fim,3,2)."-".substr($fim,0,2);
-    
+
   }
 if ($nutricionista != "") {
-  
+
   // Obtenho todas as escolas atendidas pelo usuário nutricionista
   $oDaoMerNutricionistaEscola = db_utils::getdao('mer_nutricionistaescola');
   $sSql                       = $oDaoMerNutricionistaEscola->sql_query_nutricionistausuario(null, 'me31_i_escola', '',
@@ -197,11 +197,11 @@ if ($nutricionista != "") {
                                                                                            );
   $rs                         = $oDaoMerNutricionistaEscola->sql_record($sSql);
   if ($oDaoMerNutricionistaEscola->numrows > 0) {
-    
+
     $sCodEscolas = '';
     $sSepEscolas = '';
     for ($iCont = 0; $iCont < $oDaoMerNutricionistaEscola->numrows; $iCont++) {
-      
+
       $sCodEscolas .= $sSepEscolas.db_utils::fieldsmemory($rs, $iCont)->me31_i_escola;
       $sSepEscolas  = ', ';
 
@@ -213,11 +213,11 @@ if ($nutricionista != "") {
   }
 
 } else {
-  $condicao = " and me32_i_escola = $codescola";	
+  $condicao = " and me32_i_escola = $codescola";
 }
   $campos   = " me12_i_codigo,me03_c_tipo,me01_i_codigo,me01_c_nome,me01_f_versao,me12_d_data, me37_i_codigo, ";
   $campos  .= " ed18_i_codigo, ed18_c_nome, ed18_c_abrev ";
-            
+
   $sSql     = $clmer_cardapiodia->sql_query_cardapiodiaescola('', $campos, "me12_d_data,me03_i_orden,me01_c_nome",
                                                               " me12_d_data between '$inicio' AND '$fim' $condicao"
                                                              );
@@ -230,25 +230,25 @@ if ($nutricionista != "") {
    <tr>
     <td width="45%" valign="top" bgcolor="#f3f3f3" >
      <table width="100%" border="1" cellpadding="0" cellspacing="0">
-     <?
+     <?php
      $primeiro = "";
      if ($clmer_cardapiodia->numrows == 0) {
-     	
+
        ?>
        <tr><td bgcolor="#CCCCCC">Nenhum registro para o período</td></tr>
-       <?
-       
+       <?php
+
      }
      for ($x=0;$x<$clmer_cardapiodia->numrows;$x++) {
-     	
+
        db_fieldsmemory($result0,$x);
        if($primeiro!=$me12_d_data){
-       	
+
          ?>
          <tr><td bgcolor="#f3f3f3"><b><?=db_formatar($me12_d_data,'d')?></b></td></tr>
-         <?
+         <?php
          $primeiro = $me12_d_data;
-         
+
        }
        $texto_dados  = '<table width="100%" border="1" cellpadding="0" cellspacing="0">';
        $texto_dados .= '<tr><td class="cabec" colspan="5" bgcolor="#444444">';
@@ -271,7 +271,7 @@ if ($nutricionista != "") {
                                                                                  " me07_i_cardapio = $me01_i_codigo"
                                                                                 ));
        for ($y=0;$y<$clmer_cardapioitem->numrows;$y++) {
-       	
+
          db_fieldsmemory($result1,$y);
          $texto_dados .= '<tr>';
          $texto_dados .= '<td>'.$me35_i_codigo.'</td>';
@@ -280,22 +280,22 @@ if ($nutricionista != "") {
          $texto_dados .= '<td>'.$m61_descr.'</td>';
          $texto_dados .= '<td>'.$me07_c_medida.'</td>';
          $texto_dados .= '</tr>';
-         
+
        }
        $campos  = " me29_i_alimentoorig,mer_alimento.me35_c_nomealimento as alimentoorig,alimento.me35_c_nomealimento as alimentonovo, ";
        $campos .= " me29_i_alimentonovo,me29_f_quantidade ";
        $result2 = $clmer_subitem->sql_record($clmer_subitem->sql_query("",
                                                                        $campos,
                                                                        "alimentoorig",
-                                                                       " me29_i_refeicao = $me01_i_codigo 
-                                                                         AND '$me12_d_data' BETWEEN me29_d_inicio 
+                                                                       " me29_i_refeicao = $me01_i_codigo
+                                                                         AND '$me12_d_data' BETWEEN me29_d_inicio
                                                                          AND me29_d_fim"
                                                                       ));
        $texto_dados .= '<tr>';
        $texto_dados .= '<td class="descri" bgcolor="#f3f3f3" colspan="5">SUBSTITUIÇÕES</td>';
        $texto_dados .= '</tr>';
        if ($clmer_subitem->numrows>0) {
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td class="descri">Código</td>';
          $texto_dados .= '<td class="descri">Substituído</td>';
@@ -304,7 +304,7 @@ if ($nutricionista != "") {
          $texto_dados .= '<td class="descri">Quantidade</td>';
          $texto_dados .= '</tr>';
          for ($y=0;$y<$clmer_subitem->numrows;$y++) {
-         	
+
            db_fieldsmemory($result2,$y);
            $texto_dados .= '<tr>';
            $texto_dados .= '<td>'.$me29_i_alimentoorig.'</td>';
@@ -313,14 +313,14 @@ if ($nutricionista != "") {
            $texto_dados .= '<td>'.substr($alimentonovo,0,30).'</td>';
            $texto_dados .= '<td>'.$me29_f_quantidade.'</td>';
            $texto_dados .= '</tr>';
-           
+
          }
        } else {
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td colspan="5">Nenhum registro.</td>';
          $texto_dados .= '</tr>';
-         
+
        }
        $result3 = $clmer_desper_und->sql_record($clmer_desper_und->sql_query("",
                                                                              "m61_descr,me23_f_quant,me23_t_obs",
@@ -332,14 +332,14 @@ if ($nutricionista != "") {
        $texto_dados .= '<td class="descri" bgcolor="#f3f3f3" colspan="5">DESPERDÍCIO</td>';
        $texto_dados .= '</tr>';
        if ($clmer_desper_und->numrows>0) {
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td class="descri">Quantidade</td>';
          $texto_dados .= '<td class="descri">Unidade</td>';
          $texto_dados .= '<td class="descri" colspan="3">Observação</td>';
          $texto_dados .= '</tr>';
          for ($y=0;$y<$clmer_desper_und->numrows;$y++) {
-         	
+
            db_fieldsmemory($result3,$y);
            $me23_t_obs   = empty($me23_t_obs) ? '&nbsp;' : $me23_t_obs;
            $texto_dados .= '<tr>';
@@ -347,14 +347,14 @@ if ($nutricionista != "") {
            $texto_dados .= '<td>'.$m61_descr.'</td>';
            $texto_dados .= '<td colspan="3">'.$me23_t_obs.'</td>';
            $texto_dados .= '</tr>';
-           
+
          }
        } else {
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td colspan="5">Nenhum registro</td>';
          $texto_dados .= '</tr>';
-         
+
        }
 
        $texto_dados .= '<tr>';
@@ -370,24 +370,24 @@ if ($nutricionista != "") {
        if ($clmer_cardapioaluno->numrows>0) { // Baixa por aluno
 
          db_fieldsmemory($result4,0);
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td class="descri">Código</td>';
          $texto_dados .= '<td class="descri" colspan="3">Nome</td>';
          $texto_dados .= '<td class="descri">Turma / Etapa</td>';
          $texto_dados .= '</tr>';
          for ($y=0;$y<$clmer_cardapioaluno->numrows;$y++) {
-         	
+
            db_fieldsmemory($result4,$y);
            $texto_dados .= '<tr>';
            $texto_dados .= '<td>'.$ed47_i_codigo.'</td>';
            $texto_dados .= '<td colspan="3">'.trim($ed47_v_nome).'</td>';
            $texto_dados .= '<td>'.trim($ed57_c_descr).' / '.trim($ed11_c_descr).'</td>';
            $texto_dados .= '</tr>';
-           
+
          }
        } else {
-       	
+
          $campos  = " ed57_i_codigo,ed57_c_descr,ed11_c_descr,me39_i_quantidade,me39_i_repeticao ";
          $order   = " ed11_i_sequencia,ed57_c_descr ";
          $sWhere  = " me39_i_cardapiodia = $me12_i_codigo and ed18_i_codigo = $ed18_i_codigo ";
@@ -397,30 +397,30 @@ if ($nutricionista != "") {
 
            $texto_dados .= '<tr>';
            $texto_dados .= '<td class="descri">Código</td>';
-           $texto_dados .= '<td class="descri">Turma</td>';           
+           $texto_dados .= '<td class="descri">Turma</td>';
            $texto_dados .= '<td class="descri" colspan="2">Quantidade</td>';
            $texto_dados .= '<td class="descri">Repetição</td>';
            $texto_dados .= '</tr>';
            for ($y=0;$y<$clmer_cardapioturma->numrows;$y++) {
-            
+
              db_fieldsmemory($result4,$y);
              $texto_dados .= '<tr>';
              $texto_dados .= '<td>'.$ed57_i_codigo.'</td>';
              $texto_dados .= '<td>'.trim($ed57_c_descr).' / '.trim($ed11_c_descr).'</td>';
-             $texto_dados .= '<td colspan="2">'.$me39_i_quantidade.'</td>';             
+             $texto_dados .= '<td colspan="2">'.$me39_i_quantidade.'</td>';
              $texto_dados .= '<td>'.$me39_i_repeticao.'</td>';
              $texto_dados .= '</tr>';
-           
+
            }
-           
+
          } else {
-                                                  
+
            $texto_dados .= '<tr>';
            $texto_dados .= '<td colspan="5">Nenhum registro</td>';
            $texto_dados .= '</tr>';
-           
+
          }
-         
+
        }
 
        $sCampos = "me13_i_codigo, me13_d_data";
@@ -432,7 +432,7 @@ if ($nutricionista != "") {
        $texto_dados .= '<td class="descri" bgcolor="#f3f3f3" colspan="5">BAIXA DE ESTOQUE</td>';
        $texto_dados .= '</tr>';
        if ($clmer_cardapiodata->numrows>0) {
-       	
+
          db_fieldsmemory($result5,0);
          $texto_dados .= '<tr>';
          $texto_dados .= '<td class="descri" colspan="2">Código Baixa</td>';
@@ -443,14 +443,14 @@ if ($nutricionista != "") {
          $texto_dados .= '<td colspan="3">'.db_formatar($me13_d_data,'d').'</td>';
          $texto_dados .= '</tr>';
          $baixa = "&nbsp;&nbsp;<font color=red>Baixado</font>";
-         
+
        } else {
-       	
+
          $texto_dados .= '<tr>';
          $texto_dados .= '<td colspan="5">Nenhum registro</td>';
          $texto_dados .= '</tr>';
          $baixa = "";
-         
+
        }
        $texto_dados .= '</table>';
        ?>
@@ -463,22 +463,22 @@ if ($nutricionista != "") {
            <td width="30%"><?=trim($ed18_c_abrev)?></td>
            <td align="right"><b><?=$baixa?></b></td>
           </tr>
-         </table>  
+         </table>
         </td>
        </tr>
-      <?
+      <?php
      }
     ?>
-    </table> 
+    </table>
     </td>
     <td width="1%"><a name="inicio"></a><input type="hidden" id="clicado" value=""></td>
     <td width="54%" id="dados" valign="top" align="center">
      &nbsp;
-     <?
+     <?php
       if ($clmer_cardapiodia->numrows>0) {
      ?>
         Clique sobre uma refeição ao lado.
-      <?
+      <?php
       }
       ?>
     </td>
@@ -486,11 +486,11 @@ if ($nutricionista != "") {
   </table>
  </fieldset>
 </center>
- <?
+ <?php
 }
 ?>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -500,7 +500,7 @@ if ($nutricionista != "") {
 </html>
 <script>
 function js_consulta1() {
-	
+
   opcao = 1;
   periodo = document.form1.periodo.value;
   if (periodo==0) {
@@ -511,13 +511,13 @@ function js_consulta1() {
 }
 
 function js_consulta2() {
-	
+
   opcao = 2;
   if (document.form1.inicio.value=="" || document.form1.fim.value=="") {
-	  
+
     alert('Informe a data inicial e data final!');
     return false;
-    
+
   }
   inicio = document.form1.inicio.value.substr(6,4)+''+
            document.form1.inicio.value.substr(3,2)+''+
@@ -528,7 +528,7 @@ function js_consulta2() {
   if (parseInt(inicio)>parseInt(fim)) {
     alert('Data inicial deve ser menor ou igual que a data final!');
   } else{
-	  
+
     inicio = document.form1.inicio.value.substr(6,4)+'-'+
              document.form1.inicio.value.substr(3,2)+'-'+
              document.form1.inicio.value.substr(0,2);
@@ -536,12 +536,12 @@ function js_consulta2() {
              document.form1.fim.value.substr(3,2)+'-'+
              document.form1.fim.value.substr(0,2);
     location.href = 'mer3_mer_histcardapios001.php?opcao='+opcao+'&periodo=0&inicio='+inicio+'&fim='+fim;
-    
+
   }
 }
 
 function js_texto(id,texto) {
-	
+
   if (document.getElementById("clicado").value!="") {
     document.getElementById(document.getElementById("clicado").value).style.background = "#CCCCCC";
   }

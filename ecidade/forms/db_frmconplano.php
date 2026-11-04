@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,12 +59,12 @@ $clrotulo->label("db83_tipoconta");
 					    <tr>
 					      <td nowrap title="<?=@$Tc60_codcon?>"><?=@$Lc60_codcon?></td>
 					      <td>
-					        <? 
+					        <?php 
 					          db_input('c60_codcon',6,$Ic60_codcon,true,'text',3); 
 					        ?>
 					      </td>
 					    </tr>
-					    <?
+					    <?php
 					
 					      if($db_opcao!=1){ 
 						      $clestrutura_sistema->db_opcao = 3;
@@ -80,7 +80,7 @@ $clrotulo->label("db83_tipoconta");
 							<tr>
 							  <td nowrap title="<?=@$Tc60_descr?>"><?=@$Lc60_descr?></td>
 							  <td>
-							    <? 
+							    <?php 
 							      db_input('c60_descr',52,$Ic60_descr,true,'text',$db_opcao,"onFocus='js_configsistema();'");
 							    ?>
 							  </td>
@@ -88,15 +88,15 @@ $clrotulo->label("db83_tipoconta");
 							<tr>
 							  <td nowrap title="<?=@$Tc60_finali?>" valign='top'><?=@$Lc60_finali?></td>
 							  <td>
-							    <? 
+							    <?php 
 							      db_textarea('c60_finali',0,50,$Ic60_finali,true,'text',$db_opcao,"") 
 							    ?>
 							  </td>
 							</tr>
 							<tr>
-							  <td nowrap title="<?=@$Tc60_codsis?>"><? db_ancora(@$Lc60_codsis,"js_pesquisac60_codsis(true);",$db_opcao);?></td>
+							  <td nowrap title="<?=@$Tc60_codsis?>"><?php db_ancora(@$Lc60_codsis,"js_pesquisac60_codsis(true);",$db_opcao);?></td>
 							  <td>
-							    <? 
+							    <?php 
 						        db_input('c60_codsis',4,$Ic60_codsis,true,'text',$db_opcao," onchange='js_pesquisac60_codsis(false);'");  
 						        db_input('c52_descr',46,@$Ic52_descr,true,'text',3,'');   
 						      ?>
@@ -104,12 +104,12 @@ $clrotulo->label("db83_tipoconta");
 							</tr>
 							<tr>
 							  <td nowrap title="<?=@$Tc60_codcla?>">
-						      <?
+						      <?php
 							      db_ancora(@$Lc60_codcla,"js_pesquisac60_codcla(true);",$db_opcao);
 							    ?>
 							  </td>
 							  <td> 
-						      <?
+						      <?php
 						        db_input('c60_codcla',4,$Ic60_codcla,true,'text',$db_opcao," onchange='js_pesquisac60_codcla(false);'");
 						        db_input('c51_descr',46,@$Ic51_descr,true,'text',3,'');
 							    ?>
@@ -120,7 +120,7 @@ $clrotulo->label("db83_tipoconta");
 							    <b>Tipo de conta:</b>
 						  	</td>
 							  <td>
-							    <? 
+							    <?php 
 						        if (!isset($tipo)){
 							        $tipo ="sintetica";
 						        }
@@ -141,7 +141,7 @@ $clrotulo->label("db83_tipoconta");
 			    </fieldset>
 			  </td>	
 		  </tr>
-		<? 
+		<?php 
 		  if (isset($c60_codsis) && @$c60_codsis == 6){
 		    $mostrar = "visible";
 		  } else {
@@ -167,7 +167,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Sequencial:</b>
                   </td>
                   <td colspan="3">
-                    <?
+                    <?php
                       db_input('db83_sequencial',10,$Idb83_sequencial,true,'text',3,'');
                     ?>
                   </td>			            
@@ -185,7 +185,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Banco:</b>
                   </td>
                   <td colspan="3">
-                    <?
+                    <?php
                       db_input('db89_db_bancos',10,$Idb89_db_bancos,true,'text',3,'');
                       db_input('db90_descr',40,'',true,'text',3,'');
                     ?>
@@ -193,12 +193,12 @@ $clrotulo->label("db83_tipoconta");
 			          </tr>
 			          <tr>
 			            <td>
-                    <?
+                    <?php
                       db_ancora('<b>Código Agência:</b>',"js_pesquisaAgencia(true);",$db_opcao,"");                     
                     ?>
 			            </td>
                   <td>
-                    <?
+                    <?php
                       db_input('db89_codagencia',10,$Idb89_codagencia,true,'text',$db_opcao,"onChange='js_pesquisaAgencia(false);'");
                       db_input('db83_bancoagencia',10,'',true,'hidden',3);
                     ?>
@@ -207,19 +207,19 @@ $clrotulo->label("db83_tipoconta");
                     <b>DV Agência:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('db89_digito',5,$Idb89_digito,true,'text',3,'');
                     ?>
                   </td>                  
 			          </tr>
                 <tr>
                   <td>
-                    <?
+                    <?php
                       db_ancora('<b>Conta Bancária:</b>','js_pesquisaContaBancaria(true)',$db_opcao,"");                     
                     ?>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('db83_conta',10,$Idb83_conta,true,'text',$db_opcao,"onChange='js_pesquisaContaBancaria(false)'");
                       db_input('c56_contabancaria',10,'',true,'hidden',1);
                     ?>
@@ -228,7 +228,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>DV Conta:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('db83_dvconta',5,$Idb83_dvconta,true,'text',3,'');
                     ?>
                   </td>                  
@@ -238,7 +238,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Identificador (CNPJ)</b>
                   </td>
                   <td colspan="4">
-                    <?
+                    <?php
                       db_input('db83_identificador',54,$Idb83_identificador,true,'text',3,'');
                     ?>
                   </td>                 
@@ -248,7 +248,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Código da Operação:</b>                     
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('db83_codigooperacao',10,$Idb83_codigooperacao,true,'text',3,'');
                     ?>
                   </td>                 
@@ -256,7 +256,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Tipo da Conta:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                     
                       if ( isset($db83_tipoconta) && trim($db83_tipoconta) != '' ) {
                       	if ( $db83_tipoconta == 1 ) {
@@ -278,7 +278,7 @@ $clrotulo->label("db83_tipoconta");
 		    </td>	
 		  </tr>
 		  
-		  <?
+		  <?php
       
 		  } else {
 		  	
@@ -296,7 +296,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Banco:</b>
                   </td>
                   <td colspan="3">
-                    <?
+                    <?php
                       db_input('c63_banco',10,$Ic63_banco,true,'text',1,'');
                     ?>
                   </td>                 
@@ -306,7 +306,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Código Agência:</b>                     
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('c63_agencia',10,$Ic63_agencia,true,'text',1);
                     ?>
                   </td>                 
@@ -314,7 +314,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>DV Agência:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('c63_dvagencia',5,$Ic63_dvagencia,true,'text',1);
                     ?>
                   </td>                  
@@ -324,7 +324,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Conta Bancária:</b>                     
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('c63_conta',10,$Ic63_conta,true,'text',1);
                     ?>
                   </td>                 
@@ -332,7 +332,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>DV Conta:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('c63_dvconta',5,$Ic63_dvconta,true,'text',1);
                     ?>
                   </td>                  
@@ -342,7 +342,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Identificador (CNPJ)</b>
                   </td>
                   <td colspan="4">
-                    <?
+                    <?php
                       db_input('c63_identificador',54,$Ic63_identificador,true,'text',1);
                     ?>
                   </td>                 
@@ -352,7 +352,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Código da Operação:</b>                     
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_input('c63_codigooperacao',10,$Ic63_codigooperacao,true,'text',1);
                     ?>
                   </td>                 
@@ -360,7 +360,7 @@ $clrotulo->label("db83_tipoconta");
                     <b>Tipo da Conta:</b>
                   </td>
                   <td>
-                    <?
+                    <?php
                       $aTipoConta = array( 1 => 'Conta Corrente',
                                            2 => 'Conta Poupança' );
                       db_select('c63_tipoconta',$aTipoConta,true,1);
@@ -372,7 +372,7 @@ $clrotulo->label("db83_tipoconta");
           </div>
         </td> 
       </tr>
-	  	<?
+	  	<?php
 		  	
 		  }
 		  
@@ -638,14 +638,14 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }
 
-<?
+<?php
  if(isset($atualizar) || isset($atualizar02)){
    if(isset($erro_msg)){
      echo "

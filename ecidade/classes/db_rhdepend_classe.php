@@ -27,45 +27,49 @@
 
 class cl_rhdepend
 {
-   // cria variaveis de erro
-    public $rotulo = null;
-    public $query_sql = null;
-    public $numrows = 0;
-    public $numrows_incluir = 0;
-    public $numrows_alterar = 0;
-    public $numrows_excluir = 0;
-    public $erro_status = null;
-    public $erro_sql = null;
-    public $erro_banco = null;
-    public $erro_msg = null;
-    public $erro_campo = null;
-    public $pagina_retorno = null;
+   // cria variaveis de erro 
+    public $rotulo = null; 
+    public $query_sql = null; 
+    public $numrows = 0; 
+    public $numrows_incluir = 0; 
+    public $numrows_alterar = 0; 
+    public $numrows_excluir = 0; 
+    public $erro_status = null; 
+    public $erro_sql = null; 
+    public $erro_banco = null;  
+    public $erro_msg = null;  
+    public $erro_campo = null;  
+    public $pagina_retorno = null; 
     /* Variáveis do Arquivo */
-    public $rh31_codigo = 0;
-    public $rh31_regist = 0;
-    public $rh31_nome = null;
-    public $rh31_dtnasc_dia = null;
-    public $rh31_dtnasc_mes = null;
-    public $rh31_dtnasc_ano = null;
-    public $rh31_dtnasc = null;
-    public $rh31_gparen = null;
-    public $rh31_depend = null;
-    public $rh31_irf = null;
-    public $rh31_especi = null;
-    public $rh31_fins_previdenciarios = 'f';
-    public $rh31_tipoparentesco = null;
-   // cria propriedade com as variaveis do arquivo
+    public $rh31_codigo = 0; 
+    public $rh31_regist = 0; 
+    public $rh31_nome = null; 
+    public $rh31_dtnasc_dia = null; 
+    public $rh31_dtnasc_mes = null; 
+    public $rh31_dtnasc_ano = null; 
+    public $rh31_dtnasc = null; 
+    public $rh31_gparen = null; 
+    public $rh31_depend = null; 
+    public $rh31_irf = null; 
+    public $rh31_especi = null; 
+    public $rh31_fins_previdenciarios = 'f'; 
+    public $rh31_tipoparentesco = null; 
+    public $rh31_descricaoparentesco = null; 
+    public $rh31_irfcomplementar = 'f'; 
+   // cria propriedade com as variaveis do arquivo 
     public $campos = "
-                 rh31_codigo = int8 = Código
-                 rh31_regist = int4 = Matrícula do Servidor
-                 rh31_nome = varchar(70) = Nome do Dependente
-                 rh31_dtnasc = date = Data de Nascimento
-                 rh31_gparen = varchar(1) = Parentesco
-                 rh31_depend = varchar(1) = Salário Família
-                 rh31_irf = varchar(1) = IRF
-                 rh31_especi = varchar(1) = Especial
-                 rh31_fins_previdenciarios = bool = Dependente para fins previdenciários
-                 rh31_tipoparentesco = char(2) = tipo de parentesco esocial
+                 rh31_codigo = int8 = Código 
+                 rh31_regist = int4 = Matrícula do Servidor 
+                 rh31_nome = varchar(70) = Nome do Dependente 
+                 rh31_dtnasc = date = Data de Nascimento 
+                 rh31_gparen = varchar(1) = Parentesco 
+                 rh31_depend = varchar(1) = Salário Família 
+                 rh31_irf = varchar(1) = IRF 
+                 rh31_especi = varchar(1) = Especial 
+                 rh31_fins_previdenciarios = bool = Dependente para fins previdenciários 
+                 rh31_tipoparentesco = char(2) = tipo de parentesco esocial 
+                 rh31_descricaoparentesco = varchar(100) = Descrição do Parentesco 
+                 rh31_irfcomplementar = bool = Dependente Complementar somente para IR 
                  ";
     /**
      * @var array
@@ -74,7 +78,7 @@ class cl_rhdepend
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("rhdepend");
+        $this->rotulo = new rotulo("rhdepend"); 
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
@@ -108,6 +112,8 @@ class cl_rhdepend
        $this->rh31_especi = ($this->rh31_especi == ""?@$GLOBALS["HTTP_POST_VARS"]["rh31_especi"]:$this->rh31_especi);
        $this->rh31_fins_previdenciarios = ($this->rh31_fins_previdenciarios == null ?@$GLOBALS["HTTP_POST_VARS"]["rh31_fins_previdenciarios"]:$this->rh31_fins_previdenciarios);
        $this->rh31_tipoparentesco = ($this->rh31_tipoparentesco == ""?@$GLOBALS["HTTP_POST_VARS"]["rh31_tipoparentesco"]:$this->rh31_tipoparentesco);
+       $this->rh31_descricaoparentesco = ($this->rh31_descricaoparentesco == ""?@$GLOBALS["HTTP_POST_VARS"]["rh31_descricaoparentesco"]:$this->rh31_descricaoparentesco);
+       $this->rh31_irfcomplementar = ($this->rh31_irfcomplementar == null ?@$GLOBALS["HTTP_POST_VARS"]["rh31_irfcomplementar"]:$this->rh31_irfcomplementar);
      }else{
        $this->rh31_codigo = ($this->rh31_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh31_codigo"]:$this->rh31_codigo);
      }
@@ -116,7 +122,7 @@ class cl_rhdepend
     public function incluir($rh31_codigo)
     {
       $this->atualizacampos();
-     if($this->rh31_regist == null ){
+     if($this->rh31_regist == null ){ 
        $this->erro_sql = " Campo Matrícula do Servidor não informado.";
        $this->erro_campo = "rh31_regist";
        $this->erro_banco = "";
@@ -125,7 +131,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_nome == null ){
+     if($this->rh31_nome == null ){ 
        $this->erro_sql = " Campo Nome do Dependente não informado.";
        $this->erro_campo = "rh31_nome";
        $this->erro_banco = "";
@@ -134,7 +140,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_dtnasc == null ){
+     if($this->rh31_dtnasc == null ){ 
        $this->erro_sql = " Campo Data de Nascimento não informado.";
        $this->erro_campo = "rh31_dtnasc_dia";
        $this->erro_banco = "";
@@ -143,7 +149,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_gparen == null ){
+     if($this->rh31_gparen == null ){ 
        $this->erro_sql = " Campo Parentesco não informado.";
        $this->erro_campo = "rh31_gparen";
        $this->erro_banco = "";
@@ -152,7 +158,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_depend == null ){
+     if($this->rh31_depend == null ){ 
        $this->erro_sql = " Campo Salário Família não informado.";
        $this->erro_campo = "rh31_depend";
        $this->erro_banco = "";
@@ -170,7 +176,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_especi == null ){
+     if($this->rh31_especi == null ){ 
        $this->erro_sql = " Campo Especial não informado.";
        $this->erro_campo = "rh31_especi";
        $this->erro_banco = "";
@@ -179,7 +185,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh31_fins_previdenciarios == null ){
+     if($this->rh31_fins_previdenciarios == null ){ 
        $this->erro_sql = " Campo Dependente para fins previdenciários não informado.";
        $this->erro_campo = "rh31_fins_previdenciarios";
        $this->erro_banco = "";
@@ -188,17 +194,26 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
+     if($this->rh31_irfcomplementar == null ){ 
+       $this->erro_sql = " Campo Dependente Complementar somente para IR não informado.";
+       $this->erro_campo = "rh31_irfcomplementar";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
      if($rh31_codigo == "" || $rh31_codigo == null ){
-       $result = db_query("select nextval('rhdepend_rh31_codigo_seq')");
+       $result = db_query("select nextval('rhdepend_rh31_codigo_seq')"); 
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhdepend_rh31_codigo_seq do campo: rh31_codigo";
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhdepend_rh31_codigo_seq do campo: rh31_codigo"; 
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false;
+         return false; 
        }
-       $this->rh31_codigo = pg_result($result,0,0);
+       $this->rh31_codigo = pg_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhdepend_rh31_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh31_codigo)){
@@ -209,10 +224,10 @@ class cl_rhdepend
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh31_codigo = $rh31_codigo;
+         $this->rh31_codigo = $rh31_codigo; 
        }
      }
-     if(($this->rh31_codigo == null) || ($this->rh31_codigo == "") ){
+     if(($this->rh31_codigo == null) || ($this->rh31_codigo == "") ){ 
        $this->erro_sql = " Campo rh31_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -221,31 +236,35 @@ class cl_rhdepend
        return false;
      }
      $sql = "insert into rhdepend(
-                                       rh31_codigo
-                                      ,rh31_regist
-                                      ,rh31_nome
-                                      ,rh31_dtnasc
-                                      ,rh31_gparen
-                                      ,rh31_depend
-                                      ,rh31_irf
-                                      ,rh31_especi
-                                      ,rh31_fins_previdenciarios
-                                      ,rh31_tipoparentesco
+                                       rh31_codigo 
+                                      ,rh31_regist 
+                                      ,rh31_nome 
+                                      ,rh31_dtnasc 
+                                      ,rh31_gparen 
+                                      ,rh31_depend 
+                                      ,rh31_irf 
+                                      ,rh31_especi 
+                                      ,rh31_fins_previdenciarios 
+                                      ,rh31_tipoparentesco 
+                                      ,rh31_descricaoparentesco 
+                                      ,rh31_irfcomplementar 
                        )
                 values (
-                                $this->rh31_codigo
-                               ,$this->rh31_regist
-                               ,'$this->rh31_nome'
-                               ,".($this->rh31_dtnasc == "null" || $this->rh31_dtnasc == ""?"null":"'".$this->rh31_dtnasc."'")."
-                               ,'$this->rh31_gparen'
-                               ,'$this->rh31_depend'
-                               ,'$this->rh31_irf'
-                               ,'$this->rh31_especi'
-                               ,'$this->rh31_fins_previdenciarios'
-                               ,'$this->rh31_tipoparentesco'
+                                $this->rh31_codigo 
+                               ,$this->rh31_regist 
+                               ,'$this->rh31_nome' 
+                               ,".($this->rh31_dtnasc == "null" || $this->rh31_dtnasc == ""?"null":"'".$this->rh31_dtnasc."'")." 
+                               ,'$this->rh31_gparen' 
+                               ,'$this->rh31_depend' 
+                               ,'$this->rh31_irf' 
+                               ,'$this->rh31_especi' 
+                               ,'$this->rh31_fins_previdenciarios' 
+                               ,'$this->rh31_tipoparentesco' 
+                               ,'$this->rh31_descricaoparentesco' 
+                               ,'$this->rh31_irfcomplementar' 
                       )";
-     $result = db_query($sql);
-     if($result==false){
+     $result = db_query($sql); 
+     if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Dependentes ($this->rh31_codigo) não Incluído. Inclusão Abortada.";
@@ -263,7 +282,7 @@ class cl_rhdepend
      }
      $this->erro_banco = "";
      $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
-     $this->erro_sql .= "Valores : ".$this->rh31_codigo;
+         $this->erro_sql .= "Valores : ".$this->rh31_codigo;
      $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
@@ -289,20 +308,22 @@ class cl_rhdepend
          $resac = db_query("insert into db_acount values($acount,1186,7156,'','".AddSlashes(pg_result($resaco,0,'rh31_especi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1186,1010557,'','".AddSlashes(pg_result($resaco,0,'rh31_fins_previdenciarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1186,1013791,'','".AddSlashes(pg_result($resaco,0,'rh31_tipoparentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1186,1015572,'','".AddSlashes(pg_result($resaco,0,'rh31_descricaoparentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1186,1015587,'','".AddSlashes(pg_result($resaco,0,'rh31_irfcomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
-   }
+   } 
 
     public function alterar($rh31_codigo=null)
     {
       $this->atualizacampos();
      $sql = " update rhdepend set ";
      $virgula = "";
-     if(trim($this->rh31_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_codigo"])){
+     if(trim($this->rh31_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_codigo"])){ 
        $sql  .= $virgula." rh31_codigo = $this->rh31_codigo ";
        $virgula = ",";
-       if(trim($this->rh31_codigo) == null ){
+       if(trim($this->rh31_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "rh31_codigo";
          $this->erro_banco = "";
@@ -312,10 +333,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_regist"])){
+     if(trim($this->rh31_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_regist"])){ 
        $sql  .= $virgula." rh31_regist = $this->rh31_regist ";
        $virgula = ",";
-       if(trim($this->rh31_regist) == null ){
+       if(trim($this->rh31_regist) == null ){ 
          $this->erro_sql = " Campo Matrícula do Servidor não informado.";
          $this->erro_campo = "rh31_regist";
          $this->erro_banco = "";
@@ -325,10 +346,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_nome"])){
+     if(trim($this->rh31_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_nome"])){ 
        $sql  .= $virgula." rh31_nome = '$this->rh31_nome' ";
        $virgula = ",";
-       if(trim($this->rh31_nome) == null ){
+       if(trim($this->rh31_nome) == null ){ 
          $this->erro_sql = " Campo Nome do Dependente não informado.";
          $this->erro_campo = "rh31_nome";
          $this->erro_banco = "";
@@ -338,10 +359,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_dtnasc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"] !="") ){
+     if(trim($this->rh31_dtnasc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"] !="") ){ 
        $sql  .= $virgula." rh31_dtnasc = '$this->rh31_dtnasc' ";
        $virgula = ",";
-       if(trim($this->rh31_dtnasc) == null ){
+       if(trim($this->rh31_dtnasc) == null ){ 
          $this->erro_sql = " Campo Data de Nascimento não informado.";
          $this->erro_campo = "rh31_dtnasc_dia";
          $this->erro_banco = "";
@@ -350,11 +371,11 @@ class cl_rhdepend
          $this->erro_status = "0";
          return false;
        }
-     }     else{
-       if(isset($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"])){
+     }     else{ 
+       if(isset($GLOBALS["HTTP_POST_VARS"]["rh31_dtnasc_dia"])){ 
          $sql  .= $virgula." rh31_dtnasc = null ";
          $virgula = ",";
-         if(trim($this->rh31_dtnasc) == null ){
+         if(trim($this->rh31_dtnasc) == null ){ 
            $this->erro_sql = " Campo Data de Nascimento não informado.";
            $this->erro_campo = "rh31_dtnasc_dia";
            $this->erro_banco = "";
@@ -365,10 +386,10 @@ class cl_rhdepend
          }
        }
      }
-     if(trim($this->rh31_gparen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_gparen"])){
+     if(trim($this->rh31_gparen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_gparen"])){ 
        $sql  .= $virgula." rh31_gparen = '$this->rh31_gparen' ";
        $virgula = ",";
-       if(trim($this->rh31_gparen) == null ){
+       if(trim($this->rh31_gparen) == null ){ 
          $this->erro_sql = " Campo Parentesco não informado.";
          $this->erro_campo = "rh31_gparen";
          $this->erro_banco = "";
@@ -378,10 +399,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_depend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_depend"])){
+     if(trim($this->rh31_depend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_depend"])){ 
        $sql  .= $virgula." rh31_depend = '$this->rh31_depend' ";
        $virgula = ",";
-       if(trim($this->rh31_depend) == null ){
+       if(trim($this->rh31_depend) == null ){ 
          $this->erro_sql = " Campo Salário Família não informado.";
          $this->erro_campo = "rh31_depend";
          $this->erro_banco = "";
@@ -391,7 +412,7 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_irf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_irf"])){
+     if(trim($this->rh31_irf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_irf"])){ 
        $sql  .= $virgula." rh31_irf = '$this->rh31_irf' ";
        $virgula = ",";
        if(trim($this->rh31_irf) === null ){
@@ -404,10 +425,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_especi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_especi"])){
+     if(trim($this->rh31_especi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_especi"])){ 
        $sql  .= $virgula." rh31_especi = '$this->rh31_especi' ";
        $virgula = ",";
-       if(trim($this->rh31_especi) == null ){
+       if(trim($this->rh31_especi) == null ){ 
          $this->erro_sql = " Campo Especial não informado.";
          $this->erro_campo = "rh31_especi";
          $this->erro_banco = "";
@@ -417,10 +438,10 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_fins_previdenciarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_fins_previdenciarios"])){
+     if(trim($this->rh31_fins_previdenciarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_fins_previdenciarios"])){ 
        $sql  .= $virgula." rh31_fins_previdenciarios = '$this->rh31_fins_previdenciarios' ";
        $virgula = ",";
-       if(trim($this->rh31_fins_previdenciarios) == null ){
+       if(trim($this->rh31_fins_previdenciarios) == null ){ 
          $this->erro_sql = " Campo Dependente para fins previdenciários não informado.";
          $this->erro_campo = "rh31_fins_previdenciarios";
          $this->erro_banco = "";
@@ -430,9 +451,26 @@ class cl_rhdepend
          return false;
        }
      }
-     if(trim($this->rh31_tipoparentesco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_tipoparentesco"])){
+     if(trim($this->rh31_tipoparentesco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_tipoparentesco"])){ 
        $sql  .= $virgula." rh31_tipoparentesco = '$this->rh31_tipoparentesco' ";
        $virgula = ",";
+     }
+     if(trim($this->rh31_descricaoparentesco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_descricaoparentesco"])){ 
+       $sql  .= $virgula." rh31_descricaoparentesco = '$this->rh31_descricaoparentesco' ";
+       $virgula = ",";
+     }
+     if(trim($this->rh31_irfcomplementar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh31_irfcomplementar"])){ 
+       $sql  .= $virgula." rh31_irfcomplementar = '$this->rh31_irfcomplementar' ";
+       $virgula = ",";
+       if(trim($this->rh31_irfcomplementar) == null ){ 
+         $this->erro_sql = " Campo Dependente Complementar somente para IR não informado.";
+         $this->erro_campo = "rh31_irfcomplementar";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
      }
      $sql .= " where ";
      if($rh31_codigo!=null){
@@ -471,11 +509,15 @@ class cl_rhdepend
              $resac = db_query("insert into db_acount values($acount,1186,1010557,'".AddSlashes(pg_result($resaco,$conresaco,'rh31_fins_previdenciarios'))."','$this->rh31_fins_previdenciarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh31_tipoparentesco"]) || $this->rh31_tipoparentesco != "")
              $resac = db_query("insert into db_acount values($acount,1186,1013791,'".AddSlashes(pg_result($resaco,$conresaco,'rh31_tipoparentesco'))."','$this->rh31_tipoparentesco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["rh31_descricaoparentesco"]) || $this->rh31_descricaoparentesco != "")
+             $resac = db_query("insert into db_acount values($acount,1186,1015572,'".AddSlashes(pg_result($resaco,$conresaco,'rh31_descricaoparentesco'))."','$this->rh31_descricaoparentesco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["rh31_irfcomplementar"]) || $this->rh31_irfcomplementar != "")
+             $resac = db_query("insert into db_acount values($acount,1186,1015587,'".AddSlashes(pg_result($resaco,$conresaco,'rh31_irfcomplementar'))."','$this->rh31_irfcomplementar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
      $result = db_query($sql);
-     if (!$result) {
+     if (!$result) { 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dependentes não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh31_codigo;
@@ -503,9 +545,9 @@ class cl_rhdepend
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
+       } 
+     } 
+   } 
 
    public function excluirByRegist($rh31_regist = null) { 
       $sql = "select rh31_codigo from rhdepend where rh31_regist = {$rh31_regist}";
@@ -545,7 +587,7 @@ class cl_rhdepend
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($rh31_codigo));
-       } else {
+       } else { 
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -566,6 +608,8 @@ class cl_rhdepend
            $resac  = db_query("insert into db_acount values($acount,1186,7156,'','".AddSlashes(pg_result($resaco,$iresaco,'rh31_especi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1186,1010557,'','".AddSlashes(pg_result($resaco,$iresaco,'rh31_fins_previdenciarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1186,1013791,'','".AddSlashes(pg_result($resaco,$iresaco,'rh31_tipoparentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1186,1015572,'','".AddSlashes(pg_result($resaco,$iresaco,'rh31_descricaoparentesco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1186,1015587,'','".AddSlashes(pg_result($resaco,$iresaco,'rh31_irfcomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -583,7 +627,7 @@ class cl_rhdepend
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) {
+     if ($result == false) { 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Dependentes não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh31_codigo;
@@ -611,9 +655,9 @@ class cl_rhdepend
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
+       } 
+     } 
+   } 
 
     public function sql_record($sql)
     {
@@ -639,7 +683,7 @@ class cl_rhdepend
      return $result;
    }
 
-    public function sql_query($rh31_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
+    public function sql_query($rh31_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") { 
 
      $sql  = "select {$campos}";
      $sql .= "  from rhdepend ";
@@ -655,8 +699,8 @@ class cl_rhdepend
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($rh31_codigo)) {
-         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo ";
-       }
+         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo "; 
+       } 
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -674,8 +718,8 @@ class cl_rhdepend
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($rh31_codigo)){
-         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo ";
-       }
+         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo "; 
+       } 
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -686,7 +730,7 @@ class cl_rhdepend
      return $sql;
   }
 
-   function sql_query_cgm ( $rh31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   function sql_query_cgm ( $rh31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -708,8 +752,8 @@ class cl_rhdepend
      $sql2 = "";
      if($dbwhere==""){
        if($rh31_codigo!=null ){
-         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo ";
-       }
+         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo "; 
+       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -725,7 +769,7 @@ class cl_rhdepend
      }
      return $sql;
   }
-   function sql_query_relPREVID ( $rh31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   function sql_query_relPREVID ( $rh31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -740,7 +784,7 @@ class cl_rhdepend
      $sql .= " from rhdepend ";
      $sql .= "      inner join rhpessoal     on rhpessoal.rh01_regist     = rhdepend.rh31_regist";
      $sql .= "      inner join rhpessoalmov  on rhpessoalmov.rh02_regist  = rhpessoal.rh01_regist
-		                                        and rhpessoalmov.rh02_anousu  = ".db_anofolha()."
+		                                        and rhpessoalmov.rh02_anousu  = ".db_anofolha()." 
 																						and rhpessoalmov.rh02_mesusu  = ".db_mesfolha()."
 																						and rhpessoalmov.rh02_instit  = ".db_getsession("DB_instit")." ";
      $sql .= "      inner join cgm           on cgm.z01_numcgm            = rhpessoal.rh01_numcgm";
@@ -748,8 +792,8 @@ class cl_rhdepend
      $sql2 = "";
      if($dbwhere==""){
        if($rh31_codigo!=null ){
-         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo ";
-       }
+         $sql2 .= " where rhdepend.rh31_codigo = $rh31_codigo "; 
+       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }

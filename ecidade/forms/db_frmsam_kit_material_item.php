@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,37 +42,37 @@ $clrotulo->label("sm04_kit_material");
             <?=@$Lsm04_sequencial?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('sm04_sequencial',10,$Ism04_sequencial,true,'text',3,"")
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tsm04_kit_material?>">
-            <?
+            <?php
             db_ancora(@$Lsm04_kit_material,"js_pesquisasm04_kit_material(true);",3);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('sm04_kit_material',10,$Ism04_kit_material,true,'text',3," onchange='js_pesquisasm04_kit_material(false);'")
             ?>
-            <?
+            <?php
             db_input('sm03_descr',40,$Ism03_descr,true,'text',3,'')
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tsm04_material?>">
-            <?
+            <?php
             db_ancora(@$Lsm04_material,"js_pesquisasm04_material(true);",$db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('sm04_material',10,$Ism04_material,true,'text',$db_opcao," onchange='js_pesquisasm04_material(false);'")
             ?>
-            <?
+            <?php
             db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
             ?>
           </td>
@@ -82,7 +82,7 @@ $clrotulo->label("sm04_kit_material");
             <?=@$Lsm04_quantidade?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('sm04_quantidade',10,$Ism04_quantidade,true,'text',$db_opcao,"onchange ='js_validaValores();'")
             ?>
           </td>
@@ -96,7 +96,7 @@ $clrotulo->label("sm04_kit_material");
        <?=($db_botao==false?"disabled":"")?> > 
     <input name="cancelar" type="button" id="pesquisar" value="Cancelar" onclick="js_cancelar();" >
 
-<?
+<?php
   //Grid Aterar/Excluir
 
   if (isset($sm04_kit_material) && @$sm04_kit_material != "") {

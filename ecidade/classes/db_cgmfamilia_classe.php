@@ -1,60 +1,60 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE cgmfamilia
-class cl_cgmfamilia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $z13_sequencial = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cgmfamilia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $z13_sequencial = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 z13_sequencial = int4 = Sequencial 
+                 z13_sequencial = int4 = Sequencial
                  ";
-   //funcao construtor da classe 
-   function cl_cgmfamilia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cgmfamilia"); 
+     $this->rotulo = new rotulo("cgmfamilia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -63,7 +63,7 @@ class cl_cgmfamilia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z13_sequencial = ($this->z13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["z13_sequencial"]:$this->z13_sequencial);
      }else{
@@ -71,19 +71,19 @@ class cl_cgmfamilia {
      }
    }
    // funcao para inclusao
-   function incluir ($z13_sequencial){ 
+   public function incluir ($z13_sequencial){
       $this->atualizacampos();
      if($z13_sequencial == "" || $z13_sequencial == null ){
-       $result = db_query("select nextval('cgmfamilia_z13_sequencial_seq')"); 
+       $result = db_query("select nextval('cgmfamilia_z13_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmfamilia_z13_sequencial_seq do campo: z13_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmfamilia_z13_sequencial_seq do campo: z13_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->z13_sequencial = pg_result($result,0,0); 
+       $this->z13_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cgmfamilia_z13_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $z13_sequencial)){
@@ -94,10 +94,10 @@ class cl_cgmfamilia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->z13_sequencial = $z13_sequencial; 
+         $this->z13_sequencial = $z13_sequencial;
        }
      }
-     if(($this->z13_sequencial == null) || ($this->z13_sequencial == "") ){ 
+     if(($this->z13_sequencial == null) || ($this->z13_sequencial == "") ){
        $this->erro_sql = " Campo z13_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -106,13 +106,13 @@ class cl_cgmfamilia {
        return false;
      }
      $sql = "insert into cgmfamilia(
-                                       z13_sequencial 
+                                       z13_sequencial
                        )
                 values (
-                                $this->z13_sequencial 
+                                $this->z13_sequencial
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Familia do CGM ($this->z13_sequencial) nao Incluído. Inclusao Abortada.";
@@ -144,16 +144,16 @@ class cl_cgmfamilia {
        $resac = db_query("insert into db_acount values($acount,3010,17037,'','".AddSlashes(pg_result($resaco,0,'z13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($z13_sequencial=null) { 
+   public function alterar ($z13_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cgmfamilia set ";
      $virgula = "";
-     if(trim($this->z13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z13_sequencial"])){ 
+     if(trim($this->z13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z13_sequencial"])){
        $sql  .= $virgula." z13_sequencial = $this->z13_sequencial ";
        $virgula = ",";
-       if(trim($this->z13_sequencial) == null ){ 
+       if(trim($this->z13_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "z13_sequencial";
          $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_cgmfamilia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Familia do CGM nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->z13_sequencial;
@@ -207,14 +207,14 @@ class cl_cgmfamilia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($z13_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($z13_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z13_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -240,7 +240,7 @@ class cl_cgmfamilia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Familia do CGM nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$z13_sequencial;
@@ -268,11 +268,11 @@ class cl_cgmfamilia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -294,11 +294,11 @@ class cl_cgmfamilia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $z13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $z13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -311,15 +311,15 @@ class cl_cgmfamilia {
      $sql2 = "";
      if($dbwhere==""){
        if($z13_sequencial!=null ){
-         $sql2 .= " where cgmfamilia.z13_sequencial = $z13_sequencial "; 
-       } 
+         $sql2 .= " where cgmfamilia.z13_sequencial = $z13_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -328,11 +328,11 @@ class cl_cgmfamilia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $z13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $z13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -345,15 +345,15 @@ class cl_cgmfamilia {
      $sql2 = "";
      if($dbwhere==""){
        if($z13_sequencial!=null ){
-         $sql2 .= " where cgmfamilia.z13_sequencial = $z13_sequencial "; 
-       } 
+         $sql2 .= " where cgmfamilia.z13_sequencial = $z13_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

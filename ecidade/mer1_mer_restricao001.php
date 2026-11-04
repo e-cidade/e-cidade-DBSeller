@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -36,11 +36,11 @@ $clmer_restricao = new cl_mer_restricao;
 $db_opcao        = 1;
 $db_botao        = true;
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $clmer_restricao->incluir($me24_i_codigo);
   db_fim_transacao();
-  
+
 }
 ?>
 <html>
@@ -58,7 +58,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Restrição</b></legend>
-    <?include(modification("forms/db_frmmer_restricao.php"));?>
+    <?php include(modification("forms/db_frmmer_restricao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -69,26 +69,26 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me24_i_aluno",true,1,"me24_i_aluno",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
-	
+
   if($clmer_restricao->erro_status=="0"){
-  	
+
     $clmer_restricao->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if($clmer_restricao->erro_campo!=""){
-    	
+
       echo "<script> document.form1.".$clmer_restricao->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_restricao->erro_campo.".focus();</script>";
-      
+
     }
   } else {
-  	
+
     $clmer_restricao->erro(true,false);
     db_redireciona("mer1_mer_restricao002.php?chavepesquisa=".$clmer_restricao->me24_i_codigo);
-    
- } 
+
+ }
 }
 ?>

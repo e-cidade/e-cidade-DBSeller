@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ if(isset($incluir)) {
   if ($oDaoKitMaterialItem->numrows > 0) {
     db_fieldsmemory($rs, 0);
   } else {
-    alert('Nenhum registro encontrado para kit Material item: '.$chavepesquisa);
+    db_msgbox('Nenhum registro encontrado para kit Material item: '.$chavepesquisa);
   }
 
 }
@@ -110,7 +110,7 @@ if(isset($incluir)) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-    <?
+    <?php
       include(modification("forms/db_frmsam_kit_material_item.php"));
     ?>
     </td>
@@ -122,7 +122,7 @@ if(isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","sm04_material",true,1,"sm04_material",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
 
   if($oDaoKitMaterialItem->erro_status=="0"){

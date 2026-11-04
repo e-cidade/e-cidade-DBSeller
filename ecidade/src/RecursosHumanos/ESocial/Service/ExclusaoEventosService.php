@@ -52,17 +52,24 @@ class ExclusaoEventosService
             throw new Exception("O evento {$this->eventoDeExclusao->getTpEvento()} não pode ser excluído.");
         }
 
-        if ($this->eventoNaoExiste()) {
-            $msg = "O evento {$this->eventoDeExclusao->getTpEvento()} que está sendo excluído não existe e deve "
-                . "referir-se ao identificado pelo recibo {$this->eventoDeExclusao->getNrRecEvt()}.";
-            throw new Exception($msg);
-        }
+        /**
+         * Removidas validacoes abaixo, pois o sistema antes de salvar, busca as informacoes na api, resultando
+         * em validacoes redudantes, com o porem que está impactando em muito o processamento em lote devido
+         * as 2 requisicoes abaixo serem feitas na api para cada exclusao, resultando em média de 10 segundos para
+         * cada exclusao.
+        */
 
-        if ($this->eventoJaFoiExcluido()) {
-            $msg = "O evento {$this->eventoDeExclusao->getTpEvento()} identificado"
-                . " pelo recibo {$this->eventoDeExclusao->getNrRecEvt()} já foi excluído.";
-            throw new Exception($msg);
-        }
+        // if ($this->eventoNaoExiste()) {
+        //     $msg = "O evento {$this->eventoDeExclusao->getTpEvento()} que está sendo excluído não existe e deve "
+        //         . "referir-se ao identificado pelo recibo {$this->eventoDeExclusao->getNrRecEvt()}.";
+        //     throw new Exception($msg);
+        // }
+
+        // if ($this->eventoJaFoiExcluido()) {
+        //     $msg = "O evento {$this->eventoDeExclusao->getTpEvento()} identificado"
+        //         . " pelo recibo {$this->eventoDeExclusao->getNrRecEvt()} já foi excluído.";
+        //     throw new Exception($msg);
+        // }
 
         $this->validarInformacoesTrabalhador();
         $this->persistir();

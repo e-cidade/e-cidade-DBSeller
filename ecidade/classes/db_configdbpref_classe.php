@@ -1,97 +1,99 @@
-<?
-//MODULO: prefeitura
-//CLASSE DA ENTIDADE configdbpref
-class cl_configdbpref { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $w13_liberaatucgm = 'f'; 
-   var $w13_liberapedsenha = 'f'; 
-   var $w13_permfornsemlog = 'f'; 
-   var $w13_permvarsemlog = 'f'; 
-   var $w13_liberaescritorios = 0; 
-   var $w13_liberaimobiliaria = 'f'; 
-   var $w13_permconscgm = 'f'; 
-   var $w13_aliqissretido = 'f'; 
-   var $w13_liberaissretido = 'f'; 
-   var $w13_utilizafolha = 'f'; 
-   var $w13_instit = 0; 
-   var $w13_libcertpos = 'f'; 
-   var $w13_libcarnevariavel = 'f'; 
-   var $w13_libsociosdai = 'f'; 
-   var $w13_libissprestado = 'f'; 
-   var $w13_emailadmin = null; 
-   var $w13_liberalancisssemmov = 'f'; 
-   var $w13_exigecpfcnpjmatricula = 'f'; 
-   var $w13_exigecpfcnpjinscricao = 'f'; 
-   var $w13_regracnd = 0; 
-   var $w13_permconsservdemit = 'f'; 
-   var $w13_tipocertidao = 0; 
-   var $w13_agrupadebrecibos = 'f'; 
-   var $w13_msgaviso = 'f'; 
-   var $w13_tipocodigocertidao = 0; 
-   var $w13_uploadarquivos = null; 
-   var $w13_recaptcha_sitekey = null; 
-   var $w13_recaptcha_privatekey = null; 
-   // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 w13_liberaatucgm = bool = Libera Atualização do CGM 
-                 w13_liberapedsenha = bool = Libera Pedido de Senha 
-                 w13_permfornsemlog = bool = permite acessar fornecedor sem estar logado 
-                 w13_permvarsemlog = bool = Permite ISS Var sem login 
-                 w13_liberaescritorios = int4 = Regra para Escritório Informar Clientes 
-                 w13_liberaimobiliaria = bool = Libera Imobiliárias para adicionar seus clientes 
-                 w13_permconscgm = bool = Permite consulta Contribuinte por CGM 
-                 w13_aliqissretido = bool = Permitir alíquota fora do padrão 
-                 w13_liberaissretido = bool = Libera ISS Retido sem login 
-                 w13_utilizafolha = bool = Utiliza Folha 
-                 w13_instit = int4 = instituição 
-                 w13_libcertpos = bool = Libera certidao positiva 
-                 w13_libcarnevariavel = bool = Libera carne de ISSQN variável 
-                 w13_libsociosdai = bool = Libera aba socios na DAI 
-                 w13_libissprestado = bool = Libera opcao de ISSQN prestado 
-                 w13_emailadmin = varchar(50) = E-mail do administrador 
-                 w13_liberalancisssemmov = bool = Permitir ISSQN sem movimento 
-                 w13_exigecpfcnpjmatricula = bool = Exige CPF/CNPJ na consulta de imóveis 
-                 w13_exigecpfcnpjinscricao = bool = Exige CPF/CNPJ na consulta de inscrições 
-                 w13_regracnd = int4 = Regra para Emissão CND 
-                 w13_permconsservdemit = bool = Permite Consulta de Servidor Demitido 
-                 w13_tipocertidao = int4 = Forma Emissão Certidão de Débitos 
-                 w13_agrupadebrecibos = bool = Agrupa Déb. Venc. na Emissão de Recibos 
-                 w13_msgaviso = bool = Mostrar Mensagem de Aviso de Corte 
-                 w13_tipocodigocertidao = int4 = Tipo de Codificação da certidão 
-                 w13_uploadarquivos = text = Caminho da Pasta de Upload de Arquivos 
-                 w13_recaptcha_sitekey = varchar(200) = Captcha Chave Pública 
-                 w13_recaptcha_privatekey = varchar(200) = Captcha Chave Privada 
+<?php
+
+class cl_configdbpref
+{
+   // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
+    /* Variáveis do Arquivo */
+    public $w13_liberaatucgm = 'f';
+    public $w13_liberapedsenha = 'f';
+    public $w13_permfornsemlog = 'f';
+    public $w13_permvarsemlog = 'f';
+    public $w13_liberaescritorios = 0;
+    public $w13_liberaimobiliaria = 'f';
+    public $w13_permconscgm = 'f';
+    public $w13_aliqissretido = 'f';
+    public $w13_liberaissretido = 'f';
+    public $w13_utilizafolha = 'f';
+    public $w13_instit = 0;
+    public $w13_libcertpos = 'f';
+    public $w13_libcarnevariavel = 'f';
+    public $w13_libsociosdai = 'f';
+    public $w13_libissprestado = 'f';
+    public $w13_emailadmin = null;
+    public $w13_liberalancisssemmov = 'f';
+    public $w13_exigecpfcnpjmatricula = 'f';
+    public $w13_exigecpfcnpjinscricao = 'f';
+    public $w13_regracnd = 0;
+    public $w13_permconsservdemit = 'f';
+    public $w13_tipocertidao = 0;
+    public $w13_agrupadebrecibos = 'f';
+    public $w13_msgaviso = 'f';
+    public $w13_tipocodigocertidao = 0;
+    public $w13_uploadarquivos = null;
+    public $w13_recaptcha_sitekey = null;
+    public $w13_recaptcha_privatekey = null;
+    public $w13_comprovanterendimentosanoanterior = 'f';
+   // cria propriedade com as variaveis do arquivo
+    public $campos = "
+                 w13_liberaatucgm = bool = Libera Atualização do CGM
+                 w13_liberapedsenha = bool = Libera Pedido de Senha
+                 w13_permfornsemlog = bool = permite acessar fornecedor sem estar logado
+                 w13_permvarsemlog = bool = Permite ISS Var sem login
+                 w13_liberaescritorios = int4 = Regra para Escritório Informar Clientes
+                 w13_liberaimobiliaria = bool = Libera Imobiliárias para adicionar seus clientes
+                 w13_permconscgm = bool = Permite consulta Contribuinte por CGM
+                 w13_aliqissretido = bool = Permitir alíquota fora do padrão
+                 w13_liberaissretido = bool = Libera ISS Retido sem login
+                 w13_utilizafolha = bool = Utiliza Folha
+                 w13_instit = int4 = instituição
+                 w13_libcertpos = bool = Libera certidao positiva
+                 w13_libcarnevariavel = bool = Libera carne de ISSQN variável
+                 w13_libsociosdai = bool = Libera aba socios na DAI
+                 w13_libissprestado = bool = Libera opcao de ISSQN prestado
+                 w13_emailadmin = varchar(50) = E-mail do administrador
+                 w13_liberalancisssemmov = bool = Permitir ISSQN sem movimento
+                 w13_exigecpfcnpjmatricula = bool = Exige CPF/CNPJ na consulta de imóveis
+                 w13_exigecpfcnpjinscricao = bool = Exige CPF/CNPJ na consulta de inscrições
+                 w13_regracnd = int4 = Regra para Emissão CND
+                 w13_permconsservdemit = bool = Permite Consulta de Servidor Demitido
+                 w13_tipocertidao = int4 = Forma Emissão Certidão de Débitos
+                 w13_agrupadebrecibos = bool = Agrupa Déb. Venc. na Emissão de Recibos
+                 w13_msgaviso = bool = Mostrar Mensagem de Aviso de Corte
+                 w13_tipocodigocertidao = int4 = Tipo de Codificação da certidão
+                 w13_uploadarquivos = text = Caminho da Pasta de Upload de Arquivos
+                 w13_recaptcha_sitekey = varchar(200) = Captcha Chave Pública
+                 w13_recaptcha_privatekey = varchar(200) = Captcha Chave Privada
+                 w13_comprovanterendimentosanoanterior = bool = Comprovante de Rendimentos ano anterior
                  ";
-   //funcao construtor da classe 
-   function cl_configdbpref() { 
-     //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("configdbpref"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
-   }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+
+    public function __construct()
+    {
+        $this->rotulo = new rotulo("configdbpref");
+        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+    }
+
+    public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\");</script>";
+        echo "<script>alert(\"".$this->erro_msg."\")</script>";
         if($retorna==true){
            echo "<script>location.href='".$this->pagina_retorno."'</script>";
         }
      }
    }
-   // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+
+    public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w13_liberaatucgm = ($this->w13_liberaatucgm == "f"?@$GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"]:$this->w13_liberaatucgm);
        $this->w13_liberapedsenha = ($this->w13_liberapedsenha == "f"?@$GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"]:$this->w13_liberapedsenha);
@@ -121,14 +123,15 @@ class cl_configdbpref {
        $this->w13_uploadarquivos = ($this->w13_uploadarquivos == ""?@$GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"]:$this->w13_uploadarquivos);
        $this->w13_recaptcha_sitekey = ($this->w13_recaptcha_sitekey == ""?@$GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"]:$this->w13_recaptcha_sitekey);
        $this->w13_recaptcha_privatekey = ($this->w13_recaptcha_privatekey == ""?@$GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"]:$this->w13_recaptcha_privatekey);
+       $this->w13_comprovanterendimentosanoanterior = ($this->w13_comprovanterendimentosanoanterior == "f"?@$GLOBALS["HTTP_POST_VARS"]["w13_comprovanterendimentosanoanterior"]:$this->w13_comprovanterendimentosanoanterior);
      }else{
        $this->w13_instit = ($this->w13_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["w13_instit"]:$this->w13_instit);
      }
    }
-   // funcao para Inclusão
-   function incluir ($w13_instit){ 
+
+    public function incluir ($w13_instit){
       $this->atualizacampos();
-     if($this->w13_liberaatucgm == null ){ 
+     if($this->w13_liberaatucgm == null ){
        $this->erro_sql = " Campo Libera Atualização do CGM não informado.";
        $this->erro_campo = "w13_liberaatucgm";
        $this->erro_banco = "";
@@ -137,7 +140,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_liberapedsenha == null ){ 
+     if($this->w13_liberapedsenha == null ){
        $this->erro_sql = " Campo Libera Pedido de Senha não informado.";
        $this->erro_campo = "w13_liberapedsenha";
        $this->erro_banco = "";
@@ -146,7 +149,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_permfornsemlog == null ){ 
+     if($this->w13_permfornsemlog == null ){
        $this->erro_sql = " Campo permite acessar fornecedor sem estar logado não informado.";
        $this->erro_campo = "w13_permfornsemlog";
        $this->erro_banco = "";
@@ -155,7 +158,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_permvarsemlog == null ){ 
+     if($this->w13_permvarsemlog == null ){
        $this->erro_sql = " Campo Permite ISS Var sem login não informado.";
        $this->erro_campo = "w13_permvarsemlog";
        $this->erro_banco = "";
@@ -164,7 +167,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_liberaescritorios == null ){ 
+     if($this->w13_liberaescritorios == null ){
        $this->erro_sql = " Campo Regra para Escritório Informar Clientes não informado.";
        $this->erro_campo = "w13_liberaescritorios";
        $this->erro_banco = "";
@@ -173,7 +176,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_liberaimobiliaria == null ){ 
+     if($this->w13_liberaimobiliaria == null ){
        $this->erro_sql = " Campo Libera Imobiliárias para adicionar seus clientes não informado.";
        $this->erro_campo = "w13_liberaimobiliaria";
        $this->erro_banco = "";
@@ -182,7 +185,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_permconscgm == null ){ 
+     if($this->w13_permconscgm == null ){
        $this->erro_sql = " Campo Permite consulta Contribuinte por CGM não informado.";
        $this->erro_campo = "w13_permconscgm";
        $this->erro_banco = "";
@@ -191,7 +194,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_aliqissretido == null ){ 
+     if($this->w13_aliqissretido == null ){
        $this->erro_sql = " Campo Permitir alíquota fora do padrão não informado.";
        $this->erro_campo = "w13_aliqissretido";
        $this->erro_banco = "";
@@ -200,7 +203,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_liberaissretido == null ){ 
+     if($this->w13_liberaissretido == null ){
        $this->erro_sql = " Campo Libera ISS Retido sem login não informado.";
        $this->erro_campo = "w13_liberaissretido";
        $this->erro_banco = "";
@@ -209,7 +212,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_utilizafolha == null ){ 
+     if($this->w13_utilizafolha == null ){
        $this->erro_sql = " Campo Utiliza Folha não informado.";
        $this->erro_campo = "w13_utilizafolha";
        $this->erro_banco = "";
@@ -218,7 +221,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_libcertpos == null ){ 
+     if($this->w13_libcertpos == null ){
        $this->erro_sql = " Campo Libera certidao positiva não informado.";
        $this->erro_campo = "w13_libcertpos";
        $this->erro_banco = "";
@@ -227,7 +230,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_libcarnevariavel == null ){ 
+     if($this->w13_libcarnevariavel == null ){
        $this->erro_sql = " Campo Libera carne de ISSQN variável não informado.";
        $this->erro_campo = "w13_libcarnevariavel";
        $this->erro_banco = "";
@@ -236,7 +239,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_libsociosdai == null ){ 
+     if($this->w13_libsociosdai == null ){
        $this->erro_sql = " Campo Libera aba socios na DAI não informado.";
        $this->erro_campo = "w13_libsociosdai";
        $this->erro_banco = "";
@@ -245,7 +248,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_libissprestado == null ){ 
+     if($this->w13_libissprestado == null ){
        $this->erro_sql = " Campo Libera opcao de ISSQN prestado não informado.";
        $this->erro_campo = "w13_libissprestado";
        $this->erro_banco = "";
@@ -254,7 +257,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_emailadmin == null ){ 
+     if($this->w13_emailadmin == null ){
        $this->erro_sql = " Campo E-mail do administrador não informado.";
        $this->erro_campo = "w13_emailadmin";
        $this->erro_banco = "";
@@ -263,7 +266,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_liberalancisssemmov == null ){ 
+     if($this->w13_liberalancisssemmov == null ){
        $this->erro_sql = " Campo Permitir ISSQN sem movimento não informado.";
        $this->erro_campo = "w13_liberalancisssemmov";
        $this->erro_banco = "";
@@ -272,7 +275,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_exigecpfcnpjmatricula == null ){ 
+     if($this->w13_exigecpfcnpjmatricula == null ){
        $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de imóveis não informado.";
        $this->erro_campo = "w13_exigecpfcnpjmatricula";
        $this->erro_banco = "";
@@ -281,7 +284,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_exigecpfcnpjinscricao == null ){ 
+     if($this->w13_exigecpfcnpjinscricao == null ){
        $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de inscrições não informado.";
        $this->erro_campo = "w13_exigecpfcnpjinscricao";
        $this->erro_banco = "";
@@ -290,7 +293,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_regracnd == null ){ 
+     if($this->w13_regracnd == null ){
        $this->erro_sql = " Campo Regra para Emissão CND não informado.";
        $this->erro_campo = "w13_regracnd";
        $this->erro_banco = "";
@@ -299,7 +302,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_permconsservdemit == null ){ 
+     if($this->w13_permconsservdemit == null ){
        $this->erro_sql = " Campo Permite Consulta de Servidor Demitido não informado.";
        $this->erro_campo = "w13_permconsservdemit";
        $this->erro_banco = "";
@@ -308,7 +311,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_tipocertidao == null ){ 
+     if($this->w13_tipocertidao == null ){
        $this->erro_sql = " Campo Forma Emissão Certidão de Débitos não informado.";
        $this->erro_campo = "w13_tipocertidao";
        $this->erro_banco = "";
@@ -317,7 +320,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_agrupadebrecibos == null ){ 
+     if($this->w13_agrupadebrecibos == null ){
        $this->erro_sql = " Campo Agrupa Déb. Venc. na Emissão de Recibos não informado.";
        $this->erro_campo = "w13_agrupadebrecibos";
        $this->erro_banco = "";
@@ -326,7 +329,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_msgaviso == null ){ 
+     if($this->w13_msgaviso == null ){
        $this->erro_sql = " Campo Mostrar Mensagem de Aviso de Corte não informado.";
        $this->erro_campo = "w13_msgaviso";
        $this->erro_banco = "";
@@ -335,7 +338,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_tipocodigocertidao == null ){ 
+     if($this->w13_tipocodigocertidao == null ){
        $this->erro_sql = " Campo Tipo de Codificação da certidão não informado.";
        $this->erro_campo = "w13_tipocodigocertidao";
        $this->erro_banco = "";
@@ -344,7 +347,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_recaptcha_sitekey == null ){ 
+     if($this->w13_recaptcha_sitekey == null ){
        $this->erro_sql = " Campo Captcha Chave Pública não informado.";
        $this->erro_campo = "w13_recaptcha_sitekey";
        $this->erro_banco = "";
@@ -353,7 +356,7 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-     if($this->w13_recaptcha_privatekey == null ){ 
+     if($this->w13_recaptcha_privatekey == null ){
        $this->erro_sql = " Campo Captcha Chave Privada não informado.";
        $this->erro_campo = "w13_recaptcha_privatekey";
        $this->erro_banco = "";
@@ -362,8 +365,17 @@ class cl_configdbpref {
        $this->erro_status = "0";
        return false;
      }
-       $this->w13_instit = $w13_instit; 
-     if(($this->w13_instit == null) || ($this->w13_instit == "") ){ 
+     if($this->w13_comprovanterendimentosanoanterior == null ){
+       $this->erro_sql = " Campo Comprovante de Rendimentos ano anterior não informado.";
+       $this->erro_campo = "w13_comprovanterendimentosanoanterior";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+       $this->w13_instit = $w13_instit;
+     if(($this->w13_instit == null) || ($this->w13_instit == "") ){
        $this->erro_sql = " Campo w13_instit não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -372,67 +384,69 @@ class cl_configdbpref {
        return false;
      }
      $sql = "insert into configdbpref(
-                                       w13_liberaatucgm 
-                                      ,w13_liberapedsenha 
-                                      ,w13_permfornsemlog 
-                                      ,w13_permvarsemlog 
-                                      ,w13_liberaescritorios 
-                                      ,w13_liberaimobiliaria 
-                                      ,w13_permconscgm 
-                                      ,w13_aliqissretido 
-                                      ,w13_liberaissretido 
-                                      ,w13_utilizafolha 
-                                      ,w13_instit 
-                                      ,w13_libcertpos 
-                                      ,w13_libcarnevariavel 
-                                      ,w13_libsociosdai 
-                                      ,w13_libissprestado 
-                                      ,w13_emailadmin 
-                                      ,w13_liberalancisssemmov 
-                                      ,w13_exigecpfcnpjmatricula 
-                                      ,w13_exigecpfcnpjinscricao 
-                                      ,w13_regracnd 
-                                      ,w13_permconsservdemit 
-                                      ,w13_tipocertidao 
-                                      ,w13_agrupadebrecibos 
-                                      ,w13_msgaviso 
-                                      ,w13_tipocodigocertidao 
-                                      ,w13_uploadarquivos 
-                                      ,w13_recaptcha_sitekey 
-                                      ,w13_recaptcha_privatekey 
+                                       w13_liberaatucgm
+                                      ,w13_liberapedsenha
+                                      ,w13_permfornsemlog
+                                      ,w13_permvarsemlog
+                                      ,w13_liberaescritorios
+                                      ,w13_liberaimobiliaria
+                                      ,w13_permconscgm
+                                      ,w13_aliqissretido
+                                      ,w13_liberaissretido
+                                      ,w13_utilizafolha
+                                      ,w13_instit
+                                      ,w13_libcertpos
+                                      ,w13_libcarnevariavel
+                                      ,w13_libsociosdai
+                                      ,w13_libissprestado
+                                      ,w13_emailadmin
+                                      ,w13_liberalancisssemmov
+                                      ,w13_exigecpfcnpjmatricula
+                                      ,w13_exigecpfcnpjinscricao
+                                      ,w13_regracnd
+                                      ,w13_permconsservdemit
+                                      ,w13_tipocertidao
+                                      ,w13_agrupadebrecibos
+                                      ,w13_msgaviso
+                                      ,w13_tipocodigocertidao
+                                      ,w13_uploadarquivos
+                                      ,w13_recaptcha_sitekey
+                                      ,w13_recaptcha_privatekey
+                                      ,w13_comprovanterendimentosanoanterior
                        )
                 values (
-                                '$this->w13_liberaatucgm' 
-                               ,'$this->w13_liberapedsenha' 
-                               ,'$this->w13_permfornsemlog' 
-                               ,'$this->w13_permvarsemlog' 
-                               ,$this->w13_liberaescritorios 
-                               ,'$this->w13_liberaimobiliaria' 
-                               ,'$this->w13_permconscgm' 
-                               ,'$this->w13_aliqissretido' 
-                               ,'$this->w13_liberaissretido' 
-                               ,'$this->w13_utilizafolha' 
-                               ,$this->w13_instit 
-                               ,'$this->w13_libcertpos' 
-                               ,'$this->w13_libcarnevariavel' 
-                               ,'$this->w13_libsociosdai' 
-                               ,'$this->w13_libissprestado' 
-                               ,'$this->w13_emailadmin' 
-                               ,'$this->w13_liberalancisssemmov' 
-                               ,'$this->w13_exigecpfcnpjmatricula' 
-                               ,'$this->w13_exigecpfcnpjinscricao' 
-                               ,$this->w13_regracnd 
-                               ,'$this->w13_permconsservdemit' 
-                               ,$this->w13_tipocertidao 
-                               ,'$this->w13_agrupadebrecibos' 
-                               ,'$this->w13_msgaviso' 
-                               ,$this->w13_tipocodigocertidao 
-                               ,'$this->w13_uploadarquivos' 
-                               ,'$this->w13_recaptcha_sitekey' 
-                               ,'$this->w13_recaptcha_privatekey' 
+                                '$this->w13_liberaatucgm'
+                               ,'$this->w13_liberapedsenha'
+                               ,'$this->w13_permfornsemlog'
+                               ,'$this->w13_permvarsemlog'
+                               ,$this->w13_liberaescritorios
+                               ,'$this->w13_liberaimobiliaria'
+                               ,'$this->w13_permconscgm'
+                               ,'$this->w13_aliqissretido'
+                               ,'$this->w13_liberaissretido'
+                               ,'$this->w13_utilizafolha'
+                               ,$this->w13_instit
+                               ,'$this->w13_libcertpos'
+                               ,'$this->w13_libcarnevariavel'
+                               ,'$this->w13_libsociosdai'
+                               ,'$this->w13_libissprestado'
+                               ,'$this->w13_emailadmin'
+                               ,'$this->w13_liberalancisssemmov'
+                               ,'$this->w13_exigecpfcnpjmatricula'
+                               ,'$this->w13_exigecpfcnpjinscricao'
+                               ,$this->w13_regracnd
+                               ,'$this->w13_permconsservdemit'
+                               ,$this->w13_tipocertidao
+                               ,'$this->w13_agrupadebrecibos'
+                               ,'$this->w13_msgaviso'
+                               ,$this->w13_tipocodigocertidao
+                               ,'$this->w13_uploadarquivos'
+                               ,'$this->w13_recaptcha_sitekey'
+                               ,'$this->w13_recaptcha_privatekey'
+                               ,'$this->w13_comprovanterendimentosanoanterior'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "configdbpref ($this->w13_instit) não Incluído. Inclusão Abortada.";
@@ -494,19 +508,21 @@ class cl_configdbpref {
          $resac = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_result($resaco,0,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_result($resaco,0,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_result($resaco,0,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,1014774,'','".AddSlashes(pg_result($resaco,0,'w13_comprovanterendimentosanoanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
-   } 
-   // funcao para alteracao
-   public function alterar ($w13_instit=null) { 
+   }
+
+    public function alterar($w13_instit=null)
+    {
       $this->atualizacampos();
      $sql = " update configdbpref set ";
      $virgula = "";
-     if(trim($this->w13_liberaatucgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"])){ 
+     if(trim($this->w13_liberaatucgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"])){
        $sql  .= $virgula." w13_liberaatucgm = '$this->w13_liberaatucgm' ";
        $virgula = ",";
-       if(trim($this->w13_liberaatucgm) == null ){ 
+       if(trim($this->w13_liberaatucgm) == null ){
          $this->erro_sql = " Campo Libera Atualização do CGM não informado.";
          $this->erro_campo = "w13_liberaatucgm";
          $this->erro_banco = "";
@@ -516,10 +532,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberapedsenha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"])){ 
+     if(trim($this->w13_liberapedsenha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"])){
        $sql  .= $virgula." w13_liberapedsenha = '$this->w13_liberapedsenha' ";
        $virgula = ",";
-       if(trim($this->w13_liberapedsenha) == null ){ 
+       if(trim($this->w13_liberapedsenha) == null ){
          $this->erro_sql = " Campo Libera Pedido de Senha não informado.";
          $this->erro_campo = "w13_liberapedsenha";
          $this->erro_banco = "";
@@ -529,10 +545,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permfornsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permfornsemlog"])){ 
+     if(trim($this->w13_permfornsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permfornsemlog"])){
        $sql  .= $virgula." w13_permfornsemlog = '$this->w13_permfornsemlog' ";
        $virgula = ",";
-       if(trim($this->w13_permfornsemlog) == null ){ 
+       if(trim($this->w13_permfornsemlog) == null ){
          $this->erro_sql = " Campo permite acessar fornecedor sem estar logado não informado.";
          $this->erro_campo = "w13_permfornsemlog";
          $this->erro_banco = "";
@@ -542,10 +558,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permvarsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permvarsemlog"])){ 
+     if(trim($this->w13_permvarsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permvarsemlog"])){
        $sql  .= $virgula." w13_permvarsemlog = '$this->w13_permvarsemlog' ";
        $virgula = ",";
-       if(trim($this->w13_permvarsemlog) == null ){ 
+       if(trim($this->w13_permvarsemlog) == null ){
          $this->erro_sql = " Campo Permite ISS Var sem login não informado.";
          $this->erro_campo = "w13_permvarsemlog";
          $this->erro_banco = "";
@@ -555,10 +571,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaescritorios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaescritorios"])){ 
+     if(trim($this->w13_liberaescritorios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaescritorios"])){
        $sql  .= $virgula." w13_liberaescritorios = $this->w13_liberaescritorios ";
        $virgula = ",";
-       if(trim($this->w13_liberaescritorios) == null ){ 
+       if(trim($this->w13_liberaescritorios) == null ){
          $this->erro_sql = " Campo Regra para Escritório Informar Clientes não informado.";
          $this->erro_campo = "w13_liberaescritorios";
          $this->erro_banco = "";
@@ -568,10 +584,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaimobiliaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaimobiliaria"])){ 
+     if(trim($this->w13_liberaimobiliaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaimobiliaria"])){
        $sql  .= $virgula." w13_liberaimobiliaria = '$this->w13_liberaimobiliaria' ";
        $virgula = ",";
-       if(trim($this->w13_liberaimobiliaria) == null ){ 
+       if(trim($this->w13_liberaimobiliaria) == null ){
          $this->erro_sql = " Campo Libera Imobiliárias para adicionar seus clientes não informado.";
          $this->erro_campo = "w13_liberaimobiliaria";
          $this->erro_banco = "";
@@ -581,10 +597,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permconscgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconscgm"])){ 
+     if(trim($this->w13_permconscgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconscgm"])){
        $sql  .= $virgula." w13_permconscgm = '$this->w13_permconscgm' ";
        $virgula = ",";
-       if(trim($this->w13_permconscgm) == null ){ 
+       if(trim($this->w13_permconscgm) == null ){
          $this->erro_sql = " Campo Permite consulta Contribuinte por CGM não informado.";
          $this->erro_campo = "w13_permconscgm";
          $this->erro_banco = "";
@@ -594,10 +610,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_aliqissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_aliqissretido"])){ 
+     if(trim($this->w13_aliqissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_aliqissretido"])){
        $sql  .= $virgula." w13_aliqissretido = '$this->w13_aliqissretido' ";
        $virgula = ",";
-       if(trim($this->w13_aliqissretido) == null ){ 
+       if(trim($this->w13_aliqissretido) == null ){
          $this->erro_sql = " Campo Permitir alíquota fora do padrão não informado.";
          $this->erro_campo = "w13_aliqissretido";
          $this->erro_banco = "";
@@ -607,10 +623,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaissretido"])){ 
+     if(trim($this->w13_liberaissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaissretido"])){
        $sql  .= $virgula." w13_liberaissretido = '$this->w13_liberaissretido' ";
        $virgula = ",";
-       if(trim($this->w13_liberaissretido) == null ){ 
+       if(trim($this->w13_liberaissretido) == null ){
          $this->erro_sql = " Campo Libera ISS Retido sem login não informado.";
          $this->erro_campo = "w13_liberaissretido";
          $this->erro_banco = "";
@@ -620,10 +636,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_utilizafolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_utilizafolha"])){ 
+     if(trim($this->w13_utilizafolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_utilizafolha"])){
        $sql  .= $virgula." w13_utilizafolha = '$this->w13_utilizafolha' ";
        $virgula = ",";
-       if(trim($this->w13_utilizafolha) == null ){ 
+       if(trim($this->w13_utilizafolha) == null ){
          $this->erro_sql = " Campo Utiliza Folha não informado.";
          $this->erro_campo = "w13_utilizafolha";
          $this->erro_banco = "";
@@ -633,10 +649,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_instit"])){ 
+     if(trim($this->w13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_instit"])){
        $sql  .= $virgula." w13_instit = $this->w13_instit ";
        $virgula = ",";
-       if(trim($this->w13_instit) == null ){ 
+       if(trim($this->w13_instit) == null ){
          $this->erro_sql = " Campo instituição não informado.";
          $this->erro_campo = "w13_instit";
          $this->erro_banco = "";
@@ -646,10 +662,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libcertpos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcertpos"])){ 
+     if(trim($this->w13_libcertpos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcertpos"])){
        $sql  .= $virgula." w13_libcertpos = '$this->w13_libcertpos' ";
        $virgula = ",";
-       if(trim($this->w13_libcertpos) == null ){ 
+       if(trim($this->w13_libcertpos) == null ){
          $this->erro_sql = " Campo Libera certidao positiva não informado.";
          $this->erro_campo = "w13_libcertpos";
          $this->erro_banco = "";
@@ -659,10 +675,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libcarnevariavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcarnevariavel"])){ 
+     if(trim($this->w13_libcarnevariavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcarnevariavel"])){
        $sql  .= $virgula." w13_libcarnevariavel = '$this->w13_libcarnevariavel' ";
        $virgula = ",";
-       if(trim($this->w13_libcarnevariavel) == null ){ 
+       if(trim($this->w13_libcarnevariavel) == null ){
          $this->erro_sql = " Campo Libera carne de ISSQN variável não informado.";
          $this->erro_campo = "w13_libcarnevariavel";
          $this->erro_banco = "";
@@ -672,10 +688,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libsociosdai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libsociosdai"])){ 
+     if(trim($this->w13_libsociosdai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libsociosdai"])){
        $sql  .= $virgula." w13_libsociosdai = '$this->w13_libsociosdai' ";
        $virgula = ",";
-       if(trim($this->w13_libsociosdai) == null ){ 
+       if(trim($this->w13_libsociosdai) == null ){
          $this->erro_sql = " Campo Libera aba socios na DAI não informado.";
          $this->erro_campo = "w13_libsociosdai";
          $this->erro_banco = "";
@@ -685,10 +701,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libissprestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libissprestado"])){ 
+     if(trim($this->w13_libissprestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libissprestado"])){
        $sql  .= $virgula." w13_libissprestado = '$this->w13_libissprestado' ";
        $virgula = ",";
-       if(trim($this->w13_libissprestado) == null ){ 
+       if(trim($this->w13_libissprestado) == null ){
          $this->erro_sql = " Campo Libera opcao de ISSQN prestado não informado.";
          $this->erro_campo = "w13_libissprestado";
          $this->erro_banco = "";
@@ -698,10 +714,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_emailadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_emailadmin"])){ 
+     if(trim($this->w13_emailadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_emailadmin"])){
        $sql  .= $virgula." w13_emailadmin = '$this->w13_emailadmin' ";
        $virgula = ",";
-       if(trim($this->w13_emailadmin) == null ){ 
+       if(trim($this->w13_emailadmin) == null ){
          $this->erro_sql = " Campo E-mail do administrador não informado.";
          $this->erro_campo = "w13_emailadmin";
          $this->erro_banco = "";
@@ -711,10 +727,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberalancisssemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberalancisssemmov"])){ 
+     if(trim($this->w13_liberalancisssemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberalancisssemmov"])){
        $sql  .= $virgula." w13_liberalancisssemmov = '$this->w13_liberalancisssemmov' ";
        $virgula = ",";
-       if(trim($this->w13_liberalancisssemmov) == null ){ 
+       if(trim($this->w13_liberalancisssemmov) == null ){
          $this->erro_sql = " Campo Permitir ISSQN sem movimento não informado.";
          $this->erro_campo = "w13_liberalancisssemmov";
          $this->erro_banco = "";
@@ -724,10 +740,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_exigecpfcnpjmatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjmatricula"])){ 
+     if(trim($this->w13_exigecpfcnpjmatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjmatricula"])){
        $sql  .= $virgula." w13_exigecpfcnpjmatricula = '$this->w13_exigecpfcnpjmatricula' ";
        $virgula = ",";
-       if(trim($this->w13_exigecpfcnpjmatricula) == null ){ 
+       if(trim($this->w13_exigecpfcnpjmatricula) == null ){
          $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de imóveis não informado.";
          $this->erro_campo = "w13_exigecpfcnpjmatricula";
          $this->erro_banco = "";
@@ -737,10 +753,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_exigecpfcnpjinscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjinscricao"])){ 
+     if(trim($this->w13_exigecpfcnpjinscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjinscricao"])){
        $sql  .= $virgula." w13_exigecpfcnpjinscricao = '$this->w13_exigecpfcnpjinscricao' ";
        $virgula = ",";
-       if(trim($this->w13_exigecpfcnpjinscricao) == null ){ 
+       if(trim($this->w13_exigecpfcnpjinscricao) == null ){
          $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de inscrições não informado.";
          $this->erro_campo = "w13_exigecpfcnpjinscricao";
          $this->erro_banco = "";
@@ -750,10 +766,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_regracnd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_regracnd"])){ 
+     if(trim($this->w13_regracnd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_regracnd"])){
        $sql  .= $virgula." w13_regracnd = $this->w13_regracnd ";
        $virgula = ",";
-       if(trim($this->w13_regracnd) == null ){ 
+       if(trim($this->w13_regracnd) == null ){
          $this->erro_sql = " Campo Regra para Emissão CND não informado.";
          $this->erro_campo = "w13_regracnd";
          $this->erro_banco = "";
@@ -763,10 +779,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permconsservdemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconsservdemit"])){ 
+     if(trim($this->w13_permconsservdemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconsservdemit"])){
        $sql  .= $virgula." w13_permconsservdemit = '$this->w13_permconsservdemit' ";
        $virgula = ",";
-       if(trim($this->w13_permconsservdemit) == null ){ 
+       if(trim($this->w13_permconsservdemit) == null ){
          $this->erro_sql = " Campo Permite Consulta de Servidor Demitido não informado.";
          $this->erro_campo = "w13_permconsservdemit";
          $this->erro_banco = "";
@@ -776,10 +792,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_tipocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocertidao"])){ 
+     if(trim($this->w13_tipocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocertidao"])){
        $sql  .= $virgula." w13_tipocertidao = $this->w13_tipocertidao ";
        $virgula = ",";
-       if(trim($this->w13_tipocertidao) == null ){ 
+       if(trim($this->w13_tipocertidao) == null ){
          $this->erro_sql = " Campo Forma Emissão Certidão de Débitos não informado.";
          $this->erro_campo = "w13_tipocertidao";
          $this->erro_banco = "";
@@ -789,10 +805,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_agrupadebrecibos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_agrupadebrecibos"])){ 
+     if(trim($this->w13_agrupadebrecibos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_agrupadebrecibos"])){
        $sql  .= $virgula." w13_agrupadebrecibos = '$this->w13_agrupadebrecibos' ";
        $virgula = ",";
-       if(trim($this->w13_agrupadebrecibos) == null ){ 
+       if(trim($this->w13_agrupadebrecibos) == null ){
          $this->erro_sql = " Campo Agrupa Déb. Venc. na Emissão de Recibos não informado.";
          $this->erro_campo = "w13_agrupadebrecibos";
          $this->erro_banco = "";
@@ -802,10 +818,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_msgaviso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_msgaviso"])){ 
+     if(trim($this->w13_msgaviso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_msgaviso"])){
        $sql  .= $virgula." w13_msgaviso = '$this->w13_msgaviso' ";
        $virgula = ",";
-       if(trim($this->w13_msgaviso) == null ){ 
+       if(trim($this->w13_msgaviso) == null ){
          $this->erro_sql = " Campo Mostrar Mensagem de Aviso de Corte não informado.";
          $this->erro_campo = "w13_msgaviso";
          $this->erro_banco = "";
@@ -815,10 +831,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_tipocodigocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocodigocertidao"])){ 
+     if(trim($this->w13_tipocodigocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocodigocertidao"])){
        $sql  .= $virgula." w13_tipocodigocertidao = $this->w13_tipocodigocertidao ";
        $virgula = ",";
-       if(trim($this->w13_tipocodigocertidao) == null ){ 
+       if(trim($this->w13_tipocodigocertidao) == null ){
          $this->erro_sql = " Campo Tipo de Codificação da certidão não informado.";
          $this->erro_campo = "w13_tipocodigocertidao";
          $this->erro_banco = "";
@@ -828,14 +844,14 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_uploadarquivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"])){ 
+     if(trim($this->w13_uploadarquivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"])){
        $sql  .= $virgula." w13_uploadarquivos = '$this->w13_uploadarquivos' ";
        $virgula = ",";
      }
-     if(trim($this->w13_recaptcha_sitekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"])){ 
+     if(trim($this->w13_recaptcha_sitekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"])){
        $sql  .= $virgula." w13_recaptcha_sitekey = '$this->w13_recaptcha_sitekey' ";
        $virgula = ",";
-       if(trim($this->w13_recaptcha_sitekey) == null ){ 
+       if(trim($this->w13_recaptcha_sitekey) == null ){
          $this->erro_sql = " Campo Captcha Chave Pública não informado.";
          $this->erro_campo = "w13_recaptcha_sitekey";
          $this->erro_banco = "";
@@ -845,12 +861,25 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_recaptcha_privatekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"])){ 
+     if(trim($this->w13_recaptcha_privatekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"])){
        $sql  .= $virgula." w13_recaptcha_privatekey = '$this->w13_recaptcha_privatekey' ";
        $virgula = ",";
-       if(trim($this->w13_recaptcha_privatekey) == null ){ 
+       if(trim($this->w13_recaptcha_privatekey) == null ){
          $this->erro_sql = " Campo Captcha Chave Privada não informado.";
          $this->erro_campo = "w13_recaptcha_privatekey";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->w13_comprovanterendimentosanoanterior)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_comprovanterendimentosanoanterior"])){
+       $sql  .= $virgula." w13_comprovanterendimentosanoanterior = '$this->w13_comprovanterendimentosanoanterior' ";
+       $virgula = ",";
+       if(trim($this->w13_comprovanterendimentosanoanterior) == null ){
+         $this->erro_sql = " Campo Comprovante de Rendimentos ano anterior não informado.";
+         $this->erro_campo = "w13_comprovanterendimentosanoanterior";
          $this->erro_banco = "";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -931,11 +960,13 @@ class cl_configdbpref {
              $resac = db_query("insert into db_acount values($acount,1383,1009742,'".AddSlashes(pg_result($resaco,$conresaco,'w13_recaptcha_sitekey'))."','$this->w13_recaptcha_sitekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"]) || $this->w13_recaptcha_privatekey != "")
              $resac = db_query("insert into db_acount values($acount,1383,1009740,'".AddSlashes(pg_result($resaco,$conresaco,'w13_recaptcha_privatekey'))."','$this->w13_recaptcha_privatekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["w13_comprovanterendimentosanoanterior"]) || $this->w13_comprovanterendimentosanoanterior != "")
+             $resac = db_query("insert into db_acount values($acount,1383,1014774,'".AddSlashes(pg_result($resaco,$conresaco,'w13_comprovanterendimentosanoanterior'))."','$this->w13_comprovanterendimentosanoanterior',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "configdbpref não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->w13_instit;
@@ -963,12 +994,12 @@ class cl_configdbpref {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($w13_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
 
+    public function excluir($w13_instit=null, $dbwhere = null)
+    {
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
        && ($lSessaoDesativarAccount === false))) {
@@ -976,7 +1007,7 @@ class cl_configdbpref {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($w13_instit));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -1015,6 +1046,7 @@ class cl_configdbpref {
            $resac  = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,1014774,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_comprovanterendimentosanoanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1032,7 +1064,7 @@ class cl_configdbpref {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "configdbpref não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$w13_instit;
@@ -1060,11 +1092,12 @@ class cl_configdbpref {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+
+    public function sql_record($sql)
+    {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -1086,16 +1119,16 @@ class cl_configdbpref {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($w13_instit = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+
+    public function sql_query($w13_instit = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from configdbpref ";
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($w13_instit)) {
-         $sql2 .= " where configdbpref.w13_instit = $w13_instit "; 
-       } 
+         $sql2 .= " where configdbpref.w13_instit = $w13_instit ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -1105,16 +1138,16 @@ class cl_configdbpref {
      }
      return $sql;
   }
-   // funcao do sql 
-   public function sql_query_file ($w13_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
+    public function sql_query_file($w13_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
      $sql .= "  from configdbpref ";
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($w13_instit)){
-         $sql2 .= " where configdbpref.w13_instit = $w13_instit "; 
-       } 
+         $sql2 .= " where configdbpref.w13_instit = $w13_instit ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }

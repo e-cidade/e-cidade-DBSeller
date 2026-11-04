@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('at31_sequencial',10,$Iat31_sequencial,true,'hidden',3,"")
 ?>
   <tr>
@@ -62,22 +62,22 @@ db_input('at31_sequencial',10,$Iat31_sequencial,true,'hidden',3,"")
        <?=@$Lat31_proced?>
     </td>
     <td> 
-<?
+<?php
 db_input('at31_proced',10,$Iat31_proced,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat31_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lat31_usuario,"js_pesquisaat31_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at31_usuario',10,$Iat31_usuario,true,'text',$db_opcao," onchange='js_pesquisaat31_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 if(isset($db_opcao)&&$db_opcao==2) {
 	 	$chavepri= array("at31_proced"=>@$at31_proced);
 	 }

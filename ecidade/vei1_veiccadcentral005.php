@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,15 +59,15 @@ if(isset($alterar)){
        parent.document.formaba.veiccadcentralveiculo.disabled=false;
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_veiccadcentralveiculo.location.href='vei1_veiccadcentralveiculo001.php?ve41_veiccadcentral=<?=@$chavepesquisa?>';
 
-<?
+<?php
    if (isset($liberaaba) && $liberaaba == true){
 ?>
        parent.mo_camada('veiccadcentraldepart');
-<?
+<?php
    }
 ?>
     </script>
-<?
+<?php
 }
 ?>
 <html>
@@ -83,7 +83,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmveiccadcentral.php"));
 	?>
     </center>
@@ -92,7 +92,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clveiccadcentral->erro_status=="0"){
     $clveiccadcentral->erro(true,false);

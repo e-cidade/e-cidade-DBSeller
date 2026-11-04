@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguabasecorresp
-class cl_aguabasecorresp { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x32_codcorresp = 0; 
-   var $x32_matric = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguabasecorresp {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x32_codcorresp = 0;
+   var $x32_matric = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x32_codcorresp = int4 = Endereço Correspondência 
-                 x32_matric = int4 = Matrícula 
+                 x32_codcorresp = int4 = Endereço Correspondência
+                 x32_matric = int4 = Matrícula
                  ";
-   //funcao construtor da classe 
-   function cl_aguabasecorresp() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguabasecorresp"); 
+     $this->rotulo = new rotulo("aguabasecorresp");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_aguabasecorresp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x32_codcorresp = ($this->x32_codcorresp == ""?@$GLOBALS["HTTP_POST_VARS"]["x32_codcorresp"]:$this->x32_codcorresp);
        $this->x32_matric = ($this->x32_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["x32_matric"]:$this->x32_matric);
@@ -74,9 +74,9 @@ class cl_aguabasecorresp {
      }
    }
    // funcao para inclusao
-   function incluir ($x32_matric){ 
+   public function incluir ($x32_matric){
       $this->atualizacampos();
-     if($this->x32_codcorresp == null ){ 
+     if($this->x32_codcorresp == null ){
        $this->erro_sql = " Campo Endereço Correspondência nao Informado.";
        $this->erro_campo = "x32_codcorresp";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_aguabasecorresp {
        $this->erro_status = "0";
        return false;
      }
-       $this->x32_matric = $x32_matric; 
-     if(($this->x32_matric == null) || ($this->x32_matric == "") ){ 
+       $this->x32_matric = $x32_matric;
+     if(($this->x32_matric == null) || ($this->x32_matric == "") ){
        $this->erro_sql = " Campo x32_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_aguabasecorresp {
        return false;
      }
      $sql = "insert into aguabasecorresp(
-                                       x32_codcorresp 
-                                      ,x32_matric 
+                                       x32_codcorresp
+                                      ,x32_matric
                        )
                 values (
-                                $this->x32_codcorresp 
-                               ,$this->x32_matric 
+                                $this->x32_codcorresp
+                               ,$this->x32_matric
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "aguabasecorresp ($this->x32_matric) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_aguabasecorresp {
        $resac = db_query("insert into db_acount values($acount,1432,8431,'','".AddSlashes(pg_result($resaco,0,'x32_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x32_matric=null) { 
+   public function alterar ($x32_matric=null) {
       $this->atualizacampos();
      $sql = " update aguabasecorresp set ";
      $virgula = "";
-     if(trim($this->x32_codcorresp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x32_codcorresp"])){ 
+     if(trim($this->x32_codcorresp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x32_codcorresp"])){
        $sql  .= $virgula." x32_codcorresp = $this->x32_codcorresp ";
        $virgula = ",";
-       if(trim($this->x32_codcorresp) == null ){ 
+       if(trim($this->x32_codcorresp) == null ){
          $this->erro_sql = " Campo Endereço Correspondência nao Informado.";
          $this->erro_campo = "x32_codcorresp";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_aguabasecorresp {
          return false;
        }
      }
-     if(trim($this->x32_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x32_matric"])){ 
+     if(trim($this->x32_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x32_matric"])){
        $sql  .= $virgula." x32_matric = $this->x32_matric ";
        $virgula = ",";
-       if(trim($this->x32_matric) == null ){ 
+       if(trim($this->x32_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "x32_matric";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_aguabasecorresp {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguabasecorresp nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x32_matric;
@@ -214,14 +214,14 @@ class cl_aguabasecorresp {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x32_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x32_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x32_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_aguabasecorresp {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguabasecorresp nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x32_matric;
@@ -276,11 +276,11 @@ class cl_aguabasecorresp {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_aguabasecorresp {
       }
      return $result;
    }
-   function sql_query ( $x32_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $x32_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -325,15 +325,15 @@ class cl_aguabasecorresp {
      $sql2 = "";
      if($dbwhere==""){
        if($x32_matric!=null ){
-         $sql2 .= " where aguabasecorresp.x32_matric = $x32_matric "; 
-       } 
+         $sql2 .= " where aguabasecorresp.x32_matric = $x32_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -342,10 +342,10 @@ class cl_aguabasecorresp {
      }
      return $sql;
   }
-   function sql_query_file ( $x32_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $x32_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,15 +358,15 @@ class cl_aguabasecorresp {
      $sql2 = "";
      if($dbwhere==""){
        if($x32_matric!=null ){
-         $sql2 .= " where aguabasecorresp.x32_matric = $x32_matric "; 
-       } 
+         $sql2 .= " where aguabasecorresp.x32_matric = $x32_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();
 
@@ -21,7 +21,7 @@ $sNumeroProtocolo = $this->p58_numero."/".$this->p58_ano;
 $this->objpdf->Setfont("Times", "B", 11);
 $this->objpdf->SetLeftMargin(20);
 $this->objpdf->sety(55);
-$this->objpdf->roundedrect(15, 50, 180, 65, 2, 'df', 1234);
+$this->objpdf->roundedrect(15, 50, 180, 70, 2, 'df', 1234);
 $this->objpdf->cell(35, 5, "PROTOCOLO Nº: ", 0, 0, 'L');
 $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->cell(50, 5, $sNumeroProtocolo, 0, 0, 'L');
@@ -78,17 +78,18 @@ $this->objpdf->cell(75, 5, $this->z01_munic , 0, 1, 'L');
 
 $this->objpdf->Setfont("Times", "B", 11);
 $this->objpdf->cell(35, 5, ("ASSUNTO: "), 0, 0, 'L');
-$this->objpdf->Setfont("Times", "", 11);
+$this->objpdf->Setfont("Times", "", 8);
 
 // $this->objpdf->multicell(0, 5, mb_strtoupper(substr($this->p58_obs,0, 290)), 0, 1, 'L');
 
-$this->objpdf->cell(75, 5, mb_strtoupper(substr($this->p58_obs,0,60)), 0, 1, 'L'); 
+$this->objpdf->cell(75, 5, mb_strtoupper(substr($this->p58_obs,0,75)), 0, 1, 'L');
 if( substr($this->p58_obs,0,75) != "" ) {
    //$this->objpdf->cell(50, 5, (" "), 0, 0, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 60, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 133, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 206, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 279, 66)), 0, 1, 'L'); 
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 75, 75)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 150, 100)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 250, 100)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 350, 100)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 450, 50)), 0, 1, 'L');
 }
 
 
@@ -106,8 +107,8 @@ if (pg_numrows($result_impusu) > 0) {
   }
 }
 $sqlproc = "select coddepto,descrdepto,p51_descr
-	   		from andpadrao 
-				  inner join db_depart on coddepto = p53_coddepto 
+	   		from andpadrao
+				  inner join db_depart on coddepto = p53_coddepto
 				  inner join tipoproc on p51_codigo = p53_codigo where p53_codigo = ".$this->p58_codigo ."
         order by p53_ordem limit 1
         ";
@@ -152,7 +153,7 @@ if ($this->result_vars != ""){
 	   $imprime_str .= ucfirst($rotulo).": ".$conteudo.$separador;
   }
 
-  $linha = split("-",$imprime_str);
+  $linha =explode("-",$imprime_str);
   $this->objpdf->multicell(185, 5, $imprime_str,0,1,"L");
 }
 
@@ -162,9 +163,9 @@ if ($this->result_vars != ""){
 //-----------------------------------DOCUMENTOS---------------------------------------------------
 $this->objpdf->setfillcolor(255);
 $this->objpdf->Setfont("Times", "", 12);
-$this->objpdf->roundedrect(15, 120, 180, 110, 2, 'df', 1234);
-$this->objpdf->roundedrect(15, 120, 180, 5, 2, 'DF', 12);
-$this->objpdf->sety(120);
+$this->objpdf->roundedrect(15, 125, 180, 110, 2, 'df', 1234);
+$this->objpdf->roundedrect(15, 125, 180, 5, 2, 'DF', 12);
+$this->objpdf->sety(125);
 $this->objpdf->cell(180, 5, 'DOCUMENTOS', 0, 1, "C");
 $sql_doc = "select p81_doc,p56_descr from procprocessodoc
                inner join procdoc on p81_coddoc = p56_coddoc

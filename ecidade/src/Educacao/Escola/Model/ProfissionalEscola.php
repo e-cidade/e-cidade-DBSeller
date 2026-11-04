@@ -32,6 +32,7 @@ use CgmJuridico;
 use CgmFactory;
 use ECidade\Educacao\Escola\Registry\PaisRegistry;
 use ECidade\Educacao\Escola\Registry\ProfissionalEscolaRegistry;
+use ECidade\Educacao\Escola\Repository\AtividadeProfissionalEscolaRepository;
 use ECidade\RecursosHumanos\Pessoal\Model\Vinculo;
 use Escola;
 use EscolaRepository;
@@ -39,6 +40,7 @@ use Exception;
 
 class ProfissionalEscola
 {
+    private $isDocente;
     private $codigoInep;
     /**
      * @var integer
@@ -108,6 +110,7 @@ class ProfissionalEscola
      */
     private $posGraduacoes;
 
+    private $atividadesProfissionalEscola = [];
 
     /**
      * @param array $state
@@ -121,6 +124,7 @@ class ProfissionalEscola
 
         if (array_key_exists('ed20_i_codigo', $state)) {
             $self->setCodigoRecursoHumano($state['ed20_i_codigo']);
+            $self->setDocente();
         }
 
         if (array_key_exists('ed20_i_codigoinep', $state)) {
@@ -199,8 +203,33 @@ class ProfissionalEscola
             $self->setRegimeContratacao($state['ed20_i_rhregime']);
         }
 
+        $atividadeProfissionalEscolaRepository = new AtividadeProfissionalEscolaRepository();
+        $atividadeProfissionalEscola = $atividadeProfissionalEscolaRepository->scopeProfissional($self)->get();
+        $self->setAtividades($atividadeProfissionalEscola);
+
         ProfissionalEscolaRegistry::set($self);
+
         return $self;
+    }
+
+    public function isDocente()
+    {
+        return $this->isDocente;
+    }
+
+    public function setDocente()
+    {
+        $sql = "select  ed119_docente from rechumanoativ
+                    join atividaderh on ed22_i_atividade = ed01_i_codigo
+                    join funcaoatividade on ed01_funcaoatividade = ed119_sequencial
+             where ed22_i_rechumanoescola = {$this->getCodigoRecursoHumano()}";
+
+        if (pg_fetch_assoc(db_query($sql))) {
+            $this->isDocente = pg_fetch_assoc(db_query($sql))['ed119_docente'] == 't';
+        } else {
+            $this->isDocente = pg_fetch_assoc(db_query($sql));
+        }
+        return $this;
     }
 
     /**
@@ -600,5 +629,24 @@ class ProfissionalEscola
     {
         $this->vinculoRegimeContratacao = $vinculoRegimeContratacao;
         return $this;
+    }
+
+    /**
+     * @param AtividadeProfissionalEscola[] $atividades
+     * @return ProfissionalEscola
+     */
+    private function setAtividades(array $atividades)
+    {
+        $this->atividadesProfissionalEscola = $atividades;
+        return $this;
+    }
+
+    /**
+     * Atividades do profissional
+     * @return AtividadeProfissionalEscola[]
+     */
+    public function getAtividades()
+    {
+        return $this->atividadesProfissionalEscola;
     }
 }

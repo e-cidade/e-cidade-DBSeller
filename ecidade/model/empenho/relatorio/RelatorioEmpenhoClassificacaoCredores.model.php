@@ -237,15 +237,16 @@ class RelatorioEmpenhoClassificacaoCredores
             }
 
             $codigoRecurso = $stdLinha->codigo_recurso;
-            if (empty($informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso])) {
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso] = new stdClass();
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->codigo = $codigoRecurso;
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->descricao = $stdLinha->descricao_recurso;
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->complemento = $stdLinha->complemento;
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->linhas = array();
+            $hash = "$codigoRecurso#$stdLinha->complemento";
+            if (empty($informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash])) {
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash] = new stdClass();
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash]->codigo = $codigoRecurso;
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash]->descricao = $stdLinha->descricao_recurso;
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash]->complemento = $stdLinha->complemento;
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash]->linhas = array();
             }
 
-            $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->linhas[] = $stdLinha;
+            $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$hash]->linhas[] = $stdLinha;
         }
 
         $this->oPdf = new PDFDocument(PDFDocument::PRINT_LANDSCAPE);
@@ -651,9 +652,9 @@ class RelatorioEmpenhoClassificacaoCredores
             "z01_nome    as razao_social",
             "e69_dtvencimento as data_vencimento",
             "e69_dtrecebe as data_recebimento",
-            "o15_recurso as codigo_recurso",
+            "gestao as codigo_recurso",
             "o200_descricao as complemento",
-            "o15_descr as descricao_recurso",
+            "descricao as descricao_recurso",
             "e53_valor  as ordem_valor_total",
             "min(c70_data)  as data_liquidacao",
             "e53_vlranu as ordem_valor_anulado",
@@ -714,14 +715,12 @@ class RelatorioEmpenhoClassificacaoCredores
             $aWhere[] = "e69_dtrecebe <= '{$this->oDataNotaFinal->getDate()}'";
         }
 
-
         if (!empty($this->oDataLiquidacaoInicial)) {
             $aWhere[] = "  c70_data >='{$this->oDataLiquidacaoInicial->getDate()}'";
         }
         if (!empty($this->oDataLiquidacaoFinal)) {
             $aWhere[] = "  c70_data <='{$this->oDataLiquidacaoFinal->getDate()}'";
         }
-
 
         $ordenacao = 'e69_dtrecebe';
         switch ($this->iOrdenacao) {
@@ -738,11 +737,12 @@ class RelatorioEmpenhoClassificacaoCredores
         }
         $sWhere = implode(' and ', $aWhere);
         $sCampos = implode(', ', $aCampos);
-        $sGroupOrder = " group by corempagemov.k12_data, e60_numemp, e60_anousu, e69_codnota, e69_numero, e50_codord, z01_nome, e53_valor, o56_elemento, o15_descr, ";
-        $sGroupOrder .= " e53_vlranu, e53_vlrpag , cc31_classificacaocredores, e09_justificativa, cc31_justificativa, e09_sequencial, cc30_codigo, o15_recurso, o200_descricao";
-        $sGroupOrder .= " order by cc31_classificacaocredores, o15_recurso, {$ordenacao} ";
+        $sGroupOrder = " group by corempagemov.k12_data, e60_numemp, e60_anousu, e69_codnota, e69_numero, e50_codord, z01_nome, e53_valor, o56_elemento, descricao, ";
+        $sGroupOrder .= " e53_vlranu, e53_vlrpag , cc31_classificacaocredores, e09_justificativa, cc31_justificativa, e09_sequencial, cc30_codigo, gestao, o200_descricao";
+        $sGroupOrder .= " order by cc31_classificacaocredores, gestao, {$ordenacao} ";
         $oDaoEmpenho = new cl_empempenho();
         $sSqlBusca = $oDaoEmpenho->sql_query_empenho_classificacao_nota($sCampos, $sWhere . $sGroupOrder);
+
         $rsBuscaEmpenhos = $oDaoEmpenho->sql_record($sSqlBusca);
 
         if ($oDaoEmpenho->erro_status == "0") {

@@ -52,7 +52,7 @@ if(isset($incluir)){
 
   if (isset($post->q38_dtinicial)){
 
-      $dataIni  = split("/",$post->q38_dtinicial);
+      $dataIni  =explode("/",$post->q38_dtinicial);
       $dataIni2 = $dataIni[2]."-".$dataIni[1]."-".$dataIni[0];
   }else{
       $dataIni2 = $post->q38_dtinicial_ano."-".$post->q38_dtinicial_mes."-".$post->q38_dtinicial_dia;
@@ -75,9 +75,9 @@ if(isset($incluir)){
 			 if (db_strtotime($dataIni2) < db_strtotime($oIss->q02_dtinic)){
 
 			 	/*
-			 	 * aqui Sistema está permitindo colocar data de Inicio do Simples apenas a 
+			 	 * aqui Sistema está permitindo colocar data de Inicio do Simples apenas a
 			 	 * partir da data de Inicio da Inscrição.
-			 	 * 
+			 	 *
                  $erro_msg = "Data Inicial menor que a data do início da Atividade.";
 				 $lSqlErro = true;
 				 $clisscadsimples->erro_msg    = $erro_msg;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ function js_retorna(chave){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
 <center>
-<?
+<?php
 //echo "$cgm---------$matricula-----------$inscricao--------$sanitario";
 $ordem="";
 if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
@@ -86,7 +86,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -97,14 +97,14 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
- <? 
+ <?php 
 }elseif(isset($numbloco) && $numbloco != ""){
   $sql=($clvistorias->sql_query("","*","y70_codvist $ordem"," y70_numbloco = '$numbloco' and y70_instit = ".db_getsession('DB_instit') )); 
   ?>
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -115,7 +115,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($dataini) && $dataini != "--" && $datafim == "--"){
   $sql = ($clvistorias->sql_query("","*","y70_codvist $ordem"," y70_data >= '$dataini' and y70_instit = ".db_getsession('DB_instit') ));
@@ -123,7 +123,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -134,7 +134,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($dataini) && $dataini != "--" && isset($datafim) && $datafim != "--"){
   $sql = ($clvistorias->sql_query("","*","y70_codvist $ordem"," y70_data >= '$dataini' and y70_data <= '$datafim' and y70_instit = ".db_getsession('DB_instit') ));
@@ -142,7 +142,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -153,7 +153,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($tipovist) && (trim($tipovist)!="") ){
   $sql = ($clvistorias->sql_query("","*","y70_codvist $ordem"," y70_tipovist = $tipovist and y70_instit = ".db_getsession('DB_instit') ));
@@ -161,7 +161,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -172,7 +172,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($rua) && (trim($rua)!="") ){
   $sql = ($clvistlocal->sql_query("","*","y70_codvist $ordem"," y10_codigo = $rua and y70_instit = ".db_getsession('DB_instit') ));
@@ -180,7 +180,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -191,7 +191,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($bairro) && (trim($bairro)!="") ){
   $sql = ($clvistlocal->sql_query("","*","y70_codvist $ordem"," y10_codi = $bairro and y70_instit = ".db_getsession('DB_instit') ));
@@ -199,7 +199,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -210,7 +210,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($ruae) && (trim($ruae)!="") ){
   $sql = ($clvistexec->sql_query("","*","y70_codvist $ordem"," y11_codigo = $ruae and y70_instit = ".db_getsession('DB_instit') ));
@@ -218,7 +218,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -229,7 +229,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }elseif(isset($bairroe) && (trim($bairroe)!="") ){
   $sql = ($clvistexec->sql_query("","*","y70_codvist $ordem"," y11_codi = $bairroe and y70_instit = ".db_getsession('DB_instit')));
@@ -237,7 +237,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
   <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr> 
       <td align="center" valign="top">
-	<? 
+	<?php 
 	  db_lovrot($sql,15,"()","",$funcao_js);
 	?>
        </td>
@@ -248,7 +248,7 @@ if(isset($y70_codvist) && (trim($y70_codvist)!="") ){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 }
   $resultlocal = $clvistexec->sql_record($clvistexec->sql_query(null,"*",null," y70_instit = ".db_getsession('DB_instit')." and y70_codvist = {$y70_codvist}")); 

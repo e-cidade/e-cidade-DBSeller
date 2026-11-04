@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcausas->rotulo->label();
        <?=@$Ltr02_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr02_id',5,$Itr02_id,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('tr02_id',5,$Itr02_id,true,'text',3,"")
        <?=@$Ltr02_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr02_sigla',3,$Itr02_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('tr02_sigla',3,$Itr02_sigla,true,'text',$db_opcao,"")
        <?=@$Ltr02_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr02_descr',35,$Itr02_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_causas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

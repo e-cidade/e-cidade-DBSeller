@@ -79,10 +79,10 @@ if (isset($oGet->iNumCgm) && $oGet->iNumCgm != "") {
 }
 
 //Checa parametro e mostra alerta de confirmacao de data
-$clconparametro  = new cl_conparametro();
-$rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
-$conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+$clconparametro = new cl_conparametro();
+$rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
+$conparametro = db_utils::fieldsMemory($rsconparametro, 0);
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
@@ -125,22 +125,13 @@ if (isset($oGet->lSession) && $oGet->lSession == "false") {
     $oRetencaoNota = new retencaoNota($oNota->e69_codnota);
     $oRetencaoNota->unsetSession();
 }
-/*
- * Verificamos se o emepnho nao é um empenho da folha
- */
-$lEmpenhoFolha = false;
-$oDaoRHEmpenhofolhaEmpenho = db_utils::getDao("rhempenhofolhaempenho");
-$sSqlEmpenhoFolha = $oDaoRHEmpenhofolhaEmpenho->sql_query_file(null, "*", null, "rh76_numemp = {$e60_numemp}");
-$rsEmpenhoFolha = $oDaoRHEmpenhofolhaEmpenho->sql_record($sSqlEmpenhoFolha);
-if ($oDaoRHEmpenhofolhaEmpenho->numrows > 0) {
-    $lEmpenhoFolha = true;
-}
 
 $uf = getEstadoInstituicao();
-$isPB = $uf === "PB" ;
+$isPB = $uf === "PB";
 $e23_valorbase = $oNota->e70_liq;
 ?>
 <html>
+
 <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -157,271 +148,313 @@ $e23_valorbase = $oNota->e70_liq;
     db_app::load("windowAux.widget.js, classes/financeiro/DadosAdicionaisRetencao.js");
     ?>
     <style type="text/css">
-        #dadosAdicionaisRetencao fieldset > table tr td:nth-child(1) {
+        #dadosAdicionaisRetencao fieldset>table tr td:nth-child(1) {
             width: 340px;
         }
 
-        #dadosAdicionaisRetencao fieldset > table fieldset > table tr td:nth-child(1) {
+        #dadosAdicionaisRetencao fieldset>table fieldset>table tr td:nth-child(1) {
             width: 327px;
         }
     </style>
 </head>
+
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0"
-      marginheight="0" onLoad="a=1">
+    marginheight="0" onLoad="a=1">
 
-<div id="msgWarning" style="display: none" class="alert alert-warning text-left" role="alert">
+    <div id="msgWarning" style="display: none" class="alert alert-warning text-left" role="alert">
 
-</div>
-<div class="container">
-    <form name='form1'>
-        <table>
-            <tr>
-                <td>
-                    <fieldset>
-                        <legend><b>Dados da Nota</b></legend>
-                        <table>
-                            <tr>
-                                <td><b>Código da Nota:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e69_codnota', 13, $Ie69_codnota, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b>Número:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e69_numero', 13, $Ie69_numero, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b><?php echo $Le60_numemp ?>:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e60_numemp', 13, $Ie60_codemp, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b>Ordem:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e50_codord', 13, $Ie50_codord, true, 'text', 3);
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b><?php echo $Lz01_nome ?></b></td>
-                                <td colspan='8'>
-                                    <?php
-                                    db_input('z01_nome', 70, $Lz01_nome, true, 'text', 3);
-                                    db_input('z01_cgccpf', 20, $Lz01_nome, true, 'text', 3);
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Valor:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e70_valor', 13, $Ie70_valor, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b>Valor Liquidado:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e70_vlrliq', 13, $Ie70_vlrliq, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b>Valor Anulado: </b></td>
-                                <td>
-                                    <?php
-                                    db_input('e70_vlranu', 13, $Ie70_vlranu, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td><b>Valor Pago:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e53_vlrpag', 13, $Ie53_vlrpag, true, 'text', 3);
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    db_input('valorpagar', 13, $Ie53_vlrpag, true, 'hidden', 3);
-                                    db_input('valormovimento', 13, 0, true, 'text', 3);
-                                    db_input('e81_codmov', 14, '', true, 'hidden', 3);
-                                    ?>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <fieldset>
-                        <legend><b>Dados das Retenções</b></legend>
-                        <table>
-                            <tr>
-                                <td>
-                                    <strong><?php db_ancora('Retenção', "js_pesquisaRetencoes();", 2); ?></strong>
-                                </td>
-                                <td class="retencoes-info">
-                                    <?php
-                                    $rsInicio = db_query("select '' as codigo, 'Selecione' as descr");
-                                    db_selectrecord("e21_sequencial", $rsInicio, true, 1, "", null, "", "", "js_setAliquota(\$('e21_sequencial').selectedIndex);js_validaReinf(\$('e21_sequencial').selectedIndex)");
-                                    ?>
-                                </td>
-                                <td><b>Aliquota:</b></td>
-                                <td>
-                                    <?php
-                                    db_input('e21_aliquota', 15, $Ie21_aliquota, true, 'text', 1, "onBlur='js_calculaRetencao()'");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b><?php echo $Le23_deducao ?></b></td>
-                                <td>
-                                    <?php
-                                    db_input('e23_deducao', 10, $Ie23_deducao, true, 'text', 1, 'onblur="js_calculaRetencao()"');
-                                    ?>
-                                </td>
-                                <td><b><?php echo $Le23_valorbase ?></b></td>
-                                <td>
-                                    <?php
-                                   // $e23_valorbase = ($e23_valorbase - $oNota->e70_vlranu);
-                                    db_input('e23_valorbase', 15, $Ie23_valorbase, true, 'text', 3, '');
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b><?php echo $Le23_valorretencao ?></b></td>
-                                <td>
-                                    <?php
-                                    db_input('e23_valorretencao', 10, $Ie23_valorretencao, true, 'text', 1, '');
-                                    ?>
-                                </td>
-                                <td>
-                                    <b>Data Calculo</b>
-                                </td>
-                                <td>
-                                    <?php
-                                    if (isset($Get->dtPagamento) && $oGet->dtPagamento != "") {
-                                        $dtpagamento = $oGet->dtPagamento;
-                                    } else {
-                                        $dtpagamento = date("d/m/Y", db_getsession("DB_datausu"));
-                                    }
-                                    $aDataBase = explode("/", $dtpagamento);
-                                    $iMes = $aDataBase[1];
-                                    $iAno = $aDataBase[2];
-                                    db_input("dtpagamento", 15, '', true, "text");
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr id="dadosReinf" style="display: none;">
-                                <td colspan='4'>
-                                    <fieldset>
-                                        <legend><b>Dados EFD-Reinf</b></legend>
-                                        <table id="R-2010" style="display: none;">
-                                            <tr>
-                                                <td><b>Tipo de serviço da nota fiscal:</b></td>
-                                                <td class="retencoes-info" colspan="2">
-                                                    <?php
-                                                    $rsInicio = db_query("select '' as codigo, 'Selecione' as descr");
-                                                    db_selectrecord("e18_sequencial", $rsInicio, true, 1, "", null, "", "", "js_validaTipoServico()");
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Indicativo de Obra: </b></td>
-                                                <td>
-                                                    <select name="indObra" id="indObra"></select>
-                                                    <input type="text" placeholder="CNO" name="indObraCNO" id="indObraCNO" value="" width="180px" disabled>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan='4' style='text-align: center'>
-                                                    <input type='button' id='dadosadicionarefdreinf'
-                                                           value='Dados Adicionais'>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <table id="R-2055" style="display: none;">
-                                            <tr>
-                                                <td><b>Valor GILRAT:</b></td>
-                                                <td><input type="text" id="vlrrat" onkeyup="js_ValidaCampos(this, 4,'(Valor GILRAT)','f','f',event);"></td>
-                                                <td><b>Valor Senar:</b></td>
-                                                <td><input type="text" id="vlrsenar" onkeyup="js_ValidaCampos(this, 4,'(Valor Senar)','f','f',event);"></td>
-                                            </tr>
-                                        </table>
-                                    </fieldset>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan='4' style='text-align: center'>
-                                    <input type='button' id='lancarretencao' value='Lançar' onclick='js_addRetencao()'>
-                                    <input type='button' id='alterarretencao' value='Alterar'
-                                           onclick='js_alterarRetencao()' disabled>
-                                    <input type='button' id='apagarretencao' value='Excluir' onclick='js_apagar()'
-                                           disabled>
-                                    <input type='button' id='limparretencao' value='Limpar' onclick='js_limpar()'>
-                                    <input type='button' id='recalcularretencao' value='Recalcular'
-                                           onclick='js_calculaRetencao()'>
-                                    <input type='button' id='mostraoutrosmov' value='Composição da Base'
-                                           onclick='js_mostraInfo()'>
-                                    <input type='button' id='tabelas        ' value='Tabelas' onclick='js_tabelas()'>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </td>
-            </tr>
+    </div>
+    <div class="container">
+        <form name='form1'>
+            <table>
+                <tr>
+                    <td>
+                        <fieldset>
+                            <legend><b>Dados da Nota</b></legend>
+                            <table>
+                                <tr>
+                                    <td><b>Código da Nota:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e69_codnota', 13, $Ie69_codnota, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b>Número:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e69_numero', 13, $Ie69_numero, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b><?php echo $Le60_numemp ?>:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e60_numemp', 13, $Ie60_codemp, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b>Ordem:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e50_codord', 13, $Ie50_codord, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b><?php echo $Lz01_nome ?></b></td>
+                                    <td colspan='8'>
+                                        <?php
+                                        db_input('z01_nome', 70, $Lz01_nome, true, 'text', 3);
+                                        db_input('z01_cgccpf', 20, $Lz01_nome, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Valor:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e70_valor', 13, $Ie70_valor, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b>Valor Liquidado:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e70_vlrliq', 13, $Ie70_vlrliq, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b>Valor Anulado: </b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e70_vlranu', 13, $Ie70_vlranu, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td><b>Valor Pago:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e53_vlrpag', 13, $Ie53_vlrpag, true, 'text', 3);
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        db_input('valorpagar', 13, $Ie53_vlrpag, true, 'hidden', 3);
+                                        db_input('valormovimento', 13, 0, true, 'text', 3);
+                                        db_input('e81_codmov', 14, '', true, 'hidden', 3);
+                                        ?>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <fieldset>
+                            <legend><b>Dados das Retenções</b></legend>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <strong><?php db_ancora('Retenção', "js_pesquisaRetencoes();", 2); ?></strong>
+                                    </td>
+                                    <td class="retencoes-info">
+                                        <?php
+                                        $rsInicio = db_query("select '' as codigo, 'Selecione' as descr");
+                                        db_selectrecord(
+                                            "e21_sequencial",
+                                            $rsInicio,
+                                            true,
+                                            1,
+                                            "",
+                                            null,
+                                            "",
+                                            "",
+                                            "
+                                        js_setAliquota(\$('e21_sequencial').selectedIndex);
+                                        js_validaReinf(\$('e21_sequencial').selectedIndex);
+                                        js_enableSubcontratacao(\$('e21_sequencial').selectedIndex)
+                                        checkIfPeriodEFDReinfIsClosed()
+                                        "
+                                        );
+                                        ?>
+                                    </td>
+                                    <td><b>Aliquota:</b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e21_aliquota', 15, $Ie21_aliquota, true, 'text', 1, "onBlur='js_calculaRetencao()'");
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b><?php echo $Le23_deducao ?></b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e23_deducao', 10, $Ie23_deducao, true, 'text', 1, 'onblur="js_calculaRetencao()"');
+                                        ?>
+                                    </td>
+                                    <td><b><?php echo $Le23_valorbase ?></b></td>
+                                    <td>
+                                        <?php
+                                        // $e23_valorbase = ($e23_valorbase - $oNota->e70_vlranu);
+                                        db_input('e23_valorbase', 15, $Ie23_valorbase, true, 'text', 3, '');
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b><?php echo $Le23_valorretencao ?></b></td>
+                                    <td>
+                                        <?php
+                                        db_input('e23_valorretencao', 10, $Ie23_valorretencao, true, 'text', 1, '');
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <b>Data Calculo</b>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if (isset($Get->dtPagamento) && $oGet->dtPagamento != "") {
+                                            $dtpagamento = $oGet->dtPagamento;
+                                        } else {
+                                            $dtpagamento = date("d/m/Y", db_getsession("DB_datausu"));
+                                        }
+                                        $aDataBase = explode("/", $dtpagamento);
+                                        $iMes = $aDataBase[1];
+                                        $iAno = $aDataBase[2];
+                                        db_input("dtpagamento", 15, '', true, "text");
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr id="dadosReinf" style="display: none;">
+                                    <td colspan='4'>
+                                        <fieldset>
+                                            <legend><b>Dados EFD-Reinf</b></legend>
+                                            <table id="R-4010-4020" class="form-container" style="display: none;">
+                                                <tr>
+                                                    <td><label id="ancoraNaturezaRendimento">Grupo / Natureza Rendimento: </label></td>
+                                                    <td>
+                                                        <input type="hidden" id="idNaturezaRendimento" name="idNaturezaRendimento" lang='db_codigo'>
+                                                        <input type="text" id="codigoNaturezaRendimento" name="codigoNaturezaRendimento" lang='e167_codigo' class="field-size2">
+                                                        <input type="text" id="naturezaRendimento" name="naturezaRendimento" lang='e167_descricao' class="field-size8">
 
-            <tr>
-                <td>
-                    <fieldset>
-                        <legend><b>Retenções lançadas</b></legend>
-                        <div id='gridRetencoes'></div>
-                    </fieldset>
-                </td>
-            </tr>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <table id="R-2010" style="display: none;">
+                                                <tr>
+                                                    <td><b>Tipo de serviço da nota fiscal:</b></td>
+                                                    <td class="retencoes-info" colspan="2">
+                                                        <?php
+                                                        $rsInicio = db_query("select '' as codigo, 'Selecione' as descr");
+                                                        db_selectrecord("e18_sequencial", $rsInicio, true, 1, "", null, "", "", "js_validaTipoServico()");
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Indicativo de Obra: </b></td>
+                                                    <td>
+                                                        <select name="indObra" id="indObra"></select>
+                                                        <input type="text" maxlength="12" placeholder="CNO"
+                                                            name="indObraCNO" id="indObraCNO" value="" width="180px"
+                                                            disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='4' style='text-align: center'>
+                                                        <input type='button' id='dadosadicionarefdreinf'
+                                                            value='Dados Adicionais'>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table id="R-2055" style="display: none;">
+                                                <tr>
+                                                    <td><b>Valor GILRAT: (0,1%)</b></td>
+                                                    <td><input type="text" id="vlrrat"
+                                                            onkeyup="js_ValidaCampos(this, 4,'(Valor GILRAT)','f','f',event);">
+                                                    </td>
+                                                    <td><b>Valor Senar: (0,2%)</b></td>
+                                                    <td><input type="text" id="vlrsenar"
+                                                            onkeyup="js_ValidaCampos(this, 4,'(Valor Senar)','f','f',event);">
+                                                    </td>
+                                                    <td><b>Valor CP: (1,2%)</b></td>
+                                                    <td><input type="text" id="vlrcp"
+                                                            onkeyup="js_ValidaCampos(this, 4,'(Valor CP)','f','f',event);">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan='4' style='text-align: center'>
+                                        <input type='button' id='lancarretencao' value='Lançar' onclick='js_addRetencao()'>
+                                        <input type='button' id='alterarretencao' value='Alterar'
+                                            onclick='js_alterarRetencao()' disabled>
+                                        <input type='button' id='apagarretencao' value='Excluir' onclick='js_apagar()'
+                                            disabled>
+                                        <input type='button' id='limparretencao' value='Limpar' onclick='js_limpar()'>
+                                        <input type='button' id='recalcularretencao' value='Recalcular'
+                                            onclick='js_calculaRetencao()'>
+                                        <input type='button' id='mostraoutrosmov' value='Composição da Base'
+                                            onclick='js_mostraInfo()'>
+                                        <input type='button' id='tabelas        ' value='Tabelas' onclick='js_tabelas()'>
+                                        <input type='button' id='subcontratacoesbtn' value='Subcontratações'
+                                            onclick='js_openFrameSubcontratacao()' class="d-none">
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <fieldset>
+                            <legend><b>Retenções lançadas</b></legend>
+                            <div id='gridRetencoes'></div>
+                        </fieldset>
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td align="right">
-                    <div><strong> Total Retido
-                            Lançado: </strong> <?php db_input('nTotalLancado', 15, "", true, 'text', 3, ""); ?> </div>
-                </td>
-            </tr>
+                <tr>
+                    <td align="right">
+                        <div><strong> Total Retido
+                                Lançado: </strong> <?php db_input('nTotalLancado', 15, "", true, 'text', 3, ""); ?> </div>
+                    </td>
+                </tr>
 
 
-        </table>
-        <?php
-        if (isset($oGet->lSession) && $oGet->lSession == "false") {
+            </table>
+            <?php
+            if (isset($oGet->lSession) && $oGet->lSession == "false") {
+                echo " <input type='button' id='confirmarretencoes'  value='Confirmar'  onclick='js_confirmar()'>";
 
-            echo " <input type='button' id='confirmarretencoes'  value='Confirmar'  onclick='js_confirmar()'>";
-
-            if (isset($oGet->iCodMov) && $oGet->iCodMov != "") {
-                $nomeBotao = "Configurar Pagamento";
-                if (APROPRIACAO_RETENCAO && !$lEmpenhoFolha) {
-                    $nomeBotao = "Apropriar Retenções";
+                if (isset($oGet->iCodMov) && $oGet->iCodMov != "") {
+                    $nomeBotao = "Configurar Pagamento";
+                    if (APROPRIACAO_RETENCAO) {
+                        $nomeBotao = "Apropriar Retenções";
+                    }
+                    echo " <input type='button' id='configurarretencoes'  value='{$nomeBotao}'  onclick='js_confirmarPagamento()'>";
                 }
-                echo " <input type='button' id='configurarretencoes'  value='{$nomeBotao}'  onclick='js_confirmarPagamento()'>";
             }
-        }
-        ?>
-    </form>
-</div>
+            ?>
+        </form>
+    </div>
 </body>
+
 </html>
 <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
+<script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+
 <script>
     lSession = <?php echo isset($oGet->lSession) && $oGet->lSession == "false" ? "false" : "true"; ?>;
     lCallBack = <?php echo isset($oGet->callback) && $oGet->callback == "false" ? "false" : "true"; ?>;
     lApropriacaoRetencao = <?php echo APROPRIACAO_RETENCAO ? "true" : "false"; ?>;
+    isRN = '<?php echo isRioGrandeDoNorte() ?>';
 
-
-
-    lEmpenhoFolha = <?php echo $lEmpenhoFolha ? "true" : "false";  ?>;
-
+    const TIPO_CALCULO_IRRF_PESSOA_JURIDICA = 2;
+    const TIPO_CALCULO_IRRF_PESSOA_FISICA = 1;
     const TIPO_CALCULO_INSS_PESSOA_JURIDICA = 4;
+    const TIPO_CALCULO_INSS_PESSOA_FISICA = 3;
 
     const dadosAdicionaisRetencaoWindowAux = new windowAux('windowAux', 'Dados Adicionais EFD-Reinf', 600, 250);
     const dadosAdicionaisRetencao = new DadosAdicionaisRetencao();
@@ -431,6 +464,25 @@ $e23_valorbase = $oNota->e70_liq;
 
     $("nTotalLancado").value = "0.00";
 
+
+    var lookupNaturezaRendimento = new DBLookUp($('ancoraNaturezaRendimento'), $('codigoNaturezaRendimento'), $('naturezaRendimento'), {
+        "sArquivo": "func_naturezarendimento.php",
+        "sObjetoLookUp": "db_iframe_naturezarendimento",
+        "sLabel": "Pesquisar Natureza da Informação",
+        "aCamposAdicionais": ['db_codigo']
+    });
+    lookupNaturezaRendimento.setCallBack('onClick', (dados) => {
+        $('idNaturezaRendimento').value = dados[2];
+    });
+    lookupNaturezaRendimento.setCallBack('onChange', (erro, dados) => {
+        $('idNaturezaRendimento').value = '';
+        $('naturezaRendimento').value = dados[2];
+        if (!erro) {
+            $('idNaturezaRendimento').value = dados[3]
+
+        }
+    });
+
     function js_calcularTotalLancado() {
 
         $("nTotalLancado").value = "0.00";
@@ -439,7 +491,7 @@ $e23_valorbase = $oNota->e70_liq;
         var aValores = [];
 
         var nTotal = 0;
-        aRegistros.each(function (oLinha, iInd) {
+        aRegistros.each(function(oLinha, iInd) {
 
             var nValorLinha = oLinha.aCells[5].getValue();
             nValorLinha = nValorLinha.replace(/\./g, '');
@@ -507,19 +559,20 @@ $e23_valorbase = $oNota->e70_liq;
         gridRetencoes.nameInstance = "gridRetencoes";
         gridRetencoes.setCellAlign(new Array("Right", "left", "right", "right", "right", "right", "right"));
         gridRetencoes.setHeader(new Array("Id",
-                "Retenção",
-                'Dedução',
-                "Base de Calculo",
-                "Aliquota",
-                "Valor Retido",
-                "Tipo",
-                "Grupo",
-                "Tipo de Serviço Sequencial",
-                "Tipo de Serviço"
-            )
-        );
+            "Retenção",
+            'Dedução',
+            "Base de Calculo",
+            "Aliquota",
+            "Valor Retido",
+            "Tipo",
+            "Grupo",
+            "Tipo de Serviço Sequencial",
+            "Tipo de Serviço",
+            "Subcontratacao"
+        ));
         gridRetencoes.aHeaders[7].lDisplayed = false;
         gridRetencoes.aHeaders[8].lDisplayed = false;
+        gridRetencoes.aHeaders[10].lDisplayed = false;
         gridRetencoes.show(document.getElementById('gridRetencoes'));
         closeOnSave = false;
         aBaseDeCalculo = new Array();
@@ -527,11 +580,13 @@ $e23_valorbase = $oNota->e70_liq;
         var oParametros = {};
 
         // tipo de servico nota fiscal
-        oParametros = {exec: "getTipoServicos"};
+        oParametros = {
+            exec: "getTipoServicos"
+        };
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametros,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 tipoServicos = oRetorno.tiposServicosNotaFiscal || [];
                 tipoServicos.forEach((tipoServico) => {
                     adicionaTipoServico(tipoServico.descricao, tipoServico.referencia, tipoServico.sequencial);
@@ -540,21 +595,26 @@ $e23_valorbase = $oNota->e70_liq;
         ).execute();
 
         // verificar se o empenho e de aquisicao de producao rural
-        oParametros = {exec: "getByEmpenho", numemp: $F('e60_numemp')};
+        oParametros = {
+            exec: "getByEmpenho",
+            numemp: $F('e60_numemp')
+        };
         new AjaxRequest(
             'emp4_tipoaquisicaoproducaorural.RPC.php',
             oParametros,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 produtorrural = (oRetorno.tipoaquisicaoproducaorural) ? 't' : 'f';
             }
         ).execute();
 
         // indicativo de obra
-        oParametros = {exec: "getLabels"};
+        oParametros = {
+            exec: "getLabels"
+        };
         new AjaxRequest(
             'emp4_tiposervicoobra.RPC.php',
             oParametros,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 let option = '';
                 let indObra = $('indObra');
                 let data = oRetorno.labels;
@@ -595,14 +655,16 @@ $e23_valorbase = $oNota->e70_liq;
                     break;
             }
         });
+
+        js_clearSubcontratacao();
     }
 
 
     function js_setValorBase() {
 
-        var nDeducao = new Number($F('e23_deducao'));
-       // var nValorBase = new Number($F('e70_valor'));
-       var nValorBase = new Number($F('e70_vlrliq'));
+        var nDeducao = new Number($F('e23_deducao')).toFixed(2); //new Number($F('e23_deducao'));
+        // var nValorBase = new Number($F('e70_valor'));
+        var nValorBase = new Number($F('e70_vlrliq'));
         nValorBase = (nValorBase - nDeducao);
         var nReducao = new Number();
         if (nValorBase < 0) {
@@ -613,26 +675,27 @@ $e23_valorbase = $oNota->e70_liq;
             $('e23_valorretencao').value = nReducao;
         }
 
-        console.log('js_setValorBase');
         $('e23_valorbase').value = nValorBase;
     }
 
     function js_addRetencao() {
 
         /* Algumas regras:
-         *  - caso o usuario cadastrou uma retencao de tipo 1, ou 2 (Imposto de Renda)
-         *    ele não pode mais cadastrar uma retencao do tipo 3 ou 4 (INSS), pois as
-         *    retencoes do tipo 3, 4 deduzem da base de cálculo.
-         *  - Não Podemos lancar uma retencao duas vezes.
-         *  - Sempre devemos ver o calculo da retencao por CGM(cnpj/cpf (quando for pessoa fisica)) dentro do mes , nunca por nota.
-         *  - Valor da retencao nao pode ser maior que o valor da nota.
+         * - caso o usuario cadastrou uma retencao de tipo 1, ou 2 (Imposto de Renda)
+         *   ele não pode mais cadastrar uma retencao do tipo 3 ou 4 (INSS), pois as
+         *   retencoes do tipo 3, 4 deduzem da base de cálculo.
+         * - Não Podemos lancar uma retencao duas vezes.
+         * - Sempre devemos ver o calculo da retencao por CGM(cnpj/cpf (quando for pessoa fisica)) dentro do mes, nunca por nota.
+         * - Valor da retencao nao pode ser maior que o valor da nota.
          */
 
         let cboRetencao = document.getElementById('e21_sequencial');
 
-        var nValorRetencao = new Number($F('e23_valorretencao'));
+        var nValorRetencao = new Number($F('e23_valorretencao')).toFixed(2); //new Number($F('e23_valorretencao'));
         var nTotalRetido = getTotalRetido(null) + nValorRetencao;
         var nValorNota = new Number($F('e70_valor'));
+        let nAliquota = Number($F('e21_aliquota'));
+        let nValorBase = new Number($F('e23_valorbase')).toFixed(2); //Number($F('e23_valorbase'));
 
         if (nTotalRetido.toFixed(2) > nValorNota.toFixed(2)) {
             alert('Valor da retenção maior que o valor da nota!');
@@ -660,6 +723,12 @@ $e23_valorbase = $oNota->e70_liq;
         let tipoCalculo = optionSelecionado.tipocalc;
 
         // Validacoes EFD-REINF
+        if ([TIPO_CALCULO_IRRF_PESSOA_FISICA, TIPO_CALCULO_IRRF_PESSOA_JURIDICA].includes(Number(tipoCalculo)) &&
+            $F('idNaturezaRendimento') == '') {
+            alert('A Natureza de Rendimento é obrigatória.')
+            return;
+        }
+
         if (tipoCalculo == TIPO_CALCULO_INSS_PESSOA_JURIDICA) {
             if (produtorrural == 'f' && $F('e18_sequencial') == '') {
                 alert('Tipo de serviço da nota fiscal deve ser informado!');
@@ -671,45 +740,70 @@ $e23_valorbase = $oNota->e70_liq;
                 alert('Você deve informar o CNO do tipo de serviço.');
                 return false;
             }
+
+            if ($F('indObraCNO') != "" && $F('indObraCNO').length < 12) {
+                alert('O CNO deve possuir 12 caracteres');
+                return false;
+            }
+
+            if (nValorRetencao > (((nAliquota / 100) * nValorBase) + 0.01).toFixed(2)) {
+                alert(`
+                    Valor da retenção não pode ser maior que ${nAliquota}% da base de cálculo!
+                    Revise os valores digitados.
+                `);
+                $('e23_valorretencao').focus();
+                return false;
+            }
+
+            if (nValorRetencao < (((nAliquota / 100) * nValorBase)).toFixed(2)) {
+                let valorRetencaoEsperado = ((nAliquota / 100) * nValorBase).toFixed(2);
+                let warningRetencao = confirm(`
+                    O valor esperado da retenção : ${valorRetencaoEsperado}.
+                    Deseja prosseguir com o valor de: ${nValorRetencao}?
+                `);
+
+                if (!warningRetencao) {
+                    return false;
+                }
+            }
         }
 
         isSave = true;
         var oRetencao = {};
 
         oRetencao.iCodigoRetencao = $F('e21_sequencial');
-        oRetencao.nValorDeducao = new Number($F('e23_deducao')).toString();
+        oRetencao.nValorDeducao = new Number($F('e23_deducao')).toFixed(2);
         oRetencao.nValorNota = $F('e70_valor');
         oRetencao.tipoCalculo = tipoCalculo;
         oRetencao.iCodNota = $F('e69_codnota');
         oRetencao.nAliquota = $F('e21_aliquota');
         oRetencao.iCpfCnpj = $F('z01_cgccpf');
-        oRetencao.nValorRetencao = $F('e23_valorretencao');
-        oRetencao.nValorbase = $F('e23_valorbase');
+        oRetencao.nValorRetencao = new Number($F('e23_valorretencao')).toFixed(2); //$F('e23_valorretencao');
+        oRetencao.nValorbase = new Number($F('e23_valorbase')).toFixed(2); //Number($F('e23_valorbase')).toFixed(2);
         oRetencao.codigoOrdem = $F('e50_codord');
 
         oRetencao.dadosReinf = js_validaReinf();
+        oRetencao.subcontratacoes = js_getDadosSubcontratacao();
 
         oRetencao.aMovimentos = [];
-        if (typeof (aBaseDeCalculo[$F('e21_sequencial')]) != "undefined") {
+        if (typeof(aBaseDeCalculo[$F('e21_sequencial')]) != "undefined") {
             oRetencao.aMovimentos = aBaseDeCalculo[$F('e21_sequencial')];
         }
         js_divCarregando("Aguarde, Calculando retenção", "msgBox");
 
         var oParametros = {
             "exec": "addRetencao",
-            "params": [
-                {
-                    "oRetencao": oRetencao,
-                    "inSession": true,
-                    "isUpdate": false
-                }
-            ]
+            "params": [{
+                "oRetencao": oRetencao,
+                "inSession": true,
+                "isUpdate": false
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametros,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 js_retornoaddRetencao(oRetorno);
             }
         ).setMessage('Aguarde, configurando retenção...').execute();
@@ -719,6 +813,7 @@ $e23_valorbase = $oNota->e70_liq;
 
         js_removeObj("msgBox");
         var oRetencoes = oAjax;
+
         if (oRetencoes.status == 2) {
             js_validaReinf(null, true);
             alert(oRetencoes.message.urlDecode());
@@ -730,36 +825,36 @@ $e23_valorbase = $oNota->e70_liq;
         if (oRetencoes.aRetencoes.length > 0) {
 
             for (var iRet = 0; iRet < oRetencoes.aRetencoes.length; iRet++) {
+                const oRetencao = oRetencoes.aRetencoes[iRet];
+                const aLinha = new Array();
 
-                with (oRetencoes.aRetencoes[iRet]) {
-                    var aLinha = new Array();
-                    aLinha[0] = e21_sequencial;
-                    aLinha[1] = e21_descricao.urlDecode();
-                    aLinha[2] = js_formatar(e23_deducao, 'f');
-                    aLinha[3] = js_formatar(e23_valorbase, 'f');
-                    aLinha[4] = js_formatar(e23_aliquota, 'f');
-                    aLinha[5] = js_formatar(e23_valorretencao, 'f');
-                    aLinha[6] = e21_retencaotipocalc;
-                    aLinha[7] = e21_retencaotiporecgrupo;
-                    aLinha[8] = JSON.stringify(dadosReinf);
-                    aLinha[9] = dadosReinf ? (dadosReinf.e18_descricao ? dadosReinf.e18_descricao : '') : "";
+                aLinha[0] = oRetencao.e21_sequencial;
+                aLinha[1] = oRetencao.e21_descricao.urlDecode();
+                aLinha[2] = js_formatar(oRetencao.e23_deducao, 'f');
+                aLinha[3] = js_formatar(oRetencao.e23_valorbase, 'f');
+                aLinha[4] = js_formatar(oRetencao.e23_aliquota, 'f');
+                aLinha[5] = js_formatar(oRetencao.e23_valorretencao, 'f');
+                aLinha[6] = oRetencao.e21_retencaotipocalc;
+                aLinha[7] = oRetencao.e21_retencaotiporecgrupo;
+                aLinha[8] = oRetencao.dadosReinf ? JSON.stringify(oRetencao.dadosReinf) : JSON.stringify(false);
+                aLinha[9] = oRetencao.dadosReinf ? (oRetencao.dadosReinf.e18_descricao ? oRetencao.dadosReinf.e18_descricao : '') : "";
+                aLinha[10] = oRetencao.subcontratacoes ? JSON.stringify(oRetencao.subcontratacoes) : JSON.stringify(false);
 
-                    gridRetencoes.addRow(aLinha);
-                    gridRetencoes.aRows[iRet].sEvents = "onDBLClick='js_atualizaCampos(" + iRet + ")'";
-                    gridRetencoes.aRows[iRet].sValue = e21_sequencial;
-                    aBaseDeCalculo[e21_sequencial] = "";
-                    if (aMovimentos.length > 0) {
-                        var aMov = new Array();
-                        for (var iMov = 0; iMov < aMovimentos.length; iMov++) {
-                            aMov.push(aMovimentos[iMov]);
-                        }
-                        aBaseDeCalculo[e21_sequencial] = aMov;
+                gridRetencoes.addRow(aLinha);
+                gridRetencoes.aRows[iRet].sEvents = "onDBLClick='js_atualizaCampos(" + iRet + ")'";
+                gridRetencoes.aRows[iRet].sValue = oRetencao.e21_sequencial;
+                aBaseDeCalculo[oRetencao.e21_sequencial] = "";
+
+                if (oRetencao.aMovimentos.length > 0) {
+                    var aMov = new Array();
+                    for (var iMov = 0; iMov < oRetencao.aMovimentos.length; iMov++) {
+                        aMov.push(oRetencao.aMovimentos[iMov]);
                     }
+                    aBaseDeCalculo[oRetencao.e21_sequencial] = aMov;
                 }
             }
 
             gridRetencoes.renderRows();
-
             js_calcularTotalLancado();
         }
 
@@ -775,19 +870,17 @@ $e23_valorbase = $oNota->e70_liq;
 
         var oParametro = {
             "exec": "apagarRetencao",
-            "params": [
-                {
-                    "iCodNota": $F('e69_codnota'),
-                    "iRetencao": $F('e21_sequencial'),
-                    "iNotaLiquidacao": $F('e50_codord')
-                }
-            ]
+            "params": [{
+                "iCodNota": $F('e69_codnota'),
+                "iRetencao": $F('e21_sequencial'),
+                "iNotaLiquidacao": $F('e50_codord')
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametro,
-            function (oRetorno) {
+            function(oRetorno) {
                 js_retornoaddRetencao(oRetorno);
             }
         ).execute();
@@ -803,20 +896,18 @@ $e23_valorbase = $oNota->e70_liq;
         var oParametro = {
             "exec": "getRetencoes",
             "numeroEmpenho": $F('e60_numemp'),
-            "params": [
-                {
-                    "iCodNota": $F('e69_codnota'),
-                    "iCodOrd": iCodOrd,
-                    "iCodMov": iCodMov,
-                    "dtCalculo": dtRetencao
-                }
-            ]
+            "params": [{
+                "iCodNota": $F('e69_codnota'),
+                "iCodOrd": iCodOrd,
+                "iCodMov": iCodMov,
+                "dtCalculo": dtRetencao
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametro,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 js_retornoaddRetencao(oRetorno);
             }
         ).execute();
@@ -824,8 +915,7 @@ $e23_valorbase = $oNota->e70_liq;
         alertaConfirmaData();
     }
 
-    function alertaConfirmaData()
-    {
+    function alertaConfirmaData() {
         <?php
         $clconparametro = new cl_conparametro();
         $rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
@@ -855,13 +945,19 @@ $e23_valorbase = $oNota->e70_liq;
         var aSelecionados = gridRetencoes.getSelection();
 
         if (aSelecionados[0][7] == 1) {
-            var dadosReinf = JSON.parse(aSelecionados[0][8]);
-            $('e21_sequencial').value = aSelecionados[0][0];//Codigo da retencao
-            $('e21_sequencialdescr').value = aSelecionados[0][0];//descricao da retencao
-            $('e23_deducao').value = js_strToFloat(aSelecionados[0][2]);//valor da deducao
-            $('e21_aliquota').value = js_strToFloat(aSelecionados[0][4]);//aliquota da retencao
-            $('e23_valorretencao').value = js_strToFloat(aSelecionados[0][5]);//valor retido da retencao
+            const dadosReinf = JSON.parse(aSelecionados[0][8]);
+            const subcontratacoes = JSON.parse(aSelecionados[0][10]);
+
+            $('e21_sequencial').value = aSelecionados[0][0]; //Codigo da retencao
+            $('e21_sequencialdescr').value = aSelecionados[0][0]; //descricao da retencao
+            $('e23_deducao').value = js_strToFloat(aSelecionados[0][2]); //valor da deducao
+            $('e23_valorbase').value = js_strToFloat(aSelecionados[0][3]); // valor da base de cálculo
+            $('e21_aliquota').value = js_strToFloat(aSelecionados[0][4]); //aliquota da retencao
+            $('e23_valorretencao').value = js_strToFloat(aSelecionados[0][5]); //valor retido da retencao
             $('lancarretencao').disabled = true;
+            if (isRN) {
+                $('lancarretencao').disabled = false;
+            }
             $('alterarretencao').disabled = false;
             $('apagarretencao').disabled = false;
             $('e21_sequencial').disabled = true;
@@ -892,29 +988,35 @@ $e23_valorbase = $oNota->e70_liq;
                     case 'R-2055':
                         $('vlrrat').value = dadosReinf.e158_vlrrat;
                         $('vlrsenar').value = dadosReinf.e158_vlrsenar;
+                        $('vlrcp').value = dadosReinf.e158_vlrcp;
                         break;
                 }
+            }
+
+            if (subcontratacoes) {
+                js_setSubcontratacoes(subcontratacoes);
+                $('subcontratacoesbtn').removeClassName('d-none');
             }
         }
         gridRetencoes.aRows[iNumRow].isSelected = false;
     }
 
     function js_limpar() {
-        <?php if ($lEmpenhoFolha) { ?>
+
         $('lancarretencao').disabled = true;
-        <?php } else { ?>
-        $('lancarretencao').disabled = false;
-        <?php } ?>
+        if (isRN) {
+            $('lancarretencao').disabled = false;
+        }
         $('alterarretencao').disabled = true;
         $('apagarretencao').disabled = true;
         $('e21_sequencial').disabled = false;
         $('e21_sequencialdescr').disabled = false;
-        $('e21_sequencial').value = '';//Codigo da retencao
-        $('e21_sequencialdescr').value = '';//descricao da retencao
-        $('e23_deducao').value = '';//valor da deducao
-        $('e21_aliquota').value = '';//aliquota da retencao
-        $('e23_valorretencao').value = '';//valor retido da retencao
-        $('e23_valorbase').value = $F('e70_vlrliq');;// $F('e70_valor');
+        $('e21_sequencial').value = ''; //Codigo da retencao
+        $('e21_sequencialdescr').value = ''; //descricao da retencao
+        $('e23_deducao').value = ''; //valor da deducao
+        $('e21_aliquota').value = ''; //aliquota da retencao
+        $('e23_valorretencao').value = ''; //valor retido da retencao
+        $('e23_valorbase').value = $F('e70_vlrliq');; // $F('e70_valor');
         $('dadosReinf').style.display = 'none';
         $('e18_sequencial').selectedIndex = 0;
         $('e18_sequencialdescr').selectedIndex = 0;
@@ -922,10 +1024,12 @@ $e23_valorbase = $oNota->e70_liq;
         $('e18_sequencialdescr').disabled = false;
         $('vlrrat').value = '';
         $('vlrsenar').value = '';
+        $('vlrcp').value = '';
         $('indObra').value = 0;
         $('indObraCNO').value = '';
 
         dadosAdicionaisRetencao.remapear(true);
+        js_clearSubcontratacao();
     }
 
     /**
@@ -934,7 +1038,7 @@ $e23_valorbase = $oNota->e70_liq;
     function js_alterarRetencao() {
 
         var oRetencao = new Object();
-        var nValorRetencao = new Number($F('e23_valorretencao'));
+        var nValorRetencao = new Number($F('e23_valorretencao')).toFixed(2); //new Number($F('e23_valorretencao'));
         var nTotalRetido = getTotalRetido($('e21_sequencial').value) + nValorRetencao;
         var nValorNota = new Number($F('e70_valor'));
 
@@ -951,15 +1055,16 @@ $e23_valorbase = $oNota->e70_liq;
 
         isSave = true;
         oRetencao.iCodigoRetencao = $F('e21_sequencial');
-        oRetencao.nValorDeducao = new Number($F('e23_deducao')).toString();
+        oRetencao.nValorDeducao = new Number($F('e23_deducao')).toFixed(2); //new Number($F('e23_deducao')).toString();
         oRetencao.nValorNota = $F('e70_valor');
         oRetencao.iCodNota = $F('e69_codnota');
         oRetencao.nAliquota = $F('e21_aliquota');
         oRetencao.iCpfCnpj = $F('z01_cgccpf');
-        oRetencao.nValorRetencao = $F('e23_valorretencao');
-        oRetencao.nValorbase = $F('e23_valorbase');
+        oRetencao.nValorRetencao = new Number($F('e23_valorretencao')).toFixed(2); //$F('e23_valorretencao');
+        oRetencao.nValorbase = new Number($F('e23_valorbase')).toFixed(2); //$F('e23_valorbase');
         oRetencao.aMovimentos = new Array();
         oRetencao.dadosReinf = js_validaReinf();
+        oRetencao.subcontratacoes = js_getDadosSubcontratacao();
 
         if (aBaseDeCalculo[$F('e21_sequencial')] != "undefined") {
             oRetencao.aMovimentos = aBaseDeCalculo[$F('e21_sequencial')];
@@ -969,19 +1074,17 @@ $e23_valorbase = $oNota->e70_liq;
         js_divCarregando("Aguarde, Calculando retenção", "msgBox");
         var oParametro = {
             "exec": "addRetencao",
-            "params": [
-                {
-                    "oRetencao": oRetencao,
-                    "inSession": true,
-                    "isUpdate": true
-                }
-            ]
+            "params": [{
+                "oRetencao": oRetencao,
+                "inSession": true,
+                "isUpdate": true
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametro,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 js_retornoaddRetencao(oRetorno);
             }
         ).execute();
@@ -1002,21 +1105,19 @@ $e23_valorbase = $oNota->e70_liq;
 
         var oParametro = {
             "exec": "saveRetencoes",
-            "params": [
-                {
-                    "iCodNota": $F('e69_codnota'),
-                    "iCodOrd": $F('e50_codord'),
-                    "iCodMov": $F('e81_codmov'),
-                    "codigoOrdem" : $F('e50_codord'),
-                    "aMovimentos": aBaseDeCalculo
-                }
-            ]
+            "params": [{
+                "iCodNota": $F('e69_codnota'),
+                "iCodOrd": $F('e50_codord'),
+                "iCodMov": $F('e81_codmov'),
+                "codigoOrdem": $F('e50_codord'),
+                "aMovimentos": aBaseDeCalculo
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametro,
-            function (oRetorno, lErro) {
+            function(oRetorno, lErro) {
                 js_retornoConfirma(oRetorno);
             }
         ).execute();
@@ -1027,7 +1128,7 @@ $e23_valorbase = $oNota->e70_liq;
 
         isSave = false;
         js_removeObj("msgBox");
-//    var oRetorno = JSON.parse(oAjax.responseText);
+        //    var oRetorno = JSON.parse(oAjax.responseText);
         var oRetorno = oAjax;
         alert(oRetorno.message.urlDecode());
 
@@ -1120,7 +1221,7 @@ $e23_valorbase = $oNota->e70_liq;
 
         $('e21_aliquota').value = $('e21_sequencial').options[selectedIndex].aliquota;
         $('valorpagar').value = $F('valormovimento');
-        $('e23_valorbase').value = $F('e70_vlrliq');//$F('e70_valor');
+        $('e23_valorbase').value = $F('e70_vlrliq'); //$F('e70_valor');
         js_calculaRetencao();
 
     }
@@ -1137,13 +1238,47 @@ $e23_valorbase = $oNota->e70_liq;
         }
 
         var retencao = $('e21_sequencial').options[selectedIndex];
-        var trReinf  = $('dadosReinf');
-        var r2010    = $('R-2010');
-        var r2055    = $('R-2055');
+        var trReinf = $('dadosReinf');
+        var r2010 = $('R-2010');
+        var r2055 = $('R-2055');
+        const r4010r4020 = $('R-4010-4020');
 
-        if ((tipoServicos.length > 0) && ($F('z01_cgccpf').length == 14) && (retencao.tipocalc == TIPO_CALCULO_INSS_PESSOA_JURIDICA)) {
+        // tipos de calculo que possuem campos a serem adicionados para o EFD-Reinf
+        const tiposEFD = [
+            TIPO_CALCULO_IRRF_PESSOA_JURIDICA,
+            TIPO_CALCULO_IRRF_PESSOA_FISICA,
+            TIPO_CALCULO_INSS_PESSOA_JURIDICA,
+            TIPO_CALCULO_INSS_PESSOA_FISICA
+        ];
+
+        if (tiposEFD.includes(Number(retencao.tipocalc))) {
             trReinf.style.display = "table-row";
+        } else {
+            $('e18_sequencial').selectedIndex = 0;
+            $('e18_sequencialdescr').selectedIndex = 0;
+            trReinf.style.display = "none";
+            return false;
+        }
 
+        if ([TIPO_CALCULO_IRRF_PESSOA_JURIDICA, TIPO_CALCULO_IRRF_PESSOA_FISICA].includes(Number(retencao.tipocalc))) {
+            $('R-4010-4020').style.display = "table-row";
+
+            let tipoPessoa = Number(retencao.tipocalc) === TIPO_CALCULO_IRRF_PESSOA_JURIDICA ? 'PJ' : 'PF';
+            lookupNaturezaRendimento.setParametrosAdicionais([`declarante=${tipoPessoa}`, 'excluiGrupo10'])
+            const objeto = {
+                evento: 'R-4010-4020',
+                id: $F('idNaturezaRendimento'),
+                codigo: $F('codigoNaturezaRendimento'),
+                descricao: $F('naturezaRendimento')
+            }
+            return objeto;
+        }
+
+        if ((tipoServicos.length > 0) && ($F('z01_cgccpf').length == 14) &&
+            (retencao.tipocalc == TIPO_CALCULO_INSS_PESSOA_JURIDICA) ||
+            retencao.tipocalc == TIPO_CALCULO_INSS_PESSOA_FISICA &&
+            produtorrural == 't'
+        ) {
             switch (produtorrural) {
                 case 't':
                     r2055.style.display = "table-row";
@@ -1152,6 +1287,7 @@ $e23_valorbase = $oNota->e70_liq;
                         evento: 'R-2055',
                         vlrsenar: $F('vlrsenar'),
                         vlrrat: $F('vlrrat'),
+                        vlrcp: $F('vlrcp'),
                         empnota: $F('e69_codnota')
                     }
 
@@ -1182,11 +1318,6 @@ $e23_valorbase = $oNota->e70_liq;
                     return objeto;
                     break;
             }
-        } else {
-            $('e18_sequencial').selectedIndex = 0;
-            $('e18_sequencialdescr').selectedIndex = 0;
-            trReinf.style.display = "none";
-            return false;
         }
     }
 
@@ -1202,9 +1333,9 @@ $e23_valorbase = $oNota->e70_liq;
         var sCpfCnpj = $F('z01_cgccpf');
         var iTipoCalc = $('e21_sequencial').options[$('e21_sequencial').selectedIndex].tipocalc;
         var nAliquota = new Number($F('e21_aliquota'));
-        var nDeducao = new Number($F('e23_deducao'));
-        var nValorBase = new Number($F('e70_vlrliq'));;//new Number($F('e70_valor'));
-        var nValorNota =  new Number($F('e70_vlrliq'));;//new Number($F('e70_valor'));
+        var nDeducao = new Number($F('e23_deducao')).toFixed(2); //new Number($F('e23_deducao'));
+        var nValorBase = new Number($F('e70_vlrliq'));; //new Number($F('e70_valor'));
+        var nValorNota = new Number($F('e70_vlrliq'));; //new Number($F('e70_valor'));
         var dtPagamento = $F("dtpagamento");
         var aMovimentos = new Array();
 
@@ -1227,24 +1358,22 @@ $e23_valorbase = $oNota->e70_liq;
             js_divCarregando("Aguarde, calculando..", "msgBox");
             var oParametro = {
                 "exec": "calculaRetencao",
-                "params": [
-                    {
-                        "iTipoCalc": iTipoCalc,
-                        "iCpfCnpj": sCpfCnpj,
-                        "nAliquota": nAliquota,
-                        "dtPagamento": dtPagamento,
-                        "aMovimentos": aMovimentos,
-                        "nValorDeducao": nDeducao,
-                        "nValorBase": nValorBase,
-                        "iCodNota": $F('e69_codnota'),
-                        "nValorNota": nValorNota
-                    }
-                ]
+                "params": [{
+                    "iTipoCalc": iTipoCalc,
+                    "iCpfCnpj": sCpfCnpj,
+                    "nAliquota": nAliquota,
+                    "dtPagamento": dtPagamento,
+                    "aMovimentos": aMovimentos,
+                    "nValorDeducao": nDeducao,
+                    "nValorBase": nValorBase,
+                    "iCodNota": $F('e69_codnota'),
+                    "nValorNota": nValorNota
+                }]
             };
             new AjaxRequest(
                 'emp4_retencaonotaRPC.php',
                 oParametro,
-                function (oRetorno, lErro) {
+                function(oRetorno, lErro) {
                     js_retornoCalculo(oRetorno);
                 }
             ).execute();
@@ -1256,10 +1385,20 @@ $e23_valorbase = $oNota->e70_liq;
         js_removeObj("msgBox");
         var oRetorno = oAjax;
         if (oRetorno.status == 1) {
-            $('e23_valorretencao').value = new Number(oRetorno.nValorRetencao).toFixed(2);
+            $('e23_valorretencao').value = truncarDecimais(oRetorno.nValorRetencao);
             $('e21_aliquota').value = oRetorno.nAliquota;
             $('e23_valorbase').value = oRetorno.nValorBase;
+            $('vlrrat').value = truncarDecimais(oRetorno.nValorGilrat);
+            $('vlrsenar').value = truncarDecimais(oRetorno.nValorSenar);
+            $('vlrcp').value = truncarDecimais(oRetorno.nValorCP);
+
+            js_desabilitaBotoes(false);
         } else if (oRetorno.status == 2) {
+            $('e23_valorretencao').value = '';
+            js_desabilitaBotoes(true);
+            if (isRN) {
+                js_desabilitaBotoes(false);
+            }
             alert(oRetorno.message.urlDecode());
         }
     }
@@ -1272,7 +1411,7 @@ $e23_valorbase = $oNota->e70_liq;
 
         var sMensagemRetornoSave = 'Antes de pagar as retenções, confirme as modificações realizadas.';
         var sMensagemConfirmacao = 'Antes de pagar as retenções, revise se já salvou as últimas modificações.';
-        if (lApropriacaoRetencao && !lEmpenhoFolha) {
+        if (lApropriacaoRetencao) {
             sMensagemRetornoSave = 'Antes de apropriar as retenções, é necessário confirmar as retenções lançadas. Para isso clique no botão confirmar.';
             sMensagemConfirmacao = 'Tem certeza que deseja apropriar as retenções? Clique em OK para confirmar.';
         }
@@ -1289,21 +1428,19 @@ $e23_valorbase = $oNota->e70_liq;
 
         var oParametro = {
             "exec": "configurarRetencoes",
-            "params": [
-                {
-                    "iNumemp": $F('e60_numemp'),
-                    "iCodNota": $F('e69_codnota'),
-                    "iCodOrd": $F('e50_codord'),
-                    "iCodMov": $F('e81_codmov'),
-                    "aMovimentos": aBaseDeCalculo
-                }
-            ]
+            "params": [{
+                "iNumemp": $F('e60_numemp'),
+                "iCodNota": $F('e69_codnota'),
+                "iCodOrd": $F('e50_codord'),
+                "iCodMov": $F('e81_codmov'),
+                "aMovimentos": aBaseDeCalculo
+            }]
         };
 
         new AjaxRequest(
             'emp4_retencaonotaRPC.php',
             oParametro,
-            function (oRetorno) {
+            function(oRetorno) {
                 js_retornoConfirmaPagamento(oRetorno);
             }
         ).execute();
@@ -1354,11 +1491,13 @@ $e23_valorbase = $oNota->e70_liq;
         "e21_sequencial, e21_descricao, e21_retencaotipocalc, e21_aliquota",
         "e21_sequencial",
         "e21_instit=" . db_getsession("DB_instit") . "
-                                            and e21_retencaotiporecgrupo = 1");
+         and e21_retencaotiporecgrupo = 1
+         and e21_ativo is true "
+    );
     $rsRetencao = $oDaoRetencao->sql_record($sSQLRetencao);
     if (strlen($oNota->z01_cgccpf) == 14) {
         $sPessoa = "J";
-    } else if (strlen($oNota->z01_cgccpf) == 11) {
+    } elseif (strlen($oNota->z01_cgccpf) == 11) {
         $sPessoa = "F";
     } else {
         $sPessoa = null;
@@ -1374,7 +1513,6 @@ $e23_valorbase = $oNota->e70_liq;
                     }
                     break;
                 case 2:
-
                     if ($sPessoa != "J") {
                         $lAdiciona = false;
                     }
@@ -1416,6 +1554,7 @@ $e23_valorbase = $oNota->e70_liq;
     }
 
     ?>
+
     function js_chkcpf(vcic) {
 
         expr = new RegExp("0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}");
@@ -1558,22 +1697,7 @@ $e23_valorbase = $oNota->e70_liq;
 
     //controle de tela, caso false, o usuário nao fez nenhuma modificação, caso true, a modificações.
     isSave = false;
-    /**
-     * o Empenho eh da folha bloqueados todos os botoes da tela. o usuário pode apenas consultar o empenho
-     */
-    <?php
-    if ($lEmpenhoFolha) {
-    ?>
-    $('lancarretencao').disabled = true;
-    $('alterarretencao').disabled = true;
-    $('apagarretencao').disabled = true;
-    $('mostraoutrosmov').disabled = true;
-    $('recalcularretencao').disabled = true;
-    $('limparretencao').disabled = true;
-    $('confirmarretencoes').disabled = true;
-    <?php
-    }
-    ?>
+
     /*
      * passa para lookup todos os options da combobox de retençoes
      */
@@ -1583,7 +1707,7 @@ $e23_valorbase = $oNota->e70_liq;
         var sLista = new String(['']);
         var sListaNova = new String(['']);
         aElemOpcao.each(
-            function (oElemOpcao, iInd) {
+            function(oElemOpcao, iInd) {
                 sLista += oElemOpcao.value + ',';
             }
         );
@@ -1591,7 +1715,9 @@ $e23_valorbase = $oNota->e70_liq;
         var tam = sLista.length - 1;
         sLista = sLista.slice(1, tam);
 
-        var sUrl = 'func_retencaotiporec.php?chave_pesquisa_in=+' + sLista + '&funcao_js=parent.js_mostra|e21_sequencial';
+        var sUrl = 'func_retencaotiporec.php?somenteAtivo';
+        sUrl += '&chave_pesquisa_in=+' + sLista;
+        sUrl += '&funcao_js=parent.js_mostra|e21_sequencial';
         js_OpenJanelaIframe('', 'db_iframe_retencaotiporec', sUrl, 'Pesquisa', true, 5, 5, 1500, 500);
     }
 
@@ -1602,6 +1728,7 @@ $e23_valorbase = $oNota->e70_liq;
         js_ProcCod_e21_sequencial('e21_sequencial', 'e21_sequencialdescr');
         js_setAliquota($('e21_sequencial').selectedIndex);
         js_validaReinf();
+        checkIfPeriodEFDReinfIsClosed();
 
         db_iframe_retencaotiporec.hide();
     }
@@ -1626,14 +1753,128 @@ $e23_valorbase = $oNota->e70_liq;
 
         return nTotalRetido;
     }
+
     var isPB = '<?php echo $isPB ?>';
 
     //devido a PB necessitar de uma conta para apropriação, ela somente ocorrerá ao pagar movimento na agenda
     if (isPB) {
 
-      $('configurarretencoes').disabled = 'disabled';
-      $('configurarretencoes').setAttribute('title', 'Retenção será apropriada ao confirmar o pagamento do movimento na agenda.');
-      $('configurarretencoes').setAttribute('onclick', '');
+        $('configurarretencoes').disabled = 'disabled';
+        $('configurarretencoes').setAttribute('title', 'Retenção será apropriada ao confirmar o pagamento do movimento na agenda.');
+        $('configurarretencoes').setAttribute('onclick', '');
     }
 
+    /**
+     * Rotinas referentes a subcontratacoes
+     */
+    function js_openFrameSubcontratacao() {
+        let sUrl = 'emp4_retencaoreceitassubcontracao.php';
+        js_OpenJanelaIframe('this', 'db_iframe_subcontratacoes', sUrl, '', true, 0, 900, 900);
+    }
+
+    function js_enableSubcontratacao(selectedIndex) {
+        tipoCalculo = $('e21_sequencial').options[selectedIndex].tipocalc;
+        tipoCalculoIRRF = ['1', '2']
+        if (tipoCalculoIRRF.indexOf(tipoCalculo) != -1) {
+            $('subcontratacoesbtn').removeClassName('d-none');
+        } else {
+            $('subcontratacoesbtn').addClassName('d-none');
+        }
+    }
+
+    function js_getDadosSubcontratacao() {
+        if (sessionStorage.key('subcontratacoes')) {
+            let subcontratacoes = sessionStorage.getItem('subcontratacoes');
+            return JSON.parse(subcontratacoes);
+        } else {
+            return null;
+        }
+    }
+
+    function js_clearSubcontratacao() {
+        $('subcontratacoesbtn').addClassName('d-none');
+        sessionStorage.removeItem('subcontratacoes');
+    }
+
+    function js_setSubcontratacoes(data) {
+        sessionStorage.setItem('subcontratacoes', JSON.stringify(data));
+    }
+
+    /**
+     * Validar apenas valores numéricos e limite para 12 caracteres no input CNO
+     * */
+    document.addEventListener('DOMContentLoaded', function() {
+        const numericInput = document.getElementById('indObraCNO');
+
+        // Adiciona um ouvinte de evento de entrada para validar a entrada
+        numericInput.addEventListener('input', function() {
+            const inputValue = numericInput.value;
+            // Usa uma expressão regular para remover caracteres não numéricos
+            const numericValue = inputValue.replace(/[^0-9]/g, '');
+            // Limita o valor ao comprimento máximo
+            numericInput.value = numericValue.substring(0, numericInput.maxLength);
+        });
+    });
+
+    /**
+     * Verificar status EFDREINF esta fechado (r-2099, r4099)
+     */
+    async function checkIfPeriodEFDReinfIsClosed() {
+        const retencaoSelected = document.querySelector('#e21_sequencial');
+        const tipoCalculo = retencaoSelected.selectedOptions[0].tipocalc;
+        const currentDate = document.querySelector('#dtpagamento').value.split('/');
+        let competence = `${currentDate[2]}-${currentDate[1].padStart(2, '0')}`;
+        let event = null;
+
+        switch (Number(tipoCalculo)) {
+            case TIPO_CALCULO_INSS_PESSOA_FISICA:
+            case TIPO_CALCULO_INSS_PESSOA_JURIDICA:
+                event = 'R-2099';
+                break;
+            case TIPO_CALCULO_IRRF_PESSOA_FISICA:
+            case TIPO_CALCULO_IRRF_PESSOA_JURIDICA:
+                event = 'R-4099';
+                break;
+        }
+
+        if (!event) return;
+
+        try {
+            const url = '/v4/api/integracoes/efd-reinf/events/checkPeriodIsClosed';
+            const params = {
+                event,
+                competence
+            }
+            const req = await CurrentWindow.axios.get(url, {
+                params
+            });
+            const {
+                data: resp
+            } = req;
+            const {
+                data: eventData
+            } = resp;
+            if (!eventData) return;
+            if (eventData.closed === true) {
+                alert(`
+                    <b>Aviso</b>\n
+                    Período <b>EFD-REINF(${event})</b> fechado para a competência <b>${competence}</b>.\n
+                    Após o lançamento da retenção deve-se realizar a reabertura do período
+                    e processar/enviar os eventos novamente.
+                `);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function truncarDecimais(valor, casas = 2) {
+        console.log(valor);
+        if (typeof valor !== 'number' || isNaN(valor)) {
+            console.error('Valor inválido:', valor);
+            return '';
+        }
+        const fator = 10 ** casas;
+        return (Math.floor(valor * fator) / fator).toFixed(casas);
+    }
 </script>

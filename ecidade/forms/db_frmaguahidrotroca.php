@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,12 +39,12 @@ $clrotulo->label("x15_diametro");
 <table border="0">
   <tr>
     <td align='right' nowrap title="<?=@$Tx28_codhidrometro?>">
-       <?
+       <?php
        db_ancora(@$Lx28_codhidrometro,"js_pesquisax28_codhidrometro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x28_codhidrometro',6,$Ix28_codhidrometro,true,'text',$db_opcao," onchange='js_pesquisax28_codhidrometro(false);'")
 ?>       
     </td>
@@ -54,7 +54,7 @@ db_input('x28_codhidrometro',6,$Ix28_codhidrometro,true,'text',$db_opcao," oncha
        <?=@$Lx04_codmarca?>
     </td>
     <td>
-           <?
+           <?php
 db_input('x04_codmarca',6,$Ix04_codmarca,true,'text',3,'');
 db_input('x03_nomemarca',40,$Ix03_nomemarca,true,'text',3,'');
        ?>
@@ -65,7 +65,7 @@ db_input('x03_nomemarca',40,$Ix03_nomemarca,true,'text',3,'');
        <?=@$Lx04_coddiametro?>
     </td>
     <td>
-           <?                  
+           <?php                  
 db_input('x04_coddiametro',6,$Ix04_coddiametro,true,'text',3,'');
 db_input('x15_diametro',40,$Ix15_diametro,true,'text',3,'');
        ?>
@@ -73,12 +73,12 @@ db_input('x15_diametro',40,$Ix15_diametro,true,'text',3,'');
   </tr>
   <tr>
     <td align='right' nowrap title="<?=@$Tx28_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lx28_codigo,"js_pesquisax28_codigo(true);",$db_opcao);
        ?>       
     </td>
     <td> 
-<?
+<?php
 db_input('x28_codigo',6,$Ix28_codigo,true,'text',$db_opcao,"onchange=s'js_pesquisax28_codigo(false);'");
 db_input('j31_descr',40,$Ij31_descr,true,'text',3,'');
 ?>
@@ -89,7 +89,7 @@ db_input('j31_descr',40,$Ij31_descr,true,'text',3,'');
        <?=@$Lx28_dttroca?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x28_dttroca',@$x28_dttroca_dia,@$x28_dttroca_mes,@$x28_dttroca_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_inputdata('x28_dttroca',@$x28_dttroca_dia,@$x28_dttroca_mes,@$x28_dttroca_ano
        <?=@$Lx28_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('x28_obs',5, 60,$Ix28_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,7 +152,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguahidrotroca.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

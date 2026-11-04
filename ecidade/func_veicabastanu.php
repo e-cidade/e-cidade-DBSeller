@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clveicabastanu->rotulo->label("ve74_codigo");
               <?=$Lve74_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve74_codigo",10,$Ive74_codigo,true,"text",4,"","chave_ve74_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clveicabastanu->rotulo->label("ve74_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veicabastanu.php")==true){
@@ -113,12 +113,12 @@ $clveicabastanu->rotulo->label("ve74_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

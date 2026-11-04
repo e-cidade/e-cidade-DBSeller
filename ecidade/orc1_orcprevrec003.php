@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if(isset($receita) && trim($receita) != ""){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="1" cellpadding="0" cellspacing="0">
   <form name='form1'>
-  <?
+  <?php
   if($semregistros == true){
     ?>
     <tr>
@@ -63,7 +63,7 @@ if(isset($receita) && trim($receita) != ""){
         <b>Informe a receita</b>
       </td>
     </tr>
-    <?
+    <?php
 	}else{
 		$bimestre = ($bimestre * 2);
 
@@ -102,7 +102,7 @@ if(isset($receita) && trim($receita) != ""){
 			<td align='center'>
 	      <b>Meses</b>
 	    </td>
-    <?
+    <?php
 		for($i=0; $i<6; $i++){
 			?>
 			<td align="center">
@@ -110,7 +110,7 @@ if(isset($receita) && trim($receita) != ""){
 			  <?=$arr_meses[($i+1)]?> (R$)
 			  </b>
 			</td>
-			<?
+			<?php
 		}
     ?>
     </tr>
@@ -118,7 +118,7 @@ if(isset($receita) && trim($receita) != ""){
 		  <td align='center'>
         <b>Valores</b>
       </td>
-    <?
+    <?php
 		for($i=0; $i<6; $i++){
       $bloquear = 3;
       $campo    = 'o34_valor_'.$arr_meses[($i+1)];
@@ -139,11 +139,11 @@ if(isset($receita) && trim($receita) != ""){
 		  $arr_valin[$i] = $$campo;
 			?>
 			<td align="center">
-			  <?
+			  <?php
 			  db_input("o34_valor",15,$Io34_valor,true,'text',$bloquear,"onchange='js_alteravalor(this.name);'",$campo);
 			  ?>
 			</td>
-			<?
+			<?php
 		}
     ?>
     </tr>
@@ -156,7 +156,7 @@ if(isset($receita) && trim($receita) != ""){
 			<td align='center'>
 	      <b>Meses</b>
 	    </td>
-    <?
+    <?php
 		for($i=6; $i<12; $i++){
 			?>
 			<td align="center">
@@ -164,7 +164,7 @@ if(isset($receita) && trim($receita) != ""){
 			  <?=$arr_meses[($i+1)]?> (R$)
 			  </b>
 			</td>
-			<?
+			<?php
 		}
     ?>
     </tr>
@@ -172,7 +172,7 @@ if(isset($receita) && trim($receita) != ""){
 		  <td align='center'>
         <b>Valores</b>
       </td>
-    <?
+    <?php
 		for($i=6; $i<12; $i++){
       $bloquear = 3;
       $campo    = 'o34_valor_'.$arr_meses[($i+1)];
@@ -202,11 +202,11 @@ if(isset($receita) && trim($receita) != ""){
 		  $arr_valin[$i] = $$campo;
 			?>
 			<td align="center">
-			  <?
+			  <?php
 			  db_input('o34_valor',15,$Io34_valor,true,'text',$bloquear,$campoblr,$campo);
 			  ?>
 			</td>
-			<?
+			<?php
 		}
 		?>
     </tr>
@@ -220,13 +220,13 @@ if(isset($receita) && trim($receita) != ""){
         <b>Saldo a arrecadar:</b>
       </td>
 		  <td align='center' colspan='1'>
-		    <?
+		    <?php
 		    $saldo_a_arrecadar = trim(db_formatar($saldo_a_arrecadar,"p"));;
 		    db_input('o34_valor',15,$Io34_valor,true,'text',$bloquear,"",'saldo_a_arrecadar');
 		    ?>
       </td>
     </tr>
-		<?
+		<?php
 	}
   ?>
   </form>
@@ -237,7 +237,7 @@ if(isset($receita) && trim($receita) != ""){
 function js_valorinicial(campo){
 	x = document.form1;
 	arr = new Array();
-	<?
+	<?php
 	for($i=0; $i<count($arr_valin); $i++){
     echo "  arr[".$i."] = ".$arr_valin[$i].";\n";
 	}
@@ -281,7 +281,7 @@ function js_alteravalor(campo){
     }
   }
 }
-<?
+<?php
 if($semregistros == false){
   echo "
         function js_setarfoco(){

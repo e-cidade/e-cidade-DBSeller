@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE bairro
 class cl_bairro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j13_codi = 0; 
-   var $j13_descr = null; 
-   var $j13_codant = null; 
-   var $j13_rural = 'f'; 
+   public $j13_codi = 0; 
+   public $j13_descr = null; 
+   public $j13_codant = null; 
+   public $j13_rural = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j13_codi = int4 = Cód. do Bairro 
                  j13_descr = varchar(40) = Bairro 
                  j13_codant = varchar(10) = Código Anterior 
                  j13_rural = bool = Rural 
                  ";
    //funcao construtor da classe 
-   function cl_bairro() { 
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bairro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_bairro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j13_codi = ($this->j13_codi == ""?@$GLOBALS["HTTP_POST_VARS"]["j13_codi"]:$this->j13_codi);
        $this->j13_descr = ($this->j13_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j13_descr"]:$this->j13_descr);
@@ -80,7 +80,7 @@ class cl_bairro {
      }
    }
    // funcao para inclusao
-   function incluir ($j13_codi){ 
+   public function incluir ($j13_codi){ 
       $this->atualizacampos();
      if($this->j13_descr == null ){ 
        $this->erro_sql = " Campo Bairro nao Informado.";
@@ -182,7 +182,7 @@ class cl_bairro {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j13_codi=null) { 
+   public function alterar ($j13_codi=null) { 
       $this->atualizacampos();
      $sql = " update bairro set ";
      $virgula = "";
@@ -283,7 +283,7 @@ class cl_bairro {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j13_codi=null,$dbwhere=null) { 
+   public function excluir ($j13_codi=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j13_codi));
      }else{ 
@@ -347,7 +347,7 @@ class cl_bairro {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -369,7 +369,7 @@ class cl_bairro {
       }
      return $result;
    }
-   function sql_query ( $j13_codi=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j13_codi=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -402,7 +402,7 @@ class cl_bairro {
      }
      return $sql;
   }
-   function sql_query_file ( $j13_codi=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j13_codi=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -434,6 +434,34 @@ class cl_bairro {
        }
      }
      return $sql;
+  }
+
+  public function sql_getBairroByCodRua($iCodRua){
+    $sql = "select bairro.* from ruasbairro
+              inner join ruas 
+                ON ruas.j14_codigo = ruasbairro.j16_lograd
+              inner join bairro
+                ON bairro.j13_codi = ruasbairro.j16_bairro 
+            where ruas.j14_codigo = {$iCodRua}";
+
+    return $sql;
+  }
+
+  public function sql_buscaBairroPorCep($cep)
+  {
+    $sql = "
+      select
+          cp02_codbairro,
+          cp02_faixa,
+          cp02_cepinicial,
+          cp02_cepfinal
+      from
+          cepbairrosfaixa
+      where
+          cp02_cepinicial :: int <= {$cep}::int
+          and cp02_cepfinal :: int >= {$cep}::int
+    ";
+    return $sql;
   }
 }
 ?>

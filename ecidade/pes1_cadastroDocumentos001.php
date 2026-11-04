@@ -76,12 +76,12 @@ $oRotulos->label('z01_nome');
           <table align="center" border="0" cellspacing="5" cellpadding="5">
             <tr>
               <td nowrap title="<?=@$Trh01_regist?>">
-                <?
+                <?php
                   db_ancora($Lrh01_regist,"js_pesquisaMatricula(true);",1);
                 ?>
               </td>
               <td nowrap>
-                <?
+                <?php
                   db_input('rh01_regist',6 ,$Irh01_regist,true,'text',1,"onchange='js_pesquisaMatricula(false);'");
                   db_input('z01_nome'   ,40,$Iz01_nome   ,true,'text',3,'');
                 ?>

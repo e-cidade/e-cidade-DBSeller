@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_stdlibwebseller.php"));
@@ -74,7 +74,7 @@ $escola = db_getsession("DB_coddepto");
    <br>
    <form name="form1" method="post" action="">
    <fieldset style="width:95%"><legend><b>Consulta Progressão de Aluno</b></legend>
-    <?
+    <?php
     $result = $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_codigo,ed52_c_descr,ed52_i_ano","ed52_i_ano desc"," ed38_i_escola = $escola AND ed52_c_passivo = 'N'"));?>
     <table border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -82,7 +82,7 @@ $escola = db_getsession("DB_coddepto");
        <b>Selecione o Calendário:</b>
        <select name="calendario" style="font-size:9px;width:150px;height:18px;">
         <option value=""></option>
-        <?
+        <?php
         for($i=0;$i<$clcalendario->numrows;$i++) {
          db_fieldsmemory($result,$i);
          $selected = $ed52_i_codigo==@$calendario?"selected":"";
@@ -107,7 +107,7 @@ $escola = db_getsession("DB_coddepto");
   </td>
  </tr>
 </table>
-<?
+<?php
  if(isset($calendario)){
  $where = $tipo!=""?" AND ed101_c_tipo = '$tipo '":"";
  $sql = "SELECT DISTINCT
@@ -152,7 +152,7 @@ $escola = db_getsession("DB_coddepto");
    <td class="cabec" align="center">Etapa/Turma Destino</td>
    <td class="cabec" align="center">Data</td>
   </tr>
-  <?
+  <?php
   $cor1 = "#f3f3f3";
   $cor2 = "#DBDBDB";
   $cor = "";
@@ -173,12 +173,12 @@ $escola = db_getsession("DB_coddepto");
      <td align="center"><?=$seriedestino." / ".$turmadestino?></td>
      <td align="center"><?=db_formatar($ed101_d_data,'d')?></td>
     </tr>
-    <?
+    <?php
    }
   }else{
    ?>
    <tr bgcolor="#f3f3f3">
-    <?
+    <?php
     if($tipo==""){
      $descr_tipo = " Nenhum AVANÇO ou CLASSIFICAÇÃO";
     }elseif($tipo=="A"){
@@ -189,12 +189,12 @@ $escola = db_getsession("DB_coddepto");
     ?>
     <td colspan="6"><?=$descr_tipo?> neste calendário.</td>
    </tr>
-   <?
+   <?php
   }
   ?>
  </table>
-<?}?>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php }?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -203,7 +203,7 @@ function js_processar(calendario,tipo){
   location.href = "edu3_trocaserie001.php?calendario="+calendario+"&tipo="+tipo;
  }
 }
-<?if(!isset($calendario) && pg_num_rows($result)>0){?>
+<?php if(!isset($calendario) && pg_num_rows($result)>0){?>
  document.form1.calendario.options[1].selected = true;
-<?}?>
+<?php }?>
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -214,7 +214,7 @@ $oGet          = db_utils::postMemory($_GET);
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body onLoad="a=1; js_escondetag();" >
-<?
+<?php
  include_once(modification("forms/db_frmrelextratorpps.php"));
 ?>
 <?php 

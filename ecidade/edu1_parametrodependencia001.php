@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -109,7 +109,7 @@ $oRotulo->label('ed112_justificativa');
             </tr>
             <tr >
               <td class="primeiraColuna" nowrap="nowrap" title = "<?php echo $Ted112_formacontrole;?>">
-                <? echo $Led112_formacontrole?>
+                <?php echo $Led112_formacontrole?>
               </td>
               <td>
                 <?php
@@ -119,7 +119,7 @@ $oRotulo->label('ed112_justificativa');
             </tr>
             <tr >
               <td class="primeiraColuna" nowrap="nowrap" title = "<?php echo $Ted112_controlefrequencia;?>">
-                <? echo $Led112_controlefrequencia?>
+                <?php echo $Led112_controlefrequencia?>
               </td>
               <td>
                 <?php
@@ -130,7 +130,7 @@ $oRotulo->label('ed112_justificativa');
             </tr>
             <tr >
               <td class="primeiraColuna" nowrap="nowrap" title = "<?php echo $Ted112_disciplinaeliminadependencia;?>">
-                <? echo $Led112_disciplinaeliminadependencia?>
+                <?php echo $Led112_disciplinaeliminadependencia?>
               </td>
               <td>
                 <?php
@@ -142,7 +142,7 @@ $oRotulo->label('ed112_justificativa');
             </tr>
             <tr id = 'ctnJustificativa' style="display:none;">
               <td class="primeiraColuna" nowrap="nowrap" title = "<?php echo $Ted112_justificativa;?>">
-                <? echo $Led112_justificativa?>
+                <?php echo $Led112_justificativa?>
               </td>
               <td>
                 <?php
@@ -164,7 +164,7 @@ $oRotulo->label('ed112_justificativa');
     </center>
   </div>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

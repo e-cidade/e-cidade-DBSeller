@@ -1,83 +1,83 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_sysregrasacesso
-class cl_db_sysregrasacesso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db46_idacesso = 0; 
-   var $db46_dtinicio_dia = null; 
-   var $db46_dtinicio_mes = null; 
-   var $db46_dtinicio_ano = null; 
-   var $db46_dtinicio = null; 
-   var $db46_horaini = null; 
-   var $db46_datafinal_dia = null; 
-   var $db46_datafinal_mes = null; 
-   var $db46_datafinal_ano = null; 
-   var $db46_datafinal = null; 
-   var $db46_horafinal = null; 
-   var $db46_id_usuario = 0; 
-   var $db46_datacadastd_dia = null; 
-   var $db46_datacadastd_mes = null; 
-   var $db46_datacadastd_ano = null; 
-   var $db46_datacadastd = null; 
-   var $db46_observ = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_sysregrasacesso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db46_idacesso = 0;
+   var $db46_dtinicio_dia = null;
+   var $db46_dtinicio_mes = null;
+   var $db46_dtinicio_ano = null;
+   var $db46_dtinicio = null;
+   var $db46_horaini = null;
+   var $db46_datafinal_dia = null;
+   var $db46_datafinal_mes = null;
+   var $db46_datafinal_ano = null;
+   var $db46_datafinal = null;
+   var $db46_horafinal = null;
+   var $db46_id_usuario = 0;
+   var $db46_datacadastd_dia = null;
+   var $db46_datacadastd_mes = null;
+   var $db46_datacadastd_ano = null;
+   var $db46_datacadastd = null;
+   var $db46_observ = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db46_idacesso = int4 = Código da Regra 
-                 db46_dtinicio = date = Data Início 
-                 db46_horaini = varchar(5) = Hora Início 
-                 db46_datafinal = date = Data Final 
-                 db46_horafinal = varchar(5) = Hora Final 
-                 db46_id_usuario = int4 = Cod. Usuário 
-                 db46_datacadastd = date = Data Cadastro 
-                 db46_observ = text = Observação 
+                 db46_idacesso = int4 = Código da Regra
+                 db46_dtinicio = date = Data Início
+                 db46_horaini = varchar(5) = Hora Início
+                 db46_datafinal = date = Data Final
+                 db46_horafinal = varchar(5) = Hora Final
+                 db46_id_usuario = int4 = Cod. Usuário
+                 db46_datacadastd = date = Data Cadastro
+                 db46_observ = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_db_sysregrasacesso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_sysregrasacesso"); 
+     $this->rotulo = new rotulo("db_sysregrasacesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_db_sysregrasacesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db46_idacesso = ($this->db46_idacesso == ""?@$GLOBALS["HTTP_POST_VARS"]["db46_idacesso"]:$this->db46_idacesso);
        if($this->db46_dtinicio == ""){
@@ -122,9 +122,9 @@ class cl_db_sysregrasacesso {
      }
    }
    // funcao para inclusao
-   function incluir ($db46_idacesso){ 
+   public function incluir ($db46_idacesso){
       $this->atualizacampos();
-     if($this->db46_dtinicio == null ){ 
+     if($this->db46_dtinicio == null ){
        $this->erro_sql = " Campo Data Início nao Informado.";
        $this->erro_campo = "db46_dtinicio_dia";
        $this->erro_banco = "";
@@ -133,7 +133,7 @@ class cl_db_sysregrasacesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db46_horaini == null ){ 
+     if($this->db46_horaini == null ){
        $this->erro_sql = " Campo Hora Início nao Informado.";
        $this->erro_campo = "db46_horaini";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_db_sysregrasacesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db46_datafinal == null ){ 
+     if($this->db46_datafinal == null ){
        $this->erro_sql = " Campo Data Final nao Informado.";
        $this->erro_campo = "db46_datafinal_dia";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_db_sysregrasacesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db46_horafinal == null ){ 
+     if($this->db46_horafinal == null ){
        $this->erro_sql = " Campo Hora Final nao Informado.";
        $this->erro_campo = "db46_horafinal";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_db_sysregrasacesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db46_id_usuario == null ){ 
+     if($this->db46_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "db46_id_usuario";
        $this->erro_banco = "";
@@ -169,7 +169,7 @@ class cl_db_sysregrasacesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db46_datacadastd == null ){ 
+     if($this->db46_datacadastd == null ){
        $this->erro_sql = " Campo Data Cadastro nao Informado.";
        $this->erro_campo = "db46_datacadastd_dia";
        $this->erro_banco = "";
@@ -179,16 +179,16 @@ class cl_db_sysregrasacesso {
        return false;
      }
      if($db46_idacesso == "" || $db46_idacesso == null ){
-       $result = db_query("select nextval('db_sysregrasacesso_db46_idacesso_seq')"); 
+       $result = db_query("select nextval('db_sysregrasacesso_db46_idacesso_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_sysregrasacesso_db46_idacesso_seq do campo: db46_idacesso"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_sysregrasacesso_db46_idacesso_seq do campo: db46_idacesso";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db46_idacesso = pg_result($result,0,0); 
+       $this->db46_idacesso = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_sysregrasacesso_db46_idacesso_seq");
        if(($result != false) && (pg_result($result,0,0) < $db46_idacesso)){
@@ -199,10 +199,10 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db46_idacesso = $db46_idacesso; 
+         $this->db46_idacesso = $db46_idacesso;
        }
      }
-     if(($this->db46_idacesso == null) || ($this->db46_idacesso == "") ){ 
+     if(($this->db46_idacesso == null) || ($this->db46_idacesso == "") ){
        $this->erro_sql = " Campo db46_idacesso nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -211,27 +211,27 @@ class cl_db_sysregrasacesso {
        return false;
      }
      $sql = "insert into db_sysregrasacesso(
-                                       db46_idacesso 
-                                      ,db46_dtinicio 
-                                      ,db46_horaini 
-                                      ,db46_datafinal 
-                                      ,db46_horafinal 
-                                      ,db46_id_usuario 
-                                      ,db46_datacadastd 
-                                      ,db46_observ 
+                                       db46_idacesso
+                                      ,db46_dtinicio
+                                      ,db46_horaini
+                                      ,db46_datafinal
+                                      ,db46_horafinal
+                                      ,db46_id_usuario
+                                      ,db46_datacadastd
+                                      ,db46_observ
                        )
                 values (
-                                $this->db46_idacesso 
-                               ,".($this->db46_dtinicio == "null" || $this->db46_dtinicio == ""?"null":"'".$this->db46_dtinicio."'")." 
-                               ,'$this->db46_horaini' 
-                               ,".($this->db46_datafinal == "null" || $this->db46_datafinal == ""?"null":"'".$this->db46_datafinal."'")." 
-                               ,'$this->db46_horafinal' 
-                               ,$this->db46_id_usuario 
-                               ,".($this->db46_datacadastd == "null" || $this->db46_datacadastd == ""?"null":"'".$this->db46_datacadastd."'")." 
-                               ,'$this->db46_observ' 
+                                $this->db46_idacesso
+                               ,".($this->db46_dtinicio == "null" || $this->db46_dtinicio == ""?"null":"'".$this->db46_dtinicio."'")."
+                               ,'$this->db46_horaini'
+                               ,".($this->db46_datafinal == "null" || $this->db46_datafinal == ""?"null":"'".$this->db46_datafinal."'")."
+                               ,'$this->db46_horafinal'
+                               ,$this->db46_id_usuario
+                               ,".($this->db46_datacadastd == "null" || $this->db46_datacadastd == ""?"null":"'".$this->db46_datacadastd."'")."
+                               ,'$this->db46_observ'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Regras de Acesso so Sistema ($this->db46_idacesso) nao Incluído. Inclusao Abortada.";
@@ -270,16 +270,16 @@ class cl_db_sysregrasacesso {
        $resac = db_query("insert into db_acount values($acount,1772,10267,'','".AddSlashes(pg_result($resaco,0,'db46_observ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db46_idacesso=null) { 
+   public function alterar ($db46_idacesso=null) {
       $this->atualizacampos();
      $sql = " update db_sysregrasacesso set ";
      $virgula = "";
-     if(trim($this->db46_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_idacesso"])){ 
+     if(trim($this->db46_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_idacesso"])){
        $sql  .= $virgula." db46_idacesso = $this->db46_idacesso ";
        $virgula = ",";
-       if(trim($this->db46_idacesso) == null ){ 
+       if(trim($this->db46_idacesso) == null ){
          $this->erro_sql = " Campo Código da Regra nao Informado.";
          $this->erro_campo = "db46_idacesso";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_db_sysregrasacesso {
          return false;
        }
      }
-     if(trim($this->db46_dtinicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"] !="") ){ 
+     if(trim($this->db46_dtinicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"] !="") ){
        $sql  .= $virgula." db46_dtinicio = '$this->db46_dtinicio' ";
        $virgula = ",";
-       if(trim($this->db46_dtinicio) == null ){ 
+       if(trim($this->db46_dtinicio) == null ){
          $this->erro_sql = " Campo Data Início nao Informado.";
          $this->erro_campo = "db46_dtinicio_dia";
          $this->erro_banco = "";
@@ -301,11 +301,11 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_dtinicio_dia"])){
          $sql  .= $virgula." db46_dtinicio = null ";
          $virgula = ",";
-         if(trim($this->db46_dtinicio) == null ){ 
+         if(trim($this->db46_dtinicio) == null ){
            $this->erro_sql = " Campo Data Início nao Informado.";
            $this->erro_campo = "db46_dtinicio_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_db_sysregrasacesso {
          }
        }
      }
-     if(trim($this->db46_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_horaini"])){ 
+     if(trim($this->db46_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_horaini"])){
        $sql  .= $virgula." db46_horaini = '$this->db46_horaini' ";
        $virgula = ",";
-       if(trim($this->db46_horaini) == null ){ 
+       if(trim($this->db46_horaini) == null ){
          $this->erro_sql = " Campo Hora Início nao Informado.";
          $this->erro_campo = "db46_horaini";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_db_sysregrasacesso {
          return false;
        }
      }
-     if(trim($this->db46_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"] !="") ){ 
+     if(trim($this->db46_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"] !="") ){
        $sql  .= $virgula." db46_datafinal = '$this->db46_datafinal' ";
        $virgula = ",";
-       if(trim($this->db46_datafinal) == null ){ 
+       if(trim($this->db46_datafinal) == null ){
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "db46_datafinal_dia";
          $this->erro_banco = "";
@@ -341,11 +341,11 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_datafinal_dia"])){
          $sql  .= $virgula." db46_datafinal = null ";
          $virgula = ",";
-         if(trim($this->db46_datafinal) == null ){ 
+         if(trim($this->db46_datafinal) == null ){
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "db46_datafinal_dia";
            $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_db_sysregrasacesso {
          }
        }
      }
-     if(trim($this->db46_horafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_horafinal"])){ 
+     if(trim($this->db46_horafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_horafinal"])){
        $sql  .= $virgula." db46_horafinal = '$this->db46_horafinal' ";
        $virgula = ",";
-       if(trim($this->db46_horafinal) == null ){ 
+       if(trim($this->db46_horafinal) == null ){
          $this->erro_sql = " Campo Hora Final nao Informado.";
          $this->erro_campo = "db46_horafinal";
          $this->erro_banco = "";
@@ -369,10 +369,10 @@ class cl_db_sysregrasacesso {
          return false;
        }
      }
-     if(trim($this->db46_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_id_usuario"])){ 
+     if(trim($this->db46_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_id_usuario"])){
        $sql  .= $virgula." db46_id_usuario = $this->db46_id_usuario ";
        $virgula = ",";
-       if(trim($this->db46_id_usuario) == null ){ 
+       if(trim($this->db46_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "db46_id_usuario";
          $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_db_sysregrasacesso {
          return false;
        }
      }
-     if(trim($this->db46_datacadastd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"] !="") ){ 
+     if(trim($this->db46_datacadastd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"] !="") ){
        $sql  .= $virgula." db46_datacadastd = '$this->db46_datacadastd' ";
        $virgula = ",";
-       if(trim($this->db46_datacadastd) == null ){ 
+       if(trim($this->db46_datacadastd) == null ){
          $this->erro_sql = " Campo Data Cadastro nao Informado.";
          $this->erro_campo = "db46_datacadastd_dia";
          $this->erro_banco = "";
@@ -394,11 +394,11 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db46_datacadastd_dia"])){
          $sql  .= $virgula." db46_datacadastd = null ";
          $virgula = ",";
-         if(trim($this->db46_datacadastd) == null ){ 
+         if(trim($this->db46_datacadastd) == null ){
            $this->erro_sql = " Campo Data Cadastro nao Informado.";
            $this->erro_campo = "db46_datacadastd_dia";
            $this->erro_banco = "";
@@ -409,7 +409,7 @@ class cl_db_sysregrasacesso {
          }
        }
      }
-     if(trim($this->db46_observ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_observ"])){ 
+     if(trim($this->db46_observ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db46_observ"])){
        $sql  .= $virgula." db46_observ = '$this->db46_observ' ";
        $virgula = ",";
      }
@@ -443,7 +443,7 @@ class cl_db_sysregrasacesso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Regras de Acesso so Sistema nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db46_idacesso;
@@ -471,14 +471,14 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db46_idacesso=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db46_idacesso=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db46_idacesso));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -511,7 +511,7 @@ class cl_db_sysregrasacesso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Regras de Acesso so Sistema nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db46_idacesso;
@@ -539,11 +539,11 @@ class cl_db_sysregrasacesso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -565,10 +565,10 @@ class cl_db_sysregrasacesso {
       }
      return $result;
    }
-   function sql_query ( $db46_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db46_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,15 +582,15 @@ class cl_db_sysregrasacesso {
      $sql2 = "";
      if($dbwhere==""){
        if($db46_idacesso!=null ){
-         $sql2 .= " where db_sysregrasacesso.db46_idacesso = $db46_idacesso "; 
-       } 
+         $sql2 .= " where db_sysregrasacesso.db46_idacesso = $db46_idacesso ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,10 +599,10 @@ class cl_db_sysregrasacesso {
      }
      return $sql;
   }
-   function sql_query_file ( $db46_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db46_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -615,15 +615,15 @@ class cl_db_sysregrasacesso {
      $sql2 = "";
      if($dbwhere==""){
        if($db46_idacesso!=null ){
-         $sql2 .= " where db_sysregrasacesso.db46_idacesso = $db46_idacesso "; 
-       } 
+         $sql2 .= " where db_sysregrasacesso.db46_idacesso = $db46_idacesso ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

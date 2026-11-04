@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,15 +54,15 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tat12_codcli?>">
-       <?
+       <?php
        db_ancora(@$Lat12_codcli,"js_pesquisaat12_codcli(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at12_codcli',4,$Iat12_codcli,true,'text',$db_opcao," onchange='js_pesquisaat12_codcli(false);'")
 ?>
-       <?
+       <?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        ?>
     </td>
@@ -72,7 +72,7 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        <?=@$Lat12_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('at12_seq',10,$Iat12_seq,true,'text',3,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ db_input('at12_seq',10,$Iat12_seq,true,'text',3,"")
        <?=@$Lat12_email?>
     </td>
     <td> 
-<?
+<?php
 db_input('at12_email',40,$Iat12_email,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('at12_email',40,$Iat12_email,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at12_codcli"=>@$at12_codcli,"at12_seq"=>@$at12_seq);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clatendemail->sql_query_file($at12_codcli);

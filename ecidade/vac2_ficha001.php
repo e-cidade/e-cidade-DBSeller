@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ $oRotulo->label('z01_v_sexo');
             <?=$Ls115_c_cartaosus?>
           </td>
           <td nowrap> 
-            <?
+            <?php
             db_input('s115_c_cartaosus', 15,$Is115_c_cartaosus, true, 'text', 1, 'onchange="js_getCgsCns();"');
             ?>
           </td>
@@ -69,12 +69,12 @@ $oRotulo->label('z01_v_sexo');
 
         <tr>
           <td nowrap title="<?=@$Tz01_i_cgsund?>">
-            <?
+            <?php
             db_ancora(@$Lz01_i_cgsund,"js_pesquisaz01_i_cgsund(true);", 1);
             ?>
           </td>
           <td nowrap> 
-            <?
+            <?php
             db_input('z01_i_cgsund',10,$Iz01_i_cgsund,true,'text', 1," onchange='js_pesquisaz01_i_cgsund(false);'");
             db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
             ?>
@@ -85,7 +85,7 @@ $oRotulo->label('z01_v_sexo');
             <?=$Lz01_d_nasc?>
           </td>
           <td>
-            <?
+            <?php
             db_input('z01_d_nasc',10,$Iz01_d_nasc,true,'text',3,"");
             echo"<b>Idade:</b>";
             db_input('iIdade',23,"",true,'text',3,"");
@@ -99,7 +99,7 @@ $oRotulo->label('z01_v_sexo');
             <strong><b>Nome da Mãe:</b></strong>
           </td>
           <td>
-            <?
+            <?php
             db_input('z01_v_mae', 50, $Iz01_v_mae, true, 'text' ,3, '');
             ?>
           </td>
@@ -289,7 +289,7 @@ function js_formataData(dData) {
 }
 
 </script>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

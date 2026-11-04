@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -167,12 +167,12 @@ if(isset($emite)){
       <strong>Ano / Mês:</strong>
     </td>
     <td>
-      <?
+      <?php
       $ano = db_anofolha();
       db_input('ano',4,1,true,'text',1,"");
       ?>
       <b>&nbsp;/&nbsp;</b>
-      <?
+      <?php
       $mes = db_mesfolha();
       db_input('mes',2,1,true,'text',1,"");
       ?>
@@ -183,7 +183,7 @@ if(isset($emite)){
       <strong>Tipo de folha:</strong>
     </td>
     <td>
-      <?
+      <?php
       $arr_folha = array("s"=>"Salário","d"=>"Décimo");
       db_select("folha", $arr_folha, true, 1);
       ?>
@@ -194,7 +194,7 @@ if(isset($emite)){
       <strong>Percentual patronal:</strong>
     </td>
     <td>
-      <?
+      <?php
       db_input('percp',5,4,true,'text',1,"");
       ?>
     </td>
@@ -206,7 +206,7 @@ if(isset($emite)){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -235,7 +235,7 @@ function js_detectaarquivo(arquivo,pdf){
   js_montarlista(listagem,"form1");
 }
 </script>
-<?
+<?php
 if(isset($emite)){
   if(isset($erro_msg)){
 /*    db_msgbox($erro_msg);*/

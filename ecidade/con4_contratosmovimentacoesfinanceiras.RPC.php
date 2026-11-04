@@ -123,12 +123,14 @@ switch ($oParam->exec) {
                         $oItemRetorno->valortotal = $oItem->getValorTotal();
                         $oItemRetorno->quantidade = $oItem->getQuantidade();
                         $oItemRetorno->lControlaQuantidade = $oItem->getControlaQuantidade();
+                        $oItemRetorno->resumo = $oItem->getResumo();
 
-                        foreach ($oItem->getDotacoes(true) as $oDotacao) {
+                        foreach ($oItem->getDotacoes() as $oDotacao) {
                             $oDotacaoSaldo = new Dotacao($oDotacao->dotacao, $oDotacao->ano);
                             $oDotacao->saldoexecutado = 0;;
                             $oDotacao->valorexecutar = 0;
                             $oDotacao->saldodotacao = $oDotacaoSaldo->getSaldoFinal();
+                            $oDotacao->orgao = $oDotacaoSaldo->getDescricaoOrgao();
                         }
 
                         $oItemRetorno->dotacoes = $oItem->getDotacoes();

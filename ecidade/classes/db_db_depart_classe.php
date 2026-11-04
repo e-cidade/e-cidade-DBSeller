@@ -27,57 +27,57 @@
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_depart
-class cl_db_depart { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $coddepto = 0; 
-   var $descrdepto = null; 
-   var $nomeresponsavel = null; 
-   var $emailresponsavel = null; 
-   var $limite_dia = null; 
-   var $limite_mes = null; 
-   var $limite_ano = null; 
-   var $limite = null; 
-   var $fonedepto = null; 
-   var $emaildepto = null; 
-   var $faxdepto = null; 
-   var $ramaldepto = null; 
-   var $instit = 0; 
-   var $id_usuarioresp = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_depart {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $coddepto = 0;
+   var $descrdepto = null;
+   var $nomeresponsavel = null;
+   var $emailresponsavel = null;
+   var $limite_dia = null;
+   var $limite_mes = null;
+   var $limite_ano = null;
+   var $limite = null;
+   var $fonedepto = null;
+   var $emaildepto = null;
+   var $faxdepto = null;
+   var $ramaldepto = null;
+   var $instit = 0;
+   var $id_usuarioresp = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 coddepto = int4 = Depart. 
-                 descrdepto = varchar(40) = Descrição do Departamento 
-                 nomeresponsavel = varchar(40) = Nome Responsável 
-                 emailresponsavel = varchar(50) = Email Responsável 
-                 limite = date = Data limite 
-                 fonedepto = varchar(12) = Telefone 
-                 emaildepto = varchar(50) = E-mail 
-                 faxdepto = varchar(12) = Fax 
-                 ramaldepto = varchar(10) = Ramal 
-                 instit = int4 = Instituição 
-                 id_usuarioresp = int4 = Login Responsável 
+                 coddepto = int4 = Depart.
+                 descrdepto = varchar(40) = Descrição do Departamento
+                 nomeresponsavel = varchar(40) = Nome Responsável
+                 emailresponsavel = varchar(50) = Email Responsável
+                 limite = date = Data limite
+                 fonedepto = varchar(12) = Telefone
+                 emaildepto = varchar(50) = E-mail
+                 faxdepto = varchar(12) = Fax
+                 ramaldepto = varchar(10) = Ramal
+                 instit = int4 = Instituição
+                 id_usuarioresp = int4 = Login Responsável
                  ";
-   //funcao construtor da classe 
+   //funcao construtor da classe
    public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_depart"); 
+     $this->rotulo = new rotulo("db_depart");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -111,9 +111,9 @@ class cl_db_depart {
      }
    }
    // funcao para Inclusão
-   function incluir ($coddepto){ 
+   function incluir ($coddepto){
       $this->atualizacampos();
-     if($this->descrdepto == null ){ 
+     if($this->descrdepto == null ){
        $this->erro_sql = " Campo Descrição do Departamento não informado.";
        $this->erro_campo = "descrdepto";
        $this->erro_banco = "";
@@ -122,10 +122,10 @@ class cl_db_depart {
        $this->erro_status = "0";
        return false;
      }
-     if($this->limite == null ){ 
+     if($this->limite == null ){
        $this->limite = "null";
      }
-     if($this->instit == null ){ 
+     if($this->instit == null ){
        $this->erro_sql = " Campo Instituição não informado.";
        $this->erro_campo = "instit";
        $this->erro_banco = "";
@@ -136,16 +136,16 @@ class cl_db_depart {
      }
 
      if($coddepto == "" || $coddepto == null ){
-       $result = db_query("select nextval('db_depart_coddepto_seq')"); 
+       $result = db_query("select nextval('db_depart_coddepto_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_depart_coddepto_seq do campo: coddepto"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_depart_coddepto_seq do campo: coddepto";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->coddepto = pg_result($result,0,0); 
+       $this->coddepto = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_depart_coddepto_seq");
        if(($result != false) && (pg_result($result,0,0) < $coddepto)){
@@ -156,10 +156,10 @@ class cl_db_depart {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->coddepto = $coddepto; 
+         $this->coddepto = $coddepto;
        }
      }
-     if(($this->coddepto == null) || ($this->coddepto == "") ){ 
+     if(($this->coddepto == null) || ($this->coddepto == "") ){
        $this->erro_sql = " Campo coddepto não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -173,33 +173,33 @@ class cl_db_depart {
      }
 
      $sql = "insert into db_depart(
-                                       coddepto 
-                                      ,descrdepto 
-                                      ,nomeresponsavel 
-                                      ,emailresponsavel 
-                                      ,limite 
-                                      ,fonedepto 
-                                      ,emaildepto 
-                                      ,faxdepto 
-                                      ,ramaldepto 
-                                      ,instit 
-                                      ,id_usuarioresp 
+                                       coddepto
+                                      ,descrdepto
+                                      ,nomeresponsavel
+                                      ,emailresponsavel
+                                      ,limite
+                                      ,fonedepto
+                                      ,emaildepto
+                                      ,faxdepto
+                                      ,ramaldepto
+                                      ,instit
+                                      ,id_usuarioresp
                        )
                 values (
-                                $this->coddepto 
-                               ,'$this->descrdepto' 
-                               ,'$this->nomeresponsavel' 
-                               ,'$this->emailresponsavel' 
-                               ,".($this->limite == "null" || $this->limite == ""?"null":"'".$this->limite."'")." 
-                               ,'$this->fonedepto' 
-                               ,'$this->emaildepto' 
-                               ,'$this->faxdepto' 
-                               ,'$this->ramaldepto' 
-                               ,$this->instit 
-                               ,$this->id_usuarioresp 
+                                $this->coddepto
+                               ,'$this->descrdepto'
+                               ,'$this->nomeresponsavel'
+                               ,'$this->emailresponsavel'
+                               ,".($this->limite == "null" || $this->limite == ""?"null":"'".$this->limite."'")."
+                               ,'$this->fonedepto'
+                               ,'$this->emaildepto'
+                               ,'$this->faxdepto'
+                               ,'$this->ramaldepto'
+                               ,$this->instit
+                               ,$this->id_usuarioresp
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Departamento dos Usuários ($this->coddepto) não Incluído. Inclusão Abortada.";
@@ -247,16 +247,16 @@ class cl_db_depart {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($coddepto=null) { 
+   public function alterar ($coddepto=null) {
       $this->atualizacampos();
      $sql = " update db_depart set ";
      $virgula = "";
-     if(trim($this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){ 
+     if(trim($this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){
        $sql  .= $virgula." coddepto = $this->coddepto ";
        $virgula = ",";
-       if(trim($this->coddepto) == null ){ 
+       if(trim($this->coddepto) == null ){
          $this->erro_sql = " Campo Depart. não informado.";
          $this->erro_campo = "coddepto";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_db_depart {
          return false;
        }
      }
-     if(trim($this->descrdepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrdepto"])){ 
+     if(trim($this->descrdepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrdepto"])){
        $sql  .= $virgula." descrdepto = '$this->descrdepto' ";
        $virgula = ",";
-       if(trim($this->descrdepto) == null ){ 
+       if(trim($this->descrdepto) == null ){
          $this->erro_sql = " Campo Descrição do Departamento não informado.";
          $this->erro_campo = "descrdepto";
          $this->erro_banco = "";
@@ -279,43 +279,43 @@ class cl_db_depart {
          return false;
        }
      }
-     if(trim($this->nomeresponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomeresponsavel"])){ 
+     if(trim($this->nomeresponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomeresponsavel"])){
        $sql  .= $virgula." nomeresponsavel = '$this->nomeresponsavel' ";
        $virgula = ",";
      }
-     if(trim($this->emailresponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["emailresponsavel"])){ 
+     if(trim($this->emailresponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["emailresponsavel"])){
        $sql  .= $virgula." emailresponsavel = '$this->emailresponsavel' ";
        $virgula = ",";
      }
-     if(trim($this->limite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["limite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["limite_dia"] !="") ){ 
+     if(trim($this->limite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["limite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["limite_dia"] !="") ){
        $sql  .= $virgula." limite = '$this->limite' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["limite_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["limite_dia"])){
          $sql  .= $virgula." limite = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->fonedepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fonedepto"])){ 
+     if(trim($this->fonedepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fonedepto"])){
        $sql  .= $virgula." fonedepto = '$this->fonedepto' ";
        $virgula = ",";
      }
-     if(trim($this->emaildepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["emaildepto"])){ 
+     if(trim($this->emaildepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["emaildepto"])){
        $sql  .= $virgula." emaildepto = '$this->emaildepto' ";
        $virgula = ",";
      }
-     if(trim($this->faxdepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["faxdepto"])){ 
+     if(trim($this->faxdepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["faxdepto"])){
        $sql  .= $virgula." faxdepto = '$this->faxdepto' ";
        $virgula = ",";
      }
-     if(trim($this->ramaldepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ramaldepto"])){ 
+     if(trim($this->ramaldepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ramaldepto"])){
        $sql  .= $virgula." ramaldepto = '$this->ramaldepto' ";
        $virgula = ",";
      }
-     if(trim($this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){ 
+     if(trim($this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){
        $sql  .= $virgula." instit = $this->instit ";
        $virgula = ",";
-       if(trim($this->instit) == null ){ 
+       if(trim($this->instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "instit";
          $this->erro_banco = "";
@@ -382,7 +382,7 @@ class cl_db_depart {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Departamento dos Usuários não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->coddepto;
@@ -410,11 +410,11 @@ class cl_db_depart {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($coddepto=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($coddepto=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -423,7 +423,7 @@ class cl_db_depart {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($coddepto));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -462,7 +462,7 @@ class cl_db_depart {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Departamento dos Usuários não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$coddepto;
@@ -490,11 +490,11 @@ class cl_db_depart {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -516,8 +516,8 @@ class cl_db_depart {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($coddepto = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($coddepto = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= " from db_depart ";
@@ -528,8 +528,8 @@ class cl_db_depart {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($coddepto)) {
-         $sql2 .= " where db_depart.coddepto = $coddepto "; 
-       } 
+         $sql2 .= " where db_depart.coddepto = $coddepto ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -539,7 +539,7 @@ class cl_db_depart {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($coddepto = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -547,8 +547,8 @@ class cl_db_depart {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($coddepto)){
-         $sql2 .= " where db_depart.coddepto = $coddepto "; 
-       } 
+         $sql2 .= " where db_depart.coddepto = $coddepto ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -559,7 +559,7 @@ class cl_db_depart {
      return $sql;
   }
 
-   function sql_query_almox ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query_almox ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -577,8 +577,8 @@ class cl_db_depart {
      $sql2 = "";
      if($dbwhere==""){
        if($coddepto!=null ){
-         $sql2 .= " where db_depart.coddepto = $coddepto "; 
-       } 
+         $sql2 .= " where db_depart.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -769,17 +769,19 @@ class cl_db_depart {
 
   public function get_orgao()
   {
+      $orgao = null;
+
     $sqlDepartamento = "
-      SELECT 
+      SELECT
         o40_descr,
         o40_orgao
-      FROM 
+      FROM
         db_depart
       LEFT JOIN db_departorg
         ON db_departorg.db01_coddepto = db_depart.coddepto
       LEFT JOIN orcorgao
         ON db_departorg.db01_orgao = orcorgao.o40_orgao
-      WHERE 
+      WHERE
         coddepto = " . db_getsession("DB_coddepto") ."
         AND o40_anousu = " . db_getsession("DB_anousu") . "
         AND db01_anousu = " . db_getsession("DB_anousu")

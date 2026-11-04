@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("m80_matestoqueitem");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tm87_matestoqueinil?>">
-       <?
+       <?php
        db_ancora(@$Lm87_matestoqueinil,"js_pesquisam87_matestoqueinil(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m87_matestoqueinil',10,$Im87_matestoqueinil,true,'text',3," onchange='js_pesquisam87_matestoqueinil(false);'")
 ?>
-       <?
+       <?php
 db_input('m86_codigo',10,$Im86_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm87_matestoqueini?>">
-       <?
+       <?php
        db_ancora(@$Lm87_matestoqueini,"js_pesquisam87_matestoqueini(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m87_matestoqueini',10,$Im87_matestoqueini,true,'text',$db_opcao," onchange='js_pesquisam87_matestoqueini(false);'")
 ?>
-       <?
+       <?php
 db_input('m80_matestoqueitem',10,$Im80_matestoqueitem,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoqueinill.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

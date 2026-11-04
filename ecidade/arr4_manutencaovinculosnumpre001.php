@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ include_once(modification("libs/db_utils.php"));
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_tipoprocessamento()" bgcolor="#cccccc">
-<?
+<?php
 
 if (db_getsession("DB_id_usuario") == 1) {
   
@@ -63,13 +63,13 @@ if (db_getsession("DB_id_usuario") == 1) {
 
      <tr>
       <td width=192> <strong>Numpre: </strong> </td>
-      <td> <? db_input('numpre',11,1,true,"text",1) ?> </td>
+      <td> <?php db_input('numpre',11,1,true,"text",1) ?> </td>
      </tr>
      
      <tr>
       <td width=192> <strong>Tipo de Vinculo: </strong> </td>
       <td>
-        <? 
+        <?php 
          $aTipos = array("0"=>"Selecione","1"=>"Matricula","2"=>"Inscrição");
          db_select("tipo", $aTipos,true,1);
         ?> 
@@ -88,7 +88,7 @@ if (db_getsession("DB_id_usuario") == 1) {
  </tr>    
 </table>
 
-<?
+<?php
  } else {
    db_msgbox("Procedimento não disponível!");
  }

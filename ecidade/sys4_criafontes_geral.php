@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-  <?
+  <?php
    if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     <form method="post" name="estrut">                
         <table border="0" cellpadding="0" cellspacing="0">
@@ -86,7 +86,7 @@ input {
           </tr>
         </table>
 	</form>
-<?
+<?php
 } else {
   db_postmemory($HTTP_POST_VARS);
 // Tabelas
@@ -151,7 +151,7 @@ input {
         fputs($fd1,'require(modification("libs/db_conecta.php"));'."\n");
         fputs($fd1,'include(modification("libs/db_sessoes.php"));'."\n");
         fputs($fd1,'include(modification("libs/db_usuariosonline.php"));'."\n");
-        fputs($fd1,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq"))).'_classe.php");'."\n");
+        fputs($fd1,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq")).'_classe.php");'."\n");
         fputs($fd1,'include(modification("dbforms/db_funcoes.php"));'."\n");
         fputs($fd1,'db_postmemory($HTTP_SERVER_VARS);'."\n");
         fputs($fd1,'db_postmemory($HTTP_POST_VARS);'."\n");
@@ -196,7 +196,7 @@ input {
         fputs($fd1,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd1,'    <center>'."\n");
         fputs($fd1,'	<?'."\n");
-        fputs($fd1,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
+        fputs($fd1,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq")).'.php");'."\n");
         fputs($fd1,'	?>'."\n");
         fputs($fd1,'    </center>'."\n");
         fputs($fd1,'	</td>'."\n");
@@ -247,7 +247,7 @@ input {
         fputs($fd2,'require(modification("libs/db_conecta.php"));'."\n");
         fputs($fd2,'include(modification("libs/db_sessoes.php"));'."\n");
         fputs($fd2,'include(modification("libs/db_usuariosonline.php"));'."\n");
-        fputs($fd2,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq"))).'_classe.php");'."\n");
+        fputs($fd2,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq")).'_classe.php");'."\n");
         fputs($fd2,'include(modification("dbforms/db_funcoes.php"));'."\n");
         fputs($fd2,'db_postmemory($HTTP_SERVER_VARS);'."\n");
         fputs($fd2,'db_postmemory($HTTP_POST_VARS);'."\n");
@@ -298,7 +298,7 @@ input {
         fputs($fd2,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd2,'    <center>'."\n");
         fputs($fd2,'	<?'."\n");
-        fputs($fd2,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
+        fputs($fd2,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq")).'.php");'."\n");
         fputs($fd2,'	?>'."\n");
         fputs($fd2,'    </center>'."\n");
         fputs($fd2,'	</td>'."\n");
@@ -333,7 +333,7 @@ input {
         fputs($fd3,'require(modification("libs/db_conecta.php"));'."\n");
         fputs($fd3,'include(modification("libs/db_sessoes.php"));'."\n");
         fputs($fd3,'include(modification("libs/db_usuariosonline.php"));'."\n");
-        fputs($fd3,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq"))).'_classe.php");'."\n");
+        fputs($fd3,'include(modification("classes/db_'.trim(pg_result($result,$i,"nomearq")).'_classe.php");'."\n");
         fputs($fd3,'include(modification("dbforms/db_funcoes.php"));'."\n");
         fputs($fd3,'db_postmemory($HTTP_SERVER_VARS);'."\n");
         fputs($fd3,'db_postmemory($HTTP_POST_VARS);'."\n");
@@ -384,7 +384,7 @@ input {
         fputs($fd3,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd3,'    <center>'."\n");
         fputs($fd3,'	<?'."\n");
-        fputs($fd3,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
+        fputs($fd3,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq")).'.php");'."\n");
         fputs($fd3,'	?>'."\n");
 		
         fputs($fd3,'    </center>'."\n");
@@ -418,7 +418,7 @@ input {
 	</td>
   </tr>
 </table>
-	<?
+	<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

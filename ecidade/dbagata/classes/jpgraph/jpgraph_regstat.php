@@ -21,7 +21,7 @@ class Spline {
     var $y2;		 // 2:nd derivate of ydata	
     var $n=0;
 
-    function Spline($xdata,$ydata) {
+    public function __construct($xdata,$ydata) {
 	$this->y2 = array();
 	$this->xdata = $xdata;
 	$this->ydata = $ydata;
@@ -60,7 +60,7 @@ class Spline {
     }
 
     // Return the two new data vectors
-    function Get($num=50) {
+    public function Get($num=50) {
 	$n = $this->n ;
 	$step = ($this->xdata[$n-1]-$this->xdata[0]) / ($num-1);
 	$xnew=array();
@@ -75,7 +75,7 @@ class Spline {
     }
 
     // Return a single interpolated Y-value from an x value
-    function Interpolate($xpoint) {
+    public function Interpolate($xpoint) {
 
 	$max = $this->n-1;
 	$min = 0;
@@ -121,7 +121,7 @@ class Bezier {
     var $datay = array();
     var $n=0;
  
-    function Bezier($datax, $datay, $attraction_factor = 1) {
+    public function __construct($datax, $datay, $attraction_factor = 1) {
 	// Adding control point multiple time will raise their attraction power over the curve   
 	$this->n = count($datax);
 	if( $this->n !== count($datay) ) {
@@ -143,7 +143,7 @@ class Bezier {
 	$this->n *= $attraction_factor;
     }
 
-    function Get($steps) {
+    public function Get($steps) {
 	$datax = array();
 	$datay = array();
 	for ($i = 0; $i < $steps; $i++) {
@@ -158,7 +158,7 @@ class Bezier {
 	return array($datax, $datay);
     }
  
-    function GetPoint($mu) {
+    public function GetPoint($mu) {
 	$n = $this->n - 1;
 	$k = 0;
 	$kn = 0;

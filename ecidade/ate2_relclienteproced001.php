@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ function js_emite(){
          <b> Atual: </b>
          </td>
          <td>
-         <? 
+         <?php 
          db_inputdata('data1','','','',true,'text',1,"");   		          
          echo "<b> a </b> ";
          db_inputdata('data2','','','',true,'text',1,"");
@@ -106,7 +106,7 @@ function js_emite(){
          <b> Antes: </b>
          </td>
          <td>
-         <? 
+         <?php 
          db_inputdata('data3','','','',true,'text',1,"");   		          
          echo "<b> a </b> ";
          db_inputdata('data4','','','',true,'text',1,"");
@@ -119,7 +119,7 @@ function js_emite(){
          <b> Totalizar por: </b>
          </td>
          <td>
-         <? 
+         <?php 
          $x = array ("cp" => "cliente e procedimento", "c" => "clientes", "p" => "procedimento", "m" => "módulo");
 	     db_select('totalizar', $x, true, 4, "");
 	     ?>
@@ -132,7 +132,7 @@ function js_emite(){
          <b> Ordenar por: </b>
          </td>
          <td>
-         <? 
+         <?php 
          
           
       
@@ -177,7 +177,7 @@ function js_emite(){
       </tr>
     </form>
   </table>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

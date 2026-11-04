@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ if(isset($incluir)){
 <table border="0" cellspacing="0" style="padding-top:15px" cellpadding="0">
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
-	<?
+	<?php
 	  include(modification("forms/db_frmdb_almoxdepto.php"));
 	?>
 	</td>
@@ -109,7 +109,7 @@ if(isset($incluir)){
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
     
 	db_msgbox($erro_msg);

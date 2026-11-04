@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -117,7 +117,7 @@ return true;
        <?=@$Lk60_codigo?>
     </td>
     <td>
-<?
+<?php
 if ($db_opcao == 1){
   $xopcao = 3;
 }else{
@@ -132,7 +132,7 @@ db_input('k60_codigo',6,$Ik60_codigo,true,'text',$xopcao,"")
        <?=@$Lk60_descr?>
     </td>
     <td>
-<?
+<?php
 db_textarea('k60_descr',0,70,$Ik60_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -142,7 +142,7 @@ db_textarea('k60_descr',0,70,$Ik60_descr,true,'text',$db_opcao,"")
        <?=@$Lk60_tipo?>
     </td>
     <td>
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k60_tipo',$x,true,$db_opcao,"");
 ?>
@@ -153,7 +153,7 @@ db_select('k60_tipo',$x,true,$db_opcao,"");
        <?=@$Lk60_datadeb?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('k60_datadeb',@$k60_datadeb_dia,@$k60_datadeb_mes,@$k60_datadeb_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -168,13 +168,13 @@ db_inputdata('k60_datadeb',@$k60_datadeb_dia,@$k60_datadeb_mes,@$k60_datadeb_ano
       <table border="0">
          <tr>
            <td nowrap title="<?=@$Tk00_tipo?>" colspan="2">
-            <?
+            <?php
               db_ancora(@$Lk00_tipo,"js_pesquisatipo(true);",$db_opcao);
             ?>
-            <?
+            <?php
               db_input('k00_tipo',8,$Ik00_tipo,true,'text',$db_opcao," onchange='js_pesquisatipo(false);'")
             ?>
-            <?
+            <?php
               db_input('k00_descr',25,$Ik00_descr,true,'text',3,'')
             ?>
 	    <input name="lanca" type="button" value="Lançar"  <?=($db_botao==false?"disabled":"")?> >
@@ -184,7 +184,7 @@ db_inputdata('k60_datadeb',@$k60_datadeb_dia,@$k60_datadeb_mes,@$k60_datadeb_ano
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php
               if(isset($chavepesquisa)){
 
 	 $resulta = $clarretipo->sql_record($clarretipo->sql_query($chavepesquisa,"","k00_tipo,k00_descr","k00_tipo"));
@@ -262,7 +262,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

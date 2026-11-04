@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimentomanual
 class cl_rhconsignadomovimentomanual { 
@@ -32,13 +32,13 @@ class cl_rhconsignadomovimentomanual {
                  rh182_mes = int4 = Mês da competência 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimentomanual() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimentomanual"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -47,7 +47,7 @@ class cl_rhconsignadomovimentomanual {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh182_sequencial = ($this->rh182_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh182_sequencial"]:$this->rh182_sequencial);
        $this->rh182_rhconsignadomovimento = ($this->rh182_rhconsignadomovimento == ""?@$GLOBALS["HTTP_POST_VARS"]["rh182_rhconsignadomovimento"]:$this->rh182_rhconsignadomovimento);
@@ -60,7 +60,7 @@ class cl_rhconsignadomovimentomanual {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh182_sequencial){ 
+   public function incluir ($rh182_sequencial){ 
       $this->atualizacampos();
      if($this->rh182_rhconsignadomovimento == null ){ 
        $this->erro_sql = " Campo Sequencial Contrato não informado.";

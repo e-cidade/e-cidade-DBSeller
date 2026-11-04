@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ if($clautoultandam->numrows > 0){
     <fieldset width="100%">
     <legend align="center">AUTO DE INFRAÇÃO</legend>
     <center>
-	<?
+	<?php
 	  $db_opcao = 3;
 	  db_ancora(@$Ly50_codauto,"js_auto(true);",1);
 	  db_input('y50_codauto',20,$Iy50_codauto,true,'text',3,"")
@@ -150,7 +150,7 @@ if($clautoultandam->numrows > 0){
     <fieldset>
     <legend align="center">ANDAMENTO</legend>
     <center>
-	<?
+	<?php
 	$db_opcao=3;
         if($db_opcao==3 && !isset($chavepesquisa)){
 	  $db_opcao=33;
@@ -168,7 +168,7 @@ if($clautoultandam->numrows > 0){
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
   if($clfandam->erro_status=="0"){
     $clfandam->erro(true,false);

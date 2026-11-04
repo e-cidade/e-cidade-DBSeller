@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clportariatipoato->rotulo->label("h41_descr");
               <?=$Lh41_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h41_sequencial",10,$Ih41_sequencial,true,"text",4,"","chave_h41_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clportariatipoato->rotulo->label("h41_descr");
               <?=$Lh41_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h41_descr",20,$Ih41_descr,true,"text",4,"","chave_h41_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clportariatipoato->rotulo->label("h41_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_portariatipoato.php")==true){
@@ -122,12 +122,12 @@ $clportariatipoato->rotulo->label("h41_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

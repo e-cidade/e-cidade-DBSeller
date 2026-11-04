@@ -169,7 +169,7 @@ if ( isset($excluir) || ( isset ( $lExcluir ) && $lExcluir ) ) {
     <td align="left" valign="top" bgcolor="#CCCCCC">
      <center>
       <fieldset style="width:95%;"><legend><b>Etapa cursada fora da Rede Municipal</b></legend>
-       <?include(modification("forms/db_frmhistoricompsfora.php"));?>
+       <?php include(modification("forms/db_frmhistoricompsfora.php"));?>
       </fieldset>
      </center>
     </td>
@@ -199,7 +199,7 @@ if (isset($alterar) && !$lErro) {
      location.href = "edu1_histmpsdiscfora002.php?ed100_i_historicompsfora=<?=$ed99_i_codigo?>";
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 }
 
@@ -218,7 +218,7 @@ if ( isset($excluir) || $lConfirmouExclusao ) {
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>"+
                                    "&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 }
 

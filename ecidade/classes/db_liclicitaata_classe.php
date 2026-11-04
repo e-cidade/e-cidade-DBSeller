@@ -1,68 +1,68 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liclicitaata
-class cl_liclicitaata { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $l39_sequencial = 0; 
-   var $l39_arquivo = 0; 
-   var $l39_arqnome = null; 
-   var $l39_liclicita = 0; 
-   var $l39_posicaoinicial = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_liclicitaata {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $l39_sequencial = 0;
+   var $l39_arquivo = 0;
+   var $l39_arqnome = null;
+   var $l39_liclicita = 0;
+   var $l39_posicaoinicial = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 l39_sequencial = int4 = Sequencial 
-                 l39_arquivo = oid = Arquivo 
-                 l39_arqnome = varchar(50) = Nome Arquivo 
-                 l39_liclicita = int4 = Licitação 
-                 l39_posicaoinicial = bool = Posição Inicial do Registro 
+                 l39_sequencial = int4 = Sequencial
+                 l39_arquivo = oid = Arquivo
+                 l39_arqnome = varchar(50) = Nome Arquivo
+                 l39_liclicita = int4 = Licitação
+                 l39_posicaoinicial = bool = Posição Inicial do Registro
                  ";
-   //funcao construtor da classe 
-   function cl_liclicitaata() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("liclicitaata"); 
+     $this->rotulo = new rotulo("liclicitaata");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_liclicitaata {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l39_sequencial = ($this->l39_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l39_sequencial"]:$this->l39_sequencial);
        $this->l39_arquivo = ($this->l39_arquivo == ""?@$GLOBALS["HTTP_POST_VARS"]["l39_arquivo"]:$this->l39_arquivo);
@@ -83,9 +83,9 @@ class cl_liclicitaata {
      }
    }
    // funcao para inclusao
-   function incluir ($l39_sequencial){ 
+   public function incluir ($l39_sequencial){
       $this->atualizacampos();
-     if($this->l39_arquivo == null ){ 
+     if($this->l39_arquivo == null ){
        $this->erro_sql = " Campo Arquivo nao Informado.";
        $this->erro_campo = "l39_arquivo";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_liclicitaata {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l39_arqnome == null ){ 
+     if($this->l39_arqnome == null ){
        $this->erro_sql = " Campo Nome Arquivo nao Informado.";
        $this->erro_campo = "l39_arqnome";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_liclicitaata {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l39_liclicita == null ){ 
+     if($this->l39_liclicita == null ){
        $this->erro_sql = " Campo Licitação nao Informado.";
        $this->erro_campo = "l39_liclicita";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_liclicitaata {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l39_posicaoinicial == null ){ 
+     if($this->l39_posicaoinicial == null ){
        $this->erro_sql = " Campo Posição Inicial do Registro nao Informado.";
        $this->erro_campo = "l39_posicaoinicial";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_liclicitaata {
        return false;
      }
      if($l39_sequencial == "" || $l39_sequencial == null ){
-       $result = db_query("select nextval('liclicitaata_l39_sequencial_seq')"); 
+       $result = db_query("select nextval('liclicitaata_l39_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: liclicitaata_l39_sequencial_seq do campo: l39_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: liclicitaata_l39_sequencial_seq do campo: l39_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->l39_sequencial = pg_result($result,0,0); 
+       $this->l39_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from liclicitaata_l39_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $l39_sequencial)){
@@ -142,10 +142,10 @@ class cl_liclicitaata {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->l39_sequencial = $l39_sequencial; 
+         $this->l39_sequencial = $l39_sequencial;
        }
      }
-     if(($this->l39_sequencial == null) || ($this->l39_sequencial == "") ){ 
+     if(($this->l39_sequencial == null) || ($this->l39_sequencial == "") ){
        $this->erro_sql = " Campo l39_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_liclicitaata {
        return false;
      }
      $sql = "insert into liclicitaata(
-                                       l39_sequencial 
-                                      ,l39_arquivo 
-                                      ,l39_arqnome 
-                                      ,l39_liclicita 
-                                      ,l39_posicaoinicial 
+                                       l39_sequencial
+                                      ,l39_arquivo
+                                      ,l39_arqnome
+                                      ,l39_liclicita
+                                      ,l39_posicaoinicial
                        )
                 values (
-                                $this->l39_sequencial 
-                               ,$this->l39_arquivo 
-                               ,'$this->l39_arqnome' 
-                               ,$this->l39_liclicita 
-                               ,'$this->l39_posicaoinicial' 
+                                $this->l39_sequencial
+                               ,$this->l39_arquivo
+                               ,'$this->l39_arqnome'
+                               ,$this->l39_liclicita
+                               ,'$this->l39_posicaoinicial'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "liclicitaata ($this->l39_sequencial) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_liclicitaata {
        $resac = db_query("insert into db_acount values($acount,2742,17713,'','".AddSlashes(pg_result($resaco,0,'l39_posicaoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($l39_sequencial=null) { 
+   public function alterar ($l39_sequencial=null) {
       $this->atualizacampos();
      $sql = " update liclicitaata set ";
      $virgula = "";
-     if(trim($this->l39_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_sequencial"])){ 
+     if(trim($this->l39_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_sequencial"])){
        $sql  .= $virgula." l39_sequencial = $this->l39_sequencial ";
        $virgula = ",";
-       if(trim($this->l39_sequencial) == null ){ 
+       if(trim($this->l39_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "l39_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_liclicitaata {
          return false;
        }
      }
-     if(trim($this->l39_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_arquivo"])){ 
+     if(trim($this->l39_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_arquivo"])){
        $sql  .= $virgula." l39_arquivo = $this->l39_arquivo ";
        $virgula = ",";
-       if(trim($this->l39_arquivo) == null ){ 
+       if(trim($this->l39_arquivo) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "l39_arquivo";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_liclicitaata {
          return false;
        }
      }
-     if(trim($this->l39_arqnome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_arqnome"])){ 
+     if(trim($this->l39_arqnome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_arqnome"])){
        $sql  .= $virgula." l39_arqnome = '$this->l39_arqnome' ";
        $virgula = ",";
-       if(trim($this->l39_arqnome) == null ){ 
+       if(trim($this->l39_arqnome) == null ){
          $this->erro_sql = " Campo Nome Arquivo nao Informado.";
          $this->erro_campo = "l39_arqnome";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_liclicitaata {
          return false;
        }
      }
-     if(trim($this->l39_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_liclicita"])){ 
+     if(trim($this->l39_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_liclicita"])){
        $sql  .= $virgula." l39_liclicita = $this->l39_liclicita ";
        $virgula = ",";
-       if(trim($this->l39_liclicita) == null ){ 
+       if(trim($this->l39_liclicita) == null ){
          $this->erro_sql = " Campo Licitação nao Informado.";
          $this->erro_campo = "l39_liclicita";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_liclicitaata {
          return false;
        }
      }
-     if(trim($this->l39_posicaoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_posicaoinicial"])){ 
+     if(trim($this->l39_posicaoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l39_posicaoinicial"])){
        $sql  .= $virgula." l39_posicaoinicial = '$this->l39_posicaoinicial' ";
        $virgula = ",";
-       if(trim($this->l39_posicaoinicial) == null ){ 
+       if(trim($this->l39_posicaoinicial) == null ){
          $this->erro_sql = " Campo Posição Inicial do Registro nao Informado.";
          $this->erro_campo = "l39_posicaoinicial";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_liclicitaata {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "liclicitaata nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->l39_sequencial;
@@ -327,14 +327,14 @@ class cl_liclicitaata {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($l39_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($l39_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l39_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_liclicitaata {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "liclicitaata nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$l39_sequencial;
@@ -392,11 +392,11 @@ class cl_liclicitaata {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,11 +418,11 @@ class cl_liclicitaata {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $l39_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $l39_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,15 +442,15 @@ class cl_liclicitaata {
      $sql2 = "";
      if($dbwhere==""){
        if($l39_sequencial!=null ){
-         $sql2 .= " where liclicitaata.l39_sequencial = $l39_sequencial "; 
-       } 
+         $sql2 .= " where liclicitaata.l39_sequencial = $l39_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,11 +459,11 @@ class cl_liclicitaata {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $l39_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $l39_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,15 +476,15 @@ class cl_liclicitaata {
      $sql2 = "";
      if($dbwhere==""){
        if($l39_sequencial!=null ){
-         $sql2 .= " where liclicitaata.l39_sequencial = $l39_sequencial "; 
-       } 
+         $sql2 .= " where liclicitaata.l39_sequencial = $l39_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1697,7 +1697,8 @@ Ajax.Request = Class.create(Ajax.Base, {
   },
 
   request: function(url) {
-    this.url = url;
+    const isV3 = typeof CurrentWindow !== 'undefined' && typeof CurrentWindow.resolveUrl === 'function';
+    this.url = isV3 ? CurrentWindow.resolveUrl(url) : url;
     this.method = this.options.method;
     var params = Object.isString(this.options.parameters) ?
           this.options.parameters :

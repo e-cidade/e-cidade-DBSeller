@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -72,7 +72,7 @@ if ($oGet->tipo == "urbano") {
                   <b>Código da ITBI:</b>
                 </td>
                 <td align="left">
-                    <?
+                    <?php
                     db_input('it01_guia', 20, $Iit01_guia, true, 'text', 3);
                     db_input('it22_sequencial', 10, "", true, 'hidden', 3);
                     db_input('listaFormas', 10, "", true, 'hidden', 3);
@@ -85,7 +85,7 @@ if ($oGet->tipo == "urbano") {
                     <?= @$Lit01_mail ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('it01_mail', 50, $Iit01_mail, true, 'text', $db_opcao, "");
                     ?>
                 </td>
@@ -185,7 +185,7 @@ if ($oGet->tipo == "urbano") {
                               <b>Setor/Bairro :</b>
                             </td>
                             <td colspan="3">
-                                <?
+                                <?php
                                 db_input('it22_setor', 20, $Iit22_setor, true, 'text', $db_opcao);
                                 ?>
                             </td>
@@ -195,7 +195,7 @@ if ($oGet->tipo == "urbano") {
                                 <?= @$Lit22_descrlograd ?>
                             </td>
                             <td colspan="3">
-                                <?
+                                <?php
                                 db_input('it22_descrlograd', 112, $Iit22_descrlograd, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -205,7 +205,7 @@ if ($oGet->tipo == "urbano") {
                                 <?= @$Lit22_numero ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input('it22_numero', 20, $Iit22_numero, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -213,7 +213,7 @@ if ($oGet->tipo == "urbano") {
                                 <?= @$Lit22_compl ?>
                             </td>
                             <td align="right">
-                                <?
+                                <?php
                                 db_input('it22_compl', 20, $Iit22_compl, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -223,7 +223,7 @@ if ($oGet->tipo == "urbano") {
                                 <?= @$Lit22_quadra ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input('it22_quadra', 20, $Iit22_quadra, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -231,22 +231,22 @@ if ($oGet->tipo == "urbano") {
                                 <?= @$Lit22_lote ?>
                             </td>
                             <td align="right">
-                                <?
+                                <?php
                                 db_input('it22_lote', 20, $Iit22_lote, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
                           </tr>
 
-                            <? if ($oGet->tipo == "urbano") { ?>
+                            <?php if ($oGet->tipo == "urbano") { ?>
 
                               <tr>
                                 <td nowrap title="<?= @$Tit05_itbisituacao ?>">
-                                    <?
+                                    <?php
                                     db_ancora(@$Lit05_itbisituacao, "js_pesquisait05_itbisituacao(true);", $db_opcao);
                                     ?>
                                 </td>
                                 <td colspan="3">
-                                    <?
+                                    <?php
                                     db_input('it05_itbisituacao', 20, $Iit05_itbisituacao, true, 'text', $db_opcao,
                                       " onchange='js_pesquisait05_itbisituacao(false);'");
                                     db_input('it07_descr', 87, $Iit07_descr, true, 'text', 3, '');
@@ -254,13 +254,13 @@ if ($oGet->tipo == "urbano") {
                                 </td>
                               </tr>
 
-                            <? } else { ?>
+                            <?php } else { ?>
                               <tr>
                                 <td>
                                     <?= @$Lit18_coordenadas ?>
                                 </td>
                                 <td colspan="3">
-                                    <?
+                                    <?php
                                     db_input('it18_coordenadas', 112, $Iit18_coordenadas, true, 'text', $db_opcao);
                                     ?>
                                 </td>
@@ -270,7 +270,7 @@ if ($oGet->tipo == "urbano") {
                                   <b>Localização:</b>
                                 </td>
                                 <td colspan="3">
-                                    <?
+                                    <?php
                                     db_input('it18_localimovel', 112, $Iit18_localimovel, true, 'text', $db_opcao);
                                     ?>
                                 </td>
@@ -280,7 +280,7 @@ if ($oGet->tipo == "urbano") {
                                   <b>Distância da Cidade:</b>
                                 </td>
                                 <td colspan="3">
-                                    <?
+                                    <?php
                                     db_input('it18_distcidade', 20, $Iit18_distcidade, true, 'text', $db_opcao);
                                     ?>
                                   <b>Km</b>
@@ -300,14 +300,14 @@ if ($oGet->tipo == "urbano") {
                                   <b>Nome Logradouro:</b>
                                 </td>
                                 <td colspan="3">
-                                    <?
+                                    <?php
                                     db_input('it18_nomelograd', 112, $Iit18_nomelograd, true, 'text', $db_opcao);
                                     ?>
                                 </td>
                               </tr>
                               <tr>
                                 <td colspan="4">
-                                    <?
+                                    <?php
                                     db_ancora("<b>Característica do Imóvel</b>", "js_caract('imovel');", $db_opcao);
                                     db_input('valorCaracImovel', 20, "", true, 'hidden', $db_opcao, "");
                                     ?>
@@ -315,7 +315,7 @@ if ($oGet->tipo == "urbano") {
                               </tr>
                               <tr>
                                 <td colspan="4">
-                                    <?
+                                    <?php
                                     db_ancora("<b>Característica de Utilização do Imóvel</b>", "js_caract('util');",
                                       $db_opcao);
                                     db_input('valorCaracUtil', 20, "", true, 'hidden', $db_opcao, "");
@@ -323,7 +323,7 @@ if ($oGet->tipo == "urbano") {
                                 </td>
                               </tr>
 
-                            <? } ?>
+                            <?php } ?>
 
                         </table>
                   </fieldset>
@@ -341,7 +341,7 @@ if ($oGet->tipo == "urbano") {
                               <b>Área Total:</b>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input('it01_areaterreno', 20, $Iit01_areaterreno, true, 'text', $db_opcao, "");
                                 ?>
                               <b><?= $sMedida ?></b>
@@ -350,21 +350,21 @@ if ($oGet->tipo == "urbano") {
                               <b>Área Transmitida:</b>
                             </td>
                             <td align="right">
-                                <?
+                                <?php
                                 db_input('it01_areatrans', 20, $Iit01_areatrans, true, 'text', $db_opcao, "");
                                 ?>
                               <b><?= $sMedida ?></b>
                             </td>
                           </tr>
 
-                            <? if ($oGet->tipo == "urbano") { ?>
+                            <?php if ($oGet->tipo == "urbano") { ?>
 
                               <tr>
                                 <td>
                                   <b>Frente:</b>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                     db_input('it05_frente', 20, $Iit05_frente, true, 'text', $db_opcao, "");
                                     ?>
                                   <b><?= $sMedida ?></b>
@@ -373,7 +373,7 @@ if ($oGet->tipo == "urbano") {
                                   <b>Fundos:</b>
                                 </td>
                                 <td align="right">
-                                    <?
+                                    <?php
                                     db_input('it05_fundos', 20, $Iit05_fundos, true, 'text', $db_opcao, "");
                                     ?>
                                   <b><?= $sMedida ?></b>
@@ -384,7 +384,7 @@ if ($oGet->tipo == "urbano") {
                                   <b>Lado Direito:</b>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                     db_input('it05_direito', 20, $Iit05_direito, true, 'text', $db_opcao, "");
                                     ?>
                                   <b><?= $sMedida ?></b>
@@ -393,20 +393,20 @@ if ($oGet->tipo == "urbano") {
                                   <b>Lado Esquerdo:</b>
                                 </td>
                                 <td align="right">
-                                    <?
+                                    <?php
                                     db_input('it05_esquerdo', 20, $Iit05_esquerdo, true, 'text', $db_opcao, "");
                                     ?>
                                   <b><?= $sMedida ?></b>
                                 </td>
                               </tr>
 
-                            <? } else { ?>
+                            <?php } else { ?>
                               <tr>
                                 <td nowrap title="<?= @$Tit18_frente ?>">
                                     <?= @$Lit18_frente ?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                     db_input('it18_frente', 20, $Iit18_frente, true, 'text', $db_opcao, "");
                                     db_input('it18_guia', 10, $Iit18_guia, true, 'hidden', $db_opcao, "");
                                     ?>
@@ -416,7 +416,7 @@ if ($oGet->tipo == "urbano") {
                                     <?= @$Lit18_fundos ?>
                                 </td>
                                 <td align="right">
-                                    <?
+                                    <?php
                                     db_input('it18_fundos', 20, $Iit18_fundos, true, 'text', $db_opcao, "")
                                     ?>
                                   <b><?= $sMedida ?></b>
@@ -427,13 +427,13 @@ if ($oGet->tipo == "urbano") {
                                     <?= @$Lit18_prof ?>
                                 </td>
                                 <td colspan="2">
-                                    <?
+                                    <?php
                                     db_input('it18_prof', 20, $Iit18_prof, true, 'text', $db_opcao, "")
                                     ?>
                                   <b><?= $sMedida ?></b>
                                 </td>
                               </tr>
-                            <? } ?>
+                            <?php } ?>
                         </table>
                   </fieldset>
                 </td>
@@ -447,12 +447,12 @@ if ($oGet->tipo == "urbano") {
                         <table width="100%">
                           <tr>
                             <td width="100px;">
-                                <?
+                                <?php
                                 db_ancora("<b>Setor:</b>", "js_pesquisait29_setorloc(true);", $db_opcao);
                                 ?>
                             </td>
                             <td colspan="3">
-                                <?
+                                <?php
                                 db_input('it29_setorloc', 20, $Iit29_setorloc, true, 'text', $db_opcao,
                                   "onChange='js_pesquisait29_setorloc(false);'");
                                 db_input('j05_descr', 87, $Ij05_descr, true, 'text', 3);
@@ -464,7 +464,7 @@ if ($oGet->tipo == "urbano") {
                               <b>Quadra:</b>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input('it22_quadrari', 20, $Iit22_quadrari, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -472,7 +472,7 @@ if ($oGet->tipo == "urbano") {
                               <b>Lote:</b>
                             </td>
                             <td align="right">
-                                <?
+                                <?php
                                 db_input('it22_loteri', 20, $Iit22_loteri, true, 'text', $db_opcao, "");
                                 ?>
                             </td>
@@ -482,7 +482,7 @@ if ($oGet->tipo == "urbano") {
                               <b>Matrícula</b>
                             </td>
                             <td colspan="3">
-                                <?
+                                <?php
                                 db_input('it22_matricri', 20, $Iit22_matricri, true, 'text', $db_opcao);
                                 ?>
                             </td>
@@ -504,12 +504,12 @@ if ($oGet->tipo == "urbano") {
             <table width="100%">
               <tr>
                 <td title="<?= @$Tit01_tipotransacao ?>" width="16%">
-                    <?
+                    <?php
                     db_ancora(@$Lit01_tipotransacao, "js_pesquisait01_tipotransacao(true);", $db_opcao);
                     ?>
                 </td>
                 <td colspan="5">
-                    <?
+                    <?php
                     db_input('it01_tipotransacao', 20, $Iit01_tipotransacao, true, 'text', $db_opcao,
                       " onBlur='js_pesquisait01_tipotransacao(false);'");
                     db_input('it04_descr', 90, $Iit04_descr, true, 'text', 3, '');
@@ -521,7 +521,7 @@ if ($oGet->tipo == "urbano") {
                   <b>Valor <?= $sPrefix . $sTerraLabel ?>:</b>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('it01_valorterreno', 20, $Iit01_valorterreno, true, 'text', $db_opcao,
                       "onkeyup='js_validaValores(this)'");
                     ?>
@@ -530,7 +530,7 @@ if ($oGet->tipo == "urbano") {
                   <b>Valor das Benfeitorias:</b>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('it01_valorconstr', 20, $Iit01_valorconstr, true, 'text', $db_opcao,
                       "onkeyup='js_validaValores(this)'");
                     ?>
@@ -539,7 +539,7 @@ if ($oGet->tipo == "urbano") {
                   <b>Valor Total:</b>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('it01_valortransacao', 20, $Iit01_valortransacao, true, 'text', $db_opcao,
                       "onkeyup='js_validaValores(this)'");
                     ?>
@@ -578,7 +578,7 @@ if ($oGet->tipo == "urbano") {
             <table width="100%">
               <tr>
                 <td>
-                    <?
+                    <?php
                     db_textarea('it01_obs', 3, 134, $Iit01_obs, true, 'text', $db_opcao, "");
                     ?>
                 </td>
@@ -1097,7 +1097,7 @@ spanPersonalizado_gridTaxas.setAttribute("style", "float: right; color: blue");
     location.href = 'itb1_itbiretificacaodadosimovel001.php?chavepesquisa=' + chave + '&tipo=' + sTipo;
   }
 
-  <?
+  <?php
   if (isset($oGet->chavepesquisa)) {
       echo "js_validaValores(document.form1.it01_valortransacao);";
       echo "js_consultaFormaPgtoCadastrada(" . $oGet->chavepesquisa . ");";

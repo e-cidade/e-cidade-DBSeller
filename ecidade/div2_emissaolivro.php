@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ db_postmemory($HTTP_POST_VARS);
 	       Tipo:
 	      </td>
 	      <td>
-	       <? 
+	       <?php 
 	        $tipo = array("r"=>"Resumido","c"=>"Completo");
 	        db_select("tipo",$tipo,true,2); 
 	       ?>
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
 	    <tr>
           <td>Complementar:</td>
 	      <td>
-	       <?
+	       <?php
             $arr = array("nao" => "Não", "sim" => "Sim");
             db_select("complementar", $arr, true, 1, "");
        	   ?>
@@ -79,7 +79,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
 	      <td>Numero do livro:</td>
 	      <td>
-	       <?
+	       <?php
 	        if(empty($processar)){	   
 	         $result=$cldivida->sql_record($cldivida->sql_query_file(null,"max(v01_livro) as v01_livro",""," v01_folha <> 0 and v01_instit = ".db_getsession('DB_instit') ));
   	         db_fieldsmemory($result,0);
@@ -91,7 +91,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
 	      <td>Data para correção:</td>
 	      <td>
-	       <?
+	       <?php
             if(empty($v01_dtoper_dia)){
 	         $v01_dtoper_dia =  date("d",db_getsession("DB_datausu"));
 	         $v01_dtoper_mes =  date("m",db_getsession("DB_datausu"));
@@ -106,7 +106,7 @@ db_postmemory($HTTP_POST_VARS);
     <input name="processar" type='submit' value="Processar" onClick="return imprime()">
   </form>
 
-  <? 
+  <?php 
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
  </body>

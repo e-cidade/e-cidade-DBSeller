@@ -57,7 +57,7 @@ $oRotulo->label("z01_nome");
               <?=$Lla06_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("la06_i_codigo",10,$Ila06_i_codigo,true,"text",4,"","chave_la06_i_codigo");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $oRotulo->label("z01_nome");
              <b>Nome:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $oRotulo->label("z01_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_labresp.php")==true){
@@ -115,8 +115,14 @@ $oRotulo->label("z01_nome");
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
-          $result = $cllab_labresp->sql_record($cllab_labresp->sql_query($pesquisa_chave));
-          if($cllab_labresp->numrows!=0){
+          
+          $where = "la06_i_codigo = $pesquisa_chave";
+          if(isset($la24_i_laboratorio)){
+            $where .=" and la06_i_laboratorio=$la24_i_laboratorio ";
+          }          
+          $campos = "lab_labresp.*,z01_nome";
+          $result = db_query($cllab_labresp->sql_query(null,$campos,null,$where));
+          if(pg_num_rows($result)!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$z01_nome',false);</script>";
           }else{
@@ -132,12 +138,12 @@ $oRotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

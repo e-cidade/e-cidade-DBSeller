@@ -77,7 +77,7 @@ $oRotuloConhistdocRegra->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('c92_sequencial', 10, $Ic92_sequencial, true, 'text', 3);
               ?>
             </td>
@@ -87,7 +87,7 @@ $oRotuloConhistdocRegra->label();
             <td><b>Documento:</b></td>
             
             <td>
-              <?
+              <?php
               $funcaoJsDocumento = "onchange = 'js_pesquisaDocumento(false);'";
               $c53_coddoc = $oGet->iCodigoDocumento;
               $c53_descr  = $oGet->sDescricaoDocumento;
@@ -104,7 +104,7 @@ $oRotuloConhistdocRegra->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('c92_descricao', 57, $Ic92_descricao, true, 'text', 1);
               ?>
             </td>

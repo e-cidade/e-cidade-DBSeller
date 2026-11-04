@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: itbi
 //CLASSE DA ENTIDADE itbimatric
-class cl_itbimatric { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $it06_guia = 0; 
-   var $it06_matric = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_itbimatric {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $it06_guia = 0;
+   var $it06_matric = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 it06_guia = int8 = Guia 
-                 it06_matric = int4 = Inscrição Imóvel 
+                 it06_guia = int8 = Guia
+                 it06_matric = int4 = Inscrição Imóvel
                  ";
-   //funcao construtor da classe 
-   function cl_itbimatric() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("itbimatric"); 
+     $this->rotulo = new rotulo("itbimatric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_itbimatric {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->it06_guia = ($this->it06_guia == ""?@$GLOBALS["HTTP_POST_VARS"]["it06_guia"]:$this->it06_guia);
        $this->it06_matric = ($this->it06_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["it06_matric"]:$this->it06_matric);
@@ -75,11 +75,11 @@ class cl_itbimatric {
      }
    }
    // funcao para inclusao
-   function incluir ($it06_guia,$it06_matric){ 
+   public function incluir ($it06_guia,$it06_matric){
       $this->atualizacampos();
-       $this->it06_guia = $it06_guia; 
-       $this->it06_matric = $it06_matric; 
-     if(($this->it06_guia == null) || ($this->it06_guia == "") ){ 
+       $this->it06_guia = $it06_guia;
+       $this->it06_matric = $it06_matric;
+     if(($this->it06_guia == null) || ($this->it06_guia == "") ){
        $this->erro_sql = " Campo it06_guia nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_itbimatric {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->it06_matric == null) || ($this->it06_matric == "") ){ 
+     if(($this->it06_matric == null) || ($this->it06_matric == "") ){
        $this->erro_sql = " Campo it06_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_itbimatric {
        return false;
      }
      $sql = "insert into itbimatric(
-                                       it06_guia 
-                                      ,it06_matric 
+                                       it06_guia
+                                      ,it06_matric
                        )
                 values (
-                                $this->it06_guia 
-                               ,$this->it06_matric 
+                                $this->it06_guia
+                               ,$this->it06_matric
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Matricula ITBI ($this->it06_guia."-".$this->it06_matric) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_itbimatric {
        $resac = db_query("insert into db_acount values($acount,797,5409,'','".AddSlashes(pg_result($resaco,0,'it06_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($it06_guia=null,$it06_matric=null) { 
+   public function alterar ($it06_guia=null,$it06_matric=null) {
       $this->atualizacampos();
      $sql = " update itbimatric set ";
      $virgula = "";
-     if(trim($this->it06_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it06_guia"])){ 
+     if(trim($this->it06_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it06_guia"])){
        $sql  .= $virgula." it06_guia = $this->it06_guia ";
        $virgula = ",";
-       if(trim($this->it06_guia) == null ){ 
+       if(trim($this->it06_guia) == null ){
          $this->erro_sql = " Campo Guia nao Informado.";
          $this->erro_campo = "it06_guia";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_itbimatric {
          return false;
        }
      }
-     if(trim($this->it06_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it06_matric"])){ 
+     if(trim($this->it06_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it06_matric"])){
        $sql  .= $virgula." it06_matric = $this->it06_matric ";
        $virgula = ",";
-       if(trim($this->it06_matric) == null ){ 
+       if(trim($this->it06_matric) == null ){
          $this->erro_sql = " Campo Inscrição Imóvel nao Informado.";
          $this->erro_campo = "it06_matric";
          $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_itbimatric {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Matricula ITBI nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->it06_guia."-".$this->it06_matric;
@@ -220,14 +220,14 @@ class cl_itbimatric {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($it06_guia=null,$it06_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($it06_guia=null,$it06_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($it06_guia,$it06_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -261,7 +261,7 @@ class cl_itbimatric {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Matricula ITBI nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$it06_guia."-".$it06_matric;
@@ -289,11 +289,11 @@ class cl_itbimatric {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_itbimatric {
       }
      return $result;
    }
-   function sql_query ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -336,23 +336,23 @@ class cl_itbimatric {
      $sql2 = "";
      if($dbwhere==""){
        if($it06_guia!=null ){
-         $sql2 .= " where itbimatric.it06_guia = $it06_guia "; 
-       } 
+         $sql2 .= " where itbimatric.it06_guia = $it06_guia ";
+       }
        if($it06_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " itbimatric.it06_matric = $it06_matric "; 
-       } 
+         }
+         $sql2 .= " itbimatric.it06_matric = $it06_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,10 +361,10 @@ class cl_itbimatric {
      }
      return $sql;
   }
-   function sql_query_file ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,23 +377,23 @@ class cl_itbimatric {
      $sql2 = "";
      if($dbwhere==""){
        if($it06_guia!=null ){
-         $sql2 .= " where itbimatric.it06_guia = $it06_guia "; 
-       } 
+         $sql2 .= " where itbimatric.it06_guia = $it06_guia ";
+       }
        if($it06_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " itbimatric.it06_matric = $it06_matric "; 
-       } 
+         }
+         $sql2 .= " itbimatric.it06_matric = $it06_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,11 +402,11 @@ class cl_itbimatric {
      }
      return $sql;
   }
-  
-   function sql_query_propri ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query_propri ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,31 +415,31 @@ class cl_itbimatric {
      }else{
        $sql .= $campos;
      }
-     
+
      $sql .= " from itbimatric ";
      $sql .= "      inner join iptubase  on  iptubase.j01_matric = itbimatric.it06_matric";
      $sql .= "      inner join cgm       on  cgm.z01_numcgm      = iptubase.j01_numcgm";
-     
+
      $sql2 = "";
      if($dbwhere==""){
        if($it06_guia!=null ){
-         $sql2 .= " where itbimatric.it06_guia = $it06_guia "; 
-       } 
+         $sql2 .= " where itbimatric.it06_guia = $it06_guia ";
+       }
        if($it06_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " itbimatric.it06_matric = $it06_matric "; 
-       } 
+         }
+         $sql2 .= " itbimatric.it06_matric = $it06_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,12 +447,12 @@ class cl_itbimatric {
        }
      }
      return $sql;
-  }  
-  
-   function sql_query_outros_propri ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+  }
+
+   public function sql_query_outros_propri ( $it06_guia=null,$it06_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,31 +461,31 @@ class cl_itbimatric {
      }else{
        $sql .= $campos;
      }
-     
+
      $sql .= " from itbimatric ";
      $sql .= "      inner join propri  on  propri.j42_matric = itbimatric.it06_matric";
      $sql .= "      inner join cgm     on  cgm.z01_numcgm    = propri.j42_numcgm";
-     
+
      $sql2 = "";
      if($dbwhere==""){
        if($it06_guia!=null ){
-         $sql2 .= " where itbimatric.it06_guia = $it06_guia "; 
-       } 
+         $sql2 .= " where itbimatric.it06_guia = $it06_guia ";
+       }
        if($it06_matric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " itbimatric.it06_matric = $it06_matric "; 
-       } 
+         }
+         $sql2 .= " itbimatric.it06_matric = $it06_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_itbimatric {
        }
      }
      return $sql;
-  }    
-  
+  }
+
 }
 ?>

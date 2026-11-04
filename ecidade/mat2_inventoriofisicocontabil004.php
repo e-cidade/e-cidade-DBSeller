@@ -45,7 +45,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, prototype.js, strings.js");
 db_app::load("estilos.css");
 ?>
@@ -70,12 +70,12 @@ db_app::load("estilos.css");
             <tr>
                <td><b>Período:</b></td>
                <td>
-                 <?  
+                 <?php  
                    db_inputdata('datainicial',null, null,null, true, "text", 1);
                  ?>
                  
                  <b>&nbsp; A &nbsp;</b> 
-                 <?  
+                 <?php  
                    db_inputdata('datafinal',null, null,null, true, "text", 1);
                  ?> 
                </td>
@@ -85,7 +85,7 @@ db_app::load("estilos.css");
                 <b>Almoxarifado</b>
               </td>
               <td colspan="4">
-              <?
+              <?php
               $cldb_almox = db_utils::getDao("db_almox");
               $result = $cldb_almox->sql_record($cldb_almox->sql_query(null,"coddepto,descrdepto","descrdepto"));
               db_selectrecord("coddepto",$result,true,(isset($mostrapesquisa)?"3":"1"),"","","","0-Selecione");
@@ -99,7 +99,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aOrderBy = array(1 => "Código do Item",
                                     2 => "Descrição do Item"
                                    );
@@ -115,7 +115,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aSaldoNegativo = array("N" => "Não",
                                           "S" => "Sim"
                                    );
@@ -131,7 +131,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aItensSemMovimento = array("N" => "Não",
                                               "S" => "Sim");
                                    
@@ -146,7 +146,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aOpcao = array(1 => "Almoxarifado",
                                   2 => "Conta"
                                  );
@@ -162,7 +162,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aTipo = array(1 => "Sintética",
                                  2 => "Analitica"
                                 );
@@ -178,7 +178,7 @@ db_app::load("estilos.css");
                 </b>
               </td>
               <td>
-                 <?
+                 <?php
                   $aAgruparPorElemento = array(1 => "Nao",
                                                2 => "Sim"
                                               );

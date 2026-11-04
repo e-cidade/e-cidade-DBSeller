@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
               <?=$Lv18_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v18_sequencial",10,$Iv18_sequencial,true,"text",4,"","chave_v18_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
               <?=$Lv18_isencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v18_isencao",10,$Iv18_isencao,true,"text",4,"","chave_v18_isencao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaolanc.php")==true){
@@ -122,12 +122,12 @@ $clisencaolanc->rotulo->label("v18_isencao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

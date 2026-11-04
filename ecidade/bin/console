@@ -40,7 +40,6 @@ $application->add(new ECidade\Console\Command\Extension\Status());
 $application->add(new ECidade\Console\Command\Modification\Install());
 $application->add(new ECidade\Console\Command\Modification\Uninstall());
 $application->add(new ECidade\Console\Command\Modification\Unpack());
-$application->add(new ECidade\Console\Command\Modification\Apply());
 $application->add(new ECidade\Console\Command\Modification\UpdateFile());
 $application->add(new ECidade\Console\Command\Modification\UpdateFileTest());
 $application->add(new ECidade\Console\Command\Modification\RefreshCache());

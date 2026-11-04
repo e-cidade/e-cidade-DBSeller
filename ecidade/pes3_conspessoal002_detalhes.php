@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -123,10 +123,10 @@ $clgera_sql_folha = new cl_gera_sql_folha;
   border: 1px solid #cccccc;
 }
 .bordasCor2{
-  border-top-color: #orange;
-  border-right-color: #orange;
-  border-left-color: #orange;
-  border-bottom-color: #orange;
+  border-top-color: orange;
+  border-right-color: orange;
+  border-left-color: orange;
+  border-bottom-color: orange;
   background-color: #EFE029;
 }
 .bordasCor1{
@@ -143,7 +143,7 @@ $clgera_sql_folha = new cl_gera_sql_folha;
 <?php
   db_postmemory($HTTP_GET_VARS,0);
   if ($solicitacao == "Ferias") {
-    $sql_cadferia = $clcadferia->sql_query_file(null,"*","r30_perai","r30_anousu = ".$ano." and r30_mesusu = ".$mes." and r30_regist = ".$parametro);
+    $sql_cadferia = $clcadferia->sql_query_file(null,"distinct *","r30_perai","r30_anousu = ".$ano." and r30_mesusu = ".$mes." and r30_regist = ".$parametro);
     $result = $clcadferia->sql_record($sql_cadferia);
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ $clrotulo->label("ob08_area");
        </tr>
        <tr>
           <td colspan="2">
-            <?
+            <?php
               // $aux = new cl_arquivo_auxiliar;
               $aux->cabecalho = "<strong>Ocupação</strong>";
               $aux->codigo = "j31_codigo"; //chave de retorno da func
@@ -107,11 +107,11 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Unidades de:</td>
         <td>
-	        <?
+	        <?php
             db_input('ob07_unidades',6,$Iob07_unidades,true,'text',1,"","ob07_unidadesINI","");             
           ?>
 	        <b>até:</b>
-          <?
+          <?php
             db_input('ob07_unidades',6,$Iob07_unidades,true,'text',1,"","ob07_unidadesFIN","");             
           ?>
         </td>
@@ -119,11 +119,11 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Pavimentos de:</td>
         <td>
-	        <?
+	        <?php
             db_input('ob07_pavimentos',6,$Iob07_pavimentos,true,'text',1,"","ob07_pavimentosINI","");             
           ?>
 	        <b>até:</b>
-          <?
+          <?php
             db_input('ob07_pavimentos',6,$Iob07_pavimentos,true,'text',1,"","ob07_pavimentosFIN","");             
           ?>
         </td>
@@ -131,11 +131,11 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Área de:</td>
         <td>
-  	      <?
+  	      <?php
             db_input('ob08_area',6,$Iob08_area,true,'text',1,"","ob08_areaINI","");             
           ?>
   	      <b>até:</b>
-          <?
+          <?php
             db_input('ob08_area',6,$Iob08_area,true,'text',1,"","ob08_areaFIN","");             
           ?>
         </td>
@@ -143,7 +143,7 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Data inicio de:</td>
         <td>
-          <? 
+          <?php 
 	          db_inputdata('data1','','','',true,'text',1,"");   		          
             echo "<b> a </b> ";
             db_inputdata('data2','','','',true,'text',1,"");
@@ -153,7 +153,7 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Data final de:</td>
         <td>
-          <? 
+          <?php 
 	          db_inputdata('data3','','','',true,'text',1,"");   		          
             echo "<b> a </b> ";
             db_inputdata('data4','','','',true,'text',1,"");
@@ -163,7 +163,7 @@ $clrotulo->label("ob08_area");
       <tr>
         <td>Habite-se:</td>
         <td>
-	        <?
+	        <?php
             $x = array("t"=>"Todas","c"=>"com Habite-se","s"=>"sem Habite-se");
             db_select('habite',$x,true,1,"");
           ?>

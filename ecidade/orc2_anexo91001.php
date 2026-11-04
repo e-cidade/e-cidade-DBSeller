@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -158,7 +158,7 @@ function js_limpa(){
       </tr>
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('parent.js_limpa',300,100);
 	?>
 	</td>
@@ -170,7 +170,7 @@ function js_limpa(){
 	   <tr>
              <td align="right" ><strong>Filtro :</strong></td>
              <td align="left">
-	      <?
+	      <?php
 	        $xy = array('1A'=>'Órgão','3B'=>'Função');
 	        db_select('nivel',$xy,true,2,"");
 	      ?>
@@ -184,7 +184,7 @@ function js_limpa(){
         <td colspan="2" >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
-       <?
+       <?php
         db_selorcbalanco();
        ?>
       <tr>
@@ -195,7 +195,7 @@ function js_limpa(){
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

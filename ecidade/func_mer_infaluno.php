@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("ed47_v_nome");
               <?=$Led47_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed47_i_codigo",5,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrotulo->label("ed47_v_nome");
               <b>Aluno</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed47_v_nome",40,@$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clrotulo->label("ed47_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         $campos = "me14_i_codigo,ed47_i_codigo,ed47_v_nome,me14_f_peso,me14_f_altura";
@@ -132,13 +132,13 @@ $clrotulo->label("ed47_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php
   
 }
 ?>

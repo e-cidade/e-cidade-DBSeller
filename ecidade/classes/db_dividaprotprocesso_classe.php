@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: divida
 //CLASSE DA ENTIDADE dividaprotprocesso
-class cl_dividaprotprocesso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v88_sequencial = 0; 
-   var $v88_divida = 0; 
-   var $v88_protprocesso = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_dividaprotprocesso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v88_sequencial = 0;
+   var $v88_divida = 0;
+   var $v88_protprocesso = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v88_sequencial = int4 = Sequencial 
-                 v88_divida = int4 = Código da Divida 
-                 v88_protprocesso = int4 = Número do processo 
+                 v88_sequencial = int4 = Sequencial
+                 v88_divida = int4 = Código da Divida
+                 v88_protprocesso = int4 = Número do processo
                  ";
-   //funcao construtor da classe 
-   function cl_dividaprotprocesso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("dividaprotprocesso"); 
+     $this->rotulo = new rotulo("dividaprotprocesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_dividaprotprocesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v88_sequencial = ($this->v88_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v88_sequencial"]:$this->v88_sequencial);
        $this->v88_divida = ($this->v88_divida == ""?@$GLOBALS["HTTP_POST_VARS"]["v88_divida"]:$this->v88_divida);
@@ -77,9 +77,9 @@ class cl_dividaprotprocesso {
      }
    }
    // funcao para inclusao
-   function incluir ($v88_sequencial){ 
+   public function incluir ($v88_sequencial){
       $this->atualizacampos();
-     if($this->v88_divida == null ){ 
+     if($this->v88_divida == null ){
        $this->erro_sql = " Campo Código da Divida nao Informado.";
        $this->erro_campo = "v88_divida";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_dividaprotprocesso {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v88_protprocesso == null ){ 
+     if($this->v88_protprocesso == null ){
        $this->erro_sql = " Campo Número do processo nao Informado.";
        $this->erro_campo = "v88_protprocesso";
        $this->erro_banco = "";
@@ -98,19 +98,19 @@ class cl_dividaprotprocesso {
        return false;
      }
      if($v88_sequencial == "" || $v88_sequencial == null ){
-       $result = db_query("select nextval('dividaprotprocesso_v88_sequencial_seq')"); 
+       $result = db_query("select nextval('dividaprotprocesso_v88_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: dividaprotprocesso_v88_sequencial_seq do campo: v88_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: dividaprotprocesso_v88_sequencial_seq do campo: v88_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->v88_sequencial = pg_result($result,0,0); 
+       $this->v88_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from dividaprotprocesso_v88_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v88_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v88_sequencial)){
          $this->erro_sql = " Campo v88_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -118,10 +118,10 @@ class cl_dividaprotprocesso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->v88_sequencial = $v88_sequencial; 
+         $this->v88_sequencial = $v88_sequencial;
        }
      }
-     if(($this->v88_sequencial == null) || ($this->v88_sequencial == "") ){ 
+     if(($this->v88_sequencial == null) || ($this->v88_sequencial == "") ){
        $this->erro_sql = " Campo v88_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_dividaprotprocesso {
        return false;
      }
      $sql = "insert into dividaprotprocesso(
-                                       v88_sequencial 
-                                      ,v88_divida 
-                                      ,v88_protprocesso 
+                                       v88_sequencial
+                                      ,v88_divida
+                                      ,v88_protprocesso
                        )
                 values (
-                                $this->v88_sequencial 
-                               ,$this->v88_divida 
-                               ,$this->v88_protprocesso 
+                                $this->v88_sequencial
+                               ,$this->v88_divida
+                               ,$this->v88_protprocesso
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "divida processo ($this->v88_sequencial) nao Incluído. Inclusao Abortada.";
@@ -164,29 +164,29 @@ class cl_dividaprotprocesso {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
 
-    
+
      $resaco = $this->sql_record($this->sql_query_file($this->v88_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18804,'$this->v88_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3334,18804,'','".AddSlashes(pg_result($resaco,0,'v88_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3334,18805,'','".AddSlashes(pg_result($resaco,0,'v88_divida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3334,18806,'','".AddSlashes(pg_result($resaco,0,'v88_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3334,18804,'','".AddSlashes(pg_fetch_result($resaco,0,'v88_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3334,18805,'','".AddSlashes(pg_fetch_result($resaco,0,'v88_divida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3334,18806,'','".AddSlashes(pg_fetch_result($resaco,0,'v88_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
-     
+
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($v88_sequencial=null) { 
+   public function alterar ($v88_sequencial=null) {
       $this->atualizacampos();
      $sql = " update dividaprotprocesso set ";
      $virgula = "";
-     if(trim($this->v88_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_sequencial"])){ 
+     if(trim($this->v88_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_sequencial"])){
        $sql  .= $virgula." v88_sequencial = $this->v88_sequencial ";
        $virgula = ",";
-       if(trim($this->v88_sequencial) == null ){ 
+       if(trim($this->v88_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v88_sequencial";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_dividaprotprocesso {
          return false;
        }
      }
-     if(trim($this->v88_divida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_divida"])){ 
+     if(trim($this->v88_divida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_divida"])){
        $sql  .= $virgula." v88_divida = $this->v88_divida ";
        $virgula = ",";
-       if(trim($this->v88_divida) == null ){ 
+       if(trim($this->v88_divida) == null ){
          $this->erro_sql = " Campo Código da Divida nao Informado.";
          $this->erro_campo = "v88_divida";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_dividaprotprocesso {
          return false;
        }
      }
-     if(trim($this->v88_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_protprocesso"])){ 
+     if(trim($this->v88_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v88_protprocesso"])){
        $sql  .= $virgula." v88_protprocesso = $this->v88_protprocesso ";
        $virgula = ",";
-       if(trim($this->v88_protprocesso) == null ){ 
+       if(trim($this->v88_protprocesso) == null ){
          $this->erro_sql = " Campo Número do processo nao Informado.";
          $this->erro_campo = "v88_protprocesso";
          $this->erro_banco = "";
@@ -230,19 +230,19 @@ class cl_dividaprotprocesso {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18804,'$this->v88_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v88_sequencial"]) || $this->v88_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3334,18804,'".AddSlashes(pg_result($resaco,$conresaco,'v88_sequencial'))."','$this->v88_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3334,18804,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v88_sequencial'))."','$this->v88_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v88_divida"]) || $this->v88_divida != "")
-           $resac = db_query("insert into db_acount values($acount,3334,18805,'".AddSlashes(pg_result($resaco,$conresaco,'v88_divida'))."','$this->v88_divida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3334,18805,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v88_divida'))."','$this->v88_divida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v88_protprocesso"]) || $this->v88_protprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3334,18806,'".AddSlashes(pg_result($resaco,$conresaco,'v88_protprocesso'))."','$this->v88_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3334,18806,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v88_protprocesso'))."','$this->v88_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "divida processo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->v88_sequencial;
@@ -270,30 +270,30 @@ class cl_dividaprotprocesso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($v88_sequencial=null,$dbwhere=null) { 
-     
-     
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($v88_sequencial=null,$dbwhere=null) {
+
+
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v88_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18804,'$v88_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3334,18804,'','".AddSlashes(pg_result($resaco,$iresaco,'v88_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3334,18805,'','".AddSlashes(pg_result($resaco,$iresaco,'v88_divida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3334,18806,'','".AddSlashes(pg_result($resaco,$iresaco,'v88_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3334,18804,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v88_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3334,18805,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v88_divida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3334,18806,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v88_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
-     
+
      $sql = " delete from dividaprotprocesso
                     where ";
      $sql2 = "";
@@ -308,7 +308,7 @@ class cl_dividaprotprocesso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "divida processo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$v88_sequencial;
@@ -336,11 +336,11 @@ class cl_dividaprotprocesso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -351,7 +351,7 @@ class cl_dividaprotprocesso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:dividaprotprocesso";
@@ -362,11 +362,11 @@ class cl_dividaprotprocesso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $v88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $v88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,15 +389,15 @@ class cl_dividaprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($v88_sequencial!=null ){
-         $sql2 .= " where dividaprotprocesso.v88_sequencial = $v88_sequencial "; 
-       } 
+         $sql2 .= " where dividaprotprocesso.v88_sequencial = $v88_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,11 +406,11 @@ class cl_dividaprotprocesso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $v88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $v88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,15 +423,15 @@ class cl_dividaprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($v88_sequencial!=null ){
-         $sql2 .= " where dividaprotprocesso.v88_sequencial = $v88_sequencial "; 
-       } 
+         $sql2 .= " where dividaprotprocesso.v88_sequencial = $v88_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

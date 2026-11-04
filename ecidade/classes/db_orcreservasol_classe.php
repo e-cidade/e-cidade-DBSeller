@@ -56,7 +56,7 @@ class cl_orcreservasol
                  ";
 
     //funcao construtor da classe
-    function cl_orcreservasol()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("orcreservasol");
@@ -64,7 +64,7 @@ class cl_orcreservasol
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -75,7 +75,7 @@ class cl_orcreservasol
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->o82_sequencial = ($this->o82_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["o82_sequencial"] : $this->o82_sequencial);
@@ -88,7 +88,7 @@ class cl_orcreservasol
     }
 
     // funcao para inclusao
-    function incluir($o82_sequencial)
+    public function incluir($o82_sequencial)
     {
         $this->atualizacampos();
         if ($this->o82_codres == null) {
@@ -201,7 +201,7 @@ class cl_orcreservasol
     }
 
     // funcao para alteracao
-    function alterar($o82_sequencial = null)
+    public function alterar($o82_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update orcreservasol set ";
@@ -313,7 +313,7 @@ class cl_orcreservasol
     }
 
     // funcao para exclusao
-    function excluir($o82_sequencial = null, $dbwhere = null)
+    public function excluir($o82_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($o82_sequencial));
@@ -379,7 +379,7 @@ class cl_orcreservasol
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -403,7 +403,7 @@ class cl_orcreservasol
         return $result;
     }
 
-    function sql_query($o82_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($o82_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -444,7 +444,7 @@ class cl_orcreservasol
         return $sql;
     }
 
-    function sql_query_file($o82_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($o82_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -479,7 +479,7 @@ class cl_orcreservasol
         return $sql;
     }
 
-    function sql_query_orcreserva($o82_codres = null, $pc13_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_orcreserva($o82_codres = null, $pc13_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -524,7 +524,7 @@ class cl_orcreservasol
         return $sql;
     }
 
-    function sql_query_saldo($o82_codres = null, $o82_solicitem = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_saldo($o82_codres = null, $o82_solicitem = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("j32_descr");
   <tr>
     <td nowrap title="<?=@$Tob12_grupo?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lob12_grupo,"js_pesquisaob12_grupo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob12_grupo',4,$Iob12_grupo,true,'text',$db_opcao," onchange='js_pesquisaob12_grupo(false);'")
 ?>
-       <?
+       <?php
 db_input('j32_descr',40,$Ij32_descr,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parobrastipocons.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

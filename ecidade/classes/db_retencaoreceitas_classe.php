@@ -30,35 +30,35 @@
 class cl_retencaoreceitas
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $e23_sequencial = 0;
-    var $e23_retencaotiporec = 0;
-    var $e23_retencaopagordem = 0;
-    var $e23_dtcalculo_dia = null;
-    var $e23_dtcalculo_mes = null;
-    var $e23_dtcalculo_ano = null;
-    var $e23_dtcalculo = null;
-    var $e23_valor = 0;
-    var $e23_deducao = 0;
-    var $e23_valorbase = 0;
-    var $e23_aliquota = 0;
-    var $e23_valorretencao = 0;
-    var $e23_ativo = 'f';
-    var $e23_recolhido = 'f';
+    public $e23_sequencial = 0;
+    public $e23_retencaotiporec = 0;
+    public $e23_retencaopagordem = 0;
+    public $e23_dtcalculo_dia = null;
+    public $e23_dtcalculo_mes = null;
+    public $e23_dtcalculo_ano = null;
+    public $e23_dtcalculo = null;
+    public $e23_valor = 0;
+    public $e23_deducao = 0;
+    public $e23_valorbase = 0;
+    public $e23_aliquota = 0;
+    public $e23_valorretencao = 0;
+    public $e23_ativo = 'f';
+    public $e23_recolhido = 'f';
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  e23_sequencial = int4 = Código Sequencial
                  e23_retencaotiporec = int4 = Retenção
                  e23_retencaopagordem = int4 = Código da Retenção
@@ -73,7 +73,7 @@ class cl_retencaoreceitas
                  ";
 
     //funcao construtor da classe
-    function cl_retencaoreceitas()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("retencaoreceitas");
@@ -81,7 +81,7 @@ class cl_retencaoreceitas
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -92,7 +92,7 @@ class cl_retencaoreceitas
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->e23_sequencial = ($this->e23_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["e23_sequencial"] : $this->e23_sequencial);
@@ -119,7 +119,7 @@ class cl_retencaoreceitas
     }
 
     // funcao para inclusao
-    function incluir($e23_sequencial)
+    public function incluir($e23_sequencial)
     {
         $this->atualizacampos();
         if ($this->e23_retencaotiporec == null) {
@@ -316,7 +316,7 @@ class cl_retencaoreceitas
     }
 
     // funcao para alteracao
-    function alterar($e23_sequencial = null)
+    public function alterar($e23_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update retencaoreceitas set ";
@@ -558,7 +558,7 @@ class cl_retencaoreceitas
     }
 
     // funcao para exclusao
-    function excluir($e23_sequencial = null, $dbwhere = null)
+    public function excluir($e23_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($e23_sequencial));
@@ -631,7 +631,7 @@ class cl_retencaoreceitas
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -655,7 +655,7 @@ class cl_retencaoreceitas
         return $result;
     }
 
-    function sql_query($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -695,7 +695,7 @@ class cl_retencaoreceitas
         return $sql;
     }
 
-    function sql_query_file($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -840,6 +840,65 @@ class cl_retencaoreceitas
     }
 
 
+    public function sql_query_notasOrc($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from retencaoreceitas ";
+        $sql .= "      inner join retencaotiporec  on  retencaotiporec.e21_sequencial = retencaoreceitas.e23_retencaotiporec";
+        $sql .= "      inner join retencaopagordem  on  retencaopagordem.e20_sequencial = retencaoreceitas.e23_retencaopagordem";
+        $sql .= "      inner join tabrec  on  tabrec.k02_codigo = retencaotiporec.e21_receita";
+        $sql .= "
+
+        inner JOIN taborc ON tabrec.k02_codigo = taborc.k02_codigo
+        inner join orcreceita on k02_anousu = o70_anousu and k02_codrec = o70_codrec
+        inner join orcfontes on o70_codfon = o57_codfon and o70_anousu =  o57_anousu
+        join conplanoorcamento orc on orc.c60_codcon = o57_codfon and orc.c60_anousu = o57_anousu
+        join conplanoconplanoorcamento on c72_conplanoorcamento = orc.c60_codcon and c72_anousu = orc.c60_anousu
+        join conplano pcasp on c72_conplano = pcasp.c60_codcon and c72_anousu = pcasp.c60_anousu
+        join conplanoreduz on c61_codcon = pcasp.c60_codcon and pcasp.c60_anousu = c61_anousu and c61_instit = fc_getsession('DB_instit')::int";
+
+        $sql .= "      inner join retencaotipocalc  on  retencaotipocalc.e32_sequencial = retencaotiporec.e21_retencaotipocalc";
+        $sql .= "      inner join pagordem  on  pagordem.e50_codord = retencaopagordem.e20_pagordem";
+        $sql .= "      inner join pagordemnota  on  pagordem.e50_codord = pagordemnota.e71_codord";
+        $sql .= "      inner join empnota            on  pagordemnota.e71_codnota = empnota.e69_codnota";
+        $sql .= "      inner join retencaoempagemov  on  e23_sequencial = e27_retencaoreceitas";
+        $sql .= "      left  join empagemovslips     on  e27_empagemov   = k107_empagemov";
+        $sql .= "      left  join slipempagemovslips on  k107_sequencial = k108_empagemovslips";
+        $sql .= "      left  join retencaoreceitasadicionais on e23_sequencial = e19_retencaoreceitas";
+        $sql .= "      left  join tiposerviconotafiscal on e19_tiposerviconotafiscal = e18_sequencial";
+        $sql .= "      left  join retencaotiporeccgm on  e48_retencaotiporec = retencaotiporec.e21_sequencial";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($e23_sequencial != null) {
+                $sql2 .= " where retencaoreceitas.e23_sequencial = $e23_sequencial ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+
     public function sql_query_consulta($e23_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
@@ -886,7 +945,7 @@ class cl_retencaoreceitas
         return $sql;
     }
 
-    function sql_query_retencoes_cgm($campos1 = "*", $campos2 = "*", $withWhere = array(), $where = array(), $groupBy = null, $ordem = null)
+    public function sql_query_retencoes_cgm($campos1 = "*", $campos2 = "*", $withWhere = array(), $where = array(), $groupBy = null, $ordem = null)
     {
 
         $with = "WITH pagordens_retencaoreceitas AS (
@@ -968,7 +1027,7 @@ class cl_retencaoreceitas
         $sqlApenasRetencoes .= "LEFT JOIN retencaocorgrupocorrente on e47_retencaoreceita = e23_sequencial ";
         $sqlApenasRetencoes .= "LEFT JOIN slipretencaoreceitas on k206_retencaoreceitas = e23_sequencial ";
         $sqlApenasRetencoes .= "LEFT JOIN corgrupocorrente on k105_sequencial = e47_corgrupocorrente ";
-        $sqlApenasRetencoes .= "LEFT JOIN corrente on k105_id = corrente.k12_id and k105_autent = corrente.k12_autent 
+        $sqlApenasRetencoes .= "LEFT JOIN corrente on k105_id = corrente.k12_id and k105_autent = corrente.k12_autent
                                     and k105_data = corrente.k12_data and corrente.k12_instit = $instituicaoSessao ";
         $sqlApenasRetencoes .= "LEFT JOIN conplanoreduz on corrente.k12_conta = c61_reduz ";
         $sqlApenasRetencoes .= "    and c61_anousu = $iAnoUsoSessao ";
@@ -1001,5 +1060,56 @@ class cl_retencaoreceitas
         }
 
         return $sql;
+    }
+
+    public function getSsqlBuscaRetencoes($iAnoUso, $dtDataInicial, $dtDataFinal, $instituicaoSessao) {
+
+        $sql = <<< SQL
+        SELECT
+  empempenho.e60_codemp,
+  empempenho.e60_anousu,
+  k105_data AS c70_data,
+  orcdotacao.o58_orgao,
+  CASE WHEN c60_estrut IS NULL THEN 'PARAMETRO' ELSE c60_estrut END AS c60_estrut,
+  CAST(c61_reduz || '-' || c61_codcon AS TEXT) AS c61_reduz_codcon,
+  '' AS c70_codlan,
+  array_to_string(array_agg(DISTINCT pagordem.e50_codord), ',') AS codordem,
+  TO_CHAR(corrente.k12_data, 'YYYYmm') AS competencia,
+  orcdotacao.o58_unidade,
+  0 AS valor_pago
+FROM
+  retencaoreceitas retencao
+  INNER JOIN retencaopagordem ON e20_sequencial = e23_retencaopagordem
+  INNER JOIN pagordem ON e50_codord = e20_pagordem
+  INNER JOIN pagordemele ON e50_codord = e53_codord
+  INNER JOIN empempenho ON e60_numemp = e50_numemp
+  INNER JOIN orcdotacao ON e60_coddot = o58_coddot AND e60_anousu = o58_anousu
+  INNER JOIN retencaotiporec ON e21_sequencial = e23_retencaotiporec
+  INNER JOIN tabrec ON e21_receita = k02_codigo
+  LEFT JOIN retencaocorgrupocorrente ON e47_retencaoreceita = e23_sequencial
+  LEFT JOIN corgrupocorrente ON k105_sequencial = e47_corgrupocorrente
+  LEFT JOIN corrente ON k105_id = corrente.k12_id AND k105_autent = corrente.k12_autent AND k105_data = corrente.k12_data
+  LEFT JOIN conplanoreduz ON corrente.k12_conta = conplanoreduz.c61_reduz AND conplanoreduz.c61_anousu = 2023
+  LEFT JOIN conplano ON c60_codcon = conplanoreduz.c61_codcon AND c60_anousu = conplanoreduz.c61_anousu
+WHERE
+  e23_ativo IS TRUE
+  AND e60_instit = {$instituicaoSessao}
+  AND e60_anousu = {$iAnoUso}
+  AND corrente.k12_estorn IS FALSE
+  AND corrente.k12_data BETWEEN '{$dtDataInicial}' AND '{$dtDataFinal}'
+  AND e23_recolhido IS TRUE
+GROUP BY
+  empempenho.e60_codemp,
+  empempenho.e60_anousu,
+  k105_data,
+  orcdotacao.o58_orgao,
+  c60_estrut,
+  CAST(c61_reduz || '-' || c61_codcon AS TEXT),
+  TO_CHAR(corrente.k12_data, 'YYYYmm'),
+  orcdotacao.o58_unidade
+
+SQL;
+
+            return $sql;
     }
 }

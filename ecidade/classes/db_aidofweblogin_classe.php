@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_aidofweblogin {
                  y09_loginext = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_aidofweblogin() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aidofweblogin"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_aidofweblogin {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y09_aidofweb = ($this->y09_aidofweb == ""?@$GLOBALS["HTTP_POST_VARS"]["y09_aidofweb"]:$this->y09_aidofweb);
        $this->y09_loginext = ($this->y09_loginext == ""?@$GLOBALS["HTTP_POST_VARS"]["y09_loginext"]:$this->y09_loginext);
@@ -74,7 +74,7 @@ class cl_aidofweblogin {
      }
    }
    // funcao para inclusao
-   function incluir ($y09_aidofweb){ 
+   public function incluir ($y09_aidofweb){ 
       $this->atualizacampos();
      if($this->y09_loginext == null ){ 
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
@@ -138,7 +138,7 @@ class cl_aidofweblogin {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y09_aidofweb=null) { 
+   public function alterar ($y09_aidofweb=null) { 
       $this->atualizacampos();
      $sql = " update aidofweblogin set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_aidofweblogin {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y09_aidofweb=null,$dbwhere=null) { 
+   public function excluir ($y09_aidofweb=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y09_aidofweb));
      }else{ 
@@ -280,7 +280,7 @@ class cl_aidofweblogin {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

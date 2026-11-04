@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $depto   = db_getsession('DB_coddepto');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 	db_app::load('strings.js');
   db_app::load('scripts.js');
   db_app::load('datagrid.widget.js');
@@ -87,7 +87,7 @@ $depto   = db_getsession('DB_coddepto');
 	    	      <b>Controle de Atendimento</b>
 	    	    </legend>
 	    	    <table>
-	    	      <?
+	    	      <?php
 	    	        if ( $lOuvidor ) {
 	    	      ?>
               <tr>
@@ -95,7 +95,7 @@ $depto   = db_getsession('DB_coddepto');
                   <b>Departamento:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $sWhereDepart  = "     limite is null                                         "; 
                     $sWhereDepart .= "  or limite > '".date('Y-m-d',db_getsession('DB_datausu'))."'";
                     $rsDepart = $clDBDepart->sql_record($clDBDepart->sql_query_file(null,"*","descrdepto",$sWhereDepart));
@@ -108,14 +108,14 @@ $depto   = db_getsession('DB_coddepto');
                   <b>Usuários:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $sWhereUsusarios  = " usuarioativo = 1 "; 
                     $rsUsuarios = $clDBUsuarios->sql_record($clDBUsuarios->sql_query_file(null,"*",null,$sWhereUsusarios));
                     db_selectrecord('usuario',$rsUsuarios,true,1,'');
                   ?>
                 </td>
               </tr>            
-              <?
+              <?php
 	    	        } else {
 	    	        	db_input('usuario',10,'',true,'hidden',1,'');
 	    	        	db_input('depto'  ,10,'',true,'hidden',1,'');
@@ -123,12 +123,12 @@ $depto   = db_getsession('DB_coddepto');
               ?>  
 	    	      <tr>
 	    	        <td>
-	    	          <?
+	    	          <?php
                     db_ancora('<b>Código do Processo:</b>','js_pesquisaProcessoIni();',1,'');
 	    	          ?>
 	    	        </td>
 	    	        <td>
-	    	          <?
+	    	          <?php
                     db_input('procini',10,'',true,'text',1,'');
 	    	            db_ancora('<b>à</b>','js_pesquisaProcessoFin();',1,'');
 	    	            db_input('procfin',10,'',true,'text',1,'');
@@ -137,12 +137,12 @@ $depto   = db_getsession('DB_coddepto');
 	    	      </tr>
 	    	      <tr>
               <td nowrap="nowrap">
-                <?
+                <?php
                   db_ancora('<b>Atendimento:</b>', ' js_pesquisaNumeroAtendimento(true); ', '');
                 ?>
               </td>
               <td nowrap="nowrap">
-                <?
+                <?php
                   db_input('ov01_numero',     10, "", true, 'text', 1, ' onchange="js_pesquisaNumeroAtendimento(false); "');
                   db_input('ov01_requerente', 40,  0, true, 'text', 3, '');
                   db_input('ov01_anousu',      5, "", true, 'hidden', 1, '');
@@ -153,7 +153,7 @@ $depto   = db_getsession('DB_coddepto');
                   <b>Período:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata('dataini','','','',true,'text',1,'');
                     echo"<b>à</b>";
                     db_inputdata('datafin','','','',true,'text',1,'');
@@ -162,12 +162,12 @@ $depto   = db_getsession('DB_coddepto');
               </tr>
               <tr>
                 <td>
-                  <?
+                  <?php
                     db_ancora('<b>Tipo de Processo:</b>','js_pesquisaTipoProcesso(true);',1,'');
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('proctipo' ,10,'',true,'text',1,"onChange='js_pesquisaTipoProcesso(false);'");
                     db_input('descrtipo',40,'',true,'text',3,'');
                   ?>
@@ -194,7 +194,7 @@ $depto   = db_getsession('DB_coddepto');
     </fieldset>
     </center>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

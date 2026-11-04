@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ function js_verifica(){
 
 </script>
 
-<?
+<?php
 if(isset($ordem)){
 ?>
 <script>
@@ -65,7 +65,7 @@ function js_emite(){
   jan.moveTo(0,0);
 }
 </script>  
-<?
+<?php
 }
 ?>
 </head>
@@ -105,7 +105,7 @@ function js_emite(){
                 <tr> 
                   <td height="35">
 	 	     <div align="left"><font size="2"><strong>De</strong>: 
-                       <?
+                       <?php
 			  db_input('DBtxt12',8,$IDBtxt12,true,'text',2);
 	  	       ?>
                      </font>
@@ -115,7 +115,7 @@ function js_emite(){
 		  </td>
                   <td>
 		  <div align="left"><font size="2"><strong>At&eacute;:</strong> 
-                  <?
+                  <?php
 		     db_input('DBtxt13',8,$IDBtxt13,true,'text',2);
 	 	  ?>
                   </font>
@@ -137,12 +137,12 @@ function js_emite(){
 	</td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

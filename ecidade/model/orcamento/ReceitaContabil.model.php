@@ -122,7 +122,7 @@ class ReceitaContabil
 
     public function setTef($lTef)
     {
-      $this->lTef = $lTef;
+        $this->lTef = $lTef;
     }
 
     public function getTef()
@@ -200,8 +200,7 @@ class ReceitaContabil
         $aDesdobramentos = $this->getDesdobramentos();
         $aReceitas = array();
 
-        if (count($aDesdobramentos) > 0 && $this->getTipoRecurso() == 1 && $oDadoSqlGeral->arrecada != 0.01) {
-
+        if (count($aDesdobramentos) > 0 && $oDadoSqlGeral->arrecada != 0.01) {
             $nValorSoma = 0;
             $lMultiplica = false;
             if ($oDadoSqlGeral->arrecada < 0) {
@@ -337,10 +336,10 @@ class ReceitaContabil
 
                     if (pg_num_rows($rsBuscaConta) == 0) {
 
-                      $sErroMensagem = "Impossível localizar o vínculo da conta orçamentaria de ";
-                      $sErroMensagem .= "código {$iCodigoContaCredito} ";
-                      $sErroMensagem .= "com uma conta do plano de contas (PCASP) no ano de {$iAnoAutenticacao}.";
-                      throw new BusinessException($sErroMensagem);
+                        $sErroMensagem = "Impossível localizar o vínculo da conta orçamentaria de ";
+                        $sErroMensagem .= "código {$iCodigoContaCredito} ";
+                        $sErroMensagem .= "com uma conta do plano de contas (PCASP) no ano de {$iAnoAutenticacao}.";
+                        throw new BusinessException($sErroMensagem);
                     }
 
                     $iCodigoContaCreditoPcasp = db_utils::fieldsMemory($rsBuscaConta, 0)->c61_reduz;
@@ -385,7 +384,7 @@ class ReceitaContabil
                     }
                 }
 
-                if(empty($sCaracteristaPeculiarRecibo)){
+                if (empty($sCaracteristaPeculiarRecibo)) {
                     $sCaracteristaPeculiarRecibo = $sCaracteristicaPeculiarPlanilhaRecibo;
                 }
 
@@ -516,7 +515,7 @@ class ReceitaContabil
 
                         $oDaoRetencaoTipoRec = new cl_retencaotiporec;
                         $sqlRetencao = $oDaoRetencaoTipoRec->sql_query_file($retencao, "*", null, null);
-                        $rsRetencao    = db_query($sqlRetencao);
+                        $rsRetencao = db_query($sqlRetencao);
                         $dadosRetencao = db_utils::fieldsMemory($rsRetencao, 0);
                         $iCodigoDocumentoExecutar = 6000;
 
@@ -775,7 +774,7 @@ class ReceitaContabil
         $sSqlOrcreceita = $oDaoOrcreceita->sql_query_receita($sCampos, null, $WhereOrcreceita);
         $rsSqlOrcreceita = $oDaoOrcreceita->sql_record($sSqlOrcreceita);
 
-        $receitas = db_utils::makeCollectionFromRecord($rsSqlOrcreceita, function($dados){
+        $receitas = db_utils::makeCollectionFromRecord($rsSqlOrcreceita, function ($dados) {
             return ReceitaContabilRepository::getReceitaByCodigo($dados->o70_codrec, $dados->o70_anousu);
         });
         return $receitas;
@@ -784,14 +783,13 @@ class ReceitaContabil
 
     /**
      * Retorna as Receitas que fazem parte do desdobramento da receita
-     * @throws BusinessException
      * @return array
+     * @throws BusinessException
      */
     public function getDesdobramentos()
     {
 
         if (count($this->aDesdobramentos) == 0) {
-
             $oDaoOrcReceita = new cl_orcreceita();
 
             /*
@@ -801,11 +799,15 @@ class ReceitaContabil
             $sWhereDesdobramento .= " and o70_instit = {$this->getInstituicao()->getSequencial()}";
             $sWhereDesdobramento .= " and o57_fonte  = '{$this->getContaOrcamento()->getEstrutural()}' ";
 
-            $rsBuscaDesdobramento = $oDaoOrcReceita->sql_record($oDaoOrcReceita->sql_query_fonte_desdobramento(null,
+            $sql = $oDaoOrcReceita->sql_query_fonte_desdobramento(
+                null,
                 null,
                 "o70_codrec",
                 "o57_fonte",
-                $sWhereDesdobramento));
+                $sWhereDesdobramento
+            );
+
+            $rsBuscaDesdobramento = $oDaoOrcReceita->sql_record($sql);
             if ($oDaoOrcReceita->numrows > 0) {
 
                 $sEstruturalContaMae = db_le_mae_rec_sin($this->getContaOrcamento()->getEstrutural(), false);

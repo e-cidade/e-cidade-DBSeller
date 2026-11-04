@@ -112,10 +112,14 @@ if (isset($processa) && $processa == 't') {
   if(isset($codigos) && $codigos != ""){
     $where .= " and q82_classe in ($codigos) ";
   }
+  $rsparfiscal  = db_query("select 1 from parfiscal where y32_instit = ".db_getsession('DB_instit')."  and y32_calcprovisorio = true ");
+  $numrowsparfiscal = pg_num_rows($rsparfiscal);
 
   if ($origemori == 1){
 
-    $where .= " and q07_perman = 't'    ";
+    if ($numrowsparfiscal == 0){
+        $where .= " and q07_perman = 't'    ";
+    }
     $where .= " and q81_tipo   = 3      ";
     $where .= " and q02_dtbaix is null  ";
     $where .= " and (q07_datafi is null or q07_datafi >= '".$oDataExercicio->getDate()."') ";
@@ -145,7 +149,9 @@ if (isset($processa) && $processa == 't') {
 
   }elseif($origemori == 2){
 
-    $where .= " and y83_perman = 't'    ";
+    if ($numrowsparfiscal == 0){
+        $where .= " and y83_perman = 't'    ";
+    }
     $where .= " and q81_tipo = 6        ";
     $where .= " and y80_dtbaixa is null ";
     $where .= " and (y83_dtfim is null or y83_dtfim >= '".$oDataExercicio->getDate()."') ";

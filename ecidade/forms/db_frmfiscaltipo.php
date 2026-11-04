@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
@@ -49,52 +49,52 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty31_codnoti?>">
-       <?
+       <?php
        db_ancora(@$Ly31_codnoti,"js_pesquisay31_codnoti(true);",3);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('y31_codnoti',10,$Iy31_codnoti,true,'text',3," onchange='js_pesquisay31_codnoti(false);'");
 db_input('y39_codandam',10,$Iy39_codandam,true,'hidden',3,"");
 ?>
-       <?
+       <?php
 db_input('y30_data',50,$Iy30_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty31_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly31_codtipo,"js_pesquisay31_codtipo(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('y31_codtipo',10,$Iy31_codtipo,true,'text',$db_opcao," onchange='js_pesquisay31_codtipo(false);'");
 db_input('y31_codtipo',10,$Iy31_codtipo,true,'hidden',$db_opcao,"","y31_codtipo_old");
 echo "<script>document.form1.y31_codtipo_old.value='".@$y31_codtipo."'</script>";
 ?>
-       <?
+       <?php
 db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
-    <td colspan="2" align="center"> 
-      <input <?($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+    <td colspan="2" align="center">
+      <input <?php ($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_fiscaltipo001.php?y31_codnoti=<?=$y31_codnoti?>&abas=1'" onblur="js_setatabulacao();">
-      <?
+      <?php
       }
       ?>
     </td>
-  </tr>  
+  </tr>
   <tr>
     <td colspan="2" align="center">
-    <?
+    <?php
     $chavepri= array("y31_codnoti"=>@$y31_codnoti,"y31_codtipo"=>@$y31_codtipo);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y31_codtipo,y29_descr,y41_descr";
@@ -107,7 +107,7 @@ db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
     $cliframe_alterar_excluir->fundocorpo ="#ccddcc";
     $cliframe_alterar_excluir->iframe_height ="150";
     $cliframe_alterar_excluir->iframe_width ="700";
-    $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);    
+    $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
     ?>
     </td>
   </tr>
@@ -115,7 +115,7 @@ db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
     <td colspan="2" align="center">
       <fieldset>
       <legend align="center"><strong>Escolha um Andamento Padrão</strong></legend>
-<?
+<?php
 $clfiscaltipo1 = new cl_fiscaltipo;
 $clfiscalandam = new cl_fiscalandam;
 $clfandam      = new cl_fandam;
@@ -220,10 +220,10 @@ function js_pesquisay31_codnoti(mostra){
   }
 }
 function js_mostrafiscal(chave,erro){
-  document.form1.y30_data.value = chave; 
-  if(erro==true){ 
-    document.form1.y31_codnoti.focus(); 
-    document.form1.y31_codnoti.value = ''; 
+  document.form1.y30_data.value = chave;
+  if(erro==true){
+    document.form1.y31_codnoti.focus();
+    document.form1.y31_codnoti.value = '';
   }
 }
 function js_mostrafiscal1(chave1,chave2){
@@ -239,10 +239,10 @@ function js_pesquisay31_codtipo(mostra){
   }
 }
 function js_mostrafiscalproc(chave,erro){
-  document.form1.y29_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.y31_codtipo.focus(); 
-    document.form1.y31_codtipo.value = ''; 
+  document.form1.y29_descr.value = chave;
+  if(erro==true){
+    document.form1.y31_codtipo.focus();
+    document.form1.y31_codtipo.value = '';
   }else{
     document.form1.db_opcao.disabled=false;
   }
@@ -258,7 +258,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_fiscaltipo.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_fiscaltipo002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -267,7 +267,7 @@ function js_preenchepesquisa(chave,chave1){
   ?>
 }
 </script>
-<?
+<?php
 if(isset($y31_codnoti) && $y31_codnoti != ""){
   echo "<script>js_OpenJanelaIframe('','db_iframe_fiscal','func_fiscal.php?pesquisa_chave=$y31_codnoti&funcao_js=parent.js_mostrafiscal','Pesquisa',false);</script>";
 }

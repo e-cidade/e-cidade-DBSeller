@@ -39,6 +39,7 @@ class BemDepreciacao {
   private $iMes;
   private $iInstituicao;
   private $nValorAtual = 0;
+  private $iTipoCalculo;
 
   /**
    * @var float
@@ -68,6 +69,21 @@ class BemDepreciacao {
    */
   public function setAno($iAno) {
     $this->iAno = $iAno;
+  }
+
+    /**
+     * @param $iTipoCalculo
+     * @return void
+     */
+    public function setTipoCalculo($iTipoCalculo) {
+      $this->iTipoCalculo = $iTipoCalculo;
+  }
+
+    /**
+     * @return mixed
+     */
+    public function getTipoCalculo() {
+      return $this->iTipoCalculo;
   }
 
   /**
@@ -536,6 +552,7 @@ class BemDepreciacao {
       $oBemDepreciacao->setInstituicao( $oStdDadosDepreciacao->t57_instituicao );
       $oBemDepreciacao->setValorAtual( $oStdDadosDepreciacao->t58_valoratual );
       $oBemDepreciacao->setValorResidual($oStdDadosDepreciacao->t58_valorresidual );
+      $oBemDepreciacao->setTipoCalculo($oStdDadosDepreciacao->t57_tipocalculo);
     }
 
     return $oBemDepreciacao;

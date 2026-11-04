@@ -32,7 +32,7 @@ class liquidac {
 
   var $arq=null;
 
-  function liquidac($header){
+  public function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/LIQUIDAC.TXT",'w+');
     fputs($this->arq,$header);

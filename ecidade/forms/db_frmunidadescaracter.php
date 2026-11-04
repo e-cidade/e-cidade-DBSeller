@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -41,35 +41,35 @@ $clunidades->rotulo->label();
       <?=@$Lsd02_i_codigo?>
      </td>
      <td>
-      <?db_input('sd02_i_codigo',7,$Isd02_i_codigo,true,'text',3,"")?>
-      <?db_input('descrdepto',25,@$Idescrdepto,true,'text',3,"")?>
+      <?php db_input('sd02_i_codigo',7,$Isd02_i_codigo,true,'text',3,"")?>
+      <?php db_input('descrdepto',25,@$Idescrdepto,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_cod_esfadm?>">
-      <?db_ancora(@$Lsd02_i_cod_esfadm,"js_pesquisasd02_i_cod_esfadm(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_cod_esfadm,"js_pesquisasd02_i_cod_esfadm(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_cod_esfadm',7,$Isd02_i_cod_esfadm,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_esfadm(false);'")?>
-      <?db_input('sd37_v_descricao',25,@$Isd37_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_cod_esfadm',7,$Isd02_i_cod_esfadm,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_esfadm(false);'")?>
+      <?php db_input('sd37_v_descricao',25,@$Isd37_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_cod_ativ?>">
-      <?db_ancora(@$Lsd02_i_cod_ativ,"js_pesquisasd02_i_cod_ativ(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_cod_ativ,"js_pesquisasd02_i_cod_ativ(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_cod_ativ',7,$Isd02_i_cod_ativ,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_ativ(false);'")?>
-      <?db_input('sd38_v_descricao',25,@$Isd38_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_cod_ativ',7,$Isd02_i_cod_ativ,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_ativ(false);'")?>
+      <?php db_input('sd38_v_descricao',25,@$Isd38_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_codnivhier?>">
-      <?db_ancora(@$Lsd02_i_codnivhier,"js_pesquisasd02_i_codnivhier(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_codnivhier,"js_pesquisasd02_i_codnivhier(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_codnivhier',7,$Isd02_i_codnivhier,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_codnivhier(false);'")?>
-      <?db_input('sd44_v_descricao',25,@$Isd44_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_codnivhier',7,$Isd02_i_codnivhier,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_codnivhier(false);'")?>
+      <?php db_input('sd44_v_descricao',25,@$Isd44_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
    </table>
@@ -78,38 +78,38 @@ $clunidades->rotulo->label();
    <table border="0">
     <tr>
      <td nowrap title="<?=@$Tsd02_i_cod_turnat?>">
-      <?db_ancora(@$Lsd02_i_cod_turnat,"js_pesquisasd02_i_cod_turnat(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_cod_turnat,"js_pesquisasd02_i_cod_turnat(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_cod_turnat',7,$Isd02_i_cod_turnat,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_turnat(false);'")?>
-      <?db_input('sd43_v_descricao',25,@$Isd43_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_cod_turnat',7,$Isd02_i_cod_turnat,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_turnat(false);'")?>
+      <?php db_input('sd43_v_descricao',25,@$Isd43_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_cod_natorg?>">
-      <?db_ancora(@$Lsd02_i_cod_natorg,"js_pesquisasd02_i_cod_natorg(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_cod_natorg,"js_pesquisasd02_i_cod_natorg(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_cod_natorg',7,$Isd02_i_cod_natorg,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_natorg(false);'")?>
-      <?db_input('sd40_v_descricao',25,@$Isd40_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_cod_natorg',7,$Isd02_i_cod_natorg,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_natorg(false);'")?>
+      <?php db_input('sd40_v_descricao',25,@$Isd40_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_reten_trib?>">
-      <?db_ancora(@$Lsd02_i_reten_trib,"js_pesquisasd02_i_reten_trib(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_reten_trib,"js_pesquisasd02_i_reten_trib(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_reten_trib',7,$Isd02_i_reten_trib,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_reten_trib(false);'")?>
-      <?db_input('sd39_v_situacao',25,@$Isd39_v_situacao,true,'text',3,"")?>
+      <?php db_input('sd02_i_reten_trib',7,$Isd02_i_reten_trib,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_reten_trib(false);'")?>
+      <?php db_input('sd39_v_situacao',25,@$Isd39_v_situacao,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tsd02_i_cod_client?>">
-      <?db_ancora(@$Lsd02_i_cod_client,"js_pesquisasd02_i_cod_client(true);",$db_opcao);?>
+      <?php db_ancora(@$Lsd02_i_cod_client,"js_pesquisasd02_i_cod_client(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('sd02_i_cod_client',7,$Isd02_i_cod_client,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_client(false);'")?>
-      <?db_input('sd41_v_descricao',25,@$Isd41_v_descricao,true,'text',3,"")?>
+      <?php db_input('sd02_i_cod_client',7,$Isd02_i_cod_client,true,'text',$db_opcao,"onchange='js_pesquisasd02_i_cod_client(false);'")?>
+      <?php db_input('sd41_v_descricao',25,@$Isd41_v_descricao,true,'text',3,"")?>
      </td>
     </tr>
    </table>
@@ -126,7 +126,7 @@ $clunidades->rotulo->label();
 <table border="0" width="100%">
  <tr>
   <td valign="top">
-   <?
+   <?php
    $clcriaabas->abas_top   = "175";
    $clcriaabas->identifica = array("b1"=>"Nível de Atenção","b2"=>"Atendimento Prestado");
    $clcriaabas->sizecampo  = array("b1"=>"30","b2"=>"30");

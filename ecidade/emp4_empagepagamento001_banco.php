@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -123,7 +123,7 @@ function js_calcula(){
     <form name="form1" method="post" action="">
 	      <center>
 
-<?
+<?php
 
 $dbwhere .= " and e80_instit = " . db_getsession("DB_instit") . " and e90_codmov is null ";
 
@@ -205,7 +205,7 @@ if(isset($e87_codgera) && $e87_codgera != ''){
    parent.document.form1.registros.value = '<?=$registros?>';
    parent.document.form1.tipo.value = 'banco';
 </script>
-<?
+<?php
 if($numrows>0){
   echo "<script>";
   echo "parent.document.form1.atualizar.disabled=false;";

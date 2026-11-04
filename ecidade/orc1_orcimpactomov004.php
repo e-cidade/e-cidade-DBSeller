@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -245,7 +245,7 @@ if(isset($chavepesquisa)|| (isset($chave_nova) && $chave_nova != '')){
   <tr> 
     <td height="300" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcimpactomov.php"));
 	?>
     </center>
@@ -254,7 +254,7 @@ if(isset($chavepesquisa)|| (isset($chave_nova) && $chave_nova != '')){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($atualizar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

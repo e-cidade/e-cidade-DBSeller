@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,26 +72,26 @@ function js_verificacalculo(){
 	    <table width="387" border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td align="right" height="25" title="<?=$Tz01_nunmcgm?>"> 
-              <?
+              <?php
 				db_ancora('<strong>Matricula:</strong>','js_mostranomes(true);',4)
 				?>
             &nbsp;
             </td>
             <td width="360" height="25"> 
-              <?
+              <?php
 				db_input("x01_matric",8,$Ix01_matric,true,'text',4," onchange='js_mostranomes(false);' ")
 				?>
             </td>
           </tr>
           <tr>
             <td align="right" height="25">
-              <?
+              <?php
 				db_ancora('<strong>Nome:</strong>','js_mostranomes(true);',4)
 				?>
             &nbsp;
             </td>
             <td height="25">
-              <?
+              <?php
 				db_input("z01_nome",40,$Iz01_nome,true,'text',3)
 				?>
             </td>
@@ -102,21 +102,21 @@ function js_verificacalculo(){
 				    <strong>Ano:&nbsp;</strong>
             </td>
             <td height="25">
-              <?
+              <?php
 	            $result=db_query("select " . db_getsession("DB_anousu") . "as j18_anousu");
 	            if(pg_numrows($result) > 0){
 		          ?>
 		          <select name="anousu">
-		          <?
+		          <?php
   	          for($i=0;$i<pg_numrows($result);$i++){
 		            db_fieldsmemory($result,$i);
 	              ?>
 	              <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
-	              <?
+	              <?php
 	              }
 		          ?>
 		        </select>
-		        <?
+		        <?php
 	          }
 	          ?>
           </td>
@@ -127,7 +127,7 @@ function js_verificacalculo(){
 					<strong>Mes Inicial:&nbsp;</strong>
 					</td>
 					<td height="25">
-					<?
+					<?php
           if(!isset($mesini)){
             $mesini = db_subdata(db_getsession("DB_datausu"),"m","t");
           }
@@ -142,7 +142,7 @@ function js_verificacalculo(){
 					<strong>Mes Final:&nbsp;</strong>
 					</td>
 					<td height="25">
-					<?
+					<?php
           if(!isset($mesfim)){
             $mesfim = db_subdata(db_getsession("DB_datausu"),"m","t");
           }
@@ -157,7 +157,7 @@ function js_verificacalculo(){
             <strong>Tipo de Emissao:&nbsp;</strong>
           </td>
   	      <td>
-			   <?	
+			   <?php 
            //$xy = array ("pdf" => "PDF - Pré-impresso", "txt" => "TXT - Arquivo Gráfica");
            $xy = array ("txt" => "TXT - Arquivo Gráfica");
            db_select('tipo_emissao', $xy, true, 1);
@@ -170,7 +170,7 @@ function js_verificacalculo(){
             <strong>Qtd registros a processar:&nbsp;</strong>
           </td>
   	      <td>
-			   <?	
+			   <?php 
 				  db_input("qtdreg",8,"",true,'text',4,"")
          ?>      
          <strong>&nbsp;* deixe em branco para processar todas</strong>
@@ -180,12 +180,12 @@ function js_verificacalculo(){
           <tr> 
             <td height="25">&nbsp;</td>
             <td height="25"> <input name="processar"  type="submit" id="calcular" value="Processar">
-              <?
+              <?php
 			  if(isset($calcular)){
 			    ?>
               <input name="Limpar"  type="button" id="limpr" value="Limpar" onClick="document.form1.x01_matric.value='';document.form1.z01_nome.value=''">
                 <input name="ultimo"  type="button" id="ultimo" value="&Uacute;ltimo C&aacute;lculo" onClick="func_nome.show();  func_nome.focus();">
-              <?
+              <?php
 			  }
 			  ?>
             </td>
@@ -203,7 +203,7 @@ function js_verificacalculo(){
  </table>
 </body>
 </html>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -232,7 +232,7 @@ function js_mostra1(chave1,chave2){
 }
 
 </script>
-<?
+<?php
 /*
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;
@@ -253,7 +253,7 @@ if(isset($processar)){
     jan.moveTo(0, 0);
   
   </script>
-  <?
+  <?php
 }
 
 ?>

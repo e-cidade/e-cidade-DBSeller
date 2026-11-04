@@ -79,7 +79,7 @@ class cl_afasta
                  ";
 
     //funcao construtor da classe
-    function cl_afasta()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("afasta");
@@ -87,7 +87,7 @@ class cl_afasta
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -98,7 +98,7 @@ class cl_afasta
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->r45_codigo = ($this->r45_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["r45_codigo"] : $this->r45_codigo);
@@ -139,7 +139,7 @@ class cl_afasta
     }
 
     // funcao para inclusao
-    function incluir($r45_codigo)
+    public function incluir($r45_codigo=null)
     {
         $this->atualizacampos();
         if ($this->r45_anousu == null) {
@@ -376,7 +376,7 @@ class cl_afasta
     }
 
     // funcao para alteracao
-    function alterar($r45_codigo = null)
+    public function alterar($r45_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update afasta set ";
@@ -681,7 +681,7 @@ class cl_afasta
     }
 
     // funcao para exclusao
-    function excluir($r45_codigo = null, $dbwhere = null)
+    public function excluir($r45_codigo = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -791,7 +791,7 @@ class cl_afasta
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -821,7 +821,7 @@ class cl_afasta
     }
 
     // funcao do sql
-    function sql_query($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -868,7 +868,7 @@ class cl_afasta
     }
 
     // funcao do sql
-    function sql_query_file($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -906,13 +906,13 @@ class cl_afasta
         return $sql;
     }
 
-    function atualiza_incluir()
+    public function atualiza_incluir()
     {
         $this->incluir();
     }
 
     // funcao do sql
-    function sql_query_left_join_assenta($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_left_join_assenta($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -951,7 +951,7 @@ class cl_afasta
         return $sql;
     }
 
-    function sql_query_pessoal($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pessoal($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1062,7 +1062,7 @@ class cl_afasta
         return $sSql;
     }
 
-    function sql_query_func($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_func($r45_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $iInstit = db_getsession('DB_instit');
         $sql = "select ";

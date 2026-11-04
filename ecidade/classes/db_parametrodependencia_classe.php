@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE parametrodependencia
-class cl_parametrodependencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed295_sequencial = 0; 
-   var $ed295_habilitaprogressao = 0; 
-   var $ed295_qtddiscdependente = 0; 
-   var $ed295_controledependencia = 0; 
-   var $ed295_controlefreq = 0; 
-   var $ed295_disceliminadep = 0; 
-   var $ed295_escola = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_parametrodependencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed295_sequencial = 0;
+   var $ed295_habilitaprogressao = 0;
+   var $ed295_qtddiscdependente = 0;
+   var $ed295_controledependencia = 0;
+   var $ed295_controlefreq = 0;
+   var $ed295_disceliminadep = 0;
+   var $ed295_escola = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed295_sequencial = int4 = Sequencial 
-                 ed295_habilitaprogressao = int4 = Habilitar Progressão Parcial/Dependência 
-                 ed295_qtddiscdependente = int4 = Quantidade de Disciplinas Dependentes 
-                 ed295_controledependencia = int4 = Controle da Dependência 
-                 ed295_controlefreq = int4 = Controle da Frequência 
-                 ed295_disceliminadep = int4 = Disciplina Aprovada Elimina Dependência 
-                 ed295_escola = int4 = Escola 
+                 ed295_sequencial = int4 = Sequencial
+                 ed295_habilitaprogressao = int4 = Habilitar Progressão Parcial/Dependência
+                 ed295_qtddiscdependente = int4 = Quantidade de Disciplinas Dependentes
+                 ed295_controledependencia = int4 = Controle da Dependência
+                 ed295_controlefreq = int4 = Controle da Frequência
+                 ed295_disceliminadep = int4 = Disciplina Aprovada Elimina Dependência
+                 ed295_escola = int4 = Escola
                  ";
-   //funcao construtor da classe 
-   function cl_parametrodependencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("parametrodependencia"); 
+     $this->rotulo = new rotulo("parametrodependencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_parametrodependencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed295_sequencial = ($this->ed295_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"]:$this->ed295_sequencial);
        $this->ed295_habilitaprogressao = ($this->ed295_habilitaprogressao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"]:$this->ed295_habilitaprogressao);
@@ -89,9 +89,9 @@ class cl_parametrodependencia {
      }
    }
    // funcao para inclusao
-   function incluir ($ed295_sequencial){ 
+   public function incluir ($ed295_sequencial){
       $this->atualizacampos();
-     if($this->ed295_habilitaprogressao == null ){ 
+     if($this->ed295_habilitaprogressao == null ){
        $this->erro_sql = " Campo Habilitar Progressão Parcial/Dependência nao Informado.";
        $this->erro_campo = "ed295_habilitaprogressao";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed295_qtddiscdependente == null ){ 
+     if($this->ed295_qtddiscdependente == null ){
        $this->erro_sql = " Campo Quantidade de Disciplinas Dependentes nao Informado.";
        $this->erro_campo = "ed295_qtddiscdependente";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed295_controledependencia == null ){ 
+     if($this->ed295_controledependencia == null ){
        $this->erro_sql = " Campo Controle da Dependência nao Informado.";
        $this->erro_campo = "ed295_controledependencia";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed295_controlefreq == null ){ 
+     if($this->ed295_controlefreq == null ){
        $this->erro_sql = " Campo Controle da Frequência nao Informado.";
        $this->erro_campo = "ed295_controlefreq";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed295_disceliminadep == null ){ 
+     if($this->ed295_disceliminadep == null ){
        $this->erro_sql = " Campo Disciplina Aprovada Elimina Dependência nao Informado.";
        $this->erro_campo = "ed295_disceliminadep";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_parametrodependencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed295_escola == null ){ 
+     if($this->ed295_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
        $this->erro_campo = "ed295_escola";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_parametrodependencia {
        return false;
      }
      if($ed295_sequencial == "" || $ed295_sequencial == null ){
-       $result = db_query("select nextval('parametrodependencia_ed295_sequencial_seq')"); 
+       $result = db_query("select nextval('parametrodependencia_ed295_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: parametrodependencia_ed295_sequencial_seq do campo: ed295_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: parametrodependencia_ed295_sequencial_seq do campo: ed295_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed295_sequencial = pg_result($result,0,0); 
+       $this->ed295_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from parametrodependencia_ed295_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed295_sequencial)){
@@ -166,10 +166,10 @@ class cl_parametrodependencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed295_sequencial = $ed295_sequencial; 
+         $this->ed295_sequencial = $ed295_sequencial;
        }
      }
-     if(($this->ed295_sequencial == null) || ($this->ed295_sequencial == "") ){ 
+     if(($this->ed295_sequencial == null) || ($this->ed295_sequencial == "") ){
        $this->erro_sql = " Campo ed295_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_parametrodependencia {
        return false;
      }
      $sql = "insert into parametrodependencia(
-                                       ed295_sequencial 
-                                      ,ed295_habilitaprogressao 
-                                      ,ed295_qtddiscdependente 
-                                      ,ed295_controledependencia 
-                                      ,ed295_controlefreq 
-                                      ,ed295_disceliminadep 
-                                      ,ed295_escola 
+                                       ed295_sequencial
+                                      ,ed295_habilitaprogressao
+                                      ,ed295_qtddiscdependente
+                                      ,ed295_controledependencia
+                                      ,ed295_controlefreq
+                                      ,ed295_disceliminadep
+                                      ,ed295_escola
                        )
                 values (
-                                $this->ed295_sequencial 
-                               ,$this->ed295_habilitaprogressao 
-                               ,$this->ed295_qtddiscdependente 
-                               ,$this->ed295_controledependencia 
-                               ,$this->ed295_controlefreq 
-                               ,$this->ed295_disceliminadep 
-                               ,$this->ed295_escola 
+                                $this->ed295_sequencial
+                               ,$this->ed295_habilitaprogressao
+                               ,$this->ed295_qtddiscdependente
+                               ,$this->ed295_controledependencia
+                               ,$this->ed295_controlefreq
+                               ,$this->ed295_disceliminadep
+                               ,$this->ed295_escola
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "parametro dependencia ($this->ed295_sequencial) nao Incluído. Inclusao Abortada.";
@@ -234,16 +234,16 @@ class cl_parametrodependencia {
        $resac = db_query("insert into db_acount values($acount,3275,18521,'','".AddSlashes(pg_result($resaco,0,'ed295_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed295_sequencial=null) { 
+   public function alterar ($ed295_sequencial=null) {
       $this->atualizacampos();
      $sql = " update parametrodependencia set ";
      $virgula = "";
-     if(trim($this->ed295_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"])){ 
+     if(trim($this->ed295_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_sequencial"])){
        $sql  .= $virgula." ed295_sequencial = $this->ed295_sequencial ";
        $virgula = ",";
-       if(trim($this->ed295_sequencial) == null ){ 
+       if(trim($this->ed295_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ed295_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_habilitaprogressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"])){ 
+     if(trim($this->ed295_habilitaprogressao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_habilitaprogressao"])){
        $sql  .= $virgula." ed295_habilitaprogressao = $this->ed295_habilitaprogressao ";
        $virgula = ",";
-       if(trim($this->ed295_habilitaprogressao) == null ){ 
+       if(trim($this->ed295_habilitaprogressao) == null ){
          $this->erro_sql = " Campo Habilitar Progressão Parcial/Dependência nao Informado.";
          $this->erro_campo = "ed295_habilitaprogressao";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_qtddiscdependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_qtddiscdependente"])){ 
+     if(trim($this->ed295_qtddiscdependente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_qtddiscdependente"])){
        $sql  .= $virgula." ed295_qtddiscdependente = $this->ed295_qtddiscdependente ";
        $virgula = ",";
-       if(trim($this->ed295_qtddiscdependente) == null ){ 
+       if(trim($this->ed295_qtddiscdependente) == null ){
          $this->erro_sql = " Campo Quantidade de Disciplinas Dependentes nao Informado.";
          $this->erro_campo = "ed295_qtddiscdependente";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_controledependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controledependencia"])){ 
+     if(trim($this->ed295_controledependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controledependencia"])){
        $sql  .= $virgula." ed295_controledependencia = $this->ed295_controledependencia ";
        $virgula = ",";
-       if(trim($this->ed295_controledependencia) == null ){ 
+       if(trim($this->ed295_controledependencia) == null ){
          $this->erro_sql = " Campo Controle da Dependência nao Informado.";
          $this->erro_campo = "ed295_controledependencia";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_controlefreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controlefreq"])){ 
+     if(trim($this->ed295_controlefreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_controlefreq"])){
        $sql  .= $virgula." ed295_controlefreq = $this->ed295_controlefreq ";
        $virgula = ",";
-       if(trim($this->ed295_controlefreq) == null ){ 
+       if(trim($this->ed295_controlefreq) == null ){
          $this->erro_sql = " Campo Controle da Frequência nao Informado.";
          $this->erro_campo = "ed295_controlefreq";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_disceliminadep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_disceliminadep"])){ 
+     if(trim($this->ed295_disceliminadep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_disceliminadep"])){
        $sql  .= $virgula." ed295_disceliminadep = $this->ed295_disceliminadep ";
        $virgula = ",";
-       if(trim($this->ed295_disceliminadep) == null ){ 
+       if(trim($this->ed295_disceliminadep) == null ){
          $this->erro_sql = " Campo Disciplina Aprovada Elimina Dependência nao Informado.";
          $this->erro_campo = "ed295_disceliminadep";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_parametrodependencia {
          return false;
        }
      }
-     if(trim($this->ed295_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_escola"])){ 
+     if(trim($this->ed295_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed295_escola"])){
        $sql  .= $virgula." ed295_escola = $this->ed295_escola ";
        $virgula = ",";
-       if(trim($this->ed295_escola) == null ){ 
+       if(trim($this->ed295_escola) == null ){
          $this->erro_sql = " Campo Escola nao Informado.";
          $this->erro_campo = "ed295_escola";
          $this->erro_banco = "";
@@ -359,7 +359,7 @@ class cl_parametrodependencia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "parametro dependencia nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed295_sequencial;
@@ -387,14 +387,14 @@ class cl_parametrodependencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed295_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed295_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed295_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -426,7 +426,7 @@ class cl_parametrodependencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "parametro dependencia nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed295_sequencial;
@@ -454,11 +454,11 @@ class cl_parametrodependencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -480,11 +480,11 @@ class cl_parametrodependencia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,15 +506,15 @@ class cl_parametrodependencia {
      $sql2 = "";
      if($dbwhere==""){
        if($ed295_sequencial!=null ){
-         $sql2 .= " where parametrodependencia.ed295_sequencial = $ed295_sequencial "; 
-       } 
+         $sql2 .= " where parametrodependencia.ed295_sequencial = $ed295_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,11 +523,11 @@ class cl_parametrodependencia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed295_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,15 +540,15 @@ class cl_parametrodependencia {
      $sql2 = "";
      if($dbwhere==""){
        if($ed295_sequencial!=null ){
-         $sql2 .= " where parametrodependencia.ed295_sequencial = $ed295_sequencial "; 
-       } 
+         $sql2 .= " where parametrodependencia.ed295_sequencial = $ed295_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

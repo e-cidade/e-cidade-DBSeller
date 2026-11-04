@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cllocalidaderural->rotulo->label("j137_descricao");
               <?=$Lj137_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j137_sequencial",10,$Ij137_sequencial,true,"text",4,"","chave_j137_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllocalidaderural->rotulo->label("j137_descricao");
               <?=$Lj137_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j137_descricao",100,$Ij137_descricao,true,"text",4,"","chave_j137_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllocalidaderural->rotulo->label("j137_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_localidaderural.php")==true){
@@ -122,12 +122,12 @@ $cllocalidaderural->rotulo->label("j137_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 <Strong>Descrição da Atualização:</strong>
 </td>
 </tr>
-<?
+<?php
 if(isset($versao)){
   $cldb_versao = new cl_db_versao;
   $result = $cldb_versao->sql_record($cldb_versao->sql_query(null," distinct db32_obs ",null," db30_codversao = $versao and db30_codrelease = $release and db32_id_item = $item"));

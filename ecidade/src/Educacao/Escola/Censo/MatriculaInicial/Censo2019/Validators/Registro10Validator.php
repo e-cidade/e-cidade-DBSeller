@@ -114,6 +114,7 @@ class Registro10Validator
         $this->validarCacimbaCisternaPoco();
         $this->validarFonteRio();
         $this->validarSemAgua();
+        $this->validarCarroPipa();
         $this->validarFonteEnergiaEletrica();
         $this->validarLuzRedePublica();
         $this->validarGeradorCombustivelFossil();
@@ -137,7 +138,8 @@ class Registro10Validator
         $this->validarNaoTrataLixo();
         $this->validarDependenciasFisicas();
         $this->validarAlmoxarifado();
-        $this->validarAreaVerde();
+        $this->validarAreaVegetacaoGramado();
+        $this->validarAreaHortaPlantioProducaoAgricola();
         $this->validarAudirotio();
         $this->validarBanheiro();
         $this->validarBanheiroAcessivelPessoasDeficiencia();
@@ -172,6 +174,7 @@ class Registro10Validator
         $this->validarSalaRecursosMultifuncionaisAEE();
         $this->validarSalaSecretaria();
         $this->validarSalaEducacaoProfissional();
+        $this->validarSalasGravacaoEdicao();
         $this->validarNenhumaDependencias();
         $this->validarRecursosAcessibilidade();
         $this->validarCorrimao();
@@ -187,6 +190,7 @@ class Registro10Validator
         $this->validarNumeroSalasForaPredioEscolar();
         $this->validarNumeroSalasClimatizada();
         $this->validarNumeroSalasComAcessibilidade();
+        $this->validarSinalizacaoAlarmeLuminoso();
         $this->validarEquipamentosTecnicosAdministrativos();
         $this->validarAntenaParabolica();
         $this->validarComputador();
@@ -216,11 +220,14 @@ class Registro10Validator
         $this->validarDispositivosPessoais();
         $this->validarInternetBandaLarga();
         $this->validarRedeComputadores();
+        // Rede local de interligacao de computadores
         $this->validarRedeCabo();
         $this->validarRedeWireless();
         $this->validarNaoExisteRede();
+        // Profissionais da escola
         $this->validarProfissionaisEscola();
         $this->validarAuxiliarSecretariaAdministrativos();
+        $this->validarAgronomosHorticultoresTecnicosMonitoresGestaoHorta();
         $this->validarAuxiliarServicosGerais();
         $this->validarBibliotecario();
         $this->validarBombeiro();
@@ -236,6 +243,7 @@ class Registro10Validator
         // Vice-diretor(a) ou diretor(a) adjunto(a), profissionais responsáveis pela gestão administrativa...
         $this->validarGestoresEscola();
         $this->validarOrientadorComunitario();
+        $this->validarTradutorInterpreteLibras();
         $this->validarNaoHaFuncionarios();
         $this->validarAlimentacaoEscolar();
         $this->validarInstrumentosMateriais();
@@ -251,6 +259,9 @@ class Registro10Validator
         $this->validarMaterialEducacaoIndigena();
         $this->validarMaterialEducacaoEtnicoRacial();
         $this->validarMaterialEducacaoCampo();
+        $this->validarEquipamentosAtividadesHortaProducaoAgricola();
+        $this->validarMateriaisEducacaoEscolarQuilombola();
+        $this->validarMateriaisEducacaoEscolarEspecial();
         $this->validarNenhumInstrumentoListado();
         $this->validarEducacaoEscolarIndigena();
         $this->validarLinguaEnsinoMinistrado();
@@ -277,6 +288,16 @@ class Registro10Validator
         $this->validarOrgaosColegiadosOutros();
         $this->validarOrgaosColegiadosNenhum();
         $this->validarProjetoPedagogicoAtualizado();
+        // Forma de desenvolvimento de acoes da area da educacao ambiental
+        $this->validarEscolaDesenvolveAcoesEducacaoAmbiental();
+        // Formas de desenvolvimento da educacao ambiental
+        $this->validarFormasEducacaoAmbientalDesenvolvidas();
+        $this->validarComoConteudoComponentesCamposExperiencias();
+        $this->validarComoComponenteCurricularEspecialEspecifico();
+        $this->validarComoEixoEstruturanteCurriculo();
+        $this->validarEmEventos();
+        $this->validarEmProjetosTransversaisInterdisciplinares();
+        $this->validarNenhumaDasOpcoesListadas();
     }
 
     private function validarTipoRegistro()
@@ -707,6 +728,28 @@ class Registro10Validator
         }
     }
 
+    private function validarCarroPipa()
+    {
+        $carroPipa = $this->registro->getCarroPipa();
+        $campo = "Abastecimento de água - Carro-pipa";
+
+        if (!$this->isPreenchido($carroPipa)) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+        }
+
+        if (!in_array($carroPipa, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($this->registro->getSemAgua() == 1 && $carroPipa == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Não há abastecimento de água"' .
+                'for preenchido com "Sim".',
+                $campo
+            ));
+        }
+    }
+
     private function validarFonteEnergiaEletrica()
     {
         $campos = array();
@@ -1054,7 +1097,7 @@ class Registro10Validator
     {
         $campos = array();
         $campos[] = $this->registro->getAlmoxarifado();
-        $campos[] = $this->registro->getAreaVerde();
+        $campos[] = $this->registro->getAreaVegetacaoGramado();
         $campos[] = $this->registro->getAuditorio();
         $campos[] = $this->registro->getBanheiro();
         $campos[] = $this->registro->getBanheiroAcessivelPessoasDeficiencia();
@@ -1090,6 +1133,9 @@ class Registro10Validator
         $campos[] = $this->registro->getSalaSecretaria();
         $campos[] = $this->registro->getSalaEducacaoProfissional();
         $campos[] = $this->registro->getNenhumaDependencias();
+        $campos[] = $this->registro->getSalaGravacaoEdicao();
+        $campos[] = $this->registro->getTradutorInterpreteLibras();
+        $campos[] = $this->registro->getAreaHortaPlantioProducaoAgricola();
 
         if (!in_array(1, $campos)) {
             $this->log(
@@ -1116,17 +1162,36 @@ class Registro10Validator
             ));
         }
     }
-
-    private function validarAreaVerde()
+    
+    private function validarAreaVegetacaoGramado()
     {
-        $area = $this->registro->getAreaVerde();
-        $campo = "Dependências físicas existentes e utilizadas na escola - Área verde";
+        $area = $this->registro->getAreaVegetacaoGramado();
+        $campo = "Dependências físicas existentes e utilizadas na escola - Área de vegetação ou gramado";
 
         if (!in_array($area, array(0, 1))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
         if ($area == 1 && $this->registro->getNenhumaDependencias() == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo ' .
+                '"Nenhuma das dependências relacionadas" for preenchido com "Sim".',
+                $campo
+            ));
+        }
+    }
+
+    private function validarAreaHortaPlantioProducaoAgricola()
+    {
+        $areaHorta = $this->registro->getAreaHortaPlantioProducaoAgricola();
+        $areaNome = "Área de horta, plantio e/ou produção agrícola";
+        $campo = "Dependências físicas existentes e utilizadas na escola - $areaNome";
+
+        if (!in_array($areaHorta, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($areaHorta == 1 && $this->registro->getNenhumaDependencias() == 1) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com "Sim" quando o campo ' .
                 '"Nenhuma das dependências relacionadas" for preenchido com "Sim".',
@@ -1763,6 +1828,23 @@ class Registro10Validator
         }
     }
 
+    public function validarSalasGravacaoEdicao()
+    {
+        $salaGravacaoEdicao = $this->registro->getSalaGravacaoEdicao();
+        $campo = "Estúdio de gravação e edição";
+
+        if (!in_array($salaGravacaoEdicao, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($salaGravacaoEdicao == 1 && $this->registro->getNenhumaDependencias() == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Nenhuma das dependências ' .
+                'relacionadas" for preenchido com "Sim".',
+                $campo
+            ));
+        }
+    }
     private function validarNenhumaDependencias()
     {
         $nenhumaDependencias = $this->registro->getNenhumaDependencias();
@@ -1784,6 +1866,7 @@ class Registro10Validator
         $campos[] = $this->registro->getSinalizacaoSonora();
         $campos[] = $this->registro->getSinalizacaoTatil();
         $campos[] = $this->registro->getSinalizacaoVisual();
+        $campos[] = $this->registro->getSinalizacaoAlarmeLuminoso();
         $campos[] = $this->registro->getNenhumRecursosAcessibilidade();
 
         if (!in_array(1, $campos)) {
@@ -2108,6 +2191,24 @@ class Registro10Validator
 
         if ($salasAcessibilidade + $salasClimatizada > 2 * ($salasDentro + $salasFora)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+    }
+
+    private function validarSinalizacaoAlarmeLuminoso()
+    {
+        $sinalizacaoAlarmeLuminoso = $this->registro->getSinalizacaoAlarmeLuminoso();
+        $campo = "circulação internas na escola - Sinalização/alarme luminoso";
+
+        if (!in_array($sinalizacaoAlarmeLuminoso, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($sinalizacaoAlarmeLuminoso == 1  && $this->registro->getNenhumRecursosAcessibilidade() == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Nenhum dos recursos de ' .
+                'acessibilidade listados" for preenchido com "Sim".',
+                $campo
+            ));
         }
     }
 
@@ -2568,7 +2669,7 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
-  
+
         if ($pessoais == 1 && $wireless != 1) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Wireless" não for preenchido com Sim',
@@ -2695,6 +2796,16 @@ class Registro10Validator
         }
     }
 
+    private function verificaConsistenciaPreenchimentoProfissionais($campo, $isPreenchido, $naoHaFuncionarios)
+    {
+        if ($isPreenchido && $naoHaFuncionarios) {
+            $this->log(sprintf('
+            O campo %s não pode ser preenchido com "Sim" quando o campo "Não há funcionários para as funções "'.
+            'listadas for preenchido com "Sim".
+            ', $campo));
+        }
+    }
+
     private function validarProfissionaisEscola()
     {
         $campos = array();
@@ -2715,7 +2826,7 @@ class Registro10Validator
         $campos[] = $this->registro->getOrientadorComunitario();
 
         $iguais = array_unique($campos);
-       
+
         if (count($iguais) == 1 && is_null($iguais[0])) {
             $this->log(
                 '"Total de profissionais que atuam nas seguintes funções na escola" ' .
@@ -2747,9 +2858,42 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($administrativo) && $naoHaFuncionarios == 1) {
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($administrativo),
+            $naoHaFuncionarios == 1
+        );
+    }
+
+    private function validarAgronomosHorticultoresTecnicosMonitoresGestaoHorta()
+    {
+        $agronomosTecnicos = $this->registro->getAgronomosTecnicosResponsaveisProducaoAgricola();
+        $naoHaFuncionarios = $this->registro->getNaoHaFuncionarios();
+        $campo = "Total de profissionais que atuam nas seguintes funções na escola - Agrônomos(as), ";
+        $campo .= "horticultores(as), técnicos ou monitores(as) responsáveis pela gestão da área de horta, ";
+        $campo .= "plantio e/ou produção agrícola";
+
+        if (!$this->isPreenchido($agronomosTecnicos)) {
+            return;
+        }
+
+        if (strlen($agronomosTecnicos) > 4) {
+            $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
+        }
+
+        if (!DBString::isSomenteNumero($agronomosTecnicos)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
+
+        if (((int)$agronomosTecnicos) == 0) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($agronomosTecnicos),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarAuxiliarServicosGerais()
@@ -2757,7 +2901,7 @@ class Registro10Validator
         $servicosGerais = $this->registro->getAuxiliarServicosGerais();
         $naoHaFuncionarios = $this->registro->getNaoHaFuncionarios();
         $campo = "Total de profissionais que atuam nas seguintes funções na escola - Auxiliar de serviços gerais, ";
-        $campo .= "porteiro(a), zelador(a), faxineiro(a), horticultor(a), jardineiro(a)";
+        $campo .= "porteiro(a), zelador(a), faxineiro(a), jardineiro(a)";
 
         if (!$this->isPreenchido($servicosGerais)) {
             return;
@@ -2775,9 +2919,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($servicosGerais) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($servicosGerais),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarBibliotecario()
@@ -2803,9 +2949,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($bibliotecario) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($bibliotecario),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarBombeiro()
@@ -2832,9 +2980,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($bombeiro) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($bombeiro),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarCoordenador()
@@ -2860,9 +3010,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($coordenador) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($coordenador),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarFonoaudiologo()
@@ -2887,9 +3039,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($fonoaudiologo) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($fonoaudiologo),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarNutricionista()
@@ -2914,9 +3068,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($nutricionista) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($nutricionista),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarPsicologo()
@@ -2941,9 +3097,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($psicologo) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($psicologo),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarProfissionaisPreparacaoSeguranca()
@@ -2969,9 +3127,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($profissionalCozinha) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($profissionalCozinha),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarProfissionaisApoio()
@@ -2998,9 +3158,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($apoio) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($apoio),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarSecretario()
@@ -3025,9 +3187,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($secretario) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($secretario),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarSeguranca()
@@ -3053,9 +3217,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($seguranca) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($seguranca),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarTecnicosMonitores()
@@ -3082,9 +3248,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
         }
 
-        if ($this->isPreenchido($tecnicos) && $naoHaFuncionarios == 1) {
-            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
-        }
+        $this->verificaConsistenciaPreenchimentoProfissionais(
+            $campo,
+            $this->isPreenchido($tecnicos),
+            $naoHaFuncionarios == 1
+        );
     }
 
     private function validarAlimentacaoEscolar()
@@ -3111,7 +3279,7 @@ class Registro10Validator
                 $respostas[] = $reg20->getTipoMediacaoDidaticoPedagogica();
             }
 
-            if (!in_array(1, $respostas) && !in_array(2, $respostas)) {
+            if (!in_array(1, $respostas)) {
                 $this->log(sprintf(
                     'O campo "%s" não pode ser preenchido com "Oferece" quando o campo "Tipo de mediação ' .
                     'didático-pedagógica" de todas as turmas da escola for preenchido com "Educação a distância".',
@@ -3136,6 +3304,7 @@ class Registro10Validator
         $campos[] = $this->registro->getMaterialEducacaoIndigena();
         $campos[] = $this->registro->getMaterialEducacaoEtnicoRacial();
         $campos[] = $this->registro->getMaterialEducacaoCampo();
+        $campos[] = $this->registro->getMaterialEducacaoQuilombola();
         $campos[] = $this->registro->getNenhumInstrumentoListado();
 
         if (!in_array(1, $campos)) {
@@ -3145,6 +3314,18 @@ class Registro10Validator
                 'não foi preenchido corretamente. Não podem ser informadas todas as opções' .
                 'com valor igual a Não'
             );
+        }
+    }
+
+    private function verificaConsistenciaPreenchimentoInstrumentosMateriais($campo, $isPreenchido, $naoHaFuncionarios)
+    {
+        if ($isPreenchido && $naoHaFuncionarios) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo'.
+                '"Nenhum dos instrumentos listados" for preenchido com "Sim"'.'.
+            ',
+                $campo
+            ));
         }
     }
 
@@ -3159,13 +3340,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($acervo == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($acervo),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarBrinquedosEducacaoInfantil()
@@ -3179,13 +3358,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($brinquedos == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($brinquedos),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMateriaisCientificos()
@@ -3199,13 +3376,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materiaisCientificos == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materiaisCientificos),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarEquipamentoAmplificacaoOuDifusaoAudio()
@@ -3219,13 +3394,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($audio == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($audio),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarInstrumentosMusicais()
@@ -3240,13 +3413,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($instrumentos == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($instrumentos),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarJogosEducativos()
@@ -3260,13 +3431,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($jogos == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($jogos),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMaterialAtividadeCultural()
@@ -3280,13 +3449,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materialCultura == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialCultura),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarmaterialEducacaoProfissional()
@@ -3300,13 +3467,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materialProfissional == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialProfissional),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMaterialDesportivRecreacao()
@@ -3320,13 +3485,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materialRecreacao == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialRecreacao),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMaterialEducacaoIndigena()
@@ -3334,19 +3497,17 @@ class Registro10Validator
         $educacaoIndigena = $this->registro->getMaterialEducacaoIndigena();
         $nenhumInstrumento = $this->registro->getNenhumInstrumentoListado();
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
-        $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação escolar indígena";
+        $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a escola indígena";
 
         if (!in_array($educacaoIndigena, array(0, 1))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($educacaoIndigena == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($educacaoIndigena),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMaterialEducacaoEtnicoRacial()
@@ -3361,13 +3522,11 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materialRacial == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
-        }
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialRacial),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarMaterialEducacaoCampo()
@@ -3381,13 +3540,78 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($materialCampo == 1 && $nenhumInstrumento == 1) {
-            $this->log(sprintf(
-                'O campo "%s" não pode ser preenchido com 1 (Sim) quando o campo'.
-                '"Nenhum dos instrumentos listados" for preenchido com 1 (Sim).',
-                $campo
-            ));
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialCampo),
+            $nenhumInstrumento == 1
+        );
+    }
+
+    private function validarEquipamentosAtividadesHortaProducaoAgricola()
+    {
+        $materialAtividadeAgricola = $this->registro->getEquipamentosAtividadesHortaProducaoAgricola();
+        $nenhumInstrumento = $this->registro->getNenhumInstrumentoListado();
+        $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
+        $campo .= "atividades de ensino aprendizagem - Equipamentos e instrumentos para atividades em área de ";
+        $campo .= "horta, plantio e/ou produção agrícola";
+
+        if (!$this->isPreenchido($materialAtividadeAgricola)) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
+
+        if (!in_array($materialAtividadeAgricola, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialAtividadeAgricola),
+            $nenhumInstrumento == 1
+        );
+    }
+
+    private function validarMateriaisEducacaoEscolarQuilombola()
+    {
+        $materialAtividadeQuilombola = $this->registro->getMaterialEducacaoQuilombola();
+        $nenhumInstrumento = $this->registro->getNenhumInstrumentoListado();
+        $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
+        $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação escolar quilombola";
+
+        if (!$this->isPreenchido($materialAtividadeQuilombola)) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+        }
+
+        if (!in_array($materialAtividadeQuilombola, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialAtividadeQuilombola),
+            $nenhumInstrumento == 1
+        );
+    }
+
+    private function validarMateriaisEducacaoEscolarEspecial()
+    {
+        $materialAtividadeEspecial = $this->registro->getMaterialEducacaoEspecial();
+        $nenhumInstrumento = $this->registro->getNenhumInstrumentoListado();
+        $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
+        $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação especial";
+
+        if (!$this->isPreenchido($materialAtividadeEspecial)) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+        }
+
+        if (!in_array($materialAtividadeEspecial, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoInstrumentosMateriais(
+            $campo,
+            $this->isPreenchido($materialAtividadeEspecial),
+            $nenhumInstrumento == 1
+        );
     }
 
     private function validarNenhumInstrumentoListado()
@@ -3403,7 +3627,7 @@ class Registro10Validator
     private function validarEducacaoEscolarIndigena()
     {
         $educacaoIndigena = $this->registro->getEducacaoEscolarIndigena();
-        $campo = "Educação escolar indígena";
+        $campo = "Escola indígena";
 
         if (!in_array($educacaoIndigena, array(0, 1))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
@@ -3808,6 +4032,20 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
+    
+    private function validarEscolaDesenvolveAcoesEducacaoAmbiental()
+    {
+        $acoesEducacaoAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'A escola desenvolve ações na área de educação ambiental';
+
+        if (!$this->isPreenchido($acoesEducacaoAmbiental)) {
+            return;
+        }
+
+        if (!in_array($acoesEducacaoAmbiental, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+    }
 
     private function validarAssociacaoPais()
     {
@@ -4005,6 +4243,13 @@ class Registro10Validator
         if ($this->isPreenchido($gestoresEscola) && $naoHaFuncionarios == 1) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
+
+        if ($this->isPreenchido($gestoresEscola) && $naoHaFuncionarios == 1) {
+            $this->log(sprintf('
+            O campo %s não pode ser preenchido com "Sim" quando o campo "Não há funcionários para as funções "'.
+            'listadas for preenchido com "Sim".
+            ', $campo));
+        }
     }
 
     private function validarOrientadorComunitario()
@@ -4033,6 +4278,48 @@ class Registro10Validator
         if ($this->isPreenchido($orientador) && $naoHaFuncionarios == 1) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
+
+        if ($this->isPreenchido($orientador) && $naoHaFuncionarios == 1) {
+            $this->log(sprintf('
+            O campo %s não pode ser preenchido com "Sim" quando o campo "Não há funcionários para as funções "'.
+            'listadas for preenchido com "Sim".
+            ', $campo));
+        }
+    }
+
+    private function validarTradutorInterpreteLibras()
+    {
+        $campo =
+            "Tradutor e Intérprete de Libras para atendimento em outros ambientes da escola que não seja sala de aula";
+        $naoHaFuncionarios = $this->registro->getNaoHaFuncionarios();
+        $tradutor = $this->registro->getTradutorInterpreteLibras();
+
+        if (!$this->isPreenchido($tradutor)) {
+            return;
+        }
+
+        if (strlen($tradutor) > 4) {
+            $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
+        }
+
+        if (!DBString::isSomenteNumero($tradutor)) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if (((int)$tradutor) == 0) {
+            $this->log(sprintf('O campo "%s" não pode ser preenchido apenas com zeros.', $campo));
+        }
+
+        if ($this->isPreenchido($tradutor) && $naoHaFuncionarios == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($this->isPreenchido($tradutor) && $naoHaFuncionarios == 1) {
+            $this->log(sprintf('
+            O campo %s não pode ser preenchido com "Sim" quando o campo "Não há funcionários para as funções "'.
+            'listadas for preenchido com "Sim".
+            ', $campo));
+        }
     }
 
     private function validarNaoHaFuncionarios()
@@ -4041,6 +4328,171 @@ class Registro10Validator
         $naoHaFuncionarios = $this->registro->getNaoHaFuncionarios();
 
         if (!in_array($naoHaFuncionarios, array(1, null))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+    }
+
+    // Formas de educacao ambiental da escola
+
+    private function verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+        $campo,
+        $isPreenchido,
+        $nenhumaDasFuncoesListadas
+    ) {
+        if ($isPreenchido && $nenhumaDasFuncoesListadas) {
+            $this->log(sprintf('
+            O campo %s não pode ser preenchido com "Sim" quando o campo "Nenhuma das opções '.
+            'listadas" for preenchido com "Sim".
+            ', $campo));
+        }
+    }
+
+    private function validarFormasEducacaoAmbientalDesenvolvidas()
+    {
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campos = array();
+        $campos[] = $this->registro->getComoConteudoComponentesCamposExperiencias();
+        $campos[] = $this->registro->getComoComponenteCurricularEspecialEspecifico();
+        $campos[] = $this->registro->getComoEixoEstruturanteCurriculo();
+        $campos[] = $this->registro->getEmEventos();
+        $campos[] = $this->registro->getEmProjetosTransversaisInterdisciplinares();
+        $campos[] = $this->registro->getNenhumaDasOpcoesListadas();
+
+        if ($escolaDesenvolveAcoesAreaAmbiental == 1 && !in_array(1, $campos)) {
+            $this->log(
+                '"Forma(s) nas quais a educação ambiental é desenvolvida na escola" não foi preenchida ' .
+                'corretamente. Não podem ser informadas todas as opções com valor igual a 0 "Não". '
+            );
+        }
+    }
+
+    private function validarComoConteudoComponentesCamposExperiencias()
+    {
+        $comoConteudosComponentes = $this->registro->getComoConteudoComponentesCamposExperiencias();
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - Como ';
+        $campo .= 'conteúdo dos componentes/campos de experiências presentes no currículo';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $comoConteudosComponentes == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($comoConteudosComponentes, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+            $campo,
+            $comoConteudosComponentes == 1,
+            $nenhumaDasOpcoesListadas == 1
+        );
+    }
+
+    private function validarComoComponenteCurricularEspecialEspecifico()
+    {
+        $comoComponenteCurricularEspecial = $this->registro->getComoComponenteCurricularEspecialEspecifico();
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - ';
+        $campo .= 'Como um componente curricular especial, específico, flexível ou eletivo';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $comoComponenteCurricularEspecial == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($comoComponenteCurricularEspecial, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+            $campo,
+            $comoComponenteCurricularEspecial == 1,
+            $nenhumaDasOpcoesListadas == 1
+        );
+    }
+
+    private function validarComoEixoEstruturanteCurriculo()
+    {
+        $comoEixoEstruturante = $this->registro->getComoEixoEstruturanteCurriculo();
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - ';
+        $campo .= 'Como um eixo estruturante do currículo';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $comoEixoEstruturante == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($comoEixoEstruturante, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+            $campo,
+            $comoEixoEstruturante == 1,
+            $nenhumaDasOpcoesListadas == 1
+        );
+    }
+
+    private function validarEmEventos()
+    {
+        $emEventos = $this->registro->getEmEventos();
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - ';
+        $campo .= 'Em eventos';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $emEventos == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($emEventos, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+            $campo,
+            $emEventos == 1,
+            $nenhumaDasOpcoesListadas == 1
+        );
+    }
+
+    private function validarEmProjetosTransversaisInterdisciplinares()
+    {
+        $emProjetosTransversais = $this->registro->getEmProjetosTransversaisInterdisciplinares();
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - ';
+        $campo .= 'Em projetos transversais ou interdisciplinares';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $emProjetosTransversais == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($emProjetosTransversais, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        $this->verificaConsistenciaPreenchimentoFormasEducacaoAmbiental(
+            $campo,
+            $emProjetosTransversais == 1,
+            $nenhumaDasOpcoesListadas == 1
+        );
+    }
+
+    private function validarNenhumaDasOpcoesListadas()
+    {
+        $nenhumaDasOpcoesListadas = $this->registro->getNenhumaDasOpcoesListadas();
+        $escolaDesenvolveAcoesAreaAmbiental = $this->registro->getDesenvolveAcoesEducacaoAmbiental();
+        $campo = 'Informe de qual(quais) forma(s) a educação ambiental é desenvolvida na escola - ';
+        $campo .= 'Nenhuma das opções listadas';
+
+        if ($escolaDesenvolveAcoesAreaAmbiental != 1 && $nenhumaDasOpcoesListadas == 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando deveria não ser preenchido.', $campo));
+        }
+
+        if (!in_array($nenhumaDasOpcoesListadas, array(0, 1))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }

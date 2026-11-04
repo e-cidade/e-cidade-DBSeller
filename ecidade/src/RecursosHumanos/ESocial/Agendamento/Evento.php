@@ -115,6 +115,7 @@ class Evento
         $daoFilaEsocial->rh213_situacao = 1;
         $daoFilaEsocial->rh213_data = date('Y-m-d H:i:s');
 
+
         if (empty($codigo)) {
             $daoFilaEsocial->incluir(null);
         } else {

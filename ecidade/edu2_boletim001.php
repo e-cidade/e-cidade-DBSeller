@@ -69,7 +69,7 @@ db_postmemory($_GET);
         $sql .= "  ORDER BY ed52_i_ano DESC ";
         $sql_result = db_query($sql);
         $num = pg_num_rows($sql_result);
-        $conta = "";
+        $conta = 0;
 
         while ($row = pg_fetch_array($sql_result)) {
 
@@ -95,7 +95,7 @@ db_postmemory($_GET);
 
                 # Se achar alguma base para o curso, marca a palavra Todas
                 echo "new Array(\"\", ''),\n";
-                $conta_sub = "";
+                $conta_sub = 0;
                 while ($rowx = pg_fetch_array($sub_result)) {
 
                     $codigo_base = $rowx["ed220_i_codigo"];
@@ -106,13 +106,12 @@ db_postmemory($_GET);
                     if ($conta_sub == $num_sub) {
 
                         echo "new Array(\"$base_nome - $serie_nome\", $codigo_base)\n";
-                        $conta_sub = "";
+                        $conta_sub = 0;
                     } else {
                         echo "new Array(\"$base_nome - $serie_nome\", $codigo_base),\n";
                     }
                 }
             } else {
-
                 #Se nao achar base para o curso selecionado...
                 echo "new Array(\"Calendário sem turmas cadastradas\", '')\n";
             }
@@ -124,7 +123,8 @@ db_postmemory($_GET);
         echo ")\n";
         echo ");\n";
         ?>
-//Inicio da função JS
+
+        //Inicio da função JS
         function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
 
             var i, j;
@@ -154,7 +154,7 @@ db_postmemory($_GET);
                 document.form1.subgrupo.disabled = false;
             }
             document.form1.procurar.disabled = true;
-            <?if (isset($turma)) {?>
+            <?php if (isset($turma)) {?>
             qtd = document.form1.alunosdiario.length;
             for (i = 0; i < qtd; i++) {
                 document.form1.alunosdiario.options[0] = null;
@@ -163,11 +163,10 @@ db_postmemory($_GET);
             for (i = 0; i < qtd; i++) {
                 document.form1.alunos.options[0] = null;
             }
-            <?}?>
+            <?php } ?>
         }
 
     function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
-
         var i, j;
         var prompt;
         // empty existing items
@@ -189,21 +188,21 @@ db_postmemory($_GET);
                 if (itemArray[i][1] != null) {
                     selectCtrl.options[j].value = itemArray[i][1];
                 }
-                <?if (isset($turma)) {?>
+                <?php if (isset($turma)) {?>
                 if (<?=trim($turma)?> == itemArray[i][1]
-            )
+                )
                 {
                     indice = i;
                 }
-                <?}?>
+                <?php } ?>
                 j++;
             }
-            <?if (isset($turma)) {?>
+            <?php if (isset($turma)) {?>
             selectCtrl.options[indice].selected = true;
             document.form1.procurar.disabled = false;
-            <?} else {?>
+            <?php } else {?>
             selectCtrl.options[0].selected = true;
-            <?}?>
+            <?php } ?>
             document.form1.subgrupo.disabled = false;
         }
     }
@@ -516,7 +515,7 @@ db_postmemory($_GET);
                                 <option value='M1'>MODELO 1 - 2 por página</option>
                                 <option value='M2'>MODELO 2 - 1 por página</option>
                                 <option value='M3'>MODELO 3 - Cumulativo</option>
-                                <option value='M4'>MODELO 4</option>
+<!--                                <option value='M4'>MODELO 4</option> Desabilitando opção Redmine 27410 -->
 
                             </select>
                             <b>Disciplinas:</b>
@@ -574,7 +573,7 @@ db_postmemory($_GET);
                     <tr>
                         <td>
                             <b>Período de Avaliação:</b>
-                            <?
+                            <?php
                             $sql2 = " SELECT ed41_i_codigo, ";
                             $sql2 .= "                ed09_c_descr, ";
                             $sql2 .= "                ed41_i_sequencia, ";
@@ -616,7 +615,7 @@ db_postmemory($_GET);
                                 <option value='1'>MODELO 1 - RETRATO</option>
                                 <option value='2'>MODELO 2 - PAISAGEM</option>
                                 <option value='3'>MODELO 3</option>
-                                <option value="4">MODELO 4 - 3 por página</option>
+<!--                                <option value="4">MODELO 4 - 3 por p?gina</option> Desabilitando op??o Redmine 27410 -->
                             </select>
                             <input type="checkbox" id='assinaturaregente' name="assinaturaregente" value="" checked> <b>Imprimir
                                 assinatura do professor conselheiro</b><br>
@@ -722,11 +721,11 @@ db_postmemory($_GET);
                                                 MODELO 3 -> Retrato (Dois boletins por página)
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                MODELO 4 -> Retrato (Três boletins por página)
-                                            </td>
-                                        </tr>
+<!--                                        <tr>-->
+<!--                                            <td>-->
+<!--                                                MODELO 4 -> Retrato (Três boletins por página) Desabilitando opção Redmine 27410-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
                                     </table>
                                 </fieldset>
                                 <?php
@@ -1148,9 +1147,11 @@ db_menu(db_getsession("DB_id_usuario"),
             sUrlBoletim = 'edu2_pardescritivonota003.php';
         } else if (document.form1.modelo.value == 'M3') {
             sUrlBoletim = 'edu2_boletim004.php';
-        } else if (document.form1.modelo.value == 'M4') {
-            sUrlBoletim = 'edu2_boletimunificado002.php';
-        }else {
+        }
+        // else if (document.form1.modelo.value == 'M4') { // Desabilitando op??o Redmine 27410
+        //     sUrlBoletim = 'edu2_boletimunificado002.php';
+        // }
+        else {
             sUrlBoletim = 'edu2_pardescritivonota002.php';
         }
 

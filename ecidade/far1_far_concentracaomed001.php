@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ if(isset($incluir)){
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Inclusão de Concentração</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmfar_concentracaomed.php"));
 	?>
 	</fieldset>
@@ -64,7 +64,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -72,7 +72,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","fa37_i_medanvisa",true,1,"fa37_i_medanvisa",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clfar_concentracaomed->erro_status=="0"){
     $clfar_concentracaomed->erro(true,false);

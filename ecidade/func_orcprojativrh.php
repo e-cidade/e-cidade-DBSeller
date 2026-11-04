@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clorcprojativ->rotulo->label("o55_descr");
               <?=$Lo55_projativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o55_projativ",4,$Io55_projativ,true,"text",4,"","chave_o55_projativ");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcprojativ->rotulo->label("o55_descr");
               <?=$Lo55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o55_descr",40,$Io55_descr,true,"text",4,"","chave_o55_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcprojativ->rotulo->label("o55_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $db_where = "";
       if(isset($orgao) && trim($orgao)!=""){
 	$db_where .= " o58_orgao =$orgao ";
@@ -141,12 +141,12 @@ $clorcprojativ->rotulo->label("o55_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

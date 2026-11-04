@@ -34,6 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $iEscola = db_getsession("DB_coddepto");
+$user = db_getsession("DB_id_usuario");
 
 ?>
 <html>
@@ -83,14 +84,20 @@ $iEscola = db_getsession("DB_coddepto");
                         <td class="field-size5">
                             <label>Selecione o Calendário:</label>
                         </td>
-                        <td id="listaCalendarios">
+                        <td>
+                            <select id="listaCalendarios">
+                                <option value="" selected>Selecione a Calendario</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
                         <td class="field-size5">
                             <label>Selecione a Turma:</label>
                         </td>
-                        <td id="listaTurmas">
+                        <td>
+                            <select id="listaTurmas">
+                                <option value="" selected>Selecione a Turma</option>
+                            </select>
                         </td>
                     </tr>
                     <tr id="listaEtapas">
@@ -122,15 +129,6 @@ $iEscola = db_getsession("DB_coddepto");
                             <div style="width: 600px; height: 20px; float: left; position: relative; margin-left: 5px;"><span id="avisoTempoBimestre"> </span></div>
                         </td>
 
-                    </tr>
-                    <tr id="linhaTurnoTurma" style="display:none;">
-                        <td class="field-size5">
-                            <label>Selecione o Turno:</label>
-                        </td>
-                        <td class="field-size-max">
-                            <select id="turnoTurma" name="turnoTurma">
-                            </select>
-                        </td>
                     </tr>
 
                     <tr id="linhaDisciplina" style="display: none">
@@ -263,7 +261,7 @@ $iEscola = db_getsession("DB_coddepto");
                         <td>
                             <select id="registro">
                                 <option value="M">Manual</option>
-                                <option value="F">Frequência / Conteúdo</option>
+                                <option value="F">Frequência digital</option>
                             </select>
                         </td>
                     </tr>
@@ -356,20 +354,19 @@ db_menu();
 ?>
 
 <script>
+    const user = '<?php echo $user; ?>';
     const tipoSelecao = $('tipoSelecao');
     const MENSAGENS_DIARIO_CLASSE_NOVO = 'educacao.escola.edu2_diarioclassenovo001.';
 
     var aColunas = document.getElementsByName('colunas');
     var lTemDisciplinaGlobal = false;
     var iEscola = $F("iEscola");
-    var oTurma = new DBViewFormularioEducacao.ListaTurma();
     var oPeriodo = new DBViewFormularioEducacao.ListaPeriodoAvaliacao();
     oPeriodo.somentePeriodoCalculaCargaHoraria(true);
     var oDisciplina = new DBViewFormularioEducacao.ListaDisciplinas();
-    var oCalendario = new DBViewFormularioEducacao.ListaCalendario();
     var sRpc = "edu4_turmas.RPC.php";
 
-    oTurma.show($('listaTurmas'));
+    // oTurma.show($('listaTurmas'));
     oPeriodo.show($('listaPeriodos'));
     oDisciplina.show($('listaDisciplinas'));
 
@@ -441,7 +438,6 @@ db_menu();
      * Controla os filtros que devem ser liberados, de acordo com o modelo selecionado
      */
     function liberaFiltrosPorModelo() {
-
         for (var oElemento in aColunas) {
 
             aColunas[oElemento].checked = false;
@@ -509,121 +505,19 @@ db_menu();
         }
     }
 
-    /**
-     * Busca os calendários vinculados a escola logada
-     */
-    function buscaCalendario() {
-
-        oCalendario.setEscola(iEscola);
-        oCalendario.getCalendarios();
-
-        /**
-         * Função realizada ao alterar o calendário
-         * @return {function}
-         */
-        var functionChangeCalendario = function() {
-
-            limpaElementos();
-
-            var oCalendarioSelecionado = oCalendario.getSelecionados();
-
-            if (oCalendarioSelecionado.iCalendario != "") {
-                buscaTurma(oCalendarioSelecionado);
-            }
-        };
-
-        /**
-         * Função chamada ao trazer os calendários
-         * @return {[type]} [description]
-         */
-        var functionLoadCalendario = function() {
-
-            var oCalendarioSelecionado = oCalendario.getSelecionados();
-
-            if (oCalendarioSelecionado.iCalendario != "") {
-                buscaTurma(oCalendarioSelecionado);
-            }
-        };
-
-        oCalendario.setOnChangeCallBack(functionChangeCalendario);
-        oCalendario.setCallBackLoad(functionLoadCalendario);
-        oCalendario.show($('listaCalendarios'));
-    }
-
-    function buscaTurnoTurma(turma, etapa) {
-        $('linhaTurnoTurma').style.display = 'none';
-        $('turnoTurma').options.length = 0;
-        const parametros = {
-            'exec': 'turnosTurma',
-            'turma': turma,
-            'etapa': etapa
-        };
-        var oAjaxRequest = new AjaxRequest('edu4_turmas.RPC.php', parametros, function(retorno, erro) {
-            if (erro) {
-                alert(retorno.message);
-                return;
-            }
-
-            if (!retorno.permite) {
-                return;
-            }
-
-            $('linhaTurnoTurma').style.display = 'table-row';
-            for (const turno of retorno.turnos) {
-                const option = new Option(turno.nome.urlDecode(), turno.codigo);
-                if (turno.original) {
-                    option.setAttribute('selected', 'selected');
-                }
-                option.setAttribute('original', turno.original);
-                $('turnoTurma').add(option);
-            }
-            return;
-        });
-
-        oAjaxRequest.setMessage('Buscando regentes.');
-        oAjaxRequest.execute();
-    }
-
-    /**
-     * Busca as turmas vinculadas ao calendário selecionado
-     * @param  {Object} oCalendarioSelecionado
-     */
-    function buscaTurma(oCalendarioSelecionado) {
-        limpaElementos();
-
-        var oAjaxRequest = new AjaxRequest(
-            'edu_educacaobase.RPC.php', {
-                'exec': 'pesquisaTurma',
-                'iCalendario': oCalendarioSelecionado.iCalendario
-            },
-            (response) => {
-                response.dados.map((turma) => {
-                    cboTurma.add(new Option(turma.ed57_c_descr.urlDecode(), turma.ed57_i_codigo));
-                });
-
-                if (response.dados.length == 1) {
-                    cboTurma.value = response.dados[0].ed57_i_codigo;
-                    cboTurma.dispatchEvent(new Event('change'));
-                }
-            }
-        );
-        oAjaxRequest.execute();
-    }
 
     function functionChangeTurma() {
 
-        var oTurmaSelecionada = oTurma.getSelecionados();
+        var oTurmaSelecionada = document.querySelector("#listaTurmas").value
 
         $('cboEtapas').options.length = 0;
         $('cboEtapas').add(new Option('Selecione uma Etapa', ''));
 
-        if ($F('cboTurma') === '') {
-            return;
-        }
+        js_divCarregando('Buscando etapas, aguarde...', 'msgBox');
         var oAjaxRequest = new AjaxRequest(
             'edu_educacaobase.RPC.php', {
                 'exec': 'pesquisaEtapa',
-                'turma': $F('cboTurma'),
+                'turma': oTurmaSelecionada,
             },
             (response) => {
                 const etapas = [];
@@ -640,10 +534,9 @@ db_menu();
                 }
             }
         );
+        js_removeObj('msgBox')
         oAjaxRequest.execute();
     }
-
-    oTurma.setCallbackOnChange(functionChangeTurma);
 
     $('cboEtapas').addEventListener('change', (event) => {
 
@@ -652,8 +545,8 @@ db_menu();
         }
         const etapaSelecionada = $F('cboEtapas').split(',')[0];
 
-        validaTurma($F("cboTurma"), etapaSelecionada);
-        oPeriodo.getPeriodos($F("cboTurma"), etapaSelecionada, 2);
+        validaTurma(document.querySelector('#listaTurmas').value, etapaSelecionada);
+        oPeriodo.getPeriodos(document.querySelector('#listaTurmas').value, etapaSelecionada, 2);
     });
 
     $('listaPeriodos').addEventListener('change', (event) => {
@@ -663,7 +556,7 @@ db_menu();
             document.getElementById("data_corte").disabled = false;
         }
 
-        escreveDataDoBimestre(oPeriodoSelecionado, $F("cboTurma"));
+        escreveDataDoBimestre(oPeriodoSelecionado, document.querySelector('#listaTurmas').value);
     })
 
     function escreveDataDoBimestre(icodigo, iturma) {
@@ -672,7 +565,6 @@ db_menu();
         oParametro.iCodigo = icodigo;
         oParametro.iTurma = iturma;
 
-
         var oDadosRequisicao = new Object();
         oDadosRequisicao.method = 'post';
         oDadosRequisicao.parameters = 'json=' + Object.toJSON(oParametro);
@@ -680,7 +572,6 @@ db_menu();
 
         js_divCarregando(_M(MENSAGENS_DIARIO_CLASSE_NOVO + "validando_turma"), "msgBox");
         new Ajax.Request(sRpc, oDadosRequisicao);
-
     }
 
     var dataFim = "";
@@ -799,8 +690,8 @@ db_menu();
      */
     function validaDados() {
 
-        var iCalendarioSelecionado = oCalendario.getSelecionados().iCalendario;
-        var iTurmaSelecionada = oTurma.getSelecionados().codigo_turma;
+        var iCalendarioSelecionado = document.querySelector("#listaCalendarios").value
+        var iTurmaSelecionada = document.querySelector("#listaTurmas").value
         var iPeriodoSelecionado = oPeriodo.getSelecionado().iCodigo;
 
         var aDisciplinaSelecionadas = oDisciplina.getSelecionados();
@@ -864,8 +755,8 @@ db_menu();
     function imprimir() {
 
         const formData = new FormData();
-        var iCalendarioSelecionado = oCalendario.getSelecionados().iCalendario;
-        var iTurmaSelecionada = oTurma.getSelecionados().codigo_turma;
+        var iCalendarioSelecionado =  document.querySelector('#listaCalendarios').value
+        var iTurmaSelecionada = document.querySelector('#listaTurmas').value
         var iPeriodoSelecionado = oPeriodo.getSelecionado().iCodigo;
         var aDisciplinaSelecionadas = oDisciplina.getSelecionados();
         var iDataCorte = document.getElementById("data_corte").value;
@@ -910,12 +801,6 @@ db_menu();
 
         if (aRegencias.length == 0) {
             return;
-        }
-
-        const turnoTurma = $('turnoTurma');
-        if (turnoTurma.options.length > 0) {
-            sParametros += '&turnoSelecionado=' + $F('turnoTurma');
-            sParametros += '&turnoOriginal=' + turnoTurma.options[turnoTurma.selectedIndex].getAttribute('original');
         }
 
         const url = "<?php echo ECIDADE_REQUEST_PATH; ?>",
@@ -974,14 +859,15 @@ db_menu();
     function limpaElementos() {
         oPeriodo.limpaElemento();
         oDisciplina.clear();
-        oTurma.limpar();
+        document.querySelector('#listaTurmas').options.length = 0
+        document.querySelector('#listaTurmas').add(new Option('Selecione uma Turma', ''));
+
 
         $('cboEtapas').options.length = 0;
         $('cboEtapas').add(new Option('Selecione uma Etapa', ''));
     }
 
     preencheQuantidadeColunas();
-    buscaCalendario();
 
     $('tipoSelecao').addEventListener('change', function(event) {
         tipoSelecaoDisciplina(event.target.value);
@@ -1052,6 +938,65 @@ db_menu();
         oAjaxRequest.setMessage('Buscando regentes.');
         oAjaxRequest.execute();
     }
+
+    window.addEventListener('load', async () => {
+        const montaSelect = async (options, elemento) => {
+            let first = elemento.options[0]
+            elemento.options.length = 0
+            elemento.add(first)
+
+            options.forEach(linha => {
+                let option = new Option(linha.nome, linha.codigo)
+                elemento.add(option)
+            })
+        }
+
+        const montaSelectTurmas = async (options, elemento) => {
+            let first = elemento.options[0]
+            elemento.options.length = 0
+            elemento.add(first)
+
+            options.forEach(linha => {
+                let option = new Option(linha.nome, linha.codigo)
+                elemento.add(option)
+            });
+        }
+
+        const escola = document.querySelector('#iEscola').value;
+        const selectCalendario = document.querySelector('#listaCalendarios');
+        const selectTurmas = document.querySelector('#listaTurmas');
+        const routes = {
+            calendarios: `v4/api/educacao/escola/${escola}/calendario?validaUsuario=${user}`,
+            turmas: `v4/api/educacao/escola/turmas-por-calendario`
+        }
+
+        js_divCarregando('Buscando calendários, aguarde...', 'msgBox');
+
+        const calendarios = (await CurrentWindow.axios.get(routes.calendarios)).data.data;
+
+        montaSelect(calendarios, selectCalendario);
+        js_removeObj('msgBox');
+
+        selectCalendario.addEventListener('change', async () => {
+            const codCalendario = calendarios.find(calendario => selectCalendario.value == calendario.codigo);
+            let turmas;
+
+            if (codCalendario) {
+                js_divCarregando('Aguarde, buscando turmas', 'msgBox');
+                const codigoCalendario = codCalendario.codigo;
+                const response = (await CurrentWindow.axios.get(`${routes.turmas}/${codigoCalendario}?validaUsuario=${user}`));
+                turmas = response.data.data;
+            }
+
+            montaSelectTurmas(turmas, selectTurmas);
+            js_removeObj('msgBox');
+        });
+
+        selectTurmas.addEventListener('change', () => {
+            functionChangeTurma();
+        })
+    })
+
 </script>
 
 </html>

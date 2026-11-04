@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,7 +62,7 @@ $sHoraAtual = date('H:i');
   <form id="form1" name="form1" method="post" action="">
     <fieldset style="width: 400px;">
       <legend><strong>Cancela Manutenção de Medida</strong></legend>
-      <?
+      <?php
         db_input("iUsuario", 10, '', true, 'hidden', 3);
         db_input("iVeiculo", 10, '', true, 'hidden', 3);
       ?>
@@ -72,7 +72,7 @@ $sHoraAtual = date('H:i');
             <b><?=$Lve67_sequencial;?></b>
           </td>
           <td>
-            <?
+            <?php
               db_input("iSequencial", 8, '', true, 'text', 3);
             ?>
           </td>
@@ -82,7 +82,7 @@ $sHoraAtual = date('H:i');
             <b><?=db_ancora($Lve67_veicmanutencaomedida, 'js_pesquisar(true)', 1);?></b>
           </td>
           <td>
-            <?
+            <?php
               db_input("iManutencao", 8, '', true, 'text', 1, "onchange='js_pesquisar(false);'");
               db_input("sPlacaVeiculo", 25, '', true, 'text', 3);
             ?>
@@ -93,7 +93,7 @@ $sHoraAtual = date('H:i');
             <b><?=$Lve67_data?></b>
           </td>
           <td>
-            <?
+            <?php
               db_input("sData", 8, '', true, 'text', 3);
             ?>
           </td>
@@ -103,7 +103,7 @@ $sHoraAtual = date('H:i');
             <b><?=$Lve67_hora;?></b>
           </td>
           <td>
-            <?
+            <?php
               db_input("sHora", 8, '', true, 'text', 3);
             ?>
           </td>
@@ -114,7 +114,7 @@ $sHoraAtual = date('H:i');
             <fieldset>
               <legend><b>Motivo</b></legend>
               
-              <?
+              <?php
                 db_textarea("sMotivo", 5, 50, '', true, 'text', 1);
               ?>
             </fieldset>
@@ -129,7 +129,7 @@ $sHoraAtual = date('H:i');
     
   </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,7 +74,7 @@ if ( isset( $alterar ) ) {
        if ( substr( $chave, 0, 6) == "linha_" ) {
 
          $sqlerro     = false;
- 	       $matri       = split("#",$vt[$chave]);
+ 	       $matri       =explode("#",$vt[$chave]);
          $q05_histor .= $vir.$matri[0];
  	       $vir         = ",";
        }
@@ -128,7 +128,7 @@ if ( isset( $alterar ) ) {
        if ( substr( $chave, 0, 6) == "linha_" ) {
 
          $sqlerro  = false;
- 	       $matri    = split("#",$vt[$chave]);
+ 	       $matri    =explode("#",$vt[$chave]);
          $result55 = $clissvarnotas->sql_record($clissvarnotas->sql_query_file($codigo,"","max(q06_seq) +1 as seq"));
          db_fieldsmemory($result55,0);
 
@@ -330,7 +330,7 @@ if(empty($entrar) && isset($q05_codigo) && $q05_codigo>0){//quando vier o código
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-<?
+<?php
 if(isset($varios) && $varios==true){//quando tiver várias inscrições para um cgm
 $clrotulo= new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -345,7 +345,7 @@ $clrotulo->label("q02_inscr");
       <?=$Lz01_numcgm?>
     </td>
     <td>
-    <?
+    <?php
     $z01_numcgmx=$z01_numcgm;
   db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3,"","z01_numcgmx")
       ?>
@@ -356,7 +356,7 @@ $clrotulo->label("q02_inscr");
       <?=$Lz01_nome?>
     </td>
     <td>
-    <?
+    <?php
   db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
       ?>
     </td>
@@ -366,7 +366,7 @@ $clrotulo->label("q02_inscr");
        <?=$Lq02_inscr?>
     </td>
     <td>
-<?
+<?php
     for($e=0; $e<$clissbase->numrows; $e++){
       db_fieldsmemory($result03,$e);
       $inscrs[$q02_inscr]=$q02_inscr;
@@ -391,13 +391,13 @@ $clrotulo->label("q02_inscr");
    function js_voltar(){
      location.href="iss1_issvar002.php";
    }
-   <?
+   <?php
    if(isset($entrar) && $entrar=="denovo"){
      echo  "alert('Nenhum registro de issqn variável encontrado para esta inscrição!')";
    }
    ?>
  </script>
-<?
+<?php
 }else if(isset($varios_codigos)){//quando tiver vários códigos de ISSVAR para uma inscrição
   $clrotulo= new rotulocampo;
   $clrotulo->label("z01_nome");
@@ -407,7 +407,7 @@ $clrotulo->label("q02_inscr");
 ?>
 <form name="form1" method="post" action="iss1_issvar015.php">
  <table>
-<?
+<?php
     if(isset($unico_codigo)){
       if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcgm
          db_input('z01_numcgm',6,$Iz01_numcgm,true,'hidden',1,"");
@@ -419,35 +419,35 @@ $clrotulo->label("q02_inscr");
     }
     db_input('q05_codigo',6,0,true,'hidden',1);
 ?>
-<?
+<?php
   if(empty($unico_codigo)){
 ?>
   <tr>
-<?
+<?php
 if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcgm
 ?>
     <td nowrap title="<?=@$Tz01_numcgm?>" width="25%">
       <?=$Lz01_numcgm?>
     </td>
     <td nowrap title="<?=@$Tz01_numcgm?>">
-<?
+<?php
   db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3,"")
 ?>
 
     </td>
-<?
+<?php
 }else if(isset($entrar) && isset($q02_inscr) && $q02_inscr>0){//quando for por  inscrição
 ?>
     <td nowrap title="<?=@$Tq02_inscr?>">
       <?=$Lq02_inscr?>
     </td>
     <td nowrap title="<?=@$Tq02_inscr?>">
-<?
+<?php
   db_input('q02_inscr',6,$Iq02_inscr,true,'text',3,"")
 ?>
 
     </td>
-<?
+<?php
 }
 ?>
   </tr>
@@ -456,13 +456,13 @@ if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcg
       <?=$Lz01_nome?>
     </td>
     <td nowrap title="<?=@$Tz01_nome?>">
-<?
+<?php
   db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr><td colspan="2" align="center"> <input type="button" name="voltar" value="Voltar" onclick="js_voltar();"></td></tr>
-<?
+<?php
     reset($varios_codigos);
     $codis="";
     $vir="";
@@ -476,7 +476,7 @@ if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcg
     db_lovrot($sql,1000,"()","","js_alterar|q05_codigo");
 
 ?>
-     <?
+     <?php
      }
      ?>
    </table>
@@ -489,13 +489,13 @@ if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcg
    function js_voltar(){
      location.href="iss1_issvar002.php";
    }
-   <?
+   <?php
     if(isset($unico_codigo)){//quando tiver um unico codigo de issvar, ele já entra direto
       echo "document.form1.submit();";
     }
    ?>
  </script>
-<?
+<?php
 }else{
    include(modification("forms/db_frmissvar.php"));
 }
@@ -504,12 +504,12 @@ if(isset($entrar) && isset($z01_numcgm) && $z01_numcgm>0){//quando for por numcg
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clissvar->erro_status=="0"){
     $clissvar->erro(true,false);

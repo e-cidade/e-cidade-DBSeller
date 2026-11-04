@@ -32,13 +32,15 @@ use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
+use ECidade\RecursosHumanos\Pessoal\Service\DataPagamentoFolhaService;
+use InstituicaoRepository;
 use ECidade\V3\Extension\Registry;
-use DBPessoal;
 use stdClass;
 use CgmRepository;
 use ServidorRepository;
 use ParameterException;
 use ParametrosPessoalRepository;
+use Exception;
 
 /**
  * Class PagamentosRendimentosTrabalho
@@ -47,12 +49,9 @@ use ParametrosPessoalRepository;
 class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     private $cgm;
-
     private $mes;
     private $ano;
-
-    private $competenciaAnterior;
-
+    private $processaPorCompetencia = false;
 
     /**
      * @param integer $mes
@@ -73,9 +72,6 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
 
     public function __construct($cgm)
     {
-        $this->competenciaAnterior = DBPessoal::getCompetenciaFolha()->getCompetenciaAnterior();
-        $this->mes = $this->competenciaAnterior->getMes();
-        $this->ano = $this->competenciaAnterior->getAno();
         $this->cgm = $cgm;
     }
 
@@ -85,6 +81,12 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
      */
     public function processar()
     {
+        // Adicionadas variaveis de controle de processamento do mes 12 e Decimo
+        $processaMes12 = false;
+        $processa13 = false;
+        $this->ano = $this->getAnoCaixa();
+        $this->mes = $this->getMesCaixa();
+
         ini_set("memory_limit", "1024M");
         $alteracao = false;
         $competencia =  $this->ano . $this->mes;
@@ -98,36 +100,114 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
             throw new ParameterException("Nenhuma matrícula informada. Por Favor selecione as matrículas.");
         }
 
-        $dados = new stdClass();
+        $dataPagamentoService = new DataPagamentoFolhaService();
+        $dataPagamentoService->setAnoCompetencia($this->ano);
+        $dataPagamentoService->setMesCompetencia($this->mes);
+        $stdParametros = new stdClass();
+        $stdParametros->instituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
+        $dataPagamentos = $dataPagamentoService->buscarDataPagamentoInstituicaoCompetenciaCaixa($stdParametros);
+        // Controle de Competencias que serão processadas
+        $competenciasProcessamento = [];
+        // Caso seja o mes 12 na competencia de caixa, vindo da tela, adicionamos o processamento de 13
+        if ($this->mes == 12) {
+            $processa13 = true;
+            $competenciasProcessamento[$this->ano] = [];
+            $competenciasProcessamento[$this->ano][$this->mes] = 1;
+        }
+        foreach ($dataPagamentos as $dataPagamento) {
+            if (empty($competenciasProcessamento[$dataPagamento->getAno()])) {
+                $competenciasProcessamento[$dataPagamento->getAno()] = [];
+            }
+            // Caso o mes 12 tenha sido pago na competencia de caixa informada pela tela, adicionamos o processamento
+            // do mes 12, pois não necessáriamente o mes 12 foi pago em dezembro, porem o 13 deve ir junto com os
+            // pagamentos realizados em dezembro
+            if ($dataPagamento->getMes() == 12) {
+                $processaMes12 = true;
+            }
+            $mes = $dataPagamento->getMes();
+            $competenciasProcessamento[$dataPagamento->getAno()][str_pad($mes, 2, '0', STR_PAD_LEFT)] = 1;
+        }
+        $dados = new stdClass();
         $body = new stdClass();
         $body->inscricaoEmpregador = CgmRepository::buscarCNPJEmpregador($this->cgm);
-        $body->competencia = $competencia;
-
-        $cgmFiltro = [];
-        if (!empty($this->servidores)) {
-            foreach ($this->servidores as $servidor) {
-                $cgmFiltro[] = $servidor->getCgm()->getCodigo();
-            }
-            if (sizeof($this->servidores) == 1) {
-                $body->competencia = $cgmFiltro[0] . '%' . $body->competencia;
-                if ($this->servidores[0]->isRescindido()) {
-                    $dadosRescisao = $this->servidores[0]->getDadosRescisao();
-                    $dataRescisao = new \DBDate($dadosRescisao->rh05_recis);
-
-                    if ($this->anoCompetencia == $dataRescisao->getAno() &&
-                        $this->mesCompetencia == $dataRescisao->getMes()) {
-                        $body->competencia = $dadosRescisao->rh05_codigorescisao;
-                    }
-                }
-            }
-        }
         $service = new ESocial(
             Registry::get('app.config'),
             Recurso::CONSULTA_REFERENCIA_PARA_PAGAMENTOS_RENDIMENTOS_TRABALHO
         );
-        $service->setDados($body);
-        $dados = $service->request('GET');
+
+        if (!empty($this->selecao)) {
+            try {
+                $instituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
+
+                $this->servidores = ServidorRepository::getServidoresBySelecao(
+                    $this->ano,
+                    $this->mes,
+                    $this->selecao,
+                    $instituicao->getCodigo()
+                );
+                $this->servidores = array_values($this->servidores);
+            } catch (Exception $e) {
+                throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
+            }
+        }
+        foreach ($competenciasProcessamento as $ano => $mesCompetencias) {
+            foreach ($mesCompetencias as $mes => $value) {
+                $retornoRequisicao = new stdClass();
+                $competencia = $ano . $mes;
+                if (!empty($this->servidores)) {
+                    $body->referencias = [];
+                    foreach ($this->servidores as $servidor) {
+                        switch ($servidor->getTipoPagamentoEsocialAPI($ano, $mes)) {
+                            case Tipo::S1202_API:
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . '-' . $competencia . '-1';
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . '-' . $competencia . '-2';
+                                break;
+                            case Tipo::S1207_API:
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . '_' . $competencia . '_1';
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . '_' . $competencia . '_2';
+                                break;
+                            default:
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . $competencia . '1';
+                                $body->referencias[] = $servidor->getCgm()->getCodigo() . $competencia . '2';
+                                break;
+                        }
+                        if ($servidor->isRescindido()) {
+                            $dadosRescisao = $servidor->getDadosRescisao();
+                            $dataRescisao = new \DBDate($dadosRescisao->rh05_recis);
+
+                            if (($dataPagamento->getAno() == $dataRescisao->getAno() &&
+                                $dataPagamento->getMes() == $dataRescisao->getMes())
+                                || ($this->ano == $dataRescisao->getAno() &&
+                                $this->mes == $dataRescisao->getMes())
+                            ) {
+                                $body->referencias[] = $dadosRescisao->rh05_codigorescisao;
+                            }
+                        }
+                    }
+                    $service->setDados($body);
+                    $retornoRequisicao = $this->buscaDadosApi(clone $service);
+                } else {
+                    $body->competencia = "%{$competencia}%" ;
+                    $this->processaPorCompetencia = true;
+                    $service->setDados($body);
+                    $retornoRequisicao = $this->buscaDadosApi(clone $service);
+                }
+                if (!empty($retornoRequisicao)) {
+                    if (empty($dados)) {
+                        $dados = $retornoRequisicao;
+                    } else {
+                        if (isset($dados->eventos) && !empty($dados->eventos)) {
+                            foreach ($retornoRequisicao->eventos as $evento) {
+                                $dados->eventos[] = $evento;
+                            }
+                        } else {
+                            $dados->eventos = $retornoRequisicao->eventos;
+                        }
+                    }
+                }
+            }
+        }
 
         if (empty($dados)) {
             $dados = (object) $dados;
@@ -146,6 +226,9 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
                 switch ($dado->tipo_evento_id) {
                     case TIPO::S2299_API:
                     case TIPO::S2399_API:
+                        $dadoCgm->competencia = new stdClass();
+                        $dadoCgm->competencia->ano = substr($dado->referencia, strlen($dado->referencia) - 6, -2);
+                        $dadoCgm->competencia->mes = substr($dado->referencia, strlen($dado->referencia) - 2);
                         $dado->referencia = substr($dado->referencia, 0, $quantidadeCompetencia);
                         if (!\ServidorRepository::isMatriculaValida($dado->referencia)) {
                             continue;
@@ -165,37 +248,83 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
                         break;
                     case TIPO::S1207_API:
                         $referencia = explode('_', $dado->referencia);
+                        $dadoCgm->competencia = new stdClass();
+                        $dadoCgm->competencia->ano = substr($referencia[1], 0, -2);
+                        $dadoCgm->competencia->mes = substr($referencia[1], 4);
                         $dado->referencia = $referencia[0];
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                     case TIPO::S1202_API:
                         $referencia = explode('-', $dado->referencia);
+                        $dadoCgm->competencia = new stdClass();
+                        $dadoCgm->competencia->ano = substr($referencia[1], 0, -2);
+                        $dadoCgm->competencia->mes = substr($referencia[1], 4);
                         $dado->referencia = $referencia[0];
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                     default:
+                        $dadoCgm->competencia = new stdClass();
+                        $dadoCgm->competencia->ano = substr($dado->referencia, strlen($dado->referencia) - 7, -3);
+                        $dadoCgm->competencia->mes = substr($dado->referencia, strlen($dado->referencia) - 3, -1);
                         $dado->referencia = substr($dado->referencia, 0, -7);
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                 }
-                if (!empty($cgmFiltro)) {
-                    if (in_array($dadoCgm->cgm->getCodigo(), $cgmFiltro)) {
-                        $dados->cgms[] = $dadoCgm;
+
+                if (isset($dadoCgm->cgm)) {
+                    if (empty($dados->cgms[$dadoCgm->cgm->getCodigo()])) {
+                        $dados->cgms[$dadoCgm->cgm->getCodigo()] = new stdClass();
+                        $dados->cgms[$dadoCgm->cgm->getCodigo()]->competencias = [];
+                        //CRIA INSTÂNCIA EM MEMÓRIA
+                        $dados->cgms[$dadoCgm->cgm->getCodigo()]->competenciaTmp = [];
+                        $dados->cgms[$dadoCgm->cgm->getCodigo()]->cgm = null;
                     }
-                } else {
-                    if (isset($dadoCgm->cgm)) {
-                        $dados->cgms[] = $dadoCgm;
+                    $dados->cgms[$dadoCgm->cgm->getCodigo()]->cgm = $dadoCgm->cgm;
+                    $dados->cgms[$dadoCgm->cgm->getCodigo()]->competencias[] = $dadoCgm->competencia;
+                    //VERIFICA SE A REFERENCIA ESTÁ VAZIO
+                    if (empty($dados->cgms[$dadoCgm->cgm->getCodigo()]->competenciaTmp[$dadoCgm->competencia->ano])) {
+                        $dados->cgms[$dadoCgm->cgm->getCodigo()]->competenciaTmp[$dadoCgm->competencia->ano] = [];
                     }
+                    $codigo = $dadoCgm->cgm->getCodigo();
+                    $mesCompetencia = $dadoCgm->competencia->mes;
+                    $anoCompetencia = $dadoCgm->competencia->ano;
+                    $dados->cgms[$codigo]->competenciaTmp[$anoCompetencia][$mesCompetencia] = $mesCompetencia;
                 }
             }
         }
+        //PEGANDO OS CGMS
+        foreach ($dados->cgms as &$cgm) {
+            $competencias = [];
+            //BUSCANDO AS COMPETENCIAS
+            foreach ($cgm->competenciaTmp as $ano => $competenciaTmp) {
+                //BUSCAR POR MÊS E ANO
+                foreach ($competenciaTmp as $mes) {
+                    $competencia = new stdClass();
+                    $competencia->mes = $mes;
+                    $competencia->ano = $ano;
+                    $competencias[] = $competencia;
+                }
+            }
+            //APAGA A VARIÁVEL TEMPORARIA
+            unset($cgm->competenciaTmp);
+            $cgm->competencias = $competencias;
+        }
+
         $dados->eventos = [];
         $dados->inscricao_empregador = $body->inscricaoEmpregador;
         $dados->anoCompetencia = $this->ano;
         $dados->mesCompetencia = $this->mes;
-        $competencia = new \DBCompetencia($this->ano, $this->mes);
+
+        $competencia = new \DBCompetencia($dados->anoCompetencia, $dados->mesCompetencia);
         $parametros = ParametrosPessoalRepository::getParametros($competencia);
         $formatter = FormatterFactory::get(Tipo::S1210);
+        $formatter->setProcessaMes12($processaMes12);
+
+        if (!empty($parametros->getMes13()) && $parametros->getMes13() == $this->mes && $this->mes != 1) {
+            $processa13 = true;
+        }
+
+        $formatter->setProcessa13($processa13);
 
         if ($this->isForcarMatricula()) {
             $formatter->setServidores($servidores);
@@ -204,9 +333,9 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
         if (!empty($parametros->getMes13()) && $parametros->getMes13() == $this->mes) {
             $formatter->setDecimoTerceiro();
         }
-
         $dadosPreenchimentoEmpregador = $formatter->formatar((array) $dados);
         $validaMd5 = true;
+
         if ($this->envioForcado) {
             $validaMd5 = false;
         }
@@ -220,5 +349,35 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
         }
 
         return $alteracao;
+    }
+
+    private function buscaDadosApi($service)
+    {
+        $retorno = $service->request('GET');
+        /**
+         * Quando processamos por competencia, fazemos uma segunda requisicao na api devido aos desligamentos com
+         * data de pagamento na competencia informada em tela (desconsiderando a competencia de caixa)
+         */
+        if ($this->processaPorCompetencia) {
+            $dados = $service->getDados();
+            $dados->competencia = "%{$this->ano}{$this->mes}%";
+            $service->setDados($dados);
+            $service->setRecurso(Recurso::CONSULTA_REFERENCIA_PARA_PAGAMENTOS_RENDIMENTOS_TRABALHO_DESLIGAMENTO);
+            if (!empty($retorno)) {
+                if (isset($retorno->eventos) && !empty($retorno->eventos)) {
+                    $desligamentos = $service->request('GET');
+                    if (!empty($desligamentos)) {
+                        if (isset($desligamentos->eventos) && !empty($desligamentos->eventos)) {
+                            foreach ($desligamentos->eventos as $evento) {
+                                $retorno->eventos[] = $evento;
+                            }
+                        }
+                    }
+                }
+            } else {
+                $desligamentos = $service->request('GET');
+            }
+        }
+        return $retorno;
     }
 }

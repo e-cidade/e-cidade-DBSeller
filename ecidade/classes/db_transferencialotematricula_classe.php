@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE transferencialotematricula
 class cl_transferencialotematricula { 
@@ -26,13 +26,13 @@ class cl_transferencialotematricula {
                  ed138_matricula = int4 = Matrícula 
                  ";
    //funcao construtor da classe 
-   function cl_transferencialotematricula() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transferencialotematricula"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_transferencialotematricula {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed138_sequencial = ($this->ed138_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed138_sequencial"]:$this->ed138_sequencial);
        $this->ed138_transferencialote = ($this->ed138_transferencialote == ""?@$GLOBALS["HTTP_POST_VARS"]["ed138_transferencialote"]:$this->ed138_transferencialote);
@@ -51,7 +51,7 @@ class cl_transferencialotematricula {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed138_sequencial){ 
+   public function incluir ($ed138_sequencial){ 
       $this->atualizacampos();
      if($this->ed138_transferencialote == null ){ 
        $this->erro_sql = " Campo Transferência em Lote não informado.";

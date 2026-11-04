@@ -53,7 +53,7 @@ class cl_pagordemoutrosdados
      }
    }
 
-    public function incluir($e172_codigo)
+    public function incluir($e172_codigo=null)
     {
       $this->atualizacampos();
      if($this->e172_pagordem == null ){

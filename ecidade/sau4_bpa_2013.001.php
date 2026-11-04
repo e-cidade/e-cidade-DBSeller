@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -91,7 +91,7 @@ if ($oSauConfig != false) {
                 <tr>
                   <td colspan="2">
                     <b>Tipo de BPA:</b>
-                    <?
+                      <?php
                       $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
                       db_select('sTipo', $arr_tipo, true, 4 );
                     ?>
@@ -103,12 +103,12 @@ if ($oSauConfig != false) {
                       <table>
                         <tr>
                           <td>
-                            <?
+                              <?php
                               db_ancora("<b>Competência:</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );
                             ?>
                           </td>
                           <td colspan="3">
-                            <?
+                              <?php
                               db_input('linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "");
                               db_input('campocontrole', 2, "" , false, 'hidden', 3, "");
                               db_input('sd97_i_codigo', 2, @$Isd97_i_compmes, true, 'hidden', 3,'');
@@ -163,19 +163,19 @@ if ($oSauConfig != false) {
                             <b>Período de Fechamento :</b>
                           </td>
                           <td>
-                            <? db_inputdata('sd97_d_dataini', @$sd97_d_dataini_dia, @$sd97_d_dataini_mes,
+                              <?php db_inputdata('sd97_d_dataini', @$sd97_d_dataini_dia, @$sd97_d_dataini_mes,
                                             @$sd97_d_dataini_ano, true, 'text', 3);?>
 
                             A
 
-                            <? db_inputdata('sd97_d_datafim', @$sd97_d_datafim_dia, @$sd97_d_datafim_mes,
+                              <?php db_inputdata('sd97_d_datafim', @$sd97_d_datafim_dia, @$sd97_d_datafim_mes,
                                   @$sd97_d_datafim_ano, true, 'text', 3);?>
                           </td>
                         </tr>
                         <tr>
                           <td><b>Tipo de Financiamento:</b></td>
                           <td colspan="3">
-                            <?
+                              <?php
                               db_input('sd97_i_financiamento', 6, @$sd97_i_financiamento, true, 'hidden', 3, "");
                               db_input('sd65_c_nome', 60, @$sd65_c_nome, true, 'text', 3, "");
                             ?>
@@ -188,7 +188,7 @@ if ($oSauConfig != false) {
                 <tr>
                   <td colspan="2">
                     <fieldset><legend><b>UPS:</b></legend>
-                      <?
+                        <?php
                         $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo,descrdepto");
                         $rsUnidades = $oDaoUnidades->sql_record($sSql);
                         db_multiploselect("sd02_i_codigo", "descrdepto", "nselecionados", "sselecionados", $rsUnidades,
@@ -207,7 +207,7 @@ if ($oSauConfig != false) {
                             <b>Nome:</b>
                           </td>
                           <td>
-                            <?
+                              <?php
                               db_input('snomedepart', 40, @$Lsnomedepart, true, 'text', 3, "");
                               db_input('iCidade', 40, @$LiCidade, true, 'hidden', 3, "");
                             ?>
@@ -218,7 +218,7 @@ if ($oSauConfig != false) {
                             <b>Sigla:</b>
                           </td>
                           <td colspan=3>
-                            <?
+                              <?php
                               db_input('sSigla', 6, @$siglas, true, 'text', 3, "");
                             ?>
                           </td>
@@ -228,7 +228,7 @@ if ($oSauConfig != false) {
                             <b>CNPJ:</b>
                           </td>
                           <td>
-                            <?
+                              <?php
                               db_input('cnpj', 30, @$cnpj, true, 'text', 3, "");
                             ?>
                           </td>
@@ -246,7 +246,7 @@ if ($oSauConfig != false) {
                             <B>Sec. de Destino:</b>
                           </td>
                           <td colspan=3>
-                            <?
+                              <?php
                               db_input('sDestino', 40, @$destino, true, 'text', 3, "");
                             ?>
                           </td>
@@ -275,7 +275,7 @@ if ($oSauConfig != false) {
                           </td>
                           <td>
                             PA
-                            <?
+                              <?php
                               db_input('sNomeArquivo', 8, @$sNomeArquivo, true, 'text', $db_opcao, "","","","",8);
                             ?>
                             .<span id="nomeExtencao" ></span>
@@ -288,7 +288,7 @@ if ($oSauConfig != false) {
               </table>
             </fieldset>
             </center>
-            <?
+              <?php
               $regerar = false;
               if (isset($sd97_i_codigo)) {
 
@@ -323,14 +323,14 @@ if ($oSauConfig != false) {
         </td>
       </tr>
     </table>
-<?
+    <?php
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
           db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-<?
+    <?php
   if (isset($sd97_i_compmes)) {
     echo "document.getElementById('nomeExtencao').innerHTML = js_nomeMes($sd97_i_compmes,1);";
   }

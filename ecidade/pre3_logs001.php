@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,7 +63,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
-<? if(!isset($HTTP_POST_VARS["consultar"])) { ?>
+<?php if(!isset($HTTP_POST_VARS["consultar"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -88,7 +88,7 @@ input {
                   <tr bgcolor="#CCFF99"> 
                     <td width="12%"><strong>Ordenar:</strong></td>
                     <td width="88%" nowrap> <input type="radio" name="ascdesc" value="asc" <?=@$ascdesc=="asc"?"checked":""?>>
-                      ascendente&nbsp;&nbsp; <input name="ascdesc" type="radio" value="desc" <? echo !isset($ascdesc)?"checked":$ascdesc=="desc"?"checked":"" ?>>
+                      ascendente&nbsp;&nbsp; <input name="ascdesc" type="radio" value="desc" <?php echo !isset($ascdesc)?"checked":($ascdesc=="desc"?"checked":"") ?>>
                       descendente</td>
                   </tr>
                 </table></td>
@@ -101,9 +101,9 @@ input {
             </tr>
             <tr> 
               <td nowrap><strong>Por Data:</strong></td>
-              <td align="center" valign="middle" bgcolor="#CCFF99"> <input name="ordenar" type="radio" value="data" <? echo !isset($ordenar)?"checked":$ordenar=="data"?"checked":"" ?>></td>
+              <td align="center" valign="middle" bgcolor="#CCFF99"> <input name="ordenar" type="radio" value="data" <?php echo !isset($ordenar)?"checked":($ordenar=="data"?"checked":"") ?>></td>
               <td> 
-	        <?
+	        <?php
                 db_inputdata('data','','','',true,'text',2);
 		?>
 		      </td>
@@ -149,7 +149,7 @@ input {
 
   <iframe name="consulta" width="730" height="160"></iframe>
 </center>
-	<?
+	<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </td>
@@ -158,8 +158,8 @@ input {
 	</td>
   </tr>
 </table>
-<? } else { ?>
-<?
+<?php } else { ?>
+<?php
 db_postmemory($HTTP_POST_VARS);
 
 
@@ -197,6 +197,6 @@ db_postmemory($HTTP_POST_VARS);
 
 db_lov($query,100);
 ?>
-<? } ?>
+<?php } ?>
 </body>
 </html>

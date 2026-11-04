@@ -41,7 +41,7 @@ $db_opcao = 1;
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <script type="text/javascript" src="scripts/strings.js"></script>
-    <script type="text/javascript" src="scripts/prototype.js"></script>    
+    <script type="text/javascript" src="scripts/prototype.js"></script>
     <script type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
@@ -61,7 +61,10 @@ $db_opcao = 1;
                         <select name="evento" id="evento" style = "width:120px">
                             <option value="r2010">R-2010</option>
                             <option value="r2055">R-2055</option>
-                            <option value="todos">TODOS</option>
+                            <option value="r4010">R-4010</option>
+                            <option value="r4020">R-4020</option>
+                            <option value="todos1">TODOS (R-2010 e R-2055)</option>
+                            <option value="todos2">TODOS (R-4010 e R-4020)</option>
                         </select>
                     </td>
                </tr>
@@ -85,8 +88,8 @@ $db_opcao = 1;
                         <?php
                           $aQuebras = [
                             1 => "Nenhuma",
-                            3 => "Credor", 
-                            5 => "Unidade Orçamentária", 
+                            3 => "Credor",
+                            5 => "Unidade Orçamentária",
                             6 => "Unidade Orçamentária e Credor"
                           ];
                           db_select("group", $aQuebras, true, 1, "style='width:20em'");
@@ -100,7 +103,7 @@ $db_opcao = 1;
                     <strong>Filtrar Credores</strong>
                 </legend>
                 <table class="form-container">
-                    <tr>    
+                    <tr>
                         <td>
                             <?php
                               db_ancora('Credor:',"js_pesquisaCredor(true)",1);
@@ -145,13 +148,13 @@ $db_opcao = 1;
             </fieldset>
             <table>
                 <tr>
-        
+
                   <td>
                     <label><b>Formato:</b></label>
-                    <?php 
+                    <?php
                       $formatos = ["p" => "PDF", "c" => "CSV"];
-                      db_select("formato", $formatos, true, 1); 
-                    ?>  
+                      db_select("formato", $formatos, true, 1);
+                    ?>
                   </td>
                 </tr>
             </table>
@@ -166,7 +169,7 @@ db_menu();
 ?>
 <script type="text/javascript" src="scripts/session.js"></script>
 <script>
-    
+
     function js_pesquisaCredor(lMostra){
 
         if (lMostra) {
@@ -192,9 +195,9 @@ db_menu();
     }
 
     function js_mostraCredor(erro, chave){
-    
+
         if(erro == true) {
-        
+
             $('cgm_credor').focus();
             $("cgm_credor").value = '';
             $('nome_credor').value = chave;
@@ -205,7 +208,7 @@ db_menu();
     }
 
     function js_mostraCredor1(chave1, chave2) {
-    
+
         $('nome_credor').value   = chave1;
         $('cgm_credor').value = chave2;
         db_iframe_credor.hide();
@@ -316,7 +319,7 @@ db_menu();
         }
 
         const formData = new FormData();
-        
+
         formData.append('dataInicial', $F('datainicial'));
         formData.append('dataFinal',$F('datafinal'));
         formData.append('agrupa_por', $F('group'));
@@ -325,7 +328,7 @@ db_menu();
         formData.append('credor',$F("cgm_credor") );
         formData.append('evento',$F("evento") );
         formData.append('formato_relatorio',$F("formato") );
-        
+
         PHPSession.appendFormData(formData);
         HttpClient.post(`${PHPSession.requestApi}/${rota}`, {body: formData}).then(response => {
             if (response.error) {

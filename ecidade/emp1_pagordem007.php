@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 <table>
   <tr> 
 
-<?
+<?php
         $ver=true;
        //rotina que verifica... os valores das receitas
        $result = $clpagordemrec->sql_record($clpagordemrec->sql_query($e50_codord,null,"sum(e52_valor) as tot_receit")); 

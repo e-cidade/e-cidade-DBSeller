@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -236,13 +236,13 @@ for($i=0;$i<$num;$i++){
     if(($x==0) || ((($x+1) % $db_layouttxt->_quantLinhasLay) == 0)){
       if(($x+1) % $db_layouttxt->_quantLinhasLay == 0){
         $multiplic ++;
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
       }
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,CABECALHOARQUIVO);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,CABECALHOARQUIVO);
     }
 
     if($provdesc != "B"){
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,REGISTROSARQUIVO);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,REGISTROSARQUIVO);
     }
 
   }
@@ -252,7 +252,7 @@ for($i=0;$i<$num;$i++){
 
   $db_layouttxt->quebraLinha($multiplic);
 
-  db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+  db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
 
 }
 $db_layouttxt->adicionaLinha(chr(18));

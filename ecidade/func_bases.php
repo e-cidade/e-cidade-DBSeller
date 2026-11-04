@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,11 +56,11 @@ $clbases->rotulo->label("r08_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lr08_codigo?></label></td>
-          <td><? db_input("r08_codigo",4,$Ir08_codigo,true,"text",4,"","chave_r08_codigo"); ?></td>
+          <td><?php db_input("r08_codigo",4,$Ir08_codigo,true,"text",4,"","chave_r08_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lr08_descr?></label></td>
-          <td><? db_input("r08_descr",40,$Ir08_descr,true,"text",4,"","chave_r08_descr");?></td>
+          <td><?php db_input("r08_descr",40,$Ir08_descr,true,"text",4,"","chave_r08_descr");?></td>
         </tr>
       </table>
     </fieldset>
@@ -69,7 +69,7 @@ $clbases->rotulo->label("r08_descr");
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_bases.hide();">
   </form>
   
-      <?
+      <?php
       $db_where = "r08_instit = ".db_getsession("DB_instit")." and r08_anousu = ".db_anofolha()." and r08_mesusu = ".db_mesfolha()."  ";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -112,12 +112,12 @@ $clbases->rotulo->label("r08_descr");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

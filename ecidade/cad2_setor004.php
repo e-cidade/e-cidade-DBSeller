@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,7 +39,7 @@ $clrotulo->label("z01_nome");
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
 if(isset($j34_setor) && $j34_setor != ""){
-  $setor = split(",",$j34_setor);
+  $setor =explode(",",$j34_setor);
   $vir = "";
   $set = "";
 	$set2 = "";
@@ -70,26 +70,26 @@ function js_nome(obj){
        valor = zona.document.form1.elements[i].value.split("_")
        j34_zona += vir + valor[0];
        vir = ",";
-       x += 1; 
+       x += 1;
      }
    }
   }
   parent.iframe_g1.document.form1.j34_zona.value = j34_zona;
 if( x != 0){
-	
+
     parent.document.formaba.g3.disabled = false;
   }else{
     parent.document.formaba.g3.disabled = true;
   }
 	 parent.iframe_g3.document.form1.j34_zona.value = j34_zona;
-	 
+
 	 if(document.form1.setor.value == ""){
-	 	   
-		  document.form1.setor.value ='<?=$set2?>'; 
+
+		  document.form1.setor.value ='<?=$set2?>';
 			// parent.iframe_g3.document.form1.j34_setor.value ;
 	 }
-	 
-   parent.iframe_g3.document.form1.j34_setor.value = document.form1.setor.value;	 
+
+   parent.iframe_g3.document.form1.j34_setor.value = document.form1.setor.value;
 	 parent.iframe_g3.document.form1.submit();
 }
 
@@ -97,16 +97,16 @@ if( x != 0){
 </script>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="790" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 			<center>
 				<form name="form1" method="post" action="" target="">
 					<center>
 						<table border="0">
 							<tr>
 								<td align="top" colspan="2">
-									<?
-									
+									<?php
+
 									if(isset($j34_setor)&& $j34_setor!=""){
                         //$sql = 	$cllote->sql_query(""," distinct on(j34_setor,j34_quadra,j34_lote) j34_setor,j34_quadra,j34_lote ,j34_idbql","j34_setor,j34_quadra,j34_lote","j34_quadra in ($qua) and j34_setor in ($set)");
                         $sql = "select distinct j34_zona,j34_setor,
@@ -128,13 +128,13 @@ if( x != 0){
                         $cliframe_seleciona->chaves ="j34_zona";
                         $cliframe_seleciona->dbscript ="onClick='parent.js_nome(this)'";
                         $cliframe_seleciona->js_marcador="parent.js_nome()";
-                        $cliframe_seleciona->iframe_seleciona(@$db_opcao);   
+                        $cliframe_seleciona->iframe_seleciona(@$db_opcao);
 										  }else{
 										    echo "<br><strong>SELECIONE UM SETOR PARA ESCOLHER A(S) ZONA(S)</strong>";
 										    echo "<script>parent.document.formaba.g3.disabled = true;</script>";
 										  }
-				
-                  ?>   
+
+                  ?>
 								</td>
 									<input type="hidden"  name="setor">
 							</tr>

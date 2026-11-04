@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhgrupotipoavaliacao->rotulo->label("h68_descricao");
               <?=$Lh68_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h68_sequencial",10,$Ih68_sequencial,true,"text",4,"","chave_h68_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhgrupotipoavaliacao->rotulo->label("h68_descricao");
               <?=$Lh68_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h68_descricao",60,$Ih68_descricao,true,"text",4,"","chave_h68_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhgrupotipoavaliacao->rotulo->label("h68_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhgrupotipoavaliacao.php")==true){
@@ -122,12 +122,12 @@ $clrhgrupotipoavaliacao->rotulo->label("h68_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

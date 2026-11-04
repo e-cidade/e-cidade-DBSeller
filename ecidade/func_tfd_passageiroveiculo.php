@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -49,35 +49,35 @@ $oRotulo->label('z01_v_nome');
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
 	    <form name="form2" method="post" action='' >
         <table width="35%" border="0" align="center" cellspacing="0">
-          <tr> 
-            <td width="4%" align="right" nowrap title="<?=$Ttf19_i_codigo?>">
+          <tr>
+            <td width="4%" align="right" nowrap title="<?=isset($Ttf19_i_codigo) ? $Ttf19_i_codigo : '' ?>">
               <?=$Ltf19_i_cgsund?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+                <?php
 		          db_input('tf19_i_cgsund', 10, $Itf19_i_cgsund, true, 'text', 4, '', 'chave_tf19_i_cgsund');
 		          ?>
             </td>
           </tr>
-          <tr> 
-            <td width="4%" align="right" nowrap title="<?=$Ttf19_i_codigo?>">
+          <tr>
+            <td width="4%" align="right" nowrap title="<?=isset($Ttf19_i_codigo) ? $Ttf19_i_codigo : '' ?>">
               <?=$Lz01_v_nome?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+                <?php
 		          db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 4, '', 'chave_z01_v_nome');
 		          ?>
             </td>
           </tr>
-          <tr> 
-            <td colspan="2" align="center"> 
-              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+          <tr>
+            <td colspan="2" align="center">
+              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
-              <input name="Fechar" type="button" id="fechar" value="Fechar" 
+              <input name="Fechar" type="button" id="fechar" value="Fechar"
                 onClick="parent.db_iframe_tfd_passageiroveiculo.hide();">
              </td>
           </tr>
@@ -85,9 +85,9 @@ $oRotulo->label('z01_v_nome');
       </form>
     </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-      <?
+  <tr>
+    <td align="center" valign="top">
+        <?php
       $sValidos        = '';
       $sSepValidos     = '';
       $sFica           = '';
@@ -103,36 +103,37 @@ $oRotulo->label('z01_v_nome');
 
         $sValidos    = ' tf19_i_valido = 1';
         $sSepValidos = ' and ';
-        
+
       }
 
       if (isset($chave_fica)) {
 
         $sFica    = ' tf19_i_fica = 1';
         $sSepFica = ' and ';
-        
+
       }
 
       if (isset($chave_tf19_i_veiculodestino)) {
 
         $sVeiculoDest    = ' tf19_i_veiculodestino != '.$chave_tf19_i_veiculodestino;
         $sSepVeiculoDest = ' and ';
-        
+
       }
 
       if (isset($chave_ja_incluidos)) {
 
         $sJaIncluidos    = ' not exists (select suba.tf31_i_codigo from tfd_passageiroretorno as suba ';
         $sJaIncluidos   .= ' inner join tfd_passageiroveiculo subb on suba.tf31_i_passageiroveiculo = subb.tf19_i_codigo ';
-        $sJaIncluidos   .= ' where subb.tf19_i_codigo = tfd_passageiroveiculo.tf19_i_codigo and suba.tf31_i_valido = 1) ';
+        $sJaIncluidos   .= ' where subb.tf19_i_codigo = tfd_passageiroveiculo.tf19_i_codigo and suba.tf31_i_valido = 1 ';
+        $sJaIncluidos   .= ' and not exists (select 1 from cancelamentoviagem where tf41_veiculodestino = tf31_i_veiculodestino) ) ';
         $sSepJaIncluidos = ' and ';
-        
+
       }
 
       if (isset($chave_valida_hora)) {
-          
+
         /*
-        A data do retorno do veiculo tem que ser maior que a data de saída do paciente, ou seja, 
+        A data do retorno do veiculo tem que ser maior que a data de saída do paciente, ou seja,
         o paciente já tem que ter saído para poder retornar no veículo. (óbvio)
         */
         $sValidaHora    = ' exists (select subc.tf18_i_codigo ';
@@ -142,7 +143,7 @@ $oRotulo->label('z01_v_nome');
         $sValidaHora   .= '                   or (tfd_veiculodestino.tf18_d_datasaida = subc.tf18_d_dataretorno ';
         $sValidaHora   .= '                      and tfd_veiculodestino.tf18_c_horasaida < subc.tf18_c_horaretorno)))';
         $sSepValidaHora = ' and ';
-        
+
       }
 
       if (!isset($pesquisa_chave)) {
@@ -158,7 +159,7 @@ $oRotulo->label('z01_v_nome');
         }
         if (isset($chave_tf19_i_cgsund) && (trim($chave_tf19_i_cgsund) != '')) {
 
-          $sSql = $oDaoTfdPassageiroVeiculo->sql_query(null, $campos, 'cgs_und.z01_v_nome', 
+          $sSql = $oDaoTfdPassageiroVeiculo->sql_query(null, $campos, 'cgs_und.z01_v_nome',
                                                        'tf19_i_cgsund = '.$chave_tf19_i_cgsund.
                                                        $sSepValidos.$sValidos.
                                                        $sSepVeiculoDest.$sVeiculoDest.
@@ -169,7 +170,7 @@ $oRotulo->label('z01_v_nome');
 
         } elseif (isset($chave_z01_v_nome) && (trim($chave_z01_v_nome) != '')) {
 
-	        $sSql = $oDaoTfdPassageiroVeiculo->sql_query('', $campos, 'cgs_und.z01_v_nome', 
+	        $sSql = $oDaoTfdPassageiroVeiculo->sql_query('', $campos, 'cgs_und.z01_v_nome',
                                                        " cgs_und.z01_v_nome like '$chave_z01_v_nome%' ".
                                                        $sSepValidos.$sValidos.
                                                        $sSepVeiculoDest.$sVeiculoDest.
@@ -179,17 +180,17 @@ $oRotulo->label('z01_v_nome');
                                                       );
 
         } else {
-         
+
           $sSep1 = ' and ';
           $sSep2 = ' and ';
           $sSep3 = ' and ';
           $sSep4 = ' and ';
           if (empty($sVeiculoDest)) {
             $sSep1 = '';
-          } 
+          }
           if (empty($sFica)) {
             $sSep2 = '';
-          } 
+          }
           if (empty($sJaIncluidos)) {
             $sSep3 = '';
           }
@@ -206,14 +207,14 @@ $oRotulo->label('z01_v_nome');
         }
 
         if (isset($nao_mostra)) {
-          
+
           $sSep    = '';
           $aFuncao = explode('|', $funcao_js);
           $rs      = $oDaoTfdPassageiroVeiculo->sql_record($sSql);
            if ($oDaoTfdPassageiroVeiculo->numrows == 0) {
 	           die('<script>'.$aFuncao[0]."('','Chave(".$chave_tf19_i_cgsund.") não Encontrado');</script>");
            } else {
-            
+
              db_fieldsmemory($rs, 0);
              $sFuncao = $aFuncao[0].'(';
              for($iCont = 1; $iCont < count($aFuncao); $iCont++) {
@@ -242,7 +243,7 @@ $oRotulo->label('z01_v_nome');
         if ($pesquisa_chave != null && $pesquisa_chave != '') {
 
           $sSql   = $oDaoTfdPassageiroVeiculo->sql_query($pesquisa_chave);
-          $result = $oDaoTfdPassageiroVeiculo->sql_record();
+          $result = $oDaoTfdPassageiroVeiculo->sql_record($sSql);
           if ($oDaoTfdPassageiroVeiculo->numrows != 0) {
 
             db_fieldsmemory($result, 0);
@@ -263,12 +264,12 @@ $oRotulo->label('z01_v_nome');
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+    <?php
 }
 ?>
 <script>

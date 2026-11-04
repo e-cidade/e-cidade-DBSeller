@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,13 +70,13 @@ class cl_db_sysarquivo {
                  naolibform = bool = Não Lib.. Form
                  ";
    //funcao construtor da classe
-   function cl_db_sysarquivo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysarquivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_db_sysarquivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codarq = ($this->codarq == ""?@$GLOBALS["HTTP_POST_VARS"]["codarq"]:$this->codarq);
        $this->nomearq = ($this->nomearq == ""?@$GLOBALS["HTTP_POST_VARS"]["nomearq"]:$this->nomearq);
@@ -110,7 +110,7 @@ class cl_db_sysarquivo {
      }
    }
    // funcao para inclusao
-   function incluir ($codarq){
+   public function incluir ($codarq){
       $this->atualizacampos();
      if($this->nomearq == null ){
        $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
@@ -296,7 +296,7 @@ class cl_db_sysarquivo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($codarq=null) {
+   public function alterar ($codarq=null) {
       $this->atualizacampos();
      $sql = " update db_sysarquivo set ";
      $virgula = "";
@@ -519,7 +519,7 @@ class cl_db_sysarquivo {
      }
    }
    // funcao para exclusao
-   function excluir ($codarq=null,$dbwhere=null) {
+   public function excluir ($codarq=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codarq));
      }else{
@@ -590,7 +590,7 @@ class cl_db_sysarquivo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -612,7 +612,7 @@ class cl_db_sysarquivo {
       }
      return $result;
    }
-   function sql_query ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -645,7 +645,7 @@ class cl_db_sysarquivo {
      }
      return $sql;
   }
-   function sql_query_arqmod ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_arqmod ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -680,7 +680,7 @@ class cl_db_sysarquivo {
      }
      return $sql;
   }
-   function sql_query_file ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $codarq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

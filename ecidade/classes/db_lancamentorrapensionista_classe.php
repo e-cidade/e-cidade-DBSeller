@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE lancamentorrapensionista
 class cl_lancamentorrapensionista { 
@@ -28,13 +28,13 @@ class cl_lancamentorrapensionista {
                  rh201_valor = float4 = Valor do Pensionista 
                  ";
    //funcao construtor da classe 
-   function cl_lancamentorrapensionista() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lancamentorrapensionista"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_lancamentorrapensionista {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh201_sequencial = ($this->rh201_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh201_sequencial"]:$this->rh201_sequencial);
        $this->rh201_lancamentorra = ($this->rh201_lancamentorra == ""?@$GLOBALS["HTTP_POST_VARS"]["rh201_lancamentorra"]:$this->rh201_lancamentorra);
@@ -54,7 +54,7 @@ class cl_lancamentorrapensionista {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh201_sequencial){ 
+   public function incluir ($rh201_sequencial){ 
       $this->atualizacampos();
      if($this->rh201_lancamentorra == null ){ 
        $this->erro_sql = " Campo Lançamento não informado.";

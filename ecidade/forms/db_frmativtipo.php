@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("q03_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq80_ativ?>">
-       <?
+       <?php
        db_ancora(@$Lq80_ativ,"js_pesquisaq80_ativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q80_ativ',4,$Iq80_ativ,true,'text',$db_opcao," onchange='js_pesquisaq80_ativ(false);'")
 ?>
-       <?
+       <?php
 db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
        ?>
     <td>
@@ -53,7 +53,7 @@ db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
        <?=@$Lq80_tipcal?>
     </td>
     <td> 
-<?
+<?php
 db_input('q80_tipcal',4,$Iq80_tipcal,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -97,7 +97,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

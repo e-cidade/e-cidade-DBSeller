@@ -1,96 +1,96 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE moblevantamentoedi
-class cl_moblevantamentoedi { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j96_sequen = 0; 
-   var $j96_codimporta = 0; 
-   var $j96_matric = 0; 
-   var $j96_codigo = 0; 
-   var $j96_numero = null; 
-   var $j96_compl = null; 
-   var $j96_paredes = 0; 
-   var $j96_cobertura = 0; 
-   var $j96_revexterno = 0; 
-   var $j96_esquadrias = 0; 
-   var $j96_forro = 0; 
-   var $j96_pintura = 0; 
-   var $j96_piso = 0; 
-   var $j96_revinterno = 0; 
-   var $j96_instsanitario = 0; 
-   var $j96_insteletrica = 0; 
-   var $j96_idade = 0; 
-   var $j96_tipoconstr = 0; 
-   var $j96_subtitulo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_moblevantamentoedi {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j96_sequen = 0;
+   var $j96_codimporta = 0;
+   var $j96_matric = 0;
+   var $j96_codigo = 0;
+   var $j96_numero = null;
+   var $j96_compl = null;
+   var $j96_paredes = 0;
+   var $j96_cobertura = 0;
+   var $j96_revexterno = 0;
+   var $j96_esquadrias = 0;
+   var $j96_forro = 0;
+   var $j96_pintura = 0;
+   var $j96_piso = 0;
+   var $j96_revinterno = 0;
+   var $j96_instsanitario = 0;
+   var $j96_insteletrica = 0;
+   var $j96_idade = 0;
+   var $j96_tipoconstr = 0;
+   var $j96_subtitulo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j96_sequen = int4 = Sequencial 
-                 j96_codimporta = int4 = Código Importação 
-                 j96_matric = int4 = Matrícula 
-                 j96_codigo = int4 = Logradouro 
-                 j96_numero = varchar(10) = Número 
-                 j96_compl = varchar(50) = Complemento 
-                 j96_paredes = int4 = Paredes 
-                 j96_cobertura = int4 = Cobertura 
-                 j96_revexterno = int4 = Revest. Externo 
-                 j96_esquadrias = int4 = Esquadrias 
-                 j96_forro = int4 = Forro 
-                 j96_pintura = int4 = Pintura 
-                 j96_piso = int4 = Piso 
-                 j96_revinterno = int4 = Revest. Interno 
-                 j96_instsanitario = int4 = Inst. Sanitária 
-                 j96_insteletrica = int4 = Inst. Elétrica 
-                 j96_idade = int4 = Idade Aparente 
-                 j96_tipoconstr = int4 = Tipo Construção 
-                 j96_subtitulo = int4 = Sub Título 
+                 j96_sequen = int4 = Sequencial
+                 j96_codimporta = int4 = Código Importação
+                 j96_matric = int4 = Matrícula
+                 j96_codigo = int4 = Logradouro
+                 j96_numero = varchar(10) = Número
+                 j96_compl = varchar(50) = Complemento
+                 j96_paredes = int4 = Paredes
+                 j96_cobertura = int4 = Cobertura
+                 j96_revexterno = int4 = Revest. Externo
+                 j96_esquadrias = int4 = Esquadrias
+                 j96_forro = int4 = Forro
+                 j96_pintura = int4 = Pintura
+                 j96_piso = int4 = Piso
+                 j96_revinterno = int4 = Revest. Interno
+                 j96_instsanitario = int4 = Inst. Sanitária
+                 j96_insteletrica = int4 = Inst. Elétrica
+                 j96_idade = int4 = Idade Aparente
+                 j96_tipoconstr = int4 = Tipo Construção
+                 j96_subtitulo = int4 = Sub Título
                  ";
-   //funcao construtor da classe 
-   function cl_moblevantamentoedi() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("moblevantamentoedi"); 
+     $this->rotulo = new rotulo("moblevantamentoedi");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -99,7 +99,7 @@ class cl_moblevantamentoedi {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j96_sequen = ($this->j96_sequen == ""?@$GLOBALS["HTTP_POST_VARS"]["j96_sequen"]:$this->j96_sequen);
        $this->j96_codimporta = ($this->j96_codimporta == ""?@$GLOBALS["HTTP_POST_VARS"]["j96_codimporta"]:$this->j96_codimporta);
@@ -125,9 +125,9 @@ class cl_moblevantamentoedi {
      }
    }
    // funcao para inclusao
-   function incluir ($j96_sequen){ 
+   public function incluir ($j96_sequen){
       $this->atualizacampos();
-     if($this->j96_codimporta == null ){ 
+     if($this->j96_codimporta == null ){
        $this->erro_sql = " Campo Código Importação nao Informado.";
        $this->erro_campo = "j96_codimporta";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_matric == null ){ 
+     if($this->j96_matric == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
        $this->erro_campo = "j96_matric";
        $this->erro_banco = "";
@@ -145,7 +145,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_codigo == null ){ 
+     if($this->j96_codigo == null ){
        $this->erro_sql = " Campo Logradouro nao Informado.";
        $this->erro_campo = "j96_codigo";
        $this->erro_banco = "";
@@ -154,7 +154,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_paredes == null ){ 
+     if($this->j96_paredes == null ){
        $this->erro_sql = " Campo Paredes nao Informado.";
        $this->erro_campo = "j96_paredes";
        $this->erro_banco = "";
@@ -163,7 +163,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_cobertura == null ){ 
+     if($this->j96_cobertura == null ){
        $this->erro_sql = " Campo Cobertura nao Informado.";
        $this->erro_campo = "j96_cobertura";
        $this->erro_banco = "";
@@ -172,7 +172,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_revexterno == null ){ 
+     if($this->j96_revexterno == null ){
        $this->erro_sql = " Campo Revest. Externo nao Informado.";
        $this->erro_campo = "j96_revexterno";
        $this->erro_banco = "";
@@ -181,7 +181,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_esquadrias == null ){ 
+     if($this->j96_esquadrias == null ){
        $this->erro_sql = " Campo Esquadrias nao Informado.";
        $this->erro_campo = "j96_esquadrias";
        $this->erro_banco = "";
@@ -190,7 +190,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_forro == null ){ 
+     if($this->j96_forro == null ){
        $this->erro_sql = " Campo Forro nao Informado.";
        $this->erro_campo = "j96_forro";
        $this->erro_banco = "";
@@ -199,7 +199,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_pintura == null ){ 
+     if($this->j96_pintura == null ){
        $this->erro_sql = " Campo Pintura nao Informado.";
        $this->erro_campo = "j96_pintura";
        $this->erro_banco = "";
@@ -208,7 +208,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_piso == null ){ 
+     if($this->j96_piso == null ){
        $this->erro_sql = " Campo Piso nao Informado.";
        $this->erro_campo = "j96_piso";
        $this->erro_banco = "";
@@ -217,7 +217,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_revinterno == null ){ 
+     if($this->j96_revinterno == null ){
        $this->erro_sql = " Campo Revest. Interno nao Informado.";
        $this->erro_campo = "j96_revinterno";
        $this->erro_banco = "";
@@ -226,7 +226,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_instsanitario == null ){ 
+     if($this->j96_instsanitario == null ){
        $this->erro_sql = " Campo Inst. Sanitária nao Informado.";
        $this->erro_campo = "j96_instsanitario";
        $this->erro_banco = "";
@@ -235,7 +235,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_insteletrica == null ){ 
+     if($this->j96_insteletrica == null ){
        $this->erro_sql = " Campo Inst. Elétrica nao Informado.";
        $this->erro_campo = "j96_insteletrica";
        $this->erro_banco = "";
@@ -244,7 +244,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_idade == null ){ 
+     if($this->j96_idade == null ){
        $this->erro_sql = " Campo Idade Aparente nao Informado.";
        $this->erro_campo = "j96_idade";
        $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_tipoconstr == null ){ 
+     if($this->j96_tipoconstr == null ){
        $this->erro_sql = " Campo Tipo Construção nao Informado.";
        $this->erro_campo = "j96_tipoconstr";
        $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_moblevantamentoedi {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j96_subtitulo == null ){ 
+     if($this->j96_subtitulo == null ){
        $this->erro_sql = " Campo Sub Título nao Informado.";
        $this->erro_campo = "j96_subtitulo";
        $this->erro_banco = "";
@@ -272,16 +272,16 @@ class cl_moblevantamentoedi {
        return false;
      }
      if($j96_sequen == "" || $j96_sequen == null ){
-       $result = db_query("select nextval('moblevantamentoedi_j96_sequen_seq')"); 
+       $result = db_query("select nextval('moblevantamentoedi_j96_sequen_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: moblevantamentoedi_j96_sequen_seq do campo: j96_sequen"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: moblevantamentoedi_j96_sequen_seq do campo: j96_sequen";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j96_sequen = pg_result($result,0,0); 
+       $this->j96_sequen = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from moblevantamentoedi_j96_sequen_seq");
        if(($result != false) && (pg_result($result,0,0) < $j96_sequen)){
@@ -292,10 +292,10 @@ class cl_moblevantamentoedi {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j96_sequen = $j96_sequen; 
+         $this->j96_sequen = $j96_sequen;
        }
      }
-     if(($this->j96_sequen == null) || ($this->j96_sequen == "") ){ 
+     if(($this->j96_sequen == null) || ($this->j96_sequen == "") ){
        $this->erro_sql = " Campo j96_sequen nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -304,49 +304,49 @@ class cl_moblevantamentoedi {
        return false;
      }
      $sql = "insert into moblevantamentoedi(
-                                       j96_sequen 
-                                      ,j96_codimporta 
-                                      ,j96_matric 
-                                      ,j96_codigo 
-                                      ,j96_numero 
-                                      ,j96_compl 
-                                      ,j96_paredes 
-                                      ,j96_cobertura 
-                                      ,j96_revexterno 
-                                      ,j96_esquadrias 
-                                      ,j96_forro 
-                                      ,j96_pintura 
-                                      ,j96_piso 
-                                      ,j96_revinterno 
-                                      ,j96_instsanitario 
-                                      ,j96_insteletrica 
-                                      ,j96_idade 
-                                      ,j96_tipoconstr 
-                                      ,j96_subtitulo 
+                                       j96_sequen
+                                      ,j96_codimporta
+                                      ,j96_matric
+                                      ,j96_codigo
+                                      ,j96_numero
+                                      ,j96_compl
+                                      ,j96_paredes
+                                      ,j96_cobertura
+                                      ,j96_revexterno
+                                      ,j96_esquadrias
+                                      ,j96_forro
+                                      ,j96_pintura
+                                      ,j96_piso
+                                      ,j96_revinterno
+                                      ,j96_instsanitario
+                                      ,j96_insteletrica
+                                      ,j96_idade
+                                      ,j96_tipoconstr
+                                      ,j96_subtitulo
                        )
                 values (
-                                $this->j96_sequen 
-                               ,$this->j96_codimporta 
-                               ,$this->j96_matric 
-                               ,$this->j96_codigo 
-                               ,'$this->j96_numero' 
-                               ,'$this->j96_compl' 
-                               ,$this->j96_paredes 
-                               ,$this->j96_cobertura 
-                               ,$this->j96_revexterno 
-                               ,$this->j96_esquadrias 
-                               ,$this->j96_forro 
-                               ,$this->j96_pintura 
-                               ,$this->j96_piso 
-                               ,$this->j96_revinterno 
-                               ,$this->j96_instsanitario 
-                               ,$this->j96_insteletrica 
-                               ,$this->j96_idade 
-                               ,$this->j96_tipoconstr 
-                               ,$this->j96_subtitulo 
+                                $this->j96_sequen
+                               ,$this->j96_codimporta
+                               ,$this->j96_matric
+                               ,$this->j96_codigo
+                               ,'$this->j96_numero'
+                               ,'$this->j96_compl'
+                               ,$this->j96_paredes
+                               ,$this->j96_cobertura
+                               ,$this->j96_revexterno
+                               ,$this->j96_esquadrias
+                               ,$this->j96_forro
+                               ,$this->j96_pintura
+                               ,$this->j96_piso
+                               ,$this->j96_revinterno
+                               ,$this->j96_instsanitario
+                               ,$this->j96_insteletrica
+                               ,$this->j96_idade
+                               ,$this->j96_tipoconstr
+                               ,$this->j96_subtitulo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Constrições das Matrículas ($this->j96_sequen) nao Incluído. Inclusao Abortada.";
@@ -396,16 +396,16 @@ class cl_moblevantamentoedi {
        $resac = db_query("insert into db_acount values($acount,1670,9727,'','".AddSlashes(pg_result($resaco,0,'j96_subtitulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j96_sequen=null) { 
+   public function alterar ($j96_sequen=null) {
       $this->atualizacampos();
      $sql = " update moblevantamentoedi set ";
      $virgula = "";
-     if(trim($this->j96_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_sequen"])){ 
+     if(trim($this->j96_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_sequen"])){
        $sql  .= $virgula." j96_sequen = $this->j96_sequen ";
        $virgula = ",";
-       if(trim($this->j96_sequen) == null ){ 
+       if(trim($this->j96_sequen) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j96_sequen";
          $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_codimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_codimporta"])){ 
+     if(trim($this->j96_codimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_codimporta"])){
        $sql  .= $virgula." j96_codimporta = $this->j96_codimporta ";
        $virgula = ",";
-       if(trim($this->j96_codimporta) == null ){ 
+       if(trim($this->j96_codimporta) == null ){
          $this->erro_sql = " Campo Código Importação nao Informado.";
          $this->erro_campo = "j96_codimporta";
          $this->erro_banco = "";
@@ -428,10 +428,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_matric"])){ 
+     if(trim($this->j96_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_matric"])){
        $sql  .= $virgula." j96_matric = $this->j96_matric ";
        $virgula = ",";
-       if(trim($this->j96_matric) == null ){ 
+       if(trim($this->j96_matric) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "j96_matric";
          $this->erro_banco = "";
@@ -441,10 +441,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_codigo"])){ 
+     if(trim($this->j96_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_codigo"])){
        $sql  .= $virgula." j96_codigo = $this->j96_codigo ";
        $virgula = ",";
-       if(trim($this->j96_codigo) == null ){ 
+       if(trim($this->j96_codigo) == null ){
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "j96_codigo";
          $this->erro_banco = "";
@@ -454,18 +454,18 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_numero"])){ 
+     if(trim($this->j96_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_numero"])){
        $sql  .= $virgula." j96_numero = '$this->j96_numero' ";
        $virgula = ",";
      }
-     if(trim($this->j96_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_compl"])){ 
+     if(trim($this->j96_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_compl"])){
        $sql  .= $virgula." j96_compl = '$this->j96_compl' ";
        $virgula = ",";
      }
-     if(trim($this->j96_paredes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_paredes"])){ 
+     if(trim($this->j96_paredes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_paredes"])){
        $sql  .= $virgula." j96_paredes = $this->j96_paredes ";
        $virgula = ",";
-       if(trim($this->j96_paredes) == null ){ 
+       if(trim($this->j96_paredes) == null ){
          $this->erro_sql = " Campo Paredes nao Informado.";
          $this->erro_campo = "j96_paredes";
          $this->erro_banco = "";
@@ -475,10 +475,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_cobertura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_cobertura"])){ 
+     if(trim($this->j96_cobertura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_cobertura"])){
        $sql  .= $virgula." j96_cobertura = $this->j96_cobertura ";
        $virgula = ",";
-       if(trim($this->j96_cobertura) == null ){ 
+       if(trim($this->j96_cobertura) == null ){
          $this->erro_sql = " Campo Cobertura nao Informado.";
          $this->erro_campo = "j96_cobertura";
          $this->erro_banco = "";
@@ -488,10 +488,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_revexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_revexterno"])){ 
+     if(trim($this->j96_revexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_revexterno"])){
        $sql  .= $virgula." j96_revexterno = $this->j96_revexterno ";
        $virgula = ",";
-       if(trim($this->j96_revexterno) == null ){ 
+       if(trim($this->j96_revexterno) == null ){
          $this->erro_sql = " Campo Revest. Externo nao Informado.";
          $this->erro_campo = "j96_revexterno";
          $this->erro_banco = "";
@@ -501,10 +501,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_esquadrias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_esquadrias"])){ 
+     if(trim($this->j96_esquadrias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_esquadrias"])){
        $sql  .= $virgula." j96_esquadrias = $this->j96_esquadrias ";
        $virgula = ",";
-       if(trim($this->j96_esquadrias) == null ){ 
+       if(trim($this->j96_esquadrias) == null ){
          $this->erro_sql = " Campo Esquadrias nao Informado.";
          $this->erro_campo = "j96_esquadrias";
          $this->erro_banco = "";
@@ -514,10 +514,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_forro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_forro"])){ 
+     if(trim($this->j96_forro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_forro"])){
        $sql  .= $virgula." j96_forro = $this->j96_forro ";
        $virgula = ",";
-       if(trim($this->j96_forro) == null ){ 
+       if(trim($this->j96_forro) == null ){
          $this->erro_sql = " Campo Forro nao Informado.";
          $this->erro_campo = "j96_forro";
          $this->erro_banco = "";
@@ -527,10 +527,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_pintura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_pintura"])){ 
+     if(trim($this->j96_pintura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_pintura"])){
        $sql  .= $virgula." j96_pintura = $this->j96_pintura ";
        $virgula = ",";
-       if(trim($this->j96_pintura) == null ){ 
+       if(trim($this->j96_pintura) == null ){
          $this->erro_sql = " Campo Pintura nao Informado.";
          $this->erro_campo = "j96_pintura";
          $this->erro_banco = "";
@@ -540,10 +540,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_piso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_piso"])){ 
+     if(trim($this->j96_piso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_piso"])){
        $sql  .= $virgula." j96_piso = $this->j96_piso ";
        $virgula = ",";
-       if(trim($this->j96_piso) == null ){ 
+       if(trim($this->j96_piso) == null ){
          $this->erro_sql = " Campo Piso nao Informado.";
          $this->erro_campo = "j96_piso";
          $this->erro_banco = "";
@@ -553,10 +553,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_revinterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_revinterno"])){ 
+     if(trim($this->j96_revinterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_revinterno"])){
        $sql  .= $virgula." j96_revinterno = $this->j96_revinterno ";
        $virgula = ",";
-       if(trim($this->j96_revinterno) == null ){ 
+       if(trim($this->j96_revinterno) == null ){
          $this->erro_sql = " Campo Revest. Interno nao Informado.";
          $this->erro_campo = "j96_revinterno";
          $this->erro_banco = "";
@@ -566,10 +566,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_instsanitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_instsanitario"])){ 
+     if(trim($this->j96_instsanitario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_instsanitario"])){
        $sql  .= $virgula." j96_instsanitario = $this->j96_instsanitario ";
        $virgula = ",";
-       if(trim($this->j96_instsanitario) == null ){ 
+       if(trim($this->j96_instsanitario) == null ){
          $this->erro_sql = " Campo Inst. Sanitária nao Informado.";
          $this->erro_campo = "j96_instsanitario";
          $this->erro_banco = "";
@@ -579,10 +579,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_insteletrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_insteletrica"])){ 
+     if(trim($this->j96_insteletrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_insteletrica"])){
        $sql  .= $virgula." j96_insteletrica = $this->j96_insteletrica ";
        $virgula = ",";
-       if(trim($this->j96_insteletrica) == null ){ 
+       if(trim($this->j96_insteletrica) == null ){
          $this->erro_sql = " Campo Inst. Elétrica nao Informado.";
          $this->erro_campo = "j96_insteletrica";
          $this->erro_banco = "";
@@ -592,10 +592,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_idade"])){ 
+     if(trim($this->j96_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_idade"])){
        $sql  .= $virgula." j96_idade = $this->j96_idade ";
        $virgula = ",";
-       if(trim($this->j96_idade) == null ){ 
+       if(trim($this->j96_idade) == null ){
          $this->erro_sql = " Campo Idade Aparente nao Informado.";
          $this->erro_campo = "j96_idade";
          $this->erro_banco = "";
@@ -605,10 +605,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_tipoconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_tipoconstr"])){ 
+     if(trim($this->j96_tipoconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_tipoconstr"])){
        $sql  .= $virgula." j96_tipoconstr = $this->j96_tipoconstr ";
        $virgula = ",";
-       if(trim($this->j96_tipoconstr) == null ){ 
+       if(trim($this->j96_tipoconstr) == null ){
          $this->erro_sql = " Campo Tipo Construção nao Informado.";
          $this->erro_campo = "j96_tipoconstr";
          $this->erro_banco = "";
@@ -618,10 +618,10 @@ class cl_moblevantamentoedi {
          return false;
        }
      }
-     if(trim($this->j96_subtitulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_subtitulo"])){ 
+     if(trim($this->j96_subtitulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j96_subtitulo"])){
        $sql  .= $virgula." j96_subtitulo = $this->j96_subtitulo ";
        $virgula = ",";
-       if(trim($this->j96_subtitulo) == null ){ 
+       if(trim($this->j96_subtitulo) == null ){
          $this->erro_sql = " Campo Sub Título nao Informado.";
          $this->erro_campo = "j96_subtitulo";
          $this->erro_banco = "";
@@ -683,7 +683,7 @@ class cl_moblevantamentoedi {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Constrições das Matrículas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j96_sequen;
@@ -711,14 +711,14 @@ class cl_moblevantamentoedi {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j96_sequen=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j96_sequen=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j96_sequen));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -762,7 +762,7 @@ class cl_moblevantamentoedi {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Constrições das Matrículas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j96_sequen;
@@ -790,11 +790,11 @@ class cl_moblevantamentoedi {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -816,10 +816,10 @@ class cl_moblevantamentoedi {
       }
      return $result;
    }
-   function sql_query ( $j96_sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j96_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -834,15 +834,15 @@ class cl_moblevantamentoedi {
      $sql2 = "";
      if($dbwhere==""){
        if($j96_sequen!=null ){
-         $sql2 .= " where moblevantamentoedi.j96_sequen = $j96_sequen "; 
-       } 
+         $sql2 .= " where moblevantamentoedi.j96_sequen = $j96_sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -851,10 +851,10 @@ class cl_moblevantamentoedi {
      }
      return $sql;
   }
-   function sql_query_file ( $j96_sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j96_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -867,15 +867,15 @@ class cl_moblevantamentoedi {
      $sql2 = "";
      if($dbwhere==""){
        if($j96_sequen!=null ){
-         $sql2 .= " where moblevantamentoedi.j96_sequen = $j96_sequen "; 
-       } 
+         $sql2 .= " where moblevantamentoedi.j96_sequen = $j96_sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

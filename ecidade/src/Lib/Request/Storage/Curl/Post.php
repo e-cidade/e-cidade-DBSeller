@@ -48,7 +48,11 @@ class Post
      */
     public function __construct(Autenticacao $autenticacao)
     {
-        $this->client = new Client();
+        $optionsGuzzle = [];
+        if ($autenticacao->isDisableSSLverification()) {
+            $optionsGuzzle["verify"] = false;
+        }
+        $this->client = new Client($optionsGuzzle);
         $this->autenticacao = $autenticacao;
         $this->autenticacao->execute();
         $authorization = $this->autenticacao->getTokenType();

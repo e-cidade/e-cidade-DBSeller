@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
               <?=$Lm93_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m93_sequencial",10,$Im93_sequencial,true,"text",4,"","chave_m93_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
               <?=$Lm93_db_usuarios?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m93_db_usuarios",10,$Im93_db_usuarios,true,"text",4,"","chave_m93_db_usuarios");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matimplantacaotipogrupo.php")==true){
@@ -122,12 +122,12 @@ $clmatimplantacaotipogrupo->rotulo->label("m93_db_usuarios");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

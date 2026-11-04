@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ background-color:#ccddcc;
 </tr>
   </tr>
     <td colspan=2>
-  <?
+  <?php
        $result_proc=$clprotprocesso->sql_record($clprotprocesso->sql_query_file($p58_codproc,"p58_codandam"));
        if ($clprotprocesso->numrows!=0){
 	      db_fieldsmemory($result_proc,0);

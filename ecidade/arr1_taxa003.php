@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("classes/db_taxa_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_favorecidotaxa_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
 $cltaxa           = new cl_taxa;
 $clFavorecidoTaxa = new cl_favorecidotaxa;
@@ -72,7 +72,7 @@ if (isset($excluir)) {
 </div>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($cltaxa->erro_status=="0"){
     $cltaxa->erro(true,false);

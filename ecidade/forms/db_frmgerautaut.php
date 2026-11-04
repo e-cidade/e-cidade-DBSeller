@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -31,7 +31,7 @@
   <tr align="center">
     <td nowrap  width="100%" height="100%"><br><br>
       <iframe name="iframe_solicitem" id="solicitem" marginwidth="0" marginheight="0" frameborder="0" src="com1_gerautautiframe001.php"  width="95%" height="400"></iframe>
-      <?
+      <?php
         db_input('pc80_codproc',8,$Ipc80_codproc,true,'hidden',3);
         db_input('e54_codcom',8,0,true,'hidden',3);
         db_input('e54_codtipo',8,0,true,'hidden',3);
@@ -46,7 +46,7 @@
   </tr>
   <tr align="center">
     <td nowrap height="10%">
-      <?
+      <?php
       $botao = "Gerar autorização";
       $click = "js_enviarcampos();";
       $click2= "document.location.href='com1_selproc001.php'";
@@ -83,13 +83,13 @@ function js_enviarcampos(){
     obj.setAttribute('type','hidden');
     obj.setAttribute('value','incluir');
     iframe_solicitem.document.form1.appendChild(obj);
-<?
+<?php
     if (isset($anul) && $anul == true){
 ?>
     var op = document.createElement("input");
     op.setAttribute("type","hidden");
     op.setAttribute("name","reservar");
-<?
+<?php
          $res_sol     = $clempautoriza->sql_record($clempautoriza->sql_query_solicita($e54_autori));
          $numrows_sol = $clempautoriza->numrows;
          if ($numrows_sol > 0){
@@ -105,7 +105,7 @@ function js_enviarcampos(){
 					 if ($lGeraReserva == "f"){
 ?>
 						op.setAttribute("value","false");
-<?
+<?php
 					 }else{
 ?>
 						 if (confirm("Recriar reservas de solicitacao de compras?")){
@@ -113,16 +113,16 @@ function js_enviarcampos(){
 						 } else {
 								 op.setAttribute("value","false");
 						 }
-<?
+<?php
            }
 				 } else {
 ?>
          op.setAttribute("value","true");
-<?
+<?php
          }
 ?>
     iframe_solicitem.document.form1.appendChild(op);
-<?
+<?php
     }
 ?>
     iframe_solicitem.document.form1.submit();

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clArqAuxiliar->Labelancora    = 'C&oacute;digo';
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js');
   db_app::load('estilos.css, grid.style.css');
 ?>
@@ -195,7 +195,7 @@ function js_processa() {
 <table style="margin: 10px auto">
   <tr>
     <td>
-    <?
+    <?php
       $clArqAuxiliar->cabecalho      = '<strong>Zona Fiscal</strong>';
       $clArqAuxiliar->codigo         = 'j50_zona'; 
       $clArqAuxiliar->descr          = 'j50_descr';
@@ -212,7 +212,7 @@ function js_processa() {
   
   <tr>
     <td>
-    <? 
+    <?php 
       $clArqAuxiliar->cabecalho      = '<strong>Zona de Entrega</strong>';
       $clArqAuxiliar->codigo         = 'j85_codigo'; //chave de retorno da func
       $clArqAuxiliar->descr          = 'j85_descr';   //chave de retorno
@@ -229,7 +229,7 @@ function js_processa() {
   
   <tr>
     <td>
-    <?
+    <?php
       $clArqAuxiliar->cabecalho      = '<strong>Logradouros</strong>';
       $clArqAuxiliar->codigo         = 'j14_codigo'; //chave de retorno da func
       $clArqAuxiliar->descr          = 'j14_nome';   //chave de retorno
@@ -246,7 +246,7 @@ function js_processa() {
   
   <tr>
     <td>
-    <?
+    <?php
       $clArqAuxiliar->cabecalho      = '<strong>Bairros</strong>';
       $clArqAuxiliar->codigo         = 'j13_codi'; //chave de retorno da func
       $clArqAuxiliar->descr          = 'j13_descr';   //chave de retorno
@@ -264,9 +264,9 @@ function js_processa() {
   <tr>
     <td align="center"><br/>
       <strong>M&eacute;dia Consumo:</strong>
-      <? db_input('consumoinicial', 10, $consumoinicial, true, 'text', 1)?>
+      <?php db_input('consumoinicial', 10, $consumoinicial, true, 'text', 1)?>
          a
-      <? db_input('consumofinal', 10, $consumofinal, true, 'text', 1)?>
+      <?php db_input('consumofinal', 10, $consumofinal, true, 'text', 1)?>
       
     </td>
   </tr>
@@ -274,9 +274,9 @@ function js_processa() {
   <tr>
     <td align="center"><br/>
       <strong>Per&iacute;odo:</strong>
-      <? db_inputdata('datainicial', $datainicial_dia, $datainicial_mes, $datainicial_ano, true, 'text', 1)?>
+      <?php db_inputdata('datainicial', $datainicial_dia, $datainicial_mes, $datainicial_ano, true, 'text', 1)?>
       a
-      <? db_inputdata('datafinal', $datafinal_dia, $datafinal_mes, $datafinal_ano, true, 'text', 1)?>
+      <?php db_inputdata('datafinal', $datafinal_dia, $datafinal_mes, $datafinal_ano, true, 'text', 1)?>
       
     </td>
   </tr>
@@ -284,7 +284,7 @@ function js_processa() {
   <tr>
     <td align="center"><br/>
       <strong>Ordenar por:</strong>
-      <?
+      <?php
         $aOrdenar = array('matricula'          => 'Matr&iacute;cula'             , 
                           'nome'               => 'Nome'                         , 
                           'logradouro, numero' => 'Logradouro'                   , 
@@ -304,7 +304,7 @@ function js_processa() {
   </tr>
 </table>
 
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </form>

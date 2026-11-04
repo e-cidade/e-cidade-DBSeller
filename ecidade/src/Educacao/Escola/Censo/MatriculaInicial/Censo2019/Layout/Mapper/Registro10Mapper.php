@@ -51,6 +51,7 @@ class Registro10Mapper extends Mapper
         "Poço artesiano" => "pocoArtesiano",
         "Cacimba/ cisterna / poço" => "cacimbaCisternaPoco",
         "Fonte/ rio / igarapé/ riacho/ córrego" => "fonteRio",
+        "Carro-pipa" => "carroPipa",
         "Não há abastecimento de água" => "semAgua",
         "Luz Rede pública" => "luzRedePublica",
         "Gerador movido a combustível fóssil" => "geradorCombustivelFossil",
@@ -71,7 +72,7 @@ class Registro10Mapper extends Mapper
         "Reciclagem" => "reciclagemLixo",
         "Não faz tratamento" => "naoTrataLixo",
         "Almoxarifado" => "almoxarifado",
-        "Área verde" => "areaVerde",
+        "Área de vegetação ou gramado" => "areaVegetacaoGramado",
         "Auditório" => "auditorio",
         "Banheiro" => "banheiro",
         "Banheiro acessível adequado ao uso de pessoas com deficiência ou mobilidade ".
@@ -109,12 +110,15 @@ class Registro10Mapper extends Mapper
         "(AEE)" => "salaRecursosMultifuncionaisAEE",
         "Sala de Secretaria" => "salaSecretaria",
         "Salas de oficinas da educação profissional" => "salaEducacaoProfissional",
+        "Estúdio de gravação e edição" => "salasGravacaoEdicao",
+        "Área de horta, plantio e/ou produção agrícola" => "areaHortaPlantioProducaoAgricola",
         "Nenhuma das dependências relacionadas" => "nenhumaDependencias",
         "Corrimão e guarda-corpos" => "corrimao",
         "Elevador" => "elevador",
         "Pisos táteis" => "pisoTatil",
         "Portas com vão livre de no mínimo 80 cm" => "portasComVao80Cm",
         "Rampas" => "rampas",
+        "Sinalização/alarme luminoso" => "sinalizacaoAlarmeLuminoso",
         "Sinalização sonora" => "sinalizacaoSonora",
         "Sinalização tátil" => "sinalizacaoTatil",
         "Sinalização visual (piso/paredes)" => "sinalizacaoVisual",
@@ -151,6 +155,9 @@ class Registro10Mapper extends Mapper
         "A cabo" => "redeCabo",
         "Wireless" => "redeWireless",
         "Não há rede local interligando computadores" => "naoExisteRede",
+        "Agrônomos(as), horticultores(as), técnicos ou monitores(as) responsáveis pela".
+            " gestão da área de horta, plantio e/ou ".
+            "produção agrícola" => "agronomosTecnicosResponsaveisProducaoAgricola",
         "Auxiliares de secretaria ou auxiliares administrativos, atendentes" => "auxiliarSecretariaAdministrativos",
         "Auxiliar de serviços gerais, porteiro(a), zelador(a), faxineiro(a), horticultor(a)," .
         " jardineiro(a)" => "auxiliarServicosGerais",
@@ -170,22 +177,31 @@ class Registro10Mapper extends Mapper
         "Vice-diretor(a) ou diretor(a) adjunto(a), profissionais responsáveis pela gestão administrativa" .
         "e/ou financeira" => "gestoresEscola",
         "Orientador(a) comunitário(a) ou assistente social" => "orientadorComunitario",
+        "Tradutor e Intérprete de Libras para atendimento em outros ambientes da escola que não seja sala de aula"
+            => "tradutorInterpreteLibras",
+        "Revisor de texto Braille, assistente vidente (assistente de revisão do texto ".
+            "em Braille)" => "revisorTextoBrailleAssistenteVidente",
         "Não há funcionários para as funções listadas" => "naoHaFuncionarios",
         "Alimentação escolar para os aluno(a)s" => "alimentacaoEscolar",
         "Acervo multimídia" => "acervoMultimidia",
         "Brinquedos para educação infantil" => "brinquedosEducacaoInfantil",
         "Conjunto de materiais científicos" => "materiaisCientificos",
         "Equipamento para amplificação e difusão de som/áudio" => "EquipamentoAmplificacaoOuDifusaoAudio",
+        "Equipamentos e instrumentos para atividades em área de horta, ".
+            "plantio e/ou produção agrícola" => "equipamentosAtividadesHortaProducaoAgricola",
         "Instrumentos musicais para conjunto, banda/fanfarra e/ou aulas de música" => "instrumentosMusicais",
         "Jogos educativos" => "jogosEducativos",
         "Materiais para atividades culturais e artísticas" => "materialAtividadeCultural",
         "Materiais para educação profissional" => "materialEducacaoProfissional",
         "Materiais para prática desportiva e recreação" => "materialDesportivRecreacao",
+        "Materiais pedagógicos para a educação bilíngue de surdos" => "materialEducacaoBilingue",
         "Materiais pedagógicos para a educação escolar indígena" => "materialEducacaoIndigena",
         "Materiais pedagógicos para a educação das relações étnicos raciais" => "materialEducacaoEtnicoRacial",
         "Materiais pedagógicos para a educação do campo" => "materialEducacaoCampo",
+        "Materiais pedagógicos para a educação escolar quilombola" => "materialEducacaoQuilombola",
+        "Materiais pedagógicos para a educação especial" => "materialEducacaoEspecial",
         "Nenhum dos instrumentos listados" => "nenhumInstrumentoListado",
-        "Educação escolar indígena" => "educacaoEscolarIndigena",
+        "Escola indígena" => "educacaoEscolarIndigena",
         "Língua indígena" => "linguaIndigena",
         "Língua portuguesa" => "linguaPortuguesa",
         "Código da língua indígena 1" => "codigoLinguaIndigena1",
@@ -211,6 +227,15 @@ class Registro10Mapper extends Mapper
         "Orgaos Outros" => "orgaosColegiadosOutros",
         "Não há órgãos colegiados em funcionamento" => "orgaosColegiadosNenhum",
         "Projeto político pedagógico ou a proposta pedagógica da escola atualizado nos últimos 12 meses até a data de" .
-        " referência" => "projetoPedagogicoAtualizado"
+        " referência" => "projetoPedagogicoAtualizado",
+        "A escola desenvolve ações na área de educação ambiental" => "desenvolveAcoesEducacaoAmbiental",
+        "Como conteúdo dos componentes/campos de experiências presentes no currículo"
+            => "comoConteudoComponentesCamposExperiencias",
+        "Como um componente curricular especial, específico, flexível ou eletivo"
+            => "comoComponenteCurricularEspecialEspecifico",
+        "Como um eixo estruturante do currículo" => "comoEixoEstruturanteCurriculo",
+        "Em eventos" => "emEventos",
+        "Em projetos transversais ou interdisciplinares" => "emProjetosTransversaisInterdisciplinares",
+        "Nenhuma das opções listadas" => "nenhumaDasOpcoesListadas"
     );
 }

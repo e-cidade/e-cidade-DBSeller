@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,13 +74,13 @@ class cl_db_certidaoweb {
                  cerhtml = text = Certidão HTML 
                  ";
    //funcao construtor da classe 
-   function cl_db_certidaoweb() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_certidaoweb"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_db_certidaoweb {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codcert = ($this->codcert == ""?@$GLOBALS["HTTP_POST_VARS"]["codcert"]:$this->codcert);
        $this->tipocer = ($this->tipocer == ""?@$GLOBALS["HTTP_POST_VARS"]["tipocer"]:$this->tipocer);
@@ -120,7 +120,7 @@ class cl_db_certidaoweb {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->codcert == null ){ 
        $this->erro_sql = " Campo Código da certidão nao Informado.";
@@ -288,7 +288,7 @@ class cl_db_certidaoweb {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update db_certidaoweb set ";
      $virgula = "";
@@ -476,7 +476,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from db_certidaoweb
                     where ";
      $sql2 = "";
@@ -515,7 +515,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ a:active {
   font-size: 10;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -70,7 +70,7 @@ a:active {
 <title>Agendar Prestadoras</title>
 </head>
 <body>
-<?
+<?php
 db_postmemory($HTTP_POST_VARS);
 $ano           = substr( $pdia, 6, 4 );
 $mes           = substr( $pdia, 3, 2 );
@@ -96,7 +96,7 @@ if($tipoagenda=="C"){
   			<td class='cabec' align="center">Hora</td>
   			<td class='cabec' align="center">Opções</td>
 			</tr>
-<?	
+<?php 
 	for( $x=0; $x < $clsau_agendaexterna->numrows; $x++ ){
 		$obj_agendaexterna  = db_utils::fieldsMemory( $result_agendaexterna, $x );
     	
@@ -116,7 +116,7 @@ if($tipoagenda=="C"){
 					&nbsp;&nbsp;					
 				</td>
 			</tr>
-		<?
+		<?php
 	}//fim for
 ?>
 </table>  

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label("at25_descr");
        <?=@$Lcodproced?>
     </td>
     <td> 
-<?
+<?php
 db_input('codproced',10,$Icodproced,true,'text',3,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('codproced',10,$Icodproced,true,'text',3,"")
        <?=@$Ldescrproced?>
     </td>
     <td> 
-<?
+<?php
 db_input('descrproced',60,$Idescrproced,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,37 +66,37 @@ db_input('descrproced',60,$Idescrproced,true,'text',$db_opcao,"")
        <?=@$Lobsproced?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('obsproced',20,110,$Iobsproced,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodmod?>">
-       <?
+       <?php
        db_ancora(@$Lcodmod,"js_pesquisacodmod(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('codmod',4,$Icodmod,true,'text',$db_opcao," onchange='js_pesquisacodmod(false);'")
 ?>
-       <?
+       <?php
 db_input('nomemod',40,$Inomemod,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodarea?>">
-       <?
+       <?php
        db_ancora(@$Lcodarea,"js_pesquisacodarea(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('codarea',10,$Icodarea,true,'text',$db_opcao," onchange='js_pesquisacodarea(false);'")
 ?>
-       <?
+       <?php
 db_input('at25_descr',30,$Iat25_descr,true,'text',3,'')
        ?>
     </td>
@@ -158,7 +158,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_syscadproced.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

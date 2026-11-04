@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,14 +57,14 @@ $clrotulo->label('rh49_mesusu');
 		      <b>Ano / Mês:</b>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		        $rh49_anousu = db_anofolha();
 			      db_input('rh49_anousu',4,$Irh49_anousu,true,'text',3,"");
 		      ?>
 		      
 		      &nbsp;/&nbsp;
 		      
-		      <?
+		      <?php
 		        $rh49_mesusu = db_mesfolha();
 		      	db_input('rh49_mesusu',2,$Irh49_mesusu,true,'text',3,"");
 		      ?>
@@ -75,13 +75,13 @@ $clrotulo->label('rh49_mesusu');
 		    	<strong>Ano / Mês Afastamentos:</strong>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      	$iAnoAfastamento = db_anofolha();
 		       
 		       	db_input('iAnoAfastamento',4, 1,true,'text',2,'');
 		      ?>
 		      &nbsp;/&nbsp;
-		      <?
+		      <?php
 						$iMesAfastamento = db_mesfolha();
 		       	
 						db_input('iMesAfastamento',2, 1,true,'text',2,'');
@@ -90,12 +90,12 @@ $clrotulo->label('rh49_mesusu');
 		  </tr>
 		  <tr>
 		    <td title="Seleção:">
-		      <?
+		      <?php
 		    	 db_ancora("<b>Não Gerar Para Seleção:</b>","js_pesquisaSelecao(true)",1);
 		      ?>
 		    </td>
 		    <td>
-	       <?
+	       <?php
 		       db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisaSelecao(false)"');
 		       db_input('r44_descr',25,$Ir44_descr,true,'text',3,'');
 	       ?>
@@ -192,7 +192,7 @@ function js_confirma(oAjax){
 
 </script>
 
-<?
+<?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

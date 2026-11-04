@@ -103,6 +103,7 @@ class MovimentacaoFichaAtendimentoRepository {
     $sSqlMovimentacoes   = $oDaoMovimentacao->sql_query_file( null, "sd102_codigo", $sOrdemMovimentacoes, $sWhereMovimentacoes );
     $rsMovimentacoes     = db_query( $sSqlMovimentacoes );
 
+    $oErro = new stdClass();
     if ( !$rsMovimentacoes ) {
 
       $oErro->sErro = pg_last_error();
@@ -121,6 +122,35 @@ class MovimentacaoFichaAtendimentoRepository {
 
     return $aMovimentacoes;
   }
+
+    /**
+     * Busca o último registro de movimentação de um prontuário
+     * @param  integer $iProntuario Código da FAA
+     */
+    public static function buscaUltimoRegistro($prontuario) {
+        $situacao = MovimentacaoFichaAtendimento::SITUACAO_ATESTADO_EM_BRANCO;
+        $oMovimentacaoDao    = new cl_movimentacaoprontuario();
+
+        $sqlMovimentacao = "
+        SELECT *
+        FROM movimentacaoprontuario
+        WHERE sd102_prontuarios = $prontuario
+          AND sd102_situacao <> $situacao
+          AND sd102_codigo =
+            (SELECT MAX(sd102_codigo)
+             FROM movimentacaoprontuario
+             WHERE sd102_prontuarios = $prontuario
+             AND sd102_situacao <> $situacao);";
+        $rsSqlMovimentacao    = $oMovimentacaoDao->sql_record($sqlMovimentacao);
+
+        $iLinhas        = pg_num_rows($rsSqlMovimentacao);
+        $aMovimentacoes = null;
+
+        if ( $iLinhas > 0 ) {
+            $aMovimentacoes = db_utils::fieldsMemory($rsSqlMovimentacao, 0);
+        }
+        return $aMovimentacoes;
+    }
 
   /**
    * Impossibilita instancia

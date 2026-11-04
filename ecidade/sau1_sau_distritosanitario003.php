@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_sau_distritosanitario_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $oDaoSauDistritoSanitario = new cl_sau_distritosanitario;
 $db_botao                 = false;
@@ -71,8 +71,8 @@ if (isset($excluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <fieldset style='width: 75%;'> <legend><b>Destino</b></legend>
-          <?
+        <fieldset style='width: 75%;'> <legend><b>Distrito Sanitário</b></legend>
+          <?php
           require_once(modification("forms/db_frmsau_distritosanitario.php"));
           ?>
         </fieldset>
@@ -81,14 +81,14 @@ if (isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
                       db_getsession("DB_anousu"), db_getsession("DB_instit")
                      );
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
 
   if ($oDaoSauDistritoSanitario->erro_status == '0') {

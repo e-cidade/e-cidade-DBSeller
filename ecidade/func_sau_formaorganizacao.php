@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("sd62_i_codigo", 5, $Isd62_i_codigo, true, "text", 4, "", "chave_sd62_i_codigo");
               ?>
             </td>
@@ -67,7 +67,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_c_formaorganizacao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("sd62_c_formaorganizacao", 5, $Isd62_c_formaorganizacao, 
                        true, "text", 4, "", "chave_sd62_c_formaorganizacao"
                       );
@@ -79,7 +79,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_c_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd62_c_nome",60,$Isd62_c_nome,true,"text",4,"","chave_sd62_c_nome");
                  ?>
             </td>
@@ -97,7 +97,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_sau_formaorganizacao.php")==true) {
@@ -194,12 +194,12 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

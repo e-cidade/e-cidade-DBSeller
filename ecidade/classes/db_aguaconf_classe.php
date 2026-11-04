@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ class cl_aguaconf {
                  x18_receitacreditorecalculo = int4 = Receita Crédito Recalculo 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconf() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_aguaconf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x18_anousu = ($this->x18_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["x18_anousu"]:$this->x18_anousu);
        $this->x18_carsemesgoto = ($this->x18_carsemesgoto == ""?@$GLOBALS["HTTP_POST_VARS"]["x18_carsemesgoto"]:$this->x18_carsemesgoto);
@@ -103,7 +103,7 @@ class cl_aguaconf {
      }
    }
    // funcao para Inclusão
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->x18_anousu == null ){ 
        $this->erro_sql = " Campo Exercício não informado.";

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -41,7 +41,7 @@ $cltipoproc->rotulo->label();
                     </td>
                     <td>
                         <?php
-                        db_input('p51_codigo', 3, $Ip51_codigo, true, 'text', 3, "")
+                        db_input('p51_codigo', 10, $Ip51_codigo, true, 'text', 3, "")
                         ?>
                     </td>
                 </tr>

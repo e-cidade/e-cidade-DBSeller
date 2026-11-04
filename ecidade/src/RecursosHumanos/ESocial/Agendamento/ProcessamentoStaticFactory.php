@@ -26,6 +26,7 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Agendamento;
 
+use App\Domain\RecursosHumanos\ESocial\Models\ExameToxicologico;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\AdmissaoPreliminar;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\AfastamentoTemporario;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\AlteracaoContratual;
@@ -47,6 +48,7 @@ use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\EFDReaberturaEvent
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\EFDServicosPrestados;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\EFDServicosTomados;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\EmpregadorObras;
+use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\ExameToxicologicoMotoristaProfissionalEmpregado;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\ExclusaoEventos;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\FechamentoEventosPeriodicos;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Processamento\Funcao;
@@ -131,6 +133,11 @@ final class ProcessamentoStaticFactory
                 $afastamentoTemporario->setMes($mes);
                 $afastamentoTemporario->setAno($ano);
                 return $afastamentoTemporario;
+                break;
+            case Tipo::EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO:
+                $exame = new ExameToxicologicoMotoristaProfissionalEmpregado($cgm);
+                $exame->setInstituicao($instituicao);
+                return $exame;
                 break;
             case Tipo::AFASTAMENTO_TEMPORARIO:
                 $afastamentoTemporario = new AfastamentoTemporario($cgm);

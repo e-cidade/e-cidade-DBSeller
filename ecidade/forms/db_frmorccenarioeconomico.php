@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clorccenarioeconomico->rotulo->label();
        <?=@$Lo02_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('o02_sequencial',10,$Io02_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -51,7 +51,7 @@ $clorccenarioeconomico->rotulo->label();
        <?=@$Lo02_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('o02_descricao',40,$Io02_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -64,7 +64,7 @@ $clorccenarioeconomico->rotulo->label();
        <b> Cenário econômico: </b>
     </td>
     <td> 
-			<?
+			<?php
 			$sSql     = $clorccenarioeconomicogrupo->sql_query_file(null, "o111_sequencial, o111_descricao");
 			$rsRecord = $clorccenarioeconomicogrupo->sql_record($sSql);
 			db_selectrecord("o111_sequencial", $rsRecord, true, $db_opcao, "o02_orccenarioeconomicogrupo");
@@ -88,7 +88,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orccenarioeconomico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

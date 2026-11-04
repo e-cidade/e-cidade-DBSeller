@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clrotulo->label("ht13_habitprograma");
       <b>Inscrição:</b>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
         db_input('ht15_sequencial', 10,'', true, 'text', 3);
       ?>
     </td>
@@ -58,12 +58,12 @@ $clrotulo->label("ht13_habitprograma");
       <b>Candidato:</b>
     </td>
     <td width="20px"> 
-      <?
+      <?php
         db_input('ht20_habitcandidato', 10,'', true, 'text', 3);
       ?>
     </td>
     <td colspan="2">
-      <?
+      <?php
         db_input('z01_nome', 40,'', true, 'text', 3);
       ?>
     </td>
@@ -73,12 +73,12 @@ $clrotulo->label("ht13_habitprograma");
       <b>Programa:</b>
     </td>
     <td> 
-      <?
+      <?php
         db_input('ht13_habitprograma', 10,'', true, 'text', 3);
       ?>
     </td>
     <td colspan="2">
-      <?
+      <?php
         db_input('ht01_descricao', 40,'', true, 'text', 3);
       ?>
     </td>
@@ -88,7 +88,7 @@ $clrotulo->label("ht13_habitprograma");
       <b>Data:</b>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
         db_input('ht15_datalancamento', 10,'', true, 'text', 3);
       ?>
     </td>
@@ -102,7 +102,7 @@ $clrotulo->label("ht13_habitprograma");
          <table border="0" cellpadding="0" cellspacing="0" width="100%">
            <tr valign="top">
              <td> 
-               <?
+               <?php
                  db_textarea('ht22_motivo', 5, 70, $Iht22_motivo, true, 'text', $db_opcao);
                ?>
              </td>
@@ -135,7 +135,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_habitinscricao.hide();
-  <?
+  <?php
 	  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

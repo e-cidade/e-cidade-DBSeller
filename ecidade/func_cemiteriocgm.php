@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,7 +56,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
               <?=$Lcm15_i_cemiterio?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("cm15_i_cemiterio",10,$Icm15_i_cemiterio,true,"text",4,"","chave_cm15_i_cemiterio");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
               <?=$Lcm15_i_cgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("cm15_i_cgm",10,$Icm15_i_cgm,true,"text",4,"","chave_cm15_i_cgm");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cemiteriocgm.php")==true){

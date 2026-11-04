@@ -89,6 +89,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $z01_codigoibge
  * @property string $z01_orgaoemissoridentidade
  * @property boolean $z01_registromunicipio
+ * @property string $z01_nome_social
+ * @property integer $z01_distritosanitario
  *
  * @property Cgs $cgs
  * @property CgsUnidadeExtensao $cgsExtensao
@@ -138,16 +140,21 @@ class CgsUnidade extends Model
 
     public function scopeNome(Builder $query, $nome)
     {
-        return $query->where('z01_v_nome', 'ILIKE', trim($nome));
+        return $query->where('z01_v_nome', 'ILIKE', trim($nome)."%");
     }
 
     public function scopeNomeMae(Builder $query, $nome)
     {
-        return $query->where('z01_v_mae', 'ILIKE', trim($nome));
+        return $query->where('z01_v_mae', 'ILIKE', trim($nome)."%");
     }
 
     public function scopeDataNascimento(Builder $query, $data)
     {
         return $query->where('z01_d_nasc', $data);
+    }
+
+    public function scopeCgs(Builder $query, $cgs)
+    {
+        return $query->where('z01_i_cgsund', $cgs);
     }
 }

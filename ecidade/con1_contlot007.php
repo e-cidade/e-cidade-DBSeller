@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ db_inicio_transacao();
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+      $dados=explode("_",$chave); 
       $idbql=$dados[1];
       $testada=$dados[2];
       $length=strlen($idbql);
@@ -90,10 +90,10 @@ db_inicio_transacao();
        /* for($x=0; $x<$ta; $x++){
           $chave2=key($vt2);
 	  if(substr($chave2,0,(10+$length))=="j36testad_".$idbql){ 
-   	     $dados2=split("_",$chave2); 
+   	     $dados2=explode("_",$chave2); 
 	     $tipo=$dados2[2];
              $testad=$vt2[$chave2]."\n";
-	     $valcal=split("XX",$vt2["quant_$tipo"]);
+	     $valcal=explode("XX",$vt2["quant_$tipo"]);
 	     $quant=$valcal[0];
 	     $vlr=$valcal[1];
              $clcontlotv->d06_contri=$contri;
@@ -178,7 +178,7 @@ db_inicio_transacao();
 
 	      
 	      $x= "j36_testad_".$f;
-	      GLOBAL $$x;
+	      GLOBAL ${$x};
 	      $$x=$d05_testad;
 	      echo "<td style='cursor:help' onMouseOut='parent.js_label(false);' onMouseOver='parent.js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal,$d04_vlrval);'>";
 	      echo "<input ".($GLOBALS["desabilita"]=="true"?"readonly":"")."  type=\"text\" size=\"4\" id=\"j36testad_".$j34_idbql."\" value=\"$d06_fracao\" name=\"j36testad_".$j34_idbql."_".$d03_tipos."\" title=\"Testadas\"onKeyUp=\"js_ValidaCampos(this,4,'Constribuicao','f','f',event);\"  onKeyDown=\"return js_controla_tecla_enter(this,event);\">";
@@ -202,7 +202,7 @@ db_inicio_transacao();
   <meta http-equiv="Expires" CONTENT="0">
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script>
-<?
+<?php
    echo "parent.document.form1.conface.style.visibility='hidden';\n";
   if($desabilita=="true"){
      echo" parent.document.form1.confirma.disabled=true;
@@ -290,13 +290,13 @@ db_inicio_transacao();
   <input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
   <input name="confirma" type="hidden">
   <table border="0">
-<?
+<?php
            if($GLOBALS["desabilita"]=="true"){
 			echo "  <b>*<small> As matrículas dos lotes já foram processadas, portanto não será possível alteração.</small></b>";
 	     }
 ?>	     
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-  <?
+  <?php
   if(isset($contri)){
    $result07=$cleditalrua->sql_record($cleditalrua->sql_query_file($contri,"d02_codedi as codiedi"));    
    db_fieldsmemory($result07,0); 
@@ -324,7 +324,7 @@ db_inicio_transacao();
   </table>
   </body>
 </html>
-<?
+<?php
 if(isset($confirma) && $confirma=="ok"){
   if($clcontlot->erro_status=="0"||$clcontlotv->erro_status=="0"){
      $clcontlot->erro(true,false);

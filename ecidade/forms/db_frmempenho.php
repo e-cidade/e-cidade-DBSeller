@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,34 +48,34 @@ if($db_opcao==1){
        <?=@$Le54_autori?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_autori',6,$Ie54_autori,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te54_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Le54_numcgm,"js_pesquisae54_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_numcgm',10,$Ie54_numcgm,true,'text',$db_opcao," onchange='js_pesquisae54_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te54_codcom?>">
-       <?
+       <?php
        db_ancora(@$Le54_codcom,"js_pesquisae54_codcom(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 if(isset($e54_codcom) && $e54_codcom==''){
   $pc50_descr='';
 }
@@ -90,7 +90,7 @@ if(isset($e54_codcom) && $e54_codcom==''){
        <?=@$Le54_tipol?>
     </td>
     <td> 
-<?
+<?php
 if(isset($tipocompra) || isset($e54_codcom)){
    if(isset($e54_codcom) && empty($tipocompra)){
      $tipocompra=$e54_codcom;
@@ -113,7 +113,7 @@ if(isset($tipocompra) || isset($e54_codcom)){
 }  
 ?>
        <?=@$Le54_numerl?>
-<?
+<?php
 db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=$Le54_codtipo?>
     </td>
     <td> 
-<?
+<?php
   $result=$clemptipo->sql_record($clemptipo->sql_query_file(null,"e41_codtipo,e41_descr"));
   db_selectrecord("e54_codtipo",$result,true,$db_opcao);
 
@@ -135,7 +135,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=$Le57_codhist?>
     </td>
     <td> 
-<?
+<?php
   $result=$clemphist->sql_record($clemphist->sql_query_file(null,"e40_codhist,e40_descr"));
   db_selectrecord("e57_codhist",$result,true,$db_opcao,"","","","Nenhum");
 
@@ -147,7 +147,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=@$Le54_destin?>
     </td>
     <td> 
-<?
+<?php
 db_input('e54_destin',40,$Ie54_destin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ db_input('e54_destin',40,$Ie54_destin,true,'text',$db_opcao,"")
        <?=@$Le54_resumo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('e54_resumo',0,40,$Ie54_resumo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -227,7 +227,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empautoriza.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

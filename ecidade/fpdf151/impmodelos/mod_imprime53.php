@@ -1,4 +1,4 @@
-<?
+<?php
 ##Modelo de boletim de estagio probatorio; 
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();

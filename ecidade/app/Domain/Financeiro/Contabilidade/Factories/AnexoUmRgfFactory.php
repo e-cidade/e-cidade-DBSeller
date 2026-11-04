@@ -2,6 +2,9 @@
 
 namespace App\Domain\Financeiro\Contabilidade\Factories;
 
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RGF\AnexoUm\AnexoUmInRsService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RGF\AnexoUm\AnexoUmMdf2024Service;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RGF\AnexoUm\AnexoUmMdfService;
 use Exception;
 
 class AnexoUmRgfFactory extends AnexosFactory
@@ -48,9 +51,13 @@ class AnexoUmRgfFactory extends AnexosFactory
     {
         switch ($exercicio) {
             case 2021:
+            case 2022:
                 return 260;
+            case 2023:
+                return 274;
+            case 2024:
             default:
-                return 260;
+                return 276;
         }
     }
 
@@ -62,7 +69,6 @@ class AnexoUmRgfFactory extends AnexosFactory
     {
         switch ($exercicio) {
             case 2021:
-                return 261;
             default:
                 return 261;
         }
@@ -77,6 +83,60 @@ class AnexoUmRgfFactory extends AnexosFactory
                 return 'financeiro/contabilidade/relatorio/rgf/anexo-1-in-rs';
             case 'mdf':
                 return 'financeiro/contabilidade/relatorio/rgf/anexo-1-mdf';
+            default:
+                throw new Exception("Não foi implementado o modelo para configuração atual.");
+        }
+    }
+
+    /**
+     * @param $exercicio
+     * @param $filtros
+     * @return AnexoUmMdfService
+     * @throws Exception
+     */
+    public static function getServiceMdf($exercicio, $filtros)
+    {
+        switch ($exercicio) {
+            case 2021:
+            case 2022:
+            case 2023:
+                return new AnexoUmMdfService($filtros);
+            case 2024:
+            default:
+                return new AnexoUmMdf2024Service($filtros);
+        }
+    }
+
+    /**
+     * @param $exercicio
+     * @param $filtros
+     * @return AnexoUmInRsService
+     * @throws Exception
+     */
+    public static function getServiceIn($exercicio, $filtros)
+    {
+        switch ($exercicio) {
+            case 2021:
+            default:
+                return new AnexoUmInRsService($filtros);
+        }
+    }
+
+    /**
+     * @param $exercicio
+     * @param $filtros
+     * @return AnexoUmInRsService|AnexoUmMdfService
+     * @throws Exception
+     */
+    public static function getService($exercicio, $filtros)
+    {
+        $modelo = static::getModelo($exercicio);
+
+        switch ($modelo) {
+            case 'in13':
+                return static::getServiceIn($exercicio, $filtros);
+            case 'mdf':
+                return static::getServiceMdf($exercicio, $filtros);
             default:
                 throw new Exception("Não foi implementado o modelo para configuração atual.");
         }

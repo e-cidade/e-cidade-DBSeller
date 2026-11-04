@@ -209,7 +209,7 @@ require_once(modification("libs/db_utils.php"));
 	  exit;
   }
 
-	for( $iInd=0; $iInd < $iRowsPrescr; $iInd++ ) {
+	for( $iInd=0; $iInd <= $iRowsPrescr; $iInd++ ) {
 
 		$oPrescr = db_utils::fieldsMemory($rsPrescr,$iInd);
 
@@ -262,7 +262,11 @@ require_once(modification("libs/db_utils.php"));
 
 		  if($oGet->selhist == "s" &&  $codPrescr != $oPrescr->k31_codigo && $iInd !=0 ){
 				$pdf->setfont('arial','i',7);
-				$pdf->cell(280,$alt,"Histórico : ".$obsPrescr ,0,1,"L",($iList==0?$iList=1:$iList=0));
+				if(strlen($obsPrescr) > 200){
+					$pdf->MultiCell(280,$alt,"Histórico : ".$obsPrescr,0,"L",($iList==0?$iList=1:$iList=0));
+				} else {
+					$pdf->cell(280,$alt,"Histórico : ".$obsPrescr ,0,1,"L",($iList==0?$iList=1:$iList=0));
+				}
 				$pdf->setfont('arial','',$fonte);
       }
 
@@ -591,7 +595,7 @@ require_once(modification("libs/db_utils.php"));
 	}
 
 	if ( $iRowsPrescr > 0 &&  $oGet->seltipo == "c" ) {
-  	$pdf->cell(280,$alt,"Histórico : ".$obsPrescr ,0,1,"L",($iList==0?$iList=1:$iList=0));
+  	//$pdf->cell(280,$alt,"Histórico : ".$obsPrescr ,0,1,"L",($iList==0?$iList=1:$iList=0));
 	}
 
   $iNroReg = $iRowsPrescr;

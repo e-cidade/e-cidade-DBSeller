@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllab_tipodocumento->rotulo->label("la33_c_descr");
               <?=$Lla33_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("la33_i_codigo",10,$Ila33_i_codigo,true,"text",4,"","chave_la33_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllab_tipodocumento->rotulo->label("la33_c_descr");
               <?=$Lla33_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("la33_c_descr",40,$Ila33_c_descr,true,"text",4,"","chave_la33_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllab_tipodocumento->rotulo->label("la33_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_tipodocumento.php")==true){
@@ -122,12 +122,12 @@ $cllab_tipodocumento->rotulo->label("la33_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

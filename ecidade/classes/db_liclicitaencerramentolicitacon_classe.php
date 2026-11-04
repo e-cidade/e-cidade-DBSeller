@@ -54,13 +54,13 @@ class cl_liclicitaencerramentolicitacon {
                  l18_data = date = Data de Geração
                  ";
    //funcao construtor da classe
-   function cl_liclicitaencerramentolicitacon() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaencerramentolicitacon");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_liclicitaencerramentolicitacon {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l18_sequencial = ($this->l18_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l18_sequencial"]:$this->l18_sequencial);
        $this->l18_liclicita = ($this->l18_liclicita == ""?@$GLOBALS["HTTP_POST_VARS"]["l18_liclicita"]:$this->l18_liclicita);
@@ -86,7 +86,7 @@ class cl_liclicitaencerramentolicitacon {
      }
    }
    // funcao para Inclusão
-   function incluir ($l18_sequencial){
+   public function incluir ($l18_sequencial){
       $this->atualizacampos();
      if($this->l18_liclicita == null ){
        $this->erro_sql = " Campo Licitação não informado.";

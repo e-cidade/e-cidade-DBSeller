@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -53,7 +53,7 @@ $dbwhere = " e80_instit = " . db_getsession("DB_instit") . " and e92_processa = 
 $valorin = "";
 if(trim($selecionadas) != ""){
   $virgula = "";
-  $arr_selecionadas = split(",",$selecionadas);
+  $arr_selecionadas =explode(",",$selecionadas);
   for($i=0; $i<count($arr_selecionadas); $i++){
     $valorin .= $virgula.$arr_selecionadas[$i];
     $virgula = ",";
@@ -95,7 +95,7 @@ if(isset($datai) && isset($dataf)){
   $head5   = "Período de data não informado";
 }
 
-$dbwhere .= " and e75_ativo is true "; 
+$dbwhere .= " and e75_ativo is true ";
 
 $sSqlEmpAge = $clempage->sql_query_pagam(null,"e53_valor,
                                                e53_vlranu,
@@ -120,13 +120,13 @@ $sSqlEmpAge = $clempage->sql_query_pagam(null,"e53_valor,
                                                e60_codemp,
                                                e82_codord,
                                                e86_codmov,
-                                               case when coalesce(a.z01_numcgm,0) = 0 
-                                                    then cgm.z01_numcgm 
-                                                    else a.z01_numcgm 
+                                               case when coalesce(a.z01_numcgm,0) = 0
+                                                    then cgm.z01_numcgm
+                                                    else a.z01_numcgm
                                                end as z01_numcgm,
-                                               case when a.z01_nome='' or a.z01_nome is null 
-                                                    then cgm.z01_nome 
-                                                    else a.z01_nome 
+                                               case when a.z01_nome='' or a.z01_nome is null
+                                                    then cgm.z01_nome
+                                                    else a.z01_nome
                                                end as z01_nome,
                                                e81_valor,
                                                e83_codtipo,
@@ -144,7 +144,7 @@ if($numrows_valores == 0){
 
 $head3 = "RELATÓRIO ARQUIVOS ENVIADOS";
 $head8 = "** - Contas conferidas";
-  
+
 $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
@@ -168,7 +168,7 @@ for($i=0;$i<$numrows_valores;$i++){
   db_fieldsmemory($result_valores,$i);
 
   if(!isset($arr_valmovis[$e83_codtipo])){
-    $arr_valmovis[$e83_codtipo] = 0;    
+    $arr_valmovis[$e83_codtipo] = 0;
   }
   if(!isset($arr_valconta[$e83_codtipo])){
     $arr_valconta[$e83_codtipo] = 0;
@@ -191,7 +191,7 @@ for($i=0;$i<$numrows_valores;$i++){
 }
 
 for($i=0;$i<$numrows_valores;$i++){
-  db_fieldsmemory($result_valores,$i);  
+  db_fieldsmemory($result_valores,$i);
 
   $true_ou_false = false;
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
@@ -204,11 +204,11 @@ for($i=0;$i<$numrows_valores;$i++){
     $pdf->cell(70,$alt,$RLz01_nome,1,0,"C",1);
     $pdf->cell(15,$alt,"Data mov.",1,0,"C",1);
     $pdf->cell(15,$alt,"Data ret.",1,0,"C",1);
-    $pdf->cell(25,$alt,"Valor mov.",1,0,"C",1);	
+    $pdf->cell(25,$alt,"Valor mov.",1,0,"C",1);
     $pdf->cell(25,$alt,"Valor ret.",1,1,"C",1);
     $troca = 0;
     $true_ou_false = true;
-  }  
+  }
   if($pagadora!=$e83_codtipo || $true_ou_false == true){
   	if(trim($pagadora) != "" && $pagadora!=$e83_codtipo){
       $pdf->ln(3);
@@ -239,7 +239,7 @@ for($i=0;$i<$numrows_valores;$i++){
   $pdf->cell(70,$alt,$asteriscos.$z01_nome,"T",0,"L",0);
   $pdf->cell(15,$alt,db_formatar($e87_data,"d"),"T",0,"C",0);
   $pdf->cell(15,$alt,db_formatar($e76_dataefet,"d"),"T",0,"C",0);
-  $pdf->cell(25,$alt,db_formatar($e81_valor,"f"),"T",0,"R",0);    
+  $pdf->cell(25,$alt,db_formatar($e81_valor,"f"),"T",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($e76_valorefet,"f"),"T",1,"R",0);
   $total++;
 }

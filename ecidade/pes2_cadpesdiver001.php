@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,12 +85,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -100,7 +100,7 @@ function js_emite(){
         <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
             $xx = array("n"=>"Numérica","a"=>"Alfabética");
             db_select('ordem',$xx,true,4,"");
 	  ?>
@@ -118,7 +118,7 @@ function js_emite(){
       <script>document.form1.DBtxt23.focus();</script>     
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

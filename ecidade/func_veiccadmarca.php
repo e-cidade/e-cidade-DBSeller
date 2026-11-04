@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveiccadmarca->rotulo->label("ve21_descr");
               <?=$Lve21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve21_codigo",10,$Ive21_codigo,true,"text",4,"","chave_ve21_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveiccadmarca->rotulo->label("ve21_descr");
               <?=$Lve21_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve21_descr",40,$Ive21_descr,true,"text",4,"","chave_ve21_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveiccadmarca->rotulo->label("ve21_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadmarca.php")==true){
@@ -122,12 +122,12 @@ $clveiccadmarca->rotulo->label("ve21_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

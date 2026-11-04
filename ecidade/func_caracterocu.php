@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clcaracter->rotulo->label("j31_descr");
               <?=$Lj31_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j31_codigo",4,$Ij31_codigo,true,"text",4,"","chave_j31_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcaracter->rotulo->label("j31_descr");
               <?=$Lj31_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j31_descr",40,$Ij31_descr,true,"text",4,"","chave_j31_descr");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcaracter->rotulo->label("j31_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 	$result = $clparobrasocup->sql_record($clparobrasocup->sql_query("","*"));
 	if($clparobrasocup->numrows > 0){
 	  db_fieldsmemory($result,0);
@@ -118,14 +118,14 @@ $clcaracter->rotulo->label("j31_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j31_codigo.focus();
 document.form2.chave_j31_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

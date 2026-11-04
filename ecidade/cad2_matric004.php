@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
 if(isset($j34_setor) && $j34_setor != "") {
 
-  $setor = split(",",$j34_setor);
+  $setor =explode(",",$j34_setor);
   $vir = "";
   $set = "";
 	$set2 = "";

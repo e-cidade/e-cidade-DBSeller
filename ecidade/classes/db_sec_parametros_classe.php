@@ -49,6 +49,10 @@ class cl_sec_parametros
     public $ed290_habilitaconsultaalunoporescola = 'f';
     public $ed290_habilconsmovalunescola = 'f';
     public $ed290_cordisciplinaquadro = 0;
+    public $ed290_permite_alteracao_proc_avaliacao = 'f';
+    public $ed290_habilitarcampostransescolar = 'f';
+    public $ed290_habilitarcamposmatriculainicial = 'f';
+    public $ed290_correcao_de_fluxo_manual = 0;
     // cria propriedade com as variaveis do arquivo
     public $campos = "
                  ed290_sequencial = int4 = Sequencial
@@ -58,7 +62,11 @@ class cl_sec_parametros
                  ed290_bncc = int4 = Base Curricular
                  ed290_habilitaconsultaalunoporescola = bool = Habilita Consulta Aluno Por Escola
                  ed290_habilconsmovalunescola = bool = Habil. Cons. Mov. Aluno Por Escola
-                 ed290_cordisciplinaquadro = int4 = Aplicar Cor Disciplinas Quadro de Horarios
+                 ed290_cordisciplinaquadro = int4 = Aplicar Cor Disciplinas / Quadro de Horrios
+                 ed290_permite_alteracao_proc_avaliacao = bool = Permite alteracao proc avaliacao.
+                 ed290_habilitarcampostransescolar = bool = Habilitar Campos Transescolar
+                 ed290_habilitarcamposmatriculainicial = bool = Habilitar Matricula Inicial
+                 ed290_correcao_de_fluxo_manual = int4 = Controle de Fluxo manual
                  ";
 
     public function __construct()
@@ -70,9 +78,9 @@ class cl_sec_parametros
     public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
-            echo "<script>alert(\"" . $this->erro_msg . "\")</script>";
+            echo "<script>alert(\"".$this->erro_msg."\")</script>";
             if ($retorna == true) {
-                echo "<script>location.href='" . $this->pagina_retorno . "'</script>";
+                echo "<script>location.href='".$this->pagina_retorno."'</script>";
             }
         }
     }
@@ -88,8 +96,12 @@ class cl_sec_parametros
             $this->ed290_habilitaconsultaalunoporescola = ($this->ed290_habilitaconsultaalunoporescola == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_habilitaconsultaalunoporescola"] : $this->ed290_habilitaconsultaalunoporescola);
             $this->ed290_habilconsmovalunescola = ($this->ed290_habilconsmovalunescola == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_habilconsmovalunescola"] : $this->ed290_habilconsmovalunescola);
             $this->ed290_cordisciplinaquadro = ($this->ed290_cordisciplinaquadro == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_cordisciplinaquadro"] : $this->ed290_cordisciplinaquadro);
+            $this->ed290_permite_alteracao_proc_avaliacao = ($this->ed290_permite_alteracao_proc_avaliacao == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_permite_alteracao_proc_avaliacao"] : $this->ed290_permite_alteracao_proc_avaliacao);
+            $this->ed290_habilitarcampostransescolar = ($this->ed290_habilitarcampostransescolar == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_habilitarcampostransescolar"] : $this->ed290_habilitarcampostransescolar);
+            $this->ed290_habilitarcamposmatriculainicial = ($this->ed290_habilitarcamposmatriculainicial == "f" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_habilitarcamposmatriculainicial"] : $this->ed290_habilitarcamposmatriculainicial);
+            $this->ed290_correcao_de_fluxo_manual = ($this->ed290_correcao_de_fluxo_manual == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_correcao_de_fluxo_manual"] : $this->ed290_correcao_de_fluxo_manual);
         } else {
-            $this->ed290_sequencial = ($this->ed290_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed290_sequencial"] : $this->ed290_sequencial);
+            $this->ed290_sequencial = ($this->ed290_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed290_sequencial"] : $this->ed290_sequencial);
         }
     }
 
@@ -109,8 +121,8 @@ class cl_sec_parametros
             $this->erro_sql = " Campo Controle da Progressão Parcial não informado.";
             $this->erro_campo = "ed290_controleprogressaoparcial";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -118,8 +130,8 @@ class cl_sec_parametros
             $this->erro_sql = " Campo Prazo(dias) para Manutenção do Histórico não informado.";
             $this->erro_campo = "ed290_diasmanutencaohistorico";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -127,8 +139,8 @@ class cl_sec_parametros
             $this->erro_sql = " Campo Base Curricular não informado.";
             $this->erro_campo = "ed290_bncc";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -136,26 +148,62 @@ class cl_sec_parametros
             $this->erro_sql = " Campo Habilita Consulta Aluno Por Escola não informado.";
             $this->erro_campo = "ed290_habilitaconsultaalunoporescola";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
         if ($this->ed290_habilconsmovalunescola == null) {
-            $this->erro_sql = " Habil. Cons. Mov. Aluno Por Escola não informado.";
+            $this->erro_sql = " Campo Habil. Cons. Mov. Aluno Por Escola não informado.";
             $this->erro_campo = "ed290_habilconsmovalunescola";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
         if ($this->ed290_cordisciplinaquadro == null) {
-            $this->erro_sql = " Campo Aplicar Cor não informado.";
+            $this->erro_sql = " Campo Aplicar Cor Disciplinas / Quadro de Horários não informado.";
             $this->erro_campo = "ed290_cordisciplinaquadro";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->ed290_permite_alteracao_proc_avaliacao == null) {
+            $this->erro_sql = " Campo Permite alteracao proc avaliacao. não informado.";
+            $this->erro_campo = "ed290_permite_alteracao_proc_avaliacao";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->ed290_habilitarcampostransescolar == null) {
+            $this->erro_sql = " Campo Habilitar Campos Transescolar não informado.";
+            $this->erro_campo = "ed290_habilitarcampostransescolar";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->ed290_habilitarcamposmatriculainicial == null) {
+            $this->erro_sql = " Campo habilitar matricula inicial não informado.";
+            $this->erro_campo = "ed290_habilitarcamposmatriculainicial";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usurio: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->ed290_correcao_de_fluxo_manual == null) {
+            $this->erro_sql = " Campo Controle de Fluxo.";
+            $this->erro_campo = "ed290_correcao_de_fluxo_manual";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -186,8 +234,8 @@ class cl_sec_parametros
         if (($this->ed290_sequencial == null) || ($this->ed290_sequencial == "")) {
             $this->erro_sql = " Campo ed290_sequencial não declarado.";
             $this->erro_banco = "Chave Primaria zerada.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -200,6 +248,10 @@ class cl_sec_parametros
                                       ,ed290_habilitaconsultaalunoporescola
                                       ,ed290_habilconsmovalunescola
                                       ,ed290_cordisciplinaquadro
+                                      ,ed290_permite_alteracao_proc_avaliacao
+                                      ,ed290_habilitarcampostransescolar
+                                      ,ed290_habilitarcamposmatriculainicial
+                                      ,ed290_correcao_de_fluxo_manual
                        )
                 values (
                                 $this->ed290_sequencial
@@ -207,23 +259,26 @@ class cl_sec_parametros
                                ,$this->ed290_controleprogressaoparcial
                                ,$this->ed290_diasmanutencaohistorico
                                ,$this->ed290_bncc
-                               ,$this->ed290_habilitaconsultaalunoporescola
-                               ,$this->ed290_habilconsmovalunescola
+                               ,'$this->ed290_habilitaconsultaalunoporescola'
+                               ,'$this->ed290_habilconsmovalunescola'
                                ,$this->ed290_cordisciplinaquadro
+                               ,'$this->ed290_permite_alteracao_proc_avaliacao'
+                               ,'$this->ed290_habilitarcampostransescolar'
+                               ,'$this->ed290_habilitarcamposmatriculainicial'
+                               ,'$this->ed290_correcao_de_fluxo_manual'
                       )";
-
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
                 $this->erro_sql = "Secretaria Parametros ($this->ed290_sequencial) não Incluído. Inclusão Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = "Secretaria Parametros já Cadastrado";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             } else {
                 $this->erro_sql = "Secretaria Parametros ($this->ed290_sequencial) não Incluído. Inclusão Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             }
             $this->erro_status = "0";
             $this->numrows_incluir = 0;
@@ -231,32 +286,11 @@ class cl_sec_parametros
         }
         $this->erro_banco = "";
         $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
-        $this->erro_sql .= "Valores : " . $this->ed290_sequencial;
-        $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-        $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_sql .= "Valores : ".$this->ed290_sequencial;
+        $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "1";
         $this->numrows_incluir = pg_affected_rows($result);
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
-
-            $resaco = $this->sql_record($this->sql_query_file($this->ed290_sequencial));
-            if (($resaco != false) || ($this->numrows != 0)) {
-
-                $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
-                $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                $resac = db_query("insert into db_acountkey values($acount,17998,'$this->ed290_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,3180,17998,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,17999,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_importcenso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,19536,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_controleprogressaoparcial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,21782,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_diasmanutencaohistorico')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,1011783,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_bncc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,1013144,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_habilitaconsultaalunoporescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,1013156,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_habilconsmovalunescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3180,1014612,'','" . AddSlashes(pg_result($resaco, 0, 'ed290_cordisciplinaquadro')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            }
-        }
         return true;
     }
 
@@ -266,20 +300,23 @@ class cl_sec_parametros
         $sql = " update sec_parametros set ";
         $virgula = "";
         if (trim($this->ed290_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_sequencial"])) {
-            $sql .= $virgula . " ed290_sequencial = $this->ed290_sequencial ";
+            $sql .= $virgula." ed290_sequencial = $this->ed290_sequencial ";
             $virgula = ",";
             if (trim($this->ed290_sequencial) == null) {
                 $this->erro_sql = " Campo Sequencial não informado.";
                 $this->erro_campo = "ed290_sequencial";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_importcenso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_importcenso"])) {
-            $sql .= $virgula . " ed290_importcenso = $this->ed290_importcenso ";
+            if (trim($this->ed290_importcenso) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ed290_importcenso"])) {
+                $this->ed290_importcenso = "0" ;
+            }
+            $sql  .= $virgula." ed290_importcenso = $this->ed290_importcenso ";
             $virgula = ",";
             if (trim($this->ed290_importcenso) == null) {
                 $this->erro_sql = " Campo Importação do Censo não informado.";
@@ -292,79 +329,131 @@ class cl_sec_parametros
             }
         }
         if (trim($this->ed290_controleprogressaoparcial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_controleprogressaoparcial"])) {
-            $sql .= $virgula . " ed290_controleprogressaoparcial = $this->ed290_controleprogressaoparcial ";
+            $sql .= $virgula." ed290_controleprogressaoparcial = $this->ed290_controleprogressaoparcial ";
             $virgula = ",";
             if (trim($this->ed290_controleprogressaoparcial) == null) {
                 $this->erro_sql = " Campo Controle da Progressão Parcial não informado.";
                 $this->erro_campo = "ed290_controleprogressaoparcial";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_diasmanutencaohistorico) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_diasmanutencaohistorico"])) {
-            $sql .= $virgula . " ed290_diasmanutencaohistorico = $this->ed290_diasmanutencaohistorico ";
+            $sql .= $virgula." ed290_diasmanutencaohistorico = $this->ed290_diasmanutencaohistorico ";
             $virgula = ",";
             if (trim($this->ed290_diasmanutencaohistorico) == null) {
                 $this->erro_sql = " Campo Prazo(dias) para Manutenção do Histórico não informado.";
                 $this->erro_campo = "ed290_diasmanutencaohistorico";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_bncc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_bncc"])) {
-            $sql .= $virgula . " ed290_bncc = $this->ed290_bncc ";
+            $sql .= $virgula." ed290_bncc = $this->ed290_bncc ";
             $virgula = ",";
             if (trim($this->ed290_bncc) == null) {
                 $this->erro_sql = " Campo Base Curricular não informado.";
                 $this->erro_campo = "ed290_bncc";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_habilitaconsultaalunoporescola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilitaconsultaalunoporescola"])) {
-            $sql .= $virgula . " ed290_habilitaconsultaalunoporescola = '$this->ed290_habilitaconsultaalunoporescola'";
+            $sql .= $virgula." ed290_habilitaconsultaalunoporescola = '$this->ed290_habilitaconsultaalunoporescola' ";
             $virgula = ",";
             if (trim($this->ed290_habilitaconsultaalunoporescola) == null) {
                 $this->erro_sql = " Campo Habilita Consulta Aluno Por Escola não informado.";
                 $this->erro_campo = "ed290_habilitaconsultaalunoporescola";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_habilconsmovalunescola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilconsmovalunescola"])) {
-            $sql .= $virgula . " ed290_habilconsmovalunescola = '$this->ed290_habilconsmovalunescola'";
+            $sql .= $virgula." ed290_habilconsmovalunescola = '$this->ed290_habilconsmovalunescola' ";
             $virgula = ",";
             if (trim($this->ed290_habilconsmovalunescola) == null) {
                 $this->erro_sql = " Campo Habil. Cons. Mov. Aluno Por Escola não informado.";
                 $this->erro_campo = "ed290_habilconsmovalunescola";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
         if (trim($this->ed290_cordisciplinaquadro) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_cordisciplinaquadro"])) {
-            $sql .= $virgula . " ed290_cordisciplinaquadro = $this->ed290_cordisciplinaquadro ";
+            $sql .= $virgula." ed290_cordisciplinaquadro = $this->ed290_cordisciplinaquadro ";
             $virgula = ",";
-            if (trim($this->ed290_importcenso) == null) {
-                $this->erro_sql = " Campo Aplicar Cor não informado.";
+            if (trim($this->ed290_cordisciplinaquadro) == null) {
+                $this->erro_sql = " Campo Aplicar Cor Disciplinas / Quadro de Horrios não informado.";
                 $this->erro_campo = "ed290_cordisciplinaquadro";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->ed290_permite_alteracao_proc_avaliacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_permite_alteracao_proc_avaliacao"])) {
+            $sql  .= $virgula." ed290_permite_alteracao_proc_avaliacao = '$this->ed290_permite_alteracao_proc_avaliacao' ";
+            $virgula = ",";
+            if (trim($this->ed290_permite_alteracao_proc_avaliacao) == null) {
+                $this->erro_sql = " Campo Permite alteracao proc avaliacao. não informado.";
+                $this->erro_campo = "ed290_permite_alteracao_proc_avaliacao";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->ed290_habilitarcampostransescolar) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilitarcampostransescolar"])) {
+            $sql  .= $virgula." ed290_habilitarcampostransescolar = '$this->ed290_habilitarcampostransescolar' ";
+            $virgula = ",";
+            if (trim($this->ed290_habilitarcampostransescolar) == null) {
+                $this->erro_sql = " Campo Habilitar Campos Transescolar não informado.";
+                $this->erro_campo = "ed290_habilitarcampostransescolar";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->ed290_habilitarcamposmatriculainicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilitarcamposmatriculainicial"])) {
+            $sql  .= $virgula." ed290_habilitarcamposmatriculainicial = '$this->ed290_habilitarcamposmatriculainicial' ";
+            $virgula = ",";
+            if (trim($this->ed290_habilitarcamposmatriculainicial) == null) {
+                $this->erro_sql = " Campo habilitar campos Matricula Inicial não informado!";
+                $this->erro_campo = "ed290_habilitarcamposmatriculainicial";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usurio: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->ed290_correcao_de_fluxo_manual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed290_correcao_de_fluxo_manual"])) {
+            $sql .= $virgula." ed290_correcao_de_fluxo_manual = $this->ed290_correcao_de_fluxo_manual ";
+            $virgula = ",";
+            if (trim($this->ed290_correcao_de_fluxo_manual) == null) {
+                $this->erro_sql = " Campo Controle da Progressão Parcial não informado.";
+                $this->erro_campo = "ed290_correcao_de_fluxo_manual";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "0";
                 return false;
             }
@@ -373,45 +462,14 @@ class cl_sec_parametros
         if ($ed290_sequencial != null) {
             $sql .= " ed290_sequencial = $this->ed290_sequencial";
         }
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
 
-            $resaco = $this->sql_record($this->sql_query_file($this->ed290_sequencial));
-            if ($this->numrows > 0) {
-
-                for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-
-                    $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
-                    $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                    $resac = db_query("insert into db_acountkey values($acount,17998,'$this->ed290_sequencial','A')");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_sequencial"]) || $this->ed290_sequencial != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,17998,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_sequencial')) . "','$this->ed290_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_importcenso"]) || $this->ed290_importcenso != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,17999,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_importcenso')) . "','$this->ed290_importcenso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_controleprogressaoparcial"]) || $this->ed290_controleprogressaoparcial != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,19536,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_controleprogressaoparcial')) . "','$this->ed290_controleprogressaoparcial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_diasmanutencaohistorico"]) || $this->ed290_diasmanutencaohistorico != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,21782,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_diasmanutencaohistorico')) . "','$this->ed290_diasmanutencaohistorico'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_bncc"]) || $this->ed290_bncc != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,1011783,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_bncc')) . "','$this->ed290_bncc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilitaconsultaalunoporescola"]) || $this->ed290_habilitaconsultaalunoporescola != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,1013144,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_habilitaconsultaalunoporescola')) . "','$this->ed290_habilitaconsultaalunoporescola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_habilconsmovalunescola"]) || $this->ed290_habilconsmovalunescola != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,1013156,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_habilconsmovalunescola')) . "','$this->ed290_habilconsmovalunescola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed290_cordisciplinaquadro"]) || $this->ed290_cordisciplinaquadro != "")
-                        $resac = db_query("insert into db_acount values($acount,3180,1014612,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed290_cordisciplinaquadro')) . "','$this->ed290_cordisciplinaquadro'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                }
-            }
-        }
         $result = db_query($sql);
         if (!$result) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Secretaria Parametros não Alterado. Alteração Abortada.\\n";
-            $this->erro_sql .= "Valores : " . $this->ed290_sequencial;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_sql .= "Valores : ".$this->ed290_sequencial;
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             $this->numrows_alterar = 0;
             return false;
@@ -419,18 +477,18 @@ class cl_sec_parametros
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
                 $this->erro_sql = "Secretaria Parametros não foi Alterado. Alteração Executada.\\n";
-                $this->erro_sql .= "Valores : " . $this->ed290_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_sql .= "Valores : ".$this->ed290_sequencial;
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
                 $this->erro_sql = "Alteração efetuada com sucesso.\\n";
-                $this->erro_sql .= "Valores : " . $this->ed290_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_sql .= "Valores : ".$this->ed290_sequencial;
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = pg_affected_rows($result);
                 return true;
@@ -440,55 +498,26 @@ class cl_sec_parametros
 
     public function excluir($ed290_sequencial = null, $dbwhere = null)
     {
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-                && ($lSessaoDesativarAccount === false))) {
-
-            if (empty($dbwhere)) {
-
-                $resaco = $this->sql_record($this->sql_query_file($ed290_sequencial));
-            } else {
-                $resaco = $this->sql_record($this->sql_query_file(null, "*", null, $dbwhere));
-            }
-            if (($resaco != false) || ($this->numrows != 0)) {
-
-                for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-
-                    $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
-                    $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-                    $resac = db_query("insert into db_acountkey values($acount,17998,'$ed290_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,3180,17998,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,17999,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_importcenso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,19536,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_controleprogressaoparcial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,21782,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_diasmanutencaohistorico')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,1011783,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_bncc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,1013144,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_habilitaconsultaalunoporescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,1013156,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_habilconsmovalunescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3180,1014612,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed290_cordisciplinaquadro')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                }
-            }
-        }
         $sql = " delete from sec_parametros
                     where ";
         $sql2 = "";
         if (empty($dbwhere)) {
             if (!empty($ed290_sequencial)) {
                 if (!empty($sql2)) {
-                    $sql2 .= " and ";
+                     $sql2 .= " and ";
                 }
                 $sql2 .= " ed290_sequencial = $ed290_sequencial ";
             }
         } else {
             $sql2 = $dbwhere;
         }
-        $result = db_query($sql . $sql2);
+        $result = db_query($sql.$sql2);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Secretaria Parametros não Excluído. Exclusão Abortada.\\n";
-            $this->erro_sql .= "Valores : " . $ed290_sequencial;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_sql .= "Valores : ".$ed290_sequencial;
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             $this->numrows_excluir = 0;
             return false;
@@ -496,18 +525,18 @@ class cl_sec_parametros
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
                 $this->erro_sql = "Secretaria Parametros não Encontrado. Exclusão não Efetuada.\\n";
-                $this->erro_sql .= "Valores : " . $ed290_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_sql .= "Valores : ".$ed290_sequencial;
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
                 $this->erro_sql = "Exclusão efetuada com sucesso.\\n";
-                $this->erro_sql .= "Valores : " . $ed290_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_sql .= "Valores : ".$ed290_sequencial;
+                $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = pg_affected_rows($result);
                 return true;
@@ -522,8 +551,8 @@ class cl_sec_parametros
             $this->numrows = 0;
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Erro ao selecionar os registros.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -531,8 +560,8 @@ class cl_sec_parametros
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:sec_parametros";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
             $this->erro_status = "0";
             return false;
         }
@@ -549,7 +578,7 @@ class cl_sec_parametros
             if (!empty($ed290_sequencial)) {
                 $sql2 .= " where sec_parametros.ed290_sequencial = $ed290_sequencial ";
             }
-        } else if (!empty($dbwhere)) {
+        } elseif (!empty($dbwhere)) {
             $sql2 = " where $dbwhere";
         }
         $sql .= $sql2;
@@ -569,7 +598,7 @@ class cl_sec_parametros
             if (!empty($ed290_sequencial)) {
                 $sql2 .= " where sec_parametros.ed290_sequencial = $ed290_sequencial ";
             }
-        } else if (!empty($dbwhere)) {
+        } elseif (!empty($dbwhere)) {
             $sql2 = " where $dbwhere";
         }
         $sql .= $sql2;
@@ -578,5 +607,4 @@ class cl_sec_parametros
         }
         return $sql;
     }
-
 }

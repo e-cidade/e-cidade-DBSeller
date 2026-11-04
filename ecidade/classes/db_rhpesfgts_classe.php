@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,13 +63,13 @@ class cl_rhpesfgts {
                  rh15_contac_d = varchar(2) = Dígito da Conta do FGTS 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesfgts() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesfgts"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_rhpesfgts {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh15_regist = ($this->rh15_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["rh15_regist"]:$this->rh15_regist);
        if($this->rh15_data == ""){
@@ -99,7 +99,7 @@ class cl_rhpesfgts {
      }
    }
    // funcao para inclusao
-   function incluir ($rh15_regist){ 
+   public function incluir ($rh15_regist){ 
       $this->atualizacampos();
      if($this->rh15_data == null ){ 
        $this->erro_sql = " Campo Opção do FGTS não informado.";
@@ -211,7 +211,7 @@ class cl_rhpesfgts {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($rh15_regist=null) { 
+   public function alterar ($rh15_regist=null) { 
       $this->atualizacampos();
      $sql = " update rhpesfgts set ";
      $virgula = "";
@@ -369,7 +369,7 @@ class cl_rhpesfgts {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($rh15_regist=null,$dbwhere=null) { 
+   public function excluir ($rh15_regist=null,$dbwhere=null) { 
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -445,7 +445,7 @@ class cl_rhpesfgts {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -468,7 +468,7 @@ class cl_rhpesfgts {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -503,7 +503,7 @@ class cl_rhpesfgts {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -536,7 +536,7 @@ class cl_rhpesfgts {
      }
      return $sql;
   }
-   function sql_query_banco ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_banco ( $rh15_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

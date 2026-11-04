@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Atividade","g2"=>"Bairro da Inscrição"); 
        $clcriaabas->title = array("g1"=>"Atividade","g2"=>"Bairro");    
        $clcriaabas->src = array("g1"=>"iss2_cadgeral003.php","g2"=>"iss2_cadgeral004.php");  
@@ -65,7 +65,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

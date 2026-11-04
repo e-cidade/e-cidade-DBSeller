@@ -79,14 +79,14 @@ class RemuneracaoRGPS extends \BaseClassRepository
          * Reforada forma de buscar os cgm, para nao retornar cgm sem calculo no mes
          */
         $selectBase = <<<SQL
-                    SELECT DISTINCT
+            SELECT DISTINCT
                 rh01_numcgm AS cgm
             FROM
                 rhpessoalmov
                 INNER JOIN rhpessoal ON rhpessoal.rh01_regist = rhpessoalmov.rh02_regist
                     AND rhpessoal.rh01_instit = rhpessoalmov.rh02_instit
                 INNER JOIN cgm ON cgm.z01_numcgm = rhpessoal.rh01_numcgm
-                INNER JOIN pessoal.inssirf ON r33_anousu = fc_anofolha(rh02_instit)
+                left JOIN pessoal.inssirf ON r33_anousu = fc_anofolha(rh02_instit)
                     AND r33_mesusu = fc_mesfolha(rh02_instit)
                     AND r33_instit = rhpessoalmov.rh02_instit
                     AND r33_codtab = rhpessoalmov.rh02_tbprev + 2
@@ -119,7 +119,7 @@ SQL;
                     and r20_anousu = rh02_anousu and r20_mesusu = rh02_mesusu
             $whereBase order by cgm;
 SQL;
-       
+
         $rsRhPessoalMov = db_query($sql);
 
         if (!$rsRhPessoalMov) {
@@ -181,7 +181,7 @@ SQL;
         $rs = db_query($sql);
 
         if (!$rs || pg_num_rows($rs) == 0) {
-            throw new Exception('Não foi possível consultar os preenchimentos da rubrica {$item->codigo}.');
+            throw new \Exception('Não foi possível consultar os preenchimentos da rubrica {$item->codigo}.');
         }
 
         return pg_fetch_result($rs, 0, 'identificador');

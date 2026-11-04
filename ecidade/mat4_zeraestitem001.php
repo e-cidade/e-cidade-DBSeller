@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -189,7 +189,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info = split(",",$cod);
+  $info =explode(",",$cod);
   for ($w = 0; $w < count($info); $w++) {
 
     if ($sqlerro == false) {
@@ -269,7 +269,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info=split(",",$cod);
+  $info= explode(",",$cod);
   for($w=0;$w<count($info);$w++){
     if ($info[$w]!=""){
       $result_atenditem = $clatendrequiitem->sql_record($clatendrequiitem->sql_query_file(null, "*", null, "m43_codatendrequi=".$info[$w]));
@@ -302,7 +302,7 @@ if (isset ($excluir)) {
     $vir=",";
   }
 
-  $info = split(",", $cod);
+  $info =explode(",", $cod);
 
 
   if ($sqlerro == false) {
@@ -317,9 +317,9 @@ if (isset ($excluir)) {
         $erro_msg = $clmatanulitemrequi->erro_msg;
         db_msgbox("Erro!!matanulitemrequi!!");
       }
-    }  
+    }
 
-  }  
+  }
 
 
 
@@ -357,7 +357,7 @@ if (isset ($excluir)) {
     }
 
 
-    // ($cc13_sequencial=null,$dbwhere=null) { 
+    // ($cc13_sequencial=null,$dbwhere=null) {
 //    delete from matrequiitemcriteriocustorateio where cc13_matrequiitem in (select m41_codigo from matrequiitem   where m41_codmatmater in (1) );
 
     $clmatrequiitem->excluir(null,"m41_codmatmater in ($codmatmater)");
@@ -367,7 +367,7 @@ if (isset ($excluir)) {
       db_msgbox("Erro!!MATREQUIITEM!!");
     }
   }
-  $info=split(",",$cod);
+  $info= explode(",",$cod);
   for($w=0;$w<count($info);$w++){
     if ($info[$w] != "") {
       $result_matrequiitem = $clmatrequiitem->sql_record($clmatrequiitem->sql_query_file(null,"*",null,"m41_codmatrequi=".$info[$w]));
@@ -437,7 +437,7 @@ if (isset ($excluir)) {
       $clconlancammatestoqueinimei->excluir(null, "c103_matestoqueinimei in ({$codmei})");
 
     	if ($clconlancammatestoqueinimei->erro_status==0){
-        
+
     		$sqlerro = true;
     		$erro_msg = $clconlancammatestoqueinimei->erro_msg;
     		db_msgbox("Erro!!conlancammatestoqueinimei!");
@@ -447,7 +447,7 @@ if (isset ($excluir)) {
 
       $clcustoapropria->excluir(null, "cc12_matestoqueinimei in ({$codmei}) ");
     	if ($clcustoapropria->erro_status==0){
-        
+
     		$sqlerro = true;
     		$erro_msg = $clcustoapropria->erro_msg;
     		db_msgbox("Erro!!custoapropria!");
@@ -462,7 +462,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info=split(",",$cod);
+  $info= explode(",",$cod);
   $vir="";
   $codini="";
   for($w=0;$w<count($info);$w++){
@@ -530,7 +530,7 @@ if (isset ($excluir)) {
     	$clconlancammatestoqueinimei->excluir(null, "c103_matestoqueinimei in ({$sSqlMatestoqueinimei})");
 
     	if ($clconlancammatestoqueinimei->erro_status==0){
-        
+
     		$sqlerro = true;
     		$erro_msg = $clconlancammatestoqueinimei->erro_msg;
     		db_msgbox("Erro!!conlancammatestoqueinimei!");
@@ -538,19 +538,19 @@ if (isset ($excluir)) {
     	}
 
     	if ($sqlerro == false) {
-    	
+
     	  $oDaoMatEstoqueTransferencia = db_utils::getDao("matestoquetransferencia");
     	  $oDaoMatEstoqueTransferencia->excluir(null, " m84_matestoqueini in ({$codini})");
     	  if ($oDaoMatEstoqueTransferencia->erro_status == 0) {
-    	
+
     	    $sqlerro   = true;
     	    $erro_msg  = "Erro ao excluir da tabela matestoquetransferencia.";
     	    $erro_msg .= $oDaoMatEstoqueTransferencia->erro_msg;
     	    db_msgbox($erro_msg);
     	  }
     	}
-    	
-    	
+
+
       $clmatestoqueini->excluir(null,"m80_codigo in ($codini)");
       if ($clmatestoqueini->erro_status==0){
         $sqlerro = true;
@@ -673,7 +673,7 @@ if (isset ($excluir)) {
 
 
     if ($sqlerro==false){
-      
+
       $clbensdispensatombamento->excluir(null, "e139_matestoqueitem = {$m71_codlanc} ");
       if ($clbensdispensatombamento->erro_status==0){
         $sqlerro=true;
@@ -748,7 +748,7 @@ if (isset ($excluir)) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-  <?
+  <?php
 
 
 if (db_getsession('DB_login') != 'dbseller') {
@@ -761,12 +761,12 @@ if (db_getsession('DB_login') != 'dbseller') {
   </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 
 

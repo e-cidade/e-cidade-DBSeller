@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -125,12 +125,12 @@ if (isset($excluir)) {
   </style>
 </head>
 <body bgcolor=#CCCCCC>
-<?
+<?php
 require_once(modification("forms/db_frmarretipo001.php"));
 db_menu();
 ?>
 </body>
-<?
+<?php
 if (isset($excluir)) {
     if ($clarretipo->erro_status == "0") {
         $clarretipo->erro(true, false);

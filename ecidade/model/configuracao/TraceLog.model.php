@@ -189,6 +189,9 @@ class TraceLog {
     $aBackTrace     = array();
 
     foreach ( $aBackTraceData as $iIndice => $aRouteData ) {
+      if (empty($aRouteData['file'])) {
+         continue;
+      } 
 
       $sFunction    = $aBackTraceData[$iIndice]['function'];
       $sFile        = explode("/",$aRouteData['file']);

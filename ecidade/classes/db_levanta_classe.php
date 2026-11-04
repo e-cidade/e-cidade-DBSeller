@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,13 +73,13 @@ class cl_levanta {
                  y60_espontaneo = bool = Levantamento Espontâneo
                  ";
    //funcao construtor da classe
-   function cl_levanta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levanta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_levanta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y60_codlev = ($this->y60_codlev == ""?@$GLOBALS["HTTP_POST_VARS"]["y60_codlev"]:$this->y60_codlev);
        if($this->y60_data == ""){
@@ -125,7 +125,7 @@ class cl_levanta {
      }
    }
    // funcao para inclusao
-   function incluir ($y60_codlev){
+   public function incluir ($y60_codlev){
       $this->atualizacampos();
      if($this->y60_data == null ){
        $this->erro_sql = " Campo Data do Levantamento nao Informado.";
@@ -275,7 +275,7 @@ class cl_levanta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($y60_codlev=null) {
+   public function alterar ($y60_codlev=null) {
       $this->atualizacampos();
      $sql = " update levanta set ";
      $virgula = "";
@@ -478,7 +478,7 @@ class cl_levanta {
      }
    }
    // funcao para exclusao
-   function excluir ($y60_codlev=null,$dbwhere=null) {
+   public function excluir ($y60_codlev=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y60_codlev));
      }else{
@@ -547,7 +547,7 @@ class cl_levanta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -570,7 +570,7 @@ class cl_levanta {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -610,7 +610,7 @@ class cl_levanta {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -643,7 +643,7 @@ class cl_levanta {
      }
      return $sql;
   }
-   function sql_query_inf ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_inf ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -681,7 +681,7 @@ class cl_levanta {
      }
      return $sql;
   }
-  function sql_query_inf_numpre ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_inf_numpre ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -721,7 +721,7 @@ class cl_levanta {
      return $sql;
   }
 
-   function sql_query_inscr ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_inscr ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -758,7 +758,7 @@ class cl_levanta {
      }
      return $sql;
   }
-   function sql_querylev( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_querylev( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -803,7 +803,7 @@ class cl_levanta {
      }
      return $sql;
   }
-   function sql_query_pesquisa ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pesquisa ( $y60_codlev=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

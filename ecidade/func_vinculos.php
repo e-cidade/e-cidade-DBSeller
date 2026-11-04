@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clvinculos->rotulo->label("h11_funcao");
               <?=$Lh11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h11_codigo",6,$Ih11_codigo,true,"text",4,"","chave_h11_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clvinculos->rotulo->label("h11_funcao");
               <?=$Lh11_funcao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h11_funcao",5,$Ih11_funcao,true,"text",4,"","chave_h11_funcao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clvinculos->rotulo->label("h11_funcao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vinculos.php")==true){
@@ -122,12 +122,12 @@ $clvinculos->rotulo->label("h11_funcao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

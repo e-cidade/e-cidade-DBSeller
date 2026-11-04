@@ -112,6 +112,10 @@ class tceFolhaTabelaTotalizadores extends tceEstruturaBasica {
             case
                 when (eso26_subgrupotce is not null and eso26_natureza = '4011' and eso26_subgrupotce != '') then '1000' || eso26_subgrupotce
                 when (eso26_subgrupotce is not null and eso26_subgrupotce != '') then eso26_natureza || eso26_subgrupotce
+                when (eso26_subgrupotce is not null and eso26_natureza = '1016') then '102001'
+                when (eso26_subgrupotce is not null and eso26_natureza = '1017') then '102001'
+                when (eso26_subgrupotce is not null and eso26_natureza = '1018') then '102101'
+                when (eso26_subgrupotce is not null and eso26_natureza = '1019') then '102101'
             else '000000' end as codigo_conta,
             'X' as piso_magisterio,
             case when rh23_rubric is not null then 'S' else 'X' end as compoe_empenho

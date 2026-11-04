@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -36,48 +36,48 @@ $clvac_calendario->rotulo->label();
     <td nowrap title="<?=@$Tvc05_i_codigo?>">
        <?=@$Lvc05_i_codigo?>
     </td>
-    <td> 
-    <?db_input('vc05_i_codigo',10,$Ivc05_i_codigo,true,'text',3,"")?>
+    <td>
+    <?php db_input('vc05_i_codigo',10,$Ivc05_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc05_i_idadeini?>">
        <?=@$Lvc05_i_idadeini?>
     </td>
-    <td> 
-     <?db_input('vc05_i_idadeini',3,$Ivc05_i_idadeini,true,'text',$db_opcao,"")?>
+    <td>
+     <?php db_input('vc05_i_idadeini',3,$Ivc05_i_idadeini,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc05_i_idadefim?>">
        <?=@$Lvc05_i_idadefim?>
     </td>
-    <td> 
-     <?db_input('vc05_i_idadefim',3,$Ivc05_i_idadefim,true,'text',$db_opcao,"")?>
+    <td>
+     <?php db_input('vc05_i_idadefim',3,$Ivc05_i_idadefim,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc05_c_descr?>">
        <?=@$Lvc05_c_descr?>
     </td>
-    <td> 
-     <?db_input('vc05_c_descr',50,$Ivc05_c_descr,true,'text',$db_opcao,"")?>
+    <td>
+     <?php db_input('vc05_c_descr',50,$Ivc05_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
   </center>
-<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
-       type  = "submit" 
-       id    = "db_opcao" 
-       value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
-               <?=($db_botao==false?"disabled":"")?> 
+<input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
+       type  = "submit"
+       id    = "db_opcao"
+       value = "<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
+               <?=($db_botao==false?"disabled":"")?>
        onclick="return js_valida();">
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 </fieldset>
 <script>
 function js_valida() {
-  
+
   oF=document.form1;
   if ((oF.vc05_i_idadeini.value != '') || (oF.vc05_i_idadefim.value != '')) {
 
@@ -104,7 +104,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_calendario.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
               <?=$Lsd72_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd72_i_codigo",5,$Isd72_i_codigo,true,"text",4,"","chave_sd72_i_codigo");
                  ?>
             </td>
@@ -79,7 +79,7 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
               <?=$Lsd70_c_cid?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd70_c_cid",60,$Isd70_c_cid,true,"text",4,"","chave_sd70_c_cid");
                  ?>
             </td>
@@ -89,7 +89,7 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
               <?=$Lsd70_c_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd70_c_nome",60,$Isd70_c_nome,true,"text",4,"","chave_sd70_c_nome");
                  ?>
             </td>
@@ -108,7 +108,7 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_proccid.php")==true){
@@ -156,12 +156,12 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

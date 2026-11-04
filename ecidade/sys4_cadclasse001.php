@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ function js_abreJanelaTabelas(){
 <table width="100%" align='center' height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-<?
+<?php
 if(isset($procurar)) {
 
 	$sql = "
@@ -190,22 +190,22 @@ if(isset($procurar)) {
 		</strong></td>
 	</tr>
 	<tr>
-            <td colspan="2"> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)&&isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
-              &nbsp; <input name="alterar" onClick="Botao = 'alterar'" accesskey="a" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)&&!isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
-              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="Botao = 'excluir';return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)&&!isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
+            <td colspan="2"> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)&&isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
+              &nbsp; <input name="alterar" onClick="Botao = 'alterar'" accesskey="a" type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)&&!isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
+              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="Botao = 'excluir';return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)&&!isset($desabilitaBotaoIncluir)?"disabled":"" ?>>
               &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar">
               </td>
           </tr>
         </table>
       </form>
-    <?
+    <?php
 	} // fim do else do       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
     ?>
     </td>
 
   </tr>
 </table>
-   <?
+   <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 

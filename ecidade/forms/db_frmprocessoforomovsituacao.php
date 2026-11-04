@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clprocessoforomovsituacao->rotulo->label();
           <?=@$Lv74_sequencial?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v74_sequencial',10,$Iv74_sequencial,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -47,7 +47,7 @@ $clprocessoforomovsituacao->rotulo->label();
           <?=@$Lv74_descricao?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v74_descricao',50,$Iv74_descricao,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -57,7 +57,7 @@ $clprocessoforomovsituacao->rotulo->label();
           <?=@$Lv74_tipomovimento?>
         </td>
         <td> 
-          <?
+          <?php
             $x = getValoresPadroesCampo('v74_tipomovimento');
             db_select('v74_tipomovimento',$x,true,$db_opcao,"");
           ?>
@@ -74,7 +74,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_processoforomovsituacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhpagatra->rotulo->label("rh57_regist");
               <?=$Lrh57_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh57_seq",6,$Irh57_seq,true,"text",4,"","chave_rh57_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhpagatra->rotulo->label("rh57_regist");
               <?=$Lrh57_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh57_regist",6,$Irh57_regist,true,"text",4,"","chave_rh57_regist");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhpagatra->rotulo->label("rh57_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpagatra.php")==true){
@@ -122,12 +122,12 @@ $clrhpagatra->rotulo->label("rh57_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

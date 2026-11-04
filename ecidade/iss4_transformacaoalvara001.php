@@ -100,7 +100,7 @@ if (isset($oPost->transformar)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -121,7 +121,7 @@ if (isset($oPost->transformar)) {
       <table class="form-container">
         <tr>
           <td ><strong>
-            <?
+            <?php
               db_ancora("Inscrição:", 'js_buscaAlvara(true);',$db_opcao );
             ?></b>
           </td>
@@ -138,7 +138,7 @@ if (isset($oPost->transformar)) {
           <td nowrap="nowrap"><strong>Alvará:</strong>
           </td>
           <td nowrap="nowrap">
-           <?
+           <?php
                db_input("q120_issalvara",  10,"", true, 'text', 3);
            ?>
           </td>
@@ -148,7 +148,7 @@ if (isset($oPost->transformar)) {
           <td nowrap="nowrap"><strong>Grupo do Alvará:</strong>
           </td>
           <td nowrap="nowrap">
-           <?
+           <?php
              db_input("q97_sequencialAtual", 10,"", true, '', 3);
              db_input("q97_descricaoAtual", 45,"", true, 'text', 3);
            ?>
@@ -158,7 +158,7 @@ if (isset($oPost->transformar)) {
           <td nowrap="nowrap"><strong>Tipo do Alvará:</strong>
           </td>
           <td nowrap="nowrap">
-           <?
+           <?php
              db_input("q98_sequencialAtual", 10,"", true, '', 3);
              db_input("q98_descricaoAtual", 45,"", true, 'text', 3);
            ?>
@@ -175,7 +175,7 @@ if (isset($oPost->transformar)) {
           Grupo do Alvará:
         </td nowrap="nowrap">
           <td>
-           <?
+           <?php
              $aGrupo = array("0"=>"Selecione",
                              "1"=>"SEM ALVARA",
                              "2"=>"PERMANENTE",
@@ -190,12 +190,12 @@ if (isset($oPost->transformar)) {
       </tr>
       <tr id='tipo' style="display: none;" title='Tipo do Grupo'>
         <td ><strong>
-          <?
+          <?php
             db_ancora("Tipo Grupo:", 'js_buscaTipoAlvara(true);',$db_opcao );
           ?></b>
         </td>
         <td>
-          <?
+          <?php
             db_input("q98_sequencial", 10,"", true, '',     3, "func_isstransformaalvara(false);");
             db_input("q98_descricao" , 45,"", true, 'text', 3);
           ?>
@@ -206,7 +206,7 @@ if (isset($oPost->transformar)) {
           <strong>Validade do Alvará:</strong>
         </td>
         <td nowrap="nowrap">
-         <?
+         <?php
           db_input("q120_validadealvara", 10,"", true, 'text', 1);
          ?>
          <input type="hidden" id="tipovalidade" name='tipovalidade' />
@@ -216,7 +216,7 @@ if (isset($oPost->transformar)) {
         <td colspan="2">
           <fieldset>
           <legend>Observação:</legend>
-          <? db_textarea("q120_obs",5, 48,  "", true,null, 1); ?>
+          <?php db_textarea("q120_obs",5, 48,  "", true,null, 1); ?>
         </td>
       </tr>
    </table>

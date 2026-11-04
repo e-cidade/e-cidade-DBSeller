@@ -1,9 +1,7 @@
-<?
-set_time_limit(0);
+<?php
 if(!defined('DB_BIBLIOT')){
 
 	if ( !isset($_SESSION) ) {
-        session_cache_limiter('none');
 		session_start();
 	}
 
@@ -11,8 +9,8 @@ if(!defined('DB_BIBLIOT')){
 
     require_once modification("libs/db_stdlib.php");
     require_once modification("libs/db_conecta.php");
-    include_once modification("libs/db_sessoes.php");
-    include_once modification("libs/db_usuariosonline.php");
+    require_once modification("libs/db_sessoes.php");
+    require_once modification("libs/db_usuariosonline.php");
   }
   db_postmemory($_POST);
   db_postmemory($_SERVER);

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: fiscal
 //CLASSE DA ENTIDADE taxadiversos
 class cl_taxadiversos { 
@@ -34,13 +34,13 @@ class cl_taxadiversos {
                  y119_tipo_calculo = char(1) = Tipo de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_taxadiversos() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxadiversos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -49,7 +49,7 @@ class cl_taxadiversos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y119_sequencial = ($this->y119_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["y119_sequencial"]:$this->y119_sequencial);
        $this->y119_grupotaxadiversos = ($this->y119_grupotaxadiversos == ""?@$GLOBALS["HTTP_POST_VARS"]["y119_grupotaxadiversos"]:$this->y119_grupotaxadiversos);
@@ -63,7 +63,7 @@ class cl_taxadiversos {
      }
    }
    // funcao para Inclusão
-   function incluir ($y119_sequencial){ 
+   public function incluir ($y119_sequencial){ 
       $this->atualizacampos();
      if($this->y119_grupotaxadiversos == null ){ 
        $this->erro_sql = " Campo Grupo não informado.";

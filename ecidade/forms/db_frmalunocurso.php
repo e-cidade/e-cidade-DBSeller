@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -94,6 +94,23 @@ $oAluno  = AlunoRepository::getAlunoByCodigo( $oGet->ed56_i_aluno );
 $aEtapas = array();
 $sEtapas = "";
 
+/* Verifica parâmetros da secretaria para liberar ou não os campos de Matrícula Inicial */
+$clsec_parametros = new cl_sec_parametros;
+$sSqlSecParametros = $clsec_parametros->sql_query_file(1, 'ed290_habilitarcamposmatriculainicial');
+$result = db_query( $sSqlSecParametros );
+$habilitaCampos = db_utils::fieldsMemory($result, 0)->ed290_habilitarcamposmatriculainicial;
+
+
+/* Verifica se o código da escola que o aluno está matriculado é o mesmo do departamento logado */
+$codEscolaMatricula = \App\Domain\Educacao\Escola\Models\Matricula::with('aluno', 'turma')
+    ->where('ed60_i_aluno', $oGet->ed56_i_aluno)
+    ->where('ed60_c_concluida', 'N')
+    ->where('ed60_c_situacao', 'MATRICULADO')
+    ->where('ed60_c_ativa', 'S')
+    ->first()->turma->ed57_i_escola;
+$btnsMatInicial = $codEscolaMatricula == db_getsession("DB_coddepto");
+/* Usarei o $btnsMatInicial para habilitar ou não o botão de salvamento desses dados */
+
 foreach ( $oAluno->getProgressaoParcial() as $oProgressaoParcial ) {
 
   if ( !$oProgressaoParcial->isAtiva() || $oProgressaoParcial->isConcluida() ) {
@@ -112,45 +129,59 @@ $sEtapas = implode( ", ", $aEtapas );
           <table>
             <tr>
               <td nowrap title="<?=@$Ted56_i_escola?>">
-                <?db_ancora( @$Led56_i_escola, "", 3 );?>
+                <?php db_ancora( @$Led56_i_escola, "", 3 );?>
               </td>
               <td>
-                <?db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
-                <?db_input('ed18_c_nome', 30, @$Ied18_c_nome, true, 'text', 3, '')?>
+                <?php db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
+                <?php db_input('ed18_c_nome', 30, @$Ied18_c_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted56_i_aluno?>">
-                <?db_ancora(@$Led56_i_aluno, "", 3);?>
+                <?php db_ancora(@$Led56_i_aluno, "", 3);?>
               </td>
               <td>
-                <?db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
-                <?db_input('ed47_v_nome', 30, @$Ied47_v_nome, true, 'text', 3, '')?>
+                <?php db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
+                <?php db_input('ed47_v_nome', 30, @$Ied47_v_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted31_i_curso?>">
-                <?db_ancora(@$Led31_i_curso, "js_pesquisaed31_i_curso(true);", $db_opcao);?>
+                <?php db_ancora(@$Led31_i_curso, "js_pesquisaed31_i_curso(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed31_i_curso', 15, $Ied31_i_curso, true, 'text', $db_opcao,
+                <?php db_input('ed31_i_curso', 15, $Ied31_i_curso, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed31_i_curso(false);'")
                 ?>
-                <?db_input('ed29_c_descr', 30, @$Ied29_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed29_c_descr', 30, @$Ied29_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted56_i_base?>">
-                <?db_ancora(@$Led56_i_base, "js_pesquisaed56_i_base(true,document.form1.ed31_i_curso.value);",
+                <?php db_ancora(@$Led56_i_base, "js_pesquisaed56_i_base(true,document.form1.ed31_i_curso.value);",
                             $db_opcao);
                 ?>
               </td>
               <td>
-                <?db_input('ed56_i_base', 15, $Ied56_i_base, true, 'text', $db_opcao,
+                <?php db_input('ed56_i_base', 15, $Ied56_i_base, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed56_i_base(false,document.form1.ed31_i_curso.value);'")
                 ?>
-                <?db_input('ed31_c_descr', 30, @$Ied31_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed31_c_descr', 30, @$Ied31_c_descr, true, 'text', 3, '')?>
               </td>
+            </tr>
+            <tr id="matinicial" hidden>
+                <td><b>Matrícula Inicial: </b></td>
+                <td>
+                <input id="matriculaescola" old-value="" type="text" autocomplete="off" size="20" maxlength="20" oninput="this.value.length>this.maxLength&&(this.value=this.value.slice(0,this.maxLength));value=parseInt(this.value.replace(/\D/g, '') || '');(this.value=value=='NaN'?'':value)" style="width:75px;background-color:#E6E4F1"/>
+                <input id="btnSalvarMatriculaEscola" type="button" value="Salvar" onclick="salvarMatriculaEscola()" hidden <?=($btnsMatInicial==false?"disabled":"")?>/>
+                </td>
+            </tr>
+            <tr id="datamatinicial" hidden>
+                <td><b>Data Matrícula Inicial: </b></td>
+                <td>
+                <input id="matriculainicial" old-value="" type="text" autocomplete="off" size="10" maxlength="10" onblur="validaMatriculaInicial(this)" style="width:75px;background-color:#E6E4F1"/>
+                <input id="btnSalvarMatriculaInicial" type="button" value="Salvar" onclick="salvarMatriculaInicial()" hidden <?=($btnsMatInicial==false?"disabled":"")?>/>
+                </td>
             </tr>
           </table>
         </td>
@@ -158,37 +189,37 @@ $sEtapas = implode( ", ", $aEtapas );
           <table>
             <tr>
               <td nowrap title="<?=@$Ted56_i_calendario?>">
-                <?db_ancora(@$Led56_i_calendario, "js_pesquisaed56_i_calendario(true);", $db_opcao);?>
+                <?php db_ancora(@$Led56_i_calendario, "js_pesquisaed56_i_calendario(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed56_i_calendario', 15, $Ied56_i_calendario, true, 'text', $db_opcao,
+                <?php db_input('ed56_i_calendario', 15, $Ied56_i_calendario, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed56_i_calendario(false);'")
                 ?>
-                <?db_input('ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted79_i_serie?>">
-                <?db_ancora(@$Led79_i_serie, "js_pesquisaed79_i_serie(true,document.form1.ed56_i_base.value);",
+                <?php db_ancora(@$Led79_i_serie, "js_pesquisaed79_i_serie(true,document.form1.ed56_i_base.value);",
                             $db_opcao);
                 ?>
               </td>
               <td>
-                <?db_input('ed79_i_serie', 15, $Ied79_i_serie, true, 'text', $db_opcao,
+                <?php db_input('ed79_i_serie', 15, $Ied79_i_serie, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed79_i_serie(false,document.form1.ed56_i_base.value);'")
                 ?>
-                <?db_input('ed11_c_descr', 20, @$Ied11_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed11_c_descr', 20, @$Ied11_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted79_i_turno?>">
-                <?db_ancora(@$Led79_i_turno, "js_pesquisaed79_i_turno(true);", $db_opcao);?>
+                <?php db_ancora(@$Led79_i_turno, "js_pesquisaed79_i_turno(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed79_i_turno', 15, $Ied79_i_turno, true, 'text', $db_opcao,
+                <?php db_input('ed79_i_turno', 15, $Ied79_i_turno, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed79_i_turno(false);'")
                 ?>
-                <?db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
+                <?php db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
@@ -275,6 +306,7 @@ $sEtapas = implode( ", ", $aEtapas );
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'APROVADO'";
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'APROVADO PARCIAL'";
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'REPETENTE'";
+                  $sWhere .= "   AND trim(ed56_c_situacao) != 'ABANDONO ESCOLAR'";
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'EVADIDO'";
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'DESISTENTE'";
                   $sWhere .= "   AND trim(ed56_c_situacao) != 'CANCELADO'";
@@ -313,6 +345,203 @@ $sEtapas = implode( ", ", $aEtapas );
     </table>
   </form>
 <script>
+
+require_once('scripts/scripts.js');
+require_once('scripts/widgets/Input/DBInput.widget.js');
+require_once('scripts/widgets/Input/DBInputDate.widget.js');
+require_once('scripts/session.js');
+require_once('scripts/classes/http/http.js');
+
+let inputMatInicial = document.getElementById('matinicial');
+let inputDataMatInicial = document.getElementById('datamatinicial');
+
+let habilitaCampos = "<?php echo $habilitaCampos == 't' ?>";
+
+if (habilitaCampos) {
+    inputMatInicial.removeAttribute('hidden');
+    inputDataMatInicial.removeAttribute('hidden');
+}
+
+let urlApi = '';
+PHPSession.loadData().then(() => {
+    urlApi = PHPSession.requestApi;
+    buscarMatriculaEscola();
+});
+let carregando = 'Caregando..';
+let salvando = 'Salvando..';
+// $('ocupacaopai').value = carregando;
+// $('ocupacaopai_label').value = carregando;
+// $('ocupacaomae').value = carregando;
+// $('ocupacaomae_label').value = carregando;
+// $('ocupacaoresp').value = carregando;
+// $('ocupacaoresp_label').value = carregando;
+
+const showElem = (el) => {
+        if (typeof el === 'string') {
+            el = document.getElementById(el)
+        }
+
+        el && el.removeAttribute('hidden')
+    },
+    hideElem = (el) => {
+        if (typeof el === 'string') {
+            el = document.getElementById(el)
+        }
+
+        el && el.setAttribute('hidden', !0)
+    },
+    brToDate = (date) => {
+        return date.split('/').reverse().join('-')
+    },
+    dateToBr = (date) => {
+        return date.split('-').reverse().join('/')
+    };
+
+$('matriculaescola').onkeyup = function() {
+    el = 'btnSalvarMatriculaEscola';
+    if (this.value && this.value != this.getAttribute('old-value')) {
+        showElem(el)
+    } else {
+        hideElem(el)
+    }
+};
+
+$('matriculainicial').oninput = function() {
+    mascaraMatriculaInicial(this);
+
+    el = 'btnSalvarMatriculaInicial';
+    if (this.value && this.value != this.getAttribute('old-value')) {
+        showElem(el)
+    } else {
+        hideElem(el)
+    }
+};
+
+function buscarMatriculaEscola() {
+    if (!$('ed56_i_aluno').value || !$('ed56_i_escola').value) {
+        return;
+    }
+
+    js_divCarregando('Buscando matrícula na escola..', 'msg_box_req_bmatriculaescolaaluno');
+
+    HttpClient.get(
+        `${urlApi}/educacao/escola/matriculaescolaaluno/${$('ed56_i_escola').value}/`+$('ed56_i_aluno').value
+    ).then((response) => {
+        js_removeObj('msg_box_req_bmatriculaescolaaluno');
+
+        if (response.message) {
+            alert(response.message);
+        }
+        if (response.error) {
+            return;
+        }
+        response = response.data;
+        if (response?.ed365_matricula) {
+            let matriculainicial = response.ed365_matricula;
+            $('matriculaescola').value = matriculainicial;
+            $('matriculaescola').setAttribute('old-value', matriculainicial);
+        }
+        if (response?.ed365_datamatriculainicial) {
+            let datamatriculainicial = dateToBr(response.ed365_datamatriculainicial);
+            $('matriculainicial').value = datamatriculainicial;
+            $('matriculainicial').setAttribute('old-value', datamatriculainicial);
+        }
+    });
+}
+function salvarMatriculaEscola() {
+    if (!$('ed56_i_aluno').value || !$('ed56_i_escola').value) {
+        alert('Os campos "Escola" e "Aluno" são necessarios para prosseguir.');
+        return;
+    }
+
+    $('btnSalvarMatriculaEscola').value = salvando;
+    js_divCarregando('Salvando matrícula na escola..', 'msg_box_req_smatriculaescolaaluno');
+
+    HttpClient.get(
+        `${urlApi}/educacao/escola/matriculaescolaaluno/${$('ed56_i_escola').value}/${$('ed56_i_aluno').value}/`+ $('matriculaescola').value
+    ).then(response => {
+        js_removeObj('msg_box_req_smatriculaescolaaluno');
+        $('btnSalvarMatriculaEscola').value = 'Salvar';
+
+        if (response.message) {
+            alert(response.message);
+        }
+        if (response.error) {
+            return;
+        }
+        response = response.data;
+
+        $('matriculaescola').setAttribute('old-value', $('matriculaescola').value);
+        hideElem('btnSalvarMatriculaEscola')
+    });
+}
+
+function salvarMatriculaInicial() {
+    if (!$('ed56_i_aluno').value || !$('ed56_i_escola').value) {
+        alert('Os campos "Escola" e "Aluno" são necessarios para prosseguir.');
+        return;
+    }
+
+    $('btnSalvarMatriculaInicial').value = salvando;
+    js_divCarregando('Salvando matrícula inicial na escola..', 'msg_box_req_smatriculainicialescolaaluno');
+
+    HttpClient.get(
+        `${urlApi}/educacao/escola/matriculainicialescolaaluno/${$('ed56_i_escola').value}/${$('ed56_i_aluno').value}/`+ brToDate($('matriculainicial').value)
+    ).then(response => {
+        js_removeObj('msg_box_req_smatriculainicialescolaaluno');
+        $('btnSalvarMatriculaInicial').value = 'Salvar';
+
+        if (response.message) {
+            alert(response.message);
+        }
+        if (response.error) {
+            return;
+        }
+        response = response.data;
+
+        $('matriculainicial').setAttribute('old-value', $('matriculainicial').value);
+        hideElem('btnSalvarMatriculaInicial')
+    });
+}
+
+function isValidDate(dateString) {
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) return false;
+
+    let parts = dateString.split('/');
+    let day = parseInt(parts[0], 10);
+    let month = parseInt(parts[1], 10);
+    let year = parseInt(parts[2], 10);
+    if (year < 1000 || year > 9999 || month == 0 || month > 12) return false;
+
+    let daysInMonth = [31, 28 + (year % 4 == 0 && year % 100 != 0 || year % 400 == 0), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    return day > 0 && day <= daysInMonth[month - 1];
+}
+function validaMatriculaInicial(el) {
+    if (!isValidDate(el.value)) {
+        alert('Matrícula inicial inválida.');
+        hideElem('btnSalvarMatriculaInicial');
+        el.value = ''
+    }
+}
+function mascaraMatriculaInicial(el){
+    let val = el.value;
+
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) { // Verifica se já está no formato correto
+        return;
+    }
+    if (/^\d{2}\/?$/.test(val)) {
+        el.value = val + '/';
+    } else if (/^\d{2}\/\d{2}\/?$/.test(val)) {
+        el.value = val + '/';
+    } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        // OK
+    } else {
+        // el.value = '';
+    }
+}
+
+
 var sCaminhoMensagens = 'educacao.escola.db_frmalunocurso.';
 
 function js_pesquisaed31_i_curso(mostra) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ function js_marca(obj){
 <td align="center"><small><b>Trecho</b></small></td>
 <td align="center"><small><b>Rua</b></small></td>
 </tr>  
-<?
+<?php
 if($db_opcao!=1){
   $sql="select  j14_codigo,d10_codigo,d40_trecho,j14_nome from  editalproj inner join projmelhorias on d40_codigo=d10_codigo inner join ruas on d40_codlog=j14_codigo where d10_codedi=$d01_codedi order by j14_codigo";
   $result=db_query($sql);
@@ -94,7 +94,7 @@ if($db_opcao!=3){
 }  	 
 ?>  
 </table>	
-<?
+<?php
 if((isset($num02) && $num02==0) && (isset($num) && $num==0)){
   echo "
   <script>

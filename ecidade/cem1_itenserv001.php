@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -37,17 +37,19 @@ require_once(modification("classes/db_taxaservval_classe.php"));
 require_once(modification("classes/db_txsepultamentos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
-$clitenserv        = new cl_itenserv;
-$cltaxaserv        = new cl_taxaserv;
-$cltaxaservval     = new cl_taxaservval;
-$cltxsepultamentos = new cl_txsepultamentos;
-$clrotulo          = new rotulocampo;
+$cltaxasepultamentos = new cl_txsepultamentos();
+$clepultamentos      = new cl_sepultamentos();
+$clitenserv          = new cl_itenserv;
+$cltaxaserv          = new cl_taxaserv;
+$cltaxaservval       = new cl_taxaservval;
+$cltxsepultamentos   = new cl_txsepultamentos;
+$clrotulo            = new rotulocampo;
 
 $db_opcao = 1;
 $db_botao = true;
@@ -84,9 +86,6 @@ if ( isset($incluir) ) {
     if ( $clitenserv->erro_status == 0 ) {
       $lSqlErro = true;
     }
-  }
-
-  if ( !$lSqlErro ) {
 
     $cltxsepultamentos->cm31_i_sepultamento = $oPost->cm31_i_sepultamento;
     $cltxsepultamentos->cm31_i_itenserv     = $clitenserv->cm10_i_codigo;
@@ -96,9 +95,6 @@ if ( isset($incluir) ) {
     if ( $cltxsepultamentos->erro_status == 0 ) {
       $lSqlErro = true;
     }
-  }
-
-  if ( !$lSqlErro ) {
 
 	  if ( $clitenserv->numrows_incluir != 0 ) {
 
@@ -120,7 +116,7 @@ if ( isset($incluir) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -139,21 +135,21 @@ if ( isset($incluir) ) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-     <?
+     <?php
        include(modification("forms/db_frmitenserv.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?
+<?php
 if(!isset($tp)){
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
 ?>
 </body>
 </html>
-<?
+<?php
 if ( isset($incluir) ) {
 
   if ( $clitenserv->erro_status == "0" ) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,15 +71,15 @@ $clrotulo->label("DBtxt25");
 	  <table border="0">
         <tr> 
           <td align="right" title="<?=$Tr01_regist?>"> 
-            <?
+            <?php
             db_ancora(@ $Lr01_regist, "js_pesquisarregistro(true);", 1);
     		?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('r01_regist', 8, $Ir01_regist, true, 'text', 1, " onchange='js_pesquisarregistro(false);'")
             ?>
-            <?
+            <?php
             db_input('z01_nome', 30, $Iz01_nome, true, 'text', 3, '');
             ?>
           </td>
@@ -95,7 +95,7 @@ $clrotulo->label("DBtxt25");
     </td>
   </tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

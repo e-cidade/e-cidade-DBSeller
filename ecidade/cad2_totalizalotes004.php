@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -76,7 +76,7 @@ $clrotulo = new rotulocampo;
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Rua</strong>";
                  $aux->codigo = "j14_codigo"; //chave de retorno da func

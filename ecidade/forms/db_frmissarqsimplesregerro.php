@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("q23_issarqsimples");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq49_sequencial?>">
-       <?
+       <?php
        db_ancora(@$Lq49_sequencial,"js_pesquisaq49_sequencial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q49_sequencial',8,$Iq49_sequencial,true,'text',$db_opcao," onchange='js_pesquisaq49_sequencial(false);'")
 ?>
-       <?
+       <?php
 db_input('q23_issarqsimples',8,$Iq23_issarqsimples,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('q23_issarqsimples',8,$Iq23_issarqsimples,true,'text',3,'')
        <?=@$Lq49_erro?>
     </td>
     <td> 
-<?
+<?php
 db_input('q49_erro',100,$Iq49_erro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issarqsimplesregerro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

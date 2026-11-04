@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -78,7 +78,7 @@ $clrotulo->label("c82_reduz");
 
 </script>
 
-<?
+<?php
 $alt=false;
 $desabilitafunc=false;
 if (isset($c70_codlan)  && $c70_codlan!="" ){
@@ -148,7 +148,7 @@ db_app::load("dbcomboBox.widget.js");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc70_codlan ?>"> <?=@$Lc70_codlan ?> </td>
-    <td><? db_input('c70_codlan',8,$Ic70_codlan,true,'text',3 );
+    <td><?php db_input('c70_codlan',8,$Ic70_codlan,true,'text',3 );
            db_input('c69_sequen',8,$Ic69_sequen,true,'text',3 );
          ?>
     </td>
@@ -156,7 +156,7 @@ db_app::load("dbcomboBox.widget.js");
 
   <tr>
   <td nowrap title="<?=@$Tc70_data ?>"> <?=@$Lc70_data ?>  </td>
-      <td><?
+      <td><?php
 
 	if( $db_opcao=="1" and (!isset($c70_data_dia))){
             $c70_data_dia = date("d",db_getsession("DB_datausu"));
@@ -175,7 +175,7 @@ db_app::load("dbcomboBox.widget.js");
 
   <tr>
    <td nowrap title="<?=$Tc78_chave?>" ><strong> <?=$Lc78_chave?> </strong> </td>
-   <td><?
+   <td><?php
          if (isset($HTTP_SESSION_VARS["llote"]) && $db_opcao==1){
             $c78_chave  = db_getsession("llote");
          }
@@ -201,8 +201,8 @@ db_app::load("dbcomboBox.widget.js");
   </tr>
 
   <tr>
-    <td nowrap title="<?=@$Tc69_debito ?>"><? db_ancora(@$Lc69_debito,"js_pesquisac69_debito(true);",$db_opcao); ?> </td>
-    <td><? db_input('c69_debito',10,$Ic69_debito,true,'text',$db_opcao," onchange='js_pesquisac69_debito(false);'");
+    <td nowrap title="<?=@$Tc69_debito ?>"><?php db_ancora(@$Lc69_debito,"js_pesquisac69_debito(true);",$db_opcao); ?> </td>
+    <td><?php db_input('c69_debito',10,$Ic69_debito,true,'text',$db_opcao," onchange='js_pesquisac69_debito(false);'");
            if (isset($c69_debito)) {
                  $r=$clconplano->sql_record(
 	              	   $clconplano->sql_query_file("",null,"c60_descr as debito_descr","",
@@ -220,8 +220,8 @@ db_app::load("dbcomboBox.widget.js");
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tc69_credito?>"><? db_ancora(@$Lc69_credito,"js_pesquisac69_credito(true);",$db_opcao); ?> </td>
-    <td><? db_input('c69_credito',10,$Ic69_credito,true,'text',$db_opcao," onchange='js_pesquisac69_credito(false);'");
+    <td nowrap title="<?=@$Tc69_credito?>"><?php db_ancora(@$Lc69_credito,"js_pesquisac69_credito(true);",$db_opcao); ?> </td>
+    <td><?php db_input('c69_credito',10,$Ic69_credito,true,'text',$db_opcao," onchange='js_pesquisac69_credito(false);'");
            if (isset($c69_credito)) {
                 $r=$clconplano->sql_record(
 	              $clconplano->sql_query_file("",null,"c60_descr as credito_descr","",
@@ -242,21 +242,21 @@ db_app::load("dbcomboBox.widget.js");
 
   <tr>
     <td nowrap title="<?=@$Tc69_valor?>"> <?=@$Lc69_valor ?> </td>
-    <td><? db_input('c69_valor',15,$Ic69_valor,true,'text',$db_opcao ); ?></td>
+    <td><?php db_input('c69_valor',15,$Ic69_valor,true,'text',$db_opcao ); ?></td>
   </tr>
 
   </tr>
   <tr>
-   <td nowrap title="<?=@$Tc69_codhist?>"><? db_ancora(@$Lc69_codhist,"js_pesquisac69_codhist(true);",$db_opcao); ?> </td>
-   <td><? db_input('c69_codhist',4,$Ic69_codhist,true,'text',$db_opcao," onchange='js_pesquisac69_codhist(false);'"); ?>
-       <? db_input('c50_descr',40,$Ic50_descr,true,'text',3,'');    ?>
+   <td nowrap title="<?=@$Tc69_codhist?>"><?php db_ancora(@$Lc69_codhist,"js_pesquisac69_codhist(true);",$db_opcao); ?> </td>
+   <td><?php db_input('c69_codhist',4,$Ic69_codhist,true,'text',$db_opcao," onchange='js_pesquisac69_codhist(false);'"); ?>
+       <?php db_input('c50_descr',40,$Ic50_descr,true,'text',3,'');    ?>
     </td>
   </tr>
   <tr>
    <td nowrap title="Tipo de Lançamento">
    <strong>Tipo de Lançamento:</strong> </td>
    <td>
-    <?
+    <?php
     $matarr = array('0'=>'Execução','2000'=>'Abertura','1000'=>'Fechamento');
     db_select('c71_coddoc',$matarr,true,2);
     ?>
@@ -265,7 +265,7 @@ db_app::load("dbcomboBox.widget.js");
 
   <tr>
    <td nowrap title="<?=@$Tc72_complem?>"><?=@$Lc72_complem ?> </td>
-   <td><?
+   <td><?php
          if (isset($c70_codlan) and ($c70_codlan!="")) {
          $r=$clconlancamcompl->sql_record($clconlancamcompl->sql_query_file($c70_codlan,"*","",""));
 	   if ($clconlancamcompl->numrows > 0 ){
@@ -277,17 +277,17 @@ db_app::load("dbcomboBox.widget.js");
   </tr>
   <tr>
    <td colspan="2" align="center">
- <?
+ <?php
 
  if (!isset($consulta)){
      if ($db_opcao != "33"){     ?>
        <input name="db_opcao" type="button" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"           <?=($db_botao==false?"disabled":"")?>   onclick="critica_form(); ">
        <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-     <?  } else {  ?>
+     <?php  } else {  ?>
        <input name="db_opcao" type="button" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"           <?=($db_botao==false?"disabled":"")?>   onclick="critica_form(); ">
        <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 
-      <input name="fechar" type="button"  value="Fechar" onclick="parent.db_conlancamval.hide();" > <?  }
+      <input name="fechar" type="button"  value="Fechar" onclick="parent.db_conlancamval.hide();" > <?php  }
       echo "</td></tr>";
   } else {
      // consulta é setada na | contabilidade| consulta Lançamentos
@@ -311,40 +311,40 @@ db_app::load("dbcomboBox.widget.js");
 
        if ($c79_codsup !=""){   ?>
 	    <tr>
-               <td nowrap title="<?=@$Tc79_codsup ?>"><? db_ancora($Lc79_codsup,'abre_sup()',1) ?></td>
-               <td><? db_input('c79_codsup',8,"",true,'text',$db_opcao );?></td>
+               <td nowrap title="<?=@$Tc79_codsup ?>"><?php db_ancora($Lc79_codsup,'abre_sup()',1) ?></td>
+               <td><?php db_input('c79_codsup',8,"",true,'text',$db_opcao );?></td>
              </tr>
-       <? }
+       <?php }
           if ($c73_coddot !="") {  ?>
             <tr>
-                <td nowrap title="<?=@$Tc73_coddot ?>"> <? db_ancora($Lc73_coddot,'abre_dot()',1) ?></td>
-                <td><? db_input('c73_coddot',8,"",true,'text',$db_opcao );?></td>
+                <td nowrap title="<?=@$Tc73_coddot ?>"> <?php db_ancora($Lc73_coddot,'abre_dot()',1) ?></td>
+                <td><?php db_input('c73_coddot',8,"",true,'text',$db_opcao );?></td>
             </tr>
-       <? }
+       <?php }
           if ($c75_numemp) {   ?>
              <tr>
-                <td nowrap title="<?=@$Tc75_numemp ?>"> <? db_ancora($Lc75_numemp,'abre_empenho()',1) ?></td>
-                <td><?	db_input('c75_numemp',8,"",true,'text',$db_opcao );?></td>
+                <td nowrap title="<?=@$Tc75_numemp ?>"> <?php db_ancora($Lc75_numemp,'abre_empenho()',1) ?></td>
+                <td><?php db_input('c75_numemp',8,"",true,'text',$db_opcao );?></td>
              </tr>
-       <? }
+       <?php }
           if (!empty($c74_codrec)){ ?>
             <tr>
-               <td nowrap title="<?=@$Tc74_codrec ?>"> <? db_ancora($Lc74_codrec,'abre_rec()',1) ?></td>
-               <td><? db_input('c74_codrec',8,"",true,'text',$db_opcao );?></td>
+               <td nowrap title="<?=@$Tc74_codrec ?>"> <?php db_ancora($Lc74_codrec,'abre_rec()',1) ?></td>
+               <td><?php db_input('c74_codrec',8,"",true,'text',$db_opcao );?></td>
             </tr>
-       <? }
+       <?php }
           if (!empty($c80_codord)){ ?>
             <tr>
-               <td nowrap title="<?=@$Tc80_codord ?>"> <? db_ancora($Lc80_codord,'abre_empenho()',1) ?></td>
-               <td><? db_input('c80_codord',8,"",true,'text',$db_opcao );?></td>
+               <td nowrap title="<?=@$Tc80_codord ?>"> <?php db_ancora($Lc80_codord,'abre_empenho()',1) ?></td>
+               <td><?php db_input('c80_codord',8,"",true,'text',$db_opcao );?></td>
             </tr>
-       <? }
+       <?php }
           if (!empty($c82_reduz)){ ?>
             <tr>
                <td nowrap title="<?=@$Tc82_reduz ?>"> <?=$Lc82_reduz ?></td>
-               <td><? db_input('c82_reduz',8,"",true,'text',$db_opcao );?></td>
+               <td><?php db_input('c82_reduz',8,"",true,'text',$db_opcao );?></td>
             </tr>
-       <? }
+       <?php }
 
 
    }
@@ -526,7 +526,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_conlancamval.hide();
-  <?
+  <?php
 
   if($db_opcao!=1 ){
 

@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contrib
 //CLASSE DA ENTIDADE contlotv
-class cl_contlotv { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $d06_contri = 0; 
-   var $d06_idbql = 0; 
-   var $d06_tipos = 0; 
-   var $d06_fracao = 0; 
-   var $d06_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_contlotv {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $d06_contri = 0;
+   var $d06_idbql = 0;
+   var $d06_tipos = 0;
+   var $d06_fracao = 0;
+   var $d06_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 d06_contri = int4 = Contribuicao 
-                 d06_idbql = int4 = Codigo do lote 
-                 d06_tipos = int4 = Tipo de Serviço 
-                 d06_fracao = float8 = Fracao Ideal 
-                 d06_valor = float8 = Valor do serviço 
+                 d06_contri = int4 = Contribuicao
+                 d06_idbql = int4 = Codigo do lote
+                 d06_tipos = int4 = Tipo de Serviço
+                 d06_fracao = float8 = Fracao Ideal
+                 d06_valor = float8 = Valor do serviço
                  ";
-   //funcao construtor da classe 
-   function cl_contlotv() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("contlotv"); 
+     $this->rotulo = new rotulo("contlotv");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_contlotv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d06_contri = ($this->d06_contri == ""?@$GLOBALS["HTTP_POST_VARS"]["d06_contri"]:$this->d06_contri);
        $this->d06_idbql = ($this->d06_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["d06_idbql"]:$this->d06_idbql);
@@ -85,18 +85,18 @@ class cl_contlotv {
      }
    }
    // funcao para inclusao
-   function incluir ($d06_contri,$d06_idbql,$d06_tipos){ 
+   public function incluir ($d06_contri,$d06_idbql,$d06_tipos){
       $this->atualizacampos();
-     if($this->d06_fracao == null ){ 
+     if($this->d06_fracao == null ){
        $this->d06_fracao = "0";
      }
-     if($this->d06_valor == null ){ 
+     if($this->d06_valor == null ){
        $this->d06_valor = "0";
      }
-       $this->d06_contri = $d06_contri; 
-       $this->d06_idbql = $d06_idbql; 
-       $this->d06_tipos = $d06_tipos; 
-     if(($this->d06_contri == null) || ($this->d06_contri == "") ){ 
+       $this->d06_contri = $d06_contri;
+       $this->d06_idbql = $d06_idbql;
+       $this->d06_tipos = $d06_tipos;
+     if(($this->d06_contri == null) || ($this->d06_contri == "") ){
        $this->erro_sql = " Campo d06_contri nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -104,7 +104,7 @@ class cl_contlotv {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->d06_idbql == null) || ($this->d06_idbql == "") ){ 
+     if(($this->d06_idbql == null) || ($this->d06_idbql == "") ){
        $this->erro_sql = " Campo d06_idbql nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -112,7 +112,7 @@ class cl_contlotv {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->d06_tipos == null) || ($this->d06_tipos == "") ){ 
+     if(($this->d06_tipos == null) || ($this->d06_tipos == "") ){
        $this->erro_sql = " Campo d06_tipos nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,21 +121,21 @@ class cl_contlotv {
        return false;
      }
      $sql = "insert into contlotv(
-                                       d06_contri 
-                                      ,d06_idbql 
-                                      ,d06_tipos 
-                                      ,d06_fracao 
-                                      ,d06_valor 
+                                       d06_contri
+                                      ,d06_idbql
+                                      ,d06_tipos
+                                      ,d06_fracao
+                                      ,d06_valor
                        )
                 values (
-                                $this->d06_contri 
-                               ,$this->d06_idbql 
-                               ,$this->d06_tipos 
-                               ,$this->d06_fracao 
-                               ,$this->d06_valor 
+                                $this->d06_contri
+                               ,$this->d06_idbql
+                               ,$this->d06_tipos
+                               ,$this->d06_fracao
+                               ,$this->d06_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->d06_contri."-".$this->d06_idbql."-".$this->d06_tipos) nao Incluído. Inclusao Abortada.";
@@ -173,16 +173,16 @@ class cl_contlotv {
        $resac = db_query("insert into db_acount values($acount,131,706,'','".AddSlashes(pg_result($resaco,0,'d06_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($d06_contri=null,$d06_idbql=null,$d06_tipos=null) { 
+   public function alterar ($d06_contri=null,$d06_idbql=null,$d06_tipos=null) {
       $this->atualizacampos();
      $sql = " update contlotv set ";
      $virgula = "";
-     if(trim($this->d06_contri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_contri"])){ 
+     if(trim($this->d06_contri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_contri"])){
        $sql  .= $virgula." d06_contri = $this->d06_contri ";
        $virgula = ",";
-       if(trim($this->d06_contri) == null ){ 
+       if(trim($this->d06_contri) == null ){
          $this->erro_sql = " Campo Contribuicao nao Informado.";
          $this->erro_campo = "d06_contri";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_contlotv {
          return false;
        }
      }
-     if(trim($this->d06_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_idbql"])){ 
+     if(trim($this->d06_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_idbql"])){
        $sql  .= $virgula." d06_idbql = $this->d06_idbql ";
        $virgula = ",";
-       if(trim($this->d06_idbql) == null ){ 
+       if(trim($this->d06_idbql) == null ){
          $this->erro_sql = " Campo Codigo do lote nao Informado.";
          $this->erro_campo = "d06_idbql";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_contlotv {
          return false;
        }
      }
-     if(trim($this->d06_tipos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_tipos"])){ 
+     if(trim($this->d06_tipos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_tipos"])){
        $sql  .= $virgula." d06_tipos = $this->d06_tipos ";
        $virgula = ",";
-       if(trim($this->d06_tipos) == null ){ 
+       if(trim($this->d06_tipos) == null ){
          $this->erro_sql = " Campo Tipo de Serviço nao Informado.";
          $this->erro_campo = "d06_tipos";
          $this->erro_banco = "";
@@ -218,17 +218,17 @@ class cl_contlotv {
          return false;
        }
      }
-     if(trim($this->d06_fracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_fracao"])){ 
-        if(trim($this->d06_fracao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d06_fracao"])){ 
-           $this->d06_fracao = "0" ; 
-        } 
+     if(trim($this->d06_fracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_fracao"])){
+        if(trim($this->d06_fracao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d06_fracao"])){
+           $this->d06_fracao = "0" ;
+        }
        $sql  .= $virgula." d06_fracao = $this->d06_fracao ";
        $virgula = ",";
      }
-     if(trim($this->d06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_valor"])){ 
-        if(trim($this->d06_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d06_valor"])){ 
-           $this->d06_valor = "0" ; 
-        } 
+     if(trim($this->d06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d06_valor"])){
+        if(trim($this->d06_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d06_valor"])){
+           $this->d06_valor = "0" ;
+        }
        $sql  .= $virgula." d06_valor = $this->d06_valor ";
        $virgula = ",";
      }
@@ -264,7 +264,7 @@ class cl_contlotv {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->d06_contri."-".$this->d06_idbql."-".$this->d06_tipos;
@@ -292,14 +292,14 @@ class cl_contlotv {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($d06_contri=null,$d06_idbql=null,$d06_tipos=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($d06_contri=null,$d06_idbql=null,$d06_tipos=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d06_contri,$d06_idbql,$d06_tipos));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -343,7 +343,7 @@ class cl_contlotv {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$d06_contri."-".$d06_idbql."-".$d06_tipos;
@@ -371,11 +371,11 @@ class cl_contlotv {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -397,10 +397,10 @@ class cl_contlotv {
       }
      return $result;
    }
-   function sql_query ( $d06_contri=null,$d06_idbql=null,$d06_tipos=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $d06_contri=null,$d06_idbql=null,$d06_tipos=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,31 +419,31 @@ class cl_contlotv {
      $sql2 = "";
      if($dbwhere==""){
        if($d06_contri!=null ){
-         $sql2 .= " where contlotv.d06_contri = $d06_contri "; 
-       } 
+         $sql2 .= " where contlotv.d06_contri = $d06_contri ";
+       }
        if($d06_idbql!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " contlotv.d06_idbql = $d06_idbql "; 
-       } 
+         }
+         $sql2 .= " contlotv.d06_idbql = $d06_idbql ";
+       }
        if($d06_tipos!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " contlotv.d06_tipos = $d06_tipos "; 
-       } 
+         }
+         $sql2 .= " contlotv.d06_tipos = $d06_tipos ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,10 +452,10 @@ class cl_contlotv {
      }
      return $sql;
   }
-   function sql_query_file ( $d06_contri=null,$d06_idbql=null,$d06_tipos=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $d06_contri=null,$d06_idbql=null,$d06_tipos=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,31 +468,31 @@ class cl_contlotv {
      $sql2 = "";
      if($dbwhere==""){
        if($d06_contri!=null ){
-         $sql2 .= " where contlotv.d06_contri = $d06_contri "; 
-       } 
+         $sql2 .= " where contlotv.d06_contri = $d06_contri ";
+       }
        if($d06_idbql!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " contlotv.d06_idbql = $d06_idbql "; 
-       } 
+         }
+         $sql2 .= " contlotv.d06_idbql = $d06_idbql ";
+       }
        if($d06_tipos!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " contlotv.d06_tipos = $d06_tipos "; 
-       } 
+         }
+         $sql2 .= " contlotv.d06_tipos = $d06_tipos ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

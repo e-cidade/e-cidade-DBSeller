@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ $clrotulo->label('DBtxt28');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -97,7 +97,7 @@ td {
   <tr>
     <td>
       <form name="form1" method="post" action="pes2_cedulac002.php">
-        <?
+        <?php
           db_input('listlotacoes', 10, "", true, "hidden", 3);
           db_input('listmatriculas', 10, "", true, "hidden", 3);
           db_input('listcgms', 10, "", true, "hidden", 3);
@@ -112,7 +112,7 @@ td {
                   <b>Ano :</b>
                 </td>
                 <td  align="left" nowrap>
-                 <?      
+                 <?php      
                    $anobase = db_anofolha() -1;
                    db_input('ano', 4, 0, true, 'text', 1, "");
                  ?>
@@ -126,7 +126,7 @@ td {
                <b>Tipo Resumo:</b>
               </td>
               <td> 
-					      <?
+					      <?php
 					        $tipo        = 'pf';
 					        $aTipoResumo = array('g'  => 'Geral', 
 					                             'l'  => 'Lotação',
@@ -142,7 +142,7 @@ td {
                <b>CGM:</b>
               </td>
               <td> 
-                <?
+                <?php
                   $tipofiltro  = '1';
                   $aTipoFiltro = array('1' => 'Geral', 
                                        '2'    => 'Intervalo',
@@ -163,12 +163,12 @@ td {
                  <table align="left">
                     <tr>
                       <td nowrap title="Numcgm" align="left" width="50px">
-                       <? db_ancora("<b>Numcgm:</b>","js_pesquisa_z01_numcgm_ini(true);",1); ?>
+                       <?php db_ancora("<b>Numcgm:</b>","js_pesquisa_z01_numcgm_ini(true);",1); ?>
                       </td>
                       <td> 
-                       <? db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_ini(false);'","z01_numcgm_ini" )  ?>
-                        <strong><? db_ancora('à',"js_pesquisa_z01_numcgm_fim(true);",1); ?></strong>   
-                       <? db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_fim(false);'","z01_numcgm_fim" )  ?>
+                       <?php db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_ini(false);'","z01_numcgm_ini" )  ?>
+                        <strong><?php db_ancora('à',"js_pesquisa_z01_numcgm_fim(true);",1); ?></strong>   
+                       <?php db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_fim(false);'","z01_numcgm_fim" )  ?>
                       </td>
                     </tr>
                  </table>
@@ -176,7 +176,7 @@ td {
                <table align="left" id="tipo-filtro-cgm-selecionados" style="display: none;">
                   <tr>
                     <td colspan="2">
-                      <?
+                      <?php
                         $cl_cgmpfpj                 = new cl_arquivo_auxiliar;
                         $cl_cgmpfpj->nome_botao     = "db_lanca_cgmpfpj";
                         $cl_cgmpfpj->cabecalho      = "<strong>Cgm Selecionados</strong>";
@@ -209,7 +209,7 @@ td {
                <b>Ordem:</b>
               </td>
               <td> 
-                <?
+                <?php
                   $aOrdem = array('a' => 'Alfabética', 
                                   'n' => 'Numérica');
                   db_select("ordem", $aOrdem, true, 1, "");
@@ -238,7 +238,7 @@ td {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

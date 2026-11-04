@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,13 +73,13 @@ class cl_reserva {
                  bi14_situacao = char(1) = Situação
                  ";
    //funcao construtor da classe
-   function cl_reserva() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reserva");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_reserva {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi14_codigo = ($this->bi14_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi14_codigo"]:$this->bi14_codigo);
        $this->bi14_carteira = ($this->bi14_carteira == ""?@$GLOBALS["HTTP_POST_VARS"]["bi14_carteira"]:$this->bi14_carteira);
@@ -125,7 +125,7 @@ class cl_reserva {
      }
    }
    // funcao para inclusao
-   function incluir ($bi14_codigo){
+   public function incluir ($bi14_codigo){
       $this->atualizacampos();
      if($this->bi14_carteira == null ){
        $this->erro_sql = " Campo Carteira nao Informado.";
@@ -281,7 +281,7 @@ class cl_reserva {
      return true;
    }
    // funcao para alteracao
-   function alterar ($bi14_codigo=null) {
+   public function alterar ($bi14_codigo=null) {
       $this->atualizacampos();
      $sql = " update reserva set ";
      $virgula = "";
@@ -481,7 +481,7 @@ class cl_reserva {
      }
    }
    // funcao para exclusao
-   function excluir ($bi14_codigo=null,$dbwhere=null) {
+   public function excluir ($bi14_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bi14_codigo));
      }else{
@@ -550,7 +550,7 @@ class cl_reserva {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -572,10 +572,10 @@ class cl_reserva {
       }
      return $result;
    }
-   function sql_query ( $bi14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $bi14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -617,7 +617,7 @@ class cl_reserva {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -626,10 +626,10 @@ class cl_reserva {
      }
      return $sql;
   }
-   function sql_query_file ( $bi14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $bi14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -650,7 +650,7 @@ class cl_reserva {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -660,12 +660,12 @@ class cl_reserva {
      return $sql;
   }
 
-  function sql_query_acervo_leitorcidadao ( $bi14_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_acervo_leitorcidadao ( $bi14_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -703,7 +703,7 @@ class cl_reserva {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

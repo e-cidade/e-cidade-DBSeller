@@ -52,7 +52,7 @@ class MenuAcessadoSessionMiddleware implements RequestMiddlewareInterface
             return;
         }
 
-        if (DefaultSession::getInstance()->status() !== DefaultSession::ACTIVE) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             return;
         }
 

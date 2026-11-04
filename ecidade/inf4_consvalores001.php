@@ -98,7 +98,7 @@ function js_verifica() {
             <tr>
               <td height="25" nowrap title="<?=$Ti01_codigo?>"><?=$Li01_codigo?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 		$result = $clinflan->sql_record($clinflan->sql_query("","i01_codigo#i01_descr#i01_dm","i01_codigo"));
                 if(!isset($i01_codigo)){
                   $i01_codigo = pg_result($result,0,1);
@@ -118,7 +118,7 @@ function js_verifica() {
 
               <td height="25" nowrap title="Exercício"></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-              <?
+              <?php
                 if (isset($i01_codigo)){
                   $i01_codigo=trim($i01_codigo);
   		          $result1 = $clinfla->sql_record($clinfla->sql_query("","","distinct substr(i02_data,1,4) as exerc ","exerc"," i02_codigo = '$i01_codigo'"));
@@ -143,7 +143,7 @@ function js_verifica() {
             </tr>
             <tr>
 	      <td colspan="5">
-              <?
+              <?php
               include(modification("inf4_manvalores002.php"));
               ?>
 	      </td>
@@ -155,7 +155,7 @@ function js_verifica() {
 	</td>
   </tr>
 </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

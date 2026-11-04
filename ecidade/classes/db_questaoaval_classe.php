@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE questaoaval
-class cl_questaoaval { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed108_i_codigo = 0; 
-   var $ed108_t_descr = null; 
-   var $ed108_c_ativo = null; 
-   var $ed108_i_sequencia = 0; 
-   var $ed108_c_tipoaval = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_questaoaval {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed108_i_codigo = 0;
+   var $ed108_t_descr = null;
+   var $ed108_c_ativo = null;
+   var $ed108_i_sequencia = 0;
+   var $ed108_c_tipoaval = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed108_i_codigo = int8 = Código 
-                 ed108_t_descr = text = Descrição 
-                 ed108_c_ativo = char(1) = Ativo 
-                 ed108_i_sequencia = int4 = Sequência 
-                 ed108_c_tipoaval = char(1) = Tipo de Avaliação 
+                 ed108_i_codigo = int8 = Código
+                 ed108_t_descr = text = Descrição
+                 ed108_c_ativo = char(1) = Ativo
+                 ed108_i_sequencia = int4 = Sequência
+                 ed108_c_tipoaval = char(1) = Tipo de Avaliação
                  ";
-   //funcao construtor da classe 
-   function cl_questaoaval() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("questaoaval"); 
+     $this->rotulo = new rotulo("questaoaval");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_questaoaval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed108_i_codigo = ($this->ed108_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed108_i_codigo"]:$this->ed108_i_codigo);
        $this->ed108_t_descr = ($this->ed108_t_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["ed108_t_descr"]:$this->ed108_t_descr);
@@ -83,9 +83,9 @@ class cl_questaoaval {
      }
    }
    // funcao para inclusao
-   function incluir ($ed108_i_codigo){ 
+   public function incluir ($ed108_i_codigo){
       $this->atualizacampos();
-     if($this->ed108_t_descr == null ){ 
+     if($this->ed108_t_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "ed108_t_descr";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_questaoaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed108_c_ativo == null ){ 
+     if($this->ed108_c_ativo == null ){
        $this->erro_sql = " Campo Ativo nao Informado.";
        $this->erro_campo = "ed108_c_ativo";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_questaoaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed108_i_sequencia == null ){ 
+     if($this->ed108_i_sequencia == null ){
        $this->erro_sql = " Campo Sequência nao Informado.";
        $this->erro_campo = "ed108_i_sequencia";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_questaoaval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed108_c_tipoaval == null ){ 
+     if($this->ed108_c_tipoaval == null ){
        $this->erro_sql = " Campo Tipo de Avaliação nao Informado.";
        $this->erro_campo = "ed108_c_tipoaval";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_questaoaval {
        return false;
      }
      if($ed108_i_codigo == "" || $ed108_i_codigo == null ){
-       $result = db_query("select nextval('questaoaval_ed108_i_codigo_seq')"); 
+       $result = db_query("select nextval('questaoaval_ed108_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: questaoaval_ed108_i_codigo_seq do campo: ed108_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: questaoaval_ed108_i_codigo_seq do campo: ed108_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed108_i_codigo = pg_result($result,0,0); 
+       $this->ed108_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from questaoaval_ed108_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed108_i_codigo)){
@@ -142,10 +142,10 @@ class cl_questaoaval {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed108_i_codigo = $ed108_i_codigo; 
+         $this->ed108_i_codigo = $ed108_i_codigo;
        }
      }
-     if(($this->ed108_i_codigo == null) || ($this->ed108_i_codigo == "") ){ 
+     if(($this->ed108_i_codigo == null) || ($this->ed108_i_codigo == "") ){
        $this->erro_sql = " Campo ed108_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_questaoaval {
        return false;
      }
      $sql = "insert into questaoaval(
-                                       ed108_i_codigo 
-                                      ,ed108_t_descr 
-                                      ,ed108_c_ativo 
-                                      ,ed108_i_sequencia 
-                                      ,ed108_c_tipoaval 
+                                       ed108_i_codigo
+                                      ,ed108_t_descr
+                                      ,ed108_c_ativo
+                                      ,ed108_i_sequencia
+                                      ,ed108_c_tipoaval
                        )
                 values (
-                                $this->ed108_i_codigo 
-                               ,'$this->ed108_t_descr' 
-                               ,'$this->ed108_c_ativo' 
-                               ,$this->ed108_i_sequencia 
-                               ,'$this->ed108_c_tipoaval' 
+                                $this->ed108_i_codigo
+                               ,'$this->ed108_t_descr'
+                               ,'$this->ed108_c_ativo'
+                               ,$this->ed108_i_sequencia
+                               ,'$this->ed108_c_tipoaval'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro das Questões das Avaliações ($this->ed108_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_questaoaval {
        $resac = db_query("insert into db_acount values($acount,1010172,1009112,'','".AddSlashes(pg_result($resaco,0,'ed108_c_tipoaval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed108_i_codigo=null) { 
+   public function alterar ($ed108_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update questaoaval set ";
      $virgula = "";
-     if(trim($this->ed108_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_i_codigo"])){ 
+     if(trim($this->ed108_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_i_codigo"])){
        $sql  .= $virgula." ed108_i_codigo = $this->ed108_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed108_i_codigo) == null ){ 
+       if(trim($this->ed108_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed108_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_questaoaval {
          return false;
        }
      }
-     if(trim($this->ed108_t_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_t_descr"])){ 
+     if(trim($this->ed108_t_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_t_descr"])){
        $sql  .= $virgula." ed108_t_descr = '$this->ed108_t_descr' ";
        $virgula = ",";
-       if(trim($this->ed108_t_descr) == null ){ 
+       if(trim($this->ed108_t_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ed108_t_descr";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_questaoaval {
          return false;
        }
      }
-     if(trim($this->ed108_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_c_ativo"])){ 
+     if(trim($this->ed108_c_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_c_ativo"])){
        $sql  .= $virgula." ed108_c_ativo = '$this->ed108_c_ativo' ";
        $virgula = ",";
-       if(trim($this->ed108_c_ativo) == null ){ 
+       if(trim($this->ed108_c_ativo) == null ){
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "ed108_c_ativo";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_questaoaval {
          return false;
        }
      }
-     if(trim($this->ed108_i_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_i_sequencia"])){ 
+     if(trim($this->ed108_i_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_i_sequencia"])){
        $sql  .= $virgula." ed108_i_sequencia = $this->ed108_i_sequencia ";
        $virgula = ",";
-       if(trim($this->ed108_i_sequencia) == null ){ 
+       if(trim($this->ed108_i_sequencia) == null ){
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "ed108_i_sequencia";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_questaoaval {
          return false;
        }
      }
-     if(trim($this->ed108_c_tipoaval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_c_tipoaval"])){ 
+     if(trim($this->ed108_c_tipoaval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed108_c_tipoaval"])){
        $sql  .= $virgula." ed108_c_tipoaval = '$this->ed108_c_tipoaval' ";
        $virgula = ",";
-       if(trim($this->ed108_c_tipoaval) == null ){ 
+       if(trim($this->ed108_c_tipoaval) == null ){
          $this->erro_sql = " Campo Tipo de Avaliação nao Informado.";
          $this->erro_campo = "ed108_c_tipoaval";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_questaoaval {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro das Questões das Avaliações nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed108_i_codigo;
@@ -327,14 +327,14 @@ class cl_questaoaval {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed108_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed108_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed108_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_questaoaval {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro das Questões das Avaliações nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed108_i_codigo;
@@ -392,11 +392,11 @@ class cl_questaoaval {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +418,10 @@ class cl_questaoaval {
       }
      return $result;
    }
-   function sql_query ( $ed108_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed108_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,15 +434,15 @@ class cl_questaoaval {
      $sql2 = "";
      if($dbwhere==""){
        if($ed108_i_codigo!=null ){
-         $sql2 .= " where questaoaval.ed108_i_codigo = $ed108_i_codigo "; 
-       } 
+         $sql2 .= " where questaoaval.ed108_i_codigo = $ed108_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,10 +451,10 @@ class cl_questaoaval {
      }
      return $sql;
   }
-   function sql_query_file ( $ed108_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed108_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,15 +467,15 @@ class cl_questaoaval {
      $sql2 = "";
      if($dbwhere==""){
        if($ed108_i_codigo!=null ){
-         $sql2 .= " where questaoaval.ed108_i_codigo = $ed108_i_codigo "; 
-       } 
+         $sql2 .= " where questaoaval.ed108_i_codigo = $ed108_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

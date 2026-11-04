@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clempagemod->rotulo->label();
        <?=@$Le84_codmod?>
     </td>
     <td> 
-<?
+<?php
 db_input('e84_codmod',6,$Ie84_codmod,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('e84_codmod',6,$Ie84_codmod,true,'text',$db_opcao,"")
        <?=@$Le84_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('e84_descr',0,0,$Ie84_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_textarea('e84_descr',0,0,$Ie84_descr,true,'text',$db_opcao,"")
        <?=@$Le84_layout?>
     </td>
     <td> 
-<?
+<?php
 db_input('e84_layout',6,$Ie84_layout,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('e84_layout',6,$Ie84_layout,true,'text',$db_opcao,"")
        <?=@$Le84_sequencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('e84_sequencia',8,$Ie84_sequencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empagemod.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

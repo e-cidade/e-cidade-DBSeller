@@ -274,15 +274,15 @@ class Recurso
      */
     const CAT = '/evento/cat';
 
-    // // /**
-    // //  * @var string
-    // //  */
-    // // const CERTIFICADO_VALIDADE = '/evento/data_certificado';
+    /**
+     * @var string
+     */
+    const CERTIFICADO_VALIDADE = '/evento/data_certificado';
 
-    // /**
-    //  * @var string
-    //  */
-    // const LIMPA_CACHE = '/evento/limpa_cache';
+    /**
+     * @var string
+     */
+    const LIMPA_CACHE = '/evento/limpa_cache';
 
     /**
      * @var string
@@ -301,6 +301,8 @@ class Recurso
 
     const INFORMACOES_COMPLEMENTARES_EVENTOS_PERIODICOS = '/evento/informacoes_complementares_eventos_periodicos';
 
+    const EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO =
+        '/evento/exame_toxicologico_motorista_profissional_empregado';
     /**
      * @param $codigoEvento
      * @return string
@@ -338,7 +340,6 @@ class Recurso
                 return self::REMUNERACAO_BENEFICIO_ENTE_PUBLICO;
             case Tipo::S1280:
                 return self::INFORMACOES_COMPLEMENTARES_EVENTOS_PERIODICOS;
-
             case Tipo::S1298:
                 return self::REABERTURA_EVENTOS_PERIODICOS;
             case Tipo::S1210:
@@ -361,6 +362,8 @@ class Recurso
                 return self::CAT;
             case Tipo::S2220:
                 return self::MONITORAMENTO_SAUDE;
+            case Tipo::S2221:
+                return self::EXAME_TOXICOLOGICO_MOTORISTA_PROFISSIONAL_EMPREGADO;
             case Tipo::S2230:
                 return self::EVENTO_AFASTAMENTO_TEMPORARIO;
             case Tipo::S2231:
@@ -424,7 +427,7 @@ class Recurso
             case Tipo::R4099:
                 return self::EFD_REABERTURA_FECH_R4000;
             default:
-                throw new InvalidArgumentException("O evento {$codigoEvento} nï¿½o existe ou nï¿½o estï¿½ mapeado.");
+                throw new InvalidArgumentException("O evento {$codigoEvento} não existe ou não está mapeado.");
         }
     }
 }

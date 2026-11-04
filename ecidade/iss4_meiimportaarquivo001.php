@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ if ( isset($oPost->importar) ) {
 		       			  <b> Arquivo :</b>
 		      			</td>
 		    		    <td> 
-			    			  <?
+			    			  <?php
 			      				db_input('arquivo',35,'',true,'file',1,"");
 			    			  ?>
 		    		    </td>
@@ -102,7 +102,7 @@ if ( isset($oPost->importar) ) {
 	  </table>	  	
   </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -119,7 +119,7 @@ if ( isset($oPost->importar) ) {
   }
 </script>
 </html>
-<?
+<?php
   if ( isset($oPost->importar) ) {
 		if ($lErro) {
 		  db_msgbox(str_replace("\n","\\n",$sMsgErro));	 

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Biblioteca
@@ -53,16 +53,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_codigo?>
   </td>
   <td>
-   <?db_input('bi09_codigo',10,$Ibi09_codigo,true,'text',3,"")?>
+   <?php db_input('bi09_codigo',10,$Ibi09_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi09_biblioteca?>">
-   <?db_ancora(@$Lbi09_biblioteca,"",3);?>
+   <?php db_ancora(@$Lbi09_biblioteca,"",3);?>
   </td>
   <td>
-   <?db_input('bi09_biblioteca',10,$Ibi09_biblioteca,true,'text',3,"")?>
-   <?db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
+   <?php db_input('bi09_biblioteca',10,$Ibi09_biblioteca,true,'text',3,"")?>
+   <?php db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_nome?>
   </td>
   <td>
-   <?db_input('bi09_nome',30,$Ibi09_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_nome',30,$Ibi09_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -78,7 +78,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_abrev?>
   </td>
   <td>
-   <?db_input('bi09_abrev',10,$Ibi09_abrev,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_abrev',10,$Ibi09_abrev,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_capacidade?>
   </td>
   <td>
-   <?db_input('bi09_capacidade',10,$Ibi09_capacidade,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_capacidade',10,$Ibi09_capacidade,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("bi09_codigo"=>@$bi09_codigo,"bi09_nome"=>@$bi09_nome,"bi09_abrev"=>@$bi09_abrev,"bi09_capacidade"=>@$bi09_capacidade);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cllocalizacao->sql_query("","*","bi09_nome"," bi09_biblioteca = $bi09_biblioteca");

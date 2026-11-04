@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllocalacervo->rotulo->label("bi20_codigo");
               <?=$Lbi20_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi20_codigo",10,$Ibi20_codigo,true,"text",4,"","chave_bi20_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllocalacervo->rotulo->label("bi20_codigo");
               <?=$Lbi20_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi20_codigo",10,$Ibi20_codigo,true,"text",4,"","chave_bi20_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllocalacervo->rotulo->label("bi20_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_localacervo.php")==true){
@@ -122,12 +122,12 @@ $cllocalacervo->rotulo->label("bi20_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

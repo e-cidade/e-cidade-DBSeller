@@ -47,7 +47,7 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
 
     /**
      * Instancia de FPDF
-     * @var FPDF
+     * @var ECidade\Pdf\Pdf
      */
     private $oPdf;
 
@@ -92,6 +92,11 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
     private $contadorVagasDisponiveisPorEscolaGlobal;
 
     /**
+     * @var array
+     */
+    private $contadorVagasDisponiveisParciaisGlobal;
+
+    /**
      * Construtor da classe.
      * @param Calendario $oCalendario Instancia do calendário
      * @param array $aEtapa Array com os códigos das etapas a serem filtradas
@@ -113,14 +118,12 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $iModulo = db_getsession("DB_modulo");
         $contadorCalendario = 0;
         $this->instaciarPdf();
-        global $head1;
-        global $head3;
 
         // Ajuste no cabeçalho do relatório para que seja impresso todos os calendários selecionados
         if (sizeof($aEscola) > 1) {
-            $head1 = 'QUADRO DE VAGAS';
+            $this->oPdf->addTitulo('QUADRO DE VAGAS', 1);
             if ($iModulo == 7159) {
-                $head3 = "Calendário : ";
+                $this->oPdf->addTitulo("Calendário : ", 3);
 
                 $arrayCaledariosRepetidos = array();
                 foreach ($aCalendario as $calendario) {// Percorre o array em busca de calendário
@@ -131,11 +134,11 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $tamanhoCalendarioRepetidos = 1;
                 foreach ($arrayCaledariosRepetidos as $calendarioRepetidos) { // Percorre os arrays sem repetição
                     // e seta o cabeçalho
-                    $head3 .= $calendarioRepetidos;
+                    $this->oPdf->editTitleByKey(3, "{$this->oPdf->getTitleByKey(3)} {$calendarioRepetidos}");
                     if ($tamanhoCalendarioRepetidos == sizeof($arrayCaledariosRepetidos)) {
-                        $head3 .= ".";
+                        $this->oPdf->editTitleByKey(3, "{$this->oPdf->getTitleByKey(3)} .");
                     } else {
-                        $head3 .= ", ";
+                        $this->oPdf->editTitleByKey(3, "{$this->oPdf->getTitleByKey(3)} , ");
                     }
                     $tamanhoCalendarioRepetidos++;
                 }
@@ -150,10 +153,6 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $contadorCalendario++;
                 $this->getEstatisticaAlunosMatriculados(); // Reliza as busca dos dados na classe PAI
                 $this->getPercentual(); // Não utilizado
-                global $head1;
-                global $head2;
-                global $head3;
-                global $head4;
 
                 $this->lPercentual = $lPercentual;
 
@@ -166,21 +165,24 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 }
 
                 // Ajuste no cabeçalho do relatório para exibiçao da escola quando for emitida pelo Módulo Secretaria
-                $head1 = 'QUADRO DE VAGAS';
+                $this->oPdf->addTitulo('QUADRO DE VAGAS', 1);
 
                 if ($iModulo == 7159) {
-                    $head2 = sizeof($aEscola) > 1
+                    $title2 = sizeof($aEscola) > 1
                         ? ""
                         : "Escola : {$oEscola->getCodigoReferencia()} - {$oEscola->getNome()}";
-                    $head3 = sizeof($aEscola) > 1
-                        ? "$head3 "
+                    $title3 = sizeof($aEscola) > 1
+                        ? ""
                         : "Calendário: {$oCalendario->getDescricao()}"; // Seta Calendário no cabeçalho e incrementa
-                    $head4 = sizeof($aEscola) > 1
+                    $title4 = sizeof($aEscola) > 1
                         ? ""
                         : "Etapa : {$sDescricaoEtapa} ";
+                        $this->oPdf->addTitulo($title2, 2);
+                        $this->oPdf->addTitulo($title3, 3);
+                        $this->oPdf->addTitulo($title4, 4);
                 } else {
-                    $head2 = "Calendário: {$oCalendario->getDescricao()}";
-                    $head3 = "Etapa : {$sDescricaoEtapa} ";
+                    $this->oPdf->addTitulo("Calendário: {$oCalendario->getDescricao()}", 2);
+                    $this->oPdf->addTitulo("Etapa : {$sDescricaoEtapa}", 3);
                 }
 
                 if ($contadorCalendario == 1) {
@@ -195,7 +197,8 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $this->contadorVagasTurmasPorEscolaGlobal,
                 $this->contadorMatriculasPorEscolaGlobal,
                 $this->contadorMatriculasNeePorEscolaGlobal,
-                $this->contadorVagasDisponiveisPorEscolaGlobal
+                $this->contadorVagasDisponiveisPorEscolaGlobal,
+                $this->contadorVagasDisponiveisParciaisGlobal
             );
         } elseif ($iTipoRelatorio === "2") {
             foreach ($aEscola as $oEscola) {
@@ -205,10 +208,6 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $contadorCalendario++;
                 $this->getEstatisticaAlunosMatriculados(); // Reliza as busca dos dados na classe PAI
                 $this->getPercentual(); // Não utilizado
-                global $head1;
-                global $head2;
-                global $head3;
-                global $head4;
 
                 $this->lPercentual = $lPercentual;
 
@@ -221,21 +220,24 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 }
 
                 // Ajuste no cabeçalho do relatório para exibiçao da escola quando for emitida pelo Módulo Secretaria
-                $head1 = 'QUADRO DE VAGAS GERAL DA REDE';
+                $this->oPdf->addTitulo('QUADRO DE VAGAS GERAL DA REDE', 1);
 
                 if ($iModulo == 7159) {
-                    $head2 = sizeof($aEscola) > 1
+                    $title2 = sizeof($aEscola) > 1
                         ? ""
                         : "Escola : {$oEscola->getCodigoReferencia()} - {$oEscola->getNome()}";
-                    $head3 = sizeof($aEscola) > 1
-                        ? "$head3 "
+                    $title3 = sizeof($aEscola) > 1
+                        ? ""
                         : "Calendário: {$oCalendario->getDescricao()}"; // Seta Calendário no cabeçalho e incrementa
-                    $head4 = sizeof($aEscola) > 1
+                    $title4 = sizeof($aEscola) > 1
                         ? ""
                         : "Etapa : {$sDescricaoEtapa} ";
+                        $this->oPdf->addTitulo($title2, 2);
+                        $this->oPdf->addTitulo($title3, 3);
+                        $this->oPdf->addTitulo($title4, 4);
                 } else {
-                    $head2 = "Calendário: {$oCalendario->getDescricao()}";
-                    $head3 = "Etapa : {$sDescricaoEtapa} ";
+                    $this->oPdf->addTitulo("Calendário: {$oCalendario->getDescricao()}", 2);
+                    $this->oPdf->addTitulo("Etapa : {$sDescricaoEtapa}", 3);
                 }
 
                 if ($contadorCalendario == 1) {
@@ -251,9 +253,9 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
 
     public function instaciarPdf()
     {
-        $this->oPdf = new PDF();
-        $this->oPdf->setfont('arial', '', 8);
-        $this->oPdf->Open();
+        $this->oPdf = new ECidade\Pdf\Pdf();
+        $this->oPdf->setfont('arial', '', 6);
+        $this->oPdf->init(false);
         $this->oPdf->AliasNbPages();
         $this->oPdf->SetAutoPageBreak(true, 8);
         $this->oPdf->setfillcolor(223);
@@ -265,12 +267,13 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $contadorVagasTurmas,
         $contadorMatriculas,
         $contadorMatriculasNee,
-        $contadorVagasDisponiveis
+        $contadorVagasDisponiveis,
+        $contadorVagasDisponiveisParciais
     )
     {
         // Rodapé Total Geral
         $altura = 4;
-        $largura = 22;
+        $largura = 14;
 
         $total_geral_turmas = $contadorTurmas;
         $total_geral_vagas_turmas = $contadorVagasTurmas;
@@ -281,14 +284,41 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $this->oPdf->SetY($this->oPdf->GetY() + 8);
         $this->oPdf->setfillcolor(self::COR_ETAPA);
         $this->oPdf->setfont('arial', 'b', 7);
-        $this->oPdf->cell($largura, $altura, "TOTAL GERAL:", 'LBT', 0, 'L', 1);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "{$total_geral_turmas}", "LBT", 0, 'C', 1);
+        $this->oPdf->cell($largura + 7, $altura, "TOTAL GERAL:", 'LBT', 0, 'C', 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura + 54, $altura, "{$total_geral_turmas}", "LBT", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$total_geral_vagas_turmas}", "LBT", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$total_geral_matriculas}", "LBT", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$total_geral_matriculas_nee}", "LBT", 0, 'C', 1);
-        $this->oPdf->cell($largura * 2, $altura, "", "LBT", 0, 'C', 1);
-        $this->oPdf->cell($largura, $altura, "{$total_geral_vagas_disponiveis}", 1, 1, 'C', 1);
+        $this->oPdf->cell(($largura * 2) + 6, $altura, "", "LBT", 0, 'C', 1);
+
+        if (!empty($contadorVagasDisponiveisParciais)) {
+            $sDescricaoVagasParciaisGlobal = "";
+            foreach ($contadorVagasDisponiveisParciais as $turno => $vagas) {
+                $sDescricaoVagasParciaisGlobal .= $vagas . substr($turno, 0, 1);
+                $sDescricaoVagasParciaisGlobal .= ",";
+            }
+            $sDescricaoVagasParciaisGlobal = rtrim($sDescricaoVagasParciaisGlobal, " ,");
+            $this->oPdf->cell(
+                $largura + 6,
+                $altura,
+                "{$total_geral_vagas_disponiveis} ({$sDescricaoVagasParciaisGlobal})*",
+                1,
+                1,
+                'C',
+                1
+            );
+            //Descritivo adicional caso tenha Vagas Parciais em Turno Integral
+            $this->oPdf->setfont('arial', '', 6);
+            $this->oPdf->cell($largura * 13, $altura,
+                                "Vagas em (*) correspondem a Vagas Parciais em turmas com Turno Integral", 0, 1, "R", 0);
+            $this->oPdf->cell(1, 0, "", 0, 1, "R", 0);
+            $this->oPdf->cell($largura * 13, $altura - 1,
+                                "T = Tarde / M = Manhã", 0, 1, "R", 0);
+            $this->oPdf->setfont('arial', 'b', 6);
+        } else {
+            $this->oPdf->cell($largura + 6, $altura, "{$total_geral_vagas_disponiveis}", 1, 1, 'C', 1);
+        }
     }
 
     public function montarDadosPorEtapa()
@@ -410,7 +440,7 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
     public function cabecalhoPorEtapa($iPosicaoX, $altura, $largura, $larguraReduzida)
     {
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
+        $this->oPdf->setfont('arial', 'b', 6);
 
         $this->oPdf->SetY($this->oPdf->GetY() + 6);
         $this->oPdf->cell(0, 0, "TURMAS REGULARES", 0, 0, "C", 0);
@@ -419,13 +449,13 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $this->oPdf->SetX($iPosicaoX);
         $this->oPdf->cell($largura, $altura, "SÉRIE", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "TURMAS", 1, 0, "C", 1);
-        $this->oPdf->cell($larguraReduzida, $altura, "VAGAS TURMA", 1, 0, "C", 1);
+        $this->oPdf->cell($larguraReduzida, $altura, "V. TURMA", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "MATRÍCULAS", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, 'INCLUSÃO', 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "V. DISP", 1, 1, "C", 1);
 
         $this->oPdf->setfillcolor(self::COR_TURMA);
-        $this->oPdf->setfont('arial', '', 8);
+        $this->oPdf->setfont('arial', '', 6);
     }
 
     public function imprimirPorEtapa($aEtapas)
@@ -450,14 +480,14 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
             }
 
             $this->oPdf->SetX($iPosicaoX);
-            $this->oPdf->cell($largura, $altura, "{$aEtapa->nome_etapa}", "LB", 0, "L", 0);
+            $this->oPdf->cell($largura, $altura, "{$aEtapa->nome_etapa}", "LB", 0, "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$aEtapa->total_turmas}", "LB", 0, "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$aEtapa->total_vagas_turmas}", "LB", 0, "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$aEtapa->total_matriculas}", 1, "LB", "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$aEtapa->total_matriculas_nee}", "LB", 0, "C", 0);
-            $this->oPdf->setfont('arial', 'b', 8);
+            $this->oPdf->setfont('arial', 'b', 6);
             $this->oPdf->cell($larguraReduzida, $altura, "{$aEtapa->total_vagas_disponiveis}", "LBR", 1, "C", 0);
-            $this->oPdf->setfont('arial', '', 8);
+            $this->oPdf->setfont('arial', '', 6);
 
             $contadorTurmas += $aEtapa->total_turmas;
             $contadorVagasTurmas += $aEtapa->total_vagas_turmas;
@@ -468,8 +498,8 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
 
         $this->oPdf->SetX($iPosicaoX);
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "SUBTOTAL", "LB", 0, 'R', 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura, $altura, "SUBTOTAL", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorTurmas}", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorVagasTurmas}", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorMatriculas}", "LB", 0, 'C', 1);
@@ -493,13 +523,13 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $this->oPdf->SetX($iPosicaoX);
         $this->oPdf->cell($largura, $altura, "SÉRIE", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "TURMAS", 1, 0, "C", 1);
-        $this->oPdf->cell($larguraReduzida, $altura, "VAGAS TURMA", 1, 0, "C", 1);
+        $this->oPdf->cell($larguraReduzida, $altura, "V. TURMA", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "MATRÍCULAS", 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, 'INCLUSÃO', 1, 0, "C", 1);
         $this->oPdf->cell($larguraReduzida, $altura, "V. DISP", 1, 1, "C", 1);
 
         $this->oPdf->setfillcolor(self::COR_TURMA);
-        $this->oPdf->setfont('arial', '', 8);
+        $this->oPdf->setfont('arial', '', 6);
 
         if (empty($this->aTurmasMulti)) {
             $this->oPdf->cell(176, $altura * 1.2, "Não foram encontradas turmas multietapa.", "LRB", 1, "C", 0);
@@ -516,13 +546,13 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $this->oPdf->SetX($iPosicaoX);
                 $this->oPdf->cell($largura, $altura, "SÉRIE", 1, 0, "C", 1);
                 $this->oPdf->cell($larguraReduzida, $altura, "TURMAS", 1, 0, "C", 1);
-                $this->oPdf->cell($larguraReduzida, $altura, "VAGAS TURMA", 1, 0, "C", 1);
+                $this->oPdf->cell($larguraReduzida, $altura, "V. TURMA", 1, 0, "C", 1);
                 $this->oPdf->cell($larguraReduzida, $altura, "MATRÍCULAS", 1, 0, "C", 1);
                 $this->oPdf->cell($larguraReduzida, $altura, 'INCLUSÃO', 1, 0, "C", 1);
                 $this->oPdf->cell($larguraReduzida, $altura, "V. DISP", 1, 1, "C", 1);
 
                 $this->oPdf->setfillcolor(self::COR_TURMA);
-                $this->oPdf->setfont('arial', '', 8);
+                $this->oPdf->setfont('arial', '', 6);
             }
 
             $this->oPdf->SetX($iPosicaoX);
@@ -536,16 +566,16 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $this->oPdf->SetFontSize($tamanhoFonte);
             }
 
-            $this->oPdf->cell($largura, $altura, "{$turmaMulti->nome_etapa_multi}", "LB", 0, "L", 0);
+            $this->oPdf->cell($largura, $altura, "{$turmaMulti->nome_etapa_multi}", "LB", 0, "C", 0);
             // Retorna fonte ao tamanho original
-            $this->oPdf->SetFontSize(8);
+            $this->oPdf->SetFontSize(6);
             $this->oPdf->cell($larguraReduzida, $altura, "{$turmaMulti->total_turmas}", "LB", 0, "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$turmaMulti->total_vagas_turmas}", "LB", 0, "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$turmaMulti->total_matriculas}", 1, "LB", "C", 0);
             $this->oPdf->cell($larguraReduzida, $altura, "{$turmaMulti->total_matriculas_nee}", "LB", 0, "C", 0);
-            $this->oPdf->setfont('arial', 'b', 8);
+            $this->oPdf->setfont('arial', 'b', 6);
             $this->oPdf->cell($larguraReduzida, $altura, "{$turmaMulti->total_vagas_disponiveis}", "LBR", 1, "C", 0);
-            $this->oPdf->setfont('arial', '', 8);
+            $this->oPdf->setfont('arial', '', 6);
 
             $contadorTurmasMulti += $turmaMulti->total_turmas;
             $contadorVagasTurmasMulti += $turmaMulti->total_vagas_turmas;
@@ -557,8 +587,8 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         // Turmas Multietapa Rodapé
         $this->oPdf->SetX($iPosicaoX);
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "SUBTOTAL", "LB", 0, 'R', 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura, $altura, "SUBTOTAL", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorTurmasMulti}", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorVagasTurmasMulti}", "LB", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$contadorMatriculasMulti}", "LB", 0, 'C', 1);
@@ -574,8 +604,8 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
 
         $this->oPdf->SetY($this->oPdf->GetY() + 12);
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "TOTAL GERAL:", 'LBT', 0, 'L', 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura, $altura, "TOTAL GERAL:", 'LBT', 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$total_geral_turmas}", "LBT", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$total_geral_vagas_turmas}", "LBT", 0, 'C', 1);
         $this->oPdf->cell($larguraReduzida, $altura, "{$total_geral_matriculas}", "LBT", 0, 'C', 1);
@@ -588,7 +618,7 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
     {       
         $this->oPdf->setX(10);
         $altura = 4;
-        $largura = 22;
+        $largura = 14;
 
         // Popula telefones de contato da escola
         $contatos = " ";
@@ -604,20 +634,20 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $this->oPdf->cell(74, $altura, "", 0, 1, "R", 0);
         $this->oPdf->cell($largura * 8, $altura, "{$escola->getCodigoReferencia()} - {$escola->getNome()}   ({$calendario->getDescricao()}) ", 0, 0, "L", 0);
         $this->oPdf->cell(1, $altura, "", 0, 1, "R", 0);
-        $this->oPdf->cell($largura * 4, $altura, "BAIRRO: {$escola->getBairro()}", 0, 0, "L", 0);
-        $this->oPdf->cell($largura * 4, $altura, "TELEFONE: $contatos", 0, 1, "R", 0);
+        $this->oPdf->cell($largura * 6, $altura, "BAIRRO: {$escola->getBairro()}", 0, 0, "L", 0);
+        $this->oPdf->cell($largura * 6, $altura, "TELEFONE: $contatos", 0, 1, "R", 0);
 
         // Seta cabeçalho das colunas
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "SÉRIE", 1, 0, "C", 1);
-        $this->oPdf->cell($largura, $altura, "TURMA", 1, 0, "C", 1);
-        $this->oPdf->cell($largura, $altura, "VAGAS TURMA", 1, 0, "C", 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura + 7, $altura, "SÉRIE", 1, 0, "C", 1);
+        $this->oPdf->cell($largura + 54, $altura, "TURMA", 1, 0, "C", 1);
+        $this->oPdf->cell($largura, $altura, "V. TURMA", 1, 0, "C", 1);
         $this->oPdf->cell($largura, $altura, "MATRÍCULA", 1, 0, "C", 1);
         $this->oPdf->cell($largura, $altura, "INCLUSÃO", 1, 0, "C", 1);
-        $this->oPdf->cell($largura - 5, $altura, "TP TURMA", 1, 0, "C", 1);
-        $this->oPdf->cell($largura, $altura, "TURNO", 1, 0, "C", 1);
-        $this->oPdf->cell($largura + 5, $altura, "V. DISP", 1, 1, "C", 1);
+        $this->oPdf->cell($largura, $altura, "TP TURMA", 1, 0, "C", 1);
+        $this->oPdf->cell($largura + 6, $altura, "TURNO", 1, 0, "C", 1);
+        $this->oPdf->cell($largura + 6, $altura, "V. DISP", 1, 1, "C", 1);
 
         // Array para guardar turmas multietapas únicas
         $aTurmasMultiProcessadas = [];
@@ -629,7 +659,8 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 foreach ($oEtapa->aTurmas as $oTurma) {
                     $modelTurma = TurmaRepository::getTurmaByCodigo($oTurma->iCodigo);
                     $aModelTurmaEtapas = $modelTurma->getEtapas();
-                    
+                    $totalVagasDisponiveis = 0;
+
                     // Monta as turmas multietapa
                     if (count($aModelTurmaEtapas) > 1 || $modelTurma->getTipoDaTurma() == 3 || $modelTurma->getTipoDaTurma() == 7) {
                         if (in_array($oTurma->iCodigo, $aTurmasMultiProcessadas)) {
@@ -637,6 +668,23 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                         }
                         $aTurmasMultiProcessadas[] = $oTurma->iCodigo;
                     } else {
+                        if ($oTurma->lTurnoIntegral && $oTurma->lIsInfantil) {
+                            $oTurma->total_vagas = ($oTurma->total_vagas / 2);
+                            $totalVagasDisponiveis = $oTurma->total_vagas_inteiras;
+                            ksort($oTurma->vagas_parciais, SORT_STRING);
+                            if ($oTurma->total_vagas_inteiras > 0) {
+                                $vagasParciaisPosCalculo = 0;
+                                foreach ($oTurma->vagas_parciais as $turno => $vagas) {
+                                    $oTurma->vagas_parciais[$turno] = $vagas - $oTurma->total_vagas_inteiras;
+                                }
+                                foreach ($oTurma->vagas_parciais as $turno => $vagas) {
+                                    $vagasParciaisPosCalculo += (int)$vagas;
+                                }
+                                $oTurma->total_disponiveis = $vagasParciaisPosCalculo;
+                            }
+                        } else {
+                            $totalVagasDisponiveis = $oTurma->total_disponiveis;
+                        }
                         $this->aTurmasRegulares[$oTurma->iCodigo] = (object)[
                             'etapa_turma_regular' => $oEtapa->sNome,
                             'nome_turma_regular' => $oTurma->sTurma,
@@ -645,7 +693,9 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                             'matriculas_nee_turma_regular' => $oTurma->matriculas_nee,
                             'tipo_turma_regular' => '',
                             'turno_turma_regular' => $oTurma->sTurno,
-                            'vagas_disponiveis_turma_regular' => $oTurma->total_disponiveis
+                            'vagas_disponiveis_turma_regular' => $totalVagasDisponiveis,
+                            'vagas_disponiveis_parcial' => $oTurma->total_disponiveis,
+                            'vagas_parciais_por_turno' => $oTurma->vagas_parciais
                         ];
                     }
                 }
@@ -656,6 +706,7 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
             foreach ($oEnsino->aEtapa as $oEtapa) {
                 foreach ($oEtapa->aTurmas as $oTurma) {
                     $multiEatapa = [];
+                    $totalVagasDisponiveis = 0;
                     
                     if (in_array($oTurma->iCodigo, $aTurmasMultiProcessadas)) {
                         $modelTurma = TurmaRepository::getTurmaByCodigo($oTurma->iCodigo);
@@ -664,12 +715,29 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                         if (!isset($etapaCenso)) {
                             continue;
                         }
-                   
+
                         foreach ($aModelTurmaEtapas as $turmaEatapa) {
                             $multiEatapa[] = $turmaEatapa->getEtapa()->getNome();
                         }
 
                         if (!array_key_exists($oTurma->iCodigo, $this->aTurmasMulti)) {
+                            if ($oTurma->lTurnoIntegral && $oTurma->lIsInfantil) {
+                                $oTurma->total_vagas = ($oTurma->total_vagas / 2);
+                                $totalVagasDisponiveis = $oTurma->total_vagas_inteiras;
+                                ksort($oTurma->vagas_parciais, SORT_STRING);
+                                if ($oTurma->total_vagas_inteiras > 0) {
+                                    $vagasParciaisPosCalculo = 0;
+                                    foreach ($oTurma->vagas_parciais as $turno => $vagas) {
+                                        $oTurma->vagas_parciais[$turno] = $vagas - $oTurma->total_vagas_inteiras;
+                                    }
+                                    foreach ($oTurma->vagas_parciais as $turno => $vagas) {
+                                        $vagasParciaisPosCalculo += (int)$vagas;
+                                    }
+                                    $oTurma->total_disponiveis = $vagasParciaisPosCalculo;
+                                }
+                            } else {
+                                $totalVagasDisponiveis = $oTurma->total_disponiveis;
+                            }
                             $this->aTurmasMulti[$oTurma->iCodigo] = (object)[
                                 'etapa_turma_multi' => $multiEatapa,
                                 'nome_turma_multi' => $oTurma->sTurma,
@@ -678,7 +746,9 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                                 'matriculas_nee_turma_multi' => $oTurma->matriculas_nee,
                                 'tipo_turma_multi' => 'MULTI',
                                 'turno_turma_multi' => $oTurma->sTurno,
-                                'vagas_disponiveis_turma_multi' => $oTurma->total_disponiveis
+                                'vagas_disponiveis_turma_multi' => $totalVagasDisponiveis,
+                                'vagas_disponiveis_parcial' => $oTurma->total_disponiveis,
+                                'vagas_parciais_por_turno' => $oTurma->vagas_parciais
                             ];
                         } else {
                             $this->aTurmasMulti[$oTurma->iCodigo]->matriculas_turma_multi +=
@@ -697,6 +767,7 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $contadorMatriculas = 0;
         $contadorMatriculasNee = 0;
         $contadorVagasDisponiveis = 0;
+        $contadorVagasParciais = [];
 
         // Imprime turmas regulares
         foreach ($this->aTurmasRegulares as $oTurmaRegular) {
@@ -723,57 +794,85 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 $this->oPdf->cell(74, $altura, "", 0, 1, "R", 0);
                 $this->oPdf->cell($largura * 8, $altura, "{$escola->getCodigoReferencia()} - {$escola->getNome()}   ({$calendario->getDescricao()}) ", 0, 0, "L", 0);
                 $this->oPdf->cell(1, $altura, "", 0, 1, "R", 0);
-                $this->oPdf->cell($largura * 4, $altura, "BAIRRO: {$escola->getBairro()}", 0, 0, "L", 0);
-                $this->oPdf->cell($largura * 4, $altura, "TELEFONE: $contatos", 0, 1, "R", 0);
+                $this->oPdf->cell($largura * 6, $altura, "BAIRRO: {$escola->getBairro()}", 0, 0, "L", 0);
+                $this->oPdf->cell($largura * 6, $altura, "TELEFONE: $contatos", 0, 1, "R", 0);
 
                 // Seta cabeçalho das colunas
                 $this->oPdf->setfillcolor(self::COR_ETAPA);
-                $this->oPdf->setfont('arial', 'b', 8);
-                $this->oPdf->cell($largura, $altura, "SÉRIE", 1, 0, "C", 1);
-                $this->oPdf->cell($largura, $altura, "TURMA", 1, 0, "C", 1);
-                $this->oPdf->cell($largura, $altura, "VAGAS TURMA", 1, 0, "C", 1);
+                $this->oPdf->setfont('arial', 'b', 6);
+                $this->oPdf->cell($largura + 7, $altura, "SÉRIE", 1, 0, "C", 1);
+                $this->oPdf->cell($largura + 54, $altura, "TURMA", 1, 0, "C", 1);
+                $this->oPdf->cell($largura, $altura, "V. TURMA", 1, 0, "C", 1);
                 $this->oPdf->cell($largura, $altura, "MATRÍCULA", 1, 0, "C", 1);
                 $this->oPdf->cell($largura, $altura, "INCLUSÃO", 1, 0, "C", 1);
-                $this->oPdf->cell($largura - 5, $altura, "TP TURMA", 1, 0, "C", 1);
-                $this->oPdf->cell($largura, $altura, "TURNO", 1, 0, "C", 1);
-                $this->oPdf->cell($largura + 5, $altura, "V. DISP", 1, 1, "C", 1);
+                $this->oPdf->cell($largura, $altura, "TP TURMA", 1, 0, "C", 1);
+                $this->oPdf->cell($largura + 6, $altura, "TURNO", 1, 0, "C", 1);
+                $this->oPdf->cell($largura + 6, $altura, "V. DISP", 1, 1, "C", 1);
             }
 
             $this->oPdf->setfillcolor(self::COR_TURMA);
-            $this->oPdf->setfont('arial', '', 8);
+            $this->oPdf->setfont('arial', '', 6);
 
-            $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->etapa_turma_regular}", "LB", 0, "L", 0);
-            $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->nome_turma_regular}", "LB", 0, "C", 0);
+            $this->oPdf->cell($largura + 7, $altura, "{$oTurmaRegular->etapa_turma_regular}", "LB", 0, "C", 0);
+            $this->oPdf->cell($largura + 54, $altura, "{$oTurmaRegular->nome_turma_regular}", "LB", 0, "L", 0);
             $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->vagas_turma_regular}", "LB", 0, "C", 0);
             $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->matriculas_turma_regular}", "LB", 0, "C", 0);
             $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->matriculas_nee_turma_regular}", "LB", 0, "C", 0);
-            $this->oPdf->cell($largura - 5, $altura, "{$oTurmaRegular->tipo_turma_regular}", "LB", 0, "C", 0);
+            $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->tipo_turma_regular}", "LB", 0, "C", 0);
 
-            // Ajusta o tamanho da fonte dinamicamente
+            // Verifica se o turno tem INTEGRAL MANHA E TARDE
             $content = "{$oTurmaRegular->turno_turma_regular} ";
-            $tamanhoString = $this->oPdf->GetStringWidth($content);
-
-            if ($tamanhoString > $largura) {
-                $tamanhoFonte = 8 * $largura / $tamanhoString;
-                $this->oPdf->SetFontSize($tamanhoFonte);
+            $verificaIntegral = stripos($content, 'INTEGRAL') !== false;
+            $verificaManha = stripos($content, 'MANH') !== false;
+            $verificaTarde = stripos($content, 'TARDE') !== false;
+            if ($verificaIntegral && $verificaManha && $verificaTarde) {
+                $content = 'INTEGRAL';
             }
 
-            $this->oPdf->cell($largura, $altura, "{$oTurmaRegular->turno_turma_regular}", "LB", 0, "C", 0);
+            $this->oPdf->cell($largura + 6, $altura, "{$content}", "LB", 0, "C", 0);
 
-            $this->oPdf->setfont('arial', 'b', 8);
-            $this->oPdf->cell($largura + 5, $altura, "{$oTurmaRegular->vagas_disponiveis_turma_regular}", "LBR", 1, "C", 0);
-            $this->oPdf->setfont('arial', '', 8);
+            $this->oPdf->setfont('arial', 'b', 6);
+            if ($oTurmaRegular->vagas_disponiveis_parcial > 0) {
+                $sDescricaoVagas = "";
+                foreach ($oTurmaRegular->vagas_parciais_por_turno as $turno => $vagas) {
+                    $sDescricaoVagas .= $vagas . substr($turno, 0, 1);
+                    $sDescricaoVagas .= ",";
+                }
+                $sDescricaoVagas = rtrim($sDescricaoVagas, " ,");
+                if ($sDescricaoVagas != '') {
+                    $this->oPdf->cell(
+                        $largura + 6,
+                        $altura,
+                        "{$oTurmaRegular->vagas_disponiveis_turma_regular} ({$sDescricaoVagas})*",
+                        "LBR",
+                        1,
+                        "C",
+                        0
+                    );
+                } else {
+                    $this->oPdf->cell($largura + 6, $altura, "{$oTurmaRegular->vagas_disponiveis_turma_regular}", "LBR", 1, "C", 0);
+                }
+            } else {
+                $this->oPdf->cell($largura + 6, $altura, "{$oTurmaRegular->vagas_disponiveis_turma_regular}", "LBR", 1, "C", 0);
+            }
+            $this->oPdf->setfont('arial', '', 6);
 
             $contadorTurmas++;
             $contadorVagasTurmas += $oTurmaRegular->vagas_turma_regular;
             $contadorMatriculas += $oTurmaRegular->matriculas_turma_regular;
             $contadorMatriculasNee += $oTurmaRegular->matriculas_nee_turma_regular;
             $contadorVagasDisponiveis += $oTurmaRegular->vagas_disponiveis_turma_regular;
+
+            if ($oTurmaRegular->vagas_disponiveis_parcial > 0) {
+                foreach ($oTurmaRegular->vagas_parciais_por_turno as $turno => $vagas) {
+                    $contadorVagasParciais[$turno] += $vagas;
+                }
+            }
         }
 
         // Imprime turmas multietapa
         foreach ($this->aTurmasMulti as $oTurmaMulti) {
-            $this->oPdf->setfont('arial', '', 8);
+            $this->oPdf->setfont('arial', '', 6);
 
             // Ajusta o tamanho da fonte dinamicamente
             $content = "{$oTurmaMulti->etapa_turma_multi[0]} ";
@@ -788,51 +887,98 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
                 
                 foreach ($oTurmaMulti->etapa_turma_multi as $value) {
                     $acAltura += $altura;
-                    $this->oPdf->cell($largura, $altura, "{$value}", 1, 1, "L", 0);
+                    $this->oPdf->cell($largura + 7, $altura, "{$value}", 1, 1, "L", 0);
                 }
                 $this->oPdf->setY($this->oPdf->getY() - $acAltura);
-                $this->oPdf->setX($this->oPdf->getX() + $largura);
-                $this->oPdf->setfont('arial', '', 8);
-                $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->nome_turma_multi}", "LB", 0, "C", 0);
+                $this->oPdf->setX($this->oPdf->getX() + $largura + 7);
+                $this->oPdf->setfont('arial', '', 6);
+                $this->oPdf->cell($largura + 54, $acAltura, "{$oTurmaMulti->nome_turma_multi}", "LB", 0, "L", 0);
                 $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->vagas_turma_multi}", "LB", 0, "C", 0);
                 $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->matriculas_turma_multi}", "LB", 0, "C", 0);
                 $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->matriculas_nee_turma_multi}", "LB", 0, "C", 0);
-                $this->oPdf->cell($largura - 5, $acAltura, "{$oTurmaMulti->tipo_turma_multi}", "LB", 0, "C", 0);
+                $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->tipo_turma_multi}", "LB", 0, "C", 0);
                 
-                // Ajusta o tamanho da fonte dinamicamente
+                // Verifica se o turno tem INTEGRAL MANHA E TARDE
                 $content = "{$oTurmaMulti->turno_turma_multi} ";
-                $tamanhoString = $this->oPdf->GetStringWidth($content);
-    
-                if ($tamanhoString > $largura) {
-                    $tamanhoFonte = 8 * $largura / $tamanhoString;
-                    $this->oPdf->SetFontSize($tamanhoFonte);
+                $verificaIntegral = stripos($content, 'INTEGRAL') !== false;
+                $verificaManha = stripos($content, 'MANH') !== false;
+                $verificaTarde = stripos($content, 'TARDE') !== false;
+                if ($verificaIntegral && $verificaManha && $verificaTarde) {
+                    $content = 'INTEGRAL';
                 }
-    
-                $this->oPdf->cell($largura, $acAltura, "{$oTurmaMulti->turno_turma_multi}", "LB", 0, "C", 0);
-    
-                $this->oPdf->setfont('arial', 'b', 8);
-                $this->oPdf->cell($largura + 5, $acAltura, "{$oTurmaMulti->vagas_disponiveis_turma_multi}", "LBR", 1, "C", 0);
-                $this->oPdf->setfont('arial', '', 8);
-    
+
+                $this->oPdf->cell($largura + 6, $acAltura, "{$content}", "LB", 0, "C", 0);
+
+                $this->oPdf->setfont('arial', 'b', 6);
+                if ($oTurmaMulti->vagas_disponiveis_parcial > 0) {
+                    $sDescricaoVagas = "";
+                    foreach ($oTurmaMulti->vagas_parciais_por_turno as $turno => $vagas) {
+                        $sDescricaoVagas .= $vagas . substr($turno, 0, 1);
+                        $sDescricaoVagas .= ",";
+                    }
+                    $sDescricaoVagas = rtrim($sDescricaoVagas, " ,");
+                    if ($sDescricaoVagas != '') {
+                        $this->oPdf->cell(
+                            $largura + 6,
+                            $acAltura,
+                            "{$oTurmaMulti->vagas_disponiveis_turma_multi} ({$sDescricaoVagas})*",
+                            "LBR",
+                            1,
+                            "C",
+                            0
+                        );
+                    } else {
+                        $this->oPdf->cell($largura + 6, $acAltura, "{$oTurmaMulti->vagas_disponiveis_turma_multi}", "LBR", 1, "C", 0);
+                    }
+                } else {
+                    $this->oPdf->cell($largura + 6, $acAltura, "{$oTurmaMulti->vagas_disponiveis_turma_multi}", "LBR", 1, "C", 0);
+                }
+                $this->oPdf->setfont('arial', '', 6);
+
                 $contadorTurmas++;
                 $contadorVagasTurmas += $oTurmaMulti->vagas_turma_multi;
                 $contadorMatriculas += $oTurmaMulti->matriculas_turma_multi;
                 $contadorMatriculasNee += $oTurmaMulti->matriculas_nee_turma_multi;
                 $contadorVagasDisponiveis += $oTurmaMulti->vagas_disponiveis_turma_multi;
+
+                if ($oTurmaMulti->vagas_disponiveis_parcial > 0) {
+                    foreach ($oTurmaMulti->vagas_parciais_por_turno as $turno => $vagas) {
+                        $contadorVagasParciais[$turno] += $vagas;
+                    }
+                }
             }
         }
 
         // Rodapé
         $this->oPdf->setfillcolor(self::COR_ETAPA);
-        $this->oPdf->setfont('arial', 'b', 8);
-        $this->oPdf->cell($largura, $altura, "SUBTOTAL", "LB", 0, 'R', 1);
-        $this->oPdf->cell($largura, $altura, "{$contadorTurmas}", "LB", 0, 'C', 1);
+        $this->oPdf->setfont('arial', 'b', 6);
+        $this->oPdf->cell($largura + 7, $altura, "SUBTOTAL", "LB", 0, 'C', 1);
+        $this->oPdf->cell($largura + 54, $altura, "{$contadorTurmas}", "LB", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$contadorVagasTurmas}", "LB", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$contadorMatriculas}", "LB", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "{$contadorMatriculasNee}", "LBR", 0, 'C', 1);
         $this->oPdf->cell($largura, $altura, "", "B", 0, "C", 1);
-        $this->oPdf->cell($largura - 5, $altura, "", "B", 0, "C", 1);
-        $this->oPdf->cell($largura + 5, $altura, "{$contadorVagasDisponiveis}", "LBR", 0, 'C', 1);
+        $this->oPdf->cell($largura + 6 , $altura, "", "B", 0, "C", 1);
+
+        if (!empty($contadorVagasParciais)) {
+            $sDescricaoVagasParcialContador = "";
+            foreach ($contadorVagasParciais as $turno => $vagas) {
+                $sDescricaoVagasParcialContador .= $vagas . substr($turno, 0, 1);
+                $sDescricaoVagasParcialContador .= ",";
+            }
+            $sDescricaoVagasParcialContador = rtrim($sDescricaoVagasParcialContador, " ,");
+            $this->oPdf->cell(
+                $largura + 6,
+                $altura,
+                "{$contadorVagasDisponiveis} ({$sDescricaoVagasParcialContador})*",
+                "LBR",
+                0,
+                'C',
+                1
+            );
+        } else {
+            $this->oPdf->cell($largura + 6, $altura, "{$contadorVagasDisponiveis}", "LBR", 0, 'C', 1);
+        }
 
         $this->contadorTurmasPorEscolaGlobal += $contadorTurmas;
         $this->contadorVagasTurmasPorEscolaGlobal += $contadorVagasTurmas;
@@ -840,8 +986,29 @@ class RelatorioQuadroDeVagas extends EstatisticaAlunosMatriculados
         $this->contadorMatriculasNeePorEscolaGlobal += $contadorMatriculasNee;
         $this->contadorVagasDisponiveisPorEscolaGlobal += $contadorVagasDisponiveis;
 
-        // Insere linha em branco para dar um espaço entre cada tabela de escola
-        $this->oPdf->cell($largura, $altura, "", 0, 1, "C", 0);
+        if (!empty($contadorVagasParciais)) {
+            foreach ($contadorVagasParciais as $turno => $vagas) {
+                $this->contadorVagasDisponiveisParciaisGlobal[$turno] += $vagas;
+            }
+        }
+
+        //Condicao caso não tenha turma integral e infantil
+        if (!empty($contadorVagasParciais)) {
+            $this->oPdf->cell(1, $altura, "", 0, 1, "R", 0);
+            $this->oPdf->setfont('arial', '', 6);
+            $this->oPdf->cell($largura * 13, $altura,
+                                "Vagas em (*) correspondem a Vagas Parciais em turmas com Turno Integral", 0, 1, "R", 0);
+            $this->oPdf->cell(1, 0, "", 0, 1, "R", 0);
+            $this->oPdf->cell($largura * 13, $altura - 1,
+                                "T = Tarde / M = Manhã", 0, 1, "R", 0);
+            $this->oPdf->setfont('arial', 'b', 6);
+
+            // Insere linha em branco para dar um espaço entre cada tabela de escola
+            $this->oPdf->cell($largura, $altura / 4, "", 0, 1, "C", 0);
+        } else {
+            // Insere linha em branco para dar um espaço entre cada tabela de escola
+            $this->oPdf->cell($largura, $altura, "", 0, 1, "C", 0);
+        }
     }
 
     public function gerarRelatorio() // Função para gerar pdf chamado no edu2_QuadroDeVagas002.php

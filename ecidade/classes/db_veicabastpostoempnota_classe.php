@@ -54,7 +54,7 @@ class cl_veicabastpostoempnota
                  ";
 
     //funcao construtor da classe
-    function cl_veicabastpostoempnota()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicabastpostoempnota");
@@ -62,7 +62,7 @@ class cl_veicabastpostoempnota
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -73,7 +73,7 @@ class cl_veicabastpostoempnota
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve72_codigo = ($this->ve72_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve72_codigo"] : $this->ve72_codigo);
@@ -85,7 +85,7 @@ class cl_veicabastpostoempnota
     }
 
     // funcao para inclusao
-    function incluir($ve72_codigo)
+    public function incluir($ve72_codigo)
     {
         $this->atualizacampos();
         if ($this->ve72_veicabastposto == null) {
@@ -196,7 +196,7 @@ class cl_veicabastpostoempnota
     }
 
     // funcao para alteracao
-    function alterar($ve72_codigo = null)
+    public function alterar($ve72_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update veicabastpostoempnota set ";
@@ -306,7 +306,7 @@ class cl_veicabastpostoempnota
     }
 
     // funcao para exclusao
-    function excluir($ve72_codigo = null, $dbwhere = null)
+    public function excluir($ve72_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ve72_codigo));
@@ -383,7 +383,7 @@ class cl_veicabastpostoempnota
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -412,7 +412,7 @@ class cl_veicabastpostoempnota
         return $result;
     }
 
-    function sql_query($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -456,7 +456,7 @@ class cl_veicabastpostoempnota
         return $sql;
     }
 
-    function sql_query_abastposto($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_abastposto($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -495,7 +495,7 @@ class cl_veicabastpostoempnota
         return $sql;
     }
 
-    function sql_query_file($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -533,7 +533,7 @@ class cl_veicabastpostoempnota
         return $sql;
     }
 
-    function sql_query_verificanota($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_verificanota($ve72_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

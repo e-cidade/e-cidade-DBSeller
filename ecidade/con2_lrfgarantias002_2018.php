@@ -49,9 +49,8 @@ $response = $kernel->handle(
 );
 
 try {
-    if(db_getsession('DB_id_usuario') != 1){
-
-        if(!ProcessamentoRelatorioLegal::verificarAnexoLiberado(ProcessamentoRelatorioLegal::ANEXO_III)) {
+    if (db_getsession('DB_id_usuario') != 1) {
+        if (!ProcessamentoRelatorioLegal::verificarAnexoLiberado(ProcessamentoRelatorioLegal::ANEXO_III)) {
             db_redireciona('db_erros.php?db_erro='. urlencode("O relatório não está disponível para o exercício {$anousu}. Aguarde a liberação."));
         }
     }

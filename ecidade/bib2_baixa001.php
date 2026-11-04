@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,9 +70,9 @@ $cltipo = new cl_tipoitem;
      <strong><label for="data1">Período:</label></strong>
      </td>
      <td>
-      <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+      <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
       <label for="data2">Até</label>
-      <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+      <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $cltipo = new cl_tipoitem;
        <label for="tipo"><strong>Filtro:</strong></label>
      </td>
      <td>
-      <?
+      <?php
       $result_tipo = $cltipo->sql_record($cltipo->sql_query());
       db_selectrecord("tipo",$result_tipo,true,2,"","","",1,"",1);
       ?>
@@ -102,7 +102,7 @@ $cltipo = new cl_tipoitem;
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("nome");
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Ty20_grafica?>">
-             <?
+             <?php
              db_ancora(@$Ly20_grafica,"js_pesquisay20_grafica(true);",$db_opcao);
              ?>
           </td>

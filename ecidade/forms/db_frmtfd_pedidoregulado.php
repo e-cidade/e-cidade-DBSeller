@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,7 +50,7 @@ $oRotulo->label("tf34_i_especmedico");
      <b>Início:</b>
     </td>
       <td>
-        <?
+        <?php
         db_inputdata('data1', @$dia1, @$mes1, @$ano1, true, 'text', 1, "");
         ?>
       </td>
@@ -60,19 +60,19 @@ $oRotulo->label("tf34_i_especmedico");
       <b>Fim:</b>
     </td>
       <td>
-        <?
+        <?php
         db_inputdata('data2', @$dia2, @$mes2, @$ano2, true, 'text', 1, "onchange=js_validaData();");
         ?>
       </td>
     </tr>
    <tr>
     <td nowrap title="<?=@$Ttf01_i_rhcbo?>">
-      <?
+      <?php
       db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao);
       ?>
     </td>
     <td colspan="2">
-      <?
+      <?php
       db_input('rh70_estrutural', 10, @$Irh70_estrutural, true, 'text', $db_opcao,
                " onchange='js_pesquisatf01_i_rhcbo(false);'"
               );
@@ -105,7 +105,7 @@ $oRotulo->label("tf34_i_especmedico");
         <b>Regulador:</b>
       </td>
       <td>
-        <?
+        <?php
           db_input('sd03_i_codigo', 5, $Isd03_i_codigo, true, 'text', 3, " onchange='js_pesquisa_medico(false);'");
           db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
         ?>
@@ -113,12 +113,12 @@ $oRotulo->label("tf34_i_especmedico");
     </tr>
     <tr>
       <td>
-        <?
+        <?php
           db_ancora("<b>Especialidade:</b>", "js_pesquisa_especmedico(true); ","");
         ?>
       </td>
       <td>
-        <?
+        <?php
           db_input('tf34_i_especmedico', 5, $Itf34_i_especmedico, true, 'hidden');
           db_input('rh70_estrutural2', 5, $Irh70_estrutural, true, 'text', "",
                    " onchange='js_pesquisa_especmedico(false);' ");
@@ -137,7 +137,7 @@ $oRotulo->label("tf34_i_especmedico");
     <tr>
       <td><b>Unidade:</b></td>
       <td>
-        <?
+        <?php
           db_input ('sd02_i_codigo', 5, $Isd02_i_codigo, true, 'text', 3, '');
           db_input ('descrdepto', 40, $Isd02_i_codigo, true, 'text', 3, '');
         ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@
 									  <b> Conta : </b>
                   </td>
                   <td>
-									<?
+									<?php
 									  $sqlConta    = " select distinct db83_sequencial,db83_descricao ";
 										$sqlConta   .= "   from conplano  ";
                     $sqlConta   .= "        inner join conplanocontabancaria on conplanocontabancaria.c56_codcon = conplano.c60_codcon ";
@@ -82,7 +82,7 @@
 							      <b> Datas disponiveis : </b> 
 						      </td>
 					       	<td>
-                   <?
+                   <?php
                     $arrayDatas = array(0 => " Selecione a data para o processamento ");
                     db_select('data',$arrayDatas,'',1,"style='width:400px' onchange='js_enabled()'; ","","");
                   ?>
@@ -99,7 +99,7 @@
        <table width="70%" border="0" align="center" cellspacing="0">
           <tr>
           <td colspan = 2>
-          <?
+          <?php
 					   if (isset($data) && $data != '0') {
 							 // monta o iframeseleciona
 							 $sqlAutentica  = " select distinct ";

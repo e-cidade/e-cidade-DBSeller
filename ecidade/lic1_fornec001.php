@@ -44,6 +44,7 @@ $clliclicitem = new cl_liclicitem;
 $clpcorcamval = new cl_pcorcamval;
 $oDaoTipoEmpresa = new cl_liclicitatipoempresa;
 $oDaoPcorcamjulgamentologitem = new cl_pcorcamjulgamentologitem;
+$oDaoRegistroPrecoValor = new cl_registroprecovalores;
 
 $db_opcao = 2;
 $db_botao = true;
@@ -146,11 +147,45 @@ if (isset ($incluir)) {
         $erro_msg = "Existe valor lançado para o fornecedor!!";
     } else {
         db_inicio_transacao();
+        $sCampos = " pc20_codorc ";
+        $sWhere  = " l20_codigo = {$l20_codigo} ";
+
+        $oDaoOrcamItemLic = new cl_pcorcamitemlic();
+        $sSqlOrcLicitacao = $oDaoOrcamItemLic->sql_query(null, $sCampos, null, $sWhere);
+
+        $sCampos = " pc31_orcamforne as codigo, z01_nome as nome, l17_situacao as situacao ";
+        $sWhere  = " pc21_codorc in ($sSqlOrcLicitacao) ";
+
+        $oDaoFornecedoresLicitacao = new cl_pcorcamfornelic();
+        $sSqlFornecedoresLicitacao = $oDaoFornecedoresLicitacao->sql_query(null, $sCampos, null, $sWhere);
+        $rsFornecedoresLicitacao   = db_query($sSqlFornecedoresLicitacao);
+
+        $aFornecedores      = array();
+        $iTotalFornecedores = pg_num_rows($rsFornecedoresLicitacao);
+        for ($i = 0; $i < $iTotalFornecedores; $i++) {
+            $aFornecedores[] = db_utils::fieldsMemory($rsFornecedoresLicitacao, $i, false, false, true);
+        }
         if ($sqlerro == false) {
             $clpcorcamfornelic->excluir($pc21_orcamforne);
             if ($clpcorcamfornelic->erro_status == 0) {
                 $sqlerro = true;
-                $erro_msg = $clpcorcamfornelic->erro_msg;
+                $situacao = null;
+
+                foreach ($aFornecedores as $forne) {
+                    if ($forne->situacao != 0 || $forne->situacao != null) {
+                        $situacao = $forne->situacao;
+                    }
+                }
+                if ($situacao) {
+                    $aSituacao = array(1 => 'Habilitado', 2 => 'Inabilitado', 3 => 'Não compareceu');
+                    $erro_msg = 'Exclusão abortada.
+
+                    O fornecedor está como ' . $aSituacao[$situacao] . ' no item de menu a seguir: DB:PATRIMONIAL > Licitações > Procedimentos > Habilitação de Fornecedores;
+
+                    Para que seja possível excluí-lo, acesse o item de menu descrito acima e altere a situação do fornecedor para "Selecione".';
+                } else {
+                    $erro_msg = $clpcorcamfornelic->erro_msg;
+                }
             }
         }
 
@@ -180,6 +215,14 @@ if (isset ($incluir)) {
 
         }
 
+        if ($sqlerro == false) {
+            $oDaoRegistroPrecoValor->excluir(null, "pc56_orcamforne = {$pc21_orcamforne}");
+            $erro_msg = $oDaoRegistroPrecoValor->erro_msg;
+
+            if ($oDaoRegistroPrecoValor->erro_status == 0) {
+                $sqlerro = true;
+            }
+        }
 
         if ($sqlerro == false) {
             $clpcorcamforne->excluir($pc21_orcamforne);

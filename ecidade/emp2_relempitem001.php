@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ $clempempenho->rotulo->label();
        </tr>
        <tr>
           <td nowrap><table border="0">
-               <?
+               <?php
                  $clmaterial = new cl_arquivo_auxiliar;
 		 $clmaterial->nome_botao = "db_lanca_mat";
                  $clmaterial->cabecalho = "<strong> Material/Serviço </strong>";
@@ -97,7 +97,7 @@ $clempempenho->rotulo->label();
               ?>    
           </table></td>
 	  <td nowrap><table border="0">
-       <?
+       <?php
                  $clsubgrupo = new cl_arquivo_auxiliar;
 		 $clsubgrupo->nome_botao = "db_lanca_sub";
                  $clsubgrupo->cabecalho = "<strong>Subgrupo</strong>";

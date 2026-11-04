@@ -57,7 +57,7 @@ $linhasperfil = pg_num_rows($resultperfil);
 <center>
 <br>
 
-<?
+<?php
 if($linhasperfil > 0){
   ?>
   <table width='60%' border ="1" class="tab_cinza" >
@@ -65,7 +65,7 @@ if($linhasperfil > 0){
     <th>Código </th>
     <th>Perfil </th>
   </tr>
-  <?
+  <?php
   for($i=0;$i<$linhasperfil;$i++){
     db_fieldsmemory($resultperfil,$i);  
     echo "

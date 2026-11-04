@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_db_menu {
                  modulo = int4 = Módulo 
                  ";
    //funcao construtor da classe 
-   function cl_db_menu() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_menu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_menu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_item = ($this->id_item == ""?@$GLOBALS["HTTP_POST_VARS"]["id_item"]:$this->id_item);
        $this->id_item_filho = ($this->id_item_filho == ""?@$GLOBALS["HTTP_POST_VARS"]["id_item_filho"]:$this->id_item_filho);
@@ -79,7 +79,7 @@ class cl_db_menu {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->id_item == null ){ 
        $this->erro_sql = " Campo Código do ítem nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_menu {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update db_menu set ";
      $virgula = "";
@@ -242,7 +242,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from db_menu
                     where ";
      $sql2 = "";
@@ -281,7 +281,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -303,7 +303,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="db_menu.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="db_menu.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -336,7 +336,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -366,7 +366,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_menus ( $oid = null,$campos="db_menu.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_menus ( $oid = null,$campos="db_menu.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -409,7 +409,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    * @param String $sWhere
    * @return String
    */
-  function sqlItensMenuDBSeller($sCampos = "*", $sOrdem = "", $sWhere = "") {
+  public function sqlItensMenuDBSeller($sCampos = "*", $sOrdem = "", $sWhere = "") {
 
     $sSql  = " select {$sCampos}                                               \n";
     $sSql .= "   from db_menu m                                                \n";
@@ -438,7 +438,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    * @param integer $iModulo
    * @return string
    */
-  function sqlItensMenuUsuario($sCampos = "*", $sOrdem = "", $sWhere = "", $iIdUsuario, $iAnoUsu, $iInstituicao, $iModulo = null) {
+  public function sqlItensMenuUsuario($sCampos = "*", $sOrdem = "", $sWhere = "", $iIdUsuario, $iAnoUsu, $iInstituicao, $iModulo = null) {
 
     $sSql  = "  select {$sCampos}                                               \n";
     $sSql .= "    from db_menu m                                                \n";

@@ -210,7 +210,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
   } else if ($oPost->tipo == "excluirCampos") {
 
 
-  	$aCampos = split(",",$oPost->aCampos);
+  	$aCampos =explode(",",$oPost->aCampos);
 
   	foreach ( $aCampos as $sNomeCampo){
  	    unset($oXML->aColunas["Principal"][$sNomeCampo]);
@@ -318,7 +318,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 		$oVariavel     = new dbVariaveisRelatorio( utf8_decode($oPostVariavel->sNome),
 				  								                     utf8_decode($oPostVariavel->sLabel),
 			                  										   utf8_decode($oPostVariavel->sValor),
-															   utf8_decode($oPostVariavel->sTipoDado), 
+															   utf8_decode($oPostVariavel->sTipoDado),
 															   utf8_decode($oPostVariavel->sSql));
 
 		$oXML->addVariavel($oPostVariavel->sNome,$oVariavel);
@@ -531,7 +531,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 
 	  if (!$lErro) {
 
-             if ($oPost->tipoVisualizacao == 'usuario' ){ 
+             if ($oPost->tipoVisualizacao == 'usuario' ){
 
   	 	$cldb_relatoriousuario->db09_db_relatorio = $cldb_relatorio->db63_sequencial;
 	  	$cldb_relatoriousuario->db09_db_usuarios  = db_getsession("DB_id_usuario");
@@ -544,7 +544,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
              }
 
 
-           if ($oPost->tipoVisualizacao == 'depto' ){ 
+           if ($oPost->tipoVisualizacao == 'depto' ){
 
 	     $cldb_relatoriodepart->db07_db_relatorio = $cldb_relatorio->db63_sequencial;
 	     $cldb_relatoriodepart->db07_db_depart	 = db_getsession("DB_coddepto");
@@ -626,7 +626,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
 	    $sMsgErro = $cldb_relatorio->erro_msg;
 	  }
 
-		
+
 	  	$cldb_relatoriousuario->excluir(null,' db09_db_relatorio = '.$oXML->getCodRelatorio());
 
 	  	if($cldb_relatoriousuario->erro_status == 0){
@@ -646,7 +646,7 @@ if ( $oPost->tipo == "consultaCampos" ) {
                   }
                 }
 
-             
+
 	     $cldb_relatoriodepart->excluir(null, ' db07_db_relatorio = '.$oXML->getCodRelatorio());
 
 	     if($cldb_relatoriodepart->erro_status == 0){

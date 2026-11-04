@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -268,7 +268,7 @@ for ($i=0; $i<$iNumrows; $i++) {
 					$oLogsAcessa->codsequen = $oNextLogsAcessa->nextval;
 					$oLogsAcessa->ip = "127.0.0.1";
 					$oLogsAcessa->data = substr($oAcount->datahora_sessao, 00, 10);
-					$oLogsAcessa->hora = substr($oAcount->datahora_sessao, 11, 08);
+					$oLogsAcessa->hora = substr($oAcount->datahora_sessao, 11, 8);
 					$oLogsAcessa->arquivo = "classes/db_{$oAcount->tabela}_classe.php";
 					$oLogsAcessa->obs = "LogsAcessa Automatico Migracao";
 					$oLogsAcessa->id_usuario = $oAcount->id_usuario;

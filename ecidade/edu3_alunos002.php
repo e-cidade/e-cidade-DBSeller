@@ -93,6 +93,9 @@ $cpf = false;
 $certidao = false;
 $semDocumentos = true;
 
+$laudo = false;
+$semDocumentosLaudo = true;
+
 if (isset($chavepesquisa) && !empty($chavepesquisa)) {
 
     $oDaoAluno = new cl_aluno();
@@ -100,28 +103,37 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
     $rsCertidao = db_query($sqlCertidao);
 
     if (!$rsCertidao) {
-        db_msgbox('Não foi possível buscar a formação.');
-        return;
+        db_msgbox('Não foi possível buscar o anexo certidão.');
     }
 
     if (pg_num_rows($rsCertidao) > 0) {
         $idCertidao = db_utils::fieldsMemory($rsCertidao, 0)->idcertidao;
-        $fileCertidao = !empty($idCertidao) ? StorageHelper::downloadArquivo($idCertidao): "" ;
-        $fileCertidao =  basename($fileCertidao);
+        try {
+            $fileCertidao = (!empty($idCertidao))? StorageHelper::downloadArquivo($idCertidao): "" ;
+            $fileCertidao = basename($fileCertidao);
+        } catch (Exception $exception) {
+            echo "- Não foi possível recuperar a imagem da certidão<br />";
+            echo "Erro e-Storage: ".$exception->getMessage()."<br />";
+        }
+        
     }
 
     $sqlCpf = $oDaoAluno->sql_query_file(null,"ed47_i_cpf_estorage  as idCpf",null, "ed47_i_codigo = $chavepesquisa");
     $rsCpf = db_query($sqlCpf);
 
     if (!$rsCpf) {
-        db_msgbox('Não foi possível buscar a formação.');
-        return;
+        db_msgbox('Não foi possível buscar o anexo cpf.');
     }
 
     if (pg_num_rows($rsCpf) > 0) {
         $idCpf = db_utils::fieldsMemory($rsCpf, 0)->idcpf;
-        $fileCpf = !empty($idCpf) ? StorageHelper::downloadArquivo($idCpf): "" ;
-        $fileCpf =  basename($fileCpf);
+        try {
+            $fileCpf = (!empty($idCpf))? StorageHelper::downloadArquivo($idCpf): "" ;
+            $fileCpf =  basename($fileCpf);
+        } catch (Exception $exception) {
+            echo "- Não foi possível recuperar a imagem do CPF<br />";
+            echo "Erro e-Storage:".$exception->getMessage()."<br />";
+        }
     }
 
     if(!empty($idCpf) && isset($idCpf)) {
@@ -129,12 +141,36 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
       $cpf = true;
       $cpfHTML = "<iframe name='frame_imagemCPF' id='frame_imagemCPF' src='edu4_alunodocumentocpf.php' width='56' height='40' frameborder='1' scrolling='no'></iframe>";
     }
+
     if(!empty($idCertidao) && isset($idCertidao)){
       $semDocumentos = false;
       $certidao = true;
       $certidaoHTML = "<iframe name='frame_imagemCertidao' id='frame_imagemCertidao' src='edu4_alunodocumentocertidao.php' width='56' height='40' frameborder='1' scrolling='no'></iframe>";
     }
 
+    $daoLaudo = new cl_alunonecessidade();
+    $sqlLaudo = $daoLaudo->sql_query( null, 'ed214_i_anexo_estorage as idFileLaudo, ed48_c_descr as descricao', null, 
+                                      "ed214_i_aluno = $chavepesquisa");
+    $rsLaudo = db_query($sqlLaudo);
+
+    if (pg_num_rows($rsLaudo) > 0) {
+      $fileLaudo = array();
+      $laudoHTML = array();
+      $descricao = array();
+
+      for ($iIndice = 0; $iIndice < pg_num_rows($rsLaudo); $iIndice++) {
+        $idLaudo = db_utils::fieldsMemory($rsLaudo, $iIndice)->idfilelaudo;
+        $fileLaudo_ = !empty($idLaudo) ? basename(StorageHelper::downloadArquivo($idLaudo)): "" ;
+        $fileLaudo[$iIndice] = basename($fileLaudo_);
+        $descricao[$iIndice] = db_utils::fieldsMemory($rsLaudo, $iIndice)->descricao;
+
+        if(!empty($idLaudo) && isset($idLaudo)) {
+          $semDocumentosLaudo = false;
+          $laudo = true;
+          $laudoHTML[$iIndice] = "<iframe name='frame_imagemLaudo{$iIndice}' id='frame_imagemLaudo{$iIndice}' src='edu4_alunodocumentolaudo.php' width='56' height='40' frameborder='1' scrolling='no'></iframe>";
+        }
+      }
+    }
 }
 
 ?>
@@ -457,8 +493,6 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                      * Removido vinculo com a matricula pois a tabela turmaacmatricula não é vinculado com
                      * matricula e sim com aluno.
                      */
-                    //$sWhere   .= " AND ed60_c_situacao = 'MATRICULADO' AND ed60_c_concluida='N'";
-
                    $sSqlAtendimentoDiferenciado = $clturmaacmatricula->sql_query("",
                                                                                 "ed268_c_descr, ed52_c_descr",
                                                                                 "",
@@ -1162,55 +1196,102 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
       if ($evento == 5) { ?>
         <tr>
          <td valign="top" >
-          <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Necessidades Especiais</b></legend>
-           <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
+          <fieldset style=" display:flex; background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>PcD / Altas Habilidades</b></legend>
+           <table border="1"  width="55%"  bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
            <?php
-            $result = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
+          $result = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
                                                                                      "*",
                                                                                      "ed48_c_descr",
                                                                                      " ed214_i_aluno = $chavepesquisa"
                                                                                     )
                                                      );
-            if ($clalunonecessidade->numrows > 0) {
+           if ($clalunonecessidade->numrows > 0) {
 
             ?>
               <tr>
                <td class="cabec1">
                 <table width="100%" cellspacing="0" cellpading="0">
                  <tr>
-                  <td width="40%" class="cabec1">
-                   Descrição:
-                  </td>
-                  <td class="cabec1">
-                    Necessidade Maior:
-                  </td>
+                   <td width="70%" class="cabec1"> Descrição: </td>
+                   <td class="cabec1"> Necessidade Maior: </td>
                  </tr>
                 </table>
                </td>
               </tr>
               <?php
-              for ($f = 0; $f < $clalunonecessidade->numrows; $f++) {
+              
+          $clsubdivisaoaluno = new cl_necessidadesubdivisaoaluno;
+          $sSql = $clsubdivisaoaluno->sql_query(null, 'necessidadesubdivisao.*', 'ed48_c_descr, ed185_descricao', "ed187_aluno = {$chavepesquisa}");
+          $rsSubdivisao = $clsubdivisaoaluno->sql_record($sSql);
+          for ($f = 0; $f < $clalunonecessidade->numrows; $f++) {
 
                 db_fieldsmemory($result,$f);
+        
               ?>
                 <tr>
                  <td>
                   <table width="100%" cellspacing="0" cellpading="0">
-                   <tr>
-                    <td width="40%">
-                     <?=$ed48_c_descr?>
-                    </td>
-                    <td>
-                     <?=$ed214_c_principal?>
-                    </td>
-                   </tr>
+                   
+                    <tr id="tr_<?=$ed214_i_necessidade?>">
+                      <td width="70%" id="td_<?=$ed214_i_necessidade?>" data-id="<?=$ed214_i_necessidade?>">
+                        <?=$ed48_c_descr?>
+                      </td>
+                      <td>
+                       <?=$ed214_c_principal?>
+                      </td>
+                    </tr>
+          <?php
+          $icon = false;
+          for ($y = 0; $y < $clsubdivisaoaluno->numrows; $y++) {
+            $oSubDivisaoNecessidade = db_utils::fieldsMemory($rsSubdivisao,$y);
+            if($ed214_i_necessidade == $oSubDivisaoNecessidade->ed185_necessidade) {
+              $icon = true;
+              echo
+              "<tr class='node_$ed214_i_necessidade' data-toggle='true' style='display: none;'>
+                <td> <div style='padding: 2px 20px'><i class='fa fa-check' aria-hidden='true'></i> $ed48_i_codigo.".str_pad($oSubDivisaoNecessidade->ed185_sequencial,2,0,STR_PAD_LEFT)." - $oSubDivisaoNecessidade->ed185_descricao </div> </td>
+              </tr>";
+            }
+          }
+          ?>
+          <script>
+            <?php if($icon) { ?>
+            var tr = document.querySelector("#tr_<?=$ed214_i_necessidade?>");
+            var td = document.querySelector("#td_<?=$ed214_i_necessidade?>");
+            var i = document.createElement('i');
+            i.setAttribute('id','i_<?=$ed214_i_necessidade?>');
+            i.setAttribute('class','fa fa-plus');
+            i.setAttribute('style','margin-left: 5px;');
+            i.setAttribute('data-id','<?=$ed214_i_necessidade?>');
+            i.addEventListener("click", (function(e) {
+              document.querySelector('#tr_'+e.target.dataset.id).click();
+            }));
+            td.appendChild(i);
+            tr.setAttribute('style','cursor: pointer;')
+            tr.addEventListener("click", (function(e) {
+              var nodes = document.getElementsByClassName('node_'+e.target.dataset.id);
+              var i = document.querySelector("#i_<?=$ed214_i_necessidade?>"); 
+              Array.prototype.forEach.call(nodes, function(el) {
+                el.removeAttribute('style');
+                  i.removeAttribute('class');
+                if(el.dataset.toggle) {
+                  i.setAttribute('class','fa fa-times');
+                  el.removeAttribute('data-toggle');
+                  el.setAttribute('style','display: table;');
+                } else {
+                  i.setAttribute('class','fa fa-plus');
+                  el.setAttribute('data-toggle','true');
+                  el.setAttribute('style','display: none;');
+                }
+              })
+            }), false);
+          <?php } ?>
+          </script>
+          <!-- FIM PLUGIN NECESSIDADES ESPECIAIS -->
+        
                   </table>
-                 </td>
-                </tr>
                 <?php
               }
             } else {
-
             ?>
               <tr>
                <td>
@@ -1222,9 +1303,47 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
             ?>
            </table>
           </fieldset>
-         </td>
-        </tr>
-    <?php }
+          <?php } ?>
+          <br>
+          <fieldset style="background: #f3f3f3; border: 2px solid #000000;">
+            <legend style="background: #f3f3f3;">Documentos Anexados:</legend>
+            <table >
+              <tr>
+                <?php  
+                  if($laudo) {
+                ?>
+                          <?php 
+                            foreach ($laudoHTML as $key=> $ilaudoHTML) { 
+                          ?>  
+                              <td>
+                              <fieldset>
+                              <legend><b><?php echo strtolower($descricao[$key]) ?>: </b></legend>
+                          <?php
+                              echo $ilaudoHTML; 
+                          ?>
+                          <script>
+                            frame_imagemLaudo<?php echo $key?>.location.href="edu4_alunodocumentolaudo.php?imagem_gerada=<?php echo $fileLaudo[$key]?>";
+                          </script>
+                              </td>
+                              </fieldset>
+                          <?php
+                            }
+                          ?>
+                  <?php 
+                    } if($semDocumentosLaudo) { 
+                  ?>
+                    <td>
+                      Nenhum Documento anexado
+                    </td>
+                  <?php 
+                    } 
+                  ?>
+              </tr>
+            </table>
+          </fieldset>
+        </td>
+      </tr>
+    <?php
       if ($evento == 6) {
 
         if (!isset($ordem)) {

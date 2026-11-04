@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -298,7 +298,7 @@ if (isset($alterar2)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar2)) {
 	
   ?>
@@ -307,7 +307,7 @@ if (isset($alterar2)) {
     parent.db_iframe_parecerindiv.hide();
     alert("Alteração efetuada com Sucesso");
   </script>
-  <?
+  <?php
   
 }
 ?>

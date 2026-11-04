@@ -25,16 +25,18 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_liborcamento.php"));
-require_once(modification("libs/db_libcontabilidade.php"));
-require_once(modification("fpdf151/pdf.php"));
-require_once(modification("libs/db_sql.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_liborcamento.php");
+require_once modification("libs/db_libcontabilidade.php");
+require_once modification("libs/db_sql.php");
 
 $clselorcdotacao = new cl_selorcdotacao();
 $opcao = 2;
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
-
 $anousu = db_getsession('DB_anousu');
 
 $sInstit = str_replace("-", ",", $db_selinstit);
@@ -42,7 +44,7 @@ $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo 
 $descr_inst = '';
 $xvirg = '';
 
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ',';
@@ -50,15 +52,11 @@ for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
 
 if ($tipo_balanco == 2) {
     $xtipo = "-EMPENHADO";
-} else if ($tipo_balanco == 3) {
+} elseif ($tipo_balanco == 3) {
     $xtipo = "-LIQUIDADO";
 } else {
     $xtipo = "-PAGO";
 }
-
-$head3 = "RESUMO DA DESPESA - $xtipo";
-$head4 = "EXERCÍCIO: " . $anousu;
-$head5 = "INSTITUIÇÕES : " . $descr_inst;
 
 // funcao para gerar work
 
@@ -92,6 +90,7 @@ if ($nivelele == '0') {
         $tipo_rel = 1;
     }
 }
+
 switch ($nivelele) {
     case '1':
         $ccampo = "o58_orgao";
@@ -281,7 +280,7 @@ if ($tipo_agrupa == 1) {
         $sql .= "order by o56_elemento";
     }
 }
-//echo $sql; die();
+
 $result = db_query($sql);
 
 $result = db_query("select * from work");
@@ -297,10 +296,21 @@ for ($mes = 1; $mes < 13; $mes++) {
     db_fieldsmemory($result_ultdia, 0, true);
 
     if ($nivel != 9) {
-        $result_rec = db_dotacaosaldo(8, 2, $opcao, true, $where, $anousu,
+        $result_rec = db_dotacaosaldo(
+            8,
+            2,
+            $opcao,
+            true,
+            $where,
+            $anousu,
             $anousu . "-{$mes}-01",
             $anousu . "-{$mes}-$ultimodiames",
-            2, $nivelele, null, $tipo_balanco, false);
+            2,
+            $nivelele,
+            null,
+            $tipo_balanco,
+            false
+        );
     } else {
         $dtInicial = $anousu . "-$mes-01";
         $dtFinal = $anousu . "-$mes-$ultimodiames";
@@ -339,10 +349,7 @@ for ($mes = 1; $mes < 13; $mes++) {
         $sSqlDesdobramento .= "         o58_unidade ";
         $sSqlDesdobramento .= "order by o56_elemento";
 
-
-       $result_rec = db_query($sSqlDesdobramento);
-
-
+        $result_rec = db_query($sSqlDesdobramento);
     }
     db_query("rollback");
     $valor = 0;
@@ -380,12 +387,15 @@ for ($mes = 1; $mes < 13; $mes++) {
         $result = db_query($sql);
     }
 }
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new \ECidade\Pdf\Pdf('L');
+$pdf->init(false);
+$pdf->addTitulo("RESUMO DA DESPESA - {$xtipo}");
+$pdf->addTitulo("EXERCÍCIO: {$anousu}");
+$pdf->addTitulo("INSTITUIÇÕES : {$descr_inst}");
 $pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
-$pdf->setfont('arial', 'b', 8);
+$pdf->setFont('arial', 'b', 8);
 $troca = 1;
 $alt = 4;
 
@@ -416,8 +426,8 @@ if ($tipo_rel == 2) {
     } else {
         $sql = "select * from work order by orgao,unidade,campo";
         $result = db_query($sql);
-        $qorgao = pg_result($result, 0, 'orgao');
-        $qunidade = pg_result($result, 0, 'unidade');
+        $qorgao = pg_fetch_result($result, 0, 'orgao');
+        $qunidade = pg_fetch_result($result, 0, 'unidade');
     }
 } else {
     $sCampos = 'campo, descr';
@@ -443,280 +453,344 @@ if ($tipo_rel == 2) {
     $result = db_query($sql);
 }
 
-$pagina = 1;
-$qualou = "$qorgao$qunidade";
+if ($formato == 2) {
+    $csvheader = array("Orgao", "Descricao", "Janeiro", "Fevereiro",
+        "Marco", "Abril", "Maio", "Junho", "Julho",
+        "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", "Total");
 
-$totoper = 0;
+    $timestamp = time();
+    $fp = fopen('tmp/despesaorgaoelementounidadecsv'.$timestamp.'.csv', 'w');
+    $headers = $csvheader;
+    fputcsv($fp, $headers, ";");
 
-$ttvlr1 = 0;
-$ttvlr2 = 0;
-$ttvlr3 = 0;
-$ttvlr4 = 0;
-$ttvlr5 = 0;
-$ttvlr6 = 0;
-$ttvlr7 = 0;
-$ttvlr8 = 0;
-$ttvlr9 = 0;
-$ttvlr10 = 0;
-$ttvlr11 = 0;
-$ttvlr12 = 0;
-
-$tvlr1 = 0;
-$tvlr2 = 0;
-$tvlr3 = 0;
-$tvlr4 = 0;
-$tvlr5 = 0;
-$tvlr6 = 0;
-$tvlr7 = 0;
-$tvlr8 = 0;
-$tvlr9 = 0;
-$tvlr10 = 0;
-$tvlr11 = 0;
-$tvlr12 = 0;
-
-if ($tipo_rel == 2) {
-    $troca_secretaria = false;
+    $tvls = array_fill(1, 12, 0);
+    $ttvls = 0;
     for ($i = 0; $i < pg_num_rows($result); $i++) {
-        db_fieldsmemory($result, $i);
-        if ($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12 == 0) {
-            continue;
-        }
+        $row = db_utils::fieldsMemory($result, $i);
+        $row->total = $row->vlr1 + $row->vlr2 + $row->vlr3 + $row->vlr4 + $row->vlr5 + $row->vlr6 +
+            $row->vlr7 + $row->vlr8 + $row->vlr9 + $row->vlr10 + $row->vlr11 + $row->vlr12;
+        $tvls[1] += $row->vlr1;
+        $tvls[2]+= $row->vlr2;
+        $tvls[3]+= $row->vlr3;
+        $tvls[4]+= $row->vlr4;
+        $tvls[5]+= $row->vlr5;
+        $tvls[6]+= $row->vlr6;
+        $tvls[7]+= $row->vlr7;
+        $tvls[8]+= $row->vlr8;
+        $tvls[9]+= $row->vlr9;
+        $tvls[10]+= $row->vlr10;
+        $tvls[11]+= $row->vlr11;
+        $tvls[12]+= $row->vlr12;
 
-        if ($nivelele == 8) {
-            $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($campo);
-            $campo = $recurso->getFonteDeRecurso();
-            $descr = "{$recurso->getDescricao()} - {$recurso->getComplementoRecursoVinculado()->getDescricao()}";
-        }
-
-        if (!($nivelele == 7 && $tipoagrupar == 1)) {
-            if (("$qualou" != "$orgao$unidade")) {
-                $troca_secretaria = true;
-                $qualou = "$orgao$unidade";
-                $pdf->setfont('arial', 'B', 6);
-                $pdf->cell(75, $alt, "Total ", 0, 0, "L", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr1, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr2, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr3, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr4, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr5, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr6, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr7, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr8, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr9, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr10, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr11, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr12, 'f'), 0, 0, "R", 0);
-                $pdf->cell(15, $alt, db_formatar($tvlr1 + $tvlr2 + $tvlr3 + $tvlr4 + $tvlr5 + $tvlr6 + $tvlr7 + $tvlr8 + $tvlr9 + $tvlr10 + $tvlr11 + $tvlr12, 'f'), 0, 1, "R", 0);
-                $tvlr1 = 0;
-                $tvlr2 = 0;
-                $tvlr3 = 0;
-                $tvlr4 = 0;
-                $tvlr5 = 0;
-                $tvlr6 = 0;
-                $tvlr7 = 0;
-                $tvlr8 = 0;
-                $tvlr9 = 0;
-                $tvlr10 = 0;
-                $tvlr11 = 0;
-                $tvlr12 = 0;
+        $rowarray = (array) $row;
+        if ($i == pg_num_rows($result) - 1) {
+            for ($j = 1; $j <= 12; $j++) {
+                $tvls[$j] =  trim(db_formatar($tvls[$j], 'f'));
             }
         }
-        if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
-            $pagina = 0;
-            $pdf->addpage("L");
-            $troca_secretaria = true;
+        for ($j = 1; $j <= 12; $j++) {
+            $rowarray['vlr'.$j] =  trim(db_formatar($rowarray['vlr'.$j], 'f'));
         }
-        if ($troca_secretaria == true) {
-            $troca_secretaria = false;
+        $ttvls += $row->total;
+        $rowarray["total"] = trim(db_formatar($rowarray["total"], 'f'));
+        fputcsv($fp, $rowarray, ";");
+    }
+    $totalfinal = array("linhaembranco" => "", "totalgeral" => "Total Geral") + $tvls;
+    $totalfinal['ttvls'] = trim(db_formatar($ttvls, 'f'));
+    fputcsv($fp, $totalfinal, ";");
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename=despesaorgaoelementounidadecsv'.$timestamp.'.csv');
+    readfile('tmp/despesaorgaoelementounidadecsv'.$timestamp.'.csv');
+    fclose($fp);
 
-            if ($tipoagrupar == 2) {
-                $pdf->setfont('arial', 'b', 7);
-                $sql = "select o40_descr
-  	            	 from orcorgao
-		              where o40_anousu = " . $anousu . "
-		                and o40_orgao = " . $orgao;
-                $resorg = db_query($sql);
-                db_fieldsmemory($resorg, 0);
+} else {
+    $pagina = 1;
+    $qualou = "$qorgao$qunidade";
 
-                $pdf->cell(0, 0.5, '', "TB", 1, "C", 0);
-                $pdf->cell(10, $alt, db_formatar($orgao, 'orgao'), 0, 0, "L", 0);
-                $pdf->cell(50, $alt, $o40_descr, 0, 1, "L", 0);
-                $pdf->setfont('arial', '', 6);
+    $totoper = 0;
 
-                if ($tipo_agrupa == '2') {
-                    $sql = "select o41_descr
-		           from orcunidade
-		          where o41_anousu = " . $anousu . "
-			          and o41_orgao = " . $orgao . " and o41_unidade = " . $unidade;
-                    $resorg = db_query($sql);
-                    db_fieldsmemory($resorg, 0);
-                    $pdf->cell(10, $alt, db_formatar($orgao, 'orgao') . db_formatar($unidade, 'orgao'), 0, 0, "L", 0);
-                    $pdf->cell(50, $alt, $o41_descr, 0, 1, "L", 0);
-                    $pdf->cell(0, 0.5, '', "TB", 1, "C", 0);
+    $ttvlr1 = 0;
+    $ttvlr2 = 0;
+    $ttvlr3 = 0;
+    $ttvlr4 = 0;
+    $ttvlr5 = 0;
+    $ttvlr6 = 0;
+    $ttvlr7 = 0;
+    $ttvlr8 = 0;
+    $ttvlr9 = 0;
+    $ttvlr10 = 0;
+    $ttvlr11 = 0;
+    $ttvlr12 = 0;
+
+    $tvlr1 = 0;
+    $tvlr2 = 0;
+    $tvlr3 = 0;
+    $tvlr4 = 0;
+    $tvlr5 = 0;
+    $tvlr6 = 0;
+    $tvlr7 = 0;
+    $tvlr8 = 0;
+    $tvlr9 = 0;
+    $tvlr10 = 0;
+    $tvlr11 = 0;
+    $tvlr12 = 0;
+
+
+    if ($tipo_rel == 2) {
+        $troca_secretaria = false;
+
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
+            db_fieldsmemory($result, $i);
+            if ($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12 == 0) {
+                continue;
+            }
+
+            if ($nivelele == 8) {
+                $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+                    ->where('exercicio', $anousu)
+                    ->where('orctiporec_id', $campo)
+                    ->first();
+                $complemento = str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT);
+                $campo = "{$fonteRecurso->gestao} - {$complemento}";
+                $descr = "{$fonteRecurso->descricao}";
+            }
+
+
+            if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
+                $pagina = 0;
+                $pdf->addPage();
+                $troca_secretaria = true;
+            }
+            if (!($nivelele == 7 && $tipoagrupar == 1)) {
+                if (("$qualou" != "$orgao$unidade")) {
+                    $troca_secretaria = true;
+                    $qualou = "$orgao$unidade";
+                    $pdf->setFont('arial', 'B', 6);
+                    $pdf->cell(75, $alt, "Total ", 0, 0, "L", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr1, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr2, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr3, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr4, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr5, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr6, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr7, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr8, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr9, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr10, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr11, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr12, 'f'), 0, 0, "R", 0);
+                    $pdf->cell(15, $alt, db_formatar($tvlr1 + $tvlr2 + $tvlr3 + $tvlr4 + $tvlr5 + $tvlr6 + $tvlr7 + $tvlr8 + $tvlr9 + $tvlr10 + $tvlr11 + $tvlr12, 'f'), 0, 1, "R", 0);
+                    $tvlr1 = 0;
+                    $tvlr2 = 0;
+                    $tvlr3 = 0;
+                    $tvlr4 = 0;
+                    $tvlr5 = 0;
+                    $tvlr6 = 0;
+                    $tvlr7 = 0;
+                    $tvlr8 = 0;
+                    $tvlr9 = 0;
+                    $tvlr10 = 0;
+                    $tvlr11 = 0;
+                    $tvlr12 = 0;
                 }
             }
 
-            $xx = 20;
-            $pdf->setfont('arial', 'B', 8);
-            $pdf->cell($xx, $alt, $cabec, 0, 0, "R", 0);
-            $pdf->cell(55, $alt, "Descrição", 0, 0, "L", 0);
-            $pdf->cell(15, $alt, "Janeiro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Fevereiro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Março", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Abril", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Maio", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Junho", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Julho", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Agosto", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Setembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Outubro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Novembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Dezembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Total", 0, 1, "R", 0);
+            if ($troca_secretaria == true) {
+                $troca_secretaria = false;
+
+                if ($tipoagrupar == 2) {
+                    $pdf->setFont('arial', 'b', 7);
+                    $sql = "select o40_descr
+  	            	 from orcorgao
+		              where o40_anousu = " . $anousu . "
+		                and o40_orgao = " . $orgao;
+                    $resorg = db_query($sql);
+                    db_fieldsmemory($resorg, 0);
+
+                    $pdf->cell(0, 0.5, '', "TB", 1, "C", 0);
+                    $pdf->cell(10, $alt, db_formatar($orgao, 'orgao'), 0, 0, "L", 0);
+                    $pdf->cell(50, $alt, $o40_descr, 0, 1, "L", 0);
+                    $pdf->setFont('arial', '', 6);
+
+                    if ($tipo_agrupa == '2') {
+                        $sql = "select o41_descr
+		           from orcunidade
+		          where o41_anousu = " . $anousu . "
+			          and o41_orgao = " . $orgao . " and o41_unidade = " . $unidade;
+                        $resorg = db_query($sql);
+                        db_fieldsmemory($resorg, 0);
+                        $pdf->cell(10, $alt, db_formatar($orgao, 'orgao') . db_formatar($unidade, 'orgao'), 0, 0, "L", 0);
+                        $pdf->cell(50, $alt, $o41_descr, 0, 1, "L", 0);
+                        $pdf->cell(0, 0.5, '', "TB", 1, "C", 0);
+                    }
+                }
+
+                $xx = 20;
+                $pdf->setFont('arial', 'B', 8);
+                $pdf->cell($xx, $alt, $cabec, 0, 0, "R", 0);
+                $pdf->cell(55, $alt, "Descrição", 0, 0, "L", 0);
+                $pdf->cell(15, $alt, "Janeiro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Fevereiro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Março", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Abril", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Maio", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Junho", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Julho", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Agosto", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Setembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Outubro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Novembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Dezembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Total", 0, 1, "R", 0);
+            }
+
+            $pdf->setFont('arial', '', 6);
+            $pdf->cell(20, $alt, $campo, 0, 0, "R", 0);
+            $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr3, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr4, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr5, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr6, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr7, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr8, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr9, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr10, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr11, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr12, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12, 'f'), 0, 1, "R", 0);
+
+            $tvlr1 += $vlr1;
+            $tvlr2 += $vlr2;
+            $tvlr3 += $vlr3;
+            $tvlr4 += $vlr4;
+            $tvlr5 += $vlr5;
+            $tvlr6 += $vlr6;
+            $tvlr7 += $vlr7;
+            $tvlr8 += $vlr8;
+            $tvlr9 += $vlr9;
+            $tvlr10 += $vlr10;
+            $tvlr11 += $vlr11;
+            $tvlr12 += $vlr12;
+
+            $ttvlr1 += $vlr1;
+            $ttvlr2 += $vlr2;
+            $ttvlr3 += $vlr3;
+            $ttvlr4 += $vlr4;
+            $ttvlr5 += $vlr5;
+            $ttvlr6 += $vlr6;
+            $ttvlr7 += $vlr7;
+            $ttvlr8 += $vlr8;
+            $ttvlr9 += $vlr9;
+            $ttvlr10 += $vlr10;
+            $ttvlr11 += $vlr11;
+            $ttvlr12 += $vlr12;
         }
 
-        $pdf->setfont('arial', '', 6);
-        $pdf->cell(20, $alt, $campo, 0, 0, "R", 0);
-        $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr3, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr4, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr5, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr6, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr7, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr8, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr9, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr10, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr11, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr12, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12, 'f'), 0, 1, "R", 0);
+        $pdf->setFont('arial', '', 6);
+        $pdf->cell(75, $alt, "Total ", 0, 0, "L", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr1, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr2, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr3, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr4, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr5, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr6, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr7, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr8, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr9, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr10, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr11, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr12, 'f'), 0, 0, "R", 0);
+        $pdf->cell(15, $alt, db_formatar($tvlr1 + $tvlr2 + $tvlr3 + $tvlr4 + $tvlr5 + $tvlr6 + $tvlr7 + $tvlr8 + $tvlr9 + $tvlr10 + $tvlr11 + $tvlr12, 'f'), 0, 1, "R", 0);
+    } else {
+        $troca_secretaria = false;
 
-        $tvlr1 += $vlr1;
-        $tvlr2 += $vlr2;
-        $tvlr3 += $vlr3;
-        $tvlr4 += $vlr4;
-        $tvlr5 += $vlr5;
-        $tvlr6 += $vlr6;
-        $tvlr7 += $vlr7;
-        $tvlr8 += $vlr8;
-        $tvlr9 += $vlr9;
-        $tvlr10 += $vlr10;
-        $tvlr11 += $vlr11;
-        $tvlr12 += $vlr12;
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
+            db_fieldsmemory($result, $i);
+            if ($nivelele == 8) {
+                $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+                    ->where('exercicio', $anousu)
+                    ->where('orctiporec_id', $campo)
+                    ->first();
+                $complemento = str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT);
+                $campo = "{$fonteRecurso->gestao} - {$complemento}";
+                $descr = "{$fonteRecurso->descricao}";
+            }
 
-        $ttvlr1 += $vlr1;
-        $ttvlr2 += $vlr2;
-        $ttvlr3 += $vlr3;
-        $ttvlr4 += $vlr4;
-        $ttvlr5 += $vlr5;
-        $ttvlr6 += $vlr6;
-        $ttvlr7 += $vlr7;
-        $ttvlr8 += $vlr8;
-        $ttvlr9 += $vlr9;
-        $ttvlr10 += $vlr10;
-        $ttvlr11 += $vlr11;
-        $ttvlr12 += $vlr12;
+            $pdf->setFont('arial', '', 6);
+            if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
+                $pagina = 0;
+                $pdf->addPage();
+                $pdf->setFont('arial', '', 6);
+                $pdf->cell(20, $alt, "$cabec", 0, 0, "L", 0);
+                $pdf->cell(55, $alt, "Descrição", 0, 0, "L", 0);
+                $pdf->cell(15, $alt, "Janeiro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Fevereiro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Março", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Abril", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Maio", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Junho", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Julho", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Agosto", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Setembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Outubro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Novembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Dezembro", 0, 0, "R", 0);
+                $pdf->cell(15, $alt, "Total", 0, 1, "R", 0);
+            }
+
+            if ($tipoagrupa == 3) {
+                $campo = "{$orgao}.{$unidade}";
+            }
+            $pdf->setFont('arial', 'b', 6);
+            $pdf->cell(20, $alt, $campo, 0, 0, "L", 0);
+            $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
+            $pdf->setFont('arial', '', 6);
+            $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr3, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr4, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr5, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr6, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr7, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr8, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr9, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr10, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr11, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr12, 'f'), 0, 0, "R", 0);
+            $pdf->cell(15, $alt, db_formatar($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12, 'f'), 0, 1, "R", 0);
+
+            $ttvlr1 += $vlr1;
+            $ttvlr2 += $vlr2;
+            $ttvlr3 += $vlr3;
+            $ttvlr4 += $vlr4;
+            $ttvlr5 += $vlr5;
+            $ttvlr6 += $vlr6;
+            $ttvlr7 += $vlr7;
+            $ttvlr8 += $vlr8;
+            $ttvlr9 += $vlr9;
+            $ttvlr10 += $vlr10;
+            $ttvlr11 += $vlr11;
+            $ttvlr12 += $vlr12;
+        }
     }
 
-    $pdf->setfont('arial', '', 6);
-    $pdf->cell(75, $alt, "Total ", 0, 0, "L", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr1, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr2, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr3, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr4, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr5, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr6, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr7, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr8, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr9, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr10, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr11, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr12, 'f'), 0, 0, "R", 0);
-    $pdf->cell(15, $alt, db_formatar($tvlr1 + $tvlr2 + $tvlr3 + $tvlr4 + $tvlr5 + $tvlr6 + $tvlr7 + $tvlr8 + $tvlr9 + $tvlr10 + $tvlr11 + $tvlr12, 'f'), 0, 1, "R", 0);
-} else {
-    $troca_secretaria = false;
+    $pdf->setFont('arial', '', 6);
+    $pdf->cell(75, $alt, "Total Geral ", 1, 0, "L", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr1, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr2, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr3, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr4, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr5, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr6, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr7, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr8, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr9, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr10, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr11, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr12, 'f'), 1, 0, "R", 0);
+    $pdf->cell(15, $alt, db_formatar($ttvlr1 + $ttvlr2 + $ttvlr3 + $ttvlr4 + $ttvlr5 + $ttvlr6 + $ttvlr7 + $ttvlr8 + $ttvlr9 + $ttvlr10 + $ttvlr11 + $ttvlr12, 'f'), 1, 1, "R", 0);
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
-        db_fieldsmemory($result, $i);
-        if ($nivelele == 8) {
-            $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($campo);
-            $campo = $recurso->getFonteDeRecurso();
-            $descr = "{$recurso->getDescricao()} - {$recurso->getComplementoRecursoVinculado()->getDescricao()}";
-        }
-
-        $pdf->setfont('arial', '', 6);
-        if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
-            $pagina = 0;
-            $pdf->addpage("L");
-            $pdf->setfont('arial', '', 6);
-            $pdf->cell(20, $alt, "$cabec", 0, 0, "L", 0);
-            $pdf->cell(55, $alt, "Descrição", 0, 0, "L", 0);
-            $pdf->cell(15, $alt, "Janeiro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Fevereiro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Março", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Abril", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Maio", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Junho", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Julho", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Agosto", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Setembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Outubro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Novembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Dezembro", 0, 0, "R", 0);
-            $pdf->cell(15, $alt, "Total", 0, 1, "R", 0);
-        }
-
-        if ($tipoagrupa == 3) {
-            $campo = "{$orgao}.{$unidade}";
-        }
-        $pdf->setfont('arial', 'b', 6);
-        $pdf->cell(20, $alt, $campo, 0, 0, "L", 0);
-        $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
-        $pdf->setfont('arial', '', 6);
-        $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr3, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr4, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr5, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr6, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr7, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr8, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr9, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr10, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr11, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr12, 'f'), 0, 0, "R", 0);
-        $pdf->cell(15, $alt, db_formatar($vlr1 + $vlr2 + $vlr3 + $vlr4 + $vlr5 + $vlr6 + $vlr7 + $vlr8 + $vlr9 + $vlr10 + $vlr11 + $vlr12, 'f'), 0, 1, "R", 0);
-
-        $ttvlr1 += $vlr1;
-        $ttvlr2 += $vlr2;
-        $ttvlr3 += $vlr3;
-        $ttvlr4 += $vlr4;
-        $ttvlr5 += $vlr5;
-        $ttvlr6 += $vlr6;
-        $ttvlr7 += $vlr7;
-        $ttvlr8 += $vlr8;
-        $ttvlr9 += $vlr9;
-        $ttvlr10 += $vlr10;
-        $ttvlr11 += $vlr11;
-        $ttvlr12 += $vlr12;
-    }
+    $pdf->Output();
 }
-
-$pdf->setfont('arial', '', 6);
-$pdf->cell(75, $alt, "Total Geral ", 1, 0, "L", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr1, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr2, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr3, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr4, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr5, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr6, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr7, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr8, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr9, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr10, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr11, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr12, 'f'), 1, 0, "R", 0);
-$pdf->cell(15, $alt, db_formatar($ttvlr1 + $ttvlr2 + $ttvlr3 + $ttvlr4 + $ttvlr5 + $ttvlr6 + $ttvlr7 + $ttvlr8 + $ttvlr9 + $ttvlr10 + $ttvlr11 + $ttvlr12, 'f'), 1, 1, "R", 0);
-
-$pdf->Output();

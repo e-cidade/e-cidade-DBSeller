@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,7 +35,7 @@ if (!isset($ve09_usuario)){
 }
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
    db_input("ve09_veiculos",10,0,true,"hidden",3);
    db_input("sequencial",   10,0,true,"hidden",3);
    db_input("ve09_usuario", 10,0,true,"hidden",3);
@@ -43,7 +43,7 @@ if (!isset($ve09_usuario)){
 <table class="container" border="0" width="790">
   <tr>
     <td nowrap align="center" title="<?=@$Tve09_veiccaditensobrig?>">
-    <? 
+    <?php 
        db_ancora(@$Lve09_veiccaditensobrig,"js_pesquisave09_veiccaditensobrig(true);",$db_opcao);
        db_input('ve09_veiccaditensobrig',10,$Ive09_veiccaditensobrig,true,'text',$db_opcao,"onChange='js_pesquisave09_veiccaditensobrig(false);'");
        db_input('ve08_descr',40,0,true,'text',3); 
@@ -57,18 +57,18 @@ if (!isset($ve09_usuario)){
           value="<?=($db_opcao==1?"Incluir":($db_opcao==3||$db_opcao==33?"Excluir":""))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
   </tr>	
   <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
 	     $chavepri = array ("ve09_sequencial"=>@$ve09_sequencial);
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveicitensobrig->sql_query_obrigatorio(null,"distinct on (ve08_descr) ve09_sequencial,ve09_veiccaditensobrig,ve08_descr,case when ve10_veicitensobrig is not null then 'BAIXADO' else 'NÃO BAIXADO' end as ve10_veicitensobrig",null,"ve09_veiculos = $ve09_veiculos");
@@ -116,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,13 +57,13 @@ class cl_db_daitomadorpaga {
                  w09_valpago = float8 = Valor do pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_daitomadorpaga() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daitomadorpaga"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_db_daitomadorpaga {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w09_sequencial = ($this->w09_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["w09_sequencial"]:$this->w09_sequencial);
        $this->w09_daitomador = ($this->w09_daitomador == ""?@$GLOBALS["HTTP_POST_VARS"]["w09_daitomador"]:$this->w09_daitomador);
@@ -90,7 +90,7 @@ class cl_db_daitomadorpaga {
      }
    }
    // funcao para inclusao
-   function incluir ($w09_sequencial){ 
+   public function incluir ($w09_sequencial){ 
       $this->atualizacampos();
      if($this->w09_daitomador == null ){ 
        $this->erro_sql = " Campo Sequencial nao Informado.";
@@ -201,7 +201,7 @@ class cl_db_daitomadorpaga {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($w09_sequencial=null) { 
+   public function alterar ($w09_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update db_daitomadorpaga set ";
      $virgula = "";
@@ -325,7 +325,7 @@ class cl_db_daitomadorpaga {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($w09_sequencial=null,$dbwhere=null) { 
+   public function excluir ($w09_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($w09_sequencial));
      }else{ 
@@ -389,7 +389,7 @@ class cl_db_daitomadorpaga {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo = new rotulocampo;
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($anousu)){
         $anousu = db_anofolha();
       }
@@ -49,7 +49,7 @@ $clrotulo = new rotulocampo;
         db_input('anousu', 4, @$Irh49_anousu, true, 'text', 1, "")
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
         db_input('mesusu', 2, @$Irh49_mesusu, true, 'text', 1, "")
       ?>
     </td>
@@ -59,7 +59,7 @@ $clrotulo = new rotulocampo;
     <strong>Tipo Geração:</strong>
     </td>
     <td>
-      <?
+      <?php
         // necessário definir nome para o select
         $aTipos = array("F"=>"Férias", "D"=>"13° Salário");             
         db_select("tipoger", $aTipos, true, 1); 

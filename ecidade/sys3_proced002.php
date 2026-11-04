@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $cldb_syscadproceditem = new cl_db_syscadproceditem;
 <table>
 <tr>
 <td>
-  <?
+  <?php
   
   $sql = $cldb_syscadproceditem->sql_query(null,"*",null," db_syscadproceditem.codproced = $codproced");
     

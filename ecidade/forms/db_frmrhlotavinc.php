@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -76,8 +76,8 @@ if (isset($opcao) && $opcao == "alterar") {
                     </td>
                     <td>
                         <?php
-                        db_input('rh25_codigo', 8, $Irh25_codigo, true, 'text', 3);
-                        db_input('rh25_descr', 50, $Ir70_descr, true, 'text', 3);
+                        db_input('rh25_codigo', 5, $Irh25_codigo, true, 'text', 3);
+                        db_input('rh25_descr', 60, $Ir70_descr, true, 'text', 3);
                         ?>
                     </td>
                 </tr>
@@ -97,32 +97,35 @@ if (isset($opcao) && $opcao == "alterar") {
                                 db_fieldsmemory($result_projativ, 0);
                             }
                         }
-                        db_input('rh25_projativ', 8, $Irh25_projativ, true, 'text', $db_opcao, "onchange='js_pesquisarh25_projativ(false)'");
-                        db_input('rh25_anousu', 4, $Irh25_anousu, true, 'text', 3);
-                        db_input('o55_descr', 42, $Io55_descr, true, 'text', 3);
+                        db_input('rh25_projativ', 5, $Irh25_projativ, true, 'text', $db_opcao, "onchange='js_pesquisarh25_projativ(false)'");
+                        db_input('rh25_anousu', 5, $Irh25_anousu, true, 'text', 3);
+                        db_input('o55_descr', 50, $Io55_descr, true, 'text', 3);
                         ?>
                     </td>
                 </tr>
 
-                <tr>
-                    <td nowrap title="<?= @$Trh25_recurso ?>">
+                <tr title="Pesquise usando o código de gestão.">
+                    <td>
                         <?php
-                        db_ancora($Lrh25_recurso, "js_pesquisarh25_recurso(true)", $db_opcao);
+                        db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
                         ?>
                     </td>
                     <td>
                         <?php
                         db_input('rh25_recurso', 8, $Irh25_recurso, true, 'hidden');
-                        db_input('o15_recurso', 10, $Io15_recurso, true, 'text', 3);
-                        db_input('o15_descr', 50, $Io15_descr, true, 'text', 3);
+                        db_input("gestao", 5, null, false, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                        db_input('o15_recurso', 5, $Io15_recurso, true, 'text', 3);
+                        db_input("descricao", 50, null, true, "text", 3);
                         ?>
                     </td>
                 </tr>
 
+
                 <tr>
                     <td>Complemento:</td>
                     <td>
-                        <?php db_input('o200_descricao', 62, 0, true, 'text', 3); ?>
+                        <?php db_input('o15_complemento', 5, 0, true, 'text', 3); ?>
+                        <?php db_input('o200_descricao', 60, 0, true, 'text', 3); ?>
                     </td>
                 </tr>
 
@@ -131,8 +134,8 @@ if (isset($opcao) && $opcao == "alterar") {
                         <?php db_ancora($Lrh25_programa, 'js_pesquisa_programa(true)', $db_opcao); ?>
                     </td>
                     <td>
-                        <?php db_input('rh25_programa', 8, $Irh25_programa, true, 'text', $db_opcao, "onchange='js_pesquisa_programa(false)'"); ?>
-                        <?php db_input('o54_descr', 50, $Io54_descr, true, 'text', 3); ?>
+                        <?php db_input('rh25_programa', 5, $Irh25_programa, true, 'text', $db_opcao, "onchange='js_pesquisa_programa(false)'"); ?>
+                        <?php db_input('o54_descr', 60, $Io54_descr, true, 'text', 3); ?>
                     </td>
                 </tr>
 
@@ -142,8 +145,8 @@ if (isset($opcao) && $opcao == "alterar") {
                     </td>
                     <td>
                         <?php
-                        db_input('rh25_funcao', 8, $Irh25_funcao, true, 'text', $db_opcao, "onchange='js_pesquisa_funcao(false)'");
-                        db_input('o52_descr', 50, $Io52_descr, true, 'text', 3);
+                        db_input('rh25_funcao', 5, $Irh25_funcao, true, 'text', $db_opcao, "onchange='js_pesquisa_funcao(false)'");
+                        db_input('o52_descr', 60, $Io52_descr, true, 'text', 3);
                         ?>
                     </td>
                 </tr>
@@ -153,8 +156,8 @@ if (isset($opcao) && $opcao == "alterar") {
                         <?php db_ancora($Lrh25_subfuncao, 'js_pesquisa_subfuncao(true)', $db_opcao); ?>
                     </td>
                     <td>
-                        <?php db_input('rh25_subfuncao', 8, $Irh25_subfuncao, true, 'text', $db_opcao, "onchange='js_pesquisa_subfuncao(false)'"); ?>
-                        <?php db_input('o53_descr', 50, $Io53_descr, true, 'text', 3); ?>
+                        <?php db_input('rh25_subfuncao', 5, $Irh25_subfuncao, true, 'text', $db_opcao, "onchange='js_pesquisa_subfuncao(false)'"); ?>
+                        <?php db_input('o53_descr', 60, $Io53_descr, true, 'text', 3); ?>
                     </td>
                 </tr>
 
@@ -220,18 +223,19 @@ if (isset($opcao) && $opcao == "alterar") {
             "case when rh25_vinculo = 'I' then 'Inativo' when rh25_vinculo = 'A' then 'Ativo' else 'Pensionista' end as rh25_vinculo",
             "o55_descr",
             "rh25_anousu",
+            "gestao",
             "rh25_codigo",
             "o15_recurso",
             "rh25_projativ",
             "rh25_codlotavinc",
-            "o15_descr",
+            "descricao",
             "o200_descricao",
         ];
         $ordem = "rh25_codigo, rh25_codlotavinc";
         $sql = $clrhlotavinc->sql_query2(null, implode(', ', $campos), $ordem, $where);
         $cliframe_alterar_excluir->sql = $sql;
 
-        $cliframe_alterar_excluir->campos = "rh25_codlotavinc, rh25_projativ, rh25_anousu, o55_descr, o15_recurso, o15_descr, o200_descricao, rh25_vinculo";
+        $cliframe_alterar_excluir->campos = "rh25_codlotavinc, rh25_projativ, rh25_anousu, o55_descr, gestao, o15_recurso, descricao, o200_descricao, rh25_vinculo";
         $cliframe_alterar_excluir->legenda = "ITENS LANÇADOS";
         $cliframe_alterar_excluir->iframe_height = "250";
         $cliframe_alterar_excluir->iframe_width = "90%";
@@ -277,29 +281,38 @@ if (isset($opcao) && $opcao == "alterar") {
         }
     }
 
-    function js_pesquisarh25_recurso(mostra) {
+    function js_pesquisaRecurso(lMostraWindow) {
 
-        let url = 'func_fonterecursocomplemento.php?funcao_js=parent.CurrentWindow.corpo.iframe_rhlotavinc.';
-        url += 'js_mostraorctiporec|db_codigo|o15_recurso|o15_descr|o200_descricao';
+        if (!lMostraWindow && $('gestao').value == '') {
+            $('rh25_recurso').value = id;
+            $('o15_recurso').value = recurso;
+            $('descricao').value = descricao;
+            $('o15_complemento').value = complemento;
+            $('o200_descricao').value = descrComplemento
+            return
+        }
 
-        js_OpenJanelaIframe(
-            'CurrentWindow.corpo.iframe_rhlotavinc',
-            'db_iframe_orctiporec',
-            url,
-            'Pesquisa Recursos',
-            mostra,
-            '0'
-        );
+        let param = 'gestao='+ $('gestao').value;
+        pesquisaRecurso(param);
     }
 
-    function js_mostraorctiporec(codigo, recurso, descricao, complemento) {
+    const pesquisaRecurso = (parametroAdicional) => {
+        let sUrl = 'func_novosRecursos.php?funcao_js=parent.js_preencheRecurso|o15_codigo|o15_recurso|gestao|descricao|o15_complemento|o200_descricao';
+        if (parametroAdicional) {
+            sUrl += `&${parametroAdicional}`;
+        }
+        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    };
 
-        document.form1.rh25_recurso.value = codigo;
-        document.form1.o15_recurso.value = recurso;
-        document.form1.o15_descr.value = descricao;
-        document.form1.o200_descricao.value = complemento;
+    function js_preencheRecurso(id, recurso, gestao,  descricao, complemento, descrComplemento) {
+        $('rh25_recurso').value = id;
+        $('o15_recurso').value = recurso;
+        $('gestao').value = gestao;
+        $('descricao').value = descricao;
+        $('o15_complemento').value = complemento;
+        $('o200_descricao').value = descrComplemento
 
-        db_iframe_orctiporec.hide();
+        db_iframe_recurso.hide();
     }
 
     function js_pesquisarh25_projativ(mostra) {
@@ -317,7 +330,6 @@ if (isset($opcao) && $opcao == "alterar") {
             }
         }
     }
-
     function js_mostraprojativ(chave, chave1) {
         document.form1.o55_descr.value = chave;
         document.form1.rh25_projativ.value = chave1;

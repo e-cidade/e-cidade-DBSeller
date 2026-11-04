@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -95,12 +95,17 @@ $idsetor  = $oStd->db_stripTagsJson($idsetor);
         if(isset($campos)==false){
            $campos = "ruas.*";
         }
-          
-        $sql= $clface->sql_query('','j37_codigo, j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra'");
+        if(isset($chave_j14_codigo) && (trim($chave_j14_codigo)!="") ){
+          $sql= $clface->sql_query('','j37_codigo, j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra' and j37_codigo=$chave_j14_codigo" );
+        }else if(isset($chave_j14_nome) && (trim($chave_j14_nome)!="") ){
+          $sql= $clface->sql_query('','j37_codigo, j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra' and j14_nome='$chave_j14_nome'" );
+        }else{
+          $sql= $clface->sql_query('','j37_codigo, j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra'");
+        }
         db_lovrot($sql,15,"()","",$funcao_js);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
-          $result = $clruas->sql_record($clface->sql_query('','j37_codigo#j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra' and j37_codigo=$pesquisa_chave" ));          
+          $result = $clruas->sql_record($clface->sql_query('','j37_codigo,j14_nome',''," j37_setor = '$idsetor' and j37_quadra = '$idquadra' and j37_codigo=$pesquisa_chave" ));          
           if($clruas->numrows!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$j14_nome',false);</script>";

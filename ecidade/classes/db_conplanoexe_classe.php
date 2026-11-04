@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ class cl_conplanoexe
                  ";
 
     //funcao construtor da classe
-    function cl_conplanoexe()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conplanoexe");
@@ -66,7 +66,7 @@ class cl_conplanoexe
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -77,7 +77,7 @@ class cl_conplanoexe
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c62_anousu = ($this->c62_anousu == "" ? @$GLOBALS["HTTP_POST_VARS"]["c62_anousu"] : $this->c62_anousu);
@@ -92,7 +92,7 @@ class cl_conplanoexe
     }
 
     // funcao para inclusao
-    function incluir($c62_anousu, $c62_reduz)
+    public function incluir($c62_anousu, $c62_reduz)
     {
         $this->atualizacampos();
         if ($this->c62_codrec == null) {
@@ -195,7 +195,7 @@ class cl_conplanoexe
     }
 
     // funcao para alteracao
-    function alterar($c62_anousu = null, $c62_reduz = null)
+    public function alterar($c62_anousu = null, $c62_reduz = null)
     {
         $this->atualizacampos();
         $sql = " update conplanoexe set ";
@@ -326,7 +326,7 @@ class cl_conplanoexe
     }
 
     // funcao para exclusao
-    function excluir($c62_anousu = null, $c62_reduz = null, $dbwhere = null)
+    public function excluir($c62_anousu = null, $c62_reduz = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file_log($c62_anousu, $c62_reduz));
@@ -400,7 +400,7 @@ class cl_conplanoexe
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -424,7 +424,7 @@ class cl_conplanoexe
         return $result;
     }
 
-    function sql_conta_debitar($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_conta_debitar($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -488,7 +488,7 @@ class cl_conplanoexe
         return $sql;
     }
 
-    function sql_descr($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_descr($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -535,7 +535,7 @@ class cl_conplanoexe
         return $sql;
     }
 
-    function sql_query($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -584,7 +584,7 @@ class cl_conplanoexe
         return $sql;
     }
 
-    function sql_query_file($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -660,7 +660,7 @@ class cl_conplanoexe
         return $sql;
     }
 
-    function sql_query_file_log($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file_log($c62_anousu = null, $c62_reduz = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,7 +91,7 @@ function js_marca(obj){
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   </tr>
     <td colspan=2 align='center' >
-  <?  
+  <?php  
        $sSqlProcessos  = "select * ";
        $sSqlProcessos .= "  from proctransferintand ";
        $sSqlProcessos .= "       inner join procandam    on p61_codandam = p87_codandam ";

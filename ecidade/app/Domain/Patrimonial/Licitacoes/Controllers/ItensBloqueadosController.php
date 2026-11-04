@@ -20,15 +20,24 @@ class ItensBloqueadosController extends Controller
     public function emitir(Request $request)
     {
         $service = new ItensBloqueadosService();
-       
+
         $dados = $service->buscarDadosLicitacao($request->licitacao);
-      
+
         $relatorio = new ItensBloqueados();
-        foreach ($dados as $dadosLicitacao) {
-            $relatorio->setLicitacao($dadosLicitacao->licitacao);
-            $relatorio->setModalidade($dadosLicitacao->modalidade);
-            $relatorio->setRegistroPreco($dadosLicitacao->solicitacao);
-            $relatorio->setMovimentacao($dadosLicitacao->movimentacao);
+        if ($dados) {
+            foreach ($dados as $dadosLicitacao) {
+                $relatorio->setLicitacao($dadosLicitacao->licitacao);
+                $relatorio->setModalidade($dadosLicitacao->modalidade);
+                $relatorio->setRegistroPreco($dadosLicitacao->solicitacao);
+                $relatorio->setMovimentacao($dadosLicitacao->movimentacao);
+            }
+        } else {
+            $dadosHeaders = $service->buscarDadosHeadersLicitacao($request->licitacao);
+            foreach ($dadosHeaders as $dadosLicitacaoHeader) {
+                $relatorio->setLicitacao($dadosLicitacaoHeader->licitacao);
+                $relatorio->setModalidade($dadosLicitacaoHeader->modalidade);
+                $relatorio->setRegistroPreco($dadosLicitacaoHeader->solicitacao);
+            }
         }
         $solicita = $service->buscarSolicitacao($request->licitacao);
         $list = $service->buscarItensBloqueados($solicita);

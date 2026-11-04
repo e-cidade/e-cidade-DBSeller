@@ -49,13 +49,13 @@ class cl_atolegalprevidencia {
                  rh179_descricao = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_atolegalprevidencia() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atolegalprevidencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -64,7 +64,7 @@ class cl_atolegalprevidencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh179_sequencial = ($this->rh179_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh179_sequencial"]:$this->rh179_sequencial);
        $this->rh179_descricao = ($this->rh179_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh179_descricao"]:$this->rh179_descricao);
@@ -73,7 +73,7 @@ class cl_atolegalprevidencia {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh179_sequencial){ 
+   public function incluir ($rh179_sequencial){ 
       $this->atualizacampos();
      if($this->rh179_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

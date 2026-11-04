@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,13 +55,13 @@ function js_abre(opcao){
     return false;
  }
  if (document.form1.vernivel.value != '' && document.form1.vernivel.value != document.form1.nivel.value){
-    if(confirm('Você já escolheu anteriormente dados do nível '+document.form1.vernivel.value+' , deseja altera-los?')==false) 
+    if(confirm('Você já escolheu anteriormente dados do nível '+document.form1.vernivel.value+' , deseja altera-los?')==false)
       return false
     else
       js_OpenJanelaIframe('','db_iframe_orgao','func_selorcdotacao.php?&nivel='+document.form1.nivel.value+'&db_selinstit='+document.form1.db_selinstit.value,'pesquisa',true);
  }else if((window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_orgao != undefined){
 //   alert('entrou');
-   
+
    if(document.form1.nivel.value == document.form1.vernivel.value){
      db_iframe_orgao.show();
    }else{
@@ -70,8 +70,8 @@ function js_abre(opcao){
  }else{
    js_OpenJanelaIframe('','db_iframe_orgao','func_selorcdotacao.php?&nivel='+document.form1.nivel.value+'&db_selinstit='+document.form1.db_selinstit.value,'pesquisa',true);
  }
- 
- 
+
+
 }
 
 
@@ -81,14 +81,14 @@ function js_emite(opcao,origem){
   itemselecionado = 0;
   numElems = document.form1.qual_tipo_balanco.length;
   for (i=0;i<numElems;i++) {
-    if (document.form1.qual_tipo_balanco[i].checked){ 
+    if (document.form1.qual_tipo_balanco[i].checked){
        itemselecionado = i;
     }
   }
-  
+
   tipo_balanco = document.form1.qual_tipo_balanco[itemselecionado].value;
 
-    
+
   if (opcao == 3){
      var data1 = new Date(document.form1.DBtxt21_ano.value,document.form1.DBtxt21_mes.value,document.form1.DBtxt21_dia.value,0,0,0);
      var data2 = new Date(document.form1.DBtxt22_ano.value,document.form1.DBtxt22_mes.value,document.form1.DBtxt22_dia.value,0,0,0);
@@ -117,7 +117,7 @@ function js_emite(opcao,origem){
      }else{
        mesinicial = document.form1.mesini.value;
      }
-    
+
      perini = <?=db_getsession("DB_anousu")?>+'-'+mesinicial+'-01';
      perfin = <?=db_getsession("DB_anousu")?>+'-'+mesfinal+'-01';
   }else{
@@ -126,7 +126,7 @@ function js_emite(opcao,origem){
   }
 
 
-  
+
   valor_nivel = new Number(document.form1.orgaos.value);
   sel_instit  = new Number(document.form1.db_selinstit.value);
   if(valor_nivel == 0){
@@ -138,7 +138,7 @@ function js_emite(opcao,origem){
   }else{
     jan = window.open('','safo' + variavel,'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
     document.form1.target = 'safo' + variavel++;
-    document.form1.action = "orc2_anexo2_resudespesa002.php?tipo_balanco="+tipo_balanco+"&perfin="+perfin+"&perini="+perini+"&opcao="+opcao+"&origem="+origem;
+    document.form1.action = "orc2_anexo2_resudespesa002.php?tipo_balanco=" + tipo_balanco + "&perfin=" + perfin + "&perini=" + perini + "&opcao=" + opcao + "&origem=" + origem + "&tipoArquivo=" + tipoArquivo;
     setTimeout("document.form1.submit()",1000);
     return true;
  }
@@ -151,7 +151,7 @@ function js_limpa(){
     document.form1.seleciona.click();
   }
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -172,9 +172,9 @@ function js_limpa(){
       </tr>
       <tr>
          <td align="center" colspan="3">
-         <?
-           db_selinstit('parent.js_limpa',300,100);
-         ?>
+         <?php
+            db_selinstit('parent.js_limpa', 300, 100);
+            ?>
          </td>
       </tr>
       <tr>
@@ -183,25 +183,33 @@ function js_limpa(){
       </tr>
       <tr>
         <td colspan="3" align="center" ><strong>Nível :</strong>&nbsp;&nbsp;
-        
-	  <?
-	  
-	   $xy = array('1A'=>'Órgão','2A'=>'Unidade','7B'=>'Elemento');
-	     db_select('nivel',$xy,true,2,"");
-	     
-	   ?>
+
+      <?php
+
+        $xy = array('1A'=>'Órgão','2A'=>'Unidade','7B'=>'Elemento');
+         db_select('nivel', $xy, true, 2, "");
+
+        ?>
 &nbsp;&nbsp;<input  name="seleciona" id="seleciona" type="button" value="Selecionar" onclick="js_abre();">
 &nbsp;</td>
       </tr>
       <tr>
+                <td colspan="4" align="center"><strong>Tipo Emissão :</strong>&nbsp;&nbsp;
+                <?php
+                    $aTipoArquivo    =    array('1' => 'PDF', '2' => 'CSV');
+                    db_select('tipoArquivo', $aTipoArquivo, true, 1, 'style="width: 50px;"')
+                    ?>
+                </td>
+            </tr>
+      <tr>
          <td colspan="2"</td>
          <td >&nbsp;</td>
       </tr>
-       <?
-        db_selorcbalanco(true,true,true);
-       ?>
+       <?php
+        db_selorcbalanco(true, true, true);
+        ?>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="orgaos" id="orgaos" type="hidden" value="" >
           <input  name="vernivel" id="vernivel" type="hidden" value="" >
         </td>
@@ -209,8 +217,8 @@ function js_limpa(){
 
   </form>
     </table>
-<?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>

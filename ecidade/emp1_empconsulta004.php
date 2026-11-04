@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -72,7 +72,7 @@ if (isset ($e60_numemp) and ($e60_numemp != "")) {
 }
 
 if (isset($e60_codemp) and $e60_codemp != "" ) {
-	  $arr = split("/",$e60_codemp);
+	  $arr =explode("/",$e60_codemp);
 	  if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 	  	$where_sql .= " e60_codemp =  '".$arr[0]."' and e60_anousu = ".$arr[1]." and ";
 	  }else{
@@ -105,7 +105,7 @@ if (isset($pc01_codmater) and $pc01_codmater !=""){
 }
 
 if (isset ($o50_estrutdespesa) && ($o50_estrutdespesa != "")) {
-	$matriz = split('\.', $o50_estrutdespesa);
+	$matriz =explode('.', $o50_estrutdespesa);
 	for ($i = 0; $i < count($matriz); $i ++) {
 		switch ($i) {
 			case 0 : //orgao
@@ -176,7 +176,7 @@ if (!empty($oGet->e150_numeroprocesso)) {
   }
 
   $sSqlNovoSqlParaProcesso = "
-    select * 
+    select *
       from ({$sSqlConsultaBase}) as consulta_principal
            inner join empempaut on empempaut.e61_numemp = consulta_principal.e60_numemp
            inner join empautorizaprocesso on empautorizaprocesso.e150_empautoriza = empempaut.e61_autori
@@ -210,7 +210,7 @@ db_fieldsmemory($resultDescricaoMaterial, 0);
 if (!empty($pc01_descrmater)) {
 	$head4 .= " - $pc01_descrmater";
 }
-	
+
 $head5 = "CGM : ".$z01_numcgm;
 $head6 =  "De  : $dta1[2]/$dta1[1]/$dta1[0] ";
 $head7 =  "Ate : $dta2[2]/$dta2[1]/$dta2[0] ";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,14 +25,16 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_cadtipoparc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_cadtipoparc_classe.php"));
+
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
+
 $clcadtipoparc = new cl_cadtipoparc;
 $clcadtipoparc->rotulo->label("k40_codigo");
 $clcadtipoparc->rotulo->label("k40_descr");
@@ -55,7 +57,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk40_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k40_codigo",10,$Ik40_codigo,true,"text",4,"","chave_k40_codigo");
 		       ?>
             </td>
@@ -65,7 +67,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k40_descr",40,$Ik40_descr,true,"text",4,"","chave_k40_descr");
 		       ?>
             </td>
@@ -83,7 +85,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipoparc.php")==true){
@@ -107,21 +109,11 @@ $instit = db_getsession("DB_instit");
 
         $sql = $clcadtipoparc->sql_query("",$campos, $ordem, $where);
 
-        /* if (isset($apenasParcelamento)) {
-          $whereIn = "cadtipo.k03_tipo in (6,13,16,17) group by k40_codigo";
-          $sql = $clcadtipoparc->sql_query_parcelamento("",$campos, $ordem, "{$where} AND {$whereIn}");
-        } */
-
         db_lovrot($sql,15,"()","",$funcao_js);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!="") {
           $where = "k40_codigo = $pesquisa_chave and k40_instit = $instit";
           $sql = $clcadtipoparc->sql_query(null,"*",null,$where);
-
-          /* if (isset($apenasParcelamento)) {
-            $whereIn = "cadtipo.k03_tipo in (6,13,16,17) group by k40_codigo";
-            $sql = $clcadtipoparc->sql_query_parcelamento("",$campos, $ordem, "{$where} AND {$whereIn}");
-          } */
 
           $result = $clcadtipoparc->sql_record($sql);
           if($clcadtipoparc->numrows!=0){
@@ -140,12 +132,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

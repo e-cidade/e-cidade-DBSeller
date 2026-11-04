@@ -38,7 +38,7 @@ require_once modification("dbforms/db_funcoes.php");
   <head>
     <title>DBSeller Informática Ltda</title>
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       /**
        * Default
        */

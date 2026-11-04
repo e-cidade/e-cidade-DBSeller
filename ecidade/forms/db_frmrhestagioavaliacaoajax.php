@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,15 +43,15 @@ $clrotulo->label("h59_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Th56_rhestagiocomissao?>">
-       <?
+       <?php
        db_ancora(@$Lh56_rhestagiocomissao,"js_pesquisah56_rhestagiocomissao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_rhestagiocomissao',10,$Ih56_rhestagiocomissao,true,'text',$db_opcao," onchange='js_pesquisah56_rhestagiocomissao(false);'")
 ?>
-       <?
+       <?php
 db_input('h59_descr',40,$Ih59_descr,true,'text',3,'');
        ?>
     </td>
@@ -59,15 +59,15 @@ db_input('h59_descr',40,$Ih59_descr,true,'text',3,'');
   <tr>
   <tr>
     <td nowrap title="<?=@$Th57_regist?>">
-       <?
+       <?php
        db_ancora(@$Lh57_regist,"js_pesquisah57_regist(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h57_regist',10,$Ih57_regist,true,'text',3,"");
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -76,19 +76,19 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lh56_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h56_data',@$h56_data_dia,@$h56_data_mes,@$h56_data_ano,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th56_avaliador?>">
-       <?
+       <?php
        db_ancora(@$Lh56_avaliador,"js_pesquisaavaliador(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h56_avaliador',10,$Ih56_avaliador,true,'text',$db_opcao,"onchange=js_pesquisaavaliador(false)");
 db_input('nomeavaliador',40,$Iz01_nome,true,'text',3,'')
 ?>

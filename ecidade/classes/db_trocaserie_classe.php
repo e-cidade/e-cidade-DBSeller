@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,13 +63,13 @@ class cl_trocaserie {
                  ed101_c_tipo = char(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_trocaserie() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("trocaserie"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_trocaserie {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed101_i_codigo = ($this->ed101_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed101_i_codigo"]:$this->ed101_i_codigo);
        $this->ed101_i_aluno = ($this->ed101_i_aluno == ""?@$GLOBALS["HTTP_POST_VARS"]["ed101_i_aluno"]:$this->ed101_i_aluno);
@@ -99,7 +99,7 @@ class cl_trocaserie {
      }
    }
    // funcao para inclusao
-   function incluir ($ed101_i_codigo){ 
+   public function incluir ($ed101_i_codigo){ 
       $this->atualizacampos();
      if($this->ed101_i_aluno == null ){ 
        $this->erro_sql = " Campo Aluno nao Informado.";
@@ -237,7 +237,7 @@ class cl_trocaserie {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed101_i_codigo=null) { 
+   public function alterar ($ed101_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update trocaserie set ";
      $virgula = "";
@@ -397,7 +397,7 @@ class cl_trocaserie {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed101_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed101_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed101_i_codigo));
      }else{ 
@@ -464,7 +464,7 @@ class cl_trocaserie {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -486,7 +486,7 @@ class cl_trocaserie {
       }
      return $result;
    }
-   function sql_query ( $ed101_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed101_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -532,7 +532,7 @@ class cl_trocaserie {
      }
      return $sql;
   }
-   function sql_query_file ( $ed101_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed101_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -567,7 +567,7 @@ class cl_trocaserie {
   }
 
   
-  function sql_query_certificado_conclusao ($ed101_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_certificado_conclusao ($ed101_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
     
     $sql = "select ";
     if ($campos != "*" ) {

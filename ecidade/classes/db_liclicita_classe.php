@@ -108,13 +108,13 @@ class cl_liclicita {
                  l20_tipo = int4 = Tipo
                  ";
    //funcao construtor da classe
-   function cl_liclicita() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicita");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -123,7 +123,7 @@ class cl_liclicita {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l20_codigo = ($this->l20_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["l20_codigo"]:$this->l20_codigo);
        $this->l20_codtipocom = ($this->l20_codtipocom == ""?@$GLOBALS["HTTP_POST_VARS"]["l20_codtipocom"]:$this->l20_codtipocom);
@@ -178,7 +178,7 @@ class cl_liclicita {
      }
    }
    // funcao para Inclusão
-   function incluir ($l20_codigo){
+   public function incluir ($l20_codigo){
       $this->atualizacampos();
      if($this->l20_codtipocom == null ){
        $this->erro_sql = " Campo Código do tipo de compra não informado.";
@@ -1124,7 +1124,7 @@ class cl_liclicita {
      return $sql;
   }
 
-  function sql_query_baixa ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_baixa ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1168,7 +1168,7 @@ class cl_liclicita {
     }
     return $sql;
   }
-  function sql_query_lib ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_lib ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1210,7 +1210,7 @@ class cl_liclicita {
     }
     return $sql;
   }
-  function sql_query_pco ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_pco ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1252,7 +1252,7 @@ class cl_liclicita {
     return $sql;
   }
 
-  function sql_query_pcodireta ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_pcodireta ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1293,7 +1293,7 @@ class cl_liclicita {
     return $sql;
   }
 
-  function sql_query_modelos( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_modelos( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1330,7 +1330,7 @@ class cl_liclicita {
     return $sql;
   }
 
-   function sql_query_modelosatas( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_modelosatas( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1367,7 +1367,7 @@ class cl_liclicita {
      return $sql;
   }
 
-  function sql_query_modelosminutas( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_modelosminutas( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1405,7 +1405,7 @@ class cl_liclicita {
   }
 
 
-   function sql_query_julgamento_licitacao ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_julgamento_licitacao ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ){
@@ -1531,7 +1531,7 @@ class cl_liclicita {
   /**
    * query para chegar até o vinculo de contratos
    */
-  function sql_queryContratos ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  function sql_queryContratos ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere="", $pncp = false){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1558,7 +1558,11 @@ class cl_liclicita {
     $sql .= "      inner join ruas                  on ruas.j14_codigo                     = liclocal.l26_lograd";
     $sql .= "       left join liclicitaproc         on liclicitaproc.l34_liclicita         = liclicita.l20_codigo";
     $sql .= "       left join protprocesso          on protprocesso.p58_codproc            = liclicitaproc.l34_protprocesso";
-    $sql .= "       left join liclicitem            on liclicita.l20_codigo                = l21_codliclicita ";
+    $sqlPncp = "       left join liclicitem            on liclicita.l20_codigo                = l21_codliclicita ";
+    if ($pncp) {
+        $sqlPncp = "      inner join liclicitem            on liclicita.l20_codigo                = l21_codliclicita ";
+    }
+    $sql .= $sqlPncp;
     $sql .= "       left join acordoliclicitem      on liclicitem.l21_codigo               = acordoliclicitem.ac24_liclicitem ";
 
     $sql2 = "";
@@ -1670,7 +1674,7 @@ class cl_liclicita {
 
     if ($flagItensComPropostas) {
       $sSqlBusca .= '
-        inner join pcorcamval 
+        inner join pcorcamval
           on pcorcamval.pc23_orcamforne = pcorcamforne.pc21_orcamforne
             and pcorcamval.pc23_orcamitem = pcorcamitem.pc22_orcamitem
       ';
@@ -1679,11 +1683,11 @@ class cl_liclicita {
     if (!empty($sWhere)) {
       $sSqlBusca .= " where {$sWhere} ";
     }
-    
+
     return $sSqlBusca;
   }
 
-  function sql_query_licitacon($sCampos, $sWhere) {
+  public function sql_query_licitacon($sCampos, $sWhere) {
 
     if (empty($sCampos)) {
       $sCampos = " * ";
@@ -1728,7 +1732,7 @@ class cl_liclicita {
     return $sSql;
   }
 
-  function sql_query_licitacon_dotacao_lic($sCampos, $sWhere) {
+  public function sql_query_licitacon_dotacao_lic($sCampos, $sWhere) {
 
     if (empty($sCampos)) {
       $sCampos = " * ";
@@ -1753,7 +1757,7 @@ class cl_liclicita {
     return $sSql;
   }
 
-  function sql_query_licitacao_comissao($sCampos, $sWhere) {
+  public function sql_query_licitacao_comissao($sCampos, $sWhere) {
 
     if (empty($sCampos)) {
       $sCampos = " * ";
@@ -1771,7 +1775,7 @@ class cl_liclicita {
     return $sSql;
   }
 
-  function sql_query_encerramento($sCampos, $sWhere) {
+  public function sql_query_encerramento($sCampos, $sWhere) {
 
     if (empty($sCampos)) {
       $sCampos = " * ";
@@ -1803,7 +1807,7 @@ class cl_liclicita {
     return $sSql;
   }
 
-  function sql_query_propostas($sCampos = null, $sWhere = null, $sGroupBy = null, $sOrderBy = null) {
+  public function sql_query_propostas($sCampos = null, $sWhere = null, $sGroupBy = null, $sOrderBy = null) {
     if (empty($sCampos)) {
       $sCampos = "*";
     }
@@ -1877,7 +1881,7 @@ class cl_liclicita {
     return $sSql;
   }
 
-    function sqlPropostasLoteLicitacon($sCampos = null, $sWhere = null, $sGroupBy = null, $sOrderBy = null)
+    public function sqlPropostasLoteLicitacon($sCampos = null, $sWhere = null, $sGroupBy = null, $sOrderBy = null)
     {
         if (empty($sCampos)) {
             $sCampos = "*";

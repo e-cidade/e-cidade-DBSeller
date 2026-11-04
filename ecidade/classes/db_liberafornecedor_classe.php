@@ -1,89 +1,89 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Compras
 //CLASSE DA ENTIDADE liberafornecedor
-class cl_liberafornecedor { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc82_sequencial = 0; 
-   var $pc82_id_usuario = 0; 
-   var $pc82_numcgm = 0; 
-   var $pc82_dataini_dia = null; 
-   var $pc82_dataini_mes = null; 
-   var $pc82_dataini_ano = null; 
-   var $pc82_dataini = null; 
-   var $pc82_datafim_dia = null; 
-   var $pc82_datafim_mes = null; 
-   var $pc82_datafim_ano = null; 
-   var $pc82_datafim = null; 
-   var $pc82_obs = null; 
-   var $pc82_data_dia = null; 
-   var $pc82_data_mes = null; 
-   var $pc82_data_ano = null; 
-   var $pc82_data = null; 
-   var $pc82_liberasol = 'f'; 
-   var $pc82_liberaproc = 'f'; 
-   var $pc82_liberaaut = 'f'; 
-   var $pc82_ativo = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_liberafornecedor {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc82_sequencial = 0;
+   var $pc82_id_usuario = 0;
+   var $pc82_numcgm = 0;
+   var $pc82_dataini_dia = null;
+   var $pc82_dataini_mes = null;
+   var $pc82_dataini_ano = null;
+   var $pc82_dataini = null;
+   var $pc82_datafim_dia = null;
+   var $pc82_datafim_mes = null;
+   var $pc82_datafim_ano = null;
+   var $pc82_datafim = null;
+   var $pc82_obs = null;
+   var $pc82_data_dia = null;
+   var $pc82_data_mes = null;
+   var $pc82_data_ano = null;
+   var $pc82_data = null;
+   var $pc82_liberasol = 'f';
+   var $pc82_liberaproc = 'f';
+   var $pc82_liberaaut = 'f';
+   var $pc82_ativo = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc82_sequencial = int4 = Código 
-                 pc82_id_usuario = int4 = Usuário 
-                 pc82_numcgm = int4 = CGM 
-                 pc82_dataini = date = Data Inicial 
-                 pc82_datafim = date = Data Fim 
-                 pc82_obs = text = Observação 
-                 pc82_data = date = Data 
-                 pc82_liberasol = bool = Libera Solicitação 
-                 pc82_liberaproc = bool = Libera Processo de Compras 
-                 pc82_liberaaut = bool = Liberação Autorização de Empenho 
-                 pc82_ativo = bool = Ativo 
+                 pc82_sequencial = int4 = Código
+                 pc82_id_usuario = int4 = Usuário
+                 pc82_numcgm = int4 = CGM
+                 pc82_dataini = date = Data Inicial
+                 pc82_datafim = date = Data Fim
+                 pc82_obs = text = Observação
+                 pc82_data = date = Data
+                 pc82_liberasol = bool = Libera Solicitação
+                 pc82_liberaproc = bool = Libera Processo de Compras
+                 pc82_liberaaut = bool = Liberação Autorização de Empenho
+                 pc82_ativo = bool = Ativo
                  ";
-   //funcao construtor da classe 
-   function cl_liberafornecedor() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("liberafornecedor"); 
+     $this->rotulo = new rotulo("liberafornecedor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -92,7 +92,7 @@ class cl_liberafornecedor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc82_sequencial = ($this->pc82_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"]:$this->pc82_sequencial);
        $this->pc82_id_usuario = ($this->pc82_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"]:$this->pc82_id_usuario);
@@ -131,9 +131,9 @@ class cl_liberafornecedor {
      }
    }
    // funcao para inclusao
-   function incluir ($pc82_sequencial){ 
+   public function incluir ($pc82_sequencial){
       $this->atualizacampos();
-     if($this->pc82_id_usuario == null ){ 
+     if($this->pc82_id_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "pc82_id_usuario";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_numcgm == null ){ 
+     if($this->pc82_numcgm == null ){
        $this->erro_sql = " Campo CGM nao Informado.";
        $this->erro_campo = "pc82_numcgm";
        $this->erro_banco = "";
@@ -151,13 +151,13 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_dataini == null ){ 
+     if($this->pc82_dataini == null ){
        $this->pc82_dataini = "null";
      }
-     if($this->pc82_datafim == null ){ 
+     if($this->pc82_datafim == null ){
        $this->pc82_datafim = "null";
      }
-     if($this->pc82_data == null ){ 
+     if($this->pc82_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "pc82_data_dia";
        $this->erro_banco = "";
@@ -166,7 +166,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_liberasol == null ){ 
+     if($this->pc82_liberasol == null ){
        $this->erro_sql = " Campo Libera Solicitação nao Informado.";
        $this->erro_campo = "pc82_liberasol";
        $this->erro_banco = "";
@@ -175,7 +175,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_liberaproc == null ){ 
+     if($this->pc82_liberaproc == null ){
        $this->erro_sql = " Campo Libera Processo de Compras nao Informado.";
        $this->erro_campo = "pc82_liberaproc";
        $this->erro_banco = "";
@@ -184,7 +184,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_liberaaut == null ){ 
+     if($this->pc82_liberaaut == null ){
        $this->erro_sql = " Campo Liberação Autorização de Empenho nao Informado.";
        $this->erro_campo = "pc82_liberaaut";
        $this->erro_banco = "";
@@ -193,7 +193,7 @@ class cl_liberafornecedor {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc82_ativo == null ){ 
+     if($this->pc82_ativo == null ){
        $this->erro_sql = " Campo Ativo nao Informado.";
        $this->erro_campo = "pc82_ativo";
        $this->erro_banco = "";
@@ -203,16 +203,16 @@ class cl_liberafornecedor {
        return false;
      }
      if($pc82_sequencial == "" || $pc82_sequencial == null ){
-       $result = db_query("select nextval('liberafornecedor_pc82_sequencial_seq')"); 
+       $result = db_query("select nextval('liberafornecedor_pc82_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: liberafornecedor_pc82_sequencial_seq do campo: pc82_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: liberafornecedor_pc82_sequencial_seq do campo: pc82_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc82_sequencial = pg_result($result,0,0); 
+       $this->pc82_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from liberafornecedor_pc82_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc82_sequencial)){
@@ -223,10 +223,10 @@ class cl_liberafornecedor {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc82_sequencial = $pc82_sequencial; 
+         $this->pc82_sequencial = $pc82_sequencial;
        }
      }
-     if(($this->pc82_sequencial == null) || ($this->pc82_sequencial == "") ){ 
+     if(($this->pc82_sequencial == null) || ($this->pc82_sequencial == "") ){
        $this->erro_sql = " Campo pc82_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -235,33 +235,33 @@ class cl_liberafornecedor {
        return false;
      }
      $sql = "insert into liberafornecedor(
-                                       pc82_sequencial 
-                                      ,pc82_id_usuario 
-                                      ,pc82_numcgm 
-                                      ,pc82_dataini 
-                                      ,pc82_datafim 
-                                      ,pc82_obs 
-                                      ,pc82_data 
-                                      ,pc82_liberasol 
-                                      ,pc82_liberaproc 
-                                      ,pc82_liberaaut 
-                                      ,pc82_ativo 
+                                       pc82_sequencial
+                                      ,pc82_id_usuario
+                                      ,pc82_numcgm
+                                      ,pc82_dataini
+                                      ,pc82_datafim
+                                      ,pc82_obs
+                                      ,pc82_data
+                                      ,pc82_liberasol
+                                      ,pc82_liberaproc
+                                      ,pc82_liberaaut
+                                      ,pc82_ativo
                        )
                 values (
-                                $this->pc82_sequencial 
-                               ,$this->pc82_id_usuario 
-                               ,$this->pc82_numcgm 
-                               ,".($this->pc82_dataini == "null" || $this->pc82_dataini == ""?"null":"'".$this->pc82_dataini."'")." 
-                               ,".($this->pc82_datafim == "null" || $this->pc82_datafim == ""?"null":"'".$this->pc82_datafim."'")." 
-                               ,'$this->pc82_obs' 
-                               ,".($this->pc82_data == "null" || $this->pc82_data == ""?"null":"'".$this->pc82_data."'")." 
-                               ,'$this->pc82_liberasol' 
-                               ,'$this->pc82_liberaproc' 
-                               ,'$this->pc82_liberaaut' 
-                               ,'$this->pc82_ativo' 
+                                $this->pc82_sequencial
+                               ,$this->pc82_id_usuario
+                               ,$this->pc82_numcgm
+                               ,".($this->pc82_dataini == "null" || $this->pc82_dataini == ""?"null":"'".$this->pc82_dataini."'")."
+                               ,".($this->pc82_datafim == "null" || $this->pc82_datafim == ""?"null":"'".$this->pc82_datafim."'")."
+                               ,'$this->pc82_obs'
+                               ,".($this->pc82_data == "null" || $this->pc82_data == ""?"null":"'".$this->pc82_data."'")."
+                               ,'$this->pc82_liberasol'
+                               ,'$this->pc82_liberaproc'
+                               ,'$this->pc82_liberaaut'
+                               ,'$this->pc82_ativo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Libera Fornecedor ($this->pc82_sequencial) nao Incluído. Inclusao Abortada.";
@@ -303,16 +303,16 @@ class cl_liberafornecedor {
        $resac = db_query("insert into db_acount values($acount,2724,15528,'','".AddSlashes(pg_result($resaco,0,'pc82_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc82_sequencial=null) { 
+   public function alterar ($pc82_sequencial=null) {
       $this->atualizacampos();
      $sql = " update liberafornecedor set ";
      $virgula = "";
-     if(trim($this->pc82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"])){ 
+     if(trim($this->pc82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_sequencial"])){
        $sql  .= $virgula." pc82_sequencial = $this->pc82_sequencial ";
        $virgula = ",";
-       if(trim($this->pc82_sequencial) == null ){ 
+       if(trim($this->pc82_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "pc82_sequencial";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"])){ 
+     if(trim($this->pc82_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_id_usuario"])){
        $sql  .= $virgula." pc82_id_usuario = $this->pc82_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc82_id_usuario) == null ){ 
+       if(trim($this->pc82_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "pc82_id_usuario";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_numcgm"])){ 
+     if(trim($this->pc82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_numcgm"])){
        $sql  .= $virgula." pc82_numcgm = $this->pc82_numcgm ";
        $virgula = ",";
-       if(trim($this->pc82_numcgm) == null ){ 
+       if(trim($this->pc82_numcgm) == null ){
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "pc82_numcgm";
          $this->erro_banco = "";
@@ -348,32 +348,32 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"] !="") ){ 
+     if(trim($this->pc82_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"] !="") ){
        $sql  .= $virgula." pc82_dataini = '$this->pc82_dataini' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_dataini_dia"])){
          $sql  .= $virgula." pc82_dataini = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->pc82_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"] !="") ){ 
+     if(trim($this->pc82_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"] !="") ){
        $sql  .= $virgula." pc82_datafim = '$this->pc82_datafim' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_datafim_dia"])){
          $sql  .= $virgula." pc82_datafim = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->pc82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_obs"])){ 
+     if(trim($this->pc82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_obs"])){
        $sql  .= $virgula." pc82_obs = '$this->pc82_obs' ";
        $virgula = ",";
      }
-     if(trim($this->pc82_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"] !="") ){ 
+     if(trim($this->pc82_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"] !="") ){
        $sql  .= $virgula." pc82_data = '$this->pc82_data' ";
        $virgula = ",";
-       if(trim($this->pc82_data) == null ){ 
+       if(trim($this->pc82_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "pc82_data_dia";
          $this->erro_banco = "";
@@ -382,11 +382,11 @@ class cl_liberafornecedor {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc82_data_dia"])){
          $sql  .= $virgula." pc82_data = null ";
          $virgula = ",";
-         if(trim($this->pc82_data) == null ){ 
+         if(trim($this->pc82_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "pc82_data_dia";
            $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_liberafornecedor {
          }
        }
      }
-     if(trim($this->pc82_liberasol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberasol"])){ 
+     if(trim($this->pc82_liberasol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberasol"])){
        $sql  .= $virgula." pc82_liberasol = '$this->pc82_liberasol' ";
        $virgula = ",";
-       if(trim($this->pc82_liberasol) == null ){ 
+       if(trim($this->pc82_liberasol) == null ){
          $this->erro_sql = " Campo Libera Solicitação nao Informado.";
          $this->erro_campo = "pc82_liberasol";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_liberaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaproc"])){ 
+     if(trim($this->pc82_liberaproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaproc"])){
        $sql  .= $virgula." pc82_liberaproc = '$this->pc82_liberaproc' ";
        $virgula = ",";
-       if(trim($this->pc82_liberaproc) == null ){ 
+       if(trim($this->pc82_liberaproc) == null ){
          $this->erro_sql = " Campo Libera Processo de Compras nao Informado.";
          $this->erro_campo = "pc82_liberaproc";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_liberaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaaut"])){ 
+     if(trim($this->pc82_liberaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_liberaaut"])){
        $sql  .= $virgula." pc82_liberaaut = '$this->pc82_liberaaut' ";
        $virgula = ",";
-       if(trim($this->pc82_liberaaut) == null ){ 
+       if(trim($this->pc82_liberaaut) == null ){
          $this->erro_sql = " Campo Liberação Autorização de Empenho nao Informado.";
          $this->erro_campo = "pc82_liberaaut";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_liberafornecedor {
          return false;
        }
      }
-     if(trim($this->pc82_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_ativo"])){ 
+     if(trim($this->pc82_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc82_ativo"])){
        $sql  .= $virgula." pc82_ativo = '$this->pc82_ativo' ";
        $virgula = ",";
-       if(trim($this->pc82_ativo) == null ){ 
+       if(trim($this->pc82_ativo) == null ){
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "pc82_ativo";
          $this->erro_banco = "";
@@ -485,7 +485,7 @@ class cl_liberafornecedor {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Libera Fornecedor nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc82_sequencial;
@@ -513,14 +513,14 @@ class cl_liberafornecedor {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc82_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc82_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc82_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -556,7 +556,7 @@ class cl_liberafornecedor {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Libera Fornecedor nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc82_sequencial;
@@ -584,11 +584,11 @@ class cl_liberafornecedor {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -610,11 +610,11 @@ class cl_liberafornecedor {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -629,15 +629,15 @@ class cl_liberafornecedor {
      $sql2 = "";
      if($dbwhere==""){
        if($pc82_sequencial!=null ){
-         $sql2 .= " where liberafornecedor.pc82_sequencial = $pc82_sequencial "; 
-       } 
+         $sql2 .= " where liberafornecedor.pc82_sequencial = $pc82_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -646,11 +646,11 @@ class cl_liberafornecedor {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $pc82_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -663,15 +663,15 @@ class cl_liberafornecedor {
      $sql2 = "";
      if($dbwhere==""){
        if($pc82_sequencial!=null ){
-         $sql2 .= " where liberafornecedor.pc82_sequencial = $pc82_sequencial "; 
-       } 
+         $sql2 .= " where liberafornecedor.pc82_sequencial = $pc82_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

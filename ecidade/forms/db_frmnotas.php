@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,15 +37,15 @@ $clrotulo->label("ed09_c_situacao");
 <table border="0">
   <tr>
     <td nowrap title="Avaliação">
-       <?
+       <?php
        db_ancora("<b>Avaliação:</b>","js_pesquisaed13_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed13_i_codigo',5,$ed13_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed13_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed13_c_descr',40,$ed13_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -192,7 +192,7 @@ function js_mostraturmas1(chave1,chave2){
 
 function js_preenchepesquisa(chave){
   db_iframe_chamadas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

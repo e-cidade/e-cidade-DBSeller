@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -98,7 +98,7 @@ if (isset($excluir)) {
     <br><br>
      <center>
    <fieldset style="width:95%"><legend><b>Inclusão Intolerância Alimentar</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmmer_intoleranciaalimentar.php"));
 	?>
 	</fieldset>
@@ -106,7 +106,7 @@ if (isset($excluir)) {
 	</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),
   db_getsession("DB_modulo"),
   db_getsession("DB_anousu"),
@@ -117,7 +117,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "me33_c_descr", true, 1, "me33_c_descr", true);
 </script>
-<?if (isset($incluir) || isset($alterar) || isset($excluir)) {
+<?php if (isset($incluir) || isset($alterar) || isset($excluir)) {
     
   if ($clmer_intoleranciaalimentar->erro_status=="0") {
     

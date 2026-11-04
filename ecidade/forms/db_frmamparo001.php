@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -34,10 +34,10 @@ $clrotulo->label("ed06_i_codigo");
 <form name="form1" method="post" action="">
 <center>
 <table border="0" align="left">
- <?if(isset($opcao)){?>
+ <?php if(isset($opcao)){?>
  <tr>
   <td valign="top">
-   <?
+   <?php
    $sql = "SELECT ed95_i_codigo,ed47_v_nome
            FROM matricula
             inner join aluno on ed47_i_codigo = ed60_i_aluno
@@ -61,7 +61,7 @@ $clrotulo->label("ed06_i_codigo");
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:120px" multiple>
-    <?
+    <?php
     for($i=0;$i<$linhas;$i++) {
      db_fieldsmemory($result,$i);
      echo "<option value='$ed95_i_codigo'>$ed47_v_nome</option>\n";
@@ -117,7 +117,7 @@ $clrotulo->label("ed06_i_codigo");
  </tr>
  <tr>
   <td valign="top">
-   <?
+   <?php
    $sql1 = "SELECT DISTINCT ed72_i_procavaliacao,ed09_c_descr
            FROM diario
             inner join diarioavaliacao on ed72_i_diario = ed95_i_codigo
@@ -130,7 +130,7 @@ $clrotulo->label("ed06_i_codigo");
    ?>
    <b>Períodos:</b><br>
    <select name="avaliacoesdiario" id="avaliacoesdiario" onclick="js_desabinc2()" style="font-size:9px;width:330px;height:100px" multiple>
-    <?
+    <?php
     for($i=0;$i<$linhas1;$i++) {
      db_fieldsmemory($result1,$i);
      echo "<option value='$ed72_i_procavaliacao'>$ed09_c_descr</option>\n";
@@ -199,19 +199,19 @@ $clrotulo->label("ed06_i_codigo");
    <table id="justificativa" style="position:absolute;visibility:hidden;">
     <tr>
      <td nowrap title="<?=@$Ted81_i_justificativa?>">
-      <?db_ancora(@$Led81_i_justificativa,"js_pesquisaed81_i_justificativa(true);",$db_opcao);?>
-      <?db_input('ed81_i_justificativa',15,$Ied81_i_justificativa,true,'text',$db_opcao," onchange='js_pesquisaed81_i_justificativa(false);'")?>
-      <?db_input('ed06_c_descr',@50,@$ed06_c_descr,true,'text',3,'')?>
+      <?php db_ancora(@$Led81_i_justificativa,"js_pesquisaed81_i_justificativa(true);",$db_opcao);?>
+      <?php db_input('ed81_i_justificativa',15,$Ied81_i_justificativa,true,'text',$db_opcao," onchange='js_pesquisaed81_i_justificativa(false);'")?>
+      <?php db_input('ed06_c_descr',@50,@$ed06_c_descr,true,'text',3,'')?>
      </td>
     </tr>
    </table>
    <table id="convencao" style="position:absolute;visibility:hidden;">
     <tr>
      <td nowrap title="<?=@$Ted81_i_convencaoamp?>">
-      <?db_ancora(@$Led81_i_convencaoamp,"js_pesquisaed81_i_convencaoamp(true);",$db_opcao);?>
-      <?db_input('ed81_i_convencaoamp',15,@$Ied81_i_convencaoamp,true,'text',$db_opcao," onchange='js_pesquisaed81_i_convencaoamp(false);'")?>
-      <?db_input('ed250_c_descr',50,@$ed250_c_descr,true,'text',3,'')?>
-      <?db_input('ed250_c_abrev',5,@$ed250_c_abrev,true,'text',3,'')?>
+      <?php db_ancora(@$Led81_i_convencaoamp,"js_pesquisaed81_i_convencaoamp(true);",$db_opcao);?>
+      <?php db_input('ed81_i_convencaoamp',15,@$Ied81_i_convencaoamp,true,'text',$db_opcao," onchange='js_pesquisaed81_i_convencaoamp(false);'")?>
+      <?php db_input('ed250_c_descr',50,@$ed250_c_descr,true,'text',3,'')?>
+      <?php db_input('ed250_c_abrev',5,@$ed250_c_abrev,true,'text',3,'')?>
      </td>
     </tr>
    </table>
@@ -221,7 +221,7 @@ $clrotulo->label("ed06_i_codigo");
   <td nowrap title="<?=@$Ted81_c_aprovch?>" colspan="3">
    <br>
    <b>Gerar carga horária para esta disciplina no histórico:</b>
-   <?
+   <?php
    $x = array("N"=>"NÃO","S"=>"SIM");
    db_select('ed81_c_aprovch',$x,true,$db_opcao,"");
    ?>
@@ -235,7 +235,7 @@ $clrotulo->label("ed06_i_codigo");
    <input name="regencia" type="hidden" value="<?=$regencia?>">
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </center>
 </form>
@@ -539,9 +539,9 @@ function js_escolheamparo(valor){
  }
 }
 if(document.form1.alunosdiario.length==0){
- <?if(!isset($incluir)){?>
+ <?php if(!isset($incluir)){?>
   alert("Não existem alunos para incluir amparo!");
- <?}?>
+ <?php }?>
  location.href = "edu1_amparo001.php?regencia=<?=$regencia?>"
 }
 </script>

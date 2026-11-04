@@ -22,7 +22,7 @@ class TestCase extends MockeryTestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->setUpExtensions();
         $this->setUpFaker();

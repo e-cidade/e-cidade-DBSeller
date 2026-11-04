@@ -43,11 +43,11 @@ class EFDRetornoRefactor
     public function format()
     {
         switch ($this->layout) {
-            case 'R-5001':
-                return $this->formatR5001();
+            case 'R-9001':
+                return $this->formatR9001();
                 break;
-            case 'R-5011':
-                return $this->fortmatR5011();
+            case 'R-9011':
+                return $this->fortmatR9011();
                 break;
             default:
                 return $this->data;
@@ -57,11 +57,11 @@ class EFDRetornoRefactor
 
 
     /**
-     * Formatacao para o evento R-5011
+     * Formatacao para o evento R-9011
      *
      * @return object
      */
-    private function fortmatR5011()
+    private function fortmatR9011()
     {
         if (isset($this->data->infoTotalContrib)) {
             $infoTotalContrib = $this->data->infoTotalContrib;
@@ -70,11 +70,11 @@ class EFDRetornoRefactor
             if (isset($infoTotalContrib->RTom)) {
                 foreach ($infoTotalContrib->RTom as $item) {
                     $item->CRTom         = $item->infoCRTom->CRTom;
-                    $item->VlrCRTom      = $item->infoCRTom->VlrCRTom;
-                    $item->VlrCRTomSusp  = $item->infoCRTom->VlrCRTomSusp;
+                    $item->vlrCRTom      = $item->infoCRTom->vlrCRTom;
+                    $item->vlrCRTomSusp  = $item->infoCRTom->vlrCRTomSusp;
 
-                    $item->VlrCRTom        = $this->formatMoney($item->VlrCRTom);
-                    $item->VlrCRTomSusp    = $this->formatMoney($item->VlrCRTomSusp);
+                    $item->vlrCRTom        = $this->formatMoney($item->vlrCRTom);
+                    $item->vlrCRTomSusp    = $this->formatMoney($item->vlrCRTomSusp);
                     $item->vlrTotalBaseRet = $this->formatMoney($item->vlrTotalBaseRet);
 
                     $item->cnpjPrestador = preg_replace(
@@ -99,21 +99,21 @@ class EFDRetornoRefactor
     }
 
     /**
-     * Formatacao para o evento R-5001
+     * Formatacao para o evento R-9001
      *
      * @return object
      */
-    public function formatR5001()
+    public function formatR9001()
     {
         // R-2010 SERVICOS TOMADOS
         if (isset($this->data->RTom)) {
             $rtom = &$this->data->RTom;
 
             $rtom->CRTom        = $rtom->infoCRTom->CRTom;
-            $rtom->VlrCRTom     = $rtom->infoCRTom->VlrCRTom;
-            $rtom->VlrCRTomSusp = $rtom->infoCRTom->VlrCRTomSusp;
-            $rtom->VlrCRTom     = $this->formatMoney($rtom->VlrCRTom);
-            $rtom->VlrCRTomSusp = $this->formatMoney($rtom->VlrCRTomSusp);
+            $rtom->vlrCRTom     = $rtom->infoCRTom->vlrCRTom;
+            $rtom->vlrCRTomSusp = $rtom->infoCRTom->vlrCRTomSusp;
+            $rtom->vlrCRTom     = $this->formatMoney($rtom->vlrCRTom);
+            $rtom->vlrCRTomSusp = $this->formatMoney($rtom->vlrCRTomSusp);
 
             $rtom->cnpjPrestador = preg_replace(
                 "/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/",

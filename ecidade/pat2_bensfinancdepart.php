@@ -39,7 +39,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, estilos.css, prototype.js, arrays.js");
 ?>
 </head>
@@ -59,7 +59,7 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                        <table>
-                         <?
+                         <?php
                          $oListaDepartamento = new cl_arquivo_auxiliar;
                          $oListaDepartamento->cabecalho = "<strong>Departamentos</strong>";
                          $oListaDepartamento->codigo = "coddepto"; //chave de retorno da func
@@ -89,7 +89,7 @@ include(modification("dbforms/db_funcoes.php"));
                       <b>Opções:</b>
                     </td>
                     <td>
-                        <?
+                        <?php
                           $aOpcoes = array(
                                           "comdepartamento" => "Com os departamentos selecionados",
                                           "semdepartamento" => "sem os departamentos selecionados",

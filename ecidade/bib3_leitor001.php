@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -83,11 +83,11 @@ if ($linhas != 0) {
    <table border="0">
     <tr>
      <td nowrap title="<?=@$Tbi18_carteira?>">
-      <?db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$opcao);?>
+      <?php db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$opcao);?>
      </td>
      <td>
-      <?db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $opcao, " onchange='js_pesquisabi18_carteira(false);'")?>
-      <?db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
+      <?php db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $opcao, " onchange='js_pesquisabi18_carteira(false);'")?>
+      <?php db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
       <input name="proximo" type="submit" id="proximo" value="Próximo" style="visibility:hidden;">
      </td>
     </tr>
@@ -98,9 +98,9 @@ if ($linhas != 0) {
  </tr>
 </table>
 <br>
-<?if (!empty($bi18_carteira)) {
-  
-  $result = $cldevolucaoacervo->sql_record("select * 
+<?php if (!empty($bi18_carteira)) {
+
+  $result = $cldevolucaoacervo->sql_record("select *
                                               from emprestimoacervo
                                                    inner join emprestimo      on bi18_codigo = bi19_emprestimo
                                                    inner join carteira        on bi16_codigo = bi18_carteira
@@ -124,7 +124,7 @@ if ($linhas != 0) {
         <br>Nenhum empréstimo para o Leitor selecionado (<?=@$ov02_nome?>).<br><br>
       </fieldset>
     </center>
-    <?
+    <?php
   } else {
     ?>
     <table border="0" width="95%" align="center">
@@ -140,11 +140,11 @@ if ($linhas != 0) {
                   <td><b>Devolver até</b></td>
                   <td><b>Situação</b></td>
                 </tr>
-                <?
+                <?php
                 $cor1 = "#f3f3f3";
                 $cor2 = "#ababab";
                 $cor  = "";
-                
+
                 for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
 
                   db_fieldsmemory($result,$x);
@@ -171,7 +171,7 @@ if ($linhas != 0) {
                     <td><?=db_formatar($bi18_devolucao, 'd')?></td>
                     <td align="center" style="color:#FFFFFF;" bgcolor="<?=@$situacao?>"><?=@$texto?></td>
                   </tr>
-                  <?
+                  <?php
                 }
                 ?>
                 <tr height="30">
@@ -187,15 +187,15 @@ if ($linhas != 0) {
         </td>
       </tr>
     </table>
- <?}?>
-<?}?>
+ <?php }?>
+<?php }?>
 </fieldset>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 function js_pesquisabi18_carteira(mostra) {
-  
+
   if (mostra == true) {
     js_OpenJanelaIframe('CurrentWindow.corpo',
                         'db_iframe_leitor',
@@ -204,7 +204,7 @@ function js_pesquisabi18_carteira(mostra) {
                         true
                        );
   } else {
-    
+
     if (document.form1.bi18_carteira.value != '') {
       js_OpenJanelaIframe('CurrentWindow.corpo',
                           'db_iframe_leitor',
@@ -220,18 +220,18 @@ function js_pesquisabi18_carteira(mostra) {
 }
 
 function js_mostraleitor(chave, erro) {
-  
+
   document.form1.ov02_nome.value = chave;
   document.form1.proximo.click();
   if (erro == true) {
-    
+
     document.form1.bi18_carteira.focus();
     document.form1.bi18_carteira.value = '';
   }
 }
 
 function js_mostraleitor1(chave1, chave2) {
-  
+
   document.form1.bi18_carteira.value = chave1;
   document.form1.ov02_nome.value     = chave2;
   db_iframe_leitor.hide();

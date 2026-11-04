@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -165,7 +165,7 @@ if(isset($oPost->botao)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js');
   db_app::load('estilos.css');
 ?>
@@ -178,12 +178,12 @@ if(isset($oPost->botao)) {
   <table align="center">
   <tr>
     <td>
-    <?
+    <?php
       db_ancora($Lq25_classe, 'js_pesquisaClasse(true)', 1);
      ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q25_classe', 10, $Iq25_classe, true, 'text', $db_opcao, 'onchange="js_pesquisaClasse(false)"');
       db_input('q12_descr', 40, $Iq12_descr, true, 'text', 3);
     ?>
@@ -195,7 +195,7 @@ if(isset($oPost->botao)) {
     <?=$Lq25_pontuacao ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q25_pontuacao', 10, $Iq25_pontuacao, true, 'text', 1);
     ?>
     </td>
@@ -203,7 +203,7 @@ if(isset($oPost->botao)) {
   
   </table>
   
-  <?
+  <?php
     if($db_opcao == 1) {
       echo "<input type='submit' name='botao' id='botao' value='Incluir'>";
     } else {
@@ -219,7 +219,7 @@ if(isset($oPost->botao)) {
   
 </fieldset>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>
@@ -257,7 +257,7 @@ function js_novoRegistro() {
 </script>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->botao)) {
 	db_msgbox($clClassepont->erro_msg);
 	db_redireciona('iss1_classepont001.php');

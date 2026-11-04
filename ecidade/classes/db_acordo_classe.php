@@ -113,13 +113,13 @@ class cl_acordo {
                  ac16_dependeordeminicio = bool = Depende da Ordem de Início
                  ";
    //funcao construtor da classe
-   function cl_acordo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -128,7 +128,7 @@ class cl_acordo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac16_sequencial = ($this->ac16_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac16_sequencial"]:$this->ac16_sequencial);
        $this->ac16_acordosituacao = ($this->ac16_acordosituacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ac16_acordosituacao"]:$this->ac16_acordosituacao);
@@ -185,7 +185,7 @@ class cl_acordo {
      }
    }
    // funcao para Inclusão
-   function incluir ($ac16_sequencial){
+   public function incluir ($ac16_sequencial){
       $this->atualizacampos();
      if($this->ac16_acordosituacao == null ){
        $this->erro_sql = " Campo Acordo Situação não informado.";
@@ -898,7 +898,7 @@ class cl_acordo {
      }
      $sql .= " where ";
      if($ac16_sequencial!=null){
-       $sql .= " ac16_sequencial = $this->ac16_sequencial";
+         $sql .= " ac16_sequencial = $this->ac16_sequencial";
      }
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -1158,7 +1158,7 @@ class cl_acordo {
     }
 
    // funcao do sql
-   function sql_query ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1180,7 +1180,9 @@ class cl_acordo {
      $sql .= "      inner join db_config  on  db_config.codigo = db_depart.instit";
      $sql .= "      inner join acordonatureza  on  acordonatureza.ac01_sequencial = acordogrupo.ac02_acordonatureza";
      $sql .= "      inner join acordotipo  on  acordotipo.ac04_sequencial = acordogrupo.ac02_acordotipo";
+     $sql .= "      left join acordoorigem  on  acordoorigem.ac28_sequencial = acordo.ac16_origem";
      $sql .= "      left join  acordoencerramentolicitacon on ac16_sequencial = ac58_acordo";
+     $sql .= "      left join contratospncp on ac16_sequencial = pn04_acordo";
      $sql2 = "";
      if($dbwhere==""){
        if($ac16_sequencial!=null ){
@@ -1237,7 +1239,7 @@ class cl_acordo {
   }
 
    // funcao do sql
-   function sql_query_file ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1271,7 +1273,7 @@ class cl_acordo {
      return $sql;
   }
 
-   function sql_queryLicitacoesVinculadas($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+   public function sql_queryLicitacoesVinculadas($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
      $sSql = "";
      if (!empty($iCodigoAcordo)) {
@@ -1290,7 +1292,7 @@ class cl_acordo {
 
      return $sSql;
    }
-   function sql_query_completo( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_completo( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1331,7 +1333,7 @@ class cl_acordo {
      }
      return $sql;
    }
-   function sql_queryProcessosVinculados($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+   public function sql_queryProcessosVinculados($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
      $sSql = "";
      if (!empty($iCodigoAcordo)) {
@@ -1350,7 +1352,7 @@ class cl_acordo {
 
      return $sSql;
    }
-   function sql_query_acordoitemexecutado ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_acordoitemexecutado ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1394,7 +1396,7 @@ class cl_acordo {
     }
     return $sql;
   }
-   function sql_query_empenho ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_empenho ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql2 = '';
     if ($dbwhere=="") {
@@ -1449,7 +1451,7 @@ class cl_acordo {
     }
     return $sSqlAutorizacoes;
   }
-   function sql_queryEmpenhosVinculados($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+   public function sql_queryEmpenhosVinculados($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
      $sSql = "";
      if (!empty($iCodigoAcordo)) {
@@ -1465,7 +1467,7 @@ class cl_acordo {
 
      return $sSql;
    }
-   function sql_queryEmpenhosVinculadosContrato($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+   public function sql_queryEmpenhosVinculadosContrato($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
      $sSql = "";
      if (!empty($iCodigoAcordo)) {
@@ -1486,7 +1488,7 @@ class cl_acordo {
      return $sSql;
    }
 
-   function sql_queryItensEmpenhoContrato($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+   public function sql_queryItensEmpenhoContrato($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
      $sSql = "";
      if (!empty($iCodigoAcordo)) {
@@ -1514,7 +1516,7 @@ class cl_acordo {
      return $sSql;
    }
 
-   function sql_query_completo_posicao( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere="",$flagBuscaLicitacao=false){
+   public function sql_query_completo_posicao( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere="",$flagBuscaLicitacao=false){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -1536,7 +1538,7 @@ class cl_acordo {
      $sql .= "      inner join acordotipo      on  acordotipo.ac04_sequencial     = acordogrupo.ac02_acordotipo     " ;
      $sql .= "      inner join cgm gestor      on  gestor.z01_numcgm              = acordo.ac16_contratado          " ;
      $sql .= "      inner join acordoposicao   on  acordoposicao.ac26_acordo      = acordo.ac16_sequencial          " ;
-     
+
     if ($flagBuscaLicitacao) {
       $sql .= "      left join acordoitem on acordoitem.ac20_acordoposicao = acordoposicao.ac26_sequencial           " ;
       $sql .= "      left join acordoliclicitem on acordoliclicitem.ac24_acordoitem = acordoitem.ac20_sequencial     " ;
@@ -1610,7 +1612,7 @@ class cl_acordo {
     }
     return $sSql;
   }
-   function sql_movimentacao_acordo_empenhado ($ac16_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_movimentacao_acordo_empenhado ($ac16_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
@@ -1658,7 +1660,7 @@ class cl_acordo {
     return $sql;
 
   }
-   function sql_movimentacao_acordo_origem_manual ( $ac16_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_movimentacao_acordo_origem_manual ( $ac16_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if($campos != "*" ){
@@ -1743,7 +1745,7 @@ class cl_acordo {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_acordoReativado ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_acordoReativado ( $ac16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -1799,7 +1801,7 @@ class cl_acordo {
    * @param string $sWhere
    * @return string
    */
-  function sql_queryDadosMapaExecucao($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+  public function sql_queryDadosMapaExecucao($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
     $sSql  = "select {$sCampos}";
     $sSql .= "  from acordo";
@@ -1833,7 +1835,7 @@ class cl_acordo {
     return $sSql;
   }
 
-  function sql_query_movimentacao_financeira($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+  public function sql_query_movimentacao_financeira($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
     $sSql  = "select {$sCampos}";
     $sSql .= "  from acordo";
@@ -1866,7 +1868,7 @@ class cl_acordo {
     return $sSql;
   }
 
-  function sql_query_movimentacao_empenho($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
+  public function sql_query_movimentacao_empenho($iCodigoAcordo = null, $sCampos = "*", $sOrder = null, $sWhere = "") {
 
     $sSql  = "select {$sCampos}";
     $sSql .= "  from acordo";

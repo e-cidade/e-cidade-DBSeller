@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
@@ -45,28 +45,28 @@ $clrotulo->label("descrdepto");
       <b>Unidade:</b>
     </td>
     <td nowrap="nowrap">
-      <? db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
-      <? db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
+      <?php db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
+      <?php db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc06_i_vacina?>">
-     <? db_ancora("<b>Vacina:</b>","js_pesquisavc06_i_codigo(true);",$db_opcao);?>
+     <?php db_ancora("<b>Vacina:</b>","js_pesquisavc06_i_codigo(true);",$db_opcao);?>
     </td>
-    <td> 
-     <?db_input('vc06_i_codigo',5,$Ivc06_i_codigo,true,'text',$db_opcao,
+    <td>
+     <?php db_input('vc06_i_codigo',5,$Ivc06_i_codigo,true,'text',$db_opcao,
                 " onchange='js_pesquisavc06_i_codigo(false);'")?>
-     <?db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
+     <?php db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm77_sequencial?>">
-     <? db_ancora("<b>Lote:</b>","js_pesquisam77_sequencial(true);",$db_opcao);?>
+     <?php db_ancora("<b>Lote:</b>","js_pesquisam77_sequencial(true);",$db_opcao);?>
     </td>
-    <td> 
-     <?db_input('m77_sequencial',5,$Im77_sequencial,true,'text',$db_opcao,
+    <td>
+     <?php db_input('m77_sequencial',5,$Im77_sequencial,true,'text',$db_opcao,
                 " onchange='js_pesquisam77_sequencial(false);'")?>
-     <?db_input('m77_lote',20,$Im77_lote,true,'text',3,'')?>
+     <?php db_input('m77_lote',20,$Im77_lote,true,'text',3,'')?>
     </td>
   </tr>
 </table>
@@ -92,7 +92,7 @@ js_init();
 function js_init() {
 
 	oGridLotes.setCellWidth(new Array('10%', '25%', '15%', '15%', '30%','5%'));
-  var arrHeader = new Array (" Cod. Retirada ",  
+  var arrHeader = new Array (" Cod. Retirada ",
                              " Lote ",
                              " Validade ",
                              " Qtd Atendida ",
@@ -109,13 +109,13 @@ function js_init() {
   aAligns[5] = 'center';
   oGridLotes.setCellAlign(aAligns);
   oGridLotes.setHeight(80);
-  
-  oGridLotes.show($('GridLotes')); 
+
+  oGridLotes.show($('GridLotes'));
 
 }
 
 function js_CarregaLotes() {
-	
+
   if ($F('m77_sequencial') == '') {
 
     alert('Selecione um Lote!');
@@ -133,7 +133,7 @@ function js_CarregaLotes() {
 
 function js_RetornoCarregaLotes(oAjax) {
   oRetorno = JSON.parse(oAjax.responseText);
-  
+
   if (oRetorno.iStatus == 1) {
 
     oGridLotes.clearAll(true);
@@ -161,7 +161,7 @@ function js_RetornoCarregaLotes(oAjax) {
 
 }
 function js_addlote(iCod,bAdd) {
-	
+
   if (bAdd == true) {
 
     sSep = '';
@@ -175,7 +175,7 @@ function js_addlote(iCod,bAdd) {
     aRetirada = $F('codretirada').split(',');
     aRetiradaNew = new Array();
     for (iX = 0; iX < aRetirada.length; iX++) {
-        
+
       if (aRetirada[iX] != iCod) {
         aRetiradaNew[aRetiradaNew.length] = aRetirada[iX];
       }
@@ -208,9 +208,9 @@ function js_motivos() {
 
 function js_ajax( objParam,jsRetorno ) {
     var objAjax = new Ajax.Request(
-                           'vac4_vacinas.RPC.php', 
+                           'vac4_vacinas.RPC.php',
                            {
-                            method    : 'post', 
+                            method    : 'post',
                             parameters: 'json='+Object.toJSON(objParam),
                             onComplete: function(objAjax){
                                     var evlJS = jsRetorno+'( objAjax );';
@@ -244,7 +244,7 @@ function js_pesquisavc06_i_codigo(mostra) {
 
 	  } else {
 
-	    if (document.form1.vc13_i_vacina.value != '') {  
+	    if (document.form1.vc13_i_vacina.value != '') {
 
 	      js_OpenJanelaIframe('CurrentWindow.corpo',
 	                          'db_iframe_vac_vacina',
@@ -255,18 +255,18 @@ function js_pesquisavc06_i_codigo(mostra) {
 	                         );
 
 	    } else {
-	      document.form1.vc06_c_descr.value = ''; 
+	      document.form1.vc06_c_descr.value = '';
 	     }
 	  }
 	}
 
 	function js_mostravac_vacina(chave,erro) {
 
-	  document.form1.vc06_c_descr.value = chave; 
-	  if (erro == true) {  
+	  document.form1.vc06_c_descr.value = chave;
+	  if (erro == true) {
 
-	    document.form1.vc06_i_codigo.focus(); 
-	    document.form1.vc06_i_codigo.value = ''; 
+	    document.form1.vc06_i_codigo.focus();
+	    document.form1.vc06_i_codigo.value = '';
 
 	  }
 	  js_CarregaBoletim();
@@ -282,16 +282,16 @@ function js_pesquisavc06_i_codigo(mostra) {
 
 	function js_pesquisam77_sequencial(mostra) {
 
-		  oFormFrame = document.form1; 
+		  oFormFrame = document.form1;
 		  if (oFormFrame.vc06_i_codigo.value == '') {
-			  
+
         alert('Escolha uma Vacina!');
         return false;
-        
+
 		  }
-		  
+
 		  if (mostra == true) {
-			  
+
 		    js_OpenJanelaIframe('', 'db_iframe_vac_vacinalote', 'func_vac_vacinalote.php?chave_vacina='+
 		                        oFormFrame.vc06_i_codigo.value+'&funcao_js=parent.js_mostravac_vacinalote|m77_sequencial|'+
 		                        'm77_lote', 'Pesquisa', true
@@ -300,7 +300,7 @@ function js_pesquisavc06_i_codigo(mostra) {
 		  } else {
 
 		     if (oFormFrame.m77_sequencial.value != '') {
-			      
+
 		       js_OpenJanelaIframe('', 'db_iframe_vac_vacinalote', 'func_vac_vacinalote.php?chave_vacina='+
 		                           oFormFrame.vc06_i_codigo.value+'&chave_m77_sequencial='+oFormFrame.m77_sequencial.value+
 		                           '&nao_mostra=true&funcao_js=parent.js_mostravac_vacinalote|m77_sequencial|'+
@@ -315,7 +315,7 @@ function js_pesquisavc06_i_codigo(mostra) {
 
 		}
 		function js_mostravac_vacinalote(sequencial, lote) {
-			 
+
 			oFormFrame = document.form1;
 		  if (sequencial == '') {
 

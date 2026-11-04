@@ -27,7 +27,9 @@
 
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
-require_once(modification('fpdf151/FpdfMultiCellBorder.php'));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 
 use ECidade\Saude\Laboratorio\Exame\Resultado\ImpressaoMatricialLote;
 use ECidade\Saude\Laboratorio\Repository\Responsavel as ResponsavelRepository;
@@ -72,6 +74,13 @@ try {
     $laboratorio = $oRequisicaoLaboratorial->getLaboratorio();
     $oDadosEstrutura->oSolicitante->sMedico = $oRequisicaoLaboratorial->getMedico();
     $oDadosEstrutura->iDepartamento = $oRequisicaoLaboratorial->getDepartamento()->getCodigo();
+    $oDadosEstrutura->oSolicitante->idadeCompleta = $oRequisicaoLaboratorial->getCgs()->getIdadeCompleta();
+
+    $listaIdsExames = [];
+
+    foreach ($oRequisicaoLaboratorial->getRequisicoesDeExames() as $oRequisicao) {
+        $listaIdsExames[] = $oRequisicao->getExame()->getCodigo();
+    }
 
     /**
      * Array com atributos que possuem valor para impressão.
@@ -98,7 +107,7 @@ try {
         $oDadosEstrutura->sData = $oRequisicao->getData()->convertTo(DBDate::DATA_PTBR);
 
         /**
-         * Caso não seja do tipo CONFERIDO '60 - Conferido', segue percorrendo o próximo registro
+         * Caso não seja do tipo CONFERIDO '60 - Conferido' ou '70 - Entregue', segue percorrendo o próximo registro
          */
         if (!in_array($oRequisicao->getSituacao(), array(RequisicaoExame::CONFERIDO, RequisicaoExame::ENTREGUE))) {
             continue;
@@ -162,6 +171,7 @@ try {
             $oStdExame->aMedicamentosExame = $oRequisicao->getMedicamentos();
             $oStdExame->aDadosMaterialColeta = $aDadosMaterialColeta;
             $oStdExame->sObservacao = $oRequisicao->getObservacao();
+            $oStdExame->exibeHistoricoResultados = $oExame->getExibeHistoricoResultados();
             $oStdExame->aAtributos = array();
 
             $responsavelRepository = ResponsavelRepository::getInstance();
@@ -169,18 +179,20 @@ try {
             $conferenciaResultado = $oRequisicao->getConferenciaResultado();
             $cgmConferencia = $conferenciaResultado->getUsuarioSistema()->getCGM();
             $responsavelConferenciaModel = $responsavelRepository->getByLaboratorioCgm($laboratorio, $cgmConferencia);
-            
-            $postgresObjectCBO = db_query("
-                SELECT 
-                    rh70_descr 
-                FROM 
-                    lab_labresp 
+
+            $postgresObjectCBO = db_query(
+                "
+                SELECT
+                    rh70_descr
+                FROM
+                    lab_labresp
                 INNER JOIN rhcbo
-                    ON rh70_sequencial = la06_i_cbo 
-                WHERE 
-                    la06_i_laboratorio = {$laboratorio->getCodigo()} 
+                    ON rh70_sequencial = la06_i_cbo
+                WHERE
+                    la06_i_laboratorio = {$laboratorio->getCodigo()}
                     AND la06_i_cgm = {$cgmConferencia->getCodigo()};
-            ");
+            "
+            );
 
             $cbo = null;
             if (!empty($postgresObjectCBO)) {
@@ -224,7 +236,7 @@ try {
              * Apenas no modelo 2 evitamos de mostrar atributos do exame que não têm valores no resultado
              */
             if ($oGet->iModelo == 2 && $oAtributo->getTipo() != 1
-              && (is_null($oResultadoAtributo) || !digitouResultado($oResultadoAtributo))) {
+                && (is_null($oResultadoAtributo) || !digitouResultado($oResultadoAtributo))) {
                 continue;
             }
 
@@ -234,6 +246,7 @@ try {
             $oAtributoDoExame->valorabsoluto = '';
             $oAtributoDoExame->valorpercentual = '';
             $oAtributoDoExame->unidade = '';
+            $oAtributoDoExame->unidadeAtributo = $oAtributo->getUnidadeMedidaAtributo();
             $oAtributoDoExame->referencia = '';
             $oAtributoDoExame->tipo = $oAtributo->getTipo();
             $oAtributoDoExame->tiporeferencia = $oAtributo->getTipoReferencia();
@@ -263,21 +276,34 @@ try {
                 $oAtributoDoExame->titulacao = $oRetorno->titulacao;
             }
 
-            $oResultadoAnterior = $oResultadoExame->getValorDoAtributoResultadoAnterior($oAtributo);
+            if ($oGet->iModelo == 2) {
+                $oResultadoAnterior = $oResultadoExame->getValorDoAtributoResultadoAnterior($oAtributo);
 
-            if (!empty($oResultadoAnterior)) {
-                $oRetornoAnterior = organizaValoresAtributo(
-                    $oResultadoAnterior,
-                    $oAtributoDoExame->unidade,
-                    $oAtributo->getTipoReferencia(),
-                    $aAtributosSelecionaveis,
-                    $oRequisicao
+                if (!empty($oResultadoAnterior)) {
+                    $oRetornoAnterior = organizaValoresAtributo(
+                        $oResultadoAnterior,
+                        $oAtributoDoExame->unidade,
+                        $oAtributo->getTipoReferencia(),
+                        $aAtributosSelecionaveis,
+                        $oRequisicao
+                    );
+
+                    $oAtributoDoExame->valorabsolutoanterior = $oRetornoAnterior->valorabsoluto;
+                    $oAtributoDoExame->valorpercentualanterior = $oRetornoAnterior->valorpercentual;
+                    $oAtributoDoExame->referenciaanterior = $oRetornoAnterior->referencia;
+                    $oAtributoDoExame->titulacaoanterior = $oRetornoAnterior->titulacao;
+                }
+            }
+
+            if (!empty($oStdExame->exibeHistoricoResultados)) {
+                $resultadosAnteriores = $oResultadoExame->getResultadosAnteriores(
+                    $oAtributo,
+                    $oRequisicaoLaboratorial->getData(),
+                    $oExame,
+                    $listaIdsExames
                 );
 
-                $oAtributoDoExame->valorabsolutoanterior = $oRetornoAnterior->valorabsoluto;
-                $oAtributoDoExame->valorpercentualanterior = $oRetornoAnterior->valorpercentual;
-                $oAtributoDoExame->referenciaanterior = $oRetornoAnterior->referencia;
-                $oAtributoDoExame->titulacaoanterior = $oRetornoAnterior->titulacao;
+                $oAtributoDoExame->resultadosAnteriores = $resultadosAnteriores;
             }
 
             /**
@@ -320,7 +346,9 @@ function organizaValoresAtributo(
             $oReferenciaAtributo = $oResultadoAtributo->getFaixaUtilizada();
 
             if (!empty($oReferenciaAtributo) && $oReferenciaAtributo->getCodigo() == '') {
-                $oReferenciaAtributo = $oResultadoAtributo->getAtributo()->getValoresDeReferenciaParaExame($oRequisicao);
+                $oReferenciaAtributo = $oResultadoAtributo->getAtributo()->getValoresDeReferenciaParaExame(
+                    $oRequisicao
+                );
             }
 
             $iCasasDecimaisApresentacao = null;
@@ -328,12 +356,12 @@ function organizaValoresAtributo(
             if ($oReferenciaAtributo instanceof AtributoValorReferenciaNumerico) {
                 $iCasasDecimaisApresentacao = $oReferenciaAtributo->getCasasDecimaisApresentacao();
             }
-
+            /*
             $oAtributoDoExame->valorabsoluto = MascaraValorAtributoExame::mascarar(
                 $iCasasDecimaisApresentacao,
                 $oAtributoDoExame->valorabsoluto
             );
-
+            */
             if ($oReferenciaAtributo != '') {
                 $iValorMinimo = MascaraValorAtributoExame::mascarar(
                     $iCasasDecimaisApresentacao,
@@ -360,8 +388,21 @@ function organizaValoresAtributo(
             break;
 
         case AtributoExame::REFERENCIA_FIXA:
-            $oAtributoDoExame->referencia = $unidade;
-            $oAtributoDoExame->valorreferencia = null;
+            $stringValorReferencia = null;
+            $referencia = null;
+            $valorFixo = $oResultadoAtributo->getAtributo()->getValoresDeReferenciaParaExame($oRequisicao);
+
+            if ($valorFixo !== 'null') {
+                $valorReferencia = $valorFixo->getTamanho();
+
+                if ($valorReferencia !== null && $valorReferencia !== '') {
+                    $referencia = $valorReferencia . ' ';
+                }
+                $stringValorReferencia = "{$referencia}{$unidade}";
+            }
+
+            $oAtributoDoExame->referencia = $stringValorReferencia;
+            $oAtributoDoExame->valorreferencia = $stringValorReferencia;
             $oAtributoDoExame->valorabsoluto = $oResultadoAtributo->getValorAbsoluto();
             break;
     }
@@ -371,7 +412,7 @@ function organizaValoresAtributo(
 
 /**
  * Calcula a idade que o solicitante tem com base na data do sistema
- * @param  date $dtNascimento
+ * @param date $dtNascimento
  * @return stdClass
  */
 function getIdadeSolicitante($dtNascimento)
@@ -430,8 +471,8 @@ function salvaRelatorio($oDadosEstrutura)
 
 /**
  * Busca o usuário que efetuou a conferência dos exames do setor da requisição
- * @param  integer $iRequisicao código da requisição
- * @param  integer $iSetor código do setor dos exames
+ * @param integer $iRequisicao código da requisição
+ * @param integer $iSetor código do setor dos exames
  * @return integer|null
  * @throws Exception
  */
@@ -461,7 +502,7 @@ function buscaUsuarioConferiuRequisicao($iRequisicao, $iSetor)
 
 /**
  * Valida os atributos que foram digitados
- * @param  ResultadoExameAtributo $oResultadoAtributo
+ * @param ResultadoExameAtributo $oResultadoAtributo
  * @return boolean   true se digitou
  */
 function digitouResultado($oResultadoAtributo)
@@ -474,7 +515,8 @@ function digitouResultado($oResultadoAtributo)
         /**
          * Tipo de Calculo = 2 é os atributos com cálculo %, nesse caso devemos considerar o valor percentual como valor digitado
          */
-        if ($oResultadoAtributo->getFaixaUtilizada()->getTipoCalculo() == 2 && $oResultadoAtributo->getValorPercentual() == '') {
+        if ($oResultadoAtributo->getFaixaUtilizada()->getTipoCalculo() == 2 && $oResultadoAtributo->getValorPercentual(
+            ) == '') {
             return false;
         }
     }
@@ -487,12 +529,12 @@ function digitouResultado($oResultadoAtributo)
 }
 
 /**
- * @param scpdf $oPdf
+ * @param \ECidade\Pdf\Pdf $oPdf
  * @param $oDadosEstrutura
  * @throws DBException
  * @throws Exception
  */
-function rodape(scpdf $oPdf, $oDadosEstrutura)
+function rodape(\ECidade\Pdf\Pdf $oPdf, $oDadosEstrutura)
 {
     if ($oDadosEstrutura->mostrarConferenciaPorExame === true) {
         return;
@@ -513,8 +555,7 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
 
     $sCampos = " la06_c_orgaoclasse as orgao_classe, la24_c_nomearq, la24_o_assinatura as assinatura";
     $sWhere = " id_usuario = {$iUsuario} and la24_i_setor = {$oDadosEstrutura->iSetor} ";
-    $sWhere .= " and la03_i_departamento = " . $oDadosEstrutura->iDepartamento;
-    $sWhere .= " and la24_o_assinatura is not null ";
+    $sWhere .= " and la03_i_departamento = " . $oDadosEstrutura->iDepartamento;    
     $oDaoUsuarioLogado = new cl_lab_labsetor();
     $sSqlDadosAssinatura = $oDaoUsuarioLogado->sql_query_conferencia('', $sCampos, '', $sWhere);
 
@@ -530,13 +571,28 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
         $sOrgaoClasse = "Órgão Classe: {$oDadosAssinatura->orgao_classe}";
         $oPdf->Cell($oDadosEstrutura->iLarguraPadrao, $oDadosEstrutura->iAlturaPadrao, $sOrgaoClasse, 0, 1, "L");
 
-        $sArquivo = "tmp/" . $oDadosAssinatura->la24_c_nomearq;
-
-        db_query("begin");
-        pg_loexport($oDadosAssinatura->assinatura, $sArquivo);
-        db_query("end");
-
-        $oPdf->Image($sArquivo, 170, 260, 15);
+        $sDataExame = "";
+        $oRequisicaoLaboratorial = new RequisicaoLaboratorial($oDadosEstrutura->iRequisicao);
+        $aDataExames = $oRequisicaoLaboratorial->getRequisicoesDeExames();
+        foreach($aDataExames as $oExame){
+        
+          if ($oExame->getConferenciaResultado() != '' ) {
+            $sDataExame = "Data do Exame: " .  $oExame->getConferenciaResultado()->getData()->getDate(DBDate::DATA_PTBR);
+            break;
+          }
+        
+        }
+        $oPdf->Ln(2);
+        $oPdf->SetX(14);
+        $oPdf->Cell($oDadosEstrutura->iLarguraPadrao, $oDadosEstrutura->iAlturaPadrao, "$sDataExame", 0, 1, "L");
+        
+        if(!empty($oDadosAssinatura->la24_c_nomearq)){
+            $sArquivo = "tmp/" . $oDadosAssinatura->la24_c_nomearq;
+            db_query("begin");
+            pg_loexport($oDadosAssinatura->assinatura, $sArquivo);
+            db_query("end");
+            $oPdf->Image($sArquivo, 170, 260, 15);
+        }
     }
 
     $oPdf->Line(10, 282, 200, 282);
@@ -544,25 +600,25 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
     $oDepartamento = new DBDepartamento($oDadosEstrutura->iDepartamento);
     $oEnderecoDepartamento = $oDepartamento->getEndereco();
 
-    $sEndereço = "Endereço: " . $oEnderecoDepartamento->sRua;
+    $sEndereco = "Endereço: " . $oEnderecoDepartamento->sRua;
 
     if (!empty($oEnderecoDepartamento->iNumero)) {
-        $sEndereço .= ", {$oEnderecoDepartamento->iNumero}";
+        $sEndereco .= ", {$oEnderecoDepartamento->iNumero}";
     }
 
     if (!empty($oEnderecoDepartamento->sComplemento)) {
-        $sEndereço .= " - {$oEnderecoDepartamento->sComplemento}";
+        $sEndereco .= " - {$oEnderecoDepartamento->sComplemento}";
     }
 
     if (!empty($oEnderecoDepartamento->sBairro)) {
-        $sEndereço .= " - {$oEnderecoDepartamento->sBairro}";
+        $sEndereco .= " - {$oEnderecoDepartamento->sBairro}";
     }
 
     if ($oDepartamento->getInstituicao()->getMunicipio() != "") {
-        $sEndereço .= " - " . $oDepartamento->getInstituicao()->getMunicipio();
+        $sEndereco .= " - " . $oDepartamento->getInstituicao()->getMunicipio();
 
         if ($oDepartamento->getInstituicao()->getUf() != "") {
-            $sEndereço .= "/" . $oDepartamento->getInstituicao()->getUf();
+            $sEndereco .= "/" . $oDepartamento->getInstituicao()->getUf();
         }
     }
 
@@ -578,8 +634,31 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
 
     $oPdf->setY(282);
     $oPdf->SetFont("arial", "B", 5);
-    $oPdf->Cell($oDadosEstrutura->iLarguraPadrao, $oDadosEstrutura->iAlturaPadrao, $sEndereço, 0, 1, "C");
+    $oPdf->Cell($oDadosEstrutura->iLarguraPadrao, $oDadosEstrutura->iAlturaPadrao, $sEndereco, 0, 1, "C");
     $oPdf->Cell($oDadosEstrutura->iLarguraPadrao, $oDadosEstrutura->iAlturaPadrao, $sContato, 0, 1, "C");
+}
+
+/**
+ * Função para completar a célula à direita, com os caracteres específicados.
+ * @param \ECidade\Pdf\Pdf $pdf
+ * @param int $largura
+ * @param string $string
+ * @param string $caracter
+ * @return string
+ */
+function completaCelula($pdf, $largura, $string, $caracter = '.')
+{
+    $stringExtra = '';
+
+    $tamanhoString = $pdf->GetStringWidth($string);
+    if ($tamanhoString < $largura) {
+        $quant = ($largura - $tamanhoString) / $pdf->GetStringWidth($caracter);
+        $stringExtra = str_repeat($caracter, $quant);
+    } else {
+        $stringExtra = '';
+    }
+
+    return $string = $string . $stringExtra;
 }
 
 /**
@@ -587,11 +666,10 @@ function rodape(scpdf $oPdf, $oDadosEstrutura)
  */
 try {
     if ($modeloImpressao == 2) {
-
         if (empty($oDadosEstrutura->aExames) || empty($oDadosEstrutura->aSetor)) {
             throw new Exception("Nenhum registro encontrado para os filtros selecionados.");
         }
-        
+
         $dados = array();
         array_push($dados, $oDadosEstrutura);
         $impressaoMatricialLote->gerarArquivo($dados);
@@ -601,8 +679,10 @@ try {
     } else {
         if ($oGet->iModelo == 1) {
             require_once(modification('lab4_resultadomodelo1.php'));
-        } else {
+        } elseif ($oGet->iModelo == 2) {
             require_once(modification('lab4_resultadomodelo2.php'));
+        } else {
+            require_once(modification('lab4_resultadomodelo3.php'));
         }
     }
 } catch (Exception $oErro) {

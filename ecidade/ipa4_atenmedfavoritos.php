@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -97,7 +97,7 @@ function js_excluir() {
   <table border="0" cellpadding="3" cellspacing="0" style="	border: 1px solid #000000;">
     <tr> 
       <td align="left" valign="top"><strong>Favoritos:</strong><br> <select onDblClick="js_inserir(this.options[this.selectedIndex].text)" style="width:136px;font-size:9px;" name="favoritos" size="10" id="select">
-          <?			 
+          <?php 		 
 			  $result = db_query("select codigo,descr from favoritos where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
 			  $numrows = pg_numrows($result);
 			  for($i = 0;$i < $numrows;$i++) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_arreparc {
                  k26_perc = float8 = Percentual da receita 
                  ";
    //funcao construtor da classe 
-   function cl_arreparc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreparc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_arreparc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k26_numpre = ($this->k26_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k26_numpre"]:$this->k26_numpre);
        $this->k26_receit = ($this->k26_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["k26_receit"]:$this->k26_receit);
@@ -78,7 +78,7 @@ class cl_arreparc {
      }
    }
    // funcao para inclusao
-   function incluir ($k26_numpre,$k26_receit){ 
+   public function incluir ($k26_numpre,$k26_receit){ 
       $this->atualizacampos();
      if($this->k26_perc == null ){ 
        $this->erro_sql = " Campo Percentual da receita nao Informado.";
@@ -155,7 +155,7 @@ class cl_arreparc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k26_numpre=null,$k26_receit=null) { 
+   public function alterar ($k26_numpre=null,$k26_receit=null) { 
       $this->atualizacampos();
      $sql = " update arreparc set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_arreparc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k26_numpre=null,$k26_receit=null,$dbwhere=null) { 
+   public function excluir ($k26_numpre=null,$k26_receit=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k26_numpre,$k26_receit));
      }else{ 
@@ -324,7 +324,7 @@ class cl_arreparc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

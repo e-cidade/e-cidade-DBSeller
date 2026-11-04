@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label("rh59_descr");
               <?=@$Lrh58_data?>
             </td>
             <td> 
-              <?
+              <?php
               db_inputdata("rh58_data",@$rh58_data_dia,@$rh58_data_mes,@$rh58_data_ano,true,'text',$db_opcao);
 //function db_textarea($nome, $dbsizelinha = 1, $dbsizecoluna = 1, $dbvalidatipo, $dbcadastro = true, $dbhidden = 'text', $db_opcao = 3, $js_script = "", $nomevar = "", $bgcolor = "") {
               ?>
@@ -55,22 +55,22 @@ $clrotulo->label("rh59_descr");
 	      <?=@$Lrh58_valor?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
               db_input('rh58_valor',10,$Irh58_valor,true,'text',3,"")
 	      ?>
 	    </td>
           </tr>
 	  <tr>
             <td nowrap title="<?=@$Trh58_tipoocor?>">
-              <?
+              <?php
               db_ancora(@$Lrh58_tipoocor,"js_pesquisarh58_tipoocor(true);",3);
               ?>
             </td>
             <td colspan="3" nowrap> 
-              <?
+              <?php
               db_input('rh58_tipoocor',10,$Irh58_tipoocor,true,'text',3," onchange='js_pesquisarh58_tipoocor(false);'")
               ?>
-              <?
+              <?php
               db_input('rh59_descr',48,$Irh59_descr,true,'text',3,'');
               db_input('rh58_seq',6,$Irh58_seq,true,'hidden',3,"");
               db_input('rh58_codigo',6,$Irh58_codigo,true,'hidden',3,"");
@@ -85,7 +85,7 @@ $clrotulo->label("rh59_descr");
 <table>
   <tr>
     <td>
-      <?
+      <?php
       /*
       $dbgroupby = "rh57_seq, rh57_ano, rh57_mes, rh57_regist, rh57_valorini, rh57_saldo, rh58_tipoocor"; 
       $dbhaving = " rh57_regist = $rh57_regist ";
@@ -139,5 +139,5 @@ function js_mostrarhpagtipoocor1(chave1,chave2){
   document.form1.rh58_tipoocor.value = chave1;
   document.form1.rh59_descr.value = chave2;
   db_iframe_rhpagtipoocor.hide();
-}>
+}
 </script>

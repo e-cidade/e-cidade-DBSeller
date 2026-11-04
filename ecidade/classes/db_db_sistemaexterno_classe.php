@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,13 +50,13 @@ class cl_db_sistemaexterno {
                  db124_descricao = varchar(50) = Sistema Externo
                  ";
    //funcao construtor da classe
-   function cl_db_sistemaexterno() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sistemaexterno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_db_sistemaexterno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db124_sequencial = ($this->db124_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db124_sequencial"]:$this->db124_sequencial);
        $this->db124_descricao = ($this->db124_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["db124_descricao"]:$this->db124_descricao);
@@ -74,7 +74,7 @@ class cl_db_sistemaexterno {
      }
    }
    // funcao para inclusao
-   function incluir ($db124_sequencial){
+   public function incluir ($db124_sequencial){
       $this->atualizacampos();
      if($this->db124_descricao == null ){
        $this->erro_sql = " Campo Sistema Externo nao Informado.";
@@ -138,7 +138,7 @@ class cl_db_sistemaexterno {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db124_sequencial=null) {
+   public function alterar ($db124_sequencial=null) {
       $this->atualizacampos();
      $sql = " update db_sistemaexterno set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_db_sistemaexterno {
      }
    }
    // funcao para exclusao
-   function excluir ($db124_sequencial=null,$dbwhere=null) {
+   public function excluir ($db124_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db124_sequencial));
      }else{
@@ -280,7 +280,7 @@ class cl_db_sistemaexterno {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -303,10 +303,10 @@ class cl_db_sistemaexterno {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $db124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -327,7 +327,7 @@ class cl_db_sistemaexterno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -337,10 +337,10 @@ class cl_db_sistemaexterno {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $db124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_db_sistemaexterno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,7 +378,7 @@ class cl_db_sistemaexterno {
        * @param $iNumCgm        integer : numero do cgm para buscar o codigo do municipio
        *
        */
-      function getCodigoSistemaExternoMunic($iCodigoSistema, $iNumCgm){
+      public function getCodigoSistemaExternoMunic($iCodigoSistema, $iNumCgm){
 
         $sSqlSistema  = "select db125_codigosistema::integer from cgm                                                  \n";
         $sSqlSistema .= "  left join cgmendereco               on z01_numcgm          = z07_numcgm                     \n";

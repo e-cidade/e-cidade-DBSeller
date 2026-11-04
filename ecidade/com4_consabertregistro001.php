@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,7 +45,7 @@ $clrotulo->label("pc67_motivo");
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -77,36 +77,36 @@ db_app::load("widgets/windowAux.widget.js");
             <table>
             <tr>
               <td nowrap title="" width="130">
-                 <?
+                 <?php
                   db_ancora("<b>Abertura do Registro:</b>","js_pesquisar();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="" width="130">
-                 <?
+                 <?php
                   db_ancora("<b>Estimativa do Registro:</b>","js_pesquisarEstimativas();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 db_input('pc54_estimativa',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="" >
-                 <?
+                 <?php
                   db_ancora("<b>Compilação do Registro:</b>","js_pesquisarCompilacao();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 db_input('pc54_compilacao',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -114,7 +114,7 @@ db_app::load("widgets/windowAux.widget.js");
             <tr>
               <td><b>Data:</b></td>
               <td>
-                <?
+                <?php
                   $dtini     = "";
                   $dtini_dia = "";
                   $dtini_mes = "";
@@ -124,7 +124,7 @@ db_app::load("widgets/windowAux.widget.js");
               </td>
               <td>
                 <b>Até:</b>
-                <?
+                <?php
                   $dtfim     = "";
                   $dtfim_dia = "";
                   $dtfim_mes = "";
@@ -135,17 +135,17 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                <?
+                <?php
                   db_ancora("<b>Departamento:</b>", "js_departamento(true);", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('pc10_depto', 14, $Ipc10_depto, true, 'text', 1, "onchange='js_departamento(false);'");
                 ?>
               </td>
               <td align="left">
-                <?
+                <?php
                  db_input('descrdepto', 40, $Idescrdepto, true, 'text', 3);
                 ?>
               </td>
@@ -164,61 +164,67 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 <script>
 
 var sUrlRC = 'com4_solicitacaoComprasRegistroPreco.RPC.php';
 
 function js_pesquisar() {
-
   js_OpenJanelaIframe('',
                       'db_iframe_solicita',
-                      'func_solicitaregistropreco.php?formacontrole=1,2&funcao_js=parent.js_mostraPesquisa|pc54_solicita&departamento=false',
+                      'func_solicitaregistropreco.php?formacontrole=1,2&funcao_js=parent.js_mostraPesquisa|pc54_solicita',
                       'Abertura Registro de Preço',
                       true
                       );
 }
 
+function limparFormulario() {
+    $('pc10_numero').value = ''
+    $('pc54_estimativa').value = ''
+    $('pc54_compilacao').value = ''
+}
+
 function js_mostraPesquisa(chave1,chave2){
+   limparFormulario();
 
    $('pc10_numero').value = chave1;
    db_iframe_solicita.hide();
 }
 
 function js_pesquisarEstimativas() {
-
   js_OpenJanelaIframe('',
                       'db_iframe_estimativa',
                       'func_solicitaestimativa.php?funcao_js=parent.js_mostraPesquisaEstimativa|'+
                       'pc10_numero',
-                      'Estimativas de Registro de Preço',
+                      'Estimativa de Registro de Preço',
                       true
                       );
 }
 
 function js_mostraPesquisaEstimativa(chave1,chave2){
+   limparFormulario();
 
    $('pc54_estimativa').value = chave1;
    db_iframe_estimativa.hide();
 }
 
 function js_pesquisarCompilacao() {
-
   js_OpenJanelaIframe('',
-                      'db_iframe_solicita',
+                      'db_iframe_compilacao',
                       'func_solicitacompilacao.php?funcao_js=parent.js_mostraPesquisaCompilacao|'+
                       'pc10_numero',
-                      'Compilações de Registro de Preço',
+                      'Compilação de Registro de Preço',
                       true
                       );
 }
 
 function js_mostraPesquisaCompilacao(chave1,chave2){
+   limparFormulario();
 
    $('pc54_compilacao').value = chave1;
-   db_iframe_solicita.hide();
+   db_iframe_compilacao.hide();
 }
 function js_limpar() {
 
@@ -310,7 +316,5 @@ function js_mostradepart1(chave1,chave2){
   $('descrdepto').value = chave2;
   db_iframe_depart.hide();
 }
-
-
 
 </script>

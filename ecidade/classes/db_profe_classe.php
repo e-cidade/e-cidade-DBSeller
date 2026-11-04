@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,13 +62,13 @@ class cl_profe {
                  h18_descat = varchar(120) = Descrição da Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_profe() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("profe"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_profe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h18_regist = ($this->h18_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["h18_regist"]:$this->h18_regist);
        $this->h18_local = ($this->h18_local == ""?@$GLOBALS["HTTP_POST_VARS"]["h18_local"]:$this->h18_local);
@@ -102,7 +102,7 @@ class cl_profe {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->h18_regist == null ){ 
        $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
@@ -189,7 +189,7 @@ class cl_profe {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update profe set ";
      $virgula = "";
@@ -317,7 +317,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from profe
                     where ";
      $sql2 = "";
@@ -356,7 +356,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

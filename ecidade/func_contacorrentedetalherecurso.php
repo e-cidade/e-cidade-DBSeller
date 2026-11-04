@@ -53,7 +53,7 @@ $oDaoOrcTipoRec = new cl_orctiporec();
                 <label for="o15_codigo" class="bold">Código:</label>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 $So15_codigo = "Código";
                 db_input("o15_codigo",10,1,true,"text",4,"");
                 ?>
@@ -64,7 +64,7 @@ $oDaoOrcTipoRec = new cl_orctiporec();
                <label for="o15_descr" class="bold">Descrição</label>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 $So15_descr = "Descrição";
                 db_input("o15_descr",50,0,true,"text",4,"");
                 ?>

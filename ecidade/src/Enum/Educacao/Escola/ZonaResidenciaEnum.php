@@ -9,6 +9,11 @@ class ZonaResidenciaEnum extends Enum
 {
     const URBANA = 1;
     const RURAL = 2;
+    const URBANA_NORTE = 3;
+    const URBANA_SUL = 4;
+    const URBANA_LESTE = 5;
+    const URBANA_OESTE = 6;
+
 
     /**
      * @return string
@@ -19,6 +24,10 @@ class ZonaResidenciaEnum extends Enum
         $data = array(
             self::URBANA => "Urbana",
             self::RURAL => "Rural",
+            self::URBANA_NORTE => "Urbana/Norte",
+            self::URBANA_SUL => "Urbana/Sul",
+            self::URBANA_LESTE => "Urbana/Leste",
+            self::URBANA_OESTE => "Urbana/Oeste",
         );
 
         if (empty($data[$this->getValue()])) {

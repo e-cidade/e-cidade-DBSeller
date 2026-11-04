@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("descrdepto");
           <b>Código da Requisição: </b>
           </td>
           <td>
-            <?
+            <?php
             db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"")
             ?>
           </td>
@@ -61,7 +61,7 @@ $clrotulo->label("descrdepto");
              <?=@$Lm40_hora?>
           </td>
           <td>
-            <?
+            <?php
             db_input('m40_hora', 10,$Im40_hora,true,'text',3,"")
             ?>
           </td>
@@ -109,7 +109,7 @@ $clrotulo->label("descrdepto");
               <th class='table_header'>Qtde Em Estoque</th>
               <th class='table_header'>Lote</th>
               <th class='table_header'>Qtde a Entregar</th>
-              <?
+              <?php
               if ($iTipoControleCustos > 0) {
                echo "<th class='table_header'>Centro De Custo</th>";
               }
@@ -124,7 +124,7 @@ $clrotulo->label("descrdepto");
    </fieldset>
          <input name="incluir" type="button"  value="Efetuar Atendimento" onclick="return js_atendeRequisicao();" >
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-  <?
+  <?php
   db_input('atendimento',10,'',true,'hidden',3);
   db_input('m80_codigo',10,'',true,'hidden',3);
   db_input("valores",100,0,true,"hidden",3);

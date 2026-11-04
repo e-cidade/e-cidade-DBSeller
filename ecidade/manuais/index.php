@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ $imagem = str_replace($nome_imagem,"",$imagem)."manuais/$modulo/$nome_imagem";
 ?>
 <html>
 <body>
-<?
+<?php
 echo "<img border='1' width='100%'  heigth='100%' src='$imagem'>";
 ?>
 </body>

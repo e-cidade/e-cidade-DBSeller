@@ -106,7 +106,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clobrastec->erro_status=="0"){
     $clobrastec->erro(true,false);

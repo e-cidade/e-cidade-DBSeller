@@ -31,6 +31,9 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
         $this->dadosImprimir = [];
         $aRetencoes = $this->dados['retencoes'];
         $nTotalRetencoes = 0;
+        $vlrTotalNl = 0;
+        $vlrBaseCalc = 0;
+        $textoQuebra = '';
 
         foreach ($aRetencoes as $oQuebra) {
             $lEscreverHeader = true;
@@ -39,14 +42,21 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
                 if ($lEscreverHeader) {
                     if ($oQuebra->texto != "") {
                         $this->dadosImprimir[] = $this->imprimeQuebra($oQuebra->texto);
+                        if ($textoQuebra != $oQuebra->texto) {
+                            $textoQuebra = $oQuebra->texto;
+                            $vlrTotalNl = 0;
+                            $vlrBaseCalc = 0;
+                        }
                     }
 
-                    $this->dadosImprimir[] = $this->imprimeCabecalho();
+                    $this->dadosImprimir[] = $this->imprimeCabecalho($oRetencaoAtiva);
                     $lEscreverHeader = false;
                 }
+                $vlrTotalNl += $oRetencaoAtiva->valor_nota_liq;
+                $vlrBaseCalc += $oRetencaoAtiva->valor_base_calc;
                 $this->dadosImprimir[] = $this->imprimeDadosRelatorio($oRetencaoAtiva);
             }
-            $this->dadosImprimir[] = $this->imprimeTotalizadorQuebra($oQuebra);
+            $this->dadosImprimir[] = $this->imprimeTotalizadorQuebra($oQuebra, $vlrTotalNl, $vlrBaseCalc);
             $nTotalRetencoes += $oQuebra->total;
         }
 
@@ -56,9 +66,8 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
         return $this->dadosImprimir;
     }
 
-    public function imprimeCabecalho()
+    public function imprimeCabecalho($oRetencaoAtiva)
     {
-
         $cabecalho = [
             "NF",
             "DATA DA NF",
@@ -69,9 +78,29 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
             "TIPO DE SERVIÇO",
             "CNO",
             "VLR DA NL",
+            "BASE DE CALC",
             "ALÍQ",
             "VLR RETIDO"
         ];
+
+        if ($this->isEventos4000($oRetencaoAtiva->evento)) {
+            $cabecalho = [
+                "NF",
+                "NL",
+                "DATA PAGAMENTO",
+                "PRESTADOR DE SERVIÇO",
+                "CNPJ/CPF",
+                "EMPENHO",
+                "RETENÇÃO",
+                "TIPO DE SERVIÇO",
+                "CÓD NATUREZA",
+                "VLR DA NL",
+                "BASE DE CALC",
+                "ALÍQ",
+                "VLR RETIDO"
+            ];
+        }
+       
         
         return $cabecalho;
     }
@@ -98,26 +127,47 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
 
     public function imprimeDadosRelatorio($oRetencaoAtiva)
     {
-        $dadosRelatorio = [
-            $oRetencaoAtiva->numero_nota,
-            db_formatar($oRetencaoAtiva->data_emissao, 'd'),
-            $oRetencaoAtiva->nome_prestador,
-            $oRetencaoAtiva->cnpj_prestador,
-            $oRetencaoAtiva->empenho_numero,
-            $oRetencaoAtiva->retencao_tipo,
-            $oRetencaoAtiva->indicativo_obra_tipo,
-            $oRetencaoAtiva->indicativo_obra_cno,
-            db_formatar($oRetencaoAtiva->valor_nota_liq, "f"),
-            $oRetencaoAtiva->aliquota != "" ? $oRetencaoAtiva->aliquota."%": "",
-            db_formatar($oRetencaoAtiva->valor_retencao, "f")
-        ];
+        if ($this->isEventos4000($oRetencaoAtiva->evento)) {
+            $dadosRelatorio = [
+                $oRetencaoAtiva->numero_nota,
+                $oRetencaoAtiva->codigo_nota,
+                db_formatar($oRetencaoAtiva->data_pagamento, 'd'),
+                $oRetencaoAtiva->nome_prestador,
+                $oRetencaoAtiva->cnpj_prestador,
+                $oRetencaoAtiva->empenho_numero,
+                $oRetencaoAtiva->retencao_tipo,
+                $oRetencaoAtiva->codnatureza_rendimento,
+                $oRetencaoAtiva->naturezarendimento,
+                db_formatar($oRetencaoAtiva->valor_nota_liq, "f"),
+                db_formatar($oRetencaoAtiva->valor_base_calc, "f"),
+                $oRetencaoAtiva->aliquota != "" ? $oRetencaoAtiva->aliquota."%": "",
+                db_formatar($oRetencaoAtiva->valor_retencao, "f")
+            ];
+        } else {
+            $dadosRelatorio = [
+                $oRetencaoAtiva->numero_nota,
+                db_formatar($oRetencaoAtiva->data_emissao, 'd'),
+                $oRetencaoAtiva->nome_prestador,
+                $oRetencaoAtiva->cnpj_prestador,
+                $oRetencaoAtiva->empenho_numero,
+                $oRetencaoAtiva->retencao_tipo,
+                $oRetencaoAtiva->referencia_tipo_servico_desc,
+                $oRetencaoAtiva->indicativo_obra_cno,
+                db_formatar($oRetencaoAtiva->valor_nota_liq, "f"),
+                db_formatar($oRetencaoAtiva->valor_base_calc, "f"),
+                $oRetencaoAtiva->aliquota != "" ? $oRetencaoAtiva->aliquota."%": "",
+                db_formatar($oRetencaoAtiva->valor_retencao, "f")
+            ];
+        }
+
 
         return $dadosRelatorio;
     }
 
-    public function imprimeTotalizadorQuebra($oQuebra)
+    public function imprimeTotalizadorQuebra($oQuebra, $vlrTotalNl, $vlrBaseCalc)
     {
         $totalizadorQuebra = [
+            "Totalizadores:",
             "",
             "",
             "",
@@ -125,16 +175,18 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
             "",
             "",
             "",
+            db_formatar($vlrTotalNl, "f"),
+            db_formatar($vlrBaseCalc, "f"),
             "",
-            "",
-            "Total da Retenção:",
             db_formatar($oQuebra->total, "f")
         ];
+        return $totalizadorQuebra;
     }
 
     public function imprimeTotalizadorGeral($nTotalRetencoes)
     {
         $totalizadorGeral = [
+            "",
             "",
             "",
             "",
@@ -161,5 +213,10 @@ class RelatorioRetencoesEfdReinfCsv extends Dumper
     public function setFiltros(RelatorioRetencoesEfdReinfFiltros $filtros)
     {
         $this->filtros = $filtros;
+    }
+
+    public function isEventos4000($evento)
+    {
+        return in_array($evento, ['r4010', 'r4020', 'r4040']) ? true : false;
     }
 }

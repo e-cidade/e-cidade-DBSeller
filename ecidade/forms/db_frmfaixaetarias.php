@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clfaixaetarias->rotulo->label();
        <?=@$Lsd13_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd13_i_codigo',5,$Isd13_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd13_i_codigo',5,$Isd13_i_codigo,true,'text',3,"")
        <?=@$Lsd13_i_inicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd13_i_inicial',2,$Isd13_i_inicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('sd13_i_inicial',2,$Isd13_i_inicial,true,'text',$db_opcao,"")
        <?=@$Lsd13_i_final?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd13_i_final',2,$Isd13_i_final,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('sd13_i_final',2,$Isd13_i_final,true,'text',$db_opcao,"")
        <?=@$Lsd13_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd13_c_descr',40,$Isd13_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_faixaetarias.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

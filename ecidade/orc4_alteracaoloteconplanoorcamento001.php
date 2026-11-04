@@ -56,7 +56,7 @@ require_once(modification("libs/db_app.utils.php"));
 
 <div class="container">
 
-    <fieldset style="600px">
+    <fieldset>
         <legend class="bold">Filtrar Contas Orçamentárias</legend>
         <table>
             <tr>

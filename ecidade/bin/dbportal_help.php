@@ -1,4 +1,4 @@
-<?
+<?php
 include("vihelp.conf");
 
 $fd = fopen("/tmp/dbportal_help.html","w");
@@ -17,36 +17,36 @@ function db_formatar($str,$tipo,$caracter=" ",$quantidade=0,$TipoDePreenchimento
       // boolean
       if($str==false){
 	     return 'N';
-      }else{ 
-	     return 'S';		
+      }else{
+	     return 'S';
       }
     case "p":
       // ponto decimal com "."
       if($quantidade==0)
          return str_pad(number_format($str,$casasdecimais,".",""),15,"$caracter",STR_PAD_LEFT);
-      else 
+      else
         return str_pad(number_format($str,$casasdecimais,".",""),$quantidade,"$caracter",STR_PAD_LEFT);
     case "f":
       // ponto decimal com virgula
       if($quantidade==0)
          return str_pad(number_format($str,$casasdecimais,",","."),15,"$caracter",STR_PAD_LEFT);
-      else 
+      else
         return str_pad(number_format($str,$casasdecimais,",","."),$quantidade,"$caracter",STR_PAD_LEFT);
     case "d":
-     
+
       if($str!=""){
-        $data = split("-",$str);
+        $data =explode("-",$str);
         return $data[2]."/".$data[1]."/".$data[0];
       }else{
         return $str;
       }
-    case "s":   	     
+    case "s":
 	  if($TipoDePreenchimento == "e") {
         return str_pad($str,$quantidade,$caracter,STR_PAD_LEFT);
 	  } else if($TipoDePreenchimento == "d") {
         return str_pad($str,$quantidade,$caracter,STR_PAD_RIGHT);
 	  } else if($TipoDePreenchimento == "a") {
-        return str_pad($str,$quantidade,$caracter,STR_PAD_BOTH);	  
+        return str_pad($str,$quantidade,$caracter,STR_PAD_BOTH);
 	  }
 	case "v":
 	  if(strpos($str,",") != "") {
@@ -54,10 +54,10 @@ function db_formatar($str,$tipo,$caracter=" ",$quantidade=0,$TipoDePreenchimento
 	    $str = str_replace(",",".",$str);
 		return $str;
 	  } else if(strpos($str,"-") != "") {
-        $str = split("-",$str);
+        $str =explode("-",$str);
 		return $str[2]."-".$str[1]."-".$str[0];
 	  } else if(strpos($str,"/") != "") {
-	    $str = split("/",$str);
+	    $str =explode("/",$str);
 		return $str[2]."-".$str[1]."-".$str[0];
 	  }
 	  break;
@@ -102,16 +102,16 @@ function gera_help($arquivo){
       unset($listaobservacao);
       unset($listavariavel);
       unset($listaretorno);
-      
+
     }
     if(substr($conteudo,0,8)=="//|XX|//"){
       unset($eclasse);
     }
-     
+
     if(substr($conteudo,0,8)=="//#00#//" || substr($conteudo,0,8)=="//#01#//"){
       // nome da funcao
       if(!isset($eclasse)){
-       
+
 	if(substr($conteudo,0,8)=="//#00#//" ){
 	  fputs($fd, "$br");
 	  fputs($fd, "===================================== FUNCAO PHP ================================================\n");
@@ -127,14 +127,14 @@ function gera_help($arquivo){
 	fputs($fd,  "Método         : *".substr($conteudo,8)."* $br");
       }
       $tags .= substr($conteudo,8)."\t db_phphelp.txt \t /*".substr($conteudo,8)."* $br";
-      
+
       unset($listafuncao);
       unset($listasintaxe);
       unset($listaparametro);
       unset($listaobservacao);
       unset($listavariavel);
       unset($listaretorno);
-   
+
       unset($clistafuncao);
       unset($clistasintaxe);
       unset($clistaparametro);
@@ -142,10 +142,10 @@ function gera_help($arquivo){
       unset($clistavariavel);
       unset($clistaretorno);
 
-     
+
     }
     if(substr($conteudo,0,8)=="//#10#//" || substr($conteudo,0,8)=="//|10|//"){
-      // descricao da funcao    
+      // descricao da funcao
       if(!isset($listafuncao) && !isset($clistafuncao)){
 	 $listafuncao = true;
 	 $clistafuncao = true;
@@ -158,7 +158,7 @@ function gera_help($arquivo){
       fputs($fd, substr($conteudo,8)." $br");
     }
     if(substr($conteudo,0,8)=="//#15#//" || substr($conteudo,0,8)=="//|15|//"){
-      // sintaxe da sintaxe    
+      // sintaxe da sintaxe
       if(!isset($listasintaxe) && !isset($clistasintaxe)){
 	 $listasintaxe = true;
 	 $clistasintaxe = true;
@@ -171,7 +171,7 @@ function gera_help($arquivo){
       fputs($fd, substr($conteudo,8)."\n");
     }
     if(substr($conteudo,0,8)=="//#20#//" || substr($conteudo,0,8)=="//|20|//"){
-      // Parametros da funcao    
+      // Parametros da funcao
       if(!isset($listaparametro) && !isset($clistaparametro)){
 	 $listaparametro = true;
 	 $clistaparametro = true;
@@ -216,7 +216,7 @@ function gera_help($arquivo){
 
 
     if(substr($conteudo,0,8)=="//#99#//" || substr($conteudo,0,8)=="//|99|//"){
-      // Parametros da funcao    
+      // Parametros da funcao
       if(!isset($listaobservacao) && !isset($listaobservacao)){
 	 $listaobservacao = true;
 	 $clistaobservacao = true;
@@ -245,7 +245,7 @@ $result = pg_exec("select * from db_syscampo order by nomecam");
 fputs($fd, "\n");
 fputs($fd, "================================= LISTA DOS CAMPOS CADASTRADOS ==================================\n");
 fputs($fd, "\n");
- 
+
 for($i=0;$i<pg_numrows($result);$i++){
   $codcam    = pg_result($result,$i,'codcam');
   $nomecam   = pg_result($result,$i,'nomecam');
@@ -260,7 +260,7 @@ for($i=0;$i<pg_numrows($result);$i++){
   $rotulorel = pg_result($result,$i,'rotulorel');
   fputs($fd, "$br");
   fputs($fd, "Campo          : *".trim($nomecam)."* $br");
-  $linha = split("$br",$descricao);
+  $linha =explode("$br",$descricao);
   $tags .= trim($nomecam)."\tdb_phphelp.txt\t/*".trim($nomecam)."*$br";
   for($l=0;$l<sizeof($linha);$l++){
     if($l==0)
@@ -295,7 +295,7 @@ for($i=0;$i<pg_numrows($result);$i++){
 fputs($fd, "$br");
 fputs($fd, "================================= LISTA DOS ARQUIVOS CADASTRADOS ================================\n");
 fputs($fd, "$br");
- 
+
 
 $result = pg_exec("select a.codarq, nomearq, a.descricao, nomecam , p.descricao as descrcampo,conteudo,tamanho
                    from db_sysarquivo a
@@ -312,7 +312,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $listaarq = true;
     fputs($fd, "$br");
     fputs($fd, "Arquivo        : *".trim($nomearq)."* *cl".trim($nomearq)."*$br");
-    $linha = split("$br",$descricao);
+    $linha =explode("$br",$descricao);
     $tags .= trim($nomearq)."\tdb_phphelp.txt\t/*".trim($nomearq)."*$br";
     $tags .= "cl_".trim($nomearq)."\tdb_phphelp.txt\t/*cl_".trim($nomearq)."*$br";
     $tags .= "cl".trim($nomearq)."\tdb_phphelp.txt\t/*cl".trim($nomearq)."*$br";
@@ -323,7 +323,7 @@ for($i=0;$i<pg_numrows($result);$i++){
         fputs($fd, "                 ");
       fputs($fd, $linha[$l]."$br");
     }
-   
+
   }else{
     $listaarq = false;
   }

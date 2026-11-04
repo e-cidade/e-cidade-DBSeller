@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if (isset($alterar)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_tipovacina.php"));
 	?>
     </center>
@@ -83,7 +83,7 @@ if (isset($alterar)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -92,7 +92,7 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($clvac_tipovacina->erro_status == "0") {

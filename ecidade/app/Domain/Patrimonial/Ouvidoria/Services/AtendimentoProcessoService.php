@@ -2,23 +2,21 @@
 
 namespace App\Domain\Patrimonial\Ouvidoria\Services;
 
+use App\Domain\Configuracao\Helpers\StorageHelper;
 use App\Domain\Patrimonial\Ouvidoria\Model\TipoProcessoFormaReclamacao;
-use App\Domain\Patrimonial\Protocolo\Model\Cgm;
-use App\Domain\Patrimonial\Protocolo\Model\Processo\TipoProcesso;
-use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Filter\ListagemProcessos as FiltroListagemProcessos;
-use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Helper\ProcessoEletronicoHelper;
-use ECidade\Patrimonial\Protocolo\Servicos\InclusaoProcesso as InclusaoProcessoLegacyService;
-use App\Domain\Patrimonial\Protocolo\Repository\Processo\ProcessoDocumentoRepository;
 use App\Domain\Patrimonial\Ouvidoria\Repository\Atendimento\AtendimentoRepository;
 use App\Domain\Patrimonial\Ouvidoria\Repository\Cidadao\CidadaoRepository;
-use App\Domain\Patrimonial\Ouvidoria\Services\InformacoesProcessoPDFService;
-use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoOuvidoria;
-use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoDocumento;
-use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoAndamento;
-use App\Domain\Patrimonial\Protocolo\Services\ProcessoService;
+use App\Domain\Patrimonial\Protocolo\Model\Cgm;
 use App\Domain\Patrimonial\Protocolo\Model\Processo\Processo;
-use App\Domain\Configuracao\Helpers\StorageHelper;
+use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoAndamento;
+use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoDocumento;
+use App\Domain\Patrimonial\Protocolo\Model\Processo\ProcessoOuvidoria;
+use App\Domain\Patrimonial\Protocolo\Model\Processo\TipoProcesso;
+use App\Domain\Patrimonial\Protocolo\Services\ProcessoService;
 use ECidade\Lib\Session\DefaultSession;
+use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Filter\ListagemProcessos as FiltroListagemProcessos;
+use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Helper\ProcessoEletronicoHelper;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Classe AtendimentoProcessoService
@@ -39,11 +37,25 @@ class AtendimentoProcessoService
      * @property ProcessoAndamento $processoAndamento
      */
     private $processoAndamento;
+    /**
+     * @var AtendimentoRepository
+     */
+    private $atendimentoRepository;
+    /**
+     * @var CidadaoRepository
+     */
+    private $cidadaoRepository;
+    /**
+     * @var ProcessoService
+     */
+    private $processoService;
 
     /**
      * Construtor da classe
      *
-     * @param ProcessoDocumentoRepository $processoDocumentoRepository
+     * @param AtendimentoRepository $atendimentoRepository
+     * @param CidadaoRepository $cidadaoRepository
+     * @param ProcessoService $processoService
      */
     public function __construct(
         AtendimentoRepository $atendimentoRepository,
@@ -59,7 +71,7 @@ class AtendimentoProcessoService
      * Função que realiza a ação de aprovar um processo
      *
      * @param \Cgmbase $cgm
-     * @param stdClass $solicitacaoOuvidoria
+     * @param \stdClass $solicitacaoOuvidoria
      * @throws \Exception
      */
     public function aprovarProcesso(
@@ -80,7 +92,7 @@ class AtendimentoProcessoService
      * Função que realiza a ação de aprovar um processo mas não gera capa e documentos nos e-Storage
      *
      * @param \Cgmbase $cgm
-     * @param stdClass $solicitacaoOuvidoria
+     * @param \stdClass $solicitacaoOuvidoria
      * @throws \Exception
      */
     public function aprovarProcessoSemCapa(
@@ -98,7 +110,7 @@ class AtendimentoProcessoService
      * Função que realiza a ação de rejeitar um processo
      *
      * @param \Cgmbase $cgm
-     * @param stdClass $solicitacaoOuvidoria
+     * @param \stdClass $solicitacaoOuvidoria
      * @param string $motivo
      */
     public function rejeitarProcesso(\CgmBase $cgm, $solicitacaoOuvidoria, $motivo, $oCgmResponsavel)
@@ -129,17 +141,19 @@ class AtendimentoProcessoService
                 continue;
             }
 
-            foreach ($sessao->resposta as $documentoStorage) {
-                if ($documentoStorage->codigo == null) {
-                    throw new \Exception("Documento inválido");
+            if (isset($sessao->resposta)) {
+                foreach ($sessao->resposta as $documentoStorage) {
+                    if ($documentoStorage->codigo == null) {
+                        throw new \Exception("Documento inválido");
+                    }
+
+                    $this->salvarDocumento(
+                        $documentoStorage,
+                        $ordem
+                    );
+
+                    $ordem++;
                 }
-
-                $this->salvarDocumento(
-                    $documentoStorage,
-                    $ordem
-                );
-
-                $ordem++;
             }
         }
     }
@@ -240,7 +254,7 @@ class AtendimentoProcessoService
     /**
      * Função que salva um documento
      *
-     * @param stdClass $documento
+     * @param \stdClass $documento
      * @param int $ordem
      */
     protected function salvarDocumento(
@@ -264,7 +278,7 @@ class AtendimentoProcessoService
     /**
      * Cria PDF com os dados enviados pela web
      *
-     * @param stdClass $dadosSolicitacao
+     * @param \stdClass $dadosSolicitacao
      */
     private function criarInformacoesProcessoPDF($dadosSolicitacao, $motivoRejeicao = null)
     {
@@ -347,12 +361,9 @@ class AtendimentoProcessoService
      *
      * @param string $motivo
      */
-    public function baixarProcesso($motivo)
+    public function baixarProcesso($motivo, $isLegacy = true)
     {
-        $defaultSession = DefaultSession::getInstance();
-        $usuario = $defaultSession->get(DefaultSession::DB_ID_USUARIO);
-        $departamento = $defaultSession->get(DefaultSession::DB_CODDEPTO);
-        $departamentoRecebimento = $this->processoService->getDepartamentoAndamentoPadrao($this->processo);
+        $this->processoService->isLegacy = $isLegacy;
         $this->processoService->arquivar($this->processo, $motivo, null);
     }
 
@@ -407,9 +418,20 @@ class AtendimentoProcessoService
         }
 
         foreach ($dadosRequerente->campos as $campo) {
+            if (empty($campo->resposta)) {
+                $campo->resposta = null;
+            }
             $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta;
             if (is_object($campo->resposta)) {
-                $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta->descricao;
+                if ($campo->nome === "sexo") {
+                    if ($campo->resposta->codigo === "N") {
+                        $dadosApiEauth[strtolower($campo->nome)] = "";
+                    } else {
+                        $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta->codigo;
+                    }
+                } else {
+                    $dadosApiEauth[strtolower($campo->nome)] = $campo->resposta->descricao;
+                }
             }
         }
 
@@ -437,6 +459,9 @@ class AtendimentoProcessoService
         return (object)$dadosApiEauth;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getCgmResponsavelByMetadados($oMetadados)
     {
         $oResponsavel = null;
@@ -469,12 +494,10 @@ class AtendimentoProcessoService
                     $oCgm->setCnpj($sCpfCnpj);
                 }
             }
-            $oCgm->setNome(mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(substr($sNome, 0, 40))));
-            $oCgm->setNomeCompleto(
-                mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(
-                    substr($sNome, 0, 100)
-                ))
-            );
+            $oCgm->setNome(\DBString::upperCaseRemoveCaracteresEspeciais(substr($sNome, 0, 40)));
+            $oCgm->setNomeCompleto(\DBString::upperCaseRemoveCaracteresEspeciais(
+                substr($sNome, 0, 100)
+            ));
 
             if (!empty($oEndereco)) {
                 $oCgm = $this->ajustaEndereco($oCgm, $oEndereco);
@@ -523,7 +546,19 @@ class AtendimentoProcessoService
                     }
                     break;
                 case "razao_social":
-                    $sNome = $oCampo->resposta;
+                    if (isset($oCampo->resposta)) {
+                        $sNome = $oCampo->resposta;
+                    } elseif (isset($oResponsavel->resposta) && is_array($oResponsavel->resposta)) {
+                        if (isset($oResponsavel->resposta[0]->razao_social)) {
+                            $sNome = $oResponsavel->resposta[0]->razao_social;
+                            $sCpfCnpj = $oResponsavel->resposta[0]->cpf;
+                        } else {
+                            throw new \Exception("Resposta para o campo razao_social não encontrada!");
+                        }
+                    } else {
+                        throw new \Exception("Resposta para o campo razao_social não encontrada!");
+                    }
+
                     break;
             }
         }
@@ -534,30 +569,47 @@ class AtendimentoProcessoService
         $oInstituicao = (object)ProcessoEletronicoHelper::getDadosMunicipio("munic, uf");
 
         $oCgm->setUf(mb_strtoupper($oInstituicao->uf));
-        $oCgm->setMunicipio(mb_strtoupper($oInstituicao->munic));
+        $oCgm->setMunicipio(\DBString::upperCaseRemoveCaracteresEspeciais($oInstituicao->munic));
 
         foreach ($oEndereco->campos as $oCampo) {
             switch ($oCampo->nome) {
                 case "cep":
                 case "responsavel_cep":
-                    $oCgm->setCep(mb_strtoupper(trim(str_replace("-", "", $oCampo->resposta))));
+                    if (isset($oCampo->resposta)) {
+                        $oCgm->setCep(mb_strtoupper(trim(str_replace("-", "", $oCampo->resposta))));
+                    }
+
                     break;
                 case "bairro":
-                    $oCgm->setBairro(mb_strtoupper($oCampo->resposta->descricao));
+                    if (isset($oCampo->resposta->descricao)) {
+                        $oCgm->setBairro(mb_strtoupper($oCampo->resposta->descricao));
+                    }
+
                     break;
                 case "numero":
                 case "responsavel_numero":
-                    $oCgm->setNumero(mb_strtoupper($oCampo->resposta));
+                    if (isset($oCampo->resposta)) {
+                        $oCgm->setNumero(mb_strtoupper($oCampo->resposta));
+                    }
+
                     break;
                 case "responsavel_logradouro":
                     $oCgm->setLogradouro(mb_strtoupper($oCampo->resposta));
                     break;
                 case "logradouro":
-                    $oCgm->setLogradouro(mb_strtoupper($oCampo->resposta->descricao));
+                    if (isset($oCampo->resposta->descricao)) {
+                        $oCgm->setLogradouro(mb_strtoupper($oCampo->resposta->descricao));
+                    } else {
+                        $oCgm->setLogradouro(" ");
+                    }
+
                     break;
                 case "complemento":
                 case "responsavel_complemento":
-                    $oCgm->setComplemento(mb_strtoupper($oCampo->resposta));
+                    if (isset($oCampo->resposta)) {
+                        $oCgm->setComplemento(mb_strtoupper($oCampo->resposta));
+                    }
+
                     break;
                 case "responsavel_bairro":
                     $oCgm->setBairro(mb_strtoupper($oCampo->resposta));
@@ -566,5 +618,103 @@ class AtendimentoProcessoService
         }
 
         return $oCgm;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function alteraStatusAtendimento($solicitacaoOuvidoriaId, $idStatus)
+    {
+        $sql = "update ouvidoria.ouvidoriaatendimento set ov01_status = {$idStatus}
+where ouvidoria.ouvidoriaatendimento.ov01_sequencial = {$solicitacaoOuvidoriaId}";
+        $result = db_query($sql);
+
+        if (pg_affected_rows($result) == 0) {
+            throw new Exception("Falha ao atualizar status do atendimento!" . pg_last_error());
+        }
+    }
+
+    public function consultaAtendimentos($parametros)
+    {
+        $atendimento = "ov01_numero || '/' || ov01_anousu";
+
+        $query = DB::table('ouvidoriaatendimento')
+            ->select(
+                'db_depart.coddepto AS codigo_departamento_origem',
+                'db_depart.descrdepto AS descricao_departamento_origem',
+                'ouvidoria.ouvidoriaatendimento.ov01_sequencial AS sequencial',
+                DB::raw("CONCAT(ov01_numero, '/', ov01_anousu) AS atendimento"),
+                'ouvidoria.ouvidoriaatendimento.ov01_dataatend AS data',
+                DB::raw("CONCAT(protprocesso.p58_numero, '/', protprocesso.p58_ano) AS processo_numero_ano"),
+                'db_config.nomeinst',
+                'ouvidoriaatendimento_status.ov35_descricao AS status',
+                'ov02_nome AS solicitante',
+                'p51_descr AS tipo_processo_descricao',
+                'ov33_informacoesprocesso as metadados',
+                'cgm.z01_numcgm as cgm',
+                'db_config.codigo as codigo_instituicao'
+            )
+            ->leftJoin('processoouvidoria', 'ov09_ouvidoriaatendimento', '=', 'ov01_sequencial')
+            ->leftJoin('protprocesso', 'protprocesso.p58_codproc', '=', 'processoouvidoria.ov09_protprocesso')
+            ->join('db_config', 'db_config.codigo', '=', 'ouvidoria.ouvidoriaatendimento.ov01_instit')
+            ->join('ouvidoriaatendimento_status', 'ouvidoriaatendimento_status.ov35_id', '=', 'ov01_status')
+            ->leftJoin('ouvidoriaatendimentocidadao', 'ov10_ouvidoriaatendimento', '=', 'ov01_sequencial')
+            ->leftJoin('cidadao', function ($join) {
+                $join->on('cidadao.ov02_sequencial', '=', 'ouvidoria.ouvidoriaatendimentocidadao.ov10_cidadao')
+                    ->on('cidadao.ov02_seq', '=', 'ouvidoria.ouvidoriaatendimentocidadao.ov10_seq');
+            })
+            ->join('ouvidoriaatendimentoprocessoeletronico', 'ov33_ouvidoriaatendimento', '=', 'ov01_sequencial')
+            ->join('tipoproc', 'p51_codigo', '=', 'ouvidoria.ouvidoriaatendimento.ov01_tipoprocesso')
+            ->join('db_depart', 'coddepto', '=', 'ouvidoria.ouvidoriaatendimento.ov01_depart')
+            ->leftJoin('cgm', 'cgm.z01_cgccpf', '=', 'cidadao.ov02_cnpjcpf');
+
+        if (isset($parametros->cgm)) {
+            $query->where('cgm.z01_numcgm', '=', $parametros->cgm);
+        }
+
+        if (isset($parametros->atendimento)) {
+            $query->whereRaw("{$atendimento} ILIKE ?", ['%'.$parametros->atendimento.'%']);
+        }
+
+        if (isset($parametros->descricao)) {
+            $query->whereRaw("p51_descr ILIKE ?", ['%'.$parametros->descricao.'%']);
+        }
+
+        if (isset($parametros->dataDe) && isset($parametros->dataAte)) {
+            $query->whereBetween('ov01_dataatend', [$parametros->dataDe, $parametros->dataAte]);
+        }
+
+        if (isset($parametros->filtroDepartamento)) {
+            $query->where('ov01_depart', '=', db_getsession('DB_coddepto'));
+        }
+
+        if (isset($parametros->aprovarAtendimento)) {
+            $query->where('ov01_status', '=', 1);
+        }
+
+        if (isset($parametros->filtrosStatus)) {
+            $status = explode(', ', $parametros->filtrosStatus);
+            $query->whereIn('ouvidoriaatendimento_status.ov35_descricao', $status);
+        }
+
+        $query->orderBy('ouvidoria.ouvidoriaatendimento.ov01_sequencial', 'desc');
+
+        if (isset($parametros->perpage)) {
+            return [
+                'data' => $query->paginate($parametros->perpage),
+                'instituicao_atual' => $this->getIdInstituicao()
+            ];
+        }
+
+        return [
+            'data' => $query->paginate(15),
+            'instituicao_atual' => $this->getIdInstituicao()
+        ];
+    }
+
+    public function getIdInstituicao()
+    {
+        $defaultSession = DefaultSession::getInstance();
+        return $defaultSession->get(DefaultSession::DB_INSTIT);
     }
 }

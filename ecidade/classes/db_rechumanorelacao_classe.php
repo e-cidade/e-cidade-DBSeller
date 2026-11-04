@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_rechumanorelacao {
                  ed03_i_relacaotrabalho = int8 = Relação de Trabalho 
                  ";
    //funcao construtor da classe 
-   function cl_rechumanorelacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rechumanorelacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_rechumanorelacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed03_i_codigo = ($this->ed03_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed03_i_codigo"]:$this->ed03_i_codigo);
        $this->ed03_i_rechumanoativ = ($this->ed03_i_rechumanoativ == ""?@$GLOBALS["HTTP_POST_VARS"]["ed03_i_rechumanoativ"]:$this->ed03_i_rechumanoativ);
@@ -77,7 +77,7 @@ class cl_rechumanorelacao {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed03_i_codigo){ 
+   public function incluir ($ed03_i_codigo){ 
       $this->atualizacampos();
      if($this->ed03_i_rechumanoativ == null ){ 
        $this->erro_sql = " Campo Atividade não informado.";

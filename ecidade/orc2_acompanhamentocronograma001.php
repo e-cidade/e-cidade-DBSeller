@@ -89,16 +89,16 @@ if ($iTipoRelatorio == 1) {
               <table>
                 <tr>
                   <td nowrap>
-                    <?
+                    <?php
                     db_ancora("<b>Perspectiva:</b>", "js_pesquisao125_cronogramaperspectiva(true);", $db_opcao);
                     ?>
                   </td>
                   <td nowrap>
-                    <?
+                    <?php
                     $So124_sequencial = "Perspectiva";
                     db_input('o124_sequencial', 10, $Io124_sequencial, true, 'text', $db_opcao, " onchange='js_pesquisao125_cronogramaperspectiva(false);'");
                     ?>
-                    <?
+                    <?php
                     db_input('o124_descricao', 40, $Io124_descricao, true, 'text', 3, '');
                     db_input('codrel', 40, '', true, 'hidden', 3, '');
                     ?>

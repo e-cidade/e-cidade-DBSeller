@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -60,7 +60,7 @@ db_app::load("webseller.js");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<?
+<?php
    $db_opcao2=1;
    $la52_i_codigo="";
    if(isset($iRequiitem)){
@@ -97,23 +97,23 @@ db_app::load("webseller.js");
               </tr>
            </table>";
       echo" <script> document.form2.la52_t_motivo.tabIndex = $iIndex; </script> ";
-      $iIndex++;  
+      $iIndex++;
    }
 echo"</center>";
 ?>
 
 <center>
-<?if($db_opcao2==1){?>
+<?php if($db_opcao2==1){?>
   <input type="button" name="Salvar" id="Salvar" value="Salvar" tabindex="<?=$iIndex?>" onclick="js_incluir()" >
-<?}else{?>  
+<?}else{?>
   <input type="button" name="alterar" id="alterar" value="Alterar" tabindex="<?=$iIndex?>" onclick="js_alterar()" >
-<?}?>
+<?php }?>
 </center>
 </form>
 <script>
    F=document.form2
    sRPC = 'lab4_agendar.RPC.php';
-   
+
    function js_valida(){
       aVet=F.repositorios.value.split(',');
       for(x=0;x<aVet.length;x++){
@@ -121,22 +121,22 @@ echo"</center>";
          if(document.getElementById(aVet2[0]).value==''){
              alert('Digite todos os atributos!');
              return false
-         }   
+         }
       }
       return true
    }
 
    function js_controla_tecla_enter(obj,evt){
 		var evt = (evt) ? evt : (window.event) ? window.event : "";
-		
+
 		//13=enter, 40=seta cima, 38=seta baixo, 37=set esquerda, 39=seta direita
 		if(evt.keyCode==13){
 			if( evt.keyCode==13 || evt.keyCode==40 || evt.keyCode==39 ){
 				var iTabindex = obj.tabIndex + 1;
 			}else {
-				var iTabindex = obj.tabIndex - 1;			
+				var iTabindex = obj.tabIndex - 1;
 			}
-				
+
 			//Varre todos os campos que foram setados com tabindex
 			var aTabindex = new Array();
 			for(var iCount = 0; iCount <= document.form2.elements.length; iCount++){
@@ -160,11 +160,11 @@ echo"</center>";
 					}
 				}
 			}
-			
+
 			return false;
 		}
 	}
-   
+
    function js_incluir(){
        if(js_valida()){
     	   aVet=F.repositorios.value.split(',');
@@ -185,7 +185,7 @@ echo"</center>";
   	       oParam.exec     = 'digitacaoinc';
   	       oParam.iRequiitem  = <?=$iRequiitem?>;
     	   oParam.sAtributos = satributos;
-    	   oParam.sValores = sValores;  
+    	   oParam.sValores = sValores;
     	   oParam.sTipos = stipos;
     	   oParam.sMotivo = '';
   	       js_ajax( oParam, 'js_retornoIncluir' );
@@ -221,7 +221,7 @@ echo"</center>";
   	       oParam.iRequiitem  = <?=$iRequiitem?>;
     	   oParam.la52_i_codigo  = <?=($la52_i_codigo=="")?"''":$la52_i_codigo?>;
     	   oParam.sAtributos = satributos;
-    	   oParam.sValores = sValores;  
+    	   oParam.sValores = sValores;
     	   oParam.sTipos = stipos;
     	   oParam.sMotivo = F.la52_t_motivo.value;
   	       js_ajax( oParam, 'js_retornoAlterar' );
@@ -238,9 +238,9 @@ echo"</center>";
    }
    function js_ajax( objParam,jsRetorno ){
 		  var objAjax = new Ajax.Request(
-		                         sRPC, 
+		                         sRPC,
 		                         {
-		                          method    : 'post', 
+		                          method    : 'post',
 		                          parameters: 'json='+Object.toJSON(objParam),
 		                          onComplete: function(objAjax){
 		                                  var evlJS = jsRetorno+'( objAjax );';

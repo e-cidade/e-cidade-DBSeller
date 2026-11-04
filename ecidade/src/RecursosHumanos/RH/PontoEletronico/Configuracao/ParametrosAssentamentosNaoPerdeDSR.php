@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,7 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao;
 
-class ParametrosAssentamentosNaoPerdeDSR {
+class ParametrosAssentamentosNaoPerdeDSR
+{
 
     /**
      * @var \Instituicao
@@ -39,7 +40,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
      * @var \TipoAssentamento[]
      * @access private
      */
-    private $tiposAssentamento = array(); 
+    private $tiposAssentamento = array();
 
     /**
      * @param \Instituicao $instituicao
@@ -84,7 +85,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
     {
         $codigosTiposAssentamento = array();
 
-        if(!empty($this->tiposAssentamento)) {
+        if (!empty($this->tiposAssentamento)) {
             foreach ($this->tiposAssentamento as $tipoAssentamento) {
                 $codigosTiposAssentamento[] = (int)$tipoAssentamento->getSequencial();
             }

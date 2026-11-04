@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_atinota {
                  q14_nota = int8 = nota fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_atinota() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atinota"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_atinota {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q14_ativ = ($this->q14_ativ == ""?@$GLOBALS["HTTP_POST_VARS"]["q14_ativ"]:$this->q14_ativ);
        $this->q14_nota = ($this->q14_nota == ""?@$GLOBALS["HTTP_POST_VARS"]["q14_nota"]:$this->q14_nota);
@@ -75,7 +75,7 @@ class cl_atinota {
      }
    }
    // funcao para inclusao
-   function incluir ($q14_ativ,$q14_nota){ 
+   public function incluir ($q14_ativ,$q14_nota){ 
       $this->atualizacampos();
        $this->q14_ativ = $q14_ativ; 
        $this->q14_nota = $q14_nota; 
@@ -140,7 +140,7 @@ class cl_atinota {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q14_ativ=null,$q14_nota=null) { 
+   public function alterar ($q14_ativ=null,$q14_nota=null) { 
       $this->atualizacampos();
      $sql = " update atinota set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_atinota {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q14_ativ=null,$q14_nota=null,$dbwhere=null) { 
+   public function excluir ($q14_ativ=null,$q14_nota=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q14_ativ,$q14_nota));
      }else{ 
@@ -293,7 +293,7 @@ class cl_atinota {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

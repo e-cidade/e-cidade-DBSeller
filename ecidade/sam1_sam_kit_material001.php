@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ $oCriaabas = new cl_criaabas;
   </tr>
 </table>
 <form name="formaba">
-  <?
+  <?php
     if ($iOp == 1) {
       $sArquivo = 'sam1_sam_kit_material004.php';
     } elseif ($iOp == 2) {
@@ -73,7 +73,7 @@ $oCriaabas = new cl_criaabas;
   ?>
 </form>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

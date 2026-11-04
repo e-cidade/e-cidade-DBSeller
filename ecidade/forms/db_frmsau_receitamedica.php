@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -118,10 +118,11 @@ $oRotulo->label('m60_descr');
             <td nowrap title="<?=@$Ts115_c_cartaosus?>">
               <?=@$Ls115_c_cartaosus?>
             </td>
-            <td>
+            <td style="display: flex;">
               <?php
               db_input('s115_c_cartaosus', 15, $Is115_c_cartaosus, true, 'text', 3, '');
               ?>
+              <div style="padding-left: 135px; display: flex; align-items: center; height: 18px;" id="linhaDaIdadeCompleta"></div>
             </td>
           </tr>
           <tr>
@@ -1274,4 +1275,21 @@ jQuery(document).ready(jQuery => {
     });
   };
 });
+
+function retornaIdadePaciente(oRetorno, lErro) {
+    let idadeCompleta = oRetorno.oCgs.sIdadeCompleta.urlDecode();
+    $('linhaDaIdadeCompleta').innerHTML  = `<p style="display: inline-block">Idade: <span style="color: red;">${idadeCompleta}</span></p>`;
+}
+
+function existeCgsUnd() {
+    let cgsUnd = document.getElementById('z01_i_cgsund').value;
+
+    if (cgsUnd !== '') {
+        let diretrizes    = {'sExecucao': 'buscarDadosCgs','iCgs': cgsUnd}
+        let oAjaxRequest  = new AjaxRequest('sau4_cgs.RPC.php', diretrizes, retornaIdadePaciente);
+        oAjaxRequest.execute();
+    }
+}
+existeCgsUnd();
+
 </script>

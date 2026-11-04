@@ -32,15 +32,16 @@
  * @revision $Author: dbjeferson.belmiro $
  * @version $Revision: 1.7 $
  */
- abstract class CgmFactory {
+abstract class CgmFactory
+{
 
-  const
+    const
     FISICO = 1,
     JURIDICO = 2;
 
-  function __construct() {
-
-  }
+    function __construct()
+    {
+    }
 
   /**
    * Retorna a instancia da classe CgmFisico ou CgmJuridico apartir do parâmetros informado
@@ -51,103 +52,114 @@
    * @param  integer $iCgm
    * @return object
    */
-  public static function getInstance( $iTipo='', $iCgm='' ){
+    public static function getInstance($iTipo = '', $iCgm = '')
+    {
 
-  	require_once(modification('model/CgmBase.model.php'));
-  	require_once(modification('model/CgmFisico.model.php'));
-  	require_once(modification('model/CgmJuridico.model.php'));
+        require_once(modification('model/CgmBase.model.php'));
+        require_once(modification('model/CgmFisico.model.php'));
+        require_once(modification('model/CgmJuridico.model.php'));
 
-    if ( trim($iTipo) != '' ) {
+        if (trim($iTipo) != '') {
+            if ($iTipo == self::FISICO) {
+                return new CgmFisico();
+            } elseif ($iTipo == self::JURIDICO) {
+                return new CgmJuridico();
+            }
+        } elseif (trim($iCgm) != '') {
+            $oDaoCgm = db_utils::getDao("cgm");
+            $sSqlCgm = $oDaoCgm->sql_query_file($iCgm, "z01_cgccpf");
+            $rsCgm   = $oDaoCgm->sql_record($sSqlCgm);
 
-    	if ( $iTipo == self::FISICO ) {
-    		return new CgmFisico();
-    	} else if ( $iTipo == self::JURIDICO ) {
-   		  return new CgmJuridico();
-    	}
+            if ($oDaoCgm->numrows > 0) {
+                $sCgcCpf = db_utils::fieldsMemory($rsCgm, 0)->z01_cgccpf;
 
-    } else if ( trim($iCgm) != '' ) {
-
-      $oDaoCgm = db_utils::getDao("cgm");
-      $sSqlCgm = $oDaoCgm->sql_query_file($iCgm,"z01_cgccpf");
-      $rsCgm   = $oDaoCgm->sql_record($sSqlCgm);
-
-      if ($oDaoCgm->numrows > 0) {
-
-      	$sCgcCpf = db_utils::fieldsMemory($rsCgm,0)->z01_cgccpf;
-
-      	if ( strlen(trim($sCgcCpf)) == '14' ) {
-      		return new CgmJuridico($iCgm);
-      	} else if ( strlen(trim($sCgcCpf)) == '11' ) {
-      		return new CgmFisico($iCgm);
-      	} else {
-      		return new CgmFisico($iCgm);
-      	}
-      }
+                if (strlen(trim($sCgcCpf)) == '14') {
+                    return new CgmJuridico($iCgm);
+                } elseif (strlen(trim($sCgcCpf)) == '11') {
+                    return new CgmFisico($iCgm);
+                } else {
+                    return new CgmFisico($iCgm);
+                }
+            }
+        }
     }
-  }
 
    /**
     * @param string $iCgm
     * @return CgmBase|CgmFisico|CgmJuridico
     * @throws Exception
     */
-   public static function getInstanceByCgm ( $iCgm='' ){
+    public static function getInstanceByCgm($iCgm = '')
+    {
 
- 	  if ( trim($iCgm) == '' ) {
- 		  throw new Exception('CGM não informado!');
- 	  }
+        if (trim($iCgm) == '') {
+            throw new Exception('CGM não informado!');
+        }
 
- 	  try {
-	 	  return self::getInstance('',$iCgm);
-	 	} catch (Exception $eException){
-	    throw new Exception($eException->getMessage());
-	 	}
-  }
+        try {
+            return self::getInstance('', $iCgm);
+        } catch (Exception $eException) {
+            throw new Exception($eException->getMessage());
+        }
+    }
 
    /**
     * @param string $iTipo
     * @return CgmBase|CgmFisico|CgmJuridico
     * @throws Exception
     */
-   public static function getInstanceByType ( $iTipo='' ){
+    public static function getInstanceByType($iTipo = '')
+    {
 
-    if ( trim($iTipo) == '' ) {
-      throw new Exception('Tipo não informado!');
+        if (trim($iTipo) == '') {
+            throw new Exception('Tipo não informado!');
+        }
+
+        try {
+            return self::getInstance($iTipo, '');
+        } catch (Exception $eException) {
+            throw new Exception($eException->getMessage());
+        }
     }
 
-    try {
-      return self::getInstance($iTipo,'');
-    } catch (Exception $eException){
-      throw new Exception($eException->getMessage());
+    public static function getCgmByCnpjCpf($sCnpjCpf)
+    {
+
+        if (empty($sCnpjCpf)) {
+            return null;
+        }
+
+        return self::getInstanceByCnpjCpf($sCnpjCpf);
     }
 
-  }
+    public static function getInstanceByCnpjCpf($sCnpjCpf)
+    {
 
-  public static function  getCgmByCnpjCpf($sCnpjCpf) {
-      
-      if (empty($sCnpjCpf)) {
-          return null;
-      }
+        $oDaoCgm = db_utils::getDao("cgm");
+        $sWhere = "trim(z01_cgccpf) = '{$sCnpjCpf}' and z01_cgccpf <> '00000000000' and z01_cgccpf <> '00000000000000'";
+        $sQueryCnpjCpf   = $oDaoCgm->sql_query_file(null, 'z01_numcgm', null, $sWhere);
+        $rsQueryCnpjCpf  = $oDaoCgm->sql_record($sQueryCnpjCpf);
 
-      return self::getInstanceByCnpjCpf($sCnpjCpf);
-  }
-
-  public static function  getInstanceByCnpjCpf($sCnpjCpf) {
-
-    $oDaoCgm = db_utils::getDao("cgm");
-    $sWhere  = "trim(z01_cgccpf) = '".$sCnpjCpf."' and z01_cgccpf <> '00000000000' and z01_cgccpf <> '00000000000000'";
-    $sQueryCnpjCpf   = $oDaoCgm->sql_query_file(null, 'z01_numcgm', null, $sWhere);
-    $rsQueryCnpjCpf  = $oDaoCgm->sql_record($sQueryCnpjCpf);
-
-    if ($rsQueryCnpjCpf !== false) {
-
-      return self::getInstanceByCgm(db_utils::fieldsMemory($rsQueryCnpjCpf,0)->z01_numcgm);
-    } else {
-
-    	return false;
+        if ($rsQueryCnpjCpf !== false) {
+            return self::getInstanceByCgm(db_utils::fieldsMemory($rsQueryCnpjCpf, 0)->z01_numcgm);
+        } else {
+            return false;
+        }
     }
 
-  }
+    /**
+     * @throws Exception
+     */
+    public static function getInstanceByNumber($cpfCnpj)
+    {
+        if (\DBString::isCPF($cpfCnpj)) {
+            return \CgmFactory::getInstanceByType(\CgmFactory::FISICO);
+        }
+
+        if (\DBString::isCNPJ($cpfCnpj)) {
+            return \CgmFactory::getInstanceByType(\CgmFactory::JURIDICO);
+        }
+
+        throw new Exception("Número de CPF/CNOJ inválido.");
+    }
 }
-
-?>

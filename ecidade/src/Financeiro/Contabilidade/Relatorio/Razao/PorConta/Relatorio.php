@@ -17,6 +17,7 @@ abstract class Relatorio
     private $saldoPorDia;
     private $relatorio;
     private $contasSemMovimento;
+    private $recursos;
 
     /**
      * @return mixed
@@ -208,6 +209,23 @@ abstract class Relatorio
         $this->contasSemMovimento = $contasSemMovimento;
     }
 
+    /**
+     * @return array
+     */
+    public function getRecursos()
+    {
+        return $this->recursos;
+    }
+
+    /**
+     * @param mixed $recursos
+     */
+    public function setRecursos($recursos)
+    {
+        $this->recursos = $recursos;
+        return $this;
+    }
+
 
     public function __construct()
     {
@@ -262,7 +280,6 @@ abstract class Relatorio
             inner join db_config on codigo = c61_instit
             WHERE conplanoreduz.c61_anousu = {$this->getAnoUsu()} AND {$where}  ORDER BY conplano.c60_estrut
         ";
-
         $rs = db_query($sql);
         
         return pg_fetch_all($rs);
@@ -283,6 +300,14 @@ abstract class Relatorio
                 $estruturais[] = " conplano.c60_estrut like '".trim($estrutural)."%' ";
             }
             $where .= " AND (" . implode(" OR ", $estruturais) . ")";
+        }
+
+        if (!empty($this->getRecursos())) {
+            $where .= "AND EXISTS ( 
+                                    SELECT 1 FROM  conlancamrecurso 
+                                    WHERE conplanoreduz.c61_reduz = conlancamrecurso.c130_conta
+                                        AND conlancamrecurso.c130_conlancam = c69_codlan
+                                        AND conlancamrecurso.c130_orctiporec in ({$this->getRecursos()}))";
         }
 
         if (!empty($this->getDocumentos())) {

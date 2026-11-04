@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clbotipgrausat->rotulo->label();
        <?=@$Lbo02__codgrausat?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo02__codgrausat',4,$Ibo02__codgrausat,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('bo02__codgrausat',4,$Ibo02__codgrausat,true,'text',3,"")
        <?=@$Lbo02_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo02_descr',20,$Ibo02_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_botipgrausat.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

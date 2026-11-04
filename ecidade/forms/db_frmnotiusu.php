@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tk52_notifica?>">
-       <?
+       <?php
        db_ancora(@$Lk52_notifica,"js_pesquisak52_notifica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k52_notifica',8,$Ik52_notifica,true,'text',$db_opcao," onchange='js_pesquisak52_notifica(false);'")
 ?>
-       <?
+       <?php
 db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk52_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lk52_id_usuario,"js_pesquisak52_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k52_id_usuario',5,$Ik52_id_usuario,true,'text',$db_opcao," onchange='js_pesquisak52_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('nome',20,$Inome,true,'text',3,'')
        <?=@$Lk52_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k52_data',@$k52_data_dia,@$k52_data_mes,@$k52_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_inputdata('k52_data',@$k52_data_dia,@$k52_data_mes,@$k52_data_ano,true,'text'
        <?=@$Lk52_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k52_hora',5,$Ik52_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -145,7 +145,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -40,11 +40,12 @@ class RecursoService
     public function salvar($dados)
     {
         $exercicio = $dados['DB_anousu'];
+        $dados['siconfi'] = "{$dados['codificacao']}{$dados['recursoSiconfi']}";
         $valorEstrutural = $this->getValorEstrutural($exercicio, $dados['recursoSiconfi'], $dados['descricao']);
 
         $recurso = $this->buildModel($dados);
         $recurso->setDbEstruturaValor($valorEstrutural);
-        $this->validarRecurso($recurso);
+        $this->validarRecurso($recurso, $dados['siconfi'], $exercicio);
 
         $recurso = $this->repository->persist($recurso);
 
@@ -105,6 +106,8 @@ class RecursoService
         $fonteRecurso->setDescricao($descricao);
         $fonteRecurso->setTipoDetalhamento(str_pad($recurso->o15_loatipo, 2, '0', STR_PAD_LEFT));
         $repository->salvar($fonteRecurso);
+
+        $this->replicaAberturaExercicio($repository, $fonteRecurso);
     }
 
     /**
@@ -115,27 +118,40 @@ class RecursoService
     protected function buildModel($dados)
     {
         if (!empty($dados['codigo'])) {
-            $recurso = Recurso::find($dados['codigo']);
-            if ($recurso->o15_complemento != $dados['complemento']) {
-                throw new Exception('Não é permitido alterar o complemento.', 406);
+            $recurso = Recurso::query()->recursoJaFoiUsado($dados['codigo'])->first();
+
+            if (!is_null($recurso)) {
+                $fonte = $recurso->fonteRecurso($dados['DB_anousu']);
+
+                if ($fonte->codigo_siconfi != $dados['siconfi'] ||
+                    $fonte->gestao != $dados['recursoGestao'] ||
+                    $recurso->o15_complemento != $dados['complemento'] ||
+                    $recurso->o15_recurso != $dados['subRecurso']) {
+                    $msg = 'Esse recurso já foi utilizado. Você não pode alterá-lo. ';
+                    $msg .= 'Caso esse recurso já não atenda a sua necessidade, você deve inativá-lo e criar um novo.';
+                    throw new Exception($msg);
+                }
             }
+
+            $recurso = Recurso::find($dados['codigo']);
         } else {
             $recurso = new Recurso();
-            $recurso->o15_descr = substr($dados['descricao'], 0, 100);
-            $recurso->o15_codigo = $dados['codigo'];
-            $recurso->o15_codtri = $dados['recursoGestao'];
-            $recurso->o15_tipo = $dados['tipoRecurso'];
-            $recurso->o15_codigosiconfi = "{$dados['codificacao']}{$dados['recursoSiconfi']}";
-            $recurso->o15_loaidentificadoruso = null;
-            $recurso->o15_loatipo = null;
-            $recurso->o15_loagrupo = null;
-            $recurso->o15_loaespecificacao = null;
-            $recurso->setComplemento(Complemento::find($dados['complemento']));
-            $recurso->o15_recurso = $dados['recursoGestao'];
         }
 
+        $recurso->o15_descr = substr($dados['descricao'], 0, 100);
+        $recurso->o15_codigo = $dados['codigo'];
+        $recurso->o15_codtri = $dados['recursoGestao'];
+        $recurso->o15_tipo = $dados['tipoRecurso'];
+        $recurso->o15_codigosiconfi = $dados['siconfi'];
+        $recurso->o15_loaidentificadoruso = null;
+        $recurso->o15_loatipo = null;
+        $recurso->o15_loagrupo = null;
+        $recurso->o15_loaespecificacao = null;
+        $recurso->o15_recurso = $dados['subRecurso'];
         $data = !empty($dados['dataLimite']) ? $dados['dataLimite'] : null;
         $recurso->o15_datalimite = $data;
+        $recurso->setComplemento(Complemento::find($dados['complemento']));
+        $recurso->o15_descr = substr($dados['descricao'], 0, 100);
         $recurso->o15_finali = $dados['finalidade'];
 
         return $recurso;
@@ -254,21 +270,26 @@ SQL;
 
     /**
      * @param Recurso $recurso
+     * @param $recursoSiconfi
+     * @param $exercicio
      * @return bool
      * @throws Exception
      */
-    protected function validarRecurso(Recurso $recurso)
+    protected function validarRecurso(Recurso $recurso, $recursoSiconfi, $exercicio)
     {
-        $recursoUtilizado = $this->recursoUtilizado($recurso);
-        if ($recursoUtilizado) {
-            /**
-             * @todo verificar como considerar se o recu
-             *
-             */
+        $first = FonteRecursoModel::where('codigo_siconfi', $recursoSiconfi)
+            ->where('exercicio', $exercicio)
+            ->recursoExiste($recurso)
+            ->first();
+
+        if (!empty($first)) {
+            throw new Exception(sprintf(
+                'Já existe o recurso "%s" cadastrado no sistema com o sub recurso "%s" e complemento "%s".',
+                $recursoSiconfi,
+                $first->recurso->getRecurso(),
+                $first->recurso->getComplemento()->o200_sequencial
+            ), 406);
         }
-
-        $this->recursoJaCadastrado($recurso);
-
         return true;
     }
 
@@ -285,7 +306,7 @@ SQL;
         $first = $recurso->recursoExiste($recurso)->first();
         if (!empty($first)) {
             throw new Exception(sprintf(
-                "Já existe um recurso cadastrado no sistema com código %s e complemento %s.",
+                "Já existe um recurso cadastrado no sistema com o sub recurso %s e complemento %s.",
                 $first->getRecurso(),
                 $first->getComplemento()->o200_sequencial
             ), 406);
@@ -340,5 +361,44 @@ SQL;
         });
 
         return $recursosUtilizados;
+    }
+
+    /**
+     * @param FonteRecursoSiconfiRepository $repository
+     * @param FonteRecurso $fonteRecurso
+     * @return true
+     * @throws Exception
+     */
+    private function replicaAberturaExercicio(FonteRecursoSiconfiRepository $repository, FonteRecurso $fonteRecurso)
+    {
+        $abertura = DB::table('conaberturaexe')
+            ->select(DB::raw('max(c91_anousudestino) as exercicio'))
+            ->where('c91_anousuorigem', $fonteRecurso->getExercicio())
+            ->first();
+        if (is_null($abertura->exercicio)) {
+            return true;
+        }
+
+        $exercicios = range($fonteRecurso->getExercicio() + 1, $abertura->exercicio);
+        foreach ($exercicios as $exercicio) {
+            $fonte = $repository->scopeExercicio($exercicio)
+                ->scopeCodigoRecurso($fonteRecurso->getOrctiporecId())
+                ->first();
+            if (is_null($fonte)) {
+                $fonteRecurso->setId(null);
+                $fonteRecurso->setExercicio($exercicio);
+                $fonte = $fonteRecurso;
+            } else {
+                $fonte->setClassificacaofrId($fonteRecurso->getClassificacaofrId());
+                $fonte->setCodigoSiconfi($fonteRecurso->getCodigoSiconfi());
+                $fonte->setGestao($fonteRecurso->getGestao());
+                $fonte->setDescricao($fonteRecurso->getDescricao());
+                $fonte->setTipoDetalhamento($fonteRecurso->getTipoDetalhamento());
+            }
+
+            $repository->salvar($fonte);
+        }
+
+        return  true;
     }
 }

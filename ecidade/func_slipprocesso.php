@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -28,7 +28,7 @@ $clslipprocesso->rotulo->label("k145_sequencial");
               <?=$Lk145_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k145_sequencial",10,$Ik145_sequencial,true,"text",4,"","chave_k145_sequencial");
 		       ?>
             </td>
@@ -38,7 +38,7 @@ $clslipprocesso->rotulo->label("k145_sequencial");
               <?=$Lk145_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k145_sequencial",10,$Ik145_sequencial,true,"text",4,"","chave_k145_sequencial");
 		       ?>
             </td>
@@ -56,7 +56,7 @@ $clslipprocesso->rotulo->label("k145_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_slipprocesso.php")==true){
@@ -96,12 +96,12 @@ $clslipprocesso->rotulo->label("k145_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

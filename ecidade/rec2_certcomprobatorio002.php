@@ -51,9 +51,9 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
 
   $oDaoRhPessoalmov = db_utils::getDao('rhpessoalmov');
 
-  $sSqlRhPessoalmov = $oDaoRhPessoalmov->sql_getDadosServidoresTempoServico( $sCampos, 
-    db_anofolha(), 
-    db_mesfolha(), 
+  $sSqlRhPessoalmov = $oDaoRhPessoalmov->sql_getDadosServidoresTempoServico( $sCampos,
+    db_anofolha(),
+    db_mesfolha(),
     $regist
   );
 
@@ -63,7 +63,7 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
 
     $sErro = _M(MENSAGEM . 'erro_sql_pessoal');
     db_redireciona('db_erros.php?fechar=true&db_erro='.$sErro);
-    exit; 
+    exit;
   }
 
   if (pg_numrows($rsRhPessoalmov) == 0) {
@@ -93,7 +93,7 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
     exit;
   }
 
-  $oDadosEmissor = db_utils::fieldsMemory($rsEmissor, 0); 
+  $oDadosEmissor = db_utils::fieldsMemory($rsEmissor, 0);
 
   $emissor_regist = trim($oDadosEmissor->rh01_regist);
   $emissor_nome   = trim($oDadosEmissor->z01_nome);
@@ -112,7 +112,7 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
   global $depend;
   if( db_selectmax("depend","select rh31_regist as r03_regist,
     rh31_gparen as r03_gparen,
-    rh31_nome   as r03_nome 
+    rh31_nome   as r03_nome
     from rhdepend
     where rh31_regist = $regist ")){
 
@@ -257,7 +257,7 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
   }
   $pdf = imprime_assenta_fastamento(2,$oDadosPessoal->r01_regist,$data_cert,$pdf, $oDadosPessoal);
 
-  //echo "<BR> passou aqui !!!";   
+  //echo "<BR> passou aqui !!!";
   //exit;
   // impressao das vantagens;
   $desc_vant = "a";
@@ -321,16 +321,16 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
   }
   $pdf = imp_gradeefetividade(2,$regist,$data_cert,null,true,true,true,null,null,$pdf);
   $sqlparag = "select *
-    from db_documento 
+    from db_documento
     inner join db_docparag on db03_docum = db04_docum
     inner join db_tipodoc on db08_codigo  = db03_tipodoc
-    inner join db_paragrafo on db04_idparag = db02_idparag 
+    inner join db_paragrafo on db04_idparag = db02_idparag
     where db03_tipodoc = 11 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
   db_sel_instit();
   $resparag = db_query($sqlparag);
   if ( pg_numrows($resparag) == 0 ) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento 11 (Certidão de Tempo de Serviço!)');
-    exit; 
+    exit;
   }
   $numrows = pg_numrows($resparag);
   $texto = '';
@@ -340,19 +340,19 @@ function certidao_comprobatorio($regist,$data_cert,$numcert,$emissor){
     $texto .= $db02_texto;
   }
   $data= date("Y-m-d",db_getsession("DB_datausu"));
-  $data=split('-',$data);
+  $data= explode('-',$data);
   $dia=$data[2];
   $mes=$data[1];
   $ano=$data[0];
   $mes=db_mes($mes);
   $data=" $dia de $mes de $ano ";
   $pdf->setfont('arial','',8);
-  $pdf->ln(3);												
+  $pdf->ln(3);
   $pdf->multicell(0,$alt,db_geratexto($texto),0,"J",0,40);
   $pdf->multicell(0,$alt,ucfirst(strtolower($munic)).', '.$data.'.',0,"J",0,40);
-  $pdf->ln(8);												
+  $pdf->ln(8);
   $pdf->multicell(0,$alt,$emissor_nome.'                  ',0,"R",0,40);
-  $pdf->ln(5);												
+  $pdf->ln(5);
   $pdf->multicell(0,$alt,'Visado por : ',0,"L",0);
 
   $sNomeArquivo = 'Certidao_Tempo_Servico.pdf';
@@ -513,7 +513,7 @@ function imprime_vantagem($desc_vant,$data_cert,$regist,$cab_vant,$arq_work,$pdf
     // verifica se funcionario esta enquadrado em alguma lei, de acordo com *****;
     // seu regime e funcao.;
     global $vinculos;
-    if( db_selectmax("vinculos","select * from vinculos where h11_tipo = " . db_sqlformat($tipo_vantagem) . " and h11_regime = " . db_sqlformat(db_str($pessoal[$Ipessoal]["r01_regime"],1))." and h11_funcao = " . db_sqlformat(db_str($pessoal[$Ipessoal]["r01_funcao"],5))) 
+    if( db_selectmax("vinculos","select * from vinculos where h11_tipo = " . db_sqlformat($tipo_vantagem) . " and h11_regime = " . db_sqlformat(db_str($pessoal[$Ipessoal]["r01_regime"],1))." and h11_funcao = " . db_sqlformat(db_str($pessoal[$Ipessoal]["r01_funcao"],5)))
       || db_selectmax("vinculos","select * from vinculos where h11_tipo = " . db_sqlformat($tipo_vantagem) . " and h11_regime = " . db_sqlformat(db_str($pessoal[$Ipessoal]["r01_regime"],1))." and h11_funcao = '99999'")){
 
         if( busca_lei($vinculos[0]["h11_lei1"],$tipo_vantagem)){
@@ -674,7 +674,7 @@ function imprime_vantagem($desc_vant,$data_cert,$regist,$cab_vant,$arq_work,$pdf
                 $Iassenta++;
               }
             }
-            global $work; 
+            global $work;
             db_selectmax("work","select * from " .$arq_work);
 
             enquadra_na_lei();
@@ -703,7 +703,6 @@ function imprime_vantagem($desc_vant,$data_cert,$regist,$cab_vant,$arq_work,$pdf
 
   $passou = false;
 
-  $max_conta = count();
   $Iwork = 0;
   for($Iwork=0;$Iwork< count($work_);$Iwork++){
 
@@ -745,8 +744,8 @@ function imprime_vantagem($desc_vant,$data_cert,$regist,$cab_vant,$arq_work,$pdf
       $pdf->setfont('arial','b',8);
       $pdf->ln($alt*8);
       $cab_vant = false;
-    }   
-    $pdf->cell(0,$alt,"Relacao De Vantagens",1,0,"C",1);; 
+    }
+    $pdf->cell(0,$alt,"Relacao De Vantagens",1,0,"C",1);;
     $pdf->ln($alt*2);
     $pdf->cell(3,$alt,"Vantagem",0,0,"C",1);
     $pdf->cell(25,$alt,"Anos",0,0,"C",1);
@@ -1126,29 +1125,30 @@ function enquadra_na_lei(){
           $mar1 = array();
           $mar2 = array();
 
-          $mar1[01] = "wv_regist";
-          $mar1[02] = "wv_lotac";
-          $mar1[03] = "wv_dtbase";
-          $mar1[04] = "wv_dtvant";
-          $mar1[05] = "wv_anos";
-          $mar1[06] = "wv_perc";
-          $mar1[07] = "wv_tipo";
-          $mar1[08] = "wv_protel";
-          $mar1[09] = "wv_inf";
-          $mar1[10] = "wv_lei";
-          $mar1[11] = "wv_nome";
+          $mar1[0] = "wv_regist";
+          $mar1[1] = "wv_lotac";
+          $mar1[2] = "wv_dtbase";
+          $mar1[3] = "wv_dtvant";
+          $mar1[4] = "wv_anos";
+          $mar1[5] = "wv_perc";
+          $mar1[6] = "wv_tipo";
+          $mar1[7] = "wv_protel";
 
-          $mar2[01] = $oDadosPessoal->r01_regist;
-          $mar2[02] = $oDadosPessoal->r01_lotac ;
-          $mar2[03] = $data_admissao;
-          $mar2[04] = $data_consessao;
-          $mar2[05] = $anos_perc;
-          $mar2[06] = $percentual;
-          $mar2[07] = $tipo_vantagem;
-          $mar2[08] = $dias_protelar;
-          $mar2[09] = $inform;
-          $mar2[10] = bb_space(6);
-          $mar2[11] = $cgm[0]["z01_nome"];
+          $mar1[8] = "wv_inf";
+          $mar1[9] = "wv_lei";
+          $mar1[10] = "wv_nome";
+
+          $mar2[0] = $oDadosPessoal->r01_regist;
+          $mar2[1] = $oDadosPessoal->r01_lotac ;
+          $mar2[2] = $data_admissao;
+          $mar2[3] = $data_consessao;
+          $mar2[4] = $anos_perc;
+          $mar2[5] = $percentual;
+          $mar2[6] = $tipo_vantagem;
+          $mar2[7] = $dias_protelar;
+          $mar2[8] = $inform;
+          $mar2[9] = bb_space(6);
+          $mar2[10] = $cgm[0]["z01_nome"];
 
           if( $grava_codigo_lei || db_empty($registro)){
             $mar2[10] = $leis[0]["h08_numero"];
@@ -1186,7 +1186,7 @@ function busca_lei($lei,$tipo_vantagem){
     $retornar = false;
   }
   return $retornar;
-}			
+}
 
 include(modification("fpdf151/pdf1.php"));
 include(modification("libs/db_libpessoal.php"));

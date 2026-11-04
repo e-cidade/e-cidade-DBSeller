@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -42,9 +42,9 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
     db_query("update db_sysarqcamp set codsequencia = 0 where codsequencia = $codsequencia") or die("Erro(15) atualizando db_sysarqcamp");
     db_query("delete from db_syssequencia where codsequencia = $codsequencia") or die("Erro(16) excluindo em db_syssequencia");
     db_query("END");
-    db_redireciona();	
+    db_redireciona();
   } else {
-    $aux = split("#",$campos);
+    $aux =explode("#",$campos);
     $codcampo = $aux[0];
     $nomecampo = $aux[2];
     if($nomesequencia=="")
@@ -64,7 +64,7 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
                                                   $minvalueseq,
                                                   $maxvalueseq,
                                                   $startseq,
-                                                  $cacheseq)") or die("Erro(18) inserindo em db_syssequencia");    
+                                                  $cacheseq)") or die("Erro(18) inserindo em db_syssequencia");
       } else if($codsequencia != "0") {//sequencia existe, dá update
         db_query("update db_syssequencia set nomesequencia = '$nomesequencia',
                                           incrseq = $incrseq,
@@ -77,18 +77,18 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
       db_query("ROLLBACK");
       db_erro("Erro na variável codsequencia");
     }
-    
-    
-    
+
+
+
     db_query("update db_sysarqcamp set codsequencia = $codsequencia
              where codarq = $dbh_tabela and codcam = $codcampo") or die("Erro(38) alterando db_sysarqcamp");
-    
-    
-    
+
+
+
     db_query("END");
     db_redireciona();
   }
-} 
+}
 ?>
 
 <html>
@@ -100,7 +100,7 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
 <script>
 function js_submeter() {
   var F = document.form1;
-  
+
   if(F.dbh_tabela.value == '') {
     alert("Clique em tabela para escolher uma");
 	F.db_tabela.focus();
@@ -115,27 +115,27 @@ function js_submeter() {
     alert("Campo 'Valor Mínimo' não pode ser vazio");
 	F.minvalueseq.focus();
 	return false;
-  }  
+  }
   if(F.maxvalueseq.value == '') {
     alert("Campo 'Valor Máximo' não pode ser vazio");
 	F.maxvalueseq.focus();
 	return false;
-  }  
+  }
   if(F.startseq.value == '') {
     alert("Campo 'Iniciar Com' não pode ser vazio");
 	F.startseq.focus();
 	return false;
-  }    
+  }
   if(F.cacheseq.value == '') {
     alert("Campo 'Cache' não pode ser vazio");
 	F.cacheseq.focus();
 	return false;
-  }    
+  }
   return true;
 }
 function js_iniciar() {
   var F = document.form1;
-  
+
   if(F.campos.selectedIndex == -1)
     F.atualizar.value = "Excluir Sequência";
   F.atualizar.disabled = false;
@@ -166,7 +166,7 @@ input {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_iniciar();js_trocacordeselect();">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -174,28 +174,28 @@ input {
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr> 
-    <td height="430" align="center" valign="middle" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
 	<form name="form1" method="post" onSubmit="return js_submeter()">
         <table width="55%" border="0" cellspacing="0" cellpadding="5">
-          <tr> 
-            <td width="90%"> 
-              <?
+          <tr>
+            <td width="90%">
+              <?php
 			  db_label("db_sysarquivo","tabela");
 			  ?>
-              <? 
+              <?php
 			    if(isset($HTTP_POST_VARS["dbh_tabela"])) {
 				  $result = db_query("select codarq,nomearq from db_sysarquivo where codarq = $dbh_tabela");
-				  db_fieldsmemory($result,0);			    
+				  db_fieldsmemory($result,0);
 			    }
 			    echo db_text("tabela",40,40,@trim($nomearq),@$codarq,3)
 			  ?>
             </td>
 	  <td width="90%"></td>
-          </tr> 
-          <tr> 
+          </tr>
+          <tr>
             <td> <strong>Campos:</strong><br> <select name="campos" id="campos" onChange="document.form1.atualizar.value = 'Atualizar'" size="17" style="width:250px">
-                <?
+                <?php
                 if(isset($HTTP_POST_VARS["dbh_tabela"])) {
                   $result = db_query("select c.codcam,c.nomecam,ac.codsequencia from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam  where ac.codarq = $dbh_tabela");
                   $numrows = pg_numrows($result);
@@ -221,18 +221,18 @@ input {
                   $minvalueseq = "1";
                   $maxvalueseq = "9223372036854775807";
                   $startseq    = "1";
-                  $cacheseq    = "1";  
+                  $cacheseq    = "1";
                   $nomesequencia = "";
                 } else {
                   $result = db_query("select incrseq,minvalueseq,maxvalueseq,startseq,cacheseq,nomesequencia from db_syssequencia where codsequencia = $codsequencia");
                   db_fieldsmemory($result,0);
                 }
        		     ?>
-              </select> <input type="hidden" name="codsequencia" value="<?=@$codsequencia?>"> 
+              </select> <input type="hidden" name="codsequencia" value="<?=@$codsequencia?>">
             </td>
             <td valign="top">
 	       <table width="100%" border="0" cellspacing="0" cellpadding="3">
-                <tr> 
+                <tr>
                   <td nowrap>
                     <strong>Sequencia:</strong>
                   </td>
@@ -242,40 +242,40 @@ input {
                 </tr>
 
 
-                <tr> 
+                <tr>
                   <td width="53%" nowrap><strong>Incrementar com:</strong></td>
                   <td width="47%" nowrap><input name="incrseq" type="text" id="incrseq" value="<?=@$incrseq?>" size="28" maxlength="20"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td nowrap><strong>Valor M&iacute;nimo:</strong></td>
                   <td nowrap><input name="minvalueseq" type="text" id="minvalueseq" value="<?=@$minvalueseq?>" size="28" maxlength="20"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td nowrap><strong>Valor M&aacute;ximo:</strong></td>
                   <td nowrap><input name="maxvalueseq" type="text" id="maxvalueseq" value="<?=@$maxvalueseq?>" size="28" maxlength="20"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td nowrap><strong>Iniciar Com:</strong></td>
                   <td nowrap><input name="startseq" type="text" id="startseq" value="<?=@$startseq?>" size="28" maxlength="20"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td nowrap><strong>Cache:</strong></td>
                   <td nowrap><input name="cacheseq" type="text" id="cacheseq" value="<?=@$cacheseq?>" size="28" maxlength="20"></td>
                 </tr>
 
-		
+
               </table></td>
           </tr>
-          <tr> 
-            <td colspan="2" nowrap><input name="atualizar" onClick="return confirm('Atualizar sequencia?')" accesskey="a" type="submit" value="Atualizar" disabled> 
+          <tr>
+            <td colspan="2" nowrap><input name="atualizar" onClick="return confirm('Atualizar sequencia?')" accesskey="a" type="submit" value="Atualizar" disabled>
               &nbsp;&nbsp; <input type="button" name="Button" onClick="js_retsel()" value="Retirar Sele&ccedil;&atilde;o de Campos"></td>
           </tr>
         </table>
-      </form> 
+      </form>
     </td>
   </tr>
 </table>
-      <?
+      <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

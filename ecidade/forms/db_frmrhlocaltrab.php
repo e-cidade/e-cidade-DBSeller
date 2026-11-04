@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,13 +40,13 @@ $clrotulo->label("cc08_descricao");
       <?=@$Lrh55_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh55_codigo',5,$Irh55_codigo,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
-    <?
+    <?php
     $retorno_cfpess = db_sel_cfpess(db_anofolha(),db_mesfolha(),"r11_localtrab");
     if(isset($r11_localtrab) && trim($r11_localtrab) != ""){
       $cldb_estrut->autocompletar = true;
@@ -72,19 +72,19 @@ $clrotulo->label("cc08_descricao");
       <?=@$Lrh55_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh55_descr',40,$Irh55_descr,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh86_criteriorateio?>">
-       <?
+       <?php
        db_ancora(@$Lrh86_criteriorateio,"js_adicionaCentroCusto('');",$db_opcao); 
        ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh86_criteriorateio',10,$Irh86_criteriorateio,true,'text',$db_opcao," onchange='js_adicionaCentroCusto(this.value);'");
       db_input('cc08_descricao',30,$Icc08_descricao,true,'text',3,'')
        ?>
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhlocaltrab.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -166,7 +166,7 @@ function js_validaCadastro() {
   }
   
 }
-<?
+<?php
   if ($db_opcao == 1 || $db_opcao == 2) {
     echo "\$('db_opcao').onclick = js_validaCadastro;\n";    
   }

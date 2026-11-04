@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clconfigdbprefarretipo->rotulo->label("w17_arretipo");
               <?=$Lw17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("w17_sequencial",10,$Iw17_sequencial,true,"text",4,"","chave_w17_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconfigdbprefarretipo->rotulo->label("w17_arretipo");
               <?=$Lw17_arretipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("w17_arretipo",10,$Iw17_arretipo,true,"text",4,"","chave_w17_arretipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconfigdbprefarretipo->rotulo->label("w17_arretipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_configdbprefarretipo.php")==true){
@@ -122,12 +122,12 @@ $clconfigdbprefarretipo->rotulo->label("w17_arretipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

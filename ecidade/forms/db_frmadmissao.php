@@ -29,6 +29,7 @@
 $cladmissao->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
+$clrotulo->label("rh01_matriculaanterior");
 $clrotulo->label("rh37_funcao");
 $clrotulo->label("rh37_descr");
 $clrotulo->label("h04_descr");
@@ -46,6 +47,10 @@ $clrotulo->label("h25_portariaexoneracao");
 $clrotulo->label("h25_dataexoneracao");
 $clrotulo->label("h25_processoexoneracao");
 $clrotulo->label("h25_portariareintegracao");
+$clrotulo->label("h25_tiporeintegracao");
+$clrotulo->label("h25_dataefetivoretorno");
+$clrotulo->label("h25_numeroprocesso");
+$clrotulo->label("h25_leianistia");
 $clrotulo->label("h25_datareintegracao");
 $clrotulo->label("h25_processoreintegracao");
 $clrotulo->label("h25_contarexoneracao");
@@ -70,6 +75,10 @@ $clrotulo->label("rh260_cnpjagentintegracao");
 $clrotulo->label("rh260_areaatuacao");
 $clrotulo->label("rh260_apoliceseguro");
 $clrotulo->label("rh260_cpfsupervisor");
+$clrotulo->label("rh312_modalidade");
+$clrotulo->label("rh312_cnpjefetivada");
+$clrotulo->label("rh312_cnpjqualificadora");
+$clrotulo->label("rh312_cnpjpratica");
 
 $simNao = ["f" => "Não", "t" => "Sim"];
 
@@ -526,32 +535,64 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                             <td>
                                 <?php db_input('h25_portariareintegracao', 30, $h25_portariareintegracao, true, 'text', $db_opcao, "");?>
                             </td>
+                        </tr> <tr>
+                            <td>
+                                <?php echo "<b>{$Lh25_tiporeintegracao}</b>";?>
+                            </td>
+                            <td>
+                                <?php 
+                                    $aOpcoesReintegracao  = array(
+                                    0 => 'Não informado',
+                                    1 => '1 - Reintegração por decisão judicial',
+                                    2 => '2 - Reintegração por anistia legal', 
+                                    3 => '3 - Reversão de servidor público', 
+                                    4 => '4 - Recondução de servidor público', 
+                                    5 => '5 - Reinclusão de militar', 
+                                    6 => '6 - Revisão de reforma de militar', 
+                                    9 => '9 - Outros'); 
+
+                                    db_select('h25_tiporeintegracao', $aOpcoesReintegracao, true, 1, "onchange='jsMostraCampo(this)';onload='jsMostraCampo(this)'");
+                                ?>
+                            </td>
+                        </tr>
+                        <tr id="tdnumeroprocesso" style="visibility:collapse;">
+                            <td>
+                                <?php echo "<b>{$Lh25_numeroprocesso}</b>"?>
+                            </td>
+                            <td>
+                                <?php
+                                    db_input('h25_numeroprocesso', 20, $Ih25_numeroprocesso, true, 'hidden', $db_opcao, 'onchange="js_ValidaProcesso(this)"');
+                                ?>
+                            </td>
+                        </tr>
+                        <tr id="tdleianistia" style="visibility:collapse;">
+                            <td>
+                                <?php echo "<b>{$Lh25_leianistia}</b>"?>
+                            </td>
+                            <td>
+                                <?php
+                                    db_input('h25_leianistia', 13, $Ih25_leianistia, true, 'hidden', $db_opcao, 'onchange="js_ValidaLeiAnistia(this)"');
+                                ?>
+                            </td>
                         </tr>
                         <tr>
+                            <td>
+                                <?php echo "<b>{$Lh25_dataefetivoretorno}</b>"?>
+                            </td>
+                            <td>
+                                <?php
+                                    db_inputdata('h25_dataefetivoretorno', $h25_dataefetivoretorno_dia, $h25_dataefetivoretorno_mes, $h25_dataefetivoretorno_ano, true, 'text', $db_opcao, "onchange='jsValidaData(this)'");
+                                ?>
+                            </td>
                             <td>
                                 <?php echo "<b>{$Lh25_datareintegracao}</b>"?>
                             </td>
                             <td>
                                 <?php
-                                    db_inputdata('h25_datareintegracao', $h25_datareintegracao_dia, $h25_datareintegracao_mes, $h25_datareintegracao_ano, true, 'text', $db_opcao, "");
+                                    db_inputdata('h25_datareintegracao', $h25_datareintegracao_dia, $h25_datareintegracao_mes, $h25_datareintegracao_ano, true, 'text', $db_opcao, "onchange='jsValidaData(this)'");
                                 ?>
-                            </td>
+                            </td>   
                         </tr>
-                        <tr>
-                        <td>
-                            <?php echo "<b>{$Lh25_processoreintegracao}</b>";?>
-                        </td>
-                        <td>
-                            <?php
-                            $x = ["0" => "Não", "1" => "Sim"];
-                            db_select("processoreintegracao", $x, true, $db_opcao, "onChange=jsMontaCampoProcesso(this.id,this.value)");
-                            ?>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                     <tr>
                         <?php
                         $displayReintegracao = "display: none;";
@@ -748,6 +789,81 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                 </fieldset>
             </td>
         </tr>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>Dados Migração eSocial</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <?php echo @$Lrh01_matriculaanterior?>
+                            </td>
+                            <td>
+                                <?php db_input('rh01_matriculaanterior', 14, $rh01_matriculaanterior, true, 'text', $db_opcao, "");?>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>Dados Aprendiz eSocial</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Modalidade de Contratação do Aprendiz:</b>
+                            </td>
+                            <td>
+                                <?php
+                                $arrayIndAprend = [
+                                    ""  => "Não Informado",
+                                    "1" => '1 - Contratação direta',
+                                    "2" => '2 - Contratação indireta'
+                                ];
+                                db_select("rh312_modalidade", $arrayIndAprend, true, $db_opcao, "style=margin-right:50px; onchange='validaAprendiz();'");
+                                ?>
+                            </td>
+                        </tr>
+                        <tr id="aprendizDireto" style="display: none;">
+                            <td>
+                                <b>CNPJ da Entidade Qualificadora, contratação direta:</b>
+                            </td>
+                            <td>
+                                <?php db_input('rh312_cnpjqualificadora', 14, $rh312_cnpjqualificadora, true, 'text', $db_opcao, "");?>
+                            </td>
+                        </tr>
+                        <tr id="aprendizIndireto" style="display: none;">
+                            <td>
+                                <p style="margin: 0px;">
+                                    <b>Inscrição do estabelecimento para o qual a contratação </b>                                    
+                                </p>
+                                <p style="margin: 0px;">
+                                <b>de aprendiz foi efetivada, no caso de contratação indireta:</b>                                    
+                                </p>
+                            </td>
+                            <td>
+                                <?php db_input('rh312_cnpjefetivada', 14, $rh312_cnpjefetivada, true, 'text', $db_opcao, "");?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="margin: 0px;">
+                                    <b>CNPJ do estabelecimento onde estão</b>
+                                </p>
+                                <p style="margin: 0px;">
+                                    <b>sendo realizadas as atividades práticas:</b>
+                                </p>
+                            </td>
+                            <td>
+                                <?php db_input('rh312_cnpjpratica', 14, $rh312_cnpjpratica, true, 'text', $db_opcao, "");?>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
     </table>
     <table>
         <tr>
@@ -775,6 +891,12 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
 
 <script>
 
+    jsMostraCampo(document.form1.h25_tiporeintegracao);
+
+    if(document.form1.h07_regist.value != '' && document.form1.z01_nome.value == ''){
+        js_OpenJanelaIframe('','db_iframe_rhpessoal','func_rhpessoal.php?pesquisa_chave='+document.form1.h07_regist.value+'&funcao_js=parent.js_mostrarhpessoal','Pesquisa',false);
+    }
+
     function js_imprime(){
         var oVariavel   = new js_criaObjetoVariavel("$matricula",document.form1.h07_regist.value);
         var iModelo     = document.form1.modeloposse.value;
@@ -785,8 +907,6 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
             return false;
         }
         js_imprimeRelatorio(iModelo,js_downloadArquivo,JSON.stringify(aParametros));
-        // TODO - TRECHO ABAIXO ESTA NO E-CIDADE
-        // js_imprimeRelatorio(iModelo,js_downloadArquivo,JSON.stringify(aParametros));
     }
 
     function js_pesquisah07_area(mostra){
@@ -901,7 +1021,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
                 js_OpenJanelaIframe('','db_iframe_rhpessoal','func_rhpessoal.php?pesquisa_chave='+document.form1.h07_regist.value+'&funcao_js=parent.js_mostrarhpessoal','Pesquisa',false);
             }else{
                 document.form1.z01_nome.value = '';
-                <?
+                <?php
                 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
                 ?>
             }
@@ -931,7 +1051,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
 
     function js_preenchepesquisa(chave){
         db_iframe_admissao.hide();
-        <?
+        <?php
         if($db_opcao != 1 && db_getsession('DB_nome_modulo') != 'Pessoal'){
             echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
         }
@@ -939,42 +1059,6 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
     }
 
     /** Códigos para extensão */
-
-    if (exibeHipotese != 't') {
-        document.getElementById('lblh25_hipleg').style.display = 'none';
-        document.getElementById('idh25_hipleg').style.display = 'none';
-    }
-
-    if (exibeFonte != 1) {
-        document.getElementById('jsLabelRefencia').style.display = 'none';
-        document.getElementById('jsInputRefencia').style.display = 'none';
-    }
-
-    if(document.getElementById('processoaposentadoria').value == '1') {
-        document.getElementById('processoaposentadoria_id1').style.display = 'block';
-        document.getElementById('processoaposentadoria_cod1').style.display = 'block';
-
-    }else{
-        document.getElementById('processoaposentadoria_id1').style.display = 'none';
-        document.getElementById('processoaposentadoria_cod1').style.display = 'none';
-    }
-
-    if (document.getElementById('processoexoneracao').value == '1') {
-    	document.getElementById('processo_exoneracao_id').style.display = 'block';
-    	document.getElementById('processo_exoneracao_cod').style.display = 'block';
-    } else {
-        document.getElementById('processo_exoneracao_id').style.display = 'none';
-        document.getElementById('processo_exoneracao_cod').style.display = 'none';
-    }
-
-    if (document.getElementById('processoreintegracao').value == '1') {
-    	document.getElementById('processo_reintegracao_id').style.display = 'block';
-    	document.getElementById('processo_reintegracao_cod').style.display = 'block';
-    } else {
-        document.getElementById('processo_reintegracao_id').style.display = 'none';
-        document.getElementById('processo_reintegracao_cod').style.display = 'none';
-    }
-
     /**
      * Monta o campo do processo
      *
@@ -1119,5 +1203,129 @@ function js_mostraNom(mostra){
         js_OpenJanelaIframe('','db_iframe_assenta','rec1_assentanom001.php?h16_regist=<?=$h07_regist?>&h12_assent=NOM&h12_codigo=192','Nomeação',true,0);
     }
 }
+
+function jsMostraCampo(element){
+    const h25_numeroprocesso   = document.getElementById("h25_numeroprocesso");
+    const tdh25_numeroprocesso = document.getElementById("tdnumeroprocesso");
+    const h25_leianistia       = document.getElementById("h25_leianistia");
+    const tdleianistia         = document.getElementById("tdleianistia");
+
+    h25_numeroprocesso.type = 'hidden';
+    tdh25_numeroprocesso.style.visibility = 'collapse';
+    h25_leianistia.type = 'hidden';
+    tdleianistia.style.visibility = 'collapse';
+
+    if(element.value == "1"){
+        h25_numeroprocesso.type = 'text';
+        tdh25_numeroprocesso.style.visibility = 'visible';
+    }else if(element.value == "2"){
+        h25_leianistia.type = 'text';
+        tdleianistia.style.visibility = 'visible';
+    }
+}
+
+function jsValidaData(element){
+    let dataResc = criarData('<?php echo $sDataResc; ?>');
+    if(element.name == "h25_datareintegracao"){
+        let dataRetorno = criarData(document.getElementById('h25_dataefetivoretorno').value)
+        if (isNaN(dataRetorno.getTime())) {
+            element.value = "";
+            alert("Data do efetivo retorno deve ser preenchida!");
+            return;
+        }
+        let dataReintegracao =  criarData(element.value);
+        if(dataReintegracao.getTime() > dataRetorno.getTime() || dataReintegracao.getTime() < dataResc.getTime()){
+            element.value = "";
+            alert("Deve ser uma data igual ou anterior à data do efetivo retorno ao trabalho e posterior à data do desligamento");
+            return;
+        }
+    }else if(element.name == "h25_dataefetivoretorno"){
+        let dataRetorno = criarData(element.value)
+        
+        if(dataResc.getTime() > dataRetorno.getTime()){
+            element.value = "";
+            alert("Deve ser uma data posterior à data de desligamento do trabalhador!");
+            return;
+        }
+    }
+}
+
+function js_ValidaProcesso(element){
+    if(element.value.length != 20){
+        alert("Número do processo precisa ter 20 digitos!");
+        element.value = "";
+    }
+}
+
+function js_ValidaLeiAnistia(element){
+    if(element.value.length < 5){
+        alert("Lei de Anistia precisa ter no mínimo 5 digitos e no máximo 13!");
+        element.value = "";
+    }
+}
+
+function criarData(str) {
+    var partes = str.split("/");
+    return new Date(partes[2], partes[1] - 1, partes[0]);
+}
+
+    function validaAprendiz()
+    {
+        let modalidade = document.getElementById("rh312_modalidade").value;
+        let contratacaoDireta = document.getElementById("aprendizDireto");
+        let contratacaoIndireta = document.getElementById("aprendizIndireto");
+
+        contratacaoIndireta.style.display = "none";
+        contratacaoDireta.style.display = "none";
+
+        if (modalidade == "1") {
+            contratacaoDireta.style.display = "contents";
+        }
+
+        if (modalidade == "2") {
+            contratacaoIndireta.style.display = "contents";
+        }        
+    }
+    
+    (function () {
+        validaAprendiz();
+
+
+        if (exibeHipotese != 't') {
+            document.getElementById('lblh25_hipleg').style.display = 'none';
+            document.getElementById('idh25_hipleg').style.display = 'none';
+        }
+
+        if (exibeFonte != 1) {
+            document.getElementById('jsLabelRefencia').style.display = 'none';
+            document.getElementById('jsInputRefencia').style.display = 'none';
+        }
+
+        if(document.getElementById('processoaposentadoria').value == '1') {
+            document.getElementById('processoaposentadoria_id1').style.display = 'block';
+            document.getElementById('processoaposentadoria_cod1').style.display = 'block';
+
+        }else{
+            document.getElementById('processoaposentadoria_id1').style.display = 'none';
+            document.getElementById('processoaposentadoria_cod1').style.display = 'none';
+        }
+
+        if (document.getElementById('processoexoneracao').value == '1') {
+            document.getElementById('processo_exoneracao_id').style.display = 'block';
+            document.getElementById('processo_exoneracao_cod').style.display = 'block';
+        } else {
+            document.getElementById('processo_exoneracao_id').style.display = 'none';
+            document.getElementById('processo_exoneracao_cod').style.display = 'none';
+        }
+
+        if (document.getElementById('processoreintegracao').value == '1') {
+            document.getElementById('processo_reintegracao_id').style.display = 'block';
+            document.getElementById('processo_reintegracao_cod').style.display = 'block';
+        } else {
+            document.getElementById('processo_reintegracao_id').style.display = 'none';
+            document.getElementById('processo_reintegracao_cod').style.display = 'none';
+        }
+        
+    })();
 
 </script>

@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_sysprikey
-class cl_db_sysprikey { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codarq = 0; 
-   var $codcam = 0; 
-   var $sequen = 0; 
-   var $referen = 0; 
-   var $camiden = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_sysprikey {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codarq = 0;
+   var $codcam = 0;
+   var $sequen = 0;
+   var $referen = 0;
+   var $camiden = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codarq = int4 = Codigo Arquivo 
-                 codcam = int4 = Código 
-                 sequen = int4 = Sequencia 
-                 referen = int4 = Referencia 
-                 camiden = int4 = Codigo Campo 
+                 codarq = int4 = Codigo Arquivo
+                 codcam = int4 = Código
+                 sequen = int4 = Sequencia
+                 referen = int4 = Referencia
+                 camiden = int4 = Codigo Campo
                  ";
-   //funcao construtor da classe 
-   function cl_db_sysprikey() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_sysprikey"); 
+     $this->rotulo = new rotulo("db_sysprikey");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_sysprikey {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codarq = ($this->codarq == ""?@$GLOBALS["HTTP_POST_VARS"]["codarq"]:$this->codarq);
        $this->codcam = ($this->codcam == ""?@$GLOBALS["HTTP_POST_VARS"]["codcam"]:$this->codcam);
@@ -85,9 +85,9 @@ class cl_db_sysprikey {
      }
    }
    // funcao para inclusao
-   function incluir ($codcam,$codarq,$sequen){ 
+   public function incluir ($codcam,$codarq,$sequen){
       $this->atualizacampos();
-     if($this->referen == null ){ 
+     if($this->referen == null ){
        $this->erro_sql = " Campo Referencia nao Informado.";
        $this->erro_campo = "referen";
        $this->erro_banco = "";
@@ -96,7 +96,7 @@ class cl_db_sysprikey {
        $this->erro_status = "0";
        return false;
      }
-     if($this->camiden == null ){ 
+     if($this->camiden == null ){
        $this->erro_sql = " Campo Codigo Campo nao Informado.";
        $this->erro_campo = "camiden";
        $this->erro_banco = "";
@@ -105,10 +105,10 @@ class cl_db_sysprikey {
        $this->erro_status = "0";
        return false;
      }
-       $this->codcam = $codcam; 
-       $this->codarq = $codarq; 
-       $this->sequen = $sequen; 
-     if(($this->codcam == null) || ($this->codcam == "") ){ 
+       $this->codcam = $codcam;
+       $this->codarq = $codarq;
+       $this->sequen = $sequen;
+     if(($this->codcam == null) || ($this->codcam == "") ){
        $this->erro_sql = " Campo codcam nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_db_sysprikey {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->codarq == null) || ($this->codarq == "") ){ 
+     if(($this->codarq == null) || ($this->codarq == "") ){
        $this->erro_sql = " Campo codarq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -124,7 +124,7 @@ class cl_db_sysprikey {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->sequen == null) || ($this->sequen == "") ){ 
+     if(($this->sequen == null) || ($this->sequen == "") ){
        $this->erro_sql = " Campo sequen nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,21 +133,21 @@ class cl_db_sysprikey {
        return false;
      }
      $sql = "insert into db_sysprikey (
-                                       codarq 
-                                      ,codcam 
-                                      ,sequen 
-                                      ,referen 
-                                      ,camiden 
+                                       codarq
+                                      ,codcam
+                                      ,sequen
+                                      ,referen
+                                      ,camiden
                        )
                 values (
-                                $this->codarq 
-                               ,$this->codcam 
-                               ,$this->sequen 
-                               ,$this->referen 
-                               ,$this->camiden 
+                                $this->codarq
+                               ,$this->codcam
+                               ,$this->sequen
+                               ,$this->referen
+                               ,$this->camiden
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Chaves Primárias ($this->codcam."-".$this->codarq."-".$this->sequen) nao Incluído. Inclusao Abortada.";
@@ -185,16 +185,16 @@ class cl_db_sysprikey {
        $resac = db_query("insert into db_acount values($acount,149,2370,'','".AddSlashes(pg_result($resaco,0,'camiden'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codcam=null,$codarq=null,$sequen=null) { 
+   public function alterar ($codcam=null,$codarq=null,$sequen=null) {
       $this->atualizacampos();
      $sql = " update db_sysprikey set ";
      $virgula = "";
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim($this->codarq) == null ){
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_db_sysprikey {
          return false;
        }
      }
-     if(trim($this->codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcam"])){ 
+     if(trim($this->codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcam"])){
        $sql  .= $virgula." codcam = $this->codcam ";
        $virgula = ",";
-       if(trim($this->codcam) == null ){ 
+       if(trim($this->codcam) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codcam";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_db_sysprikey {
          return false;
        }
      }
-     if(trim($this->sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sequen"])){ 
+     if(trim($this->sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sequen"])){
        $sql  .= $virgula." sequen = $this->sequen ";
        $virgula = ",";
-       if(trim($this->sequen) == null ){ 
+       if(trim($this->sequen) == null ){
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "sequen";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_db_sysprikey {
          return false;
        }
      }
-     if(trim($this->referen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["referen"])){ 
+     if(trim($this->referen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["referen"])){
        $sql  .= $virgula." referen = $this->referen ";
        $virgula = ",";
-       if(trim($this->referen) == null ){ 
+       if(trim($this->referen) == null ){
          $this->erro_sql = " Campo Referencia nao Informado.";
          $this->erro_campo = "referen";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_db_sysprikey {
          return false;
        }
      }
-     if(trim($this->camiden)!="" || isset($GLOBALS["HTTP_POST_VARS"]["camiden"])){ 
+     if(trim($this->camiden)!="" || isset($GLOBALS["HTTP_POST_VARS"]["camiden"])){
        $sql  .= $virgula." camiden = $this->camiden ";
        $virgula = ",";
-       if(trim($this->camiden) == null ){ 
+       if(trim($this->camiden) == null ){
          $this->erro_sql = " Campo Codigo Campo nao Informado.";
          $this->erro_campo = "camiden";
          $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_db_sysprikey {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Chaves Primárias nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codcam."-".$this->codarq."-".$this->sequen;
@@ -316,14 +316,14 @@ class cl_db_sysprikey {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codcam=null,$codarq=null,$sequen=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codcam=null,$codarq=null,$sequen=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codcam,$codarq,$sequen));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -367,7 +367,7 @@ class cl_db_sysprikey {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Chaves Primárias nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codcam."-".$codarq."-".$sequen;
@@ -395,11 +395,11 @@ class cl_db_sysprikey {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -421,10 +421,10 @@ class cl_db_sysprikey {
       }
      return $result;
    }
-   function sql_query ( $codcam=null,$codarq=null,$sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $codcam=null,$codarq=null,$sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,31 +439,31 @@ class cl_db_sysprikey {
      $sql2 = "";
      if($dbwhere==""){
        if($codcam!=null ){
-         $sql2 .= " where db_sysprikey.codcam = $codcam "; 
-       } 
+         $sql2 .= " where db_sysprikey.codcam = $codcam ";
+       }
        if($codarq!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysprikey.codarq = $codarq "; 
-       } 
+         }
+         $sql2 .= " db_sysprikey.codarq = $codarq ";
+       }
        if($sequen!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysprikey.sequen = $sequen "; 
-       } 
+         }
+         $sql2 .= " db_sysprikey.sequen = $sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,10 +472,10 @@ class cl_db_sysprikey {
      }
      return $sql;
   }
-   function sql_query_file ( $codcam=null,$codarq=null,$sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $codcam=null,$codarq=null,$sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,31 +488,31 @@ class cl_db_sysprikey {
      $sql2 = "";
      if($dbwhere==""){
        if($codcam!=null ){
-         $sql2 .= " where db_sysprikey.codcam = $codcam "; 
-       } 
+         $sql2 .= " where db_sysprikey.codcam = $codcam ";
+       }
        if($codarq!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysprikey.codarq = $codarq "; 
-       } 
+         }
+         $sql2 .= " db_sysprikey.codarq = $codarq ";
+       }
        if($sequen!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysprikey.sequen = $sequen "; 
-       } 
+         }
+         $sql2 .= " db_sysprikey.sequen = $sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

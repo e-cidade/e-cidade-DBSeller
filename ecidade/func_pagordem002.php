@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ $RLc70_valor = "Valor";
             </center>
             <form name='form1'>
                 <center>
-                    <?
+                    <?php
 
 
                     if (isset ($e60_numemp) && $e60_numemp != "") {

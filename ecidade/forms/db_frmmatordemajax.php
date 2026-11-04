@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,13 +50,13 @@ $clrotulo->label("e62_descr");
         <tr>
           <td nowrap align="left" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
           <td> 
-            <?
+            <?php
               db_input('m51_numcgm',20,$Im51_numcgm,true,'text',3)
             ?>
           </td>
           <td nowrap align="left" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
           <td>
-            <?
+            <?php
               db_input('z01_nome',45,$Iz01_nome,true,'text',3)
             ?>
           </td>
@@ -64,7 +64,7 @@ $clrotulo->label("e62_descr");
         <tr>
           <td nowrap align="left" title="<?=@$Tm51_codordem?>"><b>Ordem de Compra:</b></td>
           <td>
-	    <?
+	    <?php
               db_input('m51_codordem',20,$Im51_codordem,true,'text',3)
 	    ?>
 	  </td>
@@ -74,7 +74,7 @@ $clrotulo->label("e62_descr");
         <tr>
           <td nowrap align="left" title="<?=@$Tm53_data?>"><b>Data da anula&ccedil;&atilde;o:</b></td>
           <td> 
-            <?
+            <?php
             $m53_data_dia =  date("d",db_getsession("DB_datausu"));
 	          $m53_data_mes =  date("m",db_getsession("DB_datausu"));
 		        $m53_data_ano =  date("Y",db_getsession("DB_datausu"));
@@ -84,7 +84,7 @@ $clrotulo->label("e62_descr");
           <td nowrap align="left" title="<?=@$descrdepto?>">
              <?=@$Lcoddepto?>
           <td> 
-             <?
+             <?php
              db_input('m51_depto',6,$Im51_depto,true,'text',3);
              db_input('descrdepto',36,$Idescrdepto,true,'text',3);
              ?>
@@ -93,7 +93,7 @@ $clrotulo->label("e62_descr");
         <tr> 
          	<td align='left'><b>Obs:</b></td>
           <td colspan='3' align='left'>
-       	 <? 
+       	 <?php 
         	 db_textarea("m53_obs","","90",$Im53_obs,true,'text',1); 
        	 ?>
 	  </td>
@@ -102,7 +102,7 @@ $clrotulo->label("e62_descr");
   <tr style='display:<?=$sDisplay?>'>
      <td nowrap valign="top"><b>Solicitar a Anulação<br>do Empenho:</b></td>
      <td colspan='3'>
-      <?
+      <?php
        $valoresanul = array (
                              "0" => "Não", 
                              "1" => "Valor",

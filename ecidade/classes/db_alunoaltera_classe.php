@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,11 +106,11 @@ class cl_alunoaltera {
  var $ed47_i_censomuniccert = 0;
  var $ed47_i_censoufnat = 0;
  var $ed47_i_censomunicnat = 0;
- function cl_alunoaltera() {
+ public function __construct() {
   $this->rotulo = new rotulo("aluno");
   $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
  }
- function Pais($pais){
+ public function Pais($pais){
   if($pais!=""){
    $result = db_query("SELECT ed228_c_descr FROM pais WHERE ed228_i_codigo = $pais");
    return trim(pg_result($result,0,0));
@@ -118,7 +118,7 @@ class cl_alunoaltera {
    return "";
   }
  }
- function SiglaUF($uf){
+ public function SiglaUF($uf){
   if($uf!=""){
    $result = db_query("SELECT ed260_c_sigla FROM censouf WHERE ed260_i_codigo = $uf");
    return trim(pg_result($result,0,0));
@@ -126,7 +126,7 @@ class cl_alunoaltera {
    return "";
   }
  }
- function Municipio($municipio){
+ public function Municipio($municipio){
   if($municipio!=""){
    $result = db_query("SELECT ed261_c_nome FROM censomunic WHERE ed261_i_codigo = $municipio");
    return trim(pg_result($result,0,0));
@@ -134,7 +134,7 @@ class cl_alunoaltera {
    return "";
   }
  }
- function OrgaoRG($orgao){
+ public function OrgaoRG($orgao){
   if($orgao!=""){
    $result = db_query("SELECT ed132_c_descr FROM censoorgemissrg WHERE ed132_i_codigo = $orgao");
    return trim(pg_result($result,0,0));
@@ -142,7 +142,7 @@ class cl_alunoaltera {
    return "";
   }
  }
- function atualizacamposlog() {
+ public function atualizacamposlog() {
   $this->ed47_i_codigo = ($this->ed47_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed47_i_codigo"]:$this->ed47_i_codigo);
   $this->ed47_v_nome = ($this->ed47_v_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["ed47_v_nome"]:$this->ed47_v_nome);
   $this->ed47_v_ender = ($this->ed47_v_ender == ""?@$GLOBALS["HTTP_POST_VARS"]["ed47_v_ender"]:$this->ed47_v_ender);
@@ -244,7 +244,7 @@ class cl_alunoaltera {
   $this->ed47_i_censomunicnat = ($this->ed47_i_censomunicnat == ""?@$GLOBALS["HTTP_POST_VARS"]["ed47_i_censomunicnat"]:$this->ed47_i_censomunicnat);
  }
  // funcao para alteracao
- function logalterar ($ed47_i_codigo=null,$q_modulo){
+ public function logalterar ($ed47_i_codigo=null,$q_modulo){
   $this->atualizacamposlog();
   $n_registros = 0;
   $sql_ant = " SELECT * FROM aluno WHERE ed47_i_codigo = ".$this->ed47_i_codigo;

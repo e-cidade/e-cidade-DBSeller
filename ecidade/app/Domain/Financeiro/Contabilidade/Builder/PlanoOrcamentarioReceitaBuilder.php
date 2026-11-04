@@ -32,6 +32,12 @@ class PlanoOrcamentarioReceitaBuilder extends PlanoOrcamentarioBuilder
         if (isset($dado['sintetica'])) {
             $dado['sintetica'] = $this->sintetica($dado['sintetica']);
         }
+
+        $dado['desdobramento2'] = str_pad($dado['desdobramento2'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento4'] = str_pad($dado['desdobramento4'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento5'] = str_pad($dado['desdobramento5'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento6'] = str_pad($dado['desdobramento6'], 2, '0', STR_PAD_LEFT);
+
         $dado['created_at'] = Carbon::now();
         $dado['updated_at'] = Carbon::now();
 

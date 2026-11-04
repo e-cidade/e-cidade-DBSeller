@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -58,7 +58,7 @@ $sqlinst = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultinst = db_query($sqlinst);
 db_fieldsmemory($resultinst,0);
 
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
 
   db_fieldsmemory($result_arqbanco,0);
@@ -91,14 +91,14 @@ if($clrharqbanco->numrows>0){
   $descricaobanco = $db90_descr;
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag =explode('-',$datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad =explode('-',$datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -174,7 +174,7 @@ if($sqlerro == false){
       if(!is_writable("/tmp/")){
         $sqlerro= true;
         $erro_msg = 'Sem permissão de gravar o arquivo. Contate suporte.';
-      }  
+      }
 
     ///// HEADER DO ARQUIVO
       if($acodigodobanco=="001"){
@@ -264,15 +264,15 @@ if($sqlerro == false){
           ///// TRAILLER DO LOTE
         if($seq_header != 0){
             // DEMAIS POSIÇÕES ESTÃO FIXAS NA CLASSE
-        $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco; 
+        $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco;
         $cllayout_BBBS->BBBStraillerL_004_007 = $seq_header;
-        $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe; 
+        $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe;
         $cllayout_BBBS->BBBStraillerL_024_041 = $valor_header;
         $cllayout_BBBS->geraTRAILLERLote();
         $valor_header = 0;
         $registro += 1;
         }
-          ///// FINAL DO TRAILLER DO LOTE        
+          ///// FINAL DO TRAILLER DO LOTE
 
         $seq_header  += 1;
         $seq_detalhe  = 0;
@@ -299,7 +299,7 @@ if($sqlerro == false){
       $cllayout_BBBS->BBheaderL_073_102 = $nomeprefeitura;
       $cllayout_BBBS->BBheaderL_143_172 = $ender;
       $cllayout_BBBS->BBheaderL_173_177 = $numero;
-      $cllayout_BBBS->BBheaderL_193_212 = $munic;       
+      $cllayout_BBBS->BBheaderL_193_212 = $munic;
       $cllayout_BBBS->BBheaderL_213_217 = $cep;
       $cllayout_BBBS->BBheaderL_218_220 = $com;
       $cllayout_BBBS->BBheaderL_221_222 = $uf;
@@ -365,9 +365,9 @@ if($sqlerro == false){
         $cllayout_BBBS->BBregistA_018_020 = $compensacao;
         $cllayout_BBBS->BBregistA_021_023 = $r38_banco;
         $cllayout_BBBS->BBregistA_024_028 = $agenciapagar;
-        $cllayout_BBBS->BBregistA_029_029 = $digitoagenci; 
+        $cllayout_BBBS->BBregistA_029_029 = $digitoagenci;
       $cllayout_BBBS->BBregistA_030_041 = $contasapagar;
-      $cllayout_BBBS->BBregistA_042_042 = $digitocontas; 
+      $cllayout_BBBS->BBregistA_042_042 = $digitocontas;
       $cllayout_BBBS->BBregistA_043_043 = $digitoconage;
       $cllayout_BBBS->BBregistA_044_073 = $z01_nome;
       $cllayout_BBBS->BBregistA_074_093 = $r38_regist;
@@ -436,7 +436,7 @@ if($sqlerro == false){
 
           // $pdf->cell(225,0.1,"","T",1,"L",0);
           $pdf->addpage("L");
-   
+
           $pdf->cell(20,$alt,"RECURSO",1,0,"C",1);
           $pdf->cell(205,$alt,"DESCRIÇÃO",1,1,"C",1);
 
@@ -532,9 +532,9 @@ if($sqlerro == false){
 
       ///// TRAILLER DO LOTE
       // DEMAIS POSIÇÕES ESTÃO FIXAS NA CLASSE
-      $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco; 
+      $cllayout_BBBS->BBBStraillerL_001_003 = $acodigodobanco;
     $cllayout_BBBS->BBBStraillerL_004_007 = $seq_header;
-      $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe; 
+      $cllayout_BBBS->BBBStraillerL_018_023 = $seq_detalhe;
     $cllayout_BBBS->BBBStraillerL_024_041 = $valor_header;
     $cllayout_BBBS->geraTRAILLERLote();
      ///// FINAL DO TRAILLER DO LOTE
@@ -553,10 +553,10 @@ if($sqlerro == false){
       $cllayout_BBBS->gera();
 
    /*
-  if($sqlerro == false){   
+  if($sqlerro == false){
           //db_msgbox("//// LAYOUT BANCO DO BRASIL");
           //----------------------------------------------------------------------------------
-        ///// COMEÇO DO HEADER 
+        ///// COMEÇO DO HEADER
         ///// rharqbanco
         $cllayouts_bb->cabec01 = '0' ;          // fixo
         $cllayouts_bb->cabec02 = '1' ;          // fixo
@@ -588,7 +588,7 @@ if($sqlerro == false){
           //----------------------------------------------------------------------------------
 
         for($i=0; $i<$numrows; $i++ ){
-        db_fieldsmemory($result,$i); 
+        db_fieldsmemory($result,$i);
           $tam = strlen($z01_cgccpf);
           ////GERA DETALHE
             if($tam == 14){
@@ -614,36 +614,36 @@ if($sqlerro == false){
         $agencia_fav = db_formatar( str_replace('.','',str_replace('-','',$r38_agenc)),'s','0',4,'e',0);
         $conta_fav   = db_formatar( str_replace('.','',str_replace('-','',$r38_conta)),'s','0',13,'e',0);
 
-            $cllayouts_bb->corp01 = '1' ;           // fixo 
-            $cllayouts_bb->corp02 = ' ' ;           // brancos 
+            $cllayouts_bb->corp01 = '1' ;           // fixo
+            $cllayouts_bb->corp02 = ' ' ;           // brancos
         $cllayouts_bb->corp03 = 0 ;         // indicador de conferencia
         $cllayouts_bb->corp04 = '          ';         // cgc, cnpf ou zeros
         $cllayouts_bb->corp05 = '  ' ;          // digitos do cpf ou cnpf
-        $cllayouts_bb->corp06 = '0000' ;          // sequencial 
-        $cllayouts_bb->corp07 = '0' ;           // sequencial 
-        $cllayouts_bb->corp08 = '000000000' ;         // sequencial 
-        $cllayouts_bb->corp09 =  db_formatar($r38_regist,'s','0',8,'e',0) ;           // sequencial 
+        $cllayouts_bb->corp06 = '0000' ;          // sequencial
+        $cllayouts_bb->corp07 = '0' ;           // sequencial
+        $cllayouts_bb->corp08 = '000000000' ;         // sequencial
+        $cllayouts_bb->corp09 =  db_formatar($r38_regist,'s','0',8,'e',0) ;           // sequencial
         $cllayouts_bb->corp10 = str_repeat(' ',5) ; // livre  // não precisa
-        $cllayouts_bb->corp11 = str_repeat(' ',5) ;       // sequencial 
+        $cllayouts_bb->corp11 = str_repeat(' ',5) ;       // sequencial
         $cllayouts_bb->corp12 = str_repeat(' ',9) ;       // campo livre
         $cllayouts_bb->corp13 = '000' ;         // camara de compensação
         $cllayouts_bb->corp14 = ($r38_banco = 001?'   ':$r38_banco) ; // codigo do banco r38_banco
         $cllayouts_bb->corp15 = substr($agencia_fav,0,4) ;      // agencia do favorecido r38_agenc
-        $cllayouts_bb->corp16 = ($r38_banco = 001?substr($agencia_fav,4,1):db_CalculaDV(substr($agencia_fav,0,4))) ;  // digito da agencia 
-        $cllayouts_bb->corp17 = substr($conta_fav,0,12) ; // conta do favorecido 
+        $cllayouts_bb->corp16 = ($r38_banco = 001?substr($agencia_fav,4,1):db_CalculaDV(substr($agencia_fav,0,4))) ;  // digito da agencia
+        $cllayouts_bb->corp17 = substr($conta_fav,0,12) ; // conta do favorecido
         $cllayouts_bb->corp18 = ($r38_banco = 001?substr($conta_fav,12,1):db_CalculaDV(substr($conta_fav,0,4))) ;   // digito da conta
-        $cllayouts_bb->corp19 = '  ' ;          // brancos 
-        $cllayouts_bb->corp20 = db_formatar($z01_nome,'s',' ',40,'d',0);  // nome do favorecido 
-        $cllayouts_bb->corp21 = $deposito_dia.$deposito_mes.substr($deposito_ano,2,2);          // data do depósito(DDMMAA) 
+        $cllayouts_bb->corp19 = '  ' ;          // brancos
+        $cllayouts_bb->corp20 = db_formatar($z01_nome,'s',' ',40,'d',0);  // nome do favorecido
+        $cllayouts_bb->corp21 = $deposito_dia.$deposito_mes.substr($deposito_ano,2,2);          // data do depósito(DDMMAA)
         $cllayouts_bb->corp22 = db_formatar(str_replace(',','',str_replace('.','',$r38_liq)),'s','0',13,'e',0); // valor r38_liq
-        $cllayouts_bb->corp23 = '001' ;   // codigo do serviço 
-        $cllayouts_bb->corp24 = str_repeat(' ',40) ;        // livre 
-        $cllayouts_bb->corp25 = str_repeat(' ',10) ;        // livre 
+        $cllayouts_bb->corp23 = '001' ;   // codigo do serviço
+        $cllayouts_bb->corp24 = str_repeat(' ',40) ;        // livre
+        $cllayouts_bb->corp25 = str_repeat(' ',10) ;        // livre
         $cllayouts_bb->corp26 = str_pad($registro,6,"0",STR_PAD_LEFT);  // sequencial
         $cllayouts_bb->gera_corpo();
         $registro += 1;
             ////FINAL DETALHE
-      } 
+      }
       //trailler.;...  RODAPÉ
       $cllayouts_bb->rodap01 = '9';       // fixo
       $cllayouts_bb->rodap02 = str_repeat(' ',193) ;  // brancos

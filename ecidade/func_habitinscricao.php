@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
               <b>Código Inscrição:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("ht15_sequencial", 10, $Iht15_sequencial, true, "text", 4, "", "chave_ht15_sequencial");
 		          ?>
             </td>
@@ -75,7 +75,7 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         
         $sWhere = ' habitcandidatointeresse.ht20_ativo is true ';
         
@@ -148,12 +148,12 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

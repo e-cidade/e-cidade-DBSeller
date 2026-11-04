@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_depusu
-class cl_db_depusu { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $id_usuario = 0; 
-   var $coddepto = 0; 
-   var $db17_ordem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_depusu {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $id_usuario = 0;
+   var $coddepto = 0;
+   var $db17_ordem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 id_usuario = int4 = Cod. Usuário 
-                 coddepto = int4 = Depart. 
-                 db17_ordem = int4 = Ordem 
+                 id_usuario = int4 = Cod. Usuário
+                 coddepto = int4 = Depart.
+                 db17_ordem = int4 = Ordem
                  ";
-   //funcao construtor da classe 
-   function cl_db_depusu() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_depusu"); 
+     $this->rotulo = new rotulo("db_depusu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_depusu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_usuario = ($this->id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["id_usuario"]:$this->id_usuario);
        $this->coddepto = ($this->coddepto == ""?@$GLOBALS["HTTP_POST_VARS"]["coddepto"]:$this->coddepto);
@@ -78,9 +78,9 @@ class cl_db_depusu {
      }
    }
    // funcao para inclusao
-   function incluir ($id_usuario,$coddepto){ 
+   public function incluir ($id_usuario,$coddepto){
       $this->atualizacampos();
-     if($this->db17_ordem == null ){ 
+     if($this->db17_ordem == null ){
        $this->erro_sql = " Campo Ordem nao Informado.";
        $this->erro_campo = "db17_ordem";
        $this->erro_banco = "";
@@ -89,9 +89,9 @@ class cl_db_depusu {
        $this->erro_status = "0";
        return false;
      }
-       $this->id_usuario = $id_usuario; 
-       $this->coddepto = $coddepto; 
-     if(($this->id_usuario == null) || ($this->id_usuario == "") ){ 
+       $this->id_usuario = $id_usuario;
+       $this->coddepto = $coddepto;
+     if(($this->id_usuario == null) || ($this->id_usuario == "") ){
        $this->erro_sql = " Campo id_usuario nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -99,7 +99,7 @@ class cl_db_depusu {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->coddepto == null) || ($this->coddepto == "") ){ 
+     if(($this->coddepto == null) || ($this->coddepto == "") ){
        $this->erro_sql = " Campo coddepto nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -108,17 +108,17 @@ class cl_db_depusu {
        return false;
      }
      $sql = "insert into db_depusu(
-                                       id_usuario 
-                                      ,coddepto 
-                                      ,db17_ordem 
+                                       id_usuario
+                                      ,coddepto
+                                      ,db17_ordem
                        )
                 values (
-                                $this->id_usuario 
-                               ,$this->coddepto 
-                               ,$this->db17_ordem 
+                                $this->id_usuario
+                               ,$this->coddepto
+                               ,$this->db17_ordem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Departamento de Usuário ($this->id_usuario."-".$this->coddepto) nao Incluído. Inclusao Abortada.";
@@ -153,16 +153,16 @@ class cl_db_depusu {
        $resac = db_query("insert into db_acount values($acount,155,15565,'','".AddSlashes(pg_result($resaco,0,'db17_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($id_usuario=null,$coddepto=null) { 
+   public function alterar ($id_usuario=null,$coddepto=null) {
       $this->atualizacampos();
      $sql = " update db_depusu set ";
      $virgula = "";
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim($this->id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_depusu {
          return false;
        }
      }
-     if(trim($this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){ 
+     if(trim($this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){
        $sql  .= $virgula." coddepto = $this->coddepto ";
        $virgula = ",";
-       if(trim($this->coddepto) == null ){ 
+       if(trim($this->coddepto) == null ){
          $this->erro_sql = " Campo Depart. nao Informado.";
          $this->erro_campo = "coddepto";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_depusu {
          return false;
        }
      }
-     if(trim($this->db17_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_ordem"])){ 
+     if(trim($this->db17_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_ordem"])){
        $sql  .= $virgula." db17_ordem = $this->db17_ordem ";
        $virgula = ",";
-       if(trim($this->db17_ordem) == null ){ 
+       if(trim($this->db17_ordem) == null ){
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "db17_ordem";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_db_depusu {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Departamento de Usuário nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->id_usuario."-".$this->coddepto;
@@ -250,14 +250,14 @@ class cl_db_depusu {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($id_usuario=null,$coddepto=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($id_usuario=null,$coddepto=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($id_usuario,$coddepto));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -292,7 +292,7 @@ class cl_db_depusu {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Departamento de Usuário nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$id_usuario."-".$coddepto;
@@ -320,11 +320,11 @@ class cl_db_depusu {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,10 +346,10 @@ class cl_db_depusu {
       }
      return $result;
    }
-   function sql_query ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,23 +364,23 @@ class cl_db_depusu {
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($coddepto!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_depusu.coddepto = $coddepto "; 
-       } 
+         }
+         $sql2 .= " db_depusu.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_db_depusu {
      }
      return $sql;
   }
-   function sql_query_almoxusu ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_almoxusu ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,23 +408,23 @@ class cl_db_depusu {
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($coddepto!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_depusu.coddepto = $coddepto "; 
-       } 
+         }
+         $sql2 .= " db_depusu.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,10 +433,10 @@ class cl_db_depusu {
      }
      return $sql;
   }
-   function sql_query_departalmox ( $id_usuario=null,$almox=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_departalmox ( $id_usuario=null,$almox=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,23 +452,23 @@ class cl_db_depusu {
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($almox!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_almox.m91_depto = $almox"; 
-       } 
+         }
+         $sql2 .= " db_almox.m91_depto = $almox";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,10 +477,10 @@ class cl_db_depusu {
      }
      return $sql;
   }
-   function sql_query_departconjunto ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_departconjunto ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,23 +501,23 @@ class cl_db_depusu {
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($coddepto!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_depusu.coddepto = $coddepto "; 
-       } 
+         }
+         $sql2 .= " db_depusu.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,10 +526,10 @@ class cl_db_depusu {
      }
      return $sql;
   }
-   function sql_query_file ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,23 +542,23 @@ class cl_db_depusu {
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($coddepto!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_depusu.coddepto = $coddepto "; 
-       } 
+         }
+         $sql2 .= " db_depusu.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,10 +567,10 @@ class cl_db_depusu {
      }
      return $sql;
   }
-   function sql_query_instit ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_instit ( $id_usuario=null,$coddepto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,29 +582,29 @@ class cl_db_depusu {
      $sql .= " from db_depusu ";
      $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = db_depusu.id_usuario";
      $sql .= "      inner join db_depart  on  db_depart.coddepto       = db_depusu.coddepto";
-     $sql .= "      inner join db_departorg on db_departorg.db01_coddepto = db_depusu.coddepto"; 
+     $sql .= "      inner join db_departorg on db_departorg.db01_coddepto = db_depusu.coddepto";
      $sql .= "      inner join orcorgao     on orcorgao.o40_orgao         = db_departorg.db01_orgao and
                                                orcorgao.o40_anousu        = db_departorg.db01_anousu";
      $sql2 = "";
      if($dbwhere==""){
        if($id_usuario!=null ){
-         $sql2 .= " where db_depusu.id_usuario = $id_usuario "; 
-       } 
+         $sql2 .= " where db_depusu.id_usuario = $id_usuario ";
+       }
        if($coddepto!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_depusu.coddepto = $coddepto "; 
-       } 
+         }
+         $sql2 .= " db_depusu.coddepto = $coddepto ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

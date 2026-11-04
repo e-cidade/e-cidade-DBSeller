@@ -1,5 +1,5 @@
 parameters:
-    autoload_files:
+    bootstrapFiles:
         - libs/db_stdlib.php
         - dbforms/db_funcoes.php
         - dbforms/db_classesgenericas.php

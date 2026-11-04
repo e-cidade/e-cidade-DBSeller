@@ -102,7 +102,7 @@ function js_limpa(){
   <table border="0" align="center">
       <tr>
         <td align="center" colspan="2">
-          <?
+          <?php
           db_selinstit("",300,100);
           ?>
         </td>
@@ -111,16 +111,16 @@ function js_limpa(){
         <td colspan="2">&nbsp;</td>
       </tr>
       <tr>
-        <td align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+        <td align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
         <td align="left" nowrap>
-          <? db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+          <?php db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
           db_input("z01_nome",40,"$Iz01_nome",true,"text",3);
           ?></td>
       </tr>
 
       <tr>
         <td  align="left" nowrap title="<?=$Te60_codemp?>">
-          <? db_ancora($Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
+          <?php db_ancora($Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
         </td>
 
         <td  nowrap>
@@ -134,7 +134,7 @@ function js_limpa(){
           <b><strong>Período Empenho</strong> </b>
         </td>
         <td>
-          <?
+          <?php
           db_inputdata('data1','','','',true,'text',1,"");
           echo " a ";
           db_inputdata('data11','','','',true,'text',1,"");
@@ -146,7 +146,7 @@ function js_limpa(){
           <strong>Filtrar por:&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
           $tipo_ordem = array("a"=>"Todos","b"=>"Pendentes para acerto","c"=>"Conferidos","d"=>"Não conferidos");
           db_select("ordem",$tipo_ordem,true,2); ?>
         </td>
@@ -156,7 +156,7 @@ function js_limpa(){
           <b><strong> Período Lançamento: </strong> </b>
         </td>
         <td>
-          <?
+          <?php
           db_inputdata('data_lanc','','','',true,'text',1,"");
           echo " a ";
           db_inputdata('data_lanc1','','','',true,'text',1,"");
@@ -170,15 +170,15 @@ function js_limpa(){
           <strong>Histórico do Empenho:&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
           $xxx = array("n"=>"Não","s"=>"Sim");
           db_select("historico",$xxx,true,2); ?>
         </td>
       </tr>
       <tr>
-        <td align="left" nowrap title="<?=$To40_orgao?>"><?db_ancora(@$Lo40_orgao,"js_pesquisao40_orgao(true);",1);?></td>
+        <td align="left" nowrap title="<?=$To40_orgao?>"><?php db_ancora(@$Lo40_orgao,"js_pesquisao40_orgao(true);",1);?></td>
         <td align="left" nowrap>
-          <? db_input("o40_orgao",6,$Io40_orgao,true,"text",4,"onchange='js_pesquisao40_orgao(false);'");
+          <?php db_input("o40_orgao",6,$Io40_orgao,true,"text",4,"onchange='js_pesquisao40_orgao(false);'");
           db_input("o40_descr",40,"$Io40_descr",true,"text",3);
           ?></td>
       </tr>
@@ -188,7 +188,7 @@ function js_limpa(){
           <strong>Quebrar página por órgão:&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
           $xxx = array("n"=>"Não","s"=>"Sim");
           db_select("quebrarpagorgao",$xxx,true,2); ?>
         </td>
@@ -201,7 +201,7 @@ function js_limpa(){
   </p>
 </form>
 </div>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

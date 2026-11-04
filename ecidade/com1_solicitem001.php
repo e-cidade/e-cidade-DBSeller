@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -1612,7 +1612,21 @@ where pc20_codorc = $codorc";
     }
   }
   if ($sqlerro == false) {
-    $clsolicitem->excluir($pc11_codigo);
+    $sqlOrcamentoItem = "
+      SELECT COUNT(1) FROM pcorcamitemsol
+      WHERE pc29_solicitem = $pc11_codigo
+    ";
+
+    $resultOrcamentoItem = $clsolicitem->sql_record($sqlOrcamentoItem);
+    $existeOrcamento = pg_fetch_result($resultOrcamentoItem, 0, 'count');
+
+    if ($existeOrcamento) {
+      $clsolicitem->erro_msg = 'Este item está vinculado a um orçamento e não pode ser excluído.';
+      $clsolicitem->erro_status = 0;
+    } else {
+      $clsolicitem->excluir($pc11_codigo);
+    }
+
     $erro_msg = $clsolicitem->erro_msg;
     if ($clsolicitem->erro_status == 0) {
       $sqlerro = true;
@@ -1830,7 +1844,7 @@ if (isset($pc11_numero)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
 
     db_app::load("scripts.js, prototype.js, datagrid.widget.js,windowAux.widget.js,messageboard.widget.js, strings.js, AjaxRequest.js");
     db_app::load("classes/ultimosOrcamentos.classe.js");
@@ -1847,7 +1861,7 @@ if (isset($pc11_numero)) {
     <tr>
       <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
         <center>
-          <?
+          <?php
 
 
           require_once(modification("forms/db_frmsolicitem.php"));

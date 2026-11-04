@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ function js_voltar(){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',6,$Id02_contri,true,'text',3);
   db_input('j14_nome',50,$Ij14_nome,true,'text',3);
   ?>
@@ -163,7 +163,7 @@ function js_voltar(){
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',3);
   db_input('z01_nome',50,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -174,7 +174,7 @@ function js_voltar(){
       <b>Parcelas</b>
       </td>
       <td> 
-<?
+<?php
   db_input('parcelas',4,5,true,'text',1);
 ?>
       </td>
@@ -184,7 +184,7 @@ function js_voltar(){
        <b>1° Vencimento</b>
       </td>  
       <td nowrap title="Data do primeiro vencimento">
-     <?
+     <?php
      db_inputdata('privenc',@$privenc_dia,@$privenc_mes,@$privenc_ano,true,'text',$db_opcao,"");
    ?>  
       </td>
@@ -194,7 +194,7 @@ function js_voltar(){
         <b>Dia vencimento</b>
       </td>  
       <td nowrap title="Dia dos próximos vencimentos">
-    <?
+    <?php
      db_input('provenc',4,0,'true','text',$db_opcao,"")
    ?>  
       </td>
@@ -210,7 +210,7 @@ function js_voltar(){
       <td colspan="2" align="left">
       <fieldset><Legend><b>Matrículas da contribuição</b></legend>
       <select name="matriculas" size="8" onchange="js_troca(this)">
-       <?
+       <?php
          for($i=0; $i<$numrows; $i++){
 	   db_fieldsmemory($result,$i);
            $resu=$clcontricalc->sql_record($clcontricalc->sql_query_file(null,"d09_contri",null," q09_contri = $d07_contri and q09_matric = $d07_matric"));
@@ -238,12 +238,12 @@ function js_voltar(){
  </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($confirmar)){
   db_msgbox($erro);
 }

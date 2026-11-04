@@ -104,13 +104,13 @@ if ((int)$this->k03_tipo === 13) {
     $buscaDados = db_query("
 select termo.v07_parcel,
        (select array_to_string(array_agg(distinct (lpad(rpt.k00_numpar, length(rpt.k00_numtot::text), '0') || ',' || rpt.k00_numtot)), '#') from recibopaga rpt where rpt.k00_numnov = rp.k00_numnov and rpt.k00_numpre = rp.k00_numpre) as colecao_numpar,
-       sum(case when rp.k00_hist not in (400, 401, 403, 918, 11403) then rp.k00_valor else 0 end) as valor_historico,
+       sum(case when rp.k00_hist not in (400, 401, 403, 918, 11403, 11404) then rp.k00_valor else 0 end) as valor_historico,
        sum(case when rp.k00_hist = 400 then rp.k00_valor else 0 end) as valor_juros,
        sum(case when rp.k00_hist = 401 then rp.k00_valor else 0 end) as valor_multa,
        sum(case when rp.k00_hist not in (400, 401) then rp.k00_valor else 0 end) as valor
   from recibopaga rp
        inner join termo on termo.v07_numpre = rp.k00_numpre
- where rp.k00_hist <> 11403
+ where rp.k00_hist not in (11403, 11404)
    and rp.k00_numnov = {$numpreRecibo}
  group by colecao_numpar, v07_parcel
  order by 1
@@ -412,11 +412,35 @@ foreach ($this->aCustas as $custa) {
 $xlin+= 15;
 
 // SEGUNDO QUADRO
-$this->objpdf->Roundedrect($xcol,$xlin+72,202,75,2,'DF','1234'); // historico
+$this->objpdf->Roundedrect($xcol,$xlin+70,202,80,2,'DF','1234'); // historico
 
-$this->objpdf->SetY($xlin+75);
+$this->objpdf->SetY($xlin+80);
 
-$this->objpdf->cell(60, 5, "AGÊNCIA / CÓD do CEDENTE"                                  , "TL", 0, "L", 0);
+// linha acima quadro //
+$this->objpdf->Line($x + 46, $y + 107, $x + 46, $y + 115);  //vert
+$this->objpdf->Line($x + 61, $y + 107, $x + 61, $y + 115);  //vert
+$this->objpdf->Image($this->imagemlogo, $x+10, $y+107, 32, 7);
+$this->objpdf->SetFont('Arial', 'b', 14);
+$this->objpdf->Text($x + 47, $y + 113, $this->numbanco);      // numero do banco
+$this->objpdf->SetFont('Arial', 'b', 13);
+if ($this->linha_digitavel != null) { 
+    $this->objpdf->Text($x + 65, $y + 113, $this->linha_digitavel);
+}
+
+// linha acima quadro //
+$this->objpdf->Line($x + 46, $y + 107, $x + 46, $y + 115);  //vert
+$this->objpdf->Line($x + 61, $y + 107, $x + 61, $y + 115);  //vert
+$this->objpdf->Image($this->imagemlogo, $x+10, $y+107, 32, 7);
+$this->objpdf->SetFont('Arial', 'b', 14);
+$this->objpdf->Text($x + 47, $y + 113, $this->numbanco);      // numero do banco
+$this->objpdf->SetFont('Arial', 'b', 13);
+if ($this->linha_digitavel != null) {
+    $this->objpdf->Text($x + 65, $y + 113, $this->linha_digitavel);
+}
+
+$this->objpdf->SetY($xlin+80);
+$this->objpdf->SetFont('Arial','',6);
+$this->objpdf->cell(60, 5, "AGÊNCIA / CÓD DO BENEFICIÁRIO"                             , "TL", 0, "L", 0);
 $this->objpdf->cell(25, 5, "ESPÉCIE"                                                   , "TL", 0, "L", 0);
 $this->objpdf->cell(50, 5, ""                                                          , "TL", 0, "L", 0);
 $this->objpdf->cell(55, 5, "NOSSO NÚMERO"                                              , "TLR", 1, "L", 0);
@@ -425,7 +449,7 @@ $this->objpdf->cell(25, 3, $this->especie                                       
 $this->objpdf->cell(50, 3, ""                                                          , "LB", 0, "L", 0);
 $this->objpdf->cell(55, 3, $this->nosso_numero                                         , "LBR", 1, "L", 0); //NOSSO NÚMERO
 
-$this->objpdf->cell(105, 5, "SACADO"                                                   , "L",   0, "L", 0);
+$this->objpdf->cell(105, 5, "PAGADOR"                                                  , "L",   0, "L", 0);
 $this->objpdf->cell(30,  5, "QUANTIDADE"                                               , "L",   0, "L", 0);
 $this->objpdf->cell(55,  5, " (=) VALOR DO DOCUMENTO"                                  , "LR",   1, "L", 0);
 $this->objpdf->setfont('arial', '', 8);
@@ -450,12 +474,12 @@ $this->objpdf->cell(45, 5, "" ,  "L", 0, "L", 0); //(+) MORA MULTA
 $this->objpdf->cell(40, 5, $this->valor_cobrado  ,  "LR", 1, "L", 0); //VALOR COBRADO
 
 // MENSSAGENS
-$this->objpdf->Roundedrect( 10, 139  ,190, 30,0,"DF");
+$this->objpdf->Roundedrect( 10, 144, 190, 30,0,"DF");
 $this->objpdf->cell(190, 4, "Mensagens:",  "L", 1, "L", 0);
 
 $this->objpdf->MultiCell(190 , 4 , $this->msgcontribuinte ,  0, "J",0);
 
-$this->objpdf->SetY(169);
+$this->objpdf->SetY(174);
 $this->objpdf->cell(110, 4, "",  0, 0, "R", 0);
 $this->objpdf->cell(80 , 4, "AUTENTICAÇÃO MECÂNICA",  0, 1, "L", 0);
 

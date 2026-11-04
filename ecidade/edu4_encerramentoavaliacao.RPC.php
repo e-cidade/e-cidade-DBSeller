@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,6 +37,12 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/educacao/avaliacao/iFormaObtencao.interface.php"));
 require_once(modification("model/educacao/avaliacao/iElementoAvaliacao.interface.php"));
 /* ATENCAO: PLUGIN ParametroProgressaoParcial - Requires - INSTALADO AQUI - NAO REMOVER */
+require_once(Modification::getFile("classes/db_parametroprogressaoparcial_classe.php"));
+require_once(Modification::getFile("model/educacao/progressaoparcial/ProgressaoParcialParametro.model.php"));
+require_once(Modification::getFile("model/educacao/progressaoparcial/ProgressaoParcialAlunoRepository.model.php"));
+require_once(Modification::getFile("model/educacao/avaliacao/EncerramentoAvaliacao.model.php"));
+require_once(Modification::getFile("model/educacao/avaliacao/DiarioClasse.model.php"));
+
 
 $iEscola           = db_getsession("DB_coddepto");
 
@@ -90,6 +96,17 @@ switch($oParam->exec) {
             $oDadosAluno->aPendencias            = array();
             $oDadosAluno->lTemMatriculaPosterior = false;
             $oDadosAluno->lSemPendencia          = false;
+            $oDadosAluno->iOrdemEtapaOrigem       = $oMatricula->getEtapaDeOrigem()->getOrdem();
+
+            $sqlEtapaDestinoMatricula = " SELECT ed364_etapadestino FROM etapadestinomatricula WHERE ed364_matricula = {$oMatricula->getCodigo()} order by ed364_codigo desc";
+            $rs = db_query($sqlEtapaDestinoMatricula);
+            if (!$rs) {
+                throw new Exception("Erro ao buscar etapa de destino.");
+            }
+            $oDadosAluno->iEtapaDestino = 0;
+            if (pg_num_rows($rs) > 0) {
+                $oDadosAluno->iEtapaDestino          = pg_fetch_assoc($rs)['ed364_etapadestino'];
+            }
 
             if( isset( $oParam->lCancelamento ) || in_array($oMatricula->getSituacao(), array("TRANSFERIDO REDE", "TRANSFERIDO FORA") ) ) {
                 $oDadosAluno->lTemMatriculaPosterior = MatriculaPosterior( $oMatricula->getCodigo() );
@@ -178,8 +195,31 @@ switch($oParam->exec) {
                 $oDadosAluno->aPendencias[]          = urlencode("Aluno transferido após o encerramento.");
             }
 
-            db_fim_transacao(false);
+            $etapasTurma = $oMatricula->getTurma()->getEtapas();
+            $ultimaEtapa = $etapasTurma[count($etapasTurma) - 1];
+            $proximaEtapa = EtapaRepository::getProximaEtapa($oMatricula->getTurma(), $ultimaEtapa->getEtapa());
+
+            $oRetorno->etapasLimiteAprovacao = [];
+            if (!is_null($proximaEtapa)) {
+                foreach ($etapasTurma as $etapaTurma) {
+                    $etapaDestino = (object)[
+                        "codigo" => $etapaTurma->getEtapa()->getCodigo(),
+                        "nome" => urlencode($etapaTurma->getEtapa()->getNome()),
+                        "ordem" => $etapaTurma->getEtapa()->getOrdem()
+                    ];
+                    $oRetorno->etapasLimiteAprovacao[] = $etapaDestino;
+                }
+
+                $oRetorno->etapasLimiteAprovacao[] = (object)[
+                    "codigo" => $proximaEtapa->getCodigo(),
+                    "nome" => urlencode($proximaEtapa->getNome()),
+                    "ordem" => $proximaEtapa->getOrdem()
+                ];
+            }
             $oRetorno->aDadosAlunos[] = $oDadosAluno;
+
+            db_fim_transacao(false);
+
         }
 
         break;
@@ -397,6 +437,11 @@ switch($oParam->exec) {
         try {
 
             $oEncerramento                = new EncerramentoAvaliacao(new DBLogJSON("tmp/encerramento.json"));
+            $etapasLimiteAprovacao = [];
+            foreach ($oParam->aEtapasLimiteAprovacao as $etapaLimiteAprovacao) {
+                $etapasLimiteAprovacao[$etapaLimiteAprovacao->codigoAluno] = $etapaLimiteAprovacao->etapaDestino;
+            }
+            $oEncerramento->setEtapasLimiteAprovacao($etapasLimiteAprovacao);
             $oRetorno->aTurmasProcessadas = array();
             $oRetorno->lImprimeRel        = false; // Para manter compatibilidade
             $oRetorno->status             = 1;

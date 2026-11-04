@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clhistoric->rotulo->label("r25_descr");
               <?=$Lr25_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r25_mesusu",2,$Ir25_mesusu,true,"text",4,"","chave_r25_mesusu");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clhistoric->rotulo->label("r25_descr");
               <?=$Lr25_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r25_codigo",4,$Ir25_codigo,true,"text",4,"","chave_r25_codigo");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clhistoric->rotulo->label("r25_descr");
               <?=$Lr25_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r25_descr",30,$Ir25_descr,true,"text",4,"","chave_r25_descr");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clhistoric->rotulo->label("r25_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_historic.php")==true){
@@ -130,12 +130,12 @@ $clhistoric->rotulo->label("r25_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

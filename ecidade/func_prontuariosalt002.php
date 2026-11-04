@@ -91,7 +91,7 @@ if($linhas1>0){
               <?=$Lsd24_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
+              <?php db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
             </td>
           </tr>
           <tr>
@@ -99,7 +99,7 @@ if($linhas1>0){
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-              <?db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
+              <?php db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
             </td>
           </tr>
 
@@ -108,7 +108,7 @@ if($linhas1>0){
               <?=$Lsd24_c_digitada?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-            	<?
+            	<?php
 			       $x = array("S"=>"SIM","N"=>"NÃO");
 			       db_select('chave_sd24_c_digitada',$x,true,1);
             	?>
@@ -118,7 +118,7 @@ if($linhas1>0){
           <tr>
              <td nowrap title="<?=@$Tsd24_d_cadastro?>"><?=@$Lsd24_d_cadastro?></td>
              <td>
-             <?
+             <?php
              db_inputdata('sd24_d_cadastro',@$sd24_d_cadastro_dia,
                                             @$sd24_d_cadastro_mes,
                                             @$sd24_d_cadastro_ano,
@@ -218,10 +218,10 @@ if($linhas1>0){
 
         if( isset( $sql ) ){
 			$repassa = array(
-                       "chave_sd24_i_codigo"=>@$chave_sd24_i_codigo, 
+                       "chave_sd24_i_codigo"=>@$chave_sd24_i_codigo,
                        "chave_z01_v_nome"=>@$chave_z01_v_nome,
                        "chave_sd24_c_digitada"=>@$chave_sd24_c_digitada
-                      );                 
+                      );
     			db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",@$repassa);
     		}
 

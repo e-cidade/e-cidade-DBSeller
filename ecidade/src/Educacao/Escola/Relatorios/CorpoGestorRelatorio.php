@@ -42,7 +42,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
 
         $sNomeDistrito = utf8_decode($this->parametros->nome_distrito);
         $sCodBairro = utf8_decode($this->parametros->codEscolaBairro);
-        
+
         if (!empty($filtros_cabecalho)) {
             $head2 = "Relatório de Endereço por: {$filtros_cabecalho}";
         }
@@ -75,6 +75,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         $this->AddPage();
 
         $sCodBairro = utf8_decode($this->parametros->codEscolaBairro);
+
         $where = "";
         if (!is_null($this->bairro)) {
             $where = " AND j13_codi = {$this->bairro->getCodigo()} ";
@@ -95,8 +96,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         SELECT j13_codi, j13_descr
           FROM bairro
               WHERE exists(
-                  SELECT 1 FROM escola 
-                    WHERE j13_codi = ed18_i_bairro  
+                  SELECT 1 FROM escola
+                    WHERE j13_codi = ed18_i_bairro
                       AND ed18_i_funcionamento = 1 AND ed18_i_tipoescola = 1
                   )
           {$where}
@@ -104,15 +105,28 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
         ";
         $result_bairro = db_query($sql_bairro);
 
-        while ($ln = pg_fetch_array($result_bairro)) {
-            $this->SetFont('Arial', 'B', 9);
-            if ($this->getAvailHeight() <= 22) {
-                $this->AddPage();
+        if (!$this->parametros->chk_escolas_bairro) {
+            while ($ln = pg_fetch_array($result_bairro)) {
+                $this->SetFont('Arial', 'B', 9);
+                if ($this->getAvailHeight() <= 22) {
+                    $this->AddPage();
+                }
+                if ($this->parametros->chk_escolas_bairro || !is_null($this->bairro)) {
+                    $this->Cell(192, 10, $ln['j13_descr'], 0, 1);
+                }
             }
-            if ($this->parametros->chk_escolas_bairro || !is_null($this->bairro)) {
-                $this->Cell(192, 10, $ln['j13_descr'], 0, 1);
+            $this->rodarSql();
+        } else {
+            while ($ln = pg_fetch_array($result_bairro)) {
+                $this->SetFont('Arial', 'B', 9);
+                if ($this->getAvailHeight() <= 22) {
+                    $this->AddPage();
+                }
+                if ($this->parametros->chk_escolas_bairro || !is_null($this->bairro)) {
+                    $this->Cell(192, 10, $ln['j13_descr'], 0, 1);
+                }
+                $this->rodarSql($ln['j13_codi']);
             }
-            $this->rodarSql($ln['j13_codi']);
         }
 
         $this->Output();
@@ -169,10 +183,10 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
                             left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo
                 ";
         $sqlRh = "";
-        if ($this->parametros->chk_diretor ||
+        if (($this->parametros->chk_diretor ||
             $this->parametros->chk_diretor_interino ||
             $this->parametros->chk_orientador ||
-            $this->parametros->chk_diretor_adjunto) {
+            $this->parametros->chk_diretor_adjunto) && !$this->parametros->chk_funcional) {
             $sqlRh .= " AND ( ed01_i_codigo = 0 ";
             if ($this->parametros->chk_diretor) {
                 $sqlRh .= " or ed01_i_codigo = 5 ";
@@ -238,7 +252,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
 
         $sql .= "  group by codigo_escola, escola, codigo_ref, logradouro, numero, complemento, bairro, cep,
                         telefones, ddds,j13_codi ORDER BY ed18_codigoreferencia asc ";
-        
+
+
         $result = db_query($sql);
         if (!$result) {
             db_redireciona('db_erros.php?db_erro=Erro ao buscar dados.');
@@ -338,6 +353,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
                             end as ed20_i_codigo,
 	               case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome,
 	               case when ed20_i_tiposervidor = 1 then cgmrh.z01_cgccpf else cgmcgm.z01_cgccpf end  as z01_cgccpf,
+                   case when ed20_i_tiposervidor = 1 then cgmfisico.z04_nomesocial 
+                   else cgmfisico.z04_nomesocial end as z04_nomesocial,
 	               ed01_c_descr,
 	               case when ed20_i_tiposervidor = 1
 	                then regimerh.rh30_descr
@@ -376,6 +393,7 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
 	         left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo
 	         left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm
 	         left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime
+             left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm
 	        WHERE ed75_i_escola = '{$codigo_escola}' ";
 
             if (($this->parametros->chk_diretor ||
@@ -413,7 +431,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
                     $this->parametros->chk_diretor_adjunto) && $this->parametros->chk_funcional) {
             }
 
-            $sql .= "AND ed75_i_saidaescola is null group by ed20_i_codigo, cgmcgm.z01_nome, cgmcgm.z01_cgccpf,
+            $sql .= "AND ed75_i_saidaescola is null group by ed20_i_codigo,
+                    cgmcgm.z01_nome, cgmfisico.z04_nomesocial, cgmcgm.z01_cgccpf,
                     ed01_c_descr, regimecgm.rh30_descr, ed75_i_saidaescola, cgmrh.z01_telef,
                     celular,ed30_i_ramal, rechumanopessoal.ed284_i_rhpessoal, rechumanocgm.ed285_i_cgm,
                     cgmrh.z01_nome, cgmrh.z01_cgccpf, regimerh.rh30_descr
@@ -427,12 +446,14 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
                     $this->AddPage();
                 }
                 $this->Cell(46, 4, 'CARGO');
-                $this->Cell(80, 4, 'NOME');
-                $this->Cell(64, 4, 'CELULAR', 0, 1);
+                $this->Cell(100, 4, 'NOME / NOME SOCIAL', 0);
+                $this->Cell(44, 4, 'CELULAR', 0, 1);
             }
 
             while ($row_diretores = pg_fetch_array($result_diretores)) {
-                $nome = $row_diretores['z01_nome'];
+                $nome = $row_diretores['z04_nomesocial'] == ""
+                        ? mb_strimwidth($row_diretores['z01_nome'], 0, 60)
+                        : mb_strimwidth($row_diretores['z01_nome'] . " / " . $row_diretores['z04_nomesocial'], 0, 55);
                 $cargo = $row_diretores['ed01_c_descr'];
                 $telefone = $row_diretores['z01_telef'];
                 $ddd = $row_diretores['ddd'];
@@ -477,8 +498,8 @@ class CorpoGestorRelatorio extends FpdfMultiCellBorder
                 $this->SetFont('Arial', '', 8);
 
                 $this->Cell(46, 4, $cargo);
-                $this->Cell(80, 4, $nome);
-                $this->Cell(64, 4, $this->maskFoneDdd($celular, $ddd), 0, 1);
+                $this->Cell(100, 4, $nome);
+                $this->Cell(44, 4, $this->maskFoneDdd($celular, $ddd), 0, 1);
             }
 
             $this->SetY($this->GetY() + 4);

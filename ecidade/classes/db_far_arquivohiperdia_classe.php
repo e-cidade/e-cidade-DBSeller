@@ -1,83 +1,83 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Farmacia
 //CLASSE DA ENTIDADE far_arquivohiperdia
-class cl_far_arquivohiperdia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $fa56_i_codigo = 0; 
-   var $fa56_d_dataini_dia = null; 
-   var $fa56_d_dataini_mes = null; 
-   var $fa56_d_dataini_ano = null; 
-   var $fa56_d_dataini = null; 
-   var $fa56_d_datafim_dia = null; 
-   var $fa56_d_datafim_mes = null; 
-   var $fa56_d_datafim_ano = null; 
-   var $fa56_d_datafim = null; 
-   var $fa56_c_nomearquivo = null; 
-   var $fa56_o_arquivo = 0; 
-   var $fa56_i_login = 0; 
-   var $fa56_d_datasistema_dia = null; 
-   var $fa56_d_datasistema_mes = null; 
-   var $fa56_d_datasistema_ano = null; 
-   var $fa56_d_datasistema = null; 
-   var $fa56_c_horasistema = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_far_arquivohiperdia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $fa56_i_codigo = 0;
+   var $fa56_d_dataini_dia = null;
+   var $fa56_d_dataini_mes = null;
+   var $fa56_d_dataini_ano = null;
+   var $fa56_d_dataini = null;
+   var $fa56_d_datafim_dia = null;
+   var $fa56_d_datafim_mes = null;
+   var $fa56_d_datafim_ano = null;
+   var $fa56_d_datafim = null;
+   var $fa56_c_nomearquivo = null;
+   var $fa56_o_arquivo = 0;
+   var $fa56_i_login = 0;
+   var $fa56_d_datasistema_dia = null;
+   var $fa56_d_datasistema_mes = null;
+   var $fa56_d_datasistema_ano = null;
+   var $fa56_d_datasistema = null;
+   var $fa56_c_horasistema = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 fa56_i_codigo = int4 = Código 
-                 fa56_d_dataini = date = Data de Início 
-                 fa56_d_datafim = date = Data de Fim 
-                 fa56_c_nomearquivo = varchar(50) = Nome do arquivo 
-                 fa56_o_arquivo = oid = Arquivo 
-                 fa56_i_login = int4 = Login 
-                 fa56_d_datasistema = date = Data do sistema 
-                 fa56_c_horasistema = char(5) = Hora do sistema 
+                 fa56_i_codigo = int4 = Código
+                 fa56_d_dataini = date = Data de Início
+                 fa56_d_datafim = date = Data de Fim
+                 fa56_c_nomearquivo = varchar(50) = Nome do arquivo
+                 fa56_o_arquivo = oid = Arquivo
+                 fa56_i_login = int4 = Login
+                 fa56_d_datasistema = date = Data do sistema
+                 fa56_c_horasistema = char(5) = Hora do sistema
                  ";
-   //funcao construtor da classe 
-   function cl_far_arquivohiperdia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("far_arquivohiperdia"); 
+     $this->rotulo = new rotulo("far_arquivohiperdia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_far_arquivohiperdia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->fa56_i_codigo = ($this->fa56_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"]:$this->fa56_i_codigo);
        if($this->fa56_d_dataini == ""){
@@ -122,9 +122,9 @@ class cl_far_arquivohiperdia {
      }
    }
    // funcao para inclusao
-   function incluir ($fa56_i_codigo){ 
+   public function incluir ($fa56_i_codigo){
       $this->atualizacampos();
-     if($this->fa56_d_dataini == null ){ 
+     if($this->fa56_d_dataini == null ){
        $this->erro_sql = " Campo Data de Início nao Informado.";
        $this->erro_campo = "fa56_d_dataini_dia";
        $this->erro_banco = "";
@@ -133,7 +133,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_d_datafim == null ){ 
+     if($this->fa56_d_datafim == null ){
        $this->erro_sql = " Campo Data de Fim nao Informado.";
        $this->erro_campo = "fa56_d_datafim_dia";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_c_nomearquivo == null ){ 
+     if($this->fa56_c_nomearquivo == null ){
        $this->erro_sql = " Campo Nome do arquivo nao Informado.";
        $this->erro_campo = "fa56_c_nomearquivo";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_o_arquivo == null ){ 
+     if($this->fa56_o_arquivo == null ){
        $this->erro_sql = " Campo Arquivo nao Informado.";
        $this->erro_campo = "fa56_o_arquivo";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_i_login == null ){ 
+     if($this->fa56_i_login == null ){
        $this->erro_sql = " Campo Login nao Informado.";
        $this->erro_campo = "fa56_i_login";
        $this->erro_banco = "";
@@ -169,7 +169,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_d_datasistema == null ){ 
+     if($this->fa56_d_datasistema == null ){
        $this->erro_sql = " Campo Data do sistema nao Informado.";
        $this->erro_campo = "fa56_d_datasistema_dia";
        $this->erro_banco = "";
@@ -178,7 +178,7 @@ class cl_far_arquivohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa56_c_horasistema == null ){ 
+     if($this->fa56_c_horasistema == null ){
        $this->erro_sql = " Campo Hora do sistema nao Informado.";
        $this->erro_campo = "fa56_c_horasistema";
        $this->erro_banco = "";
@@ -188,16 +188,16 @@ class cl_far_arquivohiperdia {
        return false;
      }
      if($fa56_i_codigo == "" || $fa56_i_codigo == null ){
-       $result = db_query("select nextval('far_arquivohiperdia_fa56_i_codigo_seq')"); 
+       $result = db_query("select nextval('far_arquivohiperdia_fa56_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: far_arquivohiperdia_fa56_i_codigo_seq do campo: fa56_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: far_arquivohiperdia_fa56_i_codigo_seq do campo: fa56_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->fa56_i_codigo = pg_result($result,0,0); 
+       $this->fa56_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from far_arquivohiperdia_fa56_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $fa56_i_codigo)){
@@ -208,10 +208,10 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->fa56_i_codigo = $fa56_i_codigo; 
+         $this->fa56_i_codigo = $fa56_i_codigo;
        }
      }
-     if(($this->fa56_i_codigo == null) || ($this->fa56_i_codigo == "") ){ 
+     if(($this->fa56_i_codigo == null) || ($this->fa56_i_codigo == "") ){
        $this->erro_sql = " Campo fa56_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -220,27 +220,27 @@ class cl_far_arquivohiperdia {
        return false;
      }
      $sql = "insert into far_arquivohiperdia(
-                                       fa56_i_codigo 
-                                      ,fa56_d_dataini 
-                                      ,fa56_d_datafim 
-                                      ,fa56_c_nomearquivo 
-                                      ,fa56_o_arquivo 
-                                      ,fa56_i_login 
-                                      ,fa56_d_datasistema 
-                                      ,fa56_c_horasistema 
+                                       fa56_i_codigo
+                                      ,fa56_d_dataini
+                                      ,fa56_d_datafim
+                                      ,fa56_c_nomearquivo
+                                      ,fa56_o_arquivo
+                                      ,fa56_i_login
+                                      ,fa56_d_datasistema
+                                      ,fa56_c_horasistema
                        )
                 values (
-                                $this->fa56_i_codigo 
-                               ,".($this->fa56_d_dataini == "null" || $this->fa56_d_dataini == ""?"null":"'".$this->fa56_d_dataini."'")." 
-                               ,".($this->fa56_d_datafim == "null" || $this->fa56_d_datafim == ""?"null":"'".$this->fa56_d_datafim."'")." 
-                               ,'$this->fa56_c_nomearquivo' 
-                               ,$this->fa56_o_arquivo 
-                               ,$this->fa56_i_login 
-                               ,".($this->fa56_d_datasistema == "null" || $this->fa56_d_datasistema == ""?"null":"'".$this->fa56_d_datasistema."'")." 
-                               ,'$this->fa56_c_horasistema' 
+                                $this->fa56_i_codigo
+                               ,".($this->fa56_d_dataini == "null" || $this->fa56_d_dataini == ""?"null":"'".$this->fa56_d_dataini."'")."
+                               ,".($this->fa56_d_datafim == "null" || $this->fa56_d_datafim == ""?"null":"'".$this->fa56_d_datafim."'")."
+                               ,'$this->fa56_c_nomearquivo'
+                               ,$this->fa56_o_arquivo
+                               ,$this->fa56_i_login
+                               ,".($this->fa56_d_datasistema == "null" || $this->fa56_d_datasistema == ""?"null":"'".$this->fa56_d_datasistema."'")."
+                               ,'$this->fa56_c_horasistema'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "far_arquivohiperdia ($this->fa56_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -279,16 +279,16 @@ class cl_far_arquivohiperdia {
        $resac = db_query("insert into db_acount values($acount,3081,17425,'','".AddSlashes(pg_result($resaco,0,'fa56_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($fa56_i_codigo=null) { 
+   public function alterar ($fa56_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update far_arquivohiperdia set ";
      $virgula = "";
-     if(trim($this->fa56_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"])){ 
+     if(trim($this->fa56_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_codigo"])){
        $sql  .= $virgula." fa56_i_codigo = $this->fa56_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa56_i_codigo) == null ){ 
+       if(trim($this->fa56_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa56_i_codigo";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"] !="") ){ 
+     if(trim($this->fa56_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"] !="") ){
        $sql  .= $virgula." fa56_d_dataini = '$this->fa56_d_dataini' ";
        $virgula = ",";
-       if(trim($this->fa56_d_dataini) == null ){ 
+       if(trim($this->fa56_d_dataini) == null ){
          $this->erro_sql = " Campo Data de Início nao Informado.";
          $this->erro_campo = "fa56_d_dataini_dia";
          $this->erro_banco = "";
@@ -310,11 +310,11 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_dataini_dia"])){
          $sql  .= $virgula." fa56_d_dataini = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_dataini) == null ){ 
+         if(trim($this->fa56_d_dataini) == null ){
            $this->erro_sql = " Campo Data de Início nao Informado.";
            $this->erro_campo = "fa56_d_dataini_dia";
            $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"] !="") ){ 
+     if(trim($this->fa56_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"] !="") ){
        $sql  .= $virgula." fa56_d_datafim = '$this->fa56_d_datafim' ";
        $virgula = ",";
-       if(trim($this->fa56_d_datafim) == null ){ 
+       if(trim($this->fa56_d_datafim) == null ){
          $this->erro_sql = " Campo Data de Fim nao Informado.";
          $this->erro_campo = "fa56_d_datafim_dia";
          $this->erro_banco = "";
@@ -337,11 +337,11 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datafim_dia"])){
          $sql  .= $virgula." fa56_d_datafim = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_datafim) == null ){ 
+         if(trim($this->fa56_d_datafim) == null ){
            $this->erro_sql = " Campo Data de Fim nao Informado.";
            $this->erro_campo = "fa56_d_datafim_dia";
            $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_nomearquivo"])){ 
+     if(trim($this->fa56_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_nomearquivo"])){
        $sql  .= $virgula." fa56_c_nomearquivo = '$this->fa56_c_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->fa56_c_nomearquivo) == null ){ 
+       if(trim($this->fa56_c_nomearquivo) == null ){
          $this->erro_sql = " Campo Nome do arquivo nao Informado.";
          $this->erro_campo = "fa56_c_nomearquivo";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_o_arquivo"])){ 
+     if(trim($this->fa56_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_o_arquivo"])){
        $sql  .= $virgula." fa56_o_arquivo = $this->fa56_o_arquivo ";
        $virgula = ",";
-       if(trim($this->fa56_o_arquivo) == null ){ 
+       if(trim($this->fa56_o_arquivo) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "fa56_o_arquivo";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_login"])){ 
+     if(trim($this->fa56_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_i_login"])){
        $sql  .= $virgula." fa56_i_login = $this->fa56_i_login ";
        $virgula = ",";
-       if(trim($this->fa56_i_login) == null ){ 
+       if(trim($this->fa56_i_login) == null ){
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "fa56_i_login";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_far_arquivohiperdia {
          return false;
        }
      }
-     if(trim($this->fa56_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"] !="") ){ 
+     if(trim($this->fa56_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"] !="") ){
        $sql  .= $virgula." fa56_d_datasistema = '$this->fa56_d_datasistema' ";
        $virgula = ",";
-       if(trim($this->fa56_d_datasistema) == null ){ 
+       if(trim($this->fa56_d_datasistema) == null ){
          $this->erro_sql = " Campo Data do sistema nao Informado.";
          $this->erro_campo = "fa56_d_datasistema_dia";
          $this->erro_banco = "";
@@ -403,11 +403,11 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["fa56_d_datasistema_dia"])){
          $sql  .= $virgula." fa56_d_datasistema = null ";
          $virgula = ",";
-         if(trim($this->fa56_d_datasistema) == null ){ 
+         if(trim($this->fa56_d_datasistema) == null ){
            $this->erro_sql = " Campo Data do sistema nao Informado.";
            $this->erro_campo = "fa56_d_datasistema_dia";
            $this->erro_banco = "";
@@ -418,10 +418,10 @@ class cl_far_arquivohiperdia {
          }
        }
      }
-     if(trim($this->fa56_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_horasistema"])){ 
+     if(trim($this->fa56_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa56_c_horasistema"])){
        $sql  .= $virgula." fa56_c_horasistema = '$this->fa56_c_horasistema' ";
        $virgula = ",";
-       if(trim($this->fa56_c_horasistema) == null ){ 
+       if(trim($this->fa56_c_horasistema) == null ){
          $this->erro_sql = " Campo Hora do sistema nao Informado.";
          $this->erro_campo = "fa56_c_horasistema";
          $this->erro_banco = "";
@@ -461,7 +461,7 @@ class cl_far_arquivohiperdia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "far_arquivohiperdia nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->fa56_i_codigo;
@@ -489,14 +489,14 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($fa56_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($fa56_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($fa56_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -529,7 +529,7 @@ class cl_far_arquivohiperdia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "far_arquivohiperdia nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$fa56_i_codigo;
@@ -557,11 +557,11 @@ class cl_far_arquivohiperdia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -583,11 +583,11 @@ class cl_far_arquivohiperdia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,15 +601,15 @@ class cl_far_arquivohiperdia {
      $sql2 = "";
      if($dbwhere==""){
        if($fa56_i_codigo!=null ){
-         $sql2 .= " where far_arquivohiperdia.fa56_i_codigo = $fa56_i_codigo "; 
-       } 
+         $sql2 .= " where far_arquivohiperdia.fa56_i_codigo = $fa56_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,11 +618,11 @@ class cl_far_arquivohiperdia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $fa56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -635,15 +635,15 @@ class cl_far_arquivohiperdia {
      $sql2 = "";
      if($dbwhere==""){
        if($fa56_i_codigo!=null ){
-         $sql2 .= " where far_arquivohiperdia.fa56_i_codigo = $fa56_i_codigo "; 
-       } 
+         $sql2 .= " where far_arquivohiperdia.fa56_i_codigo = $fa56_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

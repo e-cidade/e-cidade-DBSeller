@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -109,7 +109,7 @@ function GetDadosEscola($iModulo) {
       <fieldset style="width:95%"><legend><b>Relatório de Alunos Matriculados  </b></legend>
        <table border="0">
         <tr>
-         <?
+         <?php
            GetDadosEscola(db_getsession('DB_modulo'));
          ?>
          <td>
@@ -191,7 +191,7 @@ function GetDadosEscola($iModulo) {
     ?>
   </div>
  </body>
- <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+ <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script>
 
@@ -275,15 +275,15 @@ function js_etapa(calendario) {
 
   oParam.exec       = "PesquisaEtapa";
 
-  <? if ($iModulo != 7159) { ?>
+  <?php if ($iModulo != 7159) { ?>
 
     oParam.escola = <?=$iEscola?>
 
-  <? } else { ?>
+  <?php } else { ?>
 
     oParam.escola  =  $('escola').value;
 
-  <? } ?>
+  <?php } ?>
 
   oParam.calendario = calendario;
 
@@ -348,7 +348,7 @@ function js_matriculas(turma,descrturma,calendario,etapaturma){
 
 </script>
 
-<?
+<?php
 
 if ($iModulo != 7159) {
 ?>
@@ -358,7 +358,7 @@ if ($iModulo != 7159) {
   js_escola(<?=$iEscola?>);
 </script>
 
-<?
+<?php
 
   }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -194,7 +194,7 @@ if(isset($incluir)){
        <input name="lotecemit" type="hidden" value="<?=@$lotecemit?>">
 
 
-       <?db_input('sepultamento',10,@$sepultamento,true,'hidden',3)?>
+       <?php db_input('sepultamento',10,@$sepultamento,true,'hidden',3)?>
        <?//db_input('nome',40,$nome,true,'text',3)?>
       <tr>
        <td>Localização</td>
@@ -224,7 +224,7 @@ if(isset($incluir)){
      <table>
       <tr>
        <td>
-        <?
+        <?php
          $result = $clsepultamentos->sql_record($clsepultamentos->sql_query(@$sepultamento,"cm01_i_cemiterio, cgm.z01_nome as nome_sepultamento"));
          db_fieldsmemory($result,0);
          if(isset($local)){
@@ -259,7 +259,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
  if($local == 1){
   db_msgbox($clsepulta->erro_msg);

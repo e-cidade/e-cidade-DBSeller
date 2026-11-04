@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,19 +66,19 @@ $clrotulo->label("j01_matric");
                             <?=$Lv01_coddiv?>
                         </td>
                         <td width="50%" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("v01_coddiv",6,$Iv01_coddiv,true,"text",1);
                             ?>
                         </td>
                     </tr>
                     <tr>
                         <td align="right">
-                            <?
+                            <?php
                             db_ancora($Lj01_matric,' js_matri(true); ',1);
                             ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_input('j01_matric',6,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
                             ?>
                         </td>
@@ -88,7 +88,7 @@ $clrotulo->label("j01_matric");
                             <?=$Lz01_numcgm?>
                         </td>
                         <td width="" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"","z01_numcgm");
                             ?>
                         </td>
@@ -98,22 +98,22 @@ $clrotulo->label("j01_matric");
                             <?=$Lz01_nome?>
                         </td>
                         <td width="" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","z01_nome");
                             ?>
                         </td>
                     </tr>
                     <tr>
                         <td width="" align="right" nowrap title="<?=$Tv03_codigo?>">
-                            <?
+                            <?php
                             db_ancora(@$Lv03_codigo,"js_pesquisav03_codigo(true);",1);
                             ?>
                         </td>
                         <td width="" align="left" nowrap>
-                            <?
+                            <?php
                             db_input("v03_codigo",6,$Iv03_codigo,true,"text",4,"onchange='js_pesquisav03_codigo(false);'");
                             ?>
-                            <?
+                            <?php
                             db_input('v03_descr',40,$Iv03_descr,true,'text',3,'')
                             ?>
                         </td>

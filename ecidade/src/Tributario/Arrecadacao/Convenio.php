@@ -151,7 +151,9 @@ class Convenio
         if (empty($iCodConvenio)) {
             throw new \Exception("Código do convênio não informado.");
         }
-        define("TIPO_CONVENIO_COBRANCA_REGISTRADA", regraEmissao::getConveioCustaBoleto());
+        if (!defined('TIPO_CONVENIO_COBRANCA_REGISTRADA')) {
+            define("TIPO_CONVENIO_COBRANCA_REGISTRADA", regraEmissao::getConveioCustaBoleto());
+        }
 
         $sSqlConvenio  = " select ar12_cadconveniomodalidade,	";
         $sSqlConvenio .= "        ar12_sigla,      ";
@@ -180,17 +182,17 @@ class Convenio
         $sSqlConvenio .= "          else b.db89_digito  ";
         $sSqlConvenio .= "        end as digagencia  ";
         $sSqlConvenio .= "   from cadconvenio        ";
-        $sSqlConvenio .= "        inner join cadtipoconvenio     on cadtipoconvenio.ar12_sequencial     
+        $sSqlConvenio .= "        inner join cadtipoconvenio     on cadtipoconvenio.ar12_sequencial
                                                                   = cadconvenio.ar11_cadtipoconvenio        ";
-        $sSqlConvenio .= "        left  join conveniocobranca    on conveniocobranca.ar13_cadconvenio   
+        $sSqlConvenio .= "        left  join conveniocobranca    on conveniocobranca.ar13_cadconvenio
                                                                   = cadconvenio.ar11_sequencial      	     ";
-        $sSqlConvenio .= "        left  join bancoagencia  a     on a.db89_sequencial                    
+        $sSqlConvenio .= "        left  join bancoagencia  a     on a.db89_sequencial
                                                                   = conveniocobranca.ar13_bancoagencia	     ";
-        $sSqlConvenio .= "        left  join convenioarrecadacao on convenioarrecadacao.ar14_cadconvenio 
+        $sSqlConvenio .= "        left  join convenioarrecadacao on convenioarrecadacao.ar14_cadconvenio
                                                                   = cadconvenio.ar11_sequencial     		     ";
-        $sSqlConvenio .= "        left  join bancoagencia  b     on b.db89_sequencial                   
+        $sSqlConvenio .= "        left  join bancoagencia  b     on b.db89_sequencial
                                                                   = convenioarrecadacao.ar14_bancoagencia   ";
-        $sSqlConvenio .= "        left  join cadarrecadacao      on cadarrecadacao.ar16_sequencial 		   
+        $sSqlConvenio .= "        left  join cadarrecadacao      on cadarrecadacao.ar16_sequencial
                                                                   = convenioarrecadacao.ar14_cadarrecadacao ";
         $sSqlConvenio .= "  where ar11_sequencial = {$iCodConvenio}		 ";
 

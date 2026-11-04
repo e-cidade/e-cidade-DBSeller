@@ -137,6 +137,7 @@ if( isset( $incluir ) || isset( $alterar ) ) {
 <script type="text/javascript" src="scripts/prototype.js"></script>
 <script type="text/javascript" src="scripts/strings.js"></script>
 <script type="text/javascript" src="scripts/webseller.js"></script>
+<script type="text/javascript" language="JavaScript" src="scripts/AjaxRequest.js"> </script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
@@ -144,7 +145,7 @@ if( isset( $incluir ) || isset( $alterar ) ) {
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmfichaatenddiag.php"));
         ?>
     </center>

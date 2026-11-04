@@ -98,7 +98,7 @@ if( isset($oGet->iSequencial) ) {
              <?=@$Lh72_sequencial?>
           </td>
           <td> 
-          <?
+          <?php
             db_input('h72_sequencial',10,$Ih72_sequencial,true,'text', 3,"")
           ?>
           </td>
@@ -106,12 +106,12 @@ if( isset($oGet->iSequencial) ) {
 
         <tr>
           <td nowrap title="<?=@$Th72_regist?>">
-          <?
+          <?php
             db_ancora("<b>Matrí­cula:</b>","js_pesquisah72_regist(true);",$db_opcao);
           ?>
           </td>
           <td> 
-          <?
+          <?php
             db_input('h72_regist',10,$Ih72_regist,true,'text',$db_opcao," onchange='js_pesquisah72_regist(false);'");
             db_input('z01_nome',50,$Iz01_nome,true,'text',3,'');
           ?>
@@ -123,7 +123,7 @@ if( isset($oGet->iSequencial) ) {
              <?=@$Lh72_dtinicial?>
           </td>
           <td> 
-          <?
+          <?php
             db_inputdata('h72_dtinicial',@$h72_dtinicial_dia,@$h72_dtinicial_mes,@$h72_dtinicial_ano,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -198,13 +198,13 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave) {
   db_iframe_rhpromocao.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?iSequencial='+chave";
   ?>
 }
 </script>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 </body>
 </html>

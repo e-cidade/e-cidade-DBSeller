@@ -1,0 +1,86 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1010530' name='tipopromitente' description="Tabela responsavel por guardar o tipo de promitente" prefix="" label="tipoPromitente" type="0">
+  <fields>
+    <field codigo="1011084"
+           campo_api=''
+           name="j164_tipopromitente"
+           conteudo="int4"
+           description="Sequencial da tabela tipopromitente"
+           inivalue="0"
+           label="j164_tipopromitente"
+           size="10"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="1"
+           tipoobj="text"
+           labelrel="Tipo de proprietario"
+           reference=""
+           ispk="t"
+           hassequence="t" >
+
+           <sequence name='tipopromitente_j164_tipopromitente_seq' />
+
+    </field>
+    <field codigo="1011080"
+           campo_api=''
+           name="j164_descricao"
+           conteudo="varchar(50)"
+           description="Descrição do tipo de promitente"
+           inivalue="0"
+           label="Tipo de Promitente"
+           size="50"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="2"
+           tipoobj="text"
+           labelrel=""
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+    <field codigo="1011081"
+           campo_api=''
+           name="j164_promitipo"
+           conteudo="varchar(2)"
+           description="Sigla do tipo de promitente"
+           inivalue="0"
+           label="Sigla"
+           size="1"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="2"
+           tipoobj="text"
+           labelrel=""
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+    <field codigo="1011270"
+           campo_api=''
+           name="j164_abreviatura"
+           conteudo="varchar(50)"
+           description="Abreviatura tipo de promitente"
+           inivalue="0"
+           label="Abreviatura"
+           size="50"
+           null="f"
+           uppercase="t"
+           autocompl="f"
+           aceitatipo="0"
+           tipoobj="text"
+           labelrel=""
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+  </fields>
+  <primarykey>
+    <fieldpk name="j164_tipopromitente"></fieldpk>
+  </primarykey>
+</table>

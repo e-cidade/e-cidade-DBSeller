@@ -352,7 +352,7 @@ class solicitacaoCompra
                 $oDaoPcProc->pc80_data = date("Y-m-d", db_getsession("DB_datausu"));
                 $oDaoPcProc->pc80_depto = db_getsession("DB_coddepto");
                 $oDaoPcProc->pc80_usuario = db_getsession("DB_id_usuario");
-                $oDaoPcProc->pc80_resumo = "Processo de Compras Criado automatico para a soliciticao {$this->iSolicitacao} ";
+                $oDaoPcProc->pc80_resumo = "Processo de compras criado automaticamente para a solicitação {$this->iSolicitacao} ";
                 $oDaoPcProc->pc80_resumo .= "do registro de preços {$iRegistroPreco}";
                 $oDaoPcProc->pc80_situacao = 2;
                 $oDaoPcProc->incluir(null);
@@ -404,7 +404,7 @@ class solicitacaoCompra
                 $iCodigoOrcamento = db_utils::fieldsMemory($rsVerificaOrcamento, 0)->pc20_codorc;
             } else {
 
-                $oDaoPcOrcam->pc20_obs = "Orçamento Processo de Compras Criado automático para a solicitação {$this->iSolicitacao} ";
+                $oDaoPcOrcam->pc20_obs = "Orçamento do processo de compras criado automaticamente para a solicitação {$this->iSolicitacao} ";
                 $oDaoPcOrcam->pc20_obs .= "do registro de preços {$iRegistroPreco}";
                 $oDaoPcOrcam->pc20_dtate = date("Y-m-d", db_getsession("DB_datausu"));
                 $oDaoPcOrcam->pc20_hrate = "18:00";
@@ -835,6 +835,7 @@ class solicitacaoCompra
         $sCampos .= "pc23_orcamforne,";
         $sCampos .= "pc23_valor      as valorfornecedor,";
         $sCampos .= "pc11_resum as observacao,";
+        $sCampos .= "pc10_solicitacaotipo as tiposolicitacao,";
         $sCampos .= "pc10_resumo as observacao_solicita,";
         $sCampos .= "pc10_solicitacaotipo as tipo_solicitacao,";
         $sCampos .= "pc23_vlrun as valorunitariofornecedor,";
@@ -896,7 +897,7 @@ class solicitacaoCompra
 
                 $oDados = db_utils::fieldsMemory($rsSolicitacao, $i, false, false, true);
 
-                if ($oDados->codigofornecedor == "" && $tipoSolicitacao!= '5') {
+                if (($oDados->codigofornecedor == "" || $oDados->valorunitariofornecedor == "" || $oDados->quantfornecedor == "") && $tipoSolicitacao!= '5') {
                     if ($iRowsFornecedor == 0) {
                         throw new Exception("Não existe orçamento julgado nem fornecedor sugerido para esta solicitação.");
                     }
@@ -945,9 +946,12 @@ class solicitacaoCompra
                 $oDados->saldoautorizar = $oDados->valordotacao;
                 if (!empty($oDados->codigoitemprocesso)) {
 
-                    $oValoresAutorizados = $this->getValoresParciais($oDados->codigoitemprocesso,
+                    $oValoresAutorizados = $this->getValoresParciais(
+                        $oDados->codigoitemprocesso,
                         $oDados->codigodotacao,
-                        $oDados->contrapartida);
+                        $oDados->contrapartida,
+                        $oDados->tiposolicitacao
+                    );
 
                     $oDados->quantidadeautorizada = $oValoresAutorizados->iQuantidadeAutorizacao;
                     $oDados->valorautorizado = $oValoresAutorizados->nValorAutorizacao;
@@ -993,7 +997,12 @@ class solicitacaoCompra
                 $oDados->autorizacaogeradas = array();
                 if (!empty($oDados->codigoitemprocesso)) {
                     $lic = new licitacao();
-                    $oDados->autorizacaogeradas = $lic->getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
+                    $oDados->autorizacaogeradas = $lic->getAutorizacoes(
+                        $oDados->codigoitemprocesso,
+                        $oDados->codigodotacao,
+                        null,
+                        $oDados->tiposolicitacao
+                    );
                 }
                 /**
                  * busca o parametro de casas decimais para formatar o valor jogado na grid
@@ -1028,7 +1037,7 @@ class solicitacaoCompra
      * @param integer_type $iOrcTipoRec
      * @return $oDadoValorParcial
      */
-    public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null)
+    public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null, $tipoSolicitacao = null)
     {
 
         if (empty($iCodigoItemProcesso)) {
@@ -1063,7 +1072,26 @@ class solicitacaoCompra
         $sCampos .= "sum(e55_quant) as quantidadeautorizacao           ";
         $sWhere = "          e73_pcprocitem = {$iCodigoItemProcesso} ";
         $sWhere .= "      and e56_coddot     = {$iCodigoDotacao}      ";
-        $sWhere .= "      and e54_anulad is null                      ";
+        $sWhere .= " and e54_anulad is null";
+
+        if ($tipoSolicitacao === '5') {
+            $sqlPossuiEmpenho = "
+                select e73_sequencial existe from empautitempcprocitem
+                    join empautitem on empautitempcprocitem.e73_autori = e55_autori
+                        AND empautitempcprocitem.e73_sequen = e55_sequen
+                    join empautoriza on empautitem.e55_autori = e54_autori
+                    join empempaut on e54_autori = e61_autori
+                where e73_pcprocitem = {$iCodigoItemProcesso}
+            ";
+
+            $empenho = $oDaoEmpAutItem->sql_record($sqlPossuiEmpenho);
+            $empenho = db_utils::fieldsMemory($empenho, 0);
+
+            if ($empenho->existe) {
+                $sWhere .= " and e73_sequencial in ({$sqlPossuiEmpenho}) ";
+            }
+        }
+
         $sWhere .= "      {$sWhereContrapartida}                      ";
         $sWhere .= " group by e55_vltot,                              ";
         $sWhere .= "          e55_quant                               ";

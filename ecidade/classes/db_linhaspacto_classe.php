@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE linhaspacto
 class cl_linhaspacto
@@ -22,13 +22,13 @@ class cl_linhaspacto
     var $c07_valor = 0;
     // cria propriedade com as variaveis do arquivo
     var $campos = "
-                 c07_sequencial = int4 = Código 
-                 c07_titulo = varchar(255) = Título 
-                 c07_valor = float8 = Valor 
+                 c07_sequencial = int4 = Código
+                 c07_titulo = varchar(255) = Título
+                 c07_valor = float8 = Valor
                  ";
 
     //funcao construtor da classe
-    function cl_linhaspacto()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("linhaspacto");
@@ -36,7 +36,7 @@ class cl_linhaspacto
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -47,7 +47,7 @@ class cl_linhaspacto
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c07_sequencial = ($this->c07_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["c07_sequencial"] : $this->c07_sequencial);
@@ -59,7 +59,7 @@ class cl_linhaspacto
     }
 
     // funcao para inclusao
-    function incluir($c07_sequencial)
+    public function incluir($c07_sequencial)
     {
         $this->atualizacampos();
         if ($this->c07_titulo == null) {
@@ -113,14 +113,14 @@ class cl_linhaspacto
             return false;
         }
         $sql = "insert into linhaspacto(
-                                       c07_sequencial 
-                                      ,c07_titulo 
-                                      ,c07_valor 
+                                       c07_sequencial
+                                      ,c07_titulo
+                                      ,c07_valor
                        )
                 values (
-                                $this->c07_sequencial 
-                               ,'$this->c07_titulo' 
-                               ,$this->c07_valor 
+                                $this->c07_sequencial
+                               ,'$this->c07_titulo'
+                               ,$this->c07_valor
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -166,7 +166,7 @@ class cl_linhaspacto
     }
 
     // funcao para alteracao
-    function alterar($c07_sequencial = null)
+    public function alterar($c07_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " UPDATE linhaspacto SET ";
@@ -270,7 +270,7 @@ class cl_linhaspacto
     }
 
     // funcao para exclusao
-    function excluir($c07_sequencial = null, $dbwhere = null)
+    public function excluir($c07_sequencial = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -344,7 +344,7 @@ class cl_linhaspacto
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -369,11 +369,11 @@ class cl_linhaspacto
     }
 
     // funcao do sql
-    function sql_query($c07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($c07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_linhaspacto
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -405,11 +405,11 @@ class cl_linhaspacto
     }
 
     // funcao do sql
-    function sql_query_file($c07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_linhaspacto
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_linhaspacto
         $ano = db_getsession('DB_anousu');
         $whereData = " o162_data between '{$ano}-01-01' and '{$ano}-12-31' ";
         $sqlBusca = <<<SQLBUSCA
-    
+
     select {$campos},
            sum(o156_valor) as previsto,
            sum(coalesce((select sum(o162_valor)
@@ -464,7 +464,7 @@ class cl_linhaspacto
                      from linhapactosaldomovimentacao
                      where o162_linhapacto = o156_sequencial
                        and {$whereData}
-                       and o162_tipo in (1, 2, 5, 6)), 0)) as suplementacoes_reducoes                 
+                       and o162_tipo in (1, 2, 5, 6)), 0)) as suplementacoes_reducoes
      from planoorcamentariolinhapacto
           inner join linhaspacto on c07_sequencial = o156_linhaspacto
           inner join orcdotacaoplanoorcamentario on o156_orcdotacaoplanoorcamentario = o155_sequencial
@@ -477,8 +477,8 @@ class cl_linhaspacto
                                 and o41_anousu  = o58_anousu
     where {$where}
     group by {$campos}
-    
-                               
+
+
 SQLBUSCA;
 
         if (!empty($ordem)) {
@@ -519,7 +519,7 @@ SQLBUSCA;
         $buscaInformacoes = <<<SQLBUSCA
 select o58_coddot as codigo_dotacao,
        fc_estruturaldotacao(o58_anousu, o58_coddot) as estrutural_dotacao,
-       o155_titulo as descricao_plano, 
+       o155_titulo as descricao_plano,
        c07_titulo as descricao_linha,
        o156_valor as previsto,
        abs(coalesce((select sum(o162_valor)
@@ -532,15 +532,15 @@ select o58_coddot as codigo_dotacao,
                  where o162_linhapacto = o156_sequencial
                    and {$whereData}
                    and o162_tipo in (1, 2, 5, 6)), 0) as suplementacoes_reducoes,
-      orcdotacao.o58_projativ as acao,       
-      linhaspacto.c07_sequencial as linha_pacto       
+      orcdotacao.o58_projativ as acao,
+      linhaspacto.c07_sequencial as linha_pacto
  from planoorcamentariolinhapacto
       inner join linhaspacto on c07_sequencial = o156_linhaspacto
       inner join orcdotacaoplanoorcamentario on o156_orcdotacaoplanoorcamentario = o155_sequencial
       inner join orcdotacao on o155_coddot = o58_coddot
                            and o155_anousu = o58_anousu
 where o58_anousu = {$parametro->ano}
-  and o58_instit = {$parametro->instituicao}                                  
+  and o58_instit = {$parametro->instituicao}
 SQLBUSCA;
 
 

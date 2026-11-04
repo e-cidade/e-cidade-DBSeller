@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
               Data de emissão
             </td>
             <td>
-              <?  
+              <?php  
                 db_inputdata('ob04_data', $ob04_data_dia, $ob04_data_mes, $ob04_data_ano, true, 'text', 1, "", "ob04_dataINI");
                 echo "<strong>&nbsp;À&nbsp;</strong>";
                 db_inputdata('ob04_data', $ob04_data_dia, $ob04_data_mes, $ob04_data_ano, true, 'text', 1, "", "ob04_dataFIM");
@@ -100,7 +100,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
               Tipo de Seleção:
             </td>
             <td>
-              <?  
+              <?php  
                 db_select("tipoSelecao", array("S" => "Seleção","I" => "Intervalo"),true,1, "onChange=\"js_tipoSelecao();\"");
               ?>                   
             </td>
@@ -108,7 +108,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
           <tr class="obras_selecao" style="display:none">
             <td colspan="2">
               <table>
-               <?
+               <?php
                 $oArquivoAuxiliar->funcao_gera_formulario();
                ?>
               </table>
@@ -117,7 +117,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
           <tr class="obras_selecao">
             <td>Opção de Seleção:</td>
             <td>
-              <?
+              <?php
               db_select('param_obrasalvara',$aTipoSelecao, true,2);
               ?>
             </td>
@@ -127,7 +127,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
               Obras:  
             </td>
             <td>
-              <? 
+              <?php 
                 db_input('ob04_codobra', 15, $Iob04_codobra, true, 'text', 1, "","ob04_codobraINI", "");
                 echo "<strong> À </strong>";                                                                                             
                 db_input('ob04_codobra', 15, $Iob04_codobra, true, 'text', 1, "","ob04_codobraFIM", "");
@@ -152,12 +152,12 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
             </td>
           </tr>
         </table>
-      <?  db_input('obra',"",0,true,'hidden',3,"");  ?>
+      <?php  db_input('obra',"",0,true,'hidden',3,"");  ?>
       </fieldset>
       <input type="button" name="relatorio1" value=" Processar " onClick="js_validaCampos();">
     </form>
   </body>
-  <? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script>
 function js_tipoSelecao() {

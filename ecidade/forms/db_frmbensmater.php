@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -45,7 +45,7 @@ $clrotulo->label("e60_numemp");
        <?=@$Lt53_codbem?>
     </td>
     <td>
-<?
+<?php
 db_input('t53_codbem',8,$It53_codbem,true,'text',3,"");
 ?>
     </td>
@@ -55,22 +55,22 @@ db_input('t53_codbem',8,$It53_codbem,true,'text',3,"");
        <?=@$Lt53_ntfisc?>
     </td>
     <td>
-<?
+<?php
 db_input('t53_ntfisc',51,$It53_ntfisc,true,'text',$db_opcao);
 ?>
     </td>
   </tr>
 
- <?
+ <?php
  /*
   <tr>
     <td nowrap title="<?=@$Te60_codemp?>">
-       <?
+       <?php
        db_ancora(@$Le60_codemp,"js_pesquisat53_empen(true,'cod');",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('e60_codemp',12,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesquisat53_empen(false,\"cod\");'")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('e60_codemp',12,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesqu
   <tr>
     <td nowrap title="<?=@$Te60_numemp?>" id="tdAncoraEmpenho">
       <label style="font-weight: bold;" id='procAdm'>
-        <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true,'emp');",$db_opcao); ?>
+        <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true,'emp');",$db_opcao); ?>
        </label>
 
       <label style="font-weight: bold; display: none;" id='procAdm1'>
@@ -102,7 +102,7 @@ db_input('e60_codemp',12,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesqu
        </label>
     </td>
     <td>
-       <?
+       <?php
           db_input('e60_numemp',8,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false,\"emp\");'");
         echo "<span id='procSis'>";
           db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
@@ -118,7 +118,7 @@ db_input('e60_codemp',12,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesqu
        </label>
     </td>
     <td>
-       <?
+       <?php
          db_input('e60_codemp', 8, $Ie60_codemp, true, 'text', 3, "");
        ?>
     </td>
@@ -129,7 +129,7 @@ db_input('e60_codemp',12,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesqu
        <?=@$Lt53_ordem?>
     </td>
     <td>
-<?
+<?php
 db_input('t53_ordem',11,$It53_ordem,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,8 +139,8 @@ db_input('t53_ordem',11,$It53_ordem,true,'text',$db_opcao,"")
        <?=@$Lt53_garant?>
     </td>
     <td>
-<?
-db_inputdata('t53_garant',@$t53_garant_dia,@$t53_garant_mes,@$t53_garant_ano,true,'text',$db_opcao,"")
+<?php
+db_inputdata('t53_garant',@$t53_garant_dia,@$t53_garant_mes,@$t53_garant_ano,true,'text',$db_opcao,"", '', "style='background-color:#E6E4F1'")
 ?>
     </td>
   </tr>
@@ -296,7 +296,7 @@ function preencheFormularioComDadosDoEmpenho(oAjax) {
 
 
 
-<?
+<?php
 if(isset($incluir) || isset($excluir)){
   $clbensmater->sql_record($clbensmater->sql_query_file($t53_codbem));
   if($clbensmater->numrows > 0){

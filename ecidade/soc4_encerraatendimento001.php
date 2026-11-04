@@ -59,12 +59,12 @@ $oRotulo->label("as23_observacao");
         <table>
           <tr>
             <td style="width: 25%" nowrap>
-              <?
+              <?php
                 db_ancora("<b>Família:</b>", "js_pesquisaFamilia(true);", 1);
               ?>
             </td>
             <td colspan="3">
-              <?
+              <?php
                 db_input("as04_sequencial", 10, $Ias04_sequencial, true, "text", 1, "onchange='js_pesquisaFamilia(false);'");
                 db_input("ov02_nome", 42, $Iov02_nome, true, "text", 3);
               ?>
@@ -73,7 +73,7 @@ $oRotulo->label("as23_observacao");
           <tr>
             <td style="width: 25%" nowrap><label class="bold">Local de Atendimento: </label></td>
             <td colspan="3">
-              <?
+              <?php
                 db_input("iLocalAtendimentoAtual", 6, "iLocalAtendimentoAtual", true, "hidden", 3);
                 db_input("sLocalAtendimentoAtual", 56, "localAtendimentoAtual", true, "text", 3);
               ?>
@@ -82,13 +82,13 @@ $oRotulo->label("as23_observacao");
           <tr>
             <td nowrap><?=$Las23_datavinculo?></td>
             <td nowrap>
-              <?
+              <?php
                 db_inputdata("as23_datavinculo", "", "", "", true, "text", 3);
               ?>
             </td>
             <td nowrap><?=$Las23_fimatendimento?></td>
             <td nowrap>
-              <?
+              <?php
                 db_inputdata("as23_fimatendimento", "", "", "", true, "text", 1);
               ?>
             </td>
@@ -97,7 +97,7 @@ $oRotulo->label("as23_observacao");
             <td colspan="4">
               <fieldset>
                 <legend class="bold">Motivo</legend>
-                <?
+                <?php
                   db_textarea("as23_observacao", 5, 72, $Ias23_observacao, true, "text", 1);
                 ?>
               </fieldset>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,26 +67,26 @@ if($clescola->numrows>0){
    <?=$Led86_i_codigo?>
   </td>
   <td>
-   <?db_input('ed86_i_codigo',10,$Ied86_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed86_i_codigo',10,$Ied86_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=$Ted86_i_escola?>">
-   <?db_ancora($Led86_i_escola,"",3);?>
+   <?php db_ancora($Led86_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed86_i_escola',10,$Ied86_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,$Ied18_c_nome,true,'text',3,'')
+   <?php db_input('ed86_i_escola',10,$Ied86_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,$Ied18_c_nome,true,'text',3,'')
    ?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=$Ted86_i_procedimento?>">
-   <?db_ancora($Led86_i_procedimento,"",3);?>
+   <?php db_ancora($Led86_i_procedimento,"",3);?>
   </td>
   <td>
-   <?db_input('ed86_i_procedimento',10,$Ied86_i_procedimento,true,'text',3,"","",$cor)?>
-   <?db_input('ed40_c_descr',40, $Ied40_c_descr,true,'text',3,"","",$cor)?>
+   <?php db_input('ed86_i_procedimento',10,$Ied86_i_procedimento,true,'text',3,"","",$cor)?>
+   <?php db_input('ed40_c_descr',40, $Ied40_c_descr,true,'text',3,"","",$cor)?>
   </td>
  </tr>
 </table>
@@ -95,7 +95,7 @@ if($clescola->numrows>0){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed86_i_codigo"       => (isset($ed86_i_codigo))       ? $ed86_i_codigo       : null,
                     "ed86_i_escola"       => (isset($ed86_i_escola))       ? $ed86_i_escola       : null,
                     "ed18_c_nome"         => (isset($ed18_c_nome))         ? $ed18_c_nome         : '',

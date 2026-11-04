@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("sd75_c_nome");
        <?=@$Lsd79_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_i_codigo',5,$Isd79_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd79_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd79_i_procedimento,"js_pesquisasd79_i_procedimento(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_i_procedimento',5,$Isd79_i_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd79_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nome',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd79_i_habilitacao?>">
-       <?
+       <?php
        db_ancora(@$Lsd79_i_habilitacao,"js_pesquisasd79_i_habilitacao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_i_habilitacao',5,$Isd79_i_habilitacao,true,'text',$db_opcao," onchange='js_pesquisasd79_i_habilitacao(false);'")
 ?>
-       <?
+       <?php
 db_input('sd75_c_nome',60,$Isd75_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('sd75_c_nome',60,$Isd75_c_nome,true,'text',3,'')
        <?=@$Lsd79_f_sh?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_f_sh',7,$Isd79_f_sh,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('sd79_f_sh',7,$Isd79_f_sh,true,'text',$db_opcao,"")
        <?=@$Lsd79_f_sa?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_f_sa',7,$Isd79_f_sa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd79_f_sa',7,$Isd79_f_sa,true,'text',$db_opcao,"")
        <?=@$Lsd79_f_sp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_f_sp',7,$Isd79_f_sp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('sd79_f_sp',7,$Isd79_f_sp,true,'text',$db_opcao,"")
        <?=@$Lsd79_i_anocomp?>/<?=@$Lsd79_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd79_i_anocomp',4,$Isd79_i_anocomp,true,'text',$db_opcao,""); echo "/";
 db_input('sd79_i_mescomp',2,$Isd79_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_procincremento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

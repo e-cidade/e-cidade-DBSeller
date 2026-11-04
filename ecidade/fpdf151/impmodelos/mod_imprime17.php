@@ -195,7 +195,7 @@ $this->objpdf->setxy($xcol +22, $xlin +24);
 $this->objpdf->cell(3, 4, ':  ', 0, 0, "L", 0);
 $this->objpdf->setxy($xcol +24.5, $xlin +24);
 $posini = $this->objpdf->gety();
-$this->objpdf->multicell(175, 4, trim(AddSlashes($this->Sresumo)), 0, "j");
+$this->objpdf->multicell(175, 4, trim($this->Sresumo), 0, "j");
 $setaut = $this->objpdf->gety();
 
 $oldsetaut = $setaut;
@@ -233,7 +233,7 @@ if ($this->linhasdosfornec > 0) {
 
   // Caixa de texto para labels
     $this->objpdf->rect($xcol, $setaut +0.8, 202, 6, 2, 'DF', '12');
-    $this->objpdf->text($xcol +4, $setaut +4.2, 'FORNECEDORES SUGERIDOS ');
+    $this->objpdf->text($xcol +4, $setaut +4.2, 'FORNECEDOR SUGERIDO ');
 
     $this->objpdf->rect($xcol, $setaut +6.8, 15, 6, 2, 'DF', '12');
     $this->objpdf->rect($xcol +15, $setaut +6.8, 64, 6, 2, 'DF', '12');
@@ -284,7 +284,7 @@ if ($this->linhasdosfornec > 0) {
 } else {
     $getdoy += 4.8;
     if (($oldsetaut +8) > 64) {
-        $getdoy += ($this->objpdf->NbLines(175, trim(AddSlashes($this->Sresumo)))*4)-12;
+        $getdoy += ($this->objpdf->NbLines(175, trim($this->Sresumo))*4)-12;
     }
 }
 
@@ -364,7 +364,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         } else {
             $this->casadec = $this->casadec_original;
         }
-    
+
     }
 
     db_fieldsmemory($this->recorddasdotac, $i);
@@ -445,7 +445,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
     $valimp        = $valtot;
     $prazo         = str_replace("\\n", "\n", pg_result($this->recorddasdotac, $i, $this->sprazo));
     $pgto          = str_replace("\\n", "\n", pg_result($this->recorddasdotac, $i, $this->spgto));
-    $resum         = db_stdClass::normalizeStringJsonEscapeString(str_replace("\\n", "\n", pg_result($this->recorddasdotac, $i, $this->sresum)));
+    $resum         = str_replace("\\n", "\n", pg_result($this->recorddasdotac, $i, $this->sresum));
     $just          = str_replace("\\n", "\n", pg_result($this->recorddasdotac, $i, $this->sjust));
     $unid          = pg_result($this->recorddasdotac, $i, $this->sunidade);
     $abrevunid     = pg_result($this->recorddasdotac, $i, $this->sabrevunidade);

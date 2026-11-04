@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,7 +115,7 @@ if(isset($excluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	    <?
+	    <?php
      	require_once(modification("forms/db_frmtfd_gradehorarios.php"));
      	?>
     </center>
@@ -123,7 +123,7 @@ if(isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -131,7 +131,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","tf02_i_destino",true,1,"tf02_i_destino",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cltfd_gradehorarios->erro_status=="0"){
     $cltfd_gradehorarios->erro(true,false);

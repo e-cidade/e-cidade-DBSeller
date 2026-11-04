@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("la24_i_setor");
        <?=@$Lla09_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la09_i_codigo',10,$Ila09_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -54,10 +54,10 @@ db_input('la09_i_codigo',10,$Ila09_i_codigo,true,'text',3,"")
        <b>Laboratorio:</b>
     </td>
     <td>
-<?
+<?php
 db_input('la24_i_laboratorio',10,@$Ila09_i_labsetor,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -66,12 +66,12 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tla09_i_setor?>">
-       <?
+       <?php
        db_ancora(@$Lla09_i_labsetor,"js_pesquisala09_i_labsetor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-       <?
+       <?php
        db_input('la24_i_setor',10,$Ila24_i_setor,true,'text',$db_opcao," onchange='js_pesquisala09_i_labsetor(false);'");
        db_input('la09_i_labsetor',10,'',true,'hidden',3,'');
        db_input('la23_c_descr',50,$Ila23_c_descr,true,'text',3,'');
@@ -80,15 +80,15 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla09_i_exame?>">
-       <?
+       <?php
        db_ancora(@$Lla09_i_exame,"js_pesquisala09_i_exame(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la09_i_exame',10,$Ila09_i_exame,true,'text',$db_opcao," onchange='js_pesquisala09_i_exame(false);'")
 ?>
-       <?
+       <?php
 db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
     </td>
     <td>
         
-       <?
+       <?php
         $aX = array('1'=>'ATIVO','2'=>'DESATIVADO');
         db_select('la09_i_ativo', $aX, true, $db_opcao, "");
        ?>
@@ -113,7 +113,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
 <table width="100%">
   <tr>
     <td valign="top"><br>
-  <?
+  <?php
     $chavepri = array ("la09_i_codigo" => @$la09_i_codigo,
                        "la24_i_setor" => @$la24_i_setor,
                        "la24_i_laboratorio"=>@$la24_i_laboratorio,
@@ -214,7 +214,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_setorexame.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

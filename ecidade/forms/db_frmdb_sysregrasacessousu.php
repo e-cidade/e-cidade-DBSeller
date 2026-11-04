@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,24 +36,24 @@ $clrotulo->label("nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tdb47_idacesso?>">
-       <?
+       <?php
        db_ancora(@$Ldb47_idacesso,"",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('db47_idacesso',6,$Idb47_idacesso,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb47_id_usuario?>">
-    <?
+    <?php
        db_ancora(@$Ldb47_id_usuario,"js_pesquisadb47_id_usuario(true);",$db_opcao);
     ?>
     </td>
     <td>
-<?
+<?php
 db_input('db47_id_usuario',10,$Idb47_id_usuario,true,'text',$db_opcao," onchange='js_pesquisadb47_id_usuario(false);'");
 db_input('nome',40,0,true,'text',3,"")
 ?>
@@ -97,7 +97,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_sysregrasacessousu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

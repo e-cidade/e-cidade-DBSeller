@@ -297,21 +297,28 @@ class AutenticacaoArrecadacao extends Autenticacao {
 
         // @todo - revisar questao da receita (codrec) para mais de uma instituicao
         // @todo - arrumar nome para este metodo
-        $oReceitaContabil->processaLancamentosReceita($oDadoSqlGeral->arrecada,
-                                                      $iId,
-                                                      $dtAutenticacao,
-                                                      $iAutent, $lEstorno, $this->iContaDebito,
-                                                      $oDadoSqlGeral->k12_histcor,
+
+        if(!$oReceitaContabil){
+          continue;
+        }
+
+        $oReceitaContabil->processaLancamentosReceita($oDadoSqlGeral->arrecada ? $oDadoSqlGeral->arrecada : null,
+                                                      $iId ? $iId : null,
+                                                      $dtAutenticacao ? $dtAutenticacao : null,
+                                                      $iAutent ? $iAutent : null, 
+                                                      $lEstorno ? $lEstorno : false,
+                                                      $this->iContaDebito ? $this->iContaDebito : null,
+                                                      $oDadoSqlGeral->k12_histcor ? $oDadoSqlGeral->k12_histcor : null,
                                                       null,
-                                                      $oDadoSqlGeral->k12_numpre,
-                                                      $oDadoSqlGeral->k12_numpar,
-                                                      $lDesconto,
-                                                      $this->getCodigoRecurso(),
-                                                      $this->sCaracteristicaPeculiar,
-                                                      $iCodigoCgm,
-                                                      $this->retencao,
-                                                      $this->iSequencialEmpenho,
-                                                      $this->lancamentoOutraInstuicao
+                                                      $oDadoSqlGeral->k12_numpre ? $oDadoSqlGeral->k12_numpre : null,
+                                                      $oDadoSqlGeral->k12_numpar ? $oDadoSqlGeral->k12_numpar : null,
+                                                      $lDesconto ? $lDesconto : false,
+                                                      $this->getCodigoRecurso() ? $this->getCodigoRecurso() : null,
+                                                      $this->sCaracteristicaPeculiar ? $this->sCaracteristicaPeculiar : null,
+                                                      $iCodigoCgm ? $iCodigoCgm : null,
+                                                      $this->retencao ? $this->retencao : null,
+                                                      $this->iSequencialEmpenho ? $this->iSequencialEmpenho : null,
+                                                      $this->lancamentoOutraInstuicao ? $this->lancamentoOutraInstuicao : false
                                                      );
 
       } // final for
@@ -473,6 +480,9 @@ class AutenticacaoArrecadacao extends Autenticacao {
       if ($lEstorno) {
         $iCodigoDocumento = 162;
       }
+
+
+
       $oDadoAutenticacao    = db_utils::fieldsMemory($rsBuscaReceitaExtra, $iRowAutenticacao);
       $sObservacaoHistorico = "Arrecadação de Receita Extra-Orçamentária";
       if ($oDadoAutenticacao->k12_histcor != "") {
@@ -500,12 +510,14 @@ class AutenticacaoArrecadacao extends Autenticacao {
       if ( substr($oContaContabil->getEstrutural(), 0, 4) != '2188' ) {
          $iCodigoDocumento = ( $lEstorno? 152: 150 );
       }
+
+
       $oLancamentoAuxiliar = new LancamentoAuxiliarArrecadacaoReceitaExtraOrcamentaria();
       $oLancamentoAuxiliar->setObservacaoHistorico($sObservacaoHistorico);
       $oLancamentoAuxiliar->setValorTotal(abs($oDadoAutenticacao->valor_arrecadar));
       $oLancamentoAuxiliar->setHistorico(9500);
       $oLancamentoAuxiliar->setContaCredito($oDadoAutenticacao->k02_reduz);
-      $oLancamentoAuxiliar->setContaDebito($oDadoAutenticacao->k12_conta);
+      $oLancamentoAuxiliar->setContaDebito( $oDadoAutenticacao->k12_conta);
       $oLancamentoAuxiliar->setEstorno($lEstorno);
       $oLancamentoAuxiliar->setFavorecido($oDadoAutenticacao->cgm);
       $oLancamentoAuxiliar->setCaracteristicaPeculiar($oDadoAutenticacao->k130_concarpeculiar);
@@ -525,7 +537,6 @@ class AutenticacaoArrecadacao extends Autenticacao {
 
       $oEventoContabil = EventoContabilRepository::getEventoContabilByCodigo($iCodigoDocumento, $iAnoSessao);
       $oEventoContabil->executaLancamento($oLancamentoAuxiliar, $dtAutenticacao);
-
     }
     return true;
   }

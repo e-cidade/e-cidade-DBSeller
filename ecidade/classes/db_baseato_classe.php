@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE baseato
-class cl_baseato { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed278_i_codigo = 0; 
-   var $ed278_i_escolabase = 0; 
-   var $ed278_i_atolegal = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_baseato {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed278_i_codigo = 0;
+   var $ed278_i_escolabase = 0;
+   var $ed278_i_atolegal = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed278_i_codigo = int4 = Código 
-                 ed278_i_escolabase = int4 = Escola Base 
-                 ed278_i_atolegal = int4 = Ato Legal 
+                 ed278_i_codigo = int4 = Código
+                 ed278_i_escolabase = int4 = Escola Base
+                 ed278_i_atolegal = int4 = Ato Legal
                  ";
-   //funcao construtor da classe 
-   function cl_baseato() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("baseato"); 
+     $this->rotulo = new rotulo("baseato");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_baseato {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed278_i_codigo = ($this->ed278_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed278_i_codigo"]:$this->ed278_i_codigo);
        $this->ed278_i_escolabase = ($this->ed278_i_escolabase == ""?@$GLOBALS["HTTP_POST_VARS"]["ed278_i_escolabase"]:$this->ed278_i_escolabase);
@@ -77,9 +77,9 @@ class cl_baseato {
      }
    }
    // funcao para inclusao
-   function incluir ($ed278_i_codigo){ 
+   public function incluir ($ed278_i_codigo){
       $this->atualizacampos();
-     if($this->ed278_i_escolabase == null ){ 
+     if($this->ed278_i_escolabase == null ){
        $this->erro_sql = " Campo Escola Base nao Informado.";
        $this->erro_campo = "ed278_i_escolabase";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_baseato {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed278_i_atolegal == null ){ 
+     if($this->ed278_i_atolegal == null ){
        $this->erro_sql = " Campo Ato Legal nao Informado.";
        $this->erro_campo = "ed278_i_atolegal";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_baseato {
        return false;
      }
      if($ed278_i_codigo == "" || $ed278_i_codigo == null ){
-       $result = db_query("select nextval('baseato_codigo')"); 
+       $result = db_query("select nextval('baseato_codigo')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: baseato_codigo do campo: ed278_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: baseato_codigo do campo: ed278_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed278_i_codigo = pg_result($result,0,0); 
+       $this->ed278_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from baseato_codigo");
        if(($result != false) && (pg_result($result,0,0) < $ed278_i_codigo)){
@@ -118,10 +118,10 @@ class cl_baseato {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed278_i_codigo = $ed278_i_codigo; 
+         $this->ed278_i_codigo = $ed278_i_codigo;
        }
      }
-     if(($this->ed278_i_codigo == null) || ($this->ed278_i_codigo == "") ){ 
+     if(($this->ed278_i_codigo == null) || ($this->ed278_i_codigo == "") ){
        $this->erro_sql = " Campo ed278_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_baseato {
        return false;
      }
      $sql = "insert into baseato(
-                                       ed278_i_codigo 
-                                      ,ed278_i_escolabase 
-                                      ,ed278_i_atolegal 
+                                       ed278_i_codigo
+                                      ,ed278_i_escolabase
+                                      ,ed278_i_atolegal
                        )
                 values (
-                                $this->ed278_i_codigo 
-                               ,$this->ed278_i_escolabase 
-                               ,$this->ed278_i_atolegal 
-                      )";             
-     $result = db_query($sql); 
-     if($result==false){ 
+                                $this->ed278_i_codigo
+                               ,$this->ed278_i_escolabase
+                               ,$this->ed278_i_atolegal
+                      )";
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "baseato ($this->ed278_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_baseato {
        $resac = db_query("insert into db_acount values($acount,2613,14845,'','".AddSlashes(pg_result($resaco,0,'ed278_i_atolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed278_i_codigo=null) { 
+   public function alterar ($ed278_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update baseato set ";
      $virgula = "";
-     if(trim($this->ed278_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_codigo"])){ 
+     if(trim($this->ed278_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_codigo"])){
        $sql  .= $virgula." ed278_i_codigo = $this->ed278_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed278_i_codigo) == null ){ 
+       if(trim($this->ed278_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed278_i_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_baseato {
          return false;
        }
      }
-     if(trim($this->ed278_i_escolabase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_escolabase"])){ 
+     if(trim($this->ed278_i_escolabase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_escolabase"])){
        $sql  .= $virgula." ed278_i_escolabase = $this->ed278_i_escolabase ";
        $virgula = ",";
-       if(trim($this->ed278_i_escolabase) == null ){ 
+       if(trim($this->ed278_i_escolabase) == null ){
          $this->erro_sql = " Campo Escola Base nao Informado.";
          $this->erro_campo = "ed278_i_escolabase";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_baseato {
          return false;
        }
      }
-     if(trim($this->ed278_i_atolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_atolegal"])){ 
+     if(trim($this->ed278_i_atolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed278_i_atolegal"])){
        $sql  .= $virgula." ed278_i_atolegal = $this->ed278_i_atolegal ";
        $virgula = ",";
-       if(trim($this->ed278_i_atolegal) == null ){ 
+       if(trim($this->ed278_i_atolegal) == null ){
          $this->erro_sql = " Campo Ato Legal nao Informado.";
          $this->erro_campo = "ed278_i_atolegal";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_baseato {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "baseato nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed278_i_codigo;
@@ -267,14 +267,14 @@ class cl_baseato {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed278_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed278_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed278_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_baseato {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "baseato nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed278_i_codigo;
@@ -330,11 +330,11 @@ class cl_baseato {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_baseato {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed278_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed278_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,15 +377,15 @@ class cl_baseato {
      $sql2 = "";
      if($dbwhere==""){
        if($ed278_i_codigo!=null ){
-         $sql2 .= " where baseato.ed278_i_codigo = $ed278_i_codigo "; 
-       } 
+         $sql2 .= " where baseato.ed278_i_codigo = $ed278_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,11 +394,11 @@ class cl_baseato {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed278_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed278_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_baseato {
      $sql2 = "";
      if($dbwhere==""){
        if($ed278_i_codigo!=null ){
-         $sql2 .= " where baseato.ed278_i_codigo = $ed278_i_codigo "; 
-       } 
+         $sql2 .= " where baseato.ed278_i_codigo = $ed278_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpredio->rotulo->label("j111_nome");
               <?=$Lj111_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j111_sequencial",10,$Ij111_sequencial,true,"text",4,"","chave_j111_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpredio->rotulo->label("j111_nome");
               <?=$Lj111_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j111_nome",40,$Ij111_nome,true,"text",4,"","chave_j111_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpredio->rotulo->label("j111_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_predio.php")==true){
@@ -122,12 +122,12 @@ $clpredio->rotulo->label("j111_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

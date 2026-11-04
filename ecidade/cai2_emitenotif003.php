@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
               
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	       db_input("k63_notifica",6,$Ik63_notifica,true,"text",4,"","chave_k63_notifica");
               ?>
             </td>
@@ -66,7 +66,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
               
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codigo",4,'',true,"text",4,"","chave_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
             <td width="4%" align="right" nowrap title="Nome">Nome
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("descr",40,'',true,"text",4,"","chave_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cllistanotifica->rotulo->label("k63_notifica");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if ($lista == ''){
          db_redireciona('db_erros.php?fechar=true&db_erro=Não Existe Lista Selecionada');
       }
@@ -212,11 +212,11 @@ $cllistanotifica->rotulo->label("k63_notifica");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>

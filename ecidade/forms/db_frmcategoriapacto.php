@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("o29_descricao");
        <?=@$Lo31_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o31_sequencial',10,$Io31_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To31_tipopacto?>">
-       <?
+       <?php
        db_ancora(@$Lo31_tipopacto,"js_pesquisao31_tipopacto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o31_tipopacto',10,$Io31_tipopacto,true,'text',$db_opcao," onchange='js_pesquisao31_tipopacto(false);'")
 ?>
-       <?
+       <?php
 db_input('o29_descricao',40,$Io29_descricao,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('o29_descricao',40,$Io29_descricao,true,'text',3,'')
        <?=@$Lo31_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o31_descricao',54,$Io31_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_categoriapacto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

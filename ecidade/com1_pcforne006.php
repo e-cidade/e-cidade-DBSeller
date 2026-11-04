@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -122,13 +122,13 @@ if (isset ($excluir)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br />
     <center>
-	  <?
+	  <?php
       include(modification("forms/db_frmpcforne.php"));
     ?>
     </center>
 </body>
 </html>
-<?
+<?php
 
 
 

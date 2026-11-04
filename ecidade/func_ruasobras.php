@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltestada->rotulo->label("j36_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($pesquisa_chave) && $pesquisa_chave != ""){
       	
         $sSql= $cltestada->sql_query_ruasObras(" j01_matric = $pesquisa_chave", "distinct j36_codigo, j14_nome, j13_codi, j13_descr");
@@ -70,14 +70,14 @@ $cltestada->rotulo->label("j36_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j36_idbql.focus();
 document.form2.chave_j36_idbql.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

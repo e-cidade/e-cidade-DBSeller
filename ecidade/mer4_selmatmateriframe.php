@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -40,15 +40,15 @@ db_postmemory($HTTP_POST_VARS);
 if (isset ($atualizar) && $atualizar != "") {
     db_inicio_transacao();
     $result03 = $clmer_alimentomatmater->sql_record($clmer_alimentomatmater->sql_query_file(null,
-                                                                                             "*", 
-                                                                                            null, 
+                                                                                             "*",
+                                                                                            null,
                                                                                             "me36_i_alimento=$me36_i_alimento"
                                                                                            )
                                                    );
     if ($clmer_alimentomatmater->numrows > 0) {
         $clmer_alimentomatmater->excluir(null,"me36_i_alimento=$me36_i_alimento");
         if ($clmer_alimentomatmater->erro_status == '0') {
-            $sqlerro = true;        
+            $sqlerro = true;
         }
     }
     $sqlerro = false;
@@ -58,9 +58,9 @@ if (isset ($atualizar) && $atualizar != "") {
     for ($i = 0; $i < $ta; $i ++) {
         $chave = key($vt);
         if (substr($chave, 0, 5) == "CHECK") {
-            $dados = split("_", $chave);
+            $dados =explode("_", $chave);
             $clmer_alimentomatmater->me36_i_alimento = $me36_i_alimento;
-            $clmer_alimentomatmater->me36_i_matmater = $dados[1];              
+            $clmer_alimentomatmater->me36_i_matmater = $dados[1];
             $clmer_alimentomatmater->incluir(null);
             if ($clmer_alimentomatmater->erro_status == '0') {
                 $erro_msg = $clmer_alimentomatmater->erro_msg;
@@ -69,9 +69,9 @@ if (isset ($atualizar) && $atualizar != "") {
         }
         $proximo = next($vt);
     }
-    
+
     db_fim_transacao($sqlerro);
-    
+
 }
 ?>
 <html>
@@ -82,21 +82,21 @@ if (isset ($atualizar) && $atualizar != "") {
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
 function js_atualizar() {
-	
+
   document.form1.atualizar.value="ok";
   document.form1.submit();
-  
+
 }
 
 function js_marca(obj) {
-	
+
    var OBJ = document.form1;
    for(i = 0; i < OBJ.length; i++) {
-	   
+
      if(OBJ.elements[i].type == 'checkbox') {
-       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
      }
-     
+
    }
    return false;
 }
@@ -106,13 +106,13 @@ function js_marca(obj) {
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc;       
+background-color:#aacccc;
 border-color: darkblue;
 }
 .corpo {
 text-align: center;
 color: black;
-background-color:#ccddcc;       
+background-color:#ccddcc;
 }
 </style>
 </head>
@@ -121,34 +121,34 @@ background-color:#ccddcc;
  <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<? 
+<?php
 
 
 db_input('me36_i_alimento', 8, '', true, 'hidden', 3);
 db_input('atualizar', 8, '', true, 'hidden', 3);
 db_input('me36_i_matmater', 8, '', true, 'hidden', 3);
-?>     
+?>
 <table border='1' width="100%" nowrap>
-<? 
+<?php
 
 
 if (isset ($m60_descr)) {
     $result01  = $clmatmater->sql_record($clmatmater->sql_query_file(null,
                                                                      "*",
                                                                      null,
-                                                                     "m60_descr ilike '$m60_descr%' 
+                                                                     "m60_descr ilike '$m60_descr%'
                                                                       and m60_ativo is true"
                                                                     )
                                         );
     $numrows01 = $clmatmater->numrows;
     if ($numrows01 > 0) {
-        echo " 
+        echo "
          <tr>
-          <td class='cabec'  title='Inverte marcação' align='center'><a  title='Inverte Marcação' href='' 
+          <td class='cabec'  title='Inverte marcação' align='center'><a  title='Inverte Marcação' href=''
                onclick='return js_marca(this);return false;'>M</a>
           </td>
           <td class='cabec' align='center'  title='$Tm60_codmater'>".str_replace(":", "", $Lm60_codmater)."</td>
-          <td class='cabec' align='center'  title='$Tm60_descr'>".str_replace(":", "", $Lm60_descr)."</td>                         
+          <td class='cabec' align='center'  title='$Tm60_descr'>".str_replace(":", "", $Lm60_descr)."</td>
          </tr>
                       ";
     }
@@ -158,7 +158,7 @@ if (isset ($m60_descr)) {
         $sWhere    = "me36_i_alimento=$me36_i_alimento and me36_i_matmater=$m60_codmater";
         $result02  = $clmer_alimentomatmater->sql_record($clmer_alimentomatmater->sql_query_file(null,
                                                                                                  "*",
-                                                                                                  null, 
+                                                                                                  null,
                                                                                                   $sWhere
                                                                                                 )
                                                         );
@@ -176,18 +176,18 @@ if (isset ($m60_descr)) {
                </td>
                <td  class='corpo'  align='center' title='$Tm60_descr'>
                 <label for='CHECK_".$m60_codmater."' style=\"cursor: hand\"><small>$m60_descr</small></label>
-               </td>        
+               </td>
              </tr>";
     }
 }
 ?>    </table>
     </td>
-  </tr>  
+  </tr>
   </table>
 </form>
-</body>  
+</body>
 </html>
-<?
+<?php
 if (isset ($atualizar) && $atualizar != "") {
     if ($sqlerro == false) {
         echo "<script>parent.js_conclui();</script>";

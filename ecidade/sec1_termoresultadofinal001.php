@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ if(isset($incluir)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
     db_app::load("scripts.js, prototype.js, strings.js, arrays.js, dbcomboBox.widget.js"); 
     db_app::load("estilos.css");
   ?>
@@ -56,12 +56,12 @@ if(isset($incluir)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
 <div style="margin-top: 25px; width: 450px;">
-<?
+<?php
 	include(modification("forms/db_frmtermoresultadofinal.php"));
 ?>
 </div>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -69,7 +69,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed110_ensino",true,1,"ed110_ensino",true);
 </script>
-<?
+<?php
 if(isset($incluir)) {
   
   if ($cltermoresultadofinal->erro_status=="0") {

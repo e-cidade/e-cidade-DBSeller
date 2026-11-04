@@ -140,7 +140,8 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
             </td>
             <td>
               <?php
-                $result_tipo=$clcflicita->sql_record($clcflicita->sql_query_numeracao(null,"l03_codigo,l03_descr", null, "l03_instit = " . db_getsession("DB_instit")));
+              $where = "l03_instit = " . db_getsession("DB_instit") . " and l03_modalidadeativa is true";
+                $result_tipo=$clcflicita->sql_record($clcflicita->sql_query_numeracao(null,"l03_codigo,l03_descr", null, $where));
                 if ($clcflicita->numrows==0){
         		      db_msgbox("Nenhuma Modalidade cadastrada!!");
         		      $result_tipo="";
@@ -190,7 +191,7 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
                 $l20_id_usucria=$id_usuario;
                 db_input('l20_id_usucria',10,$Il20_id_usucria,true,'text',3," onchange='js_pesquisal20_id_usucria(false);'")
               ?>
-              <?
+              <?php
                db_input('nome',45,$Inome,true,'text',3,'')
               ?>
            </td>
@@ -603,12 +604,12 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_liclicita.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
     ?>
    parent.iframe_liclicitem.location.href='lic1_liclicitemalt001.php?licitacao='+chave;
-   <?
+   <?php
   }
   ?>
 }
@@ -738,7 +739,7 @@ function js_confirmadatas() {
 
   if( js_CompararDatas(dataCriacao, dataPublicacao, '<=') ) {
     if( js_CompararDatas(dataPublicacao, dataAbertura, '<=') ) {
-      <?
+      <?php
         if($db_opcao==2 || $db_opcao==22) {
         	echo 'return js_confirmar();';
         } else {

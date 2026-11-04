@@ -62,7 +62,7 @@ require_once(modification("libs/db_app.utils.php"));
 
 <div class="container">
 
-    <fieldset style="600px">
+    <fieldset style="width:600px">
         <legend class="bold">Movimento financerio da folha</legend>
         <table>
             <tr>

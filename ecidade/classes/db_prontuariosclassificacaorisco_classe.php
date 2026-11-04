@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuariosclassificacaorisco
 class cl_prontuariosclassificacaorisco { 
@@ -26,13 +26,13 @@ class cl_prontuariosclassificacaorisco {
                  sd101_classificacaorisco = int4 = Classificação de Risco 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosclassificacaorisco() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosclassificacaorisco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_prontuariosclassificacaorisco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd101_codigo = ($this->sd101_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd101_codigo"]:$this->sd101_codigo);
        $this->sd101_prontuarios = ($this->sd101_prontuarios == ""?@$GLOBALS["HTTP_POST_VARS"]["sd101_prontuarios"]:$this->sd101_prontuarios);
@@ -51,7 +51,7 @@ class cl_prontuariosclassificacaorisco {
      }
    }
    // funcao para inclusao
-   function incluir ($sd101_codigo){ 
+   public function incluir ($sd101_codigo){ 
       $this->atualizacampos();
      if($this->sd101_prontuarios == null ){ 
        $this->erro_sql = " Campo Prontuário não informado.";

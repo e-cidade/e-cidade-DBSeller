@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification('libs/db_stdlib.php'));
@@ -51,12 +51,12 @@ require_once(modification('dbforms/db_funcoes.php'));
                     <b>Escolha o que será Impresso no relatório:</b>
                     <hr>
                   </td>
-                </tr>  
+                </tr>
                 <tr>
                   <td>
                     <input type='checkbox' id='ck1' value='1' name='opcoes' checked>
                     <label for='ck1'>Documentos</label>
-                    <?
+                    <?php
                     db_input('z01_i_cgsund', 10, '', true, 'hidden', 3, '');
                     ?>
                   </td>
@@ -109,15 +109,15 @@ require_once(modification('dbforms/db_funcoes.php'));
                     <label for='ck9'>Hiperdia</label>
                   </td>
                 </tr>
-                <? if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 8813) == 'true') { ?>
+                <?php if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 8813) == 'true') { ?>
                 <tr>
                   <td>
                     <input type='checkbox' id='ck10' value='10' name='opcoes' checked>
                     <label for='ck10'>CID's</label>
                   </td>
                 </tr>
-                <?}?>
-              </table>  
+                <?php }?>
+              </table>
             </fieldset>
           </td>
           <td align="center" valign="top">
@@ -126,11 +126,11 @@ require_once(modification('dbforms/db_funcoes.php'));
                 <tr>
                   <td><b>Inicio:</b></td>
                   <td>
-                    <? db_inputdata('dIni',@$dia1,@$mes1,@$ano1,true,'text',1,"") ?>
+                    <?php db_inputdata('dIni',@$dia1,@$mes1,@$ano1,true,'text',1,"") ?>
                   </td>
                   <td><b>Fim:</b></td>
                   <td>
-                    <? db_inputdata('dFim',@$dia2,@$mes2,@$ano2,true,'text',1,"") ?>
+                    <?php db_inputdata('dFim',@$dia2,@$mes2,@$ano2,true,'text',1,"") ?>
                   </td>
                 </tr>
               </table>
@@ -141,7 +141,7 @@ require_once(modification('dbforms/db_funcoes.php'));
                 <tr>
                   <td><b>Tipo:</b></td>
                   <td>
-                    <?
+                    <?php
                       $aX = array('1'=>'Analitico', '2'=>'Sintetico');
                       db_select('iTipo', $aX, true, 1, '');
                     ?>
@@ -150,7 +150,7 @@ require_once(modification('dbforms/db_funcoes.php'));
               </table>
             </fieldset>
             <br><br>
-            
+
             <input type='button' value='Imprimir' onclick='js_imprimir();'>
           </td>
         </tr>
@@ -160,7 +160,7 @@ require_once(modification('dbforms/db_funcoes.php'));
 </html>
 <script>
 function js_imprimir(iNumEmp) {
-  
+
   if (document.getElementById('z01_i_cgsund').value == '') {
 
     alert('CGS não informado!');
@@ -171,7 +171,7 @@ function js_imprimir(iNumEmp) {
   var sUrl    = 'sau2_consultageral002.php?iCgs='+document.getElementById('z01_i_cgsund').value+'&sOpcoesImp=';
   var aOpcoes = document.getElementsByName('opcoes');
   var sSep    = '';
-  
+
   for (var iCont = 0; iCont < aOpcoes.length; iCont++) {
 
     if (aOpcoes[iCont].checked) {
@@ -184,10 +184,10 @@ function js_imprimir(iNumEmp) {
   }
 
   if (sSep == '') { // nenhum checkbox foi marcado
-	  
+
 	  alert('Selecione no minimo uma opção de relatório!');
 	  return false;
-	  
+
 	}
   sUrl += '&iTipo='+document.getElementById('iTipo').value;
   if(document.getElementById('dIni').value != ''){
@@ -196,7 +196,7 @@ function js_imprimir(iNumEmp) {
   if(document.getElementById('dFim').value != ''){
 	  sUrl += '&dFim='+document.getElementById('dFim').value;
 	}
-  
+
   var oJan = window.open(sUrl, '', 'width='+(screen.availWidth - 5)+', height='+(screen.availHeight - 40)+
 		                     ',scrollbars=1,location=0 '
                         );

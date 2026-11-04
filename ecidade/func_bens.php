@@ -83,7 +83,7 @@ define("SITUACAO_BAIXADO", "3");
               <?= $Lt52_ident ?>
           </td>
           <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("t52_ident", 20, $It52_ident, true, "text", 4, "", "chave_t52_ident");
               ?>
           </td>
@@ -241,7 +241,7 @@ define("SITUACAO_BAIXADO", "3");
         } else {
             if (isset($chave_t52_ident) && (trim($chave_t52_ident) != "")) {
                 $sql = $clbens->{$sMetodoQuery}(null, $campos, "t52_ident",
-                  "t52_ident like '$chave_t52_ident' $where_instit $where_baixado");
+                  "t52_ident ilike '$chave_t52_ident' $where_instit $where_baixado");
             } else {
                 if (isset($chave_t64_codcla) && (trim($chave_t64_codcla) != "")) {
                     if ($chave_t64_codcla == 'NDA') {

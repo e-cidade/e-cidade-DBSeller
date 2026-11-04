@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -353,7 +353,7 @@
 
                 if (isset($opcao) && ($opcao=="excluir" || $opcao=="alterar") && $desabilitarcampos!=true) {
                     echo "
-          recebe = new Number(quant + valres);";
+          recebe = new Number(quant);";
                 } else {
                     echo "
           recebe = new Number(valres);";
@@ -757,7 +757,7 @@
                     }
                 } elseif ($db_opcao==1 && $pc30_gerareserva == 't') {
                     if (isset($pc13_coddot)&&trim($pc13_coddot)!="") {
-                        $texto = "<strong>Saldo a reservar</strong>";
+                        $texto = "<strong>Reservar saldo</strong>";
                     } else {
                         $texto = "";
                     }

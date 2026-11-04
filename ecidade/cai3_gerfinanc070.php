@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -83,7 +83,7 @@ td {
 
 </style>
 <form name="form1" method="post" action="">
-<?
+<?php
 if ($linhas>0){
 ?>
 <table border= "0 " cellspacing= "0 " cellpadding= "3 " id= "tabdebitos ">
@@ -99,7 +99,7 @@ if ($linhas>0){
 		<th title= "Hora da anulação do Parcelamento " class= "borda " style= "font-size:12px " nowrap>Hora da anulação</th>
 		<th title= "Usuário que efetuou a anulação "   class= "borda " style= "font-size:12px " nowrap>Usuário</th>
 	</tr>
-	<?
+	<?php
 	for($i = 0;$i < $linhas;$i++) {
 		db_fieldsmemory($result,$i);
 		if($i % 2 == 0){
@@ -109,7 +109,7 @@ if ($linhas>0){
 		}
       ?>
 	<tr bgcolor="<?=$cor?>">
-	<?
+	<?php
 	
 	echo "<td class= \"borda \" style= \"font-size:11px \" nowrap align =\"center\"onclick=\"parent.js_mostradetalhes('cai3_gerfinanc005.php?".base64_encode($k00_tipo."#".$v07_numpre."#"."0")."&mostra=nao','','width=600,height=500,scrollbars=1')\">
 		  <a href=\"\" onclick=\"return false;\">MI</a></td>";
@@ -126,13 +126,13 @@ if ($linhas>0){
       <td class= "borda " style= "font-size:11px " nowrap align ="center"><?=$v09_hora?></td>	  
       <td class= "borda " style= "font-size:11px " nowrap align ="center"><?=$nome?></td>
      </tr>
-     <?
+     <?php
     }
 	 ?>
    
 </table>
 </form>
 </html>
-<?
+<?php
 }
 ?>

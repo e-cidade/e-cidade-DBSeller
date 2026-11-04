@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -34,22 +34,22 @@ require_once(modification("libs/db_utils.php"));
 db_postmemory($HTTP_POST_VARS);
 $oDaoProgConvocacaoRes = db_utils::getdao("progconvocacaores");
 $oDaoProgConfig         = db_utils::getdao("progconfig");
-$oDaoProgConvFaltas     = db_utils::getdao("progconvfaltas");   
+$oDaoProgConvFaltas     = db_utils::getdao("progconvfaltas");
 $db_opcao               = 1;
 $db_botao               = true;
 $sSqlProgConfig         = $oDaoProgConfig->sql_query("", "*", "", "");
 $rsProgConfig           = $oDaoProgConfig->sql_record($sSqlProgConfig);
-if ($oDaoProgConfig->numrows > 0) { 
+if ($oDaoProgConfig->numrows > 0) {
   db_fieldsmemory($rsProgConfig,  0);
 }
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $oDaoProgConvocacaoRes->ed127_i_nparticipa = $ed127_i_nconvoca;
   $oDaoProgConvocacaoRes->ed127_i_usuario    = db_getsession("DB_id_usuario");
   $oDaoProgConvocacaoRes->incluir($ed127_i_codigo);
   db_fim_transacao();
-  
+
 }
 ?>
 <html>
@@ -68,7 +68,7 @@ if (isset($incluir)) {
     <td width="25">&nbsp;</td>
     <td width="140">&nbsp;</td>
    </tr>
-  </table>  
+  </table>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
@@ -81,7 +81,7 @@ if (isset($incluir)) {
     </td>
    </tr>
   </table>
-  <?db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+  <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
             db_getsession("DB_anousu"), db_getsession("DB_instit")
            );
   ?>
@@ -90,28 +90,28 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed127_i_progmatricula", true, 1, "ed127_i_progmatricula", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-	
+
   if ($oDaoProgConvocacaoRes->erro_status == "0") {
-  	
+
     $oDaoProgConvocacaoRes->erro(true, false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($oDaoProgConvocacaoRes->erro_campo != "") {
-    	
+
       echo "<script> document.form1.".$oDaoProgConvocacaoRes->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$oDaoProgConvocacaoRes->erro_campo.".focus();</script>";
-      
+
     }
-    
+
   } else {
-  	
+
     $oDaoProgConvocacaoRes->erro(true, false);
     db_redireciona("edu1_progconvocacaores002.php?chavepesquisa=$oDaoProgConvocacaoRes->ed127_i_codigo");
-    
-  } 
-  
+
+  }
+
 }
 ?>

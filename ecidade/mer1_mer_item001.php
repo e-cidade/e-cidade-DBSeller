@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if (isset($incluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Inclusão Item</b></legend>
-	<? include(modification("forms/db_frmmer_item.php"));?>
+	<?php include(modification("forms/db_frmmer_item.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -77,7 +77,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me10_c_controlavalidade",true,1,"me10_c_controlavalidade",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 	
   if ($clmer_item->erro_status=="0") {
@@ -100,7 +100,7 @@ if (isset($incluir)) {
     <script>
      parent.iframe_a1.location.href = "mer1_mer_item002.php?chavepesquisa=<?=$ultimo?>";
     </script>
-<?
+<?php
   }
 }
 ?>

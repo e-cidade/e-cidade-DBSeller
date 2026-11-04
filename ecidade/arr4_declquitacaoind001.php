@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 
   db_app::load('datagrid.widget.js');
   db_app::load('prototype.js');
@@ -89,19 +89,19 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 
   <tr> 
     <td title="<?=$Tz01_nome?>"> 
-     <?
+     <?php
         db_ancora($Lz01_nome, 'js_mostranomes(true);', 4);
      ?>
     </td>
     <td> 
-    <?
+    <?php
         db_input("z01_numcgm", 10, $Iz01_numcgm, true, 'text', 4, "onfocus=\"apagaInputs()\" onchange='js_mostranomes(false);'");
  
         db_input("z01_nome", 30, $Iz01_nome, true, 'text', 3);
     ?>
     </td>
     <td>
-    <?
+    <?php
         $aRegraCGM = array('1'=>'Somente CGM', '2'=>'CGM Geral');
 
         db_select('regra_cgm', $aRegraCGM, true, 1);
@@ -111,12 +111,12 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
   
   <tr> 
     <td title="<?=$Tj01_matric?>"> 
-    <?
+    <?php
       db_ancora($Lj01_matric, "js_mostramatricula(true,'$j18_nomefunc');", 2);
     ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input("j01_matric", 10, $Ij01_matric, true, 'text', 1, "onfocus=\"apagaInputs()\"  onchange=\"js_mostramatricula(false,'$j18_nomefunc')\"");
     ?>
     </td>
@@ -124,12 +124,12 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 
   <tr> 
     <td>     
-    <?
+    <?php
       db_ancora($Lq02_inscr,' js_inscr(true); ',1);
     ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('q02_inscr', 10, $Iq02_inscr,true,'text',1," onfocus=\"apagaInputs()\" onchange='js_inscr(false)'");
     ?>
     </td>
@@ -144,7 +144,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

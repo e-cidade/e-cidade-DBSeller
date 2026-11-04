@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ if (isset($gravar)){
     <tr>
        <td nowrap title="<?=@$To39_texto?>"><?=@$Lo39_texto?></td>
        <td> 
-        <? 
+        <?php 
 	   if (isset($o39_codproj) && $o39_codproj!=""){
               $ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o39_codproj,"o39_texto"));	   
    	      //db_criatabela($ro);
@@ -101,7 +101,7 @@ if (isset($gravar)){
     <tr>
        <td nowrap title="<?=@$To39_compllei?>"><?=@$Lo39_compllei?></td>
        <td> 
-        <? 
+        <?php 
 	   if (isset($o39_codproj) && $o39_codproj!=""){
               $ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o39_codproj,"o39_compllei"));	   
    	      //db_criatabela($ro);

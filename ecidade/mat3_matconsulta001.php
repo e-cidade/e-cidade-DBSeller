@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,15 +72,15 @@ function js_consulta(){
         <form method="post" action="" name="form1">
 	<tr>
 	  <td nowrap title="<?=@$Tm60_codmater?>">
-	     <?
+	     <?php
 	     db_ancora(@$Lm60_codmater,"js_pesquisam60_codmater(true);",1);
 	     ?>
 	  </td>
 	  <td colspan="3"> 
-	     <?
+	     <?php
       db_input('m60_codmater',10,$Im60_codmater,true,'text',1," onchange='js_pesquisam60_codmater(false);'")
 	     ?>
-	     <?
+	     <?php
       db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
 	     ?>
 	  </td>
@@ -103,7 +103,7 @@ function js_consulta(){
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

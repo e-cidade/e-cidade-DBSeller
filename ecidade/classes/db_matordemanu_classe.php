@@ -1,67 +1,67 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
 //CLASSE DA ENTIDADE matordemanu
-class cl_matordemanu { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $m53_codordem = 0; 
-   var $m53_data_dia = null; 
-   var $m53_data_mes = null; 
-   var $m53_data_ano = null; 
-   var $m53_data = null; 
-   var $m53_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_matordemanu {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $m53_codordem = 0;
+   var $m53_data_dia = null;
+   var $m53_data_mes = null;
+   var $m53_data_ano = null;
+   var $m53_data = null;
+   var $m53_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 m53_codordem = int8 = Código da ordem de compra 
-                 m53_data = date = Data da anulacao 
-                 m53_obs = text = Observacao da anulacao 
+                 m53_codordem = int8 = Código da ordem de compra
+                 m53_data = date = Data da anulacao
+                 m53_obs = text = Observacao da anulacao
                  ";
-   //funcao construtor da classe 
-   function cl_matordemanu() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("matordemanu"); 
+     $this->rotulo = new rotulo("matordemanu");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_matordemanu {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m53_codordem = ($this->m53_codordem == ""?@$GLOBALS["HTTP_POST_VARS"]["m53_codordem"]:$this->m53_codordem);
        if($this->m53_data == ""){
@@ -87,9 +87,9 @@ class cl_matordemanu {
      }
    }
    // funcao para inclusao
-   function incluir ($m53_codordem){ 
+   public function incluir ($m53_codordem){
       $this->atualizacampos();
-     if($this->m53_data == null ){ 
+     if($this->m53_data == null ){
        $this->erro_sql = " Campo Data da anulacao nao Informado.";
        $this->erro_campo = "m53_data_dia";
        $this->erro_banco = "";
@@ -98,8 +98,8 @@ class cl_matordemanu {
        $this->erro_status = "0";
        return false;
      }
-       $this->m53_codordem = $m53_codordem; 
-     if(($this->m53_codordem == null) || ($this->m53_codordem == "") ){ 
+       $this->m53_codordem = $m53_codordem;
+     if(($this->m53_codordem == null) || ($this->m53_codordem == "") ){
        $this->erro_sql = " Campo m53_codordem nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -108,17 +108,17 @@ class cl_matordemanu {
        return false;
      }
      $sql = "insert into matordemanu(
-                                       m53_codordem 
-                                      ,m53_data 
-                                      ,m53_obs 
+                                       m53_codordem
+                                      ,m53_data
+                                      ,m53_obs
                        )
                 values (
-                                $this->m53_codordem 
-                               ,".($this->m53_data == "null" || $this->m53_data == ""?"null":"'".$this->m53_data."'")." 
-                               ,'$this->m53_obs' 
+                                $this->m53_codordem
+                               ,".($this->m53_data == "null" || $this->m53_data == ""?"null":"'".$this->m53_data."'")."
+                               ,'$this->m53_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Anulacao de ordem de compra ($this->m53_codordem) nao Incluído. Inclusao Abortada.";
@@ -152,16 +152,16 @@ class cl_matordemanu {
        $resac = db_query("insert into db_acount values($acount,1009,6226,'','".AddSlashes(pg_result($resaco,0,'m53_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($m53_codordem=null) { 
+   public function alterar ($m53_codordem=null) {
       $this->atualizacampos();
      $sql = " update matordemanu set ";
      $virgula = "";
-     if(trim($this->m53_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_codordem"])){ 
+     if(trim($this->m53_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_codordem"])){
        $sql  .= $virgula." m53_codordem = $this->m53_codordem ";
        $virgula = ",";
-       if(trim($this->m53_codordem) == null ){ 
+       if(trim($this->m53_codordem) == null ){
          $this->erro_sql = " Campo Código da ordem de compra nao Informado.";
          $this->erro_campo = "m53_codordem";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_matordemanu {
          return false;
        }
      }
-     if(trim($this->m53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"] !="") ){ 
+     if(trim($this->m53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"] !="") ){
        $sql  .= $virgula." m53_data = '$this->m53_data' ";
        $virgula = ",";
-       if(trim($this->m53_data) == null ){ 
+       if(trim($this->m53_data) == null ){
          $this->erro_sql = " Campo Data da anulacao nao Informado.";
          $this->erro_campo = "m53_data_dia";
          $this->erro_banco = "";
@@ -183,11 +183,11 @@ class cl_matordemanu {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"])){
          $sql  .= $virgula." m53_data = null ";
          $virgula = ",";
-         if(trim($this->m53_data) == null ){ 
+         if(trim($this->m53_data) == null ){
            $this->erro_sql = " Campo Data da anulacao nao Informado.";
            $this->erro_campo = "m53_data_dia";
            $this->erro_banco = "";
@@ -198,7 +198,7 @@ class cl_matordemanu {
          }
        }
      }
-     if(trim($this->m53_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_obs"])){ 
+     if(trim($this->m53_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_obs"])){
        $sql  .= $virgula." m53_obs = '$this->m53_obs' ";
        $virgula = ",";
      }
@@ -222,7 +222,7 @@ class cl_matordemanu {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Anulacao de ordem de compra nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->m53_codordem;
@@ -250,14 +250,14 @@ class cl_matordemanu {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($m53_codordem=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($m53_codordem=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m53_codordem));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -285,7 +285,7 @@ class cl_matordemanu {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Anulacao de ordem de compra nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$m53_codordem;
@@ -313,11 +313,11 @@ class cl_matordemanu {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -339,10 +339,10 @@ class cl_matordemanu {
       }
      return $result;
    }
-   function sql_query ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,15 +358,15 @@ class cl_matordemanu {
      $sql2 = "";
      if($dbwhere==""){
        if($m53_codordem!=null ){
-         $sql2 .= " where matordemanu.m53_codordem = $m53_codordem "; 
-       } 
+         $sql2 .= " where matordemanu.m53_codordem = $m53_codordem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,10 +375,10 @@ class cl_matordemanu {
      }
      return $sql;
   }
-   function sql_query_file ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,15 +391,15 @@ class cl_matordemanu {
      $sql2 = "";
      if($dbwhere==""){
        if($m53_codordem!=null ){
-         $sql2 .= " where matordemanu.m53_codordem = $m53_codordem "; 
-       } 
+         $sql2 .= " where matordemanu.m53_codordem = $m53_codordem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

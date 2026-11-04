@@ -232,7 +232,6 @@ class AutorizacaoRepository
             $result = db_query($sqlBuscaItensVinculados);
             $this->associaItens($autorizacao, pg_fetch_all($result), $daoAutorizacaoItem);
         }
-
         return $autorizacao;
     }
 
@@ -267,15 +266,30 @@ class AutorizacaoRepository
         \cl_empautitem $daoAutorizacaoItens
     ) {
         try {
+            $itensAutorizacao = $autorizacao->toArray();
+            $dadosMateriais = [];
+
+            foreach ($itensAutorizacao['itens'] as $item) {
+                $dadosMateriais[$item['pc01_codmater']] = $item;
+            }
+
             foreach ($autorizacaoItens as $autItem) {
-                $daoAutorizacaoItens->e55_item = $autItem['e55_item'];
+                $codigoItem = $autItem['e55_item'];
+                $daoAutorizacaoItens->e55_item = $codigoItem;
                 $daoAutorizacaoItens->e55_quant = $autItem['e55_quant'];
                 $daoAutorizacaoItens->e55_vltot = $autItem['e55_vltot'];
                 $daoAutorizacaoItens->e55_codele = $autItem['e55_codele'];
                 $daoAutorizacaoItens->e55_vlrun = $autItem['e55_vlrun'];
-                $daoAutorizacaoItens->e55_servicoquantidade = $autItem['e55_servicoquantidade'];
                 $daoAutorizacaoItens->e55_matunid = $autItem['e55_matunid'];
                 $daoAutorizacaoItens->e55_descr = $autItem['e55_descr'];
+
+                $material = !empty($dadosMateriais[$codigoItem]) ? $dadosMateriais[$codigoItem] : [];
+                if ($autItem['e55_quant'] < 2 && !empty($material['pc01_servico'])) {
+                    $daoAutorizacaoItens->e55_servicoquantidade = 'f';
+                } else {
+                    $daoAutorizacaoItens->e55_servicoquantidade = 't';
+                }
+
                 $daoAutorizacaoItens->incluir($autorizacao->getCodigoAutorizacao(), $autItem['e55_sequen']);
             }
         } catch (Exception $e) {

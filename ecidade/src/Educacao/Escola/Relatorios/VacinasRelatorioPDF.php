@@ -55,12 +55,12 @@ class VacinasRelatorioPDF extends FpdfMultiCellBorder
     public function emitirPdf()
     {
         $this->initPdf();
-        $this->AddPage();
+        $this->AddPage('L');
 
         foreach ($this->dados as $escola) {
             $alturaNecessaria = (count(reset($escola->profissionais)) * 4) + 10;
             if ($this->GetAvailHeight() < $alturaNecessaria) {
-                $this->AddPage();
+                $this->AddPage('L');
             }
 
             $this->SetFont('Arial', 'B', 9);
@@ -76,7 +76,7 @@ class VacinasRelatorioPDF extends FpdfMultiCellBorder
 
                 $alturaCGM = count($profissional) * 4;
                 if ($this->GetAvailHeight() < $alturaCGM) {
-                    $this->AddPage();
+                    $this->AddPage('L');
                     $this->imprimirCabecalhoProfissionais();
                 }
 
@@ -85,7 +85,8 @@ class VacinasRelatorioPDF extends FpdfMultiCellBorder
 
                 $this->Cell(15, $alturaCGM, $profissional[0]->matricula?:'--', 0, 0, 'C', $color);
                 $this->Cell(10, $alturaCGM, $profissional[0]->numcgm, 0, 0, '', $color);
-                $this->Cell(70, $alturaCGM, $profissional[0]->nome, 0, 0, '', $color);
+                $this->Cell(80, $alturaCGM, $profissional[0]->nome, 0, 0, '', $color);
+                $this->Cell(70, $alturaCGM, mb_strimwidth($profissional[0]->nomesocial, 0, 40), 0, 0, '', $color);
 
                 $x = $this->GetX();
                 if (count($profissional) == 1 && is_null($profissional[0]->vacina)) {
@@ -116,7 +117,8 @@ class VacinasRelatorioPDF extends FpdfMultiCellBorder
 
         $this->Cell(15, 5, 'Matricula', 0, 0, 'C', 1);
         $this->Cell(10, 5, 'CGM', 0, 0, '', 1);
-        $this->Cell(70, 5, 'Nome', 0, 0, '', 1);
+        $this->Cell(80, 5, 'Nome', 0, 0, '', 1);
+        $this->Cell(70, 5, 'Nome Social', 0, 0, '', 1);
         $this->Cell(55, 5, 'Vacina', 0, 0, '', 1);
         $this->Cell(25, 5, 'Data da Vacinação', 0, 0, 'C', 1);
         $this->Cell(20, 5, 'Dose', 0, 1, '', 1);

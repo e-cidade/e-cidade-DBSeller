@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,7 +103,7 @@ if (count($oDados->aProcessos) == 1) {
                   Resumo PC 
                 </th>
                 <tbody style='background-color:white'>
-                <?
+                <?php
                   $sTbody = '';
                   foreach ($oDados->aProcessos as $oProcesso) {
 
@@ -147,7 +147,7 @@ if (count($oDados->aProcessos) == 1) {
 </center>
 <body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

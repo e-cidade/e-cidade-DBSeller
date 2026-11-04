@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,12 +69,12 @@ if($jatem!=""){
 <table border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td>
-   <?
+   <?php
    $result_loc = $cllocalizacao->sql_record($cllocalizacao->sql_query_file("","bi09_codigo,bi09_nome","bi09_nome"," bi09_biblioteca = $bi17_codigo $where"));
    ?>
    <b>Localizações:</b><br>
    <select name="localizacoes" id="localizacoes" size="10" onclick="js_desabinc()" ondblclick="js_localizacoes()" style="font-size:9px;width:450px;height:400px" multiple>
-    <?
+    <?php
     if($cllocalizacao->numrows>0){
      for($i=0;$i<$cllocalizacao->numrows;$i++) {
       db_fieldsmemory($result_loc,$i);
@@ -121,13 +121,13 @@ if($jatem!=""){
   <td>
    <b>Localizações para efetuar a busca:</b><br>
    <select name="localizacoesbusca" id="localizacoesbusca" size="10" onclick="js_desabexc()" style="font-size:9px;width:350px;height:400px" multiple>
-    <?if($jatem!=""){
+    <?php if($jatem!=""){
      $explode = explode(",",$jatem);
      for($c=0;$c<count($explode);$c++){
       $exp_registro = explode("|",$explode[$c]);
       ?>
       <option value="<?=$exp_registro[0]?>"><?=$exp_registro[1]?></option>
-      <?
+      <?php
      }
     }?>
    </select>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,7 +65,7 @@ $clrotulo->label("e80_data");
     <script type="text/javascript" src="scripts/prototype.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style>
-        <?$cor ="#999999 "?>.bordas {
+        <?php $cor ="#999999 "?>.bordas {
             border: 1px solid #cccccc;
             border-top-color: <?=$cor?>;
             border-right-color: <?=$cor?>;
@@ -112,31 +112,31 @@ $clrotulo->label("e80_data");
         <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
             <form name="form1" method="post" action="">
                 <table align="center" border='7' height="100%" width="100%">
-                    <?
+                    <?php
                     $totalmovs = 0;
                     $valormovs = 0;
                     $valordebs = 0;
                     $valoragen = 0;
                     $totalagen = 0;
-                    db_input("retornoarq",10,'',true,'hidden',3);
-                    if(isset($retornoarq) && trim($retornoarq)!=""){
-						  $dbwhere = "    e80_instit = " . db_getsession("DB_instit") . "
+                    db_input("retornoarq", 10, '', true, 'hidden', 3);
+                    if (isset($retornoarq) && trim($retornoarq)!="") {
+                          $dbwhere = "    e80_instit = " . db_getsession("DB_instit") . "
             						  and e75_codret in ({$retornoarq})
             						  and e76_processado is false
             						  and (  e60_instit = ".db_getsession("DB_instit")."
             						   or ( k17_instit = " . db_getsession("DB_instit") . "))";
-                        if(isset($contapaga)){
+                        if (isset($contapaga)) {
                             $dbwhere .= " and e83_codtipo=$contapaga ";
                         }
 
                         if (isset($lCancelado) && $lCancelado == '0') {
-
 //                            $dbwhere .= " and empageconfgera.e90_cancelado is false ";
                         }
 
 //                        $dbwhere .= " and corempagemov.k12_codmov is null ";
 
-                        $sSqlEmpAgeCons = $clempage->sql_query_cons(null,
+                        $sSqlEmpAgeCons = $clempage->sql_query_cons_novo(
+                            null,
                             "distinct e87_codgera,
 						      e87_descgera,
 						      e76_processado,
@@ -174,20 +174,19 @@ $clrotulo->label("e80_data");
 						      e83_codtipo,
 						      e83_descr",
                             "e83_codtipo,e76_lote,e76_movlote",
-                            $dbwhere);
+                            $dbwhere
+                        );
 
 //                        echo ($sSqlEmpAgeCons);
 
                         $result_arq  = $clempage->sql_record($sSqlEmpAgeCons);
                         $numrows_arq = $clempage->numrows;
-                        $arr_valorcontas = Array();
-                        $arr_valorproces = Array();
-                        $arr_valoragenda = Array();
+                        $arr_valorcontas = [];
+                        $arr_valorproces = [];
+                        $arr_valoragenda = [];
                         if ($numrows_arq > 0) {
-
                             for ($i = 0; $i < $numrows_arq; $i++) {
-
-                                db_fieldsmemory($result_arq,$i);
+                                db_fieldsmemory($result_arq, $i);
 
                                 $sSqlDadosOcorrencia   = "select e92_coderro, ";
                                 $sSqlDadosOcorrencia  .= "       e92_sequencia, ";
@@ -208,26 +207,26 @@ $clrotulo->label("e80_data");
                                     db_fieldsmemory($rsDadoOcorrencia, 0);
                                 }
                                 $valormovs += $e81_valor;
-                                if(!isset($arr_valorcontas[$e83_codtipo])){
+                                if (!isset($arr_valorcontas[$e83_codtipo])) {
                                     $arr_valorcontas[$e83_codtipo] = 0;
                                 }
                                 $arr_valorcontas[$e83_codtipo] += $e81_valor;
 
-                                if(!isset($arr_valorproces[$e83_codtipo])){
+                                if (!isset($arr_valorproces[$e83_codtipo])) {
                                     $arr_valorproces[$e83_codtipo] = 0;
                                 }
-                                if(!isset($arr_valorret[$e83_codtipo])){
+                                if (!isset($arr_valorret[$e83_codtipo])) {
                                     $arr_valorret[$e83_codtipo] = $vlrretencao;
                                 } else {
                                     $arr_valorret[$e83_codtipo] += $vlrretencao;
                                 }
-                                if($e92_processa=='t' && $e92_sequencia!=35){
+                                if ($e92_processa=='t' && $e92_sequencia!=35) {
                                     $totalmovs++;
                                     $arr_valorproces[$e83_codtipo] += $e76_valorefet;
                                     $valordebs += $e76_valorefet;
-                                }else if($e92_sequencia == 35 || ProcessamentoPagamentoFornecedor::retornoAgendamento($e92_sequencia)){
+                                } elseif ($e92_sequencia == 35 || ProcessamentoPagamentoFornecedor::retornoAgendamento($e92_sequencia)) {
                                     $totalagen ++;
-                                    if (isset($arr_valoragenda[$e83_codtipo])){
+                                    if (isset($arr_valoragenda[$e83_codtipo])) {
                                         $arr_valoragenda[$e83_codtipo] += $e76_valorefet;
                                     } else {
                                         $arr_valoragenda[$e83_codtipo] = $e76_valorefet;
@@ -240,9 +239,9 @@ $clrotulo->label("e80_data");
 						    <tr>
 						    <td colspan='11' align='center'>
 						    <b>Arquivo enviado &nbsp;&nbsp;&nbsp;&nbsp;$e87_codgera - $e87_descgera</b><br>
-						    <b>Valor debitado:</b>".trim(db_formatar(@$valordebs,'f'))."&nbsp;&nbsp;&nbsp;&nbsp;
-						    <b>Valor movimentos:</b>".trim(db_formatar(@$valormovs,'f'))."</span>&nbsp;&nbsp;&nbsp;&nbsp;
-						    <b>Valor agendado:</b>".trim(db_formatar(@$valoragen,'f'))."</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						    <b>Valor debitado:</b>".trim(db_formatar(@$valordebs, 'f'))."&nbsp;&nbsp;&nbsp;&nbsp;
+						    <b>Valor movimentos:</b>".trim(db_formatar(@$valormovs, 'f'))."</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						    <b>Valor agendado:</b>".trim(db_formatar(@$valoragen, 'f'))."</span>&nbsp;&nbsp;&nbsp;&nbsp;
 						    <b>Total efetuados:</b>".$totalmovs."</span>&nbsp;&nbsp;&nbsp;&nbsp;
 						    <b>Total agendados:</b>".$totalagen."</span>
 						    </td>
@@ -253,7 +252,7 @@ $clrotulo->label("e80_data");
 						    <tr>
 						    <td class='bordas02' align='center' title='Inverte Marcação'>
 						    ";
-                            db_ancora("M",'js_marca(this)',1);
+                            db_ancora("M", 'js_marca(this)', 1);
                             echo "
 						    </td>
 						    <td class='bordas02' align='center'><b>$RLe82_codord</b></td>
@@ -270,14 +269,13 @@ $clrotulo->label("e80_data");
 						    </thead>
 						    <tbody style='overflow:auto;' height='100%'>
 						    ";
-                        }else{
+                        } else {
                             echo "<tr><td><b>Movimentos já baixados ou cancelados.</b></td></tr>";
                         }
 
                         $pagadora = "";
-                        for($i = 0;$i<$numrows_arq;$i++){
-
-                            db_fieldsmemory($result_arq,$i);
+                        for ($i = 0; $i<$numrows_arq; $i++) {
+                            db_fieldsmemory($result_arq, $i);
 
                             $disab02 = false;
                             $sSqlDadosOcorrencia   = "select e92_coderro, ";
@@ -297,9 +295,9 @@ $clrotulo->label("e80_data");
                             $rsDadoOcorrencia      = db_query($sSqlDadosOcorrencia);
                             $iTotalLinhas          = pg_num_rows($rsDadoOcorrencia);
                             if ($iTotalLinhas > 0) {
-                                db_fieldsmemory($rsDadoOcorrencia,0);
+                                db_fieldsmemory($rsDadoOcorrencia, 0);
                             }
-                            if($e86_codmov== ''){
+                            if ($e86_codmov== '') {
                                 $disab02 = true;
                             }
                             $processa = true;
@@ -315,14 +313,14 @@ $clrotulo->label("e80_data");
                                 $e92_processa = "f";
                             }
 
-                            if ( $e92_processa == "t" ) {
+                            if ($e92_processa == "t") {
                                 $acao_sistema = "Será efetuado pagamento";
-                                if ( ! empty($k12_codmov) ) {
+                                if (! empty($k12_codmov)) {
                                     $acao_sistema = "Pagamento já foi efetuado, será atualizado na agenda.";
                                 }
-                            }else if ( $e92_processa == "f" ) {
+                            } elseif ($e92_processa == "f") {
                                 $acao_sistema = "Este registro retornará para agenda.";
-                                if ( !empty($k12_codmov) ) {
+                                if (!empty($k12_codmov)) {
                                     $acao_sistema = "Este registro terá o pagamento estornado e retornará para agenda.";
                                 }
                             }
@@ -331,21 +329,20 @@ $clrotulo->label("e80_data");
                             $disab = "";
                             $disab01 = false;
                             $check = " checked ";
-                            if($e92_sequencia==35){
+                            if ($e92_sequencia==35) {
                                 $class = "01";
                             }
                             
-                            if($e92_sequencia==114){
-
-                              $class = "01";
-                              $disab = "disabled";
-                              $disab01 = true;
-                              $check = "";
+                            if ($e92_sequencia==114) {
+                                $class = "01";
+                                $disab = "disabled";
+                                $disab01 = true;
+                                $check = "";
                             }
 
-                            if($pagadora!=$e83_codtipo) {
+                            if ($pagadora!=$e83_codtipo) {
                                 $pagadora = $e83_codtipo;
-                                if($i!=0){
+                                if ($i!=0) {
                                     echo "<tr><td colspan='11' align='left'>&nbsp;</td></tr>";
                                 }
                                 echo "<tr>
@@ -353,13 +350,13 @@ $clrotulo->label("e80_data");
 						      <b>$e83_descr</b>
 						      </td>
 						      <td colspan='1' class='bordas' align='left'>
-						      <b>".db_formatar($arr_valorcontas[$e83_codtipo],"f")."</b>
+						      <b>".db_formatar($arr_valorcontas[$e83_codtipo], "f")."</b>
 						      </td>
 						      <td colspan='1' class='bordas' align='left'>
-						      <b>".db_formatar($arr_valorret[$e83_codtipo],"f")."</b>
+						      <b>".db_formatar($arr_valorret[$e83_codtipo], "f")."</b>
 						      </td>
 						      <td colspan='3' class='bordas' align='left'>
-						      <b>".db_formatar($arr_valorproces[$e83_codtipo],"f")."</b>
+						      <b>".db_formatar($arr_valorproces[$e83_codtipo], "f")."</b>
 						      </td>
 						      </tr>";
                             }
@@ -372,7 +369,7 @@ $clrotulo->label("e80_data");
 
 						    </td>
 						    <td class='bordas$class'><small>$e82_codord ";
-                            if($disab01==true){
+                            if ($disab01==true) {
                                 echo "<span style=\"color:darkblue;\">**</span>";
                             }
                             echo "
@@ -382,11 +379,11 @@ $clrotulo->label("e80_data");
 						    <td class='bordas$class'><small>$z01_nome</small></td>
 						    <td class='bordas$class'><small>".@$e92_descrerro."</small></td>
 						    <td class='bordas$class'><small>".$acao_sistema."</small></td>
-						    <td class='bordas$class'><small>".db_formatar($e87_data,"d")."</small></td>
-						    <td class='bordas$class'><small>".db_formatar($e76_dataefet,"d")."</small></td>
-						    <td class='bordas$class'><small>".db_formatar($e81_valor,"f")."</small></td>
-						    <td class='bordas$class'><small>".db_formatar($vlrretencao,"f")."</small></td>
-						    <td class='bordas$class'><small>".db_formatar($e76_valorefet,"f")."</small></td>
+						    <td class='bordas$class'><small>".db_formatar($e87_data, "d")."</small></td>
+						    <td class='bordas$class'><small>".db_formatar($e76_dataefet, "d")."</small></td>
+						    <td class='bordas$class'><small>".db_formatar($e81_valor, "f")."</small></td>
+						    <td class='bordas$class'><small>".db_formatar($vlrretencao, "f")."</small></td>
+						    <td class='bordas$class'><small>".db_formatar($e76_valorefet, "f")."</small></td>
 						    </tr>
 						    ";
                             /*
@@ -394,7 +391,7 @@ $clrotulo->label("e80_data");
                             <td class='bordas'><small>$e76_movlote</small></td>
                             */
                         }
-                        if($numrows_arq>0){
+                        if ($numrows_arq>0) {
                             echo "</tbody>";
                         }
                     }

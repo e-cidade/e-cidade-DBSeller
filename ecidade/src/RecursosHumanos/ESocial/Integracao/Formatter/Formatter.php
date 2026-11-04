@@ -332,17 +332,19 @@ SQL;
 
         $oESocial->setDados($parametros);
         $dados = $oESocial->request("GET");
+        $excluido = false;
+        $processado = false;
         if (!empty($dados)) {
             if (sizeof($dados) > 0) {
                 // verificamos o dado do S2300
                 $dado = $dados[0];
                 if (isset($dado->recibo)) {
-                    $processado = false;
                     foreach ($dado->recibo as $recibo) {
                         if ($processado) {
                             continue;
                         }
                         if ($recibo->excluido) {
+                            $excluido = true;
                             $processado = true;
                         } else {
                             $dataRecibo = new DBDate(substr($recibo->created_at, 0, 10));
@@ -356,6 +358,10 @@ SQL;
                 if (empty(json_decode($dado->evento)->infoTSVInicio->matricula)) {
                     $enviaMatricula = false;
                 }
+            }
+            if ($excluido) {
+                // alterando regra conforme redmine 24890.
+                $enviaMatricula = true;
             }
         }
         return $enviaMatricula;

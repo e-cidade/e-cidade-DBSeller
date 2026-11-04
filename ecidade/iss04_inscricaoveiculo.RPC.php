@@ -83,7 +83,7 @@ try {
             excluirAtividadePorInscricao($parametros->q02_inscr);
 
             if (!empty($parametros->q172_sequencial)) {
-                excluirCondutorAuxiliar();
+                excluirCondutorAuxiliar($parametros->q172_sequencial);
             }
 
             excluirVeiculo($parametros->q02_inscr);

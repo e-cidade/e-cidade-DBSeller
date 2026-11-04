@@ -2035,7 +2035,7 @@ class endereco
     /*
      * @param cep string
      */
-    public static function getCodigoExternoSistemaByCep($cep)
+    public static function getCodigoExternoSistemaByCep($cep, $matricula='')
     {
         if (empty($cep) || $cep == "") {
             return "";
@@ -2058,10 +2058,19 @@ class endereco
                 REGEXP_REPLACE(db72_cepfinal,'[^a-zA-Y0-9 ]','','g')::int
                 limit 1";
         $rs = db_query($sql);
-
+        
         if (!$rs) {
-            echo $sql;
             throw new DBException("Ocorrêu um erro ao procurar o cep {$cep}.");
+        }
+
+        if (pg_num_rows($rs) == 0) { 
+
+            $msg = "O CEP:<b>($cep)</b> ";
+            if (!empty($matricula)) {
+                $msg .= "da matrícula<b>($matricula)</b> ";
+            }
+
+            throw new DBException($msg."não foi localizado.");
         }
 
         if (pg_num_rows($rs) > 0) {

@@ -62,11 +62,11 @@ db_postmemory($_POST);
           <?php
           $clcriaabas->identifica = array(
             "veicmotoristas" => "Dados do Motorista",
-            "veicmotoristascentral" => "Central de Veículos"
+            "veicmotoristascentral" => "Central de VeÃ­culos"
           );
           $clcriaabas->title      = array(
             "veicmotoristas" => "Dados do Motorista",
-            "veicmotoristascentral" => "Central de Veículos"
+            "veicmotoristascentral" => "Central de VeÃ­culos"
           );
           $clcriaabas->src        = array(
             "veicmotoristas" => "vei1_veicmotoristas004.php",

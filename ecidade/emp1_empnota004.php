@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,18 +44,18 @@ db_postmemory($HTTP_POST_VARS);
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 if(isset($e69_numemp)){
-  $result = $clempempenho->sql_record($clempempenho->sql_query_empnome($e69_numemp,"z01_nome,z01_numcgm")); 
+  $result = $clempempenho->sql_record($clempempenho->sql_query_empnome($e69_numemp,"z01_nome,z01_numcgm"));
   if($clempempenho->numrows>0){
     db_fieldsmemory($result,0);
-  }    
-}    
+  }
+}
 
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   $sqlerro=false;
-   
-  if(empty($dinovo)){ 
+
+  if(empty($dinovo)){
     //rotina que verifica se o numero da nota já não está incluido em outro codnota
     $result = $clempnota->sql_record($clempnota->sql_query_emp(null,"e69_numemp as numemp","","e69_numero='$e69_numero' and z01_numcgm=$z01_numcgm"));
     $numrows = $clempnota->numrows;
@@ -67,8 +67,8 @@ if(isset($incluir)){
 	db_fieldsmemory($result,$i);
 	if($numemp == $e69_numemp){
 	  $mesmo =  true;
-	}	
-	$emps .= $sep.$numemp; 
+	}
+	$emps .= $sep.$numemp;
 	$sep   = ',';
       }
       if($mesmo == true){
@@ -85,29 +85,29 @@ if(isset($incluir)){
     //***********************************************************************************
   }
 
-  
+
   db_inicio_transacao();
-  
+
   if($sqlerro == false){
 
-     //rotina que irá somar os valores de todas as ordens 
-	 $result  = $clempnotaele->sql_record($clempnotaele->sql_query(null,null,"e60_numemp,sum(e70_valor) as tot_valor, sum(e70_vlrliq) as tot_vlrliq, sum(e70_vlranu) as tot_vlranu","","e60_numemp=$e69_numemp group by e60_numemp")); 
+     //rotina que irá somar os valores de todas as ordens
+	 $result  = $clempnotaele->sql_record($clempnotaele->sql_query(null,null,"e60_numemp,sum(e70_valor) as tot_valor, sum(e70_vlrliq) as tot_vlrliq, sum(e70_vlranu) as tot_vlranu","","e60_numemp=$e69_numemp group by e60_numemp"));
 	 if($clempnotaele->numrows>0){
 	   db_fieldsmemory($result,0);
 	 }else{
 	     $tot_vlrliq   = '0.00';
 	     $tot_vlranu   = '0.00';
 	     $tot_valor    = '0.00';
-	 }  
-     //fim  
+	 }
+     //fim
 
 
-    
+
     $clempnota->e69_dtnota     = date("Y-m-d",db_getsession("DB_datausu"));
     $clempnota->e69_dtservidor = date("Y-m-d",db_getsession("DB_datausu"));
     $clempnota->e69_dtinclusao = date("Y-m-d",db_getsession("DB_datausu"));
     $clempnota->e69_anousu     = db_getsession("DB_anousu");
-    if (!isset($e69_tipodocumentosfisca) || $e69_tipodocumentosfisca == "") {  
+    if (!isset($e69_tipodocumentosfisca) || $e69_tipodocumentosfisca == "") {
       $clempnota->e69_tipodocumentosfiscal = 4;
     }
     $clempnota->incluir($e69_codnota);
@@ -120,33 +120,33 @@ if(isset($incluir)){
   }
 
   if($sqlerro==false){
-    $arr_dados = split("#",$dados);
+    $arr_dados =explode("#",$dados);
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-          $arr_ele = split("-",$arr_dados[$i]);
+          $arr_ele =explode("-",$arr_dados[$i]);
           $valor = number_format($arr_ele[1],"2",".","");
 	  $elemento = $arr_ele[0];
 
           $result09 = $clempelemento->sql_record($clempelemento->sql_query_file($e69_numemp,$elemento,"e64_vlremp,e64_vlranu,e64_vlrliq"));
-          db_fieldsmemory($result09,0);  
-   
-   //rotina que irá somar os valores de todas as ordens 
-       $result  = $clempnotaele->sql_record($clempnotaele->sql_query(null,null,"e60_numemp,sum(e70_valor) as tot_valor, sum(e70_vlrliq) as tot_vlrliq, sum(e70_vlranu) as tot_vlranu","","e60_numemp=$e69_numemp and e70_codele =$elemento group by e60_numemp")); 
+          db_fieldsmemory($result09,0);
+
+   //rotina que irá somar os valores de todas as ordens
+       $result  = $clempnotaele->sql_record($clempnotaele->sql_query(null,null,"e60_numemp,sum(e70_valor) as tot_valor, sum(e70_vlrliq) as tot_vlrliq, sum(e70_vlranu) as tot_vlranu","","e60_numemp=$e69_numemp and e70_codele =$elemento group by e60_numemp"));
        if($clempnotaele->numrows>0){
 	 db_fieldsmemory($result,0);
        }else{
 	   $tot_vlrliq   = '0.00';
 	   $tot_vlranu   = '0.00';
 	   $tot_valor    = '0.00';
-       }  
-   //fim  
+       }
+   //fim
 
-	  
+
 
           //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	  //rotina que verifica se tem disponivel
 	  $liber = ($e64_vlremp-$e64_vlranu) - ($tot_valor-$tot_vlranu);
-	  $valor = db_formatar($valor,'p')+0;	  	  
+	  $valor = db_formatar($valor,'p')+0;
 	  $liber = db_formatar($liber,'p')+0;
           if($valor > $liber){
 	    $sqlerro=true;
@@ -165,8 +165,8 @@ if(isset($incluir)){
 		$sqlerro=true;
 		break;
 	    }
-	  }  
-     } 	  
+	  }
+     }
   }
   db_fim_transacao($sqlerro);
 }
@@ -181,7 +181,7 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -189,22 +189,22 @@ if(isset($incluir)){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmempnota.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if(isset($duv_msg)){
        echo "<script>\n
@@ -216,7 +216,7 @@ if(isset($incluir)){
 	       obj.setAttribute('value','true');\n
 	       document.form1.appendChild(obj);\n
 	       document.form1.incluir.click();\n
-	     }\n   
+	     }\n
 	     </script>";
 
   }else{
@@ -227,7 +227,7 @@ if(isset($incluir)){
       };
     if($sqlerro==false){
       db_redireciona("emp1_empnota001.php");
-    }  
-  }  
+    }
+  }
 }
 ?>

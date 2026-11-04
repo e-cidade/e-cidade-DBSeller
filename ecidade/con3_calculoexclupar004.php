@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -149,7 +149,7 @@ function js_voltar(){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',6,$Id02_contri,true,'text',3);
   db_input('j14_nome',50,$Ij14_nome,true,'text',3);
   ?>
@@ -160,7 +160,7 @@ function js_voltar(){
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',3);
   db_input('z01_nome',50,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -177,7 +177,7 @@ function js_voltar(){
       <br>
       <b>Contribuições da rua <?=@$j14_nome?></b>
       <select name="contribs" size="" onchange="js_trocacontri(this)">
-       <?
+       <?php
          $pr="";
          $pri="";
          for($i=0; $i<$numrows; $i++){
@@ -209,7 +209,7 @@ function js_voltar(){
       </select>
       <br>
 	<select name="matriculas" size="10"  onClick="js_troca(this)">
-       <?
+       <?php
          $resulta=$clcontrib->sql_record($clcontrib->sql_query("","","d07_matric,z01_nome","","d07_contri=$contribs"));
 	   $num=$clcontrib->numrows;
 	   for($x=0; $x<$num; $x++){
@@ -233,12 +233,12 @@ function js_voltar(){
  </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($confirmar)){
    db_msgbox($erro); 
    if($pr==""){

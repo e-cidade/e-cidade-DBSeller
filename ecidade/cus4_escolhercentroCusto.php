@@ -127,7 +127,7 @@ if (isset($oGet->iCodigoCriterio) && $oGet->iCodigoCriterio != "") {
   <body bgcolor="#CCCCCC">
   <center>
    <table>
-      <?
+      <?php
        db_lovrot($sSqlCriterios, 15,"()","","js_completaCustos|cc08_sequencial|cc08_descricao");
       ?>
    </table>

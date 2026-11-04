@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -245,12 +245,12 @@ function js_emite(tiporel){
       </tr>
       <tr >
         <td align="right" nowrap title="<?=@$Td02_contri?>" >
-          <?
+          <?php
 	   db_ancora(@$Ld02_contri,"js_contri(true);",4)
           ?>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
 	  db_input('d02_contri',4,$Id02_contri,true,'text',4,"onchange='js_contri(false);'");
           ?>
         </td>
@@ -260,7 +260,7 @@ function js_emite(tiporel){
         <td> <strong>Opção de Seleção :<strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
 	  $x = array("2"=>"Somente Selecionados","3"=>"Menos os Selecionados");
 	  db_select('tipo',$x,true,2);
           ?>
@@ -278,13 +278,13 @@ function js_emite(tiporel){
 
          <tr>
            <td nowrap title="<?=@$Td07_matric?>" colspan="2">
-            <?
+            <?php
               db_ancora($Ld07_matric,"js_contrib(true);",2);
             ?>
-            <?
+            <?php
               db_input('d07_matric',8,'',true,'text',2," onchange='js_contrib(false);'")
             ?>
-            <?
+            <?php
               db_input('z01_nome',25,'',true,'text',3,'')
             ?>
 	    <input name="lanca" type="button" value="Lançar" >
@@ -326,7 +326,7 @@ function js_emite(tiporel){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -398,7 +398,7 @@ function js_preenchepesquisa(chave){
 </script>
 
 
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

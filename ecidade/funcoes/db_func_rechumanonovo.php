@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -70,6 +70,7 @@ $campospessoal = "rhpessoal.rh01_regist,
                   cgmrh.z01_compl,
                   cgmrh.z01_bairro,
                   cgmrh.z01_cep,
+                  cgmfisico.z04_nomesocial as z04_nomesocial,
                   rechumano.ed20_i_censoufender,
                   rechumano.ed20_i_censomunicender,
                   rechumano.ed20_i_codigo,
@@ -120,6 +121,7 @@ $camposcgm = "cgmcgm.z01_nomecomple,
               cgmcgm.z01_compl,
               cgmcgm.z01_bairro,
               cgmcgm.z01_cep,
+              cgmfisico.z04_nomesocial as z04_nomesocial,
               rechumano.ed20_i_censoufender,
               rechumano.ed20_i_censomunicender,
               rechumano.ed20_i_codigo,
@@ -230,6 +232,7 @@ $camposrechumano = "case when ed20_i_tiposervidor = 1
                      then rhpesdoc.rh16_carth_val
                      else cgmcgm.z01_dtvencimento
                     end as rh16_carth_val,
+                    cgmfisico.z04_nomesocial as z04_nomesocial,
                     rechumano.ed20_c_nis,
                     rechumano.ed20_i_censoorgemiss,
                     rechumano.ed20_i_censoufident,

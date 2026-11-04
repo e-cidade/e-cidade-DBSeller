@@ -2,28 +2,34 @@
 
 namespace App\Domain\Tributario\ITBI\Services;
 
+use App\Domain\Tributario\Arrecadacao\Services\ArrecadacaoPixItbiService;
 use App\Domain\Configuracao\Departamento\Repositories\DepartamentoRepository;
 use App\Domain\Configuracao\Instituicao\Repository\InstituicaoRepository;
 use App\Domain\Tributario\Arrecadacao\Repositories\ArretipoRepository;
 use App\Domain\Tributario\Arrecadacao\Repositories\NumprefRepository;
 use App\Domain\Tributario\Cadastro\Repositories\IptuantRepository;
+use App\Domain\Tributario\Cadastro\Repositories\IptubaseRepository;
 use App\Domain\Tributario\ITBI\Models\Itbinumpre;
 use App\Domain\Tributario\ITBI\Reports\EmissaoGuia;
 use App\Domain\Tributario\ITBI\Repositories\ItbiavaliaRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbiintermediadorRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbiconstrRepository;
+use App\Domain\Tributario\ITBI\Repositories\ItbidadosimovelRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbinomeRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbinumpreRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbiRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbiruralcaractRepository;
 use App\Domain\Tributario\ITBI\Repositories\ParitbiRepository;
 use App\Domain\Tributario\ITBI\Repositories\ParreciboitbiRepository;
+use CgmRepository;
 use ECidade\Lib\Session\DefaultSession;
 use \ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\ITBI\Model\Itbitaxasavalia;
 use ECidade\Tributario\ITBI\Repository\ItbitaxasavaliaRepository;
 use regraEmissao;
 use convenio;
+use cl_cgm;
+use db_utils;
 
 final class EmissaoGuiaService extends EmissaoGuia
 {
@@ -50,8 +56,10 @@ final class EmissaoGuiaService extends EmissaoGuia
         $aPagamentos = $itbinumpreRepository->getPagamentosGuia($this->numeroGuia);
 
         if (count($aPagamentos) > 0) {
-            throw new \Exception("A guia {$this->numeroGuia} já está paga.");
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -68,6 +76,7 @@ final class EmissaoGuiaService extends EmissaoGuia
             $this->geraCobrancaRegistrada($oRecibo);
             $this->ajustaItbinumpre();
             $this->carregaConvenio();
+            $this->geraPix($oRecibo);
         }
 
         $this->gerar();
@@ -120,7 +129,10 @@ final class EmissaoGuiaService extends EmissaoGuia
 
         $this->buscarParametrosItbi();
         $this->buscarDadosItbi();
+        $this->buscarDadosImovelItbi();
+        $this->buscarDadosImovelIptu();
         $this->buscarTransmitentesAdquirentes();
+        $this->buscaAdquirentesETransmitentes();
 
         if ($this->dados->bLiberado) {
             $this->buscarAvaliacao();
@@ -173,7 +185,7 @@ final class EmissaoGuiaService extends EmissaoGuia
     {
         $itbiRepository = new ItbiRepository();
         $oItbi = $itbiRepository->getAllByGuia($this->numeroGuia, [
-            "it06_matric", "it22_numero", "it22_setor","it22_quadra", "it22_lote", "it22_matricri",
+            "it06_matric", "it22_numero", "it22_setor", "it22_quadra", "it22_lote", "it22_matricri",
             "it22_quadrari", "it22_loteri", "j13_descr", "it05_frente", "it05_fundos", "it05_direito", "it05_esquerdo",
             "it04_descr", "it14_obs", "it01_obs", "it14_guia", "it14_dtliber", "it14_dtvenc", "it05_guia", "it07_descr",
             "it01_valorterreno", "it01_valorconstr", "it14_valoravalconstr", "it01_valortransacao", "it14_valoraval",
@@ -181,11 +193,39 @@ final class EmissaoGuiaService extends EmissaoGuia
             \DB::raw("(CASE WHEN LENGTH(TRIM(it18_nomelograd)) > 0 THEN 'Sim' ELSE 'Não' END) AS lFrenteVia"),
             \DB::raw("TRIM(it18_nomelograd) AS it18_nomelograd"),
             "it01_tituprocesso", "it01_dtprocesso", "it01_areaterreno", "it01_areatrans", "it14_valoravalter",
-            "it18_frente", "it18_fundos", "it18_prof", "it22_compl", "it01_data", "it01_hora", "it01_coddepto"
+            "it18_frente", "it18_fundos", "it18_prof", "it22_compl", "it01_data", "it01_hora",
+            "it01_coddepto", "it29_setorloc"
         ]);
 
         $this->setDados("oItbi", $oItbi);
         $this->setDados("bLiberado", !empty($oItbi->it14_guia));
+    }
+
+    /**
+     * Busca todos os dados necessarios do imovel da guia de itbi
+     * @throws \Exception
+     */
+    private function buscarDadosImovelItbi()
+    {
+        $itbiDadosImovelRepository = new ItbidadosimovelRepository();
+        $oDadosImovel = $itbiDadosImovelRepository->getByGuia($this->numeroGuia);
+        $this->setDados("oDadosImovel", $oDadosImovel);
+    }
+
+    /**
+     * Busca todos os dados necessarios do imovel da iptubase
+     * @throws \Exception
+     */
+    private function buscarDadosImovelIptu()
+    {
+        $oInformacoesImovel = null;
+        if ($this->dados->oItbi->it06_matric) {
+            $iptuBaseRepository = new IptubaseRepository();
+            $oInformacoesImovel = $iptuBaseRepository->getInformacoesImovel(
+                $this->dados->oItbi->it06_matric
+            );
+        }
+        $this->setDados("oInformacoesImovel", $oInformacoesImovel);
     }
 
     /**
@@ -246,6 +286,48 @@ final class EmissaoGuiaService extends EmissaoGuia
         $this->setDados("sOutrosAdquirentes", $sOutrosAdquirentes);
     }
 
+    private function buscaAdquirentesETransmitentes()
+    {
+        $arrayAdquirentes = [];
+        $arrayTransmitentes = [];
+
+        $mapArray = function ($item) {
+            if (isset($item->z01_numcgm)) {
+                return $this->buscarCgm($item->z01_numcgm);
+            } elseif (isset($item->numcgm)) {
+                return $this->buscarCgm($item->numcgm);
+            }
+        };
+
+        if (isset($this->dados->oAdquirente)) {
+            $arrayAdquirentes = array_merge($arrayAdquirentes, [$this->dados->oAdquirente]);
+        }
+
+        if (isset($this->dados->oTransmitente)) {
+            $arrayTransmitentes = array_merge($arrayTransmitentes, [$this->dados->oTransmitente]);
+        }
+
+        $arrayAdquirentes = array_merge($arrayAdquirentes, $this->dados->aAdquirentesSecundarios);
+        $arrayTransmitentes = array_merge($arrayTransmitentes, $this->dados->aTransmitentesSecundarios);
+        
+        $arrayAdquirentes = array_map($mapArray, $arrayAdquirentes);
+        $arrayTransmitentes = array_map($mapArray, $arrayTransmitentes);
+
+        $arrayAdquirentes = array_filter($arrayAdquirentes);
+        $arrayTransmitentes = array_filter($arrayTransmitentes);
+
+        $this->setDados("arrayAdquirentes", $arrayAdquirentes);
+        $this->setDados("arrayTransmitentes", $arrayTransmitentes);
+    }
+
+    private function buscarCgm($cgm)
+    {
+        $oDaoCgm = new cl_cgm();
+        $sSqlBuscaCgm = $oDaoCgm->sql_query_file($cgm, '*', null, "z01_numcgm = $cgm");
+        $rsBuscaCgm = db_query($sSqlBuscaCgm);
+        return db_utils::getCollectionByRecord($rsBuscaCgm)[0];
+    }
+
     /**
      * Busca a avaliação do ITBI
      * @throws \Exception
@@ -267,7 +349,7 @@ final class EmissaoGuiaService extends EmissaoGuia
 
         $aItbiAvalia = array_map(function ($oItbiAvalia) use (&$nTotalDesconto, &$sFormaPagamento) {
             $nValorImposto = $oItbiAvalia->it24_valor * ($oItbiAvalia->it27_aliquota / 100);
-            $nDescImposto  = $nValorImposto * ( $oItbiAvalia->it04_desconto / 100 );
+            $nDescImposto  = $nValorImposto * ($oItbiAvalia->it04_desconto / 100);
             $nTotalImposto = $nValorImposto - $nDescImposto;
 
             if ($nTotalImposto >= 0) {
@@ -462,9 +544,14 @@ final class EmissaoGuiaService extends EmissaoGuia
 
         $oRecibo->setVinculoCgm($iCgm);
 
-        if (!empty($oItbi->it06_matric)) {
-            $oRecibo->setMatricula($oItbi->it06_matric);
-        }
+        // Removido vilculo do boleto com a matricula.
+        //
+        // Arrenumcgm possui uma trigger que é acionada na insercao e
+        // modifica a arrenumcgm, vinculando o boleto ao transmitente.
+        //
+        // if (!empty($oItbi->it06_matric)) {
+        //     $oRecibo->setMatricula($oItbi->it06_matric);
+        // }
 
         $oRecibo->emiteRecibo($this->regraEmissao->isCobranca(), true, $this->regraEmissao->getConvenio());
 
@@ -606,5 +693,28 @@ final class EmissaoGuiaService extends EmissaoGuia
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
+    }
+
+    /**
+     * Realiza a geracao do pix para a guia
+     * @param Recibo $oRecibo
+     * @throws \Exception
+     */
+    private function geraPix($oRecibo)
+    {
+        $servicePixItbiArrecadao = new ArrecadacaoPixItbiService();
+        $servicePixItbiArrecadao->setConvenio($this->convenio);
+        $servicePixItbiArrecadao->setRegraEmissao($this->regraEmissao);
+        $servicePixItbiArrecadao->setVencimento($this->dados->oItbi->it14_dtvenc);
+        $servicePixItbiArrecadao->setCodigoArrecadacao($this->dados->iNumpre);
+        $servicePixItbiArrecadao->setRecibo($oRecibo);
+        $servicePixItbiArrecadao->setTipoDebito(29);
+        $servicePixItbiArrecadao->setValorRecibo($this->dados->oItbi->it14_valorpaga);
+        $servicePixItbiArrecadao->setNumpreRecibo($this->dados->iNumpre);
+        $servicePixItbiArrecadao->setCgm($this->dados->oAdquirente->z01_numcgm);
+        $servicePixItbiArrecadao->gerarPix();
+
+        $codigobarras = $servicePixItbiArrecadao->getCodigoBarras();
+        $this->setDados("codigoDeBarrasPix", $codigobarras);
     }
 }

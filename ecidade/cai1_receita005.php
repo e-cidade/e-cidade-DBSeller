@@ -238,8 +238,10 @@ if ((isset($chavepesquisa) || $encontroureceita == true) || (isset($alterar) && 
             parent.document.formaba.tabrec.disabled=false;
 						parent.document.formaba.tabrecregrasjm.disabled=false;
 						parent.document.formaba.tabrecdepto.disabled=false;
+                        parent.document.formaba.tabproced.disabled=false;
             (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tabrecregrasjm.location.href='cai1_receitaregrasjm001.php?k04_receit=" . @$k02_codigo . "';
 						(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tabrecdepto.location.href='cai1_tabrec_depto001.php?db_opcao=$opcao&k98_receit=" . @$k02_codigo . "&k02_descr=" . @$k02_descr . "';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tabproced.location.href='cai1_vinculoreceitaprocedencia.php?k02_codigo=" . @$k02_codigo . "&db_opcao=$opcao';
        ";
     if ($k02_tipo == "E") {
 

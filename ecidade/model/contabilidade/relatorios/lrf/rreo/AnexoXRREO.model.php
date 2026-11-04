@@ -101,7 +101,7 @@ class AnexoXRREO extends RelatoriosLegaisBase implements AnexoRREO {
      *
      */
     ksort($aRetorno);
-    foreach ($aRetorno as $iAno => &$oRetorno) {
+    foreach ($aRetorno as $iAno => $oRetorno) {
 
       $nValorAnterior = 0;
       if (isset($aRetorno[$iAno-1])) {

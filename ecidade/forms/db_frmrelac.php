@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("rh27_descr");
        <?=@$Lr55_codeve?>
     </td>
     <td> 
-<?
+<?php
 db_input('r55_codeve',4,$Ir55_codeve,true,'text',($db_opcao==1?"1":"3"),"")
 ?>
     </td>
@@ -49,19 +49,19 @@ db_input('r55_codeve',4,$Ir55_codeve,true,'text',($db_opcao==1?"1":"3"),"")
        <?=@$Lr55_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r55_descr',47,$Ir55_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr55_rubr01?>">
-       <?
+       <?php
        db_ancora(@ $Lr55_rubr01, "js_pesquisar55_rubric(true,'01');", $db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r55_rubr01',4,$Ir55_rubr01,true,'text',$db_opcao,"onchange='js_pesquisar55_rubric(false,\"01\")'");
 db_input('rh27_descr01',40,$Irh27_descr,true,'text',3);
 ?>
@@ -69,12 +69,12 @@ db_input('rh27_descr01',40,$Irh27_descr,true,'text',3);
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr55_rubr02?>">
-       <?
+       <?php
        db_ancora(@ $Lr55_rubr02, "js_pesquisar55_rubric(true,'02');", $db_opcao );
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r55_rubr02',4,$Ir55_rubr02,true,'text',$db_opcao,"onchange='js_pesquisar55_rubric(false,\"02\")'");
 db_input('rh27_descr02',40,$Irh27_descr,true,'text',3);
 ?>
@@ -82,12 +82,12 @@ db_input('rh27_descr02',40,$Irh27_descr,true,'text',3);
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr55_rubr03?>">
-       <?
+       <?php
        db_ancora(@ $Lr55_rubr03, "js_pesquisar55_rubric(true,'03');", $db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r55_rubr03',4,$Ir55_rubr03,true,'text',$db_opcao,"onchange='js_pesquisar55_rubric(false,\"03\")'");
 db_input('rh27_descr03',40,$Irh27_descr,true,'text',3);
 ?>
@@ -184,7 +184,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_relac.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

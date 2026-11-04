@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ if($clexemplar->numrows==0){
  parent.document.form1.bi23_codbarras.focus();
  parent.document.form1.proximo.style.visibility = "visible";
  </script>
- <?
+ <?php
  db_msgbox("Código de Barras $bi23_codbarras não encontrado.");
 }else{
  db_fieldsmemory($result,0);
@@ -50,6 +50,6 @@ if($clexemplar->numrows==0){
  parent.document.form1.codigo.value = <?=$bi23_codigo?>;
  parent.location.href = "bib1_baixa001.php?bi23_codigo=<?=$bi23_codigo?>";
  </script>
- <?
+ <?php
 }
 ?>

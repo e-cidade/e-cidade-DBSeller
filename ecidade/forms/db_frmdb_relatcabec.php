@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,22 +57,22 @@ if(isset($db_opcaoal)){
        <?=@$Ldb95_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db95_codigo',10,$Idb95_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb95_codrel?>">
-       <?
+       <?php
        db_ancora(@$Ldb95_codrel,"js_pesquisadb95_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db95_codrel',10,$Idb95_codrel,true,'text',$db_opcao," onchange='js_pesquisadb95_codrel(false);'")
 ?>
-       <?
+       <?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        ?>
     </td>
@@ -82,7 +82,7 @@ db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        <?=@$Ldb95_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('db95_compl',40,$Idb95_compl,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('db95_compl',40,$Idb95_compl,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db95_codigo"=>@$db95_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatcabec->sql_query_file($db95_codigo);

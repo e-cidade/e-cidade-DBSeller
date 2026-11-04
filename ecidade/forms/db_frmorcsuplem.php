@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,21 +39,21 @@ $clrotulo->label("o39_texto");
        <?=@$Lo46_codsup?>
     </td>
     <td> 
-     <? db_input('o46_codsup',4,$Io46_codsup,true,'text',3,"") ?>
+     <?php db_input('o46_codsup',4,$Io46_codsup,true,'text',3,"") ?>
     </td>
   </tr>
   <tr>
     <td nowrap ><b> Projeto </b> </td>
     <td> 
-       <? db_input('o46_codlei',4,$Io46_codlei,true,'text',3) ?>
-       <? db_input('o39_descr',60,'',true,'text',3) ?>
+       <?php db_input('o46_codlei',4,$Io46_codlei,true,'text',3) ?>
+       <?php db_input('o39_descr',60,'',true,'text',3) ?>
 
     </td>
   </tr>
  
   <tr>
     <td nowrap title="<?=@$To46_tiposup?>"><b> Tipo </b></td>
-    <td> <? 
+    <td> <?php 
       	  if ($db_opcao==1){
               $rtipo = $clorcsuplemtipo->sql_record($clorcsuplemtipo->sql_query_file("","o48_tiposup as o46_tiposup,o48_descr","o48_tiposup"));  
 	      db_fieldsmemory($rtipo,0);
@@ -70,7 +70,7 @@ $clrotulo->label("o39_texto");
     <td nowrap title="<?=@$To46_data?>">
        <?=@$Lo46_data?>
     </td>
-    <td> <? db_inputdata('o46_data',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"") ?>  </td>
+    <td> <?php db_inputdata('o46_data',@$o46_data_dia,@$o46_data_mes,@$o46_data_ano,true,'text',$db_opcao,"") ?>  </td>
   </tr>
 
   <tr>
@@ -86,7 +86,7 @@ $clrotulo->label("o39_texto");
   <tr>
     <td nowrap title="<?=@$To39_texto?>"> <?=@$Lo39_texto?>  </td>
     <td> 
-        <? 
+        <?php 
            @$ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o46_codlei,"o39_texto"));	   
 	   //db_criatabela($ro);
 	   if (@pg_numrows($ro)>0){
@@ -102,9 +102,9 @@ $clrotulo->label("o39_texto");
   </table>
   </center>
 
- <? if (($db_opcao==2)||($db_opcao==3))   { ?>
+ <?php if (($db_opcao==2)||($db_opcao==3))   { ?>
   <input name="alterar" type="submit" value="Alterar">
- <? } ?> 
+ <?php } ?> 
  
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
@@ -145,7 +145,7 @@ function js_mostraorcprojeto1(chave1,chave2){
   document.form1.o46_codlei.value = chave1;
   document.form1.o39_descr.value = chave2; 
   db_iframe_orcprojeto.hide();
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o46_codlei='+chave1+'&o39_descr='+chave2+'&passou=true'";
   ?>
 
@@ -156,7 +156,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcsuplem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

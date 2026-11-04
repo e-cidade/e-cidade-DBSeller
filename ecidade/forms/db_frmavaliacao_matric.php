@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed09_c_situacao");
        <?=@$Led29_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed29_i_codigo',5,$Ied29_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted29_i_avaliacao?>">
-       <?
+       <?php
        db_ancora(@$Led29_i_avaliacao,"js_pesquisaed29_i_avaliacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed29_i_avaliacao',5,$Ied29_i_avaliacao,true,'text',$db_opcao," onchange='js_pesquisaed29_i_avaliacao(false);'")
 ?>
-       <?
+       <?php
 db_input('ed13_d_data',10,$Ied13_d_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted29_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led29_i_matricula,"js_pesquisaed29_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed29_i_matricula',5,$Ied29_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed29_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        <?=@$Led29_f_nota?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed29_f_nota',5,$Ied29_f_nota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed29_f_nota',5,$Ied29_f_nota,true,'text',$db_opcao,"")
        <?=@$Led29_l_presente?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('ed29_l_presente',$x,true,$db_opcao,"");
 ?>
@@ -100,7 +100,7 @@ db_select('ed29_l_presente',$x,true,$db_opcao,"");
        <?=@$Led29_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed29_c_descr',50,$Ied29_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_avaliacao_matric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

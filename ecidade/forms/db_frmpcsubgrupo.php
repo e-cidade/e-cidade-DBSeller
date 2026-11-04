@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -69,20 +69,6 @@ $clrotulo->label("pc05_descr");
                     db_input('pc03_descrgrupo', 40, $Ipc03_descrgrupo, true, 'text', 3, '')
                     ?>
                 </td>
-            </tr>
-            <td title="<?= @$Tpc04_codtipo ?>">
-                <?php
-                db_ancora(@$Lpc04_codtipo, "js_pesquisapc04_codtipo(true);", $db_opcao);
-                ?>
-            </td>
-            <td>
-                <?php
-                db_input('pc04_codtipo', 6, $Ipc04_codtipo, true, 'text', $db_opcao, " onchange='js_pesquisapc04_codtipo(false);'")
-                ?>
-                <?php
-                db_input('pc05_descr', 40, $Ipc05_descr, true, 'text', 3, '')
-                ?>
-            </td>
             </tr>
             <tr>
                 <td title="<?= @$Tpc04_ativo ?>">

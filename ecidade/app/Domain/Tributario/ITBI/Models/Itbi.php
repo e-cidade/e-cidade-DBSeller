@@ -2,18 +2,76 @@
 
 namespace App\Domain\Tributario\ITBI\Models;
 
+use App\Domain\Patrimonial\Protocolo\Model\Processo\Processo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
+/**
+ * @property int|null $it01_protprocesso
+ * @property int|null $it01_cartorioextra
+ * @property string $it01_dtprocesso
+ * @property string $it01_tituprocesso
+ * @property int $it01_processo
+ * @property string $it01_notificado
+ * @property float $it01_percentualareatransmitida
+ * @property string $it01_envia
+ * @property float $it01_valorconstr
+ * @property float $it01_valorterreno
+ * @property int $it01_coddepto
+ * @property int $it01_id_usuario
+ * @property int $it01_origem
+ * @property string $it01_finalizado
+ * @property string $it01_mail
+ * @property float $it01_areatrans
+ * @property float $it01_valortransacao
+ * @property string $it01_obs
+ * @property float $it01_areaedificada
+ * @property float $it01_areaterreno
+ * @property int $it01_tipotransacao
+ * @property string $it01_hora
+ * @property string $it01_data
+ * @property int $it01_guia
+ */
 class Itbi extends Model
 {
     protected $table = "itbi";
+
+    protected $primaryKey = "it01_guia";
+    protected $fillable = [
+        "it01_guia",
+        "it01_data",
+        "it01_hora",
+        "it01_tipotransacao",
+        "it01_areaterreno",
+        "it01_areaedificada",
+        "it01_obs",
+        "it01_valortransacao",
+        "it01_areatrans",
+        "it01_mail",
+        "it01_finalizado",
+        "it01_origem",
+        "it01_id_usuario",
+        "it01_coddepto",
+        "it01_valorterreno",
+        "it01_valorconstr",
+        "it01_envia",
+        "it01_percentualareatransmitida",
+        "it01_notificado",
+        "it01_processo",
+        "it01_tituprocesso",
+        "it01_dtprocesso",
+        "it01_cartorioextra",
+        "it01_protprocesso"
+    ];
+
 
     /**
      * @return int
      */
     public function getGuia()
     {
-        return $this->guia;
+        return $this->it01_guia;
     }
 
     /**
@@ -22,7 +80,7 @@ class Itbi extends Model
      */
     public function setGuia($guia)
     {
-        $this->guia = $guia;
+        $this->it01_guia = $guia;
         return $this;
     }
 
@@ -31,7 +89,7 @@ class Itbi extends Model
      */
     public function getData()
     {
-        return $this->data;
+        return $this->it01_data;
     }
 
     /**
@@ -40,7 +98,7 @@ class Itbi extends Model
      */
     public function setData($data)
     {
-        $this->data = $data;
+        $this->it01_data = $data;
         return $this;
     }
 
@@ -49,7 +107,7 @@ class Itbi extends Model
      */
     public function getHora()
     {
-        return $this->hora;
+        return $this->it01_hora;
     }
 
     /**
@@ -58,7 +116,7 @@ class Itbi extends Model
      */
     public function setHora($hora)
     {
-        $this->hora = $hora;
+        $this->it01_hora = $hora;
         return $this;
     }
 
@@ -67,7 +125,7 @@ class Itbi extends Model
      */
     public function getTipotransacao()
     {
-        return $this->tipotransacao;
+        return $this->it01_tipotransacao;
     }
 
     /**
@@ -76,7 +134,7 @@ class Itbi extends Model
      */
     public function setTipotransacao($tipotransacao)
     {
-        $this->tipotransacao = $tipotransacao;
+        $this->it01_tipotransacao = $tipotransacao;
         return $this;
     }
 
@@ -85,7 +143,7 @@ class Itbi extends Model
      */
     public function getAreaterreno()
     {
-        return $this->areaterreno;
+        return $this->it01_areaterreno;
     }
 
     /**
@@ -94,7 +152,7 @@ class Itbi extends Model
      */
     public function setAreaterreno($areaterreno)
     {
-        $this->areaterreno = $areaterreno;
+        $this->it01_areaterreno = $areaterreno;
         return $this;
     }
 
@@ -103,7 +161,7 @@ class Itbi extends Model
      */
     public function getAreaedificada()
     {
-        return $this->areaedificada;
+        return $this->it01_areaedificada;
     }
 
     /**
@@ -112,7 +170,7 @@ class Itbi extends Model
      */
     public function setAreaedificada($areaedificada)
     {
-        $this->areaedificada = $areaedificada;
+        $this->it01_areaedificada = $areaedificada;
         return $this;
     }
 
@@ -121,7 +179,7 @@ class Itbi extends Model
      */
     public function getObs()
     {
-        return $this->obs;
+        return $this->it01_obs;
     }
 
     /**
@@ -130,7 +188,7 @@ class Itbi extends Model
      */
     public function setObs($obs)
     {
-        $this->obs = $obs;
+        $this->it01_obs = $obs;
         return $this;
     }
 
@@ -139,7 +197,7 @@ class Itbi extends Model
      */
     public function getValortransacao()
     {
-        return $this->valortransacao;
+        return $this->it01_valortransacao;
     }
 
     /**
@@ -148,7 +206,7 @@ class Itbi extends Model
      */
     public function setValortransacao($valortransacao)
     {
-        $this->valortransacao = $valortransacao;
+        $this->it01_valortransacao = $valortransacao;
         return $this;
     }
 
@@ -157,7 +215,7 @@ class Itbi extends Model
      */
     public function getAreatrans()
     {
-        return $this->areatrans;
+        return $this->it01_areatrans;
     }
 
     /**
@@ -166,7 +224,7 @@ class Itbi extends Model
      */
     public function setAreatrans($areatrans)
     {
-        $this->areatrans = $areatrans;
+        $this->it01_areatrans = $areatrans;
         return $this;
     }
 
@@ -175,7 +233,7 @@ class Itbi extends Model
      */
     public function getMail()
     {
-        return $this->mail;
+        return $this->it01_mail;
     }
 
     /**
@@ -184,7 +242,7 @@ class Itbi extends Model
      */
     public function setMail($mail)
     {
-        $this->mail = $mail;
+        $this->it01_mail = $mail;
         return $this;
     }
 
@@ -193,7 +251,7 @@ class Itbi extends Model
      */
     public function getFinalizado()
     {
-        return $this->finalizado;
+        return $this->it01_finalizado;
     }
 
     /**
@@ -202,7 +260,7 @@ class Itbi extends Model
      */
     public function setFinalizado($finalizado)
     {
-        $this->finalizado = $finalizado;
+        $this->it01_finalizado = $finalizado;
         return $this;
     }
 
@@ -211,7 +269,7 @@ class Itbi extends Model
      */
     public function getOrigem()
     {
-        return $this->origem;
+        return $this->it01_origem;
     }
 
     /**
@@ -220,7 +278,7 @@ class Itbi extends Model
      */
     public function setOrigem($origem)
     {
-        $this->origem = $origem;
+        $this->it01_origem = $origem;
         return $this;
     }
 
@@ -229,7 +287,7 @@ class Itbi extends Model
      */
     public function getIdUsuario()
     {
-        return $this->id_usuario;
+        return $this->it01_id_usuario;
     }
 
     /**
@@ -238,7 +296,7 @@ class Itbi extends Model
      */
     public function setIdUsuario($id_usuario)
     {
-        $this->id_usuario = $id_usuario;
+        $this->it01_id_usuario = $id_usuario;
         return $this;
     }
 
@@ -247,7 +305,7 @@ class Itbi extends Model
      */
     public function getCoddepto()
     {
-        return $this->coddepto;
+        return $this->it01_coddepto;
     }
 
     /**
@@ -256,7 +314,7 @@ class Itbi extends Model
      */
     public function setCoddepto($coddepto)
     {
-        $this->coddepto = $coddepto;
+        $this->it01_coddepto = $coddepto;
         return $this;
     }
 
@@ -265,7 +323,7 @@ class Itbi extends Model
      */
     public function getValorterreno()
     {
-        return $this->valorterreno;
+        return $this->it01_valorterreno;
     }
 
     /**
@@ -274,7 +332,7 @@ class Itbi extends Model
      */
     public function setValorterreno($valorterreno)
     {
-        $this->valorterreno = $valorterreno;
+        $this->it01_valorterreno = $valorterreno;
         return $this;
     }
 
@@ -283,7 +341,7 @@ class Itbi extends Model
      */
     public function getValorconstr()
     {
-        return $this->valorconstr;
+        return $this->it01_valorconstr;
     }
 
     /**
@@ -292,7 +350,7 @@ class Itbi extends Model
      */
     public function setValorconstr($valorconstr)
     {
-        $this->valorconstr = $valorconstr;
+        $this->it01_valorconstr = $valorconstr;
         return $this;
     }
 
@@ -301,7 +359,7 @@ class Itbi extends Model
      */
     public function getEnvia()
     {
-        return $this->envia;
+        return $this->it01_envia;
     }
 
     /**
@@ -310,7 +368,7 @@ class Itbi extends Model
      */
     public function setEnvia($envia)
     {
-        $this->envia = $envia;
+        $this->it01_envia = $envia;
         return $this;
     }
 
@@ -319,7 +377,7 @@ class Itbi extends Model
      */
     public function getPercentualareatransmitida()
     {
-        return $this->percentualareatransmitida;
+        return $this->it01_percentualareatransmitida;
     }
 
     /**
@@ -328,7 +386,7 @@ class Itbi extends Model
      */
     public function setPercentualareatransmitida($percentualareatransmitida)
     {
-        $this->percentualareatransmitida = $percentualareatransmitida;
+        $this->it01_percentualareatransmitida = $percentualareatransmitida;
         return $this;
     }
 
@@ -337,7 +395,7 @@ class Itbi extends Model
      */
     public function getNotificado()
     {
-        return $this->notificado;
+        return $this->it01_notificado;
     }
 
     /**
@@ -346,7 +404,7 @@ class Itbi extends Model
      */
     public function setNotificado($notificado)
     {
-        $this->notificado = $notificado;
+        $this->it01_notificado = $notificado;
         return $this;
     }
 
@@ -355,7 +413,7 @@ class Itbi extends Model
      */
     public function getProcesso()
     {
-        return $this->processo;
+        return $this->it01_processo;
     }
 
     /**
@@ -364,7 +422,7 @@ class Itbi extends Model
      */
     public function setProcesso($processo)
     {
-        $this->processo = $processo;
+        $this->it01_processo = $processo;
         return $this;
     }
 
@@ -373,7 +431,7 @@ class Itbi extends Model
      */
     public function getTituprocesso()
     {
-        return $this->tituprocesso;
+        return $this->it01_tituprocesso;
     }
 
     /**
@@ -382,7 +440,7 @@ class Itbi extends Model
      */
     public function setTituprocesso($tituprocesso)
     {
-        $this->tituprocesso = $tituprocesso;
+        $this->it01_tituprocesso = $tituprocesso;
         return $this;
     }
 
@@ -391,7 +449,7 @@ class Itbi extends Model
      */
     public function getDtprocesso()
     {
-        return $this->dtprocesso;
+        return $this->it01_dtprocesso;
     }
 
     /**
@@ -400,7 +458,7 @@ class Itbi extends Model
      */
     public function setDtprocesso($dtprocesso)
     {
-        $this->dtprocesso = $dtprocesso;
+        $this->it01_dtprocesso = $dtprocesso;
         return $this;
     }
 
@@ -409,7 +467,7 @@ class Itbi extends Model
      */
     public function getCartorioextra()
     {
-        return $this->cartorioextra;
+        return $this->it01_cartorioextra;
     }
 
     /**
@@ -418,7 +476,31 @@ class Itbi extends Model
      */
     public function setCartorioextra($cartorioextra)
     {
-        $this->cartorioextra = $cartorioextra;
+        $this->it01_cartorioextra = $cartorioextra;
         return $this;
+    }
+
+    /**
+     * @return integer $it01_protprocesso
+     */
+    public function getProcessoSequencial()
+    {
+        return $this->it01_protprocesso;
+    }
+
+    /**
+     * @param int $processoSequencial
+     *
+     * @return $this
+     */
+    public function setProcessoSequencial($processoSequencial)
+    {
+        $this->it01_protprocesso =  $processoSequencial;
+        return $this;
+    }
+
+    public function processo()
+    {
+        return $this->hasOne(Processo::class, "p58_codproc", "it01_protprocesso");
     }
 }

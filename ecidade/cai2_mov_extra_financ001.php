@@ -84,7 +84,7 @@ $sLabelMsg = "Nome Relatorio";
                       <b>Posição Até :</b>
                     </td>
                     <td nowrap >
-                      <?
+                      <?php
                        db_inputdata("datainicial",null,null,null,true,"text", 1);
                       ?>
                       </td>
@@ -107,7 +107,7 @@ $sLabelMsg = "Nome Relatorio";
             </tr>
           </tr>
           <tr>
-              <?
+              <?php
               $oFiltroConta = new cl_arquivo_auxiliar;
           	  $oFiltroConta->cabecalho = "<strong>Recursos</strong>";
           	  $oFiltroConta->codigo = "o15_codigo";
@@ -138,7 +138,7 @@ $sLabelMsg = "Nome Relatorio";
     </form>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -148,7 +148,7 @@ function js_gerar_relatorio(){
   //var sel_instit  = new Number(document.form1.db_selinstit.value);
   var sel_periodo = document.form1.datainicial.value;
   var oRecursos      = $('listasaltes');
-  <?
+  <?php
 
     if(!file_exists($sFonteRel)) {
       echo "alert('Relatório não disponível para o exercício $iAnoUsu');";

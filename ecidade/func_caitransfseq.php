@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcaitransfseq->rotulo->label("k94_seqtransf");
               <?=$Lk94_seqtransf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k94_seqtransf",10,$Ik94_seqtransf,true,"text",4,"","chave_k94_seqtransf");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcaitransfseq->rotulo->label("k94_seqtransf");
               <?=$Lk94_seqtransf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k94_seqtransf",10,$Ik94_seqtransf,true,"text",4,"","chave_k94_seqtransf");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcaitransfseq->rotulo->label("k94_seqtransf");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_caitransfseq.php")==true){
@@ -118,12 +118,12 @@ $clcaitransfseq->rotulo->label("k94_seqtransf");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

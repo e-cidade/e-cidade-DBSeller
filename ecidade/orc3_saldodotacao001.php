@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,7 +56,7 @@ db_postmemory($HTTP_POST_VARS);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
     <script>
 
         function js_abre(coddot) {
@@ -93,8 +93,9 @@ db_postmemory($HTTP_POST_VARS);
                 if (obj.o56_elemento.value != "0") {
                     query = query + "&o56_elemento=" + obj.o56_elemento.value;
                 }
-                if (obj.o15_recurso.value != "0") {
-                    query = query + "&o15_recurso=" + obj.o15_recurso.value;
+
+                if (obj.gestao.value != "0") {
+                    query = query + "&gestao=" + obj.gestao.value;
                 }
             }
             js_OpenJanelaIframe('', 'db_iframe_pesquisa', 'orc3_saldodotacao002.php?' + query, 'pesquisa', true);
@@ -105,7 +106,7 @@ db_postmemory($HTTP_POST_VARS);
         }
 
         function js_troca(nome) {
-            ordem = new Array("o40_orgao", "o41_unidade", "o52_funcao", "o53_subfuncao", "o54_programa", "o55_projativ", "o56_elemento", "o15_recurso");
+            ordem = new Array("o40_orgao", "o41_unidade", "o52_funcao", "o53_subfuncao", "o54_programa", "o55_projativ", "o56_elemento", "gestao");
             for (i = (ordem.length - 1); i > 0; i--) {
                 if (ordem[i] == nome) {
                     break;
@@ -128,29 +129,17 @@ db_postmemory($HTTP_POST_VARS);
     </script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-<table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-    <tr>
-        <td width="360" height="18">&nbsp;</td>
-        <td width="263">&nbsp;</td>
-        <td width="25">&nbsp;</td>
-        <td width="140">&nbsp;</td>
-    </tr>
-</table>
-<center>
+<body >
+<div class="container">
 <form name="form1" method="post">
-    <table border='0'>
-        <tr height="20px">
-            <td></td>
-            <td></td>
-        </tr>
+    <table >
 
         <tr>
             <td align="left" nowrap title="<?= $To58_coddot ?>">
                 <?= $Lo58_coddot ?>
             </td>
             <td align="left" nowrap>
-                <?
+                <?php
                 db_input("o58_coddot", 6, $Io58_coddot, true, "text", 4);
                 ?>
             </td>
@@ -163,7 +152,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
             <td><?= $Lo40_orgao ?></td>
             <td>
-                <?
+                <?php
                 $result = $clorcorgao->sql_record($clorcorgao->sql_query(null, null, "o40_orgao,o40_descr", "o40_orgao", "o40_anousu=" . db_getsession("DB_anousu") . " and o40_instit=" . db_getsession("DB_instit")));
                 db_selectrecord("o40_orgao", $result, true, 2, "", "", "", "0", $onchange = " js_troca('o40_orgao');");
                 ?>
@@ -195,7 +184,7 @@ db_postmemory($HTTP_POST_VARS);
                 if (isset($o41_unidade) && $o41_unidade > 0) {
                     $dbwhere .= " and o58_unidade = $o41_unidade ";
                 }
-                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "distinct o52_funcao,o52_descr", "o52_funcao", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
+                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2(null, null, "distinct o52_funcao,o52_descr", "o52_funcao", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
 
                 db_selectrecord("o52_funcao", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), $onchange = "  js_troca('o52_funcao');");
                 ?>
@@ -217,7 +206,7 @@ db_postmemory($HTTP_POST_VARS);
                     $dbwhere .= " and  o58_funcao = $o52_funcao ";
                 }
 
-                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "distinct o53_subfuncao,o53_descr", "o53_subfuncao", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
+                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2(null, null, "distinct o53_subfuncao,o53_descr", "o53_subfuncao", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
                 db_selectrecord("o53_subfuncao", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), $onchange = "  js_troca('o53_subfuncao');");
                 ?>
             </td>
@@ -235,15 +224,16 @@ db_postmemory($HTTP_POST_VARS);
                     $dbwhere .= " and o58_unidade = $o41_unidade ";
                 }
                 if (isset($o52_funcao) && $o52_funcao > 0) {
-                    if ($dbwhere != "")
+                    if ($dbwhere != "") {
                         $dbwhere .= "  and o58_funcao = $o52_funcao ";
+                    }
                 }
 
                 if (isset($o53_subfuncao) && $o53_subfuncao > 0) {
                     $dbwhere .= "  and o58_subfuncao = $o53_subfuncao ";
                 }
 
-                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "distinct o54_programa,o54_descr", "o54_programa", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
+                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2(null, null, "distinct o54_programa,o54_descr", "o54_programa", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
                 db_selectrecord("o54_programa", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), $onchange = "  js_troca('o54_programa');");
                 ?>
             </td>
@@ -269,7 +259,7 @@ db_postmemory($HTTP_POST_VARS);
                 if (isset($o54_programa) && $o54_programa > 0) {
                     $dbwhere .= "  and o58_programa = $o54_programa ";
                 }
-                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "distinct o55_projativ,o55_descr", "o55_projativ", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
+                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2(null, null, "distinct o55_projativ,o55_descr", "o55_projativ", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
                 db_selectrecord("o55_projativ", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), $onchange = "  js_troca('o55_projativ');");
                 ?>
             </td>
@@ -297,7 +287,7 @@ db_postmemory($HTTP_POST_VARS);
                 if (isset($o55_projativ) && $o55_projativ > 0) {
                     $dbwhere .= " and  o58_projativ = $o55_projativ ";
                 }
-                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "distinct o56_elemento,o56_descr", "o56_elemento", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
+                $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2(null, null, "distinct o56_elemento,o56_descr", "o56_elemento", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere"));
                 db_selectrecord("o56_elemento", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), " js_troca('o56_elemento');");
                 ?>
             </td>
@@ -330,10 +320,11 @@ db_postmemory($HTTP_POST_VARS);
                 }
 
                 $dbwhere .= " and (o15_datalimite is null or o15_datalimite > '" . date('Y-m-d', db_getsession('DB_datausu')) . "')";
-                $sSqlRecursos = $clorcdotacao->sql_query(null, null, "distinct o15_recurso, o15_descr", "o15_recurso", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere");
+                $sSqlRecursos = $clorcdotacao->sql_query2(null, null, "distinct gestao, descricao", "gestao", "o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $dbwhere");
+
                 $result = $clorcdotacao->sql_record($sSqlRecursos);
 
-                db_selectrecord("o15_recurso", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), " js_troca('o15_recurso');");
+                db_selectrecord("gestao", $result, true, 2, "", "", "", ($clorcdotacao->numrows > 1 ? "0" : ""), " js_troca('gestao');");
                 ?>
             </td>
         </tr>
@@ -349,7 +340,7 @@ db_postmemory($HTTP_POST_VARS);
         </tr>
     </table>
 </form>
-</center>
+</div>
 <?php
 db_menu();
 ?>

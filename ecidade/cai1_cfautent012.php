@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,14 +25,14 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_cfautent_classe.php"));
-include(modification("classes/db_cfautentconta_classe.php"));
-include(modification("classes/db_cfautentdocasschq_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_cfautent_classe.php"));
+require_once(modification("classes/db_cfautentconta_classe.php"));
+require_once(modification("classes/db_cfautentdocasschq_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 db_postmemory($HTTP_POST_VARS);
 $clcfautent = new cl_cfautent;
@@ -46,6 +46,7 @@ if(isset($alterar)){
 
   $clcfautent->k11_impassche = $k11_impassche;
   $clcfautent->k11_tef = isset($k11_tef) ? "t" : "f";
+  $clcfautent->k11_infisc = isset($k11_infisc) ? "t" : "f";
   $clcfautent->alterar($k11_id);
 
   $result = $clcfautentconta->sql_record($clcfautentconta->sql_query($k11_id));
@@ -117,8 +118,8 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
-	include(modification("forms/db_frmcfautent.php"));
+	<?php
+	require_once(modification("forms/db_frmcfautent.php"));
 	?>
     </center>
 	</td>
@@ -126,7 +127,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clcfautent->erro_status=="0"){
     $clcfautent->erro(true,false);

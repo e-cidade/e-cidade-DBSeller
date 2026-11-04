@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,32 +47,32 @@ $clrotulo->label("c90_estrutsistema");
 $clrotulo->label("c64_descr");
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
    db_input("c21_congrupo",10,"",true,"hidden",3);
    db_input("sequencial",    10,0,true,"hidden",3);
 ?>
 <center>
 <table border="0" width="790">
   <tr>
-    <td nowrap title="<?=@$Tc60_codcon?>"><? db_ancora(@$Lc60_codcon,"js_pesquisac60_codcon(true);",$db_opcao) ?></td>
-    <td nowrap><? db_input('c60_codcon',6,$Ic60_codcon,true,'text',$db_opcao,"onChange='js_pesquisac60_codcon(false);'"); ?>&nbsp;&nbsp;
-    <b>Ano:</b><? db_input("anousu",4,"",true,"text",3); ?>
+    <td nowrap title="<?=@$Tc60_codcon?>"><?php db_ancora(@$Lc60_codcon,"js_pesquisac60_codcon(true);",$db_opcao) ?></td>
+    <td nowrap><?php db_input('c60_codcon',6,$Ic60_codcon,true,'text',$db_opcao,"onChange='js_pesquisac60_codcon(false);'"); ?>&nbsp;&nbsp;
+    <b>Ano:</b><?php db_input("anousu",4,"",true,"text",3); ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc60_estrut?>"><?=@$Lc60_estrut?></td>
-    <td nowrap><?
+    <td nowrap><?php
            db_input("c60_estrut",18,"",true,"text",3);
     ?>  
     </td>
   </tr>
 	<tr>
 	  <td width="120" nowrap title="<?=@$Tc60_descr?>"><?=@$Lc60_descr?></td>
-	  <td nowrap><? db_input('c60_descr',52,$Ic60_descr,true,'text',3,"")?></td>
+	  <td nowrap><?php db_input('c60_descr',52,$Ic60_descr,true,'text',3,"")?></td>
 	</tr>
 	<tr>
 	  <td nowrap title="<?=@$Tc60_codsis?>"><?=@$Lc60_codsis?></td>
-	  <td nowrap><? 
+	  <td nowrap><?php 
            db_input('c60_codsis',4,$Ic60_codsis,true,'text',3,"");
  	         db_input('c52_descr',46,@$Ic52_descr,true,'text',3,"");
         ?>
@@ -80,7 +80,7 @@ $clrotulo->label("c64_descr");
 	</tr>
 	<tr>
 	  <td nowrap title="<?=@$Tc60_codcla?>"><?=@$Lc60_codcla?></td>
-	  <td nowrap><?
+	  <td nowrap><?php
           db_input('c60_codcla',4,$Ic60_codcla,true,'text',3,"");
           db_input('c51_descr',46,@$Ic51_descr,true,'text',3,"");
 	     ?>
@@ -94,18 +94,18 @@ $clrotulo->label("c64_descr");
           value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
   </tr>	
   <tr>
     <td nowrap colspan="2">
-    <?
+    <?php
        if (!isset($c21_anousu)){
          $c21_anousu = $anousu;
        }
@@ -173,7 +173,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

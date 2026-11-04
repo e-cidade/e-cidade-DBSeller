@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -62,7 +62,7 @@ db_fieldsmemory($result,0);
 		<td>
 			<fieldset>
 				<legend><b>Anulação do Parcelamento&nbsp;<?=$parcel?></b></legend>
-			
+
 		<table width="95%"  border=0>
 			<!--<tr>
 				<td colspan=2 align='center'> <b>Anulação do parcelamento <?=$parcel?></b>
@@ -87,17 +87,17 @@ db_fieldsmemory($result,0);
 			<tr>
 				<td width="10%" valign = 'top'> <b>Motivo:</b>
 				</td>
-				<td > <?db_textarea('motivo',8, 50,0, true, 'text', $db_opcao, "") ?>
+				<td > <?php db_textarea('motivo',8, 50,0, true, 'text', $db_opcao, "") ?>
 				</td>
 			</tr>
 			<tr>
 		    	<td nowrap title="<?=@$Tv22_processo?>">
-			    	<?
+			    	<?php
 			       	db_ancora(@$Lv22_processo,"js_pesquisaq14_proces(true);",$db_opcao);
 			       	?>
 		    	</td>
 		   		<td>
-					<?
+					<?php
 						db_input('v22_processo',10,$Iv22_processo,true,'text',$db_opcao," onchange='js_pesquisaq14_proces(false);'");
 						//db_input('p58_codproc',40,$Ip58_codproc,true,'text',3,'');
 						db_input('p58_requer',40,$Ip58_codproc,true,'text',3,'')
@@ -105,11 +105,11 @@ db_fieldsmemory($result,0);
 		    	</td>
 		 	</tr>
 			<tr>
-				<td colspan=2 align='center'> 
+				<td colspan=2 align='center'>
 					<input name="anular" type="button"  value="Anular Parcelamento" onclick="js_confirmaExclusao();" >
 				</td>
 			</tr>
-			<?
+			<?php
 			db_input('parcel',10,"",true,'hidden',3,'');
 			db_input('usuario',10,"",true,'hidden',3,'');
 			?>
@@ -123,7 +123,7 @@ db_fieldsmemory($result,0);
 <script>
   function js_confirmaExclusao() {
    js_divCarregando("Aguarde, excluindo registros","msgBox");
-   
+
    var motivo   = document.getElementById('motivo').value;
    var processo = document.form1.v22_processo.value
    strJson      = '{"exec":"setConfirmaExclusao", "parcel":"<?=$parcel?>",';
@@ -131,17 +131,17 @@ db_fieldsmemory($result,0);
    strJson     += '"motivo":"'+ encodeURIComponent(motivo) +'","processo":"'+processo+'"}';
    var url      = 'cai4_anulaparcRPC.php';
    var oAjax    = new Ajax.Request( url, {
-                                          method: 'post', 
-                                          parameters: 'json='+strJson, 
+                                          method: 'post',
+                                          parameters: 'json='+strJson,
                                           onComplete: js_saida
                                         }
                                  );
   }
 
   function js_saida(oAjax) {
-    
+
    var obj = JSON.parse(oAjax.responseText);
-    
+
    if ( obj.erro && obj.erro == true ){
        js_removeObj("msgBox");
        alert(obj.mensagem.urlDecode());
@@ -151,10 +151,10 @@ db_fieldsmemory($result,0);
     alert(obj.mensagem.urlDecode());
     parent.db_iframe_anulaparc1.hide();
     parent.db_iframe_mostrainscr.hide();
-    parent.db_iframe_anulaparc1conf.hide(); 
+    parent.db_iframe_anulaparc1conf.hide();
     parent.document.formatu.pesquisar.click();
   }
-  
+
   function js_pesquisaq14_proces(mostra){
     if (mostra==true) {
       js_OpenJanelaIframe('','db_iframe_processo','func_protprocesso.php?funcao_js=parent.js_mostraprocesso1|p58_codproc|p58_requer','Pesquisa',true);
@@ -162,19 +162,19 @@ db_fieldsmemory($result,0);
       if (document.form1.v22_processo.value != '') {
         js_OpenJanelaIframe('','db_iframe_processo','func_protprocesso.php?pesquisa_chave='+document.form1.v22_processo.value+'&funcao_js=parent.js_mostraprocesso','Pesquisa',false);
       } else {
-        document.form1.p58_requer.value = ''; 
+        document.form1.p58_requer.value = '';
       }
     }
   }
-  
+
 function js_mostraprocesso(chave1,chave,erro){
     document.form1.p58_requer.value = chave;
     if (erro==true) {
-        document.form1.v22_processo.focus(); 
-    	document.form1.v22_processo.value = ''; 
+        document.form1.v22_processo.focus();
+    	document.form1.v22_processo.value = '';
     }
   }
-  
+
   function js_mostraprocesso1(chave1,chave2) {
     document.form1.v22_processo.value = chave1;
     document.form1.p58_requer.value = chave2;

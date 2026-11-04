@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("classes/db_issarquivoretencaodisarq_classe.php");
+require_once(modification("classes/db_issarquivoretencaodisarq_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $clissarquivoretencaodisarq = new cl_issarquivoretencaodisarq;
@@ -50,11 +50,11 @@ $clissarquivoretencaodisarq->rotulo->label("q145_disarq");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lq145_sequencial?></label></td>
-          <td><? db_input("q145_sequencial",10,$Iq145_sequencial,true,"text",4,"","chave_q145_sequencial"); ?></td>
+          <td><?php db_input("q145_sequencial",10,$Iq145_sequencial,true,"text",4,"","chave_q145_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lq145_disarq?></label></td>
-          <td><? db_input("q145_disarq",10,$Iq145_disarq,true,"text",4,"","chave_q145_disarq");?></td>
+          <td><?php db_input("q145_disarq",10,$Iq145_disarq,true,"text",4,"","chave_q145_disarq");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,11 +62,11 @@ $clissarquivoretencaodisarq->rotulo->label("q145_disarq");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_issarquivoretencaodisarq.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarquivoretencaodisarq.php")==true){
-             include(modification("funcoes/db_func_issarquivoretencaodisarq.php");
+             include(modification("funcoes/db_func_issarquivoretencaodisarq.php"));
            }else{
            $campos = "issarquivoretencaodisarq.*";
            }
@@ -104,12 +104,12 @@ $clissarquivoretencaodisarq->rotulo->label("q145_disarq");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -52,9 +52,9 @@ $interferencias = $orcparamrel->sql_parametro('19','0');
 //-----------------------------------------
 $r_orgao = db_query("select distinct(o41_orgao) from orcunidade where o41_ident=03 and o41_anousu=$anousu");
 if (pg_numrows($r_orgao) == 0 ){
-   db_redireciona('db_erros.php?fechar=true&db_erro=No cadastro das unidades não foi definido o identificador do tribunal!');   
+   db_redireciona('db_erros.php?fechar=true&db_erro=No cadastro das unidades não foi definido o identificador do tribunal!');
    exit;
-}   
+}
 db_fieldsmemory($r_orgao,0);
 $orgao_educacao = $o41_orgao;
 
@@ -68,7 +68,7 @@ $total_saldo_arrecadado          =0;
 $total_saldo_arrecadado_acumulado=0;
 $total_saldo_a_arrecadar        = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -83,9 +83,9 @@ $head6 = "PERÍODO :   $bimestre º  BIMESTRE";
 $head4 = "EXERCÍCIO: ".db_getsession("DB_anousu")."  ";
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -122,7 +122,7 @@ for($i=0;$i<pg_numrows($result);$i++){
   db_fieldsmemory($result,$i);
   $elemento = $o57_fonte;
   $descr    = $o57_descr;
-     
+
 //  if($o57_fonte == '400000000000000' || $o57_fonte == "900000000000000"){
   if (db_conplano_grupo($anousu,$o57_fonte,9004) == true) {
        $total_saldo_inicial              += $saldo_inicial;
@@ -132,7 +132,7 @@ for($i=0;$i<pg_numrows($result);$i++){
        $total_saldo_a_arrecadar          += $saldo_a_arrecadar;
     continue;
   }
-	
+
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     $pagina = 0;
     $pdf->addpage();
@@ -141,7 +141,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $pdf->cell(17,$alt,"PREVISTO",0,0,"R",0);
     $pdf->cell(17,$alt,"ARREC. ANO",0,1,"R",0);
     $pdf->ln(3);
-  
+
   }
   $pdf->setfont('arial','',6);
   $pdf->cell(145,$alt,$descr,0,0,"L",0,'','.');
@@ -168,7 +168,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
   $pdf->cell(17,$alt,'liquidado',0,0,"C",0);
   $pdf->cell(17,$alt,db_formatar($liquidado,'f'),0,1,"R",0);
   $total_despesas += $liquidado;
-} 
+}
 // lista interferencias
 for($i=0;$i<pg_numrows($result_balancete);$i++){
   db_fieldsmemory($result_balancete,$i);
@@ -179,8 +179,8 @@ for($i=0;$i<pg_numrows($result_balancete);$i++){
       $pdf->cell(17,$alt,'',0,0,"R",0);
       $pdf->cell(17,$alt,db_formatar($saldo_final,'f'),0,1,"R",0);
       $total_despesas += $saldo_final;
-  }    
-} 
+  }
+}
 $pdf->setfont('arial','B',6);
 $pdf->cell(145,$alt,'TOTAL ',0,0,"L",0);
 $pdf->cell(17,$alt,'',0,0,"R",0);

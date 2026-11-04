@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -61,7 +61,7 @@ $tipoControleProtocolo = ProcessoProtocoloNumeracao::getTipoConfiguracao();
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");

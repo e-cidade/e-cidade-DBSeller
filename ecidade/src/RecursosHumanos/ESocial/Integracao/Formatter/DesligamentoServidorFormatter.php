@@ -6,6 +6,7 @@ use CalculoFolha;
 use CgmJuridico;
 use DBCompetencia;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
+use ECidade\RecursosHumanos\ESocial\Repository\LotacaoServidor;
 use ECidade\RecursosHumanos\ESocial\Repository\PagamentosRendimentosTrabalho as PagamentosRendTrabalhoRepository;
 use Servidor;
 use ServidorRepository;
@@ -16,6 +17,23 @@ use stdClass;
  */
 class DesligamentoServidorFormatter extends Formatter
 {
+
+    private $codigosNaoEnviaDemissaoVoluntaria = [
+        '10' => '10',
+        '11' => '11',
+        '12' => '12',
+        '13' => '13',
+        '28' => '28',
+        '29' => '29',
+        '30' => '30',
+        '34' => '34',
+        '36' => '36',
+        '37' => '37',
+        '40' => '40',
+        '43' => '43',
+        '44' => '44'
+    ];
+
     /**
      * @var Servidor
      */
@@ -78,6 +96,9 @@ class DesligamentoServidorFormatter extends Formatter
         $dadoServidor->ideVinculo = new stdClass();
         $dadoServidor->ideVinculo->cpfTrab = $this->servidorAtual->getCgm()->getCpf();
         $dadoServidor->ideVinculo->matricula = $this->servidorAtual->getMatricula();
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->ideVinculo->matricula = $this->servidorAtual->getMatriculaAnterior();
+        }
         $dadoServidor->infoDeslig = $this->dadosRecisaoServidor();
 
         return $dadoServidor;
@@ -110,7 +131,8 @@ class DesligamentoServidorFormatter extends Formatter
             $mes = \db_utils::fieldsMemory($rs, 0)->mes;
 
             if ($this->servidorAtual->getAnoCompetencia() != $ano
-                || $this->servidorAtual->getMesCompetencia() != $mes) {
+                || $this->servidorAtual->getMesCompetencia() != $mes
+            ) {
                 $this->servidorAtual = ServidorRepository::getInstanciaByCodigo(
                     $this->servidorAtual->getMatricula(),
                     $ano,
@@ -130,11 +152,21 @@ class DesligamentoServidorFormatter extends Formatter
             '0',
             STR_PAD_LEFT
         );
+
+        $motivoEsocial = $this->servidorAtual->getDadosRescisao()->r59_motivoesocial;
+        if (!in_array($motivoEsocial, $this->codigosNaoEnviaDemissaoVoluntaria)) {
+            if (!empty($this->servidorAtual->getDadosRescisao()->demissaovoluntaria)
+                && $this->servidorAtual->getDadosRescisao()->demissaovoluntaria == 't') {
+                $infoDeslig->indPDV = 'S';
+            }
+        }
+
         $infoDeslig->dtDeslig = $this->servidorAtual->getDadosRescisao()->rh05_recis;
 
         if (!empty($this->servidorAtual->getDadosRescisao()->rh05_aviso)) {
-            if ($this->servidorAtual->getDadosRescisao()->rh05_aviso
-                >= $this->servidorAtual->getDadosRescisao()->rh01_admiss) {
+            if ($this->servidorAtual->getDadosRescisao()->rh05_aviso >=
+                $this->servidorAtual->getDadosRescisao()->rh01_admiss
+            ) {
                 $infoDeslig->dtAvPrv = $this->servidorAtual->getDadosRescisao()->rh05_aviso;
                 $infoDeslig->indPagtoAPI = 'S';
                 $infoDeslig->dtProjFimAPI = $this->servidorAtual->getDadosRescisao()->rh05_aviso;
@@ -166,59 +198,99 @@ class DesligamentoServidorFormatter extends Formatter
 
     private function verbasRescisao()
     {
-        $retorno = false;
-        if ($this->servidorAtual->validaCategoriaRescisao()) {
-            return $retorno;
+        $processamento = false;
+        if ($this->servidorAtual->validacaoEnvioRescisaoEsocialComVinculo()) {
+            return $processamento;
         }
         $verbasResc = new stdClass();
 
         $dmDev = new stdClass();
-        $dmDev->ideDmDev = $this->servidorAtual->getDadosRescisao()->rh05_codigorescisao; //OK
-        $dmDev->infoPerApur = new stdClass();
-        $ideEstabLot = new stdClass();
-        $dmDev->infoPerApur->ideEstabLot = [];
-        $ideEstabLot->tpInsc = 1; //CNPJ=1, CAEPF= 2, CNO = 3 VERIQUEI OUTRO METODO ESTA COM A MESMA VALIDACAO
-        $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj(); //VERIFICAR SE PODE SER CNPJ
-        $ideEstabLot->codLotacao = '01';
         $anoRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
         $mesRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
-        $infoRubrica = [];
+        $dmDev->ideDmDev = $this->servidorAtual->getMatricula() . 'RESC' . $anoRescisao
+            . str_pad($mesRescisao, 2, 0, STR_PAD_LEFT);
+        $dmDev->infoPerApur = new stdClass();
+        $dmDev->infoPerApur->ideEstabLot = [];
+        $anoAtual = \DBPessoal::getAnoFolha();
+        $mesAtual = \DBPessoal::getMesFolha();
+        $lotacoes = LotacaoServidor::buscarLotacaoTributaria(
+            $this->servidorAtual,
+            $anoRescisao,
+            $mesRescisao,
+            $anoAtual,
+            $mesAtual
+        );
 
-        foreach ($this->eventosRescisao as $eventoRescisao) {
-            if (!empty($this->rubricasValidas[$eventoRescisao->getRubrica()->getCodigo()])) {
-                $detVerba = new stdClass();
-                $detVerba->codRubr = $eventoRescisao->getRubrica()->getCodigo();
-                $detVerba->ideTabRubr = $eventoRescisao->getRubrica()->getCodigo();
-                $detVerba->qtdRubr = $this->truncar($eventoRescisao->getQuantidade());
-                $detVerba->fatorRubr = $this->truncar($eventoRescisao->getQuantidade());
-                $detVerba->vrRubr = $this->truncar($eventoRescisao->getValor());
-                if (($anoRescisao == 2021 && $mesRescisao >= 7) or $anoRescisao >= 2022) {
-                    $detVerba->indApurIR = 0;
+        if (count($lotacoes) == 0) {
+            $lotacao = new \stdClass();
+            $lotacao->dataInicio = null;
+            $lotacao->dataFim = null;
+            $lotacao->lotacaoTributaria = "";
+            $lotacao->dias = 30;
+            $lotacao->ultimalotacao = true;
+            $lotacoes[] = $lotacao;
+        }
+        // array de controle de valores pagos das rubricas
+        $rubricas = [];
+        foreach ($lotacoes as $indice => $lotacao) {
+            $ideEstabLot = new stdClass();
+            $ideEstabLot->codLotacao = $lotacao->lotacaoTributaria;
+            $ideEstabLot->tpInsc = 1;
+            $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj();
+
+            $infoRubrica = [];
+            $retorno = false;
+
+            foreach ($this->eventosRescisao as $eventoRescisao) {
+                // validamos se a rubrica possui recibo no esocial
+                if (!empty($this->rubricasValidas[$eventoRescisao->getRubrica()->getCodigo()])) {
+                    // validamos se a rubrica existe no array, caso nao existe inicializamos ela com valor zerado
+                    if (empty($rubricas[$eventoRescisao->getRubrica()->getCodigo()])) {
+                        $rubricas[$eventoRescisao->getRubrica()->getCodigo()] = 0;
+                    }
+                    $detVerba = new stdClass();
+                    $detVerba->codRubr = $eventoRescisao->getRubrica()->getCodigo();
+                    $detVerba->ideTabRubr = $eventoRescisao->getRubrica()->getCodigo();
+                    $detVerba->qtdRubr = $this->truncar($eventoRescisao->getQuantidade());
+                    $detVerba->fatorRubr = $this->truncar($eventoRescisao->getQuantidade());
+                    $valorFinanceiroRescisao = $this->truncar($eventoRescisao->getValor());
+                    if (($anoRescisao == 2021 && $mesRescisao >= 7) or $anoRescisao >= 2022) {
+                        $detVerba->indApurIR = 0;
+                    }
+                    $valorRubrica = round((float) $valorFinanceiroRescisao*($lotacao->dias/30), 2);
+                    $detVerba->vrRubr = $valorRubrica;
+                    if (count($lotacoes) > 1 && $indice == (count($lotacoes)-1)) {
+                        $valor = $valorFinanceiroRescisao - $rubricas[$eventoRescisao->getRubrica()->getCodigo()];
+                        $detVerba->vrRubr = $valor;
+                    }
+                    $rubricas[$eventoRescisao->getRubrica()->getCodigo()] += $valorRubrica;
+                    $infoRubrica[] = $detVerba;
                 }
+            }
 
-                $infoRubrica[] = $detVerba;
+            // Validamos se realmente vai enviar alguma rubrica
+            if (sizeof($infoRubrica) > 0) {
+                $retorno = true;
+                $ideEstabLot->detVerbas = $infoRubrica;
+            }
+
+            $agNocivo = (int) $this->servidorAtual->getTipoExposicaoAgentesNocivos();
+
+            if ((!empty($agNocivo) or $agNocivo === 0) && $this->servidorAtual->isRgps()) {
+                $ideEstabLot->infoAgNocivo = new stdClass();
+                $ideEstabLot->infoAgNocivo->grauExp = $this->deParaAgNocivo[$agNocivo];
+            }
+            if ($retorno) {
+                $dmDev->infoPerApur->ideEstabLot[] = $ideEstabLot;
+                $processamento = true;
             }
         }
-        // Validamos se realmente vai enviar alguma rubrica
-        if (sizeof($infoRubrica) > 0) {
-            $retorno = true;
-            $ideEstabLot->detVerbas = $infoRubrica;
-        }
 
-        $agNocivo = (int) $this->servidorAtual->getTipoExposicaoAgentesNocivos();
-
-        if ((!empty($agNocivo) or $agNocivo === 0) && $this->servidorAtual->isRgps()) {
-            $ideEstabLot->infoAgNocivo = new stdClass();
-            $ideEstabLot->infoAgNocivo->grauExp = $this->deParaAgNocivo[$agNocivo];
-        }
-
-        if ($retorno) {
+        if ($processamento) {
             $verbasResc->dmDev = [];
-            $dmDev->infoPerApur->ideEstabLot[] = $ideEstabLot;
             $verbasResc->dmDev[] = $dmDev;
             return $verbasResc;
         }
-
         return $verbasResc;
     }
 
@@ -232,6 +304,7 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * Metodo com a finalidade de verificar se o servidor possui
      * pagamento de pensao alimenticia na competencia
+     *
      * @return bool
      */
     private function servidorPossuiPensaoAlimenticia()
@@ -248,8 +321,8 @@ class DesligamentoServidorFormatter extends Formatter
     }
 
     /**
-     * @param int $ano
-     * @param int $mes
+     * @param  int $ano
+     * @param  int $mes
      * @return array
      * @throws \DBException
      */
@@ -269,7 +342,7 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * Get the value of empregador
      *
-     * @return  CgmJuridico
+     * @return CgmJuridico
      */
     public function getEmpregador()
     {
@@ -279,9 +352,9 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * Set the value of empregador
      *
-     * @param  CgmJuridico  $empregador
+     * @param CgmJuridico $empregador
      *
-     * @return  self
+     * @return self
      */
     public function setEmpregador(CgmJuridico $empregador)
     {

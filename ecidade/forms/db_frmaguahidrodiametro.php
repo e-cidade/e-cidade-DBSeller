@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $claguahidrodiametro->rotulo->label();
        <?=@$Lx15_coddiametro?>
     </td>
     <td> 
-<?
+<?php
 db_input('x15_coddiametro',4,$Ix15_coddiametro,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('x15_coddiametro',4,$Ix15_coddiametro,true,'text',3,"")
        <?=@$Lx15_diametro?>
     </td>
     <td> 
-<?
+<?php
 db_input('x15_diametro',10,$Ix15_diametro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguahidrodiametro.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

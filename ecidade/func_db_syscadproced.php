@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ function js_enviar() {
               <?=$Lcodmod?>
             </td>
 						<td>
-					<?
+					<?php
 						db_selectrecord('modulo',($cldb_sysmodulo->sql_record($cldb_sysmodulo->sql_query(null,"*", "nomemod"))),true,1,"", "", "", "0-Todos", "js_enviar()");
           ?>
 					</td>
@@ -71,7 +71,7 @@ function js_enviar() {
               <?=$Lcodproced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codproced",10,$Icodproced,true,"text",4,"","chave_codproced");
 		       ?>
             </td>
@@ -81,7 +81,7 @@ function js_enviar() {
               <?=$Ldescrproced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("descrproced",60,$Idescrproced,true,"text",4,"","chave_descrproced");
 		       ?>
             </td>
@@ -99,7 +99,7 @@ function js_enviar() {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_syscadproced.php")==true){
@@ -144,12 +144,12 @@ function js_enviar() {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

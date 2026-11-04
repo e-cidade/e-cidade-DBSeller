@@ -95,6 +95,10 @@ class Inicial implements Custas\Interfaces\Service
         $iniciais = array();
 
         foreach ($this->iniciais as $inicial) {
+            if (!isset($inicial) || empty($inicial)) {
+                continue;
+            }
+
             $processo = $processoForoRepository->getByInicial($inicial);
 
             if (!$processo) {

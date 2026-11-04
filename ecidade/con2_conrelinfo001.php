@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -164,14 +164,14 @@ if ($db_opcao==1) {
 <form name="form1" method="post" action="" >
  <table  align="center" border=0>
  <tr><td align=left width=20%><?=@$Lc83_codrel?></td>
-     <td><? db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
-         <? db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,"")?></td>
+     <td><?php db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
+         <?php db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,"")?></td>
  </tr>
- <tr><td><? db_ancora(@$Lc83_codigo,"",3);  ?></td>
-     <td><? db_input('c83_codigo',5,$Ic83_codigo,true,'text',3,"") ?></td>
+ <tr><td><?php db_ancora(@$Lc83_codigo,"",3);  ?></td>
+     <td><?php db_input('c83_codigo',5,$Ic83_codigo,true,'text',3,"") ?></td>
  </tr>
- <tr><td><? db_ancora(@$Lc83_variavel,"",3);  ?></td>
-     <td><? 
+ <tr><td><?php db_ancora(@$Lc83_variavel,"",3);  ?></td>
+     <td><?php 
             if ($db_opcao != 1) {
               db_input('c83_variavel',50,$Ic83_variavel,true,'text',3,""); 
             } else {
@@ -181,14 +181,14 @@ if ($db_opcao==1) {
          ?></td>
  </tr>
  <tr>
-    <td><? db_ancora(@$Lc83_informacao,"",3);  ?></td>
+    <td><?php db_ancora(@$Lc83_informacao,"",3);  ?></td>
     <td>
-    <? db_input('c83_informacao',30,$Ic83_informacao,true,'text',$db_opcao,"onKeyUp=this.value=this.value.replace(',','.')") ?></td>
+    <?php db_input('c83_informacao',30,$Ic83_informacao,true,'text',$db_opcao,"onKeyUp=this.value=this.value.replace(',','.')") ?></td>
  </tr>
  <tr>
     <td><?=$Lc83_periodo?></td>
     <td>
-      <?
+      <?php
          db_input("c83_periodo_ant",10,0,true,"hidden",3,"");
          $matriz = array("0"=>"Nenhum",
                          "1B"=>"Primeiro Bimestre",
@@ -224,12 +224,12 @@ if ($db_opcao==1) {
           name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
           type="submit" id="db_opcao" 
           value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
-          <?=($db_botao==false?"disabled":"")?> ><?
+          <?=($db_botao==false?"disabled":"")?> ><?php
 
           if ($db_opcao != 1){
       ?>
          <input name="novo" type="submit" value="Novo">
-      <?
+      <?php
           }
       ?>
      </td>
@@ -237,7 +237,7 @@ if ($db_opcao==1) {
  
  <tr>
  <td colspan=2>
- <?
+ <?php
    $chavepri= array("c83_codigo"=>@$c83_codigo,"c83_codrel"=>@$c83_codrel,"c83_periodo"=>@$c83_periodo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql   = $clconrelinfo->sql_query(null,$instit,"*","conrelinfo.c83_codigo,conrelvalor.c83_periodo","c83_codrel=$c83_codrel");

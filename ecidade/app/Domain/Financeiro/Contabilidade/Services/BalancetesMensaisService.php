@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use stdClass;
 use Carbon\Carbon;
 use App\Domain\Financeiro\Contabilidade\Services\BalanceteDespesaService;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\BalanceteReceitaService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\BalanceteReceitaComplementoService;
 use cl_conlancam;
 
 /**
@@ -764,7 +764,7 @@ class BalancetesMensaisService
         $aFiltros["dataFinal"] = $dataFinal;
         $aFiltros["instituicoes"] = $this->filtros->instituicoes;
 
-        $balanceteReceita = new BalanceteReceitaService;
+        $balanceteReceita = new BalanceteReceitaComplementoService;
         $balanceteReceita->setFiltrosRequest($aFiltros);
         $aDadosReceita = $balanceteReceita->getArvore();
 

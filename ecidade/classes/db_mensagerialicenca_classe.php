@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: meioambiente
 //CLASSE DA ENTIDADE mensagerialicenca
 class cl_mensagerialicenca { 
@@ -26,13 +26,13 @@ class cl_mensagerialicenca {
                  am14_mensagem = text = Mensagem 
                  ";
    //funcao construtor da classe 
-   function cl_mensagerialicenca() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicenca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_mensagerialicenca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am14_sequencial = ($this->am14_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am14_sequencial"]:$this->am14_sequencial);
        $this->am14_assunto = ($this->am14_assunto == ""?@$GLOBALS["HTTP_POST_VARS"]["am14_assunto"]:$this->am14_assunto);
@@ -51,7 +51,7 @@ class cl_mensagerialicenca {
      }
    }
    // funcao para inclusao
-   function incluir ($am14_sequencial){ 
+   public function incluir ($am14_sequencial){ 
       $this->atualizacampos();
      if($this->am14_assunto == null ){ 
        $this->erro_sql = " Campo Assunto não informado.";

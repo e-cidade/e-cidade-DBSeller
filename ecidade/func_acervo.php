@@ -69,14 +69,14 @@ $sql1    = "SELECT bi17_codigo,bi17_nome FROM biblioteca WHERE bi17_coddepto = $
 $result1 = db_query($sql1);
 $linhas1 = pg_num_rows($result1);
 
-if($linhas1!=0){
-  db_fieldsmemory($result1,0);
-  $result1 = $clbib_parametros->sql_record($clbib_parametros->sql_query("","bi26_leitorbarra",""," bi26_biblioteca = $bi17_codigo"));
-  if($clbib_parametros->numrows>0){
-    db_fieldsmemory($result1,0);
-  }else{
-    $bi26_leitorbarra = "N";
-  }
+if ($linhas1!=0) {
+    db_fieldsmemory($result1, 0);
+    $result1 = $clbib_parametros->sql_record($clbib_parametros->sql_query("", "bi26_leitorbarra", "", " bi26_biblioteca = $bi17_codigo"));
+    if ($clbib_parametros->numrows>0) {
+        db_fieldsmemory($result1, 0);
+    } else {
+        $bi26_leitorbarra = "N";
+    }
 }
 ?>
 <html>
@@ -137,7 +137,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_seq"><?=$Lbi06_seq?></label>
         </td>
         <td >
-          <?db_input("bi06_seq",10,$Ibi06_seq,true,"text",4,"","chave_bi06_seq");?>
+          <?php db_input("bi06_seq", 10, $Ibi06_seq, true, "text", 4, "", "chave_bi06_seq");?>
         </td>
       </tr>
 
@@ -146,7 +146,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_titulo"><?=$Lbi06_titulo?></label>
         </td>
         <td >
-          <?db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+          <?php db_input("bi06_titulo", 50, $Ibi06_titulo, true, "text", 4, "", "chave_bi06_titulo");?>
         </td>
       </tr>
 
@@ -155,7 +155,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_subtitulo"><?=$Lbi06_subtitulo?></label>
         </td>
         <td >
-          <?db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
+          <?php db_input("bi06_subtitulo", 50, $Ibi06_subtitulo, true, "text", 4, "", "chave_bi06_subtitulo");?>
         </td>
       </tr>
 
@@ -164,7 +164,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_titulooriginal"><?=$Lbi06_titulooriginal?></label>
         </td>
         <td >
-          <?db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
+          <?php db_input("bi06_titulooriginal", 50, $Ibi06_titulooriginal, true, "text", 4, "", "chave_bi06_titulooriginal");?>
         </td>
       </tr>
 
@@ -174,7 +174,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi15_assunto"><?=$Lbi15_assunto?></label>
         </td>
         <td >
-          <?db_input("bi15_assunto",50,$Ibi15_assunto,true,"text",4,"","chave_bi15_assunto");?>
+          <?php db_input("bi15_assunto", 50, $Ibi15_assunto, true, "text", 4, "", "chave_bi15_assunto");?>
         </td>
       </tr>
 
@@ -183,7 +183,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi01_nome"><b>Nome do Autor:</b></label>
         </td>
         <td >
-          <?db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");?>
+          <?php db_input("bi01_nome", 50, $Ibi01_nome, true, "text", 4, "", "chave_bi01_nome");?>
         </td>
       </tr>
 
@@ -193,32 +193,32 @@ function js_mostraColecao1(iColecao, sNome) {
         </td>
         <td >
           <?php
-            $result_loc = $cllocalizacao->sql_record($cllocalizacao->sql_query_file("","bi09_codigo,bi09_nome","bi09_nome"," bi09_biblioteca = $bi17_codigo"));
-            db_selectrecord("chave_bi20_localizacao",$result_loc,"","","","chave_bi20_localizacao","","  ","",1);
-          ?>
+            $result_loc = $cllocalizacao->sql_record($cllocalizacao->sql_query_file("", "bi09_codigo,bi09_nome", "bi09_nome", " bi09_biblioteca = $bi17_codigo"));
+            db_selectrecord("chave_bi20_localizacao", $result_loc, "", "", "", "chave_bi20_localizacao", "", "  ", "", 1);
+            ?>
         </td>
       </tr>
 
-      <?if($bi26_leitorbarra=="S"){?>
+      <?php if ($bi26_leitorbarra=="S") {?>
       <tr>
         <td >
           <label for="chave_bi23_codbarras"><b>Código de Barras:</b></label>
         </td>
         <td >
-          <?db_input("bi23_codbarras",20,@$Ibi23_codbarras,true,"text",4,"","chave_bi23_codbarras");?>
+            <?php db_input("bi23_codbarras", 20, @$Ibi23_codbarras, true, "text", 4, "", "chave_bi23_codbarras");?>
         </td>
       </tr>
-      <?}?>
+      <?php } ?>
 
       <tr>
         <td title="Coleção">
-         <label for="bi29_sequencial"><? db_ancora("Coleção: ","js_pesquisaColecao(true);",1);?></label>
+         <label for="bi29_sequencial"><?php db_ancora("Coleção: ", "js_pesquisaColecao(true);", 1);?></label>
         </td>
         <td  title="Coleção">
-         <?
-          db_input("bi29_sequencial", 10, $Ibi29_sequencial, true, "text", 1, "onchange='js_pesquisaColecao(false);'");
-          db_input("bi29_nome", 36, '', true, "text", 3, '');
-         ?>
+         <?php
+            db_input("bi29_sequencial", 10, $Ibi29_sequencial, true, "text", 1, "onchange='js_pesquisaColecao(false);'");
+            db_input("bi29_nome", 36, '', true, "text", 3, '');
+            ?>
         </td>
       </tr>
 
@@ -231,32 +231,28 @@ function js_mostraColecao1(iColecao, sNome) {
 <?php
 
   $depto  = db_getsession("DB_coddepto");
-  $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("","bi17_codigo,bi17_nome",""," bi17_coddepto = $depto"));
-  if ($clbiblioteca->numrows!=0) {
-
-    db_fieldsmemory($result,0);
+  $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("", "bi17_codigo,bi17_nome", "", " bi17_coddepto = $depto"));
+if ($clbiblioteca->numrows!=0) {
+    db_fieldsmemory($result, 0);
     $where  = " bi06_biblioteca = $bi17_codigo AND bi17_coddepto = $depto AND ";
     $where1 = " bi06_biblioteca = $bi17_codigo";
     if (isset($campos)==false) {
-
-      if(file_exists("funcoes/db_func_acervo.php")==true){
-        include(modification("funcoes/db_func_acervo.php"));
-      }else{
-        $campos = "acervo.*";
-      }
+        if (file_exists("funcoes/db_func_acervo.php")==true) {
+            include(modification("funcoes/db_func_acervo.php"));
+        } else {
+            $campos = "acervo.*";
+        }
     }
-    if(!isset($pesquisa_chave) && !isset($pesquisa_chave2) && !isset($pesquisa_chave3) ){
-
-      $sql = '';
-      if(isset($chave_bi06_seq) && (trim($chave_bi06_seq)!="") ){
-        $sql = $clacervo->sql_query("",$campos,"bi06_titulo",$where." bi06_seq = $chave_bi06_seq");
-      } else if(isset($chave_bi06_titulo) && (trim($chave_bi06_titulo)!="") ){
-        $sql = $clacervo->sql_query("",$campos,"bi06_titulo",$where." bi06_titulo like '$chave_bi06_titulo%' ");
-      } else if(isset($chave_bi15_assunto) && (trim($chave_bi15_assunto)!="") ){
-        $sql = $classunto->sql_query_consacervo("",$campos,"bi15_assunto",$where." (bi06_titulo like '%$chave_bi15_assunto%' or bi15_assunto like '%$chave_bi15_assunto%') ");
-      } else if(isset($chave_bi01_nome) && (trim($chave_bi01_nome)!="") ){
-
-        $sql = "select DISTINCT $campos
+    if (!isset($pesquisa_chave) && !isset($pesquisa_chave2) && !isset($pesquisa_chave3)) {
+        $sql = '';
+        if (isset($chave_bi06_seq) && (trim($chave_bi06_seq)!="")) {
+            $sql = $clacervo->sql_query("", $campos, "bi06_titulo", $where." bi06_seq = $chave_bi06_seq");
+        } elseif (isset($chave_bi06_titulo) && (trim($chave_bi06_titulo)!="")) {
+            $sql = $clacervo->sql_query("", $campos, "bi06_titulo", $where." bi06_titulo like '$chave_bi06_titulo%' ");
+        } elseif (isset($chave_bi15_assunto) && (trim($chave_bi15_assunto)!="")) {
+            $sql = $classunto->sql_query_consacervo("", $campos, "bi15_assunto", $where." (bi06_titulo like '%$chave_bi15_assunto%' or bi15_assunto like '%$chave_bi15_assunto%') ");
+        } elseif (isset($chave_bi01_nome) && (trim($chave_bi01_nome)!="")) {
+            $sql = "select DISTINCT $campos
                   from autoracervo
                    inner join acervo on bi06_seq = bi21_acervo
                    inner join autor on bi01_codigo = bi21_autor
@@ -264,87 +260,78 @@ function js_mostraColecao1(iColecao, sNome) {
                    left join localizacao  on  localizacao.bi09_codigo = localacervo.bi20_localizacao
                   where $where1 and bi01_nome like '$chave_bi01_nome%'
                  ";
-      } else if (isset($chave_bi20_localizacao) && (trim($chave_bi20_localizacao)!="") ){
-          $sql = $cllocalacervo->sql_query("",$campos,"bi20_sequencia",$where." bi20_localizacao = $chave_bi20_localizacao");
-      } else if(isset($chave_bi23_codbarras) && (trim($chave_bi23_codbarras)!="") ){
-        $sql = $clexemplar->sql_query("",$campos,"bi06_titulo",$where." bi23_codbarras = ".trim($chave_bi23_codbarras)."");
-      } else if(isset($bi29_sequencial) && (trim($bi29_sequencial)!="") ){
-        $sql = $clacervo->sql_query("",$campos,"bi29_nome",$where." bi29_sequencial = ".trim($bi29_sequencial)."");
-      } else if ( !empty($chave_bi06_subtitulo) ) {
-        $sql = $clacervo->sql_query("",$campos,"bi06_titulo",$where." bi06_subtitulo like '{$chave_bi06_subtitulo}%'");
-      } else if ( !empty($chave_bi06_titulooriginal) ) {
-        $sql = $clacervo->sql_query("",$campos,"bi06_titulo",$where." bi06_titulooriginal like '{$chave_bi06_titulooriginal}%'");
-      }
+        } elseif (isset($chave_bi20_localizacao) && (trim($chave_bi20_localizacao)!="")) {
+            $sql = $cllocalacervo->sql_query("", $campos, "bi20_sequencia", $where." bi20_localizacao = $chave_bi20_localizacao");
+        } elseif (isset($chave_bi23_codbarras) && (trim($chave_bi23_codbarras)!="")) {
+            $sql = $clexemplar->sql_query("", $campos, "bi06_titulo", $where." bi23_codbarras = ".trim($chave_bi23_codbarras)."");
+        } elseif (isset($bi29_sequencial) && (trim($bi29_sequencial)!="")) {
+            $sql = $clacervo->sql_query("", $campos, "bi29_nome", $where." bi29_sequencial = ".trim($bi29_sequencial)."");
+        } elseif (!empty($chave_bi06_subtitulo)) {
+            $sql = $clacervo->sql_query("", $campos, "bi06_titulo", $where." bi06_subtitulo like '{$chave_bi06_subtitulo}%'");
+        } elseif (!empty($chave_bi06_titulooriginal)) {
+            $sql = $clacervo->sql_query("", $campos, "bi06_titulo", $where." bi06_titulooriginal like '{$chave_bi06_titulooriginal}%'");
+        }
 
-      $repassa = array();
-      if(isset($chave_bi10_codigo)){
+        $repassa = array();
+        if (isset($chave_bi10_codigo)) {
+            $repassa = array(
+            "chave_bi06_seq"            => $chave_bi06_seq,
+            "chave_bi06_titulo"         => $chave_bi06_titulo,
+            "chave_bi06_titulooriginal" => $chave_bi06_titulooriginal,
+            "chave_bi06_subtitulo"      => $chave_bi06_subtitulo,
+            "chave_bi01_nome"           => $chave_bi01_nome,
+            "chave_bi23_codbarras"      => $chave_bi23_codbarras,
+            "chave_bi20_localizacao"    => $chave_bi20_localizacao,
+            "chave_bi29_nome"           => $bi29_nome);
+        }
 
-        $repassa = array(
-          "chave_bi06_seq"            => $chave_bi06_seq,
-          "chave_bi06_titulo"         => $chave_bi06_titulo,
-          "chave_bi06_titulooriginal" => $chave_bi06_titulooriginal,
-          "chave_bi06_subtitulo"      => $chave_bi06_subtitulo,
-          "chave_bi01_nome"           => $chave_bi01_nome,
-          "chave_bi23_codbarras"      => $chave_bi23_codbarras,
-          "chave_bi20_localizacao"    => $chave_bi20_localizacao,
-          "chave_bi29_nome"           => $bi29_nome);
-      }
-
-      echo '<div class="container">';
-      echo '  <fieldset>';
-      echo '    <legend>Resultado da Pesquisa</legend>';
-        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
-      echo '  </fieldset>';
-      echo '</div>';
-
+        echo '<div class="container">';
+        echo '  <fieldset>';
+        echo '    <legend>Resultado da Pesquisa</legend>';/*dd($sql);*/
+        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
+        echo '  </fieldset>';
+        echo '</div>';
     } else {
-
-      if ($pesquisa_chave!=null && $pesquisa_chave!="") {
-
-        $result = $clacervo->sql_record($clacervo->sql_query("",$campos,"",$where." bi06_seq = $pesquisa_chave"));
-        if($clacervo->numrows!=0){
-
-          db_fieldsmemory($result,0);
-          echo "<script>".$funcao_js."('$bi06_titulo',false);</script>";
-        }else{
-          echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+        if ($pesquisa_chave!=null && $pesquisa_chave!="") {
+            $result = $clacervo->sql_record($clacervo->sql_query("", $campos, "", $where." bi06_seq = $pesquisa_chave"));
+            if ($clacervo->numrows!=0) {
+                db_fieldsmemory($result, 0);
+                echo "<script>".$funcao_js."('$bi06_titulo',false);</script>";
+            } else {
+                echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+            }
+        } elseif ($pesquisa_chave2!=null && $pesquisa_chave2!="") {
+            $result = $clacervo->sql_record($clacervo->sql_query("", $campos, "", $where." bi06_seq = $pesquisa_chave2"));
+            if ($clacervo->numrows!=0) {
+                db_fieldsmemory($result, 0);
+                echo "<script>".$funcao_js."('$bi06_titulo',$bi06_seq,false);</script>";
+            } else {
+                echo "<script>".$funcao_js."('Chave(".$pesquisa_chave2.") não Encontrado',true);</script>";
+            }
+        } elseif ($pesquisa_chave3!=null && $pesquisa_chave3!="") {
+            $result = $clacervo->sql_record($clacervo->sql_query("", $campos, "", $where." bi06_seq = $pesquisa_chave3"));
+            if ($clacervo->numrows!=0) {
+                db_fieldsmemory($result, 0);
+                echo "<script>".$funcao_js."('$bi06_titulo',false);</script>";
+            } else {
+                echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+            }
+        } else {
+            echo "<script>".$funcao_js."('',false);</script>";
         }
-      } elseif($pesquisa_chave2!=null && $pesquisa_chave2!=""){
-
-        $result = $clacervo->sql_record($clacervo->sql_query("",$campos,"",$where." bi06_seq = $pesquisa_chave2"));
-        if($clacervo->numrows!=0){
-
-          db_fieldsmemory($result,0);
-          echo "<script>".$funcao_js."('$bi06_titulo',$bi06_seq,false);</script>";
-        }else{
-          echo "<script>".$funcao_js."('Chave(".$pesquisa_chave2.") não Encontrado',true);</script>";
-        }
-      }elseif($pesquisa_chave3!=null && $pesquisa_chave3!=""){
-
-        $result = $clacervo->sql_record($clacervo->sql_query("",$campos,"",$where." bi06_seq = $pesquisa_chave3"));
-        if($clacervo->numrows!=0){
-
-          db_fieldsmemory($result,0);
-          echo "<script>".$funcao_js."('$bi06_titulo',false);</script>";
-        }else{
-          echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
-        }
-      } else {
-       echo "<script>".$funcao_js."('',false);</script>";
-      }
     }
-  } else {
+} else {
     echo "<script>alert('Erro na pesquisa.  Biblioteca não cadastrada.');</script>";
-  }
+}
 ?>
 </body>
 </html>
 <script>
- <?if($bi26_leitorbarra=="S"){?>
+ <?php if ($bi26_leitorbarra=="S") {?>
   js_tabulacaoforms("form1","chave_bi23_codbarras",true,1,"chave_bi23_codbarras",true);
- <?}else{?>
+ <?php } else { ?>
   js_tabulacaoforms("form1","chave_bi06_titulo",true,1,"chave_bi06_titulo",true);
- <?}?>
+ <?php } ?>
 </script>
 <script type="text/javascript">
 (function() {

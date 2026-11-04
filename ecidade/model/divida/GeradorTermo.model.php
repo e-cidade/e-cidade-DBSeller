@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -138,18 +138,18 @@ class GeradorTermo
         $preenc = 0;
 
         $TPagina = 57;
-        
+
         $instit = db_getsession('DB_instit');
         $count_certid = 0;
 
         if (!isset($certid) || empty($certid)) {
             $sql = $this->getSqlListaCertidoes($certid, $certid1, $count_certid, $instit, $proced, $dataInicial, $dataFinal, $anoexerc, $origemtipo, $origem);
             $rsCertidao = db_query($sql);
-            $numero = pg_num_rows($rsCertidao);                      
-        } else { 
+            $numero = pg_num_rows($rsCertidao);
+        } else {
             $numero = ($certid1 - $certid) + 1;
         }
-        
+
         if (empty($this->pdf)) {
             $this->pdf = new pdfTermo(); // abre a classe
             $pdf = $this->pdf;
@@ -212,7 +212,7 @@ class GeradorTermo
             $pdf->setfillcolor(220);
             $pdf->setfont('arial', '', 11);
 
-                
+
             $this->drawDevedores($pdf, $oTermo, 'o');
 
             $this->drawOrigens($pdf, $oTermo, 'o');
@@ -226,7 +226,7 @@ class GeradorTermo
             $this->drawCertifico($pdf, $oTermo, $sParagrafo);
 
             $this->drawFundamentoLegal($pdf, $oTermo, $aProcedencias);
-            
+
             if ($reemissao == "true") {
                 $this->drawDebitos($pdf, $oTermo, $oPardiv, $totexe == "t" ? true : false,
                 $reemissao = true);
@@ -348,7 +348,7 @@ class GeradorTermo
         foreach ($aImoveis->aImoveis as $oOrigem) {
 
             $pdf->Ln(3);
-      
+
             $pdf->setfont('arial', '', 8);
             $pdf->cell(120, 3, 'ENDEREÇO: ' . (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 0, "l", 0);
             $pdf->cell(40, 3, 'BAIRRO : ' . (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 1, "l", 0);
@@ -504,7 +504,7 @@ class GeradorTermo
         if ($lGerarMetodologia) {
             $pdf->setfont('', 'B', 6);
             $pdf->MultiCell(0, 4, "FORMA DE CALCULAR OS JUROS, MULTA E ATUALIZAÇÃO MONETÁRIA", 1, "C", 1);
-            $pdf->setfont('arial', 'B', 9);
+            $pdf->setfont('arial', 'B', 8);
 
             $resMetCalculo = db_query($sMetCalculo);
             if ($resMetCalculo) {
@@ -527,16 +527,16 @@ class GeradorTermo
      * @param termoinscr $oCertidao
      */
     private function drawDebitos(pdf3 $pdf, termoinscr $oCertidao, $oPardiv, $lTotaliza = false, $lReemissao)
-    {   
+    {
 
         $aDebitos = $oCertidao->getDebitos($lReemissao);
-            
+
         $aDebitosOrdenado = array();
         $aTotaisAno = array();
         $oTotalGeral = array();
 
         foreach ($aDebitos as $oDebito) {
-           
+
             $aDebitosOrdenado[$oDebito->procedenciatributaria][] = $oDebito;
             if (!isset($aTotaisAno[$oDebito->procedenciatributaria][$oDebito->exercicio])) {
 
@@ -608,18 +608,18 @@ class GeradorTermo
             $pdf->Cell(11, 5, "NUMPRE", 1, 0, "C", 1);
             $pdf->Cell(12, 5, "DT LANC.", 1, 0, "C", 1);
             $pdf->Cell(10, 5, "EXERC.", 1, 0, "C", 1);
-            $pdf->Cell(8, 5, "PARC", 1, 0, "C", 1);
-            /* $pdf->Cell(10, 5, "LIV/FOL", 1, 0, "C", 1); */
-            $pdf->Cell(15, 5, "ORIG.", 1, 0, "C", 1);
-            $pdf->Cell(20, 5, "PROCEDÊNCIA", 1, 0, "C", 1);
-            $pdf->Cell(18, 5, "ORIGEM DÉBITO", 1, 0, "C", 1);
+            $pdf->Cell(7, 5, "PARC", 1, 0, "C", 1);
+            $pdf->Cell(15, 5, "LIV/FOL", 1, 0, "C", 1);
+            $pdf->Cell(13, 5, "ORIG.", 1, 0, "C", 1);
+            $pdf->Cell(25, 5, "PROCEDÊNIA", 1, 0, "C", 1);
+            /* $pdf->Cell(18, 5, "ORIGEM DÉBITO", 1, 0, "C", 1); */
             $pdf->Cell(15, 5, "DATA INSCR.", 1, 0, "C", 1);
             $pdf->Cell(15, 5, "DATA VENC.", 1, 0, "C", 1);
             $pdf->Cell(13, 5, "VLR HIST.", 1, 0, "C", 1);
             $pdf->Cell(13, 5, "CORRIGIDO", 1, 0, "C", 1);
             $pdf->Cell(11, 5, "MULTA", 1, 0, "C", 1);
-            $pdf->Cell(11, 5, "JUROS", 1, 0, "C", 1);
-            $pdf->Cell(12, 5, "TOTAL", 1, 1, "C", 1);
+            $pdf->Cell(10, 5, "JUROS", 1, 0, "C", 1);
+            $pdf->Cell(11, 5, "TOTAL", 1, 1, "C", 1);
             $lEscreveTotal = false;
             $iExercicioAnterior = null;
             $pagina = 0;
@@ -630,16 +630,16 @@ class GeradorTermo
                 if ($oDebito->exercicio != $iExercicioAnterior && $lEscreveTotal && $lTotaliza) {
 
                     $pdf->SetFont('', 'B', 6);
-                    $pdf->Cell(121, 5, "TOTAL EXERCICIO - {$iExercicioAnterior}", 1, 0, "C", 0);
-                    $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrhis, 'f'), 1, 0,
+                    $pdf->Cell(134, 5, "TOTAL EXERCICIO - {$iExercicioAnterior}", 1, 0, "C", 0);
+                    $pdf->Cell(13, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrhis, 'f'), 1, 0,
                         "R", 0);
-                    $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrcor, 'f'), 1, 0,
+                    $pdf->Cell(13, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrcor, 'f'), 1, 0,
                         "R", 0);
-                    $pdf->Cell(14, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrmul, 'f'), 1, 0,
+                    $pdf->Cell(11, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrmul, 'f'), 1, 0,
                         "R", 0);
-                    $pdf->Cell(14, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrjur, 'f'), 1, 0,
+                    $pdf->Cell(10, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrjur, 'f'), 1, 0,
                         "R", 0);
-                    $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrtot, 'f'), 1, 1,
+                    $pdf->Cell(11, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrtot, 'f'), 1, 1,
                         "R", 0);
                     $pdf->setfont('', 'B', 9);
 
@@ -649,23 +649,23 @@ class GeradorTermo
 
                     $pdf->AddPage();
                     $pdf->SetFont('', 'B', 6);
-                    
+
                     $pdf->Cell(11, 5, "DÍVIDA", 1, 0, "C", 1);
                     $pdf->Cell(11, 5, "NUMPRE", 1, 0, "C", 1);
                     $pdf->Cell(12, 5, "DT LANC.", 1, 0, "C", 1);
                     $pdf->Cell(10, 5, "EXERC.", 1, 0, "C", 1);
-                    $pdf->Cell(8, 5, "PARC", 1, 0, "C", 1);
-                    /* $pdf->Cell(10, 5, "LIV/FOL", 1, 0, "C", 1); */
-                    $pdf->Cell(15, 5, "ORIG.", 1, 0, "C", 1);
-                    $pdf->Cell(20, 5, "PROCEDÊNCIA", 1, 0, "C", 1);
-                    $pdf->Cell(18, 5, "ORIGEM DÉBITO", 1, 0, "C", 1);
+                    $pdf->Cell(7, 5, "PARC", 1, 0, "C", 1);
+                    $pdf->Cell(15, 5, "LIV/FOL", 1, 0, "C", 1);
+                    $pdf->Cell(13, 5, "ORIG.", 1, 0, "C", 1);
+                    $pdf->Cell(25, 5, "PROCEDÊNIA", 1, 0, "C", 1);
+                    /* $pdf->Cell(18, 5, "ORIGEM DÉBITO", 1, 0, "C", 1); */
                     $pdf->Cell(15, 5, "DATA INSCR.", 1, 0, "C", 1);
                     $pdf->Cell(15, 5, "DATA VENC.", 1, 0, "C", 1);
                     $pdf->Cell(13, 5, "VLR HIST.", 1, 0, "C", 1);
                     $pdf->Cell(13, 5, "CORRIGIDO", 1, 0, "C", 1);
                     $pdf->Cell(11, 5, "MULTA", 1, 0, "C", 1);
-                    $pdf->Cell(11, 5, "JUROS", 1, 0, "C", 1);
-                    $pdf->Cell(12, 5, "TOTAL", 1, 1, "C", 1);
+                    $pdf->Cell(10, 5, "JUROS", 1, 0, "C", 1);
+                    $pdf->Cell(11, 5, "TOTAL", 1, 1, "C", 1);
                     $pagina = $pdf->PageNo();
 
                 }
@@ -673,18 +673,18 @@ class GeradorTermo
                 $pdf->SetFont('', '', 6);
                 $pdf->Cell(11, 5, $oDebito->codigodivida, 1, 0, "C", 0);
                 $pdf->Cell(11, 5, $oDebito->numpre, 1, 0, "C", 0);
-                $pdf->Cell(12, 5, db_formatar($oDebito->datalancamento, 'd'), 1, 0, "C", 0); 
+                $pdf->Cell(12, 5, db_formatar($oDebito->datalancamento, 'd'), 1, 0, "C", 0);
                 $pdf->Cell(10, 5, $oDebito->exercicio, 1, 0, "C", 0);
-                $pdf->Cell(8, 5, $oDebito->numpar, 1, 0, "C", 0);
-                /* $pdf->Cell(10, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0); */
-                $pdf->Cell(15, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                $pdf->Cell(7, 5, $oDebito->numpar, 1, 0, "C", 0);
+                $pdf->Cell(15, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0);
+                $pdf->Cell(13, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
                 if (strlen($oDebito->procedencia) == 20) {
-                    $procedencia = substr($oDebito->procedencia, 0, 15);
+                    $procedencia = substr($oDebito->procedencia, 0, 20);
                 } else {
                     $procedencia = $oDebito->procedencia;
                 }
-                $pdf->Cell(20, 5, $procedencia, 1, 0, "L", 0);
-                $pdf->Cell(18, 5, $oDebito->origemdebito, 1, 0, "C", 0);
+                $pdf->Cell(25, 5, $procedencia, 1, 0, "L", 0);
+                /* $pdf->Cell(18, 5, $oDebito->origemdebito, 1, 0, "C", 0); */
                 $pdf->Cell(15, 5, db_formatar($oDebito->datainscricao, 'd'), 1, 0, "C", 0);
                 $pdf->Cell(15, 5, db_formatar($oDebito->datavencimento, 'd'), 1, 0, "C", 0);
                 $pdf->Cell(13, 5, db_formatar($oDebito->valorhistorico, 'f'), 1, 0, "R", 0);
@@ -692,8 +692,8 @@ class GeradorTermo
                 if ($oDebito->certidmassa == 0) {
 
                     $pdf->Cell(11, 5, db_formatar($oDebito->valormulta, 'f'), 1, 0, "R", 0);
-                    $pdf->Cell(11, 5, db_formatar($oDebito->valorjuros, 'f'), 1, 0, "R", 0);
-                    $pdf->Cell(12, 5, db_formatar($oDebito->valortotal, 'f'), 1, 1, "R", 0);
+                    $pdf->Cell(10, 5, db_formatar($oDebito->valorjuros, 'f'), 1, 0, "R", 0);
+                    $pdf->Cell(11, 5, db_formatar($oDebito->valortotal, 'f'), 1, 1, "R", 0);
 
                 } else {
 
@@ -727,31 +727,31 @@ class GeradorTermo
             if (($lEscreveTotal && $lTotaliza)) {
 
                 $pdf->SetFont('', 'B', 6);
-                $pdf->Cell(116, 5, "TOTAL EXERCICIO - {$iExercicioAnterior}", 1, 0, "C", 0);
-                $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrhis, 'f'), 1, 0, "R",
+                $pdf->Cell(134, 5, "TOTAL EXERCICIO - {$iExercicioAnterior}", 1, 0, "C", 0);
+                $pdf->Cell(13, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrhis, 'f'), 1, 0, "R",
                     0);
-                $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrcor, 'f'), 1, 0, "R",
+                $pdf->Cell(13, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrcor, 'f'), 1, 0, "R",
                     0);
-                $pdf->Cell(14, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrmul, 'f'), 1, 0, "R",
+                $pdf->Cell(11, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrmul, 'f'), 1, 0, "R",
                     0);
-                $pdf->Cell(14, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrjur, 'f'), 1, 0, "R",
+                $pdf->Cell(10, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrjur, 'f'), 1, 0, "R",
                     0);
-                $pdf->Cell(15, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrtot, 'f'), 1, 1, "R",
+                $pdf->Cell(11, 5, db_formatar($aTotaisAno[$iTipo][$iExercicioAnterior]->vlrtot, 'f'), 1, 1, "R",
                     0);
                 $pdf->setfont('', 'B', 9);
 
             }
             $pdf->SetFont('', 'B', 6);
-            $pdf->Cell(135, 5, "TOTAL", 1, 0, "C", 0);
+            $pdf->Cell(134, 5, "TOTAL", 1, 0, "C", 0);
             $pdf->Cell(13, 5, db_formatar($oTotalGeral[$iTipo]->valorhistorico, 'f'), 1, 0, "R", 0);
             $pdf->Cell(13, 5, db_formatar($oTotalGeral[$iTipo]->valorcorrigido, 'f'), 1, 0, "R", 0);
             $pdf->Cell(11, 5, db_formatar($oTotalGeral[$iTipo]->valormulta, 'f'), 1, 0, "R", 0);
-            $pdf->Cell(11, 5, db_formatar($oTotalGeral[$iTipo]->valorjuros, 'f'), 1, 0, "R", 0);
-            $pdf->Cell(12, 5, db_formatar($oTotalGeral[$iTipo]->valortotal, 'f'), 1, 1, "R", 0);
+            $pdf->Cell(10, 5, db_formatar($oTotalGeral[$iTipo]->valorjuros, 'f'), 1, 0, "R", 0);
+            $pdf->Cell(11, 5, db_formatar($oTotalGeral[$iTipo]->valortotal, 'f'), 1, 1, "R", 0);
             $pdf->setfont('', 'B', 9);
 
             $pdf->Ln(5);
-        }        
+        }
     }
 
     /**
@@ -763,6 +763,9 @@ class GeradorTermo
      */
     private function drawTextoPadrao($pdf, $oCertidao, $sTexto)
     {
+        if (empty($sTexto)) {
+            return;
+        }
 
         $pdf->setfont('', 'B', 9);
         $pdf->Ln(5);
@@ -779,7 +782,7 @@ class GeradorTermo
      */
     private function drawData($pdf, $oCertidao, $sData, $lCorrigir)
     {
-
+        $pdf->setfont('', 'B', 7);
         $sMunic = db_stdClass::getDadosInstit()->munic;
         if ($lCorrigir) {
 
@@ -814,14 +817,8 @@ class GeradorTermo
      */
     private function drawAssinaturas($pdf, $oCertidao, $aAssinaturas)
     {
-
         $asssec = null;
         $asscoord = null;
-
-        if ($pdf->gety() > $pdf->h - 66) {
-
-            $pdf->addPage();
-        }
 
         foreach ($aAssinaturas as $oAssinaturas) {
 
@@ -834,6 +831,15 @@ class GeradorTermo
             if ($oAssinaturas->db04_ordem == '5') {
                 $asscoord = $oAssinaturas->db02_texto;
             }
+        }
+
+        if (empty($asssec) && empty($asscoord) && !isset($assinaturas_php)) {
+            return;
+        }
+
+        if ($pdf->gety() > $pdf->h - 66) {
+
+            $pdf->addPage();
         }
 
         $pdf->setfont('', '', 1);
@@ -888,9 +894,9 @@ class GeradorTermo
      * @return string                SQL Query
      */
     private function getSqlListaCertidoes($certid, $certid1, $count_certid, $instit, $proced, $dataInicial, $dataFinal, $anoexerc, $origemtipo, $origem)
-    {      
-        if (!isset($certid) || empty($certid)) { 
-            
+    {
+        if (!isset($certid) || empty($certid)) {
+
             $sql = "select v92_termo,v92_dtinsc
                     from  termoinscr
                         inner join termoinscrreg on v93_termo = v92_termo
@@ -898,16 +904,16 @@ class GeradorTermo
                                                 and v01_instit = {$instit}
                         left  join cgm       on v01_numcgm = z01_numcgm
                         left join arrematric on v01_numpre = arrematric.k00_numpre
-                        left join arreinscr on v01_numpre = arreinscr.k00_numpre 
+                        left join arreinscr on v01_numpre = arreinscr.k00_numpre
                     where v92_termo not in ( {$count_certid} )
                     and ({$anoexerc} = 0 or v01_exerc = {$anoexerc})
                     and ({$anoexerc} = 0 or v01_exerc = {$anoexerc})
                     and v01_dtinsc between '{$dataInicial}' and '{$dataFinal}'
                     and (({$origemtipo} = 0 and {$origem} = 0) or ({$origemtipo} = 1 and v01_numcgm = {$origem}) or ({$origemtipo} = 2 and k00_matric = {$origem}) or ({$origemtipo} = 3 and k00_inscr = {$origem}))
                     and ({$proced} = 0 or v01_proced = {$proced})";
-                     
+
         } else {
-        
+
             $sql = "select v92_termo,v92_dtinsc
                         from  termoinscr
                             inner join termoinscrreg on v93_termo = v92_termo
@@ -923,7 +929,7 @@ class GeradorTermo
                         and v01_dtinsc between '{$dataInicial}' and '{$dataFinal}'
                         and (({$origemtipo} = 0 and {$origem} = 0) or ({$origemtipo} = 1 and v01_numcgm = {$origem}) or ({$origemtipo} = 2 and k00_matric = {$origem}) or ({$origemtipo} = 3 and k00_inscr = {$origem}))
                         and ({$proced} = 0 or v01_proced = {$proced})
-                        order by v92_termo limit 1";   
+                        order by v92_termo limit 1";
         }
 
         return $sql;

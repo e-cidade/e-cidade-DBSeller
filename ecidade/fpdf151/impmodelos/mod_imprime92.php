@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -219,11 +219,11 @@ $maiscol = 0;
 $yy = $this->objpdf->gety();
 $intnumrows = count($this->arraycodreceitas);
 
-$this->objpdf->setx($xcol + 3 + $maiscol);
-$this->objpdf->cell(6, 3, "Rec", 0, 0, "L", 0);
+$this->objpdf->setx($xcol + 4 + $maiscol);
+$this->objpdf->cell(8, 3, "Rec", 0, 0, "L", 0);
 $this->objpdf->cell(7, 3, "Reduz", 0, 0, "L", 0);
 $this->objpdf->cell(64, 3, "Descrição", 0, 0, "L", 0);
-$this->objpdf->cell(18, 3, "Valor", 0, 1, "R", 0);
+$this->objpdf->cell(12, 3, "Valor", 0, 1, "R", 0);
 
 $reccol = $xcol + 5;
 $reccol2 = $xcol + 5;
@@ -233,6 +233,7 @@ $bklin2 = $xlin + 30;
 $this->totalrec = 0;
 $this->totaldesc = 0;
 $this->totalacres = 0;
+$yline = $xlin;
 
 for ($x = 0; $x < $intnumrows; $x++) {
     $this->obsdescr = null;
@@ -242,17 +243,19 @@ for ($x = 0; $x < $intnumrows; $x++) {
         break;
     }
 
+    $this->objpdf->SetY($yline + 28);
     $this->objpdf->Text($reccol, $bklin, $this->arraycodreceitas[$x]);
-    $this->objpdf->Text($reccol + 6, $bklin, "(" . $this->arrayreduzreceitas[$x] . ")");
+    $this->objpdf->Text($reccol + 8, $bklin, "(" . $this->arrayreduzreceitas[$x] . ")");
     if (@$this->arraycodhist[$x] == 918) {
         $this->obsdescr = " (desconto)";
     }
-    $this->objpdf->Text($reccol + 12, $bklin, $this->arraydescrreceitas[$x] . $this->obsdescr);
+    $this->objpdf->Text($reccol + 15, $bklin, $this->arraydescrreceitas[$x] . $this->obsdescr);
+    
 
     if ($x == 0) {
-        $this->objpdf->SetY($xlin + 28);
+        $this->objpdf->SetY($yline + 28);
     }
-    $this->objpdf->cell($reccol + 82, 2, db_formatar($this->arrayvalreceitas[$x], 'f'), 0, 1, "R", 0);
+    $this->objpdf->cell($reccol + 82, 3, db_formatar($this->arrayvalreceitas[$x], 'f'), 0, 1, "R", 0);
 
     $iFormaCorrecao = pg_result(db_query("select k03_separajurmulparc
                                           from numpref
@@ -285,10 +288,11 @@ for ($x = 0; $x < $intnumrows; $x++) {
 
         $bklin = $bklin2 - 2;
         $reccol += 98;
-        $this->objpdf->SetY($xlin + 28);
+        $this->objpdf->SetY($yline + 28);
     }
 
     $bklin += 2;
+    $yline += 2;
 }
 
 $xlin += 15;

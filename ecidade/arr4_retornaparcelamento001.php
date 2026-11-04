@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -519,7 +519,7 @@ if (isset($oPost->processar)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 </head>
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("estilos.css");
 ?>
@@ -541,7 +541,7 @@ db_app::load("estilos.css");
         <input type="submit" name="processar" id="processar" value="Processar" onclick="js_processar();">
     </form>
 </center>
-<?
+<?php
 
 /*
  * ATENÇÃO:

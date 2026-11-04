@@ -66,7 +66,7 @@ class DBHttpRequest
             'headers' => array(),
             'method' => 'GET',
             'body' > null,
-            'timeout' => 60,
+            'timeout' => 600,
         );
 
         if (!empty($proxy['tcp'])) {

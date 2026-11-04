@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_levnumpre {
                  y66_numpre = int4 = Código de  Arrecadação Gerado 
                  ";
    //funcao construtor da classe 
-   function cl_levnumpre() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levnumpre"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_levnumpre {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y66_codlev = ($this->y66_codlev == ""?@$GLOBALS["HTTP_POST_VARS"]["y66_codlev"]:$this->y66_codlev);
        $this->y66_numpre = ($this->y66_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["y66_numpre"]:$this->y66_numpre);
@@ -74,7 +74,7 @@ class cl_levnumpre {
      }
    }
    // funcao para inclusao
-   function incluir ($y66_codlev){ 
+   public function incluir ($y66_codlev){ 
       $this->atualizacampos();
      if($this->y66_numpre == null ){ 
        $this->erro_sql = " Campo Código de  Arrecadação Gerado nao Informado.";
@@ -138,7 +138,7 @@ class cl_levnumpre {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y66_codlev=null) { 
+   public function alterar ($y66_codlev=null) { 
       $this->atualizacampos();
      $sql = " update levnumpre set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_levnumpre {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y66_codlev=null,$dbwhere=null) { 
+   public function excluir ($y66_codlev=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y66_codlev));
      }else{ 
@@ -280,7 +280,7 @@ class cl_levnumpre {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

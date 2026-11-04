@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
               <?=$Led121_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed121_sequencial",10,$Ied121_sequencial,true,"text",4,"","chave_ed121_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
               <?=$Led121_progressaoparcialalunomatricula?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed121_progressaoparcialalunomatricula",10,$Ied121_progressaoparcialalunomatricula,true,"text",4,"","chave_ed121_progressaoparcialalunomatricula");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_progressaoparcialalunoresultadofinal.php")==true){
@@ -122,12 +122,12 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

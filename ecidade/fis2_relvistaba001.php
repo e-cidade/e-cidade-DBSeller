@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ $clrotulo->label("y11_codi");
        </tr>
       <tr>
         <td colspan=2 >
-	      <?
+	      <?php
                 $aux->cabecalho = "<strong>Tipo de vistorias</strong>";
                 $aux->codigo = "y77_codtipo";
                 $aux->descr  = "y77_descricao";
@@ -109,15 +109,15 @@ $clrotulo->label("y11_codi");
       <!--
       <tr>
          <td nowrap title="<?=@$Ty76_codvist?>">
-	    <?
+	    <?php
 	     db_ancora(@$Ly76_codvist,"js_pesquisay76_codvist(true);",1);
 	    ?>
 	 </td>
 	 <td>
-	    <?
+	    <?php
 	     db_input('y76_codvist',10,$Iy76_codvist,true,'text',1," onchange='js_pesquisay76_codvist(false);'");
 	    ?>
-	    <?
+	    <?php
 	     db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'');
 	    ?>
 	 </td>
@@ -129,7 +129,7 @@ $clrotulo->label("y11_codi");
 	    <b>Ordenar por:</b>
 	 </td>
 	 <td>
-	    <?
+	    <?php
 	    $tipo_ordem = array("v"=>"Vistoria","r"=>"Rua","b"=>"Bairro","n"=>"Nome","t"=>"Tipo");
 	    db_select("ordem",$tipo_ordem,true,"text",4); 
 	    ?>
@@ -140,7 +140,7 @@ $clrotulo->label("y11_codi");
       <tr>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
+               <?php 
 	          db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");

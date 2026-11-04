@@ -33,6 +33,7 @@ use App\Domain\Educacao\Escola\Requests\EmissaoDiarioClasseEspecialRequest;
 use ArredondamentoNota;
 use AvaliacaoAproveitamento;
 use CalendarioRepository;
+use Carbon\Carbon;
 use DBDate;
 use DisciplinaRepository;
 use ECidade\Educacao\Escola\Relatorios\DiarioClasse\Model\AlunoDiarioClasse;
@@ -258,7 +259,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         $imagem = $instituicao->getLogo();
         $this->Image("imagens/files/{$imagem}", 11, 9, 13);
         $posicaoX = 25;
-        $tamanhoLinha = 120;
+        $tamanhoLinha = 80;
 
         $this->SetFont('Arial', 'B', '7');
         $this->SetXY($posicaoX, 8);
@@ -271,19 +272,19 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
 
         $this->Cell($tamanhoLinha, 4, $instituicao->getNome(), 0, 1, 'L');
         $this->SetX($posicaoX);
-        $this->Cell($tamanhoLinha, 4, $nomeEscola, 0, 1, 'L');
+        $this->MultiCell($tamanhoLinha, 4, $nomeEscola, 0, 1, 'L');
 
         $this->SetFont('Arial', '', '7');
         $this->SetXY($posicaoX, 24);
         $this->Cell($tamanhoLinha, 4, "Cidade: {$escola->getMunicipio()->getNome()}", 0, 0, 'L');
     }
 
-    abstract protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse);
+    abstract protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse, $request = null);
 
     /**
      * @return string
      */
-    public function emitir()
+    public function emitir($request = null)
     {
         $this->opem();
 
@@ -291,19 +292,19 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
             if ($this->turmaGlobalizada) {
                 $this->recalculaColunaOutros($dadosDiarioClasse);
             }
-            $estrituraMeses = $this->calculaEstruturaSubCabecalho($dadosDiarioClasse);
-            $numeroPaginas = count($estrituraMeses);
+            $estruturaMeses = $this->calculaEstruturaSubCabecalho($dadosDiarioClasse);
+            $numeroPaginas = count($estruturaMeses);
             $imprimirEtapaAluno = count($dadosDiarioClasse->getTurma()->getEtapas()) > 1;
-            foreach ($estrituraMeses as $pagina => $meses) {
+            foreach ($estruturaMeses as $pagina => $meses) {
                 $ultimaPagina = $pagina === $numeroPaginas;
-                $this->cabecalho($dadosDiarioClasse);
-                $this->emitirCorpo($dadosDiarioClasse, $meses, $ultimaPagina, $imprimirEtapaAluno);
+                $this->cabecalho($dadosDiarioClasse, $request);
+                $this->emitirCorpo($dadosDiarioClasse, $meses, $ultimaPagina, $imprimirEtapaAluno, $request);
                 $this->assinaturas();
             }
 
             if ($this->modelo->value() === ModeloDiarioClasseEnum::MODELO_DUAS_PAGINAS) {
-                $this->cabecalho($dadosDiarioClasse);
-                $this->emitirSegundaPagina($dadosDiarioClasse, $imprimirEtapaAluno);
+                $this->cabecalho($dadosDiarioClasse, $request);
+                $this->emitirSegundaPagina($dadosDiarioClasse, $imprimirEtapaAluno, $request);
             }
         }
 
@@ -317,8 +318,13 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
      * @param $imprimirEtapaAluno
      * @throws Exception
      */
-    protected function emitirCorpo(DadosDiarioClasse $dadosDiarioClasse, $meses, $ultimaPagina, $imprimirEtapaAluno)
-    {
+    protected function emitirCorpo(
+        DadosDiarioClasse $dadosDiarioClasse,
+        $meses,
+        $ultimaPagina,
+        $imprimirEtapaAluno,
+        $request = null
+    ) {
         $this->imprimeSubcabecalho($dadosDiarioClasse, $meses, $ultimaPagina);
         $alunosDiarioClasses = $dadosDiarioClasse->getAlunos();
         $alunosImpressos = 1;
@@ -356,7 +362,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
                                 $saidaAlunoUltimaTurma = \Carbon\Carbon::createFromTimestamp(
                                     $matriculasDoAluno[$i - 1]->getDataEncerramento()->getTimestamp()
                                 );
-                                
+
                                 if (
                                     //$dadosDiarioClasse->getPeriodoDoDiario()['inicio']->gte($saidaAlunoUltimaTurma) &&
                                     $dadosDiarioClasse->getPeriodoDoDiario()['fim']->lt($saidaAlunoUltimaTurma)
@@ -372,7 +378,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
             if ($alunosImpressos == $this->numeroAlunosPagina) {
                 $alunosImpressos = 1;
                 $this->assinaturas();
-                $this->cabecalho($dadosDiarioClasse);
+                $this->cabecalho($dadosDiarioClasse, $request);
                 $this->imprimeSubcabecalho($dadosDiarioClasse, $meses, $ultimaPagina);
             }
             $alunosImpressos++;
@@ -450,7 +456,6 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
 
             $this->imprimeColunasEmBranco($meses->colunasEmBranco, $meses->tamanhoColuna, true);
         }
-
         $this->escreverColunaNumeroAluno($ultimaPagina);
         $this->escreverColunasAvaliacao($ultimaPagina);
         $this->escreverColunasTurmaGlobalizada($ultimaPagina);
@@ -617,7 +622,17 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         $tamanhoDisponivelGrade = $this->larguraPagina - $this->larguraColunaNome - $this->larguraColunaNumero;
 
         if (!$ultimaPagina) {
-            return $tamanhoDisponivelGrade;
+            if (!$this->registroManual) {
+                return $tamanhoDisponivelGrade;
+            } else {
+                if ($this->modelo->getValue() !== 3) {
+                    if (!$this->exibirColunasAvaliacaoManual) {
+                        return $tamanhoDisponivelGrade;
+                    }
+                     return $tamanhoDisponivelGrade + 15;
+                }
+                return $tamanhoDisponivelGrade;
+            }
         }
 
         if (!$this->registroManual) {
@@ -667,20 +682,24 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
                 $periodoAvaliacao
             );
 
-
             $datas = [];
             foreach ($datasLetivas as $dataLetiva) {
+                $periodosOrdenados = [];
                 foreach ($dataLetiva->aPeriodoAula as $oPeriodoAula) {
+                    $turno = trim(strval($oPeriodoAula->getPeriodoEscola()->getTurno()->getCodigoTurno()));
+                    $periodo = trim(strval($oPeriodoAula->getPeriodoEscola()->getPeriodoAula()));
+                    $periodosOrdenados[intval("{$turno}{$periodo}")] = $oPeriodoAula;
+                }
+                ksort($periodosOrdenados);
+                foreach ($periodosOrdenados as $oPeriodoAula) {
                     $datas[] = (object)[
                         'data' => $dataLetiva->oData,
                         'periodo' => $oPeriodoAula->getPeriodoEscola()->getCodigo()
                     ];
                 }
             }
-
             $paginas = $this->organizaDatasSubCabecalho($datas);
         }
-
         return $paginas;
     }
 
@@ -1039,6 +1058,29 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         $diaMatricula = null;
         $mesMatricula = null;
         $anoMatricula = null;
+        $situacao = "";
+
+        $inicioDiario = $this->dadosDiarioClasse[0]->getPeriodoDoDiario()['inicio'];
+        $fimDiario = $this->dadosDiarioClasse[0]->getPeriodoDoDiario()['fim'];
+        $matriculaAnterior = $alunoDiarioClasse->getMatriculaAnterior();
+        if (!is_null($matriculaAnterior)) {
+            if ($matriculaAnterior->getSituacao() == 'TROCA DE TURMA') {
+                if ($matriculaAnterior->getDataModificacao()->getTimeStamp()
+                    >
+                    $inicioDiario->getTimeStamp()
+                    &&
+                    $matriculaAnterior->getDataModificacao()->getTimeStamp()
+                    <
+                    $fimDiario->getTimeStamp()
+                ) {
+                    $dataMatricula = new Carbon($matriculaAnterior->getDataModificacao()->getDate());
+                    $mesMatricula = $dataMatricula->month;
+                    $diaMatricula = $dataMatricula->day;
+                    $anoMatricula = $dataMatricula->year;
+                    $situacao = new SituacaoMatriculaEnum($matriculaAnterior->getSituacao());
+                }
+            }
+        }
 
         if ($alunoDiarioClasse->getMatricula()->getDataMatricula()->getMes() >= $aMeses[0]) {
             if (!(  $alunoDiarioClasse->getMatricula()->getDataMatricula()->getMes() == $aMeses[0]
@@ -1119,10 +1161,10 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         if (isset($mesMatricula)) {
             $tamanhoColuna = ($tamanhoColunaDeDiasEmbranco) * $meses->tamanhoColuna;
             if ($tamanhoColuna != 0) {
-                $this->imprimeSituacaoAluno($alunoDiarioClasse, $tamanhoColuna, true);
+                $this->imprimeSituacaoAluno($alunoDiarioClasse, $tamanhoColuna, $situacao);
             }
         }
-        
+
         foreach ($meses->meses as $key => $mes) {
             if (isset($mesMatricula)) {
                 if ($aMeses[count($aMeses)-1] != $mesMatricula) {
@@ -1224,7 +1266,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
      * @param DadosDiarioClasse $dadosDiarioClasse
      * @param $imprimirEtapaAluno
      */
-    private function emitirSegundaPagina(DadosDiarioClasse $dadosDiarioClasse, $imprimirEtapaAluno)
+    private function emitirSegundaPagina(DadosDiarioClasse $dadosDiarioClasse, $imprimirEtapaAluno, $request = null)
     {
         $this->imprimeSubcabecalhoSegundaPagina($dadosDiarioClasse);
         $alunosDiarioClasses = $dadosDiarioClasse->getAlunos();
@@ -1254,7 +1296,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
             if ($alunosImpressos == $this->numeroAlunosPagina) {
                 $alunosImpressos = 1;
                 $this->assinaturaSegundaPagina();
-                $this->cabecalho($dadosDiarioClasse);
+                $this->cabecalho($dadosDiarioClasse, $request);
                 $this->imprimeSubcabecalhoSegundaPagina($dadosDiarioClasse);
             }
             $alunosImpressos++;
@@ -1472,18 +1514,30 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
      * @param int $tamanhoColuna
      * @throws Exception
      */
-    private function imprimeSituacaoAluno(AlunoDiarioClasse $alunoDiarioClasse, $tamanhoColuna, $vazio = false)
+    private function imprimeSituacaoAluno(AlunoDiarioClasse $alunoDiarioClasse, $tamanhoColuna, $situacao = null)
     {
         $this->SetFont('arial', 'B', $this->tamanhoFonteGrade);
-        $situacao = $vazio ? "" : $alunoDiarioClasse->getSituacao()->value();
+        $stringSituacao = "";
+        if (!is_null($situacao)) {
+            if (!($situacao instanceof SituacaoMatriculaEnum)) {
+                $stringSituacao = "";
+            } else {
+                $stringSituacao = $tamanhoColuna < 20 ?
+                    (new SituacaoMatriculaEnum($situacao))->sigla() : (new SituacaoMatriculaEnum($situacao))->value();
+            }
+        }
+        $string = is_null($situacao) ?
+            $alunoDiarioClasse->getSituacao()->value() : $stringSituacao;
+
         if ($tamanhoColuna < 20) {
-            $situacao = $vazio ? "" : $alunoDiarioClasse->getSituacao()->sigla();
+            $string = is_null($situacao) ?
+                $alunoDiarioClasse->getSituacao()->sigla() : $stringSituacao;
         }
         $this->cellAdapt(
             $this->tamanhoFonteGrade,
             $tamanhoColuna,
             4,
-            $situacao,
+            $string,
             1,
             0,
             'C'

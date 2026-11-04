@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -156,7 +156,7 @@ function js_calcula(campo){
           <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
           <td class='bordas02' align='center' ><small><b><?=$RLz01_nome?></b></small></td>
 	</tr>
-        <?
+        <?php
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 
@@ -187,7 +187,7 @@ function js_calcula(campo){
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right' nowrap><small><?=$e83_descr?></small></td>
           <td class='bordas'  <?=($desab1==true?$cor:"")?>align='left' nowrap><small >&nbsp; <?=$z01_nome?></small></td>
 	</tr>
-        <?
+        <?php
 	  }
 	?>
       </table>

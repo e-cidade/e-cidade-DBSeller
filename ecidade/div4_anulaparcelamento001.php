@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -171,12 +171,12 @@ function  js_verificaparcelamento(){
 	    <table width="292" border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="27" height="25" title="<?=$Tv07_parcel?>"> 
-              <?
+              <?php
 				db_ancora(@$Lv07_parcel,'js_mostratermo(true);',4)
 				?>
             </td>
 	    <td title="<?=$Tj14_nome?>" colspan="4">
-	    <?
+	    <?php
 	     db_input('v07_parcel',10,$Iv07_parcel,true,'text',1);
 	    ?>
 	    </td>
@@ -193,7 +193,7 @@ function  js_verificaparcelamento(){
      </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

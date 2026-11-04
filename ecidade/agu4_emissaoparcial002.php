@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -86,7 +86,7 @@ if ($tipo_emissao=="txt") {
 
   <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="document.form1.x01_matric.focus();" >
 
-  <?
+  <?php
 
   $sQuebraLinha = "\r\n";
   $iCadTipoMod = 7;
@@ -1148,11 +1148,11 @@ QUERY;
 
     $pdf->titulo1      = "Matrícula";
     $pdf->titulo8      = "Matrícula";
-    $pdf->descr12_2    = "PAGAMENTOS PODERÃO SER FEITOS SOMENTE NAS AGÊNCIAS DO BANRISUL";
-    $pdf->descr16_1    = "PAGAMENTOS PODERÃO SER FEITOS SOMENTE NAS AGÊNCIAS";
-    $pdf->descr16_2    = "DO BANRISUL";
-    $pdf->premsgunica  = "PAGAMENTOS PODERÃO SER FEITOS SOMENTE NAS AGÊNCIAS DO BANRISUL";
-    $pdf->predescr12_1 = "PAGAMENTOS PODERÃO SER FEITOS SOMENTE NAS AGÊNCIAS DO BANRISUL";
+    $pdf->descr12_2    = "PAGAMENTO SOMENTE VIA BANRISUL PELOS CANAIS CAIXA ELETRÔNICO, APP DO BANRISUL E CONVENIADOS.";
+    $pdf->descr16_1    = "PAGAMENTO SOMENTE VIA BANRISUL PELOS CANAIS CAIXA";
+    $pdf->descr16_2    = "ELETRÔNICO, APP DO BANRISUL E CONVENIADOS.";
+    $pdf->premsgunica  = "PAGAMENTO SOMENTE VIA BANRISUL PELOS CANAIS CAIXA ELETRÔNICO, APP DO BANRISUL E CONVENIADOS.";
+    $pdf->predescr12_1 = "PAGAMENTO SOMENTE VIA BANRISUL PELOS CANAIS CAIXA ELETRÔNICO, APP DO BANRISUL E CONVENIADOS.";
     $pdf->descr1       = $x01_matric;
     $pdf->descr8       = $x01_matric;
     $pdf->descr7       = $nValorTotal;
@@ -1248,7 +1248,7 @@ QUERY;
         $pdfcapa->cepcapa = $oDadosIptuEnder->j43_cep;
       }
 
-      $pdfcapa->dados1 = "PAGAMENTOS PODERÃO SER FEITOS SOMENTE NAS AGÊNCIAS DO BANRISUL";
+      $pdfcapa->dados1 = "PAGAMENTO SOMENTE VIA BANRISUL PELOS CANAIS CAIXA ELETRÔNICO, APP DO BANRISUL E CONVENIADOS.";
 
       if($bImprimeCapa){
         $pdfcapa->imprime();

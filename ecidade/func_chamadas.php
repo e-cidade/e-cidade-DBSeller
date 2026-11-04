@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clchamadas->rotulo->label("ed22_d_data");
               <?=$Led22_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed22_i_codigo",5,$Ied22_i_codigo,true,"text",4,"","chave_ed22_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clchamadas->rotulo->label("ed22_d_data");
               <?=$Led22_d_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed22_d_data",10,$Ied22_d_data,true,"text",4,"","chave_ed22_d_data");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clchamadas->rotulo->label("ed22_d_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_chamadas.php")==true){
@@ -124,12 +124,12 @@ $clchamadas->rotulo->label("ed22_d_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

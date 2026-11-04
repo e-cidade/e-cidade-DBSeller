@@ -112,7 +112,7 @@ function js_emite(anousu){
 			  <table  align="center">
 			    <tr>
 			      <td colspan=2 nowrap><b>Período :</b>
-			        <?
+			        <?php
                 if ($anousu < 2010 ) {
               
                       $aListaPeriodos = array(

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,162 +36,153 @@ $instit = db_getsession("DB_instit");
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-if(isset($codtaxa) && (!empty($codtaxa)) ) {
+if (isset($codtaxa) && (!empty($codtaxa))) {
+    $sql = $cltabrec->sql_query_inst_taxa(0, "*", "k07_valorv desc", " codsubrec = $codtaxa");
+    $result = $cltabrec->sql_record($sql);
 
+    if (gettype($result) != "boolean") {
+        if (pg_num_rows($result) > 0) {
+            db_fieldsmemory($result, 0);
 
+            $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorf, k07_data, '" . date("Y-m-d", db_getsession("DB_datausu")) . "') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
 
+            if (pg_num_rows($result_vlrcor) > 0) {
+                db_fieldsmemory($result_vlrcor, 0);
 
-  $result = $cltabrec->sql_record($cltabrec->sql_query_inst_taxa(0,"*","k07_valorv desc", " codsubrec = $codtaxa"));
-
-  if ( gettype($result) != "boolean" ) {
-
-    if (pg_numrows($result) > 0) {
-      db_fieldsmemory($result,0);
-
-        /**
-         * @var Recurso
-         */
-        $recursoX = RecursoRepository::getRecursoPorCodigo($recurso);
-        $recurso = $recursoX->getRecurso();
-
-      $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorf, k07_data, '" . date("Y-m-d",db_getsession("DB_datausu")) ."') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
-
-      if (pg_numrows($result_vlrcor)>0){
-        db_fieldsmemory($result_vlrcor,0);
-
-        if ($fc_infla!=-1){
-          $k07_valorf=$fc_infla;
+                if ($fc_infla != -1) {
+                    $k07_valorf = $fc_infla;
+                }
+            }
         }
-      }
-    }
 
-    if(empty($k07_valorv)){
-
-      echo "<script>
-        parent.document.form1.k02_codigo.value = '$k02_codigo';
+        if (empty($k07_valorv)) {
+            echo "<script>
+      parent.document.form1.k02_codigo.value = '$k02_codigo';
       parent.document.form1.k02_drecei.value = '$k02_drecei';
       parent.document.form1.valor.value      = '$k07_valorf';
       parent.document.form1.codsubrec.value  = '$codsubrec';
       parent.document.form1.k07_descr.value  = '$k07_descr';
-      parent.document.form1.o15_recurso.value = '$recurso';
       parent.document.form1.arretipo.value = '$arretipo';
       parent.document.form1.descrarretipo.value = '$k00_descr';
-      parent.document.form1.o15_recurso.onchange();
       parent.document.form1.gravar.focus();
+
+      parent.js_buscarRecurso($recurso);
       parent.func_iframe_taxas.hide();
       parent.js_buscaConCarPeculiar();
       parent.js_ajustaBotaoTef('$arretipo');
       </script>
         ";
-      exit;
-    }
+            exit;
+        }
 
-    $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorv, k07_data, '" . date("Y-m-d",db_getsession("DB_datausu")) ."') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
-    if (pg_numrows($result_vlrcor)>0){
-      db_fieldsmemory($result_vlrcor,0);
+        $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorv, k07_data, '" . date("Y-m-d", db_getsession("DB_datausu")) . "') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
+        if (pg_num_rows($result_vlrcor) > 0) {
+            db_fieldsmemory($result_vlrcor, 0);
 
-      if ($fc_infla!=-1){
-        $k07_valorv=$fc_infla;
-      }
+            if ($fc_infla != -1) {
+                $k07_valorv = $fc_infla;
+            }
+        }
+    } else {
+        echo "<script>alert('Receita não configurada corretamente ou sem ligação com o orçamento do ano atual! Contate suporte!');parent.func_iframe_taxas.hide();</script>";
+        exit;
     }
-  }else{
-    echo "<script>alert('Receita não configurada corretamente ou sem ligação com o orçamento do ano atual! Contate suporte!');parent.func_iframe_taxas.hide();</script>";
+} else {
+    echo "<script>parent.func_iframe_taxas.hide();</script>";
     exit;
-  }
-}else{
-  echo "<script>parent.func_iframe_taxas.hide();</script>";
-  exit;
 }
 ?>
 <html>
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-<script>
-function js_calculavalor(){
-  if (Number(document.form1.quant.value) <= Number(document.form1.qminimo.value)) {
-    document.form1.valor.value = (Number(document.form1.vminimo.value));
-    var vlrtotal = Number(document.form1.valor.value);
-  } else {
-    document.form1.valor.value = (Number(document.form1.quant.value)-Number(document.form1.qminimo.value)) * Number(document.form1.vvariavel.value);
-    var vlrtotal = Number(document.form1.valor.value) + Number(document.form1.vminimo.value);
-  }
-  document.form1.valortotal.value = vlrtotal.toFixed(2);
-}
-function js_verificavalor(vvalor){
-  // TESTA SE EXISTE O IFRAME db_recibo (CASO A TELA DE RECIBO SEJA CHAMADA DO PROGRAMA DE EMISSAO DA CGF)
-  if((window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo){
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k02_codigo.value = '<?=$k02_codigo?>';
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k02_drecei.value='<?=$k02_drecei?>';
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.codsubrec.value='<?=$codsubrec?>';
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k07_descr.value='<?=$k07_descr?>';
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.o15_recurso.value='<?=$recurso?>';
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.o15_recurso.onchange();
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.valor.value = vvalor;
-    (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.gravar.focus();
-  }else{
-    parent.document.form1.k02_codigo.value = '<?=$k02_codigo?>';
-    parent.document.form1.k02_drecei.value='<?=$k02_drecei?>';
-    parent.document.form1.codsubrec.value='<?=$codsubrec?>';
-    parent.document.form1.k07_descr.value='<?=$k07_descr?>';
-    parent.document.form1.o15_recurso.value='<?=$recurso?>' ;
-    parent.document.form1.arretipo.value='<?=$arretipo?>'		;
-    parent.document.form1.descrarretipo.value = '<?=$k00_descr?>';
-    parent.document.form1.o15_recurso.onchange();
-    parent.document.form1.valor.value = vvalor;
-    parent.document.form1.gravar.focus();
-      parent.js_ajustaBotaoTef('<?=$arretipo?>');
-  }
-  parent.func_iframe_taxas.hide();
-  parent.js_buscaConCarPeculiar();
-}
-</script>
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+    <script>
+        function js_calculavalor() {
+            if (Number(document.form1.quant.value) <= Number(document.form1.qminimo.value)) {
+                document.form1.valor.value = (Number(document.form1.vminimo.value));
+                var vlrtotal = Number(document.form1.valor.value);
+            } else {
+                document.form1.valor.value = (Number(document.form1.quant.value) - Number(document.form1.qminimo.value)) * Number(document.form1.vvariavel.value);
+                var vlrtotal = Number(document.form1.valor.value) + Number(document.form1.vminimo.value);
+            }
+            document.form1.valortotal.value = vlrtotal.toFixed(2);
+        }
+
+        function js_verificavalor(vvalor) {
+            // TESTA SE EXISTE O IFRAME db_recibo (CASO A TELA DE RECIBO SEJA CHAMADA DO PROGRAMA DE EMISSAO DA CGF)
+            if ((window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo) {
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k02_codigo.value = '<?=$k02_codigo?>';
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k02_drecei.value = '<?=$k02_drecei?>';
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.codsubrec.value = '<?=$codsubrec?>';
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.k07_descr.value = '<?=$k07_descr?>';
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.js_buscarRecurso(<?=$recurso?>);
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.valor.value = vvalor;
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.valor.value = vvalor;
+                (window.CurrentWindow || parent.CurrentWindow).corpo.db_recibo.jan.document.form1.gravar.focus();
+            } else {
+                parent.document.form1.k02_codigo.value = '<?=$k02_codigo?>';
+                parent.document.form1.k02_drecei.value = '<?=$k02_drecei?>';
+                parent.document.form1.codsubrec.value = '<?=$codsubrec?>';
+                parent.document.form1.k07_descr.value = '<?=$k07_descr?>';
+                parent.document.form1.arretipo.value = '<?=$arretipo?>';
+                parent.document.form1.descrarretipo.value = '<?=$k00_descr?>';
+                parent.document.form1.valor.value = vvalor;
+                parent.document.form1.gravar.focus();
+                parent.js_buscarRecurso('<?=$recurso?>');
+                parent.js_ajustaBotaoTef('<?=$arretipo?>');
+            }
+            parent.func_iframe_taxas.hide();
+            parent.js_buscaConCarPeculiar();
+        }
+    </script>
 </head>
-<body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin=" 0" topmargin=" 0" marginwidth=" 0" marginheight=" 0" >
+<body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin=" 0" topmargin=" 0" marginwidth=" 0" marginheight=" 0">
 <form name="form1" action="post">
-<table width="100%">
-<tr>
-<td width="48%" height="26" align="right">C&oacute;digo:</td>
-<td width="52%"><input name="codrec" readonly type="text" id="codrec" value="<?=$k07_codigo?>" size="5"></td>
-</tr>
-<tr>
-<td align="right">Descri&ccedil;&atilde;o:</td>
-<td><input name="descrrec" readonly type="text" id="descrrec" value="<?=$k07_descr?>" size="40"></td>
-</tr>
-<tr>
-<td align="right">Valor Fixo:</td>
-<td><input name="vminimo" readonly type="text" id="vminimo" value="<?=$k07_valorf?>" size="20"></td>
-</tr>
-<tr>
-<td align="right">Valor m2 acima do M&iacute;nimo:</td>
-<td><input name="vvariavel" readonly type="text" id="vvariavel" value="<?=$k07_valorv?>" size="20"></td>
-</tr>
-<tr>
-<td align="right">Quantidade M&iacute;nima:</td>
-<td><input name="qminimo" readonly type="text" id="qminimo" value="<?=$k07_quamin?>" size="20"></td>
-</tr>
-<tr>
-<td height="26" align="right">Quantidade Total:</td>
-<td><input name="quant" type="text" onChange="js_calculavalor()" id="quant" size="20"></td>
-</tr>
-<tr>
-<td align="right">Valor:</td>
-<td><input name="valor" readonly type="text" id="valor" size="20"></td>
-</tr>
-<tr>
-<td align="right">Valor Total a Pagar</td>
-<td><input name="valortotal" readonly type="text" id="valortotal" size="20"></td>
-</tr>
-<tr>
-<td colspan="2" align="center"><input name="confirma" type="button" id="confirma" value="Confirma" onclick="js_verificavalor(document.form1.valortotal.value)"></td>
-</tr>
-</table>
+    <table width="100%">
+        <tr>
+            <td width="48%" height="26" align="right">C&oacute;digo:</td>
+            <td width="52%"><input name="codrec" readonly type="text" id="codrec" value="<?= $k07_codigo ?>" size="5">
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Descri&ccedil;&atilde;o:</td>
+            <td><input name="descrrec" readonly type="text" id="descrrec" value="<?= $k07_descr ?>" size="40"></td>
+        </tr>
+        <tr>
+            <td align="right">Valor Fixo:</td>
+            <td><input name="vminimo" readonly type="text" id="vminimo" value="<?= $k07_valorf ?>" size="20"></td>
+        </tr>
+        <tr>
+            <td align="right">Valor m2 acima do M&iacute;nimo:</td>
+            <td><input name="vvariavel" readonly type="text" id="vvariavel" value="<?= $k07_valorv ?>" size="20"></td>
+        </tr>
+        <tr>
+            <td align="right">Quantidade M&iacute;nima:</td>
+            <td><input name="qminimo" readonly type="text" id="qminimo" value="<?= $k07_quamin ?>" size="20"></td>
+        </tr>
+        <tr>
+            <td height="26" align="right">Quantidade Total:</td>
+            <td><input name="quant" type="text" onChange="js_calculavalor()" id="quant" size="20"></td>
+        </tr>
+        <tr>
+            <td align="right">Valor:</td>
+            <td><input name="valor" readonly type="text" id="valor" size="20"></td>
+        </tr>
+        <tr>
+            <td align="right">Valor Total a Pagar</td>
+            <td><input name="valortotal" readonly type="text" id="valortotal" size="20"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input name="confirma" type="button" id="confirma" value="Confirma"
+                                                  onclick="js_verificavalor(document.form1.valortotal.value)"></td>
+        </tr>
+    </table>
 </form>
 </body>
 </html>
-  <script>
-document.form1.quant.focus()
-  </script>
+<script>
+    document.form1.quant.focus()
+</script>

@@ -55,13 +55,13 @@ class cl_cfpatriinstituicao {
                  t59_dataimplanatacaodepreciacao = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatriinstituicao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatriinstituicao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_cfpatriinstituicao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t59_sequencial = ($this->t59_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["t59_sequencial"]:$this->t59_sequencial);
        $this->t59_instituicao = ($this->t59_instituicao == ""?@$GLOBALS["HTTP_POST_VARS"]["t59_instituicao"]:$this->t59_instituicao);
@@ -87,7 +87,7 @@ class cl_cfpatriinstituicao {
      }
    }
    // funcao para inclusao
-   function incluir ($t59_sequencial){ 
+   public function incluir ($t59_sequencial){ 
       $this->atualizacampos();
      if($this->t59_instituicao == null ){ 
        $this->erro_sql = " Campo Instituição nao Informado.";
@@ -186,7 +186,7 @@ class cl_cfpatriinstituicao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($t59_sequencial=null) { 
+   public function alterar ($t59_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update cfpatriinstituicao set ";
      $virgula = "";
@@ -295,7 +295,7 @@ class cl_cfpatriinstituicao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($t59_sequencial=null,$dbwhere=null) { 
+   public function excluir ($t59_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t59_sequencial));
      }else{ 
@@ -358,7 +358,7 @@ class cl_cfpatriinstituicao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -381,7 +381,7 @@ class cl_cfpatriinstituicao {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $t59_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t59_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -418,7 +418,7 @@ class cl_cfpatriinstituicao {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $t59_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t59_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

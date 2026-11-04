@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -108,10 +108,10 @@ $instit=db_getsession("DB_instit");
 		  	  <table class="form-container">
   			    <tr>   
       	  		<td title="<?=@$Tz01_numcgm?>">
-      				  <? db_ancora($Lz01_numcgm,' js_cgm(true); ',1);?>
+      				  <?php db_ancora($Lz01_numcgm,' js_cgm(true); ',1);?>
        		  	</td>
        		 	  <td> 
-      				  <?
+      				  <?php
       				 	  db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
       					  db_input('z01_nome',48,0,true,'text',3,"","z01_nomecgm");
       				  ?>
@@ -119,12 +119,12 @@ $instit=db_getsession("DB_instit");
       		  </tr>    
 				    <tr>
 				      <td title="<?=@$Tv56_codsit?>">
-      					<?
+      					<?php
       				 	  db_ancora(@ $Lv56_codsit, "js_pesquisav56_codsit(true);", "1");
       					?>
 				      </td>
 				      <td> 
-      					<?
+      					<?php
       					  db_input('v56_codsit', 10, $Iv56_codsit, true, 'text', "1", "onchange='js_pesquisav56_codsit(false);'");
       					  db_input('v52_descr', 48, $Iv52_descr, true, 'text', 3, '');
       					?>
@@ -132,12 +132,12 @@ $instit=db_getsession("DB_instit");
       			</tr>
 				    <tr>
       			  <td title="<?=@$Tv50_advog?>">
-      					<?
+      					<?php
       					  db_ancora(@ $Lv50_advog, "js_pesquisav50_advog(true);", 1);
       					?>
       			  </td>
       			  <td>
-        				<?
+        				<?php
     					    db_input('v50_advog', 10, $Iv50_advog, true, 'text', 1, "onchange='js_pesquisav50_advog(false);'");
     				      db_input('z01_nome', 48, $Iz01_nome, true, 'text', 3, '');
   					    ?>
@@ -145,12 +145,12 @@ $instit=db_getsession("DB_instit");
     				</tr>  
     				<tr>
     		  	  <td title="<?=@$Tv70_vara?>">
-      					<?
+      					<?php
       					  db_ancora(@$Lv70_vara,"js_pesquisav70_vara(true);",1);
       					?>
     			    </td>
     		      <td>
-        				<?
+        				<?php
     			  		  db_input('v70_vara',10,$Iv70_vara,true,'text',1," onchange='js_pesquisav70_vara(false);'");
     				  	  db_input('v53_descr',48,$Iv53_descr,true,'text',3,'');
     					  ?>
@@ -161,7 +161,7 @@ $instit=db_getsession("DB_instit");
 				        Listar:
 				      </td>
 				      <td>
-    					  <?
+    					  <?php
       				  	$tipo_lista = array("t"=>"Todas","p"=>"Somente as que possuem processo no foro","n"=>"Somente as que NÃO possuem processo no foro");
       					  db_select("listar",$tipo_lista,true,1,"");
     				    ?>
@@ -172,11 +172,11 @@ $instit=db_getsession("DB_instit");
 					      <?=@$Lv50_data?>
       			  </td>
       		  	<td> 
-      					<?
+      					<?php
       					  db_inputdata('dataini', "", "", "", true, 'text',1, "")
       					?>
       					  <b style="padding:0px 25px 0px 10px;">até</b>
-      					<?
+      					<?php
       					  db_inputdata('datafim', "", "", "", true, 'text',1, "")
       					?>
       			  </td>
@@ -185,11 +185,11 @@ $instit=db_getsession("DB_instit");
                 Valor da ação:
       			  </td>
       		  	<td> 
-      					<?
+      					<?php
       			  	  db_input('nvalminacao',10,4,true,'text',1,"");
       					?>
       					  <b style="padding:0px 25px 0px 42px;">até</b>
-      					<?
+      					<?php
       			  	  db_input('nvalmaxacao',10,4,true,'text',1,"");
       					?>
       			  </td>
@@ -199,11 +199,11 @@ $instit=db_getsession("DB_instit");
                 Valor atualizado:
       			  </td>
       		  	<td> 
-      					<?
+      					<?php
       			  	  db_input('nvalminatu',10,4,true,'text',1,"");
       					?>
       					  <b style="padding:0px 25px 0px 42px;">até</b>
-      					<?
+      					<?php
       			  	  db_input('nvalmaxatu',10,4,true,'text',1,"");
       					?>
       			  </td>
@@ -250,7 +250,7 @@ $instit=db_getsession("DB_instit");
   					    Ordenar por:
   				    </td>
   				    <td>
-      				  <?
+      				  <?php
       				    $tipo_ordem = array("n"=>"Nome","i"=>"Nº Inicial","p"=>"Nº Processo do Foro","v"=>"Vara");
       				    db_select("ordem",$tipo_ordem,true,1,"");
       				  ?>
@@ -261,7 +261,7 @@ $instit=db_getsession("DB_instit");
     						Tipo:
     				  </td>
     				  <td>
-  						  <?
+  						  <?php
   					  		$aTipo = array("c"=>"Completo","r"=>"Resumido");
   					  		db_select("selTipo",$aTipo,true,1,"");
   				    	?>
@@ -272,7 +272,7 @@ $instit=db_getsession("DB_instit");
   					    Status:
   				    </td>
   			  	  <td>
-  				    	<?
+  				    	<?php
   		 			  		$aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
   					  		db_select("selSituacao",$aSituacao,true,1,"");
   				    	?>
@@ -282,7 +282,7 @@ $instit=db_getsession("DB_instit");
 			</fieldset>	
       <input name="processar" type="button" id="processar" value="Processar" onclick='js_emite();' >
 		  </form>
-	<?
+	<?php
  	db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 	?>
   	</body>

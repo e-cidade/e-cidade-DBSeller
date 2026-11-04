@@ -32,209 +32,196 @@ require_once modification("libs/db_utils.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("model/empenho/AutorizacaoEmpenho.model.php");
 
-$oParametros       = JSON::create()->parse( str_replace("\\","",$_POST["json"]) );
-$oRetorno          = new stdClass;
+$oParametros = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
+$oRetorno = new stdClass;
 $oRetorno->message = '';
-$oRetorno->erro    = false;
+$oRetorno->erro = false;
 
 try {
+    db_inicio_transacao();
 
-  db_inicio_transacao();
+    $anousu = db_getsession('DB_anousu');
+    switch ($oParametros->exec) {
+        case 'getDados':
+            $iCodigo = (int)$oParametros->iCodigo;
+            if (empty($iCodigo)) {
+                throw new ParameterException('Código inválido ou não informado.');
+            }
 
-  switch ($oParametros->exec) {
+            $oListaClassificacaoCredor = ListaClassificacaoCredorRepository::getPorCodigo($iCodigo);
+            $oRetorno->iCodigo = $iCodigo;
+            $oRetorno->sDescricao = $oListaClassificacaoCredor->getDescricao();
+            $oRetorno->iDiasVencimento = (int)$oListaClassificacaoCredor->getDiasVencimento();
+            $oRetorno->iContagemDias = (int)$oListaClassificacaoCredor->getContagemDias();
+            $oRetorno->iOrdem = (int)$oListaClassificacaoCredor->getOrdem();
+            $oRetorno->nValorInicial = (float)$oListaClassificacaoCredor->getValorInicial();
+            $oRetorno->nValorFinal = (float)$oListaClassificacaoCredor->getValorFinal();
+            $oRetorno->lDispensa = (boolean)$oListaClassificacaoCredor->dispensa();
+            $oRetorno->aContas = array();
+            $oRetorno->aTiposCompra = array();
+            $oRetorno->aRecursos = array();
+            $oRetorno->aEventos = array();
 
-    case 'getDados':
+            if (empty($oRetorno->nValorInicial)) {
+                $oRetorno->nValorInicial = '';
+            }
 
-      $iCodigo = (int) $oParametros->iCodigo;
-      if (empty($iCodigo)) {
-        throw new ParameterException('Código inválido ou não informado.');
-      }
+            if (empty($oRetorno->nValorFinal)) {
+                $oRetorno->nValorFinal = '';
+            }
 
-      $oListaClassificacaoCredor  = ListaClassificacaoCredorRepository::getPorCodigo($iCodigo);
-      $oRetorno->iCodigo          = $iCodigo;
-      $oRetorno->sDescricao       = $oListaClassificacaoCredor->getDescricao();
-      $oRetorno->iDiasVencimento  = (int) $oListaClassificacaoCredor->getDiasVencimento();
-      $oRetorno->iContagemDias    = (int) $oListaClassificacaoCredor->getContagemDias();
-      $oRetorno->iOrdem           = (int) $oListaClassificacaoCredor->getOrdem();
-      $oRetorno->nValorInicial    = (float) $oListaClassificacaoCredor->getValorInicial();
-      $oRetorno->nValorFinal      = (float) $oListaClassificacaoCredor->getValorFinal();
-      $oRetorno->lDispensa        = (boolean) $oListaClassificacaoCredor->dispensa();
-      $oRetorno->aContas          = array();
-      $oRetorno->aTiposCompra     = array();
-      $oRetorno->aRecursos        = array();
-      $oRetorno->aEventos         = array();
+            foreach ($oListaClassificacaoCredor->getContas() as $oConta) {
+                $contaOrcamento = $oConta->getContaOrcamento();
+                $oRetorno->aContas[] = (object)array(
+                    'iCodigo' => (int)$contaOrcamento->getCodigo(),
+                    'sDescricao' => $contaOrcamento->getEstrutural() . ' - ' . $contaOrcamento->getDescricao(),
+                    'lExclusao' => $oConta->contaExclusao(),
+                );
+            }
 
-      if (empty($oRetorno->nValorInicial)) {
-        $oRetorno->nValorInicial = '';
-      }
+            /**
+             * para não gerar impacto, resolvi não mexer no getRecursos, visto que esse RPC é chamado em outros arquivos
+             */
+            $oRetorno->fontesRecursos = $oListaClassificacaoCredor->getFontesRecursos($anousu)->toArray();
 
-      if (empty($oRetorno->nValorFinal)) {
-        $oRetorno->nValorFinal = '';
-      }
+            foreach ($oListaClassificacaoCredor->getRecurso() as $oRecurso) {
+                $oRetorno->aRecursos[] = (object)[
+                    'iCodigo' => (int)$oRecurso->getCodigo(),
+                    'sDescricao' => $oRecurso->getDescricao(),
+                    'fonteRecurso' => $oRecurso->getFonteDeRecurso(),
+                    'complemento' => $oRecurso->getComplementoRecursoVinculado()->getDescricao(),
+                ];
+            }
 
-      foreach ($oListaClassificacaoCredor->getContas() as $oConta) {
+            foreach ($oListaClassificacaoCredor->getTipoCompra() as $oTipoCompra) {
+                $oRetorno->aTiposCompra[] = (object)array(
+                    'iCodigo' => (int)$oTipoCompra->getCodigo(),
+                    'sDescricao' => $oTipoCompra->getDescricao(),
+                );
+            }
 
-        $oRetorno->aContas[] = (object) array(
-          'iCodigo'    => (int) $oConta->getContaOrcamento()->getCodigo(),
-          'sDescricao' => $oConta->getContaOrcamento()->getEstrutural() . ' - ' . $oConta->getContaOrcamento()->getDescricao(),
-          'lExclusao'  => $oConta->contaExclusao(),
-        );
-      }
+            foreach ($oListaClassificacaoCredor->getEvento() as $oEvento) {
+                $oRetorno->aEventos[] = (object)array(
+                    'iCodigo' => (int)$oEvento->getCodigo(),
+                    'sDescricao' => $oEvento->getDescricao(),
+                );
+            }
 
-      foreach ($oListaClassificacaoCredor->getRecurso() as $oRecurso) {
-        $oRetorno->aRecursos[] = (object) [
-          'iCodigo' => (int) $oRecurso->getCodigo(),
-          'sDescricao' => $oRecurso->getDescricao(),
-          'fonteRecurso' => $oRecurso->getFonteDeRecurso(),
-          'complemento' => $oRecurso->getComplementoRecursoVinculado()->getDescricao(),
-        ];
-      }
+            break;
 
-      foreach ($oListaClassificacaoCredor->getTipoCompra() as $oTipoCompra) {
+        case "salvar":
+            $oRetorno->iCodigo = '';
 
-        $oRetorno->aTiposCompra[] = (object) array(
-          'iCodigo'    => (int) $oTipoCompra->getCodigo(),
-          'sDescricao' => $oTipoCompra->getDescricao(),
-        );
-      }
+            $oListaClassificacao = new ListaClassificacaoCredor;
+            if (!empty($oParametros->iCodigo)) {
+                $oListaClassificacao->setCodigo((int)$oParametros->iCodigo);
+                $oRetorno->iCodigo = $oListaClassificacao->getCodigo();
+            }
+            $oListaClassificacao->setDescricao($oParametros->sDescricao);
+            if (isset($oParametros->iDiasVencimento)) {
+                $oListaClassificacao->setDiasVencimento((int)$oParametros->iDiasVencimento);
+            }
+            if (isset($oParametros->iContagemDias)) {
+                $oListaClassificacao->setContagemDias((int)$oParametros->iContagemDias);
+            }
+            if (!empty($oParametros->nValorInicial)) {
+                $oListaClassificacao->setValorInicial((float)$oParametros->nValorInicial);
+            }
+            if (!empty($oParametros->nValorFinal)) {
+                $oListaClassificacao->setValorFinal((float)$oParametros->nValorFinal);
+            }
+            if (!empty($oParametros->lDispensa)) {
+                $oListaClassificacao->setDispensa($oParametros->lDispensa == "1");
+            }
 
-      foreach ($oListaClassificacaoCredor->getEvento() as $oEvento) {
+            if (!empty($oParametros->aElementosInclusao) || !empty($oParametros->aElementosExclusao)) {
+                $oListaClassificacao->limparElemento();
+                foreach ($oParametros->aElementosInclusao as $oStdElemento) {
+                    $oConta = new ClassificacaoCredorConta;
+                    $oConta->setContaOrcamento(new ContaOrcamento($oStdElemento->sCodigo, $anousu));
+                    $oConta->setContaExclusao(false);
 
-        $oRetorno->aEventos[] = (object) array(
-          'iCodigo'    => (int) $oEvento->getCodigo(),
-          'sDescricao' => $oEvento->getDescricao(),
-        );
-      }
+                    $oListaClassificacao->adicionarConta($oConta);
+                }
 
-      break;
+                foreach ($oParametros->aElementosExclusao as $oStdElemento) {
+                    $oConta = new ClassificacaoCredorConta;
+                    $oConta->setContaOrcamento(new ContaOrcamento($oStdElemento->sCodigo, $anousu));
+                    $oConta->setContaExclusao(true);
 
-    case "salvar":
+                    $oListaClassificacao->adicionarConta($oConta);
+                }
+            }
 
-      $oRetorno->iCodigo = '';
+            if (!empty($oParametros->aRecursos)) {
+                $oListaClassificacao->limparRecurso();
+                foreach ($oParametros->aRecursos as $oStdRecurso) {
+                    $oListaClassificacao->adicionarRecurso(new Recurso($oStdRecurso->sCodigo));
+                }
+            }
 
-      $oListaClassificacao = new ListaClassificacaoCredor;
-      if (!empty($oParametros->iCodigo)) {
+            if (!empty($oParametros->aTiposCompra)) {
+                $oListaClassificacao->limparTipoCompra();
+                foreach ($oParametros->aTiposCompra as $oStdTipoCompra) {
+                    $oListaClassificacao->adicionarTipoCompra(new TipoCompra($oStdTipoCompra->sCodigo));
+                }
+            }
 
-        $oListaClassificacao->setCodigo((int) $oParametros->iCodigo);
-        $oRetorno->iCodigo  = $oListaClassificacao->getCodigo();
-      }
-      $oListaClassificacao->setDescricao($oParametros->sDescricao);
-      if (isset($oParametros->iDiasVencimento)) {
-        $oListaClassificacao->setDiasVencimento((int) $oParametros->iDiasVencimento);
-      }
-      if (isset($oParametros->iContagemDias)) {
-        $oListaClassificacao->setContagemDias((int) $oParametros->iContagemDias);
-      }
-      if (!empty($oParametros->nValorInicial)) {
-        $oListaClassificacao->setValorInicial((float) $oParametros->nValorInicial);
-      }
-      if (!empty($oParametros->nValorFinal)) {
-        $oListaClassificacao->setValorFinal((float) $oParametros->nValorFinal);
-      }
-      if (!empty($oParametros->lDispensa)) {
-        $oListaClassificacao->setDispensa($oParametros->lDispensa == "1");
-      }
+            if (!empty($oParametros->aEvento)) {
+                $oListaClassificacao->limparEvento();
+                foreach ($oParametros->aEvento as $oStdEvento) {
+                    $oListaClassificacao->adicionarEvento(new TipoPrestacaoConta($oStdEvento->sCodigo));
+                }
+            }
 
-      if (!empty($oParametros->aElementosInclusao) || !empty($oParametros->aElementosExclusao)) {
-
-        $oListaClassificacao->limparElemento();
-        foreach ($oParametros->aElementosInclusao as $oStdElemento) {
-
-          $oConta = new ClassificacaoCredorConta;
-          $oConta->setContaOrcamento(new ContaOrcamento($oStdElemento->sCodigo, db_getsession('DB_anousu')));
-          $oConta->setContaExclusao(false);
-
-          $oListaClassificacao->adicionarConta($oConta);
-        }
-
-        foreach ($oParametros->aElementosExclusao as $oStdElemento) {
-
-          $oConta = new ClassificacaoCredorConta;
-          $oConta->setContaOrcamento(new ContaOrcamento($oStdElemento->sCodigo, db_getsession('DB_anousu')));
-          $oConta->setContaExclusao(true);
-
-          $oListaClassificacao->adicionarConta($oConta);
-        }
-      }
-
-      if (!empty($oParametros->aRecursos)) {
-
-        $oListaClassificacao->limparRecurso();
-        foreach ($oParametros->aRecursos as $oStdRecurso) {
-          $oListaClassificacao->adicionarRecurso(new Recurso($oStdRecurso->sCodigo));
-        }
-      }
-
-      if (!empty($oParametros->aTiposCompra)) {
-
-        $oListaClassificacao->limparTipoCompra();
-        foreach ($oParametros->aTiposCompra as $oStdTipoCompra) {
-          $oListaClassificacao->adicionarTipoCompra(new TipoCompra($oStdTipoCompra->sCodigo));
-        }
-      }
-
-      if (!empty($oParametros->aEvento)) {
-
-        $oListaClassificacao->limparEvento();
-        foreach ($oParametros->aEvento as $oStdEvento) {
-          $oListaClassificacao->adicionarEvento(new TipoPrestacaoConta($oStdEvento->sCodigo));
-        }
-      }
-
-      $oListaClassificacao->salvar();
-      $oRetorno->message = urlencode('Lista de Classificação de Credores salva com sucesso.');
-      $oRetorno->iCodigo  = $oListaClassificacao->getCodigo();
+            $oListaClassificacao->salvar();
+            $oRetorno->message = urlencode('Lista de Classificação de Credores salva com sucesso.');
+            $oRetorno->iCodigo = $oListaClassificacao->getCodigo();
 
 
-      break;
+            break;
 
-    case 'excluir':
+        case 'excluir':
+            $iCodigo = (int)$oParametros->iCodigo;
+            if (empty($iCodigo)) {
+                throw new ParameterException('Código inválido ou não informado.');
+            }
 
-      $iCodigo = (int) $oParametros->iCodigo;
-      if (empty($iCodigo)) {
-        throw new ParameterException('Código inválido ou não informado.');
-      }
+            $oListaClassificacaoCredor = ListaClassificacaoCredorRepository::getPorCodigo($iCodigo);
+            $oListaClassificacaoCredor->setCodigo($iCodigo);
+            $oListaClassificacaoCredor->excluir();
+            $oRetorno->message = urlencode("Lista de Classificação de Credores excluída com sucesso.");
 
-      $oListaClassificacaoCredor  = ListaClassificacaoCredorRepository::getPorCodigo($iCodigo);
-      $oListaClassificacaoCredor->setCodigo($iCodigo);
-      $oListaClassificacaoCredor->excluir();
-      $oRetorno->message = urlencode("Lista de Classificação de Credores excluída com sucesso.");
+            break;
 
-      break;
+        case 'getListaPorAutorizacao':
+            $oRetorno->iCodigoLista = '';
+            $oRetorno->sDescricaoLista = '';
+            $oRetorno->lDispensa = false;
 
-    case 'getListaPorAutorizacao':
+            $oAutorizacaoEmpenho = new AutorizacaoEmpenho((int)$oParametros->iCodigo);
+            $oAutorizacaoEmpenho->setTipoCompra((int)$oParametros->iTipoCompra);
+            $oAutorizacaoEmpenho->setTipoPrestacaoConta(new TipoPrestacaoConta((int)$oParametros->iEvento));
+            $oAtributosEmpenho = ListaClassificacaoCredorRepository::getAtributosAutorizacao($oAutorizacaoEmpenho);
+            $oAtributosEmpenho->setElemento((int)$oParametros->iElemento);
+            $oListaClassificacaoCredor = ListaClassificacaoCredorRepository::getPorAtributos($oAtributosEmpenho);
 
-      $oRetorno->iCodigoLista    = '';
-      $oRetorno->sDescricaoLista = '';
-      $oRetorno->lDispensa       = false;
+            if (!empty($oListaClassificacaoCredor)) {
+                $oRetorno->iCodigoLista = $oListaClassificacaoCredor->getCodigo();
+                $oRetorno->sDescricaoLista = $oListaClassificacaoCredor->getDescricao();
+                $oRetorno->lDispensa = ListaClassificacaoCredorRepository::getPorCodigo($oRetorno->iCodigoLista)->dispensa();
+            }
 
-      $oAutorizacaoEmpenho = new AutorizacaoEmpenho((int) $oParametros->iCodigo);
-      $oAutorizacaoEmpenho->setTipoCompra((int) $oParametros->iTipoCompra);
-      $oAutorizacaoEmpenho->setTipoPrestacaoConta(new TipoPrestacaoConta((int) $oParametros->iEvento));
-      $oAtributosEmpenho = ListaClassificacaoCredorRepository::getAtributosAutorizacao($oAutorizacaoEmpenho);
-      $oAtributosEmpenho->setElemento((int) $oParametros->iElemento);
-      $oListaClassificacaoCredor = ListaClassificacaoCredorRepository::getPorAtributos($oAtributosEmpenho);
-
-      if (!empty($oListaClassificacaoCredor)) {
-
-        $oRetorno->iCodigoLista    = $oListaClassificacaoCredor->getCodigo();
-        $oRetorno->sDescricaoLista = $oListaClassificacaoCredor->getDescricao();
-        $oRetorno->lDispensa       = ListaClassificacaoCredorRepository::getPorCodigo($oRetorno->iCodigoLista)->dispensa();
-      }
-
-      break;
-    default:
-      throw new ParameterException('Método inválido.');
-
-  }
-  db_fim_transacao(false);
-
+            break;
+        default:
+            throw new ParameterException('Método inválido.');
+    }
+    db_fim_transacao(false);
 } catch (Exception $oException) {
+    db_fim_transacao(true);
 
-  db_fim_transacao(true);
-
-  $oRetorno->message = urlencode($oException->getMessage());
-  $oRetorno->erro = true;
+    $oRetorno->message = urlencode($oException->getMessage());
+    $oRetorno->erro = true;
 }
 
 echo JSON::create()->stringify($oRetorno);

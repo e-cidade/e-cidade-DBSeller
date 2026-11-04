@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,14 +54,14 @@ if(isset($incluir)){
   <tr> 
     <td> 
 	    <center>
-				<?
+				<?php
 				  include(modification("forms/db_frmcemiterioisencao.php"));
 				?>
 	    </center>
 	  </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -69,7 +69,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","cm34_descricao",true,1,"cm34_descricao",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clcemiterioisencao->erro_status=="0"){
     $clcemiterioisencao->erro(true,false);

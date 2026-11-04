@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <table border="0" align='center'>
       <tr nowrap >
         <td nowrap  align="top" align='center' colspan="2">
-				<?
+				<?php
 				  $cliframe_seleciona->campos        = "j30_codi,j30_descr";
 				  $cliframe_seleciona->legenda       = "SETOR";
 				  $cliframe_seleciona->sql=$clsetor->sql_query(""," * ","");      
@@ -90,7 +90,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 				  $cliframe_seleciona->iframe_seleciona($db_opcao);    
 				?>
         </td>
-      <?
+      <?php
         db_input('idbql',"",0,true,'hidden',3,"");
       ?>   
         <td nowrap  align='center' colspan="2">
@@ -98,14 +98,14 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 	       <tr> 
 	           <td colspan=2  align="left">
 	            <strong>Opções:</strong>  
-			        <?
+			        <?php
 			          $aVer = array("com" => "Com os Cgm's selecionadas",
 			                        "sem" => "Sem os Cgm's selecionadas");
 			          db_select("ver",$aVer,true,$db_opcao);        
 			        ?>                
 	          </td>
 	       </tr>
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho      = "<strong>CGM'S</strong>";
                  $aux->codigo         = "z01_numcgm"; //chave de retorno da func
@@ -141,7 +141,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
       <tr>
 	      <td colspan=2 align='right' >
      	    <b>Ordenar:</b>
-		      <?
+		      <?php
 		        $tipo_t = array("s"=>"Setor/Quadra/Lote","m"=>"Matrícula","r"=>"Rua");
 		        db_select("ordem",$tipo_t,true,$db_opcao); 	      
 		      ?>

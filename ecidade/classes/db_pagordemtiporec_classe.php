@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemtiporec
-class cl_pagordemtiporec { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e59_sequen = 0; 
-   var $e59_codrec = 0; 
-   var $e59_aliquota = 0; 
-   var $e59_ipes = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pagordemtiporec {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e59_sequen = 0;
+   var $e59_codrec = 0;
+   var $e59_aliquota = 0;
+   var $e59_ipes = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e59_sequen = int8 = Sequencial 
-                 e59_codrec = int8 = Receita 
-                 e59_aliquota = float8 = Aliquota 
-                 e59_ipes = char(1) = Incidência Tipo Pessoal 
+                 e59_sequen = int8 = Sequencial
+                 e59_codrec = int8 = Receita
+                 e59_aliquota = float8 = Aliquota
+                 e59_ipes = char(1) = Incidência Tipo Pessoal
                  ";
-   //funcao construtor da classe 
-   function cl_pagordemtiporec() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pagordemtiporec"); 
+     $this->rotulo = new rotulo("pagordemtiporec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_pagordemtiporec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e59_sequen = ($this->e59_sequen == ""?@$GLOBALS["HTTP_POST_VARS"]["e59_sequen"]:$this->e59_sequen);
        $this->e59_codrec = ($this->e59_codrec == ""?@$GLOBALS["HTTP_POST_VARS"]["e59_codrec"]:$this->e59_codrec);
@@ -80,9 +80,9 @@ class cl_pagordemtiporec {
      }
    }
    // funcao para inclusao
-   function incluir ($e59_sequen){ 
+   public function incluir ($e59_sequen){
       $this->atualizacampos();
-     if($this->e59_codrec == null ){ 
+     if($this->e59_codrec == null ){
        $this->erro_sql = " Campo Receita nao Informado.";
        $this->erro_campo = "e59_codrec";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_pagordemtiporec {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e59_aliquota == null ){ 
+     if($this->e59_aliquota == null ){
        $this->erro_sql = " Campo Aliquota nao Informado.";
        $this->erro_campo = "e59_aliquota";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_pagordemtiporec {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e59_ipes == null ){ 
+     if($this->e59_ipes == null ){
        $this->erro_sql = " Campo Incidência Tipo Pessoal nao Informado.";
        $this->erro_campo = "e59_ipes";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_pagordemtiporec {
        return false;
      }
      if($e59_sequen == "" || $e59_sequen == null ){
-       $result = db_query("select nextval('pagordemtiporec_e59_sequen_seq')"); 
+       $result = db_query("select nextval('pagordemtiporec_e59_sequen_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pagordemtiporec_e59_sequen_seq do campo: e59_sequen"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pagordemtiporec_e59_sequen_seq do campo: e59_sequen";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->e59_sequen = pg_result($result,0,0); 
+       $this->e59_sequen = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pagordemtiporec_e59_sequen_seq");
        if(($result != false) && (pg_result($result,0,0) < $e59_sequen)){
@@ -130,10 +130,10 @@ class cl_pagordemtiporec {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->e59_sequen = $e59_sequen; 
+         $this->e59_sequen = $e59_sequen;
        }
      }
-     if(($this->e59_sequen == null) || ($this->e59_sequen == "") ){ 
+     if(($this->e59_sequen == null) || ($this->e59_sequen == "") ){
        $this->erro_sql = " Campo e59_sequen nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_pagordemtiporec {
        return false;
      }
      $sql = "insert into pagordemtiporec(
-                                       e59_sequen 
-                                      ,e59_codrec 
-                                      ,e59_aliquota 
-                                      ,e59_ipes 
+                                       e59_sequen
+                                      ,e59_codrec
+                                      ,e59_aliquota
+                                      ,e59_ipes
                        )
                 values (
-                                $this->e59_sequen 
-                               ,$this->e59_codrec 
-                               ,$this->e59_aliquota 
-                               ,'$this->e59_ipes' 
+                                $this->e59_sequen
+                               ,$this->e59_codrec
+                               ,$this->e59_aliquota
+                               ,'$this->e59_ipes'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "e59 ($this->e59_sequen) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_pagordemtiporec {
        $resac = db_query("insert into db_acount values($acount,1620,9444,'','".AddSlashes(pg_result($resaco,0,'e59_ipes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e59_sequen=null) { 
+   public function alterar ($e59_sequen=null) {
       $this->atualizacampos();
      $sql = " update pagordemtiporec set ";
      $virgula = "";
-     if(trim($this->e59_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_sequen"])){ 
+     if(trim($this->e59_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_sequen"])){
        $sql  .= $virgula." e59_sequen = $this->e59_sequen ";
        $virgula = ",";
-       if(trim($this->e59_sequen) == null ){ 
+       if(trim($this->e59_sequen) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "e59_sequen";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_pagordemtiporec {
          return false;
        }
      }
-     if(trim($this->e59_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_codrec"])){ 
+     if(trim($this->e59_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_codrec"])){
        $sql  .= $virgula." e59_codrec = $this->e59_codrec ";
        $virgula = ",";
-       if(trim($this->e59_codrec) == null ){ 
+       if(trim($this->e59_codrec) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "e59_codrec";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_pagordemtiporec {
          return false;
        }
      }
-     if(trim($this->e59_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_aliquota"])){ 
+     if(trim($this->e59_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_aliquota"])){
        $sql  .= $virgula." e59_aliquota = $this->e59_aliquota ";
        $virgula = ",";
-       if(trim($this->e59_aliquota) == null ){ 
+       if(trim($this->e59_aliquota) == null ){
          $this->erro_sql = " Campo Aliquota nao Informado.";
          $this->erro_campo = "e59_aliquota";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_pagordemtiporec {
          return false;
        }
      }
-     if(trim($this->e59_ipes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_ipes"])){ 
+     if(trim($this->e59_ipes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e59_ipes"])){
        $sql  .= $virgula." e59_ipes = '$this->e59_ipes' ";
        $virgula = ",";
-       if(trim($this->e59_ipes) == null ){ 
+       if(trim($this->e59_ipes) == null ){
          $this->erro_sql = " Campo Incidência Tipo Pessoal nao Informado.";
          $this->erro_campo = "e59_ipes";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_pagordemtiporec {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "e59 nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e59_sequen;
@@ -297,14 +297,14 @@ class cl_pagordemtiporec {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e59_sequen=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e59_sequen=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e59_sequen));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_pagordemtiporec {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "e59 nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e59_sequen;
@@ -361,11 +361,11 @@ class cl_pagordemtiporec {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,10 +387,10 @@ class cl_pagordemtiporec {
       }
      return $result;
    }
-   function sql_query ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_pagordemtiporec {
      $sql2 = "";
      if($dbwhere==""){
        if($e59_sequen!=null ){
-         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen "; 
-       } 
+         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,10 +422,10 @@ class cl_pagordemtiporec {
      }
      return $sql;
   }
-   function sql_query_file ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_pagordemtiporec {
      $sql2 = "";
      if($dbwhere==""){
        if($e59_sequen!=null ){
-         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen "; 
-       } 
+         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,10 +455,10 @@ class cl_pagordemtiporec {
      }
      return $sql;
   }
-   function sql_query_retencao ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere="", $autori){ 
+   public function sql_query_retencao ( $e59_sequen=null,$campos="*",$ordem=null,$dbwhere="", $autori){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,15 +479,15 @@ class cl_pagordemtiporec {
      $sql2 = "";
      if($dbwhere==""){
        if($e59_sequen!=null ){
-         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen "; 
-       } 
+         $sql2 .= " where pagordemtiporec.e59_sequen = $e59_sequen ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

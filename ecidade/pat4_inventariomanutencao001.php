@@ -110,12 +110,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!-- Inventário / inventario / t75-->
           <tr>
             <td width="30%">
-              <?
+              <?php
                 db_ancora("<b>Inventário:</b>", "js_pesquisaInventario(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 //$funcaoJsIventario = "onchange = 'js_pesquisaInventario(false)'";
                 db_input('iInventario', 10, $It75_sequencial, true, 'text',3);
               ?>
@@ -143,12 +143,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!-- Orgão -->
           <tr id='filtroParametroAtivoOrgao'>
             <td width="30%">
-              <?
+              <?php
                 db_ancora("<b>Orgão:</b>", "js_pesquisaOrgao(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 $funcaoJsOrgao = "onchange = 'js_pesquisaOrgao(false)'";
                 db_input('iOrgao', 10, $Icoddepto, true, 'text', $oGet->db_opcao, $funcaoJsOrgao);
                 db_input('sOrgao', 35, $Idescrdepto, true, 'text',3);
@@ -158,12 +158,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!-- Unidade -->
           <tr id='filtroParametroAtivoUnidade'>
             <td>
-              <?
+              <?php
                 db_ancora("<b>Unidade:</b>", "js_pesquisaUnidade(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 $funcaoJsUnidade = "onchange = 'js_pesquisaUnidade(false)'";
                 db_input('iUnidade', 10, $Icodigo, true, 'text', $oGet->db_opcao, $funcaoJsUnidade);
                 db_input('sUnidade', 35, $Inomeinst, true, 'text',3);
@@ -173,12 +173,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!-- Departamento -->
           <tr  id='filtroDepartamento'>
             <td>
-              <?
+              <?php
                 db_ancora("<b>Departamento:</b>", "js_pesquisaDepartamento(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 $funcaoJsDepartamento = "onchange = 'js_pesquisaDepartamento(false)'";
                 db_input('iDepartamento', 10, $Icodigo, true, 'text', $oGet->db_opcao, $funcaoJsDepartamento);
                 db_input('sDepartamento', 35, $Inomeinst, true, 'text',3);
@@ -188,12 +188,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!-- Divisão -->
           <tr id='filtroDivisao'>
             <td>
-              <?
+              <?php
                 db_ancora("<b>Divisão:</b>", "js_pesquisaDivisao(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 $funcaoJsDivisao = "onchange = 'js_pesquisaDivisao(false)'";
                 db_input('iDivisao', 10, $Icodigo, true, 'text', $oGet->db_opcao, $funcaoJsDivisao);
                 db_input('sDivisao', 35, $Inomeinst, true, 'text',3);
@@ -204,12 +204,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!--  Convênio / benscadcedente / t04 -->
           <tr id='filtroConvenio'>
             <td>
-              <?
+              <?php
                 db_ancora("<b>Convênio:</b>", "js_pesquisaConvenio(true)", $oGet->db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 $funcaoJsConvenio = "onchange = 'js_pesquisaConvenio(false)'";
                 db_input('iConvenio', 10, $It04_sequencial, true, 'text', $oGet->db_opcao, $funcaoJsConvenio);
                 db_input('sConvenio', 35, $It04_numcgm, true, 'text',3);
@@ -220,12 +220,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!--  Classificação/ clabens / t64 -->
           <tr id='filtroClassificacao'>
             <td nowrap="nowrap" title="<?=@$Tt64_class?>">
-            	<?
+            	<?php
 	              db_ancora("<b>Classificação</b>","js_pesquisaClassificacaoInicial(true);",1);
 	            ?>
             </td>
             <td>
-              <?
+              <?php
   		          db_input('sClassificacaoInicial',10,$It64_codcla,true,'',1);
   		          db_ancora("<b>até</b>","js_pesquisaClassificacaoFinal(true);",1);
                 db_input('sClassificacaoFinal', 10, $It64_codcla, true, 'text', $oGet->db_opcao, "");
@@ -235,12 +235,12 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
           <!--  Código Bem / bens / t52-->
           <tr id='filtroCodigo'>
             <td>
-              <?
+              <?php
 	              db_ancora("<b>Código do Bem</b>","js_pesquisaBemInicial(true);",1);
 	            ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('iBemInicial', 10, $It52_bem, true, 'text', $oGet->db_opcao, "");
                 db_ancora("<b>até</b>","js_pesquisaBemFinal(true);",1);
                 db_input('iBemFinal', 10, $It52_bem, true, 'text', $oGet->db_opcao, "");
@@ -255,7 +255,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input('iPlacaInicial', 10, $It41_placa, true, 'text', $oGet->db_opcao, "");
                 db_ancora("<b>até</b>","js_pesquisaPlacaFinal(true);",1);
                 db_input('iPlacaFinal', 10, $It41_placa, true, 'text', $oGet->db_opcao, "");
@@ -268,11 +268,11 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
               Intervalo de Valor:
             </td>
             <td>
-              <?
+              <?php
                 db_input('nValorAquisicaoInicial', 10, $It52_valaqu, true, 'text', $oGet->db_opcao, "");
               ?>
               <b>até</b>
-              <?
+              <?php
                 db_input('nValorAquisicaoFinal', 10, $It52_valaqu, true, 'text', $oGet->db_opcao, "");
               ?>
             </td>
@@ -283,7 +283,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
               Periodo de Aquisição Inicial:
             </td>
             <td>
-              <?
+              <?php
                 db_inputdata('dtAquisicaoInicial', "", "", "", true, 'text', 1);
               ?>
             </td>
@@ -293,7 +293,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
               Periodo de Aquisição Final:
             </td>
             <td>
-              <?
+              <?php
                 db_inputdata('dtAquisicaoFinal', "", "", "", true, 'text', 1);
               ?>
             </td>
@@ -303,7 +303,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
               Tipo:
             </td>
             <td>
-              <?
+              <?php
                 $aTipo = array("1"=>"Todos","2"=>"Imoveis","3"=>"Materiais","4"=>"Semoventes");
                 db_select("iTipoBem", $aTipo, true, 2);
               ?>
@@ -314,7 +314,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
       </fieldset>
 	    <input type='button' name="btnExibirBens" value='Exibir' onclick = "js_exibirBens();">
     </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

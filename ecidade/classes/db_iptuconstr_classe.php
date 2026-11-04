@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,30 +63,56 @@ class cl_iptuconstr {
    public $j39_idprinc = 'f';
    public $j39_pavim = 0;
    public $j39_obs = null;
+
+  public $validar_j39_ano = false;
+
+  /**
+   * Retorna os parametro para cadastro ou alteraï¿½ï¿½o
+   *
+   * @return void
+   */
+  private function getParametros()
+  {
+    $query = db_query(
+      'select * from cadastro.cfiptu where j18_anousu = ' .
+      db_getsession('DB_anousu') . ';'
+    );
+
+    $result = pg_fetch_object($query);
+
+    if ($result) {
+      $this->validar_j39_ano = ($result->j18_validarano == 'f') ? true : false;
+    }
+  }
+
    // cria propriedade com as variaveis do arquivo
    public $campos = "
-                 j39_matric = int4 = Matrícula
-                 j39_idcons = int4 = Cód. Construção
-                 j39_ano = int4 = Ano da Construção
-                 j39_area = float8 = Área da Construção M2
-                 j39_areap = float8 = Área Privada da construção M2
-                 j39_dtlan = date = Data de Inclusão
+                 j39_matric = int4 = Matrï¿½cula
+                 j39_idcons = int4 = Cï¿½d. Construï¿½ï¿½o
+                 j39_ano = int4 = Ano da Construï¿½ï¿½o
+                 j39_area = float8 = ï¿½rea da Construï¿½ï¿½o M2
+                 j39_areap = float8 = ï¿½rea Privada da construï¿½ï¿½o M2
+                 j39_dtlan = date = Data de Inclusï¿½o
                  j39_codigo = int4 = Logradouro
-                 j39_numero = int4 = Número
+                 j39_numero = int4 = Nï¿½mero
                  j39_compl = varchar(20) = Complemento
-                 j39_dtdemo = date = Data Demolição
+                 j39_dtdemo = date = Data Demoliï¿½ï¿½o
                  j39_codprotdemo = varchar(40) = Processo de Protocolo
-                 j39_idaument = int4 = Origem da Construção
-                 j39_idprinc = bool = Construção Principal
+                 j39_idaument = int4 = Origem da Construï¿½ï¿½o
+                 j39_idprinc = bool = Construï¿½ï¿½o Principal
                  j39_pavim = int4 = Pavimento
-                 j39_obs = text = Observações
+                 j39_obs = text = Observaï¿½ï¿½es
                  ";
-   //funcao construtor da classe
-   public function cl_iptuconstr() {
-     //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptuconstr");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
-   }
+
+  // funcao construtor da classe
+  public function __construct()
+  {
+    // classes dos rotulos dos campos
+    $this->rotulo = new rotulo("iptuconstr");
+    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->getParametros();
+  }
+
    //funcao erro
    public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
@@ -133,17 +159,30 @@ class cl_iptuconstr {
        $this->j39_idcons = ($this->j39_idcons == ""?@$GLOBALS["HTTP_POST_VARS"]["j39_idcons"]:$this->j39_idcons);
      }
    }
-   // funcao para inclusao
-   public function incluir ($j39_matric,$j39_idcons){
-      $this->atualizacampos();
-     if($this->j39_ano == null ){
-       $this->j39_ano = "0";
-     }
+
+  // funcao para inclusao
+  public function incluir ($j39_matric,$j39_idcons)
+  {
+    $this->atualizacampos();
+
+    if ($this->validar_j39_ano and (empty($this->j39_ano) || strlen($this->j39_ano) != 4)) {
+      $this->erro_sql    = "Campo Ano da Construï¿½ï¿½o nï¿½o Informado.";
+      $this->erro_campo  = "j39_ano";
+      $this->erro_banco  = "";
+      $this->erro_msg    = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+
+      return false;
+    } elseif ($this->j39_ano == null) {
+      $this->j39_ano = 0;
+    }
+
      if($this->j39_area == null ){
-       $this->erro_sql = " Campo Área da Construção M2 nao Informado.";
+       $this->erro_sql = " Campo ï¿½rea da Construï¿½ï¿½o M2 nao Informado.";
        $this->erro_campo = "j39_area";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -152,10 +191,10 @@ class cl_iptuconstr {
        $this->j39_areap = "0";
      }
      if($this->j39_dtlan == null ){
-       $this->erro_sql = " Campo Data de Inclusão nao Informado.";
+       $this->erro_sql = " Campo Data de Inclusï¿½o nao Informado.";
        $this->erro_campo = "j39_dtlan_dia";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -164,16 +203,16 @@ class cl_iptuconstr {
        $this->erro_sql = " Campo Logradouro nao Informado.";
        $this->erro_campo = "j39_codigo";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($this->j39_numero == null ){
-       $this->erro_sql = " Campo Número nao Informado.";
+       $this->erro_sql = " Campo Nï¿½mero nao Informado.";
        $this->erro_campo = "j39_numero";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -185,10 +224,10 @@ class cl_iptuconstr {
        $this->j39_idaument = "0";
      }
      if($this->j39_idprinc == null ){
-       $this->erro_sql = " Campo Construção Principal nao Informado.";
+       $this->erro_sql = " Campo Construï¿½ï¿½o Principal nao Informado.";
        $this->erro_campo = "j39_idprinc";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -197,7 +236,7 @@ class cl_iptuconstr {
        $this->erro_sql = " Campo Pavimento nao Informado.";
        $this->erro_campo = "j39_pavim";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -207,7 +246,7 @@ class cl_iptuconstr {
      if(($this->j39_matric == null) || ($this->j39_matric == "") ){
        $this->erro_sql = " Campo j39_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -215,7 +254,7 @@ class cl_iptuconstr {
      if(($this->j39_idcons == null) || ($this->j39_idcons == "") ){
        $this->erro_sql = " Campo j39_idcons nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -258,13 +297,13 @@ class cl_iptuconstr {
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = " ($this->j39_matric."-".$this->j39_idcons) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = " já Cadastrado";
+         $this->erro_sql   = " ($this->j39_matric."-".$this->j39_idcons) nao Incluï¿½do. Inclusao Abortada.";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_banco = " jï¿½ Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = " ($this->j39_matric."-".$this->j39_idcons) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = " ($this->j39_matric."-".$this->j39_idcons) nao Incluï¿½do. Inclusao Abortada.";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
        $this->erro_status = "0";
@@ -274,7 +313,7 @@ class cl_iptuconstr {
      $this->erro_banco = "";
      $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->j39_matric."-".$this->j39_idcons;
-     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+     $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
@@ -312,10 +351,10 @@ class cl_iptuconstr {
        $sql  .= $virgula." j39_matric = $this->j39_matric ";
        $virgula = ",";
        if(trim($this->j39_matric) == null ){
-         $this->erro_sql = " Campo Matrícula nao Informado.";
+         $this->erro_sql = " Campo Matrï¿½cula nao Informado.";
          $this->erro_campo = "j39_matric";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -325,30 +364,45 @@ class cl_iptuconstr {
        $sql  .= $virgula." j39_idcons = $this->j39_idcons ";
        $virgula = ",";
        if(trim($this->j39_idcons) == null ){
-         $this->erro_sql = " Campo Cód. Construção nao Informado.";
+         $this->erro_sql = " Campo Cï¿½d. Construï¿½ï¿½o nao Informado.";
          $this->erro_campo = "j39_idcons";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
        }
      }
-     if(trim($this->j39_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
-        if(trim($this->j39_ano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
-           $this->j39_ano = "0" ;
-        }
+
+     if (trim($this->j39_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
+      if (empty($this->j39_ano)) {
+        $this->j39_ano = $GLOBALS["HTTP_POST_VARS"]["j39_ano"];
+      }
+
+      if ($this->validar_j39_ano and (empty($this->j39_ano) || strlen($this->j39_ano) != 4)) {
+        $this->erro_sql    = "Campo Ano da Construï¿½ï¿½o nï¿½o Informado.";
+        $this->erro_campo  = "j39_ano";
+        $this->erro_banco  = "";
+        $this->erro_msg    = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+
+        return false;
+      } elseif ($this->j39_ano == null) {
+        $this->j39_ano = 0;
+      }
        $sql  .= $virgula." j39_ano = $this->j39_ano ";
        $virgula = ",";
      }
+
      if(trim($this->j39_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_area"])){
        $sql  .= $virgula." j39_area = $this->j39_area ";
        $virgula = ",";
        if(trim($this->j39_area) == null ){
-         $this->erro_sql = " Campo Área da Construção M2 nao Informado.";
+         $this->erro_sql = " Campo ï¿½rea da Construï¿½ï¿½o M2 nao Informado.";
          $this->erro_campo = "j39_area";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -365,10 +419,10 @@ class cl_iptuconstr {
        $sql  .= $virgula." j39_dtlan = '$this->j39_dtlan' ";
        $virgula = ",";
        if(trim($this->j39_dtlan) == null ){
-         $this->erro_sql = " Campo Data de Inclusão nao Informado.";
+         $this->erro_sql = " Campo Data de Inclusï¿½o nao Informado.";
          $this->erro_campo = "j39_dtlan_dia";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -378,10 +432,10 @@ class cl_iptuconstr {
          $sql  .= $virgula." j39_dtlan = null ";
          $virgula = ",";
          if(trim($this->j39_dtlan) == null ){
-           $this->erro_sql = " Campo Data de Inclusão nao Informado.";
+           $this->erro_sql = " Campo Data de Inclusï¿½o nao Informado.";
            $this->erro_campo = "j39_dtlan_dia";
            $this->erro_banco = "";
-           $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+           $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
            $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
            $this->erro_status = "0";
            return false;
@@ -395,7 +449,7 @@ class cl_iptuconstr {
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "j39_codigo";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -405,10 +459,10 @@ class cl_iptuconstr {
        $sql  .= $virgula." j39_numero = $this->j39_numero ";
        $virgula = ",";
        if(trim($this->j39_numero) == null ){
-         $this->erro_sql = " Campo Número nao Informado.";
+         $this->erro_sql = " Campo Nï¿½mero nao Informado.";
          $this->erro_campo = "j39_numero";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -442,10 +496,10 @@ class cl_iptuconstr {
        $sql  .= $virgula." j39_idprinc = '$this->j39_idprinc' ";
        $virgula = ",";
        if(trim($this->j39_idprinc) == null ){
-         $this->erro_sql = " Campo Construção Principal nao Informado.";
+         $this->erro_sql = " Campo Construï¿½ï¿½o Principal nao Informado.";
          $this->erro_campo = "j39_idprinc";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -458,7 +512,7 @@ class cl_iptuconstr {
          $this->erro_sql = " Campo Pavimento nao Informado.";
          $this->erro_campo = "j39_pavim";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -520,7 +574,7 @@ class cl_iptuconstr {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j39_matric."-".$this->j39_idcons;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_alterar = 0;
@@ -530,16 +584,16 @@ class cl_iptuconstr {
          $this->erro_banco = "";
          $this->erro_sql = " nao foi Alterado. Alteracao Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->j39_matric."-".$this->j39_idcons;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteraï¿½ï¿½o efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->j39_matric."-".$this->j39_idcons;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
@@ -600,9 +654,9 @@ class cl_iptuconstr {
      $result = db_query($sql.$sql2);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
+       $this->erro_sql   = " nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j39_matric."-".$j39_idcons;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_excluir = 0;
@@ -610,18 +664,18 @@ class cl_iptuconstr {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = " nao Encontrado. Exclusão não Efetuada.\\n";
+         $this->erro_sql = " nao Encontrado. Exclusï¿½o nï¿½o Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$j39_matric."-".$j39_idcons;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusï¿½o efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$j39_matric."-".$j39_idcons;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
@@ -636,7 +690,7 @@ class cl_iptuconstr {
        $this->numrows    = 0;
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -645,7 +699,7 @@ class cl_iptuconstr {
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptuconstr";
-        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "0";
         return false;
@@ -743,6 +797,7 @@ class cl_iptuconstr {
   }
   public function excluirGeral ($matric=null,$idcons=null,$cascade=true) {
 
+        $cliptucaleold      = new cl_iptucaleold;
 		$clcarconstr        = new cl_carconstr;
 		$clconstrcar        = new cl_constrcar;
 		$cliptucale         = new cl_iptucale;
@@ -752,14 +807,28 @@ class cl_iptuconstr {
 		$cliptuconstrpontos = new cl_iptuconstrpontos;
 
     if($cascade){
+			$cliptucaleold->j162_matric = $matric;
+			$cliptucaleold->j162_idcons = $idcons;
+      $where = "j162_matric = {$matric} and j162_idcons = {$idcons}";
+      $cliptucaleold->excluir(null, $where);
+			if ($cliptucaleold->erro_status == 0) {
+				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
+				 $this->erro_sql         = " Iptucaleold - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
+				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+				 $this->erro_msg        .= $cliptucaleold->erro_msg;
+				 $this->erro_status = "0";
+				 return false;
+			}
 			$clcarconstr->j48_matric = $matric;
 			$clcarconstr->j48_idcons = $idcons;
 			$clcarconstr->excluir($matric,$idcons,null);
 			if ($clcarconstr->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Carconstr - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Carconstr - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $clcarconstr->erro_msg;
 				 $this->erro_status = "0";
@@ -770,9 +839,9 @@ class cl_iptuconstr {
 			$clconstrcar->excluir($matric,$idcons,null);
 			if ($clconstrcar->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Constrcar - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Constrcar - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $clconstrcar->erro_msg;
 				 $this->erro_status = "0";
@@ -783,9 +852,9 @@ class cl_iptuconstr {
 			$cliptucale->excluir(null,$matric,$idcons);
 			if ($cliptucale->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Iptucale - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Iptucale - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $cliptucale->erro_msg;
 				 $this->erro_status = "0";
@@ -796,9 +865,9 @@ class cl_iptuconstr {
 			$clconstrescr->excluir($matric,$idcons);
 			if ($clconstrescr->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Constrescr - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Constrescr - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $clconstrescr->erro_msg;
 				 $this->erro_status = "0";
@@ -808,9 +877,9 @@ class cl_iptuconstr {
 			$clissmatric->excluir(null,null," q05_matric = $matric and q05_idcons = $idcons ");
 			if ($clissmatric->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Issmatric - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Issmatric - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $clissmatric->erro_msg;
 				 $this->erro_status = "0";
@@ -819,9 +888,9 @@ class cl_iptuconstr {
 			$cliptuconstrdemo->excluir($matric,$idcons,null);
 			if ($cliptuconstrdemo->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Iptuconstrdemo - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Iptuconstrdemo - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $cliptuconstrdemo->erro_msg;
 				 $this->erro_status = "0";
@@ -830,9 +899,9 @@ class cl_iptuconstr {
 			$cliptuconstrpontos->excluir(null," j83_matric = $matric and j83_idcons = $idcons ");
 			if ($clcarconstr->erro_status == 0) {
 				 $this->erro_banco       = str_replace("\n","",@pg_last_error());
-				 $this->erro_sql         = " Iptuconstrpontos - Nao Excluído. Exclusão Abortada.\\n";
+				 $this->erro_sql         = " Iptuconstrpontos - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
 				 $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-				 $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+				 $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
 				 $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
 				 $this->erro_msg        .= $cliptuconstrpontos->erro_msg;
 				 $this->erro_status = "0";
@@ -843,9 +912,9 @@ class cl_iptuconstr {
 		$this->excluir($matric,$idcons);
 		if ($this->erro_status == 0) {
        $this->erro_banco       = str_replace("\n","",@pg_last_error());
-       $this->erro_sql         = " Iptuconstr - Nao Excluído. Exclusão Abortada.\\n";
+       $this->erro_sql         = " Iptuconstr - Nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
        $this->erro_sql        .= "Valores : ".$matric."-".$idcons;
-       $this->erro_msg         = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg         = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg        .= str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_msg        .= $this->erro_msg;
        $this->erro_status = "0";

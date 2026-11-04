@@ -1,33 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (! isset($arqinclude)) {
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -37,12 +37,12 @@ if (! isset($arqinclude)) {
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("classes/db_db_config_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
-  
+
   $classinatura = new cl_assinatura();
   $orcparamrel = new cl_orcparamrel();
   $clconrelinfo = new cl_conrelinfo();
   $cldb_config = new cl_db_config();
-  
+
   parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
 
@@ -96,11 +96,11 @@ if ($clconrelinfo->numrows > 0) {
         if ($periodo == "1Q") {
           $valor_insuficiencia1 = $c83_informacao;
         }
-        
+
         if ($periodo == "2Q" || $periodo == "1S") {
           $valor_insuficiencia2 = $c83_informacao;
         }
-        
+
         if ($periodo == "3Q" || $periodo == "2S") {
           $valor_insuficiencia3 = $c83_informacao;
         }
@@ -108,27 +108,27 @@ if ($clconrelinfo->numrows > 0) {
         if ($c83_periodo == "1Q") {
           $valor_insuficiencia1 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "2Q" || $c83_periodo == "1S") {
           $valor_insuficiencia2 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "3Q" || $c83_periodo == "2S") {
           $valor_insuficiencia3 = $c83_informacao;
         }
       }
     }
-    
+
     if ($c83_codigo == 362) {
       if (! isset($c83_periodo)) {
         if ($periodo == "1Q") {
           $valor_outras_obrigacoes1 = $c83_informacao;
         }
-        
+
         if ($periodo == "2Q" || $periodo == "1S") {
           $valor_outras_obrigacoes2 = $c83_informacao;
         }
-        
+
         if ($periodo == "3Q" || $periodo == "212110200022S") {
           $valor_outras_obrigacoes3 = $c83_informacao;
         }
@@ -136,27 +136,27 @@ if ($clconrelinfo->numrows > 0) {
         if ($c83_periodo == "1Q") {
           $valor_outras_obrigacoes1 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "2Q" || $c83_periodo == "1S") {
           $valor_outras_obrigacoes2 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "3Q" || $c83_periodo == "2S") {
           $valor_outras_obrigacoes3 = $c83_informacao;
         }
       }
     }
-    
+
     if ($c83_codigo == 363) {
       if (! isset($c83_periodo)) {
         if ($periodo == "1Q") {
           $valor_obrigacoes_nao_dc_prev1 = $c83_informacao;
         }
-        
+
         if ($periodo == "2Q" || $periodo == "1S") {
           $valor_obrigacoes_nao_dc_prev2 = $c83_informacao;
         }
-        
+
         if ($periodo == "3Q" || $periodo == "2S") {
           $valor_obrigacoes_nao_dc_prev3 = $c83_informacao;
         }
@@ -164,11 +164,11 @@ if ($clconrelinfo->numrows > 0) {
         if ($c83_periodo == "1Q") {
           $valor_obrigacoes_nao_dc_prev1 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "2Q" || $c83_periodo == "1S") {
           $valor_obrigacoes_nao_dc_prev2 = $c83_informacao;
         }
-        
+
         if ($c83_periodo == "3Q" || $c83_periodo == "2S") {
           $valor_obrigacoes_nao_dc_prev3 = $c83_informacao;
         }
@@ -178,7 +178,7 @@ if ($clconrelinfo->numrows > 0) {
 }
 
 $anousu = db_getsession("DB_anousu");
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $numrowsinstit = pg_num_rows($resultinst);
@@ -190,7 +190,7 @@ $virgula     = "";
 
 for($x = 0; $x < $numrowsinstit; $x ++) {
   db_fieldsmemory($resultinst, $x);
-  
+
   if ($db21_tipoinstit == 5 || $db21_tipoinstit == 6) { // RPPS
     $instit_rpps .= $virg_rpps . $codigo;
     $virg_rpps = ",";
@@ -211,8 +211,8 @@ if (strlen($dtini) > 5 && strlen($dtfin) > 5) {
 }
 
 $dt = data_periodo($anousu, $periodo);
-$dt_ini = split("-", $dt [0]);
-$dt_fin = split("-", $dt [1]);
+$dt_ini =explode("-", $dt [0]);
+$dt_fin =explode("-", $dt [1]);
 
 $period = strtoupper(db_mes("01")) . " A " . strtoupper(db_mes($dt_fin [1])) . " DE " . $anousu;
 
@@ -228,21 +228,21 @@ $dtini_ant = '';
 $dtfin_ant = $anousu_ant . "-12-31";
 
 if ($periodo == "1S") {
-  
+
   $dtini_01 = $anousu . '-01-01';
   $dtfin_01 = $anousu . '-06-30';
   $dtini_02 = $anousu . '-07-01';
   $dtfin_02 = $anousu . '-12-31';
 
 } else if ($periodo == "2S") {
-  
+
   $dtini_01 = $anousu . '-01-01';
   $dtfin_01 = $anousu . '-06-30';
   $dtini_02 = $anousu . '-07-01';
   $dtfin_02 = $anousu . '-12-31';
 
 } else {
-  
+
   $dtini_01 = $anousu . '-01-01';
   $dtfin_01 = $anousu . '-04-30';
   $dtini_02 = $anousu . '-09-01';
@@ -256,7 +256,7 @@ if ($usa_datas == true) {
 }
 
 if ($usa_datas == true) {
-  $dt = split('-', $dtfin); // mktime -- (mes,dia,ano)
+  $dt =explode('-', $dtfin); // mktime -- (mes,dia,ano)
   $dtini_ant = date('Y-m-d', mktime(0, 0, 0, $dt [1], $dt [2] - 364, $dt [0]));
 }
 
@@ -281,7 +281,7 @@ $parametro [12] ['estrut'] = '';
 $parametro [13] ['estrut'] = '';
 $parametro [14] ['estrut'] = '';
 if ($instituicao != '') {
-  
+
   $parametro [1] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '1', "f", $instituicao, $anousu);
   $parametro [2] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '2', "f", $instituicao, $anousu);
   $parametro [3] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '3', "f", $instituicao, $anousu);
@@ -299,24 +299,24 @@ if ($instituicao != '') {
   $aOrcParametro = array_merge(
                                (array)$parametro [1] ["estrut"],
                                (array)$parametro [2] ["estrut"],
-                               (array)$parametro [3] ["estrut"], 
-                               (array)$parametro [4] ["estrut"], 
-                               (array)$parametro [5] ["estrut"], 
-                               (array)$parametro [6] ["estrut"], 
-                               (array)$parametro [7] ["estrut"], 
-                               (array)$parametro [8] ["estrut"], 
-                               (array)$parametro [9] ["estrut"], 
-                               (array)$parametro [10] ["estrut"], 
-                               (array)$parametro [11] ["estrut"], 
-                               (array)$parametro [12] ["estrut"], 
-                               (array)$parametro [13] ["estrut"], 
+                               (array)$parametro [3] ["estrut"],
+                               (array)$parametro [4] ["estrut"],
+                               (array)$parametro [5] ["estrut"],
+                               (array)$parametro [6] ["estrut"],
+                               (array)$parametro [7] ["estrut"],
+                               (array)$parametro [8] ["estrut"],
+                               (array)$parametro [9] ["estrut"],
+                               (array)$parametro [10] ["estrut"],
+                               (array)$parametro [11] ["estrut"],
+                               (array)$parametro [12] ["estrut"],
+                               (array)$parametro [13] ["estrut"],
                                (array)$parametro [14] ["estrut"]
                               );
 
 }
 
 if (trim($instit_rpps) != "") {
-  
+
   $parametro [15] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '15', "f", $instit_rpps, $anousu);
   $parametro [16] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '16', "f", $instit_rpps, $anousu);
   $parametro [17] ['estrut'] = $orcparamrel->sql_parametro_instit('29', '17', "f", $instit_rpps, $anousu);
@@ -330,11 +330,11 @@ if (trim($instit_rpps) != "") {
 
 if (trim($instit_rpps) != "") {
   $aOrcParametro_rpps = array_merge(
-                                    $parametro [15] ["estrut"], 
-                                    $parametro [16] ["estrut"], 
-                                    $parametro [17] ["estrut"], 
-                                    $parametro [18] ["estrut"], 
-                                    $parametro [19] ["estrut"], 
+                                    $parametro [15] ["estrut"],
+                                    $parametro [16] ["estrut"],
+                                    $parametro [17] ["estrut"],
+                                    $parametro [18] ["estrut"],
+                                    $parametro [19] ["estrut"],
                                     $parametro [20] ["estrut"]
                                    );
 }
@@ -349,7 +349,7 @@ if ($instituicao != '') {
   $sele_work = "c61_instit in ({$instituicao})";
   $result_01 = db_planocontassaldo_matriz($anousu, $dtini_01, $dtfin_01, false, $sele_work, "", "true", "false", "", $aOrcParametro);
   @db_query("drop table work_pl");
-  
+
   //$sele_work = ' c61_instit in (' . $instituicao . ')';
   $result_02 = db_planocontassaldo_matriz($anousu, $dtini_02, $dtfin_02, false, $sele_work, "", "true", "false", "", $aOrcParametro);
   @db_query("drop table work_pl");
@@ -358,7 +358,7 @@ if (trim($instit_rpps) != "") {
   $sele_work = ' c61_instit in (' . $instit_rpps . ')';
   $result_01_rpps = db_planocontassaldo_matriz($anousu, $dtini_01, $dtfin_01, false, $sele_work, "", "true", "false", "", $aOrcParametro_rpps);
   @db_query("drop table work_pl");
-  
+
   $sele_work = ' c61_instit in (' . $instit_rpps . ')';
   $result_02_rpps = db_planocontassaldo_matriz($anousu, $dtini_02, $dtfin_02, false, $sele_work, "", "true", "false", "", $aOrcParametro_rpps);
   @db_query("drop table work_pl");
@@ -412,7 +412,7 @@ $texto [36] ["txt"] = "OBRIGAÇÕES NÃO INTEGRANTES DA DC";
 $texto [37] ["txt"] = "DÍVIDA CONSOLIDADA LÍQ. PREVIDENCIÁRIA(VI)=(IV - V)";
 
 for($linha = 1; $linha <= 37; $linha ++) {
-  
+
   $texto [$linha] ['ano'] = 0;
   $texto [$linha] ['quad1'] = 0;
   $texto [$linha] ['quad2'] = 0;
@@ -423,14 +423,14 @@ if ($instituicao != '') {
   // exercicio + primeiro quadrimestre ou seleção por periodo informado
   for($i = 0; $i < pg_num_rows($result_01); $i ++) {
     db_fieldsmemory($result_01, $i);
-    
+
     for($linha = 1; $linha <= 14; $linha ++) {
-      
+
       $instit = $c61_instit;
       $v_elementos = array (
-        
-                      $estrutural, 
-                      $instit 
+
+                      $estrutural,
+                      $instit
       );
       $flag_contar = false;
        for($xx = 0; $xx < count($parametro[$linha]["estrut"]); $xx ++) {
@@ -439,27 +439,27 @@ if ($instituicao != '') {
             break;
           }
         }
-      
+
       if ($flag_contar == true) {
         $parametro [$linha] ['ano'] += $saldo_anterior;
         $parametro [$linha] ['quad1'] += $saldo_final;
       }
-    
+
     }
-  
+
   }
-  
+
   // segundo quadrimestre e terceiro quadrimestre
   for($i = 0; $i < pg_numrows($result_02); $i ++) {
     db_fieldsmemory($result_02, $i);
-    
+
     for($linha = 1; $linha <= 14; $linha ++) {
-      
+
       $instit = $c61_instit;
       $v_elementos = array (
-        
-                      $estrutural, 
-                      $instit 
+
+                      $estrutural,
+                      $instit
       );
       $flag_contar = false;
       for($xx = 0; $xx < count($parametro [$linha] ["estrut"]); $xx ++) {
@@ -468,12 +468,12 @@ if ($instituicao != '') {
             break;
           }
         }
-      
+
       if ($flag_contar == true) {
         $parametro [$linha] ['quad2'] += $saldo_anterior;
         $parametro [$linha] ['quad3'] += $saldo_final;
       }
-    
+
     }
   }
 }
@@ -481,17 +481,17 @@ if (trim($instit_rpps) != "") {
   // exercicio + primeiro quadrimestre ou seleção por periodo informado
   for($i = 0; $i < pg_numrows($result_01_rpps); $i ++) {
     db_fieldsmemory($result_01_rpps, $i);
-    
+
     for($linha = 15; $linha <= 20; $linha ++) {
-      
-      
+
+
       $instit = $c61_instit;
       $v_elementos = array (
-        
-                      $estrutural, 
-                      $instit 
+
+                      $estrutural,
+                      $instit
       );
-      
+
       $flag_contar = false;
       if ($instit != 0) {
         if (in_array($v_elementos, $parametro [$linha] ["estrut"])) {
@@ -505,36 +505,36 @@ if (trim($instit_rpps) != "") {
           }
         }
       }
-      
+
       if ($flag_contar == true) {
         $parametro [$linha] ['ano'] += $saldo_anterior;
         $parametro [$linha] ['quad1'] += $saldo_final;
       }
-    
+
     }
-  
+
   }
-  
+
   // segundo quadrimestre e terceiro quadrimestre
   for($i = 0; $i < pg_numrows($result_02_rpps); $i ++) {
     db_fieldsmemory($result_02_rpps, $i);
-    
+
     for($linha = 15; $linha <= 20; $linha ++) {
-      
+
       $instit = $c61_instit;
       $v_elementos = array (
-        
-                      $estrutural, 
-                      $instit 
+
+                      $estrutural,
+                      $instit
       );
-      
+
       $flag_contar = false;
       if ($instit != 0) {
         if (in_array($v_elementos, $parametro [$linha] ["estrut"])) {
           $flag_contar = true;
         }
       } else {
-        
+
         for($xx = 0; $xx < count($parametro [$linha] ["estrut"]); $xx ++) {
           if ($estrutural == $parametro [$linha] ["estrut"] [$xx] [0]) {
             $flag_contar = true;
@@ -542,12 +542,12 @@ if (trim($instit_rpps) != "") {
           }
         }
       }
-      
+
       if ($flag_contar == true) {
         $parametro [$linha] ['quad2'] += $saldo_anterior;
         $parametro [$linha] ['quad3'] += $saldo_final;
       }
-    
+
     }
   }
 }
@@ -555,30 +555,30 @@ if (trim($instit_rpps) != "") {
 /////////// atribuição de valores
 
 if ($periodo == "1Q") {
-  
+
   $texto [21] ["quad1"] = $valor_insuficiencia1;
   $texto [22] ["quad1"] = $valor_outras_obrigacoes1;
   $texto [36] ["quad1"] = $valor_obrigacoes_nao_dc_prev1;
-  
+
 } else if ($periodo == "2Q" || $periodo == "1S") {
-  
+
   $texto [21] ["quad2"] = $valor_insuficiencia2;
   $texto [22] ["quad2"] = $valor_outras_obrigacoes2;
   $texto [36] ["quad2"] = $valor_obrigacoes_nao_dc_prev2;
-  
+
 } else if ($periodo == "3Q" || $periodo == "2S") {
-  
+
   if ($periodo == "3Q") {
-    
+
     $texto [21] ["quad1"] = $valor_insuficiencia1;
     $texto [22] ["quad1"] = $valor_outras_obrigacoes1;
     $texto [36] ["quad1"] = $valor_obrigacoes_nao_dc_prev1;
-    
+
     $texto [21] ["quad2"] = $valor_insuficiencia2;
     $texto [22] ["quad2"] = $valor_outras_obrigacoes2;
     $texto [36] ["quad2"] = $valor_obrigacoes_nao_dc_prev2;
   }
-  
+
   $texto [21] ["quad3"] = $valor_insuficiencia3;
   $texto [22] ["quad3"] = $valor_outras_obrigacoes3;
   $texto [36] ["quad3"] = $valor_obrigacoes_nao_dc_prev3;
@@ -586,15 +586,15 @@ if ($periodo == "1Q") {
 
 for($i = 1; $i <= 4; $i ++) {
   $pp = array (
-    
-                  '1' => 'ano', 
-                  '2' => 'quad1', 
-                  '3' => 'quad2', 
-                  '4' => 'quad3' 
+
+                  '1' => 'ano',
+                  '2' => 'quad1',
+                  '3' => 'quad2',
+                  '4' => 'quad3'
   );
   // atribuições diretas
   $texto [2] [$pp [$i]] = $parametro [1] [$pp [$i]]; //div mobiliaria
-  
+
 
   $texto [4] [$pp [$i]]  = $parametro [2] [$pp [$i]]; //div contratual de PPP
   $texto [5] [$pp [$i]]  = $parametro [3] [$pp [$i]]; //demais div. contratuais
@@ -610,24 +610,24 @@ for($i = 1; $i <= 4; $i ++) {
   $texto [17] [$pp [$i]] = $parametro [12] [$pp [$i]]; //ativos
   $texto [18] [$pp [$i]] = $parametro [13] [$pp [$i]]; //haveres
   $texto [20] [$pp [$i]] = $parametro [14] [$pp [$i]]; //insuf
-  
+
 
   // totalizadores
   $texto [10] [$pp [$i]] = $texto [11] [$pp [$i]] + $texto [12] [$pp [$i]];
   $texto [8] [$pp [$i]] = $texto [9] [$pp [$i]] + $texto [10] [$pp [$i]] + $texto [13] [$pp [$i]];
   $texto [1] [$pp [$i]] = $texto [2] [$pp [$i]] + $texto [3] [$pp [$i]] + $texto [6] [$pp [$i]] + $texto [7] [$pp [$i]] + $texto [8] [$pp [$i]] + $texto [14] [$pp [$i]];
-  
+
   if (($texto [16] [$pp [$i]] + $texto [17] [$pp [$i]]) < abs($texto [18] [$pp [$i]])) {
-    
+
     $texto [15] [$pp [$i]] = - 1;
     $texto[21][$pp[$i]] += abs($texto [16] [$pp [$i]] + $texto [17] [$pp [$i]]-$texto [18] [$pp [$i]]);
   } else {
     $texto [15] [$pp [$i]] = $texto [16] [$pp [$i]] + $texto [17] [$pp [$i]] - $texto [18] [$pp [$i]];
   }
-  
+
   $texto [19] [$pp [$i]] = $texto [20] [$pp [$i]] + $texto [21] [$pp [$i]] + $texto [22] [$pp [$i]];
   $texto[21][$pp[$i]] = abs($texto[21][$pp[$i]]);
-  
+
   // totalizador
   $texto [23] [$pp [$i]] = $texto [1] [$pp [$i]] - $texto [15] [$pp [$i]];
 
@@ -636,34 +636,34 @@ for($i = 1; $i <= 4; $i ++) {
 // REGIME PREVIDENCIARIO
 for($i = 1; $i <= 4; $i ++) {
   $pp = array (
-    
-                  '1' => 'ano', 
-                  '2' => 'quad1', 
-                  '3' => 'quad2', 
-                  '4' => 'quad3' 
+
+                  '1' => 'ano',
+                  '2' => 'quad1',
+                  '3' => 'quad2',
+                  '4' => 'quad3'
   );
-  
+
   $texto [29] [$pp [$i]] = $parametro [15] [$pp [$i]]; // Passivo Atuarial
   $texto [30] [$pp [$i]] = $parametro [16] [$pp [$i]]; // Demais Dividas
   $texto [28] [$pp [$i]] = $texto [29] [$pp [$i]] + $texto [30] [$pp [$i]]; // Divida Consolidada Previdenciaria
-  
+
 
   $texto [32] [$pp [$i]] = $parametro [17] [$pp [$i]]; // Ativo Disponivel
   $texto [33] [$pp [$i]] = $parametro [18] [$pp [$i]]; // Investimentos
   $texto [34] [$pp [$i]] = $parametro [19] [$pp [$i]]; // Haveres Financeiros
   $texto [35] [$pp [$i]] = $parametro [20] [$pp [$i]]; // Restos a Pagar Processados
-  
+
 
   if (($texto [32] [$pp [$i]] + $texto [33] [$pp [$i]] + $texto [34] [$pp [$i]]) < abs($texto [35] [$pp [$i]])) {
-    
+
     $texto [31] [$pp [$i]] = - 1;
     $texto [37] [$pp [$i]] = $texto [28] [$pp [$i]]; // DIVIDA CONSOLIDADA LIQUIDA PREVIDENCIARIA
-    
+
   } else {
-    
+
     $texto [31] [$pp [$i]] = $texto [32] [$pp [$i]] + $texto [33] [$pp [$i]] + $texto [34] [$pp [$i]] - $texto [35] [$pp [$i]]; // DEDUCOES
     $texto [37] [$pp [$i]] = $texto [28] [$pp [$i]] - $texto [31] [$pp [$i]]; // DIVIDA CONSOLIDADA LIQUIDA PREVIDENCIARIA
-    
+
   }
 }
 
@@ -698,17 +698,17 @@ if ($anousu_ant > 2007) {
 $texto [24] ['ano'] = $total_rcl_ant;
 
 if ($usa_datas == false) {
-  
+
   $matriz = true; // retorna matriz dos meses
   $matriz_rcl = calcula_rcl2($anousu_ant, $anousu_ant . '-01-01', $anousu_ant . '-12-31', $todasinstit, $matriz, 27, $data);
-  
+
   // primeiro quadrimestre
   $total_rcl = calcula_rcl2($anousu, $anousu . '-01-01', $anousu . '-04-30', $todasinstit, false, 27);
   //	echo "1: $total_rcl<br>";
   $texto [24] ['quad1'] = $total_rcl + $matriz_rcl ['maio'] + $matriz_rcl ['junho'] + $matriz_rcl ['julho'] + $matriz_rcl ['agosto'] + $matriz_rcl ['setembro'] + $matriz_rcl ['outubro'] + $matriz_rcl ['novembro'] + $matriz_rcl ['dezembro'];
   //	echo "2: maio: " . $matriz_rcl['maio'] . " - junho: " . $matriz_rcl['junho'] . " - julho: " . $matriz_rcl['julho'] . " - agosto: " . $matriz_rcl['agosto'] . " - setembro: " . $matriz_rcl['setembro'] . " - outubro: " . $matriz_rcl['outubro'] . " - novembro: " . $matriz_rcl['novembro'] . " - dezembro: " . $matriz_rcl['dezembro'] . "<br>";
   //	exit;
-  
+
 
   $sDataFinal = "{$anousu}-08-31";
   // segundo quadrimestre
@@ -721,21 +721,21 @@ if ($usa_datas == false) {
   } else {
     $texto [24] ['quad2'] = $total_rcl + $matriz_rcl ["julho"] + $matriz_rcl ["agosto"] + $matriz_rcl ['setembro'] + $matriz_rcl ['outubro'] + $matriz_rcl ['novembro'] + $matriz_rcl ['dezembro'];
   }
-  
+
   // terceiro quadrimestre
   $total_rcl = calcula_rcl2($anousu, $anousu . '-01-01', $anousu . '-12-31', $todasinstit, false, 27);
   $texto [24] ['quad3'] = $total_rcl;
 
 } else {
-  
+
   if ($anousu_ant > 2007) {
     $total_rcl = calcula_rcl2($anousu_ant, $dtini_ant, $dtfin_ant, $todasinstit, false, 27, $data);
   } else {
     $total_rcl = calcula_rcl($anousu_ant, $dtini_ant, $dtfin_ant, $todasinstit, false);
   }
-  
+
   $texto [24] ['quad1'] = $total_rcl;
-  
+
   $total_rcl = calcula_rcl2($anousu, $anousu . '-01-01', $dtfin, $todasinstit, false, 27);
   $texto [24] ['quad1'] += $total_rcl;
 
@@ -783,15 +783,15 @@ exit;
 
 
 $pcol = array (
-  
-                1 => 'ano', 
-                2 => 'quad1', 
-                3 => 'quad2', 
-                4 => 'quad3' 
+
+                1 => 'ano',
+                2 => 'quad1',
+                3 => 'quad2',
+                4 => 'quad3'
 );
 
 if (! isset($arqinclude)) {
-  
+
   $pdf = new PDF();
   $pdf->Open();
   $pdf->AliasNbPages();
@@ -799,13 +799,13 @@ if (! isset($arqinclude)) {
   $pdf->setfont('arial', '', 7);
   $alt = 4;
   $pagina = 1;
-  
+
   $pdf->addpage();
   $pdf->ln();
-  
+
   $pdf->cell(110, $alt, 'RGF - ANEXO II(LRF, art. 55, inciso I, alínea "b")', 'B', 0, "L", 0);
   $pdf->cell(75, $alt, 'R$ 1,00', 'B', 1, "R", 0);
-  
+
   $pdf->cell(73, $alt, "", 'R', 0, "C", 0);
   $pdf->cell(28, $alt, "SALDO DO", 'R', 0, "C", 0);
   if ($usa_datas == false) {
@@ -815,7 +815,7 @@ if (! isset($arqinclude)) {
   }
   $pdf->cell(73, $alt, "ESPECIFICAÇÃO", 'BR', 0, "C", 0);
   $pdf->cell(28, $alt, "EXERCÍCIO ANTERIOR", 'RB', 0, "C", 0);
-  
+
   if ($usa_datas == true) {
     $pdf->cell(28 * 3, $alt, "PERIODO " . db_formatar($dtini, 'd') . " à " . db_formatar($dtfin, 'd'), 'B', 1, "C", 0);
   } else {
@@ -828,14 +828,14 @@ if (! isset($arqinclude)) {
       $pdf->cell(28, $alt, "Até 3º Quadrimestre", 'B', 1, "C", 0);
     }
   }
-  
+
   // testar se deducoes foram negativas, jogar para insuficiencia...
-  
+
 
   for($linha = 1; $linha <= 22; $linha ++) {
     $pdf->cell(73, $alt, $texto [$linha] ['txt'], 'R', 0, "L", 0);
     $pdf->cell(28, $alt, db_formatar($texto [$linha] ['ano'], 'f'), 'R', 0, "R", 0);
-    
+
     if ($usa_datas == true) {
       if ($linha == 15) {
         if ($texto [$linha] ["quad1"] == - 1) {
@@ -877,13 +877,13 @@ if (! isset($arqinclude)) {
           } else {
             $pdf->cell(28, $alt, db_formatar($texto [$linha] ['quad1'], 'f'), 'R', 0, "R", 0);
           }
-          
+
           if ($texto [$linha] ["quad2"] == - 1) {
             $pdf->cell(28, $alt, "-", 'R', 0, "C", 0);
           } else {
             $pdf->cell(28, $alt, db_formatar($texto [$linha] ['quad2'], 'f'), 'R', 0, "R", 0);
           }
-          
+
           if ($texto [$linha] ["quad3"] == - 1) {
             $pdf->cell(28, $alt, "-", '', 0, "C", 0);
           } else {
@@ -896,21 +896,21 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->Ln();
-  
+
   }
-  
+
   // inprime bloco abaixo
   for($linha = 23; $linha <= 27; $linha ++) {
-    
+
     if ($linha == 27) {
       $texto [$linha] ["txt"] .= $limite . "%";
     }
-    
+
     $pdf->cell(73, $alt, $texto [$linha] ['txt'], 'TBR', 0, "L", 0);
     $pdf->cell(28, $alt, db_formatar($texto [$linha] ['ano'], 'f'), 'TBR', 0, "R", 0);
-    
+
     if ($usa_datas == true) {
       $pdf->cell(28 * 3, $alt, db_formatar($texto [$linha] ['quad1'], 'f'), 'TB', 0, "R", 0);
     } else {
@@ -929,7 +929,7 @@ if (! isset($arqinclude)) {
     }
     $pdf->Ln();
   }
-  
+
   $pdf->Ln();
   $pdf->cell(185, $alt, "REGIME PREVIDENCIÁRIO", 'TB', 1, "C", 0);
   $pdf->cell(73, $alt, "", "R", 0, "C", 0);
@@ -941,7 +941,7 @@ if (! isset($arqinclude)) {
   }
   $pdf->cell(73, $alt, "ESPECIFICAÇÃO", 'BR', 0, "C", 0);
   $pdf->cell(28, $alt, "EXERCÍCIO ANTERIOR", 'RB', 0, "C", 0);
-  
+
   if ($usa_datas == true) {
     $pdf->cell(28 * 3, $alt, "PERIODO " . db_formatar($dtini, 'd') . " à " . db_formatar($dtfin, 'd'), 'B', 1, "C", 0);
   } else {
@@ -954,14 +954,14 @@ if (! isset($arqinclude)) {
       $pdf->cell(28, $alt, "Até 3º Quadrimestre", 'B', 1, "C", 0);
     }
   }
-  
+
   // REGIME PREVIDENCIARIO
   for($linha = 28; $linha <= 37; $linha ++) {
     $borda = "";
     if ($linha == 37 || $linha == 36) {
       $borda = "B";
     }
-    
+
     $pdf->cell(73, $alt, $texto [$linha] ['txt'], $borda . 'R', 0, "L", 0);
     if ($linha == 31 || $linha == 37) {
       if ($texto [$linha] ["quad1"] < 0 || $texto [$linha] ["quad2"] < 0 || $texto [$linha] ["quad3"] < 0) {
@@ -972,7 +972,7 @@ if (! isset($arqinclude)) {
     } else {
       $pdf->cell(28, $alt, db_formatar($texto [$linha] ['ano'], 'f'), $borda . 'R', 0, "R", 0);
     }
-    
+
     if ($usa_datas == true) {
       if ($linha == 31 || $linha == 37) {
         if ($texto [$linha] ["quad1"] < 0) {
@@ -994,7 +994,7 @@ if (! isset($arqinclude)) {
         } else {
           $pdf->cell(42, $alt, db_formatar($texto [$linha] ['quad2'], 'f'), $borda . 'R', 0, "R", 0);
         }
-        
+
         if ($periodo == "2S") {
           if ($linha == 31 || $linha == 37) {
             if ($texto [$linha] ["quad3"] < 0) {
@@ -1015,13 +1015,13 @@ if (! isset($arqinclude)) {
           } else {
             $pdf->cell(28, $alt, db_formatar($texto [$linha] ['quad1'], 'f'), $borda . 'R', 0, "R", 0);
           }
-          
+
           if ($texto [$linha] ["quad2"] < 0) {
             $pdf->cell(28, $alt, "-", $borda . 'R', 0, "C", 0);
           } else {
             $pdf->cell(28, $alt, db_formatar($texto [$linha] ['quad2'], 'f'), $borda . 'R', 0, "R", 0);
           }
-          
+
           if ($texto [$linha] ["quad3"] < 0) {
             $pdf->cell(28, $alt, "-", $borda, 0, "C", 0);
           } else {
@@ -1034,25 +1034,25 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->Ln();
   }
-  
+
   $pdf->Ln();
-  
+
   $linhas = 20;
-  
+
   if ($trajetoria == "S") {
     $pdf->setfont('arial', '', 6);
     $pdf->cell(185, $alt, "TRAJETÓRIA DE AJUSTE DA DÍVIDA CONSOLIDADA LÍQUIDA EM CADA EXERCÍCIO FINANCEIRO", "TB", 1, "C", 0);
-    
+
     for($linha = 1; $linha <= 16; $linha ++) {
       $var_info [$linha] [$pcol [1]] = 2000 + $linha;
       $var_info [$linha] [$pcol [2]] = 0;
       $var_info [$linha] [$pcol [3]] = 0;
       $var_info [$linha] [$pcol [4]] = 0;
     }
-    
+
     $pdf->cell(39, ($alt * 3), "Exercício Financeiro", 'BR', 0, "C", 0);
     for($linha = 1; $linha <= 4; $linha ++) {
       if ($linha == 4) {
@@ -1061,9 +1061,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, $var_info [$linha] [$pcol [1]], 'BR', 0, "C", 0); // ano
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 1; $linha <= 4; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($var_info [$linha] [$pcol [1]] != 2001) {
@@ -1087,9 +1087,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 1; $linha <= 4; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 4) {
@@ -1122,9 +1122,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% da DCL sobre a RCL", 'BR', 0, "C", 0);
-    
+
     for($linha = 1; $linha <= 4; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 4) {
@@ -1146,7 +1146,7 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% Limite de Endividamento", 'BR', 0, "C", 0);
     for($linha = 1; $linha <= 4; $linha ++) {
       if ($linha == 4) {
@@ -1155,9 +1155,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, db_formatar($var_info [$linha] [$pcol [2]], "f"), 'BR', 0, "R", 0);
       }
     }
-    
+
     $pdf->cell(185, $alt, "", "TB", 1, "C", 0);
-    
+
     // 2005 a 2008
     $pdf->cell(39, ($alt * 3), "Exercício Financeiro", 'BR', 0, "C", 0);
     for($linha = 5; $linha <= 8; $linha ++) {
@@ -1167,9 +1167,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, $var_info [$linha] [$pcol [1]], 'BR', 0, "C", 0); // ano
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 5; $linha <= 8; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 8) {
@@ -1185,9 +1185,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 5; $linha <= 8; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 8) {
@@ -1209,9 +1209,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% da DCL sobre a RCL", 'BR', 0, "C", 0);
-    
+
     for($linha = 5; $linha <= 8; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 8) {
@@ -1233,7 +1233,7 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% Limite de Endividamento", 'BR', 0, "C", 0);
     for($linha = 5; $linha <= 8; $linha ++) {
       if ($linha == 8) {
@@ -1242,12 +1242,12 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, db_formatar($var_info [$linha] [$pcol [2]], "f"), 'BR', 0, "R", 0);
       }
     }
-    
+
     if ($pdf->getY() > $pdf->h - 20) {
       $pdf->AddPage();
       $pdf->cell(185, $alt, "", "TB", 1, "C", 0);
     }
-    
+
     // 2009 a 2012
     $pdf->cell(39, ($alt * 3), "Exercício Financeiro", 'BR', 0, "C", 0);
     for($linha = 9; $linha <= 12; $linha ++) {
@@ -1257,9 +1257,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, $var_info [$linha] [$pcol [1]], 'BR', 0, "C", 0); // ano
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 9; $linha <= 12; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 12) {
@@ -1275,9 +1275,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 9; $linha <= 12; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 12) {
@@ -1299,9 +1299,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% da DCL sobre a RCL", 'BR', 0, "C", 0);
-    
+
     for($linha = 9; $linha <= 12; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 12) {
@@ -1323,7 +1323,7 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% Limite de Endividamento", 'BR', 0, "C", 0);
     for($linha = 9; $linha <= 12; $linha ++) {
       if ($linha == 12) {
@@ -1332,9 +1332,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, db_formatar($var_info [$linha] [$pcol [2]], "f"), 'BR', 0, "R", 0);
       }
     }
-    
+
     $pdf->cell(185, $alt, "", "TB", 1, "C", 0);
-    
+
     // 2013 a 2016
     $pdf->cell(39, ($alt * 3), "Exercício Financeiro", 'BR', 0, "C", 0);
     for($linha = 13; $linha <= 16; $linha ++) {
@@ -1344,9 +1344,9 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, $var_info [$linha] [$pcol [1]], 'BR', 0, "C", 0); // ano
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 13; $linha <= 16; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 16) {
@@ -1362,9 +1362,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->setX(49);
-    
+
     for($linha = 13; $linha <= 16; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 16) {
@@ -1386,9 +1386,9 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% da DCL sobre a RCL", 'BR', 0, "C", 0);
-    
+
     for($linha = 13; $linha <= 16; $linha ++) {
       if ($periodo == "1S" || $periodo == "2S") {
         if ($linha == 16) {
@@ -1410,7 +1410,7 @@ if (! isset($arqinclude)) {
         }
       }
     }
-    
+
     $pdf->cell(39, $alt, "% Limite de Endividamento", 'BR', 0, "C", 0);
     for($linha = 13; $linha <= 16; $linha ++) {
       if ($linha == 16) {
@@ -1419,25 +1419,25 @@ if (! isset($arqinclude)) {
         $pdf->cell(39, $alt, db_formatar($var_info [$linha] [$pcol [2]], "f"), 'BR', 0, "R", 0);
       }
     }
-    
+
     $linhas = 30;
-    
+
     $pdf->setfont("arial", "I", 6);
     $pdf->multicell(185, $alt, "     Se o saldo apurado for negativo, ou seja, se o total do Ativo Disponível mais os Haveres Financeiros for menor que Restos a Pagar Processados, não deverá ser informado nessa linha, mas sim na linha da \"Insuficiência Financeira\", das Obrigações não integrantes da Dívida Consolidada - DC. Assim quando o cálculo de DEDUÇÕES (II) for negativo, colocar um \"-\" (traço) nessa linha.", 0, "J");
     $pdf->cell(185, $alt, "NOTA:", 0, 1, "L", 0);
     $pdf->multicell(185, $alt, "     O excedente em relação ao limite apurado ao final do exercício de 2001 deverá ser reduzido, no mínimo, à proporção de 1/15 (um quinze avos) a cada exercício financeiro. O valor da redução anual, 1/15 (um quinze avos) do excedente, é apresentado na coluna Redutor.", 0, "J");
-    
+
     $pdf->Ln();
   }
-  
-  notasExplicativas(&$pdf, 29, "{$periodo}", 185);
-  
+
+  notasExplicativas($pdf, 29, "{$periodo}", 185);
+
   $pdf->ln($linhas);
   // assinaturas
-  
 
-  assinaturas(&$pdf, &$classinatura, 'GF');
-  
+
+  assinaturas($pdf, $classinatura, 'GF');
+
   $pdf->Output();
 
 }

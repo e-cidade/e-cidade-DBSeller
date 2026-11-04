@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhrubelemento->rotulo->label("rh23_codele");
               <?=$Lrh23_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh23_rubric",4,$Irh23_rubric,true,"text",4,"","chave_rh23_rubric");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhrubelemento->rotulo->label("rh23_codele");
               <?=$Lrh23_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh23_codele",6,$Irh23_codele,true,"text",4,"","chave_rh23_codele");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhrubelemento->rotulo->label("rh23_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhrubelemento.php")==true){
@@ -118,12 +118,12 @@ $clrhrubelemento->rotulo->label("rh23_codele");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

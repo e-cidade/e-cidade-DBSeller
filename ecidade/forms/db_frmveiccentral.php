@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,14 +35,14 @@ if (!isset($ve09_usuario)){
 ?>
 <form name="form1" method="post" action="">
 <table class="container" border="0" width="790">
- <?
+ <?php
 db_input("sequencial",10,"",true,"hidden",3);
 
 
  ?>
 <tr>
     <td align="center">
-    <?
+    <?php
      db_ancora(@$Lve40_veiccadcentral,"js_pesquisave40_veiccadcentral(true);",$db_opcao);
      db_input("ve40_veiccadcentral",10,$Ive40_veiccadcentral,true,"text",$db_opcao," onChange='js_pesquisave40_veiccadcentral(false);'");
      db_input("descrdepto",40,0,true,"text",3);
@@ -57,18 +57,18 @@ db_input("sequencial",10,"",true,"hidden",3);
           value="<?=($db_opcao==1?"Incluir":($db_opcao==3||$db_opcao==33?"Excluir":""))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
   </tr>	
   <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
       $chavepri = array ("ve40_sequencial"=>@$ve40_sequencial);
       $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveiccentral->sql_query(null,"ve40_sequencial,ve40_veiccadcentral,ve40_veiculos",null,"ve40_veiculos = $ve09_veiculos");
@@ -116,7 +116,7 @@ function js_mostraveiccadcentral1(chave1,chave2){
 
 
 
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

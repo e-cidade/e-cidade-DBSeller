@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,6 +57,7 @@ $rotulocampo->label("j45_descr");
 $rotulocampo->label("j34_area");
 $rotulocampo->label("p58_codproc");
 $rotulocampo->label("p58_requer");
+$rotulocampo->label("p58_numero");
 
 $j45_tipis = 0;
 $result    = $cliptubase->sql_record($cliptubase->sql_query("","cgm.z01_nome as z01_nomematri","","j01_matric=$j46_matric"));
@@ -196,8 +197,8 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
 
     $clisentaxa->j56_codigo = $j46_codigo;
     $clisentaxa->excluir($j46_codigo);
-
-    $result_proc = $clisenproc->sql_record($clisenproc->sql_query(null, "p58_codproc,p58_requer", null, "j61_codigo=$j46_codigo"));
+    $camposProc = "p58_codproc,p58_requer,concat(p58_numero,'/',p58_ano) as p58_numero";
+    $result_proc = $clisenproc->sql_record($clisenproc->sql_query(null, $camposProc, null, "j61_codigo=$j46_codigo"));
 
     if ($clisenproc->numrows != 0){
         $clisenproc->excluir(null, "j61_codigo=$j46_codigo and j61_codproc=$p58_codproc");
@@ -311,7 +312,8 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
     $db_opcao = "2";
     $recoloca = "ok";//libera para recolocar os valores de iptu taxa
     $codigo = $j46_codigo;
-    $result_proc = $clisenproc->sql_record($clisenproc->sql_query(null, "p58_codproc,p58_requer", null, "j61_codigo=$j46_codigo"));
+    $camposProc = "p58_codproc,p58_requer,concat(p58_numero,'/',p58_ano) as p58_numero";
+    $result_proc = $clisenproc->sql_record($clisenproc->sql_query(null, $camposProc, null, "j61_codigo=$j46_codigo"));
 
     if ($clisenproc->numrows != 0) {
         db_fieldsmemory($result_proc, 0);
@@ -457,12 +459,15 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap title="<?=@$Tp58_codproc?>">
-                                <label for="p58_codproc"><?php db_ancora(@$Lp58_codproc, "js_pesquisap58_codproc(true);", $db_opcao); ?></label>
+                            <td nowrap title="<?=@$Tp58_numero?>">
+                                <label for="p58_numero">
+                                    <?php db_ancora(@$Lp58_numero, "js_pesquisap58_codproc(true);", $db_opcao); ?>
+                                </label>
                             </td>
                             <td>
                                 <?php
-                                db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', $db_opcao, " onchange='js_pesquisap58_codproc(false);'");
+                                db_input('p58_codproc',5,$Ip58_codproc,true,'hidden', $db_opcao);
+                                db_input('p58_numero',10,$Ip58_numero,true,'text', $db_opcao," placeholder='Número/Ano' onchange='js_pesquisap58_codproc(false);'", "", "", "text-transform: capitalize;");
                                 db_input('p58_requer', 40, $Ip58_requer, true, 'text', 3, '');
                                 ?>
                             </td>
@@ -759,23 +764,33 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
 
     function js_pesquisap58_codproc(mostra) {
         if (mostra == true) {
-            js_OpenJanelaIframe('', 'db_iframe_cgm', 'func_protprocesso.php?funcao_js=parent.js_mostraprotprocesso1|p58_codproc|p58_requer', 'Pesquisa', true);
+            js_OpenJanelaIframe('', 'db_iframe_cgm', 'func_protprocesso.php?funcao_js=parent.js_mostraprotprocesso1|p58_codproc|p58_requer|p58_numero', 'Pesquisa', true);
         } else {
-            js_OpenJanelaIframe('', 'db_iframe_cgm', 'func_protprocesso.php?pesquisa_chave=' + document.form1.p58_codproc.value + '&funcao_js=parent.js_mostraprotprocesso', 'Pesquisa', false);
+            //validando o campo
+            if (!empty($F('p58_numero')) && !RegExp('^\\d+(\\/\\d{4})?$').test($F('p58_numero'))) {
+                let sMensagemErro  = "Formatação do campo inválida\n";
+                sMensagemErro += "Informe número do processo / ano";
+                alert(sMensagemErro);
+                $('p58_numero').value = '';
+                return false;
+            }
+            js_OpenJanelaIframe('', 'db_iframe_cgm', 'func_protprocesso.php?chave_p58_numero=' + document.form1.p58_numero.value + '&funcao_js=parent.js_mostraprotprocesso|p58_codproc|p58_requer', 'Pesquisa', false);
         }
     }
 
     function js_mostraprotprocesso(chave, chave1, erro) {
+        document.form1.p58_codproc.value = chave;
         document.form1.p58_requer.value = chave1;
         if (erro==true) {
-            document.form1.p58_codproc.focus();
-            document.form1.p58_codproc.value = '';
+            document.form1.p58_numero.focus();
+            document.form1.p58_numero.value = '';
         }
     }
 
-    function js_mostraprotprocesso1(chave1,chave2){
+    function js_mostraprotprocesso1(chave1,chave2,chave3){
         document.form1.p58_codproc.value = chave1;
         document.form1.p58_requer.value = chave2;
+        document.form1.p58_numero.value = chave3;
         db_iframe_cgm.hide();
     }
 

@@ -1,7 +1,7 @@
-<?PHP
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -207,7 +207,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
             <table border="0">
                 <tr>
                     <td nowrap title="<?= @$Tc70_codlan ?>"> <?= @$Lc70_codlan ?> </td>
-                    <td><?
+                    <td><?php
                         db_input('c70_codlan', 10, $Ic70_codlan, true, 'text', 3);
                         db_input('c69_sequen', 10, $Ic69_sequen, true, 'text', 3);
                         ?>
@@ -266,7 +266,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                     <td nowrap title="<?= @$Tc69_debito ?>">
 
                         <div id='ctnDebito' style="font-weight: bold; ">
-                            <? //db_ancora(@$Lc69_debito,"js_pesquisac69_debito(true);", $db_opcao); ?>
+                            <?php //db_ancora(@$Lc69_debito,"js_pesquisac69_debito(true);", $db_opcao); ?>
                             <a class='dbancora' onclick='js_pesquisac69_debito(true);'
                                style='text-decoration: underline;' href='#'>
                                 Conta Débito:
@@ -313,7 +313,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                 <tr>
                     <td nowrap title="<?= @$Tc69_credito ?>">
                         <div id='ctnCredito' style="font-weight: bold;">
-                            <? //db_ancora(@$Lc69_credito,"js_pesquisac69_credito(true);", $db_opcao); ?>
+                            <?php //db_ancora(@$Lc69_credito,"js_pesquisac69_credito(true);", $db_opcao); ?>
                             <a class='dbancora' onclick='js_pesquisac69_credito(true);'
                                style='text-decoration: underline;' href='#'>
                                 Conta Crédito:
@@ -322,7 +322,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
 
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('c69_credito', 10, $Ic69_credito, true, 'text', $db_opcao,
                             " onchange='js_pesquisac69_credito(false);'");
                         db_input('c69_credito_estrut', 15, null, true, 'text', $db_opcao," onchange='js_pesquisaEstrutural(2, false);'");
@@ -362,7 +362,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                     <td nowrap title="<?= @$Tc69_codhist ?>">
 
                         <div id='ctnHistorico' style="font-weight: bold;">
-                            <? //db_ancora(@$Lc69_codhist,"js_pesquisac69_codhist(true);", $db_opcao); ?>
+                            <?php //db_ancora(@$Lc69_codhist,"js_pesquisac69_codhist(true);", $db_opcao); ?>
                             <a class='dbancora' onclick='js_pesquisac69_codhist(true);'
                                style='text-decoration: underline;' href='#'>
                                 Histórico:
@@ -371,7 +371,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
 
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('c69_codhist', 10, $Ic69_codhist, true, 'text', $db_opcao,
                             " onchange='js_pesquisac69_codhist(false);'");
                         db_input('c50_descr', 40, $Ic50_descr, true, 'text', 3, '');
@@ -381,7 +381,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
 
                 <tr>
                     <td nowrap title="<?= @$Tc69_valor ?>"> <?= @$Lc69_valor ?> </td>
-                    <td><? db_input('c69_valor', 10, $Ic69_valor, true, 'text', $db_opcao); ?></td>
+                    <td><?php db_input('c69_valor', 10, $Ic69_valor, true, 'text', $db_opcao); ?></td>
                 </tr>
 
                 </tr>
@@ -390,7 +390,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                     <td nowrap title="Tipo de Lançaamento">
                         <strong>Tipo de Lançamento:</strong></td>
                     <td>
-                        <?
+                        <?php
                         $matarr = array('0' => 'Execu??o', '2000' => 'Abertura', '1000' => 'Fechamento');
                         db_select('c71_coddoc', $matarr, true, 2);
                         ?>
@@ -418,7 +418,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
 
                 <tr>
                     <td colspan="2" align="center">
-                        <?
+                        <?php
 
                         if (!isset($consulta)) {
                             if ($db_opcao != "33") {
@@ -429,7 +429,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                                     ?> onclick="critica_form(); ">
                                 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar"
                                        onclick="js_pesquisa();">
-                            <? } else { ?>
+                            <?php } else { ?>
                                 <input name="db_opcao" type="button" id="db_opcao" value="<?= ($db_opcao == 1
                                     ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>"
                                     <?= ($db_botao == false ? "disabled" : "")
@@ -438,7 +438,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                                        onclick="js_pesquisa();">
 
                                 <input name="fechar" type="button" value="Fechar"
-                                       onclick="parent.db_conlancamval.hide();"> <? }
+                                       onclick="parent.db_conlancamval.hide();"> <?php }
                             echo "</td></tr>";
                         } else {
                         // consulta ? setada na | contabilidade| consulta Lan?amentos
@@ -463,61 +463,61 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                         if ($c79_codsup != "") {
                         ?>
                 <tr>
-                    <td nowrap title="<?= @$Tc79_codsup ?>"><? db_ancora(
+                    <td nowrap title="<?= @$Tc79_codsup ?>"><?php db_ancora(
                             $Lc79_codsup, 'abre_sup()', 1)
                         ?></td>
-                    <td><? db_input('c79_codsup', 8, "", true, 'text', $db_opcao); ?></td>
+                    <td><?php db_input('c79_codsup', 8, "", true, 'text', $db_opcao); ?></td>
                 </tr>
-                <? }
+                <?php }
                 if ($c73_coddot != "") {
                     ?>
                     <tr>
-                        <td nowrap title="<?= @$Tc73_coddot ?>"> <? db_ancora(
+                        <td nowrap title="<?= @$Tc73_coddot ?>"> <?php db_ancora(
                                 $Lc73_coddot, 'abre_dot()', 1)
                             ?></td>
-                        <td><? db_input('c73_coddot', 8, "", true, 'text', $db_opcao); ?></td>
+                        <td><?php db_input('c73_coddot', 8, "", true, 'text', $db_opcao); ?></td>
                     </tr>
-                <? }
+                <?php }
                 if ($c75_numemp) {
                     ?>
                     <tr>
-                        <td nowrap title="<?= @$Tc75_numemp ?>"> <? db_ancora(
+                        <td nowrap title="<?= @$Tc75_numemp ?>"> <?php db_ancora(
                                 $Lc75_numemp, 'abre_empenho()', 1)
                             ?></td>
-                        <td><? db_input('c75_numemp', 8, "", true, 'text', $db_opcao); ?></td>
+                        <td><?php db_input('c75_numemp', 8, "", true, 'text', $db_opcao); ?></td>
                     </tr>
-                <? }
+                <?php }
                 if (!empty(
                 $c74_codrec)
                 ) {
                     ?>
                     <tr>
-                        <td nowrap title="<?= @$Tc74_codrec ?>"> <? db_ancora(
+                        <td nowrap title="<?= @$Tc74_codrec ?>"> <?php db_ancora(
                                 $Lc74_codrec, 'abre_rec()', 1)
                             ?></td>
-                        <td><? db_input('c74_codrec', 8, "", true, 'text', $db_opcao); ?></td>
+                        <td><?php db_input('c74_codrec', 8, "", true, 'text', $db_opcao); ?></td>
                     </tr>
-                <? }
+                <?php }
                 if (!empty(
                 $c80_codord)
                 ) {
                     ?>
                     <tr>
-                        <td nowrap title="<?= @$Tc80_codord ?>"> <? db_ancora(
+                        <td nowrap title="<?= @$Tc80_codord ?>"> <?php db_ancora(
                                 $Lc80_codord, 'abre_empenho()', 1)
                             ?></td>
-                        <td><? db_input('c80_codord', 8, "", true, 'text', $db_opcao); ?></td>
+                        <td><?php db_input('c80_codord', 8, "", true, 'text', $db_opcao); ?></td>
                     </tr>
-                <? }
+                <?php }
                 if (!empty(
                 $c82_reduz)
                 ) {
                     ?>
                     <tr>
                         <td nowrap title="<?= @$Tc82_reduz ?>"> <?= $Lc82_reduz ?></td>
-                        <td><? db_input('c82_reduz', 8, "", true, 'text', $db_opcao); ?></td>
+                        <td><?php db_input('c82_reduz', 8, "", true, 'text', $db_opcao); ?></td>
                     </tr>
-                <? }
+                <?php }
 
                 }
                 ?>
@@ -659,7 +659,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
     function js_preenchepesquisa(chave) {
         js_limpaDados();
         db_iframe_conlancamval.hide();
-        <?
+        <?php
 
         if ($db_opcao != 1) {
 

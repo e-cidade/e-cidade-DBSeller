@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,15 +65,15 @@ $clrotulo->label('rh27_descr');
   <table border="0">
     <tr>
       <td align="right" title="<?=$Trh27_rubric?>"> 
-        <?
+        <?php
         db_ancora($Lrh27_rubric,'js_pesquisarh27_rubric(true);',2)
         ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input("rh27_rubric",8,$Irh27_rubric,true,'text',4,"onchange='js_pesquisarh27_rubric(false);'")
         ?>
-        <?
+        <?php
         db_input("rh27_descr",40,$Irh27_descr,true,'text',3)
         ?>
       </td>
@@ -86,7 +86,7 @@ $clrotulo->label('rh27_descr');
   </table>
 </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

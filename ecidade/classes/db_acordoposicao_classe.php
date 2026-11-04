@@ -69,13 +69,13 @@ class cl_acordoposicao {
                  ac26_tipooperacao = int4 = Tipo de Operação
                  ";
   //funcao construtor da classe
-  function cl_acordoposicao() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("acordoposicao");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -84,7 +84,7 @@ class cl_acordoposicao {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->ac26_sequencial = ($this->ac26_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac26_sequencial"]:$this->ac26_sequencial);
       $this->ac26_acordo = ($this->ac26_acordo == ""?@$GLOBALS["HTTP_POST_VARS"]["ac26_acordo"]:$this->ac26_acordo);
@@ -108,7 +108,7 @@ class cl_acordoposicao {
     }
   }
   // funcao para Inclusão
-  function incluir ($ac26_sequencial){
+  public function incluir ($ac26_sequencial){
     $this->atualizacampos();
     if($this->ac26_acordo == null ){
       $this->erro_sql = " Campo Acordo não informado.";
@@ -601,11 +601,11 @@ class cl_acordoposicao {
     return $sql;
   }
 
-  function sql_query_vigencia ( $ac26_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_vigencia ( $ac26_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -634,7 +634,7 @@ class cl_acordoposicao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -667,7 +667,7 @@ class cl_acordoposicao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -712,10 +712,10 @@ class cl_acordoposicao {
    * @param string $dbwhere
    * @return string
    */
-  function sql_queryReativados ( $ac26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_queryReativados ( $ac26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -740,7 +740,7 @@ class cl_acordoposicao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

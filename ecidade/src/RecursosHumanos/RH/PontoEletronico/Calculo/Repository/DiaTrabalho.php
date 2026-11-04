@@ -120,20 +120,20 @@ class DiaTrabalho
 
             throw new \BusinessException($mensagem, 1);
         }
-
+        
         $oServidor->setEscala($this->oEscalaServidor);
 
         $oDiaTrabalho = new DiaTrabalhoModel();
         $oDiaTrabalho->setServidor($oServidor);
         $oDiaTrabalho->setData($oDataPonto);
-
+        
         $assentamentosServidor = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
             $oServidor,
             'S',
             $oDataPonto,
             \Assentamento::NATUREZA_JUSTIFICATIVA
         );
-
+        
         if ($assentamentosServidor) {
             $oDiaTrabalho->setAssentamentosJustificativaServidor($assentamentosServidor);
         }
@@ -153,19 +153,19 @@ class DiaTrabalho
         if (!$this->lBuscaMarcacoesCalculos) {
             return $oDiaTrabalho;
         }
-
+        
         if (!empty($aHoras)) {
             $oMarcacaoPontoRepository = new MarcacaoPonto();
             $oMarcacaoPontoRepository->setJornada($oJornada);
             $oMarcacaoPontoRepository->setBuscaJustificativa($this->lBuscaJustificativaMarcacoes);
-
+            
             $oCollectionRetornada = $oMarcacaoPontoRepository->getCollectionMarcacaoPonto($oDiaTrabalho);
-
+            
             if ($oCollectionRetornada instanceof MarcacoesPontoCollection) {
                 $oCollectionMarcacoes = $oCollectionRetornada;
             }
         }
-
+        
         if ($lHorasProcessadas) {
             $oDiaTrabalho = $this->getHorasProcessadas($oDiaTrabalho);
         }
@@ -174,12 +174,12 @@ class DiaTrabalho
         $oDiaTrabalho->setMarcacoes($oCollectionMarcacoes);
         $oDiaTrabalho->setCodigo($this->getCodigoData($oDiaTrabalho));
         $oDiaTrabalho->setAfastamento($this->getAfastamentoNaData($oDiaTrabalho));
-
+        
         $evento = EventoRepository::getInstance()->possuiEventoNoDiaParaServidor($oDataPonto, $oServidor);
         if (!empty($evento)) {
             $oDiaTrabalho->setEvento($evento);
         }
-
+                
         $aAssentamentosHoraExtraManual = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
             $oServidor,
             'S',
@@ -189,7 +189,7 @@ class DiaTrabalho
         if (!empty($aAssentamentosHoraExtraManual)) {
             $oDiaTrabalho->setAssentamentosHoraExtraManual($aAssentamentosHoraExtraManual);
         }
-
+        
         if (!$lHorasProcessadas) {
             $aAssentamentosAbonofalta = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
                 $oServidor,
@@ -202,7 +202,7 @@ class DiaTrabalho
                 $oDiaTrabalho->setAssentamentosAbonofalta($aAssentamentosAbonofalta);
             }
         }
-
+        
         return $oDiaTrabalho;
     }
 
@@ -446,7 +446,7 @@ class DiaTrabalho
      * @throws \BusinessException
      * @throws \DBException
      */
-    public function persist(DiaTrabalhoModel $oDiaTrabalho)
+    public function persist(DiaTrabalhoModel &$oDiaTrabalho)
     {
         $oDaoPontoEletronicoData = new \cl_pontoeletronicoarquivodata();
         $sWherePontoEletronicoData = "     rh197_data      = '{$oDiaTrabalho->getData()->getDate()}'";

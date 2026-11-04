@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -151,7 +151,7 @@ if(isset($duplica)&&$duplica=='true'&&isset($cod_duplic)&&$cod_duplic!=''){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmcadvencdescalt.php"));
 	?>
     </center>
@@ -160,7 +160,7 @@ if(isset($duplica)&&$duplica=='true'&&isset($cod_duplic)&&$cod_duplic!=''){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clcadvencdesc->erro_status=="0"){
     $clcadvencdesc->erro(true,false);

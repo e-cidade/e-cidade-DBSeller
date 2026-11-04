@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ if (isset($alterar)) {
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='vac1_vac_campanhavacina004.php?vc12_i_campanha=<?=$vc11_i_codigo?>&vc11_c_nome=<?=$vc11_c_nome?>';
 
      </script>
-   <?
+   <?php
    
 }
 ?>
@@ -76,7 +76,7 @@ if (isset($alterar)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_campanha.php"));
 	?>
     </center>
@@ -86,7 +86,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($clvac_campanha->erro_status == "0") {

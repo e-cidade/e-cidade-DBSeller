@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ $aux = new cl_arquivo_auxiliar;
                 </td>
                 <td align="left">
                   <select name="anoexe" id="anoexe" style="width:85px">
-                    <?
+                    <?php
                       $result = $cliptucalc->sql_record($cliptucalc->sql_query_file("","","distinct j23_anousu","j23_anousu desc"));
                       for($i = 0;$i < $cliptucalc->numrows;$i++){
                         db_fieldsmemory($result,$i);
@@ -82,7 +82,7 @@ $aux = new cl_arquivo_auxiliar;
      	 	 			 	  <strong>Tipo : </strong>
                 </td>
                 <td align="left">
-     	 	 			    <?
+     	 	 			    <?php
                      $xx = array("a"=>"Analítico","s"=>"Sintético");
      	 	 			 		  db_select('seltipo',$xx,true,4,"");
                       ?>
@@ -93,7 +93,7 @@ $aux = new cl_arquivo_auxiliar;
 						<table> 
      	 	 		  <tr> 
      	 	 		 	  <td>
-     	 	 		 			<?
+     	 	 		 			<?php
                     $aux->codigo = "j45_tipo";
                     $aux->descr  = "j45_descr";
                     $aux->nomeobjeto = 'tipoisen';
@@ -123,7 +123,7 @@ $aux = new cl_arquivo_auxiliar;
 			</tr>   
 		</table>
   </center>
-	 <?
+	 <?php
 			db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	 ?>
 </body>

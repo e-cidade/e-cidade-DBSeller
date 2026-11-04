@@ -1,7 +1,7 @@
 <?php
     /*
      *     E-cidade Software Publico para Gestao Municipal
-     *  Copyright (C) 2009  DBseller Servicos de Informatica
+     *  Copyright (C) 2009  DBSeller Servicos de Informatica
      *                            www.dbseller.com.br
      *                         e-cidade@dbseller.com.br
      *
@@ -82,7 +82,7 @@
                                     <strong>Código da ITBI:</strong>
                                 </td>
                                 <td align="left">
-                                    <?
+                                    <?php
                                         db_input('it01_guia'      ,20,$Iit01_guia,true,'text',3);
 
                                         db_input('j01_matric'     ,10,"",true,'hidden',3);
@@ -97,7 +97,7 @@
                                     <?=@$Lit01_mail?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php
                                         db_input('it01_mail',50,$Iit01_mail,true,'text',$db_opcao,"");
                                     ?>
                                 </td>
@@ -202,7 +202,7 @@
                                                     <strong>Setor/Bairro:</strong>
                                                 </td>
                                                 <td colspan="1">
-                                                    <?
+                                                    <?php
                                                         db_input('it22_setor',20,$Iit22_setor,true,'text',@$db_opcao_plugin);
                                                     ?>
                                                 </td>
@@ -212,7 +212,7 @@
                                                     <?=@$Lit22_descrlograd?>
                                                 </td>
                                                 <td colspan="3">
-                                                    <?
+                                                    <?php
                                                         db_input('it22_descrlograd',112,$Iit22_descrlograd,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                 </td>
@@ -222,7 +222,7 @@
                                                     <?=@$Lit22_numero?>
                                                 </td>
                                                 <td style="width: 160px;">
-                                                    <?
+                                                    <?php
                                                         db_input('it22_numero',20,$Iit22_numero,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                 </td>
@@ -230,7 +230,7 @@
                                                     <?=@$Lit22_compl?>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it22_compl',74,$Iit22_compl,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                 </td>
@@ -240,7 +240,7 @@
                                                     <?=@$Lit22_quadra?>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it22_quadra',20,$Iit22_quadra,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                 </td>
@@ -248,47 +248,47 @@
                                                     <?=@$Lit22_lote?>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it22_lote',20,$Iit22_lote,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                 </td>
                                             </tr>
 
-                                            <? if ( $oGet->tipo == "urbano" ) {?>
+                                            <?php if ( $oGet->tipo == "urbano" ) {?>
 
                                                 <tr>
                                                     <td nowrap title="<?=@$Tit05_itbisituacao?>">
-                                                        <?
+                                                        <?php
                                                             db_ancora(@$Lit05_itbisituacao,"js_pesquisait05_itbisituacao(true);",$db_opcao);
                                                         ?>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('it05_itbisituacao',20,$Iit05_itbisituacao,true,'text',$db_opcao," onchange='js_pesquisait05_itbisituacao(false);'");
                                                             db_input('it07_descr',87,$Iit07_descr,true,'text',3,'');
                                                         ?>
                                                     </td>
                                                 </tr>
 
-                                            <? } else { ?>
+                                            <?php } else { ?>
                                                 <tr>
                                                     <td>
                                                         <?=@$Lit18_coordenadas?>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('it18_coordenadas',112,$Iit18_coordenadas,true,'text',$db_opcao);
                                                         ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_ancora(@$Lj137_sequencial,"js_pesquisalocalidaderural(true);",$db_opcao);
                                                         ?>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('j137_sequencial',20,@$Ij137_sequencial,true,'text',$db_opcao," onchange='js_pesquisalocalidaderural(false);'");
                                                             db_input('j137_descricao',88,@$Ij137_descricao,true,'text',3,'');
                                                         ?>
@@ -299,7 +299,7 @@
                                                         <strong>Localização:</strong>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('it18_localimovel',112,$Iit18_localimovel,true,'text',$db_opcao);
                                                         ?>
                                                     </td>
@@ -309,7 +309,7 @@
                                                         <strong>Distância da Cidade:</strong>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('it18_distcidade',20,$Iit18_distcidade,true,'text',$db_opcao);
                                                         ?>
                                                         <strong>Km</strong>
@@ -327,14 +327,14 @@
                                                         <strong>Nome Logradouro:</strong>
                                                     </td>
                                                     <td colspan="3">
-                                                        <?
+                                                        <?php
                                                             db_input('it18_nomelograd',112,$Iit18_nomelograd,true,'text',$db_opcao);
                                                         ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4">
-                                                        <?
+                                                        <?php
                                                             db_ancora("<strong>Característica do Imóvel</strong>","js_caract('imovel');",$db_opcao);
                                                             db_input('valorCaracImovel',20,"",true,'hidden',$db_opcao,"");
                                                         ?>
@@ -342,14 +342,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4">
-                                                        <?
+                                                        <?php
                                                             db_ancora("<strong>Característica de Utilização do Imóvel</strong>","js_caract('util');",$db_opcao);
                                                             db_input('valorCaracUtil',20,"",true,'hidden',$db_opcao,"");
                                                         ?>
                                                     </td>
                                                 </tr>
 
-                                            <? } ?>
+                                            <?php } ?>
 
                                         </table>
                                     </fieldset>
@@ -367,7 +367,7 @@
                                                     <strong>Área Total:</strong>
                                                 </td>
                                                 <td style="width: 190px !important;">
-                                                    <?
+                                                    <?php
                                                         db_input('it01_areaterreno',20,$Iit01_areaterreno,true,'text',@$db_opcao_plugin,"");
                                                     ?>
                                                     <strong><?=$sMedida?></strong>
@@ -384,21 +384,21 @@
                                                     <strong>Área Transmitida:</strong>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it01_areatrans',15,$Iit01_areatrans,true,'text',$db_opcao,"");
                                                     ?>
                                                     <strong><?=$sMedida?></strong>
                                                 </td>
                                             </tr>
 
-                                            <? if ( $oGet->tipo == "urbano") {?>
+                                            <?php if ( $oGet->tipo == "urbano") {?>
 
                                                 <tr>
                                                     <td>
                                                         <strong>Frente:</strong>
                                                     </td>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_input('it05_frente',20,$Iit05_frente,true,'text',@$db_opcao_plugin,"");
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
@@ -407,7 +407,7 @@
                                                         <strong>Fundos:</strong>
                                                     </td>
                                                     <td <?= (isset($db_opcao_plugin) ? "style='display:none;'" : "") ?>>
-                                                        <?
+                                                        <?php
                                                             db_input('it05_fundos',20,$Iit05_fundos,true,'text',$db_opcao,"");
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
@@ -418,7 +418,7 @@
                                                         <strong>Lado Direito:</strong>
                                                     </td>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_input('it05_direito',20,$Iit05_direito,true,'text',$db_opcao,"");
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
@@ -427,20 +427,20 @@
                                                         <strong>Lado Esquerdo:</strong>
                                                     </td>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_input('it05_esquerdo',20,$Iit05_esquerdo,true,'text',$db_opcao,"");
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
                                                     </td>
                                                 </tr>
 
-                                            <? } else { ?>
+                                            <?php } else { ?>
                                                 <tr>
                                                     <td nowrap title="<?=@$Tit18_frente?>">
                                                         <?=@$Lit18_frente?>
                                                     </td>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_input('it18_frente',20,$Iit18_frente,true,'text',$db_opcao,"");
                                                             db_input('it18_guia',10,$Iit18_guia,true,'hidden',$db_opcao,"");
                                                         ?>
@@ -450,7 +450,7 @@
                                                         <?=@$Lit18_fundos?>
                                                     </td>
                                                     <td>
-                                                        <?
+                                                        <?php
                                                             db_input('it18_fundos',20,$Iit18_fundos,true,'text',$db_opcao,"")
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
@@ -461,13 +461,13 @@
                                                         <?=@$Lit18_prof?>
                                                     </td>
                                                     <td colspan="2">
-                                                        <?
+                                                        <?php
                                                             db_input('it18_prof',20,$Iit18_prof,true,'text',$db_opcao,"")
                                                         ?>
                                                         <strong><?=$sMedida?></strong>
                                                     </td>
                                                 </tr>
-                                            <? } ?>
+                                            <?php } ?>
                                         </table>
                                     </fieldset>
                                 </td>
@@ -481,12 +481,12 @@
                                         <table width="100%">
                                             <tr>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_ancora("<strong>Setor:</strong>","js_pesquisait29_setorloc(true);",$db_opcao);
                                                     ?>
                                                 </td>
                                                 <td colspan="3">
-                                                    <?
+                                                    <?php
                                                         db_input('it29_setorloc',20,$Iit29_setorloc,true,'text',$db_opcao,"onChange='js_pesquisait29_setorloc(false);'");
                                                         db_input('j05_descr',87,$Ij05_descr,true,'text',3);
                                                     ?>
@@ -497,7 +497,7 @@
                                                     <strong>Quadra:</strong>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it22_quadrari',20,$Iit22_quadrari,true,'text',$db_opcao,"");
                                                     ?>
                                                 </td>
@@ -507,7 +507,7 @@
                                                     <strong>Lote:</strong>
                                                 </td>
                                                 <td>
-                                                    <?
+                                                    <?php
                                                         db_input('it22_loteri',20,$Iit22_loteri,true,'text',$db_opcao,"");
                                                     ?>
                                                 </td>
@@ -517,7 +517,7 @@
                                                     <strong>Matrícula</strong>
                                                 </td>
                                                 <td colspan="3">
-                                                    <?
+                                                    <?php
                                                         db_input('it22_matricri',20,$Iit22_matricri,true,'text',$db_opcao);
                                                     ?>
                                                 </td>
@@ -552,7 +552,7 @@
                         <table width="100%">
                             <tr>
                                 <td>
-                                    <?
+                                    <?php
                                         db_textarea('it01_obs',3,134,$Iit01_obs,true,'text',$db_opcao,"");
                                     ?>
                                 </td>
@@ -563,10 +563,10 @@
             </tr>
         </table>
         <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  onClick=" return js_validaCampos();">
-        <? if ( $db_opcao != 1 ) {?>
+        <?php if ( $db_opcao != 1 ) {?>
             <input name="visualizar" type="button" id="visualizar" value="Visualizar Guia" onclick="js_visualizar(<?=$it01_guia?>);" <?=($db_botao==false?"disabled":"")?>>
             <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-        <? } ?>
+        <?php } ?>
     </form>
 </center>
 <script>
@@ -796,7 +796,7 @@
         }
 
         db_iframe_itbi.hide();
-        <?
+        <?php
         if ($db_opcao == 2 || $db_opcao == 22) {
             echo " location.href = 'itb1_itbilibdadosimovel002.php?chavepesquisa='+chave+'&tipo={$oGet->tipo}';";
         } else if($db_opcao == 33 || $db_opcao == 3) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@
             <b>Sequencial:</b>
           </td>
           <td>
-            <?
+            <?php
               db_input("rh102_sequencial", 10, $Irh102_sequencial, true, "text", 3);
             ?>
           </td>
@@ -94,7 +94,7 @@
             <b>Descrição:</b>
           </td>
           <td>
-            <?
+            <?php
               db_input("rh102_descricao", 50, $Irh102_descricao, true, "text", 3);
             ?>
           </td>
@@ -104,7 +104,7 @@
             <b>Ano / Mês:</b>
           </td>
           <td>
-            <?
+            <?php
               db_input("rh102_anousu", 5, $Irh102_anousu, true, "text", 3);
               echo " / ";
               db_input("rh102_mesusu", 1, $Irh102_mesusu, true, "text", 3);
@@ -116,7 +116,7 @@
             <b>Tipo de folha:</b>
           </td>
           <td>
-            <?
+            <?php
               db_input("rh103_tipofolha", 50, $Irh102_anousu, true, "text", 3);
             ?>
           </td>
@@ -131,7 +131,7 @@
     </p>
   </center>
 </form>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -197,7 +197,7 @@
   $('btnInativar').disable();
 </script>
 
-<?
+<?php
   if ( isset($oPost->btnInativar) ) {
     db_msgbox($sMsgErro);
   }

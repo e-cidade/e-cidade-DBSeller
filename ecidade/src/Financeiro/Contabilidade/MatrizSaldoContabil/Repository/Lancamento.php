@@ -573,7 +573,7 @@ class Lancamento extends BaseClassRepository
     }
 
     /**
-     * Retorna os lançamentos da matriz filtrando por competencia e instituiçao.
+     * Retorna os lançamentos da matriz filtrando por competência e instituição.
      *
      * @param       $mes
      * @param       $ano
@@ -974,7 +974,7 @@ class Lancamento extends BaseClassRepository
      * @param $aContasAtributos
      * @param $mes
      * @param $ano
-     *
+     * @param int $sistema
      * @return mixed
      * @throws Exception
      */
@@ -1259,11 +1259,16 @@ class Lancamento extends BaseClassRepository
      * @param            $instituicoes
      *
      * @param array|null $codigoLancamentos
-     *
+     * @param array $tipoDocumentos
      * @return string
      */
-    public function getQueryLancamentosPorCompetencia($mes, $ano, $instituicoes, array $codigoLancamentos = null)
-    {
+    public function getQueryLancamentosPorCompetencia(
+        $mes,
+        $ano,
+        $instituicoes,
+        array $codigoLancamentos = null,
+        $tipoDocumentos = []
+    ) {
         $aCampos = array();
         $aWhere = array();
 
@@ -1317,6 +1322,11 @@ class Lancamento extends BaseClassRepository
             $aWhere[] = " c120_conplanosistema in( {$this->sistema} )";
         }
 
+        if (!empty($tipoDocumentos)) {
+            $tipos = implode(", ", $tipoDocumentos);
+            $aWhere[] = " c53_tipo in( {$tipos} )";
+        }
+
         $aWhere[] = " c02_instit in ({$instituicoes}) group by 1,2,3,4,5,6,7,8,9,10,11,c120_conplanosistema,c129_ordem";
 
         $ordem = "data_lancamento, estrutura, ordem";
@@ -1329,8 +1339,7 @@ class Lancamento extends BaseClassRepository
         );
         $camposAtributos = $this->getConsultasDosAtributos();
 
-        $sSqlLancamentos = " select *, {$camposAtributos}
-                               from ($sSqlLancamentos) as x";
+        $sSqlLancamentos = " select *, {$camposAtributos} from ($sSqlLancamentos) as x";
 
         return $sSqlLancamentos;
     }
@@ -1564,14 +1573,10 @@ class Lancamento extends BaseClassRepository
                     $valor = $this->deParaPo[$valor];
                 }
                 return $valor;
-                break;
 
             case Model\InformacaoComplementar::INFO_COMP_TIPO_FR:
-                if (!empty($this->deParaRecursos[$valor])) {
-                    $valor = $this->deParaRecursos[$valor];
-                }
+                // a FR já vem no padrão do siconfi ao olhar o saldo anterior
                 return $valor;
-                break;
         }
         return $valor;
     }

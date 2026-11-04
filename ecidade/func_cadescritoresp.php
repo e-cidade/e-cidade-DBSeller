@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadescritoresp->rotulo->label("q84_sequencial");
               <?=$Lq84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q84_sequencial",10,$Iq84_sequencial,true,"text",4,"","chave_q84_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadescritoresp->rotulo->label("q84_sequencial");
               <?=$Lq84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q84_sequencial",10,$Iq84_sequencial,true,"text",4,"","chave_q84_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadescritoresp->rotulo->label("q84_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadescritoresp.php")==true){
@@ -122,12 +122,12 @@ $clcadescritoresp->rotulo->label("q84_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

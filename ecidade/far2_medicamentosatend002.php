@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -120,7 +120,7 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
             </td>
           </tr>
         </table>
-      <?
+      <?php
       exit;
 
     }//fim do if que verifica se o numero de linhas da consulta é igual a zero
@@ -151,7 +151,7 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
           </td>
         </tr>
       </table>
-    <?
+    <?php
     exit;
 
   }//fim do if que verifica se o numero de linhas da consulta é igual a zero
@@ -291,7 +291,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
           </td>
         </tr>
       </table>
-    <?
+    <?php
     exit;
   }//fim do if que verifica se o numero de linhas da consulta é igual a zero
 
@@ -460,7 +460,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
             </td>
           </tr>
         </table>
-      <?
+      <?php
       exit;
     }//fim do if que verifica a quantidade de linhas que retornou a consulta 
     

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ $clrotulo->label('rh70_estrutural');
               <?=$Lq03_ativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q03_ativ",8,$Iq03_ativ,true,"text",4,"","chave_q03_ativ");
 		       ?>
             </td>
@@ -74,13 +74,13 @@ $clrotulo->label('rh70_estrutural');
               <?=$Lq03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q03_descr",40,$Iq03_descr,true,"text",4,"","chave_q03_descr");
 		       ?>
             </td>
           </tr>
 
-    <?
+    <?php
 
       if(isset($tipo_pesquisa) && $tipo_pesquisa == 'cnpj' ){
     ?>
@@ -90,12 +90,12 @@ $clrotulo->label('rh70_estrutural');
               <?=$Lq71_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q71_estrutural",8,$Iq71_estrutural,true,"text",4,"","chave_q71_estrutural");
 		       ?>
             </td>
           </tr>
-     <?
+     <?php
       }else{
      ?>
           <tr> 
@@ -103,13 +103,13 @@ $clrotulo->label('rh70_estrutural');
               <?=$Lrh70_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh70_estrutural",8,$Irh70_estrutural,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
           </tr>
 
-     <?
+     <?php
       }
      ?>
      
@@ -127,7 +127,7 @@ $clrotulo->label('rh70_estrutural');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
       $chave_q03_descr = addslashes($chave_q03_descr);
       $repassa = array("tipo_pesquisa"=>@$tipo_pesquisa);
@@ -217,14 +217,14 @@ $clrotulo->label('rh70_estrutural');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
     document.form2.chave_q03_descr.focus();
     document.form2.chave_q03_descr.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

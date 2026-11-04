@@ -47,7 +47,7 @@ $cRotulo->label('x11_complemento');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js, estilos.css');
 ?>
 </head>
@@ -57,12 +57,12 @@ $cRotulo->label('x11_complemento');
   <tr>
     <td title="<?=$Tx01_matric?>"><?=$Lx01_matric?></td>
     <td title="<?=$Tx01_matric?>">
-    <?
+    <?php
       db_input('x01_matric', 8, $Ix01_matric, true, 'text', 3)
     ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3)
     ?>
     </td>
@@ -71,12 +71,12 @@ $cRotulo->label('x11_complemento');
   <tr>
     <td title="<?=$Tj14_nome?>"><?=$Lj14_nome?></td>
     <td>
-    <?
+    <?php
       db_input('x01_codrua', 8, $Ix01_codrua, true, 'text', 3)
     ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('j14_nome', 40, $Ij14_nome, true, 'text', 3)
     ?>
     </td>
@@ -85,7 +85,7 @@ $cRotulo->label('x11_complemento');
   <tr>
     <td title="<?=$Tx01_numero?>"><?=$Lx01_numero?></td>
     <td colspan="2">
-    <?
+    <?php
       db_input('x01_numero', 8, $Ix01_numero, true, 'text', 3)
     ?>
     </td>
@@ -94,7 +94,7 @@ $cRotulo->label('x11_complemento');
   <tr>
     <td title="<?=$Tx11_complemento?>"><?=$Lx11_complemento?></td>
     <td colspan="2">
-    <?
+    <?php
       db_input('x11_complemento', 30, $Ix11_complemento, true, 'text', 3)
     ?>
     </td>
@@ -109,7 +109,7 @@ $cRotulo->label('x11_complemento');
   </tr>
 </table>
 </form>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script>

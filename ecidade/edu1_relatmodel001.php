@@ -38,21 +38,25 @@ $db_botao         = true;
 
 if (isset($incluir)) {
 
-  if (!empty($ed217_t_cabecalho)) {
-    $cledu_relatmodel->ed217_t_cabecalho = null;
-  }
+    if (!empty($ed217_t_cabecalho)) {
+        $cledu_relatmodel->ed217_t_cabecalho = null;
+    }
 
-  if ($ed217_i_relatorio == 3 && $ed217_i_tipomodelo == 2) {
-    $cledu_relatmodel->ed217_t_cabecalho = preg_replace(array('/\r/', '/\n/'), ' ', $ed217_t_cabecalho);
-  }
+    if ($ed217_i_relatorio == 3 && $ed217_i_tipomodelo == 2) {
+        $cledu_relatmodel->ed217_t_cabecalho = preg_replace(array('/\r/', '/\n/'), ' ', $ed217_t_cabecalho);
+    }
 
-  $cledu_relatmodel->ed217_exibeturma        = $ed217_exibeturma;
-  $cledu_relatmodel->ed217_exibecargahoraria = $ed217_exibecargahoraria;
+    if ($ed217_i_relatorio == 7) {
+        $cledu_relatmodel->ed217_disposicao_brasao = $ed217_disposicao_brasao;
+        $cledu_relatmodel->ed217_disposicao_cabecalho = $ed217_disposicao_cabecalho;
+    }
 
-  db_inicio_transacao();
-  $cledu_relatmodel->incluir($ed217_i_codigo);
-  db_fim_transacao();
+    $cledu_relatmodel->ed217_exibeturma        = $ed217_exibeturma;
+    $cledu_relatmodel->ed217_exibecargahoraria = $ed217_exibecargahoraria;
 
+    db_inicio_transacao();
+    $cledu_relatmodel->incluir($ed217_i_codigo);
+    db_fim_transacao();
 }
 ?>
 <html>
@@ -69,31 +73,28 @@ if (isset($incluir)) {
 <body class='body-default' >
 
   <div class='container'>
-    <?include(modification("forms/db_frmedu_relatmodel.php"));?>
+    <?php include(modification("forms/db_frmedu_relatmodel.php"));?>
   </div>
 <?php
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit") );
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed217_i_relatorio",true,1,"ed217_i_relatorio",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-
-  if ($cledu_relatmodel->erro_status == "0") {
-
-    $cledu_relatmodel->erro(true,false);
-    $db_botao = true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    if ($cledu_relatmodel->erro_campo!=""){
-
-      echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".focus();</script>";
+    if ($cledu_relatmodel->erro_status == "0") {
+        $cledu_relatmodel->erro(true, false);
+        $db_botao = true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
+        if ($cledu_relatmodel->erro_campo!="") {
+            echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$cledu_relatmodel->erro_campo.".focus();</script>";
+        }
+    } else {
+        $cledu_relatmodel->erro(true, true);
     }
-  } else {
-    $cledu_relatmodel->erro(true,true);
-  }
 }
 ?>

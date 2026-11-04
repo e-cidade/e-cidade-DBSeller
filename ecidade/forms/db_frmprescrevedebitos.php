@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 /*
@@ -49,28 +49,28 @@ $func_nome ->mostrar();
   <tr>
   </tr>
   <tr id="numcgm">
-    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
-    <td> 
-        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
-    </td>    
+    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+    <td>
+        <?php db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+        <?php db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+    </td>
   </tr>
   <tr id="matricula">
-     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
-     <td> 
-        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
-     </td>    
+     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+     <td>
+        <?php db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+     </td>
    </tr>
    <tr id="inscr">
-    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
-    <td> 
-        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
-    </td>    
+    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+    <td>
+        <?php db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+    </td>
   </tr>
  <tr>
      <td><strong>Data</strong></td>
-     <td> 
-         <?
+     <td>
+         <?php
         	   $k31_data_dia = date('d');
         	   $k31_data_mes = date('m');
         	   $k31_data_ano = date('Y');
@@ -80,8 +80,8 @@ $func_nome ->mostrar();
  </tr>
 <tr>
     <td><strong>Hora</strong></td>
-    <td> 
-       <?       
+    <td>
+       <?php
          $k31_hora = date( 'H:i' );
          db_input('k31_hora',5,@$k31_hora,true,'text',3)
        ?>
@@ -89,8 +89,8 @@ $func_nome ->mostrar();
  </tr>
  <tr>
      <td><strong>Usuário</strong></td>
-     <td> 
-         <? 
+     <td>
+         <?php
       	  $k31_usuario = db_getsession("DB_id_usuario");
       	  db_input('k31_usuario',10, $k31_usuario ,true,'text',3,"");
           db_input('db_usunome',50,$db_usunome,true,'text',3);
@@ -115,7 +115,7 @@ function js_verifica(){
   }
   querystring = 'numcgm='+numcgm+'&matric='+matric+'&inscr='+inscr;
   js_OpenJanelaIframe('','db_iframe_proc','func_prescreverdivida.php?'+querystring,'Prescrição de Divida',true);
-}  
+}
 function js_prescreve_gp( opcao ){
   if( opcao == 1 ){
     document.getElementById('numcgm').style.visibility="visible";
@@ -206,5 +206,5 @@ function js_preencheinscricao1(chave,erro){
      document.form1.k31_inscr.value = '';
    }
 }
- 
+
 </script>

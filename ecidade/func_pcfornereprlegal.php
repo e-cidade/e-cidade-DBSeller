@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
               <?=$Lpc81_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc81_sequencia",8,$Ipc81_sequencia,true,"text",4,"","chave_pc81_sequencia");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
               <?=$Lpc81_cgmforn?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc81_cgmforn",10,$Ipc81_cgmforn,true,"text",4,"","chave_pc81_cgmforn");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcfornereprlegal.php")==true){
@@ -122,12 +122,12 @@ $clpcfornereprlegal->rotulo->label("pc81_cgmforn");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

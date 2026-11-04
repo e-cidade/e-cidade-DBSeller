@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltabativ->rotulo->label("q07_inscr");
               <?=$Lq07_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q07_inscr",4,$Iq07_inscr,true,"text",4,"","chave_q07_inscr");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltabativ->rotulo->label("q07_inscr");
               <?=$Lq07_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q07_seq",4,$Iq07_seq,true,"text",4,"","chave_q07_seq");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cltabativ->rotulo->label("q07_inscr");
               <?=$Lq07_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q07_inscr",4,$Iq07_inscr,true,"text",4,"","chave_q07_inscr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cltabativ->rotulo->label("q07_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabativ.php")==true){
@@ -129,12 +129,12 @@ $cltabativ->rotulo->label("q07_inscr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

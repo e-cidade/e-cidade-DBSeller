@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,13 +50,13 @@ class cl_inicialcert {
                  v51_certidao = int4 = Certidão
                  ";
    //funcao construtor da classe
-   function cl_inicialcert() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inicialcert");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_inicialcert {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v51_inicial = ($this->v51_inicial == ""?@$GLOBALS["HTTP_POST_VARS"]["v51_inicial"]:$this->v51_inicial);
        $this->v51_certidao = ($this->v51_certidao == ""?@$GLOBALS["HTTP_POST_VARS"]["v51_certidao"]:$this->v51_certidao);
@@ -75,7 +75,7 @@ class cl_inicialcert {
      }
    }
    // funcao para inclusao
-   function incluir ($v51_inicial,$v51_certidao){
+   public function incluir ($v51_inicial,$v51_certidao){
       $this->atualizacampos();
        $this->v51_inicial = $v51_inicial;
        $this->v51_certidao = $v51_certidao;
@@ -140,7 +140,7 @@ class cl_inicialcert {
      return true;
    }
    // funcao para alteracao
-   function alterar ($v51_inicial=null,$v51_certidao=null) {
+   public function alterar ($v51_inicial=null,$v51_certidao=null) {
       $this->atualizacampos();
      $sql = " update inicialcert set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_inicialcert {
      }
    }
    // funcao para exclusao
-   function excluir ($v51_inicial=null,$v51_certidao=null,$dbwhere=null) {
+   public function excluir ($v51_inicial=null,$v51_certidao=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v51_inicial,$v51_certidao));
      }else{
@@ -293,7 +293,7 @@ class cl_inicialcert {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,7 +315,7 @@ class cl_inicialcert {
       }
      return $result;
    }
-   function sql_query ( $v51_inicial=null,$v51_certidao=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $v51_inicial=null,$v51_certidao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql =explode("#",$campos);
@@ -361,7 +361,7 @@ class cl_inicialcert {
      }
      return $sql;
   }
-   function sql_query_file ( $v51_inicial=null,$v51_certidao=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $v51_inicial=null,$v51_certidao=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql =explode("#",$campos);

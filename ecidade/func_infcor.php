@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clinfcor->rotulo->label("i04_obs");
               <?=$Li04_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("i04_codigo",6,$Ii04_codigo,true,"text",4,"","chave_i04_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clinfcor->rotulo->label("i04_obs");
               <?=$Li04_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("i04_seq",10,$Ii04_seq,true,"text",4,"","chave_i04_seq");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clinfcor->rotulo->label("i04_obs");
               <?=$Li04_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("i04_obs",100,$Ii04_obs,true,"text",4,"","chave_i04_obs");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clinfcor->rotulo->label("i04_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_infcor.php")==true){
@@ -129,12 +129,12 @@ $clinfcor->rotulo->label("i04_obs");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

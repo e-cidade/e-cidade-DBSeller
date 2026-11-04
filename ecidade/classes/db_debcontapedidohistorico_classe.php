@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,13 +73,13 @@ class cl_debcontapedidohistorico {
                  d83_codret = int4 = Codigo do Arquivo Retorno
                  ";
    //funcao construtor da classe
-   function cl_debcontapedidohistorico() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidohistorico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_debcontapedidohistorico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d83_sequencial = ($this->d83_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["d83_sequencial"]:$this->d83_sequencial);
        $this->d83_debcontapedido = ($this->d83_debcontapedido == ""?@$GLOBALS["HTTP_POST_VARS"]["d83_debcontapedido"]:$this->d83_debcontapedido);
@@ -114,7 +114,7 @@ class cl_debcontapedidohistorico {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->d83_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
@@ -259,7 +259,7 @@ class cl_debcontapedidohistorico {
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
    }
-   function excluir ($d83_sequencial=null,$dbwhere=null) {
+   public function excluir ($d83_sequencial=null,$dbwhere=null) {
      $sql = " delete from debcontapedidohistorico
                     where ";
      $sql2 = "";
@@ -306,7 +306,7 @@ class cl_debcontapedidohistorico {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -329,10 +329,10 @@ class cl_debcontapedidohistorico {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -356,7 +356,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -366,10 +366,10 @@ class cl_debcontapedidohistorico {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -399,10 +399,10 @@ class cl_debcontapedidohistorico {
      }
      return $sql;
   }
-   function sql_query_info ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_info ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,10 +442,10 @@ class cl_debcontapedidohistorico {
      return $sql;
   }
 
-  function sql_query_deb_conta($d83_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_deb_conta($d83_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

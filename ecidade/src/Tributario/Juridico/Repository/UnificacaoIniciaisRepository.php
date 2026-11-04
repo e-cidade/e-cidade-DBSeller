@@ -137,6 +137,8 @@ class UnificacaoIniciaisRepository
                 "SELECT DISTINCT
                         inicial.v50_inicial AS codigo_inicial,
                         certid.v13_certid AS codigo_certidao,
+                        arretipo.k00_descr AS tipo_debito,
+                        inicial.v50_data AS data_inicial,
                         (CASE WHEN termo.v07_parcel IS NOT NULL THEN TO_CHAR(termo.v07_dtlanc, 'YYYY')::integer
                               ELSE divida.v01_exerc
                               END) AS exercicio_divida,

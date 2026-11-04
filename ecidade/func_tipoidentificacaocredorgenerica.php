@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
               <?=$Lc25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c25_sequencial",10,$Ic25_sequencial,true,"text",4,"","chave_c25_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
               <?=$Lc25_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c25_descricao",100,$Ic25_descricao,true,"text",4,"","chave_c25_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoidentificacaocredorgenerica.php")==true){
@@ -122,12 +122,12 @@ $cltipoidentificacaocredorgenerica->rotulo->label("c25_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -178,7 +178,15 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
                             unset($oCalculoAgrupado["iptucale"]);
                             unset($oCalculoAgrupado["areaEdTaxa"]);
                             unset($oCalculoAgrupado["aliqTaxa"]);
+                            $gerafinanc = $oCalculoAgrupado[0]->gerafinanc;
+                            $habilitaGeraFinac = false;
+                            $oDaocfiptu = new cl_cfiptu;
+                            $sqlcfiptu = $oDaocfiptu->sql_query_file(db_getsession("DB_anousu"),'j18_taxaseparada, j18_simulacaocalculo');
+                            $rs = pg_fetch_object(db_query($sqlcfiptu));
 
+                            if($rs->j18_taxaseparada == 0 && $rs->j18_simulacaocalculo == 't'){
+                            $habilitaGeraFinac = true;
+                            }
                             foreach($oCalculoAgrupado as $oCalculo) :
 
                                 $soma     = $soma     + ($oCalculo->j157_valor - abs($oCalculo->j157_valorisen));
@@ -197,7 +205,9 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
                             </tr>
                         <?php endforeach; ?>
                         <tr align="left">
-                            <th colspan="5" align="right" nowrap bgcolor="#CCCCCC">TOTAL :</th>
+                            <th align="right" nowrap bgcolor="#CCCCCC"><?= $habilitaGeraFinac ? 'Calcular Financeiro' : ''; ?></th>
+                            <th align="center" nowrap bgcolor="#CCCCCC"><?= $habilitaGeraFinac ? $gerafinanc : ''; ?></th>
+                            <th colspan="3" align="right" nowrap bgcolor="#CCCCCC">TOTAL :</th>
                             <td width="12%" align="right" nowrap bgcolor="#CCCCCC"><strong><?=db_formatar($somacalc,'f')?></strong></td>
                             <td width="12%" align="right" nowrap bgcolor="#CCCCCC"><strong><?=db_formatar($somaisen,'f')?></strong></td>
                             <td width="12%" align="right" nowrap bgcolor="#CCCCCC"><strong><?=db_formatar($soma,'f')?></strong></td>

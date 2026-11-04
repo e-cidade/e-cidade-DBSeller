@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $clprocjur->rotulo->label();
   <tr>
     <td align="center" valign="middle">
 	  <table width="95%" border="1" cellspacing="0" class='tab_cinza'>
-	    <?
+	    <?php
 		    $rsDadosProcesso  = $clprocjur->sql_record($clprocjur->sql_query_susp($oGet->procjur));	
 	        $iNumRowsProcesso = $clprocjur->numrows;
 			

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("h68_descricao");
        <?=@$Lh69_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('h69_sequencial',10,$Ih69_sequencial,true,'text', 3,"")
 			?>
     </td>
@@ -55,23 +55,23 @@ $clrotulo->label("h68_descricao");
        <?=@$Lh69_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('h69_descricao',60,$Ih69_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th69_rhgrupotipoavaliacao?>">
-       <?
+       <?php
        db_ancora(@$Lh69_rhgrupotipoavaliacao,"js_pesquisah69_rhgrupotipoavaliacao(true);",$db_opcao);
        ?>
        <input type="hidden" id='iGrupo'  />
     </td>
     <td> 
-				<?
+				<?php
 				 db_input('h69_rhgrupotipoavaliacao',10,$Ih69_rhgrupotipoavaliacao,true,'text',$db_opcao," onchange='js_pesquisah69_rhgrupotipoavaliacao(false);'")
 				?>
-       <?
+       <?php
         db_input('h68_descricao',48,$Ih68_descricao,true,'text',3,'')
        ?>
     </td>
@@ -82,7 +82,7 @@ $clrotulo->label("h68_descricao");
        <?=@$Lh69_quantminima?>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('h69_quantminima',10,$Ih69_quantminima,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -92,7 +92,7 @@ $clrotulo->label("h68_descricao");
        <?=@$Lh69_quantmaxima?>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('h69_quantmaxima',10,$Ih69_quantmaxima,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -105,7 +105,7 @@ $clrotulo->label("h68_descricao");
     </td>
     <td>
       <!-- <input type='text' id='valorpadrao' maxlength="10" onkeyup="js_ValidaCampos(this,1,'Valor Padrão','f','f',event);" name='valorpadrao' size="10" />-->
-      <?
+      <?php
         db_input('valorpadrao',10,$Ih69_quantmaxima,true,'text',$db_opcao,"maxlength='10'");
       ?>   
     </td>
@@ -221,7 +221,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhtipoavaliacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

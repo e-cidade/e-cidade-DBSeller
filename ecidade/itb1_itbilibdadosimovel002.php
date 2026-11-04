@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -105,13 +105,22 @@ if(isset($oPost->alterar)){
       $clitbi->it01_dtprocesso = date('Y-m-d', strtotime(str_replace('/', '-', $oPost->it01_dtprocesso)));
   }
 
-  $clitbi->alterar($oPost->it01_guia);
-
-  if ( $clitbi->erro_status == 0 ) {
+  $validaItbiPaga = db_query("select * from itbi.itbinumpre itbinp
+                              inner join caixa.arrepaga  arp
+                              on itbinp.it15_numpre = arp.k00_numpre
+                              where itbinp.it15_guia = {$oPost->it01_guia}");
+                              
+  if(pg_num_rows($validaItbiPaga) == 0) {
+    $clitbi->alterar($oPost->it01_guia);
+    $sMsgErro = $clitbi->erro_msg;
+  }else{
     $lSqlErro = true;
+    $sMsgErro = 'Não é possivel alterar os dados de uma guia que já foi paga.';
   }
-
-  $sMsgErro = $clitbi->erro_msg;
+  if ( $clitbi->erro_status === 0 ) {
+    $lSqlErro = true;
+    $sMsgErro = $clitbi->erro_msg;
+  }
 
   $oGet->tipo = $oPost->tipo;
 
@@ -124,11 +133,16 @@ if(isset($oPost->alterar)){
     $clitburbano->it05_direito        = $oPost->it05_direito;
     $clitburbano->it05_itbisituacao   = $oPost->it05_itbisituacao;
 
-    $clitburbano->alterar($oPost->it01_guia);
+    if(pg_num_rows($validaItbiPaga) == 0) {
+      $clitbi->alterar($oPost->it01_guia);
+    }else{
+      $lSqlErro = true;
+      $sMsgErro = 'Não é possivel alterar os dados de uma guia que já foi paga.';
+    }
 
-    if($clitburbano->erro_status == 0){
+    if($clitburbano->erro_status === 0){
       $sMsgErro = $clitburbano->erro_msg;
-    $lSqlErro = true;
+      $lSqlErro = true;
     }
 
   } else if($oPost->tipo == "rural") {
@@ -147,8 +161,13 @@ if(isset($oPost->alterar)){
 		  }
 
 	    $clitbirural->it18_area      = $oPost->it01_areaterreno;
-
-	    $clitbirural->alterar($oPost->it01_guia);
+      
+      if(pg_num_rows($validaItbiPaga) == 0) {
+        $clitbi->alterar($oPost->it01_guia);
+      }else{
+        $lSqlErro = true;
+        $sMsgErro = 'Não é possivel alterar os dados de uma guia que já foi paga.';
+      }
 
 	    // Excluimos todas as localidades e apos inserimos a nova
 	    $clitbilocalidaderural->excluir('',' it33_guia = ' . $clitbi->it01_guia );
@@ -156,19 +175,18 @@ if(isset($oPost->alterar)){
 	    $clitbilocalidaderural->it33_guia 					 = $clitbi->it01_guia;
 	    $clitbilocalidaderural->it33_localidaderural = $oPost->j137_sequencial;
 	    $clitbilocalidaderural->incluir( null );
-
-	    if ( $clitbirural->erro_status == 0 ) {
+    
+	    if ( $clitbirural->erro_status === 0 ) {
 	      $lSqlErro = true;
+        $sMsgErro   = $clitbirural->erro_msg;
 	    }
-
-	    $sMsgErro   = $clitbirural->erro_msg;
 
 		  if ( !$lSqlErro ) {
 
 		    $aListaCaracImovel = explode("|",$oPost->valorCaracImovel);
 		    foreach ( $aListaCaracImovel as $aChave) {
 
-		      $aListaDadosCaracImovel = split("X", $aChave);
+		      $aListaDadosCaracImovel =explode("X", $aChave);
 
 		      $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query_file($oPost->it01_guia, $aListaDadosCaracImovel[0]));
 		      $clitbiruralcaract->it19_guia   = $oPost->it01_guia;
@@ -193,7 +211,7 @@ if(isset($oPost->alterar)){
 	    $aListaCaracUtil = explode("|",$oPost->valorCaracUtil);
 	    foreach ( $aListaCaracUtil as $aChave) {
 
-	      $aListaDadosCaracUtil = split("X",$aChave);
+	      $aListaDadosCaracUtil =explode("X",$aChave);
 
 	      $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query_file($oPost->it01_guia, $aListaDadosCaracUtil[0]));
 	      $clitbiruralcaract->it19_guia   = $oPost->it01_guia;
@@ -340,6 +358,22 @@ if (isset($oGet->alteraguialib)) {
  }
 */
 /* M16507 - ajustacadastroitbi - Plugin que ajusta os campos do ITBI para Porto Velho */
+if($it01_processo != null) {
+  $processo = explode("/", $it01_processo);
+  $verificaNome = db_query("select 
+                          	z01_nome as p58_requer
+                          from
+                          	protprocesso
+                          inner join cgm on
+                          	cgm.z01_numcgm = protprocesso.p58_numcgm
+                          where
+                          	p58_instit = 1
+                          	and p58_ano = {$processo[1]}
+                          	and p58_numero = '{$processo[0]}'");
+  if(pg_num_rows($verificaNome) > 0) {
+    $p58_requer = pg_fetch_result($verificaNome,0,'p58_requer');
+  }
+}
 ?>
 <html>
 <head>
@@ -355,7 +389,7 @@ if (isset($oGet->alteraguialib)) {
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
 
-<?
+<?php
   $sLogradouro             = @$it18_nomelograd;
   $sFuncaoFrenteLogradouro = '';
   if ($sLogradouro == " " || $sLogradouro == null ) {
@@ -371,7 +405,7 @@ if (isset($oGet->alteraguialib)) {
     </tr>
     <tr>
       <td>
-      <?
+      <?php
         include(modification("forms/db_frmitbilibdadosimovel.php"));
       ?>
     </td>
@@ -380,7 +414,7 @@ if (isset($oGet->alteraguialib)) {
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar)){
 
   if( !$lSqlErro ){

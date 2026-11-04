@@ -65,7 +65,7 @@ try {
   	    $iTipoLayout = BPAMagnetico::BPA_INDIVIDUAL;
   	  }
 
-  	  $sNomeArquivo            = "/tmp/{$oParam->sNomeArquivo}";
+  	  $sNomeArquivo            = ECIDADE_PATH . "/tmp/{$oParam->sNomeArquivo}";
   	  $sArquivoInconsistencia  = "tmp/erro_bpa_magnetico.json";
 
       $oBPAMagnetico = new BPAMagnetico($iTipoLayout, $sNomeArquivo, $oCompetencia, new DBLogJSON($sArquivoInconsistencia));

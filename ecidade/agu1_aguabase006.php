@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,30 +25,35 @@
  *                                licenca/licenca_pt.txt 
  */
 
-  require(modification("libs/db_stdlib.php"));
-  require(modification("libs/db_conecta.php"));
-  include(modification("libs/db_sessoes.php"));
-  include(modification("libs/db_usuariosonline.php"));
-  include(modification("dbforms/db_funcoes.php"));
-  include(modification("classes/db_aguabase_classe.php"));
-  include(modification("classes/db_aguabaseresp_classe.php"));
-  include(modification("classes/db_aguabasecorresp_classe.php"));
-  include(modification("classes/db_aguabasecar_classe.php"));
-  include(modification("classes/db_aguaconstr_classe.php"));
-  include(modification("classes/db_aguabasevenc_classe.php"));
-  include(modification("classes/db_histocorrencia_classe.php"));
-  include(modification("classes/db_histocorrenciamatric_classe.php"));
+  require_once(modification("libs/db_stdlib.php"));
+  require_once(modification("libs/db_conecta.php"));
+  require_once(modification("libs/db_sessoes.php"));
+  require_once(modification("libs/db_usuariosonline.php"));
+  require_once(modification("dbforms/db_funcoes.php"));
+  require_once(modification("classes/db_aguabase_classe.php"));
+  require_once(modification("classes/db_aguabaseresp_classe.php"));
+  require_once(modification("classes/db_aguabasecorresp_classe.php"));
+  require_once(modification("classes/db_aguabasecar_classe.php"));
+  require_once(modification("classes/db_aguaconstr_classe.php"));
+  require_once(modification("classes/db_aguabasevenc_classe.php"));
+  require_once(modification("classes/db_histocorrencia_classe.php"));
+  require_once(modification("classes/db_histocorrenciamatric_classe.php"));
 
   $claguabase             = new cl_aguabase;
+  $claguabasebaixa        = new cl_aguabasebaixa;
+  $claguacalc             = new cl_aguacalc;
+  $claguacalcval          = new cl_aguacalcval;
   $claguabasecar          = new cl_aguabasecar;  
   $claguabaseresp         = new cl_aguabaseresp;
   $claguabasecorresp      = new cl_aguabasecorresp;
   $claguaconstr           = new cl_aguaconstr;
   $claguabasevenc         = new cl_aguabasevenc;
   $clhistocorrencia       = new cl_histocorrencia;
+  $clhistocorrenciainscr  = new cl_histocorrenciainscr;
+  $clhistocorrenciacgm    = new cl_histocorrenciacgm;
   $clhistocorrenciamatric = new cl_histocorrenciamatric;
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $db_opcao = 33;
   $db_botao = false;
@@ -104,7 +109,23 @@
     } 
     
     $erro_msg = $claguabasevenc->erro_msg; 
-  
+
+    $claguabasebaixa->excluir($x01_matric);
+
+    $sqlCalculosAgua = $claguacalc->sql_query_file(null, 'x22_codcalc', null, "x22_matric = $x01_matric");
+    $rsCalculosAgua = db_query($sqlCalculosAgua);
+    $existeCalculoAgua = (pg_num_rows($rsCalculosAgua)) > 0;
+
+    if ($existeCalculoAgua){
+      $calculosAgua = db_utils::getCollectionByRecord($rsCalculosAgua);
+
+      foreach ($calculosAgua as $calculoAgua){
+        $claguacalcval->excluir($calculoAgua->x22_codcalc);
+      }
+
+      $claguacalc->excluir(null, "x22_matric = $x01_matric");
+    }
+    
     $claguabase->excluir($x01_matric);
     
     if ($claguabase->erro_status == 0) {
@@ -115,28 +136,55 @@
   
     //exclusao das ocorrencias 
     $result  = $clhistocorrenciamatric->sql_record($clhistocorrenciamatric->sql_query("", "ar25_histocorrencia", "ar25_histocorrencia", "ar25_matric = $x01_matric"));
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     
     if ($numrows > 0) {
+      $ar23_sequenciais_excluir = [];
+
       for($i = 0; $i < $numrows; $i++) {
         
         db_fieldsmemory($result, $i);
         
-        $ar23_sequencial_excluir .= $ar25_histocorrencia;
-      
-        if ($i < ($numrows-1)) { 
-          $ar23_sequencial_excluir .= ", ";
-        }
+        $ar23_sequenciais_excluir[] = $ar25_histocorrencia;
       }
       
       $clhistocorrenciamatric->excluir("", "ar25_matric = $x01_matric");
-      $clhistocorrencia->excluir("", "ar23_sequencial IN ($ar23_sequencial_excluir)");
-    
-      if ($clhistocorrencia->erro_status == 0) {
-        $sqlerro = true;
+
+      foreach ($ar23_sequenciais_excluir as $ar23_sequencial_excluir) {
+
+        $sqlOcorrenciasInscricao = $clhistocorrenciainscr->sql_query("", "ar26_sequencial", null, "ar26_histocorrencia = $ar23_sequencial_excluir");
+        $rsOcorrenciasInscricao = $clhistocorrenciainscr->sql_record($sqlOcorrenciasInscricao);
+        $existemOcorrenciasParaInscricao = (pg_num_rows($rsOcorrenciasInscricao)) > 0;
+
+        if($existemOcorrenciasParaInscricao){
+          $ocorrenciasInscricao = db_utils::getCollectionByRecord($rsOcorrenciasInscricao);
+
+          foreach($ocorrenciasInscricao as $ocorrenciaInscricao){
+            $clhistocorrenciainscr->excluir($ocorrenciaInscricao->ar26_sequencial);
+          }
+        }
+        
+        $sqlOcorrenciasCgm = $clhistocorrenciacgm->sql_query("", "ar24_sequencial", null, "ar24_histocorrencia = $ar23_sequencial_excluir");
+        $rsOcorrenciasCgm = $clhistocorrenciacgm->sql_record($sqlOcorrenciasCgm);
+        $existemOcorrenciasParaCgm = (pg_num_rows($rsOcorrenciasCgm)) > 0;
+
+        if($existemOcorrenciasParaCgm){
+          $ocorrenciasCgm = db_utils::getCollectionByRecord($rsOcorrenciasCgm);
+
+          foreach($ocorrenciasCgm as $ocorrenciaCgm){
+            $clhistocorrenciacgm->excluir($ocorrenciaCgm->ar24_sequencial);
+          }
+        }
+        
+        $clhistocorrencia->excluir("", "ar23_sequencial IN ($ar23_sequencial_excluir)");
+        
+        $erro_msg = $clhistocorrencia->erro_msg;
+
+        if ($clhistocorrencia->erro_status == 0) {
+          $sqlerro = true;
+          break;
+        } 
       }
-      
-      $erro_msg = $clhistocorrencia->erro_msg;
     }
   
     db_fim_transacao($sqlerro);
@@ -180,7 +228,7 @@
         <tr> 
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
             <center>
-  	          <?
+  	          <?php
 	              include(modification("forms/db_frmaguabase.php"));
 	            ?>
             </center>
@@ -191,7 +239,7 @@
   </body>
 </html>
 
-<?
+<?php
   if (isset($excluir)) {
   
     if ($sqlerro == true) {

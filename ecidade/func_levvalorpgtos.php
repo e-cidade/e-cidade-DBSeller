@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllevvalorpgtos->rotulo->label("y68_valor");
               <?=$Ly68_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y68_sequencia",10,$Iy68_sequencia,true,"text",4,"","chave_y68_sequencia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllevvalorpgtos->rotulo->label("y68_valor");
               <?=$Ly68_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y68_seq",4,$Iy68_seq,true,"text",4,"","chave_y68_seq");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cllevvalorpgtos->rotulo->label("y68_valor");
               <?=$Ly68_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y68_valor",10,$Iy68_valor,true,"text",4,"","chave_y68_valor");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cllevvalorpgtos->rotulo->label("y68_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levvalorpgtos.php")==true){
@@ -129,12 +129,12 @@ $cllevvalorpgtos->rotulo->label("y68_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -47,19 +47,19 @@ require_once(modification("libs/db_app.utils.php"));
 <body class="body-default">
 <div class="container">
   <form name="form1" id="form1" methos="post" action="" >
-    <? db_input('q120_issalvara',8,'',true,'hidden', 3,"","") ?>
+    <?php db_input('q120_issalvara',8,'',true,'hidden', 3,"","") ?>
       <fieldset style="width:400px;">
         <legend>Renovação de Alvará</legend>
         <table width="100%">
           <tr>
-            <td><? db_ancora("<strong>Inscrição:</strong>", "js_pesquisaAlvara(true,'');", 1); ?></td>
-            <td><? db_input('q123_inscr',8,'',true,'text', 1,"onchange = js_pesquisaAlvara(false,this.value);","") ?></td>
-            <td colspan="2"><? db_input('z01_nome',40,'',true,'text', 3,"","") ?></td>
+            <td><?php db_ancora("<strong>Inscrição:</strong>", "js_pesquisaAlvara(true,'');", 1); ?></td>
+            <td><?php db_input('q123_inscr',8,'',true,'text', 1,"onchange = js_pesquisaAlvara(false,this.value);","") ?></td>
+            <td colspan="2"><?php db_input('z01_nome',40,'',true,'text', 3,"","") ?></td>
           </tr>
           <tr>
             <td><strong>Data da renovação:</strong></td><!-- Mostra a data atual para o usuário -->
             <td>
-              <?
+              <?php
                 $q120_dtmov = date("d/m/Y",db_getsession("DB_datausu"));
                 db_input('q120_dtmov',8,'',true,'text', 3)
               ?>
@@ -68,19 +68,19 @@ require_once(modification("libs/db_app.utils.php"));
           </tr>
         <tr>
             <td><strong>Validade do alvará (dias):</strong></td>
-            <td><? db_input('q120_validadealvara', 8, "", true, 'text', 1); ?></td>
+            <td><?php db_input('q120_validadealvara', 8, "", true, 'text', 1); ?></td>
             <td coslpan="2"></td>
           </tr>
           <tr>
-            <td><? db_ancora("<strong>Processo de protocolo:</strong>", "js_pesquisaProtocolo(true,'');", 1); ?></td>
-            <td><? db_input('p58_codproc',8,'',true,'text', 1,"onchange = js_pesquisaProtocolo(false,this.value);") ?></td>
-            <td colspan="2"><? db_input('p58_nomeprocesso', 40, '',true, 'text', 3, "", ""); ?></td>
+            <td><?php db_ancora("<strong>Processo de protocolo:</strong>", "js_pesquisaProtocolo(true,'');", 1); ?></td>
+            <td><?php db_input('p58_codproc',8,'',true,'text', 1,"onchange = js_pesquisaProtocolo(false,this.value);") ?></td>
+            <td colspan="2"><?php db_input('p58_nomeprocesso', 40, '',true, 'text', 3, "", ""); ?></td>
           </tr>
           <tr>
             <td colspan="4">
               <fieldset>
                 <legend><strong>Resumo:</strong></legend>
-                <? db_textarea('q120_obs', 10, 67, '', true, 'text', 1); ?>
+                <?php db_textarea('q120_obs', 10, 67, '', true, 'text', 1); ?>
               </fieldset>
             </td>
           </tr>

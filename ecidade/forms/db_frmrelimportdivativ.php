@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -35,12 +35,12 @@
 	  <table border="0" class="form-container">
 	    <tr>
 	      <td width="25%" nowrap="nowrap">
-	      <?
+	      <?php
 	          db_ancora("<b>Nome Contribuinte :</b>","js_mostranomes(true);",1);
 	      ?>
 	      </td>
 	      <td colspan="3">
-	      <?
+	      <?php
 	          db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_mostranomes(false);'");
 	          db_input('z01_nome',40,0,true,'text',3,"","z01_nomecgm");
 	      ?>
@@ -48,12 +48,12 @@
 	    </tr>
       <tr>
         <td width="25%" nowrap="nowrap">
-        <?
+        <?php
             db_ancora("<b>Matrícula :</b>","js_mostramatriculas(true);",1);
         ?>
         </td>
         <td colspan="3">
-        <?
+        <?php
             db_input('j01_matric',5,@$Ij01_matric,true,'text',1,"onchange='js_mostramatriculas(false);'");
             db_input('z01_nome',40,0,true,'text',3,"","z01_nomematri");
         ?>
@@ -61,12 +61,12 @@
       </tr>
       <tr>
         <td width="25%" nowrap="nowrap">
-        <?
+        <?php
             db_ancora("<b>Inscrição :</b>","js_mostrainscricoes(true);",1);
         ?>
         </td>
         <td colspan="3">
-        <?
+        <?php
             db_input('q02_inscr',5,$Iz01_numcgm,true,'text',1,"onchange='js_mostrainscricoes(false);'");
             db_input('z01_nome',40,0,true,'text',3,"","z01_nomeinscr");
         ?>
@@ -77,7 +77,7 @@
 	        <b>Período:</b>
 	      </td>
         <td colspan="3">
-         <?
+         <?php
              db_inputdata('data1','','','',true,'text',1,"");
                echo "<b> a </b> ";
              db_inputdata('data2','','','',true,'text',1,"");
@@ -100,7 +100,7 @@
           <b>Tipo de Relatório:</b>
         </td>
         <td width="26%">
-         <?
+         <?php
              $matriz = array("0"=>"Sintético",
                              "1"=>"Analítico");
              db_select("tiporel", $matriz,true,""," onchange='js_validarGenerico(false);'");
@@ -114,7 +114,7 @@
           <b>Ordenar:</b>
         </td>
         <td id="ordenar2">
-         <?
+         <?php
              $matriz = array("0"=>"Código de Importação",
                              "1"=>"Usuário",
                              "2"=>"Tipo",
@@ -127,7 +127,7 @@
           <b>Agrupar:</b>
         </td>
         <th id="agrupar2" style="display: none;">
-         <?
+         <?php
              $matriz = array("0"=>"Nome",
                              "1"=>"Origem",
                              "2"=>"Origem/Exercício",
@@ -144,7 +144,7 @@
 	        <b> Tipo de Inscrição: </b>
 	      </td>
 	      <td width="26%">
-	       <?
+	       <?php
 	           $matriz = array("0"=>"Todos",
 	                           "1"=>"Parcial",
 	                           "2"=>"Geral",

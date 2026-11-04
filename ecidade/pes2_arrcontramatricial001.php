@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,10 +52,10 @@ db_postmemory($HTTP_POST_VARS);
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?if(!isset($emite2)){?>
+<?php if(!isset($emite2)){?>
 <table align="center">
   <form name="form1" method="post" action="">
-  <?
+  <?php
   if(!isset($anofolha) || (isset($anofolha) && trim($anofolha) == "")){
     $anofolha = db_anofolha();
   }
@@ -104,7 +104,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr>
     <td ><b>Tipo</b></td>
     <td >
-    <?
+    <?php
      $xv = array("d"=>"Demais Funcionários","e"=>"Educação");
      db_select('tipo',$xv,true,4,"");
     ?>
@@ -121,7 +121,7 @@ db_postmemory($HTTP_POST_VARS);
 	      <b>Linha 1:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem1',70,0,true,'text',1,"")
               ?>
             </td>
@@ -131,7 +131,7 @@ db_postmemory($HTTP_POST_VARS);
 	      <b>Linha 2:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem2',70,0,true,'text',1,"")
               ?>
             </td>
@@ -141,7 +141,7 @@ db_postmemory($HTTP_POST_VARS);
 	      <b>Linha 3:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem3',70,0,true,'text',1,"")
               ?>
             </td>
@@ -162,14 +162,14 @@ db_postmemory($HTTP_POST_VARS);
   <form name="form1">
   <tr>
     <td>
-    <?
+    <?php
     db_criatermometro("termometro");
     ?>
     </td>
   </tr>
   </form>
 </table>
-<?
+<?php
 }
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
@@ -190,7 +190,7 @@ function js_anomes(){
   }
 }
 </script>
-<?
+<?php
 if(isset($emite2)){
   db_sel_instit();
 
@@ -444,13 +444,13 @@ if(isset($emite2)){
               $totalproventos = "";
               $totaldescontos = "";
               $totalprovdesc  = "";
-              db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+              db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
               $contapaginas ++;
             }
             $periodo = "01/$mesfolha/$anofolha a ".db_dias_mes($anofolha,$mesfolha)."/$mesfolha/$anofolha";
             $matricula = $rh01_regist."-".db_CalculaDV($rh01_regist);
             $contabancaria = $rh44_conta;
-            db_setaPropriedadesLayoutTxt(&$db_layouttxt,CABECALHOARQUIVO);
+            db_setaPropriedadesLayoutTxt($db_layouttxt,CABECALHOARQUIVO);
           }
 
           if($provdesc != "B"){
@@ -462,7 +462,7 @@ if(isset($emite2)){
               $valorprov = trim(db_formatar($valorrubrica,"f"));
               $valordesc = "";
             }
-            db_setaPropriedadesLayoutTxt(&$db_layouttxt,REGISTROSARQUIVO);
+            db_setaPropriedadesLayoutTxt($db_layouttxt,REGISTROSARQUIVO);
           }
         }
 
@@ -474,7 +474,7 @@ if(isset($emite2)){
         $multiplic -= $linhas;
         $db_layouttxt->quebraLinha($multiplic);
        
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
       }
 
     }

@@ -92,12 +92,12 @@ abstract class AnexosExecucaoMensalService extends AnexosService
      * totais
      * @var int[]
      */
-    protected $linhasMensais = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+    protected $linhasMensais = [];
     /**
      * @return array
      * @throws Exception
      */
-    protected function getMesesProcessar()
+    public function getMesesProcessar()
     {
         if (!empty($this->mesesProcessar)) {
             return $this->mesesProcessar;

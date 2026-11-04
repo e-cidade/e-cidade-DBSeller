@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -85,7 +85,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('o70_codrec', 10, $Io70_codrec, true, 'text', 3);
               db_input('o57_descr', 40, $Io57_descr, true, 'text', 3);
               db_input('c81_sequencial', 10, $Io70_codrec, true, 'hidden', 3);
@@ -102,7 +102,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('o57_codfon_debito', 10, $Io70_codrec, true, 'text', 3);
               db_input('c57_descr_debito', 40, $Io70_codrec, true, 'text', 3);
               ?>
@@ -116,7 +116,7 @@ $oRotuloConhist->label();
               <strong>Conta Crédito:</strong>
             </td>
             <td>
-              <?
+              <?php
                 db_input('o57_codfon_credito', 10, $Io70_codrec, true, 'text', 3);
                 db_input('c57_descr_credito', 40, $Io70_codrec, true, 'text', 3);
               ?>
@@ -130,7 +130,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('c50_codhist', 10, $Ic50_codhist, true, 'text', 3);
               db_input('c50_descr', 40, $Ic50_descr, true, 'text', 3);
               ?>
@@ -145,7 +145,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('o70_valor', 10, $Ic69_valor, true, 'text', 3);
               ?>
             </td>
@@ -159,7 +159,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('valor_lancado', 10, $Ic69_valor, true, 'text', 3);
               ?>
             </td>
@@ -189,7 +189,7 @@ $oRotuloConhist->label();
   
   </div>
   </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>  
   </body>

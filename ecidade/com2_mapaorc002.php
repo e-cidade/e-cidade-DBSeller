@@ -54,18 +54,21 @@ function truncar($valor)
     }
     return $valor;
 }
-function getValorPrint($valor, $decimais = 2)
+function getValorPrint($valor, $decimaispaty = 2,$decimais = 2)
 {
+    //usar decimaispaty para o numero de casas decimais de paty, e decimais para as outras cidades
     if (isParaiba()) {
         $valor = truncar($valor);
+        $valorprint = db_formatar($valor, 'f');
+        return $valorprint;
     }
 
     if (isPatyDoAlferes()) {
-      $valorprint = number_format($valor, $decimais, ',', '.');
+      $valorprint = number_format($valor, $decimaispaty, ',', '.');
       return $valorprint;
     }
 
-    $valorprint = db_formatar($valor, 'f');
+    $valorprint = db_formatar($valor, 'f'," ",0,"e",$decimais);
 
     return $valorprint;
 }
@@ -343,6 +346,8 @@ if ($modelo == 1) {
   $troca = 1;
   $alt = 4;
   $valor_tot = 0;
+  $mediana_tot = 0;
+  $media_tot = 0;
   for($x = 0; $x < $numrows_itens; $x ++) {
     db_fieldsmemory($result_itens, $x);
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
@@ -353,6 +358,7 @@ if ($modelo == 1) {
       $pdf->cell(20, $alt, "ITEM", 1, 0, "C", 1);
       $pdf->cell(100, $alt, "MATERIAL", 1, 0, "C", 1);
       $pdf->cell(25, $alt, "VALOR MÉDIO", 1, 0, "C", 1);
+      $pdf->cell(25, $alt, "MEDIANA", 1, 0, "C", 1);
       $pdf->cell(25, $alt, "VALOR", 1, 1, "C", 1);
       $p = 0;
       $troca = 0;
@@ -366,7 +372,8 @@ if ($modelo == 1) {
                                               "pc23_valor,
                                               (select coalesce(sum(val.pc23_valor),0)/case when count(val.*) > 0 then count(val.*) else 1 end
                                                                              from pcorcamval val where val.pc23_orcamitem = {$pc22_orcamitem}) as valor_medio,
-
+                                              (select percentile_cont(0.5) WITHIN GROUP (order by valmedian.pc23_valor) as mediana
+                                                                             from pcorcamval valmedian where valmedian.pc23_orcamitem = {$pc22_orcamitem}),
                                               pc24_pontuacao", null,
                                               "pc23_orcamitem=$pc22_orcamitem and pc24_pontuacao=1");
     $result_valor = $clpcorcamval->sql_record($sSqlJulg);
@@ -377,6 +384,8 @@ if ($modelo == 1) {
       if ($pc24_pontuacao == 1) {
         $valor_tot += $pc23_valor;
       }
+      $mediana_tot += $mediana;
+      $media_tot += $valor_medio;
 
       $decimais = 2;
       $casadec = 2;
@@ -384,7 +393,7 @@ if ($modelo == 1) {
       if (isPatyDoAlferes()) {
         $classe_pcmater = new cl_pcmater();
         $sSqlMedicamento = $classe_pcmater->sql_query_grupo($pc11_codigo);
-        
+
         $codgrupo = pg_fetch_assoc( @db_query($sSqlMedicamento) )['pc03_codgrupo'];
 
         if ($codgrupo == 11) {
@@ -396,6 +405,7 @@ if ($modelo == 1) {
 
       // $pdf->cell(25, $alt, getValorPrint($valor_medio), 0, 0, "R", $p);
       $pdf->cell(25, $alt, getValorPrint($valor_medio, $decimais), 0, 0, "R", $p);
+      $pdf->cell(25, $alt, getValorPrint($mediana), 0, 0, "R", $p);
       $pdf->cell(25, $alt, getValorPrint($pc23_valor), 0, 1, "R", $p);
 
     } else {
@@ -411,7 +421,9 @@ if ($modelo == 1) {
     }
   }
   $pdf->setfont('arial', 'b', 8);
-  $pdf->cell(145, $alt, 'TOTAL :', "T", 0, "R", 0);
+  $pdf->cell(120, $alt, 'TOTAL :', "T", 0, "R", 0);
+  $pdf->cell(25, $alt, getValorPrint($media_tot), "T", 0, "R", 0);
+  $pdf->cell(25, $alt, getValorPrint($mediana_tot), "T", 0, "R", 0);
   $pdf->cell(25, $alt, getValorPrint(@$valor_tot), "T", 1, "R", 0);
 
 } else if ($modelo == 2) {
@@ -430,6 +442,8 @@ if ($modelo == 1) {
 		                                                         (select coalesce(sum(val.pc23_valor),0)/case when count(val.*) > 0 then count(val.*) else 1 end
                                                                 from pcorcamval val
                                                                where val.pc23_orcamitem = pc22_orcamitem) as valor_medio,
+                                                                 (select percentile_cont(0.5) WITHIN GROUP (order by valmedian.pc23_valor) as mediana
+                                                                from pcorcamval valmedian where valmedian.pc23_orcamitem = pc22_orcamitem),
 		                                                         pc11_seq", "pc11_seq", "pc22_codorc=$orcamento");
   } else if ($sOrigem == "processo") {
     $sSqlItens = $clpcorcamitem->sql_query_pcmaterproc(null, "distinct pc22_orcamitem,
@@ -440,6 +454,8 @@ if ($modelo == 1) {
                                                              (select coalesce(sum(val.pc23_valor),0)/case when count(val.*) > 0 then count(val.*) else 1 end
                                                                 from pcorcamval val
                                                                where val.pc23_orcamitem = pc22_orcamitem) as valor_medio,
+                                                             (select percentile_cont(0.5) WITHIN GROUP (order by valmedian.pc23_valor) as mediana
+                                                                from pcorcamval valmedian where valmedian.pc23_orcamitem = pc22_orcamitem),
                                                              pc11_seq", "pc11_seq", "pc22_codorc=$orcamento");
   }
 
@@ -507,10 +523,11 @@ if ($modelo == 1) {
 
       $alt = 6;
       $pdf->setfont('arial', 'b', 9);
-      $pdf->cell(15, $alt, "Item", 1, 0, "C", 1);
+      $pdf->cell(10, $alt, "Item", 1, 0, "C", 1);
       $pdf->cell(60, $alt, "Descr. Produto", 1, 0, "C", 1);
       $pdf->cell(20, $alt, "Unidade", 1, 0, "C", 1);
       $pdf->cell(15, $alt, "Vlr. Med.", 1, 0, "C", 1);
+      $pdf->cell(15, $alt, "Mediana", 1, 0, "C", 1);
       $pdf->cell(15, $alt, "Quant.", 1, 0, "C", 1);
 
       $sSqlFornecedores = $clpcorcamforne->sql_query(null, "*", null, "pc21_codorc=$orcamento");
@@ -538,7 +555,7 @@ if ($modelo == 1) {
         }
 
         if ($imp_vlrun == "S") {
-          $pdf->cell(20, $alt, "Vlr. Un.", 1, 0, "C", 1);
+          $pdf->cell(15, $alt, "Vlr. Un.", 1, 0, "C", 1);
         }
 
         $pdf->cell(60, $alt, substr($z01_nome, 0, 25) . "(" . ($w + 1) . ")", 1, $t, "C", 1);
@@ -547,10 +564,11 @@ if ($modelo == 1) {
     }
     $alt = 4;
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(15, $alt, $pc11_seq, 1, 0, "C", 0);
+    $pdf->cell(10, $alt, $pc11_seq, 1, 0, "C", 0);
     $pdf->cell(60, $alt, substr($pc01_descrmater . " - " . $pc11_resum, 0, 38), 1, 0, "L", 0);
     $pdf->cell(20, $alt, $m61_descr, 1, 0, "C", 0);
     $pdf->cell(15, $alt, getValorPrint($valor_medio), 1, 0, "C", 0);
+    $pdf->cell(15, $alt, getValorPrint($mediana), 1, 0, "C", 0);
     $pdf->cell(15, $alt, $pc11_quant, 1, 0, "C", 0);
 
     $t = 0;
@@ -565,7 +583,6 @@ if ($modelo == 1) {
       $sSqlJulg = $clpcorcamval->sql_query_julg(null, null,
                                                 "pc23_valor,pc23_vlrun,pc24_pontuacao", null,
                                                 "pc23_orcamforne=$pc21_orcamforne and pc23_orcamitem=$pc22_orcamitem");
-
       $result_valor = $clpcorcamval->sql_record($sSqlJulg);
       if ($clpcorcamval->numrows > 0) {
         db_fieldsmemory($result_valor, 0);
@@ -584,7 +601,7 @@ if ($modelo == 1) {
         $arr_totalcotado [$pc21_orcamforne] += $pc23_valor;
 
         if ($imp_vlrun == "S") {
-          $pdf->cell(20, $alt, getValorPrint(@$pc23_vlrun), 1, 0, "R", $fundo);
+          $pdf->cell(15, $alt, getValorPrint(@$pc23_vlrun,2,4), 1, 0, "R", $fundo);
         }
 
         $pdf->cell(60, $alt, getValorPrint(@$pc23_valor), 1, $t, "R", $fundo);
@@ -598,7 +615,7 @@ if ($modelo == 1) {
         }
       } else {
         if ($imp_vlrun == "S") {
-          $pdf->cell(20, $alt, "0,00", 1, 0, "R", 0);
+          $pdf->cell(15, $alt, "0,00", 1, 0, "R", 0);
         }
         $pdf->cell(60, $alt, "0,00", 1, $t, "R", 0);
       }
@@ -614,8 +631,8 @@ if ($modelo == 1) {
 
       $pdf->setfont('arial', 'b', 8);
 
-      $pdf->cell(125, $alt, getValorPrint($total_quant), 1, 0, "R", 0);
-      $pdf->cell(160, $alt, "", 1, 1, "R", 0);
+      $pdf->cell(135, $alt, getValorPrint($total_quant), 1, 0, "R", 0);
+      $pdf->cell(150, $alt, "", 1, 1, "R", 0);
 
       /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       // Impressao de 2 em 2 fornecedores, separados por subtotal ganho e cotado, incluindo valores unitarios e total
@@ -627,10 +644,10 @@ if ($modelo == 1) {
 
       for($xx = $ind; $xx < $w; $xx ++) {
         if (($xx % 2) == 0) {
-          $tam = 145;
+          $tam = 150;
           $msg = "SUBTOTAL GANHO ";
         } else {
-          $tam = 20;
+          $tam = 15;
           $msg = "";
         }
 
@@ -640,8 +657,8 @@ if ($modelo == 1) {
           $br = 0;
         }
 
-        $pdf->cell($tam, $alt, $msg . getValorPrint($arr_subtotganhoun [$xx]), 1, 0, "R", 0);
-        $pdf->cell(60, $alt, getValorPrint($arr_subtotganhovlr [$xx]), 1, $br, "R", 0);
+        $pdf->cell($tam, $alt, $msg . getValorPrint($arr_subtotganhoun [$xx],2,4), 1, 0, "R", 0);
+        $pdf->cell(60, $alt, getValorPrint($arr_subtotganhovlr [$xx],2,4), 1, $br, "R", 0);
       }
 
       if ($w == 2) {
@@ -652,10 +669,10 @@ if ($modelo == 1) {
 
       for($xx = $ind; $xx < $w; $xx ++) {
         if (($xx % 2) == 0) {
-          $tam = 145;
+          $tam = 150;
           $msg = "SUBTOTAL COTADO ";
         } else {
-          $tam = 20;
+          $tam = 15;
           $msg = "";
         }
 
@@ -665,7 +682,7 @@ if ($modelo == 1) {
           $br = 0;
         }
 
-        $pdf->cell($tam, $alt, $msg . getValorPrint($arr_subtotcotadoun [$xx]), 1, 0, "R", 0);
+        $pdf->cell($tam, $alt, $msg . getValorPrint($arr_subtotcotadoun [$xx],2,4), 1, 0, "R", 0);
         $pdf->cell(60, $alt, getValorPrint($arr_subtotcotadovlr [$xx]), 1, $br, "R", 0);
       }
       /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -684,13 +701,13 @@ if ($modelo == 1) {
 
   // Ficou pendente valores a serem impressos
   if ($quant_imp < $max_forne) {
-    $pdf->cell(125, $alt, "QUANT. TOTAL " . getValorPrint($total_quant), 1, 0, "R", 0);
-    $pdf->cell(80, $alt, "", 1, 1, "R", 0);
+    $pdf->cell(135, $alt, "QUANT. TOTAL " . getValorPrint($total_quant), 1, 0, "R", 0);
+    $pdf->cell(75, $alt, "", 1, 1, "R", 0);
 
-    $pdf->cell(145, $alt, "SUBTOTAL GANHO " . getValorPrint($arr_subtotganhoun [$quant_imp]), 1, 0, "R", 0);
+    $pdf->cell(150, $alt, "SUBTOTAL GANHO " . getValorPrint($arr_subtotganhoun [$quant_imp],2,4), 1, 0, "R", 0);
     $pdf->cell(60, $alt, getValorPrint($arr_subtotganhovlr [$quant_imp]), 1, 1, "R", 0);
 
-    $pdf->cell(145, $alt, "SUBTOTAL COTADO " . getValorPrint($arr_subtotcotadoun [$quant_imp]), 1, 0, "R", 0);
+    $pdf->cell(150, $alt, "SUBTOTAL COTADO " . getValorPrint($arr_subtotcotadoun [$quant_imp],2,4), 1, 0, "R", 0);
     $pdf->cell(60, $alt, getValorPrint($arr_subtotcotadovlr [$quant_imp]), 1, 1, "R", 0);
 
     $pdf->ln();
@@ -778,7 +795,7 @@ for($x = 0; $x < $numrows_itens; $x ++) {
     $pdf->ln();
 
   }
-  $campo = "round(avg(pc23_quant),2) * round(avg(pc23_vlrun),2) as pc23_valor,round(avg(pc23_vlrun),2) as pc23_vlrun";
+  $campo = "round(avg(pc23_quant) * avg(pc23_vlrun),4) as pc23_valor,round(avg(pc23_vlrun),4) as pc23_vlrun ";
   if (isParaiba()) {
       $campo = "trunc(avg(pc23_quant),2) * trunc(avg(pc23_vlrun),2) as pc23_valor,
       trunc(avg(pc23_vlrun),2) as pc23_vlrun";
@@ -799,7 +816,7 @@ $campo, null,
   $pdf->cell(60, $alt, substr($pc01_descrmater . " - " . $pc11_resum, 0, 38), 1, 0, "L", 0);
   $pdf->cell(30, $alt, $m61_descr, 1, 0, "C", 0);
   $pdf->cell(15, $alt, $pc11_quant, 1, 0, "C", 0);
-  $pdf->cell(40, $alt, getValorPrint($pc23_vlrun), 1, 0, "R", 0);
+  $pdf->cell(40, $alt, getValorPrint($pc23_vlrun,2,4), 1, 0, "R", 0);
   $pdf->cell(40, $alt, getValorPrint($pc23_valor), 1, 0, "R", 0);
   $pdf->ln();
 
@@ -842,6 +859,8 @@ $pdf->ln();
 		                                                         (select coalesce(sum(val.pc23_valor),0)/case when count(val.*) > 0 then count(val.*) else 1 end
                                                                 from pcorcamval val
                                                                where val.pc23_orcamitem = pc22_orcamitem) as valor_medio,
+                                                                 (select percentile_cont(0.5) WITHIN GROUP (order by valmedian.pc23_valor) as mediana
+                                                                from pcorcamval valmedian where pc23_orcamitem = pc22_orcamitem),
 		                                                         pc11_seq", "pc11_seq", "pc22_codorc=$orcamento");
     } else if ($sOrigem == "processo") {
         $sSqlItens = $clpcorcamitem->sql_query_pcmaterproc(null, "distinct pc22_orcamitem,
@@ -852,6 +871,8 @@ $pdf->ln();
                                                              (select coalesce(sum(val.pc23_valor),0)/case when count(val.*) > 0 then count(val.*) else 1 end
                                                                 from pcorcamval val
                                                                where val.pc23_orcamitem = pc22_orcamitem) as valor_medio,
+                                                             (select percentile_cont(0.5) WITHIN GROUP (order by valmedian.pc23_valor) as mediana
+                                                                from pcorcamval valmedian where pc23_orcamitem = pc22_orcamitem),
                                                              pc11_seq", "pc11_seq", "pc22_codorc=$orcamento");
     }
 
@@ -919,10 +940,11 @@ $pdf->ln();
 
             $alt = 6;
             $pdf->setfont('arial', 'b', 9);
-            $pdf->cell(15, $alt, "Item", 1, 0, "C", 1);
+            $pdf->cell(10, $alt, "Item", 1, 0, "C", 1);
             $pdf->cell(60, $alt, "Descr. Produto", 1, 0, "C", 1);
             $pdf->cell(20, $alt, "Unidade", 1, 0, "C", 1);
             $pdf->cell(15, $alt, "Vlr. Med.", 1, 0, "C", 1);
+            $pdf->cell(15, $alt, "Mediana", 1, 0, "C", 1);
             $pdf->cell(15, $alt, "Quant.", 1, 0, "C", 1);
 
             $sSqlFornecedores = $clpcorcamforne->sql_query(null, "*", null, "pc21_codorc=$orcamento");
@@ -950,7 +972,7 @@ $pdf->ln();
                 }
 
                 if ($imp_vlrun == "S") {
-                    $pdf->cell(20, $alt, "Vlr. Un.", 1, 0, "C", 1);
+                    $pdf->cell(15, $alt, "Vlr. Un.", 1, 0, "C", 1);
                 }
 
                 $pdf->cell(60, $alt, "COTAÇÃO" . "(" . ($w + 1) . ")", 1, $t, "C", 1);
@@ -959,10 +981,11 @@ $pdf->ln();
         }
         $alt = 4;
         $pdf->setfont('arial', '', 7);
-        $pdf->cell(15, $alt, $pc11_seq, 1, 0, "C", 0);
+        $pdf->cell(10, $alt, $pc11_seq, 1, 0, "C", 0);
         $pdf->cell(60, $alt, substr($pc01_descrmater . " - " . $pc11_resum, 0, 38), 1, 0, "L", 0);
         $pdf->cell(20, $alt, $m61_descr, 1, 0, "C", 0);
         $pdf->cell(15, $alt, getValorPrint($valor_medio), 1, 0, "C", 0);
+        $pdf->cell(15, $alt, getValorPrint($mediana), 1, 0, "C", 0);
         $pdf->cell(15, $alt, $pc11_quant, 1, 0, "C", 0);
 
         $t = 0;
@@ -996,7 +1019,7 @@ $pdf->ln();
                 $arr_totalcotado [$pc21_orcamforne] += $pc23_valor;
 
                 if ($imp_vlrun == "S") {
-                    $pdf->cell(20, $alt, getValorPrint(@$pc23_vlrun), 1, 0, "R", $fundo);
+                    $pdf->cell(15, $alt, getValorPrint(@$pc23_vlrun), 1, 0, "R", $fundo);
                 }
 
                 $pdf->cell(60, $alt, getValorPrint(@$pc23_valor), 1, $t, "R", $fundo);
@@ -1026,8 +1049,8 @@ $pdf->ln();
 
             $pdf->setfont('arial', 'b', 8);
 
-            $pdf->cell(125, $alt, getValorPrint($total_quant), 1, 0, "R", 0);
-            $pdf->cell(160, $alt, "", 1, 1, "R", 0);
+            $pdf->cell(135, $alt, getValorPrint($total_quant), 1, 0, "R", 0);
+            $pdf->cell(150, $alt, "", 1, 1, "R", 0);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Impressao de 2 em 2 fornecedores, separados por subtotal ganho e cotado, incluindo valores unitarios e total
@@ -1039,10 +1062,10 @@ $pdf->ln();
 
             for($xx = $ind; $xx < $w; $xx ++) {
                 if (($xx % 2) == 0) {
-                    $tam = 145;
+                    $tam = 150;
                     $msg = "SUBTOTAL GANHO ";
                 } else {
-                    $tam = 20;
+                    $tam = 15;
                     $msg = "";
                 }
 
@@ -1064,10 +1087,10 @@ $pdf->ln();
 
             for($xx = $ind; $xx < $w; $xx ++) {
                 if (($xx % 2) == 0) {
-                    $tam = 145;
+                    $tam = 150;
                     $msg = "SUBTOTAL COTADO ";
                 } else {
-                    $tam = 20;
+                    $tam = 15;
                     $msg = "";
                 }
 
@@ -1096,13 +1119,13 @@ $pdf->ln();
 
     // Ficou pendente valores a serem impressos
     if ($quant_imp < $max_forne) {
-        $pdf->cell(125, $alt, "QUANT. TOTAL " . getValorPrint($total_quant), 1, 0, "R", 0);
-        $pdf->cell(80, $alt, "", 1, 1, "R", 0);
+        $pdf->cell(135, $alt, "QUANT. TOTAL " . getValorPrint($total_quant), 1, 0, "R", 0);
+        $pdf->cell(75, $alt, "", 1, 1, "R", 0);
 
-        $pdf->cell(145, $alt, "SUBTOTAL GANHO " . getValorPrint($arr_subtotganhoun [$quant_imp]), 1, 0, "R", 0);
+        $pdf->cell(150, $alt, "SUBTOTAL GANHO " . getValorPrint($arr_subtotganhoun [$quant_imp]), 1, 0, "R", 0);
         $pdf->cell(60, $alt, getValorPrint($arr_subtotganhovlr [$quant_imp]), 1, 1, "R", 0);
 
-        $pdf->cell(145, $alt, "SUBTOTAL COTADO " . getValorPrint($arr_subtotcotadoun [$quant_imp]), 1, 0, "R", 0);
+        $pdf->cell(150, $alt, "SUBTOTAL COTADO " . getValorPrint($arr_subtotcotadoun [$quant_imp]), 1, 0, "R", 0);
         $pdf->cell(60, $alt, getValorPrint($arr_subtotcotadovlr [$quant_imp]), 1, 1, "R", 0);
 
         $pdf->ln();
@@ -1190,7 +1213,7 @@ $pdf->ln();
             $pdf->ln();
 
         }
-        $campo = "round(avg(pc23_quant),2) * round(avg(pc23_vlrun),2) as pc23_valor,round(avg(pc23_vlrun),2) as pc23_vlrun";
+        $campo = "round(avg(pc23_quant),4) * round(avg(pc23_vlrun),4) as pc23_valor,round(avg(pc23_vlrun),4) as pc23_vlrun";
         if (isParaiba()) {
             $campo = "trunc(avg(pc23_quant),2) * trunc(avg(pc23_vlrun),2) as pc23_valor,
       trunc(avg(pc23_vlrun),2) as pc23_vlrun";

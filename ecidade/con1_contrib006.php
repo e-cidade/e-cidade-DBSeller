@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ function js_atualiza(){
      alert("Valor de desconto inválido.");
      return false;
    }
-  <? 
+  <?php 
    echo " parent.js_matricontri2(document.form1.j01_matric.value,document.form1.j40_refant.value,document.form1.z01_nome.value,document.form1.j34_setor.value,document.form1.j34_quadra.value,document.form1.j34_lote.value,document.form1.j34_zona.value,total,desconto,$j01_idbql,$j36_testad);";
   ?> 
 }
@@ -100,19 +100,19 @@ function js_atualiza(){
               <?=$Lj01_matric?>
             </td>
             <td width="66%" align="left" nowrap> 
-              <?
+              <?php
               db_input("j01_matric",8,$Ij01_matric,true,"text",3,"");
 	      ?>
             </td>
           </tr>
           <tr> 
             <td width="34%" align="left" nowrap title="<?=$Tj40_refant?>">
-            <?
+            <?php
 	    echo $Lj40_refant;
 	    ?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j40_refant",20,$Ij40_refant,true,'text',3)
 	    ?>
             </td>
@@ -122,7 +122,7 @@ function js_atualiza(){
             <?=$Lz01_nome?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("z01_nome",40,$Iz01_nome,true,'text',3)
 	    ?>
             </td>
@@ -132,7 +132,7 @@ function js_atualiza(){
             <?=$Lj34_setor?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_setor",4,$Ij34_setor,true,'text',3)
 	    ?>
             </td>
@@ -142,7 +142,7 @@ function js_atualiza(){
             <?=$Lj34_quadra?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_quadra",4,$Ij34_quadra,true,'text',3)
 	    ?>
             </td>
@@ -152,7 +152,7 @@ function js_atualiza(){
             <?=$Lj34_lote?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_lote",4,$Ij34_lote,true,'text',3)
 	    ?>
             </td>
@@ -163,7 +163,7 @@ function js_atualiza(){
             <?=$Lj34_zona?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_zona",4,$Ij34_zona,true,'text',3)
 	    ?>
             </td>
@@ -173,7 +173,7 @@ function js_atualiza(){
              <b>Desconto R$:</b>
 	    </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("desconto",4,"",true,'text',1)
 	    ?>
             </td>
@@ -183,7 +183,7 @@ function js_atualiza(){
               <b>Total R$:</b>
 	    </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("total",4,"",true,'text',1)
 	    ?>
             </td>

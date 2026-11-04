@@ -202,6 +202,7 @@ class Registro20Repository extends Repository
         $campos = array(
             "distinct ed294_censodisciplina",
             "ed59_tipobase",
+            'ed59_unidade_curricular',
             "exists(
               select 1 from regenciahorario
                 where ed58_i_regencia = regencia.ed59_i_codigo
@@ -226,6 +227,7 @@ class Registro20Repository extends Repository
 
         $disciplinas = [];
         while ($state = pg_fetch_array($rs)) {
+            $state['codigo_turma'] = $codigoTurma;
             $disciplinas[] = TurmaCensoDisciplinaVO::fromState($state);
         }
 

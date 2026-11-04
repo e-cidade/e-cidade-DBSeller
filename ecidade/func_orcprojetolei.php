@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorcprojetolei->rotulo->label("o138_numerolei");
               <?=$Lo138_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o138_sequencial",10,$Io138_sequencial,true,"text",4,"","chave_o138_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcprojetolei->rotulo->label("o138_numerolei");
               <?=$Lo138_numerolei?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o138_numerolei",25,$Io138_numerolei,true,"text",4,"","chave_o138_numerolei");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcprojetolei->rotulo->label("o138_numerolei");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprojetolei.php")==true){
@@ -122,12 +122,12 @@ $clorcprojetolei->rotulo->label("o138_numerolei");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

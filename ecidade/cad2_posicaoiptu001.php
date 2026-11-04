@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,7 +71,7 @@ function js_relatorio(){
 						<tr>
 							<td> <b>Considerar:&nbsp;</b> </td>
 							<td> 
-							 <?
+							 <?php
 									$x = array("a"=>"Ambos","p"=>"Predial","t"=>"Territorial");
 									db_select("considerar",$x,false,2,"");
 								?>
@@ -85,7 +85,7 @@ function js_relatorio(){
                     <td height="30">
 	      
 			<select name="anousu" id="anousu">
-             <?
+             <?php
 	     $result = $cliptucalc->sql_record($cliptucalc->sql_query_file("","","distinct j23_anousu","j23_anousu desc"));
 	     for($i = 0;$i < $cliptucalc->numrows;$i++){
 	       db_fieldsmemory($result,$i);
@@ -110,7 +110,7 @@ function js_relatorio(){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

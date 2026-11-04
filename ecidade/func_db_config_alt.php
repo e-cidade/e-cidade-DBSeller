@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clrotulo->label("cp06_logradouro");
               <?=$Lcp06_codlogradouro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                 db_input("codigo",8,$Icp06_codlogradouro,true,"text",4,"","chave_codigo");
               ?>
             </td>
@@ -65,7 +65,7 @@ $clrotulo->label("cp06_logradouro");
               <?=$Lcp06_logradouro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
    	         db_input("cp06_logradouro",80,$Icp06_logradouro,true,"text",4,"","chave_cp06_logradouro");
 	      ?>
             </td>
@@ -83,7 +83,7 @@ $clrotulo->label("cp06_logradouro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
            $campos = "distinct cp06_codlogradouro,
 			       cp06_logradouro,
@@ -115,12 +115,12 @@ $clrotulo->label("cp06_logradouro");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

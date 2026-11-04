@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ if(isset($db_opcaoal)){
        <?=@$Lat13_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at13_tarefa',10,$Iat13_tarefa,true,'text',3,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_input('at13_tarefa',10,$Iat13_tarefa,true,'text',3,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefa_agenda->sql_query(null,"*"," at13_dia, at13_horaini, at13_horafim","at13_tarefa=$at13_tarefa");

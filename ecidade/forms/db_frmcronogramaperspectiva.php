@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $clrotulo->label("nome");
              <?=@$Lo124_descricao?>
           </td>
           <td>
-           <?
+           <?php
            db_input('o124_descricao',40,$Io124_descricao,true,'text',$db_opcao,"")
            ?>
           </td>
@@ -53,7 +53,7 @@ $clrotulo->label("nome");
              <?=@$Lo124_datacriacao?>
           </td>
           <td>
-            <?
+            <?php
             db_inputdata('o124_datacriacao',@$o124_datacriacao_dia,@$o124_datacriacao_mes,@$o124_datacriacao_ano,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -63,7 +63,7 @@ $clrotulo->label("nome");
              <b>Perpectiva do PPA:</b>
            </td>
           <td align="left" nowrap>
-          <?
+          <?php
            $oDaoPPaVersao    = new cl_ppaversao;
            $sSqlPerspectivas = $oDaoPPaVersao->sql_query_integracao(null,
                                                                     "ppaversao.*",
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cronogramaperspectiva.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk53_notifica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k53_notifica",8,$Ik53_notifica,true,"text",4,"","chave_k53_notifica");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk53_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k53_numpre",8,$Ik53_numpre,true,"text",4,"","chave_k53_numpre");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk53_numpar?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k53_numpar",4,$Ik53_numpar,true,"text",4,"","chave_k53_numpar");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk53_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k53_numpre",8,$Ik53_numpre,true,"text",4,"","chave_k53_numpre");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_notidebitos.php")==true){
@@ -141,12 +141,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,16 +154,16 @@ if(isset($excluir)){
 </head>
 <body bgcolor=#CCCCCC  onLoad="a=1" >
 
-  	  <?
+  	  <?php
   	    include(modification("forms/db_frmdivida.php"));
   	  ?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_iptufrac {
                  j25_fracao = float8 = Fracao Ideal 
                  ";
    //funcao construtor da classe 
-   function cl_iptufrac() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptufrac"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_iptufrac {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j25_anousu = ($this->j25_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j25_anousu"]:$this->j25_anousu);
        $this->j25_matric = ($this->j25_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j25_matric"]:$this->j25_matric);
@@ -81,7 +81,7 @@ class cl_iptufrac {
      }
    }
    // funcao para inclusao
-   function incluir ($j25_anousu,$j25_matric){ 
+   public function incluir ($j25_anousu,$j25_matric){ 
       $this->atualizacampos();
      if($this->j25_idbql == null ){ 
        $this->erro_sql = " Campo Lote da Fracao nao Informado.";
@@ -170,7 +170,7 @@ class cl_iptufrac {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j25_anousu=null,$j25_matric=null) { 
+   public function alterar ($j25_anousu=null,$j25_matric=null) { 
       $this->atualizacampos();
      $sql = " update iptufrac set ";
      $virgula = "";
@@ -284,7 +284,7 @@ class cl_iptufrac {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j25_anousu=null,$j25_matric=null,$dbwhere=null) { 
+   public function excluir ($j25_anousu=null,$j25_matric=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j25_anousu,$j25_matric));
      }else{ 
@@ -355,7 +355,7 @@ class cl_iptufrac {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

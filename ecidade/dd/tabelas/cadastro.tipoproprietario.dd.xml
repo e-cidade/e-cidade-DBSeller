@@ -1,0 +1,86 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1010529' name='tipoproprietario' description="Tabela responsavel por guardar o tipo de proprietario" prefix="" label="tipoProprietario" type="0">
+  <fields>
+    <field codigo="1011083" 
+           campo_api='' 
+           name="j163_tipoproprietario" 
+           conteudo="int4" 
+           description="Sequencial da tabela tipoproprietario" 
+           inivalue="0" 
+           label="j163_tipoproprietario" 
+           size="10" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Tipo de proprietario" 
+           reference="" 
+           ispk="t" 
+           hassequence="t" > 
+
+           <sequence name='tipoproprietario_j163_tipoproprietario_seq' />
+            
+    </field>
+    <field codigo="1011079" 
+           campo_api='' 
+           name="j163_descricao" 
+           conteudo="varchar(50)" 
+           description="Descrição do tipo de proprietario" 
+           inivalue="0" 
+           label="Tipo de proprietário" 
+           size="50" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="2" 
+           tipoobj="text" 
+           labelrel="" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field>
+    <field codigo="1011269" 
+           campo_api='' 
+           name="j163_abreviatura" 
+           conteudo="varchar(50)" 
+           description="Abreviatura do tipo de proprietario" 
+           inivalue="0" 
+           label="Abreviatura" 
+           size="50" 
+           null="f" 
+           uppercase="t" 
+           autocompl="f" 
+           aceitatipo="2" 
+           tipoobj="text" 
+           labelrel="" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+
+    </field>  
+    <field codigo="1011273" 
+           campo_api='' 
+           name="j163_pesfisjur" 
+           conteudo="int4" 
+           description="Parâmetro de pessoa física ou jurídica" 
+           inivalue="0" 
+           label="Pessoa" 
+           size="10" 
+           null="t" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+  </fields>
+  <primarykey>
+    <fieldpk name="j163_tipoproprietario"></fieldpk> 
+  </primarykey>
+</table>

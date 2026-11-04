@@ -51,13 +51,13 @@ class cl_tipoausencia {
                  ed320_tipo = int4 = Tipo de Licença 
                  ";
    //funcao construtor da classe 
-   function cl_tipoausencia() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoausencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -66,7 +66,7 @@ class cl_tipoausencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed320_sequencial = ($this->ed320_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed320_sequencial"]:$this->ed320_sequencial);
        $this->ed320_descricao = ($this->ed320_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed320_descricao"]:$this->ed320_descricao);
@@ -76,7 +76,7 @@ class cl_tipoausencia {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed320_sequencial){ 
+   public function incluir ($ed320_sequencial){ 
       $this->atualizacampos();
      if($this->ed320_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

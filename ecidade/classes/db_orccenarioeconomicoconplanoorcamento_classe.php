@@ -56,13 +56,13 @@ class cl_orccenarioeconomicoconplanoorcamento {
                  o04_tipocalculo = int4 = Tipo de Cálculo
                  ";
    //funcao construtor da classe
-   function cl_orccenarioeconomicoconplanoorcamento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orccenarioeconomicoconplanoorcamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o04_sequencial = ($this->o04_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o04_sequencial"]:$this->o04_sequencial);
        $this->o04_orccenarioeconomicoparam = ($this->o04_orccenarioeconomicoparam == ""?@$GLOBALS["HTTP_POST_VARS"]["o04_orccenarioeconomicoparam"]:$this->o04_orccenarioeconomicoparam);
@@ -83,7 +83,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      }
    }
    // funcao para inclusao
-   function incluir ($o04_sequencial){
+   public function incluir ($o04_sequencial){
       $this->atualizacampos();
      if($this->o04_orccenarioeconomicoparam == null ){
        $this->erro_sql = " Campo Parametro Macroeconomico nao Informado.";
@@ -189,7 +189,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o04_sequencial=null) {
+   public function alterar ($o04_sequencial=null) {
       $this->atualizacampos();
      $sql = " update orccenarioeconomicoconplanoorcamento set ";
      $virgula = "";
@@ -295,7 +295,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      }
    }
    // funcao para exclusao
-   function excluir ($o04_sequencial=null,$dbwhere=null) {
+   public function excluir ($o04_sequencial=null,$dbwhere=null) {
      $sql = " delete from orccenarioeconomicoconplanoorcamento
                     where ";
      $sql2 = "";
@@ -342,7 +342,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -365,10 +365,10 @@ class cl_orccenarioeconomicoconplanoorcamento {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,10 +405,10 @@ class cl_orccenarioeconomicoconplanoorcamento {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_orccenarioeconomicoconplanoorcamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

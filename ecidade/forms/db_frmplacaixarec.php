@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -109,15 +109,15 @@ if(isset($db_opcaoal)){
 <table border="0" width="100%">
 	<tr>
 		<td nowrap title="<?=@$Tk81_seqpla?>"><?=@$Lk81_seqpla?></td>
-		<td><?db_input('k81_seqpla',6,$Ik81_seqpla,true,'text',3,"")?></td>
+		<td><?php db_input('k81_seqpla',6,$Ik81_seqpla,true,'text',3,"")?></td>
 	</tr>
 	<tr>
-		<td nowrap title="<?=@$Tk81_codpla?>"><? db_ancora(@$Lk81_codpla,"js_pesquisak81_codpla(true);",3);?></td>
-		<td><?db_input('k81_codpla',6,$Ik81_codpla,true,'text',3," onchange='js_pesquisak81_codpla(false);'")?></td>
+		<td nowrap title="<?=@$Tk81_codpla?>"><?php db_ancora(@$Lk81_codpla,"js_pesquisak81_codpla(true);",3);?></td>
+		<td><?php db_input('k81_codpla',6,$Ik81_codpla,true,'text',3," onchange='js_pesquisak81_codpla(false);'")?></td>
 	</tr>
 	<tr>
-		<td nowrap title="<?=@$Tk81_receita?>"><?db_ancora(@$Lk81_receita,"js_pesquisak81_receita(true);",$db_opcao);?></td>
-		<td><?db_input('k81_receita',5,$Ik81_receita,true,'text',2," onchange='js_pesquisak81_receita(false);'");
+		<td nowrap title="<?=@$Tk81_receita?>"><?php db_ancora(@$Lk81_receita,"js_pesquisak81_receita(true);",$db_opcao);?></td>
+		<td><?php db_input('k81_receita',5,$Ik81_receita,true,'text',2," onchange='js_pesquisak81_receita(false);'");
 		      db_input('c61_codigo',5,$Ic61_codigo,true,'text',3,"onfocus=\"document.getElementById('k81_conta').focus()\" ",'recurso');
 		      db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'');
 		      db_input('estrutural',20,null,true,'hidden',2,"");
@@ -126,8 +126,8 @@ if(isset($db_opcaoal)){
 	</tr>
 
 	<tr>
-		<td nowrap title="<?=@$Tk81_conta?>"><?db_ancora(@$Lk81_conta,"js_pesquisak81_conta(true);",$db_opcao);?></td>
-		<td><?db_input('k81_conta',5,$Ik81_conta,true,'text',2," onchange='js_pesquisak81_conta(false);'");
+		<td nowrap title="<?=@$Tk81_conta?>"><?php db_ancora(@$Lk81_conta,"js_pesquisak81_conta(true);",$db_opcao);?></td>
+		<td><?php db_input('k81_conta',5,$Ik81_conta,true,'text',2," onchange='js_pesquisak81_conta(false);'");
 		      db_input('c61_codigo',5,$Ic61_codigo,true,'text',3,"onfocus=\"document.getElementById('k81_codigo').focus()\"");
 		      db_input('k13_descr',40,$Ik13_descr,true,'text',3,'');
 		     ?>
@@ -135,13 +135,13 @@ if(isset($db_opcaoal)){
 	</tr>
   <tr>
     <td nowrap title="<?=@$Tk81_origem?>"><?=$Lk81_origem?></td>
-    <td><? db_select("k81_origem",getValoresPadroesCampo("k81_origem"),true,1,"onChange='toogleOrigem(this.value)'");?></td>
+    <td><?php db_select("k81_origem",getValoresPadroesCampo("k81_origem"),true,1,"onChange='toogleOrigem(this.value)'");?></td>
   </tr>
-  <tr id='inputCgm' style=''>
+  <tr id='inputCgm'>
 
-		<td nowrap title="<?=@$Tk81_conta?>"><?db_ancora(@$Lk81_numcgm,"js_pesquisak81_numcgm(true);",$db_opcao);?></td>
+		<td nowrap title="<?=@$Tk81_conta?>"><?php db_ancora(@$Lk81_numcgm,"js_pesquisak81_numcgm(true);",$db_opcao);?></td>
 		<td>
-		    <?
+		    <?php
 				db_input('k81_numcgm',5,$Ik81_numcgm,true,'text',2," onchange='js_pesquisak81_numcgm(false);'");
 				db_input('z01_nome',45,$Iz01_nome,true,'text',3);
 				?>
@@ -149,9 +149,9 @@ if(isset($db_opcaoal)){
   </tr>
   <tr id='inputInscr' style='display:none'>
 
-		<td nowrap title="<?=@$Tq02_inscr?>"><?db_ancora(@$Lq02_inscr,"js_pesquisa_inscr(true);",$db_opcao);?></td>
+		<td nowrap title="<?=@$Tq02_inscr?>"><?php db_ancora(@$Lq02_inscr,"js_pesquisa_inscr(true);",$db_opcao);?></td>
 		<td>
-	    <?
+	    <?php
 			db_input('q02_inscr',5,$Iq02_inscr,true,'text',2," onchange='js_pesquisa_inscr(false);'");
 			db_input('nomeinscr',45,$Iz01_nome,true,'text',3);
 			?>
@@ -159,9 +159,9 @@ if(isset($db_opcaoal)){
   </tr>
   <tr id='inputMatric' style='display:none'>
 
-		<td nowrap title="<?=@$Tj01_matric?>"><?db_ancora(@$Lj01_matric,"{$sFuncaoBusca}(true);",$db_opcao);?></td>
+		<td nowrap title="<?=@$Tj01_matric?>"><?php db_ancora(@$Lj01_matric,"{$sFuncaoBusca}(true);",$db_opcao);?></td>
 		<td>
-	    <?
+	    <?php
 			db_input('j01_matric',5,$Ij01_matric,true,'text',2," onchange='{$sFuncaoBusca}(false);'");
 			db_input('nomematric',45,$Iz01_nome,true,'text',3);
 			?>
@@ -170,7 +170,7 @@ if(isset($db_opcaoal)){
 	<tr>
 		<td nowrap title="<?=@$To15_codigo?>"><?echo $Lo15_codigo?></td>
 		<td>
-		 <?
+		 <?php
 		     $clorctiporec = new cl_orctiporec;
          $dbwhere = " o15_datalimite is null or o15_datalimite > '".date('Y-m-d',db_getsession('DB_datausu'))."'";
          $record = $clorctiporec->sql_record($clorctiporec->sql_query_file(null,"o15_codigo,o15_descr","o15_codigo",$dbwhere));
@@ -181,10 +181,10 @@ if(isset($db_opcaoal)){
 
 
 
-  <tr style=''>
-    <td ><b><?db_ancora("C.Peculiar / C.Aplicação :","js_pesquisaPeculiar(true);",$db_opcao);?></b></td>
+  <tr>
+    <td ><b><?php db_ancora("C.Peculiar / C.Aplicação :","js_pesquisaPeculiar(true);",$db_opcao);?></b></td>
     <td>
-        <?
+        <?php
         db_input('c58_sequencial',5,'',true,'text',2," onchange='js_pesquisaPeculiar(false);'");
         db_input('c58_descr',45,'',true,'text',3);
         ?>
@@ -196,7 +196,7 @@ if(isset($db_opcaoal)){
 
 	<tr>
 		<td nowrap title="<?=@$Tk81_datareceb?>"><?echo $Lk81_datareceb?></td>
-		<td><?
+		<td><?php
 					if ($db_opcao==1) {
 
 					  $k81_datareceb_dia = date("d",db_getsession("DB_datausu"));
@@ -209,16 +209,16 @@ if(isset($db_opcaoal)){
 	</tr>
 	<tr>
 		<td nowrap title="<?=@$Tk81_operbanco?>"><?=@$Lk81_operbanco?></td>
-		<td><?db_input('k81_operbanco',15,$Ik81_operbanco,true,'text',$db_opcao,""); ?></td>
+		<td><?php db_input('k81_operbanco',15,$Ik81_operbanco,true,'text',$db_opcao,""); ?></td>
 	</tr>
 
 	<tr>
 		<td nowrap title="<?=@$Tk81_valor?>"><?=@$Lk81_valor?></td>
-		<td><?db_input('k81_valor',15,$Ik81_valor,true,'text',$db_opcao,"")?></td>
+		<td><?php db_input('k81_valor',15,$Ik81_valor,true,'text',$db_opcao,"")?></td>
 	</tr>
 	<tr>
 		<td nowrap title="<?=@$Tk81_obs?>"><?=@$Lk81_obs?></td>
-		<td><?db_textarea("k81_obs",1,40,$Ik81_obs,"true","text",$db_opcao);?></td>
+		<td><?php db_textarea("k81_obs",1,40,$Ik81_obs,"true","text",$db_opcao);?></td>
 	</tr>
 </table>
 
@@ -252,7 +252,7 @@ if(isset($db_opcaoal)){
 
 <table border="0" width="60%" style="margin-top: 10px;">
 	<tr>
-		<td valign="top" align="center"><?
+		<td valign="top" align="center"><?php
 	 $chavepri= array("k81_seqpla"=>@$k81_seqpla);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clplacaixarec->sql_query(null,"*",null," k81_codpla = $k81_codpla");
@@ -265,10 +265,10 @@ if(isset($db_opcaoal)){
 	 ?></td>
 	</tr>
 	<tr>
-		<td valign="top" align="center"><?
+		<td valign="top" align="center"><?php
 		if ($db_opcao!=3 && $db_opcao!=22 && $db_opcao!=11 && $db_opcao != 33 ){
 		  ?> <input name="imp" value="Imprime" type="button"
-			onclick="js_imprime()" <?=(@$k81_seqpla!=""?"disabled":"")?>> <?
+			onclick="js_imprime()" <?=(@$k81_seqpla!=""?"disabled":"")?>> <?php
 }
 ?></td>
 	</tr>
@@ -542,7 +542,7 @@ function js_pesquisa_agua(mostra){
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_placaixarec','db_iframe_matric','func_aguabase.php?pesquisa_chave='+$F('j01_matric')+'&funcao_js=parent.js_mostramatric1','Pesquisa',false);
   }
 }
-<?
+<?php
 if( isset($incluir) || isset($alterar) || isset($excluir) ){
 
    echo "document.form1.k81_receita.focus(); document.form1.k81_receita.select();";
@@ -642,7 +642,7 @@ function js_retornoCgm(oAjax) {
      document.getElementById('db_opcao').disabled = false;
 
 }
-<?
+<?php
 if (isset($opcao) || isset($importar)) {
   echo "\ntoogleOrigem('{$k81_origem}');\n";
 }

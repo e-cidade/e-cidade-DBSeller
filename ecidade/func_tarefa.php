@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $cltarefa->rotulo->label("at40_descr");
     <td height="63" align="center" valign="top">
       <table width="35%" border="0" align="center" cellspacing="0">
 	     <form name="form2" method="post" action="" >
-	     <?
+	     <?php
 	   
 	     	if (@$aut==1) { // 1
 	     	  
@@ -77,7 +77,7 @@ $cltarefa->rotulo->label("at40_descr");
               <td width="96%" align="left" nowrap>
              		<select name="chave_at41_proced" >
               	 <option value="0">TODOS</option>
-	              <?
+	              <?php
 						     for ($i = 0; $i < $linhas; $i++) {//3
 							     db_fieldsmemory($resultado,$i);	
 							     $selected = "";	
@@ -90,7 +90,7 @@ $cltarefa->rotulo->label("at40_descr");
 							    } // f 4
 					      ?>
 						      <option value="<?=$at30_codigo ?>" <?=$selected?>><?=$at30_descr?></option>
-						    <?
+						    <?php
 						      }// f 3
 						    ?>
 				        </select>
@@ -99,7 +99,7 @@ $cltarefa->rotulo->label("at40_descr");
             <tr>
           	  <td width="4%" align="right" ><b>Situação:</b> </td>
           	  <td width="96%" align="left" >
-			        <?		
+			        <?php 	
 					      $usu = db_getsession("DB_id_usuario");
 					      $sqlsutusu = " select distinct * 
 					                       from ( select at46_codigo,
@@ -119,7 +119,7 @@ $cltarefa->rotulo->label("at40_descr");
 						    ?>
 						     <select name="situacao" >
 	              		<option value="0">TODOS</option>
-	              	 <? for ($x = 0; $x < $linhassutusu; $x++) {
+	              	 <?php for ($x = 0; $x < $linhassutusu; $x++) {
 							          db_fieldsmemory($resultsutusu,$x);
 							          if ($situacao == $at46_codigo){
 								          $selected1 = "SELECTED";
@@ -128,16 +128,16 @@ $cltarefa->rotulo->label("at40_descr");
 							          }	
 						       ?>
 						        <option value="<?=$at46_codigo ?>" <?=$selected1?>><?=$at46_descr?></option>
-						       <?
+						       <?php
 						          }
 						       ?>
 						     </select>
-						    <?
+						    <?php
 					      }
          				?>
 				      </td>
 			      </tr>
-				<?
+				<?php
 		      }  
 	     	}
 	     ?>
@@ -146,7 +146,7 @@ $cltarefa->rotulo->label("at40_descr");
           <?=$Lat40_sequencial?>
          </td>
          <td width="96%" align="left" nowrap> 
-          <?
+          <?php
 		       db_input("at40_sequencial",10,$Iat40_sequencial,true,"text",4,"","chave_at40_sequencial");
 		      ?>
          </td>
@@ -156,10 +156,10 @@ $cltarefa->rotulo->label("at40_descr");
            <?=$Lat40_descr?>
          </td>
          <td width="96%" align="left" nowrap> 
-           <? db_input("chave_at40_descr",40,"",true,"text",4); ?>
+           <?php db_input("chave_at40_descr",40,"",true,"text",4); ?>
          </td>
        </tr>
-          <? 
+          <?php 
           if (@$prorrogar != 1) {
             
             if((@$aut!=1)&&(@$aut!='t')) { 
@@ -195,7 +195,7 @@ $cltarefa->rotulo->label("at40_descr");
   <tr> 
     <td align="center" valign="top"> 
        
-      <?
+      <?php
       if (!isset($pesquisa_chave)) { 
       	     	
 				if (@$prorrogar == 1) {
@@ -282,12 +282,12 @@ $cltarefa->rotulo->label("at40_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

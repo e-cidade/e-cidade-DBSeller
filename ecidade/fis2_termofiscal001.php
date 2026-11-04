@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,24 +84,24 @@ if ($numrowstipo > 0){
     <table  border="0">
      <tr>
        <td height="25" title="<?=$Tq02_inscr?>">
-         <?
+         <?php
            db_ancora($Lq02_inscr,'js_pesquisaq02_inscr(true);',4)
          ?>
        </td>
        <td height="25">
-         <?
+         <?php
             db_input("q02_inscr",8,$Iq02_inscr,true,'text',4)
          ?>
        </td>
      </tr>
      <tr>
        <td height="25" title="<?=$Tj14_codigo?>">
-         <?
+         <?php
            db_ancora($Lj14_codigo,'js_pesquisaj14_codigo(true); ',4)
          ?>
        </td>
        <td height="25">
-         <?
+         <?php
            db_input('j14_codigo',8,$Ij14_codigo,true,'text',1,'',"","#E6E4F1");
            db_input('j14_nome',40,$Ij14_nome,true,'text',3);
          ?>
@@ -110,7 +110,7 @@ if ($numrowstipo > 0){
      <tr>
         <td><b>Opcoes : </b></td>
         <td>
-           <?
+           <?php
 			$l = array ("c" => "Com as classes selecionadas", "s" => "Sem as classes selecionadas");
 			db_select('tipo', $l, true, 2);
 		   ?>
@@ -119,7 +119,7 @@ if ($numrowstipo > 0){
      <tr>
         <td><b>Reemissão : </b></td>
         <td>
-           <?
+           <?php
 			$re = array ("n" => "Não", "s" => "Sim");
 			db_select('reemis', $re, true, 2);
 		   ?>
@@ -130,7 +130,7 @@ if ($numrowstipo > 0){
      <tr>
        <td></td>
        <td align="center" valign="top" bgcolor="#CCCCCC">
-	       <?
+	       <?php
 	        $cliframe_seleciona->sql = $sql;
 		
 	        if(isset($codigos)&&$codigos != ""){		    
@@ -176,7 +176,7 @@ if ($numrowstipo > 0){
  </tr>
 </table>
      
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

@@ -24,7 +24,7 @@ class IconPlot {
     var $iScalePosY=null,$iScalePosX=null;
     var $iImgString='';
 
-    function IconPlot($aFile="",$aX=0,$aY=0,$aScale=1.0,$aMix=100) {
+    public function __construct($aFile="",$aX=0,$aY=0,$aScale=1.0,$aMix=100) {
 	$this->iFile = $aFile;
 	$this->iX=$aX;
 	$this->iY=$aY;
@@ -35,11 +35,11 @@ class IconPlot {
 	$this->iMix = $aMix ;
     }
 
-    function CreateFromString($aStr) {
+    public function CreateFromString($aStr) {
 	$this->iImgString = $aStr;
     }
 
-    function SetCountryFlag($aFlag,$aX=0,$aY=0,$aScale=1.0,$aMix=100,$aStdSize=3) {
+    public function SetCountryFlag($aFlag,$aX=0,$aY=0,$aScale=1.0,$aMix=100,$aStdSize=3) {
 	$this->iCountryFlag = $aFlag;
 	$this->iX=$aX;
 	$this->iY=$aY;
@@ -51,21 +51,21 @@ class IconPlot {
 	$this->iCountryStdSize = $aStdSize;
     }
 
-    function SetPos($aX,$aY) {
+    public function SetPos($aX,$aY) {
 	$this->iX=$aX;
 	$this->iY=$aY;
     }
 
-    function SetScalePos($aX,$aY) {
+    public function SetScalePos($aX,$aY) {
 	$this->iScalePosX = $aX;
 	$this->iScalePosY = $aY;
     }
 
-    function SetScale($aScale) {
+    public function SetScale($aScale) {
 	$this->iScale = $aScale;
     }
 
-    function SetMix($aMix) {
+    public function SetMix($aMix) {
 	if( $aMix < 0 || $aMix > 100 ) {
 	    JpGraphError::RaiseL(8001);//('Mix value for icon must be between 0 and 100.');
 	}
@@ -81,15 +81,15 @@ class IconPlot {
 	$this->iVertAnchor=$aYAnchor;
     }
     
-    function PreStrokeAdjust($aGraph) {
+    public function PreStrokeAdjust($aGraph) {
 	// Nothing to do ...
     }
 
-    function DoLegend($aGraph) {
+    public function DoLegend($aGraph) {
 	// Nothing to do ...
     }
 
-    function Max() {
+    public function Max() {
 	return array(false,false);
     }
 
@@ -97,13 +97,13 @@ class IconPlot {
     // The next four function are framework function tht gets called
     // from Gantt and is not menaiungfull in the context of Icons but
     // they must be implemented to avoid errors.
-    function GetMaxDate() { return false;   }
-    function GetMinDate() { return false;   }
-    function GetLineNbr() { return 0;   }
-    function GetAbsHeight() {return 0;  }
+    public function GetMaxDate() { return false;   }
+    public function GetMinDate() { return false;   }
+    public function GetLineNbr() { return 0;   }
+    public function GetAbsHeight() {return 0;  }
 
 
-    function Min() {
+    public function Min() {
 	return array(false,false);
     }
 
@@ -127,7 +127,7 @@ class IconPlot {
 	}
     }
 
-    function GetWidthHeight() {
+    public function GetWidthHeight() {
 	$dummy=0;
 	return $this->_Stroke($dummy,null,null,true);
     }

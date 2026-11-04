@@ -18,4 +18,5 @@
   ,"cartao_sus_cadastrado"               : "Cartão SUS informado já encontra-se vinculado a um CGS."
   ,"especialidade_nao_informado"         : "Ao selecionar um Profissional, deve ser selecionada a especialidade do mesmo."
   ,"erro_vincular_profissional"          : "Não foi possível encaminhar o paciente ao Profissional ou Especialidade informado.\n[sErro]"
+  ,"cbo_nao_informado"                   : "CBO não informado"
 }

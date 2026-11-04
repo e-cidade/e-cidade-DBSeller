@@ -222,14 +222,12 @@ class tceFolhaPagamento extends tceEstruturaBasica
 
         $sqlcampos12 = <<<SQL
             'X' as indicadorincidenciasaude,
-            case when rhrubricas.rh27_pd = 3 then 'X' when inss.db104_valorresposta in ('11', '12') then 'S' else 'N' end as indicadorincidenciainss,
-            case when rhrubricas.rh27_pd = 3 then 'X' when rpps.db104_valorresposta in ('11', '12') then 'S' else 'N' end as indicadorincidenciarpps,
+            case when rhrubricas.rh27_pd = 3 then 'X' when eso26_codinccp in ('11', '12') then 'S' else 'N' end as indicadorincidenciainss,
+            case when rhrubricas.rh27_pd = 3 then 'X' when eso26_codinccprp in ('11', '12') then 'S' else 'N' end as indicadorincidenciarpps,
 SQL;
         $sql12 = <<<SQL
         inner join esocial.esocialrubricas on esocialrubricas.eso26_rubrica = rhrubricas.rh27_rubric
             and esocialrubricas.eso26_instituicao = rhrubricas.rh27_instit
-        inner join habitacao.avaliacaoperguntaopcao as rpps on eso26_avaliacaoperguntaopcaocodinccprp = rpps.db104_sequencial
-        inner join habitacao.avaliacaoperguntaopcao as inss on eso26_avaliacaoperguntaopcaocodinccp = inss.db104_sequencial
 SQL;
 
         $sSqlFolhaPagamento  = " select qry.*, rh225_datapagamento, ";
@@ -250,9 +248,15 @@ SQL;
         $sSqlFolhaPagamento .= "        rhrubricas.rh27_pd, ";
         $sSqlFolhaPagamento .= "        r14_quant as quantidade_rubrica, ";
         $sSqlFolhaPagamento .= "        r14_regist as codigoregistrofuncionario, ";
+        $sSqlFolhaPagamento .= "        r14_regist || '00' as matriculafuncionario, ";
         $sSqlFolhaPagamento .= "        (cast(r14_anousu::varchar||'-'||r14_mesusu::varchar||'-'||(select fc_ultimodiames(r14_anousu,r14_mesusu))::varchar as date)) as datacompetenciafolha, ";
         $sSqlFolhaPagamento .= "        (cast(r14_anousu::varchar||'-'||r14_mesusu::varchar||'-'||(select fc_ultimodiames(r14_anousu,r14_mesusu))::varchar as date)) as datapagamentofolha, ";
         $sSqlFolhaPagamento .= "        '000'      as codigovantagemdescontototalizador, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoirpf, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoprevidencia, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontosaude, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordesconto, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordescontosaude, ";
         $sSqlFolhaPagamento .= "        r14_valor  as valorvantagemdescontototalizador, ";
         $sSqlFolhaPagamento .= "        case ";
         $sSqlFolhaPagamento .= "          when r14_pd = 1 then 'V' ";
@@ -338,9 +342,15 @@ SQL;
         $sSqlFolhaPagamento .= "        rhrubricas.rh27_pd, ";
         $sSqlFolhaPagamento .= "        r35_quant as quantidade_rubrica, ";
         $sSqlFolhaPagamento .= "        r35_regist as codigoregistrofuncionario, ";
+        $sSqlFolhaPagamento .= "        r35_regist || '00' as matriculafuncionario, ";        
         $sSqlFolhaPagamento .= "        (cast(r35_anousu::varchar||'-'||r35_mesusu::varchar||'-'||(select fc_ultimodiames(r35_anousu,r35_mesusu))::varchar as date)) as datacompetenciafolha, ";
         $sSqlFolhaPagamento .= "        (cast(r35_anousu::varchar||'-'||r35_mesusu::varchar||'-'||(select fc_ultimodiames(r35_anousu,r35_mesusu))::varchar as date)) as datapagamentofolha, ";
         $sSqlFolhaPagamento .= "        '000'      as codigovantagemdescontototalizador, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoirpf, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoprevidencia, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontosaude, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordesconto, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordescontosaude, ";
         $sSqlFolhaPagamento .= "        r35_valor  as valorvantagemdescontototalizador, ";
         $sSqlFolhaPagamento .= "        case ";
         $sSqlFolhaPagamento .= "          when r35_pd = 1 then 'V' ";
@@ -417,9 +427,15 @@ SQL;
         $sSqlFolhaPagamento .= "        rhrubricas.rh27_pd, ";
         $sSqlFolhaPagamento .= "        r20_quant as quantidade_rubrica, ";
         $sSqlFolhaPagamento .= "        r20_regist as codigoregistrofuncionario, ";
+        $sSqlFolhaPagamento .= "        r20_regist || '00' as matriculafuncionario, ";        
         $sSqlFolhaPagamento .= "        (cast(r20_anousu::varchar||'-'||r20_mesusu::varchar||'-'||(select fc_ultimodiames(r20_anousu,r20_mesusu))::varchar as date)) as datacompetenciafolha, ";
         $sSqlFolhaPagamento .= "        (cast(r20_anousu::varchar||'-'||r20_mesusu::varchar||'-'||(select fc_ultimodiames(r20_anousu,r20_mesusu))::varchar as date)) as datapagamentofolha, ";
         $sSqlFolhaPagamento .= "        '000'      as codigovantagemdescontototalizador, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoirpf, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoprevidencia, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontosaude, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordesconto, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordescontosaude, ";
 
         /**
          *  Soma pela chave da gerfres tirando apenas o r20_tpp
@@ -515,9 +531,15 @@ SQL;
         $sSqlFolhaPagamento .= "        rhrubricas.rh27_pd, ";
         $sSqlFolhaPagamento .= "        r48_quant as quantidade_rubrica, ";
         $sSqlFolhaPagamento .= "        r48_regist as codigoregistrofuncionario, ";
+        $sSqlFolhaPagamento .= "        r48_regist || '00' as matriculafuncionario, ";
         $sSqlFolhaPagamento .= "        (cast(r48_anousu::varchar||'-'||r48_mesusu::varchar||'-'||(select fc_ultimodiames(r48_anousu,r48_mesusu))::varchar as date)) as datacompetenciafolha, ";
         $sSqlFolhaPagamento .= "        (cast(r48_anousu::varchar||'-'||r48_mesusu::varchar||'-'||(select fc_ultimodiames(r48_anousu,r48_mesusu))::varchar as date)) as datapagamentofolha, ";
         $sSqlFolhaPagamento .= "        '000'      as codigovantagemdescontototalizador, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoirpf, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoprevidencia, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontosaude, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordesconto, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordescontosaude, ";
         $sSqlFolhaPagamento .= "        r48_valor  as valorvantagemdescontototalizador, ";
         $sSqlFolhaPagamento .= "        case ";
         $sSqlFolhaPagamento .= "          when r48_pd = 1 then 'V' ";
@@ -594,9 +616,15 @@ SQL;
         $sSqlFolhaPagamento .= "        rhhistoricocalculo.rh143_tipoevento, ";
         $sSqlFolhaPagamento .= "        rh143_quantidade as quantidade_rubrica, ";
         $sSqlFolhaPagamento .= "        rh143_regist as codigoregistrofuncionario, ";
+        $sSqlFolhaPagamento .= "        rh143_regist || '00' as matriculafuncionario, ";
         $sSqlFolhaPagamento .= "        (cast(rh141_anousu::varchar||'-'||rh141_mesusu::varchar||'-'||(select fc_ultimodiames(rh141_anousu,rh141_mesusu))::varchar as date)) as datacompetenciafolha, ";
         $sSqlFolhaPagamento .= "        (cast(rh141_anousu::varchar||'-'||rh141_mesusu::varchar||'-'||(select fc_ultimodiames(rh141_anousu,rh141_mesusu))::varchar as date)) as datapagamentofolha, ";
         $sSqlFolhaPagamento .= "        '000'      as codigovantagemdescontototalizador, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoirpf, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontoprevidencia, ";
+        $sSqlFolhaPagamento .= "        null      as percentualdescontosaude, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordesconto, ";
+        $sSqlFolhaPagamento .= "        null      as indicadordescontosaude, ";
         $sSqlFolhaPagamento .= "        rh143_valor  as valorvantagemdescontototalizador, ";
         $sSqlFolhaPagamento .= "        case ";
         $sSqlFolhaPagamento .= "          when rh143_tipoevento = 1 then 'V' ";

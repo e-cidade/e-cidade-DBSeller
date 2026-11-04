@@ -5,6 +5,7 @@
         <campo campo="db121_descricao" label="descricao"/>
         <campo campo="q136_deducao" label="deducao"/>
         <campo campo="q136_retencao" label="retencao"/>
+        <campo campo="q136_localpagamento" label="tributacao_municipio" />
     </campos>
     <from tabela="issconfiguracaogruposervico"/>
     <juncoes>

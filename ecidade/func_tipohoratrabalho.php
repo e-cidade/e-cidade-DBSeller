@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $cltipohoratrabalho->rotulo->label("ed128_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Led128_codigo?></label></td>
-          <td><? db_input("ed128_codigo",10,$Ied128_codigo,true,"text",4,"","chave_ed128_codigo"); ?></td>
+          <td><?php db_input("ed128_codigo",10,$Ied128_codigo,true,"text",4,"","chave_ed128_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Led128_descricao?></label></td>
-          <td><? db_input("ed128_descricao",10,$Ied128_descricao,true,"text",4,"","chave_ed128_descricao");?></td>
+          <td><?php db_input("ed128_descricao",10,$Ied128_descricao,true,"text",4,"","chave_ed128_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $cltipohoratrabalho->rotulo->label("ed128_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_tipohoratrabalho.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipohoratrabalho.php")==true){
@@ -78,12 +78,12 @@ $cltipohoratrabalho->rotulo->label("ed128_descricao");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

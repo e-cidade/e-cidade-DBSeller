@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,16 +25,19 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_agualeiturista_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_agualeiturista_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+
+db_postmemory($_POST);
+
 $clagualeiturista = new cl_agualeiturista;
 $db_opcao = 1;
 $db_botao = true;
+
 if(isset($incluir)){
   if((trim($x16_senha_confirma) != '') and ($x16_senha == $x16_senha_confirma)){
     $clagualeiturista->x16_senha = md5($x16_senha);
@@ -74,14 +77,14 @@ $fvalidaSenha = "return validaSenha()";
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmagualeiturista.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -89,7 +92,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 //js_tabulacaoforms("form1","x16_dtfim",true,1,"x16_dtfim",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clagualeiturista->erro_status=="0"){
     $clagualeiturista->erro(true,false);

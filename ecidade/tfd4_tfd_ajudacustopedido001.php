@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -62,7 +62,7 @@ if($oDaotfd_agendamentoprestadora->numrows <= 0) { // não pode lançar ajudas de 
 
 
 if(isset($opcao)) {
-  
+
   if($opcao == 'alterar') {
     $db_opcao = 2;
   } else {
@@ -70,9 +70,9 @@ if(isset($opcao)) {
   }
 
 } else {
- 
+
   $sSql = $oDaotfd_ajudacustopedido->sql_query2(null, ' tf14_i_codigo, tf14_i_cgsretirou, tf14_d_datarecebimento, '.
-                                                'cgs_und.z01_v_nome as z01_v_nome2', 
+                                                'cgs_und.z01_v_nome as z01_v_nome2',
                                                 null, ' tf14_i_pedidotfd = '.$tf14_i_pedidotfd);
   $rs = $oDaotfd_ajudacustopedido->sql_record($sSql);
   if($oDaotfd_ajudacustopedido->numrows > 0) {
@@ -92,7 +92,7 @@ if(isset($incluir)) {
   db_inicio_transacao();
   if($oDaotfd_ajudacustopedido->numrows == 0 && (!isset($tf14_i_codigo) || empty($tf14_i_codigo))) {
 
-    $oDaotfd_ajudacustopedido->tf14_c_horarecebimento = date('H:i', db_getsession('DB_datausu')); 
+    $oDaotfd_ajudacustopedido->tf14_c_horarecebimento = date('H:i', db_getsession('DB_datausu'));
     $oDaotfd_ajudacustopedido->tf14_i_login = db_getsession('DB_id_usuario');
     $oDaotfd_ajudacustopedido->incluir(null);
     if($oDaotfd_ajudacustopedido->erro_status != 0) {
@@ -172,11 +172,11 @@ if(isset($excluir)) {
 <center>
 <br><br>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <fieldset style='width: 80%;'> <legend><b>Ajuda de Custo</b></legend>
-	      <?
+          <?php
 	      require_once(modification("forms/db_frmtfd_ajudacustopedido.php"));
 	      ?>
       </fieldset>
@@ -185,7 +185,7 @@ if(isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -193,7 +193,7 @@ if(isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","tf14_i_cgsretirou",true,1,"tf14_i_cgsretirou",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)) {
   if($oDaotfd_ajudacustopedido->erro_status == "0") {
 

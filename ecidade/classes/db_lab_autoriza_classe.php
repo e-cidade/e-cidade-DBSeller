@@ -1,71 +1,71 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Laboratório
 //CLASSE DA ENTIDADE lab_autoriza
-class cl_lab_autoriza { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $la48_i_codigo = 0; 
-   var $la48_i_usuario = 0; 
-   var $la48_i_requisicao = 0; 
-   var $la48_c_hora = null; 
-   var $la48_d_data_dia = null; 
-   var $la48_d_data_mes = null; 
-   var $la48_d_data_ano = null; 
-   var $la48_d_data = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lab_autoriza {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $la48_i_codigo = 0;
+   var $la48_i_usuario = 0;
+   var $la48_i_requisicao = 0;
+   var $la48_c_hora = null;
+   var $la48_d_data_dia = null;
+   var $la48_d_data_mes = null;
+   var $la48_d_data_ano = null;
+   var $la48_d_data = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 la48_i_codigo = int4 = Código 
-                 la48_i_usuario = int4 = Usuário 
-                 la48_i_requisicao = int4 = Requisição 
-                 la48_c_hora = char(5) = Hora 
-                 la48_d_data = date = Data 
+                 la48_i_codigo = int4 = Código
+                 la48_i_usuario = int4 = Usuário
+                 la48_i_requisicao = int4 = Requisição
+                 la48_c_hora = char(5) = Hora
+                 la48_d_data = date = Data
                  ";
-   //funcao construtor da classe 
-   function cl_lab_autoriza() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_autoriza"); 
+     $this->rotulo = new rotulo("lab_autoriza");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_lab_autoriza {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la48_i_codigo = ($this->la48_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la48_i_codigo"]:$this->la48_i_codigo);
        $this->la48_i_usuario = ($this->la48_i_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["la48_i_usuario"]:$this->la48_i_usuario);
@@ -93,9 +93,9 @@ class cl_lab_autoriza {
      }
    }
    // funcao para inclusao
-   function incluir ($la48_i_codigo){ 
+   public function incluir ($la48_i_codigo){
       $this->atualizacampos();
-     if($this->la48_i_usuario == null ){ 
+     if($this->la48_i_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "la48_i_usuario";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_lab_autoriza {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la48_i_requisicao == null ){ 
+     if($this->la48_i_requisicao == null ){
        $this->erro_sql = " Campo Requisição nao Informado.";
        $this->erro_campo = "la48_i_requisicao";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_lab_autoriza {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la48_c_hora == null ){ 
+     if($this->la48_c_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "la48_c_hora";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_lab_autoriza {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la48_d_data == null ){ 
+     if($this->la48_d_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "la48_d_data_dia";
        $this->erro_banco = "";
@@ -132,16 +132,16 @@ class cl_lab_autoriza {
        return false;
      }
      if($la48_i_codigo == "" || $la48_i_codigo == null ){
-       $result = db_query("select nextval('lab_autoriza_la48_i_codigo_seq')"); 
+       $result = db_query("select nextval('lab_autoriza_la48_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_autoriza_la48_i_codigo_seq do campo: la48_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_autoriza_la48_i_codigo_seq do campo: la48_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->la48_i_codigo = pg_result($result,0,0); 
+       $this->la48_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_autoriza_la48_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $la48_i_codigo)){
@@ -152,10 +152,10 @@ class cl_lab_autoriza {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->la48_i_codigo = $la48_i_codigo; 
+         $this->la48_i_codigo = $la48_i_codigo;
        }
      }
-     if(($this->la48_i_codigo == null) || ($this->la48_i_codigo == "") ){ 
+     if(($this->la48_i_codigo == null) || ($this->la48_i_codigo == "") ){
        $this->erro_sql = " Campo la48_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,21 +164,21 @@ class cl_lab_autoriza {
        return false;
      }
      $sql = "insert into lab_autoriza(
-                                       la48_i_codigo 
-                                      ,la48_i_usuario 
-                                      ,la48_i_requisicao 
-                                      ,la48_c_hora 
-                                      ,la48_d_data 
+                                       la48_i_codigo
+                                      ,la48_i_usuario
+                                      ,la48_i_requisicao
+                                      ,la48_c_hora
+                                      ,la48_d_data
                        )
                 values (
-                                $this->la48_i_codigo 
-                               ,$this->la48_i_usuario 
-                               ,$this->la48_i_requisicao 
-                               ,'$this->la48_c_hora' 
-                               ,".($this->la48_d_data == "null" || $this->la48_d_data == ""?"null":"'".$this->la48_d_data."'")." 
+                                $this->la48_i_codigo
+                               ,$this->la48_i_usuario
+                               ,$this->la48_i_requisicao
+                               ,'$this->la48_c_hora'
+                               ,".($this->la48_d_data == "null" || $this->la48_d_data == ""?"null":"'".$this->la48_d_data."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "lab_autoriza ($this->la48_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -214,16 +214,16 @@ class cl_lab_autoriza {
        $resac = db_query("insert into db_acount values($acount,2908,16571,'','".AddSlashes(pg_result($resaco,0,'la48_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($la48_i_codigo=null) { 
+   public function alterar ($la48_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_autoriza set ";
      $virgula = "";
-     if(trim($this->la48_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_codigo"])){ 
+     if(trim($this->la48_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_codigo"])){
        $sql  .= $virgula." la48_i_codigo = $this->la48_i_codigo ";
        $virgula = ",";
-       if(trim($this->la48_i_codigo) == null ){ 
+       if(trim($this->la48_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la48_i_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_lab_autoriza {
          return false;
        }
      }
-     if(trim($this->la48_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_usuario"])){ 
+     if(trim($this->la48_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_usuario"])){
        $sql  .= $virgula." la48_i_usuario = $this->la48_i_usuario ";
        $virgula = ",";
-       if(trim($this->la48_i_usuario) == null ){ 
+       if(trim($this->la48_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "la48_i_usuario";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_lab_autoriza {
          return false;
        }
      }
-     if(trim($this->la48_i_requisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_requisicao"])){ 
+     if(trim($this->la48_i_requisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_i_requisicao"])){
        $sql  .= $virgula." la48_i_requisicao = $this->la48_i_requisicao ";
        $virgula = ",";
-       if(trim($this->la48_i_requisicao) == null ){ 
+       if(trim($this->la48_i_requisicao) == null ){
          $this->erro_sql = " Campo Requisição nao Informado.";
          $this->erro_campo = "la48_i_requisicao";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_lab_autoriza {
          return false;
        }
      }
-     if(trim($this->la48_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_c_hora"])){ 
+     if(trim($this->la48_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_c_hora"])){
        $sql  .= $virgula." la48_c_hora = '$this->la48_c_hora' ";
        $virgula = ",";
-       if(trim($this->la48_c_hora) == null ){ 
+       if(trim($this->la48_c_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "la48_c_hora";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_lab_autoriza {
          return false;
        }
      }
-     if(trim($this->la48_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"] !="") ){ 
+     if(trim($this->la48_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"] !="") ){
        $sql  .= $virgula." la48_d_data = '$this->la48_d_data' ";
        $virgula = ",";
-       if(trim($this->la48_d_data) == null ){ 
+       if(trim($this->la48_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "la48_d_data_dia";
          $this->erro_banco = "";
@@ -284,11 +284,11 @@ class cl_lab_autoriza {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la48_d_data_dia"])){
          $sql  .= $virgula." la48_d_data = null ";
          $virgula = ",";
-         if(trim($this->la48_d_data) == null ){ 
+         if(trim($this->la48_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "la48_d_data_dia";
            $this->erro_banco = "";
@@ -323,7 +323,7 @@ class cl_lab_autoriza {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lab_autoriza nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->la48_i_codigo;
@@ -351,14 +351,14 @@ class cl_lab_autoriza {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($la48_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($la48_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la48_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -388,7 +388,7 @@ class cl_lab_autoriza {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lab_autoriza nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$la48_i_codigo;
@@ -416,11 +416,11 @@ class cl_lab_autoriza {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -442,11 +442,11 @@ class cl_lab_autoriza {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $la48_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $la48_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,15 +464,15 @@ class cl_lab_autoriza {
      $sql2 = "";
      if($dbwhere==""){
        if($la48_i_codigo!=null ){
-         $sql2 .= " where lab_autoriza.la48_i_codigo = $la48_i_codigo "; 
-       } 
+         $sql2 .= " where lab_autoriza.la48_i_codigo = $la48_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,11 +481,11 @@ class cl_lab_autoriza {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $la48_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $la48_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,15 +498,15 @@ class cl_lab_autoriza {
      $sql2 = "";
      if($dbwhere==""){
        if($la48_i_codigo!=null ){
-         $sql2 .= " where lab_autoriza.la48_i_codigo = $la48_i_codigo "; 
-       } 
+         $sql2 .= " where lab_autoriza.la48_i_codigo = $la48_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,12 +516,12 @@ class cl_lab_autoriza {
      return $sql;
   }
 
-  function sql_query_controle( $la48_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $lProcedAtivo = true) {
+  public function sql_query_controle( $la48_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $lProcedAtivo = true) {
 
     $sql = "select ";
     if($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
 
       for($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -560,7 +560,7 @@ class cl_lab_autoriza {
     if($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
 
       for($i = 0; $i < sizeof($campos_sql); $i++) {

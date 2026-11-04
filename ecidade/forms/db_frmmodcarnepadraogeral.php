@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("k46_descr");
        <?=@$Lk48_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k48_sequencial',10,$Ik48_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk48_instit?>">
-       <?
+       <?php
        db_ancora(@$Lk48_instit,"js_pesquisak48_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k48_instit',2,$Ik48_instit,true,'text',$db_opcao," onchange='js_pesquisak48_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk48_cadmodcarne?>">
-       <?
+       <?php
        db_ancora(@$Lk48_cadmodcarne,"js_pesquisak48_cadmodcarne(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k48_cadmodcarne',10,$Ik48_cadmodcarne,true,'text',$db_opcao," onchange='js_pesquisak48_cadmodcarne(false);'")
 ?>
-       <?
+       <?php
 db_input('k47_descr',40,$Ik47_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk48_cadtipomod?>">
-       <?
+       <?php
        db_ancora(@$Lk48_cadtipomod,"js_pesquisak48_cadtipomod(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k48_cadtipomod',10,$Ik48_cadtipomod,true,'text',$db_opcao," onchange='js_pesquisak48_cadtipomod(false);'")
 ?>
-       <?
+       <?php
 db_input('k46_descr',40,$Ik46_descr,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('k46_descr',40,$Ik46_descr,true,'text',3,'')
        <?=@$Lk48_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k48_dataini',@$k48_dataini_dia,@$k48_dataini_mes,@$k48_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_inputdata('k48_dataini',@$k48_dataini_dia,@$k48_dataini_mes,@$k48_dataini_ano
        <?=@$Lk48_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k48_datafim',@$k48_datafim_dia,@$k48_datafim_mes,@$k48_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_modcarnepadraogeral.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

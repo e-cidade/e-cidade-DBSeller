@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -49,19 +49,19 @@ $todos="";
 //echo "<BR> $pesquisa_chave ";exit;
 
 $sql1 = "select z01_nome as profissional,db_usuacgm.id_usuario as sd24_i_codigo,z01_numcgm,sd03_i_codigo
-                  from cgm 
+                  from cgm
                   inner join db_usuacgm on cgmlogin= z01_numcgm
                   inner join db_usuarios on db_usuarios.id_usuario= db_usuacgm.id_usuario
-                  inner join medicos on medicos.sd03_i_cgm= cgm.z01_numcgm	
+                  inner join medicos on medicos.sd03_i_cgm= cgm.z01_numcgm
                   inner join unidademedicos on unidademedicos.sd04_i_medico= medicos.sd03_i_codigo
-                  inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade		               
-                  where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario                                
+                  inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade
+                  where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario
                   ";
  $query1 = db_query($sql1) or die(pg_errormessage());
  $linhas1 = pg_num_rows($query1);
 if($linhas1>0){
 db_fieldsmemory($query1,0);
-} 
+}
 ?>
 <html>
 <head>
@@ -71,16 +71,16 @@ db_fieldsmemory($query1,0);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0">
           <form name="form2" method="post" action="" >
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tsd24_i_codigo?>">
               <?=$Lsd24_i_codigo?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
+            <td width="96%" align="left" nowrap>
+              <?php db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
             </td>
           </tr>
           <tr>
@@ -88,12 +88,12 @@ db_fieldsmemory($query1,0);
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-              <?db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
+              <?php db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
             </td>
           </tr>
-          <tr> 
-            <td colspan="3" align="center"> 
-              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+          <tr>
+            <td colspan="3" align="center">
+              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
               <input name="limpar" type="reset" id="limpar" value="Limpar" onClick="js_limpar();">
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_prontuarios.hide();">
              </td>
@@ -102,18 +102,18 @@ db_fieldsmemory($query1,0);
         </table>
       </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-    <?
+  <tr>
+    <td align="center" valign="top">
+    <?php
     if($pesquisa_chave){
         $pesquisa_chave='';
         if(isset($campos)==false){
              include(modification("funcoes/db_func_prontuarios.php"));
         }
         $repassa = array();
-        
+
         $sql = "select distinct sd24_i_codigo,sd24_i_numcgs, z01_v_nome, z01_d_nasc
-                  from prontuarios 
+                  from prontuarios
                   inner join cgs_und on cgs_und.z01_i_cgsund= prontuarios.sd24_i_numcgs
                  where prontuarios.sd24_c_digitada = 'N'
                    ";
@@ -121,7 +121,7 @@ db_fieldsmemory($query1,0);
           //db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
            if(isset($chave_z01_v_nome) && (trim($chave_z01_v_nome)!="") ){
                  $sql = $clprontuarios->sql_query("",$campos,"cgs_und.z01_v_nome, sd24_i_codigo","cgs_und.z01_v_nome like '$chave_z01_v_nome%' ");
-                 $repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);                 
+                 $repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);
            }else if(isset($chave_sd24_i_codigo) && (trim($chave_sd24_i_codigo)!="") ){
                  $sql = $clprontuarios->sql_query(null,$campos,"sd24_i_codigo","sd24_c_digitada = 'N' and sd24_i_codigo = $chave_sd24_i_codigo");
            }

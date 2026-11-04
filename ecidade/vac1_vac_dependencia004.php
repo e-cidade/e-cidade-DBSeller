@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -124,7 +124,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-	      <?
+	      <?php
 	      require_once(modification("forms/db_frmvac_dependencia.php"));
 	      ?>
       </center>
@@ -137,7 +137,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "vc09_i_dependente", true, 1, "vc09_i_dependente", true);
 </script>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar)) || (isset($excluir))) {
 
   if ($oDaoVacDependencia->erro_status == '0') {

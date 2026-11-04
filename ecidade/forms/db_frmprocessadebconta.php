@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -41,12 +41,12 @@ $clrotulo->label('k00_numpar');
   <table border="0">
   <tr>   
       <td>
-      <?
+      <?php
       db_ancora($Ld63_banco,' js_bancos(true); ',$db_opcao);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('d63_banco',5,$Id63_banco,true,'text',1,"onchange='js_bancos(false)'");
        db_input('nome_banco',40,"",true,'text',3);
        
@@ -58,7 +58,7 @@ $clrotulo->label('k00_numpar');
        <?=@$Lk15_codage?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,32 +66,32 @@ db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
 
 
 
-      <?
+      <?php
       if (isset($arq_name)) {
       ?>
       <tr> 
         <td nowrap><?=$Larqret?> </td>
         <td> 
-  <?
+  <?php
   db_input('arq_name',50,"",true,'text',3,"");
         ?>  
       </tr>
   <tr> 
     <td nowrap><?=$Lk00_numpar?> </td>
     <td> 
-    <?
+    <?php
     //db_input("k00_numpar",50,$Ik00_numpar,true,"file",4)
     db_input('k00_numpar',3,$Ik00_numpar,true,'text',3,"")
     ?>  
   </tr>
 
-      <?
+      <?php
       } else {
       ?>
   <tr> 
     <td nowrap><?=$Larqret?> </td>
     <td> 
-    <?
+    <?php
     db_input("arqret",50,$Iarqret,true,"file",4)
     ?>  
   </tr>
@@ -99,39 +99,39 @@ db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
   <tr> 
     <td nowrap><?=$Lk00_numpar?> </td>
     <td> 
-    <?
+    <?php
     //db_input("k00_numpar",50,$Ik00_numpar,true,"file",4)
     db_input('k00_numpar',3,$Ik00_numpar,true,'text',$db_opcao,"")
     ?>  
   </tr>
 
-      <?
+      <?php
       }
       ?>
 
-      <?
+      <?php
   if (isset($totalvalorpago)) {
       ?>
       <tr> 
         <td nowrap><?=$Lk00_valor?> </td>
         <td> 
-  <?
+  <?php
   db_input('totalvalorpago',10,"",true,'text',3,"");
         ?>  
       </tr>
-      <?
+      <?php
       }
       ?>
 
 
-      <?
+      <?php
   if (isset($totalproc)) {
       ?>
       <tr> 
         <td nowrap><b>Linhas</b></td>
         <td><input name="totalproc" type="text" id="totalproc" value="<?=$totalproc?>" size="11" maxlength="10"></td>
       </tr>
-      <?
+      <?php
       }
       ?>
       <tr> 
@@ -142,7 +142,7 @@ db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
   </table>
   </fieldset>
 <!--<input name="processar" type="submit" id="processar" value="Processar"> -->
-  <?
+  <?php
   if(isset($processar)) {
   ?>
 <center>
@@ -150,13 +150,13 @@ db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
 <input name="k00_numpar" type="hidden" id="k00_numpar" value="<?=$k00_numpar?>">
 <input name="geradebcta" type="submit" id="geradebcta" value="Processar">
 </center>
-  <?
+  <?php
   } else {
   ?>
   <center>
     <input name="processar" type="submit" id="processar" value="Processar">
   </center>
-  <?
+  <?php
   }
   ?>
 

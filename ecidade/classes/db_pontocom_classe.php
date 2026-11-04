@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE pontocom
-class cl_pontocom { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r47_anousu = 0; 
-   var $r47_mesusu = 0; 
-   var $r47_regist = 0; 
-   var $r47_rubric = null; 
-   var $r47_valor = 0; 
-   var $r47_quant = 0; 
-   var $r47_lotac = null; 
-   var $r47_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pontocom {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r47_anousu = 0;
+   var $r47_mesusu = 0;
+   var $r47_regist = 0;
+   var $r47_rubric = null;
+   var $r47_valor = 0;
+   var $r47_quant = 0;
+   var $r47_lotac = null;
+   var $r47_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r47_anousu = int4 = Ano do Exercicio 
-                 r47_mesusu = int4 = Mes do Exercicio 
-                 r47_regist = int4 = Codigo do Funcionario 
-                 r47_rubric = char(     4) = Codigo da Rubrica 
-                 r47_valor = float8 = Valor (utilizado como work) 
-                 r47_quant = float8 = Qtda ou Valor para inicializar 
-                 r47_lotac = char(4) = Lotacao do Funcionario 
-                 r47_instit = int4 = codigo da instituicao 
+                 r47_anousu = int4 = Ano do Exercicio
+                 r47_mesusu = int4 = Mes do Exercicio
+                 r47_regist = int4 = Codigo do Funcionario
+                 r47_rubric = char(     4) = Codigo da Rubrica
+                 r47_valor = float8 = Valor (utilizado como work)
+                 r47_quant = float8 = Qtda ou Valor para inicializar
+                 r47_lotac = char(4) = Lotacao do Funcionario
+                 r47_instit = int4 = codigo da instituicao
                  ";
-   //funcao construtor da classe 
-   function cl_pontocom() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pontocom"); 
+     $this->rotulo = new rotulo("pontocom");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_pontocom {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r47_anousu = ($this->r47_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r47_anousu"]:$this->r47_anousu);
        $this->r47_mesusu = ($this->r47_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r47_mesusu"]:$this->r47_mesusu);
@@ -95,9 +95,9 @@ class cl_pontocom {
      }
    }
    // funcao para inclusao
-   function incluir ($r47_anousu,$r47_mesusu,$r47_regist,$r47_rubric){ 
+   public function incluir ($r47_anousu,$r47_mesusu,$r47_regist,$r47_rubric){
       $this->atualizacampos();
-     if($this->r47_valor == null ){ 
+     if($this->r47_valor == null ){
        $this->erro_sql = " Campo Valor (utilizado como work) não informado.";
        $this->erro_campo = "r47_valor";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r47_quant == null ){ 
+     if($this->r47_quant == null ){
        $this->erro_sql = " Campo Qtda ou Valor para inicializar não informado.";
        $this->erro_campo = "r47_quant";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r47_lotac == null ){ 
+     if($this->r47_lotac == null ){
        $this->erro_sql = " Campo Lotacao do Funcionario não informado.";
        $this->erro_campo = "r47_lotac";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r47_instit == null ){ 
+     if($this->r47_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao não informado.";
        $this->erro_campo = "r47_instit";
        $this->erro_banco = "";
@@ -133,11 +133,11 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-       $this->r47_anousu = $r47_anousu; 
-       $this->r47_mesusu = $r47_mesusu; 
-       $this->r47_regist = $r47_regist; 
-       $this->r47_rubric = $r47_rubric; 
-     if(($this->r47_anousu == null) || ($this->r47_anousu == "") ){ 
+       $this->r47_anousu = $r47_anousu;
+       $this->r47_mesusu = $r47_mesusu;
+       $this->r47_regist = $r47_regist;
+       $this->r47_rubric = $r47_rubric;
+     if(($this->r47_anousu == null) || ($this->r47_anousu == "") ){
        $this->erro_sql = " Campo r47_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -145,7 +145,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r47_mesusu == null) || ($this->r47_mesusu == "") ){ 
+     if(($this->r47_mesusu == null) || ($this->r47_mesusu == "") ){
        $this->erro_sql = " Campo r47_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -153,7 +153,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r47_regist == null) || ($this->r47_regist == "") ){ 
+     if(($this->r47_regist == null) || ($this->r47_regist == "") ){
        $this->erro_sql = " Campo r47_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_pontocom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r47_rubric == null) || ($this->r47_rubric == "") ){ 
+     if(($this->r47_rubric == null) || ($this->r47_rubric == "") ){
        $this->erro_sql = " Campo r47_rubric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,27 +170,27 @@ class cl_pontocom {
        return false;
      }
      $sql = "insert into pontocom(
-                                       r47_anousu 
-                                      ,r47_mesusu 
-                                      ,r47_regist 
-                                      ,r47_rubric 
-                                      ,r47_valor 
-                                      ,r47_quant 
-                                      ,r47_lotac 
-                                      ,r47_instit 
+                                       r47_anousu
+                                      ,r47_mesusu
+                                      ,r47_regist
+                                      ,r47_rubric
+                                      ,r47_valor
+                                      ,r47_quant
+                                      ,r47_lotac
+                                      ,r47_instit
                        )
                 values (
-                                $this->r47_anousu 
-                               ,$this->r47_mesusu 
-                               ,$this->r47_regist 
-                               ,'$this->r47_rubric' 
-                               ,$this->r47_valor 
-                               ,$this->r47_quant 
-                               ,'$this->r47_lotac' 
-                               ,$this->r47_instit 
+                                $this->r47_anousu
+                               ,$this->r47_mesusu
+                               ,$this->r47_regist
+                               ,'$this->r47_rubric'
+                               ,$this->r47_valor
+                               ,$this->r47_quant
+                               ,'$this->r47_lotac'
+                               ,$this->r47_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ponto complementar ($this->r47_anousu."-".$this->r47_mesusu."-".$this->r47_regist."-".$this->r47_rubric) nao Incluído. Inclusao Abortada.";
@@ -238,16 +238,16 @@ class cl_pontocom {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null) { 
+   public function alterar ($r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null) {
       $this->atualizacampos();
      $sql = " update pontocom set ";
      $virgula = "";
-     if(trim($this->r47_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_anousu"])){ 
+     if(trim($this->r47_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_anousu"])){
        $sql  .= $virgula." r47_anousu = $this->r47_anousu ";
        $virgula = ",";
-       if(trim($this->r47_anousu) == null ){ 
+       if(trim($this->r47_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio não informado.";
          $this->erro_campo = "r47_anousu";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_mesusu"])){ 
+     if(trim($this->r47_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_mesusu"])){
        $sql  .= $virgula." r47_mesusu = $this->r47_mesusu ";
        $virgula = ",";
-       if(trim($this->r47_mesusu) == null ){ 
+       if(trim($this->r47_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio não informado.";
          $this->erro_campo = "r47_mesusu";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_regist"])){ 
+     if(trim($this->r47_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_regist"])){
        $sql  .= $virgula." r47_regist = $this->r47_regist ";
        $virgula = ",";
-       if(trim($this->r47_regist) == null ){ 
+       if(trim($this->r47_regist) == null ){
          $this->erro_sql = " Campo Codigo do Funcionario não informado.";
          $this->erro_campo = "r47_regist";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_rubric"])){ 
+     if(trim($this->r47_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_rubric"])){
        $sql  .= $virgula." r47_rubric = '$this->r47_rubric' ";
        $virgula = ",";
-       if(trim($this->r47_rubric) == null ){ 
+       if(trim($this->r47_rubric) == null ){
          $this->erro_sql = " Campo Codigo da Rubrica não informado.";
          $this->erro_campo = "r47_rubric";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_valor"])){ 
+     if(trim($this->r47_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_valor"])){
        $sql  .= $virgula." r47_valor = $this->r47_valor ";
        $virgula = ",";
-       if(trim($this->r47_valor) == null ){ 
+       if(trim($this->r47_valor) == null ){
          $this->erro_sql = " Campo Valor (utilizado como work) não informado.";
          $this->erro_campo = "r47_valor";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_quant"])){ 
+     if(trim($this->r47_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_quant"])){
        $sql  .= $virgula." r47_quant = $this->r47_quant ";
        $virgula = ",";
-       if(trim($this->r47_quant) == null ){ 
+       if(trim($this->r47_quant) == null ){
          $this->erro_sql = " Campo Qtda ou Valor para inicializar não informado.";
          $this->erro_campo = "r47_quant";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_lotac"])){ 
+     if(trim($this->r47_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_lotac"])){
        $sql  .= $virgula." r47_lotac = '$this->r47_lotac' ";
        $virgula = ",";
-       if(trim($this->r47_lotac) == null ){ 
+       if(trim($this->r47_lotac) == null ){
          $this->erro_sql = " Campo Lotacao do Funcionario não informado.";
          $this->erro_campo = "r47_lotac";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_pontocom {
          return false;
        }
      }
-     if(trim($this->r47_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_instit"])){ 
+     if(trim($this->r47_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r47_instit"])){
        $sql  .= $virgula." r47_instit = $this->r47_instit ";
        $virgula = ",";
-       if(trim($this->r47_instit) == null ){ 
+       if(trim($this->r47_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao não informado.";
          $this->erro_campo = "r47_instit";
          $this->erro_banco = "";
@@ -397,7 +397,7 @@ class cl_pontocom {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ponto complementar nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r47_anousu."-".$this->r47_mesusu."-".$this->r47_regist."-".$this->r47_rubric;
@@ -425,11 +425,11 @@ class cl_pontocom {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -438,7 +438,7 @@ class cl_pontocom {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($r47_anousu,$r47_mesusu,$r47_regist,$r47_rubric));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -495,7 +495,7 @@ class cl_pontocom {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ponto complementar nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r47_anousu."-".$r47_mesusu."-".$r47_regist."-".$r47_rubric;
@@ -523,11 +523,11 @@ class cl_pontocom {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -549,8 +549,8 @@ class cl_pontocom {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($r47_anousu = null,$r47_mesusu = null,$r47_regist = null,$r47_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($r47_anousu = null,$r47_mesusu = null,$r47_regist = null,$r47_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from pontocom ";
@@ -570,39 +570,39 @@ class cl_pontocom {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($r47_anousu)) {
-         $sql2 .= " where pontocom.r47_anousu = $r47_anousu "; 
-       } 
+         $sql2 .= " where pontocom.r47_anousu = $r47_anousu ";
+       }
        if (!empty($r47_mesusu)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu ";
+       }
        if (!empty($r47_regist)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_regist = $r47_regist "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_regist = $r47_regist ";
+       }
        if (!empty($r47_rubric)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -611,11 +611,11 @@ class cl_pontocom {
      }
      return $sql;
   }
-   // funcao do sql 
-  function sql_query_file ( $r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+  public function sql_query_file ( $r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -628,39 +628,39 @@ class cl_pontocom {
      $sql2 = "";
      if($dbwhere==""){
        if($r47_anousu!=null ){
-         $sql2 .= " where pontocom.r47_anousu = $r47_anousu "; 
-       } 
+         $sql2 .= " where pontocom.r47_anousu = $r47_anousu ";
+       }
        if($r47_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu ";
+       }
        if($r47_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_regist = $r47_regist "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_regist = $r47_regist ";
+       }
        if($r47_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -670,10 +670,10 @@ class cl_pontocom {
      return $sql;
   }
 
-   function sql_query_seleciona ( $r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_seleciona ( $r47_anousu=null,$r47_mesusu=null,$r47_regist=null,$r47_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,39 +699,39 @@ class cl_pontocom {
      $sql2 = "";
      if($dbwhere==""){
        if($r47_anousu!=null ){
-         $sql2 .= " where pontocom.r47_anousu = $r47_anousu "; 
-       } 
+         $sql2 .= " where pontocom.r47_anousu = $r47_anousu ";
+       }
        if($r47_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_mesusu = $r47_mesusu ";
+       }
        if($r47_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_regist = $r47_regist "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_regist = $r47_regist ";
+       }
        if($r47_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' "; 
-       } 
+         }
+         $sql2 .= " pontocom.r47_rubric = '$r47_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

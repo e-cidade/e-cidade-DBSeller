@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcppa->rotulo->label("o23_acao");
               <?=$Lo23_codppa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o23_codppa",8,$Io23_codppa,true,"text",4,"","chave_o23_codppa");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcppa->rotulo->label("o23_acao");
               <?=$Lo23_acao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o23_acao",4,$Io23_acao,true,"text",4,"","chave_o23_acao");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcppa->rotulo->label("o23_acao");
               <?=$Lo23_anoexe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o23_anoexe",4,$Io23_anoexe,true,"text",4,"","chave_o23_anoexe");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcppa->rotulo->label("o23_acao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcppa.php")==true){
@@ -133,12 +133,12 @@ $clorcppa->rotulo->label("o23_acao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

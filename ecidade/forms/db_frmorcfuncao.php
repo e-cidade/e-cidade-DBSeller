@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -28,12 +28,12 @@
 //MODULO: orcamento
 $clorcfuncao->rotulo->label();
 
-$legenda = "Inclusão de Função";
+$legenda = "InclusÃ£o de FunÃ§Ã£o";
 if ($db_opcao == 2 || $db_opcao == 22) {
-    $legenda = "Alteração de Função";
+    $legenda = "AlteraÃ§Ã£o de FunÃ§Ã£o";
 }
 if ($db_opcao == 3 || $db_opcao == 33) {
-    $legenda = "Exclusão de Função";
+    $legenda = "ExclusÃ£o de FunÃ§Ã£o";
 }
 ?>
 <html>

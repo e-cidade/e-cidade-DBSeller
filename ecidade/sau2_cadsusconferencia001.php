@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -70,21 +70,21 @@ $db_botao = true;
   <tr>
      <td><b>Data Inicial:</b></td>
      <td>
-     <?db_inputdata("dataini","","","","","",1); ?>
+     <?php db_inputdata("dataini","","","","","",1); ?>
      </td>
   </tr>
   <tr>
      <td><b>Data Final:</b></td>
      <td>
-        <?db_inputdata("datafim","","","","","",1); ?>
+        <?php db_inputdata("datafim","","","","","",1); ?>
      </td>
   </tr>
   <tr>
     <td nowrap title="Importação">
-      <?db_ancora(@$Ls136_i_codigo,"js_pesquisas136_i_codigo(true);",$db_opcao);?>
+      <?php db_ancora(@$Ls136_i_codigo,"js_pesquisas136_i_codigo(true);",$db_opcao);?>
     </td>
     <td>
-    <?
+    <?php
 db_input('s136_i_codigo',10,$Is136_i_codigo,true,'text',$db_opcao," onchange='js_pesquisas136_i_codigo(false);'");
 db_input('s136_d_data',10,@$Is136_d_data,true,'text',3,'');
     ?>
@@ -92,10 +92,10 @@ db_input('s136_d_data',10,@$Is136_d_data,true,'text',3,'');
   </tr>
   <tr>
      <td>
-       <?db_ancora(@$Ls136_i_user,"js_pesquisas136_i_user(true);",$db_opcao);?>
+       <?php db_ancora(@$Ls136_i_user,"js_pesquisas136_i_user(true);",$db_opcao);?>
      </td>
      <td>
-     <?
+     <?php
 db_input('s136_i_user',10,$Is136_i_codigo,true,'text',$db_opcao," onchange='js_pesquisas136_i_user(false);'");
 db_input('nome',30,@$Inome,true,'text',3,'');
      ?>
@@ -105,7 +105,7 @@ db_input('nome',30,@$Inome,true,'text',3,'');
       <td>
          <b>Tipo de Registro:</b>
       </td>
-      <td>   
+      <td>
           <select name="tipo" value="0" id="tipo" style="height:18px;font-size:10px;">
              <option value="0">Todos</option>
              <option value="1">Consistente</option>
@@ -200,7 +200,7 @@ function js_mostrauser1(chave1,chave2){
 	</td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

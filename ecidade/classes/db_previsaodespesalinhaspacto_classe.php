@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE previsaodespesalinhaspacto
 class cl_previsaodespesalinhaspacto { 
@@ -30,13 +30,13 @@ class cl_previsaodespesalinhaspacto {
                  c41_valorlinha = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_previsaodespesalinhaspacto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("previsaodespesalinhaspacto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_previsaodespesalinhaspacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c41_sequencial = ($this->c41_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c41_sequencial"]:$this->c41_sequencial);
        $this->c41_previsaodespesa = ($this->c41_previsaodespesa == ""?@$GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesa"]:$this->c41_previsaodespesa);
@@ -57,7 +57,7 @@ class cl_previsaodespesalinhaspacto {
      }
    }
    // funcao para Inclusão
-   function incluir ($c41_sequencial){ 
+   public function incluir ($c41_sequencial){ 
       $this->atualizacampos();
      if($this->c41_previsaodespesa == null ){ 
        $this->erro_sql = " Campo Previsão despesa não informado.";

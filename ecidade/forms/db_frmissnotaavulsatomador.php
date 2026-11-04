@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("q51_numnota");
        <?=@$Lq53_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_sequencial',10,$Iq53_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq53_issnotaavulsa?>">
-       <?
+       <?php
        db_ancora(@$Lq53_issnotaavulsa,"js_pesquisaq53_issnotaavulsa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_issnotaavulsa',10,$Iq53_issnotaavulsa,true,'text',$db_opcao," onchange='js_pesquisaq53_issnotaavulsa(false);'")
 ?>
-       <?
+       <?php
 db_input('q51_numnota',10,$Iq51_numnota,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('q51_numnota',10,$Iq51_numnota,true,'text',3,'')
        <?=@$Lq53_dtservico?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q53_dtservico',@$q53_dtservico_dia,@$q53_dtservico_mes,@$q53_dtservico_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('q53_dtservico',@$q53_dtservico_dia,@$q53_dtservico_mes,@$q53_dtser
        <?=@$Lq53_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_nome',70,$Iq53_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('q53_nome',70,$Iq53_nome,true,'text',$db_opcao,"")
        <?=@$Lq53_cpfpnpj?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_cpfpnpj',14,$Iq53_cpfpnpj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('q53_cpfpnpj',14,$Iq53_cpfpnpj,true,'text',$db_opcao,"")
        <?=@$Lq53_endereco?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_endereco',40,$Iq53_endereco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('q53_endereco',40,$Iq53_endereco,true,'text',$db_opcao,"")
        <?=@$Lq53_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_numero',15,$Iq53_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('q53_numero',15,$Iq53_numero,true,'text',$db_opcao,"")
        <?=@$Lq53_bairro?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_bairro',50,$Iq53_bairro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,7 +123,7 @@ db_input('q53_bairro',50,$Iq53_bairro,true,'text',$db_opcao,"")
        <?=@$Lq53_cep?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_cep',8,$Iq53_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('q53_cep',8,$Iq53_cep,true,'text',$db_opcao,"")
        <?=@$Lq53_uf?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_uf',2,$Iq53_uf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('q53_uf',2,$Iq53_uf,true,'text',$db_opcao,"")
        <?=@$Lq53_email?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_email',25,$Iq53_email,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ db_input('q53_email',25,$Iq53_email,true,'text',$db_opcao,"")
        <?=@$Lq53_fone?>
     </td>
     <td> 
-<?
+<?php
 db_input('q53_fone',15,$Iq53_fone,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -192,7 +192,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsatomador.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

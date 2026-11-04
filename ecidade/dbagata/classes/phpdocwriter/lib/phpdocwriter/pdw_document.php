@@ -50,7 +50,7 @@ var $cursor;
 var $span;
 var $sautostyle;
 
-function pdw_document()
+public function pdw_document()
 {
 	$this->tmpdir = $this->_uniquename();
 	$this->filename = 'document';
@@ -136,7 +136,7 @@ function pdw_document()
 	// End manifest.xml
 }
 
-function Font($params)
+public function Font($params)
 {
 // 	if (!array_key_exists('family', $params))
 // 		$this->_error('You must define a font family');
@@ -363,7 +363,7 @@ function SetStdFont($family='', $size='')
 	}
 }
 
-function SetFont($params)
+public function SetFont($params)
 {
 	if (!$style_no = $this->_searchfont ($params))
 	{
@@ -378,7 +378,7 @@ function SetFont($params)
 		/////<office:automatic-styles> <- <style:style>
 		$this->autostyle->addXMLBranch($this->style);
 
-		array_push ($this->fontlist, &$params);
+		array_push ($this->fontlist, $params);
 		$this->spanstyle='T'.$this->textno;
 		$this->textno++;
 		
@@ -387,7 +387,7 @@ function SetFont($params)
 	else $this->spanstyle=$style_no;
 }
 
-function AddPageDef($params)
+public function AddPageDef($params)
 {
 	if (!array_key_exists('name', $params))
 		$this->_error('Please, specify a name for all pages');
@@ -463,13 +463,15 @@ function AddPageDef($params)
 	}
 }
 
-function AddParaDef($params)
+public function AddParaDef($params)
 {
 	$gname = 0;
 	$family = 'paragraph';
 	$stylebranch =& $this->sstyle;
-	$this->style =& new XMLBranch('style:style');
-	$this->styleprop =& new XMLBranch('style:properties');
+	$cl_XMLBranch = new XMLBranch('style:style');
+	$this->style =& $cl_XMLBranch;
+	$cl_XMLBranch = new XMLBranch('style:properties');
+	$this->styleprop =& $cl_XMLBranch;
 	if (!array_key_exists('name', $params))
 	{
 		$gname = 'P'.$this->parano++;
@@ -540,7 +542,7 @@ function AddPage($template='Standard')
 	$this->newpage = 1;
 }
 
-function Ln($num=1) {
+public function Ln($num=1) {
 	for ($i = 1; $i <= $num; $i++)
 		$this->cursor = $this->_getbranch();
 }
@@ -566,11 +568,11 @@ function _getbranch($branch='text:p')
 	return $newbranch;
 }
 
-function _pushbranch() {
+public function _pushbranch() {
 	$this->office->addXMLBranch($this->cursor);
 }
 
-function Write($text)
+public function Write($text)
 {
 // 	print get_class($this)."<br>";
 	if (!$this->fontdef)
@@ -639,14 +641,14 @@ function AddLink($text,$url,$name='')
 	}
 }
 
-function AddBookmark($name)
+public function AddBookmark($name)
 {
 	$bookmark = new XMLBranch('text:bookmark');
 	$bookmark->setTagAttribute('text:name', $name);
 	$this->cursor->addXMLBranch($bookmark);
 }
 
-function _frame(&$params,&$frameprop)
+function _frame($params,&$frameprop)
 {
 	foreach($params as $key => $value)
 	{
@@ -686,7 +688,7 @@ function _frame(&$params,&$frameprop)
 	}
 }
 
-function Image($params)
+public function Image($params)
 {
 	$tmpfile = $this->_addimage($params[path]);
 	if (!array_key_exists('path', $params) || !array_key_exists('w', $params) || !array_key_exists('h', $params))
@@ -971,7 +973,7 @@ function PageNo($adjust=0, $select='current')
 	$this->cursor->addXMLBranch($page_no);
 }
 
-function NoPages()
+public function NoPages()
 {
 	if ($this->cursor == '')
 		$this->cursor = $this->_getbranch();
@@ -979,7 +981,7 @@ function NoPages()
 	$this->cursor->addXMLBranch($no_pages);
 }
 
-function SetLanguage($lang, $country)
+public function SetLanguage($lang, $country)
 {
 	if (!is_int(strpos($this->meta,'<dc:language>')))
 		$this->meta .= '<dc:language>'.$lang.'-'.$country.'</dc:language>';
@@ -988,31 +990,31 @@ function SetLanguage($lang, $country)
 	$this->country = $country;
 }
 
-function SetTitle($title)
+public function SetTitle($title)
 {
 	if (!is_int(strpos($this->meta,'<dc:title>')))
 		$this->meta .= '<dc:title>'.$title.'</dc:title>';
 }
 
-function SetAuthor($author)
+public function SetAuthor($author)
 {
 	if (!is_int(strpos($this->meta,'<meta:initial-creator>')))
 		$this->meta .= '<meta:initial-creator>'.$author.'</meta:initial-creator>';
 }
 
-function SetSubject($subject)
+public function SetSubject($subject)
 {
 	if (!is_int(strpos($this->meta,'<dc:subject>')))
 		$this->meta .= '<dc:subject>'.$subject.'</dc:subject>';
 }
 
-function SetDescription($description)
+public function SetDescription($description)
 {
 	if (!is_int(strpos($this->meta,'<dc:description>')))
 		$this->meta .= '<dc:description>'.$description.'</dc:description>';
 }
 
-function SetKeywords($keywords)
+public function SetKeywords($keywords)
 {
 	if (!is_int(strpos($this->meta,'<meta:keywords>')))
 	{
@@ -1046,7 +1048,7 @@ function AddFootnote($text,$paragstyle='')
 	$this->cursor->addXMLBranch($headline1);
 }
 
-function SetFootnoteStyle($mleft = 0.499, $mright = 0, $fontsize = 10, $numformat = 1)
+public function SetFootnoteStyle($mleft = 0.499, $mright = 0, $fontsize = 10, $numformat = 1)
 {
 	if (!$headlines = $this->styles->getBranches('office:document-styles/office:styles', 'style:style', 'style:name', 'Footnote'));
 	{
@@ -1127,7 +1129,7 @@ function _searchpage(&$apage)
 	return 0;
 }
 
-function _addimage($file)
+public function _addimage($file)
 {
 	if (!$tmpfile = array_search($file, $this->imglist))
 	{
@@ -1140,22 +1142,22 @@ function _addimage($file)
 	return $tmpfile;
 }
 
-function _getFrameno()
+public function _getFrameno()
 {
 	return $this->frameno++;
 }
 
-function _getPageno()
+public function _getPageno()
 {
 	return $this->pmasterno++;
 }
 
-function Insert()
+public function Insert()
 {
 	$this->office->addXMLBranch($this->cursor);
 }
 
-function _replacechars($text)
+public function _replacechars($text)
 {
 	return str_replace('<','&lt;', str_replace('>','&gt;', $text));
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcausa->rotulo->label();
        <?=@$Lcm04_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm04_i_codigo',10,$Icm04_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('cm04_i_codigo',10,$Icm04_i_codigo,true,'text',3,"")
        <?=@$Lcm04_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm04_c_descr',60,$Icm04_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('cm04_c_descr',60,$Icm04_c_descr,true,'text',$db_opcao,"")
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?if($db_opcao == 1 ){ echo "disabled";} ?> >
+<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?php if($db_opcao == 1 ){ echo "disabled";} ?> >
 </form>
 <script>
 function js_pesquisa(){
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_causa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

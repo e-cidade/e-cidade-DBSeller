@@ -29,6 +29,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model;
 
 use ECidade\Educacao\Escola\Model\CensoDisciplina;
 use ECidade\Educacao\Escola\Registry\CensoDisciplinaRegistry;
+use Exception;
 
 class TurmaCensoDisciplinaVO
 {
@@ -39,6 +40,7 @@ class TurmaCensoDisciplinaVO
     protected $disciplina;
 
     protected $tipoBase;
+    protected $unidadeCurricular;
     /**
      * @var bool
      */
@@ -93,6 +95,24 @@ class TurmaCensoDisciplinaVO
     }
 
     /**
+     * @return mixed
+     */
+    public function getUnidadeCurricular()
+    {
+        return $this->unidadeCurricular;
+    }
+
+    /**
+     * @param mixed $unidadeCurricular
+     * @return TurmaCensoDisciplinaVO
+     */
+    public function setUnidadeCurricular($unidadeCurricular)
+    {
+        $this->unidadeCurricular = $unidadeCurricular;
+        return $this;
+    }
+
+    /**
      * @param $state
      * @return TurmaCensoDisciplinaVO
      */
@@ -105,7 +125,15 @@ class TurmaCensoDisciplinaVO
         }
 
         if (array_key_exists('ed59_tipobase', $state)) {
+            if (is_null($state['ed59_tipobase'])) {
+                $mensagemErro = "Erro. Disciplina sem Tipo de Base definido.";
+                $mensagemErro .= "\nAcesse DB:EDUCAÇÃO > Escola > Cadastros > Turmas > Alteração > ";
+                $mensagemErro .= "Aba 'Disciplinas' > Verificar o tipo de base das disciplinas. Turma para ser ";
+                $mensagemErro .= "verificada {$state['codigo_turma']}.";
+                throw new Exception($mensagemErro);
+            }
             $self->setTipoBase($state['ed59_tipobase']);
+            $self->setUnidadeCurricular($state['ed59_unidade_curricular']);
         }
 
         if (array_key_exists('oferece', $state)) {

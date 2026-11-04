@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 ?>
-  <html>
-  <head>
+<html>
+<head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
@@ -46,19 +46,21 @@ require_once(modification("dbforms/db_funcoes.php"));
     db_app::load("estilos.css");
     db_app::load("arrays.js");
     ?>
-      <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <style>
-      .linhagrid {padding:1px}
+        .linhagrid {
+            padding: 1px
+        }
     </style>
-  </head>
-  <body >
+</head>
+<body>
 
-    <?php
-    require_once(modification("forms/db_frmgerarslipretencaofolha.php"));
-    ?>
+<?php
+require_once(modification("forms/db_frmgerarslipretencaofolha.php"));
+?>
 
-  </body>
-  </html>
+</body>
+</html>
 <?php
 db_menu();
 ?>

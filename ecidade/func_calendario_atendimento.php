@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -740,7 +740,7 @@ echo "</html>";
 ?> 
 <script>
 function janela(d,m,a){ 
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = (d<10?'0'+d:d);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";

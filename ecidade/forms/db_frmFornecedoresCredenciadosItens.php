@@ -21,41 +21,48 @@
     </form>
 </div>
 <script type="text/javascript">
-
     var oGridItensFornecedor = new DatagridCollection(oDados.oCollectionItens).configure({
         height : 120,
         order : false
     });
 
     oGridItensFornecedor.getGrid().setCheckbox(4);
+    oGridItensFornecedor.getGrid().setCheckbox(4);
+    oGridItensFornecedor.addColumn('ordem', {
+        label : 'Ordem',
+        align : 'center',
+        width : '10%'
+    });
+
     oGridItensFornecedor.addColumn('sItem', {
         label : 'Item',
         align : 'left',
-        width : '50%'
+        width : '60%'
     });
 
     oGridItensFornecedor.addColumn('iQuantidadeItem', {
         label : 'Quantidade',
         align : 'left',
-        width : '14%'
+        width : '10%'
     });
 
     oGridItensFornecedor.addColumn('nVlrUnitario', {
         label : 'Valor Unitário',
         align : 'left',
-        width : '18%'
-    }).transform('dinheiro');
-
-    oGridItensFornecedor.addColumn('nVlrTotal', {
-        label : 'Valor Total',
-        align : 'left',
-        width : '18%'
+        width : '10%'
     }).transform('dinheiro');
 
     oGridItensFornecedor.addColumn('iLicLicitem', {
         label : 'codigo',
         width : ''
     });
+
+    oGridItensFornecedor.addColumn('nVlrTotal', {
+        label : 'Valor Total',
+        align : 'left',
+        width : '10%'
+    }).transform('dinheiro');
+
 
     oGridItensFornecedor.hideColumns([5]);
     oGridItensFornecedor.show($('ctnGridItensFornecedor'));
@@ -70,7 +77,7 @@
         }
 
         var oFornecedor = oDados.oCollectionFornecedor.get($F('cboFornecedores'));
-  
+
         if (oFornecedor.aItens.length == 0) {
             return;
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -144,12 +144,12 @@ input {
    <br>
   <tr>
     <td nowrap title="<?=@$Tv50_inicial?>">
-       <?
+       <?php
        db_ancora(@$Lv50_inicial,"js_pesquisav50_inicial(true);",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_inicial',8,$Iv50_inicial,true,'text',1," onchange='js_pesquisav50_inicial(false);'")
 ?>
     </td>
@@ -165,7 +165,7 @@ db_input('v50_inicial',8,$Iv50_inicial,true,'text',1," onchange='js_pesquisav50_
   </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -194,7 +194,7 @@ function js_mostrainicial(chave,erro){
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

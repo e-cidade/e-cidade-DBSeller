@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
                 <?=$Lt46_sequencial?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
   		            db_input("t46_sequencial",10,$It46_sequencial,true,"text",4,"","chave_t46_sequencial");
   		          ?>
               </td>
@@ -66,7 +66,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
                 <?=$Lt46_descricao?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
       		        db_input("t46_descricao",40,$It46_descricao,true,"text",4,"","chave_t46_descricao");
       		      ?>
               </td>
@@ -85,7 +85,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benstipodepreciacao.php")==true){
@@ -137,12 +137,12 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

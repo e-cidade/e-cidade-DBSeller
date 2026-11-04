@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js, prototype.js, strings.js, arrays.js, windowAux.widget.js, datagrid.widget.js,
                   dbtextField.widget.js, dbcomboBox.widget.js");
     db_app::load("estilos.css, grid.style.css,dbVisualizadorImpressaoTexto.style.css");
@@ -66,6 +66,13 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <td nowrap="nowrap" id="ctnCboCalendario">
                </td>
               </tr>
+              <tr>
+               <td  nowrap="nowrap" title="" >
+                  <b>Período: </b>
+                </td>
+                <td nowrap="nowrap" id="ctnCboPeriodo">
+               </td>
+              </tr>
             </table>
             </fieldset>
             <fieldset style="border:none;border-top:2px groove white;font-weight: bold">
@@ -91,7 +98,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     </form>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script type="text/javascript">
@@ -103,10 +110,19 @@ oCboEscola.addItem("", "Selecione");
 oCboEscola.addEvent("onChange", "js_pesquisarCalendarios()");
 oCboEscola.show($('ctnCboEscola'));
 
+function js_pesquisaPeriodosETurmas(){
+  js_pesquisarTurmas();
+  js_pesquisarPeriodos();
+}
+
 oCboCalendario         = new DBComboBox("cboCalendario", "oCboCalendario", null, "100%");
 oCboCalendario.addItem("", "Selecione");
-oCboCalendario.addEvent("onChange", "js_pesquisarTurmas()");
+oCboCalendario.addEvent("onChange", "js_pesquisaPeriodosETurmas()");
 oCboCalendario.show($('ctnCboCalendario'));
+
+oCboPeriodo            = new DBComboBox("cboPeriodo", "oCboPeriodo", null, "100%");
+oCboPeriodo.addItem("", "Selecione");
+oCboPeriodo.show($('ctnCboPeriodo'));
 
 oCboTurmas             = new DBComboBox("cboTurmas", "oCboTurmas", null, "250px", 10);
 oCboTurmas.setMultiple(true);
@@ -200,6 +216,48 @@ function js_retornaPesquisarCalendarios(oResponse) {
 }
 
 /**
+ * Busca os períodos do calendário e da escola selecionados
+ */
+function js_pesquisarPeriodos() {
+
+  if(oCboCalendario.getValue() == '') {
+
+    oCboPeriodo.clearItens();
+    oCboPeriodo.clearItens();
+    return false;
+  }
+
+  var oParametro         = new Object();
+	oParametro.exec        = 'buscaPeriodosAvaliacaoEscola';
+	oParametro.iEscola     = oCboEscola.getValue();
+	oParametro.iCalendario = oCboCalendario.getValue();
+
+  js_divCarregando('Aguarde, carregando os períodos.', 'msgBoxPeriodos');
+  var oAjax = new Ajax.Request(sUrlRpc,
+  	                           {
+    	                           method:     'post',
+    	                           parameters: 'json='+Object.toJSON(oParametro),
+    	                           onComplete: js_retornaPesquisarPeriodos
+  	                           }
+  	                          );
+}
+
+function js_retornaPesquisarPeriodos(oAjax) {
+  var oRetorno = JSON.parse(oAjax.responseText);
+  js_removeObj('msgBoxPeriodos');
+  oCboPeriodo.clearItens();
+	oCboPeriodo.addItem("", "Selecione");
+
+  oRetorno.dados.each(function(oPeriodo, iSeq) {
+     oCboPeriodo.addItem(oPeriodo.codigo_periodo, oPeriodo.descricao_periodo.urlDecode());
+  });
+
+  if( oRetorno.dados.length == 1 ) {
+    oCboPeriodo.setValue( oRetorno.dados[0].codigo_periodo );
+  }
+}
+
+/**
  * Busca as Turmas do calendário selecionado
  */
 function js_pesquisarTurmas() {
@@ -216,7 +274,7 @@ function js_pesquisarTurmas() {
 	oParametro.iEscola     = oCboEscola.getValue();
 	oParametro.iCalendario = oCboCalendario.getValue();
 
-	//js_divCarregando("Aguarde, carregando as turmas.", "msgBox");
+	js_divCarregando("Aguarde, carregando as turmas.", "msgBoxTurmas");
 	var oAjax = new Ajax.Request(
 			                         sUrlRpc,
 			                         {
@@ -230,7 +288,7 @@ function js_pesquisarTurmas() {
 function js_retornaPesquisarTurmas(oResponse) {
 
 	var oRetorno = JSON.parse(oResponse.responseText);
-	//js_removeObj("msgBox");
+	js_removeObj("msgBoxTurmas");
 	oCboTurmas.clearItens();
 	oCboTurmasSelecionadas.clearItens();
 
@@ -294,6 +352,11 @@ $('btnProcessarRelatorio').observe("click", function() {
 	var aTurmas             = new Array();
 	var aTurmasSelecionadas = oCboTurmasSelecionadas.aItens;
 
+  if(oCboPeriodo.getValue() == null || oCboPeriodo.getValue() == '') {
+    alert('Nenhum período selecionado');
+    return false;
+  }
+
   if (aTurmasSelecionadas == null || aTurmasSelecionadas.length == 0) {
 
     alert('Nenhuma Turma selecionada');
@@ -308,6 +371,8 @@ $('btnProcessarRelatorio').observe("click", function() {
 	sLocation     += "iEscola="+oCboEscola.getValue();
 	sLocation     += "&iCalendario="+oCboCalendario.getValue();
 	sLocation     += "&aTurmas="+aTurmas;
+  sLocation     += "&iPeriodo="+oCboPeriodo.getValue();
+  sLocation     += "&oPeriodo="+oCboPeriodo.getDescricao();
 	jan            = window.open(sLocation, '',
 	  	             'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
   jan.moveTo(0,0);

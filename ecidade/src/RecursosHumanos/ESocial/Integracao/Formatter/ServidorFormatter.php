@@ -7,6 +7,7 @@ use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use stdClass;
 use CgmJuridico;
+use DBPessoal;
 
 /**
  * Class ServidorFormatter
@@ -313,6 +314,7 @@ class ServidorFormatter extends Formatter
 
             if (empty($dadoServidor->vinculo['infoContrato']['CBOCargo'])) {
                 unset($dadoServidor->vinculo['infoContrato']['CBOCargo']);
+                unset($dadoServidor->vinculo['infoContrato']['dtIngrCargo']);
             }
 
             if (empty($dadoServidor->vinculo['infoContrato']['dtIngrCargo'])) {
@@ -519,7 +521,9 @@ class ServidorFormatter extends Formatter
 
         //Informações do regime trabalhista.
         $dadoServidor->vinculo['infoRegimeTrab'] = [];
-
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->vinculo['matricula'] = $this->servidorAtual->getMatriculaAnterior();
+        }
         // Dados - Informações de trabalhador celetista.
         if ($this->servidorAtual->isCeletista()) {
             if ($servidorEntity->getCeletista() !== null) {
@@ -632,19 +636,23 @@ class ServidorFormatter extends Formatter
             ) {
                 unset($dadoInfoCeletista['trabTemporario']);
             }
-
-            //Informações para identificação do empregador contratante de aprendiz.
-            if (empty($dadoInfoCeletista['aprend']['tpInsc'])
-                && empty($dadoInfoCeletista['aprend']['nrInsc'])
-            ) {
-                unset($dadoInfoCeletista['aprend']);
-            }
         }
 
         if (!(isset($dadoInfoCeletista))) {
             unset($dadoServidor->vinculo['infoRegimeTrab']['infoCeletista']);
         } else {
             $dadoServidor->vinculo['infoRegimeTrab']['infoCeletista'] = $dadoInfoCeletista;
+        }
+        //REGRA DE PREENCHIMENTO DO dtIngrCargo
+        if ($dadoServidor->vinculo['tpRegTrab'] == 1) {
+            unset($dadoServidor->vinculo['infoContrato']['dtIngrCargo']);
+        }
+      
+        if (!empty($dadoServidor->vinculo['infoContrato']['dtIngrCargo']) &&
+            $dadoServidor->vinculo['infoContrato']['dtIngrCargo'] >
+            DBPessoal::getDataFaseEsocial(4)->getDate() &&
+            $dadoServidor->vinculo['cadIni'] !== 'S') {
+            unset($dadoServidor->vinculo['infoContrato']['dtIngrCargo']);
         }
 
         if ($dadoServidor->vinculo['tpRegTrab'] == 2) {

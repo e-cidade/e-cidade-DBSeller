@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -157,7 +157,7 @@ if ( isset($excluir) ) {
 								<b> Inicial número: </b>
               </td>
               <td> 
-	          		<?
+	          		<?php
 	          		 db_input('v50_inicial',8,$Iv50_inicial,true,'text',3," onchange='js_pesquisav50_inicial(false);'")
 	          		?>
               </td>
@@ -165,12 +165,12 @@ if ( isset($excluir) ) {
 						
             <tr>
               <td nowrap title="<?=@$Tv56_codsit?>">
-	          		<?
+	          		<?php
                   db_ancora(@$Lv56_codsit,"js_pesquisav56_codsit(true);",3);
                 ?>
               </td>
               <td> 
-	          		<?
+	          		<?php
 	          		 db_input('v56_codsit',8,$Iv56_codsit,true,'text',3," onchange='js_pesquisav56_codsit(false);'");
 	           		 db_input('v52_descr',40,$Iv52_descr,true,'text',3,'')
                 ?>
@@ -182,7 +182,7 @@ if ( isset($excluir) ) {
 	           <?=@$Lv56_obs?>
               </td>
               <td> 
-	          		<?
+	          		<?php
 	          		 db_textarea('v56_obs',0,49,$Iv56_obs,true,'text',3) 
 	          		?>
               </td>
@@ -199,7 +199,7 @@ if ( isset($excluir) ) {
 		</form>    
 	</center>
 	
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -243,7 +243,7 @@ function js_mostrasituacao1(chave1, chave2){
 }
 
 </script>
-<?
+<?php
 // se a chave pesqusa não foi setada abre a janela para o usuário fazer a escolha do registro
 // que ele deseja alterar
 if ( !isset($chavepesquisa) ) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltipoausencia->rotulo->label("ed320_descricao");
               <?=$Led320_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed320_sequencial",10,$Ied320_sequencial,true,"text",4,"","chave_ed320_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoausencia->rotulo->label("ed320_descricao");
               <?=$Led320_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed320_descricao",100,$Ied320_descricao,true,"text",4,"","chave_ed320_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoausencia->rotulo->label("ed320_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoausencia.php")==true){
@@ -122,12 +122,12 @@ $cltipoausencia->rotulo->label("ed320_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

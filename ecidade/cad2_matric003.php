@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -112,7 +112,7 @@ $clrotulo->label("z01_nome");
           </td>
         </tr>
         </table >
-          <?
+          <?php
             db_input('setorParametro',"",0,true,'hidden',3,"");
             db_input('quadraParametro',"",0,true,'hidden',3,"");
             db_input('loteParametro',"",0,true,'hidden',3,"");

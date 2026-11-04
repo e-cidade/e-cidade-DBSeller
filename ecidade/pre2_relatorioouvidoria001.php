@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ include(modification("dbforms/db_classesgenericas.php"));
                 <tr height="25">
 				  <td align="left"><strong>Periodo:</strong></td>
 				  <td align="left">
-				    <?
+				    <?php
 				      db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',2);
 				      echo "<strong> &nbsp a &nbsp</strong>";
 				      db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',2);
@@ -91,7 +91,7 @@ include(modification("dbforms/db_classesgenericas.php"));
    </center> 
 </body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

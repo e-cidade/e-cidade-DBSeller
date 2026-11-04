@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ jan=window.open('con2_relreceita002.php?data='+data,'','width='+(screen.availWid
       <tr>
          <td>Data: </td>
          <td>
-         <? db_inputdata("data",@$dia,@$mes,@$ano,'text',1,"");  ?>
+         <?php db_inputdata("data",@$dia,@$mes,@$ano,'text',1,"");  ?>
          </td>     
    </tr>
       <tr>
@@ -104,6 +104,6 @@ jan=window.open('con2_relreceita002.php?data='+data,'','width='+(screen.availWid
 
   </form>
     </table>
-<?  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>

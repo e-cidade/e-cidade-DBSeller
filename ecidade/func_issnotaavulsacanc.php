@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clissnotaavulsacanc->rotulo->label("q63_data");
               <?=$Lq63_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q63_sequencial",10,$Iq63_sequencial,true,"text",4,"","chave_q63_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clissnotaavulsacanc->rotulo->label("q63_data");
               <?=$Lq63_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q63_data",10,$Iq63_data,true,"text",4,"","chave_q63_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clissnotaavulsacanc->rotulo->label("q63_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issnotaavulsacanc.php")==true){
@@ -122,12 +122,12 @@ $clissnotaavulsacanc->rotulo->label("q63_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

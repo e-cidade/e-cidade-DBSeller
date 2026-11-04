@@ -85,12 +85,14 @@ class Curl
         $this->options = $options;
     }
 
+    /**
+     * @throws \ParameterException
+     */
     public function execute()
     {
         if (!empty($this->options)) {
             curl_setopt_array($this->resource, $this->options);
         }
-
         $this->response = curl_exec($this->resource);
     }
 

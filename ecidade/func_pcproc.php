@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -83,7 +83,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
               <?=$Lpc80_codproc?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("pc80_codproc",10,$Ipc80_codproc,true,"text",4,"","chave_pc80_codproc");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
               <?=$Lpc10_numero?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
 		       ?>
             </td>
@@ -104,7 +104,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 	            <b>Data Inicial:</b>
 	          </td>
             <td width="96%" align="left" nowrap>
-	            <?
+	            <?php
 					      db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,"text",1,"","dataini");
 	            ?>
 	          </td>
@@ -115,7 +115,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 	            <b>Data Final:</b>
 	          </td>
             <td width="96%" align="left" nowrap>
-	            <?
+	            <?php
 					      db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,"text",1,"","datafim");
 	            ?>
 	          </td>
@@ -124,7 +124,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
           <tr>
             <td colspan="2" align="center">
               <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
-              <input name="limpar" type="reset" id="limpar" value="Limpar" >
+              <input name="limpar" type="button" id="limpar" value="Limpar" onClick="limparCampos();">
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_pcproc.hide();">
              </td>
           </tr>
@@ -134,7 +134,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       $sWhereSolicitaAnulada = " not exists (select 1 from solicitaanulada where pc67_solicita = pc10_numero) ";
 
@@ -209,7 +209,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
         if (isset($iAtivo) && !empty($iAtivo)) {
           $sql .=  " and pc80_situacao = $iAtivo";
         }
-        
+
       if ($lFiltrarProcessoAutomatico) {
 
         $sql .= " and pc10_solicitacaotipo not in (5,6) ";
@@ -222,7 +222,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 
        // echo "<br><br>" . $sql . "<br>";
 
-        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
+        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);
 
       } else {
 
@@ -262,12 +262,12 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">
@@ -275,4 +275,11 @@ if(!isset($pesquisa_chave)){
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');
   input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
 })();
+
+function limparCampos(){
+    document.getElementById("chave_pc80_codproc").value = "";
+    document.getElementById("chave_pc10_numero").value = "";
+    document.getElementById("dataini").value = "";
+    document.getElementById("datafim").value = "";
+}
 </script>

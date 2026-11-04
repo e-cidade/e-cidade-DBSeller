@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Merenda
@@ -59,52 +59,52 @@ if(isset($opcao) && $opcao=="alterar"){
     <td nowrap title="<?=@$Tme07_i_codigo?>">
        <?=@$Lme07_i_codigo?>
     </td>
-    <td> 
-    <?db_input('me07_i_codigo',10,$Ime07_i_codigo,true,'text',3,"")?>
+    <td>
+    <?php db_input('me07_i_codigo',10,$Ime07_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme07_i_cardapio?>">
-     <?db_ancora(@$Lme07_i_cardapio,"js_pesquisame07_i_cardapio(true);",3);?>
+     <?php db_ancora(@$Lme07_i_cardapio,"js_pesquisame07_i_cardapio(true);",3);?>
     </td>
-    <td> 
-    <?db_input('me07_i_cardapio',10,$Ime07_i_cardapio,true,'text',3)?>
-    <?db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
+    <td>
+    <?php db_input('me07_i_cardapio',10,$Ime07_i_cardapio,true,'text',3)?>
+    <?php db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme07_i_alimento?>">
-      <?db_ancora(@$Lme07_i_alimento,"js_pesquisame07_i_alimento(true);",$db_opcao);?>
+      <?php db_ancora(@$Lme07_i_alimento,"js_pesquisame07_i_alimento(true);",$db_opcao);?>
     </td>
-    <td> 
-      <?db_input('me07_i_alimento',10,$Ime07_i_alimento,true,'text',$db_opcao,"onchange='js_pesquisame07_i_alimento(false);'")?>
-      <?db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
-      <?db_input('count',40,@$Icount,true,'hidden',3,'')?>
+    <td>
+      <?php db_input('me07_i_alimento',10,$Ime07_i_alimento,true,'text',$db_opcao,"onchange='js_pesquisame07_i_alimento(false);'")?>
+      <?php db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
+      <?php db_input('count',40,@$Icount,true,'hidden',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme07_i_unidade?>">
-     <?db_ancora("<b>Unidade:</b>","js_pesquisame07_i_unidade(true);",$db_opcao);?>
+     <?php db_ancora("<b>Unidade:</b>","js_pesquisame07_i_unidade(true);",$db_opcao);?>
     </td>
-    <td> 
-     <?db_input('me07_i_unidade',10,@$Ime07_i_unidade,true,'text',$db_opcao,"onchange='js_pesquisame07_i_unidade(false);'")?>
-     <?db_input('m61_descr',40,@$Im61_descr,true,'text',3,'')?>     
+    <td>
+     <?php db_input('me07_i_unidade',10,@$Ime07_i_unidade,true,'text',$db_opcao,"onchange='js_pesquisame07_i_unidade(false);'")?>
+     <?php db_input('m61_descr',40,@$Im61_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme07_f_quantidade?>">
       <?=@$Lme07_f_quantidade?>
     </td>
-    <td> 
-      <?db_input('me07_f_quantidade',10,$Ime07_f_quantidade,true,'text',$db_opcao,"")?>    
+    <td>
+      <?php db_input('me07_f_quantidade',10,$Ime07_f_quantidade,true,'text',$db_opcao,"")?>
    </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme07_c_medida?>">
        <?=@$Lme07_c_medida?>
     </td>
-    <td> 
-    <?db_input('me07_c_medida',52,$Ime07_c_medida,true,'text',$db_opcao,"")?>    
+    <td>
+    <?php db_input('me07_c_medida',52,$Ime07_c_medida,true,'text',$db_opcao,"")?>
   </td>
   </tr>
 </table>
@@ -118,7 +118,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("me07_i_codigo"=>@$me07_i_codigo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clmer_cardapioitem->sql_query("","*",""," me07_i_cardapio = $me07_i_cardapio");
@@ -134,7 +134,7 @@ if(isset($opcao) && $opcao=="alterar"){
    $cliframe_alterar_excluir->tamfontecabec = 9;
    $cliframe_alterar_excluir->tamfontecorpo = 9;
    $cliframe_alterar_excluir->formulario = false;
-   $cliframe_alterar_excluir->opcoes = $opcao_frame;   
+   $cliframe_alterar_excluir->opcoes = $opcao_frame;
    $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
   ?>
   </td>
@@ -153,7 +153,7 @@ function js_pesquisame07_i_unidade(mostra) {
 
   } else {
 
-	if (document.form1.me07_i_unidade.value != '') { 
+	if (document.form1.me07_i_unidade.value != '') {
 
 	  js_OpenJanelaIframe('','db_iframe_matunid',
 	                             'func_matunid.php?pesquisa_chave='+document.form1.me07_i_unidade.value+
@@ -161,18 +161,18 @@ function js_pesquisame07_i_unidade(mostra) {
 	                             'Pesquisa',false
 	                           )
 	} else {
-	  document.form1.m61_codmatunid.value = ''; 
+	  document.form1.m61_codmatunid.value = '';
 	}
   }
 }
 
 function js_mostramer_unidade(chave,erro) {
 
-  document.form1.m61_descr.value = chave; 
-  if (erro == true) { 
+  document.form1.m61_descr.value = chave;
+  if (erro == true) {
 
-	document.form1.me07_i_unidade.focus(); 
-    document.form1.me07_i_unidade.value = ''; 
+	document.form1.me07_i_unidade.focus();
+    document.form1.me07_i_unidade.value = '';
 
   }
 
@@ -199,7 +199,7 @@ function js_pesquisame07_i_cardapio(mostra) {
 
   } else {
 
-     if (document.form1.me07_i_cardapio.value != '') { 
+     if (document.form1.me07_i_cardapio.value != '') {
 
         js_OpenJanelaIframe('','db_iframe_mer_cardapio',
                              'func_mer_cardapio.php?pesquisa_chave='+document.form1.me07_i_cardapio.value+
@@ -207,18 +207,18 @@ function js_pesquisame07_i_cardapio(mostra) {
                              'Pesquisa',false
                            )
      } else {
-       document.form1.me01_i_codigo.value = ''; 
+       document.form1.me01_i_codigo.value = '';
      }
   }
 }
 
 function js_mostramer_cardapio(chave,erro) {
 
-  document.form1.me01_c_nome.value = chave; 
-  if (erro == true) { 
+  document.form1.me01_c_nome.value = chave;
+  if (erro == true) {
 
-    document.form1.me07_i_cardapio.focus(); 
-    document.form1.me07_i_cardapio.value = ''; 
+    document.form1.me07_i_cardapio.focus();
+    document.form1.me07_i_cardapio.value = '';
 
   }
 
@@ -243,7 +243,7 @@ function js_pesquisame07_i_alimento(mostra) {
 
   } else {
 
-     if (document.form1.me07_i_alimento.value != '') { 
+     if (document.form1.me07_i_alimento.value != '') {
 
         js_OpenJanelaIframe('','db_iframe_mer_alimento',
                              'func_mer_alimento.php?pesquisa_chave='+document.form1.me07_i_alimento.value+
@@ -251,18 +251,18 @@ function js_pesquisame07_i_alimento(mostra) {
                              'Pesquisa',false
                            )
      } else {
-       document.form1.me35_i_codigo.value = ''; 
+       document.form1.me35_i_codigo.value = '';
      }
   }
 }
 
 function js_mostramer_alimento(chave,erro) {
 
-  document.form1.me35_c_nomealimento.value = chave; 
-  if (erro == true) { 
+  document.form1.me35_c_nomealimento.value = chave;
+  if (erro == true) {
 
-    document.form1.me07_i_alimento.focus(); 
-    document.form1.me07_i_alimento.value = ''; 
+    document.form1.me07_i_alimento.focus();
+    document.form1.me07_i_alimento.value = '';
 
   }
 
@@ -280,8 +280,8 @@ function js_mostramer_alimento1(chave1,chave2,chave3) {
                 'mer1_mer_alimentomatmater001.php?me36_i_alimento='+chave1+
                 '&nomealimento='+chave2,'Pesquisa',true);
 	}else{
-	} 
-  } 
+	}
+  }
 }
 
 function js_pesquisa() {
@@ -294,7 +294,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_cardapioitem.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

@@ -113,13 +113,14 @@ if (isset($excluir)) {
     $sSqlTrocaSerie = $cltrocaserie->sql_query("", "ed101_i_codigo", "", $sWhereTrocaSerie);
     $result_prog = $cltrocaserie->sql_record($sSqlTrocaSerie);
 
-    if ($cltrocaserie->numrows > 0) {
-
+    $sql = "select ed60_c_situacao from matricula where ed60_i_codigo = {$oPost->ed60_matricula}";
+    $situacao = pg_fetch_assoc(db_query($sql));
+    if ($cltrocaserie->numrows > 0 && trim($situacao['ed60_c_situacao']) == "AVANÇADO") {
         $lErro = true;
         $clmatricula->erro_status = "0";
         $clmatricula->erro_msg = "Aluno selecionado foi progredido para esta turma.
-                              \\nPara excluir sua matrícula, esta progressão deve ser cancelada.
-                              \\nAcesse Procedimentos -> Progressão de Aluno -> Cancelar Progressão";
+                          \\nPara excluir sua matrícula, esta progressão deve ser cancelada.
+                          \\nAcesse Procedimentos -> Progressão de Aluno -> Cancelar Progressão";
     } else {
 
         db_inicio_transacao();
@@ -309,7 +310,7 @@ if (isset($excluir)) {
 
                     $lErro = true;
                     $sMsg = $oDaoDiarioAvaliacaoAlternativa->erro_msg;
-                    break 2;
+                    break;
                 }
 
                 $cldiario->excluir("", " ed95_i_codigo = $coddiario");
@@ -319,6 +320,26 @@ if (isset($excluir)) {
                     $sMsg = $cldiario->erro_msg;
                     break;
                 }
+            }
+        }
+
+        $sqlEtapaDestino = "SELECT ed364_codigo as codigo
+            FROM escola.etapadestinomatricula WHERE ed364_matricula = {$matriculaAluno->getCodigo()};";
+        $rsEtapaDestino = pg_fetch_assoc(db_query($sqlEtapaDestino));
+
+        if (!empty($rsEtapaDestino)) {
+            $etapaDestinoCodigo = [];
+            foreach ($rsEtapaDestino as $etapa) {
+                $etapaDestinoCodigo[] = $etapa;
+            }
+            $whereEtapaDestinoCodigo = implode(" , ", $etapaDestinoCodigo);
+
+            $sqlEtapaDestinoDel = "DELETE FROM escola.etapadestinomatricula 
+                WHERE ed364_codigo in ({$whereEtapaDestinoCodigo}) ;";
+            $rsEtapaDestinoDel = db_query($sqlEtapaDestinoDel);
+            if (!$rsEtapaDestinoDel) {
+                $lErro = true;
+                $sMsg = pg_last_error();
             }
         }
 

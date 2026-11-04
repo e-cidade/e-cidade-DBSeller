@@ -141,7 +141,7 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
                     );
                 }
 
-                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
+                db_lovrot($sql, 150, "()", "", $funcao_js, "", "NoMe", $repassa);
             } else {
                 if ($pesquisa_chave != null && $pesquisa_chave != "") {
                     $result = $clorcparamseq->sql_record($clorcparamseq->sql_query($pesquisa_chave));

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -163,7 +163,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('1' => 'CGS', '2' => 'Cartão SUS', '3' => 'Nome');
+                                            $aX = array('1' => 'CGS', '2' => 'Cartão SUS', '3' => 'Nome', '4' => 'CPF');
                                             db_select('fa02_i_cursor', $aX, true, 1);
                                             ?>
                                         </td>
@@ -286,6 +286,19 @@ if ($oDados->total == 0) {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td nowrap
+                                            title="Parâmetro responsável pela alteração da validade inicial
+                                                do medicamento na rotina do medicamento continuado">
+                                            <label class="bold">Permitir alterar a validade inicial do medicamento continuado:</label>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $opcoes = ['f' => 'NÃO', 't' => 'SIM'];
+                                            db_select('fa02_altera_validade_medcontinuado', $opcoes, true, 1);
+                                            ?>
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
                                         <td nowrap title="<?= $Tfa02_alerta_nao_morador ?>">
                                             <label class="bold">
                                                 Exibir alerta de paciente não morador do município:
@@ -314,6 +327,18 @@ if ($oDados->total == 0) {
                                                 'text',
                                                 $db_opcao
                                             );
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap
+                                            title="Parâmetro ativa modificações na entrada/saída de materiais com campos necessários para exportar pro BNAFAR e habilita o uso do item de menu da integração.">
+                                            <label class="bold">Utilizar integração BNAFAR:</label>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $opcoes = ['f' => 'NÃO', 't' => 'SIM'];
+                                            db_select('fa02_utiliza_bnafar', $opcoes, true, 1);
                                             ?>
                                         </td>
                                     </tr>
@@ -371,21 +396,21 @@ if ($oDados->total == 0) {
                                             }
                                             ?>
                                             <input
-                                                type='radio'
-                                                id="tipoperiodocontinuado-datacontinuado"
-                                                name='fa02_i_tipoperiodocontinuado'
+                                                    type='radio'
+                                                    id="tipoperiodocontinuado-datacontinuado"
+                                                    name='fa02_i_tipoperiodocontinuado'
                                                 <?= $sC1 ?>
-                                                value='1'
+                                                    value='1'
                                             >
                                             <label for="tipoperiodocontinuado-datacontinuado">
                                                 &Agrave; partir da validade inicial no cadastro de continuado
                                             </label>
                                             <input
-                                                type='radio'
-                                                id="periodocontinuado-ultimaretirada"
-                                                name='fa02_i_tipoperiodocontinuado'
+                                                    type='radio'
+                                                    id="periodocontinuado-ultimaretirada"
+                                                    name='fa02_i_tipoperiodocontinuado'
                                                 <?= $sC2 ?>
-                                                value='2'
+                                                    value='2'
                                             >
                                             <label for="periodocontinuado-ultimaretirada">
                                                 &Agrave; partir da data da &uacute;ltima retirada
@@ -404,9 +429,9 @@ if ($oDados->total == 0) {
             </div>
         </fieldset>
         <input
-            name="<?= ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>"
-            type="submit" id="db_opcao"
-            value="<?= ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>"
+                name="<?= ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>"
+                type="submit" id="db_opcao"
+                value="<?= ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>"
             <?= ($db_botao == false ? "disabled" : "") ?>>
     </div>
 </form>

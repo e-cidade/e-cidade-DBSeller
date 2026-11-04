@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("db124_descricao");
        <b>Sequêncial:</b>
     </td>
     <td> 
-<?
+<?php
 db_input('db125_sequencial',10,$Idb125_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -51,16 +51,16 @@ db_input('db125_sequencial',10,$Idb125_sequencial,true,'text',3,"")
   <tr>
     <td nowrap title="<?=@$Tdb125_cadendermunicipio?>">
        <b>
-       <?
+       <?php
        db_ancora('Município:',"js_pesquisadb125_cadendermunicipio(true);",$db_opcao);
        ?>
        </b>
     </td>
     <td> 
-<?
+<?php
 db_input('db125_cadendermunicipio',10,$Idb125_cadendermunicipio,true,'text',$db_opcao," onchange='js_pesquisadb125_cadendermunicipio(false);'")
 ?>
-       <?
+       <?php
 db_input('db72_descricao',50,$Idb72_descricao,true,'text',3,'')
        ?>
     </td>
@@ -68,16 +68,16 @@ db_input('db72_descricao',50,$Idb72_descricao,true,'text',3,'')
   <tr>
     <td nowrap title="<?=@$Tdb125_db_sistemaexterno?>">
       <b>
-       <?
+       <?php
        db_ancora('Sistema: ',"js_pesquisadb125_db_sistemaexterno(true);",$db_opcao);
        ?>
        </b>
     </td>
     <td> 
-<?
+<?php
 db_input('db125_db_sistemaexterno',10,$Idb125_db_sistemaexterno,true,'text',$db_opcao," onchange='js_pesquisadb125_db_sistemaexterno(false);'")
 ?>
-       <?
+       <?php
 db_input('db124_descricao',50,$Idb124_descricao,true,'text',3,'')
        ?>
     </td>
@@ -87,7 +87,7 @@ db_input('db124_descricao',50,$Idb124_descricao,true,'text',3,'')
        <?=@$Ldb125_codigosistema?>
     </td>
     <td> 
-<?
+<?php
 db_input('db125_codigosistema',10,$Idb125_codigosistema,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,7 +152,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadendermunicipiosistema.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

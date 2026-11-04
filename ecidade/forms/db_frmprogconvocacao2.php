@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -52,17 +52,17 @@ if(isset($codmatricula)){
    <?=@$Led115_i_codigo?>
   </td>
   <td>
-   <?db_input('ed115_i_codigo',10,$Ied115_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed115_i_codigo',10,$Ied115_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted115_i_progmatricula?>">
-   <?db_ancora(@$Led115_i_progmatricula,"js_pesquisaed115_i_progmatricula(true);",$db_opcao);?>
+   <?php db_ancora(@$Led115_i_progmatricula,"js_pesquisaed115_i_progmatricula(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed115_i_progmatricula',10,$Ied115_i_progmatricula,true,'hidden',3,"")?>
-   <?db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
-   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed115_i_progmatricula',10,$Ied115_i_progmatricula,true,'hidden',3,"")?>
+   <?php db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
+   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,10 +70,10 @@ if(isset($codmatricula)){
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
+   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
    <?=@$Led112_i_progclasse?>
-   <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
-   <?if($db_opcao!=1){
+   <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+   <?php if($db_opcao!=1){
     if($ed112_c_situacao=="A"){
      $ed112_c_situacao = "ABERTA";
     }elseif($ed112_c_situacao=="I"){
@@ -84,16 +84,16 @@ if(isset($codmatricula)){
     ?>
     <?=@$Led112_c_situacao?>
     <input name="ed112_c_situacao" type="text" value="<?=@$ed112_c_situacao?>" style="background:#DEB887;" readonly>
-   <?}?>
+   <?php }?>
   </td>
  </tr>
- <?if(isset($codmatricula)){?>
+ <?php if(isset($codmatricula)){?>
  <tr>
   <td colspan="2">
    <b>Selecione o Ano:</b><br>
    <select name="ano" style="font-size:9px;width:200px;height:18px;" onchange="js_ano(this.value,<?=$codmatricula?>)">
     <option></option>
-    <?
+    <?php
     $sql = "SELECT DISTINCT ed111_i_ano
             FROM convocacao
             WHERE ed111_d_data >= '$ed112_d_datainicio'
@@ -103,19 +103,19 @@ if(isset($codmatricula)){
      $desc_ano=$row["ed111_i_ano"];
      ?>
      <option value="<?=$desc_ano?>" <?=$desc_ano==@$ano_chave?"selected":""?>><?=$desc_ano;?></option>
-     <?
+     <?php
     }
     ?>
    </select>
   </td>
  <tr>
- <?}?>
- <?if(isset($ano_chave)){?>
+ <?php }?>
+ <?php if(isset($ano_chave)){?>
  </tr>
   <td colspan="2">
    <b>Participações já cadastradas no Ano <?=$ano_chave?>:</b>
    <br>
-   <?
+   <?php
    $sql = "SELECT ed111_i_codigo,ed111_c_titulo,ed111_d_data
            FROM progconvocacao
             inner join convocacao on ed111_i_codigo = ed115_i_convocacao
@@ -128,7 +128,7 @@ if(isset($codmatricula)){
    $linhas = pg_num_rows($sql_result);
    ?>
    <select name="convocacoes" id="convocacoes" size="18"  multiple style="font-size:9px;width:350px;">
-    <?
+    <?php
     if($linhas>0){
      while($row=pg_fetch_array($sql_result)){
       $cod_jatem=$row["ed111_i_codigo"];
@@ -136,18 +136,18 @@ if(isset($codmatricula)){
       $data_jatem=db_formatar($row["ed111_d_data"],'d');
       ?>
       <option value="<?=$cod_jatem?>"><?=$data_jatem?> - <?=$desc_jatem?></option>
-      <?
+      <?php
      }
     }else{
      ?>
       <option value="">Nenhuma participação cadastrada no ano <?=$ano_chave?></option>
-     <?
+     <?php
     }
     ?>
    </select>
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </center>
 <input name="<?=($db_opcao==1?"excluir":($db_opcao==2||$db_opcao==22?"excluir":"excluir"))?>" type="button" id="db_opcao" value="<?=($db_opcao==1?"Excluir":($db_opcao==2||$db_opcao==22?"Excluir":"Excluir"))?>" <?=($db_botao==false||$linhas==0?"disabled":"")?> onclick="js_selecionar();">
@@ -160,7 +160,7 @@ function js_pesquisaed115_i_progmatricula(mostra){
 }
 function js_preenchepesquisamat(chave){
  db_iframe_progmatricula.hide();
- <?
+ <?php
  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codmatricula='+chave";
  ?>
 }

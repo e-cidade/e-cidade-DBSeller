@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltabcurritipo->rotulo->label("h02_descr");
               <?=$Lh02_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h02_codigo",5,$Ih02_codigo,true,"text",4,"","chave_h02_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltabcurritipo->rotulo->label("h02_descr");
               <?=$Lh02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h02_descr",60,$Ih02_descr,true,"text",4,"","chave_h02_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltabcurritipo->rotulo->label("h02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabcurritipo.php")==true){
@@ -122,12 +122,12 @@ $cltabcurritipo->rotulo->label("h02_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

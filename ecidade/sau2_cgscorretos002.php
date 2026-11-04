@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,24 +25,23 @@
  *                                licenca/licenca_pt.txt 
  */
 
-include(modification("libs/db_sql.php"));
-include(modification("fpdf151/pdf.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_sql.php"));
+require_once(modification("fpdf151/pdf.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo ( );
 $clrotulo->label ( 'j01_matric' );
 $where = "";
-if (@$processados == 'proc') {
-	$where = " where s127_b_proc is true ";
-} else if ($processados == 'nproc') {
-	$where = " where s127_b_proc is false ";
-}
+
+if(isset($ordem) && $ordem == "s127_i_codigo"){
+	$ordem = "s127_i_codigo desc";
+} 
+
 $sql = "select s127_i_numcgs, z01_v_nome, s127_b_proc, s127_i_codigo from sau_cgscorreto ";
 $sql .= "			inner join cgs_und on  cgs_und.z01_i_cgsund = sau_cgscorreto.s127_i_numcgs ";
 $sql .= " $where order by $ordem";
 
-//echo $sql;exit;
 $result = db_query ( $sql );
-$head1 = "CGS's CORRETOS";
+$head1 = "Lista de CGS's unificados";
 $pdf = new PDF ( );
 $pdf->Open ();
 $pdf->AliasNbPages ();
@@ -51,21 +50,21 @@ $pdf->setfillcolor ( 235 );
 $pdf->setfont ( 'arial', 'b', 8 );
 
 $pdf->cell ( 15, 05, "Codigo", 1, 0, "c", 1 );
-$pdf->cell ( 15, 05, "Numcgs", 1, 0, "c", 1 );
+$pdf->cell ( 15, 05, "CGS", 1, 0, "c", 1 );
 $pdf->cell ( 140, 05, "Nome", 1, 0, "c", 1 );
-$pdf->cell ( 20, 05, "Processado", 1, 1, "c", 1 );
+$pdf->cell ( 20, 05, "Correto", 1, 1, "c", 1 );
 
 $pdf->setfont ( 'arial', '', 8 );
 $total = 0;
-for($x = 0; $x < pg_numrows ( $result ); $x ++) {
+for($x = 0; $x < pg_num_rows ( $result ); $x ++) {
 	db_fieldsmemory ( $result, $x );
 	if ($pdf->gety () > $pdf->h - 35) {
 		$pdf->addpage ();
 		$pdf->setfont ( 'arial', 'b', 8 );
 		$pdf->cell ( 15, 05, "Codigo", 1, 0, "c", 1 );
-		$pdf->cell ( 15, 05, "Numcgs", 1, 0, "c", 1 );
+		$pdf->cell ( 15, 05, "CGS", 1, 0, "c", 1 );
 		$pdf->cell ( 140, 05, "Nome", 1, 0, "c", 1 );
-		$pdf->cell ( 20, 05, "Processado", 1, 1, "c", 1 );
+		$pdf->cell ( 20, 05, "Correto", 1, 1, "c", 1 );
 		$pdf->setfont ( 'arial', '', 8 );
 	}
 	$processado = ($s127_b_proc == 't') ? "Sim" : "Nao";
@@ -82,10 +81,9 @@ for($x = 0; $x < pg_numrows ( $result ); $x ++) {
 		$sql .= "                              and s129_i_numcgs = s128_i_numcgs ";
 	}
 	$sql .= " where s128_i_codigo = $s127_i_codigo";
-	//die($sql);
 	$res = db_query ( $sql );
-	if (pg_numrows ( $res ) > 0) {
-		for($y = 0; $y < pg_numrows ( $res ); $y ++) {
+	if (pg_num_rows ( $res ) > 0) {
+		for($y = 0; $y < pg_num_rows ( $res ); $y ++) {
 			db_fieldsmemory ( $res, $y );
 			$pdf->setX ( 25 );
 			$pdf->cell ( 15, 05, $s128_i_numcgs, 1, 0, "C", 1 );

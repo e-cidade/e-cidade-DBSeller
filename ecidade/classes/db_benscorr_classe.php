@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrimonio
 //CLASSE DA ENTIDADE benscorr
-class cl_benscorr { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $t63_codcor = 0; 
-   var $t63_codbem = 0; 
-   var $t63_valcor = 0; 
-   var $t63_deprec = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_benscorr {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $t63_codcor = 0;
+   var $t63_codbem = 0;
+   var $t63_valcor = 0;
+   var $t63_deprec = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 t63_codcor = int8 = Correção 
-                 t63_codbem = int8 = Código do bem 
-                 t63_valcor = float8 = Valor corrigido 
-                 t63_deprec = float8 = Valor corrigido a menor 
+                 t63_codcor = int8 = Correção
+                 t63_codbem = int8 = Código do bem
+                 t63_valcor = float8 = Valor corrigido
+                 t63_deprec = float8 = Valor corrigido a menor
                  ";
-   //funcao construtor da classe 
-   function cl_benscorr() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("benscorr"); 
+     $this->rotulo = new rotulo("benscorr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_benscorr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t63_codcor = ($this->t63_codcor == ""?@$GLOBALS["HTTP_POST_VARS"]["t63_codcor"]:$this->t63_codcor);
        $this->t63_codbem = ($this->t63_codbem == ""?@$GLOBALS["HTTP_POST_VARS"]["t63_codbem"]:$this->t63_codbem);
@@ -81,9 +81,9 @@ class cl_benscorr {
      }
    }
    // funcao para inclusao
-   function incluir ($t63_codcor,$t63_codbem){ 
+   public function incluir ($t63_codcor,$t63_codbem){
       $this->atualizacampos();
-     if($this->t63_valcor == null ){ 
+     if($this->t63_valcor == null ){
        $this->erro_sql = " Campo Valor corrigido nao Informado.";
        $this->erro_campo = "t63_valcor";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_benscorr {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t63_deprec == null ){ 
+     if($this->t63_deprec == null ){
        $this->erro_sql = " Campo Valor corrigido a menor nao Informado.";
        $this->erro_campo = "t63_deprec";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_benscorr {
        $this->erro_status = "0";
        return false;
      }
-       $this->t63_codcor = $t63_codcor; 
-       $this->t63_codbem = $t63_codbem; 
-     if(($this->t63_codcor == null) || ($this->t63_codcor == "") ){ 
+       $this->t63_codcor = $t63_codcor;
+       $this->t63_codbem = $t63_codbem;
+     if(($this->t63_codcor == null) || ($this->t63_codcor == "") ){
        $this->erro_sql = " Campo t63_codcor nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_benscorr {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->t63_codbem == null) || ($this->t63_codbem == "") ){ 
+     if(($this->t63_codbem == null) || ($this->t63_codbem == "") ){
        $this->erro_sql = " Campo t63_codbem nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_benscorr {
        return false;
      }
      $sql = "insert into benscorr(
-                                       t63_codcor 
-                                      ,t63_codbem 
-                                      ,t63_valcor 
-                                      ,t63_deprec 
+                                       t63_codcor
+                                      ,t63_codbem
+                                      ,t63_valcor
+                                      ,t63_deprec
                        )
                 values (
-                                $this->t63_codcor 
-                               ,$this->t63_codbem 
-                               ,$this->t63_valcor 
-                               ,$this->t63_deprec 
+                                $this->t63_codcor
+                               ,$this->t63_codbem
+                               ,$this->t63_valcor
+                               ,$this->t63_deprec
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores das correções de bens ($this->t63_codcor."-".$this->t63_codbem) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_benscorr {
        $resac = db_query("insert into db_acount values($acount,923,5808,'','".AddSlashes(pg_result($resaco,0,'t63_deprec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($t63_codcor=null,$t63_codbem=null) { 
+   public function alterar ($t63_codcor=null,$t63_codbem=null) {
       $this->atualizacampos();
      $sql = " update benscorr set ";
      $virgula = "";
-     if(trim($this->t63_codcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_codcor"])){ 
+     if(trim($this->t63_codcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_codcor"])){
        $sql  .= $virgula." t63_codcor = $this->t63_codcor ";
        $virgula = ",";
-       if(trim($this->t63_codcor) == null ){ 
+       if(trim($this->t63_codcor) == null ){
          $this->erro_sql = " Campo Correção nao Informado.";
          $this->erro_campo = "t63_codcor";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_benscorr {
          return false;
        }
      }
-     if(trim($this->t63_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_codbem"])){ 
+     if(trim($this->t63_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_codbem"])){
        $sql  .= $virgula." t63_codbem = $this->t63_codbem ";
        $virgula = ",";
-       if(trim($this->t63_codbem) == null ){ 
+       if(trim($this->t63_codbem) == null ){
          $this->erro_sql = " Campo Código do bem nao Informado.";
          $this->erro_campo = "t63_codbem";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_benscorr {
          return false;
        }
      }
-     if(trim($this->t63_valcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_valcor"])){ 
+     if(trim($this->t63_valcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_valcor"])){
        $sql  .= $virgula." t63_valcor = $this->t63_valcor ";
        $virgula = ",";
-       if(trim($this->t63_valcor) == null ){ 
+       if(trim($this->t63_valcor) == null ){
          $this->erro_sql = " Campo Valor corrigido nao Informado.";
          $this->erro_campo = "t63_valcor";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_benscorr {
          return false;
        }
      }
-     if(trim($this->t63_deprec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_deprec"])){ 
+     if(trim($this->t63_deprec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t63_deprec"])){
        $sql  .= $virgula." t63_deprec = $this->t63_deprec ";
        $virgula = ",";
-       if(trim($this->t63_deprec) == null ){ 
+       if(trim($this->t63_deprec) == null ){
          $this->erro_sql = " Campo Valor corrigido a menor nao Informado.";
          $this->erro_campo = "t63_deprec";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_benscorr {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores das correções de bens nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->t63_codcor."-".$this->t63_codbem;
@@ -280,14 +280,14 @@ class cl_benscorr {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($t63_codcor=null,$t63_codbem=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($t63_codcor=null,$t63_codbem=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t63_codcor,$t63_codbem));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_benscorr {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores das correções de bens nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t63_codcor."-".$t63_codbem;
@@ -351,11 +351,11 @@ class cl_benscorr {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,11 +377,11 @@ class cl_benscorr {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $t63_codcor=null,$t63_codbem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $t63_codcor=null,$t63_codbem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,23 +404,23 @@ class cl_benscorr {
      $sql2 = "";
      if($dbwhere==""){
        if($t63_codcor!=null ){
-         $sql2 .= " where benscorr.t63_codcor = $t63_codcor "; 
-       } 
+         $sql2 .= " where benscorr.t63_codcor = $t63_codcor ";
+       }
        if($t63_codbem!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " benscorr.t63_codbem = $t63_codbem "; 
-       } 
+         }
+         $sql2 .= " benscorr.t63_codbem = $t63_codbem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,11 +429,11 @@ class cl_benscorr {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $t63_codcor=null,$t63_codbem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $t63_codcor=null,$t63_codbem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,23 +446,23 @@ class cl_benscorr {
      $sql2 = "";
      if($dbwhere==""){
        if($t63_codcor!=null ){
-         $sql2 .= " where benscorr.t63_codcor = $t63_codcor "; 
-       } 
+         $sql2 .= " where benscorr.t63_codcor = $t63_codcor ";
+       }
        if($t63_codbem!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " benscorr.t63_codbem = $t63_codbem "; 
-       } 
+         }
+         $sql2 .= " benscorr.t63_codbem = $t63_codbem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

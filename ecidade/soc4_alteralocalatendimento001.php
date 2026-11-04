@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,12 +62,12 @@ $oRotulo->label("as23_observacao");
                 <table>
                   <tr>
                     <td style="width: 25%">
-                      <?
+                      <?php
                         db_ancora("<b>Família:</b>", "js_pesquisaFamilia(true);", 1);
                       ?>
                     </td>
                     <td>
-                      <?
+                      <?php
                         db_input("as04_sequencial", 6, $Ias04_sequencial, true, "text", 1, "onchange='js_pesquisaFamilia(false);'");
                         db_input("ov02_nome", 46, $Iov02_nome, true, "text", 3);
                       ?>
@@ -76,7 +76,7 @@ $oRotulo->label("as23_observacao");
                   <tr>
                     <td style="width: 25%"><label class="bold">Local de Atendimento: </label></td>
                     <td>
-                      <?
+                      <?php
                         db_input("iLocalAtendimentoAtual", 6, "iLocalAtendimentoAtual", true, "hidden", 3);
                         db_input("sLocalAtendimentoAtual", 56, "localAtendimentoAtual", true, "text", 3);
                       ?>
@@ -99,7 +99,7 @@ $oRotulo->label("as23_observacao");
                     <td colspan="2">
                       <fieldset>
                         <legend class="bold">Observação</legend>
-                        <?
+                        <?php
                           db_textarea("as23_observacao", 5, 70, $Ias23_observacao, true, "text", 1);
                         ?>
                       </fieldset>

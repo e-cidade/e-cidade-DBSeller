@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ db_postmemory($HTTP_SERVER_VARS);
         <tr height="60">
           <td nowrap><b>Material:</b></td>
           <td nowrap>
-          <?
+          <?php
             db_input("codmater", 10, 0, true, "text", 3);
             db_input("descrmater", 60, 0, true, "text", 3);
           ?>
@@ -62,7 +62,7 @@ db_postmemory($HTTP_SERVER_VARS);
           <tr>
             <td nowrap><b>Observacao:</b></td>
             <td nowrap>
-            <?
+            <?php
               db_textarea($campo,10,80,0,true,"text",2);
             ?>
             </td>

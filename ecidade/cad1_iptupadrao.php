@@ -86,7 +86,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr >
            <td ><strong>Exercício origem:<strong></td>
            <td >
-           <?
+           <?php
             $arrayexec = array("0" => "Nenhum ");
             db_select("exec",$arrayexec,1,1,"onchange='js_mostraexerc(document.form1.exec.value)'");
            ?>
@@ -94,7 +94,7 @@ db_postmemory($HTTP_POST_VARS);
         </tr>
         <tr>
            <td><strong>Percentual:<strong></td>
-           <td><? db_input('percentual',10,0,true,'text',1,""); ?></td>
+           <td><?php db_input('percentual',10,0,true,'text',1,""); ?></td>
         </tr>
     </table>
     </fieldset>

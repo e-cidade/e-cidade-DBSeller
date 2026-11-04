@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clcertid->rotulo->label("v13_dtemis");
               <?=$Lv13_certid?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v13_certid",10,$Iv13_certid,true,"text",4,"","chave_v13_certid");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcertid->rotulo->label("v13_dtemis");
               <?=$Lv13_dtemis?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v13_dtemis",8,$Iv13_dtemis,true,"text",4,"","chave_v13_dtemis");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcertid->rotulo->label("v13_dtemis");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = " and (certdiv.v14_certid is not null or certter.v14_certid is not null)";
       if(!isset($pesquisa_chave)){
         
@@ -119,7 +119,7 @@ $clcertid->rotulo->label("v13_dtemis");
         if($pesquisa_chave!=null && $pesquisa_chave!="") {
           
           $sSql = $clcertidlivrofolha->sql_query_certidao(null,"*",null,"v13_certid={$pesquisa_chave} {$sWhere}");
-          $result = $clcertidlivrofolha->sql_record();
+          $result = $clcertidlivrofolha->sql_record($sSql);
           if($clcertidlivrofolha->numrows!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$v13_dtemis',false);</script>";
@@ -136,14 +136,14 @@ $clcertid->rotulo->label("v13_dtemis");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v13_certid.focus();
 document.form2.chave_v13_certid.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

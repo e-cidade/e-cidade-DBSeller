@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ fieldset.form {
 
 <body bgcolor=#CCCCCC>
 
-<?
+<?php
 //MODULO: projetos
 
 ?>
@@ -110,12 +110,12 @@ fieldset.form {
 	<table align="center" >
 		<tr>
 			<td nowrap title="<?=@$Tob04_codobra?>" width="30%">
-			<?
+			<?php
 				db_ancora(@$Lob04_codobra,"js_pesquisaob04_codobra(true);",($db_opcao == 2?3:$db_opcao));
 			?>
 			</td>
 			<td>
-			<? 
+			<?php 
 				db_input('ob04_codobra',10,$Iob04_codobra,true,'text',($db_opcao == 2?3:$db_opcao)," onchange='js_pesquisaob04_codobra(false);'"); 
 			  db_input('ob01_nomeobra',40,$Iob01_nomeobra,true,'text',3,'');      
 			?>
@@ -127,7 +127,7 @@ fieldset.form {
 				<?=@$Lob04_alvara?>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_input('ob04_alvara',10,$Iob04_alvara,true,'text',1,"") ;
 					if ($db_opcao==1){
 						echo "(se não preencher, codigo será gerado automaticamente)";
@@ -141,7 +141,7 @@ fieldset.form {
 				<?=@$Lob04_data?>
 			</td>
 			<td>
-				<?
+				<?php
 				if($db_opcao == 1){
 					$ob04_data_dia = date("d",db_getsession("DB_datausu"));
 					$ob04_data_mes = date("m",db_getsession("DB_datausu"));
@@ -157,7 +157,7 @@ fieldset.form {
 				<?=@$Lob04_dtvalidade?>
 			</td>
 			<td>
-				<?
+				<?php
   				db_inputdata('ob04_dtvalidade',@$ob04_dtvalidade_dia,@$ob04_dtvalidade_mes,@$ob04_dtvalidade_ano,true,'text',$db_opcao,"")
 				?>
 			</td>
@@ -168,7 +168,7 @@ fieldset.form {
 				<strong>Processo do Sistema</strong>
 			</td>
 			<td nowrap>
-				<?
+				<?php
 				  $lProcessoSistema = true;
 					db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, $db_opcao, "onchange='js_processoSistema(this.value)' style='width: 95px'") 
 				?>
@@ -177,12 +177,12 @@ fieldset.form {
 		
 		<tr id="processoSistema">
 			<td nowrap title="<?=@$Tp58_codproc?>">
-				<?
+				<?php
 					db_ancora($Lp58_codproc, 'js_pesquisaProcesso(true)', $db_opcao);
 				?>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', $db_opcao, 'onchange="js_pesquisaProcesso(false)"') ;
 					
 					db_input('p58_requer', 40, $Ip58_requer, true, 'text', 3);
@@ -195,7 +195,7 @@ fieldset.form {
 				<strong>Processo</strong>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_input('ob04_processo', 10, $Iob04_processo, true, 'text', $db_opcao) ;
 				?>
 			</td>
@@ -206,7 +206,7 @@ fieldset.form {
 				<?=@$Lob04_titularprocesso?>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_input('ob04_titularprocesso', 54, $Iob04_titularprocesso, true, 'text', $db_opcao) ;
 				?>
 			</td>
@@ -217,7 +217,7 @@ fieldset.form {
 				<?=@$Lob04_dtprocesso?>
 			</td>
 			<td nowrap>
-				<? 
+				<?php 
 					db_inputdata('ob04_dtprocesso', @$ob04_dtprocesso_dia, @$ob04_dtprocesso_mes, @$ob04_dtprocesso_ano, true, 'text', $db_opcao);
 				?>
 			</td>
@@ -227,7 +227,7 @@ fieldset.form {
 		  <td title="<?=$Tob04_obsprocesso?>" colspan="2" align="center">
 		  	<fieldset style="width: 568px; margin:0;">
 		  		<legend><?=$Lob04_obsprocesso?></legend>
-		  		<?
+		  		<?php
 		  			db_textarea('ob04_obsprocesso', 10, 70, $Iob04_obsprocesso, true, 'text', $db_opcao);
 		  		?>
 		  		
@@ -466,7 +466,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrasalvara.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -476,13 +476,13 @@ function js_preenchepesquisa(chave){
 
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 
-<?
+<?php
 if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
   if($clObrasAlvara->erro_status=="0"){
     $clObrasAlvara->erro(true,false);

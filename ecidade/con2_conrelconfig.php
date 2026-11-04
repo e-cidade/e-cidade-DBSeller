@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,7 +86,7 @@ function js_editar_recurso(codrel,seq){
   <td><b> SubFunção </b></td>
   <td><b> Recurso   </b></td>
 </tr>
-<?
+<?php
 $record = $clorcparamseq->sql_record($clorcparamseq->sql_query($codrel, null, "o69_codseq,o69_descr","o69_codseq"));
 if ($clorcparamseq->numrows > 0) {
   for ($xx = 0; $xx < $clorcparamseq->numrows; $xx ++) {
@@ -98,27 +98,27 @@ if ($clorcparamseq->numrows > 0) {
 	   <td valign=top align=left><?=$o69_descr  ?></td>
 	   <td valign=top align=left >
               <a href="#" onClick="js_editar_estrut('<?=$codrel?>','<?=$o69_codseq?>');">Editar</a>
-	      <? $res = $clorcparamelemento->sql_record($clorcparamelemento->sql_query_estrutural(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codele,c60_estrut","c60_estrut"));
+	      <?php $res = $clorcparamelemento->sql_record($clorcparamelemento->sql_query_estrutural(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codele,c60_estrut","c60_estrut"));
 	         //if ($clorcparamelemento->numrows > 0)
 	 	   db_selectmultiple('parametros',$res,$clorcparamelemento->numrows+1,1);	      	
 	      ?>
              </td>	   
 	   <td valign=top><input type=text name=nivel maxlength=2 size=2> <td/>
 	   <td valign=top>
-	   <? $res = $clorcparamsubfunc->sql_record($clorcparamsubfunc->sql_query(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codele,c60_estrut","c60_estrut"));
+	   <?php $res = $clorcparamsubfunc->sql_record($clorcparamsubfunc->sql_query(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codele,c60_estrut","c60_estrut"));
 	      //if ($clorcparamsubfunc->numrows > 0)
 		 db_selectmultiple('subfunc',$res,$clorcparamsubfunc->numrows+1,1);	      	
 	   ?>
            </td>   	   
 	   <td valign=top align=left>
              <a href="#" onClick="js_editar_recurso('<?=$codrel?>','<?=$o69_codseq?>');">Editar</a> 
- 	     <? $res = $clorcparamrecurso->sql_record($clorcparamrecurso->sql_query(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codrec,o15_descr"));
+ 	     <?php $res = $clorcparamrecurso->sql_record($clorcparamrecurso->sql_query(db_getsession("DB_anousu"),$codrel,$o69_codseq,null,"o44_codrec,o15_descr"));
 	       //if ($clorcparamrecurso->numrows > 0)
 		 db_selectmultiple('recurso',$res,$clorcparamrecurso->numrows+1,1);	      	
 	     ?>
 	   </td>
 	 </tr>
-	<?
+	<?php
   }
 }
 ?>

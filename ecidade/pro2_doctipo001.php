@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 	    <table>
 	      <tr>
 	        <td>
-	<?
+	<?php
 	$aux = new cl_arquivo_auxiliar;
 	$aux->cabecalho = "<strong>TIPO DE PROCESSO</strong>";
 	$aux->codigo = "p51_codigo";
@@ -98,7 +98,7 @@ include(modification("dbforms/db_classesgenericas.php"));
         <tr>
           <td align="left" >&nbsp;&nbsp;&nbsp; <strong>Opção de Seleção :<strong></td>
 	  <td align="left">
-	    <?
+	    <?php
 	    $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 	    db_select('param_where',$xxx,true,2);
 	    ?>
@@ -110,7 +110,7 @@ include(modification("dbforms/db_classesgenericas.php"));
         <tr>
           <td align="left">&nbsp;&nbsp;&nbsp; <strong>Ordem :<strong></td>
 	  <td align="left">
-	    <?
+	    <?php
 	    $ordenar = array("p51_codigo"=>"Código do tipo de processo ","p51_descr"=>"Nome do processo");
 	    db_select('order',$ordenar,true,2);
 	    ?>
@@ -125,7 +125,7 @@ include(modification("dbforms/db_classesgenericas.php"));
   </tr> 
 </table> 
 </form>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

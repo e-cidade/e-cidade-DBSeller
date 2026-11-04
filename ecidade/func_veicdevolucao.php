@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveicdevolucao->rotulo->label("ve61_codigo");
               <?=$Lve61_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve61_codigo",10,$Ive61_codigo,true,"text",4,"","chave_ve61_codigo");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clveicdevolucao->rotulo->label("ve61_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veicdevolucao.php")==true){
@@ -112,12 +112,12 @@ $clveicdevolucao->rotulo->label("ve61_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

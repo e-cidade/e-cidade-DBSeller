@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE db_usuariosrhlota
 class cl_db_usuariosrhlota { 
@@ -26,13 +26,13 @@ class cl_db_usuariosrhlota {
                  rh157_lotacao = int4 = Lotação do Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_db_usuariosrhlota() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usuariosrhlota"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_db_usuariosrhlota {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh157_sequencial = ($this->rh157_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh157_sequencial"]:$this->rh157_sequencial);
        $this->rh157_usuario = ($this->rh157_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["rh157_usuario"]:$this->rh157_usuario);
@@ -51,7 +51,7 @@ class cl_db_usuariosrhlota {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh157_sequencial){ 
+   public function incluir ($rh157_sequencial){ 
       $this->atualizacampos();
      if($this->rh157_usuario == null ){ 
        $this->erro_sql = " Campo Usuário não informado.";

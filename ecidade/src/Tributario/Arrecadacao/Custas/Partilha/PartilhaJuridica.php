@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -63,7 +63,7 @@ abstract class PartilhaJuridica extends Partilha
         Interfaces\Calculo $calculo,
         Interfaces\Validador $validador,
         ProcessoForo $processoForo,
-        $iniciais
+        $iniciais = []
     ) {
         parent::__construct($calculo);
         parent::setCodigoProcessoForo($processoForo);
@@ -136,7 +136,10 @@ abstract class PartilhaJuridica extends Partilha
         $iniciais = $this->inicialRepository->getIniciaisAtivasPorProcesso($this->processoForo->getCodigo());
 
         if (count($iniciais) == 1) {
-            $taxasEmissao = $this->processaRemocaoTaxa($taxasEmissao, $this->getPartilhasPagasSemHonrarios());
+            /* *
+             * codigo com regra para niteroi removido
+             */
+            // $taxasEmissao = $this->processaRemocaoTaxa($taxasEmissao, $this->getPartilhasPagasSemHonrarios());
         } else {
             $desmembramentoRepository = new HistoricoDesmembramentoRepository();
             $termoInicialRepository = TermoInicialRepository::getInstance();

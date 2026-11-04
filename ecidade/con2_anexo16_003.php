@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -140,7 +140,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_sequencia?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_anousu',10,$Ic44_anousu,true,'hidden',3,"");
      	db_input('c44_instit',10,$Ic44_instit,true,'hidden',3,"");
      	db_input('c44_sequencia',10,$Ic44_sequencia,true,'text',3,"");
@@ -152,7 +152,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_lei?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_lei',50,$Ic44_lei,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -162,7 +162,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_quantidade?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_quantidade',50,$Ic44_quantidade,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -172,7 +172,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_valemiss?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_valemiss',15,$Ic44_valemiss,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -182,7 +182,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_saldo?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_saldo',15,$Ic44_saldo,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -192,7 +192,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_movemiss?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_movemiss',15,$Ic44_movemiss,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -202,7 +202,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_movresgate?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_movresgate',15,$Ic44_movresgate,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -212,7 +212,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_saldoqtd?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_saldoqtd',5,$Ic44_saldoqtd,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -222,7 +222,7 @@ if($db_opcao==1&&!$sqlerro) {
  	  <?=@$Lc44_saldovalor?>
  	</td>
      <td align="left">
-     <? 
+     <?php 
      	db_input('c44_saldovalor',15,$Ic44_saldovalor,true,'text',$db_opcao,"")
      ?>
      </td>
@@ -235,7 +235,7 @@ if($db_opcao==1&&!$sqlerro) {
  
  <tr>
  <td colspan=2>
- <?
+ <?php
    $chavepri= array("c44_sequencia"=>@$c44_sequencia);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql   = $clconreltitulos->sql_query(null,"c44_sequencia,c44_lei,c44_quantidade,c44_valemiss,c44_saldo,c44_movemiss,c44_movresgate,c44_saldoqtd,c44_saldovalor","c44_sequencia desc","c44_anousu=$anousu and c44_instit=$instit");
@@ -249,7 +249,7 @@ if($db_opcao==1&&!$sqlerro) {
  </table>
 </center>
 </form>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   if($sqlerro==true){
     if($clconreltitulos->erro_campo!=""){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $func=$chavepesquisaretirada;
     <b>Código da Retirada: </b>
     </td>
     <td> 
-<?
+<?php
 db_input('fa04_i_codigo',10,$Ifa04_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('fa04_i_codigo',10,$Ifa04_i_codigo,true,'text',3,"")
        <?=@$Lfa04_i_dbusuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa04_i_dbusuario',10,$Ifa04_i_dbusuario,true,'text',3," ")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('fa04_i_dbusuario',10,$Ifa04_i_dbusuario,true,'text',3," ")
        <?=@$Lfa04_i_unidades?>
     </td>
     <td> 
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
@@ -113,7 +113,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
   -->
        <input name="incluir" type="button"  value="Efetuar Atendimento" onclick="return js_atendeRequisicao();" >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
 //db_input('atendimento',10,'',true,'hidden',3);
 //db_input('m80_codigo',10,'',true,'hidden',3);
 //db_input("valores",100,0,true,"hidden",3);
@@ -127,7 +127,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_retirada.hide();
-  <?
+  <?php
 //  if($db_opcao!=1){
    // echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 //  }

@@ -117,7 +117,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Proprietário</b>
 		 	              </td>
 		 	              <td colspan="3">
-		 	                <?
+		 	                <?php
 					          db_input("z01_nome",80,$Iz01_nome,true,"text",3,"");
 		 	                ?>
 		 	              </td>
@@ -127,7 +127,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Matrícula</b>
 		 	              </td>
 		 	              <td>
-		 	                <?
+		 	                <?php
 					          db_input("j01_matric",10,$Ij01_matric,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>
@@ -135,7 +135,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 						   <?=$Lj40_refant?>
 		 	              </td>
 		 	              <td align="right">
-		 	                <?
+		 	                <?php
 					          db_input("j40_refant",25,$Ij40_refant,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>
@@ -145,7 +145,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Logradouro</b>
 		 	              </td>
 		 	              <td colspan="3">
-		 	                <?
+		 	                <?php
 					          db_input("j14_nome",80,$Ij14_nome,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>
@@ -155,7 +155,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Número</b>
 		 	              </td>
 		 	              <td>
-		 	                <?
+		 	                <?php
 					          db_input("j39_numero",10,$Ij39_numero,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>
@@ -163,7 +163,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Complemento</b>
 		 	              </td>
 		 	              <td align="right">
-		 	                <?
+		 	                <?php
 							  db_input("j39_compl",10,$Ij39_compl,true,"text",3,"");	 	                
 		 	                ?>
 		 	              </td>
@@ -173,7 +173,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Setor/Quadra/Lote</b>
 		 	              </td>
 		 	              <td colspan="3">
-		 	                <?
+		 	                <?php
 							  db_input("j34_setor" ,10,$Ij34_setor,true,"text",3,"");
 							  db_input("j34_quadra",10,$Ij34_quadra,true,"text",3,"");
 							  db_input("j34_lote"  ,10,$Ij34_lote,true,"text",3,""); 	                 
@@ -185,7 +185,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Área</b>
 		 	              </td>
 		 	              <td>
-		 	                <?
+		 	                <?php
 							  db_input("j34_area",10,$Ij34_area,true,"text",3,""); 	                
 		 	                ?>
 		 	                <b>m²</b>
@@ -194,7 +194,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Frente</b>
 		 	              </td>
 		 	              <td align="right">
-		 	                <?
+		 	                <?php
 							  db_input("j36_testad",10,$Ij36_testad,true,"text",3,""); 	                
 		 	                ?>
 		 	                <b>m²</b>
@@ -216,7 +216,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Matrícula</b>
 		 	              </td>
 		 	              <td>
-		 	                <?
+		 	                <?php
 							  db_input("j04_matricregimo",10,$Ij04_matricregimo,true,"text",3,""); 	                 
 		 	                ?>
 		 	              </td>
@@ -224,7 +224,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Quadra</b>
 		 	              </td>
 		 	              <td>
-		 	                <?
+		 	                <?php
 							  db_input("j04_quadraregimo",10,$Ij04_quadraregimo,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>
@@ -232,7 +232,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Lote</b>
 		 	              </td>
 		 	              <td align="right">
-		 	                <?
+		 	                <?php
 							  db_input("j04_loteregimo",10,$Ij04_loteregimo,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td> 	              
@@ -242,7 +242,7 @@ if ( isset($oGet->matric) && trim($oGet->matric) != "" ) {
 		 	                <b>Setor/Bairro</b>
 		 	              </td>
 		 	              <td colspan="5">
-		 	                <?
+		 	                <?php
 							  db_input("j32_descr",80,$Ij32_descr,true,"text",3,""); 	                
 		 	                ?>
 		 	              </td>

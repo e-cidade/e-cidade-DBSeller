@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("m82_codigo");
        <?=@$Lcc12_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc12_sequencial',10,$Icc12_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc12_custocriteriorateio?>">
-       <?
+       <?php
        db_ancora(@$Lcc12_custocriteriorateio,"js_pesquisacc12_custocriteriorateio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc12_custocriteriorateio',10,$Icc12_custocriteriorateio,true,'text',$db_opcao," onchange='js_pesquisacc12_custocriteriorateio(false);'")
 ?>
-       <?
+       <?php
 db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc12_matestoqueinimei?>">
-       <?
+       <?php
        db_ancora(@$Lcc12_matestoqueinimei,"js_pesquisacc12_matestoqueinimei(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc12_matestoqueinimei',10,$Icc12_matestoqueinimei,true,'text',$db_opcao," onchange='js_pesquisacc12_matestoqueinimei(false);'")
 ?>
-       <?
+       <?php
 db_input('m82_codigo',10,$Im82_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('m82_codigo',10,$Im82_codigo,true,'text',3,'')
        <?=@$Lcc12_qtd?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc12_qtd',20,$Icc12_qtd,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('cc12_qtd',20,$Icc12_qtd,true,'text',$db_opcao,"")
        <?=@$Lcc12_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc12_valor',20,$Icc12_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoapropria.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

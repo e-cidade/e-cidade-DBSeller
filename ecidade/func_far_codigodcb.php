@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfar_codigodcb->rotulo->label("fa28_c_numero");
               <?=$Lfa28_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa28_i_codigo",10,$Ifa28_i_codigo,true,"text",4,"","chave_fa28_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfar_codigodcb->rotulo->label("fa28_c_numero");
               <?=$Lfa28_c_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa28_c_numero",10,@$Ifa28_c_numero,true,"text",4,"","chave_fa28_c_numero");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfar_codigodcb->rotulo->label("fa28_c_numero");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_codigodcb.php")==true){
@@ -122,12 +122,12 @@ $clfar_codigodcb->rotulo->label("fa28_c_numero");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

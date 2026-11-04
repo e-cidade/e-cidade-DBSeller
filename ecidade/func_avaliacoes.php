@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clavaliacoes->rotulo->label("ed13_d_data");
               <?=$Led13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed13_i_codigo",10,$Ied13_i_codigo,true,"text",4,"","chave_ed13_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clavaliacoes->rotulo->label("ed13_d_data");
               <?=$Led13_d_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed13_d_data",10,$Ied13_d_data,true,"text",4,"","chave_ed13_d_data");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clavaliacoes->rotulo->label("ed13_d_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_avaliacoes.php")==true){
@@ -120,12 +120,12 @@ $clavaliacoes->rotulo->label("ed13_d_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

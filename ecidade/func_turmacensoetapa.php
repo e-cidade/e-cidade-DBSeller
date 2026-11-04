@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,11 +50,11 @@ $clturmacensoetapa->rotulo->label("ed132_codigo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Led132_codigo?></label></td>
-          <td><? db_input("ed132_codigo",10,$Ied132_codigo,true,"text",4,"","chave_ed132_codigo"); ?></td>
+          <td><?php db_input("ed132_codigo",10,$Ied132_codigo,true,"text",4,"","chave_ed132_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Led132_codigo?></label></td>
-          <td><? db_input("ed132_codigo",10,$Ied132_codigo,true,"text",4,"","chave_ed132_codigo");?></td>
+          <td><?php db_input("ed132_codigo",10,$Ied132_codigo,true,"text",4,"","chave_ed132_codigo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $clturmacensoetapa->rotulo->label("ed132_codigo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_turmacensoetapa.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turmacensoetapa.php")==true){
@@ -104,12 +104,12 @@ $clturmacensoetapa->rotulo->label("ed132_codigo");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

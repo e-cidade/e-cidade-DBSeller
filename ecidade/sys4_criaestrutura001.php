@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,12 +39,12 @@ include(modification("libs/db_usuariosonline.php"));
 <script>
 function js_submeter(obj) {
   if(document.getElementById("ra2").checked == true && obj.nometab.value == "") {
-    var str = prompt("Informe um nome de arquivo pra gerar o dump completo",'dump<?=strtoupper(pg_dbname())?>.sql');  
+    var str = prompt("Informe um nome de arquivo pra gerar o dump completo",'dump<?=strtoupper(pg_dbname())?>.sql');
     if(str == null)
       return false;
     obj.nometab.value = str;
   }
-  return true;	
+  return true;
 }
 </script>
 <style type="text/css">
@@ -66,7 +66,7 @@ input {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -74,42 +74,42 @@ input {
   </tr>
 </table>
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-<? if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
-  <form method="post" name="estrut" onSubmit="return js_submeter(this)">                
+<?php if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
+  <form method="post" name="estrut" onSubmit="return js_submeter(this)">
         <table border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td><strong> 
+          <tr>
+            <td><strong>
               <label for="ra1">Módulo:</label>
-              </strong> <input type="radio" class="radio" name="tabmod" id="ra1" value="m" > 
-              &nbsp;&nbsp; <strong> 
+              </strong> <input type="radio" class="radio" name="tabmod" id="ra1" value="m" >
+              &nbsp;&nbsp; <strong>
               <label for="ra2">Tabela:</label>
-              </strong> <input type="radio" class="radio" name="tabmod" value="t" id="ra2" checked> 
+              </strong> <input type="radio" class="radio" name="tabmod" value="t" id="ra2" checked>
             </td>
           </tr>
-          <tr> 
+          <tr>
             <td><input name="nometab" type="text" id="nometab" value="<?echo @$nometabela?>"></td>
           </tr>
-          <tr> 
-            <td><strong> 
+          <tr>
+            <td><strong>
               <label for="indi">Incluir Indices:</label>
               </strong></td>
             <td><input type="checkbox" class="radio" id="indi" name="indice" checked></td>
           </tr>
-          <tr> 
-            <td><strong> 
+          <tr>
+            <td><strong>
               <label for="prim">Incluir PK:</label>
               </strong></td>
             <td><input type="checkbox" class="radio" id="prim" name="pk" checked></td>
           </tr>
-          <tr> 
-            <td><strong> 
+          <tr>
+            <td><strong>
               <label for="fore">Incluir FK:</label>
               </strong></td>
             <td><input type="checkbox" class="radio" id="fore" name="fk" checked></td>
           </tr>
-          <tr> 
+          <tr>
             <td><strong>Incluir Fun&ccedil;&otilde;es:</strong></td>
             <td><input name="funcoes" type="checkbox" id="funcoes" value="funcoes"></td>
           </tr>
@@ -117,18 +117,18 @@ input {
             <td><strong>Incluir Views:</strong></td>
             <td><input name="views" type="checkbox" id="views" value="views"></td>
           </tr>
-          <tr> 
+          <tr>
             <td><strong>Incluir Triggers:</strong></td>
             <td><input name="triggers" type="checkbox" id="triggers" value="triggers"></td>
           </tr>
-          <tr> 
-            <td> <input id="id_estrut" type="submit" name="b_estrut" value="Criar Estrutura" class="botao"> 
+          <tr>
+            <td> <input id="id_estrut" type="submit" name="b_estrut" value="Criar Estrutura" class="botao">
             </td>
             <td>&nbsp;</td>
           </tr>
         </table>
 	</form>
-<?
+<?php
 } else {
   db_postmemory($HTTP_POST_VARS);
   /*
@@ -144,13 +144,13 @@ input {
  // $nometab = strtolower($nometab);
 //  if(trim($nometab) == "" && $tabmod == "t")
   $arquivo = tempnam("tmp",$nometab.".sql");
-  if(substr($nometab,(strlen($nometab) - 4)) == ".sql" && $tabmod == "t") { 
+  if(substr($nometab,(strlen($nometab) - 4)) == ".sql" && $tabmod == "t") {
     $nometab = "%";
-  }   
+  }
   if(trim($nometab) == "" && $tabmod == "m") {
     db_msgbox("Voce precisa informar um módulo");
     db_redireciona();
-  }  
+  }
   $fd = fopen($arquivo,"w");
   if($tabmod == "t")
     if($nometab == "%")
@@ -182,14 +182,14 @@ input {
 	  $campo = db_query("select c.nomecam
 	                    from db_syscampo c
 				 inner join db_sysarqcamp ac
-				 on ac.codcam = c.codcam 
+				 on ac.codcam = c.codcam
 		            where codarq = ".pg_result($result,$i,"codarq")."
 			    order by codsequencia");
 	  if(pg_numrows($campo) > 0)
-        fputs($fd,"DROP TABLE ".trim(pg_result($result,$i,"nomearq")).";\n");      	  
+        fputs($fd,"DROP TABLE ".trim(pg_result($result,$i,"nomearq")).";\n");
 	}
 	//cria drop sequence
-    fputs($fd,"\n\n\n"); 		
+    fputs($fd,"\n\n\n");
 	for($i = 0;$i < $numrows;$i++) {
 	  $seq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
 	                  from db_syssequencia s
@@ -198,10 +198,10 @@ input {
 					  where a.codsequencia <> 0
 					  and a.codarq = ".pg_result($result,$i,"codarq"));
 	   if(pg_numrows($seq) > 0)
-  	     fputs($fd,"DROP SEQUENCE ".trim(pg_result($seq,0,"nomesequencia")).";\n");      	 
+  	     fputs($fd,"DROP SEQUENCE ".trim(pg_result($seq,0,"nomesequencia")).";\n");
 	}
 	//cria sequencias
-    fputs($fd,"\n\n\n"); 	
+    fputs($fd,"\n\n\n");
 	for($i = 0;$i < $numrows;$i++) {
 	  $seq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
 	                  from db_syssequencia s
@@ -213,13 +213,13 @@ input {
   	     fputs($fd,"CREATE SEQUENCE ".trim(pg_result($seq,0,"nomesequencia"))."\n");
   	     fputs($fd,"INCREMENT ".trim(pg_result($seq,0,"incrseq"))."\n");
   	     fputs($fd,"MINVALUE ".trim(pg_result($seq,0,"minvalueseq"))."\n");
-  	     fputs($fd,"MAXVALUE ".trim(pg_result($seq,0,"maxvalueseq"))."\n");		 
-  	     fputs($fd,"START ".trim(pg_result($seq,0,"startseq"))."\n");		 		 
+  	     fputs($fd,"MAXVALUE ".trim(pg_result($seq,0,"maxvalueseq"))."\n");
+  	     fputs($fd,"START ".trim(pg_result($seq,0,"startseq"))."\n");
   	     fputs($fd,"CACHE ".trim(pg_result($seq,0,"cacheseq")).";\n");
-	     fputs($fd,"\n\n"); 
-	   }	   
+	     fputs($fd,"\n\n");
+	   }
 	}
-    fputs($fd,"\n\n\n"); 
+    fputs($fd,"\n\n\n");
 	//cria tabelas
     for($i = 0;$i < $numrows;$i++) {
         $campo = db_query("select c.nomecam,c.conteudo,c.valorinicial,s.nomesequencia,s.codsequencia
@@ -233,7 +233,7 @@ input {
 	  $Ncampos = pg_numrows($campo);
 	  if($Ncampos > 0) {
         fputs($fd,"\n-- Módulo: ".trim(pg_result($result,$i,"nomemod"))."\n");
-        fputs($fd,"CREATE TABLE ".trim(pg_result($result,$i,"nomearq"))."(\n");      
+        fputs($fd,"CREATE TABLE ".trim(pg_result($result,$i,"nomearq"))."(\n");
         for($j = 0;$j < $Ncampos;$j++) {
           if($j == $Ncampos - 1) {
             // Chave Primaria
@@ -254,7 +254,7 @@ input {
                 $primary_key = "(";
                 $nomePK = trim(pg_result($result,$i,"nomearq"))."_";
                 for($p = 0;$p < $Npk;$p++) {
-                  $cc = split("_",trim(pg_result($pk,$p,"nomecam")));
+                  $cc =explode("_",trim(pg_result($pk,$p,"nomecam")));
                   if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
                     $nomePK = $nomePK."ae_";
                   else if(strlen(strstr(strtoupper(@$cc[1]),"MESUSU")) > 0)
@@ -300,7 +300,7 @@ input {
 		}
       }
 	}
-  }  
+  }
 // Foreign Key
 if(isset($fk)) {
   fputs($fd,"\n\n\n-- CHAVE ESTRANGEIRA\n\n\n");
@@ -328,7 +328,7 @@ if(isset($fk)) {
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).")";
         else
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).",";
-        $cc = split("_",trim(pg_result($fk,$f,"nomecam")));
+        $cc =explode("_",trim(pg_result($fk,$f,"nomecam")));
         if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
           $NomeFK = $NomeFK."ae_";
         else if(strlen(strstr(strtoupper(@$cc[1]),"MESEXE")) > 0)
@@ -337,7 +337,7 @@ if(isset($fk)) {
           $ICC = sizeof($cc) == 1?0:1;
           if(strlen($cc[$ICC]) >=4 )
 		    $NomeFK = $NomeFK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
-          else			
+          else
             $NomeFK = $NomeFK.@$cc[$ICC];
 		}
         $TabPai = trim(pg_result($fk,$f,"t_pai"));
@@ -387,9 +387,9 @@ if(isset($funcoes)) {
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '0'");
   $numrows = pg_numrows($result);
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");	
-  }  
-  fputs($fd,"\n\n\n");  
+    fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");
+  }
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
   }
@@ -401,8 +401,8 @@ if(isset($views)) {
   $numrows = pg_numrows($result);
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP VIEW ".trim(pg_result($result,$i,"nomefuncao")).";\n");
-  }  
-  fputs($fd,"\n\n\n");  
+  }
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
   }
@@ -431,12 +431,12 @@ if(isset($triggers)) {
     fputs($fd,"DROP TRIGGER ".trim(pg_result($result,$i,"nometrigger"))." ON ".trim(pg_result($result,$i,"nomearq")).";\n");
   }
   //drop functions
-  fputs($fd,"\n\n\n");  
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");
   }
   //cria as funções das triggers
-  fputs($fd,"\n\n\n");  
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
   }
@@ -456,7 +456,7 @@ echo "<a href=\"sys4_criaestrutura001.php\">Retorna</a>\n";
 	</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

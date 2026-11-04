@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -27,42 +27,42 @@
 
 //MODULO: Laboratório
 //CLASSE DA ENTIDADE lab_resultadonum
-class cl_lab_resultadonum { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $la41_i_codigo = 0; 
-   var $la41_i_result = 0; 
-   var $la41_f_valor = 0; 
-   var $la41_valorpercentual = 0; 
-   var $la41_faixaescolhida = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lab_resultadonum {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $la41_i_codigo = 0;
+   var $la41_i_result = 0;
+   var $la41_f_valor = 0;
+   var $la41_valorpercentual = 0;
+   var $la41_faixaescolhida = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 la41_i_codigo = int4 = Código 
-                 la41_i_result = int4 = Resultado 
-                 la41_f_valor = float4 = Valor 
-                 la41_valorpercentual = float4 = Valor percentual 
-                 la41_faixaescolhida = int4 = Faixa escolhida para o exame 
+                 la41_i_codigo = int4 = Código
+                 la41_i_result = int4 = Resultado
+                 la41_f_valor = float4 = Valor
+                 la41_valorpercentual = float4 = Valor percentual
+                 la41_faixaescolhida = int4 = Faixa escolhida para o exame
                  ";
-   //funcao construtor da classe 
-   function cl_lab_resultadonum() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_resultadonum"); 
+     $this->rotulo = new rotulo("lab_resultadonum");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_lab_resultadonum {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la41_i_codigo = ($this->la41_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"]:$this->la41_i_codigo);
        $this->la41_i_result = ($this->la41_i_result == ""?@$GLOBALS["HTTP_POST_VARS"]["la41_i_result"]:$this->la41_i_result);
@@ -83,9 +83,9 @@ class cl_lab_resultadonum {
      }
    }
    // funcao para inclusao
-   function incluir ($la41_i_codigo){ 
+   public function incluir ($la41_i_codigo){
       $this->atualizacampos();
-     if($this->la41_i_result == null ){ 
+     if($this->la41_i_result == null ){
        $this->erro_sql = " Campo Resultado não informado.";
        $this->erro_campo = "la41_i_result";
        $this->erro_banco = "";
@@ -97,23 +97,23 @@ class cl_lab_resultadonum {
      if ($this->la41_f_valor == '' ){
        $this->la41_f_valor = "null";
      }
-     if($this->la41_valorpercentual == null ){ 
+     if($this->la41_valorpercentual == null ){
        $this->la41_valorpercentual = "null";
      }
-     if($this->la41_faixaescolhida == null ){ 
+     if($this->la41_faixaescolhida == null ){
        $this->la41_faixaescolhida = "null";
      }
      if($la41_i_codigo == "" || $la41_i_codigo == null ){
-       $result = db_query("select nextval('lab_resultadonum_la41_i_codigo_seq')"); 
+       $result = db_query("select nextval('lab_resultadonum_la41_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_resultadonum_la41_i_codigo_seq do campo: la41_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_resultadonum_la41_i_codigo_seq do campo: la41_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->la41_i_codigo = pg_result($result,0,0); 
+       $this->la41_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_resultadonum_la41_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $la41_i_codigo)){
@@ -124,10 +124,10 @@ class cl_lab_resultadonum {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->la41_i_codigo = $la41_i_codigo; 
+         $this->la41_i_codigo = $la41_i_codigo;
        }
      }
-     if(($this->la41_i_codigo == null) || ($this->la41_i_codigo == "") ){ 
+     if(($this->la41_i_codigo == null) || ($this->la41_i_codigo == "") ){
        $this->erro_sql = " Campo la41_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -136,21 +136,21 @@ class cl_lab_resultadonum {
        return false;
      }
      $sql = "insert into lab_resultadonum(
-                                       la41_i_codigo 
-                                      ,la41_i_result 
-                                      ,la41_f_valor 
-                                      ,la41_valorpercentual 
-                                      ,la41_faixaescolhida 
+                                       la41_i_codigo
+                                      ,la41_i_result
+                                      ,la41_f_valor
+                                      ,la41_valorpercentual
+                                      ,la41_faixaescolhida
                        )
                 values (
-                                $this->la41_i_codigo 
-                               ,$this->la41_i_result 
-                               ,$this->la41_f_valor 
-                               ,$this->la41_valorpercentual 
-                               ,$this->la41_faixaescolhida 
+                                $this->la41_i_codigo
+                               ,$this->la41_i_result
+                               ,$this->la41_f_valor
+                               ,$this->la41_valorpercentual
+                               ,$this->la41_faixaescolhida
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Resultado em Número ($this->la41_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -192,16 +192,16 @@ class cl_lab_resultadonum {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($la41_i_codigo=null) { 
+   public function alterar ($la41_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_resultadonum set ";
      $virgula = "";
-     if(trim($this->la41_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"])){ 
+     if(trim($this->la41_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_codigo"])){
        $sql  .= $virgula." la41_i_codigo = $this->la41_i_codigo ";
        $virgula = ",";
-       if(trim($this->la41_i_codigo) == null ){ 
+       if(trim($this->la41_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "la41_i_codigo";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_i_result)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_result"])){ 
+     if(trim($this->la41_i_result)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_i_result"])){
        $sql  .= $virgula." la41_i_result = $this->la41_i_result ";
        $virgula = ",";
-       if(trim($this->la41_i_result) == null ){ 
+       if(trim($this->la41_i_result) == null ){
          $this->erro_sql = " Campo Resultado não informado.";
          $this->erro_campo = "la41_i_result";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_f_valor"])){ 
+     if(trim($this->la41_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_f_valor"])){
        $sql  .= $virgula." la41_f_valor = $this->la41_f_valor ";
        $virgula = ",";
-       if(trim($this->la41_f_valor) == null ){ 
+       if(trim($this->la41_f_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "la41_f_valor";
          $this->erro_banco = "";
@@ -237,17 +237,17 @@ class cl_lab_resultadonum {
          return false;
        }
      }
-     if(trim($this->la41_valorpercentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
-        if(trim($this->la41_valorpercentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){ 
-           $this->la41_valorpercentual = "0" ; 
-        } 
+     if(trim($this->la41_valorpercentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){
+        if(trim($this->la41_valorpercentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_valorpercentual"])){
+           $this->la41_valorpercentual = "0" ;
+        }
        $sql  .= $virgula." la41_valorpercentual = $this->la41_valorpercentual ";
        $virgula = ",";
      }
-     if(trim($this->la41_faixaescolhida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
-        if(trim($this->la41_faixaescolhida)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){ 
-           $this->la41_faixaescolhida = "0" ; 
-        } 
+     if(trim($this->la41_faixaescolhida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){
+        if(trim($this->la41_faixaescolhida)=="" && isset($GLOBALS["HTTP_POST_VARS"]["la41_faixaescolhida"])){
+           $this->la41_faixaescolhida = "0" ;
+        }
        $sql  .= $virgula." la41_faixaescolhida = $this->la41_faixaescolhida ";
        $virgula = ",";
      }
@@ -282,7 +282,7 @@ class cl_lab_resultadonum {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Resultado em Número nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->la41_i_codigo;
@@ -310,11 +310,11 @@ class cl_lab_resultadonum {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($la41_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($la41_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -323,7 +323,7 @@ class cl_lab_resultadonum {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($la41_i_codigo));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -356,7 +356,7 @@ class cl_lab_resultadonum {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Resultado em Número nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$la41_i_codigo;
@@ -384,11 +384,11 @@ class cl_lab_resultadonum {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -410,11 +410,11 @@ class cl_lab_resultadonum {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,15 +429,15 @@ class cl_lab_resultadonum {
      $sql2 = "";
      if($dbwhere==""){
        if($la41_i_codigo!=null ){
-         $sql2 .= " where lab_resultadonum.la41_i_codigo = $la41_i_codigo "; 
-       } 
+         $sql2 .= " where lab_resultadonum.la41_i_codigo = $la41_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,11 +446,11 @@ class cl_lab_resultadonum {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $la41_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,15 +463,15 @@ class cl_lab_resultadonum {
      $sql2 = "";
      if($dbwhere==""){
        if($la41_i_codigo!=null ){
-         $sql2 .= " where lab_resultadonum.la41_i_codigo = $la41_i_codigo "; 
-       } 
+         $sql2 .= " where lab_resultadonum.la41_i_codigo = $la41_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

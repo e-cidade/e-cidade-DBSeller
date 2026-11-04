@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,12 +61,12 @@ $cliframe_seleciona_subgrupo = new cl_iframe_seleciona;
 
   <table align="center">
     <form name="form2" method="post" action="">
-      <?
+      <?php
          db_input("pc03_codgrupo",100,"",false,"hidden",4);
       ?>
       <tr><td>&nbsp;</td></tr>
       <tr>
-        <td><?
+        <td><?php
 	   $sql_marca = "";
 	   if (isset($pc03_codgrupo) && trim($pc03_codgrupo)!=""){
 	        $sql_marca = "select pc03_codgrupo, pc03_descrgrupo 
@@ -93,7 +93,7 @@ $cliframe_seleciona_subgrupo = new cl_iframe_seleciona;
            $cliframe_seleciona_grupo->iframe_seleciona(4);    
          ?>
        </td>
-        <td><?
+        <td><?php
 	   if (isset($pc03_codgrupo) && trim($pc03_codgrupo)!=""){
             	$sql       = "select pc04_codsubgrupo, pc04_descrsubgrupo 
 	                      from pcsubgrupo 
@@ -118,7 +118,7 @@ $cliframe_seleciona_subgrupo = new cl_iframe_seleciona;
         	?>
        </td>
       </tr>
-      <?
+      <?php
 	   if (isset($pc03_codgrupo) && trim($pc03_codgrupo)!=""){
       ?>
       <tr>
@@ -126,12 +126,12 @@ $cliframe_seleciona_subgrupo = new cl_iframe_seleciona;
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_mandadados();" >
         </td>
       </tr>
-      <?
+      <?php
            }
       ?>
   </form>
     </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

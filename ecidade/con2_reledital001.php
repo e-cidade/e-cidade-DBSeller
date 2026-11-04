@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,12 +84,12 @@ function js_relatorio1() {
       <tr>
       <br>
         <td nowrap title="<?=@$Td01_codedi?>">
-        <?
+        <?php
           db_ancora(@$Ld01_codedi,"js_edi(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('d01_codedi',6,$Id01_codedi,true,'text',$db_opcao," onchange='js_edi(false);'");
       db_input('d01_descr',40,$Id01_descr,true,'text',3);
          ?>
@@ -101,7 +101,7 @@ function js_relatorio1() {
 							<b>Forma de Cálculo :</b>
 						</td>
 						<td nowrap> 
-							<?
+							<?php
 
 							$x = array('1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional');
 							db_select('d04_forma',$x,true,$db_opcao,"");
@@ -114,7 +114,7 @@ function js_relatorio1() {
               <b>Mostrar custo individual : </b>
 						</td>
 						<td nowrap> 
-							<?
+							<?php
 
 							$y = array('1'=>'C.Melhoria','2'=>'Custo Obra', '3'=>'Ambos');
 							db_select('tipocusto',$y,true,$db_opcao,"");
@@ -136,7 +136,7 @@ function js_relatorio1() {
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

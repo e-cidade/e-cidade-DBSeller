@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,16 +42,16 @@ $clrotulo->label("ed15_i_codigo");
       <?=$Lme03_i_codigo?>
       </td>
       <td>
-      <?db_input('me03_i_codigo',10,@$Ime03_i_codigo,true,'text',3,"")?>
+      <?php db_input('me03_i_codigo',10,@$Ime03_i_codigo,true,'text',3,"")?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tme03_i_escola?>">
-      <?db_ancora(@$Lme03_i_escola,"",3);?>
+      <?php db_ancora(@$Lme03_i_escola,"",3);?>
       </td>
       <td>
-      <?db_input('me03_i_escola',10,$Ime03_i_escola,true,'text',3,"")?>
-      <?db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'')?>
+      <?php db_input('me03_i_escola',10,$Ime03_i_escola,true,'text',3,"")?>
+      <?php db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'')?>
       </td>
     </tr>
     <tr>
@@ -59,7 +59,7 @@ $clrotulo->label("ed15_i_codigo");
       <?=@$Lme03_c_tipo?>
       </td>
       <td>
-      <?db_input('me03_c_tipo',40,@$Ime03_c_tipo,true,'text',$db_opcao,"")?>
+      <?php db_input('me03_c_tipo',40,@$Ime03_c_tipo,true,'text',$db_opcao,"")?>
       </td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ $clrotulo->label("ed15_i_codigo");
       <?=@$Lme03_c_inicio?>
       </td>
       <td>
-      <?db_input('me03_c_inicio',10,@$Ime03_c_inicio,true,'text',$db_opcao,
+      <?php db_input('me03_c_inicio',10,@$Ime03_c_inicio,true,'text',$db_opcao,
                  "onchange='js_verifica_hora(this.value,this.name)';"
                 )
       ?>
@@ -78,7 +78,7 @@ $clrotulo->label("ed15_i_codigo");
       <?=@$Lme03_c_fim?>
       </td>
       <td>
-      <?db_input('me03_c_fim',10,@$Ime03_c_fim,true,'text',$db_opcao,
+      <?php db_input('me03_c_fim',10,@$Ime03_c_fim,true,'text',$db_opcao,
                  "onchange='js_verifica_hora(this.value,this.name)';"
                 )
       ?>
@@ -86,11 +86,11 @@ $clrotulo->label("ed15_i_codigo");
     </tr>
     <tr>
       <td nowrap title="<?=@$Tme03_i_turno?>">
-      <?db_ancora(@$Lme03_i_turno,"js_pesquisame03_i_turno(true);",$db_opcao);?>
+      <?php db_ancora(@$Lme03_i_turno,"js_pesquisame03_i_turno(true);",$db_opcao);?>
       </td>
       <td>
-      <?db_input('me03_i_turno',10,$Ime03_i_turno,true,'text',$db_opcao," onchange='js_pesquisame03_i_turno(false);'")?>
-      <?db_input('ed15_c_nome',40,@$Ied15_c_nome,true,'text',3,'')?>
+      <?php db_input('me03_i_turno',10,$Ime03_i_turno,true,'text',$db_opcao," onchange='js_pesquisame03_i_turno(false);'")?>
+      <?php db_input('ed15_c_nome',40,@$Ied15_c_nome,true,'text',3,'')?>
       </td>
     </tr>
    </table>
@@ -98,7 +98,7 @@ $clrotulo->label("ed15_i_codigo");
   <td align="center" valign="top">
    <table border="0">
     <tr>
-     <?
+     <?php
      if ($db_opcao!=3 && $db_opcao!=33) {
        $campos = " me03_i_codigo as codigo,me03_c_tipo as descricao ";
        $resulttp = $clmer_tprefeicao->sql_record(
@@ -116,13 +116,13 @@ $clrotulo->label("ed15_i_codigo");
 	         <tr>
 	           <td rowspan="3">
 	             <select size="5" name="tipos[]" id="tipos">
-	             <?
+	             <?php
 	              for ($ind=0;$ind<$clmer_tprefeicao->numrows;$ind++) {
 
 	                db_fieldsmemory($resulttp,$ind);?>
 	                <option value="<?=$codigo?>"> <?=$descricao?> </option>
 
-	            <?}?>
+	            <?php } ?>
 	             </select>
 	           </td>
 	           <td>
@@ -143,7 +143,7 @@ $clrotulo->label("ed15_i_codigo");
 	        </table>
 	       </fieldset>
 	      </td>
-      <?
+      <?php
        }
       }
      ?>
@@ -215,7 +215,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_tprefeicao.hide();
-  <?
+  <?php
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

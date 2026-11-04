@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -713,12 +713,12 @@ if(isset($opVenc) && $opVenc == 1){
 if (isset($unica) && $unica != "") {
 
   $aUnicas =  explode("U", $unica);
-  $vt      = split("U",$unica);
+  $vt      =explode("U",$unica);
   $unicas  = array();
 
   foreach ($vt as $i => $v){
 
-    $check = split("=",$v);
+    $check =explode("=",$v);
     if (isset($check) && $check != "") {
       array_push($unicas, $check[0]."-".$check[1]."-".$check[2])."#";
     }
@@ -741,9 +741,9 @@ $iParcelaMaxima = 12;
 ?>
 
 
-<? //db_criatermometro('termometro','Concluido...','blue',1); ?>
+<?php //db_criatermometro('termometro','Concluido...','blue',1); ?>
 
-<?
+<?php
 echo "iniciou o processamento.";
 //die("fim \r");
 $sQuebraLinha = "\r\n";
@@ -1390,7 +1390,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
             $j40_refant = "....";
           }
 
-          $sqlsub = split('\.', $j40_refant);
+          $sqlsub =explode('.', $j40_refant);
           if ($gerar == "dados") {
 
             if ($tipo == "txt") {
@@ -1983,7 +1983,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
 
                   if ($gerar == "dados") {
                     $fc_febraban = $linhadigitavel.",".$codigobarras;
-                    $numpreunica = db_numpre($k03_numpreunica).str_pad(null,3,"0",STR_PAD_LEFT);
+                    $numpreunica = db_numpre($k03_numpreunica).str_pad("",3,"0",STR_PAD_LEFT);
                     if ($tipo == "txt") {
                       fputs($clabre_arquivo->arquivo,$numpreunica);
                     } elseif ($tipo == "txtbsj") {
@@ -2395,7 +2395,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
 
                 } else {
 
-                  $numpre = db_numpre($k03_numprepar).str_pad(null,3,"0",STR_PAD_LEFT);
+                  $numpre = db_numpre($k03_numprepar).str_pad("",3,"0",STR_PAD_LEFT);
 
                   if ( $gerar == "dados" ) {
 
@@ -2614,7 +2614,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
                   if ($j21_valor == 0 ) {
                     fputs($arqTXTISENTOS,"{$j23_matric} - {$j17_descr}{$sQuebraLinha}");
 
-                    fputs($clabre_arquivo->arquivo, str_pad(null, 40));
+                    fputs($clabre_arquivo->arquivo, str_pad("", 40));
                     fputs($clabre_arquivo->arquivo, str_pad(db_formatar(0, 'f', ' ', 10),"0",STR_PAD_LEFT));
                     fputs($clabre_arquivo->arquivo, str_pad("", 18, ' ', STR_PAD_LEFT));
                     fputs($clabre_arquivo->arquivo, str_pad("", 18, ' ', STR_PAD_LEFT));
@@ -3085,7 +3085,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
 
                   if ($j21_valor == 0 ) {
 
-                    fputs($clabre_arquivo->arquivo, str_pad(null, 40));
+                    fputs($clabre_arquivo->arquivo, str_pad("", 40));
                     fputs($clabre_arquivo->arquivo, str_pad(db_formatar(0, 'f', ' ', 10),"0",STR_PAD_LEFT));
 
                     fputs($clabre_arquivo->arquivo, str_pad("", 18, ' ', STR_PAD_LEFT));

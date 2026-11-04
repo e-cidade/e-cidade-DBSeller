@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -34,7 +34,8 @@ use ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Reconhecimento as Reconhe
  * Class Reconhecimento
  * @package ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository
  */
-class Reconhecimento {
+class Reconhecimento
+{
 
   /**
    * Retorna uma coleção de Reconhecimentos para o reconhecimento da competencia
@@ -44,20 +45,24 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public function getAcordosParaReconhecimento(\Instituicao $instituicao, DBCompetencia $competencia = null, Acordo $acordo = null) {
+    public function getAcordosParaReconhecimento(
+        \Instituicao $instituicao,
+        DBCompetencia $competencia = null,
+        Acordo $acordo = null
+    ) {
 
-    $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
-    if (!empty($acordo)) {
-      $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
-    }
+        $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
+        if (!empty($acordo)) {
+            $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
+        }
 
-    if (!empty($competencia)) {
-      $aWhere[] = "k118_ano = {$competencia->getAno()} and k118_mes = {$competencia->getMes()}";
+        if (!empty($competencia)) {
+            $aWhere[] = "k118_ano = {$competencia->getAno()} and k118_mes = {$competencia->getMes()}";
+        }
+        $aWhere[] = "k118_reconhecido is false";
+        $sWhere      = implode(" and ", $aWhere);
+        return self::getReconhecimentos($sWhere);
     }
-    $aWhere[] = "k118_reconhecido is false";
-    $sWhere      = implode(" and ", $aWhere);
-    return self::getReconhecimentos($sWhere);
-  }
 
   /**
    * @param \Instituicao   $instituicao
@@ -67,19 +72,24 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public static function getReconhecimentosAbertosAteCompetencia(\Instituicao $instituicao, DBCompetencia $competencia, Acordo $acordo = null) {
+    public static function getReconhecimentosAbertosAteCompetencia(
+        \Instituicao $instituicao,
+        DBCompetencia $competencia,
+        Acordo $acordo = null
+    ) {
 
-    $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
+        $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
 
-    if (!empty($acordo)) {
-      $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
+        if (!empty($acordo)) {
+            $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
+        }
+        $aWhere[] = "((k118_mes <= {$competencia->getMes()} and k118_ano = {$competencia->getAno()}) or ";
+        $aWhere[] = "k118_ano < {$competencia->getAno()}) ";
+        $aWhere[] = "k118_reconhecido is false";
+
+        $sWhere      = implode(" and ", $aWhere);
+        return self::getReconhecimentos($sWhere);
     }
-    $aWhere[] = "((k118_mes <= {$competencia->getMes()} and k118_ano = {$competencia->getAno()}) or k118_ano < {$competencia->getAno()})";
-    $aWhere[] = "k118_reconhecido is false";
-
-    $sWhere      = implode(" and ", $aWhere);
-    return self::getReconhecimentos($sWhere);
-  }
 
   /**
    * @param \DBCompetencia|null $oCompetencia
@@ -88,68 +98,83 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public static function getReconhecimentosFechados(DBCompetencia $oCompetencia = null, $iCredor, $iContrato) {
+    public static function getReconhecimentosFechados(DBCompetencia $oCompetencia = null, $iCredor, $iContrato)
+    {
 
-    $oProgramacaoFinanceira    = new \cl_programacaofinanceira();
-    $lBuscaAnosAnteriores = true;
-    $sSqlProgramacaoFinanceira = $oProgramacaoFinanceira->sql_query_liquidacao($oCompetencia, $iCredor, $iContrato, $lBuscaAnosAnteriores);
-    $rsProgramacaoFinanceira   = db_query($sSqlProgramacaoFinanceira);
-    if (!$rsProgramacaoFinanceira) {
-      throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência.");
+        $oProgramacaoFinanceira = new \cl_programacaofinanceira();
+        $lBuscaAnosAnteriores = true;
+        $sSqlProgramacaoFinanceira = $oProgramacaoFinanceira->sql_query_liquidacao(
+            $oCompetencia,
+            $iCredor,
+            $iContrato,
+            $lBuscaAnosAnteriores
+        );
+        $rsProgramacaoFinanceira   = db_query($sSqlProgramacaoFinanceira);
+        if (!$rsProgramacaoFinanceira) {
+            throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência.");
+        }
+
+        $iParcela          = 0;
+        $icontratoCorrente = null;
+        $aContratos = \db_utils::makeCollectionFromRecord(
+            $rsProgramacaoFinanceira,
+            function ($dados) use (&$iParcela, &$icontratoCorrente) {
+
+                $oAcordo                      = \AcordoRepository::getByCodigo($dados->acordo);
+
+                $oReconhecimento = new ReconhecimentoModel();
+
+                $oReconhecimento->setAcordo($oAcordo);
+                $oReconhecimento->setCompetencia(new DBCompetencia($dados->k118_ano, $dados->k118_mes));
+                $oReconhecimento->setValor($dados->valortotal);
+                $oReconhecimento->setValorReconhecido($dados->valorreconhecido);
+                $oReconhecimento->setValorRealizado($dados->valorrealizado);
+                if ($dados->k117_despesaantecipada == 't') {
+                    $oReconhecimento->setValorRealizado($dados->valor_pago_antecipado);
+                }
+                $icontratoCorrente = $dados->acordo;
+                return $oReconhecimento;
+            }
+        );
+
+        return $aContratos;
     }
-
-    $iParcela          = 0;
-    $icontratoCorrente = null;
-    $aContratos = \db_utils::makeCollectionFromRecord($rsProgramacaoFinanceira, function($dados) use(&$iParcela, &$icontratoCorrente) {
-
-      $oAcordo                      = \AcordoRepository::getByCodigo($dados->acordo);
-
-      $oReconhecimento = new ReconhecimentoModel();
-
-      $oReconhecimento->setAcordo($oAcordo);
-      $oReconhecimento->setCompetencia(new DBCompetencia($dados->k118_ano, $dados->k118_mes));
-      $oReconhecimento->setValor($dados->valortotal);
-      $oReconhecimento->setValorReconhecido($dados->valorreconhecido);
-      $oReconhecimento->setValorRealizado($dados->valorrealizado);
-      if ($dados->k117_despesaantecipada == 't') {
-        $oReconhecimento->setValorRealizado($dados->valor_pago_antecipado);
-      }
-      $icontratoCorrente = $dados->acordo;
-      return $oReconhecimento;
-    });
-
-    return $aContratos;
-  }
 
   /**
    * @param $sWhere
    * @return \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Reconhecimento[]
    * @throws \DBException
    */
-  private static function getReconhecimentos ($sWhere) {
+    private static function getReconhecimentos($sWhere)
+    {
 
-    $oDaoprogramacaoItem = new \cl_acordoprogramacaofinanceira();
-    $campos      = 'ac16_sequencial as acordo, ac16_numero as numero, ac16_anousu as ano, k118_sequencial, k118_ano, k117_despesaantecipada, k118_mes, sum(k118_valor) as valor';
-    $sGroup      = 'ac16_sequencial, ac16_numero, ac16_anousu, k118_sequencial, k118_ano, k117_despesaantecipada, k118_mes';
-    $sWhere     .= " group by {$sGroup}";
-    $sSqlAcordos = $oDaoprogramacaoItem->sql_query_parcelas(null, $campos, 'ac16_numero', $sWhere);
-    $rsAcordos   = db_query($sSqlAcordos);
-    if (!$rsAcordos) {
-      throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência");
+        $oDaoprogramacaoItem = new \cl_acordoprogramacaofinanceira();
+        $campos      = 'ac16_sequencial as acordo, ac16_numero as numero, ac16_anousu as ano, k118_sequencial, ';
+        $campos     .= 'k118_ano, k117_despesaantecipada, k118_mes, sum(k118_valor) as valor';
+        $sGroup      = 'ac16_sequencial, ac16_numero, ac16_anousu, k118_sequencial, k118_ano, ';
+        $sGroup     .= 'k117_despesaantecipada, k118_mes';
+        $sWhere     .= " group by {$sGroup}";
+        $sSqlAcordos = $oDaoprogramacaoItem->sql_query_parcelas(
+            null,
+            $campos,
+            'ac16_numero',
+            $sWhere
+        );
+        $rsAcordos   = db_query($sSqlAcordos);
+        if (!$rsAcordos) {
+            throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência");
+        }
+        $reconhecimemtos = \db_utils::makeCollectionFromRecord($rsAcordos, function ($dados) {
+
+            $oReconhecimento = new ReconhecimentoModel();
+            $oReconhecimento->setCodigo($dados->k118_sequencial);
+            $oReconhecimento->setAcordo(\AcordoRepository::getByCodigo($dados->acordo));
+            $oReconhecimento->setCompetencia(new DBCompetencia($dados->k118_ano, $dados->k118_mes));
+            $oReconhecimento->setValor($dados->valor);
+            $oReconhecimento->setDispesaAntecipada($dados->k117_despesaantecipada == 't' ? true : false);
+            return $oReconhecimento;
+        });
+
+        return $reconhecimemtos;
     }
-    $reconhecimemtos = \db_utils::makeCollectionFromRecord($rsAcordos, function($dados){
-
-       $oReconhecimento = new ReconhecimentoModel();
-       $oReconhecimento->setCodigo($dados->k118_sequencial);
-       $oReconhecimento->setAcordo(\AcordoRepository::getByCodigo($dados->acordo));
-       $oReconhecimento->setCompetencia(new DBCompetencia($dados->k118_ano, $dados->k118_mes));
-       $oReconhecimento->setValor($dados->valor);
-       $oReconhecimento->setDispesaAntecipada($dados->k117_despesaantecipada == 't' ? true : false);
-       return $oReconhecimento;
-
-     });
-
-     return $reconhecimemtos;
-
-   }
 }

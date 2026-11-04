@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,7 +83,7 @@ $sql = "select * from
 $result = db_query($sql);
 $xxnum = pg_numrows($result);
 if ($xxnum == 0){
-   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários admitidos no período de '.db_formatar($datai).' e '.db_formatar($dataf));
+   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários admitidos no período de '.db_formatar($datai,'d').' e '.db_formatar($dataf,'d'));
 }
 
 $pdf = new PDF();

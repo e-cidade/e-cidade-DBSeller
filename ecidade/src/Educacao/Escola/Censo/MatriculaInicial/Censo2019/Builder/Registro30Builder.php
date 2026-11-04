@@ -184,6 +184,7 @@ class Registro30Builder extends BuilderFormulario
             $this->registro->setDeficienciaMultipla(0);
             $this->registro->setTranstornoAutista(0);
             $this->registro->setSuperdotacao(0);
+            $this->registro->setVisaoMonocular(0);
         }
 
         foreach ($this->necessidadesEspeciais as $necessidade) {
@@ -218,6 +219,9 @@ class Registro30Builder extends BuilderFormulario
                 case '113':
                     $this->registro->setSuperdotacao(1);
                     break;
+                case '114':
+                    $this->registro->setVisaoMonocular(1);
+                    break;
             }
         }
 
@@ -229,6 +233,7 @@ class Registro30Builder extends BuilderFormulario
         $campos[] = $this->registro->getSurdocegueira();
         $campos[] = $this->registro->getDeficienciaFisica();
         $campos[] = $this->registro->getDeficienciaintelectual();
+        $campos[] = $this->registro->getVisaoMonocular();
         $campos = array_diff($campos, array(null));
         $campos = array_count_values($campos);
         if (isset($campos[1]) && $campos[1] >= 2) {
@@ -275,9 +280,15 @@ class Registro30Builder extends BuilderFormulario
 
         // o array disciplinaInformada é para não deixar informar mais de uma vez a mesma disciplina
         $disciplinaInformada = array();
+
         foreach ($formacoesComplementar as $index => $formacaoComplementar) {
             if (in_array($formacaoComplementar->getCodigo(), $disciplinaInformada)) {
                 continue;
+            }
+            if ($this->profissionalEscola->isGestor()) {
+                if (!$this->profissionalEscola->isDocente()) {
+                    continue;
+                }
             }
             switch ($index) {
                 case 0:
@@ -322,6 +333,8 @@ class Registro30Builder extends BuilderFormulario
         $this->registro->setEducacaoCampo($this->exist('especifico_campo', $opcoes));
         $this->registro->setEducacaoAmbiental($this->exist('especifico_ambiental', $opcoes));
         $this->registro->setEducacaoDireitosHumanos($this->exist('especifico_direitos_humanos', $opcoes));
+        $this->registro->setEducacaoBilingueSurdos($this->exist('educacao_bilingue_surdos', $opcoes));
+        $this->registro->setEducacaoTIC($this->exist('educacao_tic', $opcoes));
         $this->registro->setGeneroDiversidadeSexual($this->exist('genero_diversidade_sexual', $opcoes));
         $this->registro->setDireitosCriancaAdolescente($this->exist('direito_crianca_adolescente', $opcoes));
         $this->registro->setEducacaoEtnicoRaciais($this->exist('relacoes_etnicorraciais', $opcoes));
@@ -374,18 +387,23 @@ class Registro30Builder extends BuilderFormulario
         $this->registro->setNacionalidade($this->alunoEscola->getNacionalidade());
         $this->registro->setMunicipioNascimento($this->alunoEscola->getCensoMunicipioNascimento());
         $this->registro->setPaisNacionalidade($this->alunoEscola->getPais()->getCodigoOnu());
-        $this->registro->setMunicipioResidencia($this->alunoEscola->getCensoMunicipioNascimento());
-        $this->registro->setCertidaoNascimento($certidaoNasc);
-
+        $tipoCertidao = intval(substr($certidaoNasc, 14, 1));
+        if ($tipoCertidao != 2) {
+            $this->registro->setCertidaoNascimento($certidaoNasc);
+        }
         $paisResidencia = $this->alunoEscola->getPaisResidencia();
+        $zona = mb_strtoupper($this->alunoEscola->getZonaResidencia()) == 'URBANA' ? 1 : 2;
         if ($paisResidencia instanceof Pais) {
             $this->registro->setPaisResidencia($paisResidencia->getCodigoOnu());
+            if ($paisResidencia->getCodigoOnu() == 76) {
+                $this->registro->setZonaResidencia($zona);
+                $this->registro->setCep($this->alunoEscola->getCep());
+                $this->registro->setMunicipioResidencia($this->alunoEscola->getMunicipioEndereco());
+                if (is_null($this->alunoEscola->getMunicipioEndereco())) {
+                    $this->registro->setMunicipioResidencia($this->alunoEscola->getCensoMunicipioNascimento());
+                }
+            }
         }
-
-        $this->registro->setCep($this->alunoEscola->getCep());
-        $this->registro->setMunicipioResidencia($this->alunoEscola->getMunicipioEndereco());
-        $zona = mb_strtoupper($this->alunoEscola->getZonaResidencia()) == 'URBANA' ? 1 : 2;
-        $this->registro->setZonaResidencia($zona);
         $this->registro->setLocalizacaoDiferenciada($this->alunoEscola->getLocalizacaodiferenciada());
 
         if (empty($cpf) && empty($nis) && empty($certidaoNasc)) {

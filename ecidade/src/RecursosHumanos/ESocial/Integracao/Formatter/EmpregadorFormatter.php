@@ -17,15 +17,6 @@ class EmpregadorFormatter extends Formatter
      */
     private $instituicao;
 
-    private $deParaTipoPoder = array(
-        1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
-        7 => 6,
-    );
-
     public function setInstituicao($instituicao)
     {
         $this->instituicao = $instituicao;
@@ -45,7 +36,6 @@ class EmpregadorFormatter extends Formatter
     public function formatar($dados)
     {
         // Pega os dados preenchidos em formulários
-       
         $dadosFormulario = parent::formatar($dados);
         return $this->posProcessamento($dadosFormulario);
     }
@@ -75,6 +65,14 @@ class EmpregadorFormatter extends Formatter
             } else {
                 $cnpj = str_pad($dadoEmpregador->infoCadastro->cnpjEFR, 14, '0', STR_PAD_LEFT);
                 $dadoEmpregador->infoCadastro->cnpjEFR = $cnpj;
+            }
+
+            if (empty($dadoEmpregador->infoCadastro->dtTrans11096)) {
+                unset($dadoEmpregador->infoCadastro->dtTrans11096);
+            }
+
+            if (empty($dadoEmpregador->infoCadastro->indTribFolhaPisPasep)) {
+                unset($dadoEmpregador->infoCadastro->indTribFolhaPisPasep);
             }
 
             if (isset($dadoEmpregador->infoCadastro->indOpcCP) && empty($dadoEmpregador->infoCadastro->indOpcCP)) {

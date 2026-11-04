@@ -1,185 +1,233 @@
 <div class="container">
-  <form name="form1">
-    <fieldset>
-      <legend> Cadastro de Fornecedores Credenciados</legend>
-      <table class="form-container">
-        <tr>
-          <td>
-            <label for="l20_codigo"><a id="ancoraLicitacao" href="#">Licitação:</a></label>
-          </td>
-          <td>
-            <?php
-              db_input("l20_codigo", 10, $Il20_codigo, true, "text", 3);
-            ?>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="z01_numcgm"><a id="ancoraFornecedor" href="#">Fornecedor:</a></label>
-          </td>
-          <td >
-
-            <?php
-              db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1);
-              db_input("z01_nome",   40, $Iz01_nome, true, "text", 3);
-            ?>
-          </td>
-        </tr>
-        <tr id="notificacao" style="display: none">
-          <td colspan="2" style="text-align: left; background-color: #fcf8e3; border: 1px solid #fcc888; padding: 5px">
-            O CGM informado como Fornecedor da Licitação não está cadastrado como <br>Fornecedor no módulo "Compras".
-          </td>
-        </tr>
-      </table>
-    </fieldset>
-    <input type="button" name="salvarFornecedor" id="btnSalvarFornecedor" disabled="disabled" value="Salvar">
-  </form>
-
-  <fieldset>
-    <legend>Fornecedores</legend>
-    <div id='cntGridFornecedores'> </div>
-  </fieldset>
-
+    <form name="form1">
+        <fieldset>
+            <legend> Cadastro de Fornecedores Credenciados</legend>
+            <table class="form-container">
+                <tr>
+                    <td>
+                        <label for="l20_codigo"><a id="ancoraLicitacao" href="#">Licitação:</a></label>
+                    </td>
+                    <td>
+                        <?php
+                        db_input("l20_codigo", 10, $Il20_codigo, true, "text", 3);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="z01_numcgm"><a id="ancoraFornecedor" href="#">Fornecedor:</a></label>
+                    </td>
+                    <td>
+                        <?php
+                        db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1);
+                        db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="tipoEmpresa">Tipo Empresa:</label>
+                    </td>
+                    <td>
+                        <select name="tipoEmpresa" id="tipoEmpresa" style="width: 18em">
+                            <option value="0">Selecione</option>
+                            <option value="1">Normal</option>
+                            <option value="2">ME</option>
+                            <option value="3">EPP</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id="notificacao" style="display: none">
+                    <td colspan="2"
+                        style="text-align: left; background-color: #fcf8e3; border: 1px solid #fcc888; padding: 5px">
+                        O CGM informado como Fornecedor da Licitação não está cadastrado como <br>Fornecedor no módulo
+                        "Compras".
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <input type="button" name="salvarFornecedor" id="btnSalvarFornecedor" disabled="disabled" value="Salvar">
+    </form>
+    <div class="subcontainer">
+        <fieldset>
+            <legend>Fornecedores</legend>
+            <div id='cntGridFornecedores' style="width: 600px"></div>
+        </fieldset>
+    </div>
 </div>
 
+
 <script type="text/javascript">
+    let nomeFornecedor = document.getElementById('z01_nome');
+    nomeFornecedor.style.width = 425;
+    var oLookUpLicitacao = new DBLookUp($('ancoraLicitacao'), $('l20_codigo'), $('l20_codigo'), {
+        sArquivo: 'func_liclicita.php',
+        sLabel: 'Pesquisa de Licitação',
+        sObjetoLookUp: 'db_iframe_liclicita',
+        aParametrosAdicionais: ['lCredenciamento=true']
+    });
 
-var oLookUpLicitacao = new DBLookUp( $('ancoraLicitacao'), $('l20_codigo'),$('l20_codigo'), {
-    sArquivo: 'func_liclicita.php',
-    sLabel: 'Pesquisa de Licitação',
-    sObjetoLookUp: 'db_iframe_liclicita',
-    aParametrosAdicionais : ['lCredenciamento=true']
-  });
+    oLookUpLicitacao.setCallBack('onClick', buscarDadosLicitacao);
 
-oLookUpLicitacao.setCallBack('onClick', buscarDadosLicitacao);
+    var oLookUpFornecedor = new DBLookUp($('ancoraFornecedor'), $('z01_numcgm'), $('z01_nome'), {
+        sArquivo: 'func_nome.php',
+        sLabel: 'Pesquisa de Fornecedor',
+        sObjetoLookUp: 'func_nome'
+    });
 
-var oLookUpFornecedor = new DBLookUp( $('ancoraFornecedor'), $('z01_numcgm'), $('z01_nome'), {
-    sArquivo: 'func_nome.php',
-    sLabel: 'Pesquisa de Fornecedor',
-    sObjetoLookUp: 'func_nome'
-  });
+    oLookUpFornecedor.setCallBack('onChange', verificaFornecedor);
+    oLookUpFornecedor.setCallBack('onClick', verificaFornecedor);
 
-oLookUpFornecedor.setCallBack('onChange', verificaFornecedor);
-oLookUpFornecedor.setCallBack('onClick', verificaFornecedor);
+    /**
+     * Verifica se o cgm selecionado é um fornecedor cadastrado
+     */
+    function verificaFornecedor() {
 
-/**
- * Verifica se o cgm selecionado é um fornecedor cadastrado
- */
-function verificaFornecedor() {
+        $("notificacao").hide();
+        var iCgm = $F("z01_numcgm");
 
-  $("notificacao").hide();
-  var iCgm = $F("z01_numcgm");
+        if (iCgm.trim() == '') {
 
-  if (iCgm.trim() == '') {
+            $('btnSalvarFornecedor').setAttribute('disabled', 'disabled');
+            return false;
+        }
 
-    $('btnSalvarFornecedor').setAttribute('disabled', 'disabled');
-    return false;
-  }
+        $('btnSalvarFornecedor').removeAttribute('disabled');
+        var oParam = {
+            exec: "verificaFornecedor",
+            iCgm: iCgm
+        }
 
-  $('btnSalvarFornecedor').removeAttribute('disabled');
-  var oParam = {
-    exec : "verificaFornecedor",
-    iCgm : iCgm
-  }
+        new AjaxRequest("com1_fornecedor.RPC.php", oParam, function (oRetorno, lErro) {
 
-  new AjaxRequest("com1_fornecedor.RPC.php", oParam, function(oRetorno, lErro) {
+            if (lErro) {
+                return alert(oRetorno.message.urlDecode());
+            }
 
-    if (lErro) {
-      return alert(oRetorno.message.urlDecode());
+            if (!oRetorno.lFornecedor) {
+                $("notificacao").show();
+            }
+        }).setMessage(_M(sFonteMsg + "verficar_fornecedor")).execute();
     }
 
-    if (!oRetorno.lFornecedor) {
-      $("notificacao").show();
+    var oGridFornecedor = new DatagridCollection(oDados.oCollectionFornecedor).configure({
+        order: false,
+        height: 120
+    });
+
+    oGridFornecedor.addColumn("iCgm", {
+        label: "CGM",
+        align: "left",
+        width: "10%"
+    });
+
+    oGridFornecedor.addColumn("sNome", {
+        label: "Nome",
+        align: "left",
+        width: "60%"
+    });
+    oGridFornecedor.addColumn("tipoEmpresa", {
+        label: "Tipo Empresa",
+        align: "left",
+        width: "20%"
+    });
+
+    oGridFornecedor.addAction("A", null, function (oEvento, oFornecedor) {
+        $('z01_numcgm').value = oFornecedor.iCgm;
+        $('z01_numcgm').dispatchEvent(new Event('change'));
+        $('tipoEmpresa').value = getCodigoTipoEmpresa(oFornecedor.tipoEmpresa);
+    });
+
+    oGridFornecedor.addAction("E", null, function (oEvento, oFornecedor) {
+
+        var oParametros = {
+            exec: 'removerFornecedor',
+            iLicitacao: oDados.iLicitacao,
+            oFornecedor: oFornecedor.build()
+        };
+
+        new AjaxRequest(sRPC, oParametros, function (oRetorno, lErro) {
+
+            alert(oRetorno.sMessage);
+            if (lErro) {
+                return false;
+            }
+
+            removerFornecedorItem(oFornecedor.iCgm);
+            oDados.oCollectionFornecedor.remove(oFornecedor.iCgm);
+            oGridFornecedor.reload();
+        }).setMessage(_M(sFonteMsg + "excluindo_fornecedor")).execute();
+    });
+
+    oGridFornecedor.show($("cntGridFornecedores"));
+
+    /**
+     * Salva o fornecedor ao oçamento da licitação
+     */
+    $('btnSalvarFornecedor').addEventListener('click', function () {
+        if ($F('tipoEmpresa') === '0') {
+            alert("Você deve selecionar o tipo da empresa.");
+            $('btnSalvarFornecedor').removeAttribute('disabled');
+            return;
+        }
+        var tipoEmpresa = document.getElementById("tipoEmpresa");
+        var descrTipoEmpresa = tipoEmpresa.options[tipoEmpresa.selectedIndex].text;
+
+        var oParametros = {
+            exec: 'adicionarFornecedor',
+            iOrcamento: oDados.iOrcamento,
+            iLicitacao: $F('l20_codigo'),
+            iCgm: $F('z01_numcgm'),
+            sNome: $F('z01_nome'),
+            tipoEmpresa: $F('tipoEmpresa'),
+            descrTipoEmpresa: descrTipoEmpresa
+        };
+
+        new AjaxRequest(sRPC, oParametros, function (oRetorno, lErro) {
+
+            if (lErro) {
+
+                alert(oRetorno.sMessage);
+                return false;
+            }
+
+            oDados.oCollectionFornecedor.add(oRetorno.oFornecedor);
+            oGridFornecedor.reload();
+            // adiciona o fornecedor na aba itens
+            atualizaFornecedoresItens(
+                oRetorno.oFornecedor.sNome,
+                oRetorno.oFornecedor.iCgm,
+                oRetorno.tipoEmpresa,
+                oRetorno.codigoTipoEmpresa
+            );
+            oDados.iOrcamento = oRetorno.iOrcamento;
+
+            $('z01_numcgm').value = '';
+            $('z01_nome').value = '';
+            $('tipoEmpresa').value = '0';
+            $("notificacao").hide();
+
+        }).setMessage(_M(sFonteMsg + "salvando_fornecedor")).execute();
+        $('btnSalvarFornecedor').setAttribute('disabled', 'disabled');
+    });
+
+    function getCodigoTipoEmpresa(tipoEmpresa) {
+        if (tipoEmpresa === 'Normal') {
+            return 1;
+        }
+        if (tipoEmpresa === 'ME') {
+            return 2;
+        }
+        return 3;
     }
-  }).setMessage( _M( sFonteMsg + "verficar_fornecedor" ) ).execute();
-}
 
-var oGridFornecedor = new DatagridCollection(oDados.oCollectionFornecedor).configure({
-  order  : false,
-  height : 120
-});
+    /**
+     * Função inicial
+     */
+    (function () {
 
-oGridFornecedor.addColumn("iCgm", {
-  label : "CGM",
-  align : "left",
-  width : "10%"
-});
-
-oGridFornecedor.addColumn("sNome", {
-  label : "Nome",
-  align : "left",
-  width : "70%"
-});
-
-oGridFornecedor.addAction("E", null, function(oEvento, oFornecedor) {
-
-  var oParametros = {
-    exec        : 'removerFornecedor',
-    iLicitacao  : oDados.iLicitacao,
-    oFornecedor : oFornecedor.build()
-  };
-
-  new AjaxRequest(sRPC, oParametros, function(oRetorno, lErro) {
-
-    alert( oRetorno.sMessage );
-    if ( lErro ) {
-      return false;
-    }
-
-    removerFornecedorItem(oFornecedor.iCgm);
-    oDados.oCollectionFornecedor.remove(oFornecedor.iCgm);
-    oGridFornecedor.reload();
-  }).setMessage( _M(sFonteMsg + "excluindo_fornecedor") ).execute();
-});
-
-
-oGridFornecedor.show($("cntGridFornecedores"));
-
-/**
- * Salva o fornecedor ao oçamento da licitação
- */
-$('btnSalvarFornecedor').addEventListener('click', function() {
-
-  var oParametros = {
-    exec       : 'adicionarFornecedor',
-    iOrcamento : oDados.iOrcamento,
-    iLicitacao : $F('l20_codigo'),
-    iCgm       : $F('z01_numcgm'),
-    sNome      : $F('z01_nome')
-  };
-
-  new AjaxRequest(sRPC, oParametros, function(oRetorno, lErro) {
-
-    if ( lErro ) {
-
-      alert( oRetorno.sMessage );
-      return false;
-    }
-
-    oDados.oCollectionFornecedor.add(oRetorno.oFornecedor);
-    oGridFornecedor.reload();
-
-    // adiciona o fornecedor na aba itens
-    atualizaFornecedoresItens(oRetorno.oFornecedor.sNome, oRetorno.oFornecedor.iCgm);
-    oDados.iOrcamento = oRetorno.iOrcamento;
-
-    $('z01_numcgm').value = '';
-    $('z01_nome').value   = '';
-    $("notificacao").hide();
-
-  }).setMessage( _M(sFonteMsg + "salvando_fornecedor") ).execute();
-  $('btnSalvarFornecedor').setAttribute('disabled', 'disabled');
-});
-
-
-/**
- * Função inicial
- */
-(function() {
-
-  $('ancoraLicitacao').dispatchEvent(new Event('click'));
-})();
-
+        $('ancoraLicitacao').dispatchEvent(new Event('click'));
+    })();
 
 
 </script>

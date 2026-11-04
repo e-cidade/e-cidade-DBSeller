@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagemovdetalhetransmissao
 class cl_empagemovdetalhetransmissao { 
@@ -47,13 +47,13 @@ class cl_empagemovdetalhetransmissao {
                  e74_valormulta = float4 = Multa 
                  ";
    //funcao construtor da classe 
-   function cl_empagemovdetalhetransmissao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovdetalhetransmissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -62,7 +62,7 @@ class cl_empagemovdetalhetransmissao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e74_sequencial = ($this->e74_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e74_sequencial"]:$this->e74_sequencial);
        $this->e74_empagemov = ($this->e74_empagemov == ""?@$GLOBALS["HTTP_POST_VARS"]["e74_empagemov"]:$this->e74_empagemov);
@@ -88,7 +88,7 @@ class cl_empagemovdetalhetransmissao {
      }
    }
    // funcao para Inclusão
-   function incluir ($e74_sequencial){ 
+   public function incluir ($e74_sequencial){ 
       $this->atualizacampos();
      if($this->e74_empagemov == null ){ 
        $this->erro_sql = " Campo Código do Movimento não informado.";

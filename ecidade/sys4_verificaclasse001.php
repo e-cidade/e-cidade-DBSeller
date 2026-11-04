@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -99,7 +99,7 @@ if(isset($verifica)){
 			while ((($file = readdir($dh)) !== false) ){
 				$tipo = filetype($dir . $file);
 				if($tipo=='file'){
-					$arr = split("_", $file);
+					$arr =explode("_", $file);
 					$count = count($arr);
 					//pega somente db_* _classe.php
 					if($arr[0]=="db" and $arr[$count-1]=="classe.php" and $count >= 3 ){
@@ -116,7 +116,7 @@ if(isset($verifica)){
 							$funcao = strstr($linha, 'function');
 							if($funcao!=""){
 								//echo "$funcao <br>";
-								$arrfunc = split(" ", $funcao);
+								$arrfunc =explode(" ", $funcao);
 								if(isset($arrfunc[1])){
 								// se não for incluir, alterar, excluir,sql_query,sql_query_file
 								if(    ($arrfunc[1]!="incluir")
@@ -160,27 +160,27 @@ if(isset($verifica)){
 													$resulttab = db_query($sqltab);
 													$linhatab = pg_numrows($resulttab);
 													if($linhatab>0){
-														
+
 														db_fieldsmemory($resulttab,0);
 														$codigo = $codarq;
-													
+
 														// para o metodo tenho que tirar o "(" das funções xxx(
 														$met="";
 														$pos = strpos($arrfunc[1], "(");
 														if ($pos == false) {
 															$met =$arrfunc[1];
-															
+
 														}else{
-															$metodo = split("\(", $arrfunc[1]);
+															$metodo =explode("(", $arrfunc[1]);
 															$met = $metodo[0];
-															
+
 														}
-														
+
 														//print_r($metodo);
-	
+
 														// para ver se ja tem cadastrado no banco
 														$sql = "select * from db_sysclasses where codarq = $codigo and nomclasse = '$met'";
-	
+
 														// ver tabela db_sysclasses
 														$result = db_query($sql);
 														$linhasres = pg_num_rows($result);
@@ -193,7 +193,7 @@ if(isset($verifica)){
 															$operacao = "Incluir";
 															$codigoclass ="Não tem ";
 														}
-													
+
 													//$operacao
 													$fonteorig = "";
 													$codarq = $codigo;
@@ -227,7 +227,7 @@ if(isset($verifica)){
 														fonte novo = $fontenovo<br>
 														fonte original = $fonteorig<br><br>
 														";*/
-														
+
 
 												}
 											}
@@ -294,13 +294,13 @@ if(isset($verifica)){
 		</td>
 	</tr>
 	<tr>
-		<td align="center"><input name="verifica"  type="submit" value="Verifica"> 
+		<td align="center"><input name="verifica"  type="submit" value="Verifica">
 			<input name="processar" type="button" value="Processar" onclick = "js_gravar();"></td>
 	</tr>
 </table>
 </form>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -309,7 +309,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
 function js_retorno(oResposta){
   js_removeObj("msgBox");
-  js_apaga(); 
+  js_apaga();
 }
 
 function js_gravar(){
@@ -326,17 +326,17 @@ function js_gravar(){
     }
   }
   if(classes != ''){
-  	
+
     js_divCarregando("Aguarde, Processando registros","msgBox");
     var url       = 'sys4_verificaclasse003.php';
-    var parametro = 'classes='+classes;	
+    var parametro = 'classes='+classes;
 
     var objAjax   = new Ajax.Request (url,{ method:'post',parameters:parametro,onComplete:js_retorno});
-     
+
   }else{
-     alert('Selecione um metodo');  
+     alert('Selecione um metodo');
   }
-  
+
 }
 function js_apaga(){
  	document.form1.submit();

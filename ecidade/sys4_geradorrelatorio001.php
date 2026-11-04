@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ if ($cldb_depart->numrows > 0) {
 					  	  	  	  	<b>Usuário:</b>
 					  	  	  	  </td>
 					  	  	  	  <td>
-					  	  	  	  	<?
+					  	  	  	  	<?php
 			   		    	  	  	  db_input("codrelatorio",40,"",true,"hidden",3,"");
 					  	  	  	  	  db_input("codUsuario"  ,10,"",true,"hidden",3,"");
 					  	  	  	  	  db_input("nomeusuario" ,40,"",true,"text",3,"");
@@ -109,7 +109,7 @@ if ($cldb_depart->numrows > 0) {
 						  	  	  	  	<b>Departamento:</b>
 						  	  	  	  </td>
 						  	  	  	  <td>
-						  	  	  	  	<?
+						  	  	  	  	<?php
 						  	  	  	  	  db_input("codDepart" ,10,"",true,"hidden",3,"");
 				        						  db_input("nomedepart",40,"",true,"text",3,"");
 						  	  	  	  	?>
@@ -202,7 +202,7 @@ if ($cldb_depart->numrows > 0) {
   </form>
 </center>
 <div id='uploadIframeBox' style='display: none'></div>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

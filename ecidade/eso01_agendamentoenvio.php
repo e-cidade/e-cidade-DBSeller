@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -69,6 +69,8 @@ require_once modification('dbforms/db_funcoes.php');
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <script src="scripts/classes/DBViewFormularioFolha/CompetenciaFolha.js" rel="script"
             type="text/javascript"></script>
+    <script src="scripts/classes/DBViewFormularioFolha/CaixaFolha.js" rel="script"
+            type="text/javascript"></script>
     <style>
         #competenciaTr input[type="text"] {
             width: inherit;
@@ -135,37 +137,17 @@ require_once modification('dbforms/db_funcoes.php');
                     <label for="indicativoDataPreenchimento">Data de Preenchimento:</label>
                 </td>
                 <td>
-                    <div>
-                        <span><strong>de</strong></span>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <span style="padding: 0 2px 0 0"><strong>de</strong></span>
                         <input type="date" id="dataPreenchimentoInicial">
-                        <span><strong>até</strong></span>
+                        <span style="padding: 0 2px"><strong>até</strong></span>
                         <input type="date" id="dataPreenchimentoFinal">
                     </div>
                 </td>
             </tr>
-            <tr id="filtrosPeriodoApuracao"  class="d-none">
-                <td>
-                    <label for="indicativoPeriodoApuracao">Indicativo de Período de Apuração:</label>
-                </td>
-                <td>
-                    <select id="indicativoPeriodoApuracao" name="indicativoPeriodoApuracao" class="field-size-max">
-                        <option value="">Selecione...</option>
-                        <option value="1">Mensal</option>
-                        <option value="2">Anual (13° salário)</option>
-                    </select>
-                </td>
-            </tr>
-            <tr id="competenciaTr" class="d-none">
-                <td id="labelCompetencia"></td>
-                <td id="formularioCompetencia"></td>
-            </tr>
-            <tr id="competenciaTrMensagem"  class="d-none">
-                <td id="competenciaMensagem" colspan="2">
-                </td>
-            </tr>
             <tr id="selecaoTr" class="d-none">
                 <td>
-                    <a href="#"><label for="r44_selec" id="lblSelecao">Sele&ccedil;&aacute;o:</label></a>
+                    <a href="#"><label for="r44_selec" id="lblSelecao">Sele&ccedil;&atilde;o:</label></a>
                 </td>
                 <td>
                     <?php db_input('r44_selec', null, 1, true, 'text', 2); ?>
@@ -176,8 +158,8 @@ require_once modification('dbforms/db_funcoes.php');
                 <td id="selecaoMensagem" colspan="2">
                 </td>
             </tr>
-            <tr id="indicativoPeriodoApuracaoTrMensagem"  class="d-none">
-                <td id="indicativoPeriodoApuracaoMensagem" colspan="2">
+            <tr id="caixaTrMensagem"  class="d-none">
+                <td id="caixaMensagem" colspan="2">
                 </td>
             </tr>
             <tr id="tipoDataPagamentoTr" class="d-none">
@@ -192,12 +174,56 @@ require_once modification('dbforms/db_funcoes.php');
                     </select>
                 </td>
             </tr>
+
+            <tr id="indFechReabTr" class="d-none">
+                <td><label for="indFechReab">Indicativo: </label></td>
+                <td>
+                    <select id="indFechReab" name="indFechReab" class="field-size-max">
+                        <option value="">Selecione...</option>
+                        <option value="0">Fechamento</option>
+                        <option value="1">Reabertura</option>
+                    </select>
+                </td>
+            </tr>
+
             <!-- Adicionado filtro para rubrica -->
             <tr id="tr_rubrica" class="d-none">
                 <td colspan="2" id="td_rubrica" style="padding-top: 15px"></td>
             </tr>
             <tr id="tr_matricula" class="d-none">
                 <td colspan="2" id="td_matricula" style="padding-top: 15px"></td>
+            </tr>
+            <tr id="matriculaTrMensagem"  class="d-none">
+                <td id="matriculaMensagem" colspan="2">
+                </td>
+            </tr>
+            <tr id="filtrosPeriodoApuracao"  class="d-none">
+                <td>
+                    <label for="indicativoPeriodoApuracao">Indicativo de Período de Apuração:</label>
+                </td>
+                <td>
+                    <select id="indicativoPeriodoApuracao" name="indicativoPeriodoApuracao" class="field-size-max">
+                        <option value="">Selecione...</option>
+                        <option value="1">Mensal</option>
+                        <option value="2">Anual (13° salário)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="indicativoPeriodoApuracaoTrMensagem"  class="d-none">
+                <td id="indicativoPeriodoApuracaoMensagem" colspan="2">
+                </td>
+            </tr>
+            <tr id="caixaTr" class="d-none">
+                <td id="labelCaixa"></td>
+                <td id="formularioCaixa"></td>
+            </tr>
+            <tr id="competenciaTr" class="d-none">
+                <td id="labelCompetencia"></td>
+                <td id="formularioCompetencia"></td>
+            </tr>
+            <tr id="competenciaTrMensagem"  class="d-none">
+                <td id="competenciaMensagem" colspan="2">
+                </td>
             </tr>
             <!-- Adicionado Filtro para forçar a matricula-->
             <tr id="tr_forcarmatricula" class="d-none">
@@ -239,6 +265,8 @@ require_once modification('dbforms/db_funcoes.php');
             const trEmpregador = document.getElementById('tr_empregador');
             const trContribuinte = document.getElementById('tr_contribuinte');
             const trMatricula = document.getElementById('tr_matricula');
+            const matriculaTrMensagem = document.getElementById('matriculaTrMensagem');
+            const matriculaMensagem =  document.getElementById('matriculaMensagem');
             const trFiltros = document.getElementById('tr_filtros');
             const selectEmpregador = document.getElementById('empregador');
             const selectArquivos = document.getElementById('arquivos');
@@ -273,6 +301,10 @@ require_once modification('dbforms/db_funcoes.php');
             const notasField = document.getElementById('notasfield');
             const notasReenvio = document.getElementById('notasreenvio');
             const trRubrica = document.getElementById('tr_rubrica');
+            const labelCaixa = document.getElementById('labelCaixa');
+            const formularioCaixa = document.getElementById('formularioCaixa');
+            const caixaTr = document.getElementById('caixaTr');
+
             var mensagemValidar = '';
             var tipoValidacaoValidar = '';
             var filtros;
@@ -319,6 +351,8 @@ require_once modification('dbforms/db_funcoes.php');
                     parametros.indicativoPeriodoApuracao = $F('indicativoPeriodoApuracao');
                     parametros.ano = formularioCompetencia.querySelector("#ano").value;
                     parametros.mes = formularioCompetencia.querySelector("#mes").value;
+                    parametros.anocaixa = formularioCaixa.querySelector("#anoCaixa").value;
+                    parametros.mescaixa = formularioCaixa.querySelector("#mesCaixa").value;
                     parametros.tipoDataPagamento = $F("tipoDataPagamento");
                     parametros.selecao = $F("r44_selec");
                     parametros.dataInicio = dataInicial.value;
@@ -330,6 +364,10 @@ require_once modification('dbforms/db_funcoes.php');
 
                     if (integracao === EFD_REINF) {
                         parametros.cgm = selectContribuinte.value;
+
+                        if (document.querySelector('#indFechReab').value.length) {
+                            parametros.indFechReab = document.querySelector('#indFechReab').value;
+                        }
                     }
 
                     if (integracao === ESOCIAL) {
@@ -402,6 +440,9 @@ require_once modification('dbforms/db_funcoes.php');
                             parametros.selecao = $F("r44_selec");
                             parametros.indicativoPeriodoApuracao = $F('indicativoPeriodoApuracao');
 
+                            parametros.anoCaixa = formularioCaixa.querySelector("#anoCaixa").value;
+                            parametros.mesCaixa = formularioCaixa.querySelector("#mesCaixa").value;
+
                             const registros = dbLancadorMatricula.getRegistros();
 
                             if (registros.length > 0) {
@@ -468,6 +509,9 @@ require_once modification('dbforms/db_funcoes.php');
             var dbViewFormularioFolha = new DBViewFormularioFolha.CompetenciaFolha(false);
             dbViewFormularioFolha.renderizaLabel(labelCompetencia);
             dbViewFormularioFolha.renderizaFormulario(formularioCompetencia);
+            var dbViewFormularioFolhaCaixa = new DBViewFormularioFolha.CaixaFolha(false);
+            dbViewFormularioFolhaCaixa.renderizaLabel(labelCaixa);
+            dbViewFormularioFolhaCaixa.renderizaFormulario(formularioCaixa);
 
             const inicializarFiltroCompetencia = exibeCompetencia => {
                 dadosCompetencia = exibeCompetencia;
@@ -516,6 +560,14 @@ require_once modification('dbforms/db_funcoes.php');
 
                 });
             };
+
+            const inicializarFiltroCaixa = (exibePeriodoCaixa) => {
+                dadosPeriodoCaixa = exibePeriodoCaixa;
+                selectArquivos.addEventListener('change', () => {
+                    changeExibePeriodoCaixa();
+                });
+            };
+
 
             $('indicativoPeriodoApuracao').addEventListener("change", (event) => {
                 $('ano').setAttribute('disabled', 'disabled');
@@ -613,6 +665,7 @@ require_once modification('dbforms/db_funcoes.php');
                     inicializarFiltroDataPreenchimento(response.exibeDataPreenchimento);
                     inicializarSelecao(response.exibeSelecao);
                     inicializarTipoDataPagamento(response.exibeTipoDataPagamento);
+                    inicializarFiltroCaixa(response.exibeCaixa);
                     if (boolReenvio) {
                         inicializarFiltroForcarMatricula(response.exibeForcarMatricula);
                     }
@@ -668,6 +721,9 @@ require_once modification('dbforms/db_funcoes.php');
                 //inicializando os grupos de forma forcada
                 trMatricula.classList.remove('d-none');
                 trMatricula.classList.add('d-none');
+                matriculaTrMensagem.classList.remove('d-none');
+                matriculaTrMensagem.classList.add('d-none');
+
                 competenciaTr.classList.remove('d-none');
                 competenciaTr.classList.add('d-none');
                 competenciaTrMensagem.classList.remove('d-none');
@@ -692,7 +748,7 @@ require_once modification('dbforms/db_funcoes.php');
                         changeMatricula();
                         break;
                     case 'competencia':
-                        if(forcar_competencia == false){
+                        if (forcar_competencia == false) {
                             changeCompetencia();
                         }
                         break;
@@ -704,6 +760,21 @@ require_once modification('dbforms/db_funcoes.php');
                         break;
                 }
             }
+
+            /**
+             * Indicativo de Reabertura ou fechamento do R-4099
+             */
+            const inicializaindFechReab = () => {
+                let indFechReabTr = document.querySelector('#indFechReabTr');
+                let indFechReab = document.querySelector('#indFechReab');
+                if (selectArquivos.value == 'R-4099') {
+                    indFechReabTr.classList.remove('d-none');
+                } else {
+                    indFechReab.value = '';
+                    indFechReabTr.classList.add('d-none');
+                }
+            }
+            selectArquivos.addEventListener('change', inicializaindFechReab);
 
             const validaMensagemCampo = () => {
                 if (mensagemValidar != "" && mensagemValidar != undefined) {
@@ -729,6 +800,7 @@ require_once modification('dbforms/db_funcoes.php');
                                 if (registros.length == 0) {
                                     alert(mensagemValidar);
                                     return false;
+                                    return confirm(mensagemValidar);
                                 }
                             }
                             break;
@@ -865,18 +937,28 @@ require_once modification('dbforms/db_funcoes.php');
                     const elemento = dadosIndicativoPeriodoApuracao.find(dadosIndicativoPeriodoApuracao => dadosIndicativoPeriodoApuracao.layout === parseInt(selectArquivos.value));
 
                     indicativoPeriodoApuracaoTr.classList.remove('d-none');
-
+                    if (indicativoPeriodoApuracao.value == "") {
                         $('ano').setAttribute('disabled', 'disabled');
                         $('mes').setAttribute('disabled', 'disabled');
-
+                    }
 
                 } else {
                     indicativoPeriodoApuracaoTr.classList.add('d-none');
                     indicativoPeriodoApuracaoTrMensagem.classList.add('d-none');
                 }
             }
+            const changeExibePeriodoCaixa = () => {
+                if (dadosPeriodoCaixa.some(dadosPeriodoCaixa => dadosPeriodoCaixa.layout === parseInt(selectArquivos.value))) {
+                    const elemento = dadosPeriodoCaixa.find(dadosPeriodoCaixa => dadosIndicativoPeriodoApuracao.layout === parseInt(selectArquivos.value));
+                    caixaTr.classList.remove('d-none');
+                } else {
+                    caixaTr.classList.add('d-none');
+                    caixaTrMensagem.classList.add('d-none');
+                }
+            }
             const changeMatricula = () => {
                 trMatricula.classList.remove('d-none');
+                matriculaTrMensagem.classList.remove('d-none');
                 dbLancadorMatricula.clearAll();
 
                 const arquivo = parseInt(selectArquivos.value);
@@ -884,7 +966,11 @@ require_once modification('dbforms/db_funcoes.php');
                 if (dadosMatricula.some(dadosMatricula => dadosMatricula.layout === parseInt(arquivo))) {
                     const urlSearchParams = new URLSearchParams();
                     const searchParams = dadosMatricula.find(dadosMatricula => dadosMatricula.layout === parseInt(arquivo));;
-
+                    if (searchParams.mensagem != undefined) {
+                        matriculaMensagem.innerText = searchParams.mensagem;
+                    } else {
+                        matriculaMensagem.innerText = '';
+                    }
                     if (searchParams.validar != undefined) {
                         tipoValidacaoValidar = 'matricula';
                         mensagemValidar = searchParams.validar;
@@ -902,6 +988,7 @@ require_once modification('dbforms/db_funcoes.php');
                     ], urlSearchParams.toString());
                 } else {
                     trMatricula.classList.add('d-none');
+                    matriculaTrMensagem.classList.add('d-none');
                 }
             }
             const inicializarFiltroForcarMatricula = exibeForcarMatricula => {

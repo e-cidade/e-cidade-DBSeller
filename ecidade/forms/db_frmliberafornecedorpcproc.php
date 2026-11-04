@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ if(isset($db_opcaoal)){
 } 
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
 db_input('pc84_sequencial',10,$Ipc84_sequencial,true,'hidden',3,"");
 
 if(isset($pc82_sequencial) && trim($pc82_sequencial) != ""){
@@ -63,12 +63,12 @@ db_input('pc84_liberafornecedor',10,$Ipc84_liberafornecedor,true,'hidden',3);
 <table border="0" style="margin-top: 15px;">
   <tr>
     <td nowrap title="<?=@$Tpc84_pcproc?>">
-       <?
+       <?php
        db_ancora(@$Lpc84_pcproc,"js_pesquisapc84_pcproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('pc84_pcproc',10,$Ipc84_pcproc,true,'text',$db_opcao," onchange='js_pesquisapc84_pcproc(false);'")
 		?>   
     </td>
@@ -83,7 +83,7 @@ db_input('pc84_liberafornecedor',10,$Ipc84_liberafornecedor,true,'hidden',3);
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("pc84_sequencial"=>@$pc82_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clliberafornecedorpcproc->sql_query_file(null,"*",null,"pc84_liberafornecedor = $pc82_sequencial");

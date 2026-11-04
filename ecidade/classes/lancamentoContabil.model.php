@@ -26,6 +26,7 @@
  */
 
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Services\Processamento;
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\LancamentoRecurso;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\PosProcessamento;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Service\ComplementoLancamentoService;
 
@@ -97,7 +98,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamCgm"]["c76_numcgm"] = $iNumCgm;
         $this->aLancamentos["lancamCgm"]["c76_data"] = $this->dDataLanc;
         $this->oLancamCgm = new cl_conlancamcgm;
-
     }
 
     /**
@@ -112,7 +112,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamCompl"]["set"] = 1;
         $this->aLancamentos["lancamCompl"]["c72_complem"] = $sComplemento;
         $this->oLancamCompl = new cl_conlancamcompl;
-
     }
 
     /**
@@ -127,7 +126,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamDig"]["set"] = 1;
         $this->aLancamentos["lancamDig"]["c78_chave"] = $sChave;
         $this->aLancamentos["lancamDig"]["c78_data"] = $this->dDataLanc;
-
     }
 
     /**
@@ -144,7 +142,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamEmp"]["c75_data"] = $this->dDataLanc;
         $this->iAnoEmpenho = $iAnoEmpenho;
         $this->iCodCom = $iCodCom;
-
     }
 
     /**
@@ -156,7 +153,6 @@ class lancamentoContabil
 
         $this->aLancamentos["lancamEle"]["set"] = 1;
         $this->aLancamentos["lancamEle"]["c67_codele"] = $iChave;
-
     }
 
     /**
@@ -170,7 +166,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamDot"]["c73_coddot"] = $iChave;
         $this->aLancamentos["lancamDot"]["c73_anousu"] = $this->iAnoUsu;
         $this->aLancamentos["lancamDot"]["c73_data"] = $this->dDataLanc;
-
     }
 
     /**
@@ -183,7 +178,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamOrd"]["set"] = 1;
         $this->aLancamentos["lancamOrd"]["c80_codord"] = $iChave;
         $this->aLancamentos["lancamOrd"]["c80_data"] = $this->dDataLanc;
-
     }
 
     /**
@@ -195,7 +189,6 @@ class lancamentoContabil
 
         $this->aLancamentos["lancamNota"]["set"] = 1;
         $this->aLancamentos["lancamNota"]["c66_conota"] = $iChave;
-
     }
 
     /**
@@ -209,7 +202,6 @@ class lancamentoContabil
         $this->aLancamentos["lancamPag"]["set"] = 1;
         $this->aLancamentos["lancamPag"]["c82_reduz"] = $iChave;
         $this->aLancamentos["lancamPag"]["c82_anousu"] = $this->iAnoUsu;
-
     }
 
     /**
@@ -253,17 +245,15 @@ class lancamentoContabil
      */
     public function salvar()
     {
-
         $oConLancam = new cl_conlancam();
         $oconLancamVal = new cl_conlancamval();
         $oConLancam->c70_anousu = $this->iAnoUsu;
         $oConLancam->c70_data = $this->dDataLanc;
         $oConLancam->c70_valor = $this->nValorLancado;
         $res = $oConLancam->incluir(null);
-        //$oConlancam->erro_status = 0;
+        
         $instituicao = db_getsession('DB_instit');
         if ($oConLancam->erro_status == 0) {
-
             $this->lSqlErro = true;
             $this->sErroMsg = "Não foi Possível incluir lançamento\nErro Técnico:{$oConLancam->erro_msg}";
             throw new exception($this->sErroMsg);
@@ -309,7 +299,6 @@ class lancamentoContabil
         $aDebito = $this->oTransaction->arr_debito;
         //se a flag InverterLancamento estiver true, invertemos  as contas de credito e debito;
         if ($this->lInverterLancamento) {
-
             $aCredito = $this->oTransaction->arr_debito;
             $aDebito = $this->oTransaction->arr_credito;
         }
@@ -319,27 +308,32 @@ class lancamentoContabil
         $oPlanoReduz = new cl_conplanoreduz;
         $oDocumentoEvento = DocumentoEventoContabilRepository::getPorCodigo($this->iCodDoc);
         for ($iTran = 0; $iTran < count($aCredito); $iTran++) {
-
-            $oPlanoReduz->sql_record($oPlanoReduz->sql_query_file(null, null, 'c61_codcon', '',
-              "c61_anousu = " . db_getsession("DB_anousu") . " and c61_reduz=" . $aDebito[$iTran]) .' and c61_instit = '.$instituicao);
+            $oPlanoReduz->sql_record($oPlanoReduz->sql_query_file(
+                null,
+                null,
+                'c61_codcon',
+                '',
+                "c61_anousu = " . db_getsession("DB_anousu") . " and c61_reduz=" . $aDebito[$iTran]
+            ) .' and c61_instit = '.$instituicao);
             if ($oPlanoReduz->numrows == 0) {
-
                 $contaDebito = $this->getCodigoReduzido($aDebito[$iTran], $this->iAnoUsu, $instituicao);
                 if (empty($contaDebito)) {
-
                     $this->lSqlErro = true;
                     $sErroMsg = "(D) Conta {$aDebito[$iTran]} não disponível para o exercício!";
                     throw new exception($sErroMsg);
                     break;
                 }
                 $aDebito[$iTran] = $contaDebito;
-
             }
-            $oPlanoReduz->sql_record($oPlanoReduz->sql_query_file(null, null,
-              'c61_codcon', '', "c61_anousu = " . db_getsession("DB_anousu") . "
-                                                              and c61_reduz ={$aCredito[$iTran]}  and c61_instit = {$instituicao}"));
+            $oPlanoReduz->sql_record($oPlanoReduz->sql_query_file(
+                null,
+                null,
+                'c61_codcon',
+                '',
+                "c61_anousu = " . db_getsession("DB_anousu") . "
+                and c61_reduz ={$aCredito[$iTran]}  and c61_instit = {$instituicao}"
+            ));
             if ($oPlanoReduz->numrows == 0 && $this->lSqlErro == false) {
-
                 $contaCredito = $this->getCodigoReduzido($aCredito[$iTran], $this->iAnoUsu, $instituicao);
                 if (empty($contaCredito)) {
                     $this->lSqlErro = true;
@@ -348,7 +342,6 @@ class lancamentoContabil
                     break;
                 }
                 $aCredito[$iTran] = $contaCredito;
-
             }
             unset($oConLancamVal);
             $oConLancamVal = new cl_conlancamval;
@@ -361,215 +354,230 @@ class lancamentoContabil
             $oConLancamVal->c69_anousu = $this->iAnoUsu;
             $oConLancamVal->incluir(null);
             if ($oConLancamVal->erro_status == 0) {
-
                 $this->sErroMsg = "Conlancamval:" . $oConLancamVal->erro_msg;
                 throw new exception($this->sErroMsg);
             }
 
-            if (USE_PCASP) {
+            /**
+             * Salvamos os dados referente a conta corrente
+             */
+            if ($this->aLancamentos["lancamEmp"]["set"] == 1) {
+                require_once modification("libs/db_app.utils.php");
 
-                /**
-                 * Salvamos os dados referente a conta corrente
-                 */
-                if ($this->aLancamentos["lancamEmp"]["set"] == 1) {
+                db_app::import("contabilidade.contacorrente.ContaCorrenteFactory");
+                db_app::import("Acordo");
+                db_app::import("AcordoComissao");
+                db_app::import("CgmFactory");
+                db_app::import("financeiro.*");
+                db_app::import("contabilidade.*");
+                db_app::import("contabilidade.lancamento.*");
+                db_app::import("Dotacao");
 
-                    require_once modification("libs/db_app.utils.php");
+                require_once(modification("model/contabilidade/contacorrente/ContaCorrenteFactory.model.php"));
+                require_once(modification("model/contabilidade/contacorrente/ContaCorrenteBase.model.php"));
+                require_once(modification("model/financeiro/ContaBancaria.model.php"));
+                require_once(modification("model/contabilidade/planoconta/SistemaConta.model.php"));
+                require_once(modification("model/contabilidade/planoconta/ContaPlano.model.php"));
+                require_once(modification("model/contabilidade/planoconta/ClassificacaoConta.model.php"));
+                require_once(modification("model/contabilidade/planoconta/ContaCorrente.model.php"));
+                require_once(modification("model/contabilidade/planoconta/ContaOrcamento.model.php"));
+                require_once(modification("model/contabilidade/planoconta/ContaPlanoPCASP.model.php"));
 
-                    db_app::import("contabilidade.contacorrente.ContaCorrenteFactory");
-                    db_app::import("Acordo");
-                    db_app::import("AcordoComissao");
-                    db_app::import("CgmFactory");
-                    db_app::import("financeiro.*");
-                    db_app::import("contabilidade.*");
-                    db_app::import("contabilidade.lancamento.*");
-                    db_app::import("Dotacao");
+                db_app::import("contabilidade.contacorrente.*");
 
-                    require_once(modification("model/contabilidade/contacorrente/ContaCorrenteFactory.model.php"));
-                    require_once(modification("model/contabilidade/contacorrente/ContaCorrenteBase.model.php"));
-                    require_once(modification("model/financeiro/ContaBancaria.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/SistemaConta.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/ContaPlano.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/ClassificacaoConta.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/ContaCorrente.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/ContaOrcamento.model.php"));
-                    require_once(modification("model/contabilidade/planoconta/ContaPlanoPCASP.model.php"));
+                $oContaCorrenteDetalheCredito = new ContaCorrenteDetalhe();
+                $oContaCorrenteDetalheDebito = new ContaCorrenteDetalhe();
+                //$oEmpenhoFinanceiro = new EmpenhoFinanceiro($this->aLancamentos["lancamEmp"]["c75_numemp"]);
+                $oEmpenhoFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero(
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                );
+                $oLancamentoAuxiliar = new LancamentoAuxiliarEmpenho();
 
-                    db_app::import("contabilidade.contacorrente.*");
+                $oLancamentoAuxiliar->setCaracteristicaPeculiar($oEmpenhoFinanceiro->getCaracteristicaPeculiar());
+                $oLancamentoAuxiliar->setFavorecido($oEmpenhoFinanceiro->getCgm()->getCodigo());
 
-                    $oContaCorrenteDetalheCredito = new ContaCorrenteDetalhe();
-                    $oContaCorrenteDetalheDebito = new ContaCorrenteDetalhe();
-                    //$oEmpenhoFinanceiro = new EmpenhoFinanceiro($this->aLancamentos["lancamEmp"]["c75_numemp"]);
-                    $oEmpenhoFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($this->aLancamentos["lancamEmp"]["c75_numemp"]);
-                    $oLancamentoAuxiliar = new LancamentoAuxiliarEmpenho();
+                $iCodigoContrato = $oEmpenhoFinanceiro->getCodigoContrato();
 
-                    $oLancamentoAuxiliar->setCaracteristicaPeculiar($oEmpenhoFinanceiro->getCaracteristicaPeculiar());
-                    $oLancamentoAuxiliar->setFavorecido($oEmpenhoFinanceiro->getCgm()->getCodigo());
-
-                    $iCodigoContrato = $oEmpenhoFinanceiro->getCodigoContrato();
-
-                    if (!empty($iCodigoContrato)) {
-                        $oLancamentoAuxiliar->setAcordo($iCodigoContrato);
-                    }
-
-                    if ($this->aLancamentos["lancamDot"]["set"] == 1) {
-
-                        $oDotacao = new Dotacao($this->aLancamentos["lancamDot"]["c73_coddot"], $this->iAnoUsu);
-                        $oLancamentoAuxiliar->setCodigoRecurso($oDotacao->getRecurso());
-                    }
-
-                    $oDotacaoEmpenho = $oEmpenhoFinanceiro->getDotacao();
-
-                    $oContaCorrenteDetalheCredito->setDotacao($oDotacaoEmpenho);
-                    $oContaCorrenteDetalheDebito->setDotacao($oDotacaoEmpenho);
-                    $oContaCorrenteDetalheCredito->setRecurso($oDotacaoEmpenho->getDadosRecurso());
-                    $oContaCorrenteDetalheDebito->setRecurso($oDotacaoEmpenho->getDadosRecurso());
-
-                    if (!empty($this->aLancamentos["lancamPag"]["c82_reduz"]) &&
-                      $oDocumentoEvento->getTipo() == DocumentoEventoContabil::TIPO_PAGAMENTO_EMPENHO) {
-
-                        $iReduzidoContaPagadora = $this->aLancamentos["lancamPag"]["c82_reduz"];
-                        $oPlanoConta = new ContaPlanoPCASP(null, $this->iAnoUsu, $iReduzidoContaPagadora);
-                        $oContaCorrenteDetalheCredito->setRecurso(new Recurso($oPlanoConta->getRecurso()));
-                    }
-
-                    if (!empty($this->aLancamentos["lancamPag"]["c82_reduz"]) &&
-                      $oDocumentoEvento->getTipo() == DocumentoEventoContabil::TIPO_ESTORNO_PAGAMENTO_EMPENHO) {
-
-                        $iReduzidoContaPagadora = $this->aLancamentos["lancamPag"]["c82_reduz"];
-                        $oPlanoConta = new ContaPlanoPCASP(null, $this->iAnoUsu, $iReduzidoContaPagadora,
-                          db_getsession('DB_instit'));
-                        $oContaCorrenteDetalheDebito->setRecurso(new Recurso($oPlanoConta->getRecurso()));
-                    }
-
-                    $oLancamentoAuxiliar->setNumeroEmpenho($this->aLancamentos["lancamEmp"]["c75_numemp"]);
-                    $oContaCorrenteDetalheCredito->setEmpenho($oEmpenhoFinanceiro);
-                    $oContaCorrenteDetalheDebito->setEmpenho($oEmpenhoFinanceiro);
-
-                    $oConplanoPCASP = new ContaPlanoPCASP(null,
-                      $this->iAnoUsu,
-                      $oConLancamVal->c69_credito,
-                      db_getsession('DB_instit'));
-
-                    if ($oConplanoPCASP->getContaBancaria()) {
-                        $oContaCorrenteDetalheCredito->setContaBancaria($oConplanoPCASP->getContaBancaria());
-                    }
-
-                    $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalheCredito);
-
-                    $oContaCorrenteCredito = ContaCorrenteFactory::getInstance($oConLancamVal->c69_sequen,
-                      $oConLancamVal->c69_credito,
-                      $oLancamentoAuxiliar);
-
-
-                    if ($oContaCorrenteCredito) {
-                        $oContaCorrenteCredito->salvar();
-                    }
-
-                    $oConplanoPCASP = new ContaPlanoPCASP(null,
-                      $this->iAnoUsu,
-                      $oConLancamVal->c69_debito,
-                      db_getsession('DB_instit'));
-
-                    if ($oConplanoPCASP->getContaBancaria()) {
-                        $oContaCorrenteDetalheDebito->setContaBancaria($oConplanoPCASP->getContaBancaria());
-                    }
-
-                    $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalheDebito);
-
-                    $oContaCorrenteDebito = ContaCorrenteFactory::getInstance($oConLancamVal->c69_sequen,
-                      $oConLancamVal->c69_debito,
-                      $oLancamentoAuxiliar);
-
-                    if ($oContaCorrenteDebito) {
-                        $oContaCorrenteDebito->salvar();
-                    }
-
-                    unset($oEmpenhoFinanceiro);
-                    unset($oContaCorrenteCredito);
-                    unset($oContaCorrenteDebito);
-
-                } else {
-                    if ($this->aLancamentos["lancamDot"]["set"] == 1 && $this->aLancamentos["lancamEmp"]["set"] == 0) {
-
-                        $oDotacao = new Dotacao($this->aLancamentos["lancamDot"]["c73_coddot"],
-                          $this->aLancamentos["lancamDot"]["c73_anousu"]);
-
-                        $oContaCorrenteDetalhe = new ContaCorrenteDetalhe();
-                        $oContaCorrenteDetalhe->setDotacao($oDotacao);
-                        $oContaCorrenteDetalhe->setRecurso($oDotacao->getDadosRecurso());
-
-                        $oLancamentoAuxiliar = new LancamentoAuxiliarSuplementacao();
-                        $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalhe);
-
-                        $oContaCorrenteCredito = ContaCorrenteFactory::getInstance($oConLancamVal->c69_sequen,
-                          $oConLancamVal->c69_credito,
-                          $oLancamentoAuxiliar);
-
-                        $oContaCorrenteDebito = ContaCorrenteFactory::getInstance($oConLancamVal->c69_sequen,
-                          $oConLancamVal->c69_debito,
-                          $oLancamentoAuxiliar);
-                        if ($oContaCorrenteCredito) {
-                            $oContaCorrenteCredito->salvar();
-                        }
-                        if ($oContaCorrenteDebito) {
-                            $oContaCorrenteDebito->salvar();
-                        }
-                        unset($oDotacao);
-                        unset($oContaCorrenteCredito);
-                        unset($oContaCorrenteDebito);
-                    }
+                if (!empty($iCodigoContrato)) {
+                    $oLancamentoAuxiliar->setAcordo($iCodigoContrato);
                 }
+
+                if ($this->aLancamentos["lancamDot"]["set"] == 1) {
+                    $oDotacao = new Dotacao($this->aLancamentos["lancamDot"]["c73_coddot"], $this->iAnoUsu);
+                    $oLancamentoAuxiliar->setCodigoRecurso($oDotacao->getRecurso());
+                }
+
+                $oDotacaoEmpenho = $oEmpenhoFinanceiro->getDotacao();
+
+                $oContaCorrenteDetalheCredito->setDotacao($oDotacaoEmpenho);
+                $oContaCorrenteDetalheDebito->setDotacao($oDotacaoEmpenho);
+                $oContaCorrenteDetalheCredito->setRecurso($oDotacaoEmpenho->getDadosRecurso());
+                $oContaCorrenteDetalheDebito->setRecurso($oDotacaoEmpenho->getDadosRecurso());
+
+                if (!empty($this->aLancamentos["lancamPag"]["c82_reduz"]) &&
+                  $oDocumentoEvento->getTipo() == DocumentoEventoContabil::TIPO_PAGAMENTO_EMPENHO) {
+                    $iReduzidoContaPagadora = $this->aLancamentos["lancamPag"]["c82_reduz"];
+                    $oPlanoConta = new ContaPlanoPCASP(null, $this->iAnoUsu, $iReduzidoContaPagadora);
+                    $oContaCorrenteDetalheCredito->setRecurso(new Recurso($oPlanoConta->getRecurso()));
+                }
+
+                if (!empty($this->aLancamentos["lancamPag"]["c82_reduz"]) &&
+                  $oDocumentoEvento->getTipo() == DocumentoEventoContabil::TIPO_ESTORNO_PAGAMENTO_EMPENHO) {
+                    $iReduzidoContaPagadora = $this->aLancamentos["lancamPag"]["c82_reduz"];
+                    $oPlanoConta = new ContaPlanoPCASP(
+                        null,
+                        $this->iAnoUsu,
+                        $iReduzidoContaPagadora,
+                        db_getsession('DB_instit')
+                    );
+                    $oContaCorrenteDetalheDebito->setRecurso(new Recurso($oPlanoConta->getRecurso()));
+                }
+
+                $oLancamentoAuxiliar->setNumeroEmpenho($this->aLancamentos["lancamEmp"]["c75_numemp"]);
+                $oContaCorrenteDetalheCredito->setEmpenho($oEmpenhoFinanceiro);
+                $oContaCorrenteDetalheDebito->setEmpenho($oEmpenhoFinanceiro);
+
+                $oConplanoPCASP = new ContaPlanoPCASP(
+                    null,
+                    $this->iAnoUsu,
+                    $oConLancamVal->c69_credito,
+                    db_getsession('DB_instit')
+                );
+
+                if ($oConplanoPCASP->getContaBancaria()) {
+                    $oContaCorrenteDetalheCredito->setContaBancaria($oConplanoPCASP->getContaBancaria());
+                }
+
+                $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalheCredito);
+
+                $oContaCorrenteCredito = ContaCorrenteFactory::getInstance(
+                    $oConLancamVal->c69_sequen,
+                    $oConLancamVal->c69_credito,
+                    $oLancamentoAuxiliar
+                );
+
+
+                if ($oContaCorrenteCredito) {
+                    $oContaCorrenteCredito->salvar();
+                }
+
+                $oConplanoPCASP = new ContaPlanoPCASP(
+                    null,
+                    $this->iAnoUsu,
+                    $oConLancamVal->c69_debito,
+                    db_getsession('DB_instit')
+                );
+
+                if ($oConplanoPCASP->getContaBancaria()) {
+                    $oContaCorrenteDetalheDebito->setContaBancaria($oConplanoPCASP->getContaBancaria());
+                }
+
+                $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalheDebito);
+
+                $oContaCorrenteDebito = ContaCorrenteFactory::getInstance(
+                    $oConLancamVal->c69_sequen,
+                    $oConLancamVal->c69_debito,
+                    $oLancamentoAuxiliar
+                );
+
+                if ($oContaCorrenteDebito) {
+                    $oContaCorrenteDebito->salvar();
+                }
+
+                unset($oEmpenhoFinanceiro);
+                unset($oContaCorrenteCredito);
+                unset($oContaCorrenteDebito);
+            } elseif ($this->aLancamentos["lancamDot"]["set"] == 1 && $this->aLancamentos["lancamEmp"]["set"] == 0) {
+                $oDotacao = new Dotacao(
+                    $this->aLancamentos["lancamDot"]["c73_coddot"],
+                    $this->aLancamentos["lancamDot"]["c73_anousu"]
+                );
+
+                $oContaCorrenteDetalhe = new ContaCorrenteDetalhe();
+                $oContaCorrenteDetalhe->setDotacao($oDotacao);
+                $oContaCorrenteDetalhe->setRecurso($oDotacao->getDadosRecurso());
+
+                $oLancamentoAuxiliar = new LancamentoAuxiliarSuplementacao();
+                $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalhe);
+
+                $oContaCorrenteCredito = ContaCorrenteFactory::getInstance(
+                    $oConLancamVal->c69_sequen,
+                    $oConLancamVal->c69_credito,
+                    $oLancamentoAuxiliar
+                );
+
+                $oContaCorrenteDebito = ContaCorrenteFactory::getInstance(
+                    $oConLancamVal->c69_sequen,
+                    $oConLancamVal->c69_debito,
+                    $oLancamentoAuxiliar
+                );
+                if ($oContaCorrenteCredito) {
+                    $oContaCorrenteCredito->salvar();
+                }
+                if ($oContaCorrenteDebito) {
+                    $oContaCorrenteDebito->salvar();
+                }
+                unset($oDotacao);
+                unset($oContaCorrenteCredito);
+                unset($oContaCorrenteDebito);
+            } elseif ($this->aLancamentos["lancamRec"]["set"] == 1
+                      && $this->aLancamentos["lancamDot"]["set"] == 0
+                      && $this->aLancamentos["lancamEmp"]["set"] == 0) {
+                $receitaOrcamentaria = new ReceitaOrcamentaria($this->aLancamentos["lancamRec"]["c74_codrec"]);
+                
+                $oContaCorrenteDetalhe = new ContaCorrenteDetalhe();
+                $oContaCorrenteDetalhe->setRecurso(new Recurso($receitaOrcamentaria->getTipoRecurso()));
+
+                $oLancamentoAuxiliar = new LancamentoAuxiliarSuplementacao();
+                $oLancamentoAuxiliar->setContaCorrenteDetalhe($oContaCorrenteDetalhe);
             }
-
         }
-
 
         /*
          * Percorremos os lancamentos configurados pelo usuario.
          */
         foreach ($this->aLancamentos as $obj => $lancam) {
-
             if ($lancam["set"] == 1) {
-
                 $sObjNome = "con" . strtolower($obj);
                 $oObjeto = db_utils::getDao($sObjNome);
                 //Percorremos as propriedades do lancamento para lancar .
                 foreach ($lancam as $sPropriedade => $sValor) {
-
                     $oObjeto->$sPropriedade = $sValor;
                 }
                 //algumas das conlancam possuem mais de um parametro. tratamos aqui.
                 switch ($sObjNome) {
-
-                    case "conlancamnota" :
-
+                    case "conlancamnota":
                         $oObjeto->incluir($oConLancam->c70_codlan, $this->aLancamentos["lancamNota"]["c66_conota"]);
                         break;
 
                     default:
-
                         $oObjeto->incluir($oConLancam->c70_codlan);
                         break;
                 }
                 if ($oObjeto->erro_status == 0) {
-
                     $this->sErroMsg = "{$sObjNome}: " . $oObjeto->erro_msg;
                     throw new exception($this->sErroMsg);
                 }
             }
         }
 
+        
         /**
          * Regra adicionada para pegar sempre a caracteristica da dotação, caso exista empenho a CP será sobrescrita pela do empenho
          */
         $caracteristicaPeculiar = '';
-        if ( !empty($this->aLancamentos["lancamDot"]["c73_coddot"]) ) {
-            $oDotacao = DotacaoRepository::getDotacaoPorCodigoAno($this->aLancamentos["lancamDot"]["c73_coddot"], $this->aLancamentos["lancamDot"]["c73_anousu"]);
+        if (!empty($this->aLancamentos["lancamDot"]["c73_coddot"])) {
+            $oDotacao = DotacaoRepository::getDotacaoPorCodigoAno(
+                $this->aLancamentos["lancamDot"]["c73_coddot"],
+                $this->aLancamentos["lancamDot"]["c73_anousu"]
+            );
             $caracteristicaPeculiar = $oDotacao->getCaracteristicaPeculiar();
         }
 
-        if ( !empty($this->aLancamentos["lancamEmp"]["c75_numemp"]) ) {
-            $oEmpenhoFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($this->aLancamentos["lancamEmp"]["c75_numemp"]);
+        if (!empty($this->aLancamentos["lancamEmp"]["c75_numemp"])) {
+            $oEmpenhoFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero(
+                $this->aLancamentos["lancamEmp"]["c75_numemp"]
+            );
             $caracteristicaPeculiar = $oEmpenhoFinanceiro->getCaracteristicaPeculiar();
         }
 
@@ -579,16 +587,13 @@ class lancamentoContabil
             $daoConlancamCaracterisstica->c08_codlan = $oConLancam->c70_codlan;
             $daoConlancamCaracterisstica->c08_concarpeculiar = $caracteristicaPeculiar;
             $daoConlancamCaracterisstica->incluir(null);
-            if ( $daoConlancamCaracterisstica->erro_status === '0' ) {
+            if ($daoConlancamCaracterisstica->erro_status === '0') {
                 throw new DBException("Ocorreu um erro ao vincular o lançamento contábil com a caracteristica peculiar.");
             }
         }
 
-        $dadosRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso();
-        $dadosRecurso->processar($oConLancam->c70_codlan);
-
-        $complementoRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\ComplementoRecurso();
-        $complementoRecurso->processar($oConLancam->c70_codlan, $this->iAnoUsu);
+        $recurso = new LancamentoRecurso($this->iCodDoc, $oConLancam->c70_codlan, $this->iAnoUsu);
+        $recurso->processar($oLancamentoAuxiliar);
 
         $instituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
         $data = new \DBDate($this->dDataLanc);
@@ -616,15 +621,13 @@ class lancamentoContabil
         }
         $oTransLan = new cl_translan();
         switch ($this->iCodDoc) {
-
             //lancamento de Empenho
-            case 1 :
+            case 1:
             case 304: // EMPENHO DA PROVISAO DE FERIAS
             case 308: // EMPENHO DA PROVISAO DE 13º SALARIO
             case 410: // EMPENHO SUPRIMENTO DE FUNDOS
             case 500: // EMPENHO DE PRECATORIOS
             case 504: // EMPENHO AMORT. DA DIVIDA
-
                 //verificamos se o usuario setou  o codigo da conta
                 if ($this->iCodCom == null) {
                     throw new exception("Não foi informado código da conta do lançamento.");
@@ -634,8 +637,8 @@ class lancamentoContabil
                 break;
 
             //liquidacao de empenho
-            case 3  :
-            case 84 : // Liquidacao de Empenho Passivo
+            case 3:
+            case 84: // Liquidacao de Empenho Passivo
             case 306: // Liquidacao de Empenho provisao de ferias
             case 202: // LIQUIDAÇÃO DESPESA COM SERVIÇOS
             case 204: // LIQUIDAÇÃO DESPESA MATERIAL DE CONSUMO
@@ -643,7 +646,6 @@ class lancamentoContabil
             case 310: // LIQUIDACAO DA PROVISAO DE 13º SALARIO
             case 502: // LIQUIDAÇÃO DE PRECATÓRIOS
             case 506: // LIQUIDACAO AMORT. DIVIDA
-
                 $iCodigoDocumento = $this->iCodDoc;
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da conta;
@@ -660,16 +662,18 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
 
-                $oTransLan->db_trans_liquida($this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoUsu,
-                  $iCodigoDocumento);
+                $oTransLan->db_trans_liquida(
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoUsu,
+                    $iCodigoDocumento
+                );
                 $this->oTransaction = $oTransLan;
                 break;
 
             //restos a pagar.;
-            case 4  :
-            case 85 : // Estorno de Liquidacao Passivo
+            case 4:
+            case 85: // Estorno de Liquidacao Passivo
             case 307: // ESTORNO DA LIQUIDACAO DA PROVISAO DE FERIAS
             case 311: // ESTORNO DA LIQUIDACAO DA PROVISAO DE 13º SALARIO
             case 203: // ESTORNO DE LIQUIDAÇÃO DESPESA COM SERVIÇOS
@@ -694,16 +698,17 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
 
-                $oTransLan->db_trans_estorna_liquida($this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoUsu,
-                  $iCodigoDocumento);
+                $oTransLan->db_trans_estorna_liquida(
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoUsu,
+                    $iCodigoDocumento
+                );
                 $this->oTransaction = $oTransLan;
                 break;
 
             //estorno de Liquidacao capital
-            case 23 :
-
+            case 23:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da conta;
                  */
@@ -720,14 +725,13 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_liquida_capital(
-                  $this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoUsu
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoUsu
                 );
                 $this->oTransaction = $oTransLan;
                 break;
-            case 24 :
-
+            case 24:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da contai, e o ano do Empenho;
                  */
@@ -745,16 +749,15 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_estorna_liquida_capital(
-                  $this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoUsu
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoUsu
                 );
                 $this->oTransaction = $oTransLan;
                 break;
 
             //liquidacao de restos a pagar
-            case 33 :
-
+            case 33:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da contai, e o ano do Empenho;
                  */
@@ -775,17 +778,17 @@ class lancamentoContabil
                     throw new exception("Não foi informado o ano do empenho.");
                 }
 
-                $oTransLan->db_trans_liquida_resto($this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                $oTransLan->db_trans_liquida_resto(
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
                 );
                 $this->oTransaction = $oTransLan;
                 break;
 
             //estorno de liquidacao de empenho RP
-            case 34 :
-
+            case 34:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da contai, e o ano do Empenho;
                  */
@@ -807,16 +810,15 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_estorna_liquida_resto(
-                  $this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
                 );
                 $this->oTransaction = $oTransLan;
                 break;
             //estorno de restos a pagar processados
-            case 31 :
-
+            case 31:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da conta, e o ano do Empenho;
                  */
@@ -845,8 +847,7 @@ class lancamentoContabil
                 break;
             //estorno de restos a pagar não processados
 
-            case 32 :
-
+            case 32:
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da conta, e o ano do Empenho;
                  */
@@ -875,7 +876,6 @@ class lancamentoContabil
                 break;
 
             case 5: //pagamento de Empenho
-
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -892,17 +892,16 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
                 $oTransLan->db_trans_pagamento(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoUsu,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoUsu,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
                 );
                 $this->oTransaction = $oTransLan;
                 $this->iContaEmp = $oTransLan->conta_emp;
                 break;
 
-            case 35 : //pagamento de RPS
-
+            case 35: //pagamento de RPS
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -912,18 +911,17 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_pagamento_resto(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iCodDoc
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iCodDoc
                 );
                 $this->iContaEmp = $oTransLan->conta_emp;
                 $this->oTransaction = $oTransLan;
                 break;
 
-            case 37 : //pagamento de RPS
-
+            case 37: //pagamento de RPS
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -933,18 +931,17 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_pagamento_resto(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iCodDoc
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iCodDoc
                 );
                 $this->iContaEmp = $oTransLan->conta_emp;
                 $this->oTransaction = $oTransLan;
                 break;
 
-            case 6 : // estorno de pagamento de empenho (exercicio corrente);
-
+            case 6: // estorno de pagamento de empenho (exercicio corrente);
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -960,10 +957,10 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
                 $oTransLan->db_trans_estorna_pagamento(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoUsu,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoUsu,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
                 );
 
                 if (count($oTransLan->arr_debito) == 0 || count($oTransLan->arr_credito) == 0) {
@@ -975,7 +972,6 @@ class lancamentoContabil
 
             case 91: // ESTORNO SUPRIMENTO DE FUNDOS
             case 92: // DEVOLUCAO DE ADIANTAMENTO
-
                 $oTransLan = new cl_translan();
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
@@ -989,11 +985,11 @@ class lancamentoContabil
                     throw new exception("Não foi informado a dotação do lançamento.");
                 }
                 $oTransLan->db_trans_estorna_pagamento_prestacao_contas(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoUsu,
-                  $this->iCodDoc,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoUsu,
+                    $this->iCodDoc,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
                 );
 
                 if (count($oTransLan->arr_debito) == 0 || count($oTransLan->arr_credito) == 0) {
@@ -1004,8 +1000,7 @@ class lancamentoContabil
                 $this->iContaEmp = $oTransLan->conta_emp;
                 break;
 
-            case 36 :
-
+            case 36:
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -1015,18 +1010,17 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_estorna_pagamento_resto(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iCodDoc
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iCodDoc
                 );
                 $this->iContaEmp = $oTransLan->conta_emp;
                 $this->oTransaction = $oTransLan;
                 break;
 
             case 38:
-
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -1036,24 +1030,23 @@ class lancamentoContabil
                 }
 
                 $oTransLan->db_trans_estorna_pagamento_resto(
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoEmpenho,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iCodDoc
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoEmpenho,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iCodDoc
                 );
                 $this->iContaEmp = $oTransLan->conta_emp;
                 $this->oTransaction = $oTransLan;
                 break;
 
-            case 2 :  // ESTORNO DE EMPENHO
+            case 2:  // ESTORNO DE EMPENHO
             case 83:  // estorno de empenho passivo
             case 305: // ESTORNO DE EMPENHO DA PROVISAO DE FERIAS
             case 309: // ESTORNO DE EMPENHO DA PROVISAO DE 13º SALÁRIO
             case 411: // ESTORNO DE EMPENHO SUPRIMENTO DE FUNDOS
             case 501: // ESTORNO DE EMPENHO DE PRECATORIOS
             case 505: // ESTORNO EMPENHO AMORT. DIVIDA
-
                 $iCodigoDocumento = $this->iCodDoc;
                 if ($this->iCodCom == null) {
                     throw new exception("Não foi informado o código da conta do lançamento.");
@@ -1079,14 +1072,12 @@ class lancamentoContabil
 
                 break;
             case 900:
-
                 $iCodigoDocumento = $this->iCodDoc;
                 if ($this->aLancamentos["lancamEmp"]["set"] != 1) {
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
                 break;
             case 903:
-
                 $iCodigoDocumento = $this->iCodDoc;
                 if ($this->aLancamentos["lancamEmp"]["set"] != 1) {
                     throw new exception("Não foi informado o empenho do lançamento.");
@@ -1099,9 +1090,10 @@ class lancamentoContabil
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
                 $this->aLancamentos["lancamEle"]["set"] = 0;
-                $oTransLan->db_trans_empenho_contrato($this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iAnoEmpenho,
-                  903
+                $oTransLan->db_trans_empenho_contrato(
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iAnoEmpenho,
+                    903
                 );
                 if ($oTransLan->sqlerro) {
                     throw new exception($oTransLan->erro_msg);
@@ -1111,7 +1103,6 @@ class lancamentoContabil
 
             case 901:
             case 904:
-
                 $iCodigoDocumento = $this->iCodDoc;
                 if ($this->aLancamentos["lancamEmp"]["set"] != 1) {
                     throw new exception("Não foi informado o empenho do lançamento.");
@@ -1127,9 +1118,10 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
                 $this->aLancamentos["lancamEle"]["set"] = 0;
-                $oTransLan->db_trans_liquidacao_contrato($this->aLancamentos["lancamEmp"]["c75_numemp"],
-                  $this->iAnoEmpenho,
-                  $this->iCodDoc
+                $oTransLan->db_trans_liquidacao_contrato(
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"],
+                    $this->iAnoEmpenho,
+                    $this->iCodDoc
                 );
                 if ($oTransLan->sqlerro) {
                     throw new exception($oTransLan->erro_msg);
@@ -1137,7 +1129,6 @@ class lancamentoContabil
                 $this->oTransaction = $oTransLan;
                 break;
             case 412: // LIQUIDACAO SUPRIMENTO DE FUNDOS
-
                 /*
                  * Devemos verificar ser o usuario setou o elemento, e o codigo da conta;
                  */
@@ -1152,15 +1143,16 @@ class lancamentoContabil
                     throw new exception("Não foi informado o empenho do lançamento.");
                 }
 
-                $oTransLan->db_trans_liquida($this->iCodCom,
-                  $this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->iAnoUsu,
-                  $this->iCodDoc);
+                $oTransLan->db_trans_liquida(
+                    $this->iCodCom,
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->iAnoUsu,
+                    $this->iCodDoc
+                );
                 $this->oTransaction = $oTransLan;
                 break;
 
             case 413: // ESTORNO DE LIQUIDAÇÃO SUPRIMENTO DE FUNDOS
-
                 if ($this->iCodCom == null) {
                     throw new exception("Não foi informado o código da conta do lançamento.");
                 }
@@ -1177,15 +1169,18 @@ class lancamentoContabil
                     throw new exception("Não foi informado o ano do empenho.");
                 }
 
-                $oTransLan->db_trans_estorna_empenho($this->iCodCom, $this->iAnoEmpenho, $this->iCodDoc,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]);
+                $oTransLan->db_trans_estorna_empenho(
+                    $this->iCodCom,
+                    $this->iAnoEmpenho,
+                    $this->iCodDoc,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                );
                 if ($oTransLan->sqlerro) {
                     throw new exception($oTransLan->erro_msg);
                 }
                 $this->oTransaction = $oTransLan;
                 break;
             case 90: // SUPRIMENTO DE FUNDOS
-
                 if ($this->aLancamentos["lancamEle"]["set"] != 1) {
                     throw new exception("Não foi informado o elemento do lançamento.");
                 }
@@ -1197,10 +1192,12 @@ class lancamentoContabil
                 if ($this->aLancamentos["lancamDot"]["set"] != 1) {
                     throw new exception("Não foi informado a dotação do lançamento.");
                 }
-                $oTransLan->db_trans_pagamento_prestacao_contas($this->aLancamentos["lancamEle"]["c67_codele"],
-                  $this->aLancamentos["lancamPag"]["c82_reduz"],
-                  $this->iAnoUsu,
-                  $this->aLancamentos["lancamEmp"]["c75_numemp"]);
+                $oTransLan->db_trans_pagamento_prestacao_contas(
+                    $this->aLancamentos["lancamEle"]["c67_codele"],
+                    $this->aLancamentos["lancamPag"]["c82_reduz"],
+                    $this->iAnoUsu,
+                    $this->aLancamentos["lancamEmp"]["c75_numemp"]
+                );
                 $this->oTransaction = $oTransLan;
                 $this->iContaEmp = $oTransLan->conta_emp;
                 break;
@@ -1260,7 +1257,6 @@ class lancamentoContabil
         $oDadosLancamento = db_utils::fieldsMemory($rsDadosLancamento, 0, false, false, true);
         $oDadosLancamento->contas = array();
         if ($lMostraContas) {
-
             $sSqlContas = "select  c69_debito as contadebito, ";
             $sSqlContas .= "      c1.c60_descr as descricaodebito, ";
             $sSqlContas .= "      c1.c60_estrut as estruturaldebito, ";
@@ -1321,6 +1317,7 @@ class lancamentoContabil
         $oConlancam = new cl_conlancam;
         $oConlancam->c70_codlan = $iCodigoLancamento;
         $oConlancam->c70_data = $dtData;
+       // $oConlancam->c70_anousu =
         $oConlancam->alterar($iCodigoLancamento);
         if ($oConlancam->erro_status == 0) {
             throw new Exception("Erro[1] - Erro ao alterar a data do lançamento contábil.");
@@ -1333,7 +1330,6 @@ class lancamentoContabil
         $sSqlLancamentos = $oDaoConlancamVal->sql_query_file(null, "*", null, "c69_codlan = {$iCodigoLancamento}");
         $rsLancamentos = $oDaoConlancamVal->sql_record($sSqlLancamentos);
         if ($oDaoConlancamVal->numrows > 0) {
-
             $aLancamentos = db_utils::getCollectionByRecord($rsLancamentos);
             foreach ($aLancamentos as $oLancamento) {
 
@@ -1342,8 +1338,12 @@ class lancamentoContabil
                  */
                 $oDaoContaCorrenteDetalheValor = new cl_contacorrentedetalheconlancamval;
                 $sWhereExcluirContaCorrenteDetalhe = "c28_conlancamval = {$oLancamento->c69_sequen}";
-                $sSqlBuscaContaCorrente = $oDaoContaCorrenteDetalheValor->sql_query_file(null, "*", null,
-                  $sWhereExcluirContaCorrenteDetalhe);
+                $sSqlBuscaContaCorrente = $oDaoContaCorrenteDetalheValor->sql_query_file(
+                    null,
+                    "*",
+                    null,
+                    $sWhereExcluirContaCorrenteDetalhe
+                );
                 $rsBuscaContaCorrente = db_query($sSqlBuscaContaCorrente);
                 if (!$rsBuscaContaCorrente) {
                     throw new Exception("Não foi possível buscar os dados da conta corrente.");
@@ -1369,7 +1369,6 @@ class lancamentoContabil
 
                 $oDaoConlancamVal->excluir($oLancamento->c69_sequen);
                 if ($oDaoConlancamVal->erro_status == 0) {
-
                     $sErroMensagem = "Erro[3] - Erro ao alterar a data do lançamento contábil!\nErro ao reprocessar lançamentos.\n";
                     $sErroMensagem .= $oDaoConlancamVal->erro_banco;
                     throw new Exception($sErroMensagem);
@@ -1378,7 +1377,10 @@ class lancamentoContabil
                 /**
                  * Incluimos a conlancam a data alterada
                  */
-                $oDaoConlancamVal->c69_anousu = $oLancamento->c69_anousu;
+                $data = new \DBDate($dtData);
+                $ano = $data->getAno();
+
+                $oDaoConlancamVal->c69_anousu = $ano;
                 $oDaoConlancamVal->c69_codhist = $oLancamento->c69_codhist;
                 $oDaoConlancamVal->c69_codlan = $oLancamento->c69_codlan;
                 $oDaoConlancamVal->c69_credito = $oLancamento->c69_credito;
@@ -1387,19 +1389,15 @@ class lancamentoContabil
                 $oDaoConlancamVal->c69_valor = $oLancamento->c69_valor;
                 $oDaoConlancamVal->c69_ordem = $oLancamento->c69_ordem;
                 $oDaoConlancamVal->incluir(null);
-
                 if ($oDaoConlancamVal->erro_status == 0) {
-
                     $sErroMsg = "Erro[4] - Erro ao alterar a data do lançamento contábil!\nErro ao reprocessar lançamentos.";
                     $sErroMsg .= "\nErro Técnico:{$oDaoConlancamVal->erro_msg}";
                     throw new Exception($sErroMsg);
                 }
-
                 /**
                  * Configuramos a conta corrente novamente.
                  */
                 foreach ($aDadosContaCorrente as $oStdContaCorrente) {
-
                     $oDaoContaCorrenteDetalheValor = new cl_contacorrentedetalheconlancamval;
                     $oDaoContaCorrenteDetalheValor->c28_sequencial = null;
                     $oDaoContaCorrenteDetalheValor->c28_contacorrentedetalhe = $oStdContaCorrente->c28_contacorrentedetalhe;
@@ -1417,7 +1415,6 @@ class lancamentoContabil
                  * incluimos na conlancamlr
                  */
                 foreach ($aLancamentosConfig as $oLancamentoConfig) {
-
                     $oDaoConlancamlr->c81_sequen = $oDaoConlancamVal->c69_sequen;
                     $oDaoConlancamlr->c81_seqtranslr = $oLancamentoConfig->c81_seqtranslr;
                     $oDaoConlancamlr->incluir($oDaoConlancamVal->c69_sequen, $oLancamentoConfig->c81_seqtranslr);
@@ -1574,6 +1571,16 @@ class lancamentoContabil
         if ($oConlancamacordo->erro_status == 0) {
             throw new Exception("Erro[4] - Erro ao excluir vinculo do lançamento contábil com o contrato.");
         }
+        $oProtProcessoDocumento = new cl_protprocessodocumento;
+        $sql = $oProtProcessoDocumento->sql_query_file(null, "p01_sequencial", null, "p01_c70codlan = {$iCodigoLancamento}");
+        $rs = $oProtProcessoDocumento->sql_record($sql);
+        if ($oProtProcessoDocumento->numrows > 0) {
+            $sequencial = db_utils::fieldsMemory($rs, 0)->p01_sequencial;
+            $oProtProcessoDocumento->excluir($sequencial, "p01_c70codlan = {$iCodigoLancamento}");
+            if ($oProtProcessoDocumento->erro_status == 0) {
+                throw new Exception("Erro[4.1] - Erro ao excluir vinculo do lançamento contábil com os documentos do acordo.");
+            }
+        }
 
         /**
          * excluimos a conlancamval
@@ -1582,10 +1589,8 @@ class lancamentoContabil
         $sSqlLancamentos = $oDaoConlancamVal->sql_query_file(null, "*", null, "c69_codlan = {$iCodigoLancamento}");
         $rsLancamentos = $oDaoConlancamVal->sql_record($sSqlLancamentos);
         if ($oDaoConlancamVal->numrows > 0) {
-
             $aLancamentos = db_utils::getCollectionByRecord($rsLancamentos);
             foreach ($aLancamentos as $oLancamento) {
-
                 $oDaoConlancamlr = new cl_conlancamlr;
                 $sSqlLancamentoConfig = $oDaoConlancamlr->sql_query_file($oLancamento->c69_sequen);
                 $rsLancamentosConfig = $oDaoConlancamlr->sql_record($sSqlLancamentoConfig);
@@ -1596,7 +1601,6 @@ class lancamentoContabil
                 }
 
                 if (USE_PCASP) {
-
                     if (!class_exists("ContaCorrenteBase")) {
                         require_once(modification("model/contabilidade/contacorrente/ContaCorrenteBase.model.php"));
                     }
@@ -1614,7 +1618,6 @@ class lancamentoContabil
                     $sWhereExcluirVinculoContaCorrente = "c28_conlancamval = {$oLancamento->c69_sequen}";
                     $oDaoContaCorrenteDetalheConLancamVal->excluir(null, $sWhereExcluirVinculoContaCorrente);
                     if ($oDaoContaCorrenteDetalheConLancamVal->erro_status == "0") {
-
                         $sMensagemException = "Erro[6] - Erro ao excluir vínculo do lançamento contábil com a conta corrente.\n";
                         $sMensagemException .= $oDaoContaCorrenteDetalheConLancamVal->erro_banco;
                         throw new Exception($sMensagemException);
@@ -1623,7 +1626,6 @@ class lancamentoContabil
 
                 $oDaoConlancamVal->excluir($oLancamento->c69_sequen);
                 if ($oDaoConlancamVal->erro_status == 0) {
-
                     $sErroMensagem = "Erro[7] - Erro ao alterar a data do lançamento contábil!\nErro ao reprocessar lançamentos.\n";
                     $sErroMensagem .= $oDaoConlancamVal->erro_banco;
                     throw new Exception($sErroMensagem);
@@ -1881,12 +1883,10 @@ class lancamentoContabil
         $iLinhas = pg_num_rows($rsApropriacao);
         $aTesourariaExcluida = array();
         for ($i = 0; $i < $iLinhas; $i++) {
-
             $oStd = db_utils::fieldsMemory($rsApropriacao, $i);
 
             $sCorrente = $oStd->autenticadora . $oStd->data . $oStd->autenticacao;
             if (empty($aTesourariaExcluida) || !in_array($sCorrente, $aTesourariaExcluida)) {
-
                 ManutencaoTesouraria::excluirTesouraria($oStd->autenticadora, $oStd->data, $oStd->autenticacao);
                 $aTesourariaExcluida[] = $sCorrente;
             }
@@ -1910,12 +1910,12 @@ class lancamentoContabil
      * @throws Exception
      * @return stdClass[]
      */
-    public static function getLog($codigoLancamento) {
+    public static function getLog($codigoLancamento)
+    {
 
         $buscaLog = self::buscaDadosLog($codigoLancamento, 1);
 
         if (pg_num_rows($buscaLog) === 0) {
-
             /* busca os dados da tabela auditoria */
             $buscaLogAuditoria = db_query("
                     select to_char(datahora_servidor , 'dd/mm/YYYY HH24:MI:SS') as data,
@@ -1936,7 +1936,6 @@ class lancamentoContabil
             }
 
             if (pg_num_rows($buscaLogAuditoria) === 1) {
-
                 $stdRegistro = db_utils::fieldsMemory($buscaLogAuditoria, 0);
                 $insertLog = db_query("
                         insert into lancamentoscontabeislog
@@ -1949,7 +1948,6 @@ class lancamentoContabil
 
             /* busca os dados da tabela db_acount */
             if (pg_num_rows($buscaLogAuditoria) === 0) {
-
                 $buscaLogAccount = db_query("
                         select datahr,
                                id_usuario
@@ -1965,7 +1963,6 @@ class lancamentoContabil
                 }
 
                 if (pg_num_rows($buscaLogAccount) === 1) {
-
                     $stdRegistro = db_utils::fieldsMemory($buscaLogAccount, 0);
                     $data = date('Y-m-d', $stdRegistro->datahr) . ' 00:00:00';
 
@@ -1984,7 +1981,6 @@ class lancamentoContabil
         $retornoLog = array();
         $buscaLog = self::buscaDadosLog($codigoLancamento);
         for ($i = 0; $i < pg_num_rows($buscaLog); $i++) {
-
             $stdLog = db_utils::fieldsMemory($buscaLog, $i);
 
             $tipoMovimento = 'Incluído';
@@ -2008,7 +2004,8 @@ class lancamentoContabil
      * @return bool|resource
      * @throws Exception
      */
-    public static function buscaDadosLog($codigoLancamento, $tipoMovimento = null) {
+    public static function buscaDadosLog($codigoLancamento, $tipoMovimento = null)
+    {
 
         $sql = "
         select db_usuarios.login,
@@ -2075,7 +2072,8 @@ class lancamentoContabil
      * @return int
      * @throws Exception
      */
-    public function  getCodigoReduzido($reduzido, $ano, $instituicao) {
+    public function getCodigoReduzido($reduzido, $ano, $instituicao)
+    {
 
         $instituicaoPrefeitura = InstituicaoRepository::getInstituicaoPrefeitura();
 

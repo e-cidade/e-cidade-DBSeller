@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ if(!isset($j39_numero)){
 </head>
 <body bgcolor=#CCCCCC  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC" >
-  <?
+  <?php
   if (isset($pesquisaRua)) {
     ?>
      <tr>
@@ -59,7 +59,7 @@ if(!isset($j39_numero)){
         Predial 
 	<input type="radio" name="filtrotipo" value="Territorial" <?=(@$filtrotipo=="Territorial"?"checked":"")?>>
         Territorial &nbsp;&nbsp; 
-        <?
+        <?php
          $clrotulo = new rotulocampo;
          $clrotulo->label("j39_numero");
          echo $Lj39_numero;
@@ -70,12 +70,12 @@ if(!isset($j39_numero)){
        </td>
        </form>
      </tr>
-    <?
+    <?php
   }
   ?>
   <tr>
   <td align="center">
-  <?
+  <?php
   $funcao_js = "parent.mostraJanelaDadosImovel|0";
   $clsqlamatriculas   = new cl_iptubase;
   $clconsultaaguabase = new ConsultaAguaBase(0);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $iAno = date('Y',db_getsession("DB_datausu"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -104,7 +104,7 @@ fieldset table td:first-child {
                 <strong>Opções:</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aVer = array("com" => "Com as contas selecionados",
                                 "sem" => "Sem as contas selecionadas");
                   db_select('ver', $aVer, true, 4, "");
@@ -113,7 +113,7 @@ fieldset table td:first-child {
             </tr>
             <tr>
               <td colspan="2">
-                <?
+                <?php
                   $aux->cabecalho      = "<strong>Contas</strong>";
                   $aux->codigo         = "e83_codtipo";
                   $aux->descr          = "e83_descr";
@@ -144,7 +144,7 @@ fieldset table td:first-child {
                         <b>De:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
                           db_inputdata("dtini", $iDia, $iMes, $iAno, "true", "text", 2);
                         ?>
                       </td>
@@ -152,7 +152,7 @@ fieldset table td:first-child {
                         <b>Até:</b>
                       </td>
                       <td>
-                        <?
+                        <?php
                           db_inputdata("dtfim", $iDia, $iMes, $iAno, "true", "text", 2);
                         ?>
                       </td>
@@ -171,7 +171,7 @@ fieldset table td:first-child {
 				                <strong>Considerar:</strong>
 				              </td>
 				              <td width="100%">
-				                <?
+				                <?php
 				                  $aConsiderar = array("t" => "Todos",
 				                                       "s" => "Autenticados",
 				                                       "n" => "Não autenticados");
@@ -184,7 +184,7 @@ fieldset table td:first-child {
 				                <strong>Filtro:</strong>
 				              </td>
 				              <td>
-				                <?
+				                <?php
 				                  $aFiltro = array("t" => "Todos",
 				                                   "o" => "Ordem de pagamento",
 				                                   "s" => "Slips");
@@ -197,7 +197,7 @@ fieldset table td:first-child {
 				                <strong>Totaliza por Cheque:</strong>
 				              </td>
 				              <td>
-				                <?
+				                <?php
 				                  $aTotaliza = array("t" => "Sim",
 				                                     "f" => "Não");
 				                  db_select('totaliza', $aTotaliza, true, 4, "");
@@ -209,7 +209,7 @@ fieldset table td:first-child {
                         <strong>Quebrar Página por Conta:</strong>
                       </td>
                       <td>
-                        <?
+                        <?php
                           $aQuebraPaginaConta = array("f" => "Não",
                                                       "t" => "Sim");
                           db_select('quebrarpaginaconta', $aQuebraPaginaConta, true, 4, "");
@@ -233,7 +233,7 @@ fieldset table td:first-child {
     </td>
   </tr>
 </table>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,13 +71,13 @@ if (isset($_GET['lRelatorio'])) {
       <tr>
         <td width="4%" align="right" nowrap title="<?=$Tk02_codigo?>"><?=$Lk02_codigo?></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("k02_codigo", 4, $Ik02_codigo, true, "text", 4, "", "chave_k02_codigo");
               ?>
             </td>
         <td width="4%" align="right" nowrap title="<?=$Tk02_descr?>"><?=$Lk02_descr?></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("k02_descr", 15, $Ik02_descr, true, "text", 4, "", "chave_k02_descr");
               ?>
             </td>
@@ -85,14 +85,14 @@ if (isset($_GET['lRelatorio'])) {
       <tr>
         <td width="4%" align="right" nowrap><b> Estrutural </b></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("k02_estorc", 15, '', true, "text", 4, "", "chave_k02_estorc");
               ?>
             </td>
 
         <td width="4%" align="right" nowrap title="<?=$Tk02_drecei?>"><?=$Lk02_drecei?></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("k02_drecei", 40, $Ik02_drecei, true, "text", 4, "", "chave_k02_drecei");
               ?>
             </td>
@@ -101,14 +101,14 @@ if (isset($_GET['lRelatorio'])) {
         <td width="4%" align="right" nowrap><strong> Extra-Orcamentário:
         </strong></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("c61_reduz", 8, $Ic61_reduz, true, "text", 2, "", "chave_c61_reduz");
               ?>
             </td>
 
         <td width="4%" align="right" nowrap><strong>Orçamentário:</strong></td>
         <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("o70_codrec", 8, $Io70_codrec, true, "text", 2, "", "chave_o70_codrec");
               ?>
             </td>
@@ -127,7 +127,7 @@ if (isset($_GET['lRelatorio'])) {
   </tr>
   <tr>
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = " 1=1";
       if (isset($tiporec) && $tiporec != "") {
         $sWhere .= " and k02_tipo = '{$tiporec}' ";
@@ -189,14 +189,14 @@ if (isset($_GET['lRelatorio'])) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (! isset($pesquisa_chave)) {
   ?>
 <script>
 document.form2.chave_k02_codigo.focus();
 document.form2.chave_k02_codigo.select();
   </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

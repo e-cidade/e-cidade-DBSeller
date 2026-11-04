@@ -300,7 +300,7 @@ $j39_idcons = $oPost->iConstrucao;
                   <td>
                     <input type="checkbox" id="arearealdolote"
                            value="<?php echo $areatotal ?>" <?php echo $temareatotal ?>>
-                    <label for="arearealdolote">Área Real do Lote: <? echo $areatotal . " m2"; ?></label>
+                    <label for="arearealdolote">Área Real do Lote: <?php echo $areatotal . " m2"; ?></label>
                   </td>
                 </tr>
                 <tr>

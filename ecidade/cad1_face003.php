@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -44,7 +44,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?
+     <?php
        $clcriaabas = new cl_criaabas;
        $db_opcao   = 3;
     	 $clcriaabas->identifica = array("face"=>"Face", "facevalor"=>"Valor");

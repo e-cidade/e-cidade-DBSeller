@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
               <?=$Led305_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed305_sequencial",10,$Ied305_sequencial,true,"text",4,"","chave_ed305_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
               <?=$Led305_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed305_usuario",10,$Ied305_usuario,true,"text",4,"","chave_ed305_usuario");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
 			/**
 			 * Se for modulo escola faz where pelo departamento logado
@@ -140,12 +140,12 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

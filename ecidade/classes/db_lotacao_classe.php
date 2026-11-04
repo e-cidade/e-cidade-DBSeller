@@ -1,86 +1,86 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE lotacao
-class cl_lotacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r13_anousu = 0; 
-   var $r13_mesusu = 0; 
-   var $r13_codigo = null; 
-   var $r13_descr = null; 
-   var $r13_reduz = 0; 
-   var $r13_proati = null; 
-   var $r13_painat = null; 
-   var $r13_descro = null; 
-   var $r13_descru = null; 
-   var $r13_subele = null; 
-   var $r13_calend = null; 
-   var $r13_rproat = null; 
-   var $r13_rpaina = null; 
-   var $r13_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lotacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r13_anousu = 0;
+   var $r13_mesusu = 0;
+   var $r13_codigo = null;
+   var $r13_descr = null;
+   var $r13_reduz = 0;
+   var $r13_proati = null;
+   var $r13_painat = null;
+   var $r13_descro = null;
+   var $r13_descru = null;
+   var $r13_subele = null;
+   var $r13_calend = null;
+   var $r13_rproat = null;
+   var $r13_rpaina = null;
+   var $r13_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r13_anousu = int4 = Ano do Exercicio 
-                 r13_mesusu = int4 = Mes do Exercicio 
-                 r13_codigo = char(4) = Código 
-                 r13_descr = varchar(40) = Descrição 
-                 r13_reduz = int4 = Codigo Reduzido da Dotacao 
-                 r13_proati = varchar(4) = Projeto/Atividade 
-                 r13_painat = varchar(4) = Projeto/Atividade Inat./Pensio 
-                 r13_descro = varchar(40) = Órgão 
-                 r13_descru = varchar(40) = Unidade 
-                 r13_subele = varchar(6) = Sub-elemento para empenhos 
-                 r13_calend = varchar(2) = calendário 
-                 r13_rproat = varchar(4) = proj/ativ ativo - reposicao 
-                 r13_rpaina = varchar(4) = proj/ativ inativos reposicao 
-                 r13_instit = int4 = codigo da instituicao 
+                 r13_anousu = int4 = Ano do Exercicio
+                 r13_mesusu = int4 = Mes do Exercicio
+                 r13_codigo = char(4) = Código
+                 r13_descr = varchar(40) = Descrição
+                 r13_reduz = int4 = Codigo Reduzido da Dotacao
+                 r13_proati = varchar(4) = Projeto/Atividade
+                 r13_painat = varchar(4) = Projeto/Atividade Inat./Pensio
+                 r13_descro = varchar(40) = Órgão
+                 r13_descru = varchar(40) = Unidade
+                 r13_subele = varchar(6) = Sub-elemento para empenhos
+                 r13_calend = varchar(2) = calendário
+                 r13_rproat = varchar(4) = proj/ativ ativo - reposicao
+                 r13_rpaina = varchar(4) = proj/ativ inativos reposicao
+                 r13_instit = int4 = codigo da instituicao
                  ";
-   //funcao construtor da classe 
-   function cl_lotacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lotacao"); 
+     $this->rotulo = new rotulo("lotacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_lotacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r13_anousu = ($this->r13_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r13_anousu"]:$this->r13_anousu);
        $this->r13_mesusu = ($this->r13_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r13_mesusu"]:$this->r13_mesusu);
@@ -112,9 +112,9 @@ class cl_lotacao {
      }
    }
    // funcao para inclusao
-   function incluir ($r13_anousu,$r13_mesusu,$r13_codigo){ 
+   public function incluir ($r13_anousu,$r13_mesusu,$r13_codigo){
       $this->atualizacampos();
-     if($this->r13_descr == null ){ 
+     if($this->r13_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "r13_descr";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_reduz == null ){ 
+     if($this->r13_reduz == null ){
        $this->erro_sql = " Campo Codigo Reduzido da Dotacao nao Informado.";
        $this->erro_campo = "r13_reduz";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_proati == null ){ 
+     if($this->r13_proati == null ){
        $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
        $this->erro_campo = "r13_proati";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_painat == null ){ 
+     if($this->r13_painat == null ){
        $this->erro_sql = " Campo Projeto/Atividade Inat./Pensio nao Informado.";
        $this->erro_campo = "r13_painat";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_descro == null ){ 
+     if($this->r13_descro == null ){
        $this->erro_sql = " Campo Órgão nao Informado.";
        $this->erro_campo = "r13_descro";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_descru == null ){ 
+     if($this->r13_descru == null ){
        $this->erro_sql = " Campo Unidade nao Informado.";
        $this->erro_campo = "r13_descru";
        $this->erro_banco = "";
@@ -168,7 +168,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_subele == null ){ 
+     if($this->r13_subele == null ){
        $this->erro_sql = " Campo Sub-elemento para empenhos nao Informado.";
        $this->erro_campo = "r13_subele";
        $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_calend == null ){ 
+     if($this->r13_calend == null ){
        $this->erro_sql = " Campo calendário nao Informado.";
        $this->erro_campo = "r13_calend";
        $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_rproat == null ){ 
+     if($this->r13_rproat == null ){
        $this->erro_sql = " Campo proj/ativ ativo - reposicao nao Informado.";
        $this->erro_campo = "r13_rproat";
        $this->erro_banco = "";
@@ -195,7 +195,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_rpaina == null ){ 
+     if($this->r13_rpaina == null ){
        $this->erro_sql = " Campo proj/ativ inativos reposicao nao Informado.";
        $this->erro_campo = "r13_rpaina";
        $this->erro_banco = "";
@@ -204,7 +204,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r13_instit == null ){ 
+     if($this->r13_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
        $this->erro_campo = "r13_instit";
        $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-       $this->r13_anousu = $r13_anousu; 
-       $this->r13_mesusu = $r13_mesusu; 
-       $this->r13_codigo = $r13_codigo; 
-     if(($this->r13_anousu == null) || ($this->r13_anousu == "") ){ 
+       $this->r13_anousu = $r13_anousu;
+       $this->r13_mesusu = $r13_mesusu;
+       $this->r13_codigo = $r13_codigo;
+     if(($this->r13_anousu == null) || ($this->r13_anousu == "") ){
        $this->erro_sql = " Campo r13_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,7 +224,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r13_mesusu == null) || ($this->r13_mesusu == "") ){ 
+     if(($this->r13_mesusu == null) || ($this->r13_mesusu == "") ){
        $this->erro_sql = " Campo r13_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -232,7 +232,7 @@ class cl_lotacao {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r13_codigo == null) || ($this->r13_codigo == "") ){ 
+     if(($this->r13_codigo == null) || ($this->r13_codigo == "") ){
        $this->erro_sql = " Campo r13_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -241,39 +241,39 @@ class cl_lotacao {
        return false;
      }
      $sql = "insert into lotacao(
-                                       r13_anousu 
-                                      ,r13_mesusu 
-                                      ,r13_codigo 
-                                      ,r13_descr 
-                                      ,r13_reduz 
-                                      ,r13_proati 
-                                      ,r13_painat 
-                                      ,r13_descro 
-                                      ,r13_descru 
-                                      ,r13_subele 
-                                      ,r13_calend 
-                                      ,r13_rproat 
-                                      ,r13_rpaina 
-                                      ,r13_instit 
+                                       r13_anousu
+                                      ,r13_mesusu
+                                      ,r13_codigo
+                                      ,r13_descr
+                                      ,r13_reduz
+                                      ,r13_proati
+                                      ,r13_painat
+                                      ,r13_descro
+                                      ,r13_descru
+                                      ,r13_subele
+                                      ,r13_calend
+                                      ,r13_rproat
+                                      ,r13_rpaina
+                                      ,r13_instit
                        )
                 values (
-                                $this->r13_anousu 
-                               ,$this->r13_mesusu 
-                               ,'$this->r13_codigo' 
-                               ,'$this->r13_descr' 
-                               ,$this->r13_reduz 
-                               ,'$this->r13_proati' 
-                               ,'$this->r13_painat' 
-                               ,'$this->r13_descro' 
-                               ,'$this->r13_descru' 
-                               ,'$this->r13_subele' 
-                               ,'$this->r13_calend' 
-                               ,'$this->r13_rproat' 
-                               ,'$this->r13_rpaina' 
-                               ,$this->r13_instit 
+                                $this->r13_anousu
+                               ,$this->r13_mesusu
+                               ,'$this->r13_codigo'
+                               ,'$this->r13_descr'
+                               ,$this->r13_reduz
+                               ,'$this->r13_proati'
+                               ,'$this->r13_painat'
+                               ,'$this->r13_descro'
+                               ,'$this->r13_descru'
+                               ,'$this->r13_subele'
+                               ,'$this->r13_calend'
+                               ,'$this->r13_rproat'
+                               ,'$this->r13_rpaina'
+                               ,$this->r13_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lotacao ($this->r13_anousu."-".$this->r13_mesusu."-".$this->r13_codigo) nao Incluído. Inclusao Abortada.";
@@ -320,16 +320,16 @@ class cl_lotacao {
        $resac = db_query("insert into db_acount values($acount,564,7634,'','".AddSlashes(pg_result($resaco,0,'r13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($r13_anousu=null,$r13_mesusu=null,$r13_codigo=null) { 
+   public function alterar ($r13_anousu=null,$r13_mesusu=null,$r13_codigo=null) {
       $this->atualizacampos();
      $sql = " update lotacao set ";
      $virgula = "";
-     if(trim($this->r13_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_anousu"])){ 
+     if(trim($this->r13_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_anousu"])){
        $sql  .= $virgula." r13_anousu = $this->r13_anousu ";
        $virgula = ",";
-       if(trim($this->r13_anousu) == null ){ 
+       if(trim($this->r13_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r13_anousu";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_mesusu"])){ 
+     if(trim($this->r13_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_mesusu"])){
        $sql  .= $virgula." r13_mesusu = $this->r13_mesusu ";
        $virgula = ",";
-       if(trim($this->r13_mesusu) == null ){ 
+       if(trim($this->r13_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r13_mesusu";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_codigo"])){ 
+     if(trim($this->r13_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_codigo"])){
        $sql  .= $virgula." r13_codigo = '$this->r13_codigo' ";
        $virgula = ",";
-       if(trim($this->r13_codigo) == null ){ 
+       if(trim($this->r13_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "r13_codigo";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descr"])){ 
+     if(trim($this->r13_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descr"])){
        $sql  .= $virgula." r13_descr = '$this->r13_descr' ";
        $virgula = ",";
-       if(trim($this->r13_descr) == null ){ 
+       if(trim($this->r13_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "r13_descr";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_reduz"])){ 
+     if(trim($this->r13_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_reduz"])){
        $sql  .= $virgula." r13_reduz = $this->r13_reduz ";
        $virgula = ",";
-       if(trim($this->r13_reduz) == null ){ 
+       if(trim($this->r13_reduz) == null ){
          $this->erro_sql = " Campo Codigo Reduzido da Dotacao nao Informado.";
          $this->erro_campo = "r13_reduz";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_proati"])){ 
+     if(trim($this->r13_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_proati"])){
        $sql  .= $virgula." r13_proati = '$this->r13_proati' ";
        $virgula = ",";
-       if(trim($this->r13_proati) == null ){ 
+       if(trim($this->r13_proati) == null ){
          $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
          $this->erro_campo = "r13_proati";
          $this->erro_banco = "";
@@ -404,10 +404,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_painat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_painat"])){ 
+     if(trim($this->r13_painat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_painat"])){
        $sql  .= $virgula." r13_painat = '$this->r13_painat' ";
        $virgula = ",";
-       if(trim($this->r13_painat) == null ){ 
+       if(trim($this->r13_painat) == null ){
          $this->erro_sql = " Campo Projeto/Atividade Inat./Pensio nao Informado.";
          $this->erro_campo = "r13_painat";
          $this->erro_banco = "";
@@ -417,10 +417,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_descro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descro"])){ 
+     if(trim($this->r13_descro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descro"])){
        $sql  .= $virgula." r13_descro = '$this->r13_descro' ";
        $virgula = ",";
-       if(trim($this->r13_descro) == null ){ 
+       if(trim($this->r13_descro) == null ){
          $this->erro_sql = " Campo Órgão nao Informado.";
          $this->erro_campo = "r13_descro";
          $this->erro_banco = "";
@@ -430,10 +430,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_descru)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descru"])){ 
+     if(trim($this->r13_descru)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_descru"])){
        $sql  .= $virgula." r13_descru = '$this->r13_descru' ";
        $virgula = ",";
-       if(trim($this->r13_descru) == null ){ 
+       if(trim($this->r13_descru) == null ){
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "r13_descru";
          $this->erro_banco = "";
@@ -443,10 +443,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_subele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_subele"])){ 
+     if(trim($this->r13_subele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_subele"])){
        $sql  .= $virgula." r13_subele = '$this->r13_subele' ";
        $virgula = ",";
-       if(trim($this->r13_subele) == null ){ 
+       if(trim($this->r13_subele) == null ){
          $this->erro_sql = " Campo Sub-elemento para empenhos nao Informado.";
          $this->erro_campo = "r13_subele";
          $this->erro_banco = "";
@@ -456,10 +456,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_calend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_calend"])){ 
+     if(trim($this->r13_calend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_calend"])){
        $sql  .= $virgula." r13_calend = '$this->r13_calend' ";
        $virgula = ",";
-       if(trim($this->r13_calend) == null ){ 
+       if(trim($this->r13_calend) == null ){
          $this->erro_sql = " Campo calendário nao Informado.";
          $this->erro_campo = "r13_calend";
          $this->erro_banco = "";
@@ -469,10 +469,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_rproat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_rproat"])){ 
+     if(trim($this->r13_rproat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_rproat"])){
        $sql  .= $virgula." r13_rproat = '$this->r13_rproat' ";
        $virgula = ",";
-       if(trim($this->r13_rproat) == null ){ 
+       if(trim($this->r13_rproat) == null ){
          $this->erro_sql = " Campo proj/ativ ativo - reposicao nao Informado.";
          $this->erro_campo = "r13_rproat";
          $this->erro_banco = "";
@@ -482,10 +482,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_rpaina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_rpaina"])){ 
+     if(trim($this->r13_rpaina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_rpaina"])){
        $sql  .= $virgula." r13_rpaina = '$this->r13_rpaina' ";
        $virgula = ",";
-       if(trim($this->r13_rpaina) == null ){ 
+       if(trim($this->r13_rpaina) == null ){
          $this->erro_sql = " Campo proj/ativ inativos reposicao nao Informado.";
          $this->erro_campo = "r13_rpaina";
          $this->erro_banco = "";
@@ -495,10 +495,10 @@ class cl_lotacao {
          return false;
        }
      }
-     if(trim($this->r13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_instit"])){ 
+     if(trim($this->r13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r13_instit"])){
        $sql  .= $virgula." r13_instit = $this->r13_instit ";
        $virgula = ",";
-       if(trim($this->r13_instit) == null ){ 
+       if(trim($this->r13_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "r13_instit";
          $this->erro_banco = "";
@@ -558,7 +558,7 @@ class cl_lotacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotacao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r13_anousu."-".$this->r13_mesusu."-".$this->r13_codigo;
@@ -586,14 +586,14 @@ class cl_lotacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r13_anousu,$r13_mesusu,$r13_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -646,7 +646,7 @@ class cl_lotacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotacao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r13_anousu."-".$r13_mesusu."-".$r13_codigo;
@@ -674,11 +674,11 @@ class cl_lotacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -700,10 +700,10 @@ class cl_lotacao {
       }
      return $result;
    }
-   function sql_query ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -717,31 +717,31 @@ class cl_lotacao {
      $sql2 = "";
      if($dbwhere==""){
        if($r13_anousu!=null ){
-         $sql2 .= " where lotacao.r13_anousu = $r13_anousu "; 
-       } 
+         $sql2 .= " where lotacao.r13_anousu = $r13_anousu ";
+       }
        if($r13_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu ";
+       }
        if($r13_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -750,10 +750,10 @@ class cl_lotacao {
      }
      return $sql;
   }
-   function sql_query_cgm ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_cgm ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -763,8 +763,8 @@ class cl_lotacao {
        $sql .= $campos;
      }
      $sql .= " from lotacao ";
-     $sql .= "      inner join pessoal  on pessoal.r01_anousu = lotacao.r13_anousu 
-		                                   and pessoal.r01_mesusu = lotacao.r13_mesusu 
+     $sql .= "      inner join pessoal  on pessoal.r01_anousu = lotacao.r13_anousu
+		                                   and pessoal.r01_mesusu = lotacao.r13_mesusu
 																			 and pessoal.r01_lotac  = lotacao.r13_codigo
 																			 and pessoal.r01_instit = lotacao.r13_instit ";
      $sql .= "      inner join cgm      on       cgm.z01_numcgm = pessoal.r01_numcgm ";
@@ -772,31 +772,31 @@ class cl_lotacao {
      $sql2 = "";
      if($dbwhere==""){
        if($r13_anousu!=null ){
-         $sql2 .= " where lotacao.r13_anousu = $r13_anousu "; 
-       } 
+         $sql2 .= " where lotacao.r13_anousu = $r13_anousu ";
+       }
        if($r13_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu ";
+       }
        if($r13_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -805,10 +805,10 @@ class cl_lotacao {
      }
      return $sql;
   }
-   function sql_query_file ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -821,31 +821,31 @@ class cl_lotacao {
      $sql2 = "";
      if($dbwhere==""){
        if($r13_anousu!=null ){
-         $sql2 .= " where lotacao.r13_anousu = $r13_anousu "; 
-       } 
+         $sql2 .= " where lotacao.r13_anousu = $r13_anousu ";
+       }
        if($r13_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu ";
+       }
        if($r13_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -854,10 +854,10 @@ class cl_lotacao {
      }
      return $sql;
   }
-   function sql_query_orgao ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_orgao ( $r13_anousu=null,$r13_mesusu=null,$r13_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -868,37 +868,37 @@ class cl_lotacao {
      }
      $sql .= " from lotacao ";
      $sql .= "      inner join rhlotaexe  on  rhlotaexe.rh26_codigo = rhlota.r70_codigo ";
-     $sql .= "      inner join orcorgao   on  orcorgao.o40_orgao = rhlotaexe.rh26_orgao 
+     $sql .= "      inner join orcorgao   on  orcorgao.o40_orgao = rhlotaexe.rh26_orgao
 		                                     and orcorgao.o40_anousu = rhlotaexe.rh26_anousu
 																				 and orcorgao.o40_instit = rhlotaexe.rh26_instit ";
      $sql2 = "";
      if($dbwhere==""){
        if($r13_anousu!=null ){
-         $sql2 .= " where lotacao.r13_anousu = $r13_anousu "; 
-       } 
+         $sql2 .= " where lotacao.r13_anousu = $r13_anousu ";
+       }
        if($r13_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_mesusu = $r13_mesusu ";
+       }
        if($r13_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' "; 
-       } 
+         }
+         $sql2 .= " lotacao.r13_codigo = '$r13_codigo' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_contatos->rotulo->label("g01_organizacao");
               <?=$Lg01_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("g01_id",0,$Ig01_id,true,"text",4,"","chave_g01_id");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_contatos->rotulo->label("g01_organizacao");
               <?=$Lg01_organizacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("g01_organizacao",50,$Ig01_organizacao,true,"text",4,"","chave_g01_organizacao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_contatos->rotulo->label("g01_organizacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "db_contatostipo.g02_descr,g01_cidade,g01_organizacao,g01_nome,g01_telef,g01_celular,g01_fax, g01_email,g01_site,g01_rua,g01_bairro";
@@ -114,14 +114,14 @@ $cldb_contatos->rotulo->label("g01_organizacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_g01_id.focus();
 document.form2.chave_g01_id.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

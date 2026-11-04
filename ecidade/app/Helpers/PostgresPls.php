@@ -78,3 +78,53 @@ if (!function_exists('fc_executa_baixa_banco')) {
         return \db_utils::fieldsMemory($rRetorno, 0);
     }
 }
+
+if (!function_exists('fc_issqn')) {
+    /**
+     * Função que faz o cálculo do alvará
+     * @param $inscricao
+     * @param $dataCorrente
+     * @param $dataBaixa
+     * @param $ano
+     * @param $instituicao
+     * @param $sequencialAtividades
+     * @param $isRecalculo
+     * @param $isCalculoGeral
+     * @return object
+     * @throws Exception
+     */
+    function fc_issqn(
+        $inscricao,
+        $dataCorrente,
+        $dataBaixa,
+        $ano,
+        $instituicao,
+        $sequencialAtividades,
+        $isRecalculo,
+        $isCalculoGeral
+    ) {
+        $idUsuario = db_getsession("DB_id_usuario");
+        $retorno = DB::select("
+        SELECT fc_issqn(
+                {$idUsuario},
+                {$inscricao},
+                '{$dataCorrente}',
+                {$ano},
+                '{$dataBaixa}',
+                '{$isRecalculo}',
+                '{$isCalculoGeral}',
+                {$instituicao},
+                '{$sequencialAtividades}'
+                ) AS retorno
+        ")[0];
+
+        if (!$retorno) {
+            throw new Exception("Não foi possível processar o cálculo.");
+        }
+
+        return (object) [
+            "codigo" => substr($retorno->retorno, 0, 2),
+            "mensagem" => substr($retorno->retorno, 2, strlen($retorno->retorno))
+        ];
+    }
+}

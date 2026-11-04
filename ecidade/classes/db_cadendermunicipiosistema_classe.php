@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_cadendermunicipiosistema {
                  db125_codigosistema = varchar(50) = Código Sistema Externo 
                  ";
    //funcao construtor da classe 
-   function cl_cadendermunicipiosistema() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadendermunicipiosistema"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cadendermunicipiosistema {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db125_sequencial = ($this->db125_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db125_sequencial"]:$this->db125_sequencial);
        $this->db125_cadendermunicipio = ($this->db125_cadendermunicipio == ""?@$GLOBALS["HTTP_POST_VARS"]["db125_cadendermunicipio"]:$this->db125_cadendermunicipio);
@@ -80,7 +80,7 @@ class cl_cadendermunicipiosistema {
      }
    }
    // funcao para inclusao
-   function incluir ($db125_sequencial){ 
+   public function incluir ($db125_sequencial){ 
       $this->atualizacampos();
      if($this->db125_cadendermunicipio == null ){ 
        $this->erro_sql = " Campo Código do Município nao Informado.";
@@ -191,7 +191,7 @@ class cl_cadendermunicipiosistema {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db125_sequencial=null) { 
+   public function alterar ($db125_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update cadendermunicipiosistema set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_cadendermunicipiosistema {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db125_sequencial=null,$dbwhere=null) { 
+   public function excluir ($db125_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db125_sequencial));
      }else{ 
@@ -365,7 +365,7 @@ class cl_cadendermunicipiosistema {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,7 +388,7 @@ class cl_cadendermunicipiosistema {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -425,7 +425,7 @@ class cl_cadendermunicipiosistema {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $db125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ $sLabelMsg = "Anexo IV - Dem. das Receitas e Despesas Previd. dos RPPS";
             <table align="center">
               <tr>
                 <td colspan=2 nowrap><b>Período :</b>
-                  <?
+                  <?php
                   if ($anousu < 2010 ) {
 
                     $aListaPeriodos = array(

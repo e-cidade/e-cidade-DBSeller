@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,8 +57,8 @@ $oRotulo->label('z01_v_nome');
             <td  nowrap title="<?=$Ttf01_i_codigo?>">
               <?=$Ltf01_i_codigo?>
             </td>
-            <td nowrap colspan="3">
-              <?
+            <td nowrap colspan="3"> 
+              <?php
 		          db_input("tf01_i_codigo",10,$Itf01_i_codigo,true,"text",4,"","chave_tf01_i_codigo");
 		          ?>
             </td>
@@ -67,16 +67,16 @@ $oRotulo->label('z01_v_nome');
             <td nowrap title="<?=$Ttf01_i_codigo?>">
               <?=$Ltf01_i_cgsund?>
             </td>
-            <td nowrap>
-              <?
+            <td nowrap> 
+              <?php
 		          db_input("tf01_i_cgsund",10,$Itf01_i_cgsund,true,"text",4,"","chave_tf01_i_cgsund");
 		          ?>
             </td>
             <td nowrap title="<?=$Ttf01_i_codigo?>">
               <?=$Lz01_v_nome?>
             </td>
-            <td nowrap>
-              <?
+            <td nowrap> 
+              <?php
 		          db_input("z01_v_nome",50,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		          ?>
             </td>
@@ -94,7 +94,7 @@ $oRotulo->label('z01_v_nome');
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)) {
 
         if(isset($campos)==false) {
@@ -126,21 +126,21 @@ $oRotulo->label('z01_v_nome');
         }
         if(isset($chave_tf01_i_codigo) && (trim($chave_tf01_i_codigo) != '') ) {
 
-	        $sql = $oDaotfd_pedidotfd->sql_query(null, $campos, 'tf01_i_codigo',
+	        $sql = $oDaotfd_pedidotfd->sql_query_grid(null, $campos, 'tf01_i_codigo',
                                              " tf01_i_codigo = $chave_tf01_i_codigo $sSep $sDesistencia");
 
         } else if(isset($chave_tf01_i_cgsund) && (trim($chave_tf01_i_cgsund) != '')) {
 
-	        $sql = $oDaotfd_pedidotfd->sql_query(null, $campos, 'tf01_i_cgsund',
+	        $sql = $oDaotfd_pedidotfd->sql_query_grid(null, $campos, 'tf01_i_cgsund',
                                              " tf01_i_cgsund = $chave_tf01_i_cgsund $sSep $sDesistencia");
 
         } else if(isset($chave_z01_v_nome) && (trim($chave_z01_v_nome) != '')) {
 
-	        $sql = $oDaotfd_pedidotfd->sql_query(null, $campos, 'z01_v_nome',
+	        $sql = $oDaotfd_pedidotfd->sql_query_grid(null, $campos, 'z01_v_nome',
                                              " z01_v_nome like '$chave_z01_v_nome%' $sSep $sDesistencia");
 
         } else {
-          $sql = $oDaotfd_pedidotfd->sql_query(null, $campos, 'tf01_i_codigo desc', $sDesistencia);
+          $sql = $oDaotfd_pedidotfd->sql_query_grid(null, $campos, 'tf01_i_codigo desc', $sDesistencia);
         }
 
         if(isset($nao_mostra)) {
@@ -179,7 +179,7 @@ $oRotulo->label('z01_v_nome');
 
         if($pesquisa_chave != null && $pesquisa_chave != '') {
 
-          $result = $oDaotfd_pedidotfd->sql_record($oDaotfd_pedidotfd->sql_query($pesquisa_chave));
+          $result = $oDaotfd_pedidotfd->sql_record($oDaotfd_pedidotfd->sql_query_grid($pesquisa_chave));
           if($oDaotfd_pedidotfd->numrows!=0) {
 
             db_fieldsmemory($result,0);
@@ -200,12 +200,12 @@ $oRotulo->label('z01_v_nome');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
 ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

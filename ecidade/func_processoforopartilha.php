@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocessoforopartilha->rotulo->label("v76_processoforo");
               <?=$Lv76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v76_sequencial",10,$Iv76_sequencial,true,"text",4,"","chave_v76_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocessoforopartilha->rotulo->label("v76_processoforo");
               <?=$Lv76_processoforo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v76_processoforo",10,$Iv76_processoforo,true,"text",4,"","chave_v76_processoforo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocessoforopartilha->rotulo->label("v76_processoforo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_processoforopartilha.php")==true){
@@ -122,12 +122,12 @@ $clprocessoforopartilha->rotulo->label("v76_processoforo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

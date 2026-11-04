@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -69,7 +69,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 						v50_movim = '$v50_movim'
 					WHERE v50_codigo = $v50_codigo") or die("Erro(43) atualizando juridico");
   $result = db_query("DELETE FROM autproc WHERE v55_proces = $v50_codigo") or die("Erro(44) deletando autproc");
-  $aux_autor = split("#",$aux_autor);
+  $aux_autor =explode("#",$aux_autor);
   $tam = sizeof($aux_autor);
   for($i = 1;$i < $tam;$i++)
     $result = db_query("INSERT INTO autproc VALUES($v50_codigo,'".$aux_autor[$i]."',$i)") or die("Erro(48) inserindo em autproc");
@@ -87,7 +87,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="if(document.form1 && document.form1.codigo) document.form1.codigo.focus(); else document.form1.v50_numero.focus();">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -95,9 +95,9 @@ if(isset($HTTP_POST_VARS["enviar"])) {
   </tr>
 </table>
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"><br><br>
-	  <?
+	  <?php
 	   if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
 	     db_postmemory($HTTP_POST_VARS);
          if(!empty($codigo)) {
@@ -105,7 +105,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 	       if(pg_numrows($result) > 0) {
  	         db_redireciona("jur1_processo002.php?".base64_encode("retorno=".pg_result($result,0,0)));
 	         exit;
-	       } else {             
+	       } else {
              $filtro = base64_encode("v50_codigo like '".$codigo."%' order by v50_codigo");
 	       }
          } else {
@@ -119,7 +119,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
          $sql = "select v50_codigo as db_codigo,v50_codigo as Código,v50_numero as número,v50_reu as réu,to_char(v50_dataen,'DD-MM-YYYY') as data from juridico where ".base64_decode($filtro);
 	     echo "<center>";
          db_lov($sql,15,"jur1_processo002.php",$filtro);
-	     echo "</center>";	  
+	     echo "</center>";
 	   } else if(!isset($retorno)) {
 	  ?>
       <center>
@@ -140,11 +140,11 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 	    <tr>
 		  <td height="30">&nbsp;</td>
 		  <td height="30"><input type="submit" name="procurar" value="Procurar"></td>
-		</tr>				
+		</tr>
 	  </table>
 	  </form>
 	  </center>
-	  <?
+	  <?php
 	    } else {
           include(modification("dbforms/db_funcoes.php"));
 		  $Alterar_PopularSelect = 1;
@@ -154,8 +154,8 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 	</td>
   </tr>
 </table>
-<?
+<?php
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>	  
+?>
 </body>
 </html>

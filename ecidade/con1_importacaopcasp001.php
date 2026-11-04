@@ -165,6 +165,11 @@ require_once modification("dbforms/db_funcoes.php");
             <i class="fas fa-print"></i>
             Imprimir
         </button>
+
+        <button type="button" id="btnAtualiza" class="btn btn-light" disabled>
+            <i class="fas fa-save"></i>
+            Atualizar Nomes
+        </button>
     </form>
 </div>
 <script type="text/javascript" src="scripts/widgets/DBFileUpload.widget.js"></script>
@@ -176,25 +181,23 @@ require_once modification("dbforms/db_funcoes.php");
     const cboPlano = document.getElementById('plano');
     const cboExercicio = document.getElementById('exercicio');
     const linhaUF = document.getElementById('linhaUF');
+    const btnImportar = document.getElementById('btnImportar');
+    const btnAtualiza = document.getElementById('btnAtualiza');
 
     const routs = {
         pcasp: 'financeiro/contabilidade/plano-contas/importar/pcasp',
-        emitir: 'financeiro/contabilidade/plano-contas/emitir/pcasp'
+        emitir: 'financeiro/contabilidade/plano-contas/emitir/pcasp',
+        atualiza: 'financeiro/contabilidade/plano-contas/importar/atualizar-pcasp',
     }
 
     cboPlano.addEventListener('change', (e) => {
         linhaUF.style.display = 'none';
     });
 
-    const data = new Date();
-    const exercicio = data.getUTCFullYear();
-    cboExercicio.add(new Option(exercicio, exercicio));
-    cboExercicio.add(new Option(exercicio + 1, exercicio + 1));
-
-
     const erroRetornoArquivo = mensagem => {
         alert(mensagem);
         btnImportar.disabled = true;
+        btnAtualiza.disabled = true;
         fileUpload.clear();
     }
 
@@ -210,6 +213,7 @@ require_once modification("dbforms/db_funcoes.php");
         }
 
         btnImportar.disabled = false;
+        btnAtualiza.disabled = false;
     }
 
     const fileUpload = new DBFileUpload({callBack: retornoEnvioArquivo, labelButton: 'Arquivo'});
@@ -228,6 +232,10 @@ require_once modification("dbforms/db_funcoes.php");
     };
 
     PHPSession.loadData().then(() => {
+        let exercicio = Number(PHPSession.getValueSession('DB_anousu'))
+        cboExercicio.add(new Option(exercicio, exercicio));
+        cboExercicio.add(new Option(exercicio + 1, exercicio + 1));
+
         document.getElementById('btnImportar').addEventListener('click', () => {
 
             if (!validar()) {
@@ -249,7 +257,32 @@ require_once modification("dbforms/db_funcoes.php");
                 }
             });
         });
+
+        btnAtualiza.addEventListener('click', () => {
+            enviaPlanilha(routs.atualiza);
+        })
     });
+
+    const enviaPlanilha = rota => {
+        if (!validar()) {
+            return false;
+        }
+
+        const formData = new FormData(formulario);
+        formData.append('file', JSON.stringify({
+            "extension": fileUpload.extension,
+            "name": fileUpload.file,
+            "path": fileUpload.filePath
+        }));
+        PHPSession.appendFormData(formData);
+
+        HttpClient.post(`${PHPSession.requestApi}/${rota}`, {body: formData}).then(response => {
+            alert(response.message);
+            if (response.error) {
+                return;
+            }
+        });
+    }
 
     document.getElementById('btnImprimir').addEventListener('click', () => {
         if (cboExercicio.value === '') {

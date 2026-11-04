@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("o56_elemento");
        <?=@$Lo44_anousu?>
     </td>
     <td> 
-<?
+<?php
 $o44_anousu = db_getsession('DB_anousu');
 db_input('o44_anousu',4,$Io44_anousu,true,'text',$db_opcao,"")
 ?>
@@ -47,30 +47,30 @@ db_input('o44_anousu',4,$Io44_anousu,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$To44_codparrel?>">
-       <?
+       <?php
        db_ancora(@$Lo44_codparrel,"js_pesquisao44_codparrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o44_codparrel',8,$Io44_codparrel,true,'text',$db_opcao," onchange='js_pesquisao44_codparrel(false);'")
 ?>
-       <?
+       <?php
 db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To44_codele?>">
-       <?
+       <?php
        db_ancora(@$Lo44_codele,"js_pesquisao44_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o44_codele',6,$Io44_codele,true,'text',$db_opcao," onchange='js_pesquisao44_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_orcparamelemento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

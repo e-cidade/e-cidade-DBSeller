@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE medicoscbo
-class cl_medicoscbo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd36_i_codigo = 0; 
-   var $sd36_i_medico = 0; 
-   var $sd36_i_rhcbo = 0; 
-   var $sd36_c_vinculo = 0; 
-   var $sd36_i_chambul = 0; 
-   var $sd36_i_choutros = 0; 
-   var $sd36_i_crm = 0; 
-   var $sd36_c_crmuf = null; 
-   var $sd36_c_crmorgao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_medicoscbo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd36_i_codigo = 0;
+   var $sd36_i_medico = 0;
+   var $sd36_i_rhcbo = 0;
+   var $sd36_c_vinculo = 0;
+   var $sd36_i_chambul = 0;
+   var $sd36_i_choutros = 0;
+   var $sd36_i_crm = 0;
+   var $sd36_c_crmuf = null;
+   var $sd36_c_crmorgao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd36_i_codigo = int4 = Código 
-                 sd36_i_medico = int4 = Médico 
-                 sd36_i_rhcbo = int4 = CBO 
-                 sd36_c_vinculo = int4 = Vínculo na Unidade 
-                 sd36_i_chambul = int4 = Carga Horária Semanal (Ambulatorial) 
-                 sd36_i_choutros = int4 = Carga Horária Semanal (Outros) 
-                 sd36_i_crm = int8 = N° Registro Conselho de Classe 
-                 sd36_c_crmuf = char(2) = UF do Registro 
-                 sd36_c_crmorgao = char(50) = Órgão Emissor do Registro 
+                 sd36_i_codigo = int4 = Código
+                 sd36_i_medico = int4 = Médico
+                 sd36_i_rhcbo = int4 = CBO
+                 sd36_c_vinculo = int4 = Vínculo na Unidade
+                 sd36_i_chambul = int4 = Carga Horária Semanal (Ambulatorial)
+                 sd36_i_choutros = int4 = Carga Horária Semanal (Outros)
+                 sd36_i_crm = int8 = N° Registro Conselho de Classe
+                 sd36_c_crmuf = char(2) = UF do Registro
+                 sd36_c_crmorgao = char(50) = Órgão Emissor do Registro
                  ";
-   //funcao construtor da classe 
-   function cl_medicoscbo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("medicoscbo"); 
+     $this->rotulo = new rotulo("medicoscbo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_medicoscbo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd36_i_codigo = ($this->sd36_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd36_i_codigo"]:$this->sd36_i_codigo);
        $this->sd36_i_medico = ($this->sd36_i_medico == ""?@$GLOBALS["HTTP_POST_VARS"]["sd36_i_medico"]:$this->sd36_i_medico);
@@ -95,9 +95,9 @@ class cl_medicoscbo {
      }
    }
    // funcao para inclusao
-   function incluir ($sd36_i_codigo){ 
+   public function incluir ($sd36_i_codigo){
       $this->atualizacampos();
-     if($this->sd36_i_medico == null ){ 
+     if($this->sd36_i_medico == null ){
        $this->erro_sql = " Campo Médico nao Informado.";
        $this->erro_campo = "sd36_i_medico";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_medicoscbo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd36_i_rhcbo == null ){ 
+     if($this->sd36_i_rhcbo == null ){
        $this->erro_sql = " Campo CBO nao Informado.";
        $this->erro_campo = "sd36_i_rhcbo";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_medicoscbo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd36_c_vinculo == null ){ 
+     if($this->sd36_c_vinculo == null ){
        $this->erro_sql = " Campo Vínculo na Unidade nao Informado.";
        $this->erro_campo = "sd36_c_vinculo";
        $this->erro_banco = "";
@@ -124,26 +124,26 @@ class cl_medicoscbo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd36_i_chambul == null ){ 
+     if($this->sd36_i_chambul == null ){
        $this->sd36_i_chambul = "0";
      }
-     if($this->sd36_i_choutros == null ){ 
+     if($this->sd36_i_choutros == null ){
        $this->sd36_i_choutros = "0";
      }
-     if($this->sd36_i_crm == null ){ 
+     if($this->sd36_i_crm == null ){
        $this->sd36_i_crm = "0";
      }
      if($sd36_i_codigo == "" || $sd36_i_codigo == null ){
-       $result = db_query("select nextval('medicoscbo_sd36_i_codigo_seq')"); 
+       $result = db_query("select nextval('medicoscbo_sd36_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: medicoscbo_sd36_i_codigo_seq do campo: sd36_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: medicoscbo_sd36_i_codigo_seq do campo: sd36_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd36_i_codigo = pg_result($result,0,0); 
+       $this->sd36_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from medicoscbo_sd36_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd36_i_codigo)){
@@ -154,10 +154,10 @@ class cl_medicoscbo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd36_i_codigo = $sd36_i_codigo; 
+         $this->sd36_i_codigo = $sd36_i_codigo;
        }
      }
-     if(($this->sd36_i_codigo == null) || ($this->sd36_i_codigo == "") ){ 
+     if(($this->sd36_i_codigo == null) || ($this->sd36_i_codigo == "") ){
        $this->erro_sql = " Campo sd36_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,29 +166,29 @@ class cl_medicoscbo {
        return false;
      }
      $sql = "insert into medicoscbo(
-                                       sd36_i_codigo 
-                                      ,sd36_i_medico 
-                                      ,sd36_i_rhcbo 
-                                      ,sd36_c_vinculo 
-                                      ,sd36_i_chambul 
-                                      ,sd36_i_choutros 
-                                      ,sd36_i_crm 
-                                      ,sd36_c_crmuf 
-                                      ,sd36_c_crmorgao 
+                                       sd36_i_codigo
+                                      ,sd36_i_medico
+                                      ,sd36_i_rhcbo
+                                      ,sd36_c_vinculo
+                                      ,sd36_i_chambul
+                                      ,sd36_i_choutros
+                                      ,sd36_i_crm
+                                      ,sd36_c_crmuf
+                                      ,sd36_c_crmorgao
                        )
                 values (
-                                $this->sd36_i_codigo 
-                               ,$this->sd36_i_medico 
-                               ,$this->sd36_i_rhcbo 
-                               ,$this->sd36_c_vinculo 
-                               ,$this->sd36_i_chambul 
-                               ,$this->sd36_i_choutros 
-                               ,$this->sd36_i_crm 
-                               ,'$this->sd36_c_crmuf' 
-                               ,'$this->sd36_c_crmorgao' 
+                                $this->sd36_i_codigo
+                               ,$this->sd36_i_medico
+                               ,$this->sd36_i_rhcbo
+                               ,$this->sd36_c_vinculo
+                               ,$this->sd36_i_chambul
+                               ,$this->sd36_i_choutros
+                               ,$this->sd36_i_crm
+                               ,'$this->sd36_c_crmuf'
+                               ,'$this->sd36_c_crmorgao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "CBO dos Médicos ($this->sd36_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -228,16 +228,16 @@ class cl_medicoscbo {
        $resac = db_query("insert into db_acount values($acount,1952,11383,'','".AddSlashes(pg_result($resaco,0,'sd36_c_crmorgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd36_i_codigo=null) { 
+   public function alterar ($sd36_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update medicoscbo set ";
      $virgula = "";
-     if(trim($this->sd36_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_codigo"])){ 
+     if(trim($this->sd36_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_codigo"])){
        $sql  .= $virgula." sd36_i_codigo = $this->sd36_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd36_i_codigo) == null ){ 
+       if(trim($this->sd36_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd36_i_codigo";
          $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_medicoscbo {
          return false;
        }
      }
-     if(trim($this->sd36_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_medico"])){ 
+     if(trim($this->sd36_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_medico"])){
        $sql  .= $virgula." sd36_i_medico = $this->sd36_i_medico ";
        $virgula = ",";
-       if(trim($this->sd36_i_medico) == null ){ 
+       if(trim($this->sd36_i_medico) == null ){
          $this->erro_sql = " Campo Médico nao Informado.";
          $this->erro_campo = "sd36_i_medico";
          $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_medicoscbo {
          return false;
        }
      }
-     if(trim($this->sd36_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_rhcbo"])){ 
+     if(trim($this->sd36_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_rhcbo"])){
        $sql  .= $virgula." sd36_i_rhcbo = $this->sd36_i_rhcbo ";
        $virgula = ",";
-       if(trim($this->sd36_i_rhcbo) == null ){ 
+       if(trim($this->sd36_i_rhcbo) == null ){
          $this->erro_sql = " Campo CBO nao Informado.";
          $this->erro_campo = "sd36_i_rhcbo";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_medicoscbo {
          return false;
        }
      }
-     if(trim($this->sd36_c_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_vinculo"])){ 
+     if(trim($this->sd36_c_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_vinculo"])){
        $sql  .= $virgula." sd36_c_vinculo = $this->sd36_c_vinculo ";
        $virgula = ",";
-       if(trim($this->sd36_c_vinculo) == null ){ 
+       if(trim($this->sd36_c_vinculo) == null ){
          $this->erro_sql = " Campo Vínculo na Unidade nao Informado.";
          $this->erro_campo = "sd36_c_vinculo";
          $this->erro_banco = "";
@@ -286,32 +286,32 @@ class cl_medicoscbo {
          return false;
        }
      }
-     if(trim($this->sd36_i_chambul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_chambul"])){ 
-        if(trim($this->sd36_i_chambul)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_chambul"])){ 
-           $this->sd36_i_chambul = "0" ; 
-        } 
+     if(trim($this->sd36_i_chambul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_chambul"])){
+        if(trim($this->sd36_i_chambul)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_chambul"])){
+           $this->sd36_i_chambul = "0" ;
+        }
        $sql  .= $virgula." sd36_i_chambul = $this->sd36_i_chambul ";
        $virgula = ",";
      }
-     if(trim($this->sd36_i_choutros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_choutros"])){ 
-        if(trim($this->sd36_i_choutros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_choutros"])){ 
-           $this->sd36_i_choutros = "0" ; 
-        } 
+     if(trim($this->sd36_i_choutros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_choutros"])){
+        if(trim($this->sd36_i_choutros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_choutros"])){
+           $this->sd36_i_choutros = "0" ;
+        }
        $sql  .= $virgula." sd36_i_choutros = $this->sd36_i_choutros ";
        $virgula = ",";
      }
-     if(trim($this->sd36_i_crm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_crm"])){ 
-        if(trim($this->sd36_i_crm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_crm"])){ 
-           $this->sd36_i_crm = "0" ; 
-        } 
+     if(trim($this->sd36_i_crm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_crm"])){
+        if(trim($this->sd36_i_crm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd36_i_crm"])){
+           $this->sd36_i_crm = "0" ;
+        }
        $sql  .= $virgula." sd36_i_crm = $this->sd36_i_crm ";
        $virgula = ",";
      }
-     if(trim($this->sd36_c_crmuf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_crmuf"])){ 
+     if(trim($this->sd36_c_crmuf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_crmuf"])){
        $sql  .= $virgula." sd36_c_crmuf = '$this->sd36_c_crmuf' ";
        $virgula = ",";
      }
-     if(trim($this->sd36_c_crmorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_crmorgao"])){ 
+     if(trim($this->sd36_c_crmorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd36_c_crmorgao"])){
        $sql  .= $virgula." sd36_c_crmorgao = '$this->sd36_c_crmorgao' ";
        $virgula = ",";
      }
@@ -347,7 +347,7 @@ class cl_medicoscbo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "CBO dos Médicos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd36_i_codigo;
@@ -375,14 +375,14 @@ class cl_medicoscbo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd36_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd36_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd36_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -416,7 +416,7 @@ class cl_medicoscbo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "CBO dos Médicos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd36_i_codigo;
@@ -444,11 +444,11 @@ class cl_medicoscbo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -470,10 +470,10 @@ class cl_medicoscbo {
       }
      return $result;
    }
-   function sql_query ( $sd36_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd36_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,15 +489,15 @@ class cl_medicoscbo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd36_i_codigo!=null ){
-         $sql2 .= " where medicoscbo.sd36_i_codigo = $sd36_i_codigo "; 
-       } 
+         $sql2 .= " where medicoscbo.sd36_i_codigo = $sd36_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,10 +506,10 @@ class cl_medicoscbo {
      }
      return $sql;
   }
-   function sql_query_file ( $sd36_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd36_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,15 +522,15 @@ class cl_medicoscbo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd36_i_codigo!=null ){
-         $sql2 .= " where medicoscbo.sd36_i_codigo = $sd36_i_codigo "; 
-       } 
+         $sql2 .= " where medicoscbo.sd36_i_codigo = $sd36_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

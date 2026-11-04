@@ -56,7 +56,7 @@ $cllab_entrega->rotulo->label();
       </tr>
       <tr>
         <td nowrap title="<?=@$Tla22_i_codigo?>">
-           <?
+           <?php
         db_ancora( '<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "" );
          ?>
         </td>

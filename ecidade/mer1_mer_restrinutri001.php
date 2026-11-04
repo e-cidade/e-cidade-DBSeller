@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -104,7 +104,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me26_i_nutriente",true,1,"me26_i_nutriente",true);
 </script>
-<?
+<?php
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
   if ($clmer_restrinutri->erro_status=="0") {

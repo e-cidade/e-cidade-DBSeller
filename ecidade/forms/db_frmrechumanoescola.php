@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -120,7 +120,7 @@ db_fieldsmemory($result, 0);
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted75_i_escola?>">
-      <?db_ancora( @$Led75_i_escola, "js_pesquisaed75_i_escola(true);", 3 );?>
+      <?php db_ancora( @$Led75_i_escola, "js_pesquisaed75_i_escola(true);", 3 );?>
     </td>
     <td>
       <?php

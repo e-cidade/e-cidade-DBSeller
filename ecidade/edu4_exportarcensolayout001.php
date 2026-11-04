@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -95,7 +95,7 @@ if (!isset($ed52_i_ano)) {
     </style>
 </head>
 <body bgcolor="#CCCCCC" style="margin-top: 25px">
-<? MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
+<?php MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
 <form name="form1" method="post" action="" class="container">
 
     <fieldset>
@@ -270,6 +270,16 @@ if ($verif) {
         HttpClient.post('edu4_novoCenso.RPC.php', {body: data}).then(response => {
             if (response.erro) {
                 alert(response.mensagem);
+                return;
+            }
+            if (response.erroCPF) {
+                let msg = 'Existem Alunos sem o CPF informado, confirme para importar assim mesmo,' +
+                    'ou cancele para exibir o arquivo de incosistências.'
+                if (confirm(msg)) {
+                    dowloadArquivoCenso(response.arquivo_censo, "Arquivo de Exportação do Censo Escolar.");
+                } else {
+                    dowloadArquivoCenso(response.arquivo_log, "Inconsistências do Censo Escolar.");
+                }
                 return;
             }
 

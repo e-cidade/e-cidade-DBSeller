@@ -287,5 +287,4 @@ class Portaria
 
         return  ($clrhparam->numrows > 0);
     }
-
 }

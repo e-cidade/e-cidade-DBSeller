@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,13 +59,13 @@ class cl_db_versao {
                  db30_obs = text = Observação da Versão/Release 
                  ";
    //funcao construtor da classe 
-   function cl_db_versao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_versao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_db_versao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db30_codver = ($this->db30_codver == ""?@$GLOBALS["HTTP_POST_VARS"]["db30_codver"]:$this->db30_codver);
        $this->db30_codversao = ($this->db30_codversao == ""?@$GLOBALS["HTTP_POST_VARS"]["db30_codversao"]:$this->db30_codversao);
@@ -93,7 +93,7 @@ class cl_db_versao {
      }
    }
    // funcao para inclusao
-   function incluir ($db30_codver){ 
+   public function incluir ($db30_codver){ 
       $this->atualizacampos();
      if($this->db30_codversao == null ){ 
        $this->erro_sql = " Campo Número da Release nao Informado.";
@@ -216,7 +216,7 @@ class cl_db_versao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db30_codver=null) { 
+   public function alterar ($db30_codver=null) { 
       $this->atualizacampos();
      $sql = " update db_versao set ";
      $virgula = "";
@@ -355,7 +355,7 @@ class cl_db_versao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db30_codver=null,$dbwhere=null) { 
+   public function excluir ($db30_codver=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db30_codver));
      }else{ 
@@ -420,7 +420,7 @@ class cl_db_versao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -442,7 +442,7 @@ class cl_db_versao {
       }
      return $result;
    }
-   function sql_query ( $db30_codver=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db30_codver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -477,7 +477,7 @@ class cl_db_versao {
      }
      return $sql;
   }
-   function sql_query_file ( $db30_codver=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db30_codver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

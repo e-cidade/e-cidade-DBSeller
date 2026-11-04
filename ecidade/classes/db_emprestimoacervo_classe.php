@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_emprestimoacervo {
                  bi19_exemplar = int8 = Exemplar
                  ";
    //funcao construtor da classe
-   function cl_emprestimoacervo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emprestimoacervo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         if($this->emite=="true"){
          echo "<script>
@@ -79,7 +79,7 @@ class cl_emprestimoacervo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi19_codigo = ($this->bi19_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi19_codigo"]:$this->bi19_codigo);
        $this->bi19_emprestimo = ($this->bi19_emprestimo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi19_emprestimo"]:$this->bi19_emprestimo);
@@ -89,7 +89,7 @@ class cl_emprestimoacervo {
      }
    }
    // funcao para inclusao
-   function incluir ($bi19_codigo){
+   public function incluir ($bi19_codigo){
       $this->atualizacampos();
      if($this->bi19_emprestimo == null ){
        $this->erro_sql = " Campo Empréstimo nao Informado.";
@@ -188,7 +188,7 @@ class cl_emprestimoacervo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($bi19_codigo=null) {
+   public function alterar ($bi19_codigo=null) {
       $this->atualizacampos();
      $sql = " update emprestimoacervo set ";
      $virgula = "";
@@ -283,7 +283,7 @@ class cl_emprestimoacervo {
      }
    }
    // funcao para exclusao
-   function excluir ($bi19_codigo=null,$dbwhere=null) {
+   public function excluir ($bi19_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bi19_codigo));
      }else{
@@ -346,7 +346,7 @@ class cl_emprestimoacervo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -368,10 +368,10 @@ class cl_emprestimoacervo {
       }
      return $result;
    }
-   function sql_query ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_emprestimoacervo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,10 +406,10 @@ class cl_emprestimoacervo {
      }
      return $sql;
   }
-   function sql_query_file ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_emprestimoacervo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,10 +441,10 @@ class cl_emprestimoacervo {
   }
 
 
-  function sql_query_emprestimos_acervo_com_autor ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_emprestimos_acervo_com_autor ( $bi19_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_emprestimoacervo {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

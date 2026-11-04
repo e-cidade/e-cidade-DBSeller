@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -63,6 +63,16 @@ class Preenchimentos
     private $servidores = array();
 
     /**
+     * @var Date
+     */
+    private $dataInicio;
+
+    /**
+     * @var Date
+     */
+    private $dataFim;
+
+    /**
      * Informa o responsável pelo preenchimento. Se não indormado, busca de todos
      *
      * @param mixed $responsavel
@@ -82,8 +92,14 @@ class Preenchimentos
             $where[] = "eso18_cgm = {$this->responsavelPreenchimento}";
         }
 
-        $where[] = $this->montarWhereServidores('eso18_regist');
-        $where = implode(' and ', $where);
+        // Substitui obrigatoridade da matricula, pela data do preenchimento.
+        if (!empty($this->dataInicio) && !empty($this->dataFim)) {
+            $where[] = " db107_datalancamento BETWEEN '{$this->dataInicio}' AND '{$this->dataFim}' ";
+            $where = implode(' and ', $where);
+        } else {
+            $where[] = $this->montarWhereServidores('eso18_regist');
+            $where = implode(' and ', $where);
+        }
 
         $campos = 'distinct on (eso18_regist) ';
         $campos .= 'eso18_cpf as identificador, eso18_cgm as cgm, db107_sequencial as preenchimento, ';
@@ -526,9 +542,9 @@ class Preenchimentos
     public function buscarUltimoPreenchimentoAfastamentoTemporario(
         $codigoFormulario,
         $instituicao,
-        $cgmEmpregador,
         $ano,
-        $mes
+        $mes,
+        $cgmEmpregador
     ) {
         $configuracaoAfastamento = new S2230();
         $dataConfiguracao = $configuracaoAfastamento->getPropriedade('data_envio');
@@ -536,7 +552,7 @@ class Preenchimentos
         $where = array(
             "eso13_avaliacao = {$codigoFormulario}",
             "(h16_dtterm >= '{$dataConfiguracao}' or h16_dtterm is null) ",
-            "eso13_empregador = {$cgmEmpregador}",
+            "rh01_instit = {$instituicao}",
             "avaliacaopergunta.db103_identificadorcampo = 'codMotAfast'"
         );
 
@@ -545,7 +561,7 @@ class Preenchimentos
         }
 
         $dao = new cl_avaliacaogruporespostaafastamentoesocial();
-        $sql = $dao->sql_avaliacao_afastamentos($instituicao, $where, $ano, $mes);
+        $sql = $dao->sql_avaliacao_afastamentos($instituicao, $where, $ano, $mes, $cgmEmpregador);
         $rs = db_query($sql);
         if (!$rs) {
             $mensagem = 'Não foi possível buscar o último preenchimento do formulario S-2230 - Afastamento Temporário.';
@@ -1311,5 +1327,25 @@ class Preenchimentos
         }
 
         return db_utils::getCollectionByRecord($rs);
+    }
+
+    public function getDataInicio()
+    {
+        return $this->dataInicio;
+    }
+
+    public function setDataInicio($dataInicio)
+    {
+        $this->dataInicio = $dataInicio;
+    }
+
+    public function getDataFim()
+    {
+        return $this->dataFim;
+    }
+
+    public function setDataFim($dataFim)
+    {
+        $this->dataFim = $dataFim;
     }
 }

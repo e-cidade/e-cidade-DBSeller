@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -265,7 +265,7 @@ function js_padrao(val){
 <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
 </tr>
 
-<?
+<?php
 $result = $clpagordem->sql_record($clpagordem->sql_query_pagordemele(null,"distinct e60_numemp,e50_codord,e60_anousu,e60_codemp,z01_nome,e53_valor,e53_vlranu,e53_vlrpag","e50_codord","$dbwhere"));
 /*
 echo($clpagordem->sql_query_pagordemele(null,"distinct e60_numemp,e50_codord,e60_anousu,e60_codemp,z01_nome,e53_valor,e53_vlranu,e53_vlrpag","e50_codord","$dbwhere"));
@@ -335,7 +335,7 @@ ${"e83_codtipo_{$e50_codord}"} = $cod_tipo;
   <td class='bordas' align='right'><small><?=db_input("valor_$e50_codord",6,$Ie53_valor,true,'text',$db_opcao,"onChange='js_confere(this);'")?></small></td>
   <td class='bordas' align='right'><small><?=db_select("e83_codtipo_$e50_codord",$arr,true,1)?></small></td>
   </tr>
-  <?	   
+  <?php    
 } 
 ?>	  
 </table>
@@ -352,7 +352,7 @@ parent.document.form1.registros.value = '<?=$numrows?>';
 parent.document.form1.tipo.value = 'ordem';
 
 </script>
-<?
+<?php
 if($numrows>0){
   echo "<script>";
   echo "parent.document.form1.atualizar.disabled=false;";

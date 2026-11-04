@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpcorcamitemproc->rotulo->label("pc31_pcprocitem");
               <?=$Lpc31_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc31_orcamitem",10,$Ipc31_orcamitem,true,"text",4,"","chave_pc31_orcamitem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpcorcamitemproc->rotulo->label("pc31_pcprocitem");
               <?=$Lpc31_pcprocitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc31_pcprocitem",10,$Ipc31_pcprocitem,true,"text",4,"","chave_pc31_pcprocitem");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clpcorcamitemproc->rotulo->label("pc31_pcprocitem");
               <?=$Lpc31_pcprocitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc31_pcprocitem",10,$Ipc31_pcprocitem,true,"text",4,"","chave_pc31_pcprocitem");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clpcorcamitemproc->rotulo->label("pc31_pcprocitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamitemproc.php")==true){
@@ -129,12 +129,12 @@ $clpcorcamitemproc->rotulo->label("pc31_pcprocitem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

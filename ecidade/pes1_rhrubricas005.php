@@ -93,7 +93,7 @@ if(isset($alterar) || isset($novasrubricas)){
       }
     }
   }else{
-    $arr_codigos = split(",",$novasrubricas);
+    $arr_codigos =explode(",",$novasrubricas);
     for($i=0; $i<count($arr_codigos); $i++){
       $rubricainclui = $arr_codigos[$i];
       if($i == 0){
@@ -226,6 +226,32 @@ if(isset($alterar) || isset($novasrubricas)){
     	}
     }
 
+    if($sqlerro == false){
+      if ( !empty($rubrica_codigo) ) {
+  
+        $clrhrubricasadiantamento->rh262_rubrica_principal    = $rh27_rubric;
+        $clrhrubricasadiantamento->rh262_rubrica_adiantamento = $rubrica_codigo; 
+        $clrhrubricasadiantamento->rh262_instituicao          = db_getsession('DB_instit');
+  
+        $resultAdiantamento = db_query($clrhrubricasadiantamento->sql_query($rh27_rubric,null,db_getsession("DB_instit")));
+        if (pg_num_rows($resultAdiantamento) > 0) {
+          $clrhrubricasadiantamento->alterar();
+        } else {
+          $clrhrubricasadiantamento->incluir($rh27_rubric,$rubrica_codigo,db_getsession("DB_instit"));
+        } 
+  
+      } else {
+        $clrhrubricasadiantamento->rh262_rubrica_principal = $rh27_rubric;
+        $clrhrubricasadiantamento->rh262_instituicao       = db_getsession('DB_instit');
+        $clrhrubricasadiantamento->excluir();
+      }
+  
+      if ($clrhrubricasadiantamento->erro_status == 0){
+        $erro_msg = $clrhrubricasadiantamento->erro_msg;
+        $sqlerro = true;
+      }
+    }
+
   db_fim_transacao($sqlerro);
   $db_opcao = 2;
   $db_botao = true;
@@ -344,6 +370,10 @@ if(isset($alterar) || isset($novasrubricas)){
   if (isset($oPost->rh27_periodolancamento) && $oPost->rh27_periodolancamento != '') {
     $rh27_periodolancamento = $oPost->rh27_periodolancamento;
   }
+  $resultAdiantamento = $clrhrubricasadiantamento->sql_record($clrhrubricasadiantamento->sql_query($chavepesquisa,null,db_getsession("DB_instit"), "rh262_rubrica_adiantamento as rubrica_codigo, rh27_descr as rubrica_descr"));
+  if(pg_num_rows($resultAdiantamento)>0){
+    db_fieldsmemory($resultAdiantamento,0);
+  }
 }
 ?>
 <html>
@@ -361,10 +391,10 @@ if(isset($alterar) || isset($novasrubricas)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <? include(modification("forms/db_frmrhrubricas.php")); ?>
+  <?php include(modification("forms/db_frmrhrubricas.php")); ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($novasrubricas)){
   if($calc1 == "" && $calc2 == "" && $calc3 == ""){
     if($sqlerro==true){

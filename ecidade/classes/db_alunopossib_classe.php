@@ -60,13 +60,13 @@ class cl_alunopossib {
                  ed79_c_situacao = char(1) = Situação 
                  ";
    //funcao construtor da classe
-   function cl_alunopossib() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("alunopossib");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_alunopossib {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed79_i_codigo = ($this->ed79_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed79_i_codigo"]:$this->ed79_i_codigo);
        $this->ed79_i_alunocurso = ($this->ed79_i_alunocurso == ""?@$GLOBALS["HTTP_POST_VARS"]["ed79_i_alunocurso"]:$this->ed79_i_alunocurso);
@@ -89,7 +89,7 @@ class cl_alunopossib {
      }
    }
    // funcao para inclusao
-   function incluir ($ed79_i_codigo){
+   public function incluir ($ed79_i_codigo){
       $this->atualizacampos();
      if($this->ed79_i_alunocurso == null ){
        $this->erro_sql = " Campo Aluno nao Informado.";
@@ -212,7 +212,7 @@ class cl_alunopossib {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed79_i_codigo=null) {
+   public function alterar ($ed79_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update alunopossib set ";
      $virgula = "";
@@ -343,7 +343,7 @@ class cl_alunopossib {
      }
    }
    // funcao para exclusao
-   function excluir ($ed79_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed79_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed79_i_codigo));
      }else{
@@ -410,7 +410,7 @@ class cl_alunopossib {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -432,7 +432,7 @@ class cl_alunopossib {
       }
      return $result;
    }
-   function sql_query ( $ed79_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed79_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -475,7 +475,7 @@ class cl_alunopossib {
      }
      return $sql;
   }
-   function sql_query_file ( $ed79_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed79_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

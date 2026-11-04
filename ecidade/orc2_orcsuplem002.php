@@ -70,12 +70,16 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     $sql = "
     select sum(o47_valor) as total,
            o15_recurso as recurso,
-           o15_descr
+           o15_codigo as codigorecurso,
+           o15_descr,
+           anousu
     from (
         select  o47_valor,
+                o15_codigo,
                 o15_recurso,
                 o15_descr,
-                o49_codsup
+                o49_codsup,
+               o58_anousu as anousu
            from orcsuplem
                 inner join orcprojeto    on o39_codproj = orcsuplem.o46_codlei
                 left join orcsuplemretif on o48_retificado= orcprojeto.o39_codproj
@@ -86,15 +90,18 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
                                         and o58_anousu = orcsuplemval.o47_anousu
                                         and o58_instit in ({$db_selinstit})
                 inner join orctiporec on o15_codigo = o58_codigo
+                inner join fonterecurso on orctiporec_id  = o15_codigo and exercicio = o58_anousu
           where {$wheretipo} o48_retificado is null
             and {$txt_where}
 
           union all
 
         select  o136_valor,
+                o15_codigo,
                 o15_recurso,
                 o15_descr,
-                o49_codsup
+                o49_codsup,
+               o39_anousu as anousu
            from orcsuplem
                 inner join orcprojeto           on o39_codproj = orcsuplem.o46_codlei
                 left join orcsuplemretif        on o48_retificado= orcprojeto.o39_codproj
@@ -109,7 +116,7 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
             and o08_instit in ({$db_selinstit})
          ) as xx
       group by
-      recurso,o15_descr
+      recurso,o15_descr,anousu, o15_codigo
       order by o15_recurso
     ";
     $res = db_query($sql);
@@ -127,7 +134,7 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     $resultinst = db_query($sqlInstit);
     $descr_inst = '';
     $xvirg = '';
-    for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
+    for ($xins = 0; $xins < pg_num_rows($resultinst); ++$xins) {
         db_fieldsmemory($resultinst, $xins);
         $descr_inst .= $xvirg.$nomeinst;
         $xvirg = ', ';
@@ -148,6 +155,7 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     for ($x = 0; $x < $linhas; ++$x) { // loop nos projetos
         db_fieldsmemory($res, $x);
 
+        $recursocompleto = descricaoCompletaRecurso($codigorecurso, $anousu, 4);
         if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
             $pagina = 0;
             $pdf->addpage();
@@ -162,15 +170,17 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
             //$pdf->setX(30);
             //$pdf->Cell(100,4,"TOTAIS POR RECURSO",'B',1,"L",'0');
             $pdf->Ln();
-            $pdf->setX(30);
+            $pdf->setX(20);
             $pdf->Cell(20, 4, 'RECURSO', 'B', 0, 'L', '0');
+            $pdf->setX(50);
             $pdf->Cell(110, 4, 'DESCR', 'B', 0, 'L', '0');
             $pdf->Cell(20, 4, 'TOTAL', 'B', 1, 'R', '0');  // br
             $pdf->Ln();
         }
 
-        $pdf->setX(30);
-        $pdf->Cell(20, 4, "$recurso", 0, 0, 'L', '0');
+        $pdf->setX(15);
+        $pdf->Cell(20, 4, "$recursocompleto", 0, 0, 'L', '0');
+        $pdf->setX(50);
         $pdf->Cell(110, 4, "$o15_descr", 0, 0, 'L', '0');
         $pdf->Cell(20, 4, db_formatar($total, 'f'), 0, 1, 'R', '0');  // br
         // trans as qtds por tipo de projeto
@@ -190,14 +200,14 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
             left outer join orctiporec on o15_codigo = o58_codigo
             where $wheretipo o48_retificado is null  and
             $txt_where
+            and o15_codigo = $codigorecurso
             and o15_recurso = '$recurso'
             group by
             o46_tiposup,o48_descr
         ";
-
         $restipo = db_query($sql);
-        if (pg_numrows($restipo) > 0) {
-            for ($u = 0; $u < pg_numrows($restipo); ++$u) {
+        if (pg_num_rows($restipo) > 0) {
+            for ($u = 0; $u < pg_num_rows($restipo); ++$u) {
                 db_fieldsmemory($restipo, $u);
                 $pdf->setX(50);
                 $pdf->Cell(20, 4, ' ', 0, 0, 'L', '0');

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -45,7 +45,7 @@ $clempautoriza->rotulo->label();
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("widgets/windowAux.widget.js");
@@ -74,12 +74,12 @@ $clempautoriza->rotulo->label();
             <table  align="left"  cellpadding="2" cellspacing="2" border="0">
                 <tr>
                     <td nowrap title="Código de retorno do arquivo bancário">
-                        <?
+                        <?php
                           db_ancora("<b>Código de retorno do arquivo:</b>","js_pesquisacodret(true);", 1);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('codret',10,"",true,'text',1," onchange='js_pesquisacodret(false);'");
                         db_input('arqret',40,"",true,'text',3,'');
                         ?>
@@ -107,7 +107,7 @@ $clempautoriza->rotulo->label();
 
 
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

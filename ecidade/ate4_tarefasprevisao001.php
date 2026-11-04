@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,7 +123,7 @@ include(modification("classes/db_termoanuproc_classe.php"));
 </center>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -786,8 +786,8 @@ function addRows (aObj, niv) {
 	    }
 	    
 	    if (i == aObj.length-1) 
-	      sIdent += "<img src='imagens/tree/join2.gif?t=<? echo time(); ?>' border='0' id='img"+iInd+"'>";
-	    else sIdent += "<img src='imagens/tree/joinbottom2.gif?t=<? echo time(); ?>' border='0' id='img"+iInd+"'>";	      
+	      sIdent += "<img src='imagens/tree/join2.gif?t=<?php echo time(); ?>' border='0' id='img"+iInd+"'>";
+	    else sIdent += "<img src='imagens/tree/joinbottom2.gif?t=<?php echo time(); ?>' border='0' id='img"+iInd+"'>";	      
 	  }
     sIdent += "&nbsp;";
       

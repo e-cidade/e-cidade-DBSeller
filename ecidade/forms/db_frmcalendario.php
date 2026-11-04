@@ -29,6 +29,8 @@
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed55_i_codigo");
 
+$secretaria = true ? db_getsession("DB_modulo") == 7159 : false;
+
 ?>
 <form name="form1" method="post" action="">
   <table>
@@ -38,7 +40,7 @@ $clrotulo->label("ed55_i_codigo");
       </td>
       <td>
         <?php
-        db_input( 'ed52_i_codigo', 15, $Ied52_i_codigo, true, 'text', 3, "" );
+        db_input('ed52_i_codigo', 15, $Ied52_i_codigo, true, 'text', 3, "");
         ?>
       </td>
     </tr>
@@ -48,7 +50,7 @@ $clrotulo->label("ed55_i_codigo");
       </td>
       <td>
         <?php
-        db_input( 'ed52_c_descr', 20, $Ied52_c_descr, true, 'text', $db_opcao, "" );
+        db_input('ed52_c_descr', 20, $Ied52_c_descr, true, 'text', $db_opcao, "");
         ?>
       </td>
     </tr>
@@ -56,15 +58,15 @@ $clrotulo->label("ed55_i_codigo");
       <td nowrap title="<?=$Ted52_i_duracaocal?>">
         <label for="ed52_i_duracaocal">
           <?php
-          db_ancora( $Led52_i_duracaocal, "js_pesquisaed52_i_duracaocal(true);", @$db_opcao );
-          ?>
+            db_ancora($Led52_i_duracaocal, "js_pesquisaed52_i_duracaocal(true);", @$db_opcao);
+            ?>
         </label>
       </td>
       <td>
        <?php
-       db_input( 'ed52_i_duracaocal', 15, $Ied52_i_duracaocal, true, 'text', @$db_opcao, " onchange='js_pesquisaed52_i_duracaocal(false);'" );
-       db_input( 'ed55_c_descr',      20, @$Ied55_c_descr,     true, 'text', 3, '' );
-       ?>
+        db_input('ed52_i_duracaocal', 15, $Ied52_i_duracaocal, true, 'text', @$db_opcao, " onchange='js_pesquisaed52_i_duracaocal(false);'");
+        db_input('ed55_c_descr', 20, @$Ied55_c_descr, true, 'text', 3, '');
+        ?>
       </td>
     </tr>
     <tr>
@@ -73,13 +75,13 @@ $clrotulo->label("ed55_i_codigo");
       </td>
       <td>
         <?php
-        db_input( 'ed52_i_ano', 4, $Ied52_i_ano, true, 'text', $db_opcao, " onchange=\"js_ano();\"" );
+        db_input('ed52_i_ano', 4, $Ied52_i_ano, true, 'text', $db_opcao, " onchange=\"js_ano();\"");
         ?>
         <span id="periodos" style="visibility:hidden">
           <?php
-          echo $Led52_i_periodo;
-          db_input( 'ed52_i_periodo', 10, $Ied52_i_periodo, true, 'text', $db_opcao, "" );
-          ?>
+            echo $Led52_i_periodo;
+            db_input('ed52_i_periodo', 10, $Ied52_i_periodo, true, 'text', $db_opcao, "");
+            ?>
         </span>
       </td>
     </tr>
@@ -90,16 +92,18 @@ $clrotulo->label("ed55_i_codigo");
       <td>
         <?php
         db_inputdata(
-                      'ed52_d_inicio',
-                      @$ed52_d_inicio_dia,
-                      @$ed52_d_inicio_mes,
-                      @$ed52_d_inicio_ano,
-                      true,
-                      'text',
-                      $db_opcao,
-                      " onchange=\"js_datainicio();\"", "", "",
-                      "parent.js_datainicio();"
-                    );
+            'ed52_d_inicio',
+            @$ed52_d_inicio_dia,
+            @$ed52_d_inicio_mes,
+            @$ed52_d_inicio_ano,
+            true,
+            'text',
+            $db_opcao,
+            " onchange=\"js_datainicio();\"",
+            "",
+            "",
+            "parent.js_datainicio();"
+        );
         ?>
       </td>
     </tr>
@@ -110,17 +114,19 @@ $clrotulo->label("ed55_i_codigo");
       <td>
         <?php
         db_inputdata(
-                      'ed52_d_fim',
-                      @$ed52_d_fim_dia,
-                      @$ed52_d_fim_mes,
-                      @$ed52_d_fim_ano,
-                      true,
-                      'text',
-                      $db_opcao,
-                      " onchange=\"js_datafim();\"", "", "",
-                      "parent.js_datafim();",
-                      "js_datafim();"
-                    );
+            'ed52_d_fim',
+            @$ed52_d_fim_dia,
+            @$ed52_d_fim_mes,
+            @$ed52_d_fim_ano,
+            true,
+            'text',
+            $db_opcao,
+            " onchange=\"js_datafim();\"",
+            "",
+            "",
+            "parent.js_datafim();",
+            "js_datafim();"
+        );
         ?>
       </td>
     </tr>
@@ -131,16 +137,19 @@ $clrotulo->label("ed55_i_codigo");
       <td>
         <?php
         db_inputdata(
-                      'ed52_d_resultfinal',
-                      @$ed52_d_resultfinal_dia,
-                      @$ed52_d_resultfinal_mes,
-                      @$ed52_d_resultfinal_ano,
-                      true,
-                      'text',
-                      $db_opcao,
-                      " onchange=\"js_resfinal();\"", "", "",
-                      "parent.js_resfinal();","js_resfinal();"
-                    );
+            'ed52_d_resultfinal',
+            @$ed52_d_resultfinal_dia,
+            @$ed52_d_resultfinal_mes,
+            @$ed52_d_resultfinal_ano,
+            true,
+            'text',
+            $db_opcao,
+            " onchange=\"js_resfinal();\"",
+            "",
+            "",
+            "parent.js_resfinal();",
+            "js_resfinal();"
+        );
         ?>
       </td>
     </tr>
@@ -150,7 +159,7 @@ $clrotulo->label("ed55_i_codigo");
       </td>
       <td>
         <?php
-        db_input( 'ed52_i_diasletivos', 10, $Ied52_i_diasletivos, true, 'text', 3, " readonly " );
+        db_input('ed52_i_diasletivos', 10, $Ied52_i_diasletivos, true, 'text', 3, " readonly ");
         ?>
       </td>
     </tr>
@@ -160,7 +169,7 @@ $clrotulo->label("ed55_i_codigo");
       </td>
       <td>
         <?php
-        db_input( 'ed52_i_semletivas', 10, $Ied52_i_semletivas, true, 'text', 3, "" );
+        db_input('ed52_i_semletivas', 10, $Ied52_i_semletivas, true, 'text', 3, "");
         ?>
       </td>
     </tr>
@@ -169,30 +178,44 @@ $clrotulo->label("ed55_i_codigo");
     $iOpcaoCalendAnterior = $db_opcao;
 
     if (db_getsession("DB_modulo") != 1100747) {
-      $iOpcaoCalendAnterior = 3;
+        $iOpcaoCalendAnterior = 3;
     }
     ?>
     <tr>
       <td nowrap title="<?=$Ted52_i_calendant?>">
         <label for="ed52_i_calendant">
           <?php
-          db_ancora( $Led52_i_calendant, "js_pesquisaed52_i_calendant(true);", $iOpcaoCalendAnterior );
-          ?>
+            db_ancora($Led52_i_calendant, "js_pesquisaed52_i_calendant(true);", $iOpcaoCalendAnterior);
+            ?>
         </label>
       </td>
       <td>
        <?php
-       db_input( 'ed52_i_calendant', 15, $Ied52_i_calendant, true, 'text', 3, " onchange='js_pesquisaed52_i_calendant(false);'" );
-       db_input( 'ed52_c_descrant',  20, 'ed52_c_descrant',  true, 'text', 3, '' );
-       ?>
+        db_input('ed52_i_calendant', 15, $Ied52_i_calendant, true, 'text', 3, " onchange='js_pesquisaed52_i_calendant(false);'");
+        db_input('ed52_c_descrant', 20, 'ed52_c_descrant', true, 'text', 3, '');
+        ?>
       </td>
     </tr>
     <tr>
       <td>
         <?php
-        db_input( 'ed52_c_passivo',     1, $Ied52_c_passivo,     true, 'hidden', 3 );
-        db_input( 'ed52_i_codigo_base',10, "ed52_i_codigo_base", true, 'hidden', 3 );
+        db_input('ed52_c_passivo', 1, $Ied52_c_passivo, true, 'hidden', 3);
+        db_input('ed52_i_codigo_base', 10, "ed52_i_codigo_base", true, 'hidden', 3);
         ?>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap title="<?= @$Ted52_t_obs ?>">
+          <label for="ed52_t_obs"> <?= @$Led52_t_obs ?></label>
+      </td>
+      <td>
+          <table>
+              <tr>
+                  <td>
+                      <?php db_textarea('ed52_t_obs', 9, 40, $Ied52_t_obs, true, 'text', $db_opcao, "", "", "") ?>
+                  </td>
+              </tr>
+          </table>
       </td>
     </tr>
   </table>
@@ -206,18 +229,17 @@ $clrotulo->label("ed55_i_codigo");
   <input name="novo" type="button" id="novo" value="Novo Registro" onclick="js_novo()" <?=$db_opcao==1?"disabled":""?>>
   <?php
     if (db_getsession("DB_modulo") == 1100747) {
+        $sDisabled = "";
+        if ($db_opcao == 2 || $db_opcao == 3) {
+            $sDisabled = "disabled = 'disabled'";
+        }
 
-      $sDisabled = "";
-      if ( $db_opcao == 2 || $db_opcao == 3 ) {
-      	$sDisabled = "disabled = 'disabled'";
-      }
-
-      ?>
+        ?>
       <input name="novo" type="button" id="importar" value="Importar Calendario" onclick="js_importarCalendario()"
              <?php echo $sDisabled;?> />
-      <?php
+        <?php
     }
-  ?>
+    ?>
 </form>
 <table>
   <tr>
@@ -357,11 +379,11 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave){
 
   db_iframe_calendario.hide();
-  <?
-  if ( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  }
-  ?>
+  <?php
+    if ($db_opcao != 1) {
+        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    }
+    ?>
 }
 
 function js_novo() {
@@ -598,6 +620,8 @@ function js_retornoDadosCalendarioClone(oJson) {
     $('ed52_c_descrant').value     = oRetorno.oDadosCalendarioClone.sDescricaoCalendarioAnterior.urlDecode();
 
     $('ed52_i_codigo_base').value = oRetorno.iCodigoBaseCalendario;
+
+    $('ed52_t_obs').value = oRetorno.oDadosCalendarioClone.sObs.urlDecode();
   } else {
     alert( oRetorno.message.urlDecode() );
   }
@@ -612,35 +636,55 @@ function js_carregaCalendario () {
     return false;
   }
 
-	$('db_opcao').disabled = true;
+  secretaria = '<?= $secretaria ?>';
+  let answer = false;
+  const estaEditando = $F('ed52_i_codigo') !== "";
 
-  var oObject                   = new Object();
-      oObject.exec              = "vinculaCalendarioBaseEscola";
-      oObject.sOpcao            = $F('db_opcao');
-      oObject.iCodigoCalendario = $F('ed52_i_codigo');
-      oObject.sDescricao        = encodeURIComponent(tagString($F('ed52_c_descr')));
-      oObject.iPeriodicidade    = $F('ed52_i_duracaocal');
-      oObject.iPeriodo          = $F('ed52_i_periodo');
-
-  if (oObject.iPeriodicidade == 1) {
-    oObject.iPeriodo = "0";
+  if (secretaria && estaEditando) {
+    answer  = window.confirm (`O sistema irá atualizar os calendários das Unidades de Ensino que
+realizaram a importação deste calendário. Confirma?`);
+  }
+  else {
+    answer = true;
   }
 
-  oObject.iAno                      = $F('ed52_i_ano');
-  oObject.dDataInicio               = $F('ed52_d_inicio');
-  oObject.dDataFim                  = $F('ed52_d_fim');
-  oObject.dDataResultadoFinal       = $F('ed52_d_resultfinal');
-  oObject.iDiasLetivos              = $F('ed52_i_diasletivos');
-  oObject.iSemanasLetivas           = $F('ed52_i_semletivas');
-  oObject.iCodigoCalendarioAnterior = $F('ed52_i_calendant');
-  oObject.iCodigoCalendarioBase     = $F('ed52_i_codigo_base');
+  if (answer) {
+    $('db_opcao').disabled = true;
 
-  var objAjax   = new Ajax.Request (sRpc,{
-                                           method:'post',
-                                           parameters:'json='+Object.toJSON(oObject),
-                                           onComplete:js_retornoVinculoCalendario
-                                          }
-                                    );
+    var oObject                   = new Object();
+        oObject.exec              = "vinculaCalendarioBaseEscola";
+        oObject.sOpcao            = $F('db_opcao');
+        oObject.iCodigoCalendario = $F('ed52_i_codigo');
+        oObject.sDescricao        = encodeURIComponent(tagString($F('ed52_c_descr')));
+        oObject.iPeriodicidade    = $F('ed52_i_duracaocal');
+        oObject.iPeriodo          = $F('ed52_i_periodo');
+
+    if (oObject.iPeriodicidade == 1) {
+      oObject.iPeriodo = "0";
+    }
+
+    oObject.iAno                      = $F('ed52_i_ano');
+    oObject.dDataInicio               = $F('ed52_d_inicio');
+    oObject.dDataFim                  = $F('ed52_d_fim');
+    oObject.dDataResultadoFinal       = $F('ed52_d_resultfinal');
+    oObject.iDiasLetivos              = $F('ed52_i_diasletivos');
+    oObject.iSemanasLetivas           = $F('ed52_i_semletivas');
+    oObject.iCodigoCalendarioAnterior = $F('ed52_i_calendant');
+    oObject.iCodigoCalendarioBase     = $F('ed52_i_codigo_base');
+
+    oObject.sObs = encodeURIComponent(tagString($F('ed52_t_obs')));
+
+    js_divCarregando('Processando. Essa rotina pode demorar alguns minutos. Aguarde...', 'msgbox');
+    var objAjax   = new Ajax.Request (sRpc,{
+                                            method:'post',
+                                            parameters:'json='+Object.toJSON(oObject),
+                                            onComplete:js_retornoVinculoCalendario
+                                            }
+                                      );
+  }
+  else {
+    return
+  }
 
 }
 
@@ -678,7 +722,8 @@ function validaCampos() {
  */
 function js_retornoVinculoCalendario(oJson) {
 
-	var oRetorno = JSON.parse(oJson.responseText);
+  js_removeObj('msgbox');
+    var oRetorno = JSON.parse(oJson.responseText);
 
   if (oRetorno.status == 1) {
 
@@ -692,7 +737,7 @@ function js_retornoVinculoCalendario(oJson) {
 
   } else {
 
-	  $('db_opcao').disabled = false;
+      $('db_opcao').disabled = false;
     alert( oRetorno.message.urlDecode() );
   }
 }

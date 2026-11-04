@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if (isset ($opcao) && $opcao == "incluir") {
        <?=@$Lpc45_codigo?>
     </td>
     <td> 
-<?
+<?php
 
 
 		db_input('pc45_codigo', 5, $Ipc45_codigo, true, 'text', 3, "");
@@ -77,7 +77,7 @@ if (isset ($opcao) && $opcao == "incluir") {
        <?=@$Lpc45_pctipoandam?>
     </td>
     <td> 
-<?
+<?php
 
 
 		$result_pctipoandam = $clpctipoandam->sql_record($clpctipoandam->sql_query_file());
@@ -90,19 +90,19 @@ if (isset ($opcao) && $opcao == "incluir") {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc46_depart?>">
-       <?
+       <?php
 
 
 		db_ancora(@ $Lpc46_depart, "js_pesquisapc46_depart(true);", $db_opcao);
 ?>
     </td>
     <td> 
-    <?
+    <?php
 
 
 		db_input('pc46_depart', 5, $Ipc46_depart, true, 'text', $db_opcao, " onchange='js_pesquisapc46_depart(false);'");
 ?>
-       <?
+       <?php
 
 
 
@@ -115,7 +115,7 @@ if (isset ($opcao) && $opcao == "incluir") {
        <?=@$Lpc45_dias?>
     </td>
     <td> 
-<?
+<?php
 
  db_input('pc45_dias', 5, $Ipc45_dias, true, 'text', $db_opcao, "")
 ?>
@@ -126,7 +126,7 @@ if (isset ($opcao) && $opcao == "incluir") {
        <?=@$Lpc45_ordem?>
     </td>
     <td> 
-<?
+<?php
 
  db_input('pc45_ordem', 5, $Ipc45_ordem, true, 'text', $db_opcao, "")
 ?>
@@ -137,7 +137,7 @@ if (isset ($opcao) && $opcao == "incluir") {
        <?=@$Lpc45_instit?>
     </td>
     <td> 
-<?
+<?php
  $result_instit=$cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit")));
  db_fieldsmemory($result_instit,0);
  $pc45_instit=$codigo;
@@ -154,7 +154,7 @@ if (isset ($opcao) && $opcao == "incluir") {
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
 
  $chavepri = array ("pc45_codigo" => @ $pc45_codigo, "pc45_ordem" => @ $pc45_ordem,"pc46_depart"=>@$pc46_depart);
 		$cliframe_alterar_excluir->chavepri = $chavepri;

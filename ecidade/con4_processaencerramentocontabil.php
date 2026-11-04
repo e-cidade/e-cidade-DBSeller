@@ -37,16 +37,15 @@ require_once modification("dbforms/db_funcoes.php");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbmessageBoard.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <script type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/dbmessageBoard.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
     <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
-
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style type="text/css">
 
@@ -60,6 +59,9 @@ require_once modification("dbforms/db_funcoes.php");
     </style>
 </head>
 <body class="body-default">
+<div class="alert alert-primary text-left" role="alert">
+    Antes de processar o encerrametno, certifique-se que foi executada a <b>Virada Anual dos RESTOS A PAGAR (item 13)</b>
+</div>
 <div class="container" style="width: 600px;">
     <form name="form1" method="post" action="">
         <fieldset>
@@ -83,82 +85,70 @@ require_once modification("dbforms/db_funcoes.php");
                     </td>
                 </tr>
             </table>
+            <br>
+            <input name="processarVirada" type="button" id="processarVirada" value="Processar a Virada Anual dos RESTOS A PAGAR (item 13)"/>
         </fieldset>
-
-
 
         <fieldset style="margin-top: 10px;">
             <legend>Lançamentos de Encerramento de Execução Orçamentária da Despesa</legend>
         <div id="ctnGridDocumentoExecucaoOrcamentaria"></div>
         </fieldset>
 
-        <!--
-        <input name="processarExecOrc" type="button" id="processarExecOrc" value="Processar Selecionados"  onclick="processar('ExecucaoOrcamentaria')"/>
-        <input name="cancelarExecOrc" type="button" id="cancelarTeste" value="Cancelar Selecionados" onclick="cancelar('ExecucaoOrcamentaria')"/>
-         -->
-
         <input name="processarExecOrc" type="button" id="processarExecOrc" value="Processar Selecionados"  onclick="buscaLog('ExecucaoOrcamentaria')"/>
         <input name="cancelarExecOrc" type="button" id="cancelarTeste" value="Cancelar Selecionados" onclick="cancelar('ExecucaoOrcamentaria')"/>
-
-
-
-
         <fieldset style="margin-top: 20px;">
             <legend>Lançamentos de Encerramento do Exercício</legend>
         <div id="ctnGridDocumento"></div>
         </fieldset>
 
         <input name="processarTeste" type="button" id="processarTeste" value="Processar Selecionados"  onclick="processar('EncerramentoExercicio')"/>
-        <input name="cancelarTeste" type="button" id="cancelarTeste" value="Cancelar Selecionados" onclick="cancelar('EncerramentoExercicio')"/>
-
-
+        <input name="cancelarTeste" type="button" id="cancelarEncerramento" value="Cancelar Selecionados" onclick="cancelar('EncerramentoExercicio')"/>
+        <input name="implantarSaldo" type="button" id="implantarSaldo" value="Implantar Saldo"/>
 
     </form>
 </div>
-<?php
-    db_menu(db_getsession("DB_id_usuario"),
-            db_getsession("DB_modulo"),
-            db_getsession("DB_anousu"),
-            db_getsession("DB_instit")); ?>
+<?php db_menu() ?>
 
 <script type="text/javascript">
 
-var lBloquearLinhaEncerramentoExerc = true;
+    var lBloquearLinhaEncerramentoExerc = true;
 
-var oGridDadosExecOrc = new DBGrid('gridDadosExecOrc');
-    oGridDadosExecOrc.nameInstance = 'oGridDadosExecOrc';
-    oGridDadosExecOrc.setCheckbox(0);
-    oGridDadosExecOrc.setCellWidth(new Array("20%", "80%"));
-    oGridDadosExecOrc.setCellAlign(new Array('center', 'left'));
-    oGridDadosExecOrc.setHeader(new Array("Documento", "Descrição"));
-    oGridDadosExecOrc.show($('ctnGridDocumentoExecucaoOrcamentaria'));
-
-
-var oGridDados = new DBGrid('gridDados');
-    oGridDados.nameInstance = 'oGridDados';
-    oGridDados.setCheckbox(0);
-    oGridDados.setCellWidth(new Array("20%", "80%"));
-    oGridDados.setCellAlign(new Array('center', 'left'));
-    oGridDados.setHeader(new Array("Documento", "Descrição"));
-    oGridDados.show($('ctnGridDocumento'));
+    const implantarSaldo = document.getElementById('implantarSaldo');
+    const processarVirada = document.getElementById('processarVirada');
+    const botaoProcessarExecOrc =  document.getElementById('processarExecOrc');
+    const botaoCancelarTeste =  document.getElementById('cancelarTeste');
+    const botaoProcessarTeste =  document.getElementById('processarTeste');
+    const botaoImplantarSaldo =  document.getElementById('implantarSaldo');
+    const botaoCancelarEncerramento =  document.getElementById('cancelarEncerramento');
 
 
+    var oGridDadosExecOrc = new DBGrid('gridDadosExecOrc');
+        oGridDadosExecOrc.nameInstance = 'oGridDadosExecOrc';
+        oGridDadosExecOrc.setCheckbox(0);
+        oGridDadosExecOrc.setCellWidth(new Array("20%", "80%"));
+        oGridDadosExecOrc.setCellAlign(new Array('center', 'left'));
+        oGridDadosExecOrc.setHeader(new Array("Documento", "Descrição"));
+        oGridDadosExecOrc.show($('ctnGridDocumentoExecucaoOrcamentaria'));
+
+
+    var oGridDados = new DBGrid('gridDados');
+        oGridDados.nameInstance = 'oGridDados';
+        oGridDados.setCheckbox(0);
+        oGridDados.setCellWidth(new Array("20%", "80%"));
+        oGridDados.setCellAlign(new Array('center', 'left'));
+        oGridDados.setHeader(new Array("Documento", "Descrição"));
+        oGridDados.show($('ctnGridDocumento'));
 
     function processar(sTipo) {
-
         let documentosSelecionados = null;
 
         switch(sTipo){
-
             case "ExecucaoOrcamentaria" :
-                 documentosSelecionados = getDocumentosSelecionadosExecOrc();
+                documentosSelecionados = getDocumentosSelecionadosExecOrc();
             break;
-
             case "EncerramentoExercicio" :
-
-                 documentosSelecionados = getDocumentosSelecionados();
+                documentosSelecionados = getDocumentosSelecionados();
             break;
-
         }
 
         if (documentosSelecionados.length == 0) {
@@ -169,37 +159,7 @@ var oGridDados = new DBGrid('gridDados');
         var confirmacao = confirm('Você realmente deseja encerrar o exercício contábil? ');
         if (!confirmacao){
             return false;
-
         }
-
-
-
-/*
-        let lProcessar = true;
-
-        console.log(" 1 Processar: " + lProcessar);
-
-        documentosSelecionados.each( function (  valor ) {
-
-          if (valor == "1025" ) {
-
-            console.log('busca log');
-            lProcessar = buscaLog();
-          }
-
-        });
-
-        console.log(" 2 Processar: " + lProcessar);
-        return false;
-
-
-
-        if (!lProcessar) {
-            return false;
-        }
-        */
-
-
 
         bloquearBotoesTela(true);
         var oParametros = {
@@ -212,42 +172,40 @@ var oGridDados = new DBGrid('gridDados');
         new AjaxRequest('con4_processaencerramentoexercicio.RPC.php', oParametros, function (oRetorno, lErro) {
 
             bloquearBotoesTela(false);
-            if (oRetorno.erro == false) {
-
+            if (oRetorno.erro) {
                 alert(oRetorno.mensagem.urlDecode());
-                if (oRetorno.encerrouTodosDocumentos ) {
+                return
+            }
 
-                    let mensagem = oRetorno.mensagem.urlDecode();
-                    mensagem += "\n\nDeseja encerrar o período contábil?";
+            alert(oRetorno.mensagem.urlDecode());
+            if (oRetorno.encerrouTodosDocumentos ) {
 
-                    if (sTipo == "EncerramentoExercicio") {
+                let mensagem = oRetorno.mensagem.urlDecode();
+                mensagem += "\n\nDeseja encerrar o período contábil?";
 
-                        if (confirm(mensagem)) {
-                            encerrarPeriodoContabil();
-                        }
+                if (sTipo == "EncerramentoExercicio") {
+
+                    if (confirm(mensagem)) {
+                        encerrarPeriodoContabil();
                     }
-
                 }
 
-                getDocumentosDoEncerramentoOrcamentaria(false);
             }
+
+            getDocumentosDoEncerramentoOrcamentaria(false);
+
         }).setMessage("Aguarde, efetuando encerramento...").execute();
     }
 
     const download = new DBDownload();
 
-
-    function buscaLog(sTipo){
-
-        console.log("sTipo: " + sTipo);
-
+    function buscaLog(sTipo) {
         new AjaxRequest('con4_processaencerramentoexercicio.RPC.php',
             {
                'exec' : 'buscarLog',
                'doc': [1025]
             },
             function (oRetorno, lErro) {
-
                 if (oRetorno.erro == false && oRetorno.lRegistros == true) {
 
                     download.clear();
@@ -265,11 +223,8 @@ var oGridDados = new DBGrid('gridDados');
 
         }).setMessage("Aguarde, efetuando encerramento...").execute();
     }
-    //buscaLog();
-
 
     function encerrarPeriodoContabil() {
-
         bloquearBotoesTela(true);
         new AjaxRequest('con4_processaencerramentoexercicio.RPC.php',
             { 'exec' : 'fecharPeriodoContabil' },
@@ -332,8 +287,6 @@ var oGridDados = new DBGrid('gridDados');
         return documentosSelecionados;
     }
 
-
-
     function getDocumentosDoEncerramentoOrcamentaria(lBloquarLinha){
 
         let oParametros = {
@@ -341,7 +294,6 @@ var oGridDados = new DBGrid('gridDados');
         };
 
         lBloquearLinhaEncerramentoExerc = false;
-
 
         new AjaxRequest('con4_processaencerramentoexercicio.RPC.php', oParametros , function (oRetorno, lErro) {
             oGridDadosExecOrc.clearAll(true);
@@ -360,6 +312,8 @@ var oGridDados = new DBGrid('gridDados');
                         lBloquearLinhaEncerramentoExerc = true;
                     }
 
+
+
                     var aRow    = new Array();
                     aRow[0] = documento.codigo ;
                     aRow[1] = documento.descricao.urlDecode();
@@ -377,10 +331,7 @@ var oGridDados = new DBGrid('gridDados');
                 getDocumentosDoEncerramento(lBloquearLinhaEncerramentoExerc);
 
         }).setMessage("Aguarde, pesquisando documentos...").execute();
-
     }
-
-
 
     function getDocumentosDoEncerramento(lBloquarLinha){
         let oParametros = {
@@ -393,23 +344,83 @@ var oGridDados = new DBGrid('gridDados');
             let lBloqueado = lBloquarLinha;
             let lChecked = lBloquarLinha;
 
-            oRetorno.documentos.each(
-                function (documento, iInd) {
+            let liberaImplantaSaldo = true;
 
-                    var aRow    = new Array();
-                    aRow[0] = documento.codigo ;
-                    aRow[1] = documento.descricao.urlDecode();
-                    oGridDados.addRow(aRow, true, lBloqueado);
-                    if (documento.processado) {
-                        oGridDados.aRows[iInd].setClassName('cor_verde');
-                    }
+            oRetorno.documentos.each(function (documento, iInd) {
 
-                });
+                var aRow = [];
+                aRow[0] = documento.codigo ;
+                aRow[1] = documento.descricao.urlDecode();
+                oGridDados.addRow(aRow, true, lBloqueado);
+                if (documento.processado) {
+                    oGridDados.aRows[iInd].setClassName('cor_verde');
+                }
+
+                if (!documento.processado) {
+                    liberaImplantaSaldo = false;
+                }
+            });
+
             oGridDados.renderRows();
+            implantarSaldo.disabled = true;
+            if (liberaImplantaSaldo) {
+                implantarSaldo.disabled = false
+            }
         }).setMessage("Aguarde, pesquisando documentos...").execute();
     }
 
-    getDocumentosDoEncerramentoOrcamentaria(false);
+    async function validaViradaRps() {
+        lBloquearLinhaEncerramentoExerc = false;
+        botaoProcessarExecOrc.disabled = true;
+        botaoCancelarTeste.disabled = true;
+        botaoProcessarTeste.disabled = true;
+        botaoImplantarSaldo.disabled = true;
+        botaoCancelarEncerramento.disabled = true;
+        
+        js_divCarregando('Aguarde, verificando virada anual de Restos a Pagar....', 'loading_message');
+        let response = await CurrentWindow.axios.get(
+            "v4/api/financeiro/contabilidade/procedimento/escrituracao-contabil/virada-rp",
+        ).then(response => {
+            if (response.data.data.processado == true) {
+                getDocumentosDoEncerramentoOrcamentaria(false);
+                botaoProcessarExecOrc.disabled = false;
+                botaoCancelarTeste.disabled = false;
+                bloquearBotoesTela(false);
+            }
+        });
+        js_removeObj('loading_message');
+    }
+
+    processarVirada.addEventListener('click', async() => {
+        js_divCarregando('Aguarde, executando virada anual de Restos a Pagar....', 'loading_message');
+        let response = await CurrentWindow.axios.post(
+            "v4/api/financeiro/contabilidade/procedimento/escrituracao-contabil/virada-rp",
+        ).then(response => {
+            if (response.data.error == false) {
+                alert(response.data.message);
+                getDocumentosDoEncerramentoOrcamentaria(false);
+                botaoProcessarExecOrc.disabled = false;
+                botaoCancelarTeste.disabled = false;
+                bloquearBotoesTela(false);
+            } else {
+                alert("Erro ao efetuar a virada dos Restos a Pagar. Por Favor, entre em contato com o suporte.");
+            }
+        });
+        js_removeObj('loading_message');
+    });
+
+    validaViradaRps();
+
+    implantarSaldo.addEventListener('click', async () => {
+        js_divCarregando('Processando implantação do saldo.', 'loading_message');
+        let response = await CurrentWindow.axios.post(
+            "v4/api/financeiro/contabilidade/procedimento/escrituracao-contabil/implantar-saldo-inicial",
+        ).then(response => {
+            bloquearBotoesTela(false);
+            alert(response.data.message)
+        });
+        js_removeObj('loading_message');
+    });
 
 </script>
 </body>

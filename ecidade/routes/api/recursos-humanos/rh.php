@@ -32,5 +32,40 @@ Route::prefix('concessaodireitos')
 
         Route::post('processar', "ProcessamentoConcessaoController@store");
         Route::post('assentamentos', "ProcessamentoConcessaoController@show");
+        Route::post('getprocessamento', "ProcessamentoConcessaoController@getprocessamento");
+        Route::post('stopsprocessamento', "ProcessamentoConcessaoController@pararprocessamento");
     }
 );
+
+// Fundeb
+Route::prefix('tipoasse')->group(function () {
+    $path = "\App\Domain\RecursosHumanos\RH\ConcessaoDireitos\Controllers\\";
+    $TipoAsseController = "{$path}TipoAsseController";
+    Route::post('list', "{$TipoAsseController}@listAssentamento");
+});
+
+/**
+ * Relatorios
+ */
+Route::prefix('relatorios')
+    ->namespace('App\Domain\RecursosHumanos\RH\Relatorios\Controllers\\')
+    ->group(function () {
+        /**
+         * Rotas destinadas a configuracao do relatorio
+         * de assentamento por periodo
+         */
+        Route::prefix('configassentperiodo')->group(function () {
+            Route::get('getConfig', 'ConfigAssentPeriodoController@getConfig');
+            Route::post('saveConfig', 'ConfigAssentPeriodoController@saveConfig');
+            Route::get('getAssentamentos', 'ConfigAssentPeriodoController@getAssentamentos');
+        });
+        /**
+         * Rotas destinadas a geracao da certidao do tempo de contribuicao
+         */
+        Route::prefix('certidaotempocontribuicao')->group(function () {
+            Route::post('gerar', 'CertidaoTempoContribuicaoController@gerar');
+        });
+
+    }
+);
+

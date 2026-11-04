@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -45,7 +45,7 @@ class cl_extratoCnab240 {
 	var $conteudo   = "";
 
 	// contrutor da classe
-  function cl_extratoCnab240($nome){
+  public function __construct($nome){
 		$this->arquivo = "";
 		if (file_exists($nome)){
 		  $this->nomearq = $nome;
@@ -61,7 +61,7 @@ class cl_extratoCnab240 {
 	}
 
   // se e registro header de arquivo
-	function isHeaderArquivo($numeroLinha){
+	public function isHeaderArquivo($numeroLinha){
     if((int)$this->getRegistro($numeroLinha) == 0){
 		  return true;
 		}else{
@@ -69,7 +69,7 @@ class cl_extratoCnab240 {
 		}
 	}
 
-	function isTrailerArquivo($numeroLinha){
+	public function isTrailerArquivo($numeroLinha){
     if((int)$this->getRegistro($numeroLinha) == 9){
 		  return true;
 		}else{
@@ -78,7 +78,7 @@ class cl_extratoCnab240 {
 	}
 
 	// se e registro header de lote
-	function isHeaderLote($numeroLinha){
+	public function isHeaderLote($numeroLinha){
     if((int)$this->getRegistro($numeroLinha) == 1){
 		  return true;
 		}else{
@@ -87,7 +87,7 @@ class cl_extratoCnab240 {
 	}
 
 	// se e registro trailer de lote
-	function isTrailerLote($numeroLinha){
+	public function isTrailerLote($numeroLinha){
     if((int)$this->getRegistro($numeroLinha) == 5){
 		  return true;
 		}else{
@@ -96,7 +96,7 @@ class cl_extratoCnab240 {
 	}
 
 	// se e registro detalhe de arquivo
-	function isDetalhe($numeroLinha){
+	public function isDetalhe($numeroLinha){
     if((int)$this->getRegistro($numeroLinha) == 3){
 		  return true;
 		}else{
@@ -105,7 +105,7 @@ class cl_extratoCnab240 {
 	}
 
 	// se e extrato
-	function isExtrato($numeroLinha){
+	public function isExtrato($numeroLinha){
     if ($this->getTipoOper($numeroLinha) == 'E'){
 			return true;
 		}else{
@@ -113,7 +113,7 @@ class cl_extratoCnab240 {
 		}
 	}
 
-  function isValido($numeroLinha)	{
+  public function isValido($numeroLinha)	{
 
 		if ($this->isHeaderArquivo($numeroLinha) && ( $numeroLinha == 0 || $this->isTrailerArquivo(($numeroLinha-1)) )) {
 			return true;
@@ -133,7 +133,7 @@ class cl_extratoCnab240 {
 	}
 
   // seta todas variaveis do header do arquivo
-	function setHeaderArqVars(){
+	public function setHeaderArqVars(){
 		$this->erroOper = false;
     if($this->isHeaderArquivo(0)){
       $this->codbco    = substr($this->getLinha(0),0,3);
@@ -149,7 +149,7 @@ class cl_extratoCnab240 {
 
 
   // converte o arquivo para array
-	function arquivoToArray($nome){
+	public function arquivoToArray($nome){
 	  $this->arrArquivo = file($nome);
 		$this->numrows = count($this->arrArquivo);
 	}
@@ -159,7 +159,7 @@ class cl_extratoCnab240 {
 	/* header do arquivo */
 
 	// retorna uma string com o conteudo do arquivo
-	function getArquivo(){
+	public function getArquivo(){
     foreach ($this->arrArquivo as $line_num => $linha){
       $this->arquivo .= $linha;
 		}
@@ -171,7 +171,7 @@ class cl_extratoCnab240 {
 	  retorna somente o conteudo do arquivo, o metodo acima retorna 
 	  o conteudo do txt duplicado
 	*/
-	function getArquivoConteudo(){
+	public function getArquivoConteudo(){
 		
 		$this->conteudo = null;
 		foreach ($this->arrArquivo as $line_num => $linha){
@@ -182,27 +182,27 @@ class cl_extratoCnab240 {
 	}	
 
 	// retorna o nome do arquiv
-  function getNomearquivo(){
+  public function getNomearquivo(){
 		return $this->nomearq;
 	}
 
   // retorna a linha
-  function getLinha($numeroLinha){
+  public function getLinha($numeroLinha){
 		return $this->arrArquivo[$numeroLinha];
 	}
 
   // retorna o total de linhas do arquivo
-	function getTotalLinhas(){
+	public function getTotalLinhas(){
     return $this->numrows;
 	}
 
 	// retorna o tipo de registro da linha
-	function getRegistro($numeroLinha){
+	public function getRegistro($numeroLinha){
 		return substr($this->getLinha($numeroLinha),7,1);
 	}
 
   // retorna o tipo de operacao
-	function getTipoOper($numeroLinha){
+	public function getTipoOper($numeroLinha){
     $this->erroOper = false;
 	  if ($this->isHeaderLote($numeroLinha)) {
       return substr($this->getLinha($numeroLinha),8,1);
@@ -213,32 +213,32 @@ class cl_extratoCnab240 {
 		}
 	}
 
-  function getCodbco(){
+  public function getCodbco(){
 		return $this->codbco;
 	}
 
-  function getDtarq(){
+  public function getDtarq(){
 		return $this->dtarq;
 	}
 
-  function getConvenio(){
+  public function getConvenio(){
 		return $this->convenio;
 	}
 
-  function getSeqarq(){
+  public function getSeqarq(){
 		return $this->seqarq;
 	}
 
   /* header de lote */
-  function getLote($numeroLinha){
+  public function getLote($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),3,4);
 	}
 
-  function getLoteseq($numeroLinha){
+  public function getLoteseq($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),173,5);
 	}
 
-	function getConta($numeroLinha){
+	public function getConta($numeroLinha){
 
 		$sqlConta  = " select distinct db83_sequencial ";
 		$sqlConta .= "   from contabancaria ";
@@ -267,15 +267,15 @@ class cl_extratoCnab240 {
 	}
 
   /* codigo da agencia */
-	function getAgencia($numeroLinha){
+	public function getAgencia($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),52,5);
 	}
 	/* digito verificador da agencia */
-	function getDvAgencia($numeroLinha){
+	public function getDvAgencia($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),57,1);
 	}
 	/* codigo da conta corrente */
-	function getCc($numeroLinha){
+	public function getCc($numeroLinha){
 
     $sCodigoConta = substr($this->getLinha($numeroLinha),58,12);
 
@@ -291,78 +291,78 @@ class cl_extratoCnab240 {
 	  return $sCodigoConta;
 	}
 	/* digito verificador da conta corrente */
-	function getDvCc($numeroLinha){
+	public function getDvCc($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),70,1);
 	}
 
 	/* detalhe de arquivo */
-	function getBancoHistmov($numeroLinha){
+	public function getBancoHistmov($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),172,4);
 	}
 
-	function getBancoHistmovDescr($numeroLinha){ //
+	public function getBancoHistmovDescr($numeroLinha){ //
 	  return substr($this->getLinha($numeroLinha),176,25);
 	}
 
-	function getCodCategoria($numeroLinha){
+	public function getCodCategoria($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),169,3);
 	}
 
-	function getDataLancamento($numeroLinha){
+	public function getDataLancamento($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),146,4)."-".substr($this->getLinha($numeroLinha),144,2)."-".substr($this->getLinha($numeroLinha),142,2);
 	}
 
-	function getValorLancamento($numeroLinha){
+	public function getValorLancamento($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
 	}
 
-	function getTipoLancamento($numeroLinha){
+	public function getTipoLancamento($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),168,1);
 	}
 
-	function getHistLancamento($numeroLinha){
+	public function getHistLancamento($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),176,25);
 	}
 
-	function getDocumentoLancamento($numeroLinha){
+	public function getDocumentoLancamento($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),201,20);
 	}
 
   /* gets para trailer de lote */
 
-	function getDataSaldo($numeroLinha){
+	public function getDataSaldo($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),146,4)."-".substr($this->getLinha($numeroLinha),144,2)."-".substr($this->getLinha($numeroLinha),142,2);
 	}
 
-	function getValorCredito($numeroLinha){
+	public function getValorCredito($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),194,16).".".substr($this->getLinha($numeroLinha),210,2);
 	}
 
-	function getValorDebito($numeroLinha){
+	public function getValorDebito($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),176,16).".".substr($this->getLinha($numeroLinha),192,2);
 	}
 
-	function getQtdRegistrosLote($numeroLinha){
+	public function getQtdRegistrosLote($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),170,6);
 	}
 
-	function getPosicao($numeroLinha){
+	public function getPosicao($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),169,1);
 	}
 
-	function getSituacao($numeroLinha){
+	public function getSituacao($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),168,1);
 	}
 
-	function getSaldoBloqueado($numeroLinha){
+	public function getSaldoBloqueado($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),125,16).".".substr($this->getLinha($numeroLinha),141,2);
 	}
 
-	function getSaldoFinal($numeroLinha){
+	public function getSaldoFinal($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
 	}
 
-	function getLimite($numeroLinha){
+	public function getLimite($numeroLinha){
 	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
 	}
 

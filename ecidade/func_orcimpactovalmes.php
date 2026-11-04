@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactovalmes->rotulo->label("o92_valor");
               <?=$Lo92_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o92_codseqimp",5,$Io92_codseqimp,true,"text",4,"","chave_o92_codseqimp");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactovalmes->rotulo->label("o92_valor");
               <?=$Lo92_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o92_mes",4,$Io92_mes,true,"text",4,"","chave_o92_mes");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clorcimpactovalmes->rotulo->label("o92_valor");
               <?=$Lo92_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o92_valor",8,$Io92_valor,true,"text",4,"","chave_o92_valor");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clorcimpactovalmes->rotulo->label("o92_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalmes.php")==true){
@@ -129,12 +129,12 @@ $clorcimpactovalmes->rotulo->label("o92_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

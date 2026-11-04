@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -88,11 +88,11 @@ if (isset($opcao) && $opcao == "alterar") {
             </tr>
             <tr>
               <td width="165"><strong>Fra&ccedil;&atilde;o Multa:</strong> </td>
-              <td><? db_input('k02_mulfra',11,$Ik02_mulfra,true,'text',$db_opcao,"onChange=\" \"")?>%</td>
+              <td><?php db_input('k02_mulfra',11,$Ik02_mulfra,true,'text',$db_opcao,"onChange=\" \"")?>%</td>
             </tr>
             <tr>
               <td><strong>Limite:</strong></td>
-              <td><? db_input('k02_limmul',11,$Ik02_limmul,true,'text',$db_opcao,"onChange=\" \"")?>%</td>
+              <td><?php db_input('k02_limmul',11,$Ik02_limmul,true,'text',$db_opcao,"onChange=\" \"")?>%</td>
             </tr>
 
             <tr>

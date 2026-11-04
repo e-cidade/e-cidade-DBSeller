@@ -52,13 +52,13 @@ class cl_empnotaitembenspendente {
                  e137_matestoqueitem = int4 = Matestoqueitem
                  ";
    //funcao construtor da classe
-   function cl_empnotaitembenspendente() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empnotaitembenspendente");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_empnotaitembenspendente {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e137_sequencial = ($this->e137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e137_sequencial"]:$this->e137_sequencial);
        $this->e137_empnotaitem = ($this->e137_empnotaitem == ""?@$GLOBALS["HTTP_POST_VARS"]["e137_empnotaitem"]:$this->e137_empnotaitem);
@@ -77,7 +77,7 @@ class cl_empnotaitembenspendente {
      }
    }
    // funcao para inclusao
-   function incluir ($e137_sequencial){
+   public function incluir ($e137_sequencial){
       $this->atualizacampos();
      if($this->e137_empnotaitem == null ){
        $this->erro_sql = " Campo empnotaitem nao Informado.";
@@ -177,7 +177,7 @@ class cl_empnotaitembenspendente {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e137_sequencial=null) {
+   public function alterar ($e137_sequencial=null) {
       $this->atualizacampos();
      $sql = " update empnotaitembenspendente set ";
      $virgula = "";
@@ -272,7 +272,7 @@ class cl_empnotaitembenspendente {
      }
    }
    // funcao para exclusao
-   function excluir ($e137_sequencial=null,$dbwhere=null) {
+   public function excluir ($e137_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e137_sequencial));
      }else{
@@ -335,7 +335,7 @@ class cl_empnotaitembenspendente {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -358,7 +358,7 @@ class cl_empnotaitembenspendente {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -397,7 +397,7 @@ class cl_empnotaitembenspendente {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -431,7 +431,7 @@ class cl_empnotaitembenspendente {
      return $sql;
   }
 
-  function sql_query_patrimonio ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_patrimonio ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -473,7 +473,7 @@ class cl_empnotaitembenspendente {
       return $sql;
       }
 
-   function sql_query_bens ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_bens ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
   		$campos_sql = explode("#",$campos);
@@ -521,7 +521,7 @@ class cl_empnotaitembenspendente {
   	return $sql;
   }
 
-  function sql_query_bens_nota ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_bens_nota ( $e137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
     		$campos_sql = explode("#",$campos);

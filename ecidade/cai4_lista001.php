@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ db_sel_instit(null, "db21_usasisagua, db21_regracgmiptu, db21_regracgmiss");
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
 <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-  <?
+  <?php
     //caso não utilize o modulo agua não monta as abas 
     if (isset($db21_usasisagua) && $db21_usasisagua == 't') {
       
@@ -85,7 +85,7 @@ db_sel_instit(null, "db21_usasisagua, db21_regracgmiptu, db21_regracgmiss");
 </tr>
 </table>
 <form name="form1"></form>
-<?
+<?php
 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   

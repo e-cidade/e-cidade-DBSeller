@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k80_numpre",8,$Ik80_numpre,true,"text",4,"","chave_k80_numpre");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k80_codproc",10,$Ik80_codproc,true,"text",4,"","chave_k80_codproc");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k80_numpre",8,$Ik80_numpre,true,"text",4,"","chave_k80_numpre");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clarreproc->rotulo->label("k80_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_arreproc.php")==true){
@@ -129,12 +129,12 @@ $clarreproc->rotulo->label("k80_numpre");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -133,9 +133,9 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
 <form name="form1" method="post" action="">
 <center>
 <table border="6" width="100%">
-  <?
+  <?php
   if(isset($registro) && trim($registro)!=""){
-  	$arr_rubricas = split(",",$rubricas_selecionadas_enviar);
+  	$arr_rubricas =explode(",",$rubricas_selecionadas_enviar);
   	db_input('r90_lotac', 10, $Ir90_lotac, true, 'hidden', 3, '');
     db_input('DBtxt23', 4, $IDBtxt23, true, 'hidden', 3, "", 'r90_anousu');
     db_input('DBtxt25', 2, $IDBtxt25, true, 'hidden', 3, "", 'r90_mesusu');
@@ -143,13 +143,13 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
   ?>
 
   <tr>
-    <?
+    <?php
     if($mostrar_check_repassa == true){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="2%"  height="3%" title="Marque se deseja repassar ponto">
       <strong>R</strong>
     </td>
-    <?
+    <?php
     }
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="5%" height="3%">
@@ -158,19 +158,19 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
     <td align="center" valign="top" nowrap class='bordas02' width="40%" height="3%">
       <strong><?=@$RLrh27_descr?></strong>
     </td>
-    <?
+    <?php
     if($ponto == "fx" || $ponto == "fs"){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
       <strong><?=@$RLr90_datlim?></strong>
     </td>
-    <?
+    <?php
     }else if($ponto == "fe" || $ponto == "fr"){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
       <strong><?=@$RLr29_tpp?></strong>
     </td>
-    <?
+    <?php
     }
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
@@ -183,7 +183,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <strong><?=@$RLr90_valor?></strong>
     </td>
   </tr>
-    <?
+    <?php
     // $sigla - É a sigla a ser utilizada no select.
     // $campoextra - É para quando as tabelas tiverem campos como o DATLIM ou o TPP
     // $mostracamp - É para quando o DATLIM ou o TPP forem apresentados no Select, serem mostrados no IFRAME_SELECIONA
@@ -351,7 +351,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       }
     ?>
   <tr>
-    <?
+    <?php
       $imprime_tabIndex = "";
       if($mostrar_check_repassa == true){
       	if(trim($liberar_para_repassar_ponto)==""){
@@ -362,7 +362,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
 
       	$mostrar_box_checked = "";
       	if(isset($repassar_rubricas) && trim($repassar_rubricas)!=""){
-      	  $arr_repassar_rubricas = split(",",$repassar_rubricas);
+      	  $arr_repassar_rubricas =explode(",",$repassar_rubricas);
       	  if(in_array("chk_".$rh27_rubric,$arr_repassar_rubricas)){
       	  	$mostrar_box_checked = " checked ";
       	  }
@@ -371,7 +371,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="2%"  height="3%" title="Marque se deseja repassar ponto">
         <input type="checkbox" name="chk_<?=$rh27_rubric?>" <?=$imprime_tabIndex?> <?=$mostrar_box_checked?> value="chk_<?=$rh27_rubric?>" <?=$liberar_para_repassar_ponto?> onBlur="js_ativa_passa_proximo_campo(this.name);" onChange="js_adiciona_itens_array(this.name,this.value);" onfocus="js_mudar_caixa_de_texto('<?=($rh27_obs)?>');">
       </td>
-    <?
+    <?php
         if($i == 0 && $liberar_para_repassar_ponto != "disabled"){
           $setar_foco_campo = "chk_".$rh27_rubric;
         }
@@ -379,7 +379,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="5%" height="3%">
         <?=$rh27_rubric?>
-        <?
+        <?php
         $campo_recebe_formula = 'form_'.$rh27_rubric;
         $$campo_recebe_formula = 'f';
         if($rubrica_tem_formula == true){
@@ -391,7 +391,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <td align="left"   valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="40%" height="3%">
         <?=$rh27_descr?>
       </td>
-    <?
+    <?php
       if($ponto == "fx" || $ponto == "fs"){
       	$datlim_recebe_valor_select = "datlim_".$rh27_rubric;
       	if(isset($datlim)){
@@ -407,11 +407,11 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       	}
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php
           db_input('datlim_'.$rh27_rubric, 15, $Ir90_datlim, true, 'text', $mostrar_ano_mes_rub, "onKeyUp='js_mascaradata(this.value,this.name);' $imprime_tabIndex onChange='js_calculaQuant(this,quant_{$rh27_rubric},\"{$rh27_presta}\",\"{$rh27_limdat}\");' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
         ?>
       </td>
-    <?
+    <?php
 
 
       // ESTE PROGRAMA NÃO USA FR E NEM FE, MAS DEIXEI O CÓDIGO PREVENDO UM DIA SER NECESSÁRIO
@@ -425,13 +425,13 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
         }
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php
         //db_input('tpp_'.$rh27_rubric, 5, $Ir29_tpp, true, 'text', 1, "onKeyPress='js_passa_para_proximo_campo(this.name,this,event);'");
         db_input('tpp_'.$rh27_rubric, 5, $Ir29_tpp, true, 'text', 1, " tabIndex='$tabIndex' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
         $tabIndex ++;
         ?>
       </td>
-    <?
+    <?php
       }
       $quant_recebe_valor_select = "quant_".$rh27_rubric;
       if(isset($quant) && trim($quant) != ""){
@@ -444,21 +444,21 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       }
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php
 	$arr_opcoes = Array("al"=>"Alterar","so"=>"Somar","su"=>"Subtrair");
         db_select("opc_".$rh27_rubric, $arr_opcoes, true, 1, " tabIndex='$tabIndex' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");' onchange='js_zera_valores(document.form1.quant_".$rh27_rubric.",document.form1.valor_".$rh27_rubric.")' ");
         $tabIndex ++;
         ?>
       </td>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="15%" height="3%">
-        <?
+        <?php
         db_input('quant_'.$rh27_rubric, 15, $Ir90_quant, true, 'text', 1, " tabIndex='$tabIndex' onChange='js_calculaDataLimit(this,datlim_{$rh27_rubric},\"{$rh27_presta}\",\"{$rh27_limdat}\");' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
-        $tabIndex ++;        
+        $tabIndex ++;
         $aCampos[] = "'quant_{$rh27_rubric}'";
         ?>
       </td>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="15%" height="3%">
-        <?
+        <?php
         $valor_recebe_valor_select = "valor_".$rh27_rubric;
         if(isset($valor) && trim($valor) != ""){
       	  $$valor_recebe_valor_select = $valor;
@@ -470,7 +470,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
         ?>
       </td>
     </tr>
-  <?
+  <?php
 	}
   }else{
   ?>
@@ -479,7 +479,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <strong>Informe a matrícula</strong>
     </td>
   </tr>
-  <?
+  <?php
   }
   ?>
 </table>
@@ -494,7 +494,7 @@ if ( !empty($aCampos) && is_array($aCampos) ) {
 
   $sCampos = implode(",",$aCampos);
   $aCampos ='';
-  $sCampos ="[".$sCampos."]"; 
+  $sCampos ="[".$sCampos."]";
 }
 ?>
 <script>
@@ -502,70 +502,70 @@ if ( !empty($aCampos) && is_array($aCampos) ) {
 js_setNullCampoQtd();
 
 function js_setNullCampoQtd(){
-	var aCampos = <?php echo $sCampos; ?>;	
-	for(var i=0; i < aCampos.length; i++){		
-		var campoQtd = document.getElementById(aCampos[i]);		
+	var aCampos = <?php echo $sCampos; ?>;
+	for(var i=0; i < aCampos.length; i++){
+		var campoQtd = document.getElementById(aCampos[i]);
 		campoQtd.select();
 	}
 }
-  
+
 function js_calculaDataLimit(objQuant,objData,lParc,lCompl){
 
   var doc       = document.form1;
   var iQuant    = new Number(objQuant.value);
-  
+
   if ( lParc == 't' && lCompl == 't' ) {
-  
+
     var iMesAtu   = new Number(doc.r90_mesusu.value);
     var iAnoLimit = new Number(doc.r90_anousu.value);
     var iMesLimit = iMesAtu + (iQuant-1);
-    
+
     while ( iMesLimit > 12  ) {
       iMesLimit -= 12;
       iAnoLimit++;
     }
-    
+
     if ( iMesLimit.toString().length < 2 ) {
       iMesLimit = "0"+iMesLimit;
     }
-    
+
     objData.value = iAnoLimit+'/'+iMesLimit;
-     
+
   }
-   
+
 }
 
 function js_calculaQuant(objData,objQuant,lCompl,lParc){
-  
+
   var doc        = document.form1;
   var aDataLimit = objData.value.split('/');
   var iAnoLimit  = new Number(aDataLimit[0]);
   var iMesLimit  = new Number(aDataLimit[1]);
   var iAnoAtu    = new Number(doc.r90_anousu.value);
   var iMesAtu    = new Number(doc.r90_mesusu.value);
-    
+
   if ( lParc == 't' && lCompl == 't' ) {
-    
+
     var iQuant     = new Number(0);
-    
+
     if ( iAnoLimit > iAnoAtu ) {
-    
+
       while ( iAnoLimit > (iAnoAtu+1)  ) {
         iQuant += 12;
         --iAnoLimit;
       }
-      
+
       var iMesRest  = new Number(12 - iMesAtu);
-      
+
       iQuant += iMesRest + iMesLimit;
-      
+
     } else {
       iQuant += iMesLimit - iMesAtu;
     }
-    
+
     objQuant.value = iQuant+1;
-    
-  }  
+
+  }
 }
 
 
@@ -681,7 +681,7 @@ function js_enviar_dados_inclui(){
             break;
           }
         }
-        
+
         if(quant_rubrica_corrente == 0 && (formu_rubrica_corrente == 't' || formu_rubrica_corrente == 'T')){
           alert("Rubrica "+rubrica_corrente+":\nQuantidade não informada");
           eval("x.quant_"+rubrica_corrente+".select()");
@@ -778,7 +778,7 @@ function js_adiciona_itens_array(campo_origem,valor_origem){
   x = document.form1;
   if(campo_origem.substr(0,4) == "chk_"){
     rubricas_a_repassar = parent.document.form1.repassar_rubricas.value;
-    
+
     if(rubricas_a_repassar != ""){
       arr_rubricas_a_repassar = rubricas_a_repassar.split(",");
     }else{
@@ -812,7 +812,7 @@ function js_seleciona_campo_confirma(){
 }
 
 function js_setar_foco_campo(){
-<?
+<?php
 if(isset($setar_foco_campo)){
   echo "  document.form1.$setar_foco_campo.focus();\n";
 }

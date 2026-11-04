@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed23_i_codigo");
        <?=@$Led03_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed03_i_codigo',10,$Ied03_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted03_i_rechumanoativ?>">
-       <?
+       <?php
        db_ancora(@$Led03_i_rechumanoativ,"js_pesquisaed03_i_rechumanoativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed03_i_rechumanoativ',10,$Ied03_i_rechumanoativ,true,'text',$db_opcao," onchange='js_pesquisaed03_i_rechumanoativ(false);'")
 ?>
-       <?
+       <?php
 db_input('ed22_i_codigo',10,$Ied22_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted03_i_relacaotrabalho?>">
-       <?
+       <?php
        db_ancora(@$Led03_i_relacaotrabalho,"js_pesquisaed03_i_relacaotrabalho(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed03_i_relacaotrabalho',10,$Ied03_i_relacaotrabalho,true,'text',$db_opcao," onchange='js_pesquisaed03_i_relacaotrabalho(false);'")
 ?>
-       <?
+       <?php
 db_input('ed23_i_codigo',10,$Ied23_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rechumanorelacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

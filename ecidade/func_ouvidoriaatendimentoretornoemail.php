@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clouvidoriaatendimentoretornoemail->rotulo->label("ov13_email");
               <?=$Lov13_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov13_sequencial",10,$Iov13_sequencial,true,"text",4,"","chave_ov13_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clouvidoriaatendimentoretornoemail->rotulo->label("ov13_email");
               <?=$Lov13_email?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov13_email",100,$Iov13_email,true,"text",4,"","chave_ov13_email");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clouvidoriaatendimentoretornoemail->rotulo->label("ov13_email");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriaatendimentoretornoemail.php")==true){
@@ -122,12 +122,12 @@ $clouvidoriaatendimentoretornoemail->rotulo->label("ov13_email");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

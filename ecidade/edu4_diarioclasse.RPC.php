@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -70,7 +70,7 @@ try {
             if ($oDaoDBUsusario->numrows > 0) {
                 $oDadosRegente = db_utils::fieldsMemory($rsDadosRegente, 0);
                 $oRetorno->codigo_regente = $oDadosRegente->z01_numcgm;
-                $oRetorno->nome_regente = $oDadosRegente->z01_nome;
+                $oRetorno->nome_regente = urlencode($oDadosRegente->z01_nome);
             }
             if (isset($_SESSION["DIAS_LETIVOS_ESCOLA"])) {
                 unset($_SESSION["DIAS_LETIVOS_ESCOLA"]);
@@ -83,19 +83,18 @@ try {
             $sWhereNaoFuncionario .= " and rechumanoescola.ed75_i_escola = {$iEscola}                   ";
 
             $sWhereRegenciaHorario = "    ed58_ativo is true      ";
-            $sWhereRegenciaHorario .= " and ed59_c_freqglob <> 'A' ";
+            $sWhereRegenciaHorario .= " and (ed59_c_freqglob <> 'A')";
 
             $sWhereSubstituto = " {$sWhereRegenciaHorario}";
             $sWhereSubstituto .= " and '{$sDtLogin}' >= ed322_periodoinicial ";
             $sWhereSubstituto .= " and ((ed322_periodofinal is null and  '{$sDtLogin}' <= ed52_d_fim) ";
             $sWhereSubstituto .= "       or  '{$sDtLogin}' <= ed322_periodofinal) ";
 
-
             $sCampos = " distinct ed232_i_codigo as codigo_disciplina, ";
             $sCampos .= " ed232_c_descr as descricao_disciplina";
 
-            $oDaoRegenciaHorario = db_utils::getDao("regenciahorario");
-            $sWhereTurmaEscola = " ed57_i_escola = {$iEscola} ";
+            $oDaoRegenciaHorario = new cl_regenciahorario();
+            $sWhereTurmaEscola = " ed57_i_escola = {$iEscola} and '{$sDtLogin}' between ed52_d_inicio and ed52_d_fim";
             $sSqlDisciplinasRegente = $oDaoRegenciaHorario->sql_query_disciplinas_cgm(
                 $sCampos,
                 "descricao_disciplina",
@@ -126,7 +125,6 @@ try {
             $sWhereRegente .= " and ed75_i_escola = {$iEscola}";
             $sWhereRegente .= " and ed75_i_saidaescola is null ";
 
-
             $sSqlRegente = $oDaoRecHumano->sql_query_rechumano_cgm(null, $sCampoRegente, null, $sWhereRegente);
             $rsRegente = $oDaoRecHumano->sql_record($sSqlRegente);
 
@@ -136,17 +134,20 @@ try {
 
             $aCodigoRecHumano = db_utils::getCollectionByRecord($rsRegente);
             $aCodigos = array();
+
             foreach ($aCodigoRecHumano as $oCodigoRecHumano) {
                 $aCodigos[] = $oCodigoRecHumano->ed20_i_codigo;
             }
 
             $sCodigoRecHumano = implode(", ", $aCodigos);
-
-            $sWhere = " ed57_i_escola    = {$iEscola} ";
-            $sWhere .= " and ed52_i_ano   = " . db_getsession("DB_anousu");
+            $sDtLogin = date("Y-m-d", db_getsession('DB_datausu'));
+            $sWhere = " ed57_i_escola = {$iEscola} ";
+            $sWhere .= " and '{$sDtLogin}' BETWEEN ed52_d_inicio AND ed52_d_fim ";
             $sWhere .= " and ed232_i_codigo = {$oParam->iCodigoDisciplina}";
             $sWhere .= " and ed58_datainicio is not null ";
             $sWhere .= " and ed58_datafim    is not null ";
+            $sWhere .= " and ed58_ativo IS TRUE ";
+            $sWhere .= " and ed59_c_freqglob <> 'A'";
 
             $sWhereRegencia = " {$sWhere} ";
             $sWhereRegencia .= " and ed58_i_rechumano in ({$sCodigoRecHumano}) ";
@@ -264,6 +265,47 @@ try {
             $aIndicesDiaLetivo = array();
             $aIndicesDiaNaoLetivo = array();
 
+            /**
+             * Verifica quantos calendários o professor está vinculado
+             * Caso ele esteja vinculado a mais do que um calendário
+             * irá verificar se algumas das datas não consta em todos os calendários
+             * como por exemplo, o feriado de apenas a turma X e não a turma Y
+             * Sendo assim, ele retornará essa data mesmo que ela conste como um 
+             * evento em uns dos calendários
+             */
+            $nQuantosCalendarios = count(explode(",", $oDadosAnoLetivo->calendarios));
+
+            // Caso tenha mais do que um calendário vinculado ao professor
+            if ($nQuantosCalendarios > 1) {
+                $aEventosRepeticoes = array();
+                foreach ($aEventos as $key => $value){
+                    foreach ($value as $key2 => $value2){
+                        $index = $value2;
+                        if ($value2 != 'N' && $value2 != 'S')
+                        if (array_key_exists($index, $aEventosRepeticoes)){
+                            $aEventosRepeticoes[$index]++;
+                        } else {
+                            $aEventosRepeticoes[$index] = 1;
+                        }
+                    }
+                }
+                $aEventosUnicos = array();
+                foreach ($aEventosRepeticoes as $key => $value) {
+                    if ($value != $nQuantosCalendarios) {
+                        $aEventosUnicos[] = $key;
+                    }
+                }
+                if (count($aEventosUnicos) > 0) {
+                    foreach ($aEventosUnicos as $dDiaUnico) {
+                        foreach ($aEventos as $key => $value) {
+                            if ($value->data == $dDiaUnico) {
+                                unset($aEventos[$key]);
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach ($aEventos as $oEvento) {
                 $lDiaLetivo = $oEvento->dia_letivo == 'S';
                 $oDataEvento = new DBDate($oEvento->data);
@@ -316,11 +358,11 @@ try {
 
             break;
 
-
         case 'getTurmasNoDia':
             $aTurmas = array();
-            if (isset($oParam->dtAula) && isset($oParam->dtAula)) {
+            if (isset($oParam->dtAula)) {
                 $oDataInformada = new DBDate($oParam->dtAula);
+
                 if (isset($_SESSION["DIAS_LETIVOS_ESCOLA"])) {
                     foreach ($_SESSION["DIAS_LETIVOS_ESCOLA"] as $oData) {
                         if ($oData->data == $oParam->dtAula) {
@@ -331,13 +373,33 @@ try {
                                     $aTurmas[$oTurma->codigo_turma] = $oTurma;
                                 }
                             }
-
                             break;
                         }
                     }
                 }
+                /**
+                 * Verificar se para essa data, existe algum feriado em especifico
+                 * para apenas algumas turmas em especifico
+                 */
+
+                $aTurmas = array_values((array)$aTurmas);
+
+                foreach ($aTurmas as $keyTurmas => $result) {
+                    $nNumeroTurma = strtok($result->codigo_turma, '_');
+                    $oTurma = new Turma($nNumeroTurma);
+                    $oCalendarioTurma = $oTurma->getCalendario();
+                    $aEventos = buscaFeriados($oCalendarioTurma->getCodigo());
+                    foreach ($aEventos as $key => $value) {
+                        if ($value->data == $oParam->dtAula) {
+                            if ($value->dia_letivo == "N") {
+                                unset($aTurmas[$keyTurmas]);
+                            }
+                        }
+                    }
+                }
             }
-            $oRetorno->aTurmas = array_values((array)$aTurmas);
+
+            $oRetorno->aTurmas = $aTurmas;
             break;
 
         case 'getAlunosTurma' :
@@ -367,7 +429,7 @@ try {
             $sSqlAlunosMatriculadosNaTurma = $oDaoMatricula->sql_query(
                 "",
                 $sListaCampos,
-                "matricula.ed60_i_numaluno, to_ascii(ed47_v_nome)",
+                "matricula.ed60_i_numaluno, to_ascii(ed47_v_nome), matricula.ed60_d_datamatricula",
                 "ed60_i_turma = {$oParam->iCodigoTurma} and ed221_i_serie = {$iCodigoSerie}"
             );
             $aPeriodosDeAulaDoDia = array();
@@ -419,8 +481,9 @@ try {
             /**
              * Busca os periodos de alua
              */
+            $sDtLogin = date("Y-m-d", db_getsession('DB_datausu'));
             $sWhere = " ed57_i_escola    = {$iEscola} ";
-            $sWhere .= " and ed52_i_ano   = " . db_getsession("DB_anousu");
+            $sWhere .= " and '{$sDtLogin}' BETWEEN ed52_d_inicio AND ed52_d_fim ";
             $sWhere .= " and ed232_i_codigo = {$oParam->iCodigoDisciplina}";
             $sWhere .= " and ed58_i_diasemana = {$iDiaDaSemana}";
             $sWhere .= " and ed59_i_turma     = {$oParam->iCodigoTurma}";

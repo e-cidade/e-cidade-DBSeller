@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo = new rotulocampo;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
@@ -68,15 +68,15 @@ db_app::load("estilos.css, grid.style.css");
              <table>
               <tr>
 						      <td nowrap title="<?=@$Te14_sequencial?>">
-						       <?
+						       <?php
 						        db_ancora("<b>Arquivo:</b>","js_pesquisae14_sequencial(true);",1);
 						       ?>
 						      </td>
 						      <td colspan="3"> 
-										<?
+										<?php
 										  db_input('e14_sequencial',10,$Ie14_sequencial,true,'text',1," onchange='js_pesquisae14_sequencial(false);'")
 										?>
-									  <?
+									  <?php
 									   db_input('e14_nomearquivo',40,$Ie14_nomearquivo,true,'text',3,'')
 									  ?>
   					     </td>
@@ -86,7 +86,7 @@ db_app::load("estilos.css, grid.style.css");
                    <b>Data Inicial:</b>
                  </td> 
                  <td>
-                   <?
+                   <?php
                     $dtDataInicio = date("Y-m-d", db_getsession("DB_datausu"));
                     $aPartesDataInicio = explode("-", $dtDataInicio); 
                     db_inputdata('datainicial', '01', $aPartesDataInicio[1], $aPartesDataInicio[0], true, "text", 1);
@@ -96,7 +96,7 @@ db_app::load("estilos.css, grid.style.css");
                    <b>Data Final:</b>
                  </td> 
                  <td align="left">
-                   <?
+                   <?php
                     $dtDataFinal      = date("Y-m-d", db_getsession("DB_datausu"));
                     $aPartesDataFinal = explode("-", $dtDataInicio);
                     $iUltimoDia       = cal_days_in_month(CAL_GREGORIAN, $aPartesDataFinal[1], $aPartesDataFinal[0]); 
@@ -133,7 +133,7 @@ db_app::load("estilos.css, grid.style.css");
   </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

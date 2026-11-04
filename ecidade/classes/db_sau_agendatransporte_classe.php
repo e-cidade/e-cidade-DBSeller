@@ -1,80 +1,80 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Ambulatorial
 //CLASSE DA ENTIDADE sau_agendatransporte
-class cl_sau_agendatransporte { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $s124_i_codigo = 0; 
-   var $s124_i_numcgs = 0; 
-   var $s124_d_saida_dia = null; 
-   var $s124_d_saida_mes = null; 
-   var $s124_d_saida_ano = null; 
-   var $s124_d_saida = null; 
-   var $s124_c_hora = null; 
-   var $s124_c_passagem = null; 
-   var $s124_c_veiculo = null; 
-   var $s124_d_data_dia = null; 
-   var $s124_d_data_mes = null; 
-   var $s124_d_data_ano = null; 
-   var $s124_d_data = null; 
-   var $s124_i_login = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sau_agendatransporte {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $s124_i_codigo = 0;
+   var $s124_i_numcgs = 0;
+   var $s124_d_saida_dia = null;
+   var $s124_d_saida_mes = null;
+   var $s124_d_saida_ano = null;
+   var $s124_d_saida = null;
+   var $s124_c_hora = null;
+   var $s124_c_passagem = null;
+   var $s124_c_veiculo = null;
+   var $s124_d_data_dia = null;
+   var $s124_d_data_mes = null;
+   var $s124_d_data_ano = null;
+   var $s124_d_data = null;
+   var $s124_i_login = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 s124_i_codigo = int4 = Código 
-                 s124_i_numcgs = int4 = CGS 
-                 s124_d_saida = date = Saída 
-                 s124_c_hora = char(5) = Hora 
-                 s124_c_passagem = varchar(10) = Passagem 
-                 s124_c_veiculo = char(1) = Tipo Veículo 
-                 s124_d_data = date = Data Cadastro 
-                 s124_i_login = int4 = Login 
+                 s124_i_codigo = int4 = Código
+                 s124_i_numcgs = int4 = CGS
+                 s124_d_saida = date = Saída
+                 s124_c_hora = char(5) = Hora
+                 s124_c_passagem = varchar(10) = Passagem
+                 s124_c_veiculo = char(1) = Tipo Veículo
+                 s124_d_data = date = Data Cadastro
+                 s124_i_login = int4 = Login
                  ";
-   //funcao construtor da classe 
-   function cl_sau_agendatransporte() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sau_agendatransporte"); 
+     $this->rotulo = new rotulo("sau_agendatransporte");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_sau_agendatransporte {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s124_i_codigo = ($this->s124_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"]:$this->s124_i_codigo);
        $this->s124_i_numcgs = ($this->s124_i_numcgs == ""?@$GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"]:$this->s124_i_numcgs);
@@ -112,9 +112,9 @@ class cl_sau_agendatransporte {
      }
    }
    // funcao para inclusao
-   function incluir ($s124_i_codigo){ 
+   public function incluir ($s124_i_codigo){
       $this->atualizacampos();
-     if($this->s124_i_numcgs == null ){ 
+     if($this->s124_i_numcgs == null ){
        $this->erro_sql = " Campo CGS nao Informado.";
        $this->erro_campo = "s124_i_numcgs";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s124_d_saida == null ){ 
+     if($this->s124_d_saida == null ){
        $this->erro_sql = " Campo Saída nao Informado.";
        $this->erro_campo = "s124_d_saida_dia";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s124_c_hora == null ){ 
+     if($this->s124_c_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "s124_c_hora";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s124_c_veiculo == null ){ 
+     if($this->s124_c_veiculo == null ){
        $this->erro_sql = " Campo Tipo Veículo nao Informado.";
        $this->erro_campo = "s124_c_veiculo";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s124_d_data == null ){ 
+     if($this->s124_d_data == null ){
        $this->erro_sql = " Campo Data Cadastro nao Informado.";
        $this->erro_campo = "s124_d_data_dia";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->s124_i_login == null ){ 
+     if($this->s124_i_login == null ){
        $this->erro_sql = " Campo Login nao Informado.";
        $this->erro_campo = "s124_i_login";
        $this->erro_banco = "";
@@ -169,16 +169,16 @@ class cl_sau_agendatransporte {
        return false;
      }
      if($s124_i_codigo == "" || $s124_i_codigo == null ){
-       $result = db_query("select nextval('sau_agendatransporte_codigo_seq')"); 
+       $result = db_query("select nextval('sau_agendatransporte_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_agendatransporte_codigo_seq do campo: s124_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: sau_agendatransporte_codigo_seq do campo: s124_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->s124_i_codigo = pg_result($result,0,0); 
+       $this->s124_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_agendatransporte_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $s124_i_codigo)){
@@ -189,10 +189,10 @@ class cl_sau_agendatransporte {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->s124_i_codigo = $s124_i_codigo; 
+         $this->s124_i_codigo = $s124_i_codigo;
        }
      }
-     if(($this->s124_i_codigo == null) || ($this->s124_i_codigo == "") ){ 
+     if(($this->s124_i_codigo == null) || ($this->s124_i_codigo == "") ){
        $this->erro_sql = " Campo s124_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -201,27 +201,27 @@ class cl_sau_agendatransporte {
        return false;
      }
      $sql = "insert into sau_agendatransporte(
-                                       s124_i_codigo 
-                                      ,s124_i_numcgs 
-                                      ,s124_d_saida 
-                                      ,s124_c_hora 
-                                      ,s124_c_passagem 
-                                      ,s124_c_veiculo 
-                                      ,s124_d_data 
-                                      ,s124_i_login 
+                                       s124_i_codigo
+                                      ,s124_i_numcgs
+                                      ,s124_d_saida
+                                      ,s124_c_hora
+                                      ,s124_c_passagem
+                                      ,s124_c_veiculo
+                                      ,s124_d_data
+                                      ,s124_i_login
                        )
                 values (
-                                $this->s124_i_codigo 
-                               ,$this->s124_i_numcgs 
-                               ,".($this->s124_d_saida == "null" || $this->s124_d_saida == ""?"null":"'".$this->s124_d_saida."'")." 
-                               ,'$this->s124_c_hora' 
-                               ,'$this->s124_c_passagem' 
-                               ,'$this->s124_c_veiculo' 
-                               ,".($this->s124_d_data == "null" || $this->s124_d_data == ""?"null":"'".$this->s124_d_data."'")." 
-                               ,$this->s124_i_login 
+                                $this->s124_i_codigo
+                               ,$this->s124_i_numcgs
+                               ,".($this->s124_d_saida == "null" || $this->s124_d_saida == ""?"null":"'".$this->s124_d_saida."'")."
+                               ,'$this->s124_c_hora'
+                               ,'$this->s124_c_passagem'
+                               ,'$this->s124_c_veiculo'
+                               ,".($this->s124_d_data == "null" || $this->s124_d_data == ""?"null":"'".$this->s124_d_data."'")."
+                               ,$this->s124_i_login
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "sau_agendatransporte ($this->s124_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -260,16 +260,16 @@ class cl_sau_agendatransporte {
        $resac = db_query("insert into db_acount values($acount,2523,14347,'','".AddSlashes(pg_result($resaco,0,'s124_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($s124_i_codigo=null) { 
+   public function alterar ($s124_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_agendatransporte set ";
      $virgula = "";
-     if(trim($this->s124_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"])){ 
+     if(trim($this->s124_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"])){
        $sql  .= $virgula." s124_i_codigo = $this->s124_i_codigo ";
        $virgula = ",";
-       if(trim($this->s124_i_codigo) == null ){ 
+       if(trim($this->s124_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s124_i_codigo";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"])){ 
+     if(trim($this->s124_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"])){
        $sql  .= $virgula." s124_i_numcgs = $this->s124_i_numcgs ";
        $virgula = ",";
-       if(trim($this->s124_i_numcgs) == null ){ 
+       if(trim($this->s124_i_numcgs) == null ){
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "s124_i_numcgs";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_d_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"] !="") ){ 
+     if(trim($this->s124_d_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"] !="") ){
        $sql  .= $virgula." s124_d_saida = '$this->s124_d_saida' ";
        $virgula = ",";
-       if(trim($this->s124_d_saida) == null ){ 
+       if(trim($this->s124_d_saida) == null ){
          $this->erro_sql = " Campo Saída nao Informado.";
          $this->erro_campo = "s124_d_saida_dia";
          $this->erro_banco = "";
@@ -304,11 +304,11 @@ class cl_sau_agendatransporte {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"])){
          $sql  .= $virgula." s124_d_saida = null ";
          $virgula = ",";
-         if(trim($this->s124_d_saida) == null ){ 
+         if(trim($this->s124_d_saida) == null ){
            $this->erro_sql = " Campo Saída nao Informado.";
            $this->erro_campo = "s124_d_saida_dia";
            $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_sau_agendatransporte {
          }
        }
      }
-     if(trim($this->s124_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_hora"])){ 
+     if(trim($this->s124_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_hora"])){
        $sql  .= $virgula." s124_c_hora = '$this->s124_c_hora' ";
        $virgula = ",";
-       if(trim($this->s124_c_hora) == null ){ 
+       if(trim($this->s124_c_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "s124_c_hora";
          $this->erro_banco = "";
@@ -332,14 +332,14 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_c_passagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_passagem"])){ 
+     if(trim($this->s124_c_passagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_passagem"])){
        $sql  .= $virgula." s124_c_passagem = '$this->s124_c_passagem' ";
        $virgula = ",";
      }
-     if(trim($this->s124_c_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_veiculo"])){ 
+     if(trim($this->s124_c_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_veiculo"])){
        $sql  .= $virgula." s124_c_veiculo = '$this->s124_c_veiculo' ";
        $virgula = ",";
-       if(trim($this->s124_c_veiculo) == null ){ 
+       if(trim($this->s124_c_veiculo) == null ){
          $this->erro_sql = " Campo Tipo Veículo nao Informado.";
          $this->erro_campo = "s124_c_veiculo";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"] !="") ){ 
+     if(trim($this->s124_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"] !="") ){
        $sql  .= $virgula." s124_d_data = '$this->s124_d_data' ";
        $virgula = ",";
-       if(trim($this->s124_d_data) == null ){ 
+       if(trim($this->s124_d_data) == null ){
          $this->erro_sql = " Campo Data Cadastro nao Informado.";
          $this->erro_campo = "s124_d_data_dia";
          $this->erro_banco = "";
@@ -361,11 +361,11 @@ class cl_sau_agendatransporte {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"])){
          $sql  .= $virgula." s124_d_data = null ";
          $virgula = ",";
-         if(trim($this->s124_d_data) == null ){ 
+         if(trim($this->s124_d_data) == null ){
            $this->erro_sql = " Campo Data Cadastro nao Informado.";
            $this->erro_campo = "s124_d_data_dia";
            $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_sau_agendatransporte {
          }
        }
      }
-     if(trim($this->s124_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_login"])){ 
+     if(trim($this->s124_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_login"])){
        $sql  .= $virgula." s124_i_login = $this->s124_i_login ";
        $virgula = ",";
-       if(trim($this->s124_i_login) == null ){ 
+       if(trim($this->s124_i_login) == null ){
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "s124_i_login";
          $this->erro_banco = "";
@@ -419,7 +419,7 @@ class cl_sau_agendatransporte {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "sau_agendatransporte nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->s124_i_codigo;
@@ -447,14 +447,14 @@ class cl_sau_agendatransporte {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($s124_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($s124_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($s124_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -487,7 +487,7 @@ class cl_sau_agendatransporte {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "sau_agendatransporte nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$s124_i_codigo;
@@ -515,11 +515,11 @@ class cl_sau_agendatransporte {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -541,11 +541,11 @@ class cl_sau_agendatransporte {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,15 +560,15 @@ class cl_sau_agendatransporte {
      $sql2 = "";
      if($dbwhere==""){
        if($s124_i_codigo!=null ){
-         $sql2 .= " where sau_agendatransporte.s124_i_codigo = $s124_i_codigo "; 
-       } 
+         $sql2 .= " where sau_agendatransporte.s124_i_codigo = $s124_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,11 +577,11 @@ class cl_sau_agendatransporte {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,15 +594,15 @@ class cl_sau_agendatransporte {
      $sql2 = "";
      if($dbwhere==""){
        if($s124_i_codigo!=null ){
-         $sql2 .= " where sau_agendatransporte.s124_i_codigo = $s124_i_codigo "; 
-       } 
+         $sql2 .= " where sau_agendatransporte.s124_i_codigo = $s124_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

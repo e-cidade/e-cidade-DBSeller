@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 	<center>
-  <?
+  <?php
     $instit = db_getsession("DB_instit");
 
     $sql  = "select disbanco.*, ";

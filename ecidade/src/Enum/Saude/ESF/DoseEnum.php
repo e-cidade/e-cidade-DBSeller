@@ -49,6 +49,86 @@ class DoseEnum extends Enum
     const QUINTO_REFORCO = 41;
     const SEXTO_REFORCO = 42;
 
+    const QUINTA_DOSE_REVACINACAO = 43;
+
+    const PRIMEIRA_DOSE_FRACIONADA = 44;
+
+    const SEGUNDA_DOSE_FRACIONADA = 45;
+
+    const TERCEIRA_DOSE_FRACIONADA = 46;
+
+    const QUARTA_DOSE_FRACIONADA = 47;
+
+    const QUINTA_DOSE_FRACIONADA = 48;
+
+    const PRIMEIRA_DOSE_DOBRADA = 49;
+
+    const SEGUNDA_DOSE_DOBRADA = 50;
+
+    const TERCEIRA_DOSE_DOBRADA = 51;
+
+    const QUARTA_DOSE_DOBRADA = 52;
+
+    const PRIMEIRA_DOSE_REVACINAÇÃO_DOBRADA = 53;
+
+    const SEGUNDA_DOSE_REVACINAÇÃO_DOBRADA = 54;
+
+    const TERCEIRA_DOSE_REVACINAÇÃO_DOBRADA = 55;
+
+    const QUARTA_DOSE_REVACINAÇÃO_DOBRADA = 56;
+
+    const DOSE_ZERO = 57;
+
+    const REFORÇO_ZERO = 58;
+
+    const PROFILAXIA_COM_1_FRASCO_AMPOLA_AMPOLA = 59;
+
+    const PROFILAXIA_COM_2_FRASCOS_AMPOLAS_AMPOLAS = 60;
+
+    const PROFILAXIA_COM_3_FRASCOS_AMPOLAS_AMPOLAS = 61;
+
+    const PROFILAXIA_COM_4_FRASCOS_AMPOLAS_AMPOLAS = 62;
+
+    const PROFILAXIA_COM_5_FRASCOS_AMPOLAS_AMPOLAS = 63;
+
+    const PROFILAXIA_COM_6_FRASCOS_AMPOLAS_AMPOLAS = 64;
+
+    const PROFILAXIA_COM_7_FRASCOS_AMPOLAS_AMPOLAS = 65;
+
+    const PROFILAXIA_COM_8_FRASCOS_AMPOLAS_AMPOLAS = 66;
+
+    const PROFILAXIA_COM_9_FRASCOS_AMPOLAS_AMPOLAS = 67;
+
+    const PROFILAXIA_COM_10_FRASCOS_AMPOLAS_AMPOLAS = 68;
+
+    const PROFILAXIA_COM_11_FRASCOS_AMPOLAS_AMPOLAS = 69;
+
+    const PROFILAXIA_COM_12_FRASCOS_AMPOLAS_AMPOLAS = 70;
+
+    const PROFILAXIA_COM_13_FRASCOS_AMPOLAS_AMPOLAS = 71;
+
+    const PROFILAXIA_COM_14_FRASCOS_AMPOLAS_AMPOLAS = 72;
+
+    const PROFILAXIA_COM_15_FRASCOS_AMPOLAS_AMPOLAS = 73;
+
+    const PROFILAXIA_COM_16_FRASCOS_AMPOLAS_AMPOLAS = 74;
+
+    const PROFILAXIA_COM_17_FRASCOS_AMPOLAS_AMPOLAS = 75;
+
+    const PROFILAXIA_COM_18_FRASCOS_AMPOLAS_AMPOLAS = 76;
+
+    const PROFILAXIA_COM_19_FRASCOS_AMPOLAS_AMPOLAS = 77;
+
+    const PROFILAXIA_COM_20_FRASCOS_AMPOLAS_AMPOLAS = 78;
+
+    const PROFILAXIA_COM_21_FRASCOS_AMPOLAS_AMPOLAS = 79;
+
+    const PROFILAXIA_COM_22_FRASCOS_AMPOLAS_AMPOLAS = 80;
+
+    const PROFILAXIA_COM_23_FRASCOS_AMPOLAS_AMPOLAS = 81;
+
+    const PROFILAXIA_COM_24_FRASCOS_AMPOLAS_AMPOLAS = 82;
+
     /**
      * @return string
      */
@@ -96,7 +176,47 @@ class DoseEnum extends Enum
             self::TERCEIRO_REFORCO => '3º Reforço',
             self::QUARTO_REFORCO => '4º Reforço',
             self::QUINTO_REFORCO => '5º Reforço',
-            self::SEXTO_REFORCO => '6º Reforço'
+            self::SEXTO_REFORCO => '6º Reforço',
+            self::QUINTA_DOSE_REVACINACAO => '5ª Dose Revacinacao',
+            self::PRIMEIRA_DOSE_FRACIONADA => '1ª Dose Fracionada',
+            self::SEGUNDA_DOSE_FRACIONADA => '2ª Dose Fracionada',
+            self::TERCEIRA_DOSE_FRACIONADA => '3ª Dose Fracionada',
+            self::QUARTA_DOSE_FRACIONADA => '4ª Dose Fracionada',
+            self::QUINTA_DOSE_FRACIONADA => '5ª Dose Fracionada',
+            self::PRIMEIRA_DOSE_DOBRADA => '1ª Dose Dobrada',
+            self::SEGUNDA_DOSE_DOBRADA => '2ª Dose Dobrada',
+            self::TERCEIRA_DOSE_DOBRADA => '3ª Dose Dobrada',
+            self::QUARTA_DOSE_DOBRADA => '4ª Dose Dobrada',
+            self::PRIMEIRA_DOSE_REVACINAÇÃO_DOBRADA => '1ª Dose Revacinação Dobrada',
+            self::SEGUNDA_DOSE_REVACINAÇÃO_DOBRADA => '2ª Dose Revacinação Dobrada',
+            self::TERCEIRA_DOSE_REVACINAÇÃO_DOBRADA => '3ª Dose Revacinação Dobrada',
+            self::QUARTA_DOSE_REVACINAÇÃO_DOBRADA => '4ª Dose Revacinação Dobrada',
+            self::DOSE_ZERO => 'Dose Zero',
+            self::REFORÇO_ZERO => 'Reforço Zero',
+            self::PROFILAXIA_COM_1_FRASCO_AMPOLA_AMPOLA => 'Profilaxia com 1 frasco-ampola/ampola',
+            self::PROFILAXIA_COM_2_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 2 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_3_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 3 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_4_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 4 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_5_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 5 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_6_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 6 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_7_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 7 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_8_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 8 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_9_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 9 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_10_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 10 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_11_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 11 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_12_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 12 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_13_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 13 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_14_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 14 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_15_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 15 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_16_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 16 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_17_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 17 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_18_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 18 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_19_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 19 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_20_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 20 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_21_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 21 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_22_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 22 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_23_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 23 frascos-ampolas/ampolas',
+            self::PROFILAXIA_COM_24_FRASCOS_AMPOLAS_AMPOLAS => 'Profilaxia com 24 frascos-ampolas/ampolas'
         ];
 
         if (empty($data[$this->getValue()])) {

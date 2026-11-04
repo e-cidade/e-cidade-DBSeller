@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -102,17 +102,26 @@ if (FONTE_RECURSO_UNIAO) {
                             '8B' => 'Recurso só o Nível'
                         ];
                         db_select('nivel', $xy, true, 2, "");
-                        $db_selinstit = db_getsession("DB_instit");
-                        db_input("db_selinstit", 10, 0, true, "hidden", 3);
                         ?>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="4" align="center">
+                        <fieldset style="width: 98%; border-left: none; border-bottom: none; border-right: none;">
+                            <legend><b>Instituições</b></legend>
+                            <?php
+                                db_selinstit('', 500, 130);
+                            ?>
+                        </fieldset>
+                    </td>
+                </tr>
                 <tr id="linhaCodigoSiconfi" style="display: none">
-                    <td>Apresentar Código Siconfi:</td>
+                    <td>Apresentar :</td>
                     <td>
-                        <select id="apresentarCodigoSiconfi" name="apresentarCodigoSiconfi">
-                            <option selected value="N">NÃO</option>
-                            <option value="S">SIM</option>
+                        <select id="apresentarRecurso" name="apresentarRecurso">
+                            <option selected value="fonteRecurso">Fonte Recurso</option>
+                            <option value="depara">Depara Subrecurso</option>
+                            <option value="Siconfi">Código Siconfi</option>
                         </select>
                     </td>
                 </tr>
@@ -176,11 +185,11 @@ if (FONTE_RECURSO_UNIAO) {
                     $dataini = $anousu . "-" . $dataini;
                     $datafin = $anousu . "-" . $datafin;
 
-                    $dt = split('-', $dataini);
+                    $dt = explode('-', $dataini);
                     $data_ini_dia = $dt[2];
                     $data_ini_mes = $dt[1];
                     $data_ini_ano = $dt[0];
-                    $dt = split('-', $datafin);
+                    $dt = explode('-', $datafin);
                     $data_fin_dia = $dt[2];
                     $data_fin_mes = $dt[1];
                     $data_fin_ano = $dt[0];

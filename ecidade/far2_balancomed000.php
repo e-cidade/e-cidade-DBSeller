@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -73,16 +73,16 @@ $db_opcao=1;
        <b> Período:</b>
      </td>
      <td>
-       <? db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',$db_opcao,"");?>
-       <? db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',$db_opcao,"");?>
+       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',$db_opcao,"");?>
+       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',$db_opcao,"");?>
      </td>
-     </tr>     
+     </tr>
   <tr>
         <td>
        <b>livro:</b>
     </td>
-    <td> 
-       <?               
+    <td>
+       <?php
         $result_modlivro = $clfar_modelolivro->sql_record($clfar_modelolivro->sql_query("","fa16_i_codigo,fa16_c_livro","fa16_c_livro"));
         db_selectrecord("fa16_i_codigo",$result_modlivro,"","","","","","  ","",1);
           ?>
@@ -92,8 +92,8 @@ $db_opcao=1;
         <td>
        <b>xxxxx:</b>
     </td>
-    <td> 
-       <?               
+    <td>
+       <?php
         $result_periodo = $clfar_modelolivro->sql_record($clfar_modelolivro->sql_query("","fa16_c_periodo","fa16_i_codigo"));
         db_selectrecord("fa16_i_codigo",$result_periodo,"","","","","","  ","",1);
           ?>
@@ -115,12 +115,12 @@ $db_opcao=1;
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
-function js_botao(){                                 
+function js_botao(){
 	parametros = '?fa16_i_codigo=<?=$fa16_i_codigo?>';
 	parametros += "&data1="+document.form1.data1.value+"&data2="+document.form1.data2.value;
     jan = window.open('far2_relmensalnot002.php'+parametros,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    jan.moveTo(0,0);	
-} 
+    jan.moveTo(0,0);
+}
 </script>

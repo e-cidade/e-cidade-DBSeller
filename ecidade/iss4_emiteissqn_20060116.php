@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -207,7 +207,7 @@ if(isset($geracarnes)){
           <tr> 
             <td width="69" height="25">Arquivo:</td>
             <td width="223" height="25">
-			<?
+			<?php
 			if(@$quantos!=0){
 			  $clabre_arquivo->arquivo;
 			}
@@ -233,12 +233,12 @@ if(isset($geracarnes)){
      </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($erro==true){
   echo "<script>alert('$descricao_erro');</script>";
 }

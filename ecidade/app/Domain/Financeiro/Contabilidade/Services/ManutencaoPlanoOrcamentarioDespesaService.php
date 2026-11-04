@@ -21,10 +21,10 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
      * @param int $exercicio
      * @return Collection
      */
-    public function buscarDespesasParaExcluisao($estrutural, $exercicio)
+    public function buscarDespesasParaExclusao($estrutural, $exercicio)
     {
         $contas = $this->getContas(['estrutural' => $estrutural, "exercicio" => $exercicio]);
-        $balancete = $this->executaBalanceteDespesa($exercicio);
+        $estruturaisComMovimento = $this->estruturaisComMovimento($exercicio);
 
         // exclui da lista contas que não tem o sexto nível
         $despesasExcluir = $contas->reject(function (ConplanoOrcamento $conta) {
@@ -33,9 +33,8 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
         });
 
         // remove da lista contas com previsão de despesa
-        $despesasExcluir = $despesasExcluir->reject(function (ConplanoOrcamento $conta) use ($balancete) {
-            //localiza no balancete a conta
-            return $this->temMovimentacao($balancete, $conta);
+        $despesasExcluir = $despesasExcluir->reject(function (ConplanoOrcamento $conta) use ($estruturaisComMovimento) {
+            return $this->temMovimentacao($estruturaisComMovimento, $conta);
         });
 
         $elementosComEstimativa = DetalhamentoDespesa::query()
@@ -64,26 +63,29 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
      * @param $exercicio
      * @return array
      */
-    public function executaBalanceteDespesa($exercicio)
+    public function estruturaisComMovimento($exercicio)
     {
-        $instituicoes = DBConfig::select(['codigo', 'nomeinst', 'prefeitura'])->get();
-        $prefeitura = $instituicoes->filter(function (DBConfig $config) {
-            return $config->prefeitura;
-        })->shift();
-
-        $filtros = [
-            "instituicoes" => JSON::create()->stringify($instituicoes->toArray()),
-            "dataInicio" => sprintf('01/01/%s', $exercicio),
-            "dataFinal" => sprintf('31/12/%s', $exercicio),
-            "modelo" => "sintetico",
-            "nivel" => ["elemento"],
-            "filtros" => JSON::create()->stringify([]),
-            "DB_instit" => $prefeitura->codigo,
-        ];
-
-        $service = new RelatorioBalanceteDespesaService();
-        $service->setFiltrosRequest($filtros);
-        return $service->getDadosProcessados();
+        return DB::select("
+          select c60_estrut as estrutural
+            from (
+            select c60_estrut
+              from conlancam
+              join conlancamele on c67_codlan = c70_codlan
+              join conplanoorcamento on conplanoorcamento.c60_anousu = c70_anousu
+                   and conplanoorcamento.c60_codcon = c67_codele
+             where c70_anousu = $exercicio
+            union
+            select c60_estrut
+              from conlancam
+              join conlancamdot on c73_anousu = c70_anousu
+                   and c73_codlan = c70_codlan
+              join orcdotacao on (o58_anousu, o58_coddot) = (c73_anousu, c73_coddot)
+              join conplanoorcamento on conplanoorcamento.c60_anousu = c70_anousu
+                   and conplanoorcamento.c60_codcon = o58_codele
+             where c70_anousu = $exercicio
+        ) as x
+        order by 1
+        ");
     }
 
     public function excluirContas($contas)
@@ -193,32 +195,21 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
     }
 
     /**
-     * @param array $balancete
+     * @param array $estruturaisComMovimento
      * @param ConplanoOrcamento $conta
      * @return bool
      */
-    public function temMovimentacao(array $balancete, ConplanoOrcamento $conta)
+    public function temMovimentacao(array $estruturaisComMovimento, ConplanoOrcamento $conta)
     {
-        $dadoBalancete = collect($balancete)->filter(function ($bal) use ($conta) {
-            $estruturalBalancete = new Estrutural($bal->codigo);
+        $dadoBalancete = collect($estruturaisComMovimento)->filter(function ($estrutural) use ($conta) {
+            $estruturalBalancete = new Estrutural($estrutural->estrutural);
             $estruturalConta = new Estrutural($conta->c60_estrut);
             return $estruturalConta->getEstruturalAteNivel() === $estruturalBalancete->getEstruturalAteNivel();
         })->shift();
 
         // se possui execução, não pode excluir
         if (!is_null($dadoBalancete)) {
-            $temSaldo = (
-                $dadoBalancete->valores->saldo_inicial != 0 ||
-                $dadoBalancete->valores->saldo_disponivel != 0 ||
-                $dadoBalancete->valores->suplementado != 0 ||
-                $dadoBalancete->valores->suplementado_especial != 0 ||
-                $dadoBalancete->valores->reducoes != 0 ||
-                $dadoBalancete->valores->empenhado_liquido != 0 ||
-                $dadoBalancete->valores->empenhado_liquido_acumulado != 0 ||
-                $dadoBalancete->valores->liquidado_acumulado != 0 ||
-                $dadoBalancete->valores->pago_acumulado != 0
-            );
-            return $temSaldo;
+            return true;
         }
         return false;
     }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -84,13 +84,13 @@ class cl_agualeitura {
                  x21_aguacontrato = int4 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_agualeitura() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agualeitura");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -99,7 +99,7 @@ class cl_agualeitura {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x21_codleitura = ($this->x21_codleitura == ""?@$GLOBALS["HTTP_POST_VARS"]["x21_codleitura"]:$this->x21_codleitura);
        $this->x21_codhidrometro = ($this->x21_codhidrometro == ""?@$GLOBALS["HTTP_POST_VARS"]["x21_codhidrometro"]:$this->x21_codhidrometro);
@@ -136,7 +136,7 @@ class cl_agualeitura {
      }
    }
    // funcao para inclusao
-   function incluir ($x21_codleitura){
+   public function incluir ($x21_codleitura){
       $this->atualizacampos();
      if($this->x21_codhidrometro == null ){
        $this->erro_sql = " Campo Hidrômetro não informado.";
@@ -892,7 +892,7 @@ class cl_agualeitura {
      return $sql;
   }
 
-   function calcula_consumo($iLeitura) {
+   public function calcula_consumo($iLeitura) {
 
 		if($iLeitura == $this->x21_leitura) {
 			return $this->x21_consumo;
@@ -905,10 +905,10 @@ class cl_agualeitura {
 
 
 	}
-   function sql_query_sitecgm ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_sitecgm ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -932,7 +932,7 @@ class cl_agualeitura {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -941,10 +941,10 @@ class cl_agualeitura {
      }
      return $sql;
   }
-   function sql_query_pesquisa ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_pesquisa ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -969,7 +969,7 @@ class cl_agualeitura {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -978,10 +978,10 @@ class cl_agualeitura {
      }
      return $sql;
   }
-   function sql_query_dados ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_dados ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1011,7 +1011,7 @@ class cl_agualeitura {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1020,10 +1020,10 @@ class cl_agualeitura {
      }
      return $sql;
   }
-   function sql_query_anteriores ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_anteriores ( $x21_codleitura=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1047,7 +1047,7 @@ class cl_agualeitura {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1076,7 +1076,7 @@ class cl_agualeitura {
     return $sSqlDadosExportados;
   }
 
-	function sql_query_pagamentos_posteriores($iAno, $iMes, $iMatric) {
+	public function sql_query_pagamentos_posteriores($iAno, $iMes, $iMatric) {
 
 	  $sql = "select *
               from aguacalc

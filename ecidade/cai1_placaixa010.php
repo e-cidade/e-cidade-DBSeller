@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ if(isset($estorna)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	$autenticar_estorno = true;
 	include(modification("forms/db_frmplacaixa.php"));
 	?>
@@ -86,7 +86,7 @@ if(isset($estorna)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($estorna)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

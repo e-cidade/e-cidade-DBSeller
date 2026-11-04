@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($incluir)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js");
   db_app::load("estilos.css");
 ?>
@@ -70,7 +70,7 @@ if(isset($incluir)){
        <tr> 
 		    <td  align="left" nowrap title="modelo etiqueta"><b>Modelo Etiqueta:</b></td>
 		    <td align="left" nowrap>
-		      <?
+		      <?php
 		         db_input("t72_sequencial",8,$It72_sequencial,true,"text",4,"onchange='js_pesquisa_modelo(false);'"); 
 		         db_input("t72_descr",40,$It72_descr,true,"text",3);  
 		      ?>
@@ -79,7 +79,7 @@ if(isset($incluir)){
 		   <tr>
         <td><b>Descrição:</b></td>
         <td>
-          <?
+          <?php
             db_input('fileDescr',51,0,true,'text',1);
           ?>
         </td>
@@ -87,7 +87,7 @@ if(isset($incluir)){
 		   <tr>
         <td><b>Arquivo:</b></td>
         <td>
-          <? 
+          <?php 
             db_input('fileXml',40,0,true,'file',1);
           ?>
         </td>
@@ -105,7 +105,7 @@ if(isset($incluir)){
   </tr>
 </table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

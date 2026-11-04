@@ -65,13 +65,13 @@ class cl_rhgeracaofolha {
                  rh102_instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_rhgeracaofolha() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhgeracaofolha");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_rhgeracaofolha {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh102_sequencial = ($this->rh102_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh102_sequencial"]:$this->rh102_sequencial);
        $this->rh102_descricao = ($this->rh102_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh102_descricao"]:$this->rh102_descricao);
@@ -102,7 +102,7 @@ class cl_rhgeracaofolha {
      }
    }
    // funcao para inclusao
-   function incluir ($rh102_sequencial){
+   public function incluir ($rh102_sequencial){
       $this->atualizacampos();
      if($this->rh102_descricao == null ){
        $this->erro_sql = " Campo Descrição não informado.";
@@ -267,7 +267,7 @@ class cl_rhgeracaofolha {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh102_sequencial=null) {
+   public function alterar ($rh102_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhgeracaofolha set ";
      $virgula = "";
@@ -458,7 +458,7 @@ class cl_rhgeracaofolha {
      }
    }
    // funcao para exclusao
-   function excluir ($rh102_sequencial=null,$dbwhere=null) {
+   public function excluir ($rh102_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -535,7 +535,7 @@ class cl_rhgeracaofolha {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -558,10 +558,10 @@ class cl_rhgeracaofolha {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $rh102_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh102_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,7 +586,7 @@ class cl_rhgeracaofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -596,10 +596,10 @@ class cl_rhgeracaofolha {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh102_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh102_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_rhgeracaofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_rhgeracaofolha {
    * @param Boolean $geraFormularioOculto
 	 * @return String
 	 */
-	function sqlGeracaoFolha($oParam, $aFiltroSelecionados = null, $geraFormularioOculto= false){
+	public function sqlGeracaoFolha($oParam, $aFiltroSelecionados = null, $geraFormularioOculto= false){
 
 	    if($aFiltroSelecionados == null and count($aFiltroSelecionados) == 0){
 	      $sFiltroInclusao     = " ";
@@ -692,7 +692,7 @@ class cl_rhgeracaofolha {
                           and [sigla]_mesusu = ".$oDados->mesfolha."
                           and [sigla]_instit = ".db_getsession("DB_instit")."
                           and [sigla]_pd    != 3";
-     
+
 	      $sGroupBy = "  group by [sigla]_regist,
 	                              [sigla]_lotac,
 	                              [sigla]_anousu,
@@ -710,7 +710,7 @@ class cl_rhgeracaofolha {
 	                     '[tipo_folha]'::varchar                                     as tipo_folha
 	                     ";
 
-	      $aFolhaSelecionados = split(",",$oDados->folhaselecion);
+	      $aFolhaSelecionados = explode(",",$oDados->folhaselecion);
 
 	      foreach($aFolhaSelecionados as $iFolhaSelecionada){
 
@@ -771,7 +771,7 @@ class cl_rhgeracaofolha {
 	            $campos6 = str_replace("[label_tipo]","Complementar",$campos6);
 	            $campos6 = str_replace("[tipo_folha]","$iFolhaSelecionada",$campos6);
 	            $sqlcom  = $clgerfcom->sql_query_file(null,null,null,null,$campos6,"",$DBwhere6);
-              
+
               if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()){
 
                 $oCompetencia         = new DBCompetencia($oDados->anofolha, $oDados->mesfolha);
@@ -841,7 +841,7 @@ class cl_rhgeracaofolha {
           $sSqlUnion.= $valorunion.$sqlsupl;
           $valorunion = " union all ";
         }
-        
+
 	      if (trim($oDados->selecao) != "") {
 
 	        $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($oDados->selecao,db_getsession('DB_instit'),"r44_where"));
@@ -1055,7 +1055,7 @@ class cl_rhgeracaofolha {
 	    return $sSql;
 	}
 
-	function sqlGeracaoFolhaArquivoBancario($iCodigoGeracao, $sCampos = "*", $sWhere = null, $sOrdem = null, $lSomenteServidoresOpcaoContaCorrente = true) {
+	public function sqlGeracaoFolhaArquivoBancario($iCodigoGeracao, $sCampos = "*", $sWhere = null, $sOrdem = null, $lSomenteServidoresOpcaoContaCorrente = true) {
 
 		$sSql  = "select {$sCampos}                                                                                               ";
 		$sSql .= "  from rhgeracaofolha                                                                                           ";
@@ -1094,14 +1094,14 @@ class cl_rhgeracaofolha {
 
     return $sSql;
 	}
-  
+
   /**
    * Retorna uma query com os seguintes relacionamentos:
    * ==> rhgeracaofolha
    * ==> rhgeracaofolhareg
    * ==> rhpessoalmov
    * ==> rhgeracaofolhatipo
-   * 
+   *
    * @access public
    * @param Integer $rh102_sequencial
    * @param String $sCampos
@@ -1110,19 +1110,19 @@ class cl_rhgeracaofolha {
    * @return String
    */
   public function sql_query_rhgeracaofolha ($rh102_sequencial = null, $sCampos = "*", $sOrdem = null, $sWhere = ""){
-    
+
     $sSql  = "select {$sCampos}";
     $sSql .= " from rhgeracaofolha ";
     $sSql .= "      inner join rhgeracaofolhareg  on rhgeracaofolhareg.rh104_rhgeracaofolha = rhgeracaofolha.rh102_sequencial ";
     $sSql .= "      inner join rhpessoalmov       on rhpessoalmov.rh02_seqpes = rhgeracaofolhareg.rh104_seqpes and  rhpessoalmov.rh02_instit = rhgeracaofolhareg.rh104_instit";
     $sSql .= "      inner join rhgeracaofolhatipo on rhgeracaofolhatipo.rh103_rhgeracaofolhareg = rhgeracaofolhareg.rh104_sequencial ";
-    
+
     $sSql2 = "";
-    
+
     if (empty($sWhere)) {
        if (!empty($rh102_sequencial)){
-         $sSql2 .= " where rhgeracaofolha.rh102_sequencial = $rh102_sequencial "; 
-       } 
+         $sSql2 .= " where rhgeracaofolha.rh102_sequencial = $rh102_sequencial ";
+       }
      } else if (!empty($sWhere)) {
        $sSql2 = " where $sWhere";
      }
@@ -1132,6 +1132,6 @@ class cl_rhgeracaofolha {
      }
      return $sSql;
   }
-  
+
 }
 

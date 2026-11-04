@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clliclicitaata->rotulo->label("l39_arqnome");
               <?=$Ll39_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l39_sequencial",10,$Il39_sequencial,true,"text",4,"","chave_l39_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clliclicitaata->rotulo->label("l39_arqnome");
               <?=$Ll39_arqnome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l39_arqnome",50,$Il39_arqnome,true,"text",4,"","chave_l39_arqnome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clliclicitaata->rotulo->label("l39_arqnome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclicitaata.php")==true){
@@ -122,12 +122,12 @@ $clliclicitaata->rotulo->label("l39_arqnome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

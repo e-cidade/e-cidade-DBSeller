@@ -170,16 +170,8 @@ require_once modification("dbforms/db_funcoes.php");
             return alert('O campo "Operadora" é obrigatório.');
         }
 
-        if (inputAns.getValue() === '') {
-            return alert('O campo "ANS" é obrigatório.');
-        }
-
         if (document.querySelector('#ativo').value === '') {
             return alert('O campo "Situação" é obrigatório.');
-        }
-
-        if (inputAns.getValue().lenght < 6) {
-            return alert('O campo "ANS" deve ter pelo menos 6 números.');
         }
 
         return true;

@@ -75,15 +75,15 @@ function js_emite(){
     <form name="form1" method="post" action="" >
   <tr>
     <td align="right" title="<?=$Trh01_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh01_regist, "js_pesquisarh01_regist(true);", 1);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh01_regist', 8, $Irh01_regist, true, 'text', 1, " onchange='js_pesquisarh01_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome', 30, $Iz01_nome, true, 'text', 3, '');
       ?>
     </td>
@@ -93,7 +93,7 @@ function js_emite(){
         <strong>Data .:&nbsp;&nbsp;</strong>
         </td>
         <td nowrap>
-        <?
+        <?php
         db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 1);
         ?>
         </td>
@@ -108,7 +108,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

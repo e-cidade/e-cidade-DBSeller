@@ -1,10 +1,10 @@
 <?php
 namespace ECidade\Package\Desktop\Controller;
 
+use App\Domain\Configuracao\Menu\Services\CacheMenuService;
 use \ECidade\V3\Extension\Controller;
 use \ECidade\V3\Extension\Exceptions\ResponseException;
 use \ECidade\Package\Desktop\Model\Menu as ModelMenu;
-use \Exception;
 
 class Menu extends Controller {
 
@@ -30,6 +30,15 @@ class Menu extends Controller {
   public function getAreas() {
 
     $iInstitId = $this->request->get()->get('iInstitId');
+
+    if (env('APP_ENV') === 'local') {
+        $menuCache = new CacheMenuService();
+        $aAreas = $menuCache->getAreas();
+        if ($aAreas) {
+            return $aAreas;
+        }
+    }
+
     $oMenu = new ModelMenu();
     $aAreas = \DBString::utf8_encode_all($oMenu->getAreas($iInstitId));
 
@@ -43,6 +52,14 @@ class Menu extends Controller {
 
     $iInstitId = $this->request->get()->get('iInstitId');
     $iAreaId = $this->request->get()->get('iAreaId');
+
+    if (env('APP_ENV') === 'local') {
+        $cacheMenu = new CacheMenuService();
+        $aModulos = $cacheMenu->getModulos($iAreaId);
+        if ($aModulos) {
+            return $aModulos;
+        }
+    }
 
     $oMenu = new ModelMenu();
     $aModulos = \DBString::utf8_encode_all($oMenu->getModulos($iInstitId, $iAreaId));
@@ -58,6 +75,14 @@ class Menu extends Controller {
     $iInstitId = $this->request->get()->get('iInstitId');
     $iAreaId = $this->request->get()->get('iAreaId');
     $iModuloId = $this->request->get()->get('iModuloId');
+
+    if (env('APP_ENV') == 'local') {
+        $cacheMenu = new CacheMenuService();
+        $aItensMenu = $cacheMenu->getItens($iModuloId);
+        if ($aItensMenu) {
+            return $aItensMenu;
+        }
+    }
 
     $oMenu = new ModelMenu();
     $aItensMenu = \DBString::utf8_encode_all($oMenu->getItensMenu($iInstitId, $iAreaId, $iModuloId));
@@ -110,6 +135,14 @@ class Menu extends Controller {
     }
 
     $this->request->session()->close();
+
+    if (env('APP_ENV') === 'local') {
+        $menuCache = new CacheMenuService();
+        $estrutura = $menuCache->getBreadcrumbs();
+        if ($estrutura) {
+            return $estrutura;
+        }
+    }
 
     $menu = new ModelMenu();
     return \DBString::utf8_encode_all($menu->buildMenu($instit));

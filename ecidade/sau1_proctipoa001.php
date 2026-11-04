@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,7 +61,7 @@ if(isset($processar) and($sd20_i_procedimento != "")){
   <tr> 
    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmproctipoa.php"));
         ?>
     </center>
@@ -70,7 +70,7 @@ if(isset($processar) and($sd20_i_procedimento != "")){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($salvar)){
  db_msgbox($msg);
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,27 +77,27 @@ $db_opcao=1;
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty76_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly76_codvist,"js_pesquisay76_codvist(true);",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y76_codvist',10,$Iy76_codvist,true,'text',1," onchange='js_pesquisay76_codvist(false);'")
 ?>
-       <?
+       <?php
 db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'')
        ?>
     </td>
   </tr>
      <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -105,12 +105,12 @@ db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'')
      </tr>
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -118,12 +118,12 @@ db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'')
      </tr>
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -131,12 +131,12 @@ db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'')
      </tr>
     <tr>
       <td nowrap title="<?=@$Ty80_codsani?>">
-         <?
+         <?php
          db_ancora(@$Ly80_codsani,"js_sanitario(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y80_codsani',5,$Iy80_codsani,true,'text',1,"onchange='js_sanitario(false)'");
         db_input('z01_nome',30,0,true,'text',3,"","z01_nomesani");
         ?>
@@ -147,23 +147,23 @@ db_input('y70_id_usuario',40,$Iy70_id_usuario,true,'text',3,'')
        <?=@$Ly70_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('',@$dia,@$mes,@$ano,true,'text',$db_opcao,"")
 ?>
 &nbsp;&nbsp;&nbsp;À&nbsp;&nbsp;&nbsp;
-<?
+<?php
 db_inputdata('a',@$diaa,@$mesa,@$anoa,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty70_tipovist?>">
-       <?
+       <?php
        db_ancora(@$Ly70_tipovist,"js_pesquisay70_tipovist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y70_tipovist',10,$Iy70_tipovist,true,'text',$db_opcao," onchange='js_pesquisay70_tipovist(false);'");
 db_input('y77_descricao',40,$Iy77_descricao,true,'text',3,'');
 ?>
@@ -174,7 +174,7 @@ db_input('y77_descricao',40,$Iy77_descricao,true,'text',3,'');
        <?=$Ly70_numbloco?>
     </td>
     <td> 
-<?
+<?php
 db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
 ?>
     </td>
@@ -186,12 +186,12 @@ db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
       <table>
 	<tr>
 	  <td nowrap title="<?=@$Ty10_codigo?>" width="100">
-	     <?
+	     <?php
 	     db_ancora(@$Ly10_codigo,"js_ruas1(true);",$db_opcao);
 	     ?>
 	  </td>
 	  <td> 
-      <?
+      <?php
       db_input('y10_codigo',10,$Iy10_codigo,true,'text',$db_opcao," onChange='js_ruas1(false)'");
       db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
       ?>
@@ -199,12 +199,12 @@ db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
 	</tr>
 	<tr> 
 	  <td nowrap title="<?=@$Ty10_codi?>"> 
-	    <?
+	    <?php
 	    db_ancora(@$Ly10_codi,"js_bairro1(true);",$db_opcao);
 	    ?>
 	  </td>
 	  <td nowrap> 
-	    <?
+	    <?php
 	      db_input('y10_codi',10,$Iy10_codi,true,'text',$db_opcao," onChange='js_bairro1(false)'");
 	      db_input('j13_descr',50,$Ij13_descr,true,'text',3);
 	    ?>
@@ -221,12 +221,12 @@ db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
       <table>
 	<tr> 
 	  <td nowrap title="<?=@$Ty11_codigo?>" width="100"> 
-	     <?
+	     <?php
 	     db_ancora(@$Ly11_codigo,"js_ruas(true);",$db_opcao);
 	     ?>
 	  </td>
 	  <td nowrap> 
-	    <?
+	    <?php
 	      db_input('y11_codigo',10,$Iy11_codigo,true,'text',$db_opcao," onChange='js_ruas(false)'");
 	      db_input('j14_nome',50,$Ij14_nome,true,'text',3,"","j14_nome_exec");
 	    ?>
@@ -234,12 +234,12 @@ db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
 	</tr>
 	<tr> 
 	  <td nowrap title="<?=@$Ty11_codi?>"> 
-	    <?
+	    <?php
 	    db_ancora(@$Ly11_codi,"js_bairro(true);",$db_opcao);
 	    ?>
 	  </td>
 	  <td nowrap> 
-	    <?
+	    <?php
 	      db_input('y11_codi',10,$Iy11_codi,true,'text',$db_opcao," onChange='js_bairro(false)'");
 	      db_input('j13_descr',50,$Ij13_descr,true,'text',3,"","j13_descr_exec");
 	    ?>
@@ -253,7 +253,7 @@ db_input('y70_numbloco',10,$Iy70_numbloco,true,'text',$db_opcao);
 <input name="consultar" type="button" value="consultar" onClick="js_consultasani();js_limpacampos();" >
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

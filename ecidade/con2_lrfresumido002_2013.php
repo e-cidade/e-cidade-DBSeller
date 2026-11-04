@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -94,7 +94,7 @@ $periodo         = $oPeriodo->o114_sigla;
 $periodo_selecao = $dados["periodo"];
 
 $anousu_ant = $anousu-1;
-$xinstit    = split("-",$db_selinstit);
+$xinstit    =explode("-",$db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 $lUltimoBimestre = false;
@@ -121,10 +121,10 @@ if (!isset($arqinclude)){
   $txt2  = "DEMONSTRATIVO SIMPLIFICADO DO RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $txt3  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-  $mes     = split("-",$dt_ini);
+  $mes     =explode("-",$dt_ini);
   $mesini  = strtoupper(db_mes($mes[1]));
   $txt4    = "JANEIRO";
-  $mes     = split("-",$dt_fin);
+  $mes     =explode("-",$dt_fin);
   $mesfin  = strtoupper(db_mes($mes[1]));
   $txt4   .= " A $mesfin/$anousu";
 
@@ -376,7 +376,7 @@ if (@$emite_balorc==1 || $emite_desp_funcsub==1) {
 // RECEITA CORRENTE LIQUIDA - RCL
 if ($emite_rcl==1 || $emite_ppp==1) {
 
-  $dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+  $dt =explode('-',$dt_fin);  // mktime -- (mes,dia,ano)
   $dt_ini_ant = "{$anousu_ant}-01-01";
   $dt_fin_ant = "{$anousu_ant}-12-31";
 

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,43 +53,43 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
 <script>
 
 function js_abre(){
-  
+
   var sQuery = '';
   sQuery += 'e42_sequencial='+$F('e42_sequencial');
   sQuery += '&z01_numcgm='+$F('z01_numcgm');
   sQuery += '&historico='+$F('historico');
-  
+
   var dtemissao = '';
-  
+
   if($F('dt_emissao') != ''){
     var aDtEmissao = $F('dt_emissao').split('/');
     var dtemissao = aDtEmissao[2]+'-'+aDtEmissao[1]+'-'+aDtEmissao[0];
   }
-    
+
   sQuery += '&dtemissao='+dtemissao;
-  
+
   js_OpenJanelaIframe('','db_iframe_pesquisa',
                       'emp1_empconsultanf002.php?'+sQuery+'&funcao_js=parent.js_consulta|e69_codnota',
                       'Pesquisa',true);
 }
-</script>  
+</script>
 
 <script>
 function js_mascara(evt){
   var evt = (evt) ? evt : (window.event) ? window.event : "";
-      
-  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:. 
+
+  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:.
     return true;
   }else{
 	  return false;
-  }  
+  }
 }
 </script>
 </head>
@@ -103,36 +103,36 @@ function js_mascara(evt){
     <table>
       <tr>
         <td  align="left" nowrap title="Código da OP">
-        <? db_ancora("<b>Código da OP:</b>","js_pesquisaOrdemPagamento(true);",1);  ?>
+        <?php db_ancora("<b>Código da OP:</b>","js_pesquisaOrdemPagamento(true);",1);  ?>
         </td>
         <td>
-        <?
-          db_input("e42_sequencial",13,$Ie42_sequencial,true,"text",4,"onchange='js_pesquisaOrdemPagamento(false);'"); 
+        <?php
+          db_input("e42_sequencial",13,$Ie42_sequencial,true,"text",4,"onchange='js_pesquisaOrdemPagamento(false);'");
         ?>
         </td>
       </tr>
-      <tr> 
-        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
+      <tr>
+        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
         <td align="left" nowrap>
-          <? 
+          <?php
             db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
-            db_input("z01_nome2",40,"",true,"text",3);  
+            db_input("z01_nome2",40,"",true,"text",3);
           ?>
         </td>
       </tr>
       <tr>
         <td align='left'><b>Data de Emissão:</b>
-        
+
         </td>
         <td align='left'>
-        <?
-          db_inputdata('dt_emissao',"","","",false,'text',1,"","",""); 
+        <?php
+          db_inputdata('dt_emissao',"","","",false,'text',1,"","","");
         ?>
         </td>
       </tr>
-      
+
     </table>
-  </fieldset>    
+  </fieldset>
   </td>
   </tr>
   <tr>
@@ -145,7 +145,7 @@ function js_mascara(evt){
 </form>
 </center>
 
-<? 
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -156,25 +156,25 @@ function js_pesquisa_cgm(mostra){
                         'func_cgm.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome',
                         'Pesquisa',true);
   }else{
-     if(document.form1.z01_numcgm.value != ''){ 
+     if(document.form1.z01_numcgm.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','func_nome',
                             'func_cgm.php?pesquisa_chave='+$F('z01_numcgm')+'&funcao_js=parent.js_mostracgm',
                             'Pesquisa',false);
      }else{
-       $('z01_nome2').value = ''; 
+       $('z01_nome2').value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  
-  document.form1.z01_nome2.value = chave; 
-  if(erro==true){ 
-    $('z01_numcgm').value = ''; 
-    $('z01_numcgm').focus(); 
+
+  document.form1.z01_nome2.value = chave;
+  if(erro==true){
+    $('z01_numcgm').value = '';
+    $('z01_numcgm').focus();
   }
 }
 function js_mostracgm1(chave1,chave2){
-  $('z01_numcgm').value = chave1;  
+  $('z01_numcgm').value = chave1;
   $('z01_nome2').value  = chave2;
   func_nome.hide();
 }
@@ -185,27 +185,27 @@ function js_pesquisaOrdemPagamento(mostra){
                         'func_empageordem.php?funcao_js=parent.js_mostraOrdemPagamento1|e42_sequencial&credor=true',
                         'Pesquisa',true);
   }else{
-     if($F('e42_sequencial') != ''){ 
+     if($F('e42_sequencial') != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empageordem',
           'func_empageordem.php?pesquisa_chave='+$F('e42_sequencial')+'&funcao_js=parent.js_mostraOrdemPagamento&credor=true',
                             'Pesquisa',false);
      }else{
-       $('e42_sequencial').value = ''; 
+       $('e42_sequencial').value = '';
      }
   }
 }
 function js_mostraOrdemPagamento(chave,erro){
-  //$('e69_numero').value = chave; 
+  //$('e69_numero').value = chave;
   if(erro==true){
     alert("\n\nusuário:\n\n Código informado não é válido !!!\n\nAdministrador:\n\n");
-    $('e42_sequencial').value = '';  
-    $('e42_sequencial').focus(); 
+    $('e42_sequencial').value = '';
+    $('e42_sequencial').focus();
   }else{
     js_consultaOpAuxPorCredor();
   }
 }
 function js_mostraOrdemPagamento1(chave1,chave2){
-   $('e42_sequencial').value = chave1;  
+   $('e42_sequencial').value = chave1;
    db_iframe_empageordem.hide();
    js_consultaOpAuxPorCredor();
 }
@@ -215,36 +215,36 @@ sUrl = "emp4_ordemPagamentoRPC.php";
 function js_consultaOpAuxPorCredor() {
 
   js_divCarregando("Aguarde, pesquisando ...","msgBox");
-     
+
   var oParametros            = new Object();
   oParametros.e42_sequencial = $F('e42_sequencial');
   oParametros.exec           = "consOpAuxCredor";
-    
+
   var oAjax   = new Ajax.Request(
-                           sUrl, 
+                           sUrl,
                            {
-                            method    : 'post', 
-                            parameters: 'json='+Object.toJSON(oParametros) , 
+                            method    : 'post',
+                            parameters: 'json='+Object.toJSON(oParametros) ,
                             onComplete: js_retornoConsultaOpAuxPorCredor
                             }
                           );
 }
 
 function js_retornoConsultaOpAuxPorCredor(oAjax) {
-  
+
   js_removeObj("msgBox");
-  
+
   oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno == '2') {
-    
+
     alert(oRetorno.message.urlDecode());
-     
+
   } else {
-   $('z01_numcgm').value = oRetorno.dados[0].z01_numcgm;    
-   $('z01_nome2').value = oRetorno.dados[0].z01_nome.urlDecode();    
-   $('dt_emissao').value = js_formatar(oRetorno.dados[0].e42_dtpagamento, 'd', 0) ;     
-   //$('historico').value = oRetorno.dados[0].e94_historico.urlDecode();    
-  } 
+   $('z01_numcgm').value = oRetorno.dados[0].z01_numcgm;
+   $('z01_nome2').value = oRetorno.dados[0].z01_nome.urlDecode();
+   $('dt_emissao').value = js_formatar(oRetorno.dados[0].e42_dtpagamento, 'd', 0) ;
+   //$('historico').value = oRetorno.dados[0].e94_historico.urlDecode();
+  }
 }
 
 function js_novaOPAuxiliar() {
@@ -253,33 +253,33 @@ function js_novaOPAuxiliar() {
     alert('Credor não informada!');
     return false;
   }
-  
+
   if ($F('dt_emissao') == "") {
     alert('Data de emissão não informada!');
     return false;
   }
-  
+
   var oParametros             = new Object();
   oParametros.exec            = "incluirOP";
-  oParametros.e42_dtpagamento = $F('dt_emissao'); 
-  oParametros.z01_numcgm      = $F('z01_numcgm'); 
-  //oParametros.historico       = encodeURIComponent(tagString($F('historico'))); 
-  
+  oParametros.e42_dtpagamento = $F('dt_emissao');
+  oParametros.z01_numcgm      = $F('z01_numcgm');
+  //oParametros.historico       = encodeURIComponent(tagString($F('historico')));
+
   js_divCarregando("Aguarde, Gerando Autorização.","msgBox");
   var oAjax   = new Ajax.Request(
-                           sUrl, 
+                           sUrl,
                            {
-                            method    : 'post', 
-                            parameters: 'json='+Object.toJSON(oParametros), 
+                            method    : 'post',
+                            parameters: 'json='+Object.toJSON(oParametros),
                             onComplete: function(oResponse) {
-                            
+
                               js_removeObj("msgBox");
                               oRetorno = JSON.parse(oResponse.responseText);
                               if (oRetorno.status == 1) {
-                              
+
                                  $('e42_sequencial').value = oRetorno.iCodigoOPaxiliar;
                                  js_carregaOPauxiliar();
-                                 
+
                               } else {
                                 alert(oRetorno.message.urlDecode());
                               }
@@ -289,9 +289,9 @@ function js_novaOPAuxiliar() {
 }
 
 function js_carregaOPauxiliar() {
-    
+
   if ($F('e42_sequencial') != "") {
-    
+
     var iAlturaViewPort   = document.body.scrollHeight-30;
     var iLArguraViewPort  = document.body.scrollWidth-12;
     var sQuery = 'e42_sequencial='+$F('e42_sequencial');
@@ -308,7 +308,7 @@ function js_carregaOPauxiliar() {
   }else{
     alert('usuário:\n\n Informe o Código da OP para prosseguir.');
   }
-} 
+}
 </script>
 </body>
 </html>

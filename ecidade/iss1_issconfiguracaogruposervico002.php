@@ -65,6 +65,10 @@ if ( isset($oPost->salvar) ) {
         $oPost->q136_deducao = 'f';
     }
 
+    if (!$oPost->q136_salaoparceiro){
+        $oPost->q136_salaoparceiro = 'f';
+    }
+
 	$oDaoConfiguracaoGrupo->q136_sequencial     = $oPost->q136_sequencial;
 	$oDaoConfiguracaoGrupo->issgruposervico     = $oPost->q136_issgruposervico;
 	$oDaoConfiguracaoGrupo->q136_exercicio      = $oPost->q136_exercicio;
@@ -72,6 +76,7 @@ if ( isset($oPost->salvar) ) {
 	$oDaoConfiguracaoGrupo->q136_valor          = $oPost->q136_valor;
 	$oDaoConfiguracaoGrupo->q136_deducao        = $oPost->q136_deducao;
 	$oDaoConfiguracaoGrupo->q136_retencao       = $oPost->q136_retencao;
+    $oDaoConfiguracaoGrupo->q136_salaoparceiro     = $oPost->q136_salaoparceiro;
 	if ( !empty($oPost->q136_sequencial) ) {
 		$oDaoConfiguracaoGrupo->alterar($q136_sequencial);
 	} else {
@@ -184,6 +189,7 @@ if ( isset($oPost->salvar) ) {
 		$q136_localpagamento  = $oConfiguracaoGrupo->q136_localpagamento;
 		$q136_deducao         = $oConfiguracaoGrupo->q136_deducao;
 		$q136_retencao        = $oConfiguracaoGrupo->q136_retencao;
+        $q136_salaoparceiro    = $oConfiguracaoGrupo->q136_salaoparceiro;
 
 		$db_botao = true;
 	}

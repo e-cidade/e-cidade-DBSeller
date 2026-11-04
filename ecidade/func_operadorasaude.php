@@ -16,7 +16,8 @@ $cgm->rotulo->label('z01_nome');
 $operadorasaude = new cl_operadorasaude();
 $operadorasaude->rotulo->label('rh221_sequencial');
 
-$where = array("rh221_ativo is TRUE");
+$where = ["rh221_ativo is TRUE"];
+$where[] = "rh221_instituicao = " . db_getsession('DB_instit');
 ?>
 <!doctype html>
 <html lang="pt-BR">

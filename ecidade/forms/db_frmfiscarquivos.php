@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,34 +48,34 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty26_codnoti?>">
-       <?
+       <?php
        db_ancora(@$Ly26_codnoti,"js_pesquisay26_codnoti(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y26_codnoti',8,$Iy26_codnoti,true,'text',3," onchange='js_pesquisay26_codnoti(false);'")
 ?>
-       <?
+       <?php
 db_input('y30_data',10,$Iy30_data,true,'hidden',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty26_idparag?>">
-       <?
+       <?php
        db_ancora(@$Ly26_idparag,"js_pesquisay26_idparag(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y26_idparag',8,$Iy26_idparag,true,'text',$db_opcao," onchange='js_pesquisay26_idparag(false);'");
 if($db_opcao == 2){
   db_input('y26_idparag',8,$Iy26_idparag,true,'hidden',$db_opcao," ","y26_idparag_old");
   echo "<script>document.form1.y26_idparag_old.value='$y26_idparag'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('db02_descr',40,$Idb02_descr,true,'text',3,'')
        ?>
     </td>
@@ -83,18 +83,18 @@ db_input('db02_descr',40,$Idb02_descr,true,'text',3,'')
   <tr>
     <td align="center" colspan="2">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_fiscarquivos001.php?y26_codnoti=<?=$y26_codnoti?>&abas=1&y39_codandam=10911'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("y26_codnoti"=>$y26_codnoti,"y26_idparag"=>@$y26_idparag);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y26_codnoti,y26_idparag,db02_descr";
@@ -141,7 +141,7 @@ function js_mostrafiscal1(chave1,chave2){
   db_iframe_fiscal.hide();
 }
 function js_pesquisay26_idparag(mostra){
-<?
+<?php
    $result = $clfiscaltipo->sql_record($clfiscaltipo->sql_query($y26_codnoti)); 
    if($clfiscaltipo->numrows > 0){
      db_fieldsmemory($result,0);

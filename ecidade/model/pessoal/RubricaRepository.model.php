@@ -171,7 +171,7 @@ abstract class RubricaRepository
         /**
          * @var cl_rhrubricas $daoRubricas
          */
-        $daoRubricas = db_utils::getDao('rhrubricas');
+        $daoRubricas = new cl_rhrubricas;
 
         $sql = $daoRubricas->sql_query_rubricas_ponto_servidor(
             $servidor->getInstituicao()->getCodigo(),
@@ -180,10 +180,10 @@ abstract class RubricaRepository
             $servidor->getMesCompetencia()
         );
 
-        $rs = db_query($sql);
+        $rs = $daoRubricas->sql_record($sql);
 
-        if (!$rs) {
-            throw new Exception('Não foi possível buscar as rubricas do ponto do servidor.');
+        if (!$rs && $daoRubricas->erro_sql == "Erro ao selecionar os registros.") {
+            throw new Exception('Não foi possível buscar as rubricas do ponto do servidor.' . $daoRubricas->erro_msg);
         }
 
         while ($rubrica = pg_fetch_object($rs)) {
@@ -195,6 +195,32 @@ abstract class RubricaRepository
             $instanciaRubrica->setQuantidadeAtualServidor($rubrica->quantidade);
             $instanciaRubrica->setTabelaServidor($rubrica->tabela);
             $rubricas[] = $instanciaRubrica;
+        }
+
+        return $rubricas;
+    }
+
+    /**
+     * @param int $instituicao
+     * @return rubrica[]
+     * @throws Exception
+     */
+    public static function buscarRubricasAtivasPorInstituicao($instituicao = null)
+    {
+        $daoRubricas = new cl_rhrubricas();
+        if (empty($instituicao)) {
+            $instituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
+        }
+
+        $sql = $daoRubricas->sql_query_file('','','rh27_rubric','',"rh27_ativo = 't' and rh27_instit = {$instituicao}");
+        if(!$sql) {
+            throw new Exception('Não foi possível buscar as rubricas para processamento do eSocial.');
+        }
+        
+        $rsRubricas   = $daoRubricas->sql_record($sql);
+        $rubricas = array();
+        for ($i = 0; $i < pg_num_rows($rsRubricas); $i++) {
+            $rubricas[] = db_utils::fieldsMemory($rsRubricas, $i)->rh27_rubric;
         }
 
         return $rubricas;

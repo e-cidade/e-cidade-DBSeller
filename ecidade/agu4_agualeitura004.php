@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -126,7 +126,7 @@ if(isset($cancelar)){
 <?php db_menu() ?>
 </body>
 </html>
-<?
+<?php
 if($cancelar) {
   if($clagualeitura->erro_status=="0"){
     $clagualeitura->erro(true,false);

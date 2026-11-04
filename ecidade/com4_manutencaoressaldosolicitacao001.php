@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -45,7 +45,7 @@ $clsolicita->rotulo->label();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("widgets/windowAux.widget.js");
@@ -83,20 +83,20 @@ $clsolicita->rotulo->label();
 
 		  <tr>
 		    <td  align="left" nowrap title="<?=$Tpc10_numero?>"> <b>
-		      <? db_ancora("Solicitações de : ","js_solicitade(true);",1);?>
+		      <?php db_ancora("Solicitações de : ","js_solicitade(true);",1);?>
 		    </td>
 		    <td align="left" nowrap>
-		      <?
+		      <?php
 		         db_input("pc10_numerode",10,$Ipc10_numero,true,"text",4,"onchange='js_solicitade(false);'");
 		      ?>
 		      </b>
 		    </td>
 
         <td  align="left" nowrap title="<?=$Tpc10_numero?>">
-          <? db_ancora("Até : ","js_solicitaate(true);",1);?>
+          <?php db_ancora("Até : ","js_solicitaate(true);",1);?>
         </td>
         <td align="left" nowrap>
-          <?
+          <?php
              db_input("pc10_numeroate",10,$Ipc10_numero,true,"text",4,"onchange='js_solicitaate(false);'");
           ?>
         </td>
@@ -107,7 +107,7 @@ $clsolicita->rotulo->label();
 		       <b>Data de Emissão de : </b>
 		    </td>
 		    <td align="left">
-		      <?
+		      <?php
 		        db_inputdata('datainicial',null ,null, null,true,'text',1);
 		      ?>
 		    </td>
@@ -115,7 +115,7 @@ $clsolicita->rotulo->label();
            <b>Até : </b>
         </td>
         <td align="left">
-          <?
+          <?php
             db_inputdata('datafinal',null ,null, null,true,'text',1);
           ?>
         </td>
@@ -124,14 +124,14 @@ $clsolicita->rotulo->label();
       <tr>
         <td colspan="1" align="left" nowrap title="Emissão de:">
            <b>
-                <?
+                <?php
                  db_ancora("Dotação : ","js_pesquisarh72_coddot(true);", 1);
                ?>
 
            </b>
         </td>
         <td colspan="3" align="left">
-          <?
+          <?php
             db_input("dotacao",10,"",true,"text",1, "onchange='js_pesquisarh72_coddot(false);'");
           ?>
         </td>
@@ -145,7 +145,7 @@ $clsolicita->rotulo->label();
  <input type="button" value="Pesquisar" onclick="js_pesquisar();" />
 
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

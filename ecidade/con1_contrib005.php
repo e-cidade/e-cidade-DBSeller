@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ if(isset($confirma) && $confirma=="ok"){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+      $dados=explode("_",$chave); 
       $matric=$dados[1];
       $valor=$vt["d07_valor_".$matric];
       $vlrdes=$vt["d07_vlrdes_".$matric];
@@ -204,7 +204,7 @@ class cl_fate extends cl_contrib {
 	   }
 	   
            $y="d07_vlrdes_$j01_matric";
-           global $$y;
+           global ${$y};
            if($d01_perc!="" && $d01_perc!=0){
 	   //mudança evandro  
           //    $d07_vlrdes=($d07_valor*$d01_perc)/100;
@@ -216,7 +216,7 @@ class cl_fate extends cl_contrib {
 	    $$y="0.00";    
 	   }
 	   $x="d07_valor_$j01_matric";
-	   global $$x;
+	   global ${$x};
 	   $$x=number_format($d07_valor,2,'.','');
 	   
 	  echo "
@@ -350,7 +350,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   <input name="confirma" type="hidden">
   <table border="0">
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-  <?
+  <?php
   if(isset($contri)){
     $cleditalrua->sql_record($cleditalrua->sql_query_file($contri));
     if(!$cleditalrua->numrows>0){
@@ -482,7 +482,7 @@ order by d10_codigo, j01_matric
     </tr>
   </body>
 </html>
-<?
+<?php
 
 if(isset($confirma) && $confirma=="ok"){
   if($clcontrib->erro_status=="0"){

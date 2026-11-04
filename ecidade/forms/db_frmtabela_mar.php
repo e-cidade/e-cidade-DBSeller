@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $cltabela_mar->rotulo->label();
        <?=@$Lm89_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('m89_codigo',5,$Im89_codigo,true,'text',3)
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('m89_codigo',5,$Im89_codigo,true,'text',3)
        <?=@$Lm89_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('m89_nome',20,$Im89_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tabela_mar.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

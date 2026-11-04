@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ function js_procura(){
       <tr> 
         <td width="12%"  nowrap><strong>Data Inicial:</strong></td>
         <td width="88%" > 
-          <?
+          <?php
 	  db_inputdata("datainicial",'','','',true,'text',2);
 	  ?>
         </td>
@@ -70,7 +70,7 @@ function js_procura(){
       <tr> 
         <td  nowrap><strong>Data Final:</strong></td>
         <td > 
-          <?
+          <?php
 	  db_inputdata("datafinal",date('d',db_getsession("DB_datausu")),date('m',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu")),true,'text',2);
 	  ?>
         </td>
@@ -84,7 +84,7 @@ function js_procura(){
     </table>
 </form>
 
-<?
+<?php
 
 if(isset($DB_ERRO)) {
   ?>
@@ -93,6 +93,6 @@ if(isset($DB_ERRO)) {
     parent.document.getElementById('processando').style.visibility = 'visible';
 	history.back();
   </script>
-  <?
+  <?php
 }
 ?>

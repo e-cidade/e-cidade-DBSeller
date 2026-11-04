@@ -159,9 +159,16 @@ class OrcamentoLicitacao
     {
         $oDaoLicLicitem = new cl_liclicitem();
         $oDaoPcparam    = new cl_pcparam();
-        
+
         $rsPcparam       = $oDaoPcparam->sql_record($oDaoPcparam->sql_query_file(db_getsession("DB_instit"), "pc30_tipojulgamentoorcamento"));
         $iTipoJulgamento = db_utils::fieldsMemory($rsPcparam, 0)->pc30_tipojulgamentoorcamento;
+
+        $atributosLicitacao    = new LicitacaoAtributosDinamicos();
+        $atributosLicitacao->setCodigoLicitacao($this->oLicitacao->getCodigo());
+        $casasDecimais = $atributosLicitacao->getAtributo('casas_decimais') == null
+            ? "4"
+            : $atributosLicitacao->getAtributo('casas_decimais');
+
         /**
          * Busca o valor estimado por item com a seguinte prescedência:
          * - Orçamento de Processo de Compras (Quando houver), se estiver julgado irá trazer o valor do vencedor,
@@ -171,18 +178,19 @@ class OrcamentoLicitacao
         $sCampos        = " sum(case when pcorcamjulg.pc24_orcamitem is null ";
         $sCampos       .= "              then pc11_quant * solicitem.pc11_vlrun";
         $sCampos       .= "         else ";
-        $nCalculoValorEstimado = "  pc23_valor "; 
+        $nCalculoValorEstimado = "  round(pc23_vlrun, $casasDecimais) * pc11_quant ";
+
         if($iTipoJulgamento == 2) {
 
-            $nCalculoValorEstimado  = "  (select round(sum(pc23_valor)/count(pc23_orcamforne), 2)  ";
+            $nCalculoValorEstimado  = "  (select round(sum(pc23_vlrun)/count(pc23_orcamforne), $casasDecimais) * pc11_quant ";
             $nCalculoValorEstimado .= "     from pcorcamitem item ";
             $nCalculoValorEstimado .= "    inner join pcorcamval valor ";
             $nCalculoValorEstimado .= "       on item.pc22_orcamitem = valor.pc23_orcamitem ";
-            $nCalculoValorEstimado .= "    where item.pc22_orcamitem = pcorcamitem.pc22_orcamitem) ";    
+            $nCalculoValorEstimado .= "    where item.pc22_orcamitem = pcorcamitem.pc22_orcamitem) ";
         }
 
         $sCampos       .= $nCalculoValorEstimado;
-        
+
         $sCampos       .= " end) as total";
         $sWhere         = $this->montaWhereEstimado();
         $sSqlBuscaValor = $oDaoLicLicitem->sql_query_valor_estimado($sCampos, $sWhere);
@@ -203,9 +211,15 @@ class OrcamentoLicitacao
 
         $oDaoLicLicitem = new cl_liclicitem();
         $oDaoPcparam    = new cl_pcparam();
-        
+
         $rsPcparam       = $oDaoPcparam->sql_record($oDaoPcparam->sql_query_file(db_getsession("DB_instit"), "pc30_tipojulgamentoorcamento"));
         $iTipoJulgamento = db_utils::fieldsMemory($rsPcparam, 0)->pc30_tipojulgamentoorcamento;
+
+        $atributosLicitacao    = new LicitacaoAtributosDinamicos();
+        $atributosLicitacao->setCodigoLicitacao($this->oLicitacao->getCodigo());
+        $casasDecimais = $atributosLicitacao->getAtributo('casas_decimais') == null
+            ? "4"
+            : $atributosLicitacao->getAtributo('casas_decimais');
         /**
          * Busca o valor estimado por item com a seguinte prescedência:
          * - Orçamento de Processo de Compras (Quando houver), se estiver julgado irá trazer o valor do vencedor,
@@ -215,10 +229,11 @@ class OrcamentoLicitacao
         $sCampos = " sum(case when pcorcamjulg.pc24_orcamitem is null ";
         $sCampos .= "              then solicitem.pc11_vlrun ";
         $sCampos .= "         else ";
-        $nCalculoValorEstimado = "  pc23_vlrun "; 
+        $nCalculoValorEstimado = "  round(pc23_vlrun, $casasDecimais) ";
+
         if($iTipoJulgamento == 2) {
 
-            $nCalculoValorEstimado  = " (select round(sum(pc23_vlrun)/count(pc23_orcamforne), 2)  ";
+            $nCalculoValorEstimado  = " (select round(sum(pc23_vlrun)/count(pc23_orcamforne), $casasDecimais)  ";
             $nCalculoValorEstimado .= "    from pcorcamitem item";
             $nCalculoValorEstimado .= "   inner join pcorcamval valor ";
             $nCalculoValorEstimado .= "      on item.pc22_orcamitem = valor.pc23_orcamitem ";
@@ -226,11 +241,11 @@ class OrcamentoLicitacao
         }
 
         $sCampos       .= $nCalculoValorEstimado;
-        
+
         $sCampos .= "  end) as total";
         $sWhere = $this->montaWhereEstimado();
         $sSqlBuscaValor = $oDaoLicLicitem->sql_query_valor_estimado($sCampos, $sWhere);
-    
+
         return $this->executaConsulta($sSqlBuscaValor);
     }
 

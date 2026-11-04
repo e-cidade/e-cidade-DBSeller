@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("nome");
        <?=@$Lt60_codcom?>
     </td>
     <td> 
-<?
+<?php
 $t60_instit = db_getsession("DB_instit");
 db_input("t60_instit",10,$It60_instit,true,"hidden",3,"");
 db_input('t60_codcom',8,$It60_codcom,true,'text',3,"")
@@ -57,7 +57,7 @@ db_input('t60_codcom',8,$It60_codcom,true,'text',3,"")
        <?=@$Lt60_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t60_dataini',@$t60_dataini_dia,@$t60_dataini_mes,@$t60_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,22 +67,22 @@ db_inputdata('t60_dataini',@$t60_dataini_dia,@$t60_dataini_mes,@$t60_dataini_ano
        <?=@$Lt60_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t60_datafim',@$t60_datafim_dia,@$t60_datafim_mes,@$t60_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt60_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lt60_id_usuario,"js_pesquisat60_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t60_id_usuario',5,$It60_id_usuario,true,'text',$db_opcao," onchange='js_pesquisat60_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benscomissao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

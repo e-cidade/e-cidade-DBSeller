@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,12 +71,12 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora("<b>Departamento:</b>","js_pesquisacoddepto(true);","");
                   ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   db_input('coddepto',10,"'C&oacutedigo do departamento'",true,'text',1," onchange='js_pesquisacoddepto(false);'");
                   db_input('descrdepto',55,"Descri&ccedil;&atilde;o do departamento",true,'text',3,'');
                   ?>
@@ -105,12 +105,12 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora("<b>Material:</b>","js_pesquisam60_codmater(true);","");
                   ?>
                 </td>
                 <td nowrap> 
-                  <?
+                  <?php
                   db_input('m60_codmater',10,"'C&oacute;digo do material'",true,'text',1," onchange='js_pesquisam60_codmater(false);'");
                   db_input('m60_descr',55,'Descri&ccedil;&atilde; do material',true,'text',3,'');
                   ?>
@@ -162,7 +162,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
           <b>Quebras:</b>
         </td>
         <td align='left'>
-          <?
+          <?php
 						$x = array('1'=>'Departamento/&Iacute;tem','2'=>'Departamento');
 						db_select('quebra',$x,true,1,"style='width:200px;' onchange=\"js_modificaOrdenacaoQuebra(this.value);\"");
 					?>
@@ -174,7 +174,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
           <b>Situa&ccedil;&atilde;o</b>
         </td>
         <td align='left'>
-          <?
+          <?php
 						$x = array('1'=>'Todos','2'=>'Vencidos','3'=>'&Agrave; Vencer', '4'=>'No Prazo');
 						db_select('situacao',$x,true,1,"style='width:200px;' onchange=\"js_modificaOrdenacaoSituacao(this.value);\"");
 					?>
@@ -186,7 +186,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
           <b>Ordena&ccedil;&atilde;o:</b>
         </td>
         <td align='left'>
-          <?
+          <?php
 						$x = array('1'=>'Data de Validade','2'=>'Situa&ccedil;&atilde;o','3'=>'Lote');
 						db_select('ordenacao',$x,true,1,"style='width:200px;'");
 					?>
@@ -198,7 +198,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
           <b>Listar estoque zerado:</b>
         </td>
         <td align='left'>
-          <?
+          <?php
 						$x = array('1'=>'N&atilde;o','2'=>'Sim');
 						db_select('zerado',$x,true,1,"style='width:200px;'");
 					?>
@@ -210,7 +210,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
           <b>Prazo &agrave; vencer em dias:</b>
         </td>
         <td align='left'>
-          <?
+          <?php
         	  db_input('m90_prazovenc',10,@$Im90_prazovenc,true,'text',1,"")
 					?>
         </td>
@@ -221,7 +221,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
     <input  name="emite" id="emite" type="button" value="Processar" onclick="js_mandadados();" >
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

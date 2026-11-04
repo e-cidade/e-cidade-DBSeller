@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,7 +90,7 @@ function js_relatorio() {
             <tr>
               <td height="25" nowrap title="<?=$Tk00_conta?>"><?=$Lk00_conta?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 				$clarrepaga = new cl_arrepaga;
 			//	die("select arrepaga.k00_conta,saltes.k13_descr from arrepaga inner join saltes on saltes.k13_conta = arrepaga.k00_conta "); 
 				$result = $clarrepaga->sql_record("select distinct arrepaga.k00_conta,saltes.k13_descr from arrepaga inner join saltes on saltes.k13_conta = arrepaga.k00_conta "); 
@@ -108,7 +108,7 @@ function js_relatorio() {
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

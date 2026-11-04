@@ -2,93 +2,95 @@
 
 class cl_pensao
 {
-   // cria variaveis de erro 
-    public $rotulo = null; 
-    public $query_sql = null; 
-    public $numrows = 0; 
-    public $numrows_incluir = 0; 
-    public $numrows_alterar = 0; 
-    public $numrows_excluir = 0; 
-    public $erro_status = null; 
-    public $erro_sql = null; 
-    public $erro_banco = null;  
-    public $erro_msg = null;  
-    public $erro_campo = null;  
-    public $pagina_retorno = null; 
+   // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     /* Variáveis do Arquivo */
-    public $r52_anousu = 0; 
-    public $r52_mesusu = 0; 
-    public $r52_regist = 0; 
-    public $r52_formul = null; 
-    public $r52_perc = 0; 
-    public $r52_numcgm = 0; 
-    public $r52_codbco = null; 
-    public $r52_codage = null; 
-    public $r52_conta = null; 
-    public $r52_vlrpen = 0; 
-    public $r52_dtincl_dia = null; 
-    public $r52_dtincl_mes = null; 
-    public $r52_dtincl_ano = null; 
-    public $r52_dtincl = null; 
-    public $r52_pag13 = 'f'; 
-    public $r52_pagfer = 'f'; 
-    public $r52_pagcom = 'f'; 
-    public $r52_valor = 0; 
-    public $r52_valcom = 0; 
-    public $r52_val13 = 0; 
-    public $r52_limite_dia = null; 
-    public $r52_limite_mes = null; 
-    public $r52_limite_ano = null; 
-    public $r52_limite = null; 
-    public $r52_dvagencia = null; 
-    public $r52_dvconta = null; 
-    public $r52_valfer = 0; 
-    public $r52_valres = 0; 
-    public $r52_pagres = 'f'; 
-    public $r52_adiantamento13 = 'f'; 
-    public $r52_percadiantamento13 = 0; 
-    public $r52_sequencial = 0; 
-    public $r52_pagasuplementar = 'f'; 
-    public $r52_valorsuplementar = 0; 
-    public $r52_relacaodependencia = 0; 
-    public $r52_observacao = null; 
-   // cria propriedade com as variaveis do arquivo 
+    public $r52_anousu = 0;
+    public $r52_mesusu = 0;
+    public $r52_regist = 0;
+    public $r52_formul = null;
+    public $r52_perc = 0;
+    public $r52_numcgm = 0;
+    public $r52_codbco = null;
+    public $r52_codage = null;
+    public $r52_conta = null;
+    public $r52_vlrpen = 0;
+    public $r52_dtincl_dia = null;
+    public $r52_dtincl_mes = null;
+    public $r52_dtincl_ano = null;
+    public $r52_dtincl = null;
+    public $r52_pag13 = 'f';
+    public $r52_pagfer = 'f';
+    public $r52_pagcom = 'f';
+    public $r52_valor = 0;
+    public $r52_valcom = 0;
+    public $r52_val13 = 0;
+    public $r52_limite_dia = null;
+    public $r52_limite_mes = null;
+    public $r52_limite_ano = null;
+    public $r52_limite = null;
+    public $r52_dvagencia = null;
+    public $r52_dvconta = null;
+    public $r52_valfer = 0;
+    public $r52_valres = 0;
+    public $r52_pagres = 'f';
+    public $r52_adiantamento13 = 'f';
+    public $r52_percadiantamento13 = 0;
+    public $r52_sequencial = 0;
+    public $r52_pagasuplementar = 'f';
+    public $r52_valorsuplementar = 0;
+    public $r52_relacaodependencia = 0;
+    public $r52_observacao = null;
+    public $r52_cgmalimentado = 0;
+   // cria propriedade com as variaveis do arquivo
     public $campos = "
-                 r52_anousu = int4 = Ano 
-                 r52_mesusu = int4 = Mês 
-                 r52_regist = int4 = Código do Servidor 
-                 r52_formul = char(200) = Fórmula 
-                 r52_perc = float8 = Percentual 
-                 r52_numcgm = int4 = CGM 
-                 r52_codbco = char(3) = Banco 
-                 r52_codage = char(5) = Agência 
-                 r52_conta = char(15) = Conta Corrente 
-                 r52_vlrpen = float8 = valor da pensao 
-                 r52_dtincl = date = Data 
-                 r52_pag13 = bool = 13o. Salário 
-                 r52_pagfer = bool = Férias 
-                 r52_pagcom = bool = Complementar 
-                 r52_valor = float8 = Valor 
-                 r52_valcom = float8 = valor da pensao da complementa 
-                 r52_val13 = float8 = Valor 
-                 r52_limite = date = Data Limite 
-                 r52_dvagencia = char(2) = DV da agência 
-                 r52_dvconta = char(2) = DV da conta 
-                 r52_valfer = float4 = Pensao Ferias 
-                 r52_valres = float8 = Rescisão 
-                 r52_pagres = bool = Rescisão 
-                 r52_adiantamento13 = bool = Calcula no Adiantamento 13º 
-                 r52_percadiantamento13 = float8 = Percentual do adiantamento 13º 
-                 r52_sequencial = int4 = Sequencial 
-                 r52_pagasuplementar = bool = Suplementar 
-                 r52_valorsuplementar = float8 = Valor da Suplementar 
-                 r52_relacaodependencia = int4 = Relação de Dependência 
-                 r52_observacao = text = Observação 
+                 r52_anousu = int4 = Ano
+                 r52_mesusu = int4 = Mês
+                 r52_regist = int4 = Código do Servidor
+                 r52_formul = char(200) = Fórmula
+                 r52_perc = float8 = Percentual
+                 r52_numcgm = int4 = CGM
+                 r52_codbco = char(3) = Banco
+                 r52_codage = char(5) = Agência
+                 r52_conta = char(15) = Conta Corrente
+                 r52_vlrpen = float8 = valor da pensao
+                 r52_dtincl = date = Data
+                 r52_pag13 = bool = 13o. Salário
+                 r52_pagfer = bool = Férias
+                 r52_pagcom = bool = Complementar
+                 r52_valor = float8 = Valor
+                 r52_valcom = float8 = valor da pensao da complementa
+                 r52_val13 = float8 = Valor
+                 r52_limite = date = Data Limite
+                 r52_dvagencia = char(2) = DV da agência
+                 r52_dvconta = char(2) = DV da conta
+                 r52_valfer = float4 = Pensao Ferias
+                 r52_valres = float8 = Rescisão
+                 r52_pagres = bool = Rescisão
+                 r52_adiantamento13 = bool = Calcula no Adiantamento 13º
+                 r52_percadiantamento13 = float8 = Percentual do adiantamento 13º
+                 r52_sequencial = int4 = Sequencial
+                 r52_pagasuplementar = bool = Suplementar
+                 r52_valorsuplementar = float8 = Valor da Suplementar
+                 r52_relacaodependencia = int4 = Relação de Dependência
+                 r52_observacao = text = Observação
+                 r52_cgmalimentado = int4 = CGM Alimentado
                  ";
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("pensao"); 
+        $this->rotulo = new rotulo("pensao");
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
@@ -149,12 +151,13 @@ class cl_pensao
        $this->r52_valorsuplementar = ($this->r52_valorsuplementar == ""?@$GLOBALS["HTTP_POST_VARS"]["r52_valorsuplementar"]:$this->r52_valorsuplementar);
        $this->r52_relacaodependencia = ($this->r52_relacaodependencia == ""?@$GLOBALS["HTTP_POST_VARS"]["r52_relacaodependencia"]:$this->r52_relacaodependencia);
        $this->r52_observacao = ($this->r52_observacao == ""?@$GLOBALS["HTTP_POST_VARS"]["r52_observacao"]:$this->r52_observacao);
+       $this->r52_cgmalimentado = ($this->r52_cgmalimentado == ""?@$GLOBALS["HTTP_POST_VARS"]["r52_cgmalimentado"]:$this->r52_cgmalimentado);
      }else{
        $this->r52_sequencial = ($this->r52_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["r52_sequencial"]:$this->r52_sequencial);
      }
    }
    // funcao para inclusao
-   function incluir ($r52_anousu, $r52_mesusu, $r52_regist, $r52_numcgm){
+   function incluir ($r52_anousu, $r52_mesusu, $r52_regist, $r52_numcgm, $r52_cgmalimentado){
 
       $this->atualizacampos();
 
@@ -162,6 +165,7 @@ class cl_pensao
       $this->r52_mesusu = $r52_mesusu;
       $this->r52_regist = $r52_regist;
       $this->r52_numcgm = $r52_numcgm;
+      $this->r52_cgmalimentado = $r52_cgmalimentado;
 
      if($this->r52_anousu == null ){
        $this->erro_sql = " Campo Ano não informado.";
@@ -350,68 +354,70 @@ class cl_pensao
        return false;
      }
      $sql = "insert into pensao(
-                                       r52_anousu 
-                                      ,r52_mesusu 
-                                      ,r52_regist 
-                                      ,r52_formul 
-                                      ,r52_perc 
-                                      ,r52_numcgm 
-                                      ,r52_codbco 
-                                      ,r52_codage 
-                                      ,r52_conta 
-                                      ,r52_vlrpen 
-                                      ,r52_dtincl 
-                                      ,r52_pag13 
-                                      ,r52_pagfer 
-                                      ,r52_pagcom 
-                                      ,r52_valor 
-                                      ,r52_valcom 
-                                      ,r52_val13 
-                                      ,r52_limite 
-                                      ,r52_dvagencia 
-                                      ,r52_dvconta 
-                                      ,r52_valfer 
-                                      ,r52_valres 
-                                      ,r52_pagres 
-                                      ,r52_adiantamento13 
-                                      ,r52_percadiantamento13 
-                                      ,r52_sequencial 
-                                      ,r52_pagasuplementar 
-                                      ,r52_valorsuplementar 
-                                      ,r52_relacaodependencia 
-                                      ,r52_observacao 
+                                       r52_anousu
+                                      ,r52_mesusu
+                                      ,r52_regist
+                                      ,r52_formul
+                                      ,r52_perc
+                                      ,r52_numcgm
+                                      ,r52_codbco
+                                      ,r52_codage
+                                      ,r52_conta
+                                      ,r52_vlrpen
+                                      ,r52_dtincl
+                                      ,r52_pag13
+                                      ,r52_pagfer
+                                      ,r52_pagcom
+                                      ,r52_valor
+                                      ,r52_valcom
+                                      ,r52_val13
+                                      ,r52_limite
+                                      ,r52_dvagencia
+                                      ,r52_dvconta
+                                      ,r52_valfer
+                                      ,r52_valres
+                                      ,r52_pagres
+                                      ,r52_adiantamento13
+                                      ,r52_percadiantamento13
+                                      ,r52_sequencial
+                                      ,r52_pagasuplementar
+                                      ,r52_valorsuplementar
+                                      ,r52_relacaodependencia
+                                      ,r52_observacao
+                                      ,r52_cgmalimentado
                        )
                 values (
-                                $this->r52_anousu 
-                               ,$this->r52_mesusu 
-                               ,$this->r52_regist 
-                               ,'$this->r52_formul' 
-                               ,$this->r52_perc 
-                               ,$this->r52_numcgm 
-                               ,'$this->r52_codbco' 
-                               ,'$this->r52_codage' 
-                               ,'$this->r52_conta' 
-                               ,$this->r52_vlrpen 
-                               ,".($this->r52_dtincl == "null" || $this->r52_dtincl == ""?"null":"'".$this->r52_dtincl."'")." 
-                               ,'$this->r52_pag13' 
-                               ,'$this->r52_pagfer' 
-                               ,'$this->r52_pagcom' 
-                               ,$this->r52_valor 
-                               ,$this->r52_valcom 
-                               ,$this->r52_val13 
-                               ,".($this->r52_limite == "null" || $this->r52_limite == ""?"null":"'".$this->r52_limite."'")." 
-                               ,'$this->r52_dvagencia' 
-                               ,'$this->r52_dvconta' 
-                               ,$this->r52_valfer 
-                               ,$this->r52_valres 
-                               ,'$this->r52_pagres' 
-                               ,'$this->r52_adiantamento13' 
-                               ,$this->r52_percadiantamento13 
-                               ,$this->r52_sequencial 
-                               ,'$this->r52_pagasuplementar' 
-                               ,$this->r52_valorsuplementar 
-                               ,$this->r52_relacaodependencia 
-                               ,'$this->r52_observacao' 
+                                $this->r52_anousu
+                               ,$this->r52_mesusu
+                               ,$this->r52_regist
+                               ,'$this->r52_formul'
+                               ,$this->r52_perc
+                               ,$this->r52_numcgm
+                               ,'$this->r52_codbco'
+                               ,'$this->r52_codage'
+                               ,'$this->r52_conta'
+                               ,$this->r52_vlrpen
+                               ,".($this->r52_dtincl == "null" || $this->r52_dtincl == ""?"null":"'".$this->r52_dtincl."'")."
+                               ,'$this->r52_pag13'
+                               ,'$this->r52_pagfer'
+                               ,'$this->r52_pagcom'
+                               ,$this->r52_valor
+                               ,$this->r52_valcom
+                               ,$this->r52_val13
+                               ,".($this->r52_limite == "null" || $this->r52_limite == ""?"null":"'".$this->r52_limite."'")."
+                               ,'$this->r52_dvagencia'
+                               ,'$this->r52_dvconta'
+                               ,$this->r52_valfer
+                               ,$this->r52_valres
+                               ,'$this->r52_pagres'
+                               ,'$this->r52_adiantamento13'
+                               ,$this->r52_percadiantamento13
+                               ,$this->r52_sequencial
+                               ,'$this->r52_pagasuplementar'
+                               ,$this->r52_valorsuplementar
+                               ,$this->r52_relacaodependencia
+                               ,'$this->r52_observacao'
+                               ,$this->r52_cgmalimentado
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -478,14 +484,16 @@ class cl_pensao
          $resac = db_query("insert into db_acount values($acount,570,20829,'','".AddSlashes(pg_result($resaco,0,'r52_valorsuplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,570,22304,'','".AddSlashes(pg_result($resaco,0,'r52_relacaodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,570,1014449,'','".AddSlashes(pg_result($resaco,0,'r52_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,570,190997767,'','".AddSlashes(pg_result($resaco,0,'r52_cgmalimentado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
    }
    // funcao para alteracao
-  function alterar($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null) {
+  function alterar($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null, $r52_cgmalimentadoantigo = null) {
       $this->atualizacampos();
-     $sql = " update pensao set ";
+
+      $sql = " update pensao set ";
      $virgula = "";
      if(trim($this->r52_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r52_anousu"])){
        $sql  .= $virgula." r52_anousu = $this->r52_anousu ";
@@ -778,8 +786,15 @@ class cl_pensao
        $sql  .= $virgula." r52_relacaodependencia = $this->r52_relacaodependencia ";
        $virgula = ",";
      }
-     if(trim($this->r52_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r52_observacao"])){ 
+     if(trim($this->r52_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r52_observacao"])){
        $sql  .= $virgula." r52_observacao = '$this->r52_observacao' ";
+       $virgula = ",";
+     }
+     if(trim($this->r52_cgmalimentado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r52_cgmalimentado"])){
+        if(trim($this->r52_cgmalimentado)=="" && isset($GLOBALS["HTTP_POST_VARS"]["r52_cgmalimentado"])){
+           $this->r52_cgmalimentado = "0" ;
+        }
+       $sql  .= $virgula." r52_cgmalimentado = $this->r52_cgmalimentado ";
        $virgula = ",";
      }
      $sql .= " where ";
@@ -795,11 +810,14 @@ class cl_pensao
     if ($r52_numcgm != null) {
       $sql .= " and  r52_numcgm = $this->r52_numcgm";
     }
+    if ($r52_cgmalimentadoantigo != null) {
+          $sql .= " and  r52_cgmalimentado = $r52_cgmalimentadoantigo";
+    }
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
        && ($lSessaoDesativarAccount === false))) {
 
-       $resaco = $this->sql_record($this->sql_query_file($this->r52_anousu, $this->r52_mesusu, $this->r52_regist, $this->r52_numcgm));
+       $resaco = $this->sql_record($this->sql_query_file($this->r52_anousu, $this->r52_mesusu, $this->r52_regist, $this->r52_numcgm,"*",null,"",$this->r52_cgmalimentado));
        if ($this->numrows > 0) {
 
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
@@ -868,6 +886,8 @@ class cl_pensao
              $resac = db_query("insert into db_acount values($acount,570,22304,'".AddSlashes(pg_result($resaco,$conresaco,'r52_relacaodependencia'))."','$this->r52_relacaodependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["r52_observacao"]) || $this->r52_observacao != "")
              $resac = db_query("insert into db_acount values($acount,570,1014449,'".AddSlashes(pg_result($resaco,$conresaco,'r52_observacao'))."','$this->r52_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["r52_cgmalimentado"]) || $this->r52_cgmalimentado != "")
+             $resac = db_query("insert into db_acount values($acount,570,190997767,'".AddSlashes(pg_result($resaco,$conresaco,'r52_cgmalimentado'))."','$this->r52_cgmalimentado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -954,6 +974,7 @@ class cl_pensao
            $resac  = db_query("insert into db_acount values($acount,570,20829,'','".AddSlashes(pg_result($resaco,$iresaco,'r52_valorsuplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,570,22304,'','".AddSlashes(pg_result($resaco,$iresaco,'r52_relacaodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,570,1014449,'','".AddSlashes(pg_result($resaco,$iresaco,'r52_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,570,190997767,'','".AddSlashes(pg_result($resaco,$iresaco,'r52_cgmalimentado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1048,7 +1069,7 @@ class cl_pensao
   	 $this->incluir($this->r52_anousu,$this->r52_mesusu,$this->r52_regist,$this->r52_numcgm);
    }
 
-  function sql_query($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  function sql_query($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null,  $campos = "*", $ordem = null, $dbwhere = "", $r52_cgmalimentado = null) {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -1123,7 +1144,7 @@ class cl_pensao
     }
     return $sql;
   }
-  function sql_query_dados($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  function sql_query_dados($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null,  $campos = "*", $ordem = null, $dbwhere = "", $r52_cgmalimentado = null ) {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -1140,8 +1161,10 @@ class cl_pensao
     $sql .= "      inner join cgm             on cgm.z01_numcgm                 = pensao.r52_numcgm     ";
     $sql .= "      inner join rhpessoal       on rhpessoal.rh01_regist          = pensao.r52_regist     ";
     $sql .= "      inner join cgm a           on a.z01_numcgm                   = rhpessoal.rh01_numcgm ";
+    $sql .= "      inner join cgm alim        on alim.z01_numcgm                = pensao.r52_cgmalimentado ";
     $sql .= "      left  join db_bancos       on db_bancos.db90_codban::char(3) = pensao.r52_codbco     ";
     $sql .= "      left  join pensaoretencao  on pensaoretencao.rh77_numcgm     = pensao.r52_numcgm     ";
+    $sql .= "                                and pensaoretencao.rh77_cgmalimentado     = pensao.r52_cgmalimentado";
     $sql .= "                                and pensaoretencao.rh77_regist     = pensao.r52_regist     ";
     $sql .= "                                and pensaoretencao.rh77_anousu     = pensao.r52_anousu     ";
     $sql .= "                                and pensaoretencao.rh77_mesusu     = pensao.r52_mesusu     ";
@@ -1153,6 +1176,7 @@ class cl_pensao
     $sql .= "                                    and pensaocontabancaria.rh139_mesusu = pensao.r52_mesusu ";
     $sql .= "                                    and pensaocontabancaria.rh139_regist = pensao.r52_regist ";
     $sql .= "                                    and pensaocontabancaria.rh139_numcgm = pensao.r52_numcgm";
+    $sql .= "                                    and pensaocontabancaria.rh139_cgmalimentado = pensao.r52_cgmalimentado";
 
 
     $sql2 = "";
@@ -1184,6 +1208,15 @@ class cl_pensao
         }
         $sql2 .= " pensao.r52_numcgm = $r52_numcgm ";
       }
+        if ($r52_cgmalimentado != null) {
+            if ($sql2 != "") {
+                $sql2 .= " and ";
+            } else {
+                $sql2 .= " where ";
+            }
+
+            $sql2 .= " pensao.r52_cgmalimentado = $r52_cgmalimentado ";
+        }
     } else if ($dbwhere != "") {
       $sql2 = " where $dbwhere";
     }
@@ -1199,7 +1232,7 @@ class cl_pensao
     }
     return $sql;
   }
-  function sql_query_file($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  function sql_query_file($r52_anousu = null, $r52_mesusu = null, $r52_regist = null, $r52_numcgm = null,   $campos = "*", $ordem = null, $dbwhere = "", $r52_cgmalimentado = null) {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -1242,6 +1275,14 @@ class cl_pensao
         }
         $sql2 .= " pensao.r52_numcgm = $r52_numcgm ";
       }
+        if ($r52_cgmalimentado != null) {
+            if ($sql2 != "") {
+                $sql2 .= " and ";
+            } else {
+                $sql2 .= " where ";
+            }
+            $sql2 .= " pensao.r52_cgmalimentado = $r52_cgmalimentado ";
+        }
     } else if ($dbwhere != "") {
       $sql2 = " where $dbwhere";
     }
@@ -1286,6 +1327,7 @@ class cl_pensao
     $sql .= "                                    and pensaocontabancaria.rh139_mesusu = pensao.r52_mesusu             \n";
     $sql .= "                                    and pensaocontabancaria.rh139_regist = pensao.r52_regist             \n";
     $sql .= "                                    and pensaocontabancaria.rh139_numcgm = pensao.r52_numcgm             \n";
+    $sql .= "                                    and pensaocontabancaria.rh139_cgmalimentado = pensao.r52_cgmalimentado             \n";
     $sql .= "      left  join contabancaria on contabancaria.db83_sequencial = pensaocontabancaria.rh139_contabancaria\n";
     $sql .= "      left  join bancoagencia  on bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia         \n";
 
@@ -1362,6 +1404,7 @@ class cl_pensao
         $sql .= "                                    and pensaocontabancaria.rh139_mesusu = pensao.r52_mesusu             \n";
         $sql .= "                                    and pensaocontabancaria.rh139_regist = pensao.r52_regist             \n";
         $sql .= "                                    and pensaocontabancaria.rh139_numcgm = pensao.r52_numcgm             \n";
+        $sql .= "                                    and pensaocontabancaria.rh139_cgmalimentado = pensao.r52_cgmalimentado             \n";
         $sql .= "      left  join contabancaria on contabancaria.db83_sequencial = pensaocontabancaria.rh139_contabancaria\n";
         $sql .= "      left  join bancoagencia  on bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia         \n";
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("db57_descr");
        <?=@$Ldb56_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db56_sequencial',4,$Idb56_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb56_layouttxtgrupotipo?>">
-       <?
+       <?php
        db_ancora(@$Ldb56_layouttxtgrupotipo,"js_pesquisadb56_layouttxtgrupotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db56_layouttxtgrupotipo',4,$Idb56_layouttxtgrupotipo,true,'text',$db_opcao," onchange='js_pesquisadb56_layouttxtgrupotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('db57_descr',40,$Idb57_descr,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('db57_descr',40,$Idb57_descr,true,'text',3,'')
        <?=@$Ldb56_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('db56_descr',40,$Idb56_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_layouttxtgrupo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

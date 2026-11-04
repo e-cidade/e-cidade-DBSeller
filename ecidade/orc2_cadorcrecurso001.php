@@ -1,87 +1,89 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 ?>
 
 <html>
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script type="text/javascript" src="scripts/scripts.js"></script>
 
-<script>
-function js_emite(){
-  var sParam = document.getElementById('imprec').value;
-  jan = window.open('orc2_cadorcrecurso002.php?recurso='+sParam,
-                    '',
-                    'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-  jan.moveTo(0,0);
-}
-</script>  
-<link href="estilos.css" rel="stylesheet" type="text/css">
+    <script>
+        function js_emite() {
+            let sParam = document.getElementById('imprec').value;
+            let finalidade = document.getElementById('finalidade').value;
+            let url = `orc2_cadorcrecurso002.php?recurso=${sParam}&finalidade=${finalidade}`
+            jan = window.open(url, '', 'scrollbars=1,location=0 ');
+            jan.moveTo(0, 0);
+        }
+    </script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-  <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr>
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<br><br>
-<form name="form1" method="post" action="" >
-  <table  align="center">
-     <tr>
-       <td align='right'>
-          <strong>Impressão por Recurso:</strong>
-       </td>
-       <td align="left" title="Forma de impressão">
-       <?
-          $x = array("t"=>"Todos","sa"=>"Somente Ativos","si"=>"Somente Inativos");
-          db_select('imprec',$x,true,4,"");
-       ?>
-       </td>
-     </tr>   
-     <tr>
-       <td height="80" align = "center"> 
-         <input  name="emite2" id="emite2" type="button" value="Emitir Relatório" onclick="js_emite();" >
-       </td>
-     </tr>
-  </table>
+<body class="container">
+
+
+<form name="form1" method="post" action="">
+    <fieldset>
+        <legend>Relatório Cadastral de Recursos</legend>
+
+        <table class="form-container">
+            <tr>
+                <td>Impressão por Recurso:</td>
+                <td title="Forma de impressão">
+                    <?php
+                    $x = array("t" => "Todos", "sa" => "Somente Ativos", "si" => "Somente Inativos");
+                    db_select('imprec', $x, true, 4, "");
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Imprimir Finalidade:</td>
+                <td>
+                    <select id="finalidade" name="finalidade">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <button type="button" name="emite2" id="emite2" onclick="js_emite();" class="btn btn-light">
+        <i class="fas fa-print"></i>
+        Emitir Relatório
+    </button>
+
 </form>
-<?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>
+<?php db_menu(); ?>
 </body>
 </html>

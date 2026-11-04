@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,7 +77,7 @@ function js_marca(obj){
        OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
      }
    }
-<?   
+<?php   
     if(isset($js_marcador)){
        echo str_replace(";","",$js_marcador).";";
     }
@@ -103,7 +103,7 @@ function js_marca(obj){
     <th> Código
     </th>
   </tr>
-  <?
+  <?php
   if($linhatab>0){
 	  if ($linha>0){
 	  	for($i = 0;$i<$linha;$i++){

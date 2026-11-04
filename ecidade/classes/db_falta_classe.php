@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,13 +55,13 @@ class cl_falta {
                  ed245_i_diarioavaliacao = int4 = Diario avaliacao 
                  ";
    //funcao construtor da classe 
-   function cl_falta() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("falta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_falta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed245_i_codigo = ($this->ed245_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed245_i_codigo"]:$this->ed245_i_codigo);
        if($this->ed245_d_data == ""){
@@ -87,7 +87,7 @@ class cl_falta {
      }
    }
    // funcao para inclusao
-   function incluir ($ed245_i_codigo){ 
+   public function incluir ($ed245_i_codigo){ 
       $this->atualizacampos();
      if($this->ed245_d_data == null ){ 
        $this->erro_sql = " Campo Data nao Informado.";
@@ -186,7 +186,7 @@ class cl_falta {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed245_i_codigo=null) { 
+   public function alterar ($ed245_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update falta set ";
      $virgula = "";
@@ -295,7 +295,7 @@ class cl_falta {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed245_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed245_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed245_i_codigo));
      }else{ 
@@ -358,7 +358,7 @@ class cl_falta {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -45,6 +45,8 @@ use App\Domain\Financeiro\Planejamento\Models\ObjetivoEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\ObjetivoProgramaEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\Planejamento;
 use App\Domain\Financeiro\Planejamento\Models\ProgramaEstrategico;
+use App\Domain\Financeiro\Planejamento\Models\Valor;
+use Exception;
 use Illuminate\Support\Collection;
 
 class ReplicarPlanoService
@@ -136,7 +138,8 @@ class ReplicarPlanoService
         $novoPrograma->pl9_anoorcamento = $this->novoPlano->pl2_ano_inicial;
         $novoPrograma->save();
 
-        $this->replicarValores($programa->getValores(), $novoPrograma->pl9_codigo);
+
+        $this->replicarValores($programa->getValores(), $novoPrograma->pl9_codigo, Valor::ORIGEM_PROGRAMA);
 
         $this->replicarOrgaosPrograma($programa->orgaos, $novoPrograma);
         $this->replicarObjetivosPrograma($programa->objetivos, $novoPrograma);
@@ -161,11 +164,25 @@ class ReplicarPlanoService
 
     /**
      * @param Collection $valores
-     * @param $chave
+     * @param int $chave
+     * @param string $origem
      * @return void|null
+     * @throws Exception
      */
-    private function replicarValores(Collection $valores, $chave)
+    private function replicarValores(Collection $valores, $chave, $origem)
     {
+        if ($this->novoPlano->pl2_tipo === 'PPA') {
+            $exercicios = $this->novoPlano->execiciosPlanejamento();
+            $novosValores = [];
+            foreach ($exercicios as $exercicio) {
+                $novosValores[] = (object) ["ano" => $exercicio, "valor" => 0];
+            }
+
+            $service = new ValoresService();
+            $service->salvarColecao($novosValores, $origem, $chave);
+            return;
+        }
+
         if ($valores->isEmpty()) {
             return null;
         }
@@ -233,7 +250,7 @@ class ReplicarPlanoService
         $novoObjetivo->programaEstrategico()->associate($novoPrograma);
         $novoObjetivo->save();
 
-        $this->replicarValores($objetivo->getValores(), $novoObjetivo->pl11_codigo);
+        $this->replicarValores($objetivo->getValores(), $novoObjetivo->pl11_codigo, Valor::ORIGEM_OBJETIVOS);
 
         $this->replicarMetas($objetivo->metas, $novoObjetivo);
 
@@ -250,7 +267,7 @@ class ReplicarPlanoService
             $novaMeta->objetivo()->associate($novoObjetivo);
             $novaMeta->save();
 
-            $this->replicarValores($meta->getValores(), $novaMeta->pl21_codigo);
+            $this->replicarValores($meta->getValores(), $novaMeta->pl21_codigo, Valor::ORIGEM_META_OBJETIVO);
         }
     }
 
@@ -361,7 +378,8 @@ class ReplicarPlanoService
             $novoDetalhamento->iniciativa()->associate($novaIniciativa);
             $novoDetalhamento->save();
 
-            $this->replicarValores($detalhamento->getValores(), $novoDetalhamento->pl20_codigo);
+            $origem = Valor::ORIGEM_DETALHAMENTO_DESPESA;
+            $this->replicarValores($detalhamento->getValores(), $novoDetalhamento->pl20_codigo, $origem);
             $this->replicarCronogramaDesembolsoDespesa($detalhamento->cronogramaDesembolso, $novoDetalhamento);
         }
     }
@@ -383,6 +401,15 @@ class ReplicarPlanoService
             $novoCronograma->detalhamento()->associate($novoDetalhamento);
             $novoCronograma->save();
         }
+
+        $ultimo = $cronogramas->last();
+        $exercicioFinalPlano = $this->novoPlano->pl2_ano_final;
+        if ($this->novoPlano->pl2_tipo === 'LDO' && $ultimo->exercicio < $exercicioFinalPlano) {
+            $novoCronograma = $ultimo->replicate();
+            $novoCronograma->exercicio = $exercicioFinalPlano;
+            $novoCronograma->detalhamento()->associate($novoDetalhamento);
+            $novoCronograma->save();
+        }
     }
 
     private function replicarReceitas()
@@ -396,6 +423,10 @@ class ReplicarPlanoService
         /**
          * @var FatorCorrecaoReceita $fatorCorrecao
          */
+        if ($fatorCorrecaoReceita->isEmpty()) {
+            return;
+        }
+
         foreach ($fatorCorrecaoReceita as $fatorCorrecao) {
             $fonte = FonteReceita::where('o57_codfon', $fatorCorrecao->orcfontes_id)
                 ->where('o57_anousu', $this->novoPlano->pl2_ano_inicial)
@@ -454,7 +485,7 @@ class ReplicarPlanoService
 
             $this->replicarCronogramaDesembolsoReceita($estimativaReceita->cronogramaDesembolso, $novaEstimativa);
 
-            $this->replicarValores($estimativaReceita->getValores(), $novaEstimativa->id);
+            $this->replicarValores($estimativaReceita->getValores(), $novaEstimativa->id, Valor::ORIGEM_RECEITA);
         }
     }
 
@@ -517,6 +548,15 @@ class ReplicarPlanoService
              * @var CronogramaDesembolsoReceita $novoCronograma
              */
             $novoCronograma =  $cronograma->replicate();
+            $novoCronograma->estimativa()->associate($novaEstimativa);
+            $novoCronograma->save();
+        }
+
+        $ultimo = $cronogramas->last();
+        $exercicioFinalPlano = $this->novoPlano->pl2_ano_final;
+        if ($this->novoPlano->pl2_tipo === 'LDO' && $ultimo->exercicio < $exercicioFinalPlano) {
+            $novoCronograma = $ultimo->replicate();
+            $novoCronograma->exercicio = $exercicioFinalPlano;
             $novoCronograma->estimativa()->associate($novaEstimativa);
             $novoCronograma->save();
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nomeinst");
 	
   <tr>
     <td> 
-			<?
+			<?php
 				//db_input('m38_instit',10,$Im38_instit,true,'text',$db_opcao," onchange='js_pesquisam38_instit(false);'");
       ?>
     </td>
@@ -49,7 +49,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lm38_visualizacaoitens?>
     </td>
     <td> 
-		<?
+		<?php
 			$x = array('1'=>'Todas as instituições visualizam tudo na consulta de material','2'=>'Visualizar apenas itens com movimentação na própria instituição');
 			db_select('m38_visualizacaoitens',$x,true,$db_opcao,"");
 		?>
@@ -61,7 +61,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lm38_visualizacaomatestoque?>
     </td>
     <td> 
-		<?
+		<?php
 			$x = array('f'=>'Não','t'=>'Sim');
 			db_select('m38_visualizacaomatestoque',$x,true,$db_opcao,"");
 		?>
@@ -103,7 +103,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matparamconsulta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

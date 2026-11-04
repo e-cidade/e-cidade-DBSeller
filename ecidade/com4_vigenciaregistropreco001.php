@@ -99,7 +99,7 @@ if ( isset($oGet->pc54_solicita) ) {
 		        <tr>
 		          <td><b>Início Vigência:</b></td>
 		          <td>
-		            <?
+		            <?php
 		             db_inputdata('data_inicial', $data_inicial_dia, $data_inicial_mes, $data_inicial_ano, true, 'text', 1);
                 ?>
               </td>

@@ -1,9 +1,6 @@
-<?
+<?php
 //WebSeller
-set_time_limit(0);
 if(!defined('DB_BIBLIOT')){
-
-  session_cache_limiter('none');
   session_start();
 
   require(modification("libs/db_stdlib.php"));
@@ -15,7 +12,7 @@ if(!defined('DB_BIBLIOT')){
 
   define('FPDF_FONTPATH','fpdf151/font/');
   require(modification('fpdf151/fpdf.php'));
-  
+
 }
 
 

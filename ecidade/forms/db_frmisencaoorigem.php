@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,31 +43,31 @@ $clrotulo->label("q02_numcgm");
 <table border="0">
    <tr>
     <td nowrap title="<?=@$Tv12_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lv12_numcgm,"js_pesquisav12_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v12_numcgm',10,$Iv12_numcgm,true,'text',$db_opcao," onchange='js_pesquisav12_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
-	<? if($origemmenu == '2'){?>
+	<?php if($origemmenu == '2'){?>
   <tr>
     <td nowrap title="<?=@$Tv16_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lv16_inscr,"js_pesquisav16_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v16_inscr',10,$Iv16_inscr,true,'text',$db_opcao," onchange='js_pesquisav16_inscr(false);'")
 ?>
-       <?
+       <?php
 db_input('q02_numcgm',40,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -75,18 +75,18 @@ db_input('q02_numcgm',40,$Iq02_numcgm,true,'text',3,'')
 	<?}else{
 		   db_input('v16_inscr',10,$Iv16_inscr,true,'hidden',3,"");
     }?>
-	<? if($origemmenu == '3'){?>
+	<?php if($origemmenu == '3'){?>
   <tr>
     <td nowrap title="<?=@$Tv15_matric?>">
-       <?
+       <?php
        db_ancora(@$Lv15_matric,"js_pesquisav15_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v15_matric',10,$Iv15_matric,true,'text',$db_opcao," onchange='js_pesquisav15_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',40,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -163,7 +163,6 @@ function js_pesquisav12_numcgm(mostra){
   }
 }
 function js_mostracgm(erro,chave){
-//	alert(chave+ '' +erro);
   document.form1.z01_nome.value = chave; 
   if(erro==true){ 
     document.form1.v12_numcgm.focus(); 
@@ -177,7 +176,7 @@ function js_mostracgm1(chave1,chave2){
 }
 function js_pesquisav16_inscr(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_issbase','func_issbase.php?funcao_js=parent.js_mostraissbase1|q02_inscr|q02_numcgm','Pesquisa',true);
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_issbase','func_issbase.php?funcao_js=parent.js_mostraissbase1|q02_inscr|z01_nome','Pesquisa',true);
   }else{
      if(document.form1.v16_inscr.value != ''){ 
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_issbase','func_issbase.php?pesquisa_chave='+document.form1.v16_inscr.value+'&funcao_js=parent.js_mostraissbase','Pesquisa',false);
@@ -194,6 +193,7 @@ function js_mostraissbase(chave,erro){
   }
 }
 function js_mostraissbase1(chave1,chave2){
+  js_pesquisav16_inscr(false);
   document.form1.v16_inscr.value = chave1;
   document.form1.q02_numcgm.value = chave2;
   db_iframe_issbase.hide();
@@ -226,9 +226,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencaocgm.hide();
-  <?
+  <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

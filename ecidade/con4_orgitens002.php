@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
   <tr>
     <td align= "center" height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <form name="form1" method="post">
-        <?
+        <?php
           if(!isset($mod)){
         ?>
         <table border="0" cellspacing="0" cellpadding="0">
@@ -101,7 +101,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 	          <td> 
               <strong>M&oacute;dulo:</strong><br/>
 	            <select onDblClick="document.form1.mod.click()" name="modulos" size="18"  >
-                <?
+                <?php
 	                $result = db_query("select db_modulos.id_item,nome_modulo,descr_modulo 
 	                                      from db_modulos
 	                                     inner join db_itensmenu on db_itensmenu.id_item = db_modulos.id_item
@@ -123,7 +123,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 	        </tr>
 
 	      </table>
-	      <?
+	      <?php
 	        } else {
 	          $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$modulos);
 	          $mod = pg_result($result,0,0);
@@ -153,10 +153,10 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
 			        <input name="modulos" type="hidden" value="<?=$modulos?>" />
 			        <input name="mod" type="hidden" value="selecionar" />
 			        <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" 
-                <? echo isset($ambiente)?($ambiente=="1"?"checked":""):"checked" ?>
+                <?php echo isset($ambiente)?($ambiente=="1"?"checked":""):"checked" ?>
               /> 
               <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <? echo isset($ambiente)?($ambiente=="0"?"checked":""):"" ?>>
+              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php echo isset($ambiente)?($ambiente=="0"?"checked":""):"" ?>>
               <label for="caracter"><strong>Caracter</strong></label>
 	            <input name='retornar' type='button' value='Retornar' onclick="location.href='con4_orgitens002.php'" /> 
 			      </td>
@@ -166,7 +166,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
               <table border="1" cellspacing="0" cellpadding="0">	  
                 <tr> 
                   <td> 
-		                <? 
+		                <?php 
 		                $ambiente = (!isset($ambiente)?"1":$ambiente);		  		   
   		   	          $wid = 15;
   			            $conta = 0;
@@ -227,7 +227,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
             </td>
           </tr>
         </table>
-	      <?
+	      <?php
 	        }
 	      ?>	  
         </form>
@@ -235,7 +235,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

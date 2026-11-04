@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,18 +64,18 @@
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
 	include(modification("forms/db_frmeditaltipo.php"));
 	?>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 $cleditaltipo->erro(true,false);
 if($db_botao==false)
   echo "<script>js_func_editaltipo();func_editaltipo.show();</script>  ";

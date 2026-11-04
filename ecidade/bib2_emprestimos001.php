@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -59,7 +59,7 @@ $db_opcao = 1;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"), "biblioteca", "", " bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <center>
 <fieldset align="center" style="width:95%"><legend><b>Relatório de Ítens Emprestados</b></legend>
@@ -73,9 +73,9 @@ $db_opcao = 1;
      <strong>Período:&nbsp;&nbsp;</strong>
      </td>
      <td>
-      <?db_inputdata('data1', @$dia1, @$mes1, @$ano1, true, 'text', 1, "")?>
+      <?php db_inputdata('data1', @$dia1, @$mes1, @$ano1, true, 'text', 1, "")?>
       até
-      <?db_inputdata('data2', @$dia2, @$mes2, @$ano2, true, 'text', 1, "")?>
+      <?php db_inputdata('data2', @$dia2, @$mes2, @$ano2, true, 'text', 1, "")?>
      </td>
     </tr>
     <tr>
@@ -98,21 +98,40 @@ $db_opcao = 1;
     </tr>
     <tr>
      <td nowrap title="<?=@$Tbi18_carteira?>">
-      <?db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$db_opcao);?>
+      <?php db_ancora(@$Lbi18_carteira, "js_pesquisabi18_carteira(true);", $db_opcao);?>
      </td>
      <td>
-      <?db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $db_opcao, " onchange='js_pesquisabi18_carteira(false);' onKeyPress='tab(event,12)'")?>
-      <?db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
+      <?php
+        db_input(
+            'bi18_carteira',
+            10,
+            $Ibi18_carteira,
+            true,
+            'text',
+            $db_opcao,
+            " onchange='js_pesquisabi18_carteira(false);' onKeyPress='tab(event,12)'"
+        )
+        ?>
+      <?php db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tbi06_seq?>">
-      <?db_ancora(@$Lbi06_seq, "js_pesquisabi06_seq(true);", $db_opcao);?>
+      <?php db_ancora(@$Lbi06_seq, "js_pesquisabi06_seq(true);", $db_opcao);?>
      </td>
      <td>
-      <?db_input('bi06_seq', 10, @$Ibi06_seq, true, 'text', $db_opcao, " onchange='js_pesquisabi06_seq(false);'")?>
-      <?db_input('bi06_titulo', 50, @$bi06_titulo, true, 'text', 3, "")?>
+      <?php db_input('bi06_seq', 10, @$Ibi06_seq, true, 'text', $db_opcao, " onchange='js_pesquisabi06_seq(false);'")?>
+      <?php db_input('bi06_titulo', 50, @$bi06_titulo, true, 'text', 3, "")?>
      </td>
+    </tr>
+    <tr>
+        <td><strong>Tipo de Saída:</strong></td>
+        <td>
+            <select name="formatoImpressao" id="formatoImpressao">
+                <option value="pdf">PDF</option>
+                <option value="csv">CSV</option>
+            </select>
+        </td>
     </tr>
     <tr>
      <td >&nbsp;</td>
@@ -130,61 +149,100 @@ $db_opcao = 1;
 </table>
 </fieldset>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php
+    db_menu(
+        db_getsession("DB_id_usuario"),
+        db_getsession("DB_modulo"),
+        db_getsession("DB_anousu"),
+        db_getsession("DB_instit")
+    );
+    ?>
 </body>
 </html>
 <script>
+
+const formatoImpressao = document.getElementById('formatoImpressao');
+const apiUrl = "edu4_biblioteca.RPC.php";
+
 function js_emite() {
-  
-  obj   = document.form1;
-  count = 0;
-  
-  if (   (obj.data1_dia.value != '') 
-      && (obj.data1_mes.value != '') 
-      && (obj.data1_ano.value != '') 
-      && (obj.data1_dia.value != '') 
-      && (obj.data2_mes.value != '') 
-      && (obj.data2_ano.value != '')) {
-    
-    query = "data1="+obj.data1_ano.value+"-"+obj.data1_mes.value+"-"+obj.data1_dia.value
-          +"&data2="+obj.data2_ano.value+"-"+obj.data2_mes.value+"-"+obj.data2_dia.value;
-    count = 1;
-  } else {
-    
-    alert("Preencha a data corretamente!");
+  if (formatoImpressao.value === 'pdf') {
+    obj   = document.form1;
+    count = 0;
+
+    if (   (obj.data1_dia.value != '')
+        && (obj.data1_mes.value != '')
+        && (obj.data1_ano.value != '')
+        && (obj.data1_dia.value != '')
+        && (obj.data2_mes.value != '')
+        && (obj.data2_ano.value != '')) {
+
+        query = "data1="+obj.data1_ano.value+"-"+obj.data1_mes.value+"-"+obj.data1_dia.value
+            +"&data2="+obj.data2_ano.value+"-"+obj.data2_mes.value+"-"+obj.data2_dia.value;
+        count = 1;
+    } else {
+
+        alert("Preencha a data corretamente!");
+        return false;
+    }
+
+    if (obj.filtro[0].checked == true) {
+        filtro = 1;
+    }
+    if (obj.filtro[1].checked == true) {
+        filtro = 2;
+    }
+    if (obj.filtro[2].checked == true) {
+        filtro = 3;
+    }
+    if (obj.filtro[3].checked == true) {
+        filtro = 4;
+    }
+    if (count == 0 ) {
+        alert("Preencha os Campos Corretamente!");
+    } else {
+
+        jan = window.open('bib2_emprestimos002.php?'+query
+                                                    +'&filtro='+filtro
+                                                    +'&leitor='+obj.bi18_carteira.value
+                                                    +'&acervo='+obj.bi06_seq.value,
+                        '',
+                        'width='+(screen.availWidth-5)
+                        +',height='+(screen.availHeight-40)
+                        +',scrollbars=1,location=0 ');
+        jan.moveTo(0,0);
+    }
     return false;
   }
-  
-  if (obj.filtro[0].checked == true) {
-    filtro = 1;
-  }
-  if (obj.filtro[1].checked == true) {
-    filtro = 2;
-  }
-  if (obj.filtro[2].checked == true) {
-    filtro = 3;
-  }
-  if (obj.filtro[3].checked == true) {
-    filtro = 4;
-  }
-  if (count == 0 ) {
-    alert("Preencha os Campos Corretamente!");
-  } else {
 
-    jan = window.open('bib2_emprestimos002.php?'+query
-                                                +'&filtro='+filtro
-                                                +'&leitor='+obj.bi18_carteira.value
-                                                +'&acervo='+obj.bi06_seq.value,
-                      '',
-                      'width='+(screen.availWidth-5)
-                     +',height='+(screen.availHeight-40)
-                     +',scrollbars=1,location=0 ');
-    jan.moveTo(0,0);
+  var oParametros = new Object();
+  oParametros.exec = 'processarRelatorioItensEmprestadosCSV';
+  oParametros.filtro = filtro;
+  oParametros.filtroData1 = obj.data1_ano.value+"-"+obj.data1_mes.value+"-"+obj.data1_dia.value;
+  oParametros.filtroData2 = obj.data2_ano.value+"-"+obj.data2_mes.value+"-"+obj.data2_dia.value;
+  oParametros.filtroCarteira = obj.bi18_carteira.value;
+  oParametros.filtroAcervo = obj.bi06_seq.value;
+  const body = {
+      method:'post',
+      parameters: 'json='+Object.toJSON(oParametros),
+      onComplete: js_trataRetornoRelatorioCSV
   }
+  js_divCarregando('Aguarde... Imprimindo o relatório','msgbox');
+  var oAjax = new Ajax.Request(apiUrl, body);
+}
+
+function js_trataRetornoRelatorioCSV(oAjax)
+{
+    const retorno = JSON.parse(oAjax.responseText);
+    js_removeObj("msgbox");
+    if (retorno.iStatus != 0 && retorno.pathRelatorioCSV != "") {
+        jan = window.open(retorno.pathRelatorioCSV,'');
+    } else {
+        alert(retorno.sMessage.urlDecode());
+    }
 }
 
 function js_pesquisabi18_carteira(mostra) {
-  
+
   if (mostra == true) {
     js_OpenJanelaIframe('CurrentWindow.corpo',
                         'db_iframe_leitor',
@@ -192,7 +250,7 @@ function js_pesquisabi18_carteira(mostra) {
                         'Pesquisa',
                         true);
   } else {
-    
+
     if (document.form1.bi18_carteira.value != '') {
       js_OpenJanelaIframe('CurrentWindow.corpo',
                           'db_iframe_leitor',
@@ -207,24 +265,24 @@ function js_pesquisabi18_carteira(mostra) {
 }
 
 function js_mostraleitor(chave, erro) {
-  
+
   document.form1.ov02_nome.value = chave;
   if (erro == true) {
-    
+
     document.form1.bi18_carteira.focus();
     document.form1.bi18_carteira.value = '';
   }
 }
 
 function js_mostraleitor1(chave1, chave2) {
-  
+
   document.form1.bi18_carteira.value = chave1;
   document.form1.ov02_nome.value     = chave2;
   db_iframe_leitor.hide();
 }
 
 function js_pesquisabi06_seq(mostra) {
-  
+
   if (mostra == true) {
     js_OpenJanelaIframe('CurrentWindow.corpo',
                         'db_iframe_acervo',
@@ -232,7 +290,7 @@ function js_pesquisabi06_seq(mostra) {
                         'Pesquisa',
                         true);
   } else {
-    
+
     if (document.form1.bi06_seq.value != '') {
       js_OpenJanelaIframe('CurrentWindow.corpo',
                           'db_iframe_acervo',
@@ -247,17 +305,17 @@ function js_pesquisabi06_seq(mostra) {
 }
 
 function js_mostraacervo(chave, erro) {
-  
+
   document.form1.bi06_titulo.value = chave;
   if (erro == true) {
-    
+
     document.form1.bi06_seq.focus();
     document.form1.bi06_seq.value = '';
   }
 }
 
 function js_mostraacervo1(chave1, chave2) {
-  
+
   document.form1.bi06_seq.value    = chave1;
   document.form1.bi06_titulo.value = chave2;
   db_iframe_acervo.hide();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ if(isset($atualizar)){
       <?=@$Led09_i_codigo?>
      </td>
      <td>
-      <?db_input('ed09_i_codigo',10,$Ied09_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed09_i_codigo',10,$Ied09_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ if(isset($atualizar)){
       <?=@$Led09_c_descr?>
      </td>
      <td>
-      <?db_input('ed09_c_descr',40,$Ied09_c_descr,true,'text',$db_opcao,"")?>
+      <?php db_input('ed09_c_descr',40,$Ied09_c_descr,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ if(isset($atualizar)){
       <?=@$Led09_c_abrev?>
      </td>
      <td>
-      <?db_input('ed09_c_abrev',10,$Ied09_c_abrev,true,'text',$db_opcao,"")?>
+      <?php db_input('ed09_c_abrev',10,$Ied09_c_abrev,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -91,12 +91,12 @@ if(isset($atualizar)){
       <?=@$Led09_c_somach?>
      </td>
      <td>
-      <?
+      <?php
       $x = array('S'=>'SIM','N'=>'NÃO');
       db_select('ed09_c_somach',$x,true,$db_opcao,"");
       ?>
       <?=@$Led09_c_controlfreq?>
-      <?
+      <?php
       $x = array('S'=>'SIM','N'=>'NÃO');
       db_select('ed09_c_controlfreq',$x,true,$db_opcao,"");
       ?>
@@ -116,7 +116,7 @@ if(isset($atualizar)){
      <td>
       <b>Ordenar Períodos:</b><br>
       <select name="campos[]" id="campos" size="8" style="font-size:9px;width:175px" multiple>
-      <?
+      <?php
        $sql = "SELECT ed09_i_codigo,ed09_c_descr from periodoavaliacao order by ed09_i_sequencia,ed09_i_codigo";
        $query = db_query($sql);
        $linhas = pg_num_rows($query);
@@ -145,7 +145,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed09_i_codigo"=>@$ed09_i_codigo,"ed09_c_descr"=>@$ed09_c_descr,"ed09_c_abrev"=>@$ed09_c_abrev,"ed09_c_somach"=>@$ed09_c_somach,"ed09_c_controlfreq"=>@$ed09_c_controlfreq);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clperiodoavaliacao->sql_query($ed09_i_codigo,"*","ed09_i_sequencia,ed09_i_codigo");

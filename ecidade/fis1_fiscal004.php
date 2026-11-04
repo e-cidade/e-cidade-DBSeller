@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,17 +76,17 @@ input {
    <table border="0" cellspacing="0" cellpadding="0">
    <br>
    <br>
-   <?
+   <?php
    if($como == "cgm"){
    ?>
      <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -103,17 +103,17 @@ function js_testacamp(){
   document.form1.submit();
 }   
 </script>
-   <?
+   <?php
    }elseif($como == "matric"){
    ?>
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -130,18 +130,18 @@ function js_testacamp(){
   document.form1.submit();
 }   
 </script>
-   <?
+   <?php
    }elseif($como == "inscr"){
    ?>
      
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -158,17 +158,17 @@ function js_testacamp(){
   document.form1.submit();
 }   
 </script>
-   <?
+   <?php
    }elseif($como == "sani"){
    ?>
     <tr>
       <td nowrap title="<?=@$Ty80_codsani?>">
-         <?
+         <?php
          db_ancora(@$Ly80_codsani,"js_sanitario(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y80_codsani',5,$Iy80_codsani,true,'text',1,"onchange='js_sanitario(false)'");
         db_input('z01_nome',30,0,true,'text',3,"","z01_nomesani");
         ?>
@@ -185,17 +185,17 @@ function js_testacamp(){
   document.form1.submit();
 }   
 </script>
-   <?
+   <?php
    }elseif($como == "vist"){
    ?>
     <tr>
       <td nowrap title="<?=@$Ty70_codvist?>">
-         <?
+         <?php
          db_ancora(@$Ly70_codvist,"js_vistorias(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y70_codvist',5,$Iy70_codvist,true,'text',1,"onchange='js_vistorias(false)'");
         db_input('z01_nome',30,0,true,'text',3,"","z01_nomevist");
         ?>
@@ -212,7 +212,7 @@ function js_testacamp(){
   document.form1.submit();
 }   
 </script>
-    <?
+    <?php
     }
     ?>
      <tr>
@@ -313,7 +313,7 @@ function js_mostrainscr1(chave,erro){
 }
 
 function js_setatabulacao(){
-   <?
+   <?php
    if($como == "cgm"){
      echo 'js_tabulacaoforms("form1","z01_numcgm",true,1,"z01_numcgm",true);';
    }elseif($como == "matric"){

@@ -1,0 +1,108 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1010775' name='acordos.acordoparam' description="Permissão Homologação Acordo" prefix="ac59" label="Permissão Homologação Acordo" type="1">
+  <fields>
+    <field codigo="1013058"
+           campo_api=''
+           name="ac59_sequencial"
+           conteudo="int4"
+           description="Sequencial"
+           inivalue="0"
+           label="Sequencial"
+           size="10"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="1"
+           tipoobj="text"
+           labelrel="Sequencial"
+           reference=""
+           ispk="t"
+           hassequence="f" >
+            <sequence name='acordos.acordoparam_ac59_sequencial_seq' ></sequence>
+    </field>
+    <field codigo="1013059"
+           campo_api=''
+           name="ac59_instituicao"
+           conteudo="int4"
+           description="Instituição"
+           inivalue="0"
+           label="Instituição"
+           size="10"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="1"
+           tipoobj="text"
+           labelrel="Instituição"
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+    <field codigo="1013060"
+           campo_api=''
+           name="ac59_homologacaoauto"
+           conteudo="bool"
+           description="Homologação Automatica"
+           inivalue="f"
+           label="Homologação Automatica"
+           size="1"
+           null="f"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="5"
+           tipoobj="text"
+           labelrel="Homologação Automatica"
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+    <field codigo="1014714"
+           campo_api=''
+           name="ac59_cadastrocomissoesfiscal"
+           conteudo="bool"
+           description="Exibe ou não os campos de nome, cpf e matrícula do fiscal no cadastro de comissões."
+           inivalue="f"
+           label="Exibe campo fiscal no cadastro de comissões"
+           size="1"
+           null="t"
+           uppercase="f"
+           autocompl="f"
+           aceitatipo="5"
+           tipoobj="text"
+           labelrel="Fiscal em cadastro de comissões"
+           reference=""
+           ispk="f"
+           hassequence="f" >
+
+    </field>
+    <field codigo="1015631"
+             campo_api=''
+             name="ac59_permiteporinstit"
+             conteudo="bool"
+             description="Seleciona processo por instituição"
+             inivalue="t"
+             label="Seleciona processo por instituição"
+             size="1"
+             null="f"
+             uppercase="f"
+             autocompl="f"
+             aceitatipo="5"
+             tipoobj="text"
+             labelrel="Seleciona processo por instituição"
+             reference=""
+             ispk="f"
+             hassequence="f" >
+
+    </field>
+  </fields>
+  <primarykey>
+    <fieldpk name="ac59_sequencial"></fieldpk>
+  </primarykey>
+  <foreignkeys>
+    <foreignkey reference="db_config" inner='t'>
+      <fieldfk name="ac59_instituicao" reference="codigo" />
+    </foreignkey>
+  </foreignkeys>
+</table>

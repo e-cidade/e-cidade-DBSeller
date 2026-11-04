@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ function js_pesquisa(){
 <tr>
 <td align='center'>
 <strong>Modulo:
-<?
+<?php
 
 $sqlmodulo = "select distinct db_modulos.id_item,nome_modulo 
               from db_permissao 
@@ -75,7 +75,7 @@ db_selectrecord('id_item',$res,true,2,'','','','0-Todos',' js_pesquisa();');
 </tr>
 <tr>
 </td>
-<?
+<?php
 
 function monta_menu_func_contarefa($item_modulo,$id_modulo,$id_usuario,$espacos,$nivel=1,$procedimento=0){
 

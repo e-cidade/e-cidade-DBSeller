@@ -384,7 +384,7 @@ $sJoin .= "
                   and bhcb2.t57_ativo is true
                   and bhcb2.t57_datacalculo <= '{$sdtFim}'
 
-                order by bhcb2.t57_datacalculo desc limit 1
+                order by bhcb2.t57_sequencial desc limit 1
         )
 ";
 

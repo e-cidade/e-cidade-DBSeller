@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguaconfvenc->rotulo->label("x33_dtvenc");
               <?=$Lx33_exerc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x33_exerc",5,$Ix33_exerc,true,"text",4,"","chave_x33_exerc");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguaconfvenc->rotulo->label("x33_dtvenc");
               <?=$Lx33_parcela?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x33_parcela",5,$Ix33_parcela,true,"text",4,"","chave_x33_parcela");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $claguaconfvenc->rotulo->label("x33_dtvenc");
               <?=$Lx33_dtvenc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x33_dtvenc",10,$Ix33_dtvenc,true,"text",4,"","chave_x33_dtvenc");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $claguaconfvenc->rotulo->label("x33_dtvenc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaconfvenc.php")==true){
@@ -129,12 +129,12 @@ $claguaconfvenc->rotulo->label("x33_dtvenc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

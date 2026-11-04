@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -40,7 +40,7 @@ $classinatura = new cl_assinatura;
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 //db_criatabela($resultinst);exit;
 
@@ -50,14 +50,14 @@ $flag_abrev = false;
 $descr_receita = "DEDUÇÕES DA RECEITA CORRENTE";
 for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
-  
+
   if (strlen(trim($nomeinstabrev)) > 0) {
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   } else {
     $descr_inst .= $xvirg.$nomeinst;
   }
-  
+
   $xvirg = ', ';
 }
 
@@ -129,81 +129,81 @@ for ($i=0; $i<pg_num_rows($result_rec); $i++) {
     $receita_tributaria+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='412000000000000' && $o70_codrec == 0 ) {
     $receita_contribuicoes+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='413000000000000' && $o70_codrec == 0 ) {
     $receita_patrimonial+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='414000000000000' && $o70_codrec == 0 ) {
     $receita_agropecuaria+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='416000000000000' && $o70_codrec == 0 ) {
     $receita_servicos+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='417000000000000' && $o70_codrec == 0 ) {
     $transf_correntes+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   //  if(substr($o57_fonte,0,2)=='41' && $controle==false && $o70_codrec == 0  ) {
   if (( $o57_fonte=='415000000000000' || $o57_fonte=='418000000000000' || $o57_fonte=='419000000000000') && $controle==false && $o70_codrec == 0  ) {
     // se não entrou em outras receitas, sendo rec. corrente
     $outras_receitas_correntes+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   // receitas de capital
   if ($o57_fonte=='421000000000000' && $o70_codrec == 0 ) {
     $operacoes_credito+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='422000000000000' && $o70_codrec == 0 ) {
     $alienacao_bens += $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='423000000000000' && $o70_codrec == 0 ) {
     $amortizacao_emprestimos+= $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   if ($o57_fonte=='424000000000000' && $o70_codrec == 0 ) {
     $transf_capital += $saldo_arrecadado_acumulado;
     $controle=true;
   }
-  
+
   //    if(substr($o57_fonte,0,2)=='42' && $controle==false && $o70_codrec == 0 ) {
   if (( $o57_fonte=='425000000000000' || $o57_fonte=='426000000000000' || $o57_fonte=='427000000000000' || $o57_fonte=='428000000000000' || $o57_fonte=='429000000000000') && $controle==false && $o70_codrec == 0 ) {
     $outras_receitas_capital+= $saldo_arrecadado_acumulado;
   }
-  
+
   //    if(substr($o57_fonte,0,2)=='47' && $controle==false && $o70_codrec == 0 ) {
   if ($o57_fonte == '470000000000000' && $controle==false && $o70_codrec == 0 ) {
     $receitas_correntes_intra += $saldo_arrecadado_acumulado;
   }
   // deduções
-  
+
   $descr_receita = "DEDUÇÕES DA RECEITA CORRENTE";
   //if (db_conplano_grupo($anousu,substr($o57_fonte,0,2)."0000000000000",9001)==true){   // 497
   if (db_conplano_grupo($anousu,$o57_fonte,9000)==true   &&  ( $o70_codrec == 0 || true )  ) {
     // 497
-    
+
     $estrut     = substr($o57_fonte,0,1)."00000000000000";
     if ($anousu < 2008) {
       $estrut     = substr($o57_fonte,0,2)."0000000000000";
     }
-    
+
     $sql_estrut = "select o57_descr from orcfontes where o57_fonte = '$estrut' limit 1";
     $result_estrut = @db_query($sql_estrut);
     if (@pg_numrows($result_estrut) > 0) {
@@ -234,29 +234,29 @@ $amortizacao_divida        = 0;
 
 for ($i=0; $i<pg_numrows($result_desp); $i++) {
   db_fieldsmemory($result_desp,$i);
-  
+
   // Despesas Corrente
   if (substr($o58_elemento,0,3)=="331") {
     $pes_enc_sociais += $empenhado_acumulado-$anulado_acumulado;
   }
-  
+
   if (substr($o58_elemento,0,3)=="332") {
     $jur_enc_div     += $empenhado_acumulado-$anulado_acumulado;
   }
-  
+
   if (substr($o58_elemento,0,3)=="333") {
     $outras_despesas_correntes+= $empenhado_acumulado-$anulado_acumulado;
   }
-  
+
   // Despesas de Capital
   if (substr($o58_elemento,0,3)=="344") {
     $investimentos  += $empenhado_acumulado-$anulado_acumulado;
   }
-  
+
   if (substr($o58_elemento,0,3)=="345") {
     $inv_financeiras+= $empenhado_acumulado-$anulado_acumulado;
   }
-  
+
   if (substr($o58_elemento,0,3)=="346") {
     $amortizacao_divida+= $empenhado_acumulado-$anulado_acumulado;
   }
@@ -338,9 +338,9 @@ $ind_indep_exec_orc_ativa    = 0;
 $ind_indep_exec_orc_passiva  = 0;
 
 for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
-  
+
   db_fieldsmemory($res_planocontas,$i);
-  
+
   $v_elementos = array($estrutural,$c61_instit);
   $flag_contar = false;
   if ($c61_instit != 0) {
@@ -356,13 +356,13 @@ for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
     }
   }
   if ($flag_contar) {
-    
+
     $v_interf_ativa[$ind_interf_ativa][1] = $c60_descr;
     $v_interf_ativa[$ind_interf_ativa][2] = $saldo_final;
     $soma_interf_ativa += $saldo_final;
     $ind_interf_ativa++;
   }
-  
+
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_interf_passiva)) {
@@ -382,7 +382,7 @@ for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
     $soma_interf_passiva += $saldo_final;
     $ind_interf_passiva++;
   }
-  
+
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_mutacao_ativa)) {
@@ -396,14 +396,14 @@ for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
       }
     }
   }
-  
+
   if ($flag_contar) {
     $v_mutacao_ativa[$ind_mutacao_ativa][1] = $c60_descr;
     $v_mutacao_ativa[$ind_mutacao_ativa][2] = $saldo_final;
     $soma_mutacao_ativa += $saldo_final;
     $ind_mutacao_ativa++;
   }
-  
+
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_mutacao_passiva)) {
@@ -423,7 +423,7 @@ for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
     $soma_mutacao_passiva += $saldo_final;
     $ind_mutacao_passiva++;
   }
-  
+
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_indep_exec_orc_ativa)) {
@@ -443,7 +443,7 @@ for ($i=0; $i< pg_numrows($res_planocontas); $i++) {
     $soma_indep_exec_orc_ativa += $saldo_final;
     $ind_indep_exec_orc_ativa++;
   }
-  
+
   $flag_contar = false;
   if ($c61_instit != 0) {
     if (in_array($v_elementos,$m_indep_exec_orc_passiva)) {
@@ -647,7 +647,7 @@ if (count($v_interf_ativa) > count($v_interf_passiva) ) {
 }
 
 for ($i=0; $i < $contador; $i++) {
-  
+
   if (isset($v_interf_ativa[$i][2] ) ) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(65,$alt,ucfirst(strtolower($v_interf_ativa[$i][1])),"R",0,"L",0);
@@ -704,7 +704,7 @@ for ($i=0; $i < $contador; $i++) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,"","R",0,"R",0);
   }
-  
+
   if (isset($v_mutacao_passiva[$i][2]) ) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(65,$alt,ucfirst(strtolower($v_mutacao_passiva[$i][1])),"R",0,"L",0);
@@ -716,7 +716,7 @@ for ($i=0; $i < $contador; $i++) {
     $pdf->cell(5, $alt,"",0,0,"L",0);
     $pdf->cell(15,$alt,"",0,1,"L",0);
   }
-  
+
 }
 //$pdf->cell(160,$alt+1,"","R",1,"L",0);
 //$pos = $pdf->gety();

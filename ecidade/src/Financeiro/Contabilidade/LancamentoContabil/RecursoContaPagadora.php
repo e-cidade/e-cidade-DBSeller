@@ -27,6 +27,7 @@
 
 namespace ECidade\Financeiro\Contabilidade\LancamentoContabil;
 
+use cl_conlancamrecurso;
 use ILancamentoAuxiliar;
 
 /**
@@ -46,13 +47,12 @@ class RecursoContaPagadora extends RecursoAbstract
             return;
         }
 
-        /**
-         *
-         *
-         * @todo  hoje não esta salvando recurso_apropriacao .... verificar caso com Leandro
-         *
-         *
-         */
+        $daoConlancamrecurso = new cl_conlancamrecurso();
+        $sqlVerifica = $daoConlancamrecurso->sql_query_file(null, "*", null, "c130_conlancam = {$codigoLancamnento}");
+        $daoConlancamrecurso->sql_record($sqlVerifica);
+        if ($daoConlancamrecurso->numrows > 0) {
+            return;
+        }
 
         $recurso = null;
         $dadosLancamento = \db_utils::fieldsMemory($rsRecursos, 0);
@@ -83,6 +83,16 @@ class RecursoContaPagadora extends RecursoAbstract
 
         if ($dadosLancamento->abertura_exercicio != '') {
             $this->salvarRecurso($codigoLancamnento, $dadosLancamento->abertura_exercicio);
+            return;
+        }
+
+        if ($dadosLancamento->recurso_retencao_receita != '') {
+            $this->salvarRecurso($codigoLancamnento, $dadosLancamento->recurso_retencao_receita);
+            return;
+        }
+
+        if ($dadosLancamento->recurso_apropriacao != '') {
+            $this->salvarRecurso($codigoLancamnento, $dadosLancamento->recurso_apropriacao);
             return;
         }
 

@@ -55,7 +55,7 @@ $clcadfiscais->rotulo->label("id_usuario");
               <?=$Lid_usuario?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("id_usuario",5,$Iid_usuario,true,"text",4,"","chave_id_usuario");
 		       ?>
             </td>

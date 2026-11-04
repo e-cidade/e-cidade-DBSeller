@@ -54,16 +54,16 @@ font-family:Arial, Helvetica, sans-serif;
 </head>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php
 if(isset($erro1)) { ?>
  <br><br><br><Br><h3>Débitos recentemente pagos!</h3>
-<?
+<?php
 }else{
 ?>
   <table width="100%" border="0" cellpadding="0" cellspacing="5">
    <tr>
    <td align="left" ><h3> Notificações Enviadas ao Contribuinte:</h3>
-  <?
+  <?php
    $clnotificacao = new cl_notificacao;
    $numpres       = "";
    if(isset($matric)){
@@ -110,12 +110,12 @@ if(isset($erro1)) { ?>
     </tr>
     <tr>
       <td class="fonte" align="justify" valign="top">
-    	<?
+    	<?php
     	echo str_replace(" ","&nbsp;",$str);
     	?>
       </td>
     </tr>
-  <?
+  <?php
    }
    ?>
  <tr>
@@ -123,7 +123,7 @@ if(isset($erro1)) { ?>
   </tr>
 
   </table>
-<?
+<?php
 }
 ?>
 </center>

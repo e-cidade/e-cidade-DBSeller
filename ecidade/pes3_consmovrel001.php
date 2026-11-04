@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $queryst = "";
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-      <?
+      <?php
       if(!isset($r54_regist) && !isset($r54_codeve) && !isset($r54_codrel)){
       ?>
       <form name="form1" method="post" action="pes3_consmovrel001.php">
@@ -78,12 +78,12 @@ $queryst = "";
           <tr>
             <td align="right"><strong>Ano/Mês:</strong></td>
             <td>
-              <?
+              <?php
               $ano = db_anofolha();
               db_input("ano",4,'',true,'text',3)
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
               $mes = db_mesfolha();
               db_input("mes",2,'',true,'text',3)
               ?>
@@ -91,12 +91,12 @@ $queryst = "";
           </tr>
           <tr>
             <td align="right" nowrap title="<?=@$Tr54_codrel?>">
-              <?
+              <?php
               db_ancora(@$Lr54_codrel,"js_pesquisar54_codrel(true);",1);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r54_codrel',8,$Ir54_codrel,true,'text',1,"onchange='js_pesquisar54_codrel(false);' tabIndex='1'");
               db_input('r56_descr',40,$Ir56_descr,true,'text',3,"");
               ?>
@@ -104,27 +104,27 @@ $queryst = "";
           </tr>
           <tr> 
             <td align="right" title="<?=$Tr54_regist?>"> 
-              <?
+              <?php
               db_ancora(@ $Lr54_regist, "js_pesquisar54_regist(true);", 1);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r54_regist', 8, $Ir54_regist, true, 'text', 1, " onchange='js_pesquisar54_regist(false);' tabIndex='2'")
               ?>
-              <?
+              <?php
               db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr54_codeve?>">
-              <?
+              <?php
               db_ancora(@$Lr54_codeve,"js_pesquisar54_codeve(true);",1);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r54_codeve',8,$Ir54_codeve,true,'text',1,"onchange='js_pesquisar54_codeve(false);' tabIndex='3'");
               db_input('r55_descr',40,$Ir55_descr,true,'text',3,"");
               ?>
@@ -137,7 +137,7 @@ $queryst = "";
           </tr>
         </table>
       </form>
-      <?
+      <?php
       }else{
         $dbwhere = "";
         $ano = db_anofolha();
@@ -166,16 +166,16 @@ $queryst = "";
         db_lovrot($sql,15,"()","","","","NoMe",$repassa);
         ?>  
         <BR>
-        <input type='button' value='Nova consulta' onclick='location.href=\"pes3_consmovrel001.php\"' tabIndex='1'>
+        <input type='button' value='Nova consulta' onclick='location.href="pes3_consmovrel001.php"' tabIndex='1'>
         <input type='button' value='Imprimir' name='relatorio' onclick='js_abrejan(false);' tabIndex='4'>
-        <?
+        <?php
       }
       ?>
       </center>
     </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

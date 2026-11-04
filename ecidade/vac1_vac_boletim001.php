@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -129,7 +129,7 @@ db_app::load("webseller.js");
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_boletim.php"));
 	?>
     </center>
@@ -137,7 +137,7 @@ db_app::load("webseller.js");
   </tr>
 </table>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
            db_getsession("DB_modulo"),
            db_getsession("DB_anousu"),
            db_getsession("DB_instit")
@@ -148,7 +148,7 @@ db_app::load("webseller.js");
 <script>
 js_tabulacaoforms("form1", "vc13_i_vacina", true , 1, "vc13_i_vacina", true);
 </script>
-<?
+<?php
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if ($clvac_boletim->erro_status == "0") {

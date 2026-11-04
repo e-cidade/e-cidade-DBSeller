@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -41,22 +41,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lcm22_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('cm22_i_codigo',10,$Icm22_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm22_i_cemiterio?>">
-       <?
+       <?php
        db_ancora(@$Lcm22_i_cemiterio,"js_pesquisacm22_i_cemiterio(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('cm22_i_cemiterio',10,$Icm22_i_cemiterio,true,'text',$db_opcao," onchange='js_pesquisacm22_i_cemiterio(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -66,7 +66,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lcm22_c_quadra?>
     </td>
     <td>
-<?
+<?php
 db_input('cm22_c_quadra',3,$Icm22_c_quadra,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,8 +75,8 @@ db_input('cm22_c_quadra',3,$Icm22_c_quadra,true,'text',$db_opcao,"")
   <td><strong>Tipo:</strong>
   </td>
   <td>
-   <?
-    $x = array('C'=>'Campa','J'=>'Jazigo','O'=>'Ossário','S'=>'Sepultura');
+   <?php
+    $x = array('M'=>'Mista','J'=>'Jazigo','O'=>'Ossário','S'=>'Sepultura');
     db_select('cm22_c_tipo',$x,true,$db_opcao,"");
    ?>
   </tr>
@@ -118,7 +118,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_quadracemit.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

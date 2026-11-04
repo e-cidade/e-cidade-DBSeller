@@ -62,13 +62,13 @@ class cl_relacaotrabalho {
                  ed23_ativo = bool = Ativo
                  ";
    //funcao construtor da classe
-   function cl_relacaotrabalho() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("relacaotrabalho");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_relacaotrabalho {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed23_i_codigo = ($this->ed23_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed23_i_codigo"]:$this->ed23_i_codigo);
        $this->ed23_i_rechumanoescola = ($this->ed23_i_rechumanoescola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed23_i_rechumanoescola"]:$this->ed23_i_rechumanoescola);
@@ -92,7 +92,7 @@ class cl_relacaotrabalho {
      }
    }
    // funcao para inclusao
-   function incluir ($ed23_i_codigo){
+   public function incluir ($ed23_i_codigo){
       $this->atualizacampos();
      if($this->ed23_i_rechumanoescola == null ){
        $this->erro_sql = " Campo Matrícula não informado.";
@@ -548,12 +548,12 @@ class cl_relacaotrabalho {
      }
      return $sql;
   }
-  function sql_query_area_trabalho ( $ed23_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_area_trabalho ( $ed23_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -579,7 +579,7 @@ class cl_relacaotrabalho {
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

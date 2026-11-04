@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,7 +34,7 @@ $clrotulo->label("ve01_codigo");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 //db_input("ve01_codigo",10,0,true,"hidden",3);
 db_input("sequencial", 10,0,true,"hidden",3);
 
@@ -47,12 +47,12 @@ db_input("sequencial", 10,0,true,"hidden",3);
   </td>
   </tr>
     <td nowrap title="<?=@$Tve01_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lve01_codigo,"js_pesquisave01_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve01_codigo',10,$Ive01_codigo,true,'text',$db_opcao," onchange='js_pesquisave01_codigo(true);'");
 
 db_input('ve01_placa',10,$Ive01_codigo,true,'text',3,'');
@@ -71,11 +71,11 @@ db_input('ve22_descr',40,$Ive01_codigo,true,'text',3,'');
           value="<?=($db_opcao==1?"Incluir":($db_opcao==3||$db_opcao==33?"Excluir":""))?>"
           <?=($db_botao==false?"disabled":"")?> 
        >
-       <?
+       <?php
           if ($db_opcao != 1) {
        ?>
          <input name="novo" id="novo" type="submit" value="Novo">
-       <?
+       <?php
           }
        ?>
     </td>
@@ -86,7 +86,7 @@ db_input('ve22_descr',40,$Ive01_codigo,true,'text',3,'');
 
 <tr>
     <td nowrap colspan="3">
-    <?
+    <?php
        $dbwhere = "";
        if (isset($ve41_veiccadcentral) && trim($ve41_veiccadcentral)!=""){
          $dbwhere = " ve36_sequencial = $ve41_veiccadcentral";
@@ -117,7 +117,7 @@ function js_preenchepesquisa(chave1,chave2,chave3){
     document.form1.ve01_placa.value = chave2;
     document.form1.ve22_descr.value = chave3;
     db_iframe_veiculos.hide();
-      <?
+      <?php
         if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
          }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("rh01_numcgm");
        <?=@$Lh72_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h72_sequencial',10,$Ih72_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th72_regist?>">
-       <?
+       <?php
        db_ancora(@$Lh72_regist,"js_pesquisah72_regist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h72_regist',10,$Ih72_regist,true,'text',$db_opcao," onchange='js_pesquisah72_regist(false);'")
 ?>
-       <?
+       <?php
 db_input('rh01_numcgm',10,$Irh01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('rh01_numcgm',10,$Irh01_numcgm,true,'text',3,'')
        <?=@$Lh72_dtinicial?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h72_dtinicial',@$h72_dtinicial_dia,@$h72_dtinicial_mes,@$h72_dtinicial_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('h72_dtinicial',@$h72_dtinicial_dia,@$h72_dtinicial_mes,@$h72_dtini
        <?=@$Lh72_dtfinal?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h72_dtfinal',@$h72_dtfinal_dia,@$h72_dtfinal_mes,@$h72_dtfinal_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('h72_dtfinal',@$h72_dtfinal_dia,@$h72_dtfinal_mes,@$h72_dtfinal_ano
        <?=@$Lh72_ativo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('0'=>'Ativo','1'=>'Inativo');
 db_select('h72_ativo',$x,true,$db_opcao,"");
 ?>
@@ -94,7 +94,7 @@ db_select('h72_ativo',$x,true,$db_opcao,"");
        <?=@$Lh72_observacao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h72_observacao',0,0,$Ih72_observacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpromocao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

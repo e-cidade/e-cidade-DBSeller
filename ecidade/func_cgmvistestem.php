@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lz01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcgm->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgm.php")==true){
@@ -118,14 +118,14 @@ $clcgm->rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_z01_nome.focus();
 document.form2.chave_z01_nome.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

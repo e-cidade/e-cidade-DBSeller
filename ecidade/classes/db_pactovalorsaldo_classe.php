@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE pactovalorsaldo
-class cl_pactovalorsaldo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o103_sequencial = 0; 
-   var $o103_pactovalor = 0; 
-   var $o103_pactovalorsaldotipo = 0; 
-   var $o103_anousu = 0; 
-   var $o103_mesusu = 0; 
-   var $o103_valor = 0; 
-   var $o103_contrapartida = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pactovalorsaldo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o103_sequencial = 0;
+   var $o103_pactovalor = 0;
+   var $o103_pactovalorsaldotipo = 0;
+   var $o103_anousu = 0;
+   var $o103_mesusu = 0;
+   var $o103_valor = 0;
+   var $o103_contrapartida = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o103_sequencial = int4 = Sequencial 
-                 o103_pactovalor = int4 = Item 
-                 o103_pactovalorsaldotipo = int4 = Tipo Item 
-                 o103_anousu = int4 = Ano 
-                 o103_mesusu = int4 = Mes 
-                 o103_valor = float4 = Valor 
-                 o103_contrapartida = bool = Contrapartida 
+                 o103_sequencial = int4 = Sequencial
+                 o103_pactovalor = int4 = Item
+                 o103_pactovalorsaldotipo = int4 = Tipo Item
+                 o103_anousu = int4 = Ano
+                 o103_mesusu = int4 = Mes
+                 o103_valor = float4 = Valor
+                 o103_contrapartida = bool = Contrapartida
                  ";
-   //funcao construtor da classe 
-   function cl_pactovalorsaldo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pactovalorsaldo"); 
+     $this->rotulo = new rotulo("pactovalorsaldo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_pactovalorsaldo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o103_sequencial = ($this->o103_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o103_sequencial"]:$this->o103_sequencial);
        $this->o103_pactovalor = ($this->o103_pactovalor == ""?@$GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"]:$this->o103_pactovalor);
@@ -89,9 +89,9 @@ class cl_pactovalorsaldo {
      }
    }
    // funcao para inclusao
-   function incluir ($o103_sequencial){ 
+   public function incluir ($o103_sequencial){
       $this->atualizacampos();
-     if($this->o103_pactovalor == null ){ 
+     if($this->o103_pactovalor == null ){
        $this->erro_sql = " Campo Item nao Informado.";
        $this->erro_campo = "o103_pactovalor";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o103_pactovalorsaldotipo == null ){ 
+     if($this->o103_pactovalorsaldotipo == null ){
        $this->erro_sql = " Campo Tipo Item nao Informado.";
        $this->erro_campo = "o103_pactovalorsaldotipo";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o103_anousu == null ){ 
+     if($this->o103_anousu == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "o103_anousu";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o103_mesusu == null ){ 
+     if($this->o103_mesusu == null ){
        $this->erro_sql = " Campo Mes nao Informado.";
        $this->erro_campo = "o103_mesusu";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o103_valor == null ){ 
+     if($this->o103_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "o103_valor";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o103_contrapartida == null ){ 
+     if($this->o103_contrapartida == null ){
        $this->erro_sql = " Campo Contrapartida nao Informado.";
        $this->erro_campo = "o103_contrapartida";
        $this->erro_banco = "";
@@ -146,16 +146,16 @@ class cl_pactovalorsaldo {
        return false;
      }
      if($o103_sequencial == "" || $o103_sequencial == null ){
-       $result = db_query("select nextval('pactovalorsaldo_o103_sequencial_seq')"); 
+       $result = db_query("select nextval('pactovalorsaldo_o103_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pactovalorsaldo_o103_sequencial_seq do campo: o103_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pactovalorsaldo_o103_sequencial_seq do campo: o103_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o103_sequencial = pg_result($result,0,0); 
+       $this->o103_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pactovalorsaldo_o103_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o103_sequencial)){
@@ -166,10 +166,10 @@ class cl_pactovalorsaldo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o103_sequencial = $o103_sequencial; 
+         $this->o103_sequencial = $o103_sequencial;
        }
      }
-     if(($this->o103_sequencial == null) || ($this->o103_sequencial == "") ){ 
+     if(($this->o103_sequencial == null) || ($this->o103_sequencial == "") ){
        $this->erro_sql = " Campo o103_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,25 +178,25 @@ class cl_pactovalorsaldo {
        return false;
      }
      $sql = "insert into pactovalorsaldo(
-                                       o103_sequencial 
-                                      ,o103_pactovalor 
-                                      ,o103_pactovalorsaldotipo 
-                                      ,o103_anousu 
-                                      ,o103_mesusu 
-                                      ,o103_valor 
-                                      ,o103_contrapartida 
+                                       o103_sequencial
+                                      ,o103_pactovalor
+                                      ,o103_pactovalorsaldotipo
+                                      ,o103_anousu
+                                      ,o103_mesusu
+                                      ,o103_valor
+                                      ,o103_contrapartida
                        )
                 values (
-                                $this->o103_sequencial 
-                               ,$this->o103_pactovalor 
-                               ,$this->o103_pactovalorsaldotipo 
-                               ,$this->o103_anousu 
-                               ,$this->o103_mesusu 
-                               ,$this->o103_valor 
-                               ,'$this->o103_contrapartida' 
+                                $this->o103_sequencial
+                               ,$this->o103_pactovalor
+                               ,$this->o103_pactovalorsaldotipo
+                               ,$this->o103_anousu
+                               ,$this->o103_mesusu
+                               ,$this->o103_valor
+                               ,'$this->o103_contrapartida'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "pactovalorsaldo ($this->o103_sequencial) nao Incluído. Inclusao Abortada.";
@@ -234,16 +234,16 @@ class cl_pactovalorsaldo {
        $resac = db_query("insert into db_acount values($acount,2447,13984,'','".AddSlashes(pg_result($resaco,0,'o103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o103_sequencial=null) { 
+   public function alterar ($o103_sequencial=null) {
       $this->atualizacampos();
      $sql = " update pactovalorsaldo set ";
      $virgula = "";
-     if(trim($this->o103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_sequencial"])){ 
+     if(trim($this->o103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_sequencial"])){
        $sql  .= $virgula." o103_sequencial = $this->o103_sequencial ";
        $virgula = ",";
-       if(trim($this->o103_sequencial) == null ){ 
+       if(trim($this->o103_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o103_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_pactovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"])){ 
+     if(trim($this->o103_pactovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"])){
        $sql  .= $virgula." o103_pactovalor = $this->o103_pactovalor ";
        $virgula = ",";
-       if(trim($this->o103_pactovalor) == null ){ 
+       if(trim($this->o103_pactovalor) == null ){
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "o103_pactovalor";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_pactovalorsaldotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalorsaldotipo"])){ 
+     if(trim($this->o103_pactovalorsaldotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalorsaldotipo"])){
        $sql  .= $virgula." o103_pactovalorsaldotipo = $this->o103_pactovalorsaldotipo ";
        $virgula = ",";
-       if(trim($this->o103_pactovalorsaldotipo) == null ){ 
+       if(trim($this->o103_pactovalorsaldotipo) == null ){
          $this->erro_sql = " Campo Tipo Item nao Informado.";
          $this->erro_campo = "o103_pactovalorsaldotipo";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_anousu"])){ 
+     if(trim($this->o103_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_anousu"])){
        $sql  .= $virgula." o103_anousu = $this->o103_anousu ";
        $virgula = ",";
-       if(trim($this->o103_anousu) == null ){ 
+       if(trim($this->o103_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o103_anousu";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_mesusu"])){ 
+     if(trim($this->o103_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_mesusu"])){
        $sql  .= $virgula." o103_mesusu = $this->o103_mesusu ";
        $virgula = ",";
-       if(trim($this->o103_mesusu) == null ){ 
+       if(trim($this->o103_mesusu) == null ){
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "o103_mesusu";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_valor"])){ 
+     if(trim($this->o103_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_valor"])){
        $sql  .= $virgula." o103_valor = $this->o103_valor ";
        $virgula = ",";
-       if(trim($this->o103_valor) == null ){ 
+       if(trim($this->o103_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o103_valor";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_contrapartida"])){ 
+     if(trim($this->o103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_contrapartida"])){
        $sql  .= $virgula." o103_contrapartida = '$this->o103_contrapartida' ";
        $virgula = ",";
-       if(trim($this->o103_contrapartida) == null ){ 
+       if(trim($this->o103_contrapartida) == null ){
          $this->erro_sql = " Campo Contrapartida nao Informado.";
          $this->erro_campo = "o103_contrapartida";
          $this->erro_banco = "";
@@ -359,7 +359,7 @@ class cl_pactovalorsaldo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pactovalorsaldo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o103_sequencial;
@@ -387,14 +387,14 @@ class cl_pactovalorsaldo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o103_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o103_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o103_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -426,7 +426,7 @@ class cl_pactovalorsaldo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pactovalorsaldo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o103_sequencial;
@@ -454,11 +454,11 @@ class cl_pactovalorsaldo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -480,11 +480,11 @@ class cl_pactovalorsaldo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,15 +506,15 @@ class cl_pactovalorsaldo {
      $sql2 = "";
      if($dbwhere==""){
        if($o103_sequencial!=null ){
-         $sql2 .= " where pactovalorsaldo.o103_sequencial = $o103_sequencial "; 
-       } 
+         $sql2 .= " where pactovalorsaldo.o103_sequencial = $o103_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,11 +523,11 @@ class cl_pactovalorsaldo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,15 +540,15 @@ class cl_pactovalorsaldo {
      $sql2 = "";
      if($dbwhere==""){
        if($o103_sequencial!=null ){
-         $sql2 .= " where pactovalorsaldo.o103_sequencial = $o103_sequencial "; 
-       } 
+         $sql2 .= " where pactovalorsaldo.o103_sequencial = $o103_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

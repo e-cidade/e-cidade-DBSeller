@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,32 +43,32 @@ $nomeescola       = db_getsession("DB_nomedepto");
 $me03_i_escola    = $codescola;
 $ed18_c_nome      = $nomeescola;
 if (isset($atualizar)) {
-	
+
   $vet = explode(",",$lista);
   for ($x=0; $x<count($vet); $x++) {
-  	
+
     $sql    = "update mer_tprefeicao set me03_i_orden=".($x+1)." where me03_i_codigo=$vet[$x]";
     $result = db_query($sql);
-    
+
  }
 }
 
 if (isset($incluir)) {
-	
+
   $sqltp    = "select me03_i_orden as anterior from mer_tprefeicao order by me03_i_orden desc";
   $resulttp = db_query($sqltp);
   $linhastp = pg_num_rows($resulttp);
   if($linhastp == 0){
     $orden = 1;
   } else {
-  	
+
     db_fieldsmemory($resulttp,0);
     $orden=$anterior+1;
-    
+
  }
  db_inicio_transacao();
  $clmer_tprefeicao->me03_i_orden = $orden;
- $clmer_tprefeicao->incluir($me03_i_codigo); 
+ $clmer_tprefeicao->incluir($me03_i_codigo);
  db_fim_transacao();
 }
 ?>
@@ -91,17 +91,17 @@ if (isset($incluir)) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td align="left" valign="top" bgcolor="#CCCCCC">   
+  <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão Tipo de Refeição</b></legend>
-    <?include(modification("forms/db_frmmer_tprefeicao.php"));?>
+    <?php include(modification("forms/db_frmmer_tprefeicao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -112,23 +112,23 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me03_c_tipo",true,1,"me03_c_tipo",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
-	
+
   if ($clmer_tprefeicao->erro_status=="0") {
-  	 
+
     $clmer_tprefeicao->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clmer_tprefeicao->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_tprefeicao->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_tprefeicao->erro_campo.".focus();</script>";
-      
+
     }
   } else {
     $clmer_tprefeicao->erro(true,true);
-  }  
+  }
 }
 ?>

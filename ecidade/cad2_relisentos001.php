@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -159,7 +159,7 @@ function js_emite(){
 
 </script>
 
-<?
+<?php
 if(isset($ordem)){
   if(isset($campos)){
     $xcampo = '';
@@ -200,23 +200,23 @@ if(isset($ordem)){
       </tr>
       <tr>
         <td colspan="2" title="Intervalo entre as datas de inclusão das isenções">Período:&nbsp;&nbsp;
-	  <?
+	  <?php
 	  db_inputdata('DBtxt21','','','',true,'text',4)
 	  ?>
 	  &nbsp;&nbsp;&nbsp;
 	  Até
-	  <?
+	  <?php
 	  db_inputdata('DBtxt22','','','',true,'text',4)
 	  ?>
       </tr>
       <tr>
         <td colspan="2" title="Anos das isenções">Exercícios das Isenções :&nbsp;&nbsp;
-          <?
+          <?php
 	    db_input('DBtxt12',15,$IDBtxt13,true,'text',2);
 	  ?>
         &nbsp;&nbsp;
         Até
-          <?
+          <?php
 	    db_input('DBtxt13',15,$IDBtxt13,true,'text',2);
 	  ?>
 
@@ -255,13 +255,13 @@ if(isset($ordem)){
       <table border="0">
          <tr>
            <td nowrap title="<?=@$Tj45_tipo?>" colspan="2">
-            <?
+            <?php
               db_ancora(@$Lj45_tipo,"js_pesquisaisencao(true);",2);
             ?>
-            <?
+            <?php
               db_input('j45_tipo',8,$Ij45_tipo,true,'text',2," onchange='js_pesquisaisencao(false);'")
             ?>
-            <?
+            <?php
               db_input('j45_descr',25,$Ij45_descr,true,'text',3,'')
             ?>
 	    <input name="lanca" type="button" value="Lançar" >
@@ -271,7 +271,7 @@ if(isset($ordem)){
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php
               if(isset($chavepesquisa)){
 
 	 $resulta = $cltipoisen->sql_record($cltipoisen->sql_query($chavepesquisa,"","j45_tipo,j45_descr",""));
@@ -326,7 +326,7 @@ if(isset($ordem)){
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -372,7 +372,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

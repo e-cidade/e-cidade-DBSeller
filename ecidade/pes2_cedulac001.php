@@ -98,7 +98,7 @@ td {
   <tr>
     <td>
       <form name="form1" method="post" action="pes2_cedulac002.php">
-        <?
+        <?php
           db_input('listlotacoes', 10, "", true, "hidden", 3);
           db_input('listmatriculas', 10, "", true, "hidden", 3);
           db_input('listcgms', 10, "", true, "hidden", 3);
@@ -113,7 +113,7 @@ td {
                   <b>Ano Base:</b>
                 </td>
                 <td  align="left" nowrap>
-                 <?
+                 <?php
                    $anobase = db_anofolha() -1;
                    db_input('anobase', 4, 0, true, 'text', 1, "");
                  ?>
@@ -124,7 +124,7 @@ td {
                   <b>Ano/Mês:</b>
                 </td>
                 <td  align="left" nowrap>
-                 <?
+                 <?php
 									 if(!isset($anofolha) || (isset($anofolha) && trim($anofolha) == "")){
 									   $anofolha = db_anofolha();
 									 }
@@ -144,7 +144,7 @@ td {
                <b>Tipo Resumo:</b>
               </td>
               <td>
-					      <?
+					      <?php
 					        $tipo        = 'g';
 					        $aTipoResumo = array('g'  => 'Geral',
 					                             'l'  => 'Lotação',
@@ -160,7 +160,7 @@ td {
                <b>Tipo Filtro:</b>
               </td>
               <td>
-                <?
+                <?php
                   $tipofiltro  = 'null';
                   $aTipoFiltro = array('null' => 'Selecione',
                                        'i'    => 'Intervalo',
@@ -178,12 +178,12 @@ td {
 	               <table align="left">
 	                  <tr>
 				              <td nowrap title="Lotação" align="left" width="40px">
-				               <? db_ancora("<b>Lotação:</b>","js_pesquisa_r70_estrut_ini(true);",1); ?>
+				               <?php db_ancora("<b>Lotação:</b>","js_pesquisa_r70_estrut_ini(true);",1); ?>
 				              </td>
 				              <td>
-				               <? db_input('r70_estrut', 10, @$Ir70_estrut, true, 'text', 4, " onchange='js_pesquisa_r70_estrut_ini(false);'", "r70_estrut_ini" )  ?>
-				                <strong><? db_ancora('à',"js_pesquisa_r70_estrut_fim(true);",1); ?></strong>
-				               <? db_input('r70_estrut',10,@$Ir70_estrut,true,'text',4," onchange='js_pesquisa_r70_estrut_fim(false);'","r70_estrut_fim" )  ?>
+				               <?php db_input('r70_estrut', 10, @$Ir70_estrut, true, 'text', 4, " onchange='js_pesquisa_r70_estrut_ini(false);'", "r70_estrut_ini" )  ?>
+				                <strong><?php db_ancora('à',"js_pesquisa_r70_estrut_fim(true);",1); ?></strong>
+				               <?php db_input('r70_estrut',10,@$Ir70_estrut,true,'text',4," onchange='js_pesquisa_r70_estrut_fim(false);'","r70_estrut_fim" )  ?>
 				              </td>
 	                  </tr>
 	               </table>
@@ -191,7 +191,7 @@ td {
                <table align="left" id="tipo-filtro-lotacao-selecionados" style="display: none;">
                   <tr>
                     <td colspan="2">
-                      <?
+                      <?php
                         $cl_rhlotaestrut                 = new cl_arquivo_auxiliar;
                         $cl_rhlotaestrut->nome_botao     = "db_lanca_rhlotaestrut";
                         $cl_rhlotaestrut->cabecalho      = "<strong>Lotação Selecionadas</strong>";
@@ -222,12 +222,12 @@ td {
 	               <table align="left">
 	                  <tr>
 	                    <td nowrap title="Matricula" align="left" width="50px">
-	                     <? db_ancora("<b>Matricula:</b>","js_pesquisa_rh01_regist_ini(true);",1); ?>
+	                     <?php db_ancora("<b>Matricula:</b>","js_pesquisa_rh01_regist_ini(true);",1); ?>
 	                    </td>
 	                    <td>
-	                     <? db_input('rh01_regist',10,@$Irh01_regist,true,'text',4," onchange='js_pesquisa_rh01_regist_ini(false);'","rh01_regist_ini" )  ?>
-	                      <strong><? db_ancora('à',"js_pesquisa_rh01_regist_fim(true);",1); ?></strong>
-	                     <? db_input('rh01_regist',10,@$Irh01_regist,true,'text',4," onchange='js_pesquisa_rh01_regist_fim(false);'","rh01_regist_fim" )  ?>
+	                     <?php db_input('rh01_regist',10,@$Irh01_regist,true,'text',4," onchange='js_pesquisa_rh01_regist_ini(false);'","rh01_regist_ini" )  ?>
+	                      <strong><?php db_ancora('à',"js_pesquisa_rh01_regist_fim(true);",1); ?></strong>
+	                     <?php db_input('rh01_regist',10,@$Irh01_regist,true,'text',4," onchange='js_pesquisa_rh01_regist_fim(false);'","rh01_regist_fim" )  ?>
 	                    </td>
 	                  </tr>
 	               </table>
@@ -235,7 +235,7 @@ td {
                <table align="left" id="tipo-filtro-matricula-selecionados" style="display: none;">
                   <tr>
                     <td colspan="2">
-                      <?
+                      <?php
                         $cl_rhpessoal                 = new cl_arquivo_auxiliar;
                         $cl_rhpessoal->nome_botao     = "db_lanca_rhpessoal";
                         $cl_rhpessoal->cabecalho      = "<strong>Matrícula Selecionadas</strong>";
@@ -267,12 +267,12 @@ td {
                  <table align="left">
                     <tr>
                       <td nowrap title="Numcgm" align="left" width="50px">
-                       <? db_ancora("<b>Numcgm:</b>","js_pesquisa_z01_numcgm_ini(true);",1); ?>
+                       <?php db_ancora("<b>Numcgm:</b>","js_pesquisa_z01_numcgm_ini(true);",1); ?>
                       </td>
                       <td>
-                       <? db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_ini(false);'","z01_numcgm_ini" )  ?>
-                        <strong><? db_ancora('à',"js_pesquisa_z01_numcgm_fim(true);",1); ?></strong>
-                       <? db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_fim(false);'","z01_numcgm_fim" )  ?>
+                       <?php db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_ini(false);'","z01_numcgm_ini" )  ?>
+                        <strong><?php db_ancora('à',"js_pesquisa_z01_numcgm_fim(true);",1); ?></strong>
+                       <?php db_input('z01_numcgm',10,@$Iz01_numcgm,true,'text',4," onchange='js_pesquisa_z01_numcgm_fim(false);'","z01_numcgm_fim" )  ?>
                       </td>
                     </tr>
                  </table>
@@ -297,7 +297,7 @@ td {
                <b>Ordem:</b>
               </td>
               <td>
-                <?
+                <?php
                   $aOrdem = array('a' => 'Alfabética',
                                   'n' => 'Numérica');
                   db_select("ordem", $aOrdem, true, 1, "");
@@ -309,7 +309,7 @@ td {
                <b>Sem Retenção:</b>
               </td>
               <td>
-                <?
+                <?php
                   $aSemRetencao = array('s' => 'Sim',
                                         'n' => 'Não');
                   db_select("semirf", $aSemRetencao, true, 1, "");
@@ -321,7 +321,7 @@ td {
                 <b>Responsável:</b>
               </td>
               <td  align="left" nowrap>
-               <?
+               <?php
                  db_input('resp', 50, 0, true, 'text', 1, "");
                ?>
               </td>
@@ -338,7 +338,7 @@ td {
 					              <b>CNPJ:</b>
 					            </td>
 					            <td nowrap align="left">
-										  <?
+										  <?php
 										     $instit = db_getsession("DB_instit");
 										     $sSqlUnidades  = "select distinct  o41_cnpj, ";
 										     $sSqlUnidades .= "       case when o41_cnpj = cgc then nomeinst else o41_descr end as nome_fundo ";
@@ -373,7 +373,7 @@ td {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

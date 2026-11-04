@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -190,7 +190,7 @@ function consulta(){
           <tr align="center"> 
             <td colspan="5">
               <input type="button" name="gerar" onClick="testar2()" value="Gerar relatório">
-          <? 
+          <?php 
              if(@$libera!=true){
 	      echo "<input type=\"button\" name=\"personalizar\"  value=\"Personalizar Relatório\" onclick=\"testar()\">";
              }   
@@ -207,12 +207,12 @@ function consulta(){
 	  </td>
   </tr>
 </table>
-     <? 
+     <?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
      ?>
 </body>
 </html>
-<?
+<?php
      if(@$repete==true){
           echo "<script>";    
           echo "alert(\"O relatório ".$nome." ja existe\");";

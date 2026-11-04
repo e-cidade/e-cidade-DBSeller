@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Alteracao as Prazo;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Contrato as Regra;
 
@@ -139,6 +140,40 @@ class ContratoLicitaCon extends ArquivoLicitaCon
                 if (!$rsAcordoPosicao) {
                     throw  new DBException("Erro ao consultar Acordo {$oDadosContrato->ac16_sequencial}");
                 }
+                $acordoLicitacaoCompartilhada = new \cl_acordolicitacaocompartilhada();
+                $where = "ac63_acordo = " . $oDadosContrato->ac16_sequencial;
+                $sql = $acordoLicitacaoCompartilhada->sql_query_file(null, '*', '', $where);
+                $rs = db_query($sql);
+
+                $licitacaoCompartilhada = db_utils::fieldsMemory($rs, 0);
+                $cgm = new \cl_cgm();
+                $sql = $cgm->sql_query_file($licitacaoCompartilhada->ac63_numcgm, 'z01_cgccpf');
+                $rs = db_query($sql);
+                $cmgLicitacao = db_utils::fieldsMemory($rs, 0);
+                $documentoConsorcio = null ;
+                $documentoOrgaoGerenciador = $cmgLicitacao->z01_cgccpf;
+
+                if ($licitacaoCompartilhada->ac63_licitacaocompartilhada === '1') {
+                    $documentoConsorcio = $cmgLicitacao->z01_cgccpf;
+                    $documentoOrgaoGerenciador = null;
+                }
+
+                if (empty($licitacaoCompartilhada->ac63_licitacaocompartilhada)) {
+                    $documentoOrgaoGerenciador = null;
+                    $documentoConsorcio = null;
+                }
+
+                $numero = $oDadosLicitacao->numero;
+                $ano = $oDadosLicitacao->ano;
+                $tipo = $oDadosLicitacao->tipo;
+
+                if (isset($licitacaoCompartilhada->ac63_licitacaocompartilhada)
+                    && $licitacaoCompartilhada->ac63_licitacaocompartilhada != 0) {
+                    $numero = $licitacaoCompartilhada->ac63_numero;
+                    $ano = $licitacaoCompartilhada->ac63_ano;
+                    $tipo = AcordoLicitacaoCompartilhadaService::getModalidade($licitacaoCompartilhada->ac63_modalidade)
+                        ->getSiglaTipoCompraTribunal();
+                }
 
                 $oDados = db_utils::fieldsMemory($rsAcordoPosicao, 0);
 
@@ -163,11 +198,11 @@ class ContratoLicitaCon extends ArquivoLicitaCon
             }
 
             $datafim = new \DBDate($oDataVigencia->fim);
-            $numeroDias = $oDadosContrato->nr_dias_prazo + 1;
+            $numeroDias = $oDadosContrato->nr_dias_prazo;
             $datafim->modificarIntervalo("+{$numeroDias} days");
-            $oContrato->NR_LICITACAO = $oDadosLicitacao->numero;
-            $oContrato->ANO_LICITACAO = $oDadosLicitacao->ano;
-            $oContrato->CD_TIPO_MODALIDADE = $oDadosLicitacao->tipo;
+            $oContrato->NR_LICITACAO = $numero;
+            $oContrato->ANO_LICITACAO = $ano;
+            $oContrato->CD_TIPO_MODALIDADE = $tipo;
             $oContrato->NR_CONTRATO = $oDadosContrato->ac16_numero;
             $oContrato->ANO_CONTRATO = $oDadosContrato->ac16_anousu;
             $oContrato->TP_INSTRUMENTO = $aTiposInstrumento[$oDadosContrato->ac16_tipoinstrumento];
@@ -183,15 +218,13 @@ class ContratoLicitaCon extends ArquivoLicitaCon
             $oContrato->NR_DIAS_PRAZO = $numeroDias;
             $oContrato->NR_CONTRATO_ORIGINAL = '';
             $oContrato->BL_INICIO_DEPENDE_OI = $oDadosContrato->ac16_dependeordeminicio == 't' ? 'S' : 'N';
-            $oContrato->CNPJ_ORGAO_GERENCIADOR = null;
+            $oContrato->CNPJ_ORGAO_GERENCIADOR = $documentoOrgaoGerenciador;
             $oContrato->BL_GERA_DESPESA = $oDadosLicitacao->gera_despesa;
             $oContrato->DS_OBSERVACAO = null;
             $oContrato->DS_JUSTIFICATIVA = $this->oRegra->getJustificativaTrocaFornecedor($oDadosContrato->ac16_sequencial);
             $oContrato->DS_OBJETO = substr($oDadosContrato->ac16_objeto, 0, 500);
-            $oContrato->CNPJ_CONSORCIO = null;
-
+            $oContrato->CNPJ_CONSORCIO = $documentoConsorcio;
             $aContratos[] = $oContrato;
-
         }
 
         return $aContratos;
@@ -299,7 +332,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
 
                 if ($oEvento->ac55_tipoevento == 9 || $oEvento->ac55_tipoevento == 10 || $oEvento->ac55_tipoevento == 11) {
                     //verifica se a data de inicio de vigência é maior que a data do evento
-                    if($oDataInicioVigencia > $oEvento->ac55_data) {
+                    if ($oDataInicioVigencia > $oEvento->ac55_data) {
                         $oDataInicioVigencia = $oEvento->ac55_data;
                     }
                     //verifica se a data do evento e maior que a data do inicio de vigencia

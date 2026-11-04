@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ th {
 </head>
 <body bgcolor=#CCCCCC onload="parent.document.getElementById('processando').style.visibility = 'hidden';">
 <form name="form1" method="post">
-  <?
+  <?php
   if($clgerasql->numrows_exec > 0){
   ?>
   <center>
@@ -83,7 +83,7 @@ th {
       <th style="font-size:12px" nowrap>Quantidade</th>
       <th style="font-size:12px" nowrap>Valor</th>
     </tr>
-  <?
+  <?php
     $valortotal = 0;
     $quanttotal = 0;
     $cor="#EFE029";
@@ -99,7 +99,7 @@ th {
   ?>
     <tr>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-        <?
+        <?php
         db_ancora($rh01_regist,"parent.location.href='pes3_gerfinanc001.php?ano=".$ano."&mes=".$mes."&matricula=".$rh01_regist."'",1);
         ?>
       </td>
@@ -109,7 +109,7 @@ th {
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=db_formatar($quant,'f')?></td>
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=db_formatar($valor,'f')?></td>
     </tr>
-  <?
+  <?php
     }
   ?>
     <tr bgcolor="#FFCC66">
@@ -119,7 +119,7 @@ th {
     </tr>
   </table>
   </center>
-  <?
+  <?php
   }else{
     echo "SEM CALCULO NO MÊS";
   }

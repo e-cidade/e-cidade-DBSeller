@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE disciplinas
-class cl_disciplinas { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed27_i_codigo = 0; 
-   var $ed27_c_nome = null; 
-   var $ed27_c_abrevia = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_disciplinas {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed27_i_codigo = 0;
+   var $ed27_c_nome = null;
+   var $ed27_c_abrevia = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed27_i_codigo = int8 = Código 
-                 ed27_c_nome = char(50) = Nome 
-                 ed27_c_abrevia = char(5) = Abreviação 
+                 ed27_i_codigo = int8 = Código
+                 ed27_c_nome = char(50) = Nome
+                 ed27_c_abrevia = char(5) = Abreviação
                  ";
-   //funcao construtor da classe 
-   function cl_disciplinas() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("disciplinas"); 
+     $this->rotulo = new rotulo("disciplinas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_disciplinas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed27_i_codigo = ($this->ed27_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed27_i_codigo"]:$this->ed27_i_codigo);
        $this->ed27_c_nome = ($this->ed27_c_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["ed27_c_nome"]:$this->ed27_c_nome);
@@ -77,9 +77,9 @@ class cl_disciplinas {
      }
    }
    // funcao para inclusao
-   function incluir ($ed27_i_codigo){ 
+   public function incluir ($ed27_i_codigo){
       $this->atualizacampos();
-     if($this->ed27_c_nome == null ){ 
+     if($this->ed27_c_nome == null ){
        $this->erro_sql = " Campo Nome nao Informado.";
        $this->erro_campo = "ed27_c_nome";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_disciplinas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed27_c_abrevia == null ){ 
+     if($this->ed27_c_abrevia == null ){
        $this->erro_sql = " Campo Abreviação nao Informado.";
        $this->erro_campo = "ed27_c_abrevia";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_disciplinas {
        return false;
      }
      if($ed27_i_codigo == "" || $ed27_i_codigo == null ){
-       $result = @db_query("select nextval('disciplinas_ed27_i_codigo_seq')"); 
+       $result = @db_query("select nextval('disciplinas_ed27_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: disciplinas_ed27_i_codigo_seq do campo: ed27_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: disciplinas_ed27_i_codigo_seq do campo: ed27_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed27_i_codigo = pg_result($result,0,0); 
+       $this->ed27_i_codigo = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from disciplinas_ed27_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed27_i_codigo)){
@@ -118,10 +118,10 @@ class cl_disciplinas {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed27_i_codigo = $ed27_i_codigo; 
+         $this->ed27_i_codigo = $ed27_i_codigo;
        }
      }
-     if(($this->ed27_i_codigo == null) || ($this->ed27_i_codigo == "") ){ 
+     if(($this->ed27_i_codigo == null) || ($this->ed27_i_codigo == "") ){
        $this->erro_sql = " Campo ed27_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_disciplinas {
        return false;
      }
      $sql = "insert into disciplinas(
-                                       ed27_i_codigo 
-                                      ,ed27_c_nome 
-                                      ,ed27_c_abrevia 
+                                       ed27_i_codigo
+                                      ,ed27_c_nome
+                                      ,ed27_c_abrevia
                        )
                 values (
-                                $this->ed27_i_codigo 
-                               ,'$this->ed27_c_nome' 
-                               ,'$this->ed27_c_abrevia' 
+                                $this->ed27_i_codigo
+                               ,'$this->ed27_c_nome'
+                               ,'$this->ed27_c_abrevia'
                       )";
-     $result = @db_query($sql); 
-     if($result==false){ 
+     $result = @db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Disciplinas ($this->ed27_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -173,16 +173,16 @@ class cl_disciplinas {
        $resac = db_query("insert into db_acount values($acount,1006001,1006182,'','".AddSlashes(pg_result($resaco,0,'ed27_c_abrevia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed27_i_codigo=null) { 
+   public function alterar ($ed27_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update disciplinas set ";
      $virgula = "";
-     if(trim($this->ed27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_i_codigo"])){ 
+     if(trim($this->ed27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_i_codigo"])){
        $sql  .= $virgula." ed27_i_codigo = $this->ed27_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed27_i_codigo) == null ){ 
+       if(trim($this->ed27_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed27_i_codigo";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_disciplinas {
          return false;
        }
      }
-     if(trim($this->ed27_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_c_nome"])){ 
+     if(trim($this->ed27_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_c_nome"])){
        $sql  .= $virgula." ed27_c_nome = '$this->ed27_c_nome' ";
        $virgula = ",";
-       if(trim($this->ed27_c_nome) == null ){ 
+       if(trim($this->ed27_c_nome) == null ){
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "ed27_c_nome";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_disciplinas {
          return false;
        }
      }
-     if(trim($this->ed27_c_abrevia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_c_abrevia"])){ 
+     if(trim($this->ed27_c_abrevia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed27_c_abrevia"])){
        $sql  .= $virgula." ed27_c_abrevia = '$this->ed27_c_abrevia' ";
        $virgula = ",";
-       if(trim($this->ed27_c_abrevia) == null ){ 
+       if(trim($this->ed27_c_abrevia) == null ){
          $this->erro_sql = " Campo Abreviação nao Informado.";
          $this->erro_campo = "ed27_c_abrevia";
          $this->erro_banco = "";
@@ -237,7 +237,7 @@ class cl_disciplinas {
        }
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Disciplinas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed27_i_codigo;
@@ -265,14 +265,14 @@ class cl_disciplinas {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed27_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed27_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed27_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -299,7 +299,7 @@ class cl_disciplinas {
        $sql2 = $dbwhere;
      }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Disciplinas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed27_i_codigo;
@@ -327,11 +327,11 @@ class cl_disciplinas {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -353,11 +353,11 @@ class cl_disciplinas {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -370,15 +370,15 @@ class cl_disciplinas {
      $sql2 = "";
      if($dbwhere==""){
        if($ed27_i_codigo!=null ){
-         $sql2 .= " where disciplinas.ed27_i_codigo = $ed27_i_codigo "; 
-       } 
+         $sql2 .= " where disciplinas.ed27_i_codigo = $ed27_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,11 +387,11 @@ class cl_disciplinas {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,15 +404,15 @@ class cl_disciplinas {
      $sql2 = "";
      if($dbwhere==""){
        if($ed27_i_codigo!=null ){
-         $sql2 .= " where disciplinas.ed27_i_codigo = $ed27_i_codigo "; 
-       } 
+         $sql2 .= " where disciplinas.ed27_i_codigo = $ed27_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

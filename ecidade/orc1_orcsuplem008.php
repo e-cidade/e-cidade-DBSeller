@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -109,7 +109,7 @@ if (isset($o48_arrecadmaior) && $o48_arrecadmaior > 0){
 <tr>
   <td height="20px" align="left" valign="top" bgcolor="#CCCCCC">
 
-    <?
+    <?php
     $clcriaabas->identifica = $identifica;
     $clcriaabas->src        = $src;
     $clcriaabas->sizecampo  = $sizecampo;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrharquivossiprev->rotulo->label();
        <?=@$Lrh94_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh94_sequencial',10,$Irh94_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh94_sequencial',10,$Irh94_sequencial,true,'text',$db_opcao,"")
        <?=@$Lrh94_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh94_descricao',100,$Irh94_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('rh94_descricao',100,$Irh94_descricao,true,'text',$db_opcao,"")
        <?=@$Lrh94_nomeclasse?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh94_nomeclasse',100,$Irh94_nomeclasse,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rharquivossiprev.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

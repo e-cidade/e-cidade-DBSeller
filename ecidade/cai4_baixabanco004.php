@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ $iInstit = db_getsession("DB_instit");
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 
 
 if(isset($acertabanco)){
@@ -109,16 +109,16 @@ function js_imprime(erro){
                 <input name="corretos" type="submit" id="corretos" value="N&uacute;meros Corretos"> 
                 <input name="todos" type="submit" id="todos" value="Todos N&uacute;meros ">
                 <input name="imprimir" id="imprimir" value="Imprimir" onClick="js_imprime('0')" type="button">
-             <? if($opcao == 'erros'){?>
+             <?php if($opcao == 'erros'){?>
                 <input name="imprimir_ana"  value="Imprimir Analítico" onClick="js_imprime('1')" type="button"></td>
-             <? }?>
+             <?php }?>
                 </td>
                 
             </form>
           </tr>
           <tr align="center"> 
             <td> 
-            <? 
+            <?php 
               $disbanco = new janela("disbanco","");
               $disbanco->iniciarVisivel = false;
               $disbanco->largura = "470";

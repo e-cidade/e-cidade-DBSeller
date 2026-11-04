@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="remessa">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="codigoOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cpfGestor">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipoRemessa">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ano">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="2014"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dataCriacao" type="xs:date"/>
+      <xs:element name="sistemaGerador">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="programas" type="programasTipo" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:complexType name="programasTipo">
+    <xs:sequence>
+      <xs:element name="programa" type="programaTipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programaTipo">
+    <xs:sequence>
+      <xs:element name="codigoPrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomePrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="4"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codigoOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="objetivo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="metas">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="publicoAlvo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipoPrograma" type="tipoProgramaTipo"/>
+      <xs:element name="dataInicio" type="xs:date"/>
+      <xs:element name="dataTermino" type="xs:date" minOccurs="0"/>
+      <xs:element name="justificativa">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="esferaOrcamentaria" type="esferaOrcamentariaTipo"/>
+      <xs:element name="fonteFinanciamento" type="fonteFinanciamentoTipo"/>
+      <xs:element name="indicadoresPrograma" type="indicadoresProgramaTipo" maxOccurs="1"/>
+      <xs:element name="acoes" type="acoesTipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="tipoProgramaTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="FINALÍSTICO"/>
+    <xs:enumeration value="GESTÃO DE POLÍTICAS PÚBLICAS"/>
+    <xs:enumeration value="SERVIÇOS AO ESTADO"/>
+    <xs:enumeration value="APOIO ADMINISTRATIVO"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="esferaOrcamentariaTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="FISCAL"/>
+    <xs:enumeration value="SEGURIDADE SOCIAL"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="indicadoresProgramaTipo">
+  <xs:choice>
+    <xs:element name="indicadores" type="indicadoresTipo"/>
+    <xs:element name="justificativaAusenciaIndicador">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:maxLength value="8000"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:element>
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="indicadoresTipo">
+  <xs:choice>
+    <xs:element name="indicador" type="indicadorTipo" minOccurs="1" maxOccurs="unbounded"/>
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="indicadorTipo">
+    <xs:sequence>
+      <xs:element name="nomeIndicador">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidadeMedida">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dataMedida" type="xs:date"/>
+      <xs:element name="valorAuferidoIndicador">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-999999999999.999999"/>
+            <xs:maxInclusive value="999999999999.999999"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorEstimadoIndicador">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-999999999999.999999"/>
+            <xs:maxInclusive value="999999999999.999999"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fonteFinanciamentoTipo">
+    <xs:sequence>
+      <xs:element name="valorFonteMunicipal">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFonteEstadual">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFonteFederal">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFonteOperacaoCredito">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFonteOutros">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acoesTipo">
+    <xs:sequence>
+      <xs:element name="acao" type="acaoTipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acaoTipo">
+    <xs:sequence>
+      <xs:element name="codigoAcao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="4"/>
+            <xs:maxLength value="8"/>
+            <xs:pattern value="[0-9][a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]([0-9][0-9][0-9][0-9])*"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeAcao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="4"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codigoUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codigoUnidadeOrcamentaria">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeUnidadeOrcamentaria">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="objetivo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="meta">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidadeMedidaMeta">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorMeta">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-999999999999.999999"/>
+            <xs:maxInclusive value="999999999999.999999"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipoAcao" type="tipoAcaoTipo"/>
+      <xs:element name="dataInicio" type="xs:date"/>
+      <xs:element name="dataTermino" type="xs:date" minOccurs="0"/>
+      <xs:element name="codigoFuncao" type="codigoFuncaoTipo"/>
+      <xs:element name="codigoSubfuncao" type="codigoSubfuncaoTipo"/>
+      <xs:element name="valorDespesaCorrenteTesouro">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorDespesaCorrenteOutras">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorDespesaCapitalTesouro">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorDespesaCapitalOutras">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="tipoAcaoTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="PROJETO"/>
+    <xs:enumeration value="ATIVIDADE"/>
+    <xs:enumeration value="OPERAÇÃO ESPECIAL"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="codigoFuncaoTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="01"/>
+    <xs:enumeration value="02"/>
+    <xs:enumeration value="03"/>
+    <xs:enumeration value="04"/>
+    <xs:enumeration value="05"/>
+    <xs:enumeration value="06"/>
+    <xs:enumeration value="07"/>
+    <xs:enumeration value="08"/>
+    <xs:enumeration value="09"/>
+    <xs:enumeration value="10"/>
+    <xs:enumeration value="11"/>
+    <xs:enumeration value="12"/>
+    <xs:enumeration value="13"/>
+    <xs:enumeration value="14"/>
+    <xs:enumeration value="15"/>
+    <xs:enumeration value="16"/>
+    <xs:enumeration value="17"/>
+    <xs:enumeration value="18"/>
+    <xs:enumeration value="19"/>
+    <xs:enumeration value="20"/>
+    <xs:enumeration value="21"/>
+    <xs:enumeration value="22"/>
+    <xs:enumeration value="23"/>
+    <xs:enumeration value="24"/>
+    <xs:enumeration value="25"/>
+    <xs:enumeration value="26"/>
+    <xs:enumeration value="27"/>
+    <xs:enumeration value="28"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="codigoSubfuncaoTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="031"/>
+    <xs:enumeration value="032"/>
+    <xs:enumeration value="061"/>
+    <xs:enumeration value="062"/>
+    <xs:enumeration value="091"/>
+    <xs:enumeration value="092"/>
+    <xs:enumeration value="121"/>
+    <xs:enumeration value="122"/>
+    <xs:enumeration value="123"/>
+    <xs:enumeration value="124"/>
+    <xs:enumeration value="125"/>
+    <xs:enumeration value="126"/>
+    <xs:enumeration value="127"/>
+    <xs:enumeration value="128"/>
+    <xs:enumeration value="129"/>
+    <xs:enumeration value="130"/>
+    <xs:enumeration value="131"/>
+    <xs:enumeration value="151"/>
+    <xs:enumeration value="152"/>
+    <xs:enumeration value="153"/>
+    <xs:enumeration value="181"/>
+    <xs:enumeration value="182"/>
+    <xs:enumeration value="183"/>
+    <xs:enumeration value="211"/>
+    <xs:enumeration value="212"/>
+    <xs:enumeration value="241"/>
+    <xs:enumeration value="242"/>
+    <xs:enumeration value="243"/>
+    <xs:enumeration value="244"/>
+    <xs:enumeration value="271"/>
+    <xs:enumeration value="272"/>
+    <xs:enumeration value="273"/>
+    <xs:enumeration value="274"/>
+    <xs:enumeration value="301"/>
+    <xs:enumeration value="302"/>
+    <xs:enumeration value="303"/>
+    <xs:enumeration value="304"/>
+    <xs:enumeration value="305"/>
+    <xs:enumeration value="306"/>
+    <xs:enumeration value="331"/>
+    <xs:enumeration value="332"/>
+    <xs:enumeration value="333"/>
+    <xs:enumeration value="334"/>
+    <xs:enumeration value="361"/>
+    <xs:enumeration value="362"/>
+    <xs:enumeration value="363"/>
+    <xs:enumeration value="364"/>
+    <xs:enumeration value="365"/>
+    <xs:enumeration value="366"/>
+    <xs:enumeration value="367"/>
+    <xs:enumeration value="368"/>
+    <xs:enumeration value="391"/>
+    <xs:enumeration value="392"/>
+    <xs:enumeration value="421"/>
+    <xs:enumeration value="422"/>
+    <xs:enumeration value="423"/>
+    <xs:enumeration value="451"/>
+    <xs:enumeration value="452"/>
+    <xs:enumeration value="453"/>
+    <xs:enumeration value="481"/>
+    <xs:enumeration value="482"/>
+    <xs:enumeration value="511"/>
+    <xs:enumeration value="512"/>
+    <xs:enumeration value="541"/>
+    <xs:enumeration value="542"/>
+    <xs:enumeration value="543"/>
+    <xs:enumeration value="544"/>
+    <xs:enumeration value="545"/>
+    <xs:enumeration value="571"/>
+    <xs:enumeration value="572"/>
+    <xs:enumeration value="573"/>
+    <xs:enumeration value="605"/>
+    <xs:enumeration value="606"/>
+    <xs:enumeration value="607"/>
+    <xs:enumeration value="608"/>
+    <xs:enumeration value="609"/>
+    <xs:enumeration value="631"/>
+    <xs:enumeration value="632"/>
+    <xs:enumeration value="661"/>
+    <xs:enumeration value="662"/>
+    <xs:enumeration value="663"/>
+    <xs:enumeration value="664"/>
+    <xs:enumeration value="665"/>
+    <xs:enumeration value="691"/>
+    <xs:enumeration value="692"/>
+    <xs:enumeration value="693"/>
+    <xs:enumeration value="694"/>
+    <xs:enumeration value="695"/>
+    <xs:enumeration value="721"/>
+    <xs:enumeration value="722"/>
+    <xs:enumeration value="751"/>
+    <xs:enumeration value="752"/>
+    <xs:enumeration value="753"/>
+    <xs:enumeration value="754"/>
+    <xs:enumeration value="781"/>
+    <xs:enumeration value="782"/>
+    <xs:enumeration value="783"/>
+    <xs:enumeration value="784"/>
+    <xs:enumeration value="785"/>
+    <xs:enumeration value="811"/>
+    <xs:enumeration value="812"/>
+    <xs:enumeration value="813"/>
+    <xs:enumeration value="841"/>
+    <xs:enumeration value="842"/>
+    <xs:enumeration value="843"/>
+    <xs:enumeration value="844"/>
+    <xs:enumeration value="845"/>
+    <xs:enumeration value="846"/>
+    <xs:enumeration value="847"/>
+  </xs:restriction>
+</xs:simpleType>
+
+</xs:schema>

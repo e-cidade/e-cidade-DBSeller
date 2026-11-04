@@ -3,6 +3,7 @@
 namespace App\Domain\Educacao\CentralMatriculas\Services;
 
 use App\Domain\Educacao\CentralMatriculas\Models\Escola;
+use App\Domain\Educacao\CentralMatriculas\Models\EscolaBairro;
 use ECidade\Educacao\MatriculaOnline\Registry\ConfiguracaoRegistry;
 use ECidade\Educacao\MatriculaOnline\Registry\FaseRegistry;
 use ECidade\Educacao\MatriculaOnline\Repository\ConfiguracaoEscolaRepository;
@@ -95,8 +96,41 @@ class EscolasService
                 "nome" => $escola->getNome(),
                 "bairro" => $escola->getBairro()->getDescricao(),
                 "turnos" => $turnos,
-                "bairros_atendidos" => $escola->bairrosAtendidos->toArray()
+                "bairros_atendidos" => $escola->bairrosAtendidos->toArray(),
+                "acessibilidade" => $escola->mo53_acessibilidade
             ];
         });
+    }
+
+    public function getEscolasPorBairro()
+    {
+        $escolaBairro = EscolaBairro::all();
+        $escolasPorBairros = [];
+        foreach ($escolaBairro as $registro) {
+            if (!array_key_exists($registro->mo08_bairro, $escolasPorBairros)) {
+                $escolasPorBairros[$registro->mo08_bairro] = (object) [
+                    'nomeBairro' => trim($registro->bairro->j13_descr),
+                    'escolas' => []
+                ];
+            }
+
+            if (!array_key_exists($registro->mo08_escola, $escolasPorBairros[$registro->mo08_bairro]->escolas)) {
+                $rua = !is_null($registro->escola->rua) ? trim($registro->escola->rua->j14_nome) : "";
+                $numero = $registro->escola->mo53_numero != "" ? trim($registro->escola->mo53_numero) : "";
+                $bairro = trim($registro->bairro->j13_descr);
+                $telefone = $registro->escola->mo53_telefone != "" ? trim($registro->escola->mo53_telefone)
+                    : "Não Informado";
+                $escolasPorBairros[$registro->mo08_bairro]->escolas[$registro->mo08_escola] = (object) [
+                    'nome' => trim($registro->escola->mo53_nome),
+                    'endereco' => $rua == "" ? $bairro : $rua . " " . $numero . " - " . $bairro,
+                    'telefone' =>  \DBString::formatarTelefone($telefone)
+                ];
+            }
+        }
+
+        foreach ($escolasPorBairros as $registro) {
+            $registro->escolas = array_values($registro->escolas);
+        }
+        return array_values($escolasPorBairros);
     }
 }

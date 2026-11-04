@@ -636,7 +636,7 @@ if (isset($oPost->processar)) {
         <table align="center" border="0">
           <tr>
             <td>
-              <?
+              <?php
 
                 $clformulariorelpes               = new cl_formulario_rel_pes;
 
@@ -694,7 +694,7 @@ if (isset($oPost->processar)) {
               <?=@$Lr11_mensagempadraotxt?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('r11_mensagempadraotxt',4,$Ir11_mensagempadraotxt,true,'text',1,"")
               ?>
             </td>
@@ -712,7 +712,7 @@ if (isset($oPost->processar)) {
                 <b>Linha 1:</b>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('mensagem1',64,0,true,'text',1,"")
                 ?>
               </td>
@@ -722,7 +722,7 @@ if (isset($oPost->processar)) {
                 <b>Linha 2:</b>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('mensagem2',64,0,true,'text',1,"")
                 ?>
               </td>
@@ -732,7 +732,7 @@ if (isset($oPost->processar)) {
                 <b>Linha 3:</b>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('mensagem3',64,0,true,'text',1,"")
                 ?>
               </td>
@@ -742,7 +742,7 @@ if (isset($oPost->processar)) {
                 <b>Linha 4:</b>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('mensagem4',64,0,true,'text',1,"")
                 ?>
               </td>
@@ -752,7 +752,7 @@ if (isset($oPost->processar)) {
                 <b>Linha 5:</b>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('mensagem5',64,0,true,'text',1,"")
                 ?>
               </td>
@@ -772,11 +772,11 @@ if (isset($oPost->processar)) {
     </tr>
   </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
-<?
+<?php
   if (isset($sMsgErro)) {
     db_msgbox($sMsgErro);
   }
@@ -837,7 +837,7 @@ function js_anomes() {
     document.form1.submit();
   }
 }
-<?
+<?php
   if (!$lErro) {
     if(isset($oPost->processar)){
       echo "js_montarlista('".$sDirArq."#Arquivo gerado em: ".$sDirArq."','form1');";

@@ -57,10 +57,14 @@ $erroconf       = false;
 $iAluno         = null;
 $iOpcaoFiliacao = 1;
 
-$sCamposEscola = "ed261_i_codigo as ed47_i_censomunicend, ed260_i_codigo as ed47_i_censoufend,ed18_c_cep as ed47_v_cep";
+$sCamposEscola = "ed261_i_codigo as ed47_i_censomunicend, ed260_i_codigo as ed47_i_censoufend";
 $sWhereEscola  = " ed18_i_codigo = ".db_getsession("DB_coddepto");
 $sSqlEscola   = $clescola->sql_query("", $sCamposEscola, "", $sWhereEscola);
 $result       = $clescola->sql_record($sSqlEscola);
+
+$sqlParametros = "select ed290_habilitarcampostransescolar from secretariadeeducacao.sec_parametros";
+$resultHabilitarCamposTransescolar = pg_fetch_assoc(db_query($sqlParametros));
+$habilitarCamposTransescolar = $resultHabilitarCamposTransescolar['ed290_habilitarcampostransescolar']  == 't' ? 'S' : 'N';
 
 if( $clescola->numrows > 0 ) {
   db_fieldsmemory( $result, 0 );
@@ -95,10 +99,20 @@ if( isset( $incluir ) ) {
   if ($ed47_v_nome != "") {
 
     $erroconf         = false;
-    $ed47_v_nome      = TiraEspacoNome($ed47_v_nome);
-    $ed47_v_mae       = TiraEspacoNome($ed47_v_mae);
-    $ed47_v_pai       = TiraEspacoNome($ed47_v_pai);
-    $ed47_c_nomeresp  = TiraEspacoNome($ed47_c_nomeresp);
+
+    if (isRioGrandeDoNorte()) {
+      $ed47_v_nome = TiraAcento($ed47_v_nome);
+      $ed47_v_mae = TiraAcento($ed47_v_mae);
+      $ed47_v_pai = TiraAcento($ed47_v_pai);
+      $ed47_c_nomeresp = TiraAcento($ed47_c_nomeresp);
+    }
+
+    $ed47_v_nome = TiraEspacoNome($ed47_v_nome);
+    $ed47_v_mae = TiraEspacoNome($ed47_v_mae);
+    $ed47_v_pai = TiraEspacoNome($ed47_v_pai);
+    $ed47_c_nomeresp = TiraEspacoNome($ed47_c_nomeresp);
+
+
     $sCampos          = "ed47_i_codigo as jatem, ed47_d_nasc as datatem, ed47_c_certidaonum as certidaonumexiste";
     $sCampos         .= ", ed47_v_mae as maesim";
     $result2          = $claluno->sql_record($claluno->sql_query("", $sCampos, "", " ed47_v_nome = '$ed47_v_nome'"));
@@ -169,7 +183,7 @@ if( isset( $incluir ) ) {
         if ( strlen($ed47_celularresponsavel) <= 9 ) {
           $ed47_celularresponsavel = "{$dddcelularresponsavel}{$ed47_celularresponsavel}";
         }
-      
+
         $claluno->ed47_c_foto               = $ed47_c_foto;
         $claluno->ed47_o_oid                = $oid_imagem;
         $claluno->ed47_v_nome               = $ed47_v_nome;
@@ -187,9 +201,13 @@ if( isset( $incluir ) ) {
         $claluno->ed47_censoregiaonat = empty($ed47_censoregiaonat) ? "null" : $ed47_censoregiaonat;
 
         $ed47_paisresidencia = trim($ed47_paisresidencia);
-          $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
-          $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
-    
+        $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
+        $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
+        if ($habilitarCamposTransescolar == 'S') {
+          $claluno->ed47_v_codigo_energia = preg_replace('/[^0-9]/', '', $ed47_v_codigo_energia);
+          $claluno->ed47_v_sigla_concessionaria = $ed47_v_sigla_concessionaria;
+        }
+
         $claluno->incluir($ed47_i_codigo);
 
         if ( $claluno->erro_status == 0 ) {
@@ -452,7 +470,7 @@ if( isset( $incluir ) ) {
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-    <?include(modification("forms/db_frmalunodados.php"));?>
+    <?php include(modification("forms/db_frmalunodados.php"));?>
    </fieldset>
    </center>
   </td>

@@ -102,7 +102,7 @@ class EvolucaoReceitaService
                 return $instituicao->codigo;
             });
         }
-        
+
         if (!empty($filtros['DB_instit'])) {
             $this->db_inst = $filtros['DB_instit'];
         }
@@ -120,7 +120,7 @@ class EvolucaoReceitaService
             $filtros['dataInicio'] = Carbon::createFromFormat('Y-m-d', $mesFinal->data_inicio)->format('d/m/Y');
             $filtros['dataFinal'] = Carbon::createFromFormat('Y-m-d', $mesFinal->data_fim)->format('d/m/Y');
 
-            $balancete = new BalanceteReceitaService();
+            $balancete = new BalanceteReceitaComplementoService();
             $balancete->setFiltrosRequest($filtros);
             $this->dados = $balancete->getArvore();
             foreach ($this->dados as $dado) {
@@ -131,7 +131,7 @@ class EvolucaoReceitaService
             foreach ($meses as $mes) {
                 $filtros['dataInicio'] = Carbon::createFromFormat('Y-m-d', $mes->data_inicio)->format('d/m/Y');
                 $filtros['dataFinal'] = Carbon::createFromFormat('Y-m-d', $mes->data_fim)->format('d/m/Y');
-                $balancete = new BalanceteReceitaService();
+                $balancete = new BalanceteReceitaComplementoService();
                 $balancete->setFiltrosRequest($filtros);
                 $dadosMensal = $balancete->getArvore();
 
@@ -183,7 +183,7 @@ class EvolucaoReceitaService
             "{$mes1->nome}/{$mes1->ano}",
             "{$mes12->nome}/{$mes12->ano}"
         );
-        
+
         $this->parser->setEnteFederativo($this->enteFederativo);
         $this->parser->setEmissor($this->emissor);
         $this->parser->setPeriodo(mb_strtoupper($this->mesesProcessar[11]->nome, 'ISO-8859-1'));
@@ -201,7 +201,7 @@ class EvolucaoReceitaService
         $mesesProcessar = [];
         $exercicio = db_getsession("DB_anousu");
         $mesFinal = $mes;
-        
+
         $dataInical = new DateTime("{$exercicio}-01-01");
         $dia = cal_days_in_month(CAL_GREGORIAN, $mesFinal, $exercicio);
         $dataFinal = new DBDate("{$dia}/{$mesFinal}/{$exercicio}");

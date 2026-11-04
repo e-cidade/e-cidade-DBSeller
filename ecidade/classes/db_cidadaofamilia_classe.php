@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: social
 //CLASSE DA ENTIDADE cidadaofamilia
-class cl_cidadaofamilia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $as04_sequencial = 0; 
-   var $as04_dataentrevista_dia = null; 
-   var $as04_dataentrevista_mes = null; 
-   var $as04_dataentrevista_ano = null; 
-   var $as04_dataentrevista = null; 
-   var $as04_rendafamiliar = 0; 
-   var $as04_dataatualizacao_dia = null; 
-   var $as04_dataatualizacao_mes = null; 
-   var $as04_dataatualizacao_ano = null; 
-   var $as04_dataatualizacao = null; 
-   var $as04_aparelhoeletricocontinuo = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cidadaofamilia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $as04_sequencial = 0;
+   var $as04_dataentrevista_dia = null;
+   var $as04_dataentrevista_mes = null;
+   var $as04_dataentrevista_ano = null;
+   var $as04_dataentrevista = null;
+   var $as04_rendafamiliar = 0;
+   var $as04_dataatualizacao_dia = null;
+   var $as04_dataatualizacao_mes = null;
+   var $as04_dataatualizacao_ano = null;
+   var $as04_dataatualizacao = null;
+   var $as04_aparelhoeletricocontinuo = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 as04_sequencial = int4 = Código da Família 
-                 as04_dataentrevista = date = Data da Entrevista 
-                 as04_rendafamiliar = float8 = Renda Familiar 
-                 as04_dataatualizacao = date = Data de Atualização 
-                 as04_aparelhoeletricocontinuo = bool = Aparelho Eletríco Contínuo 
+                 as04_sequencial = int4 = Código da Família
+                 as04_dataentrevista = date = Data da Entrevista
+                 as04_rendafamiliar = float8 = Renda Familiar
+                 as04_dataatualizacao = date = Data de Atualização
+                 as04_aparelhoeletricocontinuo = bool = Aparelho Eletríco Contínuo
                  ";
-   //funcao construtor da classe 
-   function cl_cidadaofamilia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cidadaofamilia"); 
+     $this->rotulo = new rotulo("cidadaofamilia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_cidadaofamilia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->as04_sequencial = ($this->as04_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["as04_sequencial"]:$this->as04_sequencial);
        if($this->as04_dataentrevista == ""){
@@ -103,9 +103,9 @@ class cl_cidadaofamilia {
      }
    }
    // funcao para inclusao
-   function incluir ($as04_sequencial){ 
+   public function incluir ($as04_sequencial){
       $this->atualizacampos();
-     if($this->as04_dataentrevista == null ){ 
+     if($this->as04_dataentrevista == null ){
        $this->erro_sql = " Campo Data da Entrevista nao Informado.";
        $this->erro_campo = "as04_dataentrevista_dia";
        $this->erro_banco = "";
@@ -114,7 +114,7 @@ class cl_cidadaofamilia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as04_rendafamiliar == null ){ 
+     if($this->as04_rendafamiliar == null ){
        $this->erro_sql = " Campo Renda Familiar nao Informado.";
        $this->erro_campo = "as04_rendafamiliar";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_cidadaofamilia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as04_dataatualizacao == null ){ 
+     if($this->as04_dataatualizacao == null ){
        $this->erro_sql = " Campo Data de Atualização nao Informado.";
        $this->erro_campo = "as04_dataatualizacao_dia";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_cidadaofamilia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as04_aparelhoeletricocontinuo == null ){ 
+     if($this->as04_aparelhoeletricocontinuo == null ){
        $this->erro_sql = " Campo Aparelho Eletríco Contínuo nao Informado.";
        $this->erro_campo = "as04_aparelhoeletricocontinuo";
        $this->erro_banco = "";
@@ -142,16 +142,16 @@ class cl_cidadaofamilia {
        return false;
      }
      if($as04_sequencial == "" || $as04_sequencial == null ){
-       $result = db_query("select nextval('cidadaofamilia_as04_sequencial_seq')"); 
+       $result = db_query("select nextval('cidadaofamilia_as04_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cidadaofamilia_as04_sequencial_seq do campo: as04_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cidadaofamilia_as04_sequencial_seq do campo: as04_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->as04_sequencial = pg_result($result,0,0); 
+       $this->as04_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cidadaofamilia_as04_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $as04_sequencial)){
@@ -162,10 +162,10 @@ class cl_cidadaofamilia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->as04_sequencial = $as04_sequencial; 
+         $this->as04_sequencial = $as04_sequencial;
        }
      }
-     if(($this->as04_sequencial == null) || ($this->as04_sequencial == "") ){ 
+     if(($this->as04_sequencial == null) || ($this->as04_sequencial == "") ){
        $this->erro_sql = " Campo as04_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,21 +174,21 @@ class cl_cidadaofamilia {
        return false;
      }
      $sql = "insert into cidadaofamilia(
-                                       as04_sequencial 
-                                      ,as04_dataentrevista 
-                                      ,as04_rendafamiliar 
-                                      ,as04_dataatualizacao 
-                                      ,as04_aparelhoeletricocontinuo 
+                                       as04_sequencial
+                                      ,as04_dataentrevista
+                                      ,as04_rendafamiliar
+                                      ,as04_dataatualizacao
+                                      ,as04_aparelhoeletricocontinuo
                        )
                 values (
-                                $this->as04_sequencial 
-                               ,".($this->as04_dataentrevista == "null" || $this->as04_dataentrevista == ""?"null":"'".$this->as04_dataentrevista."'")." 
-                               ,$this->as04_rendafamiliar 
-                               ,".($this->as04_dataatualizacao == "null" || $this->as04_dataatualizacao == ""?"null":"'".$this->as04_dataatualizacao."'")." 
-                               ,'$this->as04_aparelhoeletricocontinuo' 
+                                $this->as04_sequencial
+                               ,".($this->as04_dataentrevista == "null" || $this->as04_dataentrevista == ""?"null":"'".$this->as04_dataentrevista."'")."
+                               ,$this->as04_rendafamiliar
+                               ,".($this->as04_dataatualizacao == "null" || $this->as04_dataatualizacao == ""?"null":"'".$this->as04_dataatualizacao."'")."
+                               ,'$this->as04_aparelhoeletricocontinuo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "cidadaofamilia ($this->as04_sequencial) nao Incluído. Inclusao Abortada.";
@@ -230,16 +230,16 @@ class cl_cidadaofamilia {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($as04_sequencial=null) { 
+   public function alterar ($as04_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cidadaofamilia set ";
      $virgula = "";
-     if(trim($this->as04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_sequencial"])){ 
+     if(trim($this->as04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_sequencial"])){
        $sql  .= $virgula." as04_sequencial = $this->as04_sequencial ";
        $virgula = ",";
-       if(trim($this->as04_sequencial) == null ){ 
+       if(trim($this->as04_sequencial) == null ){
          $this->erro_sql = " Campo Código da Família nao Informado.";
          $this->erro_campo = "as04_sequencial";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_cidadaofamilia {
          return false;
        }
      }
-     if(trim($this->as04_dataentrevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"] !="") ){ 
+     if(trim($this->as04_dataentrevista)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"] !="") ){
        $sql  .= $virgula." as04_dataentrevista = '$this->as04_dataentrevista' ";
        $virgula = ",";
-       if(trim($this->as04_dataentrevista) == null ){ 
+       if(trim($this->as04_dataentrevista) == null ){
          $this->erro_sql = " Campo Data da Entrevista nao Informado.";
          $this->erro_campo = "as04_dataentrevista_dia";
          $this->erro_banco = "";
@@ -261,11 +261,11 @@ class cl_cidadaofamilia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["as04_dataentrevista_dia"])){
          $sql  .= $virgula." as04_dataentrevista = null ";
          $virgula = ",";
-         if(trim($this->as04_dataentrevista) == null ){ 
+         if(trim($this->as04_dataentrevista) == null ){
            $this->erro_sql = " Campo Data da Entrevista nao Informado.";
            $this->erro_campo = "as04_dataentrevista_dia";
            $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_cidadaofamilia {
          }
        }
      }
-     if(trim($this->as04_rendafamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_rendafamiliar"])){ 
+     if(trim($this->as04_rendafamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_rendafamiliar"])){
        $sql  .= $virgula." as04_rendafamiliar = $this->as04_rendafamiliar ";
        $virgula = ",";
-       if(trim($this->as04_rendafamiliar) == null ){ 
+       if(trim($this->as04_rendafamiliar) == null ){
          $this->erro_sql = " Campo Renda Familiar nao Informado.";
          $this->erro_campo = "as04_rendafamiliar";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_cidadaofamilia {
          return false;
        }
      }
-     if(trim($this->as04_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"] !="") ){ 
+     if(trim($this->as04_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"] !="") ){
        $sql  .= $virgula." as04_dataatualizacao = '$this->as04_dataatualizacao' ";
        $virgula = ",";
-       if(trim($this->as04_dataatualizacao) == null ){ 
+       if(trim($this->as04_dataatualizacao) == null ){
          $this->erro_sql = " Campo Data de Atualização nao Informado.";
          $this->erro_campo = "as04_dataatualizacao_dia";
          $this->erro_banco = "";
@@ -301,11 +301,11 @@ class cl_cidadaofamilia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["as04_dataatualizacao_dia"])){
          $sql  .= $virgula." as04_dataatualizacao = null ";
          $virgula = ",";
-         if(trim($this->as04_dataatualizacao) == null ){ 
+         if(trim($this->as04_dataatualizacao) == null ){
            $this->erro_sql = " Campo Data de Atualização nao Informado.";
            $this->erro_campo = "as04_dataatualizacao_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_cidadaofamilia {
          }
        }
      }
-     if(trim($this->as04_aparelhoeletricocontinuo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_aparelhoeletricocontinuo"])){ 
+     if(trim($this->as04_aparelhoeletricocontinuo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as04_aparelhoeletricocontinuo"])){
        $sql  .= $virgula." as04_aparelhoeletricocontinuo = '$this->as04_aparelhoeletricocontinuo' ";
        $virgula = ",";
-       if(trim($this->as04_aparelhoeletricocontinuo) == null ){ 
+       if(trim($this->as04_aparelhoeletricocontinuo) == null ){
          $this->erro_sql = " Campo Aparelho Eletríco Contínuo nao Informado.";
          $this->erro_campo = "as04_aparelhoeletricocontinuo";
          $this->erro_banco = "";
@@ -360,7 +360,7 @@ class cl_cidadaofamilia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "cidadaofamilia nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->as04_sequencial;
@@ -388,11 +388,11 @@ class cl_cidadaofamilia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($as04_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($as04_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -401,7 +401,7 @@ class cl_cidadaofamilia {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($as04_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -434,7 +434,7 @@ class cl_cidadaofamilia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "cidadaofamilia nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$as04_sequencial;
@@ -462,11 +462,11 @@ class cl_cidadaofamilia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -488,11 +488,11 @@ class cl_cidadaofamilia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,15 +505,15 @@ class cl_cidadaofamilia {
      $sql2 = "";
      if($dbwhere==""){
        if($as04_sequencial!=null ){
-         $sql2 .= " where cidadaofamilia.as04_sequencial = $as04_sequencial "; 
-       } 
+         $sql2 .= " where cidadaofamilia.as04_sequencial = $as04_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,11 +522,11 @@ class cl_cidadaofamilia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,15 +539,15 @@ class cl_cidadaofamilia {
      $sql2 = "";
      if($dbwhere==""){
        if($as04_sequencial!=null ){
-         $sql2 .= " where cidadaofamilia.as04_sequencial = $as04_sequencial "; 
-       } 
+         $sql2 .= " where cidadaofamilia.as04_sequencial = $as04_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,15 +556,15 @@ class cl_cidadaofamilia {
      }
      return $sql;
   }
-  function sql_query_completa ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
-    
+  public function sql_query_completa ( $as04_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+
     $sql = "select ";
     if ($campos != "*") {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -580,10 +580,10 @@ class cl_cidadaofamilia {
     $sql .= "      left  join cidadaofamiliacadastrounico on as15_cidadaofamilia = as04_sequencial";
     $sql .= "      left  join localatendimentofamilia     on as23_cidadaofamilia = as04_sequencial";
     $sql .= "      left  join localatendimentosocial      on as16_sequencial     = as23_localatendimentosocial";
-    
+
     $sql2 = "";
     if ($dbwhere == "") {
-       
+
       if ($as04_sequencial!=null ) {
         $sql2 .= " where cidadaofamilia.as04_sequencial              = $as04_sequencial";
       }
@@ -592,27 +592,27 @@ class cl_cidadaofamilia {
     }
     $sql .= $sql2;
     if ($ordem != null ) {
-      
+
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
     }
     return $sql;
    }
-   function sql_query_familia_avaliacao ($as04_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-    
+   public function sql_query_familia_avaliacao ($as04_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if ($campos != "*" ) {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -623,7 +623,7 @@ class cl_cidadaofamilia {
     $sql .= " left join cidadaofamiliaavaliacao on as06_cidadaofamilia = as04_sequencial";
     $sql2 = "";
     if ($dbwhere=="") {
-       
+
       if ($as04_sequencial != null) {
         $sql2 .= " where cidadaofamilia.as04_sequencial              = $as04_sequencial";
       }
@@ -632,27 +632,27 @@ class cl_cidadaofamilia {
     }
     $sql .= $sql2;
     if ($ordem != null ) {
-      
+
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
     }
     return $sql;
   }
-  function sql_query_responsavel ($as04_sequencial=null, $campos="*", $ordem=null, $dbwhere="") {
-    
+  public function sql_query_responsavel ($as04_sequencial=null, $campos="*", $ordem=null, $dbwhere="") {
+
     $sql = "select ";
     if ($campos != "*") {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
@@ -661,14 +661,14 @@ class cl_cidadaofamilia {
     }
     $sql .= " from cidadaofamilia ";
     $sql .= "      inner join cidadaocomposicaofamiliar   on as03_cidadaofamilia = as04_sequencial";
-		$sql .= "      																	     and as03_tipofamiliar   = 0              ";    
+		$sql .= "      																	     and as03_tipofamiliar   = 0              ";
     $sql .= "      inner join cidadao                     on as03_cidadao        = ov02_sequencial";
-    $sql .= "                                            and as03_cidadao_seq    = ov02_seq       ";   
+    $sql .= "                                            and as03_cidadao_seq    = ov02_seq       ";
     $sql .= "      left  join cidadaocadastrounico        on as02_cidadao        = ov02_sequencial";
     $sql .= "      left  join cidadaofamiliacadastrounico on as15_cidadaofamilia = as04_sequencial";
     $sql2 = "";
     if ($dbwhere=="") {
-    	
+
       if ($as04_sequencial!=null ) {
         $sql2 .= " where cidadaofamilia.as04_sequencial              = $as04_sequencial";
       }
@@ -677,28 +677,28 @@ class cl_cidadaofamilia {
     }
     $sql .= $sql2;
     if ($ordem != null) {
-      
+
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-         
+
         $sql    .= $virgula.$campos_sql[$i];
         $virgula = ",";
       }
     }
     return $sql;
   }
-  
-  function sql_query_familiarcadastrounico ( $as04_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
-    
+
+  public function sql_query_familiarcadastrounico ( $as04_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if ($campos != "*" ) {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }
@@ -708,26 +708,26 @@ class cl_cidadaofamilia {
     $sql  .= " from cidadaofamilia ";
     $sql  .= "      left join cidadaofamiliacadastrounico on as15_cidadaofamilia = as04_sequencial ";
     $sql2  = "";
-    
+
     if ($dbwhere == "") {
-      
+
       if ($as04_sequencial != null ) {
         $sql2 .= " where cidadaofamilia.as04_sequencial = $as04_sequencial ";
       }
     } else if ($dbwhere != "") {
-      
+
       $sql2 = " where $dbwhere";
     }
     $sql .= $sql2;
-    
+
     if ($ordem != null ) {
-      
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
-      
+
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }
@@ -735,13 +735,13 @@ class cl_cidadaofamilia {
     return $sql;
   }
 
-  function sql_query_responsavel_por_resposta_avaliacao(array $aIdentificadoresResposta ) {
-    
+  public function sql_query_responsavel_por_resposta_avaliacao(array $aIdentificadoresResposta ) {
+
     if ( count($aIdentificadoresResposta) == 0 ) {
       return null;
     }
     $sIdentificadores = "'".implode("','", $aIdentificadoresResposta)."'";
-    
+
     $sSql = "select pessoa_responsavel.as01_cidadao, cidadaocadastrounico.as02_sequencial                                                                                                                                                     ";
     $sSql.= "  from (select db108_avaliacaogruporesposta, avaliacaoperguntaopcao.db104_identificador, cidadaoavaliacao.as01_cidadao, as01_cidadao_seq                                          ";
     $sSql.= "          from avaliacaoresposta                                                                                                                                                              ";

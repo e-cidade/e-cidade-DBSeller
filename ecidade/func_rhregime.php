@@ -54,7 +54,7 @@ $clrhregime->rotulo->label("rh30_descr");
               <?=$Lrh30_codreg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh30_codreg",2,$Irh30_codreg,true,"text",4,"","chave_rh30_codreg");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhregime->rotulo->label("rh30_descr");
               <?=$Lrh30_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh30_descr",40,$Irh30_descr,true,"text",4,"","chave_rh30_descr");
 		       ?>
             </td>
@@ -127,12 +127,12 @@ $clrhregime->rotulo->label("rh30_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

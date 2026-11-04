@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -34,7 +34,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 
 $sCampos         = "db98_sequencial as z03_tipoempresa, db98_descricao";
-$sSqlTipoEmpresa = $cltipoempresa->sql_query_file(null, $sCampos, null, "");
+$sSqlTipoEmpresa = $cltipoempresa->sql_query_file(null, $sCampos, 'db98_sequencial', "");
 $rsTipoEmpresa   = $cltipoempresa->sql_record($sSqlTipoEmpresa);
 
 if ($db_opcao == 1) {
@@ -50,93 +50,97 @@ if ($db_opcao == 1) {
     $sLegendFieldset = "Exclusão";
     $iOpcaoInputNume = 3;
 }
+
+if (!isset($z03_sequencial)) {
+    $z03_sequencial = '';
+}
 ?>
 
-<form name="form1" method="post" action="<?=$db_action?>">
+<form name="form1" method="post" action="<?php echo $db_action?>">
 <center>
 <fieldset style="width: 800px;">
-<legend style="font-weight: bold;"><?=$sLegendFieldset;?> de Fornecedores</legend>
+<legend style="font-weight: bold;"><?php echo $sLegendFieldset;?> de Fornecedores</legend>
 <table border="0">
   <tr>
-    <td nowrap title="<?=@$Tpc60_numcgm?>">
-       <?
-       db_ancora(@$Lpc60_numcgm,"js_pesquisapc60_numcgm(true);",($db_opcao==1?$db_opcao:3));
-       ?>
+    <td nowrap title="<?php echo @$Tpc60_numcgm?>">
+       <?php
+        db_ancora(@$Lpc60_numcgm, "js_pesquisapc60_numcgm(true);", ($db_opcao==1?$db_opcao:3));
+        ?>
     </td>
     <td>
-      <?
-        db_input('pc60_numcgm',8,$Ipc60_numcgm,true,'text',($db_opcao==1?$db_opcao:3)," onchange='js_pesquisapc60_numcgm(false);'")
-      ?>
-       <?
-        db_input('z01_nome', 50, $Iz01_nome, true, 'text', $iOpcaoInputNume, '')
-       ?>
+      <?php
+        db_input('pc60_numcgm', 8, $Ipc60_numcgm, true, 'text', ($db_opcao==1?$db_opcao:3), " onchange='js_pesquisapc60_numcgm(false);'")
+        ?>
+       <?php
+        db_input('z01_nome', 67, $Iz01_nome, true, 'text', $iOpcaoInputNume, '')
+        ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tpc60_dtlanc?>">
-       <?=@$Lpc60_dtlanc?>
+    <td nowrap title="<?php echo @$Tpc60_dtlanc?>">
+       <?php echo @$Lpc60_dtlanc?>
     </td>
     <td>
-      <?
-        db_inputdata('pc60_dtlanc',date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,'text',3,"")
-      ?>
+      <?php
+        db_inputdata('pc60_dtlanc', date("d", db_getsession("DB_datausu")), date("m", db_getsession("DB_datausu")), date("Y", db_getsession("DB_datausu")), true, 'text', 3, "")
+        ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tpc60_obs?>">
-       <?=@$Lpc60_obs?>
+    <td nowrap title="<?php echo @$Tpc60_obs?>">
+       <?php echo @$Lpc60_obs?>
     </td>
     <td>
-<?
-db_textarea('pc60_obs',2,80,$Ipc60_obs,true,'text',$db_opcao,"")
+<?php
+db_textarea('pc60_obs', 2, 78, $Ipc60_obs, true, 'text', $db_opcao, "")
 ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tpc60_bloqueado?>">
-       <?=@$Lpc60_bloqueado?>
+    <td nowrap title="<?php echo @$Tpc60_bloqueado?>">
+       <?php echo @$Lpc60_bloqueado?>
     </td>
     <td>
-<?
+<?php
 $x = array("f"=>"Não","t"=>"Sim");
-db_select('pc60_bloqueado',$x,true,$db_opcao,"");
+db_select('pc60_bloqueado', $x, true, $db_opcao, "");
 ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tpc60_indicativocprb?>">
-      <?=@$Lpc60_indicativocprb?>
+    <td nowrap title="<?php echo @$Tpc60_indicativocprb?>">
+      <?php echo @$Lpc60_indicativocprb?>
     </td>
     <td>
       <?php
         $opcoes = array("f"=>"Não", "t"=>"Sim");
         db_select('pc60_indicativocprb', $opcoes, true, $db_opcao);
-      ?>
+        ?>
     </td>
   </tr>
 
-  <?php if (in_array($db_opcao, [2, 22, 3, 33])): ?>
+  <?php if (in_array($db_opcao, [2, 22, 3, 33])) : ?>
   <tr>
-    <td nowrap title='<?=@$Tz03_tipoempresa?>'>
+    <td nowrap title='<?php echo @$Tz03_tipoempresa?>'>
       <strong>Tipo de Empresa:</strong>
     </td>
     <td colspan="3" nowrap="nowrap">
-        <? db_selectrecord('z03_tipoempresa', $rsTipoEmpresa, true, $db_opcao, '', '', '', '', '', 1); ?>
-        <input name="z03_sequencial" type="hidden" value="<?= $z03_sequencial ?>">
+        <?php db_selectrecord('z03_tipoempresa', $rsTipoEmpresa, true, $db_opcao, '', '', '', '', '', 2); ?>
+        <input name="z03_sequencial" type="hidden" value="<?php echo $z03_sequencial ?>">
     </td>
   </tr>
-  <? endif; ?>
+  <?php endif; ?>
 
 </table>
 </fieldset>
 <br />
-<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
+<input name="<?php echo ($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?php echo ($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?php echo ($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </center>
 </form>
 <script>
 function js_pesquisapc60_numcgm(mostra){
-  if(mostra==true){
+  if(mostra===true){
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_pcforne','db_iframe_nomes','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true,'0');
   }else{
      if(document.form1.pc60_numcgm.value != ''){
@@ -148,7 +152,7 @@ function js_pesquisapc60_numcgm(mostra){
 }
 function js_mostracgm(erro,chave){
   document.form1.z01_nome.value = chave;
-  if(erro==true){
+  if(erro===true){
     document.form1.pc60_numcgm.focus();
     document.form1.pc60_numcgm.value = '';
   }
@@ -163,10 +167,10 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
-  <?
-  if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  }
-  ?>
+  <?php
+    if ($db_opcao!=1) {
+        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    }
+    ?>
 }
 </script>

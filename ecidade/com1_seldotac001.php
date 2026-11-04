@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -346,7 +346,7 @@ if (isset($pesquisa_dot)) {
 </style>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<?
+<?php
 if (! isset($consulta)) {
   ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
@@ -358,28 +358,28 @@ if (! isset($consulta)) {
   </tr>
 
 </table>
-<?
+<?php
 }
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?
+      <?php
       include(modification("forms/db_frmseldotac.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 if (! isset($consulta)) {
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 }
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
   if ($sqlerro == true) {
     $erro_msg = str_replace("\n", "\\n", $erro_msg);

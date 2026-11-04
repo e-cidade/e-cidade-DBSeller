@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("o56_elemento");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Te70_codnota?>">
-       <?
+       <?php
        db_ancora(@$Le70_codnota,"js_pesquisae70_codnota(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e70_codnota',6,$Ie70_codnota,true,'text',$db_opcao," onchange='js_pesquisae70_codnota(false);'")
 ?>
-       <?
+       <?php
 db_input('e69_codnota',6,$Ie69_codnota,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te70_codele?>">
-       <?
+       <?php
        db_ancora(@$Le70_codele,"js_pesquisae70_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e70_codele',6,$Ie70_codele,true,'text',$db_opcao," onchange='js_pesquisae70_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        <?=@$Le70_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('e70_valor',8,$Ie70_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('e70_valor',8,$Ie70_valor,true,'text',$db_opcao,"")
        <?=@$Le70_vlranu?>
     </td>
     <td> 
-<?
+<?php
 db_input('e70_vlranu',8,$Ie70_vlranu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('e70_vlranu',8,$Ie70_vlranu,true,'text',$db_opcao,"")
        <?=@$Le70_vlrliq?>
     </td>
     <td> 
-<?
+<?php
 db_input('e70_vlrliq',8,$Ie70_vlrliq,true,'text',$db_opcao,"")
 ?>
     </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_carlote004.php'</script>";
 <table border="0">
   <tr>
     <td align="top" colspan="3">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j31_codigo,j31_descr,j32_descr";
       $cliframe_seleciona->legenda="QUE CONTENHAM ESTAS CARACTERÍSTICAS DE CONSTRUÇÃO";
       $cliframe_seleciona->sql=$clcaracter->sql_query("","*","j32_descr"," j32_tipo = 'L'");
@@ -113,15 +113,15 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_carlote004.php'</script>";
  </tr>
   <tr>
     <td align="left" nowrap title="<?=@$Tj32_grupo?>">
-       <?
+       <?php
        db_ancora($Lj32_grupo,"js_pesquisagrupo(true)",1);
        ?>
      </td>
      <td>
-<?
+<?php
 db_input('j32_grupo',4,$Ij32_grupo,true,'text',1,"onChange='js_pesquisagrupo(false)'")
 ?>
-<?
+<?php
 db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
 ?>
  <input type='hidden' name='chaves_caract'>
@@ -213,7 +213,7 @@ db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
     </td>
     <fieldset>
     <legend><strong>Valores a serem mostrados</strong></legend>
-    <?
+    <?php
     //rotina q monta os checkbox na tela para selecionar as colunas de acordo com o historico da tabela iptucalh
     $rsResult=$cliptucalh->sql_record($cliptucalh->sql_query_file(null,"*",""));
     $numrows=$cliptucalh->numrows;
@@ -299,7 +299,7 @@ function js_mostracargrup1(chave1,chave2){
 </table>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=1;

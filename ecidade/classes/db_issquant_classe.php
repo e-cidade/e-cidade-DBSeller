@@ -171,28 +171,7 @@ class cl_issquant
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
 
-       $resaco = $this->sql_record($this->sql_query_file($this->q30_anousu,$this->q30_inscr  ));
-       if(($resaco!=false)||($this->numrows!=0)){
-
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,285,'$this->q30_anousu','I')");
-         $resac = db_query("insert into db_acountkey values($acount,286,'$this->q30_inscr','I')");
-         $resac = db_query("insert into db_acount values($acount,47,285,'','".AddSlashes(pg_result($resaco,0,'q30_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,286,'','".AddSlashes(pg_result($resaco,0,'q30_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,287,'','".AddSlashes(pg_result($resaco,0,'q30_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,288,'','".AddSlashes(pg_result($resaco,0,'q30_mult'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,7428,'','".AddSlashes(pg_result($resaco,0,'q30_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,1011839,'','".AddSlashes(pg_result($resaco,0,'q30_tempofuncionamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,1011869,'','".AddSlashes(pg_result($resaco,0,'q30_areapublicidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,47,1013278,'','".AddSlashes(pg_result($resaco,0,'q30_graurisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
      return true;
    }
 
@@ -295,37 +274,7 @@ class cl_issquant
      if($q30_inscr!=null){
        $sql .= " and  q30_inscr = $this->q30_inscr";
      }
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
 
-       $resaco = $this->sql_record($this->sql_query_file($this->q30_anousu,$this->q30_inscr));
-       if ($this->numrows > 0) {
-
-         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-
-           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
-           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-           $resac = db_query("insert into db_acountkey values($acount,285,'$this->q30_anousu','A')");
-           $resac = db_query("insert into db_acountkey values($acount,286,'$this->q30_inscr','A')");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_anousu"]) || $this->q30_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,47,285,'".AddSlashes(pg_result($resaco,$conresaco,'q30_anousu'))."','$this->q30_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_inscr"]) || $this->q30_inscr != "")
-             $resac = db_query("insert into db_acount values($acount,47,286,'".AddSlashes(pg_result($resaco,$conresaco,'q30_inscr'))."','$this->q30_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_quant"]) || $this->q30_quant != "")
-             $resac = db_query("insert into db_acount values($acount,47,287,'".AddSlashes(pg_result($resaco,$conresaco,'q30_quant'))."','$this->q30_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_mult"]) || $this->q30_mult != "")
-             $resac = db_query("insert into db_acount values($acount,47,288,'".AddSlashes(pg_result($resaco,$conresaco,'q30_mult'))."','$this->q30_mult',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_area"]) || $this->q30_area != "")
-             $resac = db_query("insert into db_acount values($acount,47,7428,'".AddSlashes(pg_result($resaco,$conresaco,'q30_area'))."','$this->q30_area',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_tempofuncionamento"]) || $this->q30_tempofuncionamento != "")
-             $resac = db_query("insert into db_acount values($acount,47,1011839,'".AddSlashes(pg_result($resaco,$conresaco,'q30_tempofuncionamento'))."','$this->q30_tempofuncionamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["q30_areapublicidade"]) || $this->q30_areapublicidade != "")
-             $resac = db_query("insert into db_acount values($acount,47,1011869,'".AddSlashes(pg_result($resaco,$conresaco,'q30_areapublicidade'))."','$this->q30_areapublicidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
-       }
-     }
      $result = db_query($sql);
      if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
@@ -361,35 +310,6 @@ class cl_issquant
 
     public function excluir($q30_anousu=null,$q30_inscr=null, $dbwhere = null)
     {
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
-
-       if (empty($dbwhere)) {
-
-         $resaco = $this->sql_record($this->sql_query_file($q30_anousu,$q30_inscr));
-       } else {
-         $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
-       }
-       if (($resaco != false) || ($this->numrows!=0)) {
-
-         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-
-           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
-           $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-           $resac  = db_query("insert into db_acountkey values($acount,285,'$q30_anousu','E')");
-           $resac  = db_query("insert into db_acountkey values($acount,286,'$q30_inscr','E')");
-           $resac  = db_query("insert into db_acount values($acount,47,285,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,286,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,287,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,288,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_mult'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,7428,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,1011839,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_tempofuncionamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,47,1011869,'','".AddSlashes(pg_result($resaco,$iresaco,'q30_areapublicidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
-       }
-     }
      $sql = " delete from issquant
                     where ";
      $sql2 = "";

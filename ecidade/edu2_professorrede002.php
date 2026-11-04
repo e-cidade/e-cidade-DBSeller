@@ -251,6 +251,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oProfessor->iCgm = $oDadosProfessor->cgm;
     $oProfessor->dtIngresso = db_formatar($oDadosProfessor->dt_ingresso, 'd');
     $oProfessor->sNome = $oCgm->getNome();
+    $oProfessor->sNomeSocial = $oCgm->getNomeSocial();
     $oProfessor->sEtapas = $oDadosProfessor->etapas;
 
     unset($oCgm);
@@ -393,7 +394,8 @@ foreach ($aProfessorRede as $oEscola) {
                     $oPdf->SetY($iAlturaInicial);
 
                     $oPdf->Cell(20, ($iAlturaFinal - $iAlturaInicial), $oProfessor->iMatricula, "BTR", 0, "C");
-                    $oPdf->Cell(115, ($iAlturaFinal - $iAlturaInicial), $oProfessor->sNome, 1, 0, "L");
+                    $oPdf->Cell(57.5, ($iAlturaFinal - $iAlturaInicial), mb_strimwidth($oProfessor->sNome, 0, 35), 1, 0, "L");
+                    $oPdf->Cell(57.5, ($iAlturaFinal - $iAlturaInicial), mb_strimwidth($oProfessor->sNomeSocial, 0, 35), 1, 0, "L");
                     $oPdf->SetX(245);
                     $oPdf->Cell(25, ($iAlturaFinal - $iAlturaInicial), $sRegencia, 1, 0, "C");
                     $oPdf->Cell(20, ($iAlturaFinal - $iAlturaInicial), $oProfessor->dtIngresso, "BTL", 0, "C");
@@ -450,7 +452,8 @@ function imprimeCabecalho(FPDF $oPdf, $iHeight)
 
     $oPdf->SetFont('arial', 'b', 8);
     $oPdf->Cell(20, $iHeight, "Matrícula", 1, 0, "C", 1);
-    $oPdf->Cell(115, $iHeight, "Professor", 1, 0, "C", 1);
+    $oPdf->Cell(57.5, $iHeight, "Professor", 1, 0, "C", 1);
+    $oPdf->Cell(57.5, $iHeight, "Nome Social", 1, 0, "C", 1);
     $oPdf->Cell(100, $iHeight, "Etapa", 1, 0, "C", 1);
     $oPdf->Cell(25, $iHeight, "Em Regência", 1, 0, "C", 1);
     $oPdf->Cell(20, $iHeight, "Data Ingresso", 1, 1, "C", 1);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clflegal->rotulo->label();
        <?=@$Lh04_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('h04_codigo',5,$Ih04_codigo,true,'text',($db_opcao == 1 ? 1 : 3),"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h04_codigo',5,$Ih04_codigo,true,'text',($db_opcao == 1 ? 1 : 3),"")
        <?=@$Lh04_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h04_descr',35,$Ih04_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('h04_descr',35,$Ih04_descr,true,'text',$db_opcao,"")
        <?=@$Lh04_tpfund?>
     </td>
     <td> 
-<?
+<?php
 $arr_tpfund = array(
                     1=>"1 - Decreto",
                     2=>"2 - Edital",
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_flegal.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

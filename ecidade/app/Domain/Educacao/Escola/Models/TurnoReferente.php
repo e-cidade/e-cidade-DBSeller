@@ -2,6 +2,7 @@
 
 namespace App\Domain\Educacao\Escola\Models;
 
+use App\Domain\Educacao\Escola\Enums\TurnoReferenteEnum;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,12 +18,15 @@ class TurnoReferente extends Model
     protected $primaryKey = 'ed231_i_codigo';
     public $timestamps = false;
     public $incrementing = false;
+    protected $appends = ['referencia'];
 
-    protected $appends = ['turno'];
-//    protected $hidden = ['ed231_i_turno];
-
-    public function getTurnoAttribute()
+    public function getReferenciaAttribute()
     {
-        return Turno::find($this->attributes['ed231_i_turno']);
+        return new TurnoReferenteEnum($this->ed231_i_referencia);
+    }
+
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'ed231_i_turno', 'ed15_i_codigo');
     }
 }

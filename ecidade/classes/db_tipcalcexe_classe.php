@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_tipcalcexe {
                  q83_cadvencdescsimples = int4 = Vencimento do simples 
                  ";
    //funcao construtor da classe 
-   function cl_tipcalcexe() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipcalcexe"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_tipcalcexe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q83_codigo = ($this->q83_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q83_codigo"]:$this->q83_codigo);
        $this->q83_tipcalc = ($this->q83_tipcalc == ""?@$GLOBALS["HTTP_POST_VARS"]["q83_tipcalc"]:$this->q83_tipcalc);
@@ -83,7 +83,7 @@ class cl_tipcalcexe {
      }
    }
    // funcao para inclusao
-   function incluir ($q83_codigo){ 
+   public function incluir ($q83_codigo){ 
       $this->atualizacampos();
      if($this->q83_tipcalc == null ){ 
        $this->erro_sql = " Campo codigo do tipo de calculo nao Informado.";
@@ -197,7 +197,7 @@ class cl_tipcalcexe {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q83_codigo=null) { 
+   public function alterar ($q83_codigo=null) { 
       $this->atualizacampos();
      $sql = " update tipcalcexe set ";
      $virgula = "";
@@ -316,7 +316,7 @@ class cl_tipcalcexe {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q83_codigo=null,$dbwhere=null) { 
+   public function excluir ($q83_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q83_codigo));
      }else{ 
@@ -381,7 +381,7 @@ class cl_tipcalcexe {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -404,7 +404,7 @@ class cl_tipcalcexe {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -444,7 +444,7 @@ class cl_tipcalcexe {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -477,7 +477,7 @@ class cl_tipcalcexe {
      }
      return $sql;
   }
-   function sql_query_tipocalc ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_tipocalc ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -512,7 +512,7 @@ class cl_tipcalcexe {
      }
      return $sql;
   }
-   function sql_query_venc ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_venc ( $q83_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

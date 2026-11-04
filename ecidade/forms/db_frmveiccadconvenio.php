@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lve17_sequencial?>
     </td>
     <td colspan="2"> 
-<?
+<?php
 db_input('ve17_sequencial',10,$Ive17_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -51,24 +51,24 @@ db_input('ve17_sequencial',10,$Ive17_sequencial,true,'text',3,"")
        <?=@$Lve17_descr?>
     </td>
     <td colspan="2"> 
-<?
+<?php
 db_input('ve17_descr',40,$Ive17_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap align="right" title="<?=@$Tve18_numcgm?>">
-    <?
+    <?php
       db_ancora($Lve18_numcgm,"js_pesquisave18_numcgm(true);",$db_opcao);
     ?>
     </td>
     <td nowrap width="10%">
-    <?
+    <?php
       db_input("ve18_numcgm",10,$Ive18_numcgm,true,"text",$db_opcao,"onChange='js_pesquisave18_numcgm(false);'");
     ?>
     </td>
     <td nowrap>
-    <?
+    <?php
       db_input("z01_nome",40,0,true,"text",3);
     ?>
     </td>
@@ -78,7 +78,7 @@ db_input('ve17_descr',40,$Ive17_descr,true,'text',$db_opcao,"")
        <?=@$Lve17_obs?>
     </td>
     <td colspan="2"> 
-<?
+<?php
 db_textarea('ve17_obs',10,80,$Ive17_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiccadconvenio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

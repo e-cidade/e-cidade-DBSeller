@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,10 +69,10 @@ $db_opcao = 1;
           <table>
             <tr>
               <td nowrap title="<?=@$Te50_codord?>" align='right'>
-                <? db_ancora("<b>Nota de Liquidação:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
+                <?php db_ancora("<b>Nota de Liquidação:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
              </td>
              <td> 
-               <?
+               <?php
                db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'");
                db_input('e50_numemp',8,$Ie50_codord,true,'hidden',3);
                db_input('e69_codnota',8,$Ie50_codord,true,'hidden',3);
@@ -93,7 +93,7 @@ $db_opcao = 1;
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

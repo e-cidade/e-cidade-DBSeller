@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k21_codigo");
        <?=@$Lk24_sequencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_sequencia',15,$Ik24_sequencia,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk24_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lk24_codigo,"js_pesquisak24_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_codigo',15,$Ik24_codigo,true,'text',$db_opcao," onchange='js_pesquisak24_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('k23_codigo',10,$Ik23_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk24_cancdebitosreg?>">
-       <?
+       <?php
        db_ancora(@$Lk24_cancdebitosreg,"js_pesquisak24_cancdebitosreg(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_cancdebitosreg',15,$Ik24_cancdebitosreg,true,'text',$db_opcao," onchange='js_pesquisak24_cancdebitosreg(false);'")
 ?>
-       <?
+       <?php
 db_input('k21_codigo',10,$Ik21_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('k21_codigo',10,$Ik21_codigo,true,'text',3,'')
        <?=@$Lk24_vlrhis?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_vlrhis',999999,$Ik24_vlrhis,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('k24_vlrhis',999999,$Ik24_vlrhis,true,'text',$db_opcao,"")
        <?=@$Lk24_vlrcor?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_vlrcor',999999,$Ik24_vlrcor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('k24_vlrcor',999999,$Ik24_vlrcor,true,'text',$db_opcao,"")
        <?=@$Lk24_juros?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_juros',999999,$Ik24_juros,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('k24_juros',999999,$Ik24_juros,true,'text',$db_opcao,"")
        <?=@$Lk24_multa?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_multa',999999,$Ik24_multa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('k24_multa',999999,$Ik24_multa,true,'text',$db_opcao,"")
        <?=@$Lk24_desconto?>
     </td>
     <td> 
-<?
+<?php
 db_input('k24_desconto',999999,$Ik24_desconto,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cancdebitosprocreg.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

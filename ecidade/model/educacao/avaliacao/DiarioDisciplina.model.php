@@ -100,6 +100,24 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
   }
 
   /**
+   * Retorna os aproveitamentos do periodo, pela sequencial da tabela
+   * Esse método é usado na rotina Notas Parciais
+   * 
+   * @param $iOrdem
+   * @return AvaliacaoAproveitamento
+   */
+  public function getAvaliacoesPorOrdemSequencial($iOrdem)
+  {
+    foreach ($this->getAvaliacoes() as $oAvaliacao) {
+      if (method_exists($oAvaliacao->getElementoAvaliacao(), 'getPeriodoAvaliacao')) {
+        if ($oAvaliacao->getElementoAvaliacao()->getPeriodoAvaliacao()->getOrdemPeriodo() == $iOrdem) {
+          return $oAvaliacao;
+        }
+      }
+    }
+  }
+
+  /**
    * Retorna os aproveitamentos do periodo
    *
    * @param  integer $iPeriodo
@@ -215,7 +233,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
          */
         if (!empty( $oResultadoFina)) {
             foreach ($oResultadoFinal->getElementosCalculoFaltas() as $oElementoFalta) {
-      
+
                 foreach ($aAvaliacoesAproveitamento as $oAvaliacao) {
                     if ($oAvaliacao->isAmparado()) {
                         continue;
@@ -230,7 +248,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
                 if ($oAvaliacao->isAmparado()) {
                     continue;
                 }
-                
+
                 $iTotalFaltas += (int)$oAvaliacao->getNumeroFaltas();
             }
         }
@@ -260,7 +278,7 @@ abstract class DiarioDisciplina implements iDiarioDisciplina {
 
           if ($oPeriodoAvaliacao->getCodigo() == $oElementoFalta->getElementoAvaliacao()->getPeriodoAvaliacao()->getCodigo()) {
 
-            $iTotalFaltasPeriodo += $oElementoFalta->getNumeroFaltas();
+            $iTotalFaltasPeriodo += intval($oElementoFalta->getNumeroFaltas());
           }
         }
       }

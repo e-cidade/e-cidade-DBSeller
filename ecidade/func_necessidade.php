@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,15 +26,16 @@
  */
 
 //MODULO: educação
-include(modification("libs/db_stdlibwebseller.php"));
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_necessidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+require_once(modification("libs/db_stdlibwebseller.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_necessidade_classe.php"));
+
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
 $clnecessidade = new cl_necessidade;
 $clnecessidade->rotulo->label("ed48_i_codigo");
 $clnecessidade->rotulo->label("ed48_c_descr");
@@ -56,7 +57,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
+      <?php db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
+      <?php db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $sWhere = "ed48_i_codigo <> 108";
 
    if(!isset($pesquisa_chave)){

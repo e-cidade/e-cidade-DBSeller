@@ -1,4 +1,5 @@
 <?php
+
 namespace ECidade\Console\Command\Extension;
 
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +20,6 @@ class Uninstall extends Command
             ->setHelp('Uninstall a extension');
 
         $this->addArgument('id', InputArgument::REQUIRED, 'Extension id');
-        $this->addArgument('user', InputArgument::OPTIONAL, 'Extension username');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,45 +27,42 @@ class Uninstall extends Command
         ini_set('memory_limit', '-1');
 
         $extension = $input->getArgument('id');
-        $user = $input->getArgument('user') ?: null;
 
         $manager = new Manager();
         $logger = $manager->getLogger();
         $logger->setVerbosity(Logger::DEBUG);
-        $logger->addHandler(function($output, $level) {
+        $logger->addHandler(function ($output, $level) {
 
-            switch($level) {
+            switch ($level) {
+                case Logger::DEBUG:
+                    $output = Color::set($output, 'light_gray');
+                    break;
 
-            case Logger::DEBUG:
-                $output = Color::set($output, 'light_gray');
-                break;
+                case Logger::WARNING:
+                    $output = Color::set($output, 'brown');
+                    break;
 
-            case Logger::WARNING:
-                $output = Color::set($output, 'brown');
-                break;
-
-            case Logger::ERROR:
-                $output = Color::set($output, 'red');
-                break;
-
+                case Logger::ERROR:
+                    $output = Color::set($output, 'red');
+                    break;
             }
 
             return $output;
         });
 
-        $manager->uninstall($extension, $user);
+        $manager->uninstall($extension);
 
         $processUser = posix_getpwuid(posix_geteuid());
         $group = posix_getgrgid($processUser['uid']);
         if ($group['name'] != 'www-data') {
             echo Color::set(
-                "\n\nUsuário atual não está no grupo www-data\n".
-                " - Apos rodar comando atualize as permissões para o grupo www-data\n".
+                "\n\nUsuário atual não está no grupo www-data\n" .
+                " - Apos rodar comando atualize as permissões para o grupo www-data\n" .
                 " - Ou execute o commando com 'sudo -H -u www-data COMMAND\n",
                 'brown'
             );
         }
 
-        echo "\n memory: " . round((memory_get_peak_usage(true)/1024)/1024, 2) . "mb\n\n";
+        echo "\n memory: " . round((memory_get_peak_usage(true) / 1024) / 1024, 2) . "mb\n\n";
     }
 }

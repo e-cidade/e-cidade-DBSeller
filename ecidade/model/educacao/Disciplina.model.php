@@ -48,6 +48,7 @@ class Disciplina {
    * @var String
    */
   protected $sNomeDisciplina;
+  public $unidadeCurricular;
 
   /**
    *
@@ -123,6 +124,23 @@ class Disciplina {
   public function getCodigoDisciplinaGeral() {
     return $this->iCodigoDisciplinaGeral;
   }
+
+    /**
+     * @return mixed
+     */
+    public function getUnidadeCurricular()
+    {
+        return $this->unidadeCurricular;
+    }
+
+    /**
+     * @param mixed $unidadeCurricular
+     */
+    public function setUnidadeCurricular($unidadeCurricular)
+    {
+        $this->unidadeCurricular = $unidadeCurricular;
+    }
+
 
   /**
    * @return Ensino

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,10 +30,10 @@ $cldb_config->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 
-require(modification("classes/db_db_uf_classe.php"));
-require(modification("classes/db_db_tipoinstit_classe.php"));
-require(modification("classes/db_ceplocalidades_classe.php"));
-require(modification("libs/db_libdicionario.php"));
+require_once(modification("classes/db_db_uf_classe.php"));
+require_once(modification("classes/db_db_tipoinstit_classe.php"));
+require_once(modification("classes/db_ceplocalidades_classe.php"));
+require_once(modification("libs/db_libdicionario.php"));
 
 $cluf             = new cl_db_uf();
 $cltipoinstit     = new cl_db_tipoinstit();
@@ -56,19 +56,19 @@ if ($db_opcao == 1) {
   <tr>
   <td>
   <fieldset style="width: 790px;"><legend>
-     <a  id='esconderinstituicao' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeInstituicao('');">
+     <a  id='esconderinstituicao' style="-moz-user-select: none;user-select:none;cursor: pointer" onClick="js_escondeInstituicao('');">
        <b>Dados da Instituição</b>
        <img src='imagens/setabaixo.gif' id='toggleinstituicao' border='0'>
      </a></legend>
 
-  <table border="0" align="center" id="tabInstituicao" style="display: ">
+  <table border="0" align="center" id="tabInstituicao">
 
 		  <tr>
 		    <td nowrap title="<?=@$Tcodigo?>">
 		       <?=@$Lcodigo?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('codigo',10,$Icodigo,true,'text',3,"")
 					?>
 		    </td>
@@ -79,7 +79,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lnomeinst?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('nomeinst',50,$Inomeinst,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -87,11 +87,10 @@ if ($db_opcao == 1) {
 
 		  <tr>
 		    <td nowrap title="<?=@$Tnomeinstabrev?>">
-		       <?//=@$Lnomeinstabrev?>
 		       <b>Nome abreviado da Instituição:</b>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('nomeinstabrev',50,$Inomeinstabrev,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -102,7 +101,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lender?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('ender',50,$Iender,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -113,7 +112,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lnumero?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('numero',10,$Inumero,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -125,7 +124,7 @@ if ($db_opcao == 1) {
            <?=@$Ldb21_compl?>
         </td>
         <td>
-          <?
+          <?php
           db_input('db21_compl',50,$Idb21_compl,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -136,7 +135,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lbairro?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('bairro',35,$Ibairro,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -147,7 +146,7 @@ if ($db_opcao == 1) {
            <?=@$Luf?>
         </td>
         <td>
-          <?
+          <?php
           $rsUf = $cluf->sql_record($cluf->sql_query_file(null, '*', 'db12_uf'));
           $iNumRowsUf = $cluf->numrows;
 
@@ -172,7 +171,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lmunic?>
 		    </td>
 		    <td id="idMunic">
-					<?
+					<?php
 					$x = array(0=>"Selecione");
 					if($db_opcao == 2 || $db_opcao == 22 || $db_opcao == 3 || $db_opcao == 33){
 			      $sWhere = "cp05_sigla = '$uf'";
@@ -203,7 +202,7 @@ if ($db_opcao == 1) {
            <?=@$Lcep?>
         </td>
         <td>
-          <?
+          <?php
           db_input('cep',10,$Icep,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -214,7 +213,7 @@ if ($db_opcao == 1) {
 		       <?=@$Ltelef?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('telef',10,$Itelef,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -225,7 +224,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lfax?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('fax',10,$Ifax,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -236,7 +235,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lemail?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('email',53,$Iemail,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -247,7 +246,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lcgc?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('cgc',14,$Icgc,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -255,16 +254,16 @@ if ($db_opcao == 1) {
 
 		  <tr>
 		    <td nowrap title="<?=@$Tnumcgm?>">
-		       <?
+		       <?php
 		        db_ancora(@$Lnumcgm,"js_pesquisanumcgm(true);",$db_opcao);
 		       ?>
 		    </td>
 
 		    <td>
-		      <?
+		      <?php
 		       db_input('numcgm',10,$Inumcgm,true,'text',$db_opcao," onchange='js_pesquisanumcgm(false);'")
 		      ?>
-		      <?
+		      <?php
 		        db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 		      ?>
 		    </td>
@@ -275,7 +274,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lurl?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      db_input('url',53,$Iurl,true,'text',$db_opcao,"")
 		      ?>
 		    </td>
@@ -410,7 +409,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_codsiconfi?>
           </td>
           <td>
-              <?
+              <?php
               db_input('db21_codsiconfi',10,$Idb21_codsiconfi,true,'text',$db_opcao,"")
               ?>
           </td>
@@ -421,7 +420,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_unidade_gestora_rpps?>
           </td>
           <td>
-              <?
+              <?php
 		      $x = array("f"=>"NAO","t"=>"SIM");
 		      db_select('db21_unidade_gestora_rpps',$x,true,$db_opcao,"");
               ?>
@@ -433,7 +432,7 @@ if ($db_opcao == 1) {
            <?=@$Ldb21_esfera_op?>
         </td>
         <td>
-          <?
+          <?php
           $x = array("null"=>"Não informado","1"=>"Federal", "2"=>"Estadual ou distrital", "3"=>"Municipal");
           db_select('db21_esfera_op',$x,true,$db_opcao,"");
           ?>
@@ -445,7 +444,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_valor_teto_remuneratorio?>
           </td>
           <td>
-              <?
+              <?php
               db_input('db21_valor_teto_remuneratorio',10,$Idb21_valor_teto_remuneratorio,true,'text',$db_opcao,"");
               ?>
           </td>
@@ -456,7 +455,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_ente_federativo_resp?>
           </td>
           <td>
-              <?
+              <?php
 		      $x = array("f"=>"NAO","t"=>"SIM");
 		      db_select('db21_ente_federativo_resp',$x,true,$db_opcao,"");
               ?>
@@ -468,7 +467,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_cnpj_efr?>
           </td>
           <td>
-              <?
+              <?php
               db_input('db21_cnpj_efr',10,$Idb21_cnpj_efr,true,'text',$db_opcao,"");
               ?>
           </td>
@@ -479,7 +478,7 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_efr_previdencia_compl?>
           </td>
           <td>
-              <?
+              <?php
 		      $x = array("f"=>"NAO","t"=>"SIM");
 		      db_select('db21_efr_previdencia_compl',$x,true,$db_opcao,"");
               ?>
@@ -491,9 +490,21 @@ if ($db_opcao == 1) {
               <?=@$Ldb21_possui_rpps?>
           </td>
           <td>
-              <?
+              <?php
 		      $x = array("f"=>"NAO","t"=>"SIM");
 		      db_select('db21_possui_rpps',$x,true,$db_opcao,"");
+              ?>
+          </td>
+      </tr>
+
+      <tr>
+          <td nowrap title="<?=@$Tdb21_permiteinscricaocgf?>">
+              <?=@$Ldb21_permiteinscricaocgf?>
+          </td>
+          <td>
+              <?php
+		      $x = array("t"=>"SIM", "f"=>"NAO");
+		      db_select('db21_permiteinscricaocgf',$x,true,$db_opcao,"");
               ?>
           </td>
       </tr>
@@ -507,7 +518,7 @@ if ($db_opcao == 1) {
   <tr>
   <td>
   <fieldset><legend>
-     <a  id='esconderfinanceiro' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeFinanceiro('');">
+     <a  id='esconderfinanceiro' style="-moz-user-select: none;user-select:none;cursor: pointer" onClick="js_escondeFinanceiro('');">
        <b>Dados da Instituição Financeiro</b>
        <img src='imagens/seta.gif' id='togglefinanceiro' border='0'>
      </a>
@@ -518,7 +529,7 @@ if ($db_opcao == 1) {
 	       <?=@$Ldtcont?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	      db_inputdata('dtcont',@$dtcont_dia,@$dtcont_mes,@$dtcont_ano,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -526,12 +537,12 @@ if ($db_opcao == 1) {
 
     <tr>
 	    <td nowrap title="<?=@$Tcodtrib?>">
-	       <?
+	       <?php
           db_ancora(@$Lcodtrib,"js_pesquisa_orgaounidade(true);",$db_opcao);
          ?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	      db_input('codtrib',4,$Icodtrib,true,'text',3,"onChange=js_pesquisa_orgaounidade(true);");
 	      db_input('orgaounid',70,0,true,'text',3,"");
 	      ?>
@@ -543,7 +554,7 @@ if ($db_opcao == 1) {
 	       <?=@$Ltribinst?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	      db_input('tribinst',10,$Itribinst,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -554,7 +565,7 @@ if ($db_opcao == 1) {
 	       <?=@$Ldb21_tipoinstit?>
 	    </td>
 	    <td>
-          <?
+          <?php
           $x = array();
 	        $rsTipoInstit = $cltipoinstit->sql_record($cltipoinstit->sql_query_file());
           if($cltipoinstit->numrows > 0){
@@ -579,7 +590,7 @@ if ($db_opcao == 1) {
 			 <tr>
 			 <td>
 			 <fieldset><legend>
-			  <a  id='escondertributario' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeTributario('');">
+			  <a  id='escondertributario' style="-moz-user-select: none;user-select:none;cursor: pointer" onClick="js_escondeTributario('');">
         <b>Dados da Instituição Tributário</b>
         <img src='imagens/seta.gif' id='toggletributario' border='0'>
         </a>
@@ -587,11 +598,8 @@ if ($db_opcao == 1) {
 			 <table border = "0" id="tabTributario" style="display: none;">
 
 			  <tr style="display: none;">
-			   <td nowrap title="<?//=@$Ttx_banc?>">
-			       <?//=@$Ltx_banc?>
-			   </td>
 			   <td>
-			     <?
+			     <?php
 			     db_input('tx_banc',15,$Itx_banc,true,'hidden',$db_opcao,"");
 			     ?>
 			   </td>
@@ -601,7 +609,7 @@ if ($db_opcao == 1) {
 			       <?=@$Lnumbanco?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      $numbanco = null;
 			      db_input('numbanco',10,$Inumbanco,true,'hidden',$db_opcao,"");
 			      ?>
@@ -613,7 +621,7 @@ if ($db_opcao == 1) {
 			       <?=@$Ltpropri?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      $x = array("f"=>"NAO","t"=>"SIM");
 			      db_select('tpropri',$x,true,$db_opcao,"");
 			      ?>
@@ -625,7 +633,7 @@ if ($db_opcao == 1) {
 			       <?=@$Ltsocios?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      $x = array("f"=>"NAO","t"=>"SIM");
 			      db_select('tsocios',$x,true,$db_opcao,"");
 			      ?>
@@ -637,7 +645,7 @@ if ($db_opcao == 1) {
 			       <?=@$Lnomedebconta?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      db_input('nomedebconta',20,$Inomedebconta,true,'text',$db_opcao,"")
 			      ?>
 			    </td>
@@ -648,7 +656,7 @@ if ($db_opcao == 1) {
 			       <?=@$Ldb21_regracgmiss?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      $x = array('0'=>'Não vincular socios','1'=>'Vincular socios');
 			      db_select('db21_regracgmiss',$x,true,$db_opcao,"");
 			      ?>
@@ -660,7 +668,7 @@ if ($db_opcao == 1) {
 			       <?=@$Ldb21_regracgmiptu?>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 			      $x = array('0'=>'Considerar Proprietario e Promitente','1'=>'Considerar Somente Proprietario','2'=>'Considerar Somente Promitente');
 			      db_select('db21_regracgmiptu',$x,true,$db_opcao,"");
 			      ?>
@@ -674,7 +682,7 @@ if ($db_opcao == 1) {
 
 			    <!--  db21_reghra -->
 			    <td>
-			      <?
+			      <?php
 			      $x = array("f"=>"NAO","t"=>"SIM");
 			      db_select('db21_usasisagua',$x,true,$db_opcao,"");
 			      ?>
@@ -686,7 +694,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lident?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('ident',4,$Iident,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -697,7 +705,7 @@ if ($db_opcao == 1) {
 		       <?=@$Ldiario?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('diario',4,$Idiario,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -708,7 +716,7 @@ if ($db_opcao == 1) {
 		       <?=@$Lsegmento?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					$x = array('1'=>'Prefeituras','2'=>'Saneamento','3'=>'Energia Elétrica e Gás','4'=>'Telecomunicações','5'=>'Órgãos Governamentais','6'=>'Carnes e Assemelhados ou demais Empresas / Órgãos que serão identificadas através do CNPJ','7'=>'Multas de trânsito','9'=>'Uso exclusivo do banco');
 					db_select('segmento',$x,true,$db_opcao,"");
 					?>
@@ -720,7 +728,7 @@ if ($db_opcao == 1) {
 			       <?=@$Lformvencfebraban?>
 			    </td>
 			    <td>
-						<?
+						<?php
 						$x = array('1'=>'aaaammdd','2'=>'ddmmaa');
 						db_select('formvencfebraban',$x,true,$db_opcao,"");
 						?>
@@ -746,7 +754,6 @@ if ($db_opcao == 1) {
 <script>
 
 function js_buscaLocalidade(){
-  //alert($('uf').value);
   var oUf = new Object();
   oUf.cp05_sigla = $('uf').value;
   oUf.acao       = "pesquisar";
@@ -767,15 +774,11 @@ function js_buscaLocalidade(){
 
 function js_retornoPesquisaLocalidades(oAjax){
 
-  //alert(oAjax.responseText);
-
   js_removeObj("msgBox");
 
   var aRetorno = JSON.parse(oAjax.responseText);
 
   var sExpReg  = new RegExp('\\\\n','g');
-
-  //alert(aRetorno.message.urlDecode().replace(sExpReg,'\n'));
 
   if ( aRetorno.status == 1) {
     return false;
@@ -979,8 +982,6 @@ function js_validaForm(){
   $('db21_cnpj_efr').value = inputCnpjEfr.getValue();
 
   return true;
-  //document.form1.submit();
-
 }
 
 function js_pesquisanumcgm(mostra){
@@ -1011,7 +1012,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_config.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

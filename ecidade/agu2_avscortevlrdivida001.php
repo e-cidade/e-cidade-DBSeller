@@ -43,7 +43,7 @@ $clrotulo->label("x40_dtinc");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js');
   db_app::load('estilos.css');
 ?>
@@ -53,12 +53,12 @@ $clrotulo->label("x40_dtinc");
 <table align="center" style="margin: 20px auto">
   <tr>
     <td nowrap title="<?=@$Tx40_codcorte?>">
-    <?
+    <?php
       db_ancora(@$Lx40_codcorte,"js_pesquisax40_codcorte(true);",$db_opcao);
     ?>
     </td>
     <td>
-    <?
+    <?php
 	    db_input('x40_codcorte',10,$Ix40_codcorte,true,'text',$db_opcao," onchange='js_pesquisax40_codcorte(false);'");
     ?>
     </td>
@@ -68,7 +68,7 @@ $clrotulo->label("x40_dtinc");
 	  <?=$Lx40_dtinc?>
 	  </td>
 	  <td> 
-	  <?
+	  <?php
 	    db_input('x40_dtinc',10,$Ix40_dtinc,true,'text',3,'');
 	  ?>
 	  </td>
@@ -78,7 +78,7 @@ $clrotulo->label("x40_dtinc");
       <strong>Ordenar por:</strong>
     </td>
     <td nowrap title="Campo a ser ordenado">
-    <?
+    <?php
       $aOrdem = array('corte'     => 'C&oacute;digo do corte', 
                       'historico' => 'Valor Hist&oacute;rico',
                       'corrigido' => 'Valor Corrigido',
@@ -94,7 +94,7 @@ $clrotulo->label("x40_dtinc");
   </tr>
 </table>
 
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </form>

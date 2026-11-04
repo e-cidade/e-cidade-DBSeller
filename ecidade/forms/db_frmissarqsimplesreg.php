@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -78,7 +78,7 @@ if (!isset($opcao)){
        <?=@$Lq23_sequencial?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_sequencial',8,$Iq23_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('q23_sequencial',8,$Iq23_sequencial,true,'text',3,"")
        <?=@$Lq23_issarqsimples?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_issarqsimples',8,$Iq23_issarqsimples,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_input('q23_issarqsimples',8,$Iq23_issarqsimples,true,'text',$db_opcao,"")
        <?=@$Lq23_seqreg?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_seqreg',8,$Iq23_seqreg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -108,7 +108,7 @@ db_input('q23_seqreg',8,$Iq23_seqreg,true,'text',$db_opcao,"")
        <?=@$Lq23_dtarrec?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('q23_dtarrec',@$q23_dtarrec_dia,@$q23_dtarrec_mes,@$q23_dtarrec_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -118,7 +118,7 @@ db_inputdata('q23_dtarrec',@$q23_dtarrec_dia,@$q23_dtarrec_mes,@$q23_dtarrec_ano
        <?=@$Lq23_dtvenc?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('q23_dtvenc',@$q23_dtvenc_dia,@$q23_dtvenc_mes,@$q23_dtvenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_inputdata('q23_dtvenc',@$q23_dtvenc_dia,@$q23_dtvenc_mes,@$q23_dtvenc_ano,tru
        <?=@$Lq23_cnpj?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_cnpj',14,$Iq23_cnpj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -138,7 +138,7 @@ db_input('q23_cnpj',14,$Iq23_cnpj,true,'text',$db_opcao,"")
        <?=@$Lq23_tiporec?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_tiporec',1,$Iq23_tiporec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -148,7 +148,7 @@ db_input('q23_tiporec',1,$Iq23_tiporec,true,'text',$db_opcao,"")
        <?=@$Lq23_vlrprinc?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_vlrprinc',15,$Iq23_vlrprinc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -158,7 +158,7 @@ db_input('q23_vlrprinc',15,$Iq23_vlrprinc,true,'text',$db_opcao,"")
        <?=@$Lq23_vlrmul?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_vlrmul',15,$Iq23_vlrmul,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -168,7 +168,7 @@ db_input('q23_vlrmul',15,$Iq23_vlrmul,true,'text',$db_opcao,"")
        <?=@$Lq23_vlrjur?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_vlrjur',15,$Iq23_vlrjur,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -178,7 +178,7 @@ db_input('q23_vlrjur',15,$Iq23_vlrjur,true,'text',$db_opcao,"")
        <?=@$Lq23_data?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('q23_data',@$q23_data_dia,@$q23_data_mes,@$q23_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,7 +188,7 @@ db_inputdata('q23_data',@$q23_data_dia,@$q23_data_mes,@$q23_data_ano,true,'text'
        <?=@$Lq23_vlraut?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_vlraut',15,$Iq23_vlraut,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -198,7 +198,7 @@ db_input('q23_vlraut',15,$Iq23_vlraut,true,'text',$db_opcao,"")
        <?=@$Lq23_nroaut?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_nroaut',23,$Iq23_nroaut,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -208,7 +208,7 @@ db_input('q23_nroaut',23,$Iq23_nroaut,true,'text',$db_opcao,"")
        <?=@$Lq23_codbco?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_codbco',3,$Iq23_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -218,7 +218,7 @@ db_input('q23_codbco',3,$Iq23_codbco,true,'text',$db_opcao,"")
        <?=@$Lq23_codage?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_codage',4,$Iq23_codage,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -228,7 +228,7 @@ db_input('q23_codage',4,$Iq23_codage,true,'text',$db_opcao,"")
        <?=@$Lq23_codsiafi?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_codsiafi',6,$Iq23_codsiafi,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -238,7 +238,7 @@ db_input('q23_codsiafi',6,$Iq23_codsiafi,true,'text',$db_opcao,"")
        <?=@$Lq23_codserpro?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_codserpro',17,$Iq23_codserpro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -248,10 +248,10 @@ db_input('q23_codserpro',17,$Iq23_codserpro,true,'text',$db_opcao,"")
        <?=@$Lq23_anousu ."/".@$Lq23_mesusu?>
     </td>
     <td>
-<?
+<?php
 db_input('q23_anousu',4,$Iq23_anousu,true,'text',3,"")
 ?>/
-<?
+<?php
 db_input('q23_mesusu',2,$Iq23_mesusu,true,'text',$db_opcao,"")
 ?>
   </td>
@@ -259,7 +259,7 @@ db_input('q23_mesusu',2,$Iq23_mesusu,true,'text',$db_opcao,"")
   <tr>
   <td><b>Ação</b></td>
   <td>
-  <?
+  <?php
    $acoes = array("0"=>"Processo Normal","1" => "Gerar isscomplementar");
    db_select("q23_acao",$acoes,true,1);
   ?>
@@ -274,7 +274,7 @@ db_input('q23_mesusu',2,$Iq23_mesusu,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">
-    <?
+    <?php
 	 $chavepri= array("q23_sequencial"=>@$q23_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
    $sSQL  = "select * ";

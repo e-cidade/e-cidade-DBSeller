@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("cc05_sequencial");
    	 	<?=$Lcc05_custoplanoanalitica?>
 	 </td>
      <td> 
-        <?
+        <?php
           db_input("cc05_sequencial",10,"",true,'hidden',$db_opcao,"");
           db_input('cc05_custoplanoanalitica',10,$Icc05_custoplanoanalitica,true,'text',3,"");   
         ?>
@@ -47,12 +47,12 @@ $clrotulo->label("cc05_sequencial");
    </tr>  	
    <tr>
      <td> 
-        <?
+        <?php
 	      db_ancora(@$Lcc05_bens,"js_pesquisacc05_bens(true);",$db_opcao);
         ?>
      </td>
      <td>
-     	<?
+     	<?php
            db_input('cc05_bens',10,$Icc05_bens,true,'text',$db_opcao,"onChange='js_pesquisacc05_bens(false);'");
            db_input('t52_descr',40,$Icc05_bens,true,'text',3,"");
         ?>
@@ -66,7 +66,7 @@ $clrotulo->label("cc05_sequencial");
  
  <br /> 
  
- <?
+ <?php
     //função altera_exclui
 	include(modification("dbforms/db_classesgenericas.php"));
     $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -138,7 +138,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoplanoanaliticabens.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

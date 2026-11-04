@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -35,81 +35,90 @@ use \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto as Marcac
  * @package ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Model
  * @author Fábio Esteves <fabio.esteves@dbseller.com.br>
  */
-class MarcacaoPontoJustificativa {
+class MarcacaoPontoJustificativa
+{
 
   /**
    * @var int
    */
-  private $iCodigo;
+    private $iCodigo;
 
   /**
    * @var \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto
    */
-  private $oMarcacaoPonto;
+    private $oMarcacaoPonto;
 
   /**
    * @var \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa
    */
-  private $oJustificativa;
+    private $oJustificativa;
 
   /**
    * @var int
    */
-  private $iTipo;
+    private $iTipo;
 
   /**
    * @return int
    */
-  public function getCodigo() {
-    return $this->iCodigo;
-  }
+    public function getCodigo()
+    {
+        return $this->iCodigo;
+    }
 
   /**
    * @return MarcacaoPontoModel
    */
-  public function getMarcacaoPonto() {
-    return $this->oMarcacaoPonto;
-  }
+    public function getMarcacaoPonto()
+    {
+        return $this->oMarcacaoPonto;
+    }
 
   /**
    * @return JustificativaModel
    */
-  public function getJustificativa() {
-    return $this->oJustificativa;
-  }
+    public function getJustificativa()
+    {
+        return $this->oJustificativa;
+    }
 
   /**
    * @return int
    */
-  public function getTipo() {
-    return $this->iTipo;
-  }
+    public function getTipo()
+    {
+        return $this->iTipo;
+    }
 
   /**
    * @param int $iCodigo
    */
-  public function setCodigo($iCodigo) {
-    $this->iCodigo = $iCodigo;
-  }
+    public function setCodigo($iCodigo)
+    {
+        $this->iCodigo = $iCodigo;
+    }
 
   /**
    * @param MarcacaoPontoModel $oMarcacaoPonto
    */
-  public function setMarcacaoPonto(MarcacaoPontoModel $oMarcacaoPonto) {
-    $this->oMarcacaoPonto = $oMarcacaoPonto;
-  }
+    public function setMarcacaoPonto(MarcacaoPontoModel $oMarcacaoPonto)
+    {
+        $this->oMarcacaoPonto = $oMarcacaoPonto;
+    }
 
   /**
    * @param JustificativaModel $oJustificativa
    */
-  public function setJustificativa(JustificativaModel $oJustificativa) {
-    $this->oJustificativa = $oJustificativa;
-  }
+    public function setJustificativa(JustificativaModel $oJustificativa)
+    {
+        $this->oJustificativa = $oJustificativa;
+    }
 
   /**
    * @param int $iTipo
    */
-  public function setTipo($iTipo) {
-    $this->iTipo = $iTipo;
-  }
+    public function setTipo($iTipo)
+    {
+        $this->iTipo = $iTipo;
+    }
 }

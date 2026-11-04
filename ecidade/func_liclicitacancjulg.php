@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -56,56 +56,67 @@ $clrotulo->label("l03_descr");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0">
 	     <form name="form2" method="post" action="" >
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tl20_codigo?>">
               <?=$Ll20_codigo?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+              <?php
 		       db_input("l20_codigo",10,$Il20_codigo,true,"text",4,"","chave_l20_codigo");
 		       ?>
             </td>
-            </tr> 
+            </tr>
 
             <tr>
             <td width="4%" align="right" nowrap title="<?=$Tl20_edital?>">
               <?=$Ll20_edital?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("l20_edital",10,$Il20_edital,true,"text",4,"","chave_l20_edital");
               ?>
             </td>
             </tr>
 
-            <tr> 
+            <tr>
             <td width="4%" align="right" nowrap title="<?=$Tl20_numero?>">
               <?=$Ll20_numero?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+              <?php
 		       db_input("l20_numero",10,$Il20_numero,true,"text",4,"","chave_l20_numero");
 		       ?>
             </td>
           </tr>
-          <tr> 
+          <tr>
           <td width="4%" align="right" nowrap title="<?=$Tl03_descr?>">
               <?=$Ll03_descr?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
-	        db_input("l03_descr",60,$Il03_descr,true,"text",4,"","chave_l03_descr");
-                db_input("param",10,"",false,"hidden",3);
+            <td width="96%" align="left" nowrap>
+              <?php
+              $clcflicita = new cl_cflicita;
+              $dbWhereModalidade = "";
+              $todos = "0";
+
+              if (!empty($iModalidadeLicitacao)) {
+                  $dbWhereModalidade = " and l03_codigo in ({$iModalidadeLicitacao})";
+                  $todos = "";
+              }
+              $dbWhereClcflicita = "l03_instit = ".db_getsession("DB_instit") . "{$dbWhereModalidade}";
+
+              $resultClcflicita = $clcflicita->sql_record($clcflicita->sql_query("", "l03_codigo, l03_descr", "l03_codigo", $dbWhereClcflicita));
+
+              db_selectrecord("l03_codigo", $resultClcflicita, true, 1, "", "chave_l03_codigo", "", $todos, "", "2");
 	      ?>
             </td>
-          </tr>          
-          <tr> 
-            <td colspan="2" align="center"> 
-              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+          </tr>
+          <tr>
+            <td colspan="2" align="center">
+              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_liclicita.hide();">
              </td>
@@ -114,10 +125,10 @@ $clrotulo->label("l03_descr");
         </table>
       </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-      <?
-      $dbwhere = " and l20_licsituacao in (1, 6, 7) and (e54_anulad is not null or e55_sequen is null) 
+  <tr>
+    <td align="center" valign="top">
+      <?php
+      $dbwhere = " and l20_licsituacao in (1, 6, 7) and (e54_anulad is not null or e55_sequen is null)
                    and l20_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -131,17 +142,17 @@ $clrotulo->label("l03_descr");
        $campos  = "distinct ".$campos;
 
        if(isset($chave_l20_codigo) && (trim($chave_l20_codigo)!="") ){
-	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo","l20_codigo = $chave_l20_codigo$dbwhere");
+	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo desc","l20_codigo = $chave_l20_codigo$dbwhere");
 	     }else if(isset($chave_l20_numero) && (trim($chave_l20_numero)!="") ){
-	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo","l20_numero=$chave_l20_numero$dbwhere");
+	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo desc","l20_numero=$chave_l20_numero$dbwhere");
 	     }else if(isset($chave_l03_descr) && (trim($chave_l03_descr)!="") ){
-	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo","l03_descr like '$chave_l03_descr%'$dbwhere");
-       }else if(isset($chave_l03_codigo) && (trim($chave_l03_codigo)!="") ){
-           $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo","l03_codigo=$chave_l03_codigo$dbwhere");        
+	         $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo desc","l03_descr like '$chave_l03_descr%'$dbwhere");
+       }else if(isset($chave_l03_codigo) && (trim($chave_l03_codigo)!="0") ){
+           $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo desc","l03_codigo=$chave_l03_codigo$dbwhere");
        }else if(isset($chave_l20_edital) && (trim($chave_l20_edital)!="") ){
-           $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo","l20_edital=$chave_l20_edital$dbwhere");
+           $sql = $clliclicitem->sql_query_inf(null,$campos,"l20_codigo desc","l20_edital=$chave_l20_edital$dbwhere");
        }else{
-           $sql = $clliclicitem->sql_query_inf("",$campos,"l20_codigo","1=1$dbwhere");
+           $sql = $clliclicitem->sql_query_inf("",$campos,"l20_codigo desc","1=1$dbwhere");
        }
 
         db_lovrot($sql,15,"()","",$funcao_js);
@@ -164,12 +175,12 @@ $clrotulo->label("l03_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">
@@ -177,4 +188,8 @@ if(!isset($pesquisa_chave)){
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');
   input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
 })();
+
+var select = document.getElementById("chave_l03_codigo");
+var optionValue = select.options[select.selectedIndex].value;
+document.getElementById('chave_l03_codigodescr').value = optionValue;
 </script>

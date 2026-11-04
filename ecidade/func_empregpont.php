@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempregpont->rotulo->label("q27_pontuacao");
               <?=$Lq27_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q27_sequencia",10,$Iq27_sequencia,true,"text",4,"","chave_q27_sequencia");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempregpont->rotulo->label("q27_pontuacao");
               <?=$Lq27_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q27_pontuacao",15,$Iq27_pontuacao,true,"text",4,"","chave_q27_pontuacao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempregpont->rotulo->label("q27_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empregpont.php")==true){
@@ -122,12 +122,12 @@ $clempregpont->rotulo->label("q27_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

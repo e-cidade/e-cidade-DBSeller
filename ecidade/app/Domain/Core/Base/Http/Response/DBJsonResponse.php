@@ -16,11 +16,21 @@ class DBJsonResponse extends JsonResponse
      * @param bool $encode
      * @param array $headers
      * @param int $options
+     * @param bool $encodeMessage
      */
-    public function __construct($data = null, $message = '', $status = 200, $encode = true, $headers = [], $options = 0)
-    {
+    public function __construct(
+        $data = null,
+        $message = '',
+        $status = 200,
+        $encode = true,
+        $headers = [],
+        $options = 0,
+        $encodeMessage = true
+    ) {
         if ($encode) {
-            $message = utf8_encode($message);
+            if ($encodeMessage) {
+                $message = utf8_encode($message);
+            }
             $data = self::convertFromLatin1ToUTF8Recursively($data);
         }
 

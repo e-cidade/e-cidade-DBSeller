@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,11 +68,11 @@ if(!isset($chave_r59_mesusu)){
               <strong>Ano / Mês :&nbsp;&nbsp;</strong>
             </td>
             <td>
-              <?
+              <?php
               db_input('r59_anousu',4,$Ir59_anousu,true,'text',2,'',"chave_r59_anousu")
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
               db_input('r59_mesusu',2,$Ir59_mesusu,true,'text',2,'',"chave_r59_mesusu")
               ?>
             </td>
@@ -82,7 +82,7 @@ if(!isset($chave_r59_mesusu)){
               <?=$Lr59_regime?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("r59_regime",4,$Ir59_regime,true,"text",4,"","chave_r59_regime");
 		       ?>
             </td>
@@ -92,7 +92,7 @@ if(!isset($chave_r59_mesusu)){
               <?=$Lr59_causa?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("r59_causa",4,$Ir59_causa,true,"text",4,"","chave_r59_causa");
 		       ?>
             </td>
@@ -102,7 +102,7 @@ if(!isset($chave_r59_mesusu)){
               <?=$Lr59_caub?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("r59_caub",4,$Ir59_caub,true,"text",4,"","chave_r59_caub");
 		       ?>
             </td>
@@ -112,7 +112,7 @@ if(!isset($chave_r59_mesusu)){
               <?=$Lr59_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("r59_descr",40,$Ir59_descr,true,"text",4,"","chave_r59_descr");
 		       ?>
             </td>
@@ -130,7 +130,7 @@ if(!isset($chave_r59_mesusu)){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($chave_r59_regime) || (isset($chave_r59_regime) && trim($chave_r59_regime)=="")){
         $chave_r59_regime = null;
       }
@@ -177,12 +177,12 @@ if(!isset($chave_r59_mesusu)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

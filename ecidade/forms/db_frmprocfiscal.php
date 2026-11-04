@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ $clrotulo->label("p58_numero");
        <?=@$Ly100_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('y100_sequencial',10,$Iy100_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -71,51 +71,51 @@ db_input('y100_sequencial',10,$Iy100_sequencial,true,'text',3,"")
       <table border="0">
       	<tr>
     <td nowrap title="<?=@$Ty95_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lz01_numcgm,"js_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_numcgm(false);'")
 			?>
-			<?
+			<?php
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
   </tr>
 	<tr> 
     <td nowrap> 
-		<?
+		<?php
 		 db_ancora($Lj01_matric,'js_mostramatriculas(true);',$db_opcao); //4);
 		?>
 		</td>
     <td> 
-    <?
+    <?php
  			db_input('j01_matric',10,$Ij01_matric,true,'text',$db_opcao,'onchange="js_mostramatriculas(false);"');  // 4,'onchange="js_mostramatriculas(false);"');
 		?>
     </td>
     </tr>
 	<tr> 
      <td nowrap> 
-		    <?
+		    <?php
  			  db_ancora($Lq02_inscr,'js_mostrainscricao(true)',$db_opcao);//4);
 			  ?>
      </td>
      <td> 
-       <?
+       <?php
  			  db_input('q02_inscr',10,$Iq02_inscr,true,'text',$db_opcao,'onchange="js_mostrainscricao(false);"');   // 4,'onchange="js_mostrainscricao(false);"');
 			 ?>
      </td>
   </tr>
 	<tr>
       <td nowrap title="<?=@$Ty80_codsani?>">
-         <?
+         <?php
          db_ancora(@$Ly80_codsani,"js_sanitario(true);",1);
          ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('y80_codsani',10,$Iy80_codsani,true,'text',1,"onchange='js_sanitario(false)'");
         
         ?>
@@ -128,15 +128,15 @@ db_input('y100_sequencial',10,$Iy100_sequencial,true,'text',3,"")
 	 
   <tr>
     <td nowrap title="<?=@$Ty100_procfiscalcadtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly100_procfiscalcadtipo,"js_pesquisay100_procfiscalcadtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y100_procfiscalcadtipo',10,$Iy100_procfiscalcadtipo,true,'text',$db_opcao," onchange='js_pesquisay100_procfiscalcadtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('y33_descricao',40,$Iy33_descricao,true,'text',3,'')
        ?>
     </td>
@@ -146,7 +146,7 @@ db_input('y33_descricao',40,$Iy33_descricao,true,'text',3,'')
        <?=@$Ly100_dtinicial?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y100_dtinicial',@$y100_dtinicial_dia,@$y100_dtinicial_mes,@$y100_dtinicial_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -156,7 +156,7 @@ db_inputdata('y100_dtinicial',@$y100_dtinicial_dia,@$y100_dtinicial_mes,@$y100_d
        <?=@$Ly100_dtfinal?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y100_dtfinal',@$y100_dtfinal_dia,@$y100_dtfinal_mes,@$y100_dtfinal_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -166,19 +166,19 @@ db_inputdata('y100_dtfinal',@$y100_dtfinal_dia,@$y100_dtfinal_mes,@$y100_dtfinal
        <?=@$Ly100_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y100_obs',3,52,$Iy100_obs,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
 	<tr> 
     <td nowrap> 
-		  <?
+		  <?php
  			db_ancora($Lp58_codproc,' js_mostracodproc(true); ',4);
 			?>
 		  </td>
       <td> 
-        <?
+        <?php
  			  db_input('p58_codproc',10,$Ip58_codproc,true,'text',4,'onchange="js_mostracodproc(false);"');
 				
 			  db_input('z01_nome1',40,$Iz01_nome,true,'text',3,'');
@@ -190,7 +190,7 @@ db_textarea('y100_obs',3,52,$Iy100_obs,true,'text',$db_opcao,"")
 	  <tr>
     <td></td>
     <td> 
-<?
+<?php
 $y100_instit = db_getsession("DB_instit");
 db_input('y100_instit',10,$Iy100_instit,true,'hidden',$db_opcao);
 ?>
@@ -412,7 +412,7 @@ function js_mostraproc1(chave1,n,z){
 
 function js_preenchepesquisa(chave){
   db_iframe_procfiscal.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

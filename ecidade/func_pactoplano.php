@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpactoplano->rotulo->label("o74_descricao");
               <?=$Lo74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o74_sequencial",10,$Io74_sequencial,true,"text",4,"","chave_o74_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpactoplano->rotulo->label("o74_descricao");
               <?=$Lo74_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o74_descricao",50,$Io74_descricao,true,"text",4,"","chave_o74_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpactoplano->rotulo->label("o74_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pactoplano.php")==true){
@@ -122,12 +122,12 @@ $clpactoplano->rotulo->label("o74_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

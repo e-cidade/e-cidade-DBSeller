@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -45,35 +45,34 @@ if(isset($coddisciplinas)){
   $db_opcao = 2;
   db_inicio_transacao();
   $clmer_tpcardapioturma->excluir("","me28_i_cardapioescola = $teste");
-  $sql = "select ed11_i_codigo from mer_tpcardapioturma 
+  $sql = "select ed11_i_codigo from mer_tpcardapioturma
            inner join serie on serie.ed11_i_codigo = mer_tpcardapioturma.me28_i_serie
            where me28_i_cardapioescola =$codcardapioescola";
- 
+
   $result = db_query($sql);
   $linhas = pg_numrows($result);
-  
-  if ($linhas>0) {     
-    for ($t=0;$t<$linhas;$t++) {  
+
+  if ($linhas>0) {
+    for ($t=0;$t<$linhas;$t++) {
     	db_fieldsmemory($result,$t);
       $clmer_tpcardapioturma->me28_i_serie = $ed11_i_codigo;
       $clmer_tpcardapioturma->me28_i_cardapioescola = $teste;
       $clmer_tpcardapioturma->incluir(null);
-      
+
     }
   }
   db_fim_transacao();
- 
- 	
+
+
  }
  if ($clmer_tpcardapioturma->erro_status=="0") {
     $clmer_tpcardapioturma->erro(true,false);
   } else{?>
-    <script>        
-    parent.db_iframe_tpcardapioturma.hide();    
+    <script>
+    parent.db_iframe_tpcardapioturma.hide();
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'mer1_mer_cardapioescola001.php?me32_i_tipocardapio=<?=$iCodCardapio?>&me27_c_nome=<?=$nome?>&db_opcao=<?=$db_opcao?>';
     </script>
-       
- <? }
+ <?php }
  db_msgbox("Alterações efetuadas com sucesso!");
  exit;
 }
@@ -89,7 +88,7 @@ if(isset($coddisciplinas)){
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $result = $clmer_cardapioescola->sql_record($clmer_cardapioescola->sql_query("",
                                                                              "me32_i_codigo,ed18_c_nome",
                                                                              "",
@@ -99,24 +98,24 @@ if(isset($coddisciplinas)){
    if($linhas>0){
     ?>
     <select name="outras_disc[]" id="outras_disc" size="10" style="width:300px;font-size:10px;padding:0px;" multiple>
-    <?
+    <?php
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$me32_i_codigo?>"> <?=$ed18_c_nome?></option>
-     <?
+     <?php
     }
     ?>
     </select>
     <br><br>
     <input type="button" value="Confirmar" onClick="js_confirmaserie();">
     <input type="button" value="Cancelar" onClick="js_fechar();">
-   <?}else{
+   <?php } else {
     ?>
     <script>
      parent.db_iframe_tpcardapioturma.hide();
     </script>
-    <?
+    <?php
     exit;
    }?>
   </td>

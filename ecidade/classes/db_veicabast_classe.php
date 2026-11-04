@@ -88,7 +88,7 @@ class cl_veicabast
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -99,7 +99,7 @@ class cl_veicabast
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve70_codigo = ($this->ve70_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve70_codigo"] : $this->ve70_codigo);
@@ -135,7 +135,7 @@ class cl_veicabast
     }
 
     // funcao para inclusao
-    function incluir($ve70_codigo)
+    public function incluir($ve70_codigo)
     {
         $this->atualizacampos();
         if ($this->ve70_veiculos == null) {
@@ -377,7 +377,7 @@ class cl_veicabast
     }
 
     // funcao para alteracao
-    function alterar($ve70_codigo = null)
+    public function alterar($ve70_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update veicabast set ";
@@ -928,7 +928,7 @@ class cl_veicabast
         return $sql;
     }
 
-    function sql_query_info($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_info($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -979,11 +979,11 @@ class cl_veicabast
                 $virgula = ",";
             }
         }
+
         return $sql;
     }
 
-
-    function sql_query_abastecimento($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $agrupar = "")
+    public function sql_query_abastecimento($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $agrupar = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1042,7 +1042,7 @@ class cl_veicabast
         return $sql;
     }
 
-    function sql_query_posto($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $agrupar = "")
+    public function sql_query_posto($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $agrupar = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1101,7 +1101,7 @@ class cl_veicabast
         return $sql;
     }
 
-    function sql_query_nota($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_nota($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1142,7 +1142,7 @@ class cl_veicabast
         return $sql;
     }
 
-    function sql_query_file_anula($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file_anula($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1181,7 +1181,7 @@ class cl_veicabast
         return $sql;
     }
 
-    function sql_query_abast($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $iCoddepto = null)
+    public function sql_query_abast($ve70_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $iCoddepto = null)
     {
         $sql = "select ";
         if ($campos != "*") {

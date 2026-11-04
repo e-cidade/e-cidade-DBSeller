@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldepartdiv->rotulo->label("t30_codigo");
               <?=$Lt30_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t30_codigo",8,$It30_codigo,true,"text",4,"","chave_t30_codigo");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $cldepartdiv->rotulo->label("t30_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "";
       if (isset($orgaos) && $orgaos != "") {
         
@@ -144,12 +144,12 @@ $cldepartdiv->rotulo->label("t30_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

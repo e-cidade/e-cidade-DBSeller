@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -49,20 +49,20 @@ class cl_empageconfche {
   var $e91_ativo = 'f';
   // cria propriedade com as variaveis do arquivo
   var $campos = "
-                 e91_codcheque = int8 = Código 
-                 e91_codmov = int4 = Movimento 
-                 e91_cheque = varchar(40) = Cheque 
-                 e91_valor = float8 = Valor 
-                 e91_ativo = bool = Ativo 
+                 e91_codcheque = int8 = Código
+                 e91_codmov = int4 = Movimento
+                 e91_cheque = varchar(40) = Cheque
+                 e91_valor = float8 = Valor
+                 e91_ativo = bool = Ativo
                  ";
   //funcao construtor da classe
-  function cl_empageconfche() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("empageconfche");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -71,7 +71,7 @@ class cl_empageconfche {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->e91_codcheque = ($this->e91_codcheque == ""?@$GLOBALS["HTTP_POST_VARS"]["e91_codcheque"]:$this->e91_codcheque);
       $this->e91_codmov = ($this->e91_codmov == ""?@$GLOBALS["HTTP_POST_VARS"]["e91_codmov"]:$this->e91_codmov);
@@ -83,7 +83,7 @@ class cl_empageconfche {
     }
   }
   // funcao para inclusao
-  function incluir ($e91_codcheque){
+  public function incluir ($e91_codcheque){
     $this->atualizacampos();
     if($this->e91_codmov == null ){
       $this->erro_sql = " Campo Movimento nao Informado.";
@@ -154,18 +154,18 @@ class cl_empageconfche {
       return false;
     }
     $sql = "insert into empageconfche(
-                                       e91_codcheque 
-                                      ,e91_codmov 
-                                      ,e91_cheque 
-                                      ,e91_valor 
-                                      ,e91_ativo 
+                                       e91_codcheque
+                                      ,e91_codmov
+                                      ,e91_cheque
+                                      ,e91_valor
+                                      ,e91_ativo
                        )
                 values (
-                                $this->e91_codcheque 
-                               ,$this->e91_codmov 
-                               ,'$this->e91_cheque' 
-                               ,$this->e91_valor 
-                               ,'$this->e91_ativo' 
+                                $this->e91_codcheque
+                               ,$this->e91_codmov
+                               ,'$this->e91_cheque'
+                               ,$this->e91_valor
+                               ,'$this->e91_ativo'
                       )";
     $result = db_query($sql);
     if($result==false){
@@ -206,7 +206,7 @@ class cl_empageconfche {
     return true;
   }
   // funcao para alteracao
-  function alterar ($e91_codcheque=null) {
+  public function alterar ($e91_codcheque=null) {
     $this->atualizacampos();
     $sql = " update empageconfche set ";
     $virgula = "";
@@ -331,7 +331,7 @@ class cl_empageconfche {
     }
   }
   // funcao para exclusao
-  function excluir ($e91_codcheque=null,$dbwhere=null) {
+  public function excluir ($e91_codcheque=null,$dbwhere=null) {
     if($dbwhere==null || $dbwhere==""){
       $resaco = $this->sql_record($this->sql_query_file($e91_codcheque));
     }else{
@@ -396,7 +396,7 @@ class cl_empageconfche {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if($result==false){
       $this->numrows    = 0;
@@ -419,10 +419,10 @@ class cl_empageconfche {
     return $result;
   }
   // funcao do sql
-  function sql_query ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -455,10 +455,10 @@ class cl_empageconfche {
     return $sql;
   }
   // funcao do sql
-  function sql_query_file ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -488,10 +488,10 @@ class cl_empageconfche {
     }
     return $sql;
   }
-  function sql_query_cheques ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_cheques ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -531,10 +531,10 @@ class cl_empageconfche {
     }
     return $sql;
   }
-  function sql_query_cheques_cancelados ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_cheques_cancelados ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -569,10 +569,10 @@ class cl_empageconfche {
     }
     return $sql;
   }
-  function sql_query_pagamento ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_pagamento ( $e91_codcheque=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -596,7 +596,7 @@ class cl_empageconfche {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

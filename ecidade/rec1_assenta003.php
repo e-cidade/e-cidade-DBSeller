@@ -70,6 +70,7 @@ if (isset($excluir)) {
                     }
                 }
             }
+            $msgRetorno = "Exclusão efetuada com sucesso.";
         }
         db_fim_transacao(false);
     } catch (Exception $oException) {
@@ -89,7 +90,7 @@ if (isset($excluir)) {
         }
         db_redireciona("rec1_assenta003.php");
     }
-    db_fim_transacao();
+    db_msgbox($msgRetorno);
     if ($classenta->erro_status != "0") {
         $h12_codigo = $h12_assent = $h16_assent = $h12_natureza = '';
     }

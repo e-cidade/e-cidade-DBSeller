@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clresptecnico->rotulo->label("y22_numcgm");
               <?=$Ly22_codsani?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y22_codsani",10,$Iy22_codsani,true,"text",4,"","chave_y22_codsani");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clresptecnico->rotulo->label("y22_numcgm");
               <?=$Ly22_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y22_numcgm",8,$Iy22_numcgm,true,"text",4,"","chave_y22_numcgm");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clresptecnico->rotulo->label("y22_numcgm");
               <?=$Ly22_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y22_numcgm",8,$Iy22_numcgm,true,"text",4,"","chave_y22_numcgm");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clresptecnico->rotulo->label("y22_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_resptecnico.php")==true){
@@ -129,12 +129,12 @@ $clresptecnico->rotulo->label("y22_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

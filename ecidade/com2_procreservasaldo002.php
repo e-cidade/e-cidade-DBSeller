@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -62,7 +62,9 @@ select distinct o80_codres,
        pc11_resum,
        pc90_numeroprocesso,
        fc_estruturaldotacao(o58_anousu,o58_coddot) as estrut,
-       pc11_seq
+       pc11_seq,
+       gestao,
+       descricao
 from orcreserva
      inner join orcdotacao   on o58_coddot  = o80_coddot
                             and o58_anousu  = o80_anousu
@@ -72,7 +74,7 @@ from orcreserva
      inner join orcunidade   on o41_unidade = o58_unidade
                             and o41_orgao   = o58_orgao
                             and o41_anousu  = o58_anousu
-                            and o41_instit  = o58_instit 
+                            and o41_instit  = o58_instit
      inner join orcelemento  on o56_codele  = o58_codele
                             and o56_anousu  = o58_anousu
      inner join db_config    on codigo      = o58_instit
@@ -81,6 +83,7 @@ from orcreserva
      inner join orcprograma  on o58_programa= o54_programa and o80_anousu = o54_anousu
      left join orcprojativ  on o58_projativ= o55_projativ and o80_anousu = o55_anousu and o55_instit = o58_instit
      left join orctiporec   on o58_codigo  = o15_codigo
+     inner join fonterecurso on orctiporec.o15_codigo = fonterecurso.orctiporec_id and fonterecurso.exercicio = orcdotacao.o58_anousu
      inner join orcreservasol on o82_codres = o80_codres
      inner join solicitem            on solicitem.pc11_codigo               = o82_solicitem
      inner join solicita ON pc11_numero = pc10_numero
@@ -108,13 +111,13 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
   db_fieldsmemory($result,$x);
 
-  $aDadosReserva[$estrut]['iRecurso']   = $o58_codigo.' - '.$o15_descr;
+  $aDadosReserva[$estrut]['iRecurso']   = $gestao.' - '.$descricao;
   $aDadosReserva[$estrut]['iMotivo']    = $o80_descr;
   $aDadosReserva[$estrut]['iDotacao']   = $o58_coddot;
   $aDadosReserva[$estrut]['iValor']    += $o80_valor;
   $aDadosReserva[$estrut]['iProcesso']  = $pc90_numeroprocesso;
 
-  $aReservas[$estrut][] =  $o80_codres."/".$o80_anousu; 
+  $aReservas[$estrut][] =  $o80_codres."/".$o80_anousu;
 
 }
 
@@ -123,10 +126,10 @@ db_fieldsmemory($result,0);
 $head3 = "RELATÓRIO DE RESERVA DE SALDO";
 $head4 = $nomeinst;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->Addpage(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->Addpage();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $troca = 1;
@@ -186,5 +189,5 @@ $pdf->cell(30,4,'R$ '.db_formatar($oTotal,'f'),"",0,"R",0);
 $pdf->cell(40,4,'',"",0,"C",0);
 
 $pdf->Output();
-   
+
 ?>

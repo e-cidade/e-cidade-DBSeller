@@ -146,9 +146,9 @@ class DBDepartamento
             "coddepto",
             "instit = {$iCodigoInstituicao} {$sWhereDataLimite}"
         );
-       
+
         $rsDadosDepartamento   = $oDaoDepartamento->sql_record($sSqlDadosDepartamento);
-        
+
         if ($oDaoDepartamento->erro_status == '0') {
             throw new Exception("Não foi possível localizar o departamento pelo código da instituião: $iCodigoInstituicao");
         }
@@ -361,6 +361,11 @@ class DBDepartamento
         $this->iCodigoDepartamento = $iCodigoDepartamento;
     }
 
+    public function getCodigoDepartamento()
+    {
+        return $this->iCodigoDepartamento;
+    }
+
     public function setNomeDepartamento($sNomeDepartamento)
     {
         $this->sNomeDepartamento = $sNomeDepartamento;
@@ -392,7 +397,7 @@ class DBDepartamento
                          from db_usuarios U
                        inner join db_depusu D    on U.id_usuario  = D.id_usuario
                        inner join db_permissao P on U.id_usuario  = P.id_usuario
-                                                and P.id_item     = 2182
+                       and (P.id_item = 2182 or P.id_item = 229286)
                        where D.coddepto = {$this->getCodigo()} and  usuarioativo=1
                        union
                        select distinct U.id_usuario, nome, usuext
@@ -400,12 +405,12 @@ class DBDepartamento
                        inner join db_depusu D    on U.id_usuario  = D.id_usuario
                        inner join db_permherda H on U.id_usuario  = H.id_usuario
                        inner join db_permissao P on P.id_usuario  = H.id_perfil
-                                                and P.id_item     = 2182
-                       where D.coddepto = {$this->getCodigo()} and usuarioativo=1
+                       and (P.id_item = 2182 or P.id_item = 229286)
+                       where D.coddepto = {$this->getCodigo()} and usuarioativo = 1
         order by nome
                       ) as x where x.usuext <> 2
          ) as y";
-         
+
         $rsUsuarios = db_query($sql);
         $usuarios  = array();
 
@@ -426,14 +431,14 @@ class DBDepartamento
         SELECT
             DISTINCT U.id_usuario,
             nome
-        FROM 
+        FROM
             db_usuarios U
         INNER JOIN db_depusu D
             ON U.id_usuario = D.id_usuario
         INNER JOIN db_permissao P
             ON U.id_usuario = P.id_usuario
                 AND P.id_item = 2182
-        WHERE  
+        WHERE
             D.coddepto = {$this->getCodigo()}
             AND usuarioativo = 1
             AND usuext <> 2

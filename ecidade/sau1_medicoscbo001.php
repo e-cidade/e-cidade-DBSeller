@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","sd36_i_rhcbo",true,1,"sd36_i_rhcbo",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar)){
  if($clmedicoscbo->erro_status=="0"){
   $clmedicoscbo->erro(true,false);

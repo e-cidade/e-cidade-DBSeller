@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,14 +48,14 @@ if(isset($opcao) && $opcao=="alterar"){
 <form name="form1" method="post" action="">
 <center>
 <table border="0" width="100%">
- <?db_input('ed219_i_codigo',20,$Ied219_i_codigo,true,'hidden',3,"")?>
+ <?php db_input('ed219_i_codigo',20,$Ied219_i_codigo,true,'hidden',3,"")?>
  <tr>
   <td nowrap title="<?=@$Ted219_i_regimemat?>" width="15%">
-   <?db_ancora(@$Led219_i_regimemat,"js_pesquisaed219_i_regimemat(true);",3);?>
+   <?php db_ancora(@$Led219_i_regimemat,"js_pesquisaed219_i_regimemat(true);",3);?>
   </td>
   <td>
-   <?db_input('ed219_i_regimemat',20,$Ied219_i_regimemat,true,'text',3,'')?>
-   <?db_input('ed218_c_nome',30,@$Ied218_c_nome,true,'text',3,'')?>
+   <?php db_input('ed219_i_regimemat',20,$Ied219_i_regimemat,true,'text',3,'')?>
+   <?php db_input('ed218_c_nome',30,@$Ied218_c_nome,true,'text',3,'')?>
    </td>
  </tr>
  <tr>
@@ -63,7 +63,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led219_c_nome?>
   </td>
   <td>
-   <?db_input('ed219_c_nome',30,$Ied219_c_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('ed219_c_nome',30,$Ied219_c_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led219_c_abrev?>
   </td>
   <td>
-   <?db_input('ed219_c_abrev',10,$Ied219_c_abrev,true,'text',$db_opcao,"")?>
+   <?php db_input('ed219_c_abrev',10,$Ied219_c_abrev,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top" width="70%">
-  <?
+  <?php
   $chavepri= array("ed219_i_codigo"=>@$ed219_i_codigo,"ed219_i_regimemat"=>@$ed219_i_regimemat,"ed218_c_nome"=>@$ed218_c_nome,"ed219_c_nome"=>@$ed219_c_nome,"ed219_c_abrev"=>@$ed219_c_abrev);
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $cliframe_alterar_excluir->sql = $clregimematdiv->sql_query("","*","ed219_i_ordenacao"," ed219_i_regimemat = $ed219_i_regimemat");
@@ -105,7 +105,7 @@ if(isset($opcao) && $opcao=="alterar"){
     <tr>
      <td>
       <select name="campos[]" id="campos" size="8" style="width:250px" multiple>
-      <?
+      <?php
        $query = $clregimematdiv->sql_record($clregimematdiv->sql_query("","ed219_i_codigo,ed219_c_nome,ed219_c_abrev","ed219_i_ordenacao"," ed219_i_regimemat = $ed219_i_regimemat"));
        $linhas = pg_num_rows($query);
        if($linhas>0){

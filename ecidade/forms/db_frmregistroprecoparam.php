@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ require_once(modification("libs/db_libdicionario.php"));
                  <?=@$Lpc08_incluiritemestimativa?>
               </td>
               <td> 
-          <?
+          <?php
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('pc08_incluiritemestimativa',$x,true,$db_opcao,"");
           ?>
@@ -54,7 +54,7 @@ require_once(modification("libs/db_libdicionario.php"));
                  <?=@$Lpc08_alteraabertura?>
               </td>
               <td> 
-          <?
+          <?php
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('pc08_alteraabertura',$x,true,$db_opcao,"");
           ?>
@@ -65,7 +65,7 @@ require_once(modification("libs/db_libdicionario.php"));
                  <?=@$Lpc08_percentuquantmax?>
               </td>
               <td> 
-              <?
+              <?php
               db_input('pc08_percentuquantmax',10,$Ipc08_percentuquantmax,true,'text',$db_opcao,"onchange='js_validaPercentual(this);'")
               ?>
               </td>
@@ -75,7 +75,7 @@ require_once(modification("libs/db_libdicionario.php"));
                  <?=@$Lpc08_ordemitensestimativa?>
               </td>
               <td> 
-                  <?
+                  <?php
                   $x = getValoresPadroesCampo('pc08_ordemitensestimativa');
                   db_select('pc08_ordemitensestimativa',$x,true,$db_opcao,"");
                   ?>
@@ -126,7 +126,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_registroprecoparam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

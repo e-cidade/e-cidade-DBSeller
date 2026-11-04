@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,17 +46,17 @@ class cl_conlancamele {
    var $c67_codele = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c67_codlan = int4 = Código Lançamento 
-                 c67_codele = int4 = Código Elemento 
+                 c67_codlan = int4 = Código Lançamento
+                 c67_codele = int4 = Código Elemento
                  ";
    //funcao construtor da classe
-   function cl_conlancamele() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamele");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_conlancamele {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c67_codlan = ($this->c67_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c67_codlan"]:$this->c67_codlan);
        $this->c67_codele = ($this->c67_codele == ""?@$GLOBALS["HTTP_POST_VARS"]["c67_codele"]:$this->c67_codele);
@@ -74,7 +74,7 @@ class cl_conlancamele {
      }
    }
    // funcao para Inclusão
-   function incluir ($c67_codlan){
+   public function incluir ($c67_codlan){
       $this->atualizacampos();
      if($this->c67_codele == null ){
        $this->erro_sql = " Campo Código Elemento não informado.";
@@ -95,12 +95,12 @@ class cl_conlancamele {
        return false;
      }
      $sql = "insert into conlancamele(
-                                       c67_codlan 
-                                      ,c67_codele 
+                                       c67_codlan
+                                      ,c67_codele
                        )
                 values (
-                                $this->c67_codlan 
-                               ,$this->c67_codele 
+                                $this->c67_codlan
+                               ,$this->c67_codele
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -324,10 +324,10 @@ class cl_conlancamele {
       }
      return $result;
    }
-    function sql_query ( $c67_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query ( $c67_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_conlancamele {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -359,10 +359,10 @@ class cl_conlancamele {
         }
         return $sql;
     }
-   function sql_query_file ( $c67_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c67_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_conlancamele {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

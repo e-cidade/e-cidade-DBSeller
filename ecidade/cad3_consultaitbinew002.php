@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -50,11 +50,11 @@ $clrotulo->label("j13_descr");
 <body class="body-default">
 <?php
   $where = "";
-  
+
   if(isset($codguia) && $codguia != ""){
      $where .= " and it01_guia = $codguia ";
   }
-  
+
   if(isset($matric) && $matric != ""){
      $where .= " and it06_matric = $matric";
   }
@@ -73,9 +73,9 @@ $clrotulo->label("j13_descr");
   if(isset($lote) && $lote != ""){
      $where .= " and j34_lote = '" . str_pad($lote,4,"0",STR_PAD_LEFT) ."'";
   }
-  
+
 	if(isset($setorloc) || isset($quadraloc) || isset($loteloc)) {
-				
+
 		if(isset($setorloc) and $setorloc != '') {
 			$where .= " and j05_codigoproprio = '{$setorloc}' ";
 		}
@@ -86,7 +86,7 @@ $clrotulo->label("j13_descr");
 			$where .= " and j06_lote = '{$loteloc}' ";
 		}
 	}
-  
+
   if(isset($dtini) && $dtini != ""){
      $where .= " and it01_data >= '".$dtini."'";
   }
@@ -94,14 +94,14 @@ $clrotulo->label("j13_descr");
      $where .= " and it01_data <= '".$dtfim."'";
   }
   if(isset($tipo) && $tipo == 'u'){
-    $where .= " and itbimatric.it06_guia is not null ";   
+    $where .= " and itbimatric.it06_guia is not null ";
   }else{
     $where .= " and itbimatric.it06_guia is null ";
   }
   if(isset($codrua) && $codrua != ""){
     $where .= " and codpri = $codrua ";
   }
-  
+
   $sql  = " select distinct on (it01_guia) 																			";
   $sql .= "       it01_guia, 																										";
   $sql .= "       case when it06_matric = 0 then 'ITBI rural ou sem matrícula' else it06_matric::text end as it06_matric, ";
@@ -109,11 +109,11 @@ $clrotulo->label("j13_descr");
   $sql .= "       it01_data, 																										";
   $sql .= "       it04_descr, 																									";
   $sql .= '       it14_valoraval, 																							';
-  $sql .= '       case 
-                    when exists ( select 1  
-				                            from itbicancela 
-				                           where it16_guia = it01_guia limit 1 ) then \'Cancelada\' 
-				            else \'Ativa\' 
+  $sql .= '       case
+                    when exists ( select 1
+				                            from itbicancela
+				                           where it16_guia = it01_guia limit 1 ) then \'Cancelada\'
+				            else \'Ativa\'
 				          end																														';
   $sql .= " from ( 																															";
   $sql .= "    select it01_guia,                                                ";
@@ -152,23 +152,25 @@ $clrotulo->label("j13_descr");
   if($clitbi->numrows == 1){
 
     db_fieldsmemory($result,0);
-    $funcao = split("\\|",$funcao_js);
+
+    $funcao =explode("|",$funcao_js);
+    
     echo "<script>".$funcao[0]."('$it01_guia');</script>";
     echo "<script>parent.db_iframe_consultaitbi.hide();</script>";
     exit;
   }
 ?>
 <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td align="center" valign="top">
-      <?php 
+      <?php
         db_lovrot($sql,30,"()","",$funcao_js);
       ?>
      </td>
    </tr>
-  <tr> 
+  <tr>
     <td align="center" valign="top">
-      <input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe_consultaitbi.hide();" /> 
+      <input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe_consultaitbi.hide();" />
     </td>
   </tr>
 </table>

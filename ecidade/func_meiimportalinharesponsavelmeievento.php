@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
               <?=$Lq113_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q113_sequencial",10,$Iq113_sequencial,true,"text",4,"","chave_q113_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
               <?=$Lq113_meiimportalinharesponsavel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q113_meiimportalinharesponsavel",10,$Iq113_meiimportalinharesponsavel,true,"text",4,"","chave_q113_meiimportalinharesponsavel");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiimportalinharesponsavelmeievento.php")==true){
@@ -122,12 +122,12 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

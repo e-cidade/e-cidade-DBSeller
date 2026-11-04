@@ -113,10 +113,8 @@ class HabilidadeDesenvolvidaService
                     "codigosReferencial" => []
                 ];
             }
-
             $habilidadesSalvar[$key]->codigosReferencial[] = $habilidadeReferencial->getCodigo();
         }
-
         foreach ($habilidadesSalvar as $habilidade) {
             $habilidadeSalva =  $this->salvarHabilidade($habilidade->codigo, $conteudoDesenvolvido, $disciplinaBncc);
             foreach ($habilidade->codigosReferencial as $codigo) {

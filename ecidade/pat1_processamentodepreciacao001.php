@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -138,7 +138,7 @@ $iAnoSessao = db_getsession("DB_anousu");
 	   * Verifica se o mes disponível é 0. Caso seja as depreciações já foram realizadas para o ano.
 	   */
 	  if (oRetorno.iMesDisponivel == 0) {
-		  
+
 			alert(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.depreciacao_ja_executada'));
 	  }
 	  if (oRetorno.message != "") {
@@ -187,24 +187,24 @@ $iAnoSessao = db_getsession("DB_anousu");
   });
 
   function js_executaProcessamentoAutomatico() {
+      if (!confirm(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.deseja_executar_processamento'))) {
+          return false;
+      }
 
-    if (!confirm(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.deseja_executar_processamento'))) {
-			return false;
-    }
-		js_divCarregando(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.executando_depreciacao'), "msgBox");
+      js_divCarregando(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.executando_depreciacao'), "msgBox");
 
-		var oParam           = new Object();
-		oParam.exec 				 = "executaDepreciacaoAutomatico";
-		oParam.iMesProcessar = $F("iMes");
-		oParam.iAnoSessao    = <?=$iAnoSessao;?>;
+      var oParam           = new Object();
+      oParam.exec 		   = "executaDepreciacaoAutomatico";
+      oParam.iMesProcessar = $F("iMes");
+      oParam.iAnoSessao    = <?=$iAnoSessao;?>;
 
-		var oAjax = new Ajax.Request(sUrlRPC,
-        												 {method: 'post',
-      													  asynchronous: false,
-      													  parameters: 'json='+Object.toJSON(oParam),
-      													  onComplete: js_retornoExecutaProcessamentoAutomatico
-	                               }
-    														);
+      var oAjax = new Ajax.Request(sUrlRPC,
+          {
+              method: 'post',
+              parameters: 'json='+Object.toJSON(oParam),
+              onComplete: js_retornoExecutaProcessamentoAutomatico
+          }
+      );
   }
 
   function js_retornoExecutaProcessamentoAutomatico (oAjax) {
@@ -364,7 +364,7 @@ $iAnoSessao = db_getsession("DB_anousu");
 		var oParam           = new Object();
 		oParam.exec 			   = "getItensProcessamentoManual";
 		oParam.iMesProcessar = $F('iMes');
-		
+
 	  js_divCarregando(_M('patrimonial.patrimonio.pat1_processamentodepreciacao001.buscando_bens'), "msgBox");
 		var oAjax = new Ajax.Request(sUrlRPC,
                         				 {method: 'post',

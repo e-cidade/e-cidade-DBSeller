@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int p61_codandam
  * @property int p61_codproc
  * @property int p61_id_usuario
- * @property date p61_dtandam
+ * @property string p61_dtandam
  * @property string p61_despacho
  * @property int p61_coddepto
  * @property boolean p61_publico
@@ -24,12 +24,14 @@ class ProcessoAndamento extends Model
     public $timestamps = false;
 
     /**
-     * @param int $p61_codandam
-     * @return this
+     * @param  int  $p61_codandam
+     *
+     * @return ProcessoAndamento
      */
     public function setCodigo($p61_codandam)
     {
         $this->p61_codandam = $p61_codandam;
+
         return $this;
     }
 
@@ -42,12 +44,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param int $p61_codproc
-     * @return this
+     * @param  int  $p61_codproc
+     *
+     * @return ProcessoAndamento
      */
     public function setProcesso($p61_codproc)
     {
         $this->p61_codproc = $p61_codproc;
+
         return $this;
     }
 
@@ -60,12 +64,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param int $p61_id_usuario
-     * @return this
+     * @param  int  $p61_id_usuario
+     *
+     * @return ProcessoAndamento
      */
     public function setUsuario($p61_id_usuario)
     {
         $this->p61_id_usuario = $p61_id_usuario;
+
         return $this;
     }
 
@@ -78,12 +84,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param date $p61_dtandam
-     * @return this
+     * @param  date  $p61_dtandam
+     *
+     * @return ProcessoAndamento
      */
     public function setData($p61_dtandam)
     {
         $this->p61_dtandam = $p61_dtandam;
+
         return $this;
     }
 
@@ -96,12 +104,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param string $p61_despacho
-     * @return this
+     * @param  string  $p61_despacho
+     *
+     * @return ProcessoAndamento
      */
     public function setDespacho($p61_despacho)
     {
         $this->p61_despacho = $p61_despacho;
+
         return $this;
     }
 
@@ -114,12 +124,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param int $p61_coddepto
-     * @return this
+     * @param  int  $p61_coddepto
+     *
+     * @return ProcessoAndamento
      */
     public function setDepartamento($p61_coddepto)
     {
         $this->p61_coddepto = $p61_coddepto;
+
         return $this;
     }
 
@@ -132,12 +144,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param boolean $p61_publico
-     * @return this
+     * @param  boolean  $p61_publico
+     *
+     * @return ProcessoAndamento
      */
     public function setPublico($p61_publico)
     {
         $this->p61_publico = $p61_publico;
+
         return $this;
     }
 
@@ -150,12 +164,14 @@ class ProcessoAndamento extends Model
     }
 
     /**
-     * @param string $p61_hora
-     * @return this
+     * @param  string  $p61_hora
+     *
+     * @return ProcessoAndamento
      */
     public function setHora($p61_hora)
     {
         $this->p61_hora = $p61_hora;
+
         return $this;
     }
 
@@ -165,5 +181,22 @@ class ProcessoAndamento extends Model
     public function getHora()
     {
         return $this->p61_hora;
+    }
+
+    public function despachos()
+    {
+        return $this->hasMany(
+            AndamentoProcessoInterno::class,
+            "p78_codandam",
+            "p61_codandam"
+        );
+    }
+
+    /**
+     * @return AndamentoProcessoInterno|null
+     */
+    public function utlimoDespacho()
+    {
+        return $this->despachos->orderBy("p78_sequencial")->get()->last();
     }
 }

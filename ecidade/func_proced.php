@@ -55,7 +55,7 @@ $clproced->rotulo->label("v03_descr");
               <?=$Lv03_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("v03_codigo",4,$Iv03_codigo,true,"text",4,"","chave_v03_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clproced->rotulo->label("v03_descr");
               <?=$Lv03_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("v03_descr",20,$Iv03_descr,true,"text",4,"","chave_v03_descr");
 		       ?>
             </td>

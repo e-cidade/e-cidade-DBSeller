@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ if(isset($opcao) && $opcao == "excluir"){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('at05_seq',4,$Iat05_seq,true,'hidden',$db_opcao,"")
 ?>
   <tr>
@@ -55,20 +55,20 @@ db_input('at05_seq',4,$Iat05_seq,true,'hidden',$db_opcao,"")
     <table border="0">
     <tr>
     <td>
-<?
+<?php
 db_input('at05_codatend',6,$Iat05_codatend,true,'hidden',3," onchange='js_pesquisaat05_codatend(false);'")
 ?>
-       <?
+       <?php
 db_input('at02_codcli',6,$Iat02_codcli,true,'hidden',3,'')
        ?>
-<?
+<?php
 db_selectrecord('at05_tipo',($clatenditemtipo->sql_record($clatenditemtipo->sql_query("","*"))),1,$db_opcao, " ","","","","js_datavenc(this.value)");
 ?>
     </td>
     <td>
     
 <div style="position:relative;visibility:visible;width:300px;height:20px" id="data">
-<?
+<?php
 echo $Lat05_data;
 if(empty($at05_data_dia) && $db_opcao == 1){
   $at05_data_dia = date("d",db_getsession("DB_datausu"));
@@ -93,7 +93,7 @@ function js_datavenc(val){
   }
 }
 </script>
-<?
+<?php
 if($db_opcao == 2){
   echo "<script>js_datavenc(document.form1.at05_tipo.value)</script>";  
 }
@@ -108,7 +108,7 @@ if($db_opcao == 2){
        <?=@$Lat05_solicitado?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at05_solicitado',3,50,$Iat05_solicitado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -118,7 +118,7 @@ db_textarea('at05_solicitado',3,50,$Iat05_solicitado,true,'text',$db_opcao,"")
        <?=@$Lat05_feito?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
        <?=@$Lat05_perc?>
     </td>
     <td> 
-<?
+<?php
   $matriz = array("0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
@@ -151,7 +151,7 @@ db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td colspan="2" align="top">
-   <?
+   <?php
     $chavepri= array("at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="at05_seq,at05_codatend,at05_solicitado,at05_feito";
@@ -198,7 +198,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_atenditem.hide();
 }
 </script>
-<?
+<?php
 if(isset($at05_codatend) && $at05_codatend != ""){
   echo "<script>js_OpenJanelaIframe('','db_iframe_atendimento','func_atendimento.php?pesquisa_chave=$at05_codatend&funcao_js=parent.js_mostraatendimento','Pesquisa',false);</script>";
 }

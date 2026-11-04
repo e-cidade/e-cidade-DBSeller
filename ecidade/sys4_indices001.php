@@ -170,11 +170,11 @@ $nomearq = pg_result($nomearq, 0, 0);
                         $rsCodigoIndice = db_query("select nextval('db_sysindices_codind_seq') as codigo");
                         $iCodigoIndice = db_utils::fieldsMemory($rsCodigoIndice, 0)->codigo;
                         db_query("insert into db_sysindices values({$iCodigoIndice},'{$nome_ind}',{$tabela},'{$campounico}')") or die("Erro(94) inserindo em db_sysindices");
-                        $result = db_query("select codind 
-                           from db_sysindices 
+                        $result = db_query("select codind
+                           from db_sysindices
                            where nomeind = '$nome_ind'") or die("Erro(97) selecionando db_sysindices");
                         $ind = pg_result($result, 0, 0);
-                        $alt_ind = split("\r\n", $alt_ind);
+                        $alt_ind =explode("\r\n", $alt_ind);
                         for ($i = 0; $i < sizeof($alt_ind) - 1; $i++) {
                             if ($alt_ind[$i] != "" && $alt_ind[$i] != " " && $alt_ind[$i] != "  ") {
                                 $alt_ind[$i] = trim(str_replace("#", "", $alt_ind[$i]));
@@ -194,7 +194,7 @@ $nomearq = pg_result($nomearq, 0, 0);
                         db_query("BEGIN");
                         db_query("update db_sysindices set nomeind = '$nome_ind',campounico = '$campounico' where codind = $ind") or die("Erro(111) atualizando db_sysindices");
                         db_query("delete from db_syscadind where codind = $ind") or die("Erro(112) excluindo db_syscadind");
-                        $alt_ind = split("\r\n", $alt_ind);
+                        $alt_ind =explode("\r\n", $alt_ind);
                         for ($i = 0; $i < sizeof($alt_ind) - 1; $i++) {
                             if ($alt_ind[$i] != "" && $alt_ind[$i] != " " && $alt_ind[$i] != "  ") {
                                 $result = db_query("
@@ -203,7 +203,7 @@ $nomearq = pg_result($nomearq, 0, 0);
 					where nomecam = '$alt_ind[$i]'");
                                 $s = $i + 1;
                                 $result = db_query($conn, "
-					insert into db_syscadind 
+					insert into db_syscadind
 					values($ind," . pg_result(
                                     $result,
                                     0,

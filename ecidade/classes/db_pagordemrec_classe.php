@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemrec
-class cl_pagordemrec { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e52_codord = 0; 
-   var $e52_receit = 0; 
-   var $e52_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pagordemrec {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e52_codord = 0;
+   var $e52_receit = 0;
+   var $e52_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e52_codord = int4 = Ordem 
-                 e52_receit = int4 = codigo da receita 
-                 e52_valor = float8 = Valor 
+                 e52_codord = int4 = Ordem
+                 e52_receit = int4 = codigo da receita
+                 e52_valor = float8 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_pagordemrec() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pagordemrec"); 
+     $this->rotulo = new rotulo("pagordemrec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_pagordemrec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e52_codord = ($this->e52_codord == ""?@$GLOBALS["HTTP_POST_VARS"]["e52_codord"]:$this->e52_codord);
        $this->e52_receit = ($this->e52_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["e52_receit"]:$this->e52_receit);
@@ -78,9 +78,9 @@ class cl_pagordemrec {
      }
    }
    // funcao para inclusao
-   function incluir ($e52_codord,$e52_receit){ 
+   public function incluir ($e52_codord,$e52_receit){
       $this->atualizacampos();
-     if($this->e52_valor == null ){ 
+     if($this->e52_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "e52_valor";
        $this->erro_banco = "";
@@ -89,9 +89,9 @@ class cl_pagordemrec {
        $this->erro_status = "0";
        return false;
      }
-       $this->e52_codord = $e52_codord; 
-       $this->e52_receit = $e52_receit; 
-     if(($this->e52_codord == null) || ($this->e52_codord == "") ){ 
+       $this->e52_codord = $e52_codord;
+       $this->e52_receit = $e52_receit;
+     if(($this->e52_codord == null) || ($this->e52_codord == "") ){
        $this->erro_sql = " Campo e52_codord nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -99,7 +99,7 @@ class cl_pagordemrec {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->e52_receit == null) || ($this->e52_receit == "") ){ 
+     if(($this->e52_receit == null) || ($this->e52_receit == "") ){
        $this->erro_sql = " Campo e52_receit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -108,17 +108,17 @@ class cl_pagordemrec {
        return false;
      }
      $sql = "insert into pagordemrec(
-                                       e52_codord 
-                                      ,e52_receit 
-                                      ,e52_valor 
+                                       e52_codord
+                                      ,e52_receit
+                                      ,e52_valor
                        )
                 values (
-                                $this->e52_codord 
-                               ,$this->e52_receit 
-                               ,$this->e52_valor 
+                                $this->e52_codord
+                               ,$this->e52_receit
+                               ,$this->e52_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Receita na ordem de pagamento ($this->e52_codord."-".$this->e52_receit) nao Incluído. Inclusao Abortada.";
@@ -153,16 +153,16 @@ class cl_pagordemrec {
        $resac = db_query("insert into db_acount values($acount,910,5741,'','".AddSlashes(pg_result($resaco,0,'e52_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e52_codord=null,$e52_receit=null) { 
+   public function alterar ($e52_codord=null,$e52_receit=null) {
       $this->atualizacampos();
      $sql = " update pagordemrec set ";
      $virgula = "";
-     if(trim($this->e52_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_codord"])){ 
+     if(trim($this->e52_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_codord"])){
        $sql  .= $virgula." e52_codord = $this->e52_codord ";
        $virgula = ",";
-       if(trim($this->e52_codord) == null ){ 
+       if(trim($this->e52_codord) == null ){
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "e52_codord";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_pagordemrec {
          return false;
        }
      }
-     if(trim($this->e52_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_receit"])){ 
+     if(trim($this->e52_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_receit"])){
        $sql  .= $virgula." e52_receit = $this->e52_receit ";
        $virgula = ",";
-       if(trim($this->e52_receit) == null ){ 
+       if(trim($this->e52_receit) == null ){
          $this->erro_sql = " Campo codigo da receita nao Informado.";
          $this->erro_campo = "e52_receit";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_pagordemrec {
          return false;
        }
      }
-     if(trim($this->e52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_valor"])){ 
+     if(trim($this->e52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_valor"])){
        $sql  .= $virgula." e52_valor = $this->e52_valor ";
        $virgula = ",";
-       if(trim($this->e52_valor) == null ){ 
+       if(trim($this->e52_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "e52_valor";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_pagordemrec {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Receita na ordem de pagamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e52_codord."-".$this->e52_receit;
@@ -250,14 +250,14 @@ class cl_pagordemrec {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e52_codord=null,$e52_receit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e52_codord=null,$e52_receit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e52_codord,$e52_receit));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -292,7 +292,7 @@ class cl_pagordemrec {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Receita na ordem de pagamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e52_codord."-".$e52_receit;
@@ -320,11 +320,11 @@ class cl_pagordemrec {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,10 +346,10 @@ class cl_pagordemrec {
       }
      return $result;
    }
-   function sql_query ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -366,23 +366,23 @@ class cl_pagordemrec {
      $sql2 = "";
      if($dbwhere==""){
        if($e52_codord!=null ){
-         $sql2 .= " where pagordemrec.e52_codord = $e52_codord "; 
-       } 
+         $sql2 .= " where pagordemrec.e52_codord = $e52_codord ";
+       }
        if($e52_receit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pagordemrec.e52_receit = $e52_receit "; 
-       } 
+         }
+         $sql2 .= " pagordemrec.e52_receit = $e52_receit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,10 +391,10 @@ class cl_pagordemrec {
      }
      return $sql;
   }
-   function sql_query_file ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,23 +407,23 @@ class cl_pagordemrec {
      $sql2 = "";
      if($dbwhere==""){
        if($e52_codord!=null ){
-         $sql2 .= " where pagordemrec.e52_codord = $e52_codord "; 
-       } 
+         $sql2 .= " where pagordemrec.e52_codord = $e52_codord ";
+       }
        if($e52_receit!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pagordemrec.e52_receit = $e52_receit "; 
-       } 
+         }
+         $sql2 .= " pagordemrec.e52_receit = $e52_receit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

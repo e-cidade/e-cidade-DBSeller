@@ -202,13 +202,13 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
       <table id="tabela_construcoes">
         <tr>
           <td nowrap title="<?= $Tob08_codobra ?>">
-              <?
+              <?php
               db_input('ob08_codconstr', 10, $Iob08_codconstr, true, 'hidden', 3, "");
               db_ancora($Lob08_codobra, "js_pesquisaob08_codobra(true);", 3);
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob08_codobra', 10, $Iob08_codobra, true, 'text', 3,
                 " onchange='js_pesquisaob08_codobra(false);'");
               db_input('ob01_nomeobra', 50, $Iob01_nomeobra, true, 'text', 3, '')
@@ -220,7 +220,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob08_area ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob08_area', 10, $Iob08_area, true, 'text', $iDBOpcao_area,
                 " onkeypress='return validaMonetario(this, event)';")
               ?>
@@ -229,7 +229,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
 
         <tr>
           <td nowrap title="<?= $Tob08_area ?>">
-              <? db_ancora("<b>Caracteristicas:</b> ", "js_caracteristicasConstrucao();", $iDBOpcao); ?>
+              <?php db_ancora("<b>Caracteristicas:</b> ", "js_caracteristicasConstrucao();", $iDBOpcao); ?>
           </td>
           <td>
             &nbsp;
@@ -241,7 +241,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob08_ocupacao ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_ocupacao", $rsCaracterOcupacao, true, $iDBOpcao, "", "ob08_ocupacao");
               ?>
           </td>
@@ -251,7 +251,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob08_tipoconstr ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_tipoconstr", $rsCaracterConstrucao, true, $iDBOpcao, "", "ob08_tipoconstr");
               ?>
           </td>
@@ -261,19 +261,19 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob08_tipolanc ?>
           </td>
           <td>
-              <?
+              <?php
               db_selectrecord("ob08_tipolanc", $rsCaracterLancamento, true, $iDBOpcao, "", "ob08_tipolanc");
               ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?= $Tob07_lograd ?>">
-              <?
+              <?php
               db_ancora($Lob07_lograd, "js_pesquisaob07_lograd(true);", $iDBOpcao);
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_lograd', 10, $Iob07_lograd, true, 'text', (isset($oObras) && $oObras->ob01_regular == "f" ? $iDBOpcao : 3),
                 " onchange='js_pesquisaob07_lograd(false);'");
               db_input('j14_nome', 50, $Ij14_nome, true, 'text', 3, '')
@@ -286,7 +286,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_numero ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_numero', 10, $Iob07_numero, true, 'text', $iDBOpcao, "");
               ?>
           </td>
@@ -297,7 +297,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_compl ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_compl', 63, $Iob07_compl, true, 'text', $iDBOpcao, "");
               ?>
           </td>
@@ -305,12 +305,12 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
 
         <tr>
           <td nowrap title="<?= $Tob07_bairro ?>">
-              <?
+              <?php
               db_ancora($Lob07_bairro, "js_pesquisaob07_bairro(true);", $iDBOpcao);
               ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_bairro', 10, $Iob07_bairro, true, 'text', $iDBOpcao,
                 " onchange='js_pesquisaob07_bairro(false);'");
               db_input('j13_descr', 50, $Ij13_descr, true, 'text', 3, '');
@@ -323,7 +323,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_areaatual ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_areaatual', 10, $Iob07_areaatual, true, 'text', 3);
               ?>
           </td>
@@ -355,7 +355,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_unidades ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_unidades', 10, $Iob07_unidades, true, 'text', $iDBOpcao, "");
               ?>
           </td>
@@ -366,7 +366,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_pavimentos ?>
           </td>
           <td>
-              <?
+              <?php
               db_input('ob07_pavimentos', 10, $Iob07_pavimentos, true, 'text', $iDBOpcao, "");
               ?>
           </td>
@@ -377,7 +377,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
               <?= $Lob07_inicio ?>
           </td>
           <td>
-              <?
+              <?php
               $ob07_inicio_dia = isset($ob07_inicio_dia) ? $ob07_inicio_dia : '';
               $ob07_inicio_mes = isset($ob07_inicio_mes) ? $ob07_inicio_mes : '';
               $ob07_inicio_ano = isset($ob07_inicio_ano) ? $ob07_inicio_ano : '';
@@ -436,7 +436,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
   function js_pesquisaob07_lograd(mostra) {
 
     if(mostra) {
-        <?
+        <?php
         if (isset($oObras) && $oObras->ob01_regular == "t") {
             echo "js_OpenJanelaIframe('','db_iframe_ruas','func_ruasobras.php?pesquisa_chave={$iMatricula}&funcao_js=parent.js_mostraruas2|j36_codigo|j14_nome|j13_codi|j13_descr','Pesquisa',true);";
         } else {
@@ -535,7 +535,7 @@ $lPermiteExclusao = !empty($oObrasConstr) ? true : false;
 
   function js_preenchepesquisa(chave) {
     db_iframe_obrasconstr.hide();
-      <?
+      <?php
       if ($iDBOpcao != 1) {
           echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }

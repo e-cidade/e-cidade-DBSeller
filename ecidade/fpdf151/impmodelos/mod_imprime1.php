@@ -78,8 +78,8 @@ $this->objpdf->Text(52 - $iAjusteColunaX, $y + 6, $this->descr2); // numpre
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(74 - $iAjusteColunaX, $y + 3, $this->titulo5); // Parcela
-$this->objpdf->SetFont('Arial', 'B', 7);
-$this->objpdf->Text(75 - $iAjusteColunaX, $y + 6, $this->descr5); // Parcela inicial e total de parcelas
+$this->objpdf->SetFont('Arial', 'B', 9.5);
+$this->objpdf->Text(71 - $iAjusteColunaX, $y + 6, $this->descr5); // Parcela inicial e total de parcelas
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(13 - $iAjusteColunaX, $y + 10, $this->titulo3); // contribuinte/endereço
@@ -91,8 +91,9 @@ $this->descr3_2 . (!empty($this->descr3_3) ? " - " . $this->descr3_3 : "")); // 
 $this->objpdf->SetFont('Arial', 'B', 7);
 $this->objpdf->Text(12 - $iAjusteColunaX, $y + 19, substr($this->descr17, 0, 75)); // SQL
 
-$this->objpdf->SetFont('Arial', '', 5);
-$this->objpdf->Text(13 - $iAjusteColunaX, $y + 23, $this->titulo4 . $this->descr4_1); // Instruções
+
+$this->objpdf->SetFont('Arial', 'B', 6);
+$this->objpdf->Text(12 - $iAjusteColunaX, $y + 23, $this->titulo4 .' '. $this->descr4_1); // Instruções
 
 $this->objpdf->SetFont('Arial', 'B', 7);
 $xx = $this->objpdf->getx();
@@ -101,7 +102,7 @@ $yy = $this->objpdf->gety();
 $this->objpdf->setleftmargin(10 - $iAjusteColunaX);
 $this->objpdf->setrightmargin(120 - $iAjusteColunaX);
 $this->objpdf->sety($y + 23);
-$this->objpdf->SetFont('Arial', 'B', 6);
+$this->objpdf->SetFont('Arial', 'B', 5);
 
 $this->objpdf->multicell(68 - $iAjusteColunaX, 2.5, $this->descr4_2); // Instruções 1 - linha 2
 $this->objpdf->multicell(68 - $iAjusteColunaX, 2.5, $this->descr12_2); // Instruções 1 - linha 2
@@ -151,8 +152,8 @@ $this->objpdf->Text(138 - $iAjusteColunaX, $y + 6, $this->descr9); // numpre
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(161 - $iAjusteColunaX, $y + 3, $this->titulo10); // parcela
-$this->objpdf->SetFont('Arial', 'B', 7);
-$this->objpdf->Text(162 - $iAjusteColunaX, $y + 6, $this->descr10); // parcela e total das parcelas
+$this->objpdf->SetFont('Arial', 'B', 10);
+$this->objpdf->Text(159 - $iAjusteColunaX, $y + 6, $this->descr10); // parcela e total das parcelas
 
 $this->objpdf->SetFont('Arial', '', 5);
 $this->objpdf->Text(180 - $iAjusteColunaX, $y + 3, $this->titulo13); // livre
@@ -180,7 +181,7 @@ $this->objpdf->setrightmargin(2);
 $this->objpdf->sety($y + 25);
 
 // mensagem de instruções da guia prefeitura
-$this->objpdf->SetFont('Arial', 'B', 6);
+$this->objpdf->SetFont('Arial', 'B', 5);
 $this->objpdf->multicell(100 - $iAjusteColunaX, 2, substr($this->descr12_1, 0, 274)); // Instruções 2 - linha 1
 $this->objpdf->multicell(100 - $iAjusteColunaX, 2, $this->descr12_2); // Instruções 2 - linha 2
 $this->objpdf->setxy($xx, $yy);
@@ -204,7 +205,8 @@ $this->objpdf->SetFillColor(0, 0, 0);
 $this->objpdf->SetFont('Arial', '', 10);
 
 $this->objpdf->SetFont('Arial', '', 4);
-$this->objpdf->TextWithDirection(2, $y + 30, $this->texto, 'U'); // texto no canhoto do carne
+$this->objpdf->TextWithDirection(2, $y + 54, $this->texto, 'U'); // texto no canhoto do carne
+$this->objpdf->SetFont('Arial', '', 4);
 $this->objpdf->TextWithDirection(85 - $iAjusteColunaX, $y + 35, 'A U T E N T I C A C A O   M E C Â N I C A',
   'U'); // texto no canhoto do carne
 $this->objpdf->TextWithDirection(203 - $iAjusteColunaX, $y + 35, 'A U T E N T I C A C A O   M E C Â N I C A',

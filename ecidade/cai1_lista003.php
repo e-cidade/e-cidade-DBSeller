@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -135,12 +135,12 @@ function js_emite(){
     <table class="form-container">
       <tr>
         <td title="<?=@$Tk60_codigo?>" >
-          <?
+          <?php
   	        db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
   	        db_input('k60_codigo',4,$Ik60_codigo,true,'text',4,"onchange='js_pesquisalista(false);'");
             db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
           ?>
@@ -150,7 +150,7 @@ function js_emite(){
   </fieldset>
   <input name="excluir" type="submit" id="excluir" value="Excluir" >
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -190,7 +190,7 @@ function js_mostralista1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

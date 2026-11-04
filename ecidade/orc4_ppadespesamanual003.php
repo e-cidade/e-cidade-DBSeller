@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ if (isset($oGet->chavepesquisa)) {
   </tr>
 </table>
 
-<?
+<?php
  require_once(modification("forms/db_frmppadotacaoestimativa.php"));
  if ($lSqlErro) {
    db_msgbox($sErroMsg);

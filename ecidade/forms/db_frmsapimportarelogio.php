@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,11 +45,11 @@ if(!isset($mesusu)){
       <strong>Ano / Mês :&nbsp;&nbsp;</strong> 
     </td>
     <td>
-      <?
+      <?php
       db_input('anousu', 4, $anousu, true, 'text', 1, "");
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input('mesusu', 2, $mesusu, true, 'text', 1, "");
       ?>
     </td>
@@ -60,7 +60,7 @@ if(!isset($mesusu)){
   </tr>
   <tr>
 	<td colspan="2" nowrap align='left'>
-<?
+<?php
 
 db_input('r56_dirarq',49,'' ,true,'file',1,"onblur='document.form1.r54_codeve.focus();'");
 db_input('texto',20,0,true,'hidden',3);

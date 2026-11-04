@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -98,7 +98,7 @@ if(isset($incluir) || isset($novasrubricas)){
       }
     }
   }else{
-    $arr_codigos = split(",",$novasrubricas);
+    $arr_codigos =explode(",",$novasrubricas);
 
     for($i=0; $i<count($arr_codigos); $i++){
       $rubricainclui = $arr_codigos[$i];
@@ -281,12 +281,12 @@ if(isset($incluir) || isset($novasrubricas)){
 <link href="estilos/DBFormularios.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<?
+	<?php
 	  include(modification("forms/db_frmrhrubricas.php"));
 	?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($novasrubricas)){
   if($calc1 == "" && $calc2 == "" && $calc3 == ""){
     if($sqlerro==true){

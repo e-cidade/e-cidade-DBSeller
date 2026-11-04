@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,16 +56,16 @@ $clpcmater->rotulo->label("pc01_descrmater");
     <form name="form1" method="post" action="" >
    <tr> 
       <td width="4%" align="right" nowrap title="<?=$Tpc01_codmater?>"><?=$Lpc01_codmater?></td>
-      <td width="96%" align="left" nowrap><?  db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"","chave_pc01_codmater"); ?> </td>
+      <td width="96%" align="left" nowrap><?php  db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"","chave_pc01_codmater"); ?> </td>
    </tr>
    <tr> 
       <td width="4%" align="right" nowrap title="<?=$Tpc01_descrmater?>"> <?=$Lpc01_descrmater?></td>
-      <td width="96%" align="left" nowrap><? db_input("pc01_descrmater",80,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
+      <td width="96%" align="left" nowrap><?php db_input("pc01_descrmater",80,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
    </tr>
    <tr> 
       <td width="4%" align="right" nowrap title="Selecionar todos, ativos ou inativos"><b>Seleção por:</b></td>
       <td width="96%" align="left" nowrap>
-      <?
+      <?php
       if(!isset($opcao)){
 	    $opcao = "f";
       }
@@ -90,7 +90,7 @@ $clpcmater->rotulo->label("pc01_descrmater");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
        
        //echo($clpcmaterele->sql_query_file(null,null,"pc07_codmater as pc01_codmater","pc07_codmater"," pc07_codele=$o56_codele "));exit;
       $where_ativo = "";
@@ -185,7 +185,7 @@ $clpcmater->rotulo->label("pc01_descrmater");
 function js_reload(){
   document.form1.submit();
 }
-<?
+<?php
 // CADASTRO DE PCMATER
 // Quando o usuário for incluir um item, aparecerá a func_pcmater.php para caso ele queira pegar dados de um item
 // já criado... EX.:o usuário ja tem um cadastro de caneta preta com Elemens,grupo e sub-grupo... Para o cadastro

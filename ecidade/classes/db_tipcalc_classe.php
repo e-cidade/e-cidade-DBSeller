@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,13 +88,13 @@ class cl_tipcalc {
                  q81_excedenteativ = float8 = Excedente por atividade 
                  ";
    //funcao construtor da classe 
-   function cl_tipcalc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -103,7 +103,7 @@ class cl_tipcalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q81_codigo = ($this->q81_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q81_codigo"]:$this->q81_codigo);
        $this->q81_descr = ($this->q81_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["q81_descr"]:$this->q81_descr);
@@ -131,7 +131,7 @@ class cl_tipcalc {
      }
    }
    // funcao para inclusao
-   function incluir ($q81_codigo){ 
+   public function incluir ($q81_codigo){ 
       $this->atualizacampos();
      if($this->q81_descr == null ){ 
        $this->erro_sql = " Campo descricao nao Informado.";
@@ -446,7 +446,7 @@ class cl_tipcalc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q81_codigo=null) { 
+   public function alterar ($q81_codigo=null) { 
       $this->atualizacampos();
      $sql = " update tipcalc set ";
      $virgula = "";
@@ -811,7 +811,7 @@ class cl_tipcalc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q81_codigo=null,$dbwhere=null) { 
+   public function excluir ($q81_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q81_codigo));
      }else{ 
@@ -892,7 +892,7 @@ class cl_tipcalc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -915,7 +915,7 @@ class cl_tipcalc {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -960,7 +960,7 @@ class cl_tipcalc {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -995,7 +995,7 @@ class cl_tipcalc {
   }
 
 
-   function sql_query_alt ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_alt ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -1035,7 +1035,7 @@ class cl_tipcalc {
      return $sql;
   }
   
-   function sql_query_virada_issqn ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere="") { 
+   public function sql_query_virada_issqn ( $q81_codigo=null,$campos="*",$ordem=null,$dbwhere="") { 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -1076,7 +1076,7 @@ class cl_tipcalc {
   }
   
   
-  function sql_dados_calculo($iAtividade, $iAno) {
+  public function sql_dados_calculo($iAtividade, $iAno) {
      
       $sCampos  = "tipcalc.q81_codigo     as tipocalculo,                       ";
       $sCampos .= "tipcalc.q81_cadcalc    as calculo,                           ";                                                      

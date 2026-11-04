@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
+
 /**
  * Class BalancoFinanceiroDCASP2015
  */
@@ -48,43 +50,43 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      *
      * @var PDFDocument
      */
-    private $oPdf;
+    protected $oPdf;
 
     /**
      * Nome da instituição a ser exibida no relatório.
      *
      * @var string
      */
-    private $sDescricaoInstituicao;
+    protected $sDescricaoInstituicao;
 
     /**
      * Nome do período a ser exibido no relatório.
      *
      * @var string
      */
-    private $sDescricaoPeriodo;
+    protected $sDescricaoPeriodo;
 
     /**
      * Determina se deve exibir as informações do exercício anterior.
      *
      * @var boolean
      */
-    private $lExibirExercicioAnterior = true;
+    protected $lExibirExercicioAnterior = true;
 
     /**
      * Linhas finais de cada seção. Utilizado somente para formatar a linha
      *
      * @var array
      */
-    private $aLinhasFinais = array(23, 46);
+    protected $aLinhasFinais = array(23, 46);
 
     /**
      * Linhas que podem ter Recursos, caso o relatório seja emitido
      * como analítico
      *
-     * @var array
+     * @var array<int,int>
      */
-    private $aLinhasComRecurso = array(4, 5, 6, 7, 8, 9, 27, 28, 29, 30, 31, 32);
+    protected $aLinhasComRecurso = array(4, 5, 6, 7, 8, 9, 27, 28, 29, 30, 31, 32, 33);
 
     /**
      * Tipo de impressão (Analítico ou Sintético)
@@ -92,17 +94,17 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      *
      * @var string
      */
-    private $sTipo;
+    protected $sTipo;
 
     /**
      * @var integer
      */
-    private $iAltura;
+    protected $iAltura;
 
     /**
      * @var integer
      */
-    private $iLargura;
+    protected $iLargura;
 
     /**
      * se deve imprimir o quadro auxiliar
@@ -156,17 +158,22 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $oDataFinalAnterior = clone $this->getDataFinal();
         $oDataFinalAnterior->modificarIntervalo('-1 year');
 
-        if ($this->sTipo == self::TIPO_ANALITICO) {
+        if ($this->sTipo == static::TIPO_ANALITICO) {
             foreach ($this->aLinhasComRecurso as $iLinha) {
                 foreach ($this->aLinhasConsistencia[$iLinha]->colunas as $oColuna) {
+                    $campoRecurso = 'o15_descr';
+                    if ($this->aLinhasConsistencia[$iLinha]->origem == OrigemDadosEnum::BALANCETE_DESPESA) {
+                        $campoRecurso = 'descricao';
+                    }
                     $oColuna->agrupar = (object)array(
                         'nome' => 'recursos',
                         'campo' => ($iLinha <= 9 ? 'o70_codigo' : 'o58_codigo'),
-                        'descricao' => 'o15_descr'
+                        'descricao' => $campoRecurso
                     );
                 }
             }
         }
+
 
         /**
          * Executa o Balancete da receita
@@ -193,6 +200,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
 
                 $this->limparEstruturaBalanceteReceita();
             }
+
 
             foreach ($this->aLinhasProcessarReceita as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
@@ -239,6 +247,8 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 $this->getDataInicial()->getDate(),
                 $this->getDataFinal()->getDate()
             );
+
+
             $this->limparEstruturaBalanceteDespesa();
 
             if ($this->lExibirExercicioAnterior) {
@@ -252,6 +262,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                     $oDataInicialAnterior->getDate(),
                     $oDataFinalAnterior->getDate()
                 );
+
                 $this->limparEstruturaBalanceteDespesa();
             }
 
@@ -264,7 +275,6 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                     $aColunas,
                     RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                 );
-
                 if ($this->lExibirExercicioAnterior) {
                     $aColunas = $this->getColunasPorLinha($oLinha, array(1));
                     RelatoriosLegaisBase::calcularValorDaLinha(
@@ -359,6 +369,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 $rsRestosPagarAnterior = db_query($sSqlRestosaPagar);
             }
 
+
             foreach ($this->aLinhasProcessarRestosPagar as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
 
@@ -388,7 +399,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         /**
          * Remove os recursos não informados
          */
-        if ($this->sTipo == self::TIPO_ANALITICO) {
+        if ($this->sTipo == static::TIPO_ANALITICO) {
             foreach ($this->aLinhasComRecurso as $iLinha) {
                 if (isset($this->aLinhasConsistencia[$iLinha]->recursos[0])) {
                     unset($this->aLinhasConsistencia[$iLinha]->recursos[0]);
@@ -412,7 +423,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $this->oPdf->addHeaderDescription("BALANÇO FINANCEIRO");
         $this->oPdf->addHeaderDescription("EXERCÍCIO : {$this->iAnoUsu}");
         $this->oPdf->addHeaderDescription("PERÍODO : {$this->sDescricaoPeriodo}");
-        $tipo = $this->sTipo == self::TIPO_ANALITICO ? "ANALÍTICO" : "SINTÉTICO";
+        $tipo = $this->sTipo == static::TIPO_ANALITICO ? "ANALÍTICO" : "SINTÉTICO";
         $this->oPdf->addHeaderDescription("TIPO : {$tipo}");
         $this->oPdf->AddPage();
 
@@ -536,7 +547,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
 
         if (in_array($oLinha->ordem, $this->aLinhasFinais)) {
             $this->iAltura -= 2;
-            if ($oLinha->ordem != self::LINHA_FINAL_DISPENDIOS) {
+            if ($oLinha->ordem != static::LINHA_FINAL_DISPENDIOS) {
                 $this->oPdf->Ln($this->iAltura);
             }
         }
@@ -550,7 +561,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      * @param stdClass $oLinha
      * @param stdClass $oRecurso
      */
-    private function escreverLinhaRecurso(stdClass $oLinha, stdClass $oRecurso)
+    protected function escreverLinhaRecurso(stdClass $oLinha, stdClass $oRecurso)
     {
         $nValorRecursoAtual = property_exists($oRecurso, 'vlrexatual') ? $oRecurso->vlrexatual : 0;
         $sExercicioAnterior = '-';
@@ -571,6 +582,15 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
             return;
         }
 
+
+        // Tratando a descrições muito longas com '...'
+
+        $larguraDescricao = $this->iLargura * 0.60;
+
+        if (strlen($sDescricao) > $larguraDescricao) {
+            $sDescricao = substr($sDescricao, 0, $larguraDescricao - 5) . '...';
+        }
+
         $this->oPdf->Cell($this->iLargura * 0.60, $this->iAltura, $sDescricao, $sBorda, 0, 'L');
         $this->oPdf->Cell($this->iLargura * 0.20, $this->iAltura, $sExercicioAtual, 'L' . $sBorda, 0, 'R');
         $this->oPdf->Cell($this->iLargura * 0.20, $this->iAltura, $sExercicioAnterior, 'L' . $sBorda, 1, 'R');
@@ -583,7 +603,9 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      */
     public function emitir()
     {
+
         $aDados = $this->getDados();
+
         $sNomeSecao = "INGRESSOS";
 
         $this->preparaCabecalho();
@@ -591,7 +613,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $this->adicionarPagina($sNomeSecao);
 
         foreach ($aDados as $oLinha) {
-            if ($oLinha->ordem == self::LINHA_INICIO_DISPENDIOS) {
+            if ($oLinha->ordem == static::LINHA_INICIO_DISPENDIOS) {
                 $sNomeSecao = "DISPÊNDIOS";
                 $this->escreverCabecalho($sNomeSecao);
             }
@@ -600,11 +622,12 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 $this->adicionarPagina($sNomeSecao);
             }
 
-            if ($oLinha->ordem == self::LINHA_FINAL_DISPENDIOS - 1 && $this->oPdf->getAvailHeight() < 58) {
+            if ($oLinha->ordem == static::LINHA_FINAL_DISPENDIOS - 1 && $this->oPdf->getAvailHeight() < 58) {
                 $this->adicionarPagina($sNomeSecao);
             }
 
             $this->escreverLinha($oLinha);
+
 
             if (isset($oLinha->recursos) && count($oLinha->recursos) > 0 &&
                 in_array($oLinha->ordem, $this->aLinhasComRecurso)) {
@@ -792,10 +815,10 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $this->oPdf->Cell($larguraDescricao, 8, "Especificação", 0, 0, 'C');
         $y = $this->oPdf->GetY();
         $x = $this->oPdf->GetX() + $larguraValor;
-        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Receita\nOrçamentaria\n(a)", 0,'C');
+        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Receita\nOrçamentaria\n(a)", 0, 'C');
         $this->oPdf->SetXY($x, $y);
         $x += $larguraValor;
-        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Dedução da\nReceita\nOrçamentaria (b)", 0,'C');
+        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Dedução da\nReceita\nOrçamentaria (b)", 0, 'C');
         $this->oPdf->SetXY($x, $y);
         $x += $larguraValor;
         $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Saldo\n(c) = (a-b)", 0, 'C');
@@ -803,10 +826,10 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $this->oPdf->SetXY($x, $y);
         $x += $larguraValor;
         // Exercício Anterior
-        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Receita\nOrçamentaria\n(d)", 0,'C');
+        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Receita\nOrçamentaria\n(d)", 0, 'C');
         $this->oPdf->SetXY($x, $y);
         $x += $larguraValor;
-        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Dedução da\nReceita\nOrçamentaria (e)", 0,'C');
+        $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Dedução da\nReceita\nOrçamentaria (e)", 0, 'C');
         $this->oPdf->SetXY($x, $y);
         $x += $larguraValor;
         $this->oPdf->MultiCell($larguraValor, $this->iAltura, "Saldo\n(f) = (d-e)", 0, 'C');

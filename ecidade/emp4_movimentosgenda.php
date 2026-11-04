@@ -54,104 +54,109 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td height="380" align="center" valign="middle" bgcolor="#CCCCCC">
-            <table>
-                <tr>
-                    <td align='center'>
-                        <input name="Fechar" type="button" id="fechar" value="Fechar"
-                               onClick="parent.db_iframe_cheque.hide();">
-                    </td>
-                </tr>
-                <tr style="<?= $displayEmpenhos ?>">
-                    <td>
-                        <fieldset>
-                            <legend>Pagamento Empenho</legend>
-                            <?php
-
-                            $dbwhere = " e80_instit = " . db_getsession("DB_instit");
-                            $dbwhere .= " and e60_numemp = $e60_numemp and k105_corgrupotipo = 1";
-                            $dbwhere .= " and e81_cancelado is null ";
-                            if (isset($e50_codord) && $e50_codord != '') {
-                                $dbwhere .= " and  e82_codord = $e50_codord ";
-                            }
-
-                            if (isset($e81_codmov) && !empty($e81_codmov)) {
-                                $dbwhere .= " and e81_codmov = {$e81_codmov}";
-                            }
-                            if ($apenasRetencoes) {
-                                $where .= " and false";
-                            }
-
-                            $sql = $clempagemov->sql_query_corgrupo(null,
-                                "e91_codcheque as DB_e91_codcheque,
-                                                     substr(k13_descr,0,30),
-                                                     corempagemovpagamento.k12_codmov as e81_codmov,
-                                                     substr(z01_nome,1,30),
-                                                     e83_conta,e83_descr,
-                                                     e91_cheque,
-                                                     corrente.k12_data,
-                                                     k105_corgrupotipo,
-                                                     (case when e91_valor is null then e81_valor  - fc_valorretencaomov(e81_codmov,true)
-                                                          else e91_valor end) as e81_valor,
-                                                     corrente.k12_valor",
-                                "", "$dbwhere");
-
-                            $result = $clempagemov->sql_record($sql);
-
-                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoEmpenho', array(), false);
-                            ?>
-                        </fieldset>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <fieldset>
-                            <legend>Retenções</legend>
-                            <?php
-
-                            /**
-                             * Consultamos as retencoes da ordem.
-                             */
-                            $dbwhere = " e80_instit = " . db_getsession("DB_instit");
-                            $dbwhere .= " and e60_numemp = $e60_numemp and corempagemov.k12_codmov is not null and k105_corgrupotipo = 2";
-                            $dbwhere .= " and e81_cancelado is null";
-                            if (isset($e50_codord) && $e50_codord != '') {
-                                $dbwhere .= " and  e82_codord = $e50_codord ";
-                            }
-
-                            if (isset($e81_codmov) && !empty($e81_codmov)) {
-                                $dbwhere .= " and e81_codmov = {$e81_codmov}";
-                            }
-
-                            $sql = $clempagemov->sql_query_corgrupo_retencoes(null,
-                                "e91_codcheque as DB_e91_codcheque,
-                                                        substr(k13_descr,0,30),
-                                                        e81_codmov,
-                                                        substr(z01_nome,1,30),
-                                                        e83_conta,
-                                                        e83_descr,
-                                                        e91_cheque,
-                                                        corrente.k12_data,
-                                                        k105_corgrupotipo,
-                                                        fc_valorretencaomov(e81_codmov,true) as e81_valor,
-                                                        fc_valorretencaomov(e81_codmov,true) as k12_valor",
-                                "",
-                                "$dbwhere ");
-
-                            $rsRetencao = $clempagemov->sql_record($sql);
-
-                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoRetecoes', array(), false);
-                            ?>
-                        </fieldset>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+<body>
+<div class="container">
+    <table>
+        <tr>
+            <td align='center'>
+                <input name="Fechar" type="button" id="fechar" value="Fechar"
+                       onClick="parent.db_iframe_cheque.hide();">
+            </td>
+        </tr>
+        <tr style="<?= $displayEmpenhos ?>">
+            <td>
+                <fieldset>
+                    <legend>Pagamento Empenho</legend>
+                    <?php
+                    $dbwhere = " e80_instit = " . db_getsession("DB_instit");
+                    $dbwhere .= " and e60_numemp = $e60_numemp and k105_corgrupotipo = 1";
+                    $dbwhere .= " and e81_cancelado is null ";
+                    //apenas movimentos que nao foram estornados
+                    $dbwhere .= " and not exists (select true 
+                                                    from corempagemovestorno 
+                                                         inner join corgrupocorrente on corgrupocorrente.k105_id = corempagemovestorno.k12_id 
+                                                                                    and corgrupocorrente.k105_data = corempagemovestorno.k12_data 
+                                                                                    and corgrupocorrente.k105_autent = corempagemovestorno.k12_autent 
+                                                   where corempagemovestorno.k12_codmov = empagemov.e81_codmov 
+                                                     and corgrupocorrente.k105_corgrupotipo = 4)";
+                    if (isset($e50_codord) && $e50_codord != '') {
+                        $dbwhere .= " and  e82_codord = $e50_codord ";
+                    }
+                    if (isset($e81_codmov) && !empty($e81_codmov)) {
+                        $dbwhere .= " and e81_codmov = {$e81_codmov}";
+                    }
+                    if ($apenasRetencoes) {
+                        $where .= " and false";
+                    }
+                    $sql = $clempagemov->sql_query_corgrupo(
+                        null,
+                        "distinct 
+                        e91_codcheque as DB_e91_codcheque,
+                         substr(k13_descr,0,30),
+                         corempagemovpagamento.k12_codmov as e81_codmov,
+                         substr(z01_nome,1,30),
+                         e83_conta,e83_descr,
+                         e91_cheque,
+                         corrente.k12_data,
+                         k105_corgrupotipo,
+                         (case 
+                            when e91_valor is null 
+                              then e81_valor - fc_valorretencaomov(e81_codmov,true)
+                            else e91_valor 
+                         end) as e81_valor,
+                         corrente.k12_valor",
+                        "",
+                        $dbwhere
+                    );
+                    $result = $clempagemov->sql_record($sql);
+                    db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoEmpenho', array(), false);
+                    ?>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>Retenções</legend>
+                    <?php
+                    /**
+                     * Consultamos as retencoes da ordem.
+                     */
+                    $dbwhere = " e80_instit = " . db_getsession("DB_instit");
+                    $dbwhere .= " and e60_numemp = $e60_numemp ";
+                    $dbwhere .= " and corempagemov.k12_codmov is not null ";
+                    $dbwhere .= " and k105_corgrupotipo = 2 ";
+                    $dbwhere .= " and e81_cancelado is null ";
+                    if (isset($e50_codord) && $e50_codord != '') {
+                        $dbwhere .= " and e82_codord = $e50_codord ";
+                    }
+                    if (isset($e81_codmov) && !empty($e81_codmov)) {
+                        $dbwhere .= " and e81_codmov = {$e81_codmov}";
+                    }
+                    $sql = $clempagemov->sql_query_corgrupo_retencoes(
+                        null,
+                        "e91_codcheque as DB_e91_codcheque,
+                         substr(k13_descr,0,30),
+                         e81_codmov,
+                         substr(z01_nome,1,30),
+                         e83_conta,
+                         e83_descr,
+                         e91_cheque,
+                         corrente.k12_data,
+                         k105_corgrupotipo,
+                         fc_valorretencaomov(e81_codmov,true) as e81_valor,
+                         fc_valorretencaomov(e81_codmov,true) as k12_valor",
+                        "",
+                        $dbwhere
+                    );
+                    $rsRetencao = $clempagemov->sql_record($sql);
+                    db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoRetecoes', array(), false);
+                    ?>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
 <script>

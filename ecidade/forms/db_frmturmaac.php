@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,6 +44,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
     db_fieldsmemory($result4,0);
   }
 }
+
 ?>
 <form name="form1" method="post" action="">
 <center>
@@ -53,9 +54,9 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_i_codigo?>
   </td>
   <td>
-   <?db_input('ed268_i_codigo',15,$Ied268_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed268_i_codigo',15,$Ied268_i_codigo,true,'text',3,"")?>
    <?=@$Led268_i_codigoinep?>
-   <?db_input('ed268_i_codigoinep',10,$Ied268_i_codigoinep,true,'text',$db_opcao,"")?>
+   <?php db_input('ed268_i_codigoinep',10,$Ied268_i_codigoinep,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -63,17 +64,17 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_c_descr?>
   </td>
   <td>
-   <?db_input('ed268_c_descr',80,$Ied268_c_descr,true,'text',$db_opcao,
+   <?php db_input('ed268_c_descr',80,$Ied268_c_descr,true,'text',$db_opcao,
                " onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed268_c_descr]','f','t',event);\"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted268_i_escola?>">
-   <?db_ancora(@$Led268_i_escola,"",3);?>
+   <?php db_ancora(@$Led268_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed268_i_escola',15,$Ied268_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed268_i_escola',15,$Ied268_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -83,7 +84,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_i_tipoatend?>
   </td>
   <td>
-   <?
+   <?php
    if (@$ed255_i_ativcomplementar == 3) {
      $x = array('5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE');
    }
@@ -105,7 +106,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <table width="100%">
     <tr>
      <td valign="top">
-      <?
+      <?php
       if (!isset($ed268_c_aee)) {
         $ed268_c_aee = "00000000000";
       }
@@ -155,7 +156,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_i_ativqtd?>
   </td>
   <td>
-   <?
+   <?php
    $x = array('1'=>'UMA VEZ POR SEMANA',
               '2'=>'DUAS VEZES POR SEMANA',
               '3'=>'TRÊS VEZES POR SEMANA',
@@ -168,32 +169,32 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted268_i_calendario?>">
-   <?db_ancora(@$Led268_i_calendario,"js_pesquisaed268_i_calendario(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led268_i_calendario,"js_pesquisaed268_i_calendario(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed268_i_calendario',15,$Ied268_i_calendario,true,'text',$db_opcao1,
+   <?php db_input('ed268_i_calendario',15,$Ied268_i_calendario,true,'text',$db_opcao1,
               " onchange='js_pesquisaed268_i_calendario(false);'")?>
-   <?db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
+   <?php db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted268_i_turno?>">
-   <?db_ancora(@$Led268_i_turno,"js_pesquisaed268_i_turno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led268_i_turno,"js_pesquisaed268_i_turno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed268_i_turno',15,$Ied268_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed268_i_turno(false);'")?>
-   <?db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
+   <?php db_input('ed268_i_turno',15,$Ied268_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed268_i_turno(false);'")?>
+   <?php db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted268_i_sala?>">
-   <?db_ancora(@$Led268_i_sala,"js_pesquisaed268_i_sala(true);",$db_opcao);?>
+   <?php db_ancora(@$Led268_i_sala,"js_pesquisaed268_i_sala(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed268_i_sala',15,$Ied268_i_sala,true,'text',$db_opcao," onchange='js_checaDependencia();'")?>
-   <?db_input('ed16_c_descr',20,@$Ied16_c_descr,true,'text',3,'')?>
+   <?php db_input('ed268_i_sala',15,$Ied268_i_sala,true,'text',$db_opcao," onchange='js_checaDependencia();'")?>
+   <?php db_input('ed16_c_descr',20,@$Ied16_c_descr,true,'text',3,'')?>
    <?=@$Led16_i_capacidade?>
-   <?db_input('ed16_i_capacidade',5,@$Ied16_i_capacidade,true,'text',3,'')?>
+   <?php db_input('ed16_i_capacidade',5,@$Ied16_i_capacidade,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -201,7 +202,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_i_numvagas?>
   </td>
   <td>
-   <?db_input('ed268_i_numvagas',10,$Ied268_i_numvagas,true,'text',$db_opcao," onKeyUp=\"js_calcvagas(event);\"
+   <?php db_input('ed268_i_numvagas',10,$Ied268_i_numvagas,true,'text',$db_opcao," onKeyUp=\"js_calcvagas(event);\"
                onchange=\"js_checaNumVagas();\"")?>
   </td>
  </tr>
@@ -210,9 +211,9 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_i_nummatr?>
   </td>
   <td>
-   <?db_input('ed268_i_nummatr',10,$Ied268_i_nummatr,true,'text',3,"")?>
+   <?php db_input('ed268_i_nummatr',10,$Ied268_i_nummatr,true,'text',3,"")?>
    <b>Vagas Restantes:</b>
-   <?db_input('restantes',10,'',true,'text',3,"")?>
+   <?php db_input('restantes',10,'',true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -220,7 +221,7 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
    <?=@$Led268_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed268_t_obs',3,50,$Ied268_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed268_t_obs',3,50,$Ied268_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr id='programaMaisEducacao' style="display: none;">
@@ -228,24 +229,35 @@ if ($db_opcao != 1 && isset($ed268_i_codigo) && !empty($ed268_i_codigo)) {
     <?=@$Led268_programamaiseducacao?>
    </td>
    <td>
-     <?
+     <?php
        $aOpcoes = array(0 => "Não", 1 => "Sim");
        db_select('ed268_programamaiseducacao', $aOpcoes, true, 1);
      ?>
    </td>
  </tr>
+    <tr id='bilingue'>
+        <td nowrap title="<?=@$Ted268_is_bilingue?>">
+            <?=@$Led268_is_bilingue?>
+        </td>
+        <td>
+            <?php
+            $x = array('f' => 'NÃO', 't' => 'SIM', );
+            db_select('ed268_is_bilingue', $x, true, 1);
+            ?>
+        </td>
+    </tr>
 </table>
 </center>
 
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
        type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
        <?=($db_botao==false?"disabled":"")?> onclick="return js_valida();">
-<?if (!isset($abre)) { ?>
+<?php if (!isset($abre)) { ?>
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar"
            onclick="js_pesquisa();" <?=($db_botao2==false?"disabled":"")?>>
     <input name="novo" type="button" id="novo" value="Novo Registro"
            onclick="js_novo()" <?=$db_opcao==1?"disabled":""?> <?=($db_botao2==false?"disabled":"")?>>
-<?}?>
+<?php }?>
 </form>
 <script>
 if ($F('ed268_i_tipoatend') == 4) {
@@ -506,7 +518,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave,tipo) {
 
   db_iframe_turmaac.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
 
     if ($db_opcao == 3 || $db_opcao == 33) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("sd04_i_medico");
        <?=@$Lsd31_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd31_i_codigo',10,$Isd31_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -50,52 +50,52 @@ db_input('sd31_i_codigo',10,$Isd31_i_codigo,true,'text',$db_opcao,"")
        <?=@$Lsd31_d_dataorigem?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd31_d_dataorigem',@$sd31_d_dataorigem_dia,@$sd31_d_dataorigem_mes,@$sd31_d_dataorigem_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd31_i_agendamento?>">
-       <?
+       <?php
        db_ancora(@$Lsd31_i_agendamento,"js_pesquisasd31_i_agendamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd31_i_agendamento',10,$Isd31_i_agendamento,true,'text',$db_opcao," onchange='js_pesquisasd31_i_agendamento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd23_d_consulta',10,$Isd23_d_consulta,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd31_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd31_i_usuario,"js_pesquisasd31_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd31_i_usuario',10,$Isd31_i_usuario,true,'text',$db_opcao," onchange='js_pesquisasd31_i_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd31_i_undmedorigem?>">
-       <?
+       <?php
        db_ancora(@$Lsd31_i_undmedorigem,"js_pesquisasd31_i_undmedorigem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd31_i_undmedorigem',10,$Isd31_i_undmedorigem,true,'text',$db_opcao," onchange='js_pesquisasd31_i_undmedorigem(false);'")
 ?>
-       <?
+       <?php
 db_input('sd04_i_medico',5,$Isd04_i_medico,true,'text',3,'')
        ?>
     </td>
@@ -180,7 +180,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agendtransf.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

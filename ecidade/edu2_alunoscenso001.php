@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ if(!isset($ed52_i_ano)){
 </head>
 <script>
  team = new Array(
- <?
+ <?php
  $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
          FROM ensino
           inner join serie on ed11_i_ensino  = ed10_i_codigo
@@ -155,9 +155,9 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <b>Data do Censo:</b>
      </td>
      <td>
-      <?db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1," onchange=\"js_ano();\"","","","parent.js_ano();")?>
+      <?php db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1," onchange=\"js_ano();\"","","","parent.js_ano();")?>
       <b>Ano:</b>
-      <?db_input('ano_censo',4,@$ano_censo,true,'text',3,"")?>
+      <?php db_input('ano_censo',4,@$ano_censo,true,'text',3,"")?>
      </td>
      <td></td>
      <td></td>
@@ -174,7 +174,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      <td>
       <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:200px;height:18px;">
       <option></option>
-       <?
+       <?php
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
                FROM ensino
@@ -190,7 +190,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         $desc_curso=$row["ed10_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" ><?=$desc_curso;?></option>
-        <?
+        <?php
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -216,7 +216,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       &nbsp;&nbsp;<input type="checkbox" name="tt_serie" value=""> <b>Totalizador por Etapa</b>
      </td>
      <td>
-      &nbsp;&nbsp;<input type="checkbox" name="titulo_serie" value=""> <b>Mostrar títulos por etapa</b>
+      &nbsp;&nbsp;<input type="checkbox" name="titulo_serie" value="" checked> <b>Mostrar títulos por etapa</b>
      </td>
     </tr>
    </table>
@@ -224,7 +224,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
  </tr>
  <tr>
   <td align="center" colspan="3">
-  Selecione os campos para aparecerem no relatório. Largura da página não deve ultrapassar <b><span id="limite">195</span></b> pixels.
+  Selecione os campos para aparecerem no relatório. Largura da página não deve ultrapassar <b><span id="limite">280</span></b> pixels.
   </td>
  </tr>
  <tr>
@@ -249,8 +249,8 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         <td>
          <b>Orientação:</b><br>
          <select name="orientacao" style="width:200px" onchange="js_limite(this.value);">
-          <option value="P" selected>RETRATO -> 195 pixels</option>
-          <option value="L">PAISAGEM -> 280 pixels</option>
+          <option value="L" selected>PAISAGEM -> 280 pixels</option>
+          <option value="P">RETRATO -> 195 pixels</option>
          </select><br><br>
          Já Marcados:
          <input type="text" size="3" name="marcados" readonly> pixels
@@ -399,7 +399,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     </tr>
     <tr>
      <td valign="top">
-      <input type="checkbox" name="campos" value="case when ed47_i_transpublico = 1 then 'SIM' else null end as transporte" onclick="VerificaTamanho(6);"> Transporte Escolar
+      <input type="checkbox" name="campos" value="case when ed47_i_transpublico = 1 then 'SIM' else null end as transporte" onclick="VerificaTamanho(6);" checked> Transporte Escolar
       <input type="hidden" name="largura" id="largura" value="5">
       <input type="hidden" name="cabecalho" value="T"><br>
      </td>
@@ -433,12 +433,13 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     </tr>
     <tr>
      <td valign="top">
-      <input type="checkbox" name="campos" value="(select array_to_string( array(select ed214_i_necessidade from alunonecessidade where ed214_i_aluno = ed47_i_codigo), ',') ) as necessidade" onclick="VerificaTamanho(8);"> Necessidades Especiais
-      <input type="hidden" name="largura" id="largura" value="10">
+      <input type="checkbox" name="campos" value="(select array_to_string( array(select ed48_c_descr from alunonecessidade inner join necessidade on ed214_i_necessidade = ed48_i_codigo where ed214_i_aluno = ed47_i_codigo), ',') ) as necessidade" 
+                                                onclick="VerificaTamanho(8);" checked> Necessidades Especiais
+      <input type="hidden" name="largura" id="largura" value="85">
       <input type="hidden" name="cabecalho" value="NE"><br>
      </td>
      <td>
-      10
+      85
      </td>
      <td>
       <select name="alinhamento">
@@ -450,7 +451,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     </tr>
     <tr>
      <td valign="top">
-      <input type="checkbox" name="campos" value="ed47_i_codigo" onclick="VerificaTamanho(9);"> Código Aluno
+      <input type="checkbox" name="campos" value="ed47_i_codigo" onclick="VerificaTamanho(9);" checked> Código Aluno
       <input type="hidden" name="largura" id="largura" value="10">
       <input type="hidden" name="cabecalho" value="Código"><br>
      </td>
@@ -499,6 +500,23 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       </select>
      </td>
     </tr>
+    <tr>
+     <td valign="top">
+      <input type="checkbox" name="campos" value="ed47_c_codigoinep" onclick="VerificaTamanho(12);"> INEP/ ID Aluno
+      <input type="hidden" name="largura" id="largura" value="15">
+      <input type="hidden" name="cabecalho" value="INEP/ID"><br>
+     </td>
+     <td>
+      15
+     </td>
+     <td>
+      <select name="alinhamento">
+       <option value="L">ESQUERDO</option>
+       <option value="C" selected>CENTRALIZADO</option>
+       <option value="R">DIREITO</option>
+      </select>
+     </td>
+    </tr>
    <table>
   </td>
  <tr>
@@ -511,7 +529,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 </fieldset>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -523,7 +541,7 @@ function VerificaTamanho(atual){
    jamarcados += parseInt(document.form1.largura[i].value);
   }
  }
- limite = parseInt(document.getElementById("limite").innerHTML);
+ limite = document.form1.orientacao.value == "L" ? 280 : 195;
  if(jamarcados>limite){
   alert("Limite máximo de "+limite+" pixels ultrapassado!");
   document.form1.campos[atual].checked = false;
@@ -547,13 +565,15 @@ VerificaTamanho(3);
 VerificaTamanho(4);
 VerificaTamanho(5);
 VerificaTamanho(6);
+VerificaTamanho(8);
+VerificaTamanho(9);
 function js_limite(valor){
  if(valor=="P"){
   document.getElementById("limite").innerHTML = 195;
  }else{
   document.getElementById("limite").innerHTML = 280;
  }
- if(parseInt(document.getElementById("limite").innerHTML)<document.form1.marcados.value){
+ if(parseInt(document.getElementById("limite").innerHTML)<document.form1.marcados.value) {
   alert("Campos já selecionados ultrapassam o limite de 195 pixels.\nDesmarque alguns campos para usar a orientação RETRATO");
   document.getElementById("limite").innerHTML = 280;
   document.form1.orientacao.options[1].selected = true;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -48,19 +48,19 @@ $clorcfontesdes = new cl_orcfontesdes;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
-<?
+<?php
   if(isset($chavepesquisa)){
     $fonte_full=str_replace(".","",$o50_estrutreceita);
     $mami=db_le_mae($fonte_full,false);
     echo "parent.document.form1.o50_estrutreceita.value='".db_formatar($mami,'receita')."'";
   }
-?>  
+?>
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.js_soma();" >
 <form name='form1'>
 <center>
- <table width="80%" border ='0' > 
+ <table width="80%" border ='0' >
     <tr>
        <td>&nbsp;</td>
        <td nowrap title="<?=@$To57_fonte?>" align='center'>
@@ -73,9 +73,9 @@ $clorcfontesdes = new cl_orcfontesdes;
        <td nowrap title="<?=@$To60_perc?>" align='center'>
          <b><?=@$RLo60_perc?>(%)</b>
        </td>
-    </tr> 
-<?
-  $matriz= split("\.",$o50_estrutreceita);
+    </tr>
+<?php
+  $matriz=explode(".",$o50_estrutreceita);
   $inicia=false;//variavel que indica que o nivel não tem mais filhos
   $tam=(count($matriz)-1);
   $codigos='';
@@ -85,13 +85,13 @@ $clorcfontesdes = new cl_orcfontesdes;
       $inicia=true;
       for($x=$i; $x>=0; $x--){
 	  $codigo=$matriz[$x].$codigo;
-      } 	 
+      }
     }
     if($inicia==true){
       break;
-    }  
+    }
   }
-      
+
   $taman=strlen($codigo);
   $fonte_full=str_replace(".","",$o50_estrutreceita);
   $nivel=db_le_mae($fonte_full,true);
@@ -128,9 +128,9 @@ $clorcfontesdes = new cl_orcfontesdes;
   }else{
      $dbwhere = "substr(o57_fonte,1,$taman)='$codigo' and o57_fonte<>'$fonte_full' ";
   }
-  
+
   $dbwhere .= " and o57_anousu = ".db_getsession("DB_anousu");
-  
+
   $result=$clorcfontes->sql_record($clorcfontes->sql_query(null,null,"o57_fonte,o57_codfon,o57_descr",'o57_fonte',"$dbwhere"));
   $numrows = $clorcfontes->numrows;
   for($i=0; $i<$numrows; $i++){
@@ -144,33 +144,33 @@ $clorcfontesdes = new cl_orcfontesdes;
       if(isset($chavepesquisa)){
          $result15=$clorcfontesdes->sql_record($clorcfontesdes->sql_query_file(null,null,"o60_perc",'',"o60_anousu=".db_getsession('DB_anousu')." and o60_codfon=$o57_codfon "));
 	 if($clorcfontesdes->numrows>0){
-           db_fieldsmemory($result15,0);      	
+           db_fieldsmemory($result15,0);
 	 }else{
 	   continue;
 	 }
          $$nomeperc=$o60_perc;
       }else{
             $$nomeperc='0';
-      }  	    
+      }
       echo "
 	   <tr>
 	    <td>&nbsp;</td>
 	    <td align='center'>";
 	      db_input('o60_fonte',23,$Io60_perc,true,'text',3,"",$nomefon);
-      echo "  	      
+      echo "
 	     </td>
 	    <td align='center'>";
 	      db_input('o57_descr',50,$Io57_descr,true,'text',3,"",$descrfon);
-      echo "  	      
+      echo "
 	     </td>
 	     <td align='center'>";
 	     db_input('o60_perc',4,$Io60_perc,true,'text',$db_opcao,"onchange='parent.js_totaliza(this);'",$nomeperc);
-      echo " 	     
+      echo "
 	     </td>
-	  </tr> 
+	  </tr>
             ";
   }
-   
+
 ?>
     </form>
    </table>

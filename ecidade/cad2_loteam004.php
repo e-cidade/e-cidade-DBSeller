@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr>
     <td nowrap width="50%">
-<?
+<?php
 $aux = new cl_arquivo_auxiliar;
 $aux->cabecalho = "<strong>LOTEAMENTOS</strong>";
 $aux->codigo = "j34_loteam";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -123,16 +123,16 @@ if(isset($incluir)) {
 <body bgcolor=#CCCCCC onLoad="a=1" >
 
 
-<?
+<?php
 	include(modification("forms/db_frmproced.php"));
 ?>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clproced->erro_status=="0"||$sqlerro==true){
     //$clproced->erro(true,false);

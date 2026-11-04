@@ -14,7 +14,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
     /**
      * @var array
      */
-    private $recursos = [];
+    protected $recursos = [];
 
     /**
      * @return array
@@ -88,7 +88,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
             ->get();
     }
 
-    private function agruparPorReceita(Collection $estimativas)
+    protected function agruparPorReceita(Collection $estimativas)
     {
         $this->dados['dados'] = $this->processaEstimativas($estimativas)->toArray();
         return $this->dados['dados'];
@@ -149,7 +149,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
      * @param CronogramaDesembolsoReceita $cronograma
      * @return array
      */
-    private function processaValores(CronogramaDesembolsoReceita $cronograma)
+    protected function processaValores(CronogramaDesembolsoReceita $cronograma)
     {
         if ($this->periodicidade === 'mensal') {
             return $cronograma->toArray();
@@ -169,7 +169,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
      * @param EstimativaReceita $estimativaReceita
      * @return CronogramaDesembolsoReceita
      */
-    private function getCronograma(EstimativaReceita $estimativaReceita)
+    protected function getCronograma(EstimativaReceita $estimativaReceita)
     {
         return $estimativaReceita->cronogramaDesembolso->filter(
             function (CronogramaDesembolsoReceita $cronograma) {
@@ -182,7 +182,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
      * @param EstimativaReceita $estimativaReceita
      * @return Valor
      */
-    private function getValorBase(EstimativaReceita $estimativaReceita)
+    protected function getValorBase(EstimativaReceita $estimativaReceita)
     {
         return $estimativaReceita->getValores()->filter(function (Valor $valor) {
             return $valor->pl10_ano === $this->exercicio;
@@ -193,21 +193,29 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
      * @param Collection $estimativas
      * @return Collection|\Illuminate\Support\Collection
      */
-    private function processaEstimativas(Collection $estimativas)
+    protected function processaEstimativas(Collection $estimativas)
     {
         return $estimativas->map(function (EstimativaReceita $estimativaReceita) {
             $cronograma = $this->getCronograma($estimativaReceita);
             $valor = $this->getValorBase($estimativaReceita);
             $recurso = $estimativaReceita->recurso;
             $naturezaReceita = $estimativaReceita->getNaturezaOrcamento();
-
+            $fonte = $recurso->fonteRecurso($this->planejamento->pl2_ano_inicial);
+            if (is_null($fonte)) {
+                throw new \Exception(sprintf(
+                    'Não foi encontrada a fonte de recurso para %s. Acesse: %s ',
+                    $this->planejamento->pl2_ano_inicial,
+                    'Contabilidade > Procedimentos > Exercício Contábil > Inclusão'
+                ));
+            }
+            $hash = "{$fonte->codigo_siconfi}#{$recurso->complemento->o200_sequencial}";
             $dado = [
                 'estrutural' => $naturezaReceita->o57_fonte,
                 'estrutural_mascara' => $naturezaReceita->getEstrutural()->getEstruturalComMascara(),
                 'natureza' => $naturezaReceita->o57_descr,
-                'codigo_recurso' => $recurso->o15_codigo,
-                'fonte_recurso' => $recurso->o15_recurso,
-                'descricao_recurso' => $recurso->o15_descr,
+                'codigo_recurso' => $hash,
+                'fonte_recurso' => $fonte->codigo_siconfi,
+                'descricao_recurso' => $fonte->descricao,
                 'complemento' => $recurso->complemento->o200_sequencial,
                 'descricao_complemento' => $recurso->complemento->o200_descricao,
                 'valor' => $valor->pl10_valor,

@@ -39,11 +39,13 @@ function build_debitos($oDebito, $aConfigConexao, $sArquivoLog, $sNomeScript, $s
 		return;
 	}
 
-    /* Define forma de aplicação da multa, usa a data de operação, ao invés do vencimento
-    */
-    if (file_exists("../../config/multa_dtoper_dtvenc.txt")){
-       $rsStartVariavel = db_query($pConexao, "select fc_putsession('DB_multa_dtoper_dtvenc', 'true');", $sArquivoLog);
-    }
+        /* Define forma de aplicação da multa, usa a data de operação, ao invés do vencimento
+        */
+        if (file_exists("../../config/multa_dtoper_dtvenc.txt")){
+           $rsStartVariavel = db_query($pConexao, "select fc_putsession('DB_multa_dtoper_dtvenc', 'true');", $sArquivoLog);
+        }
+
+        db_query($pConexao, "select fc_putsession('DB_instit', '$iInstit')", $sArquivoLog);
 
 	$sSql = "SELECT fc_startsession();SET synchronous_commit TO off;SET application_name TO 'build_debitos_thread.php(build_debitos)';";
 	db_query($pConexao, $sSql, $sArquivoLog);

@@ -130,7 +130,7 @@ if(isset($alterar)) {
       <br>
       <center>
         <fieldset style="width:95%"><legend><b>Definições dos pareceres desta turma</b></legend>
-          <?include(modification("forms/db_frmparecerturma.php"));?>
+          <?php include(modification("forms/db_frmparecerturma.php"));?>
         </fieldset>
       </center>
     </td>

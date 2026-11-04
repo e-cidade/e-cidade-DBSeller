@@ -60,7 +60,7 @@ class cl_iptucalv
                  ";
 
     //funcao construtor da classe
-    function cl_iptucalv()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("iptucalv");
@@ -68,7 +68,7 @@ class cl_iptucalv
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -79,7 +79,7 @@ class cl_iptucalv
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->j21_anousu = ($this->j21_anousu == "" ? @$GLOBALS["HTTP_POST_VARS"]["j21_anousu"] : $this->j21_anousu);
@@ -93,7 +93,7 @@ class cl_iptucalv
     }
 
     // funcao para inclusao
-    function incluir()
+    public function incluir()
     {
         $this->atualizacampos();
         if ($this->j21_anousu == null) {
@@ -210,7 +210,7 @@ class cl_iptucalv
     }
 
     // funcao para alteracao
-    function alterar($oid = null)
+    public function alterar($oid = null)
     {
         $this->atualizacampos();
         $sql = " update iptucalv set ";
@@ -344,7 +344,7 @@ class cl_iptucalv
     }
 
     // funcao para exclusao
-    function excluir($oid = null, $dbwhere = null)
+    public function excluir($oid = null, $dbwhere = null)
     {
         $sql = " delete from iptucalv
                     where ";
@@ -391,7 +391,7 @@ class cl_iptucalv
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -420,7 +420,7 @@ class cl_iptucalv
         return $result;
     }
 
-    function sql_query($oid, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($oid, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -455,7 +455,7 @@ class cl_iptucalv
         return $sql;
     }
 
-    function sql_query_file($oid, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($oid, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -490,7 +490,7 @@ class cl_iptucalv
         return $sql;
     }
 
-    function sql_query_hist($oid, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_hist($oid, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -526,7 +526,7 @@ class cl_iptucalv
         return $sql;
     }
 
-    function sql_queryValoresCalculoIptu($iAnoCalculo)
+    public function sql_queryValoresCalculoIptu($iAnoCalculo)
     {
         $sSql = "select ano_calculo,                                                                             ";
         $sSql .= "       codigo_receita,                                                                          ";
@@ -773,7 +773,7 @@ class cl_iptucalv
         return $sSql;
     }
 
-    function sql_query_taxa($j21_anousu, $j21_matric, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_taxa($j21_anousu, $j21_matric, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

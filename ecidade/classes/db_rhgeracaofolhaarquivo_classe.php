@@ -67,13 +67,13 @@ class cl_rhgeracaofolhaarquivo {
                  rh105_instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_rhgeracaofolhaarquivo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhgeracaofolhaarquivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_rhgeracaofolhaarquivo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh105_sequencial = ($this->rh105_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh105_sequencial"]:$this->rh105_sequencial);
        if($this->rh105_dtgeracao == ""){
@@ -112,7 +112,7 @@ class cl_rhgeracaofolhaarquivo {
      }
    }
    // funcao para inclusao
-   function incluir ($rh105_sequencial){
+   public function incluir ($rh105_sequencial){
       $this->atualizacampos();
      if($this->rh105_dtgeracao == null ){
        $this->erro_sql = " Campo Data da Geração nao Informado.";
@@ -270,7 +270,7 @@ class cl_rhgeracaofolhaarquivo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh105_sequencial=null) {
+   public function alterar ($rh105_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhgeracaofolhaarquivo set ";
      $virgula = "";
@@ -480,7 +480,7 @@ class cl_rhgeracaofolhaarquivo {
      }
    }
    // funcao para exclusao
-   function excluir ($rh105_sequencial=null) {
+   public function excluir ($rh105_sequencial=null) {
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->rh105_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
@@ -536,7 +536,7 @@ class cl_rhgeracaofolhaarquivo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -559,10 +559,10 @@ class cl_rhgeracaofolhaarquivo {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_rhgeracaofolhaarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,10 +599,10 @@ class cl_rhgeracaofolhaarquivo {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh105_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -623,7 +623,7 @@ class cl_rhgeracaofolhaarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,7 +633,7 @@ class cl_rhgeracaofolhaarquivo {
      return $sql;
   }
 
-   function salvaArquivoTXT($sCaminhoArquivoTXT){
+   public function salvaArquivoTXT($sCaminhoArquivoTXT){
      $hArquivoTxt   = fopen($sCaminhoArquivoTXT,"r");
      $sTextoArquivo = "";
      if($hArquivoTxt){

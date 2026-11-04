@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clrhresponsavel->rotulo->label();
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php
 	  db_app::load("scripts.js, strings.js,arrays.js, prototype.js,datagrid.widget.js");
 	  db_app::load("widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js");
 	  db_app::load("estilos.css, grid.style.css");
@@ -83,7 +83,7 @@ $clrhresponsavel->rotulo->label();
 					        <b>Tipo de Folha:</b>
 					      </td>
 					      <td colspan="2"> 
-					        <?
+					        <?php
 					          $aTipoFolha = array("0" => "Selecione",
 					                              "1" => "Salário", 
 					                              "5" => "13º Salário");             
@@ -94,18 +94,18 @@ $clrhresponsavel->rotulo->label();
 					    </tr>
 					    <tr>
 					      <td title="<?=@$Trh108_regist?>">
-                  <?
+                  <?php
                     db_ancora('<b>Responsável:</b>', "js_pesquisarh107_sequencial(true);", 1);
                   ?>
 					      </td>
 					      <td> 
-                  <?
+                  <?php
                     db_input('rh107_sequencial', 10, $Irh107_sequencial, true, 'text', 1, 
                              "onchange='js_pesquisarh107_sequencial(false);'");
                   ?>
 					      </td>
 					      <td>
-                  <?
+                  <?php
                     db_input('rh107_nome', 40, $Irh107_nome, true, 'text', 3);
                   ?>
 					      </td>
@@ -119,7 +119,7 @@ $clrhresponsavel->rotulo->label();
 	<table align="center">
 	  <tr>
 	    <td>
-	      <?
+	      <?php
           db_input('servidoresvinculados', 10, 0, true, 'hidden', 3);
         ?>
 	    </td>
@@ -131,7 +131,7 @@ $clrhresponsavel->rotulo->label();
     </tr>
 	</table>
 </form>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

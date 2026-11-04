@@ -126,4 +126,62 @@ class VincularPlanoOrcamentarioDespesaService extends VincularPlanoOrcamentario
             }
         }
     }
+
+    public function importarVinculo(array $filtros)
+    {
+        $copy = $filtros;
+        $copy['exercicio'] = $filtros['exercicio'] - 1;
+        $this->removerVinculos($filtros);
+        $contasPadrao = $this->getContasPadrao($filtros);
+
+        foreach ($contasPadrao as $pcasp) {
+            $copy['conta'] = $pcasp->conta;
+            $pcaspAnterior = $this->getContasPadrao($copy)->shift();
+
+            // quando a conta do pcasp é nova não vai ter no ano anterior
+            if (is_null($pcaspAnterior)) {
+                continue;
+            }
+            // não tem conta mapeada no exercicio anterior
+            $contasAnoAnterior = $pcaspAnterior->contasEcidade;
+            if ($contasAnoAnterior->isEmpty()) {
+                continue;
+            }
+
+            $codCons = $contasAnoAnterior->map(function ($contaOrcamentaria) {
+                return $contaOrcamentaria->c60_codcon;
+            })->toArray();
+
+            $idsContasEcidade = ConplanoOrcamento::query()
+                ->select('c60_codigo')
+                ->where('c60_anousu', $filtros['exercicio'])
+                ->whereIn('c60_codcon', $codCons)
+                ->get()
+                ->map(function (ConplanoOrcamento $conta) {
+                    return $conta->c60_codigo;
+                })
+                ->toArray();
+
+            if (!empty($idsContasEcidade)) {
+                $this->vincular($pcasp, $idsContasEcidade);
+            }
+        }
+    }
+
+    protected function removerVinculos($filtros)
+    {
+        $where = sprintf(
+            "exercicio = %s and uniao = '%s'",
+            $filtros['exercicio'],
+            $filtros['tipoPlano'] === PlanoContas::PLANO_UNIAO ? 't' : 'f'
+        );
+
+        DB::statement(<<<SQL
+            delete from contabilidade.planodespesaconplanoorcamento
+            using contabilidade.planodespesa
+            where planodespesa_id = planodespesa.id
+            and $where;
+SQL
+        );
+    }
 }

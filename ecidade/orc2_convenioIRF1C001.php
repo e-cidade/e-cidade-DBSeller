@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,12 +81,12 @@ $clrotulo->label("o74_descricao");
                </tr>
                <tr>
                  <td nowrap >
-                   <?
+                   <?php
                    db_ancora("<b>Plano:</b>","js_pesquisapactoplano(true);",1);
                    ?>
                  </td>
                  <td> 
-                  <?
+                  <?php
                   db_input('o74_sequencial',10,$Io74_sequencial,true,'text',1," onchange='js_pesquisapactoplano(false);'");
                   db_input('o74_descricao',40,$Io74_descricao,true,'text',3,'');
                   ?>
@@ -104,7 +104,7 @@ $clrotulo->label("o74_descricao");
      </table>
      </form>
    </center>
-<?
+<?php
   //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>   
 </body>

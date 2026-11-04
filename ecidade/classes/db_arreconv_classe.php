@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_arreconv {
                  k00_npant = varchar(30) = numpre antigo 
                  ";
    //funcao construtor da classe 
-   function cl_arreconv() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreconv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_arreconv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -78,7 +78,7 @@ class cl_arreconv {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_numpre,$k00_numpar){ 
+   public function incluir ($k00_numpre,$k00_numpar){ 
       $this->atualizacampos();
      if($this->k00_npant == null ){ 
        $this->erro_sql = " Campo numpre antigo nao Informado.";
@@ -155,7 +155,7 @@ class cl_arreconv {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k00_numpre=null,$k00_numpar=null) { 
+   public function alterar ($k00_numpre=null,$k00_numpar=null) { 
       $this->atualizacampos();
      $sql = " update arreconv set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_arreconv {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k00_numpre=null,$k00_numpar=null,$dbwhere=null) { 
+   public function excluir ($k00_numpre=null,$k00_numpar=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_numpre,$k00_numpar));
      }else{ 
@@ -324,7 +324,7 @@ class cl_arreconv {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

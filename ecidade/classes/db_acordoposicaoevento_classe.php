@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoposicaoevento
 class cl_acordoposicaoevento { 
@@ -26,13 +26,13 @@ class cl_acordoposicaoevento {
                  ac56_acordoposicao = int4 = Posiçao do Acordo 
                  ";
    //funcao construtor da classe 
-   function cl_acordoposicaoevento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoposicaoevento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_acordoposicaoevento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac56_sequencial = ($this->ac56_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac56_sequencial"]:$this->ac56_sequencial);
        $this->ac56_acordoevento = ($this->ac56_acordoevento == ""?@$GLOBALS["HTTP_POST_VARS"]["ac56_acordoevento"]:$this->ac56_acordoevento);
@@ -51,7 +51,7 @@ class cl_acordoposicaoevento {
      }
    }
    // funcao para Inclusão
-   function incluir ($ac56_sequencial){ 
+   public function incluir ($ac56_sequencial){ 
       $this->atualizacampos();
      if($this->ac56_acordoevento == null ){ 
        $this->erro_sql = " Campo Evento não informado.";

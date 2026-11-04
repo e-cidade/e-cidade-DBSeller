@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,20 +25,25 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("libs/JSON.php"));
+require modification("libs/db_stdlib.php");
+require modification("libs/db_conecta.php");
+include modification("libs/db_sessoes.php");
+include modification("libs/db_usuariosonline.php");
+include modification("libs/JSON.php");
 
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_corrente_classe.php"));
-include(modification("classes/db_concilia_classe.php"));
+include modification("dbforms/db_funcoes.php");
+include modification("classes/db_corrente_classe.php");
+include modification("classes/db_concilia_classe.php");
 $clcorrente = new cl_corrente;
 $clconcilia = new cl_concilia;
 $objJSON    = new Services_JSON();
 
 db_postmemory($_POST);
+
+$lCarregarPendente = false;
+if (!empty($_POST['lCarregarPendente'])) {
+  $lCarregarPendente = $_POST['lCarregarPendente'] == "true";
+}
 
 $sqlMenorDataCaixa  = " select min(menordatacaixa) as menordatacaixa ";
 $sqlMenorDataCaixa .= "   from (  select min(k68_data) as menordatacaixa from concilia ";
@@ -52,7 +57,6 @@ if($clconcilia->numrows > 0){
 }
 $sqlAutentica  = " select caixa,                                  ";
 $sqlAutentica .= "        autent,                                 ";
-$sqlAutentica .= "        arquivo,                                ";
 $sqlAutentica .= "        data,                                   ";
 $sqlAutentica .= "        sum(valor_debito) as valor_debito,      ";
 $sqlAutentica .= "        sum(valor_credito) as valor_credito,    ";
@@ -66,7 +70,6 @@ $sqlAutentica .= "        justificativa                                    ";
 $sqlAutentica .= "   from ( select distinct ";
 $sqlAutentica .= "                 caixa as caixa, ";
 $sqlAutentica .= "                 autent as autent, ";
-$sqlAutentica .= "                 arquivo as arquivo, ";
 $sqlAutentica .= "                 data as data, ";
 $sqlAutentica .= "                 valor_debito as valor_debito, ";
 $sqlAutentica .= "                 valor_credito as valor_credito, ";
@@ -85,42 +88,10 @@ $sqlAutentica .= "                 erro as erro ";
 $sqlAutentica .= "            from ( ";
 
 // pendentes
+if ($lCarregarPendente) {
   $sqlAutentica .= "                   select distinct ";
   $sqlAutentica .= "                          ricaixa           as caixa, ";
   $sqlAutentica .= "                          riautent          as autent, ";
-  $sqlAutentica .= "                          ( select e75_codgera 
-                                                  from conlancamcorrente 
-                                            inner join corlanc on c86_id = k12_id 
-                                                              and c86_data = k12_data 
-                                                              and c86_autent = k12_autent 
-                                            inner join conlancamslip on c84_slip = k12_codigo 
-                                                                    and c84_conlancam = c86_conlancam 
-                                            inner join empageslip on e89_codigo = k12_codigo 
-                                            inner join empagedadosretmov on e76_codmov = e89_codmov 
-                                                                        and e76_processado = true 
-                                                                        and e76_dataefet = k12_data 
-                                            inner join empagedadosret on e75_codret = e76_codret 
-                                            inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret 
-                                                                                  and e02_empagedadosretmov = e76_codmov
-                                                                                  and e02_errobanco = 2 
-                                                 where corlanc.k12_data = ridata 
-                                                   and corlanc.k12_id = ricaixa 
-                                                   and corlanc.k12_autent = riautent 
-                                        union select e75_codgera 
-                                                from conlancamcorgrupocorrente 
-                                          inner join corgrupocorrente on k105_sequencial = c23_corgrupocorrente 
-                                          inner join corempagemov  on k12_id = k105_id 
-                                                                  and k12_data = k105_data 
-                                                                  and k12_autent = k105_autent 
-                                          inner join empagedadosretmov on e76_codmov = k12_codmov 
-                                                                      and e76_processado = true 
-                                          inner join empagedadosret on e75_codret = e76_codret 
-                                          inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret 
-                                                                                and e02_empagedadosretmov = e76_codmov 
-                                                                                and e02_errobanco = 2 
-                                               where corempagemov.k12_data = ridata 
-                                                 and corempagemov.k12_id = ricaixa 
-                                                 and corempagemov.k12_autent = riautent ) as arquivo, ";
   $sqlAutentica .= "                          ridata            as data, ";
   $sqlAutentica .= "                          rnvalordebito     as valor_debito, ";
   $sqlAutentica .= "                          rivalorcredito    as valor_credito, ";
@@ -147,47 +118,14 @@ $sqlAutentica .= "            from ( ";
   $sqlAutentica .= "                                                                              where k68_contabancaria = {$conta} ";
   $sqlAutentica .= "                                                                                and k68_data = '" . $data . "' ) ";
   $sqlAutentica .= "                     where ( k83_sequencial is null ) ";
-  $sqlAutentica .= "                       and k68_sequencial = " . $concilia;
+  $sqlAutentica .= " and k89_data between '".$datainicio."' and '".$data."' and k68_sequencial = " . $concilia;
 
   $sqlAutentica .= "                     union all ";
-
+}
 // conciliados
 $sqlAutentica .= "                    select distinct ";
 $sqlAutentica .= "                           ricaixa        as caixa, ";
 $sqlAutentica .= "                           riautent       as autent, ";
-$sqlAutentica .= "                           ( select e75_codgera 
-                                                 from conlancamcorrente 
-                                            inner join corlanc on c86_id = k12_id 
-                                                              and c86_data = k12_data 
-                                                              and c86_autent = k12_autent 
-                                            inner join conlancamslip on c84_slip = k12_codigo 
-                                                                    and c84_conlancam = c86_conlancam 
-                                            inner join empageslip on e89_codigo = k12_codigo 
-                                            inner join empagedadosretmov on e76_codmov = e89_codmov 
-                                                                        and e76_processado = true 
-                                                                        and e76_dataefet = k12_data 
-                                            inner join empagedadosret on e75_codret = e76_codret 
-                                            inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret 
-                                                                                  and e02_empagedadosretmov = e76_codmov 
-                                                                                  and e02_errobanco = 2
-                                                 where corlanc.k12_data = ridata 
-                                                   and corlanc.k12_id = ricaixa 
-                                                   and corlanc.k12_autent = riautent 
-                                       union select e75_codgera 
-                                               from conlancamcorgrupocorrente 
-                                         inner join corgrupocorrente on k105_sequencial = c23_corgrupocorrente 
-                                         inner join corempagemov  on k12_id = k105_id 
-                                                                 and k12_data = k105_data 
-                                                                 and k12_autent = k105_autent 
-                                         inner join empagedadosretmov on e76_codmov = k12_codmov 
-                                                                     and e76_processado = true 
-                                         inner join empagedadosret on e75_codret = e76_codret 
-                                         inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret
-                                                                               and e02_empagedadosretmov = e76_codmov 
-                                                                               and e02_errobanco = 2 
-                                              where corempagemov.k12_data = ridata 
-                                                and corempagemov.k12_id = ricaixa 
-                                                and corempagemov.k12_autent = riautent ) as arquivo, ";
 $sqlAutentica .= "                           ridata         as data, ";
 $sqlAutentica .= "                           rnvalordebito  as valor_debito, ";
 $sqlAutentica .= "                           rivalorcredito as valor_credito, ";
@@ -199,6 +137,7 @@ $sqlAutentica .= "                           ''             as justificativa, ";
 $sqlAutentica .= "                           'conciliado'   as classe, ";
 $sqlAutentica .= "                           k83_sequencial as itemconciliacao, ";
 $sqlAutentica .= "                           rberro         as erro ";
+//$sqlAutentica .= "                           ( select max(a.k68_data) from conciliapendcorrente inner join concilia a on k89_concilia = a.k68_sequencial where k89_concilia = $concilia ) as ult_dt_conc "
 $sqlAutentica .= "                      from conciliacor ";
 $sqlAutentica .= "                           inner join conciliaitem on k83_sequencial = k84_conciliaitem ";
 $sqlAutentica .= "                           inner join concilia     on k83_concilia   = k68_sequencial ";
@@ -214,37 +153,6 @@ $sqlAutentica .= "                     union all ";
 $sqlAutentica .= "                    select distinct ";
 $sqlAutentica .= "                           ricaixa        as caixa, ";
 $sqlAutentica .= "                           riautent       as autent, ";
-$sqlAutentica .= "                           ( select e75_codgera 
-                                                 from conlancamcorrente 
-                                              inner join corlanc on c86_id = k12_id 
-                                                                   and c86_data = k12_data 
-                                                                   and c86_autent = k12_autent 
-                                              inner join conlancamslip on c84_slip = k12_codigo 
-                                                                         and c84_conlancam = c86_conlancam 
-                                              inner join empageslip on e89_codigo = k12_codigo 
-                                              inner join empagedadosretmov on e76_codmov = e89_codmov 
-                                                                           and e76_processado = true 
-                                                                           and e76_dataefet = k12_data 
-                                              inner join empagedadosret on e75_codret = e76_codret 
-                                              inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret 
-                                                                                     and e02_empagedadosretmov = e76_codmov 
-                                                                                     and e02_errobanco = 2 
-                                                 where corlanc.k12_data = ridata 
-                                                   and corlanc.k12_id = ricaixa 
-                                                   and corlanc.k12_autent = riautent 
-                                              union select e75_codgera from conlancamcorgrupocorrente 
-                                                 inner join corgrupocorrente on k105_sequencial = c23_corgrupocorrente 
-                                                 inner join corempagemov  on k12_id = k105_id 
-                                                                          and k12_data = k105_data and k12_autent = k105_autent 
-                                                inner join empagedadosretmov on e76_codmov = k12_codmov 
-                                                                             and e76_processado = true 
-                                                inner join empagedadosret on e75_codret = e76_codret 
-                                                inner join empagedadosretmovocorrencia on e02_empagedadosret = e76_codret 
-                                                                                and e02_empagedadosretmov = e76_codmov 
-                                                                                and e02_errobanco = 2 
-                                                    where corempagemov.k12_data = ridata 
-                                                      and corempagemov.k12_id = ricaixa
-                                                      and corempagemov.k12_autent = riautent ) as arquivo, ";
 $sqlAutentica .= "	 		                     ridata         as data, ";
 $sqlAutentica .= "  			                   rnvalordebito  as valor_debito, ";
 $sqlAutentica .= "  			                   rivalorcredito as valor_credito, ";
@@ -300,10 +208,23 @@ $sqlAutentica .= " where not exists (select 1
                                         and k105_data   = data
                                         and k105_corgrupotipo in (2,3,5,6)
                                         and extract(year from k105_data) <= 2012 )  ";
-$sqlAutentica .= "  group by caixa, autent, arquivo,data, cheque, credor, classe, itemconciliacao, erro, justificativa ";
+
+/* Remove as autenticações do limite de saque */
+// $sqlAutentica .= " and not exists (select 1 
+//                                      from conlancamdoc 
+//                                           inner join conlancamcorrente on c86_conlancam = c71_codlan 
+//                                     where c86_id = caixa 
+//                                       and c86_data = data 
+//                                       and c86_autent = autent
+//                                       and c71_coddoc in (5000, 5001) ) ";
+
+// $sqlAutentica .= "  group by caixa, autent, data, cheque, credor, classe, itemconciliacao, erro, justificativa 
+//                    having sum(valor_debito) <> sum(valor_credito)  
+// ";
+
+$sqlAutentica .= "  group by caixa, autent, data, cheque, credor, classe, itemconciliacao, erro, justificativa";
 $sqlAutentica .= "  order by data, autent";
-
-
+//die($sqlAutentica);
 $rsAutentica   = $clcorrente->sql_record($sqlAutentica);
 
 $intNumrows    = $clcorrente->numrows;
@@ -313,14 +234,21 @@ if ($intNumrows > 0){
   $arrayObj = array();
 	for($i = 0; $i < $intNumrows; $i++ ) {
 
+
+
     db_fieldsmemory($rsAutentica,$i);
+
+    if ($classe == 'pendente' && !$lCarregarPendente ) {
+      continue;
+    }
+
+
 		$arrayObj[] = new Autenticacoes($i,
                                       'Concolidado',
                                       $cheque,
 				                              str_replace("'","",$detalhe),
                                       $caixa,
                                       $autent,
-                                      $arquivo,
                                       db_formatar($data,'d'),
                                       db_formatar($valor_debito,'f'),
                                       db_formatar($valor_credito,'f'),
@@ -346,7 +274,6 @@ class Autenticacoes {
   var $detalhe          = '';
   var $caixa            = '';
   var $autent           = '';
-  var $arquivo          = '';
   var $data             = '';
   var $valorDebito      = '';
   var $valorCredito     = '';
@@ -356,7 +283,7 @@ class Autenticacoes {
   var $justificativa    = '';
 
   // Construtor
-  function Autenticacoes ($pid=null,$pstatus=null,$pnumeroCheque=null,$pdetalhe=null,$pcaixa=null,$pautent=null,$parquivo=null,$pdata=null,$pvalorDebito=null,$pvalorCredito=null,$pcredor=null,$pclasse='normal',$pitemconciliacao=null, $sJustificativa = ''){
+  function Autenticacoes ($pid=null,$pstatus=null,$pnumeroCheque=null,$pdetalhe=null,$pcaixa=null,$pautent=null,$pdata=null,$pvalorDebito=null,$pvalorCredito=null,$pcredor=null,$pclasse='normal',$pitemconciliacao=null, $sJustificativa = ''){
 
   	$this->id               = $pid;
     $this->status           = $pstatus;
@@ -364,7 +291,6 @@ class Autenticacoes {
     $this->detalhe          = utf8_encode(str_replace("\r","",str_replace("\n","",$pdetalhe)));
     $this->caixa            = $pcaixa;
     $this->autent           = $pautent;
-    $this->arquivo          = $parquivo;
     $this->data             = $pdata;
     $this->valorDebito      = $pvalorDebito;
     $this->valorCredito     = $pvalorCredito;

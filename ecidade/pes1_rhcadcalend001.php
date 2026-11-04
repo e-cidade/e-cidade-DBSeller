@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,14 +65,14 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
       include(modification("forms/db_frmrhcadcalend.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -80,7 +80,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","rh53_descr",true,1,"rh53_descr",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clrhcadcalend->erro_status=="0"){
     $clrhcadcalend->erro(true,false);

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
     <title>DBSeller Informática Ltda - Página Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js');
       db_app::load('estilos.css, grid.style.css');
     ?>
@@ -141,7 +141,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
       </legend>
   
       <form name="form1" method="POST" action="" onsubmit="return js_importar_dados()" enctype="multipart/form-data">
-        <? 
+        <?php 
           db_menu(db_getsession("DB_id_usuario"),
                   db_getsession("DB_modulo"),
                   db_getsession("DB_anousu"),
@@ -151,7 +151,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
         <table align="center" width="700" style="margin: 10px auto;">
           <tr>
             <td>
-              <?
+              <?php
                 $clArqAuxiliar->cabecalho      = '<strong>Zona Fiscal</strong>';
                 $clArqAuxiliar->codigo         = 'j50_zona'; 
                 $clArqAuxiliar->descr          = 'j50_descr';
@@ -167,7 +167,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
           </tr>
           <tr>
             <td>
-              <? 
+              <?php 
                 $clArqAuxiliar->cabecalho      = '<strong>Zona de Entrega</strong>';
                 $clArqAuxiliar->codigo         = 'j85_codigo'; //chave de retorno da func
                 $clArqAuxiliar->descr          = 'j85_descr';   //chave de retorno
@@ -183,7 +183,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
           </tr>
           <tr>
             <td>
-              <?
+              <?php
                 $clArqAuxiliar->cabecalho      = '<strong>Logradouros</strong>';
                 $clArqAuxiliar->codigo         = 'j14_codigo'; //chave de retorno da func
                 $clArqAuxiliar->descr          = 'j14_nome';   //chave de retorno
@@ -199,7 +199,7 @@ $clArqAuxiliar->Labelancora    = 'Código';
           </tr>
           <tr>
             <td>
-              <?
+              <?php
                 $clArqAuxiliar->cabecalho      = '<strong>Bairros</strong>';
                 $clArqAuxiliar->codigo         = 'j13_codi'; //chave de retorno da func
                 $clArqAuxiliar->descr          = 'j13_descr';   //chave de retorno
@@ -225,12 +225,12 @@ $clArqAuxiliar->Labelancora    = 'Código';
                 <strong>Água</strong>
               </td>
               <td>
-                <?
+                <?php
                   $rscaracter = $clcaracter->sql_record($clcaracter->sql_query_file(null, "*", "j31_descr", "j31_grupo = 83"));
                 ?>
                 <select name="caracterAgua" style="width: 300px;">
                   <option value="">Todas</option>
-                  <?
+                  <?php
                     for($i = 0; $i < $clcaracter->numrows; $i++) {
                      
                       $oCaracter = db_utils::fieldsMemory($rscaracter, $i);
@@ -245,12 +245,12 @@ $clArqAuxiliar->Labelancora    = 'Código';
                 <strong>Esgoto</strong>
               </td>
               <td>
-                <?
+                <?php
                   $rscaracter = $clcaracter->sql_record($clcaracter->sql_query_file(null, "*", "j31_descr", "j31_grupo = 82"));
                 ?>
                 <select name="caracterEsgoto" style="width: 300px;">
                   <option value="">Todas</option>
-                  <?
+                  <?php
                     for($i = 0; $i < $clcaracter->numrows; $i++) {
                     
                       $oCaracter = db_utils::fieldsMemory($rscaracter, $i);

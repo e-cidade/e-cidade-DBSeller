@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -67,11 +67,11 @@ function js_emite(){
   }else{
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_ordemcompra002','emp3_ordemcompra002.php?m51_codordem='+document.form1.m51_codordem.value+'&e60_numcgm='+document.form1.m51_numcgm.value+'&e60_numemp='+document.form1.m52_numemp.value,'Pesquisa',true);
   }
-}  
-function js_limpa(){
-   location.href='emp3_ordemcompra001.php'; 
 }
-</script>  
+function js_limpa(){
+   location.href='emp3_ordemcompra001.php';
+}
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -91,26 +91,26 @@ function js_limpa(){
 <td ></td>
 <td ></td>
 </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?php db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
+      <?php db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
          ?></td>
   </tr>
 
-  <tr> 
-    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("m51_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
-         db_input("z01_nome",40,"$Iz01_nome",true,"text",3);  
+      <?php db_input("m51_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+         db_input("z01_nome",40,"$Iz01_nome",true,"text",3);
         ?></td>
   </tr>
       <tr>
 	<td nowrap title="<?=@$Te60_codemp?>">
-	   <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+	   <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
 	</td>
-	<td> 
-	   <? db_input('e60_codemp',15,$Ie60_codemp,true,'text',4,"")  ?>
+	<td>
+	   <?php db_input('e60_codemp',15,$Ie60_codemp,true,'text',4,"")  ?>
 	</td>
       </tr>
 </tr>
@@ -118,10 +118,10 @@ function js_limpa(){
 
   <tr>
 	<td nowrap title="<?=@$Te60_numemp?>">
-	   <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
+	   <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
 	</td>
-	<td> 
-	   <? db_input('m52_numemp',15,$Ie60_numemp,true,'text',4," onchange='js_pesquisae60_numemp(false);'")  ?>
+	<td>
+	   <?php db_input('m52_numemp',15,$Ie60_numemp,true,'text',4," onchange='js_pesquisae60_numemp(false);'")  ?>
 	</td>
       </tr>
 
@@ -140,28 +140,28 @@ function js_limpa(){
   </tr>
   </table>
   </form>
- 
+
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisae60_numcgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_matordemempcgm.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome|m51_codordem','Pesquisa',true);
   }else{
-     if(document.form1.m51_numcgm.value != ''){ 
+     if(document.form1.m51_numcgm.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.m51_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.z01_nome.value = ''; 
+       document.form1.z01_nome.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.m51_numcgm.focus(); 
-    document.form1.m51_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.m51_numcgm.focus();
+    document.form1.m51_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2,chave3){
@@ -174,18 +174,18 @@ function js_mostracgm1(chave1,chave2,chave3){
 function js_pesquisae60_numemp(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_matordemempcgm.php?funcao_js=parent.js_mostraempempenho1|m52_numemp|m51_codordem','Pesquisa',true);  }else{
-     if(document.form1.m52_numemp.value != ''){ 
+     if(document.form1.m52_numemp.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_matordemempcgm.php?pesquisa_chave='+document.form1.m52_numemp.value+'&funcao_js=parent.js_mostraempempenho','Pesquisa',false);
      }else{
-       document.form1.m52_numemp.value = ''; 
+       document.form1.m52_numemp.value = '';
      }
   }
 }
 function js_mostraempempenho(chave,erro){
-  if(erro==true){ 
-    
-    document.form1.m52_numemp.focus(); 
-    document.form1.m52_numemp.value = ''; 
+  if(erro==true){
+
+    document.form1.m52_numemp.focus();
+    document.form1.m52_numemp.value = '';
   }
 }
 function js_mostraempempenho1(chave1,x){
@@ -193,17 +193,17 @@ function js_mostraempempenho1(chave1,x){
   document.form1.m51_codordem.value = x;
   document.form1.e60_codemp.value = '';
   db_iframe_empempenho.hide();
-  
+
 }
 //-----------------------------------------------------
 function js_pesquisae60_codemp(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_matordemempcgm.php?funcao_js=parent.js_mostraempempenho1|m52_numemp|m51_codordem','Pesquisa',true);
   }else{
-     if(document.form1.e60_numemp.value != ''){ 
+     if(document.form1.e60_numemp.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_empempenho','func_matordemempcgm.php?pesquisa_chave='+document.form1.e60_numemp.value+'&funcao_js=parent.js_mostraempempenho','Pesquisa',false);
      }else{
-       document.form1.e60_numemp.value = ''; 
+       document.form1.e60_numemp.value = '';
      }
   }
 }
@@ -212,22 +212,22 @@ function js_pesquisa_matordem(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_matordem','func_matordemanulada.php?funcao_js=parent.js_mostramatordem1|m51_codordem|','Pesquisa',true);
   }else{
-     if(document.form1.m51_codordem.value != ''){ 
+     if(document.form1.m51_codordem.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_matordem','func_matordemanulada.php?pesquisa_chave='+document.form1.m51_codordem.value+'&funcao_js=parent.js_mostramatordem','Pesquisa',false);
      }else{
-       document.form1.m51_codordem.value = ''; 
+       document.form1.m51_codordem.value = '';
      }
   }
 }
 function js_mostramatordem(chave,erro){
-  document.form1.m51_codordem.value = chave1; 
-  if(erro==true){ 
-    document.form1.m51_codordem.value = ''; 
-    document.form1.m51_codordem.focus(); 
+  document.form1.m51_codordem.value = chave1;
+  if(erro==true){
+    document.form1.m51_codordem.value = '';
+    document.form1.m51_codordem.focus();
   }
 }
 function js_mostramatordem1(chave1){
-   document.form1.m51_codordem.value = chave1;  
+   document.form1.m51_codordem.value = chave1;
    db_iframe_matordem.hide();
 }
 //------------------------------------------------------

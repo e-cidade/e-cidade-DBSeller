@@ -7,12 +7,12 @@ O **e-Cidade** é um sistema integrado desenvolvido para a gestão municipal. El
 ## 🚀 Tecnologias e Requisitos
 
 Este projeto é considerado legado e utiliza as seguintes tecnologias fundamentais:
-*   **Backend:** PHP 5.6
+*   **Backend:** PHP 7.4
 *   **Frontend:** HTML e Javascript
 *   **Banco de Dados:** PostgreSQL
 *   **Servidor Web:** Apache ou Nginx
 
-> ⚠️ **Atenção:** Devido aos requisitos legados (como o PHP 5.6), o uso do **Docker** é o ambiente de desenvolvimento fortemente recomendado. A instalação manual convencional encontra-se atualmente em construção.
+> ⚠️ **Atenção:** Devido aos requisitos legados (como o PHP 7.4), o uso do **Docker** é o ambiente de desenvolvimento fortemente recomendado. A instalação manual convencional encontra-se atualmente em construção.
 
 ---
 
@@ -45,20 +45,20 @@ O projeto está configurado em containers para simplificar ao máximo sua execu�
     ```bash
     docker-compose up -d --build
     ```
-    *Nota: Todos os containers possuem um volume mapeado da raiz do e-Cidade diretamente para a pasta `/var/www/html/` de cada container respectivo.*
+    *Nota: Todos os containers possuem um volume mapeado da pasta `ecidade/` diretamente para a pasta `/var/www/html/` de cada container respectivo.*
 3.  **Descompactar o banco de dados:**
     ```bash
-    docker exec -it ecidade_php56 gunzip docker/ecidade_base.sql.gz
+    docker exec -it ecidade_php74 gunzip -k docker/ecidade_base.sql.gz
     ```
 4.  **Executar o Script de Instalação:**
     Rode o script de instalação por dentro do container PHP:
     ```bash
-    docker exec -it ecidade_php56 bash docker/install.sh
+    docker exec -it ecidade_php74 bash docker/install.sh
     ```
 5.  **Ajustar permissões do sistema:**
     Na raiz do e-Cidade, aplique as permissões adequadas na pasta para garantir o funcionamento correto:
     ```bash
-    docker exec -it ecidade_php56 chmod -R 775 /var/www/html
+    docker exec -it ecidade_php74 chmod -R 775 /var/www/html
     ```
 6.  **Acessar a Aplicação:**
     Após finalizar, o sistema estará pronto para acesso através do navegador nos seguintes endereços:
@@ -74,7 +74,7 @@ O projeto está configurado em containers para simplificar ao máximo sua execu�
 ## 🧰 Solução de Problemas (Troubleshooting)
 
 *   **A porta 8080 já está em uso?** Altere o arquivo `docker-compose.yml`, mudando a configuração de `8080:80` para outra porta disponível (ex: `8081:80`) e acesse através de http://localhost:8081.
-*   **O script `install.sh` não foi encontrado?** Verifique se o seu terminal está no diretório correto (raiz do projeto) e se o arquivo reside no caminho `docker/install.sh`.
+*   **O script `install.sh` não foi encontrado?** Verifique se o seu terminal está no diretório correto (raiz do projeto) e se o arquivo reside no caminho `ecidade/docker/install.sh`.
 *   **Ocorreu erro de permissão no script?** Você pode conceder a permissão de execução usando o comando: `chmod +x docker/install.sh`.
 *   **Deseja reinstalar (refazer o sistema e o banco)?** Remova tudo (volumes e imagens) com o comando `docker-compose down -v --rmi all` e, após isso, repita os passos 4 e 5 da instalação.
 
@@ -133,3 +133,17 @@ A evolução contínua da ferramenta depende da comunidade, e contribuições s�
 
 *   **Grupo Oficial do Telegram:** Para comunicação direta, alinhamentos da comunidade, suporte e dúvidas, participe do canal através do link https://t.me/eCidadeCE.
 *   **Registro de Problemas (Issues):** Para demandas técnicas específicas ou bugs, recomenda-se registrar uma *Issue* nos repositórios, a fim de manter a rastreabilidade do problema sempre que possível.
+
+## Atualização a partir de ecidade_psp
+
+O código da aplicação está em `ecidade/`; `docker-compose.yml` e os arquivos de construção das imagens continuam na raiz. A imagem `ecidade-php74:latest`, construída em `docker/php74-apache`, utiliza PHP 7.4, exigido pela aplicação com Laravel 8. O serviço e o container se chamam `ecidade_php74`.
+
+Depois de reconstruir a imagem, instale as dependências da versão atualizada:
+
+```bash
+docker compose up -d --build
+docker compose exec ecidade_php74 composer install
+docker compose exec ecidade_php74 composer configure-desktop
+```
+
+A instalação inicial continua usando `docker/install.sh` dentro do container (arquivo `ecidade/docker/install.sh` no projeto). Esse script cria o banco; não o execute para atualizar uma instalação com dados existentes. As migrações do banco devem ser planejadas e executadas separadamente, com backup.

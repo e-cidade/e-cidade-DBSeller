@@ -72,8 +72,30 @@ try {
       }
   
       if ( !$oParametros->lActive ) {
+
         db_destroysession("DB_traceLog");
+        db_destroysession("TracelogObject");
       }
+
+      $data = array();
+
+      $data['TracelogObject'] = isset($_SESSION['TracelogObject']) ? $_SESSION['TracelogObject'] : null;
+      $data['DB_traceLog'] = isset($_SESSION['DB_traceLog']) ? $_SESSION['DB_traceLog'] : null;
+      $data['DB_traceLogAcount'] = isset($_SESSION['DB_traceLogAcount']) ? $_SESSION['DB_traceLogAcount'] : null;
+
+      \ECidade\V3\Window\Session::iterateAll(function($name, $id) use ($data) {
+
+        foreach ($data as $key => $value) {
+
+          if (empty($value)) {
+            unset($_SESSION[$key]);
+            continue;
+          }
+
+          $_SESSION[$key] = $value;
+        }
+      });
+ 
   
       break;
 
@@ -195,6 +217,14 @@ try {
     case 'ManipularPreMenus' :
     
       db_destroysession('DB_premenus');
+      \ECidade\V3\Window\Session::iterateAll(function($name, $id) use ($oParametros) {
+
+        unset($_SESSION["DB_premenus"]);
+        if ($oParametros->status =='ativar') {
+          $_SESSION["DB_premenus"] = true;
+        }
+      });
+   
       $oRetorno->sStatus = 'ativar';
       $oRetorno->sValue  = 'Ativar PreMenus';
     

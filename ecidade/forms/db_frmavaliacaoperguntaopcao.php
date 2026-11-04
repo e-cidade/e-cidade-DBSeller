@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ if (isset($oPost->db_opcaoal)) {
       <b>Código da Pergunta:</b>
     </td>
     <td colspan="3">
-      <?
+      <?php
         db_input('db104_sequencial',10,$Idb104_sequencial,true,'hidden',3,"");
         db_input('db103_sequencial',10,$Idb103_sequencial,true,'text',3,"");
         db_input('db103_descricao',40,@$Idb103_descricao,true,'text',3,"");
@@ -79,7 +79,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb104_descricao?>
     </td>
     <td colspan="4">
-      <?
+      <?php
         db_input('db104_descricao',255,$Idb104_descricao,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -89,7 +89,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb104_identificador?>
     </td>
     <td colspan="4">
-      <?
+      <?php
         db_input('db104_identificador',65,$Idb104_identificador,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -99,7 +99,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb104_peso?>
     </td>
     <td colspan="4">
-      <?
+      <?php
         db_input('db104_peso',10,$Idb104_peso,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -109,7 +109,7 @@ if (isset($oPost->db_opcaoal)) {
       <b>Valor da Resposta:</b>
     </td>
     <td colspan="4">
-      <?
+      <?php
       db_input('db104_valorresposta',10,"0",true,'text',$db_opcao,"")
       ?>
     </td>
@@ -119,7 +119,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb104_aceitatexto?>
     </td>
     <td>
-      <?
+      <?php
         $aAceitaTexto = array("f"=>"NAO","t"=>"SIM");
         db_select('db104_aceitatexto',$aAceitaTexto,true,$db_opcao,"");
       ?>
@@ -149,7 +149,7 @@ if (isset($oPost->db_opcaoal)) {
 <table>
   <tr>
     <td valign="top" align="center">
-      <?
+      <?php
         $sWhere    = "db104_avaliacaopergunta = {$db103_sequencial}";
         $sCampos   = "db104_sequencial, db104_avaliacaopergunta, db104_descricao, db104_identificador";
         $sCampos  .= ", db104_aceitatexto, db104_peso";

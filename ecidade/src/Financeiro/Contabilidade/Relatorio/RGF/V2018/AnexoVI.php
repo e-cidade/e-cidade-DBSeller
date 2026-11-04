@@ -6,8 +6,6 @@ use App\Domain\Financeiro\Contabilidade\Factories\AnexoCincoRgfFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoDoisRgfFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoTresFactory;
 use App\Domain\Financeiro\Contabilidade\Factories\AnexoUmRgfFactory;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RGF\AnexoUmInRsService;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RGF\AnexoUmMdfService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTresInRsService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTresMdfService;
 use cl_assinatura;
@@ -450,15 +448,7 @@ class AnexoVI extends AnexoAbstract
             'DB_instit' => db_getsession('DB_instit')
         ];
 
-        switch (AnexoUmRgfFactory::getModelo($this->ano)) {
-            case 'in13':
-                $service = new AnexoUmInRsService($filtros);
-                break;
-            case 'mdf':
-            default:
-                $service = new AnexoUmMdfService($filtros);
-                break;
-        }
+        $service = AnexoUmRgfFactory::getService($this->ano, $filtros);
 
         return $service->processaLinhasSimplificado();
     }
@@ -752,7 +742,7 @@ class AnexoVI extends AnexoAbstract
 
         foreach ($simplificado as $dado) {
             $linha = new Linha();
-            $linha->addColuna(105, "Dívida Consolidada Líquida", "TR", 0, 'L', 0);
+            $linha->addColuna(105, $dado->nome, "TR", 0, 'L', 0);
             $linha->addColuna(40, $this->formatarValor($dado->valor), 'TLR', 0, 'R', 0);
             $linha->addColuna(45, $this->formatarValor($dado->percentual), "TL", 1, 'R', 0);
             $this->linhas[] = $linha;

@@ -16,7 +16,10 @@ abstract class BaseDeferredProvider extends ServiceProvider
      * Registra o service provider.
      * @return void
      */
-    abstract public function register();
+    public function register()
+    {
+        // TODO: Implement register() method.
+    }
 
     /**
      * Retorna os Services registrados no provider.

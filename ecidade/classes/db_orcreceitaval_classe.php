@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
@@ -56,13 +56,13 @@ class cl_orcreceitaval {
                  o71_valor = float8 = Valor
                  ";
    //funcao construtor da classe
-   function cl_orcreceitaval() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcreceitaval");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_orcreceitaval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o71_anousu = ($this->o71_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o71_anousu"]:$this->o71_anousu);
        $this->o71_codrec = ($this->o71_codrec == ""?@$GLOBALS["HTTP_POST_VARS"]["o71_codrec"]:$this->o71_codrec);
@@ -86,7 +86,7 @@ class cl_orcreceitaval {
      }
    }
    // funcao para inclusao
-   function incluir ($o71_anousu,$o71_codrec,$o71_coddoc,$o71_mes){
+   public function incluir ($o71_anousu,$o71_codrec,$o71_coddoc,$o71_mes){
       $this->atualizacampos();
      if($this->o71_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
@@ -193,7 +193,7 @@ class cl_orcreceitaval {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null) {
+   public function alterar ($o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null) {
       $this->atualizacampos();
      $sql = " update orcreceitaval set ";
      $virgula = "";
@@ -334,7 +334,7 @@ class cl_orcreceitaval {
      }
    }
    // funcao para exclusao
-   function excluir ($o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$dbwhere=null) {
+   public function excluir ($o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -424,7 +424,7 @@ class cl_orcreceitaval {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -446,10 +446,10 @@ class cl_orcreceitaval {
       }
      return $result;
    }
-   function sql_query ( $o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_orcreceitaval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,10 +511,10 @@ class cl_orcreceitaval {
      }
      return $sql;
   }
-   function sql_query_file ( $o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o71_anousu=null,$o71_codrec=null,$o71_coddoc=null,$o71_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_orcreceitaval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

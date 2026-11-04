@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -53,7 +53,7 @@ include(modification("dbforms/db_funcoes.php"));
       if (!in_array($type, $aTipos)) {
 
         db_msgbox("Imagem não é um formato válido!\\n\\nUtilize somente imagens no formato JPG!");
-        ?><script>parent.frame_file.document.form3.ed47_o_oid.value = "";</script><?
+        ?><script>parent.frame_file.document.form3.ed47_o_oid.value = "";</script><?php
       } elseif ($size > 1024000) {
         db_msgbox("Tamanho da imagem é maior que o permitido!\\n\\nUtilize imagens até 1Mb!");
         ?><script>parent.frame_file.document.form3.ed47_o_oid.value = "";</script><?php
@@ -124,7 +124,7 @@ include(modification("dbforms/db_funcoes.php"));
         <script>
           alert("Erro na importação da imagem");
         </script>
-      <?
+      <?php
     }
   }
   if(isset($_GET["imagem_gerada"])){?>

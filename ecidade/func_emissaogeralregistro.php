@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clemissaogeralregistro->rotulo->label("tr02_emissaogeral");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ltr02_sequencial?></label></td>
-          <td><? db_input("tr02_sequencial",10,$Itr02_sequencial,true,"text",4,"","chave_tr02_sequencial"); ?></td>
+          <td><?php db_input("tr02_sequencial",10,$Itr02_sequencial,true,"text",4,"","chave_tr02_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ltr02_emissaogeral?></label></td>
-          <td><? db_input("tr02_emissaogeral",10,$Itr02_emissaogeral,true,"text",4,"","chave_tr02_emissaogeral");?></td>
+          <td><?php db_input("tr02_emissaogeral",10,$Itr02_emissaogeral,true,"text",4,"","chave_tr02_emissaogeral");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clemissaogeralregistro->rotulo->label("tr02_emissaogeral");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_emissaogeralregistro.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emissaogeralregistro.php")==true){
@@ -78,12 +78,12 @@ $clemissaogeralregistro->rotulo->label("tr02_emissaogeral");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -97,7 +97,7 @@ a:active {
   font-size: 11;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -165,9 +165,9 @@ $sCampos .= " ({$sAusenciaPorCodGradeHorario}) as ausencia_grade";
 $sOrdenacao = "sd30_i_diasemana, sd30_c_horaini";
 $sWhere     = "     sd27_i_codigo = {$sd27_i_codigo}
                 and sd30_i_diasemana = {$chave_diasemana}
-                and (    sd30_d_valfinal is null 
+                and (    sd30_d_valfinal is null
                       or ( sd30_d_valfinal is not null and sd30_d_valfinal >= '{$sData}' ) )
-                 and (    sd30_d_valinicial is null 
+                 and (    sd30_d_valinicial is null
                        or ( sd30_d_valinicial is not null and sd30_d_valinicial <= '{$sData}') ) ";
 $sSql                 = $clundmedhorario->sql_query_ext( null, $sCampos, $sOrdenacao, $sWhere );
 $result_undmedhorario = db_query( $sSql );
@@ -405,7 +405,7 @@ if( $in == true ) {
 
       $diferenca   = $nro_fichas-$reservadas;
       $mi_interva1 = 0;
-      $mi_interva2 = 1;
+      $mi_interva2 = 0;
 
       $sDisplayCabecalho = isset( $lUnificado )         ? 'none' : "''";
       $sDisplaySeq       = isset( $lMostraSeq )         ? "''" : 'none';
@@ -441,7 +441,7 @@ if( $in == true ) {
           ?>
         </td>
       </tr>
-      <tr class='cabec' <? if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
+      <tr class='cabec' <?php if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
         <?php
         //verifica se vem da transferencia lado de
         if( isset($sTransf) && $sTransf == "true" && $sLado == "de") {
@@ -652,12 +652,12 @@ if( $in == true ) {
         if ($intervalo != 0) {
 
           $hora_ini2   = $hora_ini = $clagendamentos->somahora($hora_ini,($intervalo+$mi_interva2));
-          $mi_interva1 = -1;
+          $mi_interva1 = 0;
           $mi_interva2 = 0;
         } else {
 
           $hora_ini2   = $clagendamentos->somahora($hora_ini2,($intervalo2+$mi_interva2));
-          $mi_interva1 = -1;
+          $mi_interva1 = 0;
           $mi_interva2 = 0;
         }
       } // fim for h

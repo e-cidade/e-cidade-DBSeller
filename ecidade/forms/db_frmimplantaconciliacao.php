@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2013  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $borda = 0;
 							 <b> Conta : </b> 
 						</td>
 						<td colspan=2 nowrap title="">
-              <?
+              <?php
                 $sqlConta    = " select * from ( ";
                 $sqlConta   .= " select db83_sequencial,c61_reduz||' - '||db83_descricao as db83_descricao ,c61_reduz";
                 $sqlConta   .= "   from contabancaria ";
@@ -118,7 +118,7 @@ $borda = 0;
 							 <b> Datas disponiveis para conciliacao : </b> 
 						</td>
 						<td colspan=2 nowrap title="">
-              <?
+              <?php
                 $arrayDatas = array( '0' => " Selecione a data para conciliacao ");
                 db_select('data',$arrayDatas,'',1,"style='width:400px' onchange='js_enabled()'; ","","");
               ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,13 +69,13 @@ class cl_aguahidromatric {
                  x04_observacao = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_aguahidromatric() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromatric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_aguahidromatric {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x04_codhidrometro = ($this->x04_codhidrometro == ""?@$GLOBALS["HTTP_POST_VARS"]["x04_codhidrometro"]:$this->x04_codhidrometro);
        $this->x04_codmarca = ($this->x04_codmarca == ""?@$GLOBALS["HTTP_POST_VARS"]["x04_codmarca"]:$this->x04_codmarca);
@@ -108,7 +108,7 @@ class cl_aguahidromatric {
      }
    }
    // funcao para inclusao
-   function incluir ($x04_codhidrometro){
+   public function incluir ($x04_codhidrometro){
       $this->atualizacampos();
      if($this->x04_codmarca == null ){
        $this->erro_sql = " Campo Marca nao Informado.";
@@ -264,7 +264,7 @@ class cl_aguahidromatric {
      return true;
    }
    // funcao para alteracao
-   function alterar ($x04_codhidrometro=null) {
+   public function alterar ($x04_codhidrometro=null) {
       $this->atualizacampos();
      $sql = " update aguahidromatric set ";
      $virgula = "";
@@ -451,7 +451,7 @@ class cl_aguahidromatric {
      }
    }
    // funcao para exclusao
-   function excluir ($x04_codhidrometro=null,$dbwhere=null) {
+   public function excluir ($x04_codhidrometro=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x04_codhidrometro));
      }else{
@@ -521,7 +521,7 @@ class cl_aguahidromatric {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -544,10 +544,10 @@ class cl_aguahidromatric {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -611,10 +611,10 @@ class cl_aguahidromatric {
   }
 
    // funcao do sql
-   function sql_query_file ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -635,7 +635,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -644,10 +644,10 @@ class cl_aguahidromatric {
      }
      return $sql;
   }
-   function sql_query_diametromarca ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_diametromarca ( $x04_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,7 +672,7 @@ class cl_aguahidromatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

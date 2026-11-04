@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -57,7 +57,7 @@ $limpa = false;
 $tipobotao = "Excluir";                 //tipo do botao
 echo "<script> passa = 'e'; </script>"; //variavel js para a func saber se passa para proxima ab ou naun
 $tipoancgeral = "3";                    // TIpo geral das ancoras
-$tipoanctiaf = "1";                     //tipo da ancorado tiaf 
+$tipoanctiaf = "1";                     //tipo da ancorado tiaf
 $db_opcao = "3";                        //opcao geral dos campos
 
 ///////////// EXCLUSAO DO TIAF ////////////////////////
@@ -85,7 +85,7 @@ if (isset($incluir) && $incluir == "Excluir"){
 	    else{
 	        $erro_msg= $cltiaftiafinscr->erro_msg;
 	    }
-	}  
+	}
     $cltiafprazo->y96_prazo = $y96_prazo_ano."-".$y96_prazo_mes."-".$y96_prazo_dia;
 	$cltiafprazo->y96_codtiaf = $y90_codtiaf;
 	$rsResult = db_query("select y96_codigo as codigo from tiafprazo where y96_codtiaf = $y90_codtiaf");
@@ -104,7 +104,7 @@ if (isset($incluir) && $incluir == "Excluir"){
     }
     else{
         $erro_msg= $cltiafdoc->erro_msg;
-    }    
+    }
     $cltiaf->y90_data = $y90_data_ano."-".$y90_data_mes."-".$y90_data_dia;
 	$cltiaf->y90_atend = "f";
 	//$cltiaf->y90_codtiaf = $y90_codtiaf;
@@ -117,7 +117,7 @@ if (isset($incluir) && $incluir == "Excluir"){
         $limpa = true;
     }
 	db_fim_transacao($sqlerro);
-} 
+}
 
 ////////////////////////////////////////////////////////////////
 
@@ -134,22 +134,22 @@ if (isset($incluir) && $incluir == "Excluir"){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
- 
+
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	    <?
-	    
+	    <?php
+
 	        //$rsResult = $cltiaf->sql_record($cltiaf->sql_query_file("$y90_codtiaf","*","",""));
 	        if ($sqlerro == false){
-			    if(isset($y90_codtiaf) && $y90_codtiaf != "" && $limpa != true){  
+			    if(isset($y90_codtiaf) && $y90_codtiaf != "" && $limpa != true){
 	//			    echo($cltiaf->sql_querytiaf("","*","","y90_codtiaf = $y90_codtiaf"));
 				    $rsResult = $cltiaf->sql_record($cltiaf->sql_querytiaf("","*","","y90_codtiaf = $y90_codtiaf"));
 					if ($cltiaf->numrows > 0){
 				    	db_fieldsmemory($rsResult,0);
-				    	list($y90_data_ano,$y90_data_mes,$y90_data_dia) = split ("-", $y90_data);
-				   		list($y96_prazo_ano,$y96_prazo_mes,$y96_prazo_dia) = split ("-", $y96_prazo);
+				    	list($y90_data_ano,$y90_data_mes,$y90_data_dia) = explode("-", $y90_data);
+				   		list($y96_prazo_ano,$y96_prazo_mes,$y96_prazo_dia) = explode("-", $y96_prazo);
 				   		if ($tipo == "cgm"){
 							$z01_numcgm = $numero;
 							$z01_nomecgm = $z01_nome;
@@ -158,25 +158,25 @@ if (isset($incluir) && $incluir == "Excluir"){
 							$q02_inscr = $numero;
 							$z01_nomeinscr = $z01_nome;
 							$z01_numcgm = "";
-							
+
 						}
 				    }
 			    }
 		    }
-		    
-		    
+
+
 	    	include(modification("forms/db_frmtiaf001.php"));
 	    	if ($limpa == true){
        			echo "<script>js_limpacampos()</script>";
 		    }
-	    ?> 
+	    ?>
 	</td>
   </tr>
 </table>
 </body>
 </html>
 
-<?
+<?php
 if(isset($incluir)){
   if($cltiaf->erro_status=="0"){
     $cltiaf->erro(true,false);

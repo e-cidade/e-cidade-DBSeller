@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,34 +44,34 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty78_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly78_codtipo,"js_pesquisay78_codtipo(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y78_codtipo',10,$Iy78_codtipo,true,'text',3," onchange='js_pesquisay78_codtipo(false);'");
 ?>
-       <?
+       <?php
 db_input('y77_descricao',50,$Iy77_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty78_receit?>">
-       <?
+       <?php
        db_ancora(@$Ly78_receit,"js_pesquisay78_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y78_receit',4,$Iy78_receit,true,'text',$db_opcao," onchange='js_pesquisay78_receit(false);'");
 if($db_opcao == 2){
   db_input('y78_receit',4,$Iy78_receit,true,'hidden',$db_opcao,"","y78_receit_old");
   echo "<script>document.form1.y78_receit_old.value = '$y78_receit'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -81,7 +81,7 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Ly78_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('y78_valor',10,$Iy78_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -91,7 +91,7 @@ db_input('y78_valor',10,$Iy78_valor,true,'text',$db_opcao,"")
        <?=@$Ly78_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('y78_descr',50,$Iy78_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('y78_descr',50,$Iy78_descr,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td colspan="2" align="top">
-   <?
+   <?php
     $chavepri= array("y78_codtipo"=>@$y78_codtipo,"y78_receit"=>@$y78_receit);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y78_codtipo,y78_receit,y78_valor,y78_descr";
@@ -169,7 +169,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_tipovistoriasrec.hide();
 }
 </script>
-<?
+<?php
   if(isset($y78_codtipo) && $y78_codtipo != ""){
     echo "<script>js_OpenJanelaIframe('','db_iframe_tipovistorias1','func_tipovistorias.php?pesquisa_chave=$y78_codtipo&funcao_js=parent.js_mostratipovistorias','Pesquisa',false);</script>";
   }

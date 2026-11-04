@@ -56,6 +56,7 @@ class cl_iptucalcold
     public $j223_manual = null; 
     public $j223_tipocalculo = 0; 
     public $j223_iptucalclog = 0; 
+    public $j223_gerafinanc  =  't';
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  j223_sequencial = int4 = j223_sequencial 
@@ -109,6 +110,7 @@ class cl_iptucalcold
        $this->j223_manual = ($this->j223_manual == ""?@$GLOBALS["HTTP_POST_VARS"]["j223_manual"]:$this->j223_manual);
        $this->j223_tipocalculo = ($this->j223_tipocalculo == ""?@$GLOBALS["HTTP_POST_VARS"]["j223_tipocalculo"]:$this->j223_tipocalculo);
        $this->j223_iptucalclog = ($this->j223_iptucalclog == ""?@$GLOBALS["HTTP_POST_VARS"]["j223_iptucalclog"]:$this->j223_iptucalclog);
+       $this->j223_gerafinanc = ($this->j223_gerafinanc == ""?@$GLOBALS["HTTP_POST_VARS"]["j223_gerafinanc"]:$this->j223_gerafinanc);
      }else{
        $this->j223_sequencial = ($this->j223_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j223_sequencial"]:$this->j223_sequencial);
      }
@@ -293,7 +295,8 @@ class cl_iptucalcold
                                       ,j223_tipoim 
                                       ,j223_manual 
                                       ,j223_tipocalculo 
-                                      ,j223_iptucalclog 
+                                      ,j223_iptucalclog
+                                      ,j223_gerafinanc 
                        )
                 values (
                                 $this->j223_sequencial 
@@ -311,6 +314,7 @@ class cl_iptucalcold
                                ,'$this->j223_manual' 
                                ,$this->j223_tipocalculo 
                                ,$this->j223_iptucalclog 
+                               ,'$this->j223_gerafinanc'
                       )";
 
      $result = db_query($sql); 
@@ -849,7 +853,8 @@ class cl_iptucalcold
                             coalesce(j23_vlrisen, 0)     as j23_vlrisen,     
                             coalesce(j23_tipoim, '')     as j23_tipoim,
                             coalesce(j23_manual, '')     as j23_manual,
-                            coalesce(j23_tipocalculo, 0) as j23_tipocalculo
+                            coalesce(j23_tipocalculo, 0) as j23_tipocalculo,
+                            j23_gerafinanc 
                        from iptucalc where j23_anousu = {$iAnousu} and j23_matric = {$iMatric};";
 
     $rsIptucalc = db_query($sSqlIptucalc) or die($sSqlIptucalc);
@@ -870,6 +875,7 @@ class cl_iptucalcold
     global $j23_tipoim     ;
     global $j23_manual     ;
     global $j23_tipocalculo;
+    global $j23_gerafinanc ;
 
     db_fieldsmemory($rsIptucalc, 0);
 
@@ -887,6 +893,7 @@ class cl_iptucalcold
     $this->j223_manual         = ($j23_manual)?$j23_manual:' ';
     $this->j223_tipocalculo    = $j23_tipocalculo;
     $this->j223_iptucalclog    = $iCalclog;
+    $this->j223_gerafinanc     = $j23_gerafinanc;
 
     $this->incluir(null);
     if ($this->erro_status == 0) {

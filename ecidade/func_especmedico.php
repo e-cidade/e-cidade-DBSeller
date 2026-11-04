@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lsd04_i_medico?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
    		         db_input("sd04_i_medico",10,$Isd04_i_medico,true,"text",4,"","chave_sd04_i_medico");
 		          ?>
             </td>
@@ -71,7 +71,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",60,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -81,7 +81,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lrh70_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh70_estrutural",10,$Irh70_estrutural,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
@@ -91,7 +91,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lsd27_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd27_i_codigo",10,$Isd27_i_codigo,true,"text",4,"","chave_sd27_i_codigo");
 		       ?>
             </td>
@@ -109,8 +109,9 @@ $clrotulo->label("rh70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
+      $limitador = 15;
       $where = " sd27_c_situacao = 'A' ";
       if( isset($chave_sd04_i_unidade)){
          $where .= " and sd04_i_unidade = ".(int)$chave_sd04_i_unidade;
@@ -128,6 +129,11 @@ $clrotulo->label("rh70_descr");
         $where    .= " and exists (select * from sau_proccbo $sInner where $sSubWhere)";
 
       }
+
+      if(isset($limit) && !empty($limit)){
+        $limitador = $limit;
+      }
+
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_especmedico.php")==true){
@@ -139,15 +145,15 @@ $clrotulo->label("rh70_descr");
 
         if(isset($chave_z01_nome) && (trim($chave_z01_nome)!="") ){
            $where = ( !empty($where)?' and ':'').$where;
-	         $sql = $clespecmedico->sql_query("",$campos,"cgm.z01_nome"," cgm.z01_nome like '$chave_z01_nome%' $where");
+	         $sql = $clespecmedico->sql_query("",$campos,"sd27_b_principal DESC,cgm.z01_nome"," cgm.z01_nome like '$chave_z01_nome%' $where");
         }else if(isset($chave_rh70_estrutural) && (trim($chave_rh70_estrutural)!="") ){
            $where = (!empty($where)?' and ':'').$where;         
-	         $sql = $clespecmedico->sql_query("",$campos,"rh70_estrutural"," rh70_estrutural = '$chave_rh70_estrutural' $where ");          
+	         $sql = $clespecmedico->sql_query("",$campos,"sd27_b_principal DESC,rh70_estrutural"," rh70_estrutural = '$chave_rh70_estrutural' $where ");          
         }else if(isset($chave_sd27_i_codigo) && (trim($chave_sd27_i_codigo)!="") ){
            $where = (!empty($where)?' and ':'').$where;         
-	         $sql = $clespecmedico->sql_query("",$campos,"rh70_estrutural"," sd27_i_codigo = $chave_sd27_i_codigo $where ");          
+	         $sql = $clespecmedico->sql_query("",$campos,"sd27_b_principal DESC,rh70_estrutural"," sd27_i_codigo = $chave_sd27_i_codigo $where ");          
         }else{
-           $sql = $clespecmedico->sql_query("",$campos,"sd04_i_codigo","$where");
+           $sql = $clespecmedico->sql_query("",$campos,"sd27_b_principal DESC,sd04_i_codigo","$where");
         }
 /*
         if(isset($chave_sd27_i_codigo) && (trim($chave_sd27_i_codigo)!="") ){
@@ -198,9 +204,8 @@ $clrotulo->label("rh70_descr");
             echo "</script>";
 
           }
-
-        }
-        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
+        }        
+        db_lovrot($sql,$limitador,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $where = !empty($where)?' and '.$where:'';
@@ -233,12 +238,12 @@ $clrotulo->label("rh70_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

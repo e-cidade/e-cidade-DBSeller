@@ -68,13 +68,13 @@ class cl_benshistoricocalculobem {
                  t58_valorresidualanterior = numeric(10) = Valor residual anterior
                  ";
    //funcao construtor da classe
-   function cl_benshistoricocalculobem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benshistoricocalculobem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_benshistoricocalculobem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t58_sequencial = ($this->t58_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["t58_sequencial"]:$this->t58_sequencial);
        $this->t58_benstipodepreciacao = ($this->t58_benstipodepreciacao == ""?@$GLOBALS["HTTP_POST_VARS"]["t58_benstipodepreciacao"]:$this->t58_benstipodepreciacao);
@@ -101,7 +101,7 @@ class cl_benshistoricocalculobem {
      }
    }
    // funcao para inclusao
-   function incluir ($t58_sequencial){
+   public function incluir ($t58_sequencial){
       $this->atualizacampos();
      if($this->t58_benstipodepreciacao == null ){
        $this->erro_sql = " Campo Tipo de depreciaçao nao Informado.";
@@ -284,7 +284,7 @@ class cl_benshistoricocalculobem {
      return true;
    }
    // funcao para alteracao
-   function alterar ($t58_sequencial=null) {
+   public function alterar ($t58_sequencial=null) {
       $this->atualizacampos();
      $sql = " update benshistoricocalculobem set ";
      $virgula = "";
@@ -484,7 +484,7 @@ class cl_benshistoricocalculobem {
      }
    }
    // funcao para exclusao
-   function excluir ($t58_sequencial=null,$dbwhere=null) {
+   public function excluir ($t58_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t58_sequencial));
      }else{
@@ -555,7 +555,7 @@ class cl_benshistoricocalculobem {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -578,7 +578,7 @@ class cl_benshistoricocalculobem {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -625,7 +625,7 @@ class cl_benshistoricocalculobem {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -658,7 +658,7 @@ class cl_benshistoricocalculobem {
      }
      return $sql;
   }
-   function sql_query_calculo ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_calculo ( $t58_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -702,18 +702,18 @@ class cl_benshistoricocalculobem {
    *
    * Retorna o valor depreciado de um bem a partir da data de última Avaliação.
    */
-  function sql_query_valor_depreciado($idBem, $campos = null, $condicoes = null)
+  public function sql_query_valor_depreciado($idBem, $campos = null, $condicoes = null)
   {
     $campos = !$campos ? '*' : $campos;
-    $where = "WHERE t58_bens = {$idBem} AND benshistoricocalculo.t57_datacalculo >= bensdepreciacao.t44_ultimaavaliacao ";
+    $where = "WHERE t58_bens = {$idBem} AND benshistoricocalculo.t57_datacalculo >= (select max(benshistoricocalculo.t57_datacalculo) from benshistoricocalculobem join benshistoricocalculo ON benshistoricocalculo.t57_sequencial = benshistoricocalculobem.t58_benshistoricocalculo where t58_bens = {$idBem} and benshistoricocalculobem.t58_benstipodepreciacao = 6) ";
     $where .= !$condicoes ? '' : " AND {$condicoes}";
 
     $sql = "
-      SELECT {$campos} 
+      SELECT {$campos}
       FROM benshistoricocalculobem
-      INNER JOIN benshistoricocalculo 
+      INNER JOIN benshistoricocalculo
         ON benshistoricocalculo.t57_sequencial = benshistoricocalculobem.t58_benshistoricocalculo
-      INNER JOIN bensdepreciacao 
+      INNER JOIN bensdepreciacao
         ON bensdepreciacao.t44_bens = benshistoricocalculobem.t58_bens
       {$where}
     ";
@@ -724,12 +724,12 @@ class cl_benshistoricocalculobem {
    * @param $idBem int
    * @return string
    */
-  function sql_query_ultimo_sequencial_reavaliacao($idBem)
+  public function sql_query_ultimo_sequencial_reavaliacao($idBem)
   {
     $sql = "
       SELECT max(t57_sequencial) AS t57_sequencial
       FROM benshistoricocalculobem
-      INNER JOIN benshistoricocalculo 
+      INNER JOIN benshistoricocalculo
         ON benshistoricocalculo.t57_sequencial = benshistoricocalculobem.t58_benshistoricocalculo
       WHERE t58_bens = {$idBem} AND t57_tipocalculo != 1
     ";
@@ -740,7 +740,7 @@ class cl_benshistoricocalculobem {
    * @param $idsBem string
    * @return string
    */
-  function sql_query_busca_bens_reavaliados($idsBem)
+  public function sql_query_busca_bens_reavaliados($idsBem)
   {
     $sql = "
       SELECT t58_bens

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE idioma
 class cl_idioma { 
@@ -24,13 +24,13 @@ class cl_idioma {
                  bi22_idioma = varchar(50) = Idioma 
                  ";
    //funcao construtor da classe 
-   function cl_idioma() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("idioma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_idioma {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi22_sequencial = ($this->bi22_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["bi22_sequencial"]:$this->bi22_sequencial);
        $this->bi22_idioma = ($this->bi22_idioma == ""?@$GLOBALS["HTTP_POST_VARS"]["bi22_idioma"]:$this->bi22_idioma);
@@ -48,7 +48,7 @@ class cl_idioma {
      }
    }
    // funcao para Inclusão
-   function incluir ($bi22_sequencial){ 
+   public function incluir ($bi22_sequencial){ 
       $this->atualizacampos();
      if($this->bi22_idioma == null ){ 
        $this->erro_sql = " Campo Idioma não informado.";

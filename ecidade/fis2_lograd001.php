@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ function js_emite(){
        <tr>
          <td align="center">
            <b>Opções :&nbsp;&nbsp;&nbsp;</b>
-            <?
+            <?php
                $aVer = array("com"=>"Com as Ruas selecionadas",
                              "sem"=>"Sem as Ruas selecionados");
                db_select("ver",$aVer,true,2); 
@@ -86,7 +86,7 @@ function js_emite(){
        </tr>
       <tr>
         <td>
-			    <?
+			    <?php
 			      $aux->cabecalho      = "<b>Ruas</b>";
 			      $aux->codigo         = "j14_codigo"; //chave de retorno da func
 			      $aux->descr          = "j14_nome";   //chave de retorno
@@ -118,7 +118,7 @@ function js_emite(){
 				          <b>Selecionar Inscrições :</b>
 				        </td>
 				        <td>
-				          <?
+				          <?php
 				            $aTipoInscr = array("t"=>"Todos",
 				                                "c"=>"Não Baixados",
 				                                "b"=>"Baixados");
@@ -131,7 +131,7 @@ function js_emite(){
 				          <b>Mostrar Atividades :</b>
 				        </td>
 				        <td>
-				          <? 
+				          <?php 
 				            $aTipoAtividade = array("a"=>"Ativas",
 				                                    "b"=>"Baixadas",
 				                                    "0"=>"Todas");
@@ -144,7 +144,7 @@ function js_emite(){
 				          <b>Tipo:</b>
 				        </td>
 				        <td>
-				          <? 
+				          <?php 
 				            $aTipo = array( "0"=>"Todos",
 				                            "t"=>"Permanente",
 				                            "f"=>"Provisório");
@@ -163,7 +163,7 @@ function js_emite(){
       </tr>
     </form>
   </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -182,7 +182,7 @@ function js_mostra1(sNome, sDescr, lErro) {
 }
 </script>
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
           js_emite();

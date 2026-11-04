@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_procedcadgrupos->rotulo->label("at51_descr");
               <?=$Lat51_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at51_codigo",10,$Iat51_codigo,true,"text",4,"","chave_at51_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_procedcadgrupos->rotulo->label("at51_descr");
               <?=$Lat51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("chave_at51_descr",40,"",true,"text",4);
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_procedcadgrupos->rotulo->label("at51_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_procedcadgrupos.php")==true){
@@ -118,12 +118,12 @@ $cldb_procedcadgrupos->rotulo->label("at51_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

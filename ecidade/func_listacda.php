@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ $instit = db_getsession("DB_instit");
   </tr> -->
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         $sCampos = "lista.k60_codigo, lista.k60_descr, lista.k60_tipo, lista.k60_datadeb";
         $sSql = $cllistacda->sql_query(null," distinct {$sCampos} ","k60_codigo desc","k60_instit = {$instit}");
@@ -94,12 +94,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

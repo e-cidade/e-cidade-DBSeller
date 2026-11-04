@@ -91,7 +91,7 @@ $clempempenho->rotulo->label();
                             <tr>
                                 <td width="20%"><strong>Data Emissão:</strong></td>
                                 <td>
-                                    <?
+                                    <?php
                                     db_inputdata('e60_emiss1',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
                                     echo "<strong> a </strong>";
                                     db_inputdata('e60_emiss2',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
@@ -103,7 +103,7 @@ $clempempenho->rotulo->label();
                             <tr>
                                 <td><strong>Faixa de Valor do Empenho:</strong></td>
                                 <td>
-                                    <?
+                                    <?php
                                        db_input("e60_vlrempInicial", 9, $Ie60_vlremp,true,"text",4,"");
                                        echo "<strong> a </strong>";
                                        db_input("e60_vlrempFinal", 9, $Ie60_vlremp ,true,"text",4,"");

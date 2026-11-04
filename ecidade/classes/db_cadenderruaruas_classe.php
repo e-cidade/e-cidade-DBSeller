@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_cadenderruaruas {
                  db88_ruas = int4 = Código Ruas 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderruaruas() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderruaruas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cadenderruaruas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db88_sequencial = ($this->db88_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db88_sequencial"]:$this->db88_sequencial);
        $this->db88_cadenderrua = ($this->db88_cadenderrua == ""?@$GLOBALS["HTTP_POST_VARS"]["db88_cadenderrua"]:$this->db88_cadenderrua);
@@ -77,7 +77,7 @@ class cl_cadenderruaruas {
      }
    }
    // funcao para inclusao
-   function incluir ($db88_sequencial){ 
+   public function incluir ($db88_sequencial){ 
       $this->atualizacampos();
      if($this->db88_cadenderrua == null ){ 
        $this->erro_sql = " Campo Código Rua nao Informado.";
@@ -176,7 +176,7 @@ class cl_cadenderruaruas {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db88_sequencial=null) { 
+   public function alterar ($db88_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update cadenderruaruas set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_cadenderruaruas {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db88_sequencial=null,$dbwhere=null) { 
+   public function excluir ($db88_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db88_sequencial));
      }else{ 
@@ -334,7 +334,7 @@ class cl_cadenderruaruas {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -357,7 +357,7 @@ class cl_cadenderruaruas {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -394,7 +394,7 @@ class cl_cadenderruaruas {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -428,7 +428,7 @@ class cl_cadenderruaruas {
      return $sql;
   }
 // funcao do sql 
-   function sql_queryBairroRuaMunicipio ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_queryBairroRuaMunicipio ( $db88_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

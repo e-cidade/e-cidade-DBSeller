@@ -83,6 +83,11 @@ class Parametros
         $parametrosModel->setModeloColetaAmostra($stdClass->la49_modelocoletaamostra);
         $parametrosModel->setIntegracao($stdClass->la49_integracao);
         $parametrosModel->setNumeroControleInterno($stdClass->la49_numerocontroleinterno === 't');
+        $parametrosModel->setModeloLaudo($stdClass->la49_modelolaudo);
+        $parametrosModel->setExibeLiberacaoPorExame($stdClass->la49_exibeliberacaoporexame);
+        $parametrosModel->setEspacoLinhas($stdClass->la49_espacolinhas);
+        $parametrosModel->setTamanhoFonte($stdClass->la49_tamanhofonte);
+        $parametrosModel->setIntegracaoInfinity($stdClass->la49_integracaoinfinity);
 
         static::getInstancia()->parametros = $parametrosModel;
 

@@ -57,6 +57,11 @@ class PensaoAlimenticia
      * @var CgmFisico
      */
     private $cgmPensionista;
+
+    /**
+     * @var CgmFisico
+     */
+    private $cgmRepresentanteLegal;
     /**
      * @var float
      */
@@ -73,6 +78,16 @@ class PensaoAlimenticia
     private $valorDecimo;
 
     /**
+     * @var float
+     */
+    private $valorFerias;
+
+    /**
+     * @var float
+     */
+    private $valorComplementar;
+
+    /**
      * PensaoAlimenticia constructor.
      * @param null $codigo
      * @throws Exception
@@ -86,9 +101,12 @@ class PensaoAlimenticia
             $this->mes = $pensaoAlimenticia->getMes();
             $this->servidor = $pensaoAlimenticia->getServidor();
             $this->cgmPensionista = $pensaoAlimenticia->getCgmPensionista();
+            $this->cgmAlimentado = $pensaoAlimenticia->getCgmAlimentado();
             $this->valorRescisao = $pensaoAlimenticia->getValorRescisao();
             $this->valor = $pensaoAlimenticia->getValor();
             $this->valorDecimo = $pensaoAlimenticia->getValorDecimo();
+            $this->valorFerias = $pensaoAlimenticia->getValorFerias();
+            $this->valorComplementar = $pensaoAlimenticia->getValorComplementar();
         }
     }
 
@@ -118,8 +136,8 @@ class PensaoAlimenticia
             $pensaoAlimenticia->setServidor(ServidorRepository::getInstanciaByCodigo($state['r52_regist']));
         }
 
-        if (array_key_exists('r52_numcgm', $state)) {
-            $pensaoAlimenticia->setCgmPensionista(CgmRepository::getByCodigo($state['r52_numcgm']));
+        if (array_key_exists('r52_cgmalimentado', $state)) {
+            $pensaoAlimenticia->setCgmPensionista(CgmRepository::getByCodigo($state['r52_cgmalimentado']));
         }
 
         if (array_key_exists('r52_valres', $state)) {
@@ -132,6 +150,18 @@ class PensaoAlimenticia
 
         if (array_key_exists('r52_val13', $state)) {
             $pensaoAlimenticia->setValorDecimo((float)$state['r52_val13']);
+        }
+
+        if (array_key_exists('r52_valfer', $state)) {
+            $pensaoAlimenticia->setValorFerias((float)$state['r52_valfer']);
+        }
+
+        if (array_key_exists('r52_valcom', $state)) {
+            $pensaoAlimenticia->setValorComplementar((float)$state['r52_valcom']);
+        }
+
+        if (array_key_exists('r52_numcgm', $state)) {
+            $pensaoAlimenticia->setCgmRepresentanteLegal(CgmRepository::getByCodigo($state['r52_numcgm']));
         }
 
         return $pensaoAlimenticia;
@@ -148,9 +178,12 @@ class PensaoAlimenticia
             'mes' => $this->getMes(),
             'servidor' => $this->getServidor()->toArray(),
             'cgmPensionista' => $this->getCgmPensionista()->toArray(),
+            'cgmRepresentanteLegal' => $this->getCgmRepresentanteLegal()->toArray(),
             'valorRescisao' => $this->getValorRescisao(),
             'valor' => $this->getValor(),
-            'valorDecimo' => $this->getValorDecimo()
+            'valorDecimo' => $this->getValorDecimo(),
+            'valorFerias' => $this->getValorFerias(),
+            'valorComplementar' => $this->getValorComplementar()
         );
     }
 
@@ -280,5 +313,47 @@ class PensaoAlimenticia
     public function setValorDecimo($valorDecimo)
     {
         $this->valorDecimo = $valorDecimo;
+    }
+
+    /**
+     * @return float
+     */
+    public function getValorFerias()
+    {
+        return $this->valorFerias;
+    }
+
+    /**
+     * @param float $valorFerias
+     */
+    public function setValorFerias($valorFerias)
+    {
+        $this->valorFerias = $valorFerias;
+    }
+
+    /**
+     * @return float
+     */
+    public function getValorComplementar()
+    {
+        return $this->valorComplementar;
+    }
+
+    /**
+     * @param float $valorComplementar
+     */
+    public function setValorComplementar($valorComplementar)
+    {
+        $this->valorComplementar = $valorComplementar;
+    }
+
+    public function setCgmRepresentanteLegal($cgmRepresentanteLegal)
+    {
+        $this->cgmRepresentanteLegal = $cgmRepresentanteLegal;
+    }
+
+    public function getCgmRepresentanteLegal()
+    {
+        return $this->cgmRepresentanteLegal;
     }
 }

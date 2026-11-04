@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,12 +80,12 @@ return true;
 	  <table class="form-container">
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -93,12 +93,12 @@ return true;
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -106,12 +106,12 @@ return true;
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -119,18 +119,18 @@ return true;
       </tr>
       <tr> 
         <td>
-          <?
+          <?php
             db_ancora('<b>Certidao Inicial: </b>',' js_certidini(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v13_certidini',5,$Iv13_certid,true,'text',1,"onchange='js_certidini(false)'");
           ?>
-          <?
+          <?php
             db_ancora('<b>Certidao Final: </b>',' js_certidfim(true); ',1);
           ?>       
-          <?
+          <?php
             db_input('v13_certidfim',5,$Iv13_certid,true,'text',1,"onchange='js_certidfim(false)'");
           ?>
         </td>       
@@ -139,7 +139,7 @@ return true;
   </fieldset>
 	<input type="submit" name="pesquisar" value="Pesquisar" onclick="return js_testacamp()" >
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -255,7 +255,7 @@ function js_mostracertidfim1(chave,erro){
 
 
 </script>
-<?
+<?php
 if(isset($invalido)){
     echo "<script>alert(_M('tributario.juridico.jur1_emiteinicial001.certidao_nao_encontrada'))</script>";
 }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,7 @@ $clpcdoccertif->rotulo->label();
                     <?= @$Lpc71_obs ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_textarea('pc71_obs', 0, 60, $Ipc71_obs, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -76,7 +76,7 @@ $clpcdoccertif->rotulo->label();
 
     function js_preenchepesquisa(chave) {
         db_iframe_pcdoccertif.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

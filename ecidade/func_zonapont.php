@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
               <?=$Lq26_zona?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q26_zona",10,$Iq26_zona,true,"text",4,"","chave_q26_zona");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
               <?=$Lq26_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q26_pontuacao",15,$Iq26_pontuacao,true,"text",4,"","chave_q26_pontuacao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_zonapont.php")==true){
@@ -122,12 +122,12 @@ $clzonapont->rotulo->label("q26_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

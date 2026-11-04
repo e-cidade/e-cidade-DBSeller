@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("k02_drecei");
 <table border="0" width="100%" align="center">
   <tr>
     <td nowrap title="<?=@$Tp52_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lp52_codigo,"js_pesquisap52_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p52_codigo',3,$Ip52_codigo,true,'text',$db_opcao," onchange='js_pesquisap52_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('p51_descr',60,$Ip51_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp52_codrec?>">
-       <?
+       <?php
        db_ancora(@$Lp52_codrec,"js_pesquisap52_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p52_codrec',3,$Ip52_codrec,true,'text',$db_opcao," onchange='js_pesquisap52_codrec(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'')
        <?=@$Lp52_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('p52_valor',15,$Ip52_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ function js_preenchepesquisa(chave1, chave2){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa1="+chave1+"&chavepesquisa2="+chave2;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -151,6 +151,6 @@ if($db_opcao != 1){
 <script>
 //onLoad=js_pesquisa();
 </script>
-<?
+<?php
 }
 ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcadmodcarne->rotulo->label();
        <?=@$Lk47_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k47_sequencial',10,$Ik47_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k47_sequencial',10,$Ik47_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk47_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('k47_descr',40,$Ik47_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('k47_descr',40,$Ik47_descr,true,'text',$db_opcao,"")
        <?=@$Lk47_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('k47_obs',3,40,$Ik47_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_textarea('k47_obs',3,40,$Ik47_obs,true,'text',$db_opcao,"")
        <?=@$Lk47_altura?>
     </td>
     <td> 
-<?
+<?php
 db_input('k47_altura',10,$Ik47_altura,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('k47_altura',10,$Ik47_altura,true,'text',$db_opcao,"")
        <?=@$Lk47_largura?>
     </td>
     <td> 
-<?
+<?php
 db_input('k47_largura',10,$Ik47_largura,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('k47_largura',10,$Ik47_largura,true,'text',$db_opcao,"")
        <?=@$Lk47_orientacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('k47_orientacao',10,$Ik47_orientacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('k47_orientacao',10,$Ik47_orientacao,true,'text',$db_opcao,"")
        <?=@$Lk47_tipoconvenio?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Arrecadação','2'=>'Cobrança');
 db_select('k47_tipoconvenio',$x,true,$db_opcao,"");
 ?>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadmodcarne.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

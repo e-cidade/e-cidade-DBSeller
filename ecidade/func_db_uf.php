@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_uf->rotulo->label("db12_uf");
               <?=$Ldb12_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db12_codigo",10,$Idb12_codigo,true,"text",4,"","chave_db12_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_uf->rotulo->label("db12_uf");
               <?=$Ldb12_uf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db12_uf",2,$Idb12_uf,true,"text",4,"","chave_db12_uf");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_uf->rotulo->label("db12_uf");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_uf.php")==true){
@@ -118,12 +118,12 @@ $cldb_uf->rotulo->label("db12_uf");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

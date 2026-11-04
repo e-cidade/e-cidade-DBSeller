@@ -36,6 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $oGet = db_utils::postMemory($_GET);
 ?>
+<!DOCTYPE html>
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -62,6 +63,12 @@ $oGet = db_utils::postMemory($_GET);
                            background-color: #FFFFCC;width: 70%; '>
 
 </div>
+<style>
+    .sortLink, .sortLink:visited {
+        text-decoration: none;
+        color: black;
+    }
+</style>
 <script>
 var iCodigoProcesso = '<?php echo $oGet->codigo_processo;?>';
 var iTipoProcesso = '<?php echo $oGet->tipo_processo;?>';
@@ -72,80 +79,125 @@ oDataGridMovimentacoes.nameInstance = 'oDataGridMovimentacoes';
 oDataGridMovimentacoes.allowSelectColumns(true);
 oDataGridMovimentacoes.setCellWidth(['5%', '5%', '20%', '15%', '20%', '10%', '10%', '7%', '7%']);
 oDataGridMovimentacoes.setCellAlign(['center', 'center', 'left', 'left', 'left', 'left', 'left', 'center', 'center' ]);
-oDataGridMovimentacoes.setHeader(['Data', 'Hora', 'Departamento', 'Instituicao', 'Login', 'Ocorrência', 'Despacho', 'Imprimir', 'Documentos']);
+
+const url = montarParametroOrdemUrl();
+const headers = [
+    `<i class="fas fa-arrow-down fa-sm" id="sortIcon"></i><a class="sortLink" href="${url}"> Data </a>`,
+    'Hora',
+    'Departamento',
+    'Instituicao',
+    'Usuário',
+    'Ocorrência',
+    'Despacho',
+    'Imprimir',
+    'Documentos'
+];
+
+oDataGridMovimentacoes.setHeader(headers);
 oDataGridMovimentacoes.setHeight(250);
 oDataGridMovimentacoes.show($('ctnDataGridMovimentacoes'));
 oDataGridMovimentacoes.clearAll(true);
 
+const urlParams = new URLSearchParams(window.location.search);
+const sortIcon = document.getElementById('sortIcon');
+const direcaoAtual = urlParams.get('ordem') ? urlParams.get('ordem').toUpperCase() : '';
+
+if (direcaoAtual === 'DESC') {
+    sortIcon.classList.remove('fa-arrow-down');
+    sortIcon.classList.add('fa-arrow-up');
+} else if (direcaoAtual === 'ASC') {
+    sortIcon.classList.remove('fa-arrow-up');
+    sortIcon.classList.add('fa-arrow-down');
+}
+
 js_buscarMovimentacoes();
 
-function js_buscarMovimentacoes() {
+function montarParametroOrdemUrl() {
+    const url = new URL(window.location.href);
+    const ordemAtual = url.searchParams.get('ordem');
+    url.searchParams.delete('ordem');
 
-  js_divCarregando('Buscando movimentações do processo.', 'msgbox');
-  var oParametro  = new Object();
-  oParametro.exec = 'getMovimentacoesProcesso';
-  oParametro.iCodigoProcesso = iCodigoProcesso;
-
-  new Ajax.Request( sRPC, { method:'post', parameters:'json='+Object.toJSON(oParametro), onComplete: function(oAjax) {
-    
-    js_removeObj("msgbox");
-    var oRetorno = JSON.parse(oAjax.responseText);
-
-    if ( oRetorno.lErro ) {
-
-      alert(oRetorno.sMensagem.urlDecode());
-      return false;
+    if (ordemAtual && ordemAtual.toUpperCase() === 'DESC') {
+        url.searchParams.append('ordem', 'ASC');
+    } else {
+        url.searchParams.append('ordem', 'DESC');
     }
-    
-    oRetorno.aMovimentacoes.each(function(oMovimento, iSeq) {
-      var aLinha = new Array();
-      aLinha[0] = oMovimento.sData.urlDecode();
-      aLinha[1] = oMovimento.sHora.urlDecode();
-      aLinha[2] = oMovimento.iDepartamento + ' - ' + oMovimento.sDepartamento.urlDecode();
-      aLinha[3] = oMovimento.iInstituicao + ' - ' + oMovimento.sInstituicao.urlDecode();
-      aLinha[4] = oMovimento.sLogin.urlDecode();
-      aLinha[5] = oMovimento.sObservacoes.urlDecode();
 
-      var despacho = oMovimento.sDespacho.replace(/%0A/g, "<br>")
-      aLinha[6] = despacho.urlDecode();
-      // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro3_listamovimentacoesprocesso.php #1
-      aLinha[7] = '';
-      aLinha[8] = '';
+    return url.toString();
+}
 
-      if (oMovimento.lImprimir) {
+function js_buscarMovimentacoes() {
+    js_divCarregando('Buscando movimentações do processo.', 'msgbox');
+    const urlParams = new URLSearchParams(window.location.search);
+    const oParametro = {};
 
-        var sButton  = "<input type='button' value='imprimir' name='Imprimir' ";
-            sButton += " onclick='js_imprimeDespacho(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
-        aLinha[7] = sButton;
-      }
+    if (urlParams.get('ordem')) {
+        oParametro.ordem = urlParams.get('ordem');
+    }
 
-      if (oMovimento.lAnexos) {
-        var sButton  = "<input type='button' value='Anexos' name='Anexos' ";
-            sButton += " onclick='js_abrepopup(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
+    oParametro.exec = 'getMovimentacoesProcesso';
+    oParametro.iCodigoProcesso = iCodigoProcesso;
 
-        if(iTipoProcesso == 2){
-          var sButton  = "<input type='button' value='Visualizar' name='Visualizar' ";
-              sButton += " onclick='visualizarDocumentosDespacho(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
+    new Ajax.Request(sRPC, {
+        method: 'post',
+        parameters: 'json=' + Object.toJSON(oParametro),
+        onComplete: function (oAjax) {
+            js_removeObj("msgbox");
+            const oRetorno = JSON.parse(oAjax.responseText);
+
+            if (oRetorno.lErro) {
+                return alert(oRetorno.sMensagem.urlDecode());
+            }
+
+            oRetorno.aMovimentacoes.each(function (oMovimento, iSeq) {
+                var aLinha = new Array();
+                aLinha[0] = oMovimento.sData.urlDecode();
+                aLinha[1] = oMovimento.sHora.urlDecode();
+                aLinha[2] = oMovimento.iDepartamento + ' - ' + oMovimento.sDepartamento.urlDecode();
+                aLinha[3] = oMovimento.iInstituicao + ' - ' + oMovimento.sInstituicao.urlDecode();
+                aLinha[4] = oMovimento.sLogin.urlDecode();
+                aLinha[5] = oMovimento.sObservacoes.urlDecode();
+
+                var despacho = oMovimento.sDespacho.replace(/%0A/g, "<br>")
+                aLinha[6] = despacho.urlDecode();
+                // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro3_listamovimentacoesprocesso.php #1
+                aLinha[7] = '';
+                aLinha[8] = '';
+
+                if (oMovimento.lImprimir) {
+
+                    var sButton = "<input type='button' value='imprimir' name='Imprimir' ";
+                    sButton += " onclick='js_imprimeDespacho(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
+                    aLinha[7] = sButton;
+                }
+
+                if (oMovimento.lAnexos) {
+                    var sButton = "<input type='button' value='Anexos' name='Anexos' ";
+                    sButton += " onclick='js_abrepopup(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
+
+                    if (iTipoProcesso == 2) {
+                        var sButton = "<input type='button' value='Visualizar' name='Visualizar' ";
+                        sButton += " onclick='visualizarDocumentosDespacho(\"" + iCodigoProcesso + "\",\"" + oMovimento.iAndamentoInterno + "\")' />";
+                    }
+
+                    aLinha[8] = sButton;
+                }
+
+                oDataGridMovimentacoes.addRow(aLinha);
+
+                for (var iHint = 0; iHint <= 6; iHint++) {
+
+                    var sCampo = iHint != 6 ? aLinha[iHint] : oMovimento.sDespacho;
+                    if (iHint == 2) {
+                        sCampo += ' / ' + oMovimento.sOrgao.urlDecode();
+                    }
+                    oDataGridMovimentacoes.aRows[iSeq].aCells[iHint].sEvents += " onmouseover='js_displayAjuda(\"" + sCampo + "\", true)'";
+                    oDataGridMovimentacoes.aRows[iSeq].aCells[iHint].sEvents += " onmouseout='js_displayAjuda(\"\", false)'";
+                }
+            });
+            oDataGridMovimentacoes.renderRows();
         }
-
-        aLinha[8] = sButton;
-      }
-
-      oDataGridMovimentacoes.addRow(aLinha);
-
-      for (var iHint = 0; iHint <= 6; iHint++) {
-
-        var sCampo = iHint != 6 ? aLinha[iHint] : oMovimento.sDespacho;
-        if (iHint == 2) {
-          sCampo += ' / ' + oMovimento.sOrgao.urlDecode();
-        }
-        oDataGridMovimentacoes.aRows[iSeq].aCells[iHint].sEvents += " onmouseover='js_displayAjuda(\""+sCampo+"\", true)'";
-        oDataGridMovimentacoes.aRows[iSeq].aCells[iHint].sEvents += " onmouseout='js_displayAjuda(\"\", false)'";
-      }
     });
-
-    oDataGridMovimentacoes.renderRows();
-  }});
 
 }
 
@@ -163,8 +215,10 @@ function js_displayAjuda(sTexto, lShow) {
     var despacho = sTexto.replace(/%0A/g, "<br>")
     oElemento.innerHTML     = despacho.urlDecode()
     oElemento.style.display = '';
-    oElemento.style.top     = $('ctnDataGridMovimentacoes').scrollTop + 20;
+    oElemento.style.top     = '10px';
     oElemento.style.left    = x;
+    oElemento.style.borderRadius = '2px';
+    oElemento.style.padding = '4px';
 
   } else {
     $('ajudaItem').style.display = 'none';

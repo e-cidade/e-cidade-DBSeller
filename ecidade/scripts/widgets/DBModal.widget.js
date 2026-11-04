@@ -7,7 +7,6 @@ var CONTEXT = this;
  *  @return {Object}
  */
 DBModal = function() {
-
   this.oDBMask = {};
 
   this.dbMaskOptions = {};
@@ -224,8 +223,6 @@ DBModal.dependencies = function() {
   if ( !CONTEXT["require_once"] ) {
     throw "Não é possível carregar as dependências (scripts.js não carregado)";
   }
-
-  require_once('estilos/widgets/DBModalBase.css');
 
   if ( !CONTEXT["DBMask"] ) {
     require_once("scripts/widgets/DBMask.widget.js");

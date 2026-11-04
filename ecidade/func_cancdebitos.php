@@ -58,7 +58,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                 db_input("k20_codigo",10,$Ik20_codigo,true,"text",4,"","chave_k20_codigo");
               ?>
             </td>
@@ -68,7 +68,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_data?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_inputdata("k20_data",null,null,null, true, 'text',1,"","chave_k20_data" );
               ?>
             </td>
@@ -78,7 +78,7 @@ $instit = db_getsession("DB_instit");
               <b>Origem:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?db_input("origem",10,1,true,"text",4,"","chave_origem");?>
+              <?php db_input("origem",10,1,true,"text",4,"","chave_origem");?>
             </td>
           </tr>
           <tr>
@@ -86,7 +86,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?db_input("k20_descr",30,$Ik20_descr,true,"text",4,"","chave_k20_descr");?>
+              <?php db_input("k20_descr",30,$Ik20_descr,true,"text",4,"","chave_k20_descr");?>
             </td>
           </tr>
           <tr>
@@ -102,7 +102,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 
         $sql = "";
@@ -148,7 +148,7 @@ $instit = db_getsession("DB_instit");
         }else{
           $sql .= " where k20_instit = $instit";
         }
-
+        $sql .= " and not exists ( select 1 from cancdebitosprocreg inner join cancdebitosproc on k24_codigo = k23_codigo where  k24_cancdebitosreg = k21_sequencia) ";
         $rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_filtrardepart'));
         $filtrarDepartamento = \db_utils::fieldsMemory($rs, 0)->k03_filtrardepart;
 
@@ -189,12 +189,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

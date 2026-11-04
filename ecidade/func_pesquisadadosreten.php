@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpagordem = new cl_pagordem;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos  = "e60_numcgm,z01_nome,z01_munic,z01_uf,z01_ender,z01_cep";
       $dbwhere = " e60_instit = ".db_getsession("DB_instit");
 
@@ -81,7 +81,7 @@ $clpagordem = new cl_pagordem;
 </body>
 </html>
 <script>
-  <?
+  <?php
     echo $scriptjs;
   ?>
 </script>

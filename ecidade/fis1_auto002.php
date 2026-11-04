@@ -221,7 +221,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   </div>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
 
   if($clauto->erro_status=="0"||$sqlerro==true){

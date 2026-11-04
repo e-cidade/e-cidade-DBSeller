@@ -97,11 +97,6 @@ if (isset($oGet->iCodigoEmpNotaItem) && !empty($oGet->iCodigoEmpNotaItem)) {
     width: 130px;
   }
 
-  /* pega a segunda td */
-  #fieldsetBensNovo table tr td + td{
-
-  }
-
   /* pega a terceira td */
   #fieldsetBensNovo table tr td + td + td{
     text-align: right;
@@ -119,7 +114,7 @@ if (isset($oGet->iCodigoEmpNotaItem) && !empty($oGet->iCodigoEmpNotaItem)) {
   }
 
   .readOnly {
-    backgroud-color: #DEB887;
+    background-color: #DEB887;
   }
 
   .ctnFoto {
@@ -130,7 +125,7 @@ if (isset($oGet->iCodigoEmpNotaItem) && !empty($oGet->iCodigoEmpNotaItem)) {
 
   .ctnFoto img {
 
-    width:  70;
+    width:  70; 
     height: 85;
   }
 
@@ -223,7 +218,7 @@ if (isset($oGet->iCodigoEmpNotaItem) && !empty($oGet->iCodigoEmpNotaItem)) {
   }
 </script>
 
-<?
+<?php
 if(isset($incluir)) {
 
   if (trim(@$erro_msg) != "") {

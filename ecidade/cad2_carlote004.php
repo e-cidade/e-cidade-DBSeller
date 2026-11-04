@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j31_codigo,j31_descr,j32_descr";
       $cliframe_seleciona->legenda="QUE NÃO CONTENHAM ESTAS CARACTERÍSTICAS DE CONSTRUÇÃO";
       $cliframe_seleciona->sql=$clcaracter->sql_query(""," * ","j32_descr"," j32_tipo = 'L'");

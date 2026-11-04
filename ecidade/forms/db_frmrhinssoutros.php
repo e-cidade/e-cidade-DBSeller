@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,12 +37,12 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh01_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh01_regist',6,$Irh01_regist,true,'text',$db_opcao," onchange='js_pesquisarh01_regist(false);'");
       db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
       db_input('rh51_seqpes',6,$Irh51_seqpes,true,'hidden',3,"");
@@ -54,7 +54,7 @@ $clrotulo->label("z01_nome");
       <?=@$Lrh51_basefo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh51_basefo',15,$Irh51_basefo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
       <?=@$Lrh51_descfo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh51_descfo',15,$Irh51_descfo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -74,7 +74,7 @@ $clrotulo->label("z01_nome");
       <?=@$Lrh51_b13fo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh51_b13fo',15,$Irh51_b13fo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -84,7 +84,7 @@ $clrotulo->label("z01_nome");
       <?=@$Lrh51_d13fo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('rh51_d13fo',15,$Irh51_d13fo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -94,7 +94,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lrh51_ocorre?>
     </td>
     <td colspan="3"> 
-       <?
+       <?php
        $arr_ocorre = array(
                            '05'=>'05 - Não exposto no momento',
                            '06'=>'06 - Exposta (aposentadoria esp. 15 anos)',
@@ -106,16 +106,16 @@ $clrotulo->label("z01_nome");
     </td>
   </tr>
 </table>
-<?
+<?php
 if($db_opcao == 1){
 ?>
 <input name="incluir" type="submit" id="db_opcao" value="Incluir" onblur='js_tabulacaoforms("form1","rh01_regist",true,1,"rh01_regist",true);'>
-<?
+<?php
 }else{
 ?>
 <input name="alterar" type="submit" id="db_opcao" value="Alterar">
 <input name="excluir" type="submit" id="db_opcao" value="Excluir" onblur='js_tabulacaoforms("form1","rh01_regist",true,1,"rh01_regist",true);'>
-<?
+<?php
 }
 ?>
 </center>

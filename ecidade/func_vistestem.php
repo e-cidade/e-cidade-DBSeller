@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clvistestem->rotulo->label("y25_numcgm");
               <?=$Ly25_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y25_codvist",10,$Iy25_codvist,true,"text",4,"","chave_y25_codvist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clvistestem->rotulo->label("y25_numcgm");
               <?=$Ly25_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y25_numcgm",8,$Iy25_numcgm,true,"text",4,"","chave_y25_numcgm");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clvistestem->rotulo->label("y25_numcgm");
               <?=$Ly25_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y25_numcgm",8,$Iy25_numcgm,true,"text",4,"","chave_y25_numcgm");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clvistestem->rotulo->label("y25_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistestem.php")==true){
@@ -129,12 +129,12 @@ $clvistestem->rotulo->label("y25_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

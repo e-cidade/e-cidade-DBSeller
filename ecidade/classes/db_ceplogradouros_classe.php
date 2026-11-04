@@ -1,86 +1,86 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE ceplogradouros
-class cl_ceplogradouros { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cp06_sequencial = 0; 
-   var $cp06_codlogradouro = 0; 
-   var $cp06_codbairroinicial = 0; 
-   var $cp06_codbairrofinal = 0; 
-   var $cp06_logradouro = null; 
-   var $cp06_adicional = null; 
-   var $cp06_cep = null; 
-   var $cp06_grandeusuario = null; 
-   var $cp06_numinicial = 0; 
-   var $cp06_numfinal = 0; 
-   var $cp06_lado = null; 
-   var $cp06_codseccao = 0; 
-   var $cp06_sigla = null; 
-   var $cp06_codlocalidade = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_ceplogradouros {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $cp06_sequencial = 0;
+   var $cp06_codlogradouro = 0;
+   var $cp06_codbairroinicial = 0;
+   var $cp06_codbairrofinal = 0;
+   var $cp06_logradouro = null;
+   var $cp06_adicional = null;
+   var $cp06_cep = null;
+   var $cp06_grandeusuario = null;
+   var $cp06_numinicial = 0;
+   var $cp06_numfinal = 0;
+   var $cp06_lado = null;
+   var $cp06_codseccao = 0;
+   var $cp06_sigla = null;
+   var $cp06_codlocalidade = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 cp06_sequencial = int4 = Sequencial 
-                 cp06_codlogradouro = int8 = Código do Logradouro 
-                 cp06_codbairroinicial = int8 = Bairro Inicial 
-                 cp06_codbairrofinal = int8 = Bairro Final 
-                 cp06_logradouro = varchar(72) = Logradouro 
-                 cp06_adicional = varchar(72) = Adicional 
-                 cp06_cep = varchar(8) = Cep 
-                 cp06_grandeusuario = varchar(1) = Grande Usuario 
-                 cp06_numinicial = int8 = Número Inicial 
-                 cp06_numfinal = int8 = Número Final 
-                 cp06_lado = varchar(1) = Lado 
-                 cp06_codseccao = int8 = Codigo Secção 
-                 cp06_sigla = varchar(2) = Sigla Estado 
-                 cp06_codlocalidade = int8 = Codigo da Localidade 
+                 cp06_sequencial = int4 = Sequencial
+                 cp06_codlogradouro = int8 = Código do Logradouro
+                 cp06_codbairroinicial = int8 = Bairro Inicial
+                 cp06_codbairrofinal = int8 = Bairro Final
+                 cp06_logradouro = varchar(72) = Logradouro
+                 cp06_adicional = varchar(72) = Adicional
+                 cp06_cep = varchar(8) = Cep
+                 cp06_grandeusuario = varchar(1) = Grande Usuario
+                 cp06_numinicial = int8 = Número Inicial
+                 cp06_numfinal = int8 = Número Final
+                 cp06_lado = varchar(1) = Lado
+                 cp06_codseccao = int8 = Codigo Secção
+                 cp06_sigla = varchar(2) = Sigla Estado
+                 cp06_codlocalidade = int8 = Codigo da Localidade
                  ";
-   //funcao construtor da classe 
-   function cl_ceplogradouros() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("ceplogradouros"); 
+     $this->rotulo = new rotulo("ceplogradouros");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_ceplogradouros {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cp06_sequencial = ($this->cp06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"]:$this->cp06_sequencial);
        $this->cp06_codlogradouro = ($this->cp06_codlogradouro == ""?@$GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"]:$this->cp06_codlogradouro);
@@ -110,9 +110,9 @@ class cl_ceplogradouros {
      }
    }
    // funcao para inclusao
-   function incluir ($cp06_sequencial){ 
+   public function incluir ($cp06_sequencial){
       $this->atualizacampos();
-     if($this->cp06_codlogradouro == null ){ 
+     if($this->cp06_codlogradouro == null ){
        $this->erro_sql = " Campo Código do Logradouro nao Informado.";
        $this->erro_campo = "cp06_codlogradouro";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_codbairroinicial == null ){ 
+     if($this->cp06_codbairroinicial == null ){
        $this->erro_sql = " Campo Bairro Inicial nao Informado.";
        $this->erro_campo = "cp06_codbairroinicial";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_codbairrofinal == null ){ 
+     if($this->cp06_codbairrofinal == null ){
        $this->erro_sql = " Campo Bairro Final nao Informado.";
        $this->erro_campo = "cp06_codbairrofinal";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_logradouro == null ){ 
+     if($this->cp06_logradouro == null ){
        $this->erro_sql = " Campo Logradouro nao Informado.";
        $this->erro_campo = "cp06_logradouro";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_adicional == null ){ 
+     if($this->cp06_adicional == null ){
        $this->erro_sql = " Campo Adicional nao Informado.";
        $this->erro_campo = "cp06_adicional";
        $this->erro_banco = "";
@@ -157,7 +157,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_cep == null ){ 
+     if($this->cp06_cep == null ){
        $this->erro_sql = " Campo Cep nao Informado.";
        $this->erro_campo = "cp06_cep";
        $this->erro_banco = "";
@@ -166,7 +166,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_grandeusuario == null ){ 
+     if($this->cp06_grandeusuario == null ){
        $this->erro_sql = " Campo Grande Usuario nao Informado.";
        $this->erro_campo = "cp06_grandeusuario";
        $this->erro_banco = "";
@@ -175,7 +175,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_numinicial == null ){ 
+     if($this->cp06_numinicial == null ){
        $this->erro_sql = " Campo Número Inicial nao Informado.";
        $this->erro_campo = "cp06_numinicial";
        $this->erro_banco = "";
@@ -184,7 +184,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_numfinal == null ){ 
+     if($this->cp06_numfinal == null ){
        $this->erro_sql = " Campo Número Final nao Informado.";
        $this->erro_campo = "cp06_numfinal";
        $this->erro_banco = "";
@@ -193,7 +193,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_lado == null ){ 
+     if($this->cp06_lado == null ){
        $this->erro_sql = " Campo Lado nao Informado.";
        $this->erro_campo = "cp06_lado";
        $this->erro_banco = "";
@@ -202,7 +202,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_codseccao == null ){ 
+     if($this->cp06_codseccao == null ){
        $this->erro_sql = " Campo Codigo Secção nao Informado.";
        $this->erro_campo = "cp06_codseccao";
        $this->erro_banco = "";
@@ -211,7 +211,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_sigla == null ){ 
+     if($this->cp06_sigla == null ){
        $this->erro_sql = " Campo Sigla Estado nao Informado.";
        $this->erro_campo = "cp06_sigla";
        $this->erro_banco = "";
@@ -220,7 +220,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cp06_codlocalidade == null ){ 
+     if($this->cp06_codlocalidade == null ){
        $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
        $this->erro_campo = "cp06_codlocalidade";
        $this->erro_banco = "";
@@ -230,16 +230,16 @@ class cl_ceplogradouros {
        return false;
      }
      if($cp06_sequencial == "" || $cp06_sequencial == null ){
-       $result = db_query("select nextval('ceplogradouros_cp06_sequencial_seq')"); 
+       $result = db_query("select nextval('ceplogradouros_cp06_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: ceplogradouros_cp06_sequencial_seq do campo: cp06_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: ceplogradouros_cp06_sequencial_seq do campo: cp06_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->cp06_sequencial = pg_result($result,0,0); 
+       $this->cp06_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from ceplogradouros_cp06_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $cp06_sequencial)){
@@ -250,10 +250,10 @@ class cl_ceplogradouros {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->cp06_sequencial = $cp06_sequencial; 
+         $this->cp06_sequencial = $cp06_sequencial;
        }
      }
-     if(($this->cp06_sequencial == null) || ($this->cp06_sequencial == "") ){ 
+     if(($this->cp06_sequencial == null) || ($this->cp06_sequencial == "") ){
        $this->erro_sql = " Campo cp06_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -262,39 +262,39 @@ class cl_ceplogradouros {
        return false;
      }
      $sql = "insert into ceplogradouros(
-                                       cp06_sequencial 
-                                      ,cp06_codlogradouro 
-                                      ,cp06_codbairroinicial 
-                                      ,cp06_codbairrofinal 
-                                      ,cp06_logradouro 
-                                      ,cp06_adicional 
-                                      ,cp06_cep 
-                                      ,cp06_grandeusuario 
-                                      ,cp06_numinicial 
-                                      ,cp06_numfinal 
-                                      ,cp06_lado 
-                                      ,cp06_codseccao 
-                                      ,cp06_sigla 
-                                      ,cp06_codlocalidade 
+                                       cp06_sequencial
+                                      ,cp06_codlogradouro
+                                      ,cp06_codbairroinicial
+                                      ,cp06_codbairrofinal
+                                      ,cp06_logradouro
+                                      ,cp06_adicional
+                                      ,cp06_cep
+                                      ,cp06_grandeusuario
+                                      ,cp06_numinicial
+                                      ,cp06_numfinal
+                                      ,cp06_lado
+                                      ,cp06_codseccao
+                                      ,cp06_sigla
+                                      ,cp06_codlocalidade
                        )
                 values (
-                                $this->cp06_sequencial 
-                               ,$this->cp06_codlogradouro 
-                               ,$this->cp06_codbairroinicial 
-                               ,$this->cp06_codbairrofinal 
-                               ,'$this->cp06_logradouro' 
-                               ,'$this->cp06_adicional' 
-                               ,'$this->cp06_cep' 
-                               ,'$this->cp06_grandeusuario' 
-                               ,$this->cp06_numinicial 
-                               ,$this->cp06_numfinal 
-                               ,'$this->cp06_lado' 
-                               ,$this->cp06_codseccao 
-                               ,'$this->cp06_sigla' 
-                               ,$this->cp06_codlocalidade 
+                                $this->cp06_sequencial
+                               ,$this->cp06_codlogradouro
+                               ,$this->cp06_codbairroinicial
+                               ,$this->cp06_codbairrofinal
+                               ,'$this->cp06_logradouro'
+                               ,'$this->cp06_adicional'
+                               ,'$this->cp06_cep'
+                               ,'$this->cp06_grandeusuario'
+                               ,$this->cp06_numinicial
+                               ,$this->cp06_numfinal
+                               ,'$this->cp06_lado'
+                               ,$this->cp06_codseccao
+                               ,'$this->cp06_sigla'
+                               ,$this->cp06_codlocalidade
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro de Logradouros ($this->cp06_sequencial) nao Incluído. Inclusao Abortada.";
@@ -339,16 +339,16 @@ class cl_ceplogradouros {
        $resac = db_query("insert into db_acount values($acount,1197,7208,'','".AddSlashes(pg_result($resaco,0,'cp06_codlocalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cp06_sequencial=null) { 
+   public function alterar ($cp06_sequencial=null) {
       $this->atualizacampos();
      $sql = " update ceplogradouros set ";
      $virgula = "";
-     if(trim($this->cp06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"])){ 
+     if(trim($this->cp06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"])){
        $sql  .= $virgula." cp06_sequencial = $this->cp06_sequencial ";
        $virgula = ",";
-       if(trim($this->cp06_sequencial) == null ){ 
+       if(trim($this->cp06_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cp06_sequencial";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codlogradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"])){ 
+     if(trim($this->cp06_codlogradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"])){
        $sql  .= $virgula." cp06_codlogradouro = $this->cp06_codlogradouro ";
        $virgula = ",";
-       if(trim($this->cp06_codlogradouro) == null ){ 
+       if(trim($this->cp06_codlogradouro) == null ){
          $this->erro_sql = " Campo Código do Logradouro nao Informado.";
          $this->erro_campo = "cp06_codlogradouro";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codbairroinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairroinicial"])){ 
+     if(trim($this->cp06_codbairroinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairroinicial"])){
        $sql  .= $virgula." cp06_codbairroinicial = $this->cp06_codbairroinicial ";
        $virgula = ",";
-       if(trim($this->cp06_codbairroinicial) == null ){ 
+       if(trim($this->cp06_codbairroinicial) == null ){
          $this->erro_sql = " Campo Bairro Inicial nao Informado.";
          $this->erro_campo = "cp06_codbairroinicial";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codbairrofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairrofinal"])){ 
+     if(trim($this->cp06_codbairrofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairrofinal"])){
        $sql  .= $virgula." cp06_codbairrofinal = $this->cp06_codbairrofinal ";
        $virgula = ",";
-       if(trim($this->cp06_codbairrofinal) == null ){ 
+       if(trim($this->cp06_codbairrofinal) == null ){
          $this->erro_sql = " Campo Bairro Final nao Informado.";
          $this->erro_campo = "cp06_codbairrofinal";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_logradouro"])){ 
+     if(trim($this->cp06_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_logradouro"])){
        $sql  .= $virgula." cp06_logradouro = '$this->cp06_logradouro' ";
        $virgula = ",";
-       if(trim($this->cp06_logradouro) == null ){ 
+       if(trim($this->cp06_logradouro) == null ){
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "cp06_logradouro";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_adicional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_adicional"])){ 
+     if(trim($this->cp06_adicional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_adicional"])){
        $sql  .= $virgula." cp06_adicional = '$this->cp06_adicional' ";
        $virgula = ",";
-       if(trim($this->cp06_adicional) == null ){ 
+       if(trim($this->cp06_adicional) == null ){
          $this->erro_sql = " Campo Adicional nao Informado.";
          $this->erro_campo = "cp06_adicional";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_cep"])){ 
+     if(trim($this->cp06_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_cep"])){
        $sql  .= $virgula." cp06_cep = '$this->cp06_cep' ";
        $virgula = ",";
-       if(trim($this->cp06_cep) == null ){ 
+       if(trim($this->cp06_cep) == null ){
          $this->erro_sql = " Campo Cep nao Informado.";
          $this->erro_campo = "cp06_cep";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_grandeusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_grandeusuario"])){ 
+     if(trim($this->cp06_grandeusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_grandeusuario"])){
        $sql  .= $virgula." cp06_grandeusuario = '$this->cp06_grandeusuario' ";
        $virgula = ",";
-       if(trim($this->cp06_grandeusuario) == null ){ 
+       if(trim($this->cp06_grandeusuario) == null ){
          $this->erro_sql = " Campo Grande Usuario nao Informado.";
          $this->erro_campo = "cp06_grandeusuario";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_numinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numinicial"])){ 
+     if(trim($this->cp06_numinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numinicial"])){
        $sql  .= $virgula." cp06_numinicial = $this->cp06_numinicial ";
        $virgula = ",";
-       if(trim($this->cp06_numinicial) == null ){ 
+       if(trim($this->cp06_numinicial) == null ){
          $this->erro_sql = " Campo Número Inicial nao Informado.";
          $this->erro_campo = "cp06_numinicial";
          $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_numfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numfinal"])){ 
+     if(trim($this->cp06_numfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numfinal"])){
        $sql  .= $virgula." cp06_numfinal = $this->cp06_numfinal ";
        $virgula = ",";
-       if(trim($this->cp06_numfinal) == null ){ 
+       if(trim($this->cp06_numfinal) == null ){
          $this->erro_sql = " Campo Número Final nao Informado.";
          $this->erro_campo = "cp06_numfinal";
          $this->erro_banco = "";
@@ -475,10 +475,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_lado"])){ 
+     if(trim($this->cp06_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_lado"])){
        $sql  .= $virgula." cp06_lado = '$this->cp06_lado' ";
        $virgula = ",";
-       if(trim($this->cp06_lado) == null ){ 
+       if(trim($this->cp06_lado) == null ){
          $this->erro_sql = " Campo Lado nao Informado.";
          $this->erro_campo = "cp06_lado";
          $this->erro_banco = "";
@@ -488,10 +488,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codseccao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codseccao"])){ 
+     if(trim($this->cp06_codseccao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codseccao"])){
        $sql  .= $virgula." cp06_codseccao = $this->cp06_codseccao ";
        $virgula = ",";
-       if(trim($this->cp06_codseccao) == null ){ 
+       if(trim($this->cp06_codseccao) == null ){
          $this->erro_sql = " Campo Codigo Secção nao Informado.";
          $this->erro_campo = "cp06_codseccao";
          $this->erro_banco = "";
@@ -501,10 +501,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sigla"])){ 
+     if(trim($this->cp06_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sigla"])){
        $sql  .= $virgula." cp06_sigla = '$this->cp06_sigla' ";
        $virgula = ",";
-       if(trim($this->cp06_sigla) == null ){ 
+       if(trim($this->cp06_sigla) == null ){
          $this->erro_sql = " Campo Sigla Estado nao Informado.";
          $this->erro_campo = "cp06_sigla";
          $this->erro_banco = "";
@@ -514,10 +514,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlocalidade"])){ 
+     if(trim($this->cp06_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlocalidade"])){
        $sql  .= $virgula." cp06_codlocalidade = $this->cp06_codlocalidade ";
        $virgula = ",";
-       if(trim($this->cp06_codlocalidade) == null ){ 
+       if(trim($this->cp06_codlocalidade) == null ){
          $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
          $this->erro_campo = "cp06_codlocalidade";
          $this->erro_banco = "";
@@ -569,7 +569,7 @@ class cl_ceplogradouros {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Logradouros nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cp06_sequencial;
@@ -597,14 +597,14 @@ class cl_ceplogradouros {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cp06_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cp06_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cp06_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -643,7 +643,7 @@ class cl_ceplogradouros {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro de Logradouros nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cp06_sequencial;
@@ -671,11 +671,11 @@ class cl_ceplogradouros {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -697,10 +697,10 @@ class cl_ceplogradouros {
       }
      return $result;
    }
-   function sql_query ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -715,15 +715,15 @@ class cl_ceplogradouros {
      $sql2 = "";
      if($dbwhere==""){
        if($cp06_sequencial!=null ){
-         $sql2 .= " where ceplogradouros.cp06_sequencial = $cp06_sequencial "; 
-       } 
+         $sql2 .= " where ceplogradouros.cp06_sequencial = $cp06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -732,10 +732,10 @@ class cl_ceplogradouros {
      }
      return $sql;
   }
-   function sql_query_file ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -748,15 +748,15 @@ class cl_ceplogradouros {
      $sql2 = "";
      if($dbwhere==""){
        if($cp06_sequencial!=null ){
-         $sql2 .= " where ceplogradouros.cp06_sequencial = $cp06_sequencial "; 
-       } 
+         $sql2 .= " where ceplogradouros.cp06_sequencial = $cp06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

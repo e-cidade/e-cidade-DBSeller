@@ -43,13 +43,13 @@ class cl_pontoprovfe {
                  r91_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_pontoprovfe() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pontoprovfe"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -58,7 +58,7 @@ class cl_pontoprovfe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r91_anousu = ($this->r91_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r91_anousu"]:$this->r91_anousu);
        $this->r91_mesusu = ($this->r91_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r91_mesusu"]:$this->r91_mesusu);
@@ -80,7 +80,7 @@ class cl_pontoprovfe {
      }
    }
    // funcao para Inclusão
-   function incluir ($r91_anousu,$r91_mesusu,$r91_regist,$r91_rubric,$r91_tpp){ 
+   public function incluir ($r91_anousu,$r91_mesusu,$r91_regist,$r91_rubric,$r91_tpp){ 
       $this->atualizacampos();
      if($this->r91_valor == null ){ 
        $this->erro_sql = " Campo Valor não informado.";

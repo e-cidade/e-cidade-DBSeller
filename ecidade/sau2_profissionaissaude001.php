@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ db_postmemory($HTTP_POST_VARS);
                   <b>Início:</b>
                 </td>
                 <td style="padding-bottom: 2px;" nowrap> 
-                  <?
+                  <?php
                   db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', 1, '');
                   ?>
                 </td>
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
                   <b>Fim:</b>
                 </td>
                 <td style="padding-bottom: 2px;" nowrap> 
-                  <?
+                  <?php
                   db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', 1, '');
                   ?>
                 </td>
@@ -81,7 +81,7 @@ db_postmemory($HTTP_POST_VARS);
                   <b>Situação:</b>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   $aX = array('1' => 'ATIVO', '2' => 'INATIVO');
                   db_select('situacao', $aX, true, 1, '');
                   ?>
@@ -98,12 +98,12 @@ db_postmemory($HTTP_POST_VARS);
             <table  border="0"  align="center" width="100%">
               <tr>
                 <td width="15%" align="right">
-                  <?
+                  <?php
                   db_ancora('<b>Profissional:</b>', 'js_pesquisaProfissional(true);', '');
                   ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   db_input('iProfissional', 10, '', true, 'text', 1, 
                            'onchange="js_pesquisaProfissional(false);" '.
                            'onkeydown="return js_controla_tecla_enter(this, event);" '.
@@ -177,7 +177,7 @@ db_postmemory($HTTP_POST_VARS);
 
   </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );

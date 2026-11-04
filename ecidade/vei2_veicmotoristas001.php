@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -131,15 +131,15 @@ function js_mostraveiccadmotoristasit1(chave1,chave2){
   
         <tr>
     <td nowrap title="<?=@$Tve05_veiccadcategcnh?>">
-       <?
+       <?php
        db_ancora(@$Lve05_veiccadcategcnh,"js_pesquisave05_veiccadcategcnh(true);",4);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve05_veiccadcategcnh',10,$Ive05_veiccadcategcnh,true,'text',4," onchange='js_pesquisave05_veiccadcategcnh(false);'")
 ?>
-       <?
+       <?php
 db_input('ve30_descr',40,$Ive30_descr,true,'text',3,'')
        ?>
     </td>
@@ -149,7 +149,7 @@ db_input('ve30_descr',40,$Ive30_descr,true,'text',3,'')
        <?=@$Lve05_dtvenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve05_dtvenc',@$ve05_dtvenc_dia,@$ve05_dtvenc_mes,@$ve05_dtvenc_ano,true,'text',4,"");
 echo "<b> a </b>";
 db_inputdata('ve05_dtvenc1',@$ve05_dtvenc_dia,@$ve05_dtvenc_mes,@$ve05_dtvenc_ano,true,'text',4,"");
@@ -161,7 +161,7 @@ db_inputdata('ve05_dtvenc1',@$ve05_dtvenc_dia,@$ve05_dtvenc_mes,@$ve05_dtvenc_an
        <?=@$Lve05_dtprimcnh?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve05_dtprimcnh',@$ve05_dtprimcnh_dia,@$ve05_dtprimcnh_mes,@$ve05_dtprimcnh_ano,true,'text',4,"");
 echo "<b> a </b>";
 db_inputdata('ve05_dtprimcnh1',@$ve05_dtprimcnh_dia,@$ve05_dtprimcnh_mes,@$ve05_dtprimcnh_ano,true,'text',4,"");
@@ -170,15 +170,15 @@ db_inputdata('ve05_dtprimcnh1',@$ve05_dtprimcnh_dia,@$ve05_dtprimcnh_mes,@$ve05_
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve05_veiccadmotoristasit?>">
-       <?
+       <?php
        db_ancora(@$Lve05_veiccadmotoristasit,"js_pesquisave05_veiccadmotoristasit(true);",4);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve05_veiccadmotoristasit',10,$Ive05_veiccadmotoristasit,true,'text',4," onchange='js_pesquisave05_veiccadmotoristasit(false);'")
 ?>
-       <?
+       <?php
 db_input('ve33_descr',40,$Ive33_descr,true,'text',3,'')
        ?>
     </td>
@@ -188,7 +188,7 @@ db_input('ve33_descr',40,$Ive33_descr,true,'text',3,'')
         <strong>Ordem :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <? 
+	  <?php 
 	  $tipo_ordem = array("b"=>"Numérica","a"=>"Alfabética");
 	  db_select("ordem",$tipo_ordem,true,2); ?>
         </td>
@@ -205,7 +205,7 @@ db_input('ve33_descr',40,$Ive33_descr,true,'text',3,'')
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

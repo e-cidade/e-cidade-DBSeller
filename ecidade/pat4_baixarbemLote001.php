@@ -92,7 +92,7 @@ $db_opcao = 1;
         <legend>Baixa de Bens por Lote</legend>
         <table style="width: 100%;">
             <tr>
-                <td title="<?= $Tt52_depart ?>"> <? db_ancora(@$Lt52_depart, "js_pesquisa_depart(true);", 1); ?>  </td>
+                <td title="<?= $Tt52_depart ?>"> <?php db_ancora(@$Lt52_depart, "js_pesquisa_depart(true);", 1); ?>  </td>
                 <td>
                     <?php
                     db_input("t52_depart", 10, $It52_depart, true, "text", 4, "onchange='js_pesquisa_depart(false);'");
@@ -134,7 +134,7 @@ $db_opcao = 1;
 
 
             <tr>
-                <td title="<?= $Tt52_bem ?>"> <? db_ancora(@$Lt52_bem, "js_pesquisa_bemInicial(true);", 1); ?>  </td>
+                <td title="<?= $Tt52_bem ?>"> <?php db_ancora(@$Lt52_bem, "js_pesquisa_bemInicial(true);", 1); ?>  </td>
                 <td>
                     <?php
                     db_input("t52_bemInicial", 10, $It52_bem, true, "text", 4, "onchange='js_pesquisa_bemInicial(false);'");
@@ -224,6 +224,7 @@ db_menu();
         oParametros.aBens = aBens;
         oParametros.iMotivo = iMotivo;
         oParametros.dtBaixa = dBaixa;
+        oParametros.nomeArquivo = fileUpload.file
         oParametros.sObservacao = encodeURIComponent(tagString(sObs));
         oParametros.caminhoArquivo = fileUpload.filePath !== undefined && !empty(fileUpload.filePath) ? fileUpload.filePath : null
         oParametros.anexoObrigatorio = anexoObrigatorio

@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clconlancamordem->rotulo->label("c03_codlan");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lc03_sequencial?></label></td>
-          <td><? db_input("c03_sequencial",10,$Ic03_sequencial,true,"text",4,"","chave_c03_sequencial"); ?></td>
+          <td><?php db_input("c03_sequencial",10,$Ic03_sequencial,true,"text",4,"","chave_c03_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lc03_codlan?></label></td>
-          <td><? db_input("c03_codlan",10,$Ic03_codlan,true,"text",4,"","chave_c03_codlan");?></td>
+          <td><?php db_input("c03_codlan",10,$Ic03_codlan,true,"text",4,"","chave_c03_codlan");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clconlancamordem->rotulo->label("c03_codlan");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_conlancamordem.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamordem.php")==true){
@@ -78,12 +78,12 @@ $clconlancamordem->rotulo->label("c03_codlan");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

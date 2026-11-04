@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ if (isset($db_opcao)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_trocacordeselect()" >
 
-<?
+<?php
 if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o texto a ser trabalhado
 ?>
 <form class="container" action="" name="form1" method="POST">
@@ -111,7 +111,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 	<table class="form-container">
 	  <tr>
 	    <td>Instituição:
-	      <?
+	      <?php
 	        $instituicao=db_getsession('DB_instit');
 		    db_input("instituicao",30,0,true,"hidden",3);		
 		    //---Pesquisao nome da instituição atual--//
@@ -138,19 +138,19 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 	  </tr>
     </table>
   </fieldset>
-  <?
+  <?php
     if($habilita_alteracao){
   ?>
   <input type="submit" name="alterar" value="Alterar" >&nbsp;
-  <?
+  <?php
     }else if(!$habilita_alteracao){
   ?>
   <input type="submit" name="incluir" value="Incluir" >&nbsp;
-  <?
+  <?php
     }
   ?>
 </form>
-<?
+<?php
   }else{ // se caiu aqui é porque o menu que chama esta pagina nao contem o parametro db_opcao
 ?>
   <table>
@@ -160,12 +160,12 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 	  </td>
     </tr>
   </table>
-<?
+<?php
 }
 ?>
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

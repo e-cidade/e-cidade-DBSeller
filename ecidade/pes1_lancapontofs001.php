@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clrotulo->label("r55_descr");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -92,12 +92,12 @@ $clrotulo->label("r55_descr");
         <tr>
           <td align="left"><strong>Ano/Mês:</strong></td>
           <td>
-       	    <?
+       	    <?php
        	    $ano = db_anofolha();
     	    db_input("ano",4,'',true,'text',3)
 	        ?>
 	        &nbsp;/&nbsp;
-	        <?
+	        <?php
        	    $mes = db_mesfolha();
             db_input("mes",2,'',true,'text',3)
             ?>
@@ -105,12 +105,12 @@ $clrotulo->label("r55_descr");
         </tr>
         <tr>
           <td align="left" nowrap title="<?=@$Tr54_codrel?>">
-            <?
+            <?php
             db_ancora(@$Lr54_codrel,"js_pesquisar54_codrel(true);",1);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('r54_codrel',8,$Ir54_codrel,true,'text',1,"onchange='js_pesquisar54_codrel(false);' tabIndex='1'");
             db_input('r56_descr',40,$Ir56_descr,true,'text',3,"");
             ?>
@@ -118,27 +118,27 @@ $clrotulo->label("r55_descr");
         </tr>
         <tr> 
           <td align="left" title="<?=$Tr54_regist?>"> 
-            <?
+            <?php
             db_ancora(@ $Lr54_regist, "js_pesquisar54_regist(true);", 1);
     		?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('r54_regist', 8, $Ir54_regist, true, 'text', 1, " onchange='js_pesquisar54_regist(false);' tabIndex='2'")
             ?>
-            <?
+            <?php
             db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
             ?>
           </td>
         </tr>
         <tr>
           <td align="left" nowrap title="<?=@$Tr54_codeve?>">
-            <?
+            <?php
             db_ancora(@$Lr54_codeve,"js_pesquisar54_codeve(true);",1);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             db_input('r54_codeve',8,$Ir54_codeve,true,'text',1,"onchange='js_pesquisar54_codeve(false);' tabIndex='3'");
             db_input('r55_descr',40,$Ir55_descr,true,'text',3,"");
             ?>
@@ -152,7 +152,7 @@ $clrotulo->label("r55_descr");
             </strong>
           </td>
           <td> 
-            <?
+            <?php
             $aAcoes  = array(
                              0 => "Selecione",
                              1 => "Somar",
@@ -181,7 +181,7 @@ $clrotulo->label("r55_descr");
 
 
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -536,7 +536,7 @@ function js_mostrarelac1(chave1,chave2){
   db_iframe_relac.hide();
 }
 </script>
-<?
+<?php
 if(isset($incluir)){
   db_msgbox($erro_msg);
   if($erro_cntRPESn > 0){

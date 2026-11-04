@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -94,7 +94,7 @@ function js_troca(nome){
       </tr>
       <tr>
         <td colspan="2">
-	<?
+	<?php
 	 db_selinstit('parent.js_limpa');
 	?>
 	</td>
@@ -103,7 +103,7 @@ function js_troca(nome){
    <tr>
      <td align="right"><?=$Lo40_orgao?></td>
      <td>
-     <?
+     <?php
       $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
       db_selectrecord("o40_orgao",$result,true,2,"","","","0",$onchange=" js_troca('o40_orgao');");
      ?>
@@ -113,7 +113,7 @@ function js_troca(nome){
   <tr>
     <td align="right"><?=$Lo41_unidade?></td>
     <td>
-    <?
+    <?php
     if(isset($o40_orgao)){
       $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$o40_orgao " ));
       db_selectrecord("o41_unidade",$result,true,2,"","","",($clorcunidade->numrows>1?"0":""),$onchange="  js_troca('o41_unidade');");
@@ -134,7 +134,7 @@ function js_troca(nome){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

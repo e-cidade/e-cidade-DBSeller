@@ -58,7 +58,7 @@ $oAguaContrato->rotulo->label("x54_sequencial");
             <?php echo $Lx54_sequencial ?>
             </label>
           </td>
-          <td><? db_input("x54_sequencial", 10, $Ix54_sequencial, true, "text", 4, "", "chave_x54_sequencial"); ?></td>
+          <td><?php db_input("x54_sequencial", 10, $Ix54_sequencial, true, "text", 4, "", "chave_x54_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>

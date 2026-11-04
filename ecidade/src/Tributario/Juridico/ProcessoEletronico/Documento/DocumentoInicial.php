@@ -1,8 +1,9 @@
 <?php
 namespace ECidade\Tributario\Juridico\ProcessoEletronico\Documento;
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,7 +47,7 @@ class DocumentoInicial extends \pdf3
         parent::__construct();
     }
 
-    function headerCertidao()
+    public function headerCertidao()
     {
 
         $sql = "select nomeinst,
@@ -99,7 +100,6 @@ class DocumentoInicial extends \pdf3
         $Espaco = $this->w - 80;
 
         if ($lImpFolha) {
-
             $this->SetFont('Arial', '', 7);
             $this->SetFillColor(240);
             $this->RoundedRect(160, 10, 40, 20, 2, "FD", '1234');
@@ -126,6 +126,7 @@ class DocumentoInicial extends \pdf3
         $Letra = 'Times';
         $posini = 20;
 
+        $sEndereco = 'Rua Visconde de Sepetiba, 519 7º andar CEP 24020-206 - Centro - Niterói - RJ';
         $this->Image('imagens/logo_pjerj.jpg', 10, 6, 24);
         $this->SetLeftMargin(33);
         $this->SetFont($Letra, 'B', 10);
@@ -134,18 +135,16 @@ class DocumentoInicial extends \pdf3
         $this->Cell(0, 4, 'Poder Judiciário', 0, 1);
         $this->Cell(0, 4, 'Comarca de Niterói', 0, 1);
         $this->Cell(0, 4, 'Central da Dívida Ativa', 0, 1);
-        $this->MultiCell(150, 4, 'Rua Visconde de Sepetiba, 519 7º andar CEP 24020-206 - Centro - Niterói - RJ', 0, 'L');
+        $this->MultiCell(150, 4, $sEndereco, 0, 'L');
         $this->SetLeftMargin($S);
         $this->Ln(1);
 
         $comprim = ($this->w - $this->rMargin - $this->lMargin);
         $Espaco = $this->w - 80;
-
-
     }
 
 
-    public function Header()
+    public function header()
     {
         if ($this->tipoImpressao == self::IMPRESSAO_INICIAL) {
             parent::Header();
@@ -173,7 +172,4 @@ class DocumentoInicial extends \pdf3
     {
         $this->tipoImpressao = $tipoImpressao;
     }
-
-
-
 }

@@ -86,7 +86,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Vincular Etapa ao Regime de Matrícula</b></legend>
-    <?include(modification("forms/db_frmserieregimemat.php"));?>
+    <?php include(modification("forms/db_frmserieregimemat.php"));?>
    </fieldset>
    </center>
   </td>
@@ -106,7 +106,7 @@ function redirecionaVinculoEtapaCenso(iEtapa, sDescricao) {
 }
 
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clserieregimemat->erro_status=="0") {

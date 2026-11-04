@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -56,17 +56,17 @@ $db_botao=1;
 $db_opcao=1;
 $dadosini="";
 if(isset($iniciais)){
-  
-  $matriz = split("x",$iniciais);
+
+  $matriz =explode("x",$iniciais);
   for($s=0; $s < sizeof($matriz); $s++){
     $inicial=$matriz[$s];
     if($inicial!=""){
-      $res = $clinicial->sql_record($clinicial->sql_query($inicial,"z01_nome as advogado,v57_oab")); 
+      $res = $clinicial->sql_record($clinicial->sql_query($inicial,"z01_nome as advogado,v57_oab"));
       $numrows= $clinicial->numrows;
       if($numrows==0){
         db_redireciona("jur2_pagaparcela.php?testini=false");
       }
-      
+
       $sWhere = "processoforoinicial.71_inicial = {$inicial} and processoforoinicial is false";
       $result = $clprocessoforoinicial->sql_record($clprocessoforoinicial->sql_query(null,"v70_codforo",null,$sWhere));
       $numrows= $clprocessoforoinicial->numrows;
@@ -74,9 +74,9 @@ if(isset($iniciais)){
         db_redireciona("jur2_pagaparcela.php?codforo=false");
       }
       $sql="
-      select distinct k00_inscr,k00_matric 
+      select distinct k00_inscr,k00_matric
       from inicial
-      inner join inicialcert 	 on v50_inicial=v51_inicial 
+      inner join inicialcert 	 on v50_inicial=v51_inicial
       inner join processoforoinicial on processoforoinicial.v71_inicial=v51_inicial
                                     and processoforoinicial.v71_anulado is false
       inner join certid 		  	 on v13_certid=v51_certidao
@@ -87,7 +87,7 @@ if(isset($iniciais)){
       left outer join arreinscr  on arreinscr.k00_numpre=v01_numpre
       left outer join arrematric on arrematric.k00_numpre=v01_numpre
       where v50_instit = ".db_getsession('DB_instit')." and v50_inicial = $inicial";
-      
+
       $result = db_query($sql);
       db_fieldsmemory($result,0);
       if($k00_matric!=""){
@@ -100,16 +100,16 @@ if(isset($iniciais)){
         $q02_inscr = $k00_inscr;
         $chave = $q02_inscr;
       }
-      
+
       $dadosini .= "xx".$inicial."ww".$chave."ww".$modo;
-    } 
+    }
   }
   echo "
   <script>
   jan = window.open('jur2_geradoc.php?dadosini=$dadosini&pagaparcela=true','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
   //location.href='jur2_pagaparcela.php';
-  </script>";  
+  </script>";
 }
 
 ?>
@@ -149,8 +149,8 @@ function js_gera(){
   var nums="";
   var t="";
   var ent=false;
-  
-  
+
+
   for(var i=0; i<obj.length; i++){
     if(obj[i].type=="checkbox"){
       if(obj[i].checked){
@@ -159,10 +159,10 @@ function js_gera(){
       }
       t="x";
     }
-  }		
+  }
   if(ent==false){
     alert("Marque uma das iniciais!");
-  }else{  
+  }else{
     obj=document.getElementsByTagName("INPUT");
     var inis="";
     var t="";
@@ -173,13 +173,13 @@ function js_gera(){
           inis += t+obj[i].value;
           var ent=true;
           t="x";
-        } 	 
+        }
       }
     }
-    document.form1.iniciais.value=inis;  
+    document.form1.iniciais.value=inis;
     document.form1.submit();
   }
-} 
+}
 </script>
 </head>
 <body bgcolor=#CCCCCC  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -189,12 +189,12 @@ function js_gera(){
 <td valign="top">
 <input type="hidden" name="iniciais">
 <br><br>
-<table border="1"  align="center">	    
+<table border="1"  align="center">
 <tr>
 <td colspan="6" align="center">
 <b>PAGAMENTO DE PARCELAMENTOS</b>
 </td>
-</tr>  
+</tr>
 <tr>
 <td><a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'><b>T</b></a></td>
 <td><b>Inicial</b></td>
@@ -204,12 +204,12 @@ function js_gera(){
 <td><b>Advogado</b></td>
 </tr>
 
-<?
+<?php
 $result=$clinicial->sql_record($clinicial->sql_query_sitpar("","cgm.z01_nome,v50_inicial,v52_descr,v53_descr,v54_descr","v50_inicial",""));
 $numrows=$clinicial->numrows;
 for($i=0; $i<$numrows; $i++){
   db_fieldsmemory($result,$i);
-  echo "<tr>  
+  echo "<tr>
   <td align='left'><input name='check_".$i."' type='checkbox' value='$v50_inicial'></td>
   <td>$v50_inicial</td>
   <td>$v52_descr</td>
@@ -217,9 +217,9 @@ for($i=0; $i<$numrows; $i++){
   <td>$v54_descr</td>
   <td>$z01_nome</td>
   </tr>";
-  
-}  
-?>  
+
+}
+?>
 </table>
 </td>
 </tr>
@@ -246,14 +246,14 @@ function js_pesquisav50_inicial(mostra){
   }
 }
 function js_mostrainicial1(chave){
-  document.form1.v50_inicial.value=chave;    
+  document.form1.v50_inicial.value=chave;
   db_iframe.hide();
 }
 function js_mostrainicial(chave,erro){
   if(erro==true){
-    document.form1.v50_inicial.focus(); 
+    document.form1.v50_inicial.focus();
   }else{
-    document.form1.v50_inicial.value=chave;    
+    document.form1.v50_inicial.value=chave;
   }
 }
 </script>

@@ -36,11 +36,7 @@ class RecibobarpixRepository
     public function getByCodBar($codigobarras)
     {
         $oRecibobarpix = Recibobarpix::query()
-        ->where(
-            "k00_codbar",
-            "=",
-            $codigobarras
-        )->first();
+            ->where("k00_codbar", "=", $codigobarras)->first();
 
         if (!$oRecibobarpix) {
             return false;

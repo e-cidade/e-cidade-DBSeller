@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -279,7 +279,7 @@ foreach ( $aListaAnos as $iIndAno => $iAno ) {
 // Busca valores "Corrente" da Despesa para cada ano
 foreach ( $aEstimativaDespesa as $iInd => $oDespesa ) {
 
-  if ( $oDespesa->iElemento{0} == 3 ) {
+  if ( $oDespesa->iElemento[0] == 3 ) {
 
   	foreach ( $aListaAnos as $iIndAno => $iAno ) {
   		$oDespesaTotal->aValores[$iAno]->Corrente += $oDespesa->aEstimativas[$iAno];

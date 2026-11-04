@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("e50_numemp");
               <?=@$Lk32_sequencia?>
             </td>
             <td> 
-             <?
+             <?php
              db_input('k32_sequencia',10,$Ik32_sequencia,true,'text',3,"")
             ?>
             </td>
@@ -51,7 +51,7 @@ $clrotulo->label("e50_numemp");
                <?=@$Lk32_numpre?>
              </td>
              <td> 
-              <?
+              <?php
               db_input('k32_numpre',10,$Ik32_numpre,true,'text',$db_opcao,"onchange='js_validanumpre(this.value)'");
               db_input('k00_valor',20,null,true,'text',3);
               db_input('tipo',20,null,true,'text',3);
@@ -60,15 +60,15 @@ $clrotulo->label("e50_numemp");
           </tr>
          <tr>
            <td nowrap title="<?=@$Tk32_ordpag?>">
-           <?
+           <?php
              db_ancora(@$Lk32_ordpag,"js_pesquisak32_ordpag(true);",$db_opcao);
            ?>
         </td>
         <td> 
-        <?
+        <?php
          db_input('k32_ordpag',10,$Ik32_ordpag,true,'text',$db_opcao," onchange='js_pesquisak32_ordpag(false);'")
         ?>
-        <?
+        <?php
          db_input('e50_numemp',20,$Ie50_numemp,true,'text',3,'')
         ?>
       </td>
@@ -128,7 +128,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cairetordem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

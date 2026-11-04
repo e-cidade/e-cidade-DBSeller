@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ fieldset table td:first-child {
        <b>Código:</b>
     </td>
     <td style="width:120px;"> 
-			<?
+			<?php
 			db_input('g04_sequencial',10,$Ig04_sequencial,true,'text',3,"")
 			?>
     </td>
@@ -77,7 +77,7 @@ fieldset table td:first-child {
        <b>Periodicidade:</b>
     </td>
     <td> 
-       <?
+       <?php
        include(modification("classes/db_db_periodicidade_classe.php"));
        $cldb_periodicidade = new cl_db_periodicidade;
        $sSqlPeriodicidade = $cldb_periodicidade->sql_query("","*","db84_sequencial ASC");       
@@ -96,7 +96,7 @@ fieldset table td:first-child {
        <?=@$Lg04_descricao?>
     </td>
     <td colspan="3"> 
-			<?
+			<?php
 			db_input('g04_descricao',45,$Ig04_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -106,7 +106,7 @@ fieldset table td:first-child {
        <b>Tipo:</b>
     </td>
     <td> 
-			<?
+			<?php
 			$x = array('1'=>'Crescente','2'=>'Decrescente');
 			db_select('g04_tipo',$x,true,$db_opcao,"onchange='js_limpaCampos();'");
 			?>
@@ -115,7 +115,7 @@ fieldset table td:first-child {
        <b>Data Limite:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_inputdata('g04_limite',@$g04_limite_dia,@$g04_limite_mes,@$g04_limite_ano,true,'text',$db_opcao,"");
 			?>
     </td>
@@ -125,7 +125,7 @@ fieldset table td:first-child {
       <?=@$Lg04_link?>
     </td>  
     <td nowrap="nowrap" colspan="3">  
-      <?
+      <?php
         db_input('g04_link',45,$Ig04_link,true,'text',$db_opcao,"onkeyup=''");
       ?> 
     </td> 
@@ -134,7 +134,7 @@ fieldset table td:first-child {
     <td colspan="4">
       <fieldset>
         <legend><b>Definição:</b></legend>
-        <?
+        <?php
           db_textarea('g04_definicao',5,60,$Ig04_definicao,true,'text',$db_opcao,"")
         ?>
         
@@ -153,7 +153,7 @@ fieldset table td:first-child {
        <b>Inicial:</b>
     </td>
     <td style="width:180px;"> 
-		<?
+		<?php
 		db_input('g04_faixainicial',15,$Ig04_faixainicial,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -161,7 +161,7 @@ fieldset table td:first-child {
        <b>Final:</b>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('g04_faixafinal',15,$Ig04_faixafinal,true,'text',$db_opcao);
 		?>
     </td>
@@ -171,7 +171,7 @@ fieldset table td:first-child {
        <b>Verde Inicial:</b>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('g04_faixaverdeinicial',15,$Ig04_faixaverdeinicial,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -179,7 +179,7 @@ fieldset table td:first-child {
        <b>Final:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g04_faixaverdefinal',15,$Ig04_faixaverdefinal,true,'text',$db_opcao);
 			?>
     </td>
@@ -189,7 +189,7 @@ fieldset table td:first-child {
        <b>Amarela Inicial:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g04_faixaamarelainicial',15,$Ig04_faixaamarelainicial,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -198,7 +198,7 @@ fieldset table td:first-child {
        <b>Final:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g04_faixaamarelafinal',15,$Ig04_faixaamarelafinal,true,'text',$db_opcao);
 			?>
     </td>
@@ -208,7 +208,7 @@ fieldset table td:first-child {
        <b>Vermelha Inicial:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g04_faixavermelhainicial',15,$Ig04_faixavermelhainicial,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -217,7 +217,7 @@ fieldset table td:first-child {
        <b>Final:</b>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('g04_faixavermelhafinal',15,$Ig04_faixavermelhafinal,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -234,7 +234,7 @@ fieldset table td:first-child {
        <b>Alertar:</b>
     </td>
     <td> 
-      <?
+      <?php
       $x = array("f"=>"NAO","t"=>"SIM");
       db_select('g04_emitealerta',$x,true,$db_opcao,"onChange='js_show_hide();'");
       ?>
@@ -249,7 +249,7 @@ fieldset table td:first-child {
        <b>Valor:</b>
     </td>
     <td colspan=3> 
-		<?
+		<?php
 		db_input('g04_valoralerta',20,$Ig04_valoralerta,true,'text',$db_opcao,"")
 		?>
     </td>    
@@ -259,7 +259,7 @@ fieldset table td:first-child {
        <?=@$Lg04_emailalerta?>
     </td>
     <td colspan=3> 
-			<?
+			<?php
 			db_input('g04_emailalerta',40,$Ig04_emailalerta,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -269,7 +269,7 @@ fieldset table td:first-child {
     <td colspan=4 align=center>
       <fieldset>
       <legend><b>Mensagem</b></legend> 
-			<?
+			<?php
 			db_textarea('g04_mensagemalerta',5,60,$Ig04_mensagemalerta,true,'text',$db_opcao,"")
 			?>
 			</fieldset>
@@ -637,7 +637,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe_gestorindicador.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

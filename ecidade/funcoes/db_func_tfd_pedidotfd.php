@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,5 +32,11 @@ $campos = " tfd_pedidotfd.tf01_i_codigo,
             tfd_situacaotfd.tf26_c_descr,
             tfd_pedidotfd.tf01_d_datapedido,
             tfd_pedidotfd.tf01_d_datapreferencia,
-            tfd_pedidotfd.tf01_i_tipotratamento ";
+            CASE
+                WHEN tfd_agendamentoprestadora.tf16_d_dataagendamento IS NOT NULL THEN to_char(tfd_agendamentoprestadora.tf16_d_dataagendamento, 'DD/MM/YYYY')::char(10)
+                ELSE NULL
+            END AS tf16_d_dataagendamento,
+            tfd_agendamentoprestadora.tf16_c_horaagendamento,
+            tfd_pedidotfd.tf01_i_tipotratamento
+            ";
 ?>

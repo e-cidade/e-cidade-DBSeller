@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -174,7 +174,7 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 
 
@@ -219,12 +219,12 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
         <table border="0" align="center">
   		<tr>
 		  <td nowrap title="<?=@$Tv65_advog?>">
-		    <?
+		    <?php
 			  db_ancora("<b>Código do CGM que identifica o advogado</b>","js_advog(true);",$db_opcao);		    
 		    ?>
 		  </td>
 		  <td> 
-		    <?
+		    <?php
 		      db_input('v65_sequencial',10,"",true,'hidden',3,'');
 		      db_input('v65_procjurjudicial',10,"",true,'hidden',3,'');
 		      db_input('v65_advog',10,$Iv65_advog,true,'text',$db_opcao," onchange='js_advog(false);'");
@@ -237,7 +237,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
   		    <b>Principal</b>		  
   		  </td>
 		  <td> 
-		    <?
+		    <?php
 		    
 		      if (isset($oPost->v65_principal) && $oPost->v65_principal == "t"){
 		      	$v65_principal = "true";
@@ -260,7 +260,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
  	  <table>
 		<tr>
 		  <td valign="top"  align="center">  
-		    <?
+		    <?php
 			  $aChavePri = array("v65_sequencial"=>@$v65_sequencial,"v65_advog"=>@$v65_advog,"v65_principal"=>@$v65_principal);
 			  
 			  $cliframe_alterar_excluir->chavepri= $aChavePri;
@@ -280,7 +280,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
   </table>   
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
     db_msgbox($sErroMsg);
     if($clprocjurjudicialadvog->erro_campo!=""){

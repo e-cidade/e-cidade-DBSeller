@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancamlr
-class cl_conlancamlr { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c81_sequen = 0; 
-   var $c81_seqtranslr = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conlancamlr {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c81_sequen = 0;
+   var $c81_seqtranslr = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c81_sequen = int4 = Código Lançamento 
-                 c81_seqtranslr = int4 = Sequencia Translr 
+                 c81_sequen = int4 = Código Lançamento
+                 c81_seqtranslr = int4 = Sequencia Translr
                  ";
-   //funcao construtor da classe 
-   function cl_conlancamlr() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conlancamlr"); 
+     $this->rotulo = new rotulo("conlancamlr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_conlancamlr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c81_sequen = ($this->c81_sequen == ""?@$GLOBALS["HTTP_POST_VARS"]["c81_sequen"]:$this->c81_sequen);
        $this->c81_seqtranslr = ($this->c81_seqtranslr == ""?@$GLOBALS["HTTP_POST_VARS"]["c81_seqtranslr"]:$this->c81_seqtranslr);
@@ -75,11 +75,11 @@ class cl_conlancamlr {
      }
    }
    // funcao para inclusao
-   function incluir ($c81_sequen,$c81_seqtranslr){ 
+   public function incluir ($c81_sequen,$c81_seqtranslr){
       $this->atualizacampos();
-       $this->c81_sequen = $c81_sequen; 
-       $this->c81_seqtranslr = $c81_seqtranslr; 
-     if(($this->c81_sequen == null) || ($this->c81_sequen == "") ){ 
+       $this->c81_sequen = $c81_sequen;
+       $this->c81_seqtranslr = $c81_seqtranslr;
+     if(($this->c81_sequen == null) || ($this->c81_sequen == "") ){
        $this->erro_sql = " Campo c81_sequen nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_conlancamlr {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->c81_seqtranslr == null) || ($this->c81_seqtranslr == "") ){ 
+     if(($this->c81_seqtranslr == null) || ($this->c81_seqtranslr == "") ){
        $this->erro_sql = " Campo c81_seqtranslr nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_conlancamlr {
        return false;
      }
      $sql = "insert into conlancamlr(
-                                       c81_sequen 
-                                      ,c81_seqtranslr 
+                                       c81_sequen
+                                      ,c81_seqtranslr
                        )
                 values (
-                                $this->c81_sequen 
-                               ,$this->c81_seqtranslr 
+                                $this->c81_sequen
+                               ,$this->c81_seqtranslr
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lançamentos Automáticos - Previsão ($this->c81_sequen."-".$this->c81_seqtranslr) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_conlancamlr {
        $resac = db_query("insert into db_acount values($acount,967,6033,'','".AddSlashes(pg_result($resaco,0,'c81_seqtranslr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c81_sequen=null,$c81_seqtranslr=null) { 
+   public function alterar ($c81_sequen=null,$c81_seqtranslr=null) {
       $this->atualizacampos();
      $sql = " update conlancamlr set ";
      $virgula = "";
-     if(trim($this->c81_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c81_sequen"])){ 
+     if(trim($this->c81_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c81_sequen"])){
        $sql  .= $virgula." c81_sequen = $this->c81_sequen ";
        $virgula = ",";
-       if(trim($this->c81_sequen) == null ){ 
+       if(trim($this->c81_sequen) == null ){
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c81_sequen";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_conlancamlr {
          return false;
        }
      }
-     if(trim($this->c81_seqtranslr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c81_seqtranslr"])){ 
+     if(trim($this->c81_seqtranslr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c81_seqtranslr"])){
        $sql  .= $virgula." c81_seqtranslr = $this->c81_seqtranslr ";
        $virgula = ",";
-       if(trim($this->c81_seqtranslr) == null ){ 
+       if(trim($this->c81_seqtranslr) == null ){
          $this->erro_sql = " Campo Sequencia Translr nao Informado.";
          $this->erro_campo = "c81_seqtranslr";
          $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_conlancamlr {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamentos Automáticos - Previsão nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c81_sequen."-".$this->c81_seqtranslr;
@@ -220,14 +220,14 @@ class cl_conlancamlr {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c81_sequen=null,$c81_seqtranslr=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c81_sequen=null,$c81_seqtranslr=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c81_sequen,$c81_seqtranslr));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -261,7 +261,7 @@ class cl_conlancamlr {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lançamentos Automáticos - Previsão nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c81_sequen."-".$c81_seqtranslr;
@@ -289,11 +289,11 @@ class cl_conlancamlr {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_conlancamlr {
       }
      return $result;
    }
-   function sql_query ( $c81_sequen=null,$c81_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $c81_sequen=null,$c81_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -337,23 +337,23 @@ class cl_conlancamlr {
      $sql2 = "";
      if($dbwhere==""){
        if($c81_sequen!=null ){
-         $sql2 .= " where conlancamlr.c81_sequen = $c81_sequen "; 
-       } 
+         $sql2 .= " where conlancamlr.c81_sequen = $c81_sequen ";
+       }
        if($c81_seqtranslr!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " conlancamlr.c81_seqtranslr = $c81_seqtranslr "; 
-       } 
+         }
+         $sql2 .= " conlancamlr.c81_seqtranslr = $c81_seqtranslr ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,10 +362,10 @@ class cl_conlancamlr {
      }
      return $sql;
   }
-   function sql_query_file ( $c81_sequen=null,$c81_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $c81_sequen=null,$c81_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,23 +378,23 @@ class cl_conlancamlr {
      $sql2 = "";
      if($dbwhere==""){
        if($c81_sequen!=null ){
-         $sql2 .= " where conlancamlr.c81_sequen = $c81_sequen "; 
-       } 
+         $sql2 .= " where conlancamlr.c81_sequen = $c81_sequen ";
+       }
        if($c81_seqtranslr!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " conlancamlr.c81_seqtranslr = $c81_seqtranslr "; 
-       } 
+         }
+         $sql2 .= " conlancamlr.c81_seqtranslr = $c81_seqtranslr ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

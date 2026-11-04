@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $cldb_relat->rotulo->label();
        <?=@$Ldb91_codrel?>
     </td>
     <td> 
-<?
+<?php
 db_input('db91_codrel',10,$Idb91_codrel,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('db91_codrel',10,$Idb91_codrel,true,'text',3,"")
        <?=@$Ldb91_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('db91_descr',40,$Idb91_descr,true,'text',$db_opcao,"")
        <?=@$Ldb91_quebra?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('db91_quebra',$x,true,$db_opcao,"");
 ?>
@@ -74,7 +74,7 @@ db_select('db91_quebra',$x,true,$db_opcao,"");
        <?=@$Ldb91_todos?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('db91_todos',$x,true,$db_opcao,"");
 ?>
@@ -85,7 +85,7 @@ db_select('db91_todos',$x,true,$db_opcao,"");
        <?=@$Ldb91_nomearq?>
     </td>
     <td> 
-<?
+<?php
 db_input('db91_nomearq',40,$Idb91_nomearq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -101,7 +101,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_relat.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

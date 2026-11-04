@@ -57,7 +57,7 @@ if (!empty($get->rubricas)) {
     $dbwhererubs = " and #s#_rubric in ('{$rubricas}')";
 }
 
-$arr_pontos = split(",",$ponts);
+$arr_pontos =explode(",",$ponts);
 $varSQL = "";
 
 $headPontos = "";

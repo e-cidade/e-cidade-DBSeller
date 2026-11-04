@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ $cllab_exameatributo->rotulo->label();
       </tr>
       <tr>
         <td nowrap title="<?=@$Tla42_i_exame?>">
-          <?db_ancora ( @$Lla42_i_exame, "js_pesquisala42_i_exame(true);", 3 );?>
+          <?php db_ancora ( @$Lla42_i_exame, "js_pesquisala42_i_exame(true);", 3 );?>
         </td>
         <td>
           <?php
@@ -71,14 +71,14 @@ $cllab_exameatributo->rotulo->label();
   <?php if ($db_opcao==2) { ?>
 
     <div id='ctnAtributos' style="height: 500px; overflow: auto; ">
-      <? $cllab_tributo_componente->atributos($la42_i_exame,$la42_i_atributo,"", 4 , 0, 0)?>
+      <?php $cllab_tributo_componente->atributos($la42_i_exame,$la42_i_atributo,"", 4 , 0, 0)?>
     </div>
 
     <input type="hidden" name="repositorios" id="repoditorios" value="<?=$cllab_tributo_componente->getInputs()?>" >
     <input type="hidden" name="sAtributos"   id="sAtributos" value="">
     <input type="hidden" name="sValores"     id="sValores" value="" >
 
- <?}?>
+ <?php }?>
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick="return js_valida()">
 </form>
 

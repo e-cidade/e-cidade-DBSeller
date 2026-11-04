@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -118,7 +118,7 @@ input {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
         <form name="form1" method="post">
           <table border="0" cellspacing="0" cellpadding="3">
-		  <?
+		  <?php
 		  if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["ambiente"])) {
 		  ?>
 		  <tr>
@@ -127,7 +127,7 @@ input {
 		  <tr>
 		   <td nowrap><strong>No M&oacute;dulo:</strong><br> 
 		   <select onDblClick="document.form1.selecionar.click()" name="modulos" size="15" id="modulos" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-                  <?
+                  <?php
 				if(db_getsession("DB_id_usuario") == "1") {
 				  $result = db_query("select m.id_item,m.nome_modulo,m.descr_modulo 
 				                   from db_modulos m		
@@ -157,13 +157,13 @@ input {
 		  <tr>
 		  <Td><input onClick="if(document.form1.modulos.selectedIndex == -1) { alert('Voce precisa selecionar um modulo!'); return false; }" name="selecionar" type="submit" id="selecionar" value="Selecionar"></Td>
            </tr> 
-		   <?
+		   <?php
 		   } else {
 		   ?>
 		   <tr>
 			 <Td align="center" colspan="3">
 			   <strong>Módulo: </strong>
-			   <? 
+			   <?php 
 			   $aux = $HTTP_POST_VARS["modulos"];
 			   echo substr(strstr($aux,"||"),2)."</strong><br>";
 			   echo "<font style=\"font-size:10px\">(".substr($aux,strpos($aux,"##")+2,strpos($aux,"||")-3).")</font>";
@@ -175,9 +175,9 @@ input {
         <td colspan="3" align="center"><strong>Ambiente:</strong>
 
 			    <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">
-			    <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			    <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
           <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-          <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+          <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
           <label for="caracter"><strong>Caracter</strong></label>
 
 			  </td>
@@ -193,7 +193,7 @@ input {
               <td nowrap>
 			   <strong>Itens:</strong><br> 
 			   <select name="itens" style="width:350px" onClick="js_desmarca('itens1')" size="13" id="itens" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-                  <?				  
+                  <?php 			  
 				$result = db_query("select distinct i.id_item,i.descricao, i.help,i.funcao,lower(i.descricao) 
 				                   from db_itensmenu i
 						        left join db_modulos modu on modu.id_item = i.id_item
@@ -215,7 +215,7 @@ input {
               <td nowrap>
 			   <strong>Itens não organizados:</strong><br> 
 			   <select name="itens1" style="width:350px" onClick="js_desmarca('itens')" size="13" id="itens1" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-                  <?				  
+                  <?php 			  
 				$result = db_query("select distinct i.id_item,i.descricao, i.help ,i.funcao,lower(i.descricao) 
 				                   from db_itensmenu i
 						        left join db_modulos modu on modu.id_item = i.id_item
@@ -237,7 +237,7 @@ input {
               <td nowrap> <strong>Ficar&aacute; embaixo de:</strong><br> 
 			  <select name="menu" style="width:350px" size="13" id="menu" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
                   <option value="TOPO">Menu Principal</option>
-                  <?
+                  <?php
 				$result = db_query("
 				select distinct i.id_item,i.descricao, i.help, i.funcao,lower(i.descricao) 
 				from db_itensmenu i
@@ -262,7 +262,7 @@ input {
               <td nowrap><input name="cadastrar" onClick="return js_cadastrar()" type="submit" id="cadastrar" value="Cadastrar"></td>
               <td nowrap>&nbsp;</td>			  
             </tr>
-			<?
+			<?php
 			}
 			?>
           </table>
@@ -271,7 +271,7 @@ input {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

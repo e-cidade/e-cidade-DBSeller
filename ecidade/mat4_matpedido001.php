@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -102,7 +102,7 @@ if(isset($incluir)){
    <br>
    <center>
    <fieldset style="width:50%"><legend><b>Solicitação de Transferência</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmmatpedido.php"));
 	?>
 	</fieldset>
@@ -112,7 +112,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clmatpedido->erro_status=="0"){
     $clmatpedido->erro(true,false);

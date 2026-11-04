@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("ed02_i_codigo");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ted15_i_codigo?>">
-       <?
+       <?php
        db_ancora(@$Led15_i_codigo,"js_pesquisaed15_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed15_i_codigo',10,$Ied15_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed15_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted15_i_escolas?>">
-       <?
+       <?php
        db_ancora(@$Led15_i_escolas,"js_pesquisaed15_i_escolas(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed15_i_escolas',5,$Ied15_i_escolas,true,'text',$db_opcao," onchange='js_pesquisaed15_i_escolas(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome2',50,$z01_nome,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('z01_nome2',50,$z01_nome,true,'text',3,'')
        <?=@$Led15_c_categoria?>
     </td>
     <td> 
-<?
+<?php
 $x = array('VICE-DIRETOR'=>'VICE-DIRETOR','DIRETOR'=>'DIRETOR');
 db_select('ed15_c_categoria',$x,true,$db_opcao,"");
 ?>
@@ -80,7 +80,7 @@ db_select('ed15_c_categoria',$x,true,$db_opcao,"");
        <?=@$Led15_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed15_d_inicio',@$ed15_d_inicio_dia,@$ed15_d_inicio_mes,@$ed15_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_inputdata('ed15_d_inicio',@$ed15_d_inicio_dia,@$ed15_d_inicio_mes,@$ed15_d_in
        <?=@$Led15_d_termino?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed15_d_termino',@$ed15_d_termino_dia,@$ed15_d_termino_mes,@$ed15_d_termino_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,7 +152,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_diretores.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

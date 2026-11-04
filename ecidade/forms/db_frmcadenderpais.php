@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clcadenderpais->rotulo->label();
        <?=@$Ldb70_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db70_sequencial',10,$Idb70_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('db70_sequencial',10,$Idb70_sequencial,true,'text',3,"")
        <?=@$Ldb70_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db70_descricao',40,$Idb70_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('db70_descricao',40,$Idb70_descricao,true,'text',$db_opcao,"")
        <?=@$Ldb70_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('db70_sigla',2,$Idb70_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderpais.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

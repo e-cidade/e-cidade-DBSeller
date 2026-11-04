@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,7 +32,7 @@ function js_ProtegeTextoEsc() {
     return false;
 }
 </script>
-<? 
+<?php 
   db_getsession(); 
 $clrotulo = new rotulocampo;
 $clrotulo->label("or10_codatend");
@@ -97,7 +97,7 @@ $clrotulo->label("or10_codatend");
 
 	  js_trocacordeselect();
 	}
-	<?
+	<?php
     echo "\n</script>\n\n";
   
   
@@ -112,15 +112,15 @@ $clrotulo->label("or10_codatend");
       </tr>
       <br>
       <tr align="left" valign="middle"> 
-        <td width="365" nowrap ><strong>Usuario : <? echo $nomeUsuario ?> 
+        <td width="365" nowrap ><strong>Usuario : <?php echo $nomeUsuario ?> 
           </strong> <div align="left"></div></td>
         <td nowrap ><div align="left"></div>
           <strong>Data :</strong> 
-          <? include(modification("dbforms/db_funcoes.php")) ;
+          <?php include(modification("dbforms/db_funcoes.php")) ;
 		    db_data("dataordem",date("d"),date("m"),date("Y"));
 		  ?>
         </td>
-        <? 
+        <?php 
 		  //Gera numero negativo temporario para gravação dos arquivos anexado
 		  $numTemp = rand(-1000,-1);
 		?>
@@ -130,7 +130,7 @@ $clrotulo->label("or10_codatend");
             <tr> 
               <td align="left" nowrap valign="middle"><strong>Departamento 
                 : </strong> <select name="depto" id="select3" onChange="vai(eval('a' + this.options[this.selectedIndex].value),eval('a' + this.options[this.selectedIndex].value + '1'))">
-                  <?
+                  <?php
 				    // Identifica o departamento atual da pessoa que está acessando
 					$result = db_query("select d.id_usuario, d.coddepto, p.descrdepto
 					                   from db_depusu d
@@ -157,7 +157,7 @@ $clrotulo->label("or10_codatend");
                 destino : 
                 <select name="usuarioreceb" id="select2" onChange="document.form1.usuold.value = this.value" >
                   <option value="">Enviar para todo o departamento</option>
-                  <? 
+                  <?php 
 						// Carrega a lista de usuarios do departamento selecionado na rotina acima
 						// e deixa selecionado o nome do usuario que está acessando
     					$coddepartamento = pg_result($result,0,"coddepto");
@@ -173,7 +173,7 @@ $clrotulo->label("or10_codatend");
 				    	}
 					?>
                 </select>
-	<?
+	<?php
 	if(isset($usuold) && $usuold != ""){
 	  echo "<script>
 	        for(var i = 0;i < document.form1.usuarioreceb.length;i++){
@@ -209,7 +209,7 @@ $clrotulo->label("or10_codatend");
             <tr> 
               <td colspan="3" align="center" valign="middle" style="font-size:13px"> 
                 <select name="modulos[]" size="5" multiple id="modulos[]">
-                  <?
+                  <?php
 		  // Carrega a lista de modulos
 		  $listaDeModulos = db_query("Select id_item, nome_modulo from db_modulos");
 		  $numListaDeModulos = pg_numrows($listaDeModulos);
@@ -240,7 +240,7 @@ $clrotulo->label("or10_codatend");
       <tr align="center" valign="middle"> 
         <td height="11" colspan="2" nowrap ><div align="left"></div>
           
-       <?
+       <?php
        db_ancora(@$Lor10_codatend,"js_pesquisaor10_codatend(true);",1);
 
        ?>
@@ -260,7 +260,7 @@ $clrotulo->label("or10_codatend");
       </tr>
       <tr align="center">
         <td colspan="2" nowrap ><strong>Previs&atilde;o </strong>: 
-          <? 
+          <?php 
 		    db_data("dataprev");
 		    if(isset($data_dia) && $data_dia != ""){
 		      echo "<script>document.form1.dataprev_dia.value = '$data_dia'</script>";

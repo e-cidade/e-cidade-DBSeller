@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,7 +84,7 @@ if ($clmatricula->numrows==0) {?>
     </td>
    </tr>
   </table>
- <?
+ <?php
  exit;
 }else{
   $oMatriculaTurma = db_utils::fieldsMemory($rsMatriculaTurma,0);   
@@ -123,7 +123,7 @@ if ($clmatricula->numrows==0) {?>
           <tr bgcolor="">
             <td>
               <table border='1px' width="100%" cellpading="0" cellspacing="0">
-                <?
+                <?php
                 for ($w=0;$w<$clmatricula->numrows;$w++) {
                     
                   $oMatriculaTurma = db_utils::fieldsMemory($rsMatriculaTurma,$w);
@@ -150,7 +150,7 @@ if ($clmatricula->numrows==0) {?>
                     <td width="35%">Qtde Alunos: <?=$oMatriculaTurma->qtde?></td>                         
                     <td width="30%">Turno: <?=$oMatriculaTurma->ed15_c_nome?></td>
                   </tr>
-                  <?
+                  <?php
                   
                 }
                 ?>

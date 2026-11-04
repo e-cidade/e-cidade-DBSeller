@@ -27,16 +27,21 @@
 
 namespace App\Domain\Financeiro\Planejamento\Services;
 
-use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Configuracao\Usuario\Models\Usuario;
+use App\Domain\Financeiro\Planejamento\Models\BaseCalculoProjecao;
+use App\Domain\Financeiro\Planejamento\Models\CronogramaDesembolsoDespesa;
+use App\Domain\Financeiro\Planejamento\Models\DetalhamentoDespesa;
+use App\Domain\Financeiro\Planejamento\Models\DetalhamnentoPlanejamento;
 use App\Domain\Financeiro\Planejamento\Models\FatorCorrecaoDespesa;
 use App\Domain\Financeiro\Planejamento\Models\Iniciativa;
-use App\Domain\Financeiro\Planejamento\Models\Planejamento;
+use App\Domain\Financeiro\Planejamento\Models\OrgaoPrograma;
 use App\Domain\Financeiro\Planejamento\Models\ProgramaEstrategico;
 use App\Domain\Financeiro\Planejamento\Models\Valor;
 use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\Despesa\CalculaProjecaoRequest;
-use ECidade\Enum\Financeiro\Planejamento\TipoEnum;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use JSON;
 use stdClass;
@@ -44,25 +49,35 @@ use stdClass;
 // phpcs:disable
 include(modification("libs/db_liborcamento.php"));
 // phpcs:enable
+
 /**
  * Class ProjecaoDespesaService
  * @package App\Domain\Financeiro\Planejamento\Services
  */
 class ProjecaoDespesaService extends ProjecaoService
 {
+    /**
+     * 1 - Previsão Atualizada
+     * 2 - Empenhado
+     * 3 - Liquidado
+     * 4 - Pago mo execício até o presente momento
+     * @var integer
+     */
+    protected $formaRecalculo;
 
     /**
      * @throws Exception
+     * @todo esse metodo pode ser usado para criar o plano, como um start
      */
     public function calcular()
     {
-        ProgramaEstrategico::where('pl9_planejamento', '=', $this->planejamento->pl2_codigo)->delete();
-
-        $valoresDotacao = $this->buscarValores();
-        $valoresDotacao = $this->calculaProjecao($valoresDotacao);
-
-        $valoresAgrupados = $this->agrupaValores($valoresDotacao);
-        $this->persisteCalculo($valoresAgrupados);
+//        ProgramaEstrategico::where('pl9_planejamento', '=', $this->planejamento->pl2_codigo)->delete();
+//
+//        $valoresDotacao = $this->buscarValores();
+//        $valoresDotacao = $this->calculaProjecao($valoresDotacao);
+//
+//        $valoresAgrupados = $this->agrupaValores($valoresDotacao);
+//        $this->persisteCalculo($valoresAgrupados);
     }
 
 
@@ -91,8 +106,7 @@ class ProjecaoDespesaService extends ProjecaoService
         $where = implode(' and ', $filtros);
 
         $sql = "
-            select codigo as id_instituicao,
-                   nomeinst as instituicao,
+            select
                    pl9_codigo as id_programa,
                    pl9_planejamento as planejamento,
                    pl9_orcprograma as orcprograma,
@@ -121,18 +135,56 @@ class ProjecaoDespesaService extends ProjecaoService
               from planejamento.programaestrategico
               join planejamento.iniciativaprojativ
                   on iniciativaprojativ.pl12_programaestrategico = programaestrategico.pl9_codigo
-              join db_config on db_config.codigo = programaestrategico.pl9_instituicao
               join orcamento.orcprograma on (o54_anousu, o54_programa) = (pl9_anoorcamento, pl9_orcprograma)
               join orcamento.orcprojativ on (o55_anousu, o55_projativ) = (pl12_anoorcamento, pl12_orcprojativ)
             where {$where}
-            order by id_instituicao, id_programa, id_iniciativa
+            order by  id_programa, id_iniciativa
         ";
 
         return \db_utils::makeCollectionFromRecord(db_query($sql), function ($dado) {
-             $dado->valores = JSON::create()->parse($dado->valores);
+            $dado->valores = JSON::create()->parse($dado->valores);
             return $dado;
         });
     }
+
+    /**
+     * @param stdClass $programa
+     * @return ProgramaEstrategico|Builder|Model|null
+     */
+    public function criarProgramaSeNaoExiste(stdClass $programa)
+    {
+        $programaEstrategico = ProgramaEstrategico::query()
+            ->where('pl9_planejamento', $this->planejamento->pl2_codigo)
+            ->where('pl9_orcprograma', $programa->programa)
+            ->first();
+
+        if (is_null($programaEstrategico)) {
+            $programaEstrategico = new ProgramaEstrategico();
+            $programaEstrategico->planejamento()->associate($this->planejamento);
+            $programaEstrategico->pl9_orcprograma = $programa->programa;
+            $programaEstrategico->pl9_anoorcamento = $this->planejamento->pl2_ano_inicial;
+            $programaEstrategico->pl9_valorbase = 0;
+            $programaEstrategico->save();
+        }
+
+        // cria uma coleção com os códigos dos órgão vinculado ao programa
+        $orgaosPrograma = $programaEstrategico->orgaos->map(function ($data) {
+            return $data->pl27_orcorgao;
+        });
+
+        // transforma a lista de orgãos em collection e remove usando o diff todos que já estão vínculados ao programa
+        collect($programa->orgaos)
+            ->diff($orgaosPrograma)->each(function ($codigo) use ($programaEstrategico) {
+                $orgao = new OrgaoPrograma();
+                $orgao->programaEstrategico()->associate($programaEstrategico);
+                $orgao->pl27_orcorgao = $codigo;
+                $orgao->pl27_anoorcamento = $this->planejamento->pl2_ano_inicial;
+                $orgao->save();
+            });
+
+        return $programaEstrategico;
+    }
+
 
     /**
      * Busca os orgaos que o usuário possui permissão no ano informado
@@ -148,100 +200,9 @@ class ProjecaoDespesaService extends ProjecaoService
      * Busca os valores das dotações agrupando por programa e ação(iniciativa)
      * @return array
      */
-    private function buscarValores()
+    private function buscarValoresDetalhamento()
     {
-
-        if ($this->planejamento->pl2_tipo === TipoEnum::LOA) {
-            return $this->calulaValoresDetalhado();
-        }
-
-        return $this->calulaValoresSintetico();
-//
-//        $orgaos = implode(',', $orgaosUsuario);
-//        return DB::table('orcdotacao')
-//            /* se o plano for uma LOA */
-//            ->when($this->planejamento->pl2_tipo === TipoEnum::LOA, function ($query) {
-//                $campos = [
-//                    'fc_estruturaldotacao(o58_anousu, o58_coddot) as estrutural',
-//                    'o58_instit',
-//                    'o58_orgao',
-//                    'o58_unidade',
-//                    'o58_subfuncao',
-//                    'o58_projativ',
-//                    'o58_codigo',
-//                    'o58_funcao',
-//                    'o58_programa',
-//                    'o58_codele',
-//                    'o58_valor as valor',
-//                    'o58_localizadorgastos',
-//                    'o58_concarpeculiar',
-//                    'o58_esferaorcamentaria',
-//                    'o54_descr',
-//                    'o55_descr',
-//                    'o40_descr',
-//                    'o41_descr',
-//                    'o56_descr',
-//                    'o15_descr',
-//                    'c58_descr',
-//                    'o52_descr',
-//                    'o53_descr',
-//                    'o11_descricao',
-//                    'nomeinst',
-//                ];
-//                $query->select($campos);
-//            })
-//            /* se o plano for PPA ou LDO */
-//            ->when($this->planejamento->pl2_tipo !== TipoEnum::LOA, function ($query) {
-//                $outrosCampos = [
-//                    DB::raw("o58_programa  ||'.'|| o58_projativ as estrutural, sum(o58_valor) as valor")
-//                ];
-//                $campos = [
-//                    'o58_programa',
-//                    'o58_projativ',
-//                    'o58_codele',
-//                    'o58_instit',
-//                    'o54_descr',
-//                    'o55_descr',
-//                    'nomeinst',
-//                ];
-//                $query->select(
-//                    array_merge($campos, $outrosCampos)
-//                )->groupBy($campos);
-//            })
-//            ->whereIn('o58_orgao', $orgaosUsuario)
-//            ->where('o58_anousu', $this->anoSessao)
-//            ->when(!$this->instituicao->prefeitura, function ($query) {
-//                $query->where('o58_instit', $this->instituicao->codigo);
-//            })
-//            ->join('orcprograma', function ($join) {
-//                $join->on('orcprograma.o54_programa', '=', 'orcdotacao.o58_programa')
-//                    ->on('orcprograma.o54_anousu', '=', 'orcdotacao.o58_anousu');
-//            })
-//            ->join('orcprojativ', function ($join) {
-//                $join->on('orcprojativ.o55_projativ', '=', 'orcdotacao.o58_projativ')
-//                    ->on('orcprojativ.o55_anousu', '=', 'orcdotacao.o58_anousu');
-//            })
-//            ->join('orcorgao', function ($join) {
-//                $join->on('orcorgao.o40_orgao', '=', 'orcdotacao.o58_orgao')
-//                    ->on('orcorgao.o40_anousu', '=', 'orcdotacao.o58_anousu');
-//            })
-//            ->join('orcunidade', function ($join) {
-//                $join->on('orcunidade.o41_orgao', '=', 'orcdotacao.o58_orgao')
-//                    ->on('orcunidade.o41_unidade', '=', 'orcdotacao.o58_unidade')
-//                    ->on('orcunidade.o41_anousu', '=', 'orcdotacao.o58_anousu');
-//            })
-//            ->join('orcelemento', function ($join) {
-//                $join->on('orcelemento.o56_codele', '=', 'orcdotacao.o58_codele')
-//                    ->on('orcelemento.o56_anousu', '=', 'orcdotacao.o58_anousu');
-//            })
-//            ->join('orctiporec', 'o15_codigo', '=', 'o58_codigo')
-//            ->join('concarpeculiar', 'c58_sequencial', '=', 'o58_concarpeculiar')
-//            ->join('orcfuncao', 'o52_funcao', '=', 'o58_funcao')
-//            ->join('db_config', 'codigo', '=', 'o58_instit')
-//            ->join('ppasubtitulolocalizadorgasto', 'o11_sequencial', '=', 'o58_localizadorgastos')
-//            ->join('orcsubfuncao', 'o53_subfuncao', '=', 'o58_subfuncao')
-//            ->orderBy('o58_programa', 'o58_projativ')
-//            ->get()->toArray();
+        return $this->calulaValoresDetalhado();
     }
 
     private function agrupaValores(array $dadosDotacao)
@@ -308,70 +269,72 @@ class ProjecaoDespesaService extends ProjecaoService
         ];
     }
 
-    private function calulaValoresSintetico()
-    {
-        $sqlDotacao = $this->executaDotacaoSaldo();
-        $formulaValor = $this->getFormulaCalculaValor();
-
-        $sql = "
-            select dotacao.o58_programa as programa,
-                   dotacao.o58_projativ as acao,
-                   orcelemento.o56_codele as elemento,
-                   orcdotacao.o58_instit as instituicao,
-                   sum($formulaValor) as valor
-                from ({$sqlDotacao}) dotacao
-                join orcelemento on orcelemento.o56_elemento = dotacao.o58_elemento
-                                and orcelemento.o56_anousu = {$this->anoSessao}
-                join orcdotacao on orcdotacao.o58_coddot = dotacao.o58_coddot
-                               and orcdotacao.o58_anousu = {$this->anoSessao}
-            group by 1, 2, 3, 4
-            limit 10
-        ";
-
-        return \db_utils::getCollectionByRecord(db_query($sql));
-    }
-
+    /**
+     * Retorna um sql com dotações do exercício e o valor da base de cálculo escolhida
+     * @return string
+     */
     private function executaDotacaoSaldo()
     {
-        $orgaosUsuario = $this->getOrgaosLiberadoUsuario();
-        $orgaos = implode(',', $orgaosUsuario);
-        $filtros = ["o58_orgao in ($orgaos)"];
+        $dataIni = "$this->anoSessao-01-01";
+        $dataFim = "$this->anoSessao-12-31";
+        $campo = $this->getFormulaCalculaValor();
 
-        if (!$this->instituicao->prefeitura) {
-            $filtros[] = "o58_instit = {$this->instituicao->codigo}";
-        }
+        $sql = "
+        with valores_dotacao as (
+          select ($campo) as valor,
+                 o58_programa,
+                 o58_projativ,
+                 o58_instit,
+                 o58_orgao,
+                 o58_unidade,
+                 o58_funcao,
+                 o58_subfuncao,
+                 o58_codele,
+                 o58_codigo,
+                 o58_concarpeculiar,
+                 o58_localizadorgastos,
+                 o58_esferaorcamentaria
+            from orcdotacao
+            join fc_saldo_dotacao(o58_anousu, o58_coddot, '$dataIni', '$dataFim') on o58_coddot = reduzido
+                 and o58_anousu = ano
+           where o58_anousu = $this->anoSessao
+             and o58_esferaorcamentaria != 0
+        ), totaliza_na_dotacao as (
+           select sum(valor) as valor,
+                  o58_programa,
+                  o58_projativ,
+                  o58_instit,
+                  o58_orgao,
+                  o58_unidade,
+                  o58_funcao,
+                  o58_subfuncao,
+                  o58_codele,
+                  o58_codigo,
+                  o58_concarpeculiar,
+                  o58_localizadorgastos,
+                  o58_esferaorcamentaria
+             from valores_dotacao
+             group by o58_programa, o58_projativ, o58_instit, o58_orgao, o58_unidade, o58_funcao, o58_subfuncao,
+                      o58_codele, o58_codigo, o58_concarpeculiar, o58_localizadorgastos, o58_esferaorcamentaria
+        )
+        select * from totaliza_na_dotacao
+        ";
 
-        return db_dotacaosaldo(
-            8,
-            2,
-            2,
-            true,
-            implode(' and ', $filtros),
-            $this->anoSessao,
-            "{$this->anoSessao}-01-01",
-            $this->dataUsuario,
-            8,
-            0,
-            true
-        );
+        return $sql;
     }
 
     private function getFormulaCalculaValor()
     {
-        if ($this->planejamento->pl2_base_calculo === 1) {
-            return "dot_ini + suplementado_acumulado - reduzido_acumulado";
-        } else {
-            switch ($this->planejamento->pl2_base_despesa) {
-                case 1: // empenho
-                    return "empenhado_acumulado - anulado_acumulado";
-                    break;
-                case 2: // liquidado
-                    return "liquidado_acumulado";
-                    break;
-                case 3: // pago
-                    return "pago_acumulado";
-                    break;
-            }
+        switch ($this->formaRecalculo) {
+            case 2: // Empenhado
+                return 'empenhado_acumulado - anulado_acumulado';
+            case 3:  // Liquidado
+                return 'liquidado_acumulado';
+            case 4: // Pago mo execício até o presente momento
+                return 'pago_acumulado';
+            case 1: // Previsão Atualizada
+            default:
+                return 'total_creditos';
         }
     }
 
@@ -407,7 +370,6 @@ class ProjecaoDespesaService extends ProjecaoService
 
         return $valoresDotacao;
     }
-
 
 
     private function persisteCalculo($valoresAgrupados)
@@ -460,13 +422,63 @@ class ProjecaoDespesaService extends ProjecaoService
     private function persisteValores($origem, $chave, array $valores)
     {
         foreach ($valores as $ano => $valorPrevisto) {
-            $valor = new Valor();
-            $valor->pl10_origem = $origem;
-            $valor->pl10_chave = $chave;
-            $valor->pl10_ano = $ano;
-            $valor->pl10_valor = $valorPrevisto;
-            $valor->save();
+            $this->atualizaValor($origem, $chave, $ano, $valorPrevisto);
         }
+    }
+
+    public function atualizaValor($origem, $chave, $ano, $valorPrevisto)
+    {
+        $valor = new Valor();
+        $valor->pl10_origem = $origem;
+        $valor->pl10_chave = $chave;
+        $valor->pl10_ano = $ano;
+        $valor->pl10_valor = $valorPrevisto;
+        $valor->save();
+    }
+
+    /**
+     * Atualiza a previsão da despesa e atualiza o cronograma.
+     * @param integer $id
+     * @param integer $exercicio
+     * @param float $valor
+     * @param bool $atualizarCronograma
+     * @return true
+     * @throws Exception
+     */
+    public function atualizarPrevisao($id, $exercicio, $valor, $atualizarCronograma = true)
+    {
+        $detalhamento = DetalhamentoDespesa::find($id);
+        if (is_null($detalhamento)) {
+            throw new Exception("Estimativa não encontrada.");
+        }
+
+        $valoreService = new ValoresService();
+        $modelValor = $valoreService->salvar(Valor::ORIGEM_DETALHAMENTO_DESPESA, $id, $valor, $exercicio, true);
+
+        if (!$atualizarCronograma) {
+            return true;
+        }
+        $cronograma = $detalhamento->cronogramaDesembolso->filter(
+            function (CronogramaDesembolsoDespesa $cronograma) use ($exercicio) {
+                return $cronograma->exercicio == $exercicio;
+            }
+        )->shift();
+
+        if (is_null($cronograma)) {
+            $service = new CronogramaDesembolsoDespesaService();
+            $service->criarCronogramaExercicio($detalhamento, $valor, $exercicio);
+            return true;
+        }
+
+        $service = new CronogramaDesembolsoDespesaService();
+        $service->updateRateioAutomatico($cronograma, $modelValor);
+        return true;
+    }
+
+    public function setFormaRecalculo($formaRecalculo)
+    {
+        $this->formaRecalculo = $formaRecalculo;
+        return $this;
     }
 
     private function log($tipo, $msg)
@@ -474,5 +486,433 @@ class ProjecaoDespesaService extends ProjecaoService
         $date = new \DateTime();
 
         echo sprintf("%s - [%s] %s <br>", $date->format('Y-m-d H:i:s u'), $tipo, $msg);
+    }
+
+    /**
+     * Esse recalculo é aplicado apenas a planos com detalhamento
+     * @return void
+     */
+    public function recalcular()
+    {
+        $this->salvarBaseCalculo();
+        $sqlDotacao = $this->executaDotacaoSaldo();
+        $dotacoes = DB::select($sqlDotacao);
+        $detalhamentos = $this->buscarValoresDetalhamento();
+
+        foreach ($detalhamentos as $detalhamento) {
+            $valor = $this->matchDotacao($detalhamento, $dotacoes);
+            if (!is_null($valor)) {
+                $this->atualizaValorBaseDetalhamento($detalhamento, $valor);
+            }
+        }
+    }
+
+    public function criarDetalhamentoNovasDotacoes()
+    {
+        $sqlDotacao = $this->executaDotacaoSaldo();
+        $dotacoes = DB::select($sqlDotacao);
+        $detalhamentos = $this->buscarValoresDetalhamento();
+
+        $dotacoesNovas = [];
+        foreach ($dotacoes as $dotacao) {
+            if (!$this->existeDetalhamento($dotacao, $detalhamentos)) {
+                $dotacoesNovas[] = $dotacao;
+            }
+        }
+
+        if (empty($dotacoesNovas)) {
+            throw new Exception('Não existem detalhamentos novos a serem incluídos.');
+        }
+
+        $dotacoesOrganizadas = [];
+        foreach ($dotacoesNovas as $dotacao) {
+            $programa = $dotacao->o58_programa;
+            $acao = $dotacao->o58_projativ;
+            if (!array_key_exists($programa, $dotacoesOrganizadas)) {
+                $dotacoesOrganizadas[$programa] = (object)[
+                    'programa' => $programa,
+                    'orgaos' => [],
+                    'iniciativas' => []
+                ];
+            }
+
+            if (!array_key_exists($acao, $dotacoesOrganizadas[$programa]->iniciativas)) {
+                $dotacoesOrganizadas[$programa]->iniciativas[$acao] = (object)[
+                    'codigo' => $acao,
+                    'detalhamentos' => []
+                ];
+            }
+
+            $dotacoesOrganizadas[$programa]->iniciativas[$acao]->detalhamentos[] = $dotacao;
+            if (!in_array($dotacao->o58_orgao, $dotacoesOrganizadas[$programa]->orgaos)) {
+                $dotacoesOrganizadas[$programa]->orgaos[] = $dotacao->o58_orgao;
+            }
+        }
+
+        foreach ($dotacoesOrganizadas as $programa) {
+            $programaEstrategico = $this->criarProgramaSeNaoExiste($programa);
+
+            foreach ($programa->iniciativas as $stdIniciativa) {
+                $iniciativa = $this->criarIniciativaSeNaoExiste($stdIniciativa, $programaEstrategico);
+
+                foreach ($stdIniciativa->detalhamentos as $detalhamento) {
+                    $this->criarDetalhamento($detalhamento, $iniciativa);
+                }
+            }
+        }
+    }
+
+
+    public function get()
+    {
+        $baseCalculo = $this->getBaseCalculo();
+
+        return [
+            'projecao' => $this->buscarValoresDetalhamento(),
+            'baseCalculo' => (object) [
+                'descricao' => $baseCalculo->pl31_basecalculo,
+                'codigo' => $this->getCodigoBaseCalculo($baseCalculo->pl31_basecalculo),
+            ]
+        ];
+    }
+
+    /**
+     * Retorna uma collection com todos detalhamentos do plano
+     * @return Collection
+     */
+    private function calulaValoresDetalhado()
+    {
+        $campos = [
+            'detalhamnento_planejamento.*',
+            'o40_descr as descricao_orgao',
+            'o41_descr as descricao_unidade',
+            'o52_descr as descricao_funcao',
+            'o53_descr as descricao_subfuncao',
+            'o54_descr as descricao_programa',
+            'o55_descr as descricao_iniciativa',
+            'o56_elemento as elemento',
+            'o56_descr as descricao_elemento',
+            'o15_codigo',
+            'o15_tipo',
+            'orctiporec.o15_recurso as subrecurso',
+            'fonterecurso.codigo_siconfi as siconfi',
+            'o15_complemento as complemento',
+            DB::raw("
+            (SELECT json_agg(
+                      json_build_object('ano', x.exercicio, 'percentual', x.percentual, 'deflator', x.deflator)
+                    ) AS valores
+              FROM (SELECT pl7_exercicio as exercicio,
+                           pl7_percentual as percentual,
+                           deflator
+                     FROM planejamento.fatorcorrecaodespesa
+                    WHERE fatorcorrecaodespesa.pl7_planejamento = detalhamnento_planejamento.planejamento_id
+                      AND pl7_orcelemento = pl20_orcelemento
+                    ORDER BY pl7_exercicio
+              ) AS x
+            ) AS inflatores
+            ")
+        ];
+
+
+        return DetalhamnentoPlanejamento::where('planejamento_id', $this->planejamento->pl2_codigo)
+            ->selectRaw(implode(', ', $campos))
+            ->vinculoOrcamento()
+            ->with('instituicao')
+            ->orderBy('pl20_instituicao')
+            ->orderBy('pl20_orcorgao')
+            ->orderBy('pl20_orcunidade')
+            ->orderBy('pl20_orcfuncao')
+            ->orderBy('pl20_orcsubfuncao')
+            ->orderBy('pl9_orcprograma')
+            ->orderBy('pl12_orcprojativ')
+            ->orderBy('o56_elemento')
+            ->orderBy('siconfi')
+            ->orderBy('complemento')
+            ->get()
+            ->map(function ($detalhamento) {
+                $detalhamento->codigo = $detalhamento->detalhamentoiniciativa_id;
+                $detalhamento->estrutural = $this->montaProgramatica($detalhamento);
+                $detalhamento->valorBase = $detalhamento->pl20_valorbase;
+                $detalhamento->valores = $this->parseValores($detalhamento->valores);
+                $detalhamento->inflatores = JSON::create()->parse($detalhamento->inflatores);
+                return $detalhamento;
+            });
+    }
+
+    /**
+     * Quando não existe valores no detalhamento, a view retorna um array com dados nulos [{ano:null, valor:null}]
+     * Nesse caso crio os valores zerados com os exercícios que o plano abrange
+     * @param string $valores string json com os valores
+     * @return array
+     */
+    private function parseValores($valores)
+    {
+        $valores = JSON::create()->parse($valores);
+        $exercicios = $this->planejamento->execiciosPlanejamento();
+        $nulos = collect($valores)->filter(function ($valor) {
+            return is_null($valor->ano);
+        });
+
+        if (count($valores) != count($exercicios) && $nulos->count()) {
+            $valores = [];
+            foreach ($exercicios as $exercicio) {
+                $valores[] = (object)["ano" => $exercicio, "valor" => 0];
+            }
+        }
+
+        return $valores;
+    }
+
+    /**
+     * Monta a programática do detalhamento
+     * @param $detalhamento
+     * @return string
+     */
+    private function montaProgramatica($detalhamento)
+    {
+        return implode('.', [
+            str_pad($detalhamento->pl20_orcorgao, 2, '0', STR_PAD_LEFT),
+            str_pad($detalhamento->pl20_orcunidade, 2, '0', STR_PAD_LEFT),
+            str_pad($detalhamento->pl20_orcfuncao, 2, '0', STR_PAD_LEFT),
+            str_pad($detalhamento->pl20_orcsubfuncao, 3, '0', STR_PAD_LEFT),
+            str_pad($detalhamento->pl9_orcprograma, 4, '0', STR_PAD_LEFT),
+            str_pad($detalhamento->pl12_orcprojativ, 4, '0', STR_PAD_LEFT),
+            $detalhamento->elemento,
+            $detalhamento->siconfi,
+            str_pad($detalhamento->o15_complemento, 4, '0', STR_PAD_LEFT)
+        ]);
+    }
+
+    /**
+     * Verifica se o detalhamento ex
+     * @param DetalhamnentoPlanejamento $detalhamento
+     * @param array $dotacoes
+     * @return null
+     */
+    private function matchDotacao(DetalhamnentoPlanejamento $detalhamento, array $dotacoes)
+    {
+        foreach ($dotacoes as $dotacao) {
+            if ($detalhamento->pl20_instituicao != $dotacao->o58_instit) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcorgao != $dotacao->o58_orgao) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcunidade != $dotacao->o58_unidade) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcfuncao != $dotacao->o58_funcao) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcsubfuncao != $dotacao->o58_subfuncao) {
+                continue;
+            }
+            if ($detalhamento->pl9_orcprograma != $dotacao->o58_programa) {
+                continue;
+            }
+            if ($detalhamento->pl12_orcprojativ != $dotacao->o58_projativ) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcelemento != $dotacao->o58_codele) {
+                continue;
+            }
+            if ($detalhamento->pl20_recurso != $dotacao->o58_codigo) {
+                continue;
+            }
+            if ($detalhamento->pl20_concarpeculiar != $dotacao->o58_concarpeculiar) {
+                continue;
+            }
+            if ($detalhamento->pl20_subtitulo != $dotacao->o58_localizadorgastos) {
+                continue;
+            }
+            if ($detalhamento->pl20_esferaorcamentaria != $dotacao->o58_esferaorcamentaria) {
+                continue;
+            }
+
+            return $dotacao->valor;
+        }
+
+        return null;
+    }
+
+    private function atualizaValorBaseDetalhamento($stdDetalhamento, $valor)
+    {
+        $id = $stdDetalhamento->detalhamentoiniciativa_id;
+        $detalhamento = DetalhamentoDespesa::find($id);
+        $detalhamento->pl20_valorbase = $valor;
+        $detalhamento->save();
+
+        $inflatores = $stdDetalhamento->inflatores;
+        $exerciciosPlanejamento = $this->planejamento->execiciosPlanejamento();
+
+        $projecao = [];
+
+        foreach ($exerciciosPlanejamento as $exercicio) {
+            $projecao[$exercicio] = $this->buidValor($exercicio, $valor);
+        }
+
+        if (!is_null($inflatores)) {
+            foreach ($inflatores as $inflator) {
+                if ($inflator->deflator) {
+                    $inflator->percentual *= -1;
+                }
+
+                $valor = round($valor * (1 + ($inflator->percentual / 100)), $this->precisaoRound);
+                $projecao[$inflator->ano]->valor = $valor;
+            }
+        }
+
+        (new ValoresService)->salvarColecao($projecao, Valor::ORIGEM_DETALHAMENTO_DESPESA, $id);
+    }
+
+    private function salvarBaseCalculo()
+    {
+        $base = $this->getBaseCalculo();
+
+        $base->pl31_planejamento_id = $this->planejamento->pl2_codigo;
+        $base->pl31_origem = 1;
+        $base->pl31_basecalculo = $this->getDescricaoBaseCalculo();
+        $base->save();
+    }
+
+    private function getDescricaoBaseCalculo()
+    {
+        switch ($this->formaRecalculo) {
+            case 2:
+                return 'Empenhado';
+            case 3:
+                return 'Liquidado';
+            case 4: // Pago
+                return 'Pago';
+            case 1: //
+            default:
+                return 'Previsão Atualizada';
+        }
+    }
+
+    private function getCodigoBaseCalculo($base)
+    {
+        switch ($base) {
+            case 'Empenhado':
+                return 2;
+            case 'Liquidado':
+                return 3;
+            case 'Pago': // Pago
+                return '4';
+            case 'Previsão Atualizada': //
+            default:
+                return 1;
+        }
+    }
+    /**
+     * @return BaseCalculoProjecao
+     */
+    private function getBaseCalculo()
+    {
+        $base = BaseCalculoProjecao::query()
+            ->where('pl31_planejamento_id', $this->planejamento->pl2_codigo)
+            ->where('pl31_origem', 1)
+            ->first();
+
+        if (is_null($base)) {
+            $base = new BaseCalculoProjecao();
+        }
+        return $base;
+    }
+
+    private function existeDetalhamento($dotacao, Collection $detalhamentos)
+    {
+        foreach ($detalhamentos as $detalhamento) {
+            if ($detalhamento->pl20_instituicao != $dotacao->o58_instit) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcorgao != $dotacao->o58_orgao) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcunidade != $dotacao->o58_unidade) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcfuncao != $dotacao->o58_funcao) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcsubfuncao != $dotacao->o58_subfuncao) {
+                continue;
+            }
+            if ($detalhamento->pl9_orcprograma != $dotacao->o58_programa) {
+                continue;
+            }
+            if ($detalhamento->pl12_orcprojativ != $dotacao->o58_projativ) {
+                continue;
+            }
+            if ($detalhamento->pl20_orcelemento != $dotacao->o58_codele) {
+                continue;
+            }
+            if ($detalhamento->pl20_recurso != $dotacao->o58_codigo) {
+                continue;
+            }
+            if ($detalhamento->pl20_concarpeculiar != $dotacao->o58_concarpeculiar) {
+                continue;
+            }
+            if ($detalhamento->pl20_subtitulo != $dotacao->o58_localizadorgastos) {
+                continue;
+            }
+            if ($detalhamento->pl20_esferaorcamentaria != $dotacao->o58_esferaorcamentaria) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function criarIniciativaSeNaoExiste(stdClass $stdIniciativa, ProgramaEstrategico $programaEstrategico)
+    {
+        $iniciativa = $programaEstrategico->iniciativas->filter(function (Iniciativa $iniciativa) use ($stdIniciativa) {
+            return $iniciativa->pl12_orcprojativ === $stdIniciativa->codigo;
+        })->shift();
+
+        if (is_null($iniciativa)) {
+            $iniciativa = new Iniciativa();
+            $iniciativa->programaEstrategico()->associate($programaEstrategico);
+            $iniciativa->pl12_orcprojativ = $stdIniciativa->codigo;
+            $iniciativa->pl12_anoorcamento = $this->planejamento->pl2_ano_inicial;
+            $iniciativa->save();
+        }
+
+        return $iniciativa;
+    }
+
+    private function criarDetalhamento($detalhamento, Iniciativa $iniciativa)
+    {
+        $valores = [];
+        foreach ($this->planejamento->execiciosPlanejamento() as $exercicio) {
+            $valores[] = (object)['ano' => $exercicio, 'valor' => $detalhamento->valor];
+        }
+
+        $std = (object)[
+            "pl20_anoorcamento" => $this->planejamento->pl2_ano_inicial,
+            "pl20_valorbase" => $detalhamento->valor,
+            "pl20_iniciativaprojativ" => $iniciativa->pl12_codigo,
+            "pl20_instituicao" => $detalhamento->o58_instit,
+            "pl20_orcorgao" => $detalhamento->o58_orgao,
+            "pl20_orcunidade" => $detalhamento->o58_unidade,
+            "pl20_orcfuncao" => $detalhamento->o58_funcao,
+            "pl20_orcsubfuncao" => $detalhamento->o58_subfuncao,
+            "pl9_orcprograma" => $detalhamento->o58_programa,
+            "pl12_orcprojativ" => $detalhamento->o58_projativ,
+            "pl20_orcelemento" => $detalhamento->o58_codele,
+            "pl20_recurso" => $detalhamento->o58_codigo,
+            "pl20_concarpeculiar" => $detalhamento->o58_concarpeculiar,
+            "pl20_subtitulo" => $detalhamento->o58_localizadorgastos,
+            "pl20_esferaorcamentaria" => $detalhamento->o58_esferaorcamentaria,
+            "valores" => json_encode($valores)
+        ];
+
+        /**
+         * todo tem quer criar
+         */
+        $service = new DetalhamentoDespesaService(new ValoresService);
+        $service->salvarFromObject($std);
     }
 }

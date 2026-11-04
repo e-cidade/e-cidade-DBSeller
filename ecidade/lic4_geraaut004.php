@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -120,7 +120,7 @@ $gerautori = "";
 if (isset ($incluir)) {
 
 	$gerautori = "";
-	$valor = split(",", $valores);
+	$valor =explode(",", $valores);
 	// arrays para dados do empautoriza
 	$arr_vals = Array ();
 	$arr_cgms = Array ();
@@ -149,7 +149,7 @@ if (isset ($incluir)) {
 		$e54_emiss = date("Y-m-d", db_getsession("DB_datausu"));
 		$e54_instit = db_getsession("DB_instit");
 
-		$splitei = split("_", $valor[$i]);
+		$splitei =explode("_", $valor[$i]);
 		$contador_aut = $splitei[1];
 		$pc81_codprocitem = $splitei[2];
 		$pc22_orcamitem = $splitei[3];
@@ -361,11 +361,11 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item =explode(",", $arr_proc[$arr_help[$i]]);
 
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-					$arr_daditem          = split("_", $arr_item[$iii]);
+					$arr_daditem          =explode("_", $arr_item[$iii]);
 					$e55_sequen           = $arr_daditem[0];
 					$e55_quant            = $arr_daditem[1];
 					$e55_vltot            = $arr_daditem[2];
@@ -433,11 +433,11 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item =explode(",", $arr_proc[$arr_help[$i]]);
 
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-					$arr_daditem               = split("_", $arr_item[$iii]);
+					$arr_daditem               =explode("_", $arr_item[$iii]);
 					$e55_sequen                = $arr_daditem[0];
 					$e55_quant                 = $arr_daditem[1];
 					$e55_vltot                 = $arr_daditem[2];
@@ -606,10 +606,10 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-			  $arr_item = split(",", $arr_proc[$arr_help[$i]]);
+			  $arr_item =explode(",", $arr_proc[$arr_help[$i]]);
 			  for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-				$arr_daditem = split("_", $arr_item[$iii]);
+				$arr_daditem =explode("_", $arr_item[$iii]);
 				//$e55_sequen = $arr_daditem[0];
 				$e55_quant = $arr_daditem[1];
 				$e55_vltot = $arr_daditem[2];
@@ -1029,7 +1029,7 @@ if (isset ($l20_codigo) && trim($l20_codigo) != "") {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -1066,7 +1066,7 @@ if (isset ($l20_codigo) && trim($l20_codigo) != "") {
 <tr>
 <td align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?
+<?php
 db_input('valores', 8, 0, true, 'hidden', 3);
 $locationh = true;
 if ($numrows_itens == 0) {
@@ -1772,7 +1772,7 @@ function js_verificasaldo(oElemento, iCodigoItemProcesso, iCodigoDotacao, iOrcTi
 </script>
 </body>
 </html>
-<?
+<?php
 if (isset ($incluir)) {
 
 	if ($sqlerro == false) {

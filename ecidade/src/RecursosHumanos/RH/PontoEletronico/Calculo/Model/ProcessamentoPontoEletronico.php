@@ -251,7 +251,7 @@ class ProcessamentoPontoEletronico
         $oPeriodoRepository = new PeriodoRepository(null, null, true);
         $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new \DBDate($primeiraData), new \DBDate($ultimaData));
         $aCodigosArquivos = array();
-
+        
         foreach ($aPeriodos as $oPeriodo) {
             $oCabecalhoRepository = new CabecalhoRepository();
             $oCabecalhoRegistro = $oCabecalhoRepository->add(new CabecalhoRegistro(), $oPeriodo);
@@ -259,7 +259,7 @@ class ProcessamentoPontoEletronico
             $iCodigoArquivo = $oCabecalhoRegistro->getCodigo();
             $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()] = $iCodigoArquivo;
         }
-
+        
         $colecaoHistoricoRegistraPonto = \ServidorRepository::getRegistraPontoNoPeriodoPorMatricula(
             $iMatricula,
             $primeiraData,
@@ -276,16 +276,16 @@ class ProcessamentoPontoEletronico
                     $oServidor->setDispensaLancamentoPonto($registraPonto->registraPontoEletronico());
                 }
             }
-
+                        
             $oCabecalhoRegistro = new CabecalhoRegistro();
             $oCabecalhoRegistro->setCodigo(self::getCodigoArquivoPorPeriodosEData(
                 $aCodigosArquivos,
                 $aPeriodos,
                 $oData
             ));
-
+            
             $oEscalaServidorNaData = self::getEscalaNaData($aEscalas, $oData);
-
+                        
             if (empty($oEscalaServidorNaData)) {
                 $mensagem = "Servidor {$oServidor->getMatricula()} - {$oServidor->getCgm()->getNome()} não possui";
                 $mensagem .= " escala de trabalho configurada no dia {$oData->getDate(\DBDate::DATA_PTBR)}.";
@@ -294,7 +294,7 @@ class ProcessamentoPontoEletronico
 
                 throw new \ParameterException($mensagem, 5);
             }
-
+            
             $oDiaTrabalhoRepository = new DiaTrabalhoRepository();
             $oDiaTrabalhoRepository->setEscalaServidor($oEscalaServidorNaData);
             $oDiaTrabalhoModel = $oDiaTrabalhoRepository->getDiaTrabalhoServidor($oServidor, $oData);
@@ -303,21 +303,26 @@ class ProcessamentoPontoEletronico
             $oDiaTrabalhoModel->setAfastamento(null);
             $oAfastamentoNaData = null;
             $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($oServidor, 'A', $oData);
-
+                        
             if (!empty($aAfastamentos)) {
                 $oAfastamentoNaData = $aAfastamentos[0];
                 $oDiaTrabalhoModel->setAfastado(true);
                 $oDiaTrabalhoModel->setAfastamento($oAfastamentoNaData);
             }
-
+            
             $oDiaTrabalhoRepository->persist($oDiaTrabalhoModel);
-
-            $oDiaTrabalhoModel = $oDiaTrabalhoRepository->getDiaTrabalhoServidor($oServidor, $oData);
+            
             $iCodigoData = $oDiaTrabalhoRepository->getCodigoData($oDiaTrabalhoModel);
 
             if ($iCodigoData != null) {
                 self::removerJustificativaNaData($iCodigoData);
             }
+            $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+                \ServidorRepository::getInstanciaByCodigo($oServidor->getMatricula()),
+                'S',
+                $oData
+            );
+            $aAssentamentosNaData = $aAfastamentos;
 
             for ($iMarcacoes = 1; $iMarcacoes <= 6; $iMarcacoes++) {
                 $oMarcacao = new MarcacaoRegistro();
@@ -365,13 +370,6 @@ class ProcessamentoPontoEletronico
                 $oMarcacao->setHora($sHora);
                 $oMarcacao->setManual($lManual);
 
-                $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
-                    \ServidorRepository::getInstanciaByCodigo($oServidor->getMatricula()),
-                    'S',
-                    $oData
-                );
-                $aAssentamentosNaData = $aAfastamentos;
-
                 $feriado = $oDiaTrabalhoModel->getFeriado();
 
                 if (!$oServidor->registraPontoEletronico() &&
@@ -390,14 +388,14 @@ class ProcessamentoPontoEletronico
                 $oMarcacaoRepository = new MarcacaoRepository();
                 $oMarcacaoRepository->setOrdem($iMarcacoes);
                 $oMarcacao = $oMarcacaoRepository->add($oMarcacao);
-
+                
                 self::vincularJustificativa($oMarcacao, $aAssentamentosNaData, $iMarcacoes);
-
+                
                 if (!$oServidor->registraPontoEletronico()) {
                     $oMarcacaoRepository->add($oMarcacao);
                 }
             }
-
+                       
             EspelhoPontoCache::init()->invalidarCache($oData, $iMatricula);
         }
     }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,7 +47,7 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m40_codigo" id="lbl_codigo">Código da Requisição:</label>
             </td>
             <td>
-              <?db_input('m40_codigo',10,@$Im40_codigo,true,'text',3,"")?>
+              <?php db_input('m40_codigo',10,@$Im40_codigo,true,'text',3,"")?>
             </td>
           </tr>
           <tr>
@@ -55,7 +55,7 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m40_data" id="lbl_data"><?=@$Lm40_data?></label>
             </td>
             <td>
-              <?db_inputdata('m40_data',@$m40_data_dia,@$m40_data_mes,@$m40_data_ano,true,'text',3,"")?>
+              <?php db_inputdata('m40_data',@$m40_data_dia,@$m40_data_mes,@$m40_data_ano,true,'text',3,"")?>
             </td>
           </tr>
           <tr>
@@ -63,7 +63,7 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m40_hora" id="lbl_hora"><?=@$Lm40_hora?></label>
             </td>
             <td>
-              <?db_input('m40_hora',5,@$Im40_hora,true,'text',3,"")?>
+              <?php db_input('m40_hora',5,@$Im40_hora,true,'text',3,"")?>
             </td>
           </tr>
           <tr>
@@ -71,8 +71,8 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m40_login" id="lbl_login"><?=@$Lm40_login?></label>
             </td>
             <td>
-              <?db_input('m40_login',10,@$Im40_login,true,'text',3," ")?>
-              <?db_input('nome',40,@$Inome,true,'text',3,'')?>
+              <?php db_input('m40_login',10,@$Im40_login,true,'text',3," ")?>
+              <?php db_input('nome',40,@$Inome,true,'text',3,'')?>
             </td>
           </tr>
           <tr>
@@ -80,7 +80,7 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m40_depto" id="lbl_solicitante">Departamento Solicitante:</label>
             </td>
             <td>
-              <?
+              <?php
               db_input ( 'm40_depto', 10, @$Im40_depto, true, 'text', 3, "" );
               db_input ( 'descrdepto', 40, @$Idescrdepto, true, 'text', 3, '' );
               ?>
@@ -91,7 +91,7 @@ $clrotulo->label("m40_login");
               <label class="bold" for="m91_depto" id="lbl_almoxarifado">Almoxarifado:</label>
             </td>
             <td>
-              <?
+              <?php
               db_input ( 'm91_depto', 10, @$Im40_depto, true, 'text', 3, "" );
               db_input ( 'descr_depto', 40, @$Idescr_depto, true, 'text', 3, '' );
               db_input ( 'linha', 40, @$linha, true, 'hidden', 3, '' );
@@ -119,7 +119,7 @@ $clrotulo->label("m40_login");
     <td align="center">
       <input id="btnAnularRequisicao" name="anular" type="button"  value="Anular" onclick="return js_atendeRequisicao();" >
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-      <?
+      <?php
       db_input('atendimento',10,'',true,'hidden',3);
       db_input('m80_codigo',10,'',true,'hidden',3);
       db_input("valores",100,0,true,"hidden",3);

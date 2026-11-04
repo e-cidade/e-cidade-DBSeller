@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $cltarefasemana->rotulo->label();
        <?=@$Lat19_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at19_sequencial',8,$Iat19_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('at19_sequencial',8,$Iat19_sequencial,true,'text',3,"")
        <?=@$Lat19_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('at19_descr',40,$Iat19_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('at19_descr',40,$Iat19_descr,true,'text',$db_opcao,"")
        <?=@$Lat19_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at19_dtini',@$at19_dtini_dia,@$at19_dtini_mes,@$at19_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('at19_dtini',@$at19_dtini_dia,@$at19_dtini_mes,@$at19_dtini_ano,tru
        <?=@$Lat19_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at19_dtfim',@$at19_dtfim_dia,@$at19_dtfim_mes,@$at19_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefasemana.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

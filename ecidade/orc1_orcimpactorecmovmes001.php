@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ if(isset($atualizar)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <br>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcimpactorecmovmes.php"));
 	?>
     </center>
@@ -130,7 +130,7 @@ if(isset($atualizar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($atualizar)){
 //    db_msgbox($erro_msg);
     if($clorcimpacvalmes->erro_campo!=""){

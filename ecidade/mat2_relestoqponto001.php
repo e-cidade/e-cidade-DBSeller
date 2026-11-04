@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $cldb_almox        = new cl_db_almox;
 <form name="form1" action="" method="post">
   <tr> 
      <td colspan="2" align="center">
-     <?
+     <?php
          $sql          = $cldb_almox->sql_query(null,"m91_codigo,m91_depto,descrdepto","m91_depto");
          $sql_marca    = $cldb_almox->sql_query(null,"m91_codigo,m91_depto,descrdepto","m91_depto","m91_depto = ".db_getsession("DB_coddepto"));
          $sql_disabled = $cldb_almox->sql_query(null,"m91_codigo,m91_depto,descrdepto","m91_depto","m91_depto = ".db_getsession("DB_coddepto"));
@@ -87,7 +87,7 @@ $cldb_almox        = new cl_db_almox;
     <td align="right" ><strong>Ordem :&nbsp;&nbsp;</strong>
     </td>
     <td align="left">
-      <?
+      <?php
         $arr_ordem = array("a"=>"Alfabetica","n"=>"Numerica");
         db_select('ordem',$arr_ordem,true,4,"");
 	    ?>
@@ -100,7 +100,7 @@ $cldb_almox        = new cl_db_almox;
     <td align="right" ><strong>Tipo :&nbsp;&nbsp;</strong>
     </td>
     <td align="left">
-      <?
+      <?php
         $arr_ponto = array("t"=>"Todos","p"=>"Ponto de Pedido");
         db_select('ponto',$arr_ponto,true,4,"");
 	    ?>
@@ -144,7 +144,7 @@ function js_valida_dados(){
 }
 </script>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

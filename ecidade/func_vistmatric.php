@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clvistmatric->rotulo->label("y72_matric");
               <?=$Ly72_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y72_codvist",10,$Iy72_codvist,true,"text",4,"","chave_y72_codvist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clvistmatric->rotulo->label("y72_matric");
               <?=$Ly72_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y72_matric",10,$Iy72_matric,true,"text",4,"","chave_y72_matric");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clvistmatric->rotulo->label("y72_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistmatric.php")==true){
@@ -118,12 +118,12 @@ $clvistmatric->rotulo->label("y72_matric");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

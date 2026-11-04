@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,7 +69,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk15_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
            db_input("k15_codigo",6,$Ik15_codigo,true,"text",4,"","chave_k15_codigo");
            ?>
             </td>
@@ -79,7 +79,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
            db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
            ?>
             </td>
@@ -208,12 +208,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

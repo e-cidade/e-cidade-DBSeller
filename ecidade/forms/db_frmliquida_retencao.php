@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ $clpagordemnota = new cl_pagordemnota;
     <td colspan=2 ><b>RECEITA  </b></td>
     <td width=20px><b>VALOR</b></td>
   </tr>
-<?
+<?php
 
 
 
@@ -84,7 +84,7 @@ if (isset ($codop) && $codop != "false") {
 		             <td><?=$e52_receit?></td>
 		             <td><?=$k02_descr?></td>
 		             <td align=right>
-		             <?
+		             <?php
 
 				$campovalor = "val_".$e52_receit."_".$cont;
 				$$campovalor = $e52_valor;
@@ -99,7 +99,7 @@ if (isset ($codop) && $codop != "false") {
 				      onclick='js_deleteRow("ret_<?=$e52_receit?>_<?=$cont?>")'>
                              </td>
 		          </tr>
-		            <?
+		            <?php
 		           $cont++;    
 			}// end loop
 		} // end if		 
@@ -108,7 +108,7 @@ if (isset ($codop) && $codop != "false") {
 	    <tr>
 	      <td id="semretencoes" colspan=2>Sem retenções Lançadas </td>
 	    </tr>
-	 <?
+	 <?php
 	}
 }
 ?>

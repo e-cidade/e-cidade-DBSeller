@@ -13,7 +13,15 @@ class EmissaoGuiaController extends Controller
     {
         $emissaoGuiaService = new EmissaoGuiaService();
         $emissaoGuiaService->setNumeroGuia($request->numeroGuia);
-        $emissaoGuiaService->verificaGuiaPaga();
+
+        if ($emissaoGuiaService->verificaGuiaPaga()) {
+            return new DBJsonResponse([
+                'mensagem' => "A guia {$request->numeroGuia} já está paga.",
+                'erro' => false,
+                'paga' => true
+            ]);
+        }
+
         $emissaoGuiaService->setMostraArquivo(false);
         $emissaoGuiaService->emitir();
 

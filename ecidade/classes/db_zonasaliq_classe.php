@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_zonasaliq {
                  j70_aliter = float8 = Aliquota territorial 
                  ";
    //funcao construtor da classe 
-   function cl_zonasaliq() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonasaliq"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_zonasaliq {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j70_zona = ($this->j70_zona == ""?@$GLOBALS["HTTP_POST_VARS"]["j70_zona"]:$this->j70_zona);
        $this->j70_alipre = ($this->j70_alipre == ""?@$GLOBALS["HTTP_POST_VARS"]["j70_alipre"]:$this->j70_alipre);
@@ -77,7 +77,7 @@ class cl_zonasaliq {
      }
    }
    // funcao para inclusao
-   function incluir ($j70_zona){ 
+   public function incluir ($j70_zona){ 
       $this->atualizacampos();
      if($this->j70_alipre == null ){ 
        $this->erro_sql = " Campo Aliquota predial nao Informado.";
@@ -153,7 +153,7 @@ class cl_zonasaliq {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j70_zona=null) { 
+   public function alterar ($j70_zona=null) { 
       $this->atualizacampos();
      $sql = " update zonasaliq set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_zonasaliq {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j70_zona=null,$dbwhere=null) { 
+   public function excluir ($j70_zona=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j70_zona));
      }else{ 
@@ -311,7 +311,7 @@ class cl_zonasaliq {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

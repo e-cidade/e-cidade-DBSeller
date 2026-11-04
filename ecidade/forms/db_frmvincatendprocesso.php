@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,12 +42,12 @@ $clprotprocesso->rotulo->label("p58_requer");
 	  <table>
 	    <tr>
 		  <td nowrap title="<?=$Tp58_codproc?>" align="right">
-		  <?
+		  <?php
 		    db_ancora('<b>Processo:</b>',"js_pesquisap58_codproc(true);","");
 		  ?>
 		  </td>
 		  <td> 
-		  <?
+		  <?php
 		    db_input("p58_codproc",10,$Ip58_codproc,true,'text',""," onchange='js_pesquisap58_codproc(false);'");
 		    db_input("p58_requer",50,$Ip58_requer,true,'text',3,'');
 		  ?>

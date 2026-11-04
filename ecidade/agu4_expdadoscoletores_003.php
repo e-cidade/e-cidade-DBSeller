@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ if (isset ( $cancelar )) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load ( 'scripts.js, prototype.js, strings.js, datagrid.widget.js' );
 db_app::load ( 'estilos.css, grid.style.css' );
 ?>
@@ -112,7 +112,7 @@ db_app::load ( 'estilos.css, grid.style.css' );
   <tr>
     <td nowrap title="<?=@$Tx49_anousu?>" align="right" width="33%"><b><?=@$RLx49_anousu?>:</b></td>
     <td colspan="2">
-	<?
+	<?php
 db_input ( "x49_anousu", 10, $Ix49_anousu, true, "text", 3 );
 ?>
 	</td>
@@ -121,7 +121,7 @@ db_input ( "x49_anousu", 10, $Ix49_anousu, true, "text", 3 );
   <tr>
     <td nowrap title="<?=@$Tx49_mesusu?>" align="right"><b><?=@$RLx49_mesusu?>:</b></td>
     <td colspan="2">
-	<?
+	<?php
 db_input ( "x49_mesusu", 10, $Ix49_mesusu, true, "text", 3 );
 ?>
 	</td>
@@ -130,10 +130,10 @@ db_input ( "x49_mesusu", 10, $Ix49_mesusu, true, "text", 3 );
   <tr>
     <td nowrap title="<?=@$Tx49_aguacoletor?>" align="right"><b><?=@$RLx49_aguacoletor?></b></td>
     <td>
-    <?
+    <?php
     db_input ( 'x49_aguacoletor', 10, $Ix49_aguacoletor, true, 'text', 3 );
     ?>
-    <?
+    <?php
     db_input ( 'x46_descricao', 30, $Ix46_descricao, true, 'text', 3 );
     ?>
     </td>
@@ -157,7 +157,7 @@ db_input ( "x49_mesusu", 10, $Ix49_mesusu, true, "text", 3 );
   <tr>
     <td colspan="3" title="<?=$Tx48_motivo?>">
     <fieldset><legend><?=@$Lx48_motivo?></legend>
-	<?
+	<?php
 db_textarea ( 'x48_motivo', 10, 100, $Ix48_motivo, true, 'text', 1 );
 ?>
 	</fieldset>
@@ -169,7 +169,7 @@ db_textarea ( 'x48_motivo', 10, 100, $Ix48_motivo, true, 'text', 1 );
   </tr>
 </table>
 
-<?
+<?php
 db_input ( 'x49_sequencial', 10, $Ix49_sequencial, true, 'hidden', 3 );
 db_input ( 'x49_instit', 10, $Ix49_instit, true, 'hidden', 3 );
 db_input ( 'x49_situacao', 10, $Ix49_situacao, true, 'hidden', 3 );
@@ -268,7 +268,7 @@ function js_init_table() {
 </script>
 </body>
 </html>
-<?
+<?php
 if (isset ( $cancelar )) {
   if ($clCancelaLeituras->iErroStatus == 0) {
     db_msgbox ( $clCancelaLeituras->sErroMsg );

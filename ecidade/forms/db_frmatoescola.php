@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -62,25 +62,25 @@ if($clescola->numrows>0){
    <?=@$Led19_i_codigo?>
   </td>
   <td>
-   <?db_input('ed19_i_codigo',10,$Ied19_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed19_i_codigo',10,$Ied19_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted19_i_ato?>">
-   <?db_ancora(@$Led19_i_ato,"",3);?>
+   <?php db_ancora(@$Led19_i_ato,"",3);?>
   </td>
   <td>
-   <?db_input('ed19_i_ato',10,$Ied19_i_ato,true,'text',3,'')?>
-   <?db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
+   <?php db_input('ed19_i_ato',10,$Ied19_i_ato,true,'text',3,'')?>
+   <?php db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted19_i_escola?>">
-   <?db_ancora(@$Led19_i_escola,"",3);?>
+   <?php db_ancora(@$Led19_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed19_i_escola',10,$Ied19_i_escola,true,'text',3,'','',$color)?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'','',$color)?>
+   <?php db_input('ed19_i_escola',10,$Ied19_i_escola,true,'text',3,'','',$color)?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'','',$color)?>
   </td>
  </tr>
 </table>
@@ -89,7 +89,7 @@ if($clescola->numrows>0){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed19_i_codigo"=>@$ed19_i_codigo,
                     "ed19_i_escola"=>@$ed19_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,

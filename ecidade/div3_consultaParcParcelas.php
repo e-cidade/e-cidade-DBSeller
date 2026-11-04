@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -72,6 +72,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
             }
 
             $sqlTermoParcelas  = " select  a.k00_numpre, a.k00_numpar, $camposDetalhe a.status, sum(a.k00_valor) as k00_valor, ";
+            $sqlTermoParcelas .= " k00_dtvenc, k00_dtpaga, ";
             $sqlTermoParcelas .= " case when ar51_numpre = {$oTermo->v07_numpre} then (select distinct ";
             $sqlTermoParcelas .= "                                                        ar51_dtproc ";
             $sqlTermoParcelas .= "                                                     from ";
@@ -103,6 +104,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
             $sqlTermoParcelas .= "                                                     end as dl_Acao_de_processamento ";
             $sqlTermoParcelas .= "   from ( ";
             $sqlTermoParcelas .= " select  arrecad.k00_numpre,  arrecad.k00_numpar, arrecad.k00_receit, k00_descr, k02_descr, 'Aberto'::varchar as status ,arrecad.k00_valor, ";
+            $sqlTermoParcelas .= "         arrecad.k00_dtvenc, case when arrepaga.k00_dtpaga is not null then k00_dtpaga else null end as k00_dtpaga,";
             $sqlTermoParcelas .= "         ar51_numpre, ar51_numpar, ar51_receit, ar51_dtvenc, ar51_novadtvenc, ar51_id_agendamento ";
             $sqlTermoParcelas .= "    from arrecad   ";
             $sqlTermoParcelas .= "         inner join arretipo on arretipo.k00_tipo   = arrecad.k00_tipo ";
@@ -120,6 +122,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
             $sqlTermoParcelas .= "union  ";
             $sqlTermoParcelas .= "  select arreold.k00_numpre, arreold.k00_numpar, arreold.k00_receit, k00_descr, k02_descr, " .
                                    ($oTermo->anulado ? "'Anulado'" : "'Reparcelado'") . "::varchar as status, arreold.k00_valor, ";
+            $sqlTermoParcelas .= "         arreold.k00_dtvenc, case  when arrepaga.k00_dtpaga is not null then k00_dtpaga else null end as k00_dtpaga,";
             $sqlTermoParcelas .= "         ar51_numpre, ar51_numpar, ar51_receit, ar51_dtvenc, ar51_novadtvenc, ar51_id_agendamento ";
             $sqlTermoParcelas .= "    from arreold   ";
             $sqlTermoParcelas .= "         inner join arretipo on arretipo.k00_tipo   = arreold.k00_tipo ";
@@ -142,6 +145,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
             $sqlTermoParcelas .= "           else           ";
             $sqlTermoParcelas .= "             'Cancelado'::varchar  ";
             $sqlTermoParcelas .= "         end as status, arrecant.k00_valor, ";
+            $sqlTermoParcelas .= "         arrecant.k00_dtvenc, case when arrepaga.k00_dtpaga is not null then k00_dtpaga else null end as k00_dtpaga,";
             $sqlTermoParcelas .= "         ar51_numpre, ar51_numpar, ar51_receit, ar51_dtvenc, ar51_novadtvenc, ar51_id_agendamento ";
             $sqlTermoParcelas .= "    from arrecant         ";
             $sqlTermoParcelas .= "         inner join arretipo on arretipo.k00_tipo   = arrecant.k00_tipo   ";
@@ -157,7 +161,7 @@ $oTermo->anulado = ($oTermo->anulado == 't');
             $sqlTermoParcelas .= "                                              and ar51_receit = arrecant.k00_receit ";
             $sqlTermoParcelas .= "   where arreold.k00_numpre is null and arrecant.k00_numpre = {$oTermo->v07_numpre} ";
             $sqlTermoParcelas .= " ) as a ";
-            $sqlTermoParcelas .= " group by a.k00_numpre, a.k00_numpar,$camposDetalheGroup a.status, ";
+            $sqlTermoParcelas .= " group by k00_dtvenc,k00_dtpaga, a.k00_numpre, a.k00_numpar,$camposDetalheGroup a.status, ";
             $sqlTermoParcelas .= " ar51_numpre, ar51_dtvenc, ar51_novadtvenc, ar51_id_agendamento ";
             $sqlTermoParcelas .= " order by a.k00_numpre, a.k00_numpar,$camposDetalheGroup a.status ";
 

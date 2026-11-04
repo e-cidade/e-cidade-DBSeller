@@ -75,7 +75,7 @@ require_once(modification("libs/db_utils.php"));
 	    	    <table cellspacing="0" style="border:0px inset white; width:260px;" >
 			      <thead style="display:block; position:absolute; overflow:none;">
 			      <tr>
- 	      	       <?
+ 	      	       <?php
 	    	      	  db_input("CamposConfigurados" ,40,"",true,"hidden",1,"");
 	      	       ?>
 			      	<th class="table_header" width="242px"><b>Campos Disponíveis</b></th>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clmatestoqueitemoc->rotulo->label("m73_codmatordemitem");
               <?=$Lm73_codmatestoqueitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m73_codmatestoqueitem",10,$Im73_codmatestoqueitem,true,"text",4,"","chave_m73_codmatestoqueitem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmatestoqueitemoc->rotulo->label("m73_codmatordemitem");
               <?=$Lm73_codmatordemitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m73_codmatordemitem",10,$Im73_codmatordemitem,true,"text",4,"","chave_m73_codmatordemitem");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clmatestoqueitemoc->rotulo->label("m73_codmatordemitem");
               <?=$Lm73_codmatordemitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m73_codmatordemitem",10,$Im73_codmatordemitem,true,"text",4,"","chave_m73_codmatordemitem");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clmatestoqueitemoc->rotulo->label("m73_codmatordemitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoqueitemoc.php")==true){
@@ -129,12 +129,12 @@ $clmatestoqueitemoc->rotulo->label("m73_codmatordemitem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@
     </td>
   </tr>
   <tr>
-   <?
+   <?php
     db_input('cods',10,'',true,'hidden',3);    
     ?>
     <td align='center' colspan=2><input name='incluir' type='button' value='Incluir' onclick='js_inclui();'></td>

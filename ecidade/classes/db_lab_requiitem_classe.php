@@ -755,7 +755,7 @@ class cl_lab_requiitem {
      return $sql;
   }
    // funcao do sql + lab_laboratorio
-   public function sql_query2 ( $la21_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query2 ( $la21_i_codigo=null,$campos="*",$ordem=null,$dbwhere="",$groupBy  = null){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -772,6 +772,7 @@ class cl_lab_requiitem {
      $sql .= "      inner join lab_requisicao  on  lab_requisicao.la22_i_codigo = lab_requiitem.la21_i_requisicao";
      $sql .= "      inner join lab_exame  on  lab_exame.la08_i_codigo = lab_setorexame.la09_i_exame";
      $sql .= "      inner join lab_labsetor  on  lab_labsetor.la24_i_codigo = lab_setorexame.la09_i_labsetor";
+     $sql .= "      inner join lab_setor on lab_setor.la23_i_codigo = lab_labsetor.la24_i_setor";
      $sql .= "      inner join lab_laboratorio on la02_i_codigo = lab_labsetor.la24_i_laboratorio";
      $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = lab_requisicao.la22_i_usuario";
      $sql .= "      inner join db_depart  on  db_depart.coddepto = lab_requisicao.la22_i_departamento";
@@ -784,7 +785,12 @@ class cl_lab_requiitem {
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
-     $sql .= $sql2;
+     $sql .= $sql2; 
+
+     if($groupBy != null){
+      $sql .= " group by $groupBy";
+     }
+
      if($ordem != null ){
        $sql .= " order by ";
        $campos_sql = explode("#",$ordem);

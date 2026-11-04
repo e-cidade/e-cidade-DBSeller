@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Saude\Shared\MulticellPdfService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once modification("libs/db_utils.php");
@@ -43,15 +45,61 @@ function imprimir(\ECidade\Pdf\Pdf $pdf, $dadosRequisicao)
             cabecalhoExames($pdf, $dadosRequisicao);
         }
 
-        $pdf->Cell(45, 4, $exame->setor);
-        $pdf->Cell(80, 4, $exame->exame);
-        $pdf->Cell(18, 4, $exame->quantidade, 0, 0, 'C');
+        $dadosCelulas = [
+            'setorDescricao' => ['largura' => 45, 'texto' => $exame->setor],
+            'exameDescricao' => ['largura' => 80, 'texto' => $exame->exame],
+            'exameQuantidade' => ['largura' => 18, 'texto' => $exame->quantidade],
+            'dataColeta' => ['largura' => 18, 'texto' => $exame->data_coleta],
+            'horaColeta' => ['largura' => 13, 'texto' => $exame->hora_coleta],
+            'dataEntrega' => ['largura' => 18, 'texto' => $exame->data_entrega],
+        ];
+
+        $service = new MulticellPdfService($pdf, $dadosCelulas, 4);
+
+        $x1 = $pdf->getX();
+        $y1 = $pdf->getY();
+        $pdf->multiCell(45, $service->validaAlturaLinha('setorDescricao'), $exame->setor, '', 'L');
+        $pdf->setXY($x1 + 45, $y1);
+
+        $x1 = $pdf->getX();
+        $y1 = $pdf->getY();
+        $pdf->multiCell(80, $service->validaAlturaLinha('exameDescricao'), $exame->exame);
+        $pdf->setXY($x1 + 80, $y1);
+
+        $x1 = $pdf->getX();
+        $y1 = $pdf->getY();
+        $pdf->Cell(18, $service->validaAlturaLinha('exameQuantidade'), $exame->quantidade, 0, 0, 'C');
+        $pdf->setXY($x1 + 18, $y1);
+
         if ($dadosRequisicao->modeloRequisicao == 1) {
             $pdf->ln();
+
         } else {
-            $pdf->Cell(18, 4, $exame->data_coleta);
-            $pdf->Cell(13, 4, $exame->hora_coleta);
-            $pdf->Cell(18, 4, $exame->data_entrega, 0, 1);
+            $x1 = $pdf->getX();
+            $y1 = $pdf->getY();
+            $pdf->Cell(
+                18,
+                $service->validaAlturaLinha('dataColeta'),
+                $exame->data_coleta
+            );
+            $pdf->setXY($x1 + 18, $y1);
+
+            $x1 = $pdf->getX();
+            $y1 = $pdf->getY();
+            $pdf->Cell(
+                13,
+                $service->validaAlturaLinha('horaColeta'),
+                $exame->hora_coleta
+            );
+            $pdf->setXY($x1 + 13, $y1);
+
+            $pdf->Cell(
+                18,
+                $service->validaAlturaLinha('dataEntrega'),
+                $exame->data_entrega,
+                0,
+                1
+            );
         }
     }
 
@@ -122,15 +170,6 @@ function cabecalho(\ECidade\Pdf\Pdf $pdf, $dadosRequisicao)
     $pdf->Cell(160, 4, $dadosRequisicao->laboratorio, 0, 1);
 
     $pdf->Setfont('Arial', 'B', 7);
-    $pdf->Cell(19, 4, "Paciente:");
-    $pdf->Setfont('Arial', '', 7);
-    $pdf->Cell(80, 4, "{$dadosRequisicao->cgs} {$dadosRequisicao->paciente}", 0, 0);
-    $pdf->Setfont('Arial', 'B', 7);
-    $pdf->Cell(16, 4, "Solicitante:");
-    $pdf->Setfont('Arial', '', 7);
-    $pdf->Cell(80, 4, "{$dadosRequisicao->medico}", 0, 1);
-
-    $pdf->Setfont('Arial', 'B', 7);
     $pdf->Cell(19, 4, "Departamento:");
     $pdf->Setfont('Arial', '', 7);
     $pdf->Cell(80, 4, "{$dadosRequisicao->departamento}", 0, 0);
@@ -139,8 +178,24 @@ function cabecalho(\ECidade\Pdf\Pdf $pdf, $dadosRequisicao)
     $pdf->Setfont('Arial', '', 7);
     $pdf->Cell(80, 4, "{$dadosRequisicao->atendente}", 0, 1);
 
+    $pdf->Setfont('Arial', 'B', 7);
+    $pdf->Cell(16, 4, "Solicitante:");
+    $pdf->Setfont('Arial', '', 7);
+    $pdf->Cell(80, 4, "{$dadosRequisicao->medico}", 0, 1);
+
     $pdf->SetY($pdf->GetY() + 3);
     $pdf->RoundedRect($pdf->GetX() - 1, $pdf->GetY() - 1, 193, 9, 2);
+
+    $pdf->Setfont('Arial', 'B', 7);
+    $pdf->Cell(13, 4, "Paciente:");
+    $pdf->Setfont('Arial', '', 7);
+    $pdf->Cell(86, 4, "{$dadosRequisicao->cgs} {$dadosRequisicao->paciente}");
+
+    $pdf->Setfont('Arial', 'B', 7);
+    $pdf->Cell(9, 4, "Idade:");
+    $pdf->Setfont('Arial', '', 7);
+    $pdf->Cell(80, 4, $dadosRequisicao->idadeCompleta, 0, 1);
+
     $pdf->Setfont('Arial', 'B', 7);
     $pdf->Cell(19, 4, "Responsável:");
     $pdf->Setfont('Arial', '', 7);
@@ -217,11 +272,12 @@ try {
                 'observacao' => $requisicao->getObservacao(),
                 'modeloRequisicao' => $modeloComprovanteRequisicao,
                 'assinatiuraModelo' => $modeloComprovanteRequisicao == 0 ? 'RECEBEDOR' : 'AUTORIZADOR',
-                'exames' => []
+                'exames' => [],
+                'idadeCompleta' => $requisicao->getCgs()->getIdadeCompleta()
             ];
         }
         $setor = $exameRequisitado->getLaboratorioSetor();
-        $dadosRequisicao->laboratorios[$id]->exames[] = (object) array(
+        $dadosRequisicao->laboratorios[$id]->exames[] = (object)array(
             'setor' => $setor->getDescricao(),
             'exame' => $exameRequisitado->getExame()->getNome(),
             'quantidade' => $exameRequisitado->getQuantidade(),
@@ -251,7 +307,7 @@ try {
     }
 } catch (Exception $e) {
     $sMsg = urlencode($e->getMessage());
-    db_redireciona('db_erros.php?fechar=true&db_erro=' . $sMsg);
+    db_redireciona('db_erros.php?fechar=true&db_erro='.$sMsg);
 }
 
 $pdf = new ECidade\Pdf\Pdf();

@@ -120,7 +120,7 @@ $clrotulo->label("z01_nome");
           if (!isset($pesquisa_chave)) {
 
             $campos  = "distinct y80_codsani, y80_numbloco, y80_numcgm, z01_numcgm as db_z01_numcgm, z01_nome, j14_nome, ";
-            $campos .= "y80_numero,y80_compl, y80_dtbaixa, y18_inscr, y83_dtini as dl_Data_de_Início                     ";
+            $campos .= "y80_numero,y80_compl, y80_dtbaixa, y18_inscr, y80_data as dl_Data_de_Início                     ";
             if (isset($chave_y80_codsani) && (trim($chave_y80_codsani) != "")) {
 
               $sWhere = "y80_codsani = {$chave_y80_codsani} and {$where} ";

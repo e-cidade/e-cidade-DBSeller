@@ -131,31 +131,31 @@ if(isset($oGet->iMatricula)){
           <tr>
             <td nowrap title="<?=@$Trh16_titele?>"><?=@$Lrh16_titele?></td>
             <td>
-              <?
+              <?php
               db_input('rh16_titele',17,$Irh16_titele,true,'text',$db_opcao,"")
               ?>
             </td>
             <td><?=@$Lrh16_zonael?></td>
             <td>
-              <?
+              <?php
               db_input('rh16_zonael',5,$Irh16_zonael,true,'text',$db_opcao,"")
               ?>
             </td>
             <td><?=@$Lrh16_secaoe?></td>
             <td>
-              <?
+              <?php
               db_input('rh16_secaoe',5,$Irh16_secaoe,true,'text',$db_opcao,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh16_reserv?>"><?=@$Lrh16_reserv?></td>
-            <td><?
+            <td><?php
               db_input('rh16_reserv',17,$Irh16_reserv,true,'text',$db_opcao,"")
               ?>
             </td>
             <td><?=@$Lrh16_catres?></td>
-            <td><?
+            <td><?php
                 db_input('rh16_catres',5,$Irh16_catres,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -163,14 +163,14 @@ if(isset($oGet->iMatricula)){
           <tr>
             <td nowrap title="<?=$Tz01_cgccpf?>"><B>CPF: </B></td>
             <td>
-              <?
+              <?php
               //db_input('z01_cgccpf',17, null, null,'text',$db_opcao," onblur='js_verificaCGCCPF(this);' ")
               ?>
               <input type="text" id="z01_cgccpf" size="17" maxlength="11" style="background-color: rgb(230,228,241)" onblur="js_verificaCGCCPF(this);" value="<?=$z01_cgccpf ?>">
             </td>
             <td><?//=@$Lrh16_catres?></td>
             <td>
-              <?
+              <?php
                 //db_input('rh16_catres',5,$Irh16_catres,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -179,30 +179,30 @@ if(isset($oGet->iMatricula)){
             <td nowrap title="<?=@$Trh16_ctps_n?>"><?=@$Lrh16_ctps_n?>
             </td>
             <td>
-              <?
+              <?php
               db_input('rh16_ctps_n',17,$Irh16_ctps_n,true,'text',$db_opcao,"")
               ?>
             </td>
             <td><?=@$Lrh16_ctps_s?>
             </td>
-            <td><?
+            <td><?php
             db_input('rh16_ctps_s',5,$Irh16_ctps_s,true,'text',$db_opcao,"")
             ?>
             </td>
             <td><?=@$Lrh16_ctps_d?>
             </td>
-            <td><?
+            <td><?php
             db_input('rh16_ctps_d',5,$Irh16_ctps_d,true,'text',$db_opcao,"")
             ?>
             </td>
           </tr>
           <tr>
-            <td nowrap title="<?=@$Trh16_ctps_uf?>"><?
+            <td nowrap title="<?=@$Trh16_ctps_uf?>"><?php
             db_ancora(@$Lrh16_ctps_uf,"",3);
             ?>
             </td>
             <td colspan='5'>
-              <?
+              <?php
                 $rsEstados = $oDaoDb_uf->sql_record($oDaoDb_uf->sql_query_file(null,"db12_codigo as rh16_ctps_uf,db12_uf"));
                 db_selectrecord("rh16_ctps_uf",$rsEstados,true,$db_opcao,"","","","0-Nenhum...");
               ?>
@@ -211,7 +211,7 @@ if(isset($oGet->iMatricula)){
           <tr>
             <td nowrap title="<?=@$Trh16_pis?>"><?=@$Lrh16_pis?>
             </td>
-            <td><?
+            <td><?php
                 db_input('rh16_pis',17,$Irh16_pis,true,'text',$db_opcao,"onblur = js_validaPis(this.value);")
                 ?>
             </td>
@@ -219,19 +219,19 @@ if(isset($oGet->iMatricula)){
           <tr>
             <td nowrap title="<?=@$Trh16_carth_n?>"><?=@$Lrh16_carth_n?>
             </td>
-            <td><?
+            <td><?php
                 db_input('rh16_carth_n',17,$Irh16_carth_n,true,'text',$db_opcao,"")
                 ?>
             </td>
             <td nowrap title="<?=@$Tr16_carth_cat?>"><?=@$Lr16_carth_cat?>
             </td>
-            <td><?
+            <td><?php
                 db_input('r16_carth_cat',5,$Ir16_carth_cat,true,'text',$db_opcao,"")
                 ?>
             </td>
             <td nowrap title="<?=@$Trh16_carth_val?>"><?=@$Lrh16_carth_val?>
             </td>
-            <td><?
+            <td><?php
                 db_inputdata('rh16_carth_val',@$rh16_carth_val_dia,@$rh16_carth_val_mes,@$rh16_carth_val_ano,true,'text',$db_opcao,"")
                 ?>
             </td>

@@ -28,18 +28,22 @@
 require_once(modification("libs/ReceitaSaldo.php"));
 require_once(modification("libs/ReceitaSaldoComplemento.php"));
 
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Factories\BalanceteReceitaFactory;
 use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class bal_rec
 {
-    var $arq = null;
+    protected $arq = null;
+    protected $header;
+    protected $emissaoMGS = false;
 
-    function bal_rec($header)
+    public function __construct($header)
     {
-        umask(74);
-        $this->arq = fopen("tmp/BAL_REC.TXT", 'w+');
-        fputs($this->arq, $header);
-        fputs($this->arq, "\r\n");
+        $this->header = $header;
+    }
+    public function isMGS($bool)
+    {
+        $this->emissaoMGS = $bool;
     }
 
     /**
@@ -51,9 +55,48 @@ class bal_rec
      * @return string
      * @throws Exception
      */
-    function processa($instit = 1, $data_ini = "", $data_fim = "", $orgaotrib = "", $subelemento = "")
+    public function processa($instit = 1, $data_ini = "", $data_fim = "", $orgaotrib = "", $subelemento = "")
     {
-        global $contador, $instituicoes,$complemento;
+        $anousu = db_getsession("DB_anousu");
+
+        $sqlorcreceita = "
+            select orcreceita.*, c60_estrut
+              from orcreceita
+            left join conplanoorcamento on o70_codfon = c60_codcon and o70_anousu = c60_anousu
+            left join conplanoorcamentoanalitica on o70_codfon = c61_codcon and o70_anousu = c61_anousu and o70_instit = c61_instit
+            where o70_anousu = $anousu and c61_reduz is null
+        ";
+
+        $resultorcreceita = db_query($sqlorcreceita) or die($sqlorcreceita);
+        if (pg_num_rows($resultorcreceita) > 0) {
+            echo "<br><b>ERRO - RECEITAS DO ORCAMENTO SEM REDUZIDO NO PLANO DE CONTAS:</b><br>";
+
+            for ($x = 0; $x < pg_num_rows($resultorcreceita); $x++) {
+                $o70_codrec = pg_fetch_result($resultorcreceita, $x, "o70_codrec");
+                $o70_codfon = pg_fetch_result($resultorcreceita, $x, "o70_codfon");
+                $c60_estrut = pg_fetch_result($resultorcreceita, $x, "c60_estrut");
+
+                echo "REDUZIDO ORCAMENTO: $o70_codrec - CODCON: $o70_codfon - ESTRUTURAL: $c60_estrut" . "<br>";
+            }
+        }
+
+        if ($anousu >= 2023) {
+            $instituicoes = InstituicaoRepository::getInstituicaoConsolida(db_getsession('DB_instit'));
+
+            $service = BalanceteReceitaFactory::getService($anousu, $instituicoes, $data_ini, $data_fim);
+            $service->setHeader($this->header);
+            $service->processa();
+
+            return true;
+        }
+
+
+        umask(74);
+        $this->arq = fopen("tmp/BAL_REC.TXT", 'w+');
+        fputs($this->arq, $this->header);
+        fputs($this->arq, "\r\n");
+
+        global $contador, $instituicoes, $complemento;
         $contador = 0;
 
         $tipo_mesini = 1;
@@ -67,7 +110,7 @@ class bal_rec
         $sele = " o70_instit in ($instit)";
         $sele .= " and ( c70_valor <> 0 or o70_valor <> 0) ";
 
-        $anousu = db_getsession("DB_anousu");
+
         if (EMENTARIO_RECEITA) {
             $result = ReceitaSaldoComplemento(11, 1, $opcao, true, $sele, $anousu, $data_ini, $data_fim, true);
         } else {
@@ -81,7 +124,7 @@ class bal_rec
           substr(o57_fonte,2,14)
           else
             substr(o57_fonte,1,15)
-              end
+            end
               end as o57_fonte,
               substr(o57_fonte,1,1) as teste,
                   o57_descr,
@@ -91,7 +134,7 @@ class bal_rec
                   x.o70_codrec,
                   (saldo_inicial + x.saldo_inicial_prevadic) as saldo_inicial_prevadic,
                   x.complemento,
-                  coalesce(o70_instit,0) as o70_instit,
+                  coalesce(x.o70_instit,0) as o70_instit,
                   fc_nivel_plano2005(x.o57_fonte) as nivel
                     from (" . $result . ") as x
                     left join orcreceita on orcreceita.o70_codrec = x.o70_codrec and o70_anousu=$anousu
@@ -106,15 +149,15 @@ class bal_rec
 
         $tottotal = 0;
 
-        for ($i = 1; $i < pg_numrows($result); $i++) {
-            $elemento_original = pg_result($result, $i, "o57_fonte");
-            $elemento = pg_result($result, $i, "o57_fonte");
-            $saldo_inicial = pg_result($result, $i, "saldo_inicial");
-            $saldo_arrecadado_acumulado = pg_result($result, $i, "saldo_arrecadado_acumulado");
-            $recurso = pg_result($result, $i, "recurso");
-            $descr = pg_result($result, $i, "o57_descr");
-            $o70_codrec = pg_result($result, $i, "o70_codrec");
-            $o15_complemento = pg_result($result, $i, 'complemento');
+        for ($i = 1; $i < pg_num_rows($result); $i++) {
+            $elemento_original = pg_fetch_result($result, $i, "o57_fonte");
+            $elemento = pg_fetch_result($result, $i, "o57_fonte");
+            $saldo_inicial = pg_fetch_result($result, $i, "saldo_inicial");
+            $saldo_arrecadado_acumulado = pg_fetch_result($result, $i, "saldo_arrecadado_acumulado");
+            $recurso = pg_fetch_result($result, $i, "recurso");
+            $descr = pg_fetch_result($result, $i, "o57_descr");
+            $o70_codrec = pg_fetch_result($result, $i, "o70_codrec");
+            $o15_complemento = pg_fetch_result($result, $i, 'complemento');
             if ($anousu > 2007) {
                 $sql_orcreceita = "
                     select o70_concarpeculiar
@@ -123,15 +166,15 @@ class bal_rec
                       and orcreceita.o70_codrec = $o70_codrec
                 ";
                 $res_orcreceita = @db_query($sql_orcreceita);
-                if (@pg_numrows($res_orcreceita) != 0) {
-                    $concarpeculiar = formatar(pg_result($res_orcreceita, 0, "o70_concarpeculiar"), 3, "n");
+                if (@pg_num_rows($res_orcreceita) != 0) {
+                    $concarpeculiar = formatar(pg_fetch_result($res_orcreceita, 0, "o70_concarpeculiar"), 3, "n");
                 } else {
                     $concarpeculiar = "000";
                 }
             }
 
-            $o70_instit = pg_result($result, $i, "o70_instit");
-            $nivel = pg_result($result, $i, "nivel");
+            $o70_instit = pg_fetch_result($result, $i, "o70_instit");
+            $nivel = pg_fetch_result($result, $i, "nivel");
 
             if ($anousu > 2007) {
                 if (substr($elemento_original, 0, 1) == "9") {
@@ -176,7 +219,7 @@ class bal_rec
             }
 
             if ($anousu >= 2014) {
-                $nValorInicialMaisPrevisaoAdicional = pg_result($result, $i, "saldo_inicial_prevadic");
+                $nValorInicialMaisPrevisaoAdicional = pg_fetch_result($result, $i, "saldo_inicial_prevadic");
                 $sSinal = "+";
                 if ($nValorInicialMaisPrevisaoAdicional < 0) {
                     $sSinal = "-";
@@ -259,25 +302,6 @@ class bal_rec
          * }
          * }
          * */
-
-        $sqlorcreceita = analiseQueryPlanoOrcamento("select orcreceita.*, c60_estrut
-                            from orcreceita
-                            left join conplano on o70_codfon = c60_codcon and o70_anousu = c60_anousu
-                            left join conplanoreduz on o70_codfon = c61_codcon and o70_anousu = c61_anousu and o70_instit = c61_instit
-                            where o70_anousu = $anousu and c61_reduz is null");
-
-        $resultorcreceita = db_query($sqlorcreceita) or die($sqlorcreceita);
-        if (pg_numrows($resultorcreceita) > 0) {
-            echo "<br><b>ERRO - RECEITAS DO ORCAMENTO SEM REDUZIDO NO PLANO DE CONTAS:</b><br>";
-
-            for ($x = 0; $x < pg_numrows($resultorcreceita); $x++) {
-                $o70_codrec = pg_result($resultorcreceita, $x, "o70_codrec");
-                $o70_codfon = pg_result($resultorcreceita, $x, "o70_codfon");
-                $c60_estrut = pg_result($resultorcreceita, $x, "c60_estrut");
-
-                echo "REDUZIDO ORCAMENTO: $o70_codrec - CODCON: $o70_codfon - ESTRUTURAL: $c60_estrut" . "<br>";
-            }
-        }
 
 
         // trailer

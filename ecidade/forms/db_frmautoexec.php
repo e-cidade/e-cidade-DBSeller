@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,45 +37,45 @@ $clrotulo->label("j13_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty15_codauto?>">
-       <?
+       <?php
        db_ancora(@$Ly15_codauto,"js_pesquisay15_codauto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y15_codauto',10,$Iy15_codauto,true,'text',$db_opcao," onchange='js_pesquisay15_codauto(false);'")
 ?>
-       <?
+       <?php
 db_input('y50_codauto',10,$Iy50_codauto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty15_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ly15_codigo,"js_pesquisay15_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y15_codigo',7,$Iy15_codigo,true,'text',$db_opcao," onchange='js_pesquisay15_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty15_codi?>">
-       <?
+       <?php
        db_ancora(@$Ly15_codi,"js_pesquisay15_codi(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y15_codi',4,$Iy15_codi,true,'text',$db_opcao," onchange='js_pesquisay15_codi(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -85,7 +85,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        <?=@$Ly15_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('y15_numero',10,$Iy15_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_input('y15_numero',10,$Iy15_numero,true,'text',$db_opcao,"")
        <?=@$Ly15_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('y15_compl',20,$Iy15_compl,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -168,7 +168,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_autoexec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

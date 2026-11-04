@@ -22,7 +22,7 @@ class M21367RecalculoIptuTabelasOld extends Migration
     public function upDicionario()
     {
         DB::connection()->getPdo()->exec(<<<SQL
-        
+
             /* Tabela iptucalcold */
             INSERT INTO db_sysarquivo VALUES (1010971, 'iptucalcold', 'Tabela para armazenamento de dados anteriores após efetuar recálculos', 'j223', '2022-07-20', 'iptucalcold', 0, 'f', 'f', 'f', 'f' );
             INSERT INTO db_sysarqmod VALUES (2,1010971);
@@ -171,7 +171,7 @@ class M21367RecalculoIptuTabelasOld extends Migration
             INSERT INTO db_syscadind VALUES(1008806,1010985,1);
 
             /* Tabela iptutaxacalvold */
-            
+
             INSERT INTO db_sysarquivo VALUES (1010516, 'iptutaxacalvold', 'Tabela de histórico de calculo de taxa de iptu', 'j158', '2020-02-03', 'iptutaxacalv', 0, 'f', 'f', 'f', 'f' );
             INSERT INTO db_sysarqmod VALUES (2,1010516);
 
@@ -194,13 +194,13 @@ class M21367RecalculoIptuTabelasOld extends Migration
             INSERT INTO db_sysarqcamp VALUES(1010516,1010990,7,0);
             INSERT INTO db_sysarqcamp VALUES(1010516,1011791,8,0);
             INSERT INTO db_sysarqcamp VALUES(1010516,1010992,9,0);
- 
+
             INSERT INTO db_sysprikey (codarq,codcam,sequen,camiden) VALUES(1010516,1014484,1,1014484);
 
             INSERT INTO db_sysforkey VALUES(1010516,1010983,1,1010517,0);
             INSERT INTO db_sysforkey VALUES(1010516,1010984,1,904,0);
             INSERT INTO db_sysforkey VALUES(1010516,1010986,1,75,0);
-            INSERT INTO db_sysforkey VALUES(1010516,1010992,1,1320,0); 
+            INSERT INTO db_sysforkey VALUES(1010516,1010992,1,1320,0);
 
             INSERT INTO db_syssequencia VALUES(1001090, 'iptutaxacalvold_j158_sequencial_seq', 1, 1, 9223372036854775807, 1, 1);
             UPDATE db_sysarqcamp set codsequencia = 1001090 WHERE codarq = 1010516 and codcam = 1014484;
@@ -209,13 +209,13 @@ SQL
     );
 
     }
- 
+
     public function upEstrutura()
     {
         DB::connection()->getPdo()->exec(<<<SQL
-        
+
             /* Tabela iptucalcold */
-            CREATE SEQUENCE cadastro.iptucalcold_j223_sequencial_seq  
+            CREATE SEQUENCE cadastro.iptucalcold_j223_sequencial_seq
               INCREMENT 1
               MINVALUE 1
               MAXVALUE 9223372036854775807
@@ -223,7 +223,7 @@ SQL
               CACHE 1;
 
             CREATE TABLE cadastro.iptucalcold (
-                j223_sequencial int NOT NULL DEFAULT nextval('iptucalcold_j223_sequencial_seq'), 
+                j223_sequencial int NOT NULL DEFAULT nextval('iptucalcold_j223_sequencial_seq'),
                 j223_anousu int NOT NULL,
                 j223_matric int NOT NULL,
                 j223_testad double precision,
@@ -241,8 +241,8 @@ SQL
                 CONSTRAINT iptucalcold_pk PRIMARY KEY (j223_sequencial),
                 CONSTRAINT iptucalcold_iptucalclog_fk FOREIGN KEY (j223_iptucalclog) REFERENCES iptucalclog(j27_codigo) MATCH FULL DEFERRABLE
             );
-            
-            CREATE SEQUENCE cadastro.iptucaleold_j162_sequencial_seq  
+
+            CREATE SEQUENCE cadastro.iptucaleold_j162_sequencial_seq
               INCREMENT 1
               MINVALUE 1
               MAXVALUE 9223372036854775807
@@ -265,7 +265,7 @@ SQL
             );
 
             /* Tabela iptucalvold */
-            CREATE SEQUENCE cadastro.iptucalvold_j157_sequencial_seq 
+            CREATE SEQUENCE cadastro.iptucalvold_j157_sequencial_seq
               INCREMENT 1
               MINVALUE 1
               MAXVALUE 9223372036854775807
@@ -281,7 +281,7 @@ SQL
                 j157_valor numeric,
                 j157_quant integer,
                 j157_codhis integer NOT NULL,
-                j157_iptucalclog integer NOT NULL, 
+                j157_iptucalclog integer NOT NULL,
                 CONSTRAINT iptucalvold_pk PRIMARY KEY (j157_sequencial),
                 CONSTRAINT codhis_fk FOREIGN KEY (j157_codhis) REFERENCES iptucalh(j17_codhis),
                 CONSTRAINT matric_fk FOREIGN KEY (j157_matric) REFERENCES iptubase(j01_matric),
@@ -289,13 +289,13 @@ SQL
                 CONSTRAINT iptucalvold_iptucalclog_fk FOREIGN KEY (j157_iptucalclog) REFERENCES iptucalclog(j27_codigo) MATCH FULL DEFERRABLE
             );
 
-            /* Tabela iptunumpold - adiciona fk para iptucalclog */ 
+            /* Tabela iptunumpold - adiciona fk para iptucalclog */
             ALTER TABLE cadastro.iptunumpold ADD COLUMN j130_iptucalclog int4 DEFAULT NULL;
             ALTER TABLE cadastro.iptunumpold ADD CONSTRAINT "iptunumpold_iptucalclog_fk" FOREIGN KEY (j130_iptucalclog) REFERENCES iptucalclog(j27_codigo);
 
 
             /* Tabela iptutaxanumpold */
-            CREATE SEQUENCE cadastro.iptutaxanumpold_j159_sequencial_seq  
+            CREATE SEQUENCE cadastro.iptutaxanumpold_j159_sequencial_seq
               INCREMENT 1
               MINVALUE 1
               MAXVALUE 9223372036854775807
@@ -303,7 +303,7 @@ SQL
               CACHE 1;
 
             CREATE TABLE cadastro.iptutaxanumpold (
-                j159_sequencial int NOT NULL DEFAULT nextval('iptutaxanumpold_j159_sequencial_seq'), 
+                j159_sequencial int NOT NULL DEFAULT nextval('iptutaxanumpold_j159_sequencial_seq'),
                 j159_codigo int NOT NULL,
                 j159_matric int NOT NULL,
                 j159_numpre bigint,
@@ -315,7 +315,7 @@ SQL
             );
 
             /* Tabela iptutaxacalvold */
-            CREATE SEQUENCE cadastro.iptutaxacalvold_j158_sequencial_seq  
+            CREATE SEQUENCE cadastro.iptutaxacalvold_j158_sequencial_seq
               INCREMENT 1
               MINVALUE 1
               MAXVALUE 9223372036854775807
@@ -323,14 +323,14 @@ SQL
               CACHE 1;
 
             CREATE TABLE cadastro.iptutaxacalvold (
-                j158_sequencial int NOT NULL DEFAULT nextval('iptutaxacalvold_j158_sequencial_seq'), 
+                j158_sequencial int NOT NULL DEFAULT nextval('iptutaxacalvold_j158_sequencial_seq'),
                 j158_codigo int NOT NULL,
                 j158_iptutaxanumpold int NOT NULL,
                 j158_codhis int NOT NULL,
                 j158_receit int NOT NULL,
-                j158_valor double precision DEFAULT 0, 
-                j158_quant double precision DEFAULT 0, 
-                j158_areaed double precision DEFAULT 0, 
+                j158_valor double precision DEFAULT 0,
+                j158_quant double precision DEFAULT 0,
+                j158_areaed double precision DEFAULT 0,
                 j158_iptucalclog int NOT NULL,
                 CONSTRAINT iptutaxacalvold_pk PRIMARY KEY (j158_sequencial),
                 CONSTRAINT iptutaxacalvold_iptutaxanumpold_fk FOREIGN KEY (j158_iptutaxanumpold) REFERENCES iptutaxanumpold(j159_sequencial),
@@ -338,7 +338,7 @@ SQL
                 CONSTRAINT iptutaxacalvold_tabrec_fk FOREIGN KEY (j158_receit) REFERENCES tabrec(k02_codigo) MATCH FULL DEFERRABLE,
                 CONSTRAINT iptutaxacalvold_iptucalclog_fk FOREIGN KEY (j158_iptucalclog) REFERENCES iptucalclog(j27_codigo) MATCH FULL DEFERRABLE
             );
-            
+
 SQL
     );
 
@@ -351,7 +351,7 @@ SQL
      */
     public function down()
     {
-        $this->downEstrutura(); 
+        $this->downEstrutura();
         $this->downDicionario();
     }
 
@@ -374,7 +374,7 @@ SQL
 
             DELETE FROM db_sysarqcamp WHERE codarq = 1010971;
             DELETE FROM db_syscampo WHERE codcam in (1014360, 1014361, 1014362, 1014363, 1014364, 1014365, 1014366, 1014367, 1014368, 1014369, 1014370, 1014371, 1014372, 1014373, 1014374);
-            DELETE FROM db_sysarqmod WHERE codarq = 1010971; 
+            DELETE FROM db_sysarqmod WHERE codarq = 1010971;
             DELETE FROM db_sysarquivo WHERE codarq = 1010971;
 
             /* iptucaleold */
@@ -385,7 +385,7 @@ SQL
             DELETE FROM db_syscadind WHERE codind = 1008801;
 
             DELETE FROM db_sysprikey WHERE codarq = 1010523;
-            
+
             DELETE FROM db_sysarqcamp WHERE codarq = 1010523;
             DELETE FROM db_sysarqmod WHERE codarq = 1010523;
             DELETE FROM db_syscampo WHERE codcam in (1014376, 1011024, 1011025, 1011026, 1011027, 1011028, 1011029, 1011030, 1011031, 1011032);
@@ -397,14 +397,14 @@ SQL
 
             DELETE FROM db_sysindices WHERE codind = 1008802;
             DELETE FROM db_syscadind WHERE codind = 1008802;
-            
+
             DELETE FROM db_sysprikey WHERE codarq = 1010500;
 
             DELETE FROM db_sysarqcamp WHERE codarq = 1010500;
             DELETE FROM db_syscampo WHERE codcam in (1010897, 1010898, 1010899, 1010900, 1010901, 1010902, 1010902, 1010903, 1014377);
             DELETE FROM db_sysarqmod WHERE codarq = 1010500;
             DELETE FROM db_sysarquivo WHERE codarq = 1010500;
- 
+
             /* iptunumpold */
 
             DELETE FROM db_syssequencia WHERE codsequencia = 1001089;
@@ -421,7 +421,7 @@ SQL
 
             DELETE FROM db_syscadind  WHERE codind = 1008806 and codcam = 1010985;
             DELETE FROM db_sysindices WHERE codarq = 1010517 and codind = 1008806;
-            
+
             DELETE FROM db_sysforkey WHERE codarq = 1010517;
 
             DELETE FROM db_sysprikey WHERE codarq = 1010517;
@@ -448,29 +448,29 @@ SQL
 
 SQL
         );
-        
+
     }
-    
+
     public function downEstrutura()
     {
         DB::connection()->getPdo()->exec(<<<SQL
 
             ALTER TABLE cadastro.iptunumpold DROP COLUMN j130_iptucalclog;
- 
+
             DROP TABLE cadastro.iptutaxacalvold;
             DROP TABLE cadastro.iptutaxanumpold;
- 
+
             DROP TABLE cadastro.iptucalvold;
-            DROP TABLE cadastro.iptucaleold;          
+            DROP TABLE cadastro.iptucaleold;
             DROP TABLE cadastro.iptucalcold;
-  
+
             DROP SEQUENCE cadastro.iptutaxacalvold_j158_sequencial_seq;
-            DROP SEQUENCE cadastro.iptutaxanumpold_j159_sequencial_seq; 
+            DROP SEQUENCE cadastro.iptutaxanumpold_j159_sequencial_seq;
             DROP SEQUENCE cadastro.iptucalcold_j223_sequencial_seq;
             DROP SEQUENCE cadastro.iptucaleold_j162_sequencial_seq;
             DROP SEQUENCE cadastro.iptucalvold_j157_sequencial_seq;
-            
- 
+
+
 SQL
         );
 

@@ -92,11 +92,11 @@ if( !empty($oGet->lEscolaRede) && $oGet->lEscolaRede != "true" && !empty($oGet->
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for="chave_ed47_i_codigo"><?=$Led47_i_codigo?></label></td>
-          <td><? db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo"); ?></td>
+          <td><?php db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo"); ?></td>
         </tr>
         <tr>
           <td><label for="chave_ed47_v_nome"><?=$Led47_v_nome?></label></td>
-          <td><? db_input("ed47_v_nome",30,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?></td>
+          <td><?php db_input("ed47_v_nome",30,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?></td>
         </tr>
       </table>
     </fieldset>

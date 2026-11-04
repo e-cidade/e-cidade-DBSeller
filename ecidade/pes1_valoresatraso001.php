@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $db_botao = false;
 <table width="100%">
   <tr>
     <td width="100%">
-      <?
+      <?php
       include(modification("forms/db_frmvaloresatraso.php"));
       ?>
     </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -221,12 +221,12 @@ function js_emite1(){
 	</table>
   <table  border="0" align="center">
     <form name="form1" method="post" action="" onsubmit="return js_verifica();">
-		<?
+		<?php
 		if (1==2) {
 		?>
      <tr>
         <td title="Data da Geração do Cálculo"><strong>Data do Cálculo:</strong>&nbsp;&nbsp;
-         <?
+         <?php
 					$DBtxt21_ano = db_getsession("DB_anousu");
 					$DBtxt21_mes = '01';
 					$DBtxt21_dia = '01';
@@ -234,7 +234,7 @@ function js_emite1(){
 				 ?>
         </td>
         <td >Até&nbsp;&nbsp;
-         <?
+         <?php
           $DBtxt22_ano = date('Y');
           $DBtxt22_mes = date('m');
           $DBtxt22_dia = date('d');
@@ -243,7 +243,7 @@ function js_emite1(){
 				 ?>
         </td>
       </tr>
-		<?
+		<?php
 		}
 		?>
 			<tr>
@@ -259,13 +259,13 @@ function js_emite1(){
 									 <table border="0">
 									   <tr>
 											 <td nowrap title="<?=@$Tk60_codigo?>" colspan="2">
-												 <?
+												 <?php
 												 	 db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao);
 												 ?>
-												 <?
+												 <?php
 												 	 db_input('k60_codigo',8,$Ik60_codigo,true,'text',$db_opcao," onchange='js_pesquisalista(false);'")
 												 ?>
-												 <?
+												 <?php
 												 	 db_input('k60_descr',25,$Ik60_descr,true,'text',3,'')
 												 ?>
 												 <input name="lanca" type="button" value="Lançar" >
@@ -274,7 +274,7 @@ function js_emite1(){
 									   <tr>
 											 <td align="right" colspan="" width="80%">
 												 <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-													 <?
+													 <?php
 															if(isset($chavepesquisa)){
 																$resulta = $cllista->sql_record($cllista->sql_query("","","","k60_codigo = $chavepesquisa and k60_instit = $instit "));
 
@@ -412,7 +412,7 @@ function js_emite1(){
        </tr>
 		 </form>
    </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -483,7 +483,7 @@ function js_preenchepesquisa(chave){
 }
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -4,7 +4,6 @@ $aEcidadeConfig = [
     /* define constantes no e-cidade */
     "aConstantesEcidade" => [
         "Tributario" => [
-            "CUSTAS_HONORARIOS" => false
         ]
     ],
 

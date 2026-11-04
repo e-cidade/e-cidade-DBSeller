@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@
   <tr align="center">
     <td nowrap  width="100%" height="100%"><br><br> 
       <iframe name="iframe_solicitem" id="solicitem" marginwidth="0" marginheight="0" frameborder="0" src="lic4_geraaut004.php?l20_codigo=<?=$l20_codigo?>&e54_codtipo=<?=$e54_codtipo?>"  width="95%" height="400"></iframe>
-      <?
+      <?php
       db_input('l20_codigo',8,$Il20_codigo,true,'hidden',3);
       db_input('e54_destin',8,0,true,'hidden',3);
       db_input('e54_codtipo',8,0,true,'hidden',3);
@@ -47,7 +47,7 @@
   </tr>
   <tr align="center">
     <td nowrap height="10%">
-      <?
+      <?php
       $botao = "Gerar autorização";
       $click = "js_enviarcampos();";
       $click2= "document.location.href='lic4_geraaut001.php'";

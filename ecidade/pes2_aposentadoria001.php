@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,12 +65,12 @@ $clrotulo->label('r08_descr');
         <table border="0">
           <tr>
             <td nowrap align="right" title="<?=@$Trh01_regist?>">
-              <?
+              <?php
               db_ancora($Lrh01_regist,"js_pesquisarh01_regist(true);",1);
               ?>
             </td>
             <td colspan="3" nowrap>
-              <?
+              <?php
               db_input('rh01_regist',6,$Irh01_regist,true,'text',1,"onChange='js_pesquisarh01_regist(false);'");
               db_input('z01_nome',50,$Irh01_regist,true,'text',3,"");
               ?>
@@ -78,12 +78,12 @@ $clrotulo->label('r08_descr');
           </tr>
           <tr>
             <td nowrap align="right" title="<?=@$Ti01_codigo?>">
-              <?
+              <?php
               db_ancora($Li01_codigo,"js_pesquisai01_codigo(true);",1);
               ?>
             </td>
             <td colspan="3" nowrap>
-              <?
+              <?php
               db_input('i01_codigo',6,$Ii01_codigo,true,'text',1,"onChange='js_pesquisai01_codigo(false);'");
               db_input('i01_descr',50,$Ii01_descr,true,'text',3,"");
               ?>
@@ -94,7 +94,7 @@ $clrotulo->label('r08_descr');
               <b>Período:</b>
             </td>
             <td colspan="3" nowrap>
-              <?
+              <?php
               if(!isset($anof)){
                 $anof = db_anofolha();
               }
@@ -110,15 +110,15 @@ $clrotulo->label('r08_descr');
               db_input('anoi',4,1,true,'text',1,"");
               ?>
               <b>/</b>
-              <?
+              <?php
               db_input('mesi',2,1,true,'text',1,"");
               ?>
               <b>&nbsp;a&nbsp;</b>
-              <?
+              <?php
               db_input('anof',4,1,true,'text',1,"");
               ?>
               <b>/</b>
-              <?
+              <?php
               db_input('mesf',2,1,true,'text',1,"");
               ?>
             </td>
@@ -128,14 +128,14 @@ $clrotulo->label('r08_descr');
               <b>Data para Correção</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               if(!isset($datacor)){
                 $datacor_dia = date("d",db_getsession("DB_datausu"));
                 $datacor_mes = date("m",db_getsession("DB_datausu"));
                 $datacor_ano = date("Y",db_getsession("DB_datausu"));
               }
               ?>
-              <?
+              <?php
               db_inputdata("datacor", @$datacor_dia, @$datacor_mes, @$datacor_ano, true, 'text', 1);
               ?>
             </td>
@@ -145,7 +145,7 @@ $clrotulo->label('r08_descr');
               <b>Índice de Correção</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               if(!isset($indcor)){
                 $indcor = "80" ;
               }
@@ -159,7 +159,7 @@ $clrotulo->label('r08_descr');
               <b>Portaria Ministerial:</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_input('nrport',6,1,true,'text',1);
               ?>
               
@@ -170,7 +170,7 @@ $clrotulo->label('r08_descr');
               <b>Data da Portaria Ministerial:</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_inputdata("datanrport", @$datanrport_dia, @$datanrport_mes, @$datanrport_ano, true, 'text', 1);
               ?>
             </td>
@@ -180,7 +180,7 @@ $clrotulo->label('r08_descr');
               <b>Descartar por:</b>
             </td>
             <td colspan="3" nowrap>
-              <?
+              <?php
 	      $arr_descart = array('t'=>'Valor corrigido','f'=>'Valor histórico');
               db_select("descart", $arr_descart, true, 1);
               ?>
@@ -188,13 +188,13 @@ $clrotulo->label('r08_descr');
           </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora('Rubricas Dedução da Base:',"js_pesquisabase01(true)",2);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
 
               db_input('r08_codigo',4,$Ir08_codigo,true,'text',2,"onchange='js_pesquisabase01(false)'");
               db_input("r08_descr",30,$Ir08_descr,true,"text",3,"","descr_base01");
@@ -208,7 +208,7 @@ $clrotulo->label('r08_descr');
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

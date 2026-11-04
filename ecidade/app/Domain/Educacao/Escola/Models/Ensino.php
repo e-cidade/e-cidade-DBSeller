@@ -27,20 +27,20 @@
 
 namespace App\Domain\Educacao\Escola\Models;
 
+use ECidade\Enum\Educacao\Escola\TipoEnsinoEnum;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Ensino
  * @package App\Domain\Educacao\Escola\Models
- * @property integer ed10_i_codigo
- * @property integer ed10_i_tipoensino
- * @property integer ed10_i_grauensino
- * @property string ed10_c_descr
- * @property string ed10_c_abrev
- * @property integer ed10_mediacaodidaticopedagogica
- * @property integer ed10_ordem
- * @property integer ed10_censocursoprofiss
- * @property integer ed10_tipo
+ * @property integer $ed10_i_codigo
+ * @property integer $ed10_i_tipoensino
+ * @property integer $ed10_i_grauensino
+ * @property string  $ed10_c_descr
+ * @property string  $ed10_c_abrev
+ * @property integer $ed10_mediacaodidaticopedagogica
+ * @property integer $ed10_ordem
+ * @property integer $ed10_tipo
  */
 class Ensino extends Model
 {
@@ -48,6 +48,7 @@ class Ensino extends Model
     protected $primaryKey = 'ed10_i_codigo';
     public $timestamps = false;
     public $incrementing = false;
+    protected $appends = ['tipoEnsino', 'isInfantil'];
 
     /**
      * @return integer
@@ -103,14 +104,6 @@ class Ensino extends Model
     public function getMediacaoDidaticoPedagogica()
     {
         return $this->ed10_mediacaodidaticopedagogica;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getCensoCursoProfissionalizante()
-    {
-        return $this->ed10_censocursoprofiss;
     }
 
     /**
@@ -178,18 +171,31 @@ class Ensino extends Model
     }
 
     /**
-     * @param int $ed10_censocursoprofiss
-     */
-    public function setCensoCursoProfissionalizante($ed10_censocursoprofiss)
-    {
-        $this->ed10_censocursoprofiss = $ed10_censocursoprofiss;
-    }
-
-    /**
      * @param int $ed10_tipo
      */
     public function setEd10Tipo($ed10_tipo)
     {
         $this->ed10_tipo = $ed10_tipo;
+    }
+
+    public function getTipoEnsinoAttribute()
+    {
+        return new TipoEnsinoEnum($this->ed10_tipo);
+    }
+
+    public function getIsInfantilAttribute()
+    {
+        return $this->tipoEnsino->value() === 1;
+    }
+
+    public function disciplinas()
+    {
+        return $this->hasMany(DisciplinaEnsino::class, 'ed12_i_ensino', 'ed10_i_codigo')
+            ->matrizCurricular();
+    }
+
+    public function etapas()
+    {
+        return $this->hasMany(Etapa::class, 'ed11_i_ensino', 'ed10_i_codigo');
     }
 }

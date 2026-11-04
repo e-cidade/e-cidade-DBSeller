@@ -152,7 +152,7 @@ class Inventario {
 
     $sObservacao     = "TRANSFERENCIA AUTOMATICA VIA REAVALIAÇÃO";
     $aInventarioBens = $this->getBens();
-    
+
     /*
      * percorremos o array de itens vinculados
      * para realizar o processamento
@@ -256,10 +256,10 @@ class Inventario {
       } else {
         $nValorAnterior  = $oInventarioBem->getBem()->getValorAtual() - $oInventarioBem->getValorResidual();
       }
-      
+
       $somaDepreciavelResidual = $oInventarioBem->getValorDepreciavel() + $oInventarioBem->getValorResidual();
       $iVidaUtilAnterior = $oInventarioBem->getBem()->getVidaUtil();
-      
+
       $oDaoBensHistoricoCalculoBem->t58_benstipodepreciacao   = 6;
       $oDaoBensHistoricoCalculoBem->t58_benshistoricocalculo  = $oDaoBensHistoricoCalculo->t57_sequencial;
       $oDaoBensHistoricoCalculoBem->t58_bens                  = $oInventarioBem->getBem()->getCodigoBem();
@@ -332,20 +332,25 @@ class Inventario {
          * Cria uma transferência do bem, para seu antigo departamento
          * Cria uma transferência inversa a criada pelo processamento (departamento origem será destino)
          */
-        $oTransferenciaBem = new TransferenciaBens();
-        $oTransferenciaBem->setBem($oInventarioBem->getBem()->getCodigoBem());
-        $oTransferenciaBem->setDepartamentoDestino($oBensTransfOrigemDestino->t34_departamentoorigem);
-        $oTransferenciaBem->setDepartamentoOrigem($oBensTransfOrigemDestino->t34_departamentodestino);
-        $oTransferenciaBem->setDivisaoDestino($oBensTransfOrigemDestino->t34_divisaoorigem);
-        $oTransferenciaBem->setDivisaoOrigem($oBensTransfOrigemDestino->t34_divisaodestino);
-        $oTransferenciaBem->setUsuario(db_getsession('DB_id_usuario'));
-        $oTransferenciaBem->setInstit(db_getsession('DB_instit'));
-        $oTransferenciaBem->setClabens(0);
-        $oTransferenciaBem->setData(date("Y-m-d", db_getsession("DB_datausu")));
-        $oTransferenciaBem->setSituacao($oBensTransfOrigemDestino->t77_situabens);
-        $oTransferenciaBem->setHistorico($sObservacao);
-        $oTransferenciaBem->setObservacao($sObservacao);
-        $oTransferenciaBem->transferenciaAutomatica();
+        if ($oDaoBensTransfOrigemDestino->t34_departamentoorigem != "" &&
+            $oDaoBensTransfOrigemDestino->t34_departamentodestino != "") {
+
+           $oTransferenciaBem = new TransferenciaBens();
+           $oTransferenciaBem->setBem($oInventarioBem->getBem()->getCodigoBem());
+           $oTransferenciaBem->setDepartamentoDestino($oBensTransfOrigemDestino->t34_departamentoorigem);
+           $oTransferenciaBem->setDepartamentoOrigem($oBensTransfOrigemDestino->t34_departamentodestino);
+           $oTransferenciaBem->setDivisaoDestino($oBensTransfOrigemDestino->t34_divisaoorigem);
+           $oTransferenciaBem->setDivisaoOrigem($oBensTransfOrigemDestino->t34_divisaodestino);
+           $oTransferenciaBem->setUsuario(db_getsession('DB_id_usuario'));
+           $oTransferenciaBem->setInstit(db_getsession('DB_instit'));
+           $oTransferenciaBem->setClabens(0);
+           $oTransferenciaBem->setData(date("Y-m-d", db_getsession("DB_datausu")));
+           $oTransferenciaBem->setSituacao($oBensTransfOrigemDestino->t77_situabens);
+           $oTransferenciaBem->setHistorico($sObservacao);
+           $oTransferenciaBem->setObservacao($sObservacao);
+           $oTransferenciaBem->transferenciaAutomatica();
+
+        }
       }
 
       $oBem = $oInventarioBem->getBem();

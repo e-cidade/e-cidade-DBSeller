@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,12 +74,12 @@ function js_checa(){
           <table border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="80px;" title="<?=@$Tj46_matric?>">
-                <?
+                <?php
                 db_ancora(@$Lj46_matric,"js_pesquisaj46_matric(true);",$db_opcao);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                 db_input('j46_matric',10,$Ij46_matric,true,'text',$db_opcaom," onchange='js_pesquisaj46_matric(false);'");
                 db_input('z01_nome',45,$Iz01_nome,true,'text',3,"","z01_nomematri");
                 ?>
@@ -89,7 +89,7 @@ function js_checa(){
       <input name="entrar" type="submit" id="entrar" value="Pesquisar" onclick=" return js_checa()" />
     </form>
   </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

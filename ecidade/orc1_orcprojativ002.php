@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,36 +56,53 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
      <td>
-     <?
-       $clcriaabas->identifica = array("g1" => "Dados Ação",
-								                       "g2" => "Programação Física",
-                                       "g3" => "Iniciativas");
+     <?php
 
-       $clcriaabas->title      = array("g1" => "Dados Ação",
-								                       "g2" => "Programação Física",
-                                       "g3" => "Iniciativas");
+       if(isNiteroi()){
+        $clcriaabas->identifica = array("g1" => "Dados Ação");
+        $clcriaabas->title      = array("g1" => "Dados Ação");       
+        $clcriaabas->src        = array("g1" => "orc1_orcprojativ012.php");
+
+       } else {
+        $clcriaabas->identifica = array("g1" => "Dados Ação",
+                                        "g2" => "Programação Física",
+                                        "g3" => "Iniciativas");
+
+        $clcriaabas->title      = array("g1" => "Dados Ação",
+                                        "g2" => "Programação Física",
+                                        "g3" => "Iniciativas");
 
 
-       $clcriaabas->src        = array("g1" => "orc1_orcprojativ012.php",
-       								                 "g2" => "orc1_orcprojativprogramfisica001.php",
-                                       "g3" => "orc1_orciniciativavinculoprojativ001.php");
-       $clcriaabas->cria_abas();
+        $clcriaabas->src        = array("g1" => "orc1_orcprojativ012.php",
+                                        "g2" => "orc1_orcprojativprogramfisica001.php",
+                                        "g3" => "orc1_orciniciativavinculoprojativ001.php");
+      }
+      
+      $clcriaabas->cria_abas();
+
      ?>
      </td>
   </tr>
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 <script>
-  document.formaba.g1.size = 25;
-  document.formaba.g2.size = 25;
-  document.formaba.g3.size = 25;
+  let isNiteroi = <?php echo json_encode(isNiteroi()) ?>;
+  
+  if(isNiteroi){
+    document.formaba.g1.size = 25;
+  } else {
+    document.formaba.g1.size = 25;
+    document.formaba.g2.size = 25;
+    document.formaba.g3.size = 25;
 
-  document.formaba.g2.disabled = true;
-  document.formaba.g3.disabled = true;
+    document.formaba.g2.disabled = true;
+    document.formaba.g3.disabled = true;
+  }
+
 </script>
 </html>

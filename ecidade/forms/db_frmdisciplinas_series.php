@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed27_c_nome");
        <?=@$Led31_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed31_i_codigo',5,$Ied31_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted31_i_disciplina?>">
-       <?
+       <?php
        db_ancora(@$Led31_i_disciplina,"js_pesquisaed31_i_disciplina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed31_i_disciplina',5,$Ied31_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed31_i_disciplina(false);'")
 ?>
-       <?
+       <?php
 db_input('ed27_c_nome',50,$Ied27_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted31_i_series?>">
-       <?
+       <?php
        db_ancora(@$Led31_i_series,"js_pesquisaed31_i_series(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed31_i_series',5,$Ied31_i_series,true,'text',$db_opcao," onchange='js_pesquisaed31_i_series(false);'")
 ?>
-       <?
+       <?php
 db_input('ed03_c_nome',40,$Ied03_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_disciplinas_series.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

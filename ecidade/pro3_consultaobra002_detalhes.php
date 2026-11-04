@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ function js_emite(){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?  
+<?php  
 if ($solicitacao == "construcoes") {
   $result_obrasconstr=$clobrasconstr->sql_record($clobrasconstr->sql_query(null,"*","","ob08_codobra=$parametro"));
   $tituloJanela = "Construções";
@@ -74,7 +74,7 @@ if ($solicitacao == "construcoes") {
   </tr>
 </table>
 <table width="100%" height="100%"  border="0" align="left"  cellpadding="0" cellspacing="2">
-<?
+<?php
   if(pg_numrows($result_obrasconstr)!= 0) {
     for ($x=0;$x < pg_numrows($result_obrasconstr);$x++ ){
       db_fieldsmemory($result_obrasconstr,$x);
@@ -102,7 +102,7 @@ if ($solicitacao == "construcoes") {
     <td align="left" nowrap bgcolor="#FFFFFF" >
       <?=@$ob08_ocupacao?>
       -
-      <? $sql="select j31_descr as ocupacao  from caracter where j31_codigo=$ob08_ocupacao";
+      <?php $sql="select j31_descr as ocupacao  from caracter where j31_codigo=$ob08_ocupacao";
       $result2= db_query($sql);
       db_fieldsmemory($result2,0);
       ?><?=@$ocupacao?>
@@ -112,7 +112,7 @@ if ($solicitacao == "construcoes") {
     <td  align="left" nowrap bgcolor="#FFFFFF">
       <?=@$ob08_tipoconstr?>
       -
-      <? $sql="select j31_descr as tipoconstr  from caracter where j31_codigo=$ob08_tipoconstr";
+      <?php $sql="select j31_descr as tipoconstr  from caracter where j31_codigo=$ob08_tipoconstr";
       $result1= db_query($sql);
       db_fieldsmemory($result1,0);
       ?><?=@$tipoconstr?>
@@ -125,7 +125,7 @@ if ($solicitacao == "construcoes") {
     <td align="left" nowrap bgcolor="#FFFFFF"> 
       <?=@$ob08_tipolanc?>
       -
-      <? $sql="select j31_descr as tipolanc from caracter where j31_codigo=$ob08_tipolanc";
+      <?php $sql="select j31_descr as tipolanc from caracter where j31_codigo=$ob08_tipolanc";
       $result3= db_query($sql);
       db_fieldsmemory($result3,0);
       ?><?=@$tipolanc?>
@@ -167,7 +167,7 @@ if ($solicitacao == "construcoes") {
     <td  align="right" nowrap bgcolor="#CCCCCC">Data final:</td>
     <td  align="left" nowrap bgcolor="#FFFFFF"> <?=@db_formatar($ob07_fim,"d")?>&nbsp; </td>
   </tr>
-<? 
+<?php 
         if($passa==true){ 
 ?>
   <tr align="center"> 
@@ -181,7 +181,7 @@ if ($solicitacao == "construcoes") {
     <td  align="left" nowrap bgcolor="#FFFFFF"><?=@$ob09_area?>&nbsp;</td>
     <td  align="right" nowrap bgcolor="#CCCCCC">Tipo de habite-se:</td>
     <td  align="left" nowrap bgcolor="#FFFFFF">
-    <?
+    <?php
     if ($ob09_parcial==true){
       $tipo="Parcial";
       }else $tipo="Total";
@@ -193,14 +193,14 @@ if ($solicitacao == "construcoes") {
     <td  align="right" nowrap bgcolor="#CCCCCC">Obs:</td>
     <td colspan=3 align="left" nowrap bgcolor="#FFFFFF"><?=@$ob09_obs?>&nbsp;</td>
   </tr>
-<?     
+<?php     
         }else if($passa==false){
 ?>
   <tr align="center"> 
     <td colspan="4" align="center" nowrap bgcolor="#CCCCCC"><b>Constru&ccedil;&atilde;o n&atilde;o possui  habite-se. </b> &nbsp;</td>
   </tr>
 </table>
-<?	  
+<?php   
 	}
       }
     }
@@ -220,7 +220,7 @@ if ($solicitacao=="alvara"){
     <td colspan="4" align="center" nowrap bgcolor="#CCCCCC"><b>Esta obra  n&atilde;o possui  alvar&aacute;. </b> &nbsp;</td>
   </tr>
 </table>
-<?
+<?php
   }else{
   db_fieldsmemory($result_obrasalvara,0,true);
   //db_criatabela($result_obrasalvara);
@@ -253,7 +253,7 @@ if ($solicitacao=="alvara"){
     </td>
 </table>
 
-<?
+<?php
    }
 }
 if ($solicitacao=="tecnico"){
@@ -268,7 +268,7 @@ $rsTecnicos = $clobrastecnicos->sql_record($clobrastecnicos->sql_query(null,"z01
     <td colspan="4" align="center" nowrap bgcolor="#CCCCCC"><b>Esta obra  n&atilde;o possui  t&eacute;cnico. </b> &nbsp;</td>
   </tr>
 </table>
-<?
+<?php
   }else{
   db_fieldsmemory($rsTecnicos,0,true);
   //db_fieldsmemory($result_obrastec,0,true);
@@ -291,7 +291,7 @@ $rsTecnicos = $clobrastecnicos->sql_record($clobrastecnicos->sql_query(null,"z01
   <td colspan=4>        </td>
   </tr>
   <tr align="center"> 
-    <td width="20%"  align="right" nowrap bgcolor="#CCCCCC"><b><?
+    <td width="20%"  align="right" nowrap bgcolor="#CCCCCC"><b><?php
 				db_ancora('Numcgm:','js_mostracgm();',4)
 				?></b></td>
     <td  width="30%" align="left" nowrap bgcolor="#FFFFFF"><?=@$ob15_numcgm?>&nbsp;</td>
@@ -317,7 +317,7 @@ function js_mostracgm(){
 }
 
 </script>
-<?
+<?php
 
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=0;

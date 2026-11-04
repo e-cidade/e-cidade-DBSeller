@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcarfator->rotulo->label("j74_fator");
               <?=$Lj74_caract?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j74_caract",10,$Ij74_caract,true,"text",4,"","chave_j74_caract");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcarfator->rotulo->label("j74_fator");
               <?=$Lj74_fator?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j74_fator",15,$Ij74_fator,true,"text",4,"","chave_j74_fator");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcarfator->rotulo->label("j74_fator");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_carfator.php")==true){
@@ -123,12 +123,12 @@ $clcarfator->rotulo->label("j74_fator");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

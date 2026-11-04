@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cllab_tiporeferenciaalnumerico->rotulo->label();
        <?=@$Lla30_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_codigo',10,$Ila30_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('la30_i_codigo',10,$Ila30_i_codigo,true,'text',$db_opcao,"")
        <?=@$Lla30_i_valorref?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_valorref',10,$Ila30_i_valorref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('la30_i_valorref',10,$Ila30_i_valorref,true,'text',$db_opcao,"")
        <?=@$Lla30_i_normalmin?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_normalmin',10,$Ila30_i_normalmin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('la30_i_normalmin',10,$Ila30_i_normalmin,true,'text',$db_opcao,"")
        <?=@$Lla30_i_normalmax?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_normalmax',10,$Ila30_i_normalmax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('la30_i_normalmax',10,$Ila30_i_normalmax,true,'text',$db_opcao,"")
        <?=@$Lla30_c_calculavel?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_c_calculavel',100,$Ila30_c_calculavel,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('la30_c_calculavel',100,$Ila30_c_calculavel,true,'text',$db_opcao,"")
        <?=@$Lla30_i_absurdomin?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_absurdomin',10,$Ila30_i_absurdomin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('la30_i_absurdomin',10,$Ila30_i_absurdomin,true,'text',$db_opcao,"")
        <?=@$Lla30_i_absurdomax?>
     </td>
     <td> 
-<?
+<?php
 db_input('la30_i_absurdomax',10,$Ila30_i_absurdomax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_tiporeferenciaalnumerico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

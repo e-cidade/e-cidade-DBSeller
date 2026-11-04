@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -51,6 +51,7 @@ $db_where = " v50_instit = ".db_getsession('DB_instit');
 $db_ordem = "";
 $and = "";
 $aTotValOrigem = array();
+$aTotalAno = array();
 $aIniciais     = array();
 
 $aOrigens = explode("|",$origem);
@@ -184,6 +185,7 @@ $alt = 4;
 $total = 0;
 $totalvalor=0;
 $totalvalorcor=0;
+$totalvalorpago=0;
 $p = 0;
 
 for($x = 0; $x < $linhas;$x++){
@@ -398,18 +400,77 @@ for($x = 0; $x < $linhas;$x++){
   // valor da Ação
 
 
-$sqlvalor = " select sum(k00_valor) as valor
+  $sqlvalor = " select sum(k00_valor) as valor,
+
+			sum(
+				fc_corre( arreforo.k00_receit,
+				  arreforo.k00_dtoper,
+				  arreforo.k00_valor,
+				  v50_data,
+				  cast(extract(year from v50_data) as integer),
+				  v50_data )
+				+
+				round(
+				fc_corre( arreforo.k00_receit,
+				  arreforo.k00_dtoper,
+				  arreforo.k00_valor,
+				  v50_data,
+				  cast(extract(year from v50_data) as integer),
+				  v50_data )
+				*
+				coalesce( fc_juros( arreforo.k00_receit,
+					    arreforo.k00_dtvenc,
+					    v50_data,
+					    v50_data,
+					    false,
+					    cast( extract(
+					    year from v50_data) as integer)),0)
+				,2)
+				+
+				round(
+				fc_corre( arreforo.k00_receit,
+				  arreforo.k00_dtoper,
+				  arreforo.k00_valor,
+				  v50_data,
+				  cast(extract(year from v50_data) as integer),
+				  v50_data )
+				*
+				coalesce( fc_multa( arreforo.k00_receit,
+					    arreforo.k00_dtvenc,
+					    v50_data,
+					    arreforo.k00_dtoper,
+					    cast( extract(
+					    year from v50_data) as integer)),0)
+				,2)
+			) as corrigido
 			    from inicialcert
+				 inner join inicial on v50_inicial = v51_inicial
 			    	 inner join arreforo on k00_certidao = v51_certidao
 	   		   where v51_inicial = $v50_inicial" ;
-
-
 
 $resultvalor = db_query($sqlvalor);
 $linhasvalor = pg_num_rows($resultvalor);
 
 if($linhasvalor > 0){
   db_fieldsmemory($resultvalor,0);
+
+  $valor = $corrigido; // + round( $corrigido * $juros_base,2 ) + round( $corrigido * $multa_base,2 );
+
+}
+
+
+$valorpago = 0;
+
+$sqlvalorpago = " select sum(k00_valor) as valorpago
+			    from inicialcert
+				 inner join inicialnumpre on v51_inicial = v59_inicial
+			    	 inner join arrepaga on k00_numpre = v59_numpre
+	   		   where v51_inicial = $v50_inicial" ;
+$resultvalorpago = db_query($sqlvalorpago);
+$linhasvalorpago = pg_num_rows($resultvalorpago);
+
+if($linhasvalorpago > 0){
+  db_fieldsmemory($resultvalorpago,0);
 }
 
   if($mostra==true){
@@ -440,13 +501,26 @@ if($linhasvalor > 0){
       continue;
     }
 
+    $ano = substr($v50_data,0,4);
+
     if ( ! in_array($v50_inicial,$aIniciais)) {
        if (isset($aTotValOrigem[$sDescrOrigem])){
          $aTotValOrigem[$sDescrOrigem]['valor']    += (float)$valor;
          $aTotValOrigem[$sDescrOrigem]['valorcor'] += (float)$valorcor;
+         $aTotValOrigem[$sDescrOrigem]['valorpago'] += (float)$valorpago;
        } else {
          $aTotValOrigem[$sDescrOrigem]['valor']    = (float)$valor;
          $aTotValOrigem[$sDescrOrigem]['valorcor'] = (float)$valorcor;
+         $aTotValOrigem[$sDescrOrigem]['valorpago'] = (float)$valorpago;
+       }
+       if (isset($aTotalAno[$ano])){
+         $aTotalAno[$ano]['valor']     += (float)$valor;
+         $aTotalAno[$ano]['valorcor']  += (float)$valorcor;
+         $aTotalAno[$ano]['valorpago'] += (float)$valorpago;
+       } else {
+         $aTotalAno[$ano]['valor']     = (float)$valor;
+         $aTotalAno[$ano]['valorcor']  = (float)$valorcor;
+         $aTotalAno[$ano]['valorpago'] = (float)$valorpago;
        }
     }
 
@@ -456,14 +530,15 @@ if($linhasvalor > 0){
         $pdf->addpage('L');
         $pdf->setfont('arial','b',8);
         $pdf->cell(20,$alt,"Inicial"	   ,1,0,"C",1);
-        $pdf->cell(20,$alt,@$RLv50_data	   ,1,0,"C",1);
-        $pdf->cell(30,$alt,@$RLv70_codforo ,1,0,"C",1);
+        $pdf->cell(15,$alt,"Dt Inicial"	   ,1,0,"C",1);
+        $pdf->cell(30,$alt,"Cod Processo Foro",1,0,"C",1);
         $pdf->cell(20,$alt,@$RLv70_vara ,1,0,"C",1);
         $pdf->cell(70,$alt,@$RLz01_nome	   ,1,0,"C",1);
-        $pdf->cell(40,$alt,@$RLv56_codsit  ,1,0,"C",1);
-        $pdf->cell(30,$alt,"Origem"	   	   ,1,0,"C",1);
+        $pdf->cell(25,$alt,@$RLv56_codsit  ,1,0,"C",1);
+        $pdf->cell(25,$alt,"Origem"	   	   ,1,0,"C",1);
         $pdf->cell(25,$alt,"Vlr Ação"	     ,1,0,"C",1);
-        $pdf->cell(25,$alt,"Vlr Atualizado",1,1,"C",1);
+        $pdf->cell(25,$alt,"Vlr Atualizado",  1,0,"C",1);
+        $pdf->cell(25,$alt,"Vlr Pago",  1,1,"C",1);
 
 
         $troca = 0;
@@ -471,22 +546,24 @@ if($linhasvalor > 0){
       }
       $pdf->setfont('arial','',7);
       $pdf->cell(20,$alt,@$v50_inicial			    ,0,0,"C",$p);
-      $pdf->cell(20,$alt,db_formatar(@$v50_data,'d'),0,0,"C",$p);
+      $pdf->cell(15,$alt,db_formatar(@$v50_data,'d'),0,0,"C",$p);
       $pdf->cell(30,$alt,@$v70_codforo			    ,0,0,"C",$p);
       $pdf->cell(20,$alt,substr(@$v53_descr, 0, 12)				,0,0,"L",$p);
       $pdf->cell(70,$alt,@$nome_exec				,0,0,"L",$p);
-      $pdf->cell(40,$alt,@$v52_descr				,0,0,"L",$p);
-      $pdf->cell(30,$alt,$sDescrOrigem2      ,0,0,"L",$p);
+      $pdf->cell(25,$alt,@$v52_descr				,0,0,"L",$p);
+      $pdf->cell(25,$alt,$sDescrOrigem2      ,0,0,"L",$p);
       if ( ! in_array($v50_inicial,$aIniciais)) {
 
       	$pdf->cell(25,$alt,db_formatar(@$valor,'f')	  ,0,0,"R",$p);
-        $pdf->cell(25,$alt,db_formatar(@$valorcor,'f'),0,1,"R",$p);
+        $pdf->cell(25,$alt,db_formatar(@$valorcor,'f'),    0,0,"R",$p);
+        $pdf->cell(25,$alt,db_formatar(@$valorpago,'f'),    0,1,"R",$p);
 
         $total++;
         $totalvalor += $valor;
         $totalvalorcor +=$valorcor;
+        $totalvalorpago +=$valorpago;
       } else {
-
+        $pdf->cell(25,$alt,"",0,0,"R",$p);
         $pdf->cell(25,$alt,"",0,0,"R",$p);
         $pdf->cell(25,$alt,"",0,1,"R",$p);
       }
@@ -494,18 +571,17 @@ if($linhasvalor > 0){
       if ($p==0) $p=1;
       else $p=0;
 
-
       $aIniciais[] = $v50_inicial;
-
 
     }
   }
 }
 if ($selTipo == "c") {
   $pdf->setfont('arial','b',8);
-  $pdf->cell(230,$alt,'TOTAL DE REGISTROS : '.$total,"T",0,"L",0);
+  $pdf->cell(205,$alt,'TOTAL DE REGISTROS : '.$total,"T",0,"L",0);
   $pdf->cell(25,$alt,db_formatar(@$totalvalor,'f')   ,"T",0,"R",0);
   $pdf->cell(25,$alt,db_formatar(@$totalvalorcor,'f'),"T",0,"R",0);
+  $pdf->cell(25,$alt,db_formatar(@$totalvalorpago,'f'),"T",0,"R",0);
 
   $pdf->ln(10);
 } else {
@@ -515,17 +591,33 @@ if ($selTipo == "c") {
 
 }
 
-$pdf->cell(100,$alt,"Resumo Origens" ,1,1,"C",1);
-$pdf->cell(40 ,$alt,"Origem"		 ,1,0,"C",1);
-$pdf->cell(30 ,$alt,"Valor Ação"	  ,1,0,"C",1);
-$pdf->cell(30 ,$alt,"Vlr. Atualizado",1,1,"C",1);
+$pdf->cell(100,$alt,"Resumo Origens" ,     1,1,"C",1);
+$pdf->cell(40 ,$alt,"Origem"		  ,1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Ação"	  ,1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Atualizado",     1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Pago",           1,1,"C",1);
 
 foreach ($aTotValOrigem as $sDescrOrigem => $aValores){
-  $pdf->cell(40,$alt,$sDescrOrigem	 					   ,1,0,"L",0);
+  $pdf->cell(40,$alt,$sDescrOrigem	 		   ,1,0,"L",0);
   $pdf->cell(30,$alt,db_formatar($aValores['valor'],'f')   ,1,0,"R",0);
-  $pdf->cell(30,$alt,db_formatar($aValores['valorcor'],'f'),1,1,"R",0);
-
+  $pdf->cell(30,$alt,db_formatar($aValores['valorcor'],'f'),1,0,"R",0);
+  $pdf->cell(30,$alt,db_formatar($aValores['valorpago'],'f'),1,1,"R",0);
 }
+
+$pdf->ln(10);
+
+$pdf->cell(40 ,$alt,"Ano"		  ,1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Ação"	  ,1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Atualizado",     1,0,"C",1);
+$pdf->cell(30 ,$alt,"Vlr. Pago",           1,1,"C",1);
+
+foreach ($aTotalAno as $sDescrOrigem => $aValores){
+  $pdf->cell(40,$alt,$sDescrOrigem	 		   ,1,0,"L",0);
+  $pdf->cell(30,$alt,db_formatar($aValores['valor'],'f')   ,1,0,"R",0);
+  $pdf->cell(30,$alt,db_formatar($aValores['valorcor'],'f'),1,0,"R",0);
+  $pdf->cell(30,$alt,db_formatar($aValores['valorpago'],'f'),1,1,"R",0);
+}
+
 
 
 $pdf->Output();

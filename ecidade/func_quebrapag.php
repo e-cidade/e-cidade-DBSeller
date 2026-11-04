@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -38,8 +38,8 @@ $cldb_syscampo = new cl_db_syscampo;
 $clrotulo = new rotulocampo;
 if(isset($selecionados)){
   if(isset($quebras) && $quebras != ""){
-    $arr1 = split(",",$selecionados);
-    $arr2 = split(",",$quebras);
+    $arr1 =explode(",",$selecionados);
+    $arr2 =explode(",",$quebras);
     for($i=0; $i<count($arr1); $i++){
       if(in_array($arr1[$i],$arr2)){
         array_splice($arr1,$i,1);
@@ -54,7 +54,7 @@ if(isset($quebras) && $quebras != ""){
   $result_quebras = $cldb_syscampo->sql_record($cldb_syscampo->sql_query(null,"codcam, nomecam, conteudo, rotulo, descricao",""," codcam in (".$quebras.")"));
 }
 if(isset($totaliz) && $totaliz != ""){
-  $arr_totalizacao = split(",",$totaliz);
+  $arr_totalizacao =explode(",",$totaliz);
 }
 ?>
 <html>
@@ -137,7 +137,7 @@ function js_buscarvalores(){
   if(parent.document.form1.campo_auxilio_sselecion.value != ""){
     valor += virgu + parent.document.form1.campo_auxilio_sselecion.value;
   }
- 
+
   document.form1.selecionados.value = valor;
   document.form1.quebras.value = parent.document.form1.campo_camporecb_qbrapor.value;
   document.form1.totaliz.value = parent.document.form1.campo_camporecb_totaliz.value;
@@ -150,8 +150,8 @@ function js_buscarvalores(){
 <table border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <form name="form1" method="post" action="">
   <tr>
-    <td> 
-   <?
+    <td>
+   <?php
     db_input("selecionados",30,0,true,'hidden',1);
     db_input("quebras",30,0,true,'hidden',1);
     db_input("totaliz",30,0,true,'hidden',1);
@@ -161,7 +161,7 @@ function js_buscarvalores(){
   </tr>
   <tr>
     <td align='center'>
-			<input name="Enviar" type="button" id="enviar" value="Enviar" onclick="js_enviarvalor();"> 
+			<input name="Enviar" type="button" id="enviar" value="Enviar" onclick="js_enviarvalor();">
 			<input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_quebrapag.hide();">
     </td>
   </tr>
@@ -198,7 +198,7 @@ function js_buscarvalores(){
 				        <td id='td22' align='left' width='45%'>
 				        </td>
 			        </div>
-			        <div id='dv3' style="visibility:hidden;">	
+			        <div id='dv3' style="visibility:hidden;">
 				        <td id='td31' align='center' width='5%'>
 				          <input type='checkbox' name='chk31' value='chk31' style="visibility:hidden;" onclick='js_atualizaARR();'>
 				        </td>
@@ -272,7 +272,7 @@ function js_checkarcampos(){
     for(i=0;i<x.length;i++){
       if(i<8){
 	      value = x.options[i].value;
-	      <?
+	      <?php
 	      if(isset($arr_totalizacao) && count($arr_totalizacao) > 0){
 	      	for($i=0; $i<count($arr_totalizacao); $i++){
 	      		echo "
@@ -336,7 +336,7 @@ function js_zeralista(tdh,val,dvh){
     }
   }
 }
-<?
+<?php
 if(!isset($selecionados)){
   echo "js_buscarvalores();";
 }else{

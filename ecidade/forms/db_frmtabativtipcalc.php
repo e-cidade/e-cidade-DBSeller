@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,12 +38,12 @@ $clrotulo->label("q07_inscr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq11_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq11_inscr,"js_pesquisaq11_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q11_inscr',4,$Iq11_inscr,true,'text',$db_opcao," onchange='js_pesquisaq11_inscr(false);'");
 db_input('q07_inscr',4,$Iq07_inscr,true,'text',3,'');
        ?>
@@ -51,15 +51,15 @@ db_input('q07_inscr',4,$Iq07_inscr,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq11_seq?>">
-       <?
+       <?php
        db_ancora(@$Lq11_seq,"js_pesquisaq11_seq(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q11_seq',4,$Iq11_seq,true,'text',$db_opcao," onchange='js_pesquisaq11_seq(false);'")
 ?>
-       <?
+       <?php
 db_input('q07_inscr',4,$Iq07_inscr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('q07_inscr',4,$Iq07_inscr,true,'text',3,'')
        <?=@$Lq11_tipcalc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q11_tipcalc',4,$Iq11_tipcalc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_tabativtipcalc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

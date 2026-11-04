@@ -100,39 +100,47 @@ case "getDadosSlip" :
             $oRetorno->sCNPJ = db_formatar($oCgm->getCpf(), "cpf");
         }
 
-
-            // buscamos o processo
-            $oRetorno->k145_numeroprocesso = null;
-            $oDaoSlipProcesso = new cl_slipprocesso();
-            $sSqlSlipProcesso = $oDaoSlipProcesso->sql_query_file(null, "*", null, "k145_slip = {$oParam->iCodigoSlip}");
-            $rsSlipProcesso   = $oDaoSlipProcesso->sql_record($sSqlSlipProcesso);
+        // buscamos o processo
+        $oRetorno->k145_numeroprocesso = null;
+        $oDaoSlipProcesso = new cl_slipprocesso();
+        $sSqlSlipProcesso = $oDaoSlipProcesso->sql_query_file(null, "*", null, "k145_slip = {$oParam->iCodigoSlip}");
+        $rsSlipProcesso   = $oDaoSlipProcesso->sql_record($sSqlSlipProcesso);
         if ($oDaoSlipProcesso->numrows > 0) {
 
             $oDadosSlipProcesso = db_utils::fieldsMemory($rsSlipProcesso, 0);
             $oRetorno->k145_numeroprocesso = urlencode($oDadosSlipProcesso->k145_numeroprocesso);
         }
 
+        /*
+         * descrição dos demais campos:
+         *
+         * conta debito
+         * caracteristica debito
+         * conta credito
+         * caracteristica credito
+         * descricao do historico
+         */
+        $oCaracteristicaCredito = new CaracteristicaPeculiar($oRetorno->sCaracteristicaCredito);
+        $oCaracteristicaDebito  = new CaracteristicaPeculiar($oRetorno->sCaracteristicaDebito);
+        $oRetorno->sCaracteristicaPeculiarCredito = urlencode($oCaracteristicaCredito->getDescricao());
+        $oRetorno->sCaracteristicaPeculiarDebito  = urlencode($oCaracteristicaDebito->getDescricao());
 
-
-            /*
-             * descrição dos demais campos:
-             *
-             * conta debito
-             * caracteristica debito
-             * conta credito
-             * caracteristica credito
-             * descricao do historico
-             */
-            $oCaracteristicaCredito = new CaracteristicaPeculiar($oRetorno->sCaracteristicaCredito);
-            $oCaracteristicaDebito  = new CaracteristicaPeculiar($oRetorno->sCaracteristicaDebito);
-            $oRetorno->sCaracteristicaPeculiarCredito = urlencode($oCaracteristicaCredito->getDescricao());
-            $oRetorno->sCaracteristicaPeculiarDebito  = urlencode($oCaracteristicaDebito->getDescricao());
-
-            $oDaoConHist = new cl_conhist;
-            $sSqlConHist = $oDaoConHist->sql_query($oRetorno->iHistorico);
-            $rsConHist   = $oDaoConHist->sql_record($sSqlConHist);
+        $oDaoConHist = new cl_conhist;
+        $sSqlConHist = $oDaoConHist->sql_query($oRetorno->iHistorico);
+        $rsConHist   = $oDaoConHist->sql_record($sSqlConHist);
         if ($oDaoConHist->numrows > 0) {
-                $oRetorno->sHistorico = urlencode(db_utils::fieldsMemory($rsConHist, 0)->c50_descr);
+          $oRetorno->sHistorico = urlencode(db_utils::fieldsMemory($rsConHist, 0)->c50_descr);
+        }
+
+        $parametroMomentoSlipAuto = ParametroCaixa::getParametroMomentoSlipAutomatico(db_getsession("DB_anousu"));
+        /*
+         * Verificamos se o slip possui configuração na agenda
+         */
+        $oRetorno->configuracao_agenda = 'false';
+        $clEmpAgeConf = new cl_empageconf();
+        $rsEmpageConf   = $clEmpAgeConf->sql_record($clEmpAgeConf->sql_query_file($oSlip->getMovimento()));
+        if ($clEmpAgeConf->numrows > 0 && $parametroMomentoSlipAuto == 2) {
+            $oRetorno->configuracao_agenda = 'true';
         }
 
     } catch (Exception $eErro) {
@@ -152,7 +160,7 @@ case "salvarSlip":
 
     db_inicio_transacao();
     try {
-        
+
         $iCodigoSlip = null;
         if (isset($oParam->k17_codigo) && !empty($oParam->k17_codigo)) {
             $iCodigoSlip = $oParam->k17_codigo;
@@ -167,6 +175,19 @@ case "salvarSlip":
 
         if ($oContaCredito->getReduzido() == '') {
             throw new BusinessException("A Conta Crédito informada é inválida.");
+        }
+
+        /**
+         * devemos validar a conta da tesouraria vinculada aos reduzidos
+         * nao pode permitir usar uma conta que tenha data limite.
+         */
+        if ($oContaCredito->getContaTesouraria()->getDataLimite() != null) {
+
+            throw new BusinessException("A Conta Credito informada possui data limite.");
+        }
+        if ($oContaDebito->getContaTesouraria()->getDataLimite() != null) {
+
+            throw new BusinessException("A Conta Debito informada possui data limite.");
         }
 
         $oTransferencia = TransferenciaFactory::getInstance($oParam->iCodigoTipoOperacao, $iCodigoSlip);
@@ -197,7 +218,7 @@ case "salvarSlip":
             $slipImportacao = Slip::getSlipCompleto($oParam->codigoSlipAux);
             Slip::salvarVinculoImportacao($slipImportacao, $oTransferencia->getCodigoSlip());
         }
-        
+
         $oDaoExcluiFinalidade = new cl_slipfinalidadepagamentofundeb();
         $oDaoExcluiFinalidade->excluir(null, "e153_slip = {$oTransferencia->getCodigoSlip()}");
         if ($oDaoExcluiFinalidade->erro_status == "0") {
@@ -222,7 +243,7 @@ case "salvarSlip":
 
 
         /**
-         * se o parametro da tesouraria slip::getParametroSlipAutomatico() estiver true
+         * se o parametro da tesouraria slip::getParametroSlipAutomaticoLiquidacao() estiver true
          * sera gerado um slip adicional invertendo debito e credito para esse novo
          * slip gerado, o restante dos dados segue igual ao slip original
          *
@@ -231,8 +252,8 @@ case "salvarSlip":
          *   para os tipos de Operação ($oParam->iCodigoTipoOperacao)  07 , 11
          */
         $oRetorno->slipAutomatico = "";
-        if (slip::getParametroSlipAutomatico()) {
-            
+        if (slip::getParametroSlipAutomaticoLiquidacao()) {
+
             $aTiposPagamentos = array(7, 11);
 
             if (in_array($oParam->iCodigoTipoOperacao, $aTiposPagamentos) ) {
@@ -264,7 +285,7 @@ case "salvarSlip":
                 $oNovoSlip->save();
                 Slip::vincularTipoOperacaoSlip($oNovoSlip->getSlip(), $iTipoPagamento);
                 Slip::vincularSlipOperacaoExtra($oTransferencia->getCodigoSlip(), $oNovoSlip->getSlip());
-            
+
                 $oRetorno->slipAutomatico = $oNovoSlip->getSlip();
             }
         }
@@ -395,7 +416,7 @@ case "excluirSlip":
         db_inicio_transacao();
 
 
-        if (slip::getParametroSlipAutomatico()) {
+        if (slip::getParametroSlipAutomaticoLiquidacao()) {
 
             /**
              * exclui o slip extra
@@ -502,7 +523,7 @@ case "anularSlip" :
     db_inicio_transacao();
 
     try {
- 
+
         $oTransferencia = TransferenciaFactory::getInstance($oParam->iCodigoTipoOperacao, $oParam->k17_codigo);
         $oTransferencia->anular($oParam->sMotivo);
 
@@ -517,7 +538,7 @@ case "anularSlip" :
             $oTransferencia->executarLancamentoContabil(null, true);
         }
 
-        if (slip::getParametroSlipAutomatico()) {
+        if (slip::getParametroSlipAutomaticoLiquidacao()) {
 
           /**
            * estornar o slip extra gerado automaticamente
@@ -633,10 +654,10 @@ case "getDadosTransferencia" :
             $slipRetencaoReceitas = Slip::getSlipRetencaoReceitas($oTransferencia->getCodigoSlip());
             $slipReceitaPlanilha = Slip::getSlipReceitaPlanilha($oTransferencia->getCodigoSlip());
             $slipOperacaoExtra = Slip::getSlipOperacaoExtra($oTransferencia->getCodigoSlip());
-    
+
             if(!empty($slipReceitaPlanilha) || !empty($slipOperacaoExtra) || !empty($slipRetencaoReceitas)){
                 $oRetorno->vinculo    = true;
-            } 
+            }
         }
 
     } catch (Exception $eErro) {
@@ -982,10 +1003,10 @@ case "getAutenticacoesSlip":
     $sCampos .= "corrente.k12_autent,";
     $sCampos .= "corrente.k12_valor,";
     $sCampos .= "e91_cheque,";
-    $sCampos .= "coalesce(e96_descr, (select e96_descr 
-                                        from empageslip 
-                                             inner join empagemovforma on e89_codmov = e97_codmov 
-                                             inner join empageforma on e97_codforma = e96_codigo 
+    $sCampos .= "coalesce(e96_descr, (select e96_descr
+                                        from empageslip
+                                             inner join empagemovforma on e89_codmov = e97_codmov
+                                             inner join empageforma on e97_codforma = e96_codigo
                                        where e89_codigo = k12_codigo)) as descricao,";
     $sCampos .= "(select coalesce(c86_conlancam, 0)
                     from conlancamcorrente

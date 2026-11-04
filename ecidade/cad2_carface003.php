@@ -219,7 +219,7 @@ function js_mostracargrup1( chave1, chave2 ) {
 
 </body>
 </html>
-<?
+<?php
 $func_iframe                 = new janela( 'db_iframe_cargrup', '' );
 $func_iframe->posX           = 1;
 $func_iframe->posY           = 1;

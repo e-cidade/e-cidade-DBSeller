@@ -185,7 +185,11 @@ for($iIndiceTurma = 0; $iIndiceTurma < count($aDisciplinas); $iIndiceTurma++) {
     
     if (count($professores) > 0) {
       foreach ($professores as $prof) {
-        $oDadosTurma->professor = $prof->getNome();
+        $nome        = $prof->getNome();
+        $nome_social = $prof->getNomeSocial();
+
+        $oDadosTurma->professor = $nome;
+        $oDadosTurma->professorSocial = $nome_social;
       }
     }
 
@@ -418,14 +422,14 @@ function headerRelatorio($oPdf, $iContador) {
     $oPdf->Cell(40,  $oPdf->oDadosRelatorio->iAlturaLinha,  "Turma: {$oDados->turma}",           0, 0, "L", 0);
     $oPdf->Cell(80,  $oPdf->oDadosRelatorio->iAlturaLinha,  "Período: {$oDados->periodo}",       0, 0, "L", 0);
     $oPdf->Cell(40,  $oPdf->oDadosRelatorio->iAlturaLinha,  "Turno: {$oDados->turno}",           0, 1, "L", 0);
-    $oPdf->Cell(100, $oPdf->oDadosRelatorio->iAlturaLinha,  "Disciplina (Área): {$sDisciplina}", 0, 0, "L", 0);
-    if ($oDados->professor) {
-      $oPdf->Cell(100, $oPdf->oDadosRelatorio->iAlturaLinha,  "Professor: {$oDados->professor} ",                       0, 1, "L", 0);
+    $oPdf->Cell(80, $oPdf->oDadosRelatorio->iAlturaLinha,  "Disciplina (Área): {$sDisciplina}",  0, 0, "L", 0);
+    $oPdf->Cell(70, $oPdf->oDadosRelatorio->iAlturaLinha,  mb_strimwidth("Professor: {$oDados->professor} ", 0, 72), 0, 1, "L", 0);
+    if(isset($oDados->professorSocial) && !empty($oDados->professorSocial)){
+      "\n";
+      $oPdf->setX(90);
+      $oPdf->Cell(70, $oPdf->oDadosRelatorio->iAlturaLinha,  mb_strimwidth("Nome Social: {$oDados->professorSocial} ", 0, 70), 0, 1, "L", 0);
     }
-  if($oDados->professor == null){
-    $oPdf->Cell(100, $oPdf->oDadosRelatorio->iAlturaLinha,  "Professor:  ",                       0, 1, "L", 0);
-  }
-         
+    
   $oPdf->setfont('times', 'b', 8);
   $oPdf->Cell(16, $oPdf->oDadosRelatorio->iAlturaLinha*2,  "Nº MATR.",  1, 0, "L", 0);
   $oPdf->Cell(14, $oPdf->oDadosRelatorio->iAlturaLinha*2,  "ORDEM",     1, 0, "L", 0);
@@ -482,7 +486,7 @@ function getProfessorByRegencia($codigoregencia = 0)
  
   $query = <<<SQL
 select
-    distinct z01_nome
+    distinct z01_nome, z04_nomesocial
 from
     regenciahorario
 join rechumano on
@@ -493,6 +497,8 @@ join rhpessoal on
     rh01_regist = ed284_i_rhpessoal
 join cgm on
     rh01_numcgm = z01_numcgm
+join cgmfisico on 
+    cgmfisico.z04_numcgm = cgm.z01_numcgm
 where
     ed58_i_regencia = {$codigoregencia}
 SQL;

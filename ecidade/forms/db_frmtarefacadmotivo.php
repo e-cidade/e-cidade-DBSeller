@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltarefacadmotivo->rotulo->label();
        <?=@$Lat54_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at54_sequencial',10,$Iat54_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('at54_sequencial',10,$Iat54_sequencial,true,'text',$db_opcao,"")
        <?=@$Lat54_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('at54_descr',40,$Iat54_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('at54_descr',40,$Iat54_descr,true,'text',$db_opcao,"")
        <?=@$Lat54_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'usa no atendimento','2'=>'não usa no atendimento','6'=>'Administração');
 db_select('at54_tipo',$x,true,$db_opcao,"");
 ?>
@@ -67,7 +67,7 @@ db_select('at54_tipo',$x,true,$db_opcao,"");
        <?=@$Lat54_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('at54_nome',20,$Iat54_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefacadmotivo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsolicitemele->rotulo->label("pc18_solicitem");
               <?=$Lpc18_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc18_solicitem",10,$Ipc18_solicitem,true,"text",4,"","chave_pc18_solicitem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsolicitemele->rotulo->label("pc18_solicitem");
               <?=$Lpc18_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc18_codele",6,$Ipc18_codele,true,"text",4,"","chave_pc18_codele");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clsolicitemele->rotulo->label("pc18_solicitem");
               <?=$Lpc18_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc18_solicitem",10,$Ipc18_solicitem,true,"text",4,"","chave_pc18_solicitem");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clsolicitemele->rotulo->label("pc18_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitemele.php")==true){
@@ -129,12 +129,12 @@ $clsolicitemele->rotulo->label("pc18_solicitem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -66,13 +66,13 @@ class cl_aguaisencaocgm {
                  x56_observacoes = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_aguaisencaocgm() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaisencaocgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_aguaisencaocgm {
    }
 
    // funcao para Inclusão
-   function incluir ($x56_sequencial){
+   public function incluir ($x56_sequencial){
      if($this->x56_aguaisencaotipo == null ){
        $this->erro_sql = " Campo Tipo de Isenção não informado.";
        $this->erro_campo = "x56_aguaisencaotipo";

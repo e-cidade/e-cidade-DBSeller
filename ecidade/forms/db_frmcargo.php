@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,14 +36,14 @@ $clcargo->rotulo->label();
       <strong>Ano / Mês :&nbsp;&nbsp;</strong>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($r65_anousu)){
         $r65_anousu = db_anofolha();
       }
       db_input('r65_anousu',4,$Ir65_anousu,true,'text',$db_opcao,'')
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       if(!isset($r65_mesusu)){
         $r65_mesusu = db_mesfolha();
       }
@@ -56,7 +56,7 @@ $clcargo->rotulo->label();
       <?=@$Lr65_cargo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r65_cargo',5,$Ir65_cargo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -66,7 +66,7 @@ $clcargo->rotulo->label();
       <?=@$Lr65_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r65_descr',30,$Ir65_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_cargo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

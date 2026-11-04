@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -149,7 +149,7 @@ if($ponto == "fx"){
         </td>
       </tr>
       <tr>
-        <td title="<? echo isset($Tr90_regist) ? $Tr90_regist : '' ?>">
+        <td title="<?php echo isset($Tr90_regist) ? $Tr90_regist : '' ?>">
           <?php
             db_ancora(@$Lr90_regist, "js_pesquisar90_regist(true);", $db_opcao);
           ?>

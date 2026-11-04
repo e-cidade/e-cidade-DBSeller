@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -104,7 +104,7 @@ db_fieldsmemory($result,0);
        <b>Informe o ano:</b>
       </td>
       <td>
-       <?db_input('ano_chave',4,@$Iano_chave,true,'text',$db_opcao,'')?>
+       <?php db_input('ano_chave',4,@$Iano_chave,true,'text',$db_opcao,'')?>
        &nbsp;&nbsp;&nbsp;&nbsp;
        <b>Filtro:</b>
        <select name="tipo" style="width:180px;height:15px;font-size:10px;padding:0px;">
@@ -116,7 +116,7 @@ db_fieldsmemory($result,0);
      </tr>
     </table>
     <br><br>
-    <?
+    <?php
     if(isset($ano_chave)){
      ?>
      <table width="100%" align="left" border="1" cellspacing="0" cellpadding="2">
@@ -129,7 +129,7 @@ db_fieldsmemory($result,0);
        <td>Próxima Progressão</td>
        <td></td>
       </tr>
-      <?
+      <?php
       $result = $clprogmatricula->sql_record($clprogmatricula->sql_query("","*","z01_nome"," ed112_c_situacao = 'A'"));
       $linhas = $clprogmatricula->numrows;
       $cor1 = "#F3F3F3";
@@ -281,30 +281,30 @@ db_fieldsmemory($result,0);
           <b><?=db_formatar($ed112_d_dataprevisao,'d')?></b>
          </td>
          <td>
-          <?
+          <?php
           if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral){
            $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
            db_fieldsmemory($result4,0);
            if($ultimaclasse==$ed107_i_sequencia){
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php
            }else{
             $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
             db_fieldsmemory($result4,0);
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php
            }
           }else{
            ?>
            <input type="button" name="confirmar" value="Planilha" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-           <?
+           <?php
           }
           ?>
          </td>
         </tr>
-        <?
+        <?php
        }elseif($tipo=="P" && ($ano_chave==""||$ano_chave==$ed112_d_dataprevisao_ano)){
         if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral){
          $count++;
@@ -329,31 +329,31 @@ db_fieldsmemory($result,0);
            <b><?=db_formatar($ed112_d_dataprevisao,'d')?></b>
           </td>
           <td>
-           <?
+           <?php
            $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
            db_fieldsmemory($result4,0);
            if($ultimaclasse==$ed107_i_sequencia){
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php
            }else{
             $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
             db_fieldsmemory($result4,0);
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php
            }
            ?>
           </td>
          </tr>
-         <?
+         <?php
         }
        }
       }
       if($count==0){
        ?>
        <tr bgcolor="#F3F3F3"><td align="center" colspan="6">Nenhum registro com os filtros selecionados.</td></tr>
-       <?
+       <?php
       }
      }
     ?>
@@ -365,7 +365,7 @@ db_fieldsmemory($result,0);
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

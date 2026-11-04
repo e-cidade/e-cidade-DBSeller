@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($alterar)){
 <table style="padding-top:15px">
   <tr>
     <td>
-      <?
+      <?php
        include(modification("forms/db_frmcustoplanoanaliticabens.php"));
       ?>
     </td>
@@ -71,7 +71,7 @@ if(isset($alterar)){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clcustoplanoanaliticabens->erro_status=="0"){
     $clcustoplanoanaliticabens->erro(true,false);

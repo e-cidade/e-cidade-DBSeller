@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ function js_submit_form(){
 <table border="0" align='left'>
     <tr>
     	<td colspan=2 >
-    	<?
+    	<?php
     	$dis="";
 		$sql=$clsolicita->sql_query_andsol("distinct pc11_numero,pc11_codigo,pc11_quant,pc11_seq,pc11_vlrun,pc11_resum,pc01_codmater,pc01_descrmater,pc01_servico,pc17_unid,pc17_quant,m61_descr,m61_usaquant","where pc10_numero=$pc10_numero and  p64_codtran is not null and y.pc43_depto=".db_getsession("DB_coddepto"));
 		$result=db_query($sql);		
@@ -74,7 +74,7 @@ function js_submit_form(){
     		<?=@$Lp78_despacho?>
    		</td>
     	<td nowrap title="<?=@$Tp78_despacho?>"align='left' colspan=3>       
-			<?
+			<?php
 			db_textarea('p78_despacho',12,100,$Ip78_despacho,true,'text',$db_opcao,"");
 			?>
 		</td>

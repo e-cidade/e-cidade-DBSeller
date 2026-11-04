@@ -30,6 +30,10 @@ use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\DadosESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use ServidorRepository;
+use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
+use Exception;
+use CgmRepository;
 
 class Reintegracao extends ProcessamentoAbstract implements ProcessamentoInterface
 {
@@ -42,33 +46,79 @@ class Reintegracao extends ProcessamentoAbstract implements ProcessamentoInterfa
 
     public function processar()
     {
+        if (empty($this->getMesCompetencia()) && !empty($this->getAnoCompetencia())) {
+            throw new \BusinessException("Mês da competência, não informado.");
+        }
+
+        if (!empty($this->getMesCompetencia()) && empty($this->getAnoCompetencia())) {
+            throw new \BusinessException("Ano da competência, não informado.");
+        }
+
+        /** Criamos as propriedades internas de ano e mes, devido aos cases de competencia e a necessidade de busca
+         *  e necessidade de busca por ano e mes
+         */
+
+        $codigoInstituicao = db_getsession("DB_instit");
+        $ano = $this->anoCompetencia;
+        $mes = $this->mesCompetencia;
+        if (empty($ano)) {
+            $ano = CompetenciaHelper::get()->getAno();
+        }
+        if (empty($mes)) {
+            $mes = CompetenciaHelper::get()->getMes();
+        }
+
+        if (empty($this->servidores)) {
+            if (!empty($this->selecao)) {
+                try {
+                    $this->servidores = ServidorRepository::getServidoresBySelecao(
+                        $ano,
+                        $mes,
+                        $this->selecao,
+                        $codigoInstituicao
+                    );
+                } catch (Exception $e) {
+                    throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
+                }
+            } else {
+                if (!empty($this->anoCompetencia) && !empty($this->mesCompetencia)) {
+                    $this->servidores = ServidorRepository::getServidoresCompetenciaReintegracao(
+                        $this->anoCompetencia,
+                        $this->mesCompetencia,
+                        $codigoInstituicao
+                    );
+                } else {
+                    $this->servidores = ServidorRepository::getServidoresCompetenciaReintegracao(
+                        $ano,
+                        $mes,
+                        $codigoInstituicao
+                    );
+                }
+            }
+        }
+
+        if (sizeof($this->servidores) == 0) {
+            throw new \BusinessException("Nenhuma matrícula encontrada para o filtro informado");
+        }
+
         $bAlteracao = false;
-        $oDadosESocial = new DadosESocial();
-        $oDadosESocial->setCgmEmpregador($this->cgm);
-
-        $oDadosPreenchimento = $oDadosESocial->getPorTipo(Tipo::REINTEGRACAO);
         $oFormatter = FormatterFactory::get(Tipo::S2298);
-        $aDadosPreenchimento = $oFormatter->formatar($oDadosPreenchimento);
-
-        foreach ($aDadosPreenchimento as $iIndice => $oDados) {
+        $oFormatter->setEmpregador(CgmRepository::getByCodigo($this->cgm));
+        $oFormatter->setIgnoraValidacao($this->getIgnoraValidacao());
+        $aDadosPreenchimentoReintegracao = $oFormatter->formatar($this->servidores);
+        $validaMd5 = true;
+        if ($this->envioForcado) {
+            $validaMd5 = false;
+        }
+        foreach ($aDadosPreenchimentoReintegracao as $iIndice => $oDados) {
             $oEvento = new Evento(Tipo::S2298, $this->cgm, $oDados->referencia, $oDados);
             $oEvento->iContador = $iIndice;
 
-            if ($oEvento->adicionarFila()) {
+            if ($oEvento->adicionarFila(false, $validaMd5)) {
                 $bAlteracao = true;
             }
         }
 
         return $bAlteracao;
-    }
-
-    public function getCgm()
-    {
-        return $this->cgm;
-    }
-
-    public function setCgm($cgm)
-    {
-        $this->cgm = $cgm;
     }
 }

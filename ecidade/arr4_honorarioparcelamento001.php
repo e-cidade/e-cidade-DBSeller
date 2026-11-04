@@ -71,7 +71,7 @@ db_app::load("prototype.js");
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input("v70_sequencial", 4, $Iv70_sequencial, true, "text", 4, "onchange='js_pesquisaprocessoforo(false);'");
                         db_input("v70_codforo", 40, $Iv70_codforo, true, "text", 3, "");
                         ?>
@@ -94,7 +94,7 @@ db_app::load("prototype.js");
                         Parcelas do Honorário:
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input("ar43_numeroparcelas", 4, true, "ar43_numeroparcelas", true, "text", 4);
                         ?>
                     </td>
@@ -106,7 +106,7 @@ db_app::load("prototype.js");
         <input name="limpa" type="button" onclick='js_limpa();' value="Limpar Campos">
     </form>
 </div>
-<?
+<?php
 db_menu();
 ?>
 </body>

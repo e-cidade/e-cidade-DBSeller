@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ if (isset($excluir)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <center>
             <fieldset style="width:95%"><legend><b>Exclusão de Aluno</b></legend>
-              <?
+              <?php
                 include(modification("forms/db_frmalunodadosfora.php"));
               ?>
             </fieldset>
@@ -94,7 +94,7 @@ if (isset($excluir)) {
     </table>
   </body>
 </html>
-<?
+<?php
 
 if (isset($excluir)) {
 

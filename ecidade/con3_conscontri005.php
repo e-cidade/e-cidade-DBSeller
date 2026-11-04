@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ $db_opcao = 1;
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   if(isset($contribs)){
     $d02_contri=$contribs;
     $j01_matric="";
@@ -112,10 +112,10 @@ $db_opcao = 1;
 <?=$Lj01_matric?>
           </td>
 	  <td>
-      <?
+      <?php
        db_input("d01_codedi",6,$Id01_codedi,true,'hidden',$db_opcao)
       ?>
-<?
+<?php
   db_input('j01_matric',8,$Ij01_matric,true,'text',3);
   db_input('z01_nome',50,$Iz01_nome,true,'text',3);
 ?>
@@ -123,7 +123,7 @@ $db_opcao = 1;
         </tr>
     <tr>
       <td colspan="2" align="left" valign="top" >
-       <?
+       <?php
           $legenda="Código do edital $d01_codedi";
        include(modification("con3_conscontri008.php"));
        ?> 
@@ -131,7 +131,7 @@ $db_opcao = 1;
     </tr>
       <tr>
         <td colspan="2"   height="25" align="center">
-  <?
+  <?php
   $consultar="Consultar";
   db_input("consultar",6,0,true,'button',$db_opcao,"onClick='js_consultar();'");
   $voltar="Voltar";
@@ -145,7 +145,7 @@ $db_opcao = 1;
     </td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

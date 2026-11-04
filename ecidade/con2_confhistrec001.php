@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ function js_emite(opcao,origem){
       </tr>
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 			db_selinstit('parent.js_limpa', 300, 100);
 	?>
 	</td>
@@ -92,7 +92,7 @@ function js_emite(opcao,origem){
     <tr>
      <td align="right" ><strong>Recurso:</strong></td>
 	<td>
- 	<?
+ 	<?php
 		$clorctiporec = new cl_orctiporec;
 		$dbwhere = " o15_datalimite is null or o15_datalimite > '".date('Y-m-d',db_getsession('DB_datausu'))."'";
 		$res = $clorctiporec->sql_record($clorctiporec->sql_query(null,"*","o15_codigo",$dbwhere));
@@ -103,7 +103,7 @@ function js_emite(opcao,origem){
     <tr>  
       <td><b> Data Limite :</b></td>
       <td>
-         <?
+         <?php
              db_inputdata('DBtxt21', @$DBtxt21_dia, @$DBtxt21_mes, @$DBtxt21_ano, true, 'text', 4);
          ?>
       </td>
@@ -118,7 +118,7 @@ function js_emite(opcao,origem){
       
 </form>
     
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -149,6 +149,7 @@ switch ($oParam->sExec) {
         try {
 
             $oRetorno->aProcdiver = array();
+            $oRetorno->aVinculoReceitaProced  = array();
             $oRetorno->procedenciaDividaAtiva = array();
             $oRetorno->aDebitos = array();
 
@@ -182,6 +183,25 @@ switch ($oParam->sExec) {
                 if ($oDaoProcdiver->numrows > 0) {
                     $oRetorno->aProcdiver = db_utils::getCollectionByRecord($rsBuscaProcedencia, false, false, true);
                 }
+                $sSqlVinculoReceitaProcedencia  = "select k202_receita as receita,
+                                                          k202_procdiver as procdiver
+                                                     from caixa.vinculoreceitaprocedencia
+                                                    inner join procdiver on dv09_procdiver = k202_procdiver";
+                $sSqlVinculoReceitaProcedencia .= " where {$sWhereProcDriver}";
+
+                $rsVinculoReceitaProcedencia    = db_query($sSqlVinculoReceitaProcedencia);
+                if(!$rsVinculoReceitaProcedencia) {
+
+                  throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_procedencia',$oMensagem));
+                }
+
+                $iTotalDadosOrigem = pg_num_rows($rsVinculoReceitaProcedencia);
+
+                for ($iIndice=0; $iIndice < $iTotalDadosOrigem; $iIndice++) {
+
+                  $oDadosVinculo = db_utils::fieldsMemory($rsVinculoReceitaProcedencia, $iIndice);
+                  $oRetorno->aVinculoReceitaProced[$oDadosVinculo->receita] = $oDadosVinculo->procdiver;
+                }
             }
 
             if (!empty($oParam->importaDividaAtiva) && $oParam->importaDividaAtiva === true) {
@@ -195,6 +215,33 @@ switch ($oParam->sExec) {
                     throw new BusinessException("Não foi encontrada nenhuma procedência para importação de Dívida Ativa.");
                 }
                 $oRetorno->procedenciaDividaAtiva = db_utils::getCollectionByRecord($resBuscaProcedencia);
+                  foreach ($oRetorno->aDebitos as $oDebitos) {
+
+                  $sSqlVinculoReceitaProcedencia = "select k00_numpre  as numpre,
+                                                           dv09_proced as procdiv
+                                                      from arrecad
+                                                     inner join diversos                          on dv05_numpre    = k00_numpre
+                                                     inner join procdiver                         on dv09_procdiver = dv05_procdiver
+                                                     inner join proced                            on dv09_proced    = v03_codigo
+                                                     where k00_numpre = {$oDebitos->k00_numpre}
+                                                       and k00_numpar = {$oDebitos->k00_numpar}
+                                                       and k00_receit = {$oDebitos->k02_codigo}
+                                                       and (v03_limite is null or v03_limite >= '{$dtHoje}')
+                                                       and v03_instit = " . db_getsession("DB_instit");
+
+                  $rsVinculoReceitaProcedencia    = db_query($sSqlVinculoReceitaProcedencia);
+                  if(!$rsVinculoReceitaProcedencia) {
+
+                    throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_procedencia',$oMensagem));
+                  }
+
+                  $iTotalDadosOrigem = pg_num_rows($rsVinculoReceitaProcedencia);
+                  for ($iIndice=0; $iIndice < $iTotalDadosOrigem; $iIndice++) {
+
+                    $oDadosVinculo = db_utils::fieldsMemory($rsVinculoReceitaProcedencia, $iIndice);
+                    $oRetorno->aVinculoReceitaProced["{$oDadosVinculo->numpre}"] = $oDadosVinculo->procdiv;
+                  }
+                }
             }
         } catch (Exception $e) {
 
@@ -283,6 +330,24 @@ switch ($oParam->sExec) {
                 "dv09_descra",
                 implode(' and ', $where));
 
+      	    $sSqlVinculoReceitaProcedencia  = "select k202_receita as receita,
+                                                    k202_procdiver as procdiver
+                                                 from caixa.vinculoreceitaprocedencia
+                                                inner join procdiver on dv09_procdiver = k202_procdiver
+                                                where ".implode(' and ', $where);
+            $rsVinculoReceitaProcedencia    = db_query($sSqlVinculoReceitaProcedencia);
+            if(!$rsVinculoReceitaProcedencia) {
+
+              throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_procedencia',$oMensagem));
+            }
+
+            $iTotalDadosOrigem = pg_num_rows($rsVinculoReceitaProcedencia);
+            $oRetorno->aVinculoReceitaProced = [];
+            for ($iIndice=0; $iIndice < $iTotalDadosOrigem; $iIndice++) {
+              $oDadosVinculo = db_utils::fieldsMemory($rsVinculoReceitaProcedencia, $iIndice);
+              $oRetorno->aVinculoReceitaProced[$oDadosVinculo->receita] = $oDadosVinculo->procdiver;
+            }
+
             if (!empty($oParam->importaDividaAtiva) && $oParam->importaDividaAtiva === true) {
 
                 $daoProced = new cl_proced();
@@ -347,16 +412,23 @@ switch ($oParam->sExec) {
             }
 
             $sSqlDebitos = $oDaoArrecad->sql_query_getReceitasTipo($oParam->iCadTipo, $buscarPorCadTipo);
+            if ($oParam->importaDividaAtiva === true ) {
+                $sSqlDebitos = $oDaoArrecad->sql_query_getReceitasTipoVinculo($oParam->iCadTipo, $buscarPorCadTipo);
+            }
 
             if ($buscarDebitosOrigem) {
                 $sSqlDebitos = "
                     select distinct
-                           tabrec.k02_descr,
-                           arreold.k00_receit
-                      from arreold
-                           inner join arreinstit on arreinstit.k00_numpre = arreold.k00_numpre
-                           inner join diversos on diversos.dv05_numpre = arreold.k00_numpre
-                           inner join termodiver on termodiver.dv10_coddiver = diversos.dv05_coddiver
+                            tabrec.k02_descr,
+                            arreold.k00_receit,
+                            dv09_procdiver,
+                            dv09_proced
+                            from arreold
+                    inner join arreinstit on arreinstit.k00_numpre = arreold.k00_numpre
+                    inner join diversos on diversos.dv05_numpre = arreold.k00_numpre
+                    inner join procdiver  on diversos.dv05_procdiver = procdiver.dv09_procdiver
+                    inner join proced     on proced.v03_codigo       = procdiver.dv09_proced
+                    inner join termodiver on termodiver.dv10_coddiver = diversos.dv05_coddiver
                            inner join termo on termo.v07_parcel = termodiver.dv10_parcel
                            inner join arrecad on arrecad.k00_numpre = termo.v07_numpre
                            inner join tabrec on tabrec.k02_codigo = arrecad.k00_receit
@@ -369,10 +441,15 @@ switch ($oParam->sExec) {
                 $sSqlDebitos = "
 
                     select distinct
-                       k02_descr,
-                           k00_receit
-                  from arrecad
-                       inner     join tabrec   on k02_codigo = k00_receit
+                        k02_descr,
+                        k00_receit,
+                        dv09_procdiver,
+                        dv09_proced
+                        from arrecad
+                       inner join tabrec   on k02_codigo = k00_receit
+                  left join diversos   on diversos.dv05_numpre = arrecad.k00_numpre
+                  left join procdiver  on diversos.dv05_procdiver = procdiver.dv09_procdiver
+                  left join proced     on proced.v03_codigo       = procdiver.dv09_proced
                        natural join arretipo
                        natural join cadtipo
                        natural join arreinstit
@@ -381,11 +458,16 @@ switch ($oParam->sExec) {
                      union all
                     select distinct
                            tabrec.k02_descr,
-                           arreold.k00_receit
-                      from arreold
+                           arreold.k00_receit,
+                           dv09_procdiver,
+                           dv09_proced
+                           from arreold
                            inner join arreinstit on arreinstit.k00_numpre = arreold.k00_numpre
                            inner join diversos on diversos.dv05_numpre = arreold.k00_numpre
-                           inner join termodiver on termodiver.dv10_coddiver = diversos.dv05_coddiver
+
+                    inner join procdiver  on diversos.dv05_procdiver = procdiver.dv09_procdiver
+                    inner join proced     on proced.v03_codigo       = procdiver.dv09_proced
+                    inner join termodiver on termodiver.dv10_coddiver = diversos.dv05_coddiver
                            inner join termo on termo.v07_parcel = termodiver.dv10_parcel
                            inner join arrecad on arrecad.k00_numpre = termo.v07_numpre
                            inner join tabrec on tabrec.k02_codigo = arrecad.k00_receit
@@ -405,7 +487,23 @@ switch ($oParam->sExec) {
                 throw new BusinessException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'nenhuma_receita_encontrada'));
             }
 
-            $oRetorno->aReceitas     = db_utils::getCollectionByRecord($rsDAODebitos,   false, false, true);
+
+            if ($oParam->importaDividaAtiva === true ) {
+
+               $sSqlVinculoReceitaProcedencia  = $sSqlDebitos." and (v03_limite is null or v03_limite >= '{$dtHoje}') and v03_instit = " . db_getsession("DB_instit");
+
+               $rsVinculoReceitaProcedencia    = db_query($sSqlVinculoReceitaProcedencia);
+               if(!$rsVinculoReceitaProcedencia) {
+
+                 throw new DBException(_M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . 'erro_buscar_dados_procedencia',$oMensagem));
+               }
+
+               $iTotalDadosOrigem = pg_num_rows($rsVinculoReceitaProcedencia);
+               for ($iIndice=0; $iIndice < $iTotalDadosOrigem; $iIndice++) {
+                 $oDados = db_utils::fieldsMemory($rsVinculoReceitaProcedencia, $iIndice);
+                 $oRetorno->aVinculoReceitaProced[$oDados->k00_receit] = $oDados->dv09_proced;
+               }
+            }$oRetorno->aReceitas     = db_utils::getCollectionByRecord($rsDAODebitos,   false, false, true);
             $oRetorno->aProcedencias = db_utils::getCollectionByRecord($rsBuscaProcedencia, false, false, true);
 
         } catch (Exception $oException) {
@@ -861,7 +959,7 @@ switch ($oParam->sExec) {
             /* M17476 - Pode ter mais de um tipo
             $sqlListaTipo = $daoListaDeb->sql_query_arrecad_tipo($oParam->listaDebitos, "distinct cadtipo.k03_tipo");
             $rsListaTipo = db_query($sqlListaTipo);
-            
+
             if ( pg_num_rows($rsListaTipo) > 1 ) {
                 throw new BusinessException( _M(MENSAGENS_DVR3_IMPORTACAOIPTU_RPC . "lista_invalida_diversos_parcelamento") );
             }

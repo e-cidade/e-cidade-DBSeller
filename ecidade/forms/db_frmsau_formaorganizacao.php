@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("sd61_c_nome");
        <?=@$Lsd62_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_i_codigo',5,$Isd62_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd62_i_grupo?>">
-       <?
+       <?php
        db_ancora(@$Lsd62_i_grupo,"js_pesquisasd62_i_grupo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_i_grupo',5,$Isd62_i_grupo,true,'text',$db_opcao," onchange='js_pesquisasd62_i_grupo(false);'")
 ?>
-       <?
+       <?php
 db_input('sd60_c_nome',60,$Isd60_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd62_i_subgrupo?>">
-       <?
+       <?php
        db_ancora(@$Lsd62_i_subgrupo,"js_pesquisasd62_i_subgrupo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_i_subgrupo',5,$Isd62_i_subgrupo,true,'text',$db_opcao," onchange='js_pesquisasd62_i_subgrupo(false);'")
 ?>
-       <?
+       <?php
 db_input('sd61_c_nome',60,$Isd61_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('sd61_c_nome',60,$Isd61_c_nome,true,'text',3,'')
        <?=@$Lsd62_c_formaorganizacao?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_c_formaorganizacao',2,$Isd62_c_formaorganizacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('sd62_c_formaorganizacao',2,$Isd62_c_formaorganizacao,true,'text',$db_o
        <?=@$Lsd62_c_nome?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_c_nome',60,$Isd62_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd62_c_nome',60,$Isd62_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd62_i_anocomp?>/<?=@$Lsd62_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd62_i_anocomp',4,$Isd62_i_anocomp,true,'text',$db_opcao,""); echo "/";
 db_input('sd62_i_mescomp',2,$Isd62_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_formaorganizacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

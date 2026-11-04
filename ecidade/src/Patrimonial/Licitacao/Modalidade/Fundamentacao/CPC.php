@@ -46,7 +46,10 @@ final class CPC implements DeparaInterface
     public function __construct()
     {
         $this->aFundamentacoes = array(
-          'A78I',
+          'A79I',
+          'A79II',
+          'A79III',
+          'A30CAPT',
           'OUT'
         );
     }

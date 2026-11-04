@@ -61,6 +61,16 @@
             </tr>
             <tr>
                 <td>
+                    <label for="codigoRubricaDependente"><a id="ancoraRubricaDependente" href="#">Rubrica:</a></label>
+                </td>
+                <td>
+                    <input type="text" id="codigoRubricaDependente" name="rubricaDependente" lang="rh27_rubric" class="field-size2"/>
+                    <input type="text" id="descricaoRubricaDependente" name="descricaoRubricaDependente" lang="rh27_descr"
+                           class="field-size8" title="Rubrica" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <label for="valorDependente">Valor:</label>
                 </td>
                 <td>

@@ -350,7 +350,7 @@ if ( isset($alterar) ) {
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_alunoturma001.php?ed60_i_turma=<?=$ed57_i_codigo?>&ed57_c_descr=<?=$ed57_c_descr?>&ed52_c_descr=<?=$ed52_c_descr?>';
   </script>
- <?
+ <?php
 }
 ?>
 <html>
@@ -369,11 +369,11 @@ if ( isset($alterar) ) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default" >
-  <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
-     <?include(modification("forms/db_frmmatricula.php"));?>
+  <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php include(modification("forms/db_frmmatricula.php"));?>
 </body>
 </html>
-<?
+<?php
 if ( isset( $alterar ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

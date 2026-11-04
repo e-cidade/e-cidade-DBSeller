@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,108 +37,6 @@ db_postmemory($HTTP_GET_VARS);
 $db_opcao = 1;
 $db_botao = true;
 $clsaltes = new cl_saltes;
-$clempagedadosret = new cl_empagedadosret;
-$clconcilia = new cl_concilia;
-
-
-$sWhere = " k68_contabancaria = $conta ";
-
-$sSql = $clconcilia->sql_query(null, " k68_sequencial as concilia,
-									   k68_data as data,
-									   k68_contabancaria as conta "," k68_data desc limit 1 " , $sWhere);
-$result = $clconcilia->sql_record($sSql);
-
-
-
-if ($clconcilia->numrows != 0) {
-
-	db_inicio_transacao();
-	$sqlerro = false;
-	
-   db_fieldsmemory($result, 0);
-   $clextratolinha         = new cl_extratolinha;
-   $clconciliapendextrato  = new cl_conciliapendextrato;
-   $clconcilia             = new cl_concilia;
-
-	// busca lancamentos do extratolinha incluido como pendencias futuras
-	//
-	//
-
-
-	$sqlPendExtrato  = " select k86_sequencial ";
-	$sqlPendExtrato .= "	 from extratolinha ";
-	$sqlPendExtrato .= "	 left join conciliapendextrato on k88_extratolinha = k86_sequencial ";
-	$sqlPendExtrato .= "	where extract(month from k86_data) = extract(month from( select k68_data "; 
-    $sqlPendExtrato .= "                        from concilia "; 
-    $sqlPendExtrato .= "                       where k68_data = '".$data."' "; 
-    $sqlPendExtrato .= "                         and k68_contabancaria = $conta "; 
-    $sqlPendExtrato .= "                       order by k68_data  ";
-    $sqlPendExtrato .= "                        desc limit 1 )) ";
-	$sqlPendExtrato .= "	  and k86_contabancaria = ".$conta ;
-	$sqlPendExtrato .= " and k88_sequencial is null";
-	$rsExtrato = $clextratolinha->sql_record($sqlPendExtrato);
-
-	$intNumrowsextrato = $clextratolinha->numrows;
-	
-	for($i = 0; $i < $intNumrowsextrato; $i++ ){
-		
-		db_fieldsmemory($rsExtrato,$i);	
-		$clconciliapendextrato->k88_extratolinha   = $k86_sequencial;
-		$clconciliapendextrato->k88_concilia       = $concilia;
-		$clconciliapendextrato->k88_conciliaorigem = 1;
-		$clconciliapendextrato->k88_justificativa  = '';
-		$clconciliapendextrato->incluir(null);
-		if($clconciliapendextrato->erro_status == 0){
-			$erromsg = $clconciliapendextrato->erro_msg;
-			$sqlerro = true;
-			break;
-		}
-	}
-
-	// mesma coisa que o for a cima porem com as pendencias de extrato 
-
-	/*
-
-	verifiquei que aqui ja vem os que estão vinculados
-
-
-	$sqlPendExtrato  = " select conciliapendextrato.* ";
-	$sqlPendExtrato .= "	 from concilia ";
-	$sqlPendExtrato .= "		    inner join conciliapendextrato on k88_concilia = k68_sequencial ";
-	$sqlPendExtrato .= "	where k68_data  = ( select k68_data "; 
-    $sqlPendExtrato .= "                        from concilia "; 
-    $sqlPendExtrato .= "                       where k68_data < '".$data."' "; 
-    $sqlPendExtrato .= "                         and k68_contabancaria = $conta "; 
-    $sqlPendExtrato .= "                       order by k68_data  ";
-    $sqlPendExtrato .= "                        desc limit 1 ) ";
-	$sqlPendExtrato .= "	  and k68_contabancaria = ".$conta ;
-	
-	$rsExtrato = $clextratolinha->sql_record($sqlPendExtrato);
-	$intNumrowsextrato = $clextratolinha->numrows;
-	for($i = 0; $i < $intNumrowsextrato; $i++ ){
-		db_fieldsmemory($rsExtrato,$i);	
-		$clconciliapendextrato->k88_extratolinha   = $k88_extratolinha;
-		$clconciliapendextrato->k88_concilia       = $clconcilia->k68_sequencial;
-		$clconciliapendextrato->k88_conciliaorigem = 1;
-		$clconciliapendextrato->k88_justificativa  = $k88_justificativa;
-		$clconciliapendextrato->incluir(null);
-		if($clconciliapendextrato->erro_status == 0){
-			$erromsg = $clconciliapendextrato->erro_msg;
-			$sqlerro = true;
-			break;
-		}
-	}
-*/
-
-
-
-
-
-
-	db_fim_transacao($sqlerro);
-}
-
-
 
 ?>
 <html>
@@ -151,7 +49,7 @@ if ($clconcilia->numrows != 0) {
 		<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 		<link href="estilos.css" rel="stylesheet" type="text/css">
 	</head>
-	<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
+	<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_calcular_datainicio('<?=$data?>'); a=1" >
 		<table width="790" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
 			<tr>
 				<td width="360" height="18">&nbsp;</td>
@@ -164,14 +62,14 @@ if ($clconcilia->numrows != 0) {
 			<tr> 
 				<td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
 				<center>
-			<?
+			<?php
 			include(modification("forms/db_frmconcbanc.php"));
 			?>
 				</center>
 			</td>
 			</tr>
 		</table>
-		<?
+		<?php
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 		?>
 	</body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -289,7 +289,7 @@ if(isset($alterar)){
   <table style="padding-top: 10px">
     <tr>
       <td width="500">
-        <?
+        <?php
         include(modification("forms/db_frmcustoplano.php"));
         ?>
       </td>
@@ -298,7 +298,7 @@ if(isset($alterar)){
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($clcustoplano->erro_status=="0") {

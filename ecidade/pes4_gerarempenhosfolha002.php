@@ -44,6 +44,11 @@ $oPost = db_utils::postMemory($_POST);
 
 $oGet = db_utils::postMemory($_GET);
 
+$ocultaDadosNaContabilidade = '';
+if (isset($_GET['contabilidade'])) {
+    $ocultaDadosNaContabilidade = 'display:none';
+}
+
 $oRotulo = new rotulocampo();
 $oRotulo->label("rh72_projativ");
 $oRotulo->label("rh72_programa");
@@ -61,6 +66,8 @@ $oRotulo->label("o54_descr");
 $oRotulo->label("o56_codele");
 $oRotulo->label("o15_recurso");
 $oRotulo->label("o200_descricao");
+$oRotulo->label("gestao");
+$oRotulo->label("descricao");
 
 
 $oJson = new Services_JSON();
@@ -237,9 +244,7 @@ foreach ($aSiglas as $sSigla) {
             </tr>
             <tr>
                 <td>
-
-                    <fieldset>
-
+                    <fieldset style="<?=$ocultaDadosNaContabilidade?>">
                         <table width="100%" height="100%" cellspacing="0">
                             <tr>
                                 <td style='border-right: 2px groove white'
@@ -279,9 +284,8 @@ foreach ($aSiglas as $sSigla) {
                 </td>
             </tr>
             <tr>
-                <td colspan="7" style="text-align: center;">
-          <span id='buttonReservas'>
-          </span>
+                <td colspan="7" style="text-align: center; <?=$ocultaDadosNaContabilidade?>">
+                    <span id='buttonReservas'> </span>
                     <input type='button' onclick="js_gerarEmpenhos()" id='empenhar' value='Gerar Empenhos' disabled>
                     <input type='button' onclick="js_gerarTotalizacoes()" id='totalizacoes' value='Totalizações'>
                 </td>
@@ -403,8 +407,10 @@ foreach ($aSiglas as $sSigla) {
                             <td>
                                 <?php
                                 db_input('rh72_recurso', 10, $Irh72_recurso, true, 'hidden', 1);
-                                db_input('o15_recurso', 10, $Io15_recurso, true, 'text', 1, "onchange='js_pesquisac62_codrec(false);'");
-                                db_input('o15_descr', 35, 0, true, 'text', 3, "");
+
+                                db_input('gestao', 5, $Igestao, true, 'text', 3, "onchange='js_pesquisac62_codrec(false);'");
+                                db_input('o15_recurso', 5, $Io15_recurso, true, 'text', 3);
+                                db_input('o15_descr', 30, 0, true, 'text', 3, "");
                                 ?>
                             </td>
                         </tr>
@@ -508,7 +514,7 @@ foreach ($aSiglas as $sSigla) {
             sNomeFolha = 'Mensal';
             break;
     }
-    <?
+    <?php
     if (!$lLiberado) {
     ?>
     lBotoes = false;
@@ -516,7 +522,7 @@ foreach ($aSiglas as $sSigla) {
     $('messageBoard').innerHTML = "Folha  de " + sNomeFolha + " para o período " + oParametros.iMesFolha + "/" + oParametros.iAnoFolha;
     $('messageBoard').innerHTML += " Não liberada para gerar Empenhos.";
     $('messageBoard').style.display = "";
-    <?
+    <?php
     }
     ?>
     sUrl = "pes4_gerarEmpenhoFolhaRPC.php";
@@ -609,7 +615,7 @@ foreach ($aSiglas as $sSigla) {
 
                     var oCellRecurso = document.createElement("TD");
                     oCellRecurso.style.textAlign = 'right';
-                    oCellRecurso.innerHTML = o15_loaespecificacao + "(" + o15_complemento + ")";
+                    oCellRecurso.innerHTML = gestao + "(" + o15_complemento + ")";
                     oCellRecurso.innerHTML += "<input type='hidden' size=5 id='recurso_" + rh72_sequencial + "' value='" + rh72_recurso + "'>";
                     oCellRecurso.className = "border";
                     oCellRecurso.id = 'recurso' + rh72_sequencial;
@@ -1421,11 +1427,12 @@ foreach ($aSiglas as $sSigla) {
 
     function js_pesquisac62_codrec(mostra) {
 
+
         if (mostra) {
             js_OpenJanelaIframe(
                 '',
                 'db_iframe_orctiporec',
-                'func_fonterecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|o15_descr',
+                'func_fontesubrecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|descricao|gestao',
                 'Recursos', true, 0, 0,
                 document.body.clientWidth - 40,
                 document.body.scrollHeight - 180);
@@ -1453,21 +1460,23 @@ foreach ($aSiglas as $sSigla) {
         document.form1.o15_descr.value = descricao;
         if (erro) {
             document.form1.o15_recurso.focus();
+            document.form1.gestao.value = '';
             document.form1.o15_recurso.value = '';
             document.form1.rh72_recurso.value = '';
             montaSelectComplemento([]);
-            return ;
+            return;
         }
 
-        buscarComplementosRecurso(document.form1.o15_recurso.value);
+        buscarComplementosRecurso(document.form1.o15_recurso.value, gestao);
     }
 
-    function js_mostraorctiporec1(recurso, descricao) {
+    function js_mostraorctiporec1(recurso, descricao, gestao) {
 
         document.form1.o15_recurso.value = recurso;
         document.form1.o15_descr.value = descricao;
+        document.form1.gestao.value = gestao;
 
-        buscarComplementosRecurso(recurso);
+        buscarComplementosRecurso(recurso, gestao);
 
         db_iframe_orctiporec.hide();
     }
@@ -1700,7 +1709,7 @@ foreach ($aSiglas as $sSigla) {
 
         if ($F('complementoRecurso') === '') {
             alert('Você deve selecionar o complemento.');
-            return ;
+            return;
         }
 
         if ($('orgao' + iCodigoEmpenho).innerHTML == $F('rh72_orgao')
@@ -1982,11 +1991,12 @@ foreach ($aSiglas as $sSigla) {
             document.body.scrollHeight - 180);
     }
 
-    const buscarComplementosRecurso = (recurso) => {
+    const buscarComplementosRecurso = (recurso, gestao) => {
 
         const formData = new FormData();
         formData.append('acao', 'buscarComplementos');
-        formData.append('fonteRecurso', recurso);
+        formData.append('subrecurso', recurso);
+        formData.append('fonteRecurso', gestao);
         HttpClient.post('orc4_fonterecursos.RPC.php', {body: formData}).then(response => {
 
             if (response.erro) {
@@ -2012,7 +2022,8 @@ foreach ($aSiglas as $sSigla) {
 
             $('rh72_recurso').value = response.codigo;
             $('o15_recurso').value = response.recurso;
-            $('o15_descr').value = response.descricao;
+            $('gestao').value = response.fonte.gestao;
+            $('o15_descr').value = response.fonte.descricao;
 
             montaSelectComplemento(response.complementos, response.complemento);
 

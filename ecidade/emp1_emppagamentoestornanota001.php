@@ -69,9 +69,9 @@ $apenas_retencoes = !empty($_GET["retencoes"])? 1 : 0;
       var evt = (evt) ? evt : (window.event) ? window.event : "";
 
       if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:.
-	return true;
+    return true;
       }else{
-	return false;
+    return false;
       }
     }
 </script>
@@ -88,28 +88,29 @@ $apenas_retencoes = !empty($_GET["retencoes"])? 1 : 0;
       <table>
         <tr>
           <td>
-        <fieldset>
-          <legend><b>Ordem de Pagamento</b></legend>
-          <table>
-      	    <tr>
-        		  <td nowrap title="<?=@$Te50_codord?>" align='right'>
-		            <? db_ancora("<b>Ordem de Pagamento:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
-      	 	   </td>
-		         <td>
-		           <?php
-                   db_input('apenas_retencoes', 10, 1, true, 'hidden');
-               db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")
-               ?>
-		         </td>
-      		  </tr>
-          </table>
-        </fieldset>
+            <fieldset>
+              <legend><b>Ordem de Pagamento</b></legend>
+              <table>
+                <tr>
+                  <td nowrap title="<?=@$Te50_codord?>" align='right'>
+                    <?php db_ancora("<b>Ordem de Pagamento:</b>", "js_pesquisae50_codord(true);", $db_opcao);  ?>
+                  </td>
+                  <td>
+                    <?php
+                    db_input('apenas_retencoes', 10, 1, true, 'hidden');
+                    db_input('e50_codord', 8, $Ie50_codord, true, 'text', $db_opcao, " onchange='js_pesquisae50_codord(false);'")
+                    ?>
+                  </td>
+                </tr>
+              </table>
+            </fieldset>
+          </td>
         </tr>
         <tr>
-  	      <td colspan='2' align='center'>
-		      <input name="entrar_codord" type="button" id="pesquisar" value="Entrar" onclick="js_entra();" >
-		    </td>
-	   	</tr>
+          <td colspan='2' align='center'>
+            <input name="entrar_codord" type="button" id="pesquisar" value="Entrar" onclick="js_entra();" >
+          </td>
+        </tr>
       </table>
       </form>
     </center>
@@ -119,8 +120,8 @@ $apenas_retencoes = !empty($_GET["retencoes"])? 1 : 0;
 </center>
 
 
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
@@ -130,33 +131,33 @@ document.getElementById('pesquisar').disabled  = true;
 
 function js_pesquisae50_codord(mostra){
 
-	  document.getElementById('pesquisar').disabled  = true;
-	  if(mostra==true){
-	    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?funcao_js=parent.js_mostrapagordem1|0','Pesquisa',true);
-	  }else{
-	    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+document.form1.e50_codord.value+'&funcao_js=parent.js_mostrapagordem','Pesquisa',false);
-	  }
-	}
+      document.getElementById('pesquisar').disabled  = true;
+      if(mostra==true){
+        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?funcao_js=parent.js_mostrapagordem1|0','Pesquisa',true);
+      }else{
+        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+document.form1.e50_codord.value+'&funcao_js=parent.js_mostrapagordem','Pesquisa',false);
+      }
+    }
 
-	function js_mostrapagordem(chave,erro) {
+    function js_mostrapagordem(chave,erro) {
 
-	  document.getElementById('pesquisar').disabled  = false;
-	  if(erro==true) {
+      document.getElementById('pesquisar').disabled  = false;
+      if(erro==true) {
 
-	    document.getElementById('pesquisar').disabled  = true;
-	    document.form1.e50_codord.focus();
-	    document.form1.e50_codord.value = '';
-	  }
-	  js_verificaEmpenho();
-	}
-	function js_mostrapagordem1(chave1,chave2) {
+        document.getElementById('pesquisar').disabled  = true;
+        document.form1.e50_codord.focus();
+        document.form1.e50_codord.value = '';
+      }
+      js_verificaEmpenho();
+    }
+    function js_mostrapagordem1(chave1,chave2) {
 
-	  document.getElementById('pesquisar').disabled  = false;
-	  document.form1.e50_codord.value = chave1;
-	  db_iframe_pagordem.hide();
+      document.getElementById('pesquisar').disabled  = false;
+      document.form1.e50_codord.value = chave1;
+      db_iframe_pagordem.hide();
 
-	  js_verificaEmpenho();
-	}
+      js_verificaEmpenho();
+    }
 
 /*
  * funcao para validar se o empenho é uma prestação de contas.
@@ -165,35 +166,35 @@ function js_pesquisae50_codord(mostra){
 var sUrlRPC = "cai4_devolucaoadiantamento004.RPC.php";
 function js_verificaEmpenho() {
 
-	var oParametros             = new Object();
-	var msgDiv                  = "Verificando evento do empenho selecionado \n Aguarde ...";
-	oParametros.exec            = 'verificaEventoEmpenho';
-	oParametros.iOrdemPagamento = $F("e50_codord");
+    var oParametros             = new Object();
+    var msgDiv                  = "Verificando evento do empenho selecionado \n Aguarde ...";
+    oParametros.exec            = 'verificaEventoEmpenho';
+    oParametros.iOrdemPagamento = $F("e50_codord");
 
-	if ($F("e50_codord") == null || $F("e50_codord") == '') {
+    if ($F("e50_codord") == null || $F("e50_codord") == '') {
     return false;
-	}
+    }
 
-	js_divCarregando(msgDiv,'msgBox');
+    js_divCarregando(msgDiv,'msgBox');
 
-	new Ajax.Request(sUrlRPC,
-	                 {method: "post",
-	                  parameters:'json='+Object.toJSON(oParametros),
-	                  onComplete: js_retornoVerificacaoEmpenho
-	                 });
+    new Ajax.Request(sUrlRPC,
+                     {method: "post",
+                      parameters:'json='+Object.toJSON(oParametros),
+                      onComplete: js_retornoVerificacaoEmpenho
+                     });
 }
 
 function js_retornoVerificacaoEmpenho(oAjax) {
 
-	js_removeObj('msgBox');
-	var oRetorno = JSON.parse(oAjax.responseText);
+    js_removeObj('msgBox');
+    var oRetorno = JSON.parse(oAjax.responseText);
 
-	if (oRetorno.iStatus == '2') {
+    if (oRetorno.iStatus == '2') {
 
-	  alert(oRetorno.sMessage.urlDecode());
-	  document.getElementById('pesquisar').disabled  = true;
-	  return false;
-	}
+      alert(oRetorno.sMessage.urlDecode());
+      document.getElementById('pesquisar').disabled  = true;
+      return false;
+    }
 }
 
 
@@ -207,8 +208,8 @@ function js_entra(){
       document.form1.submit();
   }else{
 
-   	alert("Selecione uma nota de liquidação!");
- 	  return false;
+    alert("Selecione uma nota de liquidação!");
+      return false;
 
   }
 }
@@ -252,15 +253,14 @@ function js_mostraempempenho1(chave1){
 
 
 </script>
-<?
-if(isset($erro_msg)){
-  db_msgbox($erro_msg);
-  if(isset($erro) && $erro != ''){
-    echo "<script>";
-    echo "js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem001.php?funcao_js=parent.js_mostrapagordem1|e50_codord&chave_e50_numemp=$e60_numemp','Pesquisa',true);";
-    echo "</script>";
-  }
-
+<?php
+if (isset($erro_msg)) {
+    db_msgbox($erro_msg);
+    if (isset($erro) && $erro != '') {
+        echo "<script>";
+        echo "js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem001.php?funcao_js=parent.js_mostrapagordem1|e50_codord&chave_e50_numemp=$e60_numemp','Pesquisa',true);";
+        echo "</script>";
+    }
 }
 
 ?>

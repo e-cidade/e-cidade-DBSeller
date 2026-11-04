@@ -148,15 +148,15 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
          if(<?=trim($z01_i_familiamicroarea)?>==itemArray[i][1]){
            indice = i;
          }
-        <?}?>
+        <?php }?>
         j++;
       }
 
-      <?if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
+      <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
        selectCtrl.options[indice].selected = true;
       <?}else{?>
        selectCtrl.options[0].selected = true;
-      <?}?>
+      <?php }?>
     }
   }
 </script>
@@ -187,7 +187,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
               db_input( 'sd23_i_codigo', 21, $Isd23_i_codigo, true, 'text', 3 );
               ?>
             </td>
-          <? } ?>
+          <?php } ?>
         </tr>
         <tr>
           <td>
@@ -240,7 +240,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                <option value="<?=$cod_micro;?>" <?=$cod_micro == @$sd34_i_codigo ? "selected" : ""?>>
                  <?=$desc_micro;?>
                </option>
-             <?
+             <?php
              }
              ?>
             </select>
@@ -261,7 +261,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
             if( isset( $z01_i_familiamicroarea ) && $z01_i_familiamicroarea != "" ) {
             ?>
               <script>fillSelectFromArray(document.form1.z01_i_familiamicroarea, team[document.form1.z01_v_micro.selectedIndex-1]);</script>
-            <?}?>
+            <?php }?>
           </td>
         </tr>
         <!-- CPF / CGS do municipio -->
@@ -894,7 +894,7 @@ if( isset( $triagem ) && $triagem == "false" ) {
                          true
                        );
   }
-<?}?>
+<?php }?>
 
 function js_preenchecgs( chave ) {
 
@@ -923,7 +923,7 @@ if( isset( $triagem ) && $triagem == "false" ) {
     db_iframe_prontuarios.hide();
     location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
   }
-<?}?>
+<?php }?>
 
 function js_limpa() {
 

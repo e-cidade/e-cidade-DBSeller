@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -72,58 +72,89 @@ db_postmemory($HTTP_POST_VARS);
 $db_opcao        = 22;
 $db_botao        = false;
 $lPrestacaoConta = true;
+$erro_msg = "Alteração efetuada com sucesso";
+if (isset($alterar)) {
+    $sqlerro = false;
 
-if ( isset($alterar) ) {
+    db_inicio_transacao();
 
-  $sqlerro = false;
 
-  db_inicio_transacao();
+    $sqlMovimentos = "
 
-  $clemppresta->alterar($e45_sequencial);
-
-  if ( $clemppresta->erro_status == 0 ) {
-    $sqlerro=true;
-  }
-
-  $erro_msg = $clemppresta->erro_msg;
-
-  if (USE_PCASP) {
-
-    try {
-
-      $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e45_numemp);
-      $oPrestacaoConta    = new PrestacaoConta($oEmpenhoFinanceiro, $e45_sequencial);
-
-      if (count($oPrestacaoConta->getItens()) == 0) {
-        throw new Exception("Nenhum item lançado para prestação de contas.");
-      }
-
-      $oPrestacaoConta->processarLancamento($observacao_lancamento);
-
-    } catch (Exception $eException) {
-
-      $erro_msg = $eException->getMessage();
-      $sqlerro = true;
-
-    } catch (BusinessException $eBusinessException) {
-
-      $erro_msg = $$eBusinessException->getMessage();
-      $sqlerro = true;
+  WITH ordem AS
+  
+    (
+  
+  select e82_codord as ordem 
+    from emppresta 
+    join empord on e82_codmov = e45_codmov 
+    where e45_sequencial = {$e45_sequencial}
+  
+    ), movimentos as 
+  
+    (
+  
+       select e82_codmov ,
+              e45_sequencial
+         from  ordem 
+         join empord on ordem = e82_codord
+         join emppresta on e82_codmov = e45_codmov
+    )
+  
+  select * from movimentos;
+      ";
+      $rsMovimentos = db_query($sqlMovimentos);
+    if (pg_num_rows($rsMovimentos) > 0) {
+        for ($i=0; $i < pg_num_rows($rsMovimentos); $i++) {
+                $sequencial = db_utils::fieldsMemory($rsMovimentos, $i)->e45_sequencial;
+  
+                $altera = "update emppresta set e45_conferido = '{$e45_conferido}' where e45_sequencial = {$sequencial}";
+            if (!db_query($altera)) {
+                if ($clemppresta->erro_status == 0) {
+                    $erro_msg = "Erro ao alterar a data da prestação";
+                    $sqlerro=true;
+                }
+            }
+        }
     }
-  }
-  db_fim_transacao($sqlerro);
 
-   $db_opcao = 2;
-   $db_botao = true;
-} else if(isset($chavepesquisa)) {
 
-   $db_opcao = 2;
-   $db_botao = true;
-   $result = $clemppresta->sql_record( $clemppresta->sql_query_emp( null,
-                                                                    '*',
-                                                                    null,
-                                                                    "e45_numemp = {$chavepesquisa} and e45_codmov = {$chavemovimento}") );
-   db_fieldsmemory($result,0);
+    if (USE_PCASP) {
+        try {
+            $oEmpenhoFinanceiro = new EmpenhoFinanceiro($e45_numemp);
+            $oPrestacaoConta    = new PrestacaoConta($oEmpenhoFinanceiro, $e45_sequencial);
+
+            if (count($oPrestacaoConta->getItens()) == 0) {
+                throw new Exception("Nenhum item lançado para prestação de contas.");
+            }
+
+            $oPrestacaoConta->processarLancamento($observacao_lancamento);
+        } catch (Exception $eException) {
+            $erro_msg = $eException->getMessage();
+            $sqlerro = true;
+        } catch (BusinessException $eBusinessException) {
+            $erro_msg = $$eBusinessException->getMessage();
+            $sqlerro = true;
+        }
+    }
+
+
+    $sql = "select * from emppresta where e45_sequencial in (22530, 22531);";
+
+    db_fim_transacao($sqlerro);
+
+    $db_opcao = 2;
+    $db_botao = true;
+} elseif (isset($chavepesquisa)) {
+    $db_opcao = 2;
+    $db_botao = true;
+    $result = $clemppresta->sql_record($clemppresta->sql_query_emp(
+        null,
+        '*',
+        null,
+        "e45_numemp = {$chavepesquisa} and e45_codmov = {$chavemovimento}"
+    ));
+    db_fieldsmemory($result, 0);
 }
 ?>
 <html>
@@ -137,39 +168,34 @@ if ( isset($alterar) ) {
 </head>
 <body bgcolor=#CCCCCC style="margin-top: 30px;">
 <center>
-	<?
-	include(modification("forms/db_frmemppresta09.php"));
-	?>
+    <?php
+    include(modification("forms/db_frmemppresta09.php"));
+    ?>
 </center>
 </body>
 </html>
 <?php
-if ( isset($alterar) ) {
+if (isset($alterar)) {
+    if ($sqlerro == true) {
+        db_msgbox(str_replace("\n", "\\n", $erro_msg));
 
-  if ( $sqlerro == true ) {
+        if ($clemppresta->erro_campo!="") {
+            echo "<script> document.form1.".$clemppresta->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$clemppresta->erro_campo.".focus();</script>";
+        };
+    } else {
+        db_msgbox(str_replace("\n", "\\n", $erro_msg));
 
-    db_msgbox(str_replace("\n","\\n",$erro_msg));
-
-    if($clemppresta->erro_campo!=""){
-
-      echo "<script> document.form1.".$clemppresta->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clemppresta->erro_campo.".focus();</script>";
-    };
-
-  } else {
-
-		db_msgbox(str_replace("\n","\\n",$erro_msg));
-
-		echo "
+        echo "
 			<script>
 				parent.location.href = 'emp1_emppresta008.php';
 			</script>\n
 		";
-  }
+    }
 }
 
-if ( isset($chavepesquisa) && !isset($alterar) ) {
- echo "
+if (isset($chavepesquisa) && !isset($alterar)) {
+    echo "
   <script>
     function js_db_libera() {
 
@@ -185,7 +211,7 @@ if ( isset($chavepesquisa) && !isset($alterar) ) {
  ";
 }
 
-if ( $db_opcao == 22 || $db_opcao == 33 ) {
-	echo "<script>document.form1.pesquisar.click();</script>";
+if ($db_opcao == 22 || $db_opcao == 33) {
+    echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>

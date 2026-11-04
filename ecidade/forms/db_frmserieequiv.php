@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -33,7 +33,7 @@ $clrotulo->label("ed11_i_codigo");
 ?>
 <script>
  team = new Array(
- <?
+ <?php
  #Seleciona todos os calendários
  $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
  $num = pg_num_rows($sql_result);
@@ -108,14 +108,14 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <b>Selecione o nível de ensino:</b><br>
       <select name="grupo" onChange="js_zerar();fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:250px;height:18px;">
        <option></option>
-       <?
+       <?php
        $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
        while($row=pg_fetch_array($sql_result)){
         $cod_curso=$row["ed10_i_codigo"];
         $desc_curso=$row["ed10_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$ensino?"selected":""?>><?=$desc_curso;?></option>
-        <?
+        <?php
        }
        ?>
       </select>
@@ -130,15 +130,15 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
    </table>
   </td>
  </tr>
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
   <tr>
    <td colspan="2" align="center">
-    <?
+    <?php
     $result = $clserie->sql_record($clserie->sql_query_equiv("","*","ed10_i_codigo,ed11_i_sequencia"," ed11_i_ensino != $ensino OR (ed11_i_ensino = $ensino AND ed11_i_codigo != $serie)"));
     ?>
     <b>Etapas equivalentes a <span id="nomeserie"></span> em outros ensinos:</b><br>
     <select name="serieequiv[]" id="serieequiv" style="font-size:9px;width:400px;height:350px" multiple>
-     <?
+     <?php
      for($x=0;$x<$clserie->numrows;$x++){
       db_fieldsmemory($result,$x);
       $result2 = $clserieequiv->sql_record($clserieequiv->sql_query_file("","ed234_i_serie",""," ed234_i_serie = $serie AND ed234_i_serieequiv = $ed11_i_codigo"));
@@ -149,11 +149,11 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       }
       ?>
       <option value="<?=$ed11_i_codigo?>" <?=$selected?>><?=$ed10_c_descr?> - <?=$ed11_c_descr?></option>
-      <?
+      <?php
      }
      ?>
     </select>
-    <?
+    <?php
     ?>
    </td>
   </tr>
@@ -179,7 +179,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     </fieldset>
    </td>
   </tr>
- <?}?>
+ <?php }?>
 </table>
 </center>
 </form>
@@ -198,13 +198,13 @@ function js_limpar(){
  }
 }
 function js_zerar(){
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
  qtd = document.form1.serieequiv.length;
  for (i = 0; i < qtd; i++) {
   document.form1.serieequiv.options[0] = null;
  }
  document.getElementById("nomeserie").innerHTML = "_________";
- <?}?>
+ <?php }?>
 }
 function js_geral(){
  js_OpenJanelaIframe('','db_iframe_geral','func_serieequiv.php','Quadro Geral de Etapas Equivalentes',true);

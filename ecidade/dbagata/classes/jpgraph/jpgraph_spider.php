@@ -20,13 +20,13 @@
 //===================================================
 class FontProp {
     var $font_family=FF_FONT1, $font_style=FS_NORMAL,$font_size=14,$font_color=array(0,0,0);	
-    function SetFont($family,$style=FS_NORMAL,$size=14) {
+    public function SetFont($family,$style=FS_NORMAL,$size=14) {
 	$this->font_family = $family;
 	$this->font_style = $style;
 	$this->font_size = $size;
     }
 	
-    function SetColor($c) {
+    public function SetColor($c) {
 	$this->font_color = $c;
     }
 }
@@ -34,7 +34,7 @@ class FontProp {
 class SpiderLogTicks extends Ticks {
 //---------------
 // CONSTRUCTOR
-    function SpiderLogTicks() {
+    public function SpiderLogTicks() {
     }
 //---------------
 // PUBLIC METHODS	
@@ -103,7 +103,7 @@ class SpiderLogTicks extends Ticks {
 class SpiderLinearTicks extends LinearTicks {
 //---------------
 // CONSTRUCTOR
-    function SpiderLinearTicks() {
+    public function SpiderLinearTicks() {
 	// Empty
     }
 
@@ -180,7 +180,7 @@ class SpiderAxis extends Axis {
     }
 //---------------
 // PUBLIC METHODS	
-    function SetTickLabels($l) {
+    public function SetTickLabels($l) {
 	$this->ticks_label = $l;
     }
 	
@@ -224,7 +224,7 @@ class SpiderAxis extends Axis {
 //---------------
 // PRIVATE METHODS	
 	
-    function _StrokeAxisTitle($pos,$aAxisAngle,$title) {
+    public function _StrokeAxisTitle($pos,$aAxisAngle,$title) {
 	// Draw title of this axis
 	$this->img->SetFont($this->title->font_family,$this->title->font_style,$this->title->font_size);
 	$this->img->SetColor($this->title->font_color);
@@ -267,7 +267,7 @@ class SpiderAxis extends Axis {
 class SpiderGrid extends Grid {
 //------------
 // CONSTRUCTOR
-    function SpiderGrid() {
+    public function SpiderGrid() {
     }
 
 //----------------
@@ -312,38 +312,38 @@ class SpiderPlot {
     var $weight=1;
 //---------------
 // CONSTRUCTOR
-    function SpiderPlot($data) {
+    public function __construct($data) {
 	$this->data = $data;
     }
 
 //---------------
 // PUBLIC METHODS	
-    function Min() {
+    public function Min() {
 	return Min($this->data);
     }
 	
-    function Max() {
+    public function Max() {
 	return Max($this->data);
     }
 	
-    function SetLegend($legend) {
+    public function SetLegend($legend) {
 	$this->legend=$legend;
     }
 	
-    function SetFill($f=true) {
+    public function SetFill($f=true) {
 	$this->fill = $f;
     }
 	
-    function SetLineWeight($w) {
+    public function SetLineWeight($w) {
 	$this->weight=$w;
     }
 		
-    function SetColor($color,$fill_color=array(160,170,180)) {
+    public function SetColor($color,$fill_color=array(160,170,180)) {
 	$this->color = $color;
 	$this->fill_color = $fill_color;
     }
 	
-    function GetCSIMareas() {
+    public function GetCSIMareas() {
 	JpGraphError::Raise("Client side image maps not supported for SpiderPlots.");
     }
 	
@@ -379,7 +379,7 @@ class SpiderPlot {
 	
 //---------------
 // PRIVATE METHODS
-    function GetCount() {
+    public function GetCount() {
 	return count($this->data);
     }
 	
@@ -405,7 +405,7 @@ class SpiderGraph extends Graph {
     var $grid,$axis=null;
 //---------------
 // CONSTRUCTOR
-    function SpiderGraph($width=300,$height=200,$cachedName="",$timeout=0,$inline=1) {
+    public function SpiderGraph($width=300,$height=200,$cachedName="",$timeout=0,$inline=1) {
 	$this->Graph($width,$height,$cachedName,$timeout,$inline);
 	$this->posx=$width/2;
 	$this->posy=$height/2;
@@ -417,35 +417,41 @@ class SpiderGraph extends Graph {
 
 //---------------
 // PUBLIC METHODS
-    function SupressTickMarks($f=true) {
+    public function SupressTickMarks($f=true) {
 	$this->axis->scale->ticks->SupressTickMarks($f);
     }
 	
-    function SetScale($axtype,$ymin=1,$ymax=1) {
+    public function SetScale($axtype,$ymin=1,$ymax=1) {
 	if( $axtype != "lin" && $axtype != "log" ) {
 	    JpGraphError::Raise("Illegal scale for spiderplot ($axtype). Must be \"lin\" or \"log\"");
 	}
 	if( $axtype=="lin" ) {
-	    $this->yscale = & new LinearScale(1,1);
-	    $this->yscale->ticks = & new SpiderLinearTicks();
+	    $cl_LinearScale = new LinearScale(1,1);
+		$this->yscale = & $cl_LinearScale;
+	    $cl_SpiderLinearTicks = new SpiderLinearTicks();
+	    $this->yscale->ticks = & $cl_SpiderLinearTicks;
 	    $this->yscale->ticks->SupressMinorTickMarks();
 	}
 	elseif( $axtype=="log" ) {
-	    $this->yscale = & new LogScale(1,1);
-	    $this->yscale->ticks = & new SpiderLogTicks();
+	    $cl_LogScale = new LogScale(1,1);
+		$this->yscale = & $cl_LogScale;
+	    $cl_SpiderLogTicks = new SpiderLogTicks();
+	    $this->yscale->ticks = & $cl_SpiderLogTicks;
 	}
 		
-	$this->axis = & new SpiderAxis($this->img,$this->yscale);
-	$this->grid = & new SpiderGrid();		
+	$cl_SpiderAxis = new SpiderAxis($this->img,$this->yscale);
+	$this->axis = & $cl_SpiderAxis;
+	$cl_SpiderGrid = new SpiderGrid();
+	$this->grid = & $cl_SpiderGrid;
     }
 
-    function SetPlotSize($s) {
+    public function SetPlotSize($s) {
 	if( $s<0.1 || $s>1 )
 	    JpGraphError::Raise("Spider Plot size must be between 0.1 and 1. (Your value=$s)");
 	$this->len=min($this->img->width,$this->img->height)*$s/2;
     }
 
-    function SetTickDensity($densy=TICKD_NORMAL) {
+    public function SetTickDensity($densy=TICKD_NORMAL) {
 	$this->ytick_factor=25;		
 	switch( $densy ) {
 	    case TICKD_DENSE:
@@ -465,17 +471,17 @@ class SpiderGraph extends Graph {
 	}
     }
 
-    function SetCenter($px,$py=0.5) {
+    public function SetCenter($px,$py=0.5) {
 	assert($px > 0 && $py > 0 );
 	$this->posx=$this->img->width*$px;
 	$this->posy=$this->img->height*$py;
     }
 
-    function SetColor($c) {
+    public function SetColor($c) {
 	$this->SetMarginColor($c);
     }
 			
-    function SetTitles($title) {
+    public function SetTitles($title) {
 	$this->axis_title = $title;
     }
 
@@ -483,7 +489,7 @@ class SpiderGraph extends Graph {
 	$this->plots[]=$splot;
     }
 	
-    function GetPlotsYMinMax() {
+    public function GetPlotsYMinMax() {
 	$min=$this->plots[0]->Min();
 	$max=$this->plots[0]->Max();
 	foreach( $this->plots as $p ) {
@@ -496,7 +502,7 @@ class SpiderGraph extends Graph {
     }	
 
     // Stroke the Spider graph
-    function Stroke($aStrokeFileName="") {
+    public function Stroke($aStrokeFileName="") {
 	// Set Y-scale
 	if( !$this->yscale->IsSpecified() && 
 	count($this->plots)>0 ) {

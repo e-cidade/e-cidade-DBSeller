@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -57,7 +57,7 @@ $db_botao                    = true;
 
 // variável de alteração / exclusão
 if (isset($opcao)) {
-  
+
   $db_opcao2 = 3;
   if ($opcao == 'alterar') {
     $db_opcao = 2;
@@ -76,7 +76,7 @@ if (isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($exc
   // Busco as informações da triagem e do cadastro / acompanhamento
   $sCampos        = 'sau_triagemavulsa.*, far_cadacomppachiperdia.*, sd03_i_codigo, ';
   $sCampos       .= 'z01_nome, sd04_i_unidade, sd04_i_codigo, descrdepto, fa53_i_codigo ';
-           
+
 	$sSql           = $oDaoFarCadAcompPacHiperdia->sql_query2(null, $sCampos, ' s152_i_codigo desc ',
                                                             ' fa50_i_codigo = '.$chavepesquisa
                                                            );
@@ -90,7 +90,7 @@ if (isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($exc
                                                       );
   $rs   = $oDaoFarComplicacoesCadAcomp->sql_record($sSql);
   for ($iCont = 0; $iCont < $oDaoFarComplicacoesCadAcomp->numrows; $iCont++) {
-    
+
     $oDados                 = db_utils::fieldsmemory($rs, $iCont);
     $aComplicAltExc[$iCont] = $oDados->fa52_i_complicacao;
 
@@ -102,7 +102,7 @@ if (isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($exc
                                              );
   $rs   = $oDaoFarExamesAcomp->sql_record($sSql);
   for ($iCont = 0; $iCont < $oDaoFarExamesAcomp->numrows; $iCont++) {
-    
+
     $oDados                = db_utils::fieldsmemory($rs, $iCont);
     $aExamesAltExc[$iCont] = $oDados->fa48_i_exame;
 
@@ -112,23 +112,23 @@ if (isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($exc
 
 if (!isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($excluir)) {
 
-  $sSql = $oDaoDbUsuaCgm->sql_query(null, 'nome, cgmlogin', '', 
+  $sSql = $oDaoDbUsuaCgm->sql_query(null, 'nome, cgmlogin', '',
                                     ' db_usuacgm.id_usuario = '.db_getsession('DB_id_usuario')
                                    );
   $rs   = $oDaoDbUsuaCgm->sql_record($sSql);
- 
+
   if ($oDaoDbUsuaCgm->numrows > 0) {
- 
+
     $oDados   = db_utils::fieldsmemory($rs, 0);
 
     $sCampos  = 'sd03_i_codigo, sd04_i_codigo, (select fa54_i_cbos from far_cbosprofissional ';
     $sCampos .= 'where far_cbosprofissional.fa54_i_unidademedico = sd04_i_codigo limit 1) as fa54_i_cbos ';
-    $sSql     = $oDaoMedicos->sql_query_file(null, $sCampos, '', 
+    $sSql     = $oDaoMedicos->sql_query_file(null, $sCampos, '',
                                              ' sd03_i_cgm = '.$oDados->cgmlogin.
                                              'and sd04_i_unidade = '.db_getsession('DB_coddepto')
                                             );
     $rs       = $oDaoMedicos->sql_record($sSql);
-   
+
     if ($oDaoMedicos->numrows > 0) {
 
       $z01_nome       = $oDados->nome;
@@ -138,7 +138,7 @@ if (!isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($ex
       $fa53_i_codigo  = empty($oDados->fa54_i_cbos) ? '' : $oDados->fa54_i_cbos;
       $sd04_i_unidade = db_getsession('DB_coddepto');
       $descrdepto     = db_getsession('DB_nomedepto');
-                         
+
     }
 
   }
@@ -148,17 +148,17 @@ if (!isset($chavepesquisa) && !isset($incluir) && !isset($alterar) && !isset($ex
 if (!isset($lBuscaCgs) || isset($iCgs)) {
 
   //Indica se o paciente já foi ou não cadastrado (possui registros na tabela far_cadacomppachiperdia)
-  $lCadastrado = false; 
+  $lCadastrado = false;
   $sSql        = $oDaoFarCadAcompPacHiperdia->sql_query_file(null, 'fa50_i_codigo', '', ' fa50_i_cgsund = '.$iCgs);
   $rs          = $oDaoFarCadAcompPacHiperdia->sql_record($sSql);
   if ($oDaoFarCadAcompPacHiperdia->numrows > 0) {
-    $lCadastrado     = true; 
+    $lCadastrado     = true;
   }
 
   if ($lCadastrado && (!isset($fa50_i_tipo) || $fa50_i_tipo == 2)) {
     $sTituloFieldset = 'Acompanhamento de Paciente do Hiperdia';
   } else {
-    $sTituloFieldset = 'Cadastro de Paciente do Hiperdia'; 
+    $sTituloFieldset = 'Cadastro de Paciente do Hiperdia';
   }
 
   $oDaoFarCadAcompPacHiperdia->erro_status = null; // Retira o status de erro de um possível record vazio
@@ -167,7 +167,7 @@ if (!isset($lBuscaCgs) || isset($iCgs)) {
   $sSql = $oDaoCgsUnd->sql_query_file(null, 'z01_v_nome', '', ' z01_i_cgsund = '.$iCgs);
   $rs   = $oDaoCgsUnd->sql_record($sSql);
   if ($oDaoCgsUnd->numrows == 0) {
-    die("<center><big><b>Nenhum paciente informado para realizar o acompanhamento.</b></big></center>"); 
+    die("<center><big><b>Nenhum paciente informado para realizar o acompanhamento.</b></big></center>");
   }
   db_fieldsmemory($rs, 0);
   $fa50_i_cgsund   = $iCgs;
@@ -175,7 +175,7 @@ if (!isset($lBuscaCgs) || isset($iCgs)) {
 
 } else {
 
-  $lCadastrado = false; 
+  $lCadastrado = false;
   $sTituloFieldset = 'Cadastro de Paciente do Hiperdia';
 
 }
@@ -188,7 +188,7 @@ if (isset($incluir) || isset($alterar)) {
   db_inicio_transacao();
 
   /* BLOCO DE VERIFICAÇÃO / INCLUSÃO DO CBOS DO PROFISSIONAL */
-  $sSql = $oDaoFarCbosProfissional->sql_query_file(null, 'fa54_i_codigo', '', 
+  $sSql = $oDaoFarCbosProfissional->sql_query_file(null, 'fa54_i_codigo', '',
                                                    "fa54_i_unidademedico = $sd04_i_codigo ".
                                                    "and fa54_i_cbos = $fa53_i_codigo"
                                                   );
@@ -214,7 +214,7 @@ if (isset($incluir) || isset($alterar)) {
     }
 
   }
-  
+
   /* BLOCO DE INCLUSÃO / ALTERAÇÃO DA TRIAGEM AVULSA */
   if ($oDaoFarCadAcompPacHiperdia->erro_status != '0') {
 
@@ -251,7 +251,7 @@ if (isset($incluir) || isset($alterar)) {
 
   /* BLOCO DE INCLUSÃO / ALTERAÇÃO DO CADASTRO / ACOMPANHAMENTO */
   if ($oDaoFarCadAcompPacHiperdia->erro_status != '0') {
-   
+
     $oDaoFarCadAcompPacHiperdia->fa50_i_outrosmedicamentos = isset($ckOutrosMedicamentos) ? 1 : 2;
     $oDaoFarCadAcompPacHiperdia->fa50_i_naomedicamentoso   = isset($ckNaoMedicamentoso) ? 1 : 2;
     $oDaoFarCadAcompPacHiperdia->fa50_i_diabetesacomp      = isset($statusDiabetes) ? 1 : 2;
@@ -273,7 +273,7 @@ if (isset($incluir) || isset($alterar)) {
 
   }
 
-  /* BLOCO DE INCLUSÃO DA LIGAÇÃO DO CADASTRO / ACOMPANHAMENTO COM A RETIRADA DE MEDICAMENTOS 
+  /* BLOCO DE INCLUSÃO DA LIGAÇÃO DO CADASTRO / ACOMPANHAMENTO COM A RETIRADA DE MEDICAMENTOS
      *Obs: Não tem alteração, e a ligação é 1:1 */
   if ($oDaoFarCadAcompPacHiperdia->erro_status != '0' && isset($incluir) && $fa55_i_retirada != "") {
 
@@ -304,7 +304,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todos os medicamentos relacionados ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarMedicamentoCadAcomp->excluir($oDados->fa49_i_codigo);
         if ($oDaoFarMedicamentoCadAcomp->erro_status == '0') {
@@ -314,7 +314,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -338,7 +338,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarMedicamentoCadAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -362,7 +362,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todas as complicações relacionadas ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarComplicacoesCadAcomp->excluir($oDados->fa52_i_codigo);
         if ($oDaoFarComplicacoesCadAcomp->erro_status == '0') {
@@ -372,7 +372,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -395,7 +395,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarComplicacoesCadAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -419,7 +419,7 @@ if (isset($incluir) || isset($alterar)) {
       * Laco que exclui todos os exames relacionadas ao cadastro / acompanhamento
       */
       for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-       
+
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oDaoFarExamesAcomp->excluir($oDados->fa48_i_codigo);
         if ($oDaoFarExamesAcomp->erro_status == '0') {
@@ -429,7 +429,7 @@ if (isset($incluir) || isset($alterar)) {
           break;
 
         }
-     
+
       } // fim do for
 
     }
@@ -449,7 +449,7 @@ if (isset($incluir) || isset($alterar)) {
           $oDaoFarCadAcompPacHiperdia->erro_status = '0';
           $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarExamesAcomp->erro_msg;
           break;
-          
+
         }
 
       } // fim do for
@@ -478,7 +478,7 @@ if (isset($excluir)) {
   * Laco que exclui todas as complicações relacionadas ao cadastro / acompanhamento
   */
   for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-   
+
     $oDados = db_utils::fieldsmemory($rs, $iCont);
     $oDaoFarComplicacoesCadAcomp->excluir($oDados->fa52_i_codigo);
     if ($oDaoFarComplicacoesCadAcomp->erro_status == '0') {
@@ -488,7 +488,7 @@ if (isset($excluir)) {
       break;
 
     }
- 
+
   } // fim do for
 
   if ($oDaoFarCadAcompPacHiperdia->erro_status != '0') {
@@ -503,17 +503,17 @@ if (isset($excluir)) {
     * Laco que exclui todos os medicamentos relacionados ao cadastro / acompanhamento
     */
     for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-     
+
       $oDados = db_utils::fieldsmemory($rs, $iCont);
       $oDaoFarMedicamentoCadAcomp->excluir($oDados->fa49_i_codigo);
       if ($oDaoFarMedicamentoCadAcomp->erro_status == '0') {
-  
+
         $oDaoFarCadAcompPacHiperdia->erro_status = '0';
         $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarMedicamentoCadAcomp->erro_msg;
         break;
-  
+
       }
-    
+
     }
 
   }
@@ -530,17 +530,17 @@ if (isset($excluir)) {
     * Laco que exclui todos os exames relacionadas ao cadastro / acompanhamento
     */
     for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
-     
+
       $oDados = db_utils::fieldsmemory($rs, $iCont);
       $oDaoFarExamesAcomp->excluir($oDados->fa48_i_codigo);
       if ($oDaoFarExamesAcomp->erro_status == '0') {
-    
+
         $oDaoFarCadAcompPacHiperdia->erro_status = '0';
         $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarExamesAcomp->erro_msg;
         break;
-    
+
       }
-    
+
     } // fim do for
 
   }
@@ -554,21 +554,21 @@ if (isset($excluir)) {
     $rs      = $oDaoFarRetiradaCadAcomp->sql_record($sSql);
     $iLinhas = $oDaoFarRetiradaCadAcomp->numrows;
     if ($iLinhas > 0) {
-  
+
       $oDados = db_utils::fieldsmemory($rs, 0);
       $oDaoFarRetiradaCadAcomp->excluir($oDados->fa55_i_codigo);
       if ($oDaoFarRetiradaCadAcomp->erro_status == '0') {
-  
+
         $oDaoFarCadAcompPacHiperdia->erro_status = '0';
         $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoFarRetiradaCadAcomp->erro_msg;
-  
+
       }
-  
+
     }
 
   }
 
-  
+
   if ($oDaoFarCadAcompPacHiperdia->erro_status != '0') {
 
     // Excluo o cadastro / acompanhamento
@@ -581,17 +581,13 @@ if (isset($excluir)) {
     // Excluo a triagem avulsa relacionada ao cadastro / acompanhamento
     $oDaoSauTriagemAvulsa->excluir($s152_i_codigo);
     if ($oDaoSauTriagemAvulsa->erro_status == '0') {
-  
+
       $oDaoFarCadAcompPacHiperdia->erro_status = '0';
       $oDaoFarCadAcompPacHiperdia->erro_msg    = $oDaoSauTriagemAvulsa->erro_msg;
-      break;
-  
     }
-
   }
 
   db_fim_transacao($oDaoFarCadAcompPacHiperdia->erro_status == '0' ? true : false);
-
 }
 ?>
 <html>
@@ -618,16 +614,16 @@ if (isset($excluir)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <center>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-        <?
+        <?php
           if (isset($lBuscaCgs)) {
             echo "<br><br>";
           }
         ?>
         <fieldset style='width: 100%;'> <legend><b><?=$sTituloFieldset?></b></legend>
-          <?
+          <?php
           require_once(modification("forms/db_frmfar_cadacomppachiperdia.php"));
           ?>
       </center>
@@ -636,10 +632,10 @@ if (isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 if ($iModulo == 2) {
 
-db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );
 
@@ -651,7 +647,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
 <script>
 js_tabulacaoforms("form1", "fa50_i_triagem", true, 1, "fa50_i_triagem", true);
 </script>
-<?
+<?php
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if ($oDaoFarCadAcompPacHiperdia->erro_status=="0") {

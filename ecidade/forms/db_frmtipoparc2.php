@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("i01_descr");
        <?=@$Ltipoparc?>
     </td>
     <td> 
-<?
+<?php
 db_input('tipoparc',4,$Itipoparc,true,'text',3,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('tipoparc',4,$Itipoparc,true,'text',3,"")
        <?=@$Ldescr?>
     </td>
     <td> 
-<?
+<?php
 db_input('descr',40,$Idescr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -58,7 +58,7 @@ db_input('descr',40,$Idescr,true,'text',$db_opcao,"")
        <?=@$Ldtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,7 +68,7 @@ db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',$db_opcao,"
        <?=@$Ldtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -78,7 +78,7 @@ db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',$db_opcao,"
        <?=@$Lmaxparc?>
     </td>
     <td> 
-<?
+<?php
 db_input('maxparc',4,$Imaxparc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('maxparc',4,$Imaxparc,true,'text',$db_opcao,"")
        <?=@$Lvlrmin?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrmin',15,$Ivlrmin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,22 +98,22 @@ db_input('vlrmin',15,$Ivlrmin,true,'text',$db_opcao,"")
        <?=@$Ldtvlr?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dtvlr',@$dtvlr_dia,@$dtvlr_mes,@$dtvlr_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tinflat?>">
-       <?
+       <?php
        db_ancora(@$Linflat,"js_pesquisainflat(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('inflat',5,$Iinflat,true,'text',$db_opcao," onchange='js_pesquisainflat(false);'")
 ?>
-       <?
+       <?php
 db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        ?>
     </td>
@@ -123,7 +123,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        <?=@$Ldescmul?>
     </td>
     <td> 
-<?
+<?php
 db_input('descmul',15,$Idescmul,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_input('descmul',15,$Idescmul,true,'text',$db_opcao,"")
        <?=@$Ldescjur?>
     </td>
     <td> 
-<?
+<?php
 db_input('descjur',15,$Idescjur,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipoparc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

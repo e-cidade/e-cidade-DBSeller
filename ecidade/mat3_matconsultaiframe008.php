@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -76,7 +76,7 @@ db_postmemory($HTTP_POST_VARS);
       ?>
       </td>
     </tr>
-  <?
+  <?php
   if (!isset($filtroquery)){
   if (isset($codmater)&&$codmater!="") {
     $where="";

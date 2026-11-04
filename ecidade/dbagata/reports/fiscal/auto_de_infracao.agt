@@ -44,32 +44,44 @@
                     (select coalesce( valormulta_levantamento    , 0 ) from fc_autodeinfracao_getimpostosservicos ( $iCodigoAutodeInfracao, null ) ) as total_multa,
                     (select coalesce( valorjuros_levantamento    , 0 ) from fc_autodeinfracao_getimpostosservicos ( $iCodigoAutodeInfracao, null ) ) as total_juros,
                     (select coalesce( valortotal_levantamento    , 0 ) from fc_autodeinfracao_getimpostosservicos ( $iCodigoAutodeInfracao, null ) ) as total_levantamentos,
-                    y50_obs       as obs_auto</Select>
+                    y50_obs       as obs_auto,
+                    (SELECT tipo_procedencia
+                       FROM fc_autodeinfracao_getprocedencias($iCodigoAutodeInfracao, NULL)) as tt,
+                    p58_ano       as tt5,
+                    p58_numero    as tt6,
+                    j34_setor     as setor,
+                    j34_quadra    as quadra,
+                    j34_lote      as lote</Select>
             <From>(SELECT y50_obs,
                           y14_numero,
                           y14_compl,
                           y50_hora,
                           y50_data,
-                          j13_descr,
-                          j14_nome,
+                          bairro.j13_descr,
+                          ruas.j14_nome,
                           y50_codauto AS auto,
+                          j34_setor,
+                          j34_quadra,
+                          j34_lote,
+                          p58_numero,
+                          p58_ano,
                           CASE WHEN y30_codnoti IS NOT NULL THEN 'Notificação'
                                WHEN q02_numcgm  IS NOT NULL THEN 'Inscrição'
                                WHEN y80_numcgm  IS NOT NULL THEN 'Sanitário '
-                               WHEN z01_numcgm  IS NOT NULL THEN 'Cgm'
-                               WHEN j01_numcgm  IS NOT NULL THEN 'Matrícula'
+                               WHEN cgm.z01_numcgm  IS NOT NULL THEN 'Cgm'
+                               WHEN proprietario.z01_numcgm  IS NOT NULL THEN 'Matrícula'
                                ELSE 'Nenhum'
                           END AS identificacao,
                           CASE WHEN y51_codnoti IS NOT NULL THEN y51_codnoti
                                WHEN y53_matric  IS NOT NULL THEN y53_matric
                                WHEN y55_codsani IS NOT NULL THEN y55_codsani
-                               WHEN z01_numcgm  IS NOT NULL THEN z01_numcgm
+                               WHEN cgm.z01_numcgm  IS NOT NULL THEN cgm.z01_numcgm
                                WHEN y52_inscr   IS NOT NULL THEN y52_inscr
                           END AS codigo,
                           CASE WHEN q02_numcgm IS NOT NULL THEN q02_numcgm
-                               WHEN j01_numcgm IS NOT NULL THEN j01_numcgm
+                               WHEN proprietario.z01_numcgm IS NOT NULL THEN proprietario.z01_numcgm
                                WHEN y80_numcgm IS NOT NULL THEN y80_numcgm
-                               WHEN z01_numcgm IS NOT NULL THEN z01_numcgm
+                               WHEN cgm.z01_numcgm IS NOT NULL THEN cgm.z01_numcgm
                                ELSE q02_numcgm
                           END AS z01_numcgm
                    FROM auto INNER JOIN tipofiscaliza ON y50_codtipo = y27_codtipo
@@ -77,15 +89,18 @@
                              LEFT  JOIN autoinscr ON y52_codauto = y50_codauto
                              LEFT  JOIN automatric ON y53_codauto = y50_codauto
                              LEFT  JOIN autosanitario ON y55_codauto = y50_codauto
-                             LEFT  JOIN iptubase ON j01_matric = y53_matric
+                             left join procfiscalauto on y50_codauto = y111_auto
+                             left join procfiscalprot on y105_procfiscal = y111_procfiscal
+                             left join protprocesso on p58_codproc = y105_protprocesso
+                             LEFT  JOIN proprietario ON j01_matric = y53_matric
                              LEFT  JOIN issbase ON y52_inscr = q02_inscr
-                             LEFT  JOIN cgm ON z01_numcgm = y54_numcgm
+                             LEFT  JOIN cgm ON cgm.z01_numcgm = y54_numcgm
                              LEFT  JOIN sanitario ON y80_codsani = y55_codsani
                              LEFT  JOIN autofiscal ON y51_codauto = y50_codauto
                              LEFT  JOIN fiscal ON y51_codnoti = y30_codnoti
                              INNER JOIN autolocal ON y14_codauto = y50_codauto
-                             LEFT  JOIN ruas ON j14_codigo = y14_codigo
-                             LEFT  JOIN bairro ON j13_codi = y14_codi
+                             LEFT  JOIN ruas ON ruas.j14_codigo = y14_codigo
+                             LEFT  JOIN bairro ON bairro.j13_codi = y14_codi
                   ) AS subqueryauto INNER JOIN cgm ON cgm.z01_numcgm = subqueryauto.z01_numcgm</From>
             <Where>auto = $iCodigoAutodeInfracao;</Where>
             <GroupBy></GroupBy>

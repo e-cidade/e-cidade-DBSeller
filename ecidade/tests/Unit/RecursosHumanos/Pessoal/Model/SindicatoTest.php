@@ -156,7 +156,7 @@ class SindicatoTest extends TestCase
         $this->assertEquals($razaoSocial, $sindicato['razaoSocial']);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

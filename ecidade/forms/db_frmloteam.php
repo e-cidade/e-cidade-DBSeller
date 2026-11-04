@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clloteam->rotulo->label();
 	       <?=@$Lj34_loteam?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('j34_loteam',4,$Ij34_loteam,true,'text',3,"")
 				?>
 	    <td>
@@ -47,7 +47,7 @@ $clloteam->rotulo->label();
 	       <?=@$Lj34_descr?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('j34_descr',40,$Ij34_descr,true,'text',$db_opcao,"")
 				?>
 	    <td>
@@ -57,7 +57,7 @@ $clloteam->rotulo->label();
 	       <?=@$Lj34_areacc?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('j34_areacc',15,$Ij34_areacc,true,'text',$db_opcao,"")
 				?>
 	    <td>
@@ -67,7 +67,7 @@ $clloteam->rotulo->label();
 	       <?=@$Lj34_areapc?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('j34_areapc',15,$Ij34_areapc,true,'text',$db_opcao,"")
 				?>
 	    <td>
@@ -77,7 +77,7 @@ $clloteam->rotulo->label();
 	       <?=@$Lj34_areato?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('j34_areato',15,$Ij34_areato,true,'text',$db_opcao,"")
 				?>
 	    <td>

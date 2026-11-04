@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claquisicao->rotulo->label("bi04_forma");
               <?=$Lbi04_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi04_codigo",10,$Ibi04_codigo,true,"text",4,"","chave_bi04_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claquisicao->rotulo->label("bi04_forma");
               <?=$Lbi04_forma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi04_forma",50,$Ibi04_forma,true,"text",4,"","chave_bi04_forma");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claquisicao->rotulo->label("bi04_forma");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aquisicao.php")==true){
@@ -119,12 +119,12 @@ $claquisicao->rotulo->label("bi04_forma");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

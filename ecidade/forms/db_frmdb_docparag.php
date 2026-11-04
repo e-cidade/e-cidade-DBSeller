@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("db02_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tdb04_docum?>">
-       <?
+       <?php
        db_ancora(@$Ldb04_docum,"js_pesquisadb04_docum(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db04_docum',8,$Idb04_docum,true,'text',$db_opcao," onchange='js_pesquisadb04_docum(false);'")
 ?>
-       <?
+       <?php
 db_input('db03_descr',80,$Idb03_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb04_idparag?>">
-       <?
+       <?php
        db_ancora(@$Ldb04_idparag,"js_pesquisadb04_idparag(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db04_idparag',8,$Idb04_idparag,true,'text',$db_opcao," onchange='js_pesquisadb04_idparag(false);'")
 ?>
-       <?
+       <?php
 db_input('db02_descr',40,$Idb02_descr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('db02_descr',40,$Idb02_descr,true,'text',3,'')
        <?=@$Ldb04_ordem?>
     </td>
     <td> 
-<?
+<?php
 db_input('db04_ordem',4,$Idb04_ordem,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ function js_preenchepesquisa(chave,chave1){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
-<?
+<?php
 //$func_iframe = new janela('db_iframe','');
 //$func_iframe->posX=1;
 //$func_iframe->posY=20;

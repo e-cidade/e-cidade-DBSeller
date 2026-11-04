@@ -13,13 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['auth:api'])->namespace('App\Http\Controllers')->get('/user', function (Request $request) {
-    return $request->user();
-});
+$namespace = '\App\Http\Controllers';
 
 Route::prefix('client')->group(base_path('routes/api/client/client.php'));
-
-Route::prefix('assinador')->namespace('App\Domain\Assinador\\')->group(base_path('routes/api/assinador/assinador.php'));
 
 Route::prefix('assistencia-social')->middleware(['auth:api'])->group(function () {
     Route::prefix('habitacao')->group(base_path('routes/api/assistencia-social/habitacao.php'));
@@ -55,20 +51,36 @@ Route::prefix('educacao')
         Route::prefix('censo')->group(base_path('routes/api/educacao/censo.php'));
     });
 
-Route::prefix('educacao')->group(function () {
-    Route::prefix('central-de-matriculas')->group(base_path('routes/api/educacao/central-de-matriculas.php'));
+Route::prefix('educacao')
+    ->middleware(['auth:api'])
+    ->namespace('\App\Domain\Educacao\MatriculaOnline\Controllers')
+    ->middleware(\App\Domain\Educacao\MatriculaOnline\Middlewares\AuthMatriculaOnLineMiddleware::class)
+    ->group(function () {
+        Route::prefix('matricula-online')->group(base_path('routes/api/educacao/matricula-online.php'));
+    });
+
+Route::prefix('educacao')
+    ->middleware(['api'])
+    ->namespace('\App\Domain\Educacao\CentralMatriculas\Controllers')
+    ->group(function () {
+     Route::prefix('central-de-matriculas')->group(base_path('routes/api/educacao/central-de-matriculas.php'));
 });
 
-Route::prefix('financeiro')->middleware(['auth:api'])->group(function () {
-    Route::prefix('custos')->group(base_path('routes/api/financeiro/custos.php'));
-    Route::prefix('empenho')->group(base_path('routes/api/financeiro/empenho.php'));
-    Route::prefix('planejamento')->group(base_path('routes/api/financeiro/planejamento.php'));
+Route::prefix('educacao')
+    ->middleware(['api'])
+    ->namespace('\App\Domain\Educacao\CentralMatriculas\Controllers')
+    ->group(function () {
+     Route::prefix('files')->group(base_path('routes/api/educacao/files.php'));
 });
 
 Route::prefix('financeiro')
     ->middleware(['auth:api'])
     ->namespace('App\Domain\Financeiro\\')
     ->group(function () {
+        Route::prefix('custos')->namespace('Custos\Controllers\\')->group(
+            base_path('routes/api/financeiro/custos.php')
+        );
+
         Route::prefix('contabilidade')->namespace('Contabilidade\Controllers\\')->group(
             base_path('routes/api/financeiro/contabilidade.php')
         );
@@ -76,12 +88,28 @@ Route::prefix('financeiro')
         Route::prefix('orcamento')->namespace('Orcamento\Controllers\\')->group(
             base_path('routes/api/financeiro/orcamento.php')
         );
-    });
 
-Route::prefix('financeiro')->namespace('App\Domain\Financeiro\\')->group(function () {
-    Route::prefix('tesouraria')->group(base_path('routes/api/financeiro/tesouraria.php'));
-    Route::prefix('empenho')->group(base_path('routes/api/financeiro/empenho.php'));
+        Route::prefix('planejamento')->namespace('Planejamento\Controllers\\')->group(
+            base_path('routes/api/financeiro/planejamento.php')
+        );
 
+        Route::prefix('tesouraria')->namespace('Tesouraria\Controller\\')->group(
+            base_path('routes/api/financeiro/tesouraria.php')
+        );
+
+        Route::prefix('empenho')->namespace('Empenho\Controller\\')->group(
+            base_path('routes/api/financeiro/empenho.php')
+        );
+});
+
+Route::prefix('financeiro')
+    ->middleware(['api'])
+    ->namespace('App\Domain\Financeiro\\')
+    ->group(function () {
+
+        Route::prefix('contabilidade')->namespace('Contabilidade\Controllers\\')->group(
+            base_path('routes/api/financeiro/contabilidade-public.php')
+        );
 });
 
 Route::prefix('gestor')->middleware(['auth:api'])->group(base_path('routes/api/gestor/gestor.php'));
@@ -89,20 +117,17 @@ Route::prefix('gestor')->middleware(['auth:api'])->group(base_path('routes/api/g
 Route::prefix('integracoes')
     ->namespace('App\Domain\Integracoes\\')
     ->middleware(['auth:api'])->group(function () {
-    Route::prefix('efd-reinf')->namespace('EFDReinf\Controllers')->group(
-        base_path('routes/api/integracoes/efd-reinf.php')
-    );
-});
+        Route::prefix('efd-reinf')->namespace('EFDReinf\Controllers')->group(
+            base_path('routes/api/integracoes/efd-reinf.php')
+        );
+    });
 
 Route::prefix('patrimonial')->namespace('\App\Domain\Patrimonial')->group(function () {
     Route::prefix('compras')->group(base_path('routes/api/patrimonial/compras.php'));
-    Route::prefix('contratos')->group(base_path('routes/api/patrimonial/contratos.php'));
+
     Route::prefix('licitacoes')->group(base_path('routes/api/patrimonial/licitacoes.php'));
     Route::prefix('material')->namespace('Material\Controllers\\')->group(
         base_path('routes/api/patrimonial/material.php')
-    );
-    Route::prefix('ouvidoria')->namespace('Ouvidoria\Controller')->group(
-        base_path('routes/api/patrimonial/ouvidoria.php')
     );
     Route::prefix('patrimonio')->namespace('Patrimonio\Controllers\\')->group(
         base_path('routes/api/patrimonial/patrimonio.php')
@@ -114,9 +139,14 @@ Route::prefix('patrimonial')->namespace('\App\Domain\Patrimonial')->group(functi
 
 Route::prefix('patrimonial')
     ->middleware(['auth:api'])
-    ->namespace('App\Domain\Patrimonial\Licitacoes\Controllers')
+    ->namespace('App\Domain\Patrimonial\\')
     ->group(function () {
-        Route::prefix('licitacoes')->group(base_path('routes/api/patrimonial/licitacoes.php'));
+        Route::prefix('licitacoes')->namespace('Licitacoes\Controllers\\')
+            ->group(base_path('routes/api/patrimonial/licitacoes.php'));
+        Route::prefix('contratos')->namespace('Contratos\Controllers\\')
+            ->group(base_path('routes/api/patrimonial/contratos.php'));
+        Route::prefix('pncp')->namespace('PNCP\Controllers\\')
+            ->group(base_path('routes/api/patrimonial/pncp.php'));
     });
 
 Route::prefix('recursos-humanos')->middleware(['auth:api'])->group(function () {
@@ -126,26 +156,23 @@ Route::prefix('recursos-humanos')->middleware(['auth:api'])->group(function () {
     Route::prefix('rh')->group(base_path('routes/api/recursos-humanos/rh.php'));
 });
 
-Route::prefix('saude')->middleware(['auth:api'])->namespace('App\Domain\Saude\\')->group(function () {
+Route::prefix('saude')->namespace('App\Domain\Saude\\')->group(function () {
     Route::prefix('agendamento')->group(base_path('routes/api/saude/agendamento.php'));
-    Route::prefix('farmacia')->namespace('Farmacia\Controllers\\')->group(base_path('routes/api/saude/farmacia.php'));
-    Route::prefix('hiperdia')->group(base_path('routes/api/saude/hiperdia.php'));
-    Route::prefix('samu')->group(base_path('routes/api/saude/samu.php'));
-    Route::prefix('tfd')->namespace('TFD\Controllers\\')->group(base_path('routes/api/saude/tfd.php'));
-    Route::prefix('vacinas')->group(base_path('routes/api/saude/vacinas.php'));
+    Route::prefix('ambulatorial')->namespace('Ambulatorial\Controllers\\')->group(
+        base_path('routes/api/saude/ambulatorial.php')
+    );
     Route::prefix('esf')
         ->namespace('ESF\Controllers\\')
         ->middleware(\App\Domain\Saude\ESF\Middlewares\AuthEsfMiddleware::class)
         ->group(base_path('routes/api/saude/esf.php'));
-});
-
-Route::prefix('saude')->namespace('App\Domain\Saude\\')->group(function () {
-    Route::prefix('ambulatorial')->namespace('Ambulatorial\Controllers\\')->group(
-        base_path('routes/api/saude/ambulatorial.php')
-    );
+    Route::prefix('farmacia')->namespace('Farmacia\Controllers\\')->group(base_path('routes/api/saude/farmacia.php'));
+    Route::prefix('hiperdia')->group(base_path('routes/api/saude/hiperdia.php'));
     Route::prefix('laboratorio')->namespace('Laboratorio\Controllers\\')->group(
         base_path('routes/api/saude/laboratorio.php')
     );
+    Route::prefix('samu')->group(base_path('routes/api/saude/samu.php'));
+    Route::prefix('tfd')->namespace('TFD\Controllers\\')->group(base_path('routes/api/saude/tfd.php'));
+    Route::prefix('vacinas')->group(base_path('routes/api/saude/vacinas.php'));
 });
 
 Route::prefix('tributario')->namespace('App\Domain\Tributario\\')->group(function () {
@@ -159,6 +186,10 @@ Route::prefix('tributario')->namespace('App\Domain\Tributario\\')->group(functio
     Route::prefix('diversos')->group(base_path('routes/api/tributario/diversos.php'));
     Route::prefix('divida-ativa')->group(base_path('routes/api/tributario/divida-ativa.php'));
     Route::prefix('fiscal')->group(base_path('routes/api/tributario/fiscal.php'));
+    Route::prefix('fiscalizacao')
+        ->middleware(['auth:api'])
+        ->namespace('Fiscalizacao\Controllers\\')
+        ->group(base_path('routes/api/tributario/fiscalizacao.php'));
     Route::prefix('inflatores')->group(base_path('routes/api/tributario/inflatores.php'));
     Route::prefix('issqn')->namespace('ISSQN\Controller\\')->group(base_path('routes/api/tributario/issqn.php'));
     Route::prefix('itbi')->group(base_path('routes/api/tributario/itbi.php'));
@@ -167,4 +198,13 @@ Route::prefix('tributario')->namespace('App\Domain\Tributario\\')->group(functio
     Route::prefix('meio-ambiente')->group(base_path('routes/api/tributario/meio-ambiente.php'));
     Route::prefix('notificacoes')->group(base_path('routes/api/tributario/notificacoes.php'));
     Route::prefix('projetos')->group(base_path('routes/api/tributario/projetos.php'));
+    Route::prefix('caixa')
+        ->namespace('Caixa\Controllers\\')
+        ->middleware(['auth:api'])
+        ->group(base_path('routes/api/tributario/caixa.php'));
 });
+
+Route::prefix('/dbpref')
+    ->middleware(['api'])
+    ->namespace($namespace)
+    ->group(base_path('routes/api/dbpref/dbpref.php'));

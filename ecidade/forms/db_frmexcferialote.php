@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td align="right" nowrap title="<?=@$Tr44_selec?>">
-      <?
+      <?php
       db_ancora(@$Lr44_selec, "js_pesquisar44_selec(true);", $db_opcao);
       ?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php
       db_input('r44_selec', 8, $Ir44_selec, true, 'text', $db_opcao, " onchange='js_pesquisar44_selec(false);'")
       ?>
-      <?
+      <?php
       db_input('r44_descr', 60, $Ir44_descr, true, 'text', 3);
       ?>
     </td>

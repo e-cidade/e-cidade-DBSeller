@@ -1,44 +1,44 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/scpdf.php"));
-require_once(modification("libs/db_sql.php"));
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("libs/db_app.utils.php"));
-require_once(modification("libs/JSON.php"));
-require_once(modification("std/DBDate.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("model/educacao/avaliacao/iFormaObtencao.interface.php"));
-require_once(modification("model/educacao/avaliacao/iElementoAvaliacao.interface.php"));
+require_once modification("fpdf151/scpdf.php");
+require_once modification("libs/db_sql.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_app.utils.php");
+require_once modification("libs/JSON.php");
+require_once modification("std/DBDate.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("model/educacao/avaliacao/iFormaObtencao.interface.php");
+require_once modification("model/educacao/avaliacao/iElementoAvaliacao.interface.php");
 
 use ECidade\Educacao\Escola\Repository\ParametrosRepository;
 
@@ -148,38 +148,38 @@ if (array_key_exists($sTipoModelo, $aTituloCabecalho)) {
          * 1 - Matricula Inicial
          * 2 - Demais Cursos
          */
-        case ("12"):
+    case ("12"):
 
-            if ($oFiltros->iPreEscola == 2) {
+        if ($oFiltros->iPreEscola == 2) {
 
-                $oFiltros->iColunaAluno = 142;
-                $oFiltros->iColunaPreEscola = 20;
-            } else {
-                $oFiltros->iColunaAluno = 162;
-            }
-            $oFiltros->iColunaSituacaoMatricula = 30;
-            break;
+            $oFiltros->iColunaAluno = 142;
+            $oFiltros->iColunaPreEscola = 20;
+        } else {
+            $oFiltros->iColunaAluno = 162;
+        }
+        $oFiltros->iColunaSituacaoMatricula = 30;
+        break;
 
         /**
          * 2 - Matricula Final
          * 1 - Educacao Infantil
          */
-        case ("21"):
+    case ("21"):
 
-            $oFiltros->iColunaAluno = 97;
-            tamanhosColunasMatriculaFinal($oFiltros);
-            break;
+        $oFiltros->iColunaAluno = 97;
+        tamanhosColunasMatriculaFinal($oFiltros);
+        break;
 
         /**
          * 2 - Matricula Final
          * 2 - Demais Cursos
          */
-        case ("22"):
+    case ("22"):
 
-            $oFiltros->iColunaAluno = 81;
-            $oFiltros->iColunaSituacaoMatricula = 16;
-            tamanhosColunasMatriculaFinal($oFiltros);
-            break;
+        $oFiltros->iColunaAluno = 81;
+        $oFiltros->iColunaSituacaoMatricula = 16;
+        tamanhosColunasMatriculaFinal($oFiltros);
+        break;
     }
 }
 
@@ -243,9 +243,10 @@ foreach ($aTurmas as $oTurmaSelecionada) {
 
 /**
  * Cabecalho padrao para todos os modelos de relatorio
- * @param SCPDF $oPdf
+ *
+ * @param SCPDF    $oPdf
  * @param stdClass $oFiltros
- * @param Turma $oTurma
+ * @param Turma    $oTurma
  */
 function cabecalhoRelatorio($oPdf, $oFiltros, $oTurma)
 {
@@ -307,34 +308,34 @@ function cabecalhoRelatorio($oPdf, $oFiltros, $oTurma)
          * 1 - Matricula Inicial
          * 2 - Demais Cursos
          */
-        case ("12"):
+    case ("12"):
 
-            $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaCabecalho, "Situação de Matrícula", 1, 0, "C");
+        $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaCabecalho, "Situação de Matrícula", 1, 0, "C");
 
-            if ($oFiltros->iPreEscola == 2) {
-                $oPdf->Cell($oFiltros->iColunaPreEscola, $oFiltros->iAlturaLinhaCabecalho, "Pré-Escola", 1, 0, "C");
-            }
-            break;
+        if ($oFiltros->iPreEscola == 2) {
+            $oPdf->Cell($oFiltros->iColunaPreEscola, $oFiltros->iAlturaLinhaCabecalho, "Pré-Escola", 1, 0, "C");
+        }
+        break;
 
         /**
          * 2 - Matricula Final
          * 1 - Educacao Infantil
          */
-        case ("21"):
+    case ("21"):
 
-            colunasMatriculaFinal($oPdf, $oFiltros);
-            break;
+        colunasMatriculaFinal($oPdf, $oFiltros);
+        break;
 
         /**
          * 2 - Matricula Final
          * 2 - Demais Cursos
          */
-        case ("22"):
+    case ("22"):
 
-            $oPdf->MultiCell($oFiltros->iColunaSituacaoMatricula, 6, "Situação de Matrícula", 1, "C");
-            $oPdf->SetXY(163, 45);
-            colunasMatriculaFinal($oPdf, $oFiltros);
-            break;
+        $oPdf->MultiCell($oFiltros->iColunaSituacaoMatricula, 6, "Situação de Matrícula", 1, "C");
+        $oPdf->SetXY(163, 45);
+        colunasMatriculaFinal($oPdf, $oFiltros);
+        break;
     }
 
     $oPdf->Cell($oFiltros->iColunaCorRaca, $oFiltros->iAlturaLinhaCabecalho, "Cor / Raça", 1, 1, "C");
@@ -345,9 +346,10 @@ function cabecalhoRelatorio($oPdf, $oFiltros, $oTurma)
 
 /**
  * Metodo para montar o corpo do relatorio, de acordo com os filtros selecionados
- * @param SCPDF $oPdf
+ *
+ * @param SCPDF    $oPdf
  * @param stdClass $oFiltros
- * @param Turma $oTurma
+ * @param Turma    $oTurma
  */
 function corpoRelatorio($oPdf, $oFiltros, $oTurma)
 {
@@ -401,7 +403,7 @@ function corpoRelatorio($oPdf, $oFiltros, $oTurma)
          */
         if ($oMatricula->getSituacao() == 'TRANSFERIDO FORA' || $oMatricula->getSituacao() == 'TRANSFERIDO REDE') {
             $oFiltros->sEvadido = db_mes($oMatricula->getDataEncerramento()->getMes(), 2);
-        } else if ($oMatricula->getSituacao() == 'EVADIDO') {
+        } else if ($oMatricula->getSituacao() == 'EVADIDO' || $oMatricula->getSituacao() == 'ABANDONO ESCOLAR') {
             $oFiltros->sTransferido = db_mes($oMatricula->getDataEncerramento()->getMes(), 2);
         }
 
@@ -418,37 +420,37 @@ function corpoRelatorio($oPdf, $oFiltros, $oTurma)
              * 1 - Matricula Inicial
              * 2 - Demais Cursos
              */
-            case ("12"):
+        case ("12"):
 
-                $sPreEscola = 'NÃO';
-                if ($oMatricula->getAluno()->temPreEscolaNaRede()) {
-                    $sPreEscola = 'SIM';
-                }
+            $sPreEscola = 'NÃO';
+            if ($oMatricula->getAluno()->temPreEscolaNaRede()) {
+                $sPreEscola = 'SIM';
+            }
 
-                $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaPadrao, $sSituacao, 1, 0, "C");
-                if ($oFiltros->iPreEscola == 2) {
-                    $oPdf->Cell($oFiltros->iColunaPreEscola, $oFiltros->iAlturaLinhaPadrao, $sPreEscola, 1, 0, "C");
-                }
-                break;
+            $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaPadrao, $sSituacao, 1, 0, "C");
+            if ($oFiltros->iPreEscola == 2) {
+                $oPdf->Cell($oFiltros->iColunaPreEscola, $oFiltros->iAlturaLinhaPadrao, $sPreEscola, 1, 0, "C");
+            }
+            break;
 
             /**
              * 2 - Matricula Final
              * 1 - Educacao Infantil
              */
-            case ("21"):
+        case ("21"):
 
-                preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula);
-                break;
+            preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula);
+            break;
 
             /**
              * 2 - Matricula Final
              * 2 - Demais Cursos
              */
-            case ("22"):
+        case ("22"):
 
-                $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaPadrao, $sSituacao, 1, 0, "C");
-                preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula);
-                break;
+            $oPdf->Cell($oFiltros->iColunaSituacaoMatricula, $oFiltros->iAlturaLinhaPadrao, $sSituacao, 1, 0, "C");
+            preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula);
+            break;
         }
 
         $oPdf->Cell($oFiltros->iColunaCorRaca, $oFiltros->iAlturaLinhaPadrao, $oMatricula->getAluno()->getRaca(), 1, 1, "C");
@@ -458,9 +460,10 @@ function corpoRelatorio($oPdf, $oFiltros, $oTurma)
 
 /**
  * Metodo para montar o corpo do relatorio, de acordo com os filtros seleciondos
- * @param SCPDF $oPdf
+ *
+ * @param SCPDF    $oPdf
  * @param stdClass $oFiltros
- * @param Turma $oTurma
+ * @param Turma    $oTurma
  */
 function rodapeRelatorio($oPdf, $oFiltros, $oTurma)
 {
@@ -496,6 +499,7 @@ function rodapeRelatorio($oPdf, $oFiltros, $oTurma)
 
 /**
  * Altera o tamanho das colunas extras quando for tipo 1 - Matricula Final
+ *
  * @param stdClass $oFiltros
  */
 function tamanhosColunasMatriculaFinal($oFiltros)
@@ -512,7 +516,8 @@ function tamanhosColunasMatriculaFinal($oFiltros)
 
 /**
  * Colunas extras que devem ser impressas quando for tipo 1 - Matricula Final
- * @param SCPDF $oPdf
+ *
+ * @param SCPDF    $oPdf
  * @param stdClass $oFiltros
  */
 function colunasMatriculaFinal($oPdf, $oFiltros)
@@ -537,8 +542,9 @@ function colunasMatriculaFinal($oPdf, $oFiltros)
 
 /**
  * Preenche as colunas extras que devem ser impressas quando for tipo 1 - Matricula Final
- * @param SCPDF $oPdf
- * @param stdClass $oFiltros
+ *
+ * @param SCPDF     $oPdf
+ * @param stdClass  $oFiltros
  * @param Matricula $oMatricula
  */
 function preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula)
@@ -553,9 +559,11 @@ function preencheColunasMatriculaFinal($oPdf, $oFiltros, $oMatricula)
     /**
      * Buscamos o resultado final de acordo com o termo do ensino
      */
-    $aResultadoFinal = DBEducacaoTermo::getTermoEncerramento($oFiltros->iEnsino,
+    $aResultadoFinal = DBEducacaoTermo::getTermoEncerramento(
+        $oFiltros->iEnsino,
         $oDiarioClasse->getResultadoFinal(),
-        $oFiltros->iAno);
+        $oFiltros->iAno
+    );
 
     if (count($aResultadoFinal) > 0) {
 

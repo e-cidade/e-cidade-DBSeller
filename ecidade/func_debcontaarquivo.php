@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldebcontaarquivo->rotulo->label("d72_nsa");
               <?=$Ld72_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d72_codigo",10,$Id72_codigo,true,"text",4,"","chave_d72_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldebcontaarquivo->rotulo->label("d72_nsa");
               <?=$Ld72_nsa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d72_nsa",10,$Id72_nsa,true,"text",4,"","chave_d72_nsa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldebcontaarquivo->rotulo->label("d72_nsa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_debcontaarquivo.php")==true){
@@ -118,12 +118,12 @@ $cldebcontaarquivo->rotulo->label("d72_nsa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

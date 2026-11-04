@@ -85,7 +85,7 @@ $grupoLaboratorioService = new GrupoLaboratorioService(new GrupoLaboratorioRepos
 
 if($iTipo==1){ //Auto complete profissional agendamento de exames
 	$sName   = html_entity_decode(crossUrlDecode($_POST['string']));
-	$oDaoMedicos = db_utils::getdao('medicos');
+	$oDaoMedicos = new cl_medicos;
   $sCampos  = 'distinct medicos.sd03_i_codigo as cod, ';
   $sCampos .= '         case ';
   $sCampos .= '           when sd03_i_tipo = 1 ';
@@ -107,17 +107,18 @@ if($iTipo==1){ //Auto complete profissional agendamento de exames
 if ($iTipo == 2) { //Auto complete exames agendamento de exames
 
   $sName         = html_entity_decode(crossUrlDecode($_POST['string']));
-  $oDaoLabExames = db_utils::getdao('lab_exame');
+  $oDaoLabExames = new cl_lab_exame;
   $departamento = $_SESSION['DB_coddepto'];
 
   if(isset($_GET['sexoPaciente'])){
     $sexoPaciente = str_replace(chr(92), '', str_replace('\'', '', $_GET['sexoPaciente']));
     $sexoPaciente = $sexoPaciente == 'M' ? 1 : 2;
   }
-  
+
   $sCampos  = 'la08_i_codigo as cod, ';
   $sCampos .= 'la08_c_descr as label ';
   $sWhere   = "(la08_c_descr like upper('%".$sName."%') or sau_procedimento.sd63_c_procedimento like ('".$sName."%'))";
+  $sWhere  .= "and la09_i_ativo = 1 and la08_i_ativo = 1 ";
   $sWhere  .= "and lab_exameproced.la53_i_ativo = 1 ";
   $sWhere  .= "and EXISTS ( select * from lab_setorexame where la09_i_exame = la08_i_codigo )";
   $sWhere  .= "and lab_labsetor.la24_i_laboratorio in (select la03_i_laboratorio from lab_labdepart where la03_i_departamento = $departamento)";
@@ -127,9 +128,9 @@ if ($iTipo == 2) { //Auto complete exames agendamento de exames
   }
 
   $sSql     = $oDaoLabExames->sql_query_procedimento(null, $sCampos, 'label', $sWhere);
-  $rs       = $oDaoLabExames->sql_record($sSql);
-  $iLinhas  = $oDaoLabExames->numrows;
-  
+  $rs       = db_query($sSql);
+  $iLinhas  = pg_num_rows($rs);
+
   $aRetorno = "";
 
   if ($iLinhas > 0){
@@ -141,7 +142,7 @@ if ($iTipo == 2) { //Auto complete exames agendamento de exames
 
 if ($objParam->exec == 'getProcedimento') {
 
-  $clsau_proccbo = db_utils::getDao("sau_proccbo_ext");
+  $clsau_proccbo = new cl_sau_proccbo_ext;
 
   $strWhere  = "     sau_proccbo.sd96_i_cbo = {$objParam->rh70_sequencial} ";
   $strWhere .= " and sau_procedimento.sd63_c_procedimento = '{$objParam->sd63_c_procedimento}'";
@@ -186,7 +187,7 @@ if ($objParam->exec == 'getProcedimento') {
 
 if ($objParam->exec == 'getGridExames') {
 
-  $oDaoLabRequiitem = db_utils::getdao('lab_requiitem');
+  $oDaoLabRequiitem = new cl_lab_requiitem;
   $sCampos          = "distinct la21_i_codigo as codigo,";
   $sCampos         .= "la08_c_descr  as descr,";
   $sCampos         .= "(select sd63_c_procedimento||'__'||(sd63_f_sa+sd63_f_sp)||'__'||nome||'__'||la47_d_data||";
@@ -234,7 +235,10 @@ if($objParam->exec == 'LoadLaboratorio'){
 }
 
 if($objParam->exec == 'DadosExame'){
-  $sSql=$cllab_setorexame->sql_query(""," la08_i_dias as dias,la08_c_descr as sexame,la09_i_exame as iexame,la02_i_codigo,la02_c_descr ",""," la09_i_codigo=$objParam->la09_i_codigo");
+  $campos = ' la08_i_dias as dias,la08_c_descr as sexame,la09_i_exame as iexame,la02_i_codigo,la02_c_descr, ';
+  $campos .= ' la08_obriga_peso as obriga_peso, la08_obriga_altura as obriga_altura, la08_obriga_volumeamostra as obriga_volume_amostra ';
+
+  $sSql=$cllab_setorexame->sql_query("",$campos,""," la09_i_codigo=$objParam->la09_i_codigo");
   $rResult=$cllab_setorexame->sql_record($sSql);
   if($cllab_setorexame->numrows>0){
       db_fieldsmemory($rResult,0);
@@ -251,6 +255,9 @@ if($objParam->exec == 'DadosExame'){
       $objRetorno->sRequisitos  = $sStr;
       $objRetorno->iLaboratorio = $la02_i_codigo;
       $objRetorno->sLaboratorio = urlencode($la02_c_descr);
+      $objRetorno->obrigaPeso = $obriga_peso;
+      $objRetorno->obrigaAltura = $obriga_altura;
+      $objRetorno->obrigaVolumeAmostra = $obriga_volume_amostra;
   }else{
       $objRetorno->status  = 0;
       $objRetorno->message = ' Exame codigo '+$objParam->la29_i_codigo+' inexistente! ';
@@ -277,7 +284,7 @@ if($objParam->exec == 'CarregaGrid'){
 
 if ( $objParam->exec == 'CarregaGridAutorizado' ) {
 
-  $sCampos     = "lab_requiitem.*, lab_exame.*, lab_laboratorio.*";
+  $sCampos     = "lab_requiitem.*, lab_exame.*, lab_laboratorio.*, lab_coletaitem.*";
   $sWhere      = "la21_i_requisicao = {$objParam->requisicao} and la02_i_codigo = {$objParam->iLaboratorioLogado}";
 	$sSql        = $cllab_requisicao->sql_query_coleta_amostra( "", $sCampos, "", $sWhere );
 	$result      = $cllab_requisicao->sql_record( $sSql );
@@ -294,12 +301,12 @@ if ( $objParam->exec == 'CarregaGridAutorizado' ) {
         $oExame->la21_c_situacao == "f - falta material") {
 
       //montar array com linhas do grid
-      $aData            = explode( "-", $oExame->la21_d_data );
       $aData2           = explode( "-", $oExame->la21_d_entrega );
       $alinhasgrid[$y]  = "{$oExame->la21_i_setorexame}#" . urlencode($oExame->la02_c_descr) . "#" . urlencode($oExame->la08_c_descr) . "#";
-      $alinhasgrid[$y] .= $aData[2] . "/" . $aData[1] . "/" . $aData[0];
-      $alinhasgrid[$y] .= "#{$oExame->la21_c_hora}#{$oExame->la21_c_situacao}#{$oExame->la21_i_emergencia}";
-      $alinhasgrid[$y] .= "#{$oExame->la21_i_codigo}#" . $aData2[2] . "/" . $aData2[1] . "/" . $aData2[0];
+      $alinhasgrid[$y] .= $oExame->la32_d_data ? (new DateTime($oExame->la32_d_data))->format('d/m/Y') : '';
+      $alinhasgrid[$y] .= "#{$oExame->la32_c_hora}#{$oExame->la21_c_situacao}#{$oExame->la21_i_emergencia}";
+      $alinhasgrid[$y] .= "#{$oExame->la21_i_codigo}#";
+      $alinhasgrid[$y] .= $oExame->la32_d_entrega ? (new DateTime($oExame->la32_d_entrega))->format('d/m/Y') : '';
       $y++;
     }
   }
@@ -610,8 +617,8 @@ if($objParam->exec == 'digitacaoalt'){
     	             }
     	             if($aTipo[$x]==3){
 
-    	   	            $cllab_resultadonum->la41_i_result=$cllab_resultadoitem->la39_i_codigo;;
-                        $cllab_resultadonum->la41_f_valor=$aValores[$x];
+    	   	            $cllab_resultadonum->la41_i_result=$cllab_resultadoitem->la39_i_codigo;
+                         $cllab_resultadonum->la41_f_valor=$aValores[$x];
                         $cllab_resultadonum->incluir(null);
     	                if($cllab_resultadonum->erro_status=="0"){
 
@@ -702,7 +709,7 @@ if($objParam->exec == 'verificaExameAtivo'){
     ";
 
     $oPostgresresource = db_query($sSqlExame);
-    
+
     $objRetorno->exameAtivo = pg_numrows($oPostgresresource) == 0;
 }
 
@@ -715,7 +722,42 @@ if($objParam->exec == 'buscaExamesPorGrupoELaboratorio'){
   $objRetorno->exames = $grupoExameService->buscarGrupoExamesPorGrupoELaboratprio($objParam);
 }
 
-if($autoCompleteGrupos){
+if ( $objParam->exec == 'pegarSetoresPorRequiitem' ) {
+    try {
+        $setoresExames = implode(', ', $objParam->codigosRequiitem);
+        $relacaoSetorPorRequiitem = [];
+
+        $sql = "
+        select la21_i_codigo, la23_i_codigo, la23_c_descr from lab_requiitem
+        inner join lab_setorexame on la09_i_codigo = la21_i_setorexame
+        inner join lab_labsetor on la24_i_codigo = la09_i_labsetor
+        inner join lab_setor on la23_i_codigo = la24_i_setor
+        where la21_i_codigo in ({$setoresExames});
+    ";
+
+        $rsSql = db_query($sql);
+
+        if (!$rsSql || pg_num_rows($rsSql) == 0) {
+            throw new DomainException('Erro ao buscar relação de exames pertencentes a requisição.');
+        }
+
+        $setoresExames = db_utils::getCollectionByRecord($rsSql);
+
+        foreach ($setoresExames as $setorExame) {
+            $relacaoSetorPorRequiitem[] = [
+                'setor' => (int)$setorExame->la23_i_codigo,
+                'requiitem' => $setorExame->la21_i_codigo,
+                'descricaoSetor' => urlencode(trim($setorExame->la23_c_descr)),
+            ];
+        }
+
+        $objRetorno->dadosRequiitem = $relacaoSetorPorRequiitem;
+    } catch (Exception $exception) {
+        $objRetorno->message = urlencode($exception->getMessage());
+    }
+}
+
+if(!empty($autoCompleteGrupos)){
   $descricao   = html_entity_decode(crossUrlDecode($_POST['string']));
   $objParam->descricaoGrupo = $descricao;
   $objParam->departamento = $departamento;

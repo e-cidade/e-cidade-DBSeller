@@ -52,8 +52,8 @@ $oRetorno->message = utf8_encode('Configurações salvas com sucesso!');
 $oRetorno->erro    = false;
 $oRetorno->aDados  = array();
 
-$oDaoConfVencISSQNRetido   = db_utils::getDao('db_confplan');
-$oDaoConfVencISSQNVariavel = db_utils::getDao('confvencissqnvariavel');
+$oDaoConfVencISSQNRetido   = new cl_db_confplan;
+$oDaoConfVencISSQNVariavel = new cl_confvencissqnvariavel;
 
 
 $oDaoConfVencISSQNAvulso = \cl_confvencissqnavulso::class;

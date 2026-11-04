@@ -131,6 +131,15 @@ $clcgm->rotulo->label();
               <td>
             </tr>
 
+              <tr>
+                  <td>
+                      <label for="saldo" class="bold">Valor débitos:</label>
+                  </td>
+                  <td>
+                      <input type="number" id="total-debitos" disabled="disabled" style="width: 126.25px">
+                  </td>
+              </tr>
+
             <tr>
               <td>
                 <label for="txtValor" class="bold">Valor:</label>
@@ -165,14 +174,14 @@ $clcgm->rotulo->label();
     var iSelecionado = 0;
     var sCheckSelecionado = '';
 
-    function js_pesquisaDebitos(iCgm) {
+    function js_pesquisaDebitos(iCgm)   {
 
       var sCampos = '|k00_numpre|k00_numpar|k00_tipo|k00_descr|k00_dtvenc|dl_Valor_Hist';
       var aQueryString = [
         'cgm=' + iCgm,
         'funcao_js=parent.js_mostraDebitos' + sCampos,
       ];
-      var sLookup = 'func_compensacaodebitos.php';
+      var sLookup = 'func_compensacaodebitos_multiselecao.php';
       var aDebitosSelecionados = oGridDebitos.getRows();
 
       var aDebitosFiltrar = [];
@@ -197,6 +206,7 @@ $clcgm->rotulo->label();
 
       aSelecionados.each(function(oLinha) {
         aLinhasRemover.push(oLinha.getRowNumber());
+        js_preencheTotalDebitos(oLinha.getCells()[4].getValue(), false);
       });
 
       oGridDebitos.removeRow(aLinhasRemover);
@@ -204,8 +214,6 @@ $clcgm->rotulo->label();
     }
 
     function js_mostraDebitos(iNumpre, iNumpar, iTipoDebito, sDescricaoTipoDebito, sDataVencimento, nValor) {
-
-      db_iframe_compensacaodebitos.hide();
 
       var oParam = {
             "exec": "getValorNumpreCalculado",
@@ -225,6 +233,8 @@ $clcgm->rotulo->label();
             oGridDebitos.addRow(aLinha);
             oGridDebitos.renderRows();
 
+            js_preencheTotalDebitos(js_formatar(oRetorno.total, 'f'), true);
+
         }).execute();
     }
 
@@ -239,6 +249,7 @@ $clcgm->rotulo->label();
     oGridDebitos.show($('oGridDebitos'));
 
     $('txtObservacao').value = '';
+    $('total-debitos').value = 0;
 
     $('btnProcessar').observe("click", function() {
       js_ProcessarCredito();
@@ -251,6 +262,19 @@ $clcgm->rotulo->label();
     $('remover-selecionados').observe('click', function () {
       js_removerSelecionados();
     });
+
+    /**
+     * Preenche valor total de débitos
+     */
+    function js_preencheTotalDebitos(valor, somar){
+        if(somar){
+            $('total-debitos').value = parseFloat($('total-debitos').value.toLocaleString('pt-br', {minimumFractionDigits: 2})) +
+                parseFloat(js_strToFloat(valor));
+        } else {
+            $('total-debitos').value = parseFloat($('total-debitos').value.toLocaleString('pt-br', {minimumFractionDigits: 2})) -
+                parseFloat(js_strToFloat(valor));
+        }
+    }
 
     /**
      * Tipo de Operações

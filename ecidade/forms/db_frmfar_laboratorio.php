@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clfar_laboratorio->rotulo->label();
        <?=@$Lfa24_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa24_i_codigo',5,$Ifa24_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('fa24_i_codigo',5,$Ifa24_i_codigo,true,'text',3,"")
        <?=@$Lfa24_c_laboratorio?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa24_c_laboratorio',40,$Ifa24_c_laboratorio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_laboratorio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

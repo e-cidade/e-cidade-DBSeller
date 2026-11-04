@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $cllevantamentopatrimonial->rotulo->label("p13_departamento");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lp13_sequencial?></label></td>
-          <td><? db_input("p13_sequencial",10,$Ip13_sequencial,true,"text",4,"","chave_p13_sequencial"); ?></td>
+          <td><?php db_input("p13_sequencial",10,$Ip13_sequencial,true,"text",4,"","chave_p13_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lp13_departamento?></label></td>
-          <td><? db_input("p13_departamento",10,$Ip13_departamento,true,"text",4,"","chave_p13_departamento");?></td>
+          <td><?php db_input("p13_departamento",10,$Ip13_departamento,true,"text",4,"","chave_p13_departamento");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $cllevantamentopatrimonial->rotulo->label("p13_departamento");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_levantamentopatrimonial.hide();">
   </form>
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos) == false) {
@@ -84,12 +84,12 @@ $cllevantamentopatrimonial->rotulo->label("p13_departamento");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

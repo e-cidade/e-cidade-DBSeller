@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clliberafornecedor->rotulo->label("pc82_sequencial");
               <?=$Lpc82_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc82_sequencial",10,$Ipc82_sequencial,true,"text",4,"","chave_pc82_sequencial");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $clliberafornecedor->rotulo->label("pc82_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "";
       if(isset($pc82_ativo) && $pc82_ativo == "true"){
       $sWhere .= " pc82_ativo is true ";
@@ -117,12 +117,12 @@ $clliberafornecedor->rotulo->label("pc82_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

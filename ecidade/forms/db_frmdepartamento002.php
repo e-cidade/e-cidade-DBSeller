@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,9 +59,9 @@
       <tr> 
         <td colspan="2" nowrap>
           <div align="center"> 
-            <input name="alterar" type="submit" id="alterar2"  value="Alterar" <? echo isset($retornoCod)?"":"disabled" ?>>
+            <input name="alterar" type="submit" id="alterar2"  value="Alterar" <?php echo isset($retornoCod)?"":"disabled" ?>>
             &nbsp;&nbsp; 
-            <input name="excluir" type="submit" id="excluir2" value="Excluir" <? echo isset($retornoCod)?"":"disabled" ?>>
+            <input name="excluir" type="submit" id="excluir2" value="Excluir" <?php echo isset($retornoCod)?"":"disabled" ?>>
             &nbsp;&nbsp; 
             <input name="cancelar" type="reset" id="cancelar2" value="Cancelar">
             &nbsp;&nbsp; 

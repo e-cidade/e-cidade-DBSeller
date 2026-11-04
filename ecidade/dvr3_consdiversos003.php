@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ function js_info(obj){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1" method="post" >
-  <?
+  <?php
 //	echo $sql;
     db_lovrot($sql,15,"()","","js_info|dv05_coddiver");
   ?>

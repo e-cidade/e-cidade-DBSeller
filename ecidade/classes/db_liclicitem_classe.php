@@ -40,7 +40,7 @@ class cl_liclicitem
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -51,7 +51,7 @@ class cl_liclicitem
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->l21_codigo = ($this->l21_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["l21_codigo"] : $this->l21_codigo);
@@ -65,7 +65,7 @@ class cl_liclicitem
     }
 
     // funcao para inclusao
-    function incluir($l21_codigo)
+    public function incluir($l21_codigo)
     {
         $this->atualizacampos();
         if ($this->l21_codliclicita == null) {
@@ -206,7 +206,7 @@ class cl_liclicitem
     }
 
     // funcao para alteracao
-    function alterar($l21_codigo = null)
+    public function alterar($l21_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update liclicitem set ";
@@ -356,7 +356,7 @@ class cl_liclicitem
     }
 
     // funcao para exclusao
-    function excluir($l21_codigo = null, $dbwhere = null)
+    public function excluir($l21_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($l21_codigo));
@@ -439,7 +439,7 @@ class cl_liclicitem
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -468,7 +468,7 @@ class cl_liclicitem
         return $result;
     }
 
-    function sql_query($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -490,8 +490,9 @@ class cl_liclicitem
         $sql .= "      inner join cflicita     on  cflicita.l03_codigo      = liclicita.l20_codtipocom";
         $sql .= "      inner join liclocal     on  liclocal.l26_codigo      = liclicita.l20_liclocal";
         $sql .= "      inner join liccomissao  on  liccomissao.l30_codigo   = liclicita.l20_liccomissao";
-        $sql .= "       left join solicitatipo on  solicitatipo.pc12_numero = solicitem.pc11_numero";
-        $sql .= "       left join pctipocompra on  pctipocompra.pc50_codcom = solicitatipo.pc12_tipo";
+        $sql .= "      left join solicitatipo on  solicitatipo.pc12_numero = solicitem.pc11_numero";
+        $sql .= "      left join pctipocompra on  pctipocompra.pc50_codcom = solicitatipo.pc12_tipo";
+
         $sql2 = "";
         if ($dbwhere == "") {
             if ($l21_codigo != null) {
@@ -516,7 +517,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_anulados($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_anulados($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -571,7 +572,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_file($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -646,6 +647,8 @@ class cl_liclicitem
             $sql .= "  and pcorcamjulg.pc24_pontuacao  = 1";
         }
         $sql .= "      left  join pcorcamforne         on pc21_orcamforne                     = pc23_orcamforne ";
+        $sql .= "      left  join pcorcamfornelic      on pc31_orcamforne                     = pc21_orcamforne ";
+        $sql .= "      left  join liclicitatipoempresa on l32_sequencial                      = pc31_liclicitatipoempresa ";
         $sql .= "      left  join cgm                  on pc21_numcgm                         = z01_numcgm ";
         $sql .= "      left  join db_usuarios          on pcproc.pc80_usuario                 = db_usuarios.id_usuario";
         $sql .= "      left  join solicitempcmater     on solicitempcmater.pc16_solicitem     = solicitem.pc11_codigo";
@@ -686,7 +689,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_orc($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_orc($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -733,7 +736,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_proc($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_proc($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -779,7 +782,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_sol($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_sol($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -802,11 +805,12 @@ class cl_liclicitem
         $sql .= "      left  join solicitemunid        on  solicitemunid.pc17_codigo       = solicitem.pc11_codigo";
         $sql .= "      left  join matunid              on  matunid.m61_codmatunid          = solicitemunid.pc17_unid";
         $sql .= "      left  join solicitempcmater     on  solicitempcmater.pc16_solicitem = solicitem.pc11_codigo";
-        $sql .= "      left  join pcmater  				    on  pcmater.pc01_codmater           = solicitempcmater.pc16_codmater";
+        $sql .= "      left  join pcmater              on  pcmater.pc01_codmater           = solicitempcmater.pc16_codmater";
         $sql .= "      left  join solicitemele         on  solicitemele.pc18_solicitem     = solicitem.pc11_codigo";
         $sql .= "      left  join solicitaprotprocesso on solicitaprotprocesso.pc90_solicita  = solicita.pc10_numero ";
         $sql .= "      left  join processocompraloteitem on processocompraloteitem.pc69_pcprocitem = pcprocitem.pc81_codprocitem ";
         $sql .= "      left  join processocompralote on processocompralote.pc68_sequencial = processocompraloteitem.pc69_processocompralote ";
+        $sql .= "      left  join solicitavinculo aberturaregistropreco on solicita.pc10_numero = aberturaregistropreco.pc53_solicitafilho ";
 
         $sql2 = "";
         if ($dbwhere == "") {
@@ -832,7 +836,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_soljulg($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_soljulg($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -892,7 +896,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_dotacao_reserva($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_dotacao_reserva($l21_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -982,6 +986,10 @@ class cl_liclicitem
         $sql .= "      left  join solicitemele         on solicitemele.pc18_solicitem         = solicitem.pc11_codigo";
         $sql .= "      left  join orcelemento          on orcelemento.o56_codele              = solicitemele.pc18_codele";
         $sql .= "                                     and orcelemento.o56_anousu              = extract(year from pc10_data)";
+        $sql .= "      inner join liclicitacadattdinamicovalorgrupo";
+        $sql .= "      on liclicitem.l21_codliclicita = liclicitacadattdinamicovalorgrupo.l16_liclicita";
+        $sql .= "      inner join db_cadattdinamicoatributosvalor";
+        $sql .= "      on liclicitacadattdinamicovalorgrupo.l16_cadattdinamicovalorgrupo = db_cadattdinamicoatributosvalor.db110_cadattdinamicovalorgrupo";
 
         $sql2 = "";
         if ($dbwhere == "") {
@@ -1040,10 +1048,10 @@ class cl_liclicitem
         return $sql;
     }
 
-    function sql_query_acordos ( $l21_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_acordos ( $l21_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1071,7 +1079,7 @@ class cl_liclicitem
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1213,3 +1221,4 @@ class cl_liclicitem
         return $sql;
     }
 }
+

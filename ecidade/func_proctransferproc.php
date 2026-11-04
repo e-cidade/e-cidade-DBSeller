@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ $clproctransferproc = new cl_proctransferproc;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "proctransferproc.*";
@@ -87,14 +87,14 @@ $clproctransferproc = new cl_proctransferproc;
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_.focus();
 document.form2.chave_.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

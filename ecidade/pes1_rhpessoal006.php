@@ -49,6 +49,8 @@ require_once(modification("classes/db_rhpesorigem_classe.php"));
 require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("classes/db_rhferias_classe.php"));
 require_once(modification("classes/db_registrapontoeletronicohistorico_classe.php"));
+require_once(modification("classes/db_pontoeletronicoarquivodataregistro_classe.php"));
+require_once(modification("classes/db_pontoeletronicoarquivodata_classe.php"));
 require_once(modification("classes/db_rhdeficiente_classe.php"));
 require_once(modification("classes/db_rhdepend_classe.php"));
 require_once(modification("classes/db_tomador_classe.php"));
@@ -56,41 +58,46 @@ require_once(modification("classes/db_assenta_classe.php"));
 require_once(modification("classes/db_rhestagiovinculo_classe.php"));
 require_once(modification("classes/db_rhimigrante_classe.php"));
 require_once(modification("classes/db_rhcedencia_classe.php"));
+require_once(modification("classes/db_rhservidorcontratojornada_classe.php"));
+require_once(modification("classes/db_rhvinculoaprendiz_classe.php"));
 
-
-$clrhferias                       = new cl_rhferias;
-$clrhpessoal                      = new cl_rhpessoal;
-$clrhpesrescisao                  = new cl_rhpesrescisao;
-$clrhpesbanco                     = new cl_rhpesbanco;
-$clrhpespadrao                    = new cl_rhpespadrao;
-$clrhpesfgts                      = new cl_rhpesfgts;
-$clrhpesdoc                       = new cl_rhpesdoc;
-$clrhpessoalmov                   = new cl_rhpessoalmov;
-$clrhraca                         = new cl_rhraca;
-$clrhinstrucao                    = new cl_rhinstrucao;
-$clrhestcivil                     = new cl_rhestcivil;
-$clrhnacionalidade                = new cl_rhnacionalidade;
-$clcfpess                         = new cl_cfpess;
-$clrhfotos                        = new cl_rhfotos;
-$clrhpesorigem                    = new cl_rhpesorigem;
-$clrhcontratoemergencial          = new cl_rhcontratoemergencial;
-$clrhcontratoemergencialrenovacao = new cl_rhcontratoemergencialrenovacao;
-$clrhdependeplug                  = new cl_rhdependeplug();
-$clregistrapontoeletronicohistorico  = new cl_registrapontoeletronicohistorico;
-$clrhdeficiente                   = new cl_rhdeficiente;
-$cltomador                        = new cl_tomador;
-$clrhdepend                       = new cl_rhdepend;
-$classenta                        = new cl_assenta;
-$clrhestagiovinculo               = new cl_rhestagiovinculo;
-$clrhimigrante                    = new cl_rhimigrante;
-$clrhcedencia                     = new cl_rhcedencia;
+$clrhferias                           = new cl_rhferias;
+$clrhpessoal                          = new cl_rhpessoal;
+$clrhpesrescisao                      = new cl_rhpesrescisao;
+$clrhpesbanco                         = new cl_rhpesbanco;
+$clrhpespadrao                        = new cl_rhpespadrao;
+$clrhpesfgts                          = new cl_rhpesfgts;
+$clrhpesdoc                           = new cl_rhpesdoc;
+$clrhpessoalmov                       = new cl_rhpessoalmov;
+$clrhraca                             = new cl_rhraca;
+$clrhinstrucao                        = new cl_rhinstrucao;
+$clrhestcivil                         = new cl_rhestcivil;
+$clrhnacionalidade                    = new cl_rhnacionalidade;
+$clcfpess                             = new cl_cfpess;
+$clrhfotos                            = new cl_rhfotos;
+$clrhpesorigem                        = new cl_rhpesorigem;
+$clrhcontratoemergencial              = new cl_rhcontratoemergencial;
+$clrhcontratoemergencialrenovacao     = new cl_rhcontratoemergencialrenovacao;
+$clrhdependeplug                      = new cl_rhdependeplug();
+$clregistrapontoeletronicohistorico   = new cl_registrapontoeletronicohistorico;
+$clpontoeletronicoarquivodataregistro = new cl_pontoeletronicoarquivodataregistro;
+$clpontoeletronicoarquivodata         = new cl_pontoeletronicoarquivodata;
+$clrhdeficiente                       = new cl_rhdeficiente;
+$cltomador                            = new cl_tomador;
+$clrhdepend                           = new cl_rhdepend;
+$classenta                            = new cl_assenta;
+$clrhestagiovinculo                   = new cl_rhestagiovinculo;
+$clrhimigrante                        = new cl_rhimigrante;
+$clrhcedencia                         = new cl_rhcedencia;
+$clrhcontratojornada                  = new cl_rhservidorcontratojornada;
+$clrhvinculoaprendiz                  = new cl_rhvinculoaprendiz;    
 
 db_postmemory($HTTP_POST_VARS);
 $db_opcao = 33;
 $db_botao = false;
 
-$ano = db_anofolha();
-$mes = db_mesfolha();
+$ano = \DBPessoal::getAnoFolha();
+$mes = \DBPessoal::getMesFolha();
 
 if(isset($excluir)){
   $sqlerro=false;
@@ -100,14 +107,6 @@ if(isset($excluir)){
   if ($clrhdependeplug->erro_status == '0') {
       $sqlerro = true;
       $erro_msg = "Erro ao excluir as informações do dependente.";
-  }
-
-  if($sqlerro == false) {
-    $clregistrapontoeletronicohistorico->excluir(null, "rh215_matricula = ".$rh01_regist);
-    $erro_msg = $clregistrapontoeletronicohistorico->erro_msg;
-      if($clregistrapontoeletronicohistorico->erro_status==0){
-        $sqlerro=true;
-      }
   }
 
   if($sqlerro == false) {
@@ -147,6 +146,14 @@ if(isset($excluir)){
     $erro_msg = $clrhimigrante->erro_msg;
     if ($clrhimigrante->erro_status == 0) {
       $sqlerro=true;
+    }
+  }
+
+  if (!$sqlerro) {
+    $clrhcontratojornada->excluir(null, "rh254_matricula = " . $rh01_regist);
+    $erro_msg = $clrhcontratojornada->erro_msg;
+    if ($clrhcontratojornada->erro_status == 0) {
+      $sqlerro = true;
     }
   }
 
@@ -237,6 +244,31 @@ if(isset($excluir)){
                 $sqlerro=true;
             }
         }
+
+        if($sqlerro == false) {
+          $clpontoeletronicoarquivodataregistro->excluir(null, "rh198_pontoeletronicoarquivodata in (select rh197_sequencial from pontoeletronicoarquivodata where rh197_matricula = {$rh01_regist})");
+          $erro_msg = $clpontoeletronicoarquivodataregistro->erro_msg;
+          if ($clpontoeletronicoarquivodataregistro->erro_status == 0) {
+            $sqlerro=true;
+          }
+        }
+
+        if($sqlerro == false) {
+          $clpontoeletronicoarquivodata->excluir(null, "rh197_matricula = ".$rh01_regist);
+          $erro_msg = $clpontoeletronicoarquivodata->erro_msg;
+          if($clpontoeletronicoarquivodata->erro_status==0){
+              $sqlerro=true;
+          }
+        }
+
+        if($sqlerro == false) {
+          $clrhvinculoaprendiz->excluir(null, "rh312_matricula = ".$rh01_regist);
+          $erro_msg = $clrhvinculoaprendiz->erro_msg;
+          if($clrhvinculoaprendiz->erro_status==0){
+              $sqlerro=true;
+          }
+        }
+
         $alteracoes = ServidorAlteracao::findMatriculaByLayout($rh01_regist, '', true);
         if (is_array($alteracoes)) {
             foreach ($alteracoes as $alteracao) {
@@ -299,7 +331,7 @@ if(isset($excluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<?
+<?php
     db_app::load("prototype.js, widgets/Input/DBInput.widget.js, widgets/Input/DBInputDate.widget.js,
                 widgets/windowAux.widget.js, AjaxRequest.js, widgets/Collection.widget.js, widgets/DatagridCollection.widget.js");
 ?>
@@ -316,7 +348,7 @@ if(isset($excluir)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmrhpessoal.php"));
 	?>
     </center>
@@ -325,7 +357,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

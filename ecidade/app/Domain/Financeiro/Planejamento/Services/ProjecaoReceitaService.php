@@ -132,7 +132,7 @@ class ProjecaoReceitaService extends ProjecaoService
     }
 
     /**
-     * Retotna o valores das receitas do exercício da sessão
+     * Retorna os valores das receitas do exercício da sessão
      * @return array
      */
     private function executaReceitasaldo()
@@ -203,7 +203,6 @@ class ProjecaoReceitaService extends ProjecaoService
             $sql .= "where " . implode(' and ', $filtroAdicional);
         }
 
-
         return DB::select($sql);
     }
 
@@ -266,16 +265,23 @@ class ProjecaoReceitaService extends ProjecaoService
 
         $valor = $mapper->valorBase;
         $valores = [];
-        foreach ($fatores as $fator) {
-            /**
-             * @var FatorCorrecaoReceita $fator
-             */
-            if ($fator->deflator) {
-                $fator->percentual *= -1;
-            }
+        $exercicios = range($mapper->planejamento->pl2_ano_inicial, $mapper->planejamento->pl2_ano_final);
 
-            $valor = round($valor * (1 + ($fator->percentual / 100)), $this->precisaoRound);
-            $valores[$fator->exercicio] = $this->buidValor($fator->exercicio, $valor);
+        foreach ($exercicios as $exercicio) {
+            $fator = $fatores->filter(function (FatorCorrecaoReceita $fator) use ($exercicio) {
+                return $fator->exercicio === $exercicio;
+            })->shift();
+
+            $valores[$exercicio] = $this->buidValor($exercicio, $valor);
+
+            if ($fator instanceof FatorCorrecaoReceita) {
+                if ($fator->deflator) {
+                    $fator->percentual *= -1;
+                }
+
+                $valor = round($valor * (1 + ($fator->percentual / 100)), $this->precisaoRound);
+                $valores[$fator->exercicio] = $this->buidValor($fator->exercicio, $valor);
+            }
         }
 
         $mapper->valoresProjetados = $valores;
@@ -295,14 +301,6 @@ class ProjecaoReceitaService extends ProjecaoService
         }
         $mapper->valoresProjetados = $valores;
         return $mapper;
-    }
-
-    private function buidValor($ano, $valor)
-    {
-        return (object)[
-            'ano' => $ano,
-            'valor' => $valor
-        ];
     }
 
     /**

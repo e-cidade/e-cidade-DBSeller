@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -99,8 +99,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       $sqlerro = true;
     }
     if(isset($codigo) && isset($valor) && $codigo != "" && $valor != "" && $sqlerro == false){
-      $cod = split(",",$codigo);
-      $val = split(",",$valor);
+      $cod =explode(",",$codigo);
+      $val =explode(",",$valor);
       for($i=0;$i<sizeof($cod);$i++){
         $clitbiruralcaract->it19_guia = $clitbi->it01_guia;
         $clitbiruralcaract->it19_codigo = $cod[$i];
@@ -279,7 +279,7 @@ if(!isset($pri) && $tipo != "rural"){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbi.php"));
 	?>
     </center>
@@ -288,7 +288,7 @@ if(!isset($pri) && $tipo != "rural"){
 </table>
 </body>
 </html>
-<?
+<?php
 
 if(isset($pri) && $tipo != "rural" && !isset($incluir) && !isset($alterar)){
 

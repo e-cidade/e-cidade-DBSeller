@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $linhafontes = array("underline"=>"sim","none"=>"não");
        <?=@$Lw01_cod?>
     </td>
     <td> 
-<?
+<?php
 db_input('w01_cod',4,$Iw01_cod,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -53,14 +53,14 @@ db_input('w01_cod',4,$Iw01_cod,true,'text',$db_opcao,"")
        <?=@$Lw01_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('w01_descricao',50,$Iw01_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tw01_corbody?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corbody,"js_corbody();",$db_opcao);
        ?>
     </td>
@@ -68,7 +68,7 @@ db_input('w01_descricao',50,$Iw01_descricao,true,'text',$db_opcao,"")
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
 	  <td>
-<?
+<?php
 db_input('w01_corbody',10,$Iw01_corbody,true,'text',$db_opcao,"")
 ?>
           </td>
@@ -89,7 +89,7 @@ db_input('w01_corbody',10,$Iw01_corbody,true,'text',$db_opcao,"")
 </tr>
   <tr>
     <td nowrap title="<?=@$Tw01_cortexto?>">
-       <?
+       <?php
          db_ancora(@$Lw01_cortexto,"js_cortexto();",$db_opcao);
        ?>
     </td>
@@ -97,7 +97,7 @@ db_input('w01_corbody',10,$Iw01_corbody,true,'text',$db_opcao,"")
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
 	  <td>
-<?
+<?php
 db_input('w01_cortexto',10,$Iw01_cortexto,true,'text',$db_opcao,"")
 ?>
          </td>
@@ -121,7 +121,7 @@ db_input('w01_cortexto',10,$Iw01_cortexto,true,'text',$db_opcao,"")
     <?=$Lw01_titulo?>
   </td>
   <td>
-<?
+<?php
 db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
 ?>
   </td>
@@ -142,7 +142,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
     <table cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td><strong>Borda: </strong>
-    <?
+    <?php
       db_select('w01_bordamenu',$tambordas,true,$db_opcao);
     ?>
     </td>
@@ -150,17 +150,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
       <?=@$Lw01_estilomenu?>
     </td>
     <td>
-    <?
+    <?php
      db_select('w01_estilomenu',$estilobordas,true,$db_opcao)
     ?>
     </td>
     <td nowrap title="<?=@$Tw01_corbordamenu?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corbordamenu,"js_corbordamenu();",$db_opcao);
        ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('w01_corbordamenu',0,$Iw01_corbordamenu,true,'hidden',$db_opcao,"")
     ?>
     </td>
@@ -176,12 +176,12 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        </table>
     </td>
     <td nowrap title="<?=@$Tw01_corfundomenu?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corfundomenu,"js_corfundomenu();",$db_opcao);
        ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('w01_corfundomenu',0,$Iw01_corfundomenu,true,'hidden',$db_opcao,"")
     ?>
     </td>
@@ -209,12 +209,12 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td nowrap title="<?=@$Tw01_corfundomenuativo?>">
-            <?
+            <?php
               db_ancora(@$Lw01_corfundomenuativo,"js_corfundomenuativo();",$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tw01_corfundomenuativo?>">
-          <?
+          <?php
             db_input('w01_corfundomenuativo',0,$Iw01_corfundomenuativo,true,'hidden',$db_opcao,"")
           ?>
           </td>
@@ -244,7 +244,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_fontemenu?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_fontemenu',$fontes,true,$db_opcao)
       ?>
     </td>
@@ -252,7 +252,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_tamfontemenu?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_tamfontemenu',$tamfontes,true,$db_opcao)
       ?>
     </td>
@@ -260,7 +260,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_wfontemenu?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_wfontemenu',$estilo,true,$db_opcao)
       ?>
     </td>
@@ -268,7 +268,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_estilofontemenu?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_estilofontemenu',$estilofontes,true,$db_opcao)
       ?>
     </td>
@@ -276,17 +276,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_linhafontemenu?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_linhafontemenu',$linhafontes,true,$db_opcao)
       ?>
     </td>
     <td nowrap title="<?=@$Tw01_corfontemenu?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corfontemenu,"js_corfontemenu();",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('w01_corfontemenu',0,$Iw01_corfontemenu,true,'hidden',$db_opcao,"")
        ?>
     </td>
@@ -317,7 +317,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_fontesite?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_fontesite',$fontes,true,$db_opcao)
       ?>
     </td>
@@ -325,7 +325,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_tamfontesite?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_tamfontesite',$tamfontes,true,$db_opcao)
       ?>
     </td>
@@ -333,7 +333,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_wfontesite?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_wfontesite',$estilo,true,$db_opcao)
       ?>
     </td>
@@ -341,7 +341,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_estilofontesite?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_estilofontesite',$estilofontes,true,$db_opcao)
       ?>
     </td>
@@ -349,17 +349,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_linhafontesite?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_linhafontesite',$linhafontes,true,$db_opcao)
       ?>
     </td>
     <td nowrap title="<?=@$Tw01_corfontesite?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corfontesite,"js_corfontesite();",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('w01_corfontesite',0,$Iw01_corfontesite,true,'hidden',$db_opcao,"")
        ?>
     </td>
@@ -390,7 +390,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_fonteativo?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_fonteativo',$fontes,true,$db_opcao)
       ?>
     </td>
@@ -398,7 +398,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_tamfonteativo?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_tamfonteativo',$tamfontes,true,$db_opcao)
       ?>
     </td>
@@ -406,7 +406,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_wfonteativo?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_wfonteativo',$estilo,true,$db_opcao)
       ?>
     </td>
@@ -414,7 +414,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_estilofonteativo?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_estilofonteativo',$estilofontes,true,$db_opcao)
       ?>
     </td>
@@ -422,17 +422,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_linhafonteativo?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_linhafonteativo',$linhafontes,true,$db_opcao)
       ?>
     </td>
     <td nowrap title="<?=@$Tw01_corfonteativo?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corfonteativo,"js_corfonteativo();",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('w01_corfonteativo',0,$Iw01_corfonteativo,true,'hidden',$db_opcao,"")
        ?>
     </td>
@@ -463,7 +463,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
             <?=@$Lw01_fonteinput?>
             </td>
             <td>&nbsp; 
-             <?
+             <?php
              db_select('w01_fonteinput',$fontes,true,$db_opcao)
              ?>
             </td>
@@ -471,7 +471,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
             &nbsp;<?=@$Lw01_tamfonteinput?>
             </td>
             <td> 
-            <?
+            <?php
             db_select('w01_tamfonteinput',$tamfontes,true,$db_opcao)
             ?>
             </td>
@@ -479,17 +479,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
               <?=@$Lw01_estilofonteinput?>
             </td>
             <td> 
-            <?
+            <?php
               db_select('w01_estilofonteinput',$estilofontes,true,$db_opcao)
             ?>
             </td>
             <td nowrap title="<?=@$Tw01_corfonteinput?>">
-            <?
+            <?php
               db_ancora(@$Lw01_corfonteinput,"js_corfonteinput();",$db_opcao);
             ?>
             </td>
             <td> 
-            <?
+            <?php
               db_input('w01_corfonteinput',0,$Iw01_corfonteinput,true,'hidden',$db_opcao,"")
             ?>
             <table id="corfonteinput" bgcolor="<?=($db_opcao==1?"#cccccc":($db_opcao==2 || $db_opcao == 3?$w01_corfonteinput:"#cccccc"))?>"  border="0" style="border: 2px outset #cccccc; border-right-width: 2px ; border-right-style: outset; " cellpadding="0" cellspacing="0" >
@@ -511,7 +511,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
          <?=@$Lw01_bordainput?>
         </td>
         <td> 
-        <?
+        <?php
           db_select('w01_bordainput',$tambordas,true,$db_opcao)
         ?>
         </td>
@@ -519,15 +519,15 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
           <?=@$Lw01_estiloinput?>
         </td>
         <td>
-        <?
+        <?php
          db_select('w01_estiloinput',$estilobordas,true,$db_opcao)
         ?>
         </td>
         <td nowrap title="<?=@$Tw01_corbordainput?>">
-         <?
+         <?php
            db_ancora(@$Lw01_corbordainput,"js_corbordainput();",$db_opcao);
          ?>
-         <?
+         <?php
            db_input('w01_corbordainput',0,$Iw01_corbordainput,true,'hidden',$db_opcao,"")
          ?>
         </td>
@@ -543,10 +543,10 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
           </table>
         </td>
         <td nowrap title="<?=@$Tw01_corfundoinput?>">
-        <?
+        <?php
           db_ancora(@$Lw01_corfundoinput,"js_corfundoinput();",$db_opcao);
         ?>
-        <?
+        <?php
           db_input('w01_corfundoinput',0,$Iw01_corfundoinput,true,'hidden',$db_opcao,"")
         ?>
         </td>
@@ -579,7 +579,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
           <?=@$Lw01_fontebotao?>
           </td>
           <td>&nbsp; 
-           <?
+           <?php
              db_select('w01_fontebotao',$fontes,true,$db_opcao)
            ?>
          </td>
@@ -587,7 +587,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
         &nbsp;<?=@$Lw01_tamfontebotao?>
         </td>
         <td> 
-        <?
+        <?php
           db_select('w01_tamfontebotao',$tamfontes,true,$db_opcao)
         ?>
         </td>
@@ -595,7 +595,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_estilofontebotao?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_estilofontebotao',$estilofontes,true,$db_opcao)
       ?>
     </td>
@@ -603,17 +603,17 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
        <?=@$Lw01_wfontebotao?>
     </td>
     <td> 
-      <?
+      <?php
         db_select('w01_wfontebotao',$estilo,true,$db_opcao)
       ?>
     </td>
         <td nowrap title="<?=@$Tw01_corfontebotao?>" >
-        <?
+        <?php
           db_ancora(@$Lw01_corfontebotao,"js_corfontebotao();",$db_opcao);
         ?>
         </td>
 	<td>
-        <?
+        <?php
           db_input('w01_corfontebotao',0,$Iw01_corfontebotao,true,'hidden',$db_opcao,"")
         ?>
          <table id="corfontebotao" bgcolor="<?=($db_opcao==1?"#cccccc":($db_opcao==2 || $db_opcao == 3?$w01_corfontebotao:"#cccccc"))?>"  border="0" style="border: 2px outset #cccccc; border-right-width: 2px ; border-right-style: outset; " cellpadding="0" cellspacing="0" >
@@ -635,7 +635,7 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
          <?=@$Lw01_bordabotao?>
       </td>
       <td> 
-      <?
+      <?php
         db_select('w01_bordabotao',$tambordas,true,$db_opcao)
       ?>
       </td>
@@ -643,15 +643,15 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
         <?=@$Lw01_estilobotao?>
       </td>
       <td>
-      <?
+      <?php
        db_select('w01_estilobotao',$estilobordas,true,$db_opcao)
       ?>
       </td>
       <td nowrap title="<?=@$Tw01_corbordabotao?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corbordabotao,"js_corbordabotao();",$db_opcao);
        ?>
-        <?
+        <?php
           db_input('w01_corbordabotao',0,$Iw01_corbordabotao,true,'hidden',$db_opcao,"")
         ?>
       </td>
@@ -667,10 +667,10 @@ db_input('w01_titulo',80,$Iw01_titulo,true,'text',$db_opcao,"")
            </table>
          </td>
       <td nowrap title="<?=@$Tw01_corfundobotao?>">
-       <?
+       <?php
          db_ancora(@$Lw01_corfundobotao,"js_corfundobotao();",$db_opcao);
        ?>
-      <?
+      <?php
         db_input('w01_corfundobotao',0,$Iw01_corfundobotao,true,'hidden',$db_opcao,"")
       ?>
       </td>
@@ -862,7 +862,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -32,7 +32,7 @@ require(modification("fpdf151/pdf.php"));
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 $sTiposDebitos = $tipos;
-$tipos 		  = split(",", $tipos);
+$tipos 		  =explode(",", $tipos);
 
 if (isset ($db_datausu)) {
 	if (!checkdate(substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4))) {
@@ -103,10 +103,10 @@ if (isset ($matric)) {
 			if (isset ($numpre)) {
 				$result = debitos_tipos_numpre($numpre);
 				$chave = $numpre;
-				$sql = "select cgm.* 
-				          from arrecad inner join cgm on z01_numcgm = k00_numcgm 
-				               inner join arreinstit  on arreinstit.k00_numpre = arrecad.k00_numpre 
-											                       and arreinstit.k00_instit = ".db_getsession('DB_instit')." 
+				$sql = "select cgm.*
+				          from arrecad inner join cgm on z01_numcgm = k00_numcgm
+				               inner join arreinstit  on arreinstit.k00_numpre = arrecad.k00_numpre
+											                       and arreinstit.k00_instit = ".db_getsession('DB_instit')."
          				 where arrecad.k00_numpre = $numpre limit 1";
 				$result1 = db_query($sql);
 				db_fieldsmemory($result1, 0);
@@ -122,9 +122,9 @@ $where = "";
 $and = " and ";
 if ($parReceit != ''){
 	if(isset($numpre)){
- 	 $where .= $where." y.k00_receit in($parReceit)"; 	
+ 	 $where .= $where." y.k00_receit in($parReceit)";
 	}else{
-     $where .= $where.$and." y.k00_receit in($parReceit)";		
+     $where .= $where.$and." y.k00_receit in($parReceit)";
 	}
 }
 
@@ -146,15 +146,15 @@ if (($dtini != "--") && ($dtfim != "--")) {
 	$and = " and ";
 }
 if (($exercini != "") && ($exercfim != "")) {
-	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar)  between '$exercini' and '$exercfim'  ";	
+	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar)  between '$exercini' and '$exercfim'  ";
 	$info1 = "Do exercício $exercini até $exercfim.";
 	$and = " and ";
 } else if ($exercini != "") {
-	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar) >= '$exercini'  ";	
+	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar) >= '$exercini'  ";
 	$info1 = "Apartir do exercício $exercini.";
 	$and = " and ";
 } else if ($exercfim != "") {
-	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar) <= '$exercfim'   ";	
+	$where = $where. $and. " fc_arrecexerc(y.k00_numpre,y.k00_numpar) <= '$exercfim'   ";
 	$info1 = "Até o exercício $exercfim.";
 	$and = " and ";
 }
@@ -172,7 +172,7 @@ if ($chave != 0) {
 		$tttotal = 0;
 		for ($x = 0; $x < pg_numrows($result); $x++) {
 			db_fieldsmemory($result, $x, true);
-							
+
 			if (in_array($k00_tipo, $tipos) == true) {
 
 				if (isset ($matric)) {
@@ -186,11 +186,11 @@ if ($chave != 0) {
 				} else {
 				  break;
 				}
-										
+
 				if ($debitos==false||$debitos==1){
 					continue;
-				}			
-				
+				}
+
 				if (pg_numrows($debitos) > 0) {
 					$tvlrhis = 0;
 					$tvlrcor = 0;
@@ -305,23 +305,23 @@ if ($chave != 0) {
 			$pdf->ln();
 			$pdf->multiCell(190,4,"Receitas Selecionadas: $legRec");
    }
-   
+
    $pdf->Ln();
-   
+
    if (isset ($matric)) {
    	$sSqlInnerTabela = " inner join arrematric on arrematric.k00_numpre = arresusp.k00_numpre ";
    	$sSqlWhereTabela = " arrematric.k00_matric = $matric ";
    } else if (isset ($inscr)) {
    	$sSqlInnerTabela = " inner join arreinscr on arreinscr.k00_numpre = arresusp.k00_numpre ";
-   	$sSqlWhereTabela = " arreinscr.k00_inscr  = $inscr ";   	
+   	$sSqlWhereTabela = " arreinscr.k00_inscr  = $inscr ";
    } else if (isset ($numcgm)) {
    	$sSqlInnerTabela = " inner join arrenumcgm on arrenumcgm.k00_numpre = arresusp.k00_numpre ";
-   	$sSqlWhereTabela = " arrenumcgm.k00_numcgm = $numcgm ";   	
+   	$sSqlWhereTabela = " arrenumcgm.k00_numcgm = $numcgm ";
    } else if (isset ($numpre)) {
    	$sSqlInnerTabela = "";
-   	$sSqlWhereTabela = " arresusp.k00_numpre   = $numpre ";   	
-   }   
-   
+   	$sSqlWhereTabela = " arresusp.k00_numpre   = $numpre ";
+   }
+
    $sSqlSuspensao  = " select arresusp.*,		  								 	  				";
    $sSqlSuspensao .= " 		  arretipo.k00_descr	  							 	  				";
    $sSqlSuspensao .= " 	 from arresusp  		  								 	  				";
@@ -331,21 +331,21 @@ if ($chave != 0) {
    $sSqlSuspensao .= " 	 where {$sSqlWhereTabela} 							 	 	  				";
    $sSqlSuspensao .= " 	   and suspensao.ar18_situacao = 1 											";
    if (trim($parReceit) != ""){
-	 $sSqlSuspensao .= "   and arresusp.k00_receit in ({$parReceit})			 	  				";   	
-   }      
+	 $sSqlSuspensao .= "   and arresusp.k00_receit in ({$parReceit})			 	  				";
+   }
    $sSqlSuspensao .= " 	   and arresusp.k00_tipo   in ({$sTiposDebitos})			 	  		    ";
    $sSqlSuspensao .= " 	   and arretipo.k00_instit = ".db_getsession('DB_instit');
-   
+
    $rsSuspensao      = db_query($sSqlSuspensao);
    $iLinhasSuspensao = pg_num_rows($rsSuspensao);
    $aSuspensao		 = array();
-	
+
    if ( $iLinhasSuspensao > 0 ) {
-   	
+
      for ($i=0; $i < $iLinhasSuspensao; $i++) {
-     	
+
        $oSuspensao = db_utils::fieldsMemory($rsSuspensao,$i);
-     
+
        if (isset($aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr])) {
          $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrhis'] += $oSuspensao->k00_valor;
          $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrcor'] += $oSuspensao->k00_vlrcor;
@@ -357,16 +357,16 @@ if ($chave != 0) {
          $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrcor']  = $oSuspensao->k00_vlrcor;
          $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrjur']  = $oSuspensao->k00_vlrjur;
          $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrmul']  = $oSuspensao->k00_vlrmul;
-         $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrdes']  = $oSuspensao->k00_vlrdes;     	  
+         $aSuspensao[$oSuspensao->k00_tipo][$oSuspensao->k00_descr]['vlrdes']  = $oSuspensao->k00_vlrdes;
        }
-     
+
      }
-   
-   
+
+
      $pdf->SetFont('Arial', 'BI', 12);
      $pdf->Cell(0,5,'Débitos Suspensos',0,1,"C",0);
      $pdf->Ln();
-     
+
      $pdf->SetFont('Arial', 'B', 8);
      $pdf->Cell(7 ,5, "Tipo"		 ,1,0,"C",1);
      $pdf->Cell(60,5, "Descrição"	 ,1,0,"C",1);
@@ -376,21 +376,21 @@ if ($chave != 0) {
      $pdf->Cell(20,5, "Vlr Multa"    ,1,0,"C",1);
      $pdf->Cell(20,5, "Vlr Desconto" ,1,0,"C",1);
      $pdf->Cell(20,5, "Vlr Total"	 ,1,1,"C",1);
-        
+
      $pdf->SetFont('Arial', '', 8);
-     
+
    	 $aTotalSuspensao[0]['vlrhis'] = 0;
    	 $aTotalSuspensao[0]['vlrcor'] = 0;
    	 $aTotalSuspensao[0]['vlrjur'] = 0;
    	 $aTotalSuspensao[0]['vlrmul'] = 0;
    	 $aTotalSuspensao[0]['vlrdes'] = 0;
    	 $aTotalSuspensao[0]['vlrtot'] = 0;
-     
+
      foreach ($aSuspensao as $iTipo => $aDescrTipo ) {
    	   foreach ($aDescrTipo as $sDescrTipo => $aValores ) {
-   	   	
+
    	   	 $nTotal = ( $aValores['vlrcor'] + $aValores['vlrjur'] + $aValores['vlrmul'] ) - $aValores['vlrdes'];
-   	   	 
+
    	     $pdf->Cell(7 ,5, $iTipo							   , 1, 0, "C", 0);
    	     $pdf->Cell(60,5, substr($sDescrTipo, 0, 35)		   , 1, 0, "L", 0);
    	     $pdf->Cell(20,5, db_formatar($aValores['vlrhis'], 'f'), 1, 0, "R", 0);
@@ -408,13 +408,13 @@ if ($chave != 0) {
    	     $aTotalSuspensao[0]['vlrtot'] += $nTotal;
    	   }
      }
-   
+
      foreach ( $aTotalSuspensao as $iInd => $aTotValSuspensao ){
 
    	   $nTotal = ( $aTotValSuspensao['vlrcor'] + $aTotValSuspensao['vlrjur'] + $aTotValSuspensao['vlrmul'] ) - $aTotValSuspensao['vlrdes'];
-   	 
+
    	   $pdf->Cell(7 ,5, ''		 	   						  	     ,1,0,"C",0);
-   	   $pdf->SetFont('Arial', 'B', 8);  	 
+   	   $pdf->SetFont('Arial', 'B', 8);
    	   $pdf->Cell(60,5, 'Total'		   				 			     ,1,0,"C",0);
    	   $pdf->SetFont('Arial', '', 8);
    	   $pdf->Cell(20,5, db_formatar($aTotValSuspensao['vlrhis'], 'f'),1,0,"R",0);
@@ -422,7 +422,7 @@ if ($chave != 0) {
    	   $pdf->Cell(20,5, db_formatar($aTotValSuspensao['vlrjur'], 'f'),1,0,"R",0);
    	   $pdf->Cell(20,5, db_formatar($aTotValSuspensao['vlrmul'], 'f'),1,0,"R",0);
    	   $pdf->Cell(20,5, db_formatar($aTotValSuspensao['vlrdes'], 'f'),1,0,"R",0);
-   	   $pdf->Cell(20,5, db_formatar(($nTotal),'f')			         ,1,1,"R",0);   			
+   	   $pdf->Cell(20,5, db_formatar(($nTotal),'f')			         ,1,1,"R",0);
      }
    }
 

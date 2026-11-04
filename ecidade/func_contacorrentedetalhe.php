@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
               <?=$Lc19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c19_sequencial",10,$Ic19_sequencial,true,"text",4,"","chave_c19_sequencial");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
       $sWhere  = " c19_contacorrente = {$c17_sequencial} ";
       
@@ -141,12 +141,12 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

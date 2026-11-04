@@ -1,11 +1,14 @@
 <IfModule mod_rewrite.c>
   RewriteEngine on
   RewriteCond %{REQUEST_URI} !=/server-status
-  RewriteCond %{REQUEST_URI} !=/server-status-php-fpm
+  RewriteCond %{REQUEST_URI} !=/php-fpm-status
+  RewriteCond %{REQUEST_URI} !=/php-fpm-ping
+  RewriteCond %{REQUEST_URI} !=/php-fpm-pong
   RewriteRule ^(.*)$ FrontController.php?_path=$1 [QSA]
   # Handle Authorization Header
   RewriteCond %{HTTP:Authorization} .
   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+  RedirectMatch 404 /\.git
 </IfModule>
 
 <filesMatch "\.(htaccess|htpasswd|ini|sh|env)$">

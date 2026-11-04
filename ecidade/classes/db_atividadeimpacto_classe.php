@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -56,13 +56,13 @@ class cl_atividadeimpacto {
                  am03_potencialpoluidor = varchar(20) = Potencial Poluidor
                  ";
    //funcao construtor da classe
-   function cl_atividadeimpacto() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_atividadeimpacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am03_sequencial = ($this->am03_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am03_sequencial"]:$this->am03_sequencial);
        $this->am03_criterioatividadeimpacto = ($this->am03_criterioatividadeimpacto == ""?@$GLOBALS["HTTP_POST_VARS"]["am03_criterioatividadeimpacto"]:$this->am03_criterioatividadeimpacto);
@@ -83,7 +83,7 @@ class cl_atividadeimpacto {
      }
    }
    // funcao para inclusao
-   function incluir ($am03_sequencial){
+   public function incluir ($am03_sequencial){
       $this->atualizacampos();
      if($this->am03_criterioatividadeimpacto == null ){
        $this->erro_sql = " Campo Critério de Medição não informado.";

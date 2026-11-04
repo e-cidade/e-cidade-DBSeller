@@ -58,7 +58,7 @@ if (isset($incluir) || isset($alterar)) {
   if($sqlerro==false){
     db_inicio_transacao();
     if((isset($alterar) && trim($valores)!="") || isset($incluir)){
-      $arr_dad = split(",",$valores);
+      $arr_dad =explode(",",$valores);
 
       for($i=0;$i<sizeof($arr_dad);$i++){
       	if(isset($alterar)){

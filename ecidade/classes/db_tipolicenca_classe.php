@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,13 +50,13 @@ class cl_tipolicenca {
                  am09_descricao = varchar(50) = Descrição da Licença
                  ";
    //funcao construtor da classe
-   function cl_tipolicenca() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipolicenca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_tipolicenca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am09_sequencial = ($this->am09_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am09_sequencial"]:$this->am09_sequencial);
        $this->am09_descricao = ($this->am09_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["am09_descricao"]:$this->am09_descricao);
@@ -74,7 +74,7 @@ class cl_tipolicenca {
      }
    }
    // funcao para inclusao
-   function incluir ($am09_sequencial){
+   public function incluir ($am09_sequencial){
       $this->atualizacampos();
      if($this->am09_descricao == null ){
        $this->erro_sql = " Campo Descrição da Licença não informado.";

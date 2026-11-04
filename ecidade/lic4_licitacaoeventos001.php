@@ -31,6 +31,8 @@ require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
+$request = db_utils::postMemory($_GET);
+$request->consulta = !empty($request->consulta) ? 1 : 0;
 ?>
 <html>
 <head>
@@ -50,154 +52,155 @@ require_once modification("dbforms/db_funcoes.php");
   <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body class="body-default">
+<body class="body-default" >
   <div class="container">
     <form name="form1" method="post">
-      <fieldset>
-        <legend>Dados do Evento</legend>
-        <table>
-          <tr>
-            <td>
-              <label for="licitacao_codigo" class="bold">
-                <a id="licitacao_ancora">Licitação:</a>
-              </label>
-            </td>
-            <td>
-              <?php
-                db_input("l20_codigo", 10, 0, true);
-                db_input("l20_anousu", 10, 0, true, 'hidden');
-              ?>
-            </td>
-          </tr>
+          <fieldset style="<?= $request->consulta ? 'display:none;' : ''?>">
+            <legend>Dados do Evento</legend>
+            <table>
+              <tr>
+                <td>
+                  <label for="licitacao_codigo" class="bold">
+                    <a id="licitacao_ancora">Licitação:</a>
+                  </label>
+                </td>
+                <td>
+                  <?php
+                    db_input("l20_codigo", 10, 0, true);
+                    db_input("l20_anousu", 10, 0, true, 'hidden');
+                  ?>
+                </td>
+              </tr>
 
-          <tr>
-            <td>
-              <label for="fase" class="bold">Fase:</label>
-            </td>
-            <td>
-              <?php
-                $aFases = array(
-                    1 => "Fase Interna",
-                    2 => "Edital Publicado",
-                    3 => "Publicação",
-                    4 => "Habilitação/Propostas",
-                    5 => "Adjudicação/Homologação"
-                  );
-                $fase = 1;
-                db_select("fase", $aFases, true, 1, 'style="width:368px;"');
-              ?>
-            </td>
-          </tr>
+              <tr>
+                <td>
+                  <label for="fase" class="bold">Fase:</label>
+                </td>
+                <td>
+                  <?php
+                    $aFases = array(
+                        1 => "Fase Interna",
+                        2 => "Edital Publicado",
+                        3 => "Publicação",
+                        4 => "Habilitação/Propostas",
+                        5 => "Adjudicação/Homologação"
+                      );
+                    $fase = 1;
+                    db_select("fase", $aFases, true, 1, 'style="width:368px;"');
+                  ?>
+                </td>
+              </tr>
 
-          <tr>
-            <td><label for="evento" class="bold">Evento:</label>
-            </td>
-            <td>
-              <select id="evento" style="width: 368px;">
-                <option value="" selected>Selecione</option>
-              </select>
-              <input type="hidden" id="codigo_evento" name="codigo_evento" />
-            </td>
-          </tr>
+              <tr>
+                <td><label for="evento" class="bold">Evento:</label>
+                </td>
+                <td>
+                  <select id="evento" style="width: 368px;">
+                    <option value="" selected>Selecione</option>
+                  </select>
+                  <input type="hidden" id="codigo_evento" name="codigo_evento" />
+                </td>
+              </tr>
 
-          <tr>
-            <td nowrap>
-              <label for="data" class="bold">Data do Evento:</label>
-            </td>
-            <td>
-              <?php
-                db_inputdata("data", null, null, null, true, 'text', 1);
-              ?>
-            </td>
-          </tr>
+              <tr>
+                <td nowrap>
+                  <label for="data" class="bold">Data do Evento:</label>
+                </td>
+                <td>
+                  <?php
+                    db_inputdata("data", null, null, null, true, 'text', 1);
+                  ?>
+                </td>
+              </tr>
 
-          <tr>
-            <td>
-              <label for="autor" class="bold">
-                <a id="autor_ancora">Autor:</a>
-              </label>
-            </td>
-            <td>
-              <?php
-                $Sz01_numcgm = "Autor";
-                db_input("z01_numcgm", 10, 1, true, 'text', 1, 'style="width: 93px;"');
-                db_input("z01_nome", 10, 0, true, 'text', 3, 'style="width: 272px;"');
-              ?>
-            </td>
-          </tr>
+              <tr>
+                <td>
+                  <label for="autor" class="bold">
+                    <a id="autor_ancora">Autor:</a>
+                  </label>
+                </td>
+                <td>
+                  <?php
+                    $Sz01_numcgm = "Autor";
+                    db_input("z01_numcgm", 10, 1, true, 'text', 1, 'style="width: 93px;"');
+                    db_input("z01_nome", 10, 0, true, 'text', 3, 'style="width: 272px;"');
+                  ?>
+                </td>
+              </tr>
 
-          <tr>
-            <td>
-              <label for="data_julgamento" class="bold">Data do Julgamento:</label>
-            </td>
-            <td>
-            <?php
-              db_inputdata("data_julgamento","","","", true, 'text', 1);
-            ?>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <label for="resultado" class="bold">Resultado:</label>
-            </td>
-            <td>
-              <?php
-                $aResultados = array(
-                  "" => "Selecione",
-                  EventoLicitacao::RESULTADO_DEFERIDO => "Deferido",
-                  EventoLicitacao::RESULTADO_INDEFERIDO => "Indeferido",
-                  EventoLicitacao::RESULTADO_PARCIALMENTE_DEFERIDO => "Deferido Pacialmente"
-                );
-                db_select("resultado", $aResultados, true, 1);
-              ?>
-            </td>
-          </tr>
-        </table>
-
-        <fieldset id="evento_publicacao" class="separator" style="display:none;">
-          <legend>Veículo de Publicação</legend>
-          <table>
-            <tr>
-              <td>
-                <label for="publicacao_tipo" class="bold">Tipo:</label>
-              </td>
-              <td>
+              <tr>
+                <td>
+                  <label for="data_julgamento" class="bold">Data do Julgamento:</label>
+                </td>
+                <td>
                 <?php
-                  $aTiposPublicacao = array(
-                    "" => "Selecione",
-                    EventoLicitacao::PUBLICACAO_DIARIO_ESTADO          => 'Diário Oficial do Estado',
-                    EventoLicitacao::PUBLICACAO_INTERNET               => 'Internet',
-                    EventoLicitacao::PUBLICACAO_JORNAL                 => 'Jornal',
-                    EventoLicitacao::PUBLICACAO_MURAL_ENTIDADE         => 'Mural da Entidade',
-                    EventoLicitacao::PUBLICACAO_DIARIO_MUNICIPIO       => 'Diário Oficial do Município',
-                    EventoLicitacao::PUBLICACAO_DIARIO_MUNICIPIO_RS    => 'Diário Oficial dos Municípios/RS',
-                    EventoLicitacao::PUBLICACAO_DIARIO_UNIAO           => 'Diário Oficial da União',
-                    EventoLicitacao::PUBLICACAO_NAO_PUBLICADO          => 'Não publicado',
-                    EventoLicitacao::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
-                    EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
-                  );
-                  db_select("publicacao_tipo", $aTiposPublicacao, true,null);
+                  db_inputdata("data_julgamento","","","", true, 'text', 1);
                 ?>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label for="publicacao_descricao" class="bold">Descrição:</label>
-              </td>
-              <td>
-                <?php
-                  db_input("publicacao_descricao", 65, 0, true, "text", 1, 'style="width: 416px;"', null, null, null, 100);
-                ?>
-              </td>
-            </tr>
-          </table>
-        </fieldset>
-      </fieldset>
+                </td>
+              </tr>
 
-      <input type="button" id="incluir_evento" value="Incluir" />
-      <input type="button" id="cancelar_evento" value="Cancelar" style="display: none;" />
+              <tr>
+                <td>
+                  <label for="resultado" class="bold">Resultado:</label>
+                </td>
+                <td>
+                  <?php
+                    $aResultados = array(
+                      "" => "Selecione",
+                      EventoLicitacao::RESULTADO_DEFERIDO => "Deferido",
+                      EventoLicitacao::RESULTADO_INDEFERIDO => "Indeferido",
+                      EventoLicitacao::RESULTADO_PARCIALMENTE_DEFERIDO => "Deferido Pacialmente"
+                    );
+                    db_select("resultado", $aResultados, true, 1);
+                  ?>
+                </td>
+              </tr>
+            </table>
 
+            <fieldset id="evento_publicacao" class="separator" style="display:none;">
+              <legend>Veículo de Publicação</legend>
+              <table>
+                <tr>
+                  <td>
+                    <label for="publicacao_tipo" class="bold">Tipo:</label>
+                  </td>
+                  <td>
+                    <?php
+                      $aTiposPublicacao = array(
+                        "" => "Selecione",
+                        EventoLicitacao::PUBLICACAO_DIARIO_ESTADO          => 'Diário Oficial do Estado',
+                        EventoLicitacao::PUBLICACAO_INTERNET               => 'Internet',
+                        EventoLicitacao::PUBLICACAO_JORNAL                 => 'Jornal',
+                        EventoLicitacao::PUBLICACAO_MURAL_ENTIDADE         => 'Mural da Entidade',
+                        EventoLicitacao::PUBLICACAO_DIARIO_MUNICIPIO       => 'Diário Oficial do Município',
+                        EventoLicitacao::PUBLICACAO_DIARIO_MUNICIPIO_RS    => 'Diário Oficial dos Municípios/RS',
+                        EventoLicitacao::PUBLICACAO_DIARIO_UNIAO           => 'Diário Oficial da União',
+                        EventoLicitacao::PUBLICACAO_NAO_PUBLICADO          => 'Não publicado',
+                        EventoLicitacao::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
+                        EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
+                      );
+                      db_select("publicacao_tipo", $aTiposPublicacao, true,null);
+                    ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="publicacao_descricao" class="bold">Descrição:</label>
+                  </td>
+                  <td>
+                    <?php
+                      db_input("publicacao_descricao", 65, 0, true, "text", 1, 'style="width: 416px;"', null, null, null, 100);
+                    ?>
+                  </td>
+                </tr>
+              </table>
+            </fieldset>
+          </fieldset>
+
+          <div style="<?= $request->consulta ? 'display:none;' : ''?>">
+            <input type="button" id="incluir_evento" value="Incluir" />
+            <input type="button" id="cancelar_evento" value="Cancelar" style="display: none;" />
+          </div>
       <fieldset>
         <legend>Eventos Lançados</legend>
         <div style="width: 750px" id="container-eventos"></div>
@@ -208,40 +211,53 @@ require_once modification("dbforms/db_funcoes.php");
   <div id="documentos_evento">
     <div class="subcontainer">
       <form name="form2" method="post" enctype="multipart/form-data">
-        <fieldset>
-          <legend>Documentos do Evento</legend>
-          <table>
-            <tr>
-              <td>
-                <label for="tipo_documento" class="bold">Tipo de Documento:</label>
-              </td>
-              <td>
-                <?php
-                  $aTiposDocumento = LicitaConTipoDocumento::$aDescricaoTipoDocumento;
-                  array_unshift($aTiposDocumento, "Selecione");
-                  db_select("tipo_documento", $aTiposDocumento, true,null);
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label for="anexo" class="bold">Arquivo:</label>
-              </td>
-              <td>
-                <input type="file" name="arquivo" id="arquivo" />
-              </td>
-            </tr>
-          </table>
-        </fieldset>
-        <input type="button" id="incluir_documento" value="Incluir" />
+          <?php if (empty($request->consulta)): ?>
+            <fieldset >
+              <legend>Documentos do Evento</legend>
+              <table>
+                <tr>
+                  <td>
+                    <label for="tipo_documento" class="bold">Tipo de Documento:</label>
+                  </td>
+                  <td>
+                    <?php
+                      $aTiposDocumento = LicitaConTipoDocumento::$aDescricaoTipoDocumento;
+                      array_unshift($aTiposDocumento, "Selecione");
+                      db_select("tipo_documento", $aTiposDocumento, true,null);
+                    ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="anexo" class="bold">Arquivo:</label>
+                  </td>
+                  <td>
+                    <input type="file" name="arquivo" id="arquivo" style="height: 100%"/>
+                  </td>
+                </tr>
+              </table>
+            </fieldset>
+          <?php endif; ?>
+            <input
+                type="button"
+                id="incluir_documento"
+                value="Incluir"
+                style="<?= $request->consulta ? 'display:none' : ''?>"
+            />
         <fieldset>
           <legend>Documentos Lançados</legend>
-          <div id="documentos-lancados"></div>
+          <div id="documentos-lancados" style="min-width:450px"></div>
         </fieldset>
       </form>
     </div>
   </div>
-  <?php db_menu(); ?>
+  <div>
+  <?php
+    if (!$request->consulta) {
+        db_menu();
+    }
+  ?>
+  </div>
   <script type="text/javascript">
 
     var sRPC = "lic4_licitacaoeventos001.RPC.php";
@@ -333,7 +349,7 @@ require_once modification("dbforms/db_funcoes.php");
     var oDocumentosCollection = Collection.create().setId('codigo');
     var oGridDocumentos = DatagridCollection.create(oDocumentosCollection).configure({"order" : false, "height" : 150});
 
-    oGridDocumentos.addColumn("tipo",    {label : "Tipo de Documento", "width" : "200px" });
+    oGridDocumentos.addColumn("tipo",    {label : "Tipo de Documento", "width" : "160px" });
     oGridDocumentos.addColumn('arquivo', {label : "Arquivo",           "width" : "160px" });
 
     /**
@@ -358,7 +374,7 @@ require_once modification("dbforms/db_funcoes.php");
         if (oRetorno.aEventos.length == 0) {
           return false;
         }
-        
+
         for (var oEvento of oRetorno.aEventos) {
           oEventosCollection.add({
             codigo : oEvento.codigo,
@@ -450,69 +466,71 @@ require_once modification("dbforms/db_funcoes.php");
         .execute();
     };
 
-    oGridEventos.addAction("Editar", null, function(oEvento, oItem) {
+    if (<?= $request->consulta ?> === 0) {
+      oGridEventos.addAction("Editar", null, function(oEvento, oItem) {
+          var oParametros = {
+            "exec"          : "getLicitacaoEvento",
+            "codigo_evento" : oItem.ID
+          };
 
-      var oParametros = {
-        "exec"          : "getLicitacaoEvento",
-        "codigo_evento" : oItem.ID
-      };
+          new AjaxRequest(sRPC,oParametros, function (oRetorno, lErro) {
 
-      new AjaxRequest(sRPC,oParametros, function (oRetorno, lErro) {
+            if (lErro) {
+              return false;
+            }
 
-        if (lErro) {
-          return false;
-        }
+            $('evento_publicacao').hide();
 
-        $('evento_publicacao').hide();
+            $('codigo_evento').value        = oRetorno.oEvento.codigo;
+            $('fase').value                 = oRetorno.oEvento.fase;
+            $('evento').value               = oRetorno.oEvento.evento;
+            $('data').value                 = oRetorno.oEvento.data;
+            $('z01_numcgm').value           = oRetorno.oEvento.autor;
+            $('z01_nome').value             = oRetorno.oEvento.autor_nome;
+            $('data_julgamento').value      = oRetorno.oEvento.data_julgamento;
+            $('resultado').value            = oRetorno.oEvento.resultado;
+            $('publicacao_tipo').value      = oRetorno.oEvento.publicacao_tipo;
+            $('publicacao_descricao').value = oRetorno.oEvento.publicacao_descricao;
 
-        $('codigo_evento').value        = oRetorno.oEvento.codigo;
-        $('fase').value                 = oRetorno.oEvento.fase;
-        $('evento').value               = oRetorno.oEvento.evento;
-        $('data').value                 = oRetorno.oEvento.data;
-        $('z01_numcgm').value           = oRetorno.oEvento.autor;
-        $('z01_nome').value             = oRetorno.oEvento.autor_nome;
-        $('data_julgamento').value      = oRetorno.oEvento.data_julgamento;
-        $('resultado').value            = oRetorno.oEvento.resultado;
-        $('publicacao_tipo').value      = oRetorno.oEvento.publicacao_tipo;
-        $('publicacao_descricao').value = oRetorno.oEvento.publicacao_descricao;
+            if (aTiposEventoPublicacaoEsclarecimento.indexOf(oRetorno.oEvento.evento) != -1) {
+              $('evento_publicacao').show();
+            }
 
-        if (aTiposEventoPublicacaoEsclarecimento.indexOf(oRetorno.oEvento.evento) != -1) {
-          $('evento_publicacao').show();
-        }
-
-        oBtnIncluirEvento.value = "Salvar";
-        oBtnCancelarEvento.show()
-      }).setMessage("Carregando Evento.").execute();
-    });
+            oBtnIncluirEvento.value = "Salvar";
+            oBtnCancelarEvento.show()
+          }).setMessage("Carregando Evento.").execute();
+      });
+    }
 
     /**
      * Action excluir evento
      */
-    oGridEventos.addAction("Excluir", null, function(oEvento, oItem) {
+    if (<?= $request->consulta ?> === 0) {
+        oGridEventos.addAction("Excluir", null, function (oEvento, oItem) {
 
-      if (!confirm("Deseja excluir evento da Licitação?")) {
-        return false;
-      }
+            if (!confirm("Deseja excluir evento da Licitação?")) {
+                return false;
+            }
 
-      var oParametros = {
-        "exec"          : "excluirEvento",
-        "codigo_evento" : oItem.ID
-      };
+            var oParametros = {
+                "exec": "excluirEvento",
+                "codigo_evento": oItem.ID
+            };
 
-      new AjaxRequest(sRPC, oParametros, function(oRetorno, lErro) {
+            new AjaxRequest(sRPC, oParametros, function (oRetorno, lErro) {
 
-        alert(oRetorno.message.urlDecode());
+                alert(oRetorno.message.urlDecode());
 
-        if (lErro) {
-          return false;
-        }
+                if (lErro) {
+                    return false;
+                }
 
-        oEventoLicitacao.getEventos(oLicitacaoCodigo.value);
-      })
-        .setMessage("Excluindo evento.")
-        .execute();
-    });
-
+                oEventoLicitacao.getEventos(oLicitacaoCodigo.value);
+            })
+                .setMessage("Excluindo evento.")
+                .execute();
+        });
+    }
     /**
      * Action documentos do evento
      */
@@ -528,28 +546,54 @@ require_once modification("dbforms/db_funcoes.php");
     /**
      * Action excluir documento
      */
-    oGridDocumentos.addAction("Excluir", null, function(oEvento, oItem) {
+    if (<?= $request->consulta ?> === 0) {
+        oGridDocumentos.addAction("Excluir", null, function (oEvento, oItem) {
 
-      if (!confirm("Deseja excluir documento do evento da Licitação?")) {
-        return false;
-      }
+            if (!confirm("Deseja excluir documento do evento da Licitação?")) {
+                return false;
+            }
 
-      var oParametros = {
-        "exec"            : "excluirDocumento",
-        "codigoDocumento" : oItem.ID
-      };
+            var oParametros = {
+                "exec": "excluirDocumento",
+                "codigoDocumento": oItem.ID
+            };
 
-      new AjaxRequest(sRPC, oParametros, function(oRetorno, lErro) {
+            new AjaxRequest(sRPC, oParametros, function (oRetorno, lErro) {
 
-        alert(oRetorno.message.urlDecode());
+                alert(oRetorno.message.urlDecode());
 
-        if (lErro) {
-          return false;
-        }
+                if (lErro) {
+                    return false;
+                }
 
-        oEventoLicitacao.getDocumentos(iCodigoEvento);
-      })
-        .setMessage("Excluindo documento.")
+                oEventoLicitacao.getDocumentos(iCodigoEvento);
+            })
+                .setMessage("Excluindo documento.")
+                .execute();
+        });
+    }
+
+    oGridDocumentos.addAction("Download", null, function (oEvento, oItem) {
+        const oParametros = {
+            "exec": "baixarDocumento",
+            "codigoDocumento": oItem.ID
+        };
+
+        new AjaxRequest(sRPC, oParametros, function (oRetorno) {
+            if (oRetorno.error) {
+                return alert(oRetorno.message);
+            }
+
+            const caminhoDocumento = oRetorno.caminhoDocumento.urlDecode();
+            js_OpenJanelaIframe(
+                'CurrentWindow.corpo',
+                'db_iframe_download',
+                'db_download.php?arquivo=' + caminhoDocumento,
+                'Download de arquivos',
+                false
+            );
+        })
+        .setMessage("Baixando documento...")
         .execute();
     });
 
@@ -737,11 +781,42 @@ require_once modification("dbforms/db_funcoes.php");
      * Windows Aux
      */
 
-    var oMessageBoard = new DBMessageBoard('msgboard1', 'Anexar Documentos aos Eventos', '', $('documentos_evento'));
-    oMessageBoard.show();
+    let alturaJanela = 300;
+    if (<?= $request->consulta ?> === 0) {
+        alturaJanela = 430;
+        var oMessageBoard = new DBMessageBoard(
+            'msgboard1',
+            'Anexar Documentos aos Eventos',
+            '',
+            $('documentos_evento')
+        );
+        oMessageBoard.show();
+    }
 
-    var windowDocumentos = new windowAux('windowDocumentos', 'Documentos de Evento de Licitação', 520, 430);
+
+    var windowDocumentos = new windowAux('windowDocumentos', 'Documentos de Evento de Licitação', 600, alturaJanela);
     windowDocumentos.setContent($("documentos_evento"));
-    oLookUpLicitacao.abrirJanela(true);
+
+    if (<?= $request->consulta ?>) {
+        oLookUpLicitacao.abrirJanela(false);
+        buscarEventos();
+    } else {
+        oLookUpLicitacao.abrirJanela(true);
+    }
+
+    function buscarEventos() {
+        const params = {};
+        params.codigo_licitacao = oLicitacaoCodigo.value;
+        params.exec = 'getFaseLicitacao';
+
+        new AjaxRequest(sRPC, params, function (oRetorno, lErro) {
+            if (lErro) {
+                return false;
+            }
+
+            $('fase').value = oRetorno.fase;
+        }).execute();
+        oEventoLicitacao.getEventos(oLicitacaoCodigo.value);
+    }
   </script>
 </body>

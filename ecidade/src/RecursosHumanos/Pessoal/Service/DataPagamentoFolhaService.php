@@ -56,7 +56,7 @@ class DataPagamentoFolhaService
      * @var int
      */
     private $mesCompetencia;
-    
+
     /**
      * @var int
      */
@@ -87,7 +87,8 @@ class DataPagamentoFolhaService
         $instituicao = InstituicaoRepository::getInstituicaoByCodigo($parametros->instituicao);
         $anoCompetencia = !empty($parametros->ano) ? $parametros->ano : $this->anoCompetencia;
         $mesCompetencia = !empty($parametros->mes) ? $parametros->mes : $this->mesCompetencia;
-        return $this->repositorio->scopeAno($anoCompetencia)->scopeMes($mesCompetencia)->scopeInstituicao($instituicao)->get();
+        return $this->repositorio->scopeAno($anoCompetencia)->scopeMes($mesCompetencia)->scopeInstituicao($instituicao)
+            ->get();
     }
 
     /**
@@ -95,7 +96,7 @@ class DataPagamentoFolhaService
      * @throws Exception
      */
     public function virarCompetencia(DBCompetencia $competenciaAtual, $dataPagamento)
-    { 
+    {
         $parametros = new stdClass();
         $parametros->mes =  $competenciaAtual->getMes();
         $parametros->ano =  $competenciaAtual->getAno();
@@ -137,9 +138,10 @@ class DataPagamentoFolhaService
         $datasPagamentosFolha = $this->repositorio
                                             ->scopeMes($competenciaAnterior->getMes())
                                             ->scopeAno($competenciaAnterior->getAno())
-                                            ->scopeInstituicao(InstituicaoRepository::getInstituicaoByCodigo($this->codigoInstituicao))
-                                            ->get();
-        
+                                            ->scopeInstituicao(InstituicaoRepository::getInstituicaoByCodigo(
+                                                $this->codigoInstituicao
+                                            ))->get();
+
         $this->repositorio->resetScopes();
 
         foreach ($datasPagamentosFolha as $dataPagamento) {
@@ -178,5 +180,24 @@ class DataPagamentoFolhaService
     public function setMesCompetencia($mesCompetencia)
     {
         $this->mesCompetencia = $mesCompetencia;
+    }
+
+    /**
+     * @param stdClass $parametros
+     * @return DataPagamentoFolha[]
+     * @throws Exception
+     */
+    public function buscarDataPagamentoInstituicaoCompetenciaCaixa(stdClass $parametros)
+    {
+        if (empty($parametros->instituicao)) {
+            throw new Exception("É necessário informar a instituição.");
+        }
+
+        $instituicao = InstituicaoRepository::getInstituicaoByCodigo($parametros->instituicao);
+        $anoCompetencia = !empty($parametros->ano) ? $parametros->ano : $this->anoCompetencia;
+        $mesCompetencia = !empty($parametros->mes) ? $parametros->mes : $this->mesCompetencia;
+        return $this->repositorio->scopeCompetenciaCaixa($anoCompetencia, $mesCompetencia)
+            ->scopeInstituicao($instituicao)
+            ->get();
     }
 }

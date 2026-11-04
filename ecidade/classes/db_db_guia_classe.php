@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,13 +60,13 @@ class cl_db_guia {
                  s_email = varchar(50) = Email 
                  ";
    //funcao construtor da classe 
-   function cl_db_guia() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_guia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_db_guia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s_codigo = ($this->s_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s_codigo"]:$this->s_codigo);
        $this->s_localid = ($this->s_localid == ""?@$GLOBALS["HTTP_POST_VARS"]["s_localid"]:$this->s_localid);
@@ -88,7 +88,7 @@ class cl_db_guia {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->s_codigo == null ){ 
        $this->erro_sql = " Campo Código nao Informado.";
@@ -197,7 +197,7 @@ class cl_db_guia {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update db_guia set ";
      $virgula = "";
@@ -323,7 +323,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from db_guia
                     where ";
      $sql2 = "";
@@ -362,7 +362,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

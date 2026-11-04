@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            if(!isset($ano)){
              $ano = db_anofolha();
            }
@@ -107,7 +107,7 @@ function js_emite(){
            db_input('ano',4,$ano,true,'text',2,'');
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            if(!isset($mes)){
              $mes = db_mesfolha();
            }
@@ -120,7 +120,7 @@ function js_emite(){
         <td><strong>Tipo de Folha :</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_folha = array("r14"=>"Salario",
                              "r48"=>"Complementar", 
                              "r35"=>"13o. Salario", 
@@ -129,7 +129,7 @@ function js_emite(){
           ?>
        </td>
      </tr>
-     <?
+     <?php
      if(isset($folha) && $folha == "r48"){
 //       echo ($clgerfcom->sql_query_file($anosqlcom,$messqlcom,null,null,"distinct r48_semest"));
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($anosqlcom,$messqlcom,null,null,"distinct r48_semest"));
@@ -166,7 +166,7 @@ function js_emite(){
         <strong>Receitas :&nbsp;&nbsp;</strong>
         </td>
       <td>
-      <?
+      <?php
       $db_rec = "1030-1250-1252-1350-1360-1400-1501-1502-1503-1506-1508-1600-1602-1700-1705-1710-1715-1720-1730-1755-R907-R901-R904-R913-R916-R903-R906-R915-3400";
       db_textarea('db_rec',1,90,$db_rec,true,'text',2,"");
       ?>
@@ -177,7 +177,7 @@ function js_emite(){
         <strong>Deduções das Receitas :&nbsp;&nbsp;</strong>
         </td>
       <td>
-      <?
+      <?php
       $db_ded_rec = '0501-0505-0510-0532';
       db_textarea('db_ded_rec',1,90,$db_ded_rec,true,'text',2,"");
       ?>
@@ -187,7 +187,7 @@ function js_emite(){
         <strong>Despesas Extras :&nbsp;&nbsp;</strong>
         </td>
       <td>
-      <?
+      <?php
       $db_desp_ext = 'R919-0255-';
       db_textarea('db_desp_ext',1,90,$db_desp_ext,true,'text',2,"");
       ?>
@@ -205,7 +205,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -236,7 +236,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

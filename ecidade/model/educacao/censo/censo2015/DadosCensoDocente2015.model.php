@@ -539,9 +539,9 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       $iInstituicaoCursoSuperior         = "instituicao_curso_superior_{$iContador}";
 
       /* coluna 7 - DAQUI */
-      if ( $oRegistro50->$iFormacaoComplementacaoPedagogica == ''
-          && $oRegistro50->$iSituacaoCursoSuperior == 1
-          && DadosCensoDocente2015::$aCursosFormacao[$oRegistro50->$iCodigoCursoSuperior] != GRAU_LICENCIATURA ) {
+      if ( $oRegistro50->{$iFormacaoComplementacaoPedagogica} == ''
+          && $oRegistro50->{$iSituacaoCursoSuperior} == 1
+          && DadosCensoDocente2015::$aCursosFormacao[$oRegistro50->{$iCodigoCursoSuperior}] != GRAU_LICENCIATURA ) {
 
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -556,15 +556,15 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
        * Sempre que o curso for bacharelado ou tecnológico ou não estiver concluído, o campo Formação/Complementação
        * pedagógica deve ser nulo
        */
-      if ( $oRegistro50->$iSituacaoCursoSuperior != 1  ||
-           ( !empty($oRegistro50->$iCodigoCursoSuperior) &&
-             DadosCensoDocente2015::$aCursosFormacao[$oRegistro50->$iCodigoCursoSuperior] == GRAU_LICENCIATURA) ) {
-        $oRegistro50->$iFormacaoComplementacaoPedagogica = '';
+      if ( $oRegistro50->{$iSituacaoCursoSuperior} != 1  ||
+           ( !empty($oRegistro50->{$iCodigoCursoSuperior}) &&
+             DadosCensoDocente2015::$aCursosFormacao[$oRegistro50->{$iCodigoCursoSuperior}] == GRAU_LICENCIATURA) ) {
+        $oRegistro50->{$iFormacaoComplementacaoPedagogica} = '';
       }
         /* ATÉ AQUI */
 
       /* coluna 8 - DAQUI */
-      if ( $oRegistro50->$iCodigoCursoSuperior == '' &&  $oRegistro50->$iSituacaoCursoSuperior != '' ) {
+      if ( $oRegistro50->{$iCodigoCursoSuperior} == '' &&  $oRegistro50->{$iSituacaoCursoSuperior} != '' ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Código do Curso Superior ' . $iContador . '" deve ser preenchido quando o campo';
@@ -573,7 +573,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( $oRegistro50->$iCodigoCursoSuperior != '' && $oRegistro50->$iSituacaoCursoSuperior == '' ) {
+      if ( $oRegistro50->{$iCodigoCursoSuperior} != '' && $oRegistro50->{$iSituacaoCursoSuperior} == '' ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Código do Curso Superior ' . $iContador . '" não pode ser preenchido quando o campo';
@@ -584,7 +584,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         /* ATÉ AQUI */
 
       /* coluna 9 - DAQUI */
-      if ( $oRegistro50->$iAnoInicioCursoSuperior == '' && $oRegistro50->$iSituacaoCursoSuperior == 2 ) {
+      if ( $oRegistro50->{$iAnoInicioCursoSuperior} == '' && $oRegistro50->{$iSituacaoCursoSuperior} == 2 ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Início do Curso Superior ' . $iContador . '" deve ser preenchido quando o campo';
@@ -593,7 +593,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (  $oRegistro50->$iAnoInicioCursoSuperior != '' && $oRegistro50->$iSituacaoCursoSuperior != 2 ) {
+      if (  $oRegistro50->{$iAnoInicioCursoSuperior} != '' && $oRegistro50->{$iSituacaoCursoSuperior} != 2 ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Início do Curso Superior ' . $iContador . '" não pode ser preenchido quando o campo';
@@ -603,8 +603,8 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       }
 
       // registro 50 coluna 9 regra 4
-      if ( !empty($oRegistro50->$iAnoInicioCursoSuperior) &&
-           $oRegistro50->$iAnoInicioCursoSuperior < 2001) {
+      if ( !empty($oRegistro50->{$iAnoInicioCursoSuperior}) &&
+           $oRegistro50->{$iAnoInicioCursoSuperior} < 2001) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Início do Curso Superior ' . $iContador . '" foi preenchido com valor inválido.';
@@ -613,8 +613,8 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       }
 
       // registro 50 coluna 9 regra 5
-      if ( !empty($oRegistro50->$iAnoInicioCursoSuperior) &&
-           $oRegistro50->$iAnoInicioCursoSuperior > $oExportacaoCenso->getAnoCenso()) {
+      if ( !empty($oRegistro50->{$iAnoInicioCursoSuperior}) &&
+           $oRegistro50->{$iAnoInicioCursoSuperior} > $oExportacaoCenso->getAnoCenso()) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Início do Curso Superior ' . $iContador . '" foi preenchido com valor inválido.';
@@ -622,7 +622,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (  !empty($oRegistro50->$iAnoInicioCursoSuperior) && $oRegistro50->$iAnoInicioCursoSuperior <= $iAnoNascimento ) {
+      if (  !empty($oRegistro50->{$iAnoInicioCursoSuperior}) && $oRegistro50->{$iAnoInicioCursoSuperior} <= $iAnoNascimento ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Início do Curso Superior ' . $iContador . '" não pode ser anterior ou igual à data informada no';
@@ -633,7 +633,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         /* ATÉ AQUI */
 
       /* Coluna 10 - DAQUI */
-      if ( $oRegistro50->$iAnoConclusaoCursoSuperior == '' && $oRegistro50->$iSituacaoCursoSuperior == 1 ) {
+      if ( $oRegistro50->{$iAnoConclusaoCursoSuperior} == '' && $oRegistro50->{$iSituacaoCursoSuperior} == 1 ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Conclusão do Curso Superior ' . $iContador . '" deve ser preenchido quando o campo';
@@ -642,7 +642,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( $oRegistro50->$iAnoConclusaoCursoSuperior != '' && $oRegistro50->$iSituacaoCursoSuperior != 1 ) {
+      if ( $oRegistro50->{$iAnoConclusaoCursoSuperior} != '' && $oRegistro50->{$iSituacaoCursoSuperior} != 1 ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Conclusão do Curso Superior ' . $iContador . '" não pode ser preenchido quando o campo';
@@ -651,8 +651,8 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( !empty($oRegistro50->$iAnoConclusaoCursoSuperior)
-          && ($oRegistro50->$iAnoConclusaoCursoSuperior < 1940 || $oRegistro50->$iAnoConclusaoCursoSuperior > $oExportacaoCenso->getAnoCenso()) ) {
+      if ( !empty($oRegistro50->{$iAnoConclusaoCursoSuperior})
+          && ($oRegistro50->{$iAnoConclusaoCursoSuperior} < 1940 || $oRegistro50->{$iAnoConclusaoCursoSuperior} > $oExportacaoCenso->getAnoCenso()) ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Conclusão do Curso Superior ' . $iContador . '" foi preenchido com valor inválido.';
@@ -660,7 +660,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( !empty($oRegistro50->$iAnoConclusaoCursoSuperior) && $oRegistro50->$iAnoConclusaoCursoSuperior <= $iAnoNascimento ) {
+      if ( !empty($oRegistro50->{$iAnoConclusaoCursoSuperior}) && $oRegistro50->{$iAnoConclusaoCursoSuperior} <= $iAnoNascimento ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Ano de Conclusão do Curso Superior ' . $iContador . '" não pode ser anterior ou igual ao ano informado no';
@@ -734,7 +734,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     for ( $iPosGraduacao = 0; $iPosGraduacao < count($aPosGraduacoes); $iPosGraduacao++ ) {
 
-      if ( $oRegistro50->$aPosGraduacoes[$iPosGraduacao] == '' && in_array( 1, $aSituacoesCursoSuperior) ) {
+      if ($oRegistro50->{$aPosGraduacoes[$iPosGraduacao]} == '' && in_array(1, $aSituacoesCursoSuperior)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Pós-Graduação - Especialização" deve ser preenchido quando o campo';
@@ -743,7 +743,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( $oRegistro50->$aPosGraduacoes[$iPosGraduacao] !== '' && !in_array( 1, $aSituacoesCursoSuperior) ) {
+      if ($oRegistro50->{$aPosGraduacoes[$iPosGraduacao]} !== '' && !in_array(1, $aSituacoesCursoSuperior)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Pós-Graduação - Especialização" não pode ser preenchido quando o profissional escolar não';
@@ -752,7 +752,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if ( $iPosGraduacao != 3 && ( $oRegistro50->$aPosGraduacoes[$iPosGraduacao] != 0 && $oRegistro50->pos_graduacao == 1) ) {
+      if ( $iPosGraduacao != 3 && ( $oRegistro50->{$aPosGraduacoes[$iPosGraduacao]} != 0 && $oRegistro50->pos_graduacao == 1) ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= 'O campo "Pós-Graduação - Especialização" deve ser preenchido com 0 (Não) quando o campo';

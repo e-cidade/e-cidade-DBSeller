@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,14 +63,14 @@
                 <table align="center" border="0" cellpadding="0" cellspacing="0">
                   <tr align="center">
                     <td>
-                      <?
+                      <?php
                           $oDaoFarClass = db_utils::getdao('far_class');
                           $sSql         = $oDaoFarClass->sql_query("", "fa05_c_descr, fa05_i_codigo", "fa05_c_descr", "");
                           $rsSql        = $oDaoFarClass->sql_record($sSql);
                         ?> 
                         <select name="medicaHisto" id="medicaHisto" size="10" onclick="js_desabinc()" multiple style="font-size:9px;width:350px;">
                          
-                        <?
+                        <?php
                           $iLinhas =  $oDaoFarClass->numrows;
                           
                             for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
@@ -144,7 +144,7 @@
              <tr align="left">
               <td align="left" >
                 <b>Quebra :</b>
-                <?
+                <?php
                   $x = array("n"=>"Nenhuma","q"=>"Classificação");
                   db_select("sQuebra",$x,true,2);
                 ?>
@@ -153,7 +153,7 @@
               </td>
               <td align="left">
                 <b>Ordem :</b>
-              <?
+              <?php
               $y = array("n"=>"Numérica","a"=>"Alfabética","u"=>"Unidade");
               db_select("sOrdem",$y,true,2);
               ?>
@@ -173,7 +173,7 @@
   </body>
 </html>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 <script>
 
 

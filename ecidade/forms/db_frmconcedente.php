@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("o37_descricao");
        <?=@$Lo108_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o108_sequencial',10,$Io108_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To108_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lo108_numcgm,"js_pesquisao108_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o108_numcgm',10,$Io108_numcgm,true,'text',$db_opcao," onchange='js_pesquisao108_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To108_tipoconcedente?>">
-       <?
+       <?php
        db_ancora(@$Lo108_tipoconcedente,"js_pesquisao108_tipoconcedente(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o108_tipoconcedente',10,$Io108_tipoconcedente,true,'text',$db_opcao," onchange='js_pesquisao108_tipoconcedente(false);'")
 ?>
-       <?
+       <?php
 db_input('o37_descricao',50,$Io37_descricao,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_concedente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

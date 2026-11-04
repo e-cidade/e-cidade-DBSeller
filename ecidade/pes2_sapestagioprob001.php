@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -86,7 +86,7 @@ function js_relatorio2() {
               <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem : </strong>
               </td>
               <td align="left">&nbsp;&nbsp;&nbsp;
-              <?
+              <?php
                 $xx = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
                 db_select('ordem',$xx,true,4,"");
 	      ?>

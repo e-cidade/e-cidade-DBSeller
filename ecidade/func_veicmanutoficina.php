@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveicmanutoficina->rotulo->label("ve66_codigo");
               <?=$Lve66_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve66_codigo",10,$Ive66_codigo,true,"text",4,"","chave_ve66_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveicmanutoficina->rotulo->label("ve66_codigo");
               <?=$Lve66_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve66_codigo",10,$Ive66_codigo,true,"text",4,"","chave_ve66_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveicmanutoficina->rotulo->label("ve66_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veicmanutoficina.php")==true){
@@ -122,12 +122,12 @@ $clveicmanutoficina->rotulo->label("ve66_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

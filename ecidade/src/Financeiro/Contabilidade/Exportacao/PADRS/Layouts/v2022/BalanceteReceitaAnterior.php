@@ -18,8 +18,8 @@ class BalanceteReceitaAnterior extends ParseArray implements LayoutPad
         "Número do Nível da Receita Orçamentária" => "nivel",
         "Característica Peculiar" => "caracteristicaPeculiar",
         "Complemento do Recurso Vinculado" => "complemento",
-        "Complemento da FonteRecurso" => "fonteRecursoSigap",
-        "Codigo de Execucao Orcamentaria - CO" => "complementoSigap",
+        "Código da Fonte de Recurso" => "fonteRecursoSiconfi",
+        "Codigo de Execucao Orcamentaria - CO" => "complementoSiconfi",
     ];
 
     public $codigoReceita;
@@ -33,8 +33,8 @@ class BalanceteReceitaAnterior extends ParseArray implements LayoutPad
     public $caracteristicaPeculiar = '000';
     public $orgaoUnidade = '0000';
     public $nivel;
-    public $fonteRecursoSigap = '0000';
-    public $complementoSigap = '0000';
+    public $fonteRecursoSiconfi = '0000';
+    public $complementoSiconfi = '0000';
 
     /**
      * Sintética / Analítica
@@ -261,36 +261,36 @@ class BalanceteReceitaAnterior extends ParseArray implements LayoutPad
     /**
      * @return mixed
      */
-    public function getFonteRecursoSigap()
+    public function getFonteRecursoSiconfi()
     {
-        return $this->fonteRecursoSigap;
+        return $this->fonteRecursoSiconfi;
     }
 
     /**
-     * @param mixed $fonteRecursoSigap
+     * @param mixed $fonteRecursoSiconfi
      * @return BalanceteReceitaAnterior
      */
-    public function setFonteRecursoSigap($fonteRecursoSigap)
+    public function setFonteRecursoSiconfi($fonteRecursoSiconfi)
     {
-        $this->fonteRecursoSigap = $fonteRecursoSigap;
+        $this->fonteRecursoSiconfi = $fonteRecursoSiconfi;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getComplementoSigap()
+    public function getComplementoSiconfi()
     {
-        return $this->complementoSigap;
+        return $this->complementoSiconfi;
     }
 
     /**
-     * @param mixed $complementoSigap
+     * @param mixed $complementoSiconfi
      * @return BalanceteReceitaAnterior
      */
-    public function setComplementoSigap($complementoSigap)
+    public function setComplementoSiconfi($complementoSiconfi)
     {
-        $this->complementoSigap = $complementoSigap;
+        $this->complementoSiconfi = $complementoSiconfi;
         return $this;
     }
 
@@ -312,8 +312,8 @@ class BalanceteReceitaAnterior extends ParseArray implements LayoutPad
             "nivel" => $this->getNivel(),
             "caracteristicaPeculiar" => $this->getCaracteristicaPeculiar(),
             "complemento" => $this->getComplemento(),
-            "fonteRecursoSigap" => $this->getFonteRecursoSigap(),
-            "complementoSigap" => $this->getComplementoSigap()
+            "fonteRecursoSiconfi" => $this->getFonteRecursoSiconfi(),
+            "complementoSiconfi" => $this->getComplementoSiconfi()
         ];
     }
 }

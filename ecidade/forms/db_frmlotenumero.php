@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,45 +40,45 @@ $clrotulo->label("j14_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj12_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lj12_idbql,"js_pesquisaj12_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j12_idbql',7,$Ij12_idbql,true,'text',$db_opcao," onchange='js_pesquisaj12_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj12_lograd?>">
-       <?
+       <?php
        db_ancora(@$Lj12_lograd,"js_pesquisaj12_lograd(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j12_lograd',7,$Ij12_lograd,true,'text',$db_opcao," onchange='js_pesquisaj12_lograd(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
 <tr>
     <td nowrap title="<?=@$Tp58_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lp58_codproc,"js_pesquisap58_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p58_codproc',7,$Ip58_codproc,true,'text',$db_opcao," onchange='js_pesquisap58_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
        <?=@$Lj12_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j12_data',@$j12_data_dia,@$j12_data_mes,@$j12_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_inputdata('j12_data',@$j12_data_dia,@$j12_data_mes,@$j12_data_ano,true,'text'
        <?=@$Lj12_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('j12_numero',10,$Ij12_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,7 +188,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lotenumero.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

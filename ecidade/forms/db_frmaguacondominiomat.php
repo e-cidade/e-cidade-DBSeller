@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,12 +75,12 @@
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tx40_codcondominio?>">
-            <?
+            <?php
               db_ancora(@$Lx40_codcondominio, "js_pesquisax40_codcondominio(true);", $db_opcao);
             ?>
           </td>
           <td>
-            <?
+            <?php
               db_input('x40_codcondominio', 10, $Ix40_codcondominio, true, 'text',
                  3, " onchange='js_pesquisax40_codcondominio(false);'");
             ?>
@@ -88,12 +88,12 @@
         </tr>
         <tr>
           <td nowrap title="<?=@$Tx40_matric?>">
-            <?
+            <?php
               db_ancora(@$Lx40_matric, "js_pesquisax40_matric(true);", $db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('x40_matric', 10, $Ix40_matric, true, 'text', $db_opcao, " onchange='js_pesquisax40_matric(false);'");
               //db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'')
               db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');

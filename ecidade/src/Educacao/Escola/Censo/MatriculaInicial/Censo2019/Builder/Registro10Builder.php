@@ -155,6 +155,7 @@ class Registro10Builder extends BuilderFormulario
             $this->registro->setCacimbaCisternaPoco($this->exist('cacimba_cisterna_poco', $opcoes));
             $this->registro->setFonteRio($this->exist('fonte_rio_igarape_riacho', $opcoes));
             $this->registro->setSemAgua($this->exist('abastecimento_de_agua_inexistente', $opcoes));
+            $this->registro->setCarroPipa($this->exist('abastecimento_de_agua_carro_pipa', $opcoes));
         }
     }
 
@@ -327,7 +328,7 @@ class Registro10Builder extends BuilderFormulario
     private function buildDependenciasEscola($opcoes)
     {
         $this->registro->setAlmoxarifado($this->exist('almoxarifado', $opcoes));
-        $this->registro->setAreaVerde($this->exist('area_verde', $opcoes));
+        $this->registro->setAreaVegetacaoGramado($this->exist('area_vegetacao_ou_gramado', $opcoes));
         $this->registro->setAuditorio($this->exist('auditorio', $opcoes));
         $this->registro->setBanheiro($this->exist('banheiro_dentro_do_predio', $opcoes));
         $this->registro->setBanheiroAcessivelPessoasDeficiencia(
@@ -376,6 +377,10 @@ class Registro10Builder extends BuilderFormulario
         );
         $this->registro->setSalaSecretaria($this->exist('sala_de_secretaria', $opcoes));
         $this->registro->setSalaEducacaoProfissional($this->exist('salas_oficinas_educacao_profissional', $opcoes));
+        $this->registro->setSalaGravacaoEdicao($this->exist('estudio_gravacao_edicao', $opcoes));
+        $this->registro->setAreaHortaPlantioProducaoAgricola(
+            $this->exist('area_horta_plantio_e_ou_producao_agricola', $opcoes)
+        );
         $this->registro->setNenhumaDependencias($this->exist('nenhuma_das_dependencias_relacionadas', $opcoes));
     }
 
@@ -389,6 +394,7 @@ class Registro10Builder extends BuilderFormulario
         $this->registro->setSinalizacaoSonora($this->exist('sinalizacao_sonora', $opcoes));
         $this->registro->setSinalizacaoTatil($this->exist('sinalizacao_tatil', $opcoes));
         $this->registro->setSinalizacaoVisual($this->exist('sinalizacao_visual', $opcoes));
+        $this->registro->setSinalizacaoAlarmeLuminoso($this->exist('sinalizacao_alarme_luminoso', $opcoes));
         $this->registro->setNenhumRecursosAcessibilidade($this->exist('nenhum_recurso_acessibilidade', $opcoes));
     }
 
@@ -396,8 +402,12 @@ class Registro10Builder extends BuilderFormulario
     {
         if (array_key_exists('pergunta_equipamentos_existentes', $perguntas)) {
             $this->buildEquipamentosExistentes($perguntas['pergunta_equipamentos_existentes']);
-            $this->buildQuantidadeEquipamentos($perguntas['pergunta_quantidades_equipamentos']);
-            $this->buildQuantidadeComputadores($perguntas['pergunta_quantidades_computadores']);
+            if (array_key_exists('pergunta_quantidades_equipamentos', $perguntas)) {
+                $this->buildQuantidadeEquipamentos($perguntas['pergunta_quantidades_equipamentos']);
+            }
+            if (array_key_exists('pergunta_quantidades_computadores', $perguntas)) {
+                $this->buildQuantidadeComputadores($perguntas['pergunta_quantidades_computadores']);
+            }
         }
     }
 
@@ -418,7 +428,7 @@ class Registro10Builder extends BuilderFormulario
             $this->registro->setNenhumEquipamentosListados(1);
         }
     }
-    
+
     private function buildQuantidadeEquipamentos($opcao)
     {
         //94 a 98 Quantidade de equipamentos para o processo ensino aprendizagem
@@ -481,6 +491,12 @@ class Registro10Builder extends BuilderFormulario
             );
         }
 
+        if (array_key_exists('a_escola_desenvolve_acoes_area_educacao_ambiental', $perguntas)) {
+            $this->registro->setDesenvolveAcoesEducacaoAmbiental(
+                $this->respostaObjetiva($perguntas['a_escola_desenvolve_acoes_area_educacao_ambiental'])
+            );
+        }
+
         if (array_key_exists('orgaos_colegiados', $perguntas)) {
             $this->buildOrgaosColegiados($perguntas['orgaos_colegiados']);
         }
@@ -489,6 +505,10 @@ class Registro10Builder extends BuilderFormulario
             $this->registro->setProjetoPedagogicoAtualizado(
                 $this->respostaObjetiva($perguntas['projeto_pedagogico_atualizado'])
             );
+        }
+
+        if (array_key_exists('informe_qual_forma_educacao_ambiental_desenvolvida', $perguntas)) {
+            $this->buildFormasEducacaoAmbiental($perguntas['informe_qual_forma_educacao_ambiental_desenvolvida']);
         }
     }
 
@@ -513,6 +533,13 @@ class Registro10Builder extends BuilderFormulario
         $this->registro->setTecnicosMonitores($this->respostaDescritiva('auxiliar_laboratorio', $opcoes));
         $this->registro->setGestoresEscola($this->respostaDescritiva('gestores_escola', $opcoes));
         $this->registro->setOrientadorComunitario($this->respostaDescritiva('orientador_comunitario', $opcoes));
+        $this->registro->setTradutorInterpreteLibras($this->respostaDescritiva('tradutor_interprete_libras', $opcoes));
+        $this->registro->setAgronomosTecnicosResponsaveisProducaoAgricola(
+            $this->respostaDescritiva('agronomos_tecnicos_responsaveis_producao_agricola', $opcoes)
+        );
+        $this->registro->setRevisorTextoBrailleAssistenteVidente(
+            $this->respostaDescritiva('revisor_de_texto_braille_assistente_vidente', $opcoes)
+        );
 
         if (!$this->respostaDescritiva('bibliotecario', $opcoes) &&
             !$this->respostaDescritiva('bombeiro_ou_saude', $opcoes) &&
@@ -544,9 +571,19 @@ class Registro10Builder extends BuilderFormulario
         $this->registro->setMaterialAtividadeCultural($this->exist('materiais_atividades_culturais', $opcoes));
         $this->registro->setMaterialEducacaoProfissional($this->exist('materiais_para_educacao_profissional', $opcoes));
         $this->registro->setMaterialDesportivRecreacao($this->exist('materiais_esportivos_ou_recreacao', $opcoes));
+        $this->registro->setMaterialEducacaoBilingue($this->exist('materiais_educacao_bilingue', $opcoes));
         $this->registro->setMaterialEducacaoIndigena($this->exist('material_educacao_indigena', $opcoes));
         $this->registro->setMaterialEducacaoEtnicoRacial($this->exist('material_educacao_etnico_racial', $opcoes));
         $this->registro->setMaterialEducacaoCampo($this->exist('material_educacao_campo', $opcoes));
+        $this->registro->setEquipamentosAtividadesHortaProducaoAgricola(
+            $this->exist('equipamentos_atividades_horta_producao_agricola', $opcoes)
+        );
+        $this->registro->setMaterialEducacaoQuilombola(
+            $this->exist('materiais_pedagogicos_educacao_escolar_quilombola', $opcoes)
+        );
+        $this->registro->setMaterialEducacaoEspecial(
+            $this->exist('materiais_pedagogicos_para_a_educacao_especial', $opcoes)
+        );
 
         if (!$this->exist('acervo_multimidia', $opcoes) &&
             !$this->exist('brinquedos_educacao_infantil', $opcoes) &&
@@ -591,6 +628,27 @@ class Registro10Builder extends BuilderFormulario
         $this->registro->setGremioEstudantil($this->exist('gremio_estudantil', $opcoes) ? 1 : 0);
         $this->registro->setOrgaosColegiadosOutros($this->exist('orgaos_colegiados_outros', $opcoes) ? 1 : 0);
         $this->registro->setOrgaosColegiadosNenhum($this->exist('orgaos_colegiados_nenhum', $opcoes) ? 1 : 0);
+    }
+    
+    private function buildFormasEducacaoAmbiental($opcoes)
+    {
+        $this->registro->setComoConteudoComponentesCamposExperiencias(
+            $this->exist('como_conteudo_componentes_presentes_curriculo', $opcoes) ? 1 : 0
+        );
+        $this->registro->setComoComponenteCurricularEspecialEspecifico(
+            $this->exist('como_componente_curricular_especial_especifico', $opcoes) ? 1 : 0
+        );
+        $this->registro->setComoEixoEstruturanteCurriculo(
+            $this->exist('como_um_eixo_estruturante_do_curriculo', $opcoes) ? 1 : 0
+        );
+        $this->registro->setComoEixoEstruturanteCurriculo(
+            $this->exist('como_um_eixo_estruturante_do_curriculo', $opcoes) ? 1 : 0
+        );
+        $this->registro->setEmEventos($this->exist('em_eventos', $opcoes) ? 1 : 0);
+        $this->registro->setEmProjetosTransversaisInterdisciplinares(
+            $this->exist('em_projetos_transversais_ou_interdisciplinares', $opcoes) ? 1 : 0
+        );
+        $this->registro->setNenhumaDasOpcoesListadas($this->exist('nenhuma_das_opcoes_listadas', $opcoes) ? 1 : 0);
     }
 
     private function buildAlimentacaoAlunos($opcoes)

@@ -1,83 +1,83 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitação
 //CLASSE DA ENTIDADE licbaixa
-class cl_licbaixa { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $l28_sequencial = 0; 
-   var $l28_nome = null; 
-   var $l28_cnpj = null; 
-   var $l28_email = null; 
-   var $l28_endereco = null; 
-   var $l28_cidade = null; 
-   var $l28_fone = null; 
-   var $l28_data_dia = null; 
-   var $l28_data_mes = null; 
-   var $l28_data_ano = null; 
-   var $l28_data = null; 
-   var $l28_hora = null; 
-   var $l28_ip = null; 
-   var $l28_liclicita = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_licbaixa {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $l28_sequencial = 0;
+   var $l28_nome = null;
+   var $l28_cnpj = null;
+   var $l28_email = null;
+   var $l28_endereco = null;
+   var $l28_cidade = null;
+   var $l28_fone = null;
+   var $l28_data_dia = null;
+   var $l28_data_mes = null;
+   var $l28_data_ano = null;
+   var $l28_data = null;
+   var $l28_hora = null;
+   var $l28_ip = null;
+   var $l28_liclicita = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 l28_sequencial = int4 = sequencial 
-                 l28_nome = varchar(60) = Nome 
-                 l28_cnpj = varchar(14) = CNPJ/CPF 
-                 l28_email = varchar(40) = Email 
-                 l28_endereco = varchar(60) = Endereço 
-                 l28_cidade = varchar(30) = Cidade 
-                 l28_fone = varchar(15) = Telefone 
-                 l28_data = date = Data 
-                 l28_hora = char(5) = Hora 
-                 l28_ip = varchar(25) = Ip 
-                 l28_liclicita = int4 = codigo da licitação 
+                 l28_sequencial = int4 = sequencial
+                 l28_nome = varchar(60) = Nome
+                 l28_cnpj = varchar(14) = CNPJ/CPF
+                 l28_email = varchar(40) = Email
+                 l28_endereco = varchar(60) = Endereço
+                 l28_cidade = varchar(30) = Cidade
+                 l28_fone = varchar(15) = Telefone
+                 l28_data = date = Data
+                 l28_hora = char(5) = Hora
+                 l28_ip = varchar(25) = Ip
+                 l28_liclicita = int4 = codigo da licitação
                  ";
-   //funcao construtor da classe 
-   function cl_licbaixa() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("licbaixa"); 
+     $this->rotulo = new rotulo("licbaixa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_licbaixa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l28_sequencial = ($this->l28_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l28_sequencial"]:$this->l28_sequencial);
        $this->l28_nome = ($this->l28_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["l28_nome"]:$this->l28_nome);
@@ -111,9 +111,9 @@ class cl_licbaixa {
      }
    }
    // funcao para inclusao
-   function incluir ($l28_sequencial){ 
+   public function incluir ($l28_sequencial){
       $this->atualizacampos();
-     if($this->l28_nome == null ){ 
+     if($this->l28_nome == null ){
        $this->erro_sql = " Campo Nome nao Informado.";
        $this->erro_campo = "l28_nome";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_cnpj == null ){ 
+     if($this->l28_cnpj == null ){
        $this->erro_sql = " Campo CNPJ/CPF nao Informado.";
        $this->erro_campo = "l28_cnpj";
        $this->erro_banco = "";
@@ -131,7 +131,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_email == null ){ 
+     if($this->l28_email == null ){
        $this->erro_sql = " Campo Email nao Informado.";
        $this->erro_campo = "l28_email";
        $this->erro_banco = "";
@@ -140,7 +140,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_endereco == null ){ 
+     if($this->l28_endereco == null ){
        $this->erro_sql = " Campo Endereço nao Informado.";
        $this->erro_campo = "l28_endereco";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_cidade == null ){ 
+     if($this->l28_cidade == null ){
        $this->erro_sql = " Campo Cidade nao Informado.";
        $this->erro_campo = "l28_cidade";
        $this->erro_banco = "";
@@ -158,7 +158,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_data == null ){ 
+     if($this->l28_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "l28_data_dia";
        $this->erro_banco = "";
@@ -167,7 +167,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_hora == null ){ 
+     if($this->l28_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "l28_hora";
        $this->erro_banco = "";
@@ -176,7 +176,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_ip == null ){ 
+     if($this->l28_ip == null ){
        $this->erro_sql = " Campo Ip nao Informado.";
        $this->erro_campo = "l28_ip";
        $this->erro_banco = "";
@@ -185,7 +185,7 @@ class cl_licbaixa {
        $this->erro_status = "0";
        return false;
      }
-     if($this->l28_liclicita == null ){ 
+     if($this->l28_liclicita == null ){
        $this->erro_sql = " Campo codigo da licitação nao Informado.";
        $this->erro_campo = "l28_liclicita";
        $this->erro_banco = "";
@@ -195,16 +195,16 @@ class cl_licbaixa {
        return false;
      }
      if($l28_sequencial == "" || $l28_sequencial == null ){
-       $result = db_query("select nextval('licbaixa_l28_sequencial_seq')"); 
+       $result = db_query("select nextval('licbaixa_l28_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: licbaixa_l28_sequencial_seq do campo: l28_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: licbaixa_l28_sequencial_seq do campo: l28_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->l28_sequencial = pg_result($result,0,0); 
+       $this->l28_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from licbaixa_l28_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $l28_sequencial)){
@@ -215,10 +215,10 @@ class cl_licbaixa {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->l28_sequencial = $l28_sequencial; 
+         $this->l28_sequencial = $l28_sequencial;
        }
      }
-     if(($this->l28_sequencial == null) || ($this->l28_sequencial == "") ){ 
+     if(($this->l28_sequencial == null) || ($this->l28_sequencial == "") ){
        $this->erro_sql = " Campo l28_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -227,33 +227,33 @@ class cl_licbaixa {
        return false;
      }
      $sql = "insert into licbaixa(
-                                       l28_sequencial 
-                                      ,l28_nome 
-                                      ,l28_cnpj 
-                                      ,l28_email 
-                                      ,l28_endereco 
-                                      ,l28_cidade 
-                                      ,l28_fone 
-                                      ,l28_data 
-                                      ,l28_hora 
-                                      ,l28_ip 
-                                      ,l28_liclicita 
+                                       l28_sequencial
+                                      ,l28_nome
+                                      ,l28_cnpj
+                                      ,l28_email
+                                      ,l28_endereco
+                                      ,l28_cidade
+                                      ,l28_fone
+                                      ,l28_data
+                                      ,l28_hora
+                                      ,l28_ip
+                                      ,l28_liclicita
                        )
                 values (
-                                $this->l28_sequencial 
-                               ,'$this->l28_nome' 
-                               ,'$this->l28_cnpj' 
-                               ,'$this->l28_email' 
-                               ,'$this->l28_endereco' 
-                               ,'$this->l28_cidade' 
-                               ,'$this->l28_fone' 
-                               ,".($this->l28_data == "null" || $this->l28_data == ""?"null":"'".$this->l28_data."'")." 
-                               ,'$this->l28_hora' 
-                               ,'$this->l28_ip' 
-                               ,$this->l28_liclicita 
+                                $this->l28_sequencial
+                               ,'$this->l28_nome'
+                               ,'$this->l28_cnpj'
+                               ,'$this->l28_email'
+                               ,'$this->l28_endereco'
+                               ,'$this->l28_cidade'
+                               ,'$this->l28_fone'
+                               ,".($this->l28_data == "null" || $this->l28_data == ""?"null":"'".$this->l28_data."'")."
+                               ,'$this->l28_hora'
+                               ,'$this->l28_ip'
+                               ,$this->l28_liclicita
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "cadastro para baixa de edital ($this->l28_sequencial) nao Incluído. Inclusao Abortada.";
@@ -295,16 +295,16 @@ class cl_licbaixa {
        $resac = db_query("insert into db_acount values($acount,1616,9420,'','".AddSlashes(pg_result($resaco,0,'l28_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($l28_sequencial=null) { 
+   public function alterar ($l28_sequencial=null) {
       $this->atualizacampos();
      $sql = " update licbaixa set ";
      $virgula = "";
-     if(trim($this->l28_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_sequencial"])){ 
+     if(trim($this->l28_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_sequencial"])){
        $sql  .= $virgula." l28_sequencial = $this->l28_sequencial ";
        $virgula = ",";
-       if(trim($this->l28_sequencial) == null ){ 
+       if(trim($this->l28_sequencial) == null ){
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "l28_sequencial";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_nome"])){ 
+     if(trim($this->l28_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_nome"])){
        $sql  .= $virgula." l28_nome = '$this->l28_nome' ";
        $virgula = ",";
-       if(trim($this->l28_nome) == null ){ 
+       if(trim($this->l28_nome) == null ){
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "l28_nome";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_cnpj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_cnpj"])){ 
+     if(trim($this->l28_cnpj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_cnpj"])){
        $sql  .= $virgula." l28_cnpj = '$this->l28_cnpj' ";
        $virgula = ",";
-       if(trim($this->l28_cnpj) == null ){ 
+       if(trim($this->l28_cnpj) == null ){
          $this->erro_sql = " Campo CNPJ/CPF nao Informado.";
          $this->erro_campo = "l28_cnpj";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_email"])){ 
+     if(trim($this->l28_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_email"])){
        $sql  .= $virgula." l28_email = '$this->l28_email' ";
        $virgula = ",";
-       if(trim($this->l28_email) == null ){ 
+       if(trim($this->l28_email) == null ){
          $this->erro_sql = " Campo Email nao Informado.";
          $this->erro_campo = "l28_email";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_endereco"])){ 
+     if(trim($this->l28_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_endereco"])){
        $sql  .= $virgula." l28_endereco = '$this->l28_endereco' ";
        $virgula = ",";
-       if(trim($this->l28_endereco) == null ){ 
+       if(trim($this->l28_endereco) == null ){
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "l28_endereco";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_cidade"])){ 
+     if(trim($this->l28_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_cidade"])){
        $sql  .= $virgula." l28_cidade = '$this->l28_cidade' ";
        $virgula = ",";
-       if(trim($this->l28_cidade) == null ){ 
+       if(trim($this->l28_cidade) == null ){
          $this->erro_sql = " Campo Cidade nao Informado.";
          $this->erro_campo = "l28_cidade";
          $this->erro_banco = "";
@@ -379,14 +379,14 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_fone"])){ 
+     if(trim($this->l28_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_fone"])){
        $sql  .= $virgula." l28_fone = '$this->l28_fone' ";
        $virgula = ",";
      }
-     if(trim($this->l28_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"] !="") ){ 
+     if(trim($this->l28_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"] !="") ){
        $sql  .= $virgula." l28_data = '$this->l28_data' ";
        $virgula = ",";
-       if(trim($this->l28_data) == null ){ 
+       if(trim($this->l28_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "l28_data_dia";
          $this->erro_banco = "";
@@ -395,11 +395,11 @@ class cl_licbaixa {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["l28_data_dia"])){
          $sql  .= $virgula." l28_data = null ";
          $virgula = ",";
-         if(trim($this->l28_data) == null ){ 
+         if(trim($this->l28_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "l28_data_dia";
            $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_licbaixa {
          }
        }
      }
-     if(trim($this->l28_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_hora"])){ 
+     if(trim($this->l28_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_hora"])){
        $sql  .= $virgula." l28_hora = '$this->l28_hora' ";
        $virgula = ",";
-       if(trim($this->l28_hora) == null ){ 
+       if(trim($this->l28_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "l28_hora";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_ip"])){ 
+     if(trim($this->l28_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_ip"])){
        $sql  .= $virgula." l28_ip = '$this->l28_ip' ";
        $virgula = ",";
-       if(trim($this->l28_ip) == null ){ 
+       if(trim($this->l28_ip) == null ){
          $this->erro_sql = " Campo Ip nao Informado.";
          $this->erro_campo = "l28_ip";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_licbaixa {
          return false;
        }
      }
-     if(trim($this->l28_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_liclicita"])){ 
+     if(trim($this->l28_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l28_liclicita"])){
        $sql  .= $virgula." l28_liclicita = $this->l28_liclicita ";
        $virgula = ",";
-       if(trim($this->l28_liclicita) == null ){ 
+       if(trim($this->l28_liclicita) == null ){
          $this->erro_sql = " Campo codigo da licitação nao Informado.";
          $this->erro_campo = "l28_liclicita";
          $this->erro_banco = "";
@@ -485,7 +485,7 @@ class cl_licbaixa {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "cadastro para baixa de edital nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->l28_sequencial;
@@ -513,14 +513,14 @@ class cl_licbaixa {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($l28_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($l28_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l28_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -556,7 +556,7 @@ class cl_licbaixa {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "cadastro para baixa de edital nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$l28_sequencial;
@@ -584,11 +584,11 @@ class cl_licbaixa {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -610,10 +610,10 @@ class cl_licbaixa {
       }
      return $result;
    }
-   function sql_query ( $l28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $l28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -631,15 +631,15 @@ class cl_licbaixa {
      $sql2 = "";
      if($dbwhere==""){
        if($l28_sequencial!=null ){
-         $sql2 .= " where licbaixa.l28_sequencial = $l28_sequencial "; 
-       } 
+         $sql2 .= " where licbaixa.l28_sequencial = $l28_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -648,10 +648,10 @@ class cl_licbaixa {
      }
      return $sql;
   }
-   function sql_query_file ( $l28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $l28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,15 +664,15 @@ class cl_licbaixa {
      $sql2 = "";
      if($dbwhere==""){
        if($l28_sequencial!=null ){
-         $sql2 .= " where licbaixa.l28_sequencial = $l28_sequencial "; 
-       } 
+         $sql2 .= " where licbaixa.l28_sequencial = $l28_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

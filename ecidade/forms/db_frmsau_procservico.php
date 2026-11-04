@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("sd86_c_nome");
        <?=@$Lsd88_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd88_i_codigo',5,$Isd88_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd88_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd88_i_procedimento,"js_pesquisasd88_i_procedimento(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd88_i_procedimento',5,$Isd88_i_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd88_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nome',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd88_i_classificacao?>">
-       <?
+       <?php
        db_ancora(@$Lsd88_i_classificacao,"js_pesquisasd88_i_classificacao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd88_i_classificacao',5,$Isd88_i_classificacao,true,'text',$db_opcao," onchange='js_pesquisasd88_i_classificacao(false);'")
 ?>
-       <?
+       <?php
 db_input('sd87_c_nome',60,$Isd87_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd88_i_servico?>">
-       <?
+       <?php
        db_ancora(@$Lsd88_i_servico,"js_pesquisasd88_i_servico(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd88_i_servico',5,$Isd88_i_servico,true,'text',$db_opcao," onchange='js_pesquisasd88_i_servico(false);'")
 ?>
-       <?
+       <?php
 db_input('sd86_c_nome',60,$Isd86_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('sd86_c_nome',60,$Isd86_c_nome,true,'text',3,'')
        <?=@$Lsd88_i_anocomp?>/<?=@$Lsd88_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd88_i_anocomp',4,$Isd88_i_anocomp,true,'text',$db_opcao,""); echo "/";
 db_input('sd88_i_mescomp',2,$Isd88_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_procservico.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

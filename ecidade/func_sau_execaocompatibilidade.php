@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
               <?=$Lsd67_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd67_i_codigo",5,$Isd67_i_codigo,true,"text",4,"","chave_sd67_i_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
               <?=$Lsd67_i_procprincipal?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
                  db_input("sd67_i_procprincipal",5,$Isd67_i_procprincipal,true,"text",4,"","chave_sd67_i_procprincipal");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_execaocompatibilidade.php")==true){
@@ -122,12 +122,12 @@ $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

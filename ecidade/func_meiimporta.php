@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,12 +63,12 @@ $sAnd     = "";
               <?=$Lq104_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("q104_sequencial",10,$Iq104_sequencial,true,"text",4,"","chave_q104_sequencial");
 		          ?>
             </td>
           </tr>
-          <?
+          <?php
             if (!isset($oGet->cancelamentos)) {
           ?>
           <tr> 
@@ -76,12 +76,12 @@ $sAnd     = "";
               <?=$Lq104_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("q104_nomearq",50,$Iq104_nomearq,true,"text",4,"","chave_q104_nomearq");
 		          ?>
             </td>
           </tr>
-          <? 
+          <?php 
             }
           ?>
           <tr> 
@@ -97,7 +97,7 @@ $sAnd     = "";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?      
+      <?php      
 	      if (!isset($pesquisa_chave)) {
 	      	
 	        if (isset($campos) == false) {
@@ -161,12 +161,12 @@ $sAnd     = "";
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

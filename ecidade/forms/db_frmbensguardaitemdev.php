@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,12 +48,12 @@ function js_submit_form() {
     <table class="form-container">
       <tr>
         <td title="<?=@$Tt22_bensguarda?>">
-          <?
+          <?php
             db_ancora(@$Lt22_bensguarda,"js_pesquisat22_bensguarda(true);",3);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t22_bensguarda', 10, $It22_bensguarda, true, 'text', 3, " onchange='js_pesquisat22_bensguarda(false);'");
             db_input('t21_codigo', 8, $It21_codigo, true, 'hidden', 3, '');
           ?>
@@ -64,7 +64,7 @@ function js_submit_form() {
           <?=@$Lt23_data?>
         </td>
         <td> 
-          <?
+          <?php
             if (!isset($t23_data)){
             	$t23_data_ano = date('Y',db_getsession("DB_datausu"));
             	$t23_data_mes = date('m',db_getsession("DB_datausu"));
@@ -79,7 +79,7 @@ function js_submit_form() {
           <?=@$Lt23_situacao?>
         </td>
         <td> 
-          <?
+          <?php
             $result_sit=$clsituabens->sql_record($clsituabens->sql_query_file());
             db_selectrecord('t23_situacao',$result_sit,true,'text',$db_opcao,"");
             if(isset($t23_situacao)&&$t23_situacao!=""){
@@ -92,7 +92,7 @@ function js_submit_form() {
         <td title="<?=@$Tt23_obs?>" colspan="2">
           <fieldset class="separator">
             <legend><?=@$Lt23_obs?></legend>
-            <?
+            <?php
               db_textarea('t23_obs',0,50,$It23_obs,true,'text',$db_opcao,"")
             ?>
           </fieldset>
@@ -107,7 +107,7 @@ function js_submit_form() {
   <table>
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
   	      $cliframe_seleciona->campos = "t22_bensguarda,t22_codigo,t22_bem,t52_descr,t22_dtini,t22_dtfim,t22_obs";
   	      $cliframe_seleciona->legenda = "Bens";
   	      if (isset($t21_codigo)&&$t21_codigo != "") { 
@@ -142,7 +142,7 @@ function js_pesquisa() {
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensguarda.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

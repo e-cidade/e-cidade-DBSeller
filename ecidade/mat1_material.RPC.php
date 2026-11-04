@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
 use ECidade\Patrimonial\Material\Helpers\Material;
 use ECidade\Patrimonial\Material\Repositories\DepositoRepository;
 
@@ -195,10 +196,19 @@ try {
             $iMatestoqueini = '';
             $itensInconsistententes = [];
 
+            $utilizaBnafar = FarmaciaHelper::utilizaIntegracaoBnafar();
             foreach ($materiais as $material) {
                 $oMaterialEstoque = new materialEstoque($material->codigo_material);
+                $isMaterialFarmacia = $utilizaBnafar && FarmaciaHelper::isMaterialFarmacia($material->codigo_material);
                 foreach ($material->lotes as $lote) {
                     $materialEstoqueItem = new MaterialEstoqueItem($lote->m71_codlanc);
+                    /**
+                     * Caso seja um material da fármacia, valida se a quantidade não está fracionada.
+                     */
+                    if ($isMaterialFarmacia) {
+                        FarmaciaHelper::validaQuantidade($lote->rateio);
+                    }
+
                     $quantidadeSaida = (int)$lote->rateio;
                     if ($quantidadeSaida > $materialEstoqueItem->getSaldo()) {
                         if (!in_array($lote->m70_codmatmater, $itensInconsistententes)) {

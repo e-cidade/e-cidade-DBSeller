@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,7 +48,7 @@ $clProcTransferProc = new cl_proctransferproc();
 <table align="center" valign="top">
   <tr>
     <td>
-      <?
+      <?php
 
         $sCampos  = "p61_dtandam,";
         $sCampos .= "p61_hora,   ";

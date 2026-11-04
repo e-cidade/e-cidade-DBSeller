@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $db_botao         = true;
     parent.document.formaba.a3.disabled = true;
     parent.document.formaba.a4.disabled = true;
 </script>
-<?
+<?php
 //altera exclui inicio
 $db_botao1 = false;
 if (isset($opcao)) {
@@ -73,7 +73,7 @@ if (isset($opcao)) {
 
     </script>
 
-    <?
+    <?php
     
   }
   if ($opcao == "alterar") {
@@ -147,7 +147,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_vacinadose.php"));
 	?>
     </center>
@@ -160,7 +160,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "vc07_i_diasvalidade", true, 1, "vc07_i_diasvalidade", true);
 </script>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar)) || (isset($excluir))) {
 
   if ($clvac_vacinadose->erro_status == "0") {

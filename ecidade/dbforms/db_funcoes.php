@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -134,24 +134,24 @@ if (!function_exists("db_contas")) {
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td nowrap>
-                    <select name="<?= $nome ?>" onChange="js_ProcCod('<?= $nome ?>','<?= $nome . "descr" ?>')">
+                    <select name="<?php echo  $nome ?>" onChange="js_ProcCod('<?php echo  $nome ?>','<?php echo  $nome . "descr" ?>')">
                         <?php
 
 
                         $result_redu = db_query($sql_redu);
-                        $numrows = pg_numrows($result_redu);
+                        $numrows = pg_num_rows($result_redu);
                         for ($i = 0; $i < $numrows; $i++) {
-                            echo "<option value=\"" . pg_result($result_redu, $i, 0) . "\" >" . pg_result($result_redu, $i, 0) . "</option>\n";
+                            echo "<option value=\"" . pg_fetch_result($result_redu, $i, 0) . "\" >" . pg_fetch_result($result_redu, $i, 0) . "</option>\n";
                         }
                         ?>
                     </select>&nbsp;&nbsp;
-                    <select name="<?= $nome . "descr" ?>"
-                            onChange="js_ProcCod('<?= $nome . "descr" ?>','<?= $nome ?>')">
+                    <select name="<?php echo  $nome . "descr" ?>"
+                            onChange="js_ProcCod('<?php echo  $nome . "descr" ?>','<?php echo  $nome ?>')">
                         <?php
 
                         $result_desc = db_query($sql_desc);
                         for ($i = 0; $i < $numrows; $i++) {
-                            echo "<option value=\"" . pg_result($result_desc, $i, 0) . "\">" . pg_result($result_desc, $i, 1) . "</option>\n";
+                            echo "<option value=\"" . pg_fetch_result($result_desc, $i, 0) . "\">" . pg_fetch_result($result_desc, $i, 1) . "</option>\n";
                         }
                         ?>
                     </select>
@@ -168,8 +168,8 @@ if (!function_exists("db_contas")) {
                 }
             }
 
-            document.form1.elements['<?=$nome?>'].options[0].selected = true;
-            js_ProcCod('<?=$nome?>', '<?=$nome . "descr"?>');
+            document.form1.elements['<?php echo $nome?>'].options[0].selected = true;
+            js_ProcCod('<?php echo $nome?>', '<?php echo $nome . "descr"?>');
         </script>
         <?php
     }
@@ -202,11 +202,11 @@ if (!function_exists("db_input")) {
         }
         ?>
 
-        <input title="<?= @$GLOBALS['T' . $nome] ?>" name="<?= ($nomevar == "" ? $nome : $nomevar) ?>"
-               type="<?= $dbhidden ?>" <?= ($dbhidden == "checkbox" ? (@$GLOBALS[($nomevar == "" ? $nome : $nomevar)] == "t" ? "checked" : "") : "") ?>
-               id="<?= ($nomevar == "" ? $nome : $nomevar) ?>"
-               value="<?= @$GLOBALS[($nomevar == "" ? $nome : $nomevar)] ?>" size="<?= $dbsize ?>"
-               maxlength="<?= @$iMax ?>"
+        <input title="<?php echo  @$GLOBALS['T' . $nome] ?>" name="<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>"
+               type="<?php echo  $dbhidden ?>" <?php echo  ($dbhidden == "checkbox" ? (@$GLOBALS[($nomevar == "" ? $nome : $nomevar)] == "t" ? "checked" : "") : "") ?>
+               id="<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>"
+               value="<?php echo  @$GLOBALS[($nomevar == "" ? $nome : $nomevar)] ?>" size="<?php echo  $dbsize ?>"
+               maxlength="<?php echo  @$iMax ?>"
             <?php
 
             echo $js_script;
@@ -246,14 +246,14 @@ if (!function_exists("db_input")) {
 
             if (($db_opcao != 3) && ($db_opcao != 5 && !$bOcultaJavascript)) {
                 ?>
-                onkeyup="js_ValidaMaiusculo(this,'<?= @$GLOBALS['G' . $nome] ?>',event);"
-                onInput="js_ValidaCampos(this,<?= ($dbvalidatipo == '' ? 0 : $dbvalidatipo) ?>,'<?= @$GLOBALS['S' . $nome] ?>','<?= ($db_opcao == 4 ? "t" : @$GLOBALS['U' . $nome]) ?>','<?= @$GLOBALS['G' . $nome] ?>',event);"
+                onkeyup="js_ValidaMaiusculo(this,'<?php echo  @$GLOBALS['G' . $nome] ?>',event);"
+                onInput="js_ValidaCampos(this,<?php echo  ($dbvalidatipo == '' ? 0 : $dbvalidatipo) ?>,'<?php echo  @$GLOBALS['S' . $nome] ?>','<?php echo  ($db_opcao == 4 ? "t" : @$GLOBALS['U' . $nome]) ?>','<?php echo  @$GLOBALS['G' . $nome] ?>',event);"
                 onKeyDown="return js_controla_tecla_enter(this,event);"
                 <?php
             }
             ?>
-               autocomplete='<?= @$GLOBALS['A' . $nome] ?>'
-               labelValidacao="<?= @$GLOBALS['LS' . $nome] ?>" <?= (@$GLOBALS[($nomevar == "" ? 'U' . $nome : 'U' . $nomevar)] == "f" ? "isMandatory='true'" : "") ?>>
+               autocomplete='<?php echo  @$GLOBALS['A' . $nome] ?>'
+               labelValidacao="<?php echo  @$GLOBALS['LS' . $nome] ?>" <?php echo  (@$GLOBALS[($nomevar == "" ? 'U' . $nome : 'U' . $nomevar)] == "f" ? "isMandatory='true'" : "") ?>>
         <?php
     }
 }
@@ -281,9 +281,9 @@ if (!function_exists("db_textarea")) {
 
         $sOnInput = "";
         ?>
-        <textarea labelValidacao="<?= @$GLOBALS['LS' . $nome] ?>" title="<?= @$GLOBALS['T' . $nome] ?>"
-                  name="<?= ($nomevar == "" ? $nome : $nomevar) ?>" type="<?= $dbhidden ?>"
-                  id="<?= ($nomevar == "" ? $nome : $nomevar) ?>" rows="<?= $dbsizelinha ?>" cols="<?= $dbsizecoluna ?>"
+        <textarea labelValidacao="<?php echo  @$GLOBALS['LS' . $nome] ?>" title="<?php echo  @$GLOBALS['T' . $nome] ?>"
+                  name="<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>" type="<?php echo  $dbhidden ?>"
+                  id="<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>" rows="<?php echo  $dbsizelinha ?>" cols="<?php echo  $dbsizecoluna ?>"
         <?php
         echo $js_script;
         if ($dbcadastro == true) {
@@ -323,13 +323,13 @@ if (!function_exists("db_textarea")) {
 
         $sValue = (!isset($GLOBALS[$nome]) ? "" : stripslashes($GLOBALS[($nomevar == "" ? $nome : $nomevar)]));
         ?>
-                        onblur="<?= $OnBlur ?>"
-                  onKeyUp="<?= $OnKeyUp ?>"
+                        onblur="<?php echo  $OnBlur ?>"
+                  onKeyUp="<?php echo  $OnKeyUp ?>"
                   onInput="<?php echo $sOnInput; ?>"
 
-        <?= @$GLOBALS['N' . $nome] ?>
+        <?php echo  @$GLOBALS['N' . $nome] ?>
 
-                        autocomplete='<?= @$GLOBALS['A' . $nome] ?>'><?php echo $sValue; ?></textarea>
+                        autocomplete='<?php echo  @$GLOBALS['A' . $nome] ?>'><?php echo $sValue; ?></textarea>
         <?php
         if ($maxlength != "") {
             echo "<br>";
@@ -343,7 +343,7 @@ if (!function_exists("db_textarea")) {
     }
 }
 if (!function_exists("db_ancora")) {
-    function db_ancora($nome, $js_script, $db_opcao, $style = "", $varnome = "")
+    function db_ancora($nome, $js_script, $db_opcao = "", $style = "", $varnome = "")
     {
         //#00#//db_ancora
         //#10#//Coloca uma âncora no Label do campo e executa uma função JAVASCRIPT para pesquisa do arquivo em referencia
@@ -355,15 +355,15 @@ if (!function_exists("db_ancora")) {
         if (($db_opcao < 3) || ($db_opcao == 4)) {
             if ($varnome != "") {
                 ?>
-                <a href='#' id="<?= $varnome ?>" class='dbancora'
-                   style='text-decoration:underline;<?= trim($style) != "" ? ";$style" : "" ?>'
-                   onclick="<?= $js_script ?>"><?= $nome ?></a>
+                <a id="<?php echo  $varnome ?>" class='DBAncora'
+                   style='text-decoration:underline;<?php echo  trim($style) != "" ? ";$style" : "" ?>'
+                   onclick="<?php echo  $js_script ?>"><?php echo  $nome ?></a>
                 <?php
             } else {
                 ?>
-                <a href='#' class='dbancora'
-                   style='text-decoration:underline;<?= trim($style) != "" ? ";$style" : "" ?>'
-                   onclick="<?= $js_script ?>"><?= $nome ?></a>
+                <a class='DBAncora'
+                   style='text-decoration:underline;<?php echo  trim($style) != "" ? ";$style" : "" ?>'
+                   onclick="<?php echo  $js_script ?>"><?php echo  $nome ?></a>
                 <?php
             }
         } else {
@@ -407,14 +407,14 @@ if (!function_exists("db_multiploselect")) {
                 <td>
                     <fieldset>
                         <Legend align="left">
-                            <b><?= $descrnsel ?></b>
+                            <b><?php echo  $descrnsel ?></b>
                         </Legend>
-                        <select name="<?= $objnsel ?>[]" id="<?= $objnsel ?>" size="<?= $nlinhas ?>"
-                                style="width:<?= $width ?>px" multiple
-                                onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objsel ?>);">
+                        <select name="<?php echo  $objnsel ?>[]" id="<?php echo  $objnsel ?>" size="<?php echo  $nlinhas ?>"
+                                style="width:<?php echo  $width ?>px" multiple
+                                onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?php echo  $objsel ?>);">
                             <?php
                             if (gettype($recordnsel) == "resource") {
-                                $numrows_recnsel = pg_numrows($recordnsel);
+                                $numrows_recnsel = pg_num_rows($recordnsel);
                                 for ($i = 0; $i < $numrows_recnsel; $i++) {
                                     db_fieldsmemory($recordnsel, $i);
                                     global $$valueobj;
@@ -440,25 +440,25 @@ if (!function_exists("db_multiploselect")) {
                         <tr>
                             <td align='center'><input type='button' name='selecionD'
                                                       title='Enviar selecionados para direita' value='&nbsp;>&nbsp;'
-                                                      onclick='js_db_multiploselect_incluir_item(document.form1.<?= $objnsel ?>,document.form1.<?= $objsel ?>);'>
+                                                      onclick='js_db_multiploselect_incluir_item(document.form1.<?php echo  $objnsel ?>,document.form1.<?php echo  $objsel ?>);'>
                             </td>
                         </tr>
                         <tr>
                             <td align='center'><input type='button' name='seltodosD' title='Enviar todos para direita'
                                                       value='>>'
-                                                      onclick='js_db_multiposelect_incluir_todos(document.form1.<?= $objnsel ?>,document.form1.<?= $objsel ?>);'>
+                                                      onclick='js_db_multiposelect_incluir_todos(document.form1.<?php echo  $objnsel ?>,document.form1.<?php echo  $objsel ?>);'>
                             </td>
                         </tr>
                         <tr>
                             <td align='center'><input type='button' name='selecionE'
                                                       title='Enviar selecionados para esquerda' value='&nbsp;<&nbsp;'
-                                                      onclick='js_db_multiploselect_incluir_item(document.form1.<?= $objsel ?>,document.form1.<?= $objnsel ?>);'>
+                                                      onclick='js_db_multiploselect_incluir_item(document.form1.<?php echo  $objsel ?>,document.form1.<?php echo  $objnsel ?>);'>
                             </td>
                         </tr>
                         <tr>
                             <td align='center'><input type='button' name='seltodosE' title='Enviar todos para esquerda'
                                                       value='<<'
-                                                      onclick='js_db_multiposelect_incluir_todos(document.form1.<?= $objsel ?>,document.form1.<?= $objnsel ?>);'>
+                                                      onclick='js_db_multiposelect_incluir_todos(document.form1.<?php echo  $objsel ?>,document.form1.<?php echo  $objnsel ?>);'>
                             </td>
                         </tr>
                     </table>
@@ -466,14 +466,14 @@ if (!function_exists("db_multiploselect")) {
                 <td nowrap>
                     <fieldset>
                         <Legend align="left">
-                            <b><?= $descrsel ?></b>
+                            <b><?php echo  $descrsel ?></b>
                         </Legend>
-                        <select name="<?= $objsel ?>[]" id="<?= $objsel ?>" size="<?= $nlinhas ?>"
-                                style="width:<?= $width ?>px" multiple
-                                onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objnsel ?>);">
+                        <select name="<?php echo  $objsel ?>[]" id="<?php echo  $objsel ?>" size="<?php echo  $nlinhas ?>"
+                                style="width:<?php echo  $width ?>px" multiple
+                                onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?php echo  $objnsel ?>);">
                             <?php
                             if (gettype($recordsel) == "resource") {
-                                $numrows_recsel = pg_numrows($recordsel);
+                                $numrows_recsel = pg_num_rows($recordsel);
                                 for ($i = 0; $i < $numrows_recsel; $i++) {
                                     db_fieldsmemory($recordsel, $i);
                                     global $$valueobj;
@@ -514,7 +514,7 @@ if (!function_exists("db_multiploselect")) {
         </table>
         <script>
             function js_sobe() {
-                var F = document.form1.<?=$objsel?>;
+                var F = document.form1.<?php echo $objsel?>;
                 if (F.selectedIndex != -1 && F.selectedIndex > 0) {
                     var SI = F.selectedIndex - 1;
                     var auxText = F.options[SI].text;
@@ -527,7 +527,7 @@ if (!function_exists("db_multiploselect")) {
             }
 
             function js_desce() {
-                var F = document.form1.<?=$objsel?>;
+                var F = document.form1.<?php echo $objsel?>;
                 if (F.selectedIndex != -1 && F.selectedIndex < (F.length - 1)) {
                     var SI = F.selectedIndex + 1;
                     var auxText = F.options[SI].text;
@@ -545,8 +545,8 @@ if (!function_exists("db_multiploselect")) {
                 txt11 = "";
                 vir11 = "";
 
-                for (i = 0; i < document.form1.<?=$objsel?>.length; i++) {
-                    txt11 += vir11 + document.form1.<?=$objsel?>.options[i].value;
+                for (i = 0; i < document.form1.<?php echo $objsel?>.length; i++) {
+                    txt11 += vir11 + document.form1.<?php echo $objsel?>.options[i].value;
                     vir11 = ",";
                 }
                 stringretorno = txt11;
@@ -559,8 +559,8 @@ if (!function_exists("db_multiploselect")) {
                 txt11 = "";
                 vir11 = "";
 
-                for (i = 0; i < document.form1.<?=$objnsel?>.length; i++) {
-                    txt11 += vir11 + document.form1.<?=$objnsel?>.options[i].value;
+                for (i = 0; i < document.form1.<?php echo $objnsel?>.length; i++) {
+                    txt11 += vir11 + document.form1.<?php echo $objnsel?>.options[i].value;
                     vir11 = ",";
                 }
                 stringretorno = txt11;
@@ -576,13 +576,13 @@ if (!function_exists("db_multiploselect")) {
                 txt11 = "";
                 vir11 = "";
 
-                for (i = 0; i < document.form1.<?=$objnsel?>.length; i++) {
-                    txt22 += vir22 + document.form1.<?=$objnsel?>.options[i].value;
+                for (i = 0; i < document.form1.<?php echo $objnsel?>.length; i++) {
+                    txt22 += vir22 + document.form1.<?php echo $objnsel?>.options[i].value;
                     vir22 = ",";
                 }
 
-                for (i = 0; i < document.form1.<?=$objsel?>.length; i++) {
-                    txt11 += vir11 + document.form1.<?=$objsel?>.options[i].value;
+                for (i = 0; i < document.form1.<?php echo $objsel?>.length; i++) {
+                    txt11 += vir11 + document.form1.<?php echo $objsel?>.options[i].value;
                     vir11 = ",";
                 }
                 stringretorno = txt22 + "#" + txt11;
@@ -667,7 +667,7 @@ if (!function_exists("db_multiploselect")) {
                 } else {
                     alert("Selecione um item");
                 }
-                <?=$jsincluir?>
+                <?php echo $jsincluir?>
                 js_trocacordeselect();
             }
 
@@ -714,7 +714,7 @@ if (!function_exists("db_selectrecord")) {
             }
             if ($numcol == 2) {
                 ?>
-                <select name="<?= $nome ?>" id="<?= $nome ?>"
+                <select name="<?php echo  $nome ?>" id="<?php echo  $nome ?>"
                     <?php
 
 
@@ -747,7 +747,7 @@ if (!function_exists("db_selectrecord")) {
                             $todos = array("0" => $todos, "1" => "Todos ...");
                         }
                         ?>
-                        <option value="<?= $todos[0] ?>"><?= $todos[0] ?></option>
+                        <option value="<?php echo  $todos[0] ?>"><?php echo  $todos[0] ?></option>
                         <?php
                     }
                     $iTotalRegistros = 0;
@@ -755,10 +755,10 @@ if (!function_exists("db_selectrecord")) {
                         $iTotalRegistros = pg_num_rows($record);
                     }
                     for ($sqli = 0; $sqli < $iTotalRegistros; $sqli++) {
-                        $sqlv = pg_result($record, $sqli, 0);
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
                         ?>
                         <option
-                            value="<?= $sqlv ?>" <?= (@$GLOBALS[$nome] == $sqlv ? "selected" : "") ?>><?= $sqlv ?></option>
+                            value="<?php echo  $sqlv ?>" <?php echo  (@$GLOBALS[$nome] == $sqlv ? "selected" : "") ?>><?php echo  $sqlv ?></option>
                         <?php
                     }
                     ?>
@@ -767,10 +767,10 @@ if (!function_exists("db_selectrecord")) {
             } else {
                 $nomedescr = $nome;
             }
-            if ($record != false && pg_numrows($record) > 0 && pg_numfields($record) > 0) {
+            if ($record != false && pg_num_rows($record) > 0 && pg_num_fields($record) > 0) {
                 ?>
-                <select name="<?= $nomedescr ?>" id="<?= $nomedescr ?>"
-                        onchange="js_ProcCod_<?= $nome ?>('<?= $nomedescr ?>','<?= $nome ?>');<?= $onchange ?>"
+                <select name="<?php echo  $nomedescr ?>" id="<?php echo  $nomedescr ?>"
+                        onchange="js_ProcCod_<?php echo  $nome ?>('<?php echo  $nomedescr ?>','<?php echo  $nome ?>');<?php echo  $onchange ?>"
                     <?php
 
 
@@ -793,20 +793,20 @@ if (!function_exists("db_selectrecord")) {
 
                     if (is_array($todos) || $todos != "") {
                         ?>
-                        <option value="<?= $todos[0] ?>"><?= $todos[1] ?></option>
+                        <option value="<?php echo  $todos[0] ?>"><?php echo  $todos[1] ?></option>
                         <?php
                     }
-                    for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
-                        $sqlv = pg_result($record, $sqli, 0);
-                        $sqlv1 = pg_result($record, $sqli, 1);
+                    for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
+                        $sqlv1 = pg_fetch_result($record, $sqli, 1);
                         ?>
-                        <option value="<?= $sqlv ?>"><?= $sqlv1 ?></option>
+                        <option value="<?php echo  $sqlv ?>"><?php echo  $sqlv1 ?></option>
                         <?php
                     }
                     ?>
                 </select>
                 <script>
-                    function js_ProcCod_<?=$nome?>(proc, res) {
+                    function js_ProcCod_<?php echo $nome?>(proc, res) {
                         var sel1 = document.forms[0].elements[proc];
                         var sel2 = document.forms[0].elements[res];
                         for (var i = 0; i < sel1.options.length; i++) {
@@ -832,13 +832,13 @@ if (!function_exists("db_selectrecord")) {
                         echo "document.forms[0]." . $nome . ".options[0].selected = true;";
                     }
                     ?>
-                    js_ProcCod_<?=$nome?>('<?=$nome?>', '<?=$nomedescr?>');
+                    js_ProcCod_<?php echo $nome?>('<?php echo $nome?>', '<?php echo $nomedescr?>');
                 </script>
                 <?php
             } else {
                 ?>
                 <script>
-                    function js_ProcCod_<?=$nome?>() {
+                    function js_ProcCod_<?php echo $nome?>() {
                     }
                 </script>
                 <?php
@@ -857,11 +857,11 @@ if (!function_exists("db_selectrecord")) {
             }
 
             if (is_resource($record)) {
-                for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
-                    if (pg_result($record, $sqli, 0) == @ $GLOBALS[$nome]) {
-                        $nomec = pg_fieldname($record, 1);
+                for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
+                    if (pg_fetch_result($record, $sqli, 0) == @ $GLOBALS[$nome]) {
+                        $nomec = pg_field_name($record, 1);
                         global $$nomec;
-                        $$nomec = pg_result($record, $sqli, 1);
+                        $$nomec = pg_fetch_result($record, $sqli, 1);
                         $clrot->label($nomec);
                         $tamm = "M" . trim($nomec);
                         break;
@@ -904,10 +904,10 @@ if (!function_exists("db_selectmultiple")) {
             $nome = $nomevar;
         }
         if ($db_opcao != 3 && $db_opcao != 5 && $db_opcao != 33 && $db_opcao != 22) {
-            /*change="js_ProcCod_<?=$nome?>('<?=$nome?>','<?=$nome?>');<?=$onchange?>"tava assim dae eu mudei pra : (ze)*/
+            /*change="js_ProcCod_<?php echo $nome?>('<?php echo $nome?>','<?php echo $nome?>');<?php echo $onchange?>"tava assim dae eu mudei pra : (ze)*/
             ?>
-            <select class="DBSelectMultiplo" multiple name="<?= $nome ?>[]" size="<?= $size ?>" id="<?= $nome ?>"
-                    onchange="<?= $js_script ?>" <?= $compltags ?>
+            <select class="DBSelectMultiplo" multiple name="<?php echo  $nome ?>[]" size="<?php echo  $size ?>" id="<?php echo  $nome ?>"
+                    onchange="<?php echo  $js_script ?>" <?php echo  $compltags ?>
                 <?php
 
 
@@ -925,26 +925,26 @@ if (!function_exists("db_selectmultiple")) {
             >
                 <?php
                 if (gettype($record) == "resource") {
-                    for ($sqli = 0; $sqli < pg_numrows($record); $sqli++) {
+                    for ($sqli = 0; $sqli < pg_num_rows($record); $sqli++) {
                         if ($sqli % 2 == 0) {
                             $color = "#D7CC06";
                         } else {
                             $color = "#F8EC07";
                         }
-                        $sqlv = pg_result($record, $sqli, 0);
-                        $sqlv1 = pg_result($record, $sqli, 1);
+                        $sqlv = pg_fetch_result($record, $sqli, 0);
+                        $sqlv1 = pg_fetch_result($record, $sqli, 1);
                         $esta_selecionado = "";
                         if ($db_opcao != 1 && $db_opcao != 22 && is_resource($record_select)) {
                             for ($sqls = 0; $sqls < pg_num_rows($record_select); $sqls++) {
-                                $sqlsv = pg_result($record_select, $sqls, 0);
+                                $sqlsv = pg_fetch_result($record_select, $sqls, 0);
                                 if ($sqlsv == $sqlv) {
                                     $esta_selecionado = " selected ";
                                 }
                             }
                         }
-                        /** <option value="<?=$sqlv?>" style="background-color:<?=$color?>" <?=$esta_selecionado?>><?=$sqlv1?></option> */
+                        /** <option value="<?php echo $sqlv?>" style="background-color:<?php echo $color?>" <?php echo $esta_selecionado?>><?php echo $sqlv1?></option> */
                         ?>
-                        <option value="<?= $sqlv ?>" <?= $esta_selecionado ?>><?= $sqlv1 ?></option>
+                        <option value="<?php echo  $sqlv ?>" <?php echo  $esta_selecionado ?>><?php echo  $sqlv1 ?></option>
                         <?php
                     }
                 } elseif (gettype($record) == "array") {
@@ -969,9 +969,9 @@ if (!function_exists("db_selectmultiple")) {
                                 next($record_select);
                             }
                         }
-                        /**option value="<?=$valueobj?>" style="background-color:<?=$color?>" <?=$esta_selecionado?>><?=$descrobj?></option>*/
+                        /**option value="<?php echo $valueobj?>" style="background-color:<?php echo $color?>" <?php echo $esta_selecionado?>><?php echo $descrobj?></option>*/
                         ?>
-                        <option value="<?= $valueobj ?>" <?= $esta_selecionado ?>><?= $descrobj ?></option>
+                        <option value="<?php echo  $valueobj ?>" <?php echo  $esta_selecionado ?>><?php echo  $descrobj ?></option>
                         <?php
                         next($record);
                     }
@@ -982,7 +982,7 @@ if (!function_exists("db_selectmultiple")) {
         } else {
             if (!is_int($record_select) && $record_select != false) {
                 if (gettype($record) == "resource") {
-                    if (pg_numrows($record_select) > 0) {
+                    if (pg_num_rows($record_select) > 0) {
                         db_selectrecord($nome, $record_select, true, ($db_opcao == 3 ? 2 : $db_opcao), "", $nomevar = "", $bgcolor = "", $todos = "", $onchange = "");
                     }
                 } elseif (gettype($record) == "array") {
@@ -1025,7 +1025,7 @@ if (!function_exists("db_select")) {
 
         if ($db_opcao != 3 && $db_opcao != 5 && $db_opcao != 22 && $db_opcao != 33) {
             ?>
-            <select name="<?= $nome ?>" id="<?= $nome ?>"
+            <select name="<?php echo  $nome ?>" id="<?php echo  $nome ?>"
                 <?php
 
 
@@ -1052,7 +1052,7 @@ if (!function_exists("db_select")) {
                 for ($i = 0; $i < sizeof($db_matriz); $i++) {
                     ?>
                     <option
-                        value="<?= key($db_matriz) ?>" <?= (@$GLOBALS[$nomevar] == key($db_matriz) ? "selected" : "") ?>><?= $db_matriz[key($db_matriz)] ?></option>
+                        value="<?php echo  key($db_matriz) ?>" <?php echo  (@$GLOBALS[$nomevar] == key($db_matriz) ? "selected" : "") ?>><?php echo  $db_matriz[key($db_matriz)] ?></option>
                     <?php
 
 
@@ -1093,7 +1093,7 @@ if (!function_exists("db_select")) {
 }
 //////////////////////////////////////
 if (!function_exists("db_inputdata")) {
-    function db_inputdata($nome, $dia = "", $mes = "", $ano = "", $dbcadastro = true, $dbtype = 'text', $db_opcao = 3, $js_script = "", $nomevar = "", $bgcolor = "", $shutdown_function = "none", $onclickBT = "", $onfocus = "", $jsRetornoCal = "")
+    function db_inputdata($nome, $dia = "", $mes = "", $ano = "", $dbcadastro = true, $dbtype = 'text', $db_opcao = 3, $js_script = "", $nomevar = "", $bgcolor = "", $shutdown_function = "none", $onclickBT = "", $onfocus = "", $jsRetornoCal = "", $validaCor = "")
     {
         //#00#//db_inputdata
         //#10#//Função para montar um objeto tipo data. Serão três objetos input na tela mais um objeto input tipo button para
@@ -1124,7 +1124,7 @@ if (!function_exists("db_inputdata")) {
 
         global $DataJavaScript;
 
-        if ($db_opcao == 3 || $db_opcao == 22 || $db_opcao == 33) {
+        if (($db_opcao == 3 || $db_opcao == 22 || $db_opcao == 33) && $validaCor == "") {
             $bgcolor = "style='background-color:#DEB887'";
         }
 
@@ -1141,28 +1141,28 @@ if (!function_exists("db_inputdata")) {
         $sButtonType = "button";
         ?>
 
-        <input name="<?= ($nomevar == "" ? $nome : $nomevar) . "" ?>" <?= $bgcolor ?> type="<?= $dbtype ?>"
-               id="<?= ($nomevar == "" ? $nome : $nomevar) . "" ?>" <?= ($db_opcao == 3 || $db_opcao == 33 || $db_opcao == 22 ? 'readonly' : ($db_opcao == 5 ? 'disabled' : '')) ?>
-               value="<?= @$diamesano ?>" size="10" maxlength="10" autocomplete="off" onBlur='js_validaDbData(this);'
+        <input name="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "" ?>" <?php echo  $bgcolor ?> type="<?php echo  $dbtype ?>"
+               id="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "" ?>" <?php echo  ($db_opcao == 3 || $db_opcao == 33 || $db_opcao == 22 ? 'readonly' : ($db_opcao == 5 ? 'disabled' : '')) ?>
+               value="<?php echo  @$diamesano ?>" size="10" maxlength="10" autocomplete="off" onBlur='js_validaDbData(this);'
                onKeyUp="return js_mascaraData(this,event)" onFocus="js_validaEntrada(this);" onpaste="return false"
-               ondrop="return false" <?= $js_script ?>
-               labelValidacao="<?= @$GLOBALS['LS' . $nome] ?>" <?= (@$GLOBALS['U' . $nome] == "f" ? "isMandatory='true'" : "") ?>>
-        <input name="<?= ($nomevar == "" ? $nome : $nomevar) . "_dia" ?>" type="hidden" title=""
-               id="<?= ($nomevar == "" ? $nome : $nomevar) . "_dia" ?>" value="<?= @$dia ?>" size="2" maxlength="2">
-        <input name="<?= ($nomevar == "" ? $nome : $nomevar) . "_mes" ?>" type="hidden" title=""
-               id="<?= ($nomevar == "" ? $nome : $nomevar) . "_mes" ?>" value="<?= @$mes ?>" size="2" maxlength="2">
-        <input name="<?= ($nomevar == "" ? $nome : $nomevar) . "_ano" ?>" type="hidden" title=""
-               id="<?= ($nomevar == "" ? $nome : $nomevar) . "_ano" ?>" value="<?= @$ano ?>" size="4" maxlength="4">
+               ondrop="return false" <?php echo  $js_script ?>
+               labelValidacao="<?php echo  @$GLOBALS['LS' . $nome] ?>" <?php echo  (@$GLOBALS['U' . $nome] == "f" ? "isMandatory='true'" : "") ?>>
+        <input name="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_dia" ?>" type="hidden" title=""
+               id="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_dia" ?>" value="<?php echo  @$dia ?>" size="2" maxlength="2">
+        <input name="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_mes" ?>" type="hidden" title=""
+               id="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_mes" ?>" value="<?php echo  @$mes ?>" size="2" maxlength="2">
+        <input name="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_ano" ?>" type="hidden" title=""
+               id="<?php echo  ($nomevar == "" ? $nome : $nomevar) . "_ano" ?>" value="<?php echo  @$ano ?>" size="4" maxlength="4">
         <?php
         if (($db_opcao < 3) || ($db_opcao == 4)) {
             ?>
             <script>
                 var PosMouseY, PosMoudeX;
 
-                function js_comparaDatas<?=($nomevar == "" ? $nome : $nomevar) . ""?>(dia, mes, ano) {
-                    var objData = document.getElementById('<?=($nomevar == "" ? $nome : $nomevar) . ""?>');
+                function js_comparaDatas<?php echo ($nomevar == "" ? $nome : $nomevar) . ""?>(dia, mes, ano) {
+                    var objData = document.getElementById('<?php echo ($nomevar == "" ? $nome : $nomevar) . ""?>');
                     objData.value = dia + "/" + mes + '/' + ano;
-                    <?=$jsRetornoCal?>
+                    <?php echo $jsRetornoCal?>
                 }
 
             </script>
@@ -1173,9 +1173,9 @@ if (!function_exists("db_inputdata")) {
 
             ?>
 
-            <input value="D" type="<?= $sButtonType ?>" id="dtjs_<?= ($nomevar == "" ? $nome : $nomevar) ?>"
-                   name="dtjs_<?= ($nomevar == "" ? $nome : $nomevar) ?>"
-                   onclick="<?= $onclickBT ?>pegaPosMouse(event);show_calendar('<?= ($nomevar == "" ? $nome : $nomevar) ?>','<?= $shutdown_function ?>')">
+            <input value="D" type="<?php echo  $sButtonType ?>" id="dtjs_<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>"
+                   name="dtjs_<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>"
+                   onclick="<?php echo  $onclickBT ?>pegaPosMouse(event);show_calendar('<?php echo  ($nomevar == "" ? $nome : $nomevar) ?>','<?php echo  $shutdown_function ?>', event)">
             <?php
         }
     }
@@ -1200,19 +1200,19 @@ if (!function_exists("db_data")) {
             $DataJavaScript->mostrar();
         }
         ?>
-        <input name="<?= $nome . "_dia" ?>" onFocus="ContrlDigitos=0"
-               onKeyUp="js_Passa(this.name,<?= date("j") ?>,<?= (date("n") - 1) ?>,<?= date("Y") ?>)" type="text"
-               id="<?= $nome . "_dia" ?>" value="<?= $dia ?>" size="2" maxlength="2" autocomplete="off">
+        <input name="<?php echo  $nome . "_dia" ?>" onFocus="ContrlDigitos=0"
+               onKeyUp="js_Passa(this.name,<?php echo  date("j") ?>,<?php echo  (date("n") - 1) ?>,<?php echo  date("Y") ?>)" type="text"
+               id="<?php echo  $nome . "_dia" ?>" value="<?php echo  $dia ?>" size="2" maxlength="2" autocomplete="off">
         <strong>/</strong>
-        <input name="<?= $nome . "_mes" ?>" onFocus="ContrlDigitos=0"
-               onKeyUp="js_Passa(this.name,<?= date("j") ?>,<?= (date("n") - 1) ?>,<?= date("Y") ?>)" type="text"
-               id="<?= $nome . "_mes" ?>" value="<?= $mes ?>" size="2" maxlength="2" autocomplete="off">
+        <input name="<?php echo  $nome . "_mes" ?>" onFocus="ContrlDigitos=0"
+               onKeyUp="js_Passa(this.name,<?php echo  date("j") ?>,<?php echo  (date("n") - 1) ?>,<?php echo  date("Y") ?>)" type="text"
+               id="<?php echo  $nome . "_mes" ?>" value="<?php echo  $mes ?>" size="2" maxlength="2" autocomplete="off">
         <strong>/</strong>
-        <input name="<?= $nome . "_ano" ?>" onFocus="ContrlDigitos=0"
-               onKeyUp="js_Passa(this.name,<?= date("j") ?>,<?= (date("n") - 1) ?>,<?= date("Y") ?>)" type="text"
-               id="<?= $nome . "_ano" ?>" value="<?= $ano ?>" size="4" maxlength="4" autocomplete="off">
+        <input name="<?php echo  $nome . "_ano" ?>" onFocus="ContrlDigitos=0"
+               onKeyUp="js_Passa(this.name,<?php echo  date("j") ?>,<?php echo  (date("n") - 1) ?>,<?php echo  date("Y") ?>)" type="text"
+               id="<?php echo  $nome . "_ano" ?>" value="<?php echo  $ano ?>" size="4" maxlength="4" autocomplete="off">
         <input value="D" type="button" name="acessadatajavascript"
-               onclick="pegaPosMouse(event);show_calendar('form1.<?= $nome ?>')">
+               onclick="pegaPosMouse(event);show_calendar('form1.<?php echo  $nome ?>')">
         <?php
     }
 }
@@ -1224,10 +1224,10 @@ if (!function_exists("db_label_blur")) {
         $campo = ($campo == "") ? $label : $campo;
         ?>
         <strong>
-            <label for="db_<?= $campo ?>">
+            <label for="db_<?php echo  $campo ?>">
                 <a href="" class="rotulos"
-                   onClick="js_lista_blur('dbforms/db_<?= $tab ?>.php',document.form1.db_<?= $campo ?>.value,'<?= $campo ?>',100,50,600,420,document.form1.db_<?= $campoaux ?>.value,'<?= $campoaux ?>');return false">
-                    <?= ucwords($label) ?>:
+                   onClick="js_lista_blur('dbforms/db_<?php echo  $tab ?>.php',document.form1.db_<?php echo  $campo ?>.value,'<?php echo  $campo ?>',100,50,600,420,document.form1.db_<?php echo  $campoaux ?>.value,'<?php echo  $campoaux ?>');return false">
+                    <?php echo  ucwords($label) ?>:
                 </a>
             </label>
         </strong>
@@ -1238,11 +1238,11 @@ if (!function_exists("db_text_blur")) {
     function db_text_blur($tab, $campo, $campoaux, $tamanho, $max, $db_nome = "", $dbh_nome = "")
     {
         ?>
-        <input name="db_<?= $campo ?>" id="db_<?= $campo ?>" <?= @$read_only ?> value="<?= $db_nome ?>" type="text"
-               size="<?= $tamanho ?>" maxlength="<?= $max ?>"
-               onChange="if(this.value!='') js_lista_blur('dbforms/db_<?= $tab ?>.php','db_<?= $campo ?>' + '==' + document.form1.db_<?= $campo ?>.value,'<?= $campo ?>',100,50,600,420,'db_<?= $campoaux ?>' + '==' + document.form1.db_<?= $campoaux ?>.value,'<?= $campoaux ?>','')"
+        <input name="db_<?php echo  $campo ?>" id="db_<?php echo  $campo ?>" <?php echo  @$read_only ?> value="<?php echo  $db_nome ?>" type="text"
+               size="<?php echo  $tamanho ?>" maxlength="<?php echo  $max ?>"
+               onChange="if(this.value!='') js_lista_blur('dbforms/db_<?php echo  $tab ?>.php','db_<?php echo  $campo ?>' + '==' + document.form1.db_<?php echo  $campo ?>.value,'<?php echo  $campo ?>',100,50,600,420,'db_<?php echo  $campoaux ?>' + '==' + document.form1.db_<?php echo  $campoaux ?>.value,'<?php echo  $campoaux ?>','')"
                autocomplete="off">
-        <input name="dbh_<?= $campo ?>" type="hidden" value="<?= $dbh_nome ?>">
+        <input name="dbh_<?php echo  $campo ?>" type="hidden" value="<?php echo  $dbh_nome ?>">
         <?php
     }
 }
@@ -1252,10 +1252,10 @@ if (!function_exists("db_label")) {
         $campo = ($campo == "") ? $label : $campo;
         ?>
         <strong>
-            <label for="db_<?= $campo ?>">
+            <label for="db_<?php echo  $campo ?>">
                 <a href="" class="rotulos"
-                   onClick="js_lista('dbforms/db_<?= $tab ?>.php','db_<?= $campo ?>' + '==' + document.form1.db_<?= $campo ?>.value,'<?= $campo ?>',05,50,780);return false">
-                    <?= ucwords($label) ?>:
+                   onClick="js_lista('dbforms/db_<?php echo  $tab ?>.php','db_<?php echo  $campo ?>' + '==' + document.form1.db_<?php echo  $campo ?>.value,'<?php echo  $campo ?>',05,50,780);return false">
+                    <?php echo  ucwords($label) ?>:
                 </a>
             </label>
         </strong>
@@ -1271,10 +1271,10 @@ if (!function_exists("db_text")) {
     function db_text($campo, $tamanho, $max, $db_nome = "", $dbh_nome = "", $validacao = 0)
     {
         ?>
-        <input name="db_<?= $campo ?>" onBlur="js_ValidaCamposText(this,<?= $validacao ?>)"
-               id="db_<?= $campo ?>" <?= @$readonly ?> value="<?= $db_nome ?>" type="text" size="<?= $tamanho ?>"
-               maxlength="<?= $max ?>" autocomplete="off">
-        <input name="dbh_<?= $campo ?>" type="hidden" value="<?= $dbh_nome ?>">
+        <input name="db_<?php echo  $campo ?>" onBlur="js_ValidaCamposText(this,<?php echo  $validacao ?>)"
+               id="db_<?php echo  $campo ?>" <?php echo  @$readonly ?> value="<?php echo  $db_nome ?>" type="text" size="<?php echo  $tamanho ?>"
+               maxlength="<?php echo  $max ?>" autocomplete="off">
+        <input name="dbh_<?php echo  $campo ?>" type="hidden" value="<?php echo  $dbh_nome ?>">
         <?php
     }
 }
@@ -1284,11 +1284,11 @@ if (!function_exists("db_file")) {
     function db_file($campo, $tamanho, $max, $dbh_nome = "", $db_nome = "")
     {
         ?>
-        <input onChange="js_preencheCampo(this.value,this.form.dbh_<?= $campo ?>.name)" name="db_<?= $campo ?>"
-               id="db_<?= $campo ?>" value="<?= $db_nome ?>" type="file" size="<?= $tamanho ?>" maxlength="<?= $max ?>"
+        <input onChange="js_preencheCampo(this.value,this.form.dbh_<?php echo  $campo ?>.name)" name="db_<?php echo  $campo ?>"
+               id="db_<?php echo  $campo ?>" value="<?php echo  $db_nome ?>" type="file" size="<?php echo  $tamanho ?>" maxlength="<?php echo  $max ?>"
                autocomplete="off"><br>
-        <input name="dbh_<?= $campo ?>" type="text" value="<?= $dbh_nome ?>" size="<?= $tamanho ?>"
-               maxlength="<?= $max ?>" autocomplete="off">
+        <input name="dbh_<?php echo  $campo ?>" type="text" value="<?php echo  $dbh_nome ?>" size="<?php echo  $tamanho ?>"
+               maxlength="<?php echo  $max ?>" autocomplete="off">
         <?php
     }
 }
@@ -1339,7 +1339,7 @@ if (!function_exists("ultimo_dia_mes")) {
     function ultimo_dia_mes($mes = 1, $ano = "")
     {
         $res = db_query("select fc_ultimodiames($ano,$mes)"); //fc_ultimodiames(anousu,mes); // retorna ultimo da do mes
-        $ultimo_dia = pg_result($res, 0, 0);
+        $ultimo_dia = pg_fetch_result($res, 0, 0);
         return $ultimo_dia;
     }
 }
@@ -1570,11 +1570,11 @@ if (!function_exists("assinaturas")) {
 
 
         if ($tipo == 'LRF' || $tipo == 'BG') {
-            if ($lVerificaQuebra && ($pdf->gety() > ($pdf->h - 30))) {
-                $pdf->addPage($pdf->CurOrientation);
+            if ($lVerificaQuebra && ($pdf->gety() > ($pdf->getH() - 30))) {
+                $pdf->addPage();
                 $pdf->Ln(14);
             }
-            $largura = ($pdf->w) / 3;
+            $largura = ($pdf->getW()) / 3;
 
             $pos = $pdf->gety();
             $pdf->multicell($largura, 3, $ass_pref, 0, "C", 0, 0);
@@ -1595,11 +1595,11 @@ if (!function_exists("assinaturas")) {
                 $pdf->multicell($largura, 3, $ass_sec, 0, "C", 0, 0);
             }
         } elseif ($tipo == 'GF') {
-            if ($lVerificaQuebra && ($pdf->gety() > ($pdf->h - 30))) {
-                $pdf->addPage($pdf->CurOrientation);
+            if ($lVerificaQuebra && ($pdf->gety() > ($pdf->getH() - 30))) {
+                $pdf->addPage();
                 $pdf->Ln(14);
             }
-            $largura = (($pdf->w) - 15) / 4;
+            $largura = (($pdf->getW()) - 15) / 4;
 
             $pos = $pdf->gety();
             $pdf->multicell($largura, 3, $ass_pref, 0, "C", 0, 0);

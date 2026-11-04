@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -310,7 +310,7 @@ if(isset($desconto)){
         <td width="140">&nbsp;</td>
       </tr>
     </table>
-    <?
+    <?php
     if(isset($v07_parcel) and !empty($v07_parcel)){
         ?>
         </center>
@@ -319,7 +319,7 @@ if(isset($desconto)){
                 <tr>
                     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
                     <table width="686" height="27" border="0" cellpadding="0" cellspacing="0">
-                        <?
+                        <?php
                         $sql = "select v07_numpre, v07_totpar,
                                       sum( FC_CORRE(K00_RECEIT,K00_DTOPER,K00_VALOR,v07_dtlanc,extract(year from v07_dtlanc)::integer,K00_DTVENC) ) as flt_corre,
                                       sum( round( FC_CORRE(K00_RECEIT,K00_DTOPER,K00_VALOR,v07_dtlanc,extract(year from v07_dtlanc)::integer,K00_DTVENC) *
@@ -416,14 +416,14 @@ if(isset($desconto)){
                                 <tr>
                                     <td width="110">Nome</td>
                                     <td width="214">
-                                        <?
+                                        <?php
                                         $clrotulo->label("z01_nome");
                                         db_input('z01_nome',40,$Iz01_nome,true,'text',3)
                                         ?>
                                     </td>
                                     <td width="104">Valor:</td>
                                     <td width="258">
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrcor')
                                         ?>
@@ -432,14 +432,14 @@ if(isset($desconto)){
                                     <tr>
                                     <td>TipoD&eacute;bito:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_descr");
                                         db_input('k00_descr',40,$Ik00_descr,true,'text',3)
                                         ?>
                                     </td>
                                     <td>Juros:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrjuros')
                                         ?>
@@ -448,14 +448,14 @@ if(isset($desconto)){
                                 <tr>
                                     <td>C&oacute;digo:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_numpre");
                                         db_input('k00_numpre',8,$Ik00_numpre,true,'text',3)
                                         ?>
                                     </td>
                                     <td>Multa:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrmulta')
                                         ?>
@@ -464,7 +464,7 @@ if(isset($desconto)){
                                 <tr>
                                     <td>Parcela:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_numpar");
                                         $k00_numpar = $numpar;
                                         db_select('k00_numpar',$matpar,true,3," onchange='document.form1.submit();' ");
@@ -472,7 +472,7 @@ if(isset($desconto)){
                                     </td>
                                     <td>Desconto:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrdesconto')
                                         ?>
@@ -481,7 +481,7 @@ if(isset($desconto)){
                                 <tr>
                                     <td>Receita:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_receit");
                                         $k00_receit = $receit;
                                         db_select('k00_receit',$matrec,true,3," onchange='document.form1.submit();' ")
@@ -489,7 +489,7 @@ if(isset($desconto)){
                                     </td>
                                     <td>Total:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3,"",'ttotal');
                                         ?>
@@ -505,7 +505,7 @@ if(isset($desconto)){
                                     <td> <div align="right"></div></td>
                                     <td align="right">Total Liberado Para desconto:</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("k00_valor");
                                         $k00_valor = $tvlrcor;
                                         db_input('k00_valor',15,$Ik00_valor,true,'text',3)
@@ -517,7 +517,7 @@ if(isset($desconto)){
                                     <td>&nbsp;</td>
                                     <td align="right">Percentual: </td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("DBtxt8");
                                         db_input('DBtxt8',15,$IDBtxt8,true,'text',3," onchange='js_calcula()'")
                                         ?>
@@ -528,7 +528,7 @@ if(isset($desconto)){
                                     <td>&nbsp;</td>
                                     <td align="right">Valor Juro/Multa Original</td>
                                     <td>
-				       <?
+				       <?php
 				       $flt_juromulta = $flt_juro+$flt_multa;
 	                               db_input('flt_juromulta',15,$flt_juromulta,true,'text',3,"onfocus='js_calculavalor()'", "flt_juromulta");
 				       ?>
@@ -538,7 +538,7 @@ if(isset($desconto)){
                                     <td>&nbsp;</td>
                                     <td align="right">Total de Parcelas:</td>
                                     <td>
-				       <?
+				       <?php
 	                               db_input('v07_totpar',15,$v07_totpar,true,'text',3,"onfocus='js_calculavalor()'", "v07_totpar");
 				       ?>
  			            </td>
@@ -547,7 +547,7 @@ if(isset($desconto)){
                                     <td>&nbsp;</td>
                                     <td align="right">Parcelas Restante:</td>
                                     <td>
-				       <?
+				       <?php
 	                               db_input('int_totpar',15,$int_totpar,true,'text',3,"onfocus='js_calculavalor()'", "int_totpar");
 				       ?>
  			            </td>
@@ -557,7 +557,7 @@ if(isset($desconto)){
                                     <td>&nbsp;</td>
                                     <td align="right">Acerto Juro/Multa</td>
                                     <td>
-                                        <?
+                                        <?php
                                         $clrotulo->label("DBtxt9");
                                         $DBtxt9 = number_format( ( ( $flt_juro+$flt_multa )/$v07_totpar ) * $int_totpar, 2, ".","");
                                         db_input('DBtxt9',15,$IDBtxt9,true,'text',3,"onfocus='js_calculavalor()'", "DBtxt9");
@@ -576,7 +576,7 @@ if(isset($desconto)){
                                         <tr>
                                             <td width="16%">Hist&oacute;rico:</td>
                                             <td width="84%">
-                                                <?
+                                                <?php
                                                 $clrotulo->label("k00_hist");
                                                 $record = db_query("select * from histcalc order by k01_descr");
                                                 db_selectrecord('k00_hist',$record,true,2,"","","");
@@ -586,7 +586,7 @@ if(isset($desconto)){
                                         <tr>
                                             <td>Observa&ccedil;&atilde;o:</td>
                                             <td>
-                                                <?
+                                                <?php
                                                 $clrotulo->label("k00_histtxt");
                                                 db_textarea('k00_histtxt',5,70,$Ik00_histtxt,true,'text',2)
                                                 ?>
@@ -600,7 +600,7 @@ if(isset($desconto)){
                                 </tr>
                                 <tr align="center"><td colspan="4">&nbsp; </td></tr>
                                 <tr align="center"><td colspan="4"></td></tr>
-                                <?
+                                <?php
                             }
                         }else{
                             $mostra=true;
@@ -612,7 +612,7 @@ if(isset($desconto)){
             </form>
         </table>
         </center>
-        <?
+        <?php
     }else{
         ?>
         <table width="100%" height="100%" border="0" cellspacing="0" bgcolor="#CCCCCC">
@@ -624,7 +624,7 @@ if(isset($desconto)){
                 <tr>
                     <td width="52%" height="20" align="right"><strong>Deconto Juro/Multa Parcelamento:</strong></td>
                     <td width="48%">
-                        <?
+                        <?php
                         $clrotulo->label("v07_parcel");
                         db_input('v07_parcel',8,$Iv07_parcel,true,'text',2)
                         ?>
@@ -636,13 +636,13 @@ if(isset($desconto)){
                 <tr align="center"><td colspan="2">&nbsp; </td></tr>
             </form>
         </table>
-        <?
+        <?php
     }
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
 </html>
-<?
+<?php
 if(isset($mostra)){
     echo "<script>alert('Parcelamento sem débito');</script>";
     db_redireciona("cai4_descacerto001.php");

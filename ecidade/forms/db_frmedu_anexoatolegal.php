@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,7 +35,7 @@ $oDaoRotulo->label("ed05_i_codigo");
 <br /><br />
 <form name="form1" method="post" action="" enctype="multipart/form-data" >
   <center>
-    <fieldset style="width=95%;"><legend><b>
+    <fieldset><legend><b>
       <?=($db_opcao == 1 ? "Inclusão" : ($db_opcao == 2 || $db_opcao == 22 ? "Alteração" : "Exclusão"))?>
       de Arquivo</b></legend>
       <table border="0">
@@ -45,7 +45,7 @@ $oDaoRotulo->label("ed05_i_codigo");
             <?=@$Led292_arquivo?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('ed05_i_codigo',50,'',true,'hidden','');
               db_input('ed292_sequencial',50,'',true,'hidden','');
 
@@ -63,14 +63,14 @@ $oDaoRotulo->label("ed05_i_codigo");
             <?=@$Led292_obs?>
           </td>
           <td> 
-            <?
+            <?php
               db_textarea('ed292_obs',3,100,$Ied292_obs,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
         <tr>
           <td> 
-            <?
+            <?php
               db_input('ed292_ordem',10,$Ied292_ordem,true,'hidden','')
             ?>
           </td>
@@ -308,7 +308,7 @@ function js_retornoDownloadFile(oRetorno) {
 
 </script>
 
-<?
+<?php
   if (isset($chavepesquisa)) {
     echo("<script>\n js_buscaArquivos(); \n</script>");
   }

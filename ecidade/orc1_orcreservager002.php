@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,11 +50,11 @@ if(isset($atualiza)){
 
   for($i=0;$i<count($HTTP_POST_VARS);$i++){
   	if(substr(key($HTTP_POST_VARS),0,9) == 'atividade' ){
-      $mat = split("\_",key($HTTP_POST_VARS));
+      $mat = explode("_",key($HTTP_POST_VARS));
       $clorcreserprev->excluir(db_getsession("DB_anousu"),$mat[1],$mat[2]);
   	}
   	if(substr(key($HTTP_POST_VARS),0,8) == 'previsao' ){
-      $mat = split("\_",key($HTTP_POST_VARS));
+      $mat = explode("_",key($HTTP_POST_VARS));
       $clorcprevdesp->excluir(db_getsession("DB_anousu"),$mat[1],$mat[2]);
   	}
     next($HTTP_POST_VARS);
@@ -64,7 +64,7 @@ if(isset($atualiza)){
   for($i=0;$i<count($HTTP_POST_VARS);$i++){
   	if(substr(key($HTTP_POST_VARS),0,9) == 'atividade' ){
 
-      $mat = split("\_",key($HTTP_POST_VARS));
+      $mat = explode("_",key($HTTP_POST_VARS));
       $clorcreserprev->o33_anousu   = db_getsession("DB_anousu");
       $clorcreserprev->o33_projativ = $mat[1];
       $clorcreserprev->o33_codigo   = $mat[2];
@@ -83,7 +83,7 @@ if(isset($atualiza)){
   	}
   	if(substr(key($HTTP_POST_VARS),0,8) == 'previsao' ){
 
-      $mat = split("\_",key($HTTP_POST_VARS));
+      $mat = explode("_",key($HTTP_POST_VARS));
       $clorcprevdesp->o35_anousu   = db_getsession("DB_anousu");
       $clorcprevdesp->o35_projativ = $mat[1];
       $clorcprevdesp->o35_codigo   = $mat[2];
@@ -163,7 +163,7 @@ $clrotulo->label("atual_menos_reservado");
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name='form1' method='post'>
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
-  <?
+  <?php
   if($erro==false){
     echo "<tr><td title='$Lo55_descr' >";
     echo $Lo58_projativ;
@@ -205,7 +205,7 @@ $clrotulo->label("atual_menos_reservado");
         $resultprev = $clorcreserprev->sql_record($clorcreserprev->sql_query(db_getsession("DB_anousu"),$o58_projativ,$o58_codigo,$x,'o33_perc'));
         if($clorcreserprev->numrows >0){
         	$atividade = "atividade_".$o58_projativ."_".$o58_codigo."_$x";
-        	global $$atividade;
+        	global ${$atividade};
         	db_fieldsmemory($resultprev,0);
         	$$atividade = $o33_perc;
         }
@@ -231,7 +231,7 @@ $clrotulo->label("atual_menos_reservado");
         $resultprevdesp = $clorcprevdesp->sql_record($clorcprevdesp->sql_query_file(db_getsession("DB_anousu"),$o58_projativ,$o58_codigo,$x,'o35_perc'));
         if($clorcprevdesp->numrows >0){
         	$atividade = "previsao_".$o58_projativ."_".$o58_codigo."_$x";
-        	global $$atividade;
+        	global ${$atividade};
         	db_fieldsmemory($resultprevdesp,0);
         	$$atividade = $o35_perc;
         }
@@ -271,7 +271,7 @@ function js_mudarprevis(campo){
   }
 }
 </script>
-<?
+<?php
 if($erro==true)
   db_msgbox($msg_erro);
 

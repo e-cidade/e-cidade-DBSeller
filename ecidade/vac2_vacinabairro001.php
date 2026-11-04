@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $datafim_ano     = $dataini_ano;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load("scripts.js, grid.style.css");
 ?>
@@ -71,16 +71,16 @@ db_app::load("scripts.js, grid.style.css");
     <tr>
       <td><b>Período</b></td>
       <td nowrap >
-      <? db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', $db_opcao);?>
+      <?php db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', $db_opcao);?>
       Á
-      <? db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', $db_opcao);?></td>
+      <?php db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', $db_opcao);?></td>
     </tr>
     <tr>
       <td nowrap>
         <b>Vacina</b>
       </td>
       <td>
-        <?
+        <?php
           $x       = array();
           $sSql    = $oDaoVacina->sql_query_file(null,"vc06_i_codigo,vc06_c_descr");
           $rsDados = $oDaoVacina->sql_record($sSql);
@@ -101,7 +101,7 @@ db_app::load("scripts.js, grid.style.css");
         <b>Bairro</b>
       </td>
       <td>
-        <?
+        <?php
         $x = array();
         $sSql     = $oDaoCgsUnd->sql_query_file(null,"z01_v_bairro");
         $sSql    .= " group by z01_v_bairro ";
@@ -129,7 +129,7 @@ db_app::load("scripts.js, grid.style.css");
 </table>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

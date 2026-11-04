@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($db_opcaoal)){
 } 
 ?>
 <form name="form1" method="post" action="">
-<? 
+<?php 
   db_input('k72_codigo',50,$Ik72_codigo,true,'hidden',3,'');
   db_input('k72_sequencial',50,$Ik72_codigo,true,'hidden',3,'');
 ?>
@@ -66,12 +66,12 @@ if(isset($db_opcaoal)){
   <table border="0" align="center">
     <tr>
 		  <td nowrap title="<?=@$Tk49_tipo?>">
-			  <?
+			  <?php
 			  db_ancora(@$Lk72_arretipo,"js_pesquisak72_arretipo(true);",$db_opcao);
 			  ?>
 			</td>
 			<td> 
-			  <?
+			  <?php
 				db_input('k72_arretipo',10,$Ik72_arretipo,true,'text',$db_opcao," onchange='js_pesquisak72_arretipo(false);'");
 				db_input('k00_descr',50,$Ik00_descr,true,'text',3,'');
 				?>
@@ -97,7 +97,7 @@ if(isset($db_opcaoal)){
 <table>
   <tr>
     <td valign="top"  align="center">  
-	    <?
+	    <?php
 		  $chavepri                              = array("k72_sequencial"=>@$k72_sequencial);
 		  $cliframe_alterar_excluir->chavepri	   = $chavepri;
 		  $cliframe_alterar_excluir->sql     	   = $clrecreparcarretipo->sql_query(null, "*",

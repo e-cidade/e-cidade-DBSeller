@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmmatpedido.php"));
 	?>
     </center>
@@ -82,7 +82,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clmatpedido->erro_status=="0"){
     $clmatpedido->erro(true,false);

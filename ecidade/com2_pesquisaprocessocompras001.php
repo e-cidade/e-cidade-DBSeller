@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ db_postmemory($HTTP_POST_VARS);
              <b>Data de Emissão: </b>
           </td>
           <td align="left"> 
-            <?
+            <?php
               db_inputdata('datainicial',null ,null, null,true,'text',1);
             ?>
           </td>
@@ -68,35 +68,35 @@ db_postmemory($HTTP_POST_VARS);
              <b>Até : </b>
           </td>
           <td align="left"> 
-            <?
+            <?php
               db_inputdata('datafinal',null ,null, null,true,'text',1);
             ?>
           </td>       
         </tr>
         <tr> 
           <td  align="left" nowrap title="<?=$Tpc10_numero?>"> <b>
-            <? db_ancora("Solicitações de : ","js_solicitade(true);",1);?>  
+            <?php db_ancora("Solicitações de : ","js_solicitade(true);",1);?>  
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
                db_input("pc10_numerode",10,$Ipc10_numero,true,"text",4,"onchange='js_solicitade(false);'"); 
             ?>
           </td>
           <td  align="left" nowrap title="<?=$Tpc10_numero?>"> 
-            <? db_ancora("<b>Até:</b> ","js_solicitaate(true);",1);?>  
+            <?php db_ancora("<b>Até:</b> ","js_solicitaate(true);",1);?>  
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
                db_input("pc10_numeroate",10,$Ipc10_numero,true,"text",4,"onchange='js_solicitaate(false);'"); 
             ?>
           </td>       
         </tr>   
         <tr> 
           <td  align="left" nowrap title="<?=$Tpc10_numero?>"> <b>
-            <? db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>  
+            <?php db_ancora("Processos de Compra de : ","js_pesquisaProcessoCompras(true, true);",1);?>  
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
               db_input("pc80_codproc", 10, $Ipc80_codproc, 
                        true, 
                        "text", 
@@ -109,10 +109,10 @@ db_postmemory($HTTP_POST_VARS);
           </td>
           
           <td  align="left" nowrap title="<?=$Tpc10_numero?>"> 
-            <? db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?>  
+            <?php db_ancora("<b>Até:</b> ","js_pesquisaProcessoCompras(true, false);",1);?>  
           </td>
           <td align="left" nowrap>
-            <?
+            <?php
                db_input("pc80_codproc",10,$Ipc80_codproc, true,
                          "text", 4, 
                          "onchange='js_pesquisaProcessoCompras(false, false);'", 
@@ -126,7 +126,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

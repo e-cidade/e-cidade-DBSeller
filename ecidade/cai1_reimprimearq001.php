@@ -295,8 +295,8 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
       $pc63_banco = db_formatar($pc63_banco,'s','0',3,'e',0);
       if($codigomodelo==3 && $sqlerro == false){
 
-      $arr_data  = split('-',$e87_data);
-	    $arr_datap = split('-',$e87_dataproc);
+      $arr_data  =explode('-',$e87_data);
+	    $arr_datap =explode('-',$e87_dataproc);
     	$data    =  $arr_data[2].$arr_data[1].$arr_data[0];
 	    $dat_cred = $arr_datap[2].$arr_datap[1].$arr_datap[0];
 	    /// criar campo de sequencia do arquivo no empagetipo.
@@ -748,6 +748,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
       }
 	    // REGISTROS
 	    if ($banco=="041") {
+            /* Plugin PagamentoTransmissaoTED compensacao - Banrisul */
 
 	      $cllayout_BBBS->BSregist_001_003 = $banco;
 	      $cllayout_BBBS->BSregist_004_007 = db_formatar($seq_header,'s','0',4,'e',0);
@@ -786,6 +787,8 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      if ($pc63_banco == $banco) {
 		      $compensacao = str_repeat('0',3);
 	      }
+
+            /* Plugin PagamentoTransmissaoTED compensacao - BB */
 
 	      $cllayout_BBBS->BBregistA_001_003 = $banco;
 	      $cllayout_BBBS->BBregistA_004_007 = db_formatar($seq_header,'s','0',4,'e',0);
@@ -875,7 +878,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
           $tipodaconta  = "00";
         }
 
-				/* Plugin PagamentoTransmissaoTED compensacao */
+				/* Plugin PagamentoTransmissaoTED compensacao - Caixa */
 
         $numerocontrolemov    = $e90_codmov;
         $dataprocessamento    = $e87_dataproc;

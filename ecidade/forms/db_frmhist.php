@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clhist->rotulo->label();
        <?=@$Lc03_anousu?>
     </td>
     <td> 
-<?
+<?php
 $c03_anousu = db_getsession('DB_anousu');
 db_input('c03_anousu',4,$Ic03_anousu,true,'text',$db_opcao,"")
 ?>
@@ -47,7 +47,7 @@ db_input('c03_anousu',4,$Ic03_anousu,true,'text',$db_opcao,"")
        <?=@$Lc03_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('c03_codigo',3,$Ic03_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('c03_codigo',3,$Ic03_codigo,true,'text',$db_opcao,"")
        <?=@$Lc03_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('c03_descr',30,$Ic03_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('c03_descr',30,$Ic03_descr,true,'text',$db_opcao,"")
        <?=@$Lc03_compl?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('c03_compl',$x,true,$db_opcao,"");
 ?>
@@ -90,7 +90,7 @@ function js_preenchepesquisa(chave,chave1){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

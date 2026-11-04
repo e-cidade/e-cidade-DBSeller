@@ -142,8 +142,8 @@ if ($db_opcao == 1) {
                         <td><b> EXTRA-ORÇAMENTARIA </b></td>
                     </tr>
                     <tr>
-                        <td><? db_ancora($Lo48_seq, '', '3'); ?></td>
-                        <td><? db_input('o48_seq', 10, $Io48_seq, true, 'text', 3); ?></td>
+                        <td><?php db_ancora($Lo48_seq, '', '3'); ?></td>
+                        <td><?php db_input('o48_seq', 10, $Io48_seq, true, 'text', 3); ?></td>
                     </tr>
 
                     <tr>
@@ -166,8 +166,8 @@ if ($db_opcao == 1) {
                     </tr>
 
                     <tr>
-                        <td><? @ db_ancora($Lo48_valor, '', '3'); ?></td>
-                        <td><? @ db_input('o48_valor', 10, $Io48_valor, true, 'text', $db_opcao, ""); ?></td>
+                        <td><?php @ db_ancora($Lo48_valor, '', '3'); ?></td>
+                        <td><?php @ db_input('o48_valor', 10, $Io48_valor, true, 'text', $db_opcao, ""); ?></td>
                     </tr>
 
                     <tr>
@@ -179,11 +179,11 @@ if ($db_opcao == 1) {
                                 value=<?= ($db_opcao == 1 ? 'Incluir' : ($db_opcao == 2 || $db_opcao == 22 ? 'Alterar' : 'Excluir')) ?>
                                 <?= ($db_botao == false ? 'disabled' : '') ?>
                             >
-                            <?
+                            <?php
                             if ($db_opcao != 1) {
                                 ?>
                                 <input name="novo" value="Novo" type="submit">
-                                <?
+                                <?php
                             }
                             ?>
                         </td>

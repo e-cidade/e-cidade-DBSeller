@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Laboratório
@@ -47,8 +47,8 @@ $db_botao1 = false;
     <td nowrap title="<?=@$Tla36_i_codigo?>">
        <?=@$Lla36_i_codigo?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('la36_i_codigo',10,$Ila36_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -59,10 +59,10 @@ db_input('la36_i_codigo',10,$Ila36_i_codigo,true,'text',3,"")
        <b>Laboratorio:</b>
     </td>
     <td>
-<?
+<?php
 db_input('la02_i_codigo',10,@$Ila09_i_labsetor,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -70,12 +70,12 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tla36_i_setorexame?>">
-       <?
+       <?php
        db_ancora('<b>Exame:</b>',"js_pesquisala36_i_setorexame(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-       <?
+    <td>
+       <?php
        db_input('la08_i_codigo',10,$Ila36_i_setorexame,true,'text',$db_opcao," onchange='js_pesquisala36_i_setorexame(false);'");
        db_input('la36_i_setorexame',10,'',true,'hidden',$db_opcao,'');
        db_input('la08_c_descr',40,@$Ila08_c_descr,true,'text',3,'');
@@ -85,15 +85,15 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                <tr>
                  <td colspan="2" >
                     <fieldset><legend>Lançamento</legend>
-                        
+
                         <table border="0" width="100%">
                             <tr>
-                                <td rowspan="2" width="25%"> 
-                                    <table border="0"> 
+                                <td rowspan="2" width="25%">
+                                    <table border="0">
                                       <tr>
                                           <td nowrap title="<?=@$Tla36_i_tipo?>"><b>Tipo</b></td>
                                           <td>
-                                           <?
+                                           <?php
 					        $sql = $clmotivo_ausencia->sql_query(null,"s139_i_codigo, s139_c_descr","s139_i_codigo");
 						//echo $sql;
                                                 $resultado = $clmotivo_ausencia->sql_record($sql);
@@ -106,21 +106,21 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 
 						//$x = array('1'=>'Folga','2'=>'Férias');
                                                 //db_select('sd06_i_tipo',$x,true,$db_opcao,"");
-                                             ?>                                          
+                                             ?>
                                           </td>
-                                      </tr>                                      
+                                      </tr>
                                     </table>
                                 </td>
-                                <td width="75%"> 
+                                <td width="75%">
                                     <table border="0">
                                        <tr>
-                                            <td> 
+                                            <td>
                                                 <fieldset><legend>Data</legend>
                                                     <table>
                                                          <tr>
                                                             <td nowrap title="<?=@$Tla36_d_ini?>"><?=@$Lla36_d_ini?></td>
                                                             <td>
-                                                               <?
+                                                               <?php
                                                                if(isset($la36_d_ini)&&($la36_d_ini!="")){
                                                                  $vet=explode("/",$la36_d_ini);
                                                                  $la36_d_ini_dia=$vet[0];
@@ -134,7 +134,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                          <tr>
                                                             <td nowrap title="<?=@$Tla36_d_fim?>"><?=@$Lla36_d_fim?></td>
                                                             <td>
-                                                               <?
+                                                               <?php
                                                                if(isset($la36_d_fim)&&($la36_d_fim!="")){
                                                                  $vet=explode("/",$la36_d_fim);
                                                                  $la36_d_fim_dia=$vet[0];
@@ -153,18 +153,18 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                 <table>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tla36_c_horaini?>"><?=@$Lla36_c_horaini?></td>
-                                                         <td><?db_input('la36_c_horaini',5,@$Ila36_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horaini', event)\"");?></td>
+                                                         <td><?php db_input('la36_c_horaini',5,@$Ila36_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horaini', event)\"");?></td>
                                                      </tr>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tla36_c_horafim?>"><?=@$Lla36_c_horafim?></td>
-                                                         <td><?db_input('la36_c_horafim',5,@$Ila36_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horafim', event)\"");?></td>
+                                                         <td><?php db_input('la36_c_horafim',5,@$Ila36_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horafim', event)\"");?></td>
                                                      </tr>
                                                 </table>
                                                 </fieldset>
                                            </td>
                                       </tr>
                                    </table>
- 
+
                                 </td>
                             </tr>
                         </table>
@@ -184,16 +184,16 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 <table width="100%">
 	<tr>
 		<td valign="top"><br>
-  <?
-		$chavepri = array ("la36_i_codigo" => @$la36_i_codigo, 
-                       "la08_c_descr"=>@$la08_c_descr, 
-                       "la02_i_codigo"=>@$la02_i_codigo, 
-                       "la02_c_descr"=>@$la02_c_descr, 
-                       "la36_i_tipo" => @$la36_i_tipo, 
-                       "la36_i_setorexame" => @$la36_i_setorexame, 
-                       "la36_d_ini" => @$la36_d_ini, 
-                       "la36_d_fim" => @$la36_d_fim, 
-                       "la36_c_horaini" => @$la36_c_horaini, 
+  <?php
+		$chavepri = array ("la36_i_codigo" => @$la36_i_codigo,
+                       "la08_c_descr"=>@$la08_c_descr,
+                       "la02_i_codigo"=>@$la02_i_codigo,
+                       "la02_c_descr"=>@$la02_c_descr,
+                       "la36_i_tipo" => @$la36_i_tipo,
+                       "la36_i_setorexame" => @$la36_i_setorexame,
+                       "la36_d_ini" => @$la36_d_ini,
+                       "la36_d_fim" => @$la36_d_fim,
+                       "la36_c_horaini" => @$la36_c_horaini,
                        "la36_c_horafim" => @$la36_c_horafim,
                        "la08_i_codigo" => @$la08_i_codigo);
 		$cliframe_alterar_excluir->chavepri = $chavepri;
@@ -237,14 +237,14 @@ document.onkeydown = function(evt) {
 	if (evt.keyCode == 13 ) {
 			eval(" document.getElementById('"+nextfield+"').focus()" );
 			return false;
-		
+
 	}else if( evt.keyCode == 39 && valor_types ){
 		eval(" document.getElementById('"+nextfield+"').focus()" );
 	}
 }
 
 function js_valida() {
-      
+
       if(document.form1.la36_i_setorexame.value == '' || document.form1.la08_i_codigo.value == '') {
 
         alert('Preencha o exame.');
@@ -255,7 +255,7 @@ function js_valida() {
       if(!js_validadata()) {
         return false;
       }
-    
+
       if(!js_validahora()) {
         return false;
       }
@@ -277,22 +277,22 @@ function js_validadata() {
   dFim = new Date(aFim[2], aFim[1], aFim[0]);
 
 	if(dFim < dIni) {
-		
+
     alert("Data final nao pode ser menor que a data inicial.");
 	  document.form1.la36_d_fim.value = '';
 	  document.form1.la36_d_fim.focus();
     return false;
 
-	}	
+	}
 
   return true;
-				
+
 }
 
 function js_validahora() {
-	
+
   if(document.form1.la36_c_horaini.value != '' || document.form1.la36_c_horafim.value != '') {
- 
+
     if(document.form1.la36_c_horaini.value == '' || document.form1.la36_c_horafim.value == '') {
 
       alert('Os dois horários devem ser preenchidos ou deixados em branco.');
@@ -301,10 +301,10 @@ function js_validahora() {
     }
 
     if(document.form1.la36_c_horaini.value.length != 5 || document.form1.la36_c_horafim.value.length != 5) {
-      
+
       alert('Preencha corretamente os horarios!');
       return false;
-   
+
     }
 
     hr_ini  = (document.form1.la36_c_horaini.value.substring(0,2));
@@ -313,7 +313,7 @@ function js_validahora() {
 	 	mi_fim  = (document.form1.la36_c_horafim.value.substring(3,5));
 
     if(isNaN(hr_ini) || isNaN(mi_ini) ||  isNaN(hr_fim) || isNaN(mi_fim)) {
-        
+
       alert('Preencha corretamente os horarios!');
       return false;
 
@@ -323,7 +323,7 @@ function js_validahora() {
 	 	hora_fim  = parseInt(hr_fim, 10) * 60 + parseInt(mi_fim, 10);
 
     if(hora_ini > hora_fim) {
-      
+
       alert('A hora final deve ser maior que a inicial.');
       return false;
 
@@ -339,10 +339,10 @@ function js_pesquisala36_i_setorexame(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_lab_setorexame','func_lab_setorexame.php?la02_i_codigo=<?=$la02_i_codigo?>&funcao_js=parent.js_mostralab_setorexame1|la08_i_codigo|la08_c_descr|la09_i_codigo','Pesquisa',true);
   }else{
-     if(document.form1.la08_i_codigo.value != ''){ 
+     if(document.form1.la08_i_codigo.value != ''){
         js_OpenJanelaIframe('','db_iframe_lab_setorexame','func_lab_setorexame.php?la02_i_codigo=<?=$la02_i_codigo?>&pesquisa_chave='+document.form1.la08_i_codigo.value+'&funcao_js=parent.js_mostralab_setorexame','Pesquisa',false);
      }else{
-       document.form1.la08_c_descr.value = ''; 
+       document.form1.la08_c_descr.value = '';
        document.form1.la36_i_setorexame.value = '';
      }
   }
@@ -350,10 +350,10 @@ function js_pesquisala36_i_setorexame(mostra){
 function js_mostralab_setorexame(chave,erro,chave2){
   document.form1.la08_c_descr.value = chave;
   document.form1.la36_i_setorexame.value = chave2;
-  if(erro==true){ 
-    document.form1.lao8_i_codigo.focus(); 
-    document.form1.la36_i_setorexame.value = ''; 
-    document.form1.la08_i_codigo.value = ''; 
+  if(erro==true){
+    document.form1.lao8_i_codigo.focus();
+    document.form1.la36_i_setorexame.value = '';
+    document.form1.la08_i_codigo.value = '';
   }
 }
 function js_mostralab_setorexame1(chave1,chave2,chave3){
@@ -367,7 +367,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_ausencia.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

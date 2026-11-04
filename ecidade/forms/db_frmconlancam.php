@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clconlancam->rotulo->label();
        <?=@$Lc70_codlan?>
     </td>
     <td> 
-<?
+<?php
 db_input('c70_codlan',8,$Ic70_codlan,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('c70_codlan',8,$Ic70_codlan,true,'text',$db_opcao,"")
        <?=@$Lc70_anousu?>
     </td>
     <td> 
-<?
+<?php
 $c70_anousu = db_getsession('DB_anousu');
 db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,"")
 ?>
@@ -57,7 +57,7 @@ db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,"")
        <?=@$Lc70_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('c70_data',@$c70_data_dia,@$c70_data_mes,@$c70_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conlancam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

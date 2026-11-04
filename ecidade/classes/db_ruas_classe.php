@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE ruas
 class cl_ruas {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j14_codigo = 0;
-   var $j14_nome = null;
-   var $j14_tipo = null;
-   var $j14_rural = 'f';
-   var $j14_lei = null;
-   var $j14_dtlei_dia = null;
-   var $j14_dtlei_mes = null;
-   var $j14_dtlei_ano = null;
-   var $j14_dtlei = null;
-   var $j14_bairro = null;
-   var $j14_obs   = null;
+   public $j14_codigo = 0;
+   public $j14_nome = null;
+   public $j14_tipo = null;
+   public $j14_rural = 'f';
+   public $j14_lei = null;
+   public $j14_dtlei_dia = null;
+   public $j14_dtlei_mes = null;
+   public $j14_dtlei_ano = null;
+   public $j14_dtlei = null;
+   public $j14_bairro = null;
+   public $j14_obs   = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j14_codigo = int4 = cód. Logradouro
                  j14_nome = char(40) = Logradouro
                  j14_tipo = char(1) = Tipo da Rua
@@ -65,13 +65,13 @@ class cl_ruas {
                  j14_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_ruas() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ruas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_ruas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j14_codigo = ($this->j14_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j14_codigo"]:$this->j14_codigo);
        $this->j14_nome = ($this->j14_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["j14_nome"]:$this->j14_nome);
@@ -102,7 +102,7 @@ class cl_ruas {
      }
    }
    // funcao para inclusao
-   function incluir ($j14_codigo){
+   public function incluir ($j14_codigo){
       $this->atualizacampos();
      if($this->j14_nome == null ){
        $this->erro_sql = " Campo Logradouro nao Informado.";
@@ -215,7 +215,7 @@ class cl_ruas {
      return true;
    }
    // funcao para alteracao
-   function alterar ($j14_codigo=null) {
+   public function alterar ($j14_codigo=null) {
       $this->atualizacampos();
      $sql = " update ruas set ";
      $virgula = "";
@@ -354,7 +354,7 @@ class cl_ruas {
      }
    }
    // funcao para exclusao
-   function excluir ($j14_codigo=null,$dbwhere=null) {
+   public function excluir ($j14_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j14_codigo));
      }else{
@@ -422,7 +422,7 @@ class cl_ruas {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -444,7 +444,7 @@ class cl_ruas {
       }
      return $result;
    }
-   function sql_query ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -479,7 +479,7 @@ class cl_ruas {
      }
      return $sql;
   }
-   function sql_query_ruastipo ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_ruastipo ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -513,7 +513,7 @@ class cl_ruas {
      }
      return $sql;
   }
-   function sql_query_file ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -547,14 +547,14 @@ class cl_ruas {
      return $sql;
   }
 
-  function sqlRuasPorLogradouro($logradouro) {
+  public function sqlRuasPorLogradouro($logradouro) {
 
     $where    = "j14_nome = '{$logradouro}'";
     $sSqlRua  = $this->sql_query_file(null, "j14_codigo", '', $where);
     return $sSqlRua;
   }
 
-   function sql_query_lograd ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_lograd ( $j14_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -641,5 +641,23 @@ class cl_ruas {
 
   }
 
+  /**
+   * Metodo para gerar sql de busca pela ruas
+   * cadastradas para em cep
+   *
+   * @param string $cep
+   * @return string
+   */
+  public function sqlBuscaRuasPorCep($cep) {
+    $sql = "select
+                *
+            from
+                ruas
+                inner join ruascep ON ruascep.j29_codigo = ruas.j14_codigo
+            where
+                ruascep.j29_cep ilike '{$cep}'";
+
+    return $sql;
+  }
 }
 ?>

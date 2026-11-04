@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -212,12 +212,12 @@ function js_verifica_campos(){
           </tr>
           <tr> 
             <td height="25"> 
-              <?
+              <?php
 				db_ancora($Lj01_matric,'js_mostramatricula(true);',2)
 				?>
             </td>
             <td height="25"> 
-              <?
+              <?php
 				db_input("j01_matric",8,$Ij01_matric,true,'text',4)
 				?>
             </td>
@@ -227,21 +227,21 @@ function js_verifica_campos(){
             </td>
 
             <td height="25">
-              <?
+              <?php
 	      $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
 	      if(pg_numrows($result) > 0){
 		?>
 		<select name="anousu">
-		<?
+		<?php
   	        for($i=0;$i<pg_numrows($result);$i++){
 		db_fieldsmemory($result,$i);
 	        ?>
 	        <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
-	        <?
+	        <?php
 	        }
 		?>
 		</select>
-		<?
+		<?php
 	      }
 	        ?>
             </td>
@@ -249,7 +249,7 @@ function js_verifica_campos(){
           <tr> 
             <td width="131" height="25">Data vencimento:</td>
             <td width="161" height="25"> 
-              <?
+              <?php
 			db_inputdata('k00_dtvenc','','','',true,'text',4)
 			?>
             </td>
@@ -257,7 +257,7 @@ function js_verifica_campos(){
           <tr> 
             <td height="25">Data Lan&ccedil;amento:</td>
             <td height="25"> 
-              <?
+              <?php
 //			db_inputdata('k00_dtoper','','','',true,'text',4)
 			db_inputdata('k00_dtoper',$k00_dtoper_dia,$k00_dtoper_mes,$k00_dtoper_ano,true,'text',4)
 			?>
@@ -266,7 +266,7 @@ function js_verifica_campos(){
           <tr> 
             <td height="25">Percentual Desconto:</td>
             <td height="25"> 
-              <?
+              <?php
 			db_input('k00_percdes','','','',true,'text',4)
 			?>
             </td>
@@ -274,7 +274,7 @@ function js_verifica_campos(){
           <tr>
             <td height="25">Hist&oacute;rico:</td>
             <td height="25">
-              <?
+              <?php
 			$k00_histtxt = trim(@$k00_histtxt);
 			db_textarea('k00_histtxt',5,30,$Ik00_histtxt,true,'text',4);
 			?>
@@ -301,12 +301,12 @@ function js_verifica_campos(){
      </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($erro==true){
   echo "<script>alert('$descricao_erro');</script>";
 }
@@ -327,7 +327,7 @@ function js_preenchematricula(chave){
    func_nome.hide();
 }
 </script>
-<?
+<?php
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;
 $func_nome ->posY=20;

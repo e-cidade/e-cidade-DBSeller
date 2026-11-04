@@ -44,7 +44,7 @@ $oRetorno->mensagem = '';
 try {
     switch ($oParam->exec) {
         case 'buscarAvaliacao':
-            if (empty($oParam->matricula)) {
+            if (empty($oParam->matricula) && !$oParam->servidorSemRegistro) {
                 throw new BusinessException("Matricula não informada.");
             }
             $configuracao = new Configuracao();
@@ -90,8 +90,33 @@ try {
                 $iCodigoGrupoPerguntas = $oParam->iCodigoGrupoPerguntas;
             }
 
-            $oServidor = ServidorRepository::getInstanciaByCodigo($oParam->matricula);
+            /**
+             * Flag para criar um servidor fake, e permitir o processamento.
+             */
+            $servidorNaoCadastrado = false;
+
+            /**
+             * Adaptação para preencher a matricula
+             * de acordo com o preenchimento de tela.
+             */
+            if (empty($oParam->matricula)) {
+                $array = $oParam->aPerguntasRespostas->grupos[0]->perguntas;
+                for ($i = 0; $i < sizeof($array); $i++) {
+                    if ($array[$i]->codigo == 4000299 && (!empty($array[$i]->respostas))) {
+                        $oParam->matricula = $array[$i]->respostas[0]->valor;
+                        $servidorNaoCadastrado = true;
+                    }
+                }
+            }
             
+            $oServidor = new Servidor();
+            
+            if ($servidorNaoCadastrado) {
+                $oServidor->setMatricula($oParam->matricula);
+            } else {
+                $oServidor = ServidorRepository::getInstanciaByCodigo($oParam->matricula);
+            }
+
             $oAvaliacaoESocial = new AvaliacaoESocial();
             $oAvaliacaoESocial->setAvaliacao($oAvaliacao);
             $oAvaliacaoESocial->setServidor($oServidor);

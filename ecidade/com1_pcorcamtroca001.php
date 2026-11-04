@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ if($clpcorcamitemproc->numrows > 0 ){
   <tr>
     <td height="450" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmpcorcamtroca.php"));
         ?>
     </center>
@@ -73,11 +73,11 @@ if($clpcorcamitemproc->numrows > 0 ){
   </tr>
 </table>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>
-<?
+<?php
 if(isset($pc20_codorc) && trim($pc20_codorc)){
   echo "<script>iframe_solicitem.location.href = 'com1_trocpcorcamtroca.php?orcamento=$pc20_codorc&sol=$sol';</script>";
 }

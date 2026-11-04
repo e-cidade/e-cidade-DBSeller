@@ -46,25 +46,25 @@ $db_botao1 = false;
         </label>
       </td>
       <td colspan="3">
-       <?php
-         db_input( 'ed58_i_regencia', 15, "", true, 'text', 3);
-         db_input( 'ed232_c_descr',   30, "", true, 'text', 3);
-         db_input( 'ed232_c_abrev',   10, "", true, 'text', 3);
-         db_input( 'ed58_i_codigo',   15, "", true, 'hidden', 3 );
-       ?>
+        <?php
+          db_input( 'ed58_i_regencia', 15, "", true, 'text', 3);
+          db_input( 'ed232_c_descr',   30, "", true, 'text', 3);
+          db_input( 'ed232_c_abrev',   10, "", true, 'text', 3);
+          db_input( 'ed58_i_codigo',   15, "", true, 'hidden', 3 );
+        ?>
       </td>
     </tr>
-      <tr id="ctnPossuiRegente">
-          <td>
-              <label for="possuiRegente"><b>Possui Regente:</b></label>
-          </td>
-          <td colspan="3">
-              <select id="possuiRegente" onchange="semRegentes()">
-                  <option value="1" selected = "selected">SIM</option>
-                  <option value="2">NÃO</option>
-              </select>
-          </td>
-      </tr>
+    <tr id="ctnPossuiRegente">
+      <td>
+          <label for="possuiRegente"><b>Possui Regente:</b></label>
+      </td>
+      <td colspan="3">
+        <select id="possuiRegente" onchange="semRegentes()">
+          <option value="1" selected = "selected">SIM</option>
+          <option value="2">NÃO</option>
+        </select>
+      </td>
+    </tr>
     <tr>
       <td nowrap title="<?=@$Ted58_i_rechumano?>">
         <label for="identificacao">
@@ -236,32 +236,32 @@ $db_botao1 = false;
                         style="border: 2px outset #f3f3f3; border-bottom-color:#999999; border-right-color:#999999;">
                       <tr>
 
-                       <td align="center" onclick="IncluirHorario(<?=$ed17_i_codigo?>,<?=$ed32_i_codigo?>,'<?=$quadro?>',
-                       '<?=@$ed58_i_rechumano?>')" width="50" height="15" onmouseover="InSet('<?=$quadro?>')"
+                      <td align="center" id="td<?=$quadro?>" onclick="IncluirHorario(<?=$ed17_i_codigo?>,<?=$ed32_i_codigo?>,'<?=$quadro?>',
+                        '<?=@$ed58_i_rechumano?>')" width="50" height="15" onmouseover="InSet('<?=$quadro?>')"
                         onmouseout="OutSet('<?=$quadro?>')">
-                          <input type="text"
-                                 id="text<?=$quadro?>"
-                                 name="text<?=$quadro?>"
-                                 value="<?=$marcar?>"
-                                 size="7"
-                                 style="border:0px;background:#cccccc;text-align:center;font-weight:bold;"
-                                 readonly>
-                          <input type="hidden"
-                                 id="valor<?=$quadro?>"
-                                 name="valor<?=$quadro?>"
-                                 value="<?=$valormarcado?>"
-                                 size="20"
-                                 readonly>
-                          <input type="hidden"
-                                 id="marcado<?=$quadro?>"
-                                 name="marcado<?=$quadro?>"
-                                 value="<?=$temregistro?>"
-                                 size="20"
-                                 readonly>
-                          <span style="visibility:hidden;position:absolute;" id="codrh<?=$quadro?>">
-                            <?=$temcodrh?>
-                          </span>
-                        </td>
+                        <input type="text"
+                                id="text<?=$quadro?>"
+                                name="text<?=$quadro?>"
+                                value="<?=$marcar?>"
+                                size="7"
+                                style="border:0px;background:#cccccc;text-align:center;font-weight:bold;"
+                                readonly>
+                        <input type="hidden"
+                                id="valor<?=$quadro?>"
+                                name="valor<?=$quadro?>"
+                                value="<?=$valormarcado?>"
+                                size="20"
+                                readonly>
+                        <input type="hidden"
+                                id="marcado<?=$quadro?>"
+                                name="marcado<?=$quadro?>"
+                                value="<?=$temregistro?>"
+                                size="20"
+                                readonly>
+                        <span style="visibility:hidden;position:absolute;" id="codrh<?=$quadro?>">
+                          <?=$temcodrh?>
+                        </span>
+                      </td>
                       </tr>
                     </table>
                     <div name="dados<?=$quadro?>" id="dados<?=$quadro?>" style="visibility:hidden;position:absolute;">
@@ -295,14 +295,14 @@ $db_botao1 = false;
           }
           ?>
           <tr>
-          <?}?>
+          <?php }?>
           </tr>
         </table>
       </td>
       <td height="15">&nbsp;&nbsp;</td>
       <td valign="top" align="center">
         <table align="center" id="legenda" cellspacing="2" cellpadding="3"
-             style="visibility:hidden;border:1px solid #888888;background:#f3f3f3">
+            style="visibility:hidden;border:1px solid #888888;background:#f3f3f3">
           <tr>
             <td colspan="2" align="center" style="font-size:9px;">
               <span id="nome_selec" class="bold"></span>
@@ -481,6 +481,19 @@ function js_pesquisaed58_i_rechumano( mostra ) {
 
     if (mostra == true && document.getElementById('possuiRegente').value != 2) {
 
+      /**
+       * Reseta as informações do campo Regencia
+       */
+      document.form1.ed58_i_rechumano.value               = '';
+      document.form1.z01_nome.value                       = '';
+      document.form1.identificacao.value                  = '';
+      document.getElementById("nome_selec").innerHTML     = "";
+      document.getElementById("legenda").style.visibility = "hidden";
+
+      Verifica.location.href = "edu1_regenciahorario002.php?disponibilidade&codcalendario=<?=$codcalendario?>"
+                                                     +"&ed57_i_turno=<?=$cod_turnos?>"
+                                                     +"&rechumano=0&maisturmas=<?=$maisturmas?>";
+
       js_OpenJanelaIframe(
                            '',
                            'db_iframe_rechumano',
@@ -558,10 +571,14 @@ function IncluirHorario( periodo, diasemana, id, codrechumano ) {
       }
 
       atualizaGradeHorario(id);
-      Verifica.location.href = "edu1_regenciahorario002.php?disponibilidade&codcalendario=<?=$codcalendario?>"
-                                                         +"&ed57_i_turno=<?=$cod_turnos?>"
-                                                         +"&rechumano="+codrechumano
-                                                         +"&maisturmas=<?=$maisturmas?>";
+        let parametros = [
+            "disponibilidade",
+            "ed57_i_turno=<?=$cod_turnos?>",
+            `rechumano=${codrechumano}`,
+            "isturmas=<?=$maisturmas?>",
+            "maisturmas=<?=$maisturmas?>"
+        ];
+        Verifica.location.href = "edu1_regenciahorario002.php?" + parametros.join('&');
     }
 
   } else {
@@ -571,36 +588,41 @@ function IncluirHorario( periodo, diasemana, id, codrechumano ) {
     } else if (document.form1.ed58_i_rechumano.value == "" && document.getElementById('possuiRegente').value != 2) {
         alert ("Para adicionar uma disciplina sem um regente, 'SIM' selecionado na opção 'Possui Regente'.")
     } else {
-      Verifica.location.href = "edu1_regenciahorario002.php?codcalendario=<?=$codcalendario?>"
-                               +"&ed57_i_turno=<?=$cod_turnos?>"
-                               +"&quadro="+id
-                               +"&chavepesquisa="+document.form1.ed58_i_regencia.value
-                               +"&diasemana="+diasemana
-                               +"&periodo="+periodo
-                               +"&rechumano="+document.form1.ed58_i_rechumano.value
-                               +"&maisturmas=<?=$maisturmas?>";
+      let parametros = [
+          "codcalendario=<?=$codcalendario?>",
+          "ed57_i_turno=<?=$cod_turnos?>",
+          `quadro=${id}`,
+          `chavepesquisa=${document.form1.ed58_i_regencia.value}`,
+          `diasemana=${diasemana}`,
+          `periodo=${periodo}`,
+          `rechumano=${document.form1.ed58_i_rechumano.value}`,
+          "maisturmas=<?=$maisturmas?>",
+          `fimPeriodo=${document.form1.ed58_datafim.value}`,
+          `inicioPeriodo=${document.form1.ed58_datainicio.value}`
+      ];
+      Verifica.location.href = "edu1_regenciahorario002.php?" + parametros.join('&');
     }
   }
 }
 
 function semRegentes() {
-   var identificacao =  document.getElementById('identificacao');
-   var nomeRegente = document.getElementById('z01_nome');
-   var sem_regente = document.getElementById('possuiRegente');
+  var identificacao =  document.getElementById('identificacao');
+  var nomeRegente = document.getElementById('z01_nome');
+  var sem_regente = document.getElementById('possuiRegente');
 
-   if (sem_regente.value == 2) {
-       nomeRegente.value = '';
-       identificacao.value = '';
-       nomeRegente.style.backgroundColor = '#4444';
-       identificacao.style.backgroundColor = '#4444';
-       js_mostrarechumano1('', 'DISCIPLINA SEM REGENTE', '');
+  if (sem_regente.value == 2) {
+    nomeRegente.value = '';
+    identificacao.value = '';
+    nomeRegente.style.backgroundColor = '#4444';
+    identificacao.style.backgroundColor = '#4444';
+    js_mostrarechumano1('', 'DISCIPLINA SEM REGENTE', '');
 
-   } else {
-       nomeRegente.style.backgroundColor = '#DEB887';
-       identificacao.style.backgroundColor = '#DEB887';
-       js_mostrarechumano1('', '', '');
-       document.getElementById("legenda").style.visibility = "hidden";
-   }
+  } else {
+    nomeRegente.style.backgroundColor = '#DEB887';
+    identificacao.style.backgroundColor = '#DEB887';
+    js_mostrarechumano1('', '', '');
+    document.getElementById("legenda").style.visibility = "hidden";
+  }
 }
 
 function atualizaGradeHorario(id) {

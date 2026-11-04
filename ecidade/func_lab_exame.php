@@ -38,7 +38,7 @@ $cllab_exame = new cl_lab_exame;
 $cllab_exame->rotulo->label("la08_i_codigo");
 $cllab_exame->rotulo->label("la08_c_descr");
 
-if($sexoPaciente){
+if(!empty($sexoPaciente)){
   $sexoPaciente = $sexoPaciente == 'M' ? 1 : 2;
 }
 //Operacao 1 - PluginAlteracoesSaude - func_lab_exame.php
@@ -101,7 +101,21 @@ if($sexoPaciente){
                 $sAtivo = " and la09_i_ativo = $iAtivo ";
             }
 
-            $sWhere[] = " EXISTS (select * from lab_setorexame where la09_i_exame=la08_i_codigo $sAtivo) ";
+            if(isset($departamento)){
+              $sWhere[] = "
+                EXISTS (
+                  select la09_i_codigo 
+                    from lab_setorexame 
+                    join lab_labsetor on la24_i_codigo = la09_i_labsetor
+                    join lab_laboratorio on la02_i_codigo = la24_i_laboratorio
+                    join lab_labdepart on la02_i_codigo = la03_i_laboratorio
+                   where la03_i_departamento = $departamento 
+                     and la09_i_exame=la08_i_codigo $sAtivo
+                )
+              ";
+            } else {
+              $sWhere[] = " EXISTS (select * from lab_setorexame where la09_i_exame=la08_i_codigo $sAtivo) ";
+            }            
         }
 
         if (isset($iAtivo)) {
@@ -110,6 +124,10 @@ if($sexoPaciente){
 
         if(isset($sexoPaciente) && !empty($sexoPaciente)){
           $sWhere[] = "(la08_i_sexo = $sexoPaciente or la08_i_sexo = 3)";
+        }
+
+        if(!empty($exames)){
+          $sWhere[] = "la08_i_codigo in ($exames)";
         }
 
         if (!isset($pesquisa_chave)) {
@@ -131,15 +149,26 @@ if($sexoPaciente){
 
             $sWhere = implode(" and ", $sWhere);
             $sql = $cllab_exame->sql_query("", $campos, "la08_i_codigo", $sWhere);
-            if($la24_i_setor && $la02_i_codigo){
-              if($sWhere){
-                $sWhere .= " and la02_i_codigo = " . $la02_i_codigo;
-              }else{
-                $sWhere .= " la02_i_codigo = " . $la02_i_codigo;
+                 
+            if(isset($la02_i_codigo)){
+              $sWhere = [];
+
+              if(!empty($la02_i_codigo)){
+                $sWhere[] = " la02_i_codigo = " . $la02_i_codigo;
               }
-              $sWhere .= " and la24_i_setor = " . $la24_i_setor;
+
+              if(isset($la24_i_setor) && !empty($la24_i_setor)){
+                $sWhere[] =  " la24_i_setor = " . $la24_i_setor;
+              }
+
+              if(isset($setores) && !empty($setores)){
+                $sWhere[] = " la24_i_setor in ({$setores})";
+              }
+
+              $sWhere = implode(" and ", $sWhere);           
               $sql = $cllab_exame->sql_query_exame_laboratorio(null, $campos, "la08_i_codigo", $sWhere);
             }
+
             $repassa = array();
 
             if (isset($chave_la08_i_codigo)) {
@@ -154,19 +183,32 @@ if($sexoPaciente){
                 //Abre Operacao 3 - PluginAlteracoesSaude - func_lab_exame.php
                 $sWhere[] = " la08_i_codigo = {$pesquisa_chave} ";
                 //Fecha Operacao 3
-                $sSqlExame = $cllab_exame->sql_query("", "*", "", implode(" and ", $sWhere));
-                if($la24_i_setor && $la02_i_codigo){
-                  if($sWhere){
-                    $sWhere .= " and la02_i_codigo = " . $la02_i_codigo;
-                  }else{
-                    $sWhere .= " la02_i_codigo = " . $la02_i_codigo;
-                  }
-                  $sWhere .= " and la24_i_setor = " . $la24_i_setor;
-                  $sql = $cllab_exame->sql_query_exame_laboratorio(null, $campos, "la08_i_codigo", $sWhere);
-                }
-                $result = $cllab_exame->sql_record($sSqlExame);
+                $sWhere = implode(" and ", $sWhere);
+                $sSqlExame = $cllab_exame->sql_query("", "*", "", $sWhere);
 
-                if ($cllab_exame->numrows != 0) {
+                if(isset($la02_i_codigo)){
+
+                  $sWhere = [" la08_i_codigo = {$pesquisa_chave} "];
+
+                  if(!empty($la02_i_codigo)){
+                    $sWhere[] = " la02_i_codigo = " . $la02_i_codigo;
+                  }
+    
+                  if(isset($la24_i_setor) && !empty($la24_i_setor)){
+                    $sWhere[] =  " la24_i_setor = " . $la24_i_setor;
+                  }
+    
+                  if(isset($setores) && !empty($setores)){
+                    $sWhere[] = " la24_i_setor in ({$setores})";
+                  }
+    
+                  $sWhere = implode(" and ", $sWhere);           
+                  $sSqlExame = $cllab_exame->sql_query_exame_laboratorio(null, "*", "la08_i_codigo", $sWhere);
+                }
+                
+                $result = db_query($sSqlExame);
+
+                if (pg_num_rows($result) != 0) {
                     db_fieldsmemory($result, 0);
                     echo "<script>" . $funcao_js . "('$la08_c_descr',false,'$la08_i_codigo');</script>";
                 } else {

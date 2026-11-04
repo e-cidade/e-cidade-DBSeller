@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clbenscedente->rotulo->label("t09_benscadcedente");
               <?=$Lt09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t09_sequencial",4,$It09_sequencial,true,"text",4,"","chave_t09_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbenscedente->rotulo->label("t09_benscadcedente");
               <?=$Lt09_benscadcedente?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t09_benscadcedente",4,$It09_benscadcedente,true,"text",4,"","chave_t09_benscadcedente");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbenscedente->rotulo->label("t09_benscadcedente");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benscedente.php")==true){
@@ -122,12 +122,12 @@ $clbenscedente->rotulo->label("t09_benscadcedente");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

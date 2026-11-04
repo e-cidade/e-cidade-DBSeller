@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,22 +110,22 @@ function js_relatorio() {
             <legend>Relatório de Débitos Importados para Diversos:</legend>
             <table class="form-container">
               <tr>
-                <td nowrap><?
+                <td nowrap><?php
                 db_ancora($Ldv05_numcgm,' js_cgm(true); ',1);
                 ?>
                 </td>
-                <td nowrap><?
+                <td nowrap><?php
                 db_input('dv05_numcgm',10,$Idv05_numcgm,true,'text',1,"onchange='js_cgm(false)';jsLimpa(this.id);","dv05_numcgm");
                 db_input('z01_nome',50,0,true,'text',3,"","z01_nomecgm");
                 ?>
                 </td>
               </tr>
               <tr>
-                <td nowrap><?
+                <td nowrap><?php
                 db_ancora($Lj01_matric,' js_matri(true); ',1);
                 ?>
                 </td>
-                <td nowrap><?
+                <td nowrap><?php
                 db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false);jsLimpa(this.id);'");
                 db_input('z01_nome',50,0,true,'text',3,"","z01_nomematri");
                 ?>
@@ -148,7 +148,7 @@ function js_relatorio() {
       			  
               <tr>
                 <td title="<?=$Tk00_numpre?>"><?=$Lk00_numpre?></td>
-                <td><?
+                <td><?php
                 db_input('k00_numpre',10,$Ik00_numpre,true,'text',1,"onchange='jsLimpa(this.id);'");
                 ?>
                 </td>
@@ -156,9 +156,9 @@ function js_relatorio() {
               <tr>
                 <td nowrap title="À partir de qual data"><strong>Data inicial:</strong>
                 </td>
-                <td nowrap><?
+                <td nowrap><?php
                 db_inputdata('dataini',"","","",true,'text',1)
-                ?> <strong>até</strong> <?
+                ?> <strong>até</strong> <?php
                 db_inputdata('datafim',"","","",true,'text',1)
                 ?>
                 </td>
@@ -209,7 +209,7 @@ function js_relatorio() {
         <?php } ?>
    
   </form>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

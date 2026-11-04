@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Partilha;
 
+use App\Domain\Tributario\Juridico\Services\InicialDoForo\ParcelamentoCustasProcessoService;
 use ECidade\Tributario\Arrecadacao\Custas\Calculo\CalculoColecao;
 use ECidade\Tributario\Arrecadacao\Custas\Enum\TipoLancamento;
 use ECidade\Tributario\Arrecadacao\Custas\Interfaces\Validador;
@@ -35,8 +36,8 @@ use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 use ECidade\Tributario\Arrecadacao\Repository\TermoTaxaParcela;
 use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilha as ProcessoForoPartilhaEntity;
 use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilhaCusta as ProcessoForoPartilhaCustaEntity;
-use \Recibo as ReciboModel;
 use \DateTime;
+use db_utils;
 use \Taxa;
 
 abstract class PartilhaJuridicaParcelamento extends PartilhaJuridica
@@ -118,7 +119,28 @@ abstract class PartilhaJuridicaParcelamento extends PartilhaJuridica
             $taxasParcela[$termoTaxaParcela->getTaxa()] = $parcela;
         }
 
+        if (db_utils::ativaParcelamentoCustas()) {
+            $custasLiberadasParaParcelamento = $this->getCustasParcelamentoProcesso();
+            
+            foreach ($custasLiberadasParaParcelamento as $custaParcelameno) {
+                $sequencial = $custaParcelameno->ar36_sequencial;
+                
+                if (!array_key_exists($sequencial, $taxasParcela)) {
+                    $taxasParcela[$sequencial] = '1';
+                }
+            }
+        }
+
         $this->taxasParcelas = $taxasParcela;
+    }
+
+    private function getCustasParcelamentoProcesso()
+    {
+        $parcelamentoCustasProcesso = new ParcelamentoCustasProcessoService();
+
+        $parcelamentoCustasProcesso->setCustasProcesso($this->processoForo);
+
+        return $parcelamentoCustasProcesso->getCustasProcesso();
     }
 
     protected function getParcelaTaxa($codigoTaxa)
@@ -142,7 +164,7 @@ abstract class PartilhaJuridicaParcelamento extends PartilhaJuridica
 
         $parcela = $this->getParcelaTaxa($taxa->getCodigoTaxa());
 
-        if (empty($parcela)) {
+        if (empty($parcela) || !array_key_exists($parcela, $this->valores)) {
             return null;
         }
 

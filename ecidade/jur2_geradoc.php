@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("classes/db_inicialdoc_classe.php"));
@@ -69,11 +69,11 @@ $pdf->AliasNbPages();
 $grupodocumento = 0;
 
 if (isset ($dadosini) && $dadosini != "") {
-	$matriz = split("xx", $dadosini);
+	$matriz =explode("xx", $dadosini);
 }
 for ($q = 0; $q < sizeof($matriz); $q ++) {
 	if ($matriz[$q] != "") {
-		$dadosi = split("ww", $matriz[$q]);
+		$dadosi =explode("ww", $matriz[$q]);
 		$inicial = $dadosi[0];
 		$chave = $dadosi[1];
 		$modo = $dadosi[2];
@@ -109,7 +109,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 		$result = $clinicial->sql_record($clinicial->sql_query($inicial, "v54_descr as localiza",null," v50_inicial = $inicial and v50_instit = ".db_getsession('DB_instit') ));
 		db_fieldsmemory($result, 0); //pega localiza
 
-		$sWhere  = "processoforoinicial.v71_inicial = {$inicial} and processoforoinicial.v71_anulado is false"; 
+		$sWhere  = "processoforoinicial.v71_inicial = {$inicial} and processoforoinicial.v71_anulado is false";
 		$result  = $clprocessoforoinicial->sql_record($clprocessoforoinicial->sql_query(null,"v70_codforo,v53_descr",null,$sWhere));
 		$numrows = $clprocessoforoinicial->numrows;
 		db_fieldsmemory($result, 0); //pega codigo do processo
@@ -118,7 +118,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 		db_fieldsmemory($resul, 0); //pega o dados da prefa
 
 		$datac = date("d-m-Y");
-		$dat = split("-", $datac);
+		$dat =explode("-", $datac);
 		$mes = db_mes($dat[1]);
 		$data = $dat[0]." de ".$mes." de ".$dat[2].".";
 
@@ -204,7 +204,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					}
 				}
 				if (isset ($cgmatu)) {
-					$matricgm = split("x", $cgmatu);
+					$matricgm =explode("x", $cgmatu);
 					$outrospropri = "";
 					$xe = "";
 					$inic = false;
@@ -271,14 +271,14 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 		//    $pdf->SetLeftMargin(35);
 		$pdf->SetTextColor(0, 0, 0);
 		$pdf->SetFillColor(220);
-		
+
 		//echo "grupo - " . $grupodocumento . "<br>documento  -  ".$documento;
 		//die();
-		
-		
+
+
     if ( $grupodocumento > 0 ) {
   		$resulta = $cldb_docparag->sql_record($cldb_docparag->sql_query(null, "", "db_docparag.*,db02_texto,db02_alinhamento,db02_espaca,db02_alinha,db02_inicia", "db04_ordem"," db03_tipodoc = $grupodocumento"));
-    
+
       //echo "SQL - <br>".$cldb_docparag->sql_query(null, "", "db_docparag.*,db02_texto,db02_alinhamento,db02_espaca,db02_alinha,db02_inicia", "db04_ordem"," db03_tipodoc = $grupodocumento");
       //die();
     } else {
@@ -296,10 +296,10 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 			$pdf->SetX($db02_alinha);
 			$texto = db_geratexto($db02_texto);
 			if ($texto == "*tabela01*") {
-				$cgms = split("x", $nums);
+				$cgms =explode("x", $nums);
 				for ($t = 0; $t < sizeof($cgms); $t ++) {
 					if ($cgms[$t] != "") {
-						$numcgm = split("y", $cgms[$t]);
+						$numcgm =explode("y", $cgms[$t]);
 						$tipos = array ("PROPRIETÁRIO PRINCIPAL", "OUTRO PROPRIETÁRIO", "PROMITENTE COMPRADOR", "PROMITENTE COMPRADOR PRINCIPAL", "SÓCIO");
 						$reiptu = $clcgm->sql_record($clcgm->sql_query_file($numcgm[0], "z01_nome as nome,z01_numcgm,z01_ender as endereco,z01_numero as numero,z01_cep,z01_munic,z01_uf,z01_compl,z01_bairro,z01_cep,z01_cgccpf,z01_cxpostal"));
 
@@ -320,7 +320,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					if ($texto == "*atupropri*") {
 						$cgm = $cgmatu;
 					}
-					$matricgm = split("x", $cgm);
+					$matricgm =explode("x", $cgm);
 					$outrospropri = "";
 					$xe = "";
 					$inic = false;
@@ -356,7 +356,7 @@ for ($q = 0; $q < sizeof($matriz); $q ++) {
 					}
 				}
 			elseif ($texto == "*antpropri*") {
-				$matricgm = split("x", $cgmant);
+				$matricgm =explode("x", $cgmant);
 				$outrospropri = "";
 				$xe = "";
 				$inic = false;

@@ -22,9 +22,8 @@ class AnexoQuatroFactory extends AnexosFactory implements AnexosFactoryInterface
             case 2021:
                 return 244;
             case 2022:
-                return 263;
             default:
-                return 244;
+                return 263;
         }
     }
 

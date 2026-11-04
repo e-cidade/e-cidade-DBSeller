@@ -67,13 +67,13 @@ class cl_aguacontratoeconomia {
                  x38_observacoes = varchar(200) = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_aguacontratoeconomia() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoeconomia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_aguacontratoeconomia {
    }
 
    // funcao para Inclusão
-   function incluir ($x38_sequencial){ 
+   public function incluir ($x38_sequencial){ 
 
      if($this->x38_aguacontrato == null ){ 
        $this->erro_sql = " Campo Código do Contrato não informado.";

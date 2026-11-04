@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,19 +42,19 @@ $clrotulo->label("v03_descr");
        <?=@$Lq04_anousu?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q04_anousu',10,$Iq04_anousu,true,'text',$db_opcao,"")
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq04_inflat?>">
-       <?
+       <?php
        db_ancora(@$Lq04_inflat,"js_pesquisaq04_inflat(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q04_inflat',10,$Iq04_inflat,true,'text',$db_opcao," onchange='js_pesquisaq04_inflat(false);'");
         db_input('i01_descr',20,$Ii01_descr,true,'text',3,'');
       ?>
@@ -65,7 +65,7 @@ $clrotulo->label("v03_descr");
        <?=@$Lq04_vbase?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q04_vbase',10,$Iq04_vbase,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -75,19 +75,19 @@ $clrotulo->label("v03_descr");
        <?=@$Lq04_dtbase?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_inputdata('q04_dtbase',@$q04_dtbase_dia,@$q04_dtbase_mes,@$q04_dtbase_ano,true,'text',$db_opcao,"")
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq04_proced?>">
-      <?
+      <?php
         db_ancora(@$Lq04_proced,"js_pesquisaq04_proced(true);",$db_opcao);
       ?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q04_proced',10,$Iq04_proced,true,'text',$db_opcao," onchange='js_pesquisaq04_proced(false);'");
          db_input('v03_descr',20,$Iv03_descr,true,'text',3,'');
       ?>
@@ -98,7 +98,7 @@ $clrotulo->label("v03_descr");
        <b>Forma de Cálculo :</b> 
     </td>
     <td> 
-			<?
+			<?php
 			  $x = array('1'=>'Calcula somente variavel','2'=>'Calcula somente fixo','3'=>'Calcula variavel e fixo');
 			  db_select('q04_calfixvar',$x,true,$db_opcao,"");
 			?>
@@ -109,7 +109,7 @@ $clrotulo->label("v03_descr");
        <b>Dia Padrão para Vencimento :</b>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('q04_diasvcto',10,$Iq04_diasvcto,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -119,7 +119,7 @@ $clrotulo->label("v03_descr");
        <?=@$Lq04_perccorrepadrao?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('q04_perccorrepadrao', 10, $Iq04_perccorrepadrao, true, 'text', $db_opcao);
       ?>
     </td>
@@ -137,12 +137,12 @@ $clrotulo->label("v03_descr");
 			       value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
 			       <?=($db_botao==false?"disabled":"")?> >
 			<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-			<?
+			<?php
         if ($db_opcao == 1) {
 			?>
 			<input name="importar" type="button" id="importar" value="Importar Parâmetros do Exercício Anterior"
 			       onclick="js_importar();">
-			<?
+			<?php
         }
 			?>
     </td>
@@ -230,7 +230,7 @@ function js_pesquisa() {
 
 function js_preenchepesquisa(chave){
   db_iframe_cissqn.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

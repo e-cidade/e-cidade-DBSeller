@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -109,13 +109,13 @@ class cl_termo {
                  v07_vlrdes = float8 = Valor Desconto 
                  ";
    //funcao construtor da classe
-   function cl_termo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -124,7 +124,7 @@ class cl_termo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v07_parcel = ($this->v07_parcel == ""?@$GLOBALS["HTTP_POST_VARS"]["v07_parcel"]:$this->v07_parcel);
        if($this->v07_dtlanc == ""){
@@ -178,7 +178,7 @@ class cl_termo {
      }
    }
    // funcao para inclusao
-   function incluir ($v07_parcel){
+   public function incluir ($v07_parcel){
       $this->atualizacampos();
      if($this->v07_dtlanc == null ){
        $this->erro_sql = " Campo data de lancamento do parcelamento nao Informado.";
@@ -553,7 +553,7 @@ class cl_termo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($v07_parcel=null) {
+   public function alterar ($v07_parcel=null) {
       $this->atualizacampos();
      $sql = " update termo set ";
      $virgula = "";
@@ -1035,7 +1035,7 @@ class cl_termo {
      }
    }
    // funcao para exclusao
-   function excluir ($v07_parcel=null,$dbwhere=null) {
+   public function excluir ($v07_parcel=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v07_parcel));
      }else{
@@ -1121,7 +1121,7 @@ class cl_termo {
         }
     }
     // funcao do recordset
-    function sql_record($sql) {
+    public function sql_record($sql) {
         $result = db_query($sql);
         if($result==false){
             $this->numrows    = 0;
@@ -1143,7 +1143,7 @@ class cl_termo {
         }
         return $result;
     }
-    function sql_query ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
             $campos_sql = explode("#",$campos);
@@ -1179,7 +1179,7 @@ class cl_termo {
         }
         return $sql;
     }
-    function sql_query_arre ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_arre ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
             $campos_sql = explode("#",$campos);
@@ -1214,7 +1214,7 @@ class cl_termo {
         }
         return $sql;
     }
-    function sql_query_consulta ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_consulta ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
             $campos_sql = explode("#",$campos);
@@ -1251,7 +1251,7 @@ class cl_termo {
         }
         return $sql;
     }
-    function sql_query_file ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_file ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
             $campos_sql = explode("#",$campos);
@@ -1284,7 +1284,7 @@ class cl_termo {
         }
         return $sql;
     }
-    function sql_query_inf ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_inf ( $v07_parcel=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
             $campos_sql = explode("#",$campos);
@@ -1339,7 +1339,7 @@ class cl_termo {
         return $sql;
     }
 
-    function sql_query_origem_divida($numpre=null, $campos="*", $lPrimeiroParcelamento = false){
+    public function sql_query_origem_divida($numpre=null, $campos="*", $lPrimeiroParcelamento = false){
 
         if($numpre == null){
             return null;
@@ -1388,7 +1388,7 @@ class cl_termo {
 
     }
 
-    function sql_query_acerta_parcelamento($parcelamento, $valor_entrada, $valor_parcela, $tipo_parcelamento = 22) {
+    public function sql_query_acerta_parcelamento($parcelamento, $valor_entrada, $valor_parcela, $tipo_parcelamento = 22) {
 
         $sql = "
 				    select d.parcelamento,
@@ -1452,7 +1452,7 @@ class cl_termo {
 
     }
 
-    function sql_query_parcelas_termo($parcelamento, $tipo_parcelamento = 22) {
+    public function sql_query_parcelas_termo($parcelamento, $tipo_parcelamento = 22) {
 
         $sql = "select v07_parcel, v07_totpar, k00_numpre, k00_numpar, sum(k00_valor) as k00_valor
               from termo
@@ -1568,6 +1568,30 @@ class cl_termo {
         $tipo = $tiposParcelamento[$tabelaParcelamento->tabela];
 
         return $this->sql_query_origem($iParcelamento, $tipo);
+    }
+
+    /**
+     * @param integer $iParcelamento
+     * @return string
+     */
+    public function sql_buscar_datas_vencimento_parcelas_termo($iParcelamento)
+    {
+      $sql = "
+        select k00_numpre,
+               k00_numpar,
+               k00_dtvenc
+          from arrecad
+        where 
+          k00_numpre in (
+            select v07_numpre
+              from termo
+            where
+              v07_parcel = $iParcelamento
+            ) and k00_hist <> 11303
+        order by k00_numpre, k00_numpar
+      ";
+
+      return $sql;
     }
 }
 ?>

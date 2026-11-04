@@ -95,6 +95,8 @@ $db_opcao = 1;
             qry += '&k145_numeroprocesso=' + document.form1.k145_numeroprocesso.value;
             qry += '&db_selinstit=' + selinstit;
             qry += "&folha=<?php echo(isset($modulo) && $modulo == 'pessoal' ? 't' : 'f'); ?>";
+            qry += '&contadebito='+document.form1.oTxtContaDebitoCodigo.value;
+            qry += '&contacredito='+document.form1.oTxtContaCreditoCodigo.value;
 
             jan = window.open('cai2_relslip002.php?' + qry,
                 '',
@@ -108,24 +110,25 @@ $db_opcao = 1;
 <div class="container">
     <form name="form1">
         <fieldset>
+            <legend>Relatório >> Slip</legend>
             <table>
                 <tr>
-                    <td nowrap title="<?= @$Tk17_codigo ?>" align='left'>
+                    <td nowrap>
                         <?php db_ancora(@$Lk17_codigo, "js_pesquisak17_codigo(true);", $db_opcao); ?>
                     </td>
                     <td>
-                        <?php db_input('k17_codigo', 16, $Ik17_codigo, true, 'text', $db_opcao, " onchange='js_pesquisak17_codigo(false);'") ?>
+                        <?php db_input('k17_codigo', 10, $Ik17_codigo, true, 'text', $db_opcao, " onchange='js_pesquisak17_codigo(false);'") ?>
                     </td>
                     <td>
                         <?php db_ancora("<b>Até</b>", "js_pesquisak17_codigo02(true);", $db_opcao); ?>
                     </td>
                     <td>
-                        <?php db_input('k17_codigo', 16, $Ik17_codigo, true, 'text', $db_opcao, " onchange='js_pesquisak17_codigo02(false);'", "k17_codigo02") ?>
+                        <?php db_input('k17_codigo', 10, $Ik17_codigo, true, 'text', $db_opcao, " onchange='js_pesquisak17_codigo02(false);'", "k17_codigo02") ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <td align=left>
+                    <td>
                         <b>De:</b>
                     </td>
                     <td>
@@ -140,7 +143,7 @@ $db_opcao = 1;
                 </tr>
 
                 <tr>
-                    <td align="left"><? db_ancora(@$Lk17_hist, "js_pesquisac50_codhist(true);", $db_opcao); ?></td>
+                    <td><?php db_ancora(@$Lk17_hist, "js_pesquisac50_codhist(true);", $db_opcao); ?></td>
                     <td colspan="4">
                         <?php
                         db_input('k17_hist', 10, $Ik17_hist, true, 'text', $db_opcao, " onchange='js_pesquisac50_codhist(false);'");
@@ -150,25 +153,42 @@ $db_opcao = 1;
                 <tr>
 
                 <tr>
+                    <td>
+                    <?php db_ancora("Conta Débito:", "pesquisaContaSaltes(true, false);", $db_opcao); ?>
+                    </td>
+                    <td colspan="3">
+                      <input id="oTxtContaDebitoCodigo" size="10" type="text" name="oTxtContaDebitoCodigo" value="" onchange="pesquisaContaSaltes(false, false);"/>
+                      <input id="oTxtContaDebitoDescricao" class="readonly" type="text" size="30" name="oTxtContaDebitoDescricao" value="" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                      <?php db_ancora("Conta Crédito:", "pesquisaContaSaltes(true, true);", $db_opcao); ?>
+                    </td>
+                    <td colspan="3">
+                      <input id="oTxtContaCreditoCodigo" size="10" type="text" name="oTxtContaCreditoCodigo" value="" onchange="pesquisaContaSaltes(false, true);"/>
+                      <input id="oTxtContaCreditoDescricao" class="readonly" type="text" size="30" name="oTxtContaCreditoDescricao" value="" />
+                    </td>
+                </tr>
+
+                <tr>
                     <td><strong>Recurso:</strong></td>
-                    <td colspan='5'>
+                    <td colspan='4'>
                         <?php
                         $dbwhere = " o15_datalimite is null or o15_datalimite > '" . date('Y-m-d', db_getsession('DB_datausu')) . "'";
                         $rs = $clorctiporec->sql_record($clorctiporec->sql_query(null, "distinct o15_recurso, o15_descr", "o15_recurso", $dbwhere));
                         db_selectrecord("o15_recurso", $rs, false, 1, "", "", "", "0");
                         ?>
                     </td>
-                </tr>
+                </tr>                
 
                 <tr>
-                    <td align=left><strong>Situação:</strong></td>
+                    <td><strong>Situação:</strong></td>
                     <td colspan=3>
                         <?php
                         $tipo_ordem = array("A" => "Todas", "1" => "Não Autenticado", "2" => "Autenticado", "3" => "Estornado", "4" => "Cancelado");
                         db_select("situacao", $tipo_ordem, true, 2); ?>
-                        <script>
-                            document.getElementById('situacao').style.width = '100%';
-                        </script>
                     </td>
                 </tr>
 
@@ -182,45 +202,44 @@ $db_opcao = 1;
                 </tr>
 
                 <tr>
-                    <td></td>
-                    <td colspan=3>
-                        <?php db_selinstit('', 300, 100); ?>
+                    <td colspan=4 style="text-align: center">
+                        <?php db_selinstit('', 425, 100); ?>
                     </td>
                 </tr>
-            </table>
-
-            <table align="center">
                 <tr>
-                    <td colspan="2">
-                        <?
-                        $aux = new cl_arquivo_auxiliar;
-                        $aux->cabecalho = "<strong>CGM</strong>";
-                        $aux->codigo = "z01_numcgm";
-                        $aux->descr = "z01_nome";
-                        $aux->isfuncnome = true;
-                        $aux->nomeobjeto = 'cgm';
-                        $aux->funcao_js = 'js_mostra';
-                        $aux->funcao_js_hide = 'js_mostra1';
-                        $aux->sql_exec = "";
-                        $aux->func_arquivo = "func_nome.php";
-                        $aux->nomeiframe = "func_nome";
-                        $aux->localjan = "";
-                        $aux->db_opcao = 2;
-                        $aux->tipo = 2;
-                        $aux->top = 0;
-                        $aux->linhas = 5;
-                        $aux->vwhidth = 200;
-                        $aux->funcao_gera_formulario();
-                        ?>
+                    <td colspan="4" style="text-align: center">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="text-align: center">
+                                    <?php
+                                    $aux = new cl_arquivo_auxiliar;
+                                    $aux->cabecalho = "<strong>CGM</strong>";
+                                    $aux->codigo = "z01_numcgm";
+                                    $aux->descr = "z01_nome";
+                                    $aux->isfuncnome = true;
+                                    $aux->nomeobjeto = 'cgm';
+                                    $aux->funcao_js = 'js_mostra';
+                                    $aux->funcao_js_hide = 'js_mostra1';
+                                    $aux->sql_exec = "";
+                                    $aux->func_arquivo = "func_nome.php";
+                                    $aux->nomeiframe = "func_nome";
+                                    $aux->localjan = "";
+                                    $aux->db_opcao = 2;
+                                    $aux->tipo = 2;
+                                    $aux->top = 0;
+                                    $aux->linhas = 6;
+                                    $aux->vwidth = 400;
+                                    $aux->funcao_gera_formulario();
+                                    ?>
+                                <td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
-            </table>
-
-            <table align="center">
                 <tr>
-                    <td align="right"><strong>Opção de Seleção :<strong></td>
-                    <td align="left" colspan='4'>
-                        <?
+                    <td><strong>Opção de Seleção :<strong></td>
+                    <td colspan="3">
+                        <?php
                         $xxx = array("S" => "Somente Selecionados", "N" => "Menos os Selecionados");
                         db_select('parametro', $xxx, true, 2);
                         ?>
@@ -238,6 +257,12 @@ $db_opcao = 1;
 </body>
 </html>
 <script>
+
+document.getElementById('o15_recurso').style.width = '50';
+document.getElementById('o15_recursodescr').style.width = '250';
+document.getElementById('situacao').style.width = '305';
+document.getElementById('parametro').style.width = '305';
+
     //-----------------------------------------------------------
     //---slip 01
     function js_pesquisak17_codigo(mostra) {
@@ -245,9 +270,9 @@ $db_opcao = 1;
         sFuncao = 'func_slip.php?';
         <?php
         if (isset($modulo) and $modulo == 'pessoal') {
-        ?>
+            ?>
         sFuncao += 'modulo=pessoal&';
-        <?php
+            <?php
         }
         ?>
 
@@ -282,9 +307,9 @@ $db_opcao = 1;
         sFuncao = 'func_slip.php?';
         <?php
         if (isset($modulo) and $modulo == 'pessoal') {
-        ?>
+            ?>
         sFuncao += 'modulo=pessoal&';
-        <?php
+            <?php
         }
         ?>
 
@@ -333,4 +358,59 @@ $db_opcao = 1;
         document.form1.c50_descr.value = chave2;
         db_iframe.hide();
     }
+
+  function pesquisaContaSaltes (lMostra, lCredito) {
+
+    /**
+     * Controla que função chamar para completar os campos
+     * e também para pegar o valor do input certo
+     */
+    var sFunctionCompleta = "Debito";
+    var sIframe           = "debito";
+    if (lCredito) {
+
+      sFunctionCompleta = "Credito";
+      sIframe           = "credito";
+    }
+
+    var oTxtConta       = $('oTxtConta'+sFunctionCompleta+'Codigo');
+
+    var sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&pesquisa_chave="+oTxtConta.value+"&funcao_js=parent.preenche"+sFunctionCompleta;
+    if (lMostra) {
+      sUrlSaltes = "func_saltesreduz.php?ver_datalimite=1&funcao_js=parent.completa"+sFunctionCompleta+"|k13_reduz|k13_descr";
+    }
+
+    js_OpenJanelaIframe("", 'db_iframe_'+sIframe, sUrlSaltes, "Pesquisa Contas", lMostra);
+  }
+
+  function completaDebito(iReduzido, sDescricao) {
+
+   $('oTxtContaDebitoCodigo').value = iReduzido;
+   $('oTxtContaDebitoDescricao').value = sDescricao;
+   db_iframe_debito.hide();
+  }
+
+  function preencheDebito(sDescricao, lErro) {
+
+    $('oTxtContaDebitoDescricao').value = sDescricao;
+    if (lErro) {
+      $('oTxtContaDebitoCodigo').value = "";
+    }
+
+  }
+
+  function completaCredito(iReduzido, sDescricao) {
+
+   $('oTxtContaCreditoCodigo').value = iReduzido;
+   $('oTxtContaCreditoDescricao').value = sDescricao;
+   db_iframe_credito.hide();
+  }
+
+  function preencheCredito(sDescricao, lErro) {
+
+    $('oTxtContaCreditoDescricao').value = sDescricao;
+    if (lErro) {
+      $('oTxtContaCreditoCodigo').value = "";
+    }
+  }
 </script>

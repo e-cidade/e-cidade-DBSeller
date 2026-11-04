@@ -385,7 +385,7 @@ class ProcessoDocumento
     }
 
     /**
-     * Retorna se o documento está ou não no estorage
+     * Retorna se o documento est? ou n?o no estorage
      * @access public
      * @return integer
      */
@@ -522,9 +522,9 @@ class ProcessoDocumento
 
         $oDaoProtprocessodocumento = new cl_protprocessodocumento();
         $oDaoProtprocessodocumento->p01_protprocesso = $this->getProcessoProtocolo()->getCodProcesso();
-        $oDaoProtprocessodocumento->p01_descricao = $this->sDescricao;
+        $oDaoProtprocessodocumento->p01_descricao = DBString::removerCaracteresEspeciaisAcentos($this->sDescricao);
         $oDaoProtprocessodocumento->p01_documento = $this->iOid;
-        $oDaoProtprocessodocumento->p01_nomedocumento = $this->sNomeDocumento;
+        $oDaoProtprocessodocumento->p01_nomedocumento = DBString::removerCaracteresEspeciaisAcentos($this->sNomeDocumento);
         $oDaoProtprocessodocumento->p01_data = date('Y-m-d');
         $oDaoProtprocessodocumento->p01_usuario = $this->getUsuario()->getIdUsuario();
         $oDaoProtprocessodocumento->p01_procandamint = $this->getProcandamint();
@@ -653,7 +653,7 @@ class ProcessoDocumento
 
         $lExclusao = true;
 
-        if (!empty($this->iOid)) {
+        if (!empty($this->iOid) and !$this->isStorage()) {
             $lExclusao = DBLargeObject::exclusao($this->iOid);
         }
 
@@ -693,7 +693,8 @@ class ProcessoDocumento
             throw new Exception("Erro ao buscar ordem");
         }
 
-        return db_utils::fieldsMemory($rs, 0)->max;
+        $max = db_utils::fieldsMemory($rs, 0)->max;
+        return !empty($max) ? $max : 0;
     }
 
     /**

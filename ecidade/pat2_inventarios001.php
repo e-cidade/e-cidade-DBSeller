@@ -102,7 +102,7 @@ $db_opcao = 3;
            </strong>
         </td>
         <td> 
-          <?
+          <?php
             db_input('inicial',10,$It75_exercicio,true,'text', 3,"")
           ?>    
         </td>
@@ -116,7 +116,7 @@ $db_opcao = 3;
            </strong>
         </td>
         <td> 
-          <?
+          <?php
             db_input('final',10,$It75_exercicio,true,'text', 3,"")
           ?>    
         </td>

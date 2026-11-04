@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -121,7 +121,7 @@ input {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <br>
-<?	
+<?php 
 	
 	if(isset($HTTP_POST_VARS["excluir"])) {
   db_query("BEGIN");
@@ -363,7 +363,7 @@ input {
       </tr>
     </table>
     <table width="90%" border="1" cellpadding="0" cellspacing="0">
-	<?
+	<?php
     $CAR = db_query("select c.descricao,i.area,i.descrcar,i.anoconstr
                     from db_caritbi c,db_caritbilan i
                     where c.codcaritbi = i.codcaritbi
@@ -372,13 +372,13 @@ input {
     for($i = 0;$i < pg_numrows($CAR);$i++) {
       ?>  
       <tr> 
-        <td width="16%"><? echo $i==0?"<strong>Construções:</strong>":"" ?>&nbsp;</td>
+        <td width="16%"><?php echo $i==0?"<strong>Construções:</strong>":"" ?>&nbsp;</td>
         <td width="23%"><?=@pg_result($CAR,$i,"descrcar")?>&nbsp;</td>
         <td width="24%"><?=@pg_result($CAR,$i,"descricao")?>&nbsp;</td>
         <td width="24%"><?=@pg_result($CAR,$i,"area")?>&nbsp;</td>
         <td width="20%"><?=@pg_result($CAR,$i,"anoconstr")?>&nbsp;</td>
       </tr>
-	  <?
+	  <?php
 	  }
 	?>
     </table>
@@ -405,7 +405,7 @@ input {
           <input name="mes" type="text" class="campos" id="mes" onkeyUp="js_digitadata(this.name)" size="2" maxlength="2">
           /
           <input name="ano" type="text" class="campos" id="ano" size="4" maxlength="4"-->
-		  <?
+		  <?php
 		  include(modification("dbforms/db_funcoes.php"));
                   $dia = date("d");
                   $mes = db_formatar(date("m")+1,'s','0',2);
@@ -427,7 +427,7 @@ input {
     <input name="excluir" type="submit" value="Excluir" onclick="return confirm('Quer realmente excluir esta solicitação?')">
   </form>
 </center>
-<?
+<?php
 } else {
 /*
   if(!isset($offset)) {
@@ -455,7 +455,7 @@ echo "<center>\n";
 	</td>
   </tr>
 </table>
-<?	
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

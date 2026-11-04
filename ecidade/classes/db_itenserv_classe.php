@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,40 +29,40 @@
 //CLASSE DA ENTIDADE itenserv
 class cl_itenserv { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cm10_i_codigo = 0; 
-   var $cm10_i_numpre = 0; 
-   var $cm10_d_data_dia = null; 
-   var $cm10_d_data_mes = null; 
-   var $cm10_d_data_ano = null; 
-   var $cm10_d_data = null; 
-   var $cm10_i_taxaserv = 0; 
-   var $cm10_f_valor = 0; 
-   var $cm10_d_privenc_dia = null; 
-   var $cm10_d_privenc_mes = null; 
-   var $cm10_d_privenc_ano = null; 
-   var $cm10_d_privenc = null; 
-   var $cm10_t_obs = null; 
-   var $cm10_i_usuario = 0; 
-   var $cm10_d_dtlanc_dia = null; 
-   var $cm10_d_dtlanc_mes = null; 
-   var $cm10_d_dtlanc_ano = null; 
-   var $cm10_d_dtlanc = null; 
-   var $cm10_f_valortaxa = 0; 
+   public $cm10_i_codigo = 0; 
+   public $cm10_i_numpre = 0; 
+   public $cm10_d_data_dia = null; 
+   public $cm10_d_data_mes = null; 
+   public $cm10_d_data_ano = null; 
+   public $cm10_d_data = null; 
+   public $cm10_i_taxaserv = 0; 
+   public $cm10_f_valor = 0; 
+   public $cm10_d_privenc_dia = null; 
+   public $cm10_d_privenc_mes = null; 
+   public $cm10_d_privenc_ano = null; 
+   public $cm10_d_privenc = null; 
+   public $cm10_t_obs = null; 
+   public $cm10_i_usuario = 0; 
+   public $cm10_d_dtlanc_dia = null; 
+   public $cm10_d_dtlanc_mes = null; 
+   public $cm10_d_dtlanc_ano = null; 
+   public $cm10_d_dtlanc = null; 
+   public $cm10_f_valortaxa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cm10_i_codigo = int4 = Código 
                  cm10_i_numpre = int4 = Numpre 
                  cm10_d_data = date = Data Sepultamento 
@@ -75,13 +75,13 @@ class cl_itenserv {
                  cm10_f_valortaxa = float8 = Valor Taxa 
                  ";
    //funcao construtor da classe 
-   function cl_itenserv() { 
+   public function cl_itenserv() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itenserv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_itenserv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm10_i_codigo = ($this->cm10_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm10_i_codigo"]:$this->cm10_i_codigo);
        $this->cm10_i_numpre = ($this->cm10_i_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["cm10_i_numpre"]:$this->cm10_i_numpre);
@@ -128,7 +128,7 @@ class cl_itenserv {
      }
    }
    // funcao para inclusao
-   function incluir ($cm10_i_codigo){ 
+   public function incluir ($cm10_i_codigo){ 
       $this->atualizacampos();
      if($this->cm10_i_numpre == null ){ 
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -234,6 +234,7 @@ class cl_itenserv {
        $this->erro_status = "0";
        return false;
      }
+
      $sql = "insert into itenserv(
                                        cm10_i_codigo 
                                       ,cm10_i_numpre 
@@ -302,7 +303,7 @@ class cl_itenserv {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($cm10_i_codigo=null) { 
+   public function alterar ($cm10_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update itenserv set ";
      $virgula = "";
@@ -535,7 +536,7 @@ class cl_itenserv {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($cm10_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($cm10_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm10_i_codigo));
      }else{ 
@@ -605,7 +606,7 @@ class cl_itenserv {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -628,10 +629,10 @@ class cl_itenserv {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $cm10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $cm10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -663,7 +664,7 @@ class cl_itenserv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,10 +674,10 @@ class cl_itenserv {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $cm10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $cm10_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -697,7 +698,7 @@ class cl_itenserv {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

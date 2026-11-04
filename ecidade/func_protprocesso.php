@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,7 +74,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
                 ?>
             </td>
@@ -84,8 +84,8 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_numero?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
-                db_input("p58_numero",10,$Ip58_numero,true,"text",4,"","chave_p58_numero");
+                <?php
+                db_input("p58_numero",10,$Ip58_numero,true,"text",4,"placeholder='Número/Ano'","chave_p58_numero", "", "text-transform: capitalize;");
                 ?>
             </td>
           </tr>
@@ -94,7 +94,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_requer?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("p58_requer",50,$Ip58_requer,true,"text",4,"","chave_p58_requer");
                 ?>
             </td>
@@ -112,12 +112,9 @@ if (isset($chave_p58_requer)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-        <?
+        <?php
+        $departamentoSessao = db_getsession("DB_coddepto");
 
-
-        /**
-         * Evita o escape dos campos
-         */
         if (isset($chave_p58_numero)) {
             $chave_p58_numero = addslashes($chave_p58_numero);
         }
@@ -133,16 +130,53 @@ if (isset($chave_p58_requer)) {
         if(isset($grupo) && trim($grupo) != '' ){
             $where .= " and tipoproc.p51_tipoprocgrupo = $grupo";
         }
+        if (isset($usadepto) && $usadepto === 'true') {
+            $where .= " and p58_coddepto = {$departamentoSessao}";
+        }
+
         if ( isset($tipo) && trim($tipo) != '' ) {
             $where .= " and p58_codigo = {$tipo} ";
         }
+
         if ( isset($apensado) && trim($apensado) != '' ) {
-            $where .= " and not exists ( select *
-                                       from processosapensados
-                                      where p30_procapensado  = p58_codproc
-                                         or p30_procprincipal = p58_codproc limit 1)
-                    and p58_codproc != {$apensado} ";
+            $where .= " and p58_codproc != {$apensado} ";
         }
+
+        // Processos cujo ?ltimo andamento se encontra no departamento da sess?o
+        if (!empty($esta_no_departamento)) {
+            $where .= " and not exists (
+                select 1 from proctransferproc
+                left join proctransand on proctransand.p64_codtran = proctransferproc.p63_codtran
+                left join procandam on procandam.p61_codandam = proctransand.p64_codandam
+                where
+                    p63_codproc = p58_codproc
+                    and p64_codandam is null
+            ) ";
+
+            $where .= " and exists (
+                select 1 from procandam
+                    where
+                        p61_codandam = p58_codandam
+                        and p61_coddepto = {$departamentoSessao}
+            )";
+        }
+
+        if (!empty($nao_esta_apensado)) {
+            $condicoes = [];
+            $condicoes[] = 'p30_procapensado = p58_codproc';
+
+            if (!empty($nao_e_apensado_principal)) {
+                $condicoes[] = 'p30_procprincipal = p58_codproc';
+            }
+
+            $condicoes = implode(' OR ', $condicoes);
+            $where .= "
+                and not exists (
+                    select 1 from processosapensados
+                    where {$condicoes}
+                )";
+        }
+
         if (!isset($pesquisa_chave)) {
 
             if (isset($campos)==false) {
@@ -211,9 +245,9 @@ if (isset($chave_p58_requer)) {
 
                 }else{
                     if(!empty($requerente)) {
-                        echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") não Encontrado', true);</script>";
+                        echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") n?o Encontrado', true);</script>";
                     } else {
-                        echo "<script>" . $funcao_js . "('','Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
+                        echo "<script>" . $funcao_js . "('','Chave(" . $pesquisa_chave . ") n?o Encontrado',true);</script>";
                     }
                 }
             }else{

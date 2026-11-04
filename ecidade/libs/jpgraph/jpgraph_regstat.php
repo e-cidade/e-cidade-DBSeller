@@ -23,7 +23,7 @@ class Spline {
     var $y2;		 // 2:nd derivate of ydata	
     var $n=0;
 
-    function Spline($xdata,$ydata) {
+    public function __construct($xdata,$ydata) {
 	$this->y2 = array();
 	$this->xdata = $xdata;
 	$this->ydata = $ydata;
@@ -57,7 +57,7 @@ class Spline {
     }
 
     // Return the two new data vectors
-    function Get($num=50) {
+    public function Get($num=50) {
 	$n = $this->n ;
 	$step = ($this->xdata[$n-1]-$this->xdata[0]) / ($num-1);
 	$xnew=array();
@@ -72,7 +72,7 @@ class Spline {
     }
 
     // Return a single interpolated Y-value from an x value
-    function Interpolate($xpoint) {
+    public function Interpolate($xpoint) {
 
 	$max = $this->n-1;
 	$min = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbicgm->rotulo->label("it02_guia");
               <?=$Lit02_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it02_guia",10,$Iit02_guia,true,"text",4,"","chave_it02_guia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbicgm->rotulo->label("it02_guia");
               <?=$Lit02_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it02_numcgm",8,$Iit02_numcgm,true,"text",4,"","chave_it02_numcgm");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clitbicgm->rotulo->label("it02_guia");
               <?=$Lit02_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it02_guia",10,$Iit02_guia,true,"text",4,"","chave_it02_guia");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clitbicgm->rotulo->label("it02_guia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbicgm.php")==true){
@@ -129,12 +129,12 @@ $clitbicgm->rotulo->label("it02_guia");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

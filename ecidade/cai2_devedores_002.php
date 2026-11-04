@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -90,7 +90,7 @@ if ($grupo == 'nome'){
   if ($ordem == 'numerica' || $ordem == "tipo"){
     $ordem = 'k22_numcgm';
   }
-  
+
   $sql  = " select *                                                   			             ";
   $sql .= "	  from (                                                           				 ";
   $sql .= " 					select k22_data,                                    	     ";
@@ -101,9 +101,9 @@ if ($grupo == 'nome'){
   $sql .= "			   			   $quebra1                                            		 ";
   $sql .= "					 from (                                                    		 ";
   $sql .= "					  		select k22_data,                                     	 ";
-  $sql .= "								   k22_numcgm,                                       "; 
+  $sql .= "								   k22_numcgm,                                       ";
   $sql .= "                        sum(k22_vlrhis) as valor_hist, " ;
-  $sql .= "								   sum(k22_vlrcor + k22_juros + k22_multa) as valor  "; 
+  $sql .= "								   sum(k22_vlrcor + k22_juros + k22_multa) as valor  ";
   $sql .= "								   $quebra1                                          ";
   $sql .= "							  from debitos                                           ";
   $sql .= "					   		 where k22_data   = '$data'                              ";
@@ -112,10 +112,10 @@ if ($grupo == 'nome'){
   $sql .= "							   $tipodebito                                           ";
   $sql .= "						  group by k22_data,                                     	 ";
   $sql .= "						  		   k22_numcgm                                        ";
-  $sql .= "						  		    $quebra1                                         "; 
+  $sql .= "						  		    $quebra1                                         ";
   $sql .= "						  ) as x                                                 	 ";
   $sql .= "					  	  inner join cgm on z01_numcgm = k22_numcgm            		 ";
-  $sql .= "					where valor between $valorminimo and $valormaximo          		 "; 
+  $sql .= "					where valor between $valorminimo and $valormaximo          		 ";
   $sql .= "					  and valor > 0                                            		 ";
   $sql .= "				 group by k22_data,                                          		 ";
   $sql .= "				 		  k22_numcgm,                                            	 ";
@@ -133,7 +133,7 @@ if ($grupo == 'nome'){
   if ($ordem == 'numerica' || $ordem == "tipo"){
       $ordem = 'k22_inscr';
   }
- 
+
   $sql  = "select *                                                                          				             ";
   $sql .= "  from (                                                                                       				 ";
   $sql .= "				 select k22_data,                                                                       		 ";
@@ -162,7 +162,7 @@ if ($grupo == 'nome'){
   $sql .= "					where valor between $valorminimo and $valormaximo                                     		 ";
   $sql .= "						and valor > 0                                                                       	 ";
   $sql .= "					group by k22_data, k22_numcgm, k22_inscr,z01_nome $quebra1 order by $ordem $ordemtipo 		 ";
-  $sql .= ") as yyy $limite                                                                               				 "; 
+  $sql .= ") as yyy $limite                                                                               				 ";
 
    $cab1  = 'Incrição';
    $cab2  = 'Nome';
@@ -173,7 +173,7 @@ if ($grupo == 'nome'){
       $ordem = 'k22_matric';
   }
 
-  $sql  = " select *                                                                                                           "; 
+  $sql  = " select *                                                                                                           ";
   $sql .= "   from (                                                                                                           ";
   $sql .= "          select k22_data,                                                                                          ";
   $sql .= "                 k22_numcgm,                                                                                        ";
@@ -198,7 +198,7 @@ if ($grupo == 'nome'){
   $cab2  = 'Nome';
 
 }else{
-  
+
   if ($ordem == 'z01_nome'){
     $ordem = 'k00_descr';
   }
@@ -208,26 +208,25 @@ if ($grupo == 'nome'){
   }
 
   $sql = "select * from	(
- 					 	  select k22_data, 
-							 	 k22_tipo as um, 
+ 					 	  select k22_data,
+							 	 k22_tipo as um,
 							 	 k00_descr as dois,
-								 round(sum(k22_vlrcor + k22_juros + k22_multa),2) as valor  
+								 round(sum(k22_vlrcor + k22_juros + k22_multa),2) as valor
 							from debitos
-								 inner join arretipo on k00_tipo = k22_tipo 
-						   where k22_data   = '$data' $tipodebito and $whereorigem 
+								 inner join arretipo on k00_tipo = k22_tipo
+						   where k22_data   = '$data' $tipodebito and $whereorigem
 						     and k22_instit = $instit
-						group by k22_data, 
-								 k22_tipo, 
+						group by k22_data,
+								 k22_tipo,
 								 k00_descr
 							order by $ordem $ordemtipo
-					 	 ) as yyy 
-				  where valor between $valorminimo and $valormaximo 
+					 	 ) as yyy
+				  where valor between $valorminimo and $valormaximo
 			  	 $limite";
-   
+
    $cab1  = 'Tipo';
    $cab2  = 'Descrição';
 }
-//echo $sql;exit;
 $head7 = 'Valores entre :  '.trim(db_formatar($valorminimo,'f')).'   e   '.trim(db_formatar($valormaximo,'f'));
 $head8 = 'Posição em : '.db_formatar($data,'d');
 $result1 = db_query($sql);
@@ -261,14 +260,8 @@ if ($quebrar == 't' && $grupo != 'tipo'){
    $pdf->Cell(30,05,"Valor Hist.","TB",0,"R",1);
    $pdf->Cell(30,05,"Valor","TB",1,"R",1);
 }
-//$data = array();
 for($yy=0;$yy<$resultnrows;$yy++){
   db_fieldsmemory($result1,$yy);
-//  if ($yy % 2 == 0){
-//      $preenc = 1;
-//  }else {
-//      $preenc = 0;
-//  }
   if ($pdf->gety() > $pdf->h -30 ){
      $linha = 0;
      $pdf->AddPage();
@@ -281,7 +274,7 @@ for($yy=0;$yy<$resultnrows;$yy++){
        $pdf->cell(10,05,'Tipo',"TB",0,"C",1);
        $pdf->cell(40,05,'Descrição',"TB",1,"C",1);
      }else{
-       $pdf->Cell(30,05,"Valor Hist.","TB",0,"R",1);      
+       $pdf->Cell(30,05,"Valor Hist.","TB",0,"R",1);
        $pdf->Cell(30,05,"Valor","TB",1,"R",1);
      }
   }
@@ -291,19 +284,18 @@ for($yy=0;$yy<$resultnrows;$yy++){
   if ($quebrar == 't' && $grupo != 'tipo'){
      $pdf->Cell(30,04,db_formatar($valor,'f'),$xborda,0,"R",$preenc);
      $sql = "select k00_descr from arretipo where k00_tipo = $k22_tipo";
-//     echo pg_result(db_query($sql),0,'k02_descr');exit;
      $pdf->cell(10,05,$k22_tipo,$xborda,0,"C",$preenc);
      $pdf->cell(40,05,pg_result(db_query($sql),0,'k00_descr'),$xborda,1,"L",$preenc);
-     
+
   }else{
      $pdf->Cell(30,04,db_formatar($valor_hist,'f'),$xborda,0,"R",$preenc);
      $pdf->Cell(30,04,db_formatar($valor,'f'),$xborda,1,"R",$preenc);
-  }  
+  }
   $tttotal += $valor;
   $ttvlrhis += $valor_hist;
   $totreg  += 1;
 
-  
+
   $dt["\"".$dois."\""] = $valor;
   $cor -= 15;
   if ( $cor < 80 )
@@ -312,7 +304,6 @@ for($yy=0;$yy<$resultnrows;$yy++){
 
 }
   $pdf->SetFont('Arial','B',8);
-//  $pdf->Cell(85,05,'',"TB",0,"R",1);
   $pdf->Cell(85,05,'TOTAL  '.$totreg." Registros","TB",0,"L",1);
   if ($quebrar == 't' && $grupo != 'tipo'){
     $pdf->Cell(30,05,db_formatar($tttotal,'f'),"TB",0,"R",1);
@@ -329,7 +320,6 @@ if ($grupo == 'tipo'){
    for($i=0;$i<pg_numrows($result1);$i++){
      $data[pg_result($result1,$i,'dois')] = pg_result($result1,$i,'valor');
    }
-   //$data = array('Parcelamento do Foro' => 3229.78, 'Parcelamento de Diversos' => 4479.89, 'Alvara' => 495,'Parcelamentos de Melhorias'=> 29264.32);
    //Pie chart
    $pdf->AddPage();
    $pdf->SetFont('Arial', 'BIU', 10);
@@ -350,57 +340,44 @@ if ($grupo == 'tipo'){
    $col06=array(180,205,200);
    $col07=array(070,005,150);
    $col08=array(255,100,100);
-   $col09=array(090,045,050);
+   $col09=array(90,45,50);
    $col10=array(000,165,010);
-   $col11=array(110,085,060);
+   $col11=array(110,85,60);
    $col12=array(120,145,120);
    $col13=array(130,125,180);
    $col14=array(255,125,240);
    $col15=array(205,165,200);
    $col16=array(160,105,150);
    $col17=array(165,205,100);
-   $col18=array(180,085,050);
+   $col18=array(180,85,50);
    $col19=array(125,255,010);
    $col20=array(200,065,060);
 
-//   $pdf->PieChart(180, 60, $dt, '%l - %v - (%p)', $col);
    $pdf->PieChart(180, 60, $dt, '%l - %v - (%p)', array($col01,$col02,$col03,$col04,$col05,$col06,$col07,$col08,$col09,$col10,$col11,$col12,$col13,$col14,$col15,$col16,$col17,$col18,$col19,$col20));
    $pdf->SetXY($valX, $valY + 40);
-   
-   /*//Bar diagram
-   $pdf->SetFont('Arial', 'BIU', 12);
-   //$pdf->Cell(0, 5, '2 - Gráfico de Barras', 0, 1);
-   $pdf->Ln(8);
-   $valX = $pdf->GetX();
-   $valY = $pdf->GetY();
-   $pdf->SetXY($valX, $valY + 10);
-   $pdf->BarDiagram(190, 70, $dt, '%l : %v (%p)', array(255,175,100));
-   $pdf->SetXY($valX, $valY + 80);
-   */
-} else {   
+
+} else {
 
   if (isset($campo)){
 
     $pdf->ln();
 
     $pdf->Cell(50,05,"TIPOS DE DEBITOS ESCOLHIDOS:","",1,"L",1);
- 
-    $tiposdeb = split("-",$campo);
+
+    $tiposdeb =explode("-",$campo);
 
     for ($x = 0; $x < count($tiposdeb); $x++) {
       $sql = "select k00_tipo, k00_descr from arretipo where k00_tipo = " . $tiposdeb[$x];
       $result = db_query($sql);
       db_fieldsmemory($result, 0);
-      
+
       $pdf->Cell(50 + ($x*2), 05, "$k00_tipo - $k00_descr", "", 1, "L", 0);
     }
-    
+
   } else {
     $pdf->Cell(85,05,"TODOS OS TIPOS DE DEBITOS ESCOLHIDOS","",0,"L",1);
   }
 
 }
 
-
 $pdf->Output();
-?>

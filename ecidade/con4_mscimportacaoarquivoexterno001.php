@@ -41,7 +41,7 @@ db_postmemory($HTTP_POST_VARS);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("AjaxRequest.js");
     db_app::load("prototype.js");
@@ -96,7 +96,7 @@ db_postmemory($HTTP_POST_VARS);
     </form>
 
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

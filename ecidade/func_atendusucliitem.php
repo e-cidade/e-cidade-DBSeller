@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clatendusucliitem->rotulo->label("at81_codatendcli");
               <?=$Lat81_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at81_seq",10,$Iat81_seq,true,"text",4,"","chave_at81_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendusucliitem->rotulo->label("at81_codatendcli");
               <?=$Lat81_codatendcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at81_codatendcli",10,$Iat81_codatendcli,true,"text",4,"","chave_at81_codatendcli");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendusucliitem->rotulo->label("at81_codatendcli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendusucliitem.php")==true){
@@ -122,12 +122,12 @@ $clatendusucliitem->rotulo->label("at81_codatendcli");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=$Ly61_codlev?>
     </td>
     <td> 
-<?
+<?php
 db_input('y61_codlev',6,$Iy61_codlev,true,'text',3);
 db_input('y60_contato',40,$Iy60_contato,true,'text',3,'');
 ?>
@@ -53,15 +53,15 @@ db_input('y60_contato',40,$Iy60_contato,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty61_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ly61_id_usuario,"js_pesquisay61_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y61_id_usuario',6,$Iy61_id_usuario,true,'text',$db_opcao," onchange='js_pesquisay61_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -71,7 +71,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Ly61_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y61_obs',0,47,$Iy61_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,11 +79,11 @@ db_textarea('y61_obs',0,47,$Iy61_obs,true,'text',$db_opcao,"")
   <tr>
     <td colspan='2' align='center'> 
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if(isset($opcao)){
 ?>
 <input name="novo" type="button" value="Novo" onclick="js_novo();" >
-<?
+<?php
 }
 ?>
     </td>
@@ -96,7 +96,7 @@ if(isset($opcao)){
      <table cellpadding='0' cellspacing='0'>
 <tr>
   <td valign="top" >  
-   <?
+   <?php
 	if(isset($db_opcaoal)){
 	            db_input("db_opcaoal",10,"",true,"hidden",3);
 					    }

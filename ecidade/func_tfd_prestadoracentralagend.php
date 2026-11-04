@@ -61,7 +61,7 @@ $oRotulo->label('tf10_i_prestadora');
               <?=$Ltf10_i_prestadora?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		          db_input("tf10_i_prestadora",10,$Itf10_i_prestadora,true,"text",4,"","chave_tf10_i_prestadora");
 		          ?>
             </td>
@@ -71,7 +71,7 @@ $oRotulo->label('tf10_i_prestadora');
               <?='<b>CGM</b>'?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		          db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"","chave_cgm_prestadora");
 		          ?>
             </td>
@@ -81,7 +81,7 @@ $oRotulo->label('tf10_i_prestadora');
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		          db_input("z01_nome",50,$Iz01_nome,true,"text",4,"","chave_nome_prestadora");
 		          ?>
             </td>

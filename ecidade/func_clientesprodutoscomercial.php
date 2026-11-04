@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clclientesprodutoscomercial->rotulo->label("at91_nome");
               <?=$Lat91_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at91_sequencial",10,$Iat91_sequencial,true,"text",4,"","chave_at91_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clclientesprodutoscomercial->rotulo->label("at91_nome");
               <?=$Lat91_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at91_nome",100,$Iat91_nome,true,"text",4,"","chave_at91_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clclientesprodutoscomercial->rotulo->label("at91_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clientesprodutoscomercial.php")==true){
@@ -122,12 +122,12 @@ $clclientesprodutoscomercial->rotulo->label("at91_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

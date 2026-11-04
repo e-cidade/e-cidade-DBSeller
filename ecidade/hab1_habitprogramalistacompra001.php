@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ if ( isset($oGet->ht17_habitprograma) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -87,7 +87,7 @@ if ( isset($oGet->ht17_habitprograma) ) {
 					      <?=@$Lht17_sequencial?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_input('ht17_sequencial',10,$Iht17_sequencial,true,'text',3,"");
 					  			db_input('ht17_habitprograma',10,'',true,'hidden',3,"");
 								?>
@@ -98,19 +98,19 @@ if ( isset($oGet->ht17_habitprograma) ) {
 					      <?=@$Lht17_descricao?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_input('ht17_descricao',54,$Iht17_descricao,true,'text',$db_opcao,"");
 								?>
 					    </td>
 					  </tr>
             <tr>
               <td nowrap title="<?=@$Tht17_formaavaliacao?>">
-                <?
+                <?php
                   db_ancora(@$Lht17_formaavaliacao,"js_pesquisaht17_formaavaliacao(true);",$db_opcao);
                 ?>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('ht17_formaavaliacao',10,$Iht17_formaavaliacao,true,'text',$db_opcao," onchange='js_pesquisaht17_formaavaliacao(false);'");
                   db_input('ht07_descricao',40,$Iht07_descricao,true,'text',3,'');
                 ?>
@@ -121,7 +121,7 @@ if ( isset($oGet->ht17_habitprograma) ) {
 					      <?=@$Lht17_datalimite?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_inputdata('ht17_datalimite',@$ht17_datalimite_dia,@$ht17_datalimite_mes,@$ht17_datalimite_ano,true,'text',$db_opcao,"");
 								?>
 					    </td>
@@ -161,12 +161,12 @@ if ( isset($oGet->ht17_habitprograma) ) {
 			      <table align="center">
 			        <tr> 
 			          <td>
-			            <?
+			            <?php
 			              db_ancora(@$Lht18_pcmater,"js_pesquisaMaterial(true);",$db_opcao);
 			            ?>
 			          </td>
 			          <td>
-			            <?
+			            <?php
 			              db_input('ht18_pcmater'   ,10,$Iht18_pcmater,true,'text',1,"onChange='js_pesquisaMaterial(false);'");
 			              db_input('pc01_descrmater',40,'',true,'text',3,'');
 			              
@@ -177,12 +177,12 @@ if ( isset($oGet->ht17_habitprograma) ) {
 			        </tr>
 			        <tr> 
 			          <td>
-			            <?
+			            <?php
 			              db_ancora(@$Lht18_matunid,"js_pesquisaUnidade(true);",$db_opcao);
 			            ?>
 			          </td>
 			          <td>
-			            <?
+			            <?php
 			              db_input('ht18_matunid',10,$Iht18_matunid,true,'text',1,"onChange='js_pesquisaUnidade(false);'");
 			              db_input('m61_descr',40,'',true,'text',3,'');
 			            ?>
@@ -193,7 +193,7 @@ if ( isset($oGet->ht17_habitprograma) ) {
 			            <?=@$Lht18_quantidade?>
 			          </td>
 			          <td>
-			            <?
+			            <?php
 			              db_input('ht18_quantidade',10,$Iht18_quantidade,true,'text',1,'');
 			            ?>
 			          </td>

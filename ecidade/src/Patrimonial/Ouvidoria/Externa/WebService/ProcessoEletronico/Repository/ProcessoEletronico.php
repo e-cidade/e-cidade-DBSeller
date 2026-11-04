@@ -41,6 +41,8 @@ use \JSON;
 
 class ProcessoEletronico
 {
+    const TIPO_SEQUENCIAL = 1;
+    const TIPO_SEQUENCIAL_ANO = 2;
     /**
      * @var PreProcesso
      */
@@ -143,16 +145,16 @@ class ProcessoEletronico
         $daoOuvidoriaAtendimento->ov01_dataatend = $dataAtendimento;
         $daoOuvidoriaAtendimento->ov01_horaatend = $horaAtendimento;
         $daoOuvidoriaAtendimento->ov01_requerente = $requerente;
-        $daoOuvidoriaAtendimento->ov01_solicitacao = "SolicitaÃ§Ã£o aberta via processo eletrÃ´nico";
+        $daoOuvidoriaAtendimento->ov01_solicitacao = "Solicitação aberta via processo eletrônico";
         $daoOuvidoriaAtendimento->ov01_executado = "";
 
         $daoOuvidoriaAtendimento->incluir(null);
 
         if ($daoOuvidoriaAtendimento->erro_status == "0") {
-            $msg = "Ocorreu algo inesperado ao salvar os dados da solicitaÃ§Ã£o, tente mais tarde.";
+            $msg = "Ocorreu algo inesperado ao salvar os dados da solicitação, tente mais tarde.";
             $msg .= "Persistindo, contate o administrador do sistema. \n";
             $msg .= "-- metodo: salvarAtendimento() \n";
-            $msg .= "Erro tÃ©cnico: " . $daoOuvidoriaAtendimento->erro_msg;
+            $msg .= "Erro técnico: " . $daoOuvidoriaAtendimento->erro_msg;
             $msg.=  " - sql" . $daoOuvidoriaAtendimento->erro_sql;
 
             throw new Exception($msg);
@@ -162,14 +164,14 @@ class ProcessoEletronico
     }
 
     /**
-     * @return cl_cidadao
+     * @return cl_cidadao|false|object
      * @throws Exception
      */
     protected function salvarCidadao($requerente)
     {
 
         /**
-         * VERIFICA SE O CIDADÃƒO JÃ EXISTE CASO CONTRARIO CADASTRA CIDADÃƒO
+         * VERIFICA SE O CIDADÃO JÁ EXISTE CASO CONTRARIO CADASTRA CIDADÃO
          */
         $daoCidadao = new cl_cidadao();
 
@@ -200,7 +202,7 @@ class ProcessoEletronico
             $msg = "Ocorreu algo inesperado ao salvar os dados do requerente, tente mais tarde.";
             $msg .= "Persistindo, contate o administrador do sistema. \n";
             $msg .= "-- metodo: salvarCidadao() \n";
-            $msg .= "Erro tÃ©cnico: " . $daoCidadao->erro_msg;
+            $msg .= "Erro técnico: " . $daoCidadao->erro_msg;
 
             throw new Exception($msg);
         }
@@ -221,10 +223,10 @@ class ProcessoEletronico
         $daoOuvidoriaAtendimentoCidadao->incluir(null);
 
         if ($daoOuvidoriaAtendimentoCidadao->erro_status == "0") {
-            $msg = "Ocorreu algo inesperado ao salvar o vÃ­nculo de atendimento e cidadÃ£o.";
+            $msg = "Ocorreu algo inesperado ao salvar o vínculo de atendimento e cidadão.";
             $msg .= "Persistindo, contate o administrador do sistema. \n";
             $msg .= "-- metodo: salvarAtendimentoCidadao() \n";
-            $msg .= "Erro tÃ©cnico: " . $daoOuvidoriaAtendimentoCidadao->erro_msg;
+            $msg .= "Erro técnico: " . $daoOuvidoriaAtendimentoCidadao->erro_msg;
 
             throw new Exception($msg);
         }
@@ -251,10 +253,10 @@ class ProcessoEletronico
         $daoOuvidoriaAtendimentoProcesso->incluir(null);
 
         if ($daoOuvidoriaAtendimentoProcesso->erro_status == "0") {
-            $msg = "Ocorreu algo inesperado ao salvar o JSON de dados da solicitaÃ§Ã£o de atendimento.";
+            $msg = "Ocorreu algo inesperado ao salvar o JSON de dados da solicitação de atendimento.";
             $msg .= "Persistindo, contate o administrador do sistema. \n";
             $msg .= "-- metodo: salvarJSONAtendimento() \n";
-            $msg .= "Erro tÃ©cnico: " . $daoOuvidoriaAtendimentoProcesso->erro_msg;
+            $msg .= "Erro técnico: " . $daoOuvidoriaAtendimentoProcesso->erro_msg;
             $msg .= " - sql" . $daoOuvidoriaAtendimentoProcesso->erro_sql;
             throw new Exception($msg);
         }
@@ -280,8 +282,13 @@ class ProcessoEletronico
 
         // Consulta Numero do Atendimento
         switch ($tipoControleNumeracao) {
-            case 1:
-                $sqlNumeroAtendimento = "  SELECT COALESCE(max(ov01_numero),0) + 1 as seq FROM ouvidoriaatendimento";
+            case self::TIPO_SEQUENCIAL:
+                $sqlNumeroAtendimento = "  SELECT
+                      COALESCE(max(ov01_numero),0) + 1 as seq
+                  FROM ouvidoriaatendimento
+                    where
+                         ov01_instit = {$instituicaoId}
+                ";
                 $rsNumeroAtendimento = db_query($sqlNumeroAtendimento);
 
                 if ($rsNumeroAtendimento) {
@@ -291,10 +298,9 @@ class ProcessoEletronico
                 }
                 break;
 
-            case 2:
-                $sqlAnoAtendimento = "  SELECT 1 FROM ouvidoriaatendimento WHERE ov01_anousu = " . $anoUsu;
+            case self::TIPO_SEQUENCIAL_ANO:
+                $sqlAnoAtendimento = "SELECT 1 FROM ouvidoriaatendimento WHERE ov01_anousu = " . $anoUsu;
                 $rsAnoAtendimento = db_query($sqlAnoAtendimento);
-
                 if ($rsAnoAtendimento && pg_num_rows($rsAnoAtendimento) > 0) { //Sequencial por ano
                     $sqlProximoNumero = "SELECT COALESCE(max(ov01_numero),0) + 1 as seq
                                           FROM ouvidoriaatendimento

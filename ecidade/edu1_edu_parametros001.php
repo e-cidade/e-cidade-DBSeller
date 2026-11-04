@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -34,7 +34,7 @@ include(modification("libs/db_libdicionario.php"));
 include(modification("classes/db_edu_parametros_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cledu_parametros = new cl_edu_parametros;
 $cldb_depart = new cl_db_depart;
 $db_botao = true;
@@ -49,20 +49,21 @@ if($cledu_parametros->numrows!=0){
  $db_opcao= 1;
 }
 if ( isset( $incluir ) ) {
-  
+
   db_inicio_transacao();
   $cledu_parametros->ed233_c_decimais = 'N';
+  $cledu_parametros->ed233_campo_aulas_dadas_lanc_turma = $ed233_campo_aulas_dadas_lanc_turma;
   $db_opcao = 1;
   $cledu_parametros->incluir($ed233_i_codigo);
   db_fim_transacao();
 }
 if ( isset($alterar) ) {
-  
   db_inicio_transacao();
   $db_opcao = 2;
   $cledu_parametros->ed233_c_decimais = isset($ed233_c_decimais) && !empty($ed233_c_decimais)? $ed233_c_decimais : 'N';
+  $cledu_parametros->ed233_campo_aulas_dadas_lanc_turma = $_POST['ed233_campo_aulas_dadas_lanc_turma'];
   $cledu_parametros->alterar($ed233_i_codigo);
-  
+
   db_fim_transacao();
 }
 ?>
@@ -87,20 +88,20 @@ if ( isset($alterar) ) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <br>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <?include(modification("forms/db_frmedu_parametros.php"));?>
+    <?php include(modification("forms/db_frmedu_parametros.php"));?>
   </td>
  </tr>
 </table>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 js_tabulacaoforms("form1","ed233_i_escola",true,1,"ed233_i_escola",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cledu_parametros->erro_status=="0"){
     $cledu_parametros->erro(true,false);

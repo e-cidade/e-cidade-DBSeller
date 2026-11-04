@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -66,77 +66,59 @@ if ($clcfiptu->numrows > 0){
 //================================================================================================================================================================
 
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
-  
+
 	db_inicio_transacao();
   $db_opcao = 2;
-  
+
   /**
    * Salva os dados anteriores antes da alteração
    */
   $sSqlRuasAnterior = $oDaoRuasanterior->sql_query_file($j14_codigo);
   $rsRuasAnterior   = $oDaoRuasanterior->sql_record($sSqlRuasAnterior);
-  
+
   if ($oDaoRuasanterior->numrows > 0) {
-  	
+
   	$oRuaAnterior = db_utils::fieldsMemory($rsRuasAnterior, 0);
-  	
+
   	if (levenshtein($oRuaAnterior->j14_nome, $j14_nome) > 3) {
-	  	$oDaoRuashistorico->j136_ruas          = $oRuaAnterior->j14_codigo; 
+	  	$oDaoRuashistorico->j136_ruas          = $oRuaAnterior->j14_codigo;
 	  	$oDaoRuashistorico->j136_ruastipo      = $oRuaAnterior->j14_tipo;
 	  	$oDaoRuashistorico->j136_lei           = $oRuaAnterior->j14_lei;
 	  	$oDaoRuashistorico->j136_datalei       = $oRuaAnterior->j14_dtlei;
 	  	$oDaoRuashistorico->j136_nomeanterior  = $oRuaAnterior->j14_nome;
 	  	$oDaoRuashistorico->j136_dataalteracao = date('Y-m-d', db_getsession('DB_datausu'));
 	  	$oDaoRuashistorico->incluir(null);
-	  	
+
 	  	if ($oDaoRuashistorico->erro_status == '0') {
 	  		$sqlerro  = true;
 	  		$erro_msg = $oDaoRuashistorico->erro_msg;
 	  	}
   	}
-  	
-  	 
-  	
+
+
+
   }
-  
+
   $clruas->alterar($j14_codigo);
-  
+
   $result = $clruascep->sql_record($clruascep->sql_query($chavepesquisa));
-   
-  if($clruascep->numrows > 0){
-    $clruascep->j29_cep = $j29_cep;
-    $clruascep->j29_inicio="0";
-    $clruascep->j29_codigo = $j14_codigo;
-    $clruascep->alterar($j14_codigo,"0");
-    if ($clruascep->erro_status==0){
-      $erro_msg=$clruascep->erro_msg;
-    }
-  }else{
-    if(isset($j29_cep) and $j29_cep <> ''){
-      $clruascep->j29_cep=$j29_cep;
-      $clruascep->j29_final='0';
-      $clruascep->incluir($j14_codigo,'0');
-      if ($clruascep->erro_status==0){
-        $sqlerro=true;
-        $erro_msg=$clruascep->erro_msg;
-      }
-    }
-   }
+
      $db_botao = true;
   db_fim_transacao();
 }else if(isset($chavepesquisa)){
    $db_opcao = 2;
-   $result = $clruas->sql_record($clruas->sql_query($chavepesquisa)); 
+   $result = $clruas->sql_record($clruas->sql_query($chavepesquisa));
    db_fieldsmemory($result,0);
-   $result2 = $clruascep->sql_record($clruascep->sql_query($chavepesquisa)); 
+   $result2 = $clruascep->sql_record($clruascep->sql_query($chavepesquisa));
    if($clruascep->numrows >0 ){
      db_fieldsmemory($result2,0);
-   } 
+   }
    $db_botao = true;
 }
 
     echo "<script>
 	    parent.iframe_g2.location.href='cad1_aba2ruas002.php?chavepesquisa=".@$j14_codigo."';\n
+	    parent.iframe_g4.location.href='cad1_aba3ruas002.php?chavepesquisa=".@$j14_codigo."';\n
         parent.iframe_g3.location.href='cad1_ruasbairroalt001.php?j16_lograd=".@$j14_codigo."';\n
 	  </script>";
 ?>
@@ -150,7 +132,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -158,10 +140,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmruas.php"));
 	?>
     </center>
@@ -170,7 +152,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if($clruas->erro_status=="0"){
     $clruas->erro(true,false);

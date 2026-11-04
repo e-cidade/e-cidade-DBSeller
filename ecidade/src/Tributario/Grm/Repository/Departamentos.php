@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -43,7 +43,12 @@ class Departamentos
     {
 
         $daoUGDepartamentos = new \cl_unidadegestoradepartamentos();
-        $consultaDepartamento = $daoUGDepartamentos->sql_query_file(null, "k180_depart", '1', "k180_unidadegestora = {$unidadeGestora->getCodigo()}");
+        $consultaDepartamento = $daoUGDepartamentos->sql_query_file(
+            null,
+            "k180_depart",
+            '1',
+            "k180_unidadegestora = {$unidadeGestora->getCodigo()}"
+        );
         $consultaDepartamento = db_query($consultaDepartamento);
         if (!$consultaDepartamento) {
             throw new \DBException("Ocorreu um erro ao consultar os departamentos da Unidade Gestora.");
@@ -52,7 +57,6 @@ class Departamentos
         $totalRegistros = pg_num_rows($consultaDepartamento);
         $itensRetorno = array();
         for ($rowDepart = 0; $rowDepart < $totalRegistros; $rowDepart++) {
-
             $codigoDepartamento = \db_utils::fieldsMemory($consultaDepartamento, $rowDepart)->k180_depart;
             $departamento = \DBDepartamentoRepository::getPorCodigo($codigoDepartamento);
             $itensRetorno[$codigoDepartamento] = $departamento;

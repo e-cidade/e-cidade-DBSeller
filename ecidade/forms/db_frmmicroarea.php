@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clmicroarea->rotulo->label();
        <?=@$Lsd34_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd34_i_codigo',10,$Isd34_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd34_i_codigo',10,$Isd34_i_codigo,true,'text',3,"")
        <?=@$Lsd34_v_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd34_v_descricao',40,$Isd34_v_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_microarea.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

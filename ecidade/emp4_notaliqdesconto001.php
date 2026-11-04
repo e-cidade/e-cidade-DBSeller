@@ -84,11 +84,11 @@ if($conparametro->c90_confirmadata == 't'){
 <script>
     let c90_confirmadata = '<?php echo $conparametro->c90_confirmadata ?>'
     if (c90_confirmadata == 't') {
-        const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
+        const msg = "Antes de realizar a operaÃ§Ã£o confirme a data em que deseja incluir o movimento";
         alert(msg)
     }
 </script>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

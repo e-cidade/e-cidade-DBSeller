@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,23 +52,23 @@ class cl_codmovsefip {
    var $r66_ifgtse = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r66_anousu = float4 = Ano do Exercício 
-                 r66_mesusu = float4 = Mês do Exercício 
-                 r66_codigo = varchar(2) = Código da Movimentação 
-                 r66_descr = varchar(40) = Descrição 
-                 r66_tipo = varchar(1) = Tipo de Afastamento 
-                 r66_mensal = bool = Mensal (S/N) 
-                 r66_ifgtsc = varchar(1) = Recolhe FGTS P/ CLT 
-                 r66_ifgtse = varchar(1) = Recolhe FGTS p/ Estatutário 
+                 r66_anousu = float4 = Ano do Exercício
+                 r66_mesusu = float4 = Mês do Exercício
+                 r66_codigo = varchar(2) = Código da Movimentação
+                 r66_descr = varchar(40) = Descrição
+                 r66_tipo = varchar(1) = Tipo de Afastamento
+                 r66_mensal = bool = Mensal (S/N)
+                 r66_ifgtsc = varchar(1) = Recolhe FGTS P/ CLT
+                 r66_ifgtse = varchar(1) = Recolhe FGTS p/ Estatutário
                  ";
    //funcao construtor da classe
-   function cl_codmovsefip() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("codmovsefip");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_codmovsefip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r66_anousu = ($this->r66_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r66_anousu"]:$this->r66_anousu);
        $this->r66_mesusu = ($this->r66_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r66_mesusu"]:$this->r66_mesusu);
@@ -94,7 +94,7 @@ class cl_codmovsefip {
      }
    }
    // funcao para inclusao
-   function incluir ($r66_anousu,$r66_mesusu,$r66_codigo){
+   public function incluir ($r66_anousu,$r66_mesusu,$r66_codigo){
       $this->atualizacampos();
      if($this->r66_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -157,24 +157,24 @@ class cl_codmovsefip {
        return false;
      }
      $sql = "insert into codmovsefip(
-                                       r66_anousu 
-                                      ,r66_mesusu 
-                                      ,r66_codigo 
-                                      ,r66_descr 
-                                      ,r66_tipo 
-                                      ,r66_mensal 
-                                      ,r66_ifgtsc 
-                                      ,r66_ifgtse 
+                                       r66_anousu
+                                      ,r66_mesusu
+                                      ,r66_codigo
+                                      ,r66_descr
+                                      ,r66_tipo
+                                      ,r66_mensal
+                                      ,r66_ifgtsc
+                                      ,r66_ifgtse
                        )
                 values (
-                                $this->r66_anousu 
-                               ,$this->r66_mesusu 
-                               ,'$this->r66_codigo' 
-                               ,'$this->r66_descr' 
-                               ,'$this->r66_tipo' 
-                               ,'$this->r66_mensal' 
-                               ,'$this->r66_ifgtsc' 
-                               ,'$this->r66_ifgtse' 
+                                $this->r66_anousu
+                               ,$this->r66_mesusu
+                               ,'$this->r66_codigo'
+                               ,'$this->r66_descr'
+                               ,'$this->r66_tipo'
+                               ,'$this->r66_mensal'
+                               ,'$this->r66_ifgtsc'
+                               ,'$this->r66_ifgtse'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -220,7 +220,7 @@ class cl_codmovsefip {
      return true;
    }
    // funcao para alteracao
-   function alterar ($r66_anousu=null,$r66_mesusu=null,$r66_codigo=null) {
+   public function alterar ($r66_anousu=null,$r66_mesusu=null,$r66_codigo=null) {
       $this->atualizacampos();
      $sql = " update codmovsefip set ";
      $virgula = "";
@@ -380,7 +380,7 @@ class cl_codmovsefip {
      }
    }
    // funcao para exclusao
-   function excluir ($r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$dbwhere=null) {
+   public function excluir ($r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r66_anousu,$r66_mesusu,$r66_codigo));
      }else{
@@ -462,7 +462,7 @@ class cl_codmovsefip {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -484,13 +484,13 @@ class cl_codmovsefip {
       }
      return $result;
    }
-   function atualiza_incluir (){
+   public function atualiza_incluir (){
   	 $this->incluir($this->r66_anousu,$this->r66_mesusu,$this->r66_codigo);
    }
-   function sql_query ( $r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_codmovsefip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_codmovsefip {
      }
      return $sql;
   }
-   function sql_query_file ( $r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $r66_anousu=null,$r66_mesusu=null,$r66_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

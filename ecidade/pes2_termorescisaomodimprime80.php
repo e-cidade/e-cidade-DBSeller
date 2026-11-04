@@ -378,6 +378,10 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
    */
   foreach ( $aGrupos as $iCodigoGrupo => $oDadosGrupo ) {
 
+    if (!isset($aRubricas[$iCodigoGrupo])) {
+        continue;
+    }
+      
     foreach ( $aRubricas[$iCodigoGrupo] as $oDadosMovimentacao) {
 
       if ( $oDadosMovimentacao->oRubrica->getTipo() == Rubrica::TIPO_DESCONTO) {

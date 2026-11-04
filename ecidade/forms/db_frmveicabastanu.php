@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("nome");
                  <?//=@$Lve74_codigo?>
               </td>
               <td> 
-                <?
+                <?php
                 db_input('ve74_codigo',10,$Ive74_codigo,true,'hidden',3,"");
                 db_input('pesq',10,"",true,'hidden',3,"");
                 ?>
@@ -52,12 +52,12 @@ $clrotulo->label("nome");
             </tr>
             <tr>
               <td nowrap title="<?=@$Tve74_veicabast?>">
-                 <?
+                 <?php
                  db_ancora(@$Lve74_veicabast,"js_pesquisa_abast();",$db_opcao);
                  ?>
               </td>
               <td> 
-                <?
+                <?php
                 db_input('ve74_veicabast',10,$Ive74_veicabast,true,'text',3," onchange='js_pesquisave74_veicabast(false);'");
                 db_input('ve70_codigo',10,$Ive70_codigo,true,'hidden',3,'')
                  ?>
@@ -68,7 +68,7 @@ $clrotulo->label("nome");
                  <?=@$Lve74_motivo?>
               </td>
               <td> 
-                <?
+                <?php
                 db_textarea('ve74_motivo',0,50,$Ive74_motivo,true,'text',$db_opcao,"")
                 ?>
               </td>
@@ -140,7 +140,7 @@ function js_pesquisa_abast(){
 }
 function js_preenchepesquisa_abast(chave){
   db_iframe_veicabast.hide();
-  <?
+  <?php
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?abast='+chave";  
   ?>
 }
@@ -149,7 +149,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veicabastanu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -45,122 +45,117 @@ $instituicaoSessao = db_getsession('DB_instit');
 
 $oGet              = db_utils::postMemory($_GET);
 $oJson             = new services_json();
-$oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
+$oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
 $oRetorno->itens   = array();
 switch ($oParam->exec) {
+    case "getDadosDotacaoPPA":
+        $oDaoPPADotacao   = db_utils::getDao("ppadotacao");
+        $sSqlDadosDotacao = $oDaoPPADotacao->sql_query_estimativa(
+            null,
+            "*",
+            null,
+            "o07_sequencial ={$oParam->iEstimativa}"
+        );
+        $rsDadosDotacao = db_query($sSqlDadosDotacao);
+        if (pg_num_rows($rsDadosDotacao) > 0) {
+            $oRetorno->dadosdotacao = db_utils::fieldsMemory($rsDadosDotacao, 0, false, false, true);
+        }
+        break;
 
-  case "getDadosDotacaoPPA":
-
-    $oDaoPPADotacao   = db_utils::getDao("ppadotacao");
-    $sSqlDadosDotacao = $oDaoPPADotacao->sql_query_estimativa(null,
-                                                              "*",
-                                                             null,
-                                                             "o07_sequencial ={$oParam->iEstimativa}"
-                                                             );
-    $rsDadosDotacao = db_query($sSqlDadosDotacao);
-    if (pg_num_rows($rsDadosDotacao) > 0) {
-      $oRetorno->dadosdotacao = db_utils::fieldsMemory($rsDadosDotacao, 0, false, false, true);
-    }
-    break;
-
-  case "getDadosReceitaPPA":
-
-    $oDaoPPAReceita   = db_utils::getDao("ppaestimativareceita");
-    $sSqlDadosReceita = $oDaoPPAReceita->sql_query_analitica(null,
-                                                              "fc_estruturalreceitappa(o06_anousu,
+    case "getDadosReceitaPPA":
+        $oDaoPPAReceita   = db_utils::getDao("ppaestimativareceita");
+        $sSqlDadosReceita = $oDaoPPAReceita->sql_query_analitica(
+            null,
+            "fc_estruturalreceitappa(o06_anousu,
                                                                                    o06_sequencial,
                                                                                     c61_instit) as estrutural,
                                                                o06_sequencial,
                                                                c61_codigo,
                                                                o57_descr,
                                                                o15_descr",
-                                                             null,
-                                                             "o06_sequencial = {$oParam->iEstimativa}
+            null,
+            "o06_sequencial = {$oParam->iEstimativa}
                                                              and c61_instit=".db_getsession("DB_instit")
-                                                             );
-    $rsDadosReceita = db_query($sSqlDadosReceita);
-    if (pg_num_rows($rsDadosReceita) > 0) {
-      $oRetorno->dadosreceita = db_utils::fieldsMemory($rsDadosReceita, 0, false, false, true);
-    }
+        );
+        $rsDadosReceita = db_query($sSqlDadosReceita);
+        if (pg_num_rows($rsDadosReceita) > 0) {
+            $oRetorno->dadosreceita = db_utils::fieldsMemory($rsDadosReceita, 0, false, false, true);
+        }
 
-    break;
+        break;
     case "getSuplementacoesProjeto":
-
       /**
        * pesquisa todas as suplementacoes do decreto/projeto
        */
-      $sCampos = "o46_codsup";
+        $sCampos = "o46_codsup";
 
       /** [Extensao FiltroDespesa] - Modificacao 1*/
 
-      $oDaoOrcSuplemVal   = new cl_orcsuplemval();
-      $oDaoSuplementacao  = db_utils::getDao("orcsuplem");
-      $sSqlSuplementacoes = $oDaoSuplementacao->sql_query_sup(null,
-                                                              $sCampos,
-                                                              null,
-                                                              "o46_codlei={$oParam->iProjeto}
+        $oDaoOrcSuplemVal   = new cl_orcsuplemval();
+        $oDaoSuplementacao  = db_utils::getDao("orcsuplem");
+        $sSqlSuplementacoes = $oDaoSuplementacao->sql_query_sup(
+            null,
+            $sCampos,
+            null,
+            "o46_codlei={$oParam->iProjeto}
                                                               and o49_codsup is null "
-                                                              );
+        );
 
-      $rsSuplementacoes = $oDaoSuplementacao->sql_record($sSqlSuplementacoes);
-      $oRetorno->itens  = array();
-      if ($oDaoSuplementacao->numrows > 0) {
+        $rsSuplementacoes = $oDaoSuplementacao->sql_record($sSqlSuplementacoes);
+        $oRetorno->itens  = array();
+        if ($oDaoSuplementacao->numrows > 0) {
+            for ($i = 0; $i < $oDaoSuplementacao->numrows; $i++) {
+                $oStdSuplementacao        = db_utils::fieldsMemory($rsSuplementacoes, $i);
+                $iSuplementacao           = $oStdSuplementacao->o46_codsup;
+              /** [Extensao FiltroDespesa] - Modificacao 2*/
 
-        for ($i = 0; $i < $oDaoSuplementacao->numrows; $i++) {
-
-          $oStdSuplementacao        = db_utils::fieldsMemory($rsSuplementacoes, $i);
-          $iSuplementacao           = $oStdSuplementacao->o46_codsup;
-          /** [Extensao FiltroDespesa] - Modificacao 2*/
-
-          $oSuplementacao = new Suplementacao($iSuplementacao);
-          $oSup           = new stdClass();
-          $oSup->codigo   = $oSuplementacao->getCodigo();
-          $oSup->valorsuplementado   = $oSuplementacao->getvalorSuplementacao();
-          $oSup->valorreduzido       = $oSuplementacao->getValorReducao();
-          $oSup->tipo                = $oSuplementacao->getTipo();
-          $oSup->descricaotipo       = urlencode($oSuplementacao->getDescricaoTipo());
-          $oRetorno->itens[]         = $oSup;
-          unset($oSuplementacao);
+                $oSuplementacao = new Suplementacao($iSuplementacao);
+                $oSup           = new stdClass();
+                $oSup->codigo   = $oSuplementacao->getCodigo();
+                $oSup->valorsuplementado   = $oSuplementacao->getvalorSuplementacao();
+                $oSup->valorreduzido       = $oSuplementacao->getValorReducao();
+                $oSup->tipo                = $oSuplementacao->getTipo();
+                $oSup->descricaotipo       = urlencode($oSuplementacao->getDescricaoTipo());
+                $oRetorno->itens[]         = $oSup;
+                unset($oSuplementacao);
+            }
         }
-      }
 
 
-      break;
+        break;
 
     case 'processarSuplementacoes':
+        try {
+            db_inicio_transacao();
 
-      try {
-        db_inicio_transacao();
+            foreach ($oParam->aSuplementacoes as $iSuplementacao) {
+                $dDataProcessamento = implode("-", array_reverse(explode("/", $oParam->dataprocessamento)));
+                $oSuplementacao = new Suplementacao($iSuplementacao);
+                $oSuplementacao->processar($dDataProcessamento);
+            }
 
-        foreach ($oParam->aSuplementacoes as $iSuplementacao) {
-            $dDataProcessamento = implode("-", array_reverse(explode("/", $oParam->dataprocessamento)));
-            $oSuplementacao = new Suplementacao($iSuplementacao);
-            $oSuplementacao->processar($dDataProcessamento);
+            if ($oParam->lFecharProcesso == true) {
+                $oDaoOrcProjLan = new cl_orcprojlan();
+                $oDaoOrcProjLan->o51_codproj = $oParam->iProjeto;
+                $oDaoOrcProjLan->o51_data = $dDataProcessamento;
+                $oDaoOrcProjLan->o51_id_usuario = db_getsession('DB_id_usuario');
+
+                if (!$oDaoOrcProjLan->incluir($oParam->iProjeto)) {
+                    throw new Exception($oDaoOrcProjLan->erro_msg);
+                }
+            }
+
+
+            db_fim_transacao(false);
+        } catch (Exception $eErro) {
+            db_fim_transacao(true);
+            $oRetorno->status  = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
         }
-
-          if ($oParam->lFecharProcesso == true) {
-              $oDaoOrcProjLan = new cl_orcprojlan();
-              $oDaoOrcProjLan->o51_codproj = $oParam->iProjeto;
-              $oDaoOrcProjLan->o51_data = $dDataProcessamento;
-              $oDaoOrcProjLan->o51_id_usuario = db_getsession('DB_id_usuario');
-
-              if (!$oDaoOrcProjLan->incluir($oParam->iProjeto)) {
-                  throw new Exception($oDaoOrcProjLan->erro_msg);
-              }
-        }
-
-
-        db_fim_transacao(false);
-      } catch (Exception $eErro) {
-
-        db_fim_transacao(true);
-        $oRetorno->status  = 2;
-        $oRetorno->message = urlencode($eErro->getMessage());
-      }
-      break;
+        break;
 }
 db_putsession('DB_instit', $instituicaoSessao);
 echo $oJson->encode($oRetorno);

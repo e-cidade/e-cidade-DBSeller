@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltarefalog->rotulo->label("at43_descr");
               <?=$Lat43_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at43_sequencial",10,$Iat43_sequencial,true,"text",4,"","chave_at43_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltarefalog->rotulo->label("at43_descr");
               <?=$Lat43_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("chave_at43_descr",40,$Iat43_descr,true,"text",4);
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltarefalog->rotulo->label("at43_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefalog.php")==true){
@@ -118,12 +118,12 @@ $cltarefalog->rotulo->label("at43_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -181,20 +181,20 @@ class RelatorioCompensacoes
 		$oDaoAbatimentoUtilizacao = new cl_abatimento();
 
 		$sCampos = implode(',', array(
-			"k157_abatimento    as credito",
-			"k170_utilizacao    as compensacao",
-			"z01_numcgm         as numero_cgm",
-			"k02_estorc         as estrutural",
-			"o57_descr          as descricao_estrutural",
-			"k170_numpre        as numpre_compensado",
-			"k170_numpar        as numpar_compensado",
-			"k170_receit        as receita_debito",
-			"k157_data          as data_compensacao",
-			"z01_nome           as nome_cgm",
-			"k170_valor         as valor_compensado",
-			"recibo.k00_numpre  as origem",
-			"k02_descr          as receita_debito_descricao",
-			"arretipo.k00_descr as tipo_debito",
+			"k157_abatimento    			 as credito",
+			"k170_utilizacao    			 as compensacao",
+			"z01_numcgm         			 as numero_cgm",
+			"COALESCE(k02_estorc,c60_estrut) as estrutural",
+			"COALESCE(o57_descr, c60_descr)  as descricao_estrutural",
+			"k170_numpre        			 as numpre_compensado",
+			"k170_numpar        			 as numpar_compensado",
+			"k170_receit        			 as receita_debito",
+			"k157_data          			 as data_compensacao",
+			"z01_nome           			 as nome_cgm",
+			"k170_valor         			 as valor_compensado",
+			"recibo.k00_numpre  			 as origem",
+			"k02_descr          			 as receita_debito_descricao",
+			"arretipo.k00_descr 			 as tipo_debito",
 		));
 
 		$aWhere = array(
@@ -264,9 +264,7 @@ class RelatorioCompensacoes
 				throw new DBException("Não foi possível encontrar as informações do Tipo de Débito.");
 			}
 
-			$oTipoDebito = db_utils::fieldsMemory($rsArretipo, 0);
-
-			$this->oPdf->addHeaderDescription("TIPO DE DÉBITO: {$this->getTipoDebito()} - {$oTipoDebito->k00_descr}");
+			$this->oPdf->addHeaderDescription("TIPO DE DÉBITO: {$this->getTipoDebito()}");
 		}
 
 		if ($this->getCgm()) {
@@ -431,7 +429,6 @@ class RelatorioCompensacoes
 	{
 
 		$aValor = array();
-
 		foreach ($aDados as $oDados) {
 
 			$aDadosReceita = $oDados->aReceitas;

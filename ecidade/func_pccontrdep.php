@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpccontrdep->rotulo->label("p74_valor");
               <?=$Lp74_codcontr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p74_codcontr",10,$Ip74_codcontr,true,"text",4,"","chave_p74_codcontr");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpccontrdep->rotulo->label("p74_valor");
               <?=$Lp74_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p74_valor",20,$Ip74_valor,true,"text",4,"","chave_p74_valor");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpccontrdep->rotulo->label("p74_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccontrdep.php")==true){
@@ -118,12 +118,12 @@ $clpccontrdep->rotulo->label("p74_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

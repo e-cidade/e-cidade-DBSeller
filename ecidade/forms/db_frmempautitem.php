@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -577,11 +577,12 @@ if (!empty($e55_autori) &&
 <script>
   function js_verificar() {
 
-    vltot = new Number(document.form1.e55_vltot.value);
-
-    if (isNaN(vltot) || vltot==0 || vltot ==' '  ) {
+    js_divCarregando('Aguarde, Processando...', 'msgbox');
+    const vltot = Number(document.form1.e55_vltot.value);
+    if (isNaN(vltot) || vltot == 0 || vltot == ' '  ) {
 
       alert('Valor total inválido!');
+      js_removeObj('msgbox');
       return false;
     }
 

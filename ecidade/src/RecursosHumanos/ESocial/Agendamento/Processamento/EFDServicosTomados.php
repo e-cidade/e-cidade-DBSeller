@@ -14,6 +14,7 @@ use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\DadosESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use Exception;
 use stdClass;
 
 class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoInterface
@@ -117,26 +118,44 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
         foreach ($registroNotas as $registroNota) {
 
             /**
+             * Contribuinte
+             */
+            $cnpjContribuinte = ($this->config->filtraOrgaoUnidade())
+                ? $registroNota->cnpj_unidade
+                : $registroNota->cnpj_contribuinte;
+
+            if (!$cnpjContribuinte) {
+                throw new Exception("
+                    Nota {$registroNota->numero_nota},
+                    não possui CNPJ do contribuinte
+                ");
+            }
+
+            if (empty($dados->{$cnpjContribuinte})) {
+                $dados->{$cnpjContribuinte} = new stdClass();
+            }
+
+            $contribuinte = &$dados->{$cnpjContribuinte};
+
+            /**
              * Prestador
              */
-            if (empty($dados->{$registroNota->identificador_prestador})) {
-                $dados->{$registroNota->identificador_prestador} = new stdClass();
+            $registroNota->identificador_prestador = preg_replace('/\D/', '', $registroNota->identificador_prestador);
+            if (empty($contribuinte->{$registroNota->identificador_prestador})) {
+                $contribuinte->{$registroNota->identificador_prestador} = new stdClass();
 
-                $identificador = &$dados->{$registroNota->identificador_prestador};
+                $identificador = &$contribuinte->{$registroNota->identificador_prestador};
 
                 $identificador->notas = new stdClass();
                 $identificador->cnpjPrestador = $registroNota->cnpj_prestador;
                 $identificador->indCPRB = ($registroNota->indicativo_cprb === 't' ) ? 1 : 0;
-
-                $identificador->cnpjContribuinte = ($this->config->filtraOrgaoUnidade())
-                    ? $registroNota->cnpj_unidade
-                    : $registroNota->cnpj_contribuinte;
-
-                $identificador->cgmPrestador = $registroNota->identificador_prestador;
+                $identificador->cnpjContribuinte = $cnpjContribuinte;
+                $identificador->cgmPrestador = $registroNota->cgm_prestador;
                 $identificador->indObra = $registroNota->indicativo_obra_tipo;
                 $identificador->cno = $registroNota->indicativo_obra_cno;
             }
-            $identificador = &$dados->{$registroNota->identificador_prestador};
+
+            $identificador = &$contribuinte->{$registroNota->identificador_prestador};
 
             /**
              * Notas
@@ -174,11 +193,22 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
                 $tipoServico = $nota->infoTpServ[$registroNota->referencia_tipo_servico];
             }
 
-            $tipoServico->vlrBaseRet += ($registroNota->indicativo_valor_base == "t")
+            $valorBaseRetencao = ($registroNota->indicativo_valor_base == "t")
                 ? $registroNota->valor_base_retido
                 : floatval($registroNota->valor_bruto) + floatval($registroNota->notas_nao_retidas);
 
-            $tipoServico->vlrRetencao += $registroNota->valor_retencao;
+            $tipoServico->vlrBaseRet += $valorBaseRetencao;
+
+            // Truncar valor apenas quando for somatorio de notas
+            if (intval($registroNota->qnt_nota) > 1) {
+                $tipoServico->vlrRetencao += $this->getValorTruncadoRetencao(
+                    $registroNota->valor_retencao,
+                    $valorBaseRetencao,
+                    $registroNota->aliquota
+                );
+            } else {
+                $tipoServico->vlrRetencao += $registroNota->valor_retencao;
+            }
 
             $tipoServico->vlrNRetPrinc += !empty($registroNota->valor_nao_retido_principal)
                 ? ((float) $registroNota->valor_nao_retido_principal)
@@ -200,76 +230,97 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
             unset($tipoServico);
             unset($nota);
             unset($identificador);
+            unset($contribuinte);
         }
 
         /**
          * Totalizadores
          */
-        foreach ($dados as &$dado) {
-            $vlrTotalBruto = 0;
-            $vlrTotalBaseRet = 0;
-            $vlrTotalRetPrinc = 0;
-            $vlrTotalRetAdic = 0;
-            $vlrTotalNRetPrinc = 0;
-            $vlrTotalNRetAdic = 0;
-            $dado->nfs = array();
-            foreach ($dado->notas as $nota) {
-                $vlrTotalBruto += $nota->vlrBruto;
+        foreach ($dados as &$contribuinte) {
+            foreach ($contribuinte as &$dado) {
+                $vlrTotalBruto = 0;
+                $vlrTotalBaseRet = 0;
+                $vlrTotalRetPrinc = 0;
+                $vlrTotalRetAdic = 0;
+                $vlrTotalNRetPrinc = 0;
+                $vlrTotalNRetAdic = 0;
+                $dado->nfs = array();
+                foreach ($dado->notas as $nota) {
+                    $vlrTotalBruto += $nota->vlrBruto;
 
-                // remove identificador no array do tipo servico
-                $nota->infoTpServ = array_values($nota->infoTpServ);
+                    // remove identificador no array do tipo servico
+                    $nota->infoTpServ = array_values($nota->infoTpServ);
 
-                foreach ($nota->infoTpServ as $tipoServico) {
-                    $vlrTotalBaseRet += $tipoServico->vlrBaseRet;
-                    $vlrTotalRetPrinc +=$tipoServico->vlrRetencao;
-                    $vlrTotalRetAdic +=$tipoServico->vlrAdicional;
-                    $vlrTotalNRetPrinc +=$tipoServico->vlrNRetPrinc;
-                    $vlrTotalNRetAdic += $tipoServico->vlrNRetAdic;
+                    foreach ($nota->infoTpServ as $tipoServico) {
+                        $vlrTotalBaseRet   += $tipoServico->vlrBaseRet;
+                        $vlrTotalRetPrinc  += $tipoServico->vlrRetencao;
+                        $vlrTotalRetAdic   += $tipoServico->vlrAdicional;
+                        $vlrTotalNRetPrinc +=$tipoServico->vlrNRetPrinc;
+                        $vlrTotalNRetAdic  += $tipoServico->vlrNRetAdic;
+                    }
+
+                    $dado->nfs[] = $nota;
                 }
-                $dado->nfs[] = $nota;
-            }
-            unset($dado->notas);
+                unset($dado->notas);
 
-            $dado->vlrTotalBruto = $vlrTotalBruto;
-            $dado->vlrTotalBaseRet = $vlrTotalBaseRet;
-            $dado->vlrTotalRetPrinc = $vlrTotalRetPrinc;
-            $dado->vlrTotalRetAdic = $vlrTotalRetAdic;
-            if (!empty($vlrTotalNRetPrinc)) {
-                $dado->vlrTotalNRetPrinc = $vlrTotalNRetPrinc;
-            }
-            if (!empty($vlrTotalNRetAdic)) {
-                $dado->vlrTotalNRetAdic = $vlrTotalNRetAdic;
+                $dado->vlrTotalBruto    = $vlrTotalBruto;
+                $dado->vlrTotalBaseRet  = $vlrTotalBaseRet;
+                $dado->vlrTotalRetPrinc = $vlrTotalRetPrinc;
+                $dado->vlrTotalRetAdic  = $vlrTotalRetAdic;
+                if (!empty($vlrTotalNRetPrinc)) {
+                    $dado->vlrTotalNRetPrinc = $vlrTotalNRetPrinc;
+                }
+                if (!empty($vlrTotalNRetAdic)) {
+                    $dado->vlrTotalNRetAdic = $vlrTotalNRetAdic;
+                }
             }
         }
 
         /**
          * Identificadores do evento
          */
-        foreach ($dados as &$dado) {
-            $dadosPrestador = clone $dado;
-            unset($dadosPrestador->cnpjContribuinte);
-            unset($dadosPrestador->indObra);
-            unset($dadosPrestador->cno);
+        foreach ($dados as &$contribuinte) {
+            foreach ($contribuinte as &$dado) {
+                $dadosPrestador = clone $dado;
+                unset($dadosPrestador->cnpjContribuinte);
+                unset($dadosPrestador->indObra);
+                unset($dadosPrestador->cno);
 
-            $ideEstabObra = new stdClass();
-            $ideEstabObra->indObra = (empty($dado->indObra)) ? 0 : (int) $dado->indObra;
-            $ideEstabObra->tpInscEstab = ($ideEstabObra->indObra == 0) ? "1" : "4";
-            $ideEstabObra->nrInscEstab = ($ideEstabObra->indObra == 0) ? $dado->cnpjContribuinte : $dado->cno;
-            $ideEstabObra->cnpjContribuinte = $dado->cnpjContribuinte;
-            $ideEstabObra->idePrestServ = $dadosPrestador;
+                $ideEstabObra = new stdClass();
+                $ideEstabObra->indObra = (empty($dado->indObra)) ? 0 : (int) $dado->indObra;
+                $ideEstabObra->tpInscEstab = ($ideEstabObra->indObra == 0) ? "1" : "4";
+                $ideEstabObra->nrInscEstab = ($ideEstabObra->indObra == 0) ? $dado->cnpjContribuinte : $dado->cno;
+                $ideEstabObra->cnpjContribuinte = $dado->cnpjContribuinte;
+                $ideEstabObra->idePrestServ = $dadosPrestador;
 
-            unset($dado->cno);
+                unset($dado->cno);
 
-            $registro = new stdClass();
-            $registro->ideEstabObra = $ideEstabObra;
-            $this->dados[] = $registro;
+                $registro = new stdClass();
+                $registro->ideEstabObra = $ideEstabObra;
+                $this->dados[] = $registro;
+            }
         }
+
         foreach ($this->dados as &$dados) {
             $dados->inscricao_contribuinte = $this->cgm->getCnpj();
             $dados->referencia  = "{$this->ano}-{$this->mes} ";
-            $dados->referencia .= "{$dados->ideEstabObra->idePrestServ->cgmPrestador}-{$dados->inscricao_contribuinte}";
+            $dados->referencia .= "{$dados->ideEstabObra->idePrestServ->cgmPrestador}-";
+            $dados->referencia .= "{$dados->ideEstabObra->cnpjContribuinte}";
+            if ($dados->ideEstabObra->indObra > 0) {
+                $dados->referencia .= " {$dados->ideEstabObra->nrInscEstab}";
+            }
+
             $dados->perApur = "{$this->ano}-{$this->mes}";
             unset($dados->ideEstabObra->cnpjContribuinte);
         }
+    }
+
+    private function getValorTruncadoRetencao($valorRetido, $valorBase, $aliquota)
+    {
+        $valorTruncado = bcdiv(($valorBase * ($aliquota / 100)), 1, 2);
+        if (bcsub($valorRetido, $valorTruncado, 2) == 0.01) {
+            return $valorTruncado;
+        }
+        return $valorRetido;
     }
 }

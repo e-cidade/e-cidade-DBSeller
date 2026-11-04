@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE regracalculo
 class cl_regracalculo { 
@@ -24,13 +24,13 @@ class cl_regracalculo {
                  ed126_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_regracalculo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracalculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_regracalculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed126_codigo = ($this->ed126_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed126_codigo"]:$this->ed126_codigo);
        $this->ed126_descricao = ($this->ed126_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed126_descricao"]:$this->ed126_descricao);
@@ -48,7 +48,7 @@ class cl_regracalculo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed126_codigo){ 
+   public function incluir ($ed126_codigo){ 
       $this->atualizacampos();
      if($this->ed126_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

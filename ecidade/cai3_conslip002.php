@@ -86,7 +86,7 @@ if (isset($get->slip2) && trim($get->slip2) != "") {
 }
 
 if (isset($get->recurso) && $get->recurso != '0') {
-    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorFonteRecurso($get->recurso);
+    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorSubrecurso($get->recurso);
     $ids = implode(', ', $ids);
     $whereslip .= " and ( r1.c61_codigo in ($ids) or r2.c61_codigo in ($ids) ) ";
 }
@@ -150,7 +150,7 @@ $sql = "         select slip.k17_codigo,
     </tr>
 </table>
 <center>
-    <?
+    <?php
     $funcao_js = 'teste|k17_codigo';
     db_lovrot($sql, 15, "()", "", $funcao_js);
     ?>

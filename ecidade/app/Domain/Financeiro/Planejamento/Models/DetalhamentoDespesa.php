@@ -67,6 +67,10 @@ class DetalhamentoDespesa extends Model
     protected $table = 'planejamento.detalhamentoiniciativa';
     protected $primaryKey = 'pl20_codigo';
 
+    protected $casts = [
+        'pl20_concarpeculiar' => 'string'
+    ];
+
     /**
      * @var Collection|Valor[]
      */
@@ -175,7 +179,7 @@ class DetalhamentoDespesa extends Model
             str_pad($programa, 4, '0', STR_PAD_LEFT),
             str_pad($this->iniciativa->pl12_orcprojativ, 4, '0', STR_PAD_LEFT),
             $naturezaDespesa->o56_elemento,
-            $this->recurso->fonteRecurso($this->pl20_anoorcamento)->gestao,
+            $this->recurso->fonteRecurso($this->pl20_anoorcamento)->codigo_siconfi,
             str_pad($this->recurso->o15_complemento, 4, '0', STR_PAD_LEFT)
         ]);
     }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -60,7 +60,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
    <?=@$Led109_i_codigo?>
   </td>
   <td>
-   <?db_input('ed109_i_codigo',10,$Ied109_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed109_i_codigo',10,$Ied109_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,7 +68,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
    <?=@$Led109_c_descr?>
   </td>
   <td>
-   <?db_input('ed109_c_descr',50,$Ied109_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed109_c_descr',50,$Ied109_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -77,7 +77,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed109_i_codigo"=>@$ed109_i_codigo,"ed109_c_descr"=>@$ed109_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoconhecimento->sql_query($ed109_i_codigo,"*","ed109_c_descr");

@@ -48,6 +48,49 @@ if (isset($calcular) ){
    */
   $rsCalculo = $oDaoAuto->sql_calculo( $y50_codauto );
   $sInfo     = db_utils::fieldsmemory($rsCalculo, 0)->fc_autodeinfracao;
+  
+  $numpres = explode(".", $sInfo);
+
+  if($numpres[0] == 'Cálculo do Auto de Infração Executado'){
+    $numpre = substr($numpres[1], 8, 9);
+    $result  = $oDaoArrecad->sql_record($oDaoArrecad->sql_query("","arrecad.*",""," arrecad.k00_numpre = $numpre" ));
+      if ($oDaoArrecad->numrows > 0) {
+
+        db_query("DELETE FROM caixa.arrehist WHERE k00_numpre = $numpre");
+
+        $sqlIdhist = "SELECT nextval('arrehist_k00_idhist_seq') AS idHist;";
+        $rsIdhist = db_query($sqlIdhist);
+        $iIdHist = db_utils::fieldsMemory($rsIdhist, 0)->idhist;
+
+        $codHistorico = 84;
+        $historico = 'AUTO DE INFRACAO';
+        $usuario = (!empty(db_getsession("DB_id_usuario")) ? db_getsession("DB_id_usuario") : 1);
+        $dataCorrente = date("Y-m-d", db_getsession("DB_datausu"));
+        $horaCorrente = date('H:i');
+
+        $sqlArrehist = "INSERT INTO caixa.arrehist
+                          VALUES
+                          (
+                            {$numpre},
+                            1,
+                            {$codHistorico},
+                            '{$dataCorrente}',
+                            '{$horaCorrente}',
+                            {$usuario},
+                            '{$historico}',
+                            null,
+                            {$iIdHist}
+                          )";
+
+        $rsArrehist = db_query($sqlArrehist);
+
+        if (!$rsArrehist) {
+          echo "Erro ao inserir na tabela arrehist.";
+          exit;
+        }
+      }
+  }
+
   echo "<script>parent.iframe_calculo.location.href='fis1_autocalc001.php?y50_codauto=".$y50_codauto."&info1=$sInfo';</script>";
   exit;
 
@@ -93,7 +136,7 @@ if (isset($calcular) ){
     <form method="post" name="form1" action="">
       <?php db_input('y50_codauto',10,'',true,'hidden',3); ?>
 
-      <fieldset style="width: 650px; !important">
+      <fieldset style="width: 650px !important">
 
         <legend>Cálculo do Auto de Infração</legend>
         <table>
@@ -113,7 +156,7 @@ if (isset($calcular) ){
   </div>
 </body>
 </html>
-<?
+<?php
 if( isset($desabilita) ){
   echo "<script>document.form1.calcular.disabled = true</script>";
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ $oRotulo->label("ve01_placa");
           <?=@$Ltf17_i_codigo?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('tf17_i_codigo', 10, $Itf17_i_codigo, true, 'text', 3, '')
           ?>
         </td>
@@ -61,7 +61,7 @@ $oRotulo->label("ve01_placa");
           <?=@$Ltf17_i_pedidotfd?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('tf17_i_pedidotfd', 10, $Itf17_i_pedidotfd, true, 'text', 3, '');
           ?>
         </td>
@@ -71,7 +71,7 @@ $oRotulo->label("ve01_placa");
           <b>Paciente:</b>
         </td>
         <td nowrap> 
-          <?
+          <?php
           db_input('tf01_i_cgsund', 10, $Itf01_i_cgsund, true, 'text', 3, '');
           db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
           db_input('z01_v_ident', 10, @$Iz01_v_ident, true, 'hidden', $db_opcao, "");
@@ -85,7 +85,7 @@ $oRotulo->label("ve01_placa");
           <?=@$Ltf25_i_destino?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('tf25_i_destino', 10, $Itf25_i_destino, true, 'text', 3, '');
           db_input('tf03_c_descr', 50, $Itf03_c_descr, true, 'text', 3, '');
           ?>
@@ -96,7 +96,7 @@ $oRotulo->label("ve01_placa");
           <?=@$Ltf10_i_prestadora?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('tf10_i_prestadora', 10, $Itf10_i_prestadora, true, 'text', 3, '');
           db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, '');
           ?>
@@ -107,7 +107,7 @@ $oRotulo->label("ve01_placa");
           <b>Agendamento:</b>
         </td>
         <td> 
-          <?
+          <?php
           db_inputdata('tf16_d_dataagendamento', @$tf16_d_dataagendamento_dia, @$tf16_d_dataagendamento_mes, 
                        @$tf16_d_dataagendamento_ano, true, 'text', 3, ''
                       );
@@ -124,7 +124,7 @@ $oRotulo->label("ve01_placa");
                   <?=@$Ltf17_d_datasaida?>
                 </td>
                 <td nowrap> 
-                  <?
+                  <?php
                   db_inputdata('tf17_d_datasaida', @$tf17_d_datasaida_dia, @$tf17_d_datasaida_mes, @$tf17_d_datasaida_ano, 
                                true, 'text', $db_opcao, ' onchange="js_validaGrade();"', '', '', 'parent.js_validaGrade();'
                               );
@@ -132,7 +132,7 @@ $oRotulo->label("ve01_placa");
                 </td>
                 <td nowrap title="<?=@$Ttf17_c_horasaida?>" align="left">
                   <?=@$Ltf17_c_horasaida?>
-                  <?
+                  <?php
                   if($tf11_i_utilizagradehorario == 1 && $db_opcao != 3) { // utiliza a grade de horário
                 
                     $db_opcaosaida = 3;
@@ -154,17 +154,17 @@ $oRotulo->label("ve01_placa");
                   <?=@$Ltf17_c_localsaida?>
                 </td>
                 <td colspan="3"> 
-                   <?
+                   <?php
                    db_input('tf17_c_localsaida', 66, $Itf17_c_localsaida, true, 'text', $db_opcaosaida, "");
                    ?>
                 </td>
               </tr>
-              <tr  style=" <? echo ($db_indicarVeiculo == 1 ? '' : 'display: none;'); ?>">
+              <tr  style=" <?php echo ($db_indicarVeiculo == 1 ? '' : 'display: none;'); ?>">
                 <td nowrap title="<?=@$Ttf18_d_dataretorno?>">
                   <b>Data retorno:</b>
                 </td>
                 <td nowrap align="left"> 
-                  <?
+                  <?php
                   db_inputdata('tf18_d_dataretorno', @$tf18_d_dataretorno_dia, @$tf18_d_dataretorno_mes, @$tf18_d_dataretorno_ano, 
                                true, 'text', 1
                               );
@@ -172,7 +172,7 @@ $oRotulo->label("ve01_placa");
                 </td>
                 <td nowrap title="<?=@$Ttf18_c_horaretorno?>" align="left">
                   <b> Hora retorno: </b>
-                  <?        
+                  <?php        
                   db_input('tf18_c_horaretorno', 6, @$Itf18_c_horaretorno, true, 'text', 1,
                            "onKeyUp=\"mascara_hora(this.value, 'tf18_c_horaretorno',  event);\" "
                           );
@@ -185,18 +185,18 @@ $oRotulo->label("ve01_placa");
                            A INDICAÇÃO DE UM VEICULO.
                            
             -->
-            <fieldset style=" <? echo ($db_indicarVeiculo == 1 ? '' : 'display: none;'); ?>">
+            <fieldset style=" <?php echo ($db_indicarVeiculo == 1 ? '' : 'display: none;'); ?>">
               <legend><b> Veículo </b></legend>
               <table border="0" width="98%">
                 <tr>
                   <td>
-                    <?
+                    <?php
                     db_input('tf18_i_codigo', 10, @$Itf18_i_codigo, true, 'hidden', 3, "");
                     db_ancora(@$Ltf18_i_veiculo, "js_pesquisatf18_i_veiculo(true);", 1);
                     ?>
                   </td>
                   <td nowrap colspan="4"> 
-                    <?
+                    <?php
                     db_input('tf18_i_veiculo', 10, @$Itf18_i_veiculo, true, 'text', 1, 
                              " onchange='js_pesquisatf18_i_veiculo(false);'"
                             );
@@ -206,12 +206,12 @@ $oRotulo->label("ve01_placa");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Tve61_veicmotoristas?>">
-                    <?
+                    <?php
                     db_ancora(@$Ltf18_i_motorista, "js_pesquisatf18_i_motorista(true);", 1);
                     ?>
                   </td>
                   <td  nowrap colspan="4"> 
-                    <?
+                    <?php
                     db_input('tf18_i_motorista', 10, @$Itf18_i_motorista, true, 'text', 1, 
                              " onchange='js_pesquisatf18_i_motorista(false);'"
                             );
@@ -225,7 +225,7 @@ $oRotulo->label("ve01_placa");
               -->
               <center>
                 <fieldset align="center" style='width: 60%;'>
-                  <?
+                  <?php
                   if ($tf11_i_utilizagradehorario == 2) { 
                     echo '<legend><b>Lotação do Veiculo</b></legend>';
                   } else {
@@ -238,7 +238,7 @@ $oRotulo->label("ve01_placa");
                         <b>Total lugares: </b>
                       </td>
                       <td nowrap>
-                        <?
+                        <?php
                         if (!isset($total)) {
                           $total = 0;
                         }
@@ -249,7 +249,7 @@ $oRotulo->label("ve01_placa");
                         <b> - Pacientes: </b>
                       </td>
                       <td nowrap >
-                        <?
+                        <?php
                         if (!isset($numPac)) {
                           $numPac = 0;
                         } 
@@ -260,7 +260,7 @@ $oRotulo->label("ve01_placa");
                         <b> - Acompanhantes: </b>
                       </td>
                       <td nowrap>
-                        <?
+                        <?php
                         if (!isset($numAcomp)) {
                           $numAcomp = 0;
                         }
@@ -271,7 +271,7 @@ $oRotulo->label("ve01_placa");
                         <b> + Crianças de colo: </b> 
                       </td>
                       <td nowrap>
-                        <?
+                        <?php
                         if (!isset($numColo)) {
                           $numColo = 0;
                         }
@@ -282,7 +282,7 @@ $oRotulo->label("ve01_placa");
                         <b> = Lugares livres: </b>
                       </td>
                       <td nowrap>
-                        <?
+                        <?php
                         if (!isset($livre)) {
                           $livre = 0;
                         }
@@ -301,7 +301,7 @@ $oRotulo->label("ve01_placa");
                         <input name="numero" id="numero" type="hidden" value="0">
                         <input name="sPassageirosSelecionados" id="sPassageirosSelecionados" type="hidden" value="">
                         <input name="sPassageirosCGS" id="sPassageirosCGS" type="hidden" value="" >
-                        <?
+                        <?php
                         db_input("lAlterarSaida", 10, @$IlAlterarSaida, true, 'hidden', 3, "");
                         ?>
                       </td>
@@ -318,12 +318,12 @@ $oRotulo->label("ve01_placa");
   <input name="<?=($db_opcao==1?"incluir":"alterar")?>" type="submit" 
          id="db_opcao" value="<?=($db_opcao==1?"Incluir":"Alterar")?>" 
          <?=($db_botao==false?"disabled":"")?>  onclick="return js_validaEnvio();">
-  <?
+  <?php
     if($db_opcao == 2 && $lAlterarSaida == 1) {
   ?>
       <input name="excluir" type="submit" id="excluir" value="Excluir" 
              onclick="return confirm('Deseja excluir este agendamento de saída?');">
-  <?    
+  <?php    
     }
   ?>
   <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_saida.hide();">

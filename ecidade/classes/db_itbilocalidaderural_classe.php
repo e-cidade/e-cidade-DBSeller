@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: itbi
 //CLASSE DA ENTIDADE itbilocalidaderural
-class cl_itbilocalidaderural { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $it33_sequencial = 0; 
-   var $it33_guia = 0; 
-   var $it33_localidaderural = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_itbilocalidaderural {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $it33_sequencial = 0;
+   var $it33_guia = 0;
+   var $it33_localidaderural = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 it33_sequencial = int4 = Codigo sequencial 
-                 it33_guia = int8 = Código da ITBI 
-                 it33_localidaderural = int4 = Codigo sequencial 
+                 it33_sequencial = int4 = Codigo sequencial
+                 it33_guia = int8 = Código da ITBI
+                 it33_localidaderural = int4 = Codigo sequencial
                  ";
-   //funcao construtor da classe 
-   function cl_itbilocalidaderural() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("itbilocalidaderural"); 
+     $this->rotulo = new rotulo("itbilocalidaderural");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_itbilocalidaderural {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->it33_sequencial = ($this->it33_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["it33_sequencial"]:$this->it33_sequencial);
        $this->it33_guia = ($this->it33_guia == ""?@$GLOBALS["HTTP_POST_VARS"]["it33_guia"]:$this->it33_guia);
@@ -77,9 +77,9 @@ class cl_itbilocalidaderural {
      }
    }
    // funcao para inclusao
-   function incluir ($it33_sequencial){ 
+   public function incluir ($it33_sequencial){
       $this->atualizacampos();
-     if($this->it33_guia == null ){ 
+     if($this->it33_guia == null ){
        $this->erro_sql = " Campo Código da ITBI não informado.";
        $this->erro_campo = "it33_guia";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_itbilocalidaderural {
        $this->erro_status = "0";
        return false;
      }
-     if($this->it33_localidaderural == null ){ 
+     if($this->it33_localidaderural == null ){
        $this->erro_sql = " Campo Codigo sequencial não informado.";
        $this->erro_campo = "it33_localidaderural";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_itbilocalidaderural {
        return false;
      }
      if($it33_sequencial == "" || $it33_sequencial == null ){
-       $result = db_query("select nextval('itbilocalidaderural_it33_sequencial_seq')"); 
+       $result = db_query("select nextval('itbilocalidaderural_it33_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: itbilocalidaderural_it33_sequencial_seq do campo: it33_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: itbilocalidaderural_it33_sequencial_seq do campo: it33_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->it33_sequencial = pg_result($result,0,0); 
+       $this->it33_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from itbilocalidaderural_it33_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $it33_sequencial)){
@@ -118,10 +118,10 @@ class cl_itbilocalidaderural {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->it33_sequencial = $it33_sequencial; 
+         $this->it33_sequencial = $it33_sequencial;
        }
      }
-     if(($this->it33_sequencial == null) || ($this->it33_sequencial == "") ){ 
+     if(($this->it33_sequencial == null) || ($this->it33_sequencial == "") ){
        $this->erro_sql = " Campo it33_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_itbilocalidaderural {
        return false;
      }
      $sql = "insert into itbilocalidaderural(
-                                       it33_sequencial 
-                                      ,it33_guia 
-                                      ,it33_localidaderural 
+                                       it33_sequencial
+                                      ,it33_guia
+                                      ,it33_localidaderural
                        )
                 values (
-                                $this->it33_sequencial 
-                               ,$this->it33_guia 
-                               ,$this->it33_localidaderural 
+                                $this->it33_sequencial
+                               ,$this->it33_guia
+                               ,$this->it33_localidaderural
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ligação entre ITBI e localidade rural ($this->it33_sequencial) nao Incluído. Inclusao Abortada.";
@@ -180,16 +180,16 @@ class cl_itbilocalidaderural {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($it33_sequencial=null) { 
+   public function alterar ($it33_sequencial=null) {
       $this->atualizacampos();
      $sql = " update itbilocalidaderural set ";
      $virgula = "";
-     if(trim($this->it33_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_sequencial"])){ 
+     if(trim($this->it33_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_sequencial"])){
        $sql  .= $virgula." it33_sequencial = $this->it33_sequencial ";
        $virgula = ",";
-       if(trim($this->it33_sequencial) == null ){ 
+       if(trim($this->it33_sequencial) == null ){
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "it33_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_itbilocalidaderural {
          return false;
        }
      }
-     if(trim($this->it33_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_guia"])){ 
+     if(trim($this->it33_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_guia"])){
        $sql  .= $virgula." it33_guia = $this->it33_guia ";
        $virgula = ",";
-       if(trim($this->it33_guia) == null ){ 
+       if(trim($this->it33_guia) == null ){
          $this->erro_sql = " Campo Código da ITBI não informado.";
          $this->erro_campo = "it33_guia";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_itbilocalidaderural {
          return false;
        }
      }
-     if(trim($this->it33_localidaderural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_localidaderural"])){ 
+     if(trim($this->it33_localidaderural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it33_localidaderural"])){
        $sql  .= $virgula." it33_localidaderural = $this->it33_localidaderural ";
        $virgula = ",";
-       if(trim($this->it33_localidaderural) == null ){ 
+       if(trim($this->it33_localidaderural) == null ){
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "it33_localidaderural";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_itbilocalidaderural {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação entre ITBI e localidade rural nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->it33_sequencial;
@@ -280,11 +280,11 @@ class cl_itbilocalidaderural {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($it33_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($it33_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -293,7 +293,7 @@ class cl_itbilocalidaderural {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($it33_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -324,7 +324,7 @@ class cl_itbilocalidaderural {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ligação entre ITBI e localidade rural nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$it33_sequencial;
@@ -352,11 +352,11 @@ class cl_itbilocalidaderural {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -378,11 +378,11 @@ class cl_itbilocalidaderural {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $it33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $it33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,15 +400,15 @@ class cl_itbilocalidaderural {
      $sql2 = "";
      if($dbwhere==""){
        if($it33_sequencial!=null ){
-         $sql2 .= " where itbilocalidaderural.it33_sequencial = $it33_sequencial "; 
-       } 
+         $sql2 .= " where itbilocalidaderural.it33_sequencial = $it33_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,11 +417,11 @@ class cl_itbilocalidaderural {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $it33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $it33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,15 +434,15 @@ class cl_itbilocalidaderural {
      $sql2 = "";
      if($dbwhere==""){
        if($it33_sequencial!=null ){
-         $sql2 .= " where itbilocalidaderural.it33_sequencial = $it33_sequencial "; 
-       } 
+         $sql2 .= " where itbilocalidaderural.it33_sequencial = $it33_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

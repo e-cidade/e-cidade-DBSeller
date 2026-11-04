@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -119,7 +119,7 @@ $gerautori = "";
 if (isset ($incluir)) {
 
 	$gerautori = "";
-	$valor     = split(",", $valores);
+	$valor     =explode(",", $valores);
 	// arrays para dados do empautoriza
 	$arr_vals   = Array ();
 	$arr_cgms   = Array ();
@@ -152,7 +152,7 @@ if (isset ($incluir)) {
 		$e54_emiss = date("Y-m-d", db_getsession("DB_datausu"));
 		$e54_instit = db_getsession("DB_instit");
 
-		$splitei = split("_", $valor[$i]);
+		$splitei =explode("_", $valor[$i]);
         $contar  = $splitei[2];
 
 		$pc81_codprocitem = $splitei[2];
@@ -420,11 +420,10 @@ if (isset ($incluir)) {
 
         $arr_autori[$cont_autori] = $e54_autori;
         $cont_autori++;
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item =explode(",", $arr_proc[$arr_help[$i]]);
 
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
-
-					$arr_daditem          = split("_", $arr_item[$iii]);
+					$arr_daditem          =explode("_", $arr_item[$iii]);
 					$e55_item             = $arr_daditem[0];
 					$e55_quant            = $arr_daditem[1];
 					$e55_vltot            = $arr_daditem[2];
@@ -823,7 +822,7 @@ if (isset ($incluir)) {
 
         for ($i = $ii; $i < sizeof($valor); $i++) {
 
-          $vetor_autori = split("_", $valor[$i]);
+          $vetor_autori =explode("_", $valor[$i]);
           $contar       = $splitei[2];
           $campo        = "pc10_resumo".$contar;
 
@@ -1009,7 +1008,7 @@ if (isset ($pc80_codproc) && trim($pc80_codproc) != "") {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
 
 
 
@@ -1153,7 +1152,7 @@ if ($numrows_itens == 0) {
 
 		db_fieldsmemory($result_itens, $i);
     $oItem = db_utils::fieldsMemory($result_itens, $i);
-		/*
+	/*
      * Caso for registro de preco,
      * devemeos verificar se nao houve mudança no vencedor do item
      */
@@ -1466,7 +1465,7 @@ if ($numrows_itens == 0) {
       onClick="js_alterar_obs('<?=$campo?>',<?=$pc01_codmater?>,'<?=$pc01_descrmater?>');"></td>
     <td nowrap colspan="6" class="<?=$bordas?>">&nbsp;</td>
   </tr>
-<?
+<?php
     }
 	}
 	echo "</table>\n";
@@ -1569,7 +1568,7 @@ function js_marcaautoriza(valor){
 </script>
 </body>
 </html>
-<?
+<?php
 
 
 

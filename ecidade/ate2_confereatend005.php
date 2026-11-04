@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ print_r($nsel4);
 	</tr>
 
 	<tr>
-		<td align="center"><?
+		<td align="center"><?php
 		// filtro = Motivo, data, cliente, técnico, procedimento, modulo
 
 		// motivo
@@ -93,7 +93,7 @@ print_r($nsel4);
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//cliente
 		$sqlcliente = "select at01_codcli,at01_nomecli from clientes";
 		$resultcliente=db_query($sqlcliente);
@@ -109,7 +109,7 @@ print_r($nsel4);
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//tecnico
 		$sqltecnico = "	select distinct id_usuario,nome 
 						from tecnico 
@@ -127,7 +127,7 @@ print_r($nsel4);
 	</tr>
 	<tr>
 		<td align="center">
-		<?
+		<?php
 		//Módulo
 		$sqlmodulo = "select codmod,nomemod from db_sysmodulo where ativo = 't' order by nomemod";
 		$resultmodulo=db_query($sqlmodulo);
@@ -144,7 +144,7 @@ print_r($nsel4);
 		<td align="center"><input name="processa" type="submit" value="Processa"></td>
 	</tr>
 	
-	<?
+	<?php
 	db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 	?>
 </table>

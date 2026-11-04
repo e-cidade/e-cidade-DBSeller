@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -31,6 +31,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasMatriculasReposit
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasParametrosRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasParametrosRubricasRepository;
 use ECidade\RecursosHumanos\Pessoal\Service\ControleRubricasCalculoService;
+use App\Domain\RecursosHumanos\Pessoal\Services\Rubrica\ObservacaoRubricaService;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -257,6 +258,7 @@ if(isset($incluir) || isset($confirmado) || isset($pontonovo)){
  * Incluir
  * --------------------------------------------------------------------
  */
+
 if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset($alterar))) {
 
 
@@ -275,7 +277,6 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
     $r90_valor = "0";
     $valor_em_branco = true;
   }
-
   $result_verifica_rubrica_com_formula = $clrhrubricas->sql_record($clrhrubricas->sql_query_file(null,null,"rh27_form as formula_testa,rh27_limdat as limdata_testa, rh27_propq as proporcionalizar, rh27_periodolancamento","","rh27_instit = ".db_getsession("DB_instit")." and rh27_rubric = '".$r90_rubric."'"));
   if($clrhrubricas->numrows > 0){
 
@@ -618,6 +619,28 @@ if ( (isset($incluir) && !isset($alertconfirma)) || (isset($pontonovo) && !isset
 
       $erro_msg = $oErro->getMessage();
       $sqlerro  = true;
+    }
+  }
+
+  if (!$sqlerro) {
+    try {
+
+      $dados = (object) [
+        'matricula'  => $_POST['r90_regist'],
+        'rubrica'    => $_POST['r90_rubric'],
+        'anousu'     => $_POST['r90_anousu'],
+        'mesusu'     => $_POST['r90_mesusu'],
+        'observacao' => $_POST['observacao'],
+        'instit'     => db_getsession('DB_instit'),
+        'ponto'      => $pontonovo ? $pontonovo : $ponto
+      ];
+
+      $service = new ObservacaoRubricaService();
+      $service->saveFromLegacy($dados);
+      $observacao = null;
+    } catch (Exception $erro) {
+      $erro_msg = $erro->getMessage();
+      $sqlerro = true;
     }
   }
 
@@ -971,6 +994,29 @@ else if (isset($alterar)) {
 
     }
 
+
+    if (!$sqlerro) {
+      try {
+
+        $dados = (object) [
+          'matricula'  => $_POST['r90_regist'],
+          'rubrica'    => $_POST['r90_rubric'],
+          'anousu'     => $_POST['r90_anousu'],
+          'mesusu'     => $_POST['r90_mesusu'],
+          'observacao' => $_POST['observacao'],
+          'instit'     => db_getsession('DB_instit'),
+          'ponto'      => $pontonovo ? $pontonovo : $ponto
+        ];
+
+        $service = new ObservacaoRubricaService();
+        $service->saveFromLegacy($dados);
+        $observacao = null;
+      } catch (Exception $erro) {
+        $erro_msg = $erro->getMessage();
+        $sqlerro = true;
+      }
+    }
+
     if ( isset($ok) && $ok == true) {
 
       $r90_valor -= $valoranterior;
@@ -1142,6 +1188,27 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
       $excluir = "excluir";
     }
 
+    if (!$sqlerro) {
+      try {
+        $dados = (object) [
+          'matricula'  => $_POST['r90_regist'],
+          'rubrica'    => $_POST['r90_rubric'],
+          'anousu'     => $_POST['r90_anousu'],
+          'mesusu'     => $_POST['r90_mesusu'],
+          'observacao' => $_POST['observacao'],
+          'instit'     => db_getsession('DB_instit'),
+          'ponto'      => $pontonovo ? $pontonovo : $ponto
+        ];
+
+        $service = new ObservacaoRubricaService();
+        $service->deleteFromLegacy($dados);
+        $observacao = null;
+      } catch (Exception $erro) {
+        $erro_msg = $erro->getMessage();
+        $sqlerro = true;
+      }
+    }
+
     db_fim_transacao($sqlerro);
 
 } elseif ( isset($opcao) ) {
@@ -1249,6 +1316,27 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
     }
 
   }
+  
+  $observacao = null;
+  try {
+
+    $dados = (object) [
+      'matricula'  => $r90_regist,
+      'rubrica'    => $r90_rubric,
+      'anousu'     => $r90_anousu,
+      'mesusu'     => $r90_mesusu,
+      'instit'     => db_getsession('DB_instit'),
+      'ponto'      => $ponto
+    ];
+
+    $service = new ObservacaoRubricaService();
+    $dadosObservacao = $service->getObservacaoRubricaServidor($dados);
+    if ($dadosObservacao->observacao) {
+        $observacao = $dadosObservacao->observacao;
+    }
+  } catch (Exception $erro) {
+  }
+  
   //////////
 
   if(isset($rh27_form)){
@@ -1309,6 +1397,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir) || isset($pontonovo)){
       $r90_rubric = "";
       $r90_valor  = "";
       $r90_quant  = "";
+      $observacao = "";
       if(isset($r90_datlim)){
         $r90_datlim = "";
       }else if(isset($r29_tpp)){
@@ -1382,7 +1471,7 @@ if (isset($r90_regist)) {
   </tr>
 </table>
 
-  <?
+  <?php
   include(modification("forms/db_frmpontofx.php"));
 
   if(!isset($oGet->lConsulta)){
@@ -1393,7 +1482,7 @@ if (isset($r90_regist)) {
 </html>
 
 
-<?
+<?php
 if(isset($sqlerro) && $sqlerro == true){
     db_msgbox($erro_msg);
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,13 +60,13 @@ class cl_diario {
                  ed95_c_encerrado = char(1) = Encerrado
                  ";
    //funcao construtor da classe
-   function cl_diario() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_diario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed95_i_codigo = ($this->ed95_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed95_i_codigo"]:$this->ed95_i_codigo);
        $this->ed95_i_escola = ($this->ed95_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed95_i_escola"]:$this->ed95_i_escola);
@@ -89,7 +89,7 @@ class cl_diario {
      }
    }
    // funcao para inclusao
-   function incluir ($ed95_i_codigo){
+   public function incluir ($ed95_i_codigo){
       $this->atualizacampos();
      if($this->ed95_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
@@ -240,7 +240,7 @@ class cl_diario {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed95_i_codigo=null) {
+   public function alterar ($ed95_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update diario set ";
      $virgula = "";
@@ -400,7 +400,7 @@ class cl_diario {
      }
    }
    // funcao para exclusao
-   function excluir ($ed95_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed95_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -471,7 +471,7 @@ class cl_diario {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -493,7 +493,7 @@ class cl_diario {
       }
      return $result;
    }
-   function sql_query ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -539,7 +539,7 @@ class cl_diario {
      }
      return $sql;
   }
-   function sql_query_matric ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_matric ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -576,7 +576,7 @@ class cl_diario {
      return $sql;
   }
 
-   function sql_query_file ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -615,7 +615,7 @@ class cl_diario {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -649,7 +649,7 @@ class cl_diario {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -664,7 +664,7 @@ class cl_diario {
 
   }
 
-  function sql_query_diario_classe ($ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_diario_classe ($ed95_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
      $sql = "select ";
      if($campos != "*" ){
@@ -772,7 +772,7 @@ class cl_diario {
      return "{$sSqlAvaliacao} union {$sSqlResultado} ";
   }
 
-  function sql_query_regencia_aluno($ed95_i_codigo=null, $campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_regencia_aluno($ed95_i_codigo=null, $campos="*",$ordem=null,$dbwhere="") {
 
      $sql = "select ";
      if($campos != "*" ){
@@ -813,7 +813,7 @@ class cl_diario {
      return $sql;
   }
 
-  function sql_query_regencia($ed95_i_codigo=null, $campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_regencia($ed95_i_codigo=null, $campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if($campos != "*" ){

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ $lblRelatorio = "Processar";
 <script src="scripts/prototype.js"></script>
 <script src="scripts/scripts.js"></script>
 <script src="scripts/strings.js"></script>
-<?
+<?php
 db_app::load("estilos.css");
 ?>
 <style>
@@ -54,14 +54,14 @@ db_app::load("estilos.css");
 </style>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 <form id="form1" name="form1" method="get" action="pes3_relcomparativofolha002.php" target="Relatorio">
 <center>
 
 <table style="top: 60px; position: relative;">
-<?
+<?php
   $rubricas_selecionadas_text = "";
   db_input('rubricas_selecionadas_text',20,0,true,'hidden',3);
 ?>
@@ -73,7 +73,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
         <tr>
           <td style="width: 150px;"><b>Ano/Mês Base:</b></td>
           <td>
-            <? 
+            <?php 
               $iAnoBase = DBPessoal::getAnoFolha(); 
               db_input ("iAnoBase", "4", "", "", "text", 1, 'onKeyUp="js_ValidaCampos(this,4,\'Ano Base\',\'f\',\'f\',event);"');  
               echo "/";
@@ -85,7 +85,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
         <tr>
           <td><b>Ano/Mês a Comparar:</b></td>
           <td>
-            <? 
+            <?php 
               db_input ("iAnoCompara", "4", "", "", "text", 1, 'onKeyUp="js_ValidaCampos(this,4,\'Ano a Comparar\',\'f\',\'f\',event);"' );  
               echo "/";
               db_input ("iMesCompara", "2", "", "", "text", 1, 'onchange="js_testamescompara();" onKeyUp="js_ValidaCampos(this,4,\'Mês a Comparar\',\'f\',\'f\',event);"' );  
@@ -95,7 +95,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
         <tr>
           <td><b>Servidores:</b></td>
           <td>
-            <? 
+            <?php 
             
               $aFiltro = array( 
 							                  ''           => 'Selecione',
@@ -109,7 +109,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
         <tr>
           <td><b>Rubricas:</b></td>
           <td>
-            <? 
+            <?php 
             
               $aFiltroRubrica = array(
                                         ''             => 'Selecione', 
@@ -124,7 +124,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
         <tr id="tipo" style = "display:none;">
           <td><b>Tipo de Rubrica:</b></td>
           <td>
-            <? 
+            <?php 
             
               $aFiltroTipoRubrica = array(
                                         ''      => 'Selecione', 
@@ -137,7 +137,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
           </td>
         </tr>
  
-        <?
+        <?php
           $selecRubri                                  = new cl_arquivo_auxiliar;
           $selecRubri->cabecalho                       = "<strong>Seleção de Rubricas</strong>";
           $selecRubri->obrigarselecao                  = false;
@@ -175,7 +175,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
 	        
 	        </td>
 	        <td>
-			          <? 
+			          <?php 
 			            $aTiposFolha = array( 
 			                                  'gerfsal' => 'Salário',
 			                                  'gerfs13' => 'Saldo do 13º',
@@ -197,7 +197,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
 <p>&nbsp;
 <p>&nbsp;
 
-<?
+<?php
 	db_input ( "lblRelatorio", "20", "", "", "submit", 1, "onClick='return js_abrejanela();'" );
 ?>
 

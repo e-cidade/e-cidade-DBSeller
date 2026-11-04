@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordocomissaomembro
 class cl_acordocomissaomembro {
@@ -46,13 +46,13 @@ class cl_acordocomissaomembro {
                  ac07_arquivo = oid = Arquivo
                  ";
     //funcao construtor da classe
-    function cl_acordocomissaomembro() {
+    public function __construct() {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("acordocomissaomembro");
         $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
     //funcao erro
-    function erro($mostra,$retorna) {
+    public function erro($mostra,$retorna) {
         if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
             echo "<script>alert(\"".$this->erro_msg."\");</script>";
             if($retorna==true){
@@ -61,7 +61,7 @@ class cl_acordocomissaomembro {
         }
     }
     // funcao para atualizar campos
-    function atualizacampos($exclusao=false) {
+    public function atualizacampos($exclusao=false) {
         if($exclusao==false){
             $this->ac07_sequencial = ($this->ac07_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac07_sequencial"]:$this->ac07_sequencial);
             $this->ac07_acordocomissao = ($this->ac07_acordocomissao == ""?@$GLOBALS["HTTP_POST_VARS"]["ac07_acordocomissao"]:$this->ac07_acordocomissao);
@@ -92,7 +92,7 @@ class cl_acordocomissaomembro {
         }
     }
     // funcao para Inclusão
-    function incluir ($ac07_sequencial){
+    public function incluir ($ac07_sequencial){
         $this->atualizacampos();
         if($this->ac07_acordocomissao == null ){
             $this->erro_sql = " Campo Acordo Comissão não informado.";

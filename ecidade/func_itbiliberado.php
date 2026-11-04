@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ $clrotulo->label("it18_nomelograd");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
  db_app::load('estilos.css');
  db_app::load('scripts.js, prototype.js, strings.js, DBViewPesquisaSetorQuadraLote.js, dbcomboBox.widget.js');
 ?>
@@ -103,7 +103,7 @@ function js_mostramatri1(chave,erro){
 			<?=$Lit01_guia?>
 		</td>
 		<td> 
-		<?
+		<?php
 			db_input("it01_guia",10,$Iit01_guia,true,"text",4,"","chave_it01_guia");
 		?>
 		</td>
@@ -111,12 +111,12 @@ function js_mostramatri1(chave,erro){
 	
 	<tr>   
 		<td>
-		<?
+		<?php
 			db_ancora($Lj01_matric,' js_matri(true); ',1);
 		?>
 		</td>
 		<td> 
-		<?
+		<?php
 			db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
 			db_input('z01_nome',28,0,true,'text',3,"","z01_nomematri");
 		?>
@@ -128,7 +128,7 @@ function js_mostramatri1(chave,erro){
 			<strong>Logradouro :</strong>            
 		</td>
 		<td>
-		<?
+		<?php
 			db_input('logradouroid',40,'',true,'hidden',3);
 			db_input('it18_nomelograd',40,$Iit18_nomelograd,true,'text',1);
 		?>                 
@@ -142,7 +142,7 @@ function js_mostramatri1(chave,erro){
 			</strong>
 		</td>
 		<td> 
-		<?
+		<?php
 			db_input('j34_setor',10,$Ij34_setor,true,'text',1);
 			db_input('j34_quadra',10,$Ij34_quadra,true,'text',1);
 			db_input('j34_lote',10,$Ij34_lote,true,'text',1);
@@ -155,7 +155,7 @@ function js_mostramatri1(chave,erro){
 			<strong>Tipo :</strong>
     </td>
     <td>
-      <?
+      <?php
         $aTipo = array( 't'=>'Todos',
                         'u'=>'Urbano',
                         'r'=>'Rural' );
@@ -170,13 +170,13 @@ function js_mostramatri1(chave,erro){
 			<strong>Per&iacute;odo de:</strong>
 		</td>
 		<td>
-		<?
+		<?php
 			db_inputdata('dtIni', '', '', '', true, 'text', 1, '');
 		?>                    
 		&nbsp;
 		<b> a </b>
 		&nbsp;
-		<?
+		<?php
 			db_inputdata('dtFim', '', '', '', true, 'text', 1, '');
 		?>                    
 		</td>
@@ -187,7 +187,7 @@ function js_mostramatri1(chave,erro){
 			<strong>Situaçao:</strong>
 		</td>
 		<td colspan='3'>
-		<?
+		<?php
 			$aSituacao = array( '1'=>'Todos',
 	                        '2'=>'Aberto',
 	                        '3'=>'Pago',
@@ -216,7 +216,7 @@ function js_mostramatri1(chave,erro){
 <table align="center">
 <tr>
 	<td>
-	<?
+	<?php
 		$campos  = "distinct on (it01_guia) it01_guia,
       									  it01_data,
       									  it01_areaterreno,
@@ -352,12 +352,12 @@ function js_mostramatri1(chave,erro){
 </form>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 
@@ -365,7 +365,7 @@ if(!isset($pesquisa_chave)){
 var oPesquisa = new DBViewPesquisaSetorQuadraLote('pesquisa', 'oPesquisa');
     oPesquisa.show();
     oPesquisa.appendForm();
-<? 
+<?php 
 	echo "oPesquisa.setValues('{$setorCodigo}','{$quadra}','{$lote}');"; 
 ?>
 </script>

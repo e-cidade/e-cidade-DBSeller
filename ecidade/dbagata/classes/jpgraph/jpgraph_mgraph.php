@@ -29,13 +29,13 @@ class MGraph {
 
 
     // Create a new instane of the combined graph
-    function MGraph($aWidth=NULL,$aHeight=NULL) {
+    public function __construct($aWidth=NULL,$aHeight=NULL) {
 	$this->iWidth = $aWidth;
 	$this->iHeight = $aHeight;
     }
 
     // Specify background fill color for the combined graph
-    function SetFillColor($aColor) {
+    public function SetFillColor($aColor) {
 	$this->iFillColor = $aColor;
     }
 
@@ -47,12 +47,12 @@ class MGraph {
     }
 
     // Specify a background image blend    
-    function SetBackgroundImageMix($aMix) {
+    public function SetBackgroundImageMix($aMix) {
 	$this->background_image_mix = $aMix ;
     }
 
     // Specify a background image
-    function SetBackgroundImage($aFileName,$aCenter_aX=NULL,$aY=NULL) {
+    public function SetBackgroundImage($aFileName,$aCenter_aX=NULL,$aY=NULL) {
 	// Second argument can be either a boolean value or 
 	// a numeric
 	$aCenter=TRUE;
@@ -126,7 +126,7 @@ class MGraph {
 	return $img;
     }	
 
-    function _strokeBackgroundImage() {
+    public function _strokeBackgroundImage() {
 	if( $this->background_image == '' ) 
 	    return;
 
@@ -155,11 +155,11 @@ class MGraph {
 	$this->_imageCp($bkgimg,$x,$y,0,0,$bw,$bh,$this->background_image_mix);
     }
 
-    function _imageCp($aSrcImg,$x,$y,$fx,$fy,$w,$h,$mix=100) {
+    public function _imageCp($aSrcImg,$x,$y,$fx,$fy,$w,$h,$mix=100) {
 	imagecopymerge($this->img,$aSrcImg,$x,$y,$fx,$fy,$w,$h,$mix);
     }
 
-    function _imageCreate($aWidth,$aHeight) {
+    public function _imageCreate($aWidth,$aHeight) {
 	if( $aWidth <= 1 || $aHeight <= 1 ) {
 	    JpGraphError::RaiseL(12006,$aWidth,$aHeight);
 //("Illegal sizes specified for width or height when creating an image, (width=$aWidth, height=$aHeight)");
@@ -172,7 +172,7 @@ class MGraph {
 	ImageAlphaBlending($this->img,true);
     }
 
-    function _polygon($p,$closed=FALSE) {
+    public function _polygon($p,$closed=FALSE) {
 	if( $this->iLineWeight==0 ) return;
 	$n=count($p);
 	$oldx = $p[0];
@@ -187,37 +187,37 @@ class MGraph {
 	}
     }
 
-    function _filledPolygon($pts) {
+    public function _filledPolygon($pts) {
 	$n=count($pts);
 	for($i=0; $i < $n; ++$i) 
 	    $pts[$i] = round($pts[$i]);
 	imagefilledpolygon($this->img,$pts,count($pts)/2,$this->iCurrentColor);
     }
 	
-    function _rectangle($xl,$yu,$xr,$yl) {
+    public function _rectangle($xl,$yu,$xr,$yl) {
 	for($i=0; $i < $this->iLineWeight; ++$i ) 
 	    $this->_polygon(array($xl+$i,$yu+$i,$xr-$i,$yu+$i,
 				  $xr-$i,$yl-$i,$xl+$i,$yl-$i,
 				  $xl+$i,$yu+$i));
     }
 	
-    function _filledRectangle($xl,$yu,$xr,$yl) {
+    public function _filledRectangle($xl,$yu,$xr,$yl) {
 	$this->_filledPolygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl));
     }
 
-    function _setColor($aColor) {
+    public function _setColor($aColor) {
 	$this->iCurrentColor = $this->iRGB->Allocate($aColor);
     }
 
-    function AddMix($aGraph,$x=0,$y=0,$mix=100,$fx=0,$fy=0,$w=0,$h=0) {
+    public function AddMix($aGraph,$x=0,$y=0,$mix=100,$fx=0,$fy=0,$w=0,$h=0) {
 	$this->_gdImgHandle($aGraph->Stroke( _IMG_HANDLER),$x,$y,$fx=0,$fy=0,$w,$h,$mix);
    }
 
-   function Add($aGraph,$x=0,$y=0,$fx=0,$fy=0,$w=0,$h=0) {
+   public function Add($aGraph,$x=0,$y=0,$fx=0,$fy=0,$w=0,$h=0) {
 	$this->_gdImgHandle($aGraph->Stroke( _IMG_HANDLER),$x,$y,$fx=0,$fy=0,$w,$h);
    }
 
-    function _gdImgHandle($agdCanvas,$x,$y,$fx=0,$fy=0,$w=0,$h=0,$mix=100) {
+    public function _gdImgHandle($agdCanvas,$x,$y,$fx=0,$fy=0,$w=0,$h=0,$mix=100) {
 	if( $w == 0 )  $w = @imagesx($agdCanvas);
 	if( $w === NULL ) {
 	    JpGraphError::RaiseL(12007);
@@ -228,19 +228,19 @@ class MGraph {
 	$this->iGraphs[$this->iCnt++] = array($agdCanvas,$x,$y,$fx,$fy,$w,$h,$mix);
     }
 
-    function SetMargin($lm,$rm,$tm,$bm) {
+    public function SetMargin($lm,$rm,$tm,$bm) {
 	$this->lm = $lm;
 	$this->rm = $rm;
 	$this->tm = $tm;
 	$this->bm = $bm;
     }
 
-    function SetExpired($aFlg=true) {
+    public function SetExpired($aFlg=true) {
 	$this->expired = $aFlg;
     }
 
     // Generate image header
-    function Headers() {
+    public function Headers() {
 	
 	// In case we are running from the command line with the client version of
 	// PHP we can't send any headers.
@@ -267,7 +267,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
 	header("Content-type: image/$this->img_format");
     }
 
-    function SetImgFormat($aFormat,$aQuality=75) {
+    public function SetImgFormat($aFormat,$aQuality=75) {
 	$this->image_quality = $aQuality;
 	$aFormat = strtolower($aFormat);
 	$tst = true;
@@ -306,7 +306,7 @@ HTTP headers have already been sent.</font></td></tr><tr><td><b>Explanation:</b>
     }
 
     // Stream image to browser or to file
-    function Stream($aFile="") {
+    public function Stream($aFile="") {
 	$func="image".$this->img_format;
 	if( $this->img_format=="jpeg" && $this->image_quality != null ) {
 	    $res = @$func($this->img,$aFile,$this->image_quality);

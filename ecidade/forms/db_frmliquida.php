@@ -41,14 +41,11 @@ $clempnotaele->rotulo->label();
 $cltabrec->rotulo->label();
 
 if ($tela_estorno) {
-
     $operacao = 2;//operacao a ser realizada:1 = liquidacao, 2 estorno
     $labelVal = "SALDO A ESTORNAR";
     $metodo = "estornarLiquidacaoAJAX";
     $sCredor = "none";
-
 } else {
-
     $operacao = 1;//operacao a ser realizada:1 = liquidacao, 2 estorno
     $labelVal = "SALDO A LIQUIDAR";
     $metodo = "liquidarAjax";
@@ -76,25 +73,25 @@ $db_opcao_inf = 1;
                         <table>
                             <tr>
                                 <td nowrap><?= db_ancora($Le60_codemp, "js_JanelaAutomatica('empempenho',\$F('e60_numemp'))", $db_opcao_inf) ?></td>
-                                <td nowrap><? db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3) ?> </td>
+                                <td nowrap><?php db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3) ?> </td>
                                 <td nowrap><?= db_ancora($Le60_numemp, "js_JanelaAutomatica('empempenho',\$F('e60_numemp'))", $db_opcao_inf) ?></td>
-                                <td><? db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?> </td>
+                                <td><?php db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?> </td>
                             </tr>
                             <tr>
                                 <td><?= db_ancora($Le60_numcgm, "js_JanelaAutomatica('cgm',\$F('e60_numcgm'))", $db_opcao_inf) ?></td>
-                                <td><? db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
-                                <td colspan=2><? db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
+                                <td><?php db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
+                                <td colspan=2><?php db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
                             </tr>
                             <tr style='display:<?= $sCredor ?>'>
                                 <td><?= db_ancora('<b>Credor:</b>', "js_pesquisae49_numcgm(true)", 1) ?></td>
-                                <td><? db_input('e49_numcgm', 13, $Ie60_numcgm, true, 'text', 1, "onchange='js_pesquisae49_numcgm(false)'"); ?> </td>
-                                <td colspan=2><? db_input('z01_credor', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
+                                <td><?php db_input('e49_numcgm', 13, $Ie60_numcgm, true, 'text', 1, "onchange='js_pesquisae49_numcgm(false)'"); ?> </td>
+                                <td colspan=2><?php db_input('z01_credor', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
                             </tr>
                             <tr>
                                 <td><?= db_ancora($Le60_coddot, "js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'" . @$e60_anousu . "')", $db_opcao_inf) ?></td>
-                                <td><? db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
+                                <td><?php db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
                                 <td width="20"><?= db_ancora($Lo15_codigo, "", 3) ?></td>
-                                <td><? db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3);
+                                <td><?php db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3);
                                     db_input('o15_descr', 29, $Io15_descr, true, 'text', 3) ?></td>
                             </tr>
 
@@ -105,31 +102,28 @@ $db_opcao_inf = 1;
                                 <td colspan="1">
                                     <?php db_input('e03_numeroprocesso', 13, '', true, 'text', $db_opcao_inf, null, null, null, null, 15) ?>
                                 </td>
-                                <td class="regime_competencia" style="display: ">
+                                <td class="regime_competencia">
                                     <label for="competencia_regime"><b>Competência:</b></label>
                                 </td>
-                                <td class="regime_competencia" style="display: ">
+                                <td class="regime_competencia">
                                     <input id="competencia_regime" class="field-size3">
                                 </td>
                             </tr>
 
                             <!--[Extensao OrdenadorDespesa] inclusao_ordenador-->
-                            <?
+                            <?php
                             echo " <tr> ";
                             echo "    <td>&nbsp;</td> ";
                             echo "    <td colspan='3'> ";
                             if ($operacao == 1) {
-
                                 echo "       <input type='checkbox' checked id='emitedocumento'> ";
                                 echo "       <label for='emitedocumento'>Emitir Ordem de Pagamento</label> ";
-
                             }
                             echo "   &nbsp; </td> ";
                             echo " </tr> ";
                             echo " <tr> ";
                             echo "    <td>&nbsp;</td> </tr>";
                             if ($operacao == 2) {
-
                                 echo " <tr> ";
                                 echo "    <td>&nbsp;</td> </tr>";
                             }
@@ -143,19 +137,19 @@ $db_opcao_inf = 1;
                         <table>
                             <tr>
                                 <td nowrap><?= @$Le60_vlremp ?></td>
-                                <td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><?php db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlranu ?></td>
-                                <td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><?php db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlrliq ?></td>
-                                <td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><?php db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlrpag ?></td>
-                                <td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><?php db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td colspan=2 align=center class=table_header><?= $labelVal ?></td>
@@ -164,7 +158,7 @@ $db_opcao_inf = 1;
                             <tr>
                                 <td><b> SALDO </b></td>
                                 <td align=right>
-                                    <?
+                                    <?php
                                     if ($db_opcao == 3) {
                                         @$saldo_disp = db_formatar(($e53_valor - $e53_vlranu - $e53_vlrpag), 'p');
                                     } else {
@@ -217,15 +211,32 @@ $db_opcao_inf = 1;
                 <td colspan="2px">
                     <fieldset>
                         <legend><b>Histórico</b></legend>
-                        <table width="100%">
-                            <tr>
-                                <td>
-                                    <?php
-                                    db_textarea('historico', 4, 110, 0, true, 'text', 1, "");
-                                    ?>
-                                </td>
-                            </tr>
-                        </table>
+                        <?php if(isRioDeJaneiro()){ ?>
+                            <span>
+                              <b style ='color:red'>Campo obrigatório para uso no SIGFIS do TCE-RJ, com no máximo 4000 caracteres.
+                              </b>
+                            </span>
+                                      
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <?php
+                                        db_textarea('historico', 4, 110, 0, true, 'text', 1, "onkeyup='js_verificaCaracteresHistorico()'","","");
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <div align = 'right'>
+                                        <td>
+                                            <span> <b> N° de caracteres :</b></span>
+                                            <input type = 'text' size='4' id= 'historico_caracteres' value = '' disabled/>
+                                        </td>
+                                    </div>
+                                </tr>
+                            </table> 
+                        <?php } else {
+                            db_textarea('historico', 4, 110, 0, true, 'text', 1, "");
+                        }?>                         
                     </fieldset>
                 </td>
             </tr>
@@ -322,6 +333,12 @@ $db_opcao_inf = 1;
         var eTipoInstrumentoContratual = document.getElementById('tipo_instrumento_contratual');
         obj = JSON.parse(oAjax.responseText);
 
+        if (obj.lSuspenderLiquidacao == 't') {
+          alert("Ficha financeira suspensa para liquidações.");
+          js_pesquisa('');
+          return false;
+        }
+
         if (obj.lEmpenhoRestoAPagar) {
             habilitaRegimeCompetencia(false, <?php echo $tela_estorno ? "true" : "false"; ?>);
             lInformarCompetencia = false;
@@ -348,6 +365,7 @@ $db_opcao_inf = 1;
         $('e60_vlrpag').value = obj.e60_vlrpag;
         $('e60_vlrliq').value = obj.e60_vlrliq;
         $('historico').value = obj.e60_resumo.urlDecode();
+        js_verificaCaracteresHistorico();
         $('saldo_disp').value = obj.saldo_dis;
         saida = '';
         iTotNotas = 0;
@@ -516,11 +534,23 @@ $db_opcao_inf = 1;
         $('pesquisar').disabled = true;
         $('confirmar').disabled = true;
 
+        let isRJ = '<?=isRioDeJaneiro()?>';
+        if(isRJ && $F('historico').trim() == '' ){
+
+           alert('É obrigatório informar o histórico do estorno da liquidação!');
+           return false;
+
+        } else if (isRJ && $F('historico').length > 4000){
+            
+            alert('É obrigatório informar no histórico um limite de no máximo 4000 caracteres!');
+            return false;
+        }
+
         if (js_strToFloat($F('saldo_disp')) <= 0) {
             alert('Saldo disponível negativo.');
             return false;
         }
-
+        
         var aNotas = [];
         var aCompetencias = [];
         var eTipoInstrumentoContratual = document.getElementById('tipo_instrumento_contratual');
@@ -793,6 +823,13 @@ $db_opcao_inf = 1;
         if (c90_confirmadata == 't') {
             const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
             alert(msg)
+        }
+    }
+
+    function js_verificaCaracteresHistorico(){
+        
+        if ($('historico_caracteres')) {
+            $('historico_caracteres').value = $('historico').value.length;
         }
     }
 

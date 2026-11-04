@@ -67,6 +67,28 @@ class CgmJuridico  extends CgmBase {
 
   protected  $sNire;
 
+  /**
+     * Nacionalidade do CGM
+     *
+     * @var integer
+     */
+    protected $iNacionalidade;
+
+     /**
+     * @type string
+     */
+    protected $sDocumentoEstrangeiro;
+
+    /**
+     * @var string
+    */
+    protected $sPaisEstrangeiro;
+
+    /**
+     * @var string
+     */
+    protected $sCidadeEstrangeiro;
+
   function __construct( $iCgm = null ) {
 
     if ( !empty($iCgm) ) {
@@ -86,6 +108,7 @@ class CgmJuridico  extends CgmBase {
         $this->setNomeFantasia($oDadosCgm->z01_nomefanta);
         $this->setTipoCredor  ($oDadosCgm->z01_tipcre);
         $this->setObs         ($oDadosCgm->z01_obs);
+        $this->setNacionalidade ($oDadosCgm->z01_nacion);
 
       }
     }
@@ -178,6 +201,81 @@ class CgmJuridico  extends CgmBase {
   public function setNomeFantasia($sNomeFantasia) {
     $this->sNomeFantasia = $sNomeFantasia;
   }
+   /**
+     * @return integer
+     */
+    public function getNacionalidade()
+    {
+        return $this->iNacionalidade;
+    }
+
+     /**
+     * Documento estrangeiro
+     * @return string
+     * @throws Exception
+     */
+    public function getDocumentoEstrangeiro()
+    {
+
+        $this->carregarInformacoesEstrangeiros();
+        return $this->sDocumentoEstrangeiro;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getPaisEstrangeiro()
+    {
+
+        $this->carregarInformacoesEstrangeiros();
+        return $this->sPaisEstrangeiro;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function getCidadeEstrangeiro()
+    {
+
+        $this->carregarInformacoesEstrangeiros();
+        return $this->sCidadeEstrangeiro;
+    }
+
+
+    /**
+     * @param integer $iNacionalidade
+     */
+    public function setNacionalidade($iNacionalidade)
+    {
+        $this->iNacionalidade = $iNacionalidade;
+    }
+
+    /**
+     * Documento estrangeiro
+     * @param $sDocumento
+     */
+    public function setDocumentoEstrangeiro($sDocumento)
+    {
+        $this->sDocumentoEstrangeiro = $sDocumento;
+    }
+
+     /**
+     * @param $sPais
+     */
+    public function setPaisEstrangeiro($sPais)
+    {
+        $this->sPaisEstrangeiro = $sPais;
+    }
+
+    /**
+     * @param $sCidade
+     */
+    public function setCidadeEstrangeiro($sCidade)
+    {
+        $this->sCidadeEstrangeiro = $sCidade;
+    }
 
   /**
    * Salva os dados informados do CGM, caso o CGM já exista então
@@ -231,6 +329,7 @@ class CgmJuridico  extends CgmBase {
     $oDaoCgm->z01_emailc     = addslashes($this->getEmailComercial());
     $oDaoCgm->z01_numcon     = $this->getNumeroComercial();
     $oDaoCgm->z01_telcon     = $this->getTelefoneComercial();
+    $oDaoCgm->z01_nacion     = $this->getNacionalidade();
 
     if (!empty($oDaoCgm->z01_numcgm)) {
       $oDaoCgm->alterar($this->getCodigo());
@@ -265,7 +364,7 @@ class CgmJuridico  extends CgmBase {
     }
 
    /**
-    * inseri registro na cgmendereco {Primário}
+    * inseri registro na cgmendereco {Primério}
     */
     if ($this->getEnderecoPrimario() != "" && $this->getEnderecoPrimario() != null) {
       try {
@@ -276,7 +375,7 @@ class CgmJuridico  extends CgmBase {
     }
 
     /**
-    * inseri registro na cgmendereco {Secundário}
+    * inseri registro na cgmendereco {Secundério}
     */
     $oDaoCgmEndereco = new \cl_cgmendereco();
 
@@ -307,7 +406,7 @@ class CgmJuridico  extends CgmBase {
     }
 
     /**
-     * Inserção na cgmjuridico
+     * Insere na cgmjuridico
      */
 
     $sCgmJuridico  = $oDaoCgmJuridico->sql_query_file(null, 'z08_sequencial', null, "z08_numcgm = ".$this->getCodigo());
@@ -329,6 +428,10 @@ class CgmJuridico  extends CgmBase {
       throw new Exception("{$sMsgErro}, {$oDaoCgmJuridico->erro_msg}");
     }
 
+    if($this->iNacionalidade == 2){
+        $this->vincularDocumentoEstrangeiroEmpresa();
+    }
+
     $this->salvaCgmTipoEmpresa();
   }
 
@@ -340,5 +443,55 @@ class CgmJuridico  extends CgmBase {
         return array_merge(parent::toArray(), array(
             'cnpj' => $this->getCnpj()
         ));
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    protected function vincularDocumentoEstrangeiroEmpresa()
+    {
+
+        $oDaoDocumento = new cl_cgmestrangeiro();
+        $oDaoDocumento->excluir(null, "z09_numcgm = {$this->iCodigo}");
+
+        if ( empty($this->iNacionalidade) || empty($this->sDocumentoEstrangeiro)) {
+            return true;
+        }
+
+        $oDaoDocumento->z09_sequencial = null;
+        $oDaoDocumento->z09_numcgm = $this->iCodigo;
+        $oDaoDocumento->z09_documento = $this->sDocumentoEstrangeiro;
+        $oDaoDocumento->z09_pais = $this->sPaisEstrangeiro;
+        $oDaoDocumento->z09_cidade = $this->sCidadeEstrangeiro;
+        $oDaoDocumento->incluir($oDaoDocumento->z09_sequencial);
+        if ($oDaoDocumento->erro_status == "0") {
+            throw new Exception("Não foi possível vincular o documento do CGM estrangeiro.");
+        }
+        return true;
+    }
+
+    /**
+     * Carrega as informações do CGM Estrangeiro
+     * @throws Exception
+     */
+    private function carregarInformacoesEstrangeiros()
+    {
+
+        if ($this->iNacionalidade != 0) {
+            $oDaoDocumento = new cl_cgmestrangeiro();
+            $sSqlDocumento = $oDaoDocumento->sql_query_file(null, "*", null, "z09_numcgm = {$this->iCodigo}");
+            $rsDocumento = db_query($sSqlDocumento);
+            if (!$rsDocumento) {
+                throw new Exception("Ocorreu um erro ao buscar o número do documento estrangeiro.");
+            }
+
+            if (pg_num_rows($rsDocumento) > 0) {
+                $stdDadosEstrangeiro = db_utils::fieldsMemory($rsDocumento, 0);
+                $this->setDocumentoEstrangeiro($stdDadosEstrangeiro->z09_documento);
+                $this->setCidadeEstrangeiro($stdDadosEstrangeiro->z09_cidade);
+                $this->setPaisEstrangeiro($stdDadosEstrangeiro->z09_pais);
+            }
+        }
     }
 }

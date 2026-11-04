@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -420,9 +420,16 @@ try {
         $sProfessores = db_stdClass::normalizeStringJsonEscapeString($oParam->sNomeProfessor);
         $aWhere[] = " to_ascii(case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end) ilike '{$sProfessores}%' ";
       }
+      
+      if ( isset($oParam->sNomeProfessorSocial) && !empty($oParam->sNomeProfessorSocial) ) {
+
+        $sProfessoresSocial = db_stdClass::normalizeStringJsonEscapeString($oParam->sNomeProfessorSocial);
+        $aWhere[] = " cgmfisico.z04_nomesocial ilike '{$sProfessoresSocial}%' ";
+      }
 
       $sWhere   = implode(" and ", $aWhere);
       $sCampos  = " distinct on (z01_nome) case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome, ";
+      $sCampos .= " cgmfisico.z04_nomesocial as z04_nomesocial, ";
       $sCampos .= " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as z01_numcgm, ";
       $sCampos .= " case when ed20_i_tiposervidor = 1 then cgmrh.z01_cgccpf else cgmcgm.z01_cgccpf end as z01_cgccpf ";
 

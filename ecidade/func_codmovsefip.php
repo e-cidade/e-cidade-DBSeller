@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcodmovsefip->rotulo->label("r66_descr");
               <?=$Lr66_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <? 
+              <?php 
            db_input("r66_codigo",2,$Ir66_codigo,true,"text",4,"","chave_r66_codigo");
            ?>
             </td>
@@ -66,7 +66,7 @@ $clcodmovsefip->rotulo->label("r66_descr");
               <?=$Lr66_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
            db_input("r66_descr",40,$Ir66_descr,true,"text",4,"","chave_r66_descr");
            ?>
             </td>
@@ -84,7 +84,7 @@ $clcodmovsefip->rotulo->label("r66_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
       $sWhere = "";
 
@@ -150,12 +150,12 @@ $clcodmovsefip->rotulo->label("r66_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

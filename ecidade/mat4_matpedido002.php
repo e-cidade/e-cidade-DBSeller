@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmmatpedido.php"));
 	?>
     </center>
@@ -81,7 +81,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($chavepesquisa)){
     echo "<script>
                parent.iframe_matpedidoitem.location.href='mat1_matpedidoitem001.php?m97_sequencial=".@$chavepesquisa."&m97_db_almox=".@$m97_db_almox."';\n

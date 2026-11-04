@@ -1,83 +1,83 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE solicitalog
-class cl_solicitalog { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc15_codigo = 0; 
-   var $pc15_numsol = 0; 
-   var $pc15_codproc = 0; 
-   var $pc15_codliclicita = 0; 
-   var $pc15_solicitem = 0; 
-   var $pc15_quant = 0; 
-   var $pc15_vlrun = 0; 
-   var $pc15_id_usuario = 0; 
-   var $pc15_data_dia = null; 
-   var $pc15_data_mes = null; 
-   var $pc15_data_ano = null; 
-   var $pc15_data = null; 
-   var $pc15_hora = null; 
-   var $pc15_opcao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_solicitalog {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc15_codigo = 0;
+   var $pc15_numsol = 0;
+   var $pc15_codproc = 0;
+   var $pc15_codliclicita = 0;
+   var $pc15_solicitem = 0;
+   var $pc15_quant = 0;
+   var $pc15_vlrun = 0;
+   var $pc15_id_usuario = 0;
+   var $pc15_data_dia = null;
+   var $pc15_data_mes = null;
+   var $pc15_data_ano = null;
+   var $pc15_data = null;
+   var $pc15_hora = null;
+   var $pc15_opcao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc15_codigo = int8 = Codigo 
-                 pc15_numsol = int8 = Solicitação 
-                 pc15_codproc = int8 = Processo de compras 
-                 pc15_codliclicita = int8 = Licitação 
-                 pc15_solicitem = int8 = Item 
-                 pc15_quant = float8 = Quantidade 
-                 pc15_vlrun = float8 = Valor unitário 
-                 pc15_id_usuario = int4 = Usuário 
-                 pc15_data = date = Data 
-                 pc15_hora = char(5) = Hora 
-                 pc15_opcao = int4 = Opção 
+                 pc15_codigo = int8 = Codigo
+                 pc15_numsol = int8 = Solicitação
+                 pc15_codproc = int8 = Processo de compras
+                 pc15_codliclicita = int8 = Licitação
+                 pc15_solicitem = int8 = Item
+                 pc15_quant = float8 = Quantidade
+                 pc15_vlrun = float8 = Valor unitário
+                 pc15_id_usuario = int4 = Usuário
+                 pc15_data = date = Data
+                 pc15_hora = char(5) = Hora
+                 pc15_opcao = int4 = Opção
                  ";
-   //funcao construtor da classe 
-   function cl_solicitalog() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("solicitalog"); 
+     $this->rotulo = new rotulo("solicitalog");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_solicitalog {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc15_codigo = ($this->pc15_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["pc15_codigo"]:$this->pc15_codigo);
        $this->pc15_numsol = ($this->pc15_numsol == ""?@$GLOBALS["HTTP_POST_VARS"]["pc15_numsol"]:$this->pc15_numsol);
@@ -111,9 +111,9 @@ class cl_solicitalog {
      }
    }
    // funcao para inclusao
-   function incluir ($pc15_codigo){ 
+   public function incluir ($pc15_codigo){
       $this->atualizacampos();
-     if($this->pc15_numsol == null ){ 
+     if($this->pc15_numsol == null ){
        $this->erro_sql = " Campo Solicitação nao Informado.";
        $this->erro_campo = "pc15_numsol";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_codproc == null ){ 
+     if($this->pc15_codproc == null ){
        $this->erro_sql = " Campo Processo de compras nao Informado.";
        $this->erro_campo = "pc15_codproc";
        $this->erro_banco = "";
@@ -131,10 +131,10 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_codliclicita == null ){ 
+     if($this->pc15_codliclicita == null ){
        $this->pc15_codliclicita = "0";
      }
-     if($this->pc15_solicitem == null ){ 
+     if($this->pc15_solicitem == null ){
        $this->erro_sql = " Campo Item nao Informado.";
        $this->erro_campo = "pc15_solicitem";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_quant == null ){ 
+     if($this->pc15_quant == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "pc15_quant";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_vlrun == null ){ 
+     if($this->pc15_vlrun == null ){
        $this->erro_sql = " Campo Valor unitário nao Informado.";
        $this->erro_campo = "pc15_vlrun";
        $this->erro_banco = "";
@@ -161,7 +161,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_id_usuario == null ){ 
+     if($this->pc15_id_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "pc15_id_usuario";
        $this->erro_banco = "";
@@ -170,7 +170,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_data == null ){ 
+     if($this->pc15_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "pc15_data_dia";
        $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_hora == null ){ 
+     if($this->pc15_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "pc15_hora";
        $this->erro_banco = "";
@@ -188,7 +188,7 @@ class cl_solicitalog {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc15_opcao == null ){ 
+     if($this->pc15_opcao == null ){
        $this->erro_sql = " Campo Opção nao Informado.";
        $this->erro_campo = "pc15_opcao";
        $this->erro_banco = "";
@@ -198,16 +198,16 @@ class cl_solicitalog {
        return false;
      }
      if($pc15_codigo == "" || $pc15_codigo == null ){
-       $result = db_query("select nextval('solicitalog_pc15_codigo_seq')"); 
+       $result = db_query("select nextval('solicitalog_pc15_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: solicitalog_pc15_codigo_seq do campo: pc15_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: solicitalog_pc15_codigo_seq do campo: pc15_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc15_codigo = pg_result($result,0,0); 
+       $this->pc15_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from solicitalog_pc15_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc15_codigo)){
@@ -218,10 +218,10 @@ class cl_solicitalog {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc15_codigo = $pc15_codigo; 
+         $this->pc15_codigo = $pc15_codigo;
        }
      }
-     if(($this->pc15_codigo == null) || ($this->pc15_codigo == "") ){ 
+     if(($this->pc15_codigo == null) || ($this->pc15_codigo == "") ){
        $this->erro_sql = " Campo pc15_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -230,33 +230,33 @@ class cl_solicitalog {
        return false;
      }
      $sql = "insert into solicitalog(
-                                       pc15_codigo 
-                                      ,pc15_numsol 
-                                      ,pc15_codproc 
-                                      ,pc15_codliclicita 
-                                      ,pc15_solicitem 
-                                      ,pc15_quant 
-                                      ,pc15_vlrun 
-                                      ,pc15_id_usuario 
-                                      ,pc15_data 
-                                      ,pc15_hora 
-                                      ,pc15_opcao 
+                                       pc15_codigo
+                                      ,pc15_numsol
+                                      ,pc15_codproc
+                                      ,pc15_codliclicita
+                                      ,pc15_solicitem
+                                      ,pc15_quant
+                                      ,pc15_vlrun
+                                      ,pc15_id_usuario
+                                      ,pc15_data
+                                      ,pc15_hora
+                                      ,pc15_opcao
                        )
                 values (
-                                $this->pc15_codigo 
-                               ,$this->pc15_numsol 
-                               ,$this->pc15_codproc 
-                               ,$this->pc15_codliclicita 
-                               ,$this->pc15_solicitem 
-                               ,$this->pc15_quant 
-                               ,$this->pc15_vlrun 
-                               ,$this->pc15_id_usuario 
-                               ,".($this->pc15_data == "null" || $this->pc15_data == ""?"null":"'".$this->pc15_data."'")." 
-                               ,'$this->pc15_hora' 
-                               ,$this->pc15_opcao 
+                                $this->pc15_codigo
+                               ,$this->pc15_numsol
+                               ,$this->pc15_codproc
+                               ,$this->pc15_codliclicita
+                               ,$this->pc15_solicitem
+                               ,$this->pc15_quant
+                               ,$this->pc15_vlrun
+                               ,$this->pc15_id_usuario
+                               ,".($this->pc15_data == "null" || $this->pc15_data == ""?"null":"'".$this->pc15_data."'")."
+                               ,'$this->pc15_hora'
+                               ,$this->pc15_opcao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Log das solicitações de compras ($this->pc15_codigo) nao Incluído. Inclusao Abortada.";
@@ -298,16 +298,16 @@ class cl_solicitalog {
        $resac = db_query("insert into db_acount values($acount,1662,9662,'','".AddSlashes(pg_result($resaco,0,'pc15_opcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc15_codigo=null) { 
+   public function alterar ($pc15_codigo=null) {
       $this->atualizacampos();
      $sql = " update solicitalog set ";
      $virgula = "";
-     if(trim($this->pc15_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codigo"])){ 
+     if(trim($this->pc15_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codigo"])){
        $sql  .= $virgula." pc15_codigo = $this->pc15_codigo ";
        $virgula = ",";
-       if(trim($this->pc15_codigo) == null ){ 
+       if(trim($this->pc15_codigo) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "pc15_codigo";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_numsol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_numsol"])){ 
+     if(trim($this->pc15_numsol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_numsol"])){
        $sql  .= $virgula." pc15_numsol = $this->pc15_numsol ";
        $virgula = ",";
-       if(trim($this->pc15_numsol) == null ){ 
+       if(trim($this->pc15_numsol) == null ){
          $this->erro_sql = " Campo Solicitação nao Informado.";
          $this->erro_campo = "pc15_numsol";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codproc"])){ 
+     if(trim($this->pc15_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codproc"])){
        $sql  .= $virgula." pc15_codproc = $this->pc15_codproc ";
        $virgula = ",";
-       if(trim($this->pc15_codproc) == null ){ 
+       if(trim($this->pc15_codproc) == null ){
          $this->erro_sql = " Campo Processo de compras nao Informado.";
          $this->erro_campo = "pc15_codproc";
          $this->erro_banco = "";
@@ -343,17 +343,17 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_codliclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codliclicita"])){ 
-        if(trim($this->pc15_codliclicita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc15_codliclicita"])){ 
-           $this->pc15_codliclicita = "0" ; 
-        } 
+     if(trim($this->pc15_codliclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_codliclicita"])){
+        if(trim($this->pc15_codliclicita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc15_codliclicita"])){
+           $this->pc15_codliclicita = "0" ;
+        }
        $sql  .= $virgula." pc15_codliclicita = $this->pc15_codliclicita ";
        $virgula = ",";
      }
-     if(trim($this->pc15_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_solicitem"])){ 
+     if(trim($this->pc15_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_solicitem"])){
        $sql  .= $virgula." pc15_solicitem = $this->pc15_solicitem ";
        $virgula = ",";
-       if(trim($this->pc15_solicitem) == null ){ 
+       if(trim($this->pc15_solicitem) == null ){
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "pc15_solicitem";
          $this->erro_banco = "";
@@ -363,10 +363,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_quant"])){ 
+     if(trim($this->pc15_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_quant"])){
        $sql  .= $virgula." pc15_quant = $this->pc15_quant ";
        $virgula = ",";
-       if(trim($this->pc15_quant) == null ){ 
+       if(trim($this->pc15_quant) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "pc15_quant";
          $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_vlrun"])){ 
+     if(trim($this->pc15_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_vlrun"])){
        $sql  .= $virgula." pc15_vlrun = $this->pc15_vlrun ";
        $virgula = ",";
-       if(trim($this->pc15_vlrun) == null ){ 
+       if(trim($this->pc15_vlrun) == null ){
          $this->erro_sql = " Campo Valor unitário nao Informado.";
          $this->erro_campo = "pc15_vlrun";
          $this->erro_banco = "";
@@ -389,10 +389,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_id_usuario"])){ 
+     if(trim($this->pc15_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_id_usuario"])){
        $sql  .= $virgula." pc15_id_usuario = $this->pc15_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc15_id_usuario) == null ){ 
+       if(trim($this->pc15_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "pc15_id_usuario";
          $this->erro_banco = "";
@@ -402,10 +402,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"] !="") ){ 
+     if(trim($this->pc15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"] !="") ){
        $sql  .= $virgula." pc15_data = '$this->pc15_data' ";
        $virgula = ",";
-       if(trim($this->pc15_data) == null ){ 
+       if(trim($this->pc15_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "pc15_data_dia";
          $this->erro_banco = "";
@@ -414,11 +414,11 @@ class cl_solicitalog {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc15_data_dia"])){
          $sql  .= $virgula." pc15_data = null ";
          $virgula = ",";
-         if(trim($this->pc15_data) == null ){ 
+         if(trim($this->pc15_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "pc15_data_dia";
            $this->erro_banco = "";
@@ -429,10 +429,10 @@ class cl_solicitalog {
          }
        }
      }
-     if(trim($this->pc15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_hora"])){ 
+     if(trim($this->pc15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_hora"])){
        $sql  .= $virgula." pc15_hora = '$this->pc15_hora' ";
        $virgula = ",";
-       if(trim($this->pc15_hora) == null ){ 
+       if(trim($this->pc15_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "pc15_hora";
          $this->erro_banco = "";
@@ -442,10 +442,10 @@ class cl_solicitalog {
          return false;
        }
      }
-     if(trim($this->pc15_opcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_opcao"])){ 
+     if(trim($this->pc15_opcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc15_opcao"])){
        $sql  .= $virgula." pc15_opcao = $this->pc15_opcao ";
        $virgula = ",";
-       if(trim($this->pc15_opcao) == null ){ 
+       if(trim($this->pc15_opcao) == null ){
          $this->erro_sql = " Campo Opção nao Informado.";
          $this->erro_campo = "pc15_opcao";
          $this->erro_banco = "";
@@ -491,7 +491,7 @@ class cl_solicitalog {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Log das solicitações de compras nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc15_codigo;
@@ -519,14 +519,14 @@ class cl_solicitalog {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc15_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc15_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc15_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -562,7 +562,7 @@ class cl_solicitalog {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Log das solicitações de compras nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc15_codigo;
@@ -590,11 +590,11 @@ class cl_solicitalog {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -616,10 +616,10 @@ class cl_solicitalog {
       }
      return $result;
    }
-   function sql_query ( $pc15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -632,15 +632,15 @@ class cl_solicitalog {
      $sql2 = "";
      if($dbwhere==""){
        if($pc15_codigo!=null ){
-         $sql2 .= " where solicitalog.pc15_codigo = $pc15_codigo "; 
-       } 
+         $sql2 .= " where solicitalog.pc15_codigo = $pc15_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,10 +649,10 @@ class cl_solicitalog {
      }
      return $sql;
   }
-   function sql_query_file ( $pc15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -665,15 +665,15 @@ class cl_solicitalog {
      $sql2 = "";
      if($dbwhere==""){
        if($pc15_codigo!=null ){
-         $sql2 .= " where solicitalog.pc15_codigo = $pc15_codigo "; 
-       } 
+         $sql2 .= " where solicitalog.pc15_codigo = $pc15_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

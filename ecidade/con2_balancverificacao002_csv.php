@@ -26,30 +26,28 @@
  */
 header('Content-type: text/html; charset=ISO-8859-2');
 
-require_once (modification("libs/db_stdlib.php"));
-require_once (modification("libs/db_conecta".".php"));
-require_once (modification("libs/db_sessoes.php"));
-require_once (modification("libs/db_sql.php"));
-require_once (modification("libs/db_libcontabilidade.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta" . ".php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_sql.php"));
+require_once(modification("libs/db_libcontabilidade.php"));
 
 parse_str($_SERVER['QUERY_STRING']);
 
-$sArquivo     = "tmp/con2_balancverificacaocsv002.csv";
-$fArquivo     = fopen($sArquivo, "w+");
+$sArquivo = "tmp/con2_balancverificacaocsv002.csv";
+$fArquivo = fopen($sArquivo, "w+");
 
-$agrupa_estrutural=($agrupa_estrutural=='1'?false:true);
+$agrupa_estrutural = ($agrupa_estrutural == '1' ? false : true);
 $anousu = db_getsession("DB_anousu");
 
 $xinstit = explode(",", $db_selinstit);
 
-$sSqlInstituicao = "select codigo, 
-                           nomeinst, 
-                           nomeinstabrev, 
-                           (select count(*) from db_config) as total_instituicao
-                      from db_config 
-                     where codigo in ({$db_selinstit})";
+$sSqlInstituicao = "
+ select codigo, nomeinst, nomeinstabrev, (select count(*) from db_config) as total_instituicao
+   from db_config
+  where codigo in ({$db_selinstit})";
 $resultinst = db_query($sSqlInstituicao);
-$numero_instit = pg_numrows($resultinst);
+$numero_instit = pg_num_rows($resultinst);
 
 $descr_inst = '';
 $xvirg = '';
@@ -62,15 +60,15 @@ if ($numero_instit > 0) {
 if ($totalInstituicao == $numero_instit) {
     $descr_inst = "CONSOLIDAÇÃO GERAL";
 } else {
-    for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
-      db_fieldsmemory($resultinst,$xins);
-      if (strlen(trim($nomeinstabrev)) > 0){
-        $descr_inst .= $xvirg."($codigo)".$nomeinstabrev;
-        $flag_abrev  = true;
-      } else {
-        $descr_inst .= $xvirg."($codigo)".$nomeinst;
-      }
-      $xvirg = ', ';
+    for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
+        db_fieldsmemory($resultinst, $xins);
+        if (strlen(trim($nomeinstabrev)) > 0) {
+            $descr_inst .= $xvirg . "($codigo)" . $nomeinstabrev;
+            $flag_abrev = true;
+        } else {
+            $descr_inst .= $xvirg . "($codigo)" . $nomeinst;
+        }
+        $xvirg = ', ';
     }
 }
 
@@ -106,14 +104,11 @@ $aTextoSaida[] = "INSTITUIÇÕES : " . $descr_inst;
 
 $where = " c61_instit in ({$db_selinstit})";
 
-if (! empty($recurso)) {
-
-    $recurso = preg_replace("/[^0-9\,]/", '', $recurso);
+if (!empty($recurso)) {
     $where .= " and c61_codigo in ({$recurso}) ";
 }
 
 if (USE_PCASP) {
-
     if ($sistema_contas !== "") {
         $where .= " and c60_consistemaconta = $sistema_contas";
     }
@@ -127,7 +122,6 @@ if (USE_PCASP) {
 }
 
 if ($estrut_inicial != '') {
-
     $aEstrutural = explode(",", $estrut_inicial);
     $aWhereEstrutural = array();
     foreach ($aEstrutural as $sEstrutural) {
@@ -161,7 +155,7 @@ if (USE_PCASP) {
     $iAjustePcasp = 8;
 }
 
-$sLinha  = "";
+$sLinha = "";
 $sLinha .= "CODCON|";
 $sLinha .= "ESTRUTURAL|";
 if ($numero_instit > 1 && $agrupa_estrutural == true) {
@@ -187,21 +181,23 @@ $sLinha .= "SALDO";
 $aTextoSaida[] = $sLinha;
 
 $ultimoEstrutural = '';
-for ($x = 0; $x < pg_numrows($result); $x ++) {
-    
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
     if (($tipo == "S") && ($c61_reduz != 0)) {
         continue;
     }
 
-    if (USE_PCASP) {} else {
+    if (USE_PCASP) {
+    } else {
         if (substr($estrutural, 0, 1) == '3') {
-            if (substr($estrutural, 2) + 0 > 0)
+            if (substr($estrutural, 2) + 0 > 0) {
                 continue;
+            }
         }
         if (substr($estrutural, 0, 1) == '4') {
-            if (substr($estrutural, 2) + 0 > 0)
+            if (substr($estrutural, 2) + 0 > 0) {
                 continue;
+            }
         }
     }
 
@@ -211,9 +207,8 @@ for ($x = 0; $x < pg_numrows($result); $x ++) {
 
     $espaco = '';
     $maislinha = 0;
-    
+
     if (substr($estrutural, 1, 14) == '00000000000000') {
-        
         $espaco = "";
         $maislinha = 1;
         if ($sinal_anterior == "C") {
@@ -230,7 +225,6 @@ for ($x = 0; $x < pg_numrows($result); $x ++) {
 
         $total_debitos += $saldo_anterior_debito;
         $total_creditos += $saldo_anterior_credito;
-        
     } elseif (substr($estrutural, 2, 13) == '0000000000000') {
         $espaco = "  ";
         $maislinha = 1;
@@ -248,7 +242,7 @@ for ($x = 0; $x < pg_numrows($result); $x ++) {
     } elseif (substr($estrutural, 11, 4) == '0000') {
         $espaco = "              ";
     }
-    
+
     if ($maislinha == 1) {
 //        $pdf->ln(1);
     }
@@ -259,97 +253,83 @@ for ($x = 0; $x < pg_numrows($result); $x ++) {
                            and c63_reduz = {$c61_reduz}
                            and c63_anousu = {$anousu} ");
 
-    if (pg_numrows($resconta) > 0)
+    if (pg_num_rows($resconta) > 0) {
         db_fieldsmemory($resconta, 0);
+    }
 
     $estruturalFormatado = db_formatar($estrutural, 'receita');
     if ($estrutural === $ultimoEstrutural) {
         $estruturalFormatado = '';
     }
-    
+
     $sLinha = "$c61_codcon|";
     $sLinha .= "$estruturalFormatado|";
     if ($numero_instit > 1 && $agrupa_estrutural == true) {
         $sLinha .= "|";
         $sLinha .= "|";
     } else {
-        $sLinha .= ($c61_reduz == 0 ? '' : $c61_reduz)."|";
-        $sLinha .= ($c61_reduz == 0 ? '' : $c61_instit)."|";
+        $sLinha .= ($c61_reduz == 0 ? '' : $c61_reduz) . "|";
+        $sLinha .= ($c61_reduz == 0 ? '' : $c61_instit) . "|";
     }
-    
+
     if ($conta == 'S') {
-        $sLinha .= (pg_numrows($resconta) == 0 ? $espaco . $c60_descr : $espaco . $c60_descr . '   ( Bco: ' . $c63_banco . '  Ag: ' . $c63_agencia . '  Cta: ' . $c63_conta . ')')."|";
+        $sLinha .= (pg_num_rows($resconta) == 0 ? $espaco . $c60_descr : $espaco . $c60_descr . '   ( Bco: ' . $c63_banco . '  Ag: ' . $c63_agencia . '  Cta: ' . $c63_conta . ')') . "|";
     } else {
-        $sLinha .= ($espaco . $c60_descr)."|";
+        $sLinha .= ($espaco . $c60_descr) . "|";
     }
 
-    if (FONTE_RECURSO_UNIAO) {
-        
-        $recurso = RecursoRepository::getRecursoPorCodigo($c61_codigo);
-        $c61_codigo = $recurso->getFonteDeRecurso();
-        if (empty($c61_codigo)) {
-            $c61_codigo = $recurso->getCodigo();
-        }
-        
-    }
+    $recurso = descricaoCompletaRecurso($c61_codigo, $anousu, 3);
 
-    $sLinha .= ($c61_reduz == 0 ? '' : $c61_codigo)."|";
+    $sLinha .= ($c61_reduz == 0 ? '' : $recurso) . "|";
 
     if ($c61_reduz != 0) {
-
         $sSis = "";
         if (USE_PCASP) {
             $sSis = $sis;
         } else {
-
-            $resconta = db_query("select c52_descrred
-                                  from conplano
-       			        inner join consistema on c52_codsis = c60_codsis
-       		           where c60_anousu=$anousu and c60_estrut = '$estrutural'");
+            $resconta = db_query("
+            select c52_descrred from conplano
+             inner join consistema on c52_codsis = c60_codsis
+             where c60_anousu=$anousu and c60_estrut = '$estrutural'");
             db_fieldsmemory($resconta, 0);
             $sSis = $c52_descrred;
         }
-        
-        $sLinha .= $sSis."|";
-        
+
+        $sLinha .= $sSis . "|";
     } else {
         $sLinha .= "|";
     }
-    
+
     if (USE_PCASP) {
-        
-        $sLinha .= $isf."|";
-        
+        $sLinha .= $isf . "|";
     }
 
-    $sLinha .= db_formatar($saldo_anterior, 'f')." {$sinal_anterior}|";
-    $sLinha .= db_formatar($saldo_anterior_debito, 'f')."|";
-    $sLinha .= db_formatar($saldo_anterior_credito, 'f')."|";
-    $sLinha .= db_formatar($saldo_final, 'f')." {$sinal_final}|";
-    
+    $sLinha .= db_formatar($saldo_anterior, 'f') . " {$sinal_anterior}|";
+    $sLinha .= db_formatar($saldo_anterior_debito, 'f') . "|";
+    $sLinha .= db_formatar($saldo_anterior_credito, 'f') . "|";
+    $sLinha .= db_formatar($saldo_final, 'f') . " {$sinal_final}|";
+
     $aTextoSaida[] = $sLinha;
 
     if ($c61_reduz != 0) {
-
         if ($sinal_final == "C") {
-            $saldo_final = $saldo_final * - 1;
+            $saldo_final = $saldo_final * -1;
         }
     }
 
     if ($c61_reduz != 0) {
-
         if ($sinal_anterior == "D") {
-            $saldo_anterior = $saldo_anterior * - 1;
+            $saldo_anterior = $saldo_anterior * -1;
         }
 
         if ($sinal_final == "D") {
-            $saldo_final = $saldo_final * - 1;
+            $saldo_final = $saldo_final * -1;
         }
     }
-    
+
     $ultimoEstrutural = $estrutural;
 }
- 
+
 if ($total_anterior < 0) {
     $sinal = "C";
 } else {
@@ -357,24 +337,24 @@ if ($total_anterior < 0) {
 }
 
 $sLinha = "||||||T O T A L   G E R A L|";
-$sLinha .= db_formatar(($total_anterior * - 1), 'f')." {$sinal}|";
-$sLinha .= db_formatar($total_debitos, 'f')."|";
-$sLinha .= db_formatar($total_creditos, 'f')."|";
+$sLinha .= db_formatar(($total_anterior * -1), 'f') . " {$sinal}|";
+$sLinha .= db_formatar($total_debitos, 'f') . "|";
+$sLinha .= db_formatar($total_creditos, 'f') . "|";
 
 $total_final = $total_anterior + $total_debitos - $total_creditos;
 
 if ($total_final < 0) {
     $sinal = "C";
-    $total_final *= - 1;
+    $total_final *= -1;
 } else {
     $sinal = "D";
 }
-$sLinha .= db_formatar($total_final, 'f')." {$sinal} |";
+$sLinha .= db_formatar($total_final, 'f') . " {$sinal} |";
 
-$aTextoSaida[] = $sLinha; 
+$aTextoSaida[] = $sLinha;
 
-foreach($aTextoSaida as $sLinhaSaida){
-    fputs($fArquivo,$sLinhaSaida."\n");
+foreach ($aTextoSaida as $sLinhaSaida) {
+    fputs($fArquivo, $sLinhaSaida . "\n");
 }
 fclose($fArquivo);
 

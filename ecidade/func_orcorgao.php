@@ -150,7 +150,7 @@ $clorcorgao->rotulo->label("o40_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -167,7 +167,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

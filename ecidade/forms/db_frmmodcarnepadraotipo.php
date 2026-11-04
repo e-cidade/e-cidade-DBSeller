@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if(isset($db_opcaoal)){
 	     <?=@$Lk49_modcarnepadrao?>
 	   </td>
        <td> 
-		 <?
+		 <?php
 		   db_input('k49_sequencial',10,"",true,'hidden',3,"");
 		   db_input('k49_modcarnepadrao',10,"",true,'text',3,"");
 		 ?>
@@ -73,10 +73,10 @@ if(isset($db_opcaoal)){
   	 </tr>
      <tr>
 		   <td nowrap title="<?=@$Tk49_tipo?>">
-		     <? db_ancora(@$Lk49_tipo,"js_pesquisak49_tipo(true);",$db_opcao); ?>
+		     <?php db_ancora(@$Lk49_tipo,"js_pesquisak49_tipo(true);",$db_opcao); ?>
 		   </td>
 		   <td> 
-				 <?
+				 <?php
 				   db_input('k49_tipo',10,$Ik49_tipo,true,'text',$db_opcao," onchange='js_pesquisak49_tipo(false);'");
 				   db_input('k00_descr',50,$Ik00_descr,true,'text',3,'');
 				 ?>
@@ -100,7 +100,7 @@ if(isset($db_opcaoal)){
   <table>
     <tr>
       <td valign="top"  align="center">  
-	    <?
+	    <?php
 		  $chavepri= array("k49_sequencial"=>@$k49_sequencial,"k49_modcarnepadrao"=>@$k49_modcarnepadra,"k49_tipo"=>@$k49_tipo);
 		  $cliframe_alterar_excluir->chavepri	   = $chavepri;
 		  $cliframe_alterar_excluir->sql     	   = $clmodcarnepadraotipo->sql_query_file(@$k49_sequencial,"*"," k49_sequencial "," k49_modcarnepadrao = ".@$k49_modcarnepadrao);

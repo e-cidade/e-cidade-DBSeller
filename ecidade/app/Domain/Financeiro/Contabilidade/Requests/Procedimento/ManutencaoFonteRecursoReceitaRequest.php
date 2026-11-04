@@ -27,8 +27,9 @@ class ManutencaoFonteRecursoReceitaRequest extends FormRequest
     public function rules()
     {
         return [
-            'recurso' => 'nullable|string|required_without:codigoReceita',
-            'codigoReceita' => 'nullable|integer|required_without:recurso',
+            'gestao' => 'nullable|string|required_without:codigoReceita',
+            'subrecurso' => 'nullable|string|required_without:codigoReceita',
+            'codigoReceita' => 'nullable|integer|required_without:gestao',
             'idEmpenho' => 'nullable|string',
             'dataInicio' => 'date|required',
             'dataFinal' => 'date|required',
@@ -51,8 +52,10 @@ class ManutencaoFonteRecursoReceitaRequest extends FormRequest
     public function messages()
     {
         return [
-            'recurso.string' => 'O recurso deve ser um código válido.',
-            'recurso.required_without' => 'O recurso é obrigatório quando não informado a receita.',
+            'gestao.string' => 'A Fonte de Gestão deve ser um código válido.',
+            'gestao.required_without' => 'A Fonte de Gestão é obrigatório quando não informado a receita.',
+            'subrecurso.string' => 'O subrecurso deve ser um código válido.',
+            'subrecurso.required_without' => 'O subrecurso é obrigatório quando não informado a receita.',
             'codigoReceita.required_without' => 'O código da receita deve ser preenchido se não informado o recurso.',
             'dataInicio.date' => "Data Inicial deve ser uma data válida e estar no formato Y-m-d.",
             'dataFinal.date' => "Data Final deve ser uma data válida e estar no formato Y-m-d.",

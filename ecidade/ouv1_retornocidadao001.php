@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clTipoRetorno = new cl_tiporetorno();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 	db_app::load('strings.js');
   db_app::load('scripts.js');
   db_app::load('datagrid.widget.js');
@@ -63,12 +63,12 @@ $clTipoRetorno = new cl_tiporetorno();
 	    	    <table>
 	    	      <tr>
 	    	        <td>
-	    	          <?
+	    	          <?php
                     db_ancora('<b>Código do Processo:</b>','js_pesquisaProcessoIni();',1,'');
 	    	          ?>
 	    	        </td>
 	    	        <td>
-	    	          <?
+	    	          <?php
                     db_input('procini',10,'',true,'text',1,'');
 	    	            db_ancora('<b>à</b>','js_pesquisaProcessoFin();',1,'');
 	    	            db_input('procfin',10,'',true,'text',1,'');
@@ -80,7 +80,7 @@ $clTipoRetorno = new cl_tiporetorno();
                   <b>Período:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata('dataini','','','',true,'text',1,'');
                     echo"<b>à</b>";
                     db_inputdata('datafin','','','',true,'text',1,'');
@@ -89,12 +89,12 @@ $clTipoRetorno = new cl_tiporetorno();
               </tr>
               <tr>
                 <td>
-                  <?
+                  <?php
                     db_ancora('<b>Tipo de Processo:</b>','js_pesquisaTipoProcesso(true);',1,'');
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('proctipo' ,10,'',true,'text',1,"onChange='js_pesquisaTipoProcesso(false);'");
                     db_input('descrtipo',40,'',true,'text',3,'');
                   ?>
@@ -105,7 +105,7 @@ $clTipoRetorno = new cl_tiporetorno();
                   <b>Tipo de Retorno:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $aTipoRetorno = array(0=>"Todos",
 											                    1=>"Pessoalmente",
 											                    2=>"Carta",
@@ -121,12 +121,12 @@ $clTipoRetorno = new cl_tiporetorno();
 	    	      <!-- Ancora para Atendimento  -->
 	    	      <tr>
                 <td>
-                  <?
+                  <?php
                   db_ancora('<b>Número do Atendimento:</b>', ' js_pesquisaNumeroAtendimento(true); ', '');
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ov01_numero', 10, "", true, 'text',1, ' onchange="js_pesquisaNumeroAtendimento(false); "');
                   db_input('ov01_ano', 10, "", true, 'hidden');
                   db_input('ov01_solicitacao', 50, 0, true, 'text', 3, '');
@@ -155,7 +155,7 @@ $clTipoRetorno = new cl_tiporetorno();
       </tr>      
 	  </table>
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

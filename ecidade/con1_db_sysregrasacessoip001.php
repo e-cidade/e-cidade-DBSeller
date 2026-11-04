@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -97,7 +97,7 @@ if($result!=false && $oDaoDb_sysregrasacessoip->numrows>0){
     <table width="580" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <?
+        <?php
         include(modification("forms/db_frmdb_sysregrasacessoip.php"));
         ?>
         </td>
@@ -106,7 +106,7 @@ if($result!=false && $oDaoDb_sysregrasacessoip->numrows>0){
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clpagordemrec->erro_campo!=""){

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE teto_orcamentario
 class cl_teto_orcamentario { 
@@ -42,13 +42,13 @@ class cl_teto_orcamentario {
                  c40_valor_disponivel = float8 = Valos Disponível 
                  ";
    //funcao construtor da classe 
-   function cl_teto_orcamentario() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("teto_orcamentario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -57,7 +57,7 @@ class cl_teto_orcamentario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c40_sequencial = ($this->c40_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c40_sequencial"]:$this->c40_sequencial);
        $this->c40_ano = ($this->c40_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["c40_ano"]:$this->c40_ano);
@@ -75,7 +75,7 @@ class cl_teto_orcamentario {
      }
    }
    // funcao para Inclusão
-   function incluir ($c40_sequencial){ 
+   public function incluir ($c40_sequencial){ 
       $this->atualizacampos();
      if($this->c40_ano == null ){ 
        $this->erro_sql = " Campo Ano não informado.";

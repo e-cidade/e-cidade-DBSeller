@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,16 +58,16 @@ if (isset($alterar)) {
     $medidaSaida = str_replace(".", "", $ve60_medidasaida);
 
     if ($dataDevolucaoComHora < $dataSaidaComHora) {
-      throw new Exception('Data e Hora de Devolução devem ser maiores ou iguais a Data e Hora de Retirada!');
+      throw new Exception('Data e Hora de DevoluÃ§Ã£o devem ser maiores ou iguais a Data e Hora de Retirada!');
     }
 
     if ($medidaDevolucao < $medidaSaida) {
-      throw new Exception('Medida na Devolução deve ser maior que a Medida na Retirada!');
+      throw new Exception('Medida na DevoluÃ§Ã£o deve ser maior que a Medida na Retirada!');
     }
 
     /*
-     * Verificamos se existem abastecimentos registrados para esse veículo,
-     * caso existam, verifica se a devolução é maior ou igual que a data e a hora do último abastecimento.
+     * Verificamos se existem abastecimentos registrados para esse veÃ­culo,
+     * caso existam, verifica se a devoluÃ§Ã£o Ã© maior ou igual que a data e a hora do Ãºltimo abastecimento.
      */
     $campos = "ve70_dtabast, ve70_hora";
     $where = "ve70_veiculos = {$ve60_veiculo} and ve73_veicretirada = {$ve61_veicretirada}";
@@ -80,7 +80,7 @@ if (isset($alterar)) {
       $ultimoAbastecimento = DateTime::createFromFormat('Y-m-d H:i', "{$ultimoAbastecimento->ve70_dtabast} {$ultimoAbastecimento->ve70_hora}");
 
       if ($dataDevolucaoComHora  < $ultimoAbastecimento) {
-        throw new Exception('Data e Hora da Devolução não podem ser menores que Data e Hora do Abastecimento.');
+        throw new Exception('Data e Hora da DevoluÃ§Ã£o nÃ£o podem ser menores que Data e Hora do Abastecimento.');
       }
     }
     $clveicdevolucao->alterar($ve61_codigo);

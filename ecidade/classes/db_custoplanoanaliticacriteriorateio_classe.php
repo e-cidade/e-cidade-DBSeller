@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,21 +50,21 @@ class cl_custoplanoanaliticacriteriorateio {
   var $cc07_automatico = 'f';
   // cria propriedade com as variaveis do arquivo
   var $campos = "
-                 cc07_sequencial = int4 = Sequencial 
-                 cc07_custocriteriorateio = int4 = Custo critério rateio 
-                 cc07_custoplanoanalitica = int4 = Custo plano analítico 
-                 cc07_quantidade = float8 = Quantidade 
-                 cc07_percentual = float8 = Percentual 
-                 cc07_automatico = bool = Tipo do Rateio 
+                 cc07_sequencial = int4 = Sequencial
+                 cc07_custocriteriorateio = int4 = Custo critério rateio
+                 cc07_custoplanoanalitica = int4 = Custo plano analítico
+                 cc07_quantidade = float8 = Quantidade
+                 cc07_percentual = float8 = Percentual
+                 cc07_automatico = bool = Tipo do Rateio
                  ";
   //funcao construtor da classe
-  function cl_custoplanoanaliticacriteriorateio() {
+  public function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("custoplanoanaliticacriteriorateio");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -73,7 +73,7 @@ class cl_custoplanoanaliticacriteriorateio {
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
     if($exclusao==false){
       $this->cc07_sequencial = ($this->cc07_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cc07_sequencial"]:$this->cc07_sequencial);
       $this->cc07_custocriteriorateio = ($this->cc07_custocriteriorateio == ""?@$GLOBALS["HTTP_POST_VARS"]["cc07_custocriteriorateio"]:$this->cc07_custocriteriorateio);
@@ -86,7 +86,7 @@ class cl_custoplanoanaliticacriteriorateio {
     }
   }
   // funcao para inclusao
-  function incluir ($cc07_sequencial){
+  public function incluir ($cc07_sequencial){
     $this->atualizacampos();
     if($this->cc07_custocriteriorateio == null ){
       $this->erro_sql = " Campo Custo critério rateio nao Informado.";
@@ -166,20 +166,20 @@ class cl_custoplanoanaliticacriteriorateio {
       return false;
     }
     $sql = "insert into custoplanoanaliticacriteriorateio(
-                                       cc07_sequencial 
-                                      ,cc07_custocriteriorateio 
-                                      ,cc07_custoplanoanalitica 
-                                      ,cc07_quantidade 
-                                      ,cc07_percentual 
-                                      ,cc07_automatico 
+                                       cc07_sequencial
+                                      ,cc07_custocriteriorateio
+                                      ,cc07_custoplanoanalitica
+                                      ,cc07_quantidade
+                                      ,cc07_percentual
+                                      ,cc07_automatico
                        )
                 values (
-                                $this->cc07_sequencial 
-                               ,$this->cc07_custocriteriorateio 
-                               ,$this->cc07_custoplanoanalitica 
-                               ,$this->cc07_quantidade 
-                               ,$this->cc07_percentual 
-                               ,'$this->cc07_automatico' 
+                                $this->cc07_sequencial
+                               ,$this->cc07_custocriteriorateio
+                               ,$this->cc07_custoplanoanalitica
+                               ,$this->cc07_quantidade
+                               ,$this->cc07_percentual
+                               ,'$this->cc07_automatico'
                       )";
     $result = db_query($sql);
     if($result==false){
@@ -221,7 +221,7 @@ class cl_custoplanoanaliticacriteriorateio {
     return true;
   }
   // funcao para alteracao
-  function alterar ($cc07_sequencial=null) {
+  public function alterar ($cc07_sequencial=null) {
     $this->atualizacampos();
     $sql = " update custoplanoanaliticacriteriorateio set ";
     $virgula = "";
@@ -361,7 +361,7 @@ class cl_custoplanoanaliticacriteriorateio {
     }
   }
   // funcao para exclusao
-  function excluir ($cc07_sequencial=null,$dbwhere=null) {
+  public function excluir ($cc07_sequencial=null,$dbwhere=null) {
     if($dbwhere==null || $dbwhere==""){
       $resaco = $this->sql_record($this->sql_query_file($cc07_sequencial));
     }else{
@@ -427,7 +427,7 @@ class cl_custoplanoanaliticacriteriorateio {
     }
   }
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
     $result = db_query($sql);
     if($result==false){
       $this->numrows    = 0;
@@ -450,10 +450,10 @@ class cl_custoplanoanaliticacriteriorateio {
     return $result;
   }
   // funcao do sql
-  function sql_query ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_custoplanoanaliticacriteriorateio {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -490,10 +490,10 @@ class cl_custoplanoanaliticacriteriorateio {
     return $sql;
   }
   // funcao do sql
-  function sql_query_file ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_custoplanoanaliticacriteriorateio {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -2,7 +2,7 @@
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ db_postmemory($_POST);
       <select id="opcao_geral" name="opcao_geral"></select>
     </td>
   </tr>
-<?
+<?php
 if(!isset($opcao_gml)){
   $opcao_gml = "m";
 }
@@ -109,7 +109,7 @@ $geraform->gera_form(null,null);
 
 <input type="hidden" name="hidTipoFolha" id="hidTipoFolha" value="<?php echo (isset($opcao_geral)) ? $opcao_geral : '1'; ?>" />
 <input type="button" name="processar" value="Processar" onclick="return js_validarCalculo();">
-<? if (db_getsession("DB_login") == "dbseller") {
+<?php if (db_getsession("DB_login") == "dbseller") {
 echo "<input type=\"button\" value=\"Processar com Debug\" onclick=\"js_enviar_dados(2);\">";
 }
 ?>
@@ -117,7 +117,7 @@ echo "<input type=\"button\" value=\"Processar com Debug\" onclick=\"js_enviar_d
 
   </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -57,7 +57,6 @@ final class TermoTaxaParcela extends \BaseClassRepository
         }
 
         if (!$lResult) {
-
             $sMensagem  = 'Ocorreu um erro ao ';
             $sMensagem .= (empty($iCodigo) ? 'incluir' : 'alterar');
             $sMensagem .= ' a configuração de parcela. ' . $oDao->erro_msg;
@@ -93,6 +92,11 @@ final class TermoTaxaParcela extends \BaseClassRepository
     private function makeCollection($rsResult)
     {
         $aCollection = array();
+
+        if (!isset($rsResult) || !$rsResult) {
+            return array();
+        }
+
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed07_c_nome");
        <?=@$Led21_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed21_i_codigo',5,$Ied21_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted21_i_aluno?>">
-       <?
+       <?php
        db_ancora(@$Led21_i_aluno,"js_pesquisaed21_i_aluno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed21_i_aluno',5,$Ied21_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed21_i_aluno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed07_c_nome',50,$Ied07_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed07_c_nome',50,$Ied07_c_nome,true,'text',3,'')
        <?=@$Led21_c_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed21_c_tipo',50,$Ied21_c_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ed21_c_tipo',50,$Ied21_c_tipo,true,'text',$db_opcao,"")
        <?=@$Led21_d_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed21_d_inicio',@$ed21_d_inicio_dia,@$ed21_d_inicio_mes,@$ed21_d_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_auxilios.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

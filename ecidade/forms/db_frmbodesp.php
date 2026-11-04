@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("descrdepto");
        <?=@$Lbo05_cod_desp?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo05_cod_desp',9,$Ibo05_cod_desp,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo05_codbo?>">
-       <?
+       <?php
        db_ancora(@$Lbo05_codbo,"js_pesquisabo05_codbo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo05_codbo',9,$Ibo05_codbo,true,'text',$db_opcao," onchange='js_pesquisabo05_codbo(false);'")
 ?>
-       <?
+       <?php
 /*db_input('bo01_obs',200,$Ibo01_obs,true,'text',3,'')*/
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('bo05_codbo',9,$Ibo05_codbo,true,'text',$db_opcao," onchange='js_pesqui
        <?=@$Lbo05_datadesp?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('bo05_datadesp',@$bo05_datadesp_dia,@$bo05_datadesp_mes,@$bo05_datadesp_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,22 +74,22 @@ db_inputdata('bo05_datadesp',@$bo05_datadesp_dia,@$bo05_datadesp_mes,@$bo05_data
        <?=@$Lbo05_coddepto_ori?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo05_coddepto_ori',5,$Ibo05_coddepto_ori,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbo05_coddepto_dest?>">
-       <?
+       <?php
        db_ancora(@$Lbo05_coddepto_dest,"js_pesquisabo05_coddepto_dest(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bo05_coddepto_dest',5,$Ibo05_coddepto_dest,true,'text',$db_opcao," onchange='js_pesquisabo05_coddepto_dest(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Lbo05_despacho?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('bo05_despacho',5,80,$Ibo05_despacho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bodesp.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -50,13 +50,13 @@ class cl_proctransferintand {
                  p87_codandam = int8 = Código andamento 
                  ";
    //funcao construtor da classe 
-   function cl_proctransferintand() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransferintand"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_proctransferintand {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p87_codtransferint = ($this->p87_codtransferint == ""?@$GLOBALS["HTTP_POST_VARS"]["p87_codtransferint"]:$this->p87_codtransferint);
        $this->p87_codandam = ($this->p87_codandam == ""?@$GLOBALS["HTTP_POST_VARS"]["p87_codandam"]:$this->p87_codandam);
@@ -73,7 +73,7 @@ class cl_proctransferintand {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->p87_codtransferint == null ){ 
        $this->erro_sql = " Campo codigo nao Informado.";
@@ -127,7 +127,7 @@ class cl_proctransferintand {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update proctransferintand set ";
      $virgula = "";
@@ -188,7 +188,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from proctransferintand
                     where ";
      $sql2 = "";
@@ -227,7 +227,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -249,7 +249,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="proctransferintand.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="proctransferintand.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -288,7 +288,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_cert ( $oid = null,$campos="proctransferintand.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_cert ( $oid = null,$campos="proctransferintand.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -327,7 +327,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

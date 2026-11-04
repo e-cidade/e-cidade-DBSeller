@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ MM_reloadPage(true);
 <form name="form1" method="post">
 <tr>&nbsp;&nbsp;</tr>
 <table border="1" cellpadding="0" cellspacing="0">
-<?
+<?php
     if ($opcao=="cgm"){
       $where = "and arrenumcgm.k00_numcgm = $codopcao";
     }else if ($opcao=="matric"){

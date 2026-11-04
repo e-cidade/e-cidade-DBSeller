@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBseller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ $where = isset($where) ? $where : null;
                    <?=@$Lid_usuario?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('id_usuario',10,$Iid_usuario,true,'text',3,"")
                   ?>
                 </td>
@@ -132,7 +132,7 @@ $where = isset($where) ? $where : null;
                    <?=@$Lsenha?>
                 </td>
                 <td style="font-weight:bold;">
-                  <?
+                  <?php
                     db_input('senha',20,$Isenha,true,'password',$db_opcao,"onkeyup='return js_forcaDaSenha();'")
                   ?>
                   Força da senha: <span id="forcaSenha"></span>
@@ -144,7 +144,7 @@ $where = isset($where) ? $where : null;
                   <b>Verifica senha:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('verificasenha',20,$Isenha,true,'password',$db_opcao,"")
                   ?>
                 </td>
@@ -191,7 +191,7 @@ $where = isset($where) ? $where : null;
                    <?=@$Lemail?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('email',50,$Iemail,true,'text',$db_opcao,"")
                   ?>
                 </td>

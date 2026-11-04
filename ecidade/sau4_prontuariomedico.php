@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,7 +112,7 @@ if(isset($incluir)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmprontuariomedico.php"));
         ?>
     </center>
@@ -124,7 +124,7 @@ if(isset($incluir)){
 <table>
 <tr>
   <td valign="top" align="center"><br>
-  <?
+  <?php
    //$chavepri= array("sd29_i_codigo"=>@$sd29_i_codigo,"sd29_d_data"=>@$sd29_d_data,"sd29_c_hora"=>@$sd29_c_hora,"sd29_i_procedimento"=>@$sd29_i_procedimento,"sd09_c_descr"=>@$sd09_c_descr);
    $chavepri= array("sd29_i_codigo"=>@$sd29_i_codigo,
                     "sd29_i_procedimento"=>@$sd29_i_procedimento,
@@ -161,7 +161,7 @@ if(isset($incluir)){
  </tr>
 <table>
 
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -169,7 +169,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","z01_v_cgccpf",true,1,"z01_v_cgccpf",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar)){
   if($clprontproced->erro_status=="0"){
     $clprontproced->erro(true,false);
@@ -185,7 +185,7 @@ if(isset($incluir) || isset($alterar)){
         <script>
           location.href='sau4_fichaatendabas003.php?chavepesquisaprontuario=<?=$chavepesquisaprontuario?>'
         </script>
-    <?
+    <?php
   }
 
 }else if(isset($excluir)){
@@ -194,6 +194,6 @@ if(isset($incluir) || isset($alterar)){
         <script>
           location.href='sau4_fichaatendabas003.php?chavepesquisaprontuario=<?=$chavepesquisaprontuario?>'
         </script>
-    <?
+    <?php
 }
 ?>

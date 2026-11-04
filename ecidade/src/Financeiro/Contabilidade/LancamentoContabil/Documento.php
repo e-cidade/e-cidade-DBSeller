@@ -187,6 +187,12 @@ class Documento
 
 
     /**
+     * Registra as transferencias para os gerados na 2032
+     */
+    const TRANSFERENCIA_SALDOS_RPNP_INSCRITOS_LIQUIDAR = 2034;
+    const TRANSFERENCIA_SALDOS_RPNP_INSCRITOS_EM_LIQUIDACAO = 2035;
+    
+    /**
      * Retorna o tipo do documento
      * @param $documento
      * @return int|null

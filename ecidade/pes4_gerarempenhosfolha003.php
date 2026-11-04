@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -82,7 +82,7 @@ $rsConfirma       = $oDaoConfirma->sql_record($sSqlConfirma);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("datagrid.widget.js");
@@ -218,7 +218,7 @@ db_app::load("estilos.css");
             <tr>
               <td style='border-right: 2px groove white'
                   nowrap title="<?=@$Trh01_numcgm?>" width="50%">
-                <?
+                <?php
                 db_ancora("<strong>Credor:</strong>","js_pesquisaz01_numcgm(true);", 1);
                 db_input('z01_numcgm',6,$Iz01_numcgm,true,'text', 1,"onchange='js_pesquisaz01_numcgm(false);'");
                 db_input('z01_nome',33,$Iz01_nome,true,'text',3,'')
@@ -291,7 +291,7 @@ db_app::load("estilos.css");
                 <strong>Orgão:</strong>
               </td>
               <td>
-              <?
+              <?php
               $clorcorgao = db_utils::getDao("orcorgao");
               $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr",
                                                                          "o40_orgao",
@@ -306,19 +306,19 @@ db_app::load("estilos.css");
                 <strong>Unidade:</strong>
               </td>
               <td>
-                <?
+                <?php
                   db_select("rh72_unidade",array(),true,1,"onchange='js_getDotacoes();'");
                 ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Trh72_projativ?>">
-               <?
+               <?php
                db_ancora("<strong>Projeto:</strong>","js_pesquisarh72_projativ(true);", 1);
                ?>
               </td>
               <td>
-               <?
+               <?php
                db_input('rh72_projativ',10,$Irh72_projativ,true,'text',1," onchange='js_pesquisarh72_projativ(false);'");
                db_input('o55_descr',35,"",true,'text',3,'')
                ?>
@@ -356,13 +356,13 @@ db_app::load("estilos.css");
             <tr>
                <td nowrap title="<?=@$Trh72_codele?>">
                  <strong>
-	   	            <?
+	   	            <?php
 	   	              db_ancora("Desdobramento","js_pesquisarh72_elemento(true);", 1);
 	   	            ?>
                  </strong>
                </td>
                <td>
-                <?
+                <?php
                  db_input('rh72_elemento',10,$Irh72_codele,true,'text', 1," onchange='js_pesquisarh72_elemento(false);'");
                  db_input('o56_elemento',35,"",true,'text',3,'')
                  ?>
@@ -370,12 +370,12 @@ db_app::load("estilos.css");
              </tr>
              <tr>
               <td nowrap title="<?=@$Trh72_recurso?>">
-               <?
+               <?php
                  db_ancora(@$Lrh72_recurso,"js_pesquisac62_codrec(true);", 1);
                ?>
               </td>
               <td>
-              <?
+              <?php
               db_input('rh72_recurso',10,$Irh72_recurso,true,'text', 1,"onchange='js_pesquisac62_codrec(false);'");
               db_input('o15_descr',35,"",true,'text',3,"");
               ?>
@@ -384,13 +384,13 @@ db_app::load("estilos.css");
 	          <tr>
 	            <td nowrap title="<?=@$Trh72_concarpeculiar?>">
 	              <strong>
-	              <?
+	              <?php
 	                db_ancora("CP","js_pesquisarh72_concarpeculiar(true);",1);
 	              ?>
 	              </strong>
 	            </td>
 	            <td>
-	              <?
+	              <?php
 	                db_input("rh72_concarpeculiar",10,$Irh72_concarpeculiar,true,"text",1,"onChange='js_pesquisarh72_concarpeculiar(false);'");
 	                db_input("c58_descr",35,0,true,"text",3);
 	              ?>
@@ -398,12 +398,12 @@ db_app::load("estilos.css");
 	          </tr>
             <tr>
               <td nowrap title="<?=@$Trh72_coddot?>">
-               <?
+               <?php
                  db_ancora(@$Lrh72_coddot,"js_pesquisarh72_coddot(true);", 1);
                ?>
               </td>
               <td>
-              <?
+              <?php
                 db_select("rh72_coddot",array(),true,1);
                ?>
               </td>
@@ -413,7 +413,7 @@ db_app::load("estilos.css");
                  <strong>Valor:</strong>
                </td>
                <td>
-               <?
+               <?php
                 db_input('rh73_valor',10,"",true,'text', 3);
                ?>
             </tr>
@@ -468,7 +468,7 @@ switch (oParametros.sSigla) {
     default:
       sNomeFolha = 'Mensal';
   }
-<?
+<?php
  if ($oDaoConfirma->numrows == 0) {
 ?>
    lBotoes = false;
@@ -476,7 +476,7 @@ switch (oParametros.sSigla) {
    $('messageBoard').innerHTML     = "Folha  de "+sNomeFolha+" para o período "+oParametros.iMesFolha+"/"+oParametros.iAnoFolha;
    $('messageBoard').innerHTML    += " Não liberada para gerar Empenhos.";
    $('messageBoard').style.display = "";
-<?
+<?php
 }
 ?>
 sUrl = "pes4_gerarEmpenhoFolhaRPC.php";

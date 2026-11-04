@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -204,7 +204,7 @@ if(empty($e60_numemp)){
 <table border='0' cellspacing='0' cellpadding='0' width='100%'>
   <tr>
   <td colspan='2' align='center' valign='top'>
-<?
+<?php
 db_input('dados',6,0,true,'hidden',3)
 ?>
 
@@ -214,7 +214,7 @@ db_input('dados',6,0,true,'hidden',3)
        <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho','".@$e60_numemp."')",$db_opcao_inf)?>
     </td>
     <td>
-<?
+<?php
 db_input('e60_numemp',13,$Ie60_numemp,true,'text',3)
 ?>
     </td>
@@ -224,10 +224,10 @@ db_input('e60_numemp',13,$Ie60_numemp,true,'text',3)
     <?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','".@$e60_numcgm."')",$db_opcao_inf)?>
     </td>
     <td>
-<?
+<?php
 db_input('e60_numcgm',10,$Ie60_numcgm,true,'text',3)
 ?>
-       <?
+       <?php
 db_input('z01_nome',38,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -237,10 +237,10 @@ db_input('z01_nome',38,$Iz01_nome,true,'text',3,'')
          <?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao','".@$e60_coddot."','".db_getsession("DB_anousu")."')",$db_opcao_inf)?>
       </td>
       <td>
-          <? db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
+          <?php db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
       </td>
   </tr>
-     <?    /* busca dados da dotação  */
+     <?php    /* busca dados da dotação  */
      if((isset($e60_coddot))){
           $instit=db_getsession("DB_instit");
           $clorcdotacao->sql_record($clorcdotacao->sql_query_file("","","*","","o58_coddot=$e60_coddot and o58_instit=$instit"));
@@ -259,57 +259,57 @@ db_input('z01_nome',38,$Iz01_nome,true,'text',3,'')
           <tr>
              <td nowrap title="<?=@$To58_orgao ?>"><?=@$Lo58_orgao ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
-	       <? db_input('o40_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
+	       <?php db_input('o40_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
           <tr>
              <td nowrap title="<?=@$To58_unidade ?>"><?=@$Lo58_unidade ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_unidade',8,"",true,'text',3,"");  ?>
-	       <? db_input('o41_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_unidade',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o41_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
           <tr>
              <td nowrap title="<?=@$To58_funcao ?>"><?=@$Lo58_funcao ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_funcao',8,"",true,'text',3,"");  ?>
-	       <? db_input('o52_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_funcao',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o52_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
            <tr>
              <td nowrap title="<?=@$To58_subfuncao ?>" ><?=@$Lo58_subfuncao ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
-	       <? db_input('o53_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o53_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
           <tr>
              <td nowrap title="<?=@$To58_programa ?>"    ><?=@$Lo58_programa ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_programa',8,"",true,'text',3,"");  ?>
-	       <? db_input('o54_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_programa',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o54_descr',40,"",true,'text',3,"");  ?>
              </td>
 	  </tr>
            <tr>
              <td nowrap title="<?=@$To58_projativ ?>"><?=@$Lo58_projativ ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_projativ',8,"",true,'text',3,"");  ?>
-	       <? db_input('o55_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_projativ',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o55_descr',40,"",true,'text',3,"");  ?>
 	     </td>
            </tr>
            <tr>
              <td nowrap title="<?=@$To56_elemento ?>" ><?=@$Lo56_elemento ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_elemento',8,"",true,'text',3,"");  ?>
-	       <? db_input('o56_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_elemento',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o56_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
           <tr>
              <td nowrap title="<?=@$To58_codigo ?>" ><?=@$Lo58_codigo ?> </td>
 	     <td nowrap >
-	       <? db_input('o58_codigo',8,"",true,'text',3,"");  ?>
-	       <? db_input('o15_descr',40,"",true,'text',3,"");  ?>
+	       <?php db_input('o58_codigo',8,"",true,'text',3,"");  ?>
+	       <?php db_input('o15_descr',40,"",true,'text',3,"");  ?>
 	     </td>
 	  </tr>
 	  <tr>
@@ -320,7 +320,7 @@ db_input('z01_nome',38,$Iz01_nome,true,'text',3,'')
 	 </tr>
  <tr>
    <td colspan='2' align='center'>
-<?  if(isset($e60_numemp)){
+<?php  if(isset($e60_numemp)){
      $sql = $clempnotaele->sql_query(null,null,"e69_numero,nome,e69_dtnota,e70_codnota,sum(e70_valor) as e70_valor, sum(e70_vlrliq) as e70_vlrliq, sum(e70_vlranu) as    e70_vlranu","","e69_numemp=$e60_numemp  and e70_vlrliq <> 0  group by e70_codnota,nome,e69_dtnota,e69_numero ");
       $clempnotaele->sql_record($sql);
       $numrows_nota = $clempnotaele->numrows;
@@ -371,7 +371,7 @@ db_input('z01_nome',38,$Iz01_nome,true,'text',3,'')
      </td>
      <td valign='bottom'>
        <table cellspacing='0' cellpadding='0' class='bordas'>
-<?
+<?php
 if(isset($restoapagar) && $restoapagar==true){
 ?>
 	<tr class='bordas'>
@@ -380,7 +380,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	    <!--<b>RESTO À PAGAR</b>-->
 	  </td>
 	</tr>
-<?
+<?php
   }
 ?>
 	<tr class='bordas'>
@@ -393,7 +393,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <?=@$Le60_vlremp?>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('e60_vlremp',15,$Ie60_vlremp,true,'text',3,'')
       ?>
 	  </td>
@@ -403,7 +403,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <?=@$Le60_vlranu?>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('e60_vlranu',15,$Ie60_vlranu,true,'text',3,'')
       ?>
 	  </td>
@@ -413,7 +413,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <?=@$Le60_vlrliq?>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('e60_vlrliq',15,$Ie60_vlrliq,true,'text',3,'')
       ?>
 	  </td>
@@ -423,12 +423,12 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <?=@$Le60_vlrpag?>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('e60_vlrpag',15,$Ie60_vlrpag,true,'text',3,'')
       ?>
 	  </td>
 	</tr>
-<?
+<?php
  if(isset($e60_numemp)){
 ?>
 	<tr class='bordas'>
@@ -441,7 +441,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le70_valor?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_valorn',15,$Ie70_valor,true,'text',3,'')
 	?>
 	    </td>
@@ -451,7 +451,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le70_vlrliq?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_vlrliqn',15,$Ie70_vlrliq,true,'text',3,'')
 	?>
 	    </td>
@@ -461,17 +461,17 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le70_vlranu?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_vlranun',15,$Ie70_vlranu,true,'text',3,'')
 	?>
 	    </td>
 	  </tr>
 
-<?
+<?php
 
 }
 ?>
-<?
+<?php
  if(isset($e60_numemp)){
    $result  = $clpagordemele->sql_record($clpagordemele->sql_query(null,null,"sum(e53_valor) as tot_valor, sum(e53_vlrpag) as tot_vlrpag, sum(e53_vlranu) as tot_vlranu","","e60_numemp=$e60_numemp"));
    if($clpagordemele->numrows>0){
@@ -487,7 +487,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le53_valor?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_valor',15,$Ie60_vlranu,true,'text',3,'')
 	?>
 	    </td>
@@ -497,7 +497,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le53_vlrpag?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_vlrpag',15,$Ie53_vlrpag,true,'text',3,'')
 	?>
 	    </td>
@@ -507,13 +507,13 @@ if(isset($restoapagar) && $restoapagar==true){
 	       <?=@$Le53_vlranu?>
 	    </td>
 	    <td class='bordas'>
-	<?
+	<?php
 	  db_input('tot_vlranu',15,$Ie53_vlranu,true,'text',3,'')
 	?>
 	    </td>
 	  </tr>
 
-<?
+<?php
   }
 }
 ?>
@@ -527,7 +527,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <b>Total disponível:</b>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('vlrdis',15,0,true,'text',3);
       ?>
 	  </td>
@@ -537,7 +537,7 @@ if(isset($restoapagar) && $restoapagar==true){
 	     <b>Valor à estornar:</b>
 	  </td>
 	  <td class='bordas'>
-      <?
+      <?php
 	db_input('vlrliq_estornar',15,4,true,'text',$db_opcao,"onchange='js_verificar(\"campo\");'");
       ?>
 	  </td>
@@ -555,7 +555,7 @@ if(isset($restoapagar) && $restoapagar==true){
   </center>
 </form>
 <script>
-<?
+<?php
 if(isset($e60_numemp)){
   if(($vlrdis==0||$vlrdis=='')&&($vlrdis_nota==0||$vlrdis_nota=='')){
       echo " document.form1.confirmar.disabled=true;\n";
@@ -633,7 +633,7 @@ function js_calcula(campo){
 
 
 
-<?
+<?php
   if(isset($jafoipago) && $jafoipago==true){
      if($vlrdis <  $vlrdis_nota){
        $saldon ='0.00';
@@ -687,9 +687,9 @@ function js_calcula(campo){
 	  }else{
 	    elementos.js_calcular();
 	  }
-<?if($numrows_nota>0){?>
+<?php if($numrows_nota>0){?>
 	  js_gera_chaves();
-<?}?>
+<?php }?>
 	  return true;
 	}else{
           document.form1.vlrliq_estornar.focus();
@@ -699,7 +699,7 @@ function js_calcula(campo){
 	}
 
       }
-<?
+<?php
 }
 ?>
 
@@ -708,7 +708,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empempenho.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave";
   ?>
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("sd64_c_nome");
        <?=@$Lsd63_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_codigo',5,$Isd63_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -50,7 +50,7 @@ db_input('sd63_i_codigo',5,$Isd63_i_codigo,true,'text',3,"")
        <?=@$Lsd63_c_procedimento?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_c_procedimento',10,$Isd63_c_procedimento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -60,7 +60,7 @@ db_input('sd63_c_procedimento',10,$Isd63_c_procedimento,true,'text',$db_opcao,""
        <?=@$Lsd63_c_nome?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_c_nome',50,$Isd63_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_input('sd63_c_nome',50,$Isd63_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd63_i_complexidade?>
     </td>
     <td>
-       <?
+       <?php
        include(modification("classes/db_sau_complexidade_classe.php"));
        $clsau_complexidade = new cl_sau_complexidade;
        $result = $clsau_complexidade->sql_record($clsau_complexidade->sql_query("","*"));
@@ -83,7 +83,7 @@ db_input('sd63_c_nome',50,$Isd63_c_nome,true,'text',$db_opcao,"")
        <?=@$Lsd63_c_sexo?>
     </td>
     <td>
-<?
+<?php
 $x = array('F'=>'Feminino','I'=>'Indiferente/Ambos','M'=>'Masculino','N'=>'Não se Aplica');
 db_select('sd63_c_sexo',$x,true,$db_opcao,"");
 ?>
@@ -94,7 +94,7 @@ db_select('sd63_c_sexo',$x,true,$db_opcao,"");
        <?=@$Lsd63_i_execucaomax?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_execucaomax',4,$Isd63_i_execucaomax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('sd63_i_execucaomax',4,$Isd63_i_execucaomax,true,'text',$db_opcao,"")
        <?=@$Lsd63_i_maxdias?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_maxdias',4,$Isd63_i_maxdias,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('sd63_i_maxdias',4,$Isd63_i_maxdias,true,'text',$db_opcao,"")
        <?=@$Lsd63_i_pontos?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_pontos',4,$Isd63_i_pontos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_input('sd63_i_pontos',4,$Isd63_i_pontos,true,'text',$db_opcao,"")
        <?=@$Lsd63_i_idademin?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_idademin',4,$Isd63_i_idademin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -134,7 +134,7 @@ db_input('sd63_i_idademin',4,$Isd63_i_idademin,true,'text',$db_opcao,"")
        <?=@$Lsd63_i_idademax?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_idademax',4,$Isd63_i_idademax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,7 +144,7 @@ db_input('sd63_i_idademax',4,$Isd63_i_idademax,true,'text',$db_opcao,"")
        <?=@$Lsd63_f_sh?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_f_sh',10,$Isd63_f_sh,true,'text',3,"")
 ?>
     </td>
@@ -154,7 +154,7 @@ db_input('sd63_f_sh',10,$Isd63_f_sh,true,'text',3,"")
        <?=@$Lsd63_f_sa?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_f_sa',10,$Isd63_f_sa,true,'text',3,"")
 ?>
     </td>
@@ -164,7 +164,7 @@ db_input('sd63_f_sa',10,$Isd63_f_sa,true,'text',3,"")
        <?=@$Lsd63_f_sp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_f_sp',10,$Isd63_f_sp,true,'text',3,"")
 ?>
     </td>
@@ -174,7 +174,7 @@ db_input('sd63_f_sp',10,$Isd63_f_sp,true,'text',3,"")
        <?=@$Lsd63_i_financiamento?>
     </td>
     <td>
-       <?
+       <?php
        include(modification("classes/db_sau_financiamento_classe.php"));
        $clsau_financiamento = new cl_sau_financiamento;
        $result = $clsau_financiamento->sql_record($clsau_financiamento->sql_query("","sd65_i_codigo, sd65_c_nome",""));
@@ -184,15 +184,15 @@ db_input('sd63_f_sp',10,$Isd63_f_sp,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd63_i_rubrica?>">
-       <?
+       <?php
        db_ancora(@$Lsd63_i_rubrica,"js_pesquisasd63_i_rubrica(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_rubrica',5,$Isd63_i_rubrica,true,'text',$db_opcao," onchange='js_pesquisasd63_i_rubrica(false);'")
 ?>
-       <?
+       <?php
 db_input('sd64_c_nome',50,$Isd64_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -202,7 +202,7 @@ db_input('sd64_c_nome',50,$Isd64_c_nome,true,'text',3,'')
        <?=@$Lsd63_i_anocomp?>/<?=@$Lsd63_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd63_i_anocomp',4,$Isd63_i_anocomp,true,'text',$db_opcao,""); echo '/';
 db_input('sd63_i_mescomp',2,$Isd63_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -288,7 +288,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_procedimento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

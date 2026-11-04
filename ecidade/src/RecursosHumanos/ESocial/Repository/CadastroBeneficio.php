@@ -136,12 +136,7 @@ class CadastroBeneficio extends \BaseClassRepository
                 //validacao regime
                 $where = "
                     rhregime.rh30_codreg = {$servidor->getCodigoRegime()}
-                        AND rhregime.rh30_vinculo in ('I','P')
-                        AND not exists (
-                            select 1
-                            from rhpesrescisao
-                            where rh05_seqpes = {$servidor->getCodigoMovimentacao()}
-                        )";
+                        AND rhregime.rh30_vinculo in ('I','P')";
                 $rsRegime = $clRegime->sql_record($clRegime->sql_query_file(null, "rh30_codreg", null, $where));
 
                 if (!$rsRegime) {

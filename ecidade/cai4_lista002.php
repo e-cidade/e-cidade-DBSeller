@@ -82,28 +82,136 @@ if(!isset($oGet->dDataDebitos) || empty($oGet->dDataDebitos)) {
 }
 
 /* Montando Texto com detalhamento dos filtros da lista (lista.k60_filtros) */
-$sFiltro  = " # Descrição: {$oGet->sDescricaoLista}";
-$sFiltro .= " # Valores de: {$oGet->nValorIni} a {$oGet->nValorFim}";
-$sFiltro .= " # Data do Cálculo: {$oGet->dDataDebitos}";
-$sFiltro .= " # Quantidade a Listar: {$oGet->iQtdListar}";
-$sFiltro .= " # Tipo de Lista: {$oGet->sTipoListaDescr}";
-
-if (!empty($oGet->dNotifDataLimite)) {
-  $sFiltro .= " # Não Considerar Notificados Até: {$oGet->dNotifDataLimite} - {$oGet->sNotifTipo}";
+if (property_exists($oGet, 'sDescricaoLista') && !empty($oGet->sDescricaoLista)) {
+  $sFiltro  = " # Descrição: {$oGet->sDescricaoLista}";
 }
 
-$sFiltro .= " # Lista Massa Falida: ".(($oGet->sMassaFalida=="S")?"Sim":"Não");
-$sFiltro .= " # Considera loteamentos: ".(($oGet->sLoteamento=="S")?"Sim":"Não");
-$sFiltro .= " # Data de operação de {$oGet->dDtOperIni} a {$oGet->dDtOperFim}";
-$sFiltro .= " # Vencimento de {$oGet->dDtVencIni} a {$oGet->dDtVencFim}";
-$sFiltro .= " # Exercícios {$oGet->iExercIni} a {$oGet->iExercFim}";
-$sFiltro .= " # Considerar periodos posteriores: ".(($oGet->sConsideraPosterior=="S")?"Sim":"Não");
-$sFiltro .= " # Desconsiderando exercícios {$oGet->iIgnoraExercIni} a {$oGet->iIgnoraExercFim}";
-$sFiltro .= " # Quantidade de Parcelas em atraso {$oGet->iQtdParcAtrasoIni} a {$oGet->iQtdParcAtrasoFim}";
-$sFiltro .= " # Número das Parcelas em atraso {$oGet->iNroParcAtrasoIni} a {$oGet->iNroParcAtrasoFim}";
-$sFiltro .= " # Opção: {$oGet->sOpcaoTipoDebito}";
-$sFiltro .= " # Desconsiderar Débitos com recibo válido após: {$oGet->dtDesconsiderarDebitos}";  //Criadp
+if (property_exists($oGet, 'nValorIni') && !empty($oGet->nValorIni)) {
+  $sFiltro .= " # Valores de: {$oGet->nValorIni}";
 
+  if (property_exists($oGet, 'nValorFim') && !empty($oGet->nValorFim)) {
+    $sFiltro .= " a {$oGet->nValorFim}";
+  }
+}
+
+if (property_exists($oGet, 'dDataDebitos') && !empty($oGet->dDataDebitos)) {
+  $sFiltro .= " # Data do Cálculo: {$oGet->dDataDebitos}";
+}
+
+if (property_exists($oGet, 'iQtdListar') && !empty($oGet->iQtdListar)) {
+  $sFiltro .= " # Quantidade a Listar: {$oGet->iQtdListar}";
+}
+
+if (property_exists($oGet, 'sTipoListaDescr') && !empty($oGet->sTipoListaDescr)) {
+  $sFiltro .= " # Tipo de Lista: {$oGet->sTipoListaDescr}";
+}
+
+if (property_exists($oGet, 'dNotifDataLimite') && !empty($oGet->dNotifDataLimite)) {
+  $sFiltro .= " # Não Considerar Notificados Até: {$oGet->dNotifDataLimite}";
+
+  if (property_exists($oGet, 'sNotifTipo') && !empty($oGet->sNotifTipo)) {
+    $sFiltro .= " - {$oGet->sNotifTipo}";
+  }
+}
+
+if (property_exists($oGet, 'sMassaFalida') && !empty($oGet->sMassaFalida)) {
+  $sFiltro .= " # Lista Massa Falida: ".(($oGet->sMassaFalida=="S")?"Sim":"Não");
+}
+
+if (property_exists($oGet, 'sLoteamento') && !empty($oGet->sLoteamento)) {
+  $sFiltro .= " # Considera loteamentos: ".(($oGet->sLoteamento=="S")?"Sim":"Não");
+}
+
+if (property_exists($oGet, 'dDtOperIni') && !empty($oGet->dDtOperIni)) {
+  $sFiltro .= " # Data de operação de {$oGet->dDtOperIni}";
+
+  if (property_exists($oGet, 'dDtOperFim') && !empty($oGet->dDtOperFim)) {
+    $sFiltro .= " a {$oGet->dDtOperFim}";
+  }
+}
+
+if (property_exists($oGet, 'dDtVencIni') && !empty($oGet->dDtVencIni)) {
+  $sFiltro .= " # Vencimento de {$oGet->dDtVencIni}";
+
+  if (property_exists($oGet, 'dDtVencFim') && !empty($oGet->dDtVencFim)) {
+    $sFiltro .= " a {$oGet->dDtVencFim}";
+  }
+}
+
+if (property_exists($oGet, 'iExercIni') && !empty($oGet->iExercIni)) {
+  $sFiltro .= " # Exercícios {$oGet->iExercIni}";
+
+  if (property_exists($oGet, 'iExercFim') && !empty($oGet->iExercFim)) {
+    $sFiltro .= " a {$oGet->iExercFim}";
+  }
+}
+
+if (property_exists($oGet, 'sConsideraPosterior') && !empty($oGet->sConsideraPosterior)) {
+  $sFiltro .= " # Considerar periodos posteriores: ".(($oGet->sConsideraPosterior=="S")?"Sim":"Não");
+}
+
+if (property_exists($oGet, 'iIgnoraExercIni') && !empty($oGet->iIgnoraExercIni)) {
+  $sFiltro .= " # Desconsiderando exercícios {$oGet->iIgnoraExercIni}";
+
+  if (property_exists($oGet, 'iIgnoraExercFim') && !empty($oGet->iIgnoraExercFim)) {
+    $sFiltro .= " a {$oGet->iIgnoraExercFim}";
+  }
+}
+
+if (property_exists($oGet, 'iQtdParcAtrasoIni') && !empty($oGet->iQtdParcAtrasoIni)) {
+  $sFiltro .= " # Quantidade de Parcelas em atraso {$oGet->iQtdParcAtrasoIni}";
+
+  if (property_exists($oGet, 'iQtdParcAtrasoFim') && !empty($oGet->iQtdParcAtrasoFim)) {
+    $sFiltro .= " a {$oGet->iQtdParcAtrasoFim}";
+  }
+}
+
+if(property_exists($oGet, 'consistirCpfCnpj') && !empty($oGet->consistirCpfCnpj)) {
+  $consistirCpfCnpj = ($oGet->consistirCpfCnpj == '2')
+                        ? 'Apenas válidos'
+                        : (($oGet->consistirCpfCnpj == '3')
+                          ? 'Inválidos'
+                          : 'Não consistir');
+  $sFiltro .= " # Consistência de CPF/CNPJ: {$consistirCpfCnpj}";
+}
+
+if(property_exists($oGet, 'consistirEndereco') && !empty($oGet->consistirEndereco)) {
+  $consistirEndereco = ($oGet->consistirEndereco == '2')
+                          ? 'Apenas válidos'
+                          : (($oGet->consistirEndereco == '3')
+                            ? 'Inválidos'
+                            : 'Não consistir');
+  $sFiltro .= " # Consistência de Endereço: {$consistirEndereco}";
+}
+
+if (property_exists($oGet, 'iNroParcAtrasoIni') && !empty($oGet->iNroParcAtrasoIni)) {
+  $sFiltro .= " # Número das Parcelas em atraso {$oGet->iNroParcAtrasoIni}";
+
+  if (property_exists($oGet, 'iNroParcAtrasoFim') && !empty($oGet->iNroParcAtrasoFim)) {
+    $sFiltro .= " a {$oGet->iNroParcAtrasoFim}";
+  }
+}
+
+if (property_exists($oGet, 'sOpcaoTipoDebito') && !empty($oGet->sOpcaoTipoDebito)) {
+  $sFiltro .= " # Opção: {$oGet->sOpcaoTipoDebito}";
+}
+
+if (property_exists($oGet, 'dtDesconsiderarDebitos') && !empty($oGet->dtDesconsiderarDebitos)) {
+  $sFiltro .= " # Desconsiderar Débitos com recibo válido após: {$oGet->dtDesconsiderarDebitos}";
+}
+
+if (property_exists($oGet, 'dtDebitospagamentoapos') && !empty($oGet->dtDebitospagamentoapos)) {
+  $sFiltro .= " # Desconsiderar Débitos com pagamentos após: {$oGet->dtDebitospagamentoapos}";
+}
+
+if (property_exists($oGet, 'dtcdaini') && !empty($oGet->dtcdaini)) {
+  if(!empty($oGet->dtcdafim)){
+    $dtcdafim = $oGet->dtcdafim;
+  } else {
+    $dtcdafim = date("d/m/Y");
+  }
+  $sFiltro .= " # Data da emissão da CDA de: {$oGet->dtcdaini} a {$dtcdafim}";
+}
 
 $sSqlArretipo  = "SELECT array_to_string(array_accum(k00_tipo||'-'||k00_descr), ', ') as tipos_descr ";
 $sSqlArretipo .= "  FROM arretipo ";
@@ -122,7 +230,9 @@ if (pg_num_rows($rArretipo) > 0) {
   $oArretipo->tipos_descr = "Nenhum Tipo Encontrado";
 }
 
-$sFiltro .= " # Tipos de Débitos da Lista: {$oArretipo->tipos_descr}";
+if (property_exists($oArretipo, 'tipos_descr') && !empty($oArretipo->tipos_descr)) {
+  $sFiltro .= " # Tipos de Débitos da Lista: {$oArretipo->tipos_descr}";
+}
 
 if ($oGet->iOpcaoTipoDebito<>1 and !empty($oGet->sTiposDebitos)) {
   $sSqlArretipo  = "SELECT array_to_string(array_accum(k00_tipo||'-'||k00_descr), ', ') as tipos_descr ";
@@ -139,7 +249,9 @@ if ($oGet->iOpcaoTipoDebito<>1 and !empty($oGet->sTiposDebitos)) {
     $oArretipo->tipos_descr = "Nenhum Tipo Encontrado";
   }
 
-  $sFiltro .= " # Tipos de Débitos Selecionados: {$oArretipo->tipos_descr}";
+  if (property_exists($oArretipo, 'tipos_descr') && !empty($oArretipo->tipos_descr)) {
+    $sFiltro .= " # Tipos de Débitos Selecionados: {$oArretipo->tipos_descr}";
+  }
 }
 
 /**
@@ -205,13 +317,28 @@ if(!empty($oGet->sReceitas)) {
         $oTabrec->receita_descr = "Nenhuma Receita Encontrada";
     }
 
-    $sFiltro .= " # Tipos de Receitas Selecionadas: {$oTabrec->receita_descr}";
+    if (property_exists($oTabrec, 'receita_descr') && !empty($oTabrec->receita_descr)) {
+      $sFiltro .= " # Tipos de Receitas Selecionadas: {$oTabrec->receita_descr}";
+    }
 }
 
+if (!empty($iUsuario)) {
+  $sFiltro .= " # Usuário: {$iUsuario}";
 
+  if (property_exists($oUsuario, 'login') && !empty($oUsuario->login)) {
+    $sFiltro .= " - {$oUsuario->login}";
 
-$sFiltro .= " # Usuário: {$iUsuario} - {$oUsuario->login} - {$oUsuario->nome}";
-$sFiltro .= " # Inicio Processamento: ".date("d/m/Y H:i:s", $tInicio);
+    if (property_exists($oUsuario, 'nome') && !empty($oUsuario->nome)) {
+      $sFiltro .= " - {$oUsuario->nome}";
+    }
+  }
+
+}
+
+if (!empty($tInicio)) {
+  $sFiltro .= " # Inicio Processamento: ".date("d/m/Y H:i:s", $tInicio);
+}
+
 
 /* Array para armazenar SQLs */
 $sSqlEtapa = array();
@@ -231,7 +358,7 @@ $sSqlEtapa = array();
 <br>
 <br>
 
-<?
+<?php
 /***
  *
  *  Nas inclusão de listas de débitos do DBportal existem 2 tipos de filtros:
@@ -290,15 +417,16 @@ flush();
  * Criando Tabela Temporária com os Filtros Simples
  *
  */
-
+$sTabDebitos = preg_replace('/[^0-9]+/', '', $oGet->dDataDebitos);
+$sTabDebitos = "debitos_{$sTabDebitos}_{$iInstit}";
 $sSqlEtapa["001"]  = "DROP TABLE IF EXISTS w_debitos_divida; \n";
 $sSqlEtapa["001"] .= "CREATE TEMP TABLE w_debitos_divida AS \n";
 $sSqlEtapa["001"] .= "SELECT * \n";
-$sSqlEtapa["001"] .= "  FROM debitos \n";
+$sSqlEtapa["001"] .= "  FROM {$sTabDebitos} as debitos \n";
 if ($oGet->sTipoLista == 'A') {
     $sSqlEtapa["001"] .= "  inner join arreauto on k00_numpre = k22_numpre \n";
 }
-$sSqlEtapa["001"] .= " WHERE k22_data   = '".to_dbdate($oGet->dDataDebitos)."' \n";
+$sSqlEtapa["001"] .= " WHERE k22_data   = '".$oGet->dDataDebitos."' \n";
 $sSqlEtapa["001"] .= "   AND k22_instit = {$iInstit} \n";
 
 if (!empty($oGet->sTiposDebitos)) {
@@ -656,6 +784,7 @@ $sSqlEtapa["001.4"] = "ANALYZE w_debitos_divida; \n";
  *
  */
 if (!empty($oGet->dNotifDataLimite)) {
+
   $sSqlEtapa["002"]  = "DELETE \n";
   $sSqlEtapa["002"] .= "  FROM w_debitos_divida a \n";
   $sSqlEtapa["002"] .= " WHERE EXISTS (SELECT 1 \n";
@@ -763,6 +892,7 @@ $sSqlEtapa["004"] .= "CREATE INDEX w_debitos_divida_exercicio_2 ON w_debitos_div
  *
  */
 if (!empty($oGet->iExercIni) && !empty($oGet->iExercFim)) {
+
   $sSqlEtapa["005.1"]  = "DELETE \n";
   $sSqlEtapa["005.1"] .= "  FROM w_debitos_divida_exercicio a \n";
   $sSqlEtapa["005.1"] .= " WHERE NOT EXISTS (SELECT 1 \n";
@@ -772,7 +902,7 @@ if (!empty($oGet->iExercIni) && !empty($oGet->iExercFim)) {
 }
 
 if (!empty($oGet->dDtOperIni) or !empty($oGet->dDtOperFim)) {
-	$sSqlEtapa["005.2"]  = "DELETE \n";
+    $sSqlEtapa["005.2"]  = "DELETE \n";
   $sSqlEtapa["005.2"] .= "  FROM w_debitos_divida_exercicio a \n";
   $sSqlEtapa["005.2"] .= " WHERE NOT EXISTS (SELECT 1 \n";
   $sSqlEtapa["005.2"] .= "                     FROM w_debitos_divida b \n";
@@ -781,6 +911,7 @@ if (!empty($oGet->dDtOperIni) or !empty($oGet->dDtOperFim)) {
 }
 
 if (!empty($oGet->dDtVencIni) or !empty($oGet->dDtVencFim)) {
+
   $sSqlEtapa["005.3"]  = "DELETE \n";
   $sSqlEtapa["005.3"] .= "  FROM w_debitos_divida_exercicio a \n";
   $sSqlEtapa["005.3"] .= " WHERE NOT EXISTS (SELECT 1 \n";
@@ -806,6 +937,7 @@ if (!empty($oGet->dDtOperIni) or !empty($oGet->dDtOperFim)) {
 }
 
 if (!empty($oGet->dDtVencIni) or !empty($oGet->dDtVencFim)) {
+
   $sSqlEtapa["006.3"]  = "DELETE \n";
   $sSqlEtapa["006.3"] .= "  FROM w_debitos_divida a \n";
   $sSqlEtapa["006.3"] .= " WHERE NOT EXISTS (SELECT 1 \n";
@@ -823,6 +955,7 @@ if (!empty($oGet->dDtVencIni) or !empty($oGet->dDtVencFim)) {
  *
  */
 if (!empty($sWhereParcelas)) {
+
   $sSqlEtapa["007"]  = "DELETE \n";
   $sSqlEtapa["007"] .= "  FROM w_debitos_divida a \n";
   $sSqlEtapa["007"] .= " WHERE (SELECT COUNT(DISTINCT k00_numpar) \n";
@@ -847,10 +980,12 @@ if ( in_array($oGet->consistirCpfCnpj, array (2,3))) {
     $sSqlEtapa["008"] = " delete from w_debitos_divida
                     using cgm
                     where z01_numcgm = k22_numcgm
-                     and {$sNot} (     fn_cnpj_cpf(replace(trim(z01_cgccpf), ' ', '')) is true
+                     and {$sNot} (  fn_cnpj_cpf(replace(trim(z01_cgccpf), ' ', '')) is true
                                     and z01_cgccpf <> '00000000000'
                                     and z01_cgccpf <> '00000000000000'
-                                    and z01_cgccpf <> '' ); ";
+                                    and TRIM(z01_cgccpf) <> ''
+                                    and z01_cgccpf is not null
+                                 ); ";
 }
 
 
@@ -881,14 +1016,17 @@ if ($oGet->incluirDebitosAjuizados == 1) {
  */
 if ( in_array($oGet->consistirEndereco, array (2,3))) {
 
-    $sNot = ($oGet->consistirEndereco == '3' ? " not ": "");
+    $sNot = ($oGet->consistirEndereco == '3' ? "not": "");
 
     $sSqlEtapa["010"] = " delete from w_debitos_divida
                     using cgm
                     where z01_numcgm = k22_numcgm
-                     and {$sNot} ( (z01_ender = '' or z01_ender is null)
+                     and {$sNot} (
+                                  (z01_ender = '' or z01_ender is null)
                                   or (z01_munic = '' or z01_munic = '')
-                                  or (z01_cep = '' or z01_cep is null)); ";
+                                  or (z01_cep = '' or z01_cep is null)
+                                  or (z01_numero = 0 or z01_numero is null)
+                                ); ";
 }
 
 /***
@@ -954,6 +1092,76 @@ if (!empty($oGet->sTiposDebitos)) {
 
 $sSqlEtapa["013"] .= "); \n";
 
+if($oGet->dtDebitospagamentoapos){
+  if($oGet->sTiposDebitos != ''){
+    $sqlVerificaTipos =
+      "select  1 from arretipo
+        inner join cadtipo on  arretipo.k03_tipo = cadtipo.k03_tipo
+      where  k03_parcelamento = true and k00_tipo in ($oGet->sTiposDebitos)";
+    $rVerificaTipo = db_query($sqlVerificaTipos);
+    if(pg_num_rows($rVerificaTipo) > 0){
+      $dt = explode("/", $oGet->dtDebitospagamentoapos);
+      $data = $dt[2].'-'.$dt[1].'-'.$dt[0];
+      $sSqlEtapa["014"]  = "DROP TABLE IF EXISTS w_debitos_parc_pagamentos; \n";
+      $sSqlEtapa["014"] .= "create temp table w_debitos_parc_pagamentos as \n";
+      $sSqlEtapa["014"] .= "  select distinct k22_numpre from w_debitos_divida \n";
+      $sSqlEtapa["014"] .= "    inner join arrepaga on k22_numpre = k00_numpre \n";
+      $sSqlEtapa["014"] .= "    and k22_numpar = k00_numpar and k22_receit = k22_receit \n";
+      $sSqlEtapa["014"] .= "  where k00_dtpaga >= '$data';\n";
+      $sSqlEtapa["014"] .= " CREATE INDEX w_debitos_parc_pagamentos_1 ON w_debitos_parc_pagamentos(k22_numpre) ;  \n";
+      $sSqlEtapa["014"] .= " delete from w_debitos_divida where k22_numpre in (select distinct k22_numpre from w_debitos_parc_pagamentos); \n";
+    }
+  }
+}
+
+if($oGet->dtcdaini){
+  if($oGet->sTiposDebitos != ''){
+    $sqlVerificaTipos =
+      "select  1 from arretipo
+        inner join cadtipo on  arretipo.k03_tipo = cadtipo.k03_tipo
+      where arretipo.k03_tipo in  (5, 15, 18) and k00_tipo in ($oGet->sTiposDebitos)";
+    $rVerificaTipo = db_query($sqlVerificaTipos);
+    if(pg_num_rows($rVerificaTipo) > 0){
+      $dtini = explode("/", $oGet->dtcdaini);
+      $dtcdaini = $dtini[2].'-'.$dtini[1].'-'.$dtini[0];
+      if($oGet->dtcdafim != ''){
+        $dtfim = explode("/", $oGet->dtcdafim);
+        $dtcdafim = $dtfim[2].'-'.$dtfim[1].'-'.$dtfim[0];
+      } else {
+        $dtcdafim = date("Y-m-d");
+      }
+      $sSqlEtapa["015"]  = "DROP TABLE IF EXISTS w_debitos_cda_periodo;                                   \n";
+      $sSqlEtapa["015"] .= "create temp table w_debitos_cda_periodo as                                    \n";
+      $sSqlEtapa["015"] .= "  select                                                                      \n";
+      $sSqlEtapa["015"] .= "    distinct k22_numpre                                                       \n";
+      $sSqlEtapa["015"] .= "from                                                                          \n";
+      $sSqlEtapa["015"] .= "    (                                                                         \n";
+      $sSqlEtapa["015"] .= "    select                                                                    \n";
+      $sSqlEtapa["015"] .= "        distinct k22_numpre                                                   \n";
+      $sSqlEtapa["015"] .= "    from                                                                      \n";
+      $sSqlEtapa["015"] .= "        w_debitos_divida                                                      \n";
+      $sSqlEtapa["015"] .= "    inner join divida on k22_numpre = v01_numpre and k22_numpar = v01_numpar  \n";
+      $sSqlEtapa["015"] .= "    inner join certdiv on v01_coddiv = v14_coddiv                             \n";
+      $sSqlEtapa["015"] .= "    inner join certid on v14_certid = v13_certid                              \n";
+      $sSqlEtapa["015"] .= "    where                                                                     \n";
+      $sSqlEtapa["015"] .= "        v13_dtemis between '$dtcdaini' and '$dtcdafim'                          \n";
+      $sSqlEtapa["015"] .= "union all                                                                     \n";
+      $sSqlEtapa["015"] .= "    select                                                                    \n";
+      $sSqlEtapa["015"] .= "        distinct k22_numpre                                                   \n";
+      $sSqlEtapa["015"] .= "    from                                                                      \n";
+      $sSqlEtapa["015"] .= "        w_debitos_divida                                                      \n";
+      $sSqlEtapa["015"] .= "    inner join termo on k22_numpre = v07_numpre                               \n";
+      $sSqlEtapa["015"] .= "    inner join certter on v07_parcel = v14_parcel                             \n";
+      $sSqlEtapa["015"] .= "    inner join certid on v14_certid = v13_certid                              \n";
+      $sSqlEtapa["015"] .= "    where                                                                     \n";
+      $sSqlEtapa["015"] .= "        v13_dtemis between '$dtcdaini' and '$dtcdafim' ) as x;                  \n";
+      $sSqlEtapa["015"] .= "CREATE INDEX w_debitos_cda_periodo_1 ON w_debitos_cda_periodo(k22_numpre) ;   \n";
+      $sSqlEtapa["015"] .= "delete from w_debitos_divida where k22_numpre not in (select distinct k22_numpre from w_debitos_cda_periodo); \n";
+    }
+  }
+}
+
+
 $iCountSql = count($sSqlEtapa);
 $iLinha    = 0;
 
@@ -994,8 +1202,14 @@ foreach($sSqlEtapa as $sSql) {
 
 /* Registra tempo de processamento */
 $tFim = time();
-$sFiltro .= " # Fim Processamento: ".date("d/m/Y H:i:s", $tFim);
-$sFiltro .= " # Tempo Processamento: ".db_formatatempodecorrido($tInicio, $tFim);
+
+if (!empty($tFim)) {
+  $sFiltro .= " # Fim Processamento: ".date("d/m/Y H:i:s", $tFim);
+}
+
+if (!empty($tInicio) && !empty($tFim)) {
+  $sFiltro .= " # Tempo Processamento: ".db_formatatempodecorrido($tInicio, $tFim);
+}
 
 if ($lDebug) {
   echo str_replace("#", "\n", $sFiltro);
@@ -1006,7 +1220,7 @@ if ($lDebug) {
 db_inicio_transacao();
 
 if (!$lSqlErro) {
-  $cllista->k60_datadeb = to_dbdate($oGet->dDataDebitos);
+  $cllista->k60_datadeb = $oGet->dDataDebitos;
   $cllista->k60_usuario = $iUsuario;
   $cllista->k60_filtros = $sFiltro;
   $cllista->k60_instit  = $iInstit;
@@ -1066,7 +1280,7 @@ if (!$lSqlErro) {
         $oParms->sResultado = pg_result_error($rResult);
         $lSqlErro = true;
         $sErroMsg = _M('tributario.notificacoes.cai4_lista002.erro_executar_query_inclui', $oParms);
-        break;
+
       }
 
     }
@@ -1095,7 +1309,8 @@ if (!$lDebug) {
 ?>
 </body>
 </html>
-<?
+
+<?php
 //monta uma lista com os nomes dos contribuintes indicados por matrículas, inscrições ou cgm
 function getContribuintes($sTipo, $sIdsContribuintes) {
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -96,7 +96,7 @@ function js_emite(){
 
       <tr>
          <td align="center" colspan="3">
-         <?
+         <?php
            db_selinstit('',300,100);
          ?>
          </td>
@@ -111,18 +111,18 @@ function js_emite(){
       </tr>
       <tr>
         <td align="left" ><strong>Data Inicial :</strong></td>
-        <td><? db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4)?></td>
+        <td><?php db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4)?></td>
       </tr>
       
       <tr>
         <td align="rigth" ><strong>Data Final :</strong></td>
-        <td><?
+        <td><?php
                $datausu = date("Y/m/d",db_getsession("DB_datausu"));
                $dataf_ano = substr($datausu,0,4);
                $dataf_mes = substr($datausu,5,2);
                $dataf_dia = substr($datausu,8,2);
             ?>
-           <? db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4)?>
+           <?php db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4)?>
         </td>
       </tr>
       <tr>         
@@ -131,7 +131,7 @@ function js_emite(){
       
       <tr align="rigth">
         <td><strong>Status:</strong></td>
-        <td><?
+        <td><?php
               $xx = array("t"=>"Todos","p"=>"Processados","n"=>"Não processados");
               db_select('status',$xx,true,4,"");
             ?>
@@ -140,7 +140,7 @@ function js_emite(){
 
       <tr align="rigth">
         <td><strong>Demonstrar registros sem movimento:</strong></td>
-        <td><?
+        <td><?php
               $yy = array("n"=>"Nao","s"=>"Sim");
               db_select('registrossemmov',$yy,true,4,"");
             ?>
@@ -158,7 +158,7 @@ function js_emite(){
       </tr>
   </form>
   </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -188,7 +188,7 @@ function js_mostratabrec1(chave1,chave2){
 }
 </script>
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

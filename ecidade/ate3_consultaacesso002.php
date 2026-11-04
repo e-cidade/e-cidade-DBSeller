@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ function js_processamodulo(item){
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 if($tipototal==1){
 
@@ -103,7 +103,7 @@ if($tipototal==1){
   <table border="1" width="100%" height="100%" cellspacing="0" cellpadding="0">	  
   <tr> 
   <td colspan='5'> 
-  <?
+  <?php
   
   if($codcli==0){
     $sql = "select at99_itensacesso,nome_modulo,count(*) as at99_acessos
@@ -142,7 +142,7 @@ for($i=0;$i<pg_numrows($result_cli);$i++){
   </tr>
   <tr> 
   <td> 
-<?
+<?php
 
 $SQL = "select i.id_item as pai,m.id_item,m.id_item_filho,m.modulo,i.descricao,i.help,i.funcao 
   from db_itensmenu i 

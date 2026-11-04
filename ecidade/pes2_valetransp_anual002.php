@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -58,21 +58,21 @@ if($r11_vtprop == "t"){
 $xwhere = '';
 $vales_selecionados = "";
 if(trim($selecionados) != ''){
-  $arr_vales = split(",",$selecionados);
-  $sVirgula = ''; 
+  $arr_vales =explode(",",$selecionados);
+  $sVirgula = '';
   for($i=0; $i<count($arr_vales); $i++){
     $vales_selecionados .= $sVirgula."'".$arr_vales[$i]."' ";
      $sVirgula = ',';
-  }  
+  }
 
   $xwhere = " and r17_codigo in (".$vales_selecionados.") ";
 }
 
 
 
-$sql = " select rh02_regist, 
-                z01_nome, 
-                rh02_anousu, 
+$sql = " select rh02_regist,
+                z01_nome,
+                rh02_anousu,
                 r17_codigo,
                 r16_descr,
                 max(jan) as jan,
@@ -106,27 +106,27 @@ $sql = " select rh02_regist,
 				 case when rh02_mesusu = 10 then $q_vale else 0 end as out,
 				 case when rh02_mesusu = 11 then $q_vale else 0 end as nov,
 				 case when rh02_mesusu = 12 then $q_vale else 0 end as dez
-	from vtffunc 
-		inner join rhpessoalmov 
+	from vtffunc
+		inner join rhpessoalmov
 	     		  on rh02_regist = r17_regist
 		       and rh02_anousu = r17_anousu
 		       and rh02_mesusu = r17_mesusu
 					 and rh02_instit = ".db_getsession("DB_instit")."
-		inner join rhpessoal on rh01_regist = rh02_regist 
-    inner join rhlota 
+		inner join rhpessoal on rh01_regist = rh02_regist
+    inner join rhlota
 		        on r70_codigo = rh02_lota
-					 and r70_instit = rh02_instit	
-		inner join cgm 
-			      on rh01_numcgm = z01_numcgm 
-		inner join vtfempr 
-			      on r16_codigo = r17_codigo 
-		       and r16_anousu = r17_anousu 
-		       and r16_mesusu = r17_mesusu 
+					 and r70_instit = rh02_instit
+		inner join cgm
+			      on rh01_numcgm = z01_numcgm
+		inner join vtfempr
+			      on r16_codigo = r17_codigo
+		       and r16_anousu = r17_anousu
+		       and r16_mesusu = r17_mesusu
 					 and r16_instit = rh02_instit
 	where 	r17_anousu between {$anoi} and {$anof}
 	    $xwhere ) as x
   group by rh02_regist, z01_nome, rh02_anousu, r17_codigo, r16_descr
-  having (max(jan)+max(fev)+max(mar)+max(abr)+max(mai)+max(jun)+max(jul)+max(ago)+max(set)+max(out)+max(nov)+max(dez)) > 0     
+  having (max(jan)+max(fev)+max(mar)+max(abr)+max(mai)+max(jun)+max(jul)+max(ago)+max(set)+max(out)+max(nov)+max(dez)) > 0
   order by z01_nome, r17_codigo, rh02_anousu ";
 
 $result = db_query($sql);
@@ -136,9 +136,9 @@ if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mesfolha.' / '.$anofolha);
 }
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -167,7 +167,7 @@ $pre       = 1;
 for($x = 0; $x < pg_numrows($result);$x++){
    db_fieldsmemory($result,$x);
    $total_ = $jan+$fev+$mar+$abr+$mai+$jun+$jul+$ago+$set+$out+$nov+$dez;
-   $t_jan  += $jan;     
+   $t_jan  += $jan;
    $t_fev  += $fev;
    $t_mar  += $mar;
    $t_abr  += $abr;
@@ -204,8 +204,8 @@ for($x = 0; $x < pg_numrows($result);$x++){
         $pdf->cell(15,4,'TOTAL'    ,1,1,"C",1);
         $pre = 1;
      }
-     
-     
+
+
      $pdf->setfont('arial','b',7);
      if($matricula == $rh02_regist){
        $pdf->cell(13,$alt,'' ,0,0,"C",$pre);
@@ -239,33 +239,33 @@ for($x = 0; $x < pg_numrows($result);$x++){
      }
      $matricula = $rh02_regist;
    }
-   if(array_key_exists($r17_codigo.'-'.$r16_descr, $arr_t)){ 
-      $arr_t[$r17_codigo.'-'.$r16_descr] [1] += $jan+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [2] += $fev+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [3] += $mar+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [4] += $abr+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [5] += $mai+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [6] += $jun+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [7] += $jul+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [8] += $ago+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [9] += $set+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [10]+= $out+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [11]+= $nov+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [12]+= $dez+0;         
-   }else{ 
-      $arr_t[$r17_codigo.'-'.$r16_descr] [1]  = $jan+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [2]  = $fev+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [3]  = $mar+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [4]  = $abr+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [5]  = $mai+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [6]  = $jun+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [7]  = $jul+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [8]  = $ago+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [9]  = $set+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [10] = $out+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [11] = $nov+0;         
-      $arr_t[$r17_codigo.'-'.$r16_descr] [12] = $dez+0;         
-   } 
+   if(array_key_exists($r17_codigo.'-'.$r16_descr, $arr_t)){
+      $arr_t[$r17_codigo.'-'.$r16_descr] [1] += $jan+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [2] += $fev+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [3] += $mar+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [4] += $abr+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [5] += $mai+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [6] += $jun+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [7] += $jul+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [8] += $ago+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [9] += $set+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [10]+= $out+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [11]+= $nov+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [12]+= $dez+0;
+   }else{
+      $arr_t[$r17_codigo.'-'.$r16_descr] [1]  = $jan+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [2]  = $fev+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [3]  = $mar+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [4]  = $abr+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [5]  = $mai+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [6]  = $jun+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [7]  = $jul+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [8]  = $ago+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [9]  = $set+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [10] = $out+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [11] = $nov+0;
+      $arr_t[$r17_codigo.'-'.$r16_descr] [12] = $dez+0;
+   }
    $troca = 0;
 
 }
@@ -356,7 +356,7 @@ foreach ($aTotais as $sDescricaoVale => $aValoresMensais) {
    foreach ($aValoresMensais as $nValor) {
      $pdf->cell(12,4,$nValor.'',0,0,"R",$pre);
      $total_nValor += $nValor;
-   } 
+   }
    $pdf->cell(15,4,$total_nValor+0,0,0,"R",$pre);
    $pdf->ln();
 //  $pdf->cell(73,4,'',0,0,"L",0);
@@ -365,5 +365,5 @@ foreach ($aTotais as $sDescricaoVale => $aValoresMensais) {
 
 
 $pdf->Output();
-   
+
 ?>

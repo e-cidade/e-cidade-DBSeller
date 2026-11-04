@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ db_app::load("estilos.css, grid.style.css, scripts.js, strings.js, prototype.js,
             <strong>Data para Processamento: </strong>
           </td>
           <td align="left">
-            <?
+            <?php
               db_inputdata("dtProc", null, null, null, true, 'text', 1, '',null, '', null, '',"", "js_pesquisaArquivos()");
             ?>
           </td>
@@ -79,7 +79,7 @@ db_app::load("estilos.css, grid.style.css, scripts.js, strings.js, prototype.js,
             <input type="button" id="processar" style="margin-top: 10px;"  value="Processar" onclick="js_processar();" />
   </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

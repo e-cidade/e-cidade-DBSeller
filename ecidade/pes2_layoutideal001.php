@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -110,12 +110,12 @@ function js_detectaarquivo(arquivo,pdf){
               <strong>Ano / Mês:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $xano = db_anofolha() ;
               db_input('xano',4,'',true,'text',2,'')
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
               $xmes = db_mesfolha();
               db_input('xmes',2,'',true,'text',2,'')
               ?>
@@ -127,7 +127,7 @@ function js_detectaarquivo(arquivo,pdf){
             <b>Tipo de folha:</b>
           </td>
           <td>
-            <?
+            <?php
             $arr_tipofolha = Array("S"=>"Salário",
                                    "D"=>"13o Salário");
             db_select("sal_dec", $arr_tipofolha, true, 1);
@@ -139,7 +139,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Tabela de Previdência:&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php
 ///         echo ($clinssirf->sql_query_file(null,db_getsession('DB_instit'),"distinct (r33_codtab - 2) as r33_codtab,r33_nome","r33_codtab"," r33_anousu = ".$xano." and r33_mesusu = ".$xmes." and r33_codtab > 2"));
             $res = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession('DB_instit'),"distinct (r33_codtab - 2) as r33_codtab,r33_nome","r33_codtab"," r33_anousu = ".$xano." and r33_mesusu = ".$xmes." and r33_codtab > 2"));
             db_selectrecord('prev', $res, true, 4);
@@ -151,7 +151,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Vínculo:</strong>
           </td>
           <td>
-            <?
+            <?php
             $arr_vinculo = Array("t"=>"Todos",
                                  "a"=>"Ativos",
                                  "i"=>"Inativos",
@@ -176,7 +176,7 @@ function js_detectaarquivo(arquivo,pdf){
                     <td align="right"><strong>Salário Família:</strong>
                     </td>
                     <td align="left">
-                    <?
+                    <?php
                       $arr_sf = array("s"=>"SIM", "n"=>"Não");
                       db_select('sf',$arr_sf,true,4);
                     ?>
@@ -186,7 +186,7 @@ function js_detectaarquivo(arquivo,pdf){
                     <td align="right"><strong>Licença Gestante:</strong>
                     </td>
                     <td align="left">
-                    <?
+                    <?php
                       $arr_lg = array("s"=>"SIM", "n"=>"Não");
                       db_select('lg',$arr_lg,true,4);
                     ?>
@@ -196,7 +196,7 @@ function js_detectaarquivo(arquivo,pdf){
                     <td align="right"><strong>Licença Saúde:</strong>
                     </td>
                     <td align="left">
-                    <?
+                    <?php
                       $arr_ls = array("s"=>"SIM", "n"=>"Não");
                       db_select('ls',$arr_ls,true,4);
                     ?>
@@ -216,7 +216,7 @@ function js_detectaarquivo(arquivo,pdf){
       </table>
     </form>
    </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

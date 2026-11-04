@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: material
 //CLASSE DA ENTIDADE planilhadistribuicao
 class cl_planilhadistribuicao { 
@@ -24,13 +24,13 @@ class cl_planilhadistribuicao {
                  pd01_descricao = varchar(200) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_planilhadistribuicao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("planilhadistribuicao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_planilhadistribuicao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pd01_sequencial = ($this->pd01_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pd01_sequencial"]:$this->pd01_sequencial);
        $this->pd01_descricao = ($this->pd01_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["pd01_descricao"]:$this->pd01_descricao);
@@ -48,7 +48,7 @@ class cl_planilhadistribuicao {
      }
    }
    // funcao para Inclusão
-   function incluir ($pd01_sequencial){ 
+   public function incluir ($pd01_sequencial){ 
       $this->atualizacampos();
      if($this->pd01_descricao == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

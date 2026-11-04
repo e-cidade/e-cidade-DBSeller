@@ -38,6 +38,7 @@ use DBDepartamento;
 use ECidade\Configuracao\RelatorioLegal\Servico\ParseConfiguracaoXml;
 use ECidade\Financeiro\Contabilidade\Relatorio\DemonstrativoFiscal;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Periodo;
 use stdClass;
@@ -57,7 +58,7 @@ abstract class AnexosService
     const TIPO_PREFEITURA = 1;
 
     /**
-     * @var DBConfig[]
+     * @var DBConfig[]|Collection
      */
     protected $instituicoes;
     /**
@@ -212,6 +213,7 @@ abstract class AnexosService
         'total_pagamentos_rp' => 'total_pagamentos_rp',
         'saldo_a_liquidar' => 'saldo_a_liquidar',
         'saldo_liquidados' => 'saldo_liquidados',
+        'total_rp_a_pagar' => 'total_rp_a_pagar',
     ];
 
     /**
@@ -309,7 +311,7 @@ abstract class AnexosService
 
         return collect(DB::select($sql))->map(function ($coluna) {
             $coluna->valor = $coluna->tipo == 1 ? 0 : '';
-            $coluna->valoManual = $this->getValorManual($coluna);
+            $coluna->valorManual = $this->getValorManual($coluna);
             return $coluna;
         })->toArray();
     }
@@ -324,6 +326,7 @@ abstract class AnexosService
             $valor = DB::table('configuracoes.orcparamseqorcparamseqcolunavalor')
                 ->selectRaw('coalesce(sum(o117_valor::float), 0) as valor')
                 ->where('o117_orcparamseqorcparamseqcoluna', '=', $coluna->codigo_coluna)
+                ->where('o117_anousu', '=', $this->exercicio)
                 ->where('o117_periodo', '=', $this->periodo->getCodigo())
                 ->whereIn('o117_instit', $this->listaInstituicoes)
                 ->first();
@@ -336,7 +339,7 @@ abstract class AnexosService
 
     /**
      * Busca os valores manuais da linha informada
-     * @param $ordemLinha
+     * @param integer $ordemLinha
      * @return stdClass
      */
     public function getValoresManualLinha($ordemLinha)
@@ -452,9 +455,9 @@ abstract class AnexosService
 
     /**
      * Busca os dados do Balancete de Receita
-     * @param $exercicio
-     * @param $dataInicio data no formato banco
-     * @param $dataFim data no formato banco
+     * @param integer $exercicio
+     * @param string $dataInicio data no formato banco
+     * @param string $dataFim data no formato banco
      * @return array
      */
     protected function executarBalanceteReceita($exercicio, $dataInicio, $dataFim)
@@ -478,7 +481,7 @@ abstract class AnexosService
     }
 
     /**
-     * retorna o sql para busar os dados da receita
+     * Retorna o sql para busar os dados da receita
      * @param array $where com filtros da receita
      * @param string $dataInicio
      * @param string $dataFim
@@ -502,9 +505,9 @@ abstract class AnexosService
 
     /**
      * Busca os dados do Balancete de Despesa
-     * @param $exercicio
-     * @param $dataInicio data no formato banco
-     * @param $dataFim data no formato banco
+     * @param integer $exercicio
+     * @param string $dataInicio data no formato banco
+     * @param string $dataFim data no formato banco
      * @return array
      */
     protected function executarBalanceteDespesa($exercicio, $dataInicio, $dataFim)
@@ -521,9 +524,9 @@ abstract class AnexosService
 
     /**
      * Busca os dados do Balancete de Verificação
-     * @param $exercicio
-     * @param $dataInicio data no formato banco
-     * @param $dataFim data no formato banco
+     * @param integer $exercicio
+     * @param string $dataInicio data no formato banco
+     * @param string $dataFim data no formato banco
      * @return array
      */
     protected function executarBalanceteVerificacao($exercicio, $dataInicio, $dataFim)
@@ -599,9 +602,9 @@ abstract class AnexosService
 
     /**
      * Busca os dados de restos a pagar
-     * @param $exercicio
-     * @param $dataInicio data no formato banco
-     * @param $dataFim data no formato banco
+     * @param integer $exercicio
+     * @param string $dataInicio data no formato banco
+     * @param string $dataFim data no formato banco
      *
      * Legenda das colunas
      *  - saldo_liquidados: é o saldo a pagar liquidado dos RP inscritos como processados e saçdo a pagar dos
@@ -610,19 +613,29 @@ abstract class AnexosService
      *
      * @return array
      */
-    protected function executarRestosPagar($exercicio, $dataInicio, $dataFim)
+    protected function executarRestosPagar($exercicio, $dataInicio, $dataFim, $consideraApenasExercicioAnterior = false)
     {
-        $where = "e60_instit in ({$this->listaInstituicoes->implode(',')})";
         $dao = new cl_empresto();
+
+        $where = "e60_instit in ({$this->listaInstituicoes->implode(',')})";
+        if ($consideraApenasExercicioAnterior) {
+            $where .= " and e60_anousu = ".($exercicio-1)." ";
+        }
         $sqlRp = $dao->sqlRpRecursoLancamento($exercicio, $where, $dataInicio, $dataFim);
 
         $sql = "
         select *,
                (inscricao_rp_nao_processado - anulacao_rp_nao_processado - liquidacoes_rp)::numeric(15,2)
                    as saldo_a_liquidar,
+
                ((inscricao_rp_processado - anulacao_rp_processado - pagamento_rp_processado) +
                 (liquidacoes_rp - pagamento_rp_nao_processado)
                )::numeric(15,2) as saldo_liquidados,
+
+               ((inscricao_rp_nao_processado - anulacao_rp_nao_processado - liquidacoes_rp) +
+                (inscricao_total_rp - total_anulacoes - total_pagamentos_rp)
+               )::numeric(15,2) as total_rp_a_pagar,
+
               (inscricao_rp_processado  - anulacao_rp_processado - pagamento_rp_processado)
                   ::numeric(15,2) as saldo_rp_processado
           from (
@@ -676,12 +689,23 @@ abstract class AnexosService
      */
     public function getDadosReceita()
     {
-        if (empty($this->balanceteReceita)) {
-            $dataInicio = $this->dataIncio->getDate();
-            $dataFim = $this->dataFim->getDate();
-            $this->balanceteReceita = $this->executarBalanceteReceita($this->exercicio, $dataInicio, $dataFim);
+        return $this->getDadosReceitaPorExercicio($this->exercicio);
+    }
+
+    /**
+     * @param integer $exercicio
+     * @return array
+     */
+    public function getDadosReceitaPorExercicio($exercicio)
+    {
+        if (!array_key_exists($exercicio, $this->balanceteReceita)) {
+            $this->balanceteReceita[$exercicio] = $this->executarBalanceteReceita(
+                $exercicio,
+                $this->periodo->getDataInicial($exercicio)->getDate(),
+                $this->periodo->getDataFinal($exercicio)->getDate()
+            );
         }
-        return $this->balanceteReceita;
+        return $this->balanceteReceita[$exercicio];
     }
 
     /**
@@ -690,17 +714,7 @@ abstract class AnexosService
     protected function getBalanceteReceitaExercicioAnterior()
     {
         $exercicioAnterior = $this->exercicio - 1;
-
-        $dataInicialAnoAnterior = $this->periodo->getDataInicial($exercicioAnterior)->getDate();
-        $dataFinalAnoAnterior = $this->periodo->getDataFinal($exercicioAnterior)->getDate();
-
-        $balanceteUmAnoAntes = $this->executarBalanceteReceita(
-            $exercicioAnterior,
-            $dataInicialAnoAnterior,
-            $dataFinalAnoAnterior
-        );
-
-        return $balanceteUmAnoAntes;
+        return $this->getDadosReceitaPorExercicio($exercicioAnterior);
     }
 
     /**
@@ -708,12 +722,27 @@ abstract class AnexosService
      */
     public function getDadosDespesa()
     {
-        if (empty($this->balanceteDespesa)) {
-            $dataInicio = $this->dataIncio->getDate();
-            $dataFim = $this->dataFim->getDate();
-            $this->balanceteDespesa = $this->executarBalanceteDespesa($this->exercicio, $dataInicio, $dataFim);
+        if (!array_key_exists($this->exercicio, $this->balanceteDespesa)) {
+            $this->balanceteDespesa[$this->exercicio] = $this->getDadosDespesaPorExercicio($this->exercicio);
         }
-        return $this->balanceteDespesa;
+        return $this->balanceteDespesa[$this->exercicio];
+    }
+
+    /**
+     * @param $exercicio
+     * @return array
+     */
+    public function getDadosDespesaPorExercicio($exercicio)
+    {
+        if (!array_key_exists($exercicio, $this->balanceteDespesa)) {
+            $this->balanceteDespesa[$exercicio] = $this->executarBalanceteDespesa(
+                $exercicio,
+                $this->periodo->getDataInicial($exercicio)->getDate(),
+                $this->periodo->getDataFinal($exercicio)->getDate()
+            );
+        }
+
+        return $this->balanceteDespesa[$exercicio];
     }
 
     /**
@@ -723,15 +752,7 @@ abstract class AnexosService
     {
         $exercicioAnterior = $this->exercicio - 1;
 
-        $dataInicialAnoAnterior = $this->periodo->getDataInicial($exercicioAnterior)->getDate();
-        $dataFinalAnoAnterior = $this->periodo->getDataFinal($exercicioAnterior)->getDate();
-        $balanceteUmAnoAntes = $this->executarBalanceteDespesa(
-            $exercicioAnterior,
-            $dataInicialAnoAnterior,
-            $dataFinalAnoAnterior
-        );
-
-        return $balanceteUmAnoAntes;
+        return $this->getDadosDespesaPorExercicio($exercicioAnterior);
     }
 
     /**
@@ -739,12 +760,28 @@ abstract class AnexosService
      */
     public function getDadosVerificacao()
     {
-        if (empty($this->balanceteVerificacao)) {
-            $dataInicio = $this->dataIncio->getDate();
-            $dataFim = $this->dataFim->getDate();
-            $this->balanceteVerificacao = $this->executarBalanceteVerificacao($this->exercicio, $dataInicio, $dataFim);
+        return $this->getDadosVerificacaoPorExercicio($this->exercicio);
+    }
+
+    /**
+     * @param $exercicio
+     * @return array
+     */
+    public function getDadosVerificacaoPorExercicio($exercicio)
+    {
+        if (!array_key_exists($exercicio, $this->balanceteVerificacao)) {
+            $this->balanceteVerificacao[$exercicio] = $this->executarBalanceteVerificacao(
+                $exercicio,
+                $this->periodo->getDataInicial($exercicio)->getDate(),
+                $this->periodo->getDataFinal($exercicio)->getDate()
+            );
+
+            foreach ($this->balanceteVerificacao[$exercicio] as $conta) {
+                $this->ajustaSaldosBalanceteVerificacao($conta);
+            }
         }
-        return $this->balanceteVerificacao;
+
+        return $this->balanceteVerificacao[$exercicio];
     }
 
     /**
@@ -752,14 +789,30 @@ abstract class AnexosService
      */
     public function getDadosRestosPagar()
     {
-        if (empty($this->restosPagar)) {
-            $dataInicio = "{$this->exercicio}-01-01";
-            $dataFim = $this->dataFim->getDate();
-            $this->restosPagar = $this->executarRestosPagar($this->exercicio, $dataInicio, $dataFim);
-        }
-        return $this->restosPagar;
+        return $this->getDadosRestosPagarPorExercicio($this->exercicio);
     }
 
+    /**
+     * @param $exercicio
+     * @return array
+     */
+    public function getDadosRestosPagarPorExercicio($exercicio)
+    {
+        if (!array_key_exists($exercicio, $this->restosPagar)) {
+            $dataInicio = "{$exercicio}-01-01";
+            $this->restosPagar[$exercicio] = $this->executarRestosPagar(
+                $exercicio,
+                $dataInicio,
+                $this->periodo->getDataFinal($exercicio)->getDate()
+            );
+        }
+        return $this->restosPagar[$exercicio];
+    }
+
+    /**
+     * @param array $linhas
+     * @return void
+     */
     protected function processaLinhas(&$linhas)
     {
         foreach ($linhas as $linha) {
@@ -784,6 +837,40 @@ abstract class AnexosService
         $this->processaValoresManuais($linhas);
     }
 
+    /**
+     * @param array $linhas
+     * @param integer $exercicio
+     * @return void
+     */
+    protected function processaLinhasPorExercicio(&$linhas, $exercicio)
+    {
+        foreach ($linhas as $linha) {
+            if (in_array($linha->ordem, $this->linhasNaoProcessar)) {
+                continue;
+            }
+
+            if ((int)$linha->origem === self::ORIGEM_RECEITA) {
+                $this->processaReceita($this->getDadosReceitaPorExercicio($exercicio), $linha);
+            }
+            if ((int)$linha->origem === self::ORIGEM_DESPESA) {
+                $this->processaDespesa($this->getDadosDespesaPorExercicio($exercicio), $linha);
+            }
+            if ((int)$linha->origem === self::ORIGEM_VERIFICACAO) {
+                $this->processaBalanceteVerificacao($this->getDadosVerificacaoPorExercicio($exercicio), $linha);
+            }
+            if ((int)$linha->origem === self::ORIGEM_RP) {
+                $this->processaRestoPagar($this->getDadosRestosPagarPorExercicio($exercicio), $linha);
+            }
+        }
+
+        $this->processaValoresManuais($linhas);
+    }
+
+    /**
+     * @param array $receitas
+     * @param stdClass $linha
+     * @return void
+     */
     protected function processaReceita(array $receitas, stdClass $linha)
     {
         foreach ($receitas as $receita) {
@@ -801,6 +888,11 @@ abstract class AnexosService
         }
     }
 
+    /**
+     * @param array $despesas
+     * @param stdClass $linha
+     * @return void
+     */
     protected function processaDespesa(array $despesas, stdClass $linha)
     {
         foreach ($despesas as $despesa) {
@@ -818,14 +910,17 @@ abstract class AnexosService
         }
     }
 
+    /**
+     * @param $contas
+     * @param stdClass $linha
+     * @return void
+     */
     protected function processaBalanceteVerificacao($contas, stdClass $linha)
     {
         foreach ($contas as $conta) {
             if (!$this->matchBalanceteVerificacao($conta, $linha)) {
                 continue;
             }
-
-            $this->ajustaSaldosBalanceteVerificacao($conta);
 
             foreach ($linha->colunas as $coluna) {
                 $colunaDespena = array_search($coluna->coluna, $this->colunasVerificacao);
@@ -1049,11 +1144,15 @@ abstract class AnexosService
         return true;
     }
 
+    /**
+     * @param array $linhas
+     * @return void
+     */
     protected function processaValoresManuais(&$linhas)
     {
         foreach ($linhas as $linha) {
             foreach ($linha->colunas as $coluna) {
-                $coluna->valor += $coluna->valoManual;
+                $coluna->valor += $coluna->valorManual;
             }
         }
     }
@@ -1110,7 +1209,8 @@ abstract class AnexosService
         $sDepartamento = $oDepartamento->getNomeDepartamento();
         $dtEmissao = date("d/m/Y", db_getsession("DB_datausu"));
         $hEmissao = date("H:i:s");
-        $aParseVariaveis = array('[nome_departamento]' => $sDepartamento,
+        $aParseVariaveis = array(
+            '[nome_departamento]' => $sDepartamento,
             '[data_emissao]' => $dtEmissao,
             '[hora_emissao]' => $hEmissao
         );
@@ -1248,5 +1348,14 @@ abstract class AnexosService
                 $linhaTotalizar->{$dadoColuna->coluna} -= $this->linhas[$ordemSubtrai]->{$dadoColuna->coluna};
             }
         }
+    }
+
+    /*
+     * Retorna o periodo setado para emissao do relatorio
+     *
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
     }
 }

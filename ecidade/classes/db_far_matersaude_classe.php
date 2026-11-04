@@ -28,37 +28,37 @@
 //CLASSE DA ENTIDADE far_matersaude
 class cl_far_matersaude {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $fa01_i_codigo = 0;
-   var $fa01_t_obs = null;
-   var $fa01_i_codmater = 0;
-   var $fa01_i_class = 0;
-   var $fa01_c_nomegenerico = null;
-   var $fa01_i_medanvisa = 0;
-   var $fa01_i_prescricaomed = 0;
-   var $fa01_i_classemed = 0;
-   var $fa01_i_listacontroladomed = 0;
-   var $fa01_i_medrefemed = 0;
-   var $fa01_i_laboratoriomed = 0;
-   var $fa01_i_formafarmaceuticamed = 0;
-   var $fa01_i_concentracaomed = 0;
-   var $fa01_i_medhiperdia = 0;
-   var $fa01_codigobarras = null;
-   var $fa01_medicamentos = null;
+   public $fa01_i_codigo = 0;
+   public $fa01_t_obs = null;
+   public $fa01_i_codmater = 0;
+   public $fa01_i_class = 0;
+   public $fa01_c_nomegenerico = null;
+   public $fa01_i_medanvisa = 0;
+   public $fa01_i_prescricaomed = 0;
+   public $fa01_i_classemed = 0;
+   public $fa01_i_listacontroladomed = 0;
+   public $fa01_i_medrefemed = 0;
+   public $fa01_i_laboratoriomed = 0;
+   public $fa01_i_formafarmaceuticamed = 0;
+   public $fa01_i_concentracaomed = 0;
+   public $fa01_i_medhiperdia = 0;
+   public $fa01_codigobarras = null;
+   public $fa01_medicamentos = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  fa01_i_codigo = int4 = Código
                  fa01_t_obs = text = Observação
                  fa01_i_codmater = int8 = Medicamento
@@ -77,13 +77,13 @@ class cl_far_matersaude {
                  fa01_medicamentos = int4 = medicamentos
                  ";
    //funcao construtor da classe
-   function cl_far_matersaude() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_matersaude");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -92,7 +92,7 @@ class cl_far_matersaude {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->fa01_i_codigo = ($this->fa01_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["fa01_i_codigo"]:$this->fa01_i_codigo);
        $this->fa01_t_obs = ($this->fa01_t_obs == ""?@$GLOBALS["HTTP_POST_VARS"]["fa01_t_obs"]:$this->fa01_t_obs);
@@ -115,7 +115,7 @@ class cl_far_matersaude {
      }
    }
    // funcao para Inclusão
-   function incluir ($fa01_i_codigo){
+   public function incluir ($fa01_i_codigo){
       $this->atualizacampos();
      if($this->fa01_i_codmater == null ){
        $this->erro_sql = " Campo Medicamento não informado.";
@@ -685,11 +685,11 @@ class cl_far_matersaude {
      return $sql;
   }
 
-  function sql_query_atendrequiitem ( $m43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_atendrequiitem ( $m43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -719,7 +719,7 @@ class cl_far_matersaude {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -728,11 +728,11 @@ class cl_far_matersaude {
      }
      return $sql;
   }
-  function sql_query_matmater ( $m60_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_matmater ( $m60_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -749,7 +749,7 @@ class cl_far_matersaude {
      $sql .= "   inner join matestoqueitemlote      on m77_matestoqueitem = m71_codlanc ";
      $sql2 = "";
      if($dbwhere==""){
-       if($m43_codigo!=null ){
+       if($m60_codmater!=null ){
          $sql2 .= " where matmater.m60_codmater = $m60_codmater ";
        }
      }else if($dbwhere != ""){
@@ -758,7 +758,7 @@ class cl_far_matersaude {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -771,13 +771,13 @@ class cl_far_matersaude {
    *@autor Matheus Marinho, webseller.matheus.marinho@gmail.com
    *@data 20/03/2012
    */
-  function sql_query_medicamento ( $fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
+  public function sql_query_medicamento ( $fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
 
      $sSql = "select distinct ";
 
     if ($sCampos != "*" ) {
 
-      $sCampos_sql = split("#",$sCampos);
+      $sCampos_sql = explode("#",$sCampos);
       $sVirgula    = "";
 
       for( $i = 0; $i < sizeof($sCampos_sql); $i++ ) {
@@ -815,7 +815,7 @@ class cl_far_matersaude {
     if( $sOrdem != null ) {
 
       $sSql        .= " order by ";
-      $sCampos_sql  = split( "#", $sOrdem );
+      $sCampos_sql  = explode( "#", $sOrdem );
       $sVirgula     = "";
 
       for( $i = 0; $i < sizeof($sCampos_sql); $i++ ) {
@@ -831,12 +831,12 @@ class cl_far_matersaude {
    * @autor Adriano Quilião de Oliveira, adriano.oliveira@dbseller.com.br
    * @data 18/06/2012
    */
-  function sql_query_estoque($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
+  public function sql_query_estoque($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
 
      $sSql = "select ";
      if ($sCampos != "*") {
 
-       $sCampos_sql = split("#",$sCampos);
+       $sCampos_sql = explode("#",$sCampos);
        $sVirgula    = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++) {
 
@@ -867,7 +867,7 @@ class cl_far_matersaude {
      if ($sOrdem != null) {
 
        $sSql        .= " order by ";
-       $sCampos_sql  = split("#",$sOrdem);
+       $sCampos_sql  = explode("#",$sOrdem);
        $sVirgula     = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++){
 
@@ -888,12 +888,12 @@ class cl_far_matersaude {
    * @autor Adriano Quilião de Oliveira, adriano.oliveira@dbseller.com.br
    * @data 22/06/2012
    */
-  function sql_query_movimentacaoEstoqueSimples ($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
+  public function sql_query_movimentacaoEstoqueSimples ($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
 
      $sSql = "select ";
      if ($sCampos != "*") {
 
-       $sCampos_sql = split("#",$sCampos);
+       $sCampos_sql = explode("#",$sCampos);
        $sVirgula    = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++) {
 
@@ -925,7 +925,7 @@ class cl_far_matersaude {
      if ($sOrdem != null) {
 
        $sSql        .= " order by ";
-       $sCampos_sql  = split("#",$sOrdem);
+       $sCampos_sql  = explode("#",$sOrdem);
        $sVirgula     = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++){
 
@@ -946,12 +946,12 @@ class cl_far_matersaude {
    * @autor Adriano Quilião de Oliveira, adriano.oliveira@dbseller.com.br
    * @data 26/06/2012
    */
-  function sql_query_movimentacaoEstoqueCompleta ($fa01_i_codigo = null, $sCampos="*", $sOrdem = null, $dbwhere = "") {
+  public function sql_query_movimentacaoEstoqueCompleta ($fa01_i_codigo = null, $sCampos="*", $sOrdem = null, $dbwhere = "") {
 
      $sSql = "select ";
      if ($sCampos != "*") {
 
-       $sCampos_sql = split("#",$sCampos);
+       $sCampos_sql = explode("#",$sCampos);
        $sVirgula    = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++) {
 
@@ -1016,7 +1016,7 @@ class cl_far_matersaude {
      if ($sOrdem != null) {
 
        $sSql        .= " order by ";
-       $sCampos_sql  = split("#",$sOrdem);
+       $sCampos_sql  = explode("#",$sOrdem);
        $sVirgula     = "";
        for ($i = 0; $i < sizeof($sCampos_sql); $i++){
 
@@ -1052,125 +1052,12 @@ class cl_far_matersaude {
 
   }
 
-
-  public function entradaMedicamentoFarmaciaBasica($sWhere = null) {
-
-    $sSql  = ' select m82_codigo,                                ';
-    $sSql .= '        fa58_catmat              as nuproduto,     ';
-    $sSql .= '        \'B\'                    as tpproduto,     ';
-    $sSql .= '        m80_data                 as dtrecebimento, ';
-    $sSql .= '        m82_quant                as qtadquirida,   ';
-    $sSql .= '        m77_dtvalidade           as dtvalidade,    ';
-    $sSql .= '        m77_lote                 as nulote,        ';
-    $sSql .= '        round(m89_precomedio, 4) as vlitem         ';
-    $sSql .= '   from matestoqueini ';
-    $sSql .= '        inner join matestoqueinimei    on matestoqueinimei.m82_matestoqueini      = matestoqueini.m80_codigo ';
-    $sSql .= '        inner join matestoqueitem      on matestoqueitem.m71_codlanc              = matestoqueinimei.m82_matestoqueitem ';
-    $sSql .= '        inner join matestoque          on matestoque.m70_codigo                   = matestoqueitem.m71_codmatestoque ';
-    $sSql .= '        inner join matmater            on matmater.m60_codmater                   = matestoque.m70_codmatmater ';
-    $sSql .= '        inner join far_matersaude      on far_matersaude.fa01_i_codmater          = matmater.m60_codmater ';
-    $sSql .= '        inner join medicamentos        on medicamentos.fa58_codigo                = far_matersaude.fa01_medicamentos ';
-    $sSql .= '        inner join matestoquetipo      on matestoquetipo.m81_codtipo              = matestoqueini.m80_codtipo ';
-    $sSql .= '         left join matestoqueitemlote  on matestoqueitemlote.m77_matestoqueitem   = matestoqueitem.m71_codlanc ';
-    $sSql .= '        inner join matestoqueinimeipm  on matestoqueinimeipm.m89_matestoqueinimei = matestoqueinimei.m82_codigo ';
-
-    if ( !empty($sWhere) ) {
-      $sSql .= " where {$sWhere} ";
-    }
-
-    $sSql .= " order by m80_data ";
-
-    return $sSql;
-  }
-
-  public function saidaMedicamentoFarmaciaBasica($sWhere = null) {
-
-    $sSql  = ' select m82_codigo,                             ';
-    $sSql .= '        fa58_catmat              as nuproduto,  ';
-    $sSql .= '        \'B\'                    as tpproduto,  ';
-    $sSql .= '        m80_data                 as dtsaida,    ';
-    $sSql .= '        m82_quant                as qtsaida,    ';
-    $sSql .= '        m77_dtvalidade           as dtvalidade, ';
-    $sSql .= '        m77_lote                 as nulote,     ';
-    $sSql .= '        round(m89_precomedio, 4) as vlitem      ';
-    $sSql .= '   from matestoqueini ';
-    $sSql .= '        inner join matestoqueinimei    on matestoqueinimei.m82_matestoqueini          = matestoqueini.m80_codigo ';
-    $sSql .= '        inner join matestoqueitem      on matestoqueitem.m71_codlanc                  = matestoqueinimei.m82_matestoqueitem ';
-    $sSql .= '        inner join matestoque          on matestoque.m70_codigo                       = matestoqueitem.m71_codmatestoque ';
-    $sSql .= '        inner join matmater            on matmater.m60_codmater                       = matestoque.m70_codmatmater ';
-    $sSql .= '        inner join far_matersaude      on far_matersaude.fa01_i_codmater              = matmater.m60_codmater ';
-    $sSql .= '        inner join medicamentos        on medicamentos.fa58_codigo                    = far_matersaude.fa01_medicamentos ';
-    $sSql .= '        inner join matestoquetipo      on matestoquetipo.m81_codtipo                  = matestoqueini.m80_codtipo ';
-    $sSql .= '         left join matestoqueitemlote  on matestoqueitemlote.m77_matestoqueitem       = matestoqueitem.m71_codlanc ';
-    $sSql .= '        inner join matestoqueinimeipm  on matestoqueinimeipm.m89_matestoqueinimei     = matestoqueinimei.m82_codigo ';
-    $sSql .= '         left join matestoqueinimeiari on matestoqueinimeiari.m49_codmatestoqueinimei = matestoqueinimei.m82_codigo';
-    $sSql .= '         left join atendrequiitem      on atendrequiitem.m43_codigo                   = matestoqueinimeiari.m49_codatendrequiitem ';
-    $sSql .= '         left join matrequiitem        on matrequiitem.m41_codigo                     = atendrequiitem.m43_codmatrequiitem';
-    $sSql .= '         left join matrequi            on matrequi.m40_codigo                         = matrequiitem.m41_codmatrequi';
-    $sSql .= '         left join far_retiradarequi   on far_retiradarequi.fa07_i_matrequi           = matrequi.m40_codigo';
-    $sSql .= '         left join far_retirada        on far_retirada.fa04_i_codigo                  = far_retiradarequi.fa07_i_retirada';
-
-    if ( !empty($sWhere) ) {
-      $sSql .= " where {$sWhere} ";
-    }
-
-    $sSql .= " order by m80_data ";
-
-    return $sSql;
-  }
-
-  public function dispensacaoMedicamentoFarmaciaBasica($sWhere = null) {
-
-    $sSql  = ' select                                                      ';
-    $sSql .= '        fa06_i_codigo,                                       ';
-    $sSql .= '        m70_coddepto,                                        ';
-    $sSql .= '        fa58_catmat              as nuproduto,               ';
-    $sSql .= '        \'B\'                    as tpproduto,               ';
-    $sSql .= '        m80_data                 as dtdispensacao,           ';
-    $sSql .= '        m82_quant                as qtmedicamentodispensada, ';
-    $sSql .= '        m77_dtvalidade           as dtvalidade,              ';
-    $sSql .= '        m77_lote                 as nulote,                  ';
-    $sSql .= '        round(m89_precomedio, 4) as vlitem,                  ';
-    $sSql .= '        (select case                       ';
-    $sSql .= '                  when s115_c_tipo = \'D\' ';
-    $sSql .= '                    then s115_c_cartaosus  ';
-    $sSql .= '                  else s115_c_cartaosus    ';
-    $sSql .= '                end ';
-    $sSql .= '           from cgs_cartaosus where s115_i_cgs = fa04_i_cgsund limit 1) as nucnspaciente ';
-    $sSql .= '   from matestoqueini ';
-    $sSql .= '  inner join matestoqueinimei    on matestoqueinimei.m82_matestoqueini          = matestoqueini.m80_codigo ';
-    $sSql .= '  inner join matestoqueitem      on matestoqueitem.m71_codlanc                  = matestoqueinimei.m82_matestoqueitem ';
-    $sSql .= '  inner join matestoque          on matestoque.m70_codigo                       = matestoqueitem.m71_codmatestoque ';
-    $sSql .= '  inner join matmater            on matmater.m60_codmater                       = matestoque.m70_codmatmater ';
-    $sSql .= '  inner join far_matersaude      on far_matersaude.fa01_i_codmater              = matmater.m60_codmater ';
-    $sSql .= '  inner join medicamentos        on medicamentos.fa58_codigo                    = far_matersaude.fa01_medicamentos ';
-    $sSql .= '  inner join matestoquetipo      on matestoquetipo.m81_codtipo                  = matestoqueini.m80_codtipo ';
-    $sSql .= '   left join matestoqueitemlote  on matestoqueitemlote.m77_matestoqueitem       = matestoqueitem.m71_codlanc ';
-    $sSql .= '  inner join matestoqueinimeipm  on matestoqueinimeipm.m89_matestoqueinimei     = matestoqueinimei.m82_codigo ';
-    $sSql .= '  inner join matestoqueinimeiari on matestoqueinimeiari.m49_codmatestoqueinimei = matestoqueinimei.m82_codigo';
-    $sSql .= '  inner join atendrequiitem      on atendrequiitem.m43_codigo                   = matestoqueinimeiari.m49_codatendrequiitem ';
-    $sSql .= '  inner join matrequiitem        on matrequiitem.m41_codigo                     = atendrequiitem.m43_codmatrequiitem';
-    $sSql .= '  inner join matrequi            on matrequi.m40_codigo                         = matrequiitem.m41_codmatrequi';
-    $sSql .= '  inner join far_retiradarequi   on far_retiradarequi.fa07_i_matrequi           = matrequi.m40_codigo';
-    $sSql .= '  inner join far_retirada        on far_retirada.fa04_i_codigo                  = far_retiradarequi.fa07_i_retirada';
-    $sSql .= '  inner join far_retiradaitens   on far_retiradaitens.fa06_i_retirada           = far_retirada.fa04_i_codigo ';
-    $sSql .= '                                and far_retiradaitens.fa06_i_matersaude         = far_matersaude.fa01_i_codigo ';
-
-    if ( !empty($sWhere) ) {
-      $sSql .= " where {$sWhere} ";
-    }
-
-    $sSql .= " order by m80_data ";
-
-    return $sSql;
-  }
-
-  function sql_query_dados($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
+  public function sql_query_dados($fa01_i_codigo=null, $sCampos="*", $sOrdem=null, $dbwhere="") {
 
     $sSql = "select ";
     if ($sCampos != "*") {
 
-      $sCampos_sql = split("#",$sCampos);
+      $sCampos_sql = explode("#",$sCampos);
       $sVirgula    = "";
       for ($i = 0; $i < sizeof($sCampos_sql); $i++) {
 
@@ -1200,7 +1087,7 @@ class cl_far_matersaude {
     if ($sOrdem != null) {
 
       $sSql        .= " order by ";
-      $sCampos_sql  = split("#",$sOrdem);
+      $sCampos_sql  = explode("#",$sOrdem);
       $sVirgula     = "";
       for ($i = 0; $i < sizeof($sCampos_sql); $i++){
 
@@ -1241,11 +1128,11 @@ class cl_far_matersaude {
     return $sSql;
   }
 
-  function sql_query_tipo ( $fa01_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_tipo ( $fa01_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select distinct ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1275,7 +1162,7 @@ class cl_far_matersaude {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1285,7 +1172,7 @@ class cl_far_matersaude {
     return $sql;
   }
 
-  function sql_query_saldo($fa01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_saldo($fa01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $where = [];
     if ($fa01_i_codigo != null) {
       $where[] = "fa01_i_codigo = {$fa01_i_codigo}";

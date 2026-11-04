@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveiccadmodelo->rotulo->label("ve22_descr");
               <?=$Lve22_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve22_codigo",10,$Ive22_codigo,true,"text",4,"","chave_ve22_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveiccadmodelo->rotulo->label("ve22_descr");
               <?=$Lve22_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve22_descr",40,$Ive22_descr,true,"text",4,"","chave_ve22_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveiccadmodelo->rotulo->label("ve22_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadmodelo.php")==true){
@@ -122,12 +122,12 @@ $clveiccadmodelo->rotulo->label("ve22_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

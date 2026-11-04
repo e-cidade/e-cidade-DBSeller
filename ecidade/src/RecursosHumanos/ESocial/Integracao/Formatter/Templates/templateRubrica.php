@@ -21,6 +21,7 @@ return array(
             'codIncIRRF',
             'codIncFGTS',
             'codIncCPRP',
+            'codIncPisPasep',
             'tetoRemun',
             'observacao',
         ),

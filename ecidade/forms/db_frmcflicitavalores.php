@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,7 +79,7 @@ fieldset table td:first-child {
           <?=@$Ll40_valorminimo?>
         </td>
         <td width="30%">
-          <?
+          <?php
             db_input('l40_sequencial',10,$Il40_sequencial,true,'hidden',$db_opcao,"");
             db_input('l40_valorminimo',10,$Il40_valorminimo,true,'text',$db_opcao,"");
           ?>
@@ -88,7 +88,7 @@ fieldset table td:first-child {
           <?=@$Ll40_valormaximo?>
         </td>
         <td>
-          <?
+          <?php
             db_input('l40_valormaximo',10,$Il40_valormaximo,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -98,7 +98,7 @@ fieldset table td:first-child {
 		       <?=@$Ll40_datainicial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_inputdata('l40_datainicial',@$l40_datainicial_dia,@$l40_datainicial_mes,@$l40_datainicial_ano,true,
 					               'text',$db_opcao);
 					?>
@@ -107,7 +107,7 @@ fieldset table td:first-child {
            <?=@$Ll40_datafinal?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('l40_datafinal',@$l40_datafinal_dia,@$l40_datafinal_mes,@$l40_datafinal_ano,true,
                          'text',$db_opcao);
           ?>
@@ -136,7 +136,7 @@ fieldset table td:first-child {
 	<table>
 	  <tr>
 	    <td valign="top"  align="center">  
-		    <?
+		    <?php
            $chavepri  = array("l40_sequencial" => @$l40_sequencial);
            $sCampos   = "l40_sequencial,l40_codfclicita,l40_valorminimo,l40_valormaximo,l40_datainicial,l40_datafinal";
            $sWhere    = "l40_codfclicita = {$l37_cflicita}";

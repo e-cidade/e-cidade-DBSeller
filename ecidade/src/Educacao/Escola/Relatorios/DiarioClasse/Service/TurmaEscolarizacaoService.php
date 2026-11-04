@@ -27,11 +27,13 @@
 
 namespace ECidade\Educacao\Escola\Relatorios\DiarioClasse\Service;
 
+use App\Domain\Educacao\Escola\Models\Aluno;
 use App\Domain\Educacao\Escola\Models\Calendario;
 use App\Domain\Educacao\Escola\Models\DisciplinaEnsino;
 use App\Domain\Educacao\Escola\Models\Escola;
 use App\Domain\Educacao\Escola\Models\Turno;
 use App\Domain\Educacao\Escola\Requests\EmissaoDiarioClasseEscolarizacaoRequest;
+use App\Domain\Educacao\Escola\Services\RegistroAulaService;
 use AvaliacaoPeriodica;
 use AvaliacaoPeriodicaRepository;
 use Carbon\Carbon;
@@ -173,6 +175,9 @@ class TurmaEscolarizacaoService
         $dados = [];
         foreach ($this->disciplinas as $disciplina) {
             $dadosDiarioClasse = $this->buildDiario($disciplina);
+            if (!empty($this->regente)) {
+                $dadosDiarioClasse->setNomeRegente($this->regente);
+            }
             $dados[] = $this->buildMatriculas($dadosDiarioClasse);
         }
 
@@ -190,17 +195,22 @@ class TurmaEscolarizacaoService
             throw new Exception("Requisição vazia!", 1);
         }
 
-        $oDaoTurma = \db_utils::getDao('turma');
+        $oDaoTurma = new \cl_turma();
         $turma_str = $request->get('turma');
         $periodo_str = $request->get('periodo');
 
         $rsPeriodoCalendario = $oDaoTurma->sql_record("SELECT ed53_i_codigo, ed53_d_inicio, ed53_d_fim FROM escola.turma
             LEFT JOIN escola.periodocalendario on periodocalendario.ed53_i_calendario = turma.ed57_i_calendario
             LEFT JOIN escola.procavaliacao on procavaliacao.ed41_i_codigo = {$periodo_str}
-            WHERE 
+            WHERE
                 turma.ed57_i_codigo = {$turma_str} AND
                 periodocalendario.ed53_i_periodoavaliacao = procavaliacao.ed41_i_periodoavaliacao
         ");
+
+        if (!$rsPeriodoCalendario) {
+            throw new Exception("Prezado usuário, os períodos de avaliação não foram informados no calendário.
+            Deverá acessar o  Cadastro > Calendário > Alteração , na aba períodos de avaliação e informar.");
+        }
 
         $periodoCalendario = pg_fetch_assoc($rsPeriodoCalendario);
 
@@ -230,10 +240,7 @@ class TurmaEscolarizacaoService
             ->setEtapas($this->etapas);
 
         $dadosDiarioClasse = new DadosDiarioClasse();
-        $regente = $this->regente;
-        if (empty($regente)) {
-            $regente = $this->buscarRegente($disciplina);
-        }
+        $regente = $this->buscarRegente($disciplina);
 
         $dadosDiarioClasse->setTurma($turma)
             ->setEscola(Escola::find($this->turma->getEscola()->getCodigo()))
@@ -241,7 +248,7 @@ class TurmaEscolarizacaoService
             ->setAvaliacaoPeriodica($this->avaliacaoPeriodica)
             ->setAulasDadas($this->buscaAulasDadas($disciplina, $this->etapas))
             ->setDisciplina($disciplina)
-            ->setNomeRegente($regente)
+            ->setNomeRegente($regente) // professor
             ->setTurno(Turno::find($this->turma->getTurno()->getCodigoTurno()))
             ->setProcedimentoAvaliacaoRegencia($this->buscaProcedimentoAvaliacaoRegencia($disciplina))
             ->setProcedimentoAvaliacaoTurma($this->buscaProcedimentoAvaliacaoTurma())
@@ -282,10 +289,16 @@ class TurmaEscolarizacaoService
             if (!$this->exibirTrocaTurma && $situacaoAluno === SituacaoMatriculaEnum::TROCA_TURMA) {
                 continue;
             }
-            
+
             $alunoDiario = new AlunoDiarioClasse();
             $dataEncerramento = $matricula->getDataEncerramento();
             $aluno = $matricula->getAluno();
+            $matriculaAnteriorAluno = Aluno::find($aluno->getCodigoAluno())->matriculas()
+                ->where('ed60_i_codigo', '<', $matricula->getCodigo())
+                ->orderBy('ed60_i_codigo', 'desc')->get()->first();
+
+            $matriculaAnterior = is_null($matriculaAnteriorAluno) ?
+            null : \MatriculaRepository::getMatriculaByCodigo($matriculaAnteriorAluno->ed60_i_codigo);
 
             $alunoDiario->setCodigo($aluno->getCodigoAluno())
                 ->setNome($aluno->getNome())
@@ -294,7 +307,8 @@ class TurmaEscolarizacaoService
                 ->setNumero($matricula->getNumeroOrdemAluno())
                 ->setSituacao(new SituacaoMatriculaEnum($matricula->getSituacao()))
                 ->setSexo($aluno->getSexo())
-                ->setMatricula($matricula);
+                ->setMatricula($matricula)
+                ->setMatriculaAnterior($matriculaAnterior);
             if (!is_null($dataEncerramento)) {
                 $alunoDiario->setDataEncerramento($dataEncerramento);
             }
@@ -349,13 +363,13 @@ class TurmaEscolarizacaoService
 
             $dadosDiarioClasse->setAlunos(array_values($novosAlunos));
         }
-        
+
         $alunos = $dadosDiarioClasse->getAlunos();
-        
+
         if (count($dadosDiarioClasse->getAlunos()) === 0) {
             throw new Exception("Não existem alunos para os filtros selecionados", 406);
         }
-        
+
         return $dadosDiarioClasse;
     }
 
@@ -409,7 +423,12 @@ class TurmaEscolarizacaoService
             if ($regencia->getDisciplina()->getCodigoDisciplina() == $disciplina->getCodigo()) {
                 $docentes = $regencia->getDocentes();
                 if (!empty($docentes)) {
-                    return array_shift($docentes)->getNome();
+                    $docente = array_shift($docentes);
+
+                    if ($docente->getNomeSocial() !== null && $docente->getNomeSocial() !== '') {
+                        return $docente->getNome() . ' / Nome Social: ' . $docente->getNomeSocial();
+                    }
+                    return $docente->getNome();
                 }
             }
         }
@@ -437,5 +456,11 @@ class TurmaEscolarizacaoService
     private function buscaProcedimentoAvaliacaoTurma()
     {
         return $this->turma->getProcedimentoDeAvaliacaoDaEtapa($this->etapas[0]);
+    }
+
+    private function buscarAuldasDadasTurma($codigo)
+    {
+        $service = new RegistroAulaService();
+        return $service->getAulasDadasByTurma($codigo);
     }
 }

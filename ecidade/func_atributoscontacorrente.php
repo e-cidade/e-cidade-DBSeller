@@ -91,12 +91,12 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
     ?>
     <script>
     </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

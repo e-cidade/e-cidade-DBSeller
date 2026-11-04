@@ -253,7 +253,8 @@ function buscaFuncoesProfissional() {
     $('cboTipoHora').add(new Option('Selecione', ''));
 
     for ( var oAtividade of aFuncoes ) {
-        let descricao = `${oAtividade.sDescricao} - ${oAtividade.dataInicio} até ${oAtividade.dataFim?oAtividade.dataFim:"Em aberto"} `;
+        let turno = Object.values(oAtividade.aResumoTurno)[0].sTurno;
+        let descricao = `${oAtividade.sDescricao} - ${turno} - ${oAtividade.dataInicio} até ${oAtividade.dataFim?oAtividade.dataFim:"Em aberto"} `;
         $('cboFuncao').add(new Option( descricao, oAtividade.iCodigo ));
     }
 

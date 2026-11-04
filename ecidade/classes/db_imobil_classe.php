@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE imobil
-class cl_imobil { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j44_matric = 0; 
-   var $j44_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_imobil {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j44_matric = 0;
+   var $j44_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j44_matric = int4 = Matricula 
-                 j44_numcgm = int4 = Numcgm 
+                 j44_matric = int4 = Matricula
+                 j44_numcgm = int4 = Numcgm
                  ";
-   //funcao construtor da classe 
-   function cl_imobil() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("imobil"); 
+     $this->rotulo = new rotulo("imobil");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_imobil {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j44_matric = ($this->j44_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j44_matric"]:$this->j44_matric);
        $this->j44_numcgm = ($this->j44_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j44_numcgm"]:$this->j44_numcgm);
@@ -74,9 +74,9 @@ class cl_imobil {
      }
    }
    // funcao para inclusao
-   function incluir ($j44_matric){ 
+   public function incluir ($j44_matric){
       $this->atualizacampos();
-     if($this->j44_numcgm == null ){ 
+     if($this->j44_numcgm == null ){
        $this->erro_sql = " Campo Numcgm nao Informado.";
        $this->erro_campo = "j44_numcgm";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_imobil {
        $this->erro_status = "0";
        return false;
      }
-       $this->j44_matric = $j44_matric; 
-     if(($this->j44_matric == null) || ($this->j44_matric == "") ){ 
+       $this->j44_matric = $j44_matric;
+     if(($this->j44_matric == null) || ($this->j44_matric == "") ){
        $this->erro_sql = " Campo j44_matric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_imobil {
        return false;
      }
      $sql = "insert into imobil(
-                                       j44_matric 
-                                      ,j44_numcgm 
+                                       j44_matric
+                                      ,j44_numcgm
                        )
                 values (
-                                $this->j44_matric 
-                               ,$this->j44_numcgm 
+                                $this->j44_matric
+                               ,$this->j44_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->j44_matric) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_imobil {
        $resac = db_query("insert into db_acount values($acount,28,147,'','".AddSlashes(pg_result($resaco,0,'j44_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j44_matric=null) { 
+   public function alterar ($j44_matric=null) {
       $this->atualizacampos();
      $sql = " update imobil set ";
      $virgula = "";
-     if(trim($this->j44_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j44_matric"])){ 
+     if(trim($this->j44_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j44_matric"])){
        $sql  .= $virgula." j44_matric = $this->j44_matric ";
        $virgula = ",";
-       if(trim($this->j44_matric) == null ){ 
+       if(trim($this->j44_matric) == null ){
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j44_matric";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_imobil {
          return false;
        }
      }
-     if(trim($this->j44_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j44_numcgm"])){ 
+     if(trim($this->j44_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j44_numcgm"])){
        $sql  .= $virgula." j44_numcgm = $this->j44_numcgm ";
        $virgula = ",";
-       if(trim($this->j44_numcgm) == null ){ 
+       if(trim($this->j44_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "j44_numcgm";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_imobil {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j44_matric;
@@ -214,14 +214,14 @@ class cl_imobil {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j44_matric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j44_matric=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j44_matric));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_imobil {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j44_matric;
@@ -276,11 +276,11 @@ class cl_imobil {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_imobil {
       }
      return $result;
    }
-   function sql_query ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -322,15 +322,15 @@ class cl_imobil {
      $sql2 = "";
      if($dbwhere==""){
        if($j44_matric!=null ){
-         $sql2 .= " where imobil.j44_matric = $j44_matric "; 
-       } 
+         $sql2 .= " where imobil.j44_matric = $j44_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -339,10 +339,10 @@ class cl_imobil {
      }
      return $sql;
   }
-   function sql_query_file ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -355,15 +355,15 @@ class cl_imobil {
      $sql2 = "";
      if($dbwhere==""){
        if($j44_matric!=null ){
-         $sql2 .= " where imobil.j44_matric = $j44_matric "; 
-       } 
+         $sql2 .= " where imobil.j44_matric = $j44_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,10 +372,10 @@ class cl_imobil {
      }
      return $sql;
   }
-   function sql_query_nome ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_nome ( $j44_matric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,15 +390,15 @@ class cl_imobil {
      $sql2 = "";
      if($dbwhere==""){
        if($j44_matric!=null ){
-         $sql2 .= " where imobil.j44_matric = $j44_matric "; 
-       } 
+         $sql2 .= " where imobil.j44_matric = $j44_matric ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,21 +407,21 @@ class cl_imobil {
      }
      return $sql;
   }
-    
-   function sql_query_enderecoEntrega($iNumCgmImobiliaria = null, $sCampos = "*", $sWhere = null) {
-   	
+
+   public function sql_query_enderecoEntrega($iNumCgmImobiliaria = null, $sCampos = "*", $sWhere = null) {
+
    	if (empty($sWhere) && !empty($iNumCgmImobiliaria)) {
    		$sWhere = " where j44_numcgm = {$iNumCgmImobiliaria} ";
    	} else if (!empty($sWhere) && !empty($iNumCgmImobiliaria)) {
    		$sWhere = " where {$sWhere} and j44_numcgm = {$iNumCgmImobiliaria} ";
    	}
-   	
+
    	$sSql  = "select {$sCampos}                                      ";
    	$sSql .= "  from imobil                                          ";
    	$sSql .= "       inner join iptubase  on j01_matric = j44_matric ";
    	$sSql .= "       left  join iptuender on j43_matric = j01_matric ";
    	$sSql .= $sWhere;
-    return $sSql;   	
+    return $sSql;
    }
 }
 ?>

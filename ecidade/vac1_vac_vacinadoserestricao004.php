@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ if (isset($confirmar)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
 	    require_once(modification("forms/db_frmvac_vacinadoserestricao.php"));
     	?>
     </center>
@@ -110,7 +110,7 @@ if (isset($confirmar)) {
 <script>
 js_tabulacaoforms("form1", "vc08_i_restricao", true, 1, "vc08_i_restricao", true);
 </script>
-<?
+<?php
 if (isset($confirmar)) {
   if ($oDaoVacVacinadoserestricao->erro_status == '0') {
     $oDaoVacVacinadoserestricao->erro(true, false);

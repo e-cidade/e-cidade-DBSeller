@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,11 +121,11 @@ function js_emite(){
           <b>Período:</b>
         </td>
         <td nowrap>
-          <?
+          <?php
           db_inputdata('datai',@$datai_dia,@$datai_mes,@$datai_ano,true,'text',1,"")
           ?>
           &nbsp;<b>a</b>&nbsp;
-          <?
+          <?php
           db_inputdata('dataf',@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1,"")
           ?>
         </td>
@@ -137,7 +137,7 @@ function js_emite(){
 
       <tr >
         <td align="center" colspan="2" >
-         <?
+         <?php
 	       $sql = "select h12_assent, h12_descr
                  from tipoasse 
                  order by h12_descr"; 
@@ -163,7 +163,7 @@ function js_emite(){
  </td>
  </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -51,7 +51,7 @@ if(isset($db_opcaoal)){
 }
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
   if(!isset($pc10_numero)){
     $pc10_numero = 0;
   }
@@ -70,7 +70,7 @@ if(isset($db_opcaoal)){
        <?=@$Lpc21_orcamforne?>
     </td>
     <td>
-<?
+<?php
 db_input('pc21_orcamforne',8,$Ipc21_orcamforne,true,'text',3)
 ?>
     </td>
@@ -80,29 +80,29 @@ db_input('pc21_orcamforne',8,$Ipc21_orcamforne,true,'text',3)
        <?=@$Lpc21_codorc?>
     </td>
     <td>
-<?
+<?php
 db_input('pc21_codorc',8,$Ipc21_codorc,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc21_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lpc21_numcgm,"js_pesquisapc21_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('pc21_numcgm',8,$Ipc21_numcgm,true,'text',$db_opcao," onchange='js_pesquisapc21_numcgm(false);'")
 ?>
-<?
+<?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3);
 ?>
     </td>
   </tr>
   </tr>
     <td colspan="2" align="center">
-     <?
+     <?php
       if(isset($pc21_codorc) && trim($pc21_codorc)!=""){
         echo "<input name='gerabranco'    type='submit' id='gerabranco'    value='Gerar em branco' onclick='js_gerarel(true);' ".($db_botao==false?"disabled":"").">&nbsp;";
       }
@@ -127,7 +127,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3);
 <table width="90%">
   <tr>
     <td valign="top"  align="center">
-     <?
+     <?php
 			 $chavepri= array("pc21_orcamforne"=>@$pc21_orcamforne);
 			 $cliframe_alterar_excluir->chavepri=$chavepri;
 			 $cliframe_alterar_excluir->sql     = $clpcorcamforne->sql_query(null,"pc21_orcamforne,pc21_codorc,pc21_numcgm,z01_nome",""," pc21_codorc=$pc21_codorc");

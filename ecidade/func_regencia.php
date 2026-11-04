@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -54,7 +54,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
  <tr>
   <td align="center" valign="top">
    <br>
-   <?if(!isset($pesquisa_chave)){?>
+   <?php if(!isset($pesquisa_chave)){?>
     <b>Disciplinas da Turma <?=pg_result($result,0,'ed57_c_descr')?> para marcar horários:</b>
     <table border="1" cellspacing="1" cellpading="0">
      <tr>
@@ -74,7 +74,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       <td>Marcados</td>
       <td>Restantes</td>
      </tr>
-     <?
+     <?php
      $cor1 = "#97B5E6";
      $cor2 = "#E796A4";
      $cor = "";
@@ -116,7 +116,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
        quantos--;
       }
       </script>
-      <?
+      <?php
      }
      ?>
      <tr id="nenhum" style="visibility:hidden;">
@@ -132,7 +132,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       }
      </script>
     </table>
-   <?}?>
+   <?php }?>
   </td>
  </tr>
 </table>

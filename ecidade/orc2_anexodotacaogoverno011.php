@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,13 +61,13 @@ $oRelatorioContabil = new relatorioContabil($oGet->codrel);
           <fieldset>
             <legend><b>Filtro Padrão</b></legend>
             <table>
-              <?
+              <?php
                 db_selinstit('', 420,150);
               ?>
               <tr>
                 <td><b>Origem/Fase:</b></td>
                 <td>
-                  <?
+                  <?php
                     $aOrigemFase = array(0 => "Selecione", 
                                          1 => "Orçamento", 
                                          2 => "Empenhado", 
@@ -80,7 +80,7 @@ $oRelatorioContabil = new relatorioContabil($oGet->codrel);
               <tr id='trPeriodos'>
                 <td width="80"><b>Período:</b></td>
                 <td colspan="2">
-                  <?
+                  <?php
                     $aPeriodos         = $oRelatorioContabil->getPeriodos();                  
                     $aListaPeriodos    = array();
                     $aListaPeriodos[0] = "Selecione";

@@ -65,7 +65,9 @@ if (isset($alterar)) {
   $rsProcedimento   = $oDaoProcedimento->sql_record($sSqlProcedimento);
   db_fieldsmemory($rsProcedimento, 0);
 
-  $possuiTurmasEncerradas = ($possuiturmaencerrada == 't') ? 'S' : 'N';
+  $sqlParametros = "select ed290_permite_alteracao_proc_avaliacao from secretariadeeducacao.sec_parametros";
+  $permiteAlterarProcAvaliacao = pg_fetch_assoc(db_query($sqlParametros));
+  $possuiTurmasEncerradas = $permiteAlterarProcAvaliacao['ed290_permite_alteracao_proc_avaliacao']  == 'f' ? 'S' : 'N';
   $db_botao               = !($possuiTurmasEncerradas == 'S');
   ?>
   <script>

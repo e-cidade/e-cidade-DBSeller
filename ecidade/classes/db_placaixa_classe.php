@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,7 +63,7 @@ class cl_placaixa {
                  ";
   //funcao construtor da classe
 
-  function cl_placaixa() {
+  public function __construct() {
     //classes dos rotulos dos campos
 
     $this->rotulo = new rotulo("placaixa");
@@ -71,7 +71,7 @@ class cl_placaixa {
   }
   //funcao erro
 
-  function erro($mostra, $retorna) {
+  public function erro($mostra, $retorna) {
 
     if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
       echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -82,7 +82,7 @@ class cl_placaixa {
   }
   // funcao para atualizar campos
 
-  function atualizacampos($exclusao = false) {
+  public function atualizacampos($exclusao = false) {
 
     if ($exclusao == false) {
       $this->k80_codpla = ($this->k80_codpla == "" ? @$GLOBALS["HTTP_POST_VARS"]["k80_codpla"] : $this->k80_codpla);
@@ -115,7 +115,7 @@ class cl_placaixa {
   }
   // funcao para inclusao
 
-  function incluir($k80_codpla) {
+  public function incluir($k80_codpla) {
 
     $this->atualizacampos();
     if ($this->k80_data == null) {
@@ -241,7 +241,7 @@ class cl_placaixa {
   }
   // funcao para alteracao
 
-  function alterar($k80_codpla = null) {
+  public function alterar($k80_codpla = null) {
 
     $this->atualizacampos();
     $sql = " update placaixa set ";
@@ -383,7 +383,7 @@ class cl_placaixa {
   }
   // funcao para exclusao
 
-  function excluir($k80_codpla = null, $dbwhere = null) {
+  public function excluir($k80_codpla = null, $dbwhere = null) {
 
     if ($dbwhere == null || $dbwhere == "") {
       $resaco = $this->sql_record($this->sql_query_file($k80_codpla));
@@ -462,7 +462,7 @@ class cl_placaixa {
   }
   // funcao do recordset
 
-  function sql_record($sql) {
+  public function sql_record($sql) {
 
     $result = db_query($sql);
     if ($result == false) {
@@ -488,11 +488,11 @@ class cl_placaixa {
     return $result;
   }
 
-  function sql_query($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_placaixa {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_placaixa {
     return $sql;
   }
 
-  function sql_query_processo($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_processo($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql  = " select {$campos}";
     $sql .= "   from placaixa ";
@@ -542,11 +542,11 @@ class cl_placaixa {
     return $sql;
   }
 
-  function sql_query_file($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_file($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_placaixa {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -577,11 +577,11 @@ class cl_placaixa {
     return $sql;
   }
 
-  function sql_query_receita($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_receita($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_placaixa {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -617,7 +617,7 @@ class cl_placaixa {
     return $sql;
   }
 
-  function sql_query_rec($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_rec($k80_codpla = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = " select k80_codpla, k80_data, k80_dtaut, sum(k81_valor) as k81_valor, k144_numeroprocesso ";
     $sql .= " from placaixa ";
@@ -636,7 +636,7 @@ class cl_placaixa {
     $sql .= " group by k80_codpla, k80_data, k80_dtaut, k80_instit, k144_numeroprocesso";
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];

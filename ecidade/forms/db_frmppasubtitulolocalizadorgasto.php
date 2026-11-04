@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,7 +40,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label();
             <?=@$Lo11_sequencial?>
           </td>
           <td>
-            <?
+            <?php
             db_input('o11_sequencial',10,$Io11_sequencial,true,'text',3,"")
             ?>
           </td>
@@ -50,7 +50,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label();
             <?=@$Lo11_codigo?>
           </td>
           <td>
-            <?
+            <?php
             db_input('o11_codigo',10,$Io11_codigo,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -60,7 +60,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label();
             <?=@$Lo11_descricao?>
           </td>
           <td>
-            <?
+            <?php
             db_input('o11_descricao',50,$Io11_descricao,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -77,7 +77,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label();
   }
   function js_preenchepesquisa(chave){
     db_iframe_ppasubtitulolocalizadorgasto.hide();
-    <?
+    <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

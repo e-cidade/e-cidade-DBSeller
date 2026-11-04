@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE cronogramabasecalculo
-class cl_cronogramabasecalculo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o125_sequencial = 0; 
-   var $o125_cronogramaperspectiva = 0; 
-   var $o125_mes = 0; 
-   var $o125_ano = 0; 
-   var $o125_percentual = 0; 
-   var $o125_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cronogramabasecalculo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o125_sequencial = 0;
+   var $o125_cronogramaperspectiva = 0;
+   var $o125_mes = 0;
+   var $o125_ano = 0;
+   var $o125_percentual = 0;
+   var $o125_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o125_sequencial = int4 = Código Sequencial 
-                 o125_cronogramaperspectiva = int4 = Perspectiva do Cronograma 
-                 o125_mes = int4 = Mês 
-                 o125_ano = int4 = Ano 
-                 o125_percentual = int4 = Percentual Correspondente 
-                 o125_valor = int4 = Valor 
+                 o125_sequencial = int4 = Código Sequencial
+                 o125_cronogramaperspectiva = int4 = Perspectiva do Cronograma
+                 o125_mes = int4 = Mês
+                 o125_ano = int4 = Ano
+                 o125_percentual = int4 = Percentual Correspondente
+                 o125_valor = int4 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_cronogramabasecalculo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cronogramabasecalculo"); 
+     $this->rotulo = new rotulo("cronogramabasecalculo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_cronogramabasecalculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o125_sequencial = ($this->o125_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o125_sequencial"]:$this->o125_sequencial);
        $this->o125_cronogramaperspectiva = ($this->o125_cronogramaperspectiva == ""?@$GLOBALS["HTTP_POST_VARS"]["o125_cronogramaperspectiva"]:$this->o125_cronogramaperspectiva);
@@ -86,9 +86,9 @@ class cl_cronogramabasecalculo {
      }
    }
    // funcao para inclusao
-   function incluir ($o125_sequencial){ 
+   public function incluir ($o125_sequencial){
       $this->atualizacampos();
-     if($this->o125_cronogramaperspectiva == null ){ 
+     if($this->o125_cronogramaperspectiva == null ){
        $this->erro_sql = " Campo Perspectiva do Cronograma nao Informado.";
        $this->erro_campo = "o125_cronogramaperspectiva";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_cronogramabasecalculo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o125_mes == null ){ 
+     if($this->o125_mes == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "o125_mes";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_cronogramabasecalculo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o125_ano == null ){ 
+     if($this->o125_ano == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "o125_ano";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_cronogramabasecalculo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o125_percentual == null ){ 
+     if($this->o125_percentual == null ){
        $this->erro_sql = " Campo Percentual Correspondente nao Informado.";
        $this->erro_campo = "o125_percentual";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_cronogramabasecalculo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o125_valor == null ){ 
+     if($this->o125_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "o125_valor";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_cronogramabasecalculo {
        return false;
      }
      if($o125_sequencial == "" || $o125_sequencial == null ){
-       $result = db_query("select nextval('cronogramabasecalculo_o125_sequencial_seq')"); 
+       $result = db_query("select nextval('cronogramabasecalculo_o125_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cronogramabasecalculo_o125_sequencial_seq do campo: o125_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cronogramabasecalculo_o125_sequencial_seq do campo: o125_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o125_sequencial = pg_result($result,0,0); 
+       $this->o125_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cronogramabasecalculo_o125_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $o125_sequencial)){
@@ -154,10 +154,10 @@ class cl_cronogramabasecalculo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o125_sequencial = $o125_sequencial; 
+         $this->o125_sequencial = $o125_sequencial;
        }
      }
-     if(($this->o125_sequencial == null) || ($this->o125_sequencial == "") ){ 
+     if(($this->o125_sequencial == null) || ($this->o125_sequencial == "") ){
        $this->erro_sql = " Campo o125_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_cronogramabasecalculo {
        return false;
      }
      $sql = "insert into cronogramabasecalculo(
-                                       o125_sequencial 
-                                      ,o125_cronogramaperspectiva 
-                                      ,o125_mes 
-                                      ,o125_ano 
-                                      ,o125_percentual 
-                                      ,o125_valor 
+                                       o125_sequencial
+                                      ,o125_cronogramaperspectiva
+                                      ,o125_mes
+                                      ,o125_ano
+                                      ,o125_percentual
+                                      ,o125_valor
                        )
                 values (
-                                $this->o125_sequencial 
-                               ,$this->o125_cronogramaperspectiva 
-                               ,$this->o125_mes 
-                               ,$this->o125_ano 
-                               ,$this->o125_percentual 
-                               ,$this->o125_valor 
+                                $this->o125_sequencial
+                               ,$this->o125_cronogramaperspectiva
+                               ,$this->o125_mes
+                               ,$this->o125_ano
+                               ,$this->o125_percentual
+                               ,$this->o125_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Bases de calculo para Cronograma ($this->o125_sequencial) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_cronogramabasecalculo {
        $resac = db_query("insert into db_acount values($acount,2619,14883,'','".AddSlashes(pg_result($resaco,0,'o125_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o125_sequencial=null) { 
+   public function alterar ($o125_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cronogramabasecalculo set ";
      $virgula = "";
-     if(trim($this->o125_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_sequencial"])){ 
+     if(trim($this->o125_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_sequencial"])){
        $sql  .= $virgula." o125_sequencial = $this->o125_sequencial ";
        $virgula = ",";
-       if(trim($this->o125_sequencial) == null ){ 
+       if(trim($this->o125_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o125_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_cronogramabasecalculo {
          return false;
        }
      }
-     if(trim($this->o125_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_cronogramaperspectiva"])){ 
+     if(trim($this->o125_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_cronogramaperspectiva"])){
        $sql  .= $virgula." o125_cronogramaperspectiva = $this->o125_cronogramaperspectiva ";
        $virgula = ",";
-       if(trim($this->o125_cronogramaperspectiva) == null ){ 
+       if(trim($this->o125_cronogramaperspectiva) == null ){
          $this->erro_sql = " Campo Perspectiva do Cronograma nao Informado.";
          $this->erro_campo = "o125_cronogramaperspectiva";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_cronogramabasecalculo {
          return false;
        }
      }
-     if(trim($this->o125_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_mes"])){ 
+     if(trim($this->o125_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_mes"])){
        $sql  .= $virgula." o125_mes = $this->o125_mes ";
        $virgula = ",";
-       if(trim($this->o125_mes) == null ){ 
+       if(trim($this->o125_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "o125_mes";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_cronogramabasecalculo {
          return false;
        }
      }
-     if(trim($this->o125_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_ano"])){ 
+     if(trim($this->o125_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_ano"])){
        $sql  .= $virgula." o125_ano = $this->o125_ano ";
        $virgula = ",";
-       if(trim($this->o125_ano) == null ){ 
+       if(trim($this->o125_ano) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o125_ano";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_cronogramabasecalculo {
          return false;
        }
      }
-     if(trim($this->o125_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_percentual"])){ 
+     if(trim($this->o125_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_percentual"])){
        $sql  .= $virgula." o125_percentual = $this->o125_percentual ";
        $virgula = ",";
-       if(trim($this->o125_percentual) == null ){ 
+       if(trim($this->o125_percentual) == null ){
          $this->erro_sql = " Campo Percentual Correspondente nao Informado.";
          $this->erro_campo = "o125_percentual";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_cronogramabasecalculo {
          return false;
        }
      }
-     if(trim($this->o125_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_valor"])){ 
+     if(trim($this->o125_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o125_valor"])){
        $sql  .= $virgula." o125_valor = $this->o125_valor ";
        $virgula = ",";
-       if(trim($this->o125_valor) == null ){ 
+       if(trim($this->o125_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o125_valor";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_cronogramabasecalculo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Bases de calculo para Cronograma nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o125_sequencial;
@@ -357,14 +357,14 @@ class cl_cronogramabasecalculo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o125_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o125_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o125_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_cronogramabasecalculo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Bases de calculo para Cronograma nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o125_sequencial;
@@ -423,11 +423,11 @@ class cl_cronogramabasecalculo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,11 +449,11 @@ class cl_cronogramabasecalculo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $o125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $o125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,15 +469,15 @@ class cl_cronogramabasecalculo {
      $sql2 = "";
      if($dbwhere==""){
        if($o125_sequencial!=null ){
-         $sql2 .= " where cronogramabasecalculo.o125_sequencial = $o125_sequencial "; 
-       } 
+         $sql2 .= " where cronogramabasecalculo.o125_sequencial = $o125_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,11 +486,11 @@ class cl_cronogramabasecalculo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $o125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $o125_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,15 +503,15 @@ class cl_cronogramabasecalculo {
      $sql2 = "";
      if($dbwhere==""){
        if($o125_sequencial!=null ){
-         $sql2 .= " where cronogramabasecalculo.o125_sequencial = $o125_sequencial "; 
-       } 
+         $sql2 .= " where cronogramabasecalculo.o125_sequencial = $o125_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

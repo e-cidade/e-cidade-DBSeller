@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,17 +27,17 @@
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?if(!isset($sepultamento)||$sepultamento==""){?>
+<?php if(!isset($sepultamento)||$sepultamento==""){?>
      <table border="0">
        <tr>
          <td nowrap title="<?=@$sepultamento?>">
-           <?db_ancora("<strong>Sepultamento</strong>","js_pesquisasepultamento();",$db_opcao);?>
+           <?php db_ancora("<strong>Sepultamento</strong>","js_pesquisasepultamento();",$db_opcao);?>
          </td>
          <td>
-          <?
+          <?php
              db_input('sepultamento',10,@$sepultamento,true,'text',3)
           ?>
-          <?
+          <?php
              db_input('nome',50,@$nome,true,'text',3,'')
           ?>
          </td>
@@ -65,7 +65,7 @@
      <table>
       <tr>
        <td>
-         <?
+         <?php
           //busca a localidade do sepultamento
           $db_opcao = 3;
           $db_opcao1 = 3;
@@ -158,7 +158,7 @@
              ?>
                  <input name="tipoant" type="hidden" value="<?=$tipoant?>">
                  <input name="codigo" type="hidden" value="<?=$codigo?>">
-             <?
+             <?php
            include(modification($arquivo));
           }
         ?>
@@ -166,7 +166,7 @@
       </tr>
      </table>
      </fieldset>
-<?}?>
+<?php }?>
 </form>
 </center>
 <script>

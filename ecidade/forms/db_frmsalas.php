@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed09_c_situacao");
        <?=@$Led08_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed08_i_codigo',5,$Ied08_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted08_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led08_i_matricula,"js_pesquisaed08_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed08_i_matricula',5,$Ied08_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed08_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        <?=@$Led08_f_comportamento?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed08_f_comportamento',3,$Ied08_f_comportamento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ed08_f_comportamento',3,$Ied08_f_comportamento,true,'text',$db_opcao,"
        <?=@$Led08_f_nota?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed08_f_nota',3,$Ied08_f_nota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('ed08_f_nota',3,$Ied08_f_nota,true,'text',$db_opcao,"")
        <?=@$Led08_f_frequencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed08_f_frequencia',3,$Ied08_f_frequencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_salas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

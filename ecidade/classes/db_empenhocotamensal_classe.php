@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE empenhocotamensal
 class cl_empenhocotamensal {
@@ -28,13 +28,13 @@ class cl_empenhocotamensal {
                  e05_valor = float8 = Valor da Cota
                  ";
    //funcao construtor da classe
-   function cl_empenhocotamensal() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empenhocotamensal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_empenhocotamensal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e05_sequencial = ($this->e05_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e05_sequencial"]:$this->e05_sequencial);
        $this->e05_numemp = ($this->e05_numemp == ""?@$GLOBALS["HTTP_POST_VARS"]["e05_numemp"]:$this->e05_numemp);
@@ -54,7 +54,7 @@ class cl_empenhocotamensal {
      }
    }
    // funcao para Inclusão
-   function incluir ($e05_sequencial){
+   public function incluir ($e05_sequencial){
       $this->atualizacampos();
      if($this->e05_numemp == null ){
        $this->erro_sql = " Campo Empenho não informado.";

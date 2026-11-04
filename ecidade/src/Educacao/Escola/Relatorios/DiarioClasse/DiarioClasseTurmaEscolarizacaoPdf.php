@@ -41,40 +41,45 @@ class DiarioClasseTurmaEscolarizacaoPdf extends DiarioClassePdf
      * @param DadosDiarioClasse $dadosDiarioClasse
      * @throws Exception
      */
-    protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse)
+    protected function cabecalho(DadosDiarioClasse $dadosDiarioClasse, $request = null)
     {
+
         $this->cabecalhoDadosInstituicao($dadosDiarioClasse);
         $calendario = $dadosDiarioClasse->getCalendario();
         $turma = $dadosDiarioClasse->getTurma();
 
-        $posicaoX = 140;
-        $tamanhoLinha = 90;
+        $posicaoX = 105;
+        $tamanhoLinha = 100;
+        $tamanhoLinhaBorda = 85;
 
         $this->SetXY($posicaoX, 8);
 
         $this->Cell($tamanhoLinha, 4, "Curso: {$turma->getCurso()->getNome()}", 0, 0, "L");
-        $this->Cell($tamanhoLinha, 4, "Calendário: {$calendario->getDescricao()}", 0, 1, "L");
+        $this->Cell($tamanhoLinhaBorda, 4, "Calendário: {$calendario->getDescricao()}", 0, 1, "L");
 
         $this->SetXY($posicaoX, 12);
         $this->Cell($tamanhoLinha, 4, "Turma: {$turma->getNome()}", 0, 0, "L");
         if (strlen($this->getNomeEtapas($turma->getEtapas())) > 40) {
             $this->SetFont('Arial', '', '6');
         }
-        $this->Cell($tamanhoLinha, 4, "Etapas: {$this->getNomeEtapas($turma->getEtapas())}", 0, 1, "L");
+        $this->Cell($tamanhoLinhaBorda, 4, "Etapas: {$this->getNomeEtapas($turma->getEtapas())}", 0, 1, "L");
         $this->SetFont('Arial', '', '7');
         $this->SetXY($posicaoX, 16);
         $periodo = $dadosDiarioClasse->getAvaliacaoPeriodica()->getPeriodoAvaliacao()->getDescricao();
         $this->Cell($tamanhoLinha, 4, "Período: {$periodo}", 0, 0, "L");
 
         $exibirAulasDadas = $this->exibirAulasDadas;
+
         if ($exibirAulasDadas) {
-            if ($dadosDiarioClasse->getAulasDadas() == 0) {
-                $this->Cell($tamanhoLinha, 4, "Aulas Dadas:", 0, 1, "L");
-            } else {
-                $this->Cell($tamanhoLinha, 4, "Aulas Dadas: {$dadosDiarioClasse->getAulasDadas()}", 0, 1, "L");
+            $aulasDadas = $dadosDiarioClasse->getAulasDadas();
+            $textoAulasDadas = $aulasDadas == 0 ? "0" : $aulasDadas;
+
+            // Aqui eu verifico se a frequência é manual
+            if ($request->input('registroManual') == '1') {
+                $textoAulasDadas = "____";
             }
-        } else {
-            $this->Cell($tamanhoLinha, 4, "Aulas Dadas: ", 0, 1, "L");
+            
+            $this->Cell($tamanhoLinhaBorda, 4, "Aulas Dadas: $textoAulasDadas", 0, 1, "L");
         }
         $this->SetXY($posicaoX, 20);
         $disciplina = $dadosDiarioClasse->getDisciplina()->getDisciplina();
@@ -87,12 +92,13 @@ class DiarioClasseTurmaEscolarizacaoPdf extends DiarioClassePdf
             $this->Cell($tamanhoLinha, 4, "Disciplina: {$disciplina->getDescricaoCompleta()}", 0, 0, "L");
         }
 
-        $this->Cell($tamanhoLinha, 4, "Turno: {$dadosDiarioClasse->getTurno()->getDescricao()}", 0, 1, "L");
+        $this->Cell($tamanhoLinhaBorda, 4, "Turno: {$dadosDiarioClasse->getTurno()->getDescricao()}", 0, 1, "L");
         $this->SetXY($posicaoX, 24);
         if (!$this->pautaUnica) {
-            $this->Cell($tamanhoLinha, 4, "Regente: {$dadosDiarioClasse->getNomeRegente()}", 0, 1, "L");
+            $nome_regente = mb_strimwidth($dadosDiarioClasse->getNomeRegente(), 0, 115);
+            $this->Cell($tamanhoLinha, 4, "Regente: {$nome_regente}", 0, 1, "L");
         }
-        
+
         $this->roundedrect(8, 8, 280, 20, 2, '', '1234');
         $this->SetXY(8, 30);
     }

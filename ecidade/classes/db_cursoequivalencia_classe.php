@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE cursoequivalencia
 class cl_cursoequivalencia {
@@ -26,13 +26,13 @@ class cl_cursoequivalencia {
                  ed140_cursoequivalente = int4 = Curso equivalente
                  ";
    //funcao construtor da classe
-   function cl_cursoequivalencia() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursoequivalencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_cursoequivalencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed140_sequencial = ($this->ed140_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed140_sequencial"]:$this->ed140_sequencial);
        $this->ed140_cursoedu = ($this->ed140_cursoedu == ""?@$GLOBALS["HTTP_POST_VARS"]["ed140_cursoedu"]:$this->ed140_cursoedu);
@@ -51,7 +51,7 @@ class cl_cursoequivalencia {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed140_sequencial){
+   public function incluir ($ed140_sequencial){
       $this->atualizacampos();
      if($this->ed140_cursoedu == null ){
        $this->erro_sql = " Campo Curso não informado.";

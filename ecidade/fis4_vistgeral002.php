@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -36,7 +36,7 @@ include(modification("classes/db_arrematric_classe.php"));
 include(modification("classes/db_arreinscr_classe.php"));
 include(modification("classes/db_arreold_classe.php"));
 include(modification("classes/db_divida_classe.php"));
-			
+
 include(modification("classes/db_divimporta_classe.php"));
 include(modification("classes/db_divimportareg_classe.php"));
 
@@ -114,21 +114,21 @@ function termo(qual,total){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <table width="100%" height="100%"  border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="100%" width="100%" align="center" valign="top" bgcolor="#CCCCCC">
       <center>
       <form name="form1" method="post" action="">
       <table height="100%" width="100%"  border="0" cellspacing="5" cellpadding="0">
 	    </td>
 	    <td align="center">
-	      <?if(isset($procreg) && $procreg!=""){?>
+	      <?php if(isset($procreg) && $procreg!=""){?>
 	           <input name="termometro" style='background: transparent' id="termometro" type="text" value="" size=50>
 	      <?}else{
 //		   echo "<script>document.getElementById('filtro').style.visibility='hidden';</script>";
 		}?>
 	    </td>
-      
-<?
+
+<?php
 $wherereceita = "";
 if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && trim($chave_destino)!="" && $sub == 'f'){
 //  db_msgbox("entrou chave");
@@ -141,33 +141,33 @@ if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && t
      $venc = " and k00_dtvenc < '".$hoje."'";
    }
    if ($tipoparc == "t") {
-     $subsql = "select distinct k00_numpre 
-                      from (select k00_numpre, 
-		                   max(k00_dtvenc) 
-		              from arrecad 
-		            where k00_tipo = $chave_origem 
-		                             $wherereceita 
-		            group by k00_numpre) as xxx 
+     $subsql = "select distinct k00_numpre
+                      from (select k00_numpre,
+		                   max(k00_dtvenc)
+		              from arrecad
+		            where k00_tipo = $chave_origem
+		                             $wherereceita
+		            group by k00_numpre) as xxx
 		where max < '$hoje'";
    } else {
-     $subsql = " select distinct k00_numpre 
-                       from arrecad 
-		 where k00_tipo = $chave_origem 
-		                  $venc 
+     $subsql = " select distinct k00_numpre
+                       from arrecad
+		 where k00_tipo = $chave_origem
+		                  $venc
 				  $wherereceita ";
    }
 // db_msgbox($txt_where);
   $sql0 = " select tabrec.k02_codigo,
-                   tabrec.k02_drecei, 
+                   tabrec.k02_drecei,
          	       contrec
               from (select k00_receit, count(*) as contrec
-	              from ($subsql) as x 
+	              from ($subsql) as x
            		inner join arrecad on arrecad.k00_numpre = x.k00_numpre
-				$txt_inner	
-     		where 1=1 $venc 
-			          $wherereceita 
+				$txt_inner
+     		where 1=1 $venc
+			          $wherereceita
 					  ".(isset($txt_where)&&$txt_where!=""?$txt_where:"")."
-	    	group by k00_receit) as y 
+	    	group by k00_receit) as y
                  inner join tabrec on k02_codigo = y.k00_receit
 	  ";
 //  die($sql0);
@@ -205,14 +205,14 @@ if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && t
 		echo "
 		<tr>
 		  <td nowrap align='left' valign='top'>";
-			 db_input("$k02_codigo","8","",true,"text",3,"","k02_codigo"); 
+			 db_input("$k02_codigo","8","",true,"text",3,"","k02_codigo");
 		echo "</td>
 			  <td nowrap> ";
 					db_input("$k02_drecei",40,"",true,"text",3,"","k02_drecei");
 		echo " </td> ";
 		echo " <td>
 			   <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\">
-		   <option value=\"0\" >Escolha uma procedência</option> 
+		   <option value=\"0\" >Escolha uma procedência</option>
 			 ";
 		for($ii=0;$ii<$numrows1;$ii++){
 		  db_fieldsmemory($result1,$ii);
@@ -226,7 +226,7 @@ if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && t
 		</select>
 		  </td>
 		  <td nowrap align='left' valign='top'>";
-			 db_input("$contrec","10","",true,"text",3,"","contrec"); 
+			 db_input("$contrec","10","",true,"text",3,"","contrec");
 			 $totcontrec += $contrec;
 	  }
       echo "<tr>
@@ -243,28 +243,28 @@ if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && t
 /**//**//**//**/
 
 /********************************************************************************/
-/*   => se marcou para unificar os debitos em um unico registro na divida 
+/*   => se marcou para unificar os debitos em um unico registro na divida
         esse input guarda a data de vencimento q sera gravado na divida  */
 
   if (isset($uni) && $uni == "p"){
       echo "<b> Data do vencimento das dividas : </b>";
-      db_inputdata("dtvencuni","","","",true,'text',1,"js_validadata();"); 
+      db_inputdata("dtvencuni","","","",true,'text',1,"js_validadata();");
   }
 /*********************************************************************************/
   db_input("uni",40,"0",true,"hidden",3);
   db_input("chave_origem",40,"0",true,"hidden",3);
   db_input("chave_destino",40,"0",true,"hidden",3);
   db_input("cod_k02_codigo",40,"0",true,"hidden",3);
-  db_input("cod_v03_codigo",40,"0",true,"hidden",3); 
-  
-  db_input("codreceita",40,"0",true,"hidden",3); 
-  db_input("tipodata",40,"0",true,"hidden",3); 
-  db_input("sub",40,"0",true,"hidden",3);   
+  db_input("cod_v03_codigo",40,"0",true,"hidden",3);
+
+  db_input("codreceita",40,"0",true,"hidden",3);
+  db_input("tipodata",40,"0",true,"hidden",3);
+  db_input("sub",40,"0",true,"hidden",3);
   db_input("txt_where",40,"0",true,"hidden",3);
   db_input("txt_inner",40,"0",true,"hidden",3);
 //  db_msgbox($sub);
   if(isset($sub) && $sub == 'f'){
-	  db_input("procreg",40,"0",true,"hidden",3); 
+	  db_input("procreg",40,"0",true,"hidden",3);
   }
   echo "<script>parent.document.getElementById('process').style.visibility='hidden';</script>";
 /*echo"<script>
@@ -278,7 +278,7 @@ if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && t
 ?>
       </table>
       </form>
-	  
+
       </center>
     </td>
   </tr>
@@ -294,14 +294,14 @@ function js_troca(){
   cont=0;
   for(i=0;i<document.form1.length;i++){
     if(document.form1.elements[i].type=="select-one"){
-      if(document.form1.elements[i].value!=0){	
+      if(document.form1.elements[i].value!=0){
         codigo += vir+document.form1.elements[i].value;
         codreceit += vir+document.form1.elements[i-2].value;
         vir=',';
 		pass = 't';
       }else{
 		cont++;
-      }      
+      }
     }
   }
   if(pass=='t'){
@@ -316,10 +316,10 @@ function js_validadata(){
 //   alert("entrou");
    if (document.form1.dtvencuni_dia == '' || document.form1.dtvencuni_mes == '' || document.form1.dtvencuni_ano == '' ){
         alert("preencha a data!!");
-   } 
+   }
 }
 </script>
-<?
+<?php
 
 /*************************************************************************************************************************/
 /*************************   A Q U I   I M P O R T A   O S   R E G I S T R O S   *****************************************/
@@ -334,16 +334,16 @@ if(isset($procreg) && $procreg == 't'){
 //  db_msgbox($uni);
     if (isset($uni) && $uni == "p"){
 //      db_msgbox("uni == p");
-        $ek00_numpar = "";  
-        $andnumpar  = "";  
+        $ek00_numpar = "";
+        $andnumpar  = "";
         $excnumpar  = "";
     	$dtvencunidiv = $dtvencuni_ano."-".$dtvencuni_mes."-".$dtvencuni_dia;
     }else{
-    	$ek00_numpar = " k00_numpar, "; 
+    	$ek00_numpar = " k00_numpar, ";
         $andnumpar  = ' and k00_numpar = $k00_numpar ';
-        $excnumpar  = ' and k00_numpar = $k00_numpar_exc '; 
-    }                                                      
-                                                           
+        $excnumpar  = ' and k00_numpar = $k00_numpar_exc ';
+    }
+
 /******************************************************************/
 
 //  db_msgbox($dtvencunidiv);
@@ -355,7 +355,7 @@ if(isset($procreg) && $procreg == 't'){
 					     sum(k00_valor) as val
 				     from ($subsql) as x
 					  inner join arrecad on arrecad.k00_numpre = x.k00_numpre
-				      $txt_inner	
+				      $txt_inner
 				  where 1=1 $venc $wherereceita ".(isset($txt_where)&&$txt_where!=""?$txt_where:"")."
 				  group by x.k00_numpre,
 				           $ek00_numpar
@@ -367,48 +367,48 @@ if(isset($procreg) && $procreg == 't'){
     $result_pesq_divida = db_query($sql_pesq);
     $numrows = pg_numrows($result_pesq_divida);
     if (isset($numrows) && $numrows == 0 ){
-	 db_msgbox("Nenhum registro para o filtro selecionado !");	
+	 db_msgbox("Nenhum registro para o filtro selecionado !");
     }
-    $codigo_k02 = split(",",$codreceita);
-    $codigo_v03 = split(",",$cod_v03_codigo);
+    $codigo_k02 =explode(",",$codreceita);
+    $codigo_v03 =explode(",",$cod_v03_codigo);
     $sqlerro=false;
-   
+
     db_inicio_transacao();
-    $numpre_par_rec = "";  
+    $numpre_par_rec = "";
     echo "<script>document.getElementById('filtro').style.visibility='hidden';</script>";
     $perc100 = $numrows / 100;
     $percatual = 0;
     $perc = $perc100;
-	
-//////////////////// GRAVA O LOTE DE IMPORTAÇÃO DE DIVIDA  (TABELA divimporta) ////////////////////////    
+
+//////////////////// GRAVA O LOTE DE IMPORTAÇÃO DE DIVIDA  (TABELA divimporta) ////////////////////////
    $cldivimporta->v02_usuario    =  db_getsession("DB_id_usuario");
-   $cldivimporta->v02_data       =  date("Y-m-d",db_getsession("DB_datausu")); 
-   $cldivimporta->v02_hora       =  db_hora(); 
-   $cldivimporta->incluir(null); 
+   $cldivimporta->v02_data       =  date("Y-m-d",db_getsession("DB_datausu"));
+   $cldivimporta->v02_hora       =  db_hora();
+   $cldivimporta->incluir(null);
    if($cldivimporta->erro_status=='0'){
 	  $erro_msg = $cldivimporta->erro_msg."--- Inclusão divimporta";
       $sqlerro=true;
    }
-/////////////////////////////////////////////////////////////////////////////////////   
+/////////////////////////////////////////////////////////////////////////////////////
     for($i=0;$i<$numrows;$i++){
 //    echo "Processando registro ".($i+1)." de $numrows<BR>";
       db_fieldsmemory($result_pesq_divida,$i,true);
-      $rsArrecad = db_query(" select * from arrecad 
-                                 where k00_numpre = $k00_numpre 
+      $rsArrecad = db_query(" select * from arrecad
+                                 where k00_numpre = $k00_numpre
 				   ".(isset($$andnumpar)&&$$andnumpar!=""?$$andnumpar:"")."
-				   and k00_receit = $k00_receit 
+				   and k00_receit = $k00_receit
 				   and k00_valor > 0 limit 1 ");
       db_fieldsmemory($rsArrecad,0,true);
 //    db_criatabela($rsArrecad);
 //    exit;
-      
+
       if ($perc++ >= $perc100) {
 		  echo "<script>termo($percatual, 100);</script>";
 		  flush();
 		  $percatual++;
 		  $perc = 0;
       }
-       
+
   for($ii=0;$ii<sizeof($codigo_v03);$ii++){
 	$cod_k02_codigo = $codigo_k02[$ii];
 	$cod_v03_codigo = $codigo_v03[$ii];
@@ -464,7 +464,7 @@ if(isset($procreg) && $procreg == 't'){
 	  $cldivida->v01_livro   =  "";
 	  $cldivida->v01_folha   =  "";
 
-	  $dt_venc=split("/",$k00_dtvenc);
+	  $dt_venc= explode("/",$k00_dtvenc);
 	  $dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
 //	  $cldivida->v01_dtvenc  = $dt_venc_data;
 	  if (isset($uni) && $uni == 'p'){
@@ -473,12 +473,12 @@ if(isset($procreg) && $procreg == 't'){
 	     $cldivida->v01_dtvenc  = $dt_venc_data;
 	  }
 //	  die($cldivida->v01_dtvenc);
-	  $dt_oper=split("/",$k00_dtoper);
+	  $dt_oper= explode("/",$k00_dtoper);
 	  $dt_oper_data = $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
 	  $cldivida->v01_dtoper  = $dt_oper_data;
 	  $cldivida->v01_valor   = $val;
-	  
-	  $sqlcoddiv = "select nextval('divida_v01_coddiv_seq') as v01_coddiv"; 
+
+	  $sqlcoddiv = "select nextval('divida_v01_coddiv_seq') as v01_coddiv";
 	  $resultcoddiv = db_query($sqlcoddiv) or die($sqlcoddiv);
 	  db_fieldsmemory($resultcoddiv,0);
       $cldivida->incluir(null);
@@ -488,13 +488,13 @@ if(isset($procreg) && $procreg == 't'){
   	    $sqlerro=true;
   	    break;
   }
-  
+
 /*****  G R A V A   O S   R E G I S T R O S   Q   F O R A M   I M P O R T A D O S,   N A   D I V I M P O R T A R E G  *******/
 
 	 if($sqlerro==false){
        $cldivimportareg->v04_divimporta = $cldivimporta->v02_divimporta;
 	   $cldivimportareg->v04_coddiv     = $cldivida->v01_coddiv;
-	   $cldivimportareg->incluir();  
+	   $cldivimportareg->incluir();
 	   if($cldivimportareg->erro_status=='0'){
           $erro_msg = $cldivimportaerg->erro_msg."--- Inclusão divimportareg";
 	      $sqlerro=true;
@@ -503,7 +503,7 @@ if(isset($procreg) && $procreg == 't'){
 	 }
 
 /**************************************************************************************************************************/
-	   
+
 	  if($sqlerro==false){
 	    if($sqlerro==false){
 	      $cldivold->k10_coddiv=$cldivida->v01_coddiv;
@@ -511,14 +511,14 @@ if(isset($procreg) && $procreg == 't'){
 	      $cldivold->k10_numpar=$k00_numpar;
 	      $cldivold->k10_receita=$k00_receit;
   	      $cldivold->incluir(null);
-  	      if($cldivold->erro_status==0){	    
+  	      if($cldivold->erro_status==0){
   	        $sqlerro=true;
   	        $erro_msg = $cldivold->erro_msg."--- Inclusão DIVOLD";
   	        break;
   	      }
 	    }
-		
-//*****************************   A Q U I   F A Z   A   M A O   D O    A R R E C A D  **************************************// 
+
+//*****************************   A Q U I   F A Z   A   M A O   D O    A R R E C A D  **************************************//
 
 	    if($sqlerro==false){
 	      $k00_hist_arrecad = $k00_hist;
@@ -527,17 +527,17 @@ if(isset($procreg) && $procreg == 't'){
 //	      db_criatabela($result_pes_proced);exit;
 	      $v03_hist = $k00_hist;
 	      $k00_hist = $k00_hist_arrecad;
-	      
+
 	      $clarrecad->k00_numpre = $numpre_novo;
 	      if (isset($uni) && $uni == 'p'){
 			  $clarrecad->k00_numpar = 1;
 	          $clarrecad->k00_numtot = 1;
 	          $clarrecad->k00_dtvenc = $dtvencunidiv;
-	      }else{ 
+	      }else{
 			  $clarrecad->k00_numpar = $k00_numpar;
               $clarrecad->k00_numtot = $k00_numtot;
 	          $clarrecad->k00_dtvenc = $dt_venc_data;
-          }		  
+          }
 	      $clarrecad->k00_numcgm = $k00_numcgm;
 	      $clarrecad->k00_dtoper = $dt_oper_data;
 	      $clarrecad->k00_receit = $v03_receit;
@@ -579,14 +579,14 @@ if(isset($procreg) && $procreg == 't'){
 				$k00_tipojm = (int) $k00_tipojm;
 				$clarreold->k00_tipojm = "$k00_tipojm";
 				$clarreold->incluir();
-				if($clarreold->erro_status==0){	    
+				if($clarreold->erro_status==0){
 				  $sqlerro=true;
 				  $erro_msg = $clarreold->erro_msg."--- Inclusão Arreold";
 				  break;
 				}
 				$clarrecad->excluir(null," k00_numpre=$k00_numpre_exc ".(isset($$excnumpar)&&$$excnumpar!=""?$$excnumpar:"")." and k00_receit=$k00_receit_exc");
-				if($clarrecad->erro_status==0){	      
-				  $sqlerro=true;	      
+				if($clarrecad->erro_status==0){
+				  $sqlerro=true;
 				  $erro_msg = $clarrecad->erro_msg."--- Exclusão Arrecad";
 				  break;
 				}
@@ -598,11 +598,11 @@ if(isset($procreg) && $procreg == 't'){
     }
     $chave_origem  = "";
     $chave_destino = "";
-/*    
+/*
   if($sqlerro==true){
-    db_msgbox("deu pau - i=".$ii);  
+    db_msgbox("deu pau - i=".$ii);
   }else{
-    db_msgbox("naun deu pau - i=".$ii);  
+    db_msgbox("naun deu pau - i=".$ii);
   }
   exit;
 */
@@ -617,7 +617,7 @@ if(isset($procreg) && $procreg == 't'){
 	        </script>";
 	  $sub = 'f';
 	}
-	
+
 //    db_query(" drop table reg_a_importar".db_getsession("DB_id_usuario").db_getsession("DB_datausu").";");
 	if($teste==true){
 	  if($erro_msg!=""){

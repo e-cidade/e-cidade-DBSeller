@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE classificacaorisco
 class cl_classificacaorisco { 
@@ -30,13 +30,13 @@ class cl_classificacaorisco {
                  sd78_cor = varchar(7) = Cor 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaorisco() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaorisco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_classificacaorisco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd78_codigo = ($this->sd78_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd78_codigo"]:$this->sd78_codigo);
        $this->sd78_descricao = ($this->sd78_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["sd78_descricao"]:$this->sd78_descricao);
@@ -57,7 +57,7 @@ class cl_classificacaorisco {
      }
    }
    // funcao para inclusao
-   function incluir ($sd78_codigo){ 
+   public function incluir ($sd78_codigo){ 
       $this->atualizacampos();
      if($this->sd78_descricao == null ){ 
        $this->erro_sql = " Campo Decrição não informado.";

@@ -59,7 +59,7 @@ $db_botao = true;
   <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInput.widget.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/widgets/Input/DBInputFoto.widget.js"></script>
-<?
+<?php
   db_app::load("strings.js, DBToogle.widget.js, dbmessageBoard.widget.js, AjaxRequest.js");
   db_app::load("estilos.css");
 ?>
@@ -79,12 +79,7 @@ $db_botao = true;
     text-align: left;
     width: 130px;
   }
-  
-  /* pega a segunda td */
-  table tr td + td{
-    
-  }
-  
+
   /* pega a terceira td */
   table tr td + td + td{
     text-align: right;
@@ -115,14 +110,14 @@ $db_botao = true;
   
 </style>
 </head>
-<body class="body-default" onload="js_carregaDadosForm(<?=$db_opcao?>);" >
-  <?
+<body class="body-default" onload="js_carregaDadosForm(<?php echo $db_opcao?>);" >
+  <?php
     include(modification("forms/db_frm_bensnovo.php"));
   ?>
 </body>
 </html>
 
-<?
+<?php
 if(isset($incluir)){
 
   if (trim(@$erro_msg)!=""){

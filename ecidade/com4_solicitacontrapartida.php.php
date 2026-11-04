@@ -100,7 +100,7 @@ if ($oDaoDotacaocontr->numrows == 0) {
         </tr>
       </thead>
       <tbody style="background-color: white;height: 200px; overflow: scroll;overflow-x: hidden">
-      <?
+      <?php
         for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
 
           $oContrapartidas = db_utils::fieldsMemory($rsContrapartidas, $iInd); 

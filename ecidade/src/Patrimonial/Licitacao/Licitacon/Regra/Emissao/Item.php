@@ -426,7 +426,8 @@ class Item extends BaseAbstract
 
         if ($nivelJulgamento == 'I' && in_array(
             $siglaModalidade,
-            array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE')
+            array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE', 'CCE', 'CCP',
+                'PCE', 'PCP')
         )) {
             return $oLicitacao->obterTipoBeneficioMicroempresaEmpresaPequenoPorte();
         }

@@ -250,7 +250,7 @@ if ( isset( $incluir ) ) {
     parent.location.href = "edu1_matricula001.php?chavepesquisa=<?=$turma?>";
     parent.db_iframe_matric.hide();
   </script>
-  <?
+  <?php
   exit;
 }
 ?>
@@ -321,7 +321,7 @@ if ( isset( $incluir ) ) {
               &nbsp;&nbsp;&nbsp;
               <select name="etapaorigem[]" id="etapaorigem">
                 <option value=""></option>
-                <?
+                <?php
                 $temequiv       = false;
                 $sSqlSerieEquiv = $clserieequiv->sql_query( "", "ed234_i_serieequiv", "", "ed234_i_serie = {$ed11_i_codigo}");
                 $result_equiv   = $clserieequiv->sql_record( $sSqlSerieEquiv );
@@ -359,7 +359,7 @@ if ( isset( $incluir ) ) {
                   }
                   ?>
                   <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                  <?
+                  <?php
                 }
                 ?>
               </select>
@@ -367,7 +367,7 @@ if ( isset( $incluir ) ) {
               <input name="codigoaluno[]" type="hidden" value="<?=$ed47_i_codigo?>">
             </td>
           </tr>
-          <?
+          <?php
           }
           ?>
           <tr>
@@ -403,7 +403,7 @@ if ( isset( $incluir ) ) {
   </div>
 </body>
 </html>
-<?
+<?php
 if ( isset( $incluir ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

@@ -1,28 +1,28 @@
 <?php
 /**
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -45,7 +45,7 @@ switch ($opcao) {
     $sigla          = 'r10_';
     $arquivo        = 'pontofs';
     $sTituloCalculo = 'Salário';
-    
+
     if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
       include_once modification("pes3_consponto021_salario.php");
       exit;
@@ -124,27 +124,27 @@ switch ($opcao) {
 }
 
 if ($opcao) {
-  
+
   $sql  = " select * from (                                                                                                 ";
   $sql .= "   select {$sigla}rubric as rubrica,                                                                             ";
   $sql .= "        case when rh27_pd = 3 then 0 else case when rh27_pd = 1 then ".$sigla."valor else 0 end end as Provento, ";
   $sql .= "        case when rh27_pd = 3 then 0 else case when rh27_pd = 2 then ".$sigla."valor else 0 end end as Desconto, ";
   $sql .= "        {$sigla}quant as quant,                                                                         ";
   $sql .= "        rh27_descr,                                                                                     ";
-  $sql .= "        {$xtipo} as tipo ,                                                                              "; 
+  $sql .= "        {$xtipo} as tipo ,                                                                              ";
   $sql .= "        case                                                                                            ";
-  $sql .= "          when rh27_pd = 3 then 'Base'                                                                  "; 
+  $sql .= "          when rh27_pd = 3 then 'Base'                                                                  ";
   $sql .= "          else case                                                                                     ";
-  $sql .= "                 when rh27_pd = 1 then 'Provento'                                                       "; 
+  $sql .= "                 when rh27_pd = 1 then 'Provento'                                                       ";
   $sql .= "	               else 'Desconto'                                                                         ";
   $sql .= "	             end                                                                                       ";
   $sql .= "        end as provdesc,                                                                                ";
   $sql .= "        rh27_pd                                                                                         ";
   $sql .= "   from {$arquivo}                                                                                      ";
   $sql .= "        inner join rhrubricas on rh27_rubric = {$sigla}rubric                                           ";
-  $sql .= "	  	                        and rh27_instit = {$sigla}instit                                           ";   
+  $sql .= "	  	                        and rh27_instit = {$sigla}instit                                           ";
   $sql .= "    where {$sigla}regist = {$matricula}                                                                 ";
-  $sql .= "      and {$sigla}anousu = {$ano}                                                                       "; 
+  $sql .= "      and {$sigla}anousu = {$ano}                                                                       ";
   $sql .= "      and {$sigla}mesusu = {$mes}                                                                       ";
   $sql .= "      and rh27_pd <> 3                                                                                  ";
   $sql .= " union                                                                                                  ";
@@ -152,7 +152,7 @@ if ($opcao) {
   $sql .= "        provento,                                                                                       ";
   $sql .= "        desconto,                                                                                       ";
   $sql .= "        0 as quant,                                                                                     ";
-  $sql .= "        'TOTAL'::varchar(40) ,                                                                          "; 
+  $sql .= "        'TOTAL'::varchar(40) ,                                                                          ";
   $sql .= "        ''::varchar(1) as tipo ,                                                                        ";
   $sql .= "        ''::varchar(10) as provdesc,                                                                    ";
   $sql .= "        '999' as rh27_pd                                                                                ";
@@ -160,8 +160,8 @@ if ($opcao) {
   $sql .= "   (select sum(case when rh27_pd = 1 then {$sigla}valor else 0 end ) as provento,                       ";
   $sql .= "           sum(case when rh27_pd = 2 then {$sigla}valor else 0 end ) as desconto                        ";
   $sql .= "   from {$arquivo}                                                                                      ";
-  $sql .= "        inner join rhrubricas on rh27_rubric = {$sigla}rubric                                           "; 
-  $sql .= "		                          and rh27_instit = {$sigla}instit                                           ";  
+  $sql .= "        inner join rhrubricas on rh27_rubric = {$sigla}rubric                                           ";
+  $sql .= "		                          and rh27_instit = {$sigla}instit                                           ";
   $sql .= "   where {$sigla}regist = $matricula                                                                    ";
   $sql .= "     and {$sigla}anousu = $ano                                                                          ";
   $sql .= "     and {$sigla}mesusu = $mes                                                                          ";
@@ -171,20 +171,20 @@ if ($opcao) {
   $sql .= "  select {$sigla}rubric as rubrica,                                                                     ";
   $sql .= "         {$sigla}valor as Provento,                                                                     ";
   $sql .= "         0 as Desconto ,                                                                                ";
-  $sql .= "         {$sigla}quant as quant,                                                                        "; 
+  $sql .= "         {$sigla}quant as quant,                                                                        ";
   $sql .= "         rh27_descr,                                                                                    ";
-  $sql .= "         {$xtipo} as tipo ,                                                                             "; 
+  $sql .= "         {$xtipo} as tipo ,                                                                             ";
   $sql .= "         case                                                                                           ";
-  $sql .= "           when rh27_pd = 3 then 'Base'                                                                 "; 
+  $sql .= "           when rh27_pd = 3 then 'Base'                                                                 ";
   $sql .= "           else case                                                                                    ";
-  $sql .= "                  when rh27_pd = 1 then 'Provento'                                                      "; 
+  $sql .= "                  when rh27_pd = 1 then 'Provento'                                                      ";
   $sql .= "  	              else 'Desconto'                                                                        ";
-  $sql .= "  	           end                                                                                       "; 
+  $sql .= "  	           end                                                                                       ";
   $sql .= "         end as provdesc,                                                                               ";
   $sql .= "         '99999' as rh27_pd                                                                             ";
   $sql .= "  from {$arquivo}                                                                                       ";
-  $sql .= "     inner join rhrubricas on rh27_rubric = {$sigla}rubric                                              "; 
-  $sql .= "		                       and rh27_instit = {$sigla}instit                                              ";  
+  $sql .= "     inner join rhrubricas on rh27_rubric = {$sigla}rubric                                              ";
+  $sql .= "		                       and rh27_instit = {$sigla}instit                                              ";
   $sql .= "    where {$sigla}regist = $matricula                                                                   ";
   $sql .= "      and {$sigla}anousu = $ano                                                                         ";
   $sql .= "      and {$sigla}mesusu = $mes                                                                         ";
@@ -255,7 +255,7 @@ function js_mostrabic_inscricao(inscricao){
 function js_relatorio(){
   jan = window.open('pes3_gerfinanc017.php?opcao=<?=$opcao?>&numcgm='+document.form1.numcgm.value+'&matricula='+document.form1.matricula.value+'&ano=<?=$ano?>&mes=<?=$mes?>&tbprev=<?=$tbprev?>','sdjklsdklsdf','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
-	  
+
 }
 
 function MM_reloadPage(init) {  //reloads the window if Nav4 resized
@@ -276,7 +276,7 @@ MM_reloadPage(true);
 <table width="100%" id="tabela-calculos" cellspacing="0">
 
 <tr>
-<?
+<?php
 if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
      <th class="borda" width="80" nowrap>Código</th>
@@ -285,13 +285,13 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" width="80" nowrap>Proventos</th>
      <th class="borda" width="80" nowrap>Descontos</th>
      <th class="borda" width="80" nowrap>Prov/Desc</th>
-    <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+    <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
        <th class="borda" style="font-size:12px" nowrap>Tipo</th>
-    <?
+    <?php
      }
      ?>
    </tr>
-<?
+<?php
 
 $cor="#F0F0F0";
     for($x=0;$x<pg_numrows($result);$x++){
@@ -301,26 +301,26 @@ $cor="#F0F0F0";
         else if($cor=="#FFF")
 	   $cor="#F0F0F0";
 	if($rubrica == 'R950'){
-	
+
 ?>
            <tr>
            <td align="center" colspan="3" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong>TOTAL<strong></td>
            <td align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($provento,'f')?></strong></td>
            <td align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($desconto,'f')?></strong></td>
            <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
            <tr>
            <td align="center" colspan="3" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong>LÍQUIDO<strong></td>
            <td colspan="2" align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($provento-$desconto,'f')?></strong></td>
            <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
-<?
+<?php
          }else{
 ?>
            <tr>
@@ -330,11 +330,11 @@ $cor="#F0F0F0";
            <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($provento,'f')?>&nbsp;</td>
            <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($desconto,'f')?>&nbsp;</td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$provdesc?>&nbsp;</td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
-<?
+<?php
         }
     }
 
@@ -347,7 +347,7 @@ $cor="#F0F0F0";
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php
 
 $cor="#EFE029";
     $tot_base_sal = 0;
@@ -383,7 +383,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_novod,'f')?></td>
 	</tr>
 
-<?
+<?php
    }
 ?>
         <tr>
@@ -407,7 +407,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
 	</tr>
-<?
+<?php
 }elseif ($opcao == 'irf'){
 ?>
      <th class="borda" style="font-size:12px" nowrap>Código</th>
@@ -417,7 +417,7 @@ $cor="#EFE029";
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php
 
 $cor="#EFE029";
     $tot_base_sal = 0;
@@ -453,7 +453,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_novod,'f')?></td>
 	</tr>
 
-<?
+<?php
    }
 ?>
         <tr>
@@ -477,7 +477,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
 	</tr>
-<?
+<?php
 
 }
 
@@ -499,13 +499,13 @@ $cor="#EFE029";
    */
    parent.document.getElementById('tituloFolha').innerHTML = "<?=$sTituloCalculo?>";
 
-   function js_alteraTamanho() {      
-      
+   function js_alteraTamanho() {
+
       var body = document.body,
           html = document.documentElement;
 
-      
-  
+
+
       parent.document.getElementById('calculoFolha').style.height = html.scrollHeight + 'px';
       parent.iframeLoaded();
    }

@@ -47,6 +47,7 @@ final class MAI implements DeparaInterface
     {
         $this->aFundamentacoes = array(
           'A78III',
+          '13303A31P4',
           'OUT'
         );
     }

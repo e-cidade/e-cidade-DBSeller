@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,55 +51,55 @@ $clprocavaliacao  = new cl_procavaliacao;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <SCRIPT LANGUAGE="JavaScript">
- team = new Array(
- <?
- # Seleciona todos os calendario
- $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
- $sql       .= "  FROM calendario ";
- $sql       .= "   inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
- $sql       .= "  WHERE ed38_i_escola = $escola ";
- $sql       .= "  AND ed52_c_passivo = 'N' ";
- $sql       .= "  ORDER BY ed52_i_ano DESC ";
- $sql_result = db_query($sql);
- $num        = pg_num_rows($sql_result);
- $conta      = "";
- while ($row=pg_fetch_array($sql_result)) {
-   $conta     = $conta+1;
-   $cod_curso = $row["ed52_i_codigo"];
-   echo "new Array(\n";
-   $sub_sql    = " SELECT DISTINCT ed29_i_codigo,ed29_c_descr ";
-   $sub_sql   .= "  FROM cursoedu ";
-   $sub_sql   .= "   inner join base on ed31_i_curso = ed29_i_codigo ";
-   $sub_sql   .= "   inner join turma on ed57_i_base = ed31_i_codigo ";
-   $sub_sql   .= "   inner join matricula on ed60_i_turma = ed57_i_codigo ";
-   $sub_sql   .= "  WHERE ed57_i_escola = $escola ";
-   $sub_sql   .= "  AND ed57_i_calendario = $cod_curso ";
-   $sub_sql   .= "  ORDER BY ed29_i_codigo ASC ";
-   $sub_result = db_query($sub_sql);
-   $num_sub = pg_num_rows($sub_result);
-   if ($num_sub >= 1) {
-     # Se achar alguma base para o curso, marca a palavra Todas
-     echo "new Array(\"\", ''),\n";
-     echo "new Array(\"TODOS\", 'T'),\n";
-     $conta_sub = "";
-     while ($rowx = pg_fetch_array($sub_result)) {
-       $codigo_serie = $rowx["ed29_i_codigo"];
-       $serie_nome   = $rowx["ed29_c_descr"];
-       $conta_sub    = $conta_sub+1;
-       if ($conta_sub == $num_sub) {
-         echo "new Array(\"$serie_nome\", $codigo_serie)\n";
-         $conta_sub = "";
-       }else{
-         echo "new Array(\"$serie_nome\", $codigo_serie),\n";
-       }
-     }
-   }else{
-     #Se nao achar serie para o curso selecionado...
-     echo "new Array(\"Nenhuma turma neste calendário\", '')\n";
-   }
-   if ($num>$conta){
-     echo "),\n";
-   }
+team = new Array(
+<?php
+# Seleciona todos os calendario
+$sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
+$sql       .= "  FROM calendario ";
+$sql       .= "   inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
+$sql       .= "  WHERE ed38_i_escola = $escola ";
+$sql       .= "  AND ed52_c_passivo = 'N' ";
+$sql       .= "  ORDER BY ed52_i_ano DESC ";
+$sql_result = db_query($sql);
+$num        = pg_num_rows($sql_result);
+$conta      = "";
+while ($row=pg_fetch_array($sql_result)) {
+  $conta     = $conta+1;
+  $cod_curso = $row["ed52_i_codigo"];
+  echo "new Array(\n";
+  $sub_sql    = " SELECT DISTINCT ed29_i_codigo,ed29_c_descr ";
+  $sub_sql   .= "  FROM cursoedu ";
+  $sub_sql   .= "   inner join base on ed31_i_curso = ed29_i_codigo ";
+  $sub_sql   .= "   inner join turma on ed57_i_base = ed31_i_codigo ";
+  $sub_sql   .= "   inner join matricula on ed60_i_turma = ed57_i_codigo ";
+  $sub_sql   .= "  WHERE ed57_i_escola = $escola ";
+  $sub_sql   .= "  AND ed57_i_calendario = $cod_curso ";
+  $sub_sql   .= "  ORDER BY ed29_i_codigo ASC ";
+  $sub_result = db_query($sub_sql);
+  $num_sub = pg_num_rows($sub_result);
+  if ($num_sub >= 1) {
+    # Se achar alguma base para o curso, marca a palavra Todas
+    echo "new Array(\"\", ''),\n";
+    echo "new Array(\"TODOS\", 'T'),\n";
+    $conta_sub = "";
+    while ($rowx = pg_fetch_array($sub_result)) {
+      $codigo_serie = $rowx["ed29_i_codigo"];
+      $serie_nome   = $rowx["ed29_c_descr"];
+      $conta_sub    = $conta_sub+1;
+      if ($conta_sub == $num_sub) {
+        echo "new Array(\"$serie_nome\", $codigo_serie)\n";
+        $conta_sub = "";
+      } else {
+        echo "new Array(\"$serie_nome\", $codigo_serie),\n";
+      }
+    }
+  } else {
+    #Se nao achar serie para o curso selecionado...
+    echo "new Array(\"Nenhuma turma neste calendário\", '')\n";
+  }
+  if ($num>$conta) {
+    echo "),\n";
+  }
 }
 echo ")\n";
 echo ");\n";
@@ -130,7 +130,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     document.form1.subgrupo.disabled = false;
   }
   document.form1.procurar.disabled = true;
-<?if (isset($curso)) {?>
+<?php if (isset($curso)) {?>
     qtd = document.form1.alunosdiario.length;
     for (i = 0; i < qtd; i++) {
       document.form1.alunosdiario.options[0] = null;
@@ -139,7 +139,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     for (i = 0; i < qtd; i++) {
       document.form1.alunos.options[0] = null;
     }
-<?}?>
+<?php }?>
 }
 function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
   var i, j;
@@ -161,19 +161,19 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null){
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?if (isset($curso)) {?>
+    <?php if (isset($curso)) {?>
         if ('<?=trim($curso)?>' == itemArray[i][1]) {
           indice = i;
         }
-    <?}?>
+    <?php }?>
       j++;
     }
-  <?if (isset($curso)) {?>
+  <?php if (isset($curso)) {?>
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled = false;
-  <?} else {?>
+  <?php } else {?>
       selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
     document.form1.subgrupo.disabled = false;
   }
 }
@@ -186,41 +186,41 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Lista das Turmas (Fixa)</b></legend>
 <table border="0" align="left">
- <tr>
-  <td colspan="3">
-   <table border="0" align="left">
-    </tr>
-     <td>
-      <b>Selecione o Calendário:</b><br>
-      <select name="grupo" 
-              onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
-              style="font-size:9px;width:200px;height:18px;">
-       <option></option>
-       <?
-       #Seleciona todos os grupos para setar os valores no combo
-       $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
-       $sql       .= "  FROM calendario ";
-       $sql       .= "   inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
-       $sql       .= "  WHERE ed38_i_escola = $escola ";
-       $sql       .= "  AND ed52_c_passivo = 'N' ";
-       $sql       .= "  ORDER BY ed52_i_ano DESC ";
-       $sql_result = db_query($sql);
-       while($row = pg_fetch_array($sql_result)) {
-         $cod_curso  = $row["ed52_i_codigo"];
-         $desc_curso = $row["ed52_c_descr"];
-         ?>
-         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-         <?
-       }
-       #Popula o segundo combo de acordo com a escolha no primeiro
-       ?>
-      </select>
-     </td>
-     <td>
+  <tr>
+    <td colspan="3">
+      <table border="0" align="left">
+  </tr>
+  <td>
+    <b>Selecione o Calendário:</b><br>
+    <select name="grupo" 
+            onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));"
+            style="font-size:9px;width:200px;height:18px;">
+    <option></option>
+    <?php
+      #Seleciona todos os grupos para setar os valores no combo
+      $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
+      $sql       .= "  FROM calendario ";
+      $sql       .= "   inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
+      $sql       .= "  WHERE ed38_i_escola = $escola ";
+      $sql       .= "  AND ed52_c_passivo = 'N' ";
+      $sql       .= "  ORDER BY ed52_i_ano DESC ";
+      $sql_result = db_query($sql);
+      while($row = pg_fetch_array($sql_result)) {
+        $cod_curso  = $row["ed52_i_codigo"];
+        $desc_curso = $row["ed52_c_descr"];
+        ?>
+        <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
+        <?php
+      }
+      #Popula o segundo combo de acordo com a escolha no primeiro
+      ?>
+    </select>
+    </td>
+    <td>
       <b>Selecione o Curso:</b><br>
       <select name="subgrupo" style="font-size:9px;width:200px;height:18px;" disabled onchange="js_botao(this.value);">
        <option value=""></option>
@@ -233,39 +233,38 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
     </tr>
    </table>
   </td>
- </tr>
- <?if (isset($curso)) {
- 	
-     if ($curso == "T") {
-       $where = " AND ed57_i_calendario = $calendario";
-     } else {
-       $where = " AND ed57_i_calendario = $calendario AND ed31_i_curso = $curso";
-     }?>
-     <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
-     <tr>
+</tr>
+<?php if (isset($curso)) {
+    if ($curso == "T") {
+      $where = " AND ed57_i_calendario = $calendario";
+    } else {
+      $where = " AND ed57_i_calendario = $calendario AND ed31_i_curso = $curso";
+    }?>
+    <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
+    <tr>
       <td valign="top">
-       <?
-         $sql    = " SELECT DISTINCT ed220_i_codigo,ed57_c_descr,ed31_i_curso,ed11_c_descr ";
-         $sql   .= "  FROM turma ";
-         $sql   .= "   inner join matricula on ed60_i_turma = ed57_i_codigo ";
-         $sql   .= "   inner join turmaserieregimemat on ed220_i_turma = ed57_i_codigo ";
-         $sql   .= "   inner join serieregimemat on ed223_i_codigo = ed220_i_serieregimemat ";
-         $sql   .= "   inner join serie on ed11_i_codigo = ed223_i_serie ";
-         $sql   .= "   inner join matriculaserie on ed221_i_matricula = ed60_i_codigo ";
-         $sql   .= "   and ed221_i_serie = ed223_i_serie ";
-         $sql   .= "   inner join base on ed31_i_codigo = ed57_i_base ";
-         $sql   .= "  WHERE ed57_i_escola = $escola ";
-         $sql   .= "  AND ed221_c_origem = 'S' ";
-         $sql   .= "  $where ";
-         $sql   .= "  ORDER BY ed57_c_descr,ed11_c_descr ";          
-         $result = db_query($sql);
-         echo pg_errormessage();
-         $linhas = pg_num_rows($result);
-       ?>
+      <?php
+        $sql    = " SELECT DISTINCT ed220_i_codigo,ed57_c_descr,ed31_i_curso,ed11_c_descr ";
+        $sql   .= "  FROM turma ";
+        $sql   .= "   inner join matricula on ed60_i_turma = ed57_i_codigo ";
+        $sql   .= "   inner join turmaserieregimemat on ed220_i_turma = ed57_i_codigo ";
+        $sql   .= "   inner join serieregimemat on ed223_i_codigo = ed220_i_serieregimemat ";
+        $sql   .= "   inner join serie on ed11_i_codigo = ed223_i_serie ";
+        $sql   .= "   inner join matriculaserie on ed221_i_matricula = ed60_i_codigo ";
+        $sql   .= "   and ed221_i_serie = ed223_i_serie ";
+        $sql   .= "   inner join base on ed31_i_codigo = ed57_i_base ";
+        $sql   .= "  WHERE ed57_i_escola = $escola ";
+        $sql   .= "  AND ed221_c_origem = 'S' ";
+        $sql   .= "  $where ";
+        $sql   .= "  ORDER BY ed57_c_descr,ed11_c_descr ";          
+        $result = db_query($sql);
+        echo pg_errormessage();
+        $linhas = pg_num_rows($result);
+      ?>
       <b>Turmas:</b><br>
-     <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
-             style="font-size:9px;width:330px;height:120px" multiple>
-    <?
+      <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
+            style="font-size:9px;width:330px;height:120px" multiple>
+    <?php
     for ($i = 0; $i < $linhas; $i++) {
     	
       db_fieldsmemory($result,$i);
@@ -325,41 +324,41 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
   </td>
  </tr>
   </td>
- </tr>
- <tr>
-   <td colspan="3">
-   <b>Mostrar somente alunos ativos (Matriculados)</b>:
-   <select name="active">
-    <option value="SIM">SIM</option>
-    <option value="NAO" selected>NÃO</option>
-   </select>
-   <br>
-   </td>
- </tr>
- <tr>
-   <td>
-     <b>Exibir Trocas de Turma:</b><br/>
-     <select id='trocaTurma' name='trocaTurma' style="font-size:9px;width:200px;height:18px;">
-       <option value="1" selected="selected">Não</option>
-       <option value="2">Sim</option>
-     </select>
-   </td>
- </tr>
- <tr>
-   <td align="center" colspan="3">
-    <input name="pesquisar" type="button" id="pesquisar" value="Processar" 
-           onclick="js_pesquisa(document.form1.subgrupo.value);" disabled>
-    <br><br>
-    <input type="hidden" name="base" value="<?=isset( $base ) ? $base : ""?>">
-    <input type="hidden" name="curso" value="<?=isset( $curso ) ? $curso : ""?>">
-   </td>
   </tr>
- <?}?>
+  <tr>
+    <td colspan="3">
+      <b>Mostrar somente alunos ativos (Matriculados)</b>:
+      <select name="active">
+        <option value="SIM">SIM</option>
+        <option value="NAO" selected>NÃO</option>
+      </select>
+      <br>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Exibir Trocas de Turma:</b><br/>
+      <select id='trocaTurma' name='trocaTurma' style="font-size:9px;width:200px;height:18px;">
+        <option value="1" selected="selected">Não</option>
+        <option value="2">Sim</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">
+      <input name="pesquisar" type="button" id="pesquisar" value="Processar" 
+              onclick="js_pesquisa(document.form1.subgrupo.value);" disabled>
+      <br><br>
+      <input type="hidden" name="base" value="<?=isset( $base ) ? $base : ""?>">
+      <input type="hidden" name="curso" value="<?=isset( $curso ) ? $curso : ""?>">
+    </td>
+  </tr>
+<?php }?>
 </table>
 </fieldset>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
@@ -372,21 +371,17 @@ function js_incluir() {
   for (x = 0; x < Tam; x++) {
 	  
     if (F.alunosdiario.options[x].selected == true) {
-         
       F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunosdiario.options[x].text,F.alunosdiario.options[x].value)
       F.alunosdiario.options[x] = null;
       Tam--;
       x--;
-      
     }
   }
   if (document.form1.alunosdiario.length > 0) {
     document.form1.alunosdiario.options[0].selected = true;
   } else {
-	  
     document.form1.incluirum.disabled = true;
     document.form1.incluirtodos.disabled = true;
-    
   }
   
   document.form1.pesquisar.disabled = false;
@@ -399,11 +394,9 @@ function js_incluirtodos() {
   var Tam = document.form1.alunosdiario.length;
   var F = document.form1;
   
-  for (i = 0; i < Tam; i++) {
-	  
+  for (i = 0; i < Tam; i++) {  
     F.elements['alunos[]'].options[F.elements['alunos[]'].options.length] = new Option(F.alunosdiario.options[0].text,F.alunosdiario.options[0].value)
     F.alunosdiario.options[0] = null;
-    
   }
   
   document.form1.incluirum.disabled    = true;
@@ -419,15 +412,12 @@ function js_excluir() {
   var F = document.getElementById("alunos");
   Tam   = F.length;
   
-  for (x = 0; x < Tam; x++) {
-	  
+  for (x = 0; x < Tam; x++) { 
     if (F.options[x].selected == true) {
-        
       document.form1.alunosdiario.options[document.form1.alunosdiario.length] = new Option(F.options[x].text,F.options[x].value);
       F.options[x] = null;
       Tam--;
-      x--;
-      
+      x--;  
     }
   }
   
@@ -439,8 +429,7 @@ function js_excluir() {
     document.form1.pesquisar.disabled    = true;
     document.form1.excluirum.disabled    = true;
     document.form1.excluirtodos.disabled = true;
-    document.form1.incluirtodos.disabled = false;
-    
+    document.form1.incluirtodos.disabled = false; 
   }
   document.form1.alunos.focus();
 }
@@ -450,30 +439,24 @@ function js_excluirtodos() {
   var Tam = document.form1.alunos.length;
   var F = document.getElementById("alunos");
   
-  for (i = 0; i < Tam; i++) {
-	  
+  for (i = 0; i < Tam; i++) {  
     document.form1.alunosdiario.options[document.form1.alunosdiario.length] = new Option(F.options[0].text,F.options[0].value);
     F.options[0] = null;
-    
   }
   
-  if (F.length == 0) {
-	  
+  if (F.length == 0) {	  
     document.form1.pesquisar.disabled    = true;
     document.form1.excluirum.disabled    = true;
     document.form1.excluirtodos.disabled = true;
     document.form1.incluirtodos.disabled = false;
-    
   }
   document.form1.alunosdiario.focus();
 }
 
 function js_desabinc() {
 	
-  for (i = 0; i < document.form1.alunosdiario.length; i++) {
-	  
-    if (document.form1.alunosdiario.length > 0 && document.form1.alunosdiario.options[i].selected) {
-        
+  for (i = 0; i < document.form1.alunosdiario.length; i++) {	  
+    if (document.form1.alunosdiario.length > 0 && document.form1.alunosdiario.options[i].selected) {      
       if (document.form1.alunos.length > 0) {
         document.form1.alunos.options[0].selected = false;
       }
@@ -487,10 +470,8 @@ function js_desabinc() {
 
 function js_desabexc() {
 	
-  for (i = 0; i < document.form1.alunos.length; i++) {
-	  
-    if (document.form1.alunos.length > 0 && document.form1.alunos.options[i].selected) {
-        
+  for (i = 0; i < document.form1.alunos.length; i++) {	  
+    if (document.form1.alunos.length > 0 && document.form1.alunos.options[i].selected) {      
       if (document.form1.alunosdiario.length > 0) {
          document.form1.alunosdiario.options[0].selected = false;
       }
@@ -509,7 +490,7 @@ function js_botao(valor) {
   } else {
     document.form1.procurar.disabled = true;
   }
-<?if (isset($curso)) {?>
+<?php if (isset($curso)) {?>
 
     qtd = document.form1.alunosdiario.length;
     for (i = 0; i < qtd; i++) {
@@ -519,7 +500,7 @@ function js_botao(valor) {
     for (i = 0; i < qtd; i++) {
       document.form1.alunos.options[0] = null;
     }
-<?}?>
+<?php }?>
 }
 
 function js_procurar(calendario,curso) {
@@ -532,11 +513,9 @@ function js_pesquisa(turma) {
   turmas = "";
   sep = "";
   
-  for (i = 0; i < F.length; i++) {
-	  
+  for (i = 0; i < F.length; i++) {	  
     turmas += sep+F.options[i].value;
-    sep = ",";
-    
+    sep = ",";   
   }
   
   var sUrl  = 'edu2_listafixa002.php?turmas='+turmas+'&active='+document.form1.active.value;
@@ -550,8 +529,7 @@ function js_pesquisa(turma) {
 function js_sobe() {
 	
   var F = document.getElementById("camposordenados");
-  if (F.selectedIndex != -1 && F.selectedIndex > 0) {
-	  
+  if (F.selectedIndex != -1 && F.selectedIndex > 0) {	  
     var SI                 = F.selectedIndex - 1;
     var auxText            = F.options[SI].text;
     var auxValue           = F.options[SI].value;
@@ -565,8 +543,7 @@ function js_sobe() {
 function js_desce() {
 	
   var F = document.getElementById("camposordenados");
-  if (F.selectedIndex != -1 && F.selectedIndex < (F.length - 1)) {
-	  
+  if (F.selectedIndex != -1 && F.selectedIndex < (F.length - 1)) {	  
     var SI                 = F.selectedIndex + 1;
     var auxText            = F.options[SI].text;
     var auxValue           = F.options[SI].value;
@@ -577,10 +554,10 @@ function js_desce() {
   }
 }
 
-<?if (!isset($curso) && pg_num_rows($sql_result) > 0) {?>
+<?php if (!isset($curso) && pg_num_rows($sql_result) > 0) {?>
 
     fillSelectFromArray2(document.form1.subgrupo,team[0]);
     document.form1.grupo.options[1].selected = true;
     
-<?}?>
+<?php }?>
 </script>

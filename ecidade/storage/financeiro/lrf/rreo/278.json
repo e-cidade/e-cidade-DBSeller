@@ -1,0 +1,374 @@
+[
+    {
+        "ordem": 1,
+        "totalizadora": true,
+        "valorManual":false,
+        "somar": [3,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,23],
+        "descricao": "RECEITAS CORRENTES (I)",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 2,
+        "totalizadora": true,
+        "valorManual":false,
+        "somar": [3,4,5,6,7], "descricao": "Impostos, Taxas e Contribuições de Melhoria",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 3,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "IPTU",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 4,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "ISS",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 5,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "ITBI",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 6,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "IRRF",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 7,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Outros Impostos, Taxas e Contribuições de Melhoria",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 8,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Contribuições",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 9,
+        "totalizadora": true,
+        "somar": [10,11],
+        "valorManual":false,
+        "descricao": "Receita Patrimonial",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 10,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Rendimentos de Aplicação Financeira",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 11,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Outras Receitas Patrimoniais",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 12,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Receita Agropecuária",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+
+    },
+    {
+        "ordem": 13,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Receita Industrial",
+        "colunas": [
+             {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 14,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Receita de Serviços",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 15,
+        "totalizadora": true,
+        "valorManual":false,
+        "somar": [16, 17, 18, 19, 20, 21, 22],
+        "descricao": "Transferências Correntes",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 16,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Cota-Parte do FPM",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 17,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Cota-Parte do ICMS",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 18,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Cota-Parte do IPVA",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 19,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Cota-Parte do ITR",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 20,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Transferências da LC 61/1989",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 21,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Transferências do FUNDEB",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 22,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Outras Transferências Correntes",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 23,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Outras Receitas Correntes",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 24,
+        "totalizadora": true,
+        "valorManual":false,
+        "somar": [25,26,27,28],
+        "descricao": "DEDUÇÕES (II)",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 25,
+        "totalizadora": false,
+        "valorManual":true, "descricao": "Contrib. do Servidor para o Plano de Previdência ",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 26,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Compensação Financ. entre Regimes Previdência",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 27,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Rendimentos de Aplicações de Recursos Previdenciários",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 28,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "Dedução de Receita para Formação do FUNDEB",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 29,
+        "totalizadora": true,
+        "valorManual":false,
+        "subtrair": [1,24],
+        "descricao": "RECEITA CORRENTE LÍQUIDA (III) = (I - II)",
+        "colunas": [
+                {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+                {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+                {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+            ]},
+    {
+        "ordem": 30,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "( - ) Transferências obrigatórias da União relativas às emendas individuais (art. 166-A, § 1º, da CF) (IV)",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 31,
+        "totalizadora": true,
+        "valorManual":false,
+        "subtrair": [29,30],
+        "descricao": "RECEITA CORRENTE LÍQUIDA AJUSTADA PARA PARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO (V) = (III - IV)",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 32,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "( - ) Transferências obrigatórias da União relativas às emendas de bancada (art. 166, § 16, da CF) (VI) ",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 33,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "( - ) Transferências da União relativas à remuneração dos agentes comunitários de saúde e de combate às endemias (CF, art. 198, §11)(VII)  ",
+        "colunas": [
+             {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]},
+    {
+        "ordem": 34,
+        "totalizadora": false,
+        "valorManual":true,
+        "descricao": "( - ) Outras Deduções Constitucionais ou Legais (VIII)",
+        "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C" },
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]
+    },
+    {
+        "ordem": 35,
+        "totalizadora": true,
+        "valorManual":false,
+        "subtrair": [31,32,33,34],
+        "descricao": "RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DA DESPESA COM PESSOAL (IX) = (V - VI - VII - VII3)",
+        "colunas": [
+                {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C" },
+                {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+                {"descricao": "Previsão Atualizada", "permiteEdicaoManual":false, "coluna": "previsao_atualizada", "natureza": "D"}
+        ]}
+]

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clbairro->rotulo->label();
 <table border="0">
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j13_codi,j13_descr";
       $cliframe_seleciona->legenda="BAIRROS";
       $cliframe_seleciona->sql=$clbairro->sql_query(""," * ", "j13_codi");

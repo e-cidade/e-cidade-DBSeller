@@ -45,10 +45,10 @@ $clrotulo = new rotulocampo;
 $oDaoAluno->rotulo->label();
 $clrotulo->label("ed61_i_aluno");
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Type" content="text/html" charset="iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <link rel="stylesheet" type="text/css" href="estilos.css">
     <link rel="stylesheet" type="text/css" href="assets/fontawesome/css/all.min.css">
@@ -70,142 +70,107 @@ $clrotulo->label("ed61_i_aluno");
     ?>
 </head>
 <body class="body-default">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td align="left" valign="top" bgcolor="#CCCCCC">
-            <center>
-                <br></br>
-                <form name="form1" method="post" action="">
-                    <table>
-                        <tr>
-                            <td nowrap title="<?= @$Ted47_i_codigo ?>">
-                                <?php
-                                db_ancora(@$Led61_i_aluno, "js_pesquisaed47_i_codigo(true);", $db_opcao);
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                db_input('ed47_i_codigo', 10, @$Ied47_i_codigo, true, 'text', 3);
-                                db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3);
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <input type="button"
-                                       id='impHistorico'
-                                       name='impHistorico'
-                                       value='Emitir Histórico Escolar'
-                                       onclick='js_emiteHistorico()'
-                                       disabled="disabled"/>
-                                <input type="button"
-                                       id='impCertificado'
-                                       name='impCertificado'
-                                       value='Emitir Certificado de Conclusão'
-                                       onclick='js_emiteCertificado()'
-                                       disabled="disabled"/>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-                <fieldset style="width:99%;padding:0px;">
-                    <legend><b>Histórico do Aluno</b></legend>
-                    <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                        <tr>
-                            <td valign="top" width="42%">
-                                <iframe
-                                    src="edu1_historicoarvore.php?ed61_i_aluno=<?= @$ed47_i_codigo ?>&ed47_v_nome=<?= @$ed47_v_nome ?>"
-                                    name="arvore"
-                                    id="arvore"
-                                    width="99%"
-                                    height="230"
-                                    frameborder="1"
-                                    marginwidth="0"
-                                    leftmargin="0"
-                                    topmargin="0"></iframe>
-                                <br>
-                                <iframe src=""
-                                        name="disciplina"
-                                        id="disciplina"
-                                        width="99%"
-                                        height="230"
-                                        frameborder="1"
-                                        marginwidth="0"
-                                        leftmargin="0"
-                                        topmargin="0"></iframe>
-                            </td>
-                            <td align="right" valign="top">
-                                <iframe src=""
-                                        name="dados"
-                                        id="dados"
-                                        width="99%"
-                                        height="462"
-                                        frameborder="1"
-                                        marginwidth="0"
-                                        leftmargin="0"
-                                        topmargin="0"></iframe>
-                            </td>
-                        </tr>
-                    </table>
-                </fieldset>
-            </center>
-        </td>
-    </tr>
-</table>
-<form name="hist" method="post" action="">
-    <?php
-    db_input('ed47_i_codigo', 10, @$ed47_i_codigo, true, 'hidden', $db_opcao);
-    db_input('ed47_v_nome', 100, @$ed47_v_nome, true, 'hidden', $db_opcao);
-    ?>
-</form>
-<div id="ctnLancamentoArea" style="display: none">
-    <div class="container">
-        <fieldset>
-            <legend>
-                <b>Lançamento de Areas de Conhecimento da Etapa</b>
-            </legend>
-            <input type="hidden" id="iTipoHistorico">
-            <input type="hidden" id="codigoHistoricoEtapa">
-            <input type="hidden" id="codigoHistoricoArea">
-            <table class="form-container">
-                <tr>
-                    <td>
-                        <label id="ancoraArea" for="codigoArea">Áreas de Conhecimento:</label>
-                    </td>
-                    <td>
-                        <input id="codigoArea" type="text">
-                        <input id="descricaoArea" type="text">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Aproveitamento:</td>
-                    <td>
-                        <input id="resultadoObtidoArea" type="text">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Resultado Final:</td>
-                    <td>
-                        <select name="resultadoFinalArea" id="resultadoFinalArea">
-                            <option value="A">Aprovado</option>
-                            <option value="R">Reprovado</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <button type="button" id="salvar"><i class="fa fa-save"></i> Salvar</button>
-        <button type="button" id="limpar"><i class="fa fa-eraser"></i> Limpar</button>
-        <br>
-        <fieldset>
-            <legend class="separator">Areas de Conhecimento</legend>
-            <div id="gridAreas"></div>
-        </fieldset>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="left" valign="top" bgcolor="#CCCCCC">
+                <center>
+                    <br></br>
+                    <form name="form1" method="post" action="">
+                        <table>
+                            <tr>
+                                <td nowrap title="<?= @$Ted47_i_codigo ?>">
+                                    <?php
+                                    db_ancora(@$Led61_i_aluno, "js_pesquisaed47_i_codigo(true);", $db_opcao);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    db_input('ed47_i_codigo', 10, @$Ied47_i_codigo, true, 'text', 3);
+                                    db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3);
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="button" id='impHistorico' name='impHistorico' value='Emitir Histórico Escolar' onclick='js_emiteHistorico()' disabled="disabled" />
+                                    <input type="button" id='impCertificado' name='impCertificado' value='Emitir Certificado de Conclusão' onclick='js_emiteCertificado()' disabled="disabled" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <fieldset style="width:99%;padding:0px;">
+                        <legend><b>Histórico do Aluno</b></legend>
+                        <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                            <tr>
+                                <td valign="top" width="42%">
+                                    <iframe src="edu1_historicoarvore.php?ed61_i_aluno=<?= @$ed47_i_codigo ?>&ed47_v_nome=<?= @$ed47_v_nome ?>" name="arvore" id="arvore" width="99%" height="230" frameborder="1" marginwidth="0" leftmargin="0" topmargin="0"></iframe>
+                                    <br>
+                                    <iframe src="" name="disciplina" id="disciplina" width="99%" height="230" frameborder="1" marginwidth="0" leftmargin="0" topmargin="0"></iframe>
+                                </td>
+                                <td align="right" valign="top">
+                                    <iframe src="" name="dados" id="dados" width="99%" height="462" frameborder="1" marginwidth="0" leftmargin="0" topmargin="0"></iframe>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <form name="hist" method="post" action="">
+        <?php
+        db_input('ed47_i_codigo', 10, @$ed47_i_codigo, true, 'hidden', $db_opcao);
+        db_input('ed47_v_nome', 100, @$ed47_v_nome, true, 'hidden', $db_opcao);
+        ?>
+    </form>
+    <div id="ctnLancamentoArea" style="display: none">
+        <div class="container">
+            <fieldset>
+                <legend>
+                    <b>Lançamento de Areas de Conhecimento da Etapa</b>
+                </legend>
+                <input type="hidden" id="iTipoHistorico">
+                <input type="hidden" id="codigoHistoricoEtapa">
+                <input type="hidden" id="codigoHistoricoArea">
+                <table class="form-container">
+                    <tr>
+                        <td>
+                            <label id="ancoraArea" for="codigoArea">Áreas de Conhecimento:</label>
+                        </td>
+                        <td>
+                            <input id="codigoArea" type="text">
+                            <input id="descricaoArea" type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Aproveitamento:</td>
+                        <td>
+                            <input id="resultadoObtidoArea" type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Resultado Final:</td>
+                        <td>
+                            <select name="resultadoFinalArea" id="resultadoFinalArea">
+                                <option value="A">Aprovado</option>
+                                <option value="R">Reprovado</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <button type="button" id="salvar"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" id="limpar"><i class="fa fa-eraser"></i> Limpar</button>
+            <br>
+            <fieldset>
+                <legend class="separator">Areas de Conhecimento</legend>
+                <div id="gridAreas"></div>
+            </fieldset>
+        </div>
     </div>
-</div>
 </body>
 </html>
-<? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
 <script language="JavaScript" type="text/javascript" src="scripts/session.js"></script>
 <script>
     const ctnLancamentoArea = document.getElementById('ctnLancamentoArea');
@@ -223,27 +188,41 @@ $clrotulo->label("ed61_i_aluno");
     const MENSAGENS_MANUTENCAO_HISTORICO_000 = 'educacao.escola.edu_historico000.';
     var sUrlRPC = 'edu4_historicoaluno.RPC.php';
 
-    new DBLookUp(ancoraArea, codigoArea, descricaoArea,
-        {
-            'sArquivo': 'func_areaconhecimento.php',
-            "sObjetoLookUp": "db_iframe_areaconhecimento",
-            'sLabel': 'Pesquisa de Areas de Conhecimento',
-            'zIndex': '11000',
-            'aCamposAdicionais': ['ed293_sequencial', 'ed293_descr'],
-            'fCallBack': js_retornaPesquisaAreaDeConhecimento
-        }
-    );
+    new DBLookUp(ancoraArea, codigoArea, descricaoArea, {
+        'sArquivo': 'func_areaconhecimento.php',
+        "sObjetoLookUp": "db_iframe_areaconhecimento",
+        'sLabel': 'Pesquisa de Areas de Conhecimento',
+        'zIndex': '11000',
+        'aCamposAdicionais': ['ed293_sequencial', 'ed293_descr'],
+        'fCallBack': js_retornaPesquisaAreaDeConhecimento
+    });
 
     var collectionAreasConhecimento = new Collection().setId('codigo');
     var gridAreasConhecimento = new DatagridCollection(collectionAreasConhecimento).configure({
         order: false,
-         height: 250
+        height: 250
     });
 
-    gridAreasConhecimento.addColumn('codigo', {label: "Código", width: '50px', align: 'center'});
-    gridAreasConhecimento.addColumn('descricao_areaconhecimento', {label: "Área de Conhecimento", width: '300px', align: 'center'});
-    gridAreasConhecimento.addColumn('resultado_obtido', {label: "Aproveitamento", width: '60px', align: 'center'});
-    gridAreasConhecimento.addColumn('resultado_final', {label: "Resultado Final", width: '60px', align: 'center'});
+    gridAreasConhecimento.addColumn('codigo', {
+        label: "Código",
+        width: '50px',
+        align: 'center'
+    });
+    gridAreasConhecimento.addColumn('descricao_areaconhecimento', {
+        label: "Área de Conhecimento",
+        width: '300px',
+        align: 'center'
+    });
+    gridAreasConhecimento.addColumn('resultado_obtido', {
+        label: "Aproveitamento",
+        width: '60px',
+        align: 'center'
+    });
+    gridAreasConhecimento.addColumn('resultado_final', {
+        label: "Resultado Final",
+        width: '60px',
+        align: 'center'
+    });
     gridAreasConhecimento.addAction('Editar', 'Editar', (event, linha) => {
 
         inputCodigoHistoricoArea.value = linha.codigo;
@@ -255,8 +234,8 @@ $clrotulo->label("ed61_i_aluno");
     }, true, 'fa-pen');
     gridAreasConhecimento.addAction('Excluir', 'Excluir', (event, linha) => {
         if (!confirm("Ao excluir uma Area de Conhecimento dessa Etapa do Histórico," +
-            "serão removido todos os vinculos de Disciplinas." +
-            "Confirma exclusão?")) {
+                "serão removido todos os vinculos de Disciplinas." +
+                "Confirma exclusão?")) {
             return;
         }
 
@@ -265,22 +244,21 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iTipoHistorico = inputTipoHistoricoEtapa.value;
         oParametro.iCodigo = linha.ID;
         js_divCarregando('Excuindo...', 'loading_message', true);
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: (response) => {
-                    js_removeObj('loading_message');
-                    var oRetorno = JSON.parse(response.responseText);
-                    if (oRetorno.status === 2) {
-                        alert(oRetorno.message.urlDecode());
-                        return;
-                    }
-                    collectionAreasConhecimento.remove(linha.ID);
-                    gridAreasConhecimento.reload();
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: (response) => {
+                js_removeObj('loading_message');
+                var oRetorno = JSON.parse(response.responseText);
+                if (oRetorno.status === 2) {
+                    alert(oRetorno.message.urlDecode());
+                    return;
                 }
-            });
+                collectionAreasConhecimento.remove(linha.ID);
+                gridAreasConhecimento.reload();
+            }
+        });
     }, true, 'fa-trash');
 
 
@@ -295,33 +273,31 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iResultadoObtido = resultadoObtidoArea.value;
         oParametro.iResultadoFinal = resultadoFinalArea.value;
         js_divCarregando('Salvando...', 'loading_message', true);
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: (response) => {
-                    js_removeObj('loading_message');
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: (response) => {
+                js_removeObj('loading_message');
 
-                    var oRetorno = JSON.parse(response.responseText);
-                    if (oRetorno.status == 2) {
-                        alert(oRetorno.message.urlDecode());
-                        return;
-                    }
-                    js_limparCamposArea();
+                var oRetorno = JSON.parse(response.responseText);
+                if (oRetorno.status == 2) {
+                    alert(oRetorno.message.urlDecode());
+                    return;
+                }
+                js_limparCamposArea();
 
-                    collectionAreasConhecimento.add({
-                        codigo: oRetorno.areahistorico.codigo,
-                        codigo_areaconhecimento: oRetorno.areahistorico.codigo_areaconhecimento,
-                        descricao_areaconhecimento: oRetorno.areahistorico.descricao_areaconhecimento.urlDecode(),
-                        resultado_final: oRetorno.areahistorico.resultado_final,
-                        resultado_obtido: oRetorno.areahistorico.resultado_obtido.urlDecode()
-                    });
+                collectionAreasConhecimento.add({
+                    codigo: oRetorno.areahistorico.codigo,
+                    codigo_areaconhecimento: oRetorno.areahistorico.codigo_areaconhecimento,
+                    descricao_areaconhecimento: oRetorno.areahistorico.descricao_areaconhecimento.urlDecode(),
+                    resultado_final: oRetorno.areahistorico.resultado_final,
+                    resultado_obtido: oRetorno.areahistorico.resultado_obtido.urlDecode()
+                });
 
-                    gridAreasConhecimento.reload();
-                },
-            }
-        );
+                gridAreasConhecimento.reload();
+            },
+        });
     }
     btnSalvarArea.addEventListener('click', js_salvarHistoricoAreaEtapa);
 
@@ -366,28 +342,26 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iHistoricoMps = iHistoricomps;
         oParametro.iTipoHistorico = iTipoHistorico;
         js_divCarregando('', 'loading_message', true);
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: (response) => {
-                    js_removeObj('loading_message');
-                    var oRetorno = JSON.parse(response.responseText);
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: (response) => {
+                js_removeObj('loading_message');
+                var oRetorno = JSON.parse(response.responseText);
 
-                    oRetorno.areas_conhecimento.map((area_conhecimento) => {
-                        collectionAreasConhecimento.add({
-                            codigo: area_conhecimento.codigo,
-                            codigo_areaconhecimento: area_conhecimento.codigo_areaconhecimento,
-                            descricao_areaconhecimento: area_conhecimento.descricao_areaconhecimento.urlDecode(),
-                            resultado_final: area_conhecimento.resultado_final,
-                            resultado_obtido: area_conhecimento.resultado_obtido
-                        });
+                oRetorno.areas_conhecimento.map((area_conhecimento) => {
+                    collectionAreasConhecimento.add({
+                        codigo: area_conhecimento.codigo,
+                        codigo_areaconhecimento: area_conhecimento.codigo_areaconhecimento,
+                        descricao_areaconhecimento: area_conhecimento.descricao_areaconhecimento.urlDecode(),
+                        resultado_final: area_conhecimento.resultado_final,
+                        resultado_obtido: area_conhecimento.resultado_obtido
                     });
-                    gridAreasConhecimento.reload();
-                }
+                });
+                gridAreasConhecimento.reload();
             }
-        );
+        });
     }
 
     function js_montaCboAreasConhecimento(oCboAreaConhecimento, iHistoricomps, iTipoHistorico) {
@@ -396,20 +370,18 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iHistoricoMps = iHistoricomps;
         oParametro.iTipoHistorico = iTipoHistorico;
 
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: (response) => {
-                    var oRetorno = JSON.parse(response.responseText);
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: (response) => {
+                var oRetorno = JSON.parse(response.responseText);
 
-                    oRetorno.areas_conhecimento.map((area_conhecimento) => {
-                        oCboAreaConhecimento.addItem(area_conhecimento.codigo, area_conhecimento.descricao_areaconhecimento.urlDecode());
-                    });
-                }
+                oRetorno.areas_conhecimento.map((area_conhecimento) => {
+                    oCboAreaConhecimento.addItem(area_conhecimento.codigo, area_conhecimento.descricao_areaconhecimento.urlDecode());
+                });
             }
-        );
+        });
     }
 
     /*
@@ -523,7 +495,7 @@ $clrotulo->label("ed61_i_aluno");
         sConteudo += "  </fieldset>";
         sConteudo += "</div>";
         oWindowDisciplinas.setContent(sConteudo);
-        oWindowDisciplinas.setShutDownFunction(function () {
+        oWindowDisciplinas.setShutDownFunction(function() {
             /**
              * validados os dados, caso a etapa esteja marcada como reprovada;
              * ao menos uma disciplina deve estar como Reprovada.
@@ -541,7 +513,7 @@ $clrotulo->label("ed61_i_aluno");
 
                 var lPossuiDisciplinaReprovada = false;
 
-                aDisciplinas.each(function (oDisciplina, iContador) {
+                aDisciplinas.each(function(oDisciplina, iContador) {
                     if (oDisciplina.aCells[7].getValue() == 'R') {
                         lPossuiDisciplinaReprovada = true;
                     }
@@ -588,7 +560,7 @@ $clrotulo->label("ed61_i_aluno");
         oCboSituacao.show($('ctnCboSituacao'));
         oCboBaseComum = new DBComboBox('oCboBaseComum', 'oCboBaseComum');
         oCboBaseComum.addItem('0', 'Selecione');
-        PHPSession.loadData().then( async () => {
+        PHPSession.loadData().then(async () => {
             await HttpClient.get(`${PHPSession.requestApi}/educacao/secretaria/tipo-base/buscarTodos`).then(async response => {
                 if (response.erro) {
                     alert(response.mensagem);
@@ -638,8 +610,7 @@ $clrotulo->label("ed61_i_aluno");
             'CH',
             'Resultado',
             'Aproveitamento',
-            'Ação')
-        );
+            'Ação'));
 
         oDataGridDisciplinas.show($('ctnGridDisciplinas'));
 
@@ -673,14 +644,12 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iCodigoHistoricoAno = iCodigoHistoricoAno;
         oParametro.iEnsino = iEnsino;
         oParametro.iAnoReferencia = iAnoReferencia
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: js_retornaPesquisaTermos
-            }
-        );
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: js_retornaPesquisaTermos
+        });
     }
 
     function js_retornaPesquisaTermos(oResponse) {
@@ -688,7 +657,7 @@ $clrotulo->label("ed61_i_aluno");
         var oRetorno = JSON.parse(oResponse.responseText);
         if (oRetorno.status == 1 && oRetorno.aTermos.length > 0) {
 
-            oRetorno.aTermos.each(function (oLinha, iContador) {
+            oRetorno.aTermos.each(function(oLinha, iContador) {
 
                 oCboResultado.addItem(oLinha.sReferencia.urlDecode(), oLinha.sDescricao.urlDecode());
             });
@@ -861,8 +830,8 @@ $clrotulo->label("ed61_i_aluno");
 
             var aValorCargaHoraria = $F('oTxtCargaHoraria').split('.');
 
-            if (aValorCargaHoraria[0] == ''
-                || (aValorCargaHoraria[0] != '' && aValorCargaHoraria[0].length > 4)
+            if (aValorCargaHoraria[0] == '' ||
+                (aValorCargaHoraria[0] != '' && aValorCargaHoraria[0].length > 4)
             ) {
 
                 alert(_M(MENSAGENS_MANUTENCAO_HISTORICO_000 + 'valor_invalido_carga_horaria'));
@@ -873,8 +842,8 @@ $clrotulo->label("ed61_i_aluno");
 
             if (aValorCargaHoraria.length > 1) {
 
-                if (aValorCargaHoraria[1] == ''
-                    || (aValorCargaHoraria[1] != '' && (aValorCargaHoraria[1].length == 0 || aValorCargaHoraria[1].length > 2))
+                if (aValorCargaHoraria[1] == '' ||
+                    (aValorCargaHoraria[1] != '' && (aValorCargaHoraria[1].length == 0 || aValorCargaHoraria[1].length > 2))
                 ) {
 
                     alert(_M(MENSAGENS_MANUTENCAO_HISTORICO_000 + 'valor_invalido_carga_horaria'));
@@ -969,8 +938,7 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iTipoHistorico = iTipoHistoricoTurma;
 
         new Ajax.Request(
-            sUrlRPC,
-            {
+            sUrlRPC, {
                 method: 'post',
                 parameters: 'json=' + Object.toJSON(oParametro),
                 onComplete: js_preencherDisciplinas
@@ -986,21 +954,19 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iCodigoAreaEtapa = codigoAreaEtapa;
         oParametro.iTipoHistorico = iTipoHistoricoTurma;
         js_divCarregando('Salvando...', 'loading_message', true);
-        new Ajax.Request(sUrlRPC,
-            {
-                asynchronous: false,
-                method: 'post',
-                parameters: 'json=' + Object.toJSON(oParametro),
-                onComplete: (response) => {
-                    js_removeObj('loading_message');
-                    var oRetorno = JSON.parse(response.responseText);
+        new Ajax.Request(sUrlRPC, {
+            asynchronous: false,
+            method: 'post',
+            parameters: 'json=' + Object.toJSON(oParametro),
+            onComplete: (response) => {
+                js_removeObj('loading_message');
+                var oRetorno = JSON.parse(response.responseText);
 
-                    if (oRetorno.status == 2) {
-                        alert(oRetorno.message);
-                    }
+                if (oRetorno.status == 2) {
+                    alert(oRetorno.message);
                 }
             }
-        );
+        });
     }
     /*
      * Função para preencher o DBGrid com as disciplinas
@@ -1010,7 +976,7 @@ $clrotulo->label("ed61_i_aluno");
         var oRetorno = JSON.parse(oResponse.responseText);
         oDataGridDisciplinas.clearAll(true);
         aDisciplinasLancadas = oRetorno.disciplinas;
-        oRetorno.disciplinas.each(function (oLinha, iContador) {
+        oRetorno.disciplinas.each(function(oLinha, iContador) {
             const cboAreaConhecimento = oCboAreaConhecimento.getElement();
             cboAreaConhecimento.classList.add('classAreaConhecimento');
             cboAreaConhecimento.setAttribute('onchange', `js_atualizaAreaConhecimento(${oLinha.codigo}, this.value)`)
@@ -1089,8 +1055,7 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.lTipoBase = lTipoBase;
 
         var oAjax = new Ajax.Request(
-            sUrlRPC,
-            {
+            sUrlRPC, {
                 method: 'post',
                 parameters: 'json=' + Object.toJSON(oParametro),
                 onComplete: js_salvarDisciplina
@@ -1127,11 +1092,10 @@ $clrotulo->label("ed61_i_aluno");
             oParametro.iCodigoAluno = $F('ed47_i_codigo');
             oParametro.iCodigoCurso = iCodigoCurso;
             new Ajax.Request(
-                sUrlRPC,
-                {
+                sUrlRPC, {
                     method: 'post',
                     parameters: 'json=' + Object.toJSON(oParametro),
-                    onComplete: function (oResponse) {
+                    onComplete: function(oResponse) {
 
                         js_removeObj('msgBox');
                         var oRetorno = JSON.parse(oResponse.responseText);
@@ -1160,8 +1124,7 @@ $clrotulo->label("ed61_i_aluno");
         oParametro.iCodigoAluno = $F('ed47_i_codigo');
         oParametro.iCodigoCurso = iCodigoCurso;
         new Ajax.Request(
-            sUrlRPC,
-            {
+            sUrlRPC, {
                 method: 'post',
                 parameters: 'json=' + Object.toJSON(oParametro),
                 onComplete: js_mostraDados
@@ -1196,7 +1159,7 @@ $clrotulo->label("ed61_i_aluno");
             oTxtCargaHoraria.setValue(oRetorno.oDisciplina.iCargaHoraria);
             oCboResultado.setValue(oRetorno.oDisciplina.sResultado);
             oTxtCodigo.setValue(oRetorno.oDisciplina.iCodigoLancamento);
-            oCboBaseComum.setValue(oRetorno.oDisciplina.lBaseComum);
+            oCboBaseComum.setValue(oRetorno.oDisciplina.lTipoBase);
             oCboSituacao.setValue(oRetorno.oDisciplina.sSituacao.urlDecode());
             oTxtAproveitamento.setValue(oRetorno.oDisciplina.nAproveitamento.urlDecode());
             oTxtTermoFinal.setValue(oRetorno.oDisciplina.sTermoFinal);
@@ -1226,14 +1189,12 @@ $clrotulo->label("ed61_i_aluno");
     }
 
     function js_emiteHistorico() {
-
-        var sUrl = "edu2_historico001.php";
-        sUrl += "?ed47_i_codigo=" + $F('ed47_i_codigo');
-        sUrl += "&ed47_v_nome=" + $F('ed47_v_nome');
-
+        let janela = window.location.href.match(/[^\r\n]+(w\/[0-9]+)+/g)[0];
+        let rota = "/web/educacao/escola/alunos/historico-escolar/";
+        let aluno = document.querySelector('#ed47_i_codigo').value;
         js_OpenJanelaIframe('',
             'db_iframe_justificativa',
-            sUrl,
+            `${janela}${rota}${aluno}`,
             'Emitir Histórico',
             true
         );
@@ -1247,28 +1208,26 @@ $clrotulo->label("ed61_i_aluno");
         oParam.iAluno = $F('ed47_i_codigo')
         var sUrl = 'edu4_historicoaluno.RPC.php';
 
-        new Ajax.Request(sUrl,
-            {
-                method: 'post',
-                asynchronous: false,
-                parameters: 'json=' + Object.toJSON(oParam),
-                onComplete: function (oAjax) {
+        new Ajax.Request(sUrl, {
+            method: 'post',
+            asynchronous: false,
+            parameters: 'json=' + Object.toJSON(oParam),
+            onComplete: function(oAjax) {
 
-                    var oRetorno = JSON.parse(oAjax.responseText);
+                var oRetorno = JSON.parse(oAjax.responseText);
 
-                    if (oRetorno.status == 2) {
+                if (oRetorno.status == 2) {
 
-                        alert(oRetorno.message.urlDecode());
-                        return;
-                    }
+                    alert(oRetorno.message.urlDecode());
+                    return;
+                }
 
-                    $('impCertificado').disabled = false;
-                    if (!oRetorno.lPermiteImpressao) {
-                        $('impCertificado').disabled = true;
-                    }
+                $('impCertificado').disabled = false;
+                if (!oRetorno.lPermiteImpressao) {
+                    $('impCertificado').disabled = true;
                 }
             }
-        );
+        });
     }
 
     function js_emiteCertificado() {
@@ -1300,23 +1259,21 @@ $clrotulo->label("ed61_i_aluno");
         oParam.iAluno = $F('ed47_i_codigo')
         var sUrl = 'edu4_historicoaluno.RPC.php';
 
-        new Ajax.Request(sUrl,
-            {
-                method: 'post',
-                asynchronous: false,
-                parameters: 'json=' + Object.toJSON(oParam),
-                onComplete: function (oAjax) {
+        new Ajax.Request(sUrl, {
+            method: 'post',
+            asynchronous: false,
+            parameters: 'json=' + Object.toJSON(oParam),
+            onComplete: function(oAjax) {
 
-                    var oRetorno = JSON.parse(oAjax.responseText);
+                var oRetorno = JSON.parse(oAjax.responseText);
 
-                    $('impHistorico').disabled = false;
-                    if (!oRetorno.lTemHistorico) {
-                        $('impHistorico').disabled = true;
-                    }
-                    lAlunoTemHistorico = oRetorno.lTemHistorico;
+                $('impHistorico').disabled = false;
+                if (!oRetorno.lTemHistorico) {
+                    $('impHistorico').disabled = true;
                 }
+                lAlunoTemHistorico = oRetorno.lTemHistorico;
             }
-        );
+        });
     }
 
     function js_preencherDadosPadrao() {
@@ -1332,25 +1289,23 @@ $clrotulo->label("ed61_i_aluno");
         }
 
         var sUrl = 'edu4_historicoaluno.RPC.php';
-        new Ajax.Request(sUrl,
-            {
-                method: 'post',
-                asynchronous: false,
-                parameters: 'json=' + Object.toJSON(oParam),
-                onComplete: function (oAjax) {
+        new Ajax.Request(sUrl, {
+            method: 'post',
+            asynchronous: false,
+            parameters: 'json=' + Object.toJSON(oParam),
+            onComplete: function(oAjax) {
 
-                    var oRetorno = JSON.parse(oAjax.responseText);
+                var oRetorno = JSON.parse(oAjax.responseText);
 
 
-                    oCboSituacao.getElement().value = oRetorno.oEtapa.sSituacao.urlDecode();
+                oCboSituacao.getElement().value = oRetorno.oEtapa.sSituacao.urlDecode();
 
-                    if (oRetorno.oEtapa.sSituacao.urlDecode() == 'RECLASSIFICADO') {
-                        oCboSituacao.getElement().value = 'CONCLUÍDO';
-                    }
-                    oCboResultado.getElement().value = oRetorno.oEtapa.sResultado.urlDecode();
+                if (oRetorno.oEtapa.sSituacao.urlDecode() == 'RECLASSIFICADO') {
+                    oCboSituacao.getElement().value = 'CONCLUÍDO';
                 }
+                oCboResultado.getElement().value = oRetorno.oEtapa.sResultado.urlDecode();
             }
-        );
+        });
 
         return true;
     }
@@ -1367,7 +1322,7 @@ $clrotulo->label("ed61_i_aluno");
 
     var oDadosManutencaoHistorico;
 
-    (function () {
+    (function() {
 
         if ($F('ed47_i_codigo') != '') {
             oDadosManutencaoHistorico = verificaSituacaoManutencaoHistorico($F('ed47_i_codigo'));
@@ -1389,25 +1344,23 @@ $clrotulo->label("ed61_i_aluno");
 
 
         new Ajax.Request(sUrlRPC, {
-                method: 'post',
-                asynchronous: false,
-                parameters: 'json=' + Object.toJSON(oParams),
-                onComplete: function (oAjax) {
+            method: 'post',
+            asynchronous: false,
+            parameters: 'json=' + Object.toJSON(oParams),
+            onComplete: function(oAjax) {
 
-                    var oRetorno = JSON.parse(oAjax.responseText);
+                var oRetorno = JSON.parse(oAjax.responseText);
 
-                    if (oRetorno.status == 2) {
+                if (oRetorno.status == 2) {
 
-                        alert(oRetorno.message.urlDecode());
-                        return false;
-                    }
-
-                    oDados = oRetorno;
+                    alert(oRetorno.message.urlDecode());
+                    return false;
                 }
+
+                oDados = oRetorno;
             }
-        );
+        });
 
         return oDados;
     }
-
 </script>

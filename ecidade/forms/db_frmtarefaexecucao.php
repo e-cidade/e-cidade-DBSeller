@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,22 +60,22 @@ if(isset($db_opcaoal)){
        <?=@$Lat09_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at09_sequencial',8,$Iat09_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat09_semana?>">
-       <?
+       <?php
        db_ancora(@$Lat09_semana,"js_pesquisaat09_semana(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at09_semana',4,$Iat09_semana,true,'text',3," onchange='js_pesquisaat09_semana(false);'")
 ?>
-       <?
+       <?php
 db_input('at19_descr',40,$Iat19_descr,true,'text',3,'')
        ?>
     </td>
@@ -83,15 +83,15 @@ db_input('at19_descr',40,$Iat19_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tat09_tarefa?>">
-       <?
+       <?php
        db_ancora(@$Lat09_tarefa,"js_pesquisaat09_tarefa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at09_tarefa',10,$Iat09_tarefa,true,'text',$db_opcao," onchange='js_pesquisaat09_tarefa(false);'")
 ?>
-       <?
+       <?php
 db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
        <?=@$Lat09_situacao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('0'=>'Planejada','1'=>'Não Planejada', '2'=>'Antecipada', '3'=>'Pendente');
 db_select('at09_situacao',$x,true,$db_opcao,"");
 ?>
@@ -117,7 +117,7 @@ db_select('at09_situacao',$x,true,$db_opcao,"");
  <table width="100%">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at09_sequencial"=>@$at09_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 

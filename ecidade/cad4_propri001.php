@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,15 +78,15 @@ function js_checa(){
       <table border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td nowrap title="<?=@$Tj42_matric?>">
-<?
+<?php
   db_ancora(@$Lj42_matric,"js_pesquisaj42_matric(true);",$db_opcao);
 ?>
         </td>
         <td> 
-<?
+<?php
   db_input('j42_matric',4,$Ij42_matric,true,'text',$db_opcaom," onchange='js_pesquisaj42_matric(false);'")
 ?>
-<?
+<?php
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"","z01_nomematri")
 ?>
         </td>
@@ -98,7 +98,7 @@ function js_checa(){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -127,7 +127,7 @@ function js_mostraiptubase1(chave1,chave2){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

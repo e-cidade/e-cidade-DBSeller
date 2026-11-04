@@ -93,10 +93,11 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
                   <?=$Lsd29_i_codigo?>
                 </label>
               </td>
-              <td>
+              <td style="display: flex;">
                 <?php
                 db_input( 'sd29_i_codigo', 10, $Isd29_i_codigo, true, 'text', 3 );
                 ?>
+                <div style="display: flex; align-items: center; height: 18px; padding-left: 280px" id="linhaSd29icodigo"></div>
               </td>
             </tr>
             <tr>
@@ -111,6 +112,7 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
                 db_input( 'z01_v_nome',    68, $Iz01_v_nome,    true, 'text',   3 );
                 db_input( 'z01_i_cgsund',  10, $Iz01_i_cgsund,  true, 'hidden', 3 );
                 ?>
+                  <!-- plugin ESF operation#12 - adicionando campo hidden tipoAtendimento -->
               </td>
             </tr>
 
@@ -151,12 +153,12 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
             <tr>
               <td nowrap title="<?=@$Tsd04_i_cbo?>">
                 <label for="rh70_estrutural">
-                  <?php db_ancora( @$Lsd04_i_cbo, "js_pesquisasd04_i_cbo(true);", $db_opcao );?>
+                  <?php db_ancora( @$Lsd04_i_cbo, "js_pesquisasd04_i_cbo(true,false);", $db_opcao );?>
                 </label>
               </td>
               <td>
                 <?php
-                $sScript = "onchange='js_pesquisasd04_i_cbo(false);'";
+                $sScript = "onchange='js_pesquisasd04_i_cbo(false,false);'";
                 db_input( 'sd29_i_profissional', 10, $Isd29_i_profissional, true, 'hidden', $db_opcao, $sScript );
                 db_input( 'rh70_sequencial',     10, $Irh70_sequencial,     true, 'hidden', $db_opcao );
                 db_input( 'rh70_estrutural',     10, $Irh70_estrutural,     true, 'text',   $db_opcao, $sScript );
@@ -193,12 +195,12 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
               </td>
               <td>
                 <?php
-                  $sChange  = "onchange='js_pesquisasd70_c_cid(false);' onFocus='js_foco(this, \"sd29_d_data\");";
-                  $sChange .= "' onblur='js_validacid(this);'";
+                  $sChange  = "onchange='js_pesquisasd70_c_cid(false);' onFocus='js_foco(this, \"sd29_d_data\");'";
                   db_input( 'sd70_i_codigo', 10, $Isd70_i_codigo, true, 'hidden', $db_opcao );
                   db_input( 'sd70_c_cid',    10, $Isd70_c_cid,    true, 'text',   $db_opcao, $sChange );
                   db_input( 'sd70_c_nome',   68, $Isd70_c_nome,   true, 'text',           3, "tabIndex='0' " );
                 ?>
+                <input type="hidden" id="s103_obrigarcid" value=<?=$oSauConfig->s103_obrigarcid?>>
               </td>
             </tr>
 
@@ -230,7 +232,7 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
         </fieldset>
 
         <!-- Este dado é o crm do funcionario -->
-        <input type="hidden" id="sd04_v_registroconselho" value="<?= $sd04_v_registroconselho ?>">
+        <input type="hidden" id="sd04_v_registroconselho" value="<?= (!empty($sd04_v_registroconselho) ? $sd04_v_registroconselho : '') ?>">
 
         <fieldset>
 
@@ -396,6 +398,7 @@ $iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
     </tr>
   </table>
 </form>
+<!-- plugin ESF operation#16 - adicionando html da janela tipoAtendimento -->
 <!-- Modal problemas/condições do paciente -->
 <div id="divProblemas" class="subcontainer"></div>
 
@@ -413,6 +416,7 @@ require_once( 'scripts/widgets/DBInputHora.widget.js' );
 new DBInputHora($('sd29_c_hora'));
 
 const MENSAGEM_FRMFICHAATENDPROCED = "saude.ambulatorial.db_frmfichaatendproced.";
+<!-- plugin ESF operation#15 - criando janela tipoAtendimento -->
 
 
 const inputFAA = document.getElementById('sd24_i_codigo');
@@ -435,7 +439,7 @@ var sRpcFichaAtendimento = "sau4_fichaatendimento.RPC.php";
  * set url do arquivo RPC
  */
 strURL         = 'sau1_sau_individualprocedRPC.php';
-booValidaCID   = false;
+let booValidaCID   = false;
 
 if ( !oGet.lOrigemFicha ) {
 
@@ -453,6 +457,7 @@ window.onload = () => {
     js_pesquisaprontuarios();
   }
   validaCgs.cadastroMicroarea(inputCgs, divAlert);
+    <!-- plugin ESF operation#14 - invocando função js -->
 }
 
 /**
@@ -497,7 +502,7 @@ if( a1.toLowerCase() == 'procedimentos' ) { // Consulta médica
   document.getElementById('prosseguir').onclick    = function(){ js_prosseguir('a2') };
   document.getElementById('voltar').innerHTML      = '<i class="fas fa-search"></i> Consultar Paciente';
   document.getElementById('voltar').onclick        = function(){ js_pesquisaprontuarios() };
-  document.getElementById('emitirfaa').innerHTML   = '<i class="fas fa-notes-medical"></i> Prontuário Médico';
+  document.getElementById('emitirfaa').innerHTML   = '<i class="fas fa-notes-medical"></i> Prontuário Paciente';
   document.getElementById('emitirfaa').onclick     = function(){ js_prontuarioMedico(); };
   document.getElementById('novafaa').style.display = 'none';
   document.getElementById('cancelar').onclick      = function(){ js_cancelaAlteracao('sau4_consultamedica001.php') };
@@ -601,7 +606,7 @@ function js_prontuarioMedico() {
     sUrl += 'iFaa='+document.form1.sd24_i_codigo.value;
     sUrl += '&iCgs='+document.form1.z01_i_cgsund.value;
 
-    js_OpenJanelaIframe('', 'db_iframe_relatorioprontuario', sUrl, 'Prontuário Médico', true, '20', iLeft, 700, 320);
+    js_OpenJanelaIframe('', 'db_iframe_relatorioprontuario', sUrl, 'Prontuário Paciente', true, '20', iLeft, 700, 320);
   }
 }
 
@@ -656,18 +661,18 @@ function js_prosseguir(aba){
       parent.mo_camada('a2');
       <?php
       } else {
-        ?>alert('FAA sem procedimentos.');<?
+        ?>alert('FAA sem procedimentos.');<?php
       }
       ?>
   } else if(parent.document.formaba.a4 != undefined && aba == 'a4' ) {
-     <?
+      <?php
      if( $clprontproced->numrows > 0 ) {
 
        echo "parent.document.formaba.a4.disabled = false;";
        echo "parent.iframe_a4.location.href='sau4_fichaatendabas004.php?chavepesquisaprontuario=$chavepesquisaprontuario&chaveprofissional='+document.form1.sd03_i_codigo.value;";
        echo "parent.mo_camada('a4');";
      } else {
-       ?>alert('FAA sem procedimentos.');<?
+       ?>alert('FAA sem procedimentos.');<?php
      }
      ?>
   }
@@ -712,15 +717,22 @@ function js_novaficha() {
   parent.mo_camada('a1');
 }
 
-function js_pesquisasd04_i_cbo(mostra) {
+function js_pesquisasd04_i_cbo(mostra,limit) {
 
   if( mostra == true ) {
-    js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,'Pesquisa',true);
+    let url = 'func_especmedico.php?funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value;
+    if(limit){
+      url = 'func_especmedico.php?limit=1&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value;      
+    }
+    js_OpenJanelaIframe('','db_iframe_especmedico',url,'Pesquisa',true);
   } else {
 
     if(document.form1.rh70_estrutural.value != '') {
-
-      js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?chave_rh70_estrutural='+document.form1.rh70_estrutural.value+'&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,'Pesquisa',false);
+      let url = 'func_especmedico.php?chave_rh70_estrutural='+document.form1.rh70_estrutural.value+'&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value;
+      if(limit){
+        url = 'func_especmedico.php?limit=1&chave_rh70_estrutural='+document.form1.rh70_estrutural.value+'&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|sd27_i_rhcbo&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value;
+      }
+      js_OpenJanelaIframe('','db_iframe_especmedico',url,'Pesquisa',false);
       document.form1.rh70_estrutural.value = '';
       document.form1.rh70_descr.value      = '';
     } else {
@@ -855,7 +867,7 @@ function js_mostramedicos( chave, erro ) {
     document.form1.rh70_estrutural.value     = '';
     document.form1.rh70_descr.value          = '';
   } else {
-    js_pesquisasd04_i_cbo(true);
+    js_pesquisasd04_i_cbo(true,true);
   }
 }
 
@@ -864,7 +876,7 @@ function js_mostramedicos1(chave1, chave2 ) {
   document.form1.sd03_i_codigo.value = chave1;
   document.form1.z01_nome.value      = chave2;
   db_iframe_medicos.hide();
-  js_pesquisasd04_i_cbo(true);
+  js_pesquisasd04_i_cbo(true,true);
 }
 
 function js_pesquisasd29_i_usuario( mostra ) {
@@ -1011,6 +1023,7 @@ function js_retornoProcedimento( objAjax ) {
  * Pesquisa CID
  */
 function js_pesquisasd70_c_cid( mostra ) {
+  event.preventDefault();
 
   if( mostra == true ) {
 
@@ -1077,18 +1090,59 @@ function js_retornoCID( objAjax ) {
     $('sd70_c_cid').focus();
   }
 }
-
+function validaCBOMedico(){
+  let diretrizes = {'sExecucao':'validaCboMedico','iCBO':$('rh70_estrutural').value}
+  let retorno={};
+  let oAjaxRequest = new AjaxRequest('sau4_fichaatendimento.RPC.php',diretrizes, function(oRetorno){
+    retorno = oRetorno;
+    return;
+  });
+  oAjaxRequest.asynchronous(false);
+  oAjaxRequest.execute();
+  return retorno;
+}
 /**
  * valida obrigatoriedade do cid
  */
-function js_validacid( objCID ) {
+function validaCid() {
+  const retornoRPC = validaCBOMedico()
 
-  if( booValidaCID == true && objCID.value == '' ) {
-
-    alert('CID obrigatório.');
-    $('sd70_c_cid').focus();
+  if(retornoRPC.iStatus === 2){
+    return retornoRPC.sMensagem;
   }
+
+  if($("s103_obrigarcid").value == 't' && $('sd70_c_cid').value == '' && retornoRPC.CBOMedico){
+    return "Informe o CID do atendimento.";
+  }
+  return "";
+  
 }
+
+function validaProcedimento(){
+
+  if($('sd63_c_procedimento').value == ""){
+    return "Informe o procedimento";
+  }
+  return "";
+}
+
+function validaFormulario(){
+  let mensagemErro = validaProcedimento();
+  
+  if(mensagemErro == ""){
+    mensagemErro = validaCid();
+  }
+  
+  if(mensagemErro != ""){
+    event.preventDefault();
+    alert(mensagemErro);
+    return;
+  }
+
+}
+
+const botaoSubmit = document.getElementById("db_opcao");
+botaoSubmit.setAttribute("onclick","validaFormulario()");
 
 function js_emitirFaa() {
 
@@ -1323,5 +1377,27 @@ function cadastroGeralCGS() {
                        );
 }
 
+pesquisaIdadeCompletaDoPaciente($('z01_i_cgsund').value,'linhaSd29icodigo');
 
+function emAtendimento() {
+    let prontuario = document.getElementById('sd24_i_codigo').value;
+    if (!empty(prontuario)) {
+        let medico = document.getElementById('sd03_i_codigo');
+
+        let diretrizes = {}
+        diretrizes.sExecucao = 'criaSituacaoEmAtendimento';
+        diretrizes.iProntuario = prontuario;
+        diretrizes.iTelaOrigem = DBViewEncaminhamento.RECEPCAO;
+        diretrizes.medicoAtendendo = medico.value;
+
+        let oAjaxRequest  = new AjaxRequest('sau4_fichaatendimento.RPC.php', diretrizes, function() {
+            return;
+        });
+        oAjaxRequest.execute();
+    }
+
+}
+emAtendimento();
+
+<!-- plugin ESF operation#13 - adicionando função js -->
 </script>

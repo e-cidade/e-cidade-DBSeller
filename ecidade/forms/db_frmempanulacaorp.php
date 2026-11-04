@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,28 +79,28 @@ if (empty ($e60_numemp)) {
 
 <table  align=center border='0' cellspacing='0' cellpadding='0'>
   <tr>
-  <td colspan='2' align='center'><? db_input('dados', 6, 0, true, 'hidden', 3) ?>
+  <td colspan='2' align='center'><?php db_input('dados', 6, 0, true, 'hidden', 3) ?>
 
   <table border="0" cellspacing='0' cellpadding='0'>
   <tr>
     <td nowrap title="<?=@$Te60_numemp?>">
        <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho','".@$e60_numemp."')",$db_opcao_inf)?>        
     </td>
-    <td><?  db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?></td>
+    <td><?php  db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?></td>
   </tr>
   
   <tr>
     <td nowrap title="<?=@$Tz01_nome?>"><?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','".@$e60_numcgm."')",$db_opcao_inf)?></td>
-    <td><?  db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3) ?>
-            <?  db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '') ?>
+    <td><?php  db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3) ?>
+            <?php  db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '') ?>
     </td>
   </tr>
   <tr>
       <td nowrap title="<?=@$Te60_coddot?>"><?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao','".@$e60_coddot."','".db_getsession("DB_anousu")."')",$db_opcao_inf)?></td>
-      <td><? db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?></td>
+      <td><?php db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?></td>
    </tr>
   
-   <? 
+   <?php 
       /* busca dados da dotação  */
      if ((isset ($e60_coddot))) {
 	      $instit = db_getsession("DB_instit");
@@ -118,50 +118,50 @@ if (empty ($e60_numemp)) {
       ?>
       <tr>
              <td nowrap title="<?=@$To58_orgao ?>"><?=@$Lo58_orgao ?> </td>
-	         <td nowrap><? db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
-	                             <? db_input('o40_descr',40,"",true,'text',3,"");  ?> 
+	         <td nowrap><?php db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
+	                             <?php db_input('o40_descr',40,"",true,'text',3,"");  ?> 
 	        </td>     
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_unidade ?>"><?=@$Lo58_unidade ?> </td>
-	         <td nowrap><? db_input('o58_unidade',8,"",true,'text',3,"");  ?>
-	                             <? db_input('o41_descr',40,"",true,'text',3,"");  ?> 
+	         <td nowrap><?php db_input('o58_unidade',8,"",true,'text',3,"");  ?>
+	                             <?php db_input('o41_descr',40,"",true,'text',3,"");  ?> 
 	          </td>
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_funcao ?>"><?=@$Lo58_funcao ?> </td>
-	         <td nowrap><? db_input('o58_funcao',8,"",true,'text',3,"");  ?>
-	                             <? db_input('o52_descr',40,"",true,'text',3,"");  ?> 
+	         <td nowrap><?php db_input('o58_funcao',8,"",true,'text',3,"");  ?>
+	                             <?php db_input('o52_descr',40,"",true,'text',3,"");  ?> 
 	         </td>
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_subfuncao ?>" ><?=@$Lo58_subfuncao ?> </td>
-    	     <td nowrap><? db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
-	                             <? db_input('o53_descr',40,"",true,'text',3,"");  ?>
+    	     <td nowrap><?php db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
+	                             <?php db_input('o53_descr',40,"",true,'text',3,"");  ?>
 	         </td>
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_programa ?>"    ><?=@$Lo58_programa ?> </td>
-	         <td nowrap><? db_input('o58_programa',8,"",true,'text',3,"");  ?>
-	                             <? db_input('o54_descr',40,"",true,'text',3,"");  ?>      
+	         <td nowrap><?php db_input('o58_programa',8,"",true,'text',3,"");  ?>
+	                             <?php db_input('o54_descr',40,"",true,'text',3,"");  ?>      
              </td>
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_projativ ?>"><?=@$Lo58_projativ ?> </td>
-	         <td nowrap><? db_input('o58_projativ',8,"",true,'text',3,"");  ?> 
-	                             <? db_input('o55_descr',40,"",true,'text',3,"");  ?>  
+	         <td nowrap><?php db_input('o58_projativ',8,"",true,'text',3,"");  ?> 
+	                             <?php db_input('o55_descr',40,"",true,'text',3,"");  ?>  
 	        </td>
       </tr>
       <tr>
              <td nowrap title="<?=@$To56_elemento ?>" ><?=@$Lo56_elemento ?> </td>
-   	         <td nowrap><? db_input('o58_elemento',8,"",true,'text',3,"");  ?> 
-	                    <? db_input('o56_descr',40,"",true,'text',3,"");  ?>     
+   	         <td nowrap><?php db_input('o58_elemento',8,"",true,'text',3,"");  ?> 
+	                    <?php db_input('o56_descr',40,"",true,'text',3,"");  ?>     
 	        </td>
 	  </tr>
       <tr>
              <td nowrap title="<?=@$To58_codigo ?>" ><?=@$Lo58_codigo ?> </td>
-	         <td nowrap><? db_input('o58_codigo',8,"",true,'text',3,"");  ?>
-	                              <? db_input('o15_descr',40,"",true,'text',3,"");  ?>
+	         <td nowrap><?php db_input('o58_codigo',8,"",true,'text',3,"");  ?>
+	                              <?php db_input('o15_descr',40,"",true,'text',3,"");  ?>
 	         </td>
 	  </tr>
  <tr>
@@ -169,7 +169,7 @@ if (empty ($e60_numemp)) {
        <b>Tipo:</b>
     </td>  
     <td colspan='3' nowrap>
-     <?
+     <?php
       $oEmpAnuladoTipo  = new cl_empanuladotipo;
       $rsEmpAnuladoTipo = $oEmpAnuladoTipo->sql_record(
                                                       $oEmpAnuladoTipo->sql_query(null,"*",
@@ -196,13 +196,13 @@ if (empty ($e60_numemp)) {
    <td valign='top' align=center>
    
      <table cellspacing='0' cellpadding='0' border=3>	  
-     <? 
+     <?php 
         if (isset ($e60_anousu) && $e60_anousu < db_getsession("DB_anousu")) {
       ?>
 	   <tr class='bordas'>
      	   <td  colspan='2' align='center'><b style='color:red'>RESTO À PAGAR</b></td>
 	 </tr>
-     <?  }  ?>	
+     <?php  }  ?>	
 
 	<tr class='bordas'>
 	   <td class='bordas02' colspan='2' align='center' nowrap title="<?=@$Te60_vlremp?>"><b><small>EMPENHO</small></b></td>
@@ -210,22 +210,22 @@ if (empty ($e60_numemp)) {
 	
 	<tr class='bordas'>
 	  <td class='bordas' nowrap title="<?=@$Te60_vlremp?>" ><?=@$Le60_vlremp?></td>
-	  <td class='bordas' align=right><? db_input('e60_vlremp', 15, $Ie60_vlremp, true, 'text', 3, '','','',"text-align:right") ?></td>
+	  <td class='bordas' align=right><?php db_input('e60_vlremp', 15, $Ie60_vlremp, true, 'text', 3, '','','',"text-align:right") ?></td>
 	</tr>
 	
 	<tr class='bordas'>
 	  <td class='bordas' nowrap title="<?=@$Te60_vlranu?>"  ><?=@$Le60_vlranu?></td>
-	  <td class='bordas' align=right><? db_input('e60_vlranu', 15, $Ie60_vlranu, true, 'text', 3, '','','',"text-align:right") ?></td>
+	  <td class='bordas' align=right><?php db_input('e60_vlranu', 15, $Ie60_vlranu, true, 'text', 3, '','','',"text-align:right") ?></td>
 	</tr>
 	
 	<tr>
 	  <td class='bordas' nowrap title="<?=@$Te60_vlrliq?>"><?=@$Le60_vlrliq?></td>
-	  <td class='bordas' align=right><? db_input('e60_vlrliq', 15, $Ie60_vlrliq, true, 'text', 3, '','','',"text-align:right") ?></td>      
+	  <td class='bordas' align=right><?php db_input('e60_vlrliq', 15, $Ie60_vlrliq, true, 'text', 3, '','','',"text-align:right") ?></td>      
 	</tr>
 	
 	<tr>
 	  <td class='bordas' nowrap title="<?=@$Te60_vlrpag?>"  ><?=@$Le60_vlrpag?></td>
-	  <td class='bordas' align=right><? db_input('e60_vlrpag', 15, $Ie60_vlrpag, true, 'text', 3, '','','',"text-align:right") ?>
+	  <td class='bordas' align=right><?php db_input('e60_vlrpag', 15, $Ie60_vlrpag, true, 'text', 3, '','','',"text-align:right") ?>
 	  </td>
 	</tr>
 	
@@ -242,12 +242,12 @@ if (empty ($e60_numemp)) {
     
   <tr class='bordas'>
     <td class='bordas' nowrap title="Formula : (L-P)" ><b>PROCESSADO:</b></td>
-    <td class='bordas' align=right><? db_input('disponivel_anular_processado', 15, '', true, 'text',3, "","",""," text-align:right"); ?></td>    
+    <td class='bordas' align=right><?php db_input('disponivel_anular_processado', 15, '', true, 'text',3, "","",""," text-align:right"); ?></td>    
   </tr>
   
   <tr class='bordas'>
     <td class='bordas' nowrap title="Formula : (E-A-L)" ><b>NÂO PROCESSADO:</b></td>
-    <td class='bordas' align=right><? db_input('disponivel_anular_nao_processado', 15, 2, true, 'text', 3,"","",""," text-align:right"); ?></td>    
+    <td class='bordas' align=right><?php db_input('disponivel_anular_nao_processado', 15, 2, true, 'text', 3,"","",""," text-align:right"); ?></td>    
   </tr>
     
   <tr>
@@ -255,7 +255,7 @@ if (empty ($e60_numemp)) {
   </tr>
   
   <tr>
-     <td colspan='2' align='center'><? db_textarea('c72_complem', 3, 40, 0, true, 'text', 1); ?></td>
+     <td colspan='2' align='center'><?php db_textarea('c72_complem', 3, 40, 0, true, 'text', 1); ?></td>
   </tr>  
   </table>
   
@@ -273,7 +273,7 @@ if (empty ($e60_numemp)) {
    
   <table border=1 width=100% cellspacing=0 cellpading=0>
   
-  <?
+  <?php
   
   // lista os elementos na tela
     
@@ -332,10 +332,10 @@ if (empty ($e60_numemp)) {
 	               <td align=right><?=db_formatar($e64_vlranu,'f') ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlrliq,'f') ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlrpag,'f') ?>  </td>
-	               <td align=right bgcolor=white><? db_input('elemento_'.$e64_codele.'_processado', 15, 4, true, 'text', 1," onchange=js_verifica_valor(".$$p.",this);","",""," text-align:right"); ?></td>
-	               <td align=right bgcolor=white><? db_input('elemento_'.$e64_codele.'_nao_processado', 15, 4, true, 'text', 1,"onchange=js_verifica_valor(".$$np.",this);  ","",""," text-align:right"); ?></td>	               
+	               <td align=right bgcolor=white><?php db_input('elemento_'.$e64_codele.'_processado', 15, 4, true, 'text', 1," onchange=js_verifica_valor(".$$p.",this);","",""," text-align:right"); ?></td>
+	               <td align=right bgcolor=white><?php db_input('elemento_'.$e64_codele.'_nao_processado', 15, 4, true, 'text', 1,"onchange=js_verifica_valor(".$$np.",this);  ","",""," text-align:right"); ?></td>	               
 	               </tr>               
-	               <?              
+	               <?php              
 	           }
 	   }
 	   
@@ -374,7 +374,7 @@ function js_imprimir(){
   document.form1.appendChild(obj);
 }
 
-<?
+<?php
 if (isset ($e60_numemp)) {
 	if (isset ($e60_vlremp)) {
 		 if ($disponivel_anular_processado == 0 && $disponivel_anular_nao_processado == 0) {         		 	
@@ -392,7 +392,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
    db_iframe_empempenho.hide();
-   <? echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave"; ?>
+   <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave"; ?>
 }
 
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ include(modification("classes/db_selecao_classe.php"));
 <table>
 <tr height=25><td>&nbsp;</td></tr>
 </table>
-<?
+<?php
 db_postmemory($HTTP_POST_VARS);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();

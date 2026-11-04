@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,82 +43,82 @@ $clrotulo->label("sd16_i_codigo");
        <?=@$Lsd29_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_codigo',10,$Isd29_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_prontuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_prontuario,"js_pesquisasd29_i_prontuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_prontuario',10,$Isd29_i_prontuario,true,'text',$db_opcao," onchange='js_pesquisasd29_i_prontuario(false);'")
 ?>
-       <?
+       <?php
 db_input('sd24_i_codigo',10,$Isd24_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_procedimento,"js_pesquisasd29_i_procedimento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_procedimento',10,$Isd29_i_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd29_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',100,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_especmed?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_especmed,"js_pesquisasd29_i_especmed(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_especmed',10,$Isd29_i_especmed,true,'text',$db_opcao," onchange='js_pesquisasd29_i_especmed(false);'")
 ?>
-       <?
+       <?php
 db_input('sd27_i_codigo',5,$Isd27_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_proctipoatend?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_proctipoatend,"js_pesquisasd29_i_proctipoatend(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_proctipoatend',10,$Isd29_i_proctipoatend,true,'text',$db_opcao," onchange='js_pesquisasd29_i_proctipoatend(false);'")
 ?>
-       <?
+       <?php
 db_input('sd20_i_codigo',10,$Isd20_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_procafaixaetaria?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_procafaixaetaria,"js_pesquisasd29_i_procafaixaetaria(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_procafaixaetaria',10,$Isd29_i_procafaixaetaria,true,'text',$db_opcao," onchange='js_pesquisasd29_i_procafaixaetaria(false);'")
 ?>
-       <?
+       <?php
 db_input('sd16_i_codigo',10,$Isd16_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -128,7 +128,7 @@ db_input('sd16_i_codigo',10,$Isd16_i_codigo,true,'text',3,'')
        <?=@$Lsd29_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd29_d_data',@$sd29_d_data_dia,@$sd29_d_data_mes,@$sd29_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -138,7 +138,7 @@ db_inputdata('sd29_d_data',@$sd29_d_data_dia,@$sd29_d_data_mes,@$sd29_d_data_ano
        <?=@$Lsd29_c_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_c_hora',5,$Isd29_c_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -148,22 +148,22 @@ db_input('sd29_c_hora',5,$Isd29_c_hora,true,'text',$db_opcao,"")
        <?=@$Lsd29_t_tratamento?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('sd29_t_tratamento',0,0,$Isd29_t_tratamento,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd29_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd29_i_usuario,"js_pesquisasd29_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_i_usuario',10,$Isd29_i_usuario,true,'text',$db_opcao," onchange='js_pesquisasd29_i_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -173,7 +173,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lsd29_d_cadastro?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd29_d_cadastro',@$sd29_d_cadastro_dia,@$sd29_d_cadastro_mes,@$sd29_d_cadastro_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -183,7 +183,7 @@ db_inputdata('sd29_d_cadastro',@$sd29_d_cadastro_dia,@$sd29_d_cadastro_mes,@$sd2
        <?=@$Lsd29_c_cadastro?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd29_c_cadastro',20,$Isd29_c_cadastro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -337,7 +337,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_prontproced.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

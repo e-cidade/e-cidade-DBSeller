@@ -66,16 +66,13 @@ if( isset( $incluir ) ) {
   }
 
   $clturma->ed57_censoprogramamaiseducacao = $ed57_censoprogramamaiseducacao;
+  $clturma->ed57_is_bilingue = $ed57_is_bilingue;
   $clturma->ed57_c_descr                   = trim($ed57_c_descr);
   $clturma->incluir($ed57_i_codigo);
 
-  $oCalendario  = new Calendario($ed57_i_calendario);
-  $iAnoCenso    = DadosCenso::getUltimoAnoEtapaCenso();
-  $iAnoConsulta = 2014;
-
-  if ( $oCalendario->getAnoExecucao() > 2014 && $oCalendario->getAnoExecucao() == $iAnoCenso ) {
-    $iAnoConsulta = $iAnoCenso;
-  }
+    $oCalendario  = new Calendario($ed57_i_calendario);
+    $iAnoCenso    = DadosCenso::getUltimoAnoEtapaCenso();
+    $iAnoConsulta = $oCalendario->getAnoExecucao() > $iAnoCenso ? $iAnoCenso : $oCalendario->getAnoExecucao();
 
   if ( !empty($clturma->ed57_i_codigo) ) {
 
@@ -219,7 +216,7 @@ if( isset( $incluir ) ) {
         $clregencia->ed59_basecomum            = $ed34_basecomum            == 't' ? 'true' : 'false';
         $clregencia->ed59_procedimento         = $$codprocedaval;
         $clregencia->ed59_areaconhecimento     = $ed34_areaconhecimento;
-        $clregencia->ed59_tipobase             = $ed34_tipobase;  
+        $clregencia->ed59_tipobase             = $ed34_tipobase;
 
         // se configurado procedimento na base curricular, criar regência com o procedimento da base.
         if (!empty($ed34_procedimento)) {
@@ -265,7 +262,7 @@ if( isset( $incluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>

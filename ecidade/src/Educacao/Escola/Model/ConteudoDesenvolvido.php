@@ -4,6 +4,8 @@
 namespace ECidade\Educacao\Escola\Model;
 
 use App\Domain\Educacao\Escola\Models\TurmaTurnoReferente;
+use App\Domain\Educacao\Secretaria\Models\TiposIntrumentosAvaliativos;
+use App\Domain\Educacao\Secretaria\Resources\TiposInstrumentosAvaliativosResource;
 use DateTime;
 use ECidade\Educacao\Escola\Registry\ConteudoDesenvolvidoRegistry;
 use Exception;
@@ -46,6 +48,10 @@ class ConteudoDesenvolvido
      * @var HabilidadeDesenvolvida[]
      */
     private $habilidades = [];
+
+    private $tipoInstrumentoAvaliativo;
+
+    private $aulasDadas;
 
     /**
      * @return int
@@ -156,6 +162,24 @@ class ConteudoDesenvolvido
     }
 
     /**
+     * @return integer
+     */
+    public function getAulasDadas()
+    {
+        return $this->aulasDadas;
+    }
+
+    /**
+     * @param integer $aulasDadas
+     * @return ConteudoDesenvolvido
+     */
+    public function setAulasDadas($aulasDadas)
+    {
+        $this->aulasDadas = $aulasDadas;
+        return $this;
+    }
+
+    /**
      * @param array $state
      * @return ConteudoDesenvolvido
      * @throws Exception
@@ -178,8 +202,19 @@ class ConteudoDesenvolvido
         if (array_key_exists('ed155_data', $state)) {
             $self->setData(new DateTime($state['ed155_data']));
         }
+        if (array_key_exists('ed155_tipo_instrumento_avaliativo', $state)) {
+            $tipo = is_null($state['ed155_tipo_instrumento_avaliativo']) ?
+                null :
+                TiposInstrumentosAvaliativosResource::toResponse(
+                    TiposIntrumentosAvaliativos::find($state['ed155_tipo_instrumento_avaliativo'])
+                );
+            $self->setTipoInstrumentoAvaliativo($tipo);
+        }
         if (array_key_exists('ed155_conteudo', $state)) {
             $self->setConteudo($state['ed155_conteudo']);
+        }
+        if (array_key_exists('ed155_aulas_dadas', $state)) {
+            $self->setAulasDadas($state['ed155_aulas_dadas']);
         }
         ConteudoDesenvolvidoRegistry::set($self);
 
@@ -200,5 +235,22 @@ class ConteudoDesenvolvido
     public function getHabilidades()
     {
         return $this->habilidades;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipoInstrumentoAvaliativo()
+    {
+        return $this->tipoInstrumentoAvaliativo;
+    }
+
+    /**
+     * @param mixed $tipoInstrumentoAvaliativo
+     * @return ConteudoDesenvolvido
+     */
+    public function setTipoInstrumentoAvaliativo($tipoInstrumentoAvaliativo)
+    {
+        $this->tipoInstrumentoAvaliativo = $tipoInstrumentoAvaliativo;
     }
 }

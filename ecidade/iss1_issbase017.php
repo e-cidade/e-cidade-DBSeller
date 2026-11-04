@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -145,7 +145,7 @@ if(isset($sqlerro) && $sqlerro !== false){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-			<?
+			<?php
 				include(modification("forms/db_frmissbasealtobs.php"));
 		  ?>
     </center>
@@ -156,7 +156,7 @@ if(isset($sqlerro) && $sqlerro !== false){
 </body>
 
 </html>
-<?
+<?php
   
 if(isset($postback)){
   db_msgbox($erro);
@@ -167,9 +167,9 @@ if(isset($postback)){
 }else {
 	if ($erro != ""){
 		echo "<script>
-						alert($erro);		
-					</script>";
-		parent.mo_camada('atividades');
+						alert($erro);	
+						parent.mo_camada('atividades');	
+				</script>";
 		db_redireciona("iss1_issbase017.php?nomenu=nops&chavepesquisa=$q02_inscr&opcao=$opcao");
 	}
 }

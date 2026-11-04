@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,7 +92,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" onLoad="js_iniciar()">
-<? if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
+<?php if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -134,9 +134,9 @@ input {
       </tr>
       <tr> 
         <td height="30">&nbsp;</td>
-        <td height="30"><input name="incluir" type="submit" id="incluir" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-          <input name="alterar" type="submit" id="alterar" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-          <input name="excluir" type="submit" id="excluir" onClick="return confirm('Voce quer realmente excluir este serviço?')" value="Excluir" <? echo !isset($retorno)?"disabled":"" ?>>
+        <td height="30"><input name="incluir" type="submit" id="incluir" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+          <input name="alterar" type="submit" id="alterar" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+          <input name="excluir" type="submit" id="excluir" onClick="return confirm('Voce quer realmente excluir este serviço?')" value="Excluir" <?php echo !isset($retorno)?"disabled":"" ?>>
               <input name="consultar" type="submit" id="consultar" onClick="this.form.target = 'consulta'" value="Procurar"></td>
       </tr>
     </table>
@@ -148,8 +148,8 @@ input {
 	</td>
   </tr>
 </table>
-<? } else { ?>
-<?
+<?php } else { ?>
+<?php
   db_postmemory($HTTP_POST_VARS);
   if(!empty($nome))
     $filtro = "and upper(s_nome) like upper('$nome%')";
@@ -167,8 +167,8 @@ input {
   //db_lov($query,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe") { 
   echo "</center>\n";
 ?>
-<? } ?>
-	<?
+<?php } ?>
+	<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

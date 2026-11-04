@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -403,7 +403,7 @@ $pdf->cell(25,$alt,db_formatar(($iSomaDesp + $iDispExeSeg),'f'),"TBL" ,1,"R",1);
 $pdf->Ln();
 $pdf->setfont('arial','',5);
 
-notasExplicativas(&$pdf,55,($oGet->mes>9?$oGet->mes:"0".$oGet->mes),190);
+notasExplicativas($pdf,55,($oGet->mes>9?$oGet->mes:"0".$oGet->mes),190);
 
 $pdf->Ln(25);
 $pdf->setfont('arial','',8);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("nomecam");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tp54_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lp54_codigo,"js_pesquisap54_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p54_codigo',5,$Ip54_codigo,true,'text',$db_opcao," onchange='js_pesquisap54_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('p51_descr',60,$Ip51_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp54_codcam?>">
-       <?
+       <?php
        db_ancora(@$Lp54_codcam,"js_pesquisap54_codcam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p54_codcam',6,$Ip54_codcam,true,'text',$db_opcao," onchange='js_pesquisap54_codcam(false);'")
 ?>
-       <?
+       <?php
 db_input('nomecam',40,$Inomecam,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
        <?=@$Lp54_obrigatorio?>
     </td>
     <td> 
-<?
+<?php
 $x = array('f'=>'Não','t'=>'Sim');
 db_select('p54_obrigatorio',$x,true,$db_opcao,"");
 ?>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_procvar.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

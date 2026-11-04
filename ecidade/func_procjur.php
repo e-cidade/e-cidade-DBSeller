@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,11 +50,11 @@ $clprocjur->rotulo->label("v62_procjurtipo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv62_sequencial?></label></td>
-          <td><? db_input("v62_sequencial",10,$Iv62_sequencial,true,"text",4,"","chave_v62_sequencial"); ?></td>
+          <td><?php db_input("v62_sequencial",10,$Iv62_sequencial,true,"text",4,"","chave_v62_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv62_procjurtipo?></label></td>
-          <td><? db_input("v62_procjurtipo",10,$Iv62_procjurtipo,true,"text",4,"","chave_v62_procjurtipo");?></td>
+          <td><?php db_input("v62_procjurtipo",10,$Iv62_procjurtipo,true,"text",4,"","chave_v62_procjurtipo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $clprocjur->rotulo->label("v62_procjurtipo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_procjur.hide();">
   </form>
-      <?
+      <?php
       $sWhereInstit = "v62_instit = ". db_getsession("DB_instit");
 
       if(!isset($pesquisa_chave)){
@@ -114,12 +114,12 @@ $clprocjur->rotulo->label("v62_procjurtipo");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

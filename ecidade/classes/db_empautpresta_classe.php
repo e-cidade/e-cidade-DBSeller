@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,17 +46,17 @@ class cl_empautpresta {
    var $e58_tipo = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e58_autori = int4 = Autorização 
-                 e58_tipo = int4 = Tipo de Prestação de contas 
+                 e58_autori = int4 = Autorização
+                 e58_tipo = int4 = Tipo de Prestação de contas
                  ";
    //funcao construtor da classe
-   function cl_empautpresta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empautpresta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_empautpresta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e58_autori = ($this->e58_autori == ""?@$GLOBALS["HTTP_POST_VARS"]["e58_autori"]:$this->e58_autori);
        $this->e58_tipo = ($this->e58_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["e58_tipo"]:$this->e58_tipo);
@@ -73,7 +73,7 @@ class cl_empautpresta {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->e58_autori == null ){
        $this->erro_sql = " Campo Autorização nao Informado.";
@@ -94,12 +94,12 @@ class cl_empautpresta {
        return false;
      }
      $sql = "insert into empautpresta(
-                                       e58_autori 
-                                      ,e58_tipo 
+                                       e58_autori
+                                      ,e58_tipo
                        )
                 values (
-                                $this->e58_autori 
-                               ,$this->e58_tipo 
+                                $this->e58_autori
+                               ,$this->e58_tipo
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -127,7 +127,7 @@ class cl_empautpresta {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null ) {
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update empautpresta set ";
      $virgula = "";
@@ -188,7 +188,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from empautpresta
                     where ";
      $sql2 = "";
@@ -228,7 +228,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -250,10 +250,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="empautpresta.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="empautpresta.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -274,7 +274,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -283,10 +283,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -304,7 +304,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

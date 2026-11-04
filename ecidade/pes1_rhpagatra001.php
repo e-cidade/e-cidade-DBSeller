@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,11 +55,11 @@ if(isset($incluir)){
     if($clrhpagocor->erro_status != 0){
       $result_rhpagatra_dados = $clrhpagatra->sql_record($clrhpagatra->sql_query_file($rh57_seq));
       db_fieldsmemory($result_rhpagatra_dados, 0);
-      $clrhpagatra->rh57_ano = $rh57_ano; 
-      $clrhpagatra->rh57_mes = $rh57_mes; 
-      $clrhpagatra->rh57_regist = $rh57_regist; 
-      $clrhpagatra->rh57_valorini = $rh57_valorini; 
-      $clrhpagatra->rh57_tipoatra = $rh57_tipoatra; 
+      $clrhpagatra->rh57_ano = $rh57_ano;
+      $clrhpagatra->rh57_mes = $rh57_mes;
+      $clrhpagatra->rh57_regist = $rh57_regist;
+      $clrhpagatra->rh57_valorini = $rh57_valorini;
+      $clrhpagatra->rh57_tipoatra = $rh57_tipoatra;
       $clrhpagatra->rh57_seq = $rh57_seq;
       $soma_ou_subtrai = "+";
       if($rh59_tipo == "D"){
@@ -109,18 +109,18 @@ if(isset($incluir)){
   if(isset($rh57_seq)){
     $dbhaving = " rh57_regist = $rh57_regist and rh57_seq = $rh57_seq ";
     $sql = $clrhpagatra->sql_query_tipoatras(null,
-                                            "rh57_seq, 
-                                             rh57_ano, 
-                                             rh57_mes, 
-                                             rh57_regist, 
+                                            "rh57_seq,
+                                             rh57_ano,
+                                             rh57_mes,
+                                             rh57_regist,
                                              rh57_valorini,
      					     rh57_saldo,
-                                             rh57_tipoatra, 
+                                             rh57_tipoatra,
                                              rh60_descr",
                                             "rh57_ano,rh57_mes",
                                             $dbhaving
                                            );
-//    die($sql); 
+//    die($sql);
     $result_dadosatraso = $clrhpagatra->sql_record($sql);
     if($clrhpagatra->numrows > 0){
       db_fieldsmemory($result_dadosatraso, 0);
@@ -144,7 +144,7 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="25%" height="18">&nbsp;</td>
     <td width="25%">&nbsp;</td>
     <td width="25%">&nbsp;</td>
@@ -152,31 +152,31 @@ if(isset($incluir)){
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?
+      <?php
       include(modification("forms/db_frmrhpagatra.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-<?if(!isset($rh57_regist) || !isset($rh57_seq)){?>
+<?php if(!isset($rh57_regist) || !isset($rh57_seq)){?>
 js_tabulacaoforms("form1","rh57_regist",true,1,"rh57_regist",true);
 <?}else if($db_opcao == 3){?>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
 <?}else{?>
 js_tabulacaoforms("form1","rh58_tipoocor",true,1,"rh58_tipoocor",true);
-<?}?>
+<?php }?>
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($clrhpagocor->erro_status=="0"){
     $clrhpagocor->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -92,19 +92,25 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   	$sqlerro=true;
   }
 
-  if ($sqlerro==false){
-
-    $it14_dtvenc=$it14_dtvenc_ano."-".$it14_dtvenc_mes."-".$it14_dtvenc_dia;
-    $clitbiavalia->it14_dtvenc=$it14_dtvenc;
-    $it14_dtliber=$it14_dtliber_ano."-".$it14_dtliber_mes."-".$it14_dtliber_dia;
-    $clitbiavalia->it14_dtliber=$it14_dtliber;
-    $clitbiavalia->it14_guia=$guia;
+  $validaItbiPaga = db_query("select * from itbi.itbinumpre itbinp
+                              inner join caixa.arrepaga  arp
+                              on itbinp.it15_numpre = arp.k00_numpre
+                              where itbinp.it15_guia = {$guia}");
+  $it14_dtvenc=$it14_dtvenc_ano."-".$it14_dtvenc_mes."-".$it14_dtvenc_dia;
+  $clitbiavalia->it14_dtvenc=$it14_dtvenc;
+  $it14_dtliber=$it14_dtliber_ano."-".$it14_dtliber_mes."-".$it14_dtliber_dia;
+  $clitbiavalia->it14_dtliber=$it14_dtliber;
+  $clitbiavalia->it14_guia=$guia;
+  if ($sqlerro==false && pg_num_rows($validaItbiPaga) == 0) {
     $clitbiavalia->alterar($guia);
 
     if ($clitbiavalia->erro_status==0){
     	$sqlerro=true;
     	$erro_msg=$clitbiavalia->erro_msg;
     }
+  }else{
+      $sqlerro=true;
+      $erro_msg="Não é possivel alterar os dados de uma guia que já foi paga.";
   }
 
   db_fim_transacao($sqlerro);
@@ -143,7 +149,7 @@ if (isset($oGet->alteraguialib)) {
 	  </tr>
 	  <tr>
 	    <td>
-			<?
+			<?php
 			  include(modification("forms/db_frmitbilib.php"));
 		  ?>
 		</td>
@@ -152,7 +158,7 @@ if (isset($oGet->alteraguialib)) {
 </form>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
 
   if ($clitbi->erro_status == "0" || $sqlerro == true) {

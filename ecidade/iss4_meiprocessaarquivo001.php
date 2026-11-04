@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -42,7 +42,7 @@ $clMeiImporta = new cl_meiimporta();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -94,7 +94,7 @@ $clMeiImporta = new cl_meiimporta();
 <table style="padding-top: 25px;">
   <tr>
     <td>
-      <fieldset>
+      <fieldset style="margin:auto; width:fit-content;">
         <legend>Processar Arquivo MEI</legend>
         <table>
           <tr>
@@ -105,6 +105,19 @@ $clMeiImporta = new cl_meiimporta();
               <select id="competencia" style="width:100px;" disabled>
               </select>
             </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Eventos:</strong>
+            </td>
+            <td>
+              <Select id='filtroCodigoEvento'>
+                <option value="0">Todos</option>
+              </Select>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
             <td>
               <input type="button" id="pesquisar" value="Pesquisar" onClick="js_pesquisaRegistros();" />
             </td>
@@ -142,8 +155,10 @@ $clMeiImporta = new cl_meiimporta();
             </td>
           </tr>
           <tr>
-            <td class='table_header' width="20px"><img src="imagens/espaco.gif"></td>
-            <td class='table_header' width="25px" title="Processar">P</td>
+            <td class='table_header' width="20px">
+              <img id="abreTodosEventos" src='imagens/treeplus.gif' onclick="js_abreTodosEventos()" >
+            </td>
+            <td class='table_header' width="25px" id="selecionaCompetenciasProcessar" onclick="js_selecionaTodosEventos()" title="Processar">P</td>
             <td class='table_header' width="25px" title="Descartar">D</td>
             <td class='table_header' width="50px">Código</td>
             <td class='table_header' width="392px">Descrição Evento</td>
@@ -185,9 +200,10 @@ $clMeiImporta = new cl_meiimporta();
   var sUrlRPC        = 'iss4_processamentomei.RPC.php';
   var oParam         = new Object();
   var sCnaeAtividade = '';
-
+  var bExibeAlerta   = true;
 
   function js_pesquisaRegistros(){
+    js_fechaTodosEventos();
     js_consultaImportacao($F('competencia'));
   }
 
@@ -195,8 +211,9 @@ $clMeiImporta = new cl_meiimporta();
 
     js_divCarregando('Aguarde, pesquisando...', 'msgbox');
 
-    oParam.sMethod      = 'consultaRegistros';
-    oParam.sCompetencia = sCompetencia;
+    oParam.sMethod            = 'consultaRegistros';
+    oParam.sCompetencia       = sCompetencia;
+    oParam.sCodigoCompetencia = document.getElementById('filtroCodigoEvento').value
 
     var oAjax   = new Ajax.Request(
                                    sUrlRPC,
@@ -222,7 +239,6 @@ $clMeiImporta = new cl_meiimporta();
       $('processar').disabled = false;
       js_montaGrid(oRetorno.aDadosImporta);
     }
-
   }
 
 
@@ -230,6 +246,8 @@ $clMeiImporta = new cl_meiimporta();
 
     $('listaReg').innerHTML     = '';
     $('totalRegGrid').innerHTML = aDadosImporta.length;
+
+    js_getCodigosEventos(aDadosImporta);
 
     aDadosImporta.each(
       function( oDadosImporta ){
@@ -239,7 +257,7 @@ $clMeiImporta = new cl_meiimporta();
         var oRowImporta              = document.createElement("TR");
         oRowImporta.id               = 'linhaMei'+iCnpj;
 
-        if ( oDadosImporta.lBloqueado ) {
+        if ( oRowImporta.className !== 'inconsistente' && oDadosImporta.lBloqueado ) {
           oRowImporta.className      = 'inconsistente';
         }
 
@@ -258,6 +276,17 @@ $clMeiImporta = new cl_meiimporta();
         oRowImporta.appendChild(oCellNomeMEI);
 
         $('listaReg').appendChild(oRowImporta);
+        
+        oDadosImporta.aEventos.sort(function(item1, item2){
+          switch(true){
+            case (Number(item1.sCodEvento) > Number(item2.sCodEvento)):
+              return 1;
+            case (Number(item1.sCodEvento) < Number(item2.sCodEvento)):
+              return -1;
+            default:
+              return 0;
+          }
+        })
 
         var iCountEventos = oDadosImporta.aEventos.length;
 
@@ -329,11 +358,11 @@ $clMeiImporta = new cl_meiimporta();
             if ( oDadosEvento.lInconsistente ) {
               oCellEventoSituacao.innerHTML      = 'Inconsistente';
               oCellEventoSituacao.onclick        = function() {
-                                                     js_consultaDetalheInconsistencias(iCnpj,oDadosEvento.sCodEvento.urlDecode());
+                                                     js_consultaDetalheInconsistencias(iCnpj,oDadosEvento.sCodEvento.urlDecode(), oDadosEvento.sMsgSituacao.urlDecode());
                                                    };
-              oCellEventoSituacao.onmouseover    = function() {
+              oCellEventoSituacao.onmouseover    = function(event) {
                                                      oCellEventoSituacao.style.cursor = 'pointer';
-                                                     js_showHint(oCellEventoSituacao,oDadosEvento.sMsgSituacao.urlDecode())
+                                                     js_showHint(oCellEventoSituacao,oDadosEvento.sMsgSituacao.urlDecode(), event)
                                                    };
             } else {
               oCellEventoSituacao.innerHTML      = 'Consistente';
@@ -389,13 +418,14 @@ $clMeiImporta = new cl_meiimporta();
 
   }
 
-  function js_consultaDetalheInconsistencias(iCnpj,sCodEvento) {
+  function js_consultaDetalheInconsistencias(iCnpj,sCodEvento, sMsgSituacao) {
 
     js_divCarregando('Aguarde, pesquisando inconsistências...', 'msgbox');
 
     oParam.sMethod            = 'consultaDetalheInconsistencias';
     oParam.iCnpj              = new String(iCnpj);
     oParam.sCodEvento         = sCodEvento;
+    oParam.sMsg               = sMsgSituacao;
 
     var oAjax = new Ajax.Request ( sUrlRPC,
                                    {
@@ -549,15 +579,22 @@ $clMeiImporta = new cl_meiimporta();
 
   function js_mostraEventos(oRowMeiImg,iCnpj){
 
-    var aRowEventos = $$('#linhaEvento'+iCnpj);
-    aRowEventos.each(
+    var aRowEventos = document.querySelectorAll('tr');
+    aRowEventos.forEach(
+
       function( oRowEvento ){
-        if ( oRowEvento.style.display == 'none' ) {
-          oRowMeiImg.src = 'imagens/treeminus.gif';
-          oRowEvento.style.display = '';
-        } else {
-          oRowMeiImg.src = 'imagens/treeplus.gif';
-          oRowEvento.style.display = 'none';
+
+        if(oRowEvento.id.includes(iCnpj) 
+            && oRowEvento.id.includes('linhaEvento')){
+
+          if ( oRowEvento.style.display == 'none' ) {
+            oRowMeiImg.src = 'imagens/treeminus.gif';
+            oRowEvento.style.display = '';
+
+          } else {
+            oRowMeiImg.src = 'imagens/treeplus.gif';
+            oRowEvento.style.display = 'none';
+          }
         }
       }
     );
@@ -675,9 +712,9 @@ $clMeiImporta = new cl_meiimporta();
 
     var iIndexEvento = (oRowEvento.rowIndex-2);
 
-    if ( lCorrigeEventos ) {
-      js_marcaEventosMei(oChk.checked,iIndexEvento,oChk,lConfirma);
-    }
+    // if ( lCorrigeEventos ) {
+    //   js_marcaEventosMei(oChk.checked,iIndexEvento,oChk,lConfirma);
+    // }
 
   }
 
@@ -721,7 +758,13 @@ $clMeiImporta = new cl_meiimporta();
 
           if ( lConfirma ) {
 
-            if ( !confirm('Os eventos com data superior serão desmarcados deseja continuar?')) {
+            if(!bExibeAlerta){
+
+              oChk.checked = true;
+              js_verificaChk(oChk,false,false);
+              return false;
+
+            } else if ( !confirm('Os eventos com data superior serão desmarcados deseja continuar?')) {
 
               oChk.checked = true;
               js_verificaChk(oChk,false,false);
@@ -935,34 +978,13 @@ $clMeiImporta = new cl_meiimporta();
     );
   }
 
-
-  function js_showHint(obj,sMsg) {
-
-
-    var el = obj;
-    var x  = 0;
-    var y  = 0;
-
-    while (el.offsetParent && el.tagName.toUpperCase() != 'BODY') {
-      x += el.offsetLeft;
-      y += el.offsetTop;
-      el = el.offsetParent;
-    }
-
-    var sLeft     = (x)+"px";
-    var iDiminuir = $('listaReg').scrollTop;
-
-    var sTop = (y-(iDiminuir-20))+"px";
-
-    if ((y-iDiminuir) > document.body.scrollHeight ) {
-      var sTop = (y-iDiminuir)+"px";
-    }
-
-    var oDivHint = document.createElement("DIV");
+  
+  function js_showHint(obj,sMsg, event) {
+    var oDivHint = document.createElement("div");
     oDivHint.setAttribute("id",'testeHint');
     oDivHint.style.position   = "fixed";
-    oDivHint.style.left       = sLeft;
-    oDivHint.style.top        = sTop;
+    oDivHint.style.left       = event.clientX + 1;
+    oDivHint.style.top        = event.clientY + 1;
     oDivHint.style.zIndex     = "0";
     oDivHint.style.visibility = 'visible';
     oDivHint.style.fontFamily = 'Verdana, Arial, Helvetica, sans-serif';
@@ -982,7 +1004,7 @@ $clMeiImporta = new cl_meiimporta();
 
   }
 
-  function js_processar(){
+  function js_processar() {
 
     var aProcessar      = $$('input.chkProc:checked');
     var aDescartar      = $$('input.chkDesc:checked');
@@ -993,6 +1015,8 @@ $clMeiImporta = new cl_meiimporta();
         return false;
       }
     }
+
+    js_resetaParametros();
 
     aProcessar.each(
       function(oChk){
@@ -1129,8 +1153,8 @@ $clMeiImporta = new cl_meiimporta();
     }
   }
 
-  function js_mostraLogradouro(chave,erro){
-    $('descrlogradouro').value = chave;
+  function js_mostraLogradouro(chave, mensagem, erro){
+    $('descrlogradouro').value = mensagem;
     if(erro==true){
       $('codlogradouro').focus();
       $('codlogradouro').value = '';
@@ -1141,6 +1165,25 @@ $clMeiImporta = new cl_meiimporta();
     $('codlogradouro').value = chave1;
     $('descrlogradouro').value = chave2;
     db_iframe_logradouro.hide();
+  }
+
+  function selecionaLogradouro(codigo){
+    document.querySelectorAll('.ruaEncontrada').forEach(function(item){
+      const itemClicado = item.children[1].innerHTML.trim().toString() === codigo.toString()
+      const itemSelecionado = item.children[0].children[0].checked === true
+
+      if(itemClicado){
+          if(itemSelecionado){
+            $('codlogradouro').value = codigo;
+          } else {
+            $('codlogradouro').value = '';
+          }
+
+          js_pesquisaLogradouro(false);
+        } else {
+          item.children[0].children[0].checked = false
+        }
+    })
   }
 
 
@@ -1218,6 +1261,164 @@ $clMeiImporta = new cl_meiimporta();
     db_iframe_atividade.hide();
   }
 
+  function js_getCodigosEventos(dados) {
+    const codigoEventos = [];
+
+    dados.map(function (dado) {
+      dado.aEventos.map(function (evento) {
+          const eventoJaArmazenado = codigoEventos.find(function (item) {
+            return item.codigo === evento.sCodEvento
+          });
+
+          if(!eventoJaArmazenado){
+            codigoEventos.push({
+              codigo: evento.sCodEvento,
+              descricao: evento.sDescricao.urlDecode()
+            })
+          }
+      })
+    });
+
+    codigoEventos.sort(function (item1, item2) {
+      return (Number(item1.codigo) > Number(item2.codigo)) ? 1 : 0;
+    });
+
+    js_montaFiltroEventos(codigoEventos);
+  }
+
+  function js_montaFiltroEventos(codigoEventos) {
+    const selectCodigosEvento = document.getElementById('filtroCodigoEvento')
+    const htmlSelect = selectCodigosEvento.innerHTML.trim();
+
+    codigoEventos.map(function (item) {
+      const valor = item.codigo;
+      const descricao = `${item.codigo} - ${item.descricao}`;
+
+      if (!htmlSelect.includes(descricao)){ 
+        const option = new Option(descricao, valor);
+        selectCodigosEvento.appendChild(option);
+      }
+    });
+  }
+
+  function js_removeEventosListados() {
+    const selectCodigosEvento = document.getElementById('filtroCodigoEvento');
+      const children = selectCodigosEvento.children;
+
+      if(children){
+        Array.from(children).forEach((element) => {
+          element.remove();
+        });
+      }
+      
+      const option = new Option('Todos', '0');
+      selectCodigosEvento.appendChild(option);
+  }
+
+  function js_resetaParametros() {
+    js_removeEventosListados();
+    js_fechaTodosEventos();
+  }
+
+  function js_resetaFiltroEventos() {
+    const selectCompetencias = document.getElementById('competencia');
+
+    selectCompetencias.addEventListener('change', () => {
+      js_removeEventosListados();
+    });
+  }
+
+  function js_abreTodosEventos() {
+    const botoes = document.querySelectorAll('img');
+    const botaoAbreEventos = document.getElementById('abreTodosEventos');
+
+    botaoAbreEventos.removeAttribute("onclick");
+    botaoAbreEventos.removeAttribute("src");
+
+    botaoAbreEventos.setAttribute("src", "imagens/treeminus.gif");
+    botaoAbreEventos.setAttribute("onclick", "js_fechaTodosEventos()");
+
+    botoes.forEach(function(botao){
+      const htmlBotao = botao.outerHTML;
+
+      if(htmlBotao.includes('onclick="js_mostraEventos')
+          && htmlBotao.includes('imagens/treeplus.gif')){
+        botao.click();
+      }
+    })
+  }
+
+  function js_fechaTodosEventos() {
+    const botoes = document.querySelectorAll('img');
+    const botaoAbreEventos = document.getElementById('abreTodosEventos');
+
+    botaoAbreEventos.removeAttribute("onclick");
+    botaoAbreEventos.removeAttribute("src");
+
+    botaoAbreEventos.setAttribute("src", "imagens/treeplus.gif");
+    botaoAbreEventos.setAttribute("onclick", "js_abreTodosEventos()");
+
+    botoes.forEach(function(botao){
+      const htmlBotao = botao.outerHTML;
+
+      if(htmlBotao.includes('onclick="js_mostraEventos')
+          && htmlBotao.includes('imagens/treeminus.gif')){
+        botao.click();
+      }
+    })
+  }
+
+  function js_selecionaTodosEventos() {
+    const botaoSelecionaTodosEventos = document.getElementById('selecionaCompetenciasProcessar');
+    const botoes = document.querySelectorAll('.chkProc');
+    let numeroBotoesNaoSelecionados = 0;
+
+    botoes.forEach(function(botao){
+      const botaoNaTela = botao.parentNode.parentNode.style.display !== 'none';
+      const botaoHabilitado = botao.disabled === false;
+      const botaoNaoSelecionado = botao.checked === false;
+
+      if(botaoNaTela && botaoHabilitado && botaoNaoSelecionado){
+          numeroBotoesNaoSelecionados++;
+        }
+    })
+
+    switch(numeroBotoesNaoSelecionados){
+      case 0: 
+        js_removeSelecaoTodosEventos();
+        break;
+      
+      default:
+        botoes.forEach(function(botao){
+          const displayBotao = botao.parentNode.parentNode.style.display;
+        
+          if(displayBotao !== 'none' && botao.checked === false){
+            botao.click();
+          }
+        });
+        break;
+    }
+  }
+
+  function js_removeSelecaoTodosEventos() {
+    bExibeAlerta = false;
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    for(let index = checkboxes.length - 1; index >= 0; index--){
+      const checkbox = checkboxes[index];
+      const checkboxeNaTela = checkbox.parentNode.parentNode.style.display !== 'none';
+      const checkboxHabilitado = checkbox.disabled === false;
+      const checkBoxChecked = checkbox.checked;
+
+      if(checkboxeNaTela && checkboxHabilitado && checkBoxChecked){
+        checkbox.click();
+      }
+    }
+
+    bExibeAlerta = true;
+  }
+
+  js_resetaFiltroEventos();
   js_consultaCompetencias();
 
 </script>

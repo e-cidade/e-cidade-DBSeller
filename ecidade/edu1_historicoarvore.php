@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -221,7 +221,7 @@ get_element = document.all ?
 
 var TREE_ITEMS = [
                    ['Aluno: <b><?=$ed47_v_nome?></b>:<?=$ed61_i_aluno?>', '',
-                   <?
+                   <?php
                     if ( isset($ed61_i_aluno) && !empty($ed61_i_aluno) ) {
                       $query = $clhistorico->sql_record($clhistorico->sql_query("","*","ed29_i_codigo"," ed61_i_aluno = $ed61_i_aluno"));
                     }else{
@@ -230,13 +230,13 @@ var TREE_ITEMS = [
                     if($clhistorico->numrows == 0) {
                    ?>
                     ['Curso: <b>Nenhum curso no histórico</b>:', 'edu1_historico001.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>'],
-                   <?
+                   <?php
                     }else{
                     for($a=0;$a<$clhistorico->numrows;$a++){
                      db_fieldsmemory($query,$a);
                      ?>
                      ['Curso: <b><?=$ed29_c_descr?></b>:C<?=$ed29_i_codigo?>', 'edu1_historico002.php?chavepesquisa=<?=$ed61_i_codigo?>',
-                     <?
+                     <?php
                      $sql1 = "SELECT ed62_i_codigo,ed11_c_descr,ed11_i_codigo,ed62_i_anoref,ed62_i_periodoref,ed11_i_sequencia,'REDE' as tipo
                               FROM historicomps
                                inner join serie on ed11_i_codigo = ed62_i_serie
@@ -254,17 +254,17 @@ var TREE_ITEMS = [
                      //$query1 = $clhistoricomps->sql_record($clhistoricomps->sql_query("","*","serie.ed11_i_sequencia,ed62_i_anoref,ed62_i_periodoref"," ed62_i_historico = $ed61_i_codigo"));
                      if($linhas1==0){?>
                       ['Etapa: <b>Nenhuma etapa para este curso</b>:', 'edu1_historicomps001.php?ed62_i_historico=<?=$ed61_i_codigo?>&ed29_c_descr=<?=$ed29_c_descr?>&ed29_i_codigo=<?=$ed29_i_codigo?>&ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>'],
-                     <?}else{
+                     <?php } else {
                       for($b=0;$b<$linhas1;$b++){
                        db_fieldsmemory($query1,$b);
                        if($tipo=="REDE"){
                         ?>
                         ['Etapa: <b><?=$ed11_c_descr?></b>:S<?=$ed11_i_codigo?>', 'edu1_historicomps002.php?chavepesquisa=<?=$ed62_i_codigo?>',
-                        <?
+                        <?php
                        }else{
                         ?>
                         ['Etapa: <b><?=$ed11_c_descr?></b>:S<?=$ed11_i_codigo?>', 'edu1_historicompsfora002.php?chavepesquisa=<?=$ed62_i_codigo?>',
-                        <?
+                        <?php
                        }
                        if($tipo=="REDE"){
 
@@ -273,34 +273,34 @@ var TREE_ITEMS = [
                           if ($clhistmpsdisc->numrows == 0) {
                        ?>
                           ['Disciplina: <b>Nenhum disciplina para esta Etapa</b>:', 'edu1_histmpsdisc001.php?ed65_i_historicomps=<?=$ed62_i_codigo?>'],
-                       <? } else {
+                       <?php } else {
                             for ( $c = 0; $c < $clhistmpsdisc->numrows; $c++) {
 
                               db_fieldsmemory($query2,$c);
                         ?>
                               ['Disciplina: <b><?=$ed232_c_descr?></b>:D<?=$ed12_i_codigo?>', 'edu1_histmpsdisc002.php?ed65_i_historicomps=<?=$ed62_i_codigo?>'],
-                        <?  }
+                        <?php  }
                          }
                        }else{
                         $query2 = $clhistmpsdiscfora->sql_record($clhistmpsdiscfora->sql_query("","*","ed100_i_ordenacao"," ed100_i_historicompsfora  = $ed62_i_codigo"));
                         if($clhistmpsdiscfora->numrows==0){?>
                          ['Disciplina: <b>Nenhum disciplina para esta Etapa</b>:', 'edu1_histmpsdiscfora001.php?ed100_i_historicompsfora=<?=$ed62_i_codigo?>'],
-                        <?}else{
+                        <?php } else {
                          for($c=0;$c<$clhistmpsdiscfora->numrows;$c++){
                           db_fieldsmemory($query2,$c);
                           ?>
                           ['Disciplina: <b><?=$ed232_c_descr?></b>:D<?=$ed12_i_codigo?>', 'edu1_histmpsdiscfora002.php?ed100_i_historicompsfora=<?=$ed62_i_codigo?>'],
-                         <?}
+                         <?php }
                         }
                        }?>
                        ],
-                      <?}?>
-                     <?}?>
+                      <?php } ?>
+                     <?php } ?>
                      ],
-                    <?}?>
-                   <?}?>
+                    <?php } ?>
+                   <?php } ?>
                    ]
-                 ];                   
+                 ];
 /*
  Feel free to use your custom icons for the tree. Make sure they are all of the same size.
  User icons collections are welcome, we'll publish them giving all regards.
@@ -337,10 +337,10 @@ var tree_tpl = {
 };
 </script>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?if(isset($ed61_i_aluno) && $ed61_i_aluno!=""){?>
+<?php if(isset($ed61_i_aluno) && $ed61_i_aluno!=""){?>
  <script>tree(TREE_ITEMS, tree_tpl);</script>
- <?}else{
- 	echo "&nbsp;&nbsp;<b>Escolha um aluno</b>"; 	
+ <?php } else {
+ 	echo "&nbsp;&nbsp;<b>Escolha um aluno</b>";
  }?>
 </body>
 </html>

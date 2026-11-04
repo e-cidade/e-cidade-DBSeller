@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -67,7 +67,7 @@ class cl_inicial
                  ";
 
     //funcao construtor da classe
-    function cl_inicial()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inicial");
@@ -75,7 +75,7 @@ class cl_inicial
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -86,7 +86,7 @@ class cl_inicial
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->v50_inicial = ($this->v50_inicial == "" ? @$GLOBALS["HTTP_POST_VARS"]["v50_inicial"] : $this->v50_inicial);
@@ -110,7 +110,7 @@ class cl_inicial
     }
 
     // funcao para inclusao
-    function incluir($v50_inicial)
+    public function incluir($v50_inicial)
     {
         $this->atualizacampos();
         if ($this->v50_advog == null) {
@@ -292,7 +292,7 @@ class cl_inicial
     }
 
     // funcao para alteracao
-    function alterar($v50_inicial = null)
+    public function alterar($v50_inicial = null)
     {
         $this->atualizacampos();
         $sql = " UPDATE inicial SET ";
@@ -514,7 +514,7 @@ class cl_inicial
     }
 
     // funcao para exclusao
-    function excluir($v50_inicial = null, $dbwhere = null)
+    public function excluir($v50_inicial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($v50_inicial));
@@ -603,7 +603,7 @@ class cl_inicial
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -630,7 +630,7 @@ class cl_inicial
     }
 
     // funcao do sql
-    function sql_query($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -674,7 +674,7 @@ class cl_inicial
     }
 
     // funcao do sql
-    function sql_query_file($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -711,7 +711,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_inform($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_inform($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -763,7 +763,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_pet($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pet($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -807,7 +807,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_sit($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_sit($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -852,7 +852,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_sitpar($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_sitpar($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -897,7 +897,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_sitmanual($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_sitmanual($v50_inicial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -949,7 +949,7 @@ class cl_inicial
      * Função que calcula o valor total da inicial
      *
      */
-    function valorInicialAtualizado($iInicial, $dDtEmiss = null)
+    public function valorInicialAtualizado($iInicial, $dDtEmiss = null)
     {
 
         require_once(modification("libs/db_sql.php"));
@@ -1028,7 +1028,7 @@ class cl_inicial
     }
 
 
-    function sql_queryIniciaisPeticao($iInstituicao, $iCodigoSituacao)
+    public function sql_queryIniciaisPeticao($iInstituicao, $iCodigoSituacao)
     {
 
         $sCondicao = $iCodigoSituacao == 4 ? "<>" : "=";
@@ -1092,7 +1092,7 @@ class cl_inicial
      * @access public
      * @return string
      */
-    function sql_queryFiltroInicias($iInstituicao, $sCampos = "*", $sOrdem = null, $sWhere = null)
+    public function sql_queryFiltroInicias($iInstituicao, $sCampos = "*", $sOrdem = null, $sWhere = null)
     {
 
         /**
@@ -1133,7 +1133,7 @@ class cl_inicial
      * @param $instituicao
      * @return string
      */
-    function sql_queryFiltraInicialArrecad($v50_inicial, $instituicao)
+    public function sql_queryFiltraInicialArrecad($v50_inicial, $instituicao)
     {
 
         $sSql = " select distinct arrecad.k00_numpre as numpres                             ";
@@ -1160,7 +1160,7 @@ class cl_inicial
         return $sSql;
     }
 
-    function sql_query_FiltrarCdaPorInicial($inicial)
+    public function sql_query_FiltrarCdaPorInicial($inicial)
     {
 
         $sql = " select v13_certid as certidao, ";
@@ -1212,7 +1212,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_certidao($certidao)
+    public function sql_query_certidao($certidao)
     {
         $sql = "
             SELECT inicial.* FROM inicial
@@ -1223,7 +1223,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_by_processo($codigoProcesso, $anulado = null)
+    public function sql_query_by_processo($codigoProcesso, $anulado = null)
     {
         $where = array(
             "v71_processoforo = {$codigoProcesso}"
@@ -1250,7 +1250,7 @@ class cl_inicial
         return $sql;
     }
 
-    function sql_query_by_numpre($numpre)
+    public function sql_query_by_numpre($numpre)
     {
         $sql = "SELECT inicial.*
                 FROM inicial 
@@ -1271,7 +1271,7 @@ class cl_inicial
     return $sql;
   }
 
-    function sql_query_exercicio_by_inicial ($inicial)
+    public function sql_query_exercicio_by_inicial ($inicial)
     {
         $sql  = "
             SELECT distinct

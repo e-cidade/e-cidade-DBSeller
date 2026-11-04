@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,14 +25,16 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("dbforms/db_classesgenericas.php"));
-$clcriaabas     = new cl_criaabas;
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
+
+$clcriaabas = new cl_criaabas;
 $db_opcao = 1;
+
 ?>
 <html>
 <head>
@@ -54,20 +56,20 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
-	 $clcriaabas->identifica = array("isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"); 
-	 $clcriaabas->sizecampo = array("isencao"=>"30","isencaolanc"=>"30");
-	 $clcriaabas->src = array("isencao"=>"tri1_isencao005.php");
-	 $clcriaabas->disabled   =  array("isencaolanc"=>"true"); 
-	 $clcriaabas->cria_abas(); 
-       ?> 
-       </td>
-    </tr>
+     <?php
+	    $clcriaabas->identifica = array("isencao"=>"Dados da Isenção", 'isencaocalc'=>"Cálculos"); 
+	    $clcriaabas->sizecampo = array("isencao"=>"30", 'isencaocalc'=>"30");
+	    $clcriaabas->src = array("isencao"=>"tri1_isencao005.php");
+	    $clcriaabas->disabled   =  array("isencaocalc"=>"true"); 
+	    $clcriaabas->cria_abas(); 
+     ?> 
+    </td>
+   </tr>
   </table>
   <form name="form1">
   </form>
-      <? 
-	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+      <?php
+	      db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>
   </html>

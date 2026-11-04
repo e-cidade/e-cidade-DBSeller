@@ -20,6 +20,23 @@ Route::middleware(["auth:api"])->group(function () {
         Route::get('problemas', 'ProblemasController@getAll');
         Route::get('problemaspaciente/by-paciente/{id}', 'ProblemasPacienteController@getByPaciente');
         Route::get('microarea', 'FamiliaMicroareaController@getMicroareas');
+        Route::get('unidade/{id}', 'UnidadesController@get');
+        Route::get('classificacoesderisco', 'ClassificacoesRiscoController@getClassificacoes');
+        Route::get('setoresambulatoriais', 'SetoresAmbulatoriaisController@getSetores');
+        Route::get('motivosdeatendimento', 'MotivosAtendimentoController@getMotivosAtendimento');
+        Route::get('especialidadeprofissionais/ativas', 'EspecialidadeProfissionalController@getAtivas');
+        Route::prefix('statuspaciente')->group(function () {
+            Route::post('', 'StatusPacienteController@buscaDados');
+            Route::post('buscapacienteprontuario', 'StatusPacienteController@buscaPacienteProntuario');
+        });
+        Route::prefix('unidades-encaminhadoras')->group(function () {   
+            Route::post('', 'UnidadesEncaminhadorasController@get');
+            Route::post('unidade', 'UnidadesEncaminhadorasController@getByUnidade');
+        });  
+        Route::prefix('unidades-origem')->group(function () {   
+            Route::post('', 'UnidadesOrigemController@get');
+            Route::post('unidade', 'UnidadesOrigemController@getByUnidade');
+        });                
     });
 
     Route::prefix('procedimento')->group(function () {
@@ -34,11 +51,35 @@ Route::middleware(["auth:api"])->group(function () {
             Route::post('salvar', 'ProblemasPacienteController@salvar');
             Route::post('apagar', 'ProblemasPacienteController@apagar');
         });
+
+        Route::prefix('unificacao-cgs')->group(function () {
+            
+            Route::post('listar-unificacoes', 'UnificacaoCgsController@listarUnificacoes');
+            Route::post('listar-cgs', 'UnificacaoCgsController@listarCgs');
+            Route::post('detalhar', 'UnificacaoCgsController@detalhar');
+            Route::post('salvar', 'UnificacaoCgsController@salvar');
+            Route::post('excluir', 'UnificacaoCgsController@excluir');
+            Route::post('processar', 'UnificacaoCgsController@processar');
+        });        
     });
 
     Route::prefix('relatorio')->group(function () {
         Route::post('acompanhamento-acs', 'AcompanhamentoAcsController@relatorio');
     });
+
+    Route::prefix('cadastro')->group(function () {
+        Route::prefix('unidades-encaminhadoras')->group(function () {   
+            Route::post('save', 'UnidadesEncaminhadorasController@save');
+            Route::post('delete', 'UnidadesEncaminhadorasController@delete');
+        });        
+    });   
+    
+    Route::prefix('cadastro')->group(function () {
+        Route::prefix('unidades-origem')->group(function () {   
+            Route::post('save', 'UnidadesOrigemController@save');
+            Route::post('delete', 'UnidadesOrigemController@delete');
+        });        
+    });            
 });
 
 Route::middleware(['clientCredential'])->group(function () {

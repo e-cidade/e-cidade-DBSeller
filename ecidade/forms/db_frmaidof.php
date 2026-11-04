@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -261,7 +261,7 @@ if ( empty($valida_dados) && isset($y08_inscr) && $y08_inscr != "" && $db_opcao 
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y08_numcgm',6,$Iy08_numcgm,true,'text',$db_opcao,"class='field-size2' onchange='js_pesquisay08_numcgm(false);'");
         db_input('z01_nome_grafica',30,@$Iz01_nome,true,'text',3,"class='field-size9'")
       ?>

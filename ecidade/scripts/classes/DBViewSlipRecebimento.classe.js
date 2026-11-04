@@ -699,7 +699,7 @@ DBViewSlipRecebimento = function(sNomeInstancia, iTipoTransferencia, oDivDestino
     oParam.iCodigoTipoOperacao = iTipoTransferencia;
     oParam.lRecebimento        = true;
     oParam.exec                = "getDadosTransferencia";
-
+    oParam.importacaoCG = false;
     var oAjax = new Ajax.Request ( me.sUrlRpc,
                                   {
                                   method: 'post',

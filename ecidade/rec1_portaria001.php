@@ -80,7 +80,7 @@ if ( isset($incluir) ) {
   if(!$sqlerro && (!isset($h31_dtinicio) || empty($h31_dtinicio))) {
 
     $sqlerro                 = true;
-    $clportaria->erro_msg    = "Selecione a data inicial da portaria.";
+        $clportaria->erro_msg    = "Selecione a data inicial da portaria.";
     $clportaria->erro_status = !(int)$sqlerro;
   }
 

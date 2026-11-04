@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsolicitatipo->rotulo->label("pc12_vlrap");
               <?=$Lpc12_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc12_numero",10,$Ipc12_numero,true,"text",4,"","chave_pc12_numero");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsolicitatipo->rotulo->label("pc12_vlrap");
               <?=$Lpc12_vlrap?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc12_vlrap",15,$Ipc12_vlrap,true,"text",4,"","chave_pc12_vlrap");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsolicitatipo->rotulo->label("pc12_vlrap");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitatipo.php")==true){
@@ -118,12 +118,12 @@ $clsolicitatipo->rotulo->label("pc12_vlrap");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

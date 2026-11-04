@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ if($cldb_versaoant->numrows > 0){
 <table width="100%" height="100%" border="1">
 <tr>
 <td valign="top">
-<? 
+<?php 
 if(isset($item) && $item != ""){
   echo "Para consultas atualizacoes do modulo <a href='con3_versao004.php?id_item=$modulo'>Clique Aqui</a><br>";
   

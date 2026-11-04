@@ -73,13 +73,13 @@ class cl_autorizacaocirculacaoveiculo {
                  ve13_departamento = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_autorizacaocirculacaoveiculo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autorizacaocirculacaoveiculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_autorizacaocirculacaoveiculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ve13_sequencial = ($this->ve13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ve13_sequencial"]:$this->ve13_sequencial);
        $this->ve13_instituicao = ($this->ve13_instituicao == ""?@$GLOBALS["HTTP_POST_VARS"]["ve13_instituicao"]:$this->ve13_instituicao);
@@ -125,7 +125,7 @@ class cl_autorizacaocirculacaoveiculo {
      }
    }
    // funcao para Inclusão
-   function incluir ($ve13_sequencial = null){
+   public function incluir ($ve13_sequencial = null){
       $this->atualizacampos();
      if($this->ve13_instituicao == null ){ 
        $this->erro_sql = " Campo Instituição não informado.";

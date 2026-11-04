@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,16 +56,16 @@ $clrotulo->label("v50_inicial");
 		<table class="form-container">
 			<tr>
 		 		<td title="<?=@$Tv50_inicial?>" >
-          <?
+          <?php
             db_ancora(@$Lv50_inicial,"js_pesquisainicial(true,false);",4)
           ?>
 				</td>		
 				<td>		
-			    <? db_input("inicial01",15,"",true,"text",4,"onchange='js_pesquisainicial(false,false);'");?>
+			    <?php db_input("inicial01",15,"",true,"text",4,"onchange='js_pesquisainicial(false,false);'");?>
 			    &nbsp;				
-          <? db_ancora("<b>até</b>","js_pesquisainicial(true,true);",4);?>
+          <?php db_ancora("<b>até</b>","js_pesquisainicial(true,true);",4);?>
 			    &nbsp;				
-			    <? db_input("inicial02",16,"",true,"text",4,"onchange='js_pesquisainicial(false,false);'");?>
+			    <?php db_input("inicial02",16,"",true,"text",4,"onchange='js_pesquisainicial(false,false);'");?>
 				</td>
 			</tr>      
 			<tr>
@@ -73,7 +73,7 @@ $clrotulo->label("v50_inicial");
 					Período:
         </td>
         <td>
-			    <? 
+			    <?php 
             $dia="01";
             $mes="01";
             $ano= db_getsession("DB_anousu");
@@ -83,7 +83,7 @@ $clrotulo->label("v50_inicial");
             db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");   		          
 			    ?>	 
 			    <b>	&nbsp; até &nbsp;</b> 
-          <?  
+          <?php  
 			      db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
           ?>
 				</td>
@@ -93,7 +93,7 @@ $clrotulo->label("v50_inicial");
           Tipo:
         </td>
         <td>
-          <?
+          <?php
             $aTipo = array("todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro");
             db_select("tipo",$aTipo,true,1,"");
           ?>
@@ -104,7 +104,7 @@ $clrotulo->label("v50_inicial");
           Ativa/Anulada:
         </td>
         <td>
-          <?
+          <?php
             $aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
             db_select("selSituacao",$aSituacao,true,1,"");
           ?>
@@ -115,7 +115,7 @@ $clrotulo->label("v50_inicial");
   <input type="button" value="relatorio" onClick="js_seleciona()">
 </form>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
 <script>
 variavel = 1;
@@ -162,7 +162,7 @@ function js_mostratermofim(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

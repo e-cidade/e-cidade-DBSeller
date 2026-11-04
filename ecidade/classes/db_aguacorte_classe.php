@@ -1,85 +1,85 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Agua
 //CLASSE DA ENTIDADE aguacorte
-class cl_aguacorte { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x40_codcorte = 0; 
-   var $x40_dtinc_dia = null; 
-   var $x40_dtinc_mes = null; 
-   var $x40_dtinc_ano = null; 
-   var $x40_dtinc = null; 
-   var $x40_usuario = 0; 
-   var $x40_anoini = 0; 
-   var $x40_anofim = 0; 
-   var $x40_entrega = 0; 
-   var $x40_rua = 0; 
-   var $x40_vlrminimo = 0; 
-   var $x40_sql = null; 
-   var $x40_codsituacao = 0; 
-   var $x40_zona = 0; 
-   var $x40_tipomatricula = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguacorte {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x40_codcorte = 0;
+   var $x40_dtinc_dia = null;
+   var $x40_dtinc_mes = null;
+   var $x40_dtinc_ano = null;
+   var $x40_dtinc = null;
+   var $x40_usuario = 0;
+   var $x40_anoini = 0;
+   var $x40_anofim = 0;
+   var $x40_entrega = 0;
+   var $x40_rua = 0;
+   var $x40_vlrminimo = 0;
+   var $x40_sql = null;
+   var $x40_codsituacao = 0;
+   var $x40_zona = 0;
+   var $x40_tipomatricula = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x40_codcorte = int4 = Corte 
-                 x40_dtinc = date = Geração 
-                 x40_usuario = int4 = Usuário 
-                 x40_anoini = int4 = Ano Inicio 
-                 x40_anofim = int4 = Ano Fim 
-                 x40_entrega = int4 = Zona Entrega 
-                 x40_rua = int4 = Logradouro 
-                 x40_vlrminimo = float8 = Valor Minimo 
-                 x40_sql = text = SQL 
-                 x40_codsituacao = int4 = Situação Inicial 
-                 x40_zona = int4 = Zona Fiscal 
-                 x40_tipomatricula = int4 = Considerar matriculas 
+                 x40_codcorte = int4 = Corte
+                 x40_dtinc = date = Geração
+                 x40_usuario = int4 = Usuário
+                 x40_anoini = int4 = Ano Inicio
+                 x40_anofim = int4 = Ano Fim
+                 x40_entrega = int4 = Zona Entrega
+                 x40_rua = int4 = Logradouro
+                 x40_vlrminimo = float8 = Valor Minimo
+                 x40_sql = text = SQL
+                 x40_codsituacao = int4 = Situação Inicial
+                 x40_zona = int4 = Zona Fiscal
+                 x40_tipomatricula = int4 = Considerar matriculas
                  ";
-   //funcao construtor da classe 
-   function cl_aguacorte() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguacorte"); 
+     $this->rotulo = new rotulo("aguacorte");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -88,7 +88,7 @@ class cl_aguacorte {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x40_codcorte = ($this->x40_codcorte == ""?@$GLOBALS["HTTP_POST_VARS"]["x40_codcorte"]:$this->x40_codcorte);
        if($this->x40_dtinc == ""){
@@ -114,9 +114,9 @@ class cl_aguacorte {
      }
    }
    // funcao para inclusao
-   function incluir ($x40_codcorte){ 
+   public function incluir ($x40_codcorte){
       $this->atualizacampos();
-     if($this->x40_dtinc == null ){ 
+     if($this->x40_dtinc == null ){
        $this->erro_sql = " Campo Geração nao Informado.";
        $this->erro_campo = "x40_dtinc_dia";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_aguacorte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x40_usuario == null ){ 
+     if($this->x40_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "x40_usuario";
        $this->erro_banco = "";
@@ -134,22 +134,22 @@ class cl_aguacorte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x40_anoini == null ){ 
+     if($this->x40_anoini == null ){
        $this->x40_anoini = "0";
      }
-     if($this->x40_anofim == null ){ 
+     if($this->x40_anofim == null ){
        $this->x40_anofim = "0";
      }
-     if($this->x40_entrega == null ){ 
+     if($this->x40_entrega == null ){
        $this->x40_entrega = "0";
      }
-     if($this->x40_rua == null ){ 
+     if($this->x40_rua == null ){
        $this->x40_rua = "0";
      }
-     if($this->x40_vlrminimo == null ){ 
+     if($this->x40_vlrminimo == null ){
        $this->x40_vlrminimo = "0";
      }
-     if($this->x40_codsituacao == null ){ 
+     if($this->x40_codsituacao == null ){
        $this->erro_sql = " Campo Situação Inicial nao Informado.";
        $this->erro_campo = "x40_codsituacao";
        $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_aguacorte {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x40_zona == null ){ 
+     if($this->x40_zona == null ){
        $this->x40_zona = "0";
      }
-     if($this->x40_tipomatricula == null ){ 
+     if($this->x40_tipomatricula == null ){
        $this->erro_sql = " Campo Considerar matriculas nao Informado.";
        $this->erro_campo = "x40_tipomatricula";
        $this->erro_banco = "";
@@ -171,16 +171,16 @@ class cl_aguacorte {
        return false;
      }
      if($x40_codcorte == "" || $x40_codcorte == null ){
-       $result = db_query("select nextval('aguacorte_x40_codcorte_seq')"); 
+       $result = db_query("select nextval('aguacorte_x40_codcorte_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacorte_x40_codcorte_seq do campo: x40_codcorte"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacorte_x40_codcorte_seq do campo: x40_codcorte";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->x40_codcorte = pg_result($result,0,0); 
+       $this->x40_codcorte = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguacorte_x40_codcorte_seq");
        if(($result != false) && (pg_result($result,0,0) < $x40_codcorte)){
@@ -191,10 +191,10 @@ class cl_aguacorte {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->x40_codcorte = $x40_codcorte; 
+         $this->x40_codcorte = $x40_codcorte;
        }
      }
-     if(($this->x40_codcorte == null) || ($this->x40_codcorte == "") ){ 
+     if(($this->x40_codcorte == null) || ($this->x40_codcorte == "") ){
        $this->erro_sql = " Campo x40_codcorte nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,35 +203,35 @@ class cl_aguacorte {
        return false;
      }
      $sql = "insert into aguacorte(
-                                       x40_codcorte 
-                                      ,x40_dtinc 
-                                      ,x40_usuario 
-                                      ,x40_anoini 
-                                      ,x40_anofim 
-                                      ,x40_entrega 
-                                      ,x40_rua 
-                                      ,x40_vlrminimo 
-                                      ,x40_sql 
-                                      ,x40_codsituacao 
-                                      ,x40_zona 
-                                      ,x40_tipomatricula 
+                                       x40_codcorte
+                                      ,x40_dtinc
+                                      ,x40_usuario
+                                      ,x40_anoini
+                                      ,x40_anofim
+                                      ,x40_entrega
+                                      ,x40_rua
+                                      ,x40_vlrminimo
+                                      ,x40_sql
+                                      ,x40_codsituacao
+                                      ,x40_zona
+                                      ,x40_tipomatricula
                        )
                 values (
-                                $this->x40_codcorte 
-                               ,".($this->x40_dtinc == "null" || $this->x40_dtinc == ""?"null":"'".$this->x40_dtinc."'")." 
-                               ,$this->x40_usuario 
-                               ,$this->x40_anoini 
-                               ,$this->x40_anofim 
-                               ,$this->x40_entrega 
-                               ,$this->x40_rua 
-                               ,$this->x40_vlrminimo 
-                               ,'$this->x40_sql' 
-                               ,$this->x40_codsituacao 
-                               ,$this->x40_zona 
-                               ,$this->x40_tipomatricula 
+                                $this->x40_codcorte
+                               ,".($this->x40_dtinc == "null" || $this->x40_dtinc == ""?"null":"'".$this->x40_dtinc."'")."
+                               ,$this->x40_usuario
+                               ,$this->x40_anoini
+                               ,$this->x40_anofim
+                               ,$this->x40_entrega
+                               ,$this->x40_rua
+                               ,$this->x40_vlrminimo
+                               ,'$this->x40_sql'
+                               ,$this->x40_codsituacao
+                               ,$this->x40_zona
+                               ,$this->x40_tipomatricula
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "aguacorte ($this->x40_codcorte) nao Incluído. Inclusao Abortada.";
@@ -274,16 +274,16 @@ class cl_aguacorte {
        $resac = db_query("insert into db_acount values($acount,1452,14285,'','".AddSlashes(pg_result($resaco,0,'x40_tipomatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x40_codcorte=null) { 
+   public function alterar ($x40_codcorte=null) {
       $this->atualizacampos();
      $sql = " update aguacorte set ";
      $virgula = "";
-     if(trim($this->x40_codcorte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_codcorte"])){ 
+     if(trim($this->x40_codcorte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_codcorte"])){
        $sql  .= $virgula." x40_codcorte = $this->x40_codcorte ";
        $virgula = ",";
-       if(trim($this->x40_codcorte) == null ){ 
+       if(trim($this->x40_codcorte) == null ){
          $this->erro_sql = " Campo Corte nao Informado.";
          $this->erro_campo = "x40_codcorte";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_aguacorte {
          return false;
        }
      }
-     if(trim($this->x40_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"] !="") ){ 
+     if(trim($this->x40_dtinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"] !="") ){
        $sql  .= $virgula." x40_dtinc = '$this->x40_dtinc' ";
        $virgula = ",";
-       if(trim($this->x40_dtinc) == null ){ 
+       if(trim($this->x40_dtinc) == null ){
          $this->erro_sql = " Campo Geração nao Informado.";
          $this->erro_campo = "x40_dtinc_dia";
          $this->erro_banco = "";
@@ -305,11 +305,11 @@ class cl_aguacorte {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["x40_dtinc_dia"])){
          $sql  .= $virgula." x40_dtinc = null ";
          $virgula = ",";
-         if(trim($this->x40_dtinc) == null ){ 
+         if(trim($this->x40_dtinc) == null ){
            $this->erro_sql = " Campo Geração nao Informado.";
            $this->erro_campo = "x40_dtinc_dia";
            $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_aguacorte {
          }
        }
      }
-     if(trim($this->x40_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_usuario"])){ 
+     if(trim($this->x40_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_usuario"])){
        $sql  .= $virgula." x40_usuario = $this->x40_usuario ";
        $virgula = ",";
-       if(trim($this->x40_usuario) == null ){ 
+       if(trim($this->x40_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "x40_usuario";
          $this->erro_banco = "";
@@ -333,49 +333,49 @@ class cl_aguacorte {
          return false;
        }
      }
-     if(trim($this->x40_anoini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_anoini"])){ 
-        if(trim($this->x40_anoini)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_anoini"])){ 
-           $this->x40_anoini = "0" ; 
-        } 
+     if(trim($this->x40_anoini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_anoini"])){
+        if(trim($this->x40_anoini)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_anoini"])){
+           $this->x40_anoini = "0" ;
+        }
        $sql  .= $virgula." x40_anoini = $this->x40_anoini ";
        $virgula = ",";
      }
-     if(trim($this->x40_anofim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_anofim"])){ 
-        if(trim($this->x40_anofim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_anofim"])){ 
-           $this->x40_anofim = "0" ; 
-        } 
+     if(trim($this->x40_anofim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_anofim"])){
+        if(trim($this->x40_anofim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_anofim"])){
+           $this->x40_anofim = "0" ;
+        }
        $sql  .= $virgula." x40_anofim = $this->x40_anofim ";
        $virgula = ",";
      }
-     if(trim($this->x40_entrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_entrega"])){ 
-        if(trim($this->x40_entrega)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_entrega"])){ 
-           $this->x40_entrega = "0" ; 
-        } 
+     if(trim($this->x40_entrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_entrega"])){
+        if(trim($this->x40_entrega)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_entrega"])){
+           $this->x40_entrega = "0" ;
+        }
        $sql  .= $virgula." x40_entrega = $this->x40_entrega ";
        $virgula = ",";
      }
-     if(trim($this->x40_rua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_rua"])){ 
-        if(trim($this->x40_rua)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_rua"])){ 
-           $this->x40_rua = "0" ; 
-        } 
+     if(trim($this->x40_rua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_rua"])){
+        if(trim($this->x40_rua)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_rua"])){
+           $this->x40_rua = "0" ;
+        }
        $sql  .= $virgula." x40_rua = $this->x40_rua ";
        $virgula = ",";
      }
-     if(trim($this->x40_vlrminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_vlrminimo"])){ 
-        if(trim($this->x40_vlrminimo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_vlrminimo"])){ 
-           $this->x40_vlrminimo = "0" ; 
-        } 
+     if(trim($this->x40_vlrminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_vlrminimo"])){
+        if(trim($this->x40_vlrminimo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_vlrminimo"])){
+           $this->x40_vlrminimo = "0" ;
+        }
        $sql  .= $virgula." x40_vlrminimo = $this->x40_vlrminimo ";
        $virgula = ",";
      }
-     if(trim($this->x40_sql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_sql"])){ 
+     if(trim($this->x40_sql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_sql"])){
        $sql  .= $virgula." x40_sql = '$this->x40_sql' ";
        $virgula = ",";
      }
-     if(trim($this->x40_codsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_codsituacao"])){ 
+     if(trim($this->x40_codsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_codsituacao"])){
        $sql  .= $virgula." x40_codsituacao = $this->x40_codsituacao ";
        $virgula = ",";
-       if(trim($this->x40_codsituacao) == null ){ 
+       if(trim($this->x40_codsituacao) == null ){
          $this->erro_sql = " Campo Situação Inicial nao Informado.";
          $this->erro_campo = "x40_codsituacao";
          $this->erro_banco = "";
@@ -385,17 +385,17 @@ class cl_aguacorte {
          return false;
        }
      }
-     if(trim($this->x40_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_zona"])){ 
-        if(trim($this->x40_zona)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_zona"])){ 
-           $this->x40_zona = "0" ; 
-        } 
+     if(trim($this->x40_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_zona"])){
+        if(trim($this->x40_zona)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x40_zona"])){
+           $this->x40_zona = "0" ;
+        }
        $sql  .= $virgula." x40_zona = $this->x40_zona ";
        $virgula = ",";
      }
-     if(trim($this->x40_tipomatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_tipomatricula"])){ 
+     if(trim($this->x40_tipomatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x40_tipomatricula"])){
        $sql  .= $virgula." x40_tipomatricula = $this->x40_tipomatricula ";
        $virgula = ",";
-       if(trim($this->x40_tipomatricula) == null ){ 
+       if(trim($this->x40_tipomatricula) == null ){
          $this->erro_sql = " Campo Considerar matriculas nao Informado.";
          $this->erro_campo = "x40_tipomatricula";
          $this->erro_banco = "";
@@ -443,7 +443,7 @@ class cl_aguacorte {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguacorte nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x40_codcorte;
@@ -471,14 +471,14 @@ class cl_aguacorte {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x40_codcorte=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x40_codcorte=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x40_codcorte));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -515,7 +515,7 @@ class cl_aguacorte {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "aguacorte nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x40_codcorte;
@@ -543,11 +543,11 @@ class cl_aguacorte {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -569,11 +569,11 @@ class cl_aguacorte {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $x40_codcorte=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $x40_codcorte=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -591,15 +591,15 @@ class cl_aguacorte {
      $sql2 = "";
      if($dbwhere==""){
        if($x40_codcorte!=null ){
-         $sql2 .= " where aguacorte.x40_codcorte = $x40_codcorte "; 
-       } 
+         $sql2 .= " where aguacorte.x40_codcorte = $x40_codcorte ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -608,11 +608,11 @@ class cl_aguacorte {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $x40_codcorte=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $x40_codcorte=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -625,15 +625,15 @@ class cl_aguacorte {
      $sql2 = "";
      if($dbwhere==""){
        if($x40_codcorte!=null ){
-         $sql2 .= " where aguacorte.x40_codcorte = $x40_codcorte "; 
-       } 
+         $sql2 .= " where aguacorte.x40_codcorte = $x40_codcorte ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -642,12 +642,12 @@ class cl_aguacorte {
      }
      return $sql;
   }
-  function sql_query_listapag ( $codcorte ) {
+  public function sql_query_listapag ( $codcorte ) {
     $sql = "
       select x41_codcortemat,
              x41_matric,
              x45_parcelas,
-             k00_tipo, 
+             k00_tipo,
              k00_descr,
              count(distinct x99_parcelas) as x99_parcelas,
              sum(x99_arrecad)             as x99_arrecad,
@@ -658,8 +658,8 @@ class cl_aguacorte {
                       x41_codcortemat,
                       x41_matric,
                       x45_parcelas,
-                      p.k00_tipo, 
-                      p.k00_descr, 
+                      p.k00_tipo,
+                      p.k00_descr,
                       case when k03_tipo <> 5 then x44_numpre else 0 end as x44_numpre,
                       x44_numpar as x99_parcelas,
                       case when a.k00_numpre is not null then 1 else 0 end as x99_arrecad,
@@ -677,19 +677,19 @@ class cl_aguacorte {
                       left join arrecad a            on a.k00_numpre = x44_numpre
                                                     and a.k00_numpar = x44_numpar
                                                     and a.k00_receit = x44_receit
-                                                    
+
                       left join recibopaga r         on r.k00_numpre = x44_numpre
                                                     and r.k00_numpar = x44_numpar
                                                     and r.k00_receit = x44_receit
-                                                    and cast(r.k00_dtoper + interval '1 day' as date) >= '".date("Y-m-d", db_getsession("DB_datausu"))."' 
+                                                    and cast(r.k00_dtoper + interval '1 day' as date) >= '".date("Y-m-d", db_getsession("DB_datausu"))."'
 
                 where x41_codcorte = {$codcorte} ) as x
          group by x41_codcortemat, x41_matric, x45_parcelas, k00_tipo, k00_descr ;
     ";
 
-    return $sql; 
+    return $sql;
   }
-   function sql_query_recibopaga ( $codcortemat, $dias=1 ) {
+   public function sql_query_recibopaga ( $codcortemat, $dias=1 ) {
     $sql = "
       select distinct
              r.k00_dtoper            as x99_dtoper,

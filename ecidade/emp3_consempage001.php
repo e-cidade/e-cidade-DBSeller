@@ -114,7 +114,7 @@ function js_consultar(){
          <table>
 	    <tr>  
 	      <td align='right'>
-	       <b> <? db_ancora("SLIP","js_slip(true);",$db_opcao);  ?></b>
+	       <b> <?php db_ancora("SLIP","js_slip(true);",$db_opcao);  ?></b>
 	      </td>
 	       <td><?=db_input('k17_codigo',8,'',true,'text',1,"onchange='js_slip(false);'")?></td>
 	    </tr>
@@ -132,21 +132,21 @@ function js_consultar(){
 	    </tr>
             <tr>
 	       <td class='bordas' align='right'>
-	              <b> <? db_ancora("Agendas","js_empage(true);",$db_opcao);  ?></b>
+	              <b> <?php db_ancora("Agendas","js_empage(true);",$db_opcao);  ?></b>
 	       </td>
 	       <td><?=db_input('e80_codage',8,@$e80_codage,true,'text',1,"onchange='js_empage(false);'")?></td>
 	   </tr>
 		<tr>
 		  <td nowrap title="<?=@$Te50_codord?>" align='right'>
-		     <? db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
+		     <?php db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
 		  </td>
 		  <td> 
-		     <? db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
+		     <?php db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
 		  </td>
 		</tr>
           <tr> 
             <td  align="right" nowrap title="<?=$Te60_codemp?>">
-                 <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+                 <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
             </td>
 	    
             <td  nowrap> 
@@ -156,31 +156,31 @@ function js_consultar(){
           </tr> 
 		<tr>
 		  <td nowrap title="<?=@$Te60_numemp?>" align='right'>
-		     <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+		     <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
 		  </td>
 		  <td> 
-		     <? db_input('e60_numemp',8,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+		     <?php db_input('e60_numemp',8,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
 		  </td>
 		</tr>
 		<tr>
 		  <td nowrap title="<?=@$Te81_codmov?>" align='right'>
-		     <? db_ancora(@$Le81_codmov,"js_movs(true);",$db_opcao);  ?>
+		     <?php db_ancora(@$Le81_codmov,"js_movs(true);",$db_opcao);  ?>
 		  </td>
 		  <td> 
-		     <? db_input('e81_codmov',8,$Ie81_codmov,true,'text',$db_opcao," onchange='js_movs(false);'")  ?>
+		     <?php db_input('e81_codmov',8,$Ie81_codmov,true,'text',$db_opcao," onchange='js_movs(false);'")  ?>
 		  </td>
 		</tr>
   <tr>
     <td nowrap title="<?=@$Tz01_numcgm?>">
-    <?
+    <?php
        db_ancora(@$Lz01_nome,"js_pesquisaz01_numcgm(true);",$db_opcao);
      ?>        
     </td>
     <td> 
-<?
+<?php
 db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -190,7 +190,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 	      <?=$Le80_data?>
 	      </td>	
 	      <td>	
-	       <?
+	       <?php
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
 	       ?>
 	      </td>
@@ -212,7 +212,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

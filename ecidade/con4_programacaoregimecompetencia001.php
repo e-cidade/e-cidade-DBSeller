@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -84,13 +84,13 @@ td {
                 </label>
               </td>
               <td align="left">
-                <?
+                <?php
                   db_input('ac16_sequencial', 10, $Iac16_sequencial, true,
                            'text', 1, " onchange='js_pesquisaac16_sequencial(false);'");
                 ?>
               </td>
               <td align="left">
-                <?
+                <?php
                   db_input('ac16_resumoobjeto', 40, $Iac16_resumoobjeto, true, 'text', 3);
                 ?>
               </td>
@@ -103,7 +103,7 @@ td {
   <input type="button" value="Pesquisar" id="btnPesquisar">
 </div>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

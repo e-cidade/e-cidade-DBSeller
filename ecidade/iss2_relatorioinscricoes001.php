@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>
 							<td> <b> Tipo de Empresa: </b> </td>
 							<td>
-							  <?
+							  <?php
 								  $aPessoa = array ("j" => "Jurídica", "f" => "Física", "t" => "Todas");
 								  db_select("pessoa", $aPessoa, null, 1, "style='width: 150px;'"); 
 							  ?>
@@ -75,7 +75,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>		
 							<td> <b> Baixada: </b> </td>
 							<td>
-							  <?
+							  <?php
 								  $aBaixada = array ("n" => "Não", "s" => "Sim", "t" => "Todas");
 								  db_select("baixada", $aBaixada, null, 1, "style='width: 150px;'"); 
 							  ?>
@@ -85,7 +85,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>	
 							<td> <b> Atividade: </b> </td>
 							<td>
-							  <?
+							  <?php
 								  $aAtividade = array ("p" => "Somente Principal", "t" => "Todas");
 								  db_select("atividade", $aAtividade, null, 1, "onchange='js_removeElementSelect()'; style='width: 150px;'"); 
 							  ?>
@@ -95,7 +95,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>	
 							<td> <b> Data de Início da Atividade: </b> </td>
 							<td>
-							  <?
+							  <?php
 							    db_inputdata('datainicioatividade',null,null,null,true,'text',1);
 							  ?>
 							</td> 
@@ -104,7 +104,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>	
 							<td> <b> Data de Fim da Atividade: </b> </td>
 							<td>
-							  <?
+							  <?php
 							    db_inputdata('datafinalatividade',null,null,null,true,'text',1);
 							  ?>
 							</td> 
@@ -113,7 +113,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
             <tr>		
 							<td> <b> Regime Tributário: </b> </td>
 							<td>
-							  <?
+							  <?php
 							    $sCampos = "db140_sequencial, db140_descricao";
 							    $sSqlRegimes = $oDaoCaracteristica->sql_query(null, $sCampos, null, "db138_sequencial = 1 and db140_grupocaracteristica = 4");
 							    $rsRegimes = $oDaoCaracteristica->sql_record($sSqlRegimes);
@@ -128,7 +128,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 				          <b>Tipo:</b>
 				        </td>
 				        <td>
-				          <? 
+				          <?php 
 				            $aTipo = array( "0"=>"Todos",
 				                            "t"=>"Permanente",
 				                            "f"=>"Provisório");
@@ -139,7 +139,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 						<tr>
 							<td> <b> Ordenar por </b> </td>
 							<td>
-							  <?
+							  <?php
 								  $aOrdem = array ("i" => "Inscrição", "n" => "Nome", "a" => "Atividade");
 								  db_select("ordem", $aOrdem, null, 1, "style='width: 150px;'"); 
 							  ?>
@@ -156,7 +156,7 @@ $oDaoCaracteristica = db_utils::getDao("caracteristica");
 		</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -42,6 +42,7 @@ use stdClass;
 
 /**
  * Class ServidorOperadoraSaudeService
+ *
  * @package ECidade\RecursosHumanos\Pessoal\Service
  */
 class ServidorOperadoraSaudeService
@@ -60,9 +61,9 @@ class ServidorOperadoraSaudeService
     }
 
     /**
-     * @param stdClass $parametros
-     * @param Instituicao $instituicao
-     * @param DBCompetencia $competencia
+     * @param  stdClass      $parametros
+     * @param  Instituicao   $instituicao
+     * @param  DBCompetencia $competencia
      * @return ServidorOperadoraSaude
      * @throws Exception
      */
@@ -115,7 +116,8 @@ class ServidorOperadoraSaudeService
         $existe = $repositorio->removeScope('rubrica')->scopeOperadoraSaude($operadora)->count();
 
         if ($existe) {
-            throw new Exception("Já existe um vínculo do servidor com a operadora informada na competência {$competencia->getMes()}/{$competencia->getAno()}.");
+            $msg = "Já existe um vínculo do servidor com a operadora informada na competência";
+            throw new Exception("{$msg} {$competencia->getMes()}/{$competencia->getAno()}.");
         }
 
         $servidorOperadoraSaude = new ServidorOperadoraSaude();
@@ -129,33 +131,61 @@ class ServidorOperadoraSaudeService
         $servidorOperadoraSaude->setSequencial($parametros->sequencial);
 
         $servidorOperadoraSaudeRepository = new ServidorOperadoraSaudeRepository();
+        $servidorQuantidadeOperadora = $servidorOperadoraSaudeRepository
+            ->scopeServidor($servidor)
+            ->scopeAno($competencia->getAno())
+            ->scopeMes($competencia->getMes())
+            ->count();
+        //eSocial - Evento S-1210 v1.2
+        if ($servidorQuantidadeOperadora > 99) {
+            $msg = "A quantidade de operadora de saúde para este servidor ultrapassa a 99 na competência";
+            throw new Exception("{$msg} {$competencia->getMes()}/{$competencia->getAno()}. Favor Revisar.");
+        }
         $servidorOperadoraSaude = $servidorOperadoraSaudeRepository->save($servidorOperadoraSaude);
 
-        $valor = $this->calcularTotalDesconto($servidorOperadoraSaude);
-        $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::FIXO, $valor, 1);
-        $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::SALARIO, $valor, 1);
+        $valor = $this->calcularTotalDesconto(
+            $servidorOperadoraSaude,
+            $servidorOperadoraSaude->getRubrica()->getCodigo()
+        );
+        if ($valor > 0) {
+            $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::FIXO, $valor, 1);
+            $pontoService->adicionarRubrica($servidor, $rubrica, Ponto::SALARIO, $valor, 1);
+        }
 
         return $servidorOperadoraSaude;
     }
 
     /**
-     * @param ServidorOperadoraSaude $servidorOperadoraSaude
+     * @param  ServidorOperadoraSaude $servidorOperadoraSaude
      * @return ServidorOperadoraSaudeDependente|float|mixed
      * @throws Exception
      */
-    public function calcularTotalDesconto(ServidorOperadoraSaude $servidorOperadoraSaude)
+    public function calcularTotalDesconto(ServidorOperadoraSaude $servidorOperadoraSaude, $codigoRubrica)
     {
-        $dependentes = $this->dependentes($servidorOperadoraSaude);
-        $valorDependentes = array_reduce($dependentes, function ($a, ServidorOperadoraSaudeDependente $b) {
-            return $a + $b->getValor();
-        }, 0);
-        $valorDependentes += $servidorOperadoraSaude->getValor();
+        $dependentes =  $servidorOperadoraSaude->getServidorOperadoraSaudeDependente();
+        if (empty($dependentes)) {
+            $dependentes = $this->dependentes($servidorOperadoraSaude);
+        }
+        $valorDependentes =
+            array_reduce(
+                $dependentes,
+                function ($a, ServidorOperadoraSaudeDependente $b) use ($codigoRubrica) {
+                    if ($b->getRubrica()->getCodigo() == $codigoRubrica) {
+                        return $a + $b->getValor();
+                    }
+                    return $a;
+                },
+                0
+            );
+        if ($servidorOperadoraSaude->getRubrica()->getCodigo() == $codigoRubrica) {
+            $valorDependentes += $servidorOperadoraSaude->getValor();
+        }
 
         return $valorDependentes;
     }
 
     /**
-     * @param stdClass $parametros
+     * @param  stdClass $parametros
      * @throws Exception
      */
     public function excluir(stdClass $parametros)
@@ -179,7 +209,7 @@ class ServidorOperadoraSaudeService
     }
 
     /**
-     * @param ServidorOperadoraSaude $servidorOperadoraSaude
+     * @param  ServidorOperadoraSaude $servidorOperadoraSaude
      * @return ServidorOperadoraSaudeDependente[]
      * @throws Exception
      */
@@ -190,14 +220,20 @@ class ServidorOperadoraSaudeService
     }
 
     /**
-     * @param DBCompetencia $competenciaAtual
-     * @param DBCompetencia $competenciaNova
-     * @param Instituicao $instituicao
+     * @param  DBCompetencia $competenciaAtual
+     * @param  DBCompetencia $competenciaNova
+     * @param  Instituicao   $instituicao
      * @throws Exception
      */
-    public function virarCompetencia(DBCompetencia $competenciaAtual, DBCompetencia $competenciaNova, Instituicao $instituicao)
-    {
-        $servidores = $this->repositorio->scopeAno($competenciaAtual->getAno())->scopeMes($competenciaAtual->getMes())->scopeInstituicao($instituicao)->get();
+    public function virarCompetencia(
+        DBCompetencia $competenciaAtual,
+        DBCompetencia $competenciaNova,
+        Instituicao $instituicao
+    ) {
+        $servidores = $this->repositorio
+            ->scopeAno($competenciaAtual->getAno())
+            ->scopeMes($competenciaAtual->getMes())
+            ->scopeInstituicao($instituicao)->get();
 
         foreach ($servidores as $servidorOperadoraSaude) {
             $parametros = new stdClass();
@@ -206,15 +242,18 @@ class ServidorOperadoraSaudeService
             $parametros->rubrica = $servidorOperadoraSaude->getRubrica()->getCodigo();
             $parametros->valor = $servidorOperadoraSaude->getValor();
 
-            $novoServidorOperadoraSaude = $this->salvar($parametros, $servidorOperadoraSaude->getInstituicao(),
-                $competenciaNova);
+            $novoServidorOperadoraSaude = $this->salvar(
+                $parametros,
+                $servidorOperadoraSaude->getInstituicao(),
+                $competenciaNova
+            );
             $this->virarCompetenciaDependentes($servidorOperadoraSaude, $novoServidorOperadoraSaude);
         }
     }
 
     /**
-     * @param ServidorOperadoraSaude $servidorOperadoraSaude
-     * @param ServidorOperadoraSaude $novoServidorOperadoraSaude
+     * @param  ServidorOperadoraSaude $servidorOperadoraSaude
+     * @param  ServidorOperadoraSaude $novoServidorOperadoraSaude
      * @throws Exception
      */
     private function virarCompetenciaDependentes(
@@ -230,17 +269,22 @@ class ServidorOperadoraSaudeService
             $parametros->tipoDependente = $dependente->getTipo();
             $parametros->codigoPlanoSaudeServidor = $novoServidorOperadoraSaude->getSequencial();
             $parametros->valor = $dependente->getValor();
+            $parametros->rubricaDependente = $dependente->getRubrica()->getCodigo();
             $serviceDependente->salvar($parametros);
         }
     }
 
     /**
-     * @param DBCompetencia $competenciaAtual
+     * @param  DBCompetencia $competenciaAtual
      * @throws Exception
      */
-    public function voltarCompetencia(DBCompetencia $competenciaAtual)
+    public function voltarCompetencia(DBCompetencia $competenciaAtual, Instituicao $instituicao)
     {
-        $servidores = $this->repositorio->scopeMes($competenciaAtual->getMes())->scopeAno($competenciaAtual->getAno())->get();
+        $servidores = $this->repositorio
+            ->scopeMes($competenciaAtual->getMes())
+            ->scopeAno($competenciaAtual->getAno())
+            ->scopeInstituicao($instituicao)
+            ->get();
         $this->repositorio->resetScopes();
 
         foreach ($servidores as $servidorOperadoraSaude) {

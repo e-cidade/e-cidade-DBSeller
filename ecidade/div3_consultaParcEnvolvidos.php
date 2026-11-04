@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ if ($cltermo->numrows > 0 ) {
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-    <?    
+    <?php    
 
         $sqlTermoEnvolvidos  = "   select 'CGM'        as dl_tipo_da_origem, ";
         $sqlTermoEnvolvidos .= "           k00_numcgm  as dl_codigo_da_origem, ";

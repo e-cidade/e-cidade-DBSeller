@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,12 +25,12 @@
  *                                licenca/licenca_pt.txt 
  */
 
-include(modification("classes/db_cgm_classe.php"));
-include(modification("fpdf151/pdf.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_issbase_classe.php"));
+require_once(modification("classes/db_cgm_classe.php"));
+require_once(modification("fpdf151/pdf.php"));
+require_once(modification("classes/db_iptubase_classe.php"));
+require_once(modification("classes/db_issbase_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $total  = 0;
 $lPrint = 1;
 
@@ -212,7 +212,7 @@ if ( $numcgm == '' && $opcao != 'socios' ){
     $pdf->cell(17,4,'Loteloc'    ,1,0,"C",1);
    }
    $pdf->cell(17,4,'Baixa'       ,1,0,"C",1);
-   $pdf->cell(92,4,""            ,1,1,"C",1);
+   $pdf->cell(92,4,'Matricula RI'  ,1,1,"C",1);
    
    for($i=0;$i<pg_numrows($result);$i++){
       db_fieldsmemory($result,$i);
@@ -237,7 +237,7 @@ if ( $numcgm == '' && $opcao != 'socios' ){
           $pdf->cell(17,4,'Loteloc'    ,1,0,"C",1);
          }
          $pdf->cell(17,4,'Baixa'       ,1,0,"C",1);
-         $pdf->cell(92,4,""            ,1,1,"C",1);
+         $pdf->cell(92,4,'Matricula RI' ,1,1,"C",1);
       }
       
       if($lPrint == 1) {
@@ -268,7 +268,7 @@ if ( $numcgm == '' && $opcao != 'socios' ){
        $pdf->cell(17,4,@$j06_lote      ,"B",0,"C",$lPrint);
       }
       $pdf->cell(17,4,$j01_baixa       ,"B",0,"C",$lPrint);
-      $pdf->cell(92,4,""               ,"B",1,"C",$lPrint);
+      $pdf->cell(92,4,$j04_matricregimo ,"B",1,"C",$lPrint);
       $total += 1;
    }
    

@@ -38,7 +38,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("model/pessoal/std/DBPessoal.model.php"));
 
-class ContraChequeWebService {
+class ContraChequeWebService
+{
 
     /**
      * @param string $matricula
@@ -49,7 +50,8 @@ class ContraChequeWebService {
      * @return stdClass
      * @throws Exception
      */
-    public function emitir($matricula, $ano, $mes, $folha, $numero, $instituicao) {
+    public function emitir($matricula, $ano, $mes, $folha, $numero, $instituicao)
+    {
 
         $oGet = new \stdClass();
         $oGet->sFiltro = "M";
@@ -59,6 +61,8 @@ class ContraChequeWebService {
         $oGet->sLista = $matricula;
         $oGet->iNumVias =  1;
         $oGet->iSemest = $numero;
+        $oGet->sMensagem = '';
+        $oGet->sOrdem = '';
 
         $oDaoEmiteContraCheque = new cl_rhemitecontracheque();
         $oDaoCfPess            = new cl_cfpess();
@@ -87,15 +91,12 @@ class ContraChequeWebService {
 
         $iTipoRelatorio = $oDaoCfPess->buscaCodigoRelatorio('contracheque', $ano, $mes);
 
-        if(!$iTipoRelatorio) {
-           throw new \Exception('db_erros.php?fechar=true&db_erro=Modelo de impressão invalido, verifique parametros.');
+        if (!$iTipoRelatorio) {
+            $sMsg = 'db_erros.php?fechar=true&db_erro=Modelo de impressão invalido, verifique parametros.';
+            throw new \Exception($sMsg);
         }
 
-        $sSql = "
-        SELECT *
-            FROM db_config
-        WHERE codigo = {$iInstituicao}
-        ";
+        $sSql = "SELECT * FROM db_config WHERE codigo = {$iInstituicao} ";
 
         $rsResult = db_query($sSql);
         $oConfig  = db_utils::fieldsMemory($rsResult, 0);
@@ -105,151 +106,143 @@ class ContraChequeWebService {
         $lNovaRotina   = false;
 
         switch ($oGet->sOpcao) {
+            case 'salario':
+                $sPrefix  = 'r14';
+                $sArquivo = 'gerfsal';
+                $sTitulo  = 'SALÁRIO';
+                $iTipoFolha = FolhaPagamento::TIPO_FOLHA_SALARIO;
 
-        case 'salario':
-            $sPrefix  = 'r14';
-            $sArquivo = 'gerfsal';
-            $sTitulo  = 'SALÁRIO';
-            $iTipoFolha = FolhaPagamento::TIPO_FOLHA_SALARIO;
+                /**
+                 * Controla se o salário é da nova
+                 * rotina.
+                 */
+                if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
+                    $lNovaRotina = true;
+                    $sWhereSemest  = 'AND rh141_codigo = 0';
+                }
+                break;
 
-            /**
-             * Controla se o salário é da nova
-             * rotina.
-             */
+            case 'ferias':
+                $sPrefix  = 'r31';
+                $sArquivo = 'gerffer';
+                $sTitulo  = 'FÉRIAS';
+                $sTipo    = 'r31_tpp';
+                break;
+
+            case 'rescisao':
+                $sPrefix  = 'r20';
+                $sArquivo = 'gerfres';
+                $sTitulo  = 'RESCISÃO';
+                $sTipo    = 'r20_tpp';
+                break;
+
+            case 'adiantamento':
+                $sPrefix  = 'r22';
+                $sArquivo = 'gerfadi';
+                $sTitulo  = 'ADIANTAMENTO';
+                break;
+
+            case '13salario':
+                $sPrefix  = 'r35';
+                $sArquivo = 'gerfs13';
+                $sTitulo  = '13o. SALÁRIO';
+                break;
+
+            case 'complementar':
+                $sPrefix  = 'r48';
+                $sArquivo = 'gerfcom';
+                $sTitulo  = "COMPLEMENTAR {$oGet->iSemest}";
+                $iTipoFolha     = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR;
+                break;
+
+            case 'fixo':
+                $sPrefix  = 'r53';
+                $sArquivo = 'gerffx';
+                $sTitulo  = 'FIXO';
+                break;
+
+            case 'previden':
+                $sPrefix  = 'r60';
+                $sArquivo = 'previden';
+                $sTitulo  = 'AJUSTE DA PREVIDÊNCIA';
+                break;
+
+            case 'irf':
+                $sPrefix  = 'r61';
+                $sArquivo = 'ajusteir';
+                $sTitulo  = 'AJUSTE DO IRRF';
+                break;
+
+            case 'suplementar':
+                $sPrefix    = 'r14';
+                $sArquivo   = 'gerfsal';
+                $sTitulo    = "SUPLEMENTAR {$oGet->iSemest}";
+                $iTipoFolha = FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR;
+                break;
+        }
+
+        if (!empty($oGet->iSemest) && $oGet->iSemest) {
             if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-
-            $lNovaRotina = true;
-            $sWhereSemest  = 'AND rh141_codigo = 0';
+                $sWhereSemest = "AND rh141_codigo = {$oGet->iSemest}";
+                $lNovaRotina = true;
+                $sWhere  = "rh143_regist IN ( ";
+                $sWhere .= "                 SELECT rh143_regist ";
+                $sWhere .= "                 FROM rhfolhapagamento ";
+                $sWhere .= "                      JOIN rhhistoricocalculo ON rh143_folhapagamento = rh141_sequencial ";
+                $sWhere .= "                 WHERE rh141_mesusu  = {$oGet->iMes} ";
+                $sWhere .= "                 AND rh141_anousu    = {$oGet->iAno} ";
+                $sWhere .= "                 AND rh141_instit    = {$iInstituicao} ";
+                $sWhere .= "                 AND rh141_codigo    = {$oGet->iSemest} ";
+                $sWhere .= "                 AND rh141_tipofolha = {$iTipoFolha} ";
+                $sWhere .= "                ) ";
+                $aWhere[] = $sWhere;
+            } else {
+                $sWhereSemest = " AND r48_semest = {$oGet->iSemest}";
+                $aWhere[]     = "r48_semest = {$oGet->iSemest}";
             }
-            break;
-
-        case 'ferias':
-            $sPrefix  = 'r31';
-            $sArquivo = 'gerffer';
-            $sTitulo  = 'FÉRIAS';
-            $sTipo    = 'r31_tpp';
-            break;
-
-        case 'rescisao':
-            $sPrefix  = 'r20';
-            $sArquivo = 'gerfres';
-            $sTitulo  = 'RESCISÃO';
-            $sTipo    = 'r20_tpp';
-            break;
-
-        case 'adiantamento':
-            $sPrefix  = 'r22';
-            $sArquivo = 'gerfadi';
-            $sTitulo  = 'ADIANTAMENTO';
-            break;
-
-        case '13salario':
-            $sPrefix  = 'r35';
-            $sArquivo = 'gerfs13';
-            $sTitulo  = '13o. SALÁRIO';
-            break;
-
-        case 'complementar':
-            $sPrefix  = 'r48';
-            $sArquivo = 'gerfcom';
-            $sTitulo  = "COMPLEMENTAR {$oGet->iSemest}";
-            $iTipoFolha     = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR;
-            break;
-
-        case 'fixo':
-            $sPrefix  = 'r53';
-            $sArquivo = 'gerffx';
-            $sTitulo  = 'FIXO';
-            break;
-
-        case 'previden':
-            $sPrefix  = 'r60';
-            $sArquivo = 'previden';
-            $sTitulo  = 'AJUSTE DA PREVIDÊNCIA';
-            break;
-
-        case 'irf':
-            $sPrefix  = 'r61';
-            $sArquivo = 'ajusteir';
-            $sTitulo  = 'AJUSTE DO IRRF';
-            break;
-
-        case 'suplementar':
-            $sPrefix    = 'r14';
-            $sArquivo   = 'gerfsal';
-            $sTitulo    = "SUPLEMENTAR {$oGet->iSemest}";
-            $iTipoFolha = FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR;
-            break;
         }
 
+        if ($oGet->sFiltro != 'N') {
+            switch ($oGet->sFiltro) {
+                case 'M':
+                    $sCampo = "{$sPrefix}_regist";
+                    if ($lNovaRotina) {
+                        $sCampo = "rh143_regist";
+                    }
+                    break;
 
-    if (!empty($oGet->iSemest) && $oGet->iSemest) {
+                case 'L':
+                    $sCampo = "{$sPrefix}_lotac::integer";
+                    if ($lNovaRotina) {
+                        $sCampo = "rh01_lotac::integer";
+                    }
+                    break;
 
-        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
+                case 'T':
+                    $sCampo = 'rh56_localtrab';
+                    break;
+            }
 
-            $sWhereSemest = "AND rh141_codigo = {$oGet->iSemest}";
-            $lNovaRotina = true;
-            $aWhere[] = "
-            rh143_regist IN (
-                SELECT rh143_regist
-                FROM rhfolhapagamento
-                    INNER JOIN rhhistoricocalculo ON rh143_folhapagamento = rh141_sequencial
-                WHERE rh141_mesusu         = {$oGet->iMes}
-                AND rh141_anousu         = {$oGet->iAno}
-                AND rh141_instit         = {$iInstituicao}
-                AND rh141_codigo         = {$oGet->iSemest}
-                AND rh141_tipofolha      = {$iTipoFolha}
-            )
-            ";
-        } else {
-
-            $sWhereSemest = " AND r48_semest = {$oGet->iSemest}";
-            $aWhere[]     = "r48_semest = {$oGet->iSemest}";
+            if (isset($oGet->sLista) && !empty($oGet->sLista)) {
+                $aWhere[] = "{$sCampo} IN ($oGet->sLista)";
+            } elseif (isset($oGet->iCodIni) &&
+                      isset($oGet->iCodFim) &&
+                      !empty($oGet->iCodIni) &&
+                      !empty($oGet->iCodFim)) {
+                $aWhere[] = "{$sCampo} BETWEEN {$oGet->iCodIni} AND {$oGet->iCodFim}";
+            }
         }
-    }
-    if ($oGet->sFiltro != 'N') {
 
-    switch ($oGet->sFiltro) {
-        case 'M':
-        $sCampo = "{$sPrefix}_regist";
-        if ($lNovaRotina) {
-            $sCampo = "rh143_regist";
+        $sWhere = '';
+        if (isset($aWhere)) {
+            $sWhere = 'WHERE ' . implode(' AND ', $aWhere);
         }
-        break;
-
-        case 'L':
-        $sCampo = "{$sPrefix}_lotac::integer";
-        if ($lNovaRotina) {
-            $sCampo = "rh01_lotac::integer";
-        }
-        break;
-
-        case 'T':
-        $sCampo = 'rh56_localtrab';
-        break;
-    }
-
-    if (isset($oGet->sLista) && !empty($oGet->sLista)) {
-        $aWhere[] = "{$sCampo} IN ($oGet->sLista)";
-    } elseif (isset($oGet->iCodIni) &&
-                isset($oGet->iCodFim) &&
-            !empty($oGet->iCodIni) &&
-            !empty($oGet->iCodFim)) {
-        $aWhere[] = "{$sCampo} BETWEEN {$oGet->iCodIni} AND {$oGet->iCodFim}";
-    }
-    }
-
-    $sWhere   = '';
-    if (isset($aWhere)) {
-    $sWhere = 'WHERE ' . implode(' AND ', $aWhere);
-    }
 
     /**
      * Inicio de rotina parametrizada.
      */
-    if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && $lNovaRotina) {
-
-    $sSql = "
+        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && $lNovaRotina) {
+            $sSql = "
         SELECT DISTINCT z01_nome                AS nome,
                         r70_descr               AS lotacao,
                         rh37_descr               AS cargo,
@@ -311,14 +304,13 @@ class ContraChequeWebService {
                                     AND rh56_princ  =  true
         {$sWhere}
     ";
-    } else {
+        } else {
+            $sWhereAuxiliar = bb_condicaosubpesproc(
+                $sPrefix . '_',
+                $oGet->iAno . "/" . $oGet->iMes
+            ) . $sWhereSemest;
 
-    $sWhereAuxiliar = bb_condicaosubpesproc(
-        $sPrefix . '_',
-        $oGet->iAno . "/" . $oGet->iMes
-    ) . $sWhereSemest;
-
-    $sSql = "
+            $sSql = "
         SELECT DISTINCT z01_nome                 AS nome,
                         r70_descr                AS lotacao,
                         rh37_descr               AS cargo,
@@ -373,122 +365,115 @@ class ContraChequeWebService {
                                     AND rh56_princ  =       true
         {$sWhere}
     ";
-    }
+        }
 
-
-
-    $sSql = "
+        $sSql = "
     SELECT *
         FROM(
         {$sSql}
         ) AS xxx, generate_series(1, $oGet->iNumVias)
     ORDER BY
     ";
-    switch ($oGet->sOrdem) {
-    case 'L':
-        $sSql .= " estrutural, nome, matricula";
-        break;
+        switch ($oGet->sOrdem) {
+            case 'L':
+                $sSql .= " estrutural, nome, matricula";
+                break;
 
-    case 'N':
-        $sSql .= " nome, matricula";
-        break;
+            case 'N':
+                $sSql .= " nome, matricula";
+                break;
 
-    case 'T':
-        $sSql .= " localtrabalho, nome, matricula";
-        break;
+            case 'T':
+                $sSql .= " localtrabalho, nome, matricula";
+                break;
 
-    default:
-        $sSql .= " matricula";
-        break;
-    }
+            default:
+                $sSql .= " matricula";
+                break;
+        }
 
     /**
      * busca URL do cliente.
      */
-    $sSqlUrl = "
-    SELECT url
-        FROM db_config
-    WHERE prefeitura = true
-    ";
+        $sSqlUrl = "SELECT url FROM db_config WHERE prefeitura = true";
 
-    $rsResult = db_query($sSqlUrl);
-    if (pg_num_rows($rsResult)) {
-    $oUrl = db_utils::fieldsMemory($rsResult, 0);
-    $sUrl = $oUrl->url;
-    } else {
-    $sUrl = ' ';
-    }
+        $rsResultUrl = db_query($sSqlUrl);
+        if (pg_num_rows($rsResultUrl)) {
+            $oUrl = db_utils::fieldsMemory($rsResultUrl, 0);
+            $sUrl = $oUrl->url;
+        } else {
+            $sUrl = ' ';
+        }
 
-    $rsResult = db_query($sSql);
-    $iNumRow  = pg_num_rows($rsResult);
+        $rsResult = db_query($sSql);
+        $iNumRow  = pg_num_rows($rsResult);
 
-    /**
+        /**
      * Se n?o trazer nenhum registro.
      */
-    if (!$iNumRow) {
-    throw new \Exception("db_erros.php?fechar=true&db_erro=Não existe Cálculo no período de {$oGet->iMes}/{$oGet->iAno}.");
-    }
+        if (!$iNumRow) {
+            $sMsg = "db_erros.php?fechar=true&db_erro=Não existe Cálculo no período de {$oGet->iMes}/{$oGet->iAno}.";
+            throw new \Exception($sMsg);
+        }
 
-    /**
+        /**
      * Grrrrrr... Globals
      */
-    global $pdf;
-    $pdf = new scpdf();
-    $pdf->setautopagebreak(false, 0.05);
-    $pdf->Open();
+        global $pdf;
+        $pdf = new scpdf();
+        $pdf->setautopagebreak(false, 0.05);
+        $pdf->Open();
 
-    $oPDF = new db_impcarne($pdf, $iTipoRelatorio);
-    $oPDF->logo             = $oConfig->logo;
-    $oPDF->prefeitura       = $oConfig->nomeinst;
-    $oPDF->enderpref        = $oConfig->ender . ( isset($oConfig->numero ) ? (", {$oConfig->numero}"): "");
-    $oPDF->cgcpref          = $oConfig->cgc;
-    $oPDF->municpref        = $oConfig->munic;
-    $oPDF->telefpref        = $oConfig->telef;
-    $oPDF->emailpref        = $oConfig->email;
-    $oPDF->ano              = $oGet->iAno;
-    $oPDF->mes              = $oGet->iMes;
-    $oPDF->mensagem         = utf8_decode($oGet->sMensagem);
-    $oPDF->qualarquivo      = $sTitulo;
+        $oPDF = new db_impcarne($pdf, $iTipoRelatorio);
+        $oPDF->logo             = $oConfig->logo;
+        $oPDF->prefeitura       = $oConfig->nomeinst;
+        $oPDF->enderpref        = $oConfig->ender . ( isset($oConfig->numero) ? (", {$oConfig->numero}"): "");
+        $oPDF->cgcpref          = $oConfig->cgc;
+        $oPDF->municpref        = $oConfig->munic;
+        $oPDF->telefpref        = $oConfig->telef;
+        $oPDF->emailpref        = $oConfig->email;
+        $oPDF->ano              = $oGet->iAno;
+        $oPDF->mes              = $oGet->iMes;
+        $oPDF->mensagem         = utf8_decode($oGet->sMensagem);
+        $oPDF->qualarquivo      = $sTitulo;
 
-    $lin = 1;
+        $lin = 1;
+        $aServidores = db_utils::getCollectionByRecord($rsResult);
+        foreach ($aServidores as $iIndex => $oServidor) {
 
-    $aServidores = db_utils::getCollectionByRecord($rsResult);
-    foreach ($aServidores as $iIndex => $oServidor) {
+            $rsResult         = db_query("SELECT nextval('rhemitecontracheque_rh85_sequencial_seq') AS sequencial");
+            $oSeqContraCheque = db_utils::fieldsMemory($rsResult, 0);
+            $iSequencial      = str_pad($oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
 
-    $rsResult         = db_query("SELECT nextval('rhemitecontracheque_rh85_sequencial_seq') AS sequencial");
-    $oSeqContraCheque = db_utils::fieldsMemory($rsResult, 0);
-    $iSequencial      = str_pad($oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
+            $iMes             = str_pad($oGet->iMes, 2, '0', STR_PAD_LEFT);
+            $iMatricula       = str_pad($oServidor->matricula, 6, '0', STR_PAD_LEFT);
+            $iMod1            = db_CalculaDV($iMatricula);
+            $iMod2            = db_CalculaDV($iMatricula . $iMod1 . $iMes . $oGet->iAno . $iSequencial);
 
-    $iMes             = str_pad($oGet->iMes, 2, '0', STR_PAD_LEFT);
-    $iMatricula       = str_pad($oServidor->matricula, 6, '0', STR_PAD_LEFT);
-    $iMod1            = db_CalculaDV($iMatricula);
-    $iMod2            = db_CalculaDV($iMatricula . $iMod1 . $iMes . $oGet->iAno . $iSequencial);
+            $iCodAutent       = $iMatricula . $iMod1 . $iMes . $iMod2 . $oGet->iAno . $iSequencial;
+            $sDataEmissao     = date('Y-m-d', db_getsession('DB_datausu'));
+            $sHoraEmissao     = db_hora();
+            $sIpEmissao       = db_getsession('DB_ip');
 
-    $iCodAutent       = $iMatricula . $iMod1 . $iMes . $iMod2 . $oGet->iAno . $iSequencial;
-    $sDataEmissao     = date('Y-m-d', db_getsession('DB_datausu'));
-    $sHoraEmissao     = db_hora();
-    $sIpEmissao       = db_getsession('DB_ip');
+            $oDaoEmiteContraCheque->rh85_sequencial  = $iSequencial;
+            $oDaoEmiteContraCheque->rh85_regist      = $oServidor->matricula;
+            $oDaoEmiteContraCheque->rh85_anousu      = $oGet->iAno;
+            $oDaoEmiteContraCheque->rh85_mesusu      = $oGet->iMes;
+            $oDaoEmiteContraCheque->rh85_sigla       = $sPrefix;
+            $oDaoEmiteContraCheque->rh85_codautent   = $iCodAutent;
+            $oDaoEmiteContraCheque->rh85_dataemissao = $sDataEmissao;
+            $oDaoEmiteContraCheque->rh85_horaemissao = $sHoraEmissao;
+            $oDaoEmiteContraCheque->rh85_ip          = $sIpEmissao;
+            $oDaoEmiteContraCheque->rh85_externo     = 'false';
 
-    $oDaoEmiteContraCheque->rh85_sequencial  = $iSequencial;
-    $oDaoEmiteContraCheque->rh85_regist      = $oServidor->matricula;
-    $oDaoEmiteContraCheque->rh85_anousu      = $oGet->iAno;
-    $oDaoEmiteContraCheque->rh85_mesusu      = $oGet->iMes;
-    $oDaoEmiteContraCheque->rh85_sigla       = $sPrefix;
-    $oDaoEmiteContraCheque->rh85_codautent   = $iCodAutent;
-    $oDaoEmiteContraCheque->rh85_dataemissao = $sDataEmissao;
-    $oDaoEmiteContraCheque->rh85_horaemissao = $sHoraEmissao;
-    $oDaoEmiteContraCheque->rh85_ip          = $sIpEmissao;
-    $oDaoEmiteContraCheque->rh85_externo     = 'false';
+            if ($iIndex %2 == 0) {
+                $oPDF->seq = 0;
+            } else {
+                $oPDF->seq = 1;
+            }
 
-    if ($iIndex %2 == 0) {
-        $oPDF->seq = 0;
-    } else {
-        $oPDF->seq = 1;
-    }
-
-    if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()  && $lNovaRotina) {
-
-        $sSql = "
+            if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()  && $lNovaRotina) {
+                $sSql = "
         SELECT rh143_rubrica              AS rubrica,
                 round(rh143_valor,      2) AS valor,
                 round(rh143_quantidade, 2) AS quantidade,
@@ -510,9 +495,8 @@ class ContraChequeWebService {
             {$sWhereSemest}
         ORDER BY rh143_rubrica
         ";
-    } else {
-
-        $sSql = "
+            } else {
+                $sSql = "
         SELECT {$sPrefix}_rubric          AS rubrica,
                 round({$sPrefix}_valor, 2) AS valor,
                 round({$sPrefix}_quant, 2) AS quantidade,
@@ -532,68 +516,70 @@ class ContraChequeWebService {
             {$sWhereSemest}
         ORDER BY {$sPrefix}_rubric
         ";
-    }
+            }
 
-    $rsResult = db_query($sSql);
-    // Inicializa os valores de provento e desconto
-    $oDaoEmiteContraCheque->rh85_provento = 0;
-    $oDaoEmiteContraCheque->rh85_desconto = 0;
+            $rsResult = db_query($sSql);
 
-    for ($i=0; $i < pg_num_rows($rsResult); $i++) {
-    $oStd = db_utils::fieldsMemory($rsResult, $i);
-    switch ($oStd->tipoevento ) {
-      case 'P':
-        $oDaoEmiteContraCheque->rh85_provento += $oStd->valor;
-        break;
-      case 'D':
-        $oDaoEmiteContraCheque->rh85_desconto += $oStd->valor;
-        break;
-    }
-    }
-    $oDaoEmiteContraCheque->rh85_liquido = $oDaoEmiteContraCheque->rh85_provento - $oDaoEmiteContraCheque->rh85_desconto;
+            // Inicializa os valores de provento e desconto
+            $oDaoEmiteContraCheque->rh85_provento = 0;
+            $oDaoEmiteContraCheque->rh85_desconto = 0;
 
+            for ($i=0; $i < pg_num_rows($rsResult); $i++) {
+                $oStd = db_utils::fieldsMemory($rsResult, $i);
+                switch ($oStd->tipoevento) {
+                    case 'P':
+                        $oDaoEmiteContraCheque->rh85_provento += $oStd->valor;
+                        break;
+                    case 'D':
+                        $oDaoEmiteContraCheque->rh85_desconto += $oStd->valor;
+                        break;
+                }
+            }
+            $oDaoEmiteContraCheque->rh85_liquido = $oDaoEmiteContraCheque->rh85_provento - $oDaoEmiteContraCheque->rh85_desconto;
 
-    $oDaoEmiteContraCheque->incluir($iSequencial);
-    if (!$oDaoEmiteContraCheque->erro_status) {
-    db_redireciona("db_erros.php?fechar=true&db_erro={$clrhemitecontracheque->erro_msg}");
-    }
+            $oDaoEmiteContraCheque->incluir($iSequencial);
 
-    $oPDF->registro         = $oServidor->matricula;
-    $oPDF->admissao         = db_formatar($oServidor->admissao, 'd');
-    $oPDF->nome             = $oServidor->nome;
-    $oPDF->descr_funcao     = $oServidor->funcao;
-    $oPDF->descr_lota       = "{$oServidor->estrutural}-{$oServidor->lotacao}";
-    $oPDF->f010             = $oServidor->salario;
-    $oPDF->padrao           = $oServidor->padrao;
-    $oPDF->banco            = $oServidor->banco;
-    $oPDF->agencia          = "{$oServidor->agencia}-{$oServidor->dvagencia}";
-    $oPDF->conta            = "{$oServidor->conta}-{$oServidor->dvconta}";
-    $oPDF->lotacao_idade    = 'quantidade';
-    $oPDF->tipo             = 'tipoevento';
-    $oPDF->rubrica          = 'rubrica';
-    $oPDF->descr_rub        = 'descricao';
-    $oPDF->numero           = $iIndex + 1;
-    $oPDF->total            = $iNumRow;
-    $oPDF->codautent        = $iCodAutent;
-    $oPDF->url              = $sUrl;
-    $oPDF->estrutural         = $oServidor->estrutural;
-    $oPDF->recordenvelope   = $rsResult;
-    $oPDF->linhasenvelope   = pg_num_rows($rsResult);
-    $oPDF->valor            = 'valor';
-    $oPDF->quantidade       = 'quantidade';
-    $oPDF->tipo             = 'tipoevento';
-    $oPDF->rubrica          = 'rubrica';
-    $oPDF->descr_rub        = 'descricao';
-    $oPDF->numero           = $iIndex + 1;
-    $oPDF->total            = $iNumRow;
-    $oPDF->codautent        = $iCodAutent;
-    $oPDF->url              = $sUrl;
-    $oPDF->imprime();
+            if (!$oDaoEmiteContraCheque->erro_status) {
+                db_redireciona("db_erros.php?fechar=true&db_erro={$oDaoEmiteContraCheque->erro_msg}");
+            }
+
+            $oPDF->registro         = $oServidor->matricula;
+            $oPDF->admissao         = db_formatar($oServidor->admissao, 'd');
+            $oPDF->nome             = $oServidor->nome;
+            $oPDF->descr_funcao     = $oServidor->funcao;
+            $oPDF->descr_lota       = "{$oServidor->estrutural}-{$oServidor->lotacao}";
+            $oPDF->f010             = $oServidor->salario;
+            $oPDF->padrao           = $oServidor->padrao;
+            $oPDF->banco            = $oServidor->banco;
+            $oPDF->agencia          = "{$oServidor->agencia}-{$oServidor->dvagencia}";
+            $oPDF->conta            = "{$oServidor->conta}-{$oServidor->dvconta}";
+            $oPDF->lotacao_idade    = 'quantidade';
+            $oPDF->tipo             = 'tipoevento';
+            $oPDF->rubrica          = 'rubrica';
+            $oPDF->descr_rub        = 'descricao';
+            $oPDF->numero           = $iIndex + 1;
+            $oPDF->total            = $iNumRow;
+            $oPDF->codautent        = $iCodAutent;
+            $oPDF->url              = $sUrl;
+            $oPDF->estrutural       = $oServidor->estrutural;
+            $oPDF->recordenvelope   = $rsResult;
+            $oPDF->linhasenvelope   = pg_num_rows($rsResult);
+            $oPDF->valor            = 'valor';
+            $oPDF->quantidade       = 'quantidade';
+            $oPDF->tipo             = 'tipoevento';
+            $oPDF->rubrica          = 'rubrica';
+            $oPDF->descr_rub        = 'descricao';
+            $oPDF->numero           = $iIndex + 1;
+            $oPDF->total            = $iNumRow;
+            $oPDF->codautent        = $iCodAutent;
+            $oPDF->url              = $sUrl;
+            $oPDF->imprime();
+        }
+        $nomeArquivo = 'tmp/comprovante_rendimentos.pdf';
+        $oPDF->objpdf->output($nomeArquivo);
+        $retorno = new \stdClass();
+        $retorno->arquivo = base64_encode(file_get_contents($nomeArquivo));
+
+        return $retorno;
     }
-    $nomeArquivo = '/tmp/comprovante_rendimentos.pdf';
-    $oPDF->objpdf->output($nomeArquivo);
-    $retorno = new \stdClass();
-    $retorno->arquivo = base64_encode(file_get_contents($nomeArquivo));
-    return $retorno;
-  }
 }

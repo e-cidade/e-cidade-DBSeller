@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -571,30 +571,30 @@ function js_consultar(iMatricula){
   </tr>
   <tr>
     <td title="<?=@$Tr90_regist?>">
-      <?
+     <?php
       db_ancora(@ $Lr90_regist, "js_pesquisar90_regist(true);", $db_opcao);
       ?>
     </td>
     <td>
-      <?
+     <?php
       db_input('r90_regist', 8, $Ir90_regist, true, 'text', $db_opcao, " onchange='js_pesquisar90_regist(false);' tabIndex=1 ")
       ?>
-      <?
+     <?php
       db_input('z01_nome', 60, $Iz01_nome, true, 'text', 3, '');
       ?>
     </td>
   </tr>
   <tr>
     <td title="<?=@$Tr90_lotac?>">
-      <?
+     <?php
       db_ancora(@ $Lr90_lotac, "js_pesquisar90_lotac(true);", 3);
       ?>
     </td>
     <td>
-      <?
+     <?php
       db_input('r90_lotac', 8, $Ir90_lotac, true, 'text', 3, " onchange='js_pesquisar90_lotac(false);'")
       ?>
-      <?
+     <?php
       db_input('r70_descr', 60, $Ir70_descr, true, 'text', 3, '');
       ?>
     </td>
@@ -606,7 +606,7 @@ function js_consultar(iMatricula){
         <table border="0">
           <tr>
             <td align="left" nowrap title="<?=@$Tr90_rubric?>">
-              <?
+             <?php
               db_ancora(@ $Lr90_rubric, "js_pesquisar90_rubric(true);", (($db_opcao==1)?"1":"3"));
               ?>
             </td>
@@ -641,12 +641,12 @@ function js_consultar(iMatricula){
           </tr>
           <tr>
             <td>
-              <?
+             <?php
               db_input('r90_rubric', 8, $Ir90_rubric, true, 'text', (($db_opcao==1)?"1":"3"), " onchange='js_pesquisar90_rubric(false);' tabIndex=2 ");
               db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3, '');
               ?>
             </td>
-              <?
+             <?php
               // Se for ponto fixo ou for ponto de salário, colocará o CAMPO do ano/mês limite...
               $tabulacao = 4;
               if ($lLimiteDatas) {
@@ -675,7 +675,7 @@ function js_consultar(iMatricula){
               ?>
             </td>
             <td>
-              <?
+             <?php
               if(!isset($r90_quant) || (isset($r90_quant) && trim($r90_quant)=="")){
                 $r90_quant = '0';
               }
@@ -694,7 +694,7 @@ function js_consultar(iMatricula){
               ?>
             </td>
             <td>
-              <?
+              <?php
               if(!isset($r90_valor) || (isset($r90_valor) && trim($r90_valor)=="")){
                 $r90_valor = '0';
               }
@@ -703,7 +703,16 @@ function js_consultar(iMatricula){
               ?>
             </td>
           </tr>
+        
         </table>
+        <div>
+          <fieldset>
+              <legend>Histórico:</legend>
+              <?php
+                db_textarea('observacao', 3, 90, "", true, 'text', $db_opcao);
+              ?>
+          </fieldset>
+        </div>
       </fieldset>
 
       <?php
@@ -719,9 +728,9 @@ function js_consultar(iMatricula){
 
         <input type='button' id='calcular' value='Calcular' name='calcular' onclick="js_calcular(r90_regist.value ,<?=$iPonto ?>);" />
 
-        <? if (!isset($_GET['lConsulta'])){ ?>
+       <?php if (!isset($_GET['lConsulta'])){ ?>
           <input type='button' id='consultar' value='Consultar' name='consultar' onclick="js_consultar(<?=$r90_regist ?>);" />
-        <? } ?>
+       <?php } ?>
       <?php
       }
       // $sigla - É a sigla a ser utilizada no select.
@@ -951,7 +960,7 @@ function js_calculaQuant(sDataLimit){
 
 function js_vercampos(){
   // Verificar se algum campo ficou em branco
-<?
+<?php
   if($db_opcao != 3 && $db_opcao != 33){
     echo '
           erro = 0;
@@ -1081,7 +1090,7 @@ function js_submita() {
 // Função para tornar ou não o campo datlim READONLY.
 function js_desabilita(TrueORFalse){
   opcaoextra = "<?=($db_opcao)?>";
-  <?
+ <?php
   // Se ponto for salário ou fixo, a função irá executar caso contrário, a função
   // não fará nada
   if($ponto == "fx" || $ponto == "fs"){
@@ -1391,7 +1400,7 @@ function js_mostrarubricas1(chave1,chave2,chave3,chave4,chave5,chave6, periodoLa
   document.form1.rh27_form.value   = chave4;
   document.form1.rh27_presta.value = chave6;
   document.getElementById('caixa_de_texto').innerHTML = "<font color='red'><b>"+chave5+"</b></font>";
-  <?
+ <?php
   if($ponto == "fx" || $ponto == "fs"){
     echo "document.form1.rh27_limdat.value = chave3;";
   }

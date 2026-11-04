@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -288,7 +288,7 @@ function js_calmulta()
 </td>
 </tr>
 </table>
-<?
+<?php
 if (isset($k00_numpre)) {
   ?>
   </center>
@@ -297,7 +297,7 @@ if (isset($k00_numpre)) {
   <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <table width="686" height="27" border="0" cellpadding="0" cellspacing="0">
-  <?
+  <?php
   if (!isset($k00_numpar)) {
     $numpar = 0 ;
   } else {
@@ -383,7 +383,7 @@ if (isset($k00_numpre)) {
       <tr>
       <td width="20%">Nome</td>
       <td width="30%">
-      <?
+      <?php
       $clrotulo->label("z01_nome");
       db_input('z01_nome',40,$Iz01_nome,true,'text',3)
       ?>
@@ -391,7 +391,7 @@ if (isset($k00_numpre)) {
       <td width="20%">Valor Historico:</td>
       <td width="30%">
       
-	  <?
+	  <?php
       $clrotulo->label("K00_valor");
      db_input('k00_valor',15,"",true,'text',3,'','tvlrhist')
       ?>
@@ -401,14 +401,14 @@ if (isset($k00_numpre)) {
       <tr>
       <td>Tipo Débito:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_descr");
       db_input('k00_descr',40,$Ik00_descr,true,'text',3)
       ?>
       </td>
       <td>Valor Corrigido:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_valor");
       db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrcor')
       ?>
@@ -418,14 +418,14 @@ if (isset($k00_numpre)) {
       <tr>
       <td>Código:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_numpre");
       db_input('k00_numpre',8,$Ik00_numpre,true,'text',3)
       ?>
       </td>
       <td>Juros:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_valor");
       db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrjuros')
       ?>
@@ -435,7 +435,7 @@ if (isset($k00_numpre)) {
       <tr>
       <td>Parcela:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_numpar");
       $k00_numpar = $numpar;
       db_select('k00_numpar',$matpar,true,2," onchange='document.form1.submit();' ");
@@ -443,7 +443,7 @@ if (isset($k00_numpre)) {
       </td>
       <td>Multa:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_valor");
       db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrmulta')
       ?>
@@ -453,7 +453,7 @@ if (isset($k00_numpre)) {
 	  <tr>
       <td>Receita:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_receit");
       $k00_receit = $receit;
       db_select('k00_receit',$matrec,true,2," onchange='document.form1.submit();' ")
@@ -461,7 +461,7 @@ if (isset($k00_numpre)) {
       </td>
       <td>Desconto:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_valor");
       db_input('k00_valor',15,$Ik00_valor,true,'text',3,'','tvlrdesconto')
       ?>
@@ -472,7 +472,7 @@ if (isset($k00_numpre)) {
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>Total:</td>
-      <td><?
+      <td><?php
       $clrotulo->label("k00_valor");
       db_input('k00_valor',15,$Ik00_valor,true,'text',3,"",'ttotal');
       ?></td>
@@ -491,7 +491,7 @@ if (isset($k00_numpre)) {
       <td> <div align="right"></div></td>
       <td align="right">Total Liberado Para desconto:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_valor");
       $k00_valor = $tvlrhist;
       db_input('k00_valor',15,$Ik00_valor,true,'text',3)
@@ -505,7 +505,7 @@ if (isset($k00_numpre)) {
       </td>
       <td align="right">Percentual: </td>
       <td>
-      <?
+      <?php
       $clrotulo->label("DBtxt8");
       db_input('DBtxt8',15,$IDBtxt8,true,'text',2," onchange='js_calcula()'")
       ?>
@@ -518,7 +518,7 @@ if (isset($k00_numpre)) {
       </td>
       <td align="right">Valor</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("DBtxt9");
       db_input('DBtxt9',15,$IDBtxt9,true,'text',2," onchange='js_calculavalor()'")
       ?>
@@ -542,7 +542,7 @@ if (isset($k00_numpre)) {
       <tr>
       <td width="16%">Histórico:</td>
       <td width="84%">
-      <?
+      <?php
       
       $clrotulo->label("k00_hist");
       $record = db_query("select * from histcalc order by k01_descr");
@@ -553,7 +553,7 @@ if (isset($k00_numpre)) {
       <tr>
       <td>Observação:</td>
       <td>
-      <?
+      <?php
       $clrotulo->label("k00_histtxt");
       db_textarea('k00_histtxt',5,70,$Ik00_histtxt,true,'text',2)
       ?>
@@ -573,7 +573,7 @@ if (isset($k00_numpre)) {
       <tr align="center">
       <td colspan="4"></td>
       </tr>
-      <?
+      <?php
     }
   } else {
     $mostra=true;
@@ -585,7 +585,7 @@ if (isset($k00_numpre)) {
   </form>
   </table>
   </center>
-  <?
+  <?php
 } else {
   ?>
   <table width="100%" height="100%" border="0" cellspacing="0" bgcolor="#CCCCCC">
@@ -599,7 +599,7 @@ if (isset($k00_numpre)) {
   <tr>
   <td width="52%" height="20" align="right">Numpre:</td>
   <td width="48%">
-  <?
+  <?php
   $clrotulo->label("k00_numpre");
   db_input('k00_numpre',8,$Ik00_numpre,true,'text',2)
   ?>
@@ -614,13 +614,13 @@ if (isset($k00_numpre)) {
   </tr>
   </form>
   </table>
-  <?
+  <?php
 }
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($mostra)) {
   echo "<script>alert('Código de arrecadação sem débito');</script>";
   db_redireciona("cai4_descnumpre001.php");

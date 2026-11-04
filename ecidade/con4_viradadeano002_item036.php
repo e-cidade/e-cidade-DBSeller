@@ -161,6 +161,7 @@ if ($sqlerro == false) {
             $daoBnccReferencial->ed168_codigohabilidade = $dadosBnccReferencial->ed168_codigohabilidade;
             $daoBnccReferencial->ed168_codigoreferencial = $dadosBnccReferencial->ed168_codigoreferencial;
             $daoBnccReferencial->ed168_habilidade = pg_escape_string($dadosBnccReferencial->ed168_habilidade);
+            $daoBnccReferencial->ed168_objeto_conhecimento = pg_escape_string($dadosBnccReferencial->ed168_objeto_conhecimento);
             $daoBnccReferencial->ed168_ano = $iAnoDestino;
 
             $daoBnccReferencial->incluir(null);

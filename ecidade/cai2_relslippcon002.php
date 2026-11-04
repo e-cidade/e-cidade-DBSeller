@@ -78,7 +78,7 @@ if (($cod != "") && ($conta1 == "b")) {
 
 
 if (isset($recurso) && $recurso != '0') {
-    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorFonteRecurso($recurso);
+    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorSubrecurso($recurso);
     $ids = implode(', ', $ids);
 
     $where3 .= " and (r1.c61_codigo in ({$ids}) or r2.c61_codigo in ({$ids})) ";

@@ -42,7 +42,7 @@ $rotulo->label('arquivo');
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("dbmessageBoard.widget.js");
     db_app::load("windowAux.widget.js");
     db_app::load("DBTreeView.widget.js");
@@ -80,7 +80,7 @@ $rotulo->label('arquivo');
 
 </div>
 
-<? db_menu(); ?>
+<?php db_menu(); ?>
 </body>
 </html>
 

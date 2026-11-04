@@ -76,7 +76,7 @@ if(isset($codred)){
   $result = db_query($campos);
   // db_criatabela($result);exit;
   db_fieldsmemory($result,0);
-  $funcao_js = split("\|",$funcao_js);
+  $funcao_js =explode("|",$funcao_js);
     $sinal_final = trim($sinal_final);
   echo "<script>".$funcao_js[0]."('$codred','$c60_descr','".trim(db_formatar($saldo_final,'f'))."','$sinal_final');</script>";
 }
@@ -99,7 +99,7 @@ if(isset($codred)){
               <?=$Lc62_reduz?>
             </td>
             <td width="96%" align="left" nowrap>
-              <? db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
+              <?php db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
             </td>
           </tr>
           <tr>
@@ -107,7 +107,7 @@ if(isset($codred)){
               <?=$Lc60_estrut?>
             </td>
             <td width="96%" align="left" nowrap>
-              <? db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
+              <?php db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
             </td>
           </tr>
           <tr>
@@ -115,7 +115,7 @@ if(isset($codred)){
               <?=$Lc60_descr?>&nbsp;
             </td>
             <td width="96%" align="left" nowrap>
-              <?  db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
+              <?php  db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
             </td>
           </tr>
           <tr>
@@ -131,7 +131,7 @@ if(isset($codred)){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $campos = "c62_reduz,c60_estrut,c61_instit,c60_descr,c60_finali";
       if(!isset($pesquisa_chave)){
         if(isset($chave_c62_reduz) && (trim($chave_c62_reduz)!="") ){
@@ -169,7 +169,6 @@ if(isset($codred)){
                    conplanoreduz.c61_anousu = $anousu and c61_instit =".db_getsession("DB_instit")." and
 		           conplanoreduz.c61_reduz = $pesquisa_chave
                    ) as saldo ";
-            file_put_contents('/tmp/sql.sql', $campos);
             $result = db_query($campos);
             db_fieldsmemory($result,0);
               $sinal_final = trim($sinal_final);
@@ -199,12 +198,12 @@ if(isset($codred)){
 
 </script>
 
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

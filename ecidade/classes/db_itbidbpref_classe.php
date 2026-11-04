@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,13 +59,13 @@ class cl_itbidbpref {
                  it23_ip = varchar(20) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_itbidbpref() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbidbpref"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_itbidbpref {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->it23_sequencial = ($this->it23_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["it23_sequencial"]:$this->it23_sequencial);
        $this->it23_itbi = ($this->it23_itbi == ""?@$GLOBALS["HTTP_POST_VARS"]["it23_itbi"]:$this->it23_itbi);
@@ -93,7 +93,7 @@ class cl_itbidbpref {
      }
    }
    // funcao para inclusao
-   function incluir ($it23_sequencial){ 
+   public function incluir ($it23_sequencial){ 
       $this->atualizacampos();
      if($this->it23_itbi == null ){ 
        $this->erro_sql = " Campo codigo da ITBI nao Informado.";
@@ -216,7 +216,7 @@ class cl_itbidbpref {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($it23_sequencial=null) { 
+   public function alterar ($it23_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update itbidbpref set ";
      $virgula = "";
@@ -355,7 +355,7 @@ class cl_itbidbpref {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($it23_sequencial=null,$dbwhere=null) { 
+   public function excluir ($it23_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($it23_sequencial));
      }else{ 
@@ -420,7 +420,7 @@ class cl_itbidbpref {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

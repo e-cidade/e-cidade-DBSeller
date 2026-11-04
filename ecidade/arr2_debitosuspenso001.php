@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,45 +59,45 @@ $clrotulo->label('q02_inscr');
             <table class="form-container">
                 <tr>
                     <td nowrap title="<?= @$Tz01_numcgm ?>">
-                        <?
+                        <?php
                         db_ancora("CGM :", "js_pesquisaz01_numcgm(true);", 1);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('z01_numcgm', 15, $Iz01_numcgm, true, 'text', 1, " onchange='js_pesquisaz01_numcgm(false);'");
                         ?>
 
-                        <?
+                        <?php
                         db_input('z01_nome', 30, $Iz01_nome, true, 'text', 3, '');
                         ?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?= @$Tj01_matric ?>">
-                        <?
+                        <?php
                         db_ancora('Matrícula:', "js_pesquisaj01_matric(true);", 1);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('j01_matric', 15, $Ij01_matric, true, 'text', 1, "");
                         ?>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap title="<?= @$Tq02_inscr ?>">
-                        <?
+                        <?php
                         db_ancora('Inscrição :', "js_pesquisaq02_inscr(true);", 1);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('q02_inscr', 15, $Iq02_inscr, true, 'text', 1, "");
                         ?>
                     </td>
                 </tr>
-                <?
+                <?php
                 $dtd = date("d", db_getsession("DB_datausu"));
                 $dtm = date("m", db_getsession("DB_datausu"));
                 $dta = date("Y", db_getsession("DB_datausu"));
@@ -107,7 +107,7 @@ $clrotulo->label('q02_inscr');
                         Data Inicial:
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata("datai", "$dtd", "$dtm", "$dta", "true", "text", 2);
                         ?>
                     </td>
@@ -117,7 +117,7 @@ $clrotulo->label('q02_inscr');
                         Data Final:
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata("dataf", "$dtd", "$dtm", "$dta", "true", "text", 2);
                         ?>
                     </td>
@@ -127,7 +127,7 @@ $clrotulo->label('q02_inscr');
                         Anulada:
                     </td>
                     <td>
-                        <?
+                        <?php
                         $aOptions = array("n" => "Não", "s" => "Sim", "todas" => "Todas");
                         db_select("anulada", $aOptions, true, 4, "");
                         ?>
@@ -144,7 +144,7 @@ $clrotulo->label('q02_inscr');
                         Tipo:
                     </td>
                     <td>
-                        <?
+                        <?php
                         $xx = array("c" => "Completo", "r" => "Resumido");
                         db_select('seltipo', $xx, true, 4, "");
                         ?>
@@ -153,7 +153,7 @@ $clrotulo->label('q02_inscr');
                         <strong>Ordem:</strong>
                     </td>
                     <td>
-                        <?
+                        <?php
                         $xx = array("d" => "Data", "c" => "CGM", "m" => "Matrícula", "i" => "Inscrição");
                         db_select('selordem', $xx, true, 4, "");
                         ?>
@@ -162,7 +162,7 @@ $clrotulo->label('q02_inscr');
                         <strong>Histórico : </strong>
                     </td>
                     <td>
-                        <?
+                        <?php
                         $xx = array("s" => "Sim", "n" => "Não");
                         db_select('selhist', $xx, true, 4, "");
                         ?>
@@ -181,7 +181,7 @@ $clrotulo->label('q02_inscr');
         <input name="emite2" id="emite2" type="button" value="Emitir Relatório" onclick="js_emite();">
     </form>
 
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
     ?>
 </body>

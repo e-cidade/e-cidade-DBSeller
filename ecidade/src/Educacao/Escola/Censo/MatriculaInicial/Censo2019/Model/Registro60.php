@@ -74,7 +74,25 @@ class Registro60
     protected $areasItinerarioFormativo = [];
     protected $composicaoItinerarioIntegrado = [];
 
+    protected $codigoCursoTecnico;
 
+    /**
+     * @return mixed
+     */
+    public function getCodigoCursoTecnico()
+    {
+        return $this->codigoCursoTecnico;
+    }
+
+    /**
+     * @param mixed $codigoCursoTecnico
+     * @return Registro60
+     */
+    public function setCodigoCursoTecnico($codigoCursoTecnico)
+    {
+        $this->codigoCursoTecnico = $codigoCursoTecnico;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -878,6 +896,7 @@ class Registro60
             "cienciasNaturezaTecnlogias" => $this->getCienciasNaturezaTecnlogias(),
             "cienciasHumanas" => $this->getCienciasHumanas(),
             "formacaoTecnicaProfissional" => $this->getFormacaoTecnicaProfissional(),
+            "codigoCursoTecnico" => $this->getCodigoCursoTecnico(),
             "itenarioFormativoIntegrado" => $this->getItenarioFormativoIntegrado(),
             "liguagensTecnlogiasIntegrado" => $this->getLiguagensTecnlogiasIntegrado(),
             "matematicaTecnlogiasIntegrado" => $this->getMatematicaTecnlogiasIntegrado(),

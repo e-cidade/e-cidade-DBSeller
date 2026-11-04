@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,19 +77,19 @@
       <tr>
         <td nowrap title="<?=@$Tx07_codrotarua?>"><?=@$Lx07_codrotarua?></td>
 		    <td>
-		      <?
+		      <?php
 		        db_input('x07_codrotarua', 10, $Ix07_codrotarua, true, 'text', 3, "")
 		      ?>
 		    </td>
       </tr>
 	    <tr>
 		    <td nowrap title="<?=@$Tx07_codrota?>"><?=@$Lx07_codrota?> 
-		      <?
+		      <?php
 		        //db_ancora(@$Lx07_codrota,"js_pesquisax07_codrota(true);",$db_opcao);
 		      ?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		        db_input('x07_codrota', 10, $Ix07_codrota, true, 'text', 3, " onchange='js_pesquisax07_codrota(false);'");
 		        db_input('x06_descr', 40, $Ix06_descr, true, 'text', 3, '');
 		      ?> 
@@ -97,12 +97,12 @@
       </tr>
       <tr>
 		    <td nowrap title="<?=@$Tx07_codrua?>">
-		      <?
+		      <?php
 		        db_ancora(@$Lx07_codrua, "js_pesquisax07_codrua(true);", $db_opcao);
 		      ?>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		        db_input('x07_codrua', 10, $Ix07_codrua, true,
 		                 'text', $db_opcao, " onchange='js_pesquisax07_codrua(false); js_verifica_numeracao_rua(); js_retorna_orientacao_rua();'");
 		        
@@ -114,7 +114,7 @@
 	      <tr>
 		      <td nowrap title="<?=@$Tx07_ordem?>"><?=@$Lx07_ordem?></td>
 		      <td>
-		        <?
+		        <?php
 		          db_input('x07_ordem', 3, $Ix07_ordem, true, 'text', $db_opcao, "")
 		        ?>
 		      </td>
@@ -123,7 +123,7 @@
 	    <tr>
 		    <td nowrap title="<?=@$Tx07_nroini?>"><?=@$Lx07_nroini?></td>
 		    <td>
-		      <?
+		      <?php
 		        db_input('x07_nroini', 10, $Ix07_nroini, true, 'text', $db_opcao,"onchange = 'js_verifica_numeracao_rua()'");
 		      ?>
 		    </td>
@@ -131,7 +131,7 @@
 	    <tr>
 		    <td nowrap title="<?=@$Tx07_nrofim?>"><?=@$Lx07_nrofim?></td>
 		    <td>
-		      <?
+		      <?php
 		        db_input('x07_nrofim', 10, $Ix07_nrofim, true, 'text', $db_opcao, "onchange = 'js_verifica_numeracao_rua()'");
 		      ?>
 		    </td>
@@ -139,7 +139,7 @@
       <tr>
         <td nowrap title="<?=@$Tx07_orientacao?>"><?=@$Lx07_orientacao?></td>
         <td>
-          <?
+          <?php
             $x = array("-"=>"---------",
                        "D"=>"DIREITA",
                        "E"=>"ESQUERDA",
@@ -168,7 +168,7 @@
     <table>
 	    <tr>
 		    <td valign="top" align="center">
-		      <?
+		      <?php
             $chavepri= array("x07_codrotarua"=>@$x07_codrotarua);
             $cliframe_alterar_excluir->chavepri      = $chavepri;
             $cliframe_alterar_excluir->sql           = $claguarotarua->sql_query(null, "*", null, "x07_codrota = $x07_codrota");

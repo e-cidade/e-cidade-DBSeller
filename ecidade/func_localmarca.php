@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cllocalmarca->rotulo->label("ma04_c_descr");
               <?=$Lma04_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ma04_i_codigo",10,$Ima04_i_codigo,true,"text",4,"","chave_ma04_i_codigo");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $cllocalmarca->rotulo->label("ma04_c_descr");
               <?=$Lma04_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ma04_c_descr",40,$Ima04_c_descr,true,"text",4,"","chave_ma04_c_descr");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $cllocalmarca->rotulo->label("ma04_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_localmarca.php")==true){

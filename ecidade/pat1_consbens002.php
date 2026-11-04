@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,7 @@ if (isset($oGet->t52_ident) && trim($oGet->t52_ident != "")) {
 
   $oDaoBensPlaca           = new cl_bensplaca();
   $sCamposBuscaBemPorPlaca = " t52_bem ";
-  $sWhereBuscaBemPorPlaca  = "     t52_ident  = '{$oGet->t52_ident}' ";
+  $sWhereBuscaBemPorPlaca  = "     t52_ident  ilike '{$oGet->t52_ident}' ";
   $sWhereBuscaBemPorPlaca .= " and t52_instit = " . db_getsession('DB_instit');
 
   $sSqlBuscaBemPorPlaca = $oDaoBensPlaca->sql_query(null, $sCamposBuscaBemPorPlaca, null, $sWhereBuscaBemPorPlaca);
@@ -142,21 +142,29 @@ if ($oBem->getCedente() != null) {
 }
 
 $valorAtual = $oBem->getValorAtual() - $oBem->getValorResidual();
-$valorDepreciavel = db_formatar((float) ($oBem->getValorAquisicao()) - ((float)$oBem->getValorResidual()), "f");
+$valorDepreciavel = db_formatar((float)($oBem->getValorAquisicao()) - ((float)$oBem->getValorResidual()), "f");
 
-if($oBem->getQuantidadeMesesDepreciados() === 0) {
+if($oBem->getQuantidadeMesesDepreciados() == 0) {
     $valorAtual = $oBem->getValorAtual();
 }
 
 $valorUltimaReavaliacao = (float) $oBem->getValorUltimaReavaliacao();
 $valorAux = $oBem->getValorAquisicao();
-if($oBem->getDataUltimaAvaliacao() !== null) {
-    $valorDepreciavel = db_formatar($valorUltimaReavaliacao - ((float) $oBem->getValorResidual()), "f");
-    if ($valorUltimaReavaliacao == $oBem->getValorAtual()) {
-        $valorAtual = $oBem->getValorAtual();
-    }
 
-    $valorAux = $valorUltimaReavaliacao > $oBem->getValorAquisicao() ? $valorUltimaReavaliacao : $oBem->getValorAquisicao();
+if($oBem->getDataUltimaAvaliacao() !== null) {
+
+  if($valorUltimaReavaliacao == 0) {
+    $valorDepreciavel = db_formatar($valorUltimaReavaliacao,"f");
+    
+  } else {
+    $valorDepreciavel = db_formatar($valorUltimaReavaliacao - ((float) $oBem->getValorResidual()), "f");
+  }    
+
+  if ($valorUltimaReavaliacao == $oBem->getValorAtual()) {
+      $valorAtual = $oBem->getValorAtual();
+  }
+
+  $valorAux = $valorUltimaReavaliacao > $oBem->getValorAquisicao() ? $valorUltimaReavaliacao : $oBem->getValorAquisicao();
 }
 
 /*
@@ -247,7 +255,7 @@ $saldoDepreciavel = $valorAtual - $aux->t44_valorresidual;
         <strong>Órgão: </strong>
       </td>
       <td class="valores" align="right">
-        <? echo !empty($oOrgaoUnidade->db01_orgao)?$oOrgaoUnidade->db01_orgao:''; ?>
+        <?php echo !empty($oOrgaoUnidade->db01_orgao)?$oOrgaoUnidade->db01_orgao:''; ?>
       </td>
       <td class="valores">
         <?php echo !empty($oOrgaoUnidade->o40_descr)?$oOrgaoUnidade->o40_descr:''; ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@
 </style>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
   db_postmemory($HTTP_GET_VARS);
 ///////////////////////contribuição//////////////////////////////////////////////////////////////////////////////
 if ($solicitacao == "contri") {
@@ -111,7 +111,7 @@ if ($solicitacao == "contri") {
     </td>
   </tr>
 </table>
-<? 
+<?php 
    $result03=$cleditalserv->sql_record($cleditalserv->sql_query($contri,"","d04_tipos,d04_quant,d04_vlrcal,d04_vlrval,d03_descr"));
    $numrows03=$cleditalserv->numrows;
 ?>   
@@ -122,7 +122,7 @@ if ($solicitacao == "contri") {
     <td align='center'><b>Valor em R$</b></td>
   </tr>
   <tr> 
-    <?
+    <?php
      for($a=0; $a<$numrows03; $a++){
     	db_fieldsmemory($result03,$a);
        echo "<tr>"; 	
@@ -134,7 +134,7 @@ if ($solicitacao == "contri") {
     ?>
   </tr>
 </table>
-<?
+<?php
  /////////////EDITAL///////////////////////////////////////////////////
  }else if ($solicitacao == "edital") {
     $result01=$cleditalrua->sql_record($cleditalrua->sql_query_file($contri,"d02_codedi"));
@@ -176,7 +176,7 @@ if ($solicitacao == "contri") {
     </td>
   </tr>
 </table>
-<?
+<?php
  }else if ($solicitacao == "valores") {
     $result04=$clcontrib->sql_record($clcontrib->sql_query($contri,$matric,"d07_vlrdes,d07_valor"));
     if($clcontrib->numrows>0 ){
@@ -248,7 +248,7 @@ if ($solicitacao == "contri") {
     </td>
   </tr>
 </table>
-<?
+<?php
 ////////////////////OUTROS contribuições//////////////////////////////////////
  }else if ($solicitacao == "outras") {
       include(modification("classes/db_contlot_classe.php"));
@@ -278,7 +278,7 @@ if ($solicitacao == "contri") {
       <td align='center'><b><?=(str_replace(":","",$Ld01_descr))?></b></td>
     </tr>
     <tr> 
-      <?
+      <?php
        for($a=0; $a<$numrows10; $a++){
 	 db_fieldsmemory($result10,$a);
 	 if($contri!=$d05_contri){
@@ -294,7 +294,7 @@ if ($solicitacao == "contri") {
       ?>
     </tr>
   </table>
-  <?
+  <?php
    }else if ($solicitacao == "lote") {
     $result05=$cliptubase->sql_record($cliptubase->sql_query_file($matric,"j01_idbql"));
     db_fieldsmemory($result05,0);
@@ -314,7 +314,7 @@ if ($solicitacao == "contri") {
     <td align='center'><b>Valor em R$</b></td>
   </tr>
   <tr> 
-    <?
+    <?php
      for($a=0; $a<$numrows06; $a++){
        db_fieldsmemory($result06,$a);
        echo "<tr>"; 	
@@ -326,7 +326,7 @@ if ($solicitacao == "contri") {
     ?>
   </tr>
 </table>
-<?
+<?php
  }
  ?>
 </body>

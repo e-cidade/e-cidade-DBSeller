@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -29,10 +29,12 @@
 $cliptubaixa->rotulo->label();
 $cliptubaixaproc->rotulo->label();
 $clrotulo = new rotulocampo;
+$clnumpref = new cl_numpref;
 $clrotulo->label("j01_nome");
 $clrotulo->label("nome");
 $clrotulo->label("j02_dtbaixa");
 $clrotulo->label("p58_nome");
+$clrotulo->label("p58_numero");
 ?>
 <form name="form1" method="post" action="">
 
@@ -108,33 +110,42 @@ $clrotulo->label("p58_nome");
               ?>
           </td>
         </tr>
-        <tr>
-          <td nowrap title="<?=$Tj03_codproc;?>">
-            <label for="j03_codproc">
-              <?php
-              db_ancora($Lj03_codproc, "js_pesquisaj03_codproc(true);", $db_opcao);
-              ?>
-            </label>
-          </td>
-          <td>
-              <?php
-              db_input('j03_codproc', 10, $Ij03_codproc, true, 'text', $db_opcao, " onchange='js_pesquisaj03_codproc(false);'");
-              db_input('p58_nome', 34, null, true, 'text', 3, '');
-              ?>
-          </td>
-        </tr>
-        <tr>
-          <td nowrap title="<?=$Tj02_dtbaixa;?>">
-              <label for="j02_dtbaixa"><?=$Lj02_dtbaixa;?></label>
-          </td>
-          <td>
-              <?php
-              $j02_dtbaixa_dia = !empty($j02_dtbaixa_dia) ? $j02_dtbaixa_dia: "";
-              $j02_dtbaixa_mes = !empty($j02_dtbaixa_mes) ? $j02_dtbaixa_mes: "";
-              $j02_dtbaixa_ano = !empty($j02_dtbaixa_ano) ? $j02_dtbaixa_ano: "";
-
-              db_inputdata('j02_dtbaixa', $j02_dtbaixa_dia, $j02_dtbaixa_mes, $j02_dtbaixa_ano, true, 'text', $db_opcao, "");
-              ?>
+        <tr id="linhaProcessoSistemaInterno">
+          <td colspan="2">
+              <div>
+                  <fieldset style='width:fit-content;' >
+                      <legend>
+                        <strong>Dados do Processo</strong>
+                      </legend>
+                      <table align="center">
+                          <tr>
+                              <td title="<?= @$Tp58_numero ?>">
+                                  <?php
+                                  db_ancora($Lp58_numero, 'js_pesquisaProcesso(true)', 1)
+                                  ?>
+                              </td>
+                              <td>
+                                  <?php
+                                  db_input('p58_numero', 10, '', true, 'text', $db_opcao, "onchange='js_pesquisaProcesso(false)'", '', '', '', 20);
+                                  ?>
+                              </td>
+                              <td>
+                                <?php
+                                db_input('z01_nome', 40, isset($Iz01_nome) ? $Iz01_nome : '', true, 'text', 3, "", 'z01_nomeprocesso');
+                                ?>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td title="Ano">Ano</td>
+                              <td>
+                                  <input type="number" id="anoSessao" name="anoSessao" value="<?=$anoSessao?>" style="width: 82px;" onchange='js_pesquisaProcesso(false)'>
+                              </td>
+                          </tr>
+                          <input type="hidden" id='numeroProcessoConcatenado' name='numeroProcessoConcatenado' value=''>
+                          <input type="hidden" id='p58_codproc' name='j03_codproc' value=''>
+                      </table>
+                  </fieldset>
+              </div>
           </td>
         </tr>
         <tr>
@@ -160,6 +171,42 @@ $clrotulo->label("p58_nome");
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
 </form>
 <script type="text/javascript">
+  const numeroProcesso = document.getElementById('p58_numero');
+  const numeroProcessoConcatenado = document.getElementById("numeroProcessoConcatenado");
+  const nomeProcesso = document.getElementById('z01_nomeprocesso');
+  const codigoProcesso = document.getElementById('p58_codproc');
+
+  function js_pesquisaProcesso(mostra) {
+    numeroProcesso.value = numeroProcesso.value.split('/')[0];
+    numeroProcessoConcatenado.value = numeroProcesso.value + '/' + anoSessao.value;
+    if (mostra == true) {
+        js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?funcao_js=parent.js_mostraProcesso|p58_codproc|z01_nome|p58_numero', 'Pesquisa', true, '0');
+    } else {
+        if (numeroProcesso.value != '') {
+            js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?pesquisa_chave=' + numeroProcessoConcatenado.value + '&funcao_js=parent.js_mostraProcessoHide&sCampoPesquisa=p58_codproc', 'Pesquisa', false, '0');
+        } else {
+            nomeProcesso.value = '';
+            codigoProcesso.value = '';
+        }
+    }
+  }
+
+  function js_mostraProcessoHide(chave, chave1, erro) {
+      codigoProcesso.value = chave;
+      nomeProcesso.value = chave1;
+      if (erro == true) {
+          numeroProcesso.focus();
+          numeroProcesso.value = '';
+          codigoProcesso.value = '';
+      }
+  }
+
+  function js_mostraProcesso(chave1, chave2, chave3) {
+      codigoProcesso.value = chave1;
+      nomeProcesso.value = chave2;
+      numeroProcesso.value = chave3.split('/')[0]
+      db_iframe_nomes.hide();
+  }
 
   function js_valida() {
 

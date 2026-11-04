@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -72,7 +72,7 @@ if (!isset($arqinclude)){
   $oRelatorioContabil   = new relatorioContabil(87, false);
   $aLinhas              = $oRelatorioContabil->getLinhasRelatorio(false);
   $dt     = data_periodo($anousu,$sSiglaPeriodo);
-  
+
   $dt_ini = $dt[0];
   // data inicial do periodo
   $dt_fin = $dt[1];
@@ -332,7 +332,7 @@ if (!isset($arqinclude)){
     duplicaReceitaaCorrenteLiquida($anousu-1, 59);
     $dDataPeriodo = "01-01-".$anousu;
     $aValorRCLAnterior = calcula_rcl2($anousu_ant, $dt_ini_ant, $dt_fin_ant, $todasinstit, true, 59);
-    
+
 
     $nValorRCLPeriodo  += calcula_rcl2($anousu, $dDataPeriodo, $dt_fin, $todasinstit, false, 81);
     $nValorRCLPeriodo  += calcula_rcl2($anousu_ant, $dt_ini_ant, $dt_fin_ant, $todasinstit, false, 81,$dt_fin);
@@ -356,7 +356,7 @@ if (!isset($arqinclude)) {
 	db_fieldsmemory($resultinst, 0);
 	$descr_inst = $munic;
 
-//$vdt_fin = split("-", $dt_fin);
+//$vdt_fin =explode("-", $dt_fin);
 
   $oPrefeitura = InstituicaoRepository::getInstituicaoPrefeitura();
 
@@ -378,8 +378,8 @@ if (!isset($arqinclude)) {
   $head4 = "DEMONSTRATIVO DAS PARCERIAS PÚBLICO-PRIVADAS";
 
   $dados  = data_periodo($anousu,$periodo_selecionado);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini =explode("-",$dados[0]);
+  $perfin =explode("-",$dados[1]);
 
   $txtper = strtoupper($dados["periodo"]);
   $mesini = db_mes($perini[1],1);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -312,7 +312,7 @@ if ($iNumRows > 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("classes/infoLancamentoContabil.classe.js, widgets/messageboard.widget.js");
@@ -389,7 +389,7 @@ if ($iNumRows > 0) {
   </fieldset> 
   <fieldset style='padding-left:0px'>
     <legend><b>Detalhamento</b></legend>
-		<?
+		<?php
 		  $oTabDetalhes = new verticalTab("detalhesnumprenumbanco",300);
 		  $oTabDetalhes->add("composicao", "Composição",
 		                     "func_numprenumbanco002.php?numpar={$oGet->numpar}&numpre={$oGet->numpre}&receita={$oGet->receita}");

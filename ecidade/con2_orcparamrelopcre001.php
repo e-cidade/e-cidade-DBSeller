@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -128,7 +128,7 @@ if ($lLimpar){
   </tr>
 </table>
  <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcparamrelopcre.php"));
 	?>
   </center>
@@ -137,7 +137,7 @@ if ($lLimpar){
 <script>
 js_tabulacaoforms("form1","o98_orcparamseq",true,1,"o98_orcparamseq",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clorcparamrelopcre->erro_status=="0"){
     $clorcparamrelopcre->erro(true,false);

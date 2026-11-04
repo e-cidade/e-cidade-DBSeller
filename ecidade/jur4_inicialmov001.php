@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,24 +64,24 @@ $oRotulo->label("v70_codforo");
   	<table class="form-container">
   		<tr>
   			<td nowrap title="<?=@$Tv50_inicial?>">
-  			<?
+  			<?php
   			  db_ancora(@$Lv50_inicial,"js_pesquisaInicial(true);", 1);
   			?>
   			</td>
   			<td>
-  			<?
+  			<?php
   			  db_input('v50_inicial', 20, $Iv50_inicial, true, 'text', 1, " onchange='js_pesquisaInicial(false);'");
   			?>
   			</td>
   		</tr>
   		<tr>
   			<td nowrap title="<?=@$Tv70_codforo?>">
-    			<?
+    			<?php
     			  db_ancora('Processo do Foro', "js_pesquisaProcessoForo(true);", 1);
     			?>
   			</td>
   			<td>
-  			<?
+  			<?php
   			  db_input('v70_sequencial', 10, $Iv70_sequencial, true, 'hidden', 1);
   			  db_input('v70_codforo'   , 20, $Iv70_codforo   , true, 'text'  , 1, " onchange='js_pesquisaProcessoForo(false);'")
   			?>
@@ -91,7 +91,7 @@ $oRotulo->label("v70_codforo");
   </fieldset>
   
     <input type="button" name="pesquisar" id="pesquisar" value="Pesquisar" onclick="js_pesquisa()"/>
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
   ?>
 </form>

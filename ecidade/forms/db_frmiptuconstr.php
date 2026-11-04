@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("j14_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj39_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj39_matric,"js_pesquisaj39_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_matric',6,$Ij39_matric,true,'text',$db_opcao," onchange='js_pesquisaj39_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',4,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -54,7 +54,7 @@ db_input('j01_numcgm',4,$Ij01_numcgm,true,'text',3,'')
        <?=@$Lj39_idcons?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_idcons',4,$Ij39_idcons,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('j39_idcons',4,$Ij39_idcons,true,'text',$db_opcao,"")
        <?=@$Lj39_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_ano',4,$Ij39_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('j39_ano',4,$Ij39_ano,true,'text',$db_opcao,"")
        <?=@$Lj39_area?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_area',15,$Ij39_area,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('j39_area',15,$Ij39_area,true,'text',$db_opcao,"")
        <?=@$Lj39_areap?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_areap',15,$Ij39_areap,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,22 +94,22 @@ db_input('j39_areap',15,$Ij39_areap,true,'text',$db_opcao,"")
        <?=@$Lj39_dtlan?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj39_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_codigo',4,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -119,7 +119,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lj39_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_numero',6,$Ij39_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('j39_numero',6,$Ij39_numero,true,'text',$db_opcao,"")
        <?=@$Lj39_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_compl',20,$Ij39_compl,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_input('j39_compl',20,$Ij39_compl,true,'text',$db_opcao,"")
        <?=@$Lj39_dtdemo?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,tru
        <?=@$Lj39_idaument?>
     </td>
     <td> 
-<?
+<?php
 db_input('j39_idaument',6,$Ij39_idaument,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,7 +159,7 @@ db_input('j39_idaument',6,$Ij39_idaument,true,'text',$db_opcao,"")
        <?=@$Lj39_idprinc?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('j39_idprinc',$x,true,$db_opcao,"");
 ?>
@@ -226,7 +226,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

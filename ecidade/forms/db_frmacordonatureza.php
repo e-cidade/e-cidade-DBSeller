@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clacordonatureza->rotulo->label();
        <?=@$Lac01_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac01_sequencial',10,$Iac01_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('ac01_sequencial',10,$Iac01_sequencial,true,'text',3,"")
        <?=@$Lac01_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac01_descricao',40,$Iac01_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ac01_descricao',40,$Iac01_descricao,true,'text',$db_opcao,"")
        <?=@$Lac01_qtdmaxmesrenovacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac01_qtdmaxmesrenovacao',10,$Iac01_qtdmaxmesrenovacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,10 +79,10 @@ db_input('ac01_qtdmaxmesrenovacao',10,$Iac01_qtdmaxmesrenovacao,true,'text',$db_
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-<? if($db_opcao != 1 && $db_opcao != 11) { ?>
+<?php if($db_opcao != 1 && $db_opcao != 11) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" type="button" id="novo" value="Novo" onclick="window.location.href='aco1_acordonatureza001.php'" >
-<? } ?>
+<?php } ?>
 
 </form>
 <script>
@@ -91,7 +91,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acordonatureza.hide();  
-  <?
+  <?php
   if($db_opcao!=1){
   	echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

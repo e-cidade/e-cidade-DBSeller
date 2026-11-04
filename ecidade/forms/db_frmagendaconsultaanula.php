@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $oRotulo->label("sd23_d_consulta");
       <?=@$Ls114_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s114_i_codigo', 10, $Is114_i_codigo, true, 'text', 3, "");
       db_input('iIdJanela', 2, '', true, 'hidden', $db_opcao, "");
       ?>
@@ -46,12 +46,12 @@ $oRotulo->label("sd23_d_consulta");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts114_i_agendaconsulta?>">
-      <?
+      <?php
       db_ancora(@$Ls114_i_agendaconsulta, "js_pesquisas114_i_agendaconsulta(true);", 3);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s114_i_agendaconsulta', 10, $Is114_i_agendaconsulta, true, 'text', 3, 
                " onchange='js_pesquisas114_i_agendaconsulta(false);'"
               );
@@ -63,7 +63,7 @@ $oRotulo->label("sd23_d_consulta");
       <?=@$Ls114_d_data?>
     </td>
     <td> 
-      <?
+      <?php
       db_inputdata('s114_d_data', @$s114_d_data_dia, @$s114_d_data_mes, @$s114_d_data_ano, 
                    true, 'text', 3, ""
                   );
@@ -75,7 +75,7 @@ $oRotulo->label("sd23_d_consulta");
       <b>Paciente</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('z01_nome', 50, '', true, 'text', 3, '');
       ?>
     </td>
@@ -86,7 +86,7 @@ $oRotulo->label("sd23_d_consulta");
       <?=@$Ls114_v_motivo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('s114_v_motivo', 50, $Is114_v_motivo, true, 'text', $db_opcao, "");
       ?>
     </td>
@@ -96,7 +96,7 @@ $oRotulo->label("sd23_d_consulta");
       <?=@$Ls114_i_situacao?>
     </td>
     <td> 
-      <?
+      <?php
       $aX = array('1'=>'Cancelado', '2'=>'Faltou', '3'=>'Outros');
       db_select('s114_i_situacao', $aX, true, $db_opcao, "");
       ?>
@@ -108,11 +108,11 @@ $oRotulo->label("sd23_d_consulta");
   type="submit" id="db_opcao" 
   value="<?=($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir"))?>" 
   <?=($db_botao == false ? "disabled" : "")?>>
-<? 
+<?php 
 if($db_opcao != 1) { 
 ?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-<?
+<?php
 }
 ?>
 <input name="fechar" type="submit" id="fechar" value="Fechar" onclick="js_fechar();">
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agendaconsultaanula.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

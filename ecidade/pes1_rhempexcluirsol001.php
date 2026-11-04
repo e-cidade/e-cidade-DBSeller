@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,13 +50,13 @@ if (isset($solicitacoes) && trim($solicitacoes) != ""){
   db_inicio_transacao();
 
   $sqlerro          = false;
-  $vet_solicitacoes = split("_",$solicitacoes);
+  $vet_solicitacoes =explode("_",$solicitacoes);
 
   $solicitacao      = "";
   $virgula          = "";
   for ($i = 0; $i < count($vet_solicitacoes); $i++){
     $sqlerro = db_exclusao_solicitacao($vet_solicitacoes[$i]);
-    
+
     $solicitacao .= $virgula.$vet_solicitacoes[$i];
     $virgula      = ",";
 
@@ -95,7 +95,7 @@ if (isset($solicitacoes) && trim($solicitacoes) != ""){
 <table align="center">
   <tr>
     <td>
-    <?
+    <?php
 $numrows_confirma = 0;
 $mostra           = false;
 if ((isset($DBtxt23)&&trim(@$DBtxt23)!="") &&
@@ -104,12 +104,12 @@ if ((isset($DBtxt23)&&trim(@$DBtxt23)!="") &&
   if (!isset($rh40_sequencia)||$rh40_sequencia=="") {
     $rh40_sequencia = '0';
   }
-  
+
   $ano = $DBtxt23;
   $mes = $DBtxt25;
   $sequencia = '';
   $rh40_tipo = 'n';
-  
+
   if ($ponto == 's') {
     $siglaarq = 'r14';
   } else if ($ponto == 'c') {
@@ -124,14 +124,14 @@ if ((isset($DBtxt23)&&trim(@$DBtxt23)!="") &&
   } else if ($ponto == 'f') {
     $siglaarq  = 'r31';
   }
-  
+
   $result_confirma  = $clrhempfolha->sql_record($clrhempfolha->sql_query_file(null,null,null,null,null,null,null,null,null,null,"*",null,"rh40_anousu    = $ano and
                                                                                                                                           rh40_mesusu    = $mes and
-                                                                                                                                          rh40_sequencia = $rh40_sequencia and 
-                                                                                                                                          rh40_siglaarq  = '$siglaarq' and 
+                                                                                                                                          rh40_sequencia = $rh40_sequencia and
+                                                                                                                                          rh40_siglaarq  = '$siglaarq' and
                                                                                                                                           rh40_instit    = ".db_getsession("DB_instit")));
   $numrows_confirma = $clrhempfolha->numrows;
-  
+
   if ($numrows_confirma > 0) {
     $mostra = true;
   } else {
@@ -149,7 +149,7 @@ if (trim($erro_msg) != ""){
   </tr>
   <tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -106,7 +106,7 @@ if ($objParam->exec == "getFAA") {
 	$oDaoSetorAmbulatorial = new cl_setorambulatorial();
 
 	if( $objRetorno->status == 1 ){
-
+        $hora = new DateTime();
 		//Prontuario
 		$clprontuarios->sd24_i_unidade     = $objParam->sd24_i_unidade;
 		$clprontuarios->sd24_i_numcgs      = $objParam->z01_i_cgsund;
@@ -117,7 +117,7 @@ if ($objParam->exec == "getFAA") {
 			$clprontuarios->sd24_i_mes      = trim($fc_numatend[1]);
 			$clprontuarios->sd24_i_seq      = trim($fc_numatend[2]);
 			$clprontuarios->sd24_d_cadastro = date("Y-m-d",db_getsession("DB_datausu"));
-			$clprontuarios->sd24_c_cadastro = date("H",db_getsession("DB_datausu")).":".date("m",db_getsession("DB_datausu"));
+			$clprontuarios->sd24_c_cadastro = $hora->format('H:i');
 			$clprontuarios->sd24_i_login    = DB_getsession("DB_id_usuario");
 			$clprontuarios->sd24_c_digitada = 'N';
 

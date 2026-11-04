@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,7 +78,7 @@ $clrotulo->label("");
     <br>
     </td>
   </tr>
-<?
+<?php
 if (!isset($filtroquery)){
 if (isset($codigo)&&$codigo!="") {
   $sql= "select m71_codlanc as \"dl_Código Lanc.\",

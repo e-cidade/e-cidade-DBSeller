@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllab_medico->rotulo->label("la38_i_codigo");
               <?=$Lla38_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("la38_i_codigo",10,$Ila38_i_codigo,true,"text",4,"","chave_la38_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cllab_medico->rotulo->label("la38_i_codigo");
               <?=$Lla38_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("la38_i_codigo",10,$Ila38_i_codigo,true,"text",4,"","chave_la38_i_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cllab_medico->rotulo->label("la38_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_medico.php")==true){
@@ -122,12 +122,12 @@ $cllab_medico->rotulo->label("la38_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

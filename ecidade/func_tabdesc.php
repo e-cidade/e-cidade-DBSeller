@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,7 @@ $instit = db_getsession("DB_instit");
                 <?= $Lcodsubrec ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("codsubrec", 4, $Icodsubrec, true, "text", 4, "", "chave_codsubrec");
                 ?>
             </td>
@@ -67,7 +67,7 @@ $instit = db_getsession("DB_instit");
                 <?= $Lk07_descr ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("k07_descr", 40, $Ik07_descr, true, "text", 4, "", "chave_k07_descr");
                 ?>
             </td>
@@ -85,7 +85,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr>
     <td align="center" valign="top">
-        <?
+        <?php
         if (!isset($pesquisa_chave)) {
             if (isset($campos) == false) {
                 if (file_exists("funcoes/db_func_tabdesc.php") == true) {

@@ -11,7 +11,7 @@ $ativosNovo = 1;
 $oGet = db_utils::postMemory($_GET);
 
 if (isset($oGet->ativos)) {
-    $ativosNovo = $oGet->ativos; 
+    $ativosNovo = $oGet->ativos;
 }
 
 ?>
@@ -106,27 +106,27 @@ if (isset($oGet->ativos)) {
                                 <br>
                             </td>
                         </tr>
- 
+
                         <tr  id="anexopos">
                             <td>
                                 <b>Anexo da Pós graduação:</b>
                             </td>
                                 <td>
                                     <div style="display: flex; align-items: center; width:100%;">
-                                        <iframe name="frame_imagemPosgraduacao" id="frame_imagemPosgraduacao" src="edu4_alunodocumentoposgraduacao.php" width="56" height="40" frameborder="1" scrolling="no"></iframe>
+                                        <iframe name="frame_imagemPosgraduacao" id="frame_imagemPosgraduacao" src="edu4_alunodocumentoposgraduacao.php" width="56" height="50" frameborder="1" scrolling="no"></iframe>
                                     <script>
                                         let arquivo = '';
                                         let arquivoPosgraduacao = '';
                                         frame_imagemPosgraduacao.location.href="edu4_alunodocumentoposgraduacao.php?imagem_gerada="+arquivoPosgraduacao;
-                                    </script>        
+                                    </script>
                                     <div style="display: flex;margin-top: -5px;flex-direction: column;width:100%;">
                                         <iframe name="frame_posgraduacao" id="frame_posgraduacao" src="edu1_frameposgraduacao.php" width="100%" height="31" frameborder="0" scrolling="no" style="margin-bottom: 0px;margin-top:2px;"></iframe>
                                         <input type="button" value="Excluir Imagem"
                                             onclick=excluirArquivoPosGraduacao();
                                             style="font-size: 9px;padding: 0px;margin-left: 3px;width:82px;">
-                                    </div> 
+                                    </div>
                                     <input name="oid_arquivoPosgraduacao" type="hidden" id="oid_arquivoPosgraduacao"  size="30">
-                                </div> 
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -267,6 +267,13 @@ if (isset($oGet->ativos)) {
                         template = opt.text;
                     }
                 })
+            } else if (field == 'ed183_docpos_estorage'){
+
+                template = "Não";
+                if (value !== null) {
+                    template = "Sim";
+                }
+
             } else if (field == 'acoes') {
                 template =  `<a class="alterar" href="javascript:void(0)" title="Alterar">
                                 <i class="fa fa-edit"></i>
@@ -309,8 +316,15 @@ if (isset($oGet->ativos)) {
                 halign: 'center',
                 align: 'right',
                 width: '100',
-            }
-            ,
+            },
+            {
+                title: 'Anexo da Pós graduação',
+                field: 'ed183_docpos_estorage',
+                halign: 'center',
+                align: 'right',
+                width: '100',
+                formatter: formataCampos,
+            },
             {
                 title: 'Ações',
                 field: 'acoes',
@@ -349,7 +363,7 @@ if (isset($oGet->ativos)) {
                 }
                 document.getElementById('oid_arquivoPosgraduacao').value = response.data.arquivo;
                 frame_imagemPosgraduacao.location.href="edu4_alunodocumentoposgraduacao.php?imagem_gerada="+response.data.arquivoPosgraduacao;
- 
+
         })
 
     }
@@ -404,7 +418,7 @@ if (isset($oGet->ativos)) {
                 if (row.data_nascimento != undefined) {
                     let data = row.data_nascimento.split('-');
                     data = new Date(data);
-                    template = `<a class="seleciona">${data.getDateBR()}</a>`;
+                    template = `<a class="seleciona">${data.toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</a>`;
                 }
             } else if (field == 'possuipos') {
                 template = value ?

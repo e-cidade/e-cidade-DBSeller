@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,12 +83,12 @@ function js_emite(){
     <table class="form-container">
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
        	  ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -96,12 +96,12 @@ function js_emite(){
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -109,12 +109,12 @@ function js_emite(){
       </tr>      
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -124,7 +124,7 @@ function js_emite(){
   </fieldset>
   <input  name="emite" id="emite" type="button" value="Emitir Relátorio" onclick="js_emite();" >
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

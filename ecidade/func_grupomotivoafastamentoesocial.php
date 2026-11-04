@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clgrupomotivoafastamentoesocial->rotulo->label("eso10_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr style="display: none">
           <td><label><?=$Leso10_sequencial?></label></td>
-          <td><? db_input("eso10_sequencial",10,$Ieso10_sequencial,true,"hidden",4,"","chave_eso10_sequencial"); ?></td>
+          <td><?php db_input("eso10_sequencial",10,$Ieso10_sequencial,true,"hidden",4,"","chave_eso10_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Leso10_descricao?></label></td>
-          <td><? db_input("eso10_descricao",10,$Ieso10_descricao,true,"text",4,"","chave_eso10_descricao");?></td>
+          <td><?php db_input("eso10_descricao",10,$Ieso10_descricao,true,"text",4,"","chave_eso10_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clgrupomotivoafastamentoesocial->rotulo->label("eso10_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_grupomotivoafastamentoesocial.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_grupomotivoafastamentoesocial.php")==true){
@@ -79,12 +79,12 @@ $clgrupomotivoafastamentoesocial->rotulo->label("eso10_descricao");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

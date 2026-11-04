@@ -1,64 +1,64 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE solicitaprotprocesso
-class cl_solicitaprotprocesso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc90_sequencial = 0; 
-   var $pc90_solicita = 0; 
-   var $pc90_numeroprocesso = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_solicitaprotprocesso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc90_sequencial = 0;
+   var $pc90_solicita = 0;
+   var $pc90_numeroprocesso = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc90_sequencial = int4 = Código Sequencial 
-                 pc90_solicita = int4 = Código da Solicitação 
-                 pc90_numeroprocesso = varchar(15) = Processo Administrativo 
+                 pc90_sequencial = int4 = Código Sequencial
+                 pc90_solicita = int4 = Código da Solicitação
+                 pc90_numeroprocesso = varchar(15) = Processo Administrativo
                  ";
-   //funcao construtor da classe 
-   function cl_solicitaprotprocesso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("solicitaprotprocesso"); 
+     $this->rotulo = new rotulo("solicitaprotprocesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_solicitaprotprocesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc90_sequencial = ($this->pc90_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc90_sequencial"]:$this->pc90_sequencial);
        $this->pc90_solicita = ($this->pc90_solicita == ""?@$GLOBALS["HTTP_POST_VARS"]["pc90_solicita"]:$this->pc90_solicita);
@@ -77,9 +77,9 @@ class cl_solicitaprotprocesso {
      }
    }
    // funcao para inclusao
-   function incluir ($pc90_sequencial){ 
+   public function incluir ($pc90_sequencial){
       $this->atualizacampos();
-     if($this->pc90_solicita == null ){ 
+     if($this->pc90_solicita == null ){
        $this->erro_sql = " Campo Código da Solicitação nao Informado.";
        $this->erro_campo = "pc90_solicita";
        $this->erro_banco = "";
@@ -89,16 +89,16 @@ class cl_solicitaprotprocesso {
        return false;
      }
      if($pc90_sequencial == "" || $pc90_sequencial == null ){
-       $result = db_query("select nextval('solicitaprotprocesso_pc90_sequencial_seq')"); 
+       $result = db_query("select nextval('solicitaprotprocesso_pc90_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: solicitaprotprocesso_pc90_sequencial_seq do campo: pc90_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: solicitaprotprocesso_pc90_sequencial_seq do campo: pc90_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc90_sequencial = pg_result($result,0,0); 
+       $this->pc90_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from solicitaprotprocesso_pc90_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc90_sequencial)){
@@ -109,10 +109,10 @@ class cl_solicitaprotprocesso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc90_sequencial = $pc90_sequencial; 
+         $this->pc90_sequencial = $pc90_sequencial;
        }
      }
-     if(($this->pc90_sequencial == null) || ($this->pc90_sequencial == "") ){ 
+     if(($this->pc90_sequencial == null) || ($this->pc90_sequencial == "") ){
        $this->erro_sql = " Campo pc90_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,17 +121,17 @@ class cl_solicitaprotprocesso {
        return false;
      }
      $sql = "insert into solicitaprotprocesso(
-                                       pc90_sequencial 
-                                      ,pc90_solicita 
-                                      ,pc90_numeroprocesso 
+                                       pc90_sequencial
+                                      ,pc90_solicita
+                                      ,pc90_numeroprocesso
                        )
                 values (
-                                $this->pc90_sequencial 
-                               ,$this->pc90_solicita 
-                               ,'$this->pc90_numeroprocesso' 
+                                $this->pc90_sequencial
+                               ,$this->pc90_solicita
+                               ,'$this->pc90_numeroprocesso'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Processo da Solicitação ($this->pc90_sequencial) nao Incluído. Inclusao Abortada.";
@@ -165,16 +165,16 @@ class cl_solicitaprotprocesso {
        $resac = db_query("insert into db_acount values($acount,3329,18778,'','".AddSlashes(pg_result($resaco,0,'pc90_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc90_sequencial=null) { 
+   public function alterar ($pc90_sequencial=null) {
       $this->atualizacampos();
      $sql = " update solicitaprotprocesso set ";
      $virgula = "";
-     if(trim($this->pc90_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_sequencial"])){ 
+     if(trim($this->pc90_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_sequencial"])){
        $sql  .= $virgula." pc90_sequencial = $this->pc90_sequencial ";
        $virgula = ",";
-       if(trim($this->pc90_sequencial) == null ){ 
+       if(trim($this->pc90_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "pc90_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_solicitaprotprocesso {
          return false;
        }
      }
-     if(trim($this->pc90_solicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_solicita"])){ 
+     if(trim($this->pc90_solicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_solicita"])){
        $sql  .= $virgula." pc90_solicita = $this->pc90_solicita ";
        $virgula = ",";
-       if(trim($this->pc90_solicita) == null ){ 
+       if(trim($this->pc90_solicita) == null ){
          $this->erro_sql = " Campo Código da Solicitação nao Informado.";
          $this->erro_campo = "pc90_solicita";
          $this->erro_banco = "";
@@ -197,7 +197,7 @@ class cl_solicitaprotprocesso {
          return false;
        }
      }
-     if(trim($this->pc90_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_numeroprocesso"])){ 
+     if(trim($this->pc90_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc90_numeroprocesso"])){
        $sql  .= $virgula." pc90_numeroprocesso = '$this->pc90_numeroprocesso' ";
        $virgula = ",";
      }
@@ -220,9 +220,9 @@ class cl_solicitaprotprocesso {
            $resac = db_query("insert into db_acount values($acount,3329,18778,'".AddSlashes(pg_result($resaco,$conresaco,'pc90_numeroprocesso'))."','$this->pc90_numeroprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
-     
+
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo da Solicitação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc90_sequencial;
@@ -250,14 +250,14 @@ class cl_solicitaprotprocesso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc90_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc90_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc90_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -285,7 +285,7 @@ class cl_solicitaprotprocesso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Processo da Solicitação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc90_sequencial;
@@ -313,11 +313,11 @@ class cl_solicitaprotprocesso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -339,11 +339,11 @@ class cl_solicitaprotprocesso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $pc90_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $pc90_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,15 +361,15 @@ class cl_solicitaprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($pc90_sequencial!=null ){
-         $sql2 .= " where solicitaprotprocesso.pc90_sequencial = $pc90_sequencial "; 
-       } 
+         $sql2 .= " where solicitaprotprocesso.pc90_sequencial = $pc90_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,8 +378,8 @@ class cl_solicitaprotprocesso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $pc90_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $pc90_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -395,15 +395,15 @@ class cl_solicitaprotprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($pc90_sequencial!=null ){
-         $sql2 .= " where solicitaprotprocesso.pc90_sequencial = $pc90_sequencial "; 
-       } 
+         $sql2 .= " where solicitaprotprocesso.pc90_sequencial = $pc90_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

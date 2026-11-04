@@ -193,6 +193,10 @@ if ($oParam->exec == 'getCgsCns') {
             throw new ParameterException(_M(MENSAGEM_PEDIDOTFD_RPC . "informe_nome_mae"));
         }
 
+        if (cpfEmUso($oDaoCgsUnd, $oParam)) {
+            throw new DomainException('CPF já existente na base de dados.');
+        }
+
         $oParam->z01_d_nasc = explode('/', $oParam->z01_d_nasc);
         $oParam->z01_d_nasc = $oParam->z01_d_nasc[2] . '-' . $oParam->z01_d_nasc[1] . '-' . $oParam->z01_d_nasc[0];
 
@@ -303,8 +307,11 @@ if ($oParam->exec == 'getCgsCns') {
     }
 } elseif ($oParam->exec == 'getPedidosTfdCgs') {
     $oDaoTfdPedidoTfd = new cl_tfd_pedidotfd();
+    $campos = ' tf01_i_codigo, tf16_d_dataagendamento, tf17_d_datasaida, z01_nome, tf03_i_codigo, tf03_c_descr';
+    $campos .= ', tf26_i_codigo, tf26_c_descr, tf01_d_datapedido, rh70_sequencial, rh70_estrutural';
+    $campos .= ', rh70_descr, tf16_c_horaagendamento, tf04_c_descr, sd63_c_nome';
     $sWhere = "tf01_i_cgsund = {$oParam->iCgs}";
-    $sSql = $oDaoTfdPedidoTfd->sql_query_grid(null, '*', ' tf01_i_codigo desc ', $sWhere);
+    $sSql = $oDaoTfdPedidoTfd->sql_query_grid(null, $campos, ' tf01_i_codigo desc ', $sWhere);
     $rs = $oDaoTfdPedidoTfd->sql_record($sSql);
 
     for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
@@ -322,6 +329,9 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->oPedidos[$iCont]->rh70_sequencial = $oDados->rh70_sequencial;
         $oRetorno->oPedidos[$iCont]->rh70_estrutural = $oDados->rh70_estrutural;
         $oRetorno->oPedidos[$iCont]->rh70_descr = urlencode($oDados->rh70_descr);
+        $oRetorno->oPedidos[$iCont]->tf16_c_horaagendamento = $oDados->tf16_c_horaagendamento;
+        $oRetorno->oPedidos[$iCont]->tf04_c_descr = $oDados->tf04_c_descr;
+        $oRetorno->oPedidos[$iCont]->sd63_c_nome = $oDados->sd63_c_nome;
     }
 
     if ($oDaoTfdPedidoTfd->numrows == 0) {
@@ -483,6 +493,7 @@ if ($oParam->exec == 'getCgsCns') {
     }
     $sSubSelect .= '       and tf18_i_destino = ' . $oParam->iDestino;
     $sSubSelect .= '       and tf19_i_valido  = 1 ';
+    $sSubSelect .= ' and not exists (select 1 from cancelamentoviagem where tf41_veiculodestino = tf18_i_codigo) ';
 
     /* o Subselect possui todos os pedidos que já foram vinculadas a algum veículo */
     $where = [];
@@ -514,6 +525,7 @@ if ($oParam->exec == 'getCgsCns') {
     /* Obtenho todas as pessoas que estão com a saída agendada para o destino e data informada e que foram
        vinculadas para o veículo informado
     */
+    $oRetorno->aListaCgs = [];
     $iNumJaVinc = 0;
     if ($oParam->sHora != '' || $parametros->obrigaHoraSaida) {
         $sCamposSub = ' select tf19_i_cgsund ';
@@ -1153,6 +1165,28 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->iStatus = 2;
         $oRetorno->sMessage = urlencode($oErro->getMessage());
     }
+}
+
+/**
+ * @param cl_cgs_und $dao
+ * @param $dados
+ * @return bool
+ */
+function cpfEmUso($dao, $dados) {
+    if ($dados->z01_v_cgccpf) {
+        $campos = ' z01_i_cgsund ';
+        $where = " z01_v_cgccpf = '{$dados->z01_v_cgccpf}' ";
+        $where .= " and z01_i_cgsund <> '{$dados->iCgs}' ";
+
+        $sql = $dao->sql_query_file(null, $campos, null, $where);
+        $rsSql = db_query($sql);
+
+        if ($rsSql && pg_num_rows($rsSql) > 0) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 $oRetorno->erro = $oRetorno->iStatus == 2;

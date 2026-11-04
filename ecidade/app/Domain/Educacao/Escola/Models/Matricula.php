@@ -35,6 +35,11 @@ class Matricula extends Model
 
     protected $appends = ['codigo'];
     protected $hidden = ['ed60_i_codigo'];
+
+    protected $dates = [
+        'ed60_d_datamatricula',
+        'ed60_d_datasaida'
+    ];
     /**
      * @var array
      */
@@ -71,5 +76,20 @@ class Matricula extends Model
     {
         return $this->belongsToMany(Etapa::class, 'matriculaserie', 'ed221_i_matricula', 'ed221_i_serie')
             ->where('ed221_c_origem', '=', 'S');
+    }
+
+    public function scopeApenasAtivas($query)
+    {
+        return $query->where('ed60_c_ativa', 'S');
+    }
+
+
+    public function scopeApneasTransferidosFora($query)
+    {
+        return $query->where('ed60_c_situacao', 'TRANSFERIDO FORA');
+    }
+    public function turma()
+    {
+        return $this->belongsTo(Turma::class, 'ed60_i_turma', 'ed57_i_codigo');
     }
 }

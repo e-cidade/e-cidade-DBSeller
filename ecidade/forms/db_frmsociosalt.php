@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,11 +68,11 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=$Lq95_cgmpri?>
     </td>
     <td> 
-				<?
+				<?php
 				  db_input('somaval',20,"",true,'hidden',3);
 				  db_input('q95_cgmpri',6,$Iq95_cgmpri,true,'text',3);
 				?>
-       <?
+       <?php
        $z01_nome = stripslashes($z01_nome);
        db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        ?>
@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq95_numcgm?>">
-       <?
+       <?php
 					if($db_opcao==2){
 					  $str_01=3;
 					}else{  
@@ -91,10 +91,10 @@ if(isset($opcao) && $opcao=="alterar"){
        <input type='hidden' id='fisico_juridico' style="width: 50px;" />
     </td>
     <td> 
-				<?
+				<?php
 				  db_input('q95_numcgm',6,$Iq95_numcgm,true,'text',$str_01," onchange='js_pesquisaq95_numcgm(false);'")
 				?>
-       <?
+       <?php
          db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '', 'z01_nome_socio');
        ?>
     </td>
@@ -104,7 +104,7 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lq95_tipo?>
     </td>
     <td> 
-      <?
+      <?php
         $aTipo = array('0' => "Selecione...", '1' => "Sócio", '2' => "Responsável MEI", '3' => "Responsável");
        // ksort($aTipo);
         db_select('q95_tipo', $aTipo, true, $db_opcao,"onchange='js_mostraValr_capital();'");
@@ -118,12 +118,12 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lq95_perc?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('q95_perc',15,$Iq95_perc,true,'text',$db_opcao,"");
 			?>
     </td>
   </tr>
-  <? 
+  <?php 
     $sAcaoClick = "";
     if ($db_opcao == 33 || $db_opcao == 3) {
     	
@@ -155,7 +155,7 @@ if(isset($opcao) && $opcao=="alterar"){
   
   <tr>
    <td valign="top">
-   <?
+   <?php
     $chavepri= array("q95_cgmpri"=>$q95_cgmpri,"q95_numcgm"=>@$q95_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
 //    $cliframe_alterar_excluir->sql     =$clsocios->sql_query_socios($q95_cgmpri,"","q95_numcgm,soc.z01_nome as DBtxtnomesocio,q95_perc,q95_cgmpri");
@@ -187,7 +187,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </tr>
   <tr>
   <td align='right'>
-  <?
+  <?php
   $somaval=db_formatar(@$somaval,'f');
   ?>
   <b>Valor total do capital: 
@@ -275,7 +275,7 @@ function js_verificatipo(){
 
 function js_cancelar() {
 
- <?
+ <?php
    if (isset($q95_cgmpri)) {
      echo "location.href=\"iss1_socios004.php?q95_cgmpri={$q95_cgmpri}&z01_nome={$z01_nome}\";\n";
    }
@@ -329,7 +329,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_socios.hide();
-  <?
+  <?php
 	  if($db_opcao!=1){
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
 	  }

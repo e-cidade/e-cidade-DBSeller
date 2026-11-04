@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ $clprocessoforomov->rotulo->label("v73_sequencial");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-       <?
+       <?php
          if (!isset($oGet->detalhamento)) {
        ?>
   <tr> 
@@ -62,7 +62,7 @@ $clprocessoforomov->rotulo->label("v73_sequencial");
               <?=$Lv73_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("v73_sequencial",10,$Iv73_sequencial,true,"text",4,"","chave_v73_sequencial");
 		          ?>
             </td>
@@ -79,12 +79,12 @@ $clprocessoforomov->rotulo->label("v73_sequencial");
         </table>
       </td>
   </tr>
-        <?
+        <?php
          }
         ?>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
         $sWhere = " processoforo.v70_instit = ".db_getsession('DB_instit');
       
@@ -147,12 +147,12 @@ $clprocessoforomov->rotulo->label("v73_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

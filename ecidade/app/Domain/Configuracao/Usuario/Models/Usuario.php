@@ -1,4 +1,5 @@
 <?php
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -27,9 +28,14 @@
 
 namespace App\Domain\Configuracao\Usuario\Models;
 
+use App\Domain\Configuracao\Instituicao\Model\DBConfig;
+use App\Domain\Patrimonial\Protocolo\Model\Cgm;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Encriptacao;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class Usuario
@@ -44,14 +50,29 @@ use Illuminate\Support\Facades\DB;
  * @property integer $administrador
  * @property Carbon $datatoken
  * @property Carbon $dataexpira
-
+ * @method isAtivo($ativo = true)
+ * @method likeNome(string $nome)
+ * @method likeEmail(string $email)
+ * @method likeLogin(string $login)
  */
-class Usuario extends Model
+class Usuario extends User
 {
+    use Notifiable;
+    use HasApiTokens;
+
     protected $table = 'configuracoes.db_usuarios';
     protected $primaryKey = 'id_usuario';
     public $timestamps = false;
     public $incrementing = false;
+
+
+    protected $appends = [
+        'id'
+    ];
+
+    protected $hidden = [
+        "senha"
+    ];
 
     public $casts = [
         "id_usuario" => "integer",
@@ -62,7 +83,36 @@ class Usuario extends Model
         "email" => "string",
         "usuext" => "integer",
         "administrador" => "integer",
+        "datatoken" => "datetime",
+        "dataexpira" => "datetime"
     ];
+
+    /**
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->getAttribute('senha');
+    }
+
+    /**
+     * @param string $login
+     * @return Usuario|null
+     */
+    public function findForPassport($login)
+    {
+        return $this->where('login', $login)->first();
+    }
+
+    /**
+     * @param string $password
+     * @return boolean
+     */
+    public function validateForPassportPasswordGrant($password)
+    {
+        return app()->environment('local') ||
+            Encriptacao::encriptaSenha($password) === $this->getAuthPassword();
+    }
 
     /**
      * @return int
@@ -272,5 +322,104 @@ class Usuario extends Model
         }
 
         return $orgaos;
+    }
+
+    /**
+     * Retorna o usuário do e-cidade pelo CPF ou CNPJ
+     * @param $sCpfCnpj
+     * @return Usuario[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getUserEcidadeByCpfCnpj($sCpfCnpj)
+    {
+        $aUser = $this->join(
+            "configuracoes.db_usuacgm",
+            "db_usuacgm.id_usuario",
+            "=",
+            "db_usuarios.id_usuario"
+        )->join(
+            "cgm",
+            "z01_numcgm",
+            "=",
+            "cgmlogin"
+        )->where(
+            "z01_cgccpf",
+            "=",
+            $sCpfCnpj
+        )->where(
+            "usuarioativo",
+            "=",
+            "1"
+        )->where(
+            "usuext",
+            "!=",
+            "2"
+        )->get([
+            "db_usuarios.id_usuario",
+            "login",
+            "usuext",
+            "z01_nome",
+            "z01_nomecomple",
+            "z01_ender",
+            "z01_numero",
+            "z01_compl",
+            "z01_bairro",
+            "z01_munic",
+            "z01_uf",
+            "z01_cep",
+            "z01_nasc"
+        ]);
+
+        return $aUser;
+    }
+
+    public function getIdAttribute()
+    {
+        return $this->getCodigo();
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->getNome();
+    }
+
+    public function scopeIsAtivo($query, $ativo = true)
+    {
+        return $query->where('usuarioativo', $ativo);
+    }
+
+    public function scopeLikeNome($query, $nome = '')
+    {
+        return $query->where("nome", "ilike", "%{$nome}%");
+    }
+
+    public function scopeLikeEmail($query, $email = '')
+    {
+        return $query->where("email", "ilike", "%{$email}%");
+    }
+
+
+    public function scopeLikeLogin($query, $login = '')
+    {
+        return $query->where("login", "ilike", "%{$login}%");
+    }
+
+
+    public function usuarioCgm()
+    {
+        return $this->belongsTo(UsuarioCgm::class, 'id_usuario', 'id_usuario');
+    }
+
+     /**
+     * Retorna as instituições do usuário
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function instituicoes()
+    {
+        return $this->belongsToMany(
+            DBConfig::class,
+            'configuracoes.db_userinst',
+            'id_usuario',
+            'id_instit'
+        )->orderBy('id_instit');
     }
 }

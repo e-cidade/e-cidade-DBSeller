@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,10 +44,10 @@ $clrotulo->label("DBtxt31");
 if(isset($script) && $script != ""){
 ?>
 <script>
-<?
+<?php
   $vals = "";
   $vir = "";
-  $camp = split(",",$valores);
+  $camp =explode(",",$valores);
   for($f=0;$f<count($camp);$f++){
     $vals .= $vir."'".$camp[$f]."'";
     $vir = ",";
@@ -55,11 +55,11 @@ if(isset($script) && $script != ""){
   echo $script."(".$vals.")";
 ?>
 </script>
-<?
+<?php
 exit;
 }
 if(isset($testanome) && !isset($pesquisa_chave)){
-  $funmat = split("\|",$funcao_js);
+  $funmat =explode("|",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -69,7 +69,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
       $funmat[$i] = "z01_numcgm";
     if($funmat[$i] == "1")
       $funmat[$i] = "z01_nome";
-    $valores .= "|".$funmat[$i];  
+    $valores .= "|".$funmat[$i];
     $camp  .= $vir.$funmat[$i];
     $vir .= ",";
   }
@@ -87,7 +87,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
     document.form_busca_dados.numcgm_busca_dados.value = numcgm;
     document.form_busca_dados.submit();
   }
-<?
+<?php
 if(isset($testanome) && !isset($pesquisa_chave)){
 ?>
   function js_testanome(z01_numcgm,ender,cgccpf,<?=$camp?>){
@@ -96,7 +96,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
       alerta += "Endereço\n";
     }
     valcpf=true;
-    <?
+    <?php
     if (isset($incproc) && ($incproc!="")) {
       $result_protparam = db_query("select * from protparam where p90_instit=".db_getsession("DB_instit"));
       if (pg_numrows($result_protparam)>0){
@@ -104,7 +104,7 @@ if(isset($testanome) && !isset($pesquisa_chave)){
       	if ($p90_valcpfcnpj=='f'){
       		?>
       		valcpf=false;
-      		<?
+      		<?php
       	}
       }
     }
@@ -114,21 +114,21 @@ if(isset($testanome) && !isset($pesquisa_chave)){
         alerta += "CPF/CNPJ\n";
       }
     }
-    
-    
-    
+
+
+
     if(alerta != ""){
       alert("O Contribuinte não possui o CGM atualizado");
-      <?
+      <?php
       //testa permissao de menu
-      
+
       echo "location.href = 'prot1_cadcgm002.php?chavepesquisa='+z01_numcgm+'&testanome=$func_antes&valores=$valores&funcao_js=".$func_antes.$valores."';";
       ?>
     }else{
       <?=$func_antes."(".$camp.")"?>;
     }
   }
-<?
+<?php
 }
 ?>
 
@@ -136,53 +136,53 @@ if(isset($testanome) && !isset($pesquisa_chave)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
        <table width="100%" border="0" cellspacing="0">
 	<form name="form2" method="post" action="" >
-	<?db_input('incproc',6,"",true,'hidden',3); ?>
-        <tr> 
+	<?php db_input('incproc',6,"",true,'hidden',3); ?>
+        <tr>
           <td align="right">C&oacute;digo: </td>
           <td >
-		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<? if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
-          <?
+		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<?php if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
+          <?php
 		  db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',4,"","numcgmDigitadoParaPesquisa");
 		  ?>
 		  </td>
           <td align="right">&nbsp;<?=$DBtxt30?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cpf');
 		  ?>
           </td>
-        
+
         </tr>
-        <tr> 
+        <tr>
           <td align="right">&nbsp;Nome: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_nome',40,$Iz01_nome,true,'text',4,"",'nomeDigitadoParaPesquisa');
 		  ?>
           </td>
           <td align="right">&nbsp;<?=$DBtxt31?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php
 		  db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cnpj');
 		  ?>
           </td>
-        
-        
+
+
 		</tr>
-        <tr> 
-		
+        <tr>
+
           <td colspan="4" align="center"><br>
-		    <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+		    <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
             <input name="limpar" type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
             <input name="Fechar" type="button" id="limpar" value="Fechar" onClick="parent.func_nome.hide();">
-            <?
+            <?php
 	    if(isset($testanome)){
 	    ?>
 	    <input name="Incluir" type="button" value="Incluir Novo CGM" onClick="location.href = 'prot1_cadcgm001.php?testanome=<?=$func_antes?>&valores=<?=$valores?>&funcao_js=<?=$func_antes.$valores?>'">
@@ -192,14 +192,14 @@ if(isset($testanome) && !isset($pesquisa_chave)){
 	      document.form2.Incluir.disabled = true;
 	    }
 	    </script>
-	    <?
+	    <?php
 	    }
 	    ?>
 	    </td>
-	    
+
         </tr>
 		</form>
-      </table> 
+      </table>
 </td>
 <script>
 function js_limpa(){
@@ -211,9 +211,9 @@ function js_limpa(){
 }
 </script>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-      <?
+  <tr>
+    <td align="center" valign="top">
+      <?php
     if(!isset($pesquisa_chave)){
 
        echo "<script>
@@ -238,7 +238,7 @@ function js_limpa(){
       }else if(isset($cnpj) && $cnpj != ""){
 	$sql = $clnome->sql_query("",$campos,""," z01_cgccpf = '$cnpj' ");
       }else{
-	$sql = "";   
+	$sql = "";
 	if(isset($z01_numcgm) && $z01_numcgm != ""){
 	  $sql = $clnome->sql_query($z01_numcgm,$campos);
 	}
@@ -247,7 +247,7 @@ function js_limpa(){
     }else{
       if($pesquisa_chave!=""){
 	$result = $clcgm->sql_record($clcgm->sql_query($pesquisa_chave));
-	if(!isset($testanome)){ 
+	if(!isset($testanome)){
 	  if(($result!=false) && (pg_numrows($result) != 0)){
 	     db_fieldsmemory($result,0);
 	     echo "<script>".$funcao_js."(\"$z01_nome\",false);</script>";

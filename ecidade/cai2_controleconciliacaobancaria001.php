@@ -36,6 +36,11 @@ $clbancoagencia = new cl_bancoagencia;
 $clbancoagencia->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("db90_descr");
+
+$matrizLimite = array(
+    1 => "Desconsiderar",
+    2 => "Considerar"
+);
 ?>
     <html>
     <head>
@@ -66,10 +71,10 @@ $clrotulo->label("db90_descr");
 
                 <tr>
                     <td nowrap title="<?=@$Tdb89_db_bancos?>">
-                        <? db_ancora(@$Ldb89_db_bancos,"js_pesquisadb89_db_bancos(true);",$db_opcao);?>
+                        <?php db_ancora(@$Ldb89_db_bancos,"js_pesquisadb89_db_bancos(true);",$db_opcao);?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('db89_db_bancos',10,$Idb89_db_bancos,true,'text',$db_opcao," onchange='js_pesquisadb89_db_bancos(false);'");
                         db_input('db90_descr',40,$Idb90_descr,true,'text',3,'');
                         ?>
@@ -82,8 +87,18 @@ $clrotulo->label("db90_descr");
                         <strong>Data do Movimento:</strong>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_inputdata('datamov','','','',true,'text',2,"")
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap title='Data Limite'>
+                        <strong>Data Limite:</strong>
+                    </td>
+                    <td>
+                        <?php
+                          db_select('limite', $matrizLimite ,false, $db_opcao )
                         ?>
                     </td>
                 </tr>
@@ -108,7 +123,9 @@ $clrotulo->label("db90_descr");
             var iAno = $F("datamov");
             var sUrl   = "cai2_controleconciliacaobancaria002.php";
             var sQuery = '?iBanco=' + iBanco + '&iData='+iAno;
-
+            if(limite.value == 2){
+                sQuery += '&iLimite=sim';
+            }
             oJanela = window.open(sUrl + sQuery, '', 'width='+(screen.availWidth-5)+', height='+(screen.availHeight-40)+', scrollbars=1, location=0 ');
             oJanela.moveTo(0,0);
         }

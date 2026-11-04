@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("t80_contato");
        <?=@$Lt81_codapo?>
     </td>
     <td> 
-<?
+<?php
 $t81_instit = db_getsession("DB_instit");
 db_input("t81_instit",10,$It81_instit,true,"hidden",3,"");
 db_input('t81_codapo',8,$It81_codapo,true,'text',3,"")
@@ -54,15 +54,15 @@ db_input('t81_codapo',8,$It81_codapo,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt81_codseg?>">
-       <?
+       <?php
        db_ancora(@$Lt81_codseg,"js_pesquisat81_codseg(true);",$db_opcao);
        ?>       
     </td>
     <td> 
-<?
+<?php
 db_input('t81_codseg',8,$It81_codseg,true,'text',$db_opcao," onchange='js_pesquisat81_codseg(false);'")
 ?>
-<?
+<?php
 db_input('t80_contato',40,$It80_contato,true,'text',3,'')
 ?>
     </td>
@@ -72,7 +72,7 @@ db_input('t80_contato',40,$It80_contato,true,'text',3,'')
        <?=@$Lt81_apolice?>
     </td>
     <td> 
-<?
+<?php
 db_input('t81_apolice',51,$It81_apolice,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ db_input('t81_apolice',51,$It81_apolice,true,'text',$db_opcao,"")
        <?=@$Lt81_venc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t81_venc',@$t81_venc_dia,@$t81_venc_mes,@$t81_venc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_apolice.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

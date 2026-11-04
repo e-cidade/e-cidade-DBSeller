@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE lab_paralizacao
-class cl_lab_paralizacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $la37_i_codigo = 0; 
-   var $la37_i_laboratorio = 0; 
-   var $la37_d_ini_dia = null; 
-   var $la37_d_ini_mes = null; 
-   var $la37_d_ini_ano = null; 
-   var $la37_d_ini = null; 
-   var $la37_d_fim_dia = null; 
-   var $la37_d_fim_mes = null; 
-   var $la37_d_fim_ano = null; 
-   var $la37_d_fim = null; 
-   var $la37_c_horaini = null; 
-   var $la37_c_horafim = null; 
-   var $la37_i_motivo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lab_paralizacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $la37_i_codigo = 0;
+   var $la37_i_laboratorio = 0;
+   var $la37_d_ini_dia = null;
+   var $la37_d_ini_mes = null;
+   var $la37_d_ini_ano = null;
+   var $la37_d_ini = null;
+   var $la37_d_fim_dia = null;
+   var $la37_d_fim_mes = null;
+   var $la37_d_fim_ano = null;
+   var $la37_d_fim = null;
+   var $la37_c_horaini = null;
+   var $la37_c_horafim = null;
+   var $la37_i_motivo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 la37_i_codigo = int4 = Código 
-                 la37_i_laboratorio = int4 = Laboratório 
-                 la37_d_ini = date = Início 
-                 la37_d_fim = date = Fim 
-                 la37_c_horaini = char(5) = Hora Inicial 
-                 la37_c_horafim = char(5) = Hora final 
-                 la37_i_motivo = int4 = Motivo da paralisação 
+                 la37_i_codigo = int4 = Código
+                 la37_i_laboratorio = int4 = Laboratório
+                 la37_d_ini = date = Início
+                 la37_d_fim = date = Fim
+                 la37_c_horaini = char(5) = Hora Inicial
+                 la37_c_horafim = char(5) = Hora final
+                 la37_i_motivo = int4 = Motivo da paralisação
                  ";
-   //funcao construtor da classe 
-   function cl_lab_paralizacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lab_paralizacao"); 
+     $this->rotulo = new rotulo("lab_paralizacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_lab_paralizacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la37_i_codigo = ($this->la37_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la37_i_codigo"]:$this->la37_i_codigo);
        $this->la37_i_laboratorio = ($this->la37_i_laboratorio == ""?@$GLOBALS["HTTP_POST_VARS"]["la37_i_laboratorio"]:$this->la37_i_laboratorio);
@@ -109,9 +109,9 @@ class cl_lab_paralizacao {
      }
    }
    // funcao para inclusao
-   function incluir ($la37_i_codigo){ 
+   public function incluir ($la37_i_codigo){
       $this->atualizacampos();
-     if($this->la37_i_laboratorio == null ){ 
+     if($this->la37_i_laboratorio == null ){
        $this->erro_sql = " Campo Laboratório nao Informado.";
        $this->erro_campo = "la37_i_laboratorio";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_lab_paralizacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la37_d_ini == null ){ 
+     if($this->la37_d_ini == null ){
        $this->erro_sql = " Campo Início nao Informado.";
        $this->erro_campo = "la37_d_ini_dia";
        $this->erro_banco = "";
@@ -129,7 +129,7 @@ class cl_lab_paralizacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la37_d_fim == null ){ 
+     if($this->la37_d_fim == null ){
        $this->erro_sql = " Campo Fim nao Informado.";
        $this->erro_campo = "la37_d_fim_dia";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_lab_paralizacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->la37_i_motivo == null ){ 
+     if($this->la37_i_motivo == null ){
        $this->erro_sql = " Campo Motivo da paralisação nao Informado.";
        $this->erro_campo = "la37_i_motivo";
        $this->erro_banco = "";
@@ -148,16 +148,16 @@ class cl_lab_paralizacao {
        return false;
      }
      if($la37_i_codigo == "" || $la37_i_codigo == null ){
-       $result = db_query("select nextval('lab_paralizacao_la37_i_codigo_seq')"); 
+       $result = db_query("select nextval('lab_paralizacao_la37_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_paralizacao_la37_i_codigo_seq do campo: la37_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lab_paralizacao_la37_i_codigo_seq do campo: la37_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->la37_i_codigo = pg_result($result,0,0); 
+       $this->la37_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_paralizacao_la37_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $la37_i_codigo)){
@@ -168,10 +168,10 @@ class cl_lab_paralizacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->la37_i_codigo = $la37_i_codigo; 
+         $this->la37_i_codigo = $la37_i_codigo;
        }
      }
-     if(($this->la37_i_codigo == null) || ($this->la37_i_codigo == "") ){ 
+     if(($this->la37_i_codigo == null) || ($this->la37_i_codigo == "") ){
        $this->erro_sql = " Campo la37_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,25 +180,25 @@ class cl_lab_paralizacao {
        return false;
      }
      $sql = "insert into lab_paralizacao(
-                                       la37_i_codigo 
-                                      ,la37_i_laboratorio 
-                                      ,la37_d_ini 
-                                      ,la37_d_fim 
-                                      ,la37_c_horaini 
-                                      ,la37_c_horafim 
-                                      ,la37_i_motivo 
+                                       la37_i_codigo
+                                      ,la37_i_laboratorio
+                                      ,la37_d_ini
+                                      ,la37_d_fim
+                                      ,la37_c_horaini
+                                      ,la37_c_horafim
+                                      ,la37_i_motivo
                        )
                 values (
-                                $this->la37_i_codigo 
-                               ,$this->la37_i_laboratorio 
-                               ,".($this->la37_d_ini == "null" || $this->la37_d_ini == ""?"null":"'".$this->la37_d_ini."'")." 
-                               ,".($this->la37_d_fim == "null" || $this->la37_d_fim == ""?"null":"'".$this->la37_d_fim."'")." 
-                               ,'$this->la37_c_horaini' 
-                               ,'$this->la37_c_horafim' 
-                               ,$this->la37_i_motivo 
+                                $this->la37_i_codigo
+                               ,$this->la37_i_laboratorio
+                               ,".($this->la37_d_ini == "null" || $this->la37_d_ini == ""?"null":"'".$this->la37_d_ini."'")."
+                               ,".($this->la37_d_fim == "null" || $this->la37_d_fim == ""?"null":"'".$this->la37_d_fim."'")."
+                               ,'$this->la37_c_horaini'
+                               ,'$this->la37_c_horafim'
+                               ,$this->la37_i_motivo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "lab_paralizacao ($this->la37_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -236,16 +236,16 @@ class cl_lab_paralizacao {
        $resac = db_query("insert into db_acount values($acount,2778,17720,'','".AddSlashes(pg_result($resaco,0,'la37_i_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($la37_i_codigo=null) { 
+   public function alterar ($la37_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update lab_paralizacao set ";
      $virgula = "";
-     if(trim($this->la37_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_codigo"])){ 
+     if(trim($this->la37_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_codigo"])){
        $sql  .= $virgula." la37_i_codigo = $this->la37_i_codigo ";
        $virgula = ",";
-       if(trim($this->la37_i_codigo) == null ){ 
+       if(trim($this->la37_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la37_i_codigo";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_lab_paralizacao {
          return false;
        }
      }
-     if(trim($this->la37_i_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_laboratorio"])){ 
+     if(trim($this->la37_i_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_laboratorio"])){
        $sql  .= $virgula." la37_i_laboratorio = $this->la37_i_laboratorio ";
        $virgula = ",";
-       if(trim($this->la37_i_laboratorio) == null ){ 
+       if(trim($this->la37_i_laboratorio) == null ){
          $this->erro_sql = " Campo Laboratório nao Informado.";
          $this->erro_campo = "la37_i_laboratorio";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_lab_paralizacao {
          return false;
        }
      }
-     if(trim($this->la37_d_ini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"] !="") ){ 
+     if(trim($this->la37_d_ini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"] !="") ){
        $sql  .= $virgula." la37_d_ini = '$this->la37_d_ini' ";
        $virgula = ",";
-       if(trim($this->la37_d_ini) == null ){ 
+       if(trim($this->la37_d_ini) == null ){
          $this->erro_sql = " Campo Início nao Informado.";
          $this->erro_campo = "la37_d_ini_dia";
          $this->erro_banco = "";
@@ -280,11 +280,11 @@ class cl_lab_paralizacao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la37_d_ini_dia"])){
          $sql  .= $virgula." la37_d_ini = null ";
          $virgula = ",";
-         if(trim($this->la37_d_ini) == null ){ 
+         if(trim($this->la37_d_ini) == null ){
            $this->erro_sql = " Campo Início nao Informado.";
            $this->erro_campo = "la37_d_ini_dia";
            $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_lab_paralizacao {
          }
        }
      }
-     if(trim($this->la37_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"] !="") ){ 
+     if(trim($this->la37_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"] !="") ){
        $sql  .= $virgula." la37_d_fim = '$this->la37_d_fim' ";
        $virgula = ",";
-       if(trim($this->la37_d_fim) == null ){ 
+       if(trim($this->la37_d_fim) == null ){
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "la37_d_fim_dia";
          $this->erro_banco = "";
@@ -307,11 +307,11 @@ class cl_lab_paralizacao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["la37_d_fim_dia"])){
          $sql  .= $virgula." la37_d_fim = null ";
          $virgula = ",";
-         if(trim($this->la37_d_fim) == null ){ 
+         if(trim($this->la37_d_fim) == null ){
            $this->erro_sql = " Campo Fim nao Informado.";
            $this->erro_campo = "la37_d_fim_dia";
            $this->erro_banco = "";
@@ -322,18 +322,18 @@ class cl_lab_paralizacao {
          }
        }
      }
-     if(trim($this->la37_c_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_c_horaini"])){ 
+     if(trim($this->la37_c_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_c_horaini"])){
        $sql  .= $virgula." la37_c_horaini = '$this->la37_c_horaini' ";
        $virgula = ",";
      }
-     if(trim($this->la37_c_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_c_horafim"])){ 
+     if(trim($this->la37_c_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_c_horafim"])){
        $sql  .= $virgula." la37_c_horafim = '$this->la37_c_horafim' ";
        $virgula = ",";
      }
-     if(trim($this->la37_i_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_motivo"])){ 
+     if(trim($this->la37_i_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la37_i_motivo"])){
        $sql  .= $virgula." la37_i_motivo = $this->la37_i_motivo ";
        $virgula = ",";
-       if(trim($this->la37_i_motivo) == null ){ 
+       if(trim($this->la37_i_motivo) == null ){
          $this->erro_sql = " Campo Motivo da paralisação nao Informado.";
          $this->erro_campo = "la37_i_motivo";
          $this->erro_banco = "";
@@ -371,7 +371,7 @@ class cl_lab_paralizacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lab_paralizacao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->la37_i_codigo;
@@ -399,14 +399,14 @@ class cl_lab_paralizacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($la37_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($la37_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la37_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -438,7 +438,7 @@ class cl_lab_paralizacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lab_paralizacao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$la37_i_codigo;
@@ -466,11 +466,11 @@ class cl_lab_paralizacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -492,11 +492,11 @@ class cl_lab_paralizacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -512,15 +512,15 @@ class cl_lab_paralizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($la37_i_codigo!=null ){
-         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo "; 
-       } 
+         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,11 +529,11 @@ class cl_lab_paralizacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,15 +546,15 @@ class cl_lab_paralizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($la37_i_codigo!=null ){
-         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo "; 
-       } 
+         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -563,11 +563,11 @@ class cl_lab_paralizacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_lab_setorexame ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   // funcao do sql
+   public function sql_query_lab_setorexame ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -592,7 +592,7 @@ class cl_lab_paralizacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,13 +601,13 @@ class cl_lab_paralizacao {
      }
      return $sql;
   }
-   function HoraToMin($hora){
+   public function HoraToMin($hora){
     $hora=str_replace("'","",$hora);
     $aVet=explode(":",$hora);
     $minutos=( ((int)$aVet[0]) *60)+ ((int)$aVet[1]);
     return $minutos;
  }
- function PeriodoPertense($ini_1,$fim_1,$ini_2,$fim_2){
+ public function PeriodoPertense($ini_1,$fim_1,$ini_2,$fim_2){
     if( ( ($ini_1>=$ini_2)&&($ini_1<=$fim_2) )
              ||
         ( ($fim_1>=$ini_2)&&($fim_1<=$fim_2) )
@@ -618,10 +618,10 @@ class cl_lab_paralizacao {
     }
  }
 
-   function sql_query_paralisacao ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_paralisacao ( $la37_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,15 +639,15 @@ class cl_lab_paralizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($la37_i_codigo!=null ){
-         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo "; 
-       } 
+         $sql2 .= " where lab_paralizacao.la37_i_codigo = $la37_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -657,41 +657,41 @@ class cl_lab_paralizacao {
      return $sql;
   }
 
-   function laboratorioparalisado($la09_i_codigo, $sHoraIni, $sHoraFim, $dData) {
- 
-    $sMotivo = ''; 
-    $sSep    = ''; 
-    $sSql    = $this->sql_query_paralisacao('', 'la37_c_horaini, la37_c_horafim, s139_c_descr', '', 
+   public function laboratorioparalisado($la09_i_codigo, $sHoraIni, $sHoraFim, $dData) {
+
+    $sMotivo = '';
+    $sSep    = '';
+    $sSql    = $this->sql_query_paralisacao('', 'la37_c_horaini, la37_c_horafim, s139_c_descr', '',
                                             " la09_i_codigo = $la09_i_codigo and ($dData >= la37_d_ini and $dData <= la37_d_fim)"
-                                           );  
+                                           );
     $rs      = $this->sql_record($sSql);
     for ($iCont = 0; $iCont < $this->numrows; $iCont++) {
-            
+
       $oParalisacoes = db_utils::fieldsMemory($rs, $iCont);
       if ($oParalisacoes->la37_c_horaini != ''){
- 
+
         $iMinHoraIni = $this->HoraToMin($sHoraIni);
         $iMinHoraFim = $this->HoraToMin($sHoraFim);
         $iMinAusIni  = $this->HoraToMin($oParalisacoes->la37_c_horaini);
         $iMinAusFim  = $this->HoraToMin($oParalisacoes->la37_c_horafim);
         if ($this->PeriodoPertense($iMinHoraIni, $iMinHoraFim, $iMinAusIni, $iMinAusFim)) {
- 
+
           $sMotivo .= $sSep.$oParalisacoes->la37_c_horaini.' - '.$oParalisacoes->la37_c_horafim.' - ';
           $sMotivo .= $oParalisacoes->s139_c_descr;
           $sSep     = ', ';
- 
-        }   
- 
+
+        }
+
       } else { // Paralisado o dia inteiro
- 
+
         $sMotivo = '00:00 - 23:59 - '.$oParalisacoes->s139_c_descr;
         break;
- 
-      }   
- 
-    }   
- 
-    return $sMotivo; 
+
+      }
+
+    }
+
+    return $sMotivo;
 
 }
 }

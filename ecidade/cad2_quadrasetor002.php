@@ -34,7 +34,7 @@ $clrotulo->label('j34_quadra');
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-$setor_arr = split(",",$setor);
+$setor_arr =explode(",",$setor);
 $sVirgula  = "";
 $sSetores  = "";
 

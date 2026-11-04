@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed02_i_codigo");
        <?=@$Led05_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed05_i_codigo',5,$Ied05_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted05_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led05_i_escola,"js_pesquisaed05_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed05_i_escola',10,$Ied05_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed05_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted05_i_turno?>">
-       <?
+       <?php
        db_ancora(@$Led05_i_turno,"js_pesquisaed05_i_turno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed05_i_turno',10,$Ied05_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed05_i_turno(false);'")
 ?>
-       <?
+       <?php
 db_input('ed10_c_nome',20,$Ied10_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted05_i_serie?>">
-       <?
+       <?php
        db_ancora(@$Led05_i_serie,"js_pesquisaed05_i_serie(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed05_i_serie',10,$Ied05_i_serie,true,'text',$db_opcao," onchange='js_pesquisaed05_i_serie(false);'")
 ?>
-       <?
+       <?php
 db_input('ed03_c_nome',40,$Ied03_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed03_c_nome',40,$Ied03_c_nome,true,'text',3,'')
        <?=@$Led05_c_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',$db_opcao,"")
        <?=@$Led05_i_criterio?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Notas','2'=>'Conceito','3'=>'Parecer');
 db_select('ed05_i_criterio',$x,true,$db_opcao,"");
 ?>
@@ -191,7 +191,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_turmas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $sDisplayCompromisso= "none";
       <?=@$Le83_codtipo?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('e83_codtipo',10,$Ie83_codtipo,true,'text',3);
 			?>
     </td>
@@ -48,7 +48,7 @@ $sDisplayCompromisso= "none";
        <?=@$Le83_descr?>
     </td>
     <td> 
-			<?
+			<?php
 			 if (isset($e83_conta) && $e83_conta != '') {
 			
 			   $sSqlConta = $clempagetipo->sql_query_conplanoconta(null,
@@ -74,24 +74,24 @@ $sDisplayCompromisso= "none";
   </tr>
   <tr>
     <td nowrap title="<?=@$Te83_conta?>">
-       <?
+       <?php
          db_ancora(@$Le83_conta,"js_saltes(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('e83_conta',10,$Ie83_conta,true,'text',$db_opcao,"onchange='js_saltes(false);'")
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te83_codmod?>">
-       <?
+       <?php
          db_ancora(@$Le83_codmod,"js_mod(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('e83_codmod',10,$Ie83_codmod,true,'text',$db_opcao,"onchange='js_mod(false);'")
 			?>
     </td>
@@ -101,7 +101,7 @@ $sDisplayCompromisso= "none";
        <?=@$Le83_codigocompromisso?>
     </td>
     <td> 
-		  <?
+		  <?php
 		    db_input('e83_codigocompromisso',4,$Ie83_codigocompromisso,true,'text',$db_opcao,"")
 		  ?>
     </td>
@@ -111,7 +111,7 @@ $sDisplayCompromisso= "none";
        <?=@$Le83_convenio?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('e83_convenio',10,$Ie83_convenio,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -121,7 +121,7 @@ $sDisplayCompromisso= "none";
       <b>Seq. Cheque:</b>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('e83_sequencia',10,$Ie83_sequencia,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empagetipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

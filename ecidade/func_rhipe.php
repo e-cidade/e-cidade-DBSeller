@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ if(isset($valor_testa_rescisao) && trim($valor_testa_rescisao) != ""){
 ?>
 <html>
 <head>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -74,7 +74,7 @@ if(!isset($pesquisa_chave)){
       document.form2.submit();
     }
   </script>
-  <?
+  <?php
 }
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -92,7 +92,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh62_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh62_regist",6,$Irh62_regist,true,"text",4,"","chave_rh62_regist");
 		       ?>
             </td>
@@ -102,7 +102,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh63_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh63_numcgm",6,$Irh63_numcgm,true,"text",4,"","chave_rh63_numcgm");
 		       ?>
             </td>
@@ -112,7 +112,7 @@ if(!isset($pesquisa_chave)){
               <B>Nome do Funcionário:</B>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -122,7 +122,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh14_matipe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh14_matipe",13,$Irh14_matipe,true,"text",4,"","chave_rh14_matipe");
 		       ?>
             </td>
@@ -132,7 +132,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh14_contrato?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh14_contrato",13,$Irh14_contrato,true,"text",4,"","chave_rh14_contrato");
 		       ?>
             </td>
@@ -150,7 +150,7 @@ if(!isset($pesquisa_chave)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($depend)){
         if($depend == "func"){
 	  $entrar = true;

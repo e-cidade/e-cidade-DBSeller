@@ -130,6 +130,15 @@ class ConteudoDesenvolvidoRepository extends Repository
     }
 
     /**
+     * @param int $turno
+     * @return $this
+     */
+    public function scopeUsuario($usuario)
+    {
+        $this->scopes['usuario'] = "ed155_db_usuarios = {$usuario}";
+        return $this;
+    }
+    /**
      * @return ConteudoDesenvolvido|null
      * @throws Exception
      */

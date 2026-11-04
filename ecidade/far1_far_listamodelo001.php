@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,14 +79,14 @@ if(isset($incluir)){
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Inclusão de Lista Modelo</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmfar_listamodelo.php"));
 	?>
     </fieldset>
 	</td>
   </tr>
 </table>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </center>
@@ -95,7 +95,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","fa17_i_modelolivro",true,1,"fa17_i_modelolivro",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar)){
   if($clfar_listamodelo->erro_status=="0"){
     $clfar_listamodelo->erro(true,false);

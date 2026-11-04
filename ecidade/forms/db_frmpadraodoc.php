@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("dbforms/db_classesgenericas.php"));
@@ -39,27 +39,27 @@ if(isset($opcao) && $opcao=="alterar"){
         $db61_descr="";
 }elseif(isset($opcao) && $opcao=="excluir" || isset($db_opcao) && $db_opcao==3){
   $db_opcao = 3;
-}else{  
+}else{
   $db_opcao = 1;
-} 
+}
 ?>
 <form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
       <table border="0" cellspacing="0" cellpadding="0">
-	
+
 	<tr>
 	  <td nowrap title="<?=@$Tdb61_codparag?>">
-	     <?db_ancora(@$Ldb61_codparag,"js_pesquisa_codmater(true);",$db_opcao);?>
+	     <?php db_ancora(@$Ldb61_codparag,"js_pesquisa_codmater(true);",$db_opcao);?>
 	  </td>
-	  <td> 
-      <?
-    
+	  <td>
+      <?php
+
       db_input('db61_codparag',10,$Idb61_codparag,true,'text',$db_opcao,"onchange='js_pesquisa_codmater(false);'");
       db_input('db61_descr',40,$Idb61_descr,true,'text',3,"");
       db_input('db60_coddoc',40,"",true,'hidden',3,"");
       ?>
 	  </td>
 	</tr>
-	
+
 	</tr>
 	<tr>
 	<td>&nbsp;</td>
@@ -67,9 +67,9 @@ if(isset($opcao) && $opcao=="alterar"){
 	</tr>
 	<tr>
 	<td colspan=2 align=center>
-	<?
+	<?php
         if(!isset($opcao) && isset($db_opcao) && $db_opcao==3){
-           $db_botao=false;	  
+           $db_botao=false;
 	    }
 	?>
 	  <input name="paragrafo_sel" type="button" id="db_opcao" value="Seleciona Paragrafos"   <?=($db_botao==false?"disabled":"")?> onclick='js_selparag();' >
@@ -86,8 +86,8 @@ if(isset($opcao) && $opcao=="alterar"){
       </table>
       <table>
   <tr>
-    <td valign="top"> 
-    <?
+    <td valign="top">
+    <?php
      $chavepri= array("db61_codparag"=>@$db61_codparag,"db61_descr"=>@$db61_descr);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($db60_coddoc)&&@$db60_coddoc!=""){
@@ -107,7 +107,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	     $lib=4;
       }
       $cliframe_alterar_excluir->opcoes = @$lib;
-      $cliframe_alterar_excluir->iframe_alterar_excluir(@$db_opcao);   
+      $cliframe_alterar_excluir->iframe_alterar_excluir(@$db_opcao);
       db_input('db_opcao',10,'',true,'hidden',3);
     ?>
    </td>
@@ -119,18 +119,18 @@ function js_pesquisa_codmater(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_mater','func_db_paragrafopadrao.php?funcao_js=parent.js_mostra1|db61_codparag|db61_descr','Pesquisa',true);
   }else{
-     if(document.form1.db61_codparag.value != ''){ 
+     if(document.form1.db61_codparag.value != ''){
         js_OpenJanelaIframe('','db_iframe_mater','func_db_paragrafopadrao.php?pesquisa_chave='+document.form1.db61_codparag.value+'&funcao_js=parent.js_mostra','Pesquisa',false);
      }else{
-        document.form1.pc01_descrmater.value = ""; 
+        document.form1.pc01_descrmater.value = "";
      }
   }
 }
 function js_mostra(chave,erro){
-  document.form1.db61_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.db61_codparag.focus(); 
-    document.form1.db61_codparag.value = ''; 
+  document.form1.db61_descr.value = chave;
+  if(erro==true){
+    document.form1.db61_codparag.focus();
+    document.form1.db61_codparag.value = '';
   }
 }
 function js_mostra1(chave1,chave2){
@@ -140,13 +140,13 @@ function js_mostra1(chave1,chave2){
 }
 
 function js_newparag(){
-  js_OpenJanelaIframe('','db_iframe_newparag','con4_docpadrao005.php?funcao_retorno=parent.js_inclui','Inclui Paragrafo',true,0);	
+  js_OpenJanelaIframe('','db_iframe_newparag','con4_docpadrao005.php?funcao_retorno=parent.js_inclui','Inclui Paragrafo',true,0);
 }
 function js_selparag(){
-  js_OpenJanelaIframe('','db_iframe_selparag','con4_docpadrao007.php?db60_coddoc=<?=@$db60_coddoc?>','Seleciona Paragrafos',true,0);	
+  js_OpenJanelaIframe('','db_iframe_selparag','con4_docpadrao007.php?db60_coddoc=<?=@$db60_coddoc?>','Seleciona Paragrafos',true,0);
 }
 function js_ordena(){
-  js_OpenJanelaIframe('','db_iframe_ordena','con4_docpadrao009.php?chavepesquisa=<?=@$db60_coddoc?>','Ordena',true,0);	
+  js_OpenJanelaIframe('','db_iframe_ordena','con4_docpadrao009.php?chavepesquisa=<?=@$db60_coddoc?>','Ordena',true,0);
 }
 function js_emite(){
 	 jan = window.open('con4_docpadrao010.php?db60_coddoc=<?=@$db60_coddoc?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
@@ -154,13 +154,13 @@ function js_emite(){
 }
 function js_inclui(cod){
 	document.form1.db61_codparag.value=cod;
-	<?
+	<?php
 	if ($db_opcao==1){
 	?>
 	document.form1.incluir.click();
-	<?
+	<?php
     }
 	?>
-}	
-	
+}
+
 </script>

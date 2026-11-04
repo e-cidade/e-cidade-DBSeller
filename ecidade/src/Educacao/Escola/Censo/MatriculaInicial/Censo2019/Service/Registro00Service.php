@@ -67,7 +67,6 @@ class Registro00Service
     public function setEscola(Escola $escola)
     {
         $this->escola = $escola;
-
     }
 
     public function setCenso($censo)
@@ -85,7 +84,9 @@ class Registro00Service
         $builder = new Registro00Builder();
         $builder->addDadosCenso($repository->getDadosCenso($this->escola));
         $builder->addDadosTelefones($this->escola->getTelefones());
-        $builder->addDadosCalendarioEscolar($repository->buscaDatasCalendarioEscolar($this->escola, $this->censo->getAno()));
+        $builder
+            ->addDadosCalendarioEscolar($repository
+                ->buscaDatasCalendarioEscolar($this->escola, $this->censo->getAno()));
         $this->registro = self::$registroProcessado = $builder->build();
     }
 

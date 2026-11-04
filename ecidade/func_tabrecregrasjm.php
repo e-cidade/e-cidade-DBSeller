@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltabrecregrasjm->rotulo->label("k04_receit");
               <?=$Lk04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k04_sequencial",10,$Ik04_sequencial,true,"text",4,"","chave_k04_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltabrecregrasjm->rotulo->label("k04_receit");
               <?=$Lk04_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k04_receit",5,$Ik04_receit,true,"text",4,"","chave_k04_receit");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltabrecregrasjm->rotulo->label("k04_receit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabrecregrasjm.php")==true){
@@ -122,12 +122,12 @@ $cltabrecregrasjm->rotulo->label("k04_receit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

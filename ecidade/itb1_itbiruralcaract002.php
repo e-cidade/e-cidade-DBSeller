@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clparitbi		   = new cl_paritbi();
   <tr> 
     <td> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbiruralcaract.php"));
 	?>
     </center>

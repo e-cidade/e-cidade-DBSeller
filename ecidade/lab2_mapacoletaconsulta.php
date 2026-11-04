@@ -125,7 +125,7 @@ try {
         $pgObjectSetor = db_query($sqlSetor);
 
         if (pg_num_rows($pgObjectSetor) === 0) {
-            throw new Excpetion('Ocorreu um erro. Setor não encontrado.');
+            throw new Exception('Ocorreu um erro. Setor não encontrado.');
         }
 
         $setor = pg_fetch_assoc($pgObjectSetor, 0)['la23_c_descr'];

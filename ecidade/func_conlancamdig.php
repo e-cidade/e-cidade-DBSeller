@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,12 +52,12 @@ $clconlancamdig->rotulo->label("c78_chave");
 	  <!---   
           <tr> 
               <td width="4%" align="right" nowrap title="<?=$Tc78_codlan?>"><?=$Lc78_codlan?> </td>
-              <td width="96%" align="left" nowrap><? db_input("c78_codlan",8,$Ic78_codlan,true,"text",4,"","chave_c78_codlan"); ?></td>
+              <td width="96%" align="left" nowrap><?php db_input("c78_codlan",8,$Ic78_codlan,true,"text",4,"","chave_c78_codlan"); ?></td>
           </tr>
 	  --->
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc78_chave?>"><?=$Lc78_chave?></td>
-             <td width="96%" align="left" nowrap><? db_input("c78_chave",20,$Ic78_chave,true,"text",4,"","chave_c78_chave"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c78_chave",20,$Ic78_chave,true,"text",4,"","chave_c78_chave"); ?> </td>
           </tr>
 	  
           <tr> 
@@ -73,7 +73,7 @@ $clconlancamdig->rotulo->label("c78_chave");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos="distinct(conlancamdig.c78_chave),conlancam.c70_data ";//-- distinct(lote) / data
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -110,12 +110,12 @@ $clconlancamdig->rotulo->label("c78_chave");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

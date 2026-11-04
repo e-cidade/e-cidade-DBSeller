@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lh65_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h65_sequencial',10,$Ih65_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th65_rhestagioagenda?>">
-       <?
+       <?php
        db_ancora(@$Lh65_rhestagioagenda,"js_pesquisah65_rhestagioagenda(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h65_rhestagioagenda',10,$Ih65_rhestagioagenda,true,'text',3," onchange='js_pesquisah65_rhestagioagenda(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lh65_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('h65_data',@$h65_data_dia,@$h65_data_mes,@$h65_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_inputdata('h65_data',@$h65_data_dia,@$h65_data_mes,@$h65_data_ano,true,'text'
       <b>Número da Portaria</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('h31_numero',10,$Ih31_numero,true,'text',$db_opcao)
       ?>
     </td>
@@ -90,7 +90,7 @@ db_inputdata('h65_data',@$h65_data_dia,@$h65_data_mes,@$h65_data_ano,true,'text'
        <?=@$Lh65_resultado?>
     </td>
     <td> 
-<?
+<?php
 $x = array('A'=>'Aprovado','R'=>'Reprovado');
 db_select('h65_resultado',$x,true,$db_opcao,"");
 ?>
@@ -101,7 +101,7 @@ db_select('h65_resultado',$x,true,$db_opcao,"");
        <?=@$Lh65_pontos?>
     </td>
     <td> 
-<?
+<?php
 db_input('h65_pontos',10,$Ih65_pontos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_input('h65_pontos',10,$Ih65_pontos,true,'text',$db_opcao,"")
        <?=@$Lh65_observacao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h65_observacao',8,60,$Ih65_observacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_textarea('h65_observacao',8,60,$Ih65_observacao,true,'text',$db_opcao,"")
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
 if (isset($h65_sequencial) && $h65_sequencial != null){
 
   echo "<input name='relatorio' type='button' id='pesquisar' value='Emitir Ata de Resultado' onclick='js_relatorio({$h65_rhestagioagenda});' >";
@@ -185,7 +185,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagioresultado.hide();
-  <?
+  <?php
 //  if (!isset($oGet->chavepesquisa)){
     $name = basename($PHP_SELF);
     echo "location.href='{$name}?chavepesquisa='+chave";
@@ -195,7 +195,7 @@ function js_preenchepesquisa(chave){
 function js_relatorio(iCodExame){
   window.open('rec3_estagioAta002.php?iCodExame='+iCodExame,'','location=0');
 }
-<?
+<?php
  if (!isset($oGet->chavepesquisa)){
    echo "js_pesquisa();\n";
  }

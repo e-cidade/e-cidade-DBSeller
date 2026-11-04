@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -296,14 +296,14 @@ if($db_opcao==33){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
 	<br><br><br>
-	<?
+	<?php
 	include(modification("forms/db_frmsau_fechamento.php"));
 	?>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

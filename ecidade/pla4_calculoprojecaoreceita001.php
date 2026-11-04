@@ -45,6 +45,7 @@ require_once modification("dbforms/db_funcoes.php");
           rel="stylesheet"/>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
 </head>
 <body class="body-default">
 <div class="container">

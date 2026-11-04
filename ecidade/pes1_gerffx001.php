@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use App\Domain\RecursosHumanos\Pessoal\Services\Rubrica\ObservacaoRubricaService;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -56,6 +58,7 @@ if ( DBPessoal::verificarUtilizacaoEstruturaSuplementar() && in_array($gerf, $aF
   require_once(modification("pes4_implantacaoponto001.php"));
   exit;
 }
+
 
 if(isset($incluir) || isset($confirmado) || isset($gerfnovo)){
 
@@ -234,6 +237,27 @@ if(isset($incluir) && !isset($alertconfirma)){
 
   }
 
+  if (!$sqlerro) {
+    try {
+      $dados = (object) [
+        'matricula'  => $_POST['r14_regist'],
+        'rubrica'    => $_POST['r14_rubric'],
+        'anousu'     => $_POST['r14_anousu'],
+        'mesusu'     => $_POST['r14_mesusu'],
+        'observacao' => $_POST['observacao'],
+        'instit'     => db_getsession('DB_instit'),
+        'ponto'      => $gerf
+      ];
+
+      $service = new ObservacaoRubricaService();
+      $service->saveFromLegacy($dados);
+      $observacao = null;
+    } catch (Exception $erro) {
+      $erro_msg = $erro->getMessage();
+      $sqlerro = true;
+    }
+  }
+
   db_fim_transacao($sqlerro);
 }else if(isset($alterar)){
   db_inicio_transacao();
@@ -360,6 +384,27 @@ if(isset($incluir) && !isset($alertconfirma)){
 
   }
 
+  if (!$sqlerro) {
+    try {
+      $dados = (object) [
+        'matricula'  => $_POST['r14_regist'],
+        'rubrica'    => $_POST['r14_rubric'],
+        'anousu'     => $_POST['r14_anousu'],
+        'mesusu'     => $_POST['r14_mesusu'],
+        'observacao' => $_POST['observacao'],
+        'instit'     => db_getsession('DB_instit'),
+        'ponto'      => $gerf
+      ];
+
+      $service = new ObservacaoRubricaService();
+      $service->saveFromLegacy($dados);
+      $observacao = null;
+    } catch (Exception $erro) {
+      $erro_msg = $erro->getMessage();
+      $sqlerro = true;
+    }
+  }
+
   db_fim_transacao($sqlerro);
 }else if(isset($excluir)){
   db_inicio_transacao();
@@ -402,6 +447,26 @@ if(isset($incluir) && !isset($alertconfirma)){
     }
   //////////
 
+  }
+  
+  if (!$sqlerro) {
+    try {
+      $dados = (object) [
+        'matricula'  => $_POST['r14_regist'],
+        'rubrica'    => $_POST['r14_rubric'],
+        'anousu'     => $_POST['r14_anousu'],
+        'mesusu'     => $_POST['r14_mesusu'],
+        'instit'     => db_getsession('DB_instit'),
+        'ponto'      => $gerf
+      ];
+
+      $service = new ObservacaoRubricaService();
+      $service->deleteFromLegacy($dados);
+      $observacao = null;
+    } catch (Exception $erro) {
+      $erro_msg = $erro->getMessage();
+      $sqlerro = true;
+    }
   }
 
   db_fim_transacao($sqlerro);
@@ -475,6 +540,26 @@ if(isset($incluir) && !isset($alertconfirma)){
     }
   }
 
+    
+  $observacao = null;
+  try {
+
+    $dados = (object) [
+      'matricula'  => $r14_regist,
+      'rubrica'    => $r14_rubric,
+      'anousu'     => $r14_anousu,
+      'mesusu'     => $r14_mesusu,
+      'instit'     => db_getsession('DB_instit'),
+      'ponto'      => $gerf
+    ];
+
+    $service = new ObservacaoRubricaService();
+    $dadosObservacao = $service->getObservacaoRubricaServidor($dados);
+    if ($dadosObservacao->observacao) {
+        $observacao = $dadosObservacao->observacao;
+    }
+  } catch (Exception $erro) {
+  }
   ///////////////////////////////////////////////////
   ///////////////////////////////////////////////////
 }else if(isset($r14_regist)){
@@ -506,16 +591,16 @@ if(isset($incluir) && !isset($alertconfirma)){
     <td width="25%">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 include(modification("forms/db_frmgerffx.php"));
 ?>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>js_campos('outros');</script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if(isset($sqlerro) && $sqlerro == true){
     db_msgbox($erro_msg);

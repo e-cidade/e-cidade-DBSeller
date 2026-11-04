@@ -25,26 +25,41 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Factories\BalanceteVerificacaoFactory;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\SaldoRecurso;
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 use ECidade\Financeiro\Orcamento\Registry\ComplementoRegistry;
 
 require_once('model/contabilidade/contacorrente/AC/ContaCorrenteFonteRecurso.model.php');
 
 class bal_ver
 {
-    public $arq = null;
+
+    protected $arq = null;
+    protected $header;
 
     public function __construct($header)
     {
-        umask(74);
-        $this->arq = fopen("tmp/BAL_VER.TXT", 'w+');
-        fputs($this->arq, $header);
-        fputs($this->arq, "\r\n");
+        $this->header = $header;
     }
 
     public function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst, $subelemento = "")
     {
+        $anousu = db_getsession("DB_anousu");
+
+        if ($anousu >= 2023) {
+            $instituicoes = InstituicaoRepository::getInstituicaoConsolida(db_getsession('DB_instit'));
+
+            $service = BalanceteVerificacaoFactory::getService($anousu, $instituicoes, $data_ini, $data_fim);
+            $service->setHeader($this->header);
+            $service->processa();
+
+            return true;
+        }
+        umask(74);
+        $this->arq = fopen("tmp/BAL_VER.TXT", 'w+');
+        fputs($this->arq, $this->header);
+        fputs($this->arq, "\r\n");
+
         global $instituicoes, $contador, $nomeinst, $sinal_anterior, $sinal_final;
 
         $oDataInicial = new DBDate($data_ini);
@@ -56,11 +71,11 @@ class bal_ver
             $instituicoesParaProcessamento[] = InstituicaoRepository::getInstituicaoByCodigo($codigoInstituicao);
         }
 
-
         $estruturalProcessado = array();
         $sLancamentosEncerramento = db_getsession('DB_anousu') >= 2014 ? 'false' : 'true';
+        $anousu = db_getsession("DB_anousu");
         $result = db_planocontassaldo_matriz(
-            db_getsession("DB_anousu"),
+            $anousu,
             $data_ini,
             $data_fim,
             false,
@@ -82,82 +97,69 @@ class bal_ver
             global $instituicoes, $c61_instit, $c61_reduz, $nivel, $estrutural, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $c60_descr, $c61_codigo;
             db_fieldsmemory($result, $x);
 
-            $aLinhaArquivo = array();
-            $aLinhasDisponibilidadeRecurso = array();
+            $aLinhaArquivo = [];
+            $aLinhasDisponibilidadeRecurso = [];
             $oRecurso = null;
-            $recurso = 0;
+            $recurso = '0000';
+            $codigo_siconfi = '0000';
+            $complemento = '0000';
+            /**
+             * @todo revisar essa coisa
+             */
             if (!empty($c61_codigo)) {
                 $oRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($c61_codigo);
                 $recurso = $oRecurso->getRecurso();
-            }
-            $aEstruturalDisponibilidade = array('82111', '82110', '82100', '82000', '80000');
-            if (in_array(substr($estrutural, 0, 5), $aEstruturalDisponibilidade) && empty($c61_reduz)) {
-                $nSaldoBalancete = $saldo_anterior;
-                $nSaldoImplantadoCredito = 0;
-                if ((substr($estrutural, 0, 5) == '82111' && $saldo_anterior == 0)) {
-                    $nSaldoImplantadoCredito = self::getValorImplantadoDisponibilidadeRecurso($oDataInicial);
-                }
-
-                $saldo_anterior = ($nSaldoBalancete + $nSaldoImplantadoCredito);
-                /**
-                 * Validado se o saldo inicial da conta é credora ou devedora para ajustar o calculo do saldo final
-                 */
-                if ($sinal_anterior === 'C') {
-                    $saldo_final = (($saldo_anterior + $saldo_anterior_credito) - $saldo_anterior_debito);
-                    $sinal_final = $saldo_final < 0 ? 'D' : 'C';
-                } else {
-                    $saldo_final = (($saldo_anterior + $saldo_anterior_debito) - $saldo_anterior_credito);
-                    $sinal_final = $saldo_final < 0 ? 'C' : 'D';
+                $codigo_siconfi = substr($oRecurso->getFonteRecurso($anousu)->codigo_siconfi, 1);
+                $co = ComplementoRegistry::get($oRecurso->getComplemento());
+                if ($co->isTribunal()) {
+                    $complemento = str_pad($co->getCodigo(), 4, '0', STR_PAD_LEFT);
                 }
             }
 
             if (substr($estrutural, 0, 5) == '82111' && !empty($c61_reduz)) {
                 $oStdDadosVerificacao = db_utils::fieldsMemory($result, $x);
 
-                $instituicaoDaVez = InstituicaoRepository::getInstituicaoByCodigo($c61_instit);
-                if (!in_array($estrutural . $c61_instit, $estruturalProcessado)) {
-                    $estruturalProcessado[] = $estrutural . $c61_instit;
-                    $aLinhasDisponibilidadeRecurso = self::constroiLinhaDisponibilizacaoRecurso(
+                $hash = sprintf('%s#%s', $estrutural, $c61_instit);
+                if (!in_array($hash, $estruturalProcessado)) {
+                    $estruturalProcessado[] = $hash;
+
+                    $aLinhasDisponibilidadeRecurso = self::constroiLinhDDR(
                         $oStdDadosVerificacao,
                         $oDataInicial,
-                        $oDataFinal,
-                        array($instituicaoDaVez)
+                        $oDataFinal
                     );
-
-                    if (!$aLinhasDisponibilidadeRecurso) {
-                        $aLinhasDisponibilidadeRecurso = array();
-                    }
-
-                    unset($oStdDadosVerificacao);
                 }
+
+                unset($oStdDadosVerificacao);
             } else {
                 $aLinhaArquivo[] = formatar($estrutural, 20, 'n');
-                if ($c61_instit == 0 || empty($c61_instit)) {
-                    $aLinhaArquivo[] = "0000";
-                } else {
-                    $codigoTribunal = $instituicoes[$c61_instit];
+                $orgaoUnidade = '0000';
+                if (!empty($c61_instit)) {
+                    $orgaoUnidade = $instituicoes[$c61_instit];
                     if ($instituicoes[$c61_instit] instanceof Instituicao) {
-                        $codigoTribunal = $instituicoes[$c61_instit]->getCodigoTribunal();
+                        $orgaoUnidade = $instituicoes[$c61_instit]->getCodigoTribunal();
                     }
-                    $aLinhaArquivo[] = $codigoTribunal;    // aqui ï¿½ o codtrib, da tabela db_config
                 }
+                $valorSaldoAnterior = $saldo_anterior;
 
+                $aLinhaArquivo[] = $orgaoUnidade; // 21 a 24 Código do Órgão + Unidade Orçamentária
                 $saldo_anterior = abs($saldo_anterior);
-                if ($sinal_anterior == 'D') {
 
+                if ($sinal_anterior == 'D') {
                     $aLinhaArquivo[] = formatar(dbround_php_52($saldo_anterior, 2), 13, 'v');
                     $aLinhaArquivo[] = formatar(0, 13, 'v');
                 } else {
-
                     $aLinhaArquivo[] = formatar(0, 13, 'v');
                     $aLinhaArquivo[] = formatar(dbround_php_52($saldo_anterior, 2), 13, 'v');
                 }
                 $saldo_anterior_debito = abs($saldo_anterior_debito);
                 $saldo_anterior_credito = abs($saldo_anterior_credito);
-                $aLinhaArquivo[] = formatar($saldo_anterior_debito, 13, 'v');
-                $aLinhaArquivo[] = formatar($saldo_anterior_credito, 13, 'v');
+                $aLinhaArquivo[] = formatar($saldo_anterior_debito, 13, 'v'); // 51 a 63 Movimentação - Conta Débito
+                $aLinhaArquivo[] = formatar($saldo_anterior_credito, 13, 'v'); // 64 a 76 Movimentação - Conta Crédito
 
                 $saldo_final = abs($saldo_final);
+
+                // saldo atual da conta
                 if ($sinal_final == 'D') {
                     $aLinhaArquivo[] = formatar(dbround_php_52($saldo_final, 2), 13, 'v');
                     $aLinhaArquivo[] = formatar(0, 13, 'v');
@@ -171,27 +173,40 @@ class bal_ver
                     $c60_descr = str_replace("\n", ' ', $c60_descr);
                 }
 
-                $aLinhaArquivo[] = formatar($c60_descr, 148, 'c');
-                $aLinhaArquivo[] = ($c61_reduz == 0 ? 'S' : 'A');
+                $aLinhaArquivo[] = formatar($c60_descr, 148, 'c'); // 103 a 250 Especificação Conta
+                $aLinhaArquivo[] = ($c61_reduz == 0 ? 'S' : 'A'); // 251 Tipo de Nível da Conta
 
                 // pesquisa nivel da conta
-                $aLinhaArquivo[] = self::getNivel($estrutural);
+                $aLinhaArquivo[] = self::getNivel($estrutural); // 252 a 253 Número do Nível da Conta
                 $aLinhaArquivo[] = ' ';
                 $aLinhaArquivo[] = self::getEscrituracao($estrutural);
                 $aLinhaArquivo[] = self::getNaturezaInformacao($estrutural);
                 $aLinhaArquivo[] = self::getIndicadorSuperavit($estrutural);
 
                 $recursoVinculado = $c61_reduz == 0 ? '0000' : str_pad($recurso, 4, '0', STR_PAD_LEFT);
+                if ($anousu >= 2023 && $valorSaldoAnterior == 0) {
+                    $recursoVinculado = '0000';
+                }
                 $aLinhaArquivo[] = $recursoVinculado;
 
-                if (db_getsession("DB_anousu") >= 2020) {
-                    $complementoFonteRecurso = '0';
-                    if (!empty($oRecurso) && $recursoVinculado != '0000') {
-                        $complemento = ComplementoRegistry::get($oRecurso->getComplemento());
-                        $complementoFonteRecurso = $complemento->isTribunal() ? $complemento->getCodigo() : 0;
+                if ($anousu >= 2020) {
+                    $complementoFonteRecurso = '0000';
+                    // A partir de 2023 a informação deste campo é obrigatória para as contas com Saldo Anterior maior
+                    // que zero. Para as contas com Saldo Anterior igual a zero este campo deve obrigatoriamente ser
+                    // preenchido com sequência de zeros
+                    if ((!empty($oRecurso) && $recursoVinculado != '0000')
+                        && ($anousu >= 2023 && $valorSaldoAnterior != 0)) {
+                        $complementoFonteRecurso = $complemento;
                     }
 
                     $aLinhaArquivo[] = str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                }
+                if ($anousu == 2022) {
+                    $aLinhaArquivo[] = "00000000"; // 266 a 269 Fonte de Recurso e 270 a 273 CO
+                }
+                if ($anousu >= 2023) {
+                    $aLinhaArquivo[] = str_pad($codigo_siconfi, 4, '0', STR_PAD_LEFT); // 266 a 269 Fonte de Recurso
+                    $aLinhaArquivo[] = $complemento; // 270 a 273 CO
                 }
             }
 
@@ -199,9 +214,6 @@ class bal_ver
                 foreach ($aLinhasDisponibilidadeRecurso as $aLinhaPorRecurso) {
                     $contador++;
                     $line = implode('', $aLinhaPorRecurso);
-                    if (db_getsession("DB_anousu") >= 2022) {
-                        $line .= "00000000";
-                    }
                     fputs($this->arq, $line);
                     fputs($this->arq, "\r\n");
                 }
@@ -209,9 +221,7 @@ class bal_ver
                 if (count($aLinhaArquivo) > 0) {
                     $contador++;
                     $line = implode('', $aLinhaArquivo);
-                    if (db_getsession("DB_anousu") >= 2022) {
-                        $line .= "00000000";
-                    }
+
                     fputs($this->arq, $line);
                     fputs($this->arq, "\r\n");
                 }
@@ -358,6 +368,358 @@ class bal_ver
 
     /**
      * @param stdClass $oBalanceteVerificacao
+     * @param DBDate $dataInicial
+     * @param DBDate $dataFinal
+     *
+     * @return array
+     * @throws Exception
+     */
+    public static function constroiLinhDDR($oBalanceteVerificacao, $dataInicial, $dataFinal)
+    {
+        $instituicao = InstituicaoRepository::getInstituicaoByCodigo($oBalanceteVerificacao->c61_instit);
+        $valoresPorRecurso = self::buscaValores($oBalanceteVerificacao, $dataInicial, $dataFinal);
+
+        $dadosPorRecurso = [];
+        foreach ($valoresPorRecurso as $valor) {
+            $subrecurso = $valor['o15_recurso'];
+            $complemento = str_pad($valor['o15_complemento'], 4, '0', STR_PAD_LEFT);
+            $complementoSubrecurso = str_pad($valor['o15_complemento'], 4, '0', STR_PAD_LEFT);
+
+            // validamos se o complemento é para ir para o tribunal (PAD)
+            if (!ComplementoRegistry::get($valor['o15_complemento'])->isTribunal()) {
+                $complemento = '0000';
+                $complementoSubrecurso = '0000';
+            }
+
+            if ($valor['saldo_anterior'] == 0) {
+                $subrecurso = '0000';
+                $complementoSubrecurso = '0000';
+            }
+
+            $fonteSiconfi = substr($valor['codigo_siconfi'], 1);
+            $hash = sprintf(
+                '%s#%s%s#%s#%s#%s',
+                $oBalanceteVerificacao->estrutural,
+                $instituicao->getCodigoTribunal(),
+                $subrecurso,
+                $complementoSubrecurso,
+                $fonteSiconfi,
+                $complemento
+            );
+
+            // lógica para agrupar os valores pelo hash
+            if (!array_key_exists($hash, $dadosPorRecurso)) {
+                // linha: Código da Conta do Bal. Verificação - SG
+                $dadosPorRecurso[$hash]['estrutural'] = str_pad($oBalanceteVerificacao->estrutural, 20, 0, STR_PAD_LEFT);
+                // linha: Código do Órgão + Unidade Orçamentária
+                $dadosPorRecurso[$hash]['orgao_unidade'] = $instituicao->getCodigoTribunal();
+                // linha: Saldo Anterior - Conta Devedora
+                $dadosPorRecurso[$hash]['saldo_anterior_devedora'] = 0;
+                // linha: Saldo Anterior - Conta Credora
+                $dadosPorRecurso[$hash]['saldo_anterior_credora'] = 0;
+                // linha: Movimentação - Conta Débito
+                $dadosPorRecurso[$hash]['movimentacao_debito'] = 0;
+                // linha: Movimentação - Conta Crédito
+                $dadosPorRecurso[$hash]['movimentacao_credito'] = 0;
+                // linha: Saldo Atual - Conta Devedora
+                $dadosPorRecurso[$hash]['saldo_atual_devedora'] = 0;
+                // linha: Saldo Atual - Conta Credora
+                $dadosPorRecurso[$hash]['saldo_atual_credora'] = 0;
+                // linha: Especificação Conta do Bal. Verificação - SG
+                $dadosPorRecurso[$hash]['descricao'] = str_pad(trim($oBalanceteVerificacao->c60_descr), 148, ' ', STR_PAD_RIGHT);
+                // linha: Tipo de Nível da Conta
+                $dadosPorRecurso[$hash]['tipo'] = $oBalanceteVerificacao->c61_reduz == 0 ? 'S' : 'A';
+                // linha: Número do Nível da Conta
+                $dadosPorRecurso[$hash]['nivel'] = self::getNivel($oBalanceteVerificacao->estrutural);
+                // linha: Sistema Contábil
+                $dadosPorRecurso[$hash]['sistema'] = ' ';
+                // linha: Escrituração
+                $dadosPorRecurso[$hash]['escrituracao'] = self::getEscrituracao($oBalanceteVerificacao->estrutural);
+                // linha: Natureza da Informação
+                $dadosPorRecurso[$hash]['natureza'] = self::getNaturezaInformacao($oBalanceteVerificacao->estrutural);
+                // linha: Indicador de Superávit Financeiro
+                $dadosPorRecurso[$hash]['indicador'] = self::getIndicadorSuperavit($oBalanceteVerificacao->estrutural);
+                // $recurso já é a fonte de recurso
+                $dadosPorRecurso[$hash]['subrecurso'] = str_pad($subrecurso, 4, '0', STR_PAD_LEFT);
+                $dadosPorRecurso[$hash]['complementoSubrecurso'] = $complementoSubrecurso;
+                $dadosPorRecurso[$hash]['siconfi'] = str_pad($fonteSiconfi, 4, '0', STR_PAD_LEFT);
+                $dadosPorRecurso[$hash]['complemento'] = $complemento;
+
+                // criada apenas para totalizar os saldos
+                $dadosPorRecurso[$hash]['saldo_anterior'] = 0;
+                $dadosPorRecurso[$hash]['saldo_final'] = 0;
+            }
+
+            $dadosPorRecurso[$hash]['movimentacao_debito'] += $valor['valor_debito'];
+            $dadosPorRecurso[$hash]['movimentacao_credito'] += $valor['valor_credito'];
+
+            // criada apenas para totalizar os saldos
+            $dadosPorRecurso[$hash]['saldo_anterior'] += $valor['saldo_anterior'];
+            $dadosPorRecurso[$hash]['saldo_final'] += $valor['saldo_final'];
+        }
+
+        foreach ($dadosPorRecurso as $linhaPorRecurso) {
+            $saldoFinalCredor = 0;
+            $saldoFinalDevedor = 0;
+            $saldoAnteriorCredor = 0;
+            $saldoAnteriorDevedor = 0;
+
+            // lógica para posicionar corretamente os saldos das contas
+            $saldoAnterior = $linhaPorRecurso['saldo_anterior'];
+            if ($saldoAnterior < 0) {
+                $saldoAnteriorCredor = abs($saldoAnterior);
+            }
+
+            if ($saldoAnterior > 0) {
+                $saldoAnteriorDevedor = abs($saldoAnterior);
+            }
+
+            $saldoFinal = $linhaPorRecurso['saldo_final'];
+
+            if ($saldoFinal < 0) {
+                $saldoFinalCredor = abs($saldoFinal);
+            }
+            if ($saldoFinal > 0) {
+                $saldoFinalDevedor = abs($saldoFinal);
+            }
+
+            // remove as colun
+            unset($linhaPorRecurso['saldo_anterior']);
+            unset($linhaPorRecurso['saldo_final']);
+
+            $linhaPorRecurso['saldo_anterior_devedora'] = self::formatarSaldo($saldoAnteriorDevedor);
+            $linhaPorRecurso['saldo_anterior_credora'] = self::formatarSaldo($saldoAnteriorCredor);
+            $linhaPorRecurso['movimentacao_debito'] = self::formatarSaldo($linhaPorRecurso['movimentacao_debito']);
+            $linhaPorRecurso['movimentacao_credito'] = self::formatarSaldo($linhaPorRecurso['movimentacao_credito']);
+            $linhaPorRecurso['saldo_atual_devedora'] = self::formatarSaldo($saldoFinalDevedor);
+            $linhaPorRecurso['saldo_atual_credora'] = self::formatarSaldo($saldoFinalCredor);
+
+            $aAgrupamento[] = $linhaPorRecurso;
+        }
+
+        return $aAgrupamento;
+    }
+
+    /**
+     * @param $oBalanceteVerificacao
+     * @param DBDate $oDataInicial
+     * @param DBDate $oDataFinal
+     * @return void
+     */
+    protected static function buscaValores($oBalanceteVerificacao, $oDataInicial, $oDataFinal)
+    {
+        $reduzido = $oBalanceteVerificacao->c61_reduz;
+        $instituicao = $oBalanceteVerificacao->c61_instit;
+        $exercicio = $oDataInicial->getAno();
+        $dataIni = $oDataInicial->getDate();
+        $dataFim = $oDataFinal->getDate();
+
+        $sql = <<<SQL
+WITH lancamentos AS (
+   SELECT conplanoatributolancamentos.c124_sequencial AS codigo,
+          conplanoatributolancamentos.c124_data AS DATA,
+          conplanoatributolancamentos.c124_natureza AS natureza,
+          conplanoatributolancamentos.c124_valor AS valor,
+          conplanoatributolancamentos.c124_lancamento AS codigo_lancamento,
+          c71_coddoc AS documento,
+          infocomplementarvalor.c123_reduzido AS reduzido,
+          c60_estrut AS estrutural,
+          c60_descr AS nome_conta,
+          infocomplementarvalor.c123_valor AS valor_atributo,
+          c121_sigla AS sigla_atributo,
+          c129_ordem AS ordem,
+          conplanoatributolancamentos.c124_tipo AS tipo,
+          codigo_siconfi,
+          o15_recurso,
+          o15_complemento
+   FROM infocomplementarvalor
+   INNER JOIN conplanoatributolancamentos ON c124_sequencial = c123_conplanoatributolancamentos
+   INNER JOIN conplanosistemaatributos ON c129_conplanoinfocomplementar = c123_infocomplementar
+   AND c129_conplanosistema = c123_conplanosistema
+   INNER JOIN conplanoinfocomplementar ON c121_sequencial = c123_infocomplementar
+   INNER JOIN conplanoreduz ON c61_reduz = c123_reduzido
+   AND EXTRACT (YEAR FROM c124_data)::int = c61_anousu
+   INNER JOIN conplano ON c61_codcon = c60_codcon
+   AND c60_anousu = c61_anousu
+   LEFT JOIN conlancam ON c70_codlan = c124_lancamento
+   LEFT JOIN conlancamdoc ON c71_codlan = c70_codlan
+   join orctiporec on o15_codigo = c123_valor::int
+   join fonterecurso on orctiporec_id = o15_codigo
+        and exercicio = c60_anousu
+   WHERE c124_data <= '{$dataFim}'
+     and extract(year from c124_data)::int = $exercicio
+     AND c61_instit = $instituicao
+     AND c61_reduz = $reduzido
+     and c124_tipo = '2'
+     AND c123_conplanosistema = 100
+   ORDER BY c124_sequencial,
+            c71_coddoc,
+            c124_data,
+            c123_reduzido,
+            c129_ordem,
+            c124_lancamento,
+            c60_estrut
+), conta_corrente AS (
+   SELECT codigo,
+          DATA,
+          natureza,
+          valor,
+          codigo_lancamento,
+          reduzido,
+          estrutural,
+          nome_conta,
+          array_to_string(array_agg(valor_atributo||'#'||sigla_atributo ORDER BY ordem), '|') AS atributos,
+          tipo,
+          codigo_siconfi,
+          o15_recurso,
+          o15_complemento
+   FROM lancamentos
+   GROUP BY codigo,
+            DATA,
+            natureza,
+            valor,
+            codigo_lancamento,
+            reduzido,
+            estrutural,
+            nome_conta,
+            tipo,
+            codigo_siconfi,
+            o15_recurso,
+            o15_complemento
+   ORDER BY codigo,
+            DATA,
+            natureza,
+            valor,
+            codigo_lancamento,
+            reduzido,
+            estrutural
+), saldo_inicial as (
+    select conplanoexecontacorrenteatributo.id as codigo,
+           c60_estrut as estrutural,
+           c60_descr as nome_conta,
+           c143_conplanoreduz as reduzido,
+           c143_saldo as saldo,
+           c143_natureza as natureza,
+           c121_sigla as sigla_atributo,
+           c144_valor as valor_atributo,
+           c129_ordem as ordem_atributo,
+           codigo_siconfi,
+           o15_recurso,
+           o15_complemento
+      from contabilidade.conplanoexecontacorrente
+      join contabilidade.conplanoexecontacorrenteatributo on c144_conplanoexecontacorrente = conplanoexecontacorrente.id
+      join contabilidade.conplanoreduz ON (c61_reduz, c61_anousu) = (c143_conplanoreduz, c143_exercicio)
+      join contabilidade.conplano ON (c60_codcon, c60_anousu) = (c61_codcon, c61_anousu)
+      join contabilidade.conplanoinfocomplementar on c144_conplanoinfocomplementar = c121_sequencial
+      join contabilidade.conplanosistemaatributos on c129_conplanosistema  = c143_conplanosistema
+           and c129_conplanoinfocomplementar = c144_conplanoinfocomplementar
+      join orctiporec on o15_codigo = c144_valor::int
+      join fonterecurso on orctiporec_id = o15_codigo
+            and exercicio = c143_exercicio
+    where c143_conplanosistema = 100
+      and c143_exercicio = $exercicio
+     AND c61_instit = $instituicao
+     AND c61_reduz = $reduzido
+), conta_corrente_si as (
+  SELECT  codigo,
+          estrutural,
+          nome_conta,
+          reduzido,
+          saldo,
+          natureza,
+          array_to_string(array_agg(valor_atributo||'#'||sigla_atributo ORDER BY ordem_atributo), '|') AS atributos,
+          codigo_siconfi, o15_recurso, o15_complemento
+   FROM saldo_inicial
+   GROUP BY codigo, estrutural, nome_conta, reduzido, saldo, natureza, codigo_siconfi, o15_recurso, o15_complemento
+   ORDER BY codigo, estrutural, nome_conta, reduzido, saldo, natureza
+), totaliza_si as (
+    SELECT  codigo,
+            estrutural,
+            nome_conta,
+            reduzido,
+            atributos,
+            sum(case WHEN natureza = 'C' THEN saldo * -1 else saldo end) as saldo,
+            codigo_siconfi, o15_recurso, o15_complemento
+      FROM conta_corrente_si
+    GROUP BY codigo, estrutural, nome_conta, reduzido, atributos, codigo_siconfi, o15_recurso, o15_complemento
+), saldo_movimentacao as (
+  SELECT estrutural,
+         nome_conta,
+         reduzido,
+         atributos,
+         coalesce(sum(CASE WHEN DATA <= '{$dataFim}'
+                      AND tipo = '2'
+                      AND natureza = 'D' THEN valor END), 0) AS valor_debito,
+         coalesce(sum(CASE WHEN DATA <= '{$dataFim}'
+                      AND tipo = '2'
+                      AND natureza = 'C' THEN valor END), 0) AS valor_credito,
+         codigo_siconfi, o15_recurso, o15_complemento,
+         array_to_string(array_accum(codigo_lancamento), ',') as codigos_lancamentos
+  FROM conta_corrente
+  GROUP BY estrutural, atributos, reduzido, nome_conta, codigo_siconfi, o15_recurso, o15_complemento
+  ORDER BY estrutural
+)
+ select
+         estrutural,
+         nome_conta,
+         reduzido,
+         codigo_siconfi,
+         o15_recurso,
+         o15_complemento,
+         sum(saldo_anterior) as saldo_anterior,
+         sum(valor_debito) as valor_debito,
+         sum(valor_credito) as valor_credito,
+         sum((saldo_anterior - valor_credito) + valor_debito) as saldo_final,
+         array_to_string(array_accum(codigos_lancamentos), ',') as codigos_lancamentos
+  from (
+  select estrutural,
+         nome_conta,
+         reduzido,
+         saldo as saldo_anterior,
+         0 as valor_debito,
+         0 as valor_credito,
+         codigo_siconfi,
+         o15_recurso,
+         o15_complemento,
+         null as codigos_lancamentos
+    from totaliza_si
+
+   union
+
+  select estrutural,
+         nome_conta,
+         reduzido,
+         0 as saldo_anterior,
+         valor_debito,
+         valor_credito,
+         codigo_siconfi,
+         o15_recurso,
+         o15_complemento,
+         codigos_lancamentos
+    from saldo_movimentacao
+) as x
+
+  group by estrutural,
+         nome_conta,
+         reduzido,
+         codigo_siconfi,
+         o15_recurso,
+         o15_complemento
+ order by estrutural,
+         nome_conta,
+         reduzido,
+         codigo_siconfi,
+         o15_recurso,
+         o15_complemento
+;
+SQL;
+
+        $rs = db_query($sql);
+        return pg_fetch_all($rs);
+    }
+
+    /**
+     * @param stdClass $oBalanceteVerificacao
      * @param DBDate $oDataInicial
      * @param DBDate $oDataFinal
      *
@@ -365,10 +727,11 @@ class bal_ver
      */
     public static function constroiLinhaDisponibilizacaoRecurso(
         stdClass $oBalanceteVerificacao,
-        DBDate $oDataInicial,
-        DBDate $oDataFinal,
-        array $instituicoesProcessamento
-    ) {
+        DBDate   $oDataInicial,
+        DBDate   $oDataFinal,
+        array    $instituicoesProcessamento
+    )
+    {
         $instituicao = new Instituicao($oBalanceteVerificacao->c61_instit);
 
         $valoresPorRecurso = self::getSaldosPeriodo(
@@ -377,6 +740,7 @@ class bal_ver
             $oDataInicial,
             $oDataFinal
         );
+
 
         $aAgrupamento = array();
         foreach ($valoresPorRecurso as $recurso => $valorRecurso) {
@@ -593,8 +957,6 @@ class bal_ver
             implode(' and ', $aWhere)
         );
 
-//        die($sSqlBuscaSaldoImplantado);
-
         $rsBuscaSaldo = db_query($sSqlBuscaSaldoImplantado);
         if (!$rsBuscaSaldo) {
             throw new Exception("Ocorreu um erro ao buscar o saldo implantado do conta corrente.");
@@ -628,7 +990,12 @@ class bal_ver
      */
     private static function getSaldosPeriodo($balancete, $instituicoesProcessamento, DBDate $dataInicial, DBDate $dataFinal)
     {
-        $movimentacoes = self::getValorPorRecursoNaCompetencia($dataFinal->getAno(), $dataFinal->getMes(), $balancete->c61_reduz, $instituicoesProcessamento);
+        $movimentacoes = self::getValorPorRecursoNaCompetencia(
+            $dataFinal->getAno(),
+            $dataFinal->getMes(),
+            $balancete->c61_reduz,
+            $instituicoesProcessamento
+        );
         $dados = array();
         $dados = self::agruparSaldos($movimentacoes, $dados);
 
@@ -775,6 +1142,7 @@ class bal_ver
      * @param $reduzido
      * @param array $instituicoesProcessamento
      * @return stdClass[]
+     * @throws Exception
      */
     static function getValorPorRecursoNaCompetencia($ano, $mes, $reduzido, array $instituicoesProcessamento)
     {

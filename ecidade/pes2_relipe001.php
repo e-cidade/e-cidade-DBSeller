@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,110 +33,107 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlota_classe.php"));
 $clrhlota = new cl_rhlota;
 ?>
-
 <html>
-<head>
- <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
- <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
- <meta http-equiv="Expires" CONTENT="0">
- <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
- <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
- <link href="estilos.css" rel="stylesheet" type="text/css">
-</head>
+    <head>
+        <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta http-equiv="Expires" CONTENT="0">
+        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+        <link href="estilos.css" rel="stylesheet" type="text/css">
+    </head>
 
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-<table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
- <tr>
-  <td width="360" height="18">&nbsp;</td>
-  <td width="263">&nbsp;</td>
-  <td width="25">&nbsp;</td>
-  <td width="140">&nbsp;</td>
- </tr>
-</table>
+    <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
+        <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
+            <tr>
+                <td width="360" height="18">&nbsp;</td>
+                <td width="263">&nbsp;</td>
+                <td width="25">&nbsp;</td>
+                <td width="140">&nbsp;</td>
+            </tr>
+        </table>
+        <br><br>
 
-<br><br>
-
-<div align="center">
- <fieldset style="width: 850px;">
- <legend><b>Relatório do IPERGS</b></legend>
-  <table align="center" cellspacing="0" cellpadding="1">
-   <form name="form1" method="post" action="" onsubmit="return js_verifica();">
-   
-    <tr>
-      <td width="15%" title="Digite o Ano / Mes de competência"><b>Ano / Mês :</b></td>
-      <td>
-        <?
-         $ano = db_anofolha();
-         db_input('ano',4,1,true,'text',2,'')
-        ?>
-        &nbsp;/&nbsp;
-        <?
-         $mes = db_mesfolha();
-         db_input('mes',2,1,true,'text',2,'')
-        ?>
-      </td>
-    </tr>
-    
-    <tr>
-      <td nowrap title="Tipo de relatório" ><b>Tipo :</b></td>
-      <td>
-        <?
-         $aTipoRelatorio = array("m"=>"Manutenção", "i"=>"Inclusão", "t"=>"Todos","c"=>"Cadastro");
-         db_select('tipo',$aTipoRelatorio,true,1,"style='width: 108px;'");
-        ?>
-      </td>
-    </tr>
-    
-    <tr>
-      <td><b>Unifica I.P.E.:</b></td>
-      <td>
-       <?
-        $aUnica  = Array('f'=>'Não', 't'=>'Sim');
-        db_select("unifica_ipe",$aUnica,true,1, "style='width: 108px;'");
-       ?>
-      </td>
-    </tr>
-    
-    <tr>
-      <td colspan="2">
-      <fieldset>
-       <legend><b>Lotações</b></legend>
-       <?
-         $sSqlLotacaoes = $clrhlota->sql_query_file(null, "r70_estrut, r70_estrut || ' - ' || r70_descr as r70_descr", "r70_estrut", " r70_instit = ".db_getsession('DB_instit'));
-         $rsLotacoes    = $clrhlota->sql_record($sSqlLotacaoes);
-         db_multiploselect("r70_estrut","r70_descr", "", "", $rsLotacoes, array(), 16, 380);
-       ?>
-       </fieldset>
-      </td>
-    </tr>
-    
-  </form>
-  </table>
- </fieldset>
- <br>
- <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
-</div>
-<?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
-?>
-</body>
+        <div align="center">
+            <fieldset style="width: 850px;">
+                <legend><b>Relatório do IPERGS</b></legend>
+                <form name="form1" method="post" action="" onsubmit="return js_verifica();">
+                    <table align="center" cellspacing="0" cellpadding="1">
+                        <tr>
+                            <td width="15%" title="Digite o Ano / Mes de competência"><b>Ano / Mês :</b></td>
+                            <td>
+                                <?php
+                                    $ano = db_anofolha();
+                                    db_input('ano',4,1,true,'text',2,'')
+                                ?>
+                                &nbsp;/&nbsp;
+                                <?php
+                                    $mes = db_mesfolha();
+                                    db_input('mes',2,1,true,'text',2,'')
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td nowrap title="Tipo de relatório" ><b>Tipo :</b></td>
+                            <td>
+                                <?php
+                                    $aTipoRelatorio = [
+                                        "m" => "Manutenção",
+                                        "i" => "Inclusão",
+                                        "t"=>"Todos",
+                                        "c"=>"Cadastro"
+                                    ];
+                                    db_select('tipo', $aTipoRelatorio, true, 1, "style='width: 108px;'");
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Unifica I.P.E.:</b>
+                            </td>
+                            <td>
+                                <?php
+                                    $aUnica  = ['f' => 'Não', 't' => 'Sim'];
+                                    db_select("unifica_ipe", $aUnica, true, 1, "style='width: 108px;'");
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <fieldset>
+                                    <legend><b>Lotações</b></legend>
+                                    <?php
+                                        $sSqlLotacaoes = $clrhlota->sql_query_file(null, "r70_estrut, r70_estrut || ' - ' || r70_descr as r70_descr", "r70_estrut", " r70_instit = " . db_getsession('DB_instit'));
+                                        $rsLotacoes = $clrhlota->sql_record($sSqlLotacaoes);
+                                        db_multiploselect("r70_estrut", "r70_descr", "", "", $rsLotacoes, array(), 16, 380);
+                                    ?>
+                                </fieldset>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+            <br>
+            <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
+        </div>
+        <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));?>
+    </body>
 </html>
 
 <script>
-function js_emite() {
-
-  if ($F("ano") == "" || $F("mes") == "") {
-    alert('Informe o Ano e Mes');
-    return false;
-  }  
-  
-  var sParametros  = "";
-      sParametros += "iAno="+$F("ano");
-      sParametros += "&iMes="+$F("mes");
-      sParametros += "&sTipo="+$F("tipo");
-      sParametros += "&lUnificado="+($F("unifica_ipe")=='f'?false:true);
-      sParametros += '&sListaLotacoes='+js_db_multiploselect_retornaselecionados();
-  jan = window.open("pes2_relipe002.php?"+sParametros,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-  jan.moveTo(0,0);
-}
+    function js_emite() {
+        if ($F("ano") == "" || $F("mes") == "") {
+            alert('Informe o Ano e Mes');
+            return false;
+        }
+        
+        var sParametros  = "";
+        sParametros += "iAno=" + $F("ano");
+        sParametros += "&iMes=" + $F("mes");
+        sParametros += "&sTipo=" + $F("tipo");
+        sParametros += "&lUnificado=" + ($F("unifica_ipe") == 'f' ? false:true);
+        sParametros += '&sListaLotacoes=' + js_db_multiploselect_retornaselecionados();
+        jan = window.open("pes2_relipe002.php?" + sParametros, '', 'width=' + (screen.availWidth - 5) + ',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+        jan.moveTo(0,0);
+    }
 </script>

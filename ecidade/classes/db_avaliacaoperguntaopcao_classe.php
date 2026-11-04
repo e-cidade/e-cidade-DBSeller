@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: habitacao
 //CLASSE DA ENTIDADE avaliacaoperguntaopcao
 class cl_avaliacaoperguntaopcao { 
@@ -36,13 +36,13 @@ class cl_avaliacaoperguntaopcao {
                  db104_identificadorcampo = varchar(255) = identificador do campo 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoperguntaopcao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoperguntaopcao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -51,7 +51,7 @@ class cl_avaliacaoperguntaopcao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db104_sequencial = ($this->db104_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db104_sequencial"]:$this->db104_sequencial);
        $this->db104_avaliacaopergunta = ($this->db104_avaliacaopergunta == ""?@$GLOBALS["HTTP_POST_VARS"]["db104_avaliacaopergunta"]:$this->db104_avaliacaopergunta);
@@ -66,7 +66,7 @@ class cl_avaliacaoperguntaopcao {
      }
    }
    // funcao para Inclusão
-   function incluir ($db104_sequencial){ 
+   public function incluir ($db104_sequencial){ 
       $this->atualizacampos();
      if($this->db104_avaliacaopergunta == null ){ 
        $this->erro_sql = " Campo Avaliação Pergunta não informado.";
@@ -426,7 +426,7 @@ class cl_avaliacaoperguntaopcao {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -463,7 +463,7 @@ class cl_avaliacaoperguntaopcao {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -496,7 +496,7 @@ class cl_avaliacaoperguntaopcao {
      }
      return $sql;
   }
-   function sql_query_respostas($db104_sequencial = null, $campos = "*", $ordem=null, $iAvaliacao, $dbwhere = "") {
+   public function sql_query_respostas($db104_sequencial = null, $campos = "*", $ordem=null, $iAvaliacao, $dbwhere = "") {
      
      $sql = "select ";
      if($campos != "*" ){
@@ -536,7 +536,7 @@ class cl_avaliacaoperguntaopcao {
      return $sql;
   }
   
- function sql_query_tipo_pergunta ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+ public function sql_query_tipo_pergunta ( $db104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

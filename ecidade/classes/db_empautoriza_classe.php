@@ -496,10 +496,15 @@ class cl_empautoriza
             $sql .= $virgula . " e54_tipol = '$this->e54_tipol' ";
             $virgula = ",";
         }
+
         if (trim($this->e54_numerl) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e54_numerl"])) {
             $sql .= $virgula . " e54_numerl = '$this->e54_numerl' ";
             $virgula = ",";
+        } else {
+            $sql .= $virgula . " e54_numerl = '' ";
+            $virgula = ",";
         }
+
         if (trim($this->e54_praent) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e54_praent"])) {
             $sql .= $virgula . " e54_praent = '$this->e54_praent' ";
             $virgula = ",";
@@ -919,8 +924,8 @@ class cl_empautoriza
     public function sql_query_depto($e54_autori = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
-        if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -955,7 +960,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -969,8 +974,8 @@ class cl_empautoriza
     {
 
         $sql = "select ";
-        if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1007,7 +1012,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1020,8 +1025,8 @@ class cl_empautoriza
     public function sql_query_elementomaterial($e54_autori = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
-        if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1061,7 +1066,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1074,8 +1079,8 @@ class cl_empautoriza
     public function sql_query_itemmaterial($e54_autori = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
-        if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1102,7 +1107,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1115,8 +1120,8 @@ class cl_empautoriza
     public function sql_query_solicita($e54_autori = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
-        if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+        if($campos != "*" ){
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1146,7 +1151,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1598,21 +1603,29 @@ class cl_empautoriza
          */
         $sSqlSolicitacao = $this->sql_query_solicita(
             null,
-            "distinct pc80_codproc",
+            "distinct pc80_codproc, pc10_solicitacaotipo",
             null,
             " e54_autori = {$iCodAutori} "
         );
         $rsSolicitacao = db_query($sSqlSolicitacao);
+        $tipoSolicitacao = db_utils::fieldsMemory($rsSolicitacao, 0)->pc10_solicitacaotipo;
 
         if ($rsSolicitacao && pg_num_rows($rsSolicitacao) > 0) {
             $iCodigoProcessoCompra = db_utils::fieldsMemory($rsSolicitacao, 0)->pc80_codproc;
 
-            $sSqlDeleta = "delete
-                         from empautitempcprocitem
-                        where e73_pcprocitem in (select pc81_codprocitem from pcprocitem where pc81_codproc = {$iCodigoProcessoCompra})
-                          and e73_autori = {$iCodAutori}";
+            // Compilação registro preço
+            if ($tipoSolicitacao !== '5') {
+                $sSqlDeleta = "
+                    DELETE FROM empautitempcprocitem
+                        WHERE e73_pcprocitem IN (
+                            SELECT pc81_codprocitem FROM pcprocitem
+                                WHERE pc81_codproc = {$iCodigoProcessoCompra}
+                        )
+                        AND e73_autori = {$iCodAutori}
+                ";
 
-            $rsDeleta = db_query($sSqlDeleta);
+                db_query($sSqlDeleta);
+            }
         }
 
         /*
@@ -1631,7 +1644,7 @@ class cl_empautoriza
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1664,7 +1677,7 @@ class cl_empautoriza
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

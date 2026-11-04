@@ -49,34 +49,34 @@ $oDaoTurma           = new cl_turma();
 $escola              = db_getsession("DB_coddepto");
 $deixamarcar         = true;
 
-    if ($rechumano != '') {
-        $sSqlRecHumano = $clrechumano->sql_query("",
+if ($rechumano != '') {
+  $sSqlRecHumano = $clrechumano->sql_query("",
             "cgmcgm.z01_numcgm as rechumanocgm,
-                                          cgmrh.z01_numcgm as rhpessoalcgm",
+              cgmrh.z01_numcgm as rhpessoalcgm",
             "",
             " (ed20_i_codigo = $rechumano or ed284_i_rechumano = $rechumano)"
-        );
+  );
 
 
-        $result_cgm = $clrechumano->sql_record($sSqlRecHumano);
-        $sTabela = '';
+  $result_cgm = $clrechumano->sql_record($sSqlRecHumano);
+  $sTabela = '';
 
-        if ($clrechumano->numrows > 0) {
+  if ($clrechumano->numrows > 0) {
 
-            db_fieldsmemory($result_cgm, 0);
-            if (empty($rechumanocgm)) {
+    db_fieldsmemory($result_cgm, 0);
+    if (empty($rechumanocgm)) {
 
-                $cgmprof = $rhpessoalcgm;
-                $sTabela = 'cgmrh';
-            } else {
+      $cgmprof = $rhpessoalcgm;
+      $sTabela = 'cgmrh';
+    } else {
 
-                $cgmprof = $rechumanocgm;
-                $sTabela = 'cgmcgm';
-            }
-        } else {
-            $cgmprof = 0;
-        }
+      $cgmprof = $rechumanocgm;
+      $sTabela = 'cgmcgm';
     }
+  } else {
+    $cgmprof = 0;
+  }
+}
 ?>
 <script>
 function ordenarLista(select) {
@@ -112,187 +112,187 @@ function ordenarLista(select) {
 <?php
 if (isset($chavepesquisa)) {
 
-    if ($rechumano != '') {
-        $sCampos = " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as cgmprof,";
-        $sCampos .= " ed33_i_codigo,ed17_h_inicio as horainicio,ed17_h_fim as horafim,";
-        $sCampos .= " ed15_c_nome as descrturno,ed08_c_descr as descrperiodo";
-        $sWhere = " ed33_i_diasemana = {$diasemana} AND ed33_i_periodo = {$periodo}  and ed33_ativo is true";
-        $sWhere .= " AND ed75_i_rechumano = {$rechumano} AND ed17_i_escola = {$escola} and ed33_horaatividade is false";
+  if ($rechumano != '') {
+    $sCampos = " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as cgmprof,";
+    $sCampos .= " ed33_i_codigo,ed17_h_inicio as horainicio,ed17_h_fim as horafim,";
+    $sCampos .= " ed15_c_nome as descrturno,ed08_c_descr as descrperiodo";
+    $sWhere = " ed33_i_diasemana = {$diasemana} AND ed33_i_periodo = {$periodo}  and ed33_ativo is true";
+    $sWhere .= " AND ed75_i_rechumano = {$rechumano} AND ed17_i_escola = {$escola} and ed33_horaatividade is false";
 
-        $sSqlHorariosDisponiveis = $clrechumanohoradisp->sql_query_disponibilidade("", $sCampos, "", $sWhere);
-        $result = $clrechumanohoradisp->sql_record($sSqlHorariosDisponiveis);
+    $sSqlHorariosDisponiveis = $clrechumanohoradisp->sql_query_disponibilidade("", $sCampos, "", $sWhere);
+    $result = $clrechumanohoradisp->sql_record($sSqlHorariosDisponiveis);
 
-        if ($clrechumanohoradisp->numrows == 0) {
-            db_msgbox("Regente não tem este horário disponível na escola!\\n(Veja em Cadastros/Recursos Humanos/Aba Horários da Regência)");
-        } else {
+    if ($clrechumanohoradisp->numrows == 0) {
+      db_msgbox("Regente não tem este horário disponível na escola!\\n(Veja em Cadastros/Recursos Humanos/Aba Horários da Regência)");
+    } else {
 
-            $sCamposAtividades = "ed75_c_simultaneo as simultaneo, ed75_i_codigo";
-            $sWhereAtividades = "ed20_i_codigo = {$rechumano} and ed75_c_simultaneo = 'S'";
-            $sSqlAtividades = $clrechumanoativ->sql_query("", $sCamposAtividades, "", $sWhereAtividades);
-            $result_atividade = $clrechumanoativ->sql_record($sSqlAtividades);
+      $sCamposAtividades = "ed75_c_simultaneo as simultaneo, ed75_i_codigo";
+      $sWhereAtividades = "ed20_i_codigo = {$rechumano} and ed75_c_simultaneo = 'S'";
+      $sSqlAtividades = $clrechumanoativ->sql_query("", $sCamposAtividades, "", $sWhereAtividades);
+      $result_atividade = $clrechumanoativ->sql_record($sSqlAtividades);
 
-            if ($clrechumanoativ->numrows != 0) {
-                db_fieldsmemory($result_atividade, 0);
-            }
+      if ($clrechumanoativ->numrows != 0) {
+        db_fieldsmemory($result_atividade, 0);
+      }
 
-            $sSqlCalendario = $clcalendario->sql_query_file("", "ed52_i_ano as anocalendario", "", "ed52_i_codigo = {$codcalendario}");
-            $result_anocal = $clcalendario->sql_record($sSqlCalendario);
+      $sSqlCalendario = $clcalendario->sql_query_file("", "ed52_i_ano as anocalendario", "", "ed52_i_codigo = {$codcalendario}");
+      $result_anocal = $clcalendario->sql_record($sSqlCalendario);
 
-            db_fieldsmemory($result_anocal, 0);
-            db_fieldsmemory($result, 0);
+      db_fieldsmemory($result_anocal, 0);
+      db_fieldsmemory($result, 0);
 
-            $restrict = " AND (((ed17_h_inicio > '{$horainicio}' AND ed17_h_inicio < '{$horafim}') ";
-            $restrict .= "         OR (ed17_h_fim  > '{$horainicio}' AND ed17_h_fim < '{$horafim}'))  ";
-            $restrict .= "        OR (ed17_h_inicio <= '{$horainicio}' AND ed17_h_fim >= '{$horafim}') ";
-            $restrict .= "        OR (ed17_h_inicio >= '{$horainicio}' AND ed17_h_fim <= '{$horafim}') ";
-            $restrict .= "        OR (ed17_h_inicio = '{$horainicio}' AND ed17_h_fim = '{$horafim}'))";
+      $restrict = " AND (((ed17_h_inicio > '{$horainicio}' AND ed17_h_inicio < '{$horafim}') ";
+      $restrict .= "         OR (ed17_h_fim  > '{$horainicio}' AND ed17_h_fim < '{$horafim}'))  ";
+      $restrict .= "        OR (ed17_h_inicio <= '{$horainicio}' AND ed17_h_fim >= '{$horafim}') ";
+      $restrict .= "        OR (ed17_h_inicio >= '{$horainicio}' AND ed17_h_fim <= '{$horafim}') ";
+      $restrict .= "        OR (ed17_h_inicio = '{$horainicio}' AND ed17_h_fim = '{$horafim}'))";
 
-            if ($maisturmas != "") {
+      if ($maisturmas != "") {
 
-                $oDaoRegencia = new cl_regencia();
-                $sWhereRegencia = "ed59_i_turma in({$maisturmas}) and ( ed58_i_rechumano = {$rechumano} )";
-                $sSqlRegencia = $oDaoRegencia->sql_query_regenciahorario(null, 'distinct ed59_i_turma', null, $sWhereRegencia);
-                $rsRegencia = db_query($sSqlRegencia);
-                $iTotalRegencia = pg_num_rows($rsRegencia);
+        $oDaoRegencia = new cl_regencia();
+        $sWhereRegencia = "ed59_i_turma in({$maisturmas}) and ( ed58_i_rechumano = {$rechumano} )";
+        $sSqlRegencia = $oDaoRegencia->sql_query_regenciahorario(null, 'distinct ed59_i_turma', null, $sWhereRegencia);
+        $rsRegencia = db_query($sSqlRegencia);
+        $iTotalRegencia = pg_num_rows($rsRegencia);
 
-                $aTurmas = array();
-                for ($iContador = 0; $iContador < $iTotalRegencia; $iContador++) {
-                    $aTurmas[] = db_utils::fieldsMemory($rsRegencia, $iContador)->ed59_i_turma;
-                }
-
-                if (count($aTurmas) > 0) {
-                    $condicao = " AND ed59_i_turma in(" . implode(", ", $aTurmas) . ")";
-                }
-
-            } else {
-                $condicao = "";
-            }
-
-            $sCampos = "ed08_c_descr, ed17_h_inicio, ed17_h_fim, ed17_i_escola, ed18_c_nome as escolas";
-            $sCampos .= ", ed20_i_codigo as codmatricula, ed18_c_nome, {$sTabela}.z01_nome as professor";
-            $sCampos .= ", ed57_c_descr as tiurma, ed15_c_nome as tiurno, ed52_c_descr as calendariu";
-            $sWhere = " ed58_i_diasemana = {$diasemana} AND {$sTabela}.z01_numcgm = {$cgmprof} ";
-            $sWhere .= " and ed58_ativo is true and ed59_c_encerrada = 'N' AND ed52_i_ano = {$anocalendario} {$restrict} {$condicao}";
-
-            $sSqlRegenciaHorario = $clregenciahorario->sql_query("", $sCampos, "", $sWhere);
-
-            $result = $clregenciahorario->sql_record($sSqlRegenciaHorario);
-
-            $sCampos = "ed08_c_descr, ed17_h_inicio, ed17_h_fim, ed17_i_escola, ed18_c_nome as escolas";
-            $sCampos .= ", ed20_i_codigo as codmatricula";
-            $sCampos .= ", escola.ed18_c_nome, ed17_i_turno as tiurno, ed268_c_descr as tiurma";
-            $sCampos .= ", ed270_i_rechumano, ed52_c_descr as calendariu";
-            $sWhere = "ed270_i_diasemana = {$diasemana} AND {$sTabela}.z01_numcgm = {$cgmprof} ";
-            $sWhere .= "AND ed52_i_ano = {$anocalendario} {$restrict}";
-            $sSqlTurmaAC = $clturmaachorario->sql_query("", $sCampos, "", $sWhere);
-            $result_sala = db_query($sSqlTurmaAC);
-            $iTotalTurmaAC = pg_num_rows($result_sala);
-
-            $aTurmasSimultaneas = array();
-            $lTemConflito = false;
-            $deixamarcar = true;
-            $msg_erro = "{$descrturno} {$descrperiodo} Período ({$horainicio} às {$horafim}) está em conflito";
-            $msg_erro .= " com o(s) período(s):\\n\\n";
-            $msgsimultaneo = '';
-
-            if ($clregenciahorario->numrows > 0) {
-
-                $lTemConflito = true;
-                $deixamarcar = $simultaneo == 'S';
-                $msg_erro .= '* TURMA(S)\\n';
-
-                for ($q = 0; $q < $clregenciahorario->numrows; $q++) {
-
-                    db_fieldsmemory($result, $q);
-                    $msg_erro .= "   -> {$ed08_c_descr} ({$ed17_h_inicio} às {$ed17_h_fim}) já marcado na turma {$tiurma},";
-                    $msg_erro .= " calendário {$calendariu} da Escola {$ed17_i_escola} - {$ed18_c_nome} (Matrícula: {$codmatricula})\\n";
-                }
-            }
-
-            if ($iTotalTurmaAC > 0) {
-
-                $lTemConflito = true;
-                $msg_erro .= '* ATIVIDADE COMPLEMENTAR / AEE\\n';
-
-                for ($u = 0; $u < $iTotalTurmaAC; $u++) {
-
-                    db_fieldsmemory($result_sala, $u);
-                    $msg_erro .= "   -> {$ed08_c_descr} ({$ed17_h_inicio} às {$ed17_h_fim}) já marcado na turma {$tiurma},";
-                    $msg_erro .= " calendário {$calendariu} da Escola {$ed17_i_escola} - {$ed18_c_nome} (Matrícula: {$codmatricula})\\n";
-                }
-            }
-
-            if ($simultaneo == 'S') {
-
-                $msg_erro .= '\\nCertifique-se que a disciplina é ministrada por este regente no mesmo horário para ambas';
-                $msg_erro .= ' as turmas e confirme.\\n';
-            }
-
-            if ($lTemConflito) {
-                db_msgbox($msg_erro);
-            }
+        $aTurmas = array();
+        for ($iContador = 0; $iContador < $iTotalRegencia; $iContador++) {
+          $aTurmas[] = db_utils::fieldsMemory($rsRegencia, $iContador)->ed59_i_turma;
         }
+
+        if (count($aTurmas) > 0) {
+          $condicao = " AND ed59_i_turma in(" . implode(", ", $aTurmas) . ")";
+        }
+
+      } else {
+        $condicao = "";
+      }
+
+      $sCampos = "ed08_c_descr, ed17_h_inicio, ed17_h_fim, ed17_i_escola, ed18_c_nome as escolas";
+      $sCampos .= ", ed20_i_codigo as codmatricula, ed18_c_nome, {$sTabela}.z01_nome as professor";
+      $sCampos .= ", ed57_c_descr as tiurma, ed15_c_nome as tiurno, ed52_c_descr as calendariu";
+      $sWhere = " ed58_i_diasemana = {$diasemana} AND {$sTabela}.z01_numcgm = {$cgmprof} ";
+      $sWhere .= " and ed58_ativo is true and ed59_c_encerrada = 'N' AND ed52_i_ano = {$anocalendario} {$restrict} {$condicao}";
+
+      $sSqlRegenciaHorario = $clregenciahorario->sql_query("", $sCampos, "", $sWhere);
+
+      $result = $clregenciahorario->sql_record($sSqlRegenciaHorario);
+
+      $sCampos = "ed08_c_descr, ed17_h_inicio, ed17_h_fim, ed17_i_escola, ed18_c_nome as escolas";
+      $sCampos .= ", ed20_i_codigo as codmatricula";
+      $sCampos .= ", escola.ed18_c_nome, ed17_i_turno as tiurno, ed268_c_descr as tiurma";
+      $sCampos .= ", ed270_i_rechumano, ed52_c_descr as calendariu";
+      $sWhere = "ed270_i_diasemana = {$diasemana} AND {$sTabela}.z01_numcgm = {$cgmprof} ";
+      $sWhere .= "AND ed52_i_ano = {$anocalendario} {$restrict}";
+      $sSqlTurmaAC = $clturmaachorario->sql_query("", $sCampos, "", $sWhere);
+      $result_sala = db_query($sSqlTurmaAC);
+      $iTotalTurmaAC = pg_num_rows($result_sala);
+
+      $aTurmasSimultaneas = array();
+      $lTemConflito = false;
+      $deixamarcar = true;
+      $msg_erro = "{$descrturno} {$descrperiodo} Período ({$horainicio} às {$horafim}) está em conflito";
+      $msg_erro .= " com o(s) período(s):\\n\\n";
+      $msgsimultaneo = '';
+
+      if ($clregenciahorario->numrows > 0) {
+
+        $lTemConflito = true;
+        $deixamarcar = $simultaneo == 'S';
+        $msg_erro .= '* TURMA(S)\\n';
+
+        for ($q = 0; $q < $clregenciahorario->numrows; $q++) {
+
+          db_fieldsmemory($result, $q);
+          $msg_erro .= "   -> {$ed08_c_descr} ({$ed17_h_inicio} às {$ed17_h_fim}) já marcado na turma {$tiurma},";
+          $msg_erro .= " calendário {$calendariu} da Escola {$ed17_i_escola} - {$ed18_c_nome} (Matrícula: {$codmatricula})\\n";
+        }
+      }
+
+      if ($iTotalTurmaAC > 0) {
+
+        $lTemConflito = true;
+        $msg_erro .= '* ATIVIDADE COMPLEMENTAR / AEE\\n';
+
+        for ($u = 0; $u < $iTotalTurmaAC; $u++) {
+
+          db_fieldsmemory($result_sala, $u);
+          $msg_erro .= "   -> {$ed08_c_descr} ({$ed17_h_inicio} às {$ed17_h_fim}) já marcado na turma {$tiurma},";
+          $msg_erro .= " calendário {$calendariu} da Escola {$ed17_i_escola} - {$ed18_c_nome} (Matrícula: {$codmatricula})\\n";
+        }
+      }
+
+      if ($simultaneo == 'S') {
+
+        $msg_erro .= '\\nCertifique-se que a disciplina é ministrada por este regente no mesmo horário para ambas';
+        $msg_erro .= ' as turmas e confirme.\\n';
+      }
+
+      if ($lTemConflito) {
+        db_msgbox($msg_erro);
+      }
     }
-    if( $deixamarcar == true ) {
+  }
+  if( $deixamarcar == true ) {
 
-      $sSqlRegencia = $clregencia->sql_query( "", "ed59_i_qtdperiodo,ed232_c_descr", "", "ed59_i_codigo = $chavepesquisa" );
-      $result       = $clregencia->sql_record( $sSqlRegencia );
-      $qtdperiodo   = pg_result( $result, 0, 0 );
-      $descr        = trim( pg_result( $result, 0, 1 ) );
-    ?>
-      <script>
-       contador = 0;
-       for (i = 0; i < parent.document.getElementById("contp").value; i++) {
+    $sSqlRegencia = $clregencia->sql_query( "", "ed59_i_qtdperiodo,ed232_c_descr", "", "ed59_i_codigo = $chavepesquisa" );
+    $result       = $clregencia->sql_record( $sSqlRegencia );
+    $qtdperiodo   = pg_result( $result, 0, 0 );
+    $descr        = trim( pg_result( $result, 0, 1 ) );
+  ?>
+  <script>
+    contador = 0;
+    for (i = 0; i < parent.document.getElementById("contp").value; i++) {
 
-         for (x = 0; x < parent.document.getElementById("contd").value; x++) {
+      for (x = 0; x < parent.document.getElementById("contd").value; x++) {
 
-           val    = parent.document.getElementById("valorQ"+i+x).value;
-           separa = val.split("|");
-           if (separa[0] == parent.document.form1.ed58_i_regencia.value) {
-             contador++;
-           }
-         }
-       }
-
-       if (contador >= <?=$qtdperiodo?>) {
-         alert("Disciplina <?=$descr?> tem somente <?=$qtdperiodo?> período(s) por semana!");
-       } else {
-           var sem_regente = parent.document.getElementById('possuiRegente').value;
-
-           if (sem_regente == 2) {
-               parent.document.getElementById("text<?=$quadro?>").value = parent.document.form1.ed232_c_abrev.value;
-               parent.document.getElementById("valor<?=$quadro?>").value = "<?=$chavepesquisa . "|" . $diasemana . "|" . $periodo . "|" . null?>";
-               parent.document.getElementById("disc<?=$quadro?>").innerHTML = parent.document.form1.ed232_c_descr.value;
-               parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>" + parent.document.form1.z01_nome.value + "</font>";
-               parent.document.getElementById("codrh<?=$quadro?>").innerHTML = null
-               jatem = false;
-               tam = parent.document.form1.conselheiro.length;
-           } else {
-               parent.document.getElementById("text<?=$quadro?>").value = parent.document.form1.ed232_c_abrev.value;
-               parent.document.getElementById("valor<?=$quadro?>").value = "<?=$chavepesquisa . "|" . $diasemana . "|" . $periodo . "|" . $rechumano?>";
-               parent.document.getElementById("disc<?=$quadro?>").innerHTML = parent.document.form1.ed232_c_descr.value;
-               parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>" + parent.document.form1.z01_nome.value + "</font>";
-               parent.document.getElementById("codrh<?=$quadro?>").innerHTML = "<?=$rechumano?>";
-               jatem = false;
-               tam = parent.document.form1.conselheiro.length;
-           }
-         for (i = 0; i < tam; i++) {
-           if (parent.document.form1.conselheiro.options[i].value == <?=isset($rechumano)?>) {
-             jatem = true;
-           }
-         }
-
-         if (jatem == false) {
-           parent.document.form1.conselheiro.options[parent.document.form1.conselheiro.length] = new Option(parent.document.form1.z01_nome.value,parent.document.form1.ed58_i_rechumano.value);
-         }
-
-         ordenarLista(parent.document.form1.conselheiro);
-         parent.document.form1.conselheiro.value = parent.document.form1.cons_selected.value;
-         parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC";
-       }
-      </script>
-     <?php
+        val    = parent.document.getElementById("valorQ"+i+x).value;
+        separa = val.split("|");
+        if (separa[0] == parent.document.form1.ed58_i_regencia.value) {
+          contador++;
+        }
+      }
     }
+
+    if (contador >= <?=$qtdperiodo?>) {
+      alert("Disciplina <?=$descr?> tem somente <?=$qtdperiodo?> período(s) por semana!");
+    } else {
+      var sem_regente = parent.document.getElementById('possuiRegente').value;
+
+      if (sem_regente == 2) {
+        parent.document.getElementById("text<?=$quadro?>").value = parent.document.form1.ed232_c_abrev.value;
+        parent.document.getElementById("valor<?=$quadro?>").value = "<?=$chavepesquisa . "|" . $diasemana . "|" . $periodo . "|" . null?>";
+        parent.document.getElementById("disc<?=$quadro?>").innerHTML = parent.document.form1.ed232_c_descr.value;
+        parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>" + parent.document.form1.z01_nome.value + "</font>";
+        parent.document.getElementById("codrh<?=$quadro?>").innerHTML = null
+        jatem = false;
+        tam = parent.document.form1.conselheiro.length;
+      } else {
+        parent.document.getElementById("text<?=$quadro?>").value = parent.document.form1.ed232_c_abrev.value;
+        parent.document.getElementById("valor<?=$quadro?>").value = "<?=$chavepesquisa . "|" . $diasemana . "|" . $periodo . "|" . $rechumano?>";
+        parent.document.getElementById("disc<?=$quadro?>").innerHTML = parent.document.form1.ed232_c_descr.value;
+        parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>" + parent.document.form1.z01_nome.value + "</font>";
+        parent.document.getElementById("codrh<?=$quadro?>").innerHTML = "<?=$rechumano?>";
+        jatem = false;
+        tam = parent.document.form1.conselheiro.length;
+      }
+      for (i = 0; i < tam; i++) {
+        if (parent.document.form1.conselheiro.options[i].value == <?=isset($rechumano)?>) {
+          jatem = true;
+        }
+      }
+
+      if (jatem == false) {
+        parent.document.form1.conselheiro.options[parent.document.form1.conselheiro.length] = new Option(parent.document.form1.z01_nome.value,parent.document.form1.ed58_i_rechumano.value);
+      }
+
+      ordenarLista(parent.document.form1.conselheiro);
+      parent.document.form1.conselheiro.value = parent.document.form1.cons_selected.value;
+      parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC";
+    }
+  </script>
+  <?php
+  }
 }
 
 if (isset($disponibilidade)) {
@@ -380,76 +380,79 @@ if (isset($disponibilidade)) {
         <script>
         if (parent.document.getElementById("text<?=$quadro?>").value == "") {
 
-          <?
-             if ($rechumano != 0) {?>
-               parent.document.getElementById("text<?=$quadro?>").style.background = "#FF9900"; //laranja
-               parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
-               parent.document.getElementById("rh<?=$quadro?>").innerHTML          = 'HORÁRIO NÃO DISPONÍVEL NESTA ESCOLA';
-           <?} else {?>
-                if (parent.document.getElementById('possuiRegente').value == 2) {
-                    parent.document.getElementById("text<?=$quadro?>").style.background = "#CCFFCC"; //verde
-                    parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
-                    parent.document.getElementById("rh<?=$quadro?>").innerHTML          = 'HORÁRIO LIVRE';
-                } else {
-                    parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC"; //cinza (NENHUM REGENTE SELECIONADO)
-                    parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
-                    parent.document.getElementById("rh<?=$quadro?>").innerHTML          = '';
-                }
-           <?}?>
+        <?php
+          if ($rechumano != 0) {?>
+            parent.document.getElementById("td<?=$quadro?>").style.pointerEvents = "none";
+            parent.document.getElementById("text<?=$quadro?>").style.background  = "#FF9900"; //laranja
+            parent.document.getElementById("disc<?=$quadro?>").innerHTML         = '';
+            parent.document.getElementById("rh<?=$quadro?>").innerHTML           = 'HORÁRIO NÃO DISPONÍVEL NESTA ESCOLA';
+        <?php } else {?>
+          if (parent.document.getElementById('possuiRegente').value == 2) {
+            parent.document.getElementById("td<?=$quadro?>").style.pointerEvents = "auto";
+            parent.document.getElementById("text<?=$quadro?>").style.background  = "#CCFFCC"; //verde
+            parent.document.getElementById("disc<?=$quadro?>").innerHTML         = '';
+            parent.document.getElementById("rh<?=$quadro?>").innerHTML           = 'HORÁRIO LIVRE';
+          } else {
+            parent.document.getElementById("td<?=$quadro?>").style.pointerEvents = "auto";
+            parent.document.getElementById("text<?=$quadro?>").style.background  = "#CCCCCC"; //cinza (NENHUM REGENTE SELECIONADO)
+            parent.document.getElementById("disc<?=$quadro?>").innerHTML         = '';
+            parent.document.getElementById("rh<?=$quadro?>").innerHTML           = '';
+          }
+        <?php }?>
 
         } else {
           parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC"; // Cinza
         }
         </script>
-    <?} else {?>
-        <script>
-         if (parent.document.getElementById("text<?=$quadro?>").value == "") {
+  <?php } else {?>
+      <script>
+        if (parent.document.getElementById("text<?=$quadro?>").value == "") {
 
-           <?
-           if ($clregenciahorario->numrows > 0 && $iTotalTurma > 0) { // Ele já tem horário marcado, mas em outra turma, pois o quadro está em branco
+          <?php
+          if ($clregenciahorario->numrows > 0 && $iTotalTurma > 0) { // Ele já tem horário marcado, mas em outra turma, pois o quadro está em branco
 
-             if ($clregenciahorario->numrows > 0) {
-               db_fieldsmemory( $result3, 0 );
-             } else {
-               db_fieldsmemory( $result_sala, 0 );
-             }
+            if ($clregenciahorario->numrows > 0) {
+              db_fieldsmemory( $result3, 0 );
+            } else {
+              db_fieldsmemory( $result_sala, 0 );
+            }
 
-             $sSimult = $nometurma;
-             if (!empty($abrevdisc)) {
-               $sSimult .= ' / '.$abrevdisc;
-             }
+            $sSimult = $nometurma;
+            if (!empty($abrevdisc)) {
+              $sSimult .= ' / '.$abrevdisc;
+            }
 
-             if ($ed75_c_simultaneo == 'S') {
+            if ($ed75_c_simultaneo == 'S') {
 
               echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#6495ed";'; // Azul (pode marcar simultâneo)
               echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
               echo "parent.document.getElementById('rh$quadro').innerHTML              = 'MARCAR EM SIMULTÂNEO ($sSimult)';";
-             } else { // Vermelho (não pode marcar simultâneo)
+            } else { // Vermelho (não pode marcar simultâneo)
 
               echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#FF0000";'; // Vermelho
               echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
               echo "parent.document.getElementById('rh$quadro').innerHTML              = 'REGENTE OCUPADO ($sSimult)';";
-             }
-           } else {
+            }
+          } else {
 
-             if ($ed75_c_simultaneo == 'S') {
+            if ($ed75_c_simultaneo == 'S') {
 
-               echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#6495ed";'; // Azul (pode marcar simultâneo)
-               echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
-               echo "parent.document.getElementById('rh$quadro').innerHTML              = 'HORÁRIO LIVRE';";
-             } else { // Verdinho (não pode marcar simultâneo)
+              echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#6495ed";'; // Azul (pode marcar simultâneo)
+              echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
+              echo "parent.document.getElementById('rh$quadro').innerHTML              = 'HORÁRIO LIVRE';";
+            } else { // Verdinho (não pode marcar simultâneo)
 
-               echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#CCFFCC";'; // Verde
-               echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
-               echo "parent.document.getElementById('rh$quadro').innerHTML              = 'HORÁRIO LIVRE';";
-             }
-           }
+              echo 'parent.document.getElementById("text'.$quadro.'").style.background = "#CCFFCC";'; // Verde
+              echo "parent.document.getElementById('disc$quadro').innerHTML            = '';";
+              echo "parent.document.getElementById('rh$quadro').innerHTML              = 'HORÁRIO LIVRE';";
+            }
+          }
            ?>
-         } else {
+        } else {
            parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC"; // Cinza
-         }
-        </script>
-    <?}
+        }
+      </script>
+  <?php }
     }
   }
 }

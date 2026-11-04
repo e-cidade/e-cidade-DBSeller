@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -50,8 +50,8 @@ $db_opcao = 1;
    <b>Tipo de Atendimento:</b>
   </td>
   <td>
-   <?db_input('codigota',10,@$Icodigota,true,'text',$db_opcao,"")?>
-   <?db_input('tipoa',40,@$Itipoa,true,'text',3,"")?>
+   <?php db_input('codigota',10,@$Icodigota,true,'text',$db_opcao,"")?>
+   <?php db_input('tipoa',40,@$Itipoa,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -59,8 +59,8 @@ $db_opcao = 1;
    <b>Especialidade:</b>
   </td>
   <td>
-   <?db_input('codigoes',10,@$Icodigoes,true,'text',$db_opcao,"")?>
-   <?db_input('especialidade',40,@$Iespecialidade,true,'text',3,"")?>
+   <?php db_input('codigoes',10,@$Icodigoes,true,'text',$db_opcao,"")?>
+   <?php db_input('especialidade',40,@$Iespecialidade,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,8 +68,8 @@ $db_opcao = 1;
    <b>Procedimento:</b>
   </td>
   <td>
-   <?db_input('codigopr',10,@$Icodigopr,true,'text',$db_opcao,"")?>
-   <?db_input('procedimento',40,@$Iprocedimento,true,'text',3,"")?>
+   <?php db_input('codigopr',10,@$Icodigopr,true,'text',$db_opcao,"")?>
+   <?php db_input('procedimento',40,@$Iprocedimento,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -77,8 +77,8 @@ $db_opcao = 1;
    <b>Profissional:</b>
   </td>
   <td>
-   <?db_input('codigoprofiss',10,@$Icodigoprofiss,true,'text',$db_opcao,"")?>
-   <?db_input('profissional',40,@$Iprofissional,true,'text',3,"")?>
+   <?php db_input('codigoprofiss',10,@$Icodigoprofiss,true,'text',$db_opcao,"")?>
+   <?php db_input('profissional',40,@$Iprofissional,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -86,11 +86,11 @@ $db_opcao = 1;
    <b>Data:</b>
   </td>
   <td>
-   <?db_inputdata('data',@$data,@$data,@$data,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('data',@$data,@$data,@$data,true,'text',$db_opcao,"")?>
    <b>Hora:</b>
-   <?db_input('hora',10,@$Ihora,true,'text',$db_opcao,"")?>
+   <?php db_input('hora',10,@$Ihora,true,'text',$db_opcao,"")?>
    <b>FE:</b>
-   <?db_input('fe',10,@$Ife,true,'text',$db_opcao,"")?>
+   <?php db_input('fe',10,@$Ife,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -98,7 +98,7 @@ $db_opcao = 1;
    <b>Tratamento:</b>
   </td>
   <td>
-   <?db_textarea('tratamento',2,60,@$Itratamento,true,'text',$db_opcao,"")?>
+   <?php db_textarea('tratamento',2,60,@$Itratamento,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

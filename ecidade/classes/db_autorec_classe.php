@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_autorec {
                  y57_valor = float8 = Valor da Receita
                  ";
    //funcao construtor da classe
-   function cl_autorec() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autorec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_autorec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y57_codauto = ($this->y57_codauto == ""?@$GLOBALS["HTTP_POST_VARS"]["y57_codauto"]:$this->y57_codauto);
        $this->y57_receit = ($this->y57_receit == ""?@$GLOBALS["HTTP_POST_VARS"]["y57_receit"]:$this->y57_receit);
@@ -81,7 +81,7 @@ class cl_autorec {
      }
    }
    // funcao para inclusao
-   function incluir ($y57_codauto,$y57_receit){
+   public function incluir ($y57_codauto,$y57_receit){
       $this->atualizacampos();
      if($this->y57_descr == null ){
        $this->erro_sql = " Campo Descrição do lançamento da receita nao Informado.";
@@ -164,7 +164,7 @@ class cl_autorec {
      return true;
    }
    // funcao para alteracao
-   function alterar ($y57_codauto=null,$y57_receit=null) {
+   public function alterar ($y57_codauto=null,$y57_receit=null) {
       $this->atualizacampos();
      $sql = " update autorec set ";
      $virgula = "";
@@ -272,7 +272,7 @@ class cl_autorec {
      }
    }
    // funcao para exclusao
-   function excluir ($y57_codauto=null,$y57_receit=null,$dbwhere=null) {
+   public function excluir ($y57_codauto=null,$y57_receit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y57_codauto,$y57_receit));
      }else{
@@ -343,7 +343,7 @@ class cl_autorec {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -365,10 +365,10 @@ class cl_autorec {
       }
      return $result;
    }
-   function sql_query ( $y57_codauto=null,$y57_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $y57_codauto=null,$y57_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_autorec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,10 +410,10 @@ class cl_autorec {
      }
      return $sql;
   }
-   function sql_query_file ( $y57_codauto=null,$y57_receit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $y57_codauto=null,$y57_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_autorec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

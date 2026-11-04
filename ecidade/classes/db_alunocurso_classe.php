@@ -64,13 +64,13 @@ class cl_alunocurso {
                  ed56_c_situacaoant = char(20) = Situação Anterior
                  ";
    //funcao construtor da classe
-   function cl_alunocurso() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("alunocurso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]."?ed56_i_escola=".@$GLOBALS["HTTP_POST_VARS"]["ed56_i_escola"]."&ed18_c_descr=".@$GLOBALS["HTTP_POST_VARS"]["ed18_c_descr"]."&ed56_i_aluno=".@$GLOBALS["HTTP_POST_VARS"]["ed56_i_aluno"]."&ed47_v_nome=".@$GLOBALS["HTTP_POST_VARS"]["ed47_v_nome"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_alunocurso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed56_i_codigo = ($this->ed56_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed56_i_codigo"]:$this->ed56_i_codigo);
        $this->ed56_i_escola = ($this->ed56_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed56_i_escola"]:$this->ed56_i_escola);
@@ -95,7 +95,7 @@ class cl_alunocurso {
      }
    }
    // funcao para inclusao
-   function incluir ($ed56_i_codigo){
+   public function incluir ($ed56_i_codigo){
       $this->atualizacampos();
      if($this->ed56_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
@@ -245,7 +245,7 @@ class cl_alunocurso {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed56_i_codigo=null) {
+   public function alterar ($ed56_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update alunocurso set ";
      $virgula = "";
@@ -409,7 +409,7 @@ class cl_alunocurso {
      }
    }
    // funcao para exclusao
-   function excluir ($ed56_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed56_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed56_i_codigo));
      }else{
@@ -478,7 +478,7 @@ class cl_alunocurso {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -500,7 +500,7 @@ class cl_alunocurso {
       }
      return $result;
    }
-   function sql_query ( $ed56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -541,7 +541,7 @@ class cl_alunocurso {
      }
      return $sql;
   }
-   function sql_query_file ( $ed56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed56_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -580,7 +580,7 @@ class cl_alunocurso {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -611,7 +611,7 @@ class cl_alunocurso {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -631,7 +631,7 @@ class cl_alunocurso {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -662,7 +662,7 @@ class cl_alunocurso {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

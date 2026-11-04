@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_relcad {
                  r50_descr2 = char(    40) = Descricao do Item 
                  ";
    //funcao construtor da classe 
-   function cl_relcad() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("relcad"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_relcad {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r50_codrel = ($this->r50_codrel == ""?@$GLOBALS["HTTP_POST_VARS"]["r50_codrel"]:$this->r50_codrel);
        $this->r50_descr1 = ($this->r50_descr1 == ""?@$GLOBALS["HTTP_POST_VARS"]["r50_descr1"]:$this->r50_descr1);
@@ -77,7 +77,7 @@ class cl_relcad {
      }
    }
    // funcao para inclusao
-   function incluir ($r50_codrel){ 
+   public function incluir ($r50_codrel){ 
       $this->atualizacampos();
      if($this->r50_descr1 == null ){ 
        $this->erro_sql = " Campo Descricao do Item nao Informado.";
@@ -153,7 +153,7 @@ class cl_relcad {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r50_codrel=null) { 
+   public function alterar ($r50_codrel=null) { 
       $this->atualizacampos();
      $sql = " update relcad set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_relcad {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r50_codrel=null,$dbwhere=null) { 
+   public function excluir ($r50_codrel=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r50_codrel));
      }else{ 
@@ -311,7 +311,7 @@ class cl_relcad {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

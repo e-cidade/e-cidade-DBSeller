@@ -10,29 +10,29 @@ function js_showVencedores(iSolicitacao, iOrcamento) {
                                     parameters:'json='+Object.toJSON(oParam),
                                     onComplete: js_retornoVencedoresRegistro
                                    });
-  
+
   }
-  
+
 function  js_retornoVencedoresRegistro(oAjax) {
-    
+
   var oRetorno = JSON.parse(oAjax.responseText);
   windowVencedoresRegistro = new windowAux('windowVencedoresRegistro','Vencedores', document.body.getWidth() - 100, 500);
   windowVencedoresRegistro.allowCloseWithEsc(false);
-    
+
   var sContent  = "<fieldset style='width:100%;'>";
       sContent += "  <div id='ctnGridVencedores' style='width:100%;'>";
       sContent += "  </div>";
       sContent += "</fieldset>";
-        
+
   windowVencedoresRegistro.setContent(sContent);
   $('windowwindowVencedoresRegistro_btnclose').onclick= function () {
     windowVencedoresRegistro.destroy();
   }
-    
-  windowVencedoresRegistro.show(40,10); 
+
+  windowVencedoresRegistro.show(40,10);
   /**
    * Adiciona a grid na janela
-   */ 
+   */
   oGridVencedores     = new DBGrid('gridVencedores');
   oGridVencedores.nameInstance = "oGridVencedores";
   oGridVencedores.setHeight(300);
@@ -42,14 +42,14 @@ function  js_retornoVencedoresRegistro(oAjax) {
   oGridVencedores.aHeaders[5].lDisplayed = false;
   oGridVencedores.show($('ctnGridVencedores'));
   var aItens   = oRetorno.itens;
- 
+
   oGridVencedores.clearAll(true);
   for(var i = 0; i < aItens.length; i++) {
-    
+
     with (aItens[i]) {
-      
+
       var aLinha = new Array();
-      var idRow  = itemorcamento+"_"+fornecedororcamento; 
+      var idRow  = itemorcamento+"_"+fornecedororcamento;
       aLinha[0]  = "<a>Trocar</a>";
       aLinha[1]  = vencedor.urlDecode();
       aLinha[2]  = material.urlDecode();
@@ -60,7 +60,7 @@ function  js_retornoVencedoresRegistro(oAjax) {
     }
   }
   oGridVencedores.renderRows();
-  //windowVencedoresRegistro.setChildOf(windowItensRegistro); 
+  //windowVencedoresRegistro.setChildOf(windowItensRegistro);
 }
 
  /**
@@ -71,7 +71,7 @@ function  js_retornoVencedoresRegistro(oAjax) {
     oGlobalRowSelected = oGridMovimentos.aRows[iRow];
     oGlobalRowSelected.setClassName("marcado");
     $(oGlobalRowSelected.sId).className = 'marcado';
-    /*    
+    /*
      * Criamos uma nova Janela para os itens
      */
     windowItensMovimento = new windowAux('windowItensMovimento','Itens Movimento', document.body.getWidth() - 100,500);
@@ -84,14 +84,14 @@ function  js_retornoVencedoresRegistro(oAjax) {
         sContent += "  </center>";
     windowItensMovimento.setContent(sContent);
     $('windowwindowItensMovimento_btnclose').onclick= function () {
-      
+
       oGlobalRowSelected.isSelected       = false;
       $(oGlobalRowSelected.sId).className = 'normal';
       oGlobalRowSelected.setClassName("normal");
       windowItensMovimento.destroy();
-      
+
     }
-    
+
     var oMessageBoard = new messageBoard('msg1',
         'Itens Vinculados ao Movimento',
         '',
@@ -99,28 +99,28 @@ function  js_retornoVencedoresRegistro(oAjax) {
     );
     oMessageBoard.show();
     windowItensMovimento.show(40,10);
-    windowItensMovimento.setChildOf(windowMovimentos);  
+    windowItensMovimento.setChildOf(windowMovimentos);
     /**
      * Adiciona a grid na janela
-     */ 
+     */
     oGridItensMov     = new DBGrid('gridItens');
     oGridItensMov.nameInstance = "oGridItensMov";
     oGridItensMov.setHeight(300);
     oGridItensMov.setCellWidth(new Array("5%","25%",'20%',"25%","25%"));
     oGridItensMov.setCellAlign(new Array("center", "center", "Left", "left", "left", "right", "right"));
     oGridItensMov.setHeader(new Array("Codigo", "Item", "Complemento", "Fornecedor","Justificativa"));
-    
-    
+
+
     oGridItensMov.show($('ctnGridItens'));
-    js_getItensMovimento(oGlobalRowSelected.aCells[1].getValue());  
-    
+    js_getItensMovimento(oGlobalRowSelected.aCells[1].getValue());
+
   }
-  
+
   /**
    * Consulta os itens do Movimento do Registro que o usuário selecionou
    */
   function js_getItensMovimento(iCodigoMovimentacao) {
-  
+
     js_divCarregando('Aguarde, Carregando itens.', 'msgBox');
     var oParam          = new Object();
     oParam.exec         = "getItensMovimentosRegistro";
@@ -136,26 +136,26 @@ function  js_retornoVencedoresRegistro(oAjax) {
   }
 
   /**
-   * Preenche a grid com os itens que o fornecedor Cotou 
-   */ 
+   * Preenche a grid com os itens que o fornecedor Cotou
+   */
   function js_retornoGetItensMovimento(oAjax) {
-    
+
     js_removeObj('msgBox');
     oGridItensMov.clearAll(true);
     var oRetorno = JSON.parse(oAjax.responseText);
     var aItens   = oRetorno.itens;
     for(var i = 0; i < aItens.length; i++) {
-    
+
       with (aItens[i]) {
-      
+
         var aLinha = new Array();
         aLinha[0]  = pc01_codmater;
         aLinha[1]  = pc01_descrmater.urlDecode();
         aLinha[2]  = pc11_resum.urlDecode().substring(0,30).replace(/\+/g, ' ');
-        aLinha[3]  = z01_nome.urlDecode();  
+        aLinha[3]  = z01_nome.urlDecode();
         aLinha[4]  = pc66_justificativa.urlDecode().substring(0,30).replace(/\+/g, ' ');
         oGridItensMov.addRow(aLinha);
-        
+
       }
     }
     oGridItensMov.renderRows();
@@ -166,10 +166,10 @@ function  js_retornoVencedoresRegistro(oAjax) {
    *
    */
   function js_getMovimentos(iTipo, iSolicitacao, iOrcamento) {
-  
-    iGlobalSolicitacao = iSolicitacao; 
-    iGlobalOrcamento   = iOrcamento; 
-    iGlobalTipo        = iTipo; 
+
+    iGlobalSolicitacao = iSolicitacao;
+    iGlobalOrcamento   = iOrcamento;
+    iGlobalTipo        = iTipo;
     js_divCarregando('Aguarde, pesquisando Movimentos', 'msgBox');
     var oParam                    = new Object();
     oParam.exec                   = "getMovimentosRegistro";
@@ -182,19 +182,19 @@ function  js_retornoVencedoresRegistro(oAjax) {
                                     parameters:'json='+Object.toJSON(oParam),
                                     onComplete: js_retornoGetMovimentos
                                    });
-  
+
   }
-  
+
   /**
    * Monta a janela com os fornecedores
    */
   function  js_retornoGetMovimentos(oAjax) {
-    
+
     js_removeObj("msgBox");
     var oRetorno = JSON.parse(oAjax.responseText);
     windowMovimentos = new windowAux('windowMovimentos','Movimentos', document.body.getWidth() - 50);
     windowMovimentos.allowCloseWithEsc(false);
-    
+
     var sContent  = "<fieldset style='width:98%;'><legend><b>Movimentos</b></legend>";
         sContent += "  <div id='ctngridMovimentos' style='width:100%;'>";
         sContent += "  </div>";
@@ -202,12 +202,12 @@ function  js_retornoVencedoresRegistro(oAjax) {
         sContent += "  <br><center>";
         sContent += "   <input type='button' id='btnCancelarMovimento'  value='Processar'>";
         sContent += "  </center>";
-        
+
     windowMovimentos.setContent(sContent);
     $('windowwindowMovimentos_btnclose').onclick= function () {
       windowMovimentos.destroy();
     }
-    
+
     var sStringTipo = "Desitência";
     if (iGlobalTipo == 3) {
       sStringTipo = "Bloqueio";
@@ -222,10 +222,10 @@ function  js_retornoVencedoresRegistro(oAjax) {
     oMessageBoardForne.show();
     windowMovimentos.allowDrag(false);
     windowMovimentos.show(25,10);
-    
+
     /**
      * Adiciona a grid na janela
-     */ 
+     */
     oGridMovimentos     = new DBGrid('gridMovimentos');
     oGridMovimentos.nameInstance = "oGridMovimentos";
     oGridMovimentos.setCheckbox(1);
@@ -237,9 +237,9 @@ function  js_retornoVencedoresRegistro(oAjax) {
     oGridMovimentos.clearAll(true);
     var aItens   = oRetorno.itens;
     for(var i = 0; i < aItens.length; i++) {
-    
+
       with (aItens[i]) {
-      
+
         var aLinha = new Array();
         aLinha[0]  = pc58_sequencial;
         aLinha[1]  = js_formatar(pc58_data, "d");
@@ -247,46 +247,46 @@ function  js_retornoVencedoresRegistro(oAjax) {
         aLinha[3]  = qtditens;
         oGridMovimentos.addRow(aLinha);
         oGridMovimentos.aRows[i].sEvents += "onDblClick='js_showItens("+i+")'";
-        
+
       }
     }
-    
+
     oGridMovimentos.renderRows();
-    
+
     $('btnCancelarMovimento').onclick= function () {js_CancelaMovimentos()};
-  } 
-  
+  }
+
   function js_CancelaMovimentos() {
-  
+
     var aItens          = oGridMovimentos.getSelection("object");
     var oParam          = new Object();
     oParam.exec         = "CancelaMovimentos";
     oParam.iSolicitacao = iGlobalSolicitacao;
     oParam.aItens       = new Array();
-  
+
     for (var i = 0; i < aItens.length; i++) {
-  
+
       var oMovimento = new Object();
       oMovimento.iCodigoMovimento  = aItens[i].aCells[1].getValue()
       oParam.aItens.push(oMovimento);
-      
+
     }
-    
+
     js_divCarregando('Aguarde, salvando fornecedores', 'msgBox');
     var oAjax   = new Ajax.Request(sUrlRPC,
                                    {
                                     method: "post",
                                     parameters:'json='+Object.toJSON(oParam),
                                     onComplete: js_retornoCancelarMovimentos
-                                   }); 
+                                   });
   }
   function js_retornoCancelarMovimentos(oAjax) {
-  
+
     js_removeObj('msgBox');
     var oRetorno = JSON.parse(oAjax.responseText);
     if (oRetorno.status == 1) {
-      
-      alert('Bloqueio efetuado com sucesso!'); 
+
+      alert('Cancelamento de desitência efetuado com sucesso!');
       windowMovimentos.destroy();
       js_getMovimentos(iGlobalTipo, iGlobalSolicitacao, iGlobalOrcamento);
     } else {
@@ -297,19 +297,19 @@ function  js_retornoVencedoresRegistro(oAjax) {
 function js_setAjuda(sTexto,lShow) {
 
   if (lShow) {
-   
-    var el    =  $('gridgridItens'); 
+
+    var el    =  $('gridgridItens');
     var x = 0;
     var y = el.offsetHeight;
 
     //Walk up the DOM and add up all of the offset positions.
     while (el.offsetParent && el.tagName.toUpperCase() != 'BODY')
     {
-     // if (el.className != "windowAux12") { 
-      
+     // if (el.className != "windowAux12") {
+
         x += el.offsetLeft;
         y += el.offsetTop;
-        
+
      // }
       el = el.offsetParent;
     }
@@ -319,7 +319,7 @@ function js_setAjuda(sTexto,lShow) {
    $('ajudaItem').style.display = '';
    $('ajudaItem').style.top     = y+"px";
    $('ajudaItem').style.left    = x+"px";
-   
+
   } else {
    $('ajudaItem').style.display = 'none';
   }

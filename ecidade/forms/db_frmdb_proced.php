@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $clrotulo->label("at32_descr");
        <?=@$Lat30_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('at30_codigo',10,$Iat30_codigo,true,'text',3,"")
 ?>
     </td>
@@ -56,22 +56,22 @@ db_input('at30_codigo',10,$Iat30_codigo,true,'text',3,"")
        <?=@$Lat30_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at30_descr',5,50,$Iat30_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat30_responsavel?>">
-       <?
+       <?php
        db_ancora(@$Lat30_responsavel,"js_pesquisaat30_responsavel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at30_responsavel',10,$Iat30_responsavel,true,'text',$db_opcao," onchange='js_pesquisaat30_responsavel(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -81,7 +81,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lat30_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at30_inicio',@$at30_inicio_dia,@$at30_inicio_mes,@$at30_inicio_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -91,22 +91,22 @@ db_inputdata('at30_inicio',@$at30_inicio_dia,@$at30_inicio_mes,@$at30_inicio_ano
        <?=@$Lat30_fim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at30_fim',@$at30_fim_dia,@$at30_fim_mes,@$at30_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="Situação">
-       <?
+       <?php
        db_ancora("<b>Situação</b>","js_pesquisaat30_situacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at30_situacao',10,$Iat30_situacao,true,'text',$db_opcao," onchange='js_pesquisaat30_situacao(false);'")
 ?>
-       <?
+       <?php
 db_input('at32_descr',40,$Iat32_descr,true,'text',3,'')
        ?>
     </td>
@@ -168,7 +168,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_proced.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

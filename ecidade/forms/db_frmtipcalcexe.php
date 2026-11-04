@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -85,7 +85,7 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
        <?=@$Lq83_tipcalc?>
     </td>    
     <td> 
-     <?
+     <?php
        db_input('q83_codigo', 10, $Iq83_codigo, true, 'hidden', 3, "");
        db_input('q83_tipcalc', 4, $Iq83_tipcalc, true, 'text', 3, "");
      ?>
@@ -96,7 +96,7 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
        <?=@$Lq83_anousu?>
     </td>
     <td> 
-     <?
+     <?php
         if (!isset($q83_anousu) || isset($q83_anousu) && $q83_anousu == "") {
         	$q83_anousu = db_getsession('DB_anousu');
         }
@@ -106,12 +106,12 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq83_codven?>">
-       <?
+       <?php
          db_ancora(@$Lq83_codven,"js_pesquisaq83_codven(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('q83_codven',4,$Iq83_codven,true,'text',$db_opcao," onchange='js_pesquisaq83_codven(false);'");
         db_input('q92_descr',40,$Iq92_descr,true,'text',3,'')
       ?>
@@ -122,12 +122,12 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
   <tr id='cntVencimentoSimples' style="display:none;">
     <td nowrap title="<?=@$Tq83_cadvencdescsimples?>">
     
-       <?
+       <?php
          db_ancora(@$Lq83_cadvencdescsimples,"js_pesquisaSimples(true);",$db_opcao);
        ?>    
     </td>
     <td>
-      <? 
+      <?php 
         db_input('q83_cadvencdescsimples', 4 ,$Iq83_cadvencdescsimples, true, 'text', $db_opcao, " onchange='js_pesquisaSimples(false);'");
         db_input('descricaoSimples',      40 ,$Iq92_descr, true,'text', 3, '');
       ?>
@@ -148,7 +148,7 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
  <table style="margin-top: 10px;">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	     
        $chavepri= array("q83_codigo" => @$q83_codigo);
 	     

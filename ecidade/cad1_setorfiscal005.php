@@ -75,7 +75,7 @@ if(isset($alterar)){
   </div>
   </body>
   </html>
-<?
+<?php
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

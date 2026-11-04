@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,37 +66,37 @@ if(isset($db_opcaoal)){
        <?=@$Lh54_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h54_sequencial',10,$Ih54_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr style='display:none'>
     <td nowrap title="<?=@$Th54_rhestagioquesitopergunta?>">
-       <?
+       <?php
        db_ancora(@$Lh54_rhestagioquesitopergunta,"js_pesquisah54_rhestagioquesitopergunta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h54_rhestagioquesitopergunta',10,$Ih54_rhestagioquesitopergunta,true,'text',$db_opcao," onchange='js_pesquisah54_rhestagioquesitopergunta(false);'")
 ?>
-       <?
+       <?php
 db_input('h53_sequencial',10,$Ih53_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th54_rhestagiocriterio?>">
-       <?
+       <?php
        db_ancora(@$Lh54_rhestagiocriterio,"js_pesquisah54_rhestagiocriterio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h54_rhestagiocriterio',10,$Ih54_rhestagiocriterio,true,'text',$db_opcao," onchange='js_pesquisah54_rhestagiocriterio(false);'")
 ?>
-       <?
+       <?php
 db_input('h52_descr',40,$Ih52_descr,true,'text',3,'')
        ?>
     </td>
@@ -106,7 +106,7 @@ db_input('h52_descr',40,$Ih52_descr,true,'text',3,'')
        <?=@$Lh54_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h54_descr',6,60,$Ih54_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ db_textarea('h54_descr',6,60,$Ih54_descr,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("h54_sequencial"=>@$h54_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagioquesitoresposta->sql_query_file(null,"*",null,"h54_rhestagioquesitopergunta =".@$h54_rhestagioquesitopergunta);

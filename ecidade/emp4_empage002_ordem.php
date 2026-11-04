@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -350,7 +350,7 @@ function js_padrao(val){
 <td class='bordas02' align='center'><small><b>Valor</b></small></td>
 <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
 </tr>
-<?
+<?php
 $nords =  '';
 $nvirg ='';
 
@@ -637,7 +637,7 @@ for ($i=0; $i<$numrows09; $i++) {
   <td class='bordas' align='right'> <small><?=db_input("valor_$e50_codord",6,$Ie53_valor,true,'text',($desativado == true?3:$db_opcao),"onChange='js_confere(this);'")?></small></td>
   <td class='bordas' align='right'><small><?=db_select("e83_codtipo_$e50_codord",$arr,true,1)?></small></td>
   </tr>
-  <?
+  <?php
 }
 ?>
 <!--

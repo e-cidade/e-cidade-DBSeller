@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -157,7 +157,7 @@ function js_emite(opcao,origem){
       </tr>
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('parent.js_limpa',300,100);
 	?>
 	</td>
@@ -169,7 +169,7 @@ function js_emite(opcao,origem){
       <tr>
         <td align="right" ><strong>Órgão/Unidade :</strong></td>
 	<td align="left">
-          <?
+          <?php
 	   $xy = array('1A'=>'Órgão','2A'=>'Unidade');
 	   db_select('nivel',$xy,true,2,"");
 	  ?>
@@ -180,7 +180,7 @@ function js_emite(opcao,origem){
       <tr>
         <td  align="right"><strong>Totalização :  </strong></td>
 	<td align="left">
-          <?
+          <?php
            $x = array('A'=>'ANALÍTICO','S'=>'SINTÉTICO');
            db_select('totaliza',$x,true,2,"");
           ?>
@@ -189,7 +189,7 @@ function js_emite(opcao,origem){
       <tr>
         <td  align="right"><strong>Totaliza Atividade :  </strong></td>
   <td align="left">
-          <?
+          <?php
            $x = array('N'=>'Não','S'=>'SIM');
            db_select('totaliza_atividade',$x,true,2,"");
           ?>
@@ -208,7 +208,7 @@ function js_emite(opcao,origem){
           <tr style="<?php echo $displayAntigo; ?>">
         <td align="right" ><strong>Recurso:</strong></td>
 	<td>
-	<?
+	<?php
         $clorctiporec = new cl_orctiporec;
 	$res = $clorctiporec->sql_record($clorctiporec->sql_query());
 	db_selectrecord("recurso",$res,true,2,"","","","0");
@@ -224,7 +224,7 @@ function js_emite(opcao,origem){
         <td colspan="2" >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
-       <?
+       <?php
         db_selorcbalanco();
        ?>
       <tr>
@@ -235,7 +235,7 @@ function js_emite(opcao,origem){
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

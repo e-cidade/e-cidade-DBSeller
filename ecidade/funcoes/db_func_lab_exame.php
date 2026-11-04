@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,5 +25,16 @@
  *                                licenca/licenca_pt.txt
  */
 
-$campos = "lab_exame.la08_i_codigo,lab_exame.la08_c_sigla,trim(lab_exame.la08_c_descr) as la08_c_descr,lab_exame.la08_i_idademax,lab_exame.la08_i_idademin,lab_exame.la08_i_sexo,lab_exame.la08_d_inicio,lab_exame.la08_d_fim,lab_exame.la08_i_dias,lab_exame.la08_t_Interferencia,lab_exame.la08_i_gerar, lab_exame.la08_observacao";
+$campos = "distinct lab_exame.la08_i_codigo,
+lab_exame.la08_c_sigla,
+trim(lab_exame.la08_c_descr) as la08_c_descr,
+lab_exame.la08_i_idademax,
+lab_exame.la08_i_idademin,
+lab_exame.la08_i_sexo,
+lab_exame.la08_d_inicio,
+lab_exame.la08_d_fim,
+lab_exame.la08_i_dias,
+lab_exame.la08_t_Interferencia,
+lab_exame.la08_i_gerar,
+lab_exame.la08_observacao";
 ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $cldb_errobanco->rotulo->label("e78_codban");
               <?=$Le78_codban?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e78_codban",10,$Ie78_codban,true,"text",4,"","chave_e78_codban");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_errobanco->rotulo->label("e78_codban");
               <?=$Le78_errobanco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e78_errobanco",6,$Ie78_errobanco,true,"text",4,"","chave_e78_errobanco");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cldb_errobanco->rotulo->label("e78_codban");
               <?=$Le78_codban?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e78_codban",10,$Ie78_codban,true,"text",4,"","chave_e78_codban");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cldb_errobanco->rotulo->label("e78_codban");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_errobanco.php")==true){
@@ -129,12 +129,12 @@ $cldb_errobanco->rotulo->label("e78_codban");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

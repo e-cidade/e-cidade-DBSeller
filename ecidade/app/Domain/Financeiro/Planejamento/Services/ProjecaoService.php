@@ -101,6 +101,14 @@ abstract class ProjecaoService
         return $parametro->o50_liberadecimalppa ? 2 : 0;
     }
 
+    protected function buidValor($ano, $valor)
+    {
+        return (object)[
+            'ano' => $ano,
+            'valor' => $valor
+        ];
+    }
+
     /**
      * Apaga todo calculo e refaz a projeção
      * Retorna um array com a estimativa

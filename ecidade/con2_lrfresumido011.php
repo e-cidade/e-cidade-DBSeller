@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,7 +92,7 @@ function js_emite(){
     env += '&emite_saude='       + obj.emite_saude.value;
     env += '&emite_ppp='         + obj.emite_ppp.value;
 
-    <?
+    <?php
     if ($anousu < 2007){
       $executar = "con2_lrfresumido002.php";
     } else if ($anousu == 2008){
@@ -120,7 +120,7 @@ function js_emite(){
     </tr>
     <tr>
       <td align="center" colspan="3">
-        <? db_selinstit('',300,100); ?>
+        <?php db_selinstit('',300,100); ?>
 	    </td>
     </tr>
     <tr>

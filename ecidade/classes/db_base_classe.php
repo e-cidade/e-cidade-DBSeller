@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,13 +66,13 @@ class cl_base {
                  ed31_c_ativo = char(1) = Ativa
                  ";
    //funcao construtor da classe
-   function cl_base() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("base");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_base {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed31_i_codigo = ($this->ed31_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed31_i_codigo"]:$this->ed31_i_codigo);
        $this->ed31_i_curso = ($this->ed31_i_curso == ""?@$GLOBALS["HTTP_POST_VARS"]["ed31_i_curso"]:$this->ed31_i_curso);
@@ -98,7 +98,7 @@ class cl_base {
      }
    }
    // funcao para inclusao
-   function incluir ($ed31_i_codigo){
+   public function incluir ($ed31_i_codigo){
       $this->atualizacampos();
      if($this->ed31_i_curso == null ){
        $this->erro_sql = " Campo Curso nao Informado.";
@@ -263,7 +263,7 @@ class cl_base {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed31_i_codigo=null) {
+   public function alterar ($ed31_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update base set ";
      $virgula = "";
@@ -445,7 +445,7 @@ class cl_base {
      }
    }
    // funcao para exclusao
-   function excluir ($ed31_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed31_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed31_i_codigo));
      }else{
@@ -515,7 +515,7 @@ class cl_base {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -538,10 +538,10 @@ class cl_base {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,10 +582,10 @@ class cl_base {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -606,7 +606,7 @@ class cl_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -615,10 +615,10 @@ class cl_base {
      }
      return $sql;
   }
-  function sql_query_base ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_base ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,7 +649,7 @@ class cl_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -659,10 +659,10 @@ class cl_base {
      return $sql;
   }
 
-  function sql_query_baseturma ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_baseturma ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,6 +673,7 @@ class cl_base {
      }
      $sql .= " from base ";
      $sql .= "      inner join cursoedu on cursoedu.ed29_i_codigo = base.ed31_i_curso";
+     $sql .= "      left join  censocursoprofiss on cursoedu.ed29_censocursoprofiss = censocursoprofiss.ed247_i_codigo";
      $sql .= "      inner join cursoescola on cursoescola.ed71_i_curso = cursoedu.ed29_i_codigo";
      $sql .= "      inner join ensino on ensino.ed10_i_codigo = cursoedu.ed29_i_ensino";
      $sql .= "      inner join tipoensino on tipoensino.ed36_i_codigo = ensino.ed10_i_tipoensino";
@@ -695,7 +696,7 @@ class cl_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -704,10 +705,10 @@ class cl_base {
      }
      return $sql;
    }
-   function sql_query_hist ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_hist ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -734,7 +735,7 @@ class cl_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -744,12 +745,12 @@ class cl_base {
      return $sql;
   }
 
-  function sql_query_diarioclasse ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_diarioclasse ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
 
@@ -777,7 +778,7 @@ class cl_base {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
 
@@ -789,7 +790,7 @@ class cl_base {
   }
 
 
-  function sql_query_base2 ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_base2 ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql  = "select {$campos} ";
      $sql .= " from base ";

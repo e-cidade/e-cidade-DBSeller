@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -40,16 +40,16 @@ $clrotulo->label("ed18_i_codigo");
    <?=@$Led215_i_codigo?>
   </td>
   <td>
-   <?db_input('ed215_i_codigo',10,$Ied215_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed215_i_codigo',10,$Ied215_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted215_i_aluno?>">
-   <?db_ancora(@$Led215_i_aluno,"js_pesquisaed215_i_aluno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led215_i_aluno,"js_pesquisaed215_i_aluno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed215_i_aluno',10,$Ied215_i_aluno,true,'text',3," onchange='js_pesquisaed215_i_aluno(false);'")?>
-   <?db_input('ed47_v_nome',60,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed215_i_aluno',10,$Ied215_i_aluno,true,'text',3," onchange='js_pesquisaed215_i_aluno(false);'")?>
+   <?php db_input('ed47_v_nome',60,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -57,19 +57,19 @@ $clrotulo->label("ed18_i_codigo");
    <b>Bairro do Aluno:</b>
   </td>
   <td>
-   <?db_input('bairroaluno',40,@$bairroaluno,true,'text',3,'')?>
+   <?php db_input('bairroaluno',40,@$bairroaluno,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted18_i_codigo?>">
-   <?db_ancora("<b>Escola:</b>","js_pesquisaed18_i_codigo(true);",3);?>
+   <?php db_ancora("<b>Escola:</b>","js_pesquisaed18_i_codigo(true);",3);?>
   </td>
   <td>
-   <?db_input('ed18_i_codigo',10,@$Ied18_i_codigo,true,'text',3," onchange='js_pesquisaed18_i_codigo(false);'")?>
-   <?db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'');?>
-   <?db_input('tipoescola',10,@$Itipoescola,true,'hidden',$db_opcao,'');?>
-   <?db_input('ed226_i_codigo',10,@$Ied226_i_codigo,true,'hidden',$db_opcao,'');?>
-   <?db_input('origemescola',10,@$Iorigemescola,true,'hidden',$db_opcao,'');?>
+   <?php db_input('ed18_i_codigo',10,@$Ied18_i_codigo,true,'text',3," onchange='js_pesquisaed18_i_codigo(false);'")?>
+   <?php db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'');?>
+   <?php db_input('tipoescola',10,@$Itipoescola,true,'hidden',$db_opcao,'');?>
+   <?php db_input('ed226_i_codigo',10,@$Ied226_i_codigo,true,'hidden',$db_opcao,'');?>
+   <?php db_input('origemescola',10,@$Iorigemescola,true,'hidden',$db_opcao,'');?>
   </td>
  </tr>
  <tr>
@@ -77,16 +77,16 @@ $clrotulo->label("ed18_i_codigo");
    <b>Bairro da Escola:</b>
   </td>
   <td>
-   <?db_input('bairroescola',40,@$Ibairroescola,true,'text',3,'')?>
+   <?php db_input('bairroescola',40,@$Ibairroescola,true,'text',3,'')?>
   </td>
  </tr>
   <tr>
   <td nowrap title="<?=@$Ted215_i_linha?>">
-   <?db_ancora(@$Led215_i_linha,"js_pesquisaed215_i_linha(true);",$db_opcao);?>
+   <?php db_ancora(@$Led215_i_linha,"js_pesquisaed215_i_linha(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed215_i_linha',10,$Ied215_i_linha,true,'text',3," onchange='js_pesquisaed215_i_linha(false);'")?>
-   <?db_input('ed217_c_origem',60,@$Ied217_c_origem,true,'text',3,'')?>
+   <?php db_input('ed215_i_linha',10,$Ied215_i_linha,true,'text',3," onchange='js_pesquisaed215_i_linha(false);'")?>
+   <?php db_input('ed217_c_origem',60,@$Ied217_c_origem,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -94,7 +94,7 @@ $clrotulo->label("ed18_i_codigo");
    <b>Ano</b>
   </td>
   <td>
-   <?db_input('ed215_i_ano',4,$Ied215_i_ano,true,'text',$db_opcao,"")?>
+   <?php db_input('ed215_i_ano',4,$Ied215_i_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -102,7 +102,7 @@ $clrotulo->label("ed18_i_codigo");
    <?=@$Led215_d_datacad?>
   </td>
   <td>
-   <?db_inputdata('ed215_d_datacad',@$ed215_d_datacad_dia,@$ed215_d_datacad_mes,@$ed215_d_datacad_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed215_d_datacad',@$ed215_d_datacad_dia,@$ed215_d_datacad_mes,@$ed215_d_datacad_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -175,7 +175,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_alunopassagem.hide();
- <?
+ <?php
  if($db_opcao!=1){
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

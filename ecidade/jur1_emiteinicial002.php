@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -111,7 +111,7 @@ if(isset($alterar)){
     $sqlerro = true;
     db_msgbox($erromsg);
     db_redireciona("jur1_emiteinicial002.php?chavepesquisa=$v50_inicial");
-    break;
+    return false;
   }
 
   $sqlPardiv = "select v04_tipoinicial,v04_tipocertidao as tipocertidao from pardiv where v04_instit  = ".db_getsession('DB_instit') ;
@@ -155,8 +155,8 @@ if(isset($alterar)){
         $sql .= "                inner join inicialcert on inicialcert.v51_certidao = certid.v13_certid ";
         $sql .= "                inner join certter  on certter.v14_certid = certid.v13_certid ";
         $sql .= "                inner join termo    on termo.v07_parcel   = certter.v14_parcel ";
-//        $sql .= "                inner join termodiv on termodiv.parcel    = termo.v07_parcel ";
-//        $sql .= "                inner join divida   on divida.v01_coddiv  = termodiv.coddiv ";
+        //        $sql .= "                inner join termodiv on termodiv.parcel    = termo.v07_parcel ";
+        //        $sql .= "                inner join divida   on divida.v01_coddiv  = termodiv.coddiv ";
         $sql .= "         where v51_inicial  = $v50_inicial ";
         $sql .= "           and v51_certidao = ".$$w." ) as x ";
         $rsExcArrecad = db_query($sql);
@@ -367,15 +367,15 @@ if(isset($alterar)){
         </style>
     </head>
     <body bgcolor=#CCCCCC>
-    <?
+    <?php
     include(modification("forms/db_frmemiteinicial.php"));
     ?>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
     </body>
     </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -405,7 +405,7 @@ if(isset($alterar)){
         }
         js_AbreJanelaRelatorio();
       </script>
-    <?
+    <?php
 //     db_redireciona("jur1_emiteinicial002.php");
   }
 }

@@ -1,97 +1,97 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ISSQN
 //CLASSE DA ENTIDADE meiimportalinhacontador
-class cl_meiimportalinhacontador { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q109_sequencial = 0; 
-   var $q109_municipio = null; 
-   var $q109_meiimportalinha = 0; 
-   var $q109_ufcrc = null; 
-   var $q109_codigocrc = null; 
-   var $q109_datacrc_dia = null; 
-   var $q109_datacrc_mes = null; 
-   var $q109_datacrc_ano = null; 
-   var $q109_datacrc = null; 
-   var $q109_cnpjcpf = null; 
-   var $q109_nome = null; 
-   var $q109_tipologradouro = null; 
-   var $q109_logradouro = null; 
-   var $q109_numero = null; 
-   var $q109_complemento = null; 
-   var $q109_bairro = null; 
-   var $q109_cep = null; 
-   var $q109_uf = null; 
-   var $q109_telefone = null; 
-   var $q109_fax = null; 
-   var $q109_email = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_meiimportalinhacontador {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q109_sequencial = 0;
+   var $q109_municipio = null;
+   var $q109_meiimportalinha = 0;
+   var $q109_ufcrc = null;
+   var $q109_codigocrc = null;
+   var $q109_datacrc_dia = null;
+   var $q109_datacrc_mes = null;
+   var $q109_datacrc_ano = null;
+   var $q109_datacrc = null;
+   var $q109_cnpjcpf = null;
+   var $q109_nome = null;
+   var $q109_tipologradouro = null;
+   var $q109_logradouro = null;
+   var $q109_numero = null;
+   var $q109_complemento = null;
+   var $q109_bairro = null;
+   var $q109_cep = null;
+   var $q109_uf = null;
+   var $q109_telefone = null;
+   var $q109_fax = null;
+   var $q109_email = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q109_sequencial = int4 = Sequencial 
-                 q109_municipio = varchar(40) = Municipio 
-                 q109_meiimportalinha = int4 = Linha de Importação do MEI 
-                 q109_ufcrc = varchar(2) = UF CRC 
-                 q109_codigocrc = varchar(6) = Código CRC 
-                 q109_datacrc = date = Data CRC 
-                 q109_cnpjcpf = varchar(14) = CNPJ/CPF 
-                 q109_nome = varchar(60) = Nome 
-                 q109_tipologradouro = varchar(6) = Tipo Logradouro 
-                 q109_logradouro = varchar(60) = Logradouro 
-                 q109_numero = varchar(6) = Número 
-                 q109_complemento = varchar(156) = Complemento 
-                 q109_bairro = varchar(50) = Bairro 
-                 q109_cep = varchar(8) = CEP 
-                 q109_uf = varchar(2) = UF 
-                 q109_telefone = varchar(15) = Telefone 
-                 q109_fax = varchar(15) = Fax 
-                 q109_email = varchar(115) = Email 
+                 q109_sequencial = int4 = Sequencial
+                 q109_municipio = varchar(40) = Municipio
+                 q109_meiimportalinha = int4 = Linha de Importação do MEI
+                 q109_ufcrc = varchar(2) = UF CRC
+                 q109_codigocrc = varchar(6) = Código CRC
+                 q109_datacrc = date = Data CRC
+                 q109_cnpjcpf = varchar(14) = CNPJ/CPF
+                 q109_nome = varchar(60) = Nome
+                 q109_tipologradouro = varchar(6) = Tipo Logradouro
+                 q109_logradouro = varchar(60) = Logradouro
+                 q109_numero = varchar(6) = Número
+                 q109_complemento = varchar(156) = Complemento
+                 q109_bairro = varchar(50) = Bairro
+                 q109_cep = varchar(8) = CEP
+                 q109_uf = varchar(2) = UF
+                 q109_telefone = varchar(15) = Telefone
+                 q109_fax = varchar(15) = Fax
+                 q109_email = varchar(115) = Email
                  ";
-   //funcao construtor da classe 
-   function cl_meiimportalinhacontador() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("meiimportalinhacontador"); 
+     $this->rotulo = new rotulo("meiimportalinhacontador");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -100,7 +100,7 @@ class cl_meiimportalinhacontador {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q109_sequencial = ($this->q109_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q109_sequencial"]:$this->q109_sequencial);
        $this->q109_municipio = ($this->q109_municipio == ""?@$GLOBALS["HTTP_POST_VARS"]["q109_municipio"]:$this->q109_municipio);
@@ -132,12 +132,12 @@ class cl_meiimportalinhacontador {
      }
    }
    // funcao para inclusao
-   function incluir ($q109_sequencial){ 
+   public function incluir ($q109_sequencial){
       $this->atualizacampos();
-     if($this->q109_municipio == null ){ 
+     if($this->q109_municipio == null ){
        $this->q109_municipio = "0";
      }
-     if($this->q109_meiimportalinha == null ){ 
+     if($this->q109_meiimportalinha == null ){
        $this->erro_sql = " Campo Linha de Importação do MEI nao Informado.";
        $this->erro_campo = "q109_meiimportalinha";
        $this->erro_banco = "";
@@ -146,20 +146,20 @@ class cl_meiimportalinhacontador {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q109_datacrc == null ){ 
+     if($this->q109_datacrc == null ){
        $this->q109_datacrc = "null";
      }
      if($q109_sequencial == "" || $q109_sequencial == null ){
-       $result = db_query("select nextval('meiimportalinhacontador_q109_sequencial_seq')"); 
+       $result = db_query("select nextval('meiimportalinhacontador_q109_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: meiimportalinhacontador_q109_sequencial_seq do campo: q109_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: meiimportalinhacontador_q109_sequencial_seq do campo: q109_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q109_sequencial = pg_result($result,0,0); 
+       $this->q109_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from meiimportalinhacontador_q109_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q109_sequencial)){
@@ -170,10 +170,10 @@ class cl_meiimportalinhacontador {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q109_sequencial = $q109_sequencial; 
+         $this->q109_sequencial = $q109_sequencial;
        }
      }
-     if(($this->q109_sequencial == null) || ($this->q109_sequencial == "") ){ 
+     if(($this->q109_sequencial == null) || ($this->q109_sequencial == "") ){
        $this->erro_sql = " Campo q109_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -182,47 +182,47 @@ class cl_meiimportalinhacontador {
        return false;
      }
      $sql = "insert into meiimportalinhacontador(
-                                       q109_sequencial 
-                                      ,q109_municipio 
-                                      ,q109_meiimportalinha 
-                                      ,q109_ufcrc 
-                                      ,q109_codigocrc 
-                                      ,q109_datacrc 
-                                      ,q109_cnpjcpf 
-                                      ,q109_nome 
-                                      ,q109_tipologradouro 
-                                      ,q109_logradouro 
-                                      ,q109_numero 
-                                      ,q109_complemento 
-                                      ,q109_bairro 
-                                      ,q109_cep 
-                                      ,q109_uf 
-                                      ,q109_telefone 
-                                      ,q109_fax 
-                                      ,q109_email 
+                                       q109_sequencial
+                                      ,q109_municipio
+                                      ,q109_meiimportalinha
+                                      ,q109_ufcrc
+                                      ,q109_codigocrc
+                                      ,q109_datacrc
+                                      ,q109_cnpjcpf
+                                      ,q109_nome
+                                      ,q109_tipologradouro
+                                      ,q109_logradouro
+                                      ,q109_numero
+                                      ,q109_complemento
+                                      ,q109_bairro
+                                      ,q109_cep
+                                      ,q109_uf
+                                      ,q109_telefone
+                                      ,q109_fax
+                                      ,q109_email
                        )
                 values (
-                                $this->q109_sequencial 
-                               ,'$this->q109_municipio' 
-                               ,$this->q109_meiimportalinha 
-                               ,'$this->q109_ufcrc' 
-                               ,'$this->q109_codigocrc' 
-                               ,".($this->q109_datacrc == "null" || $this->q109_datacrc == ""?"null":"'".$this->q109_datacrc."'")." 
-                               ,'$this->q109_cnpjcpf' 
-                               ,'$this->q109_nome' 
-                               ,'$this->q109_tipologradouro' 
-                               ,'$this->q109_logradouro' 
-                               ,'$this->q109_numero' 
-                               ,'$this->q109_complemento' 
-                               ,'$this->q109_bairro' 
-                               ,'$this->q109_cep' 
-                               ,'$this->q109_uf' 
-                               ,'$this->q109_telefone' 
-                               ,'$this->q109_fax' 
-                               ,'$this->q109_email' 
+                                $this->q109_sequencial
+                               ,'$this->q109_municipio'
+                               ,$this->q109_meiimportalinha
+                               ,'$this->q109_ufcrc'
+                               ,'$this->q109_codigocrc'
+                               ,".($this->q109_datacrc == "null" || $this->q109_datacrc == ""?"null":"'".$this->q109_datacrc."'")."
+                               ,'$this->q109_cnpjcpf'
+                               ,'$this->q109_nome'
+                               ,'$this->q109_tipologradouro'
+                               ,'$this->q109_logradouro'
+                               ,'$this->q109_numero'
+                               ,'$this->q109_complemento'
+                               ,'$this->q109_bairro'
+                               ,'$this->q109_cep'
+                               ,'$this->q109_uf'
+                               ,'$this->q109_telefone'
+                               ,'$this->q109_fax'
+                               ,'$this->q109_email'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Importação do MEI por Contador ($this->q109_sequencial) nao Incluído. Inclusao Abortada.";
@@ -271,16 +271,16 @@ class cl_meiimportalinhacontador {
        $resac = db_query("insert into db_acount values($acount,2855,16312,'','".AddSlashes(pg_result($resaco,0,'q109_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q109_sequencial=null) { 
+   public function alterar ($q109_sequencial=null) {
       $this->atualizacampos();
      $sql = " update meiimportalinhacontador set ";
      $virgula = "";
-     if(trim($this->q109_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_sequencial"])){ 
+     if(trim($this->q109_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_sequencial"])){
        $sql  .= $virgula." q109_sequencial = $this->q109_sequencial ";
        $virgula = ",";
-       if(trim($this->q109_sequencial) == null ){ 
+       if(trim($this->q109_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q109_sequencial";
          $this->erro_banco = "";
@@ -290,14 +290,14 @@ class cl_meiimportalinhacontador {
          return false;
        }
      }
-     if(trim($this->q109_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_municipio"])){ 
+     if(trim($this->q109_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_municipio"])){
        $sql  .= $virgula." q109_municipio = '$this->q109_municipio' ";
        $virgula = ",";
      }
-     if(trim($this->q109_meiimportalinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_meiimportalinha"])){ 
+     if(trim($this->q109_meiimportalinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_meiimportalinha"])){
        $sql  .= $virgula." q109_meiimportalinha = $this->q109_meiimportalinha ";
        $virgula = ",";
-       if(trim($this->q109_meiimportalinha) == null ){ 
+       if(trim($this->q109_meiimportalinha) == null ){
          $this->erro_sql = " Campo Linha de Importação do MEI nao Informado.";
          $this->erro_campo = "q109_meiimportalinha";
          $this->erro_banco = "";
@@ -307,68 +307,68 @@ class cl_meiimportalinhacontador {
          return false;
        }
      }
-     if(trim($this->q109_ufcrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_ufcrc"])){ 
+     if(trim($this->q109_ufcrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_ufcrc"])){
        $sql  .= $virgula." q109_ufcrc = '$this->q109_ufcrc' ";
        $virgula = ",";
      }
-     if(trim($this->q109_codigocrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_codigocrc"])){ 
+     if(trim($this->q109_codigocrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_codigocrc"])){
        $sql  .= $virgula." q109_codigocrc = '$this->q109_codigocrc' ";
        $virgula = ",";
      }
-     if(trim($this->q109_datacrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"] !="") ){ 
+     if(trim($this->q109_datacrc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"] !="") ){
        $sql  .= $virgula." q109_datacrc = '$this->q109_datacrc' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["q109_datacrc_dia"])){
          $sql  .= $virgula." q109_datacrc = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->q109_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_cnpjcpf"])){ 
+     if(trim($this->q109_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_cnpjcpf"])){
        $sql  .= $virgula." q109_cnpjcpf = '$this->q109_cnpjcpf' ";
        $virgula = ",";
      }
-     if(trim($this->q109_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_nome"])){ 
+     if(trim($this->q109_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_nome"])){
        $sql  .= $virgula." q109_nome = '$this->q109_nome' ";
        $virgula = ",";
      }
-     if(trim($this->q109_tipologradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_tipologradouro"])){ 
+     if(trim($this->q109_tipologradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_tipologradouro"])){
        $sql  .= $virgula." q109_tipologradouro = '$this->q109_tipologradouro' ";
        $virgula = ",";
      }
-     if(trim($this->q109_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_logradouro"])){ 
+     if(trim($this->q109_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_logradouro"])){
        $sql  .= $virgula." q109_logradouro = '$this->q109_logradouro' ";
        $virgula = ",";
      }
-     if(trim($this->q109_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_numero"])){ 
+     if(trim($this->q109_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_numero"])){
        $sql  .= $virgula." q109_numero = '$this->q109_numero' ";
        $virgula = ",";
      }
-     if(trim($this->q109_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_complemento"])){ 
+     if(trim($this->q109_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_complemento"])){
        $sql  .= $virgula." q109_complemento = '$this->q109_complemento' ";
        $virgula = ",";
      }
-     if(trim($this->q109_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_bairro"])){ 
+     if(trim($this->q109_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_bairro"])){
        $sql  .= $virgula." q109_bairro = '$this->q109_bairro' ";
        $virgula = ",";
      }
-     if(trim($this->q109_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_cep"])){ 
+     if(trim($this->q109_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_cep"])){
        $sql  .= $virgula." q109_cep = '$this->q109_cep' ";
        $virgula = ",";
      }
-     if(trim($this->q109_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_uf"])){ 
+     if(trim($this->q109_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_uf"])){
        $sql  .= $virgula." q109_uf = '$this->q109_uf' ";
        $virgula = ",";
      }
-     if(trim($this->q109_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_telefone"])){ 
+     if(trim($this->q109_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_telefone"])){
        $sql  .= $virgula." q109_telefone = '$this->q109_telefone' ";
        $virgula = ",";
      }
-     if(trim($this->q109_fax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_fax"])){ 
+     if(trim($this->q109_fax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_fax"])){
        $sql  .= $virgula." q109_fax = '$this->q109_fax' ";
        $virgula = ",";
      }
-     if(trim($this->q109_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_email"])){ 
+     if(trim($this->q109_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q109_email"])){
        $sql  .= $virgula." q109_email = '$this->q109_email' ";
        $virgula = ",";
      }
@@ -422,7 +422,7 @@ class cl_meiimportalinhacontador {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Importação do MEI por Contador nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q109_sequencial;
@@ -450,14 +450,14 @@ class cl_meiimportalinhacontador {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q109_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q109_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q109_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -500,7 +500,7 @@ class cl_meiimportalinhacontador {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Importação do MEI por Contador nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q109_sequencial;
@@ -528,11 +528,11 @@ class cl_meiimportalinhacontador {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -554,11 +554,11 @@ class cl_meiimportalinhacontador {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $q109_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $q109_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,15 +573,15 @@ class cl_meiimportalinhacontador {
      $sql2 = "";
      if($dbwhere==""){
        if($q109_sequencial!=null ){
-         $sql2 .= " where meiimportalinhacontador.q109_sequencial = $q109_sequencial "; 
-       } 
+         $sql2 .= " where meiimportalinhacontador.q109_sequencial = $q109_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -590,11 +590,11 @@ class cl_meiimportalinhacontador {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $q109_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $q109_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,15 +607,15 @@ class cl_meiimportalinhacontador {
      $sql2 = "";
      if($dbwhere==""){
        if($q109_sequencial!=null ){
-         $sql2 .= " where meiimportalinhacontador.q109_sequencial = $q109_sequencial "; 
-       } 
+         $sql2 .= " where meiimportalinhacontador.q109_sequencial = $q109_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

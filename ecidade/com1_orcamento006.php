@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -149,7 +149,7 @@ $db_chama = "excluir";
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
 	include(modification("forms/db_frmorcamento.php"));
         ?>
     </center>
@@ -158,7 +158,7 @@ $db_chama = "excluir";
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir) || isset($retornoexcluival)){
   if($excluival==false){
     echo "

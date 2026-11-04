@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -108,7 +108,7 @@ if(isset($incluir)){
       $chave=key($vt);
       if(substr($chave,0,6)=="linha_"){
         $sqlerro=false;
-	$matri= split("#",$vt[$chave]);
+	$matri=explode("#",$vt[$chave]);
         $q05_histor.=$vir.$matri[0];
 	$vir=",";
       }
@@ -136,7 +136,7 @@ if(isset($incluir)){
       $chave=key($vt);
       if(substr($chave,0,6)=="linha_"){
         $sqlerro=false;
-	      $matri = split("#",$vt[$chave]);
+	      $matri =explode("#",$vt[$chave]);
         $result55 = $clissvarnotas->sql_record($clissvarnotas->sql_query_file($codigo,"","max(q06_seq) +1 as seq"));
         db_fieldsmemory($result55,0);
         $q06_seq = $seq == ""?"1":$seq;
@@ -258,7 +258,7 @@ if(isset($mesant) && $mesant != "" && $db_opcao == "1"){//isso eh pra vir o ulti
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-<?
+<?php
 if(isset($varios) && $varios==true){//quando tiver várias inscrições para um cgm
 $clrotulo= new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -273,7 +273,7 @@ db_fieldsmemory($result03,0);
       <?=$Lz01_numcgm?>
     </td>
     <td>
-    <?
+    <?php
       $z01_numcgmx=$z01_numcgm;
       db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',3,"","z01_numcgmx")
     ?>
@@ -284,7 +284,7 @@ db_fieldsmemory($result03,0);
       <?=$Lz01_nome?>
     </td>
     <td>
-    <?
+    <?php
       db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
     ?>
     </td>
@@ -294,7 +294,7 @@ db_fieldsmemory($result03,0);
        <?=$Lq02_inscr?>
     </td>
     <td>
-    <?
+    <?php
     for($e=0; $e<$clissbase->numrows; $e++){
       db_fieldsmemory($result03,$e);
       $inscrs[$q02_inscr]=$q02_inscr;
@@ -319,7 +319,7 @@ db_fieldsmemory($result03,0);
    function js_voltar(){
      location.href="iss1_issvar001.php";
    }
-   <?
+   <?php
    if(isset($entrar) && $entrar=="denovo"){
      echo  "alert('Nenhum registro de issqn variável encontrado para esta inscrição!')";
    }
@@ -331,23 +331,23 @@ db_fieldsmemory($result03,0);
    }
    ?>
  </script>
-<?
+<?php
 }else{
 	include(modification("forms/db_frmissvar.php"));
 	?>
     </center>
     </td>
   </tr>
-<?
+<?php
 }
 ?>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)||isset($substituir)){
   if($clissvar->erro_status=="0"&&$sqlerro==true){
     $clissvar->erro(true,false);

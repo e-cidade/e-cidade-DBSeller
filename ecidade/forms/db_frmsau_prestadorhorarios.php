@@ -49,7 +49,7 @@ $clrotulo->label("s111_procedimento");
               <tr>
                 <td nowrap title="<?=$Ts111_i_prestador?>"><?=$Ls111_i_prestador?></td>
                 <td>
-                  <?
+                  <?php
                   db_input( 's111_i_prestador', 10, $Is111_i_prestador, true, 'text', 3 );
                   db_input( 'z01_nome',         59, $Iz01_nome,          true, 'text', 3 );
                   ?>
@@ -57,7 +57,7 @@ $clrotulo->label("s111_procedimento");
               </tr>
               <tr>
                 <td nowrap title="<?=$Ts111_procedimento?>">
-                  <?
+                  <?php
                   db_ancora( $Ls111_procedimento, "js_pesquisas111_i_exame(true);", $db_opcao );
                   ?>
                 </td>
@@ -103,8 +103,17 @@ $clrotulo->label("s111_procedimento");
                               <td>
                                 <?php
                                 db_input( 's112_i_diasemana_atual', 10, '', true, 'hidden', 3 );
-                                $result = $cldiasemana->sql_record( $cldiasemana->sql_query( "", "*" ) );
-                                db_selectrecord( "s112_i_diasemana", $result, true, $db_opcao, '', '', '', '', '', 1 );
+                                $horarios = [
+                                  1=>"Domingo",
+                                  2=>"Segunda",
+                                  3=>"Terça",
+                                  4=>"Quarta",
+                                  5=>"Quinta",
+                                  6=>"Sexta",
+                                  7=>"Sábado"
+                                ];
+
+                                db_select( "s112_i_diasemana", $horarios, true, $db_opcao);
                                 ?>
                               </td>
                             </tr>
@@ -199,7 +208,7 @@ $clrotulo->label("s111_procedimento");
                   </fieldset>
                 </td>
               </tr>
-              <tr id="msg_cota" style="">
+              <tr id="msg_cota">
                 <td colspan='2' rowspan="10" valign="top" style="background-color: #fcf8e3 ; border: 1px solid #fcc888 ; padding: 10px 60px;color:red;">
                   Se o mesmo exame tiver Cota Diária definida e Cota Mensal no mesmo período, prevalecerá a <br />
                   Cota Mensal, ou seja, a Cota Diária será desconsiderada, considerando-se apenas a Cota Mensal.
@@ -238,14 +247,14 @@ $clrotulo->label("s111_procedimento");
                 $sCamposSql .= "                             then 'Período' ";
                 $sCamposSql .= "                             else 'Não Informado' ";
                 $sCamposSql .= "                    end as s112_c_tipograde ";
-                $sCamposSql .= ", ed32_c_descr, s112_c_horaini, s112_c_horafim, s112_i_fichas, s112_i_reservas";
+                $sCamposSql .= ", s112_c_horaini, s112_c_horafim, s112_i_fichas, s112_i_reservas";
 
-                $sOrdenacao = "ed32_i_codigo, s112_c_horaini";
+                $sOrdenacao = " s112_c_horaini ";
                 $sWhere     = " s111_i_prestador = {$s111_i_prestador} AND s111_c_situacao = 'A' and s112_c_tipograde <> 'M' ";
 
                 $sCampos  = "s112_i_codigo, sd63_c_procedimento, sd63_c_nome, s112_d_valinicial, s112_d_valfinal,";
-                $sCampos .= " s112_c_tipograde, ed32_c_descr, s112_c_horaini, s112_c_horafim, s112_i_fichas, s112_i_reservas";
-
+                $sCampos .= " s112_c_tipograde, s112_c_horaini, s112_c_horafim, s112_i_fichas, s112_i_reservas";
+            
                 $cliframe_alterar_excluir->chavepri      = $chavepri;
                 $cliframe_alterar_excluir->sql           = $clsau_prestadorhorarios->sql_query( "", $sCamposSql, $sOrdenacao, $sWhere );
                 $cliframe_alterar_excluir->campos        = $sCampos;

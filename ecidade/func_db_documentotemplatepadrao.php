@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_documentotemplatepadrao->rotulo->label("db81_descricao");
               <?=$Ldb81_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db81_sequencial",10,$Idb81_sequencial,true,"text",4,"","chave_db81_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_documentotemplatepadrao->rotulo->label("db81_descricao");
               <?=$Ldb81_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db81_descricao",50,$Idb81_descricao,true,"text",4,"","chave_db81_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_documentotemplatepadrao->rotulo->label("db81_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_documentotemplatepadrao.php")==true){
@@ -122,12 +122,12 @@ $cldb_documentotemplatepadrao->rotulo->label("db81_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

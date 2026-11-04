@@ -1,4 +1,4 @@
-<?
+<?php
 //  F I C H A   D E   C O M P E N S A Ç Ã O
 
 /*  Line(float x1, float y1, float x2, float y2)

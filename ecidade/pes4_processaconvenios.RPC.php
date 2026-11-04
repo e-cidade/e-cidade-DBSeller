@@ -584,22 +584,20 @@ switch($oParam->exec) {
 
   break;  
 
-  
   case 'processarRubricas' :
     
   	/**
   	 * Recebemos o objeto com as rubricas nao processadas em conflito
-  	 * conforme opção do usuario tomamos 2 tipos de ação
+  	 * conforme opção do usuário tomamos 2 tipos de ação
   	 */
     foreach ($oParam->oDados as $oIndiceDadosRubrica => $oValorDadosRubrica) {
-    	
     	
       // a cada objeto dentro do array verificamos a propriedade acao
     	switch ($oValorDadosRubrica->acao) {
       	
       	case  '1' :   // 1 = ALTERAR o REGISTRO EXISTENTE
       		
-      			db_inicio_transacao();
+      		db_inicio_transacao();
             $iAnoFolha             = db_anofolha();
             $iMesFolha             = db_mesfolha();
             $iMatricula            = $oValorDadosRubrica->matricula;

@@ -80,13 +80,13 @@ class cl_historicomps {
                  ed62_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_historicomps() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("historicomps");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_historicomps {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed62_i_codigo = ($this->ed62_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed62_i_codigo"]:$this->ed62_i_codigo);
        $this->ed62_i_historico = ($this->ed62_i_historico == ""?@$GLOBALS["HTTP_POST_VARS"]["ed62_i_historico"]:$this->ed62_i_historico);
@@ -119,7 +119,7 @@ class cl_historicomps {
      }
    }
    // funcao para inclusao
-   function incluir ($ed62_i_codigo){
+   public function incluir ($ed62_i_codigo){
       $this->atualizacampos();
      if($this->ed62_i_historico == null ){
        $this->erro_sql = " Campo Histórico não informado.";
@@ -736,12 +736,12 @@ class cl_historicomps {
      return $sql;
   }
 
-   function sql_query_historico ( $ed62_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_historico ( $ed62_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
    $sql = "select ";
    if ($campos != "*" ) {
 
-     $campos_sql = split("#",$campos);
+     $campos_sql = explode("#",$campos);
      $virgula    = "";
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -781,7 +781,7 @@ class cl_historicomps {
    if ($ordem != null ) {
 
      $sql        .= " order by ";
-     $campos_sql  = split("#",$ordem);
+     $campos_sql  = explode("#",$ordem);
      $virgula     = "";
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -796,7 +796,7 @@ class cl_historicomps {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -822,7 +822,7 @@ class cl_historicomps {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -836,12 +836,12 @@ class cl_historicomps {
     return $sSql;
 
   }
-   function sql_query_disciplina_etapa ($ed62_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_disciplina_etapa ($ed62_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -867,7 +867,7 @@ class cl_historicomps {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

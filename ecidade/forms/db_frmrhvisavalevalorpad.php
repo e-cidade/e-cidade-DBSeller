@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("rh01_numcgm");
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($rh49_anousu)){
         $rh49_anousu = db_anofolha();
       }
@@ -52,7 +52,7 @@ $clrotulo->label("rh01_numcgm");
       db_input('rh49_anousu',4,$Irh49_anousu,true,'text',3,"")
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input('rh49_mesusu',2,$Irh49_mesusu,true,'text',3,"")
       ?>
     </td>
@@ -62,7 +62,7 @@ $clrotulo->label("rh01_numcgm");
       <b>Valor padrão:</b>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($rh49_valor)){
         $rh49_valor = 0;
       }

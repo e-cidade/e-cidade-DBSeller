@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cllogradcep->rotulo->label("db11_cep");
               <?=$Lj65_lograd?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j65_lograd",7,$Ij65_lograd,true,"text",4,"","chave_j65_lograd");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cllogradcep->rotulo->label("db11_cep");
               <?=$Lj14_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j14_nome",40,$Ij14_nome,true,"text",4,"","chave_j14_nome");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $cllogradcep->rotulo->label("db11_cep");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_logradcep.php")==true){
@@ -122,12 +122,12 @@ $cllogradcep->rotulo->label("db11_cep");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

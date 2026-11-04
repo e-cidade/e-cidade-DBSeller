@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,36 +47,36 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty57_codauto?>">
-       <?
+       <?php
        db_ancora(@$Ly57_codauto,"js_pesquisay57_codauto(true);",3);
        ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('y57_codauto',10,$Iy57_codauto,true,'text',3," onchange='js_pesquisay57_codauto(false);'");
       echo "<script>document.form1.y57_codauto.value='$y59_codauto'</script>";
       db_input('y59_codauto',10,$Iy59_codauto,true,'hidden',3,"");
       ?>
-       <?
+       <?php
 db_input('y50_nome',40,$Iy50_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty57_receit?>">
-       <?
+       <?php
        db_ancora(@$Ly57_receit,"js_pesquisay57_receit(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y57_receit',10,$Iy57_receit,true,'text',$db_opcao," onchange='js_pesquisay57_receit(false);'");
 if($db_opcao == 2){
   db_input('y57_receit',10,$Iy57_receit,true,'hidden',$db_opcao,"","y57_receit_old");
   echo "<script>document.form1.y57_receit_old.value = '$y57_receit'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -86,7 +86,7 @@ db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')
        <?=@$Ly57_descr?>
     </td>
     <td>
-<?
+<?php
 db_input('y57_descr',54,$Iy57_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,18 +104,18 @@ db_input('y57_valor',10,$Iy57_valor,true,'hidden',$db_opcao,"")
   <tr>
     <td colspan="2" align="center">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_autorec001.php?y59_codauto=<?=$y59_codauto?>'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="top">
-   <?
+   <?php
     $chavepri= array("y57_codauto"=>@$y57_codauto,"y57_receit"=>@$y57_receit);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y57_codauto,y57_receit,y57_descr";
@@ -186,7 +186,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_autorec.hide();
 }
 </script>
-<?
+<?php
 if(isset($y59_codauto) && $y59_codauto != ""){
   echo "<script>js_pesquisay57_codauto(false)</script>";
 }

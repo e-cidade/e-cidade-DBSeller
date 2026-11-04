@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ if(isset($incluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Inclusão de Prescrição Médica</b></legend>
-	<? include(modification("forms/db_frmfar_prescricaomedica.php"));?>
+	<?php include(modification("forms/db_frmfar_prescricaomedica.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -66,7 +66,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","fa20_c_prescricao",true,1,"fa20_c_prescricao",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clfar_prescricaomedica->erro_status=="0"){
     $clfar_prescricaomedica->erro(true,false);

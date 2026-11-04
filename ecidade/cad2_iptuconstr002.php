@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,7 +48,7 @@ if(isset($relatorio1)){
   // $chaves = são as caracteristicas da aba com as caracteristicas
   if(isset($chaves) && $chaves != ""){
 
-    $chaves = split("#",$chaves);
+    $chaves =explode("#",$chaves);
     for($i=0;$i<sizeof($chaves);$i++){
 
       // concatena na $codigo o código das caracteristicas selecionadas
@@ -198,8 +198,8 @@ if(isset($setor) && $setor != ""){
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
 
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  =explode(",",$setor);
+      $chaves1 =explode(",",$quadra);
       $and     = "";
       $setor   = "";
       $and     = "";
@@ -314,6 +314,24 @@ if(isset($demo) && $demo != ""){
     $demo1 = "CONSTRUÇÕES NÃO DEMOLIDAS";
   }
 }
+
+if(isset($status) && $status != ""){
+
+  if($status == "t"){
+
+    $status  = "";
+    $status1 = "TODAS ";
+  }elseif($status == "sa"){
+
+    $status  = " and iptubase.j01_baixa is null ";
+    $status1 = "ATIVAS";
+  }elseif($status == "sb"){
+
+    $status  = " and iptubase.j01_baixa is NOT null ";
+    $status1 = "BAIXADAS";
+  }
+}
+
 if(isset($origem) && $origem != ""){
 
   if($origem == "to"){
@@ -362,7 +380,7 @@ if(isset($chaves_caract) && $chaves_caract != ""){
                  ".(($anoini != "" || $anofim != "") && ($areaini != "" || $areafim != "")?"and":"")."
                  ".($anoini != ""?" j39_ano >= $anoini":"")."
                  ".($anofim != "" && $anoini != ""?"and":"")."
-                 ".($anofim != ""?" j39_ano <= $anofim":"")." $habite $setor $demo $origem $data ";
+                 ".($anofim != ""?" j39_ano <= $anofim":"")." $habite $setor $demo $status $origem $data ";
 
 }else{
 
@@ -380,7 +398,7 @@ if(isset($j14_semruas) && $j14_semruas!= "" && empty($j14_comruas)){
   $whereparte2 .= "and j39_codigo not in($j14_semruas) ";
 }
 
-$whereparte2 .= "$habite $setor $demo $origem $data";
+$whereparte2 .= "$habite $setor $demo $status $origem $data";
 
  $sql = "select distinct on (iptuconstr.j39_matric,iptuconstr.j39_idcons)
                 iptuconstr.*, x.*,
@@ -464,7 +482,7 @@ $sql = "select *,
             $pontuacao $ordem $order ";
 
 $result  = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros para o filtro selecionado.');
@@ -709,6 +727,10 @@ if(isset($demo) && $demo != ""){
   $oPdf->MultiCell(280,05,"DEMOLIÇÕES - ".$demo1,"0");
 }
 
+if(isset($status) && $status != ""){
+  $oPdf->MultiCell(280,05,"STATUS MATRICULA - ".$status1,"0");
+}
+
 if(isset($origem) && $origem != ""){
   $oPdf->MultiCell(280,05,"ORIGEM - ".$origem1,0,"L");
 }
@@ -743,8 +765,8 @@ if(isset($setores) && $setores != ""){
 
   if(isset($setor) && $setor != ""){
 
-    $chaves  = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves  =explode(",",$setores);
+    $chaves1 =explode(",",$quadra);
     $and     = "";
     $setores = "";
 

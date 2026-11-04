@@ -59,7 +59,7 @@ class RemuneracaoRPPS extends \BaseClassRepository
             "rh02_anousu = {$dbCompetencia->getAno()}",
             "rh02_mesusu = {$dbCompetencia->getMes()}",
             "rh01_admiss <= '{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-{$dbCompetencia->getUltimoDia()}'",
-            "rh02_tbprev in (select
+            "(rh02_tbprev in (select
                                 distinct on (r33_codtab)
                                 r33_codtab-2
                             from
@@ -72,7 +72,7 @@ class RemuneracaoRPPS extends \BaseClassRepository
                                 and regimeprevidencia.rh127_sequencial != 2
                                 and regimeprevidencia.rh127_sequencial is not null
                             where
-                                regimeprevidenciainssirf.rh129_instit = {$instituicao})",
+                                regimeprevidenciainssirf.rh129_instit = {$instituicao}) or rh261_regist is not null)",
             "rh02_instit = {$instituicao}"
         ];
 
@@ -101,13 +101,14 @@ class RemuneracaoRPPS extends \BaseClassRepository
                 INNER JOIN rhpessoal ON rhpessoal.rh01_regist = rhpessoalmov.rh02_regist
                     AND rhpessoal.rh01_instit = rhpessoalmov.rh02_instit
                 INNER JOIN cgm ON cgm.z01_numcgm = rhpessoal.rh01_numcgm
-                INNER JOIN pessoal.inssirf ON r33_anousu = rh02_anousu
+                left JOIN pessoal.inssirf ON r33_anousu = rh02_anousu
                     AND r33_mesusu = rh02_mesusu
                     AND r33_instit = rhpessoalmov.rh02_instit
                     AND r33_codtab = rhpessoalmov.rh02_tbprev + 2
-                INNER JOIN pessoal.regimeprevidenciainssirf ON
+                left JOIN pessoal.regimeprevidenciainssirf ON
                     rh129_codigo = r33_codigo
                     AND rh129_instit = r33_instit AND rh129_regimeprevidencia != 2
+                left join pessoal.rhcedencia on rh261_regist = rh02_regist and rh261_servidorcedido = 'S'
 SQL;
         $whereBase = "where "  . implode(' AND ', $where);
         /**

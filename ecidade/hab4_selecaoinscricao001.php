@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -90,7 +90,7 @@ db_postmemory($HTTP_POST_VARS);
               <tr>
                 <td><strong>Grupo :</strong></td>
                 <td>
-				          <?
+				          <?php
 				            $sSqlGrupoPrograma = "select ht03_sequencial, ht03_descricao from habitgrupoprograma  order by ht03_sequencial";
 				            $rsGrupoPrograma   = db_query($sSqlGrupoPrograma);
 				            db_selectrecord("ht03_habittipogrupoprograma", $rsGrupoPrograma, true, 1,"style='width:100%'",'','','','js_montaProgramas();',1);          
@@ -162,7 +162,7 @@ db_postmemory($HTTP_POST_VARS);
 
 
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

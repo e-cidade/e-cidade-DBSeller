@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE caddocumentoatributo
-class cl_caddocumentoatributo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db45_sequencial = 0; 
-   var $db45_caddocumento = 0; 
-   var $db45_codcam = 0; 
-   var $db45_descricao = null; 
-   var $db45_valordefault = null; 
-   var $db45_tipo = 0; 
-   var $db45_tamanho = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_caddocumentoatributo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db45_sequencial = 0;
+   var $db45_caddocumento = 0;
+   var $db45_codcam = 0;
+   var $db45_descricao = null;
+   var $db45_valordefault = null;
+   var $db45_tipo = 0;
+   var $db45_tamanho = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db45_sequencial = int4 = Código Atributo 
-                 db45_caddocumento = int4 = Documento 
-                 db45_codcam = int4 = Campo Referência 
-                 db45_descricao = varchar(100) = Descrição 
-                 db45_valordefault = varchar(100) = Valor Default 
-                 db45_tipo = int4 = Tipo de Atributo 
-                 db45_tamanho = int4 = Tamanho do Campo 
+                 db45_sequencial = int4 = Código Atributo
+                 db45_caddocumento = int4 = Documento
+                 db45_codcam = int4 = Campo Referência
+                 db45_descricao = varchar(100) = Descrição
+                 db45_valordefault = varchar(100) = Valor Default
+                 db45_tipo = int4 = Tipo de Atributo
+                 db45_tamanho = int4 = Tamanho do Campo
                  ";
-   //funcao construtor da classe 
-   function cl_caddocumentoatributo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("caddocumentoatributo"); 
+     $this->rotulo = new rotulo("caddocumentoatributo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_caddocumentoatributo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db45_sequencial = ($this->db45_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db45_sequencial"]:$this->db45_sequencial);
        $this->db45_caddocumento = ($this->db45_caddocumento == ""?@$GLOBALS["HTTP_POST_VARS"]["db45_caddocumento"]:$this->db45_caddocumento);
@@ -89,9 +89,9 @@ class cl_caddocumentoatributo {
      }
    }
    // funcao para inclusao
-   function incluir ($db45_sequencial){ 
+   public function incluir ($db45_sequencial){
       $this->atualizacampos();
-     if($this->db45_caddocumento == null ){ 
+     if($this->db45_caddocumento == null ){
        $this->erro_sql = " Campo Documento nao Informado.";
        $this->erro_campo = "db45_caddocumento";
        $this->erro_banco = "";
@@ -100,10 +100,10 @@ class cl_caddocumentoatributo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db45_codcam == null ){ 
+     if($this->db45_codcam == null ){
        $this->db45_codcam = "0";
      }
-     if($this->db45_descricao == null ){ 
+     if($this->db45_descricao == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "db45_descricao";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_caddocumentoatributo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db45_tipo == null ){ 
+     if($this->db45_tipo == null ){
        $this->erro_sql = " Campo Tipo de Atributo nao Informado.";
        $this->erro_campo = "db45_tipo";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_caddocumentoatributo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db45_tamanho == null ){ 
+     if($this->db45_tamanho == null ){
        $this->erro_sql = " Campo Tamanho do Campo nao Informado.";
        $this->erro_campo = "db45_tamanho";
        $this->erro_banco = "";
@@ -131,16 +131,16 @@ class cl_caddocumentoatributo {
        return false;
      }
      if($db45_sequencial == "" || $db45_sequencial == null ){
-       $result = db_query("select nextval('caddocumentoatributo_db45_sequencial_seq')"); 
+       $result = db_query("select nextval('caddocumentoatributo_db45_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: caddocumentoatributo_db45_sequencial_seq do campo: db45_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: caddocumentoatributo_db45_sequencial_seq do campo: db45_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db45_sequencial = pg_result($result,0,0); 
+       $this->db45_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from caddocumentoatributo_db45_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db45_sequencial)){
@@ -151,10 +151,10 @@ class cl_caddocumentoatributo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db45_sequencial = $db45_sequencial; 
+         $this->db45_sequencial = $db45_sequencial;
        }
      }
-     if(($this->db45_sequencial == null) || ($this->db45_sequencial == "") ){ 
+     if(($this->db45_sequencial == null) || ($this->db45_sequencial == "") ){
        $this->erro_sql = " Campo db45_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -163,25 +163,25 @@ class cl_caddocumentoatributo {
        return false;
      }
      $sql = "insert into caddocumentoatributo(
-                                       db45_sequencial 
-                                      ,db45_caddocumento 
-                                      ,db45_codcam 
-                                      ,db45_descricao 
-                                      ,db45_valordefault 
-                                      ,db45_tipo 
-                                      ,db45_tamanho 
+                                       db45_sequencial
+                                      ,db45_caddocumento
+                                      ,db45_codcam
+                                      ,db45_descricao
+                                      ,db45_valordefault
+                                      ,db45_tipo
+                                      ,db45_tamanho
                        )
                 values (
-                                $this->db45_sequencial 
-                               ,$this->db45_caddocumento 
-                               ,$this->db45_codcam 
-                               ,'$this->db45_descricao' 
-                               ,'$this->db45_valordefault' 
-                               ,$this->db45_tipo 
-                               ,$this->db45_tamanho 
+                                $this->db45_sequencial
+                               ,$this->db45_caddocumento
+                               ,$this->db45_codcam
+                               ,'$this->db45_descricao'
+                               ,'$this->db45_valordefault'
+                               ,$this->db45_tipo
+                               ,$this->db45_tamanho
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Atributos do Documento ($this->db45_sequencial) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_caddocumentoatributo {
        $resac = db_query("insert into db_acount values($acount,2750,17924,'','".AddSlashes(pg_result($resaco,0,'db45_tamanho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db45_sequencial=null) { 
+   public function alterar ($db45_sequencial=null) {
       $this->atualizacampos();
      $sql = " update caddocumentoatributo set ";
      $virgula = "";
-     if(trim($this->db45_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_sequencial"])){ 
+     if(trim($this->db45_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_sequencial"])){
        $sql  .= $virgula." db45_sequencial = $this->db45_sequencial ";
        $virgula = ",";
-       if(trim($this->db45_sequencial) == null ){ 
+       if(trim($this->db45_sequencial) == null ){
          $this->erro_sql = " Campo Código Atributo nao Informado.";
          $this->erro_campo = "db45_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_caddocumentoatributo {
          return false;
        }
      }
-     if(trim($this->db45_caddocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_caddocumento"])){ 
+     if(trim($this->db45_caddocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_caddocumento"])){
        $sql  .= $virgula." db45_caddocumento = $this->db45_caddocumento ";
        $virgula = ",";
-       if(trim($this->db45_caddocumento) == null ){ 
+       if(trim($this->db45_caddocumento) == null ){
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "db45_caddocumento";
          $this->erro_banco = "";
@@ -251,17 +251,17 @@ class cl_caddocumentoatributo {
          return false;
        }
      }
-     if(trim($this->db45_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_codcam"])){ 
-        if(trim($this->db45_codcam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db45_codcam"])){ 
-           $this->db45_codcam = "0" ; 
-        } 
+     if(trim($this->db45_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_codcam"])){
+        if(trim($this->db45_codcam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db45_codcam"])){
+           $this->db45_codcam = "0" ;
+        }
        $sql  .= $virgula." db45_codcam = $this->db45_codcam ";
        $virgula = ",";
      }
-     if(trim($this->db45_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_descricao"])){ 
+     if(trim($this->db45_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_descricao"])){
        $sql  .= $virgula." db45_descricao = '$this->db45_descricao' ";
        $virgula = ",";
-       if(trim($this->db45_descricao) == null ){ 
+       if(trim($this->db45_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db45_descricao";
          $this->erro_banco = "";
@@ -271,14 +271,14 @@ class cl_caddocumentoatributo {
          return false;
        }
      }
-     if(trim($this->db45_valordefault)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_valordefault"])){ 
+     if(trim($this->db45_valordefault)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_valordefault"])){
        $sql  .= $virgula." db45_valordefault = '$this->db45_valordefault' ";
        $virgula = ",";
      }
-     if(trim($this->db45_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_tipo"])){ 
+     if(trim($this->db45_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_tipo"])){
        $sql  .= $virgula." db45_tipo = $this->db45_tipo ";
        $virgula = ",";
-       if(trim($this->db45_tipo) == null ){ 
+       if(trim($this->db45_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Atributo nao Informado.";
          $this->erro_campo = "db45_tipo";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_caddocumentoatributo {
          return false;
        }
      }
-     if(trim($this->db45_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_tamanho"])){ 
+     if(trim($this->db45_tamanho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db45_tamanho"])){
        $sql  .= $virgula." db45_tamanho = $this->db45_tamanho ";
        $virgula = ",";
-       if(trim($this->db45_tamanho) == null ){ 
+       if(trim($this->db45_tamanho) == null ){
          $this->erro_sql = " Campo Tamanho do Campo nao Informado.";
          $this->erro_campo = "db45_tamanho";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_caddocumentoatributo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Atributos do Documento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db45_sequencial;
@@ -357,14 +357,14 @@ class cl_caddocumentoatributo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db45_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db45_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db45_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -396,7 +396,7 @@ class cl_caddocumentoatributo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Atributos do Documento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db45_sequencial;
@@ -424,11 +424,11 @@ class cl_caddocumentoatributo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -450,11 +450,11 @@ class cl_caddocumentoatributo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db45_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db45_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,15 +469,15 @@ class cl_caddocumentoatributo {
      $sql2 = "";
      if($dbwhere==""){
        if($db45_sequencial!=null ){
-         $sql2 .= " where caddocumentoatributo.db45_sequencial = $db45_sequencial "; 
-       } 
+         $sql2 .= " where caddocumentoatributo.db45_sequencial = $db45_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,11 +486,11 @@ class cl_caddocumentoatributo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db45_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db45_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,15 +503,15 @@ class cl_caddocumentoatributo {
      $sql2 = "";
      if($dbwhere==""){
        if($db45_sequencial!=null ){
-         $sql2 .= " where caddocumentoatributo.db45_sequencial = $db45_sequencial "; 
-       } 
+         $sql2 .= " where caddocumentoatributo.db45_sequencial = $db45_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

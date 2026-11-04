@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $db_opcao = 1;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js, prototype.js, strings.js, windowAux.widget.js, datagrid.widget.js, dbmessageBoard.widget.js");
     db_app::load("estilos.css, grid.style.css");
     ?>
@@ -60,7 +60,7 @@ $db_opcao = 1;
                   <b>Período : </b>
                 </td>
                 <td align="left" nowrap>
-                  <? 
+                  <?php 
                     db_inputdata('datainicial',null,null,null,true,'text',1,"");                 
                     echo "<b> a </b>";
                     db_inputdata('datafinal',null,null,null,true,'text',1,"");
@@ -69,12 +69,12 @@ $db_opcao = 1;
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted47_i_codigo?>">
-                  <?
+                  <?php
                   db_ancora(@$Led61_i_aluno,"js_pesquisaed47_i_codigo(true);",$db_opcao);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ed47_i_codigo',10,@$Ied47_i_codigo,true,'text',3,"");
                   db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,"");
                   ?>
@@ -91,7 +91,7 @@ $db_opcao = 1;
                value="Limpar Filtros">
       </center>
     </form>
-  <? 
+  <?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -122,7 +122,7 @@ $iModulo = db_getsession("DB_modulo");
                 <tr>
                     <td colspan="2">
                         <button type="button" value="Processar" id="procurar" name="procurar"
-                                onclick="js_procurar()"
+                                onclick="js_codigoCalendario()"
                                 style="float: right; margin-top: 7px" disabled>
                             <i class="far fa-file-pdf"></i>
                             Processar
@@ -165,9 +165,9 @@ $iModulo = db_getsession("DB_modulo");
         return resultado;
     }
 
-    function js_procurar() {
+    function js_procurar(response) {
         let bairros = $F('select_bairro');
-        let calendarios = $F('select_calendario');
+        let calendarios = response.aResult.map(Object => Object.ed52_i_codigo);
         let etapas = $F('select_etapa');
 
         let jan = window.open(
@@ -182,9 +182,7 @@ $iModulo = db_getsession("DB_modulo");
     function js_bairro() {
         let oParam = new Object();
         oParam.exec = "getBairrosQuadroVagas";
-
         let url = 'edu4_escola.RPC.php';
-
         js_webajax(oParam, 'js_retornoPesquisaBairro', url);
     }
 
@@ -215,7 +213,6 @@ $iModulo = db_getsession("DB_modulo");
         let oParam = new Object();
         oParam.exec = "getCalendariosBairrosQuadroVagas";
         oParam.bairros = $F('select_bairro');
-        // console.log(oParam);
         let url = 'edu4_escola.RPC.php';
         js_webajax(oParam, 'js_retornoPesquisaCalendarioBairro', url);
     }
@@ -276,6 +273,19 @@ $iModulo = db_getsession("DB_modulo");
         }
         $('select_etapa').disabled = false;
         $('procurar').disabled = false;
+    }
+
+    function js_codigoCalendario() {
+        let oParam = new Object();
+        oParam.exec = "getCodigoCalendario";
+        oParam.calendarios = $F('select_calendario');
+        let url = 'edu4_escola.RPC.php';
+        js_webajax(oParam, 'js_retornoCodigoCalendario', url);
+    }
+
+    function js_retornoCodigoCalendario(oRetorno) {
+        let response = JSON.parse(oRetorno.responseText);
+        js_procurar(response);
     }
 
 </script>

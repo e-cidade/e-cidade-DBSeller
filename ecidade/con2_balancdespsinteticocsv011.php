@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ function js_emite(){
         </tr>
         <tr>
           <td colspan="2">
-          <?
+          <?php
             db_selinstit("",400,150);
           ?>
           </td>
@@ -117,7 +117,7 @@ function js_emite(){
                <tr>
                  <td align="right" ><strong>Nível :</strong></td>
                  <td>
-                 <?
+                 <?php
                    $xy = array('1B'=>'Órgão','2A'=>'Unidade','3B'=>'Função','4B'=>'Subfunção','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento','8B'=>'Recurso');
               	   db_select('nivel',$xy,true,2,"");
 	               ?>
@@ -137,7 +137,7 @@ function js_emite(){
                <tr>
                  <td nowrap align="right" title="<?=@$TDBtxt21?>"><?=@$LDBtxt21?></td>
                  <td>
-                 <?
+                 <?php
                    $DBtxt21_ano = db_getsession("DB_anousu");
                    $DBtxt21_mes = '01';
                    $DBtxt21_dia = '01';
@@ -148,7 +148,7 @@ function js_emite(){
                <tr>
                  <td nowrap align="right" title="<?=@$TDBtxt22?>"><?=@$LDBtxt22?></td>
                  <td>
-                 <?
+                 <?php
                    $DBtxt22_ano = date("Y",db_getsession("DB_datausu"));
                    $DBtxt22_mes = date("m",db_getsession("DB_datausu"));
                    $DBtxt22_dia = date("d",db_getsession("DB_datausu"));

@@ -1,0 +1,276 @@
+[
+{
+  "ordem":1,
+  "totalizadora": true,
+  "valorManual":false,
+  "somar": [3,4,5,6,7,8],
+  "descricao": "DESPESA BRUTA COM PESSOAL (I)",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":false, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":2,
+  "totalizadora": true,
+  "valorManual":false,
+  "somar": [3,4],
+  "descricao": "Pessoal Ativo",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":false, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":3,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Vencimentos, Vantagens e Outras Despesas Variáveis",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":4,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Obrigações Patronais",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":5,
+  "totalizadora": true,
+  "valorManual":false,
+  "somar": [6,7,8],
+  "descricao": "Pessoal Inativo e Pensionistas",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":false, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":6,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Aposentadorias, Reserva e Reformas",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]
+},
+{
+  "ordem":7,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Pensões",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":8,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Outras despesas de pessoal decorrentes de contratos de terceirização ou de contratação de forma indireta (§ 1º do art. 18 da LRF)",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":9,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Despesa com Pessoal não Executada Orçamentariamente ",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":10,
+  "totalizadora": true,
+  "valorManual":false,
+  "somar": [11,12,13,14,15,16,17],
+  "descricao": "DESPESAS NÃO COMPUTADAS (II) (§ 1º do art. 19 da LRF) ",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":false, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":11,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Indenizações por Demissão e Incentivos à Demissão Voluntária",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":12,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Decorrentes de Decisão Judicial de Período Anterior ao da Apuração",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":13,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Despesas de Exercícios Anteriores de Período Anterior ao da Apuração",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":14,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Inativos e Pensionistas com Recursos Vinculados",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+
+  "ordem":15,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Agentes Comunitários de Saúde e de Combate às Endemias com Recursos Vinculados (CF, art. 198, §11)",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":16,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Parcela dedutível referente ao piso salarial do Enfermeiro, Técnico de Enfermagem, Auxiliar de Enfermagem e Parteira (ADCT, art. 38, §2º)",
+  "colunas": [
+            {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+            {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+            {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":17,
+  "totalizadora": false,
+  "valorManual":true,
+  "descricao": "Outras Deduções Constitucionais ou Legais",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":true, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":true, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":18,
+  "totalizadora": true,
+  "valorManual":false,
+  "subtrair": [1, 10],
+  "descricao": "DESPESA LÍQUIDA COM PESSOAL (III) = (I - II)",
+  "colunas": [
+    {"descricao": "Evolução Mensal", "permiteEdicaoManual":false, "coluna": "vlr_mes", "natureza": "C"},
+    {"descricao": "Total (Últimos 12 meses)", "permiteEdicaoManual":false, "coluna": "total_meses"},
+    {"descricao": "Inscritas em Restos a Pagar Não Processados", "permiteEdicaoManual":false, "coluna": "inscricao_menos_anulacao_rp_nao_processado", "natureza": "D"}
+]},
+{
+  "ordem":19,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "RECEITA CORRENTE LÍQUIDA - RCL (IV)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":20,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "(-) Transferências obrigatórias da União relativas às emendas individuais (art. 166-A, § 1º, da CF)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":21,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "(-) Transferências obrigatórias da União relativas às emendas de bancada (art. 166, § 16 da CF)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":22,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "(-) Transferências da União relativas à remuneração dos agentes comunitários de saúde e de combate às endemias (CF, art. 198, §11)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":23,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "(-) Outras Deduções Constitucionais ou Legais",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":24,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DA DESPESA COM PESSOAL (V)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":25,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "DESPESA TOTAL COM PESSOAL - DTP (VI) = (III a + III b)",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":26,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "LIMITE MÁXIMO (VII) (incisos I, II e III, art. 20 da LRF) ",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":27,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "LIMITE PRUDENCIAL (VIII) = (0,95 x IX) (parágrafo único do art. 22 da LRF) ",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]},
+{
+  "ordem":28,
+  "totalizadora": false,
+  "valorManual":false,
+  "descricao": "LIMITE DE ALERTA (IX) = (0,90 x IX) (inciso II do §1º do art. 59 da LRF) ",
+  "colunas": [
+    {"descricao": "Valor", "permiteEdicaoManual":false, "coluna": "valor" },
+    {"descricao": "% SOBRE A RCL AJUSTADA", "permiteEdicaoManual":false, "coluna": "percentual"}
+]}
+]

@@ -1069,7 +1069,7 @@ function sql_query_ext( $oid = null, $campos = "sau_config.oid,*", $ordem = null
   $sql = "select ";
   if ($campos != "*") {
 
-    $campos_sql = split ( "#", $campos );
+    $campos_sql = explode( "#", $campos );
     $virgula    = "";
 
     for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {
@@ -1100,7 +1100,7 @@ function sql_query_ext( $oid = null, $campos = "sau_config.oid,*", $ordem = null
   if ($ordem != null) {
 
     $sql       .= " order by ";
-    $campos_sql = split ( "#", $ordem );
+    $campos_sql = explode( "#", $ordem );
     $virgula    = "";
 
     for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {

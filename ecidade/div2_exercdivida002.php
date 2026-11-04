@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_sql.php"));
@@ -87,7 +87,7 @@ if(isset($exerc)){
   $selexercicios = ' and v01_exerc > '.str_replace("-",",",$exerc).' ';
   $anos=str_replace("-",",",$exerc);
   $head4 = "Exercicíos Selecionados: $anos ";
-	$matanos=split("-",$exerc);
+	$matanos= explode("-",$exerc);
 	$menorexerc=0;
 	$maiorexerc=0;
 	for ($contanos=0; $contanos < sizeof($matanos); $contanos++) {
@@ -103,7 +103,7 @@ if(isset($exerc)){
 
 //  $exercicios = " and v01_exerc between $menorexerc and $maiorexerc ";
 //  $selexercicios = " and v01_exerc between $menorexerc and $maiorexerc ";
-	
+
 }else{
   $exercicios = '';
 }
@@ -141,8 +141,8 @@ if ($ordem == 'numerica'){
 
 //echo $campos."<br>";
 //echo $exercicios;exit;
-$sql1 = "select k22_data as xdata 
-             from debitos 
+$sql1 = "select k22_data as xdata
+             from debitos
              where k22_instit = $instit
              order by k22_data desc limit 1";
 $result1 = db_query($sql1);
@@ -154,7 +154,7 @@ if ($proced != "" or $agproced == "S") {
 	$sql = "
 					select $matric,
 			z01_nome,
-			z01_cgccpf,  
+			z01_cgccpf,
 			z01_ender,
 			z01_compl,
 			z01_bairro,
@@ -167,7 +167,7 @@ if ($proced != "" or $agproced == "S") {
 									$agrupa1
 			$agrupa2
 					from debitos
-					inner join divida  on v01_numpre = k22_numpre 
+					inner join divida  on v01_numpre = k22_numpre
 					                  and v01_numpar = k22_numpar and k22_data = '$xdata'
 							          and v01_instit = ".db_getsession('DB_instit')."
   				    inner join proced  on v01_proced = v03_codigo
@@ -186,10 +186,10 @@ if ($proced != "" or $agproced == "S") {
 					$agrupa1
 			$agrupa2
 				 ";
-		//die($agrupa2);		 
+		//die($agrupa2);
 	if($considera_debitos==1) {
     //die($exercicios);
-		$sql .= " union all 
+		$sql .= " union all
 					select  $matric,
 									z01_nome,
 									z01_cgccpf,
@@ -205,26 +205,26 @@ if ($proced != "" or $agproced == "S") {
 											$agrupa1
 									$agrupa2
 											from debitos
-													 inner join divida on v01_numpre = k22_numpre 
-													                  and v01_numpar = k22_numpar 
+													 inner join divida on v01_numpre = k22_numpre
+													                  and v01_numpar = k22_numpar
 																	  and k22_data   = '$xdata'
-																	  and v01_instit = ".db_getsession('DB_instit')." 
+																	  and v01_instit = ".db_getsession('DB_instit')."
 													 inner join proced on v01_proced = v03_codigo
 													                  and v03_instit = ".db_getsession('DB_instit')."
 													 $xtipo
 											         inner join ( select $matric1
 																				from debitos
-																				 inner join divida on v01_numpre = k22_numpre 
-																				                  and v01_numpar = k22_numpar 
+																				 inner join divida on v01_numpre = k22_numpre
+																				                  and v01_numpar = k22_numpar
 																													and k22_data = '$xdata'
-																													and v01_instit = ".db_getsession('DB_instit')." 
+																													and v01_instit = ".db_getsession('DB_instit')."
 																				 inner join proced on v01_proced = v03_codigo
-																				                  and v03_instit = ".db_getsession('DB_instit')." 
+																				                  and v03_instit = ".db_getsession('DB_instit')."
 																				 inner join arretipo on arretipo.k00_tipo = k22_tipo
 																					 $xtipo
 																			where k03_tipo = 5 $exercicios $proced
 																			group by $matric1
-																			) as ver on ver.$matric1 = debitos.$matric1 
+																			) as ver on ver.$matric1 = debitos.$matric1
 								 where k22_tipo = 5 and k22_exerc > $maiorexerc $proced and k22_data = '$xdata' and k22_instit = $instit
 								 group by $matric,
 									z01_nome,
@@ -240,7 +240,7 @@ if ($proced != "" or $agproced == "S") {
 	}
 
 	$sql_exe = "
-	 
+
 	select *,
 		sum(valor) over (partition by $matric $agrupa1) as soma_por_cgm_por_ano,
 		sum(valor) over (partition by $matric $agrupa1 order by $matric $ordem_procedencia $agrupa1) as soma_por_cgm_por_ano_linha,
@@ -264,8 +264,8 @@ if ($proced != "" or $agproced == "S") {
 			round(sum(k22_vlrcor+k22_juros+k22_multa),2) as valor
 					$agrupa1
 			$agrupa2
-					from ($sql) as  x 
-				 
+					from ($sql) as  x
+
 		 group by $matric,
 			z01_nome,
 			z01_cgccpf,
@@ -275,7 +275,7 @@ if ($proced != "" or $agproced == "S") {
 			z01_munic
 					$agrupa1
 			$agrupa2
-		) as x 
+		) as x
 	where valor >= $valor_inicial::numeric and valor <= $valor_final::numeric
 
 					order by $ordem $ordemtipo ,$matric $ordem_ano_exercicio $ordem_procedencia
@@ -313,7 +313,7 @@ if ($proced != "" or $agproced == "S") {
 				 ";
 	if($considera_debitos==1){
     //die("Exerc: $exerc  Menor Exerc: $menorexerc  Maior Exerc: $maiorexerc Agrupa1 $agrupa1  Agrupa2 $agrupa2");
-		$sql .= " union all 
+		$sql .= " union all
 					select $matric,
 			z01_nome,
 			z01_cgccpf,
@@ -335,7 +335,7 @@ if ($proced != "" or $agproced == "S") {
 															 $xtipo
 													where  k22_tipo = 5 and k22_exerc in (" . str_replace("-",",",$exerc) . ") and k22_data = '$xdata' and k22_instit = $instit
 													group by $matric1
-													) as ver on ver.$matric1 = debitos.$matric1 
+													) as ver on ver.$matric1 = debitos.$matric1
 		 where k22_tipo = 5 and k22_exerc > $maiorexerc and k22_data = '$xdata' and k22_instit = $instit
 		 group by $matric,
 			z01_nome,
@@ -349,7 +349,7 @@ if ($proced != "" or $agproced == "S") {
 	}
 
 	$sql_exe = "
-	 
+
 	select *,
 		sum(valor) over (partition by $matric $agrupa1) as soma_por_cgm_por_ano,
 		sum(valor) over (partition by $matric $agrupa1 order by $matric $agrupa1) as soma_por_cgm_por_ano_linha,
@@ -372,8 +372,8 @@ if ($proced != "" or $agproced == "S") {
 			round(sum(k22_multa),2) as k22_multa,
 			round(sum(k22_vlrcor+k22_juros+k22_multa),2) as valor
 					$agrupa1
-					from ($sql) as  x 
-				 
+					from ($sql) as  x
+
 		 group by $matric,
 			z01_nome,
 			z01_cgccpf,
@@ -382,10 +382,10 @@ if ($proced != "" or $agproced == "S") {
 			z01_bairro,
 			z01_munic
 					$agrupa1
-		) as x 
+		) as x
 	where valor >= $valor_inicial::numeric and valor <= $valor_final::numeric
 	order by $ordem $ordemtipo ,$matric $ordem_ano_exercicio $limite	";
-	
+
 }
 //die($sql_exe);
 $result = db_query($sql_exe);
@@ -393,9 +393,9 @@ if(pg_numrows($result)==0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dividas em aberto. ($exercicios).');
 }
 //die ($sql);
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(220);
 $pdf->SetFont('Arial','B',7);
@@ -415,7 +415,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
     }else{
       $pdf->addpage();
     }
-     
+
      $pdf->Cell(15,5,substr($$xmatric,0,10),1,0,"C",1);
      $pdf->Cell(63,5,$RLz01_nome,1,0,"C",1);
      if($agexerc == "S")
@@ -441,7 +441,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
     $pdf->Cell(20,5,$v01_proced,0,0,"C",0);
     $pdf->Cell(55,5,$v03_descr,0,0,"L",0);
   }
-  $cpfCnpj = strlen($z01_cgccpf) == 11 ? 'cpf' : 'cnpj'; 
+  $cpfCnpj = strlen($z01_cgccpf) == 11 ? 'cpf' : 'cnpj';
   $pdf->cell(26,5,db_formatar($z01_cgccpf,$cpfCnpj),0,0,"C",0);
   $pdf->cell(16,5,db_formatar($k22_vlrhis,'f'),0,0,"R",0);
   $pdf->cell(17,5,db_formatar($k22_vlrcor,'f'),0,0,"R",0);
@@ -454,8 +454,8 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
   $totaljur += $k22_juros;
   $totalmul += $k22_multa;
   $totalval += $valor;
-  
-  
+
+
   if($analitico == 1 ){
 	if ($soma_por_cgm_por_ano_linha==$soma_por_cgm_por_ano)
 		{
@@ -475,7 +475,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
 			$pdf->cell(17,5,db_formatar($soma_por_cgm_por_ano,'f'),0,1,"R",0);
 		}
     }
-}			
+}
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(78,7,'Total de Registros : '.$totalreg,'T',0,"L",0);
 if($agexerc == "S")
@@ -491,7 +491,7 @@ $pdf->cell(17,7,db_formatar($totaljur,'f'),'T',0,"R",0);
 $pdf->cell(16,7,db_formatar($totalmul,'f'),'T',0,"R",0);
 $pdf->cell(17,7,db_formatar($totalval,'f'),'T',1,"R",0);
 
-	
+
 $pdf->Output();
 
 ?>

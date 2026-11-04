@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo01_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o01_sequencial',10,$Io01_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -51,7 +51,7 @@ db_input('o01_sequencial',10,$Io01_sequencial,true,'text',3,"")
        <?=@$Lo01_anoinicio?>
     </td>
     <td> 
-<?
+<?php
 db_input('o01_anoinicio',10,$Io01_anoinicio,true,'text',$db_opcao,"onchange='js_adicionaAno()'");
 ?>
     </td>
@@ -61,7 +61,7 @@ db_input('o01_anoinicio',10,$Io01_anoinicio,true,'text',$db_opcao,"onchange='js_
        <?=@$Lo01_anofinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('o01_anofinal',10,$Io01_anofinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -71,7 +71,7 @@ db_input('o01_anofinal',10,$Io01_anofinal,true,'text',$db_opcao,"")
        <?=@$Lo01_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o01_descricao',50,$Io01_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -81,7 +81,7 @@ db_input('o01_descricao',50,$Io01_descricao,true,'text',$db_opcao,"")
        <?=@$Lo01_numerolei?>
     </td>
     <td> 
-<?
+<?php
 db_input('o01_numerolei',10,$Io01_numerolei,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ppalei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

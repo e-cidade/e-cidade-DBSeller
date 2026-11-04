@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 <head>
 <title>Documento sem t&iacute;tulo</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js");
 db_app::load("estilos.css, grid.style.css");
 ?>

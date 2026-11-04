@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,12 +84,12 @@ if ($oGet->tipo ==1) {
   </tr>
 </table>
 <center>
-<?
+<?php
 include(modification("forms/db_frmorccenarioeconomicoconplano.php"));
 ?>
 </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

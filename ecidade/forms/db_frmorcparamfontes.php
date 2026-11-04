@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("o57_fonte");
        <?=@$Lo43_anousu?>
     </td>
     <td> 
-<?
+<?php
 $o43_anousu = db_getsession('DB_anousu');
 db_input('o43_anousu',4,$Io43_anousu,true,'text',$db_opcao,"")
 ?>
@@ -47,30 +47,30 @@ db_input('o43_anousu',4,$Io43_anousu,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$To43_codparrel?>">
-       <?
+       <?php
        db_ancora(@$Lo43_codparrel,"js_pesquisao43_codparrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o43_codparrel',8,$Io43_codparrel,true,'text',$db_opcao," onchange='js_pesquisao43_codparrel(false);'")
 ?>
-       <?
+       <?php
 db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To43_codfon?>">
-       <?
+       <?php
        db_ancora(@$Lo43_codfon,"js_pesquisao43_codfon(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o43_codfon',6,$Io43_codfon,true,'text',$db_opcao," onchange='js_pesquisao43_codfon(false);'")
 ?>
-       <?
+       <?php
 db_input('o57_fonte',15,$Io57_fonte,true,'text',3,'')
        ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_orcparamfontes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

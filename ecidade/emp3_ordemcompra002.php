@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -80,26 +80,26 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 								    m53_data,
 								    m51_obs,
 								    m51_valortotal,
-								    pc50_descr 
-	         from matordem 
+								    pc50_descr
+	         from matordem
 
 	                left join matordemanu on m53_codordem = m51_codordem
 		              left join matordemitem on m52_codordem = m51_codordem
 		              left join empempenho on m52_numemp = e60_numemp
-		              inner join cgm on z01_numcgm = m51_numcgm 
+		              inner join cgm on z01_numcgm = m51_numcgm
 		              inner join db_depart on coddepto = m51_depto
-		              left join pctipocompra on empempenho.e60_codcom = pctipocompra.pc50_codcom 
-		              
-		             
-		              
+		              left join pctipocompra on empempenho.e60_codcom = pctipocompra.pc50_codcom
+
+
+
 		       where $where ";
-    
-      //die($sql); 
-     
-     $result = db_query($sql); 
+
+      //die($sql);
+
+     $result = db_query($sql);
      if (pg_numrows($result)==0){
           db_redireciona('db_erros.php?fechar=true&db_erro=Este registro não possui ordem de compra.');
-     
+
      }
      db_fieldsmemory($result,0);
 
@@ -139,14 +139,14 @@ if(isset($m51_codordem) && $m51_codordem!=''){
       <table border="0">
         <tr>
           <td nowrap align="right" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
-          <td> 
-            <?
+          <td>
+            <?php
               db_input('m51_numcgm',20,$Im51_numcgm,true,'text',3)
             ?>
           </td>
           <td nowrap align="right" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
           <td>
-            <?
+            <?php
               db_input('z01_nome',48,$Iz01_nome,true,'text',3)
             ?>
           </td>
@@ -154,13 +154,13 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_codordem?>"><b>Ordem de Compra:</b></td>
           <td>
-	    <?
+	    <?php
               db_input('m51_codordem',20,$Im51_codordem,true,'text',3)
 	    ?>
 	  </td>
           <td nowrap align="right" title="<?=@$Tm53_data?>"><b>Data da anula&ccedil;&atilde;o:</b></td>
-          <td> 
-	    <?		
+          <td>
+	    <?php
        $ano=substr(@$m53_data,0,4);
 	     $mes=substr(@$m53_data,5,2);
 	     $dia=substr(@$m53_data,8,2);
@@ -168,11 +168,11 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 	    ?>
           </td>
         </tr>
-        
+
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data da emiss&atilde;o:</b></td>
-          <td> 
-	    <?
+          <td>
+	    <?php
              $ano=substr($m51_data,0,4);
 	     $mes=substr($m51_data,5,2);
 	     $dia=substr($m51_data,8,2);
@@ -181,36 +181,36 @@ if(isset($m51_codordem) && $m51_codordem!=''){
           </td>
           <td nowrap align="right" title="<?=@$descrdepto?>">
              <?=@$Lcoddepto?>
-          <td> 
-             <?
+          <td>
+             <?php
              db_input('m51_depto',6,$Im51_depto,true,'text',3);
              db_input('descrdepto',40,$Idescrdepto,true,'text',3);
              ?>
           </td>
         </tr>
-        
+
         <tr>
         <td nowrap align="right">
              <b>Tipo da Compra:</b>
         </td>
-        
+
         <td colspan="3">
-          <?
+          <?php
             db_input('pc50_descr',87,'',true,'text',3);
           ?>
         </td>
        </tr>
-   
-  <tr> 
+
+  <tr>
 	<td align='right'><b>Obs:</b></td>
    <td colspan='3' align='left'>
-	 <? 
+	 <?php
 	 db_textarea("m51_obs","","85",$Im51_obs,true,'text',3);
-	 
+
 	 ?>
 	  </td>
-        
-	</tr>  
+
+	</tr>
         <tr>
           <td colspan='4' align='center'>
 	  </td>
@@ -220,7 +220,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
     </tr>
     <tr>
    <td align='center' valign='top' colspan='1' align='center'>
-  <?if(isset($m51_codordem)){?>  
+  <?php if(isset($m51_codordem)){?>
      <table>
        <tr>
          <td>
@@ -243,17 +243,17 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 	   }
 	 ?>
 	 <b>
-	 <?
+	 <?php
 	  $alancar=$m51_valortotal-$lanca;
 	  $alancar=db_formatar($alancar,'f');
           $valortotal=db_formatar($m51_valortotal,'f');
 	 ?>
-	 Total da Ordem:<?db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?db_input('lancado',15,'',true,'text',3)?>A Lançar:<?db_input('alancar',15,'',true,'text',3)?>
+	 Total da Ordem:<?php db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?php db_input('lancado',15,'',true,'text',3)?>A Lançar:<?php db_input('alancar',15,'',true,'text',3)?>
 	 </b>
 	 </td>
        </tr>
      </table>
-  <?}?>  
+  <?php }?>
    </td>
   </tr>
 </table>

@@ -13,7 +13,7 @@ class HashGeneratorTest extends TestCase
 {
     private $key;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->key = time() . '_KEY';

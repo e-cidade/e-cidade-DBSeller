@@ -39,7 +39,6 @@ $db_opcao = 1;
 $db_botao = true;
 
 if (isset($incluir)) {
-
     try {
         db_inicio_transacao();
 
@@ -60,7 +59,6 @@ if (isset($incluir)) {
 
         $erroTransacao = false;
         if ($clcontabancaria->erro_status != 0) {
-
             if ($clcontabancaria->db83_contaplano == 't' && !empty($tipo_de_vinculo)) {
                 $contaBancaria = new ContaBancaria($clcontabancaria->db83_sequencial);
 
@@ -74,15 +72,12 @@ if (isset($incluir)) {
                     }
 
                     if (!empty($contaPadrao)) {
-
                         $contaPlano = new ContaPlanoPCASP($contaPadrao, db_getsession("DB_anousu"), null);
                         $contaPlano->setInclusao(true);
                         $contaPlano->setContaBancaria(new ContaBancaria($clcontabancaria->db83_sequencial));
                         $contaPlano->setInstituicao(db_getsession("DB_instit"));
                         $contaPlano->setRecurso('0');
                         $contaPlano->persistirReduzido();
-
-
                     }
                 }
             }
@@ -117,15 +112,12 @@ if (isset($incluir)) {
 </script>
 <?php
 if (isset($incluir)) {
-
     if ($clcontabancaria->erro_status == "0") {
-
         $clcontabancaria->erro(true, false);
         $db_botao = true;
         echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
         if ($clcontabancaria->erro_campo != "") {
-
             echo "<script> document.form1." . $clcontabancaria->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
             echo "<script> document.form1." . $clcontabancaria->erro_campo . ".focus();</script>";
         }

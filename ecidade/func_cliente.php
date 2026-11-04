@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcliente->rotulo->label("j99_nome");
               <?=$Lj99_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j99_codigo",5,$Ij99_codigo,true,"text",4,"","chave_j99_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcliente->rotulo->label("j99_nome");
               <?=$Lj99_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j99_nome",40,$Ij99_nome,true,"text",4,"","chave_j99_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcliente->rotulo->label("j99_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cliente.php")==true){
@@ -118,12 +118,12 @@ $clcliente->rotulo->label("j99_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

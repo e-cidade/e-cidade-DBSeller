@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,7 +112,7 @@ a.nome:hover {
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0"><tr><td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
-    <?	
+    <?php 
 	$mensagem_semdebitos = false;
 	if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) || isset($inscricao)) {
 	//aqui é pra se clicar no link da matricula em cai3_gerfinanc002.php
@@ -245,7 +245,7 @@ a.nome:hover {
                         <td class="tabcols" nowrap title="Clique Aqui para ver os dados cadastrais."> 
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
-                          <?
+                          <?php
 					  parse_str($arg);
 					  if(isset($matric))
 					    $Label = "<a href='' onclick='js_mostrabic_matricula();return false;'>Matrícula:</a>";
@@ -283,7 +283,7 @@ a.nome:hover {
                       </form>
                     </table></td>
                   <td width="67%" valign="top"> 
-                    <?
+                    <?php
 		    $numrows = pg_numrows($result);
 			   echo "<script>
 			   function js_envia(chave){
@@ -366,7 +366,7 @@ a.nome:hover {
             </td>
           </tr>
         </table>
-    <?
+    <?php
 	} else {
 	?>
     <form name="form1" method="post">
@@ -374,63 +374,63 @@ a.nome:hover {
           <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
               <td height="25" title="<?=$Tz01_nome?>"> 
-                <?
+                <?php
 				db_ancora($Lz01_nome,'js_mostranomes(true);',4)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("z01_numcgm",6,$Iz01_numcgm,true,'text',4," onchange='js_mostranomes(false);'")
 				?>
-                <?
+                <?php
 				db_input("z01_nome",40,$Iz01_nome,true,'text',5)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tj01_matric?>"> 
-                <?
+                <?php
 				db_ancora($Lj01_matric,'js_mostramatricula(true);',2)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("j01_matric",8,$Ij01_matric,true,'text',4)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tq02_inscr?>"> 
-                <?
+                <?php
 				db_ancora($Lq02_inscr,'js_mostrainscricao(true);',4)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("q02_inscr",8,$Iq02_inscr,true,'text',4)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tk00_numpre?>"> 
-                <?
+                <?php
 				db_ancora($Lk00_numpre,'js_mostranumpre(true);',3)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("k00_numpre",8,$Ik00_numpre,true,'text',4)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tv07_parcel?>"> 
-                <?
+                <?php
 				db_ancora($Lv07_parcel,'js_mostraparcel(true);',3)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("v07_parcel",8,$Iv07_parcel,true,'text',4)
 				?>
               </td>
@@ -441,13 +441,13 @@ a.nome:hover {
             </tr>
           </table>
         </form>
-    <?
+    <?php
 	}
 	?>
   </center>
 </td></tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -529,7 +529,7 @@ function js_mostrainscricao(mostra){
  
 	
 </script>
-<?
+<?php
 
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;

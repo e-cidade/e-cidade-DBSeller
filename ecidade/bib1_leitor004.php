@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -48,17 +48,17 @@ $db_opcao = 3;
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   </head>
   <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-  <?
+  <?php
     if (isset($chavepesquisa)) {
-    
+
       if ($tipo == "ALUNO") {
-        
+
         $campos  = "ed47_i_codigo as codigo, ed47_v_nome as nome, ed47_v_ender as endereco, ed47_c_numero as numero";
         $campos .= " , ed47_v_compl as complemento, ed47_v_bairro as bairro, censomunicend.ed261_c_nome as municipio";
         $campos .= " , censoufend.ed260_c_sigla as uf, ed47_v_cep as cep, ed47_v_ident as identidade, ed47_v_cpf as cpf";
         $campos .= " , ed47_v_pai as pai, ed47_v_mae as mae, ed47_v_sexo as sexo, ed47_v_telef as telefone";
         $campos .= " , ed47_d_nasc as data_nascimento, ed47_i_estciv as estado_civil, ed47_v_telcel as celular";
-        
+
         $sql  = "SELECT $campos                                                                                                \n";
         $sql .= "  FROM aluno                                                                                                  \n";
         $sql .= "       inner join pais                         on pais.ed228_i_codigo           = aluno.ed47_i_pais           \n";
@@ -70,7 +70,7 @@ $db_opcao = 3;
         $sql .= "       left  join censomunic as censomuniccert on censomuniccert.ed261_i_codigo = aluno.ed47_i_censomuniccert \n";
         $sql .= "       left  join censomunic as censomunicend  on censomunicend.ed261_i_codigo  = aluno.ed47_i_censomunicend  \n";
         $sql .= " WHERE ed47_i_codigo = $chavepesquisa";
-        
+
       } else if ($tipo == "FUNCIONARIO") {
 
         $campos = "case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as codigo,
@@ -91,7 +91,7 @@ $db_opcao = 3;
                    case when ed20_i_tiposervidor = 1 then cgmrh.z01_nasc else cgmcgm.z01_nasc end as data_nascimento,
                    case when ed20_i_tiposervidor = 1 then cgmrh.z01_estciv else cgmcgm.z01_estciv end as estado_civil,
                    case when ed20_i_tiposervidor = 1 then cgmrh.z01_telcel else cgmcgm.z01_telcel end as celular ";
-        
+
         $sql  = "SELECT $campos                                                                                     \n";
         $sql .= "  FROM rechumano                                                                                   \n";
         $sql .= "       left join rechumanopessoal on rechumanopessoal.ed284_i_rechumano = rechumano.ed20_i_codigo  \n";
@@ -107,7 +107,7 @@ $db_opcao = 3;
         $campos .= " , z01_cep as cep, z01_ident as identidade, z01_cgccpf as cpf, z01_pai as pai, z01_mae as mae";
         $campos .= " , z01_sexo as sexo, z01_telef as telefone, z01_nasc as data_nascimento, z01_estciv as estado_civil";
         $campos .= " , z01_telcel as celular ";
-        
+
         $sql  = "SELECT $campos                     \n";
         $sql .= "  FROM cgm                         \n";
         $sql .= " WHERE z01_numcgm = $chavepesquisa \n";
@@ -117,12 +117,12 @@ $db_opcao = 3;
         $campos .= " , ov02_compl as complemento, ov02_bairro as bairro, ov02_munic as municipio ,ov02_uf as uf";
         $campos .= " , ov02_cep as cep, ov02_ident as identidade, ov02_cnpjcpf as cpf, '' as pai, '' as mae";
         $campos .= ", '' as sexo, '' as telefone, '' as data_nascimento, '' as estado_civil, '' as celular ";
-        
+
         $sql  = " SELECT $campos                           \n";
         $sql .= "   from cidadao                           \n";
         $sql .= "  WHERE ov02_sequencial = $chavepesquisa  \n";
       }
-   
+
       $result = db_query($sql);
       db_fieldsmemory($result, 0);
   ?>
@@ -135,9 +135,9 @@ $db_opcao = 3;
                   <?="<b>CPF: </b>"?>
                 </td>
                 <td>
-                  <?db_input('cpf', 15, @$cpf, true, 'text', $db_opcao, "");?>
+                  <?php db_input('cpf', 15, @$cpf, true, 'text', $db_opcao, "");?>
                   <?="<b>Identidade: </b>"?>
-                  <?db_input('identidade', 15, @$identidade, true, 'text', $db_opcao);?>
+                  <?php db_input('identidade', 15, @$identidade, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -145,7 +145,7 @@ $db_opcao = 3;
                   <?="<b>Código: </b>"?>
                 </td>
                 <td nowrap>
-                  <?db_input('codigo', 10, $codigo, true, 'text', 3);?>
+                  <?php db_input('codigo', 10, $codigo, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -153,7 +153,7 @@ $db_opcao = 3;
                   <?="<b>Nome: </b>"?>
                 </td>
                 <td nowrap title="<?=@$nome?>">
-                  <?db_input('nome', 50, $nome, true, 'text', $db_opcao, "");?>
+                  <?php db_input('nome', 50, $nome, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -161,7 +161,7 @@ $db_opcao = 3;
                   <?="<b>Nome do Pai: </b>"?>
                 </td>
                 <td nowrap title="<?=@$Ted47_v_pai?>">
-                  <?db_input('pai', 50, $pai, true, 'text', $db_opcao, "");?>
+                  <?php db_input('pai', 50, $pai, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -169,7 +169,7 @@ $db_opcao = 3;
                   <?="<b>Nome da Mãe: </b>"?>
                 </td>
                 <td nowrap title="<?=@$mae?>">
-                  <?db_input('mae', 50, $mae, true, 'text', $db_opcao, "");?>
+                  <?php db_input('mae', 50, $mae, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -177,7 +177,7 @@ $db_opcao = 3;
                   <?="<b>Data de Nascimento: </b>"?>
                 </td>
                 <td nowrap title="<?=$data_nascimento?>">
-                  <?db_inputdata('data_nascimento', @$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
+                  <?php db_inputdata('data_nascimento', @$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -185,12 +185,12 @@ $db_opcao = 3;
                   <?="<b>Estado Civil: </b>"?>
                 </td>
                 <td nowrap title="<?=$estado_civil?>">
-                  <?
+                  <?php
                     $x = array("" => "", "1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
                     db_select('estado_civil', $x, true, $db_opcao);
                   ?>
                   <?="<b>Sexo: </b>"?>
-                  <?
+                  <?php
                     $sex = array("" => "", "M"=>"Masculino","F"=>"Feminino");
                     db_select('sexo', $sex, true, $db_opcao);
                   ?>
@@ -202,10 +202,10 @@ $db_opcao = 3;
             <table width="100%" border="1" cellspacing="0" cellpadding="0">
               <tr>
                 <td nowrap title="<?=@$endereco?>">
-                  <?db_ancora("<b>Endereço: </b>", "", $db_opcao);?>
+                  <?php db_ancora("<b>Endereço: </b>", "", $db_opcao);?>
                 </td>
                 <td nowrap>
-                  <?db_input('endereco', 40, $endereco, true, 'text', 3);?>
+                  <?php db_input('endereco', 40, $endereco, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -213,18 +213,18 @@ $db_opcao = 3;
                   <?="<b>Número: </b>"?>
                 </td>
                 <td width="71%" nowrap>
-                  <?db_input('numero', 8, $numero, true, 'text', $db_opcao);?>
+                  <?php db_input('numero', 8, $numero, true, 'text', $db_opcao);?>
                   &nbsp;
                   <?="<b>Complemento: </b>"?>
-                  <?db_input('complemento', 10, $complemento, true, 'text', $db_opcao);?>
+                  <?php db_input('complemento', 10, $complemento, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$bairro?>">
-                  <?db_ancora("<b>Bairro: </b>", "", $db_opcao);?>
+                  <?php db_ancora("<b>Bairro: </b>", "", $db_opcao);?>
                 </td>
                 <td nowrap>
-                  <?db_input('bairro', 25, $bairro, true, 'text', 3);?>
+                  <?php db_input('bairro', 25, $bairro, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -232,9 +232,9 @@ $db_opcao = 3;
                   <?="<b>Munícipio: </b>"?>
                 </td>
                 <td nowrap>
-                  <?db_input('municipio', 30, @$municipio, true, 'text', $db_opcao);?>
+                  <?php db_input('municipio', 30, @$municipio, true, 'text', $db_opcao);?>
                   <?="<b>UF: </b>"?>
-                  <?db_input('uf', 2, @$uf, true, 'text', $db_opcao);?>
+                  <?php db_input('uf', 2, @$uf, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -242,7 +242,7 @@ $db_opcao = 3;
                   <?="<b>CEP: </b>"?>
                 </td>
                 <td nowrap>
-                  <?db_input('cep', 9, $cep, true, 'text', $db_opcao);?>
+                  <?php db_input('cep', 9, $cep, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -250,7 +250,7 @@ $db_opcao = 3;
                   <?="<b>Telefone: </b>"?>
                 </td>
                 <td nowrap>
-                  <?db_input('telefone', 12, $telefone, true, 'text', $db_opcao);?>
+                  <?php db_input('telefone', 12, $telefone, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -258,7 +258,7 @@ $db_opcao = 3;
                   <?="<b>Celular: </b>"?>
                 </td>
                 <td nowrap>
-                  <?db_input('celular', 12, $celular, true, 'text', $db_opcao);?>
+                  <?php db_input('celular', 12, $celular, true, 'text', $db_opcao);?>
                 </td>
               </tr>
             </table>
@@ -270,6 +270,6 @@ $db_opcao = 3;
         js_OpenJanelaIframe('parent','db_iframe_alteradados','bib1_alunoabas000.php?leitor&chavepesquisa=<?=$chavepesquisa?>','Alterar Dados do Aluno',true);
       }
     </script>
-    <?}?>
+    <?php } ?>
   </body>
 </html>

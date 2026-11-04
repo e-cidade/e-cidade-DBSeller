@@ -86,7 +86,7 @@ DEFINE("FF_FONT2",4);
 class LanguageConv {
     var $g2312 = null ;
 
-    function Convert($aTxt,$aFF) {
+    public function Convert($aTxt,$aFF) {
 	if( LANGUAGE_GREEK ) {
 	    if( GREEK_FROM_WINDOWS ) {
 		$unistring = LanguageConv::gr_win2uni($aTxt); 
@@ -137,7 +137,7 @@ class LanguageConv {
     }
 
     // Translate iso encoding to unicode
-    function iso2uni ($isoline){
+    public function iso2uni ($isoline){
 	$uniline='';
 	for ($i=0; $i < strlen($isoline); $i++){
 	    $thischar = substr($isoline,$i,1);
@@ -148,7 +148,7 @@ class LanguageConv {
     }
 
     // Translate greek iso encoding to unicode
-    function gr_iso2uni ($isoline) {
+    public function gr_iso2uni ($isoline) {
 	$uniline='';
 	for ($i=0; $i < strlen($isoline); $i++)	{
 	    $thischar=substr($isoline,$i,1);
@@ -159,7 +159,7 @@ class LanguageConv {
     }
 
     // Translate greek win encoding to unicode
-    function gr_win2uni ($winline) {
+    public function gr_win2uni ($winline) {
 	$uniline='';
 	$n = strlen($winline);
 	for ($i=0; $i < $n; $i++) {
@@ -175,7 +175,7 @@ class LanguageConv {
 	return $uniline;
     }
 
-    function heb_iso2uni($isoline) {
+    public function heb_iso2uni($isoline) {
 	$isoline = hebrev($isoline);
 	$o = '';
 
@@ -197,7 +197,7 @@ class TTF {
 
 //---------------
 // CONSTRUCTOR
-    function TTF() {
+    public function __construct() {
 	
 	// String names for font styles to be used in error messages
 	$this->style_names=array(FS_NORMAL	=>'normal',
@@ -345,7 +345,7 @@ class TTF {
 //---------------
 // PUBLIC METHODS	
     // Create the TTF file from the font specification
-    function File($family,$style=FS_NORMAL) {
+    public function File($family,$style=FS_NORMAL) {
 	
 	if( $family == FF_HANDWRT || $family==FF_BOOK ) {
 	    JpGraphError::RaiseL(25045);//('Font families FF_HANDWRT and FF_BOOK are no longer available due to copyright problem with these fonts. Fonts can no longer be distributed with JpGraph. Please download fonts from http://corefonts.sourceforge.net/');

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -60,23 +60,23 @@ db_postmemory($HTTP_POST_VARS);
           <fieldset style="width:70%"><legend align='left'><b>Origem</b></legend>
             <table  border="0"  align="center" width='100%'>
               <tr>
-                <td align="right" style="padding-bottom: 8px;"> 
+                <td align="right" style="padding-bottom: 8px;">
                   <b>Período:</b>
                 </td>
-                <td style="padding-bottom: 8px;"> 
-                  <?db_inputdata('dataini',@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',1,"")?>
+                <td style="padding-bottom: 8px;">
+                  <?php db_inputdata('dataini',@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',1,"")?>
                   <b>Até:</b>
-                  <?db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',1,"")?>
+                  <?php db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',1,"")?>
                 </td>
               </tr>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora('<b>Origem:</b>', 'js_pesquisaorigem(true);', '');
                   ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                   db_input('fa40_i_codigo',10,'',true,'text',1," onchange='js_pesquisaorigem(false);'");
                   db_input('fa40_c_descr',50,'',true,'text',3,'');
                   ?>
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
   </center>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -171,7 +171,7 @@ function js_excluir_item_origem() {
   }
 
 }
-  
+
 function js_pesquisaorigem(mostra) {
 
   if(mostra == true) {
@@ -180,14 +180,14 @@ function js_pesquisaorigem(mostra) {
                         'Pesquisa',true);
   } else {
 
-    if(document.form1.fa40_i_codigo.value != '') { 
+    if(document.form1.fa40_i_codigo.value != '') {
 
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_far_origemreceita','func_far_origemreceita.php?pesquisa_chave='+
                           document.form1.fa40_i_codigo.value+'&funcao_js=parent.js_mostraorigem',
                           'Pesquisa',false);
 
     } else {
-      document.form1.fa40_c_descr.value = ''; 
+      document.form1.fa40_c_descr.value = '';
     }
 
   }
@@ -196,14 +196,14 @@ function js_pesquisaorigem(mostra) {
 
 function js_mostraorigem(chave, erro) {
 
-  document.form1.fa40_c_descr.value = chave; 
+  document.form1.fa40_c_descr.value = chave;
   if(erro == true) {
 
-    document.form1.fa40_i_codigo.focus(); 
+    document.form1.fa40_i_codigo.focus();
     document.form1.fa40_i_codigo.value = '';
 
   } else {
-    
+
     document.form1.fa40_c_descr.value = chave;
     document.form1.lancar_origem.onclick = js_incluir_item_origem;
 
@@ -235,26 +235,26 @@ function js_validaEnvio() {
   dFim = new Date(aFim[2], aFim[1], aFim[0]);
 
 	if(dFim < dIni) {
-				
+
 	  alert("Data final não pode ser menor que a data inicial.");
 	  document.form1.datafim.value = '';
 		document.form1.datafim.focus();
 	  return false;
 
-	}	
-	return true;						
+	}
+	return true;
 
 }
 
 function js_mandadados() {
- 
+
   if(js_validaEnvio()) {
 
     sVir = '';
     sOrigens = 'sOrigens=';
     sNomesOrigens = '&sNomesOrigens='
     sDatas = '&dDatas='+document.form1.dataini.value+','+document.form1.datafim.value;
- 
+
     for(x = 0; x < document.form1.select_origem.length; x++) {
 
       sOrigens += sVir + document.form1.select_origem.options[x].value;
@@ -262,7 +262,7 @@ function js_mandadados() {
       sVir = ',';
 
     }
-    
+
     oJan = window.open('far2_origemreceita002.php?'+sOrigens+sNomesOrigens+sDatas, '',
                       'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+
                       ',scrollbars=1,location=0 ');

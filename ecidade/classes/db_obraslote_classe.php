@@ -1,59 +1,59 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: projetos
 //CLASSE DA ENTIDADE obraslote
-class cl_obraslote { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ob05_codobra = 0; 
-   var $ob05_idbql = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_obraslote {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ob05_codobra = 0;
+   var $ob05_idbql = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ob05_codobra = int4 = Código da obra 
-                 ob05_idbql = int4 = Codigo Lote 
+                 ob05_codobra = int4 = Código da obra
+                 ob05_idbql = int4 = Codigo Lote
                  ";
-   //funcao construtor da classe 
-   function cl_obraslote() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("obraslote"); 
+     $this->rotulo = new rotulo("obraslote");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -62,7 +62,7 @@ class cl_obraslote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ob05_codobra = ($this->ob05_codobra == ""?@$GLOBALS["HTTP_POST_VARS"]["ob05_codobra"]:$this->ob05_codobra);
        $this->ob05_idbql = ($this->ob05_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["ob05_idbql"]:$this->ob05_idbql);
@@ -71,9 +71,9 @@ class cl_obraslote {
      }
    }
    // funcao para inclusao
-   function incluir ($ob05_codobra){ 
+   public function incluir ($ob05_codobra){
       $this->atualizacampos();
-     if($this->ob05_idbql == null ){ 
+     if($this->ob05_idbql == null ){
        $this->erro_sql = " Campo Codigo Lote nao Informado.";
        $this->erro_campo = "ob05_idbql";
        $this->erro_banco = "";
@@ -82,8 +82,8 @@ class cl_obraslote {
        $this->erro_status = "0";
        return false;
      }
-       $this->ob05_codobra = $ob05_codobra; 
-     if(($this->ob05_codobra == null) || ($this->ob05_codobra == "") ){ 
+       $this->ob05_codobra = $ob05_codobra;
+     if(($this->ob05_codobra == null) || ($this->ob05_codobra == "") ){
        $this->erro_sql = " Campo ob05_codobra nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -92,15 +92,15 @@ class cl_obraslote {
        return false;
      }
      $sql = "insert into obraslote(
-                                       ob05_codobra 
-                                      ,ob05_idbql 
+                                       ob05_codobra
+                                      ,ob05_idbql
                        )
                 values (
-                                $this->ob05_codobra 
-                               ,$this->ob05_idbql 
+                                $this->ob05_codobra
+                               ,$this->ob05_idbql
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "lotes da obra ($this->ob05_codobra) nao Incluído. Inclusao Abortada.";
@@ -131,16 +131,16 @@ class cl_obraslote {
        $resac = db_query("insert into db_acount values($acount,950,5921,'','".AddSlashes(pg_result($resaco,0,'ob05_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ob05_codobra=null) { 
+   public function alterar ($ob05_codobra=null) {
       $this->atualizacampos();
      $sql = " update obraslote set ";
      $virgula = "";
-     if(trim($this->ob05_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob05_codobra"])){ 
+     if(trim($this->ob05_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob05_codobra"])){
        $sql  .= $virgula." ob05_codobra = $this->ob05_codobra ";
        $virgula = ",";
-       if(trim($this->ob05_codobra) == null ){ 
+       if(trim($this->ob05_codobra) == null ){
          $this->erro_sql = " Campo Código da obra nao Informado.";
          $this->erro_campo = "ob05_codobra";
          $this->erro_banco = "";
@@ -150,10 +150,10 @@ class cl_obraslote {
          return false;
        }
      }
-     if(trim($this->ob05_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob05_idbql"])){ 
+     if(trim($this->ob05_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob05_idbql"])){
        $sql  .= $virgula." ob05_idbql = $this->ob05_idbql ";
        $virgula = ",";
-       if(trim($this->ob05_idbql) == null ){ 
+       if(trim($this->ob05_idbql) == null ){
          $this->erro_sql = " Campo Codigo Lote nao Informado.";
          $this->erro_campo = "ob05_idbql";
          $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_obraslote {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lotes da obra nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ob05_codobra;
@@ -204,11 +204,11 @@ class cl_obraslote {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ob05_codobra=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ob05_codobra=null) {
        $resaco = $this->sql_record($this->sql_query_file($ob05_codobra));
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
@@ -230,7 +230,7 @@ class cl_obraslote {
           $sql2 .= " ob05_codobra = $ob05_codobra ";
         }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "lotes da obra nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ob05_codobra;
@@ -256,11 +256,11 @@ class cl_obraslote {
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -282,10 +282,10 @@ class cl_obraslote {
       }
      return $result;
    }
-   function sql_query ( $ob05_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ob05_codobra=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -303,15 +303,15 @@ class cl_obraslote {
      $sql2 = "";
      if($dbwhere==""){
        if($ob05_codobra!=null ){
-         $sql2 .= " where obraslote.ob05_codobra = $ob05_codobra "; 
-       } 
+         $sql2 .= " where obraslote.ob05_codobra = $ob05_codobra ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -320,10 +320,10 @@ class cl_obraslote {
      }
      return $sql;
   }
-   function sql_query_file ( $ob05_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ob05_codobra=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -336,15 +336,15 @@ class cl_obraslote {
      $sql2 = "";
      if($dbwhere==""){
        if($ob05_codobra!=null ){
-         $sql2 .= " where obraslote.ob05_codobra = $ob05_codobra "; 
-       } 
+         $sql2 .= " where obraslote.ob05_codobra = $ob05_codobra ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

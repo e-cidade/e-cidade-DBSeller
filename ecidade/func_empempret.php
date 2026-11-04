@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e67_numemp",10,$Ie67_numemp,true,"text",4,"","chave_e67_numemp");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_seqretencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e67_seqretencao",6,$Ie67_seqretencao,true,"text",4,"","chave_e67_seqretencao");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e67_numemp",10,$Ie67_numemp,true,"text",4,"","chave_e67_numemp");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clempempret->rotulo->label("e67_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempret.php")==true){
@@ -133,12 +133,12 @@ $clempempret->rotulo->label("e67_numemp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

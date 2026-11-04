@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitação
 //CLASSE DA ENTIDADE pctipocompranumero
-class cl_pctipocompranumero { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc51_codtipocom = 0; 
-   var $pc51_anonumer = 0; 
-   var $pc51_numeracao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pctipocompranumero {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc51_codtipocom = 0;
+   var $pc51_anonumer = 0;
+   var $pc51_numeracao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc51_codtipocom = int4 = Código do tipo de compra 
-                 pc51_anonumer = int4 = Ano da Numeração 
-                 pc51_numeracao = int8 = Numeração 
+                 pc51_codtipocom = int4 = Código do tipo de compra
+                 pc51_anonumer = int4 = Ano da Numeração
+                 pc51_numeracao = int8 = Numeração
                  ";
-   //funcao construtor da classe 
-   function cl_pctipocompranumero() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pctipocompranumero"); 
+     $this->rotulo = new rotulo("pctipocompranumero");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_pctipocompranumero {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc51_codtipocom = ($this->pc51_codtipocom == ""?@$GLOBALS["HTTP_POST_VARS"]["pc51_codtipocom"]:$this->pc51_codtipocom);
        $this->pc51_anonumer = ($this->pc51_anonumer == ""?@$GLOBALS["HTTP_POST_VARS"]["pc51_anonumer"]:$this->pc51_anonumer);
@@ -76,9 +76,9 @@ class cl_pctipocompranumero {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){
       $this->atualizacampos();
-     if($this->pc51_codtipocom == null ){ 
+     if($this->pc51_codtipocom == null ){
        $this->erro_sql = " Campo Código do tipo de compra nao Informado.";
        $this->erro_campo = "pc51_codtipocom";
        $this->erro_banco = "";
@@ -87,7 +87,7 @@ class cl_pctipocompranumero {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc51_anonumer == null ){ 
+     if($this->pc51_anonumer == null ){
        $this->erro_sql = " Campo Ano da Numeração nao Informado.";
        $this->erro_campo = "pc51_anonumer";
        $this->erro_banco = "";
@@ -96,7 +96,7 @@ class cl_pctipocompranumero {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc51_numeracao == null ){ 
+     if($this->pc51_numeracao == null ){
        $this->erro_sql = " Campo Numeração nao Informado.";
        $this->erro_campo = "pc51_numeracao";
        $this->erro_banco = "";
@@ -106,17 +106,17 @@ class cl_pctipocompranumero {
        return false;
      }
      $sql = "insert into pctipocompranumero(
-                                       pc51_codtipocom 
-                                      ,pc51_anonumer 
-                                      ,pc51_numeracao 
+                                       pc51_codtipocom
+                                      ,pc51_anonumer
+                                      ,pc51_numeracao
                        )
                 values (
-                                $this->pc51_codtipocom 
-                               ,$this->pc51_anonumer 
-                               ,$this->pc51_numeracao 
+                                $this->pc51_codtipocom
+                               ,$this->pc51_anonumer
+                               ,$this->pc51_numeracao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "pctipocompranumero () nao Incluído. Inclusao Abortada.";
@@ -139,16 +139,16 @@ class cl_pctipocompranumero {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update pctipocompranumero set ";
      $virgula = "";
-     if(trim($this->pc51_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_codtipocom"])){ 
+     if(trim($this->pc51_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_codtipocom"])){
        $sql  .= $virgula." pc51_codtipocom = $this->pc51_codtipocom ";
        $virgula = ",";
-       if(trim($this->pc51_codtipocom) == null ){ 
+       if(trim($this->pc51_codtipocom) == null ){
          $this->erro_sql = " Campo Código do tipo de compra nao Informado.";
          $this->erro_campo = "pc51_codtipocom";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_pctipocompranumero {
          return false;
        }
      }
-     if(trim($this->pc51_anonumer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_anonumer"])){ 
+     if(trim($this->pc51_anonumer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_anonumer"])){
        $sql  .= $virgula." pc51_anonumer = $this->pc51_anonumer ";
        $virgula = ",";
-       if(trim($this->pc51_anonumer) == null ){ 
+       if(trim($this->pc51_anonumer) == null ){
          $this->erro_sql = " Campo Ano da Numeração nao Informado.";
          $this->erro_campo = "pc51_anonumer";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_pctipocompranumero {
          return false;
        }
      }
-     if(trim($this->pc51_numeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_numeracao"])){ 
+     if(trim($this->pc51_numeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_numeracao"])){
        $sql  .= $virgula." pc51_numeracao = $this->pc51_numeracao ";
        $virgula = ",";
-       if(trim($this->pc51_numeracao) == null ){ 
+       if(trim($this->pc51_numeracao) == null ){
          $this->erro_sql = " Campo Numeração nao Informado.";
          $this->erro_campo = "pc51_numeracao";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_pctipocompranumero {
      }
      $sql .= " where ";
 $sql .= "oid = '$oid'";     $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pctipocompranumero nao Alterado. Alteracao Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -211,11 +211,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from pctipocompranumero
                     where ";
      $sql2 = "";
@@ -225,7 +225,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pctipocompranumero nao Excluído. Exclusão Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -250,11 +250,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -276,14 +276,14 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function alterar_where ( $oid=null,$dbwhere="" ) { 
+   public function alterar_where ( $oid=null,$dbwhere="" ) {
       $this->atualizacampos();
      $sql = " update pctipocompranumero set ";
      $virgula = "";
-     if(trim($this->pc51_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_codtipocom"])){ 
+     if(trim($this->pc51_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_codtipocom"])){
        $sql  .= $virgula." pc51_codtipocom = $this->pc51_codtipocom ";
        $virgula = ",";
-       if(trim($this->pc51_codtipocom) == null ){ 
+       if(trim($this->pc51_codtipocom) == null ){
          $this->erro_sql = " Campo Código do tipo de compra nao Informado.";
          $this->erro_campo = "pc51_codtipocom";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          return false;
        }
      }
-     if(trim($this->pc51_anonumer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_anonumer"])){ 
+     if(trim($this->pc51_anonumer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_anonumer"])){
        $sql  .= $virgula." pc51_anonumer = $this->pc51_anonumer ";
        $virgula = ",";
-       if(trim($this->pc51_anonumer) == null ){ 
+       if(trim($this->pc51_anonumer) == null ){
          $this->erro_sql = " Campo Ano da Numeração nao Informado.";
          $this->erro_campo = "pc51_anonumer";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          return false;
        }
      }
-     if(trim($this->pc51_numeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_numeracao"])){ 
+     if(trim($this->pc51_numeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc51_numeracao"])){
        $sql  .= $virgula." pc51_numeracao = $this->pc51_numeracao ";
        $virgula = ",";
-       if(trim($this->pc51_numeracao) == null ){ 
+       if(trim($this->pc51_numeracao) == null ){
          $this->erro_sql = " Campo Numeração nao Informado.";
          $this->erro_campo = "pc51_numeracao";
          $this->erro_banco = "";
@@ -324,12 +324,12 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        if( $oid != "" && $oid != null){
       	 $sql .= " where ";
          $sql .= " oid = '$oid' ";
-       }    
+       }
      }else if($dbwhere != ""){
        $sql .= " where $dbwhere ";
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pctipocompranumero nao Alterado. Alteracao Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -354,13 +354,13 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
+       }
+     }
    }
-   function sql_query ( $oid = null,$campos="pctipocompranumero.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="pctipocompranumero.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,10 +391,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

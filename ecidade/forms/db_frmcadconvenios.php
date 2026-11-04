@@ -44,7 +44,7 @@ $clrotulo->label("ar12_nome");
             <?=@$Lar11_sequencial?>
           </td>
           <td>
-            <?
+            <?php
               db_input('ar11_sequencial',10,$Iar11_sequencial,true,'text',3,"")
             ?>
           </td>
@@ -54,7 +54,7 @@ $clrotulo->label("ar12_nome");
             <?=@$Lar11_cadtipoconvenio?>
           </td>
           <td>
-            <?
+            <?php
               $rsConsultaTipo  = $clcadtipoconvenio->sql_record($clcadtipoconvenio->sql_query_file(null,"ar12_sequencial,ar12_nome"));
                db_selectrecord("ar11_cadtipoconvenio",$rsConsultaTipo,true,$db_opcao,"","","","","js_validaTipo(this.value);");
             ?>
@@ -65,7 +65,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar11_nome?>
           </td>
           <td>
-          <?
+          <?php
             db_input('ar11_nome',51,$Iar12_nome,true,'text',$db_opcao,"");
           ?>
            </td>
@@ -75,7 +75,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar11_instit?>
            </td>
            <td>
-           <?
+           <?php
              db_input('ar11_instit',7,$Iar11_instit,true,'text',3,"");
              db_input('nomeinst'   ,40,"",true,'text',3,"");
            ?>
@@ -85,12 +85,12 @@ $clrotulo->label("ar12_nome");
        <table id="formCobranca" class="form-container">
          <tr>
            <td nowrap title="<?=@$Tar13_bancoagencia?>"  width="124px">
-             <?
+             <?php
               db_ancora("<b>Agência:</b>","js_pesquisaBancoAgenciaCobranc(true)",$db_opcao);
              ?>
            </td>
            <td>
-            <?
+            <?php
               db_input('ar13_sequencial',10,"",true,'hidden',3,"");
               db_input('ar13_bancoagencia',7,$Iar13_bancoagencia,true,'text',$db_opcao,"onChange='js_pesquisaBancoAgenciaCobranc(false)'");
               db_input('agencia13',40,"",true,'text',3,"");
@@ -113,12 +113,12 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_carteira?>
            </td>
            <td id="carteiraNormal">
-            <?
+            <?php
               db_input('ar13_carteira',7,$Iar13_carteira,true,'text',$db_opcao,"")
             ?>
            </td>
            <td id="carteiraSicob" style="display:none">
-             <?
+             <?php
                $aCarteiraSicob = array("0" =>"Selecione",
                                        "82"=>"Sem Registro",
                                        "9" =>"Rápida");
@@ -126,7 +126,7 @@ $clrotulo->label("ar12_nome");
              ?>
            </td>
            <td id="carteiraSigcb" style="display:none">
-             <?
+             <?php
                $aCarteiraSigcb = array("0" =>"Selecione",
                                        "11"=>"Com registros impressos pela CEF",
                                        "14"=>"Com registros impressos pelo cedente",
@@ -141,7 +141,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_variacao?>
            </td>
            <td>
-            <?
+            <?php
               db_input('ar13_variacao',7,$Iar13_variacao,true,'text',$db_opcao,"")
             ?>
            </td>
@@ -151,7 +151,7 @@ $clrotulo->label("ar12_nome");
               <?=@$Lar13_responsavelnossonumero?>
             </td>
             <td id="responsavelNossoNumero">
-              <?
+              <?php
                 $aResponsaveis = array("t" =>"Instituição",
                                         "f"=>"Banco");
                 db_select('ar13_responsavelnossonumero',$aResponsaveis,true,$db_opcao,"");
@@ -163,7 +163,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_cedente?>
            </td>
            <td>
-            <?
+            <?php
               db_input('ar13_cedente',7,$Iar13_cedente,true,'text',$db_opcao,"");
               db_input('ar13_digcedente',1,$Iar13_digcedente,true,'text',$db_opcao,"");
             ?>
@@ -174,7 +174,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_convenio?>
            </td>
            <td>
-             <?
+             <?php
              db_input('ar13_convenio',7,$Iar13_convenio,true,'text',$db_opcao,"")
              ?>
            </td>
@@ -184,7 +184,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_especie?>
            </td>
            <td>
-            <?
+            <?php
               db_input('ar13_especie',7,$Iar13_especie,true,'text',$db_opcao,"")
             ?>
            </td>
@@ -194,7 +194,7 @@ $clrotulo->label("ar12_nome");
              <?=@$Lar13_operacao?>
            </td>
            <td>
-             <?
+             <?php
                db_input('ar13_operacao',7,$Iar13_operacao,true,'text',$db_opcao,"")
              ?>
            </td>
@@ -203,10 +203,10 @@ $clrotulo->label("ar12_nome");
        <table class="form-container" id="cadconveniogrupotaxa" style="display: none;">
          <tr>
            <td nowrap  width="124px">
-             <b><?db_ancora("Grupo Taxa", "js_pesquisagrupotaxa(true);", 4);?></b>
+             <b><?php db_ancora("Grupo Taxa", "js_pesquisagrupotaxa(true);", 4);?></b>
            </td>
            <td>
-             <?
+             <?php
                db_input("ar37_sequencial",  7, "ar37_sequencial", true, "text", 4, "onchange='js_pesquisagrupotaxa(false);'");
                db_input("ar37_descricao",  40, "ar37_descricao",  true, "text", 3, "");
              ?>
@@ -216,12 +216,12 @@ $clrotulo->label("ar12_nome");
        <table class="form-container"  id="formArrecadacao" style="display:none;">
         <tr>
            <td nowrap title="<?=@$Tar14_bancoagencia?>" width="124px">
-             <?
+             <?php
                db_ancora("<b>Agencia</b>","js_pesquisaBancoAgenciaArrecad(true)",$db_opcao);
              ?>
            </td>
            <td>
-            <?
+            <?php
               db_input('ar14_sequencial',10,"",true,'hidden',3,"");
               db_input('ar14_bancoagencia',7,$Iar14_bancoagencia,true,'text',$db_opcao,"onChange='js_pesquisaBancoAgenciaArrecad(false)'");
               db_input('agencia14',40,"",true,'text',3,"");
@@ -350,7 +350,7 @@ function js_validaTipo(iTipo){
 
   $('tdWidthControll').width = '124px';
 
-  if (iTipo == 1 || iTipo == 2 || iTipo == 6) {
+  if (iTipo == 1 || iTipo == 2 || iTipo == 6 || iTipo == 7) {
 
     $('tdWidthControll').width = '173px';
 
@@ -366,7 +366,7 @@ function js_validaTipo(iTipo){
     $('nossonumero').style.display = "none";
   }
 
-  if ( iTipo == 1 || iTipo == 2 || iTipo == 5  || iTipo == 6 || iTipo == iTipoConvenioCustaBoleto) {
+  if ( iTipo == 1 || iTipo == 2 || iTipo == 5  || iTipo == 6 || iTipo == 7 || iTipo == iTipoConvenioCustaBoleto) {
 
      $('formCobranca').style.display    = "";
      $('formArrecadacao').style.display = "none";
@@ -481,7 +481,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_cadconvenio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -501,14 +501,14 @@ function js_validaCarteiraSigcb(iCarteira){
 $("ar11_sequencial")     .addClassName("field-size2");
 $("ar11_cadtipoconvenio").setAttribute("rel","ignore-css");
 $("ar11_cadtipoconvenio").addClassName("field-size2");
-<? if($db_opcao != 3){?>
+<?php if($db_opcao != 3){?>
 $("ar11_cadtipoconveniodescr").setAttribute("rel","ignore-css");
 $("ar11_cadtipoconveniodescr").addClassName("field-size7");
 
-<? } ?>
-<? if($db_opcao==3){?>
+<?php } ?>
+<?php if($db_opcao==3){?>
 $("ar12_nome")        .addClassName("field-size7");
-<? } ?>
+<?php } ?>
 $("ar11_nome")        .addClassName("field-size9");
 $("ar11_instit")      .addClassName("field-size2");
 $("nomeinst")         .addClassName("field-size7");

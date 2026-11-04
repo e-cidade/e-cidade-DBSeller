@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $iCodTipoCardapio         = $oGet->me37_i_tipocardapio;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -60,7 +60,7 @@ $iCodTipoCardapio         = $oGet->me37_i_tipocardapio;
 <style>
 .marcaEnvia, .marcaRetira 
  { 
-   border-colappse  : collapse;
+   border-collapse  : collapse;
    border-right     : 1px inset black;
    border-bottom    : 1px inset black;
    cursor           : normal;
@@ -71,7 +71,7 @@ $iCodTipoCardapio         = $oGet->me37_i_tipocardapio;
  
 .marcaSel
 {
-   border-colappse  : collapse;
+   border-collapse  : collapse;
    border-right     : 1px inset black;
    border-bottom    : 1px inset black;
    cursor           : normal;

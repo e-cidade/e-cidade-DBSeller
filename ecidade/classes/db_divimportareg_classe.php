@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: dividaativa
 //CLASSE DA ENTIDADE divimportareg
-class cl_divimportareg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $v04_divimporta = 0; 
-   var $v04_coddiv = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_divimportareg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $v04_divimporta = 0;
+   var $v04_coddiv = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 v04_divimporta = int4 = Código da importação 
-                 v04_coddiv = int4 = codigo da divida 
+                 v04_divimporta = int4 = Código da importação
+                 v04_coddiv = int4 = codigo da divida
                  ";
-   //funcao construtor da classe 
-   function cl_divimportareg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("divimportareg"); 
+     $this->rotulo = new rotulo("divimportareg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_divimportareg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v04_divimporta = ($this->v04_divimporta == ""?@$GLOBALS["HTTP_POST_VARS"]["v04_divimporta"]:$this->v04_divimporta);
        $this->v04_coddiv = ($this->v04_coddiv == ""?@$GLOBALS["HTTP_POST_VARS"]["v04_coddiv"]:$this->v04_coddiv);
@@ -73,9 +73,9 @@ class cl_divimportareg {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){
       $this->atualizacampos();
-     if($this->v04_divimporta == null ){ 
+     if($this->v04_divimporta == null ){
        $this->erro_sql = " Campo Código da importação nao Informado.";
        $this->erro_campo = "v04_divimporta";
        $this->erro_banco = "";
@@ -84,7 +84,7 @@ class cl_divimportareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->v04_coddiv == null ){ 
+     if($this->v04_coddiv == null ){
        $this->erro_sql = " Campo codigo da divida nao Informado.";
        $this->erro_campo = "v04_coddiv";
        $this->erro_banco = "";
@@ -94,15 +94,15 @@ class cl_divimportareg {
        return false;
      }
      $sql = "insert into divimportareg(
-                                       v04_divimporta 
-                                      ,v04_coddiv 
+                                       v04_divimporta
+                                      ,v04_coddiv
                        )
                 values (
-                                $this->v04_divimporta 
-                               ,$this->v04_coddiv 
+                                $this->v04_divimporta
+                               ,$this->v04_coddiv
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registro de dividas importadas () nao Incluído. Inclusao Abortada.";
@@ -125,16 +125,16 @@ class cl_divimportareg {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update divimportareg set ";
      $virgula = "";
-     if(trim($this->v04_divimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v04_divimporta"])){ 
+     if(trim($this->v04_divimporta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v04_divimporta"])){
        $sql  .= $virgula." v04_divimporta = $this->v04_divimporta ";
        $virgula = ",";
-       if(trim($this->v04_divimporta) == null ){ 
+       if(trim($this->v04_divimporta) == null ){
          $this->erro_sql = " Campo Código da importação nao Informado.";
          $this->erro_campo = "v04_divimporta";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_divimportareg {
          return false;
        }
      }
-     if(trim($this->v04_coddiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v04_coddiv"])){ 
+     if(trim($this->v04_coddiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v04_coddiv"])){
        $sql  .= $virgula." v04_coddiv = $this->v04_coddiv ";
        $virgula = ",";
-       if(trim($this->v04_coddiv) == null ){ 
+       if(trim($this->v04_coddiv) == null ){
          $this->erro_sql = " Campo codigo da divida nao Informado.";
          $this->erro_campo = "v04_coddiv";
          $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_divimportareg {
      }
      $sql .= " where ";
 $sql .= "oid = '$oid'";     $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de dividas importadas nao Alterado. Alteracao Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,11 +184,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from divimportareg
                     where ";
      $sql2 = "";
@@ -198,7 +198,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de dividas importadas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -223,11 +223,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -249,10 +249,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="divimportareg.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="divimportareg.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -277,7 +277,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -286,10 +286,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -307,7 +307,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

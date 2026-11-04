@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clacordocomissaotipo->rotulo->label("ac43_descricao");
               <?=$Lac43_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ac43_sequencial",10,$Iac43_sequencial,true,"text",4,"","chave_ac43_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clacordocomissaotipo->rotulo->label("ac43_descricao");
               <?=$Lac43_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ac43_descricao",100,$Iac43_descricao,true,"text",4,"","chave_ac43_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clacordocomissaotipo->rotulo->label("ac43_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_acordocomissaotipo.php")==true){
@@ -122,12 +122,12 @@ $clacordocomissaotipo->rotulo->label("ac43_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

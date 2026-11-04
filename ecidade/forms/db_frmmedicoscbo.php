@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -57,26 +57,26 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_i_codigo?>
   </td>
   <td>
-   <?db_input('sd36_i_codigo',10,$Isd36_i_codigo,true,'text',3,"")?>
+   <?php db_input('sd36_i_codigo',10,$Isd36_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd36_i_medico?>">
-   <?db_ancora(@$Lsd36_i_medico,"",3);?>
+   <?php db_ancora(@$Lsd36_i_medico,"",3);?>
   </td>
   <td>
-   <?db_input('sd36_i_medico',10,$Isd36_i_medico,true,'text',3,'')?>
-   <?db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('sd36_i_medico',10,$Isd36_i_medico,true,'text',3,'')?>
+   <?php db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd36_i_rhcbo?>">
-   <?db_ancora(@$Lsd36_i_rhcbo,"js_pesquisasd36_i_rhcbo(true);",$db_opcao);?>
+   <?php db_ancora(@$Lsd36_i_rhcbo,"js_pesquisasd36_i_rhcbo(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('sd36_i_rhcbo',10,$Isd36_i_rhcbo,true,'hidden',3,'')?>
-   <?db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',3,'')?>
-   <?db_input('rh70_descr',50,$Irh70_descr,true,'text',3,'')?>
+   <?php db_input('sd36_i_rhcbo',10,$Isd36_i_rhcbo,true,'hidden',3,'')?>
+   <?php db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',3,'')?>
+   <?php db_input('rh70_descr',50,$Irh70_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -84,7 +84,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_c_vinculo?>
   </td>
   <td>
-   <?
+   <?php
    $x = array(''=>'','1'=>'VÍNCULO EMPREGATÍCIO','2'=>'AUTÔNOMO');
    db_select('sd36_c_vinculo',$x,true,$db_opcao,"");
    ?>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_i_chambul?>
   </td>
   <td>
-   <?db_input('sd36_i_chambul',10,$Isd36_i_chambul,true,'text',$db_opcao,"")?>
+   <?php db_input('sd36_i_chambul',10,$Isd36_i_chambul,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -103,7 +103,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_i_choutros?>
   </td>
   <td>
-   <?db_input('sd36_i_choutros',10,$Isd36_i_choutros,true,'text',$db_opcao,"")?>
+   <?php db_input('sd36_i_choutros',10,$Isd36_i_choutros,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -111,7 +111,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_i_crm?>
   </td>
   <td>
-   <?db_input('sd36_i_crm',20,$Isd36_i_crm,true,'text',$db_opcao,"")?>
+   <?php db_input('sd36_i_crm',20,$Isd36_i_crm,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -119,7 +119,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_c_crmuf?>
   </td>
   <td>
-   <?db_input('sd36_c_crmuf',2,$Isd36_c_crmuf,true,'text',$db_opcao,"")?>
+   <?php db_input('sd36_c_crmuf',2,$Isd36_c_crmuf,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -127,7 +127,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd36_c_crmorgao?>
   </td>
   <td>
-   <?db_input('sd36_c_crmorgao',50,$Isd36_c_crmorgao,true,'text',$db_opcao,"")?>
+   <?php db_input('sd36_c_crmorgao',50,$Isd36_c_crmorgao,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -137,7 +137,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
   $chavepri= array("sd36_i_codigo"=>@$sd36_i_codigo
                   ,"sd36_i_medico"=>@$sd36_i_medico
                   ,"z01_nome"=>@$z01_nome

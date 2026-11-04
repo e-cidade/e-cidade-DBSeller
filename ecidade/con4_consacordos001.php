@@ -47,7 +47,7 @@ $clrotulo->label("ac16_contratado");
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -93,7 +93,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <b>Origem:</b>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 $aOrigem = array();
                 $aOrigem[0] = "Todas";
                 $oDaoAcordoOrigem = db_utils::getDao("acordoorigem");
@@ -113,12 +113,12 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                <?
+                <?php
                   db_ancora("<b>Contratado:</b>", "js_pesquisaContratado(true);", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('ac16_contratado', 10, $Iac16_contratado, true, 'text', 1, "onchange='js_pesquisaContratado(false);'");
                  db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
                 ?>
@@ -126,12 +126,12 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                <?
+                <?php
                   db_ancora("<b>Departamento:</b>", "js_departamento(true);", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('ac16_coddepto', 10, $Iac16_coddepto, true, 'text', 1, "onchange='js_departamento(false);'");
                  db_input('descrdepto', 40, $Idescrdepto, true, 'text', 3);
                 ?>
@@ -151,7 +151,7 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script type="text/javascript">

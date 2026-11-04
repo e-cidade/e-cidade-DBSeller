@@ -120,7 +120,7 @@ if (isset($g->chavepesquisa)) {
 </form>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script>
@@ -130,7 +130,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 
     function js_preenchepesquisa(chave) {
         db_iframe_conaberturaexe.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

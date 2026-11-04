@@ -124,7 +124,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                         <b><?= $Lc47_seqtranslan; ?></b>
                     </td>
                     <td width="30">
-                        <? db_input('c47_seqtranslan', 8, $Ic46_seqtranslan, true, 'text', 3); ?>
+                        <?php db_input('c47_seqtranslan', 8, $Ic46_seqtranslan, true, 'text', 3); ?>
                     </td>
 
                     <!-- Seq.Partida | tabela : contranslr | código: c47-->
@@ -133,7 +133,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                         <b><?= $Lc47_seqtranslr; ?></b>
                     </td>
                     <td>
-                        <? db_input('c47_seqtranslr', 8, $Ic47_seqtranslr, true, 'text', 3); ?>
+                        <?php db_input('c47_seqtranslr', 8, $Ic47_seqtranslr, true, 'text', 3); ?>
                     </td>
                 </tr>
 
@@ -143,7 +143,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                         <b><?= $Lc47_anousu; ?></b>
                     </td>
                     <td>
-                        <? db_input('c47_anousu', 8, $Ic47_anousu, true, 'text', 1); ?>
+                        <?php db_input('c47_anousu', 8, $Ic47_anousu, true, 'text', 1); ?>
                     </td>
                 </tr>
 
@@ -281,7 +281,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                         <?= @$Lc47_tiporesto ?>
                                     </td>
                                     <td>
-                                        <?
+                                        <?php
                                         $rsResult
                                             = $oDAOEmprestotipo->sql_record($oDAOEmprestotipo->sql_query_file(null,
                                             "e90_codigo,e90_descr"));
@@ -413,7 +413,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                     <td colspan="5">
                         <fieldset>
                             <legend><b>Observações</b></legend>
-                            <? db_textarea('c47_obs', 3, 93, $Ic47_obs, true, 'text', $db_opcao) ?>
+                            <?php db_textarea('c47_obs', 3, 93, $Ic47_obs, true, 'text', $db_opcao) ?>
                         </fieldset>
                     </td>
                 </tr>

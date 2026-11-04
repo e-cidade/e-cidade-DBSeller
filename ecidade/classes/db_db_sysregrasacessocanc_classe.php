@@ -1,69 +1,69 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_sysregrasacessocanc
-class cl_db_sysregrasacessocanc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db49_idacesso = 0; 
-   var $db49_id_usuario = 0; 
-   var $db49_dtcancela_dia = null; 
-   var $db49_dtcancela_mes = null; 
-   var $db49_dtcancela_ano = null; 
-   var $db49_dtcancela = null; 
-   var $db49_observ = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_sysregrasacessocanc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db49_idacesso = 0;
+   var $db49_id_usuario = 0;
+   var $db49_dtcancela_dia = null;
+   var $db49_dtcancela_mes = null;
+   var $db49_dtcancela_ano = null;
+   var $db49_dtcancela = null;
+   var $db49_observ = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db49_idacesso = int4 = Código da Regra 
-                 db49_id_usuario = int4 = Cod. Usuário 
-                 db49_dtcancela = date = Data Cancelamento 
-                 db49_observ = text = Descrição Cancelamento 
+                 db49_idacesso = int4 = Código da Regra
+                 db49_id_usuario = int4 = Cod. Usuário
+                 db49_dtcancela = date = Data Cancelamento
+                 db49_observ = text = Descrição Cancelamento
                  ";
-   //funcao construtor da classe 
-   function cl_db_sysregrasacessocanc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_sysregrasacessocanc"); 
+     $this->rotulo = new rotulo("db_sysregrasacessocanc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_db_sysregrasacessocanc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db49_idacesso = ($this->db49_idacesso == ""?@$GLOBALS["HTTP_POST_VARS"]["db49_idacesso"]:$this->db49_idacesso);
        $this->db49_id_usuario = ($this->db49_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["db49_id_usuario"]:$this->db49_id_usuario);
@@ -90,9 +90,9 @@ class cl_db_sysregrasacessocanc {
      }
    }
    // funcao para inclusao
-   function incluir ($db49_idacesso){ 
+   public function incluir ($db49_idacesso){
       $this->atualizacampos();
-     if($this->db49_id_usuario == null ){ 
+     if($this->db49_id_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "db49_id_usuario";
        $this->erro_banco = "";
@@ -101,7 +101,7 @@ class cl_db_sysregrasacessocanc {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db49_dtcancela == null ){ 
+     if($this->db49_dtcancela == null ){
        $this->erro_sql = " Campo Data Cancelamento nao Informado.";
        $this->erro_campo = "db49_dtcancela_dia";
        $this->erro_banco = "";
@@ -110,8 +110,8 @@ class cl_db_sysregrasacessocanc {
        $this->erro_status = "0";
        return false;
      }
-       $this->db49_idacesso = $db49_idacesso; 
-     if(($this->db49_idacesso == null) || ($this->db49_idacesso == "") ){ 
+       $this->db49_idacesso = $db49_idacesso;
+     if(($this->db49_idacesso == null) || ($this->db49_idacesso == "") ){
        $this->erro_sql = " Campo db49_idacesso nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_db_sysregrasacessocanc {
        return false;
      }
      $sql = "insert into db_sysregrasacessocanc(
-                                       db49_idacesso 
-                                      ,db49_id_usuario 
-                                      ,db49_dtcancela 
-                                      ,db49_observ 
+                                       db49_idacesso
+                                      ,db49_id_usuario
+                                      ,db49_dtcancela
+                                      ,db49_observ
                        )
                 values (
-                                $this->db49_idacesso 
-                               ,$this->db49_id_usuario 
-                               ,".($this->db49_dtcancela == "null" || $this->db49_dtcancela == ""?"null":"'".$this->db49_dtcancela."'")." 
-                               ,'$this->db49_observ' 
+                                $this->db49_idacesso
+                               ,$this->db49_id_usuario
+                               ,".($this->db49_dtcancela == "null" || $this->db49_dtcancela == ""?"null":"'".$this->db49_dtcancela."'")."
+                               ,'$this->db49_observ'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cancelamento de Acesso ($this->db49_idacesso) nao Incluído. Inclusao Abortada.";
@@ -167,16 +167,16 @@ class cl_db_sysregrasacessocanc {
        $resac = db_query("insert into db_acount values($acount,1775,10275,'','".AddSlashes(pg_result($resaco,0,'db49_observ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db49_idacesso=null) { 
+   public function alterar ($db49_idacesso=null) {
       $this->atualizacampos();
      $sql = " update db_sysregrasacessocanc set ";
      $virgula = "";
-     if(trim($this->db49_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_idacesso"])){ 
+     if(trim($this->db49_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_idacesso"])){
        $sql  .= $virgula." db49_idacesso = $this->db49_idacesso ";
        $virgula = ",";
-       if(trim($this->db49_idacesso) == null ){ 
+       if(trim($this->db49_idacesso) == null ){
          $this->erro_sql = " Campo Código da Regra nao Informado.";
          $this->erro_campo = "db49_idacesso";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_db_sysregrasacessocanc {
          return false;
        }
      }
-     if(trim($this->db49_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_id_usuario"])){ 
+     if(trim($this->db49_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_id_usuario"])){
        $sql  .= $virgula." db49_id_usuario = $this->db49_id_usuario ";
        $virgula = ",";
-       if(trim($this->db49_id_usuario) == null ){ 
+       if(trim($this->db49_id_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "db49_id_usuario";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_db_sysregrasacessocanc {
          return false;
        }
      }
-     if(trim($this->db49_dtcancela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"] !="") ){ 
+     if(trim($this->db49_dtcancela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"] !="") ){
        $sql  .= $virgula." db49_dtcancela = '$this->db49_dtcancela' ";
        $virgula = ",";
-       if(trim($this->db49_dtcancela) == null ){ 
+       if(trim($this->db49_dtcancela) == null ){
          $this->erro_sql = " Campo Data Cancelamento nao Informado.";
          $this->erro_campo = "db49_dtcancela_dia";
          $this->erro_banco = "";
@@ -211,11 +211,11 @@ class cl_db_sysregrasacessocanc {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["db49_dtcancela_dia"])){
          $sql  .= $virgula." db49_dtcancela = null ";
          $virgula = ",";
-         if(trim($this->db49_dtcancela) == null ){ 
+         if(trim($this->db49_dtcancela) == null ){
            $this->erro_sql = " Campo Data Cancelamento nao Informado.";
            $this->erro_campo = "db49_dtcancela_dia";
            $this->erro_banco = "";
@@ -226,7 +226,7 @@ class cl_db_sysregrasacessocanc {
          }
        }
      }
-     if(trim($this->db49_observ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_observ"])){ 
+     if(trim($this->db49_observ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db49_observ"])){
        $sql  .= $virgula." db49_observ = '$this->db49_observ' ";
        $virgula = ",";
      }
@@ -252,7 +252,7 @@ class cl_db_sysregrasacessocanc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cancelamento de Acesso nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db49_idacesso;
@@ -280,14 +280,14 @@ class cl_db_sysregrasacessocanc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db49_idacesso=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db49_idacesso=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db49_idacesso));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -316,7 +316,7 @@ class cl_db_sysregrasacessocanc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cancelamento de Acesso nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db49_idacesso;
@@ -344,11 +344,11 @@ class cl_db_sysregrasacessocanc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -370,10 +370,10 @@ class cl_db_sysregrasacessocanc {
       }
      return $result;
    }
-   function sql_query ( $db49_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db49_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,15 +389,15 @@ class cl_db_sysregrasacessocanc {
      $sql2 = "";
      if($dbwhere==""){
        if($db49_idacesso!=null ){
-         $sql2 .= " where db_sysregrasacessocanc.db49_idacesso = $db49_idacesso "; 
-       } 
+         $sql2 .= " where db_sysregrasacessocanc.db49_idacesso = $db49_idacesso ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,10 +406,10 @@ class cl_db_sysregrasacessocanc {
      }
      return $sql;
   }
-   function sql_query_file ( $db49_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db49_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,15 +422,15 @@ class cl_db_sysregrasacessocanc {
      $sql2 = "";
      if($dbwhere==""){
        if($db49_idacesso!=null ){
-         $sql2 .= " where db_sysregrasacessocanc.db49_idacesso = $db49_idacesso "; 
-       } 
+         $sql2 .= " where db_sysregrasacessocanc.db49_idacesso = $db49_idacesso ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

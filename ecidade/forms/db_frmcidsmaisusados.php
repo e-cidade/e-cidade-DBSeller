@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clmedicocid   = new cl_medicocid;
 						<td><b>Descrição</b></td>
 					</tr>
 
-<?
+<?php
 //						   echo "<BR> ".$clmedicocid->sql_query("","*","sd56_i_codigo limit 10","sd56_i_profissional = $chaveprofissional") ;
 						   $result = $clmedicocid->sql_record( $clmedicocid->sql_query("","*","sd56_i_codigo limit 10","sd56_i_profissional = $chaveprofissional") );
 						   $intLinhas = $clmedicocid->numrows;
@@ -68,7 +68,7 @@ $clmedicocid   = new cl_medicocid;
 						   	 	  	      <td><a onclick="parent.js_cidsmaisusados('<?=$sd70_c_cid?>');"> <?=$sd70_c_cid?></a></td>
 						   	 	  	      <td><a onclick="parent.js_cidsmaisusados('<?=$sd70_c_cid?>');"><?=$sd70_c_nome?></a></td>
 						   	 	  	</tr>
-						   	 	<?						   	 
+						   	 	<?php 					   	 
 						   	 }
 						   }	
 ?>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -161,7 +161,7 @@ db_input('rh16_titele',15,$Irh16_titele,true,'text',$db_opcao,"")
 <td>
        <?=@$Lrh16_zonael?>
 			 </td><td>
-<?
+<?php
 db_input('rh16_zonael',4,$Irh16_zonael,true,'text',$db_opcao,"")
 ?>
 </td>
@@ -187,7 +187,7 @@ db_input('rh16_reserv',15,$Irh16_reserv,true,'text',$db_opcao,"")
 
  <?=@$Lrh16_catres?>
  </td><td>
- <?db_input('rh16_catres',4,$Irh16_catres,true,'text',$db_opcao,"")
+ <?php db_input('rh16_catres',4,$Irh16_catres,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
@@ -204,7 +204,7 @@ db_input('rh16_ctps_n',15,$Irh16_ctps_n,true,'text',$db_opcao,"")
      <?=@$Lrh16_ctps_s?>
 </td>
 <td>
-    <?
+    <?php
 db_input('rh16_ctps_s',4,$Irh16_ctps_s,true,'text',$db_opcao,"")
 ?>
  </td>
@@ -219,7 +219,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
   </tr>
   <tr>
       <td nowrap title="<?=@$Trh16_ctps_uf?>">
-        <?
+        <?php
         db_ancora(@$Lrh16_ctps_uf,"",3);
         ?>
       </td>
@@ -250,7 +250,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
        <?=@$Lrh16_carth_n?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('rh16_carth_n',15,$Irh16_carth_n,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -433,7 +433,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
           <?=@$Lz01_pai?>
         </td>
         <td nowrap title="<?=@$Tz01_pai?>" colspan="3">
-         <?
+         <?php
            db_input ( 'z01_pai', 50, $Iz01_pai, true, 'text', 3 );
          ?>
         </td>
@@ -470,7 +470,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
           <?=@$Lz01_identorgao?>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input ( 'z01_identorgao', 15, @$Iz01_identorgao, true, 'text', 3 );
           ?>
         </td>
@@ -495,7 +495,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
           <?=@$Lz01_telef?>
         </td>
         <td nowrap>
-          <?
+          <?php
             db_input ( 'z01_telef', 15, $Iz01_telef, true, 'text', 3 );
           ?>
         </td>
@@ -503,7 +503,7 @@ db_input('rh16_ctps_d',4,$Irh16_ctps_d,true,'text',$db_opcao,"")
           <?=@$Lz01_telcel?>
         </td>
         <td nowrap align="left">
-          <?
+          <?php
             db_input ( 'z01_telcel', 15, $Iz01_telcel, true, 'text', 3 );
           ?>
         </td>

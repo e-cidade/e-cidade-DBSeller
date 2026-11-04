@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,11 +69,11 @@ db_postmemory($HTTP_POST_VARS);
 	               <strong>Instituições de</strong>
 		       </td>
 		       <td valign='center'>      
-		     <?
+		     <?php
                  db_input('codigo',8,$Icodigo,true,'text',1,"onChange=\"js_testa('i',this.value)\"","codigoINI","");
 	             ?>
 		       <strong>&nbsp;À&nbsp;</strong>
-		     <?
+		     <?php
 		 db_input('codigo',8,$Icodigo,true,'text',1,"onChange=\"js_testa('f',this.value)\"","codigoFIM","");
 		     ?>
 		       </td>
@@ -86,7 +86,7 @@ db_postmemory($HTTP_POST_VARS);
 		   <table>
 		     <tr>
 		       <td align="center">
-			  <?
+			  <?php
 			  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>INSTITUIÇÕES</strong>";
 			  $aux->codigo = "codigo";
@@ -113,7 +113,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 		 <td align="left">&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 		   db_select('param_db_config',$xxx,true,2);		   
 		   ?>

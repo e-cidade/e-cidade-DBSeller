@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			    <b>Código Relatório:</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 				  db_input("codRel",44,"",true,"text",3,"");
 			  	?>
 			  </td>   		  
@@ -92,7 +92,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			    <b>Nome Relatório:</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 				  db_input("nomeRel",44,"",true,"text",3,"");
 			  	?>
 			  </td>   		  
@@ -102,7 +102,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			    <b>Tipo:</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 				  db_input("tipoRel"  ,5,"",true,"text",3,"");  	
 			  	  db_input("descrTipo",35,"",true,"text",3,"");
 			  	?>
@@ -113,7 +113,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			    <b>Grupo:</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 				  db_input("grupoRel"  ,5,"",true,"text",3,"");
 				  db_input("descrGrupo",35,"",true,"text",3,"");
 			  	?>
@@ -124,7 +124,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			    <b>Ultima Alteração:</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 			  	  
 			  	  $sDia = substr($dataRel,8,2);
 			  	  $sMes = substr($dataRel,5,2);
@@ -139,7 +139,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
         </fieldset>
       </td>
     </tr>
-	<?
+	<?php
 	  if ($oConsultaRelatorio->db63_db_tiporelatorio == 2 or true ) {
 	?>
 	<tr>
@@ -155,7 +155,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 		      <th class="table_header" width="12px" ><b>&nbsp;</b></th>
 		    </tr>
 		  <tbody id="relatoriosSalvos" style=" height:200px; overflow:scroll; overflow-x:hidden; background-color:white"  >
-		  <?
+		  <?php
 			
 		  $aColunas = $oGeradorRelatorio->getColunas();
 
@@ -232,7 +232,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 	    </fieldset>
 	  </td>
 	</tr>
-	<?
+	<?php
 	  }
 	?>	
   </table>

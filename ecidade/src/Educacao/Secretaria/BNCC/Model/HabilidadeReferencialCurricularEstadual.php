@@ -188,6 +188,9 @@ class HabilidadeReferencialCurricularEstadual
         if (array_key_exists('ed168_habilidade', $state)) {
             $self->setHabilidade($state['ed168_habilidade']);
         }
+        if (array_key_exists('ed168_objeto_conhecimento', $state)) {
+            $self->setObjetoConhecimento($state['ed168_objeto_conhecimento']);
+        }
         if (array_key_exists('ed168_ano', $state)) {
             $self->setAno((int) $state['ed168_ano']);
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,21 +54,21 @@ require_once(modification("dbforms/db_funcoes.php"));
             <tr>
               <td nowrap title="<?=@$Ttf12_i_codigo?>">
                 <b>Ordem:</b>
-                <?
+                <?php
                 $aX = array('1'=>'ALFABÉTICA', '2'=>'CGS','3'=>'NASCIMENTO');
                 db_select('ordem', $aX, true, 1, ' onchange="js_selecionaTipoOrdem(this.value);"');
                 ?>
               </td>
               <td> 
                 <b>Tipo da Ordem:</b>
-                <?
+                <?php
                 $aX = array('1'=>'CRESCENTE', '2'=>'DECRESCENTE');
                 db_select('tipoOrdem', $aX, true, 1, '');
                 ?>
               </td>
               <td> 
                 <b>Formato:</b>
-                <?
+                <?php
                 $aX = array('1'=>'PDF', '2'=>'TXT');
                 db_select('formato', $aX, true, 1, '');
                 ?>
@@ -85,7 +85,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

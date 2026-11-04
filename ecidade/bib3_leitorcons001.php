@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -46,7 +46,7 @@ $clleitor->rotulo->label('bi10_codigo');
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <form name="form1" method="post">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
@@ -61,9 +61,9 @@ $clleitor->rotulo->label('bi10_codigo');
      <td>
       &nbsp;&nbsp;&nbsp;
       De:
-      <?db_inputdata('data_ini','','','',true,'text',1,"")?>
+      <?php db_inputdata('data_ini','','','',true,'text',1,"")?>
       Até:
-      <?db_inputdata('data_fim','','','',true,'text',1,"")?>
+      <?php db_inputdata('data_fim','','','',true,'text',1,"")?>
      </td>
     </tr>
     <tr>
@@ -72,9 +72,9 @@ $clleitor->rotulo->label('bi10_codigo');
     <tr>
      <td>
      &nbsp;&nbsp;&nbsp;
-     <?db_ancora("<b>Carteira:</b>", "js_pesquisabi10_codigo(true);", 1);?>
-     <?db_input('bi10_codigo', 10, @$Ibi10_codigo, true, 'text', 1, " onchange='js_pesquisabi10_codigo(false);'")?>
-     <?db_input('ov02_nome', 40, @$Iov02_nome, true, 'text', 3, '')?>
+     <?php db_ancora("<b>Carteira:</b>", "js_pesquisabi10_codigo(true);", 1);?>
+     <?php db_input('bi10_codigo', 10, @$Ibi10_codigo, true, 'text', 1, " onchange='js_pesquisabi10_codigo(false);'")?>
+     <?php db_input('ov02_nome', 40, @$Iov02_nome, true, 'text', 3, '')?>
      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
      <br><br>
      </td>
@@ -94,9 +94,9 @@ $clleitor->rotulo->label('bi10_codigo');
 </form>
 <script>
 function js_pesquisa(){
-  
+
   if (document.form1.bi10_codigo.value == "") {
-    
+
     alert("Selecione um leitor para pesquisa");
     document.form1.bi10_codigo.style.backgroundColor="#99A9AE";
     document.form1.bi10_codigo.focus();
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 
 function js_pesquisabi10_codigo(mostra) {
-  
+
   if(mostra == true) {
     js_OpenJanelaIframe('CurrentWindow.corpo',
                         'db_iframe_leitor',
@@ -122,7 +122,7 @@ function js_pesquisabi10_codigo(mostra) {
                         true
                        );
   } else {
-    
+
     if (document.form1.bi10_codigo.value != '') {
       js_OpenJanelaIframe('CurrentWindow.corpo',
                           'db_iframe_leitor',
@@ -138,10 +138,10 @@ function js_pesquisabi10_codigo(mostra) {
 }
 
 function js_mostranumcgm(chave,erro) {
-  
+
   document.form1.ov02_nome.value = chave;
   if (erro == true) {
-    
+
     document.form1.bi10_codigo.focus();
     document.form1.bi10_codigo.value = '';
     return false;
@@ -150,13 +150,13 @@ function js_mostranumcgm(chave,erro) {
 }
 
 function js_mostranumcgm1(chave1,chave2) {
-  
+
   document.form1.bi10_codigo.value = chave1;
   document.form1.ov02_nome.value   = chave2;
   document.form1.pesquisar.onclick();
   db_iframe_leitor.hide();
 }
 </script>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

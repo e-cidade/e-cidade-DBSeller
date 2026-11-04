@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE transflocal
-class cl_transflocal { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed131_i_codigo = 0; 
-   var $ed131_i_escola = 0; 
-   var $ed131_i_alunocurso = 0; 
-   var $ed131_i_curso = 0; 
-   var $ed131_i_transfrede = 0; 
-   var $ed131_c_situacao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_transflocal {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed131_i_codigo = 0;
+   var $ed131_i_escola = 0;
+   var $ed131_i_alunocurso = 0;
+   var $ed131_i_curso = 0;
+   var $ed131_i_transfrede = 0;
+   var $ed131_c_situacao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed131_i_codigo = int8 = Código 
-                 ed131_i_escola = int8 = Escola 
-                 ed131_i_alunocurso = int8 = Alunocurso 
-                 ed131_i_curso = int8 = Curso 
-                 ed131_i_transfrede = int8 = Transferencia 
-                 ed131_c_situacao = char(1) = Situação 
+                 ed131_i_codigo = int8 = Código
+                 ed131_i_escola = int8 = Escola
+                 ed131_i_alunocurso = int8 = Alunocurso
+                 ed131_i_curso = int8 = Curso
+                 ed131_i_transfrede = int8 = Transferencia
+                 ed131_c_situacao = char(1) = Situação
                  ";
-   //funcao construtor da classe 
-   function cl_transflocal() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("transflocal"); 
+     $this->rotulo = new rotulo("transflocal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_transflocal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed131_i_codigo = ($this->ed131_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed131_i_codigo"]:$this->ed131_i_codigo);
        $this->ed131_i_escola = ($this->ed131_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed131_i_escola"]:$this->ed131_i_escola);
@@ -86,9 +86,9 @@ class cl_transflocal {
      }
    }
    // funcao para inclusao
-   function incluir ($ed131_i_codigo){ 
+   public function incluir ($ed131_i_codigo){
       $this->atualizacampos();
-     if($this->ed131_i_escola == null ){ 
+     if($this->ed131_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
        $this->erro_campo = "ed131_i_escola";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_transflocal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed131_i_alunocurso == null ){ 
+     if($this->ed131_i_alunocurso == null ){
        $this->erro_sql = " Campo Alunocurso nao Informado.";
        $this->erro_campo = "ed131_i_alunocurso";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_transflocal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed131_i_curso == null ){ 
+     if($this->ed131_i_curso == null ){
        $this->erro_sql = " Campo Curso nao Informado.";
        $this->erro_campo = "ed131_i_curso";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_transflocal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed131_i_transfrede == null ){ 
+     if($this->ed131_i_transfrede == null ){
        $this->erro_sql = " Campo Transferencia nao Informado.";
        $this->erro_campo = "ed131_i_transfrede";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_transflocal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed131_c_situacao == null ){ 
+     if($this->ed131_c_situacao == null ){
        $this->erro_sql = " Campo Situação nao Informado.";
        $this->erro_campo = "ed131_c_situacao";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_transflocal {
        return false;
      }
      if($ed131_i_codigo == "" || $ed131_i_codigo == null ){
-       $result = db_query("select nextval('transflocal_ed131_i_codigo_seq')"); 
+       $result = db_query("select nextval('transflocal_ed131_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: transflocal_ed131_i_codigo_seq do campo: ed131_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: transflocal_ed131_i_codigo_seq do campo: ed131_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed131_i_codigo = pg_result($result,0,0); 
+       $this->ed131_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from transflocal_ed131_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed131_i_codigo)){
@@ -154,10 +154,10 @@ class cl_transflocal {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed131_i_codigo = $ed131_i_codigo; 
+         $this->ed131_i_codigo = $ed131_i_codigo;
        }
      }
-     if(($this->ed131_i_codigo == null) || ($this->ed131_i_codigo == "") ){ 
+     if(($this->ed131_i_codigo == null) || ($this->ed131_i_codigo == "") ){
        $this->erro_sql = " Campo ed131_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_transflocal {
        return false;
      }
      $sql = "insert into transflocal(
-                                       ed131_i_codigo 
-                                      ,ed131_i_escola 
-                                      ,ed131_i_alunocurso 
-                                      ,ed131_i_curso 
-                                      ,ed131_i_transfrede 
-                                      ,ed131_c_situacao 
+                                       ed131_i_codigo
+                                      ,ed131_i_escola
+                                      ,ed131_i_alunocurso
+                                      ,ed131_i_curso
+                                      ,ed131_i_transfrede
+                                      ,ed131_c_situacao
                        )
                 values (
-                                $this->ed131_i_codigo 
-                               ,$this->ed131_i_escola 
-                               ,$this->ed131_i_alunocurso 
-                               ,$this->ed131_i_curso 
-                               ,$this->ed131_i_transfrede 
-                               ,'$this->ed131_c_situacao' 
+                                $this->ed131_i_codigo
+                               ,$this->ed131_i_escola
+                               ,$this->ed131_i_alunocurso
+                               ,$this->ed131_i_curso
+                               ,$this->ed131_i_transfrede
+                               ,'$this->ed131_c_situacao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Inclui transferencias locais ($this->ed131_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_transflocal {
        $resac = db_query("insert into db_acount values($acount,1010191,1009241,'','".AddSlashes(pg_result($resaco,0,'ed131_c_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed131_i_codigo=null) { 
+   public function alterar ($ed131_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update transflocal set ";
      $virgula = "";
-     if(trim($this->ed131_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_codigo"])){ 
+     if(trim($this->ed131_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_codigo"])){
        $sql  .= $virgula." ed131_i_codigo = $this->ed131_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed131_i_codigo) == null ){ 
+       if(trim($this->ed131_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed131_i_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_transflocal {
          return false;
        }
      }
-     if(trim($this->ed131_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_escola"])){ 
+     if(trim($this->ed131_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_escola"])){
        $sql  .= $virgula." ed131_i_escola = $this->ed131_i_escola ";
        $virgula = ",";
-       if(trim($this->ed131_i_escola) == null ){ 
+       if(trim($this->ed131_i_escola) == null ){
          $this->erro_sql = " Campo Escola nao Informado.";
          $this->erro_campo = "ed131_i_escola";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_transflocal {
          return false;
        }
      }
-     if(trim($this->ed131_i_alunocurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_alunocurso"])){ 
+     if(trim($this->ed131_i_alunocurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_alunocurso"])){
        $sql  .= $virgula." ed131_i_alunocurso = $this->ed131_i_alunocurso ";
        $virgula = ",";
-       if(trim($this->ed131_i_alunocurso) == null ){ 
+       if(trim($this->ed131_i_alunocurso) == null ){
          $this->erro_sql = " Campo Alunocurso nao Informado.";
          $this->erro_campo = "ed131_i_alunocurso";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_transflocal {
          return false;
        }
      }
-     if(trim($this->ed131_i_curso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_curso"])){ 
+     if(trim($this->ed131_i_curso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_curso"])){
        $sql  .= $virgula." ed131_i_curso = $this->ed131_i_curso ";
        $virgula = ",";
-       if(trim($this->ed131_i_curso) == null ){ 
+       if(trim($this->ed131_i_curso) == null ){
          $this->erro_sql = " Campo Curso nao Informado.";
          $this->erro_campo = "ed131_i_curso";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_transflocal {
          return false;
        }
      }
-     if(trim($this->ed131_i_transfrede)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_transfrede"])){ 
+     if(trim($this->ed131_i_transfrede)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_i_transfrede"])){
        $sql  .= $virgula." ed131_i_transfrede = $this->ed131_i_transfrede ";
        $virgula = ",";
-       if(trim($this->ed131_i_transfrede) == null ){ 
+       if(trim($this->ed131_i_transfrede) == null ){
          $this->erro_sql = " Campo Transferencia nao Informado.";
          $this->erro_campo = "ed131_i_transfrede";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_transflocal {
          return false;
        }
      }
-     if(trim($this->ed131_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_c_situacao"])){ 
+     if(trim($this->ed131_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed131_c_situacao"])){
        $sql  .= $virgula." ed131_c_situacao = '$this->ed131_c_situacao' ";
        $virgula = ",";
-       if(trim($this->ed131_c_situacao) == null ){ 
+       if(trim($this->ed131_c_situacao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "ed131_c_situacao";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_transflocal {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inclui transferencias locais nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed131_i_codigo;
@@ -357,14 +357,14 @@ class cl_transflocal {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed131_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed131_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed131_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_transflocal {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Inclui transferencias locais nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed131_i_codigo;
@@ -423,11 +423,11 @@ class cl_transflocal {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,10 +449,10 @@ class cl_transflocal {
       }
      return $result;
    }
-   function sql_query ( $ed131_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed131_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,15 +465,15 @@ class cl_transflocal {
      $sql2 = "";
      if($dbwhere==""){
        if($ed131_i_codigo!=null ){
-         $sql2 .= " where transflocal.ed131_i_codigo = $ed131_i_codigo "; 
-       } 
+         $sql2 .= " where transflocal.ed131_i_codigo = $ed131_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,10 +482,10 @@ class cl_transflocal {
      }
      return $sql;
   }
-   function sql_query_file ( $ed131_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed131_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,15 +498,15 @@ class cl_transflocal {
      $sql2 = "";
      if($dbwhere==""){
        if($ed131_i_codigo!=null ){
-         $sql2 .= " where transflocal.ed131_i_codigo = $ed131_i_codigo "; 
-       } 
+         $sql2 .= " where transflocal.ed131_i_codigo = $ed131_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

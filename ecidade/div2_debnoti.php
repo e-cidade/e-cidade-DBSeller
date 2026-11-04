@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -47,7 +47,7 @@ $sqlCriaTabela = "CREATE TEMP TABLE w_numpre_numpar (
                          numpre   int4,
                          numpar   int4)";
 $rsCriaTabela  = db_query($sqlCriaTabela);
-if( $rsCriaTabela == false ){          
+if( $rsCriaTabela == false ){
 	//db_msgbox("Erro ao tentar cria a tabela");
   exit;
 }else{
@@ -55,19 +55,19 @@ if( $rsCriaTabela == false ){
 	 $rsIndex  = db_query($sqlIndex);
 }
 $where = " where ";
-$or = ""; 
-$arr_info = split("XVX",$chaves1);
+$or = "";
+$arr_info =explode("XVX",$chaves1);
 for ($w=0;$w<count($arr_info);$w++){
-	$arr_dados = split("-",$arr_info[$w]);
+	$arr_dados =explode("-",$arr_info[$w]);
 	$numpre1 = $arr_dados[0];
 	$numpar1 = $arr_dados[1];
 	//$where .= $or." (listadeb.k61_numpre = $numpre and listadeb.k61_numpar= $numpar)  ";
-  //$or = " or  "; 
-	
+  //$or = " or  ";
+
 	// inserir o numpre e numpar na tabela temp
 	$sqlInclui = " insert into w_numpre_numpar (numpre,numpar) values ($numpre1,$numpar1)";
 	$rsInclui  = db_query($sqlInclui);
-	if( $rsInclui == false ){          
+	if( $rsInclui == false ){
 	 // db_msgbox("Erro ao tentar incluir na tabela temp ");
     exit;
   }
@@ -87,14 +87,14 @@ $sql ="select k00_numcgm,k00_matric,k00_inscr,k00_numpre,k00_numpar,k53_notifica
 																	     end)
 																		 end as numcgm
 
-                  from listadeb 
+                  from listadeb
 									    inner join w_numpre_numpar on listadeb.k61_numpre = w_numpre_numpar.numpre
                                                  and listadeb.k61_numpar = w_numpre_numpar.numpar
 											inner join arrecad      on listadeb.k61_numpre    = arrecad.k00_numpre
 																					   and listadeb.k61_numpar    = arrecad.k00_numpar
 											inner join notidebitos  on notidebitos.k53_numpre = listadeb.k61_numpre
 																					   and notidebitos.k53_numpar = listadeb.k61_numpar
-									    inner join notificacao  on k50_notifica           = k53_notifica 
+									    inner join notificacao  on k50_notifica           = k53_notifica
 											                       and k50_instit             = ".db_getsession("DB_instit")."
 											left join listanotifica on k63_notifica           = k50_notifica
 											left join arrematric    on listadeb.k61_numpre    = arrematric.k00_numpre
@@ -103,9 +103,9 @@ $sql ="select k00_numcgm,k00_matric,k00_inscr,k00_numpre,k00_numpar,k53_notifica
 											left join iptubase      on iptubase.j01_matric    = arrematric.k00_matric
 											left join issbase       on issbase.q02_inscr      = arreinscr.k00_inscr
                       where k61_codigo = $lista
-										
-										) as x inner join cgm on x.numcgm = cgm.z01_numcgm 
-                     group by k00_numcgm,k00_matric,k00_inscr,k00_numpre,k00_numpar,k53_notifica,k63_codigo ,k50_dtemite,z01_numcgm,z01_nome  
+
+										) as x inner join cgm on x.numcgm = cgm.z01_numcgm
+                     group by k00_numcgm,k00_matric,k00_inscr,k00_numpre,k00_numpar,k53_notifica,k63_codigo ,k50_dtemite,z01_numcgm,z01_nome
 
 					    		";
 									//die($sql);
@@ -115,9 +115,9 @@ $numrows = pg_numrows($result);
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -134,13 +134,13 @@ for($x = 0; $x < $numrows;$x++){
       $pdf->cell(10,$alt,"Cgm",1,0,"C",1);
       $pdf->cell(15,$alt,"Matrícula",1,0,"C",1);
       $pdf->cell(15,$alt,"Inscrição",1,0,"C",1);
-      $pdf->cell(15,$alt,"Numpre",1,0,"C",1); 
-      $pdf->cell(15,$alt,"Numpar",1,0,"C",1); 
-      $pdf->cell(50,$alt,$RLz01_nome,1,0,"C",1); 
-      $pdf->cell(20,$alt,"Cód. Notif.",1,0,"C",1); 
-      $pdf->cell(15,$alt,"Lista. Not.",1,0,"C",1); 
-      $pdf->cell(15,$alt,"Dt. Notif.",1,0,"C",1); 
-      $pdf->cell(20,$alt,"Valor",1,1,"C",1); 
+      $pdf->cell(15,$alt,"Numpre",1,0,"C",1);
+      $pdf->cell(15,$alt,"Numpar",1,0,"C",1);
+      $pdf->cell(50,$alt,$RLz01_nome,1,0,"C",1);
+      $pdf->cell(20,$alt,"Cód. Notif.",1,0,"C",1);
+      $pdf->cell(15,$alt,"Lista. Not.",1,0,"C",1);
+      $pdf->cell(15,$alt,"Dt. Notif.",1,0,"C",1);
+      $pdf->cell(20,$alt,"Valor",1,1,"C",1);
       $troca = 0;
 			$p=0;
    }

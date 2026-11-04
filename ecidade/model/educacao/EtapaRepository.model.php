@@ -125,7 +125,7 @@ class EtapaRepository {
    * @param Etapa $oEtapa Etapa de origem
    * @return Etapa proxima etapa a ser cursada
    */
-  static public function getProximaEtapa(Turma $oTurma, Etapa $oEtapa) {
+  static public function getProximaEtapa(Turma $oTurma, Etapa $oEtapa, Etapa $etapaLimiteAprovacao = null) {
 
 
     $sCampos   = 'max(ed11_i_sequencia) as ordem_turma, ed11_i_codigo as codigo_serie_turma, ';
@@ -144,7 +144,12 @@ class EtapaRepository {
       $sWhere .= " and ed223_i_serie = {$oEtapa->getCodigo()}";
     }
 
-    $oDaoTurmaSerieRegimeMat = db_utils::getdao("turmaserieregimemat");
+      if (in_array($oTurma->getTipoDaTurma(), [Turma::TIPO_TURMA_CORRECAO_FLUXO]) && $etapaLimiteAprovacao != null) {
+          $sOrderBy = '';
+          $sWhere .= " and ed223_i_serie = {$etapaLimiteAprovacao->getCodigo()}";
+      }
+
+      $oDaoTurmaSerieRegimeMat = db_utils::getdao("turmaserieregimemat");
     $sSqlDadosEtapa          = $oDaoTurmaSerieRegimeMat->sql_query(null, $sCampos, $sOrderBy, $sWhere.$sGroupBy);
     $rsDadosEtapa            = $oDaoTurmaSerieRegimeMat->sql_record($sSqlDadosEtapa);
     if ($oDaoTurmaSerieRegimeMat->numrows > 0) {

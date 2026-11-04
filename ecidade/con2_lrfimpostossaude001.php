@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -100,7 +100,7 @@ if ($anousu >= 2020) {
     <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
-                <?
+                <?php
                 if ($anousu <= 2007) {
                     $clcriaabas->identifica = array("relatorio" => "Relatorio", "variaveis" => "Variáveis", "parametro" => "Parametros");
                     $clcriaabas->title = array("relatorio" => "Relatorio", "variaveis" => "Variáveis", "parametro" => "Parametros");
@@ -134,7 +134,7 @@ if ($anousu >= 2020) {
         </td>
     </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

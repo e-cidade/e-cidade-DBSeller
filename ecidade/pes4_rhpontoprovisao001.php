@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $db_botao = true;
   <tr> 
     <td height="430" align="left" style="top:15px" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
       include(modification("forms/db_frmrhpontoprovisao.php"));
       if(isset($processar) && $processar == "Processar"){
         db_criatermometro('calculo_folha1','Concluido...','blue',1,'Efetuando a geracao do Ponto ...');
@@ -72,12 +72,12 @@ $db_botao = true;
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
    global $pessoal, $Ipessoal,$cfpess;
@@ -420,7 +420,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
 	    $quais_diversos .= $separa.'$'.$codigo;	   
 	    $separa = ",";
 	 	 
-	    global $$codigo;
+	    global ${$codigo};
 	    eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
   }
   $quais_diversos .= ';';	   

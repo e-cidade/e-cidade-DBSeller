@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
   //
@@ -36,7 +36,7 @@
    $limit=" limit ".$limite;
  }
   $resultsql = @db_query(str_replace('\\','',$sql.@$limit ));
-  $num=pg_numrows($resultsql);  
+  $num=pg_numrows($resultsql);
 if($resultsql==false){
     echo "Verifique os dados a serem gerados.<br>";
 	echo $sql;
@@ -57,13 +57,13 @@ if($resultsql==false){
   $pdf->Open();
   $pdf->AliasNbPages();
   $pdf->AddPage($visualizacao);
-  // monta cabecalho do relatório    
+  // monta cabecalho do relatório
   $pdf->setY(40);
   $pdf->setX(5);
-  $clrotulolov = new rotulolov; 
+  $clrotulolov = new rotulolov;
   $fm_numfields = pg_numfields($resultsql);
   $tamanho = array();
-  
+
   if($visualizacao=="L"){
     $maxlargura=300;
   }else{
@@ -77,22 +77,22 @@ if($resultsql==false){
     $it="cabeci_".$i;
     $s="cabecs_".$i;
     $pdf->SetFont($$cabecfonte,@$$s.@$$n.@$$it ,$$cabectamanho);
-    $cabeccortexto="cabeccortexto_".$i;     
-    $cor=split("#", $$cabeccortexto);
+    $cabeccortexto="cabeccortexto_".$i;
+    $cor= explode("#", $$cabeccortexto);
     $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);
-    $cabeccorborda="cabeccorborda_".$i;     
-    $cor=split("#", $$cabeccorborda);
+    $cabeccorborda="cabeccorborda_".$i;
+    $cor= explode("#", $$cabeccorborda);
     $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);
-    $cabeccorfundo="cabeccorfundo_".$i;     
-    $cor=split("#", $$cabeccorfundo);
+    $cabeccorfundo="cabeccorfundo_".$i;
+    $cor= explode("#", $$cabeccorfundo);
     $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);
 
     $clrotulolov->label(pg_fieldname($resultsql,$i));
-    $cabecaltura="cabecaltura_".$i;     
-    $cabeclargura="cabeclargura_".$i;     
-    $x=$pdf->getx(); 
+    $cabecaltura="cabecaltura_".$i;
+    $cabeclargura="cabeclargura_".$i;
+    $x=$pdf->getx();
     if($$cabeclargura+$x > $maxlargura){
-      $pdf->ln($$cabecaltura);//não funciona   
+      $pdf->ln($$cabecaltura);//não funciona
       $pdf->setX(5);
     }
     $pdf->Cell($$cabeclargura,$$cabecaltura,$clrotulolov->titulo,"LRBT",($i==($fm_numfields-1)?1:0),"",1);
@@ -116,64 +116,64 @@ if($resultsql==false){
       $it="corpi_".$c;
       $s="corps_".$c;
       $pdf->SetFont($$corpfonte,@$$s.@$$n.@$$it ,$$corptamanho);
-      $corpcortexto="corpcortexto_".$c;     
-      $cor=split("#", $$corpcortexto);
+      $corpcortexto="corpcortexto_".$c;
+      $cor= explode("#", $$corpcortexto);
       $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);
-      $corpcorborda="corpcorborda_".$c;     
-      $cor=split("#", $$corpcorborda);
+      $corpcorborda="corpcorborda_".$c;
+      $cor= explode("#", $$corpcorborda);
       $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);
 
     //cores que irão intercalar
-    $corpcorfundo="corpcorfundo_".$c;     
+    $corpcorfundo="corpcorfundo_".$c;
     if($$corpcorfundo =="255#255#255"){
       if($xi % 2!=0){
-       $cor=split("#",$intercalar1);
+       $cor= explode("#",$intercalar1);
        $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);
       }else{
-       $cor=split("#",$intercalar2);
+       $cor= explode("#",$intercalar2);
        $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);
-      }	 
+      }
     }else{
-          $corpcorfundo="corpcorfundo_".$c;     
-          $cor=split("#",$$corpcorfundo);
+          $corpcorfundo="corpcorfundo_".$c;
+          $cor= explode("#",$$corpcorfundo);
           $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);
     }
 
-      $corpaltura="corpaltura_".$c;     
-      $corplargura="corplargura_".$c;     
-      $x=$pdf->getx(); 
+      $corpaltura="corpaltura_".$c;
+      $corplargura="corplargura_".$c;
+      $x=$pdf->getx();
       if($$corplargura+$x > $maxlargura) {
-        $pdf->ln($corpaltura);   
+        $pdf->ln($corpaltura);
         $pdf->setX(5);
       }
- 
+
       $y=$pdf->getY();
       if($visualizacao=="L"){
         if($y>=180){
-          $nova=true; 
+          $nova=true;
         }
       }else{
         if($y>=270){
-          $nova=true; 
+          $nova=true;
         }
        }
-      
+
       if($c<   ($fm_numfields-1)){
 	 $quebra=0;
       }else{
 	 $quebra=1;
       }
-         
+
 
 
 
       $pdf->Cell($$corplargura,$$corpaltura,pg_result($resultsql,$xi,$c),1,$quebra,"",1);
-     
-       
-    } 
+
+
+    }
     if($nova==true){
       $nova = false;
-      //Imprime cabeçalho, caso pdf tenha mais de uam pagina 
+      //Imprime cabeçalho, caso pdf tenha mais de uam pagina
       $pdf->AddPage($visualizacao);
       $pdf->setX(5);
       for ($cabec=0;$cabec < $fm_numfields;$cabec++){
@@ -183,29 +183,29 @@ if($resultsql==false){
         $it="cabeci_".$cabec;
         $s="cabecs_".$cabec;
         $pdf->SetFont($$cabecfonte,@$$s.@$$n.@$$it ,$$cabectamanho);
-        
-        $cabeccortexto="cabeccortexto_".$cabec;     
-        $cor=split("#", $$cabeccortexto);
+
+        $cabeccortexto="cabeccortexto_".$cabec;
+        $cor= explode("#", $$cabeccortexto);
         $pdf->SetTextColor(@$cor[0],@$cor[1],@$cor[2]);
 
-        $cabeccorborda="cabeccorborda_".$cabec;     
-        $cor=split("#", $$cabeccorborda);
+        $cabeccorborda="cabeccorborda_".$cabec;
+        $cor= explode("#", $$cabeccorborda);
         $pdf->SetDrawColor(@$cor[0],@$cor[1],@$cor[2]);
-    
-        $cabeccorfundo="cabeccorfundo_".$cabec;     
-        $cor=split("#", $$cabeccorfundo);
+
+        $cabeccorfundo="cabeccorfundo_".$cabec;
+        $cor= explode("#", $$cabeccorfundo);
         $pdf->SetFillColor(@$cor[0],@$cor[1],@$cor[2]);
 
 
-        
+
         $clrotulolov->label(pg_fieldname($resultsql,$cabec));
-        $cabecaltura="cabecaltura_".$cabec;     
-        $cabeclargura="cabeclargura_".$cabec;     
-        $x=$pdf->getx(); 
+        $cabecaltura="cabecaltura_".$cabec;
+        $cabeclargura="cabeclargura_".$cabec;
+        $x=$pdf->getx();
         if($$cabeclargura+$x > $maxlargura){
-          $pdf->ln($$cabecaltura);//não funciona   
+          $pdf->ln($$cabecaltura);//não funciona
           $pdf->setX(5);
-        } 
+        }
 
 
 
@@ -214,25 +214,25 @@ if($resultsql==false){
         $pdf->Cell($$cabeclargura,$$cabecaltura,$clrotulolov->titulo,"LRBT",($cabec==($fm_numfields-1)?1:0),"L",1);
         //$pdf->Cell((($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2,4,$clrotulolov->titulo,"LRBT",($cabec==($fm_numfields-1)?1:0),"L",0);
       }
-      $pdf->ln(1);	   
-    } 
+      $pdf->ln(1);
+    }
   }
      $pdf->setX(5);
 
       for($s=0;$s<$fm_numfields;$s++){
-        $corpopcao="corpopcao_".$s;     
-        $corplargura="corplargura_".$s;     
+        $corpopcao="corpopcao_".$s;
+        $corplargura="corplargura_".$s;
         $pdf->SetFillColor(200,200,200);
         if($s<($fm_numfields-1)){
           $quebra=0;
         }else{
               $quebra=1;
-        } 
+        }
         if($$corpopcao!="nenhuma"){
           $pdf->Cell($$corplargura,4,"Total",1,$quebra,"LRBT",1);
         }else{
           $pdf->Cell($$corplargura,4,"",1,$quebra,"LRBT",0);
-        
+
         }
       }
         $pdf->setX(5);
@@ -245,24 +245,24 @@ if($resultsql==false){
           }else{
 	     $quebra=1;
           }
-          $corplargura="corplargura_".$cc;     
+          $corplargura="corplargura_".$cc;
           $pdf->SetFillColor(200,200,200);
-          $corpopcao="corpopcao_".$cc;     
+          $corpopcao="corpopcao_".$cc;
           switch($$corpopcao){
-                 
+
                  case "somar":
                         for($d=0; $d< $num ; $d++){
                           $result=pg_result($resultsql, $d, $cc);
                           $soma+=$result;
                         }
                         $pdf->Cell($$corplargura,4,$soma,1,$quebra,"LRBT",1);
-                        break;                                   
-                 case "preenchidos": 
+                        break;
+                 case "preenchidos":
                         for($d=0; $d< $num ; $d++){
                           $result=pg_result($resultsql, $d, $cc);
                           if($result!=""){
-                             $preenchido+=1;  
-                          }  
+                             $preenchido+=1;
+                          }
                         }
                         $pdf->Cell($$corplargura,4,$preenchido,1,$quebra,"LRBT",1);
                         break;
@@ -270,7 +270,7 @@ if($resultsql==false){
                         for($d=0; $d< $num ; $d++){
                           $result=pg_result($resultsql, $d, $cc);
                           $contador+=1;
-                        }  
+                        }
                         $pdf->Cell($$corplargura,4,$contador,1,$quebra,"LRBT",1);
                         break;
                  case "nenhuma";
@@ -278,7 +278,7 @@ if($resultsql==false){
                         break;
           }
         }
-  
+
 
   //$pdf->Cell(200,2,"","",1,"L",0)e
   //$pdf->Cell(200,0,"","LRBT",1,"L",0);

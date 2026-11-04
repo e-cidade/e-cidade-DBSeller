@@ -42,10 +42,11 @@ $clprotprocesso = new cl_protprocesso;
 $clprotprocesso->rotulo->label("p58_codproc");
 $clprotprocesso->rotulo->label("p58_requer");
 $clprotprocesso->rotulo->label("p58_numero");
-
+$clprotprocesso->rotulo->label("p58_ano");
 $daoOvidoriaAtendimento = new cl_ouvidoriaatendimento();
 $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
 
+$cl_acordoparam = new cl_acordoparam;
 ?>
 <html>
 <head>
@@ -54,6 +55,13 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body class="body-default">
+<?php if (!empty($oGet->alerta_filtro_ano)) : ?>
+    <div class="alert alert-primary text-left" role="alert">
+        Atenção! O sistema filtra automaticamente processos do ano logado, para buscar todos os processos cadastrados
+        clique no botão pesquisar (sem informar nenhum filtro)
+    </div>
+<?php endif; ?>
+
 <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr>
         <td height="63" align="center" valign="top">
@@ -75,7 +83,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("p58_numero", 10, "$Ip58_numero", true, "text", 4, "", "chave_p58_numero");
+                            db_input("p58_numero", 10, "$Ip58_numero", true, "text", 4, "placeholder='Número/Ano'", "chave_p58_numero", "", "text-transform: capitalize;");
                             ?>
                         </td>
                     </tr>
@@ -85,12 +93,12 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("ov01_numero", 10, "$Iov01_numero", true, "text", 4, "", "chave_ov01_numero");
+                            db_input("ov01_numero", 10, "", true, "text", 4, "placeholder='Número/Ano'", "chave_ov01_numero");
                             ?>
                         </td>
                     </tr>
                     <!-- PLUGIN procjudicial -->
-                    <?
+                    <?php
                     $departamentosLiberados = array(125, 236, 2481, 2479, 2483, 2489, 2488, 570, 2476, 2214);
                     if (in_array(db_getsession("DB_coddepto"), $departamentosLiberados)) { ?>
                         <tr>
@@ -99,13 +107,24 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                             </td>
                             <td width="96%" align="left" nowrap>
                                 <?php
-                                db_input("procjudi_cod", 50, $Iprocjudi_cod, true, "text", 4, "", "chave_procjudi_cod",
-                                    "", "", 20);
+                                db_input(
+                                    "procjudi_cod",
+                                    50,
+                                    $Iprocjudi_cod,
+                                    true,
+                                    "text",
+                                    4,
+                                    "",
+                                    "chave_procjudi_cod",
+                                    "",
+                                    "",
+                                    20
+                                );
                                 ?>
                             </td>
                         </tr>
                         <?php
-                    } ?>
+                        } ?>
                     <!-- PLUGIN procjudicial -->
                     <tr>
                         <td width="4%" align="left" nowrap title="<?= $Tp58_requer ?>">
@@ -113,7 +132,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("p58_requer", 50, $Ip58_requer, true, "text", 4, "", "chave_p58_requer");
+                            db_input("p58_requer", 50, $Ip58_requer, true, "text", 4, "", "chave_p58_requer", "", "width:359px;");
                             ?>
                         </td>
                     </tr>
@@ -127,12 +146,26 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                                 <?php
                                 $clorcunidade = new cl_orcunidade();
                                 $sWhere = " o40_anousu = " . db_getSession("DB_anousu");
+
+                                $rsAcordoparam = $cl_acordoparam->sql_record($cl_acordoparam->sql_query_file(null, "ac59_permiteporinstit", null, "ac59_instituicao = " . db_getsession('DB_instit')));
+                                db_fieldsmemory($rsAcordoparam, 0);
+
+                                if ($ac59_permiteporinstit === 'f') {
+                                    $todas_instituicoes = 1;
+                                }
+
                                 if (!isset($todas_instituicoes)) {
                                     $sWhere .= " and o41_instit = " . db_getsession('DB_instit');
                                 }
                                 $result = $clorcunidade->sql_record(
-                                    $clorcunidade->sql_query(null, null, null, "distinct o40_orgao,o40_descr",
-                                        "o40_descr", $sWhere)
+                                    $clorcunidade->sql_query(
+                                        null,
+                                        null,
+                                        null,
+                                        "distinct o40_orgao,o40_descr",
+                                        "o40_descr",
+                                        $sWhere
+                                    )
                                 );
 
                                 $selectOrgao = '<select name="p07_orgao" style="width:359px;"><option value="0">Todos</option>';
@@ -155,7 +188,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("p51_descr", 50, $Ip58_requer, true, "text", 4, "", "chave_p51_descr");
+                            db_input("p51_descr", 50, $Ip58_requer, true, "text", 4, "", "chave_p51_descr", "", "width:359px;");
                             ?>
                         </td>
                     </tr>
@@ -166,7 +199,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("p58_ano", 50, $Ip58_ano, true, "text", 4, "", "chave_p58_ano");
+                            db_input("p58_ano", 50, $Ip58_ano, true, "text", 4, "", "chave_p58_ano", "", "width:359px;");
                             ?>
                         </td>
                     </tr>
@@ -186,41 +219,22 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
         <td align="center" valign="top">
             <?php
 
-            /**
-             * Refatorado código para melhor legibilidade e adequação ao redmine M18678
-             */
+        /**
+         * Refatorado código para melhor legibilidade e adequação ao redmine M18678
+         */
 
-        $campos = [];
-        $ordem = "";
-        $where = [];
+            $campos = [];
+            $ordem = "";
+            $where = [];
 
         //alteramos para pegar a instituicao do departamento da protprocesso, para trazer a instit que o criou
-        $sCampoInstituicao  = "a.nomeinst as  instit";
-
-
-            //PLUGIN procjudicial
-            if (!empty($departamentosLiberados) && in_array(db_getsession("DB_coddepto"), $departamentosLiberados)) {
-                $sCampoInstituicao .= " , LPAD((select procjudi_cod from plugins.protprocessojudicial ";
-                $sCampoInstituicao .= "where protprocesso_cod = p58_codproc limit 1)::varchar, 20, '0') AS dl_numero_judicial";
-                if ($chave_procjudi_cod <> null) {
-                    $where[] = "p58_codproc = (SELECT protprocesso_cod FROM plugins.protprocessojudicial
-                    WHERE
-                    LPAD((procjudi_cod)::varchar, 20, '0') = LPAD(($chave_procjudi_cod)::varchar, 20, '0') limit 1)";
-                }
-            }
+            $sCampoInstituicao  = "a.nomeinst as  instit";
 
             $campos[] = "p58_codproc as dl_codigo_do_processo, cast(p58_numero||'/'||p58_ano as varchar) as p58_numero,
                         z01_numcgm as DB_p58_numcgm,p109_nome as dl_tipo_de_processo,
                         z01_nome as dl_titular,p58_requer,p58_dtproc,p51_descr,p58_obs, {$sCampoInstituicao},
                         (ov01_numero ||'/'||ov01_anousu)::varchar as ov01_numero";
 
-            $where[] = "
-              CASE WHEN p109_nome = 'ELETRONICO' THEN
-                 ov01_numero IS NOT NULL
-              ELSE
-                 TRUE
-              END
-        ";
             /**
              * caso a requisição venha da rotina de anexar documentos ao processo, adiciona um where para que não retorne
              * processos arquivados
@@ -230,6 +244,13 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
               select 1 from arqandam
               where p69_codandam = p58_codandam
                 and p69_arquivado is true)";
+            }
+
+            $rsAcordoparam = $cl_acordoparam->sql_record($cl_acordoparam->sql_query_file(null, "ac59_permiteporinstit", null, "ac59_instituicao = " . db_getsession('DB_instit')));
+            db_fieldsmemory($rsAcordoparam, 0);
+
+            if ($ac59_permiteporinstit === 'f') {
+                $todas_instituicoes = 1;
             }
 
             if (!isset($todas_instituicoes)) {
@@ -269,7 +290,11 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
 
             //PLUGIN procjudicial
             if (isset($p07_orgao) && !empty($p07_orgao)) {
-                $where[] = "p58_orgao = {$p07_orgao}";
+                if (ProcessoProtocoloNumeracao::getTipoConfiguracao() == ProcessoProtocoloNumeracao::TIPOORGAO) {
+                    $where[] = "p58_orgao = {$p07_orgao}";
+                } else {
+                    $where[] = "db01_orgao = {$p07_orgao}";
+                }
             }
 
         if (!isset($pesquisa_chave)) {

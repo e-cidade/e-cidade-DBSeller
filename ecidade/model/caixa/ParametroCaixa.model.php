@@ -31,17 +31,19 @@
  * @package caixa
  * @version $Revision: 1.5 $
  */
-final class ParametroCaixa {
+final class ParametroCaixa
+{
 
-  const TIPO_TRANSMISSAO_CNAB240 = 1;
-  const TIPO_TRANSMISSAO_OBN     = 2;
+    const TIPO_TRANSMISSAO_CNAB240 = 1;
+    const TIPO_TRANSMISSAO_OBN     = 2;
 
-  const NOME_CONFIGURACAO_TIPO_TRANSMISSAO = 'tipo_transmissao';
-  const NOME_CONFIGURACAO_CONVENIO_BANCO   = 'codigo_convenio_banco';
+    const NOME_CONFIGURACAO_TIPO_TRANSMISSAO = 'tipo_transmissao';
+    const NOME_CONFIGURACAO_CONVENIO_BANCO   = 'codigo_convenio_banco';
 
-  const CAMINHO_ARQUIVO = 'config/financeiro/agenda_pagamento.ini';
+    const CAMINHO_ARQUIVO = 'config/financeiro/agenda_pagamento.ini';
 
-  private $aConfiguracoes = array();
+    private $aConfiguracoes = array();
+
 
   /**
    * Retorna o código do recurso configurado para FUNDEB configurado para a instituição informada na sessão. Caso a
@@ -51,86 +53,133 @@ final class ParametroCaixa {
    *
    * @return int
    */
-  public static function getCodigoRecursoFUNDEB($iInstituicao) {
+    public static function getCodigoRecursoFUNDEB($iInstituicao)
+    {
+        $oDaoCaiParametro   = new cl_caiparametro;
+        $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file($iInstituicao, "k29_orctiporecfundeb");
+        $rsBuscaParametro   = $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
 
-    $oDaoCaiParametro   = new cl_caiparametro;
-    $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file($iInstituicao, "k29_orctiporecfundeb");
-    $rsBuscaParametro   = $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
-
-    $iCodigoRecurso = 0;
-    if ($oDaoCaiParametro->numrows == 1) {
-
-      $iCodigoRecurso = db_utils::fieldsMemory($rsBuscaParametro, 0)->k29_orctiporecfundeb;
-      if (empty($iCodigoRecurso)) {
         $iCodigoRecurso = 0;
-      }
+        if ($oDaoCaiParametro->numrows == 1) {
+            $iCodigoRecurso = db_utils::fieldsMemory($rsBuscaParametro, 0)->k29_orctiporecfundeb;
+            if (empty($iCodigoRecurso)) {
+                $iCodigoRecurso = 0;
+            }
+        }
+        return $iCodigoRecurso;
     }
-    return $iCodigoRecurso;
-  }
+
+    public static function getUtilizaContaExtraOrcamentaria($iInstituicao)
+    {
+
+        $lUtiliza = false;
+        $oDaoCaiParametro   = new cl_caiparametro;
+        $where  = "    k29_instit = {$iInstituicao} ";
+        $where .=" and k29_utilizarcontaextra is true";
+        $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file(null, "k29_utilizarcontaextra", null, $where);
+        $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
+
+        if ($oDaoCaiParametro->numrows > 0) {
+            $lUtiliza = true;
+        }
+
+        return $lUtiliza;
+    }
+
+
+    public static function getParametroMomentoSlipAutomatico($iInstituicao)
+    {
+
+        $iParametro = 0;
+        $oDaoCaiParametro   = new cl_caiparametro;
+        $where  = "    k29_instit = {$iInstituicao} ";
+      //$where .=" and k29_utilizarcontaextra is true";
+        $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file(
+            null,
+            "k29_gerarslipautomaticoreceitaretencao",
+            null,
+            $where
+        );
+        $rs = $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
+
+        if ($oDaoCaiParametro->numrows > 0) {
+            $iParametro = db_utils::fieldsMemory($rs, 0)->k29_gerarslipautomaticoreceitaretencao;
+        }
+
+        return $iParametro;
+    }
 
   /**
    * @return bool
    */
-  public static function getValidaDataCreditoBaixaBanco($iInstituicao){
+    public static function getValidaDataCreditoBaixaBanco($iInstituicao)
+    {
 
-    $lValidaData = false;
-    $oDaoCaiParametro   = new cl_caiparametro;
-    $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file($iInstituicao,
-                                                            "k29_validadatacreditobaixabanco",
-                                                            null,
-                                                            "k29_validadatacreditobaixabanco is true");
-    $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
-    if ($oDaoCaiParametro->numrows > 0) {
-        $lValidaData = true;
+        $lValidaData = false;
+        $oDaoCaiParametro   = new cl_caiparametro;
+        $sSqlBuscaParametro = $oDaoCaiParametro->sql_query_file(
+            $iInstituicao,
+            "k29_validadatacreditobaixabanco",
+            null,
+            "k29_validadatacreditobaixabanco is true"
+        );
+        $oDaoCaiParametro->sql_record($sSqlBuscaParametro);
+        if ($oDaoCaiParametro->numrows > 0) {
+            $lValidaData = true;
+        }
+        return $lValidaData;
     }
-    return $lValidaData;
-  }
 
 
   /**
    * @return int
    */
-  public function getTipoTransmissaoPadrao() {
+    public function getTipoTransmissaoPadrao()
+    {
 
-    $iTipoTransmissao = self::getConfiguracao(self::NOME_CONFIGURACAO_TIPO_TRANSMISSAO);
-    if (empty($iTipoTransmissao)) {
-      $iTipoTransmissao = self::TIPO_TRANSMISSAO_CNAB240;
+        $iTipoTransmissao = self::getConfiguracao(self::NOME_CONFIGURACAO_TIPO_TRANSMISSAO);
+        if (empty($iTipoTransmissao)) {
+            $iTipoTransmissao = self::TIPO_TRANSMISSAO_CNAB240;
+        }
+        return (int) $iTipoTransmissao;
     }
-    return (int) $iTipoTransmissao;
-  }
 
   /**
    * @return string
    */
-  public function getConvenioBanco() {
-    return self::getConfiguracao(self::NOME_CONFIGURACAO_CONVENIO_BANCO);
-  }
+    public function getConvenioBanco()
+    {
+        return self::getConfiguracao(self::NOME_CONFIGURACAO_CONVENIO_BANCO);
+    }
 
   /**
    * @param integer $iTipoTransmissao
    */
-  public function setTipoTramissaoPadrao($iTipoTransmissao = self::TIPO_TRANSMISSAO_CNAB240) {
-    $this->setConfiguracao(self::NOME_CONFIGURACAO_TIPO_TRANSMISSAO, $iTipoTransmissao);
-  }
+    public function setTipoTramissaoPadrao($iTipoTransmissao = self::TIPO_TRANSMISSAO_CNAB240)
+    {
+        $this->setConfiguracao(self::NOME_CONFIGURACAO_TIPO_TRANSMISSAO, $iTipoTransmissao);
+    }
 
   /**
    * @param string $sConvenioBanco
    */
-  public function setConvenioBanco($sConvenioBanco) {
-    $this->setConfiguracao(self::NOME_CONFIGURACAO_CONVENIO_BANCO, $sConvenioBanco);
-  }
+    public function setConvenioBanco($sConvenioBanco)
+    {
+        $this->setConfiguracao(self::NOME_CONFIGURACAO_CONVENIO_BANCO, $sConvenioBanco);
+    }
 
   /**
    * Seta uma configuração.
    * @param string $sCampo Nome da configuração.
    * @param string $sValor Valor da Configuração.
    */
-  private function setConfiguracao($sCampo, $sValor) {
+    private function setConfiguracao($sCampo, $sValor)
+    {
 
-    $aConfiguracoes = $this->getConfiguracoes();
-    $aConfiguracoes[$sCampo] = $sValor;
-    $this->aConfiguracoes = $aConfiguracoes;
-  }
+        $aConfiguracoes = $this->getConfiguracoes();
+        $aConfiguracoes[$sCampo] = $sValor;
+        $this->aConfiguracoes = $aConfiguracoes;
+    }
 
   /**
    * Busca o valor de uma configuração.
@@ -138,45 +187,61 @@ final class ParametroCaixa {
    *
    * @return array
    */
-  private function getConfiguracao($sNomeCampo) {
+    private function getConfiguracao($sNomeCampo)
+    {
 
-    $aConfiguracoes = $this->getConfiguracoes();
-    if (isset($aConfiguracoes[$sNomeCampo])) {
-      return $aConfiguracoes[$sNomeCampo];
+        $aConfiguracoes = $this->getConfiguracoes();
+        if (isset($aConfiguracoes[$sNomeCampo])) {
+            return $aConfiguracoes[$sNomeCampo];
+        }
+        return null;
     }
-    return null;
-  }
 
   /**
    * Busca todas as configurações.
    * @return array
    */
-  private function getConfiguracoes() {
+    private function getConfiguracoes()
+    {
 
-    if (empty($this->aConfiguracoes)) {
-
-      if (file_exists(self::CAMINHO_ARQUIVO) && is_readable(self::CAMINHO_ARQUIVO)) {
-        $this->aConfiguracoes = parse_ini_file(self::CAMINHO_ARQUIVO);
-      }
+        if (empty($this->aConfiguracoes)) {
+            if (file_exists(self::CAMINHO_ARQUIVO) && is_readable(self::CAMINHO_ARQUIVO)) {
+                $this->aConfiguracoes = parse_ini_file(self::CAMINHO_ARQUIVO);
+            }
+        }
+        return $this->aConfiguracoes;
     }
-    return $this->aConfiguracoes;
-  }
 
   /**
    * Salva as configurações.
    * @return bool
    */
-  public function salvar() {
+    public function salvar()
+    {
 
-    $sConteudo = '';
-    foreach ($this->aConfiguracoes as $sNome => $sValor) {
-      $sConteudo .= "{$sNome}={$sValor}\n";
+        $sConteudo = '';
+        foreach ($this->aConfiguracoes as $sNome => $sValor) {
+            $sConteudo .= "{$sNome}={$sValor}\n";
+        }
+        $lAlterouArquivo = file_put_contents(self::CAMINHO_ARQUIVO, $sConteudo);
+        if (!$lAlterouArquivo) {
+            return false;
+        }
+        return true;
     }
-    $lAlterouArquivo = file_put_contents(self::CAMINHO_ARQUIVO, $sConteudo);
-    if (!$lAlterouArquivo) {
-      return false;
+      
+    public static function utilizaFiltroContasDepartamento($iInstit = null)
+    {
+        if (empty($iInstit)) {
+            $iInstit = db_getsession("DB_instit");
+        }
+    
+        $clCaiParametro = new cl_caiparametro();
+        $sSqlCaiParametro = $clCaiParametro->sql_query_file($iInstit, "k29_filtrocontasdepartamento");
+        $rsCaiParametros = $clCaiParametro->sql_record($sSqlCaiParametro);
+        if ($clCaiParametro->numrows > 0) {
+            return (db_utils::fieldsMemory($rsCaiParametros, 0)->k29_filtrocontasdepartamento=="f"?false:true);
+        }
+        return false;
     }
-    return true;
-  }
-
 }

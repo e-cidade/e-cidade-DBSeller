@@ -796,7 +796,7 @@ class cl_obrashabite
    function sql_query_obco ( $ob09_codhab=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -824,7 +824,7 @@ class cl_obrashabite
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -836,7 +836,7 @@ class cl_obrashabite
    function sql_query_engpref ( $ob09_codhab=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -859,7 +859,7 @@ class cl_obrashabite
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -871,7 +871,7 @@ class cl_obrashabite
    function sql_query_obras_habite ( $ob09_codhab=null,$campos="*",$ordem=null,$dbwhere=""){
 		$sql = "select ";
 		if($campos != "*" ){
-			$campos_sql = split("#",$campos);
+			$campos_sql = explode("#",$campos);
 			$virgula = "";
 			for($i=0;$i<sizeof($campos_sql);$i++){
 				$sql .= $virgula.$campos_sql[$i];
@@ -903,7 +903,7 @@ class cl_obrashabite
 		$sql .= $sql2;
 		if($ordem != null ){
 			$sql .= " order by ";
-			$campos_sql = split("#",$ordem);
+			$campos_sql = explode("#",$ordem);
 			$virgula = "";
 			for($i=0;$i<sizeof($campos_sql);$i++){
 				$sql .= $virgula.$campos_sql[$i];
@@ -1015,6 +1015,7 @@ class cl_obrashabite
       $sSql .= "                       fc_dataextenso(obrasalvara.ob04_data) ";
       $sSql .= "                  else fc_dataextenso(current_date) ";
       $sSql .= "             end                                                             as data_expedicao_extenso, ";
+      $sSql .= "             fc_dataextenso(current_date)                                    as data_atual_extenso, ";
       $sSql .= "             case when obrasresp_cgm.z01_numcgm is not null then ";
       $sSql .= "                       obrasresp_cgm.z01_numcgm::varchar ";
       $sSql .= "                  else '' ";

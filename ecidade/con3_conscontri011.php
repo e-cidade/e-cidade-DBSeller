@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label('z01_nome');
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if ($numMatriculaSelecionada == 0) {
    $db_erro = "Matrícula não cadastrada.";
 ?>
@@ -68,7 +68,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
   <tr> 
     <td height="56" align="center"><font size="2" face="Arial, Helvetica, sans-serif"><br>
-    <?
+    <?php
 	echo @$db_erro;
 	?>
      </font></td>
@@ -79,7 +79,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
 </table>
 </center>
-<?
+<?php
  /***********************************************************************************************/
  // Se encontrou a matrícula, exibe tabela com a descrição do imóvel.
 } else {
@@ -91,7 +91,7 @@ if ($numMatriculaSelecionada == 0) {
       DO IM&Oacute;VEL (&nbsp; 
       <?=$j01_tipoimp?>
       &nbsp;)&nbsp;</strong>
-	  <?
+	  <?php
 	  if(!empty($j01_baixa))
 	     echo "</font><font color=\"red\"><strong> Baixada :".$j01_baixa."</strong></font>";
 	  ?> 
@@ -110,7 +110,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
   <tr> 
     <td width="73" align="right" bgcolor="#CCCCCC" title='Clique aqui para outros dados do contribuinte'>
-      <?
+      <?php
       db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','$z01_cgmpri')",2);
       ?> 
     
@@ -119,7 +119,7 @@ if ($numMatriculaSelecionada == 0) {
       <?=$z01_nome?>
       &nbsp; </strong></font></td>
     <td width="73" align="right" nowrap bgcolor="#CCCCCC" title='Clique aqui para outros dados do contribuinte'>
-    <? 
+    <?php 
       db_ancora('Proprietário',"js_JanelaAutomatica('cgm','$z01_numcgm')",2);
     ?>
     &nbsp;</td>
@@ -129,7 +129,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
   <tr> 
     <td width="73" align="right" bgcolor="#CCCCCC">
-    <? 
+    <?php 
       db_ancora('Imobiliária',"js_JanelaAutomatica('cgm','$z01_numimob')",2);
     ?>
     &nbsp; </td>
@@ -229,7 +229,7 @@ if ($numMatriculaSelecionada == 0) {
     </td>
   </tr>
 </table>
-  <?
+  <?php
 }  // fecha chave que mostra a descricao da propriedade
 ?>
 </body>

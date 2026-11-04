@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clhabitformaavaliacao->rotulo->label();
       <b>Código:</b>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ht07_sequencial',10,$Iht07_sequencial,true,'text',3,"");
 			?>
     </td>
@@ -47,7 +47,7 @@ $clhabitformaavaliacao->rotulo->label();
       <?=@$Lht07_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ht07_descricao',52,$Iht07_descricao,true,'text',3,"");
 			?>
     </td>
@@ -59,7 +59,7 @@ $clhabitformaavaliacao->rotulo->label();
       <table>
 			  <tr>
 			    <td nowrap title="<?=@$Tht07_obs?>"> 
-			      <?
+			      <?php
 			        db_textarea('ht07_obs',8,60,$Iht07_obs,true,'text',3,"");
 			      ?>
 			    </td>
@@ -77,7 +77,7 @@ $clhabitformaavaliacao->rotulo->label();
 				      <?=@$Lht07_datainicial?>
 				    </td>
 				    <td> 
-				      <?
+				      <?php
 				        db_inputdata('ht07_datainicial',@$ht07_datainicial_dia,@$ht07_datainicial_mes,@$ht07_datainicial_ano,true,'text',3,"");
 				      ?>
 				    </td>
@@ -85,7 +85,7 @@ $clhabitformaavaliacao->rotulo->label();
 				       <?=@$Lht07_datafinal?>
 				    </td>
 				    <td> 
-				      <?
+				      <?php
 				        db_inputdata('ht07_datafinal',@$ht07_datafinal_dia,@$ht07_datafinal_mes,@$ht07_datafinal_ano,true,'text',3,"");
 				      ?>
 				    </td>
@@ -117,7 +117,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_habittipogrupoprograma.hide();
-  <?
+  <?php
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,41 +29,43 @@
 //CLASSE DA ENTIDADE isscadsimples
 class cl_isscadsimples {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q38_sequencial = 0;
-   var $q38_inscr = 0;
-   var $q38_dtinicial_dia = null;
-   var $q38_dtinicial_mes = null;
-   var $q38_dtinicial_ano = null;
-   var $q38_dtinicial = null;
-   var $q38_categoria = 0;
+   public $q38_sequencial = 0;
+   public $q38_inscr = 0;
+   public $q38_dtinicial_dia = null;
+   public $q38_dtinicial_mes = null;
+   public $q38_dtinicial_ano = null;
+   public $q38_dtinicial = null;
+   public $q38_categoria = 0;
+   public $q38_observacao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q38_sequencial = int4 = Código Sequencial
                  q38_inscr = int4 = Número da Inscrição
                  q38_dtinicial = date = Data Inicial
                  q38_categoria = int4 = Categoria
+                 q38_observacao varchar(60) = Observação
                  ";
    //funcao construtor da classe
-   function cl_isscadsimples() {
+   public function cl_isscadsimples() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isscadsimples");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +74,7 @@ class cl_isscadsimples {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q38_sequencial = ($this->q38_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q38_sequencial"]:$this->q38_sequencial);
        $this->q38_inscr = ($this->q38_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["q38_inscr"]:$this->q38_inscr);
@@ -85,12 +87,13 @@ class cl_isscadsimples {
          }
        }
        $this->q38_categoria = ($this->q38_categoria == ""?@$GLOBALS["HTTP_POST_VARS"]["q38_categoria"]:$this->q38_categoria);
+       $this->q38_observacao = ($this->q38_observacao == null?@$GLOBALS["HTTP_POST_VARS"]["q38_observacao"]:$this->q38_observacao);
      }else{
        $this->q38_sequencial = ($this->q38_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q38_sequencial"]:$this->q38_sequencial);
      }
    }
    // funcao para inclusao
-   function incluir ($q38_sequencial){
+   public function incluir ($q38_sequencial){
       $this->atualizacampos();
      if($this->q38_inscr == null ){
        $this->erro_sql = " Campo Número da Inscrição nao Informado.";
@@ -129,10 +132,10 @@ class cl_isscadsimples {
          $this->erro_status = "0";
          return false;
        }
-       $this->q38_sequencial = pg_result($result,0,0);
+       $this->q38_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from isscadsimples_q38_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q38_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q38_sequencial)){
          $this->erro_sql = " Campo q38_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,12 +159,14 @@ class cl_isscadsimples {
                                       ,q38_inscr
                                       ,q38_dtinicial
                                       ,q38_categoria
+                                      ,q38_observacao
                        )
                 values (
                                 $this->q38_sequencial
                                ,$this->q38_inscr
                                ,".($this->q38_dtinicial == "null" || $this->q38_dtinicial == ""?"null":"'".$this->q38_dtinicial."'")."
                                ,$this->q38_categoria
+                               ,'$this->q38_observacao'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -187,21 +192,11 @@ class cl_isscadsimples {
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
-     $resaco = $this->sql_record($this->sql_query_file($this->q38_sequencial));
-     if(($resaco!=false)||($this->numrows!=0)){
-       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
-       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-       $resac = db_query("insert into db_acountkey values($acount,10557,'$this->q38_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1821,10557,'','".AddSlashes(pg_result($resaco,0,'q38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1821,10558,'','".AddSlashes(pg_result($resaco,0,'q38_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1821,10559,'','".AddSlashes(pg_result($resaco,0,'q38_dtinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1821,10560,'','".AddSlashes(pg_result($resaco,0,'q38_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     }
+
      return true;
    }
    // funcao para alteracao
-   function alterar ($q38_sequencial=null) {
+   public function alterar ($q38_sequencial=null) {
       $this->atualizacampos();
      $sql = " update isscadsimples set ";
      $virgula = "";
@@ -271,27 +266,15 @@ class cl_isscadsimples {
          return false;
        }
      }
+     if(trim($this->q38_observacao)!=null || isset($GLOBALS["HTTP_POST_VARS"]["q38_observacao"])){
+      $sql  .= $virgula." q38_observacao = '$this->q38_observacao' ";
+      $virgula = ",";
+    }
      $sql .= " where ";
      if($q38_sequencial!=null){
        $sql .= " q38_sequencial = $this->q38_sequencial";
      }
-     $resaco = $this->sql_record($this->sql_query_file($this->q38_sequencial));
-     if($this->numrows>0){
-       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,10557,'$this->q38_sequencial','A')");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q38_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1821,10557,'".AddSlashes(pg_result($resaco,$conresaco,'q38_sequencial'))."','$this->q38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q38_inscr"]))
-           $resac = db_query("insert into db_acount values($acount,1821,10558,'".AddSlashes(pg_result($resaco,$conresaco,'q38_inscr'))."','$this->q38_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q38_dtinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1821,10559,'".AddSlashes(pg_result($resaco,$conresaco,'q38_dtinicial'))."','$this->q38_dtinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["q38_categoria"]))
-           $resac = db_query("insert into db_acount values($acount,1821,10560,'".AddSlashes(pg_result($resaco,$conresaco,'q38_categoria'))."','$this->q38_categoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
+
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
@@ -325,24 +308,7 @@ class cl_isscadsimples {
      }
    }
    // funcao para exclusao
-   function excluir ($q38_sequencial=null,$dbwhere=null) {
-     if($dbwhere==null || $dbwhere==""){
-       $resaco = $this->sql_record($this->sql_query_file($q38_sequencial));
-     }else{
-       $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
-     }
-     if(($resaco!=false)||($this->numrows!=0)){
-       for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,10557,'$q38_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1821,10557,'','".AddSlashes(pg_result($resaco,$iresaco,'q38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1821,10558,'','".AddSlashes(pg_result($resaco,$iresaco,'q38_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1821,10559,'','".AddSlashes(pg_result($resaco,$iresaco,'q38_dtinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1821,10560,'','".AddSlashes(pg_result($resaco,$iresaco,'q38_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
+   public function excluir ($q38_sequencial=null,$dbwhere=null) {
      $sql = " delete from isscadsimples
                     where ";
      $sql2 = "";
@@ -389,7 +355,7 @@ class cl_isscadsimples {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -400,7 +366,7 @@ class cl_isscadsimples {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:isscadsimples";
@@ -411,10 +377,10 @@ class cl_isscadsimples {
       }
      return $result;
    }
-   function sql_query ( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +403,7 @@ class cl_isscadsimples {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,10 +412,10 @@ class cl_isscadsimples {
      }
      return $sql;
   }
-   function sql_query_baixa( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_baixa( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +439,7 @@ class cl_isscadsimples {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,10 +448,10 @@ class cl_isscadsimples {
      }
      return $sql;
   }
-   function sql_query_file ( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_file ( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +472,7 @@ class cl_isscadsimples {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,10 +482,10 @@ class cl_isscadsimples {
      return $sql;
   }
 
-  function sql_query_dadosinscr( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_dadosinscr( $q38_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +514,7 @@ class cl_isscadsimples {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +530,7 @@ class cl_isscadsimples {
    * @param  string  $sCompentencia    Competencia padrao (yyyy-mm)
    * @return string                    Sql
    */
-  function sql_query_valida_competencia($iCodigoInscricao, $sCompentencia) {
+  public function sql_query_valida_competencia($iCodigoInscricao, $sCompentencia) {
 
     $sSql  = "select *,                                                                                                                                                            ";
     $sSql .= "       case when q39_dtbaixa is null OR '{$sCompentencia}-15'::date between  (extract(year  from q38_dtinicial) || '-' || extract(month from q38_dtinicial) || '-01')::date                 ";

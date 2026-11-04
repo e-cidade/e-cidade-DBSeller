@@ -78,7 +78,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alter
    * Verifica se houve alteração do diverso, deve gerar numpre novo
    */
   $lGerarNovoNumpre = 'false';
-  $lNaoGerarArreold = 'false';
+  $lNaoGerarArreold = 'true';
 //   if( hasDiffObject($oDiversoOld, $oDiversoNew) ){
 //     $lGerarNovoNumpre = 'true';
 //     $lNaoGerarArreold = 'false';
@@ -101,6 +101,110 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alter
 
   $sSqlGeraArrecad = "select fc_geraarrecad($arretipo, $dv05_numpre, $lNaoGerarArreold, 1, $lGerarNovoNumpre)";
   db_query($sSqlGeraArrecad) or die("Erro ao alterar em arrecad.");
+
+  /**
+   * Atualiza dados do diverso no arrecad
+   */
+  $sSqlDadosDiversos = "
+    select
+        diversos.dv05_coddiver,
+        diversos.dv05_privenc,
+        diversos.dv05_provenc,
+        diversos.dv05_diaprox,
+        diversos.dv05_numpre,
+        diversos.dv05_oper,
+        diversos.dv05_vlrhis,
+        diversos.dv05_procdiver,
+        diversos.dv05_numtot,
+        diversos.dv05_numcgm,
+        procdiver.dv09_receit,
+        procdiver.dv09_hist,
+        procdiver.dv09_tipo
+    from diversos.diversos
+    inner join diversos.procdiver on diversos.dv05_procdiver = procdiver.dv09_procdiver
+    where diversos.dv05_coddiver = {$dv05_coddiver};
+  ";
+  $rsDadosDiversos = db_query($sSqlDadosDiversos);
+  $oDadosDiversos = db_utils::fieldsMemory($rsDadosDiversos, 0);
+
+  if (!$oDadosDiversos) {
+    $sqlerro = true;
+    db_msgbox("[1] Erro ao recuperar dados para atualização. (diversos)");
+    db_redireciona("dvr3_diversos006.php");
+    exit;
+  }
+
+  $sSqlDelRegitrosNaArrecad = "delete from caixa.arrecad where k00_numpre = {$oDadosDiversos->dv05_numpre}";
+  $rsDelRegitrosNaArrecad = db_query($sSqlDelRegitrosNaArrecad);
+
+  if (!$rsDelRegitrosNaArrecad) {
+    $sqlerro = true;
+    db_msgbox("[2] Erro ao deletar dados para atualização. (arrecad)");
+    db_redireciona("dvr3_diversos006.php");
+    exit;
+  }
+
+  /**
+   * Percorre parcelas na arrecad e atualiza os valores
+   */
+  for ($iContador = 0; $iContador < $oDadosDiversos->dv05_numtot; $iContador++) {
+    $numpar = $iContador + 1;
+
+    if ($iContador == 0) {
+      $sDtVenc = $oDadosDiversos->dv05_privenc;
+    }
+
+    if ($iContador == 1) {
+      $sDtVenc = $oDadosDiversos->dv05_provenc;
+    }
+
+    if ($iContador > 1) {
+      $sqlVencimento = "select fc_vencimento('{$oDadosDiversos->dv05_provenc}', $iContador, {$oDadosDiversos->dv05_diaprox})";
+      $rsVencimento = db_query($sqlVencimento);
+      $oVencimento = db_utils::fieldsMemory($rsVencimento, 0);
+      $sDtVenc = $oVencimento->fc_vencimento;
+    }
+
+    if (!isset($sDtVenc) && empty($sDtVenc)) {
+      $sqlerro = true;
+      db_msgbox("[3] Data de vencimento inválida. Parcela: {$numpar}");
+      db_redireciona("dvr3_diversos006.php");
+      exit;
+    }
+
+    $sqlInsertArrecad = "
+        insert into caixa.arrecad (
+            k00_numcgm, k00_dtoper, k00_receit, k00_hist, k00_valor, k00_dtvenc,
+            k00_numpre, k00_numpar, k00_numtot, k00_numdig, k00_tipo, k00_tipojm
+        )
+        values (
+            {$oDadosDiversos->dv05_numcgm},
+            '{$oDadosDiversos->dv05_oper}',
+            {$oDadosDiversos->dv09_receit},
+            {$oDadosDiversos->dv09_hist},
+            {$oDadosDiversos->dv05_vlrhis},
+            '{$sDtVenc}',
+            {$oDadosDiversos->dv05_numpre},
+            {$numpar},
+            {$oDadosDiversos->dv05_numtot},
+            fc_digito($oDadosDiversos->dv05_numpre, $numpar, $oDadosDiversos->dv05_numtot),
+            {$oDadosDiversos->dv09_tipo},
+            0
+        )
+    ";
+
+    $rsInsertArrecad = db_query($sqlInsertArrecad);
+
+    if (!$rsInsertArrecad) {
+      $sqlerro = true;
+      db_msgbox("Erro ao inserir dados no arrecad.
+          Numpre: {$oDadosDiversos->dv05_numpre}
+          Numpar: {$numpar}
+      ");
+      db_redireciona("dvr3_diversos006.php");
+      exit;
+    }
+  }
 
   db_fim_transacao($sqlerro);
 

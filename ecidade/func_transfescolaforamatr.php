@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -56,7 +56,7 @@ $clrotulo->label("ed52_i_ano");
       <?=$Led47_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
+      <?php db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
      </td>
      </tr>
      <tr>
@@ -64,7 +64,7 @@ $clrotulo->label("ed52_i_ano");
        <?=$Led47_v_nome?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+       <?php db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
       </td>
      </tr>
      <tr>
@@ -72,7 +72,7 @@ $clrotulo->label("ed52_i_ano");
        <b>Ano do Calendario da matrícula:</b>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed52_i_ano",4,$Ied52_i_ano,true,"text",4,"","chave_ed52_i_ano");?>
+       <?php db_input("ed52_i_ano",4,$Ied52_i_ano,true,"text",4,"","chave_ed52_i_ano");?>
       </td>
      </tr>
      <tr>
@@ -88,7 +88,7 @@ $clrotulo->label("ed52_i_ano");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $sWhere = '';
    $sSep   = '';
    if (isset($chave_ed52_i_ano) and !empty($chave_ed52_i_ano)) {
@@ -99,7 +99,7 @@ $clrotulo->label("ed52_i_ano");
    }
 
    if(!isset($pesquisa_chave)){
-    
+
 
     $campos = "distinct on (ed47_v_nome)
                ed104_i_aluno,
@@ -113,7 +113,7 @@ $clrotulo->label("ed52_i_ano");
                ed82_c_nome,
                matricula.ed60_i_codigo as dl_sequencia_matricula,
                matricula.ed60_matricula as matricula,
-               matricula.ed60_d_datamatricula , 
+               matricula.ed60_d_datamatricula ,
                ed104_i_codigo           ";
      $sql = "SELECT $campos FROM transfescolafora
              inner join escola  on  escola.ed18_i_codigo = transfescolafora.ed104_i_escolaorigem

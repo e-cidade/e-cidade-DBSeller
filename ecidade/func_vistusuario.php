@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvistusuario->rotulo->label("y75_obs");
               <?=$Ly75_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y75_codvist",10,$Iy75_codvist,true,"text",4,"","chave_y75_codvist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clvistusuario->rotulo->label("y75_obs");
               <?=$Ly75_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y75_id_usuario",5,$Iy75_id_usuario,true,"text",4,"","chave_y75_id_usuario");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clvistusuario->rotulo->label("y75_obs");
               <?=$Ly75_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y75_obs",0,$Iy75_obs,true,"text",4,"","chave_y75_obs");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clvistusuario->rotulo->label("y75_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistusuario.php")==true){
@@ -129,12 +129,12 @@ $clvistusuario->rotulo->label("y75_obs");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

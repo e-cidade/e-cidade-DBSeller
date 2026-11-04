@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,36 +47,32 @@ db_app::import("contabilidade.lancamento.*");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
 
-$oJson             = new services_json();
-$oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
-$oRetorno          = new stdClass();
-$oRetorno->status  = 1;
+$oJson = new services_json();
+$oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
+$oRetorno = new stdClass();
+$oRetorno->status = 1;
 $oRetorno->message = '';
-$sCaminhoMensagem  = "financeiro.contabilidade.con1_conplanoorcamento.";
+$sCaminhoMensagem = "financeiro.contabilidade.con1_conplanoorcamento.";
 
 
 switch ($oParam->exec) {
-
-
     /**
      * Efetuamos a inclusão da conta
      */
     case 'incluirConta' :
-
         try {
-
             if ($oParam->sTipoConta == "sintetica") {
                 $oParam->iContaPcasp = null;
             }
 
             db_inicio_transacao();
-            $oPlano              = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
-            $oSistemaConta       = new SistemaConta($oParam->iSistemaContaPlano);
-            $oSubsistemaConta    = new SubSistemaConta($oParam->iSubsistemaConta);
+            $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
+            $oSistemaConta = new SistemaConta($oParam->iSistemaContaPlano);
+            $oSubsistemaConta = new SubSistemaConta($oParam->iSubsistemaConta);
             $oClassificacaoConta = new ClassificacaoConta($oParam->iClassificacaoContaPlano);
-            $oContaPcasp         = new ContaPlanoPCASP($oParam->iContaPcasp, db_getsession("DB_anousu"));
+            $oContaPcasp = new ContaPlanoPCASP($oParam->iContaPcasp, db_getsession("DB_anousu"));
 
-            $sDescricao  = db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricaoPlano);
+            $sDescricao = db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricaoPlano);
             $sFinalidade = db_stdClass::normalizeStringJsonEscapeString($oParam->sFinalidadePlano);
             $oPlano->setEstrutural($oParam->iEstruturalPlano);
             $oPlano->setDescricao($sDescricao);
@@ -99,7 +95,7 @@ switch ($oParam->exec) {
 
             $oPlano->salvar();
             $oRetorno->iSequencialDaInsercao = $oPlano->getCodigoConta();
-            $oRetorno->sTipoConta            = $oParam->sTipoConta;
+            $oRetorno->sTipoConta = $oParam->sTipoConta;
             db_fim_transacao(false);
         } catch (Exception $eException) {
 
@@ -109,9 +105,7 @@ switch ($oParam->exec) {
         }
         break;
     case "excluirConta":
-
         try {
-
             db_inicio_transacao();
             /**
              * Verifica se a conta possui autorizacao de empenho
@@ -120,32 +114,27 @@ switch ($oParam->exec) {
             $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
 
             if ($oPlano->hasEmpenhoAutorizado($oParam->iCodigoConta, db_getsession("DB_anousu"))) {
-      
-              $msg = "Não é possível excluir este reduzido, pois seu código consta em Autorizações de Empenho. Verifique.";
-              throw new Exception($msg);
+
+                $msg = "Não é possível excluir este reduzido, pois seu código consta em Autorizações de Empenho. Verifique.";
+                throw new Exception($msg);
             }
 
             $oPlano->excluir();
             $oRetorno->message = urlencode("Conta excluída com sucesso.");
             db_fim_transacao(false);
-
         } catch (Exception $eErro) {
-
             $oRetorno->message = urlencode($eErro->getMessage());
-            $oRetorno->status  = 2;
+            $oRetorno->status = 2;
             db_fim_transacao(true);
         }
-
-
 
         break;
     /**
      * Buscamos os reduzidos
      */
     case 'getReduzidos':
-
-        $oPlano                     = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
-        $aContasReduzidas           = $oPlano->getContasReduzidas();
+        $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
+        $aContasReduzidas = $oPlano->getContasReduzidas();
         $oRetorno->aContasReduzidas = $aContasReduzidas;
         $oRetorno->aContasReduzidas = utf8_encode_all($oRetorno->aContasReduzidas);
         break;
@@ -154,9 +143,7 @@ switch ($oParam->exec) {
      * Excluimos reduzido
      */
     case 'excluirReduzido':
-
         try {
-
             db_inicio_transacao();
 
             $oPlano = new ContaOrcamento($oParam->iCodigoPlanoConta, db_getsession("DB_anousu"), $oParam->iCodigoReduzido, $oParam->iInstituicao);
@@ -164,7 +151,6 @@ switch ($oParam->exec) {
             $oRetorno->message = urlencode("Reduzido excluído com sucesso");
             db_fim_transacao(false);
         } catch (Exception $eException) {
-
             $oRetorno->status = 2;
             $oRetorno->message = urlencode(str_replace("\\n", "\n", $eException->getMessage()));
         }
@@ -174,9 +160,7 @@ switch ($oParam->exec) {
      * Salvamos um reduzido
      */
     case 'salvarReduzido':
-
         try {
-
             db_inicio_transacao();
 
             $oRetorno->lReduzidoVinculado = false;
@@ -191,7 +175,7 @@ switch ($oParam->exec) {
             }
 
             $aContasReduzidas = $oPlano->getContasReduzidas();
-            if ( $oParam->iCodigoReduzido == "" ) {
+            if ($oParam->iCodigoReduzido == "") {
                 if ($aContasReduzidas && substr($oPlano->getEstrutural(), 0, 1) == 4) {
 
                     $sNomeInstituicao = $aContasReduzidas[0]->nomeinst;
@@ -211,34 +195,37 @@ switch ($oParam->exec) {
              * verificarmos se o estrutural do reduzido é filho de algum estrutural cadastrado na tabela contranslrelemento
              * caso seja, perguntamos ao usuario se ele a quer vincular
              */
-            if ( !empty($aEventoContabil) ) {
-
+            if (!empty($aEventoContabil)) {
                 $oRetorno->lReduzidoVinculado = true;
-                $oRetorno->iReduzido          = $oPlano->getReduzido();
-                $aDocumentosJaAdicionados     = array();
+                $oRetorno->iReduzido = $oPlano->getReduzido();
+                $aDocumentosJaAdicionados = array();
 
                 foreach ($aEventoContabil as $oEventoContabil) {
-
                     if (in_array($oEventoContabil->getCodigoDocumento(), $aDocumentosJaAdicionados)) {
                         continue;
                     }
 
                     $aDocumentosJaAdicionados[] = $oEventoContabil->getCodigoDocumento();
                     $oDadosEventoContabil = new StdClass();
-                    $oDadosEventoContabil->iDocumento           = $oEventoContabil->getCodigoDocumento();
-                    $oDadosEventoContabil->sDescricao           = urlencode($oEventoContabil->getDescricaoDocumento());
+                    $oDadosEventoContabil->iDocumento = $oEventoContabil->getCodigoDocumento();
+                    $oDadosEventoContabil->sDescricao = urlencode($oEventoContabil->getDescricaoDocumento());
                     $oDadosEventoContabil->iSequencialTransacao = $oEventoContabil->getSequencialTransacao();
 
                     $oRetorno->aEventoContabilVinculado[] = $oDadosEventoContabil;
                 }
             }
 
+            // valida se é uma receita, se for e não possuir um grupo de contas, inclui o grupo 16 - OUTRAS RECEITAS
+            if (strpos($oPlano->getEstrutural(), '4') === 0) {
+                if ($oPlano->getGruposContas() === false) {
+                    $oPlano->addContaGrupo(16);
+                }
+            }
+
             $oRetorno->message = urlencode("Reduzido salvo com sucesso");
 
             db_fim_transacao(false);
-
         } catch (Exception $eException) {
-
             if (db_utils::inTransaction()) {
                 db_fim_transacao(false);
             }
@@ -249,40 +236,38 @@ switch ($oParam->exec) {
         break;
 
     case "vincularReduzido" :
-
         db_inicio_transacao();
 
-        $iReduzido            = $oParam->iCodigoReduzido;
-        $iCodConPcasp         = $oParam->iCodConPcasp;
-        $iAnoUso              = db_getsession("DB_anousu");
-        $iInstituicao         = db_getsession("DB_instit");
-        $oDaoConTransLan      = db_utils::getDao("contranslan");
-        $oDaoContrans         = db_utils::getDao("contrans");
-        $oPlanoContaPcasp     = new ContaPlanoPCASP($iCodConPcasp, $iAnoUso);
-        $iReduzidoPcasp       = $oPlanoContaPcasp->getReduzido();
+        $iReduzido = $oParam->iCodigoReduzido;
+        $iCodConPcasp = $oParam->iCodConPcasp;
+        $iAnoUso = db_getsession("DB_anousu");
+        $iInstituicao = db_getsession("DB_instit");
+        $oDaoConTransLan = db_utils::getDao("contranslan");
+        $oDaoContrans = db_utils::getDao("contrans");
+        $oPlanoContaPcasp = new ContaPlanoPCASP($iCodConPcasp, $iAnoUso);
+        $iReduzidoPcasp = $oPlanoContaPcasp->getReduzido();
         $oPlanoContaOrcamento = new ContaOrcamento($oParam->iCodigoContaOrcamento, $iAnoUso);
-        $aDocumentos          = array();
+        $aDocumentos = array();
 
-        foreach ( $oParam->aDocumentos as $iDocumento ) {
-
+        foreach ($oParam->aDocumentos as $iDocumento) {
             /*
              * para o documento de origem , devemos ver se ele tem documento inverso.
              * se tiver temos que criar a regra de lançamento
              */
             try {
-
-                $oDocumento        = new EventoContabil($iDocumento, $iAnoUso);
+                $oDocumento = new EventoContabil($iDocumento, $iAnoUso);
                 $oDocumentoInverso = $oDocumento->getEventoInverso();
                 $iDocumentoInverso = $oDocumentoInverso->getCodigoDocumento();
 
-                $aDocumentos[$iDocumento]        = $oDocumento;
+                $aDocumentos[$iDocumento] = $oDocumento;
                 $aDocumentos[$iDocumentoInverso] = $oDocumentoInverso;
 
                 /**
                  * try criado só para nao disparar a excessao de falta de documento
                  * pois se ele nao achar o contrario nesse momento nao fara diferença
                  */
-            } catch (Exception $eException) { }
+            } catch (Exception $eException) {
+            }
         }
 
         /**
@@ -290,20 +275,17 @@ switch ($oParam->exec) {
          * - inclui nova regra definindo conta debito/credito pelo compara
          */
         foreach ($aDocumentos as $iDocumento => $oEventoContabil) {
-
-            foreach ( $oEventoContabil->getEventoContabilLancamento() as $oEventoContabilLancamento ) {
-
-                $aRegrasLancamentos       = $oEventoContabilLancamento->getRegrasLancamento();
+            foreach ($oEventoContabil->getEventoContabilLancamento() as $oEventoContabilLancamento) {
+                $aRegrasLancamentos = $oEventoContabilLancamento->getRegrasLancamento();
                 $oRegraLancamentoContabil = clone $aRegrasLancamentos[0];
                 $oRegraLancamentoContabil->setAnoUso($iAnoUso);
                 $aComparaDebitoCredito = array(RegraLancamentoContabil::COMPARA_DEBITO, RegraLancamentoContabil::COMPARA_CREDITO);
 
-                if ( !in_array($oRegraLancamentoContabil->getCompara(), $aComparaDebitoCredito) ) {
+                if (!in_array($oRegraLancamentoContabil->getCompara(), $aComparaDebitoCredito)) {
                     continue;
                 }
 
                 switch ($oRegraLancamentoContabil->getCompara()) {
-
                     case RegraLancamentoContabil::COMPARA_DEBITO :
                         $oRegraLancamentoContabil->setContaDebito($iReduzidoPcasp);
                         break;
@@ -325,19 +307,16 @@ switch ($oParam->exec) {
         break;
 
     case 'incluirGrupo':
-
         try {
-
             db_inicio_transacao();
             $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
             // incluímos o grupo
             $oPlano->addContaGrupo($oParam->iCodigoGrupo);
 
 
-            $oRetorno->message   = urlencode("Grupo incluído com sucesso");
+            $oRetorno->message = urlencode("Grupo incluído com sucesso");
             db_fim_transacao(false);
         } catch (Exception $eException) {
-
             db_fim_transacao(true);
             $oRetorno->status = 2;
             $oRetorno->message = urlencode(str_replace("\\n", "\n", $eException->getMessage()));
@@ -346,23 +325,19 @@ switch ($oParam->exec) {
         break;
 
     case "getGrupos":
-
-        $oPlano                 = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
-        $aGrupoContas           = $oPlano->getGruposContas($oParam->iCodigoConta);
+        $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
+        $aGrupoContas = $oPlano->getGruposContas();
         $oRetorno->aGrupoContas = $aGrupoContas;
         break;
 
     case "excluirGrupo":
-
         try {
-
             db_inicio_transacao();
             $oPlano = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
             $oPlano->removeContaGrupo($oParam->iConGrupo);
-            $oRetorno->message   = urlencode("Grupo excluído com sucesso");
+            $oRetorno->message = urlencode("Grupo excluído com sucesso");
             db_fim_transacao(false);
         } catch (Exception $eException) {
-
             db_fim_transacao(true);
             $oRetorno->status = 2;
             $oRetorno->message = urlencode(str_replace("\\n", "\n", $eException->getMessage()));
@@ -370,32 +345,30 @@ switch ($oParam->exec) {
         break;
 
     case 'getDadosContaOrcamento':
-
-        $oContaOrcamento                     = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
-        $grupoEstrutural = substr($oContaOrcamento->getEstrutural(), 0 ,1);
+        $oContaOrcamento = new ContaOrcamento($oParam->iCodigoConta, db_getsession("DB_anousu"));
+        $grupoEstrutural = substr($oContaOrcamento->getEstrutural(), 0, 1);
         $formatacaoReceita = 'receita';
-        if (EMENTARIO_RECEITA && in_array($grupoEstrutural, array(4,9))) {
+        if (EMENTARIO_RECEITA && in_array($grupoEstrutural, array(4, 9))) {
             $formatacaoReceita = 'ementario_receita';
         }
 
-        $oRetorno->dados                     = new stdClass();
-        $oRetorno->dados->iCodigoConta       = $oContaOrcamento->getCodigoConta();
+        $oRetorno->dados = new stdClass();
+        $oRetorno->dados->iCodigoConta = $oContaOrcamento->getCodigoConta();
         $oRetorno->dados->c90_estrutcontabil = db_formatar($oContaOrcamento->getEstrutural(), $formatacaoReceita);
-        $oRetorno->dados->c60_descr          = urlencode($oContaOrcamento->getDescricao());
+        $oRetorno->dados->c60_descr = urlencode($oContaOrcamento->getDescricao());
         if ($oContaOrcamento->getPlanoContaPCASP() != null) {
 
-            $oRetorno->dados->c72_conplano   = $oContaOrcamento->getPlanoContaPCASP()->getCodigoConta();
+            $oRetorno->dados->c72_conplano = $oContaOrcamento->getPlanoContaPCASP()->getCodigoConta();
             $oRetorno->dados->c60_descrPcasp = urlencode($oContaOrcamento->getPlanoContaPCASP()->getDescricao());
         }
         $oRetorno->dados->c60_naturezasaldo = $oContaOrcamento->getNaturezaSaldo();
         $oRetorno->dados->c60_identificadorresultadoprimario = $oContaOrcamento->getIdentificadorResultadoPrimario();
-        $oRetorno->dados->c60_finali        = urlencode($oContaOrcamento->getFinalidade());
-        $oRetorno->dados->lReduzido         = false;
+        $oRetorno->dados->c60_finali = urlencode($oContaOrcamento->getFinalidade());
+        $oRetorno->dados->lReduzido = false;
         if ($oContaOrcamento->getContasReduzidas()) {
             $oRetorno->dados->lReduzido = true;
         }
         break;
 }
-
 
 echo $oJson->encode($oRetorno);

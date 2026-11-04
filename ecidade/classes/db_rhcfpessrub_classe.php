@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ class cl_rhcfpessrub {
                  rh23_fadiab = varchar(4) = Adiantamento s/abono de férias 
                  ";
    //funcao construtor da classe 
-   function cl_rhcfpessrub() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcfpessrub"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_rhcfpessrub {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh23_rubmat = ($this->rh23_rubmat == ""?@$GLOBALS["HTTP_POST_VARS"]["rh23_rubmat"]:$this->rh23_rubmat);
        $this->rh23_rubdec = ($this->rh23_rubdec == ""?@$GLOBALS["HTTP_POST_VARS"]["rh23_rubdec"]:$this->rh23_rubdec);
@@ -103,7 +103,7 @@ class cl_rhcfpessrub {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->rh23_rubmat == null ){ 
        $this->erro_sql = " Campo Rubrica do Salário Maternidade nao Informado.";
@@ -267,7 +267,7 @@ class cl_rhcfpessrub {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update rhcfpessrub set ";
      $virgula = "";
@@ -458,7 +458,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from rhcfpessrub
                     where ";
      $sql2 = "";
@@ -497,7 +497,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

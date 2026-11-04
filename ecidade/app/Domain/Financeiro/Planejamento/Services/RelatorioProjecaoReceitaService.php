@@ -96,16 +96,24 @@ class RelatorioProjecaoReceitaService extends ReceitaService
 
     private function projecao()
     {
-        $campos = [
-            'orcfontes_id',
-            'o70_codrec',
+        $camposFonte = [
             'o57_fonte as fonte',
             'o57_descr as descricao',
+        ];
+        if ($this->ementario !== 'ecidade') {
+            $camposFonte = [
+                'conta as fonte',
+                'nome as descricao',
+            ];
+        }
+        $campos = array_merge([
+            'orcfontes_id',
+            'o70_codrec',
             'fonterecurso.codigo_siconfi as recurso',
             'fonterecurso.descricao as descricao_recurso',
             'o15_complemento as complemento',
             'valorbase as valor_base',
-        ];
+        ], $camposFonte);
 
         $outrosCampos = [
             DB::raw("

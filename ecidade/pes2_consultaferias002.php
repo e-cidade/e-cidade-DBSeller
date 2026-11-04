@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,10 +63,10 @@ $oPost = db_utils::postMemory($_POST);
 				      <table class='form-container'>
 							  <tr> 
 								  <td><strong>Matrícula:</strong> 
-				            <?
+				            <?php
 				            db_input('rh01_regist', '', '', true, 'text', 3, "class='field-size2'");
 				            ?>
-			              <?
+			              <?php
 			               db_input('z01_nome', '', '', true, 'text', 3, "class='field-size9'");
 			              ?> 
 			            </td>

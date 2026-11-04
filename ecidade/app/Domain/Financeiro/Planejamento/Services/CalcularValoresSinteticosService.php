@@ -75,7 +75,6 @@ class CalcularValoresSinteticosService
             });
 
             $valoresPorAno = $this->totalizaValoresPorAno($valores);
-
             $metas = $iniciativa->metas;
             if ($metas->count() === 0) {
                 foreach ($valoresPorAno as $ano => $valor) {
@@ -88,9 +87,10 @@ class CalcularValoresSinteticosService
             } else {
                 $metas->each(function (MetasIniciativa $meta) use ($valoresPorAno) {
                     if (count($valoresPorAno) === 0) {
-                        return;
+                        $meta->meta_financeira = 0;
+                    } else {
+                        $meta->meta_financeira = $valoresPorAno[$meta->exercicio];
                     }
-                    $meta->meta_financeira = $valoresPorAno[$meta->exercicio];
                     $meta->save();
                 });
             }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -80,7 +80,7 @@ function js_emite(){
   jan = window.open('pes2_resumoporvinculo002.php?'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -104,7 +104,7 @@ function js_emite(){
         <strong>Ano / Mes:</strong>
         </td>
         <td>
-          <?
+          <?php
 	  if(!isset($DBtxt23) || (isset($DBtxt23) && ($DBtxt23 == "" || $DBtxt23 == 0))){
 	    $DBtxt23 = db_anofolha();
 	  }
@@ -112,7 +112,7 @@ function js_emite(){
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'onchange="document.form1.submit();"');
           ?>
 	  &nbsp;/&nbsp;
-          <?
+          <?php
 	  if(!isset($DBtxt25) || (isset($DBtxt25) && ($DBtxt25 == "" || $DBtxt25 == 0))){
 	    $DBtxt25 = db_mesfolha();
 	  }
@@ -121,32 +121,32 @@ function js_emite(){
           ?>
         </td>
       </tr>
-      <tr> 
+      <tr>
         <td align="right" nowrap title="Seleção:" >
-        <?
+        <?php
 	db_ancora("<b>Seleção:</b>","js_pesquisasel(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php
           db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
           db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
           ?>
 	</td>
       </tr>
-      <?
+      <?php
       if(!isset($tipo) || (isset($tipo) && $tipo != "T")){
         $geraform->gera_form();
 	?>
       <?}else{?>
-      <tr> 
+      <tr>
         <td align="right" nowrap title="<?=@$Trh55_estrut?>" >
-        <?
+        <?php
 	db_ancora("<b>Local inicial:</b>","js_pesquisaDBtxt27(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php
 	  $DBtxt27 = "";
 	  $DBtxt27_descr = "";
           db_input('rh55_estrut',4,$Irh55_estrut,true,'text',2,'onchange="js_pesquisaDBtxt27(false)"',"DBtxt27");
@@ -154,14 +154,14 @@ function js_emite(){
           ?>
 	</td>
       </tr>
-      <tr> 
+      <tr>
         <td align="right" nowrap title="<?=@$Trh55_estrut?>" >
-        <?
+        <?php
 	db_ancora("<b>Local final:</b>","js_pesquisaDBtxt28(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php
 	  $DBtxt28 = "";
 	  $DBtxt28_descr = "";
           db_input('rh55_estrut',4,$Irh55_estrut,true,'text',2,'onchange="js_pesquisaDBtxt28(false)"',"DBtxt28");
@@ -169,12 +169,12 @@ function js_emite(){
           ?>
 	</td>
       </tr>
-      <?}?>
+      <?php }?>
       <tr>
         <td align="right"><strong>Tipo de Resumo:</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_tipo = array("G"=>"Geral", "L"=>"Lotação", "R"=>"Recurso", "O"=>"Órgão", "T"=>"Locais de trabalho");
           db_select('tipo',$arr_tipo,true,4,"onchange='document.form1.submit();'");
           ?>
@@ -184,7 +184,7 @@ function js_emite(){
         <td align="right"><strong>Tipo de Folha :</strong>
         </td>
         <td>
-          <?
+          <?php
           $arr_folha = array("r14"=>"Salário", "r48"=>"Complementar", "r20"=>"Rescisão", "r35"=>"13o. Salário", "r22"=>"Adiantamento");
           db_select('folha',$arr_folha,true,4,"onchange='document.form1.submit();'");
           ?>
@@ -194,7 +194,7 @@ function js_emite(){
         <td align="right"><strong>Regime:</strong>
         </td>
         <td>
-          <?
+          <?php
       $result_regimes = db_query("select rh52_regime, rh52_descr from rhcadregime");
       if(pg_num_rows($result_regimes) > 0){
 	$arr_regimes[0] = "Todos";
@@ -208,7 +208,7 @@ function js_emite(){
           ?>
        </td>
      </tr>
-     <?
+     <?php
      if(isset($folha) && $folha == "r48"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($anosqlcom,$messqlcom,null,null,"distinct r48_semest"));
        if($clgerfcom->numrows > 0){
@@ -243,37 +243,37 @@ function js_emite(){
         <td align="right" nowrap title="Vinculo" ><strong>Vinculo :</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $v = array("g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista", "ip"=>"Inativo/Pensionista");
           db_select('vinculo',$v,true,4,"");
           ?>
         </td>
       </tr>
-														       
+
       <tr >
         <td align="right" nowrap title="Ordem" ><strong>Ordem</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $o = array("n"=>"Numerica","a"=>"Alfabetica");
           db_select('ordem',$o,true,4,"");
           ?>
         </td>
       </tr>
-														       
+
       <tr>
         <td >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
         </td>
       </tr>
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -283,7 +283,7 @@ function js_pesquisasel(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_selecao','func_selecao.php?funcao_js=parent.js_mostrasel1|r44_selec|r44_descr','Pesquisa',true);
   }else{
-     if(document.form1.r44_selec.value != ''){ 
+     if(document.form1.r44_selec.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_selecao','func_selecao.php?pesquisa_chave='+document.form1.r44_selec.value+'&funcao_js=parent.js_mostrasel','Pesquisa',false);
      }else{
        document.form1.r44_descr.value = '';
@@ -291,10 +291,10 @@ function js_pesquisasel(mostra){
   }
 }
 function js_mostrasel(chave,erro){
-  document.form1.r44_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.r44_selec.focus(); 
-    document.form1.r44_selec.value = ''; 
+  document.form1.r44_descr.value = chave;
+  if(erro==true){
+    document.form1.r44_selec.focus();
+    document.form1.r44_selec.value = '';
   }
 }
 function js_mostrasel1(chave1,chave2){
@@ -306,7 +306,7 @@ function js_pesquisaDBtxt27(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhlocaltrab','func_rhlocaltrabestrut.php?funcao_js=parent.js_mostraDBtxt271|rh55_estrut|rh55_descr','Pesquisa',true);
   }else{
-     if(document.form1.DBtxt27.value != ''){ 
+     if(document.form1.DBtxt27.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhlocaltrab','func_rhlocaltrabestrut.php?pesquisa_chave='+document.form1.DBtxt27.value+'&funcao_js=parent.js_mostraDBtxt27','Pesquisa',false);
      }else{
        document.form1.DBtxt27_descr.value = '';
@@ -314,10 +314,10 @@ function js_pesquisaDBtxt27(mostra){
   }
 }
 function js_mostraDBtxt27(chave,erro){
-  document.form1.DBtxt27_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.DBtxt27.focus(); 
-    document.form1.DBtxt27.value = ''; 
+  document.form1.DBtxt27_descr.value = chave;
+  if(erro==true){
+    document.form1.DBtxt27.focus();
+    document.form1.DBtxt27.value = '';
   }
 }
 function js_mostraDBtxt271(chave1,chave2){
@@ -329,7 +329,7 @@ function js_pesquisaDBtxt28(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhlocaltrab','func_rhlocaltrabestrut.php?funcao_js=parent.js_mostraDBtxt281|rh55_estrut|rh55_descr','Pesquisa',true);
   }else{
-     if(document.form1.DBtxt28.value != ''){ 
+     if(document.form1.DBtxt28.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhlocaltrab','func_rhlocaltrabestrut.php?pesquisa_chave='+document.form1.DBtxt28.value+'&funcao_js=parent.js_mostraDBtxt28','Pesquisa',false);
      }else{
        document.form1.DBtxt28_descr.value = '';
@@ -337,10 +337,10 @@ function js_pesquisaDBtxt28(mostra){
   }
 }
 function js_mostraDBtxt28(chave,erro){
-  document.form1.DBtxt28_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.DBtxt28.focus(); 
-    document.form1.DBtxt28.value = ''; 
+  document.form1.DBtxt28_descr.value = chave;
+  if(erro==true){
+    document.form1.DBtxt28.focus();
+    document.form1.DBtxt28.value = '';
   }
 }
 function js_mostraDBtxt281(chave1,chave2){
@@ -375,11 +375,11 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        // js_emite();
-       </script>";  
+       </script>";
 }
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;

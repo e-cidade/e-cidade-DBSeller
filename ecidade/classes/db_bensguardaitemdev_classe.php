@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrim
 //CLASSE DA ENTIDADE bensguardaitemdev
-class cl_bensguardaitemdev { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $t23_guardaitem = 0; 
-   var $t23_situacao = 0; 
-   var $t23_data_dia = null; 
-   var $t23_data_mes = null; 
-   var $t23_data_ano = null; 
-   var $t23_data = null; 
-   var $t23_obs = null; 
-   var $t23_usuario = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_bensguardaitemdev {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $t23_guardaitem = 0;
+   var $t23_situacao = 0;
+   var $t23_data_dia = null;
+   var $t23_data_mes = null;
+   var $t23_data_ano = null;
+   var $t23_data = null;
+   var $t23_obs = null;
+   var $t23_usuario = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 t23_guardaitem = int4 = Código bensguardaitem 
-                 t23_situacao = int8 = Código da situação 
-                 t23_data = date = Data da Devolução 
-                 t23_obs = text = Observação 
-                 t23_usuario = int4 = Cod. Usuário 
+                 t23_guardaitem = int4 = Código bensguardaitem
+                 t23_situacao = int8 = Código da situação
+                 t23_data = date = Data da Devolução
+                 t23_obs = text = Observação
+                 t23_usuario = int4 = Cod. Usuário
                  ";
-   //funcao construtor da classe 
-   function cl_bensguardaitemdev() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("bensguardaitemdev"); 
+     $this->rotulo = new rotulo("bensguardaitemdev");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_bensguardaitemdev {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t23_guardaitem = ($this->t23_guardaitem == ""?@$GLOBALS["HTTP_POST_VARS"]["t23_guardaitem"]:$this->t23_guardaitem);
        $this->t23_situacao = ($this->t23_situacao == ""?@$GLOBALS["HTTP_POST_VARS"]["t23_situacao"]:$this->t23_situacao);
@@ -93,9 +93,9 @@ class cl_bensguardaitemdev {
      }
    }
    // funcao para inclusao
-   function incluir ($t23_guardaitem){ 
+   public function incluir ($t23_guardaitem){
       $this->atualizacampos();
-     if($this->t23_situacao == null ){ 
+     if($this->t23_situacao == null ){
        $this->erro_sql = " Campo Código da situação nao Informado.";
        $this->erro_campo = "t23_situacao";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_bensguardaitemdev {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t23_data == null ){ 
+     if($this->t23_data == null ){
        $this->erro_sql = " Campo Data da Devolução nao Informado.";
        $this->erro_campo = "t23_data_dia";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_bensguardaitemdev {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t23_usuario == null ){ 
+     if($this->t23_usuario == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
        $this->erro_campo = "t23_usuario";
        $this->erro_banco = "";
@@ -122,8 +122,8 @@ class cl_bensguardaitemdev {
        $this->erro_status = "0";
        return false;
      }
-       $this->t23_guardaitem = $t23_guardaitem; 
-     if(($this->t23_guardaitem == null) || ($this->t23_guardaitem == "") ){ 
+       $this->t23_guardaitem = $t23_guardaitem;
+     if(($this->t23_guardaitem == null) || ($this->t23_guardaitem == "") ){
        $this->erro_sql = " Campo t23_guardaitem nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -132,21 +132,21 @@ class cl_bensguardaitemdev {
        return false;
      }
      $sql = "insert into bensguardaitemdev(
-                                       t23_guardaitem 
-                                      ,t23_situacao 
-                                      ,t23_data 
-                                      ,t23_obs 
-                                      ,t23_usuario 
+                                       t23_guardaitem
+                                      ,t23_situacao
+                                      ,t23_data
+                                      ,t23_obs
+                                      ,t23_usuario
                        )
                 values (
-                                $this->t23_guardaitem 
-                               ,$this->t23_situacao 
-                               ,".($this->t23_data == "null" || $this->t23_data == ""?"null":"'".$this->t23_data."'")." 
-                               ,'$this->t23_obs' 
-                               ,$this->t23_usuario 
+                                $this->t23_guardaitem
+                               ,$this->t23_situacao
+                               ,".($this->t23_data == "null" || $this->t23_data == ""?"null":"'".$this->t23_data."'")."
+                               ,'$this->t23_obs'
+                               ,$this->t23_usuario
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "bens devolvidos não estão mais sobre guarda ($this->t23_guardaitem) nao Incluído. Inclusao Abortada.";
@@ -182,16 +182,16 @@ class cl_bensguardaitemdev {
        $resac = db_query("insert into db_acount values($acount,1535,8968,'','".AddSlashes(pg_result($resaco,0,'t23_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($t23_guardaitem=null) { 
+   public function alterar ($t23_guardaitem=null) {
       $this->atualizacampos();
      $sql = " update bensguardaitemdev set ";
      $virgula = "";
-     if(trim($this->t23_guardaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_guardaitem"])){ 
+     if(trim($this->t23_guardaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_guardaitem"])){
        $sql  .= $virgula." t23_guardaitem = $this->t23_guardaitem ";
        $virgula = ",";
-       if(trim($this->t23_guardaitem) == null ){ 
+       if(trim($this->t23_guardaitem) == null ){
          $this->erro_sql = " Campo Código bensguardaitem nao Informado.";
          $this->erro_campo = "t23_guardaitem";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_bensguardaitemdev {
          return false;
        }
      }
-     if(trim($this->t23_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_situacao"])){ 
+     if(trim($this->t23_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_situacao"])){
        $sql  .= $virgula." t23_situacao = $this->t23_situacao ";
        $virgula = ",";
-       if(trim($this->t23_situacao) == null ){ 
+       if(trim($this->t23_situacao) == null ){
          $this->erro_sql = " Campo Código da situação nao Informado.";
          $this->erro_campo = "t23_situacao";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_bensguardaitemdev {
          return false;
        }
      }
-     if(trim($this->t23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"] !="") ){ 
+     if(trim($this->t23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"] !="") ){
        $sql  .= $virgula." t23_data = '$this->t23_data' ";
        $virgula = ",";
-       if(trim($this->t23_data) == null ){ 
+       if(trim($this->t23_data) == null ){
          $this->erro_sql = " Campo Data da Devolução nao Informado.";
          $this->erro_campo = "t23_data_dia";
          $this->erro_banco = "";
@@ -226,11 +226,11 @@ class cl_bensguardaitemdev {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["t23_data_dia"])){
          $sql  .= $virgula." t23_data = null ";
          $virgula = ",";
-         if(trim($this->t23_data) == null ){ 
+         if(trim($this->t23_data) == null ){
            $this->erro_sql = " Campo Data da Devolução nao Informado.";
            $this->erro_campo = "t23_data_dia";
            $this->erro_banco = "";
@@ -241,14 +241,14 @@ class cl_bensguardaitemdev {
          }
        }
      }
-     if(trim($this->t23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_obs"])){ 
+     if(trim($this->t23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_obs"])){
        $sql  .= $virgula." t23_obs = '$this->t23_obs' ";
        $virgula = ",";
      }
-     if(trim($this->t23_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_usuario"])){ 
+     if(trim($this->t23_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t23_usuario"])){
        $sql  .= $virgula." t23_usuario = $this->t23_usuario ";
        $virgula = ",";
-       if(trim($this->t23_usuario) == null ){ 
+       if(trim($this->t23_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "t23_usuario";
          $this->erro_banco = "";
@@ -282,7 +282,7 @@ class cl_bensguardaitemdev {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "bens devolvidos não estão mais sobre guarda nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->t23_guardaitem;
@@ -310,14 +310,14 @@ class cl_bensguardaitemdev {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($t23_guardaitem=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($t23_guardaitem=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t23_guardaitem));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -347,7 +347,7 @@ class cl_bensguardaitemdev {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "bens devolvidos não estão mais sobre guarda nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t23_guardaitem;
@@ -375,11 +375,11 @@ class cl_bensguardaitemdev {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -401,10 +401,10 @@ class cl_bensguardaitemdev {
       }
      return $result;
    }
-   function sql_query ( $t23_guardaitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t23_guardaitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,15 +423,15 @@ class cl_bensguardaitemdev {
      $sql2 = "";
      if($dbwhere==""){
        if($t23_guardaitem!=null ){
-         $sql2 .= " where bensguardaitemdev.t23_guardaitem = $t23_guardaitem "; 
-       } 
+         $sql2 .= " where bensguardaitemdev.t23_guardaitem = $t23_guardaitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,10 +440,10 @@ class cl_bensguardaitemdev {
      }
      return $sql;
   }
-   function sql_query_file ( $t23_guardaitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t23_guardaitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,15 +456,15 @@ class cl_bensguardaitemdev {
      $sql2 = "";
      if($dbwhere==""){
        if($t23_guardaitem!=null ){
-         $sql2 .= " where bensguardaitemdev.t23_guardaitem = $t23_guardaitem "; 
-       } 
+         $sql2 .= " where bensguardaitemdev.t23_guardaitem = $t23_guardaitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

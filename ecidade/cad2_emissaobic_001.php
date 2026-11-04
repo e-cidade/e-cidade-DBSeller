@@ -184,7 +184,7 @@
 </head>
 <body class="body-default">
  <div class="container">
-<?
+<?php
       // Cria a janela para visualizacao da func_ruas
       $listaFuncRuas = new janela("listaFuncRuas","");
 	  $listaFuncRuas->posX=1;
@@ -302,7 +302,7 @@
   <input type="button" name="relatorio" value="Emitir Relatório" onclick="js_AbreJanelaRelatorio(this)">
 	</form>
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

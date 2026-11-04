@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clrotulo = new rotulocampo;
@@ -45,10 +45,10 @@ if(empty($dtin_dia)){
   $dtin_dia = date('d',db_getsession('DB_datausu'));
   $dtin_mes = date('m',db_getsession('DB_datausu'));
   $dtin_ano = date('Y',db_getsession('DB_datausu'));
-}	 
+}
 
 if(isset($procura) &&  isset($e82_codord) && $e82_codord != ""){
-  $result = $clpagordem->sql_record($clpagordem->sql_query_file($e82_codord,'e50_numemp')); 
+  $result = $clpagordem->sql_record($clpagordem->sql_query_file($e82_codord,'e50_numemp'));
   db_fieldsmemory($result,0);
    $dbwhere .= " and e60_numemp = $e50_numemp ";
 }
@@ -61,9 +61,9 @@ if(!isset($mensagem_mostra)){
                                                                        null,
 								       null,
 								       "
-								        distinct e83_codtipo as codtipo, 
+								        distinct e83_codtipo as codtipo,
 									e83_descr,
-									e83_sequencia,e83_conta                       
+									e83_sequencia,e83_conta
 								       ",
 								       "
 								        e83_descr
@@ -84,12 +84,12 @@ if(!isset($mensagem_mostra)){
 <script>
 function js_mascara(evt){
   var evt = (evt) ? evt : (window.event) ? window.event : "";
-  
-  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:. 
+
+  if( (evt.charCode >46 && evt.charCode <58) || evt.charCode ==0 ){//8:backspace|46:delete|190:.
     return true;
   }else{
     return false;
-  }  
+  }
 }
 
 function js_pesquisar(form){
@@ -105,10 +105,10 @@ function js_pesquisar(form){
     codemp = form.e60_codemp.value;
      arr = codemp.split('/');
     if(arr.length==2){
-      query += "&e60_codemp="+arr[0]+"&e60_emiss="+arr[1];  
-    }else{  
+      query += "&e60_codemp="+arr[0]+"&e60_emiss="+arr[1];
+    }else{
       query += "&e60_codemp="+form.e60_codemp.value;
-    }  
+    }
   }
   if(form.e60_numemp.value != ""){
     query += "&e60_numemp="+form.e60_numemp.value;
@@ -117,7 +117,7 @@ function js_pesquisar(form){
     query += "&z01_numcgm="+form.z01_numcgm.value;
   }
   if( form.dtin_dia.value != "" && form.dtin_mes.value != "" && form.dtin_ano.value != ""  ){
-    query +="&dtin="+ form.dtin_ano.value+"_"+form.dtin_mes.value+"_"+form.dtin_dia.value; 
+    query +="&dtin="+ form.dtin_ano.value+"_"+form.dtin_mes.value+"_"+form.dtin_dia.value;
   }
 
   if(form.e83_codtipo.value!=0){
@@ -134,16 +134,16 @@ function js_atualizar(){
 	if(ordem.document.form1){
           obj = ordem.document.form1;
 	  var coluna='';
-	  var sep=''; 
+	  var sep='';
 	  for(i=0; i<obj.length; i++){
-	    nome = obj[i].name.substr(0,5);  
-	    
+	    nome = obj[i].name.substr(0,5);
+
 	    if(nome=="CHECK" && obj[i].checked==true){
 	      ord = obj[i].name.substring(6);
 	      coluna += sep+obj[i].value;
 	      sep= "XX";
 	    }
-	  } 
+	  }
 	  if(coluna==''){
 	    alert("Selecione um movimento!");
 	    return false;
@@ -154,7 +154,7 @@ function js_atualizar(){
         }else{
 	  alert("Clique em pesquisar para selecionar um movimento!");
 	  return false;
-	}	  
+	}
 	//return coluna ;
 
 }
@@ -166,8 +166,8 @@ function js_troca(campo){
 }
 
 function js_ver(){
-  
-  
+
+
   query = "?e80_codage=<?=$e80_codage?>";
   if(document.form1.e83_codtipo.value!=0){
     query += "&e83_codtipo="+document.form1.e83_codtipo.value;
@@ -175,8 +175,8 @@ function js_ver(){
   js_OpenJanelaIframe('','db_iframe_anula','func_empageconf001.php'+query,'Pesquisa',true);
 }
 function js_anular(){
-  
-  
+
+
   query = "?e80_codage=<?=$e80_codage?>";
   if(document.form1.e83_codtipo.value!=0){
     query += "&e83_codtipo="+document.form1.e83_codtipo.value;
@@ -189,7 +189,7 @@ function js_anular(){
 <form name="form1" method="post" action="">
   <?=db_input('codtipo',10,'',true,'hidden',3);?>
   <?=db_input('movs',10,'',true,'hidden',3);?>
-  
+
   <?=db_input('nome_imp',10,'',true,'hidden',3);?>
   <?=db_input('munic_imp',10,'',true,'hidden',3);?>
   <?=db_input('codbco_imp',10,'',true,'hidden',3);?>
@@ -200,61 +200,61 @@ function js_anular(){
 
   <?=db_input('valor_dos_cheques',50,'',true,'hidden',3);?>
   <table border='0' align='left' cellpadding='0' cellspacing='0'>
-      <tr>     
+      <tr>
         <td align='left' valign='top' nowrap>
-          <table  border='0' cellpadding='0' cellspacing='0' >  
+          <table  border='0' cellpadding='0' cellspacing='0' >
 	    <tr>
 	      <td nowrap title="<?=@$Te82_codord?>" align='right'>
-		 <? db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
+		 <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
 	      </td>
-	      <td> 
-		 <? db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
- 	   <? db_ancora("<b>até</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
-		 <? db_input('e82_codord',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
+	      <td>
+		 <?php db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
+ 	   <?php db_ancora("<b>até</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
+		 <?php db_input('e82_codord',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
                 <input name="procura" type="submit"  value="Pesquisa tipos">
 	      </td>
 	    </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tz01_numcgm?>" align='right'>
-	    <?
+	    <?php
 	       db_ancora("<b>Nome:</b>","js_pesquisaz01_numcgm(true);",$db_opcao);
-	     ?>        
+	     ?>
 	    </td>
-	    <td> 
-	<?
+	    <td>
+	<?php
 	db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 	?>
-	       <?
+	       <?php
 	db_input('z01_nome',30,$Iz01_nome,true,'text',3,'')
 	       ?>
 	    </td>
 	  </tr>
 
-	    
-	    <tr> 
+
+	    <tr>
 	      <td  align="right" nowrap title="<?=$Te60_numemp?>">
-		   <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+		   <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
 	      </td>
-	      
-	      <td  nowrap> 
-	       
+
+	      <td  nowrap>
+
 		<input name="e60_codemp" title='<?=$Te60_codemp?>' size="10" type='text'  onKeyPress="return js_mascara(event);" >
-		       <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
-		       <? db_input('e60_numemp',10,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+		       <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+		       <?php db_input('e60_numemp',10,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
 		    </td>
 		  </tr>
-	</table>  
-      </td>  
+	</table>
+      </td>
       <td align='left'>
         <table width='100%' cellpadding='0' cellspacing='0' border='0' >
 	    <tr>
 	      <td nowrap title="<?=@$Te80_codage?>" align='right'>
 	      <?=$Le80_codage?>
-	      </td>	
-	      <td>	
-		 <? db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
+	      </td>
+	      <td>
+		 <?php db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
 	      <?=$Le80_data?>
-	       <?
+	       <?php
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 	       ?>
 	      </td>
@@ -262,12 +262,12 @@ function js_anular(){
 	  <tr>
 	    <td><b>Data :</b></td>
 	    <td>
-              <?
+              <?php
 	        db_inputdata('dtin',$dtin_dia,$dtin_mes,$dtin_ano,true,'text',1);
 	      ?>
         </td>
         </tr>
-	      <?
+	      <?php
 	          $arr='';
 		  for($i=0; $i<$numrows05; $i++){
 		    db_fieldsmemory($result05,$i);
@@ -282,7 +282,7 @@ function js_anular(){
  	            $valsaldo = 'vervaloratualsaltes_'.$codtipo;
 		    $$valsaldo = trim(db_formatar($vervaloratualsaltes,"f"));
 		    db_input($valsaldo,10,'',true,'hidden',1,'');
-		    
+
 		    $pardata = "";
 		    $sqlpar1 = "select k29_chqemitidonaoautent from caiparametro where k29_instit = ".db_getsession("DB_instit");
 	        $resultpar1 = db_query($sqlpar1);
@@ -293,8 +293,8 @@ function js_anular(){
 	            $pardata = " and e86_data >= '".$k29_chqemitidonaoautent."'";
 	          }
 	        }
-		    
-		                        
+
+
   $sqlll = "select sum(e91_valor)
   from empagepag
        inner join      empagemov     on e81_codmov = e85_codmov
@@ -313,7 +313,7 @@ function js_anular(){
        left outer join  empageslip   on e89_codmov = e81_codmov
   where e85_codtipo = $codtipo and e80_instit = " . db_getsession("DB_instit") . " and (e97_codmov is null or e97_codforma = 2)
   and k12_data is null ".$pardata;
-  
+
 //  where e85_codtipo = $codtipo and e86_data between '2007-01-01' and '2007-03-07' and (e97_codmov is null or e97_codforma = 2)
 
                     $resss = db_query($sqlll) or die($sqlll);
@@ -325,7 +325,7 @@ function js_anular(){
                       $$valsaldoc = "0";
                     }
                     db_input($valsaldoc,10,'',true,'hidden',1,'');
-                  
+
                     // saldo - cheque
                     $valsaldol = 'vervaloratualsalteschequeliq_'.$codtipo;
                     if( pg_numrows($resss) > 0 ){
@@ -334,8 +334,8 @@ function js_anular(){
                       $$valsaldol = "0";
                     }
                     db_input($valsaldol,10,'',true,'hidden',1,'');
-		    
-		    
+
+
 		  }
 	      ?>
         <tr>
@@ -344,7 +344,7 @@ function js_anular(){
 	    <small>
         </td>
         <td nowrap>
-	    <?
+	    <?php
 	    if($numrows05>0){
               db_select("e83_codtipo",$arr,true,1,"onchange='js_troca(this);'");
               if(empty($atualizar) && empty($prever)){
@@ -367,7 +367,7 @@ function js_anular(){
           db_input('vervaloratualsaltes',15,'',true,'text',3,'');
            echo "Cheques:";
            db_input('vervaloratualsaltescheque',15,'',true,'text',3,'');
-        } 
+        }
 	    echo "<br>Saldo Atual:";
         db_input("vervaloratualsalteschequeliq",15,'',true,'text',3,'');
 	    ?>
@@ -375,18 +375,18 @@ function js_anular(){
 	    document.form1.e83_codtipo.onchange();
 	    </script>
 	    </small>
-	    </td>  
-	  </tr>  
+	    </td>
+	  </tr>
           <tr>
 	    <td><b>Credor: </b></td>
 	    <td><?=db_input('z01_nome',52,@$z01_nome,true,'text',1,'','credor')?></td>
-	  </tr> 
+	  </tr>
           <tr>
 	    <td><?=@$Le87_descrgera?></td>
             <td class='bordas' align='left'><small><?=db_input('e87_descrgera',20,@$I87_descrgera,true,'hidden',1,'')?></small></td>
-	  </tr>  
+	  </tr>
 	</table>
-	  
+
       </td>
     </tr>
 	  <tr>
@@ -395,7 +395,7 @@ function js_anular(){
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    <b>Imprimir verso</b>
-	    <?
+	    <?php
         $check = "";
 	    if(isset($imprimirverso) || isset($prever)){
 	      $check = " checked ";
@@ -403,10 +403,10 @@ function js_anular(){
 	    ?>
 	    <input type='checkbox' name='imprimirverso' value='imprimirverso' <?=($check)?>>
 	    </td>
-	  </tr>  
+	  </tr>
 	  <tr>
 	    <td colspan='2' align='center' >
-  <?
+  <?php
   if(isset($emiteverso)){
     $verso='';
   }
@@ -414,7 +414,7 @@ function js_anular(){
   ?>
 	    </td>
 	  </tr>
-    <?
+    <?php
       if(isset($numrows05) && $numrows05 == 0){
 	$db_botao = false;
 	if(!isset($mensagem_mostra)){
@@ -435,21 +435,21 @@ function js_anular(){
 	    <b>Total: </b>
 	     <?=db_input('total',10,'',true,'text',3)?>
             <b>Cheques: </b>
-             <?
+             <?php
 	          $arr_c = array("1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6");
 	          db_select("cheques",$arr_c,true,1,"onchange='js_liberar_botao(true);'");
 	     ?>
          <input name="valorescheques" type="button" value="Informar valores" onclick='js_informar_valores();' disabled>
-	
+
       </td>
     </tr>
    <tr>
      <td colspan='2' >
-    <?
+    <?php
       $sr = '';
       if(isset($prever)){
         $sr = "src='emp4_empageconf002_ordem.php?e80_codage=$e80_codage&movs=$movs&e83_codtipo=$e83_codtipo'";
-      } 
+      }
     ?>
        <iframe name="ordem" <?=$sr?>   width="730" height="200"  marginwidth="0" marginheight="0" frameborder="0" style="z-Index:50;"  >
        </iframe>
@@ -517,9 +517,9 @@ function js_pesquisae60_numemp(mostra){
 
 //------------------------------------------------------------
 function js_mostraempempenho(chave,erro){
-  if(erro==true){ 
-    document.form1.e60_numemp.focus(); 
-    document.form1.e60_numemp.value = ''; 
+  if(erro==true){
+    document.form1.e60_numemp.focus();
+    document.form1.e60_numemp.value = '';
   }
 }
 function js_mostraempempenho1(chave1){
@@ -537,17 +537,17 @@ function js_pesquisae82_codord(mostra){
     ord02 = new Number(document.form1.e82_codord02.value);
     if(ord01 > ord02 && ord01 != "" && ord02 != ""){
       alert("Selecione uma ordem menor que a segunda!");
-      document.form1.e82_codord.focus(); 
-      document.form1.e82_codord.value = ''; 
+      document.form1.e82_codord.focus();
+      document.form1.e82_codord.value = '';
       return false;
     }
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+ord01+'&funcao_js=parent.js_mostrapagordem','Pesquisa',false);
   }
 }
 function js_mostrapagordem(chave,erro){
-  if(erro==true){ 
-    document.form1.e82_codord.focus(); 
-    document.form1.e82_codord.value = ''; 
+  if(erro==true){
+    document.form1.e82_codord.focus();
+    document.form1.e82_codord.value = '';
   }
 }
 function js_mostrapagordem1(chave1,chave2){
@@ -564,17 +564,17 @@ function js_pesquisae82_codord02(mostra){
     ord02 = new Number(document.form1.e82_codord02.value);
     if(ord01 > ord02 && ord02 != ""  && ord01 != ""){
       alert("Selecione uma ordem maior que a primeira");
-      document.form1.e82_codord02.focus(); 
-      document.form1.e82_codord02.value = ''; 
+      document.form1.e82_codord02.focus();
+      document.form1.e82_codord02.value = '';
       return false;
     }
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem.php?pesquisa_chave='+ord02+'&funcao_js=parent.js_mostrapagordem02','Pesquisa',false);
   }
 }
 function js_mostrapagordem02(chave,erro){
-  if(erro==true){ 
-    document.form1.e82_codord02.focus(); 
-    document.form1.e82_codord02.value = ''; 
+  if(erro==true){
+    document.form1.e82_codord02.focus();
+    document.form1.e82_codord02.value = '';
   }
 }
 function js_mostrapagordem102(chave1,chave2){
@@ -587,18 +587,18 @@ function js_pesquisaz01_numcgm(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.z01_numcgm.value != ''){ 
+     if(document.form1.z01_numcgm.value != ''){
         js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.z01_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.z01_nome.value = ''; 
+       document.form1.z01_nome.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.z01_numcgm.focus(); 
-    document.form1.z01_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.z01_numcgm.focus();
+    document.form1.z01_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -607,7 +607,7 @@ function js_mostracgm1(chave1,chave2){
   db_iframe_cgm.hide();
 }
 //------------------------------------------------------------
-<?if( empty($atualizar) ){?>
+<?php if( empty($atualizar) ){?>
 //rotina que irá retornar a data para emitir o cheque com a do ultimo acesso
 function js_verif(){
   if(parent.document.form1.dtp_dia.value != ''){
@@ -618,10 +618,10 @@ function js_verif(){
 }
 js_verif();
 //--------------------------------
-<?}?>
+<?php }?>
 
 //quando o usuario procurar os tipo eh clicado automaticamente em pesquisar
-<?if(isset($procura)){?>
+<?php if(isset($procura)){?>
    js_pesquisar(document.form1);
-<?}?>
+<?php }?>
 </script>

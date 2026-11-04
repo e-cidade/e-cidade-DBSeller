@@ -19,6 +19,7 @@ DBViewContaBancaria = function(iCodigoContaBancaria, sInstance, lReadOnly) {
   me.instance = sInstance + ".";
   me.iSequencialContaBancaria = iCodigoContaBancaria;
   me.lContaPlano = false;
+  me.filtraTipoConta = 0; // filtra o tipo de conta 1 conta corrente contabancaria.db83_tipoconta
   me.getDados = function(iCodigoContaBancaria) {
 
     var oParam = new Object();
@@ -401,12 +402,15 @@ DBViewContaBancaria = function(iCodigoContaBancaria, sInstance, lReadOnly) {
     if ($('inputSequencialAgencia').value != "") {
       sBuscarPorAgencia = "bancoagencia="+$('inputSequencialAgencia').value+"&";
     }
-    
+    var filtraTipoConta = "";
+    if (me.filtraTipoConta != 0) {
+      filtraTipoConta = "&filtraTipoConta=" + me.filtraTipoConta;
+    }
     var sUrlNumeroConta = "func_contabancaria.php?"+sBuscarPorAgencia+"funcao_js=parent."+me.instance+"js_preencheNumeroConta|db83_conta|db83_dvconta|db83_identificador|db83_codigooperacao|db83_tipoconta|db83_bancoagencia|db83_sequencial";
     if (!lMostra) {
       sUrlNumeroConta = "func_contabancaria.php?"+sBuscarPorAgencia+"pesquisa_chave="+me.inputNumeroConta.getValue()+"&funcao_js=parent."+me.instance+"js_completaAgencia";
     }
-    js_OpenJanelaIframe('', "db_iframe_contabancaria", sUrlNumeroConta, "Pesquisa Número da Conta", lMostra);
+    js_OpenJanelaIframe('', "db_iframe_contabancaria", sUrlNumeroConta + filtraTipoConta, "Pesquisa Número da Conta", lMostra);
     $('Jandb_iframe_contabancaria').style.zIndex = '100000';
   }
   
@@ -419,6 +423,7 @@ DBViewContaBancaria = function(iCodigoContaBancaria, sInstance, lReadOnly) {
     me.cboTipoConta.setValue(iTipoConta);
     $('inputSequencialConta').value = iSequencial;
     db_iframe_contabancaria.hide();
+    js_getDadosFavorecido($F('z01_numcgm'),iCodigoConta);
     this.getDadosContaBancaria();
   }
   

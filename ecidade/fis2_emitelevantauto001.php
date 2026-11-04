@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,12 +68,12 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
       <tr>
       <br>
         <td nowrap title="<?=@$Tz01_numcgm?>">
-        <?
+        <?php
           db_ancora(@$Lz01_numcgm,"js_pesquisaz01_numcgm(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('z01_numcgm',6,$Iy60_codlev,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'");
       db_input('z01_nome',40,$Iz01_nome,true,'text',3);
          ?>
@@ -82,12 +82,12 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
       <tr>
       <br>
         <td nowrap title="<?=@$Tq02_inscr?>">
-        <?
+        <?php
           db_ancora(@$Lq02_inscr,"js_mostrainscricao(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('q02_inscr',6,$Iq02_inscr,true,'text',$db_opcao," onchange='js_mostrainscricao(false);'");
       db_input('z01_nome2',40,$Iz01_nome,true,'text',3);
          ?>
@@ -96,12 +96,12 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
       <tr>
       <br>
         <td nowrap title="<?=@$Ty60_codlev?>">
-        <?
+        <?php
           db_ancora(@$Ly60_codlev,"js_lev(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('y60_codlev',6,$Iy60_codlev,true,'text',$db_opcao," onchange='js_lev(false);'");
       db_input('z01_nome3',40,$Iz01_nome,true,'text',3);
          ?>
@@ -113,7 +113,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 	<strong>Enquadramento legal :</strong>
         </td>
         <td>
-        <?
+        <?php
           db_textarea("enqlegal","5","46","",true,"",2,"","","");
         ?>
         </td>	
@@ -124,7 +124,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 	<strong>Receita tributável :</strong>
         </td>
         <td>
-        <?
+        <?php
           db_textarea("rectrib","5","46","",true,"",2,"","","");
         ?>
         </td>	
@@ -141,7 +141,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

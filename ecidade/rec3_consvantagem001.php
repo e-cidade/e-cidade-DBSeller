@@ -132,13 +132,22 @@ $clrotulo->label('h12_descr');
         </tr>
         <tr>
           <td align="center" colspan="2">
-            <button type="reset" class="m-2">Limpar</button>
-            <button type="button" onClick="js_pesquisa()" class="m-2">Processar</button>
+            <button onClick="js_limpar()" type="button"  class="m-2">Limpar</button>
+            <button id="btprocessar" disabled="" type="button" onClick="js_pesquisa()" class="m-2">Processar</button>
+            <button id="btstop" type="button" onClick="js_stop()" style="display: none; class="m-2">Parar Processamento</button>
 
           </td>
         </tr>
       </table>
     </form>
+    <br>
+    <br>
+    <div class="progress">
+      <div id="progress" class="progress-bar" role="progressbar" style="width: 0%; display: none;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div>
+      <H3  style="display: none;" id="perc"></H3>
+    </div>
     <div id="divtable">
       <table id="table"></table>
     </div>
@@ -155,21 +164,19 @@ $clrotulo->label('h12_descr');
 
 </html>
 <script>
-  const url = '<?= ECIDADE_REQUEST_PATH ?>';
+  var processando = true;
+  const url = '<?= ECIDADE_REQUEST_PATH ?>'+'v4/api/recursos-humanos/rh/concessaodireitos';
   const routers = {
-    'processar': url + '/v4/api/recursos-humanos/rh/concessaodireitos/processar',
-    'search': url + '/v4/api/recursos-humanos/rh/concessaodireitos/assentamentos'
-  };
-  const data = {
-    h88_assent: 103
+    'processar': url + '/processar',
+    'search': url + '/assentamentos',
+    'getprocessamento': url + '/getprocessamento',
+    'stopsprocessamento': url + '/stopsprocessamento'
   };
   var datalimite = []
   const dado = new FormData;
-  for (index in data) {
-    dado.append(index, data[index]);
-  }
   HttpClient.post(routers.search, {
-      body: dado
+      body: dado,
+      reportProgress : false
     })
     .then((res) => {
       if (res.hasOwnProperty('data')) {
@@ -337,7 +344,18 @@ $clrotulo->label('h12_descr');
 
 }
 
+function js_limpar() {
+    $table.bootstrapTable('destroy');
+    jQuery('#rh01_regist').val('')
+    jQuery('#z01_nome').val('')
+}
+
   function js_pesquisa() {
+    if(jQuery('#dataprocessamento').val() == '00/00/0000'){
+      alert('Data Invalida');
+      return
+    }
+    jQuery('#btprocessar').prop('disabled', true);
     $table.bootstrapTable('destroy');
     const data = {
       matricula: jQuery('#rh01_regist').val(),
@@ -351,11 +369,13 @@ $clrotulo->label('h12_descr');
       dado.append(index, data[index]);
     }
     HttpClient.post(routers.processar, {
-        body: dado
+        body: dado,
+        reportProgress : true
       })
       .then((res) => {
         if (res.hasOwnProperty('data')) {
           if (res.error) {
+            jQuery('#btprocessar').prop('disabled', false);
             alert(res.message);
             return
           }
@@ -365,14 +385,37 @@ $clrotulo->label('h12_descr');
               pageSize: 5,
               data: res.data,
               pagination: true,
-            })
+            });
+            jQuery('#btprocessar').prop('disabled', false);
+          } else {
+            jQuery('#progress').show();
+            jQuery('#perc').show();
+            jQuery('#perc').text('Iniciando...');
+            setTimeout(function(){
+                processando = true;
+                intervalo();
+            },3000);
           }
-          alert('Processado com Sucesso!');
+          alert(res.message);
         }
         jQuery('#rh01_regist').removeAttr('disabled');
       });
   }
 
+  function js_stop() {
+    const dado = new FormData;
+    HttpClient.post(routers.stopsprocessamento, {
+        body: dado,
+        reportProgress : true
+      })
+      .then((res) => {
+        jQuery('#progress').hide();
+        jQuery('#perc').hide();
+        jQuery('#btstop').hide();
+        jQuery('#btprocessar').prop('disabled', false);
+        processando = false;
+      });
+  }
 
   function js_data(e) {
     id = e.closest("a").closest("td").closest("tr").children[0].innerText;
@@ -391,4 +434,45 @@ $clrotulo->label('h12_descr');
       true,
       '20');
   }
+
+  function intervalo (){
+    var intervalo = setInterval(() => {
+      if(processando){
+        const dado = new FormData;
+        HttpClient.post(routers.getprocessamento, {
+          body: dado,
+          reportProgress : false
+        })
+        .then((res) => {
+          const data = res.data
+          if (data.length != 0) {
+            var pr = document.getElementById("progress"); 
+            processando = true;
+            var value = 100 - (data[0].rh510_quantidade / data[0].rh510_total * 100).toFixed(2);
+
+            if ((data[0].rh510_quantidade / data[0].rh510_total * 100).toFixed(2) >= 100.00) {
+                this.value = 100
+            }
+
+            jQuery("#perc").text( data[0].rh510_total - data[0].rh510_quantidade +' / '+ data[0].rh510_total);
+            pr.style.width = value+'%';
+            jQuery('#progress').show();
+            jQuery('#perc').show();
+            jQuery('#btprocessar').prop('disabled', true);
+            jQuery('#btstop').show();
+          } else {
+            jQuery('#btstop').hide();
+            jQuery('#btprocessar').prop('disabled', false);
+            processando = false;
+            jQuery('#progress').hide();
+            jQuery('#perc').hide();
+            clearInterval(intervalo);
+          }
+        })
+      }
+    }, 3000);
+  }
+
+  intervalo();
+
 </script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,17 +52,17 @@ $clrotulo->label("nome");
 $clrotulo->label("descrdepto");
 
 $sqlDepartamento = "
-  SELECT 
+  SELECT
     descrdepto,
     o40_descr,
     o40_orgao
-  FROM 
+  FROM
     db_depart
   LEFT JOIN db_departorg
     ON db_departorg.db01_coddepto = db_depart.coddepto
   LEFT JOIN orcorgao
     ON db_departorg.db01_orgao = orcorgao.o40_orgao
-  WHERE 
+  WHERE
     coddepto = " . db_getsession("DB_coddepto") ."
     AND o40_anousu = " . db_getsession("DB_anousu") . "
     AND db01_anousu = " . db_getsession("DB_anousu")
@@ -91,7 +91,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                   <b>Usuário:</b>
                 </td>
                 <td>
-                 <?
+                 <?php
                    $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
                    echo pg_result(db_query($sql),0,"nome");
 
@@ -123,7 +123,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_codtran?>
                   </td>
                   <td>
-                    <?
+                    <?php
                     db_input('p62_codtran',10,$Ip62_codtran,true,'text',3,"")
                     ?>
                   </td>
@@ -133,19 +133,19 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_dttran?>
                   </td>
                   <td>
-                    <?
+                    <?php
                     db_inputdata('p62_dttran',@$p62_dttran_dia,@$p62_dttran_mes,@$p62_dttran_ano,true,'text',3,"")
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap align="right" title="<?=@$Tp62_coddeptorec?>">
-                     <?
+                     <?php
                      db_ancora(@$Lp62_coddeptorec,"js_pesquisap62_coddeptorec(true);",$db_opcao);
                      ?>
                   </td>
                   <td nowrap>
-                    <?
+                    <?php
                     db_input('p62_coddeptorec',10,$Ip62_coddeptorec,true,'text',$db_opcao," onchange='js_pesquisap62_coddeptorec(false);'");
                     db_input('descrdepto',60,$Idescrdepto,true,'text',3);
                      ?>
@@ -156,14 +156,14 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_id_usorec; ?>
                   </td>
                   <td nowrap>
-                  <?
+                  <?php
                    $aUsuarios = array("0" => "Selecione o Usuário");
                    db_select("p62_id_usorec",$aUsuarios,true,$db_opcao);
                   ?>
 
                   </td>
                 </tr>
-                <?php 
+                <?php
                   if ($tipoControleNumeracao == ProcessoProtocoloNumeracao::TIPOORGAO) { ?>
                     <tr>
                       <td nowrap align="right" title="Transferir Volumes com o Processo Principal:" width="10%" >
@@ -173,7 +173,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                         <input id="tramitar_volumes" type="checkbox" />
                       </td>
                     </tr>
-                <?php 
+                <?php
                   } ?>
             	  <tr>
             	    <td colspan="5" align="center">
@@ -192,7 +192,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
           <td colspan=5>
     <fieldset><legend><b>Processos No Departamento</b></legend>
        <table border="0" width="100%" cellspacing =0 class="tab_sem_cor">
-   <?
+   <?php
 
     if(!isset($ordem) || $ordem == ''){
       $ordem = " p58_codproc";
@@ -213,7 +213,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
     db_input('depart',5,"",true,'hidden',3,"");
 
     $sJoinValidaDespacho = " left join procandamint on p78_codandam = p58_codandam ";
-    $result_param=$clprotparam->sql_record($clprotparam->sql_query());
+    $result_param=$clprotparam->sql_record($clprotparam->sql_query(null, '*'));
 
     if ($clprotparam->numrows>0){
       db_fieldsmemory($result_param,0);
@@ -292,7 +292,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
     $sql .= "					 limit 1 ) is not null                                                                ";
     $sql .= "          {$where}                                                                             ";
     $sql .= "   order by $ordem desc                                                                        ";
-    
+
     $rs = db_query($sql) or die($sql);
     $numrows = pg_num_rows($rs);
     // dd($numrows);
@@ -314,10 +314,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
              </tr>
              <tbody style='height:300;overflow:scroll;' id="listaProcesso">
 
-             <?
-                //<td align='center' bgcolor='#999999'><b>Depto padrão</b></td>
-
-
+             <?php
 			$cont = 0;
       for ($i = 0;$i < $numrows;$i++){
 
@@ -510,7 +507,7 @@ function marcaVolumes(processopai)
       function (input) {
         input.checked = true;
         input.onclick();
-      } 
+      }
     );
   }
 }

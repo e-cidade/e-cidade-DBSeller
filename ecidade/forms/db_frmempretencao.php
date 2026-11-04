@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clempretencao->rotulo->label();
        <?=@$Le65_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('e65_seq',6,$Ie65_seq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('e65_seq',6,$Ie65_seq,true,'text',$db_opcao,"")
        <?=@$Le65_receita?>
     </td>
     <td> 
-<?
+<?php
 db_input('e65_receita',8,$Ie65_receita,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('e65_receita',8,$Ie65_receita,true,'text',$db_opcao,"")
        <?=@$Le65_aliquota?>
     </td>
     <td> 
-<?
+<?php
 db_input('e65_aliquota',10,$Ie65_aliquota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('e65_aliquota',10,$Ie65_aliquota,true,'text',$db_opcao,"")
        <?=@$Le65_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('e65_valor',10,$Ie65_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('e65_valor',10,$Ie65_valor,true,'text',$db_opcao,"")
        <?=@$Le65_hist?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('e65_hist',0,0,$Ie65_hist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empretencao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

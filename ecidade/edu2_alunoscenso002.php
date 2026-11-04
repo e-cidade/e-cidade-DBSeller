@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -104,7 +104,7 @@ try {
   $campos  .= ",turma.ed57_i_codigo, ensino.ed10_i_codigo, ensino.ed10_c_descr, serie.ed11_i_codigo, serie.ed11_c_descr,";
   $campos  .= " ed60_c_situacao, ed60_matricula, ";
   $campos  .= " ed60_d_datamatricula as dt_matricula, "; // precisamos da data para tratar os alunos
-  $campos  .= " ed60_d_datasaida as dt_saida "; // precisamos da data para tratar os alunos
+  $campos  .= " ed60_d_datasaida as dt_saida, ed47_c_codigoinep "; // precisamos da data para tratar os alunos
   $sOrdem   = " ensino.ed10_ordem, serie.ed11_i_sequencia, ensino.ed10_i_tipoensino, ensino.ed10_c_descr,  ";
   $sOrdem  .= " turma.ed57_c_descr, ed60_i_numaluno, to_ascii(ed47_v_nome), ed60_c_ativa ";
 

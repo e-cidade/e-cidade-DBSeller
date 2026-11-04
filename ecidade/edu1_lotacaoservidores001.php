@@ -341,7 +341,7 @@ $ano     = isset($_GET['ano']) ? $_GET['ano'] : '';
                 }//end if
                 ?>
             </td>
-            <td style="width=25%"></td>
+            <td style="width:25%"></td>
         </tr>
     </table>
     <?php

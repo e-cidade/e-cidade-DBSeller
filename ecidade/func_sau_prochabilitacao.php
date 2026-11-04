@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_prochabilitacao->rotulo->label("sd77_i_habilitacao");
               <?=$Lsd77_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd77_i_codigo",5,$Isd77_i_codigo,true,"text",4,"","chave_sd77_i_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_prochabilitacao->rotulo->label("sd77_i_habilitacao");
               <?=$Lsd77_i_habilitacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd77_i_habilitacao",5,$Isd77_i_habilitacao,true,"text",4,"","chave_sd77_i_habilitacao");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_prochabilitacao->rotulo->label("sd77_i_habilitacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_prochabilitacao.php")==true){
@@ -122,12 +122,12 @@ $clsau_prochabilitacao->rotulo->label("sd77_i_habilitacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

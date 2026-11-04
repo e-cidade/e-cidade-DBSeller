@@ -38,39 +38,39 @@ abstract class ConexaoSoap
    * Objeto que conterá a conexão com o Webservice
    * @var SoapClient
    */
-  protected $oSoapClient;
+    protected $oSoapClient;
 
   /**
    * Objeto que cria o arquivo de requisição do Webservice
    *
    * @var RequisicaoInterface
    */
-  protected $oRequisicao;
+    protected $oRequisicao;
 
-  protected $oRetornoSoap;
+    protected $oRetornoSoap;
 
   /**
    * Processamos a requisição conforme informações disponibilizadas
    *
    * @return \stdClass
    */
-  public function processarRequisicao()
-  {
-    $oDomDocument = $this->oRequisicao->getRequestXml();
-    $sXml         = $oDomDocument->saveXML();
+    public function processarRequisicao($emitePix = false)
+    {
+        $oDomDocument = $this->oRequisicao->getRequestXml($emitePix);
+        $sXml         = $oDomDocument->saveXML();
 
-    $sXml = str_replace("\\n", "", $sXml);
-    $sXml = str_replace("<?xml version=\"1.0\"?>", "", $sXml);
-    $sXml = str_replace("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>", "", $sXml);
-    $sXml = str_replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "", $sXml);
+        $sXml = str_replace("\\n", "", $sXml);
+        $sXml = str_replace("<?xml version=\"1.0\"?>", "", $sXml);
+        $sXml = str_replace("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>", "", $sXml);
+        $sXml = str_replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "", $sXml);
 
-    $oSoapVar           = new SoapVar($sXml, XSD_ANYXML);
-    $oRetornoSoap       = $this->oSoapClient->__soapCall($this->oRequisicao->getOperacao(), array($oSoapVar) );
-    $this->oRetornoSoap = $oRetornoSoap;
-  }
+        $oSoapVar           = new SoapVar($sXml, XSD_ANYXML);
+        $oRetornoSoap       = $this->oSoapClient->__soapCall($this->oRequisicao->getOperacao(), array($oSoapVar));
+        $this->oRetornoSoap = $oRetornoSoap;
+    }
 
-  public function getResposta() 
-  {
-    return new RetornoBoleto($this->oRetornoSoap);
-  }
+    public function getResposta()
+    {
+        return new RetornoBoleto($this->oRetornoSoap);
+    }
 }

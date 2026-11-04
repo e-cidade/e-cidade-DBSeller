@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $cldb_documentopadrao->rotulo->label("db60_descr");
               <?=$Ldb60_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db60_coddoc",8,$Idb60_coddoc,true,"text",4,"","chave_db60_coddoc");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_documentopadrao->rotulo->label("db60_descr");
               <?=$Ldb60_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db60_descr",8,$Idb60_descr,true,"text",4,"","db60_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_documentopadrao->rotulo->label("db60_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 			
       if (!isset($pesquisa_chave)) {
         if (isset($campos) == false) {
@@ -130,12 +130,12 @@ $cldb_documentopadrao->rotulo->label("db60_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

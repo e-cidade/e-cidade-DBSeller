@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -121,7 +121,14 @@ try {
       $sSqlEnvolvido   .= "  from fc_busca_envolvidos(false, {$oDadoConfigTributario->db21_regracgmiptu}, 'M', $sChavePesquisa)";
 
       $rsEnvolvidoRegra = db_query($sSqlEnvolvido);
-      $oEnvolvidoRegra  = CgmFactory::getInstanceByCgm(db_utils::fieldsMemory($rsEnvolvidoRegra, 0)->rinumcgm);
+
+      $iNumcgm          = db_utils::fieldsMemory($rsEnvolvidoRegra, 0)->rinumcgm;
+      $oEnvolvidoRegra  = CgmFactory::getInstanceByCgm($iNumcgm);
+
+      $oDaoIptubase = new cl_iptubase();
+      $sSqlTipoEnvolvido = $oDaoIptubase->sql_query_envolvidos_matricula($matric, $iNumcgm);
+      $rsTipoEnvolvido = db_query($sSqlTipoEnvolvido);
+      $oTipoEnvolvido = db_utils::getCollectionByRecord($rsTipoEnvolvido)[0];
 
       if ( !$rsDadosProprietario ) {
         throw new DBException("Erro ao Processar Pesquisa do Proprietário:".pg_last_error());
@@ -132,7 +139,7 @@ try {
 
       $oDadosPesquisa = db_utils::fieldsMemory($rsDadosProprietario, 0);
 
-      $sNome          = $oEnvolvidoRegra->getNome();
+      $sNome          = $oTipoEnvolvido->nomecomabreviatura;
       $sEndereco      = $oDadosPesquisa->tipopri    . ' '  .
                         $oDadosPesquisa->nomepri    . ', ' .
                         $oDadosPesquisa->j39_numero . ' '  .

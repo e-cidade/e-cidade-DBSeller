@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,19 +47,18 @@ $sSTyleButtonExcluir    = "Display:None;";
 $iDbOpcao               = 1;
 
 if (isset($oGet->db_opcao) && $oGet->db_opcao == 3) {
-
-  $sLabel                 = "Exclusão";
-  $sSTyleButtonAutenticar = "Display:None;";
-  $sSTyleButtonExcluir    = "Display:InLine;";
-  $iDbOpcao               = $oGet->db_opcao;
+    $sLabel                 = "Exclusão";
+    $sSTyleButtonAutenticar = "Display:None;";
+    $sSTyleButtonExcluir    = "Display:InLine;";
+    $iDbOpcao               = $oGet->db_opcao;
 }
 
 //Checa parametro e mostra alerta de confirmacao de data
-if($iDbOpcao == 1) {
+if ($iDbOpcao == 1) {
     $clconparametro = new cl_conparametro();
     $rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
     $conparametro = db_utils::fieldsMemory($rsconparametro, 0);
-    if($conparametro->c90_confirmadata == 't'){
+    if ($conparametro->c90_confirmadata == 't') {
         $data = date('d/m/y', db_getsession('DB_datausu'));
         echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
     }
@@ -76,13 +75,13 @@ if($iDbOpcao == 1) {
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  db_app::load("scripts.js");
-  db_app::load("prototype.js");
-  db_app::load("datagrid.widget.js");
-  db_app::load("strings.js");
-  db_app::load("grid.style.css");
-  db_app::load("estilos.css");
-  ?>
+    db_app::load("scripts.js");
+    db_app::load("prototype.js");
+    db_app::load("datagrid.widget.js");
+    db_app::load("strings.js");
+    db_app::load("grid.style.css");
+    db_app::load("estilos.css");
+    ?>
 </head>
 <body>
 
@@ -93,17 +92,17 @@ if($iDbOpcao == 1) {
       <table width="100%" border="0">
         <tr>
           <td width="70px" nowrap title="<?=$Tk80_codpla?>">
-            <? db_ancora(@$Lk80_codpla, "js_pesquisaPlanilha(true);",1);?>
+            <?php db_ancora(@$Lk80_codpla, "js_pesquisaPlanilha(true);",1);?>
           </td>
           <td  width="150px" >
-            <?db_input('k80_codpla', 10, $Ik80_codpla, true, 'text', 1,
+            <?php db_input('k80_codpla', 10, $Ik80_codpla, true, 'text', 1,
                        " onchange='js_pesquisaPlanilha(false);'")?>
           </td>
           <td width="100px" nowrap title="<?php echo $Tk80_data;?>">
             <b>Data de Criação:</b>
           </td>
           <td>
-            <? db_input('k80_data', 10, $Ik80_data, true, 'text', 3);?>
+            <?php db_input('k80_data', 10, $Ik80_data, true, 'text', 3);?>
           </td>
         </tr>
 
@@ -113,7 +112,7 @@ if($iDbOpcao == 1) {
           </td>
 
           <td colspan="3">
-            <? db_input('k144_numeroprocesso', 10, null, true, 'text', $iDbOpcao, null,null,null,null,15);?>
+            <?php db_input('k144_numeroprocesso', 10, null, true, 'text', $iDbOpcao, null,null,null,null,15);?>
           </td>
         </tr>
 
@@ -132,17 +131,17 @@ if($iDbOpcao == 1) {
     </p>
   </form>
 </center>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 </body>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
 <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
 <script type="text/javascript">
 
-    var iDbOpcao = '<?php echo $iDbOpcao ?>'
-    if(iDbOpcao == 1) {
-        let c90_confirmadata = '<?php echo $conparametro->c90_confirmadata ?>'
+    var iDbOpcao = '<?=$iDbOpcao ?>';
+    if (iDbOpcao == 1) {
+        let c90_confirmadata = '<?=(isset($conparametro->c90_confirmadata)?$conparametro->c90_confirmadata:"f")?>'
         if (c90_confirmadata == 't') {
             const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
             alertify.alert(msg)
@@ -187,7 +186,6 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
     js_removeObj('msgBox');
     var oRetorno = JSON.parse(oAjax.responseText);
-
     alert(oRetorno.message.urlDecode());
 
     js_limparDadosTela();
@@ -273,6 +271,11 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
     js_removeObj("msgBox");
     var oRetorno = JSON.parse(oAjax.responseText);
+
+    if (oRetorno.status == 2) {
+        alert(oRetorno.message.urlDecode());
+        return;
+    }
 
     var oPlanilha = oRetorno.oPlanilha;
     var iTotalReceitasPlanilha = oPlanilha.aReceitas.length;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("q05_numpre");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq06_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lq06_codigo,"js_pesquisaq06_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q06_codigo',0,$Iq06_codigo,true,'text',$db_opcao," onchange='js_pesquisaq06_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('q05_numpre',4,$Iq05_numpre,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('q05_numpre',4,$Iq05_numpre,true,'text',3,'')
        <?=@$Lq06_seq?>
     </td>
     <td> 
-<?
+<?php
 db_input('q06_seq',5,$Iq06_seq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('q06_seq',5,$Iq06_seq,true,'text',$db_opcao,"")
        <?=@$Lq06_nota?>
     </td>
     <td> 
-<?
+<?php
 db_input('q06_nota',100,$Iq06_nota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('q06_nota',100,$Iq06_nota,true,'text',$db_opcao,"")
        <?=@$Lq06_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('q06_valor',15,$Iq06_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -108,7 +108,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_issvarnotas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

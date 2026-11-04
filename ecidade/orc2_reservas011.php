@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $oAuxDpto = new cl_arquivo_auxiliar;
 				          <strong>Nível :</strong>
 				        </td>
 				        <td>
-								  <?
+								  <?php
 							       $aNivel = array('1A'=>'Órgão Até o Nível',
 							                       '1B'=>'Órgão só o Nível',
 							                       '2A'=>'Unidade Até o Nível',
@@ -93,7 +93,7 @@ $oAuxDpto = new cl_arquivo_auxiliar;
 				          <b>Posição até:</b>
 				        </td>
 				        <td>
-				           <?
+				           <?php
 				
 				             $dtDataIni     = explode('-',date("Y-m-d",db_getsession("DB_datausu")));
 				             $data_fin_dia  = $dtDataIni[2]; 
@@ -110,7 +110,7 @@ $oAuxDpto = new cl_arquivo_auxiliar;
                   <strong>Forma de Impressão :</strong>
                 </td>
                 <td>
-                  <?
+                  <?php
                      $aFormaImpressao = array('a'=>'Analítico',
                                               's'=>'Sintético');
                      

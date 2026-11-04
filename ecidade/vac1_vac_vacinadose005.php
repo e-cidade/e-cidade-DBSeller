@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ if (isset($alterar)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
       <center>
-	      <?
+	      <?php
 	      require_once(modification("forms/db_frmvac_vacinadose2.php"));
 	      ?>
       </center>
@@ -105,7 +105,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($oDaoVacVacinadose->erro_status == '0') {

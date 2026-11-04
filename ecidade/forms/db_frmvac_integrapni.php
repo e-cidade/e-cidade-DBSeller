@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@
             <b>Mês:</b>
           </td>
           <td nowrap="nowrap">
-            <? $x = array('1'=>'Janeiro',
+            <?php $x = array('1'=>'Janeiro',
                           '2'=>'Fevereiro',
                           '3'=>'Março',
                           '4'=>'Abril',
@@ -56,13 +56,13 @@
             <b>Ano:</b>
           </td>
           <td nowrap="nowrap">
-            <? db_input('ano',4,null,true,'text',$db_opcao);?>
+            <?php db_input('ano',4,null,true,'text',$db_opcao);?>
           </td>
           <td nowrap title="Sala de Vacinação">
             <b>Estratégia:</b>
           </td>
           <td nowrap="nowrap">
-            <? $x = array('1'=>'Rotina',
+            <?php $x = array('1'=>'Rotina',
                           '2'=>'Campanha');
                db_select('estrategia',$x,true,$db_opcao,"");?>
           </td>

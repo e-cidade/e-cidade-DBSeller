@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,12 +104,12 @@ return true;
    <br>
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -118,12 +118,12 @@ return true;
      
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -133,12 +133,12 @@ return true;
      
      <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -147,12 +147,12 @@ return true;
      
      <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Lv13_certid,' js_certid(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('v13_certid',5,$Iv13_certid,true,'text',1,"onchange='js_certid(false)'");
       ?>
        </td>
@@ -168,7 +168,7 @@ return true;
   </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -273,7 +273,7 @@ function js_mostracertid1(chave,erro){
 }
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -100,7 +100,7 @@ if(isset($excluir)){
   
 </body>
 </html>
-<?
+<?php
 if ( isset($excluir) ) {
 
   if ( empty($sErro) ) {

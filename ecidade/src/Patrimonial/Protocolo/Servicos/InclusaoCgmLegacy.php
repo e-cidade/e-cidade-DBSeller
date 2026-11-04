@@ -94,28 +94,17 @@ class InclusaoCgmLegacy
 
         $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
 
+        if (!empty($dados->tipo_empresa)) {
+            $tipoEmpresaCodigo = $this->extrairCodigoTipoEmpresa($dados->tipo_empresa);
+        }
+
         if (strlen(trim($sCgcCpf)) == '11') {
             $oCgm->setCpf($sCgcCpf);
             $oCgm->setSexo((isset($dados->sexo) ? $this->getAtribute($dados->sexo) : ""));
             $oCgm->setDataNascimento((isset($dados->nascimento) ? $this->getAtribute($dados->nascimento) : ""));
             $oCgm->setNacionalidade((isset($dados->nacionalidade) ? $this->getAtribute($dados->nacionalidade) : 0));
             $oCgm->setEstadoCivil((isset($dados->estado_civil) ? $this->getAtribute($dados->estado_civil) : 0));
-            $tipoEmpresaCodigo = 31;
-
-            if (!empty($dados->tipo_empresa)) {
-                if (is_string($dados->tipo_empresa) or is_numeric($dados->tipo_empresa)) {
-                    $tipoEmpresaCodigo = $dados->tipo_empresa;
-                }
-
-                if ($dados->tipo_empresa instanceof \stdClass) {
-                    if (!empty($dados->tipo_empresa->value) and !empty($dados->tipo_empresa->value->codigo)) {
-                        $tipoEmpresaCodigo = $dados->tipo_empresa->value->codigo;
-                    }
-                }
-            }
-
-            $oCgm->setTipoEmpresa($tipoEmpresaCodigo);
-
+            $oCgm->setTipoEmpresa(!empty($tipoEmpresaCodigo) ? $tipoEmpresaCodigo : 31);
             if (array_key_exists('nome', $dados)) {
                 $nome = $this->getAtribute($dados->nome);
             } elseif (array_key_exists('nome_fantasia', $dados)) {
@@ -125,21 +114,7 @@ class InclusaoCgmLegacy
             }
         } elseif (strlen(trim($sCgcCpf)) == '14') {
             $oCgm->setCnpj($sCgcCpf);
-
-            $tipoEmpresaCodigo = 36;
-
-            if (!empty($dados->tipo_empresa)) {
-                if (is_string($dados->tipo_empresa) or is_numeric($dados->tipo_empresa)) {
-                    $tipoEmpresaCodigo = $dados->tipo_empresa;
-                }
-
-                if ($dados->tipo_empresa instanceof \stdClass) {
-                    if (!empty($dados->tipo_empresa->value) and !empty($dados->tipo_empresa->value->codigo)) {
-                        $tipoEmpresaCodigo = $dados->tipo_empresa->value->codigo;
-                    }
-                }
-            }
-            $oCgm->setTipoEmpresa($tipoEmpresaCodigo);
+            $oCgm->setTipoEmpresa(!empty($tipoEmpresaCodigo) ? $tipoEmpresaCodigo : 36);
             $nomeFantasia = null;
             if (array_key_exists('nome_fantasia', $dados)) {
                 $nomeFantasia = $this->getAtribute($dados->nome_fantasia);
@@ -154,10 +129,9 @@ class InclusaoCgmLegacy
             }
 
             $nome = $nomeFantasia;
-            $oCgm->setNomeFantasia(mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nomeFantasia, 0, 100)),
-                "ISO-8859-1"
-            ));
+            $oCgm->setNomeFantasia(
+                \DBString::upperCaseRemoveCaracteresEspeciais(substr($nomeFantasia, 0, 100))
+            );
 
             if (array_key_exists('razao_social', $dados)) {
                 $nome = $this->getAtribute($dados->razao_social);
@@ -204,7 +178,7 @@ class InclusaoCgmLegacy
 
         if (empty($municipio) || empty($uf)) {
             /**
-             * Caso alguns dados não sejam informados, irá buscar o que já está vinculado à matrícula
+             * Caso alguns dados não sejam informados, irá buscar o que já está vinculado á matrícula
              */
             if (!empty($endereco->matricula) && is_object($endereco->matricula)) {
                 $matricula = $this->getAtribute($endereco->matricula);
@@ -214,7 +188,7 @@ class InclusaoCgmLegacy
                 $rsIssBase = pg_query($sqlIssBase);
 
                 if (!$rsIssBase) {
-                    throw new \Exception('Não foi possível buscar os dados da matrícula.');
+                    throw new \Exception('Não foi possvel buscar os dados da matírcula.');
                 }
 
                 $dadosMatricula = pg_fetch_object($rsIssBase);
@@ -225,18 +199,12 @@ class InclusaoCgmLegacy
         }
 
         $oCgm->setNome(
-            mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nome, 0, 40)),
-                "ISO-8859-1"
-            )
+            \DBString::upperCaseRemoveCaracteresEspeciais(substr($nome, 0, 40))
         );
 
         $oCgm->setNomeCompleto(
-            mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(
-                    substr($nome, 0, 100)
-                ),
-                "ISO-8859-1"
+            \DBString::upperCaseRemoveCaracteresEspeciais(
+                substr($nome, 0, 100)
             )
         );
 
@@ -290,6 +258,10 @@ class InclusaoCgmLegacy
 
         $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
 
+        if (!empty($dados->tipo_empresa)) {
+            $tipoEmpresa = $this->extrairCodigoTipoEmpresa($dados->tipo_empresa);
+        }
+
         if (strlen(trim($sCgcCpf)) == '11') {
             $oCgm = CgmFactory::getInstanceByType(CgmFactory::FISICO);
             $oCgm->setCpf($sCgcCpf);
@@ -297,7 +269,7 @@ class InclusaoCgmLegacy
             $oCgm->setDataNascimento((isset($dados->nascimento) ? $this->getAtribute($dados->nascimento) : ""));
             $oCgm->setNacionalidade((isset($dados->nacionalidade) ? $this->getAtribute($dados->nacionalidade) : 0));
             $oCgm->setEstadoCivil((isset($dados->estado_civil) ? $this->getAtribute($dados->estado_civil) : 0));
-            $oCgm->setTipoEmpresa((isset($dados->tipo_empresa) ? $dados->tipo_empresa : 31));
+            $oCgm->setTipoEmpresa(!empty($tipoEmpresa) ? $tipoEmpresa : 31);
 
             if (array_key_exists('nome', $dados)) {
                 $nome = $this->getAtribute($dados->nome);
@@ -309,7 +281,7 @@ class InclusaoCgmLegacy
         } elseif (strlen(trim($sCgcCpf)) == '14') {
             $oCgm = CgmFactory::getInstanceByType(CgmFactory::JURIDICO);
             $oCgm->setCnpj($sCgcCpf);
-            $oCgm->setTipoEmpresa((isset($dados->tipo_empresa) ? $dados->tipo_empresa : 36));
+            $oCgm->setTipoEmpresa(!empty($tipoEmpresa) ? $tipoEmpresa : 36);
 
             $nomeFantasia = null;
             if (array_key_exists('nome_fantasia', $dados)) {
@@ -325,10 +297,9 @@ class InclusaoCgmLegacy
             }
 
             $nome = $nomeFantasia;
-            $oCgm->setNomeFantasia(mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nomeFantasia, 0, 100)),
-                "ISO-8859-1"
-            ));
+            $oCgm->setNomeFantasia(
+                \DBString::upperCaseRemoveCaracteresEspeciais(substr($nomeFantasia, 0, 100))
+            );
 
             if (array_key_exists('razao_social', $dados)) {
                 $nome = $this->getAtribute($dados->razao_social);
@@ -379,7 +350,7 @@ class InclusaoCgmLegacy
 
         if (empty($municipio) || empty($uf)) {
             /**
-             * Caso alguns dados não sejam informados, irá buscar o que já está vinculado à matrícula
+             * Caso alguns dados não sejam informados, irá buscar o que já está vinculado á matrícula
              */
             if (!empty($endereco->matricula) && is_object($endereco->matricula)) {
                 $matricula = $this->getAtribute($endereco->matricula);
@@ -400,16 +371,11 @@ class InclusaoCgmLegacy
         }
 
         $oCgm->setNome(
-            mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nome, 0, 40)),
-                "ISO-8859-1"
-            )
+            \DBString::upperCaseRemoveCaracteresEspeciais(substr($nome, 0, 40))
         );
-        $oCgm->setNomeCompleto(
-            mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(
-                substr($nome, 0, 100)
-            ), "ISO-8859-1")
-        );
+        $oCgm->setNomeCompleto(\DBString::upperCaseRemoveCaracteresEspeciais(
+            substr($nome, 0, 100)
+        ));
         $oCgm->setUf(mb_strtoupper($uf));
 
         $oCgm->setCep(mb_strtoupper($cep));
@@ -445,5 +411,21 @@ class InclusaoCgmLegacy
     private function getAtribute($var)
     {
         return ProcessoEletronicoHelper::getValueJson($var->value);
+    }
+
+    private function extrairCodigoTipoEmpresa($tipoEmpresa)
+    {
+
+        if (is_string($tipoEmpresa) or is_numeric($tipoEmpresa)) {
+            return $tipoEmpresa;
+        }
+
+        if ($tipoEmpresa instanceof \stdClass) {
+            if (!empty($tipoEmpresa->value) and !empty($tipoEmpresa->value->codigo)) {
+                return $tipoEmpresa->value->codigo;
+            }
+        }
+
+        return false;
     }
 }

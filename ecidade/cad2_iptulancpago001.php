@@ -73,7 +73,7 @@ db_postmemory($HTTP_POST_VARS);
               <td><b>Exercício:</b></td>
               <td>
               <select name="anousu" >
-      			  	<?
+      			  	<?php
       			  	$sqlano = "select distinct j23_anousu from iptucalc order by j23_anousu desc";
                       $resultano = db_query($sqlano);
                       $linhasano = pg_num_rows($resultano);
@@ -89,7 +89,7 @@ db_postmemory($HTTP_POST_VARS);
   					<tr>
   						<td><b>Considerar:</b></td>
   						<td>
-  						 <?
+  						 <?php
   								$x = array("a"=>"Ambos","p"=>"Predial","t"=>"Territorial");
   								db_select("considerar",$x,false,2,"");
   							?>
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
           </table>
           <fieldset class="separator">
             <legend>Zona Fiscal:</legend>
-             	<?
+             	<?php
     			  	$sqlzona    = "select * from zonas";
                     $resultzona = db_query($sqlzona);
                     db_multiploselect("j50_zona", "j50_descr", "nsel1", "ssel1", $resultzona, array(), 4, 250);

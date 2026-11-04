@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcontabancaria->rotulo->label("db83_descricao");
               <?=$Ldb83_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db83_sequencial",10,$Idb83_sequencial,true,"text",4,"","chave_db83_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcontabancaria->rotulo->label("db83_descricao");
               <?=$Ldb83_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db83_descricao",100,$Idb83_descricao,true,"text",4,"","chave_db83_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcontabancaria->rotulo->label("db83_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 
       $sWhere = '1=1';
       
@@ -138,12 +138,12 @@ $clcontabancaria->rotulo->label("db83_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_baseserie {
                  ed87_i_seriefinal = int8 = Série/Ano Final
                  ";
    //funcao construtor da classe
-   function cl_baseserie() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("baseserie");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_baseserie {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed87_i_codigo = ($this->ed87_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed87_i_codigo"]:$this->ed87_i_codigo);
        $this->ed87_i_serieinicial = ($this->ed87_i_serieinicial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed87_i_serieinicial"]:$this->ed87_i_serieinicial);
@@ -77,7 +77,7 @@ class cl_baseserie {
      }
    }
    // funcao para inclusao
-   function incluir ($ed87_i_codigo){
+   public function incluir ($ed87_i_codigo){
       $this->atualizacampos();
      if($this->ed87_i_serieinicial == null ){
        $this->erro_sql = " Campo Série/Ano Inicial nao Informado.";
@@ -153,7 +153,7 @@ class cl_baseserie {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed87_i_codigo=null) {
+   public function alterar ($ed87_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update baseserie set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_baseserie {
      }
    }
    // funcao para exclusao
-   function excluir ($ed87_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed87_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed87_i_codigo));
      }else{
@@ -311,7 +311,7 @@ class cl_baseserie {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -334,11 +334,11 @@ class cl_baseserie {
      return $result;
    }
 
-  function sql_query ( $ed87_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query ( $ed87_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_baseserie {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -374,10 +374,10 @@ class cl_baseserie {
     }
     return $sql;
   }
-   function sql_query_file ( $ed87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_baseserie {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,10 +408,10 @@ class cl_baseserie {
      return $sql;
   }
 
-  function sql_query_base_escola ( $ed87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_base_escola ( $ed87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_baseserie {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_baseserie {
     return $sql;
   }
 
-  function sql_query_etapa_base ( $ed87_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_etapa_base ( $ed87_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql  = "select {$campos}";
     $sql .= " from baseserie ";

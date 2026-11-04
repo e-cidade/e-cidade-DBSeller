@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2013  DBselller Servicos de Informatica             
@@ -78,7 +78,7 @@ $ativo = $db_opcao;
     <td >
     </td>
     <td> 
-<?
+<?php
 if( isset($opcao) ){
 	db_input('k86_sequencial',10,$Ik86_sequencial,true,'hidden',3,"");
 }
@@ -86,16 +86,16 @@ if( isset($opcao) ){
     </td>
   </tr>
   <!--tr>
-    <td nowrap title="<? //=@$Tk86_extrato?>">
-      <?
+    <td nowrap title="<?php //=@$Tk86_extrato?>">
+      <?php
  //     db_ancora(@$Lk86_extrato,"js_pesquisak86_extrato(true);",3);
       ?>
     </td>
     <td> 
-      <?
+      <?php
   //    db_input('k86_extrato',10,$Ik86_extrato,true,'text',3," onchange='js_pesquisak86_extrato(false);'")
       ?>
-       <?
+       <?php
   //     db_input('k85_nomearq',50,$Ik85_nomearq,true,'text',3,'')
        ?>
     </td>
@@ -105,38 +105,38 @@ if( isset($opcao) ){
         <b>Origem de Movimento:</b>
     </td>
     <td> 
-<?
+<?php
 //db_input('k86_bancohistmov',10,$Ik86_bancohistmov,true,'text',$db_opcao," onchange='js_pesquisak86_bancohistmov(false);'")
       $arraytipo = array('1'=>'Extrato Bancário','2'=>'Tesouraria'); 
       db_select('k86_bancohistmov',$arraytipo,true,$ativo);
 	
 ?>
-       <?
+       <?php
 //db_input('k66_descricao',50,$Ik66_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <!--tr>
-    <td nowrap title="<? //@$Tk86_contabancaria?>">
-       <?
+    <td nowrap title="<?php //@$Tk86_contabancaria?>">
+       <?php
   //     db_ancora(@$Lk86_contabancaria,"js_pesquisak86_contabancaria(true);",$db_opcao);
        ?>
     </td>
     <td nowrap> 
-<?
+<?php
 //db_input('k86_contabancaria',10,$Ik86_contabancaria,true,'text',$ativo," onchange='js_pesquisak86_contabancaria(false);'")
 ?>
-       <?
+       <?php
 //db_input('db83_descricao',50,$Idb83_descricao,true,'text',3,'')
        ?>
     </td>
   </tr--!>
   <!--tr>
-    <td nowrap title="<? //@$Tk86_data?>">
+    <td nowrap title="<?php //@$Tk86_data?>">
        <?//=@$Lk86_data?>
     </td>
     <td> 
-<?
+<?php
 //db_inputdata('k86_data',@$k86_data_dia,@$k86_data_mes,@$k86_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -146,7 +146,7 @@ if( isset($opcao) ){
 		  <b>Tipo :</b>
 		</td>
 		<td>
-		<?
+		<?php
 		  $arraytipo = array('D'=>'Débito','C'=>'Crédito'); 
       db_select('k86_tipo',$arraytipo,true,$ativo);
 		?>
@@ -158,7 +158,7 @@ if( isset($opcao) ){
        <?=@$Lk86_valor?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k86_valor',10,$Ik86_valor,true,'text',$db_opcao,"", "", "", "", 15);
     ?>
     </td>
@@ -168,7 +168,7 @@ if( isset($opcao) ){
        <?=@$Lk86_historico?>
     </td>
     <td> 
-<?
+<?php
 db_input('k86_historico',64,$Ik86_historico,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -178,32 +178,32 @@ db_input('k86_historico',64,$Ik86_historico,true,'text',$db_opcao,"")
        <?=@$Lk86_documento?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('k86_documento',64,$Ik86_documento,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
 
-<? if ($ativo != 3) { ?>
+<?php if ($ativo != 3) { ?>
   <tr>
     <td nowrap>
       <!--strong>Recalcula Saldo do Extrato: </strong--!>
     </td>
     <td> 
-<?
+<?php
  //$x = array("f"=>"SIM","f"=>"NÃO");
  $x = array("f"=>"NÃO");
  db_select("recalcula",$x, true, 1,'hidden');
 ?>
     </td>
   </tr>  
-<? } ?>  
+<?php } ?>  
 
   <tr>
     <td nowrap title="<?=@$Tk86_observacao?>" colspan="2">
       <fieldset>
         <legend><b>Observação</b></legend>
-        <?
+        <?php
           db_textarea('k86_observacao',2,90,$Ik86_observacao,true,'text',$db_opcao,"");
         ?>
       </fieldset>
@@ -224,7 +224,7 @@ db_input('k86_historico',64,$Ik86_historico,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
          $chavepri= array("k86_sequencial"=>@$k86_sequencial);
 	 $cliframe_alterar_excluir->chavepri      = $chavepri;
 	 $cliframe_alterar_excluir->sql           = $clextratolinha->sql_query_file(null,"*","extratolinha.k86_data, extratolinha.k86_sequencial"," k86_contabancaria = $conta and k86_data = '$sDtSaldoFinal'");

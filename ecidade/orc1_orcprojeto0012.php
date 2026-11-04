@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,11 +72,11 @@ $clrotulo->label("o39_codlei");
     <table border="0">
     <tr>
         <td nowrap title="<?=@$To39_codproj?>">  <?=@$Lo39_codproj?>   </td>
-        <td><? db_input('o39_codproj',8,$Io39_codproj,true,'text',$db_opcao,"") ?></td>
+        <td><?php db_input('o39_codproj',8,$Io39_codproj,true,'text',$db_opcao,"") ?></td>
     </tr>
     <tr>
         <td nowrap title="<?=@$To39_codlei?>"> <?=@$Lo39_codlei?>  </td>
-        <td><? db_input('o39_codlei',8,$Io39_codlei,true,'text',$db_opcao,"") ?> </td>
+        <td><?php db_input('o39_codlei',8,$Io39_codlei,true,'text',$db_opcao,"") ?> </td>
     </tr>
     <tr>
      <td><input type=button value="Cadastrar" onclick="js_cadsuplem()"> </td>
@@ -87,7 +87,7 @@ $clrotulo->label("o39_codlei");
     </center>
    </form>
    <center>
-   <?  // include(modification("forms/db_frmorcprojeto.php")); 
+   <?php  // include(modification("forms/db_frmorcprojeto.php")); 
        // lista todas as suplementações do projeto
        $sql = $clorcsuplem->sql_query_file(null,"*",null,"o46_codlei=$o39_codproj");
        $res = $clorcsuplem->sql_record($sql);
@@ -101,7 +101,7 @@ $clrotulo->label("o39_codlei");
 </table>
 </body>
 </html>
-<?
+<?php
 /*
 if(isset($incluir)){
   if($clorcprojeto->erro_status=="0"){

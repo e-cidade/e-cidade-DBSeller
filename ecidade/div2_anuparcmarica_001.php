@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,12 +61,12 @@
      <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
        <td title="<?=@$Tparcel?>" width="40%">
-   	  <?
+   	  <?php
    	   db_ancora(@$Lv07_parcel,"js_pesquisaparcel(true);",4)
    	  ?>
    	 </td>
    	 <td width="60%">		     
-   	  <?
+   	  <?php
    	   db_input('v07_parcel',10,$Iv07_parcel,true,'text',4,"onchange='js_pesquisaparcel(false);'")
    	  ?>
    	 </td>
@@ -76,7 +76,7 @@
    	  <b>Simular Anulação:</b>
    	 </td>
    	 <td>		     
-   	  <?
+   	  <?php
    	   $x = array("0"=>"NÃO", "1"=>"SIM");
    	   db_select("iDebuga", $x, true,1,"style='width: 84px;'");
    	  ?>
@@ -91,7 +91,7 @@
  </td>   
 </tr>   
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -129,7 +129,7 @@ function js_AbreJanelaRelatorio() {
   
  }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,16 +25,18 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_orcunidade_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_orcunidade_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
+
 $clorcunidade = new cl_orcunidade;
+
 $db_opcao = 22;
 $db_botao = false;
 
@@ -83,32 +85,14 @@ if(isset($alterar)){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmorcunidade.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<body>
+<?php
+  include(modification("forms/db_frmorcunidade.php"));
+  db_menu();
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clorcunidade->erro_status=="0"){
     $clorcunidade->erro(true,false);
@@ -117,12 +101,13 @@ if(isset($alterar)){
     if($clorcunidade->erro_campo!=""){
       echo "<script> document.form1.".$clorcunidade->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clorcunidade->erro_campo.".focus();</script>";
-    };
+    }
   }else{
     $clorcunidade->erro(true,true);
-  };
-};
+  }
+}
 if($db_opcao==22){
   echo "<script>document.form1.pesquisar.click();</script>";
 }
+
 ?>

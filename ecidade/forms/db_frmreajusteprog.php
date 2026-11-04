@@ -76,15 +76,18 @@ $clrotulo->label("eso39_dataefeito");
                 <td align="left" nowrap>
                     <?php
                         $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
-                    $matriz = ["A" => "A - Acordo Coletivo de Trabalho",
+                    $matriz = [ ""  => "Selecione...",
+                                "A" => "A - Acordo Coletivo de Trabalho",
                                 "B" => "B - Legislação federal, estadual, municipal ou distrital",
                                 "C" => "C - Convenção Coletiva de Trabalho",
                                 "D" => "D - Sentença normativa - Dissídio",
                                 "E" => "E - Conversão de licença saúde em acidente de trabalho",
                                 "F" => "F - Outras verbas de natureza salarial ou não salarial devidas após o desligamento",
                                 "G" => "G - Antecipação de diferenças de acordo, convenção ou dissídio coletivo",
-                                "H" => "H - Recolhimento mensal de FGTS anterior ao início de obrigatoriedade dos eventos periódicos<"
-                        ];
+                                "H" => "H - Recolhimento mensal de FGTS anterior ao início de obrigatoriedade dos eventos periódicos<",
+                                "I" => "I - Sentença judicial (exceto reclamatória trabalhista)",
+                                "J" => "J - Parcelas complementares conhecidas após o fechamento da folha"
+                            ];
                             db_select("eso39_tipo",$matriz,true,1,"style='width : 250px;'");
                             ?>
                     </td>
@@ -92,8 +95,8 @@ $clrotulo->label("eso39_dataefeito");
                 <tr colspan="2">
                     <td colspan="5">
                     <fieldset>
-                        <legend><b>Descricao da alteração ou do instrumento que a gerou:</b></legend>
-                        <? db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1) ?>
+                    <legend><b>Descrição da alteração ou do instrumento que a gerou:</b></legend>
+                    <?php db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1,"","","","255") ?>
                     </fieldset>
                 </td>
                 </tr>
@@ -114,24 +117,33 @@ $clrotulo->label("eso39_dataefeito");
         }
         js_setfocus(false);
     }
-    function js_enviar(){
-        retorno = true;
+function js_enviar(){
+    retorno = true;
 
-        if(document.form1.rh02_salari.value == ""){
-            alert("Informe o percentual de reajuste!");
-            document.form1.rh02_salari.focus();
-            retorno = false;
-        }else if(document.form1.selmatri){
-            js_seleciona_combo(document.form1.selmatri);
-        }else if(document.form1.sellotac){
-            js_seleciona_combo(document.form1.sellotac);
-        }else if(document.form1.idDataEfeito.value == "") {
-            alert("Informe a data efeitos remuneratórios do reajuste.");
-            document.form1.idDataEfeito.focus();
-            retorno = false;         
-        }
-        return retorno;
+    if(document.form1.rh02_salari.value == ""){
+        alert("Informe o percentual de reajuste!");
+        document.form1.rh02_salari.focus();
+        retorno = false;
+    }else if(document.form1.selmatri){
+        js_seleciona_combo(document.form1.selmatri);
+    }else if(document.form1.sellotac){
+        js_seleciona_combo(document.form1.sellotac);
     }
+
+const instrumentoPermitido = ['A', 'B', 'C', 'D', 'E'];
+
+    if (!$F('eso39_tipo') || !$F('idDataEfeito')) {
+    alert(!$F('eso39_tipo') ? 'Tipo de Instrumento é obrigatório.' : 'Data efeitos remuneratórios do reajuste é obrigatória.');
+    return false;
+    }
+
+    if (!$F('eso39_descricao') && (instrumentoPermitido.includes($F('eso39_tipo')))) {
+    alert('Descrição da alteração é obrigatorio.');
+    return false;
+    }
+
+    return retorno;
+}
     function js_setfocus(acao){
         if(document.form1.matini){
             js_tabulacaoforms("form1","matini",acao,1,"matini",acao);

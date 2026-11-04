@@ -52,13 +52,13 @@ class cl_sau_cgserrado {
                  s128_v_nome = varchar(255) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cgserrado() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cgserrado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_sau_cgserrado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s128_i_codigo = ($this->s128_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s128_i_codigo"]:$this->s128_i_codigo);
        $this->s128_i_numcgs = ($this->s128_i_numcgs == ""?@$GLOBALS["HTTP_POST_VARS"]["s128_i_numcgs"]:$this->s128_i_numcgs);
@@ -78,7 +78,7 @@ class cl_sau_cgserrado {
      }
    }
    // funcao para Inclusão
-   function incluir ($s128_i_codigo,$s128_i_numcgs){ 
+   public function incluir ($s128_i_codigo,$s128_i_numcgs){ 
       $this->atualizacampos();
      if($this->s128_v_nome == null ){ 
        $this->erro_sql = " Campo Nome não informado.";

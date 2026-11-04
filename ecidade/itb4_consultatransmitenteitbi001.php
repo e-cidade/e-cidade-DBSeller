@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,6 @@ $clitbinome = new cl_itbinome();
     $sCampos .= " it03_bairro,	                                                      	      ";
     $sCampos .= " it03_munic,		                                                              ";
     $sCampos .= " it03_uf,			                                                              ";
-    $sCampos .= " case when it03_sexo = 'm' then 'Masculino' else 'Feminino' end as it03_sexo,";
     $sCampos .=  "it03_mail 		                                                              ";      
     $sSqlDadosNome = $clitbinome->sql_query(null,$sCampos,null," it03_guia = {$oGet->guia} and it03_tipo = 'T'");
     db_lovrot($sSqlDadosNome,50,"()","","","");

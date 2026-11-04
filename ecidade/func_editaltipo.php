@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cleditaltipo->rotulo->label("d03_descr");
               <?=$Ld03_tipos?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d03_tipos",4,$Id03_tipos,true,"text",4,"","chave_d03_tipos");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cleditaltipo->rotulo->label("d03_descr");
               <?=$Ld03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d03_descr",40,$Id03_descr,true,"text",4,"","chave_d03_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cleditaltipo->rotulo->label("d03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_editaltipo.php")==true){
@@ -118,12 +118,12 @@ $cleditaltipo->rotulo->label("d03_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

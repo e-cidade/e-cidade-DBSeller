@@ -49,7 +49,8 @@ try {
                 rh217_mesusu as mes,
                 rh217_anousu as exercicio,
                 rh217_informacao as valor,
-                'slag' as addres
+                'slag' as addres,
+                1 as editado
             from
                 servidorrelatorioarquivogenerico
             where
@@ -60,27 +61,77 @@ try {
                 r14_mesusu as mes,
                 r14_anousu as exercicio,
                 round(r14_valor, 2)::varchar as valor,
-                'gerfsal' as addres
+                'gerfsal' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r14_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r14_mesusu
+                            and rh217_anousu = r14_anousu limit 1
+                    ),
+                0) as editado
             from
                 gerfsal
             where
                 r14_rubric = 'R992'
                 and r14_regist = {$oParam->matricula}
+                union all
+            select
+                r48_mesusu as mes,
+                r48_anousu as exercicio,
+                round(r48_valor, 2)::varchar as valor,
+                'gerfcom' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r48_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r48_mesusu
+                            and rh217_anousu = r48_anousu limit 1
+                    ),
+                0) as editado
+            from
+                gerfcom
+            where
+                r48_rubric = 'R992'
+                and r48_regist = {$oParam->matricula}
             union all
             select
                 r35_mesusu as mes,
                 r35_anousu as exercicio,
                 round(r35_valor, 2)::varchar as valor,
-                'gerfs13' as addres
+                'gerfs13' as addres,
+                coalesce(
+                    (
+                        select 
+                            1 
+                        from 
+                            servidorrelatorioarquivogenerico 
+                        where 
+                            rh217_regist = r35_regist
+                            and rh217_arquivorelatorio = 'portaria154AnexoII'
+                            and rh217_mesusu = r35_mesusu
+                            and rh217_anousu = r35_anousu limit 1
+                    ),
+                0) as editado
             from
                 gerfs13
             where
                 r35_rubric = 'R992'
                 and r35_regist = {$oParam->matricula}
-            order by exercicio asc, mes asc;     
+            order by exercicio asc, mes asc, addres asc;
 SQL;
 
-    $rs          = db_query($sql);
+    $rs = db_query($sql);
     $qtdRegistros = pg_num_rows($rs);
 
     if ($qtdRegistros == 0) {
@@ -123,22 +174,20 @@ SQL;
 
     for ($i = 0; $i < $qtdRegistros; $i ++) {
         $registro  = \db_utils::fieldsMemory($rs, $i);
-
-                
-        $cont = 0;
-        if ($registro->addres == 'gerfs13') {
-            $registros[$registro->exercicio][13] = $registro->valor;
-        }
-        
-        if ($registro->addres != 'slag' and isset($registros[$registro->exercicio][$registro->mes])) {
-            continue;
-        }
-        
+       
         if (empty($registros[$registro->exercicio])) {
             $registros[$registro->exercicio] = $aMesesDefault;
         }
 
-        $registros[$registro->exercicio][$registro->mes] = $registro->valor;
+        if ($registro->editado) {
+            if ($registro->addres == 'slag') {
+                $registros[$registro->exercicio][$registro->mes] = $registro->valor;
+            }
+        } else {
+            if ($registro->addres != 'slag') {
+                $registros[$registro->exercicio][$registro->mes] += $registro->valor;
+            }
+        }
     }
     
     $quantidadeMaximaColunas = 5;
@@ -225,7 +274,7 @@ SQL;
     $oPdf->Line($x, $y, $x+190, $y);
     $oPdf->SetLineWidth(1);
     $oPdf->Line($x+0.5, $y+1, $x+189.5, $y+1);
-    $oPdf->SetLineWidth();
+    //$oPdf->SetLineWidth();
     $oPdf->Line($x, $y+2, $x+190, $y+2);
     
     $oPdf->setXY($x, $y+3);
@@ -281,7 +330,7 @@ SQL;
     $oPdf->Line($x, $y, $x+190, $y);
     $oPdf->SetLineWidth(1);
     $oPdf->Line($x+0.5, $y+1, $x+189.5, $y+1);
-    $oPdf->SetLineWidth();
+    //$oPdf->SetLineWidth();
     $oPdf->Line($x, $y+2, $x+190, $y+2);
     $oPdf->setXY($x, $y+3);
 

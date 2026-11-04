@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js");
     db_app::load("estilos.css");
     ?>
@@ -69,7 +69,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                             <b>Escolha o modelo pra impressão:</b>
                           </td>
                           <td>
-                            <?
+                            <?php
                             if (isset($modeloselect)) {
                               $on_change = "onChange='document.form1.setor.length=0;'";
                             } else {
@@ -90,12 +90,12 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                         </tr>
                         <tr>
                           <td nowrap title="Laborat&oacute;rio">
-                            <?
+                            <?php
                             db_ancora('<b>Laborat&oacute;rio:</b>', "js_pesquisala02_i_laboratorio(true);", "");
                             ?>
                           </td>
                           <td> 
-                            <?
+                            <?php
                             db_input('la02_i_codigo', 10, @$Ila02_i_codigo, true, 'text', "", 
                                      " onchange='js_pesquisala02_i_laboratorio(false);'"
                                     );
@@ -105,12 +105,12 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                         </tr>
                         <tr>
                           <td nowrap title="<?=@$Tla24_i_setor?>">
-                            <?
+                            <?php
                             db_ancora(@$Lla24_i_setor, "js_pesquisala24_i_setor(true);", "");
                             ?>
                           </td>
                           <td> 
-                            <?
+                            <?php
                             db_input('la24_i_setor', 10, @$Ila24_i_setor, true, 'text', "", 
                                      " onchange='js_pesquisala24_i_setor(false);'"
                                     );
@@ -124,13 +124,13 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                             <b> Período:</b>
                           </td>
                           <td>
-                            <?
+                            <?php
                             db_inputdata('la22_d_ini', @$la22_d_ini_dia, @$la22_d_ini_mes, @$la22_d_ini_ano, true, 
                                          'text', 1, ""
                                         );
                             ?>
                             A
-                            <?     
+                            <?php     
                             db_inputdata('la22_d_fim', @$la22_d_fim_dia, @$la22_d_fim_mes, @$la22_d_fim_ano, true,
                                          'text', 1, ""
                                         );
@@ -147,7 +147,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                   </tr>
                   <tr>
                     <td>
-                      <?
+                      <?php
                       if (isset($modeloselect)) {
                         
                         @$ini  = substr(@$la22_d_ini, 6, 4)."-".substr(@$la22_d_ini, 3, 2)."-";
@@ -173,7 +173,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                         <b>Exames:</b><br>
                         <select name="exames" id="exames" size="10" onclick="js_desabinc()" 
                                 style="font-size: 9px;width:320px;height:180px" multiple>
-                          <?
+                          <?php
                           if ($oDaoLabRequisicao->numrows > 0) {
        
                             db_fieldsmemory($rsResult, 0);
@@ -276,7 +276,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                      </td>
                    </tr>
                  </table>
-               <? 
+               <?php 
                }
                ?>
              </fieldset>
@@ -285,7 +285,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
        </table>
       </form>
     </center>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),
             db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),

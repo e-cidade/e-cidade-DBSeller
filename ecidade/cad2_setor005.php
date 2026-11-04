@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,7 +43,7 @@ $cllote->rotulo->label();
 $clrotulo->label("z01_nome");
 
 if(isset($j34_zona) && $j34_zona != ""){
-  $zona = split(",",$j34_zona);
+  $zona =explode(",",$j34_zona);
   $vir = "";
   $zon = "";
   for($i=0;$i<count($zona);$i++){
@@ -52,7 +52,7 @@ if(isset($j34_zona) && $j34_zona != ""){
   }
 }
 if(isset($j34_setor) && $j34_setor != ""){
-  $setor = split(",",$j34_setor);
+  $setor =explode(",",$j34_setor);
   $vir = "";
   $set = "";
   for($i=0;$i<count($setor);$i++){
@@ -73,9 +73,9 @@ if(isset($j34_setor) && $j34_setor != ""){
 <script>
 
 function js_loadVars(iInicio,iFinal){
-	
+
 	var oColection = quadras.document.getElementsByTagName('input');
-	
+
 	for(var i = iInicio; i <  iFinal  ; i++ ){
     if(oColection[i].type == "checkbox"){
 			if(oColection[i].checked == true){
@@ -92,7 +92,7 @@ function js_loadVars(iInicio,iFinal){
 
 
 function js_nome(obj){
-    
+
   js_divCarregando('Aguarde, efetuando pesquisa ....','msgbox');
 	j34_quadra      = "";
 	vir			 	     = "";
@@ -101,34 +101,34 @@ function js_nome(obj){
 	iTamanhoVoltas = ( aCol.length / 10);
 	iResto				 = ( aCol.length % 10);
 	iTamanhoVoltas = Math.floor(iTamanhoVoltas);
-	
-	if ( iTamanhoVoltas > 500 ){ 
-		
+
+	if ( iTamanhoVoltas > 500 ){
+
 		for ( var ii = 0 ; ii < 10; ii++ ) {
 			tmp = setTimeout("js_loadVars("+iQuantidade+","+( ii==9?eval(iQuantidade+iResto+iTamanhoVoltas):eval(iQuantidade+iTamanhoVoltas))+")",2000);
 			iQuantidade = eval(iQuantidade+iTamanhoVoltas);
-		}	
-	
+		}
+
 	}else{
-    
+
 		js_loadVars(0,aCol.length);
-	
+
 	}
 }
 
 </script>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<table width="790" border="0" cellspacing="0" cellpadding="0" align="center">
-    <tr> 
-      <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+    <tr>
+      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
         <center>
 					<form name="form1" method="post" action="cad2_setor005.php" target="">
 						<center>
 							<table border="0" align="center">
 								<tr>
 									<td align="top" colspan="2">
-                    <?
-                    
+                    <?php
+
                     $sql = "select distinct j34_zona,
                 														j34_quadra
           													from lote
@@ -150,13 +150,13 @@ function js_nome(obj){
 										  $cliframe_seleciona->chaves ="j34_quadra";
 										  $cliframe_seleciona->dbscript ="onClick='parent.js_nome(this)'";
 										  $cliframe_seleciona->js_marcador="parent.js_nome()";
-										  $cliframe_seleciona->iframe_seleciona(@$db_opcao);   
+										  $cliframe_seleciona->iframe_seleciona(@$db_opcao);
                     }else{
 										  echo "<br><strong>SELECIONE UMA ZONA PARA ESCOLHER A(S) QUADRAS(S)</strong>";
                       //echo "<script>parent.document.formaba.g3.disabled = true;</script>";
 	                  }
 
-									  ?>   
+									  ?>
 								  </td>
 							  </tr>
 								<tr>

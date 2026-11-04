@@ -58,13 +58,13 @@ class cl_clabensconplano {
                  t86_anousudepreciacao = int4 = Exercício
                  ";
    //funcao construtor da classe
-   function cl_clabensconplano() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clabensconplano");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_clabensconplano {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t86_sequencial = ($this->t86_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["t86_sequencial"]:$this->t86_sequencial);
        $this->t86_clabens = ($this->t86_clabens == ""?@$GLOBALS["HTTP_POST_VARS"]["t86_clabens"]:$this->t86_clabens);
@@ -86,7 +86,7 @@ class cl_clabensconplano {
      }
    }
    // funcao para inclusao
-   function incluir ($t86_sequencial){
+   public function incluir ($t86_sequencial){
       $this->atualizacampos();
      if($this->t86_clabens == null ){
        $this->erro_sql = " Campo Código nao Informado.";
@@ -210,7 +210,7 @@ class cl_clabensconplano {
      return true;
    }
    // funcao para alteracao
-   function alterar ($t86_sequencial=null) {
+   public function alterar ($t86_sequencial=null) {
       $this->atualizacampos();
      $sql = " update clabensconplano set ";
      $virgula = "";
@@ -330,7 +330,7 @@ class cl_clabensconplano {
      }
    }
    // funcao para exclusao
-   function excluir ($t86_sequencial=null,$dbwhere=null) {
+   public function excluir ($t86_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t86_sequencial));
      }else{
@@ -350,7 +350,7 @@ class cl_clabensconplano {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){
+     if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t86_sequencial;
@@ -382,7 +382,7 @@ class cl_clabensconplano {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -405,10 +405,10 @@ class cl_clabensconplano {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $t86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $t86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_clabensconplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,10 +452,10 @@ class cl_clabensconplano {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $t86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $t86_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_clabensconplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

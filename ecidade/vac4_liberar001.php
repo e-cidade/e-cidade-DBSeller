@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -173,7 +173,7 @@ db_app::load("webseller.js");
 </table>
 <br><br>
 <center>
-<?if ($clvac_sala->numrows == 0) {
+<?php if ($clvac_sala->numrows == 0) {
 
     echo"<br><br><center><strong><b> Departamento não é um sala de vacinação! </b></strong></center></center></center>";
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
@@ -190,7 +190,7 @@ db_app::load("webseller.js");
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -198,7 +198,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form2", "vc15_i_vacina", true, 1, "vc15_i_vacina", true);
 </script>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar)) || (isset($excluir))) {
 
   if ($clvac_vacinalote->erro_status == "0") {

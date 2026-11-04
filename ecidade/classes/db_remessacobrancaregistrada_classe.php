@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE remessacobrancaregistrada
 class cl_remessacobrancaregistrada { 
@@ -38,13 +38,13 @@ class cl_remessacobrancaregistrada {
                  k147_tiposemissao = varchar = Tipos de Débito da Remessa
                  ";
    //funcao construtor da classe 
-   function cl_remessacobrancaregistrada() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("remessacobrancaregistrada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -53,7 +53,7 @@ class cl_remessacobrancaregistrada {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k147_sequencial = ($this->k147_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k147_sequencial"]:$this->k147_sequencial);
        $this->k147_instit = ($this->k147_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["k147_instit"]:$this->k147_instit);
@@ -75,7 +75,7 @@ class cl_remessacobrancaregistrada {
      }
    }
    // funcao para Inclusão
-   function incluir ($k147_sequencial){ 
+   public function incluir ($k147_sequencial){ 
       $this->atualizacampos();
      if($this->k147_instit == null ){ 
        $this->erro_sql = " Campo Intituição não informado.";

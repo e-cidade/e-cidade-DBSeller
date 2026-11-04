@@ -28,7 +28,7 @@
 namespace App\Domain\Financeiro\Planejamento\Controllers;
 
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
-use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\AtualizaPrevisaoExercicioReceitaRequest;
+use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\AtualizaPrevisaoExercicioRequest;
 use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\CalculaProjecaoRequest;
 use App\Domain\Financeiro\Planejamento\Requests\Procedimentos\Projecao\ValorBaseReceitaRequest;
 use App\Domain\Financeiro\Planejamento\Services\EstimativaReceitaService;
@@ -75,14 +75,14 @@ class ProjecaoReceitaController extends Controller
     }
 
     /**
-     * @param AtualizaPrevisaoExercicioReceitaRequest $request
+     * @param AtualizaPrevisaoExercicioRequest $request
      * @return DBJsonResponse
      * @throws Exception
      */
-    public function previsaoExercicio(AtualizaPrevisaoExercicioReceitaRequest $request)
+    public function previsaoExercicio(AtualizaPrevisaoExercicioRequest $request)
     {
         $service = new EstimativaReceitaService();
-        $exercicio = (int) $request->get('exercicio');
+        $exercicio = (int)$request->get('exercicio');
         $service->atualizarPrevisao($request->get('id'), $exercicio, $request->get('valor'));
         return new DBJsonResponse([], "Valor atualizado");
     }

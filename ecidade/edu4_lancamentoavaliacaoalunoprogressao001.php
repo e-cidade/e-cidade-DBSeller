@@ -75,7 +75,7 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script type="text/javascript">
 
 	oAvaliacao = new DBViewFiltroLancamentoAvaliacao("oAvaliacao");

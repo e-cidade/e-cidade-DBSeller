@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_ppaestimativadespesa {
                  o07_anousu = int4 = Ano do Exercicio
                  ";
    //funcao construtor da classe
-   function cl_ppaestimativadespesa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppaestimativadespesa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_ppaestimativadespesa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o07_sequencial = ($this->o07_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o07_sequencial"]:$this->o07_sequencial);
        $this->o07_ppaestimativa = ($this->o07_ppaestimativa == ""?@$GLOBALS["HTTP_POST_VARS"]["o07_ppaestimativa"]:$this->o07_ppaestimativa);
@@ -80,7 +80,7 @@ class cl_ppaestimativadespesa {
      }
    }
    // funcao para inclusao
-   function incluir ($o07_sequencial){
+   public function incluir ($o07_sequencial){
       $this->atualizacampos();
      if($this->o07_ppaestimativa == null ){
        $this->erro_sql = " Campo Estimativa nao Informado.";
@@ -191,7 +191,7 @@ class cl_ppaestimativadespesa {
      return true;
    }
    // funcao para alteracao
-   function alterar ($o07_sequencial=null) {
+   public function alterar ($o07_sequencial=null) {
       $this->atualizacampos();
      $sql = " update ppaestimativadespesa set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_ppaestimativadespesa {
      }
    }
    // funcao para exclusao
-   function excluir ($o07_sequencial=null,$dbwhere=null) {
+   public function excluir ($o07_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o07_sequencial));
      }else{
@@ -365,7 +365,7 @@ class cl_ppaestimativadespesa {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,10 +388,10 @@ class cl_ppaestimativadespesa {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_ppaestimativadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,10 +433,10 @@ class cl_ppaestimativadespesa {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_ppaestimativadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,11 +466,11 @@ class cl_ppaestimativadespesa {
      }
      return $sql;
   }
-   function sql_query_conplano ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_conplano ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,9 +496,9 @@ class cl_ppaestimativadespesa {
      $sql .= "      left  join ppasubtitulolocalizadorgasto  on  ppasubtitulolocalizadorgasto.o11_sequencial = ppadotacao.o08_localizadorgastos";
      $sql .= "      inner join ppaversao on o05_ppaversao = o119_sequencial";
      $sql .= "      inner join ppalei   on o01_sequencial = o119_ppalei";
-     $sql .= "      inner join fonterecurso  on  orctiporec_id = o15_codigo and exercicio = o01_anoinicio";
+     $sql .= "      inner join fonterecurso  on  orctiporec_id = o15_codigo and exercicio = o56_anousu";
      $sql .= "      inner join complementofonterecurso on o200_sequencial = o15_complemento";
-     $sql .= "      inner join fontesiconfi on fontesiconfi.codigo_siconfi = fonterecurso.codigo_siconfi";
+     $sql .= "      left join fontesiconfi on fontesiconfi.codigo_siconfi = fonterecurso.codigo_siconfi";
      $sql2 = "";
      if($dbwhere==""){
        if($o07_sequencial!=null ){
@@ -510,7 +510,7 @@ class cl_ppaestimativadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -521,11 +521,11 @@ class cl_ppaestimativadespesa {
      return $sql;
   }
 
-  function sql_query_estimativadespesa ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_estimativadespesa ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
    $sql = "select ";
    if($campos != "*" ){
-    $campos_sql = split("#",$campos);
+    $campos_sql = explode("#",$campos);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_ppaestimativadespesa {
     $sql .= $sql2;
     if($ordem != null ){
     $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = explode("#",$ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
      $sql .= $virgula.$campos_sql[$i];
@@ -573,11 +573,11 @@ class cl_ppaestimativadespesa {
   }
 
 
-function sql_query_dotacao ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+public function sql_query_dotacao ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,7 +614,7 @@ function sql_query_dotacao ( $o07_sequencial=null,$campos="*",$ordem=null,$dbwhe
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

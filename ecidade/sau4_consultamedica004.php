@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO:saude
@@ -48,7 +48,7 @@ $clrotulo->label("j13_cod");
 $clrotulo->label("j13_codi");
 $clrotulo->label("DBtxt1");
 $clrotulo->label("DBtxt5");
-//select * from prontuarios inner join cgs_und on z01_i_cgsund = sd24_i_numcgs where sd24_i_numcgs = ( select sd24_i_numcgs from prontuarios where sd24_i_codigo = 4 order by sd24_i_codigo) 
+//select * from prontuarios inner join cgs_und on z01_i_cgsund = sd24_i_numcgs where sd24_i_numcgs = ( select sd24_i_numcgs from prontuarios where sd24_i_codigo = 4 order by sd24_i_codigo)
 
 $sql = "select * from cgs_und where z01_i_cgsund = ( select sd24_i_numcgs from prontuarios where sd24_i_codigo = $chave_sd24_i_codigo order by sd24_i_codigo)";
  $query = db_query($sql);
@@ -66,7 +66,7 @@ db_fieldsmemory($query,0);
    </td>
  </tr>
  <tr>
- 
+
   <!--tabela paciente-->
   <td>
     <table>
@@ -74,26 +74,26 @@ db_fieldsmemory($query,0);
       <td>
         <tr>
         <td nowrap title="<?=@$Tz01_v_cgccpf?>">
-         <?=@$Lz01_v_cgccpf?>      
+         <?=@$Lz01_v_cgccpf?>
           </td>
-          <td>    
-         <?db_input('z01_v_cgccpf',15,@$Iz01_v_cgccpf,true,'text',3,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");?>
+          <td>
+         <?php db_input('z01_v_cgccpf',15,@$Iz01_v_cgccpf,true,'text',3,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");?>
         </td>
         </tr>
         <tr>
-        <td nowrap title="<?=@$Tz01_v_ident?>">         
-         <?=@$Lz01_v_ident?>          
+        <td nowrap title="<?=@$Tz01_v_ident?>">
+         <?=@$Lz01_v_ident?>
          </td>
           <td>
-         <?db_input('z01_v_ident',15,@$Iz01_v_ident,true,'text',3);?>
+         <?php db_input('z01_v_ident',15,@$Iz01_v_ident,true,'text',3);?>
         </td>
-        </tr>  
+        </tr>
        <tr>
         <td width="27%" title='<?=$Tz01_i_cgsund?>' nowrap>
          <?=$Lz01_i_cgsund?>
         </td>
         <td width="73%" nowrap>
-         <?db_input('z01_i_cgsund',20,$Iz01_i_cgsund,true,'text',3);?>
+         <?php db_input('z01_i_cgsund',20,$Iz01_i_cgsund,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -101,7 +101,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_nome?>
         </td>
         <td nowrap title="<?=@$Tz01_v_nome?>" align="left">
-         <?db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,"");?>
+         <?php db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -109,7 +109,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_pai?>
         </td>
         <td nowrap title="<?=@$Tz01_v_pai?>">
-         <?db_input('z01_v_pai',40,$Iz01_v_pai,true,'text',3,"");?>
+         <?php db_input('z01_v_pai',40,$Iz01_v_pai,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -117,7 +117,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_mae?>
         </td>
         <td nowrap title="<?=@$Tz01_v_mae?>">
-         <?db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,"");?>
+         <?php db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -125,7 +125,7 @@ db_fieldsmemory($query,0);
          <?=$Lz01_d_nasc?>
         </td>
         <td nowrap title="<?=$Tz01_d_nasc?>">
-         <?db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',3);?>
+         <?php db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -133,12 +133,12 @@ db_fieldsmemory($query,0);
          <?=$Lz01_i_estciv?>
         </td>
          <td nowrap title="<?=$Tz01_i_estciv?>">
-          <?
+          <?php
           $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Vi�vo","4"=>"Divorciado");
           db_select('z01_i_estciv',$x,true,3);
           ?>
           <?=$Lz01_v_sexo?>
-          <?
+          <?php
           $sex = array("M"=>"Masculino","F"=>"Feminino");
           db_select('z01_v_sexo',$sex,true,3);
           ?>
@@ -146,10 +146,10 @@ db_fieldsmemory($query,0);
         </tr>
          <tr>
         <td nowrap title="<?=@$Tz01_v_ender?>">
-         <?db_ancora(@$Lz01_v_ender,"js_ruas();",3);?>
+         <?php db_ancora(@$Lz01_v_ender,"js_ruas();",3);?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_ender',40,$Iz01_v_ender,true,'text',3);?>
+         <?php db_input('z01_v_ender',40,$Iz01_v_ender,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -158,10 +158,10 @@ db_fieldsmemory($query,0);
         </td>
         <td width="71%" nowrap>
          <a name="AN3">
-         <?db_input('z01_i_numero',8,$Iz01_i_numero,true,'text',3);?>
+         <?php db_input('z01_i_numero',8,$Iz01_i_numero,true,'text',3);?>
          &nbsp;
          <?=@$Lz01_v_compl?>
-         <?db_input('z01_v_compl',10,$Iz01_v_compl,true,'text',3);?>
+         <?php db_input('z01_v_compl',10,$Iz01_v_compl,true,'text',3);?>
          </a>
         </td>
        </tr>
@@ -170,7 +170,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_munic?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_munic',20,$Iz01_v_munic,true,'text',3);?>
+         <?php db_input('z01_v_munic',20,$Iz01_v_munic,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -178,16 +178,16 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_uf?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_uf',2,$Iz01_v_uf,true,'text',3);?>
+         <?php db_input('z01_v_uf',2,$Iz01_v_uf,true,'text',3);?>
         </td>
        </tr>
        <tr>
         <td nowrap title="<?=@$Tz01_v_bairro?>">
-         <?db_ancora(@$Lz01_v_bairro,"js_bairro();",3);?>
+         <?php db_ancora(@$Lz01_v_bairro,"js_bairro();",3);?>
         </td>
         <td nowrap>
-         <?db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
-         <?db_input('z01_v_bairro',25,$Iz01_v_bairro,true,'text',3);?>
+         <?php db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
+         <?php db_input('z01_v_bairro',25,$Iz01_v_bairro,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -195,7 +195,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_cep?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_cep',9,$Iz01_v_cep,true,'text',3);?>
+         <?php db_input('z01_v_cep',9,$Iz01_v_cep,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -203,7 +203,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_telef?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_telef',12,$Iz01_v_telef,true,'text',3);?>
+         <?php db_input('z01_v_telef',12,$Iz01_v_telef,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -211,7 +211,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_telcel?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_telcel',12,$Iz01_v_telcel,true,'text',3);?>
+         <?php db_input('z01_v_telcel',12,$Iz01_v_telcel,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -219,7 +219,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_email?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_email',30,$Iz01_v_email,true,'text',3);?>
+         <?php db_input('z01_v_email',30,$Iz01_v_email,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -227,7 +227,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_cxpostal?>
         </td>
         <td nowrap>
-         <?db_input('z01_v_cxpostal',10,$Iz01_v_cxpostal,true,'text',3);?>
+         <?php db_input('z01_v_cxpostal',10,$Iz01_v_cxpostal,true,'text',3);?>
         </td>
        </tr>
        <tr align="left" valign="middle">
@@ -235,10 +235,10 @@ db_fieldsmemory($query,0);
       <?=@$Lz01_d_cadast?>
       </td>
        <td>
-      <?db_inputdata('z01_d_cadast',@$z01_d_cadast_dia,@$z01_d_cadast_mes,@$z01_d_cadast_ano,true,'text',3);?>
+      <?php db_inputdata('z01_d_cadast',@$z01_d_cadast_dia,@$z01_d_cadast_mes,@$z01_d_cadast_ano,true,'text',3);?>
      </td>
     </tr>
-      
+
       </td>
      </tr>
     </table>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcimpactovalmov->rotulo->label("o64_codimpmov");
               <?=$Lo64_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o64_codseqimpmov",5,$Io64_codseqimpmov,true,"text",4,"","chave_o64_codseqimpmov");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcimpactovalmov->rotulo->label("o64_codimpmov");
               <?=$Lo64_codimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o64_codimpmov",5,$Io64_codimpmov,true,"text",4,"","chave_o64_codimpmov");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcimpactovalmov->rotulo->label("o64_codimpmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalmov.php")==true){
@@ -118,12 +118,12 @@ $clorcimpactovalmov->rotulo->label("o64_codimpmov");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

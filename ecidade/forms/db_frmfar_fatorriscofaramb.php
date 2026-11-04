@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ for ($iContAmb = 0; $iContAmb < $oDaoSauFatorDeRisco->numrows; $iContAmb++) {
 <center>
 <table border="0">
 
-  <?
+  <?php
   for ($iCont = 0; $iCont < $oDaoFarFatorRisco->numrows; $iCont++) {
    
     $oDados    = db_utils::fieldsmemory($rsFatoresFarmacia, $iCont);
@@ -81,12 +81,12 @@ for ($iContAmb = 0; $iContAmb < $oDaoSauFatorDeRisco->numrows; $iContAmb++) {
       <input type="text" size="50" readonly value="<?=$oDados->fa44_c_descr?>">
     </td>
     <td>
-      <?
+      <?php
       db_select('fatoresAmbulatorial[]', $aFatoresAmb, true, 1);
       ?>
     </td>
   </tr>
-  <?
+  <?php
   }
   ?>
 </table>

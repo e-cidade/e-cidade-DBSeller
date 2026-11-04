@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -195,7 +195,7 @@ get_element = document.all ?
  function (s_id) { return document.getElementById(s_id) };
 
 var TREE_ITEMS = [
-                   <?
+                   <?php
                    $ponteiro = fopen($arquivogerado,"r");
                    $soma_turman = 0;
                    $soma_turmaac = 0;
@@ -233,12 +233,12 @@ var TREE_ITEMS = [
                      ],
                      ['Turmas: <b>Turmas (<?=$soma_turman+$soma_turmaac+$soma_turmaaee?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
                        ['Turmas Regular / Especial / EJA: <b>Turmas Regular / Especial / EJA (<?=$soma_turman?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
-                        <?
+                        <?php
                         $ponteiro = fopen($arquivogerado,"r");
                         while (!feof($ponteiro)){
                          $linha = " ".fgets($ponteiro);
                          $explode_linha = explode("|",$linha);
-                         if($explode_linha[0]=="20" && trim($explode_linha[9])<4){                          
+                         if($explode_linha[0]=="20" && trim($explode_linha[9])<4){
                           $codigoturma = trim($explode_linha[3]);
                           $nometurma = trim($explode_linha[4]);
                           $tipoatendimento = trim($explode_linha[9]);
@@ -263,15 +263,15 @@ var TREE_ITEMS = [
                             ['Registro 51: <b>Registro 51 - Vínculo Turma / Docentes (<?=$qtd_docente?>)</b>', 'edu4_verifexportcenso003.php?registro=21&codigoturma=<?=$codigoturma?>&arquivogerado=<?=$arquivogerado?>'],
                             ['Registro 80: <b>Registro 80 - Vínculo Turma / Alunos (<?=$qtd_vinculo?>)</b>', 'edu4_verifexportcenso003.php?registro=81&codigoturma=<?=$codigoturma?>&arquivogerado=<?=$arquivogerado?>'],
                           ],
-                          <?
+                          <?php
                          }
                         }
                         fclose($ponteiro);
                         ?>
                        ],
-                       <?if($soma_turmaac>0){?>
+                       <?php if($soma_turmaac>0){?>
                        ['Turmas Atividade Complementar: <b>Turmas Atividade Complementar (<?=$soma_turmaac?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
-                        <?
+                        <?php
                         $ponteiro = fopen($arquivogerado,"r");
                         while (!feof($ponteiro)){
                          $linha = " ".fgets($ponteiro);
@@ -289,10 +289,10 @@ var TREE_ITEMS = [
                            $explode_linha = explode("|",$linha);
                            if($explode_linha[0]=="80" && trim($explode_linha[3])==$codigoturma){
                             $qtd_vinculo++;
-                           }   
+                           }
                           if($explode_linha[0]=="51" && trim($explode_linha[3])==$codigoturma){
                             $qtd_docente++;
-                           }                        
+                           }
                           }
                           fclose($ponteiro3);
                           ?>
@@ -301,16 +301,16 @@ var TREE_ITEMS = [
                             ['Registro 51: <b>Registro 51 - Vínculo Turma / Docentes (<?=$qtd_docente?>)</b>', 'edu4_verifexportcenso003.php?registro=21&codturma=<?=$codigoturma?>&arquivogerado=<?=$arquivogerado?>'],
                             ['Registro 80: <b>Registro 80 - Vínculo Turma / Alunos (<?=$qtd_vinculo?>)</b>', 'edu4_verifexportcenso003.php?registro=81&codturma=<?=$codigoturma?>&arquivogerado=<?=$arquivogerado?>'],
                           ],
-                          <?
+                          <?php
                          }
                         }
                         fclose($ponteiro);
                         ?>
                        ],
-                       <?}?>
-                       <?if($soma_turmaaee>0){?>
+                       <?php }?>
+                       <?php if($soma_turmaaee>0){?>
                        ['Turmas AEE: <b>Turmas AEE (<?=$soma_turmaaee?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
-                        <?
+                        <?php
                         $ponteiro = fopen($arquivogerado,"r");
                         while (!feof($ponteiro)){
                          $linha = " ".fgets($ponteiro);
@@ -328,7 +328,7 @@ var TREE_ITEMS = [
                            $explode_linha = explode("|",$linha);
                            if($explode_linha[0]=="80" && trim($explode_linha[3])==$codigoturma){
                             $qtd_vinculo++;
-                           }                           
+                           }
                           }
                           fclose($ponteiro3);
                           ?>
@@ -337,16 +337,16 @@ var TREE_ITEMS = [
                             ['Registro 51: <b>Registro 51 - Vínculo Turma / Docentes (<?=$qtd_docente?>)</b>', 'edu4_verifexportcenso003.php?registro=21&codigoturma=<?=$codigoturma?>&nometurma=<?=$nometurma?>&arquivogerado=<?=$arquivogerado?>'],
                             ['Registro 80: <b>Registro 80 - Vínculo Turma / Alunos (<?=$qtd_vinculo?>)</b>', 'edu4_verifexportcenso003.php?registro=81&codigoturma=<?=$codigoturma?>&arquivogerado=<?=$arquivogerado?>'],
                           ],
-                          <?
+                          <?php
                          }
                         }
                         fclose($ponteiro);
                         ?>
                        ],
-                       <?}?>
+                       <?php }?>
                      ],
                      ['Docentes: <b>Docentes (<?=$soma_docente?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
-                       <?
+                       <?php
                        $ponteiro = fopen($arquivogerado,"r");
                        while (!feof($ponteiro)){
                         $linha = " ".fgets($ponteiro);
@@ -372,19 +372,19 @@ var TREE_ITEMS = [
                            ['Registro 50: <b>Registro 50 - Dados Variáveis do Docente</b>', 'edu4_verifexportcenso003.php?registro=50&codigodocente=<?=$codigodocente?>&nomedocente=<?=$nomedocente?>&arquivogerado=<?=$arquivogerado?>'],
                            ['Registro 51: <b>Registro 51 - Vínculo Docente / Turmas (<?=$qtd_docente?>)</b>', 'edu4_verifexportcenso003.php?registro=51&codigodocente=<?=$codigodocente?>&nomedocente=<?=$nomedocente?>&nometurma=<?=$nometurma?>&arquivogerado=<?=$arquivogerado?>'],
                          ],
-                         <?
+                         <?php
                         }
                        }
                        fclose($ponteiro);
                        ?>
                      ],
                      ['Alunos: <b>Alunos (<?=$soma_aluno?>)</b>', 'edu4_verifexportcenso003.php?registro=null',
-                       <?
+                       <?php
                        $ponteiro = fopen($arquivogerado,"r");
                        while (!feof($ponteiro)){
                         $linha = " ".fgets($ponteiro);
                         $explode_linha = explode("|",$linha);
-                        if($explode_linha[0]=="60"){                         
+                        if($explode_linha[0]=="60"){
                          $codigoaluno = trim($explode_linha[3]);
                          $nomealuno = trim($explode_linha[4]);
                          $qtd_vinculo = 0;
@@ -403,7 +403,7 @@ var TREE_ITEMS = [
                            ['Registro 70: <b>Registro 70 - Documentos do Aluno</b>', 'edu4_verifexportcenso003.php?registro=70&codigoaluno=<?=$codigoaluno?>&nomealuno=<?=$nomealuno?>&arquivogerado=<?=$arquivogerado?>'],
                            ['Registro 80: <b>Registro 80 - Vínculo Aluno / Turmas (<?=$qtd_vinculo?>)</b>', 'edu4_verifexportcenso003.php?registro=80&codigoaluno=<?=$codigoaluno?>&nomealuno=<?=$nomealuno?>&arquivogerado=<?=$arquivogerado?>'],
                          ],
-                         <?
+                         <?php
                         }
                        }
                        fclose($ponteiro);

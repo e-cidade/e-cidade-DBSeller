@@ -1,92 +1,92 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE procvalores
-class cl_procvalores { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd10_i_procedimento = 0; 
-   var $sd10_c_sala = 0; 
-   var $sd10_f_valor = 0; 
-   var $sd10_f_servico = 0; 
-   var $sd10_f_anestesia = 0; 
-   var $sd10_f_material = 0; 
-   var $sd10_f_contraste = 0; 
-   var $sd10_f_filme = 0; 
-   var $sd10_f_gesso = 0; 
-   var $sd10_f_quimio = 0; 
-   var $sd10_f_dialise = 0; 
-   var $sd10_f_sadtrat = 0; 
-   var $sd10_f_sadtpc = 0; 
-   var $sd10_f_sadtout = 0; 
-   var $sd10_f_outro = 0; 
-   var $sd10_f_filme2 = 0; 
-   var $sd10_f_total = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_procvalores {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd10_i_procedimento = 0;
+   var $sd10_c_sala = 0;
+   var $sd10_f_valor = 0;
+   var $sd10_f_servico = 0;
+   var $sd10_f_anestesia = 0;
+   var $sd10_f_material = 0;
+   var $sd10_f_contraste = 0;
+   var $sd10_f_filme = 0;
+   var $sd10_f_gesso = 0;
+   var $sd10_f_quimio = 0;
+   var $sd10_f_dialise = 0;
+   var $sd10_f_sadtrat = 0;
+   var $sd10_f_sadtpc = 0;
+   var $sd10_f_sadtout = 0;
+   var $sd10_f_outro = 0;
+   var $sd10_f_filme2 = 0;
+   var $sd10_f_total = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd10_i_procedimento = int4 = Cód. Procedimento 
-                 sd10_c_sala = float8 = Taxa da sala 
-                 sd10_f_valor = float8 = Valor do Procedimento 
-                 sd10_f_servico = int8 = Serviço Profissional 
-                 sd10_f_anestesia = float8 = Anestesia 
-                 sd10_f_material = float8 = Material Médico 
-                 sd10_f_contraste = float8 = Contraste 
-                 sd10_f_filme = float8 = Filme 
-                 sd10_f_gesso = float8 = Gesso 
-                 sd10_f_quimio = float8 = Quimioterapia 
-                 sd10_f_dialise = float8 = Dialise 
-                 sd10_f_sadtrat = float8 = Sadt rat 
-                 sd10_f_sadtpc = float8 = Sadt pc 
-                 sd10_f_sadtout = float8 = Sadt outros 
-                 sd10_f_outro = float8 = Outros 
-                 sd10_f_filme2 = float8 = Filme2 
-                 sd10_f_total = float8 = Total 
+                 sd10_i_procedimento = int4 = Cód. Procedimento
+                 sd10_c_sala = float8 = Taxa da sala
+                 sd10_f_valor = float8 = Valor do Procedimento
+                 sd10_f_servico = int8 = Serviço Profissional
+                 sd10_f_anestesia = float8 = Anestesia
+                 sd10_f_material = float8 = Material Médico
+                 sd10_f_contraste = float8 = Contraste
+                 sd10_f_filme = float8 = Filme
+                 sd10_f_gesso = float8 = Gesso
+                 sd10_f_quimio = float8 = Quimioterapia
+                 sd10_f_dialise = float8 = Dialise
+                 sd10_f_sadtrat = float8 = Sadt rat
+                 sd10_f_sadtpc = float8 = Sadt pc
+                 sd10_f_sadtout = float8 = Sadt outros
+                 sd10_f_outro = float8 = Outros
+                 sd10_f_filme2 = float8 = Filme2
+                 sd10_f_total = float8 = Total
                  ";
-   //funcao construtor da classe 
-   function cl_procvalores() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("procvalores"); 
+     $this->rotulo = new rotulo("procvalores");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_procvalores {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd10_i_procedimento = ($this->sd10_i_procedimento == ""?@$GLOBALS["HTTP_POST_VARS"]["sd10_i_procedimento"]:$this->sd10_i_procedimento);
        $this->sd10_c_sala = ($this->sd10_c_sala == ""?@$GLOBALS["HTTP_POST_VARS"]["sd10_c_sala"]:$this->sd10_c_sala);
@@ -119,58 +119,58 @@ class cl_procvalores {
      }
    }
    // funcao para inclusao
-   function incluir ($sd10_i_procedimento){ 
+   public function incluir ($sd10_i_procedimento){
       $this->atualizacampos();
-     if($this->sd10_c_sala == null ){ 
+     if($this->sd10_c_sala == null ){
        $this->sd10_c_sala = "0";
      }
-     if($this->sd10_f_valor == null ){ 
+     if($this->sd10_f_valor == null ){
        $this->sd10_f_valor = "0";
      }
-     if($this->sd10_f_servico == null ){ 
+     if($this->sd10_f_servico == null ){
        $this->sd10_f_servico = "0";
      }
-     if($this->sd10_f_anestesia == null ){ 
+     if($this->sd10_f_anestesia == null ){
        $this->sd10_f_anestesia = "0";
      }
-     if($this->sd10_f_material == null ){ 
+     if($this->sd10_f_material == null ){
        $this->sd10_f_material = "0";
      }
-     if($this->sd10_f_contraste == null ){ 
+     if($this->sd10_f_contraste == null ){
        $this->sd10_f_contraste = "0";
      }
-     if($this->sd10_f_filme == null ){ 
+     if($this->sd10_f_filme == null ){
        $this->sd10_f_filme = "0";
      }
-     if($this->sd10_f_gesso == null ){ 
+     if($this->sd10_f_gesso == null ){
        $this->sd10_f_gesso = "0";
      }
-     if($this->sd10_f_quimio == null ){ 
+     if($this->sd10_f_quimio == null ){
        $this->sd10_f_quimio = "0";
      }
-     if($this->sd10_f_dialise == null ){ 
+     if($this->sd10_f_dialise == null ){
        $this->sd10_f_dialise = "0";
      }
-     if($this->sd10_f_sadtrat == null ){ 
+     if($this->sd10_f_sadtrat == null ){
        $this->sd10_f_sadtrat = "0";
      }
-     if($this->sd10_f_sadtpc == null ){ 
+     if($this->sd10_f_sadtpc == null ){
        $this->sd10_f_sadtpc = "0";
      }
-     if($this->sd10_f_sadtout == null ){ 
+     if($this->sd10_f_sadtout == null ){
        $this->sd10_f_sadtout = "0";
      }
-     if($this->sd10_f_outro == null ){ 
+     if($this->sd10_f_outro == null ){
        $this->sd10_f_outro = "0";
      }
-     if($this->sd10_f_filme2 == null ){ 
+     if($this->sd10_f_filme2 == null ){
        $this->sd10_f_filme2 = "0";
      }
-     if($this->sd10_f_total == null ){ 
+     if($this->sd10_f_total == null ){
        $this->sd10_f_total = "0";
      }
-       $this->sd10_i_procedimento = $sd10_i_procedimento; 
-     if(($this->sd10_i_procedimento == null) || ($this->sd10_i_procedimento == "") ){ 
+       $this->sd10_i_procedimento = $sd10_i_procedimento;
+     if(($this->sd10_i_procedimento == null) || ($this->sd10_i_procedimento == "") ){
        $this->erro_sql = " Campo sd10_i_procedimento nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -179,45 +179,45 @@ class cl_procvalores {
        return false;
      }
      $sql = "insert into procvalores(
-                                       sd10_i_procedimento 
-                                      ,sd10_c_sala 
-                                      ,sd10_f_valor 
-                                      ,sd10_f_servico 
-                                      ,sd10_f_anestesia 
-                                      ,sd10_f_material 
-                                      ,sd10_f_contraste 
-                                      ,sd10_f_filme 
-                                      ,sd10_f_gesso 
-                                      ,sd10_f_quimio 
-                                      ,sd10_f_dialise 
-                                      ,sd10_f_sadtrat 
-                                      ,sd10_f_sadtpc 
-                                      ,sd10_f_sadtout 
-                                      ,sd10_f_outro 
-                                      ,sd10_f_filme2 
-                                      ,sd10_f_total 
+                                       sd10_i_procedimento
+                                      ,sd10_c_sala
+                                      ,sd10_f_valor
+                                      ,sd10_f_servico
+                                      ,sd10_f_anestesia
+                                      ,sd10_f_material
+                                      ,sd10_f_contraste
+                                      ,sd10_f_filme
+                                      ,sd10_f_gesso
+                                      ,sd10_f_quimio
+                                      ,sd10_f_dialise
+                                      ,sd10_f_sadtrat
+                                      ,sd10_f_sadtpc
+                                      ,sd10_f_sadtout
+                                      ,sd10_f_outro
+                                      ,sd10_f_filme2
+                                      ,sd10_f_total
                        )
                 values (
-                                $this->sd10_i_procedimento 
-                               ,$this->sd10_c_sala 
-                               ,$this->sd10_f_valor 
-                               ,$this->sd10_f_servico 
-                               ,$this->sd10_f_anestesia 
-                               ,$this->sd10_f_material 
-                               ,$this->sd10_f_contraste 
-                               ,$this->sd10_f_filme 
-                               ,$this->sd10_f_gesso 
-                               ,$this->sd10_f_quimio 
-                               ,$this->sd10_f_dialise 
-                               ,$this->sd10_f_sadtrat 
-                               ,$this->sd10_f_sadtpc 
-                               ,$this->sd10_f_sadtout 
-                               ,$this->sd10_f_outro 
-                               ,$this->sd10_f_filme2 
-                               ,$this->sd10_f_total 
+                                $this->sd10_i_procedimento
+                               ,$this->sd10_c_sala
+                               ,$this->sd10_f_valor
+                               ,$this->sd10_f_servico
+                               ,$this->sd10_f_anestesia
+                               ,$this->sd10_f_material
+                               ,$this->sd10_f_contraste
+                               ,$this->sd10_f_filme
+                               ,$this->sd10_f_gesso
+                               ,$this->sd10_f_quimio
+                               ,$this->sd10_f_dialise
+                               ,$this->sd10_f_sadtrat
+                               ,$this->sd10_f_sadtpc
+                               ,$this->sd10_f_sadtout
+                               ,$this->sd10_f_outro
+                               ,$this->sd10_f_filme2
+                               ,$this->sd10_f_total
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores ($this->sd10_i_procedimento) nao Incluído. Inclusao Abortada.";
@@ -265,16 +265,16 @@ class cl_procvalores {
        $resac = db_query("insert into db_acount values($acount,100005,100097,'','".AddSlashes(pg_result($resaco,0,'sd10_f_total'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd10_i_procedimento=null) { 
+   public function alterar ($sd10_i_procedimento=null) {
       $this->atualizacampos();
      $sql = " update procvalores set ";
      $virgula = "";
-     if(trim($this->sd10_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_i_procedimento"])){ 
+     if(trim($this->sd10_i_procedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_i_procedimento"])){
        $sql  .= $virgula." sd10_i_procedimento = $this->sd10_i_procedimento ";
        $virgula = ",";
-       if(trim($this->sd10_i_procedimento) == null ){ 
+       if(trim($this->sd10_i_procedimento) == null ){
          $this->erro_sql = " Campo Cód. Procedimento nao Informado.";
          $this->erro_campo = "sd10_i_procedimento";
          $this->erro_banco = "";
@@ -284,115 +284,115 @@ class cl_procvalores {
          return false;
        }
      }
-     if(trim($this->sd10_c_sala)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_c_sala"])){ 
-        if(trim($this->sd10_c_sala)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_c_sala"])){ 
-           $this->sd10_c_sala = "0" ; 
-        } 
+     if(trim($this->sd10_c_sala)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_c_sala"])){
+        if(trim($this->sd10_c_sala)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_c_sala"])){
+           $this->sd10_c_sala = "0" ;
+        }
        $sql  .= $virgula." sd10_c_sala = $this->sd10_c_sala ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_valor"])){ 
-        if(trim($this->sd10_f_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_valor"])){ 
-           $this->sd10_f_valor = "0" ; 
-        } 
+     if(trim($this->sd10_f_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_valor"])){
+        if(trim($this->sd10_f_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_valor"])){
+           $this->sd10_f_valor = "0" ;
+        }
        $sql  .= $virgula." sd10_f_valor = $this->sd10_f_valor ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_servico"])){ 
-        if(trim($this->sd10_f_servico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_servico"])){ 
-           $this->sd10_f_servico = "0" ; 
-        } 
+     if(trim($this->sd10_f_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_servico"])){
+        if(trim($this->sd10_f_servico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_servico"])){
+           $this->sd10_f_servico = "0" ;
+        }
        $sql  .= $virgula." sd10_f_servico = $this->sd10_f_servico ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_anestesia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_anestesia"])){ 
-        if(trim($this->sd10_f_anestesia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_anestesia"])){ 
-           $this->sd10_f_anestesia = "0" ; 
-        } 
+     if(trim($this->sd10_f_anestesia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_anestesia"])){
+        if(trim($this->sd10_f_anestesia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_anestesia"])){
+           $this->sd10_f_anestesia = "0" ;
+        }
        $sql  .= $virgula." sd10_f_anestesia = $this->sd10_f_anestesia ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_material"])){ 
-        if(trim($this->sd10_f_material)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_material"])){ 
-           $this->sd10_f_material = "0" ; 
-        } 
+     if(trim($this->sd10_f_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_material"])){
+        if(trim($this->sd10_f_material)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_material"])){
+           $this->sd10_f_material = "0" ;
+        }
        $sql  .= $virgula." sd10_f_material = $this->sd10_f_material ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_contraste)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_contraste"])){ 
-        if(trim($this->sd10_f_contraste)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_contraste"])){ 
-           $this->sd10_f_contraste = "0" ; 
-        } 
+     if(trim($this->sd10_f_contraste)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_contraste"])){
+        if(trim($this->sd10_f_contraste)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_contraste"])){
+           $this->sd10_f_contraste = "0" ;
+        }
        $sql  .= $virgula." sd10_f_contraste = $this->sd10_f_contraste ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_filme)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme"])){ 
-        if(trim($this->sd10_f_filme)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme"])){ 
-           $this->sd10_f_filme = "0" ; 
-        } 
+     if(trim($this->sd10_f_filme)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme"])){
+        if(trim($this->sd10_f_filme)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme"])){
+           $this->sd10_f_filme = "0" ;
+        }
        $sql  .= $virgula." sd10_f_filme = $this->sd10_f_filme ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_gesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_gesso"])){ 
-        if(trim($this->sd10_f_gesso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_gesso"])){ 
-           $this->sd10_f_gesso = "0" ; 
-        } 
+     if(trim($this->sd10_f_gesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_gesso"])){
+        if(trim($this->sd10_f_gesso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_gesso"])){
+           $this->sd10_f_gesso = "0" ;
+        }
        $sql  .= $virgula." sd10_f_gesso = $this->sd10_f_gesso ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_quimio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_quimio"])){ 
-        if(trim($this->sd10_f_quimio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_quimio"])){ 
-           $this->sd10_f_quimio = "0" ; 
-        } 
+     if(trim($this->sd10_f_quimio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_quimio"])){
+        if(trim($this->sd10_f_quimio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_quimio"])){
+           $this->sd10_f_quimio = "0" ;
+        }
        $sql  .= $virgula." sd10_f_quimio = $this->sd10_f_quimio ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_dialise)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_dialise"])){ 
-        if(trim($this->sd10_f_dialise)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_dialise"])){ 
-           $this->sd10_f_dialise = "0" ; 
-        } 
+     if(trim($this->sd10_f_dialise)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_dialise"])){
+        if(trim($this->sd10_f_dialise)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_dialise"])){
+           $this->sd10_f_dialise = "0" ;
+        }
        $sql  .= $virgula." sd10_f_dialise = $this->sd10_f_dialise ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_sadtrat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtrat"])){ 
-        if(trim($this->sd10_f_sadtrat)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtrat"])){ 
-           $this->sd10_f_sadtrat = "0" ; 
-        } 
+     if(trim($this->sd10_f_sadtrat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtrat"])){
+        if(trim($this->sd10_f_sadtrat)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtrat"])){
+           $this->sd10_f_sadtrat = "0" ;
+        }
        $sql  .= $virgula." sd10_f_sadtrat = $this->sd10_f_sadtrat ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_sadtpc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtpc"])){ 
-        if(trim($this->sd10_f_sadtpc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtpc"])){ 
-           $this->sd10_f_sadtpc = "0" ; 
-        } 
+     if(trim($this->sd10_f_sadtpc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtpc"])){
+        if(trim($this->sd10_f_sadtpc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtpc"])){
+           $this->sd10_f_sadtpc = "0" ;
+        }
        $sql  .= $virgula." sd10_f_sadtpc = $this->sd10_f_sadtpc ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_sadtout)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtout"])){ 
-        if(trim($this->sd10_f_sadtout)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtout"])){ 
-           $this->sd10_f_sadtout = "0" ; 
-        } 
+     if(trim($this->sd10_f_sadtout)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtout"])){
+        if(trim($this->sd10_f_sadtout)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_sadtout"])){
+           $this->sd10_f_sadtout = "0" ;
+        }
        $sql  .= $virgula." sd10_f_sadtout = $this->sd10_f_sadtout ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_outro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_outro"])){ 
-        if(trim($this->sd10_f_outro)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_outro"])){ 
-           $this->sd10_f_outro = "0" ; 
-        } 
+     if(trim($this->sd10_f_outro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_outro"])){
+        if(trim($this->sd10_f_outro)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_outro"])){
+           $this->sd10_f_outro = "0" ;
+        }
        $sql  .= $virgula." sd10_f_outro = $this->sd10_f_outro ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_filme2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme2"])){ 
-        if(trim($this->sd10_f_filme2)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme2"])){ 
-           $this->sd10_f_filme2 = "0" ; 
-        } 
+     if(trim($this->sd10_f_filme2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme2"])){
+        if(trim($this->sd10_f_filme2)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_filme2"])){
+           $this->sd10_f_filme2 = "0" ;
+        }
        $sql  .= $virgula." sd10_f_filme2 = $this->sd10_f_filme2 ";
        $virgula = ",";
      }
-     if(trim($this->sd10_f_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_total"])){ 
-        if(trim($this->sd10_f_total)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_total"])){ 
-           $this->sd10_f_total = "0" ; 
-        } 
+     if(trim($this->sd10_f_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_total"])){
+        if(trim($this->sd10_f_total)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd10_f_total"])){
+           $this->sd10_f_total = "0" ;
+        }
        $sql  .= $virgula." sd10_f_total = $this->sd10_f_total ";
        $virgula = ",";
      }
@@ -444,7 +444,7 @@ class cl_procvalores {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd10_i_procedimento;
@@ -472,14 +472,14 @@ class cl_procvalores {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd10_i_procedimento=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd10_i_procedimento=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd10_i_procedimento));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -521,7 +521,7 @@ class cl_procvalores {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd10_i_procedimento;
@@ -549,11 +549,11 @@ class cl_procvalores {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -575,10 +575,10 @@ class cl_procvalores {
       }
      return $result;
    }
-   function sql_query ( $sd10_i_procedimento=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd10_i_procedimento=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,15 +593,15 @@ class cl_procvalores {
      $sql2 = "";
      if($dbwhere==""){
        if($sd10_i_procedimento!=null ){
-         $sql2 .= " where procvalores.sd10_i_procedimento = $sd10_i_procedimento "; 
-       } 
+         $sql2 .= " where procvalores.sd10_i_procedimento = $sd10_i_procedimento ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,10 +610,10 @@ class cl_procvalores {
      }
      return $sql;
   }
-   function sql_query_file ( $sd10_i_procedimento=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd10_i_procedimento=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -626,15 +626,15 @@ class cl_procvalores {
      $sql2 = "";
      if($dbwhere==""){
        if($sd10_i_procedimento!=null ){
-         $sql2 .= " where procvalores.sd10_i_procedimento = $sd10_i_procedimento "; 
-       } 
+         $sql2 .= " where procvalores.sd10_i_procedimento = $sd10_i_procedimento ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -28,7 +28,7 @@
 
 use ECidade\Saude\Ambulatorial\Service\ProntuarioService;
 use ECidade\Saude\Ambulatorial\Repository\ProntuarioRepository;
-
+use ECidade\Enum\Saude\Ambulatorial\CboMedicoEnum;
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/JSON.php"));
@@ -121,6 +121,8 @@ try {
         $aWhere[] = " sd91_local not in (" . implode(", ", $oParam->aExcluirLocais). ")" ;
       }
 
+        $aWhere[] = " sd91_situacao = True";
+
       $oDaoSetorAmbulatorial = new cl_setorambulatorial();
 
       $sWhere      = implode(" and ", $aWhere);
@@ -159,6 +161,24 @@ try {
 
     case 'encaminharProntuario':
 
+      $ultimaMovimentacao = MovimentacaoFichaAtendimentoRepository::buscaUltimoRegistro($oParam->iProntuario);
+      $medicoEncaminhado = $ultimaMovimentacao->sd102_profissionalencaminhado;
+
+      if (!empty($oParam->iMedico)) {
+          $medicoEncaminhado = buscaVinculoMedicoEspecialidade($oParam->iMedico, $oParam->iEspecialidade, $iUnidade);
+      }
+      $MovimentacaoAtendimentoEncaminhado = new MovimentacaoFichaAtendimento();
+      $MovimentacaoAtendimentoEncaminhado->setFichaAtendimento($ultimaMovimentacao->sd102_prontuarios);
+      $MovimentacaoAtendimentoEncaminhado->setUsuarioSistema(UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')));
+      $MovimentacaoAtendimentoEncaminhado->setSetorAmbulatorial(SetorAmbulatorialRepository::getPorCodigo($ultimaMovimentacao->sd102_setorambulatorial));
+      $MovimentacaoAtendimentoEncaminhado->setData(new DBDate(date("Y-m-d")));
+      $MovimentacaoAtendimentoEncaminhado->setHora(date("H:i"));
+      $MovimentacaoAtendimentoEncaminhado->setObservacao( '' );
+      $MovimentacaoAtendimentoEncaminhado->setSituacao(MovimentacaoFichaAtendimento::SITUACAO_ENCAMINHADA);
+      $MovimentacaoAtendimentoEncaminhado->setProfissionalEncaminhado($medicoEncaminhado);
+      $MovimentacaoAtendimentoEncaminhado->setProfissionalAtendimento($ultimaMovimentacao->sd102_profissionalatendimento);
+      $MovimentacaoAtendimentoEncaminhado->salvar();
+
       $oDaoProntuarios  = new cl_prontuarios();
       $oDaoMovimentacao = new cl_movimentacaoprontuario();
 
@@ -187,7 +207,8 @@ try {
       $oMovimentacao->setData(new DBDate(date("Y-m-d")));
       $oMovimentacao->setHora(date("H:i"));
       $oMovimentacao->setObservacao( db_stdClass::normalizeStringJsonEscapeString($oParam->sObservacao) );
-      $oMovimentacao->setSituacao(MovimentacaoFichaAtendimento::SITUACAO_ENCAMINHADA);
+      $oMovimentacao->setSituacao(MovimentacaoFichaAtendimento::SITUACAO_ENTRADA);
+      $oMovimentacao->setProfissionalEncaminhado($medicoEncaminhado);
       $oMovimentacao->salvar();
 
       /**
@@ -487,11 +508,69 @@ try {
 
     break;
 
-    case 'salvarDadosGestante': 
+    case 'salvarDadosGestante':
       $oParam->sd24_dum = date("Y-m-d", strtotime(str_replace("/", "-", $oParam->sd24_dum)));
       $prontuarioService = new ProntuarioService(new ProntuarioRepository(new \cl_prontuarios()));
       $prontuarioService->salvar($oParam);
     break;
+
+    /**
+    * Busca a última movimentação realizada no prontuário, caso o mesmo não esteja com a situação de 'Em atendimento'
+     * criará um registro com esta situação.
+    */
+    case 'criaSituacaoEmAtendimento':
+
+      $whereAnd = " AND sd03_i_codigo = $oParam->medicoAtendendo ";
+      $sqlEspecMedico = "
+        SELECT sd27_i_codigo
+        FROM especmedico
+        INNER JOIN unidademedicos ON sd04_i_codigo = sd27_i_undmed
+        INNER JOIN medicos ON sd03_i_codigo = sd04_i_medico
+        WHERE sd27_c_situacao = 'A'
+          AND sd04_i_unidade = $iUnidade
+          $whereAnd
+        ORDER BY sd27_i_codigo;";
+
+      $retornoEspecMedico    = db_query($sqlEspecMedico);
+
+      $especMedicoId = 'null';
+
+      if (pg_num_rows($retornoEspecMedico) > 0) {
+        $especMedicoId = \db_utils::fieldsMemory($retornoEspecMedico, 0)->sd27_i_codigo;
+
+      }
+      $ultimaMovimentacao = MovimentacaoFichaAtendimentoRepository::buscaUltimoRegistro($oParam->iProntuario);
+      if($ultimaMovimentacao->sd102_situacao != MovimentacaoFichaAtendimento::EM_ATENDIMENTO) {
+         $MovimentacaoAtendimento = new MovimentacaoFichaAtendimento();
+         $MovimentacaoAtendimento->setFichaAtendimento($ultimaMovimentacao->sd102_prontuarios);
+         $MovimentacaoAtendimento->setUsuarioSistema(UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')));
+         $MovimentacaoAtendimento->setSetorAmbulatorial(SetorAmbulatorialRepository::getPorCodigo($ultimaMovimentacao->sd102_setorambulatorial));
+         $MovimentacaoAtendimento->setData(new DBDate(date("Y-m-d")));
+         $MovimentacaoAtendimento->setHora(date("H:i"));
+         $MovimentacaoAtendimento->setObservacao( db_stdClass::normalizeStringJsonEscapeString(($ultimaMovimentacao->sd102_observacao )));
+         $MovimentacaoAtendimento->setSituacao(MovimentacaoFichaAtendimento::EM_ATENDIMENTO);
+         $MovimentacaoAtendimento->setProfissionalAtendimento($especMedicoId);
+         $MovimentacaoAtendimento->setProfissionalEncaminhado($ultimaMovimentacao->sd102_profissionalencaminhado);
+         $MovimentacaoAtendimento->salvar();
+      }
+
+      if ($ultimaMovimentacao->sd102_profissionalatendimento !== $especMedicoId){
+          $MovimentacaoAtendimento = new MovimentacaoFichaAtendimento($ultimaMovimentacao->sd102_codigo);
+          $MovimentacaoAtendimento->setProfissionalAtendimento($especMedicoId);
+          $MovimentacaoAtendimento->salvar();
+      }
+
+    break;
+
+    case "validaCboMedico":
+      
+      if(empty($oParam->iCBO)){
+        throw new Exception(_M(MENSAGENS_FICHAATENDIMENTORPC . "cbo_nao_informado"));
+      }
+        
+      $oRetorno->CBOMedico = CboMedicoEnum::validaCBOMedico($oParam->iCBO);
+    
+    //plugin ESF operation#4 - adicionando novo case
   }
 
 } catch ( Exception $oErro ) {

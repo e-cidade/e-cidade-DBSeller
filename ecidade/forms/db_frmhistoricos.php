@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed09_c_situacao");
        <?=@$Led14_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed14_i_codigo',10,$Ied14_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted14_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led14_i_matricula,"js_pesquisaed14_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed14_i_matricula',10,$Ied14_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed14_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        <?=@$Led14_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed14_d_data',@$ed14_d_data_dia,@$ed14_d_data_mes,@$ed14_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('ed14_d_data',@$ed14_d_data_dia,@$ed14_d_data_mes,@$ed14_d_data_ano
        <?=@$Led14_t_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed14_t_descr',3,40,$Ied14_t_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_historicos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

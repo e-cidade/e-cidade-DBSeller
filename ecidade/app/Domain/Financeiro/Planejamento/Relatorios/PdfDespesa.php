@@ -277,20 +277,6 @@ abstract class PdfDespesa extends Pdf
     }
 
 
-    /**
-     * Retorna a altura da linha de acordo com o numero de linhas, valores impressos e a altura da linha que por
-     * default é 4
-     *
-     * @param $numerLinhas
-     * @param int $alturaLinha
-     * @return mixed
-     */
-    protected function calculaAlturaLinha($numerLinhas, $alturaLinha = 4)
-    {
-        $alturaDescricao = $numerLinhas * $alturaLinha;
-        return max([$alturaDescricao, $this->alturaTotalValores]);
-    }
-
     protected function imprimeAreaResultado(array $programa)
     {
         if ($this->planejamento['pl2_composicao'] === 2 && !empty($programa['areasResultado'])) {
@@ -453,11 +439,13 @@ abstract class PdfDespesa extends Pdf
 
     protected function imprimevalores($valores, $x = 163)
     {
-        if (!$this->isPPA) {
-            $valor = array_shift($valores);
-            $valores = [$valor];
-        }
+
         if (!empty($valores)) {
+            if (!$this->isPPA) {
+                $valor = array_shift($valores);
+                $valores = [$valor];
+            }
+            
             foreach ($valores as $valor) {
                 $this->SetX($x);
                 $this->Cell(9, 4, $valor['pl10_ano'], 1, 0, 'C');

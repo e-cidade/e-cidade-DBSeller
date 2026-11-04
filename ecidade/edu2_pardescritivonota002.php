@@ -150,18 +150,19 @@ $pdf->SetAutoPageBreak(true, 15);
 $pdf->AliasNbPages();
 $pdf->setMulticellBreakPageFunction('desenharQuadroBoletim');
 $pdf->setfillcolor(223);
-$m0         = 9;
+$m0         = 10;
 $m1         = 14;
 $m2         = 18;
 $m3         = 22;
 $m4         = 26;
 $m5         = 30;
-$m6         = 33;
+$m6         = 34;
 $m7         = 3;
 $m8         = 5;
+$m9         = 35;
 $a          = 5;
 $f          = 190;
-$r          = 33;
+$r          = 32;
 $alturahead = $pdf->setY(3);
 
 for ($x = 0; $x < $linhas1; $x++) {
@@ -183,6 +184,8 @@ for ($x = 0; $x < $linhas1; $x++) {
 
   if ($punico == "yes") {
 
+      $aRegencias = [];
+      $aRegencias =  RegenciaRepository::getRegenciaByTurmaAndEtapa($oTurma, $oEtapa); // Filtro as regências conforme turme e etapa
     /**
      * Se a primeira discilina da turma não tivér parecer, percorremos as disciplinas da turma até encontrar
      * uma disciplina com parecer lançado
@@ -191,7 +194,7 @@ for ($x = 0; $x < $linhas1; $x++) {
 
     if (trim($oParecer->sParecerPadronizado) == '' && trim($oParecer->sParecer) == '')  {
 
-      foreach ($oTurma->getDisciplinas() as $oRegenciaAux) {
+      foreach ($aRegencias as $oRegenciaAux) {
 
         $oElementoAvaliacaoAux = $oRegencia->getProcedimentoAvaliacao()->getElementoAvaliacaoByOrdem($iOrdemSequencia);
         $oParecerAux = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegenciaAux, $oElementoAvaliacao->getOrdemSequencia());
@@ -298,18 +301,19 @@ for ($x = 0; $x < $linhas1; $x++) {
   $iPosXLogoEscola = 180;
   $pdf->AddPage('P');
 
-  $m0         = 9;
+  $m0         = 10;
   $m1         = 14;
   $m2         = 18;
   $m3         = 22;
   $m4         = 26;
   $m5         = 30;
-  $m6         = 33;
+  $m6         = 34;
   $m7         = 3;
   $m8         = 5;
+  $m9         = 35;
   $a          = 5;
   $f          = 190;
-  $r          = 33;
+  $r          = 32;
   $alturahead = $pdf->setY(6);
   $pdf->setfillcolor(225);
   $pdf->SetFont('arial','b',7);
@@ -323,9 +327,52 @@ for ($x = 0; $x < $linhas1; $x++) {
 
   $aParagrafo = $oLibDocumento->getDocParagrafos();
 
-  foreach ($aParagrafo as $oParagrafo ) {
-    eval($oParagrafo->oParag->db02_texto);
-  }
+    $sSqlTelefoneEscola = "select ed26_i_numero
+                           from telefoneescola
+                          where ed26_i_escola = ".db_getsession("DB_coddepto")."
+                          limit 1";
+
+    $rsTelefoneEscola   = db_query($sSqlTelefoneEscola);
+
+    if( pg_num_rows($rsTelefoneEscola) > 0 ){
+        $telefoneescola = db_utils::fieldsMemory($rsTelefoneEscola,0)->ed26_i_numero;
+    } else {
+        $telefoneescola = "";
+    }
+
+
+    $pdf->Image('imagens/files/'.$sLogoInstit,7,$pdf->GetY(),20);
+
+    if(trim($sLogoEscola)!=""){
+        $pdf->Image('imagens/'.$sLogoEscola,108,$pdf->GetY() - 2,20);
+    }
+
+    $pdf->Text(33,$m0,$nome);
+    $pdf->Text(33,$m1,$sNomeEscola);
+    $pdf->SetFont('Arial','I',8);
+    $pdf->Text(33,$m2,$ruaescola.", ".$numescola." - ".$bairroescola);
+    $pdf->Text(33,$m3,$cidadeescola." - ".$estadoescola);
+    $pdf->Text(33,$m4,$telefoneescola);
+    $comprim = ($pdf->w - $pdf->rMargin);
+    $pdf->Text(33,$m5,($emailescola!=""?$emailescola:""));
+    $pdf->Text(33,$m6,($url!=""?$url:""));
+    $Espaco = $pdf->w - 80 ;
+    $pdf->SetFont('Arial','',7);
+    $pdf->setleftmargin($Espaco);
+    $pdf->setfillcolor(235);
+    $pdf->roundedrect($Espaco - 3,$m8,75,30,2,'DF','123');
+    $pdf->line(10,$m9,$comprim,$m9);
+    $pdf->setfillcolor(255);
+    $pdf->multicell(0,$m7,@$head1,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head2,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head3,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head4,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head5,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head6,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head7,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head8,0,1,"J",0);
+    $pdf->setleftmargin($margemesquerda);
+    $pdf->Ln(5);
 
 
 
@@ -361,18 +408,19 @@ for ($x = 0; $x < $linhas1; $x++) {
 
       if ($pdf->getY() > $pdf->h - 55) {
         $pdf->addpage("P");
-        $m0         = 9;
+        $m0         = 10;
         $m1         = 14;
         $m2         = 18;
         $m3         = 22;
         $m4         = 26;
         $m5         = 30;
-        $m6         = 33;
+        $m6         = 34;
         $m7         = 3;
         $m8         = 5;
+        $m9         = 35;
         $a          = 5;
         $f          = 190;
-        $r          = 33;
+        $r          = 32;
         $alturahead = $pdf->setY(6);
         $pdf->setfillcolor(225);
         $pdf->SetFont('arial','b',10);
@@ -526,11 +574,12 @@ for ($x = 0; $x < $linhas1; $x++) {
   quebrarLinha($pdf, 15);
   $pdf->cell(190,5,"","",1,"L",0);
   if ($assinaturaregente == "S") {
-
-    $pdf->SetY($pdf->h - 25);
-    $pdf->setfont('arial','',10);
+    $pdf->SetY($pdf->h - 35);
     $pdf->cell(190,5,"__________________________________________________","",1,"C",0);
-    $pdf->cell(190,5,"Professor ".$conselheiro,"",1,"C",0);
+    $pdf->setfont('arial','B',10);
+    $pdf->cell(190,5,$conselheiro,"",1,"C",0);
+    $pdf->setfont('arial','',8);
+    $pdf->cell(190,5,"Professor(a)","",1,"C",0);
   }
 
   if ( !isset($iPaginaAntesImpressaoObservacao) ) {

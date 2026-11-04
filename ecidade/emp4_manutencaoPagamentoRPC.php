@@ -167,83 +167,80 @@ require_once(modification("model/orcamento/Unidade.model.php"));
 
 require_once modification("model/impressaoAutenticacao.php");
 $dataSessao = date('Y-m-d', db_getsession('DB_datausu'));
-$oGet    = db_utils::postMemory($_GET);
-$oParam  = JSON::create()->parse(str_replace("\\","",$_POST["json"]));
+$oGet = db_utils::postMemory($_GET);
+$oParam = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
 $oRetono = new stdClass();
 $iInstituicaoOriginal = db_getsession('DB_instit');
-switch($oParam->exec) {
-
-    case "getMovimentos" :
-
+switch ($oParam->exec) {
+    case "getMovimentos":
         // variavel de controle para configuracao de arquivos padrao OBN
         $lArquivoObn = false;
         $lTrazContasFornecedor = true;
-        $lTrazContasRecurso    = true;
+        $lTrazContasRecurso = true;
         if (!empty($oParam->params[0]->lObn)) {
-
             $lTrazContasFornecedor = false;
-            $lTrazContasRecurso    = true;
+            $lTrazContasRecurso = true;
             $lArquivoObn = true;
         }
 
         $oAgenda = new agendaPagamento();
         $oAgenda->setUrlEncode(true);
-        $sJoin   = '';
-        $sWhereIni  = " ((round(e53_valor,2)-round(e53_vlranu,2)-round(e53_vlrpag,2)) > 0 ";
+        $sJoin = '';
+        $sWhereIni = " ((round(e53_valor,2)-round(e53_vlranu,2)-round(e53_vlrpag,2)) > 0 ";
         $sWhereIni .= " and (round(e60_vlremp,2)-round(e60_vlranu,2)-round(e60_vlrpag,2)) > 0) ";
         $sWhereIni .= " and corempagemov.k12_codmov is null and e81_cancelado is null";
-        $sWhereIni .= " and e80_data  <= '".date("Y-m-d",db_getsession("DB_datausu"))."'";
-        $sWhereIni .= " and e60_instit = ".db_getsession("DB_instit");
+        $sWhereIni .= " and e80_data  <= '" . date("Y-m-d", db_getsession("DB_datausu")) . "'";
+        $sWhereIni .= " and e60_instit = " . db_getsession("DB_instit");
 
         $sWhereIni .= " and (e69_codnota is null or (not exists ";
         $sWhereIni .= " (select e69_codnota from empnotasuspensao where e69_codnota = cc36_empnota) ";
         $sWhereIni .= " or (select cc36_dataretorno from empnotasuspensao where e69_codnota = cc36_empnota order ";
         $sWhereIni .= " by cc36_sequencial desc limit 1) is not null)) ";
 
-        $sWhere     = $sWhereIni;
+        $sWhere = $sWhereIni;
         $oAgenda->setOrdemConsultas("e82_codord, e81_codmov");
         if ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim == "") {
             $sWhere .= " and e50_codord = {$oParam->params[0]->iOrdemIni}";
-        } else if ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim != "") {
+        } elseif ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim != "") {
             $sWhere .= " and e50_codord between  {$oParam->params[0]->iOrdemIni} and {$oParam->params[0]->iOrdemFim}";
         }
 
         if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-            $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
-        } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-            $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $sWhere .= " and e50_data = '" . implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataIni))) . "'";
+        } elseif ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
+            $dtDataIni = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataIni)));
+            $dtDataFim = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataFim)));
             $sWhere .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
-        } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
-            $sWhere    .= " and e50_data <= '{$dtDataFim}'";
+        } elseif ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
+            $dtDataFim = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataFim)));
+            $sWhere .= " and e50_data <= '{$dtDataFim}'";
         }
 
-        if ($oParam->params[0]->iCodEmp!= '') {
-            if (strpos($oParam->params[0]->iCodEmp,"/")) {
-                $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+        if ($oParam->params[0]->iCodEmp != '') {
+            if (strpos($oParam->params[0]->iCodEmp, "/")) {
+                $aEmpenho = explode("/", $oParam->params[0]->iCodEmp);
                 $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
             } else {
-                $sWhere .= " and e60_codemp = '{$oParam->params[0]->iCodEmp}' and e60_anousu=".db_getsession("DB_anousu");
+                $sWhere .= " and e60_codemp = '{$oParam->params[0]->iCodEmp}' and e60_anousu=" . db_getsession("DB_anousu");
             }
         }
 
         $sCredorCgm = '';
 
         if ($oParam->params[0]->iNumCgm != '') {
-            $sWhere    .= " and (e60_numcgm = {$oParam->params[0]->iNumCgm})";
+            $sWhere .= " and (e60_numcgm = {$oParam->params[0]->iNumCgm})";
             $sCredorCgm = $oParam->params[0]->iNumCgm;
         }
 
         if ($oParam->params[0]->iAutorizadas == 2) {
-            $lAutorizadas      = true;
+            $lAutorizadas = true;
             if ($oParam->params[0]->sDtAut != "") {
-                $sDtAut   = implode("-", array_reverse(explode("/", $oParam->params[0]->sDtAut)));
+                $sDtAut = implode("-", array_reverse(explode("/", $oParam->params[0]->sDtAut)));
                 $sWhere .= " and e42_dtpagamento = '{$sDtAut}'";
             }
 
             $sWhere .= " and e43_autorizado is true ";
-        } else if ($oParam->params[0]->iAutorizadas == 3) {
+        } elseif ($oParam->params[0]->iAutorizadas == 3) {
             $sWhere .= " and e43_empagemov is null";
         }
 
@@ -251,12 +248,19 @@ switch($oParam->exec) {
             $sWhere .= " and e42_sequencial = {$oParam->params[0]->iOPauxiliar}";
         }
 
-        if (isset($oParam->params[0]->iRecurso) && $oParam->params[0]->iRecurso  != '') {
+        if (isset($oParam->params[0]->iRecurso) && $oParam->params[0]->iRecurso != '') {
             $sWhere .= " and o15_codigo = {$oParam->params[0]->iRecurso}";
         }
 
-        if (isset($oParam->params[0]->fonteRecurso) && $oParam->params[0]->fonteRecurso != '') {
+        /**
+         * Sempre que filtrar a fonteRecurso, deve-se informar o filtro fonteGestao junto.
+         * A partir de 2023 uma subfonte de recurso (o15_recurso) pode existir para mais de uma fonte de gestão
+         */
+        if (!empty($oParam->params[0]->fonteRecurso)) {
             $sWhere .= " and o15_recurso = '{$oParam->params[0]->fonteRecurso}'";
+        }
+        if (!empty($oParam->params[0]->fonteGestao)) {
+            $sWhere .= " and gestao = '{$oParam->params[0]->fonteGestao}'";
         }
 
         if ($oParam->params[0]->iOPManutencao != '') {
@@ -264,7 +268,7 @@ switch($oParam->exec) {
             $oAgenda->setOrdemConsultas("e42_sequencial,e43_sequencial, e81_codmov,e50_codord");
         } elseif (!empty($oParam->params[0]->e03_numeroprocesso)) {
             $sProcesso = addslashes(db_stdClass::normalizeStringJson($oParam->params[0]->e03_numeroprocesso));
-            $sWhere   .= " and e03_numeroprocesso = '{$sProcesso}'";
+            $sWhere .= " and e03_numeroprocesso = '{$sProcesso}'";
         }
 
         // validamos se e configuracao OBN
@@ -272,16 +276,16 @@ switch($oParam->exec) {
             $sWhere .= " and empagemovforma.e97_codforma = 3 ";
         }
 
-        $sJoin   .= " left join empagenotasordem on e81_codmov         = e43_empagemov  ";
-        $sJoin   .= " left join empageordem      on e43_ordempagamento = e42_sequencial ";
-        $sJoin   .= " left join pagordemprocesso on e50_codord = e03_pagordem ";
+        $sJoin .= " left join empagenotasordem on e81_codmov         = e43_empagemov  ";
+        $sJoin .= " left join empageordem      on e43_ordempagamento = e42_sequencial ";
+        $sJoin .= " left join pagordemprocesso on e50_codord = e03_pagordem ";
 
         if (property_exists($oParam->params[0], 'orderBy') && $oParam->params[0]->orderBy == "cgm.z01_nome") {
             $oAgenda->setOrdemConsultas("case when trim(a.z01_nome)   is not null then a.z01_nome   else cgm.z01_nome end");
         }
 
         if (!empty($oParam->params[0]->codigo_classificacao)) {
-            $sJoin  .= " left join classificacaocredoresempenho on cc31_empempenho = e60_numemp ";
+            $sJoin .= " left join classificacaocredoresempenho on cc31_empempenho = e60_numemp ";
             $sWhere .= " and cc31_classificacaocredores = {$oParam->params[0]->codigo_classificacao} ";
         }
 
@@ -310,7 +314,7 @@ switch($oParam->exec) {
             $sWhere .= " and (o15_loagrupo = '{$grupo}' and o15_loaespecificacao = '{$especificacao}') ";
         }
 
-        $aOrdensAgenda = $oAgenda->getMovimentosAgendaPagamento($sWhere,$sJoin,$lTrazContasFornecedor , $lTrazContasRecurso,'', $contasVinculadas, $sCredorCgm);
+        $aOrdensAgenda = $oAgenda->getMovimentosAgendaPagamento($sWhere, $sJoin, $lTrazContasFornecedor, $lTrazContasRecurso, ', gestao, o15_complemento', $contasVinculadas, $sCredorCgm);
 
         if (!empty($oParam->params[0]->lTratarMovimentosConfigurados) && $oParam->params[0]->lTratarMovimentosConfigurados) {
             $aMovimentosConfigurados = array();
@@ -330,32 +334,42 @@ switch($oParam->exec) {
         foreach ($aOrdensAgenda as $iIndice => $oStdMovimento) {
             $oDaoContaPagadora = new cl_empagetipo();
             $sSqlBuscaContaPagadora = $oDaoContaPagadora->sql_query_movimento('e83_conta, e83_descr', "e81_codmov = {$oStdMovimento->e81_codmov}");
-            $rsBuscaContaPagadora   = db_query($sSqlBuscaContaPagadora);
+            $rsBuscaContaPagadora = db_query($sSqlBuscaContaPagadora);
             if (!$rsBuscaContaPagadora) {
                 throw new Exception("Ocorreu um erro para buscar a conta pagadora configurada para o movimento {$oStdMovimento->e81_codmov}.");
             }
 
             $oStdContaPagadoraConfigurada = db_utils::fieldsMemory($rsBuscaContaPagadora, 0);
             $oContaPagadora = new stdClass();
-            $oContaPagadora->codigo    = $oStdContaPagadoraConfigurada->e83_conta;
+            $oContaPagadora->codigo = $oStdContaPagadoraConfigurada->e83_conta;
             $oContaPagadora->descricao = $oStdContaPagadoraConfigurada->e83_descr;
             $aOrdensAgenda[$iIndice]->conta_pagadora = $oContaPagadora;
 
+
+    //            $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+    //                ->where('exercicio', $oStdMovimento->e60_anousu)
+    //                ->where('orctiporec_id', $oStdMovimento->o15_codigo)
+    //                ->first();
+            $fonte = descricaoCompletaRecurso($oStdMovimento->o15_codigo, $oStdMovimento->e60_anousu, 3);
+            $fonteComComplemetno = descricaoCompletaRecurso($oStdMovimento->o15_codigo, $oStdMovimento->e60_anousu, 4);
             /**
              * Para não gerar impacto nas demais rotinas, manterei o nome o15_codigo
              */
             $aOrdensAgenda[$iIndice]->o15_codigo = $oStdMovimento->o15_codigo;
-            $aOrdensAgenda[$iIndice]->recurso = getFonteReduzidaRecurso($oStdMovimento->o15_codigo);
-            $aOrdensAgenda[$iIndice]->o58_codigo = getFonteReduzidaRecurso($oStdMovimento->o58_codigo);
+            $aOrdensAgenda[$iIndice]->recurso = $fonte;
+            $aOrdensAgenda[$iIndice]->fonteComComplemetno = $fonteComComplemetno;
+            $aOrdensAgenda[$iIndice]->complemento = $fonteComComplemetno;
+            $aOrdensAgenda[$iIndice]->subrecurso = getFonteReduzidaRecurso($oStdMovimento->o15_codigo);
+            $aOrdensAgenda[$iIndice]->o58_codigo = $fonte;
         }
 
-        $oRetono->status           = 2;
-        $oRetono->mensagem         = "";
+        $oRetono->status = 2;
+        $oRetono->mensagem = "";
         $oRetono->aNotasLiquidacao = array();
         if (count($aOrdensAgenda) > 0) {
-            $oRetono->status           = 1;
-            $oRetono->mensagem         = 1;
-            $oRetono->totais           = $oAgenda->getTotaisAgenda($sWhere);
+            $oRetono->status = 1;
+            $oRetono->mensagem = 1;
+            $oRetono->totais = $oAgenda->getTotaisAgenda($sWhere);
             $oRetono->aNotasLiquidacao = $aOrdensAgenda;
         }
 
@@ -363,13 +377,23 @@ switch($oParam->exec) {
         break;
 
     case 'efetuarPagamentoSlip':
-        $oAgenda                        = new agendaPagamento();
-        $oRetorno                       = new stdClass();
-        $oRetorno->status               = '1';
+        $oAgenda = new agendaPagamento();
+        $oRetorno = new stdClass();
+        $oRetorno->status = '1';
         $oRetorno->iCodigoOrdemAuxiliar = null;
-        $oRetorno->aAutenticacoes       = array();
+        $oRetorno->aAutenticacoes = array();
         $novosSlipsParciais = array();
         try {
+            $dao = new cl_caiparametro();
+            $campos = 'k29_utilizarcontaextra, k29_gerarslipautomaticoreceitaretencao';
+            $sql = $dao->sql_query_file(db_getsession('DB_instit'), $campos);
+            $rs = db_query($sql);
+
+            if (!$rs && pg_num_rows($rs) === 0) {
+                throw new Exception('Configure os parâmetros do Caixa. DB:FINANCEIRO > Tesouraria > Procedimentos > Parâmetros > Financeiro');
+            }
+
+            $parametroCaixa = db_utils::fieldsMemory($rs, 0);
             db_inicio_transacao();
 
             foreach ($oParam->aMovimentos as $oMovimento) {
@@ -390,19 +414,18 @@ switch($oParam->exec) {
                  * Incluindo possibilidade de pagamento parcial dos slips
                  * Atualmente apenas com necessidade em Campina Grande
                  */
-                if(isParaiba()){
-
+                if (isParaiba()) {
                     /**
                      * Se o tipo de operacao do slip importado for pagamento, mais precisamente, 9 ou 13.
                      */
-                    $aTipoOperacao = [9,13];
+                    $aTipoOperacao = [9, 13];
                     $slipTipoOperacao = slip::getSlipTipoOperacao($oMovimento->iCodNota)->k153_slipoperacaotipo;
-                    if (in_array($slipTipoOperacao,$aTipoOperacao)){
+                    if (in_array($slipTipoOperacao, $aTipoOperacao)) {
                         $codSlip = $oMovimento->iCodNota;
                         $codMov = $oMovimento->iCodMov;
-                        $novoSlip = slip::prepararPagamentoParcialSlip($codSlip,$codMov,$oMovimento->nValor);
-                        if(!empty($novoSlip)){
-                           $novosSlipsParciais[] = $novoSlip;
+                        $novoSlip = slip::prepararPagamentoParcialSlip($codSlip, $codMov, $oMovimento->nValor);
+                        if (!empty($novoSlip)) {
+                            $novosSlipsParciais[] = $novoSlip;
                         }
                     }
                 }
@@ -410,21 +433,19 @@ switch($oParam->exec) {
 
             /*
              * Se o usuario marcou a opcao para "Efetuar pagamento" o sistema gera pagamento sequingo a mesma logica
-             *   da rotina de pagamento de empenho por agenda (Caixa > Procedimentos > Agenda > Pgtos Empenho p/ Agenda )
+             * da rotina de pagamento de empenho por agenda (Caixa > Procedimentos > Agenda > Pgtos Empenho p/ Agenda)
              */
 
             if ($oParam->lEfetuarPagamento) {
-
                 foreach ($oParam->aMovimentos as $oMovimento) {
-
                     if ($oMovimento->iCodForma == 3) {
                         throw new Exception("Para efetuar pagamento automático somente são permitidas as forma de pagamento : Dinheiro (DIN), Débito (DEB). Verifique os movimentos configurados.");
                     }
 
-                    $oTransferencia   = TransferenciaFactory::getInstance(null, $oMovimento->iCodNota);
-                    $oDataPagamento   = new DBDate($oParam->dtPagamento);
+                    $oTransferencia = TransferenciaFactory::getInstance(null, $oMovimento->iCodNota);
+                    $oDataPagamento = new DBDate($oParam->dtPagamento);
                     $oDataEmissaoSlip = new DBDate($oTransferencia->getData());
-                    if($oDataPagamento->getTimeStamp() < $oDataEmissaoSlip->getTimeStamp()) {
+                    if ($oDataPagamento->getTimeStamp() < $oDataEmissaoSlip->getTimeStamp()) {
                         throw new Exception('Data de pagamento deve ser igual ou superior a data de emissão do slip.');
                     }
 
@@ -438,83 +459,56 @@ switch($oParam->exec) {
                         $oTransferencia->executarLancamentoContabil();
                     }
 
-                    $oAutentica                 = new stdClass();
-                    $oAutentica->iNota          = $oMovimento->iCodNota;
-                    $oAutentica->sAutentica     = $oTransferencia->getStringAutenticacao();
+                    $oAutentica = new stdClass();
+                    $oAutentica->iNota = $oMovimento->iCodNota;
+                    $oAutentica->sAutentica = $oTransferencia->getStringAutenticacao();
                     $oRetorno->aAutenticacoes[] = $oAutentica;
                     $lApropriacao = APROPRIACAO_RETENCAO;
 
-                    //realiza a transferencia se a apropriacao de retencao esta ativa
-                    if ($lApropriacao) {
-
-                        $oSlip = new slip($oMovimento->iCodNota);
-
-                        $lContaExtra = contaTesouraria::isContaExtra($oSlip->getContaCredito());
-
-                        // se for um sliprecurso vai ser criado um novo e executado a transferencia
-                        //  e Uma conta extra para credito no novo slip
-                        //  e somente para slip que nao seja da folha
-
-                        if ( $oSlip->isSlipRecurso() &&  $lContaExtra && !$oSlip->isFolha()) {
-
-                            $iCodigoDebito = $oSlip->getContaCredito();
-                            $iCodigoCredito = $oSlip->getContaPrincipalPorContaExtra();
-                            $sObservacao  = "Valor Correspondente a Transferência de Valor para Cobertura de Recurso ";
-                            $sObservacao .= "Extra orçamentário referente ao Movimento registrado no Slip : ";
-                            $sObservacao .= $oSlip->getSlip();
-
-                            $oNovoSlip = new Slip();
-                            $oNovoSlip->setContaCredito($iCodigoCredito);
-                            $oNovoSlip->setContaDebito($iCodigoDebito);
-                            $oNovoSlip->setCaracteristicaPeculiarCredito("000");
-                            $oNovoSlip->setCaracteristicaPeculiarDebito("000");
-                            $oNovoSlip->setValor($oMovimento->nValor);
-                            $oNovoSlip->setTipoPagamento(3);
-                            $oNovoSlip->setSituacao(1);
-                            $oNovoSlip->setNumCgm($oSlip->getNumCgm());
-                            $oNovoSlip->setHistorico($oSlip->getHistorico());
-                            $oNovoSlip->setObservacoes($sObservacao);
-                            $oNovoSlip->save();
-                            Slip::vincularTipoOperacaoSlip($oNovoSlip->getSlip(), 17);
-
-                            $oNovaTransferencia   = TransferenciaFactory::getInstance(null, $oNovoSlip->getSlip());
-                            $oNovaTransferencia->setObservacao($sObservacao);
-                            $oNovaTransferencia->executaAutenticacao();
-                            if (USE_PCASP) {
-                                $oNovaTransferencia->executarLancamentoContabil();
-                            }
-                        }
-                    }
+                    /**
+                     * Removido a geração do slip de transferência invertendo as contas créditos e débitos.
+                     * O slip era gerado quando apropriacao de retencao esta ativa e utiliza conta extra SIM
+                     */
                 }
             }
+
             $oRetorno->novosSlipsParciais = $novosSlipsParciais;
+
             db_fim_transacao(false);
         } catch (Exception $eErro) {
             db_fim_transacao(true);
-            $oRetorno->status  = 2;
+            $oRetorno->status = 2;
             $oRetorno->message = urlencode($eErro->getMessage());
-
         }
         echo JSON::create()->stringify($oRetorno);
 
         break;
 
-    case "configurarPagamento" :
-        $oAgenda                       = new agendaPagamento();
-        $oRetorno                       = new stdClass();
-        $oRetorno->status               = '1';
+    case "configurarPagamento":
+        $oAgenda = new agendaPagamento();
+
+        $oRetorno = new stdClass();
+        $oRetorno->status = '1';
         $oRetorno->iCodigoOrdemAuxiliar = null;
-        $oRetorno->aAutenticacoes      = array();
+        $oRetorno->aAutenticacoes = array();
         $oRetorno->sSlipsGeradoAutomatico = "";
+
         $aSlipAutomatico = array();
         $novosSlipsParciais = array();
+
+        $lGeraSlipAutomaticoConfiguracaoMovimento = false;
 
         try {
             db_inicio_transacao();
 
+            $aParametrosCaixa = db_stdClass::getParametro("caiparametro", array(db_getsession("DB_instit")), "k29_gerarslipautomaticoreceitaretencao");
+            if (count($aParametrosCaixa) > 0) {
+                $lGeraSlipAutomaticoConfiguracaoMovimento = (($aParametrosCaixa[0]->k29_gerarslipautomaticoreceitaretencao == 2) ? true : false);
+            }
+
             $iCodigoOrdemAuxiliar = null;
             if ($oParam->lEmitirOrdeAuxiliar) {
-                $iCodigoOrdemAuxiliar =  $oAgenda->autorizarPagamento($oParam->dtPagamento);
+                $iCodigoOrdemAuxiliar = $oAgenda->autorizarPagamento($oParam->dtPagamento);
             }
             /*
              * Adiciona o Movimento na ordem auxiliar escolhida pelo usuario
@@ -527,6 +521,38 @@ switch($oParam->exec) {
             foreach ($oParam->aMovimentos as $oMovimento) {
                 /** Plugin limite de saque */
 
+                /*
+                 * Suspensao orcamentaria
+                 */
+                $empAgeMov = new cl_empagemov;
+                $rsBuscaMovimento   = $empAgeMov->sql_record(
+                    $empAgeMov->sql_query_file(
+                        null,
+                        "*",
+                        null,
+                        "e81_codmov = {$oMovimento->iCodMov}"
+                    )
+                );
+                $numemp = db_utils::fieldsMemory($rsBuscaMovimento, 0)->e81_numemp;
+                if ($numemp != "0") {
+                    $empenhoFinanceiro  = new EmpenhoFinanceiro($numemp);
+                    $dotacao = $empenhoFinanceiro->getDotacao();
+
+                    $suspensaoOrcamentaria = new cl_suspensaoorcamentaria;
+                    if ($suspensaoOrcamentaria->verificaSuspensaoPagamentoDotacao(
+                        $dotacao->getCodigo(),
+                        $dotacao->getAno()
+                    )) {
+                        $msgErro  = "Não foi possível realizar as configurações do pagamento ref. ";
+                        $msgErro .= "ao empenho {$empenhoFinanceiro->getCodigo()}/{$empenhoFinanceiro->getAno()}\n";
+                        $msgErro .= "Ficha financeira do Anexo {$dotacao->getLocalizador()} ";
+                        $msgErro .= "e Fonte de Recurso {$dotacao->getRecurso()} suspensa para pagamentos.";
+                        throw new Exception($msgErro);
+                    }
+                }
+                /*
+                 * Fim logica da suspensao orcamentaria
+                 */
 
                 /*
                  * alteramos a conta a credito do slip no caso d  e ter sido alterado na agenda de pagamento
@@ -540,7 +566,6 @@ switch($oParam->exec) {
                 }
 
                 if (pg_num_rows($buscaMovimentoSlip) > 0) {
-
                     $daoContaPagadora = new cl_empagetipo();
                     $buscaContaPagadora = $daoContaPagadora->sql_query_file(null, 'e83_codtipo', null, "e83_conta = {$oMovimento->iContaPagadora}");
                     $buscaContaPagadora = db_query($buscaContaPagadora);
@@ -552,67 +577,78 @@ switch($oParam->exec) {
                     $oMovimento->iContaPagadora = db_utils::fieldsMemory($buscaContaPagadora, 0)->e83_codtipo;
                 }
 
+
                 $oAgenda->configurarPagamentos($oParam->dtPagamento, $oMovimento, $iCodigoOrdemAuxiliar, $oParam->lEmitirOrdeAuxiliar);
 
                 $iCodForma = $oMovimento->iCodForma;
-                $iCodMov   = $oMovimento->iCodMov;
+                $iCodMov = $oMovimento->iCodMov;
 
                 /**
                  * Verificamos se o codigo do movimento est? vinculado a algum tipo de transmiss?o. caso esteja, deletamos os
                  * detalhes pois o usu?rio pode ter alterado o valor a ser pago no movimento, entrando assim em conflito com os
                  * detalhes (c?digos de barras) lan?ados na configura??o de envio.
                  */
-                $oDaoEmpAgeMovTipoTransmissao   = new cl_empagemovtipotransmissao;
+                $oDaoEmpAgeMovTipoTransmissao = new cl_empagemovtipotransmissao;
                 $sSqlBuscaConfiguracaoMovimento = $oDaoEmpAgeMovTipoTransmissao->sql_query_file(null, "*", null, "e25_empagemov = {$iCodMov}");
-                $rsBuscaConfiguracaoMovimento   = $oDaoEmpAgeMovTipoTransmissao->sql_record($sSqlBuscaConfiguracaoMovimento);
+                $rsBuscaConfiguracaoMovimento = $oDaoEmpAgeMovTipoTransmissao->sql_record($sSqlBuscaConfiguracaoMovimento);
                 if ($oDaoEmpAgeMovTipoTransmissao->numrows > 0 && $iCodForma == 3) {
-
                     $oDaoDetalheTransmissao = new cl_empagemovdetalhetransmissao;
                     $oDaoDetalheTransmissao->excluir(null, "e74_empagemov = {$iCodMov}");
                     if ($oDaoDetalheTransmissao->erro_status == "0") {
                         throw new BusinessException("Não foi possível excluir as configurações do movimento {$iCodMov}.");
                     }
-
                 } else {
-
-                    $oDaoEmpAgeMovTipoTransmissao->excluir (null, "e25_empagemov = {$iCodMov}");
+                    $oDaoEmpAgeMovTipoTransmissao->excluir(null, "e25_empagemov = {$iCodMov}");
                     if ($oDaoEmpAgeMovTipoTransmissao->erro_status == 0) {
-                        throw new Exception("ERRO [0] - Vinculando Movimento Tipo Transmissao - " .$oDaoEmpAgeMovTipoTransmissao->erro_msg );
+                        throw new Exception("ERRO [0] - Vinculando Movimento Tipo Transmissao - " . $oDaoEmpAgeMovTipoTransmissao->erro_msg);
                     }
 
                     if ($iCodForma == 3) {
-
                         $oParametroCaixa = new ParametroCaixa();
                         $iTransmissao = empty($oParam->iTipoTransmissao) ? $oParametroCaixa->getTipoTransmissaoPadrao() : $oParam->iTipoTransmissao;
 
-                        $oDaoEmpAgeMovTipoTransmissao->e25_empagemov             = $iCodMov;
+                        $oDaoEmpAgeMovTipoTransmissao->e25_empagemov = $iCodMov;
                         $oDaoEmpAgeMovTipoTransmissao->e25_empagetipotransmissao = $iTransmissao;
                         $oDaoEmpAgeMovTipoTransmissao->incluir(null);
                         if ($oDaoEmpAgeMovTipoTransmissao->erro_status == 0) {
-                            throw new Exception("ERRO [1] - Vinculando Movimento Tipo Transmissao - " .$oDaoEmpAgeMovTipoTransmissao->erro_msg );
+                            throw new Exception("ERRO [1] - Vinculando Movimento Tipo Transmissao - " . $oDaoEmpAgeMovTipoTransmissao->erro_msg);
                         }
                     }
                 }
 
-                /* Plugin GeracaoSlipRetencaoAutomatico Natal */
+
+                /*
+                 * Se o sistema esta configurado para gerar slips automaticos no momento da configuração do movimento na
+                 * agenda de pagamentos
+                 */
+                if ($lGeraSlipAutomaticoConfiguracaoMovimento) {
+                    if (isset($oMovimento->aRetencoes)) {
+                        $oOrdemPagamento = new ordemPagamento($oMovimento->iCodNota);
+                        $oRetornoGeracaoSlip = $oOrdemPagamento->gerarSlipPorRetencaoConfiguracaoAgenda($oMovimento);
+                        if ($oRetornoGeracaoSlip->erro) {
+                            throw new Exception($oRetornoGeracaoSlip->msg);
+                        }
+                        $aSlipAutomatico = array_merge($aSlipAutomatico, $oRetornoGeracaoSlip->slips);
+                    }
+                }
 
 
                 /**
                  * Incluindo possibilidade de pagamento parcial dos slips
                  * Atualmente apenas com necessidade em Campina Grande
                  */
-                if(isParaiba()){
+                if (isParaiba()) {
 
                     /**
                      * Se o tipo de operacao do slip importado for pagamento, mais precisamente, 9 ou 13.
                      */
-                    $aTipoOperacao = [9,13];
+                    $aTipoOperacao = [9, 13];
                     $slipTipoOperacao = slip::getSlipTipoOperacao($oMovimento->iCodNota)->k153_slipoperacaotipo;
-                    if (in_array($slipTipoOperacao,$aTipoOperacao)){
+                    if (in_array($slipTipoOperacao, $aTipoOperacao)) {
                         $codSlip = $oMovimento->iCodNota;
                         $codMov = $oMovimento->iCodMov;
-                        $novoSlip = slip::prepararPagamentoParcialSlip($codSlip,$codMov,$oMovimento->nValor);
-                        if(!empty($novoSlip)){
+                        $novoSlip = slip::prepararPagamentoParcialSlip($codSlip, $codMov, $oMovimento->nValor);
+                        if (!empty($novoSlip)) {
                             $novosSlipsParciais[] = $novoSlip;
                         }
                     }
@@ -624,11 +660,9 @@ switch($oParam->exec) {
              *   da rotina de pagamento de empenho por agenda (Caixa > Procedimentos > Agenda > Pgtos Empenho p/ Agenda )
              */
             if ($oParam->lEfetuarPagamento) {
-
                 foreach ($oParam->aMovimentos as $oMovimento) {
-
                     if ($oMovimento->iCodForma == 3) {
-                        throw new Exception("Para efetuar pagamento automático somente são permitidas as forma de pagamento : Dinheiro (DIN), Débito (DEB). Verifique os movimentos configurados.");
+                        throw new Exception("Para efetuar pagamento automático somente são permitidas as forma de pagamento : Dinheiro(DIN), Débito(DEB). Verifique os movimentos configurados.");
                     }
 
                     /**
@@ -644,52 +678,45 @@ switch($oParam->exec) {
                         $oOrdemPagamento->setHistorico($_SESSION["HISTORICO_PAGAMENTO_{$oMovimento->iCodMov}"]);
                     }
                     $oOrdemPagamento->pagarOrdem();
+
+
                     // gera slip das retencoes da OP que foram apropriadas
-                    if (APROPRIACAO_RETENCAO) {
-
+                    // antes dependia do parametro de apropriacao, agora nao olha mais isso
+                    // valida o parametro  Gerar Slip Automático das Retenções e Transferências:  2 - Sim No momento
+                    // da apropriacao
+                    $iGerarSlipAutomaticoRetencoesTransferencias = ParametroCaixa::getParametroMomentoSlipAutomatico(db_getsession("DB_instit"));
+                    if ($iGerarSlipAutomaticoRetencoesTransferencias != 0) {
                         $oOrdemPagamento->gerarSlipDasRetencoesApropriadas($oMovimento);
-                    }
-
-                    $oRetorno->iItipoAutent     = $oOrdemPagamento->oAutentica->k11_tipautent;
-                    $c70_codlan                 = $oOrdemPagamento->iCodLanc;
-                    $oAutentica                 = new stdClass();
-                    $oAutentica->iNota          = $oMovimento->iCodNota;
-                    $oAutentica->sAutentica     = $oOrdemPagamento->getRetornoautenticacao();
-                    $oRetorno->aAutenticacoes[] = $oAutentica;
-
-                    if (count($oOrdemPagamento->getSlipsGeradosAutomaticamente(1)) > 0  ) {
-
                         $aSlipAutomatico[] = $sSlipsGeradoAutomatico = implode(", ", $oOrdemPagamento->getSlipsGeradosAutomaticamente(1));
                     }
 
-                }
-
-                if ( count($aSlipAutomatico) > 0) {
-
-                    $sSlipsGeradoAutomatico = implode(", ", $aSlipAutomatico);
-                    $oRetorno->sSlipsGeradoAutomatico = $sSlipsGeradoAutomatico;
+                    $oRetorno->iItipoAutent = $oOrdemPagamento->oAutentica->k11_tipautent;
+                    $c70_codlan = $oOrdemPagamento->iCodLanc;
+                    $oAutentica = new stdClass();
+                    $oAutentica->iNota = $oMovimento->iCodNota;
+                    $oAutentica->sAutentica = $oOrdemPagamento->getRetornoautenticacao();
+                    $oRetorno->aAutenticacoes[] = $oAutentica;
                 }
             }
 
+            if (count($aSlipAutomatico) > 0) {
+                $sSlipsGeradoAutomatico = implode(", ", $aSlipAutomatico);
+                $oRetorno->sSlipsGeradoAutomatico = $sSlipsGeradoAutomatico;
+            }
 
-            /* [Extensão] Programação Financeira */
             $oRetorno->iCodigoOrdemAuxiliar = $iCodigoOrdemAuxiliar;
             $oRetorno->novosSlipsParciais = $novosSlipsParciais;
+
             db_fim_transacao(false);
-
-        }
-        catch (Exception $eErro) {
-
+        } catch (Exception $eErro) {
             db_fim_transacao(true);
-            $oRetorno->status  = 2;
+            $oRetorno->status = 2;
             $oRetorno->message = urlencode($eErro->getMessage());
-
         }
         echo JSON::create()->stringify($oRetorno);
         break;
 
     case "getMovimentosSlip":
-
         // variavel de controle para configuração de arquivos padrao OBN
         $lArquivoObn = false;
         if (!empty($oParam->params[0]->lObn)) {
@@ -698,30 +725,30 @@ switch($oParam->exec) {
 
         $oAgenda = new agendaPagamento();
         $oAgenda->setUrlEncode(true);
-        $sWhere  = " s.k17_instit = ".db_getsession("DB_instit");
+        $sWhere = " s.k17_instit = " . db_getsession("DB_instit");
         $sWhere .= " and e91_codmov is null    ";
         $sWhere .= " and e81_cancelado is null ";
-        //$sWhere .= " and e90_codmov is null    ";
-        // alterada condicao do where vara ver o campo e90_cancelado = true, pois agora os registros da empageconfgera
-        // ao cancelar um arquivo, nao serão mais deletados
-//        $sWhere .= " and (e90_cancelado is true or e90_cancelado is null)";
-        $sWhere .= " and k17_situacao in (1, 3) ";
+        $sWhere .= " and k17_situacao in(1, 3) ";
+
+        if (!empty($oParam->params[0]->tiposOperacao)) {
+            $sWhere .= " and k153_slipoperacaotipo in ({$oParam->params[0]->tiposOperacao}) ";
+        }
 
         if ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim == "") {
             $sWhere .= " and s.k17_codigo = {$oParam->params[0]->iOrdemIni}";
-        } else if ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim != "") {
+        } elseif ($oParam->params[0]->iOrdemIni != '' && $oParam->params[0]->iOrdemFim != "") {
             $sWhere .= " and s.k17_codigo between  {$oParam->params[0]->iOrdemIni} and {$oParam->params[0]->iOrdemFim}";
         }
 
         if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-            $sWhere .= " and k17_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
-        } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-            $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $sWhere .= " and k17_data = '" . implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataIni))) . "'";
+        } elseif ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
+            $dtDataIni = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataIni)));
+            $dtDataFim = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataFim)));
             $sWhere .= " and k17_data between '{$dtDataIni}' and '{$dtDataFim}'";
-        } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
-            $sWhere    .= " and k17_data <= '{$dtDataFim}'";
+        } elseif ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
+            $dtDataFim = implode("-", array_reverse(explode("/", $oParam->params[0]->dtDataFim)));
+            $sWhere .= " and k17_data <= '{$dtDataFim}'";
         }
 
         //filtro para filtrar por credor
@@ -730,7 +757,7 @@ switch($oParam->exec) {
         }
 
         if (!empty($oParam->params[0]->iRecurso)) {
-            $sWhere .= " and ctapag.c61_codigo = {$oParam->params[0]->iRecurso}";
+            $sWhere .= " and ctapag.c61_codigo in({$oParam->params[0]->iRecurso})";
         }
 
         if (!empty($oParam->params[0]->iRetencao)) {
@@ -739,12 +766,12 @@ switch($oParam->exec) {
 
         if (!empty($oParam->params[0]->fonteRecurso)) {
             $ativos = "(o15_datalimite is null or o15_datalimite > '{$dataSessao}')";
-            $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorFonteRecurso(
+            $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorSubrecurso(
                 $oParam->params[0]->fonteRecurso,
                 $ativos
             );
 
-            $sWhere .= " and ctapag.c61_codigo in (" . implode(', ', $ids) . ")";
+            $sWhere .= " and ctapag.c61_codigo in(" . implode(', ', $ids) . ")";
         }
 
         if (FONTE_RECURSO_UNIAO && !empty($oParam->params[0]->recurso_reduzido)) {
@@ -763,28 +790,28 @@ switch($oParam->exec) {
         }
 
         if (!empty($oParam->params[0]->movimentosSelecionados)) {
-            $sWhere .= " and empagemov.e81_codmov in ({$oParam->params[0]->movimentosSelecionados}) ";
+            $sWhere .= " and empagemov.e81_codmov in({$oParam->params[0]->movimentosSelecionados}) ";
         }
 
         $aSlipsAgenda = $oAgenda->getSlips($sWhere, true);
 
         if (count($aSlipsAgenda) > 0) {
-            $oRetono->status           = 1;
-            $oRetono->mensagem         = 1;
-            $oRetono->aSlips           = $aSlipsAgenda;
+            $oRetono->status = 1;
+            $oRetono->mensagem = 1;
+            $oRetono->aSlips = $aSlipsAgenda;
 
-            $clsaltes  = new cl_saltes();
+            $clsaltes = new cl_saltes();
 
-            $sWhere    = " ( k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')";
-            $sWhere   .= " and c61_instit = ".db_getsession("DB_instit");
+            $sWhere = " ( k13_limite is null or k13_limite >= '" . date("Y-m-d", db_getsession("DB_datausu")) . "')";
+            $sWhere .= " and c61_instit = " . db_getsession("DB_instit");
             /**
              *  Retirar contas configuradas como conta padrao para slip
              */
-            $sWhere   .= " and not exists (select 1 ";
-            $sWhere   .= "                   from caiparametro ";
-            $sWhere   .= "                  where k29_contapadraoslip = k13_conta ";
-            $sWhere   .= "                    and k29_instit = ".db_getsession('DB_instit').") ";
-            $result05  = $clsaltes->sql_record(
+            $sWhere .= " and not exists (select 1 ";
+            $sWhere .= "                   from caiparametro ";
+            $sWhere .= "                  where k29_contapadraoslip = k13_conta ";
+            $sWhere .= "                    and k29_instit = " . db_getsession('DB_instit') . ") ";
+            $result05 = $clsaltes->sql_record(
                 $clsaltes->sql_query_anousu(
                     null,
                     "c63_banco as banco, k13_conta as e83_conta, k13_descr as e83_descr, c61_codigo as recurso ",
@@ -798,28 +825,32 @@ switch($oParam->exec) {
             if (!empty($oRetono->aSlips)) {
                 foreach ($oRetono->aSlips as $indice => $slip) {
                     $oRetono->aSlips[$indice]->c61_codigo = $slip->c61_codigo;
-                    $oRetono->aSlips[$indice]->recurso = getFonteReduzidaRecurso($slip->c61_codigo);
+
+                    $fonte = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+                        ->where('orctiporec_id', $slip->c61_codigo)
+                        ->where('exercicio', db_getsession('DB_anousu'))
+                        ->first();
+                    $oRetono->aSlips[$indice]->recurso = $fonte->recurso->o15_recurso;
+                    $oRetono->aSlips[$indice]->gestao = $fonte->gestao;
                 }
             }
 
             echo JSON::create()->stringify($oRetono);
         } else {
-            $oRetono->status           = 2;
-            $oRetono->mensagem         = "";
+            $oRetono->status = 2;
+            $oRetono->mensagem = "";
             echo JSON::create()->stringify($oRetono);
         }
         break;
 
     case "cancelaMovimentoOrdemAuxiliar":
-
-        $oAgenda                       = new agendaPagamento();
-        $oRetono                       = new stdClass();
-        $oRetono->status               = '1';
-        $oRetono->message              = '1';
+        $oAgenda = new agendaPagamento();
+        $oRetono = new stdClass();
+        $oRetono->status = '1';
+        $oRetono->message = '1';
         $oRetono->iCodigoOrdemAuxiliar = null;
 
         try {
-
             db_inicio_transacao();
             $iCodigoOrdemAuxiliar = $oParam->iOPAuxiliarManutencao;
             foreach ($oParam->aMovimentos as $oMovimento) {
@@ -827,72 +858,61 @@ switch($oParam->exec) {
             }
             $oRetono->iCodigoOrdemAuxiliar = $iCodigoOrdemAuxiliar;
             db_fim_transacao(false);
-        }
-        catch (Exception $eErro) {
-
+        } catch (Exception $eErro) {
             db_fim_transacao(true);
-            $oRetono->status  = 2;
+            $oRetono->status = 2;
             $oRetono->message = urlencode($eErro->getMessage());
-
         }
         echo JSON::create()->stringify($oRetono);
         break;
 
     case "agruparMovimentos":
-
-        $oRetorno                       = new stdClass();
-        $oRetorno->status               = 1;
-        $oRetorno->message              = '1';
-        $oRetorno->totalagrupados       = "".count($oParam->aMovimentosAgrupar)."";
-        $oAgenda                       = new agendaPagamento();
+        $oRetorno = new stdClass();
+        $oRetorno->status = 1;
+        $oRetorno->message = '1';
+        $oRetorno->totalagrupados = "" . count($oParam->aMovimentosAgrupar) . "";
+        $oAgenda = new agendaPagamento();
         try {
-
             db_inicio_transacao();
             $oAgenda->agruparMovimentos($oParam->aMovimentosAgrupar);
             db_fim_transacao(false);
-
         } catch (Exception $eErro) {
-
             db_fim_transacao(true);
-            $oRetorno->status               = 2;
-            $oRetorno->message              = urlencode($eErro->getMessage());
-
+            $oRetorno->status = 2;
+            $oRetorno->message = urlencode($eErro->getMessage());
         }
         echo JSON::create()->stringify($oRetorno);
         break;
 
     case "verificarNaturezaCredor":
-
         $retorno = new stdClass();
         $retorno->erro = false;
         $retorno->mensagem = "";
         $retorno->credorPossuiNatureza = false;
         $retorno->movimentosRelacionados = array();
         try {
-
             $parametroCaixa = new ParametroCaixa();
             if ($parametroCaixa->getTipoTransmissaoPadrao() === ParametroCaixa::TIPO_TRANSMISSAO_OBN) {
-
                 if (empty($oParam->codigoMovimentos)) {
                     throw new ParameterException("Não foi informado o código do movimento para verificação.");
                 }
 
-                if (empty($oParam->origem) || !in_array($oParam->origem, array(1,2))) {
+                if (empty($oParam->origem) || !in_array($oParam->origem, array(1, 2))) {
                     throw new ParameterException("Não foi possível definir a origem das informações para buscar.");
                 }
 
-                $natureza  = new NaturezaCGM();
+                $natureza = new NaturezaCGM();
                 $naturezas = $natureza->get();
                 unset($naturezas[NaturezaCGM::TIPO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO]);
                 $naturezas = array_keys($naturezas);
 
                 $where = array(
-                    "cgmnatureza.c05_tipo in (" . implode(',', $naturezas) . ")",
-                    "empagemov.e81_codmov in (" . implode(',', $oParam->codigoMovimentos) . ")"
+                "cgmnatureza.c05_tipo in(" . implode(',', $naturezas) . ")",
+                "empagemov.e81_codmov in(" . implode(',', $oParam->codigoMovimentos) . ")"
                 );
 
                 $metodo = $oParam->origem === 1 ? 'sql_query_empenho' : 'sql_query_slip';
-                $cgmNatureza   = new cl_cgmnatureza();
+                $cgmNatureza = new cl_cgmnatureza();
                 $buscaNatureza = $cgmNatureza->{$metodo}("cgmnatureza.*, empagemov.e81_codmov", null, implode(' and ', $where));
                 $resBuscaNatureza = db_query($buscaNatureza);
                 if (!$resBuscaNatureza) {
@@ -901,16 +921,13 @@ switch($oParam->exec) {
 
                 $movimentosParaConfigurar = array();
                 for ($rowNatureza = 0; $rowNatureza < pg_num_rows($resBuscaNatureza); $rowNatureza++) {
-
                     $stdMovimento = db_utils::fieldsMemory($resBuscaNatureza, $rowNatureza);
                     $movimentosParaConfigurar[] = $stdMovimento->e81_codmov;
                 }
                 $retorno->credorPossuiNatureza = count($movimentosParaConfigurar) > 0;
                 $retorno->movimentosRelacionados = $movimentosParaConfigurar;
             }
-
         } catch (Exception $e) {
-
             db_putsession('DB_instit', $iInstituicaoOriginal);
             $retorno->erro = true;
             $retorno->mensagem = $e->getMessage();

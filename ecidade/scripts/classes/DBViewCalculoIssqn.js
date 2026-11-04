@@ -66,7 +66,7 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
         me.oForm.oLinhaTipo.appendChild(me.oForm.oCelulaCboTipo);
 
         /**
-         * Linha para a Quantidade de Parcelas
+         * Linha para a Quantidade de Parcelas Alvará
          */
         me.oForm.oLinhaParcelasAlvara = document.createElement('tr');
         me.oForm.oLinhaParcelasAlvara.id = sNomeComponente + "_linhaParcelasAlvara";
@@ -81,7 +81,7 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
         me.oForm.oLinhaParcelasAlvara.appendChild(me.oForm.oCelulaNumeroParcelasAlvara);
 
         /**
-         * Linha para a Quantidade de Parcelas
+         * Linha para a Quantidade de Parcelas Issqn
          */
         me.oForm.oLinhaParcelasIssqn = document.createElement('tr');
         me.oForm.oLinhaParcelasIssqn.id = sNomeComponente + "_linhaParcelasIssqn";
@@ -94,6 +94,36 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
 
         me.oForm.oLinhaParcelasIssqn.appendChild(me.oForm.oCelulaLabelParcelasIssqn);
         me.oForm.oLinhaParcelasIssqn.appendChild(me.oForm.oCelulaNumeroParcelasIssqn);
+
+        /**
+         * Linha para a Quantidade de Parcelas Publicidade
+         */
+        me.oForm.oLinhaParcelasPublicidade = document.createElement('tr');
+        me.oForm.oLinhaParcelasPublicidade.id = sNomeComponente + "_linhaParcelasPublicidade";
+        me.oForm.oTable.appendChild(me.oForm.oLinhaParcelasPublicidade);
+
+        me.oForm.oCelulaLabelParcelasPublicidade = document.createElement('td');
+        me.oForm.oCelulaLabelParcelasPublicidade.innerHTML = '<strong>Número de Parcelas Publicidade:</strong>';
+        me.oForm.oCelulaNumeroParcelasPublicidade = document.createElement('td');
+        me.oForm.oCelulaNumeroParcelasPublicidade.innerHTML = '<div id="' + me.sNomeComponente + '_cboParcelasPublicidade"></div>';
+
+        me.oForm.oLinhaParcelasPublicidade.appendChild(me.oForm.oCelulaLabelParcelasPublicidade);
+        me.oForm.oLinhaParcelasPublicidade.appendChild(me.oForm.oCelulaNumeroParcelasPublicidade);
+
+        /**
+         * Linha para a Quantidade de Parcelas Uso de Solo
+         */
+        me.oForm.oLinhaParcelasUsoSolo = document.createElement('tr');
+        me.oForm.oLinhaParcelasUsoSolo.id = sNomeComponente + "_linhaParcelasUsoSolo";
+        me.oForm.oTable.appendChild(me.oForm.oLinhaParcelasUsoSolo);
+
+        me.oForm.oCelulaLabelParcelasUsoSolo = document.createElement('td');
+        me.oForm.oCelulaLabelParcelasUsoSolo.innerHTML = '<strong>Número de Parcelas Uso de Solo:</strong>';
+        me.oForm.oCelulaNumeroParcelasUsoSolo = document.createElement('td');
+        me.oForm.oCelulaNumeroParcelasUsoSolo.innerHTML = '<div id="' + me.sNomeComponente + '_cboParcelasUsoSolo"></div>';
+
+        me.oForm.oLinhaParcelasUsoSolo.appendChild(me.oForm.oCelulaLabelParcelasUsoSolo);
+        me.oForm.oLinhaParcelasUsoSolo.appendChild(me.oForm.oCelulaNumeroParcelasUsoSolo);
 
 
         /**
@@ -151,12 +181,14 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
     this.criarComponentes = function () {
 
         me.oCboTipo = new DBComboBox(me.sNomeComponente + '_oComboTipo', sInstancia + '.oCboTipo', new Array(), '92');
-        
+
         if (inscricaoVeiculo == false) {
             me.oCboTipo.addItem(0, 'Todos');
             me.oCboTipo.addItem(2, 'Alvará');
         }
         me.oCboTipo.addItem(1, 'ISSQN');
+        me.oCboTipo.addItem(3, 'Publicidade');
+        me.oCboTipo.addItem(4, 'Uso de Solo');
 
         me.oCboTipo.addEvent('onChange', sInstancia + '.validarTipoSelecao();');
         me.oCboTipo.show($(me.sNomeComponente + '_cboTipo'));
@@ -167,6 +199,12 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
         me.oCboParcelasIssqn = new DBComboBox(me.sNomeComponente + '_oCboParcelasIssqn', sInstancia + '.oCboParcelasIssqn', [], '92');
         me.oCboParcelasIssqn.show($(me.sNomeComponente + '_cboParcelasIssqn'));
 
+        me.oCboParcelasPublicidade = new DBComboBox(me.sNomeComponente + '_oCboParcelasPublicidade', sInstancia + '.oCboParcelasPublicidade', [], '92');
+        me.oCboParcelasPublicidade.show($(me.sNomeComponente + '_cboParcelasPublicidade'));
+
+        me.oCboParcelasUsoSolo = new DBComboBox(me.sNomeComponente + '_oCboParcelasUsoSolo', sInstancia + '.oCboParcelasUsoSolo', [], '92');
+        me.oCboParcelasUsoSolo.show($(me.sNomeComponente + '_cboParcelasUsoSolo'));
+
         var oParametrosgetParametros = getParametros();
 
         $R(0, oParametrosgetParametros.iNumeroParcelasAlvara, true).each(function (iParcela) {
@@ -176,11 +214,34 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
         for(var i = 0; i < oParametrosgetParametros.iNumeroParcelasIssqn; i++) {
             me.oCboParcelasIssqn.addItem(i + 1, i + 1);
         }
+
+        for(var i = 0; i < oParametrosgetParametros.iNumeroParcelasPublicidade; i++) {
+            me.oCboParcelasPublicidade.addItem(i + 1, i + 1);
+        }
+
+        for(var i = 0; i < oParametrosgetParametros.iNumeroParcelasUsoSolo; i++) {
+            me.oCboParcelasUsoSolo.addItem(i + 1, i + 1);
+        }
+
         // Se o usuário não configurou as parcelas do issqn,
         // não as use
         if (oParametrosgetParametros.iNumeroParcelasIssqn == null) {
             me.oCboParcelasIssqn.addItem(0, 0);
             me.oCboParcelasIssqn.invisible = true;
+        }
+
+        // Se o usuário não configurou as parcelas de publicidade,
+        // não as use
+        if (oParametrosgetParametros.iNumeroParcelasPublicidade == null) {
+            me.oCboParcelasPublicidade.addItem(0, 0);
+            me.oCboParcelasPublicidade.invisible = true;
+        }
+
+        // Se o usuário não configurou as parcelas de uso de solo,
+        // não as use
+        if (oParametrosgetParametros.iNumeroParcelasUsoSolo == null) {
+            me.oCboParcelasUsoSolo.addItem(0, 0);
+            me.oCboParcelasUsoSolo.invisible = true;
         }
 
         if (getAnoCalculo().length > 0) {
@@ -269,6 +330,8 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
                     if (oRetorno.status == 1) {
                         oParametrosIssqn.iNumeroParcelasAlvara = oRetorno.iNumeroParcelasAlvara > 0 ? oRetorno.iNumeroParcelasAlvara : 1;
                         oParametrosIssqn.iNumeroParcelasIssqn = oRetorno.iNumeroParcelasIssqn;
+                        oParametrosIssqn.iNumeroParcelasPublicidade = oRetorno.iNumeroParcelasPublicidade;
+                        oParametrosIssqn.iNumeroParcelasUsoSolo = oRetorno.iNumeroParcelasUsoSolo;
                     }
                 }
             });
@@ -360,6 +423,22 @@ DBViewCalculoIssqn = function (sInstancia, sNomeComponente) {
             $(sNomeComponente + "_oCboParcelasIssqn").setValue("1");
         } else {
             $(sNomeComponente + "_linhaParcelasIssqn").style.display = '';
+        }
+
+        // Esconde/mostra publicidade
+        if (new Number(me.oCboTipo.getValue()) == 3 || me.oCboParcelasPublicidade.invisible) {
+            $(sNomeComponente + "_linhaParcelasPublicidade").style.display = 'none';
+            $(sNomeComponente + "_oCboParcelasPublicidade").setValue("1");
+        } else {
+            $(sNomeComponente + "_linhaParcelasPublicidade").style.display = '';
+        }
+
+        // Esconde/mostra uso de solo
+        if (new Number(me.oCboTipo.getValue()) == 4 || me.oCboParcelasUsoSolo.invisible) {
+            $(sNomeComponente + "_linhaParcelasUsoSolo").style.display = 'none';
+            $(sNomeComponente + "_oCboParcelasUsoSolo").setValue("1");
+        } else {
+            $(sNomeComponente + "_linhaParcelasUsoSolo").style.display = '';
         }
     };
 

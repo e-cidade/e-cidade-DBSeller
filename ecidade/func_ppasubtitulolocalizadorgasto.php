@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label("o11_codigo");
               <?=$Lo11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o11_sequencial",10,$Io11_sequencial,true,"text",4,"","chave_o11_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label("o11_codigo");
               <?=$Lo11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o11_codigo",10,$Io11_codigo,true,"text",4,"","chave_o11_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clppasubtitulolocalizadorgasto->rotulo->label("o11_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ppasubtitulolocalizadorgasto.php")==true){
@@ -122,12 +122,12 @@ $clppasubtitulolocalizadorgasto->rotulo->label("o11_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

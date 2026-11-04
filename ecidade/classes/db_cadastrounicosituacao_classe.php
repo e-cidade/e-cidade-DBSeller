@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: social
 //CLASSE DA ENTIDADE cadastrounicosituacao
-class cl_cadastrounicosituacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $as12_sequencial = 0; 
-   var $as12_cidadaocadastrounico = 0; 
-   var $as12_tiposituacaocadastrounico = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cadastrounicosituacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $as12_sequencial = 0;
+   var $as12_cidadaocadastrounico = 0;
+   var $as12_tiposituacaocadastrounico = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 as12_sequencial = int4 = Sequencial 
-                 as12_cidadaocadastrounico = int4 = Código 
-                 as12_tiposituacaocadastrounico = int4 = Sequencial 
+                 as12_sequencial = int4 = Sequencial
+                 as12_cidadaocadastrounico = int4 = Código
+                 as12_tiposituacaocadastrounico = int4 = Sequencial
                  ";
-   //funcao construtor da classe 
-   function cl_cadastrounicosituacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cadastrounicosituacao"); 
+     $this->rotulo = new rotulo("cadastrounicosituacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cadastrounicosituacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->as12_sequencial = ($this->as12_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["as12_sequencial"]:$this->as12_sequencial);
        $this->as12_cidadaocadastrounico = ($this->as12_cidadaocadastrounico == ""?@$GLOBALS["HTTP_POST_VARS"]["as12_cidadaocadastrounico"]:$this->as12_cidadaocadastrounico);
@@ -77,9 +77,9 @@ class cl_cadastrounicosituacao {
      }
    }
    // funcao para inclusao
-   function incluir ($as12_sequencial){ 
+   public function incluir ($as12_sequencial){
       $this->atualizacampos();
-     if($this->as12_cidadaocadastrounico == null ){ 
+     if($this->as12_cidadaocadastrounico == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "as12_cidadaocadastrounico";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_cadastrounicosituacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as12_tiposituacaocadastrounico == null ){ 
+     if($this->as12_tiposituacaocadastrounico == null ){
        $this->erro_sql = " Campo Sequencial nao Informado.";
        $this->erro_campo = "as12_tiposituacaocadastrounico";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_cadastrounicosituacao {
        return false;
      }
      if($as12_sequencial == "" || $as12_sequencial == null ){
-       $result = db_query("select nextval('cadastrounicosituacao_as12_sequencial_seq')"); 
+       $result = db_query("select nextval('cadastrounicosituacao_as12_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cadastrounicosituacao_as12_sequencial_seq do campo: as12_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cadastrounicosituacao_as12_sequencial_seq do campo: as12_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->as12_sequencial = pg_result($result,0,0); 
+       $this->as12_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cadastrounicosituacao_as12_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $as12_sequencial)){
@@ -118,10 +118,10 @@ class cl_cadastrounicosituacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->as12_sequencial = $as12_sequencial; 
+         $this->as12_sequencial = $as12_sequencial;
        }
      }
-     if(($this->as12_sequencial == null) || ($this->as12_sequencial == "") ){ 
+     if(($this->as12_sequencial == null) || ($this->as12_sequencial == "") ){
        $this->erro_sql = " Campo as12_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_cadastrounicosituacao {
        return false;
      }
      $sql = "insert into cadastrounicosituacao(
-                                       as12_sequencial 
-                                      ,as12_cidadaocadastrounico 
-                                      ,as12_tiposituacaocadastrounico 
+                                       as12_sequencial
+                                      ,as12_cidadaocadastrounico
+                                      ,as12_tiposituacaocadastrounico
                        )
                 values (
-                                $this->as12_sequencial 
-                               ,$this->as12_cidadaocadastrounico 
-                               ,$this->as12_tiposituacaocadastrounico 
+                                $this->as12_sequencial
+                               ,$this->as12_cidadaocadastrounico
+                               ,$this->as12_tiposituacaocadastrounico
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro Único Situação ($this->as12_sequencial) nao Incluído. Inclusao Abortada.";
@@ -180,16 +180,16 @@ class cl_cadastrounicosituacao {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($as12_sequencial=null) { 
+   public function alterar ($as12_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cadastrounicosituacao set ";
      $virgula = "";
-     if(trim($this->as12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_sequencial"])){ 
+     if(trim($this->as12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_sequencial"])){
        $sql  .= $virgula." as12_sequencial = $this->as12_sequencial ";
        $virgula = ",";
-       if(trim($this->as12_sequencial) == null ){ 
+       if(trim($this->as12_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "as12_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_cadastrounicosituacao {
          return false;
        }
      }
-     if(trim($this->as12_cidadaocadastrounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_cidadaocadastrounico"])){ 
+     if(trim($this->as12_cidadaocadastrounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_cidadaocadastrounico"])){
        $sql  .= $virgula." as12_cidadaocadastrounico = $this->as12_cidadaocadastrounico ";
        $virgula = ",";
-       if(trim($this->as12_cidadaocadastrounico) == null ){ 
+       if(trim($this->as12_cidadaocadastrounico) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as12_cidadaocadastrounico";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_cadastrounicosituacao {
          return false;
        }
      }
-     if(trim($this->as12_tiposituacaocadastrounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_tiposituacaocadastrounico"])){ 
+     if(trim($this->as12_tiposituacaocadastrounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as12_tiposituacaocadastrounico"])){
        $sql  .= $virgula." as12_tiposituacaocadastrounico = $this->as12_tiposituacaocadastrounico ";
        $virgula = ",";
-       if(trim($this->as12_tiposituacaocadastrounico) == null ){ 
+       if(trim($this->as12_tiposituacaocadastrounico) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "as12_tiposituacaocadastrounico";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_cadastrounicosituacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro Único Situação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->as12_sequencial;
@@ -280,11 +280,11 @@ class cl_cadastrounicosituacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($as12_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($as12_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -293,7 +293,7 @@ class cl_cadastrounicosituacao {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($as12_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -324,7 +324,7 @@ class cl_cadastrounicosituacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro Único Situação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$as12_sequencial;
@@ -352,11 +352,11 @@ class cl_cadastrounicosituacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -378,11 +378,11 @@ class cl_cadastrounicosituacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $as12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $as12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,15 +398,15 @@ class cl_cadastrounicosituacao {
      $sql2 = "";
      if($dbwhere==""){
        if($as12_sequencial!=null ){
-         $sql2 .= " where cadastrounicosituacao.as12_sequencial = $as12_sequencial "; 
-       } 
+         $sql2 .= " where cadastrounicosituacao.as12_sequencial = $as12_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,11 +415,11 @@ class cl_cadastrounicosituacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $as12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $as12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,15 +432,15 @@ class cl_cadastrounicosituacao {
      $sql2 = "";
      if($dbwhere==""){
        if($as12_sequencial!=null ){
-         $sql2 .= " where cadastrounicosituacao.as12_sequencial = $as12_sequencial "; 
-       } 
+         $sql2 .= " where cadastrounicosituacao.as12_sequencial = $as12_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

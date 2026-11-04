@@ -25,8 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
+
 /**
  * Esta funcao retorna o recordset do saldo das receitas
+ *
+ * Essa função foi criada para ser usada no PAD. Portanto tomei a liberdade de altera-la. Caso outra matriz a use
+ * em plugins, teria que verificar o impacto.
  *
  * @param int $nivel Até qual o nível será apurado o saldo, pode ser:
  *    1 - classe
@@ -134,6 +138,7 @@ function ReceitaSaldoComplemento(
         o70_concarpeculiar,
         complemento,
         recurso,
+        codigo_siconfi,
         saldo_inicial,
         saldo_prevadic_acum,
         saldo_inicial_prevadic,
@@ -159,8 +164,9 @@ function ReceitaSaldoComplemento(
         desdobramento3,
         0 as o70_codrec,
         '0' as o70_concarpeculiar,
-        0 as recurso,
-        0 as complemento,
+        '0' as recurso,
+        '0' as complemento,
+        '0' as codigo_siconfi,
         sum(saldo_inicial) as saldo_inicial,
         sum(saldo_prevadic_acum) as saldo_prevadic_acum,
         sum(saldo_inicial_prevadic) as saldo_inicial_prevadic,
@@ -188,14 +194,16 @@ function ReceitaSaldoComplemento(
                case
                  when complemento_lancamento.o200_sequencial is not null and complemento_lancamento.o200_tribunal is true
                    then complemento_lancamento.o200_sequencial
-                 when complemento_lancamento.o200_sequencial is null or complemento_lancamento.o200_tribunal is false
-                   then 0
+                 when complemento_lancamento.o200_sequencial IS NULL
+                   then null
+                 when complemento_lancamento.o200_tribunal IS FALSE THEN 0
                end as complemento_lancamento,
                case
                  when complemento_recurso.o200_tribunal is true
                    then complemento_recurso.o200_sequencial
                  else 0
                end as complemento_recurso,
+               codigo_siconfi,
                c70_valor,
                o70_valor,
                c53_tipo,
@@ -204,15 +212,15 @@ function ReceitaSaldoComplemento(
          inner join orcamento.orcfontes on orcfontes.o57_codfon = orcreceita.o70_codfon
                 and orcfontes.o57_anousu = orcreceita.o70_anousu
          inner join orcamento.orctiporec recurso on o70_codigo = recurso.o15_codigo
+         inner join orcamento.fonterecurso on orctiporec_id = recurso.o15_codigo
+                    and fonterecurso.exercicio = orcreceita.o70_anousu
          inner join orcamento.complementofonterecurso as complemento_recurso on complemento_recurso.o200_sequencial = recurso.o15_complemento
-
           left join contabilidade.conlancamrec on conlancamrec.c74_anousu = orcreceita.o70_anousu
                 and conlancamrec.c74_codrec = orcreceita.o70_codrec
                 and conlancamrec.c74_data between '{$anousu}-01-01' and '{$datafim}'
           left join contabilidade.conlancam on c74_codlan = c70_codlan
           left join contabilidade.conlancamcomplementorecurso on o201_codlan = c70_codlan
           left join orcamento.complementofonterecurso as complemento_lancamento on complemento_lancamento.o200_sequencial = o201_complemento
-
           left join contabilidade.conlancamdoc on c71_codlan = c74_codlan
           left join contabilidade.conhistdoc on c53_coddoc = c71_coddoc
          where o70_anousu = {$anousu} {$condicao}
@@ -225,7 +233,12 @@ function ReceitaSaldoComplemento(
                  when complemento_lancamento is null then complemento_recurso
                  else complemento_lancamento
                end as complemento,
-               case when complemento_lancamento = complemento_recurso then o70_valor else 0 end as saldo_inicial,
+               codigo_siconfi,
+               case
+                   when (complemento_lancamento = complemento_recurso) or complemento_lancamento is null
+                     then o70_valor
+                   else 0
+               end as saldo_inicial,
                coalesce(sum(
                  case
                    WHEN c53_tipo = 110 and c70_data between '{$dataini}' AND '{$datafim}'
@@ -265,6 +278,7 @@ function ReceitaSaldoComplemento(
                   o15_recurso,
                   o70_concarpeculiar,
                   complemento,
+                  codigo_siconfi,
                   o70_valor,
                   saldo_inicial
         order by o57_fonte, o70_concarpeculiar, o15_recurso
@@ -287,9 +301,11 @@ function ReceitaSaldoComplemento(
                 desdobramento2,
                 desdobramento3,
                 o70_codrec,
-                recurso
+                recurso,
+                codigo_siconfi
     ) $query
     ";
+
 
     if ($comit == true) {
         db_query('begin');
@@ -311,6 +327,7 @@ function ReceitaSaldoComplemento(
         $receita->concarpeculiar = $dados->o70_concarpeculiar;
         $receita->complemento = $dados->complemento;
         $receita->recurso = $dados->recurso;
+        $receita->codigo_siconfi = $dados->codigo_siconfi;
         $receita->nivel = $nivel;
         $receita->saldo_inicial = $dados->saldo_inicial;
         $receita->saldo_prevadic_acum = $dados->saldo_prevadic_acum;
@@ -329,8 +346,9 @@ function ReceitaSaldoComplemento(
                 $receita = new \stdClass();
                 $receita->estrutural = $estrutural->getEstrutural();
                 $receita->codrec = 0;
-                $receita->concarpeculiar = 0;
-                $receita->recurso = 0;
+                $receita->concarpeculiar = '0';
+                $receita->recurso = '0';
+                $receita->codigo_siconfi = '0';
                 $receita->complemento = 0;
                 $receita->saldo_inicial = 0;
                 $receita->saldo_prevadic_acum = 0;
@@ -375,8 +393,9 @@ function ReceitaSaldoComplemento(
           desdobramento2 int,
           desdobramento3  int,
           o70_codrec int default 0,
-          o70_concarpeculiar int default 0,
-          recurso varchar default 0,
+          o70_concarpeculiar varchar default '000',
+          recurso varchar default '0',
+          codigo_siconfi varchar default '0',
           complemento int default 0,
           saldo_inicial numeric default 0,
           saldo_prevadic_acum numeric default 0,
@@ -411,8 +430,9 @@ function ReceitaSaldoComplemento(
                 substr($receita->estrutural, 11, 2),
                 substr($receita->estrutural, 13, 2),
                 $receita->codrec,
-                $receita->concarpeculiar,
-                $receita->recurso,
+                "'{$receita->concarpeculiar}'",
+                "'{$receita->recurso}'",
+                "'{$receita->codigo_siconfi}'",
                 $receita->complemento,
                 $receita->saldo_inicial,
                 $receita->saldo_prevadic_acum,
@@ -422,6 +442,7 @@ function ReceitaSaldoComplemento(
                 $receita->saldo_a_arrecadar,
                 $receita->saldo_arrecadado_acumulado
             );
+
             $listaInserts[] = " ( " . implode(",", $campos) . " ) ";
         }
 
@@ -440,19 +461,18 @@ function ReceitaSaldoComplemento(
             $where[] = "nivel = {$nivel}";
             break;
     }
+
+
     $where = !empty($where) ? " where " . implode(" and ", $where) : '';
-    $sql2 = "select work_receita.*, o57_descr, o15_descr
-               from work_receita
-                   left join orcfontes on work_receita.o57_fonte = orcfontes.o57_fonte
-                                      and o57_anousu  = {$anousu}
-                   left join orctiporec on o15_recurso  = recurso
-                                       and o15_complemento = complemento
-                   {$where}
-              order by orcfontes.o57_fonte,
-                       o70_concarpeculiar,
-                       recurso,
-                       o15_descr
-            ";
+    $sql2 = "
+        select work_receita.*, o57_descr, coalesce(o70_instit, 0) as o70_instit, coalesce(codtrib, '0') as orgao_unidade
+          from work_receita
+          left join orcreceita on orcreceita.o70_codrec = work_receita.o70_codrec and o70_anousu = {$anousu}
+          left join orcfontes on work_receita.o57_fonte = orcfontes.o57_fonte and o57_anousu  = {$anousu}
+          left join db_config on db_config.codigo = orcreceita.o70_instit
+        {$where}
+         order by orcfontes.o57_fonte, o70_concarpeculiar, recurso
+    ";
 
     db_query("
         update work_receita

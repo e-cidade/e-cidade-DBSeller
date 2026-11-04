@@ -42,7 +42,7 @@ include(modification("dbforms/db_funcoes.php"));
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/messageboard.widget.js");
 db_app::load("widgets/dbautocomplete.widget.js, widgets/windowAux.widget.js,widgets/dbtextField.widget.js");
 db_app::load("widgets/dbtextFieldData.widget.js");
@@ -89,7 +89,7 @@ db_app::load("estilos.css, grid.style.css");
 
 </div>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -328,7 +328,7 @@ var sUrlRPC = "lic4_licitacao.RPC.php";
   function js_createComboMovimentos(sName) {
   
     var sCombo  = "<select id='"+sName+"' style='width:100%'>";
-    <?
+    <?php
   
       $oDaTipoMov   = db_utils::getDao("tipomovimentacaoregistropreco");
       $rsMovimentos = $oDaTipoMov->sql_record($oDaTipoMov->sql_query(null,"*","l33_sequencial"));

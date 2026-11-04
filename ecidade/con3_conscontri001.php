@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,12 +121,12 @@ function js_consultar(){
     <table border="0" cellspacing="0" cellpadding="0">
       <tr> 
         <td>     
-<?
+<?php
 db_ancora($Lj01_matric,' js_matri(true); ',1);
 ?>
         </td>
         <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',1,"onchange='js_matri(false)'");
   db_input('z01_nome',40,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -134,12 +134,12 @@ db_ancora($Lj01_matric,' js_matri(true); ',1);
       </tr>
       <tr>
         <td nowrap title="<?=@$Td02_codigo?>">
-        <?
+        <?php
         db_ancora(@$Ld02_codigo,"js_pesquisad02_codigo(true);",$db_opcao);
         ?>
         </td>
         <td> 
-<?
+<?php
 db_input('d02_codigo',6,$Id02_codigo,true,'text',$db_opcao," onchange='js_pesquisad02_codigo(false);'");
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
@@ -147,12 +147,12 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
       </tr>
       <tr>
         <td nowrap title="<?=@$Td04_tipos?>">
-         <?
+         <?php
          db_ancora(@$Ld04_tipos,"js_pesquisad04_tipos(true);",$db_opcao);
           ?>
         </td>
         <td> 
-<?
+<?php
 db_input('d04_tipos',6,$Id04_tipos,true,'text',$db_opcao," onchange='js_pesquisad04_tipos(false);'");
 db_input('d03_descr',40,$Id03_descr,true,'text',3,'');
 ?>
@@ -160,43 +160,43 @@ db_input('d03_descr',40,$Id03_descr,true,'text',3,'');
       </tr>
       <tr>
         <td nowrap title="<?=@$Td01_codedi?>">
-        <?
+        <?php
           db_ancora(@$Ld01_codedi,"js_edi(true);",$db_opcao);
         ?>
         </td>	
         <td>	
-      <?
+      <?php
       db_input('d01_codedi',6,$Id01_codedi,true,'text',$db_opcao," onchange='js_edi(false);'");
          ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Td02_contri?>">
-        <?
+        <?php
           db_ancora(@$Ld02_contri,"js_contri(true);",$db_opcao);
         ?>
         </td>
         <td> 
-        <?
+        <?php
           db_input('d02_contri',6,$Id02_contri,true,'text',$db_opcao," onchange='js_contri(false);'");
         ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Td40_codigo?>">
-	<?
+	<?php
          db_ancora(@$Ld40_codigo,"js_lista(true);",$db_opcao);
         ?>	 
         </td>
         <td> 
-  <?
+  <?php
   db_input('d40_codigo',6,$Id40_codigo,true,'text',$db_opcao,"onchange='js_lista(false);'")
   ?>
         </td>
       </tr>
       <tr>
         <td colspan="2"   height="25" align="center">
-  <?
+  <?php
   $consultar="Consultar";
   db_input('consultar',6,0,true,'button',$db_opcao,"onClick='js_consultar();'")
   ?>
@@ -208,7 +208,7 @@ db_input('d03_descr',40,$Id03_descr,true,'text',3,'');
     </td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
@@ -324,7 +324,7 @@ function js_mostra1(chave,erro){
   }
 }
 </script>
-<?
+<?php
 if(isset($rua) && $rua=="false"){
   db_msgbox("Não há contribuição de melhoria para a rua informada.");
 }

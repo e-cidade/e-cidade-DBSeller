@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clorclei->rotulo->label("o45_numlei");
               <?=$Lo45_codlei?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o45_codlei",4,$Io45_codlei,true,"text",4,"","chave_o45_codlei");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorclei->rotulo->label("o45_numlei");
               <?=$Lo45_numlei?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o45_numlei",30,$Io45_numlei,true,"text",4,"","chave_o45_numlei");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorclei->rotulo->label("o45_numlei");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = '1=1';
       if (isset($leimanual)) {
         $sWhere .= " and o45_tipolei = 1 and extract (year from o45_datafim) = ".db_getsession("DB_anousu");   
@@ -124,12 +124,12 @@ $clorclei->rotulo->label("o45_numlei");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

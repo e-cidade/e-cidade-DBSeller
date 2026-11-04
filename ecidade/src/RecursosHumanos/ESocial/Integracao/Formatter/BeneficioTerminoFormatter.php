@@ -72,6 +72,10 @@ class BeneficioTerminoFormatter extends Formatter
         $dadoServidor->ideBeneficio->cpfBenef = $servidor->getCgm()->getCpf();
         $dadoServidor->ideBeneficio->nrBeneficio = $servidor->getMatricula();
 
+        if ($servidor->getMatriculaAnterior() != "") {
+            $dadoServidor->ideBeneficio->nrBeneficio = $servidor->getMatriculaAnterior();
+        }
+
         // Informações da cessação do benefício.
         $infoBenTermino = new \stdClass();
         $infoBenTermino->dtTermBeneficio = $servidor->getDadosRescisao()->rh05_recis;

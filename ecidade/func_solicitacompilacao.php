@@ -41,8 +41,9 @@ $oPost = db_utils::postMemory($_POST, 0);
 $oGet = db_utils::postMemory($_GET, 0);
 
 $clsolicita = new cl_solicita;
-$clsolicita->rotulo->label("pc10_numero");
 $clsolicita->rotulo->label("pc10_data");
+$registroPreco = new cl_solicitaregistropreco();
+$registroPreco->rotulo->label("pc54_solicita");
 ?>
 <html>
 <head>
@@ -57,12 +58,12 @@ $clsolicita->rotulo->label("pc10_data");
             <table width="35%" border="0" align="center" cellspacing="0">
                 <form name="form2" method="post" action="">
                     <tr>
-                        <td width="4%" align="right" nowrap title="<?= $Tpc10_numero ?>">
-                            <?= $Lpc10_numero ?>
+                        <td width="4%" align="right" nowrap title="<?= $Tpc54_solicita ?>">
+                            <?= $Lpc54_solicita ?>
                         </td>
                         <td width="96%" align="left" nowrap>
                             <?php
-                            db_input("pc10_numero", 10, $Ipc10_numero, true, "text", 4, "", "chave_pc10_numero");
+                            db_input("pc10_numero", 10, $Ipc54_solicita, true, "text", 4, "", "chave_pc10_numero");
                             ?>
                         </td>
                     </tr>

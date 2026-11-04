@@ -20,7 +20,7 @@ $__jpg_err_locale = DEFAULT_ERR_LOCALE;
 // Handles the retrieval of localized error messages
 class ErrMsgText {
     var $lt=NULL;
-    function ErrMsgText() {
+    public function __construct() {
 	GLOBAL $__jpg_err_locale;
 	$file = 'lang/'.$__jpg_err_locale.'.inc.php';
 
@@ -37,7 +37,7 @@ class ErrMsgText {
 	$this->lt = $_jpg_messages;
     }
 
-    function Get($errnbr,$a1=null,$a2=null,$a3=null,$a4=null,$a5=null) {
+    public function Get($errnbr,$a1=null,$a2=null,$a3=null,$a4=null,$a5=null) {
 	GLOBAL $__jpg_err_locale;
 	if( !isset($this->lt[$errnbr]) ) {
 	    return 'Internal error: The specified error message ('.$errnbr.') does not exist in the chosen locale ('.$__jpg_err_locale.')';
@@ -96,20 +96,20 @@ class ErrMsgText {
 // in all methods.
 //
 class JpGraphError {
-    function Install($aErrObject) {
+    public function Install($aErrObject) {
 	GLOBAL $__jpg_err;
 	$__jpg_err = $aErrObject;
     }
-    function SetErrLocale($aLoc) {
+    public function SetErrLocale($aLoc) {
 	GLOBAL $__jpg_err_locale ;
 	$__jpg_err_locale = $aLoc;
     }
-    function Raise($aMsg,$aHalt=true){
+    public function Raise($aMsg,$aHalt=true){
 	GLOBAL $__jpg_err;
 	$tmp = new $__jpg_err;
 	$tmp->Raise($aMsg,$aHalt);
     }
-    function RaiseL($errnbr,$a1=null,$a2=null,$a3=null,$a4=null,$a5=null) {
+    public static function RaiseL($errnbr,$a1=null,$a2=null,$a3=null,$a4=null,$a5=null) {
 	GLOBAL $__jpg_err;
 	$t = new ErrMsgText();
 	$msg = $t->Get($errnbr,$a1,$a2,$a3,$a4,$a5);
@@ -124,20 +124,20 @@ class JpGraphErrObject {
     var $iTitle = "JpGraph Error";
     var $iDest = false;
 
-    function JpGraphErrObject() {
+    public function __construct() {
 	// Empty. Reserved for future use
     }
 
-    function SetTitle($aTitle) {
+    public function SetTitle($aTitle) {
 	$this->iTitle = $aTitle;
     }
 
-    function SetStrokeDest($aDest) { 
+    public function SetStrokeDest($aDest) { 
 	$this->iDest = $aDest; 
     }
 
     // If aHalt is true then execution can't continue. Typical used for fatal errors.
-    function Raise($aMsg,$aHalt=true) {
+    public function Raise($aMsg,$aHalt=true) {
 	$aMsg = $this->iTitle.' '.$aMsg."\n";
 	if ($this->iDest) {
 	    $f = @fopen($this->iDest,'a');
@@ -159,7 +159,7 @@ class JpGraphErrObject {
 //==============================================================
 class JpGraphErrObjectImg extends JpGraphErrObject {
 
-    function Raise($aMsg,$aHalt=true) {
+    public function Raise($aMsg,$aHalt=true) {
 	$img_iconerror = 
 	    'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAaV'.
 	    'BMVEX//////2Xy8mLl5V/Z2VvMzFi/v1WyslKlpU+ZmUyMjEh/'.

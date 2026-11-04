@@ -45,7 +45,7 @@ class BnccService
      */
     public function getFiltrosEducacaoInfantil()
     {
-        return $this->reposistoryInfantil->get(['distinct ed167_disciplina', 'ed167_faixa_etaria'], [1,2]);
+        return $this->reposistoryInfantil->get(['distinct ed167_disciplina', 'ed167_faixa_etaria'], [1, 2]);
     }
 
     /**
@@ -219,7 +219,7 @@ class BnccService
         }
     }
 
-        /**
+    /**
      * @param string $ano
      * @param array $habilidades
      * @throws Exception
@@ -250,7 +250,6 @@ class BnccService
                         $habilidadeEnsinoFundamental->setCodigo($habilidade->codigo);
                         foreach ($habilidadeEnsinoFundamental->getHabilidadesReferencialCurricular() as $referencial) {
                             $referencial->setCodigoHabilidade($habilidade->codigo);
-                            dd('auqi');
                             $repo = new HabilidadeReferencialCurricularEstadualRepository();
                             $repo->salvar($referencial);
                         }
@@ -261,7 +260,7 @@ class BnccService
             } else {
                 $codigo = isset($habilidade->editar) ? $habilidade->editar : $habilidade->codigo;
                 $habilidadeEnsinoFundamental = $repository->scopeAno($ano)
-                ->scopeHabilidade($codigo)->scopeObjetoConhecimento($habilidade->objetoConhecimento)->first();
+                    ->scopeHabilidade($codigo)->scopeObjetoConhecimento($habilidade->objetoConhecimento)->first();
 
                 if (!is_null($habilidadeEnsinoFundamental)) {
                     if ($habilidadeEnsinoFundamental->getUnidadeTematica() != $habilidade->unidadeTematica) {
@@ -318,12 +317,15 @@ class BnccService
         $habilidadeReferencial->setCodigoReferencial($habilidade->codigoReferencial);
         $habilidadeReferencial->setHabilidade($habilidade->habilidade);
         $habilidadeReferencial->setAno($habilidade->ano);
-        $habilidadeReferencial->setObjetoConhecimento($habilidade->objetoConhecimento);
+        $habilidadeReferencial->setObjetoConhecimento(
+            property_exists($habilidade, 'objetoConhecimento') ?
+                $habilidade->objetoConhecimento : ""
+        );
 
         return $repository->salvar($habilidadeReferencial);
     }
 
-      /**
+    /**
      * @param $parametros
      * @param $novoNome
      * @return boolean
@@ -337,7 +339,7 @@ class BnccService
     }
 
 
-      /**
+    /**
      * @param $parametros
      * @param $novoNome
      * @return boolean
@@ -355,7 +357,7 @@ class BnccService
         $repository = new HabilidadeEnsinoFundamentalRepository();
 
         $habilidadeEnsinoFundamental = $repository->scopeAno($ano)->scopeHabilidade($codigo)
-        ->scopeObjetoConhecimento($objetoConhecimento)->get();
+            ->scopeObjetoConhecimento($objetoConhecimento)->get();
 
         foreach ($habilidadeEnsinoFundamental as $habilidade) {
             if ($repository->temVinculoDiarioDeClasse($habilidade->getId())) {

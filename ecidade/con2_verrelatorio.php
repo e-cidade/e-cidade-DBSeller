@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ function js_vai(c,n,t,f,s){
 <br>
 <br>
 <center>      <input type="button" size="10" name="novo" value="Novo relatório" onclick="novo()">
-<? 
+<?php 
     $sql = "select codger, nomeger, tituloger, finalidadeger  from db_gerador";
     db_lovrot($sql,19,"()","","js_vai|0|1|2|3");
 

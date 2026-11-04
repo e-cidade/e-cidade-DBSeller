@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -41,7 +41,7 @@ $and="and";
 if($datai!='--' || $dataf!='--'){
    $periodo = "p58_dtproc between '$datai' and '$dataf'";
 }elseif($datai='--' || $dataf!='--'){
-   $periodo = "p58_dtproc => '$datai' ";   
+   $periodo = "p58_dtproc => '$datai' ";
 }elseif($datai!='--' || $dataf='--'){
    $periodo = "p58_dtproc =< '$dataf' ";
 }elseif($datai=='--' || $dataf=='--'){
@@ -49,20 +49,20 @@ if($datai!='--' || $dataf!='--'){
    $and = "";
 }
 $orderby = "descrdepto";
-$head5 = "ORDENADO POR DEPARTAMENTO "; 
+$head5 = "ORDENADO POR DEPARTAMENTO ";
 $periodo .= " $and p68_codproc is null ";
 $periodo .= " and instit in (select id_instit from db_userinst where id_usuario =  ".db_getsession("DB_id_usuario").") ";
 /*
 select extract(year from p58_dtproc), p61_coddepto, descrdepto, count(p58_codproc) from protprocesso
-inner join cgm on cgm.z01_numcgm = protprocesso.p58_numcgm 
-inner join db_usuarios on db_usuarios.id_usuario = protprocesso.p58_id_usuario 
-inner join tipoproc on tipoproc.p51_codigo = protprocesso.p58_codigo 
-inner join procandam on procandam.p61_codandam = protprocesso.p58_codandam 
-inner join db_depart on db_depart.coddepto = procandam.p61_coddepto 
-left join arqproc on p68_codproc = p58_codproc 
-where p58_dtproc between '2000-01-01' and '2005-01-01' 
+inner join cgm on cgm.z01_numcgm = protprocesso.p58_numcgm
+inner join db_usuarios on db_usuarios.id_usuario = protprocesso.p58_id_usuario
+inner join tipoproc on tipoproc.p51_codigo = protprocesso.p58_codigo
+inner join procandam on procandam.p61_codandam = protprocesso.p58_codandam
+inner join db_depart on db_depart.coddepto = procandam.p61_coddepto
+left join arqproc on p68_codproc = p58_codproc
+where p58_dtproc between '2000-01-01' and '2005-01-01'
 and p68_codproc is null
-group by p61_coddepto,descrdepto 
+group by p61_coddepto,descrdepto
 order by extract(year from p58_dtproc)
 */
 //die($clprotprocesso->sql_query_deptand(null,"extract(year from p58_dtproc), p61_coddepto,(select nomeinstabrev from db_config where codigo = instit) as nomeabrev, descrdepto, count(p58_codproc)",$orderby,$periodo."group by extract(year from p58_dtproc), p61_coddepto,descrdepto,nomeabrev"));
@@ -73,9 +73,9 @@ if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
 }
 //db_criatabela($result);exit;
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -116,8 +116,9 @@ for($x = 0; $x < $xxnum;$x++){
      $subtotal = 0;
    }
    else{
-       $pdf->cell(15,$alt,"",0,0,"C",0);              
-       $pdf->cell(60,$alt,"",0,0,"C",0);         
+       $pdf->cell(15,$alt,"",0,0,"C",0);
+       $pdf->cell(60,$alt,"",0,0,"C",0);
+       $pdf->cell(55,$alt,"",0,0,"C",0);
    }
    if($x < ($xxnum -1)){
      $p61_coddeptoprox = pg_result($result,$x+1,"p61_coddepto");

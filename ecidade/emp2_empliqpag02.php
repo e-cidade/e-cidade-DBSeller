@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -106,31 +106,31 @@ if (isset($o50_estrutdespesa) && $o50_estrutdespesa != "") {
     $totalLinhas = count($matriz);
     for ($i = 0; $i < $totalLinhas; $i++) {
         switch ($i) {
-            case 0://orgao
+            case 0: //orgao
                 $o40_orgao = $matriz[$i];
                 break;
-            case 1://unidade
+            case 1: //unidade
                 $o41_unidade = $matriz[$i];
                 break;
-            case 2://funcao
+            case 2: //funcao
                 $o52_funcao = $matriz[$i];
                 break;
-            case 3://subfuncao
+            case 3: //subfuncao
                 $o53_subfuncao = $matriz[$i];
                 break;
-            case 4://programa
+            case 4: //programa
                 $o54_programa = $matriz[$i];
                 break;
-            case 5://projativ
+            case 5: //projativ
                 $o55_projativ = $matriz[$i];
                 break;
-            case 6://elemento de despesa
+            case 6: //elemento de despesa
                 $o56_elemento = $matriz[$i];
                 break;
-            case 7://tipo de  recurso
+            case 7: //tipo de  recurso
                 $o58_codigo = $matriz[$i];
                 break;
-            case 8://contra recurso
+            case 8: //contra recurso
                 $o61_codigo = $matriz[$i];
                 break;
         }
@@ -214,6 +214,10 @@ $pdf->addTitulo($head7);
 if ($rp == 'n') {
     $xtipo .= ' and e60_numemp not in (select e91_numemp from empresto where e91_anousu = ' . db_getsession("DB_anousu") . ') ';
 }
+if ($rp == 'somente') {
+    $xtipo .= ' and e60_numemp in (select e91_numemp from empresto where e91_anousu = ' . db_getsession("DB_anousu") . ') ';
+    $pdf->addTitulo("SOMENTE RP");
+}
 
 $sqlperiodo = "
 select 	empempenho.e60_numemp::integer as e60_numemp,
@@ -289,9 +293,11 @@ order by $xordem
 
 ";
 
+
 //     echo $sqlperiodo;exit;
 $res = $clempempenho->sql_record($sqlperiodo);
 //db_criatabela($res);
+
 $rows = $clempempenho->numrows;
 if ($rows == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Verifique os dados escolhidos! Não foi retornado nenhum resultado.');
@@ -370,11 +376,11 @@ for ($x = 0; $x < $rows; $x++) {
         for ($item = 0; $item < $rows_item; $item++) {
             db_fieldsmemory($resitem, $item, true);
             $preenche = ($item % 2 == 0 ? 0 : 1);
-//        $pdf->Cell(40,$tam,"",0,0,"R",$preenche);
+            //        $pdf->Cell(40,$tam,"",0,0,"R",$preenche);
             $pdf->Cell(10, $tam, "$e62_item", 0, 0, "R", $preenche);
             $pdf->Cell(75, $tam, substr($pc01_descrmater, 0, 45), 0, 0, "L", $preenche);
             $pdf->Cell(10, $tam, db_formatar($e62_quant, 'f'), 0, 0, "R", $preenche);
-//        $pdf->Cell(20,$tam,db_formatar($e62_vltot,'f'),0,0,"R",$preenche);
+            //        $pdf->Cell(20,$tam,db_formatar($e62_vltot,'f'),0,0,"R",$preenche);
             $pdf->multicell(0, $tam, substr($e62_descr, 0, 70), 0, "L", $preenche);
         }
     }

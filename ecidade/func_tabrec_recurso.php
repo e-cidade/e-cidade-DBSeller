@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,33 +58,33 @@ $clrotulo->label("c61_reduz");
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tk02_codigo?>"><?=$Lk02_codigo?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("k02_codigo",4,$Ik02_codigo,true,"text",4,"","chave_k02_codigo");  ?>
+              <?php db_input("k02_codigo",4,$Ik02_codigo,true,"text",4,"","chave_k02_codigo");  ?>
             </td>
             <td width="4%" align="right" nowrap title="<?=$Tk02_descr?>"><?=$Lk02_descr?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("k02_descr",15,$Ik02_descr,true,"text",4,"","chave_k02_descr"); ?>
+              <?php db_input("k02_descr",15,$Ik02_descr,true,"text",4,"","chave_k02_descr"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap><b> Estrutural </b> </td>
             <td width="96%" align="left" nowrap>
-              <? db_input("k02_estorc",15,'',true,"text",4,"","chave_k02_estorc"); ?>
+              <?php db_input("k02_estorc",15,'',true,"text",4,"","chave_k02_estorc"); ?>
             </td>
 
             <td width="4%" align="right" nowrap title="<?=$Tk02_drecei ?>"><?=$Lk02_drecei ?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("k02_drecei",40,$Ik02_drecei,true,"text",4,"","chave_k02_drecei"); ?>
+              <?php db_input("k02_drecei",40,$Ik02_drecei,true,"text",4,"","chave_k02_drecei"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap><strong> Extra-Orcamentário: </strong> </td>
             <td width="96%" align="left" nowrap>
-              <? db_input("c61_reduz",8,$Ic61_reduz,true,"text",2,"","chave_c61_reduz"); ?>
+              <?php db_input("c61_reduz",8,$Ic61_reduz,true,"text",2,"","chave_c61_reduz"); ?>
             </td>
 
             <td width="4%" align="right" nowrap ><strong>Orçamentário:</strong></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("o70_codrec",8,$Io70_codrec,true,"text",2,"","chave_o70_codrec"); ?>
+              <?php db_input("o70_codrec",8,$Io70_codrec,true,"text",2,"","chave_o70_codrec"); ?>
             </td>
           </tr>
 
@@ -101,7 +101,7 @@ $clrotulo->label("c61_reduz");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "tabrec.*";
@@ -139,14 +139,14 @@ $clrotulo->label("c61_reduz");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_k02_codigo.focus();
 document.form2.chave_k02_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

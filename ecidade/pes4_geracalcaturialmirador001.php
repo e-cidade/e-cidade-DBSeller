@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,12 +75,12 @@ $clrotulo->label('r44_descr');
         <b>Ano / Mês :</b>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -92,7 +92,7 @@ $clrotulo->label('r44_descr');
 	        <b>Tipo de Arquivo</b>
         </td>
         <td>
-          <?
+          <?php
           $aTipoArquivo = array(""=>"Selecione...", "A"=>"Ativos", "I"=>"Inativos", "P"=>"Pensionistas");          
           db_select("tipo_arquivo", $aTipoArquivo, true, 1, "");
           ?>
@@ -104,7 +104,7 @@ $clrotulo->label('r44_descr');
           <b>Data da Mudança do Regime:<b>
         </td>
         <td align="left">
-			  <?
+			  <?php
 			    db_inputdata("data_mudanca", @$dia_mudanca, @$mes_mudanca, @$ano_mudanca, true, "text", 1);
 			  ?>
         </td>
@@ -112,12 +112,12 @@ $clrotulo->label('r44_descr');
       
       <tr>
         <td align="left">
-        <?
+        <?php
           db_ancora("<b>Seleção de Professores:</b>","js_pesquisaprof(true)",1);
         ?>
         </td>        
         <td align="left">
-			  <?
+			  <?php
 			    db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisaprof(false)"');
           db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
         ?>
@@ -131,7 +131,7 @@ $clrotulo->label('r44_descr');
     <table>
       <tr>
         <td>
-        <?
+        <?php
           $aux_ins = new cl_arquivo_auxiliar;
           $aux_ins->cabecalho = "<strong>Insalubridade / Periculosidade</strong>";
           $aux_ins->codigo = "r06_codigo"; //chave de retorno da func
@@ -173,7 +173,7 @@ $clrotulo->label('r44_descr');
     </table>
     </script>
     </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

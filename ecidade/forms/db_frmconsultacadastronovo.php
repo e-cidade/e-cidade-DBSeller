@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -432,7 +432,7 @@ function js_comTeclaEnter(evt) {
 						?></td>
 					</tr>
 					<tr>
-						<td nowrap title="<?=@$Tj04_setorregimovel?>" width="240"><?
+						<td nowrap title="<?=@$Tj04_setorregimovel?>" width="240"><?php
 						db_ancora(@$Lj04_setorregimovel,"js_pesquisaj04_setorregimovel(true);",$db_opcao, "onkeypress='js_comTeclaEnter(event)'");
 						?></td>
 						<td><?php

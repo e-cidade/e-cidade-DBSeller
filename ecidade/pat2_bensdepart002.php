@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -64,7 +64,7 @@ if (isset($t52_depart) && trim($t52_depart)!="") {
   if (isset($t30_depto) && $t30_depto  != "") {
     $where .= " and t33_divisao in ($t30_depto)";
     if ($usardivisao == 1) {
-      $where_div .= " and t30_codigo in ($t30_depto)";   
+      $where_div .= " and t30_codigo in ($t30_depto)";
     }
   }
   $result_depart = $cldb_depart->sql_record($cldb_depart->sql_query_div(null,"*",null,"coddepto in ($t52_depart) $where_div"));
@@ -93,18 +93,18 @@ if ($clcfpatriplaca->numrows > 0){
 $head3 = "DEPARTAMENTO";
 
 //if ($flag_todos == 0) {
-//	
+//
 //	$sQueryOrgao  = "select db01_orgao,
 //	                        db01_unidade,
 //	                        o40_descr,
 //	                        o41_descr
 //								     from db_departorg
-//								    inner join db_depart    on db01_coddepto = coddepto    
+//								    inner join db_depart    on db01_coddepto = coddepto
 //								    inner join orcorgao     on db01_orgao    = o40_orgao
-//								                           and db01_anousu   = o40_anousu 
+//								                           and db01_anousu   = o40_anousu
 //								    inner join orcunidade   on db01_unidade  = o41_unidade
 //								                           and db01_orgao    = o41_orgao
-//								                           and db01_anousu   = o41_anousu  
+//								                           and db01_anousu   = o41_anousu
 //									  where db01_coddepto in ($t52_depart)
 //									    and db01_anousu   = ".db_getsession("DB_anousu")."
 //									    and (limite  is null or limite >= '".date("Y-m-d", db_getsession("DB_datausu"))."')";
@@ -113,7 +113,7 @@ $head3 = "DEPARTAMENTO";
 //	$resQueryOrgao = db_query($sQueryOrgao);
 //   if(pg_num_rows($resQueryOrgao)>0){
 //	   db_fieldsmemory($resQueryOrgao,0);
-//	   
+//
 //	   $head3 = "ORGÃO:	$db01_orgao - $o40_descr";
 //	   $head4 = "UNIDADE: $db01_unidade - $o41_descr";
 //	   $head5 = "DEPARTAMENTO: $descrdepto";
@@ -123,9 +123,9 @@ $head3 = "DEPARTAMENTO";
 //	   $head5 = "DEPARTAMENTO: ";
 //   }
 //
-//	
+//
 //}else {
-//	//$head2 = "TODOS OS ORGÃOS";   
+//	//$head2 = "TODOS OS ORGÃOS";
 //}
 
 
@@ -145,7 +145,7 @@ if (isset($t64_class) && trim($t64_class)!="") {
   if ($flag_todos == 0) {
     $where_class = " and t64_class='$t64_class' ";
   }
-  
+
   if ($flag_todos == 1) {
     $where_class = " and t64_class='$t64_class' ";
   }
@@ -166,14 +166,14 @@ if(isset($bens) && trim($bens) != ""){
 //t56 é sigla da histbem
 //t56_situac é o campo que contem a sequencial da situabens
 if(isset($situabens) && trim($situabens) != ""){
-	
 
-    $where .= " and  ( select t56_situac 
-                  from histbem 
-                 where t56_codbem = t52_bem  
-                 order by t56_data desc,t56_histbem desc 
+
+    $where .= " and  ( select t56_situac
+                  from histbem
+                 where t56_codbem = t52_bem
+                 order by t56_data desc,t56_histbem desc
                  limit 1 ) in $situabens ";
-                   
+
 } else {
   $where .= "";
 }
@@ -193,7 +193,7 @@ if (isset($contas) && trim($contas) != ""){
   $rsConplano  = $oDaoConplano->sql_record($sSqlConplano);
   if ($oDaoConplano->numrows == 1) {
 
-    $oConta  = db_utils::fieldsMemory($rsConplano, 0); 
+    $oConta  = db_utils::fieldsMemory($rsConplano, 0);
     $head6   = "Conta: {$oConta->c60_estrut} - {$oConta->c60_descr}";
   }
 }
@@ -202,18 +202,18 @@ if (isset($contas) && trim($contas) != ""){
 
 
 if (isset($dtaquini) && isset($dtaquifim)) {
-  
-   
+
+
   if ($dtaquini != ""  && $dtaquifim == "") {
-    
+
     $sdtIni = implode("-", array_reverse(explode("/", $dtaquini)));
     if ($where != "") {
       $where .= " and ";
     }
-    
+
     $where .= " t52_dtaqu >= '{$sdtIni}'";
   } else if ($dtaquini != ""  && $dtaquifim != "") {
-    
+
     $sdtIni = implode("-", array_reverse(explode("/", $dtaquini)));
     $sdtFim = implode("-", array_reverse(explode("/", $dtaquifim)));
     if ($where != "") {
@@ -221,12 +221,12 @@ if (isset($dtaquini) && isset($dtaquifim)) {
     }
     $where .= " t52_dtaqu between '{$sdtIni}' and '{$sdtFim}'";
   } else if ($dtaquini = ""  && $dtaquifim != "") {
-    
+
     $sdtFim = implode("-", array_reverse(explode("/", $dtaquifim)));
     if ($where != "") {
       $where .= " and ";
     }
-    
+
     $where .= " t52_dtaqu <= '{$sdtFim}'";
   }
 
@@ -239,8 +239,8 @@ if($where != ""){
 	}
 }
 if ($where != "") {
-  
-  $where .= " and ";  
+
+  $where .= " and ";
 }
 $where  .= " (limite  is null or limite >= '".date("Y-m-d", db_getsession("DB_datausu"))."')";
 
@@ -267,24 +267,24 @@ if (isset($ordem) && trim($ordem) != "") {
 }
 
 switch ($opcoescedentes) {
-  
+
   case 2 :
-    
+
     if ($listacedentes != "") {
       $where .= " and t04_sequencial in({$listacedentes})";
     } else {
       $where .= " and t04_sequencial is not null";
     }
     break;
-    
+
   case 3:
-   
-    $where .= " and t04_sequencial is null"; 
+
+    $where .= " and t04_sequencial is null";
     break;
 }
 
 if ($flag_todos == 0) {
-	
+
   $sql  = "select * ";
   $sql .= "       from bens ";
   $sql .= "            inner join cgm             on cgm.z01_numcgm = bens.t52_numcgm ";
@@ -302,11 +302,11 @@ if ($flag_todos == 0) {
   $sql .= "order by t52_depart,t30_codigo {$ordenar} ";
 }
 if ($flag_todos == 1) {
-	
+
 	if (strlen($where_class) > 0) {
     $where.= " $where_class";
   }
-	
+
   $sql  = "select * ";
   $sql .= "       from bens ";
   $sql .= "            inner join cgm       on cgm.z01_numcgm = bens.t52_numcgm ";
@@ -358,25 +358,25 @@ $temdiv = false;
 for ($x = 0; $x<$numrows; $x++) {
 
   db_fieldsmemory($result_bens,$x);
-   
-  
+
+
 //  if ($flag_todos == 1) {
     if ($depto_ant != $t52_depart) {
       if ($depto_ant=="") {
-      	
+
      	  $sQueryOrgao  = "select db01_orgao,
                           db01_unidade,
                           o40_descr,
                           o41_descr
-                     from db_departorg 
+                     from db_departorg
                     inner join orcorgao    on db01_orgao   = o40_orgao
-                                          and db01_anousu  = o40_anousu 
+                                          and db01_anousu  = o40_anousu
                     inner join orcunidade  on db01_unidade = o41_unidade
                                           and db01_orgao   = o41_orgao
-                                          and db01_anousu  = o41_anousu  
-                    where db01_coddepto in ($t52_depart) 
+                                          and db01_anousu  = o41_anousu
+                    where db01_coddepto in ($t52_depart)
                       and db01_anousu   = ".db_getsession("DB_anousu");
-		   
+
        $resQueryOrgao = db_query($sQueryOrgao);
 		   if(pg_num_rows($resQueryOrgao)>0){
 		   	db_fieldsmemory($resQueryOrgao,0);
@@ -389,7 +389,7 @@ for ($x = 0; $x<$numrows; $x++) {
 		   	$head4 = "UNIDADE: ";
 		   	$head5 = "DEPARTAMENTO: ";
 		   }
-		    /*     	
+		    /*
         $head4     = "CÓDIGO:    $t52_depart";
         $head5     = "DESCRIÇÃO: $descrdepto";
 				*/
@@ -397,7 +397,7 @@ for ($x = 0; $x<$numrows; $x++) {
       }
     }
 //  }
-  
+
   $result_bensmater = $clbensmater->sql_record($clbensmater->sql_query_file($t52_bem));
   if ($clbensmater->numrows==0) {
     $result_bensimoveis = $clbensimoveis->sql_record($clbensimoveis->sql_query_file($t52_bem,null));
@@ -412,27 +412,27 @@ for ($x = 0; $x<$numrows; $x++) {
 
   $bPeriodoBaixa = false;
   if(($t52_baixainicio != '') and ($t52_baixafim != '')) {
-    
+
     $dBaixaInicio    = implode('-', array_reverse(explode('/', $t52_baixainicio)));
     $dBaixaFim       = implode('-', array_reverse(explode('/', $t52_baixafim)));
     $bPeriodoBaixa   = true;
-      
+
   } elseif($t52_baixainicio != '' and $t52_baixafim == '') {
-    
+
     $dBaixaInicio    = implode('-', array_reverse(explode('/', $t52_baixainicio)));
     $dBaixaFim       = date('Y-m-d', db_getsession('DB_datausu'));
     $bPeriodoBaixa   = true;
-    
+
   } elseif($t52_baixainicio == '' and $t52_baixafim != '') {
-    
+
     $result_bensbaix = $clbensbaix->sql_record($clbensbaix->sql_query_file(null, 't55_baixa as t52_baixainicio', 't55_baixa', null). ' limit 1');
     $dBaixaInicio    = $clbensbaix->numrows > 0 ? db_fieldsmemory($result_bensbaix, 0) : date('Y-m-d', db_getsession('DB_datausu'));
     $dBaixaFim       = implode('-', array_reverse(explode('/', $t52_baixafim)));
     $bPeriodoBaixa   = true;
-      
+
   }
   if($opcao_baixados != 't') {
-    
+
     if($bPeriodoBaixa) {
       $sWhereBaixa     = "t55_codbem = {$t52_bem} and t55_baixa between '{$dBaixaInicio}' and '{$dBaixaFim}'";
       $result_bensbaix = $clbensbaix->sql_record($clbensbaix->sql_query_file(null, '*', null, $sWhereBaixa));
@@ -445,7 +445,7 @@ for ($x = 0; $x<$numrows; $x++) {
           continue;
         }
       }
-    
+
     }else {
       $result_bensbaix = $clbensbaix->sql_record($clbensbaix->sql_query_file($t52_bem));
       if($clbensbaix->numrows > 0) {
@@ -459,9 +459,9 @@ for ($x = 0; $x<$numrows; $x++) {
       }
     }
     $baix = $opcao_baixados == 'n' ? 'Não baixado' : 'Baixado';
-    
+
   } else {
-    
+
     if($bPeriodoBaixa) {
       $sWhereBaixa   = "t55_codbem = {$t52_bem} and t55_baixa between '{$dBaixaInicio}' and '{$dBaixaFim}'";
       $sSqlBensBaixa = $clbensbaix->sql_query_file(null, '*', null, $sWhereBaixa);
@@ -469,7 +469,7 @@ for ($x = 0; $x<$numrows; $x++) {
       $sSqlBensBaixa = $clbensbaix->sql_query_file($t52_bem);
     }
     $result_bensbaix = $clbensbaix->sql_record($sSqlBensBaixa);
-    $baix = $clbensbaix->numrows > 0 ? "Baixado" : "Não baixado"; 
+    $baix = $clbensbaix->numrows > 0 ? "Baixado" : "Não baixado";
   }
 
   $res_situacaobem = $clhistbem->sql_record($clhistbem->sql_query(null,"t70_descr","t56_histbem desc","t52_bem = $t52_bem "));
@@ -478,11 +478,11 @@ for ($x = 0; $x<$numrows; $x++) {
     $situacao_bem = $t70_descr;
   } else {
 
-     $situacao_bem = "Material";  
+     $situacao_bem = "Material";
 
   }
 
-  
+
   if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
     $pdf->addpage();
     $pdf->setfont('arial','b',8);
@@ -499,13 +499,13 @@ for ($x = 0; $x<$numrows; $x++) {
     $pdf->cell(20,$alt,"Definição",1,0,"C",1);
     $pdf->cell(30,$alt,"Bem",1,1,"C",1);
     //$pdf->cell(15,$alt,"Pl. Ident.",1,1,"C",1);
-    
+
     if ($opcao_obs == "S") {
       $pdf->cell((195-$cols),$alt,"Características adicionais do bem",1,1,"L",1);
     }
     $troca = 0;
   }
-  
+
   if ($t30_codigo != $t30_codigo_ant && trim($t30_codigo) != "") {
     if ($x != 0) {
       if ($flag_valor == true){
@@ -522,34 +522,34 @@ for ($x = 0; $x<$numrows; $x++) {
          $pdf->cell(70,$alt,'',"T",1,"R",0);
          if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
            $pdf->addpage();
-         }         
+         }
       }else{
          $pdf->cell((205-$cols),$alt,'Total da Divisão  : '.$totaldiv,"T",1,"L",0);
          if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
            $pdf->addpage();
-         }         
+         }
       }
     }
     $temdiv = true;
     $pdf->setfont('arial','b',10);
     $pdf->ln(2);
-    
+
 //    if ($flag_todos == 1) {
       if ($depto_ant!=$t52_depart) {
-      	
+
       	 $sQueryOrgao  = "select db01_orgao,
                           db01_unidade,
                           o40_descr,
                           o41_descr
-                     from db_departorg 
+                     from db_departorg
                     inner join orcorgao    on db01_orgao   = o40_orgao
-                                          and db01_anousu  = o40_anousu 
+                                          and db01_anousu  = o40_anousu
                     inner join orcunidade  on db01_unidade = o41_unidade
                                           and db01_orgao   = o41_orgao
-                                          and db01_anousu  = o41_anousu  
-                    where db01_coddepto in ($t52_depart) 
+                                          and db01_anousu  = o41_anousu
+                    where db01_coddepto in ($t52_depart)
                       and db01_anousu   = ".db_getsession("DB_anousu");
-		   
+
 		   	$resQueryOrgao = db_query($sQueryOrgao);
 		   	if(pg_num_rows($resQueryOrgao)>0){
 		   		db_fieldsmemory($resQueryOrgao,0);
@@ -583,13 +583,13 @@ for ($x = 0; $x<$numrows; $x++) {
         $pdf->cell(20,$alt,"Definição",1,0,"C",1);
         $pdf->cell(30,$alt,"Bem",1,1,"C",1);
         //$pdf->cell(15,$alt,"Pl. Ident.",1,1,"C",1);
-        
+
         if ($opcao_obs == "S") {
           $pdf->cell((205-$cols),$alt,"Características adicionais do bem",1,1,"L",1);
         }
       }
 //    }
-    
+
     $pdf->cell((205-$cols),$alt,'DIVISÃO :   '.$t30_codigo.' - '.$t30_descr,0,1,"L",0);
     $t30_codigo_ant = $t30_codigo;
     $totaldiv       = 0;
@@ -603,20 +603,20 @@ for ($x = 0; $x<$numrows; $x++) {
   } else {
 //    if ($flag_todos == 1) {
       if ($depto_ant!=$t52_depart) {
-      	
+
       	 $sQueryOrgao  = "select db01_orgao,
                           db01_unidade,
                           o40_descr,
                           o41_descr
-                     from db_departorg 
+                     from db_departorg
                     inner join orcorgao    on db01_orgao   = o40_orgao
-                                          and db01_anousu  = o40_anousu 
+                                          and db01_anousu  = o40_anousu
                     inner join orcunidade  on db01_unidade = o41_unidade
                                           and db01_orgao   = o41_orgao
-                                          and db01_anousu  = o41_anousu  
-                    where db01_coddepto in ($t52_depart) 
+                                          and db01_anousu  = o41_anousu
+                    where db01_coddepto in ($t52_depart)
                       and db01_anousu   = ".db_getsession("DB_anousu");
-		   
+
 		   	$resQueryOrgao = db_query($sQueryOrgao);
 		   	if(pg_num_rows($resQueryOrgao)>0){
 		   		db_fieldsmemory($resQueryOrgao,0);
@@ -646,12 +646,12 @@ for ($x = 0; $x<$numrows; $x++) {
            $pdf->cell(60,$alt,'',"T",1,"R",0);
            if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
              $pdf->addpage();
-           }            
+           }
         }else{
            $pdf->cell((195-$cols),$alt,'Total da Divisão  : '.$totaldiv,"T",1,"L",0);
            if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
              $pdf->addpage();
-           }           
+           }
         }
         $totaldiv  = 0;
         $total_valor_dv = 0;
@@ -677,17 +677,17 @@ for ($x = 0; $x<$numrows; $x++) {
         $pdf->cell(20, $alt,"Definição",1,0,"C",1);
         $pdf->cell(30, $alt,"Bem",1,1,"C",1);
         //$pdf->cell(15,$alt,"Pl. Indent.",1,1,"C",1);
-        
+
         if ($opcao_obs == "S") {
           $pdf->cell((195-$cols),$alt,"Características adicionais do bem",1,1,"L",1);
         }
-        
+
         $pdf->setfont('arial','b',7);
         $pdf->cell((195-$cols),$alt,$t64_class.' - '.$t64_descr,"T",1,"L",0);
       }
 //    }
   }
-  
+
   if ($t64_class!=$t64_class_ant) {
     if ($x != 0) {
       if ($flag_valor == true){
@@ -698,13 +698,13 @@ for ($x = 0; $x<$numrows; $x++) {
         $pdf->cell((195-$cols),$alt,'Total da Classificação  : '.$totalclas,"T",1,"L",0);
       }
     }
-    
+
     $pdf->setfont('arial','b',7);
     $pdf->cell((195-$cols),$alt,$t64_class.' - '.$t64_descr,"T",1,"L",0);
     $t64_class_ant = $t64_class;
     $totalclas     = 0;
     $total_valor_cl = 0;
-    
+
   }
 
   // Mostra BENS SEM DIVISAO quando bens nao esta vinculada a divisao de departamento
@@ -729,12 +729,12 @@ for ($x = 0; $x<$numrows; $x++) {
                $pdf->cell(60,$alt,'',"T",1,"R",0);
                if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
                  $pdf->addpage();
-               }               
+               }
             }else{
                $pdf->cell((195-$cols),$alt,'Total da Divisão  : '.$totaldiv,"T",1,"L",0);
                if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
                  $pdf->addpage();
-               }               
+               }
             }
             $pdf->setfont('arial','b',10);
             $pdf->ln(2);
@@ -744,15 +744,19 @@ for ($x = 0; $x<$numrows; $x++) {
             $t30_codigo_ant = "";
             $totaldiv       = 0;
             $total_valor_dv = 0;
-       }    
-  }     
+       }
+  }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   $pdf->setfont('arial','',6);
   $pdf->cell(20,$alt,$t52_bem,0,0,"C",0);
 
   if ($t07_confplaca == 1 || $t07_confplaca == 4){
+    if (is_numeric($t52_ident)) {
        $t52_ident = db_formatar($t52_ident,"s","0",$t07_digseqplaca,"e",0);
+    } else {
+       $t52_ident = strtoupper($t52_ident);
+    }
   }
 
   $pdf->cell(20,$alt,$t52_ident,0,0,"L",0);
@@ -766,16 +770,16 @@ for ($x = 0; $x<$numrows; $x++) {
   $pdf->cell(20,$alt,$situacao_bem,0,0,"L",0);
   $pdf->cell(20,$alt,$definicao,0,0,"L",0);
   $pdf->cell(30,$alt,$baix,0,1,"L",0);
-//  $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "Não"; 
+//  $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "Não";
 //  $pdf->cell(15,$alt,$placaIdentificacao,0,1,"L",0);
-  
+
   if ($opcao_obs == "S") {
     if ($x % 2 == 0) {
       $p = 1;
     } else {
       $p = 0;
     }
-    
+
     if (trim($t52_obs)!="") {
       $pdf->multicell((195-$cols),$alt,$t52_obs,0,"L",$p);
     }
@@ -811,12 +815,12 @@ if ($temdiv == true||$totaldiv > 0) {
     $pdf->cell(70,$alt,'',"T",1,"R",0);
     if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
       $pdf->addpage();
-    }    
+    }
   }else{
     $pdf->cell((205-$cols),$alt,'Total da Divisão  : '.$totaldiv,"T",1,"L",0);
     if ($pdf->gety() > $pdf->h - 36 || $troca != 0 ) {
       $pdf->addpage();
-    }    
+    }
   }
 }
 

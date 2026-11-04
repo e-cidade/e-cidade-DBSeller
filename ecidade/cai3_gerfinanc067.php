@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ db_postmemory($HTTP_POST_VARS);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
   
-<?
+<?php
 if(isset($emite)){
 
 	$data1 = $data1_ano."-".$data1_mes."-".$data1_dia;
@@ -73,7 +73,7 @@ if(isset($emite)){
           <tr>
               <td ><strong>Data inicial : </strong></td>
              <td align='center' >
-             <?
+             <?php
              db_inputdata('data1','','','',true,'text',1,"");
              ?>
              </td>
@@ -81,7 +81,7 @@ if(isset($emite)){
           <tr>
               <td ><strong>Data final : </strong></td>
              <td>
-             <?
+             <?php
              db_inputdata('data2','','','',true,'text',1,"");
              ?>
             </td>

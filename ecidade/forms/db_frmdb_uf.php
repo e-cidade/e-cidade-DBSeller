@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_uf->rotulo->label();
        <?=@$Ldb12_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db12_codigo',10,$Idb12_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('db12_codigo',10,$Idb12_codigo,true,'text',$db_opcao,"")
        <?=@$Ldb12_uf?>
     </td>
     <td> 
-<?
+<?php
 db_input('db12_uf',2,$Idb12_uf,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('db12_uf',2,$Idb12_uf,true,'text',$db_opcao,"")
      <b>  Nome:</b>
     </td>
     <td> 
-<?
+<?php
 db_input('db12_nome',40,@$Idb12_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('db12_nome',40,@$Idb12_nome,true,'text',$db_opcao,"")
     <b>  Estado por extenço:</b>
     </td>
     <td> 
-<?
+<?php
 db_input('db12_extenso',40,@$Idb12_extenso,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_uf.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

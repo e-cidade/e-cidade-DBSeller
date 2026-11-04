@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,25 +63,25 @@ $clrotulo->label("z01_v_nome");
 								<!-- PROFISSIONAL -->
 								<tr>
 									<td nowrap title="<?=@$Tsd03_i_codigo?>" >
-										<? db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,1);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,1);",$db_opcao); ?>
 									</td>
 									<td valing="top" align="top">
-										<? 
+										<?php 
 											db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false,1);' onFocus=\"nextfield='rh70_estrutural'\""); 
 										?>
 									</td>
 									<td colspan="2">
-										<? db_input('z01_nome',53,$Iz01_nome,true,'text',3,''); ?>
+										<?php db_input('z01_nome',53,$Iz01_nome,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<!-- CBO -->
 								<tr>
 									<td nowrap title="<?=@$Tsd04_i_cbo?>">
-										<? db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,1);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,1);",$db_opcao); ?>
 									</td>
 									<td>
-										<?
+										<?php
 											db_input('sd30_i_codigo',10,$Isd30_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('sd27_i_codigo',10,$Isd27_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
@@ -89,17 +89,17 @@ $clrotulo->label("z01_v_nome");
 										?>
 									</td>
 									<td colspan="2">
-										<? db_input('rh70_descr',53,$Irh70_descr,true,'text',3,''); ?>
+										<?php db_input('rh70_descr',53,$Irh70_descr,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<tr>
 									<td nowrap title="<?=@$Tsd23_d_consulta?>"><?=@$Lsd23_d_consulta?></td>
 									<td>
-										<? //db_input('sd23_d_consulta',10,$Isd23_d_consulta,true,'text',$db_opcao," onKeyUp='js_mascaraData(this,event)' onchange='js_diasem()' onFocus=\"nextfield='done'\" "); ?>
-										<? db_inputdatasaude( 'document.form1.sd27_i_codigo.value','sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd23_d_consulta_ano,true,'text',$db_opcao," onchange='js_diasem(1,".$data_ano.",".$data_mes.",".$data_dia.")' onFocus=\"nextfield='sd03_i_codigo2'\" ", "", "", "parent.js_diasem(1,".$data_ano.",".$data_mes.",".$data_dia.")"  ); ?>
+										<?php //db_input('sd23_d_consulta',10,$Isd23_d_consulta,true,'text',$db_opcao," onKeyUp='js_mascaraData(this,event)' onchange='js_diasem()' onFocus=\"nextfield='done'\" "); ?>
+										<?php db_inputdatasaude( 'document.form1.sd27_i_codigo.value','sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd23_d_consulta_ano,true,'text',$db_opcao," onchange='js_diasem(1,".$data_ano.",".$data_mes.",".$data_dia.")' onFocus=\"nextfield='sd03_i_codigo2'\" ", "", "", "parent.js_diasem(1,".$data_ano.",".$data_mes.",".$data_dia.")"  ); ?>
 									</td>
 									<td>
-										<? 
+										<?php 
 											db_input('diasemana',53,@$diasemana,true,'text',3,''); 
 											db_input('dia',10,@$dia,true,'hidden',3,''); 
 										?>
@@ -107,7 +107,7 @@ $clrotulo->label("z01_v_nome");
 								</tr>
 								<tr>
 									<td colspan="3">
-										<? 
+										<?php 
 											db_input('sd23_i_codigo',10,$Isd23_i_codigo,true,'hidden',3,"");
 											db_ancora(@$Lsd23_i_ficha,"js_pesquisasd23_i_ficha(true,1);",$db_opcao);
 											db_input('sd23_i_ficha',10,$Isd23_i_ficha,true,'text',3,"");
@@ -130,22 +130,22 @@ $clrotulo->label("z01_v_nome");
 								<!-- PROFISSIONAL -->
 								<tr>
 									<td nowrap title="<?=@$Tsd03_i_codigo?>" >
-										<? db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,2);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,2);",$db_opcao); ?>
 									</td>
 									<td valing="top" align="top">
-										<? db_input('sd03_i_codigo2',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false,2);' onFocus=\"nextfield='rh70_estrutural2'\"") ?>
+										<?php db_input('sd03_i_codigo2',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false,2);' onFocus=\"nextfield='rh70_estrutural2'\"") ?>
 									</td>
 									<td colspan="2">
-										<? db_input('z01_nome2',53,$Iz01_nome,true,'text',3,''); ?>
+										<?php db_input('z01_nome2',53,$Iz01_nome,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<!-- CBO -->
 								<tr>
 									<td nowrap title="<?=@$Tsd04_i_cbo?>">
-										<? db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,2);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,2);",$db_opcao); ?>
 									</td>
 									<td>
-										<?
+										<?php
 											db_input('sd30_i_codigo2',10,$Isd30_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('sd27_i_codigo2',10,$Isd27_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('rh70_sequencial2',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
@@ -153,17 +153,17 @@ $clrotulo->label("z01_v_nome");
 										?>
 									</td>
 									<td colspan="2">
-										<? db_input('rh70_descr2',53,$Irh70_descr,true,'text',3,''); ?>
+										<?php db_input('rh70_descr2',53,$Irh70_descr,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<tr>
 									<td nowrap title="<?=@$Tsd23_d_consulta?>"><?=@$Lsd23_d_consulta?></td>
 									<td>
-										<? //db_input('sd23_d_consulta',10,$Isd23_d_consulta,true,'text',$db_opcao," onKeyUp='js_mascaraData(this,event)' onchange='js_diasem()' onFocus=\"nextfield='done'\" "); ?>
-										<? db_inputdatasaude( 'document.form1.sd27_i_codigo2.value','sd23_d_consulta2',@$sd23_d_consulta2_dia,@$sd23_d_consulta2_mes,@$sd23_d_consulta2_ano,true,'text',$db_opcao," onchange='js_diasem(2,".$data_ano.",".$data_mes.",".$data_dia.")' onFocus=\"nextfield='done'\" ", "", "", "parent.js_diasem(2,".$data_ano.",".$data_mes.",".$data_dia."); "); ?>
+										<?php //db_input('sd23_d_consulta',10,$Isd23_d_consulta,true,'text',$db_opcao," onKeyUp='js_mascaraData(this,event)' onchange='js_diasem()' onFocus=\"nextfield='done'\" "); ?>
+										<?php db_inputdatasaude( 'document.form1.sd27_i_codigo2.value','sd23_d_consulta2',@$sd23_d_consulta2_dia,@$sd23_d_consulta2_mes,@$sd23_d_consulta2_ano,true,'text',$db_opcao," onchange='js_diasem(2,".$data_ano.",".$data_mes.",".$data_dia.")' onFocus=\"nextfield='done'\" ", "", "", "parent.js_diasem(2,".$data_ano.",".$data_mes.",".$data_dia."); "); ?>
 									</td>
 									<td>
-										<? 
+										<?php 
 											db_input('diasemana2',53,@$diasemana2,true,'text',3,''); 
 											db_input('dia2',10,@$dia2,true,'hidden',3,''); 
 										?>
@@ -171,7 +171,7 @@ $clrotulo->label("z01_v_nome");
 								</tr>
 								<tr>
 									<td colspan="3">
-										<? 
+										<?php 
 											db_ancora(@$Lsd23_i_ficha,"js_pesquisasd23_i_ficha2(true,2);",$db_opcao);
 											db_input('sd23_i_ficha2',10,$Isd23_i_ficha,true,'text',3,"");
 											//db_ancora(@$Lsd23_c_hora,"js_pesquisasd23_i_ficha2(true,2);",$db_opcao);

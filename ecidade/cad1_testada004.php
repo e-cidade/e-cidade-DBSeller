@@ -384,7 +384,7 @@ if (!isset($digita_testada)) {
 	            </td>
 	          </tr>
 	          </table>
-			<?
+			<?php
 	} else {
 		echo "Face de Quadra não Incluída para este Setor/Quadra";
 	}

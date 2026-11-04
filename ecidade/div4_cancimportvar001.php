@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,16 +25,16 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_issbase_classe.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("classes/db_issbase_classe.php");
+require_once modification("classes/db_iptubase_classe.php");
+require_once modification("classes/db_cgm_classe.php");
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $db_opcao=1;
 $cliptubase = new cl_iptubase;
@@ -44,6 +44,7 @@ $clissbase->rotulo->label();
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();
 ?>
+
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -52,45 +53,44 @@ $clcgm->rotulo->label();
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-td {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-}
-input {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-        height: 17px;
-        border: 1px solid #999999;
-}
--->
-</style>
+
 </head>
 <body bgcolor=#CCCCCC>  
 <form class="container" name="form1" method="post" action="div4_cancimportvar002.php"  onSubmit="return js_verifica_campos_digitados();" >
   <fieldset>
   	<legend>Cancela Importação de ISSQN Variavel</legend>
     <table class="form-container">
+
       <tr>   
         <td>
-          <?
-            db_ancora($Lq02_inscr,' js_inscr(true); ',1);
-          ?>
+          <?php db_ancora($Lq02_inscr,' js_inscr(true); ',1); ?>
         </td>
         <td> 
-          <?
-            db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
-            db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
+          <?php
+            db_input('q02_inscr',10,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
+            db_input('z01_nome',81,0,true,'text',3,"","z01_nomeinscr");
           ?>
         </td>
-      </tr> 
+      </tr>
+
+      <tr>
+        <td title="CGM">
+            <?php db_ancora("CGM",' js_cgm(true); ',1); ?>
+        </td>
+        <td> 
+          <?php
+            db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'","z_numcgm");
+            db_input('z01_nome',81,0,true,'text',3,"","nomeCGM");
+          ?>
+        </td>
+      </tr>
+
     </table>
   </fieldset> 	 
   <input type="submit" name="processar" value="Processar" >
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -116,10 +116,27 @@ function js_mostrainscr1(chave,erro){
     document.form1.q02_inscr.value = ''; 
   }
 }
-</script>
-<script>
 
-$("q02_inscr").addClassName("field-size2");
-$("z01_nomeinscr").addClassName("field-size9");
+function js_cgm(mostra){
+  var cgm=document.form1.z_numcgm.value;
+  if(mostra==true){
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe2','func_nome.php?funcao_js=parent.js_mostracgm|0|1','Pesquisa',true);
+  }else{
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe2','func_nome.php?pesquisa_chave='+cgm+'&funcao_js=parent.js_mostracgm1','Pesquisa',false);
+  }
+}
 
+function js_mostracgm(chave1,chave2){
+  document.form1.z_numcgm.value = chave1;
+  document.form1.nomeCGM.value  = chave2;
+  db_iframe2.hide();
+}
+
+function js_mostracgm1(erro, nome) {
+  if (erro) {
+    document.form1.z_numcgm.value = '';
+  }
+  document.form1.nomeCGM.value = nome;
+  document.form1.submit();
+} 
 </script>

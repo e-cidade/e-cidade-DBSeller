@@ -59,6 +59,7 @@ $sSqlAcordo = " select distinct
   <body style="background-color:#cccccc">
   <div class="subcontainer">
       <form name="form1" method="post">
+        <div style="display: table; float:left; margin-left:10%;">
           <fieldset>
             <legend><b>Contratos da Licitação</b></legend>
           <?php
@@ -71,6 +72,7 @@ $sSqlAcordo = " select distinct
             );
           ?>
           </fieldset>
+        </div>
       </form>
   </div>
   </body>

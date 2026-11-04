@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_procinscr {
                  p60_inscr = int8 = Inscrição 
                  ";
    //funcao construtor da classe 
-   function cl_procinscr() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_procinscr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p60_codproc = ($this->p60_codproc == ""?@$GLOBALS["HTTP_POST_VARS"]["p60_codproc"]:$this->p60_codproc);
        $this->p60_inscr = ($this->p60_inscr == ""?@$GLOBALS["HTTP_POST_VARS"]["p60_inscr"]:$this->p60_inscr);
@@ -73,7 +73,7 @@ class cl_procinscr {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->p60_codproc == null ){ 
        $this->erro_sql = " Campo Processo nao Informado.";
@@ -127,7 +127,7 @@ class cl_procinscr {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update procinscr set ";
      $virgula = "";
@@ -188,7 +188,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from procinscr
                     where ";
      $sql2 = "";
@@ -227,7 +227,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

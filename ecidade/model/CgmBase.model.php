@@ -60,6 +60,13 @@ abstract class CgmBase {
   protected $sLogradouro;
 
   /**
+   * Sexo da pessoa
+   *
+   * @var string
+   */
+  protected $sSexo;
+
+  /**
    * Número do Endereço Principal
    *
    * @var string
@@ -629,6 +636,20 @@ abstract class CgmBase {
     $this->sLogradouro = $sLogradouro;
   }
 
+  /**
+   * @param string $sSexo
+   */
+   public function setSexo ($sSexo) {
+       $this->sSexo = $sSexo;
+   }
+
+    /**
+     * @return string
+     */
+    public function getSexo () {
+        return $this->sSexo;
+    }
+
 /**
    * @return string
    */
@@ -937,6 +958,7 @@ abstract class CgmBase {
      */
     $oDaoCgm->z01_nome       = addslashes(substr($this->getNome(), 0, 40));
     $oDaoCgm->z01_nomecomple = addslashes(substr($this->getNomeCompleto(), 0, 100));
+    $oDaoCgm->z01_sexo       = !empty($this->getNumero()) ? $this->getNumero() : '';
     $oDaoCgm->z01_ender      = addslashes($this->getLogradouro());
     $oDaoCgm->z01_numero     = $this->getNumero();
     $oDaoCgm->z01_compl      = addslashes($this->getComplemento());

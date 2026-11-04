@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -90,26 +90,26 @@ if ( isset($per_cad) ) {
       <?=$Led67_i_codigo?>
      </td>
      <td>
-      <?db_input('ed67_i_codigo',15,$Ied67_i_codigo,true,'text',3,"")
+      <?php db_input('ed67_i_codigo',15,$Ied67_i_codigo,true,'text',3,"")
       ?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=$Ted67_i_procresultado?>">
-      <?db_ancora($Led67_i_procresultado,"",3);?>
+      <?php db_ancora($Led67_i_procresultado,"",3);?>
      </td>
      <td>
-      <?db_input('ed67_i_procresultado',15,$Ied67_i_procresultado,true,'text',3,"")?>
-      <?db_input('ed42_c_descr',25,$Ied42_c_descr,true,'text',3,'')?>
+      <?php db_input('ed67_i_procresultado',15,$Ied67_i_procresultado,true,'text',3,"")?>
+      <?php db_input('ed42_c_descr',25,$Ied42_c_descr,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=$Ted67_i_procavaliacao?>">
-      <?db_ancora($Led67_i_procavaliacao,"js_pesquisaed67_i_procavaliacao(true);",$db_opcao);?>
+      <?php db_ancora($Led67_i_procavaliacao,"js_pesquisaed67_i_procavaliacao(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('ed67_i_procavaliacao',15,$Ied67_i_procavaliacao,true,'text',3,"")?>
-      <?db_input('ed09_c_descr',25,$Ied09_c_descr,true,'text',3,'')?>
+      <?php db_input('ed67_i_procavaliacao',15,$Ied67_i_procavaliacao,true,'text',3,"")?>
+      <?php db_input('ed09_c_descr',25,$Ied09_c_descr,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
@@ -126,7 +126,7 @@ if ( isset($per_cad) ) {
    <table width="100%">
     <tr>
      <td valign="top">
-     <?
+     <?php
       $chavepri= array( "ed67_i_codigo"        => isset($ed67_i_codigo)        ? $ed67_i_codigo        : null,
                         "ed67_i_procresultado" => isset($ed67_i_procresultado) ? $ed67_i_procresultado : null,
                         "ed42_c_descr"         => isset($ed42_c_descr)         ? $ed42_c_descr         : '',

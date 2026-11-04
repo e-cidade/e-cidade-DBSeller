@@ -95,7 +95,7 @@ if (@$y80_codsani!="") {
        <label for='y80_codsani'><?=@$Ly80_codsani?></label>
     </td>
     <td>
-      <?
+      <?php
         db_input('y80_codsani',6,$Iy80_codsani,true,'text',3,"");
       ?>
     </td>
@@ -105,53 +105,53 @@ if (@$y80_codsani!="") {
       <label for='y80_numbloco'><?=@$Ly80_numbloco?></label>
     </td>
     <td>
-      <?
+      <?php
         db_input('y80_numbloco',6,$Iy80_numbloco,true,'text',$db_opcao,"");
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tz01_nome?>">
-      <?
+      <?php
         db_ancora(@$Lz01_nome,"js_pesquisay80_numcgm(true);",$db_opcao);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y80_numcgm',6,$Iy80_numcgm,true,'text',$db_opcao," onchange='js_pesquisay80_numcgm(false);'");
         db_input('y80_numcgm_outro',6,$Iy80_numcgm_outro,true,'hidden',3);
 		  ?>
-      <?
+      <?php
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj14_nome?>">
-      <?
+      <?php
        db_ancora(@$Lj14_nome,"js_pesquisaruas(true);",($db_opcao == 3 || $db_opcao == 33)?3:1);
       ?>
     </td>
     <td>
-      <?
+      <?php
 				db_input('y80_codrua',6,$Iy80_codrua,true,'text',$db_opcao," onChange='js_pesquisaruas(false)'")
 			?>
-      <?
+      <?php
        	db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj13_descr?>">
-      <?
+      <?php
        db_ancora(@$Lj13_descr,"js_pesquisabairro(true);",($db_opcao == 3 || $db_opcao == 33)?3:1);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y80_codbairro',6,$Iy80_codbairro,true,'text',$db_opcao," onChange='js_pesquisabairro(false)'")
       ?>
-      <?
+      <?php
         db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
       ?>
     </td>
@@ -164,7 +164,7 @@ if (@$y80_codsani!="") {
       <table>
         <tr>
           <td>
-            <?
+            <?php
               db_input('y80_numero',10,$Iy80_numero,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -172,7 +172,7 @@ if (@$y80_codsani!="") {
              <?=@$Ly80_compl?>
           </td>
           <td>
-            <?
+            <?php
               db_input('y80_compl',20,$Iy80_compl,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -185,7 +185,7 @@ if (@$y80_codsani!="") {
        <?=(@$y80_dtbaixa == ""?@$Ly80_data:'')?>
     </td>
     <td>
-      <?
+      <?php
         if(empty($y80_data_dia)){
 
           $y80_data_dia = date("d",db_getsession("DB_datausu"));
@@ -207,22 +207,22 @@ if (@$y80_codsani!="") {
       <label for='y80_area'><?=@$Ly80_area?><label>
     </td>
     <td>
-      <?
+      <?php
         db_input('y80_area',10,$Iy80_area,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq02_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq02_inscr,"js_pesquisainscr(true);",($db_opcao == 3 || $db_opcao == 33)?3:1);
        ?>
     </td>
     <td>
-		<?
+		<?php
 		db_input('q02_inscr',6,$Iq02_inscr,true,'text',$db_opcao," onChange='js_pesquisainscr(false)'")
 		?>
-		       <?
+		       <?php
 		db_input('z01_nome1',40,@$z01_nome1,true,'text',3,'')
 		       ?>
     </td>
@@ -334,13 +334,13 @@ function js_mostracgm(erro,chave){
   var iNumCgm = $F("y80_numcgm");
 
   // js_confirmaCgm(iNumCgm);
-  <?
+  <?php
   // if($db_opcao == 1){
   ?>
     // if(erro == false){
     //   document.form1.submit();
     // }
-  <?
+  <?php
   // }
   ?>
 }
@@ -350,14 +350,14 @@ function js_mostracgm1(chave1,chave2){
   document.form1.z01_nome.value = chave2;
   db_iframe_cgm.hide();
   // js_confirmaCgm(chave1);
-  <?
+  <?php
   // if($db_opcao == 1){
   ?>
 
     // if (chave1 != "") {
     //   document.form1.submit();
     // }
-  <?
+  <?php
   // }
   ?>
 
@@ -403,7 +403,7 @@ function js_retornoNumeroCgm(oAjax) {
 
 function js_preenchepesquisa(chave){
   db_iframe_sanitario.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_sanitario002.php?chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -411,18 +411,18 @@ function js_preenchepesquisa(chave){
     }
   ?>
 }
-<?
+<?php
 if($db_opcao != 1 && $db_botao == true){
 ?>
   if(document.form1.y80_codsani.value == "")
     document.form1.db_opcao.disabled=true;
   else
     document.form1.db_opcao.disabled=false;
-<?
+<?php
 }
 ?>
 </script>
-<?
+<?php
 if(isset($y80_numcgm) && $z01_nome == ""){
   echo "<script>js_pesquisay80_numcgm(false)</script>";
 }

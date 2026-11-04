@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfar_formafarmaceutica->rotulo->label("fa29_c_forma");
               <?=$Lfa33_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa33_i_codigo",10,$Ifa33_i_codigo,true,"text",4,"","chave_fa33_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfar_formafarmaceutica->rotulo->label("fa29_c_forma");
               <?=$Lfa29_c_forma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa29_c_forma",30,@$Ifa29_c_forma,true,"text",4,"","chave_fa29_c_forma");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clfar_formafarmaceutica->rotulo->label("fa29_c_forma");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_formafarmaceuticamed.php")==true){
@@ -124,12 +124,12 @@ $clfar_formafarmaceutica->rotulo->label("fa29_c_forma");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcfop->rotulo->label("e10_descricao");
               <?=$Le10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e10_sequencial",10,$Ie10_sequencial,true,"text",4,"","chave_e10_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcfop->rotulo->label("e10_descricao");
               <?=$Le10_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e10_descricao",50,$Ie10_descricao,true,"text",4,"","chave_e10_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcfop->rotulo->label("e10_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfop.php")==true){
@@ -122,12 +122,12 @@ $clcfop->rotulo->label("e10_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

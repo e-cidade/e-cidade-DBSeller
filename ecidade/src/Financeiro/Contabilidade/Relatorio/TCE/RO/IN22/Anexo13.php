@@ -44,7 +44,7 @@ class Anexo13 extends Base implements In22
         $total_vlrpagmes = 0;
         $total_vlrpagacu = 0;
 
-        foreach ($dados as &$dado) {
+        foreach ($dados as $dado) {
             $total_vlrempmes += $dado->vlrempmes;
             $total_vlrempacu += $dado->vlrempacu;
             $total_vlrliqmes += $dado->vlrliqmes;

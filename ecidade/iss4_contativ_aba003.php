@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,7 +90,7 @@ td {
 </tr>
 <tr>
    <td>
-        <?
+        <?php
         db_input('recruas1',"","","",'hidden',"","",'recruas1',"");
 		db_input('recruas2',"","","",'hidden',"","",'recruas2',"");
 		db_input('recruas3',"","","",'hidden',"","",'recruas3',"");
@@ -104,7 +104,7 @@ td {
         ?>
    </td>
 </tr>
-<?
+<?php
       @$chaves2 = @$dados1.@$dados2.@$dados3.@$dados4.@$dados5.@$dados6.@$dados7.@$dados8.@$dados9.@$dados10;
       $sql = "select distinct ruas.j14_codigo, ruas.j14_nome
               from ruas

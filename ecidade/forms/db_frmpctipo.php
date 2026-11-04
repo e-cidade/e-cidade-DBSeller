@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,16 +68,16 @@ $anousu = db_getsession("DB_anousu");
             <!--  -->
             <tr>
                 <td align=right nowrap title="<?= @$Tpc03_codgrupo ?>"><?= @$Lpc03_codgrupo ?> </td>
-                <td><? db_input('pc03_codgrupo', 6, $Ipc03_codgrupo, true, 'text', 3, "", "pc05_codtipo") ?>  </td>
+                <td><?php db_input('pc03_codgrupo', 6, $Ipc03_codgrupo, true, 'text', 3, "", "pc05_codtipo") ?>  </td>
             </tr>
             <!--  -->
             <tr>
                 <td align=right nowrap title="<?= @$Tpc03_descrgrupo ?>"><?= @$Lpc03_descrgrupo ?> </td>
-                <td><? db_input('pc03_descrgrupo', 40, $Ipc03_descrgrupo, true, 'text', $db_opcao, "", 'pc05_descr') ?>  </td>
+                <td><?php db_input('pc03_descrgrupo', 40, $Ipc03_descrgrupo, true, 'text', $db_opcao, "", 'pc05_descr') ?>  </td>
             </tr>
             <tr>
                 <td align=right nowrap title="<?= @$Tpc03_natureza ?>"><?= @$Lpc03_natureza ?> </td>
-                <td><? $natureza = array('1' => 'Produto',
+                <td><?php $natureza = array('1' => 'Produto',
                         '2' => 'Serviço',
                         '3' => 'Medicamento');
                     db_select('pc05_natureza', $natureza, true, $db_opcao, "");
@@ -89,7 +89,7 @@ $anousu = db_getsession("DB_anousu");
                     <?= @$Lpc03_ativo ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     if ($db_opcao != 1 || $db_opcao != 11) {
                         if (isset($pc05_ativo) && trim(@$pc05_ativo) != "") {
                             if ($pc05_ativo == "t") {
@@ -109,7 +109,7 @@ $anousu = db_getsession("DB_anousu");
             <!--  -->
             <tr>
                 <td colspan=2 align=center>
-                    <?
+                    <?php
                     $sql = " select distinct o56_codele,o56_elemento,o56_descr
                 from orcelemento
  	            inner join orcdotacao on o58_codele=o56_codele and o58_anousu=o56_anousu
@@ -160,7 +160,7 @@ $anousu = db_getsession("DB_anousu");
 
     function js_preenchepesquisa(chave) {
         db_iframe_pcgrupo.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

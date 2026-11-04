@@ -64,7 +64,7 @@ class Anexo7 extends Base implements In22
         $this->relatorioLegal->setDataInicial($this->relatorioLegal->getDataInicialPeriodo());
 
         $linhasRelatorio = $this->relatorioLegal->getDados();
-        foreach ($linhasRelatorio as &$linha) {
+        foreach ($linhasRelatorio as $linha) {
             $valorRelacao = 0;
             if (!empty($linha->ano)) {
                 $valorRelacao = ($linha->mes / $linha->ano) * 100;

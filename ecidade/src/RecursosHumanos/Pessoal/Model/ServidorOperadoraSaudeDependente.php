@@ -7,6 +7,8 @@ use ECidade\RecursosHumanos\Pessoal\Repository\DependenteRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeDependenteRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeRepository;
 use Exception;
+use Rubrica;
+use RubricaRepository;
 use ParameterException;
 
 /**
@@ -35,6 +37,10 @@ class ServidorOperadoraSaudeDependente
      * @var Dependente
      */
     private $dependente;
+    /**
+    * @var Rubrica
+    */
+    private $rubrica;
 
     /**
      * ServidorOperadoraSaudeDependente constructor.
@@ -156,13 +162,18 @@ class ServidorOperadoraSaudeDependente
         }
 
         if (array_key_exists('rh223_servidoroperadorasaude', $state)) {
-            $servidorOperadoraSaudeDependente->setServidorOperadoraSaude(ServidorOperadoraSaudeRepository::find($state['rh223_servidoroperadorasaude']));
+            $servidorOperadoraSaudeDependente
+            ->setServidorOperadoraSaude(ServidorOperadoraSaudeRepository::find($state['rh223_servidoroperadorasaude']));
         }
 
         if (array_key_exists('rh223_dependente', $state)) {
             $servidorOperadoraSaudeDependente->setDependente(DependenteRepository::find($state['rh223_dependente']));
         }
 
+        if (array_key_exists('rh223_rubrica', $state)) {
+            $servidorOperadoraSaudeDependente
+                ->setRubrica(RubricaRepository::getInstanciaByCodigo($state['rh223_rubrica']));
+        }
         return $servidorOperadoraSaudeDependente;
     }
 
@@ -177,7 +188,30 @@ class ServidorOperadoraSaudeDependente
             'tipo' => $this->getTipo(),
             'valor' => $this->getValor(),
             'servidorOperadoraSaude' => $this->getServidorOperadoraSaude()->toArray(),
-            'dependente' => $this->getDependente()->toArray()
+            'dependente' => $this->getDependente()->toArray(),
+            'rubrica' => $this->getRubrica()->toArray()
         );
+    }
+
+   /**
+    * Get the value of rubrica
+    *
+    * @return  Rubrica
+    */
+    public function getRubrica()
+    {
+        return $this->rubrica;
+    }
+
+   /**
+    * Set the value of rubrica
+    *
+    * @param  Rubrica  $rubrica
+    *
+    * @return  self
+    */
+    public function setRubrica(Rubrica $rubrica)
+    {
+        $this->rubrica = $rubrica;
     }
 }

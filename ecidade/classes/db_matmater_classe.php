@@ -542,7 +542,7 @@ class cl_matmater
    function sql_query_com_pcmater($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +578,7 @@ class cl_matmater
    function sql_query_com($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = explode("#", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -603,7 +603,7 @@ class cl_matmater
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = explode("#", $ordem);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -615,7 +615,7 @@ class cl_matmater
    function sql_query_deptoestoque($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = explode("#", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -648,7 +648,7 @@ class cl_matmater
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = explode("#", $ordem);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -664,7 +664,7 @@ class cl_matmater
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -695,7 +695,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -707,7 +707,7 @@ class cl_matmater
    function sql_query_unisai($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = explode("#", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -731,7 +731,7 @@ class cl_matmater
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = explode("#", $ordem);
 			$virgula = "";
 		for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 			$sql .= $virgula.$campos_sql[$i];
@@ -744,7 +744,7 @@ class cl_matmater
 	  function sql_query_config($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select distinct ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = explode("#", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -771,7 +771,7 @@ class cl_matmater
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = explode("#", $ordem);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i ++) {
 				$sql .= $virgula.$campos_sql[$i];
@@ -784,7 +784,7 @@ class cl_matmater
 	function sql_query_com_almoxarifado ($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
         $sql = "select distinct ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i ++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -812,7 +812,7 @@ class cl_matmater
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i ++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -826,7 +826,7 @@ class cl_matmater
   function sql_query_com_subgrupo($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -851,7 +851,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -864,7 +864,7 @@ class cl_matmater
    function sql_query_material_nota($m60_codmater = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -893,7 +893,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -906,7 +906,7 @@ class cl_matmater
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -932,7 +932,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -946,7 +946,7 @@ class cl_matmater
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -975,7 +975,7 @@ class cl_matmater
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i ++) {
         $sql .= $virgula.$campos_sql[$i];

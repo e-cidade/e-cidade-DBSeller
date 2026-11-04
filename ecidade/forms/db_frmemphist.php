@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clemphist->rotulo->label();
        <?=@$Le40_codhist?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1||$db_opcao==11) {
     $resultado = $clemphist->sql_record($clemphist->sql_query_file(null,"e40_codhist","e40_codhist desc",""));    
     if($clemphist->numrows > 0) {
@@ -53,7 +53,7 @@ db_input('e40_codhist',6,$Ie40_codhist,true,'text',$db_opcao,"")
        <?=@$Le40_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('e40_descr',60,$Ie40_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -69,7 +69,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_emphist.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

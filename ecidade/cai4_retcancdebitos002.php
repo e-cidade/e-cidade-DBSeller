@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,7 +47,7 @@ $clarrecant->rotulo->label("k00_numpre");
 $clarrecant->rotulo->label("k00_numpar");
 $clarrecant->rotulo->label("k00_valor");
 $instit = db_getsession("DB_instit");
-$db_opcao = 3; 
+$db_opcao = 3;
 if(isset($processar)){
   $sqlerro = false;
   $reg = str_replace("|",",",$linha);
@@ -58,7 +58,7 @@ if(isset($processar)){
   $clarrehist->k00_histtxt    = $k23_obs;
   $result_reg = $clcancdebitos->sql_record($clcancdebitos->sql_query("","k21_sequencia,k21_codigo,k21_numpre,k21_numpar,k21_receit","","k21_sequencia in($reg) and k20_instit = $instit"));
   for($x=0;$x<$clcancdebitos->numrows;$x++){
-    db_fieldsmemory($result_reg,$x); 
+    db_fieldsmemory($result_reg,$x);
     $clarrehist->k00_numpre     = $k21_numpre;
     $clarrehist->k00_numpar     = $k21_numpar;
     $clarrehist->incluir(null);
@@ -104,7 +104,7 @@ if($numpre != ""){
   }else{
     db_msgbox("Numpre não encontrado");
   }
-} 
+}
 ?>
 <html>
 <head>
@@ -124,7 +124,7 @@ if($numpre != ""){
   <td align='center'><?=$Lk00_numpar?></td>
   <td align='center'><?=$Lk00_valor?></td>
 </tr>
-<?for($x = 0; $x < $clcancdebitosreg->numrows; $x++) {
+<?php for($x = 0; $x < $clcancdebitosreg->numrows; $x++) {
     db_fieldsmemory($result,$x);
     echo "<tr><td><input type='checkbox' name='id' value='$k21_sequencia'></td><td>$k21_numpre</td><td>$k21_numpar</td><td>$k00_valor</td></tr>";
   }?>
@@ -132,7 +132,7 @@ if($numpre != ""){
   <td colspan="4"><strong>Observações:</strong></td>
 </tr>
 <tr>
-  <td colspan="4"><? db_textarea('k23_obs',2,50,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
+  <td colspan="4"><?php db_textarea('k23_obs',2,50,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
 </tr>
 </table>
 </form>

@@ -24,12 +24,12 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use ECidade\Pdf\Pdf;
 
 require_once modification("libs/db_stdlib.php");
 require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_utils.php");
-require_once modification("fpdf151/scpdf.php");
 
 $sExemplares         = db_getsession('sListaImpressao');
 $iCodigoDepartamento = db_getsession('DB_coddepto');
@@ -47,36 +47,37 @@ $oConfig->iMargemEtiqueta  = 15;
 $aLivros = array();
 
 try {
+    if (empty($sExemplares)) {
+        throw new ParameterException("Informe um exemplar.");
+    }
 
-  if ( empty($sExemplares) ) {
-    throw new ParameterException("Informe um exempar.");
-  }
+    $sCampos = " trim(bi06_titulo) as titulo, bi06_classcdd, bi06_cutter, bi23_volume, bi23_isbn, bi23_codbarras, bi23_exemplar, bi23_codigo, bi06_seq ";
+    $sWhere  = " bi17_coddepto = {$iCodigoDepartamento} ";
+    $sWhere .= " and bi23_codigo in ({$sExemplares}) ";
+    $sOrdem  = " bi06_titulo, bi23_exemplar ";
 
-  $sCampos = " trim(bi06_titulo) as titulo, bi06_classcdd, bi06_cutter, bi06_volume, bi06_isbn, bi23_codbarras, bi23_exemplar ";
-  $sWhere  = " bi17_coddepto = {$iCodigoDepartamento} ";
-  $sWhere .= " and bi23_codigo in ({$sExemplares}) ";
-  $sOrdem  = " bi06_titulo, bi23_exemplar ";
+    $oDaoExemplar = new cl_exemplar();
+    $sSqlExemplar = $oDaoExemplar->sql_query_dados_exemplar(null, $sCampos, $sOrdem, $sWhere);
+    $rsExemplar   = db_query($sSqlExemplar);
 
-  $oDaoExemplar = new cl_exemplar();
-  $sSqlExemplar = $oDaoExemplar->sql_query_dados_exemplar(null, $sCampos, $sOrdem, $sWhere );
-  $rsExemplar   = db_query($sSqlExemplar);
+    if (!$rsExemplar) {
+        throw new Exception("Erro ao buscar exemplar.\\n" . pg_last_error());
+    }
 
-  if ( !$rsExemplar ) {
-    throw new Exception("Erro ao buscar exemplar.\\n" . pg_last_error() );
-  }
-
-  $aLivros = db_utils::getCollectionByRecord($rsExemplar);
-
-} catch( Exception $oErro ) {
-  db_redireciona("db_erros.php?fechar=true&db_erro=" .$oErro->getMessage());
+    $aLivros = db_utils::getCollectionByRecord($rsExemplar);
+} catch (Exception $oErro) {
+    db_redireciona("db_erros.php?fechar=true&db_erro=" .$oErro->getMessage());
 }
 
-$oPdf = new scpdf('P', 'mm', 'Letter');
-$oPdf->Open();
-$oPdf->SetMargins(3.5, 13, 3.5);
-$oPdf->SetAutoPageBreak(false, 12.5);
-$oPdf->SetFont("Arial", '', 8);
-$oPdf->AddPage();
+$oPdf = new Pdf('P', 'mm', 'Letter');
+$oPdf->init(false);
+$oPdf->exibeHeader(false);
+$oPdf->mostrarRodape(false);
+$oPdf->setMargins(3.5, 13, 3.5);
+$oPdf->setAutoPageBreak(false, 12.5);
+$oPdf->setFont("Arial", '', 8);
+$oPdf->setFillColor(0, 0, 0);
+$oPdf->addPage();
 
 $oConfig->iMargemEtiquetaEsquerda = $oPdf->getX() + $oConfig->iMargemEtiqueta;
 $oConfig->iMargemEtiquetaDireita  = $oPdf->getX() + $oConfig->iLarguraEtiqueta + $oConfig->iMargemInterna + $oConfig->iMargemEtiqueta;
@@ -88,40 +89,39 @@ $oConfig->iMargemCodBarrasDireita  = $oConfig->iMargemEtiquetaDireita + ($oConfi
 $iYInicial        = null;
 $iContadorCelulas = 0;
 foreach ($aLivros as $iIndex => $oDados) {
+    $oPdf->setFont("Arial", '', 8);
+    if ($iContadorCelulas == 20) {
+        $oPdf->addPage();
+        $iContadorCelulas = 0;
+    }
 
-  if ($iContadorCelulas == 20) {
+    $sMsg  = substr($oDados->bi06_classcdd, 0, 12). "\n";
+    $sMsg .= substr($oDados->bi06_cutter, 0, 12). "\n";
+    $sMsg .= (!empty($oDados->bi23_volume)) ? "V. {$oDados->bi23_volume}\n" :  " \n";
+    $sMsg .= "Ex. {$oDados->bi23_exemplar}\n";
 
-    $oPdf->AddPage();
-    $iContadorCelulas = 0;
-  }
+    $iMargemCodBarras = $oConfig->iMargemCodBarrasEsquerda;
 
-  $sMsg  = substr($oDados->bi06_classcdd, 0,12). "\n";
-  $sMsg .= substr($oDados->bi06_cutter,0,12). "\n";
-  $sMsg .= (!empty($oDados->bi06_volume)) ? "V. {$oDados->bi06_volume}\n" :  " \n";
-  $sMsg .= "Ex. {$oDados->bi23_exemplar}\n";
+    if ($iIndex % 2 == 0) {
+        $iYInicial = $oPdf->getY();
+        $oPdf->ln(2.5);
+        $oPdf->setX($oConfig->iMargemEtiquetaEsquerda);
+    } else {
+        $oPdf->setY($iYInicial);
+        $oPdf->ln(2.5);
+        $oPdf->setX($oConfig->iMargemEtiquetaDireita);
+        $iMargemCodBarras = $oConfig->iMargemCodBarrasDireita;
+    }
 
-  $iMargemCodBarras = $oConfig->iMargemCodBarrasEsquerda;
-
-
-  if ( $iIndex % 2 == 0) {
-
-    $iYInicial = $oPdf->getY();
-    $oPdf->ln(2.5);
-    $oPdf->setX( $oConfig->iMargemEtiquetaEsquerda );
-  } else {
-
-    $oPdf->setY($iYInicial);
-    $oPdf->ln(2.5);
-    $oPdf->setX( $oConfig->iMargemEtiquetaDireita);
-    $iMargemCodBarras = $oConfig->iMargemCodBarrasDireita;
-  }
-
-  $oPdf->MultiCell($oConfig->iTamanhoCelula, 5, $sMsg, 0 );
-  $oPdf->Text($iMargemCodBarras +9 , $oPdf->getY()-11, str_pad($oDados->bi23_codbarras, 13, 0, STR_PAD_LEFT));
-  $oPdf->int25($iMargemCodBarras, $oPdf->getY()-10, $oDados->bi23_codbarras, 9, 0.4);//codbarras
-  $oPdf->ln(3);
-  $iContadorCelulas++;
+    $oPdf->multiCell($oConfig->iTamanhoCelula, 5, $sMsg, 0);
+    $oPdf->text($iMargemCodBarras +9, $oPdf->getY()-17, str_pad($oDados->bi23_codbarras, 13, 0, STR_PAD_LEFT));
+    $oPdf->int25($iMargemCodBarras, $oPdf->getY()-16, $oDados->bi23_codbarras, 9, 0.4);//codbarras
+    $oPdf->setX($oPdf->getY()-3);
+    $oPdf->setFont("Arial", '', 10);
+    $oPdf->text($iMargemCodBarras, $oPdf->getY()-2, "Acervo: {$oDados->bi06_seq} Cód.Ex: {$oDados->bi23_codigo}");
+    $oPdf->ln(3);
+    $iContadorCelulas++;
 }
 
-$oPdf->setX( $oPdf->getX() + $oConfig->iMargemEtiqueta );
-$oPdf->Output();
+$oPdf->setX($oPdf->getX() + $oConfig->iMargemEtiqueta);
+$oPdf->output();

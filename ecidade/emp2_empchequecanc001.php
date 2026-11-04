@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -72,9 +72,9 @@ $ano=date('Y',db_getsession("DB_datausu"));
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>  &nbsp; </td>
-  </tr>  
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  </tr>
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <form name="form1" method="post" action="emp2_empchequecanc002.php" >
 
@@ -85,38 +85,38 @@ $ano=date('Y',db_getsession("DB_datausu"));
 
        <tr>
           <td nowrap colspan=2><b> Data da agenda</b></td>
-        </tr>	  
-	
+        </tr>
+
       <tr>
 	 <td nowrap><b>De:</b></td>
-	 <td><?db_inputdata("dtini","$dia","$mes","$ano","true","text",2)    ?> 
-	 <b>Ate:</b><?db_inputdata("dtfim","$dia","$mes","$ano","true","text",2) ?> </td>
+	 <td><?php db_inputdata("dtini","$dia","$mes","$ano","true","text",2)    ?>
+	 <b>Ate:</b><?php db_inputdata("dtfim","$dia","$mes","$ano","true","text",2) ?> </td>
       </tr>
       <tr>
          <td >
            <b>Conta:</b>
          </td>
          <td colspan=2>
-         <?
-           
+         <?php
+
         $result05  = $clempagetipo->sql_record($clempagetipo->sql_query(null,"e83_codtipo as codtipo,e83_descr,e83_conta","e83_descr"));
         $numrows05 = $clempagetipo->numrows;
         $arr['0']="Nenhum";
         for($r=0; $r<$numrows05; $r++){
-    	
+
          db_fieldsmemory($result05,$r);
 	     $arr[$codtipo] = "{$e83_conta} - {$e83_descr}";
-	    
+
        }
        $e83_codtipo ='0';
        db_select("e83_codtipo",$arr,true,1,"onchange='ordem.js_padrao(this.value)';");
        ?>
-        
+
          </td>
       </tr>
-      <tr>	 
+      <tr>
            <td colspan=2 align=center><input type="button" value="relatorio" onClick="js_seleciona()"></td>
-      </tr> 
+      </tr>
       </table>
 
       </center>
@@ -126,7 +126,7 @@ $ano=date('Y',db_getsession("DB_datausu"));
   </tr>
 </table>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
 <script>
 variavel = 1;
@@ -142,7 +142,7 @@ function js_seleciona(){
   document.form1.target = 'safo' + variavel++;
   setTimeout("document.form1.submit()",1000);
   return true;
-  
+
 }
 </script>
 

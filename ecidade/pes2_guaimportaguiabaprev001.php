@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ function js_erro(msg){
       <tr>
 
 	<td nowrap align='left'>
-  <?
+  <?php
   db_input('AArquivo',46,"",true,'file',1,"");
   ?>
 	</td>
@@ -88,7 +88,7 @@ function js_erro(msg){
           <input  name="gera" id="gera" type="submit" value="Gera">
         </td>
       </tr>
-<?
+<?php
 // testa se esta setado o bota de carregamento e se o input nao esta vazio
 if(isset($gera) && $AArquivo != ""){
   
@@ -103,7 +103,7 @@ if(isset($gera) && $AArquivo != ""){
 ?>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

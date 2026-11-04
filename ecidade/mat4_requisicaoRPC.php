@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,6 +26,7 @@
  */
 
 use App\Domain\Patrimonial\Material\Relatorios\IncosistenciasSaidaMaterialPDF;
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
@@ -62,118 +63,138 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.contacorrente.*");
 
 $cldb_dbalmox = new cl_db_almox;
-$oJson    = new services_json();
-$oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
+$oJson = new services_json();
+$oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno = new stdClass();
-if ($oParam->exec == "getDados"){
+if ($oParam->exec == "getDados") {
+    try {
+        $oRequisicao = new requisicaoMaterial($oParam->params[0]->iCodReq);
+        $oRequisicao->setEncode(true);
+        if ($oRequisicao->getDados()) {
+            $oRetorno = $oRequisicao->getInfo();
+            $oRetorno->itens = $oRequisicao->getItens();
+            $oRetorno->status = 1;
+            $oRetorno->message = null;
 
-  try {
-
-    $oRequisicao  = new requisicaoMaterial($oParam->params[0]->iCodReq);
-    $oRequisicao->setEncode(true);
-    if ($oRequisicao->getDados()) {
-
-      $oRetorno           = $oRequisicao->getInfo();
-      $oRetorno->itens   =  $oRequisicao->getItens();
-      $oRetorno->status  = 1;
-      $oRetorno->message = null;
-
-      echo $oJson->encode($oRetorno);
-
-    } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
+            echo $oJson->encode($oRetorno);
+        } else {
+            echo $oJson->encode(array("status" => 2, "message" => urlencode("Não Foi possivel consultar itens.")));
+        }
+    } catch (Exception  $eExeption) {
+        $sError = $eExeption->getMessage();
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($sError)));
     }
-  }
-  catch (Exception  $eExeption) {
+} elseif ($oParam->exec == "getLotes") {
+    try {
+        $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
+        $oItens = $oMaterialEstoque->ratearLotes($oParam->params[0]->nValor, null, $oParam->params[0]->iCodEstoque);
+        if (count($oItens) > 0) {
+            $oRetorno->itens = $oItens;
+            $oRetorno->status = 1;
+            $oRetorno->message = null;
 
-    $sError = $eExeption->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
-  }
-} else if ($oParam->exec == "getLotes") {
-
-  try {
-
+            echo $oJson->encode($oRetorno);
+        } else {
+            echo $oJson->encode(array("status" => 2, "message" => urlencode("Não Foi possivel consultar itens.")));
+        }
+    } catch (Exception $eException) {
+        $sError = $eException->getMessage();
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($sError)));
+    }
+} elseif ($oParam->exec == "saveLote") {
     $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
-    $oItens           = $oMaterialEstoque->ratearLotes($oParam->params[0]->nValor, null,$oParam->params[0]->iCodEstoque);
-    if (count($oItens) > 0) {
+    $oMaterialEstoque->saveLoteSession($oParam->params[0]->aItens);
+    echo $oJson->encode(array("status" => 1, "message" => ""));
+} elseif ($oParam->exec == "cancelarLote") {
+    $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
+    $oMaterialEstoque->cancelarLoteSession();
+    echo $oJson->encode(array("status" => 1, "message" => ""));
+} elseif ($oParam->exec == "atenderRequisicao") {
+    try {
+        db_inicio_transacao();
 
-      $oRetorno->itens   = $oItens;
-      $oRetorno->status  = 1;
-      $oRetorno->message = null;
+        $oRequisicao = new requisicaoMaterial($oParam->params[0]->iCodReq);
 
-      echo $oJson->encode($oRetorno);
-    } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
-    }
-  }
-  catch (Exception $eException) {
+        $hasMaterialFarmacia = false;
+        $dadosBnafar = null;
+        foreach ($oParam->params[0]->aItens as $item) {
+            if (!$hasMaterialFarmacia
+                && FarmaciaHelper::utilizaIntegracaoBnafar()
+                && FarmaciaHelper::isMaterialFarmacia($item->iCodMater)
+            ) {
+                $hasMaterialFarmacia = true;
+                $dadosBnafar = (object)[
+                    'tipoMovimentacao' => 7, // Transferência/Remanejamento
+                    'cgm' => null,
+                    'unidade' => $_SESSION['DB_coddepto']
+                ];
+            }
+        }
 
-    $sError = $eException->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
-
-  }
-
-} else if ($oParam->exec == "saveLote") {
-
-  $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
-  $oMaterialEstoque->saveLoteSession($oParam->params[0]->aItens);
-  echo $oJson->encode(array("status" => 1, "message"=> ""));
-
-}else if ($oParam->exec == "cancelarLote") {
-
-  $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
-  $oMaterialEstoque->cancelarLoteSession();
-  echo $oJson->encode(array("status" => 1, "message"=> ""));
-
-} else if ($oParam->exec == "atenderRequisicao") {
-  try {
-
-    db_inicio_transacao();
-
-    $oRequisicao  = new requisicaoMaterial($oParam->params[0]->iCodReq);
-    $oRequisicao->atenderRequisicao($oParam->params[0]->iTipo, $oParam->params[0]->aItens, $oParam->params[0]->iCodEstoque);
-
-    db_fim_transacao(false);
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Atendimento Efetuado com Sucesso")));
-  }
-  catch (Exception $eErro) {
-
-    db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode(str_replace("\\n","\n", $eErro->getMessage()))));
-  }
-
-} else if ($oParam->exec == "saidaMaterial") {
-
-  try {
-    db_inicio_transacao();
-    foreach ($oParam->params[0]->itens as $oMaterial) {
-
-      $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
-      MaterialEstoque::bloqueioMovimentacaoItem($oMaterial->iCodMater, db_getsession("DB_coddepto"));
-      if (isset($oMaterial->iCriterioCustoRateio)) {
-        $oMaterialEstoque->setCriterioRateioCusto($oMaterial->iCriterioCustoRateio);
-      }
-
-        $observacao = sprintf(
-            "Lançamento de saida manual do estoque. Material: %s - %s.",
-            $oMaterial->iCodMater,
-            $oMaterial->sObs
+        $oRequisicao->atenderRequisicao(
+            $oParam->params[0]->iTipo,
+            $oParam->params[0]->aItens,
+            $oParam->params[0]->iCodEstoque,
+            null,
+            $dadosBnafar
         );
 
-        $oMaterialEstoque->saidaMaterial($oMaterial->nQuantidade, $observacao);
-      db_fim_transacao(false);
-
+        db_fim_transacao(false);
+        echo $oJson->encode(array("status" => 1, "message" => urlencode("Atendimento Efetuado com Sucesso")));
+    } catch (Exception $eErro) {
+        db_fim_transacao(true);
+        echo $oJson->encode(array(
+            "status" => 2,
+            "message" => urlencode(str_replace("\\n", "\n", $eErro->getMessage()))
+        ));
     }
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Saída Efetuada com Sucesso")));
-  }
-  catch (Exception $eErro) {
-    $oMaterialEstoque->cancelarLoteSession();
-    db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
-  }
-} else if ($oParam->exec == "saidaDeposito"){
+} elseif ($oParam->exec == "saidaMaterial") {
     try {
+        db_inicio_transacao();
 
+        $dadosBnafar = null;
+        if (FarmaciaHelper::utilizaIntegracaoBnafar()) {
+            $dadosBnafar = (object)[
+                'tipoMovimentacao' => $oParam->tipoMovimentacao,
+                'cgm' => $oParam->cgmDestino,
+                'unidade' => $oParam->unidadeDestino
+            ];
+        }
+
+        foreach ($oParam->params[0]->itens as $oMaterial) {
+            $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
+            MaterialEstoque::bloqueioMovimentacaoItem($oMaterial->iCodMater, db_getsession("DB_coddepto"));
+
+            $exportaBnafar = FarmaciaHelper::validaMovimentacaoMaterial(
+                $dadosBnafar,
+                $oMaterial->iCodMater,
+                true,
+                $oMaterial->nQuantidade
+            );
+
+            if (isset($oMaterial->iCriterioCustoRateio)) {
+                $oMaterialEstoque->setCriterioRateioCusto($oMaterial->iCriterioCustoRateio);
+            }
+
+            $observacao = sprintf(
+                "Lançamento de saida manual do estoque. Material: %s - %s.",
+                $oMaterial->iCodMater,
+                $oMaterial->sObs
+            );
+
+            $dados = $exportaBnafar ? $dadosBnafar : null;
+
+            $oMaterialEstoque->saidaMaterial($oMaterial->nQuantidade, $observacao, false, null, true, $dados);
+            db_fim_transacao(false);
+        }
+        echo $oJson->encode(array("status" => 1, "message" => urlencode("Saída Efetuada com Sucesso")));
+    } catch (Exception $eErro) {
+        $oMaterialEstoque->cancelarLoteSession();
+        db_fim_transacao(true);
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($eErro->getMessage())));
+    }
+} elseif ($oParam->exec == "saidaDeposito") {
+    try {
         if (empty($oParam->depositos)) {
             throw new Exception('Informe ao menos um depósito.');
         }
@@ -186,7 +207,7 @@ if ($oParam->exec == "getDados"){
             $deposito = \App\Domain\Patrimonial\Material\Models\Deposito::find($codigoDeposito);
             $departamentos[] = $deposito->departamento->getCodigo();
         }
-        $codigosDepartamentos = implode(',',$departamentos);
+        $codigosDepartamentos = implode(',', $departamentos);
 
         $daoMaterialEstoque = new cl_matestoque();
         $sql = $daoMaterialEstoque->sql_query_file(
@@ -218,7 +239,7 @@ if ($oParam->exec == "getDados"){
                 $oMaterialEstoque->saidaMaterial($dadosMaterial->m70_quant, $oParam->observacao);
             } catch (Exception $e) {
                 db_fim_transacao(true);
-               $erros[] = $dadosMaterial;
+                $erros[] = $dadosMaterial;
             }
             db_fim_transacao(false);
         }
@@ -236,83 +257,75 @@ if ($oParam->exec == "getDados"){
             "message" => urlencode("Saída manual dos itens em estoque efetuada com sucesso!"),
             "inconsistencias" => $incosistencias,
             "relatorio" => $relatorioInconsistencia
-            ]);
+        ]);
     } catch (Exception $eErro) {
         db_fim_transacao(true);
-        echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($eErro->getMessage())));
     }
-} else if ($oParam->exec == "cancelarSaidaMaterial") {
+} elseif ($oParam->exec == "cancelarSaidaMaterial") {
+    try {
+        db_inicio_transacao();
+        foreach ($oParam->params[0]->itens as $oMaterial) {
+            $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
+            $oMaterialEstoque->cancelarSaidaMaterial(
+                $oMaterial->nQuantidade,
+                $oMaterial->iCodEstoqueIni,
+                $oMaterial->sObs
+            );
+        }
+        db_fim_transacao(false);
+        echo $oJson->encode(array("status" => 1, "message" => urlencode("Cancelamento Efetuado com Sucesso")));
+    } catch (Exception $eErro) {
+        $oMaterialEstoque->cancelarLoteSession();
+        db_fim_transacao(true);
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($eErro->getMessage())));
+    }
+} elseif ($oParam->exec == "getDadosPedidoRequisicao") { ///traz os dados do atendimento requisicao para atende-la
+    try {
+        $oSolicitacao = new requisicaoMaterial($oParam->params[0]->iCodReq);
+        $oSolicitacao->setEncode(true);
+        if ($oSolicitacao->getDadosPedidoRequisicao()) {
+            $oRetorno = $oSolicitacao->getInfo();
+            unset($oRetorno->senha);
+            if ($oRetorno->m91_depto != "") {
+                if ($oRetorno->m91_depto != "") {
+                    $sql = $cldb_dbalmox->sql_record(
+                        $cldb_dbalmox->sql_query("", "descrdepto as descr", "", "m91_depto= " . $oRetorno->m91_depto)
+                    );
+                    db_fieldsmemory($sql, 0);
+                    $oRetorno->descr_depto = $descr;
+                }
+                $oRetorno->itens = $oSolicitacao->getItensPedidoRequisicao();
+                $oRetorno->status = 1;
+                $oRetorno->message = null;
 
-  try {
-
+                echo $oJson->encode($oRetorno);
+            } else {
+                echo $oJson->encode(array("status" => 2, "message" => urlencode("Não Foi possivel consultar itens.")));
+            }
+        }
+    } catch (Exception  $oExeption) {
+        $sError = $oExeption->getMessage();
+        echo $oJson->encode(array("status" => 2, "message" => urlencode($sError)));
+    }
+} elseif ($oParam->exec == "anularRequisicao") {  ///função que faz a anulação dos itens da requisição
     db_inicio_transacao();
-    foreach ($oParam->params[0]->itens as $oMaterial) {
+    try {
+        foreach ($oParam->params[0]->aItens as $oMaterial) {
+            $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
 
-
-      $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
-      $oMaterialEstoque->cancelarSaidaMaterial($oMaterial->nQuantidade, $oMaterial->iCodEstoqueIni, $oMaterial->sObs);
-
-
-    }
-    db_fim_transacao(false);
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Cancelamento Efetuado com Sucesso")));
-  }
-  catch (Exception $eErro) {
-
-    $oMaterialEstoque->cancelarLoteSession();
-    db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
-  }
-}else if ($oParam->exec == "getDadosPedidoRequisicao"){ ///traz os dados do atendimento requisicao para atende-la
-  try {
-
-    $oSolicitacao  = new requisicaoMaterial($oParam->params[0]->iCodReq);
-    $oSolicitacao->setEncode(true);
-    if ($oSolicitacao->getDadosPedidoRequisicao()) {
-
-      $oRetorno           = $oSolicitacao->getInfo();
-      unset($oRetorno->senha);
-    if($oRetorno->m91_depto!=""){
-      	 if($oRetorno->m91_depto!=""){
-	       $sql=$cldb_dbalmox->sql_record($cldb_dbalmox->sql_query("","descrdepto as descr","","m91_depto= ".$oRetorno->m91_depto));
-      	   db_fieldsmemory($sql,0);
-      	   $oRetorno->descr_depto= $descr;
-      }
-      $oRetorno->itens   =  $oSolicitacao->getItensPedidoRequisicao();
-      $oRetorno->status  = 1;
-      $oRetorno->message = null;
-
-      echo $oJson->encode($oRetorno);
-
-    } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
-    }
-    }
-  } catch (Exception  $oExeption) {
-
-    $sError = $oExeption->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
-  }
-}else if ($oParam->exec == "anularRequisicao") {  ///função que faz a anulação dos itens da requisição
- 	 db_inicio_transacao();
-	 try {
-	    foreach ($oParam->params[0]->aItens as $oMaterial) {
-         $oMaterialEstoque = new materialEstoque($oMaterial->iCodMater);
-
-         $oMaterialEstoque->anularRequisicao($oMaterial->nQtde,
-                                               db_stdClass::normalizeStringJsonEscapeString($oMaterial->sItemMotivo),
-                                               $oMaterial->iCodMater,
-                                               $oMaterial->iCodItemReq
-                                               );
-
-      }
-      db_fim_transacao(false);
+            $oMaterialEstoque->anularRequisicao(
+                $oMaterial->nQtde,
+                db_stdClass::normalizeStringJsonEscapeString($oMaterial->sItemMotivo),
+                $oMaterial->iCodMater,
+                $oMaterial->iCodItemReq
+            );
+        }
+        db_fim_transacao(false);
     } catch (Exception  $eErro) {
-	    $sqlerro = true;
-	    $erro_msg = str_replace("\n", "\\n",$eErro->getMessage());
-	    db_fim_transacao(true);
-
-	  }
-	  echo $oJson->encode(array("status" => 1, "message"=> "Inclusão efetuada com Sucesso"));
+        $sqlerro = true;
+        $erro_msg = str_replace("\n", "\\n", $eErro->getMessage());
+        db_fim_transacao(true);
+    }
+    echo $oJson->encode(array("status" => 1, "message" => "Inclusão efetuada com Sucesso"));
 }
-?>

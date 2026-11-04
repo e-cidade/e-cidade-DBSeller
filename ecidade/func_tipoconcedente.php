@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipoconcedente->rotulo->label("o37_descricao");
               <?=$Lo37_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o37_sequencial",10,$Io37_sequencial,true,"text",4,"","chave_o37_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoconcedente->rotulo->label("o37_descricao");
               <?=$Lo37_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o37_descricao",50,$Io37_descricao,true,"text",4,"","chave_o37_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoconcedente->rotulo->label("o37_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoconcedente.php")==true){
@@ -122,12 +122,12 @@ $cltipoconcedente->rotulo->label("o37_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

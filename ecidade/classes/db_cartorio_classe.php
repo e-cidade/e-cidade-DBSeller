@@ -56,13 +56,13 @@ class cl_cartorio {
                  v82_extrajudicial = bool = Extrajudicial
                  ";
    //funcao construtor da classe
-   function cl_cartorio() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cartorio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_cartorio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v82_sequencial = ($this->v82_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["v82_sequencial"]:$this->v82_sequencial);
        $this->v82_descricao = ($this->v82_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["v82_descricao"]:$this->v82_descricao);
@@ -83,7 +83,7 @@ class cl_cartorio {
      }
    }
    // funcao para Inclusão
-   function incluir ($v82_sequencial){
+   public function incluir ($v82_sequencial){
       $this->atualizacampos();
      if($this->v82_descricao == null ){
        $this->erro_sql = " Campo Descrição não informado.";

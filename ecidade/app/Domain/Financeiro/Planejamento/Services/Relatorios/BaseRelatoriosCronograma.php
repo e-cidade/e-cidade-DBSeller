@@ -2,6 +2,7 @@
 
 namespace App\Domain\Financeiro\Planejamento\Services\Relatorios;
 
+use App\Domain\Financeiro\Contabilidade\Models\PlanoReceita;
 use App\Domain\Financeiro\Orcamento\Services\Relatorios\BaseCronograma;
 use App\Domain\Financeiro\Planejamento\Models\Comissao;
 use App\Domain\Financeiro\Planejamento\Models\Planejamento;
@@ -12,6 +13,8 @@ abstract class BaseRelatoriosCronograma extends BaseCronograma
      * @var Planejamento
      */
     protected $planejamento;
+
+    protected $ementario = 'ecidade';
 
     /**
      * @param array $filtros
@@ -28,6 +31,9 @@ abstract class BaseRelatoriosCronograma extends BaseCronograma
         $this->agruparPor = $filtros['agruparPor'];
         $this->periodicidade = $filtros['periodicidade'];
         $this->instituicoes = $filtros['instituicoes'];
+        if (!empty($filtros['ementario'])) {
+            $this->ementario = $filtros['ementario'];
+        }
 
         $this->organizaFiltrosEmissao();
         $this->inicializaTotalizadores();
@@ -44,6 +50,7 @@ abstract class BaseRelatoriosCronograma extends BaseCronograma
         $this->dados['filtros']['exercicio'] = $this->exercicio;
         $this->dados['filtros']['agruparPor'] = $this->agruparPor;
         $this->dados['filtros']['periodicidade'] = $this->periodicidade;
+        $this->dados['ementario'] = $this->ementario;
     }
 
     protected function getPlanejamento($planejamento_id)
@@ -72,5 +79,24 @@ abstract class BaseRelatoriosCronograma extends BaseCronograma
             return $comissao->cgm->z01_nome;
         })->toArray();
         $this->dados['planejamento']['comissao'] = $cgms;
+    }
+
+    /**
+     * Retorna o exercício do mapeamento a ser usado.
+     * Nem sempre teremos o ementário para o exercício do planejamento, nesse caso ficou acordado de pegar o anterior.
+     * @return int
+     */
+    protected function exercicioMapeamento()
+    {
+        $plano = PlanoReceita::query()
+            ->where('uniao', $this->ementario === 'uniao')
+            ->where('exercicio', $this->planejamento->pl2_ano_inicial)
+            ->first();
+
+        if (is_null($plano)) {
+            return $this->planejamento->pl2_ano_inicial - 1;
+        }
+
+        return $this->planejamento->pl2_ano_inicial;
     }
 }

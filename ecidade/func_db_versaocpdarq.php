@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_versaocpdarq->rotulo->label("db34_obs");
               <?=$Ldb34_codarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db34_codarq",6,$Idb34_codarq,true,"text",4,"","chave_db34_codarq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_versaocpdarq->rotulo->label("db34_obs");
               <?=$Ldb34_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db34_obs",1,$Idb34_obs,true,"text",4,"","chave_db34_obs");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_versaocpdarq->rotulo->label("db34_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versaocpdarq.php")==true){
@@ -118,12 +118,12 @@ $cldb_versaocpdarq->rotulo->label("db34_obs");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,136 +25,123 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("libs/db_utils.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_benstransf_classe.php"));
-include(modification("classes/db_benstransfdiv_classe.php"));
-include(modification("classes/db_benstransfdes_classe.php"));
-include(modification("classes/db_db_usuarios_classe.php"));
-include(modification("classes/db_db_depart_classe.php"));
-include(modification("classes/db_db_depusu_classe.php"));
-include(modification("classes/db_departdiv_classe.php"));
-include(modification("classes/db_benstransfcodigo_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_benstransf_classe.php"));
+require_once(modification("classes/db_benstransfdiv_classe.php"));
+require_once(modification("classes/db_benstransfdes_classe.php"));
+require_once(modification("classes/db_db_usuarios_classe.php"));
+require_once(modification("classes/db_db_depart_classe.php"));
+require_once(modification("classes/db_db_depusu_classe.php"));
+require_once(modification("classes/db_departdiv_classe.php"));
+require_once(modification("classes/db_benstransfcodigo_classe.php"));
 
 $oPost = db_utils::postMemory($_POST);
-$oGet  = db_utils::postMemory($_GET);
+$oGet = db_utils::postMemory($_GET);
 
 $clbenstransfcodigo = new cl_benstransfcodigo();
-$clbenstransf       = new cl_benstransf();
-$clbenstransfdiv    = new cl_benstransfdiv();
-$clbenstransfdes    = new cl_benstransfdes();
-$cldb_usuarios      = new cl_db_usuarios();
-$cldb_depart        = new cl_db_depart();
-$cldepartdiv        = new cl_departdiv();
-$cldb_depusu        = new cl_db_depusu();
+$clbenstransf = new cl_benstransf();
+$clbenstransfdiv = new cl_benstransfdiv();
+$clbenstransfdes = new cl_benstransfdes();
+$cldb_usuarios = new cl_db_usuarios();
+$cldb_depart = new cl_db_depart();
+$cldepartdiv = new cl_departdiv();
+$cldb_depusu = new cl_db_depusu();
 
 $db_opcao = 22;
 $db_botao = true;
 
-if(isset($oPost->alterar)){
-	$db_opcao = 2;
-  $lSqlErro = false;
-  
-  db_inicio_transacao();
-  
-  if($oPost->t93_data_dia!="" && $oPost->t93_data_mes!="" && $oPost->t93_data_ano!=""){
-    
-  	$dtData = $oPost->t93_data_ano."-".$oPost->t93_data_mes."-".$oPost->t93_data_dia;
-    
-    if( $dtData < date("Y-m-d") ){
-      $lSqlErro = true;
-      $sMsgErro = "Erro: Informe uma data válida.";
-    }
-    
-  }
-    
-  $rsConsultaBens = $clbenstransfcodigo->sql_record($clbenstransfcodigo->sql_query_file($oPost->t93_codtran));
-  
-  if ( $clbenstransfcodigo->numrows > 0 ) {
-  	
-  	$clbenstransfdiv->excluir(null," t31_codtran = {$oPost->t93_codtran} ");
+if (isset($oPost->alterar)) {
+    $db_opcao = 2;
+    $lSqlErro = false;
 
-    if($clbenstransfdiv->erro_status==0){
-      $lSqlErro = true;
-    }
-    
-    $sMsgErro = $clbenstransfdiv->erro_msg;  	
-  	
-  	if ( !$lSqlErro ) {
-  		
-  		$clbenstransfcodigo->excluir($oPost->t93_codtran);
-  		
-	    if($clbenstransfcodigo->erro_status==0){
-	      $lSqlErro = true;
-	    }
-	    
-	    $sMsgErro = $clbenstransfcodigo->erro_msg;  		
-  		
-  	}
-  	
-  }
-  
-  
-  if( !$lSqlErro ){
-  	
-  	if ( isset($oPost->codclabens) && trim($oPost->codclabens) != "" ) {
-  	  $clbenstransf->t93_clabens  = $oPost->codclabens;
-  	} else {
-  		$clbenstransf->t93_clabens  = "0";
-  	}
-  	
-  	if ( isset($oPost->divOrigem) && trim($oPost->divOrigem) != "" &&  $oPost->divOrigem != "0" ) {
-  	  $clbenstransf->t93_divisao  = $oPost->divOrigem;
-  	} else {
-  		$clbenstransf->t93_divisao  = "0";
-  	}
-  	
-  	$clbenstransf->t93_codtran    = $oPost->t93_codtran;
-  	$clbenstransf->t93_data       = $dtData;
-  	$clbenstransf->t93_depart     = $oPost->t93_depart;
-  	$clbenstransf->t93_id_usuario = $oPost->t93_id_usuario;
-  	$clbenstransf->t93_instit     = db_getsession('DB_instit');
-  	$clbenstransf->t93_obs        = $oPost->t93_obs;
-  	
-    $clbenstransf->alterar($oPost->t93_codtran);
-    
-    if($clbenstransf->erro_status==0){
-      $lSqlErro = true;
-    }
-    
-    $sMsgErro = $clbenstransf->erro_msg;
-     
-  }
-  
-  if( !$lSqlErro ){
-  	
-    if ( isset($oPost->divDestino) && trim($oPost->divDestino) != "" && $oPost->divDestino != "0" ) {
-      $clbenstransf->t94_divisao  = $oPost->divDestino;
-    }  	
-  	
-  	$clbenstransfdes->t94_codtran = $clbenstransf->t93_codtran;
-  	$clbenstransfdes->t94_depart  = $oPost->t94_depart;
-  	
-    $clbenstransfdes->alterar($clbenstransf->t93_codtran,null);
-    
-    if($clbenstransfdes->erro_status==0){
-      $lSqlErro = true;
-    }
-    
-    $sMsgErro = $clbenstransfdes->erro_msg;
-    
-  }
+    db_inicio_transacao();
 
-  db_fim_transacao($lSqlErro);
-  
-} else if ( isset($oGet->chavepesquisa) && trim($oGet->chavepesquisa) != "" ) {
-	
+    if ($oPost->t93_data_dia != "" && $oPost->t93_data_mes != "" && $oPost->t93_data_ano != "") {
+        $dtData = $oPost->t93_data_ano . "-" . $oPost->t93_data_mes . "-" . $oPost->t93_data_dia;
 
-	$sCampos = "t93_codtran,
+        if ($dtData < date("Y-m-d")) {
+            $lSqlErro = true;
+            $sMsgErro = "Erro: Informe uma data válida.";
+        }
+    }
+
+    $rsConsultaBens = $clbenstransfcodigo->sql_record($clbenstransfcodigo->sql_query_file($oPost->t93_codtran));
+    if ($clbenstransfcodigo->numrows > 0) {
+        $clbenstransfdiv->excluir(null, " t31_codtran = {$oPost->t93_codtran} ");
+
+        if ($clbenstransfdiv->erro_status == 0) {
+            $lSqlErro = true;
+        }
+
+        $sMsgErro = $clbenstransfdiv->erro_msg;
+        if (!$lSqlErro) {
+
+            $clbenstransfcodigo->excluir($oPost->t93_codtran);
+            if ($clbenstransfcodigo->erro_status == 0) {
+                $lSqlErro = true;
+            }
+
+            $sMsgErro = $clbenstransfcodigo->erro_msg;
+        }
+    }
+
+
+    if (!$lSqlErro) {
+
+        if (isset($oPost->codclabens) && trim($oPost->codclabens) != "") {
+            $clbenstransf->t93_clabens = $oPost->codclabens;
+        } else {
+            $clbenstransf->t93_clabens = "0";
+        }
+
+        if (isset($oPost->divOrigem) && trim($oPost->divOrigem) != "" && $oPost->divOrigem != "0") {
+            $clbenstransf->t93_divisao = $oPost->divOrigem;
+        } else {
+            $clbenstransf->t93_divisao = "0";
+        }
+
+        $clbenstransf->t93_codtran = $oPost->t93_codtran;
+        $clbenstransf->t93_data = $dtData;
+        $clbenstransf->t93_depart = $oPost->t93_depart;
+        $clbenstransf->t93_id_usuario = $oPost->t93_id_usuario;
+        $clbenstransf->t93_instit = db_getsession('DB_instit');
+        $clbenstransf->t93_obs = $oPost->t93_obs;
+        $clbenstransf->alterar($oPost->t93_codtran);
+
+        if ($clbenstransf->erro_status == 0) {
+            $lSqlErro = true;
+        }
+
+        $sMsgErro = $clbenstransf->erro_msg;
+    }
+
+    if (!$lSqlErro) {
+
+        if (isset($oPost->divDestino) && trim($oPost->divDestino) != "" && $oPost->divDestino != "0") {
+            $clbenstransfdes->t94_divisao = $oPost->divDestino;
+        }
+
+        $clbenstransfdes->t94_codtran = $clbenstransf->t93_codtran;
+        $clbenstransfdes->t94_depart = $oPost->t94_depart;
+
+        $clbenstransfdes->alterar($clbenstransf->t93_codtran, null);
+
+        if ($clbenstransfdes->erro_status == 0) {
+            $lSqlErro = true;
+        }
+
+        $sMsgErro = $clbenstransfdes->erro_msg;
+    }
+
+    db_fim_transacao($lSqlErro);
+
+} else if (isset($oGet->chavepesquisa) && trim($oGet->chavepesquisa) != "") {
+    $sCampos = "t93_codtran,
 	            t93_data,
 	            t93_id_usuario,
 	            nome,
@@ -170,102 +157,102 @@ if(isset($oPost->alterar)){
 	            db_depart.descrdepto as depto_destino,
 	            t94_divisao as divDestino,
               departdiv.t30_descr as descrdivdestino ";
-	
-  $rsConsultaDestino = $clbenstransfdes->sql_record($clbenstransfdes->sql_query_lote($oGet->chavepesquisa,null,$sCampos));
-  
-  if($clbenstransfdes->numrows > 0){
-  	
-    $oDadosTransf = db_utils::fieldsMemory($rsConsultaDestino,0);
-    
-    $divOrigem       = $oDadosTransf->divorigem;
-    $divDestino      = $oDadosTransf->divdestino;
-    $t93_codtran     = $oDadosTransf->t93_codtran;
-    $aData           = explode("-",$oDadosTransf->t93_data);
-    $t93_data_ano    = $aData[0];
-    $t93_data_mes    = $aData[1];
-    $t93_data_dia    = $aData[2];
-    $t93_id_usuario  = $oDadosTransf->t93_id_usuario;
-    $nome            = $oDadosTransf->nome;
-    $codclabens      = $oDadosTransf->codclabens;
-    $descrclabens    = $oDadosTransf->descrclabens;
-    $descrdivorigem  = $oDadosTransf->descrdivorigem;
-    $estrutclabens   = $oDadosTransf->estrutclabens;
-    $t93_obs         = $oDadosTransf->t93_obs;
-    $descrdivdestino = $oDadosTransf->descrdivdestino;
 
-    if ( !isset($oPost->t93_codtran) ) {
-      $t93_depart      = $oDadosTransf->t93_depart;
-      $descrdepto      = $oDadosTransf->descrdepto;
-      $t94_depart      = $oDadosTransf->t94_depart;
-      $depto_destino   = $oDadosTransf->depto_destino;
+    $rsConsultaDestino = $clbenstransfdes->sql_record($clbenstransfdes->sql_query_lote($oGet->chavepesquisa, null, $sCampos));
+
+    if ($clbenstransfdes->numrows > 0) {
+
+        $oDadosTransf = db_utils::fieldsMemory($rsConsultaDestino, 0);
+
+        $divOrigem = $oDadosTransf->divorigem;
+        $divDestino = $oDadosTransf->divdestino;
+        $t93_codtran = $oDadosTransf->t93_codtran;
+        $aData = explode("-", $oDadosTransf->t93_data);
+        $t93_data_ano = $aData[0];
+        $t93_data_mes = $aData[1];
+        $t93_data_dia = $aData[2];
+        $t93_id_usuario = $oDadosTransf->t93_id_usuario;
+        $nome = $oDadosTransf->nome;
+        $codclabens = $oDadosTransf->codclabens;
+        $descrclabens = $oDadosTransf->descrclabens;
+        $descrdivorigem = $oDadosTransf->descrdivorigem;
+        $estrutclabens = $oDadosTransf->estrutclabens;
+        $t93_obs = $oDadosTransf->t93_obs;
+        $descrdivdestino = $oDadosTransf->descrdivdestino;
+
+        if (!isset($oPost->t93_codtran)) {
+            $t93_depart = $oDadosTransf->t93_depart;
+            $descrdepto = $oDadosTransf->descrdepto;
+            $t94_depart = $oDadosTransf->t94_depart;
+            $depto_destino = $oDadosTransf->depto_destino;
+        }
+
+
+        $db_opcao = 2;
+        $db_botao = true;
+
+        echo " <script>                                                                                      ";
+
+        if (!isset($oPost->t93_codtran)) {
+            echo "   var sQuery  = 'iCodTransf={$t93_codtran}';                                                ";
+            echo "   parent.iframe_benstransfcodigo.location.href='pat1_benstransfcodigolote001.php?'+sQuery;  ";
+            echo "   parent.document.formaba.benstransfcodigo.disabled = false;                                ";
+            echo "   parent.mo_camada('benstransfcodigo');                                                     ";
+        }
+
+        echo " </script>                                                                                     ";
+
+
     }
-    
-    
-    $db_opcao   = 2;
-    $db_botao   = true;
-	
-    echo " <script>                                                                                      ";
-    
-    if ( !isset($oPost->t93_codtran) ) {   
-      echo "   var sQuery  = 'iCodTransf={$t93_codtran}';                                                ";
-      echo "   parent.iframe_benstransfcodigo.location.href='pat1_benstransfcodigolote001.php?'+sQuery;  "; 
-      echo "   parent.document.formaba.benstransfcodigo.disabled = false;                                ";
-      echo "   parent.mo_camada('benstransfcodigo');                                                     ";
-    }
-    
-    echo " </script>                                                                                     ";                    
-  
-    
-  }
-  
-	
+
+
 }
 
 ?>
 <html>
-<head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-</head>
-<body bgcolor=#CCCCCC>
-	   <?
-	     include(modification("forms/db_frmbenstransflote.php"));
-	   ?>
-</body>
-</html>
-<?
-if(isset($oPost->alterar)){
 
-	db_msgbox($sMsgErro);
-  
-  if ( $lSqlErro ){
-  	
-    if($clbenstransf->erro_campo!=""){
-      echo "<script> document.form1.".$clbenstransf->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$clbenstransf->erro_campo.".focus();</script>";
+<head>
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor=#CCCCCC>
+    <?php
+    include(modification("forms/db_frmbenstransflote.php"));
+    ?>
+</body>
+
+</html>
+<?php
+if (isset($oPost->alterar)) {
+    db_msgbox($sMsgErro);
+
+    if ($lSqlErro) {
+        if ($clbenstransf->erro_campo != "") {
+            echo "<script> document.form1." . $clbenstransf->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1." . $clbenstransf->erro_campo . ".focus();</script>";
+        }
+
+    } else {
+        echo " <script>                                                                                                                  ";
+        echo "                                                                                                                           ";
+        echo "   var sQuery  = 'iCodTransf={$clbenstransf->t93_codtran}';                                                                ";
+        echo "   parent.iframe_benstransfcodigo.location.href='pat1_benstransfcodigolote001.php?'+sQuery;                                ";
+        echo "   parent.document.formaba.benstransfcodigo.disabled = false;                                                              ";
+        echo "   parent.mo_camada('benstransfcodigo');                                                                                   ";
+        echo "                                                                                                                           ";
+        echo " </script>                                                                                                                 ";
+
     }
-    
-  }else{
-  	
-    echo " <script>                                                                                                                  ";
-    echo "                                                                                                                           ";
-    echo "   var sQuery  = 'iCodTransf={$clbenstransf->t93_codtran}';                                                                ";
-    echo "   parent.iframe_benstransfcodigo.location.href='pat1_benstransfcodigolote001.php?'+sQuery;                                "; 
-    echo "   parent.document.formaba.benstransfcodigo.disabled = false;                                                              ";   
-    echo "   parent.mo_camada('benstransfcodigo');                                                                                   ";      
-    echo "                                                                                                                           ";
-    echo " </script>                                                                                                                 ";                                                                                                                  
-    
-  }
-  
-} 
-if ( $db_opcao == 22 ) {
-	echo "<script>               ";
-	echo "  js_pesquisaTransf(); "; 
-	echo "</script>              ";
+}
+
+if ($db_opcao == 22) {
+    echo "<script>               ";
+    echo "  js_pesquisaTransf(); ";
+    echo "</script>              ";
 }
 ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("t70_descr");
        <?=@$Lt56_histbem?>
     </td>
     <td> 
-<?
+<?php
 db_input('t56_histbem',10,$It56_histbem,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt56_codbem?>">
-       <?
+       <?php
        db_ancora(@$Lt56_codbem,"js_pesquisat56_codbem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t56_codbem',10,$It56_codbem,true,'text',$db_opcao," onchange='js_pesquisat56_codbem(false);'")
 ?>
-       <?
+       <?php
 db_input('t52_descr',100,$It52_descr,true,'text',3,'')
        ?>
     </td>
@@ -65,37 +65,37 @@ db_input('t52_descr',100,$It52_descr,true,'text',3,'')
        <?=@$Lt56_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t56_data',@$t56_data_dia,@$t56_data_mes,@$t56_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt56_depart?>">
-       <?
+       <?php
        db_ancora(@$Lt56_depart,"js_pesquisat56_depart(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t56_depart',5,$It56_depart,true,'text',$db_opcao," onchange='js_pesquisat56_depart(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt56_situac?>">
-       <?
+       <?php
        db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t56_situac',10,$It56_situac,true,'text',$db_opcao," onchange='js_pesquisat56_situac(false);'")
 ?>
-       <?
+       <?php
 db_input('t70_descr',40,$It70_descr,true,'text',3,'')
        ?>
     </td>
@@ -105,7 +105,7 @@ db_input('t70_descr',40,$It70_descr,true,'text',3,'')
        <?=@$Lt56_histor?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('t56_histor',0,0,$It56_histor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_histbem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

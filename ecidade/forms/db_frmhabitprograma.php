@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,19 +47,19 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_sequencial?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					  db_input('ht01_sequencial',10,$Iht01_sequencial,true,'text',3,"");
 					?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?php echo $Tht01_habitgrupoprograma?>">
-		      <?
+		      <?php
 		        db_ancora($Lht01_habitgrupoprograma,"js_pesquisaht01_habitgrupoprograma(true);",$db_opcao);
 		      ?>
 		    </td>
 		    <td>
-					<?
+					<?php
 						db_input('ht01_habitgrupoprograma',10,$Iht01_habitgrupoprograma,true,'text',$db_opcao," onchange='js_pesquisaht01_habitgrupoprograma(false);'");
 						db_input('ht03_descricao',40,$Iht03_descricao,true,'text',3,'');
  	        ?>
@@ -70,7 +70,7 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_descricao?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					  db_input('ht01_descricao',53,$Iht01_descricao,true,'text',$db_opcao,"");
 					?>
 		    </td>
@@ -80,7 +80,7 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_obs?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					  db_textarea('ht01_obs',2,51,$Iht01_obs,true,'text',$db_opcao,"");
 					?>
 		    </td>
@@ -88,13 +88,13 @@ if( $db_opcao == 1 ) {
       <tr>
         <td>
           <strong>
-	          <?
+	          <?php
 	            db_ancora("Concedente:","js_pesquisaConcedente(true);",$db_opcao);
 	          ?>
           </strong>
         </td>
         <td>
-          <?
+          <?php
             db_input('ht19_numcgm',10,$Iht19_numcgm,true,'text',$db_opcao," onchange='js_pesquisaConcedente(false);'");
             db_input('z01_nome'   ,40,'',true,'text',3,'');
           ?>
@@ -105,7 +105,7 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_controlemultpartcandidato?>
 		    </td>
 		    <td>
-					<?
+					<?php
 						$x = array('1'=>'Sem Aviso e Sem Bloqueio',
 						           '2'=>'Com Aviso e Sem bloqueio',
 						           '3'=>'Com Aviso e Bloqueio');
@@ -119,14 +119,14 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_controleqtd?>
 		    </td>
 		    <td>
-					<?
+					<?php
 						$x = array('1'=>'Sem Limite',
 						           '2'=>'Máxima Determindada');
 						db_select('ht01_controleqtd',$x,true,$db_opcao,"style='width:400px' onChange='js_verificaControleQtd()'");
 					?>
 		    </td>
 		  </tr>
-		  <?
+		  <?php
         if (isset($ht01_controleqtd) && $ht01_controleqtd == 2) {
         	$sStyle = '';
         } else {
@@ -138,7 +138,7 @@ if( $db_opcao == 1 ) {
           <?php echo $Lht01_qtdbenef?>
         </td>
         <td>
-          <?
+          <?php
             db_input('ht01_qtdbenef',10,$Iht01_qtdbenef,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -148,7 +148,7 @@ if( $db_opcao == 1 ) {
 		      <strong>Período Validade:</strong>
 		    </td>
 		    <td>
-					<?
+					<?php
           $ht01_validadeini_dia = isset( $ht01_validadeini_dia ) ? $ht01_validadeini_dia : "";
           $ht01_validadeini_mes = isset( $ht01_validadeini_mes ) ? $ht01_validadeini_mes : "";
           $ht01_validadeini_ano = isset( $ht01_validadeini_ano ) ? $ht01_validadeini_ano : "";
@@ -168,7 +168,7 @@ if( $db_opcao == 1 ) {
 		      <?php echo $Lht01_descrcontrato?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					  db_textarea('ht01_descrcontrato',2,51,$Iht01_descrcontrato,true,'text',$db_opcao,"");
 					?>
 		    </td>
@@ -422,7 +422,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_habitprograma.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

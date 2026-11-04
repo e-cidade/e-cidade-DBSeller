@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("c70_anousu");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc78_codlan?>">
-       <?
+       <?php
        db_ancora(@$Lc78_codlan,"js_pesquisac78_codlan(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c78_codlan',8,$Ic78_codlan,true,'text',$db_opcao," onchange='js_pesquisac78_codlan(false);'")
 ?>
-       <?
+       <?php
 db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('c70_anousu',4,$Ic70_anousu,true,'text',3,'')
        <?=@$Lc78_chave?>
     </td>
     <td> 
-<?
+<?php
 db_input('c78_chave',20,$Ic78_chave,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conlancamdig.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

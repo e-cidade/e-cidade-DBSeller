@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,13 +95,13 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC>
 
-	<?
+	<?php
 	include(modification("forms/db_frmrecparprocdiver.php"));
 	?>
 
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clrecparprocdiver->erro_campo!=""){

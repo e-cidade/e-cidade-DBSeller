@@ -2,7 +2,9 @@
 
 namespace App\Domain\Patrimonial\Protocolo\Model\Processo;
 
+use ECidade\Patrimonial\Protocolo\Modelo\AndamentoProcesso;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Transferencia
@@ -23,12 +25,14 @@ class Transferencia extends Model
     public $timestamps = false;
 
     /**
-     * @param int $p62_codtran
+     * @param  int  $p62_codtran
+     *
      * @return this
      */
     public function setCodigo($p62_codtran)
     {
         $this->p62_codtran = $p62_codtran;
+
         return $this;
     }
 
@@ -41,12 +45,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_dttran
+     * @param  int  $p62_dttran
+     *
      * @return this
      */
     public function setData($p62_dttran)
     {
         $this->p62_dttran = $p62_dttran;
+
         return $this;
     }
 
@@ -59,12 +65,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_id_usuario
+     * @param  int  $p62_id_usuario
+     *
      * @return this
      */
     public function setUsuario($p62_id_usuario)
     {
         $this->p62_id_usuario = $p62_id_usuario;
+
         return $this;
     }
 
@@ -77,12 +85,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_coddepto
+     * @param  int  $p62_coddepto
+     *
      * @return this
      */
     public function setDepartamento($p62_coddepto)
     {
         $this->p62_coddepto = $p62_coddepto;
+
         return $this;
     }
 
@@ -95,12 +105,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_id_usorec
+     * @param  int  $p62_id_usorec
+     *
      * @return this
      */
     public function setUsuarioRecebimento($p62_id_usorec)
     {
         $this->p62_id_usorec = $p62_id_usorec;
+
         return $this;
     }
 
@@ -113,12 +125,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_coddeptorec
+     * @param  int  $p62_coddeptorec
+     *
      * @return this
      */
     public function setDepartamentoRecebimento($p62_coddeptorec)
     {
         $this->p62_coddeptorec = $p62_coddeptorec;
+
         return $this;
     }
 
@@ -131,12 +145,14 @@ class Transferencia extends Model
     }
 
     /**
-     * @param int $p62_hora
+     * @param  int  $p62_hora
+     *
      * @return this
      */
     public function setHora($p62_hora)
     {
         $this->p62_hora = $p62_hora;
+
         return $this;
     }
 
@@ -146,5 +162,27 @@ class Transferencia extends Model
     public function getHora()
     {
         return $this->p62_hora;
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function recebimentos()
+    {
+        return $this->belongsToMany(
+            ProcessoAndamento::class,
+            "protocolo.proctransand",
+            "p64_codtran",
+            "p64_codandam"
+        );
+    }
+
+
+    /**
+     * @return ProcessoAndamento|null
+     */
+    public function recebimento()
+    {
+        return $this->recebimentos()->first();
     }
 }

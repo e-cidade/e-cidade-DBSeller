@@ -172,7 +172,7 @@ if(isset($chavepesquisalotepront)&&(int)$chavepesquisalotepront != 0){
 <script>
 function js_sair(){
 	if(confirm("Deseja realmente sair?")){
-		<?
+		<?php
 		if (isset($_SESSION["objRegistros"])) {
 			unset($_SESSION["objRegistros"]);
 		}

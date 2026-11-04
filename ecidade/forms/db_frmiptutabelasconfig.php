@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,19 +39,19 @@ $cldbsysarquivo->rotulo->label('nomearq');
           <?=@$Lj122_sequencial?>
         </td>
         <td colspan="2"> 
-          <?
+          <?php
             db_input('j122_sequencial', 10, $Ij122_sequencial, true, 'text', 3, "");
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj121_sequencial?>">
-          <?
+          <?php
             db_ancora("<b>Tabela Cálculo:</b>", "js_pesquisaj121_sequencial(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             if (isset($j121_sequencial)) {
             	$tabelaanterior = $j121_sequencial;
             }
@@ -62,7 +62,7 @@ $cldbsysarquivo->rotulo->label('nomearq');
           ?>
         </td>
         <td> 
-          <?
+          <?php
             if (isset($nomearq)) {
             	$nometabelaanterior = $nomearq;
             }
@@ -81,20 +81,20 @@ $cldbsysarquivo->rotulo->label('nomearq');
     </tr>
 	  <tr>			
 			<td>	
-			  <?
+			  <?php
           if (!$lDisabled) {
 			  ?>
 				<input name="<?=($db_opcao==1?"incluir":"excluir")?>" 
 				       type="submit" id="db_opcao" onclick="return js_validar();"
 				       value="<?=($db_opcao==1?"Incluir":"Excluir")?>" 
 				       <?=($db_botao==false?"disabled":"")?> >
-				<?
+				<?php
           }
           
           if ($db_opcao != 1) {
         ?>
             <input name="novo" type="button" id="novo" value="Novo" onclick="js_novo();" >
-        <?
+        <?php
           }
 				?>
 				<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
@@ -181,7 +181,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_iptutabelas.hide();
-  <?
+  <?php
 	  if ($db_opcao != 1) {
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }

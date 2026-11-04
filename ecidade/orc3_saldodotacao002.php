@@ -59,19 +59,18 @@ parse_str($_SERVER['QUERY_STRING']);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
 if (isset($o58_coddot) && $o58_coddot != "") {
     $filtro = " and o58_coddot=$o58_coddot ";
-
 } else {
     $filtro = "";
     if (isset($o50_estrutdespesa) && $o50_estrutdespesa != "") {
 
-        $matriz = split('\.', $o50_estrutdespesa);
+        $matriz =explode('.', $o50_estrutdespesa);
         for ($i = 0; $i < count($matriz); $i++) {
             switch ($i) {
                 case 0://orgao
@@ -96,10 +95,10 @@ if (isset($o58_coddot) && $o58_coddot != "") {
                     $o56_elemento = $matriz[$i];
                     break;
                 case 7://tipo de  recurso
-                    $o15_recurso = $matriz[$i];
+                    $gestao = $matriz[$i];
                     break;
-                case 8://contra recurso
-                    $o61_codigo = $matriz[$i];
+                case 8://complemento
+                    $o15_complemento = (int)$matriz[$i];
                     break;
             }
         }
@@ -130,19 +129,36 @@ if (isset($o58_coddot) && $o58_coddot != "") {
     if (!empty($o15_recurso)) {
         $filtro .= " and o15_recurso = '$o15_recurso'";
     }
+
+    if (!empty($gestao)) {
+        $filtro .= " and gestao = '$gestao'";
+    }
+
+    if (isset($o15_complemento)) {
+        $filtro .= " and o15_complemento = $o15_complemento";
+    }
+
     if (!empty($o61_codigo)) {
         $filtro .= " and o61_codigo =  $o61_codigo";
     }
 }
 
+//08.82.10.128.0111.2132.3339039000000.1600.000
 
-$sql = "select fc_estruturaldotacao(" . db_getsession("DB_anousu") . ",o58_coddot) as dl_estrutural,o55_descr::text,o56_descr,(o15_complemento||'-'||o200_descricao)::varchar AS complemento,o58_coddot
-         from orcdotacao d
-         inner join orctiporec on orctiporec.o15_codigo = o58_codigo
-         INNER JOIN complementofonterecurso ON complementofonterecurso.o200_sequencial = o15_complemento
-	     inner join orcprojativ p on p.o55_anousu = " . db_getsession("DB_anousu") . " and p.o55_projativ = d.o58_projativ
-	     inner join orcelemento e on e.o56_codele = d.o58_codele and e.o56_anousu = d.o58_anousu
-         left outer join orcdotacaocontr x on x.o61_anousu = d.o58_anousu and x.o61_coddot=d.o58_coddot ";
+$sql = "
+  select fc_estruturaldotacao(" . db_getsession("DB_anousu") . ",o58_coddot) as dl_estrutural,
+         o55_descr::text,
+         o56_descr,
+         o15_recurso,
+         (o15_complemento||'-'||o200_descricao)::varchar AS complemento,o58_coddot
+    from orcdotacao d
+    join orctiporec on orctiporec.o15_codigo = o58_codigo
+    join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+         and fonterecurso.exercicio = d.o58_anousu
+    join complementofonterecurso ON complementofonterecurso.o200_sequencial = o15_complemento
+	join orcprojativ p on p.o55_anousu = " . db_getsession("DB_anousu") . " and p.o55_projativ = d.o58_projativ
+	join orcelemento e on e.o56_codele = d.o58_codele and e.o56_anousu = d.o58_anousu
+    left outer join orcdotacaocontr x on x.o61_anousu = d.o58_anousu and x.o61_coddot=d.o58_coddot ";
 $sql .= " where o58_anousu=" . db_getsession("DB_anousu") . " and o58_instit=" . db_getsession("DB_instit") . " $filtro ";
 
 ?>

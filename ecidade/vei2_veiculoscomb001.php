@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -49,7 +49,7 @@ $clveiculoscomb = new cl_veiculoscomb;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 
-<?
+<?php
 $sqlerro  = false;
 $erro_msg = "";
 $db_botao = true;
@@ -61,7 +61,7 @@ if ($db_opcao != 1) {
 }
 
 if (isset($confirmar) && trim($confirmar)!=""){
-  $vet_combustiveis = split(",",$ve06_veiccadcomb);
+  $vet_combustiveis =explode(",",$ve06_veiccadcomb);
   $vetor            = array(array("ve06_veiccadcomb","ve06_veiculos","ve06_padrao"));
   $cont_vetor       = 0;
   for($x = 0; $x < count($vet_combustiveis); $x++){
@@ -103,7 +103,7 @@ if (isset($confirmar) && trim($confirmar)!=""){
       $rsVeicComb = $clveiculoscomb->sql_record($clveiculoscomb->sql_query_file(null,"*",null,"ve06_veiculos=$ve06_veiculos "));
 
       // exclui os registros dos combustíves.
-      $iNumRowsVeic = $clveiculoscomb->numrows; 
+      $iNumRowsVeic = $clveiculoscomb->numrows;
       if ($iNumRowsVeic >0){
         for ($i=0;$i < $iNumRowsVeic;$i++){
           $oMarcado = db_utils::fieldsMemory($rsVeicComb,$i);
@@ -122,10 +122,10 @@ if (isset($confirmar) && trim($confirmar)!=""){
         $array_marcados=explode(',',$marcados);
         print_r($array_marcados);
         $cont_vetor=count($array_marcados);
-        
+
          for($x = 0; $x < $cont_vetor; $x++){
-          
-          $clveiculoscomb->ve06_veiccadcomb = $array_marcados[$x]; 
+
+          $clveiculoscomb->ve06_veiccadcomb = $array_marcados[$x];
           $clveiculoscomb->ve06_veiculos    = $ve06_veiculos;
 
           if (($comb_padrao)==($array_marcados[$x])){
@@ -171,7 +171,7 @@ if (isset($confirmar) && trim($confirmar)!=""){
 <center>
 <form name="form1" method="post" action="">
 
-      <?
+      <?php
          db_input("comb_padrao",10,"",true,"hidden",3);
          db_input("ve06_veiccadcomb",10,"",true,"hidden",3);
          db_input("descr_veiccadcomb",10,"",true,"hidden",3);
@@ -183,9 +183,9 @@ if (isset($confirmar) && trim($confirmar)!=""){
     <td nowrap height="50">&nbsp;
     </td>
   </tr>
-  <tr> 
-    <td nowrap align="center" valign="top" bgcolor="#CCCCCC"> 
-      <?
+  <tr>
+    <td nowrap align="center" valign="top" bgcolor="#CCCCCC">
+      <?php
          db_input("db_opcao",10,"",true,"hidden",3);
          if (isset($ve06_veiculos) && trim($ve06_veiculos) != ""){
            db_input("ve06_veiculos",10,"",true,"hidden",3);
@@ -219,9 +219,9 @@ function js_confirma_dados(){
   var erro          = false;
   var virgula       = "";
   var vir           = "";
-  var marcados      = ""; 
+  var marcados      = "";
   var inc           = "";
-  var verifica      = ""; 
+  var verifica      = "";
   var descr_veiccadcomb="";
   var cod_veiccadcomb="";
   document.form1.comb_padrao.value = '';
@@ -230,19 +230,19 @@ function js_confirma_dados(){
   // Buscando os combustiveis selecionados
   //
   var oObjs = veiculoscomb.document.getElementsByTagName('input');
-  
+
             for (i=0;i< oObjs.length; i++){
 
                 if (oObjs[i].type == 'checkbox' && oObjs[i].checked == true) {
                    document.form1.marcados.value += new String(virgula+oObjs[i].value).replace('inc','');
                    descr_veiccadcomb += virgula+veiculoscomb.document.getElementById("descr_"+oObjs[i].value).innerHTML.trim();
-                   cod_veiccadcomb  += virgula+oObjs[i].value;         
+                   cod_veiccadcomb  += virgula+oObjs[i].value;
                    virgula = ",";
                 } else if (oObjs[i].type == 'radio' && oObjs[i].checked == true) {
                    document.form1.comb_padrao.value = new String(oObjs[i].value).replace('inc','');
                 }
-            } 
-            
+            }
+
             document.form1.descr_veiccadcomb.value  = descr_veiccadcomb;
             document.form1.ve06_veiccadcomb.value   = cod_veiccadcomb;
 
@@ -264,7 +264,7 @@ function js_confirma_dados(){
            }
 }
 </script>
-<?
+<?php
   if (trim($erro_msg) != ""){
     db_msgbox($erro_msg);
   }

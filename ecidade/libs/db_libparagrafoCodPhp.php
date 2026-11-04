@@ -30,11 +30,11 @@ class libParagrafoCodPhp {
   
   var $oParag = null;
   
-  function libParagrafoCodPhp( $oParag  ){
+  public function __construct( $oParag  ){
     $this->oParag = $oParag;    
   }
   
-  function writeText( $pdf ){    
+  public function writeText( $pdf ){    
     
     return eval($this->oParag->db02_texto);    
                              

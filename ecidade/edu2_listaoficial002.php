@@ -71,8 +71,6 @@ if (isset($_GET["idadeFinal"])) {
     $idadeFinal="";
 }
 
-
-
 $sCampos  = "distinct                                                              \n";
 $sCampos .= "ed57_i_codigo, ed57_c_descr, ed29_i_codigo,                           \n";
 $sCampos .= "ed29_c_descr, ed52_c_descr, ed11_c_descr, ed15_c_nome, ed223_i_serie  \n";
@@ -107,7 +105,7 @@ $campos = str_replace("fc_idade()", "fc_idade(ed47_d_nasc,'$dtSistema'::date)", 
 $campos = str_replace("fc_idade_mes()", "fc_idade_anomesdia(ed47_d_nasc,'$dtSistema')", $campos);
 $campos = str_replace("fc_idade_dia()", "fc_idade_anomesdia(ed47_d_nasc,'$dtSistema')", $campos);
 
-$oPdf = new Pdf();
+$oPdf = new ECidade\Pdf\Pdf();
 $oPdf->init(false);
 $oPdf->exibeHeader(true, \Fpdf\Pdf::HEADER_ESCOLA);
 $oPdf->setExibeBrasao(true);
@@ -279,7 +277,11 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                   ed76_c_tipo,
                   escolaprimat.ed18_c_nome,
                   escolaproc.ed82_c_nome,
-                  ed228_c_descr";
+                  ed228_c_descr,
+                  ed60_i_codigo,
+                  alunonecessidade.ed214_i_aluno "
+                  ;
+        $sGroup .= ", ". $ordenacao;
 
         $campos .= ", ed47_v_nomesocial, array_agg(cidadao2.ov02_cnpjcpf)::text[] as cpf_filiacao ";
 
@@ -301,8 +303,9 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
 
     for ($iContFor3 = 0; $iContFor3 < $iLinha2; $iContFor3++) {
         $oDadosAluno = db_utils::fieldsMemory($rsMatricula, $iContFor3);
-        $oDadosAluno->ed47_v_nome = is_null($oDadosAluno->ed47_v_nomesocial) || empty($oDadosAluno->ed47_v_nomesocial) ?
-        $oDadosAluno->ed47_v_nome : $oDadosAluno->ed47_v_nomesocial;
+        $oDadosAluno->ed47_v_nome = !empty($oDadosAluno->ed47_v_nomesocial) ?
+        $oDadosAluno->ed47_v_nomesocial : $oDadosAluno->ed47_v_nome;
+
         if ($lFiliacao) {
             $cpfFiliacao = str_replace("{", "", $oDadosAluno->cpf_filiacao);
             $cpfFiliacao = str_replace("}", "", $cpfFiliacao);
@@ -382,11 +385,19 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                     '' => "",
                     1 => "Área de assentamento",
                     2 => "Terra indígena",
-                    3 => "Área onde se localiza comunidade remanescente de quilombos",
+                    3 => "Comunidade quilombola",
                     7 => "Não está em área de localização diferenciada"
                 );
                 $localizacaoAluno = $localizacoes[$oDadosAluno->ed47_localizacaodiferenciada];
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $localizacaoAluno, 1, $next, $aCamposAlinha[$iContFor1], 0);
+            } else if (pg_field_name($rsMatricula, $iContFor1) == "ed214_i_aluno") {
+                $sNecessidadeEspecial = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                if ($sNecessidadeEspecial != null) {
+                    $sNecessidadeEspecial = "*";
+                } else {
+                    $sNecessidadeEspecial = '';
+                }
+                $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $sNecessidadeEspecial, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } else {
                 $sValor = "";
 
@@ -398,7 +409,10 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                         $sValor = db_formatar($sValor, 'd');
                     }
                 } else {
-                    $sValor = isset($oDadosAluno->$aCamposImpressao[$iContFor1]) ? $oDadosAluno->$aCamposImpressao[$iContFor1] : "";
+                    $sValor = isset($oDadosAluno->{$aCamposImpressao[$iContFor1]}) ?
+                    $oDadosAluno->{$aCamposImpressao[$iContFor1]} :
+                    "";
+
                     if ($aCamposImpressao[$iContFor1] == "ed47_v_mae as filiacao1") {
                         $sValor = $oDadosAluno->cpf_filiacao1;
                     }
@@ -409,11 +423,9 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                         $sValor = $oDadosAluno->ov02_cnpjcpf;
                     }
                 }
-
                 cellFitFont($oPdf, $tamfonte, $aLarguraCorrigida[$iContFor1], 4, $sValor, 1, $next, $aCamposAlinha[$iContFor1], 0);
-            }  
+            }
         }
-
         if ($limite == $cont) {
             $oPdf->cell($somacampos, 4, "* Aluno repetindo a Etapa", 1, 1, "L", 0);
             $oPdf->line(10, 44, $somacampos + 10, 44);
@@ -470,13 +482,13 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
             }
         }
     }
-    
+
     $oPdf->cell($somacampos, 5, "* Aluno repetindo a Etapa", 1, 1, "L", 0);
     $oPdf->line(10, 44, $somacampos + 10, 44);
-    
+
     if ($oPdf->getY() > $oPdf->getH() - 50 && ($iContFor+1) < $iLinhas) {
         $oPdf->AddPage($orientacao);
     }
 }
-
-$oPdf->Output();
+$dtRelatorio = date('d-m-Y', db_getsession("DB_datausu"));
+$oPdf->Output('I', 'Relatório - Lista das turmas - ' . $dtRelatorio);

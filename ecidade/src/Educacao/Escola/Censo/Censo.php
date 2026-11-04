@@ -108,15 +108,7 @@ class Censo
         $exportacao = DadosExportacaoFactory::factory($this->getAno());
         $exportacao->setCenso($this);
         $exportacao->setEscola($this->escola);
-        if (!$exportacao->processar()) {
-            $log = LogCensoRegistry::get(LogCensoRegistry::MATRICULA_INICIAL);
-            if ($log->exist()) {
-                $this->arquivoLog = $log->write();
-            }
-
-            return false;
-        }
-
+        $processou = $exportacao->processar();
         $layout = new Layout();
         $layout->setRegistro00($exportacao->getRegistro00()->getRegistro());
         $layout->setRegistro10($exportacao->getRegistro10()->getRegistro());
@@ -125,7 +117,17 @@ class Censo
         $layout->setRegistros40($exportacao->getRegistro40()->getRegistros());
         $layout->setRegistros50($exportacao->getRegistro50()->getRegistros());
         $layout->setRegistros60($exportacao->getRegistro60()->getRegistros());
+
         $this->arquivoCenso = $layout->gerarArquivo();
+        if (!$processou) {
+            $log = LogCensoRegistry::get(LogCensoRegistry::MATRICULA_INICIAL);
+            if ($log->exist()) {
+                $this->arquivoLog = $log->write();
+            }
+
+            return false;
+        }
+
         return true;
     }
 
@@ -150,15 +152,24 @@ class Censo
      * @throws Exception
      * @return string
      */
-    public function exportarArquivoIdentificacao(array $escolas)
+    public function exportarArquivoIdentificacao(array $escolas, $dataCensoPersonalizada = null)
     {
         $dadosExportacao = new DadosExportacaoIdentificacao();
         $dadosExportacao->setCenso($this);
+        $possuiDataPersonalizada = (!is_null($dataCensoPersonalizada)
+                                    && $this->getDataCenso()->getDate(DBDate::DATA_PTBR) != $dataCensoPersonalizada);
+        if ($possuiDataPersonalizada) {
+            $dadosExportacao->setDataCensoPersonalizada(new DBDate($dataCensoPersonalizada));
+        }
         $dadosExportacao->setEscolas($escolas);
         $dadosExportacao->processar();
+        $serviceExportacao = $dadosExportacao->getService();
+        if ($possuiDataPersonalizada) {
+            $serviceExportacao->setDataCensoPersonalizada(new DBDate($dataCensoPersonalizada));
+        }
 
         $layout = new Identificacao\Layout\Layout();
-        $layout->setPessoas($dadosExportacao->getService()->getPessoas());
+        $layout->setPessoas($serviceExportacao->getPessoas());
         return $layout->gerarArquivo();
     }
 }

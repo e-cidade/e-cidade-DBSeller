@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,9 +73,9 @@ function js_abre(){
 <td ></td>
 </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tk17_codigo?>"> <? db_ancora(@$Lk17_codigo,"js_pesquisak17_codigo(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Tk17_codigo?>"> <?php db_ancora(@$Lk17_codigo,"js_pesquisak17_codigo(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("k17_codigo",8,$Ik17_codigo,true,"text",4,"onchange='js_pesquisak17_codigo(false);'"); 
       ?>
     </td>
@@ -92,7 +92,7 @@ function js_abre(){
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisak17_codigo(mostra){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed29_i_codigo");
        <?=@$Led296_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed296_sequencial',10,$Ied296_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted296_parametrodependencia?>">
-       <?
+       <?php
        db_ancora(@$Led296_parametrodependencia,"js_pesquisaed296_parametrodependencia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed296_parametrodependencia',10,$Ied296_parametrodependencia,true,'text',$db_opcao," onchange='js_pesquisaed296_parametrodependencia(false);'")
 ?>
-       <?
+       <?php
 db_input('ed295_sequencial',10,$Ied295_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted296_etapa?>">
-       <?
+       <?php
        db_ancora(@$Led296_etapa,"js_pesquisaed296_etapa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed296_etapa',10,$Ied296_etapa,true,'text',$db_opcao," onchange='js_pesquisaed296_etapa(false);'")
 ?>
-       <?
+       <?php
 db_input('ed11_i_codigo',20,$Ied11_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted296_cursoedu?>">
-       <?
+       <?php
        db_ancora(@$Led296_cursoedu,"js_pesquisaed296_cursoedu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed296_cursoedu',10,$Ied296_cursoedu,true,'text',$db_opcao," onchange='js_pesquisaed296_cursoedu(false);'")
 ?>
-       <?
+       <?php
 db_input('ed29_i_codigo',20,$Ied29_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -170,7 +170,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parametrodependenciaetapa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

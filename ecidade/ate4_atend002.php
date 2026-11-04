@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -469,7 +469,7 @@ if (isset($chavepesquisa)&&$chavepesquisa!=""){
     <td  align="left" valign="top" bgcolor="#CCCCCC">
     <br><br>
     <center>
-    <?
+    <?php
     imprime_cabecalho(@$codatend);
     if (isset($certo)&&$certo==true){
 		$db_opcao = 1;
@@ -505,9 +505,9 @@ if (isset($chavepesquisa)&&$chavepesquisa!=""){
        ?>
        <tr>
          <td align = center><input type='button' name='reset' value='Voltar' onclick="location.href='ate4_atend002.php';" >&nbsp;</td>
-         <td align = center><input type='button' name='processa' value='Incluir Tarefa' onclick="location.href='ate1_tarefa001.php?tipo=A&at05_seq=<?=$codatenditem?><?if(isset($tecnico)&&$tecnico!="") { ?>&at40_responsavel=<? echo $tecnico; } ?><?if(isset($at08_modulo)&&$at08_modulo!="") { ?>&at49_modulo=<? echo $at08_modulo; } ?>';" <? if(isset($at05_perc)&&$at05_perc!="") { if($at05_perc == 100) { echo "disabled"; } }?>>&nbsp;</td>
+         <td align = center><input type='button' name='processa' value='Incluir Tarefa' onclick="location.href='ate1_tarefa001.php?tipo=A&at05_seq=<?=$codatenditem?><?php if(isset($tecnico)&&$tecnico!="") { ?>&at40_responsavel=<?php echo $tecnico; } ?><?php if(isset($at08_modulo)&&$at08_modulo!="") { ?>&at49_modulo=<?php echo $at08_modulo; } ?>';" <?php if(isset($at05_perc)&&$at05_perc!="") { if($at05_perc == 100) { echo "disabled"; } }?>>&nbsp;</td>
       </tr>
-       <?
+       <?php
       }else{
 	include(modification("forms/db_frmatend.php"));
     }
@@ -516,12 +516,12 @@ if (isset($chavepesquisa)&&$chavepesquisa!=""){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if ($db_opcao==11||$db_opcao==22){
 	echo "<script>js_pesquisa();</script>";
 }

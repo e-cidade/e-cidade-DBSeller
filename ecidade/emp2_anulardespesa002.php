@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/impcarne.php"));
@@ -34,7 +34,7 @@ $classinatura = new cl_assinatura;
 db_postmemory($HTTP_POST_VARS);
 
 // Parametros
-//e60_numemp         integer  NUmero do empenho 
+//e60_numemp         integer  NUmero do empenho
 //valor_anular       float8   Valor do Anular
 //historico anular   text     Historico
 
@@ -45,27 +45,27 @@ db_fieldsmemory($resultpref,0);
 if(isset($e60_numemp) && $e60_numemp != ''){
    $dbwhere =" e60_numemp = $e60_numemp ";
 } else if (isset($e60_codemp) && $e60_codemp !=''){
-	      $arr = split("/",$e60_codemp);
+	      $arr =explode("/",$e60_codemp);
 	      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 		$dbwhere_ano = " and e60_anousu = ".$arr[1];
        	      }else{
 		$dbwhere_ano = " and e60_anousu = ".db_getsession("DB_anousu");
 	      }
       $dbwhere = "e60_codemp='".$arr[0]."'$dbwhere_ano";
-	      
+
 }
 $sqlemp = "
 	select empempenho.*,
-	       cgm.* 
-	from empempenho 
+	       cgm.*
+	from empempenho
 	     inner join cgm 		on z01_numcgm = e60_numcgm
-	where  $dbwhere 
+	where  $dbwhere
 	";
 
 
  //echo "<br>".$sqlemp; exit;
 
-$result = db_query($sqlemp);	
+$result = db_query($sqlemp);
 // db_criatabela($result);exit;
 
 if (pg_numrows($result)==0){
@@ -117,5 +117,5 @@ $pdf1->imprime();
 //include(modification("fpdf151/geraarquivo.php"));
 $pdf1->objpdf->Output();
 
-   
+
 ?>

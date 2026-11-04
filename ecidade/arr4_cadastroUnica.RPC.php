@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Tributario\Fiscalizacao\Services\CheckUseModuloFiscalizacaoService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
@@ -46,6 +48,7 @@ $oRetorno->status       = 1;
 $oRetorno->message      = '';
 
 $aDadosRetorno          = array();
+$useFiscalizacao = CheckUseModuloFiscalizacaoService::verify();
 try {
 	switch ($oParam->exec) {
 
@@ -54,8 +57,8 @@ try {
 			$bTaxaIptu = false;
 
 			if($oParam->iCadTipoDebito == 1){
-				$sql = "SELECT 
-		            j18_taxaseparada 
+				$sql = "SELECT
+		            j18_taxaseparada
 		                from
 		                    cadastro.cfiptu
 		                order by j18_anousu desc
@@ -64,13 +67,13 @@ try {
 			    $bTaxaIptu = db_utils::fieldsMemory($rs, 0)->j18_taxaseparada;
 			}
 
-			$sSqlExercicios   = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito, false, 0, $bTaxaIptu);
+			$sSqlExercicios   = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito, false, 0, $bTaxaIptu, $useFiscalizacao);
 			$rsExercicios     = $oDaoReciboUnicaGeracao->sql_record($sSqlExercicios);
 
 			if($rsExercicios &&  pg_num_rows($rsExercicios) > 0){
 				$aDadosRetorno  = db_utils::getCollectionByRecord($rsExercicios, false, false, true);
 			}
-			
+
 			break;
 
 		case "getExerciciosGeral":
@@ -78,7 +81,7 @@ try {
             $bTaxaIptu = false;
 
 			if ($oParam->iCadTipoDebito == 1) {
-				$sql = "SELECT j18_taxaseparada 
+				$sql = "SELECT j18_taxaseparada
 		                  FROM cadastro.cfiptu
 		                 ORDER BY j18_anousu DESC
 		                 LIMIT 1";
@@ -88,21 +91,21 @@ try {
 			    $bTaxaIptu = db_utils::fieldsMemory($rs, 0)->j18_taxaseparada;
 			}
 
-			$sSqlExercicios = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito, true, 0, $bTaxaIptu);
+			$sSqlExercicios = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito, true, 0, $bTaxaIptu, $useFiscalizacao);
 			$rsExercicios   = $oDaoReciboUnicaGeracao->sql_record($sSqlExercicios);
 
 			if ($rsExercicios AND pg_num_rows($rsExercicios) > 0) {
 				$aDadosRetorno  = db_utils::getCollectionByRecord($rsExercicios, false, false, true);
 			}
-			
+
 			break;
 
 		case "getTiposDebito":
 
 			$bTaxaIptu = false;
 
-			$sql = "SELECT 
-		            j18_taxaseparada 
+			$sql = "SELECT
+		            j18_taxaseparada
 		                from
 		                    cadastro.cfiptu
 		                order by j18_anousu desc
@@ -123,9 +126,9 @@ try {
 
 			$bTaxaIptu = false;
 
-			$sql  = "SELECT j18_taxaseparada				 "; 
+			$sql  = "SELECT j18_taxaseparada				 ";
 		    $sql .= "  FROM cadastro.cfiptu 				 ";
-		    
+
 		    if($oParam->iExercicio){
 			    $sql .= " WHERE 								 ";
 				$sql .= "      j18_anousu = {$oParam->iExercicio}";
@@ -137,7 +140,7 @@ try {
 		    $rs = db_query($sql);
 		    $bTaxaIptu = db_utils::fieldsMemory($rs, 0)->j18_taxaseparada;
 
-			$sSqlDebitos = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito,false,$oParam->iExercicio, $bTaxaIptu);
+			$sSqlDebitos = $oDaoReciboUnicaGeracao->sql_query_debitosExercicios($oParam->sTipoPesquisa, $oParam->sChavePesquisa, $oParam->iCadTipoDebito,false,$oParam->iExercicio, $bTaxaIptu, $useFiscalizacao);
 			$rsDebitos   = $oDaoReciboUnicaGeracao->sql_record($sSqlDebitos);
 
 			if($rsDebitos &&  pg_num_rows($rsDebitos) > 0){
@@ -148,7 +151,7 @@ try {
 
 		default:
 		  throw new ErrorException("Nenhuma Opção Definida");
-	  	  break;	  	  
+	  	  break;
 	}
 
 } catch (ErrorException $eErro){

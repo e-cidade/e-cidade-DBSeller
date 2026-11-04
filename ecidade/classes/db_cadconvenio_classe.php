@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_cadconvenio {
                  ar11_nome = varchar(50) = Nome
                  ";
    //funcao construtor da classe
-   function cl_cadconvenio() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadconvenio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cadconvenio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar11_sequencial = ($this->ar11_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar11_sequencial"]:$this->ar11_sequencial);
        $this->ar11_cadtipoconvenio = ($this->ar11_cadtipoconvenio == ""?@$GLOBALS["HTTP_POST_VARS"]["ar11_cadtipoconvenio"]:$this->ar11_cadtipoconvenio);
@@ -80,7 +80,7 @@ class cl_cadconvenio {
      }
    }
    // funcao para inclusao
-   function incluir ($ar11_sequencial){
+   public function incluir ($ar11_sequencial){
       $this->atualizacampos();
      if($this->ar11_cadtipoconvenio == null ){
        $this->erro_sql = " Campo Tipo de convênio nao Informado.";
@@ -191,7 +191,7 @@ class cl_cadconvenio {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ar11_sequencial=null) {
+   public function alterar ($ar11_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cadconvenio set ";
      $virgula = "";
@@ -301,7 +301,7 @@ class cl_cadconvenio {
      }
    }
    // funcao para exclusao
-   function excluir ($ar11_sequencial=null,$dbwhere=null) {
+   public function excluir ($ar11_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ar11_sequencial));
      }else{
@@ -365,7 +365,7 @@ class cl_cadconvenio {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -388,10 +388,10 @@ class cl_cadconvenio {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_cadconvenio {
      return $sql;
   }
 
-  function sql_query_convenio_cobranca($iCodigoConvenio = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
+  public function sql_query_convenio_cobranca($iCodigoConvenio = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
 
     $sSql  = "select {$sCampos} ";
     $sSql .= "  from cadconvenio ";
@@ -452,10 +452,10 @@ class cl_cadconvenio {
   }
 
    // funcao do sql
-   function sql_query_file ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,10 +486,10 @@ class cl_cadconvenio {
      return $sql;
   }
 
-   function sql_query_arrecad_cobranc ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_arrecad_cobranc ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,10 +527,10 @@ class cl_cadconvenio {
      return $sql;
    }
 
-   function sql_query_arrecadacao( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_arrecadacao( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,7 +573,7 @@ class cl_cadconvenio {
     *
     * @return string
     */
-   function sql_queryTaxasConvenio()
+   public function sql_queryTaxasConvenio()
    {
 	   	$sSqlTaxas  = "   select taxa.*                                                                ";
 	   	$sSqlTaxas .= "     from cadconvenio                                                           ";
@@ -588,7 +588,7 @@ class cl_cadconvenio {
     * Função responsável pela criação da query que consulta os dados de cobrança do convênio
     * @return string
     */
-   function sql_queryConvenioCobranca($iSequencialConveio, $sCampos = "*")
+   public function sql_queryConvenioCobranca($iSequencialConveio, $sCampos = "*")
    {
      $sSql  = " select {$sCampos}                                                                                     ";
      $sSql .= "   from cadconvenio                                                                                    ";

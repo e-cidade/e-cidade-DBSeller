@@ -53,6 +53,8 @@ if(isset($incluir)){
     try {
 
       db_inicio_transacao();
+      $_POST['t64_ativa'] = $oPost->situacao;
+
       $oClassificacao = new BemClassificacao($oPost->t64_codcla);
       $oClassificacao->setCodigo($oPost->t64_codcla);
       $oClassificacao->setClassificacao($oPost->t64_class);
@@ -66,6 +68,7 @@ if(isset($incluir)){
       $oClassificacao->setVidaUtil($oPost->t64_vidautil);
       $oClassificacao->setValorResidual($oPost->t64_valorresidual);
       $oClassificacao->setInstituicao(db_getsession("DB_instit"));
+      $oClassificacao->setStatus($oPost->situacao);
       $oClassificacao->salvar();
       $erro_msg = _M("patrimonial.patrimonio.db_frmclabens.classificacao_salva");
       db_fim_transacao(false);
@@ -88,15 +91,17 @@ if(isset($incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
+<div>
 	<?php
 	include(modification("forms/db_frmclabens.php"));
 ?>
 <?php
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+  db_menu();
 ?>
+</div>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
 
   db_msgbox($erro_msg);

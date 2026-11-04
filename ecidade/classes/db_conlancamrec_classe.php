@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,13 +57,13 @@ class cl_conlancamrec {
                  c74_data = date = Data
                  ";
    //funcao construtor da classe
-   function cl_conlancamrec() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamrec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_conlancamrec {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c74_codlan = ($this->c74_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c74_codlan"]:$this->c74_codlan);
        $this->c74_anousu = ($this->c74_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c74_anousu"]:$this->c74_anousu);
@@ -90,7 +90,7 @@ class cl_conlancamrec {
      }
    }
    // funcao para inclusao
-   function incluir ($c74_codlan){
+   public function incluir ($c74_codlan){
       $this->atualizacampos();
      if($this->c74_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
@@ -183,7 +183,7 @@ class cl_conlancamrec {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c74_codlan=null) {
+   public function alterar ($c74_codlan=null) {
       $this->atualizacampos();
      $sql = " update conlancamrec set ";
      $virgula = "";
@@ -311,7 +311,7 @@ class cl_conlancamrec {
      }
    }
    // funcao para exclusao
-   function excluir ($c74_codlan=null,$dbwhere=null) {
+   public function excluir ($c74_codlan=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (isset($lSessaoDesativarAccount) && $lSessaoDesativarAccount === false) {
@@ -380,7 +380,7 @@ class cl_conlancamrec {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -402,10 +402,10 @@ class cl_conlancamrec {
       }
      return $result;
    }
-   function sql_query ( $c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_conlancamrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,10 +443,10 @@ class cl_conlancamrec {
      }
      return $sql;
   }
-   function sql_query_file ( $c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_conlancamrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,11 +477,11 @@ class cl_conlancamrec {
      return $sql;
   }
 
-  function sql_query_conPlanoCodDoc ($c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_conPlanoCodDoc ($c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 
@@ -514,7 +514,7 @@ class cl_conlancamrec {
     if($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 
@@ -526,11 +526,11 @@ class cl_conlancamrec {
   }
 
 
-  function sql_query_dados_receita ($c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_dados_receita ($c74_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 
@@ -561,7 +561,7 @@ class cl_conlancamrec {
     if($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 

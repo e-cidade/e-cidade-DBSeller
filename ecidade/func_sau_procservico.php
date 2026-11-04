@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_procservico->rotulo->label("sd88_i_procedimento");
               <?=$Lsd88_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd88_i_codigo",5,$Isd88_i_codigo,true,"text",4,"","chave_sd88_i_codigo");
                  ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_procservico->rotulo->label("sd88_i_procedimento");
               <?=$Lsd88_i_procedimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd88_i_procedimento",5,$Isd88_i_procedimento,true,"text",4,"","chave_sd88_i_procedimento");
                  ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_procservico->rotulo->label("sd88_i_procedimento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_procservico.php")==true){
@@ -122,12 +122,12 @@ $clsau_procservico->rotulo->label("sd88_i_procedimento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

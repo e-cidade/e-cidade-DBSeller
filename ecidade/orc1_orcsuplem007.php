@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -114,7 +114,7 @@ if (isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
             include(modification("forms/db_frmorcsuplem.php"));
         ?>
 
@@ -124,7 +124,7 @@ if (isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 //--- libera abas
 if (isset($o46_codsup) && ($o46_codsup!="")){
    if ($qt_abas=="2"){

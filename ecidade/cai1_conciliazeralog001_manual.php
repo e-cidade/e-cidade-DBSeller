@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -108,7 +108,7 @@ if( isset($db83_sequencial) ) {
 			        <?=db_ancora(@$Ldb83_sequencial,"js_pesquisadb83_sequencial(true);",1);?>
 			      </td>
 			      <td>
-			        <?
+			        <?php
 			          db_input('db83_sequencial',10,$Idb83_sequencial,true,'text',3,"");
 			          db_input('db83_descricao',50,$Idb83_descricao,true,'text',3,"");
 			          db_input('reduz',20,'',true,'hidden',3,"");
@@ -120,7 +120,7 @@ if( isset($db83_sequencial) ) {
               <b>Data de processamento : </b>
             </td>
             <td>
-              <?
+              <?php
 
                 db_inputdata('data',$data_dia,$data_mes,$data_ano,true,'text',3);
               ?>
@@ -131,7 +131,7 @@ if( isset($db83_sequencial) ) {
               <b>Observações da exclusão : </b>
             </td>
             <td>
-              <?
+              <?php
                 db_textarea("obs",5,80,null,true,"",1,"");
               ?>
             </td>
@@ -148,7 +148,7 @@ if( isset($db83_sequencial) ) {
 </table>
 </form>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -244,7 +244,7 @@ function js_preenchepesquisa(chave1,chave2){
   db_iframe_contabancaria.hide();
 }
 
-<?
+<?php
 if( ! isset($db83_sequencial) ) {
 
    echo "js_pesquisadb83_sequencial(true);";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -43,7 +43,7 @@ $ComboArqAuxiliar = new cl_arquivo_auxiliar ();
 <script language="JavaScript" type="text/javascript"
 	src="scripts/scripts.js"></script>
 
-<script><!--
+<script>
 function js_emite(){
 	
   var ano = document.form1.ano.value;
@@ -112,7 +112,7 @@ function js_emite(){
 								<td><strong>Exerc&iacute;cio:</strong></td>
 								<td>
 								<select name="ano" >
-								<?  $ano = date('y',db_getsession("DB_datausu"));
+								<?php  $ano = date('y',db_getsession("DB_datausu"));
 								    $mes = date('m',db_getsession("DB_datausu"));
 								    $mes = ( $mes == 1 ? 12 : $mes -1 );
 								    $ano = ( $mes == 12 ? $ano -1 : $ano );
@@ -131,7 +131,7 @@ function js_emite(){
 								<tr>
 								<td><strong>M&ecirc;s:</strong></td>
 								<td>
-								<?  $meses = array( "1"=>"Janeiro",
+								<?php  $meses = array( "1"=>"Janeiro",
 										            "2"=>"Feveireiro",
 										            "3"=>"Março",
 										            "4"=>"Abril",
@@ -151,7 +151,7 @@ function js_emite(){
 				</tr>
 
 				<tr>
-					<td><?
+					<td><?php
 					$ComboArqAuxiliar->cabecalho = '<strong>Bairros</strong>';
 					$ComboArqAuxiliar->codigo = 'j13_codi'; // chave de retorno da func
 					$ComboArqAuxiliar->descr = 'j13_descr'; // chave de retorno
@@ -173,7 +173,7 @@ function js_emite(){
 				</tr>
 
 				<tr>
-					<td><?
+					<td><?php
 					$ComboArqAuxiliar->cabecalho = '<strong>Receitas</strong>';
 					$ComboArqAuxiliar->codigo = 'x25_receit'; // chave de retorno da func
 					$ComboArqAuxiliar->descr = 'x25_descr'; // chave de retorno
@@ -201,7 +201,7 @@ function js_emite(){
 				</tr>
 			</table>
 		</fieldset>
-		<?
+		<?php
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 		?></form>
 </body>

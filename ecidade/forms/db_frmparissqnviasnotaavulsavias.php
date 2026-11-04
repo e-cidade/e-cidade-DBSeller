@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clparissqnviasnotaavulsavias->rotulo->label();
        <?=@$Lq67_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q67_sequencial',10,$Iq67_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -49,7 +49,7 @@ db_input('q67_sequencial',10,$Iq67_sequencial,true,'text',3,"")
        <?=@$Lq67_via?>
     </td>
     <td> 
-<?
+<?php
 db_input('q67_via',10,$Iq67_via,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -59,7 +59,7 @@ db_input('q67_via',10,$Iq67_via,true,'text',$db_opcao,"")
        <?=@$Lq67_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('q67_descr',50,$Iq67_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parissqnviasnotaavulsavias.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

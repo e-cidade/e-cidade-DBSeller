@@ -1,36 +1,36 @@
 <?php
 
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE licitaparam
 class cl_licitaparam
 {
-  // cria variaveis de erro 
+  // cria variaveis de erro
   public $rotulo = null;
   public $query_sql = null;
   public $numrows = 0;
@@ -52,16 +52,18 @@ class cl_licitaparam
   public $l12_limitetamanhoarquivo = 0;
   public $l12_urlapi = null;
   public $l12_token = null;
-  // cria propriedade com as variaveis do arquivo 
+  public $l12_validalicitacon = 0;
+  // cria propriedade com as variaveis do arquivo
   public $campos = "
-                 l12_instit = int4 = Instituição 
-                 l12_escolherprocesso = bool = Escolher Processo de Compras 
-                 l12_escolheprotocolo = bool = Processo de Protocolo do Sistema 
-                 l12_qtdediasliberacaoweb = int4 = Dias de disponibilidade 
-                 l12_tipoliberacaoweb = int4 = Disp. licitação na web até o julgamento 
-                 l12_limitetamanhoarquivo = int4 = Limite Tamanho Arquivo 
-                 l12_urlapi = varchar(50) = URL API 
-                 l12_token = varchar(40) = Identificador Comprador 
+                 l12_instit = int4 = Instituição
+                 l12_escolherprocesso = bool = Escolher Processo de Compras
+                 l12_escolheprotocolo = bool = Processo de Protocolo do Sistema
+                 l12_qtdediasliberacaoweb = int4 = Dias de disponibilidade
+                 l12_tipoliberacaoweb = int4 = Disp. licitação na web até o julgamento
+                 l12_limitetamanhoarquivo = int4 = Limite Tamanho Arquivo
+                 l12_urlapi = varchar(50) = URL API
+                 l12_token = varchar(40) = Identificador Comprador
+                 l12_validalicitacon = int4 = Valida Licitacon
                  ";
 
   public function __construct()
@@ -91,6 +93,7 @@ class cl_licitaparam
       $this->l12_limitetamanhoarquivo = ($this->l12_limitetamanhoarquivo == "" ? @$GLOBALS["HTTP_POST_VARS"]["l12_limitetamanhoarquivo"] : $this->l12_limitetamanhoarquivo);
       $this->l12_urlapi = ($this->l12_urlapi == "" ? @$GLOBALS["HTTP_POST_VARS"]["l12_urlapi"] : $this->l12_urlapi);
       $this->l12_token = ($this->l12_token == "" ? @$GLOBALS["HTTP_POST_VARS"]["l12_token"] : $this->l12_token);
+      $this->l12_validalicitacon = ($this->l12_validalicitacon == "" ? @$GLOBALS["HTTP_POST_VARS"]["l12_validalicitacon"] : $this->l12_validalicitacon);
     } else {
       $this->l12_instit = ($this->l12_instit == "" ? @$GLOBALS["HTTP_POST_VARS"]["l12_instit"] : $this->l12_instit);
     }
@@ -144,7 +147,7 @@ class cl_licitaparam
       $this->erro_status = "0";
       return false;
     }
-    
+
     $this->l12_instit = $l12_instit;
     if (($this->l12_instit == null) || ($this->l12_instit == "")) {
       $this->erro_sql = " Campo l12_instit não declarado.";
@@ -154,25 +157,36 @@ class cl_licitaparam
       $this->erro_status = "0";
       return false;
     }
+    if ($this->l12_validalicitacon == null) {
+        $this->erro_sql = " Campo Valida Licitacon não informado.";
+        $this->erro_campo = "l12_validalicitacon";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "0";
+        return false;
+    }
     $sql = "insert into licitaparam(
-                                       l12_instit 
-                                      ,l12_escolherprocesso 
-                                      ,l12_escolheprotocolo 
-                                      ,l12_qtdediasliberacaoweb 
-                                      ,l12_tipoliberacaoweb 
-                                      ,l12_limitetamanhoarquivo 
-                                      ,l12_urlapi 
-                                      ,l12_token 
+                                       l12_instit
+                                      ,l12_escolherprocesso
+                                      ,l12_escolheprotocolo
+                                      ,l12_qtdediasliberacaoweb
+                                      ,l12_tipoliberacaoweb
+                                      ,l12_limitetamanhoarquivo
+                                      ,l12_urlapi
+                                      ,l12_token
+                                      ,l12_validalicitacon
                        )
                 values (
-                                $this->l12_instit 
-                               ,'$this->l12_escolherprocesso' 
-                               ,'$this->l12_escolheprotocolo' 
-                               ,$this->l12_qtdediasliberacaoweb 
-                               ,$this->l12_tipoliberacaoweb 
-                               ,$this->l12_limitetamanhoarquivo 
-                               ,'$this->l12_urlapi' 
-                               ,'$this->l12_token' 
+                                $this->l12_instit
+                               ,'$this->l12_escolherprocesso'
+                               ,'$this->l12_escolheprotocolo'
+                               ,$this->l12_qtdediasliberacaoweb
+                               ,$this->l12_tipoliberacaoweb
+                               ,$this->l12_limitetamanhoarquivo
+                               ,'$this->l12_urlapi'
+                               ,'$this->l12_token'
+                               ,'$this->l12_validalicitacon'
                       )";
     $result = db_query($sql);
     if ($result == false) {
@@ -217,6 +231,7 @@ class cl_licitaparam
         $resac = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_result($resaco, 0, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         $resac = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_result($resaco, 0, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         $resac = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_result($resaco, 0, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,1015549,'','" . AddSlashes(pg_result($resaco, 0, 'l12_validalicitacon')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
       }
     }
     return true;
@@ -331,6 +346,19 @@ class cl_licitaparam
         return false;
       }
     }
+    if (trim($this->l12_validalicitacon) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_validalicitacon"])) {
+        $sql  .= $virgula . " l12_validalicitacon = $this->l12_validalicitacon ";
+        $virgula = ",";
+        if (trim($this->l12_validalicitacon) == null) {
+            $this->erro_sql = " Campo Valida Licitacon não informado.";
+            $this->erro_campo = "l12_validalicitacon";
+            $this->erro_banco = "";
+            $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+    }
     $sql .= " where ";
     if ($l12_instit != null) {
       $sql .= " l12_instit = $this->l12_instit";
@@ -364,6 +392,8 @@ class cl_licitaparam
             $resac = db_query("insert into db_acount values($acount,2055,1013450,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_urlapi')) . "','$this->l12_urlapi'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_token"]) || $this->l12_token != "")
             $resac = db_query("insert into db_acount values($acount,2055,1013451,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_token')) . "','$this->l12_token'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["l12_validalicitacon"]) || $this->l12_validalicitacon != "")
+            $resac = db_query("insert into db_acount values($acount,2055,1015549,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_validalicitacon')) . "','$this->l12_validalicitacon'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }
@@ -428,6 +458,7 @@ class cl_licitaparam
           $resac  = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           $resac  = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           $resac  = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,1015549,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_validalicitacon')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }

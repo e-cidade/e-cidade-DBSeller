@@ -119,6 +119,7 @@ try {
             if ($oDaoSerie->numrows > 0) {
                 $retorno->dados = db_utils::getCollectionByRecord($rsSerie, false, false, false);
             } else {
+                $retorno->erro = true;
                 $retorno->message = "Não foi possível localizar as séries solicitadas.";
             }
 
@@ -676,6 +677,7 @@ try {
             if ($oDaoTurnos->numrows > 0) {
                 $retorno->dados = db_utils::getCollectionByRecord($rsTurnos, false, false, false);
             } else {
+                $retorno->erro = true;
                 $retorno->message = "Não foi possível localizar os turnos solicitadas.";
             }
 

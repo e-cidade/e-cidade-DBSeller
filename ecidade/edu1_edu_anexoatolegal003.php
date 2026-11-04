@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -119,7 +119,7 @@ if (isset($excluir)) {
     
     <link href="estilos.css" rel="stylesheet" type="text/css">
   
-    <?
+    <?php
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,grid.style.css,";
       db_app::load($sLib);
     ?>
@@ -131,7 +131,7 @@ if (isset($excluir)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-	          <?
+	          <?php
 	            include(modification("forms/db_frmedu_anexoatolegal.php"));
 	          ?>
           </center>
@@ -141,7 +141,7 @@ if (isset($excluir)) {
   </center>
   </body>
 </html>
-<?
+<?php
 
 if (isset($excluir)) {
 

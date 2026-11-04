@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -55,7 +55,7 @@ if(isset($confirmar)){
  <script>
   parent.db_iframe_alunoalterado.hide();
  </script>
- <?
+ <?php
  exit;
 }
 $result = db_query("SELECT ed47_v_nome FROM aluno WHERE ed47_i_codigo = $aluno");
@@ -88,7 +88,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
    <br>
    <fieldset style="width:95%"><legend><b>Alterações realizadas no cadastro do aluno <?=$aluno." - ".$nomealuno?></b></legend>
     <table width="100%" border="1" cellspacing="0" cellpading="1">
-    <?
+    <?php
     $codigo_alunoalt = "";
     $sep = "";
     $sql3 = "SELECT *
@@ -131,7 +131,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
       <td bgcolor="#999999"><b>Conteúdo Anterior</b></td>
       <td bgcolor="#999999"><b>Conteúdo Após Alteração</b></td>
      </tr>
-     <?
+     <?php
      $result4 = $clalunoaltcampos->sql_record($clalunoaltcampos->sql_query("","ed276_c_campo,ed276_c_contant,ed276_c_contatual",""," ed276_i_alunoalt = $ed275_i_codigo"));
      for($y=0;$y<$clalunoaltcampos->numrows;$y++){
       db_fieldsmemory($result4,$y);
@@ -143,7 +143,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
        <td><?=$ed276_c_contant==""?"&nbsp;":$ed276_c_contant?></td>
        <td><?=$ed276_c_contatual==""?"&nbsp;":$ed276_c_contatual?></td>
       </tr>
-      <?
+      <?php
      }
     }
     ?>

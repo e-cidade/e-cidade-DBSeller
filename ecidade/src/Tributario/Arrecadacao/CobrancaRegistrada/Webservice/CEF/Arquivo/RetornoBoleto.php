@@ -29,50 +29,82 @@ namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arqui
 class RetornoBoleto
 {
 
-	private $iCodigoRetorno;
+    private $iCodigoRetorno;
 
-	private $sMensagemRetorno;
+    private $sMensagemRetorno;
 
-	function __construct($oRetornoSoap)
-	{
-		if ($oRetornoSoap->COD_RETORNO != '00' && $oRetornoSoap->COD_RETORNO != '0') {
+    private $sCodBarras;
 
-		  $this->setCodigoRetorno($oRetornoSoap->COD_RETORNO);
-		  $this->setMensagemRetorno($oRetornoSoap->MSG_RETORNO);
-		} else {
+    private $sLinhaDigitavel;
 
-		  $this->setCodigoRetorno($oRetornoSoap->DADOS->CONTROLE_NEGOCIAL->COD_RETORNO);
-		  $this->setMensagemRetorno($oRetornoSoap->DADOS->CONTROLE_NEGOCIAL->MENSAGENS->RETORNO);
-		}
+    private $sQrCode;
 
-	}
+    private $sUrlQrCode;
 
-	public function getMensagemRetorno($lUsuarioExterno = false)
-	{
-	   if ($lUsuarioExterno) {
-	   	 return "Ocorreu um erro ao registrar o boleto no banco: $this->sMensagemRetorno. Por favor entre em contato com a Instituição.";
-	   }
+    public function __construct($oRetornoSoap)
+    {
+        if ($oRetornoSoap->COD_RETORNO != '00' && $oRetornoSoap->COD_RETORNO != '0') {
+            $this->setCodigoRetorno($oRetornoSoap->COD_RETORNO);
+            $this->setMensagemRetorno($oRetornoSoap->MSG_RETORNO);
+        } else {
+            $this->setCodigoRetorno($oRetornoSoap->DADOS->CONTROLE_NEGOCIAL->COD_RETORNO);
+            $this->setMensagemRetorno($oRetornoSoap->DADOS->CONTROLE_NEGOCIAL->MENSAGENS->RETORNO);
+            if (isset($oRetornoSoap->DADOS->INCLUI_BOLETO->QRCODE)) {
+                $this->setDadosQrCode(
+                    $oRetornoSoap->DADOS->INCLUI_BOLETO->CODIGO_BARRAS,
+                    $oRetornoSoap->DADOS->INCLUI_BOLETO->LINHA_DIGITAVEL,
+                    $oRetornoSoap->DADOS->INCLUI_BOLETO->QRCODE,
+                    $oRetornoSoap->DADOS->INCLUI_BOLETO->URL_QRCODE
+                );
+            }
+        }
+    }
 
-	   return $this->sMensagemRetorno;
-	}
+    public function getMensagemRetorno($lUsuarioExterno = false)
+    {
+        if ($lUsuarioExterno) {
+            return "Ocorreu um erro ao registrar o boleto no banco: 
+			$this->sMensagemRetorno. Por favor entre em contato com a Instituição.";
+        }
 
-	public function setMensagemRetorno($sMensagemRetorno)
-	{
-	   $this->sMensagemRetorno = $sMensagemRetorno;
-	}
+        return $this->sMensagemRetorno;
+    }
 
-	public function getCodigoRetorno()
-	{
-	   return $this->iCodigoRetorno;
-	}
+    public function setMensagemRetorno($sMensagemRetorno)
+    {
+        $this->sMensagemRetorno = $sMensagemRetorno;
+    }
 
-	public function setCodigoRetorno($iCodigoRetorno)
-	{
-	   $this->iCodigoRetorno = $iCodigoRetorno;
-	}
+    public function getCodigoRetorno()
+    {
+        return $this->iCodigoRetorno;
+    }
 
-	public function isBoletoIncluido() {
-	  return ($this->iCodigoRetorno == 00);
-	}
+    public function setCodigoRetorno($iCodigoRetorno)
+    {
+        $this->iCodigoRetorno = $iCodigoRetorno;
+    }
 
+    public function isBoletoIncluido()
+    {
+        return ($this->iCodigoRetorno == 00);
+    }
+
+    public function setDadosQrCode($sCodBarras, $sLinhaDigitavel, $sQrCode, $sUrlQrCode)
+    {
+        $this->sCodBarras = $sCodBarras;
+        $this->sLinhaDigitavel = $sLinhaDigitavel;
+        $this->sQrCode = $sQrCode;
+        $this->sUrlQrCode = $sUrlQrCode;
+    }
+
+    public function getDadosQrCode()
+    {
+        return array(
+            'codBarras' => $this->sCodBarras,
+            'linhaDigitavel' => $this->sLinhaDigitavel,
+            'qrCode' => $this->sQrCode,
+            'urlQrCode' => $this->sUrlQrCode
+        );
+    }
 }

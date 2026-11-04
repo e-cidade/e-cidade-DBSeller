@@ -4,6 +4,7 @@
 namespace App\Domain\Financeiro\Planejamento\Services;
 
 use App\Domain\Financeiro\Orcamento\Models\Orgao;
+use App\Domain\Financeiro\Orcamento\Models\Programa;
 use App\Domain\Financeiro\Planejamento\Models\AreaResultado;
 use App\Domain\Financeiro\Planejamento\Models\Comissao;
 use App\Domain\Financeiro\Planejamento\Models\ObjetivoEstrategico;
@@ -14,6 +15,7 @@ use App\Domain\Financeiro\Planejamento\Requests\SalvarComissaoRequest;
 use App\Domain\Financeiro\Planejamento\Requests\SalvarObjetivoRequest;
 use App\Domain\Patrimonial\Protocolo\Model\Cgm;
 use ECidade\Enum\Financeiro\Planejamento\StatusEnum;
+use ECidade\Enum\Financeiro\Planejamento\TipoEnum;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -274,6 +276,46 @@ class PlanejamentoService
         })->toArray());
     }
 
+    public function criarPpaComBaseNoPlanoInformado($codigoPlanoBase, $anoInicial)
+    {
+        $valida = Planejamento::query()->where('pl2_tipo', TipoEnum::PPA)
+            ->whereRaw(" $anoInicial between pl2_ano_inicial and pl2_ano_final")
+            ->first();
+
+        if (!is_null($valida)) {
+            $msg = sprintf('O exercício informado %s não pode ser usado pois conflica com outro PPA.', $anoInicial);
+            throw new Exception($msg, 403);
+        }
+
+        if (!$this->existeOrcamentoExercicio($anoInicial)) {
+            $msg = "Não foi encontrado orçamento para o exercício de $anoInicial. \nAcesse a rotina: ";
+            $msg .= "DB:FINANCEIRO > Contabilidade > Procedimentos > Exercício Contábil > Inclusão ";
+
+            throw new Exception($msg);
+        }
+
+        $planoBase = Planejamento::find($codigoPlanoBase);
+
+        /**
+         * @var Planejamento $novoPlano
+         */
+        $anoFinal = $anoInicial + 3;
+        $novoPlano = $planoBase->replicate();
+        $novoPlano->pl2_tipo = TipoEnum::PPA;
+        $novoPlano->pl2_codigo_pai = null;
+        $novoPlano->pl2_ano_inicial = $anoInicial;
+        $novoPlano->pl2_ano_final = $anoFinal;
+        $novoPlano->pl2_titulo = "PPA {$anoInicial}";
+        $novoPlano->status()->associate(Status::find(StatusEnum::EM_DESENVOLVIMENTO));
+
+        $novoPlano->push();
+
+        $replicar = new ReplicarPlanoService($novoPlano, $planoBase);
+        $replicar->replicar();
+
+        return $novoPlano->pl2_codigo;
+    }
+
     /**
      * Valida se o período do Plano de Governo (PPA, LDO, LOA), ano de inicio e fim, conflita com outro Plano
      * @param integer $id
@@ -355,5 +397,16 @@ class PlanejamentoService
             ->orderBy('pl2_ano_inicial', 'desc')
             ->limit(1)
             ->first();
+    }
+
+    /**
+     * Valida a existência do cadastro do orçamento para o exercício
+     * @param $anoInicial
+     * @return bool
+     */
+    private function existeOrcamentoExercicio($anoInicial)
+    {
+        $programa = Programa::query()->where('o54_anousu', '=', $anoInicial)->first();
+        return !is_null($programa);
     }
 }

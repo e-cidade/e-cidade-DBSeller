@@ -35,12 +35,11 @@ include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_historico_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $query_string);
 
 $clserie     = new cl_serie;
 $clhistorico = new cl_historico;
-
-$sNome = isset($z01_nome) ? $z01_nome : '';
+$sNome = isset($query_string["iNomeAluno"]) ? $query_string["iNomeAluno"] : '';
 
 ?>
 <html>
@@ -56,7 +55,7 @@ $sNome = isset($z01_nome) ? $z01_nome : '';
    <?php
    $result = $clhistorico->sql_record($clhistorico->sql_query("","ed61_i_curso,ed61_i_aluno,ed47_v_nome,ed29_c_descr",""," ed61_i_codigo = $historico"));
    db_fieldsmemory($result,0);
-   echo "<b>Etapas disponíveis para o aluno {$sNome} no curso {$ed29_c_descr}:</b>";
+   echo "<br><br>Etapas disponíveis para o(a) aluno(a) <b>{$sNome}</b> no curso <b>{$ed29_c_descr}</b>:<br><br>";
 
   if ( !isset($pesquisa_chave) ) {
 
@@ -80,13 +79,12 @@ $sNome = isset($z01_nome) ? $z01_nome : '';
                     inner join serie on ed11_i_codigo = ed99_i_serie
               WHERE ed99_i_historico = {$historico}
                 AND ed99_c_resultadofinal != 'R'
-                AND ( ed99_c_situacao = 'CONCLUÍDO' OR ed99_c_situacao = 'RECLASSIFICADO' )
+                AND ( ed99_c_situacao = 'CONCLUÍDO' OR ed99_c_situacao = 'RECLASSIFICADO' OR ed99_c_situacao = 'AVANÇO' OR ed99_c_situacao = 'AMPARADO' )
             ";
 
     $query1  = db_query($sql1);
 
     if ( !$query1 ) {
-
       db_msgbox('Erro ao buscar etapas que ainda não foram cursadas pelo aluno.');
       echo "<script>parent.db_iframe_serie.hide();</script>";
       exit;

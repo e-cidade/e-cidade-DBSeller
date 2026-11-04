@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clarrebanco->rotulo->label();
               <?=$Lk00_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k00_numpre",10,$Ik00_numpre,true,"text",4,"","chave_k00_numpre");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clarrebanco->rotulo->label();
               <?=$Lk00_numpar?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k00_numpar",10,$Ik00_numpar,true,"text",4,"","chave_k00_numpar");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clarrebanco->rotulo->label();
               <?=$Lk00_numbco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k00_numbco",15,$Ik00_numbco,true,"text",4,"","chave_k00_numbco");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clarrebanco->rotulo->label();
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
        if (isset($pesquisar)) { 
          
          $sCampos = "k00_numbco, k00_numpre, k00_numpar";

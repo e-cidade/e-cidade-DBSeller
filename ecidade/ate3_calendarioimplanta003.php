@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,14 +48,14 @@ class db_calendario {
   var $trocalinha   = false;
   var $monta_menu   = false;
 
-  function db_calendario (){
+  public function __construct (){
   	
   	$this->pagina_original = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); 
   	
   }
   
 
-  function monta_calendario ($exercicio=null, $metodo=null){
+  public function monta_calendario ($exercicio=null, $metodo=null){
 
     $this->clcalend = new cl_calend;
   	
@@ -86,10 +86,10 @@ class db_calendario {
   
     echo "<table cellspacing=0>\n";  
     echo "<script>\n";
-    echo "function js_mostra_alvo(codmod,codproced){
+    echo "public function js_mostra_alvo(codmod,codproced){
             js_OpenJanelaIframe('','db_iframe_calend','".$this->pagina_alvo."?codmod'+codmod+'&codproced='+codproced);
           }\n";
-    echo "function js_mostra_text(liga,nomediv,evt){
+    echo "public function js_mostra_text(liga,nomediv,evt){
 		    evt = (evt)?evt:(window.event)?window.event:''; 
 		    if(liga==true) {
 		      document.getElementById(nomediv).style.top = 0; //evt.clientY;
@@ -278,7 +278,7 @@ class db_calendario {
    
   }
 
-  function monta_calendario_semanal_turno ($exercicio=null, $metodo=null,$data=null){
+  public function monta_calendario_semanal_turno ($exercicio=null, $metodo=null,$data=null){
 
     $this->clcalend = new cl_calend;
   	
@@ -374,10 +374,10 @@ class db_calendario {
   
     echo "<table cellspacing=0 width='100%'>\n";  
     echo "<script>\n";
-    echo "function js_mostra_alvo(data,identifica){
+    echo "public function js_mostra_alvo(data,identifica){
             js_OpenJanelaIframe('','db_iframe_calend','".$this->pagina_alvo."?data='+data+'&identifica='+identifica);
           }\n";
-    echo "function js_mostra_text(liga,nomediv,evt){
+    echo "public function js_mostra_text(liga,nomediv,evt){
 		    evt = (evt)?evt:(window.event)?window.event:''; 
 		    if(liga==true) {
 		      document.getElementById(nomediv).style.top = 0; //evt.clientY;
@@ -460,7 +460,7 @@ class db_calendario {
       $col  = pg_fieldname($result,1);
       $qcol  = pg_fieldname($result,2);
       $val  = pg_fieldname($result,3);
-      global $$lin,$$col,$$val,$$qcol;
+      global ${$lin},${$col},${$val},${$qcol};
 
     
       $matriz_imp = array();
@@ -502,7 +502,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = explode("-",key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)]['m'][substr($datat,8,2)]) ){
           	$color = "red";
@@ -532,7 +532,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = explode("-",key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)]["t"][substr($datat,8,2)]) ){
           	$color = "red";
@@ -575,7 +575,7 @@ class db_calendario {
     $this->monta_layer();
    
   }
-  function monta_calendario_semanal ($exercicio=null, $metodo=null,$data=null){
+  public function monta_calendario_semanal ($exercicio=null, $metodo=null,$data=null){
 
     $this->clcalend = new cl_calend;
   	
@@ -672,10 +672,10 @@ class db_calendario {
   
     echo "<table cellspacing=0 width='100%'>\n";  
     echo "<script>\n";
-    echo "function js_mostra_alvo(data,identifica){
+    echo "public function js_mostra_alvo(data,identifica){
             js_OpenJanelaIframe('','db_iframe_calend','".$this->pagina_alvo."?data='+data+'&identifica='+identifica);
           }\n";
-    echo "function js_mostra_text(liga,nomediv,evt){
+    echo "public function js_mostra_text(liga,nomediv,evt){
 		    evt = (evt)?evt:(window.event)?window.event:''; 
 		    if(liga==true) {
 		      document.getElementById(nomediv).style.top = 0; //evt.clientY;
@@ -737,7 +737,7 @@ class db_calendario {
       $lin  = pg_fieldname($result,0);
       $col  = pg_fieldname($result,1);
       $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      global ${$lin},${$col},${$val};
 
     
       $matriz_imp = array();
@@ -773,7 +773,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = explode("-",key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)][substr($datat,8,2)]) ){
           	$color = "red";
@@ -815,7 +815,7 @@ class db_calendario {
   }
 
 
-  function monta_calendario_anual ($exercicio=null, $metodo=null,$data=null){
+  public function monta_calendario_anual ($exercicio=null, $metodo=null,$data=null){
 
     $this->clcalend = new cl_calend;
   	
@@ -832,7 +832,7 @@ class db_calendario {
       
       if($metodo=='mais'){
         $this->diaatual = substr($data,8,2)+1;      
-        $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
+        $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
       	
         if( $datat == 0){
           $this->diaatual  = 1;
@@ -849,7 +849,7 @@ class db_calendario {
       }else if($metodo=='menos'){
       	
         $this->diaatual = substr($data,8,2)-1;      
-        $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
+        $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
           if($this->diaatual<=0){
@@ -882,10 +882,10 @@ class db_calendario {
   
     echo "<table cellspacing=0 width='100%'>\n";  
     echo "<script>\n";
-    echo "function js_mostra_alvo(data,identifica){
+    echo "public function js_mostra_alvo(data,identifica){
             js_OpenJanelaIframe('','db_iframe_calend','".$this->pagina_alvo."?data='+data+'&identifica='+identifica);
           }\n";
-    echo "function js_mostra_text(liga,nomediv,evt){
+    echo "public function js_mostra_text(liga,nomediv,evt){
 		    evt = (evt)?evt:(window.event)?window.event:''; 
 		    if(liga==true) {
 		      document.getElementById(nomediv).style.top = 0; //evt.clientY;
@@ -929,7 +929,7 @@ class db_calendario {
       $lin  = pg_fieldname($result,0);
       $col  = pg_fieldname($result,1);
       $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      global ${$lin},${$col},${$val};
 
     
       $matriz_imp = array();
@@ -1004,7 +1004,7 @@ class db_calendario {
    
   }
   
-  function monta_calendario_anual_semana ($exercicio=null, $metodo=null,$data=null){
+  public function monta_calendario_anual_semana ($exercicio=null, $metodo=null,$data=null){
 
     $this->clcalend = new cl_calend;
   	
@@ -1038,7 +1038,7 @@ class db_calendario {
       }else if($metodo=='menos'){
       	
         $this->diaatual = substr($data,8,2)-1;      
-        $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
+        $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
           if($this->diaatual<=0){
@@ -1069,10 +1069,10 @@ class db_calendario {
   
     echo "<table cellspacing=0 width='100%'>\n";  
     echo "<script>\n";
-    echo "function js_mostra_alvo(codmod,codproced){
+    echo "public function js_mostra_alvo(codmod,codproced){
             js_OpenJanelaIframe('','db_iframe_calend','".$this->pagina_alvo."?codmod='+codmod+'&codproced='+codproced);
           }\n";
-    echo "function js_mostra_text(liga,nomediv,evt){
+    echo "public function js_mostra_text(liga,nomediv,evt){
 		    evt = (evt)?evt:(window.event)?window.event:''; 
 		    if(liga==true) {
 		      document.getElementById(nomediv).style.top = 0; //evt.clientY;
@@ -1169,7 +1169,7 @@ class db_calendario {
       $lin  = pg_fieldname($result,0);
       $col  = pg_fieldname($result,1);
       $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      global ${$lin},${$col},${$val};
 
       $matriz_imp = array();
       $matriz_cor = array();
@@ -1274,7 +1274,7 @@ class db_calendario {
    
   }
 
-  function monta_layer(){
+  public function monta_layer(){
   	 
 
   	 reset($this->matriz_layer);
@@ -1305,11 +1305,11 @@ class db_calendario {
   }
 
 
-  function monta_javascript($funcao,$param=null,$conteudo){
+  public function monta_javascript($funcao,$param=null,$conteudo){
   	$this->javascript .= "function $funcao ($param){ $conteudo } \n";
   }
 
-  function monta_inicio_pagina($monta_menu){
+  public function monta_inicio_pagina($monta_menu){
   	
   	echo "<html>\n";
     echo "<head>\n";
@@ -1336,7 +1336,7 @@ class db_calendario {
   	
   }
 
-  function monta_fim_pagina(){
+  public function monta_fim_pagina(){
     if($this->monta_menu==true){
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     }

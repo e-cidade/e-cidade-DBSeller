@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,7 +27,7 @@
  */
 
 /**
- * Representa as configurações da tela de geração do empenho.
+ * Representa as configura??es da tela de gera??o do empenho.
  *
  * @author $Author: dbmarcos $
  * @version $Revision: 1.6 $
@@ -56,7 +56,6 @@ require_once(modification("libs/db_utils.php"));
     >
 
     <script type="text/javascript" src="scripts/scripts.js"></script>
-    <script type="text/javascript" src="scripts/prototype.js"></script>
     <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
     <script type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="assets/bootstrap-table/popper.min.js"></script>
@@ -86,79 +85,5 @@ require_once(modification("libs/db_utils.php"));
     <formulario-atendimento-json />
 </div>
 <script src="public/vue/modulo/rh/recadastramento.js"></script>
-<script>
-
-    // const RPC = 'rh4_recadastramento.RPC.php';
-    // const bootstrapTable = $('#table').bootstrapTable({
-    //     sidePagination: "server",
-    //     pagination: true,
-    //     sortable: true,
-    //     pageSize: 10,
-    //     pageList: [10, 20, 50, 100],
-    //     url: `${RPC}?route=aprovados-instituicao`,
-    //     height: 800,
-    //     showColumns: true,
-    //     toolbar: "#toolbar",
-    //     buttons: buttons,
-    //     columns: [
-    //         {
-    //             field: 'selecao',
-    //             checkbox: true
-    //         },
-    //         {
-    //             field: 'numero_atendimento',
-    //             title: 'N:. ATEND.',
-    //             sortable: true
-    //         }, {
-    //             field: 'data_atendimento',
-    //             title: 'DATA ATEND.',
-    //             sortable: true,
-    //             formatter: dataPtBr
-    //         }, {
-    //             field: 'matricula',
-    //             title: 'MATRICULA',
-    //             sortable: true
-    //         },
-    //         {
-    //             field: 'cgm',
-    //             title: 'CGM',
-    //             sortable: true
-    //         },
-    //         {
-    //             field: 'cpf',
-    //             title: 'CPF',
-    //             sortable: true
-    //         },
-    //         {
-    //             field: 'nome',
-    //             title: 'NOME',
-    //             sortable: true,
-    //         },
-    //         {
-    //             field: 'nome_instituicao',
-    //             title: 'INSTITUIÇÃO',
-    //             sortable: true,
-    //         },
-    //         {
-    //             field: 'codigo_lotacao',
-    //             title: 'CÓD. LOTAÇÃO',
-    //             sortable: true
-    //         },
-    //         {
-    //             field: 'descricao_lotacao',
-    //             title: 'LOTAÇÃO',
-    //             sortable: true
-    //         },
-    //         {
-    //             field: 'status',
-    //             title: 'STATUS',
-    //         },
-    //     ],
-    // });
-
-
-
-
-</script>
 </body>
 </html>

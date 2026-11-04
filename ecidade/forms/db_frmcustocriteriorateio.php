@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,19 +51,19 @@ $clrotulo->label("m61_descr");
        <?=@$Lcc08_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc08_sequencial',10,$Icc08_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc08_matunid?>">
-       <?
+       <?php
        db_ancora(@$Lcc08_matunid,"js_pesquisacc08_matunid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?
+     <?php
     db_input('cc08_matunid',10,$Icc08_matunid,true,'text',$db_opcao," onchange='js_pesquisacc08_matunid(false);'");
     db_input('m61_descr',39,$Im61_descr,true,'text',3,'');
        ?>
@@ -74,7 +74,7 @@ db_input('cc08_sequencial',10,$Icc08_sequencial,true,'text',3,"")
        <?=@$Lcc08_descricao?>
     </td>
     <td> 
-    <?
+    <?php
     db_input('cc08_descricao',53,$Icc08_descricao,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -84,7 +84,7 @@ db_input('cc08_sequencial',10,$Icc08_sequencial,true,'text',3,"")
        <?=@$Lcc08_obs?>
     </td>
     <td> 
-   <?
+   <?php
    db_textarea('cc08_obs',8, 51,$Icc08_obs,true,'text',$db_opcao,"")
   ?>
     </td>
@@ -94,7 +94,7 @@ db_input('cc08_sequencial',10,$Icc08_sequencial,true,'text',3,"")
        <?=@$Lcc08_ativo?>
     </td>
     <td> 
-   <?
+   <?php
    $x = array("f"=>"NAO","t"=>"SIM");
    db_select('cc08_ativo',$x,true,$db_opcao,"");
    ?>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custocriteriorateio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

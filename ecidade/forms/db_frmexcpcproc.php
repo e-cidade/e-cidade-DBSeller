@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if($clpcproc->numrows>0){
        <?=@$Lpc80_codproc?>
     </td>
     <td> 
-    <?
+    <?php
     db_input('pc80_codproc',8,$Ipc80_codproc,true,'text',3)
     ?>
     </td>
@@ -68,7 +68,7 @@ if($clpcproc->numrows>0){
        <?=@$Lpc80_data?>
     </td>
     <td colspan="3"> 
-    <?
+    <?php
     db_inputdata('pc80_data',date("d"),date("m"),date("Y"),true,'text',3);
     ?>
     </td>
@@ -78,7 +78,7 @@ if($clpcproc->numrows>0){
        <?=@$Lnome?>
     </td>
     <td colspan="3">
-    <?
+    <?php
     db_input('id_usuario',8,$Inome,true,'text',3);
     db_input('nome',46,$Inome,true,'text',3);
     ?>
@@ -89,7 +89,7 @@ if($clpcproc->numrows>0){
        <?=@$Ldescrdepto?>
     </td>
     <td colspan="3"> 
-    <?
+    <?php
     db_input('coddepto',8,$Idescrdepto,true,'text',3);
     db_input('descrdepto',46,$Idescrdepto,true,'text',3);
     ?>
@@ -100,7 +100,7 @@ if($clpcproc->numrows>0){
        <?=@$Lpc80_resumo?>
     </td>
     <td colspan="3"> 
-    <?
+    <?php
     db_textarea('pc80_resumo',4,54,$Ipc80_resumo,true,'text',3)
     ?>
     </td>
@@ -112,7 +112,7 @@ if($clpcproc->numrows>0){
   </tr>
 </table>
 </center>
-<?
+<?php
 //---------------------------------------Controla Andamento da solicitação---------------------------------
 	
 	
@@ -159,7 +159,7 @@ if (isset($pc80_codproc) && trim($pc80_codproc)!=""){
    }else{
   ?>
     <input name="excluir" type="submit" id="db_opcao" value="Excluir" <?=($db_botao==false?"disabled":"")?> >
-  <?
+  <?php
   }
 }
 ?>
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?pc80_codproc='+chave";
   }

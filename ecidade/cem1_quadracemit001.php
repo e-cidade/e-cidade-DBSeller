@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,14 +61,14 @@ if(isset($incluir)){
   <tr> 
     <td  height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-     <?
+     <?php
      include(modification("forms/db_frmquadracemit.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -76,7 +76,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","cm22_i_cemiterio",true,1,"cm22_i_cemiterio",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clquadracemit->erro_status=="0"){
     $clquadracemit->erro(true,false);

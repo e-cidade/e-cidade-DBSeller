@@ -35,7 +35,7 @@ class cl_empagemov
                  ";
 
     //funcao construtor da classe
-    public function cl_empagemov()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("empagemov");
@@ -473,6 +473,42 @@ class cl_empagemov
         $sql .= "      inner join pctipocompra  on  pctipocompra.pc50_codcom = empempenho.e60_codcom";
         $sql .= "      inner join emptipo  on  emptipo.e41_codtipo = empempenho.e60_codtipo";
         $sql .= "      inner join emppresta on e81_codmov = e45_codmov";
+
+        $sql2 = "";
+
+        if ($dbwhere == "") {
+            if ($e81_codmov != null) {
+                $sql2 .= " where empagemov.e81_codmov = $e81_codmov ";
+            }
+        } else if ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+
+        $sql2 .= ($sql2 != "" ? "" : " where db_config.codigo = " . db_getsession("DB_instit"));
+        $sql .= $sql2;
+
+        if ($ordem != null) {
+            $sql .= " order by {$ordem}";
+        }
+
+        return $sql;
+    }
+    public function sql_query_empenho_conferidoPagamento($e81_codmov = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select {$campos}";
+
+        $sql .= " from empagemov ";
+        $sql .= "      inner join empempenho  on  empempenho.e60_numemp = empagemov.e81_numemp";
+        $sql .= "      inner join empage  on  empage.e80_codage = empagemov.e81_codage";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = empempenho.e60_numcgm";
+        $sql .= "      inner join db_config  on  db_config.codigo = empempenho.e60_instit";
+        $sql .= "      inner join orcdotacao  on  orcdotacao.o58_anousu = empempenho.e60_anousu and  orcdotacao.o58_coddot = empempenho.e60_coddot";
+        $sql .= "      inner join pctipocompra  on  pctipocompra.pc50_codcom = empempenho.e60_codcom";
+        $sql .= "      inner join emptipo  on  emptipo.e41_codtipo = empempenho.e60_codtipo";
+        $sql .= "      inner join emppresta on e81_codmov = e45_codmov";
+        $sql .= "      inner join empord on e82_codmov = e45_codmov ";
+        $sql .= "      inner join pagordemele  on  e53_codord = e82_codord ";
+        $sql .= "      left  join empprestaitem on e46_emppresta = e45_sequencial";
 
         $sql2 = "";
 

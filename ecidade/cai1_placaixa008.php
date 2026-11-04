@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -85,7 +85,7 @@ if(isset($autentica)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	$autenticar = true;
 	include(modification("forms/db_frmplacaixa.php"));
 	?>
@@ -95,7 +95,7 @@ if(isset($autentica)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($autentica)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,19 +25,19 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_issbase_classe.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("dbforms/db_classesgenericas.php"));
-$clissbase    = new cl_issbase;
-$cliptubase   = new cl_iptubase;
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_issbase_classe.php"));
+require_once(modification("classes/db_iptubase_classe.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
 
-$clcriaabas     = new cl_criaabas;
-$db_opcao = 1;
+$clissbase  = new cl_issbase;
+$cliptubase = new cl_iptubase;
+$clcriaabas = new cl_criaabas;
+$db_opcao   = 1;
 ?>
 <html>
 <head>
@@ -59,40 +59,35 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
-   $clcriaabas->identifica = array("isencao"=>"Dados da Isenção","isencaolanc"=>"Lançamentos"); 
-	 $clcriaabas->sizecampo = array("isencao"=>"30","isencaolanc"=>"30");
-	 $clcriaabas->src = array("isencao"=>"tri1_isencao004.php?origem=$origem&valorigem=$valorigem");
-	 $clcriaabas->disabled   =  array("isencaolanc"=>"true"); 
-	 $clcriaabas->cria_abas(); 
+     <?php
+      $clcriaabas->identifica = array("isencao"=>"Dados da Isenção",'isencaocalc'=>"Cálculos"); 
+	    $clcriaabas->sizecampo = array("isencao"=>"30","isencaolanc"=>"30", 'isencaocalc'=>"30");
+	    $clcriaabas->src = array("isencao"=>"tri1_isencao004.php?origem=$origem&valorigem=$valorigem");
+	    $clcriaabas->disabled   =  array("isencaocalc"=>"true"); 
+	    $clcriaabas->cria_abas(); 
 
-   // testa se a origem ja nao esta baixada 
-   if(isset($origem) && $origem == "2"){
-//	   die($clissbase->sql_query_file($valorigem,'q02_inscr',null,"q02_inscr = $valorigem and q02_dtbaix is not null"));
-	   $rsBaixa = $clissbase->sql_record($clissbase->sql_query_file($valorigem,'q02_inscr',null,"q02_inscr = $valorigem and q02_dtbaix is not null"));
-	   if($clissbase->numrows > 0){
-	     db_msgbox("Inscrição baixada !");
-       db_redireciona("tri4_cadisencaoalt001.php?origemmenu=2");
-	   }
-	 }else if(isset($origem) && $origem == "3"){
-	   $rsBaixa = $cliptubase->sql_record($cliptubase->sql_query_file($valorigem,'j01_matric',null,"j01_baixa is not null"));
-	   if($cliptubase->numrows > 0){
-	     db_msgbox("Matrícula baixada !");
-       db_redireciona("tri4_cadisencaoalt001.php?origemmenu=3");
-	   }
-	 }
-
-
-
-
-       ?> 
-       </td>
-    </tr>
+      // testa se a origem ja nao esta baixada 
+      if(isset($origem) && $origem == "2"){
+	      $rsBaixa = $clissbase->sql_record($clissbase->sql_query_file($valorigem,'q02_inscr',null,"q02_inscr = $valorigem and q02_dtbaix is not null"));
+	      if($clissbase->numrows > 0){
+	        db_msgbox("Inscrição baixada !");
+          db_redireciona("tri4_cadisencaoalt001.php?origemmenu=2");
+	      }
+	    }else if(isset($origem) && $origem == "3"){
+	      $rsBaixa = $cliptubase->sql_record($cliptubase->sql_query_file($valorigem,'j01_matric',null,"j01_baixa is not null"));
+	      if($cliptubase->numrows > 0){
+	        db_msgbox("Matrícula baixada !");
+          db_redireciona("tri4_cadisencaoalt001.php?origemmenu=3");
+	      }
+	    }
+     ?> 
+    </td>
+   </tr>
   </table>
   <form name="form1">
   </form>
-      <? 
-	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+      <?php
+	    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>
   </html>

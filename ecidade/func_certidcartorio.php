@@ -52,11 +52,11 @@ $clcertidcartorio->rotulo->label("v31_certid");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for='v31_sequencial'><?=$Lv31_sequencial?></label></td>
-          <td><? db_input("v31_sequencial",10,$Iv31_sequencial,true,"text",4,"","chave_v31_sequencial"); ?></td>
+          <td><?php db_input("v31_sequencial",10,$Iv31_sequencial,true,"text",4,"","chave_v31_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label for='v31_certid'><?=$Lv31_certid?></label></td>
-          <td><? db_input("v31_certid",10,$Iv31_certid,true,"text",4,"","chave_v31_certid");?></td>
+          <td><?php db_input("v31_certid",10,$Iv31_certid,true,"text",4,"","chave_v31_certid");?></td>
         </tr>
       </table>
     </fieldset>
@@ -64,7 +64,7 @@ $clcertidcartorio->rotulo->label("v31_certid");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_certidcartorio.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_certidcartorio.php")==true){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -277,10 +277,10 @@ if($linhas>0){
        $pdf->cell(60,5,$array_totays[$reg][0],1,0,"L",1);
        $pdf->cell(20,5,"QUANT",1,1,"C",1);
        
-     	array_multisort($$array_totays[$reg][1], SORT_DESC);
+     	array_multisort(${$array_totays[$reg][1]}, SORT_DESC);
      	
        $total_quant=0;
-       foreach ($$array_totays[$reg][1] as $k => $v) {
+       foreach (${$array_totays[$reg][1]} as $k => $v) {
          $pdf->cell(60,5,$k,0,0,"L",0);
          $pdf->cell(20,5,db_formatar($v[0], 'f'),0,1,"R",0);
          $total_quant+=$v[0];

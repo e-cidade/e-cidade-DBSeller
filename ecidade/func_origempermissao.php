@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -124,7 +124,7 @@ if (isset($sWhereDeptos) && !empty($sWhereDeptos)) {
     <td>
       <fieldset>
         <legend><b>Permissões do Usuário:</b></legend>
-        <?
+        <?php
           $sCampos       = " db_usuarios.id_usuario,db_usuarios.nome,db_permemp.db20_orgao,db_permemp.db20_unidade,   ";
           $sCampos      .= " db_permemp.db20_funcao,db_permemp.db20_subfuncao,db_permemp.db20_programa,               ";
           $sCampos      .= " db_permemp.db20_projativ,db_permemp.db20_codele,db_permemp.db20_codigo,                  ";
@@ -149,7 +149,7 @@ if (isset($sWhereDeptos) && !empty($sWhereDeptos)) {
     <td>
       <fieldset>
         <legend><b>Permissões do Departamento:</b></legend>
-        <?
+        <?php
           $sCampos           = " db_depart.coddepto,db_depart.descrdepto,db_permemp.db20_orgao,                       ";
           $sCampos          .= " db_permemp.db20_unidade,db_permemp.db20_funcao,db_permemp.db20_subfuncao,            ";
           $sCampos          .= " db_permemp.db20_programa,db_permemp.db20_projativ,db_permemp.db20_codele,            ";

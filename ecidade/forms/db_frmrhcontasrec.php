@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,172 +30,222 @@ $oRotulo = new rotulocampo;
 $oRotulo->label("k13_descr");
 $oRotulo->label("o15_descr");
 $oRotulo->label("nomeinst");
-
+$oRotulo->label("o15_recurso");
+$oRotulo->label("gestao");
+$oRotulo->label("descricao");
+$oRotulo->label("o15_complemento");
+$oRotulo->label("o200_descricao");
 if ($db_opcao == 1) {
-  $sNameBotaoProcessar = "incluir";
+    $sNameBotaoProcessar = "incluir";
 } else if ($db_opcao == 2 || $db_opcao == 22) {
-  $sNameBotaoProcessar = "alterar";
+    $sNameBotaoProcessar = "alterar";
 } else {
-  $sNameBotaoProcessar = "excluir";
+    $sNameBotaoProcessar = "excluir";
 }
 ?>
 
 <html>
-  <head>
+<head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
-  </head>
-  <body class="body-default">
-    <div class="container">
-      <form name="form1" method="post" action="">
+</head>
+<body class="body-default">
+<div class="container">
+    <form name="form1" method="post" action="">
         <fieldset>
-          <legend>Contas por Recurso</legend>
-          <table>            
-            <tr>
-              <td nowrap title="<?php echo $Trh41_anousu; ?>" >
-                <label class="bold" for="rh41_anousu" id="lbl_rh41_anousu"><?php echo $Srh41_anousu; ?>:</label>
-              </td>
-              <td>
-                <?php
-                  $rh41_anousu = db_getsession('DB_anousu');
-                  db_input('rh41_anousu', 5, $Irh41_anousu, true, 'text', 3, "");
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <td nowrap title="<?php echo $Trh41_conta; ?>" >
-                <label class="bold" for="rh41_conta" id="lbl_rh41_conta">
-                  <?php
-                    db_ancora( $Srh41_conta . ':', 
-                               "js_pesquisarh41_conta(true);", $db_opcao);
-                  ?>
-                </label>
-              </td>
-              <td>
-                <?php
-                  db_input('rh41_conta', 5, $Irh41_conta, true, 'text', $db_opcao, " onchange='js_pesquisarh41_conta(false);'");
-                ?>
-                <?php 
-                  db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3, ''); 
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <td nowrap title="<?php echo $Trh41_codigo; ?>" >
-                <label class="bold" for="rh41_codigo" id="lbl_rh41_codigo">
-                  <?php
-                    db_ancora( $Srh41_codigo . ':', 
-                               "js_pesquisarh41_codigo(true);", $db_opcao);
-                  ?>
-                </label>
-              </td>
-              <td>
-                <?php
-                  db_input('rh41_codigo', 5, $Irh41_codigo, true, 'text', $db_opcao, " onchange='js_pesquisarh41_codigo(false);'");
-                ?>
-                <?php 
-                  db_input('o15_descr', 40, $Io15_descr, true, 'text', 3, ''); 
-                ?>
-              </td>
-            </tr>
-          </table>
+            <legend>Contas por Recurso</legend>
+            <table>
+                <tr>
+                    <td nowrap title="<?php echo $Trh41_anousu; ?>">
+                        <label class="bold" for="rh41_anousu" id="lbl_rh41_anousu"><?php echo $Srh41_anousu; ?>:</label>
+                    </td>
+                    <td>
+                        <?php
+                        $rh41_anousu = db_getsession('DB_anousu');
+                        db_input('rh41_anousu', 5, $Irh41_anousu, true, 'text', 3, "");
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap title="<?php echo $Trh41_conta; ?>">
+                        <label class="bold" for="rh41_conta" id="lbl_rh41_conta">
+                            <?php
+                            db_ancora($Srh41_conta . ':',
+                                "js_pesquisarh41_conta(true);", $db_opcao);
+                            ?>
+                        </label>
+                    </td>
+                    <td>
+                        <?php
+                        db_input('rh41_conta', 5, $Irh41_conta, true, 'text', $db_opcao, " onchange='js_pesquisarh41_conta(false);'");
+                        ?>
+                        <?php
+                        db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3, '');
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap title="<?php echo $Trh41_codigo; ?>">
+                        <label class="bold" for="rh41_codigo" id="lbl_rh41_codigo">
+                            <?php
+                            db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
+                            ?>
+                        </label>
+                    </td>
+                    <td>
+                        <?php
+                        db_input('rh41_codigo', 5, $Irh41_codigo, true, 'hidden');
+                        db_input("gestao", 5, $Io15_recurso, true, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                        db_input("o15_recurso", 5, $Io15_recurso, true, "text", 3);
+                        db_input("descricao", 50, null, true, "text", 3);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap>
+                        <label class="bold" for="rh41_codigo" id="lbl_rh41_codigo">Complemento:
+                        </label>
+                    </td>
+                    <td>
+                        <?php
+                        db_input("o15_complemento", 10, null, true, "text", 3);
+                        db_input("o200_descricao", 54, null, true, "text", 3);
+                        ?>
+                    </td>
+                </tr>
+
+            </table>
         </fieldset>
-        <input name="<?php echo $sNameBotaoProcessar; ?>" type="submit" id="db_opcao" value="<?php echo ucfirst($sNameBotaoProcessar); ?>" 
-               <?php if ($db_opcao == 1): ?>
-                 onclick="return js_validaFormulario()" 
-               <?php endif; ?>
-             <?php echo (!$db_botao ? "disabled" : ""); ?> >
-        <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-      </form>
-    </div>
-    <?php db_menu( db_getsession("DB_id_usuario"), 
-                   db_getsession("DB_modulo"), 
-                   db_getsession("DB_anousu"), 
-                   db_getsession("DB_instit") ); ?>
-  </body>
-  <script>
+        <input name="<?php echo $sNameBotaoProcessar; ?>" type="submit" id="db_opcao"
+               value="<?php echo ucfirst($sNameBotaoProcessar); ?>"
+            <?php if ($db_opcao == 1): ?>
+                onclick="return js_validaFormulario()"
+            <?php endif; ?>
+            <?php echo(!$db_botao ? "disabled" : ""); ?> >
+        <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
+    </form>
+</div>
+<?php db_menu(); ?>
+</body>
+<script>
     var sMensagens = "recursoshumanos.pessoal.pes1_rhcontasrec.";
 
     function js_validaFormulario() {
 
-      if ($F('rh41_conta') == '') {
-        alert( _M(sMensagens + "campo_nao_informado", { sCampo : "Código Conta"}) );
-        return false;
-      }
+        if ($F('rh41_conta') == '') {
+            alert(_M(sMensagens + "campo_nao_informado", {sCampo: "Código Conta"}));
+            return false;
+        }
 
-      if ($F('rh41_codigo') == '') {
-        alert( _M(sMensagens + "campo_nao_informado", { sCampo : "Recurso"}) );
-        return false;
-      }
+        if ($F('rh41_codigo') == '') {
+            alert(_M(sMensagens + "campo_nao_informado", {sCampo: "Recurso"}));
+            return false;
+        }
 
-      if ( isNaN($F('rh41_conta')) ) {
-        alert( _M(sMensagens + "campo_valor_inteiro", { sCampo : "Código Conta"}) );
-        return false;
-      }
+        if (isNaN($F('rh41_conta'))) {
+            alert(_M(sMensagens + "campo_valor_inteiro", {sCampo: "Código Conta"}));
+            return false;
+        }
 
-      if ( isNaN($F('rh41_codigo')) ) {
-        alert( _M(sMensagens + "campo_valor_inteiro", { sCampo : "Código Conta"}) );
-        return false;
-      }
+        if (isNaN($F('rh41_codigo'))) {
+            alert(_M(sMensagens + "campo_valor_inteiro", {sCampo: "Código Conta"}));
+            return false;
+        }
 
-      return true;
+        return true;
     }
 
     function js_pesquisarh41_conta(lExibeJanela) {
 
-      if (lExibeJanela) {
-        js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                             'db_iframe_saltes', 
-                             'func_saltes.php?funcao_js=parent.js_mostrasaltes1|k13_conta|k13_descr&lFiltroContaBanco=true',
-                             'Pesquisa', true);
-      } else {
-        if (document.form1.rh41_conta.value != '') {
-          js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                               'db_iframe_saltes', 
-                               'func_saltes.php?pesquisa_chave=' + document.form1.rh41_conta.value + '&funcao_js=parent.js_mostrasaltes&lFiltroContaBanco=true',
-                               'Pesquisa', false);
+        if (lExibeJanela) {
+            js_OpenJanelaIframe('CurrentWindow.corpo',
+                'db_iframe_saltes',
+                'func_saltes.php?funcao_js=parent.js_mostrasaltes1|k13_conta|k13_descr&lFiltroContaBanco=true',
+                'Pesquisa', true);
         } else {
-          document.form1.k13_descr.value = ''; 
+            if (document.form1.rh41_conta.value != '') {
+                js_OpenJanelaIframe('CurrentWindow.corpo',
+                    'db_iframe_saltes',
+                    'func_saltes.php?pesquisa_chave=' + document.form1.rh41_conta.value + '&funcao_js=parent.js_mostrasaltes&lFiltroContaBanco=true',
+                    'Pesquisa', false);
+            } else {
+                document.form1.k13_descr.value = '';
+            }
         }
-      }
     }
 
     function js_mostrasaltes(sChave, lErro) {
 
-      document.form1.k13_descr.value = sChave;
-      if (lErro) {
+        document.form1.k13_descr.value = sChave;
+        if (lErro) {
 
-        document.form1.rh41_conta.focus();
-        document.form1.rh41_conta.value = '';
-      }
+            document.form1.rh41_conta.focus();
+            document.form1.rh41_conta.value = '';
+        }
     }
 
     function js_mostrasaltes1(sChave, sDescricao) {
 
-      document.form1.rh41_conta.value = sChave;
-      document.form1.k13_descr.value = sDescricao;
-      db_iframe_saltes.hide();
+        document.form1.rh41_conta.value = sChave;
+        document.form1.k13_descr.value = sDescricao;
+        db_iframe_saltes.hide();
     }
 
+    function js_pesquisaRecurso(lMostraWindow) {
+
+        if (!lMostraWindow && $('gestao').value == '') {
+            $('rh41_codigo').value = '';
+            $('o15_recurso').value = '';
+            $('gestao').value = '';
+            $('descricao').value = '';
+            $('o15_complemento').value = '';
+            $('o200_descricao').value = '';
+            return
+        }
+
+        let param = 'gestao=' + $('gestao').value;
+        pesquisaRecurso(param);
+    }
+
+
+    const pesquisaRecurso = (parametroAdicional) => {
+        let sUrl = 'func_novosRecursos.php?funcao_js=parent.js_preencheRecurso|o15_codigo|o15_recurso|gestao|descricao|o15_complemento|o200_descricao';
+        if (parametroAdicional) {
+            sUrl += `&${parametroAdicional}`;
+        }
+        js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+    };
+
+    function js_preencheRecurso(id, recurso, gestao, descricao, complemento, descrComplemento) {
+        $('rh41_codigo').value = id;
+        $('o15_recurso').value = recurso;
+        $('gestao').value = gestao;
+        $('descricao').value = descricao;
+        $('o15_complemento').value = complemento;
+        $('o200_descricao').value = descrComplemento;
+        db_iframe_recurso.hide();
+    }
+
+    /*
     function js_pesquisarh41_codigo(lExibeJanela) {
 
       if (lExibeJanela) {
-        js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                             'db_iframe_orctiporec', 
-                             'func_orctiporec.php?funcao_js=parent.js_mostraorctiporec1|o15_codigo|o15_descr', 
+        js_OpenJanelaIframe( 'CurrentWindow.corpo',
+                             'db_iframe_orctiporec',
+                             'func_orctiporec.php?funcao_js=parent.js_mostraorctiporec1|o15_codigo|o15_descr',
                              'Pesquisa', true);
       } else {
         if (document.form1.rh41_codigo.value != '') {
-          js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                               'db_iframe_orctiporec', 
-                               'func_orctiporec.php?pesquisa_chave=' + document.form1.rh41_codigo.value + '&funcao_js=parent.js_mostraorctiporec', 
+          js_OpenJanelaIframe( 'CurrentWindow.corpo',
+                               'db_iframe_orctiporec',
+                               'func_orctiporec.php?pesquisa_chave=' + document.form1.rh41_codigo.value + '&funcao_js=parent.js_mostraorctiporec',
                                'Pesquisa', false);
         } else {
-          document.form1.o15_descr.value = ''; 
+          document.form1.o15_descr.value = '';
         }
       }
     }
@@ -216,62 +266,62 @@ if ($db_opcao == 1) {
       document.form1.o15_descr.value = sDescricao;
       db_iframe_orctiporec.hide();
     }
-
+*/
     function js_pesquisarh41_instit(lExibeJanela) {
 
-      if (lExibeJanela) {
-        js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                             'db_iframe_db_config', 
-                             'func_db_config.php?funcao_js=parent.js_mostradb_config1|codigo|nomeinst', 
-                             'Pesquisa', true);
-      } else {
-        if (document.form1.rh41_instit.value != '') {
-          js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                               'db_iframe_db_config', 
-                               'func_db_config.php?pesquisa_chave=' + document.form1.rh41_instit.value + '&funcao_js=parent.js_mostradb_config', 
-                               'Pesquisa', false);
+        if (lExibeJanela) {
+            js_OpenJanelaIframe('CurrentWindow.corpo',
+                'db_iframe_db_config',
+                'func_db_config.php?funcao_js=parent.js_mostradb_config1|codigo|nomeinst',
+                'Pesquisa', true);
         } else {
-          document.form1.nomeinst.value = ''; 
+            if (document.form1.rh41_instit.value != '') {
+                js_OpenJanelaIframe('CurrentWindow.corpo',
+                    'db_iframe_db_config',
+                    'func_db_config.php?pesquisa_chave=' + document.form1.rh41_instit.value + '&funcao_js=parent.js_mostradb_config',
+                    'Pesquisa', false);
+            } else {
+                document.form1.nomeinst.value = '';
+            }
         }
-      }
     }
 
     function js_mostradb_config(sChave, lErro) {
 
-      document.form1.nomeinst.value = sChave;
-      if (lErro) {
+        document.form1.nomeinst.value = sChave;
+        if (lErro) {
 
-        document.form1.rh41_instit.focus();
-        document.form1.rh41_instit.value = '';
-      }
+            document.form1.rh41_instit.focus();
+            document.form1.rh41_instit.value = '';
+        }
     }
 
     function js_mostradb_config1(sChave, sDescricao) {
 
-      document.form1.rh41_instit.value = sChave;
-      document.form1.nomeinst.value = sDescricao;
-      db_iframe_db_config.hide();
+        document.form1.rh41_instit.value = sChave;
+        document.form1.nomeinst.value = sDescricao;
+        db_iframe_db_config.hide();
     }
 
     function js_pesquisa() {
-      js_OpenJanelaIframe( 'CurrentWindow.corpo', 
-                           'db_iframe_rhcontasrec', 
-                           'func_rhcontasrec.php?funcao_js=parent.js_preenchepesquisa|k13_conta|rh41_codigo|rh41_anousu', 
-                           'Pesquisa', true);
+        js_OpenJanelaIframe('CurrentWindow.corpo',
+            'db_iframe_rhcontasrec',
+            'func_rhcontasrec.php?funcao_js=parent.js_preenchepesquisa|k13_conta|rh41_codigo|rh41_anousu',
+            'Pesquisa', true);
     }
 
     function js_preenchepesquisa(iConta, iCodigo, iAnousu) {
 
-      db_iframe_rhcontasrec.hide();
-      <?php
+        db_iframe_rhcontasrec.hide();
+        <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) 
-               . "?chavepesquisa=' + iConta + '&chavepesquisa1=' + iCodigo + "
-               . "'&chavepesquisa3=' + iAnousu";
+            echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
+                . "?chavepesquisa=' + iConta + '&chavepesquisa1=' + iCodigo + "
+                . "'&chavepesquisa3=' + iAnousu";
         }
-      ?>
+        ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
-  </script>
+    <?php echo(isset($sPosScripts) ? $sPosScripts : ""); ?>
+</script>
 </html>

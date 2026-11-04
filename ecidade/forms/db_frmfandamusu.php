@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,10 +53,10 @@ $db_opcao =3;
        <?=@$Ly40_codandam?>
     </td>
     <td> 
-<?
+<?php
 db_input('y40_codandam',20,$Iy40_codandam,true,'text',$db_opcao," onchange='js_pesquisay40_codandam(false);'")
 ?>
-       <?
+       <?php
 db_input('y39_data',10,$Iy39_data,true,'text',3,'')
        ?>
     </td>
@@ -67,10 +67,10 @@ db_input('y39_data',10,$Iy39_data,true,'text',3,'')
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y40_id_usuario',5,$Iy40_id_usuario,true,'text',$db_opcao," onchange='js_pesquisay40_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -80,7 +80,7 @@ db_input('nome',20,$Inome,true,'text',3,'')
        <?=@$Ly40_obs?>
     </td>
     <td> 
-<?
+<?php
 $db_opcao=2;
 db_textarea('y40_obs',3,50,$Iy40_obs,true,'text',$db_opcao,"")
 ?>
@@ -93,7 +93,7 @@ db_textarea('y40_obs',3,50,$Iy40_obs,true,'text',$db_opcao,"")
   </tr>  
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $db_opcao = 1;
     $chavepri= array("y40_codandam"=>@$y40_codandam,"y40_id_usuario"=>@$y40_id_usuario);
     $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -158,13 +158,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_fandamusu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 +"&chavepesquisa1="+chave1}
 </script>
-<?
+<?php
   echo "<script>parent.document.formaba.fiscais.focus()</script>";
 ?>

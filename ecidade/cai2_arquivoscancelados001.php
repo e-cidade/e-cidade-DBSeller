@@ -88,9 +88,9 @@ db_postmemory($HTTP_POST_VARS);
 <table border='0' align='left'>
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
        db_input("e87_codgera",10,$Ie87_codgera,true,"text",4,"onchange='js_pesquisa_gera(false);'"); 
        db_input("e87_descgera",60,$Ie87_descgera,true,"text",3);
       ?>
@@ -108,7 +108,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>
 </center>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>

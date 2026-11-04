@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,12 +58,12 @@ if (!isset($veiculo)) {
     <table border="0">
       <tr>
         <td title="<?=$Tq07_inscr?>" >
-        <?
+        <?php
          db_ancora($Lq07_inscr,' js_inscr(true); ',1);
         ?>
         </td>
         <td title="<?=$Tq07_inscr?>" colspan="4">
-        <?
+        <?php
           db_input('q07_inscr',5,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
           isset($q07_inscr)?$inscricao=$q07_inscr:"";
           db_input('inscricao',5,$Iq07_inscr,true,'hidden',1);

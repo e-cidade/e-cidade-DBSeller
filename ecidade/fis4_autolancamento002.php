@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -127,6 +127,13 @@ $head5 = "Levantamento fiscal: $codlev Data:$y60_data";
 $head6 = "Período: $y60_dtini a $y60_dtfim";
 */
 //die($cllevinscr->sql_query($codlev, "q02_inscr,z01_nome,z01_ender"));
+
+if(strtoupper($RLq02_inscr == 'INSCR')) {
+    $pontuacao = "/";
+} else {
+    $pontuacao  = ":";
+}
+
 $result = $cllevinscr->sql_record($cllevinscr->sql_query($codlev, "q02_inscr,z01_nome,z01_ender"));
 $numrowsinscr = $cllevinscr->numrows;
 if ($numrowsinscr > 0) {
@@ -139,10 +146,6 @@ $sqllevanta = "select case when levinscr.y62_codlev is not null then
                                issbase.q02_inscr
                             else cgm.z01_numcgm
                         end as origem,
-                        case when levinscr.y62_codlev is not null then
-                               'INSCR.'
-                           else 'CGM'
-                        end as tipo,
 				       cgm.*,
 				       issbase.*,
                        levcgm.*,
@@ -157,15 +160,15 @@ $sqllevanta = "select case when levinscr.y62_codlev is not null then
 				       left join levinscr on levinscr.y62_codlev = levanta.y60_codlev
 				       left join issbase  on issbase.q02_inscr   = levinscr.y62_inscr
 				       left join cgm c on c.z01_numcgm = issbase.q02_numcgm
-                                       left join issruas  on issbase.q02_inscr   = issruas.q02_inscr 
+                                       left join issruas  on issbase.q02_inscr   = issruas.q02_inscr
                                        left join ruas     on issruas.j14_codigo  = ruas.j14_codigo
                                        left join issbairro on q13_inscr = issbase.q02_inscr
-                                       left join bairro   on j13_codi = q13_bairro 
+                                       left join bairro   on j13_codi = q13_bairro
 				       left join tabativ  on tabativ.q07_inscr   = levinscr.y62_inscr
 				       left join ativprinc on ativprinc.q88_inscr = tabativ.q07_inscr
 				        and ativprinc.q88_seq = tabativ.q07_seq
 				       left join ativid  on ativid.q03_ativ   = tabativ.q07_ativ
-         			where levanta.y60_codlev = $codlev 
+         			where levanta.y60_codlev = $codlev
                 ";
 // 13-12-2005
 //adicionei leftjoin com tabativ e com ativid para buscar a atividades quand  lancament eh por issqn
@@ -188,7 +191,7 @@ $pdf->setx(55);
 $pdf->setfont('arial', 'b', 12);
 $pdf->cell(47, $alt + 1, "Origem : ", 0, 0, "L", 0);
 $pdf->setfont('arial', '', 12);
-$pdf->cell(43, $alt + 1, $tipo . "/" . $origem, 0, 0, "L", 0);
+$pdf->cell(43, $alt + 1, $RLq02_inscr . "$pontuacao" . $origem, 0, 0, "L", 0);
 $pdf->setfont('arial', 'b', 12);
 $pdf->cell(60, $alt + 1, "Levantamento Fiscal : ", 0, 0, "L", 0);
 $pdf->setfont('arial', '', 12);
@@ -220,7 +223,7 @@ if (isset($mostraativ) && $mostraativ == 't') {
     if (strlen($q03_descr) > 40) {
         $q03_descr = substr($q03_descr,0, 40) . '...';
     }
-    
+
     $pdf->cell(110, $alt + 1, $q03_descr, 0, 1, "L", 0); //
     $pdf->setfont('arial', 'b', 12);
 }
@@ -231,7 +234,7 @@ $pdf->cell(47, $alt + 1, "Data : ", 0, 0, "L", 0);
 $pdf->setfont('arial', '', 12);
 $pdf->cell(110, $alt + 1, $y60_data, 0, 1, "L", 0);
 
-//$pdf->roundedrect(10,67,150,30,2,'1234'); 
+//$pdf->roundedrect(10,67,150,30,2,'1234');
 
 $pdf->cell(70, $alt + 1, "", 0, 1, "L", 0);
 $pdf->cell(70, $alt + 1, "", 0, 1, "L", 0);
@@ -249,10 +252,10 @@ $head6 = "Período: $y60_dtini a $y60_dtfim";
 //==================================================================================================================================================================
 
 $sqlparag = "select *
-		from db_documento 
+		from db_documento
 		inner join db_docparag on db03_docum = db04_docum
 		inner join db_tipodoc on db08_codigo  = db03_tipodoc
-		inner join db_paragrafo on db04_idparag = db02_idparag 
+		inner join db_paragrafo on db04_idparag = db02_idparag
 		where db03_tipodoc = 1014 and db03_instit = " . db_getsession("DB_instit") . " order by db04_ordem ";
 $resparag = db_query($sqlparag);
 //db_criatabela($resparag);exit;
@@ -373,7 +376,7 @@ for ($x = 0; $x < $numrows01; $x++) {
         if ($y32_tipodatavencimento == 2 && isset($y50_dtvenc)) {
            $dDataVencParam = $y50_dtvenc;
         }
-    
+
         if ( intval(str_replace('-', '', $y63_dtvenc)) < intval(str_replace('-', '', $dDataOperParam)) ) {
             $dDataVencParam = $dDataOperParam;
         }
@@ -382,7 +385,7 @@ for ($x = 0; $x < $numrows01; $x++) {
         db_fieldsmemory($result, 0);
 
         //dd($y50_dtvenc);
-        
+
         //dd('RECEITA1', $y32_receit,'RECEITAEXP', $y32_receitexp,'DATA LEVANTA',$y60_data,'OPERCAO:',$dDataOperParam, 'TIPOOPERACAO:', $y32_tipodataoperacao, 'VENCIMENTO',$dDataVencParam, 'TIPOVENC:', $y32_tipodatavencimento);
 
         $result = db_query("select fc_juros(" . ($y60_espontaneo == 't' ? $y32_receitexp : $y32_receit) . ",'" . $y63_dtvenc . "','" . $dtoper . "','" . $dDtOperData . "','f'," . db_getsession("DB_anousu") . ") as juro");
@@ -498,7 +501,7 @@ if ($numrows11 > 0) {
         }
     }
 }
-//paragrafo 4 
+//paragrafo 4
 $pdf->setfont('arial', '', 12);
 $paragrafo4 = db_geratexto($paragrafo4);
 $pdf->multicell($largpag, $alt + 1, "          " . $paragrafo4, 10, 1, "C", 0);

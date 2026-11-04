@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,7 @@ $aux = new cl_arquivo_auxiliar;
        <tr> 
            <td colspan=2  align="left">
                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;Listar:</strong>
-           <?
+           <?php
 	      $matriz = array("A"=>"Ativo","I"=>"Inativo","T"=>"Todos");
 	      db_select("opcao_material",$matriz,true,1);
 	   ?>
@@ -77,7 +77,7 @@ $aux = new cl_arquivo_auxiliar;
 
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Material</strong>";
                  $aux->codigo = "m60_codmater"; //chave de retorno da func

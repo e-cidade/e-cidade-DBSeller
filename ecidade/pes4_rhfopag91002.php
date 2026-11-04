@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -30,7 +30,6 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhfopag_classe.php"));
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-//db_postmemory($HTTP_POST_VARS,2);
 $clrhfopag = new cl_rhfopag;
 
 ?>
@@ -45,18 +44,16 @@ $clrhfopag = new cl_rhfopag;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br><br>
 <center>
-<? 
+<?php 
 db_criatermometro('calculo_folha','Concluido...','blue',1,'Efetuando Importação');
 ?>
 
 </center>
 </body>
-<?
+<?php
 $db_erro = false;
 
 $erro_msg = ImportaArquivo($AArquivo,$exclui);
-
-//exit;
 
 if(!empty($erro_msg)){
   echo "
@@ -65,10 +62,7 @@ if(!empty($erro_msg)){
   </script>
   ";
 }
-//echo "<BR> antes do fim db_fim_transacao()";
-//flush();
 db_fim_transacao();
-//flush();
 db_redireciona("pes4_rhfopag91001.php");
 
 function ImportaArquivo($AArquivo,$exclui){
@@ -84,7 +78,7 @@ function ImportaArquivo($AArquivo,$exclui){
     $nRegistro++;
 
     $cLinha = $LinhasArquivo[$cL];     
-    $rh66_regist = db_val(trim(db_substr($cLinha, 08,15)));
+    $rh66_regist = db_val(trim(db_substr($cLinha, 8,15)));
     $rh66_pis    = db_substr($cLinha, 23,11);
     $rh66_valor  = str_replace(",",".",db_substr($cLinha,107,11))*1;
     $rh66_proces = db_substr($cLinha,151,01);
@@ -103,6 +97,3 @@ function ImportaArquivo($AArquivo,$exclui){
 	}
 
 }
-
-
-?>

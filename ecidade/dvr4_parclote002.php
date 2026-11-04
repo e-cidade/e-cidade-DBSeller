@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($processar)){
 $datpri    = $DBtxt15_ano.'-'.$DBtxt15_mes.'-'.$DBtxt15_dia;
 $diapar    = $DBtxt16;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clportariaenvolv->rotulo->label();
        <?=@$Lh42_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h42_sequencial',10,$Ih42_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h42_sequencial',10,$Ih42_sequencial,true,'text',3,"")
        <?=@$Lh42_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h42_descr',40,$Ih42_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('h42_descr',40,$Ih42_descr,true,'text',$db_opcao,"")
        <?=@$Lh42_amparolegal?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h42_amparolegal',5,40,$Ih42_amparolegal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_portariaenvolv.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

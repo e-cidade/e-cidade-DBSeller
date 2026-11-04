@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltipolinha->rotulo->label();
        <?=@$Led226_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed226_i_codigo',10,$Ied226_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ed226_i_codigo',10,$Ied226_i_codigo,true,'text',3,"")
        <?=@$Led226_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed226_c_descr',40,$Ied226_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('ed226_c_descr',40,$Ied226_c_descr,true,'text',$db_opcao,"")
        <?=@$Led226_c_tarifa?>
     </td>
     <td> 
-<?
+<?php
 $x = array('N'=>'NÃO','S'=>'SIM');
 db_select('ed226_c_tarifa',$x,true,$db_opcao,"");
 ?>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipolinha.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

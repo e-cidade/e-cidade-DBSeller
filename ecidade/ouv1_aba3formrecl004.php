@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -138,14 +138,14 @@ $sqlTipoFormaReclamacao = " select *
 <center>
 <br>
 <form name="form1" method="post" action="">
-<?
+<?php
  db_input('listaformreclamacao',10,'',true,'hidden',3,"");
 ?>
  <table width="80%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="400" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php
       $cl_iframeseleciona->sql           = $sqlFormaReclamacao;
       $cl_iframeseleciona->campos        = "p42_sequencial,p42_descricao";
       $cl_iframeseleciona->legenda       = "Forma de Reclamação";
@@ -176,7 +176,7 @@ $sqlTipoFormaReclamacao = " select *
 </center>
 </body>
 </html>
-<?
+<?php
   if ( isset($oPost->atualizar) ){
   	if ( isset($lsqlErro) && $lsqlErro === true ) {
 	  db_msgbox($sMsgErro);

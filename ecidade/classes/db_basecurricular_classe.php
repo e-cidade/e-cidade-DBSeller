@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE basecurricular
 class cl_basecurricular { 
@@ -29,13 +29,13 @@ class cl_basecurricular {
                  ";
 
    //funcao construtor da classe 
-   function cl_basecurricular() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("basecurricular"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         
@@ -45,7 +45,7 @@ class cl_basecurricular {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed141_sequencial = ($this->ed141_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed141_sequencial"]:$this->ed141_sequencial);
        $this->ed141_cursoedu = ($this->ed141_cursoedu == ""?@$GLOBALS["HTTP_POST_VARS"]["ed141_cursoedu"]:$this->ed141_cursoedu);
@@ -56,7 +56,7 @@ class cl_basecurricular {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed141_sequencial){ 
+   public function incluir ($ed141_sequencial){ 
       $this->atualizacampos();
      if($this->ed141_cursoedu == null ){ 
        $this->erro_sql = " Campo Curso não informado.";

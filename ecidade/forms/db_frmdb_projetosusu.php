@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('at65_sequencial',10,$Iat65_sequencial,true,'hidden',$db_opcao,"")
 ?>
   <tr>
@@ -62,22 +62,22 @@ db_input('at65_sequencial',10,$Iat65_sequencial,true,'hidden',$db_opcao,"")
        <?=@$Lat65_projeto?>
     </td>
     <td> 
-<?
+<?php
 db_input('at65_projeto',10,$Iat65_projeto,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat65_usuario?>">
-       <?
+       <?php
        db_ancora("<b>Usuário:</b>","js_pesquisaat65_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at65_usuario',10,$Iat65_usuario,true,'text',$db_opcao," onchange='js_pesquisaat65_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at65_sequencial"=>@$at65_sequencial,"at65_projeto"=>@$at65_projeto);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosusu->sql_query(null,"*","at65_sequencial","at65_projeto=$at65_projeto");

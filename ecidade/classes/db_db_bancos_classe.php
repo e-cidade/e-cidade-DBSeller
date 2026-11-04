@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -49,20 +49,20 @@ class cl_db_bancos {
    var $db90_logo = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db90_codban = varchar(10) = Código do banco FEBRABAN 
-                 db90_descr = varchar(40) = Descrição 
-                 db90_digban = varchar(2) = Digito Verificador do Codigo do Banco 
-                 db90_abrev = varchar(20) = Nome Abreviado do Banco 
-                 db90_logo = oid = Arquivo do logo 
+                 db90_codban = varchar(10) = Código do banco FEBRABAN
+                 db90_descr = varchar(40) = Descrição
+                 db90_digban = varchar(2) = Digito Verificador do Codigo do Banco
+                 db90_abrev = varchar(20) = Nome Abreviado do Banco
+                 db90_logo = oid = Arquivo do logo
                  ";
    //funcao construtor da classe
-   function cl_db_bancos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_bancos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_bancos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db90_codban = ($this->db90_codban == ""?@$GLOBALS["HTTP_POST_VARS"]["db90_codban"]:$this->db90_codban);
        $this->db90_descr = ($this->db90_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["db90_descr"]:$this->db90_descr);
@@ -83,7 +83,7 @@ class cl_db_bancos {
      }
    }
    // funcao para inclusao
-   function incluir ($db90_codban){
+   public function incluir ($db90_codban){
       $this->atualizacampos();
      if($this->db90_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -104,18 +104,18 @@ class cl_db_bancos {
        return false;
      }
      $sql = "insert into db_bancos(
-                                       db90_codban 
-                                      ,db90_descr 
-                                      ,db90_digban 
-                                      ,db90_abrev 
-                                      ,db90_logo 
+                                       db90_codban
+                                      ,db90_descr
+                                      ,db90_digban
+                                      ,db90_abrev
+                                      ,db90_logo
                        )
                 values (
-                                '$this->db90_codban' 
-                               ,'$this->db90_descr' 
-                               ,'$this->db90_digban' 
-                               ,'$this->db90_abrev' 
-                               ,$this->db90_logo 
+                                '$this->db90_codban'
+                               ,'$this->db90_descr'
+                               ,'$this->db90_digban'
+                               ,'$this->db90_abrev'
+                               ,$this->db90_logo
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -156,7 +156,7 @@ class cl_db_bancos {
      return true;
    }
    // funcao para alteracao
-   function alterar ($db90_codban=null) {
+   public function alterar ($db90_codban=null) {
       $this->atualizacampos();
      $sql = " update db_bancos set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_db_bancos {
      }
    }
    // funcao para exclusao
-   function excluir ($db90_codban=null,$dbwhere=null) {
+   public function excluir ($db90_codban=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db90_codban));
      }else{
@@ -319,7 +319,7 @@ class cl_db_bancos {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -341,10 +341,10 @@ class cl_db_bancos {
       }
      return $result;
    }
-   function sql_query ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,10 +374,10 @@ class cl_db_bancos {
      }
      return $sql;
   }
-   function sql_query_empage ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_empage ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,7 +388,7 @@ class cl_db_bancos {
      }
      $sql .= " from db_bancos ";
      $sql .= "      inner join conplanoconta on conplanoconta.c63_banco = db_bancos.db90_codban and c63_anousu=".db_getsession("DB_anousu");
-     $sql .= "      inner join conplanoreduz on c61_anousu = c63_anousu 
+     $sql .= "      inner join conplanoreduz on c61_anousu = c63_anousu
                                             and conplanoreduz.c61_reduz = conplanoconta.c63_reduz ";
      $sql .= "      inner join empagetipo on empagetipo.e83_conta = conplanoreduz.c61_reduz ";
      $sql .= "      inner join empagepag on empagepag.e85_codtipo = empagetipo.e83_codtipo ";
@@ -405,7 +405,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,10 +414,10 @@ class cl_db_bancos {
      }
      return $sql;
   }
-   function sql_query_file ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

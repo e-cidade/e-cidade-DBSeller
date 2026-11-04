@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -96,7 +96,7 @@
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td align="center">
-<?
+<?php
   if($numrows00>0){
     
 ?>
@@ -115,7 +115,7 @@
 	  <td>&nbsp;CGM do Tomador</td>
 	  <td>&nbsp;Nome do Tomador</td>
 	</tr>  
-<?
+<?php
         $str=false;
 	$plans="";
 	$virg="";
@@ -153,7 +153,7 @@
 	  <td>&nbsp;<?=$z01_numcgm?></td>
 	  <td>&nbsp;<?=$z01_nome?></td>
 	</tr>  
-<?
+<?php
 	}
         if($plans!=""){
 	  if($cont==1){
@@ -166,11 +166,11 @@
 ?>
 	  
       </table>
-<?
+<?php
    }else{
 ?>
    <br><b>Nenhum registro encontrado.</b>
-<?
+<?php
 	}
 ?>
     </td>

@@ -158,14 +158,14 @@ if (!empty($oGet->volumes)) {
 </body>
 </html>
 <script type="text/javascript">
-  
+
   var get = js_urlToObject();
 
   var flagVolume = get.volumes;
   <?php
     if (!empty($oGet->iCodigoProcesso)) {?>
       $('p58_codproc').value = <?php echo $oGet->iCodigoProcesso ?>;
-  <?php 
+  <?php
     }?>
 
   /**
@@ -467,15 +467,15 @@ if (!empty($oGet->volumes)) {
       if (anexarDocumento == true) {
         parametroExtra += '&anexar_documento=1';
       }
-      sArquivo += 'js_mostraProcesso|dl_codigo_do_processo|p58_numero|dl_nome_ou_razão_social';
+      sArquivo += 'js_mostraProcesso|dl_codigo_do_processo|p58_numero|dl_titular';
       sArquivo += parametroExtra;
       js_OpenJanelaIframe('', 'db_iframe_proc', sArquivo, 'Pesquisa de Processos', true);
     } else {
 
       /**
-       * Alterado lógica de buscar o processo quando o mesmo já vem na url. 
+       * Alterado lógica de buscar o processo quando o mesmo já vem na url.
        * A forma como esta pesquisando o processo gera um bug quando existe dois processos com o mesmo número (1/2021)
-       * por exemplo. Tem que ser revisado os outros programas que realizam essa busca, pois provavelmente possuem o 
+       * por exemplo. Tem que ser revisado os outros programas que realizam essa busca, pois provavelmente possuem o
        * mesmo erro.
        */
       if (get.iCodigoProcesso) {
@@ -495,7 +495,7 @@ if (!empty($oGet->volumes)) {
 
         js_OpenJanelaIframe('', 'db_iframe_proc', sArquivo, 'Pesquisa de Processos', false);
       }
-    }    
+    }
   }
 
   /**

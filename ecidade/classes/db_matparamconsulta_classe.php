@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
 //CLASSE DA ENTIDADE matparamconsulta
-class cl_matparamconsulta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $m38_instit = 0; 
-   var $m38_visualizacaoitens = 0; 
-   var $m38_visualizacaomatestoque = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_matparamconsulta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $m38_instit = 0;
+   var $m38_visualizacaoitens = 0;
+   var $m38_visualizacaomatestoque = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 m38_instit = int4 = Instituição 
-                 m38_visualizacaoitens = int4 = Visualização dos itens 
-                 m38_visualizacaomatestoque = bool = Visualizar apenas materiais do estoque 
+                 m38_instit = int4 = Instituição
+                 m38_visualizacaoitens = int4 = Visualização dos itens
+                 m38_visualizacaomatestoque = bool = Visualizar apenas materiais do estoque
                  ";
-   //funcao construtor da classe 
-   function cl_matparamconsulta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("matparamconsulta"); 
+     $this->rotulo = new rotulo("matparamconsulta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_matparamconsulta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m38_instit = ($this->m38_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["m38_instit"]:$this->m38_instit);
        $this->m38_visualizacaoitens = ($this->m38_visualizacaoitens == ""?@$GLOBALS["HTTP_POST_VARS"]["m38_visualizacaoitens"]:$this->m38_visualizacaoitens);
@@ -77,9 +77,9 @@ class cl_matparamconsulta {
      }
    }
    // funcao para inclusao
-   function incluir ($m38_instit){ 
+   public function incluir ($m38_instit){
       $this->atualizacampos();
-     if($this->m38_visualizacaoitens == null ){ 
+     if($this->m38_visualizacaoitens == null ){
        $this->erro_sql = " Campo Visualização dos itens nao Informado.";
        $this->erro_campo = "m38_visualizacaoitens";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_matparamconsulta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m38_visualizacaomatestoque == null ){ 
+     if($this->m38_visualizacaomatestoque == null ){
        $this->erro_sql = " Campo Visualizar apenas materiais do estoque nao Informado.";
        $this->erro_campo = "m38_visualizacaomatestoque";
        $this->erro_banco = "";
@@ -97,8 +97,8 @@ class cl_matparamconsulta {
        $this->erro_status = "0";
        return false;
      }
-       $this->m38_instit = $m38_instit; 
-     if(($this->m38_instit == null) || ($this->m38_instit == "") ){ 
+       $this->m38_instit = $m38_instit;
+     if(($this->m38_instit == null) || ($this->m38_instit == "") ){
        $this->erro_sql = " Campo m38_instit nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -107,17 +107,17 @@ class cl_matparamconsulta {
        return false;
      }
      $sql = "insert into matparamconsulta(
-                                       m38_instit 
-                                      ,m38_visualizacaoitens 
-                                      ,m38_visualizacaomatestoque 
+                                       m38_instit
+                                      ,m38_visualizacaoitens
+                                      ,m38_visualizacaomatestoque
                        )
                 values (
-                                $this->m38_instit 
-                               ,$this->m38_visualizacaoitens 
-                               ,'$this->m38_visualizacaomatestoque' 
+                                $this->m38_instit
+                               ,$this->m38_visualizacaoitens
+                               ,'$this->m38_visualizacaomatestoque'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Configuração do módulo material ($this->m38_instit) nao Incluído. Inclusao Abortada.";
@@ -151,16 +151,16 @@ class cl_matparamconsulta {
        $resac = db_query("insert into db_acount values($acount,2474,14076,'','".AddSlashes(pg_result($resaco,0,'m38_visualizacaomatestoque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($m38_instit=null) { 
+   public function alterar ($m38_instit=null) {
       $this->atualizacampos();
      $sql = " update matparamconsulta set ";
      $virgula = "";
-     if(trim($this->m38_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_instit"])){ 
+     if(trim($this->m38_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_instit"])){
        $sql  .= $virgula." m38_instit = $this->m38_instit ";
        $virgula = ",";
-       if(trim($this->m38_instit) == null ){ 
+       if(trim($this->m38_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "m38_instit";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_matparamconsulta {
          return false;
        }
      }
-     if(trim($this->m38_visualizacaoitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_visualizacaoitens"])){ 
+     if(trim($this->m38_visualizacaoitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_visualizacaoitens"])){
        $sql  .= $virgula." m38_visualizacaoitens = $this->m38_visualizacaoitens ";
        $virgula = ",";
-       if(trim($this->m38_visualizacaoitens) == null ){ 
+       if(trim($this->m38_visualizacaoitens) == null ){
          $this->erro_sql = " Campo Visualização dos itens nao Informado.";
          $this->erro_campo = "m38_visualizacaoitens";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_matparamconsulta {
          return false;
        }
      }
-     if(trim($this->m38_visualizacaomatestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_visualizacaomatestoque"])){ 
+     if(trim($this->m38_visualizacaomatestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m38_visualizacaomatestoque"])){
        $sql  .= $virgula." m38_visualizacaomatestoque = '$this->m38_visualizacaomatestoque' ";
        $virgula = ",";
-       if(trim($this->m38_visualizacaomatestoque) == null ){ 
+       if(trim($this->m38_visualizacaomatestoque) == null ){
          $this->erro_sql = " Campo Visualizar apenas materiais do estoque nao Informado.";
          $this->erro_campo = "m38_visualizacaomatestoque";
          $this->erro_banco = "";
@@ -216,7 +216,7 @@ class cl_matparamconsulta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração do módulo material nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->m38_instit;
@@ -244,14 +244,14 @@ class cl_matparamconsulta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($m38_instit=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($m38_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m38_instit));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -279,7 +279,7 @@ class cl_matparamconsulta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Configuração do módulo material nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$m38_instit;
@@ -307,11 +307,11 @@ class cl_matparamconsulta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -333,11 +333,11 @@ class cl_matparamconsulta {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $m38_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $m38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -352,15 +352,15 @@ class cl_matparamconsulta {
      $sql2 = "";
      if($dbwhere==""){
        if($m38_instit!=null ){
-         $sql2 .= " where matparamconsulta.m38_instit = $m38_instit "; 
-       } 
+         $sql2 .= " where matparamconsulta.m38_instit = $m38_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,11 +369,11 @@ class cl_matparamconsulta {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $m38_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $m38_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,15 +386,15 @@ class cl_matparamconsulta {
      $sql2 = "";
      if($dbwhere==""){
        if($m38_instit!=null ){
-         $sql2 .= " where matparamconsulta.m38_instit = $m38_instit "; 
-       } 
+         $sql2 .= " where matparamconsulta.m38_instit = $m38_instit ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,13 +79,13 @@ function mo_camada(camada,mostra){
 	  </td>
 	  </tr>
 	</table>
-        <?
+        <?php
         for($qm=1;$qm<13;$qm++){
         ?>	
 	<div class="tabela" id="Layer<?=$qm?>" style="position:absolute; left:3px; top:80px; width:760px; height:300px; z-index:1; visibility: <?=($qm==1?'visible':'hidden')?>;">
         <center>
         <table>
-          <?
+          <?php
           $mes = db_formatar($qm,'s','0',2);
           $result = $clinfla->sql_record($clinfla->sql_query_file('','','*','i02_data'," i02_codigo = '$i01_codigo' and substr(i02_data,1,7) = '".$exercicio."-"."$mes'"));
           if($clinfla->numrows>0){
@@ -111,50 +111,50 @@ function mo_camada(camada,mostra){
             ?>
             <tr>
             <td width="5%"> 
-            <?
+            <?php
             if(isset($matriz[$im]) && $im < 11)
                echo $im;
             ?>
 	    </td>
             <td width="25%"> 
-	    <?
+	    <?php
             if(isset($matriz[$im]) && $im < 11)
               db_input("i02_valor",15,$Ii02_valor,true,'text',$opcao,"","i02_valor_".$qm."_".$im);
             ?>
  	    </td>
-            <?
+            <?php
             // 10 a 19
             ?>
             <td width="5%"> 
-            <?
+            <?php
 
             if(isset($matriz[$im+10]) && $im < 11)
               echo $im+10;
             ?>
 	    </td>
             <td width="25%"> 
-	    <?
+	    <?php
             if(isset($matriz[$im+10]) && $im < 11)
               db_input("i02_valor",15,$Ii02_valor,true,'text',$opcao,"","i02_valor_".$qm."_".($im+10));
             ?>
  	    </td>
-            <?
+            <?php
             // 21 a 31
             ?>
             <td width="5%"> 
-            <?
+            <?php
             if(isset($matriz[$im+20]))
               echo $im+20;
             ?>
 	    </td>
             <td width="25%"> 
-	    <?
+	    <?php
             if(isset($matriz[$im+20]))
               db_input("i02_valor",15,$Ii02_valor,true,'text',$opcao,"","i02_valor_".$qm."_".($im+20));
             ?>
  	    </td>
             </tr>
-            <?
+            <?php
             }
           }
         ?>
@@ -162,6 +162,6 @@ function mo_camada(camada,mostra){
         </center>	
         </div>
 
-       <?
+       <?php
        }
        ?>

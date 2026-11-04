@@ -1,81 +1,81 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Gestor BI
 //CLASSE DA ENTIDADE gestorindicadorregistro
-class cl_gestorindicadorregistro { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $g05_sequencial = 0; 
-   var $g05_gestorgrupoindicador = 0; 
-   var $g05_gestorindicador = 0; 
-   var $g05_instit = 0; 
-   var $g05_mes = 0; 
-   var $g05_ano = 0; 
-   var $g05_valor = 0; 
-   var $g05_meta = 0; 
-   var $g05_processado = 'f'; 
-   var $g05_datalimite_dia = null; 
-   var $g05_datalimite_mes = null; 
-   var $g05_datalimite_ano = null; 
-   var $g05_datalimite = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_gestorindicadorregistro {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $g05_sequencial = 0;
+   var $g05_gestorgrupoindicador = 0;
+   var $g05_gestorindicador = 0;
+   var $g05_instit = 0;
+   var $g05_mes = 0;
+   var $g05_ano = 0;
+   var $g05_valor = 0;
+   var $g05_meta = 0;
+   var $g05_processado = 'f';
+   var $g05_datalimite_dia = null;
+   var $g05_datalimite_mes = null;
+   var $g05_datalimite_ano = null;
+   var $g05_datalimite = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 g05_sequencial = int4 = Código Sequencial 
-                 g05_gestorgrupoindicador = int4 = Grupo 
-                 g05_gestorindicador = int4 = Indicador 
-                 g05_instit = int4 = Instituição 
-                 g05_mes = int4 = Mês 
-                 g05_ano = int4 = Ano 
-                 g05_valor = float8 = Valor 
-                 g05_meta = float8 = Meta 
-                 g05_processado = bool = Processado 
-                 g05_datalimite = date = Data Limite 
+                 g05_sequencial = int4 = Código Sequencial
+                 g05_gestorgrupoindicador = int4 = Grupo
+                 g05_gestorindicador = int4 = Indicador
+                 g05_instit = int4 = Instituição
+                 g05_mes = int4 = Mês
+                 g05_ano = int4 = Ano
+                 g05_valor = float8 = Valor
+                 g05_meta = float8 = Meta
+                 g05_processado = bool = Processado
+                 g05_datalimite = date = Data Limite
                  ";
-   //funcao construtor da classe 
-   function cl_gestorindicadorregistro() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("gestorindicadorregistro"); 
+     $this->rotulo = new rotulo("gestorindicadorregistro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_gestorindicadorregistro {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->g05_sequencial = ($this->g05_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["g05_sequencial"]:$this->g05_sequencial);
        $this->g05_gestorgrupoindicador = ($this->g05_gestorgrupoindicador == ""?@$GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"]:$this->g05_gestorgrupoindicador);
@@ -108,9 +108,9 @@ class cl_gestorindicadorregistro {
      }
    }
    // funcao para inclusao
-   function incluir ($g05_sequencial){ 
+   public function incluir ($g05_sequencial){
       $this->atualizacampos();
-     if($this->g05_gestorgrupoindicador == null ){ 
+     if($this->g05_gestorgrupoindicador == null ){
        $this->erro_sql = " Campo Grupo nao Informado.";
        $this->erro_campo = "g05_gestorgrupoindicador";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->g05_gestorindicador == null ){ 
+     if($this->g05_gestorindicador == null ){
        $this->erro_sql = " Campo Indicador nao Informado.";
        $this->erro_campo = "g05_gestorindicador";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->g05_instit == null ){ 
+     if($this->g05_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "g05_instit";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->g05_mes == null ){ 
+     if($this->g05_mes == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "g05_mes";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->g05_ano == null ){ 
+     if($this->g05_ano == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "g05_ano";
        $this->erro_banco = "";
@@ -155,29 +155,29 @@ class cl_gestorindicadorregistro {
        $this->erro_status = "0";
        return false;
      }
-     if($this->g05_valor == null ){ 
+     if($this->g05_valor == null ){
        $this->g05_valor = "0";
      }
-     if($this->g05_meta == null ){ 
+     if($this->g05_meta == null ){
        $this->g05_meta = "0";
      }
-     if($this->g05_processado == null ){ 
+     if($this->g05_processado == null ){
        $this->g05_processado = "False";
      }
-     if($this->g05_datalimite == null ){ 
+     if($this->g05_datalimite == null ){
        $this->g05_datalimite = "null";
      }
      if($g05_sequencial == "" || $g05_sequencial == null ){
-       $result = db_query("select nextval('gestorindicadorregistro_g05_sequencial_seq')"); 
+       $result = db_query("select nextval('gestorindicadorregistro_g05_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: gestorindicadorregistro_g05_sequencial_seq do campo: g05_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: gestorindicadorregistro_g05_sequencial_seq do campo: g05_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->g05_sequencial = pg_result($result,0,0); 
+       $this->g05_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from gestorindicadorregistro_g05_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $g05_sequencial)){
@@ -188,10 +188,10 @@ class cl_gestorindicadorregistro {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->g05_sequencial = $g05_sequencial; 
+         $this->g05_sequencial = $g05_sequencial;
        }
      }
-     if(($this->g05_sequencial == null) || ($this->g05_sequencial == "") ){ 
+     if(($this->g05_sequencial == null) || ($this->g05_sequencial == "") ){
        $this->erro_sql = " Campo g05_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -200,31 +200,31 @@ class cl_gestorindicadorregistro {
        return false;
      }
      $sql = "insert into gestorindicadorregistro(
-                                       g05_sequencial 
-                                      ,g05_gestorgrupoindicador 
-                                      ,g05_gestorindicador 
-                                      ,g05_instit 
-                                      ,g05_mes 
-                                      ,g05_ano 
-                                      ,g05_valor 
-                                      ,g05_meta 
-                                      ,g05_processado 
-                                      ,g05_datalimite 
+                                       g05_sequencial
+                                      ,g05_gestorgrupoindicador
+                                      ,g05_gestorindicador
+                                      ,g05_instit
+                                      ,g05_mes
+                                      ,g05_ano
+                                      ,g05_valor
+                                      ,g05_meta
+                                      ,g05_processado
+                                      ,g05_datalimite
                        )
                 values (
-                                $this->g05_sequencial 
-                               ,$this->g05_gestorgrupoindicador 
-                               ,$this->g05_gestorindicador 
-                               ,$this->g05_instit 
-                               ,$this->g05_mes 
-                               ,$this->g05_ano 
-                               ,$this->g05_valor 
-                               ,$this->g05_meta 
-                               ,'$this->g05_processado' 
-                               ,".($this->g05_datalimite == "null" || $this->g05_datalimite == ""?"null":"'".$this->g05_datalimite."'")." 
+                                $this->g05_sequencial
+                               ,$this->g05_gestorgrupoindicador
+                               ,$this->g05_gestorindicador
+                               ,$this->g05_instit
+                               ,$this->g05_mes
+                               ,$this->g05_ano
+                               ,$this->g05_valor
+                               ,$this->g05_meta
+                               ,'$this->g05_processado'
+                               ,".($this->g05_datalimite == "null" || $this->g05_datalimite == ""?"null":"'".$this->g05_datalimite."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "gestorindicadorregistro ($this->g05_sequencial) nao Incluído. Inclusao Abortada.";
@@ -265,16 +265,16 @@ class cl_gestorindicadorregistro {
        $resac = db_query("insert into db_acount values($acount,2818,16078,'','".AddSlashes(pg_result($resaco,0,'g05_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($g05_sequencial=null) { 
+   public function alterar ($g05_sequencial=null) {
       $this->atualizacampos();
      $sql = " update gestorindicadorregistro set ";
      $virgula = "";
-     if(trim($this->g05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_sequencial"])){ 
+     if(trim($this->g05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_sequencial"])){
        $sql  .= $virgula." g05_sequencial = $this->g05_sequencial ";
        $virgula = ",";
-       if(trim($this->g05_sequencial) == null ){ 
+       if(trim($this->g05_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "g05_sequencial";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_gestorgrupoindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"])){ 
+     if(trim($this->g05_gestorgrupoindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorgrupoindicador"])){
        $sql  .= $virgula." g05_gestorgrupoindicador = $this->g05_gestorgrupoindicador ";
        $virgula = ",";
-       if(trim($this->g05_gestorgrupoindicador) == null ){ 
+       if(trim($this->g05_gestorgrupoindicador) == null ){
          $this->erro_sql = " Campo Grupo nao Informado.";
          $this->erro_campo = "g05_gestorgrupoindicador";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_gestorindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorindicador"])){ 
+     if(trim($this->g05_gestorindicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_gestorindicador"])){
        $sql  .= $virgula." g05_gestorindicador = $this->g05_gestorindicador ";
        $virgula = ",";
-       if(trim($this->g05_gestorindicador) == null ){ 
+       if(trim($this->g05_gestorindicador) == null ){
          $this->erro_sql = " Campo Indicador nao Informado.";
          $this->erro_campo = "g05_gestorindicador";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_instit"])){ 
+     if(trim($this->g05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_instit"])){
        $sql  .= $virgula." g05_instit = $this->g05_instit ";
        $virgula = ",";
-       if(trim($this->g05_instit) == null ){ 
+       if(trim($this->g05_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "g05_instit";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_mes"])){ 
+     if(trim($this->g05_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_mes"])){
        $sql  .= $virgula." g05_mes = $this->g05_mes ";
        $virgula = ",";
-       if(trim($this->g05_mes) == null ){ 
+       if(trim($this->g05_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "g05_mes";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_ano"])){ 
+     if(trim($this->g05_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_ano"])){
        $sql  .= $virgula." g05_ano = $this->g05_ano ";
        $virgula = ",";
-       if(trim($this->g05_ano) == null ){ 
+       if(trim($this->g05_ano) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "g05_ano";
          $this->erro_banco = "";
@@ -349,29 +349,29 @@ class cl_gestorindicadorregistro {
          return false;
        }
      }
-     if(trim($this->g05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
-        if(trim($this->g05_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){ 
-           $this->g05_valor = "0" ; 
-        } 
+     if(trim($this->g05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){
+        if(trim($this->g05_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_valor"])){
+           $this->g05_valor = "0" ;
+        }
        $sql  .= $virgula." g05_valor = $this->g05_valor ";
        $virgula = ",";
      }
-     if(trim($this->g05_meta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
-        if(trim($this->g05_meta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){ 
-           $this->g05_meta = "0" ; 
-        } 
+     if(trim($this->g05_meta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){
+        if(trim($this->g05_meta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["g05_meta"])){
+           $this->g05_meta = "0" ;
+        }
        $sql  .= $virgula." g05_meta = $this->g05_meta ";
        $virgula = ",";
      }
-     if(trim($this->g05_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_processado"])){ 
+     if(trim($this->g05_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_processado"])){
        $sql  .= $virgula." g05_processado = '$this->g05_processado' ";
        $virgula = ",";
      }
-     if(trim($this->g05_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"] !="") ){ 
+     if(trim($this->g05_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"] !="") ){
        $sql  .= $virgula." g05_datalimite = '$this->g05_datalimite' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["g05_datalimite_dia"])){
          $sql  .= $virgula." g05_datalimite = null ";
          $virgula = ",";
        }
@@ -410,7 +410,7 @@ class cl_gestorindicadorregistro {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "gestorindicadorregistro nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->g05_sequencial;
@@ -438,14 +438,14 @@ class cl_gestorindicadorregistro {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($g05_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($g05_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($g05_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -480,7 +480,7 @@ class cl_gestorindicadorregistro {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "gestorindicadorregistro nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$g05_sequencial;
@@ -508,11 +508,11 @@ class cl_gestorindicadorregistro {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -534,11 +534,11 @@ class cl_gestorindicadorregistro {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,15 +557,15 @@ class cl_gestorindicadorregistro {
      $sql2 = "";
      if($dbwhere==""){
        if($g05_sequencial!=null ){
-         $sql2 .= " where gestorindicadorregistro.g05_sequencial = $g05_sequencial "; 
-       } 
+         $sql2 .= " where gestorindicadorregistro.g05_sequencial = $g05_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,11 +574,11 @@ class cl_gestorindicadorregistro {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $g05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -591,15 +591,15 @@ class cl_gestorindicadorregistro {
      $sql2 = "";
      if($dbwhere==""){
        if($g05_sequencial!=null ){
-         $sql2 .= " where gestorindicadorregistro.g05_sequencial = $g05_sequencial "; 
-       } 
+         $sql2 .= " where gestorindicadorregistro.g05_sequencial = $g05_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

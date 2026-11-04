@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -127,10 +127,10 @@ $deposito = \ECidade\Patrimonial\Material\Repositories\DepositoRepository::find(
 <table border="0" cellspacing="0" cellpadding="0"> <tr>
 <td nowrap title="<?=@$Tm40_codigo?>">
 <b>Requisição: </b>
-<?//=@$Lm40_codigo?>
+<?php //=@$Lm40_codigo?>
 </td>
 <td>
-<?
+<?php
 db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"");
 $m41_codigo=@$m41_codigo;
 db_input('m41_codigo',10,$Im41_codigo,true,'hidden',3,"");
@@ -140,10 +140,10 @@ db_input('m80_codigo',10,$Im80_codigo,true,'hidden',3,"");
 </tr>
 <tr>
 <td nowrap title="<?=@$Tm60_codmater?>">
-<?db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",$db_opcao);?>
+<?php db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",$db_opcao);?>
 </td>
 <td>
-<?
+<?php
 db_input('m41_codmatmater',10,$Im60_codmater,true,'text',$db_opcao,"onchange='js_pesquisa_codmater(false);'");
 db_input('m60_descr',40,$Im60_descr,true,'text',3,"");
 ?>
@@ -158,13 +158,13 @@ db_input('m60_descr',40,$Im60_descr,true,'text',3,"");
 <?=@$Lm41_quant?>
 </td>
 <td>
-<?
+<?php
 db_input('m41_quant',6,$Im41_quant,true,'text',$db_opcao,"");
 ?>
-<?if (isset($m41_codmatmater)&&$m41_codmatmater!=""){?>
+<?php if (isset($m41_codmatmater)&&$m41_codmatmater!=""){?>
   <b>Unid. Saída:</b>
 
-  <?$result_unisai=$clmatmaterunisai->sql_record($clmatmaterunisai->sql_query($m41_codmatmater));
+  <?php $result_unisai=$clmatmaterunisai->sql_record($clmatmaterunisai->sql_query($m41_codmatmater));
   if ($clmatmaterunisai->numrows>0){
     db_fieldsmemory($result_unisai,0);
     $unisai=$m61_abrev;
@@ -173,13 +173,13 @@ db_input('m41_quant',6,$Im41_quant,true,'text',$db_opcao,"");
   db_input('codunid',10,'',true,'hidden',3,"");
   db_input('unisai',10,'',true,'text',3,""); ?>
 
-<?
+<?php
 }
 db_input('m40_almox',10,'',true,'hidden',3,"");
 ?>
 </td>
 </tr>
-<?
+<?php
 $testquan='f';
 if (isset($m41_codmatmater)&&$m41_codmatmater!=""){
   $codmater=$m41_codmatmater;
@@ -248,7 +248,7 @@ from (
   <b>Quantidade Disponível:</b>
   </td>
   <td>
-  <?
+  <?php
   if (isset($quantidadeEstoque) && ($quantidadeEstoque != "")){
       $quant_disp = MaterialHelper::arredondarQuantidade($quantidadeEstoque);
   } else {
@@ -258,24 +258,24 @@ from (
   ?>
   </td>
   </tr>
-<?}?>
+<?php } ?>
 <tr>
 <td nowrap title="<?=@$Tm41_obs?>">
 <?=@$Lm41_obs?>
 </td>
 <td>
-<?
+<?php
 db_textarea('m41_obs',0,50,$Im41_obs,true,'text',$db_opcao,"")
 ?>
 </td>
-<? if ($db_opcao==1||$db_opcao==2){?>
+<?php if ($db_opcao==1||$db_opcao==2){?>
       <tr style='display: none'>
         <td>
             <strong>Observações:</strong>
 
         </td>
          <td>
-         <?
+         <?php
           $aObs = array(
                         18 => "Resumida",
                         181 => "Completa",
@@ -285,11 +285,11 @@ db_textarea('m41_obs',0,50,$Im41_obs,true,'text',$db_opcao,"")
          </td>
 
       </tr>
-<?}?>
+<?php } ?>
 </tr>
 <tr>
 <td colspan=2 align=center>
-<?
+<?php
 if(!isset($opcao) && isset($db_opcao) && $db_opcao==3){
   $db_botao=false;
 }

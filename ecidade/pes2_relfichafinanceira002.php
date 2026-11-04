@@ -24,15 +24,19 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-include(modification("fpdf151/pdf.php"));
-include(modification("libs/db_sql.php"));
-include(modification("libs/db_utils.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_rhpessoal_classe.php"));
-include(modification("classes/db_rhfuncao_classe.php"));
-include(modification("classes/db_rhpescargo_classe.php"));
-include(modification("classes/db_rhrubricas_classe.php"));
+use ECidade\Pdf\Pdf;
 
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_sql.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_rhpessoal_classe.php"));
+require_once(modification("classes/db_rhfuncao_classe.php"));
+require_once(modification("classes/db_rhpescargo_classe.php"));
+require_once(modification("classes/db_rhrubricas_classe.php"));
+        
 //@todo solução provisória para ser possível utilizar a rotina.
 ini_set('memory_limit', -1);
 
@@ -51,7 +55,7 @@ $clrhrubricas = new cl_rhrubricas;
 $clrotulo = new rotulocampo;
 
 parse_str($_SERVER['QUERY_STRING']);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 $oGet = db_utils::postMemory($_GET);
 
 $mesi = str_pad($mesi, 2, "0", STR_PAD_LEFT);
@@ -72,7 +76,7 @@ $virg_das_rubricas = "";
 $impressao_rubricas = false;
 if (trim($rubricas_selecionadas_text) != "") {
     $impressao_rubricas = true;
-    $arr_das_rubricas = split(",", $rubricas_selecionadas_text);
+    $arr_das_rubricas = explode(",", $rubricas_selecionadas_text);
     for ($i = 0; $i < count($arr_das_rubricas); $i++) {
         $db_where_rubricas .= $virg_das_rubricas . "'" . $arr_das_rubricas[$i] . "'";
         $virg_das_rubricas = ",";
@@ -99,8 +103,8 @@ if ($mes_dados == 'p') {
     $mesmov = $mesi;
 } else {
     $cadastro_atual = true;
-    $anomov = db_anofolha();
-    $mesmov = db_mesfolha();
+    $anomov = DBPessoal::getAnoFolha();
+    $mesmov = DBPessoal::getMesFolha();
 }
 
 $db_where_matriculas = "";
@@ -108,7 +112,7 @@ $db_where_matriculas = "";
 $sp_where_matriculas = "";
 $virg_das_matriculas = "";
 if (trim($matriculas_selecionadas_text) != "") {
-    $arr_das_matriculas = split(",", $matriculas_selecionadas_text);
+    $arr_das_matriculas = explode(",", $matriculas_selecionadas_text);
     for ($i = 0; $i < count($arr_das_matriculas); $i++) {
         $sp_where_matriculas .= $virg_das_matriculas . $arr_das_matriculas[$i];
         $virg_das_matriculas = ",";
@@ -166,7 +170,7 @@ $iSelecao = $oGet->r44_selec;
 $sWhereSelecao = '';
 
 if (!empty($iSelecao)) {
-    $oDaoSelecao = db_utils::getDao('selecao');
+    $oDaoSelecao = new cl_selecao();
 
     $sSqlSelecao = $oDaoSelecao->sql_query_file($iSelecao, $iInstituicao, 'r44_where');
     $rsSelecao = $oDaoSelecao->sql_record($sSqlSelecao);
@@ -202,7 +206,8 @@ foreach ($aFolhasUtilizadas as $sSigla => $sTabela) {
     $sCamposTabelasCalculo .= "{$sSigla}_quant,                                                        \n";
     $sCamposTabelasCalculo .= "'{$sTabela}' as tabela                                                  \n";
 
-    $sWhereAnoMesUsu       = " fc_anousu_mesusu({$sSigla}_anousu, {$sSigla}_mesusu) between fc_anousu_mesusu($anoi, $mesi) and fc_anousu_mesusu($anof, $mesf) \n";
+    $sWhereAnoMesUsu  = " fc_anousu_mesusu({$sSigla}_anousu, {$sSigla}_mesusu) ";
+    $sWhereAnoMesUsu .= " between fc_anousu_mesusu($anoi, $mesi) and fc_anousu_mesusu($anof, $mesf) \n";
     $sWhereTabelasCalculo  = $db_where_rubricas == "" ? "" : " and " . $db_where_rubricas;
     $sWhereTabelasCalculo .= $db_where_matriculas == "" ? "" : " and " . $db_where_matriculas;
     if ($mes_dados == 'a') {
@@ -223,7 +228,7 @@ foreach ($aFolhasUtilizadas as $sSigla => $sTabela) {
             $sWhereTabelasCalculo .= "                    and r20_instit = r14_instit) ";
         }
 
-        if($sTabela === 'gerfcom') {
+        if ($sTabela === 'gerfcom') {
             $sCamposTabelasCalculo = estruturaSumplementar();
             $sQuery                = "sql_query_baseRelatoriosComplementar";
             $sWhereAnoMesUsu       = " fc_anousu_mesusu(rh141_anousu, rh141_mesusu) between fc_anousu_mesusu($anoi, $mesi) and fc_anousu_mesusu($anof, $mesf) \n";
@@ -269,7 +274,7 @@ $sql_dados_gerfs .= "  from (                                        ";
 
 foreach ($aSubQueryTabelasCalculo as $iIndice => $sSubQueryTabelasCalculo) {
     if ($iIndice > 0) {
-        $sql_dados_gerfs .= "\n union \n";
+        $sql_dados_gerfs .= "\n union all\n";
     }
 
     $sql_dados_gerfs .= $sSubQueryTabelasCalculo;
@@ -298,7 +303,7 @@ $sql_dados_gerfs .= "          rubric      \n";
 $aMatriculasProcessadas = array();
 $result_dados_gerfs = db_query($sql_dados_gerfs);
 
-$numrows_dados_gerfs = pg_numrows($result_dados_gerfs);
+$numrows_dados_gerfs = pg_num_rows($result_dados_gerfs);
 $mes_anterior = "";
 $ano_anterior = "";
 $contaIarray = 1;
@@ -310,7 +315,6 @@ for ($ii = 0; $ii < $numrows_dados_gerfs; $ii++) {
 
     $oDadosServidor = new stdClass();
     $oDadosServidor->regist = $regist;
-    //$oDadosServidor->seqpes                = $seqpes;
     $oDadosServidor->funcao = $funcao;
     $oDadosServidor->dfunca = $dfunca;
     $oDadosServidor->nomefc = $nomefc;
@@ -358,6 +362,7 @@ for ($ii = 0; $ii < $numrows_dados_gerfs; $ii++) {
     }
 
     $testa = true;
+    $nomefc = pg_escape_string($nomefc);
     $sql_insert_na_temporary_table = "
     insert into
     work_ficha_financ (
@@ -423,10 +428,15 @@ $head5 = "Dados: " . ($mes_dados == "p" ? "Periodo Inicial" : "Atual");
 $head6 = "Período entre " . $anoi . "/" . $mesi . " e " . $anof . "/" . $mesf;
 $head7 = "Ordem " . $HEAD7;
 
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new Pdf();
+$pdf->addTitulo($head4, 4);
+$pdf->addTitulo($head5, 5);
+$pdf->addTitulo($head6, 6);
+$pdf->addTitulo($head7, 7);
 $pdf->AliasNbPages();
 $pdf->setfillcolor(235);
+$pdf->init(false);
+
 $total = 0;
 $troca = 1;
 $p = 1;
@@ -436,18 +446,17 @@ if ($impressao_rubricas == false) {
     // IMPRESSO PARA QUANDO NO FOR INFORMADA NENHUMA RUBRICA
 
     $colunas = 1;
-
     // For para buscar dados dos funcionrios
     foreach ($aServidores as $oServidor) {
         $imprimir_cabecalho_registros = true;
-
+        
         for ($ii = 1; $ii <= count($arr_mes_ano[$oServidor->regist]); $ii++) {
             if (isset($arr_mes_ano[$oServidor->regist][$ii]) && trim($arr_mes_ano[$oServidor->regist][$ii]) == "" || !isset($arr_mes_ano[$oServidor->regist][$ii])) {
                 continue;
             }
 
             $anos_meses = $arr_mostrar[$oServidor->regist][$ii];
-            $arr_wheres = split("_", $arr_mes_ano[$oServidor->regist][$ii]);
+            $arr_wheres = explode("_", $arr_mes_ano[$oServidor->regist][$ii]);
             $sql_dados_work_ficha_financ = "";
 
             // For para montar os SQL's
@@ -573,13 +582,9 @@ if ($impressao_rubricas == false) {
                         }
                     }
                 }
-                $sql_dados_work_ficha_financ .= "
-                                          from work_ficha_financ
-                                         "
-                  . $arr_wheres[$iii] .
-                  "
-                                          and regist = " . $oServidor->regist . "
-                                         ";
+                $sql_dados_work_ficha_financ .= "from work_ficha_financ";
+                $sql_dados_work_ficha_financ .= $arr_wheres[$iii];
+                $sql_dados_work_ficha_financ .= " and regist = " . $oServidor->regist;
             }
             $sql_dados_work_ficha_financ .= "
                                                  ) as dados_rubricas
@@ -588,10 +593,8 @@ if ($impressao_rubricas == false) {
              ) as dados_vindos_para_order_by
                                       order by pd_grupo, rubric1
                                      ";
-
             $result_dados_work_ficha_financ = db_query($sql_dados_work_ficha_financ);
-
-            $numrows_dados_work_ficha_financ = pg_numrows($result_dados_work_ficha_financ);
+            $numrows_dados_work_ficha_financ = pg_num_rows($result_dados_work_ficha_financ);
             $imprimir_cabecalho_rubricas = true;
             $conta_mes_ano = 0;
             $base_impressa = false;
@@ -609,11 +612,10 @@ if ($impressao_rubricas == false) {
                 db_fieldsmemory($result_dados_work_ficha_financ, $iiii);
 
                 $novapagina = false;
-                if ($troca == 1 || $pdf->gety() > $pdf->h - 30) {
+                if ($troca == 1 || $pdf->gety() > $pdf->getH() - 30) {
                     $imprimir_cabecalho_registros = true;
                     $novapagina = true;
                     $troca = 0;
-                    $pdf->line(10, $pdf->gety(), 82 + (40 * $colunas), $pdf->gety());
                 }
 
                 if (isset($quebrapg) && $quebrapg == 's') {
@@ -759,9 +761,7 @@ if ($impressao_rubricas == false) {
     $registro_anterior = "";
     $rubrica_anterior = "";
     $result_dados_impressao_rub = db_query($sql_dados_impressao_rub);
-
-//  db_criatabela($result_dados_impressao_rub);exit;
-    $numrows_dados_impressao_rub = pg_numrows($result_dados_impressao_rub);
+    $numrows_dados_impressao_rub = pg_num_rows($result_dados_impressao_rub);
 
     $arr_provn_rubricas = array();
     $arr_descn_rubricas = array();
@@ -781,7 +781,7 @@ if ($impressao_rubricas == false) {
             $novapagina = true;
         }
 
-        if ($troca == 1 || $pdf->gety() > $pdf->h - 30) {
+        if ($troca == 1 || $pdf->gety() > $pdf->getH() - 30) {
             $imprimir_cabecalho_registros = true;
             $novapagina = true;
             $troca = 0;
@@ -832,7 +832,7 @@ if ($impressao_rubricas == false) {
 
         $borda = 0;
         if ($i + 1 < $numrows_dados_impressao_rub) {
-            if (pg_result($result_dados_impressao_rub, $i + 1, "regist") != $regist) {
+            if (pg_fetch_result($result_dados_impressao_rub, $i + 1, "regist") != $regist) {
                 $borda = "B";
             }
         } else {
@@ -902,11 +902,10 @@ $pdf->Output();
 
 function imprimedadosbase_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $v1, $v2, $v3, $cor, $linha)
 {
-
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = explode("_", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -941,7 +940,6 @@ function imprimedadosbase_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $v1, $v2
 
 function imprimecabecalho_2($crub, $drub)
 {
-
     global $alt;
     global $pdf;
 
@@ -957,7 +955,6 @@ function imprimecabecalho_2($crub, $drub)
 
 function imprimetotaisrubricas($quant, $provn, $descn)
 {
-
     global $alt;
     global $pdf;
 
@@ -969,7 +966,6 @@ function imprimetotaisrubricas($quant, $provn, $descn)
 
 function imprimetotaisrubricasperiodo($cor, $aTotais)
 {
-
     global $alt;
     global $pdf;
 
@@ -988,7 +984,7 @@ function imprimetotaisrubricasperiodo($cor, $aTotais)
             $cor = 1;
         }
 
-        if ($pdf->gety() > $pdf->h - 30) {
+        if ($pdf->gety() > $pdf->getH() - 30) {
             $pdf->addpage();
             /*
              * insere novo cabecalho de dados na quebra de pagina
@@ -1012,7 +1008,6 @@ function imprimetotaisrubricasperiodo($cor, $aTotais)
 
 function imprimedadosrubrica_2($ano_e_mes, $q1, $p1, $d1, $cor)
 {
-
     global $alt;
     global $pdf;
 
@@ -1025,11 +1020,10 @@ function imprimedadosrubrica_2($ano_e_mes, $q1, $p1, $d1, $cor)
 
 function imprimetotaisrubrica_1($anos_e_meses, $q1, $q2, $q3, $p1, $p2, $p3, $d1, $d2, $d3)
 {
-
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = explode("_", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1078,11 +1072,10 @@ function imprimetotaisrubrica_1($anos_e_meses, $q1, $q2, $q3, $p1, $p2, $p3, $d1
 
 function imprimedadosrubrica_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $p1, $p2, $p3, $d1, $d2, $d3, $cor)
 {
-
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = explode("_", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1115,11 +1108,10 @@ function imprimedadosrubrica_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $p1, 
 
 function imprimecabecalho_1($anos_e_meses)
 {
-
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = explode("_", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1186,7 +1178,6 @@ function imprimecabecalho_1($anos_e_meses)
 // Funo para imprimir os dados do funcionrio
 function imprimefuncionario_1($newpagina, $registro, $nomeregi, $lotaccod, $lotacrec, $funcacod, $funcarec)
 {
-
     global $alt;
     global $pdf;
     global $cpf;
@@ -1195,6 +1186,7 @@ function imprimefuncionario_1($newpagina, $registro, $nomeregi, $lotaccod, $lota
     global $agencia;
     global $dvconta;
     global $dvagencia;
+    global $nomesocial;
 
     if ($newpagina == true) {
         $pdf->addpage();
@@ -1205,28 +1197,67 @@ function imprimefuncionario_1($newpagina, $registro, $nomeregi, $lotaccod, $lota
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(17, $alt, "Funcionário:", 0, 0, "R", 0);
     $pdf->cell(17, $alt, $registro . " - " . db_CalculaDV($registro), 0, 0, "C", 0);
-    $result_info = db_query("select z01_cgccpf as cpf, rh44_conta as conta, rh16_pis as pis,rh44_agencia as agencia ,rh44_dvagencia as dvagencia , rh44_dvconta as dvconta from rhpessoal inner join cgm on rh01_numcgm = z01_numcgm left join rhpesdoc on rh16_regist = rh01_regist inner join rhpessoalmov on rh02_regist = rh01_regist and rh02_mesusu = " . db_mesfolha() . " and rh02_anousu =  " . db_anofolha() . "  left join rhpesbanco on rh44_seqpes = rh02_seqpes  where rh01_regist = $registro ");
-    if (pg_numrows($result_info) > 0) {
+
+    $sSqlInfo = "select 
+                        case
+                            when cgmfisico.z04_nomesocial = '' then ' '
+                            when cgmfisico.z04_nomesocial is null then ' '
+                            else cgmfisico.z04_nomesocial
+                        end as nomesocial,
+                        z01_cgccpf as cpf, 
+                        rh44_conta as conta, 
+                        rh16_pis as pis,
+                        rh44_agencia as agencia ,
+                        rh44_dvagencia as dvagencia , 
+                        rh44_dvconta as dvconta,
+                        rh01_admiss, 
+                        rh05_recis 
+                   from rhpessoal 
+                        inner join cgm on rh01_numcgm = z01_numcgm
+                        left join cgmfisico on cgmfisico.z04_numcgm = cgm.z01_numcgm
+                        inner join rhpessoalmov  on rh02_regist = rh01_regist 
+                                                and rh02_mesusu = " . DBPessoal::getMesFolha() . " 
+                                                and rh02_anousu =  " . DBPessoal::getAnoFolha() . " 
+                         left join rhpesdoc      on rh16_regist = rh01_regist   
+                         left join rhpesbanco    on rh44_seqpes = rh02_seqpes
+                         left join rhpesrescisao on rh05_seqpes = rh02_seqpes
+                  where rh01_regist = {$registro} ";
+                //   die($sSqlInfo);
+    $result_info = db_query($sSqlInfo);
+    if (pg_num_rows($result_info) > 0) {
         $pdf->cell(61, $alt, $nomeregi, 0, 0, "L", 0);
         db_fieldsmemory($result_info, 0);
-        $pdf->cell(17, $alt, "Cpf...........:", 0, 0, "R", 0);
-        $pdf->cell(78, $alt, "$cpf", 0, 1, "L", 0);
-        $pdf->cell(17, $alt, "Agência.......:", 0, 0, "R", 0);
-        $pdf->cell(17, $alt, $agencia . "-" . $dvagencia, 0, 0, "C", 0);
-        $pdf->cell(21, $alt, "Conta Corrente:", 0, 0, "R", 0);
-        $pdf->cell(40, $alt, $conta . "-" . $dvconta, 0, 0, "L", 0);
-        $pdf->cell(17, $alt, "Pis...........:", 0, 0, "R", 0);
+        $pdf->cell(17, $alt, "Nome Social:", 0, 0, "L", 0);
+        $pdf->cell(56, $alt, "$nomesocial", 0, 0, "L", 0);
+        $pdf->cell(7, $alt, "Cpf:", 0, 0, "L", 0);
+        $pdf->cell(20, $alt, "$cpf", 0, 1, "L", 0);
+        $pdf->cell(17, $alt, "Agência       :", 0, 0, "L", 0);
+        $pdf->cell(17, $alt, $agencia . "-" . $dvagencia, 0, 0, "L", 0);
+        $pdf->cell(21, $alt, "Conta Corrente:", 0, 0, "L", 0);
+        $pdf->cell(37, $alt, $conta . "-" . $dvconta, 0, 0, "L", 0);
+        $pdf->cell(17, $alt, "Pis                :", 0, 0, "L", 0);
         $pdf->cell(30, $alt, "$pis", 0, 1, "L", 0);
     } else {
         $pdf->cell(0, $alt, $nomeregi, 0, 1, "L", 0);
     }
 
-    $pdf->cell(17, $alt, "Cargo.........:", 0, 0, "R", 0);
-    $pdf->cell(17, $alt, $funcacod, 0, 0, "C", 0);
-    $pdf->cell(61, $alt, $funcarec, 0, 0, "L", 0);
-    $pdf->cell(17, $alt, "Lotação.......:", 0, 0, "R", 0);
-    $pdf->cell(17, $alt, $lotaccod, 0, 0, "C", 0);
+    $pdf->cell(17, $alt, "Cargo          :", 0, 0, "L", 0);
+    $pdf->cell(17, $alt, $funcacod, 0, 0, "L", 0);
+    $pdf->cell(58, $alt, $funcarec, 0, 0, "L", 0);
+    $pdf->cell(17, $alt, "Lotação        :", 0, 0, "L", 0);
+    $pdf->cell(17, $alt, $lotaccod, 0, 0, "L", 0);
     $pdf->cell(61, $alt, $lotacrec, 0, 1, "L", 0);
+
+    $oDadosInfo = db_utils::fieldsMemory($result_info, 0);
+    $pdf->cell(17, $alt, "Admissão    :", 0, 0, "R", 0);
+    $pdf->cell(22, $alt, db_formatar($oDadosInfo->rh01_admiss, 'd'), 0, 0, "L", 0);
+    $pdf->cell(61, $alt, '', 0, 0, "L", 0);
+    
+    if (!empty($oDadosInfo->rh05_recis)) {
+        $pdf->cell(17, $alt, "Rescisão    :", 0, 0, "R", 0);
+        $pdf->cell(17, $alt, db_formatar($oDadosInfo->rh05_recis, 'd'), 0, 0, "C", 0);
+    }
+    $pdf->cell(61, $alt, '', 0, 1, "L", 0);
 }
 
 function somarubricasmes(
@@ -1243,7 +1274,6 @@ function somarubricasmes(
     $dmes3,
     $aTotais
 ) {
-
     $rub = $rubric1 . ' - ' . $drubri1;
     $qtd = $qmes1 + $qmes2 + $qmes3;
     $prov = $pmes1 + $pmes2 + $pmes3;
@@ -1272,7 +1302,6 @@ function somarubricasmes(
 
 function estruturaSumplementar()
 {
-
     $sCamposTabelasCalculo  = "rh141_anousu as anousu,                                                 \n";
     $sCamposTabelasCalculo .= "rh141_mesusu as mesusu,                                                 \n";
     $sCamposTabelasCalculo .= "rh143_regist as regist,                                                 \n";

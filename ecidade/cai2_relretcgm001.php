@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -110,22 +110,22 @@ function js_emite(){
     </tr>
     <tr>
         <td align="left" nowrap title="<?=@$Tz01_numcgm?>" >
-          <?
+          <?php
              db_ancora(@$Lz01_numcgm,"js_pesquisa_cgm(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('z01_numcgm',8,$Iz01_numcgm,true,'text',4,"OnChange='js_pesquisa_cgm(false);'")
           ?>
-          <?
+          <?php
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
           ?>
         </td>
 	</tr>
        <tr>
           <td nowrap>
-               <?
+               <?php
                   $receitas = new cl_arquivo_auxiliar;
                   $receitas->cabecalho = "<strong>Receitas</strong>";
                   $receitas->codigo = "k02_codigo"; //chave de retorno da func
@@ -158,7 +158,7 @@ function js_emite(){
 	</tr>
 	</form>
 </table>	
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

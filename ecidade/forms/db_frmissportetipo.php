@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("q12_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq41_codporte?>">
-       <?
+       <?php
        db_ancora(@$Lq41_codporte,"js_pesquisaq41_codporte(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q41_codporte',10,$Iq41_codporte,true,'text',$db_opcao," onchange='js_pesquisaq41_codporte(false);'")
 ?>
-       <?
+       <?php
 db_input('q40_codporte',10,$Iq40_codporte,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq41_codclasse?>">
-       <?
+       <?php
        db_ancora(@$Lq41_codclasse,"js_pesquisaq41_codclasse(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q41_codclasse',4,$Iq41_codclasse,true,'text',$db_opcao," onchange='js_pesquisaq41_codclasse(false);'")
 ?>
-       <?
+       <?php
 db_input('q12_descr',40,$Iq12_descr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('q12_descr',40,$Iq12_descr,true,'text',3,'')
        <?=@$Lq41_codtipcalc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q41_codtipcalc',4,$Iq41_codtipcalc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_issportetipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,12 +77,12 @@ $clinssirf = new cl_inssirf;
         <strong>Ano / Mês :</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -90,12 +90,12 @@ $clinssirf = new cl_inssirf;
       </tr>
       <tr> 
         <td align="right" nowrap title="Seleção:" >
-        <?
+        <?php
 	db_ancora("<b>Escolhe Professores:</b>","js_pesquisasel(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php
           db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
           db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
           ?>
@@ -104,7 +104,7 @@ $clinssirf = new cl_inssirf;
       <tr>
         <td align="right"><b>Vinculo:<b></td>
 	<td align="left">
-	<?
+	<?php
 	  $arr = array(
 		             ""  => "Selecione",
 		             'A' => 'Ativo',
@@ -123,7 +123,7 @@ $clinssirf = new cl_inssirf;
           <strong>Tabela de Previdência:&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php
 ///         echo ($clinssirf->sql_query_file(null,db_getsession('DB_instit'),"distinct (r33_codtab - 2) as r33_codtab,r33_nome","r33_codtab"," r33_anousu = ".$xano." and r33_mesusu = ".$xmes." and r33_codtab > 2"));
             $res = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession('DB_instit'),"distinct (r33_codtab - 2) as r33_codtab,r33_nome","r33_codtab"," r33_anousu = ".$ano." and r33_mesusu = ".$mes." and r33_codtab > 2"));
             db_selectrecord('tabprev', $res, true, 4);
@@ -143,13 +143,13 @@ $clinssirf = new cl_inssirf;
 		</table>
 		</script>
 		</center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?
+  <?php
  // if(isset($gera)){
  // 	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
  // }

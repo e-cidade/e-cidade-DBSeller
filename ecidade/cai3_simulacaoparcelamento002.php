@@ -9,6 +9,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
+use App\Domain\Tributario\Arrecadacao\Services\DescontoTermoParcelamentoService;
+use App\Domain\Tributario\Juridico\Services\InicialDoForo\ParcelamentoCustasProcessoService;
 use ECidade\Tributario\Arrecadacao\Custas\Service;
 use ECidade\Tributario\Divida\Termo\Repository\Termo as TermoRepository;
 use ECidade\Tributario\Arrecadacao\Repository\TermoTaxaParcela as TermoTaxaParcelaRepository;
@@ -21,8 +23,107 @@ use ECidade\Tributario\Juridico\InicialPartilha\InicialPartilha;
 use ECidade\Tributario\Juridico\InicialPartilha\Repository\InicialPartilha as InicialPartilhaRepository;
 use ECidade\Tributario\Juridico\Inicial\Repository\Inicial as InicialRepository;
 
+$regraParcelamento               = 0;
+$valorTotalSemDescontos          = 0;
+$percentualTotalDescontos        = 0;
+$valorJuros                      = 0;
+$descontoJuros                   = 0;
+$valorMulta                      = 0;
+$descontoMulta                   = 0;
+$numeroParcel                    = 0;
+$valorParcelaSemDescontos        = 0;
+$valorParcelaComDescontos        = 0;
+$valorParcelaInicialSemDescontos = 0;
+$valorParcelaInicialComDescontos = 0;
+$valorParcelaFinalSemDescontos   = 0;
+$valorParcelaFinalComDescontos   = 0;
+$numeroParcelas                  = 0;
+
+if (isset($_POST)) {
+    if (isset($_POST['k40_cadtipoparc'])){
+        $regraParcelamento = $_POST['k40_cadtipoparc'];
+    }
+
+    if (isset($_POST['parc'])) {
+        $numeroParcelas = number_format($_POST['parc'], 2);
+    }
+
+    if (isset($_POST['tiposparc'])) {
+        $descontoTermoParcelamento = new DescontoTermoParcelamentoService();
+        $descontosEncontrados = $descontoTermoParcelamento->buscaPercentuaisDescontosDepoisLancamento($parc[0]);
+
+        if($descontosEncontrados){
+            $descontoMulta = $descontosEncontrados->percentualdescontojuros;
+            $descontoJuros = $descontosEncontrados->percentualdescontomultas;
+        } else {   
+            $splitTiposParcelas = (array)explode('-', $_POST['tiposparc']);
+            
+            for ($index = count($splitTiposParcelas) - 1; $index >= 0; $index--) {
+                $splitTipoParcela = $splitTiposParcelas[$index];
+                $tipoParcela = explode('=', $splitTiposParcelas[$index]);
+                $numeroMaximoParcelas = $tipoParcela[1];
+                
+                if ($numeroParcelas <= $numeroMaximoParcelas) {   
+                    $descontoMulta = $tipoParcela[2];
+                    $descontoJuros = $tipoParcela[3];
+                }
+            }
+        }
+    }
+
+    if (isset($_POST['valortotal'])) {
+        $valorTotalSemDescontos = $_POST['valortotal'];
+    }
+
+    if (isset($_POST['juros'])) {
+        $valorJuros = $_POST['juros'];
+    }
+
+    if (isset($_POST['multa'])) {
+        $valorMulta = $_POST['multa'];
+    }
+
+    $descontoTotal = (calculaPercentual($descontoJuros, $valorJuros) + calculaPercentual($descontoMulta, $valorMulta));
+
+    if (isset($k40_aplicacao) && (int)$k40_aplicacao == 1) {
+        $descontoTotal = 0;
+    }
+
+    $percentualTotalDescontos = (int)$descontoTotal ? 100 - ($descontoTotal * 100 / $valorTotalSemDescontos) : 0;
+
+    if (isset($_POST['ent'])) {
+        $valorParcelaInicialSemDescontos = formataValorParaCalculo(number_format($_POST['ent'], 2));
+        $valorParcelaInicialComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaInicialSemDescontos) : $valorParcelaInicialSemDescontos;
+    }
+
+    if (isset($_POST['parcult'])) {
+        $valorParcelaFinalSemDescontos = formataValorParaCalculo(number_format($_POST['parcult'], 2));
+        $valorParcelaFinalComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaFinalSemDescontos) : $valorParcelaFinalSemDescontos;
+    }
+
+    if (isset($_POST['parcval'])) {
+        $valorParcelaSemDescontos = formataValorParaCalculo(number_format($_POST['parcval'], 2));
+        $valorParcelaComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaSemDescontos) : $valorParcelaSemDescontos;
+    }
+
+    if (isset($_POST['entcomdesconto'])) {
+        $valorParcelaInicialSemDescontos = formataValorParaCalculo(number_format($_POST['entcomdesconto'], 2));
+        $valorParcelaInicialComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaInicialSemDescontos) : $valorParcelaInicialSemDescontos;
+    }
+
+    if (isset($_POST['parcultcomdesconto'])) {
+        $valorParcelaFinalSemDescontos = formataValorParaCalculo(number_format($_POST['parcultcomdesconto'], 2));
+        $valorParcelaFinalComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaFinalSemDescontos) : $valorParcelaFinalSemDescontos;
+    }
+
+    if (isset($_POST['parcvalcomdesconto'])) {
+        $valorParcelaSemDescontos = formataValorParaCalculo(number_format($_POST['parcvalcomdesconto'], 2));
+        $valorParcelaComDescontos = (int)$descontoTotal ? calculaPercentual($percentualTotalDescontos, $valorParcelaSemDescontos) : $valorParcelaSemDescontos;
+    }
+}
+
 /**
- * a variável $parc vem do programa cai3_gerfinanc062.php
+ * a vari?vel $parc vem do programa cai3_gerfinanc062.php
  */
 
 $modoBuscaMatricula = !empty($ver_matric) ? "M-{$ver_matric}" : '';
@@ -57,7 +158,7 @@ if (!$buscaParcelamento) {
 $totalRegistros = pg_num_rows($buscaParcelamento);
 
 try {
-    $custas = buscarCustas($codigosParcelamentos);
+    $custas = buscarCustas($codigosParcelamentos, $numeroParcelas + 1)['custas'];
 } catch (Exception $e) {
     die($e->getMessage());
 }
@@ -85,7 +186,7 @@ $pdf = new PDFDocument(PDFDocument::PRINT_PORTRAIT);
 $pdf->SetFontSize(8);
 $pdf->open();
 $pdf->addHeaderDescription("SIMULAÇÃO DE PARCELAMENTO");
-$pdf->addHeaderDescription("SIMULAÇÃO EM {$totalRegistros} PARCELA(S)");
+$pdf->addHeaderDescription("SIMULAÇÃO EM {$totparc} PARCELA(S)");
 $pdf->addHeaderDescription("Contribuinte: " . $z01_nome);
 $pdf->addHeaderDescription("Data de Emissão: " . date('d/m/Y', db_getsession("DB_datausu")));
 $pdf->addHeaderDescription("Origem: {$modoBuscaCGM}{$modoBuscaInscricao}{$modoBuscaMatricula}");
@@ -97,61 +198,76 @@ $pdf->cell($pdf->getAvailWidth(), 10, 'Simulação de Parcelamento', 0, 1, 'C');
 $pdf->setBold(false);
 $pdf->SetFontSize(8);
 
-$totalOrigem = quadro_debitos_origem($pdf, $codigosParcelamentos);
+$totalOrigem = quadro_debitos_origem($pdf, $codigosParcelamentos, $regraParcelamento);
 
-/**
- *
- */
-$pdf->ln(2);
-$sqlMultas = "select * ";
-$sqlMultas .= "  from termoini ";
-$sqlMultas .= "       inner join processoforoinicial on  v71_inicial = inicial ";
-$sqlMultas .= "       inner join processoforomulta   on  j150_processoforo =  v71_processoforo";
-$sqlMultas .= "       inner join processoforo        on  j150_processoforo =  v70_sequencial";
-$sqlMultas .= "       inner join tabrec   on  j150_receita =  k02_codigo";
-$sqlMultas .= " where parcel = $codigosParcelamentos order by j150_data, j150_sequencial";
-$rsMultas = db_query($sqlMultas);
-$multas = db_utils::getCollectionByRecord($rsMultas);
-if (count($multas) > 0) {
-    $pdf->setBold(true);
-    $pdf->cell(190, 4, 'Valores adicionais aplicados', 1, 1, 'C');
-    $pdf->cell(40, 4, 'Processo', 1, 0, 'C');
-    $pdf->cell(20, 4, 'Inicial', 1, 0, 'C');
-    $pdf->cell(60, 4, 'Receita', 1, 0, 'C');
-    $pdf->cell(20, 4, 'Data', 1, 0, 'C');
-    $pdf->cell(25, 4, 'Percentual', 1, 0, 'C');
-    $pdf->cell(25, 4, 'Valor', 1, 1, 'C');
-    $pdf->setBold(false);
-    foreach ($multas as $multa) {
-        $pdf->cell(40, 4, $multa->v70_codforo, 1, 0, 'C');
-        $pdf->cell(20, 4, $multa->v71_inicial, 1, 0, 'L');
-        $pdf->cell(60, 4, $multa->k02_codigo . " - " . $multa->k02_descr, 1, 0, 'L');
-        $pdf->cell(20, 4, db_formatar($multa->j150_data, 'd'), 1, 0, 'C');
-        $pdf->cell(25, 4, db_formatar($multa->j150_percentual, 'f'), 1, 0, 'R');
-        $pdf->cell(25, 4, db_formatar($multa->j150_valortotal, 'f'), 1, 1, 'R');
+$valoresAdicionaisAplicados = buscarCustas($codigosParcelamentos, $numeroParcelas + 1)['valoresAdicionais'];
+
+$agrupamentoValoresAdicionais = array();
+
+foreach ($custas as $custa) {
+    $regraAgrupamento = $custa->sDescricao . $custa->numeroProcesso . $custa->numeroInicial;
+
+    if (array_key_exists($regraAgrupamento ,$agrupamentoValoresAdicionais)) {
+        $agrupamentoValoresAdicionais[$regraAgrupamento] = (float)$agrupamentoValoresAdicionais[$regraAgrupamento] + (float)$custa->fValor;
+    } else {
+        $agrupamentoValoresAdicionais[$regraAgrupamento] = (float)$custa->fValor;
     }
+}
+
+if (count($valoresAdicionaisAplicados) > 0) {
+    $totalizadorValoresAdicionais = 0;
+
+    $pdf->setBold(true);
+    $pdf->cell(190, 4, 'VALORES ADICIONAIS APLICADOS', 1, 1, 'C');
+    $pdf->cell(45, 4, 'Processo', 1, 0, 'C');
+    $pdf->cell(25, 4, 'Inicial', 1, 0, 'C');
+    $pdf->cell(65, 4, 'Receita', 1, 0, 'C');
+    $pdf->cell(25, 4, 'Data', 1, 0, 'C');
+    $pdf->cell(30, 4, 'Valor', 1, 1, 'C');
+    $pdf->setBold(false);
+
+    $totalAgrupadoValoresPorProcesso = [];
+    for ($index = 0; $index < count($valoresAdicionaisAplicados); $index++) {
+        $valorAdicionalAplicado = $valoresAdicionaisAplicados[$index];
+        $regraAgrupamento = $valorAdicionalAplicado->receita . $valorAdicionalAplicado->processo . $valorAdicionalAplicado->inicial;
+
+        $totalAgrupadoValoresPorProcesso[$valorAdicionalAplicado->processo] += $agrupamentoValoresAdicionais[$regraAgrupamento];
+        $totalizadorValoresAdicionais += $agrupamentoValoresAdicionais[$regraAgrupamento];
+
+        $pdf->cell(45, 4, $valorAdicionalAplicado->processo, 1, 0, 'C');
+        $pdf->cell(25, 4, $valorAdicionalAplicado->inicial, 1, 0, 'L');
+        $pdf->cell(65, 4, $valorAdicionalAplicado->codigoTaxa . ' - ' . $valorAdicionalAplicado->receita, 1, 0, 'L');
+        $pdf->cell(25, 4, $valorAdicionalAplicado->data, 1, 0, 'C');
+        $pdf->cell(30, 4, db_formatar($agrupamentoValoresAdicionais[$regraAgrupamento], 'f'), 1, 1, 'R');
+
+        if (!isset($valoresAdicionaisAplicados[$index + 1]) || strval($valorAdicionalAplicado->processo) != strval($valoresAdicionaisAplicados[$index + 1]->processo)) {
+            $pdf->setBold(true);
+            $pdf->cell(160, 4, "Total Processo: $valorAdicionalAplicado->processo", 1, 0, 'L');
+            $pdf->cell(30, 4, db_formatar($totalAgrupadoValoresPorProcesso[$valorAdicionalAplicado->processo], 'f'), 1, 1, 'R');
+            $pdf->setBold(false);
+        }
+    }
+
+    $pdf->setBold(true);
+    $pdf->cell(160, 4, 'Total', 1, 0, 'L');
+    $pdf->cell(30, 4, db_formatar($totalizadorValoresAdicionais, 'f'), 1, 1, 'R');
+    $pdf->setBold(false);
 }
 
 $pdf->ln(5);
 cabecalho($pdf);
 
-$totalizadorTributo = 0;
-$totalizadorHonorario = 0;
-$totalizadorCustas = 0;
+$totalizadorTributoSemAcrescimos = 0;
+$totalizadorHonorario            = 0;
+$totalizadorCustas               = 0;
+$totalizadorParcelas             = 0;
 
-$textoAviso = 'Obs.: Os valores apresentados nesta simulação são meramente demonstrativos, podendo sofrer alterações conforme regulamentação.';
+$textoAviso ="Obs.: Os valores apresentados nesta simulação são meramente demonstrativos, podendo sofrer alterações conforme regulamentação.
+          O campo Total está listando o valor com desconto por regra, quando houver, considerando pagamento até o vencimento.
+          Os valor das parcelas são calculados até a data desta simulação e podem sofrer acréscimos conforme legislação.
+          ";
 for ($rowParcela = 0; $rowParcela < $totalRegistros; $rowParcela++) {
     $stdParcelamento = db_utils::fieldsMemory($buscaParcelamento, $rowParcela);
-    if ($pdf->getAvailHeight() < 20) {
-        $pdf->ln(4);
-        $pdf->setBold(true);
-        $pdf->multicell($pdf->getAvailWidth(), 4, $textoAviso, 'J');
-        $pdf->setBold(false);
-        $pdf->addPage();
-        cabecalho($pdf);
-    }
-
-
     $sql = "select 
 sum(
 fc_corre(arrecad.k00_receit, arrecad.k00_dtoper, arrecad.k00_valor::float8, arrecad.k00_dtvenc, extract(year from arrecad.k00_dtvenc)::int4, arrecad.k00_dtvenc) +
@@ -163,10 +279,7 @@ fc_corre(arrecad.k00_receit, arrecad.k00_dtoper, arrecad.k00_valor::float8, arre
 ( fc_corre(arrecad.k00_receit, arrecad.k00_dtoper, arrecad.k00_valor::float8, arrecad.k00_dtvenc, extract(year from arrecad.k00_dtvenc)::int4, arrecad.k00_dtvenc) ) * 
   fc_multa(arrecad.k00_receit, arrecad.k00_dtvenc, arrecad.k00_dtvenc, arrecad.k00_dtoper, extract(year from arrecad.k00_dtvenc)::integer)::numeric(20, 10)
 )
-) as valor
-
-from arrecad 
-where k00_numpre = (select v07_numpre from termo where v07_parcel = {$codigosParcelamentos})
+) as valor from arrecad where k00_numpre = (select v07_numpre from termo where v07_parcel = {$codigosParcelamentos})
   and k00_numpar = " . $stdParcelamento->parcela;
 
     $rsResult = db_query($sql);
@@ -179,34 +292,44 @@ where k00_numpre = (select v07_numpre from termo where v07_parcel = {$codigosPar
 
     $stdParcelamento->valor_parcela = $oValor->valor;
 
-    $stdParcelamento->valor_honorario = !empty($agrupamentoHonorarios[$stdParcelamento->parcela]) ? $agrupamentoHonorarios[$stdParcelamento->parcela] : 0;
-    $stdParcelamento->valor_custas = !empty($agrupamentoCustas[$stdParcelamento->parcela]) ? $agrupamentoCustas[$stdParcelamento->parcela] : 0;
+    $stdParcelamento->valor_honorario = !empty($agrupamentoHonorarios[$stdParcelamento->parcela])   ? $agrupamentoHonorarios[$stdParcelamento->parcela]  : 0;
+    $stdParcelamento->valor_custas    = !empty($agrupamentoCustas[$stdParcelamento->parcela]) ? $agrupamentoCustas[$stdParcelamento->parcela] : 0;
+    $valorTotalParcelaComDesconto     = $rowParcela == 0 ? $valorParcelaInicialComDescontos : ($rowParcela == $totalRegistros - 1  ? $valorParcelaFinalComDescontos : ($valorParcelaComDescontos));
+    $valorTotalParcelaSemDesconto     = $rowParcela == 0 ? $valorParcelaInicialSemDescontos  : ($rowParcela == $totalRegistros - 1  ? $valorParcelaFinalSemDescontos  : ($valorParcelaSemDescontos));
 
-    $totalizadorTributo += $stdParcelamento->valor_parcela;
-    $totalizadorHonorario += $stdParcelamento->valor_honorario;
-    $totalizadorCustas += $stdParcelamento->valor_custas;
-
-    $valorTotal = trim(db_formatar(($stdParcelamento->valor_parcela + $stdParcelamento->valor_honorario + $stdParcelamento->valor_custas), 'f'));
-    $stdParcelamento->valor_parcela = trim(db_formatar($stdParcelamento->valor_parcela, 'f'));
-    $stdParcelamento->valor_honorario = trim(db_formatar($stdParcelamento->valor_honorario, 'f'));
-    $stdParcelamento->valor_custas = trim(db_formatar($stdParcelamento->valor_custas, 'f'));
+    $valorTotal                       = $stdParcelamento->valor_parcela + $stdParcelamento->valor_honorario + $stdParcelamento->valor_custas;
+    $stdParcelamento->valor_parcela   = $stdParcelamento->valor_parcela;
+    $stdParcelamento->valor_honorario = $stdParcelamento->valor_honorario;
+    $stdParcelamento->valor_custas    = $stdParcelamento->valor_custas;
 
     $pdf->cell(32, 4, $stdParcelamento->parcela, 1, 0, 'C');
     $pdf->cell(32, 4, $stdParcelamento->data_vencimento, 1, 0, 'C');
-    $pdf->cell(32, 4, $stdParcelamento->valor_parcela, 1, 0, 'R');
-    $pdf->cell(32, 4, $stdParcelamento->valor_honorario, 1, 0, 'R');
-    $pdf->cell(32, 4, $stdParcelamento->valor_custas, 1, 0, 'R');
-    $pdf->cell(31, 4, $valorTotal, 1, 1, 'R');
+    $pdf->cell(32, 4, formataValorParaTabela($valorTotalParcelaSemDesconto), 1, 0, 'R');
+    $pdf->cell(32, 4, formataValorParaTabela($stdParcelamento->valor_honorario), 1, 0, 'R');
+    $pdf->cell(32, 4, formataValorParaTabela($stdParcelamento->valor_custas), 1, 0, 'R');
+    $pdf->cell(31, 4, formataValorParaTabela(
+                        formataValorParaCalculo($valorTotalParcelaSemDesconto)
+                        + formataValorParaCalculo($stdParcelamento->valor_honorario)
+                        + formataValorParaCalculo($stdParcelamento->valor_custas)
+                      ), 1, 1, 'R');
+
+    $totalizadorTributoSemAcrescimos += formataValorParaCalculo($valorTotalParcelaSemDesconto);
+    $totalizadorHonorario            += formataValorParaCalculo($stdParcelamento->valor_honorario);
+    $totalizadorCustas               += formataValorParaCalculo($stdParcelamento->valor_custas);
+    $totalizadorParcelas             += (
+        formataValorParaCalculo($valorTotalParcelaSemDesconto)
+        + formataValorParaCalculo($stdParcelamento->valor_honorario)
+        + formataValorParaCalculo($stdParcelamento->valor_custas)
+    );
 }
 
 $pdf->setBold(true);
 $pdf->cell(64, 4, "Total", 1, 0, 'C');
-$pdf->cell(32, 4, trim(db_formatar($totalizadorTributo, 'f')), 1, 0, 'R');
+$pdf->cell(32, 4, trim(db_formatar($totalizadorTributoSemAcrescimos, 'f')), 1, 0, 'R');
 $pdf->cell(32, 4, trim(db_formatar($totalizadorHonorario, 'f')), 1, 0, 'R');
 $pdf->cell(32, 4, trim(db_formatar($totalizadorCustas, 'f')), 1, 0, 'R');
-$pdf->cell(31, 4, trim(db_formatar($totalizadorTributo + $totalizadorHonorario + $totalizadorCustas, 'f')), 1, 1, 'R');
+$pdf->cell(31, 4, trim(db_formatar($totalizadorParcelas, 'f')), 1, 1, 'R');
 $pdf->setBold(false);
-
 
 $pdf->ln(4);
 $pdf->setBold(true);
@@ -234,8 +357,9 @@ function cabecalho(PDFDocument $pdf)
     $pdf->setBold(false);
 }
 
-function buscarCustas($codigoTermo)
+function buscarCustas($codigoTermo, $numeroTotalParcelas)
 {
+    $numeroParcelas = 0;
     $termoRepository = TermoRepository::getInstance()
         ->setReturnFullItem(true);
 
@@ -253,6 +377,7 @@ function buscarCustas($codigoTermo)
     $termoTaxasParcela = TermoTaxaParcelaRepository::getInstance()->getByInstituicao();
 
     $custas = array();
+    $valoresAdicionais = array();
 
     foreach ($inicialPartilhas as $key => $inicialPartilha) {
         foreach ($inicialPartilha->getCustas() as $custa) {
@@ -270,9 +395,14 @@ function buscarCustas($codigoTermo)
             }
 
             $liberaParcela = false;
+            $isProcessoForo = false;
+
+            $numeroProcesso = '';
+            $numeroInicial = '';
 
             if ($inicialPartilha instanceof ProcessoForoPartilha) {
                 $codigo = $inicialPartilha->getCodigoProcessoForo();
+                $isProcessoForo = true;
 
                 $processoForoRepository = ProcessoForoRepository::getInstance();
                 $processoForoRepository->setReturnFullItem(true);
@@ -281,6 +411,19 @@ function buscarCustas($codigoTermo)
                 $repository = ProcessoForoPartilhaRepository::getInstance();
 
                 $liberaParcela = true;
+
+                $codigoProcessoForo = getCodigoForoPorSequencial($inicialPartilha->getCodigoProcessoForo());
+                $numeroProcesso = $codigoProcessoForo;
+
+                $valoresAdicionais[] = (object)[
+                    'processo'   => $codigoProcessoForo,
+                    'inicial'    => '',
+                    'codigoTaxa' => $custa->getTaxa()->getCodigoTaxa(),
+                    'receita'    => $custa->getTaxa()->getDescricao(),
+                    'data'       => $inicialPartilha->getDataPartilha()->format('d/m/Y'),
+                    'percentual' => $custa->getTaxa()->getPercentual(),
+                    'valor'      => $custa->getTaxa()->getValor(),
+                ];
             } else {
                 if ($inicialPartilha instanceof InicialPartilha) {
                     $codigo = $inicialPartilha->getCodigoInicial();
@@ -292,6 +435,18 @@ function buscarCustas($codigoTermo)
                     $repository = InicialPartilhaRepository::getInstance();
 
                     $liberaParcela = true;
+
+                    $numeroInicial = $inicialPartilha->getCodigoInicial();
+                
+                    $valoresAdicionais[] = (object)[
+                        'processo'   => '',
+                        'inicial'    => $inicialPartilha->getCodigoInicial(),
+                        'codigoTaxa' => $custa->getTaxa()->getCodigoTaxa(),
+                        'receita'    => $custa->getTaxa()->getDescricao(),
+                        'data'       => $inicialPartilha->getDataPartilha()->format('d/m/Y'),
+                        'percentual' => $custa->getTaxa()->getPercentual(),
+                        'valor'      => $custa->getTaxa()->getValor(),
+                    ];
                 }
             }
 
@@ -307,42 +462,168 @@ function buscarCustas($codigoTermo)
                 }
             }
 
-            if ($custa->getTaxa()->isAplicaHonorario() && $model->getParcelasHonorarios() > 0) {
+            $parcelamentoCustas = new ParcelamentoCustasProcessoService();
+                
+            if ($isProcessoForo) {
+                $parcelamentoCustas->setCustasProcesso($codigo);
+            } else {
+                $parcelamentoCustas->setCustasProcesso($codigo);
+            }
+
+            $codigoTaxa              = $custa->getTaxa()->getCodigoTaxa();
+            $taxaPermiteParcelamento = $parcelamentoCustas->validaPermissaoParcelamentoCusta($codigoTaxa);
+
+            $numeroMaximoParcelasTaxa = $parcelamentoCustas->getNumeroMaximoParcelasCusta($codigoTaxa);
+            $numeroParcelas           = $model->getParcelasHonorarios();
+
+            $numeroParcelasCusta = ($numeroParcelas <= $numeroMaximoParcelasTaxa)
+                                        ? $numeroParcelas
+                                        : $numeroMaximoParcelasTaxa;
+
+            if ($taxaPermiteParcelamento) {
+                $numeroParcelasCusta = (int)($numeroTotalParcelas <= $numeroMaximoParcelasTaxa)
+                                            ? $numeroTotalParcelas
+                                            : $numeroMaximoParcelasTaxa;
+
+                for ($parcela = 1; $parcela <= $numeroParcelasCusta; $parcela++) {
+                    $valor = 0;
+                    if (isset($custas[$parcela . $codigoTaxa])) {
+                        $valor = $custas[$parcela . $codigoTaxa]->fValor;
+                    }
+
+                    $valorTaxa = $valor + ($valorCusta / $numeroParcelasCusta);
+
+                    if ($numeroMaximoParcelasTaxa > 0) {
+                        if ((int)$parcela > (int)$numeroParcelasCusta) {
+                            continue;
+                        }
+
+                        $valorTaxa = $valor + ($valorCusta / $numeroParcelasCusta);
+                    }
+
+                    $custas[$parcela . $codigoTaxa . $codigo] = (object) array(
+                        "numeroProcesso" => $numeroProcesso,
+                        "numeroInicial" => $numeroInicial,
+                        "iParcela"   => $parcela,
+                        "sDescricao" => $custa->getTaxa()->getDescricao(),
+                        "fValor"     => $valorTaxa,
+                        "sStatus"    => 'A pagar',
+                        "lHonorario" => $custa->getTaxa()->isAplicaHonorario(),
+                        "custaParcelada" => $taxaPermiteParcelamento
+                    );
+                }
+            } else if ($custa->getTaxa()->isAplicaHonorario() && $model->getParcelasHonorarios() > 0) {
                 for ($parcela = 1; $parcela <= $model->getParcelasHonorarios(); $parcela++) {
                     $valor = 0;
                     if (isset($custas[$parcela . $codigoTaxa])) {
                         $valor = $custas[$parcela . $codigoTaxa]->fValor;
                     }
 
+                    $valorTaxa = $valor + ($valorCusta / $model->getParcelasHonorarios());
+
+                    if ($numeroMaximoParcelasTaxa > 0) {
+                        if ((int)$parcela > (int)$numeroParcelasCusta) {
+                            continue;
+                        }
+
+                        $valorTaxa = $valor + ($valorCusta / $numeroParcelasCusta);
+                    }
+
                     $custas[$parcela . $codigoTaxa . $codigo] = (object) array(
+                        "numeroProcesso" => $numeroProcesso,
+                        "numeroInicial" => $numeroInicial,
                         "iParcela"   => $parcela,
                         "sDescricao" => $custa->getTaxa()->getDescricao(),
-                        "fValor"     => $valor + round($valorCusta / $model->getParcelasHonorarios(),2),
+                        "fValor"     => $valorTaxa,
                         "sStatus"    => 'A pagar',
-                        "lHonorario" => $custa->getTaxa()->isAplicaHonorario()
+                        "lHonorario" => $custa->getTaxa()->isAplicaHonorario(),
+                        "custaParcelada" => $taxaPermiteParcelamento
                     );
-                }
+                } 
             } else {
                 $custas[$parcela . $codigoTaxa . $codigo] = (object) array(
+                    "numeroProcesso" => $numeroProcesso,
+                    "numeroInicial" => $numeroInicial,
                     "iParcela"   => $parcela,
                     "sDescricao" => $custa->getTaxa()->getDescricao(),
-                    "fValor"     => $valorCusta,
+                    "fValor"     => $taxaPermiteParcelamento ? ($valorCusta / $numeroParcelas) : $valorCusta,
                     "sStatus"    => 'A pagar',
-                    "lHonorario" => $custa->getTaxa()->isAplicaHonorario()
+                    "lHonorario" => $custa->getTaxa()->isAplicaHonorario(),
+                    "custaParcelada" => $taxaPermiteParcelamento
                 );
             }
         }
     }
 
-    return $custas;
+    $sql = "select
+            k00_tipo,
+            v07_valor,
+            v07_totpar
+        from
+            termo
+        inner join arrecad on v07_numpre = k00_numpre
+        where v07_parcel = ".$codigoTermo;
+    $tipo = pg_fetch_result(db_query($sql),0);
+    $total = pg_fetch_result(db_query($sql),1);
+
+    //DIVIDA ATIVA SEM CDA 
+    if($tipo == 14){
+        $sql = "select
+                    ar29_numpar,
+                    ar36_descricao,
+                    ar36_perc,
+                    ar36_valor,
+                    ar36_valormax,
+                    ar36_valormin,
+                    ar36_receita
+                from
+                    taxa
+                inner join termotaxaparc on ar29_taxa = ar36_sequencial
+                where
+                    ar36_debitossemprocesso = true;";
+        $rTaxas = pg_fetch_all(db_query($sql));
+
+        foreach ($rTaxas as $key => $taxa) {
+            $parcela = $taxa['ar29_numpar']; 
+            $pctm = $taxa['ar36_perc'];
+            $descricao = $taxa['ar36_descricao'];
+            if ($pctm > 0) {
+                $valor_taxa = round(($total / 100 * $pctm), 2);
+
+                if ($taxa['ar36_valormin'] > 0 && $valor_taxa < $taxa['ar36_valormin']) {
+                   $valor_taxa = $taxa['ar36_valormin'];
+                }
+
+                if ($taxa['ar36_valormax'] > 0 && $valor_taxa > $taxa['ar36_valormax']) {
+                    $valor_taxa = $taxa['ar36_valormax'];
+                }
+            } else if ($taxa['ar36_valor'] > 0) {
+                $valor_taxa = $taxa['ar36_valor'];
+            }
+
+            $custas = array(
+                1280796 => (object) array(
+                    "iParcela"   => $parcela,
+                    "sDescricao" => $descricao,
+                    "fValor"     => $valor_taxa,
+                    "sStatus"    => 'A pagar',
+                    "lHonorario" => true
+                )
+            );
+        }
+    }
+    return ['custas' => $custas, 'valoresAdicionais' => $valoresAdicionais];
 }
 
-function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
+function quadro_debitos_origem(PDFDocument $pdf, $parcelamento, $codigoRegraParcelamento)
 {
-    $iFormaCorrecao = pg_result(db_query("select k03_separajurmulparc
-        from numpref
-        where k03_instit = " . db_getsession("DB_instit") . "
-        and k03_anousu = " . db_getsession("DB_anousu")), 0, 0);
+    $oDaoCadTipoParc = new cl_cadtipoparc();
+
+    $sSqlRegraParcelamento = $oDaoCadTipoParc->sql_query_file(null, 'k40_separajuremul', null, "k40_codigo = $codigoRegraParcelamento");
+    $rsRegraParcelamento   = db_query($sSqlRegraParcelamento);
+    $regraParcelamento     = db_utils::getCollectionByRecord($rsRegraParcelamento)[0];
+
+    $iFormaCorrecao = $regraParcelamento->k40_separajuremul == 't';
 
     $sql = "select * from termoreparc where v08_parcel = $parcelamento limit 1";
 
@@ -403,7 +684,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
         $sql .= "                 arreoldcalc.k00_vlrjur as vlrjuros,                                                     \n";
         $sql .= "                 arreoldcalc.k00_vlrmul as vlrmulta,                                                     \n";
         $sql .= "                 arreoldcalc.k00_vlrdes +                                                                \n";
-        if ($iFormaCorrecao == 1) {
+        if ($iFormaCorrecao) {
             $sql .= "             (round( arreoldcalc.k00_vlrjur * descjur / 100,2)) + (round( arreoldcalc.k00_vlrmul * descmul / 100,2)) + (round( (arreoldcalc.k00_vlrcor - arreoldcalc.k00_vlrhis) * descvlr / 100,2)) as vlrdesconto, \n";
         } else {
             $sql .= "             (round( arreoldcalc.k00_vlrjur * descjur / 100,2)) + (round( arreoldcalc.k00_vlrmul * descmul / 100,2)) as vlrdesconto, \n";
@@ -449,7 +730,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
         $sql .= "        termodiv.vlrcor,                                                                                 \n";
         $sql .= "        termodiv.juros,                                                                                  \n";
         $sql .= "        termodiv.multa,                                                                                  \n";
-        if ($iFormaCorrecao == 1) {
+        if ($iFormaCorrecao) {
             $sql .= "    termodiv.vlrdesccor + termodiv.vlrdescjur + termodiv.vlrdescmul + termodiv.desconto as desconto,   \n";
         } else {
             $sql .= "    termodiv.vlrdesccor + termodiv.vlrdescjur + termodiv.vlrdescmul + termodiv.desconto as desconto,   \n";
@@ -570,7 +851,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
         $sql = $sql2;
     } else {
-        if (pg_numrows($result) > 0) {
+        if (isset($result) && pg_numrows($result) > 0) {
             // se for reparcelamento ou diversos...
             if (pg_result($result, 0, 'matric') > 0) {
                 $numero = 'Matr. : ' . pg_result($result, 0, 'matric');
@@ -666,17 +947,31 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
             if ($k03_tipo == 13) { // parcelamento do foro
                 $sql = "select distinct ";
-                $sql .= "       x.z01_nome as nomematric, ";
-                $sql .= "       x.v03_descr,  ";
-                $sql .= "       arreold.*,  ";
-                $sql .= "       k00_descr, ";
-                $sql .= "       k00_matric as matric,  ";
-                $sql .= "       k00_inscr as inscr, ";
-                $sql .= "       coalesce(vlrdesccor,0) as vlrdesccor, ";
-                $sql .= "       coalesce(vlrdescjur,0) as vlrdescjur, ";
-                $sql .= "       coalesce(vlrdescmul,0) as vlrdescmul, ";
-                $sql .= "       case when x.v01_exerc = 0 then arreold.k00_numpar else x.v01_exerc end as v01_exerc, ";
-                $sql .= "       x.v01_dtvenc,v70_codforo";
+                $sql .= "       max(x.z01_nome) as nomematric, ";
+                $sql .= "       max(x.v03_descr) as v03_descr,  ";
+                
+                //$sql .= "       arreold.*,  ";
+                $sql .= "       arreold.k00_numpre,  ";
+                $sql .= "       arreold.k00_numpar,  ";
+                $sql .= "       max(arreold.k00_numcgm) as k00_numcgm,  ";
+                $sql .= "       max(arreold.k00_dtoper) as k00_dtoper,  ";
+                $sql .= "       max(arreold.k00_receit) as k00_receit,  ";
+                $sql .= "       max(arreold.k00_hist) as k00_hist,  ";
+                $sql .= "       max(arreold.k00_dtvenc) as v01_dtvenc,  ";
+                $sql .= "       max(arreold.k00_numtot) as k00_numtot,  ";
+                $sql .= "       max(arreold.k00_numdig) as k00_numdig,  ";
+                $sql .= "       max(arreold.k00_tipo) as k00_tipo,  ";
+                $sql .= "       max(arreold.k00_tipojm) as k00_tipojm,  ";
+
+                $sql .= "       max(k00_descr) as k00_descr, ";
+                $sql .= "       max(k00_matric) as matric,  ";
+                $sql .= "       max(k00_inscr) as inscr, ";
+                $sql .= "       coalesce(max(vlrdesccor), 0) as vlrdesccor, ";
+                $sql .= "       coalesce(max(vlrdescjur), 0) as vlrdescjur, ";
+                $sql .= "       coalesce(max(vlrdescmul), 0) as vlrdescmul, ";
+                $sql .= "       case when max(x.v01_exerc) = 0 then max(arreold.k00_numpar) else max(x.v01_exerc) end as v01_exerc, ";
+                $sql .= "       max(x.v01_dtvenc) as v01_dtvenc,";
+                $sql .= "       max(v70_codforo) as v70_codforo";
                 $sql .= "  from (   select distinct  ";
                 $sql .= "                case when v03_descr is null then 'Parcelamento : '||termo2.v07_parcel else v03_descr ";
                 $sql .= "                end as v03_descr, ";
@@ -719,18 +1014,30 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
                 $sql .= "                                and arretipo.k00_instit = " . db_getsession('DB_instit');
                 $sql .= "    left outer join arrematric     on arrematric.k00_numpre = arreold.k00_numpre ";
                 $sql .= "    left outer join arreinscr      on arreinscr.k00_numpre  = arreold.k00_numpre ";
-                $sql .= "    order by v01_dtvenc asc ";
+                $sql .= "group by arreold.k00_numpre, arreold.k00_numpar ";
+                //$sql .= "    order by v01_dtvenc asc ";
             } elseif ($k03_tipo == 16) { // parcelamento de diversos
                 $sql = "select distinct ";
-                $sql .= "       x.z01_nome as nomematric, ";
-                $sql .= "       x.v03_descr,  ";
-                $sql .= "       arreold.*,  ";
-                $sql .= "       k00_descr, ";
-                $sql .= "       k00_matric as matric,  ";
-                $sql .= "       k00_inscr as inscr, ";
-                $sql .= "       coalesce(vlrdescjur,0) as vlrdescjur, ";
-                $sql .= "       coalesce(vlrdescmul,0) as vlrdescmul, ";
-                $sql .= "       v01_exerc ";
+                $sql .= "       max(x.z01_nome) as nomematric, ";
+                $sql .= "       max(x.v03_descr) as v03_descr,  ";
+                // $sql .= "       arreold.*,  ";
+                $sql .= "       arreold.k00_numpre,  ";
+                $sql .= "       arreold.k00_numpar,  ";
+                $sql .= "       max(arreold.k00_numcgm) as k00_numcgm,  ";
+                $sql .= "       max(arreold.k00_dtoper) as k00_dtoper,  ";
+                $sql .= "       max(arreold.k00_receit) as k00_receit,  ";
+                $sql .= "       max(arreold.k00_hist) as k00_hist,  ";
+                $sql .= "       max(arreold.k00_dtvenc) as v01_dtvenc,  ";
+                $sql .= "       max(arreold.k00_numtot) as k00_numtot,  ";
+                $sql .= "       max(arreold.k00_numdig) as k00_numdig,  ";
+                $sql .= "       max(arreold.k00_tipo) as k00_tipo,  ";
+                $sql .= "       max(arreold.k00_tipojm) as k00_tipojm,  ";
+                $sql .= "       max(k00_descr) as k00_descr, ";
+                $sql .= "       max(k00_matric) as matric,  ";
+                $sql .= "       max(k00_inscr) as inscr, ";
+                $sql .= "       coalesce(max(vlrdescjur),0) as vlrdescjur, ";
+                $sql .= "       coalesce(max(vlrdescmul),0) as vlrdescmul, ";
+                $sql .= "       max(v01_exerc) as v01_exerc ";
                 $sql .= "  from (   select distinct  ";
                 $sql .= "                dv09_descra as v03_descr, ";
                 $sql .= "                z01_nome, ";
@@ -752,6 +1059,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
                 $sql .= "    inner join arretipo          on arreold.k00_tipo = arretipo.k00_tipo and arretipo.k00_instit = " . db_getsession('DB_instit');
                 $sql .= "    left outer join arrematric     on arrematric.k00_numpre = arreold.k00_numpre ";
                 $sql .= "    left outer join arreinscr      on arreinscr.k00_numpre  = arreold.k00_numpre ";
+                $sql .= "group by arreold.k00_numpre, arreold.k00_numpar ";
             } elseif ($k03_tipo == 17) { // parcelamento de contribuicao de melhorias
                 $sql = " select  ";
                 $sql .= "        coalesce(termocontrib.vlrdescjur,0) as vlrdescjur,";
@@ -899,10 +1207,42 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
     $pdf->cell(16, 4, 'Total', 1, 1, 'C');
     $pdf->setBold(false);
 
+    $aDebitos = [];
+
     foreach ($debitos as $debito) {
         $desconto = 0;
 
-        $debitoObj = (object)$debito;
+        $debitoObj = (object) $debito;
+
+
+        /**
+         * foreach para remover debitos duplicados
+         */
+        foreach ($aDebitos as $oDebito) {
+            if (
+               ($oDebito->v03_descr == $debitoObj->v03_descr)
+            && ($oDebito->k00_numpre == $debitoObj->k00_numpre)
+            && ($oDebito->k00_numpar == $debitoObj->k00_numpar)
+            && ($oDebito->k00_dtoper == $debitoObj->k00_dtoper)
+            && ($oDebito->k00_hist == $debitoObj->k00_hist)
+            && ($oDebito->k00_dtvenc == $debitoObj->k00_dtvenc)
+            && ($oDebito->k00_numtot == $debitoObj->k00_numtot)
+            && ($oDebito->k00_numdig == $debitoObj->k00_numdig)
+            && ($oDebito->k00_tipo == $debitoObj->k00_tipo)
+            && ($oDebito->k00_tipojm == $debitoObj->k00_tipojm)
+            && ($oDebito->k00_descr == $debitoObj->k00_descr)
+            && ($oDebito->matric == $debitoObj->matric)
+            && ($oDebito->vlrdesccor == $debitoObj->vlrdesccor)
+            && ($oDebito->vlrdescjur == $debitoObj->vlrdescjur)
+            && ($oDebito->vlrdescmul == $debitoObj->vlrdescmul)
+            && ($oDebito->v01_exerc == $debitoObj->v01_exerc)
+            && ($oDebito->v70_codforo == $debitoObj->v70_codforo)
+            ){
+                continue 2;
+            }
+        }
+
+        $aDebitos[] = $debitoObj;
 
         $sqlArreoldCalc = "select min(k00_dtvenc) as k00_dtvenc, ";
         $sqlArreoldCalc .= "       sum(k00_valor)  as vlrhis, ";
@@ -967,8 +1307,13 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
         if ($np == $debitoObj->k00_numpre && $npa == $debitoObj->k00_numpar) {
             continue;
         } else {
-            $np = $k00_numpre;
-            $npa = $k00_numpar;
+            if (isset($k00_numpre)) {
+                $np = $k00_numpre;
+            }
+
+            if (isset($k00_numpar)) {
+                $npa = $k00_numpar;
+            }
         }
 
         if (!empty($debitoObj->matric)) {
@@ -1003,20 +1348,22 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
         $Total += $vlrcor + $multa + $juros;
 
-        if (array_key_exists($k00_descr, $arrTipo)) {
-            $arrTipo[$k00_descr]['vlrhist'] += ((float)$valor);
-            $arrTipo[$k00_descr]['vlrcor'] += ((float)$vlrcor);
-            $arrTipo[$k00_descr]['vlrmulta'] += ((float)$multa);
-            $arrTipo[$k00_descr]['vlrjuros'] += ((float)$juros);
-            $arrTipo[$k00_descr]['vlrdesc'] += ((float)$desconto);
-            $arrTipo[$k00_descr]['vlrtotal'] += ((float)$vlrcor + (float)$multa + (float)$juros - (float)$desconto);
-        } else {
-            $arrTipo[$k00_descr]['vlrhist'] = ((float)$valor);
-            $arrTipo[$k00_descr]['vlrcor'] = ((float)$vlrcor);
-            $arrTipo[$k00_descr]['vlrmulta'] = ((float)$multa);
-            $arrTipo[$k00_descr]['vlrjuros'] = ((float)$juros);
-            $arrTipo[$k00_descr]['vlrdesc'] = ((float)$desconto);
-            $arrTipo[$k00_descr]['vlrtotal'] = ((float)$vlrcor + (float)$multa + (float)$juros - (float)$desconto);
+        if (isset($k00_descr)) {
+            if (array_key_exists($k00_descr, $arrTipo)) {
+                $arrTipo[$k00_descr]['vlrhist'] += ((float)$valor);
+                $arrTipo[$k00_descr]['vlrcor'] += ((float)$vlrcor);
+                $arrTipo[$k00_descr]['vlrmulta'] += ((float)$multa);
+                $arrTipo[$k00_descr]['vlrjuros'] += ((float)$juros);
+                $arrTipo[$k00_descr]['vlrdesc'] += ((float)$desconto);
+                $arrTipo[$k00_descr]['vlrtotal'] += ((float)$vlrcor + (float)$multa + (float)$juros - (float)$desconto);
+            } else {
+                $arrTipo[$k00_descr]['vlrhist'] = ((float)$valor);
+                $arrTipo[$k00_descr]['vlrcor'] = ((float)$vlrcor);
+                $arrTipo[$k00_descr]['vlrmulta'] = ((float)$multa);
+                $arrTipo[$k00_descr]['vlrjuros'] = ((float)$juros);
+                $arrTipo[$k00_descr]['vlrdesc'] = ((float)$desconto);
+                $arrTipo[$k00_descr]['vlrtotal'] = ((float)$vlrcor + (float)$multa + (float)$juros - (float)$desconto);
+            }
         }
     }
 
@@ -1037,4 +1384,37 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
     $pdf->ln(8);
 
     return $Total;
+}
+
+function calculaPercentual($percentage, $total) {
+    return (int)$percentage ? (number_format($percentage, 2) / 100) * round((float)$total, 2) : 0;
+}
+
+function formataValorParaTabela($valor) {
+    return db_formatar(formataValor($valor), 'f');
+}
+
+function formataValorParaCalculo($valor) {
+    return formataValor($valor);
+}
+
+function formataValor($valor) {
+    $sValor = str_replace(',', '.', strval($valor));
+    $sValor = preg_replace('/\.(?=.*\.)/', '', $sValor);
+
+    return $sValor;
+}
+
+function getCodigoForoPorSequencial($sequencialProcesso) {
+    $oDaoProcessoForo = new cl_processoforo;
+    $sSqlBuscaProcesso = $oDaoProcessoForo->sql_query_file($sequencialProcesso);
+    $rsBuscaProcesso = db_query($sSqlBuscaProcesso);
+
+    if (pg_num_rows($rsBuscaProcesso) == 0) {
+        return null;
+    }
+
+    $processosEncontrados = db_utils::getCollectionByRecord($rsBuscaProcesso);
+
+    return $processosEncontrados[0]->v70_codforo;
 }

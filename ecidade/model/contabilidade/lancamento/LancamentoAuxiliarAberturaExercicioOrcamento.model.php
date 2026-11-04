@@ -100,6 +100,18 @@ class LancamentoAuxiliarAberturaExercicioOrcamento extends LancamentoAuxiliarBas
     private $credor;
 
     /**
+     * código do recurso
+     * @var int
+     */
+    private $codigoRecurso;
+
+    /**
+     * Documento sendo executado
+     * @var int
+     */
+    private $codigoDocumento;
+
+    /**
      * Cria o vínculo entre o lançamento e a dotação.
      *
      * @throws DBException
@@ -190,7 +202,7 @@ class LancamentoAuxiliarAberturaExercicioOrcamento extends LancamentoAuxiliarBas
     public function salvarVinculoAberturaExercicioOrcamento()
     {
 
-        $oDaoConLancamAberturaExercicio = db_utils::getDao('conlancamaberturaexercicioorcamento');
+        $oDaoConLancamAberturaExercicio = new cl_conlancamaberturaexercicioorcamento;
         $oDaoConLancamAberturaExercicio->c105_aberturaexercicioorcamento = $this->getAberturaExercicioOrcamento();
         $oDaoConLancamAberturaExercicio->c105_codlan = $this->iCodigoLancamento;
         $oDaoConLancamAberturaExercicio->c105_sequencial = null;
@@ -363,5 +375,50 @@ class LancamentoAuxiliarAberturaExercicioOrcamento extends LancamentoAuxiliarBas
     {
 
         $this->ano = $ano;
+    }
+
+    /**
+     * @param integer $codigoRecurso
+     */
+    public function setCodigoRecurso($codigoRecurso)
+    {
+        $this->codigoRecurso = $codigoRecurso;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCodigoRecurso()
+    {
+        return $this->codigoRecurso;
+    }
+
+    /**
+     * @return bool|Recurso
+     */
+    public function getRecurso()
+    {
+        if (!empty($this->codigoRecurso)) {
+            return RecursoRepository::getRecursoPorCodigo($this->codigoRecurso);
+        }
+        return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCodigoDocumento()
+    {
+        return $this->codigoDocumento;
+    }
+
+    /**
+     * @param int $codigoDocumento
+     * @return LancamentoAuxiliarEncerramentoExercicio
+     */
+    public function setCodigoDocumento($codigoDocumento)
+    {
+        $this->codigoDocumento = $codigoDocumento;
+        return $this;
     }
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clrhpessalario->rotulo->label("rh04_salari");
               <?=$Lrh04_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh04_seqpes",6,$Irh04_seqpes,true,"text",4,"","chave_rh04_seqpes");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhpessalario->rotulo->label("rh04_salari");
               <?=$Lrh04_salari?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh04_salari",15,$Irh04_salari,true,"text",4,"","chave_rh04_salari");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhpessalario->rotulo->label("rh04_salari");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpessalario.php")==true){
@@ -118,12 +118,12 @@ $clrhpessalario->rotulo->label("rh04_salari");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

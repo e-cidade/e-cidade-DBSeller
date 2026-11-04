@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE tiafcgm
-class cl_tiafcgm { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $y95_codtiaf = 0; 
-   var $y95_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_tiafcgm {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $y95_codtiaf = 0;
+   var $y95_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 y95_codtiaf = int4 = Código Tiaf 
-                 y95_numcgm = int4 = Numcgm 
+                 y95_codtiaf = int4 = Código Tiaf
+                 y95_numcgm = int4 = Numcgm
                  ";
-   //funcao construtor da classe 
-   function cl_tiafcgm() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("tiafcgm"); 
+     $this->rotulo = new rotulo("tiafcgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_tiafcgm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y95_codtiaf = ($this->y95_codtiaf == ""?@$GLOBALS["HTTP_POST_VARS"]["y95_codtiaf"]:$this->y95_codtiaf);
        $this->y95_numcgm = ($this->y95_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["y95_numcgm"]:$this->y95_numcgm);
@@ -74,9 +74,9 @@ class cl_tiafcgm {
      }
    }
    // funcao para inclusao
-   function incluir ($y95_codtiaf){ 
+   public function incluir ($y95_codtiaf){
       $this->atualizacampos();
-     if($this->y95_numcgm == null ){ 
+     if($this->y95_numcgm == null ){
        $this->erro_sql = " Campo Numcgm nao Informado.";
        $this->erro_campo = "y95_numcgm";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_tiafcgm {
        $this->erro_status = "0";
        return false;
      }
-       $this->y95_codtiaf = $y95_codtiaf; 
-     if(($this->y95_codtiaf == null) || ($this->y95_codtiaf == "") ){ 
+       $this->y95_codtiaf = $y95_codtiaf;
+     if(($this->y95_codtiaf == null) || ($this->y95_codtiaf == "") ){
        $this->erro_sql = " Campo y95_codtiaf nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_tiafcgm {
        return false;
      }
      $sql = "insert into tiafcgm(
-                                       y95_codtiaf 
-                                      ,y95_numcgm 
+                                       y95_codtiaf
+                                      ,y95_numcgm
                        )
                 values (
-                                $this->y95_codtiaf 
-                               ,$this->y95_numcgm 
+                                $this->y95_codtiaf
+                               ,$this->y95_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cgm ($this->y95_codtiaf) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_tiafcgm {
        $resac = db_query("insert into db_acount values($acount,1224,7352,'','".AddSlashes(pg_result($resaco,0,'y95_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($y95_codtiaf=null) { 
+   public function alterar ($y95_codtiaf=null) {
       $this->atualizacampos();
      $sql = " update tiafcgm set ";
      $virgula = "";
-     if(trim($this->y95_codtiaf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y95_codtiaf"])){ 
+     if(trim($this->y95_codtiaf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y95_codtiaf"])){
        $sql  .= $virgula." y95_codtiaf = $this->y95_codtiaf ";
        $virgula = ",";
-       if(trim($this->y95_codtiaf) == null ){ 
+       if(trim($this->y95_codtiaf) == null ){
          $this->erro_sql = " Campo Código Tiaf nao Informado.";
          $this->erro_campo = "y95_codtiaf";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_tiafcgm {
          return false;
        }
      }
-     if(trim($this->y95_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y95_numcgm"])){ 
+     if(trim($this->y95_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y95_numcgm"])){
        $sql  .= $virgula." y95_numcgm = $this->y95_numcgm ";
        $virgula = ",";
-       if(trim($this->y95_numcgm) == null ){ 
+       if(trim($this->y95_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "y95_numcgm";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_tiafcgm {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cgm nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->y95_codtiaf;
@@ -214,14 +214,14 @@ class cl_tiafcgm {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($y95_codtiaf=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($y95_codtiaf=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y95_codtiaf));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_tiafcgm {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cgm nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$y95_codtiaf;
@@ -276,11 +276,11 @@ class cl_tiafcgm {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_tiafcgm {
       }
      return $result;
    }
-   function sql_query ( $y95_codtiaf=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $y95_codtiaf=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -320,15 +320,15 @@ class cl_tiafcgm {
      $sql2 = "";
      if($dbwhere==""){
        if($y95_codtiaf!=null ){
-         $sql2 .= " where tiafcgm.y95_codtiaf = $y95_codtiaf "; 
-       } 
+         $sql2 .= " where tiafcgm.y95_codtiaf = $y95_codtiaf ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -337,10 +337,10 @@ class cl_tiafcgm {
      }
      return $sql;
   }
-   function sql_query_file ( $y95_codtiaf=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $y95_codtiaf=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -353,15 +353,15 @@ class cl_tiafcgm {
      $sql2 = "";
      if($dbwhere==""){
        if($y95_codtiaf!=null ){
-         $sql2 .= " where tiafcgm.y95_codtiaf = $y95_codtiaf "; 
-       } 
+         $sql2 .= " where tiafcgm.y95_codtiaf = $y95_codtiaf ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

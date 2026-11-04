@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contrib
 //CLASSE DA ENTIDADE editalrua
-class cl_editalrua { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $d02_contri = 0; 
-   var $d02_codedi = 0; 
-   var $d02_codigo = 0; 
-   var $d02_dtauto_dia = null; 
-   var $d02_dtauto_mes = null; 
-   var $d02_dtauto_ano = null; 
-   var $d02_dtauto = null; 
-   var $d02_autori = 'f'; 
-   var $d02_idlog = 0; 
-   var $d02_data_dia = null; 
-   var $d02_data_mes = null; 
-   var $d02_data_ano = null; 
-   var $d02_data = null; 
-   var $d02_profun = 0; 
-   var $d02_valorizacao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_editalrua {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $d02_contri = 0;
+   var $d02_codedi = 0;
+   var $d02_codigo = 0;
+   var $d02_dtauto_dia = null;
+   var $d02_dtauto_mes = null;
+   var $d02_dtauto_ano = null;
+   var $d02_dtauto = null;
+   var $d02_autori = 'f';
+   var $d02_idlog = 0;
+   var $d02_data_dia = null;
+   var $d02_data_mes = null;
+   var $d02_data_ano = null;
+   var $d02_data = null;
+   var $d02_profun = 0;
+   var $d02_valorizacao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 d02_contri = int4 = Contribuição 
-                 d02_codedi = int4 = Codigo Edital 
-                 d02_codigo = int4 = Rua/Avenida 
-                 d02_dtauto = date = Data Autorizacao 
-                 d02_autori = bool = Autorizado 
-                 d02_idlog = int4 = Codigo do Usuario 
-                 d02_data = date = Data de inclusao 
-                 d02_profun = float8 = Profundidade 
-                 d02_valorizacao = float8 = Percentual de valorizacao 
+                 d02_contri = int4 = Contribuição
+                 d02_codedi = int4 = Codigo Edital
+                 d02_codigo = int4 = Rua/Avenida
+                 d02_dtauto = date = Data Autorizacao
+                 d02_autori = bool = Autorizado
+                 d02_idlog = int4 = Codigo do Usuario
+                 d02_data = date = Data de inclusao
+                 d02_profun = float8 = Profundidade
+                 d02_valorizacao = float8 = Percentual de valorizacao
                  ";
-   //funcao construtor da classe 
-   function cl_editalrua() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("editalrua"); 
+     $this->rotulo = new rotulo("editalrua");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_editalrua {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d02_contri = ($this->d02_contri == ""?@$GLOBALS["HTTP_POST_VARS"]["d02_contri"]:$this->d02_contri);
        $this->d02_codedi = ($this->d02_codedi == ""?@$GLOBALS["HTTP_POST_VARS"]["d02_codedi"]:$this->d02_codedi);
@@ -115,9 +115,9 @@ class cl_editalrua {
      }
    }
    // funcao para inclusao
-   function incluir ($d02_contri){ 
+   public function incluir ($d02_contri){
       $this->atualizacampos();
-     if($this->d02_codedi == null ){ 
+     if($this->d02_codedi == null ){
        $this->erro_sql = " Campo Codigo Edital nao Informado.";
        $this->erro_campo = "d02_codedi";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_codigo == null ){ 
+     if($this->d02_codigo == null ){
        $this->erro_sql = " Campo Rua/Avenida nao Informado.";
        $this->erro_campo = "d02_codigo";
        $this->erro_banco = "";
@@ -135,10 +135,10 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_dtauto == null ){ 
+     if($this->d02_dtauto == null ){
        $this->d02_dtauto = "null";
      }
-     if($this->d02_autori == null ){ 
+     if($this->d02_autori == null ){
        $this->erro_sql = " Campo Autorizado nao Informado.";
        $this->erro_campo = "d02_autori";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_idlog == null ){ 
+     if($this->d02_idlog == null ){
        $this->erro_sql = " Campo Codigo do Usuario nao Informado.";
        $this->erro_campo = "d02_idlog";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_data == null ){ 
+     if($this->d02_data == null ){
        $this->erro_sql = " Campo Data de inclusao nao Informado.";
        $this->erro_campo = "d02_data_dia";
        $this->erro_banco = "";
@@ -165,7 +165,7 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_profun == null ){ 
+     if($this->d02_profun == null ){
        $this->erro_sql = " Campo Profundidade nao Informado.";
        $this->erro_campo = "d02_profun";
        $this->erro_banco = "";
@@ -174,7 +174,7 @@ class cl_editalrua {
        $this->erro_status = "0";
        return false;
      }
-     if($this->d02_valorizacao == null ){ 
+     if($this->d02_valorizacao == null ){
        $this->erro_sql = " Campo Percentual de valorizacao nao Informado.";
        $this->erro_campo = "d02_valorizacao";
        $this->erro_banco = "";
@@ -184,16 +184,16 @@ class cl_editalrua {
        return false;
      }
      if($d02_contri == "" || $d02_contri == null ){
-       $result = db_query("select nextval('editalrua_d02_contri_seq')"); 
+       $result = db_query("select nextval('editalrua_d02_contri_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: editalrua_d02_contri_seq do campo: d02_contri"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: editalrua_d02_contri_seq do campo: d02_contri";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->d02_contri = pg_result($result,0,0); 
+       $this->d02_contri = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from editalrua_d02_contri_seq");
        if(($result != false) && (pg_result($result,0,0) < $d02_contri)){
@@ -204,10 +204,10 @@ class cl_editalrua {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->d02_contri = $d02_contri; 
+         $this->d02_contri = $d02_contri;
        }
      }
-     if(($this->d02_contri == null) || ($this->d02_contri == "") ){ 
+     if(($this->d02_contri == null) || ($this->d02_contri == "") ){
        $this->erro_sql = " Campo d02_contri nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -216,29 +216,29 @@ class cl_editalrua {
        return false;
      }
      $sql = "insert into editalrua(
-                                       d02_contri 
-                                      ,d02_codedi 
-                                      ,d02_codigo 
-                                      ,d02_dtauto 
-                                      ,d02_autori 
-                                      ,d02_idlog 
-                                      ,d02_data 
-                                      ,d02_profun 
-                                      ,d02_valorizacao 
+                                       d02_contri
+                                      ,d02_codedi
+                                      ,d02_codigo
+                                      ,d02_dtauto
+                                      ,d02_autori
+                                      ,d02_idlog
+                                      ,d02_data
+                                      ,d02_profun
+                                      ,d02_valorizacao
                        )
                 values (
-                                $this->d02_contri 
-                               ,$this->d02_codedi 
-                               ,$this->d02_codigo 
-                               ,".($this->d02_dtauto == "null" || $this->d02_dtauto == ""?"null":"'".$this->d02_dtauto."'")." 
-                               ,'$this->d02_autori' 
-                               ,$this->d02_idlog 
-                               ,".($this->d02_data == "null" || $this->d02_data == ""?"null":"'".$this->d02_data."'")." 
-                               ,$this->d02_profun 
-                               ,$this->d02_valorizacao 
+                                $this->d02_contri
+                               ,$this->d02_codedi
+                               ,$this->d02_codigo
+                               ,".($this->d02_dtauto == "null" || $this->d02_dtauto == ""?"null":"'".$this->d02_dtauto."'")."
+                               ,'$this->d02_autori'
+                               ,$this->d02_idlog
+                               ,".($this->d02_data == "null" || $this->d02_data == ""?"null":"'".$this->d02_data."'")."
+                               ,$this->d02_profun
+                               ,$this->d02_valorizacao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->d02_contri) nao Incluído. Inclusao Abortada.";
@@ -278,16 +278,16 @@ class cl_editalrua {
        $resac = db_query("insert into db_acount values($acount,127,9445,'','".AddSlashes(pg_result($resaco,0,'d02_valorizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($d02_contri=null) { 
+   public function alterar ($d02_contri=null) {
       $this->atualizacampos();
      $sql = " update editalrua set ";
      $virgula = "";
-     if(trim($this->d02_contri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_contri"])){ 
+     if(trim($this->d02_contri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_contri"])){
        $sql  .= $virgula." d02_contri = $this->d02_contri ";
        $virgula = ",";
-       if(trim($this->d02_contri) == null ){ 
+       if(trim($this->d02_contri) == null ){
          $this->erro_sql = " Campo Contribuição nao Informado.";
          $this->erro_campo = "d02_contri";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_codedi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_codedi"])){ 
+     if(trim($this->d02_codedi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_codedi"])){
        $sql  .= $virgula." d02_codedi = $this->d02_codedi ";
        $virgula = ",";
-       if(trim($this->d02_codedi) == null ){ 
+       if(trim($this->d02_codedi) == null ){
          $this->erro_sql = " Campo Codigo Edital nao Informado.";
          $this->erro_campo = "d02_codedi";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_codigo"])){ 
+     if(trim($this->d02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_codigo"])){
        $sql  .= $virgula." d02_codigo = $this->d02_codigo ";
        $virgula = ",";
-       if(trim($this->d02_codigo) == null ){ 
+       if(trim($this->d02_codigo) == null ){
          $this->erro_sql = " Campo Rua/Avenida nao Informado.";
          $this->erro_campo = "d02_codigo";
          $this->erro_banco = "";
@@ -323,19 +323,19 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_dtauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"] !="") ){ 
+     if(trim($this->d02_dtauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"] !="") ){
        $sql  .= $virgula." d02_dtauto = '$this->d02_dtauto' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["d02_dtauto_dia"])){
          $sql  .= $virgula." d02_dtauto = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->d02_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_autori"])){ 
+     if(trim($this->d02_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_autori"])){
        $sql  .= $virgula." d02_autori = '$this->d02_autori' ";
        $virgula = ",";
-       if(trim($this->d02_autori) == null ){ 
+       if(trim($this->d02_autori) == null ){
          $this->erro_sql = " Campo Autorizado nao Informado.";
          $this->erro_campo = "d02_autori";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_idlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_idlog"])){ 
+     if(trim($this->d02_idlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_idlog"])){
        $sql  .= $virgula." d02_idlog = $this->d02_idlog ";
        $virgula = ",";
-       if(trim($this->d02_idlog) == null ){ 
+       if(trim($this->d02_idlog) == null ){
          $this->erro_sql = " Campo Codigo do Usuario nao Informado.";
          $this->erro_campo = "d02_idlog";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"] !="") ){ 
+     if(trim($this->d02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"] !="") ){
        $sql  .= $virgula." d02_data = '$this->d02_data' ";
        $virgula = ",";
-       if(trim($this->d02_data) == null ){ 
+       if(trim($this->d02_data) == null ){
          $this->erro_sql = " Campo Data de inclusao nao Informado.";
          $this->erro_campo = "d02_data_dia";
          $this->erro_banco = "";
@@ -370,11 +370,11 @@ class cl_editalrua {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["d02_data_dia"])){
          $sql  .= $virgula." d02_data = null ";
          $virgula = ",";
-         if(trim($this->d02_data) == null ){ 
+         if(trim($this->d02_data) == null ){
            $this->erro_sql = " Campo Data de inclusao nao Informado.";
            $this->erro_campo = "d02_data_dia";
            $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_editalrua {
          }
        }
      }
-     if(trim($this->d02_profun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_profun"])){ 
+     if(trim($this->d02_profun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_profun"])){
        $sql  .= $virgula." d02_profun = $this->d02_profun ";
        $virgula = ",";
-       if(trim($this->d02_profun) == null ){ 
+       if(trim($this->d02_profun) == null ){
          $this->erro_sql = " Campo Profundidade nao Informado.";
          $this->erro_campo = "d02_profun";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_editalrua {
          return false;
        }
      }
-     if(trim($this->d02_valorizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_valorizacao"])){ 
+     if(trim($this->d02_valorizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d02_valorizacao"])){
        $sql  .= $virgula." d02_valorizacao = $this->d02_valorizacao ";
        $virgula = ",";
-       if(trim($this->d02_valorizacao) == null ){ 
+       if(trim($this->d02_valorizacao) == null ){
          $this->erro_sql = " Campo Percentual de valorizacao nao Informado.";
          $this->erro_campo = "d02_valorizacao";
          $this->erro_banco = "";
@@ -443,7 +443,7 @@ class cl_editalrua {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->d02_contri;
@@ -471,14 +471,14 @@ class cl_editalrua {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($d02_contri=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($d02_contri=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d02_contri));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -512,7 +512,7 @@ class cl_editalrua {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$d02_contri;
@@ -540,11 +540,11 @@ class cl_editalrua {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -566,10 +566,10 @@ class cl_editalrua {
       }
      return $result;
    }
-   function sql_query ( $d02_contri=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $d02_contri=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -587,15 +587,15 @@ class cl_editalrua {
      $sql2 = "";
      if($dbwhere==""){
        if($d02_contri!=null ){
-         $sql2 .= " where editalrua.d02_contri = $d02_contri "; 
-       } 
+         $sql2 .= " where editalrua.d02_contri = $d02_contri ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,10 +604,10 @@ class cl_editalrua {
      }
      return $sql;
   }
-   function sql_query_file ( $d02_contri=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $d02_contri=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,15 +620,15 @@ class cl_editalrua {
      $sql2 = "";
      if($dbwhere==""){
        if($d02_contri!=null ){
-         $sql2 .= " where editalrua.d02_contri = $d02_contri "; 
-       } 
+         $sql2 .= " where editalrua.d02_contri = $d02_contri ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

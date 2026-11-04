@@ -101,7 +101,7 @@ if (file_exists($arquivo) && !is_writable($arquivo)){
 </table>
 </body>
 </html>
-<?
+<?php
 exit;
 }
 
@@ -385,7 +385,7 @@ if (!is_writable($root . "/funcoes")) {
     </table>
     </body>
     </html>
-    <?
+    <?php
     exit;
 }
 if (file_exists($arquivo) && !is_writable($arquivo)) {
@@ -397,7 +397,7 @@ if (file_exists($arquivo) && !is_writable($arquivo)) {
     </table>
     </body>
     </html>
-    <?
+    <?php
     exit;
 }
 umask(74);

@@ -25,48 +25,29 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_sql.php"));
+parse_str($_SERVER['QUERY_STRING']);
+
 ?>
 <html>
 <head>
 <title>Descritivo do Parcelamento</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<style>
-<!--
-td {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: #000000;
-}
-th {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: #000000;
-}
--->
-</style>
 </head>
 
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-
-
-    <?
+    <?php
    if(1==1){
 
     $sql =	"select
 					a.k00_numpre,
-					k00_numpar,
-					k00_numtot,
+					a.k00_numpar,
+					a.k00_numtot,
                     case when k163_data is not null then
                               k163_data
                          else k00_dtoper
@@ -102,7 +83,24 @@ th {
 																														inner join controleparc_registrosorig on
 																															ar51_id_agendamento = ar49_id
 																														where ar51_numpre = ".$numpre."))
-																														end as dl_Acao_de_processamento
+																														end as dl_Acao_de_processamento,
+				(
+					select
+						nomeinst
+					from
+						db_config
+					where
+						codigo = arreinstit.k00_instit
+				) as instit,
+				(
+					select
+						db_usuarios.nome
+					from
+						arrehist
+						join db_usuarios on arrehist.k00_id_usuario = db_usuarios.id_usuario
+					where
+						k00_numpre = a.k00_numpre
+				) as usuario
 				from
 					arrecad a
 				inner join arreinstit on
@@ -160,7 +158,7 @@ th {
     if($numpar != 0){
        $sql .= " and k00_numpar = $numpar";
     }
-	$sql .= "			order by k00_numpar ASC";
+	$sql .= "			order by a.k00_numpar ASC";
 
     $js_func = "";
     db_lovrot($sql,5,"()","",$js_func);
@@ -182,7 +180,7 @@ th {
       <th width="17%" nowrap>Descri&ccedil;&atilde;o</th>
       <th width="15%" nowrap>Valor</th>
     </tr>
-    <?
+    <?php
     $sql = "select a.k00_numpre,
 	                k00_numpar,
 					k00_numtot,
@@ -240,12 +238,12 @@ th {
          <td width="17%" nowrap><?=$k02_drecei?></td>
          <td width="15%" nowrap align="right"> <?=db_formatar(db_formatar($k00_valor,"v")*-1,"f")?> </td>
       </tr>
-    <?
+    <?php
   	  }
     }
     ?>
   </table>
- <?
+ <?php
  }
  ?>
 </body>

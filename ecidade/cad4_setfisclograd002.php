@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ function js_submit_form(){
 }
 </script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -114,7 +114,7 @@ function js_submit_form(){
 <!--
     <tr>
     <td>
-    <?
+    <?php
            db_input("j14_codigo",10,"",true,"hidden",3);
     	     $cliframe_seleciona->campos  = "j37_face,j37_setor,j37_quadra";
            $cliframe_seleciona->legenda="Faces de Quadra";
@@ -133,14 +133,14 @@ function js_submit_form(){
 
         <input class='todasfaces' type="checkbox" name ='todas_faces' id = 'todas_faces' value = '1' onclick="oGridSetor.selectAll('mtodositensSetor','checkboxSetor','SetorrowSetor')" >
         <b> Alterar Todas Faces Para o Setor Fiscal</b>
-        <?
+        <?php
          $sSqlSetorFiscal = "select 0 as j90_codigo, 'Selecione Setor Fiscal' as j90_descr union all select j90_codigo,j90_descr from setorfiscal ";
          $rsSetorFiscal = db_query($sSqlSetorFiscal);
          db_selectrecord("unico_setor",$rsSetorFiscal,true,"text");
 
       ?>
       <b>e Zona:
-      <?
+      <?php
          $sSqlZona = " select 0 as j50_zona, 'Nenhum...' as j50_descr union all  select j50_zona,j50_descr from zonas ";
          $rsZona   = db_query($sSqlZona);
 
@@ -182,7 +182,7 @@ function js_submit_form(){
 </table>
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

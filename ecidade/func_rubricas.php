@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,14 +60,14 @@ $clrotulo->label("DBtxt25");
              <strong>Ano / Mês :&nbsp;&nbsp;</strong>
            </td>
            <td colspan='3'>
-           <?
+           <?php
            if(!isset($chave_r06_anousu)){
            	 $chave_r06_anousu = db_anofolha();
            }
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,"",'chave_r06_anousu');
            ?>
            &nbsp;/&nbsp;
-           <?
+           <?php
            if(!isset($chave_r06_mesusu)){
            	 $chave_r06_mesusu = db_mesfolha();
            }
@@ -80,7 +80,7 @@ $clrotulo->label("DBtxt25");
               <?=$Lr06_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r06_codigo",4,$Ir06_codigo,true,"text",4,"","chave_r06_codigo");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $clrotulo->label("DBtxt25");
               <?=$Lr06_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r06_descr",30,$Ir06_descr,true,"text",4,"","chave_r06_descr");
 		       ?>
             </td>
@@ -108,7 +108,7 @@ $clrotulo->label("DBtxt25");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $dbwhere = " r06_mesusu = $chave_r06_mesusu ";
       $dbwhere.= " and r06_anousu = $chave_r06_anousu ";
       if(!isset($pesquisa_chave)){
@@ -148,12 +148,12 @@ $clrotulo->label("DBtxt25");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

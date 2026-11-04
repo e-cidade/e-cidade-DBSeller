@@ -34,6 +34,7 @@ use App\Domain\Patrimonial\Patrimonio\Models\DivisaoDepartamento;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Departamento
@@ -302,6 +303,14 @@ class Departamento extends Model
         return $this->belongsTo(Usuario::class, 'id_usuarioresp', 'id_usuario');
     }
 
+    /**
+     * @return BelongsToMany
+     */
+    public function usuarios()
+    {
+        return  $this->belongsToMany(Usuario::class, "db_depusu", "coddepto", "id_usuario");
+    }
+
     public function divisoes()
     {
         return $this->hasMany(DivisaoDepartamento::class, 't30_depto', 'coddepto');
@@ -310,5 +319,20 @@ class Departamento extends Model
     public function deposito()
     {
         return $this->hasOne(Deposito::class, 'm91_depto', 'coddepto');
+    }
+
+    public function scopeLikeDescricao($query, $descricao = '')
+    {
+        return $query->where("descrdepto", "ilike", "%{$descricao}%");
+    }
+
+    public function scopeInCodigo($query, array $codigo = [])
+    {
+        return $query->whereIn("coddepto", $codigo);
+    }
+
+    public function scopeDataLimite($query, $data)
+    {
+        return $query->whereRaw("(limite  >'{$data}' or limite is null)");
     }
 }

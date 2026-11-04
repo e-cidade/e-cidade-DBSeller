@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //echo ($HTTP_SERVER_VARS['QUERY_STRING']);exit;
@@ -52,7 +52,7 @@ include(modification("classes/db_matestoqueitemunid_classe.php"));
 include(modification("classes/db_matparam_classe.php"));
 $clmatparam = new cl_matparam;
 $clusuarios = new cl_db_usuarios;
-$clempnota = new cl_empnota; 
+$clempnota = new cl_empnota;
 $clempnotaord = new cl_empnotaord;
 $clempnotaele = new cl_empnotaele;
 $clmatordemitem = new cl_matordemitem;
@@ -119,24 +119,24 @@ if (isset($confirma)){
   }
   $erro_msg = $clmatestoqueini->erro_msg;
 
-  $dados    = split("quant_","$valores");
-  $cods     = split("coditem_","$codmatmater");
-  $vlitem   = split("valor","$val");
-  $qmult    = split("qntmul_",$valmul);
-  $unidad   = split("codunid_","$codunidade");
+  $dados    =explode("quant_","$valores");
+  $cods     =explode("coditem_","$codmatmater");
+  $vlitem   =explode("valor","$val");
+  $qmult    =explode("qntmul_",$valmul);
+  $unidad   =explode("codunid_","$codunidade");
 
   for ($i=1; $i<count($dados); $i++){
     if ($sqlerro==false){
-      $quamul          = split("_",$qmult[$i]);
+      $quamul          =explode("_",$qmult[$i]);
       $quant_mult      = db_formatar($quamul[1], 'p');
-      $numero          = split("_",$dados[$i]);
-      $codigosmat      = split("_",$cods[$i]);
+      $numero          =explode("_",$dados[$i]);
+      $codigosmat      =explode("_",$cods[$i]);
       $codmatmater     = $codigosmat[1];
       $codele          = $numero[0];
       $numemp          = $numero[1];
       $codmatordemitem = $numero[2];
       $quanti          = db_formatar($numero[4], 'p');
-      $valitem         = split("_",$vlitem[$i]);
+      $valitem         =explode("_",$vlitem[$i]);
       $valorquant      = $valitem[2];
       $valor_item      = "";
 
@@ -224,26 +224,26 @@ if (isset($confirma)){
 
   $resultado = $clmatparam->sql_record($clmatparam->sql_query_file(null,"m90_liqentoc"));
   if ($clmatparam->numrows > 0){
-    db_fieldsmemory($resultado,0); 
+    db_fieldsmemory($resultado,0);
   }
   $gravanota = "true";
   if ($gravanota == "true" and $m51_tipo == 1 ) {
 
     foreach ($numempenho as $iNumEmp => $sValor) {
-      
+
       if ($sqlerro==false) {
 
-        $clempnota->e69_numero     = $e69_numero; 
-        $clempnota->e69_numemp     = $iNumEmp ; 
-        $clempnota->e69_id_usuario = $e69_id_usuario; 
-        $clempnota->e69_dtnota     = $datahj ; 
+        $clempnota->e69_numero     = $e69_numero;
+        $clempnota->e69_numemp     = $iNumEmp ;
+        $clempnota->e69_id_usuario = $e69_id_usuario;
+        $clempnota->e69_dtnota     = $datahj ;
         $clempnota->e69_dtrecebe   = $e69_dtrecebe ;
         $clempnota->e69_anousu     = db_getsession("DB_anousu");
         if (isset($e69_codnota) && $e69_codnota!=""){
           $clempnota->incluir($e69_codnota);
         }	else {
           $clempnota->incluir("");
-        } 
+        }
         $codnota=$clempnota->e69_codnota;
         $cdnota[$iNumEmp]=$codnota;
         $erro_msg = $clempnota->erro_msg;
@@ -251,7 +251,7 @@ if (isset($confirma)){
           //  	db_msgbox('2');
           $sqlerro=true;
           break;
-        } 
+        }
       }
 
       if ($sqlerro == false){
@@ -262,18 +262,18 @@ if (isset($confirma)){
           $sqlerro=true;
           break;
         }
-      } 
+      }
       reset($arr_eles);
-      for($y=0;$y<sizeof($arr_eles);$y++){ 
+      for($y=0;$y<sizeof($arr_eles);$y++){
         $codele_numemp = key($arr_eles);
-        $arr_emp       = split("_",$codele_numemp);
+        $arr_emp       =explode("_",$codele_numemp);
         $codelem       = $arr_emp[0];
         $numemp1       = $arr_emp[1];
         if ($numemp1==$iNumEmp){
           if ($sqlerro==false){
-            $clempnotaele->e70_valor  = $valornota[$codelem."_".$numemp1]; 
-            $clempnotaele->e70_vlranu = "0"; 
-            $clempnotaele->e70_vlrliq = "0"; 
+            $clempnotaele->e70_valor  = $valornota[$codelem."_".$numemp1];
+            $clempnotaele->e70_vlranu = "0";
+            $clempnotaele->e70_vlrliq = "0";
             $clempnotaele->incluir($codnota,$codelem);
             if ($clempnotaele->erro_status==0){
               $sqlerro=true;
@@ -292,8 +292,8 @@ if (isset($confirma)){
   for ($i=1; $i<sizeof($dados); $i++){
     if ($sqlerro==false){
 
-      $numero          = split("_",$dados[$i]);
-      $codigosmat      = split("_",$cods[$i]);
+      $numero          =explode("_",$dados[$i]);
+      $codigosmat      =explode("_",$cods[$i]);
       $codmatmater     = $codigosmat[1];
       $codele          = $numero[0];
       $numemp          = $numero[1];
@@ -301,13 +301,13 @@ if (isset($confirma)){
       $quanti          = $numero[4];
 
       //echo "reg: $i - quanti: $quanti - " . $vlitem[$i] . "<br>";
-      $valitem    = split("_",$vlitem[$i]);
+      $valitem    =explode("_",$vlitem[$i]);
       $valorquant = $valitem[2];
-      $quamul     = split("_",$qmult[$i]);
+      $quamul     =explode("_",$qmult[$i]);
       $quant_mult = db_formatar($quamul[1], 'p');
       $quanti_ant = db_formatar($quanti,'p');
       $quanti     = $quanti*$quant_mult;
-      $unid       = split("_",$unidad[$i]);
+      $unid       =explode("_",$unidad[$i]);
       $codi_unid  = $unid[1];
       $tam        = strlen($codi_unid);
       $tam        = $tam-1;
@@ -336,7 +336,7 @@ if (isset($confirma)){
           $result_newmater=$clmatordemitem->sql_record(
               $clmatordemitem->sql_query( $codmatordemitem, "pc01_codmater,pc01_descrmater,pc01_complmater") );
           db_fieldsmemory($result_newmater,0);
-          if ($sqlerro==false){   
+          if ($sqlerro==false){
             $result_resum=$clmatordemitem->sql_record( $clmatordemitem->sql_query_servico($codmatordemitem,"e62_descr") );
             if($clmatordemitem->numrows>0){
               db_fieldsmemory($result_resum,0);
@@ -350,7 +350,7 @@ if (isset($confirma)){
             $descr_newmater  = str_replace(chr(10), " ", $descr_newmater);
             $clmatmater->m60_ativo = 't';
             $clmatmater->m60_descr = substr($descr_newmater,0,80);
-            $clmatmater->m60_codmatunid =1; 
+            $clmatmater->m60_codmatunid =1;
             $clmatmater->m60_quantent = 1;
             $clmatmater->m60_codant = "";
             $clmatmater->incluir(null);
@@ -361,7 +361,7 @@ if (isset($confirma)){
             }
             $codmatmater=$clmatmater->m60_codmater;
           }
-          if ($sqlerro==false){    
+          if ($sqlerro==false){
             $clmatmaterunisai->incluir($codmatmater,1);
             if ($clmatmaterunisai->erro_status==0){
               $erro_msg=$clmatmaterunisai->erro_msg;
@@ -369,7 +369,7 @@ if (isset($confirma)){
               //db_msgbox('6');
             }
           }
-          if ($sqlerro==false){    
+          if ($sqlerro==false){
             $cltransmater->m63_codpcmater=$pc01_codmater;
             $cltransmater->m63_codmatmater=$codmatmater;
             $cltransmater->incluir();
@@ -395,7 +395,7 @@ if (isset($confirma)){
             //if (strpos(trim($valorquant),',')!=""){
             //  $valorquant=str_replace('.','',$valorquant);
             //  $valorquant=str_replace(',','.',$valorquant);
-            //} 
+            //}
             $clmatestoque->m70_valor       = "$valorquant";
             $clmatestoque->incluir(null);
             //echo "inserindo matestoque 1 - " . $clmatestoque->erro_status . "<br>";
@@ -406,7 +406,7 @@ if (isset($confirma)){
               break;
             }
           }else{
-            db_fieldsmemory($result,0); 
+            db_fieldsmemory($result,0);
             //if (strpos(trim($valorquant),',')!=""){
             //  $valorquant=str_replace('.','',$valorquant);
             //  $valorquant=str_replace(',','.',$valorquant);
@@ -422,7 +422,7 @@ if (isset($confirma)){
             //  $m70_valor=str_replace(',','.',$m70_valor);
             //}
             $clmatestoque->m70_valor = db_formatar("$m70_valor",'p');
-            $clmatestoque->alterar($m70_codigo); 
+            $clmatestoque->alterar($m70_codigo);
             if ($clmatestoque->erro_status==0){
               $sqlerro=true;
               //db_msgbox('9');
@@ -453,12 +453,12 @@ if (isset($confirma)){
             //db_msgbox('10');
           }
           $codigoestoitem = $clmatestoqueitem->m71_codlanc;
-        }	
+        }
 
         //        db_msgbox("Codestoqueitem: $codigoestoitem");
         //        die();
         if ($sqlerro==false){
-          if (isset($codigoestoitem)&&$codigoestoitem!=""){	
+          if (isset($codigoestoitem)&&$codigoestoitem!=""){
             $clmatestoqueinimei->m82_matestoqueini  = @$codini;
             $clmatestoqueinimei->m82_matestoqueitem = @$codigoestoitem;
             $clmatestoqueinimei->m82_quant          = "$quanti";
@@ -472,11 +472,11 @@ if (isset($confirma)){
           }
         }
 
-        if ($sqlerro==false){    
-          $clmatestoqueitemunid->m75_codmatestoqueitem = $codigoestoitem;	
-          $clmatestoqueitemunid->m75_codmatunid        = $codi_unid;	
-          $clmatestoqueitemunid->m75_quant             = "$quanti_ant";	
-          $clmatestoqueitemunid->m75_quantmult         = "$quant_mult";	
+        if ($sqlerro==false){
+          $clmatestoqueitemunid->m75_codmatestoqueitem = $codigoestoitem;
+          $clmatestoqueitemunid->m75_codmatunid        = $codi_unid;
+          $clmatestoqueitemunid->m75_quant             = "$quanti_ant";
+          $clmatestoqueitemunid->m75_quantmult         = "$quant_mult";
           $clmatestoqueitemunid->incluir($codigoestoitem);
           if ($clmatestoqueitemunid->erro_status==0){
             $sqlerro=true;
@@ -496,8 +496,8 @@ if (isset($confirma)){
         }
         //db_msgbox("Codmatestoqueitemoc: ".$clmatestoqueitemoc->m73_codmatestoqueitem . "-".$clmatestoqueitemoc->m73_codmatordemitem);
         //die();
-        if ($sqlerro==false){    
-          if ($gravanota == "true" and $m51_tipo == 1){ 
+        if ($sqlerro==false){
+          if ($gravanota == "true" and $m51_tipo == 1){
             $codigonota=$cdnota[$numemp];
             $clmatestoqueitemnota->incluir($codigoestoitem,$codigonota);
             if ($clmatestoqueitemnota->erro_status==0){
@@ -560,7 +560,7 @@ if (isset($confirma)){
                 //db_msgbox('14');
               }
             }else{
-              db_fieldsmemory($result,0); 
+              db_fieldsmemory($result,0);
               $m70_quant = $m70_quant + $quanti;
               //if (strpos(trim($valorquant),',')!=""){
               //  $valorquant=str_replace('.','',$valorquant);
@@ -572,7 +572,7 @@ if (isset($confirma)){
               $clmatestoque->m70_coddepto    = $m70_coddepto;
               $clmatestoque->m70_quant       = "$m70_quant" ;
               $clmatestoque->m70_valor       = "$m70_valor";
-              $clmatestoque->alterar($m70_codigo); 
+              $clmatestoque->alterar($m70_codigo);
               if ($clmatestoque->erro_status==0){
                 $sqlerro=true;
                 //db_msgbox('15');
@@ -581,7 +581,7 @@ if (isset($confirma)){
               }
             }
             $codestoque=$clmatestoque->m70_codigo;
-            if ($sqlerro==false){    
+            if ($sqlerro==false){
               $clmatestoqueitem->m71_codmatestoque = $codestoque;
               $clmatestoqueitem->m71_data          = $e69_dtrecebe;
               $clmatestoqueitem->m71_quant         = "$quanti";
@@ -601,11 +601,11 @@ if (isset($confirma)){
               }
               $codigoestoitem = $clmatestoqueitem->m71_codlanc;
             }
-            if ($sqlerro==false){    
-              $clmatestoqueitemunid->m75_codmatestoqueitem = $codigoestoitem;	
-              $clmatestoqueitemunid->m75_codmatunid        = $m54_codmatunid;	
-              $clmatestoqueitemunid->m75_quant             = "$m54_quantidade";	
-              $clmatestoqueitemunid->m75_quantmult         = "$m54_quantmulti";	
+            if ($sqlerro==false){
+              $clmatestoqueitemunid->m75_codmatestoqueitem = $codigoestoitem;
+              $clmatestoqueitemunid->m75_codmatunid        = $m54_codmatunid;
+              $clmatestoqueitemunid->m75_quant             = "$m54_quantidade";
+              $clmatestoqueitemunid->m75_quantmult         = "$m54_quantmulti";
               $clmatestoqueitemunid->incluir($codigoestoitem);
               if ($clmatestoqueitemunid->erro_status==0){
                 $sqlerro=true;
@@ -613,7 +613,7 @@ if (isset($confirma)){
                 // db_msgbox('17');
               }
             }
-            if ($sqlerro==false){    
+            if ($sqlerro==false){
               $clmatestoqueitemoc->incluir($codigoestoitem,$codmatordemitem);
               if ($clmatestoqueitemoc->erro_status==0){
                 $erro_msg=$clmatestoqueitemoc->erro_msg;
@@ -621,7 +621,7 @@ if (isset($confirma)){
                 //db_msgbox('18');
               }
             }
-            if ($sqlerro==false){    
+            if ($sqlerro==false){
               if ($gravanota == "true"){
                 $codigonota=$cdnota[$numemp];
                 $clmatestoqueitemnota->incluir($codigoestoitem,$codigonota);
@@ -633,7 +633,7 @@ if (isset($confirma)){
               }
             }
             if ($sqlerro==false){
-              if (isset($codigoestoitem)&&$codigoestoitem!=""){	
+              if (isset($codigoestoitem)&&$codigoestoitem!=""){
                 $clmatestoqueinimei->m82_matestoqueini=@$codini;
                 $clmatestoqueinimei->m82_matestoqueitem=@$codigoestoitem;
                 $clmatestoqueinimei->m82_quant="$quanti";
@@ -677,7 +677,7 @@ if (isset($confirma)){
               //db_msgbox('20');
             }
           }else{
-            db_fieldsmemory($result,0); 
+            db_fieldsmemory($result,0);
             $m70_quant = $m70_quant + $quanti;
             //if (strpos(trim($valorquant),',')!=""){
             //  $valorquant=str_replace('.','',$valorquant);
@@ -689,7 +689,7 @@ if (isset($confirma)){
             $clmatestoque->m70_coddepto    = $m70_coddepto;
             $clmatestoque->m70_quant       = "$m70_quant" ;
             $clmatestoque->m70_valor       = "$m70_valor";
-            $clmatestoque->alterar($m70_codigo); 
+            $clmatestoque->alterar($m70_codigo);
             if ($clmatestoque->erro_status==0){
               $sqlerro=true;
               $erro_msg=$clmatestoque->erro_msg;
@@ -698,7 +698,7 @@ if (isset($confirma)){
             }
           }
           $codestoque=$clmatestoque->m70_codigo;
-          if ($sqlerro==false){    
+          if ($sqlerro==false){
             $clmatestoqueitem->m71_codmatestoque = $codestoque;
             $clmatestoqueitem->m71_data          = $e69_dtrecebe;
             $clmatestoqueitem->m71_quant         = "$quanti";
@@ -713,12 +713,12 @@ if (isset($confirma)){
               //db_msgbox('22');
             }
             $codigoestoitem = $clmatestoqueitem->m71_codlanc;
-          }  
-          if ($sqlerro==false){    
-            $clmatestoqueitemunid->m75_codmatestoqueitem=$codigoestoitem;	
-            $clmatestoqueitemunid->m75_codmatunid=$m54_codmatunid;	
-            $clmatestoqueitemunid->m75_quant="$m54_quantidade";	
-            $clmatestoqueitemunid->m75_quantmult="$m54_quantmulti";	
+          }
+          if ($sqlerro==false){
+            $clmatestoqueitemunid->m75_codmatestoqueitem=$codigoestoitem;
+            $clmatestoqueitemunid->m75_codmatunid=$m54_codmatunid;
+            $clmatestoqueitemunid->m75_quant="$m54_quantidade";
+            $clmatestoqueitemunid->m75_quantmult="$m54_quantmulti";
             $clmatestoqueitemunid->incluir($codigoestoitem);
             if ($clmatestoqueitemunid->erro_status==0){
               $sqlerro=true;
@@ -726,7 +726,7 @@ if (isset($confirma)){
               //db_msgbox('23');
             }
           }
-          if ($sqlerro==false){    
+          if ($sqlerro==false){
             $clmatestoqueitemoc->incluir($codigoestoitem,$codmatordemitem);
             if ($clmatestoqueitemoc->erro_status==0){
               $sqlerro=true;
@@ -734,7 +734,7 @@ if (isset($confirma)){
               //  db_msgbox('24');
             }
           }
-          if ($sqlerro==false){    
+          if ($sqlerro==false){
             if ($gravanota == "true"){
               $codigonota=$cdnota[$numemp];
               $clmatestoqueitemnota->incluir($codigoestoitem,$codigonota);
@@ -747,7 +747,7 @@ if (isset($confirma)){
           }
           //echo "teste - $codigoestoitem<br>";
           if ($sqlerro==false){
-            if (isset($codigoestoitem)&&$codigoestoitem!=""){	
+            if (isset($codigoestoitem)&&$codigoestoitem!=""){
               $clmatestoqueinimei->m82_matestoqueini=@$codini;
               $clmatestoqueinimei->m82_matestoqueitem=@$codigoestoitem;
               $clmatestoqueinimei->m82_quant="$quanti";
@@ -768,7 +768,7 @@ if (isset($confirma)){
   if ($m51_tipo == 1 and $gravanota == true){
 
     require_once(modification("classes/db_empnotaitem_classe.php"));
-    for ($iNotas = 0; $iNotas < count($cdnota); $iNotas++ ) { 
+    for ($iNotas = 0; $iNotas < count($cdnota); $iNotas++ ) {
 
       $iCodNota      = current($cdnota);
       $clempnotaitem = new cl_empnotaitem;
@@ -823,7 +823,7 @@ if (isset($confirma)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-<tr> 
+<tr>
 <td width="360" height="18">&nbsp;</td>
 <td width="263">&nbsp;</td>
 <td width="25">&nbsp;</td>
@@ -831,10 +831,10 @@ if (isset($confirma)){
 </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
+<tr>
 <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?
+<?php
 include(modification("forms/db_frmentraordcomnota.php"));
 ?>
 </center>
@@ -842,10 +842,10 @@ include(modification("forms/db_frmentraordcomnota.php"));
 </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
-<?
+<?php
 if (isset($confirma)){
   if (strlen($erro_msg)>0){
     db_msgbox($erro_msg);
@@ -854,7 +854,7 @@ if (isset($confirma)){
   if($clmatestoque->erro_campo!=""){
     echo "<script> document.form1.".$clempnota->erro_campo.".style.backgroundColor='#99A9AE';</script>";
     echo "<script> document.form1.".$clempnota->erro_campo.".focus();</script>";
-  }else{ 
+  }else{
     if ($gravanota=="false"){
       $erro_msg = $clmatestoqueinimei->erro_msg;
       db_msgbox($erro_msg);

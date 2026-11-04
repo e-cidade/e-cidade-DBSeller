@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,22 +54,22 @@ $clrotulo->label ( "s118_i_codigo" );
 			<!-- Veiculo -->
 			<tr>
 				<td id="tipo_veiculo1"  nowrap title="<?=@$Ts121_i_veiculo?>">
-					<?
+					<?php
 					db_ancora(@$Ls121_i_veiculo,"js_pesquisas121_i_veiculo(true);",$db_opcao);
 					?>
 				</td>
 				<td id="tipo_veiculo2">
-					<?
+					<?php
 					db_input('s124_i_codigo',10,@$Is124_i_codigo,true,'hidden',$db_opcao);
 					db_input('s121_i_veiculo',10,@$Is121_i_veiculo,true,'text',$db_opcao," onchange='js_pesquisas121_i_veiculo(false);'")
 					?>
-					<?
+					<?php
 					db_input('ve22_descr',30,@$Ive22_descr,true,'text',3,'')
 					?>
 				</td>
 				<td>
 					<?=@$Lve01_quantcapacidad?>
-					<?
+					<?php
 					db_input('ve01_quantcapacidad',10,@$Ive01_quantcapacidad,true,'text',3,'')
 					?>
 				</td>					
@@ -81,11 +81,11 @@ $clrotulo->label ( "s118_i_codigo" );
 					<?=@$Ls124_d_saida?>
 				</td>
 				<td colspan="2">
-					<?
+					<?php
 					db_inputdata ( 's124_d_saida', @$s124_d_saida_dia, @$s124_d_saida_mes, @$s124_d_saida_ano, true, 'text', $db_opcao, "onChange=js_reloadtransporte();", "", "",  "parent.js_reloadtransporte();" );
 					?>
 					<?=@$Ls124_c_hora?>
-					<?
+					<?php
 					db_input ( 's124_c_hora', 10, $Is124_c_hora, true, 'text', $db_opcao );
 					?>
 				</td>
@@ -102,12 +102,12 @@ $clrotulo->label ( "s118_i_codigo" );
 						<table>
 							<tr>
 								<td nowrap title="<?=@$Ts124_i_numcgs?>">
-										<?
+										<?php
 										db_ancora ( @$Ls124_i_numcgs, "js_pesquisas124_i_numcgs(true);", $db_opcao );
 										?>
 									</td>
 								<td colspan="3">
-										<?
+										<?php
 										db_input ( 's118_i_codigo', 10, $Is118_i_codigo, true, 'hidden', 3 );
 										db_input ( 's124_i_numcgs', 10, $Is124_i_numcgs, true, 'text', $db_opcao, "onChange='js_pesquisas124_i_numcgs(false);'" );
 										db_input ( 'z01_v_nome', 48, $Iz01_v_nome, true, 'text', 3 );
@@ -119,11 +119,11 @@ $clrotulo->label ( "s118_i_codigo" );
 										<?=@$Lz01_v_ident?>
 								</td>
 								<td>
-										<?
+										<?php
 										db_input ( 'z01_v_ident', 15, $Iz01_v_ident, true, 'text', 3, "" );
 										?>
 										<?=@$Lz01_v_cgccpf?>
-										<?
+										<?php
 										db_input ( 'z01_v_cgccpf', 15, $Iz01_v_cgccpf, true, 'text', 3, "" );
 										?>
 								</td>
@@ -155,7 +155,7 @@ $clrotulo->label ( "s118_i_codigo" );
 			</tr>
 			<tr>
 				<td colspan="3" >
-						<?
+						<?php
 						$chavepri = array ("s124_i_codigo" => @$s124_i_codigo );
 						
 						$cliframe_alterar_excluir->chavepri = $chavepri;

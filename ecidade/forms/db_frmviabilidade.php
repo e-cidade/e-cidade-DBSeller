@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $clrotulo->label("z01_telef");
        <?=@$Lq29_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_codigo',10,$Iq29_codigo,true,'text',3,"")
 ?>
     <td>
@@ -58,22 +58,22 @@ db_input('q29_codigo',10,$Iq29_codigo,true,'text',3,"")
        <?=@$Lq29_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q29_data',@$q29_data_dia,@$q29_data_mes,@$q29_data_ano,true,'text',$db_opcao,"")
 ?>
     <td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq29_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lq29_numcgm,"js_pesquisaq29_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_numcgm',6,$Iq29_numcgm,true,'text',$db_opcao," onchange='js_pesquisaq29_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     <td>
@@ -83,7 +83,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lz01_cgccpf?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3,'')
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3,'')
        <?=@$Lz01_ender?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_ender',40,$Iz01_ender,true,'text',3,'')
 ?>
     </td>
@@ -106,7 +106,7 @@ db_input('z01_ender',40,$Iz01_ender,true,'text',3,'')
        <?=@$Lz01_numero?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_numero',8,$Iz01_numero,true,'text',3,'')
 ?>
     </td>
@@ -118,7 +118,7 @@ db_input('z01_numero',8,$Iz01_numero,true,'text',3,'')
        <?=@$Lz01_compl?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_compl',40,$Iz01_compl,true,'text',3,'')
 ?>
     </td>
@@ -130,7 +130,7 @@ db_input('z01_compl',40,$Iz01_compl,true,'text',3,'')
        <?=@$Lz01_bairro?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_bairro',40,$Iz01_bairro,true,'text',3,'')
 ?>
     </td>
@@ -142,7 +142,7 @@ db_input('z01_bairro',40,$Iz01_bairro,true,'text',3,'')
        <?=@$Lz01_telef?>
     </td>
     <td>
-<?
+<?php
 db_input('z01_telef',12,$Iz01_telef,true,'text',3,'')
 ?>
     </td>
@@ -150,15 +150,15 @@ db_input('z01_telef',12,$Iz01_telef,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq29_lograd?>">
-       <?
+       <?php
        db_ancora(@$Lq29_lograd,"js_pesquisaq29_lograd(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_lograd',6,$Iq29_lograd,true,'text',$db_opcao," onchange='js_pesquisaq29_lograd(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     <td>
@@ -168,7 +168,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lq29_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_numero',5,$Iq29_numero,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -178,52 +178,52 @@ db_input('q29_numero',5,$Iq29_numero,true,'text',$db_opcao,"")
        <?=@$Lq29_complem?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_complem',20,$Iq29_complem,true,'text',$db_opcao,"")
 ?>
     <td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq29_bairro?>">
-       <?
+       <?php
        db_ancora(@$Lq29_bairro,"js_pesquisaq29_bairro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_bairro',6,$Iq29_bairro,true,'text',$db_opcao," onchange='js_pesquisaq29_bairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     <td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq29_ativ?>">
-       <?
+       <?php
        db_ancora(@$Lq29_ativ,"js_pesquisaq29_ativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_ativ',6,$Iq29_ativ,true,'text',$db_opcao," onchange='js_pesquisaq29_ativ(false);'")
 ?>
-       <?
+       <?php
 db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
        ?>
     <td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq29_escrito?>">
-    <?
+    <?php
        db_ancora(@$Lq29_escrito,"js_pesquisaq29_escrito(true);",$db_opcao);
     ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q29_escrito',6,$Iq29_escrito,true,'text',$db_opcao,"")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'','z01_nomeescrito')
        ?>
     <td>
@@ -233,7 +233,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'','z01_nomeescrito')
        <?=@$Lq29_tipo?>
     </td>
    <td>
-<?
+<?php
 $x = array('I'=>'Inclusão','A'=>'Alteração');
 db_select('q29_tipo',$x,true,2);
 ?>
@@ -371,7 +371,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

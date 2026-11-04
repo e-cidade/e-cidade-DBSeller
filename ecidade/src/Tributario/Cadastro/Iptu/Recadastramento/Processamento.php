@@ -1,4 +1,5 @@
 <?php
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,7 +35,6 @@ use ECidade\Tributario\Cadastro\Iptu\Recadastramento\Entity\HistoricoOcorrencia;
 use ECidade\Tributario\Cadastro\Iptu\Recadastramento\Repository\HistoricoOcorrenciaRepository;
 use ECidade\Tributario\Cadastro\Iptu\Recadastramento\Entity\HistoricoOcorrenciaMatricula;
 use ECidade\Tributario\Cadastro\Iptu\Recadastramento\Repository\HistoricoOcorrenciaMatriculaRepository;
-
 
 class Processamento
 {
@@ -127,7 +127,7 @@ class Processamento
      * @param [type] $nomeImportacao [description]
      * @param bool $importacaoManual
      */
-    function __construct($nomeImportacao, $importacaoManual = true)
+    public function __construct($nomeImportacao, $importacaoManual = true)
     {
         $this->nomeImportacao = $nomeImportacao;
         $this->importacaoManual = $importacaoManual;
@@ -216,7 +216,6 @@ class Processamento
         if (!$this->processarEstrutura()) {
             return;
         }
-
     }
 
     /**
@@ -232,7 +231,8 @@ class Processamento
         /**
          * verificar se existe o esquema o nome informado
          */
-        $sSqlVerificaSchema = "select j142_sequencial from atualizacaoiptuschema where j142_schema = '{$this->nomeImportacao}'";
+        $sSqlVerificaSchema = "select j142_sequencial from atualizacaoiptuschema 
+            where j142_schema = '{$this->nomeImportacao}'";
         $rsSchema = db_query($sSqlVerificaSchema);
 
         if (!$rsSchema) {
@@ -241,14 +241,17 @@ class Processamento
 
 
         if (pg_num_rows($rsSchema) > 0) {
-
             $oDaoAtualizacaoiptuschemaarquivo = new \cl_atualizacaoiptuschemaarquivo();
             $this->iCodigoSchema = \db_utils::fieldsMemory($rsSchema, 0)->j142_sequencial;
 
             foreach ($this->aArquivosImportados as $sArquivo) {
-
                 $sWhere = " j143_arquivo = '{$sArquivo}' and j143_atualizacaoiptuschema = {$this->iCodigoSchema} ";
-                $sSqlAtualizacao = $oDaoAtualizacaoiptuschemaarquivo->sql_query_file(null, 'j143_sequencial', null, $sWhere);
+                $sSqlAtualizacao = $oDaoAtualizacaoiptuschemaarquivo->sql_query_file(
+                    null,
+                    'j143_sequencial',
+                    null,
+                    $sWhere
+                );
                 $rsAtualizacao = db_query($sSqlAtualizacao);
 
                 if (!$rsAtualizacao) {
@@ -256,7 +259,6 @@ class Processamento
                 }
 
                 if (pg_num_rows($rsAtualizacao) > 0) {
-
                     $iCodigoSchemaArquivo = \db_utils::fieldsMemory($rsAtualizacao, 0)->j143_sequencial;
                     $oDaoAtualizacaoiptuschemaarquivo->j143_sequencial = $iCodigoSchemaArquivo;
                     $oDaoAtualizacaoiptuschemaarquivo->j143_dataimportacao = $this->oDataArquivo->getDate();
@@ -280,7 +282,6 @@ class Processamento
                 if ($oDaoAtualizacaoiptuschemaarquivo->erro_status == '0') {
                     throw new \DBException("Erro ao cadastrar nome do arquivo.");
                 }
-
             }
             return true;
         }
@@ -307,7 +308,6 @@ class Processamento
         $oDaoAtualizacaoiptuschemaarquivo = new \cl_atualizacaoiptuschemaarquivo();
 
         foreach ($this->aArquivosImportados as $sArquivo) {
-
             $oDaoAtualizacaoiptuschemaarquivo->j143_sequencial = null;
             $oDaoAtualizacaoiptuschemaarquivo->j143_arquivo = $sArquivo;
             $oDaoAtualizacaoiptuschemaarquivo->j143_dataimportacao = date("Y-m-d");
@@ -331,8 +331,8 @@ class Processamento
     {
 
         foreach ($aTabelasParaDuplicar as $tabela) {
-
-            $sSqlCriaTabela = " CREATE TABLE {$this->nomeImportacao}.{$tabela->nome} AS SELECT * from {$tabela->schema}.{$tabela->nome} ";
+            $sSqlCriaTabela = " CREATE TABLE {$this->nomeImportacao}.{$tabela->nome} AS 
+                SELECT * from {$tabela->schema}.{$tabela->nome} ";
             if (!$tabela->incluir_dados) {
                 $sSqlCriaTabela .= " limit 0";
             }
@@ -344,14 +344,15 @@ class Processamento
             }
 
             if ($tabela->sequence != '') {
-
                 $sSqlultimoValorSequence = "select last_value + 1 as valor from {$tabela->schema}.{$tabela->sequence}";
                 $rsULtimoValorSequence = db_query($sSqlultimoValorSequence);
                 if (!$rsULtimoValorSequence) {
-                    throw new \Exception("Erro ao processar valores da sequence da tabela {$tabela->schema}.{$tabela->nome} ");
+                    throw new \Exception("Erro ao processar valores da sequence da tabela 
+                        {$tabela->schema}.{$tabela->nome} ");
                 }
                 $iValorSequence = \db_utils::fieldsMemory($rsULtimoValorSequence, 0)->valor;
-                $sSqlCriarSequence = "create sequence {$this->nomeImportacao}.{$tabela->sequence} START {$iValorSequence}";
+                $sSqlCriarSequence = "create sequence {$this->nomeImportacao}.{$tabela->sequence} 
+                    START {$iValorSequence}";
                 $rsCriarSequence = db_query($sSqlCriarSequence);
                 if (!$rsCriarSequence) {
                     throw new \Exception("Erro ao processar sequence da tabela {$tabela->schema}.{$tabela->nome} ");
@@ -359,12 +360,12 @@ class Processamento
             }
 
             if (isset($tabela->index) && is_array($tabela->index)) {
-
                 foreach ($tabela->index as $sCampo) {
-
-                    $rs = db_query("create index {$this->nomeImportacao}_{$tabela->nome}_{$sCampo} on {$this->nomeImportacao}.{$tabela->nome}({$sCampo})");
+                    $rs = db_query("create index {$this->nomeImportacao}_{$tabela->nome}_{$sCampo} 
+                        on {$this->nomeImportacao}.{$tabela->nome}({$sCampo})");
                     if (!$rs) {
-                        throw new \Exception("N?o foi poss?vel criar index no schema '{$this->nomeImportacao}' na tabela '{$tabela->nome}' para o campo '{$sCampo}'.");
+                        throw new \Exception("N?o foi poss?vel criar index no schema 
+                            '{$this->nomeImportacao}' na tabela '{$tabela->nome}' para o campo '{$sCampo}'.");
                     }
                 }
             }
@@ -398,28 +399,28 @@ class Processamento
         $this->aMatriculasImportadas = $aMatriculasImportadas;
 
         db_query("set search_path=public,{$this->nomeImportacao}");
-
+        db_query("select fc_putsession('DB_Gerafinanc','0')");
         foreach ($this->aMatriculasImportadas as $oMatricula) {
-
-            $sSqlCalculo = "select fc_calculoiptu({$oMatricula->iMatricula}::integer,{$iAno}::integer,true::boolean,false::boolean,false::boolean,false::boolean,false::boolean,array['0','0','0'])";
+            $sSqlCalculo = "select fc_calculoiptu({$oMatricula->iMatricula}::integer,{$iAno}::integer,
+                true::boolean,false::boolean,false::boolean,false::boolean,false::boolean,array['0','0','0'])";
             $rsCalculo = db_query($sSqlCalculo);
 
             if (!$rsCalculo) {
                 $pg_last_error = pg_last_error();
-                $excecao = new \DBException("Erro ao executar o c?lculo de IPTU da matr?cula {$oMatricula->iMatricula}. {$pg_last_error}");
+                $excecao = new \DBException("Erro ao executar o c?lculo de IPTU da matr?cula 
+                    {$oMatricula->iMatricula}. {$pg_last_error}");
                 Situacao::lancarExcecao($excecao, $this->importacaoManual);
             }
 
-            $retornoCalculo = pg_result($rsCalculo,0,0);
+            $retornoCalculo = pg_fetch_result($rsCalculo, 0, 0);
             preg_match('/[0-9]*/', trim($retornoCalculo), $aTipoLogCalc);
             $retorno        = $aTipoLogCalc[0];
 
-            if ($retorno != '001'){
-
-                $excecao = new \DBException("Erro ao executar o cálculo de IPTU da matrícula {$oMatricula->iMatricula}. {$retorno} .{$retornoCalculo}");
+            if ($retorno != '001') {
+                $excecao = new \DBException("Erro ao executar o cálculo de IPTU da matrícula
+                    {$oMatricula->iMatricula}. {$retorno} .{$retornoCalculo}");
                 Situacao::lancarExcecao($excecao, $this->importacaoManual);
             }
-
         }
 
         db_query("select fc_set_pg_search_path();");
@@ -435,15 +436,20 @@ class Processamento
 
 
         foreach ($this->aMatriculasImportadas as $index => $oMatricula) {
-
             $oDaoAtualizacaoiptuschemamatricula->j144_sequencial = null;
             $oDaoAtualizacaoiptuschemamatricula->j144_matricula = $oMatricula->iMatricula;
             $oDaoAtualizacaoiptuschemamatricula->j144_atualizacaoiptuschema = $this->iCodigoSchema;
             $oDaoAtualizacaoiptuschemamatricula->j144_situacao = $oMatricula->iStatus;
             $oDaoAtualizacaoiptuschemamatricula->j144_matriculanova = ($oMatricula->iStatus == 1 ? 'true' : 'false');
 
-            $sWhere = "j144_matricula = {$oMatricula->iMatricula} and  j144_atualizacaoiptuschema = {$this->iCodigoSchema} ";
-            $sSqlAtualizacaoMatricula = $oDaoAtualizacaoiptuschemamatricula->sql_query_file(null, 'j144_sequencial', null, $sWhere);
+            $sWhere = "j144_matricula = {$oMatricula->iMatricula} 
+                and  j144_atualizacaoiptuschema = {$this->iCodigoSchema} ";
+            $sSqlAtualizacaoMatricula = $oDaoAtualizacaoiptuschemamatricula->sql_query_file(
+                null,
+                'j144_sequencial',
+                null,
+                $sWhere
+            );
             $rsAtualizacaoMatricula = db_query($sSqlAtualizacaoMatricula);
 
             if (!$rsAtualizacaoMatricula) {
@@ -487,17 +493,19 @@ class Processamento
          * Verificar se a matricula tem outros lotes, e um deles ? novo.
          * Caso verdadeiro, devemos recalcular iiptu de tddas as matriculas
          */
-        $lMatriculaNova = $this->getSituacaoMatricula($iCodigoMatricula,self::MATRICULA_NOVA);
+        $lMatriculaNova = $this->getSituacaoMatricula($iCodigoMatricula, self::MATRICULA_NOVA);
 
         if ($lMatriculaNova) {
-
             db_query("set search_path=public,{$this->nomeImportacao}");
 
             $oDaoIptuBase = new \cl_iptubase();
             $oMatricula = $oDaoIptuBase->findBydId($iCodigoMatricula);
 
             $oDaoAtualizacaoIptuMatriculas = new \cl_atualizacaoiptuschemamatricula();
-            $aMatriculasNoLote = $oDaoAtualizacaoIptuMatriculas->matriculaNoLoteDaImportacao($this->nomeImportacao, $oMatricula->j01_idbql);
+            $aMatriculasNoLote = $oDaoAtualizacaoIptuMatriculas->matriculaNoLoteDaImportacao(
+                $this->nomeImportacao,
+                $oMatricula->j01_idbql
+            );
             $aMatriculas = array_map(function ($oMatriculasNoLote) {
 
                 $oMatricula = new \stdClass();
@@ -541,7 +549,7 @@ class Processamento
             throw new \DBException("Erro ao verificar se matricula é uma nova matricula: " . $iCodigoMatricula);
         }
 
-        return  (pg_num_rows($rsNova) == 0 ? false : true);
+        return (pg_num_rows($rsNova) == 0 ? false : true);
     }
 
     /**
@@ -566,7 +574,6 @@ class Processamento
         $lote->atualizar();
 
         if (!empty($oConstrucao)) {
-
             $existeMatriculaSchema = $this->existeMatriculaSchema($iCodigoMatricula);
 
             if ($lMatriculaNova && $existeMatriculaSchema) {
@@ -603,14 +610,21 @@ class Processamento
     public function atualizaSituacaoMatricula($iCodigoMatricula, $iSituacao, $lMatriculaProcessada = false)
     {
         $oDaoAtualizacaoiptuschemamatricula = new \cl_atualizacaoiptuschemamatricula();
-        $sWhere = "j144_matricula = {$iCodigoMatricula} and  j144_atualizacaoiptuschema = {$this->iCodigoSchema}";
-        $sSqlDadoMatricula = $oDaoAtualizacaoiptuschemamatricula->sql_query_file(null, 'j144_sequencial, j144_matriculanova', null, $sWhere);
+        $sWhere = "j144_matricula = {$iCodigoMatricula} 
+            and  j144_atualizacaoiptuschema = {$this->iCodigoSchema}";
+        $sSqlDadoMatricula = $oDaoAtualizacaoiptuschemamatricula->sql_query_file(
+            null,
+            'j144_sequencial, j144_matriculanova',
+            null,
+            $sWhere
+        );
 
         $rsDadosMatricula = db_query($sSqlDadoMatricula);
 
         if (!$rsDadosMatricula && pg_num_rows($rsDadosMatricula) == 0) {
-            throw  new \DBException("Não foi possível verificar registros para recadstramento da matrícula {$iCodigoMatricula}.
-             Verifique se foi realizada uma importação de arquivo de recadastramento para matrícula.");
+            throw  new \DBException("Não foi possível verificar registros para 
+                recadstramento da matrícula {$iCodigoMatricula}.
+                Verifique se foi realizada uma importação de arquivo de recadastramento para matrícula.");
         }
 
         if ($lMatriculaProcessada) {
@@ -624,7 +638,8 @@ class Processamento
         $oDaoAtualizacaoiptuschemamatricula->j144_situacao = $iSituacao;
         $oDaoAtualizacaoiptuschemamatricula->j144_sequencial = $oDados->j144_sequencial;
         $oDaoAtualizacaoiptuschemamatricula->j144_atualizacaoiptuschema = $this->iCodigoSchema;
-        $oDaoAtualizacaoiptuschemamatricula->j144_matriculanova = ($oDados->j144_matriculanova == 't' ? 'true': 'false');
+        $oDaoAtualizacaoiptuschemamatricula
+            ->j144_matriculanova = ($oDados->j144_matriculanova == 't' ? 'true' : 'false');
         $oDaoAtualizacaoiptuschemamatricula->alterar($oDados->j144_sequencial);
 
         $oDaoAtualizacaoiptuschemamatriculamotivorejeicao = new \cl_atualizacaoiptuschemamotivorejeicao();
@@ -636,29 +651,29 @@ class Processamento
         $sSituacao = 'Atualizar';
 
         if ($iSituacao == 3) {
-
             $sSituacao = 'Rejeitar';
 
             if (!empty($this->sMotivoRejeicao)) {
-
-                $oDaoAtualizacaoiptuschemamatriculamotivorejeicao->j146_atualizacaoiptuschemamatricula = $oDados->j144_sequencial;
+                $oDaoAtualizacaoiptuschemamatriculamotivorejeicao
+                    ->j146_atualizacaoiptuschemamatricula = $oDados->j144_sequencial;
                 $oDaoAtualizacaoiptuschemamatriculamotivorejeicao->j146_motivo_rejeicao = $this->sMotivoRejeicao;
                 $oDaoAtualizacaoiptuschemamatriculamotivorejeicao->j146_data = date('Y-m-d', $_SESSION["DB_datausu"]);
                 $oDaoAtualizacaoiptuschemamatriculamotivorejeicao->incluir(null);
 
                 if ($oDaoAtualizacaoiptuschemamatriculamotivorejeicao->erro_status == 0) {
-                    throw new \DBException("Erro ao {$sSituacao} os dados da matrícula.\n{$oDaoAtualizacaoiptuschemamatricula->erro_msg}");
+                    throw new \DBException("Erro ao {$sSituacao} os dados da matrícula.
+                        \n{$oDaoAtualizacaoiptuschemamatricula->erro_msg}");
                 }
-
             }
         }
 
         if ($oDaoAtualizacaoiptuschemamatricula->erro_status == 0) {
-            throw new \DBException("Erro ao {$sSituacao} os dados da matrícula.\n{$oDaoAtualizacaoiptuschemamatricula->erro_msg}");
+            throw new \DBException("Erro ao {$sSituacao} os dados da matrícula.
+                \n{$oDaoAtualizacaoiptuschemamatricula->erro_msg}");
         }
     }
 
-    private  function atualizaSituacaoSchema($iNovoCodigoMatricula, $iCodigoMatricula)
+    private function atualizaSituacaoSchema($iNovoCodigoMatricula, $iCodigoMatricula)
     {
 
         $daoCivitasComplementar = new \cl_civitasinfoscomplementar();
@@ -673,12 +688,12 @@ class Processamento
         }
 
         $sWhere    = " WHERE matricula = {$iCodigoMatricula}";
-        $rsUpdated = db_query("UPDATE  civitasinfoscomplementar SET  nova_matricula = {$iNovoCodigoMatricula}  {$sWhere}");
+        $rsUpdated = db_query("UPDATE  civitasinfoscomplementar 
+            SET  nova_matricula = {$iNovoCodigoMatricula}  {$sWhere}");
 
         if (!$rsUpdated) {
             throw  new \DBException("Não foi possível atualizar o vinculo nova matriucla com temporaria.");
         }
-
     }
 
     /**
@@ -690,7 +705,9 @@ class Processamento
     {
 
         $oDaoAtualizacaoMatricula = new \cl_atualizacaoiptuschemamatricula();
-        $sWhereMatricula = "j144_matricula = {$codigoMatricula} and j144_atualizacaoiptuschema = {$this->iCodigoSchema} and j144_situacao = ". $iSituacao;
+        $sWhereMatricula = "j144_matricula = {$codigoMatricula} 
+            and j144_atualizacaoiptuschema = {$this->iCodigoSchema} 
+            and j144_situacao = " . $iSituacao;
         $sSqlMatricula = $oDaoAtualizacaoMatricula->sql_query_file(null, 'j144_sequencial', null, $sWhereMatricula);
         $rsMatriculaNova = db_query($sSqlMatricula);
 
@@ -730,7 +747,7 @@ class Processamento
      * @throws \DBException
      * @throws \Exception
      */
-    public function  atualizaMatriculaRejeitada($iMatricula ,$inst, $usuario)
+    public function atualizaMatriculaRejeitada($iMatricula, $inst, $usuario)
     {
 
         $iNovaMatriucla = $this->isMatriculaNovaIptuBase($iMatricula);
@@ -765,5 +782,4 @@ class Processamento
 
         $historicoMatRepository->persist($historicoMat);
     }
-
 }

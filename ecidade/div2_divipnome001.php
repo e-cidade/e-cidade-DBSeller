@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -105,7 +105,7 @@ $clrotulo->label('v01_proced');
     </tr>
     <tr>
         <td><!-- iframe --><center>
-		  <?
+		  <?php
 		        if (isset($botao)){
 		        $vir = "";
 		        $listas = "";
@@ -183,15 +183,15 @@ $clrotulo->label('v01_proced');
   </fieldset>
   <input type="submit" name="botao"  value="Escolher Anos" onClick='js_seleciona();'>
   <input type="hidden" name="botao1"  value="<?=@$lista?>">
-  <? if ((isset($botao)) && (pg_numrows($result3)!=0)) {
+  <?php if ((isset($botao)) && (pg_numrows($result3)!=0)) {
   ?>
   <input type="button" value="Emitir Relatório" onclick='js_gera();' >
   <?}else{?>
   <input type="button" value="Emitir Relatório" disabled >
-  <?}?>
+  <?php }?>
 </form>
  <!---  menu -->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- -->
 <script>
 variavel = 1;

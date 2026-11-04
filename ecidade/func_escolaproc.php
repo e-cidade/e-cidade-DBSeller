@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
+      <?php db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,14 +62,14 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
+      <?php db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
      </td>
     </tr>
     <tr>
      <td colspan="2" align="center">
-      <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
-      <input name="limpar" type="reset" id="limpar" value="Limpar" >
-      <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_escolaproc.hide();">
+         <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
+         <input type="button" onclick="limparCampos()" value="Limpar">
+         <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_escolaproc.hide();">
      </td>
     </tr>
     </form>
@@ -127,6 +127,15 @@ $clescolaproc->rotulo->label("ed82_c_nome");
 </html>
 <script>
 js_tabulacaoforms("form2","chave_ed82_i_codigo",true,1,"chave_ed82_i_codigo",true);
+
+function limparCampos() {
+    var inputFields = document.querySelectorAll('input[type="text"]');
+
+    inputFields.forEach(function (input) {
+        input.value = '';
+    });
+}
+
 </script>
 <script type="text/javascript">
 (function() {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cliptunaogeracarnecgm->rotulo->label("j68_naogeracarne");
               <?=$Lj68_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j68_sequencial",10,$Ij68_sequencial,true,"text",4,"","chave_j68_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptunaogeracarnecgm->rotulo->label("j68_naogeracarne");
               <?=$Lj68_naogeracarne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j68_naogeracarne",10,$Ij68_naogeracarne,true,"text",4,"","chave_j68_naogeracarne");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptunaogeracarnecgm->rotulo->label("j68_naogeracarne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptunaogeracarnecgm.php")==true){
@@ -122,12 +122,12 @@ $cliptunaogeracarnecgm->rotulo->label("j68_naogeracarne");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

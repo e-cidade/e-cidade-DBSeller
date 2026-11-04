@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("db104_descricao");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, strings.js, datagrid.widget.js, prototype.js");
       db_app::load("estilos.css, grid.style.css");
     ?>
@@ -59,7 +59,7 @@ $clrotulo->label("db104_descricao");
         <table border='0'>
           <tr>
             <td nowrap title="<?=@$Ted313_db_layoutcampo?>" >
-              <?
+              <?php
                 db_ancora($Led313_db_layoutcampo, "js_pesquisaed313_db_layoutcampo(true)", 1);
               ?>
             </td>
@@ -79,12 +79,12 @@ $clrotulo->label("db104_descricao");
           </tr>
           <tr>
             <td nowrap title="<?=@$Ted313_avaliacaoperguntaopcao?>" >
-              <?
+              <?php
                 db_ancora($Led313_avaliacaoperguntaopcao, "js_pesquisaed313_avaliacaoperguntaopcao(true)", 1);
               ?>
             </td>
             <td nowrap >
-              <?
+              <?php
                 db_input("ed313_avaliacaoperguntaopcao", 
                          10, 
                          $Ied313_avaliacaoperguntaopcao, 
@@ -102,7 +102,7 @@ $clrotulo->label("db104_descricao");
               <b>Ano: </b>
             </td>
             <td nowrap>
-              <?
+              <?php
                 $ed313_ano = db_getsession("DB_anousu");
                 db_input("ed313_ano", 10, $Ied313_ano, true, "text", 1, '');
               ?>
@@ -113,13 +113,13 @@ $clrotulo->label("db104_descricao");
               <b><?=$Led313_layoutvalorcampo?></b>
             </td>
             <td nowrap>
-              <?
+              <?php
                 db_input("ed313_layoutvalorcampo", 10, $Ied313_layoutvalorcampo, true, "text", 1, '');
               ?>
             </td>
           </tr>
         </table>
-        <?
+        <?php
           db_menu(db_getsession("DB_id_usuario"), 
                   db_getsession("DB_modulo"), 
                   db_getsession("DB_anousu"),
@@ -188,7 +188,7 @@ function js_pesquisa_ed313_db_layoutcampo(mostra) {
 function preenchepesquisaed313_db_layoutcampo(chave) {
   
   db_iframe_db_layoutcampo.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
   
@@ -259,7 +259,7 @@ function js_pesquisa_ed313_avaliacaoperguntaopcao(mostra) {
 function preenchepesquisaed313_avaliacaoperguntaopcao(chave) {
   
   db_iframe_db_layoutcampo.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
     

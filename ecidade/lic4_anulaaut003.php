@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -86,34 +86,34 @@ $db_botao = true;
 $sqlerro   = false;
 if (isset($incluir)) {
 
-  $valor = split(",",$valores);
+  $valor =explode(",",$valores);
   // arrays para dados do empautoriza
   $arr_vals = Array();
   $arr_cgms = Array();
   $arr_help = Array();
   $indexaut = 0;
-  
+
   // arrays para dados do empautitem
   $arr_proc = Array();
   $arr_hell = Array();
   $indexitm = 0;
   $vir = "";
-  
+
   // Rotina para pegar saldo das dotacoes
   $vetor_dotacao = array();
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   db_inicio_transacao();
   if ($reservar == "true") {
     $flag_reservar = true;
   }
-  
+
   if ($reservar == "false") {
     $flag_reservar = false;
   }
   for ($i = 0; $i < sizeof($valor); $i++) {
 
-    $dados = split("_",$valor[$i]);
+    $dados =explode("_",$valor[$i]);
 
     $rsParam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"), "pc30_contrandsol"));
     $oParam  = db_utils::fieldsMemory($rsParam,0);
@@ -121,7 +121,7 @@ if (isset($incluir)) {
     if (isset ($oParam->pc30_contrandsol) && $oParam->pc30_contrandsol == 't') {
 
       $sSqlItensTransf = $clempautitem->sql_query_anuaut(null,null,"pc11_codigo",null,"e55_autori = ".$dados[1]." and e54_anulad is null");
-      $rsItensTransf   = $clempautitem->sql_record();
+      $rsItensTransf   = $clempautitem->sql_record($sSqlItensTransf);
       $iNroItensTransf = $clempautitem->numrows;
 
       for ($x = 0; $x < $iNroItensTransf; $x++) {
@@ -138,7 +138,7 @@ if (isset($incluir)) {
           $clproctransferproc->excluir($oSolicitemProt->codtran);
           if ($clproctransferproc->erro_status == "0") {
 
-            $erro_msg = $clproctransferproc->erro_msg;	
+            $erro_msg = $clproctransferproc->erro_msg;
             $sqlerro  = true;
           }
 
@@ -147,14 +147,14 @@ if (isset($incluir)) {
 
             $erro_msg = $clsolordemtransf->erro_msg;
             $sqlerro  = true;
-          } 	  	
+          }
 
           $clproctransfer->excluir($oSolicitemProt->codtran);
           if ($clproctransfer->erro_status == "0") {
 
-            $erro_msg = $clproctransfer->erro_msg; 	
+            $erro_msg = $clproctransfer->erro_msg;
             $sqlerro  = true;
-          } 	  	
+          }
         }
       }
     }
@@ -162,12 +162,12 @@ if (isset($incluir)) {
     $clempautoriza->sql_anulaautorizacao($dados[1],false,$erro_msg,$sqlerro,$flag_saldo,$vetor_dotacao,$flag_reservar);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   db_fim_transacao($sqlerro);
 }
 $numrows_itens = 0;
 if (isset($e54_autori) && trim($e54_autori) != "") {
-  
+
   $sql_itens     = $clempautitem->sql_query_anuaut(null,null," distinct e54_autori,
                                                                         pc81_codproc,
                                                                         pc81_codprocitem,
@@ -183,10 +183,10 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
                                                                         e56_coddot,
                                                                         pc01_codmater,
                                                                         pc81_codprocitem",
-                                                                        "e55_autori = $e54_autori 
-                                                                        and e54_anulad is null 
+                                                                        "e55_autori = $e54_autori
+                                                                        and e54_anulad is null
                                                                         and(e61_numemp is null or(e61_numemp is not null and e60_vlremp=e60_vlranu))");
-                                                                        
+
   $result_itens  = $clempautitem->sql_record($sql_itens);
   $numrows_itens = $clempautitem->numrows;
 }
@@ -231,8 +231,8 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php
     db_input('valores',8,0,true,'hidden',3);
@@ -254,7 +254,7 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
       }
       echo "<center>";
       echo "<table border='1' align='center'>\n";
-      
+
       echo "<tr bgcolor=''>\n";
       echo "  <td nowrap class='bordas02' align='center' title='Marcar todos os itens de todas autorizações'><strong>";db_ancora("M","js_marcatudo();",1);echo "</strong></td>\n";
       echo "  <td nowrap class='bordas02' align='center'><strong>Item</strong></td>\n";
@@ -266,13 +266,13 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
       echo "  <td nowrap class='bordas02' align='center'><strong>Val Unit.</strong></td>\n";
       echo "  <td nowrap class='bordas02' align='center'><strong>Val Tot.</strong></td>\n";
       echo "</tr>\n";
-      
+
       $dot_ant = "";
       $forn_ant= "";
       $contador= 1;
       $testatot= 0;
       $valortotalautori = 0;
-      
+
       for ($i=0;$i<$numrows_itens;$i++) {
 
         db_fieldsmemory($result_itens,$i);
@@ -306,7 +306,7 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
                 $result_andam = $clsolandam->sql_record($clsolandam->sql_query_file(null, "*", "pc43_codigo desc limit 1", "pc43_solicitem=$cod_item"));
                 if ($clsolandam->numrows > 0) {
 
-                  db_fieldsmemory($result_andam, 0);						
+                  db_fieldsmemory($result_andam, 0);
                   $result_tipo = $clsolandpadraodepto->sql_record($clsolandpadraodepto->sql_query(null, "*", null, "pc47_solicitem=$cod_item and pc47_ordem=$pc43_ordem"));
                   if ($clsolandpadraodepto->numrows > 0) {
 
@@ -338,11 +338,11 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
         echo "  <td class='$bordas' align='left' >$z01_nome</td>\n";
         echo "  <td nowrap class='$bordas' align='center'>$e56_coddot</td>\n";
         echo "  <td nowrap class='$bordas' align='right' >$e55_quant</td>\n";
-        echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar($e55_vltot/$e55_quant,"f")."</td>\n"; 
+        echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar($e55_vltot/$e55_quant,"f")."</td>\n";
         echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar($e55_vltot,"f")."</td>\n";
         $valortotalautori += $e55_vltot;
         echo "</tr>\n";
-      } 
+      }
       echo "<tr>\n";
       echo "  <td nowrap colspan='8' class='$bordas'align='right'><strong>Valor Total </strong></td>\n";
       echo "  <td nowrap colspan='1' class='$bordas'align='right'><strong>R$ ".db_formatar($valortotalautori,"f")."</strong></td>\n";
@@ -375,7 +375,7 @@ function js_marcatudo() {
           x.elements[i].checked=false;
         } else {
           x.elements[i].checked=true;
-        }        
+        }
       }
     }
   }

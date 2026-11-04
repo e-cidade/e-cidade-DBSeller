@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -62,29 +62,29 @@ $db_botao = false;
   <tr>
     <td height="490" width="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center><br><Br>
-     <?
+     <?php
      if(!isset($pesquisar)){
     ?>
       <table>
       <form name="form1">
        <tr>
         <td nowrap title="<?=@$Tcm25_i_codigo?>">
-         <?db_ancora(@$Lcm25_i_codigo,"js_pesquisacm25_i_codigo(true);",1);?>
+         <?php db_ancora(@$Lcm25_i_codigo,"js_pesquisacm25_i_codigo(true);",1);?>
         </td>
         <td>
-           <?
+           <?php
             db_input('cm25_i_codigo',10,$Icm25_i_codigo,true,'text',1," onchange='js_pesquisacm25_i_codigo(false);'");
            ?>
         </td>
        </tr>
        <tr>
          <td nowrap title="<?=@$Tcm28_i_proprietario?>">
-                 <?
+                 <?php
             db_ancora(@$Lcm28_i_proprietario,"js_pesquisacm28_i_proprietario(true);",1);
             ?>
          </td>
          <td>
-            <?
+            <?php
               db_input('cm28_i_proprietario',10,$Icm28_i_proprietario,true,'text',1," onchange='js_pesquisacm28_i_proprietario(false);'");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
             ?>
@@ -97,7 +97,7 @@ $db_botao = false;
        </tr>
       </form>
       </table>
-    <?
+    <?php
      }else{
         $result = $clossoariojazigo->sql_record( $clossoariojazigo->sql_query( $cm25_i_codigo ) );
         db_fieldsmemory($result,0);
@@ -106,7 +106,7 @@ $db_botao = false;
            <input type="button" value="Proprietário"      <?=@$b2?> onclick="js_local(2)" style=" width: 120">
            <input type="button" value="Sepultamentos" <?=@$b3?> onclick="js_local(3)" style=" width: 120">
            <script>js_local(1)</script>
-        <?
+        <?php
         //include(modification("forms/db_frmossoariojazigo.php"));
      }
     ?>
@@ -114,7 +114,7 @@ $db_botao = false;
      </td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 
 function js_local(local){

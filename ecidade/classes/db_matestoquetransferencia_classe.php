@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,13 +62,13 @@ class cl_matestoquetransferencia {
                  m84_ativo = bool = Situação da Transferência
                  ";
    //funcao construtor da classe
-   function cl_matestoquetransferencia() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquetransferencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_matestoquetransferencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m84_sequencial = ($this->m84_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["m84_sequencial"]:$this->m84_sequencial);
        $this->m84_matestoqueitem = ($this->m84_matestoqueitem == ""?@$GLOBALS["HTTP_POST_VARS"]["m84_matestoqueitem"]:$this->m84_matestoqueitem);
@@ -92,7 +92,7 @@ class cl_matestoquetransferencia {
      }
    }
    // funcao para inclusao
-   function incluir ($m84_sequencial){
+   public function incluir ($m84_sequencial){
       $this->atualizacampos();
      if($this->m84_matestoqueitem == null ){
        $this->erro_sql = " Campo Sequencial do item no estoque nao Informado.";
@@ -251,7 +251,7 @@ class cl_matestoquetransferencia {
      return true;
    }
    // funcao para alteracao
-   function alterar ($m84_sequencial=null, $sWhereAlterar) {
+   public function alterar ($m84_sequencial=null, $sWhereAlterar) {
       $this->atualizacampos();
      $sql = " update matestoquetransferencia set ";
      $virgula = "";
@@ -437,7 +437,7 @@ class cl_matestoquetransferencia {
      }
    }
    // funcao para exclusao
-   function excluir ($m84_sequencial=null,$dbwhere=null) {
+   public function excluir ($m84_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m84_sequencial));
      }else{
@@ -505,7 +505,7 @@ class cl_matestoquetransferencia {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -528,10 +528,10 @@ class cl_matestoquetransferencia {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_matestoquetransferencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,10 +571,10 @@ class cl_matestoquetransferencia {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -595,7 +595,7 @@ class cl_matestoquetransferencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,10 +604,10 @@ class cl_matestoquetransferencia {
      }
      return $sql;
   }
-   function sql_query_transferencia ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_transferencia ( $m84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -632,7 +632,7 @@ class cl_matestoquetransferencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

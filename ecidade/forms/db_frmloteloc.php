@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ if(isset($id_setor)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj06_setorloc?>">
-       <?
+       <?php
        echo $Lj06_setorloc;
        $sqlset = " select setorloc.j05_codigo,setorloc.j05_codigoproprio||' - '||setorloc.j05_descr from setorloc order by j05_codigoproprio ";
        $resultset = db_query($sqlset);
@@ -48,11 +48,11 @@ if(isset($id_setor)){
        ?>
     </td>
     <td> 
-<?
+<?php
 db_selectrecord('j06_setorloc',$resultset,true,1,'','','');
 //db_input('j06_setorloc',6,$Ij06_setorloc,true,'text',$db_opcao," onblur='js_pesquisaj06_setorloc();'")
 ?>
-       <?
+       <?php
 //db_input('j06_descr',40,$Ij06_descr,true,'text',3,'')
        ?>
     </td>
@@ -62,7 +62,7 @@ db_selectrecord('j06_setorloc',$resultset,true,1,'','','');
        <?=@$Lj06_quadraloc?>
     </td>
     <td> 
-<?
+<?php
 db_input('j06_quadraloc',5,$Ij06_quadraloc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ db_input('j06_quadraloc',5,$Ij06_quadraloc,true,'text',$db_opcao,"")
        <?=@$Lj06_lote?>
     </td>
     <td> 
-<?
+<?php
 db_input('j06_lote',10,$Ij06_lote,true,'text',$db_opcao,"")
 ?>
     </td>

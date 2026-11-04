@@ -56,7 +56,7 @@ if (isset($baixar)) {
   $proibido=false;
   $sqlerro=false;
   $data=date('Y-m-d',db_getsession("DB_datausu"));
-  $matriz01=split('#',$chaves);
+  $matriz01= explode('#',$chaves);
   $ativbaix=sizeof($matriz01);
 
   $result_ativs = $cltabativ->sql_record($cltabativ->sql_query_atividade_inscr($q07_inscr,"*","q07_seq","q07_inscr = $q07_inscr and q07_databx is null"));
@@ -116,12 +116,12 @@ if (isset($baixar)) {
   if($proibido==false){
 
     db_inicio_transacao();
-    $matriz01=split('#',$chaves);
+    $matriz01= explode('#',$chaves);
     if($calculo=="ok"){
       $seqs="";
       $virgu="";
       for($q=0; $q<sizeof($matriz01); $q++ ){
-        $matriz=split("-",$matriz01[$q]);
+        $matriz= explode("-",$matriz01[$q]);
         $seqs.=$virgu.$matriz[1];
         $virgu=",";
       }
@@ -133,7 +133,8 @@ if (isset($baixar)) {
         $somenteISSQN = ', 1 ';
       }
 
-      $sql02 = "SELECT fc_issqn($q07_inscr,'".date('Y-m-d',db_getsession("DB_datausu"))."',$ano,'$q07_databx','true','false',".$instit.",'".$seqs."'". $somenteISSQN .") AS RETORNO";
+      $idUsuario = db_getsession("DB_id_usuario");
+      $sql02 = "SELECT fc_issqn($idUsuario,$q07_inscr,'".date('Y-m-d',db_getsession("DB_datausu"))."',$ano,'$q07_databx','true','false',".$instit.",'".$seqs."'". $somenteISSQN .") AS RETORNO";
 
       $result02=db_query($sql02) or die($sql02);
       @db_fieldsmemory($result02,0);
@@ -176,7 +177,7 @@ if ($sqlerro==false){
 
     for($q=0; $q<sizeof($matriz01); $q++ ){
 
-      $matriz=split("-",$matriz01[$q]);
+      $matriz= explode("-",$matriz01[$q]);
       $cltabativbaixa->q11_login=db_getsession("DB_id_usuario");
       $cltabativbaixa->q11_hora=db_hora();
       $cltabativbaixa->q11_data=date('Y-m-d',db_getsession("DB_datausu"));
@@ -265,12 +266,12 @@ if ($sqlerro==false){
 	  if (!$sqlerro) {
 
 
-      $matriz01=split('#',$chaves);
+      $matriz01= explode('#',$chaves);
       $seqs="";
       $virgu="";
       for($q=0; $q<sizeof($matriz01); $q++ ){
 
-        $matriz = split("-",$matriz01[$q]);
+        $matriz = explode("-",$matriz01[$q]);
         $seqs  .= $virgu.$matriz[1];
         $virgu  = ",";
       }

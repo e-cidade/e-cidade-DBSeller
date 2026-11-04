@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -143,7 +143,7 @@ if (isset($concluir)) {
   parent.db_iframe_concluir.hide();
   parent.location.href = "edu1_conclusao001.php";
  </script>
- <?
+ <?php
 }
 ?>
 
@@ -160,7 +160,7 @@ if (isset($concluir)) {
  </tr>
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-  <?
+  <?php
   $codaluno = explode(",",$alunos);
   $alunoconcluido = "";
   $codalunoconcluido = "";
@@ -188,7 +188,7 @@ if (isset($concluir)) {
       <td class="aluno" bgcolor="#f3f3f3">&nbsp;&nbsp; - ALUNO NÃO PODE CONCLUIR POIS NÃO POSSUI HISTÓRICO PARA ESTE CURSO</td>
      </tr>
     </table>
-    <?
+    <?php
    }else{
     $erro = "";
     db_fieldsmemory($result_hist,0);
@@ -262,7 +262,7 @@ if (isset($concluir)) {
        <td class="aluno" bgcolor="#f3f3f3"><?=$erro?></td>
       </tr>
      </table>
-     <?
+     <?php
     }else{
      $alunoconcluido .= $sep.$ed47_v_nome." - ".$codaluno[$x];
      $codalunoconcluido .= $sep.$codaluno[$x];
@@ -277,7 +277,7 @@ if (isset($concluir)) {
    <tr>
     <td class="cabec3" align="center">O sistema irá concluir o curso <?=$nomecurso?> para os alunos:</td>
    </tr>
-   <?
+   <?php
    if($alunoconcluido!=""){
     $alunoarray = explode("#",$alunoconcluido);
     for($y=0;$y<count($alunoarray);$y++){

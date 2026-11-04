@@ -1,0 +1,58 @@
+[
+    {
+        "value": "01",
+        "label": "01 - Liminar em mandado de segurança"
+    },
+    {
+        "value": "02",
+        "label": "02 - Depósito judicial do montante integral"
+    },
+    {
+        "value": "03",
+        "label": "03 - Depósito administrativo do montante integral"
+    },
+    {
+        "value": "04",
+        "label": "04 - Antecipação de tutela"
+    },
+    {
+        "value": "05",
+        "label": "05 - Liminar em medida cautelar"
+    },
+    {
+        "value": "08",
+        "label": "08 - Sentença em mandado de segurança favorável ao contribuinte"
+    },
+    {
+        "value": "09",
+        "label": "09 - Sentença em ação ordinária favorável ao contribuinte e confirmada pelo TRF"
+    },
+    {
+        "value": "10",
+        "label": "10 - Acórdão do TRF favorável ao contribuinte"
+    },
+    {
+        "value": "11",
+        "label": "11 - Acórdão do STJ em recurso especial favorável ao contribuinte"
+    },
+    {
+        "value": "12",
+        "label": "12 - Acórdão do STF em recurso extraordinário favorável ao contribuinte"
+    },
+    {
+        "value": "13",
+        "label": "13 - Sentença 1ª instância não transitada em julgado com efeito suspensivo"
+    },
+    {
+        "value": "14",
+        "label": "14 - Contestação administrativa FAP"
+    },
+    {
+        "value": "90",
+        "label": "90 - Decisão definitiva a favor do contribuinte"
+    },
+    {
+        "value": "92",
+        "label": "92 - Sem suspensão da exigibilidade"
+    }
+]

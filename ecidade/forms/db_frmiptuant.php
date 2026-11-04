@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,15 +53,15 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj40_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj40_matric,"js_pesquisaj40_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j40_matric',10,$Ij40_matric,true,'text',$db_opcao," onchange='js_pesquisaj40_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -71,7 +71,7 @@ db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        <?=@$Lj40_refant?>
     </td>
     <td> 
-<?
+<?php
 db_input('j40_refant',20,$Ij40_refant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('j40_refant',20,$Ij40_refant,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("j40_matric"=>@$j40_matric);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptuant->sql_query_file($j40_matric);

@@ -378,13 +378,13 @@ try {
           if ($oMatricula->isAvaliadoPorParecer()) {
             $sFormaAvaliacao = 'PARECER';
           }
-          
+
           $nNota = $oAvaliacao->getValorAproveitamento()->getAproveitamento();
-        
+
           if ( $oAvaliacao->getElementoAvaliacao()->isResultado() && $sFormaAvaliacao == 'NOTA' ) {
             $nNota = $oAvaliacao->getValorAproveitamento()->getAproveitamentoReal();
           }
-         
+
           if ( $oAvaliacao->getElementoAvaliacao()->isResultado() && $sFormaAvaliacao == 'PARECER' ) {
               if ( !empty($oAvaliacao->getParecer()) ) {
                     $nNota = $oAvaliacao->getParecer();
@@ -454,7 +454,7 @@ try {
           }
             $lAmparado      = $oAvaliacao->isAmparado();
             $sFormaObtencao = '';
-           
+
           if ($oElementoAvaliacao instanceof ResultadoAvaliacao) {
 
             $sFormaObtencao = $oElementoAvaliacao->getFormaDeObtencao();
@@ -463,7 +463,7 @@ try {
               $lAmparado = true;
             }
           }
-         
+
           $oDadosAvaliacao                 = new stdClass();
           $oDadosAvaliacao->iPeriodo       = $oAvaliacao->getElementoAvaliacao()->getOrdemSequencia();
           $oDadosAvaliacao->iCodigoPeriodo = null;
@@ -498,14 +498,14 @@ try {
             $oDadosAvaliacao->iCodigoPeriodo = $oAvaliacao->getElementoAvaliacao()->getPeriodoAvaliacao()->getCodigo();
             $oDadosAvaliacao->lPeriodoControlaFrequencia = $oAvaliacao->getElementoAvaliacao()->getPeriodoAvaliacao()->hasControlaFrequencia();
           }
-         
+
             /**
              * Em caso de Forma de Obtenção igual a Aprovação por Periodo não exibe a nota final
              */
             if ($sFormaObtencao == 'AP') {
               $nNota = '';
             }
-         
+
           $oDadosAvaliacao->nNota                 = urlencode("{$nNota}");
           $oDadosAvaliacao->sTipoAvaliacao        = $sTipoAvaliacao;
           $oDadosAvaliacao->iOrdem                = $iOrdem; // Ordem do conceito
@@ -661,9 +661,13 @@ try {
             }
             $oDadosAvaliacao->lFaltaBloqueada = $iAulasPeriodo > 0 ? true : false;
             $oDadosAvaliacao->iAulasPerido    = $iAulasPeriodo;
-            $oDadosAvaliacao->lNotaBloqueada  = trim($oDadosAvaliacao->nNota) != '' && $lBloqueiaAlteracaoAvaliacao && $lProfessorLogado;
+
+            if (trim($oDadosAvaliacao->nNota) != '' && $lBloqueiaAlteracaoAvaliacao && $lProfessorLogado &&
+              $oParam->iMaiorPermissao==0) {
+              $oDadosAvaliacao->lNotaBloqueada  = true;
+            }
           }
-     
+
           if ($oAvaliacao->getElementoAvaliacao()->isResultado() &&
               $oAvaliacao->getElementoAvaliacao()->geraResultadoFinal() ) {
 
@@ -672,7 +676,6 @@ try {
              */
             if (    $oRetorno->lGeraResultadoParcial && $sFormaAvaliacao == 'NOTA'
                  && $oAvaliacao->getValorAproveitamento()->getAproveitamento() === '') {
-                 // dd('aqui');
               $oDadosAvaliacao->nNota = (string)$oDadosAproveitamento->getNotaParcial($oAvaliacao->getElementoAvaliacao());
             }
           }
@@ -786,6 +789,29 @@ try {
         $oDadosAluno->oDisciplina = $oDadoRegencia;
         $oRetorno->aAlunos[]      = $oDadosAluno;
       }
+
+        foreach ($oRetorno->aAlunos as $oAluno) {
+            // Verifica se os elementos do array aAproveitamentos estão ordenados por iPeriodo
+            $aproveitamentosOrdenados = true;
+            $periodoAnterior = null;
+            foreach ($oAluno->oDisciplina->aAproveitamentos as $aproveitamento) {
+                if ($periodoAnterior !== null && $aproveitamento->iPeriodo < $periodoAnterior) {
+                    $aproveitamentosOrdenados = false;
+                    break; // Interrompe o loop se encontrar um elemento fora de ordem
+                }
+                $periodoAnterior = $aproveitamento->iPeriodo;
+            }
+
+            // Se os elementos não estiverem ordenados, ordena o array com base em iPeriodo
+            if (!$aproveitamentosOrdenados) {
+                usort($oAluno->oDisciplina->aAproveitamentos, function($a, $b) {
+                    if ($a->iPeriodo == $b->iPeriodo) {
+                        return 0;
+                    }
+                    return ($a->iPeriodo < $b->iPeriodo) ? -1 : 1;
+                });
+            }
+        }
 
       foreach ($aDiarioConselho as $iDiario) {
         unset( $_SESSION['diario_conselho'][ $iDiario ] );
@@ -914,12 +940,12 @@ try {
           break;
         }
       }
-     
+
       EducacaoSessionManager::registrarTurma($oTurma);
       break;
 
      case 'salvarResultadoParecer':
-    
+
       $_SESSION["DB_desativar_account"] = true;
 
       $oTurma = EducacaoSessionManager::carregarTurma();

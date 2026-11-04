@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,24 +25,24 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_isencao_classe.php"));
-include(modification("classes/db_isencaolanc_classe.php"));
-include(modification("classes/db_isencaoproc_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_isencao_classe.php"));
+require_once(modification("classes/db_isencaolanc_classe.php"));
+require_once(modification("classes/db_isencaoproc_classe.php"));
+
 $clisencao = new cl_isencao;
 $clisencaoproc = new cl_isencaoproc;
-  /*
-$clisencaolanc = new cl_isencaolanc;
-  */
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
-//db_msgbox($origem);
+
+db_postmemory($_POST);
+db_postmemory($_SERVER);
+
 $db_opcao = 22;
 $db_botao = false;
+
 if(isset($alterar)){
   $sqlerro=false;
   db_inicio_transacao();
@@ -89,23 +89,20 @@ if(isset($alterar)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmisencao.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
+  <div class="container">
+    <?php
+	  include(modification("forms/db_frmisencao.php"));
+	  ?>
+  </div>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);
@@ -121,10 +118,11 @@ if(isset($chavepesquisa)){
  echo "
   <script>
       function js_db_libera(){
-         parent.document.formaba.isencaolanc.disabled=false;
-         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_isencaolanc.location.href='tri1_isencaolanc001.php?v18_isencao=".@$v10_sequencial."&origem=".$origem."&valorigem=$valorigem'; ";
+         parent.document.formaba.isencaocalc.disabled=false;
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_isencaocalc.location.href='tri1_isencaocalc001.php?v18_isencao=".@$v10_sequencial."&origem=".$origem."&valorigem=$valorigem'; 
+         ";
          if(isset($liberaaba)){
-           echo "  parent.mo_camada('isencaolanc');";
+           echo "  parent.mo_camada('isencaocalc');";
          }
  echo"}\n
     js_db_libera();

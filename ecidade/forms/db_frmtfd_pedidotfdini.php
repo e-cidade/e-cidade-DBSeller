@@ -292,7 +292,7 @@ $oRotulo->label("z01_i_numero");
                   </td>
                   <td>
                     <?php
-                    db_input('z01_v_ident', 12, $Iz01_v_ident, true, 'text', $db_opcao, 'onchange="js_change();"');
+                    db_input('z01_v_ident', 12, $Iz01_v_ident, true, 'text', $db_opcao, 'onchange="js_change();"', '', '', '', 11);
                     ?>
                   </td>
                 </tr>
@@ -598,31 +598,34 @@ function js_cria_datagrid() {
   oDBGrid                = new DBGrid('grid_pedidostfd');
   oDBGrid.nameInstance   = 'oDBGridPedidostfd';
   oDBGrid.hasTotalizador = false;
-  oDBGrid.setCellWidth(new Array('3%', '6%', '6%', '40%', '30%', '10%', '5%'));
+  oDBGrid.setCellWidth(new Array('4%', '7%', '3%', '6%', '21%', '30%', '15%', '7%', '4%'));
   oDBGrid.setHeight(150);
   oDBGrid.allowSelectColumns(false);
 
   var aHeader = new Array();
   aHeader[0]  = 'Pedido';
-  aHeader[1]  = 'Entrada';
-  aHeader[2]  = 'Saída';
-  aHeader[3]  = 'Prestadora';
-  aHeader[4]  = 'Cidade';
-  aHeader[5]  = 'Situação';
-  aHeader[6]  = 'Opções';
+  aHeader[1]  = 'Data Cons/Ex';
+  aHeader[2]  = 'Hora';
+  aHeader[3]  = 'Data Saída';
+  aHeader[4]  = 'Tratamento';
+  aHeader[5]  = 'Prestadora';
+  aHeader[6]  = 'Cidade';
+  aHeader[7]  = 'Situação';
+  aHeader[8]  = 'Opções';
   oDBGrid.setHeader(aHeader);
 
   var aAligns = new Array();
   aAligns[0]  = 'center';
   aAligns[1]  = 'center';
   aAligns[2]  = 'center';
-  aAligns[3]  = 'left';
-  aAligns[4]  = 'center';
+  aAligns[3]  = 'center';
+  aAligns[4]  = 'left';
   aAligns[5]  = 'center';
   aAligns[6]  = 'center';
+  aAligns[7]  = 'center';
+  aAligns[8]  = 'center';
 
   oDBGrid.setCellAlign(aAligns);
-  oDBGrid.aHeaders[0].lDisplayed = false;
   oDBGrid.show($('grid_pedidostfd'));
   oDBGrid.clearAll(true);
 
@@ -671,11 +674,13 @@ function js_retornogetPedidosTfdCgs( oRetorno ) {
 
         aLinha[0] = oPedidosTfd.tf01_i_codigo;
         aLinha[1] = js_formataData(oPedidosTfd.tf16_d_dataagendamento);
-        aLinha[2] = js_formataData(oPedidosTfd.tf17_d_datasaida);
-        aLinha[3] = oPedidosTfd.z01_nomeprestadora.urlDecode();
-        aLinha[4] = oPedidosTfd.tf03_c_descr.urlDecode();
-        aLinha[5] = oPedidosTfd.tf26_c_descr.urlDecode();
-        aLinha[6] = sAcao;
+        aLinha[2] = oPedidosTfd.tf16_c_horaagendamento;
+        aLinha[3] = js_formataData(oPedidosTfd.tf17_d_datasaida);
+        aLinha[4] = `${oPedidosTfd.tf04_c_descr} - ${oPedidosTfd.sd63_c_nome}`;
+        aLinha[5] = oPedidosTfd.z01_nomeprestadora.urlDecode();
+        aLinha[6] = oPedidosTfd.tf03_c_descr.urlDecode();
+        aLinha[7] = oPedidosTfd.tf26_c_descr.urlDecode();
+        aLinha[8] = sAcao;
 
         oDBGridPedidostfd.addRow(aLinha);
     });
@@ -686,7 +691,8 @@ function js_retornogetPedidosTfdCgs( oRetorno ) {
   oRetorno.oPedidos.each(function(oPedido, iLinha) {
 
     var oParametros = {iWidth:'300', oPosition : {sVertical : 'T', sHorizontal : 'R'}};
-    oDBGridPedidostfd.setHint(iLinha, 3, oPedido.rh70_estrutural + ' - ' + oPedido.rh70_descr.urlDecode(), oParametros);
+    oDBGridPedidostfd.setHint(iLinha, 3, `${oPedido.rh70_estrutural} - ${oPedido.rh70_descr.urlDecode()}`, oParametros);
+    oDBGridPedidostfd.setHint(iLinha, 4, `${oPedido.tf04_c_descr} - ${oPedido.sd63_c_nome}`, oParametros);
   });
 }
 
@@ -1105,4 +1111,16 @@ function validaCampos() {
 
   return true;
 }
+
+function validaRg() {
+    let campoRg = document.getElementById('z01_v_ident');
+
+    campoRg.addEventListener('keyup', function () {
+        if (isNaN(campoRg.value)) {
+            campoRg.value = '';
+            alert('O RG deve ser preenchido apenas com números!');
+        }
+    })
+}
+validaRg();
 </script>

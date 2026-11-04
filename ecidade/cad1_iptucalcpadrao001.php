@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ db_postmemory($HTTP_POST_VARS);
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
 	 $clcriaabas->identifica = array("iptucalcpadrao"=>"Cálculo","iptucalcpadraoconstr"=>"Construções","iptutaxamatric"=>"Taxas"); 
 	 $clcriaabas->src = array("iptucalcpadrao"=>"cad1_iptucalcpadrao004.php?j01_matric=$j01_matric&forma=$forma&exec=$exec&perc=$perc");
 	 $clcriaabas->disabled   =  array("iptucalcpadraoconstr"=>"true","iptutaxamatric"=>"true"); 
@@ -67,7 +67,7 @@ db_postmemory($HTTP_POST_VARS);
   </table>
   <form name="form1">
   </form>
-      <? 
+      <?php 
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>

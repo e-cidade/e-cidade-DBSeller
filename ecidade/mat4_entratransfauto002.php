@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -78,7 +78,7 @@ $clrotulo->label("m40_login");
 
 if (isset($confirma)) {
   $sqlerro=false;
-  $dados    = split("quant_","$valor");
+  $dados    =explode("quant_","$valor");
   $arr_info = array();
   db_inicio_transacao();
   $valores = "";
@@ -86,25 +86,25 @@ if (isset($confirma)) {
     if ($dados[$w]=="") {
       continue;
     }
-    $info = split("_",$dados[$w]);
+    $info =explode("_",$dados[$w]);
     $codlanc = $info[0];
     $codmater = $info[1];
     $pos = $info[2];
     $quant = $info[3];
     $depto_inf = "depto_".$pos;
     $depto = $$depto_inf;
-    
+
     $m80_codtipo = 7;
     // Em transferência
-    
+
     $m80_login = db_getsession("DB_id_usuario");
     $m80_data = date("Y-m-d", db_getsession("DB_datausu"));
     $m80_coddepto = db_getsession("DB_coddepto");
     $m80_hora = date('H:i:s');
-    
+
     $result_matestoque = $clmatestoqueitem->sql_record($clmatestoqueitem->sql_query(null, "distinct m70_codigo,m70_codmatmater,m70_quant,m70_valor,m70_coddepto,m71_codlanc,m71_valor,m71_quant,m71_quantatend,m71_data as dataimprime,m71_valor as valorimprime", "m71_data desc", "m71_codlanc=$codlanc  "));
     $numrows_matestoque = $clmatestoqueitem->numrows;
-    
+
     if ($sqlerro == false &&  $numrows_matestoque > 0) {
       $clmatestoqueini->m80_codigo = null;
       $clmatestoqueini->m80_login = $m80_login;
@@ -122,7 +122,7 @@ if (isset($confirma)) {
         $sqlerro = true;
       } else {
       }
-      
+
       if ($sqlerro == false) {
         $clmatestoquetransf->m83_coddepto = $depto;
         $clmatestoquetransf->incluir(@ $m82_matestoqueini);
@@ -132,7 +132,7 @@ if (isset($confirma)) {
         }
       }
     }
-        
+
     $arr_oqueaindafalta = $quant;
     $arr_estoquediminui = Array();
     $arr_vlorquediminui = Array();
@@ -155,17 +155,17 @@ if (isset($confirma)) {
             $retirar = $arr_oqueaindafalta;
             $arr_oqueaindafalta -= $arr_oqueaindafalta;
           }
-          
+
           if ($sqlerro == false) {
             $clmatestoque->m70_codigo = $m70_codigo;
             $quantretira = $arr_estoquediminui[$m70_codigo] - $retirar;
             $valorretira = 0 + db_formatar(($arr_vlorquediminui[$m70_codigo] - ($retirar * $valorunitario)), 'p', ' ', 0, 'e', 4);
             $clmatestoque->m70_quant = "$quantretira";
-            
+
             if ($valorretira < 0) {
               $valorretira *= -1;
             }
-            
+
             $clmatestoque->m70_valor = "$valorretira";
             $arr_estoquediminui[$m70_codigo] -= $retirar;
             $arr_vlorquediminui[$m70_codigo] -= ($retirar * $valorunitario);
@@ -202,7 +202,7 @@ if (isset($confirma)) {
       }
     }
     $m80_codtipo = 8;
-    
+
     if ($sqlerro == false) {
       $clmatestoqueinil->m86_matestoqueini = $codmatestoqueini;
       $clmatestoqueinil->incluir(null);
@@ -212,7 +212,7 @@ if (isset($confirma)) {
         $sqlerro = true;
       }
     }
-    
+
     if ($sqlerro == false) {
       $clmatestoqueini->m80_codigo = null;
       $clmatestoqueini->m80_login = $m80_login;
@@ -228,7 +228,7 @@ if (isset($confirma)) {
         $sqlerro = true;
       }
     }
-    
+
     if ($sqlerro == false) {
       $clmatestoqueinill->m87_matestoqueini = $matestoqueininovo;
       $clmatestoqueinill->m87_matestoqueinil = $vaipromatestoqueinill;
@@ -238,7 +238,7 @@ if (isset($confirma)) {
         $sqlerro = true;
       }
     }
-    
+
     $quant_cancel = "";
     $valor_cancel ="";
     $result_matestoque = $clmatestoqueini->sql_record($clmatestoqueini->sql_query_mater($codmatestoqueini, " distinct m70_codigo,m70_quant,m70_valor,m71_codlanc,m71_quant,m71_quantatend,m82_quant as quant_mei,m60_codmater", "m71_codlanc","matestoqueini.m80_codigo = $codmatestoqueini and matestoqueinimei.m82_matestoqueitem = $codlanc   "));
@@ -298,9 +298,9 @@ if (isset($confirma)) {
           $sqlerro = true;
         }
       }
-      
+
     }
-    
+
   }
 //  $sqlerro=true;
   db_fim_transacao($sqlerro);
@@ -342,13 +342,13 @@ if (isset($confirma)) {
        }
 </style>
 </head>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC"> 
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
 <table  border="0" cellspacing="0" cellpadding="0" width='100%'>
-  <tr> 
+  <tr>
   <br>
   <br>
   <br>
-    <td  align="left" valign="top" bgcolor="#CCCCCC"> 
+    <td  align="left" valign="top" bgcolor="#CCCCCC">
     <form name='form1'>
     <center>
 
@@ -360,12 +360,12 @@ if (isset($confirma)) {
       <br>
     </td>
   </tr>
- <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <table border='1' cellspacing="0" cellpadding="0">
+ <?php
 db_input('valor',40,"",true,'hidden',3,'');
 db_input("m80_codigo","10","",true,"hidden",3);
 if (isset($m80_codigo) && $m80_codigo!= "") {
-  
+
   $campos = "*";
   $result = $clmatestoqueinimei->sql_record($clmatestoqueinimei->sql_query_info(null,"$campos",null,"m82_matestoqueini=$m80_codigo"));
   $numrows = $clmatestoqueinimei->numrows;
@@ -397,11 +397,11 @@ if (isset($m80_codigo) && $m80_codigo!= "") {
     $op = 1;
     $quantidade = "quant_".$m71_codlanc."_".$m60_codmater."_"."$i";
     $$quantidade = "$m71_quant";
-    
+
     echo "<td class='bordas_corp' align='center'><small>";
     db_input("quant_".$m71_codlanc."_".$m60_codmater."_"."$i",6,0,true,'text',1,"onchange='js_testaquant(this.value,$m71_quant,$i,$m71_codlanc)'");
     echo "</small></td><td>";
-    
+
       $result_almox = $cldb_almoxdepto->sql_record($cldb_almoxdepto->sql_query_inf(null,null,"distinct  m91_depto,m91_codigo,descrdepto"));
       if ($cldb_almoxdepto->numrows>0) {
           echo " <select onchange='js_preenchedepto(this.value,$i);'   name='depto_$i' >";
@@ -418,9 +418,9 @@ if (isset($m80_codigo) && $m80_codigo!= "") {
     echo"  </tr>";
   }
 }
-?>     
+?>
  </table>
-    </form> 
+    </form>
     </center>
     </td>
   </tr>
@@ -442,7 +442,7 @@ function js_preenchedepto(depto,pos)
       if (obj.elements[w].value==""){
         obj.elements[w].value = depto;
       }
-    }    
+    }
   }
 }
 function js_buscaquant()
@@ -453,15 +453,15 @@ function js_buscaquant()
   var ii = 0;
   for (i=0; i<obj.elements.length; i++) {
     if (obj.elements[i].name.substr(0,6)=="quant_") {
-      
+
       valor += obj.elements[i].name+"_"+obj.elements[i].value;
     }
   }
-  
+
   document.form1.valor.value = valor;
   return true;
 }
 </script>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

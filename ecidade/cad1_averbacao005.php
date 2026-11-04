@@ -25,26 +25,26 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_averbacao_classe.php"));
-include(modification("classes/db_averbacgm_classe.php"));
-include(modification("classes/db_averbaregimovel_classe.php"));
-include(modification("classes/db_averbaescritura_classe.php"));
-include(modification("classes/db_averbaprocesso_classe.php"));
-include(modification("classes/db_averbatipo_classe.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_averbaformalpartilha_classe.php"));
-include(modification("classes/db_averbaformalpartilhacgm_classe.php"));
-include(modification("classes/db_averbadecisaojudicial_classe.php"));
-include(modification("classes/db_averbaguia_classe.php"));
-include(modification("classes/db_averbaguiaitbi_classe.php"));
-include(modification("classes/db_cgm_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_averbacao_classe.php"));
+require_once(modification("classes/db_averbacgm_classe.php"));
+require_once(modification("classes/db_averbaregimovel_classe.php"));
+require_once(modification("classes/db_averbaescritura_classe.php"));
+require_once(modification("classes/db_averbaprocesso_classe.php"));
+require_once(modification("classes/db_averbatipo_classe.php"));
+require_once(modification("classes/db_iptubase_classe.php"));
+require_once(modification("classes/db_averbaformalpartilha_classe.php"));
+require_once(modification("classes/db_averbaformalpartilhacgm_classe.php"));
+require_once(modification("classes/db_averbadecisaojudicial_classe.php"));
+require_once(modification("classes/db_averbaguia_classe.php"));
+require_once(modification("classes/db_averbaguiaitbi_classe.php"));
+require_once(modification("classes/db_cgm_classe.php"));
 
-$cliptubase                  = new  cl_iptubase;
+$cliptubase                  = new cl_iptubase;
 $claverbaregimovel           = new cl_averbaregimovel;
 $claverbaprocesso            = new cl_averbaprocesso;
 $claverbacao                 = new cl_averbacao;
@@ -64,13 +64,22 @@ $claverbadecisaojudicial->rotulo->label();
 $clcgm->rotulo->label();
 $claverbaguia->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
+
+$responsavel = (isset($j75_responsavel) && trim($j75_responsavel)) ? $j75_responsavel : db_getsession("DB_id_usuario");
+$sql="select nome as j75_responsavel_a, id_usuario as j75_responsavel from db_usuarios where id_usuario = $responsavel";
+
+db_fieldsmemory(db_query($sql),0); 
+
 if(isset($alterar)){
   $sqlerro=false;
   db_inicio_transacao();
+
+  $claverbacao->j75_responsavel =$j75_responsavel;
   $claverbacao->alterar($j75_codigo);
+
   if($claverbacao->erro_status==0){
     $sqlerro=true;
   }  
@@ -123,7 +132,7 @@ if(isset($alterar)){
 
   		}else{
 
-  			$claverbaprocesso->p77_averbacao = $j75_codigo;
+  			$claverbaprocesso->j77_averbacao = $j75_codigo;
 	  		$claverbaprocesso->incluir($j75_codigo);
 
 	  		if ($claverbaprocesso->erro_status==0){
@@ -297,11 +306,7 @@ if(isset($alterar)){
    if ($j75_situacao==2){
    	$db_opcao = 3;
    	$db_botao = false;
-   }
-   
-$sql="select nome as j75_responsavel_a from db_usuarios where id_usuario=$j75_responsavel";
-
-db_fieldsmemory(db_query($sql),0);   
+   }  
 }
 ?>
 <html>

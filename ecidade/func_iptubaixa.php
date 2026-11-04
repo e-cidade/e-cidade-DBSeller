@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<? 
+<?php 
 	db_app::load('scripts.js, prototype.js, strings.js, dbcomboBox.widget.js, estilos.css');
 ?>
 </head>
@@ -66,7 +66,7 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
               <?=$Lj02_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j02_matric",10,$Ij02_matric,true,"text",4,"","chave_j02_matric");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
               <?=$Lj02_dtbaixa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j02_dtbaixa",10,$Ij02_dtbaixa,true,"text",4,"","chave_j02_dtbaixa");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
           <tr>
           	<td width="34%" align="right" nowrap title="<?=$Tj06_setorloc?>"><?=$Lj06_setorloc?></td>
           	<td>
-          	<?
+          	<?php
            		db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos', 'js_carregaQuadra(this.value)');
           	?>
           	</td>
@@ -188,12 +188,12 @@ $rsSetorLoc = $clsetorloc->sql_record($clsetorloc->sql_query_file(null, 'j05_cod
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

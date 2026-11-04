@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,20 +31,20 @@
       <tr> 
 	   <tr> 
         <td height="25"><strong>C&oacute;d. do Banco:</strong></td>
-        <td height="25"><input name="k15_codbco" type="text" id="k15_codbco" value="<?=@$k15_codbco?>" <? echo isset($alterar)?"readonly":"" ?> size="5"></td>
+        <td height="25"><input name="k15_codbco" type="text" id="k15_codbco" value="<?=@$k15_codbco?>" <?php echo isset($alterar)?"readonly":"" ?> size="5"></td>
       </tr>
       <tr> 
         <td height="25"><strong>C&oacute;d. da Ag&ecirc;ncia:</strong></td>
-        <td height="25"><input name="k15_codage" type="text" id="k15_codage" value="<?=@$k15_codage?>" <? echo isset($alterar)?"readonly":"" ?> size="5" maxlength="5"></td>
+        <td height="25"><input name="k15_codage" type="text" id="k15_codage" value="<?=@$k15_codage?>" <?php echo isset($alterar)?"readonly":"" ?> size="5" maxlength="5"></td>
       </tr>
         <td width="40%" height="25" nowrap>
-		  <?
+		  <?php
 		    include(modification("dbforms/db_funcoes.php"));
 		    db_label_blur('numcgm','Numcgm/Nome','nome','descrnome');
 		  ?>
 		</td>
         <td width="60%" height="25" nowrap>
-		<?
+		<?php
 		  db_text_blur('numcgm','nome','descrnome',10,20,@$k15_numcgm,@$k15_numcgm);
 		  db_text_blur('numcgm','descrnome','nome',40,100,@$nomedescr,@$k15_numcgm);
 	    ?>

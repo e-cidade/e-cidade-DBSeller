@@ -27,9 +27,11 @@
 
 namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Converter;
 
+use DBString;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Collection\TagsXML;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Validator\DadosArquivosPedidos;
 use DOMDocument;
+use Exception;
 
 /**
  * Class Pedido
@@ -59,9 +61,9 @@ class Pedido
     /**
      * @param array $dados
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    public function gerarArquivoPedidos(array $dados, $hemato = false)
+    public function gerarArquivoPedidos(array $dados, $hemato = false, $urinalise = false)
     {
         $dadosArquivosPedidos = new DadosArquivosPedidos($dados);
         $dadosArquivosPedidos->validar();
@@ -69,16 +71,20 @@ class Pedido
         $this->atualizarValores($dados);
 
         $arquivo = 'tmp/pedido' . $dados["CodigoLis"] . '_' . date('Ymd_His') . '.xml';
-        
+
         if ($hemato) {
             $arquivo = 'tmp/pedido' . $dados["CodigoLis"] . '_' . date('Ymd_His') . '.luck';
+        }
+
+        if ($urinalise) {
+            $arquivo = 'tmp/pedido' . $dados["CodigoLis"] . '_' . date('Ymd_His') . '.uri';
         }
 
         $this->xml->save($arquivo);
 
         return $arquivo;
     }
-    
+
     private function criarEstruturaXml()
     {
         $this->xml = new DOMDocument('1.0', 'UTF-8');
@@ -112,7 +118,7 @@ class Pedido
             }
 
             $elemento = $this->xml->getElementsByTagName($indice)->item(0);
-            $elemento->appendChild($this->xml->createTextNode(\DBString::utf8_encode_all($dado)));
+            $elemento->appendChild($this->xml->createTextNode(DBString::utf8_encode_all($dado)));
         }
     }
 
@@ -132,5 +138,24 @@ class Pedido
                 $elementoExame->appendChild($elemento);
             }
         }
+    }
+
+    /**
+     * @param array $dados
+     * @return string
+     * @throws Exception
+     */
+    public function gerarArquivoPedidosInfinity(array $dados)
+    {
+        $dadosArquivosPedidos = new DadosArquivosPedidos($dados);
+        $dadosArquivosPedidos->validar();
+        $this->criarEstruturaXml();
+        $this->atualizarValores($dados);
+
+        $arquivo = 'tmp/pedido' . $dados["CodigoLis"] . '_' . date('Ymd_His') . '.infinity';
+
+        $this->xml->save($arquivo);
+
+        return $arquivo;
     }
 }

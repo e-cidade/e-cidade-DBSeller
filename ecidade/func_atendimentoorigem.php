@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cl_clientes->rotulo->label("at01_nomecli");
               <?=$Lat01_codcli?>
             </td>
             <td align="left" nowrap> 
-              <? db_input("at01_codcli",10,$Iat01_codcli,true,"text",4,"","chave_at01_codcli"); ?>
+              <?php db_input("at01_codcli",10,$Iat01_codcli,true,"text",4,"","chave_at01_codcli"); ?>
             </td>
           </tr>
           <tr> 
@@ -64,18 +64,18 @@ $cl_clientes->rotulo->label("at01_nomecli");
               <?=$Lat01_nomecli?>
             </td>
             <td align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at01_nomecli",20,$Iat01_nomecli,true,"text",4,"","chave_at01_nomecli");
 		       ?>
             </td>
           </tr>
           <tr>
-          	<td colspan="2"><b>Periodo de:</b><? db_inputdata("data_inicial", @$data_inicial_dia, @$data_inicial_mes, @$data_inicial_ano, true, 'text', 4, "") ?><b>&nbsp;&nbsp;a&nbsp;&nbsp;</b><? db_inputdata("data_final", @$data_final_dia, @$data_final_mes, @$data_final_ano, true, 'text', 4, "") ?></td>
+          	<td colspan="2"><b>Periodo de:</b><?php db_inputdata("data_inicial", @$data_inicial_dia, @$data_inicial_mes, @$data_inicial_ano, true, 'text', 4, "") ?><b>&nbsp;&nbsp;a&nbsp;&nbsp;</b><?php db_inputdata("data_final", @$data_final_dia, @$data_final_mes, @$data_final_ano, true, 'text', 4, "") ?></td>
           </tr>
           <tr>
             <td><b>Top de Atendimento:</b></td>
           	<td>
-          	<? 
+          	<?php 
           	   $rs_atend_top = $clatendimento_top->sql_record($clatendimento_top->sql_query(null,"at14_usuario,at10_nome","at14_qtd desc limit 5","at14_codcli = $chave_cliente"));
           	   db_selectrecord("atend_top",$rs_atend_top,true,1,"","chave_atend_top");
           	?>
@@ -94,7 +94,7 @@ $cl_clientes->rotulo->label("at01_nomecli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       	$where  = "";
         $campos = "atendlanc.at06_datalanc as dl_Lancado_em,
 				   atendlanc.at06_horalanc as dl_Hora,		
@@ -183,14 +183,14 @@ $cl_clientes->rotulo->label("at01_nomecli");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_at01_codcli.focus();
 document.form2.chave_at01_codcli.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ db_fieldsmemory($result,0);
                     <td bgcolor="#E6E6E6" width="98"><b><font size="4">Unidade</b></font></td>
                     <td bgcolor="#E6E6E6" width="86"><b><font size="4">Quantidade</b></font></td>
                   </tr>
-                  <?
+                  <?php
                   for($i=0;$i<$clfar_retiradaitens->numrows;$i++){
 
                     db_fieldsmemory($result,$i); 
@@ -80,7 +80,7 @@ db_fieldsmemory($result,0);
                     <td bgcolor="#E6E6E6" width="98"><?=$m61_descr ?></td>
                     <td bgcolor="#E6E6E6" width="86"><?=$fa09_f_quant?></td> 
                   </tr>
-                  <?
+                  <?php
                   }
                   ?>
                 </table>

@@ -51,7 +51,7 @@ try {
    
 } catch (Exception $eException) {
    
-   db_msgbox($eException->getMessage()); 
+   throw new \ECidade\V3\Extension\Exceptions\ResponseException($eException->getMessage()); 
    db_redireciona('corpo.php');
 }
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,10 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification('fpdf151/pdf.php'));
 require_once(modification('libs/db_sql.php'));
 require_once(modification('libs/db_utils.php'));
 require_once(modification('classes/db_matmater_classe.php'));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -51,72 +53,85 @@ $sHeaderTipo      = "";
 $sHeaderOrdem     = "";
 $sHeaderLiberadas = "";
 
-if ( isset($oGet->guiaini) && isset($oGet->guiafim) ) {
 
-	if ( (trim($oGet->guiaini) != "") && (trim($oGet->guiafim) != "") ) {
+if (isset($oGet->guiaini) && isset($oGet->guiafim)) {
 
-    $sHeaderGuia = "Código da Guia: ".$oGet->guiaini." á ".$oGet->guiafim;
-	  $sWhere    .= "{$sAnd} it01_guia between '{$oGet->guiaini}' and '{$oGet->guiafim}' ";
-	  $sAnd       = " and ";
-	} else if ( trim($oGet->guiaini) != "" ) {
+  if ((trim($oGet->guiaini) != "") && (trim($oGet->guiafim) != "")) {
 
-	  $sHeaderGuia = "Código da Guia: ".$oGet->guiaini;
-	  $sWhere .= "{$sAnd} ( it01_guia >= '{$oGet->guiaini}' ) ";
-	  $sAnd    = " and ";
-	} else if ( trim($oGet->guiafim) != "" ) {
+    $sHeaderGuia = "Código da Guia: " . $oGet->guiaini . " á " . $oGet->guiafim;
+    $sWhere    .= "{$sAnd} it01_guia between '{$oGet->guiaini}' and '{$oGet->guiafim}' ";
+    $sAnd       = " and ";
+  } else if (trim($oGet->guiaini) != "") {
 
-	  $sHeaderGuia = "Código da Guia: ".$oGet->guiafim;
-	  $sWhere .= "{$sAnd} ( it01_guia <= '{$oGet->guiafim}' ) ";
-	  $sAnd    = " and ";
-	}
+    $sHeaderGuia = "Código da Guia: " . $oGet->guiaini;
+    $sWhere .= "{$sAnd} ( it01_guia >= '{$oGet->guiaini}' ) ";
+    $sAnd    = " and ";
+  } else if (trim($oGet->guiafim) != "") {
+
+    $sHeaderGuia = "Código da Guia: " . $oGet->guiafim;
+    $sWhere .= "{$sAnd} ( it01_guia <= '{$oGet->guiafim}' ) ";
+    $sAnd    = " and ";
+  }
+}
+if (isset($oGet->areaini) && isset($oGet->areafim)) {
+  if ((trim($oGet->areaini) != "") && (trim($oGet->areafim) != "")) {
+    $sWhere     .= "{$sAnd} it01_areaterreno between '{$oGet->areaini}' and '{$oGet->areafim}' ";
+    $sAnd           = " and ";
+  } else if (!empty($oGet->areaini)) {
+    $sWhere     .= "{$sAnd} it01_areaterreno >= '{$oGet->areaini}'";
+    $sAnd           = " and ";
+  } else if (!empty($oGet->areafim)) {
+    $sWhere     .= "{$sAnd} it01_areaterreno <= '{$oGet->areafim}'";
+    $sAnd           = " and ";
+  }
 }
 
-if ( isset($oGet->dtfim) && isset($oGet->dtini) ) {
+if (isset($oGet->dtfim) && isset($oGet->dtini)) {
 
-	$dtIni = implode("-",array_reverse(explode("/",$oGet->dtini)));
-  $dtFim = implode("-",array_reverse(explode("/",$oGet->dtfim)));
+  $dtIni = implode("-", array_reverse(explode("/", $oGet->dtini)));
+  $dtFim = implode("-", array_reverse(explode("/", $oGet->dtfim)));
 
-  if ( !empty($dtIni) && !empty($dtFim) ) {
+  if (!empty($dtIni) && !empty($dtFim)) {
 
-	  $sHeaderPeriodo = "PERIODO : DE ".$oGet->dtini." A ".$oGet->dtfim;
-	  $sWhere        .= " {$sAnd} it01_data between '{$dtIni}' and '{$dtFim}'";
-	  $sAnd           = " and ";
-	} else if ( !empty($dtIni) ) {
+    $sHeaderPeriodo = "PERIODO : DE " . $oGet->dtini . " A " . $oGet->dtfim;
+    $sWhere        .= " {$sAnd} it01_data between '{$dtIni}' and '{$dtFim}'";
+    $sAnd           = " and ";
+  } else if (!empty($dtIni)) {
 
-	  $sHeaderPeriodo = "PERIODO : DATA MAIOR OU IGUAL A ".$oGet->dtini;
-	  $sWhere        .= " {$sAnd} it01_data >= '{$dtIni}' ";
-	  $sAnd           = " and ";
-	} else if ( !empty($dtFim) ) {
+    $sHeaderPeriodo = "PERIODO : DATA MAIOR OU IGUAL A " . $oGet->dtini;
+    $sWhere        .= " {$sAnd} it01_data >= '{$dtIni}' ";
+    $sAnd           = " and ";
+  } else if (!empty($dtFim)) {
 
-	  $sHeaderPeriodo = "PERIODO : DATA MENOR OU IGUAL A ".$oGet->dtfim;
-	  $sWhere        .= " {$sAnd} it01_data <= '{$dtFim}' ";
-	  $sAnd           = " and ";
-	}
+    $sHeaderPeriodo = "PERIODO : DATA MENOR OU IGUAL A " . $oGet->dtfim;
+    $sWhere        .= " {$sAnd} it01_data <= '{$dtFim}' ";
+    $sAnd           = " and ";
+  }
 }
 
-if ( isset($oGet->sLogradouro) ) {
-  if ( !empty($oGet->sLogradouro) ) {
+if (isset($oGet->sLogradouro)) {
+  if (!empty($oGet->sLogradouro)) {
     $sWhereLograd  = " where logradouro = '{$oGet->sLogradouro}' ";
   }
 }
 
 
-if ( isset($oGet->sSetor) && $oGet->sSetor != "") {
-  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad($oGet->sSetor,4,"0",STR_PAD_LEFT)."'";
+if (isset($oGet->sSetor) && $oGet->sSetor != "") {
+  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad($oGet->sSetor, 4, "0", STR_PAD_LEFT) . "'";
   $sAnd     = " and ";
 }
 
-if ( isset($oGet->sQuadra) && $oGet->sQuadra != "" ) {
-  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad($oGet->sQuadra,4,"0",STR_PAD_LEFT)."'";
+if (isset($oGet->sQuadra) && $oGet->sQuadra != "") {
+  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad($oGet->sQuadra, 4, "0", STR_PAD_LEFT) . "'";
   $sAnd     = " and ";
 }
 
-if ( isset($oGet->sLote) && $oGet->sLote != "" ) {
-  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad($oGet->sLote,4,"0",STR_PAD_LEFT)."'";
+if (isset($oGet->sLote) && $oGet->sLote != "") {
+  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad($oGet->sLote, 4, "0", STR_PAD_LEFT) . "'";
   $sAnd     = " and ";
 }
 
-if ( $oGet->situacao == "2" ) {
+if ($oGet->situacao == "2") {
 
   $sHeaderSituacao = "SITUAÇÃO : ABERTO";
   $sWhere         .= " {$sAnd} not exists(select arrepaga.k00_numpre";
@@ -125,7 +140,7 @@ if ( $oGet->situacao == "2" ) {
   $sWhere         .= "                     where itbinumpre.it15_guia = itbi.it01_guia)";
   $sWhere         .= " and it16_guia is null";
   $sAnd            = " and ";
-} else if ( $oGet->situacao == "3" ) {
+} else if ($oGet->situacao == "3") {
 
   $sHeaderSituacao = "SITUAÇÃO : PAGO";
   $sWhere         .= " {$sAnd} exists(select arrepaga.k00_numpre";
@@ -133,7 +148,7 @@ if ( $oGet->situacao == "2" ) {
   $sWhere         .= "                          inner join itbinumpre on itbinumpre.it15_numpre = arrepaga.k00_numpre";
   $sWhere         .= "                     where itbinumpre.it15_guia = itbi.it01_guia)";
   $sAnd            = " and ";
-} else if ( $oGet->situacao == "4" ) {
+} else if ($oGet->situacao == "4") {
 
   $sHeaderSituacao = "SITUAÇÃO : CANCELADO";
   $sWhere         .= " {$sAnd} it16_guia is not null";
@@ -142,12 +157,12 @@ if ( $oGet->situacao == "2" ) {
   $sHeaderSituacao = "SITUAÇÃO : TODOS";
 }
 
-if ( $oGet->tipo == "u"  ) {
+if ($oGet->tipo == "u") {
 
   $sHeaderTipo = "TIPO : URBANO";
   $sWhere     .= " {$sAnd} it05_guia is not null ";
   $sAnd        = " and ";
-} else if ( $oGet->tipo == "r"  ) {
+} else if ($oGet->tipo == "r") {
 
   $sHeaderTipo = "TIPO : RURAL";
   $sWhere     .= " {$sAnd} it18_guia is not null ";
@@ -156,55 +171,49 @@ if ( $oGet->tipo == "u"  ) {
   $sHeaderTipo = "TIPO : TODOS";
 }
 
-if ( $oGet->liberadas == "s" ) {
+if ($oGet->liberadas == "s") {
 
   $sHeaderLiberadas = "SOMENTE LIBERADAS";
   $sWhere          .= " {$sAnd}  it14_guia is not null ";
   $sAnd             = " and ";
-} else if ( $oGet->liberadas == "n" ) {
+} else if ($oGet->liberadas == "n") {
 
   $sHeaderLiberadas = "SOMENTE NÃO LIBERADAS";
   $sWhere          .= " {$sAnd}  it14_guia is null ";
   $sAnd             = " and ";
 }
 
-if ( isset($oGet->modoimp) ) {
+if (isset($oGet->modoimp)) {
 
-	if ($oGet->modoimp == 'anal') {
-		$sHeaderModoImp = "ANÁLITICO";
-	} else if ($oGet->modoimp == 'sint') {
-		$sHeaderModoImp = "SINTÉTICO";
-	}
+  if ($oGet->modoimp == 'anal') {
+    $sHeaderModoImp = "ANÁLITICO";
+  } else if ($oGet->modoimp == 'sint') {
+    $sHeaderModoImp = "SINTÉTICO";
+  }
 }
 
-if( $oGet->ordem == 'n' ) {
+if ($oGet->ordem == 'n') {
 
   $sHeaderOrdem = "ORDEM : NOME ";
   $sOrdem       = " itbinome.it03_nome ";
-} else if ( $oGet->ordem == 'v' ) {
+} else if ($oGet->ordem == 'v') {
 
   $sHeaderOrdem = "ORDEM : VALOR ";
   $sOrdem       = " itbi.it01_valortransacao ";
-} else if ( $oGet->ordem == 'g' ) {
+} else if ($oGet->ordem == 'g') {
 
   $sHeaderOrdem = "ORDEM : GUIA";
   $sOrdem       = " itbi.it01_guia ";
 }
 
+
 //echo $sOrdem;
 //die();
 
-if ( isset($sWhere) && !empty($sWhere) ) {
-	$sWhere = " where {$sWhere}";
+if (isset($sWhere) && !empty($sWhere)) {
+  $sWhere = " where {$sWhere}";
 }
 
-$head2 = "RESUMO DE ITBI ";
-$head4 = $sHeaderGuia;
-$head3 = $sHeaderPeriodo;
-$head4 = $sHeaderSituacao;
-$head5 = $sHeaderTipo;
-$head6 = $sHeaderOrdem;
-$head7 = $sHeaderLiberadas;
 
 $sSql  = "    select *                                                                                                ";
 $sSql .= "      from (                                                                                                ";
@@ -235,6 +244,7 @@ $sSql .= "		                it03_nome as z01_nome, 														          ";
 $sSql .= "                    coalesce(itbi.it01_valorconstr          ,0) as it01_valorconstr,                        ";
 $sSql .= "                    coalesce(itbi.it01_valorterreno         ,0) as it01_valorterreno,                       ";
 $sSql .= "                    coalesce(itbi.it01_valortransacao       ,0) as it01_valortransacao,                     ";
+$sSql .= "                    coalesce(itbi.it01_areaterreno          ,0) as it01_areaterreno,                        ";
 $sSql .= "                    coalesce(itbiavalia.it14_valoravalconstr,0) as it14_valoravalconstr,                    ";
 $sSql .= "                    coalesce(itbiavalia.it14_valoravalter   ,0) as it14_valoravalter,                       ";
 $sSql .= "                    coalesce(itbiavalia.it14_valoraval      ,0) as it14_valoraval,                          ";
@@ -252,7 +262,7 @@ $sSql .= "	             from itbi  																			      ";
 $sSql .= "                    inner join itbitransacao     on it04_codigo                = it01_tipotransacao         ";
 $sSql .= "	 	                inner join itbinome          on itbinome.it03_guia 	       = itbi.it01_guia 		  ";
 
-if ( $oGet->modoimp == 'sint' ) {
+if ($oGet->modoimp == 'sint') {
   $sSql .= "				                                      and itbinome.it03_tipo 	       = 'C' 	  		  ";
 }
 
@@ -300,12 +310,11 @@ $rsSql     = db_query($sSql);
 $iNumRows  = pg_num_rows($rsSql);
 
 $aRetorno  = db_utils::getCollectionByRecord($rsSql);
-
 /**
  * Cria vetor para comparação
  */
 $aCompara  = array();
-foreach ($aRetorno as $oDadosFiltro){
+foreach ($aRetorno as $oDadosFiltro) {
   $aCompara[$oDadosFiltro->it01_guia][$oDadosFiltro->it03_tipo][] = $oDadosFiltro;
 }
 $oGuiaPaga          = null;
@@ -315,7 +324,7 @@ $aDados             = array();
 /**
  * Filtra os dados de guias repetidas
  */
-foreach ($aCompara as $aGuias){
+foreach ($aCompara as $aGuias) {
 
   foreach ($aGuias as $aTipoRegistro) {
 
@@ -325,14 +334,13 @@ foreach ($aCompara as $aGuias){
 
     foreach ($aTipoRegistro as $oRegistroValido) {
 
-      if ($oRegistroValido->valida_situacao =='PAGO'){
+      if ($oRegistroValido->valida_situacao == 'PAGO') {
         $oGuiaPaga          = $oRegistroValido;
-      } elseif ($oRegistroValido->valida_situacao == 'EM_ABERTO'){
+      } elseif ($oRegistroValido->valida_situacao == 'EM_ABERTO') {
         $oGuiaAberto        = $oRegistroValido;
       } else {
         $oGuiaSemIncidencia = $oRegistroValido;
       }
-
     }
 
     if (count($oGuiaPaga) > 0) {
@@ -349,121 +357,127 @@ foreach ($aCompara as $aGuias){
 }
 
 $aRetorno = $aDados;
-if ($iNumRows == 0){
+if ($iNumRows == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=O filtro selecionado não retornou nenhum registro.');
 }
 
-$pdf = new PDF();
-$pdf->Open();
-$pdf->AliasNbPages();
-$pdf->SetFont('arial','b',8);
-$pdf->SetFillColor(235);
+$pdf = new ECidade\Pdf\Pdf("L");
+$pdf->init(false);
+
+$pdf->addTitulo("RESUMO DE ITBI ");
+$pdf->addTitulo($sHeaderGuia);
+$pdf->addTitulo($sHeaderPeriodo);
+$pdf->addTitulo($sHeaderSituacao);
+$pdf->addTitulo($sHeaderTipo);
+$pdf->addTitulo($sHeaderOrdem);
+$pdf->addTitulo($sHeaderLiberadas);
 
 
 
-if ( $oGet->modoimp == 'sint' ) {
+if ($oGet->modoimp == 'sint') {
 
-	$iTotal      = 0;
-	$iTotalGuia  = 0;
-	$iTroca      = 1;
-	$iAlt        = 4;
-	$aTipo       = array();
-	$aTipoValor  = array();
-	$aDadosGuias = array();
-
-	foreach ($aRetorno as $i => $oRetorno) {
+  $iTotal      = 0;
+  $iTotalGuia  = 0;
+  $iTroca      = 1;
+  $iAlt        = 4;
+  $aTipo       = array();
+  $aTipoValor  = array();
+  $aDadosGuias = array();
 
 
-	  if ($pdf->gety() > $pdf->h - 30 || $iTroca != 0 ){
+  foreach ($aRetorno as $i => $oRetorno) {
 
-	    $pdf->addpage("L");
-	    $pdf->SetFont('arial','b',8);
-	    $pdf->SetFillColor(215);
-	    $pdf->cell(15,$iAlt,"Guia"                                                                            ,1,0,"C",1);
-	    $pdf->cell(55,$iAlt,"Nome Adquirente"                                                                 ,1,0,"C",1);
-	    $pdf->cell(15,$iAlt,"Numpre"                                                                          ,1,0,"C",1);
-	    $pdf->cell(15,$iAlt,"Matrícula"                                                                       ,1,0,"C",1);
-	    $pdf->cell(15,$iAlt,"Cgm"                                                                             ,1,0,"C",1);
-	    $pdf->cell(20,$iAlt,"Valor"                                                                           ,1,0,"C",1);
-	    $pdf->cell(20,$iAlt,"Situação"                                                                        ,1,0,"C",1);
-	    $pdf->cell(20,$iAlt,"Liberada"                                                                        ,1,0,"C",1);
-	    $pdf->cell(20,$iAlt,"Dtvenc"                                                                          ,1,0,"C",1);
-	    $pdf->cell(50,$iAlt,"Transação"                                                                       ,1,0,"C",1);
-	    $pdf->cell(30,$iAlt,"Urbano/Rural"                                                                    ,1,1,"C",1);
-	    $pdf->cell(200,1,""                                                                                   ,0,1,"L",0);
+    if ($pdf->getY() > $pdf->getH() - 30 || $iTroca != 0) {
 
-	    $iTroca = 0;
+      $pdf->addPage("L");
+      $pdf->SetFont('arial', 'b', 8);
+      $pdf->SetFillColor(215);
+      $pdf->cell(15, $iAlt, "Guia", 1, 0, "C", 1);
+      $pdf->cell(55, $iAlt, "Nome Adquirente", 1, 0, "C", 1);
+      $pdf->cell(15, $iAlt, "Numpre", 1, 0, "C", 1);
+      $pdf->cell(15, $iAlt, "Matrícula", 1, 0, "C", 1);
+      $pdf->cell(15, $iAlt, "Cgm", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Valor", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Situação", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Liberada", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Dtvenc", 1, 0, "C", 1);
+      $pdf->cell(40, $iAlt, "Transação", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Urbano/Rural", 1, 0, "C", 1);
+      $pdf->cell(20, $iAlt, "Area Total", 1, 1, "C", 1);
+      $pdf->cell(200, 1, "", 0, 1, "L", 0);
 
-	  }
+      $iTroca = 0;
+    }
 
-	  if($i % 2 == 0){
-	    $corfundo = 236;
-	  }else{
-	    $corfundo = 255;
-	  }
-	  $pdf->SetFillColor($corfundo);
+    if ($i % 2 == 0) {
+      $corfundo = 236;
+    } else {
+      $corfundo = 255;
+    }
+    $pdf->SetFillColor($corfundo);
 
-	  $pdf->SetFont('arial','',6);
-	  $pdf->cell(15,$iAlt,$oRetorno->it01_guia                                                                ,0,0,"C",1);
-	  $pdf->cell(55,$iAlt,$oRetorno->z01_nome                                                                 ,0,0,"L",1);
-	  $pdf->cell(15,$iAlt,$oRetorno->k00_numpre                                                               ,0,0,"C",1);
-	  $pdf->cell(15,$iAlt,$oRetorno->matric                                                                   ,0,0,"C",1);
-	  $pdf->cell(15,$iAlt,$oRetorno->cgm                                                                      ,0,0,"C",1);
-	  $pdf->cell(20,$iAlt,db_formatar("$oRetorno->k00_valor",'f')                                             ,0,0,"R",1);
+    $pdf->SetFont('arial', '', 6);
+    $pdf->cell(15, $iAlt, $oRetorno->it01_guia, 0, 0, "C", 1);
+    $pdf->cell(55, $iAlt, $oRetorno->z01_nome, 0, 0, "L", 1);
+    $pdf->cell(15, $iAlt, $oRetorno->k00_numpre, 0, 0, "C", 1);
+    $pdf->cell(15, $iAlt, $oRetorno->matric, 0, 0, "C", 1);
+    $pdf->cell(15, $iAlt, $oRetorno->cgm, 0, 0, "C", 1);
+    $pdf->cell(20, $iAlt, db_formatar("$oRetorno->k00_valor", 'f'), 0, 0, "R", 1);
 
-	  if (isset($oRetorno->it16_guia) and $oRetorno->it16_guia != "") {
-	    $sTipo = "Cancelado";
-	  } else if (isset($oRetorno->arrepaga)&& trim($oRetorno->arrepaga) != "") {
-	    $sTipo = "Pago";
-	  } else if ( $oRetorno->itbiliberada == "Sim" ) {
-	    $sTipo = "Aberto";
-	  } else {
-	    $sTipo = "";
-	  }
+    if (isset($oRetorno->it16_guia) and $oRetorno->it16_guia != "") {
+      $sTipo = "Cancelado";
+    } else if (isset($oRetorno->arrepaga) && trim($oRetorno->arrepaga) != "") {
+      $sTipo = "Pago";
+    } else if ($oRetorno->itbiliberada == "Sim") {
+      $sTipo = "Aberto";
+    } else {
+      $sTipo = "";
+    }
 
-	  $pdf->cell(20,$iAlt,$sTipo                                                                              ,0,0,"C",1);
+    $pdf->cell(20, $iAlt, $sTipo, 0, 0, "C", 1);
 
-	  if (!isset($aTipo[$sTipo])) {
-	    $aTipo[$sTipo] = 1;
-	    $aTipoValor[$sTipo] = round($oRetorno->k00_valor,2);
-	  } else {
-	    $aTipo[$sTipo]++;
-	    $aTipoValor[$sTipo] += round($oRetorno->k00_valor,2);
-	  }
+    if (!isset($aTipo[$sTipo])) {
+      $aTipo[$sTipo] = 1;
+      $aTipoValor[$sTipo] = round($oRetorno->k00_valor, 2);
+    } else {
+      $aTipo[$sTipo]++;
+      $aTipoValor[$sTipo] += round($oRetorno->k00_valor, 2);
+    }
 
-	  $pdf->cell(20,$iAlt,$oRetorno->itbiliberada                                                             ,0,0,"C",1);
-	  $pdf->cell(20,$iAlt,db_formatar("$oRetorno->k00_dtvenc",'d')                                            ,0,0,"C",1);
-	  $pdf->cell(50,$iAlt,substr($oRetorno->it04_descr,0,30)                                                  ,0,0,"L",1);
-	  $pdf->cell(30,$iAlt,$oRetorno->urbanorural                                                              ,0,1,"L",1);
+    $pdf->cell(20, $iAlt, $oRetorno->itbiliberada, 0, 0, "C", 1);
+    $pdf->cell(20, $iAlt, db_formatar("$oRetorno->k00_dtvenc", 'd'), 0, 0, "C", 1);
+    $pdf->cell(40, $iAlt, substr($oRetorno->it04_descr, 0, 30), 0, 0, "L", 1);
+    $pdf->cell(20, $iAlt, $oRetorno->urbanorural, 0, 0, "C", 1);
+    $pdf->cell(20, $iAlt, $oRetorno->it01_areaterreno, 0, 1, "C", 1);
 
-	  $oDadosGuias = new stdClass();
-	  $oDadosGuias->CodGuia = $oRetorno->it01_guia;
+    $oDadosGuias = new stdClass();
+    $oDadosGuias->CodGuia = $oRetorno->it01_guia;
 
-	  if ( !isset($aDadosGuias[$oRetorno->it01_guia]) ) {
+    if (!isset($aDadosGuias[$oRetorno->it01_guia])) {
 
-	  	$aDadosGuias[$oRetorno->it01_guia]['oCodGuia'] = $oDadosGuias;
-	    $iTotalGuia++;
-	  }
+      $aDadosGuias[$oRetorno->it01_guia]['oCodGuia'] = $oDadosGuias;
+      $iTotalGuia++;
+    }
 
-	  $iTotal++;
-	}
+    $iTotal++;
+  }
 
-	$pdf->SetFont('arial','b',8);
-	$pdf->cell(0,$iAlt,"TOTAL DE REGISTROS  :  $iTotal"                                                     ,'T',0,"L",0);
-	$pdf->ln(10);
+  $pdf->SetFont('arial', 'b', 8);
+  $pdf->cell(0, $iAlt, "TOTAL DE REGISTROS  :  $iTotal", 'T', 0, "L", 0);
+  $pdf->ln(10);
 
-	$pdf->SetFont('arial','b',8);
-	$pdf->cell(0,$iAlt,"TOTAL DE GUIAS  :  $iTotalGuia"                                                     ,'T',0,"L",0);
-	$pdf->ln(10);
+  $pdf->SetFont('arial', 'b', 8);
+  $pdf->cell(0, $iAlt, "TOTAL DE GUIAS  :  $iTotalGuia", 'T', 0, "L", 0);
+  $pdf->ln(10);
 
-	$pdf->cell(0,$iAlt,"TOTAIS POR TIPO"                                                                    ,'T',1,"L",0);
+  $pdf->cell(0, $iAlt, "TOTAIS POR TIPO", 'T', 1, "L", 0);
 
-	foreach ($aTipo as $k => $v) {
-	  $pdf->cell(55,$iAlt,$k,0,0,"L",1);
-	  $pdf->cell(55,$iAlt,$v,0,0,"L",1);
-	  $pdf->cell(55,$iAlt,db_formatar($aTipoValor[$k],'f'),0,1,"L",1);
-	}
-	$pdf->ln();
+  foreach ($aTipo as $k => $v) {
+    $pdf->cell(55, $iAlt, $k, 0, 0, "L", 1);
+    $pdf->cell(55, $iAlt, $v, 0, 0, "L", 1);
+    $pdf->cell(55, $iAlt, db_formatar($aTipoValor[$k], 'f'), 0, 1, "L", 1);
+  }
+  $pdf->ln();
 } else {
 
   $iAlt          = 4;
@@ -477,9 +491,9 @@ if ( $oGet->modoimp == 'sint' ) {
   $aDados        = array();
   $aDadosItbi    = array();
 
-	foreach ($aRetorno as $i => $oRetorno) {
+  foreach ($aRetorno as $i => $oRetorno) {
 
-   // $oRetorno = db_utils::fieldsMemory($rsSql,$i);
+    // $oRetorno = db_utils::fieldsMemory($rsSql,$i);
 
     $oDadosItbi = new stdClass();
     $oDadosItbi->iGuia             = $oRetorno->it01_guia;
@@ -490,9 +504,9 @@ if ( $oGet->modoimp == 'sint' ) {
 
     if (isset($oRetorno->it16_guia) and $oRetorno->it16_guia != "") {
       $oDadosItbi->sSituacao       = "Cancelado";
-    } else if (isset($oRetorno->arrepaga)&& trim($oRetorno->arrepaga) != "") {
+    } else if (isset($oRetorno->arrepaga) && trim($oRetorno->arrepaga) != "") {
       $oDadosItbi->sSituacao       = "Pago";
-    } else if ( $oRetorno->itbiliberada == "Sim" ) {
+    } else if ($oRetorno->itbiliberada == "Sim") {
       $oDadosItbi->sSituacao       = "Aberto";
     } else {
       $oDadosItbi->sSituacao       = "";
@@ -500,13 +514,15 @@ if ( $oGet->modoimp == 'sint' ) {
 
     $oDadosItbi->sLiberada         = $oRetorno->itbiliberada;
     $oDadosItbi->dtVenc            = $oRetorno->k00_dtvenc;
-    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr,0,30);
-    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr,0,30);
+    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr, 0, 30);
+    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr, 0, 30);
     $oDadosItbi->sUrbRural         = $oRetorno->urbanorural;
 
     $oDadosItbi->nValorDeclConstr  = $oRetorno->it01_valorconstr;
     $oDadosItbi->nValorDeclTerreno = $oRetorno->it01_valorterreno;
     $oDadosItbi->nValTotalDecl     = $oRetorno->it01_valortransacao;
+
+    $oDadosItbi->nAreaTotal        = $oRetorno->it01_areaterreno;
 
     $oDadosItbi->nValorAvalConstr  = $oRetorno->it14_valoravalconstr;
     $oDadosItbi->nValorAvalTerreno = $oRetorno->it14_valoravalter;
@@ -514,115 +530,112 @@ if ( $oGet->modoimp == 'sint' ) {
 
     $aDadosItbi[$oRetorno->it01_guia]['oDadosGuias'] = $oDadosItbi;
 
-    if (  $oRetorno->it03_tipo == 'C' ) {
+    if ($oRetorno->it03_tipo == 'C') {
       $aDadosItbi[$oRetorno->it01_guia]['aAdquirentes'][]   = $oRetorno->z01_nome;
     } else {
-	    $aDadosItbi[$oRetorno->it01_guia]['aTransmitentes'][] = $oRetorno->z01_nome;
+      $aDadosItbi[$oRetorno->it01_guia]['aTransmitentes'][] = $oRetorno->z01_nome;
     }
 
-    if ( isset($oRetorno->it01_guia) ) {
+    if (isset($oRetorno->it01_guia)) {
       $iTotalGuia++;
     }
-
   }
 
-  foreach ( $aDadosItbi as $iCodItbi => $aDados ) {
+  foreach ($aDadosItbi as $iCodItbi => $aDados) {
 
-    imprimeCabecalho($pdf,$iAlt,$lImprime);
-		$lImprime = false;
+    imprimeCabecalho($pdf, $iAlt, $lImprime);
+    $lImprime = false;
 
     if ($iPreencher == true) {
       $iPreencher = false;
-    	$iCorFundo = 1;
+      $iCorFundo = 1;
     } else {
-    	$iPreencher = true;
+      $iPreencher = true;
       $iCorFundo  = 0;
     }
 
-    $pdf->cell(25,$iAlt,$aDados['oDadosGuias']->iGuia                                              ,0,0,"C",$iCorFundo);
-    $pdf->cell(25,$iAlt,$aDados['oDadosGuias']->iNumpre                                            ,0,0,"C",$iCorFundo);
-    $pdf->cell(25,$iAlt,$aDados['oDadosGuias']->iMatric                                            ,0,0,"C",$iCorFundo);
-    $pdf->cell(30,$iAlt,db_formatar($aDados['oDadosGuias']->nValor,'f')                            ,0,0,"C",$iCorFundo);
-    $pdf->cell(30,$iAlt,$aDados['oDadosGuias']->sSituacao                                          ,0,0,"C",$iCorFundo);
-    $pdf->cell(30,$iAlt,$aDados['oDadosGuias']->sLiberada                                          ,0,0,"C",$iCorFundo);
-    $pdf->cell(30,$iAlt,db_formatar($aDados['oDadosGuias']->dtVenc,'d')                            ,0,0,"C",$iCorFundo);
-    $pdf->cell(52,$iAlt,$aDados['oDadosGuias']->sTranzacao                                         ,0,0,"C",$iCorFundo);
-    $pdf->cell(32,$iAlt,$aDados['oDadosGuias']->sUrbRural                                          ,0,1,"C",$iCorFundo);
+    $pdf->cell(25, $iAlt, $aDados['oDadosGuias']->iGuia, 0, 0, "C", $iCorFundo);
+    $pdf->cell(25, $iAlt, $aDados['oDadosGuias']->iNumpre, 0, 0, "C", $iCorFundo);
+    $pdf->cell(25, $iAlt, $aDados['oDadosGuias']->iMatric, 0, 0, "C", $iCorFundo);
+    $pdf->cell(30, $iAlt, db_formatar($aDados['oDadosGuias']->nValor, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(30, $iAlt, $aDados['oDadosGuias']->sSituacao, 0, 0, "C", $iCorFundo);
+    $pdf->cell(30, $iAlt, $aDados['oDadosGuias']->sLiberada, 0, 0, "C", $iCorFundo);
+    $pdf->cell(30, $iAlt, db_formatar($aDados['oDadosGuias']->dtVenc, 'd'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(52, $iAlt, $aDados['oDadosGuias']->sTranzacao, 0, 0, "C", $iCorFundo);
+    $pdf->cell(32, $iAlt, $aDados['oDadosGuias']->sUrbRural, 0, 1, "C", $iCorFundo);
 
-    $pdf->cell(75,$iAlt,""                                                                         ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValorDeclConstr,'f')                  ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValorDeclTerreno,'f')                 ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValTotalDecl,'f')                     ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValorAvalConstr,'f')                  ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValorAvalTerreno,'f')                 ,0,0,"C",$iCorFundo);
-    $pdf->cell(34,$iAlt,db_formatar($aDados['oDadosGuias']->nValTotalAval,'f')                     ,0,1,"C",$iCorFundo);
+    $pdf->cell(75, $iAlt, $aDados['oDadosGuias']->nAreaTotal, 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValorDeclConstr, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValorDeclTerreno, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValTotalDecl, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValorAvalConstr, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValorAvalTerreno, 'f'), 0, 0, "C", $iCorFundo);
+    $pdf->cell(34, $iAlt, db_formatar($aDados['oDadosGuias']->nValTotalAval, 'f'), 0, 1, "C", $iCorFundo);
 
     if (!isset($aTipo[$aDados['oDadosGuias']->sSituacao])) {
       $aTipo[$aDados['oDadosGuias']->sSituacao] = 1;
-      $aTipoValor[$aDados['oDadosGuias']->sSituacao] = round($aDados['oDadosGuias']->nValor,2);
+      $aTipoValor[$aDados['oDadosGuias']->sSituacao] = round($aDados['oDadosGuias']->nValor, 2);
     } else {
       $aTipo[$aDados['oDadosGuias']->sSituacao]++;
-      $aTipoValor[$aDados['oDadosGuias']->sSituacao] += round($aDados['oDadosGuias']->nValor,2);
+      $aTipoValor[$aDados['oDadosGuias']->sSituacao] += round($aDados['oDadosGuias']->nValor, 2);
     }
 
-    $iYPosIni = $pdf->GetY();
+    $iYPosIni = $pdf->getY();
 
     if (isset($aDados['aAdquirentes'])) {
 
-	    foreach ( $aDados['aAdquirentes'] as $iInd => $aDadosAdquir ) {
+      foreach ($aDados['aAdquirentes'] as $iInd => $aDadosAdquir) {
 
-	      imprimeCabecalho($pdf,$iAlt);
-	      $pdf->cell(139.5,$iAlt,$aDadosAdquir                                                                ,0,1,"C",$iCorFundo);
-	    }
+        imprimeCabecalho($pdf, $iAlt);
+        $pdf->cell(139.5, $iAlt, $aDadosAdquir, 0, 1, "C", $iCorFundo);
+      }
     }
 
-    $iYAdquirentes = $pdf->GetY();
+    $iYAdquirentes = $pdf->getY();
 
-    if ( $pdf->GetY() > $iYPosIni ) {
+    if ($pdf->getY() > $iYPosIni) {
       $pdf->SetY($iYPosIni);
     }
 
     if (isset($aDados['aTransmitentes'])) {
 
-	    foreach ( $aDados['aTransmitentes'] as $iInd => $aDadosTrans ) {
+      foreach ($aDados['aTransmitentes'] as $iInd => $aDadosTrans) {
 
-	      imprimeCabecalho($pdf,$iAlt);
-	    	$pdf->SetX(149.5);
-	      $pdf->cell(139.5,$iAlt,$aDadosTrans                                                                 ,0,1,"C",$iCorFundo);
-	    }
+        imprimeCabecalho($pdf, $iAlt);
+        $pdf->SetX(149.5);
+        $pdf->cell(139.5, $iAlt, $aDadosTrans, 0, 1, "C", $iCorFundo);
+      }
     }
 
-    if ( $iYAdquirentes > $pdf->GetY() ) {
-    	$pdf->SetY($iYAdquirentes);
+    if ($iYAdquirentes > $pdf->getY()) {
+      $pdf->SetY($iYAdquirentes);
     }
 
     $iTotal++;
-
   }
 
-  $pdf->cell(280,$iAlt,""                                                                                   ,0,1,"L",0);
+  $pdf->cell(280, $iAlt, "", 0, 1, "L", 0);
 
-  $pdf->SetFont('arial','b',8);
-  $pdf->cell(0,$iAlt,"TOTAL DE REGISTROS  :  $iTotalGuia"                                                     ,'T',0,"L",0);
+  $pdf->SetFont('arial', 'b', 8);
+  $pdf->cell(0, $iAlt, "TOTAL DE REGISTROS  :  $iTotalGuia", 'T', 0, "L", 0);
   $pdf->ln(10);
 
-  $pdf->SetFont('arial','b',8);
-  $pdf->cell(0,$iAlt,"TOTAL DE GUIAS  :  $iTotal"                                                     ,'T',0,"L",0);
+  $pdf->SetFont('arial', 'b', 8);
+  $pdf->cell(0, $iAlt, "TOTAL DE GUIAS  :  $iTotal", 'T', 0, "L", 0);
   $pdf->ln(10);
 
-  $pdf->cell(0,$iAlt,"TOTAIS POR TIPO"                                                                    ,'T',1,"L",0);
+  $pdf->cell(0, $iAlt, "TOTAIS POR TIPO", 'T', 1, "L", 0);
 
   foreach ($aTipo as $xInd => $oValor) {
 
-  	if ( !empty($xInd) ) {
-  		$pdf->cell(55,$iAlt,$xInd,0,0,"L",0);
-  	} else {
-  	  $pdf->cell(55,$iAlt,"Outros",0,0,"L",0);
-  	}
+    if (!empty($xInd)) {
+      $pdf->cell(55, $iAlt, $xInd, 0, 0, "L", 0);
+    } else {
+      $pdf->cell(55, $iAlt, "Outros", 0, 0, "L", 0);
+    }
 
-    $pdf->cell(55,$iAlt,$oValor,0,0,"L",0);
-    $pdf->cell(55,$iAlt,db_formatar($aTipoValor[$xInd],'f'),0,1,"L",0);
-
+    $pdf->cell(55, $iAlt, $oValor, 0, 0, "L", 0);
+    $pdf->cell(55, $iAlt, db_formatar($aTipoValor[$xInd], 'f'), 0, 1, "L", 0);
   }
 
   $pdf->ln();
@@ -630,41 +643,38 @@ if ( $oGet->modoimp == 'sint' ) {
 
 $pdf->output();
 
-function imprimeCabecalho($pdf,$iAlt,$lImprime=false) {
+function imprimeCabecalho($pdf, $iAlt, $lImprime = false)
+{
 
-  if ( $pdf->gety() > $pdf->h - 30 || $lImprime ) {
+  if ($pdf->getY() > $pdf->getH() - 30 || $lImprime) {
+    $pdf->addPage("L");
+    $pdf->SetFont('arial', 'b', 8);
 
-    $pdf->addpage("L");
-    $pdf->SetFont('arial','b',8);
+    $pdf->cell(25, $iAlt, "Guia", 1, 0, "C", 1);
+    $pdf->cell(25, $iAlt, "Numpre", 1, 0, "C", 1);
+    $pdf->cell(25, $iAlt, "Matrícula", 1, 0, "C", 1);
+    $pdf->cell(30, $iAlt, "Valor", 1, 0, "C", 1);
+    $pdf->cell(30, $iAlt, "Situação", 1, 0, "C", 1);
+    $pdf->cell(30, $iAlt, "Liberada", 1, 0, "C", 1);
+    $pdf->cell(30, $iAlt, "Dtvenc", 1, 0, "C", 1);
+    $pdf->cell(52, $iAlt, "Transação", 1, 0, "C", 1);
+    $pdf->cell(32, $iAlt, "Urbano/Rural", 1, 1, "C", 1);
+    $pdf->cell(75, $iAlt, "", 1, 0, "C", 1);
+    $pdf->cell(102, $iAlt, "Valor Declarado", 1, 0, "C", 1);
+    $pdf->cell(102, $iAlt, "Valor Avaliado", 1, 1, "C", 1);
 
-    $pdf->cell(25,$iAlt,"Guia"                                                                              ,1,0,"C",1);
-    $pdf->cell(25,$iAlt,"Numpre"                                                                            ,1,0,"C",1);
-    $pdf->cell(25,$iAlt,"Matrícula"                                                                         ,1,0,"C",1);
-    $pdf->cell(30,$iAlt,"Valor"                                                                             ,1,0,"C",1);
-    $pdf->cell(30,$iAlt,"Situação"                                                                          ,1,0,"C",1);
-    $pdf->cell(30,$iAlt,"Liberada"                                                                          ,1,0,"C",1);
-    $pdf->cell(30,$iAlt,"Dtvenc"                                                                            ,1,0,"C",1);
-    $pdf->cell(52,$iAlt,"Transação"                                                                         ,1,0,"C",1);
-    $pdf->cell(32,$iAlt,"Urbano/Rural"                                                                      ,1,1,"C",1);
+    $pdf->cell(75, $iAlt, "Area Total", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Construção", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Terreno", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Total", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Construção", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Terreno", 1, 0, "C", 1);
+    $pdf->cell(34, $iAlt, "Total", 1, 1, "C", 1);
 
-    $pdf->cell(75,$iAlt,""                                                                                  ,1,0,"C",1);
-    $pdf->cell(102,$iAlt,"Valor Declarado"                                                                  ,1,0,"C",1);
-    $pdf->cell(102,$iAlt,"Valor Avaliado"                                                                   ,1,1,"C",1);
+    $pdf->cell(139.5, $iAlt, "Nome Adquirente", 1, 0, "C", 1);
+    $pdf->cell(139.5, $iAlt, "Nome Transmitente", 1, 1, "C", 1);
 
-    $pdf->cell(75,$iAlt,""                                                                                  ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Construção"                                                                        ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Terreno"                                                                           ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Total"                                                                             ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Construção"                                                                        ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Terreno"                                                                           ,1,0,"C",1);
-    $pdf->cell(34,$iAlt,"Total"                                                                             ,1,1,"C",1);
-
-    $pdf->cell(139.5,$iAlt,"Nome Adquirente"                                                                ,1,0,"C",1);
-    $pdf->cell(139.5,$iAlt,"Nome Transmitente"                                                              ,1,1,"C",1);
-
-    $pdf->cell(279,1,""                                                                                     ,0,1,"L",0);
-    $pdf->SetFont('arial','',8);
-
+    $pdf->cell(279, 1, "", 0, 1, "L", 0);
+    $pdf->SetFont('arial', '', 8);
   }
 }
-?>

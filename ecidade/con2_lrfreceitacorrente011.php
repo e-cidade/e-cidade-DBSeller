@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -115,7 +115,7 @@ function js_emite(){
          <table align="center">
             <tr>
              <td colspan=2 nowrap><b>Período :</b>
-             <?
+             <?php
               if ($iAnoUso >= 2010) {
 
                 $aPeriodos = $oRelatorio->getPeriodos();

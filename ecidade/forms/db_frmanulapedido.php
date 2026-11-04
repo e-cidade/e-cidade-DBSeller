@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
@@ -43,41 +43,41 @@ $clrotulo->label("descrdepto");
           <tr>
             <td nowrap title="<?=@$Tm97_sequencial?>">
               <b>Código da Solicitação: </b></td>
-            <td> 
-              <?db_input( 'm97_sequencial', 10, $Im97_sequencial, true, 'text', 3, "" )?>
+            <td>
+              <?php db_input( 'm97_sequencial', 10, $Im97_sequencial, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tm97_data?>">
               <?=@$Lm97_data?>
             </td>
-            <td> 
-              <?db_inputdata( 'm97_data', @$m97_data_dia, @$m97_data_mes, @$m97_data_ano, true, 'text', 3, "" )?>
+            <td>
+              <?php db_inputdata( 'm97_data', @$m97_data_dia, @$m97_data_mes, @$m97_data_ano, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tm97_hora?>">
               <?=@$Lm97_hora?>
             </td>
-            <td> 
-              <?db_input( 'm97_hora', 10, $Im97_hora, true, 'text', 3, "" )?>
+            <td>
+              <?php db_input( 'm97_hora', 10, $Im97_hora, true, 'text', 3, "" )?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tm97_login?>">
               <?=@$Lm97_login?>
             </td>
-            <td> 
-              <?db_input( 'm97_login', 10, $Im97_login, true, 'text', 3, " " )?>
-              <?db_input( 'nome', 40, $Inome, true, 'text', 3, '' )?>
+            <td>
+              <?php db_input( 'm97_login', 10, $Im97_login, true, 'text', 3, " " )?>
+              <?php db_input( 'nome', 40, $Inome, true, 'text', 3, '' )?>
             </td>
           </tr>
           <tr>
             <td nowrap title="departamento destino">
               <b>Departamento Destino</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input( 'm97_coddepto', 10, $Im97_coddepto, true, 'text', 3, "" );
               db_input( 'descrdepto', 40, $Idescrdepto, true, 'text', 3, '' );
               ?>
@@ -87,8 +87,8 @@ $clrotulo->label("descrdepto");
             <td nowrap title="departamento origem">
               <b>Departamento Origem</b>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input( 'm91_depto', 10, $Im97_coddepto, true, 'text', 3, "" );
               db_input( 'descr_depto', 40, @$Idescr_depto, true, 'text', 3, '' );
               db_input( 'linha', 40, @$linha, true, 'hidden', 3, '' );
@@ -113,10 +113,10 @@ $clrotulo->label("descrdepto");
     </td>
   </tr>
   <tr>
-    <td align="center"> 
+    <td align="center">
       <input name="anular" type="button" value="Anular Pedido" onclick="return js_atendeSolicitacao();">
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-      <?
+      <?php
       db_input( 'solicitacao', 10, '', true, 'hidden', 3 );
       db_input( "valores", 100, 0, true, "hidden", 3 );
       db_input( "m82_codigo", 100, 0, true, "hidden", 3 );
@@ -143,7 +143,7 @@ function js_preenchepesquisa(chave) {
 }
 
 function js_marca(){
-    
+
   for (var a=0; a < document.form1.linha.value ; a++) {
 
    if(document.getElementById('chk'+a).disabled==false){
@@ -180,7 +180,7 @@ function js_janelaSolicitacao(oAjax) {
   $('descr_depto').value    = obj.descr_depto.urlDecode();
   $('nome').value           = obj.nome.urlDecode();
   var iErros                = new Number(0);
-  var lDisabled             = true; 
+  var lDisabled             = true;
   var saida                 = "";
   oDBGridSolicitacao                = new DBGrid('grid_solicitacao');
   oDBGridSolicitacao.nameInstance   = 'oDBGridSolicitacao';
@@ -197,7 +197,7 @@ function js_janelaSolicitacao(oAjax) {
   aHeader[8]  = 'Qtd.Pendente';
   aHeader[9]  = 'Qtd. Anular';
   aHeader[10] = 'Motivo';
-  aHeader[11] = 'codigo';			
+  aHeader[11] = 'codigo';
   oDBGridSolicitacao.setHeader(aHeader);
   oDBGridSolicitacao.setHeight(200);
   oDBGridSolicitacao.allowSelectColumns(true);
@@ -211,14 +211,14 @@ function js_janelaSolicitacao(oAjax) {
   aAligns[6]  = 'center';
   aAligns[7]  = 'center';
   aAligns[8]  = 'center';
-  aAligns[9]  = 'center';	
+  aAligns[9]  = 'center';
   aAligns[10] = 'center';
   aAligns[11] = 'center';
   oDBGridSolicitacao.setCellAlign(aAligns);
   oDBGridSolicitacao.show($('grid_solicitacao'));
   oDBGridSolicitacao.clearAll(true);
   if (obj) {
- 
+
     var aLinha = new Array();
     for (var iInd = 0; iInd < obj.itens.length; iInd++) {
 
@@ -230,7 +230,7 @@ function js_janelaSolicitacao(oAjax) {
         if (qtdpendente==0) {
           lhabilitado = " disabled ";
         }
-        aLinha[0]  = "<input "+lhabilitado+" name='chk"+iInd+"' id='chk"+iInd+"' value='"+iInd+"' class='chkmarca' size=1 type='checkbox'>";			        
+        aLinha[0]  = "<input "+lhabilitado+" name='chk"+iInd+"' id='chk"+iInd+"' value='"+iInd+"' class='chkmarca' size=1 type='checkbox'>";
         aLinha[1]  = m98_matmater;
         aLinha[2]  = m60_descr.urlDecode();
         aLinha[3]  = m61_descr.urlDecode();
@@ -282,8 +282,8 @@ function js_consultaSolicitacao(iSolicitacao) {
   var url     = 'mat4_atendsolicitacaoRPC.php';
   var oAjax   = new Ajax.Request(url,
                                  {
-                                   method: 'post', 
-                                   parameters: 'json='+strJson, 
+                                   method: 'post',
+                                   parameters: 'json='+strJson,
                                    onComplete: js_janelaSolicitacao
                                  }
                                 );
@@ -311,7 +311,7 @@ function js_atendeSolicitacao() {
       return false;
 
     }
-    js_divCarregando("Aguarde, efetuando anulação","msgBox");	
+    js_divCarregando("Aguarde, efetuando anulação","msgBox");
     sVirgula = "";
     for (var i = 0; i < aItens.length; i++) {
 
@@ -357,10 +357,10 @@ function js_atendeSolicitacao() {
     sParams    = "'$iCodSol':"+$F('m97_sequencial')+",'iTipo':5,'aItens':["+sJsonItem+"],'iCodEstoque':"+$F('m91_depto')+",'iCodDepto':"+$F('m97_coddepto');
     var sJson  = "{'exec':'anulapedido','params':[{"+sParams+"}]}";
     var url     = 'mat4_atendsolicitacaoRPC.php';
-    var oAjax   = new Ajax.Request(url, 
+    var oAjax   = new Ajax.Request(url,
                                    {
-                                     method: 'post', 
-                                     parameters: 'json='+sJson, 
+                                     method: 'post',
+                                     parameters: 'json='+sJson,
                                      onComplete: js_saidaAtendimento
                                    }
                                   );
@@ -386,7 +386,7 @@ function js_saidaAtendimento(oAjax) {
       query  ='';
       query += "&ini="+obj.m97_sequencial.value;
       query += "&fim="+obj.m97_sequencial.value;
-      query += "&codalmox="+obj.m91_depto.value;      
+      query += "&codalmox="+obj.m91_depto.value;
       query += "&departamento="+obj.m97_coddepto.value;
       jan    = window.open('mat2_matpedido002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
       jan.moveTo(0,0);

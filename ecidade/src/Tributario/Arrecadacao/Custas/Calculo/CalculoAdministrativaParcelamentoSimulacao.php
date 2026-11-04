@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,14 +46,19 @@ final class CalculoAdministrativaParcelamentoSimulacao extends CalculoColecao im
     public function calcular()
     {
         $sql = "select x.k00_numpar as numpar,
-                       sum(fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc ,extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) + 
-                       sum(round((fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc, extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) * 
-                           fc_juros(x.receit, x.arreold_dtvenc, x.arrecad_dtvenc, x.dtoper, false, extract(year from x.arrecad_dtvenc)::integer)::numeric(20, 10), 2)) + 
-                       sum(round((fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc ,extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) * 
-                           fc_multa(x.receit, x.arreold_dtvenc, x.arrecad_dtvenc, x.dtoper, extract(year from x.arrecad_dtvenc)::integer)::numeric(20, 10), 2)) as valor
+                       sum(fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc ,
+                                    extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) +
+                       sum(round((fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc,
+                                           extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) *
+                           fc_juros(x.receit, x.arreold_dtvenc, x.arrecad_dtvenc, x.dtoper, false,
+                                    extract(year from x.arrecad_dtvenc)::integer)::numeric(20, 10), 2)) +
+                       sum(round((fc_corre(x.receit, x.dtoper, x.valor::float8, x.arrecad_dtvenc ,
+                                           extract(year from x.arrecad_dtvenc)::int4, x.arreold_dtvenc)) *
+                           fc_multa(x.receit, x.arreold_dtvenc, x.arrecad_dtvenc, x.dtoper,
+                                    extract(year from x.arrecad_dtvenc)::integer)::numeric(20, 10), 2)) as valor
                   from (select distinct
-                               arrecad.k00_numpre,  
-                               arrecad.k00_numpar, 
+                               arrecad.k00_numpre,
+                               arrecad.k00_numpar,
                                arreold.k00_receit as receit,
                                arreold.k00_dtoper as dtoper,
                                arreold.k00_valor as valor,
@@ -70,9 +75,9 @@ final class CalculoAdministrativaParcelamentoSimulacao extends CalculoColecao im
                                inner join arreoldcalc on arreoldcalc.k00_numpre = arreold.k00_numpre
                                                      and arreoldcalc.k00_numpar = arreold.k00_numpar
                                                      and arreoldcalc.k00_receit = arreold.k00_receit
-                         where termo.v07_parcel = {$this->termo->getCodigo()} 
+                         where termo.v07_parcel = {$this->termo->getCodigo()}
                            and termoini.inicial = {$this->inicial->getCodigo()}
-                       ) as x 
+                       ) as x
                  group by k00_numpar
                  order by k00_numpar asc ";
 

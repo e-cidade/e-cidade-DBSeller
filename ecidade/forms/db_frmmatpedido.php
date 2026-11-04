@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ if (isset($m97_sequencial)&&$m97_sequencial!=""){
       <?//=@$Lm97_codigo?>
     </td>
     <td> 
-	<?
+	<?php
 		db_input('m97_sequencial',10,$Im97_sequencial,true,'text',3,"")
 	?>
     </td>
@@ -60,37 +60,37 @@ if (isset($m97_sequencial)&&$m97_sequencial!=""){
        <?=@$Lm97_data?>
     </td>
     <td> 
-	<?
+	<?php
 		db_inputdata('m97_data',@$m97_data_dia,@$m97_data_mes,@$m97_data_ano,true,'text',3,"")
 	?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm97_coddepto?>">
-       <?
+       <?php
        		db_ancora(@$Lm97_coddepto,"js_pesquisam97_coddepto(true);",3);
        ?>
     </td>
     <td> 
-	<?
+	<?php
 		db_input('m97_coddepto',10,$Im97_coddepto,true,'text',3," onchange='js_pesquisam97_coddepto(false);'")
 	?>
-    <?
+    <?php
 		db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
     ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm97_login?>">
-       <?
+       <?php
     	   db_ancora(@$Lm97_login,"js_pesquisam97_login(true);",3);
        ?>
     </td>
     <td> 
-	<?
+	<?php
 		db_input('m97_login',10,$Im97_login,true,'text',3," onchange='js_pesquisam97_login(false);'")
 	?>
-    <?
+    <?php
 		db_input('nome',40,$Inome,true,'text',3,'')
     ?>
     </td>
@@ -100,7 +100,7 @@ if (isset($m97_sequencial)&&$m97_sequencial!=""){
        <?=@$Lm97_hora?>
     </td>
     <td> 
-	<?
+	<?php
 		db_input('m97_hora',10,$Im97_hora,true,'text',3,"")
 	?>
     </td>
@@ -110,7 +110,7 @@ if (isset($m97_sequencial)&&$m97_sequencial!=""){
        <?=@$Lm97_db_almox?>
     </td>
     <td> 
-	<?
+	<?php
 		$result_depusu = $cldb_depusu->sql_record($cldb_depusu->sql_query_almoxusu(null,null,"distinct m91_codigo as almoxarifado, db_depart.descrdepto", null, " db_depusu.id_usuario = " . db_getsession("DB_id_usuario")));
 		if ($cldb_depusu->numrows>0){
 			db_selectrecord('m97_db_almox',$result_depusu,true,($db_opcao == 1?1:3));
@@ -125,14 +125,14 @@ if (isset($m97_sequencial)&&$m97_sequencial!=""){
        <?=@$Lm97_obs?>
     </td>
     <td> 
-	<?
+	<?php
 		db_textarea('m97_obs',10,50,$Im97_obs,true,'text',$db_opcao,"")
 	?>
     </td>
   </tr>
   </table>
   </center>
-  <?
+  <?php
   	if (isset($opcao)){
     	$db_opcao=@$opcao;
   	}
@@ -193,7 +193,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matpedido.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
     if($db_opcao==3||$db_opcao==33){

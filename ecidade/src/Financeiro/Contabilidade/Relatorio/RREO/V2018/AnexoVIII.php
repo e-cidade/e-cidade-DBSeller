@@ -116,10 +116,17 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         // Caso ultimo bimestre, sao alteradas algumas colunas de formulas
         if ($this->verificaUltimoBimestre()) {
-            $this->aLinhasConsistencia[95]->colunas[0]->o116_formula = "(L[73]->empenhado_atebim+L[80]->empenhado_atebim)-L[94]->valor";
-            $this->aLinhasConsistencia[67]->colunas[0]->o116_formula = "L[59]->empenhado_atebim - L[66]->valor";
-            $this->aLinhasConsistencia[68]->colunas[0]->o116_formula = "((L[53]->empenhado_atebim-(L[61]->valor+L[64]->valor))/L[48]->recatebim)*100";
-            $this->aLinhasConsistencia[69]->colunas[0]->o116_formula = "((L[56]->empenhado_atebim-(L[62]->valor+L[65]->valor))/L[48]->recatebim)*100";
+            $this->aLinhasConsistencia[95]
+            ->colunas[0]->o116_formula = "(L[73]->empenhado_atebim+L[80]->empenhado_atebim)-L[94]->valor";
+            
+            $this->aLinhasConsistencia[67]
+            ->colunas[0]->o116_formula = "L[59]->empenhado_atebim - L[66]->valor";
+            
+            $this->aLinhasConsistencia[68]
+            ->colunas[0]->o116_formula = "((L[53]->empenhado_atebim-(L[61]->valor+L[64]->valor))/L[48]->recatebim)*100";
+            
+            $this->aLinhasConsistencia[69]
+            ->colunas[0]->o116_formula = "((L[56]->empenhado_atebim-(L[62]->valor+L[65]->valor))/L[48]->recatebim)*100";
 
             $this->processarFormasDasLinhas(array(95, 67, 68, 69));
         }
@@ -191,7 +198,10 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         if (!in_array($iLinha, array(114, 125))) {
             $oDaoLancamento = new \cl_conlancam();
-            $sCampos = "sum(case when c71_coddoc in(" . $sInclusao . ") then c70_valor else c70_valor * -1 end) as valor";
+            $sCampos = "sum(case 
+                              when c71_coddoc in(" . $sInclusao . ") then c70_valor 
+                              else c70_valor * -1 
+                            end) as valor";
             $aWhere = array(
                 "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
                 "c71_coddoc in (" . $sDocumentos . ")",
@@ -252,7 +262,11 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $aWhere[] = "c61_codigo = {$recurso}";
         }
         $oDaoLancamento = new \cl_conlancam();
-        $sCampos = "coalesce(sum(case when c61_reduz = c69_credito then c70_valor else c70_valor * -1 end), 0) as valor_credito";
+        $sCampos = "coalesce(sum(case 
+                                   when c61_reduz = c69_credito 
+                                     then c70_valor 
+                                     else c70_valor * -1 
+                                end), 0) as valor_credito";
         $sSqlCredito = $oDaoLancamento->sql_query_conta($sCampos, null, implode(' and ', $aWhere));
         $rsBuscaCredito = db_query($sSqlCredito);
         if (!$rsBuscaCredito || pg_num_rows($rsBuscaCredito) === 0) {
@@ -284,10 +298,11 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
                             
                           inner join conlancam on conlancam.c70_codlan = conlancamval.c69_codlan
                           inner join conlancaminstit on c02_codlan = c70_codlan
-                          inner join conlancamdoc on conlancamdoc.c71_codlan = conlancam.c70_codlan                        
+                          inner join conlancamdoc on conlancamdoc.c71_codlan = conlancam.c70_codlan
                     where (conplano.c60_estrut like '111%' or conplano.c60_estrut like '114%')
                       and (cp_credito.c60_estrut like '21881%')
-                      and c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'
+                      and c70_data between '{$this->getDataInicial()->getDate()}' 
+                                       and '{$this->getDataFinal()->getDate()}'
                       and c02_instit in ({$this->getInstituicoes()})
                       and c71_coddoc in (160,150, 152,162) ";
 
@@ -310,7 +325,8 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
                       inner join conlancamdoc on conlancamdoc.c71_codlan = conlancam.c70_codlan
                     where (conplano.c60_estrut like '111%' or conplano.c60_estrut like '114%')
                       and (cp_debito.c60_estrut like '21881%')
-                      and c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'
+                      and c70_data between '{$this->getDataInicial()->getDate()}' 
+                                       and '{$this->getDataFinal()->getDate()}'
                       and c02_instit in ({$this->getInstituicoes()})
                       and c71_coddoc in (160,150, 152,162)";
 
@@ -343,10 +359,12 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         $oDados->nMinimoAtualMDEAteBimestre = $aDados[95]->valor;
         $oDados->nPercentualAplicadoComMDE = $aDados[96]->valor;
 
-        $oDados->nMinimoAtualFUNDEBAteBimestre = $aDados[53]->liquidado_atebim - ($aDados[61]->valor + $aDados[64]->valor);
+        $oDados->nMinimoAtualFUNDEBAteBimestre = $aDados[53]->liquidado_atebim
+        - ($aDados[61]->valor + $aDados[64]->valor);
         // Caso ultimo bimestre altera a coluna da formula
         if ($this->verificaUltimoBimestre()) {
-            $oDados->nMinimoAtualFUNDEBAteBimestre = $aDados[53]->empenhado_atebim - ($aDados[61]->valor + $aDados[64]->valor);
+            $oDados->nMinimoAtualFUNDEBAteBimestre = $aDados[53]->empenhado_atebim
+            - ($aDados[61]->valor + $aDados[64]->valor);
         }
         $oDados->nPercentualAplicadoComFUNDEB = $aDados[68]->valor;
         return $oDados;
@@ -363,6 +381,4 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         }
         return false;
     }
-
-
 }

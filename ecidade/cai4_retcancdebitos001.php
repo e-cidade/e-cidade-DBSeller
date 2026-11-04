@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -57,14 +57,14 @@ $db_opcao = 33;
 $db_botao = false;
 
 if (isset($processa) && isset($chaves)) {
-  $regs = split("#", $chaves);
+  $regs =explode("#", $chaves);
 //  echo "<br><br><br>";print_r($regs);exit;
   $erro_msg = '';
-  $sqlerro  = false; 
+  $sqlerro  = false;
   $numrows  = count($regs);
   db_inicio_transacao();
   for ($i=0;$i<$numrows;$i++){
-    $numpreparrec =  split("-", $regs[$i]);
+    $numpreparrec = explode("-", $regs[$i]);
 //		echo "$numpreparrec[1] -- $numpreparrec[2] <br>";
     $clcancdebitosreg->excluir(null," k21_numpre = ".$numpreparrec[1]." and k21_numpar = ".$numpreparrec[2].((int)$numpreparrec[3] == 0?"":" and k21_receit =".$numpreparrec[3]));
     if($clcancdebitosreg->erro_status=="0"){
@@ -85,14 +85,14 @@ if (isset($processa) && isset($chaves)) {
 	      }
 	  }
 	  if($sqlerro == false){
-        $rsprot = $clcancdebitosprot->sql_record($clcancdebitosprot->sql_query_file($k20_codigo,"*",null,"")); 
+        $rsprot = $clcancdebitosprot->sql_record($clcancdebitosprot->sql_query_file($k20_codigo,"*",null,""));
         if($clcancdebitosprot->numrows > 0){
           $clcancdebitosprot->excluir($k20_codigo);
           $erromsg = "CANCDEBITOSPROT : ".$clcancdebitosprot->erro_msg;
           if($clcancdebitosprot->erro_status == 0){
             $sqlerro = true;
           }
-        } 
+        }
 	  }
 	  if($sqlerro == false){
         $clcancdebitos->excluir($k20_codigo);
@@ -102,18 +102,18 @@ if (isset($processa) && isset($chaves)) {
         }
 	  }
 
-	}   
+	}
   if($sqlerro){
-    db_msgbox($erromsg);		
+    db_msgbox($erromsg);
   }else{
-    db_msgbox("Operação realizada com sucesso !");	
+    db_msgbox("Operação realizada com sucesso !");
     echo "<script> location.href = 'cai4_retcancdebitos001.php' </script> ";
   }
   //  $sqlerro = true;
   db_fim_transacao($sqlerro);
-  
+
   /********************************************************************************************************************************/
-  
+
 }
 
 if (isset ($chavepesquisa)){
@@ -125,12 +125,12 @@ if (isset ($chavepesquisa)){
     // cancelamentos
   if($k20_cancdebitostipo==1){
   	$cancdebitostipo = "Normal";
-	
+
   }else{
   	$cancdebitostipo= "Renuncia";
-	$sqlPeculiar = "select k72_cancdebitos,c58_sequencial as tipo,c58_descr as caracteristica 
-	                from cancdebitosconcarpeculiar 
-	                inner join concarpeculiar on k72_concarpeculiar = c58_sequencial 
+	$sqlPeculiar = "select k72_cancdebitos,c58_sequencial as tipo,c58_descr as caracteristica
+	                from cancdebitosconcarpeculiar
+	                inner join concarpeculiar on k72_concarpeculiar = c58_sequencial
 	                where k72_cancdebitos = $k20_codigo";
 	$rsPeculiar     = db_query($sqlPeculiar);
 	$linhasPeculiar =  pg_num_rows($rsPeculiar);
@@ -138,7 +138,7 @@ if (isset ($chavepesquisa)){
 	  db_fieldsmemory($rsPeculiar,0);
 	  $c58_sequencial = $tipo;
       $c58_descr      = $caracteristica;
-	  
+
 	}
   }
 	$tipoDebito = $k20_cancdebitostipo;
@@ -158,19 +158,19 @@ if (isset ($chavepesquisa)){
 <td align="left" valign="top" bgcolor="#CCCCCC">
 <br><br>
 <center>
-<?
+<?php
 include(modification("forms/db_frmcanccancdeb.php"));
 ?>
 </center>
 </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (!isset ($chavepesquisa)) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }

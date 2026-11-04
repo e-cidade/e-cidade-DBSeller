@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE rhempenhofolhaexcecaoregra
-class cl_rhempenhofolhaexcecaoregra { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh128_sequencial = 0; 
-   var $rh128_descricao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhempenhofolhaexcecaoregra {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh128_sequencial = 0;
+   var $rh128_descricao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh128_sequencial = int4 = Sequencial 
-                 rh128_descricao = varchar(100) = Descrição 
+                 rh128_sequencial = int4 = Sequencial
+                 rh128_descricao = varchar(100) = Descrição
                  ";
-   //funcao construtor da classe 
-   function cl_rhempenhofolhaexcecaoregra() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhempenhofolhaexcecaoregra"); 
+     $this->rotulo = new rotulo("rhempenhofolhaexcecaoregra");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhempenhofolhaexcecaoregra {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh128_sequencial = ($this->rh128_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh128_sequencial"]:$this->rh128_sequencial);
        $this->rh128_descricao = ($this->rh128_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh128_descricao"]:$this->rh128_descricao);
@@ -74,9 +74,9 @@ class cl_rhempenhofolhaexcecaoregra {
      }
    }
    // funcao para inclusao
-   function incluir ($rh128_sequencial){ 
+   public function incluir ($rh128_sequencial){
       $this->atualizacampos();
-     if($this->rh128_descricao == null ){ 
+     if($this->rh128_descricao == null ){
        $this->erro_sql = " Campo Descrição não informado.";
        $this->erro_campo = "rh128_descricao";
        $this->erro_banco = "";
@@ -86,16 +86,16 @@ class cl_rhempenhofolhaexcecaoregra {
        return false;
      }
      if($rh128_sequencial == "" || $rh128_sequencial == null ){
-       $result = db_query("select nextval('rhempenhofolhaexcecaoregra_rh128_sequencial_seq')"); 
+       $result = db_query("select nextval('rhempenhofolhaexcecaoregra_rh128_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhempenhofolhaexcecaoregra_rh128_sequencial_seq do campo: rh128_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhempenhofolhaexcecaoregra_rh128_sequencial_seq do campo: rh128_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh128_sequencial = pg_result($result,0,0); 
+       $this->rh128_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhempenhofolhaexcecaoregra_rh128_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh128_sequencial)){
@@ -106,10 +106,10 @@ class cl_rhempenhofolhaexcecaoregra {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh128_sequencial = $rh128_sequencial; 
+         $this->rh128_sequencial = $rh128_sequencial;
        }
      }
-     if(($this->rh128_sequencial == null) || ($this->rh128_sequencial == "") ){ 
+     if(($this->rh128_sequencial == null) || ($this->rh128_sequencial == "") ){
        $this->erro_sql = " Campo rh128_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -118,15 +118,15 @@ class cl_rhempenhofolhaexcecaoregra {
        return false;
      }
      $sql = "insert into rhempenhofolhaexcecaoregra(
-                                       rh128_sequencial 
-                                      ,rh128_descricao 
+                                       rh128_sequencial
+                                      ,rh128_descricao
                        )
                 values (
-                                $this->rh128_sequencial 
-                               ,'$this->rh128_descricao' 
+                                $this->rh128_sequencial
+                               ,'$this->rh128_descricao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Exceção Regra ($this->rh128_sequencial) nao Incluído. Inclusao Abortada.";
@@ -165,16 +165,16 @@ class cl_rhempenhofolhaexcecaoregra {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh128_sequencial=null) { 
+   public function alterar ($rh128_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhempenhofolhaexcecaoregra set ";
      $virgula = "";
-     if(trim($this->rh128_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh128_sequencial"])){ 
+     if(trim($this->rh128_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh128_sequencial"])){
        $sql  .= $virgula." rh128_sequencial = $this->rh128_sequencial ";
        $virgula = ",";
-       if(trim($this->rh128_sequencial) == null ){ 
+       if(trim($this->rh128_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh128_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_rhempenhofolhaexcecaoregra {
          return false;
        }
      }
-     if(trim($this->rh128_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh128_descricao"])){ 
+     if(trim($this->rh128_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh128_descricao"])){
        $sql  .= $virgula." rh128_descricao = '$this->rh128_descricao' ";
        $virgula = ",";
-       if(trim($this->rh128_descricao) == null ){ 
+       if(trim($this->rh128_descricao) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "rh128_descricao";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_rhempenhofolhaexcecaoregra {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Exceção Regra nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh128_sequencial;
@@ -250,11 +250,11 @@ class cl_rhempenhofolhaexcecaoregra {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh128_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh128_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -263,7 +263,7 @@ class cl_rhempenhofolhaexcecaoregra {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($rh128_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -293,7 +293,7 @@ class cl_rhempenhofolhaexcecaoregra {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Exceção Regra nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh128_sequencial;
@@ -321,11 +321,11 @@ class cl_rhempenhofolhaexcecaoregra {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -347,11 +347,11 @@ class cl_rhempenhofolhaexcecaoregra {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh128_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh128_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,15 +364,15 @@ class cl_rhempenhofolhaexcecaoregra {
      $sql2 = "";
      if($dbwhere==""){
        if($rh128_sequencial!=null ){
-         $sql2 .= " where rhempenhofolhaexcecaoregra.rh128_sequencial = $rh128_sequencial "; 
-       } 
+         $sql2 .= " where rhempenhofolhaexcecaoregra.rh128_sequencial = $rh128_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,11 +381,11 @@ class cl_rhempenhofolhaexcecaoregra {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh128_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh128_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,15 +398,15 @@ class cl_rhempenhofolhaexcecaoregra {
      $sql2 = "";
      if($dbwhere==""){
        if($rh128_sequencial!=null ){
-         $sql2 .= " where rhempenhofolhaexcecaoregra.rh128_sequencial = $rh128_sequencial "; 
-       } 
+         $sql2 .= " where rhempenhofolhaexcecaoregra.rh128_sequencial = $rh128_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,20 +416,20 @@ class cl_rhempenhofolhaexcecaoregra {
      return $sql;
   }
 
-  function sql_query_regras($sCampos, $iAnoUsu, $sWhere = null) {
+  public function sql_query_regras($sCampos, $iAnoUsu, $sWhere = null) {
 
     $sSql  = "select $sCampos                                                                                      ";
     $sSql .= "  from rhempenhofolhaexcecaoregra                                                                    ";
     $sSql .= "       inner join rhempenhofolhaexcecaorubrica on rh128_sequencial = rh74_rhempenhofolhaexcecaoregra ";
     $sSql .= " where rh74_anousu = $iAnoUsu                                                                        ";
     if ($sWhere){
-      $sSql .= " and $sWhere                                                                                       ";  
+      $sSql .= " and $sWhere                                                                                       ";
     }
 
     return $sSql;
   }
 
-  function sql_query_dados_regra($iExcecaoRegra) {
+  public function sql_query_dados_regra($iExcecaoRegra) {
 
     $sCampos  = "rh74_orgao, o40_descr, rh74_unidade, o41_descr, rh74_projativ, o55_descr, rh74_recurso, o15_descr,           ";
     $sCampos .= "rh74_programa, o54_descr, rh74_funcao, o52_descr, rh74_subfuncao, o53_descr, rh74_concarpeculiar, c58_descr, ";

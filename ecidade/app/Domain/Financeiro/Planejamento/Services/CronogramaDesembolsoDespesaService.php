@@ -65,14 +65,18 @@ class CronogramaDesembolsoDespesaService extends CronogramaDesembolsoService
             $cronograma = $this->getCronograma($detalhamento->pl20_codigo, $valor->pl10_ano);
 
             if (is_null($cronograma)) {
-                $cronograma = new CronogramaDesembolsoDespesa();
-                $cronograma->detalhamento()->associate($detalhamento);
-
-                $this->salvar($cronograma, $valor->pl10_valor, $valor->pl10_ano);
+                $this->criarCronogramaExercicio($detalhamento, $valor->pl10_valor, $valor->pl10_ano);
             }
         });
 
         return $detalhamento;
+    }
+
+    public function criarCronogramaExercicio(DetalhamentoDespesa $detalhamento, $valor, $exercicio)
+    {
+        $cronograma = new CronogramaDesembolsoDespesa();
+        $cronograma->detalhamento()->associate($detalhamento);
+        $this->salvar($cronograma, $valor, $exercicio);
     }
 
     /**
@@ -239,8 +243,18 @@ class CronogramaDesembolsoDespesaService extends CronogramaDesembolsoService
                     $data->recurso->complemento = (object)$recurso->complemento->toArray();
                     $data->cp = (object)$detalhamentoDespesa->caracteristicaPeculiar->toArray();
                     $data->instituicao = $this->createObjeto($instituicao->nomeinst, $instituicao->codigo);
+                    $data->subrecurso = $fonteRecurso->recurso->o15_recurso;
 
-                    $estimativas[$data->estrutural] = $data;
+                    $hash = sprintf(
+                        '%s#%s#%s#%s',
+                        $data->estrutural,
+                        $fonteRecurso->gestao,
+                        $fonteRecurso->recurso->o15_recurso,
+                        $fonteRecurso->recurso->o15_complemento
+                    );
+
+
+                    $estimativas[$hash] = $data;
                 }
             }
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,7 +71,7 @@ function js_emite(){
     <form name="form1" method="post" action="" onsubmit="return js_verifica();">
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('parent.js_limpa',300,100);
 	?>
 	</td>
@@ -83,7 +83,7 @@ function js_emite(){
       <tr>
         <td align="right" title="<?=$Tc60_estrut?>"><strong><?=$Lc60_estrut?></strong></td>
         <td align="left">
-	  <?
+	  <?php
 	    db_input("c60_estrut",15,"",true,"text",1);	
 	  ?>
 	</td>
@@ -92,7 +92,7 @@ function js_emite(){
       <tr>
         <td align="right" title="Origem dos dados a serem gerados no relatório."><strong>Origem dos dados :</strong></td>
         <td align="left">
-          <?
+          <?php
             $x = array("R"=>"Resumido","C"=>"Completo");
             db_select('origem',$x,true,2,"");
           ?>
@@ -110,7 +110,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

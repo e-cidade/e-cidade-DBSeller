@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ function js_imprime(){
           </tr>
           <tr> 
             <td align="center"> 
-              <?
+              <?php
 	$sql = "select discla.*,disrec.k00_receit,tabrec.k02_drecei,disrec.vlrrec
 	        from discla
 			     inner join disrec on discla.codcla = disrec.codcla

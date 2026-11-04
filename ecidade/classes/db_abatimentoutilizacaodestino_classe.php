@@ -59,13 +59,13 @@ class cl_abatimentoutilizacaodestino {
                  k170_valor = float4 = k170_valor 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacaodestino() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacaodestino"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_abatimentoutilizacaodestino {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k170_utilizacao = ($this->k170_utilizacao == ""?@$GLOBALS["HTTP_POST_VARS"]["k170_utilizacao"]:$this->k170_utilizacao);
        $this->k170_numpre = ($this->k170_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k170_numpre"]:$this->k170_numpre);
@@ -87,7 +87,7 @@ class cl_abatimentoutilizacaodestino {
      }
    }
    // funcao para Inclusão
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->k170_utilizacao == null ){ 
        $this->erro_sql = " Campo Abatimento Utilizacao não informado.";

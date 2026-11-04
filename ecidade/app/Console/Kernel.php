@@ -2,9 +2,14 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClearArquivosInfinity;
+use App\Console\Commands\ReenvioLancamentosRequisicaoMaterial;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+/**
+ *
+ */
 class Kernel extends ConsoleKernel
 {
     /**
@@ -16,9 +21,17 @@ class Kernel extends ConsoleKernel
         Commands\AlteracaoSituacaoInscricaoTask::class,
         Commands\ControleParcelamentoVencidoTask::class,
         Commands\InativarVinculoProfessor::class,
-        Commands\ControleParcelamentoVencidoTask::class,
         Commands\ClearPayrollData::class,
         Commands\GenerateDataPayrolls::class,
+        Commands\AtualizacaoCadastroSimplesNacionalTask::class,
+        Commands\RedesimRetrieveEstablishmentsTask::class,
+        Commands\RedesimProcessRetrievedEstablishmentsTask::class,
+        Commands\RedesimAutomaticEstablishmentProcessTask::class,
+        Commands\PruneOldTokens::class,
+        Commands\CacheMenu::class,
+        Commands\NotificaAcordosVencimento::class,
+        ReenvioLancamentosRequisicaoMaterial::class,
+        Commands\ClearArquivosInfinity::class
     ];
 
     public function bootstrap()
@@ -40,6 +53,13 @@ class Kernel extends ConsoleKernel
          $schedule->command('matriculaonline:alteracaoinscricao')->dailyAt('21:00');
          $schedule->command('tributario:parcelamentovencido')->hourly();
          $schedule->command('agendamento:inativarvinculoprofessor')->dailyAt('21:00');
+         $schedule->command('tributario:atualizacaocadastrosimplesnacional')->hourly();
+         $schedule->command("tributario:redesim:retrieveEstablishments")->cron("*/15 * * * *");
+         $schedule->command("tributario:redesim:processRetrievedEstablishments")->cron("*/20 * * * *");
+         $schedule->command("tributario:redesim:automaticEstablishmentProcess")->everyFiveMinutes();
+         $schedule->command('dbseller:prune-tokens')->dailyAt('21:00');
+         $schedule->command('dbseller:notifica-acordos-vencimento')->dailyAt('22:00');
+         $schedule->command('saude:limparpastabackupinfinity')->weekly();
     }
 
     /**
@@ -49,6 +69,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
+        $this->load(__DIR__.'/Commands');
         require base_path('routes/console.php');
     }
 }

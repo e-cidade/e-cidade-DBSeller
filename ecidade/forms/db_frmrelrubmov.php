@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -61,34 +61,34 @@ if(isset($db_opcaoal)){
        <?=@$Lrh46_seq?>
     </td>
     <td>
-<?
+<?php
 db_input('rh46_seq',10,$Irh46_seq,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh46_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lrh46_codigo,"js_pesquisarh46_codigo(true);", 3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('rh46_codigo',6,$Irh46_codigo,true,'text',3," onchange='js_pesquisarh46_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('rh45_descr',40,$Irh45_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh46_rubric?>">
-       <?
+       <?php
        db_ancora(@$Lrh46_rubric, "js_pesquisarh46_rubric(true);", $db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('rh46_rubric',6,$Irh46_rubric,true,'text',$db_opcao,"onchange='js_pesquisarh46_rubric(false);'");
 db_input('rh27_descr', 40, $Irh27_descr, true, 'text', 3, '');
 ?>
@@ -99,7 +99,7 @@ db_input('rh27_descr', 40, $Irh27_descr, true, 'text', 3, '');
        <?=@$Lrh46_quantval?>
     </td>
     <td>
-<?
+<?php
 $arr_quantval = array('V'=>'Valor','Q'=>'Quantidade');
 db_select("rh46_quantval",$arr_quantval,true,$db_opcao);
 ?>
@@ -115,7 +115,7 @@ db_select("rh46_quantval",$arr_quantval,true,$db_opcao);
  <table width="90%">
   <tr>
     <td valign="top"  align="center" width="100%">
-    <?
+    <?php
    $dbwhere  = "";
    $dbwhere1 = "";
    $and = "";
@@ -216,7 +216,7 @@ function js_mostrarelrub1(chave1,chave2){
   document.form1.rh45_descr.value = chave2;
   db_iframe_relrub.hide();
 }
-<?
+<?php
 if($tranca_button == true){
   echo "
         document.getElementById('db_opcao').disabled = true;

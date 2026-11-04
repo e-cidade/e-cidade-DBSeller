@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,144 +27,139 @@
 
 require_once modification("interfaces/GeradorRelatorio.interface.php");
 
-final class dbVariaveisRelatorio  implements iGeradorRelatorio {
-
-  private $sNome     = "";
-  private $sLabel    = "";
-  private $sTipoDado = "";
-  private $sValor    = "";
-  private $sSql      = "";
-
-
-  /**
-   * Inclui todos atributos da variável
-   *
-   * @param string $sNome
-   *
-   */
-
-  function __construct($sNome="",$sLabel="",$sValor="",$sTipoDado="", $sSql="" ) {
-
-  	$this->setNome ($sNome);
-  	$this->setLabel($sLabel);
-  	$this->setTipoDado($sTipoDado);
-  	$this->setValor($sValor);
-  	$this->setTipoDado($sTipoDado);
-  	$this->setSQL($sSql);
-
-  }
-
-  /**
-   * @return unknown
-   */
-  public function getNome() {
-
-    return $this->sNome;
-  }
-
-  /**
-   * @param unknown_type $sNome
-   */
-  public function setNome($sNome) {
-
-    $this->sNome = $sNome;
-  }
-
-  /**
-   * @return unknown
-   */
-  public function getLabel() {
-
-   if (db_utils::isUTF8($this->sLabel)) {
-     return utf8_decode($this->sLabel);
-   } else {
-     return $this->sLabel;
-   }
-
-  }
-
-  /**
-   * @param unknown_type $sLabel
-   */
-  public function setLabel($sLabel) {
-
-    $this->sLabel = $sLabel;
-  }
+/**
+ * @todo refazer essa classe em um estrutura mais moderna quando o Agata for descontinuado
+ */
+final class dbVariaveisRelatorio implements iGeradorRelatorio
+{
+    private $sNome = "";
+    private $sLabel = "";
+    private $sTipoDado = "";
+    private $sValor = "";
+    private $sSql = "";
 
 
-  /**
-   * @return unknown
-   */
-  public function getValor() {
-
-    if (db_utils::isUTF8($this->sValor)) {
-      return utf8_decode($this->sValor);
-    } else {
-      return $this->sValor;
+    /**
+     * Inclui todos atributos da variável
+     *
+     * @param string $sNome
+     *
+     */
+    public function __construct($sNome = "", $sLabel = "", $sValor = "", $sTipoDado = "", $sSql = "")
+    {
+        $this->setNome($sNome);
+        $this->setLabel($sLabel);
+        $this->setTipoDado($sTipoDado);
+        $this->setValor($sValor);
+        $this->setTipoDado($sTipoDado);
+        $this->setSQL($sSql);
     }
 
-  }
+    /**
+     * @return string
+     */
+    public function getNome()
+    {
+
+        return $this->sNome;
+    }
+
+    /**
+     * @param string $sNome
+     */
+    public function setNome($sNome)
+    {
+        $this->sNome = $sNome;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        if (db_utils::isUTF8($this->sLabel)) {
+            return mb_convert_encoding($this->sLabel, 'ISO-8859-1', 'UTF-8');
+        } else {
+            return $this->sLabel;
+        }
+    }
+
+    /**
+     * @param string $sLabel
+     */
+    public function setLabel($sLabel)
+    {
+        $this->sLabel = $sLabel;
+    }
 
 
-  /**
-   * @param unknown_type $sValor
-   */
-  public function setValor($sValor) {
+    /**
+     * @return string
+     */
+    public function getValor()
+    {
+        if (db_utils::isUTF8($this->sValor)) {
+            return mb_convert_encoding($this->sValor, 'ISO-8859-1', 'UTF-8');
+        } else {
+            return $this->sValor;
+        }
+    }
 
-    $this->sValor = $sValor;
-  }
 
-  /**
-   * @return unknown
-   */
-  public function getTipoDado() {
+    /**
+     * @param string $sValor
+     */
+    public function setValor($sValor)
+    {
+        $this->sValor = $sValor;
+    }
 
-    return $this->sTipoDado;
-  }
+    /**
+     * @return string
+     */
+    public function getTipoDado()
+    {
+        return $this->sTipoDado;
+    }
 
-  /**
-   * @param unknown_type
-   */
-  public function setTipoDado($sTipoDado) {
+    /**
+     * @param string
+     */
+    public function setTipoDado($sTipoDado)
+    {
+        $this->sTipoDado = $sTipoDado;
+    }
 
-    $this->sTipoDado = $sTipoDado;
-  }
+    public function getSql()
+    {
+        return $this->sSql;
+    }
 
-  public function getSql() {
+    /**
+     * @param string $sSql
+     */
+    public function setSql($sSql)
+    {
+        $this->sSql = $sSql;
+    }
 
-    return $this->sSql;
-  }
+    /**
+     * Enter description here...
+     *
+     * @return true
+     */
+    public function toXml(XMLWriter $oXmlWriter)
+    {
+        $oXmlWriter->startElement('Variavel');
 
-  /**
-   * @param unknown_type
-   */
-  public function setSql($sSql) {
+        $oXmlWriter->writeAttribute('nome', mb_convert_encoding($this->sNome, 'UTF-8', 'ISO-8859-1'));
+        $oXmlWriter->writeAttribute('label', mb_convert_encoding($this->sLabel, 'UTF-8', 'ISO-8859-1'));
+        $oXmlWriter->writeAttribute('tipodado', mb_convert_encoding($this->sTipoDado, 'UTF-8', 'ISO-8859-1'));
+        $oXmlWriter->writeAttribute('valor', mb_convert_encoding($this->sValor, 'UTF-8', 'ISO-8859-1'));
+        $oXmlWriter->writeAttribute('sql', mb_convert_encoding($this->sSql, 'UTF-8', 'ISO-8859-1'));
 
-    $this->sSql = $sSql;
-  }
+        $oXmlWriter->endElement();
 
-  /**
-   * Enter description here...
-   *
-   * @return unknown
-   */
-
-  public function toXml(XMLWriter $oXmlWriter) {
-
-  	$oXmlWriter->startElement('Variavel');
-
-  	$oXmlWriter->writeAttribute('nome' ,    utf8_encode($this->sNome));
-  	$oXmlWriter->writeAttribute('label',    utf8_encode($this->sLabel));
-  	$oXmlWriter->writeAttribute('tipodado', utf8_encode($this->sTipoDado));
-  	$oXmlWriter->writeAttribute('valor',    utf8_encode($this->sValor));
-  	$oXmlWriter->writeAttribute('sql',    utf8_encode($this->sSql));
-
-  	$oXmlWriter->endElement();
-
-  	return true;
-
-  }
-
+        return true;
+    }
 }
-
-?>

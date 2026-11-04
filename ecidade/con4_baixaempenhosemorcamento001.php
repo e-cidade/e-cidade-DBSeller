@@ -56,12 +56,12 @@ $oRotuloInscricaopassivo->label();
         <!-- Inscrição por Empenho-->
         <tr>
           <td>
-            <?
+            <?php
             db_ancora("<b>Inscrição:</b>", "js_pesquisaInscricao(true)", 1);
             ?>
           </td>     
           <td>
-            <?
+            <?php
             $funcaoJs= "onchange = 'js_pesquisaInscricao(false);'";
             db_input('c36_sequencial', 10, $Ic36_sequencial, true, 'text', 1, $funcaoJs);
             ?>
@@ -76,7 +76,7 @@ $oRotuloInscricaopassivo->label();
   </form>
   </div>    
   </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
   

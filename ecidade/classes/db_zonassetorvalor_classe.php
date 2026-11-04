@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,13 +58,13 @@ class cl_zonassetorvalor {
                  j141_valorm2 = float8 = Valor do metro quadrado
                  ";
    //funcao construtor da classe
-   function cl_zonassetorvalor() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonassetorvalor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_zonassetorvalor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j141_sequencial = ($this->j141_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j141_sequencial"]:$this->j141_sequencial);
        $this->j141_anousu = ($this->j141_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["j141_anousu"]:$this->j141_anousu);
@@ -88,7 +88,7 @@ class cl_zonassetorvalor {
      }
    }
    // funcao para inclusao
-   function incluir ($j141_anousu,$j141_zonas,$j141_setor){
+   public function incluir ($j141_anousu,$j141_zonas,$j141_setor){
       $this->atualizacampos();
      if($this->j141_sequencial == null ){
        $this->erro_sql = " Campo Sequencial da tabela zonasetorvalor não informado.";

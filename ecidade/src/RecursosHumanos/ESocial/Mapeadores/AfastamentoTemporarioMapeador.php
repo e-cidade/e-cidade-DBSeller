@@ -44,6 +44,7 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
         "dtFim_esocial" => "dtFim",
         "indRemunCargo_esocial" => "indRemunCargo",
         "cnpjMandElet_esocial" => "cnpjMandElet",
+        "infoMesmoMtv_esocial" => "infoMesmoMtv"
     );
 
     private $campos = array(

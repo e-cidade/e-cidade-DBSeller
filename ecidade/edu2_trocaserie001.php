@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -61,7 +61,7 @@ $escola = db_getsession("DB_coddepto");
       <b>Selecione o Calendário:</b><br>
       <select name="calendario"  style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?
+       <?php
        $sql = "SELECT ed52_i_codigo,ed52_c_descr
                FROM calendario
                 inner join calendarioescola on ed38_i_calendario = ed52_i_codigo
@@ -74,7 +74,7 @@ $escola = db_getsession("DB_coddepto");
         $descricao=$row["ed52_c_descr"];
         ?>
         <option value="<?=$codigo?>" <?=$codigo==@$calendario?"selected":""?>><?=$descricao;?></option>
-        <?
+        <?php
        }
        ?>
       </select>
@@ -94,7 +94,7 @@ $escola = db_getsession("DB_coddepto");
    </table>
   </td>
  </tr>
- <?if(isset($tipo)){?>
+ <?php if(isset($tipo)){?>
  <tr>
   <td valign="top">
    <?php
@@ -151,7 +151,7 @@ $escola = db_getsession("DB_coddepto");
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:400px;height:120px" multiple>
-    <?
+    <?php
     for($i=0;$i<$linhas;$i++) {
      db_fieldsmemory($result,$i);
      echo "<option value='$ed47_i_codigo'>$ed47_v_nome - $descrorig -> $descrdest</option>\n";
@@ -208,12 +208,12 @@ $escola = db_getsession("DB_coddepto");
    </fieldset>
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </fieldset>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -326,7 +326,7 @@ function js_pesquisa(calendario,tipo){
  jan = window.open('edu2_trocaserie002.php?l&alunos='+alunos+'&tipo='+tipo+'&calendario='+calendario,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
  jan.moveTo(0,0);
 }
-<?if(!isset($tipo) && pg_num_rows($sql_result)>0){?>
+<?php if(!isset($tipo) && pg_num_rows($sql_result)>0){?>
  document.form1.calendario.options[1].selected = true;
-<?}?>
+<?php }?>
 </script>

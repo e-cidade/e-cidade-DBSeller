@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
           <?=@$Lt70_situac?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t70_situac',8,$It70_situac,true,'text',3,"")
           ?>
         </td>
@@ -51,7 +51,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
           <?=@$Lt70_descr?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t70_descr',40,$It70_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -67,7 +67,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_situabens.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

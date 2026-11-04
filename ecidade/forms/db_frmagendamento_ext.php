@@ -165,8 +165,7 @@ $sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        :
                               $Isd27_i_codigo,
                               true,
                               'hidden',
-                              $db_opcao,
-                              " onchange='js_pesquisasd27_i_codigo(false);'"
+                              $db_opcao
                             );
                     ?>
                   </td>
@@ -400,6 +399,8 @@ $sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        :
 $('s115_c_cartaosus').onkeyup   = validaCartaoSUS;
 $('s115_c_cartaosus').onkeydown = validaCartaoSUS;
 
+let booProced = <?php echo json_encode($booProced) ?>; 
+
 document.addEventListener("DOMContentLoaded", function(event) {
   $('sd02_i_codigo').focus();
 });
@@ -509,23 +510,12 @@ document.onkeyup = function(evt) {
         troca = 1;
       }
 
-      <?php
-      if( $booProced ) {
-
-        ?>
-        if( troca == 1 ) {
-          nextfield = 'sd63_c_procedimento';
-        }
-      <?php
-      } else {
-
-        ?>
-        if( troca == 1 ) {
-          nextfield = 's115_c_cartaosus';
-        }
-      <?php
+      if( booProced && troca == 1) {
+        nextfield = 'sd63_c_procedimento';
+      } else if(troca == 1) {
+        nextfield = 's115_c_cartaosus';
       }
-      ?>
+    
       return false;
     }
   } else if( evt.keyCode == 39 && valor_types ) {
@@ -697,7 +687,7 @@ function js_pesquisasd03_i_codigo2( mostra, depara ) {
     js_OpenJanelaIframe(
                          '',
                          'db_iframe_cboups2',
-                         'func_cboups2.php?funcao_js=parent.js_mostramedicos_21|z01_nome|sd03_i_codigo|sd27_i_codigo'
+                         'func_cboups2.php?funcao_js=parent.js_mostramedicos_1|sd03_i_codigo|z01_nome|sd27_i_codigo'
                                         +'&chave_sd04_i_medico=0'
                                         +'&chave_sd04_i_unidade='+$F('sd02_i_codigo')
                                         +'&chave_rh70_estrutural='+$F('rh70_estrutural'),
@@ -712,10 +702,9 @@ function js_pesquisasd03_i_codigo2( mostra, depara ) {
                            '',
                            'db_iframe_cboups2',
                            'func_cboups2.php?pesquisa_chave='+document.form1.sd03_i_codigo.value
-                                          +'&funcao_js=parent.js_mostramedicos_21'
+                                          +'&funcao_js=parent.js_mostramedicos_2'
                                           +'&chave_sd04_i_medico=0'
-                                          +'&chave_sd04_i_unidade='+$F('sd02_i_codigo')
-                                          +'&chave_rh70_estrutural='+$F('rh70_estrutural'),
+                                          +'&chave_sd04_i_unidade='+$F('sd02_i_codigo'),                                         
                            'Pesquisa Profissional',
                            false
                          );
@@ -733,71 +722,59 @@ function js_pesquisasd03_i_codigo2( mostra, depara ) {
   }
 }
 
-function js_mostramedicos_21( chave1, chave2, chave3 ) {
+function js_mostramedicos(){
 
-  document.form1.z01_nome.value = chave1;
+  db_iframe_cboups2.hide();
+    
+  js_OpenJanelaIframe(
+                       '',
+                       'db_iframe_especmedico',
+                       'func_especmedico.php?iFiltroHorario=1'
+                                          +'&funcao_js=parent.js_mostrarhcbo11|sd27_i_codigo'
+                                                                            +'|rh70_estrutural'
+                                                                            +'|rh70_descr'
+                                                                            +'|sd27_i_rhcbo'
+                                          +'&chave_sd04_i_unidade='+document.form1.sd02_i_codigo.value
+                                          +'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,
+                       'Pesquisa',
+                       true
+                     );
+  
+  document.getElementById('sd23_d_consulta').value = '';
+  document.form1.diasemana.value                   = '';
+  if($('s125_i_procedimento') != undefined && booProced){
+    document.form1.sd63_c_procedimento.value = '';
+    document.form1.sd63_c_nome.value         = '';
+  }else if( $('s125_i_procedimento') != undefined ) {
+    document.form1.s125_i_procedimento.value = '';
+  } 
+  document.form1.rh70_estrutural.value = '';
+  document.form1.rh70_descr.value      = '';
+  document.form1.rh70_sequencial.value = '';
 
-  if(! (chave2 === true) ) {
-
-    if( chave2 != false ) {
-      document.form1.sd03_i_codigo.value = chave2;
-    }
-
-    document.form1.sd27_i_codigo.value = chave3;
-    db_iframe_cboups2.hide();
-
-    js_OpenJanelaIframe(
-                         '',
-                         'db_iframe_especmedico',
-                         'func_especmedico.php?iFiltroHorario=1'
-                                            +'&funcao_js=parent.js_mostrarhcbo11|sd27_i_codigo'
-                                                                              +'|rh70_estrutural'
-                                                                              +'|rh70_descr'
-                                                                              +'|sd27_i_rhcbo'
-                                            +'&chave_sd04_i_unidade='+document.form1.sd02_i_codigo.value
-                                            +'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,
-                         'Pesquisa',
-                         true
-                       );
-
-    document.getElementById('sd23_d_consulta').value = '';
-    document.form1.diasemana.value                   = '';
-
-    if( $('s125_i_procedimento') != undefined ) {
-
-      document.form1.sd63_c_procedimento.value = '';
-      document.form1.sd63_c_nome.value         = '';
-      document.form1.s125_i_procedimento.value = '';
-    }
-
-    document.form1.rh70_estrutural.value = '';
-    document.form1.rh70_descr.value      = '';
-    document.form1.rh70_sequencial.value = '';
-
-    iframe     = document.getElementById('frameagendados');
-    iframe.src = '';
-    document.getElementById('framecalendario').src = '';
-  }
 }
 
-function js_pesquisasd27_i_codigo( mostra ) {
+function js_mostramedicos_1( chave1, chave2, chave3) {
 
-  if( document.form1.sd27_i_codigo.value != '' ) {
+  document.form1.sd03_i_codigo.value = chave1;
+  document.form1.z01_nome.value = chave2;
+  document.form1.sd27_i_codigo.value = chave3;
+  
+  js_mostramedicos();
+}
 
-    js_OpenJanelaIframe(
-                         '',
-                         'db_iframe_cboups2',
-                         'func_cboups2.php?pesquisa_chave='+document.form1.sd27_i_codigo.value
-                                        +'&funcao_js=parent.js_mostramedicos_21'
-                                        +'&chave_sd04_i_medico=0'
-                                        +'&chave_sd04_i_unidade='+$F('sd02_i_codigo')
-                                        +'&chave_rh70_estrutural='+$F('rh70_estrutural'),
-                         'Pesquisa Profissional',
-                         true
-                       );
+function js_mostramedicos_2(chave1, chave2, chave3, chave4){
+  if(!(chave1 === true)) {
+
+    document.form1.sd03_i_codigo.value = chave2;
+    document.form1.z01_nome.value = chave3;
+    document.form1.sd27_i_codigo.value = chave4;
+
   } else {
-    document.form1.z01_nome.value = '';
-  }
+    document.form1.z01_nome.value = chave2;
+  }  
+
+  js_mostramedicos();
 }
 
 function js_pesquisasd04_i_cbo( mostra, chama ) {
@@ -1496,14 +1473,14 @@ function js_nova() {
   obj.diasemana.value            = '';
   $('z01_v_telcel').value        = '';
 
-  <?php
-  if( $booProced ) {
-  ?>
+  
+  if( booProced ) {
+  
     obj.sd63_c_procedimento.value = '';
     obj.sd63_c_nome.value         = '';
-  <?php
+
   }
-  ?>
+  
 
   obj.sd02_i_codigo.focus();
 
@@ -1683,19 +1660,13 @@ function validaCampos() {
     return false;
   }
 
-  <?php
-  if( $booProced ) {
+  if( booProced && document.form1.sd63_c_procedimento.value == '') {
 
-  ?>
-    if( document.form1.sd63_c_procedimento.value == '' ) {
-
-      alert('Campo Procedimento não informado!');
-      document.form1.sd63_c_procedimento.focus();
-      return false;
-    }
-  <?php
+    alert('Campo Procedimento não informado!');
+    document.form1.sd63_c_procedimento.focus();
+    return false;    
   }
-  ?>
+  
   return true;
 }
 

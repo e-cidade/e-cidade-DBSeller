@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -48,7 +48,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
 $anousu = db_getsession("DB_anousu");
 
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -59,7 +59,7 @@ for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
 }
 //// saldos bancarios do exercicio anterior
 /*
- * quando usuario informa recurso usamos esta condição 
+ * quando usuario informa recurso usamos esta condição
  */
 $where_recurso = "";
 if ($recurso > 0) {
@@ -94,24 +94,24 @@ for ($h = 0; $h < $nrows; $h ++) {
 //
 $sql_where ="";
 if ($recurso > 0) {
-  $sql_where = ' and e91_recurso  = '.$recurso ; 
-} 
+  $sql_where = ' and e91_recurso  = '.$recurso ;
+}
 $sele_work = ' e60_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $sql_restos = $clempresto->sql_rp(db_getsession("DB_anousu"),$sele_work,$anousu.'-01-01',$data_limite,$sql_where, " and ".$sele_work);
 
 $sql_restos = " select sum(coalesce(round(e91_vlremp,2),0)) - sum(coalesce(round(e91_vlranu,2),0)) - sum(coalesce(round(e91_vlrpag,2),0)) as saldo_inicial_rp,
-                       sum(coalesce(round(e91_vlremp,2),0)) - 
+                       sum(coalesce(round(e91_vlremp,2),0)) -
 		         (sum(coalesce(round(e91_vlranu,2),0))
-			  + sum(coalesce(round(vlranu,2),0)) ) - 
-			 
-		         (sum(coalesce(round(e91_vlrpag,2),0)) 
+			  + sum(coalesce(round(vlranu,2),0)) ) -
+
+		         (sum(coalesce(round(e91_vlrpag,2),0))
 			  +sum(coalesce(round(vlrpag,2),0))) as saldo_atual_rp,
-		       
+
                        sum(coalesce(round(vlranu,2),0)) as cancelamento_rp,
                        sum(coalesce(round(vlrpag,2),0)) as pagamento_rp
                 from ($sql_restos) as x
               ";
-			
+
 $result_restos  = db_query($sql_restos);
 if (pg_numrows($result_restos) > 0 ){
   db_fieldsmemory($result_restos,0);
@@ -123,8 +123,8 @@ if (pg_numrows($result_restos) > 0 ){
    // exit;
 }
 $sql_where ="";
-if ($recurso > 0) {   
-   $sql_where = " o70_codigo = ".$recurso; 
+if ($recurso > 0) {
+   $sql_where = " o70_codigo = ".$recurso;
 }
 $result_receita = db_receitasaldo(1,3,3,true,$sql_where,$anousu,$anousu."-01-01",$data_limite);
 if (pg_numrows($result_receita)>0){
@@ -133,7 +133,7 @@ if (pg_numrows($result_receita)>0){
 
 $sql_where ="";
 if ($recurso > 0) {
-  $sql_where = ' and w.o58_codigo  = '.$recurso ; 
+  $sql_where = ' and w.o58_codigo  = '.$recurso ;
 }
 $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).')  '.$sql_where ;
 $sql_baldesp = db_dotacaosaldo(2,2,4,true,$sele_work,$anousu,$anousu."-01-01",$data_limite,8,0,true);
@@ -152,7 +152,7 @@ if (pg_numrows($result_baldesp) > 0 ){
   //echo "<br> empenhado ".$liquidado;
   //echo "<br> empenhado ".$pago;
   //echo "<br> empenhado ".$especial;
-  //echo "<br> empenhado ".$suplementado;  
+  //echo "<br> empenhado ".$suplementado;
   //echo "<br>";
 }
 

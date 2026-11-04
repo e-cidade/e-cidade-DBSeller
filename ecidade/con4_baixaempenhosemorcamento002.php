@@ -149,7 +149,7 @@ $c36_sequencial = $oGet->iCodigoInscricao;
 
             <tr>
               <td nowrap="nowrap" class='tamanho-primeira-col'>
-               <strong><?db_ancora('Dotação:',"js_pesquisa_dotacao(true);",1);?></strong>
+               <strong><?php db_ancora('Dotação:',"js_pesquisa_dotacao(true);",1);?></strong>
               </td>
               <td nowrap="nowrap">
 
@@ -355,7 +355,7 @@ $c36_sequencial = $oGet->iCodigoInscricao;
       </div>
   </center>
 </form>
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

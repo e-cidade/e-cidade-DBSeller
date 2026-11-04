@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clmensagerialicenca->rotulo->label("am14_mensagem");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam14_sequencial?></label></td>
-          <td><? db_input("am14_sequencial",10,$Iam14_sequencial,true,"text",4,"","chave_am14_sequencial"); ?></td>
+          <td><?php db_input("am14_sequencial",10,$Iam14_sequencial,true,"text",4,"","chave_am14_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam14_mensagem?></label></td>
-          <td><? db_input("am14_mensagem",10,$Iam14_mensagem,true,"text",4,"","chave_am14_mensagem");?></td>
+          <td><?php db_input("am14_mensagem",10,$Iam14_mensagem,true,"text",4,"","chave_am14_mensagem");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clmensagerialicenca->rotulo->label("am14_mensagem");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_mensagerialicenca.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_mensagerialicenca.php")==true){
@@ -78,12 +78,12 @@ $clmensagerialicenca->rotulo->label("am14_mensagem");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

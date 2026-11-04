@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -82,8 +82,8 @@ $clrotulo->label("ed52_c_passivo");
        <?=@$Led57_i_calendario?>
       </td>
       <td>
-       <?db_input('ed52_i_codigo',15,@$Ied52_i_codigo,true,'text',3,"")?>
-       <?db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,"")?>
+       <?php db_input('ed52_i_codigo',15,@$Ied52_i_codigo,true,'text',3,"")?>
+       <?php db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -91,7 +91,7 @@ $clrotulo->label("ed52_c_passivo");
        <b>Inativo:</b>
       </td>
       <td>
-       <?
+       <?php
        $x = array('N'=>'NÃO','S'=>'SIM');
        db_select('ed52_c_passivo',$x,true,$db_opcao,"");
        ?>
@@ -113,7 +113,7 @@ $clrotulo->label("ed52_c_passivo");
 </form>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 var iModulo         = <?=db_getsession("DB_modulo")?>;
 var sFuncaoPesquisa = 'func_calendarioativo.php'
@@ -131,14 +131,14 @@ function js_pesquisar(){
 
 function js_preenchepesquisa(chave){
  db_iframe_calendario.hide();
- <?
+ <?php
  if($db_opcao!=1){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }
 </script>
-<?
+<?php
 if(isset($alterar)){
  if($clcalendario->erro_status=="0"){
   $clcalendario->erro(true,false);

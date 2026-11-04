@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -58,12 +58,12 @@ function mo_camada(camada){
 }
 function valida_submit(){
     if (document.estrut.nome_arq == ""){
-       alert('O nome do arquivo deve ser informado!!!'); 
+       alert('O nome do arquivo deve ser informado!!!');
        return false;
     }else{
        return true
     }
-}	
+}
 </script>
 <style type="text/css">
 .tabela {border:1px solid black; top:25px; left:150}
@@ -82,18 +82,18 @@ function valida_submit(){
 
   <tr>
      <td height=25>&nbsp;</td>
-  </tr>		
+  </tr>
 </table>
-<?if(!isset($HTTP_POST_VARS["b_estrut"])) {?>
+<?php if(!isset($HTTP_POST_VARS["b_estrut"])) {?>
 <table border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc" style='border:1px solid black'>
    <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?echo $PHP_SELF;?>">
-  <tr> 
+  <tr>
      <td colspan=4 align='center' style='border-bottom:1px solid black'><font size='4'><b>Módulos</b></font></td>
   </tr>
   <tr>
   <td colspan=2>
- <? 
-      $rsmod = db_query("select m.codmod,m.nomemod 
+ <?php
+      $rsmod = db_query("select m.codmod,m.nomemod
      	                from   db_sysmodulo m
 	               	       inner join db_sysarqmod s
 			       on s.codmod = m.codmod
@@ -101,7 +101,7 @@ function valida_submit(){
    	                order by nomemod");
       echo  "<select  name='modulos' size='10' onchange=\"mo_camada(document.estrut.modulos.value);\">";
      for ($i = 0;$i < pg_numrows($rsmod); $i++) {
-          echo "<option value='".trim(pg_result($rsmod,$i,"nomemod"))."'>".trim(pg_result($rsmod,$i,"nomemod"))."</option>\n";  
+          echo "<option value='".trim(pg_result($rsmod,$i,"nomemod"))."'>".trim(pg_result($rsmod,$i,"nomemod"))."</option>\n";
       }
  ?>
   </select></td></tr>
@@ -111,7 +111,7 @@ function valida_submit(){
  </table>
 <br>
  <table  border=0 cellspacing=0 style="border:1px solid black">
-  <tr> 
+  <tr>
      <td colspan=2 align='center' style='border-bottom:1px solid black'><font size='4'><b>Opções</b></font></td>
   </tr>
    <tr>
@@ -157,19 +157,19 @@ function valida_submit(){
 	 }
        }
      }
-   </script>  
+   </script>
 
- <?
+ <?php
    // cria as layers com o conteúdo das tabelas
    $j = 0;
    $modulo = "";
   //define quantos checkboxes iram ficar por linha da tabela.
    $quebratab = 1;
    while ($j < pg_numrows($rstab)){
-      db_fieldsmemory($rstab,$j); 
+      db_fieldsmemory($rstab,$j);
       if ($modulo == $nomemod){
 	if ($quebratab == 4){
-            $quebratab = 1;	
+            $quebratab = 1;
             echo "</tr><tr>";
         }else{
             $quebratab++;
@@ -188,19 +188,19 @@ function valida_submit(){
    }
     echo "</tr>";
 echo "</table>";
-   echo "</div>";     
-        
+   echo "</div>";
 
-  ?>      
-  </form> 
-  <?
+
+  ?>
+  </form>
+  <?php
 } else {
   if (empty($_POST["nome_arq"])){
      db_msgbox('O nome do Arquivo não pode estar vazio');
-     db_redireciona(); 
+     db_redireciona();
   }
-  //cria o arquivo 
-  umask(74); 
+  //cria o arquivo
+  umask(74);
   $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
   $arquivo = "/tmp/".$_POST["nome_arq"];
   $fd = fopen($arquivo,'w');
@@ -221,12 +221,12 @@ echo "</table>";
                                      on am.codmod = m.codmod
                                      inner join db_sysarquivo a
                                      on a.codarq = am.codarq
-                              where a.codarq = $valor  
+                              where a.codarq = $valor
                               order by codmod");
-	    
+
            if(pg_numrows($campos) > 0){
                db_fieldsmemory($campos,0);
-                fputs($fd, "DROP TABLE ".trim($nomearq).";\n");      	  
+                fputs($fd, "DROP TABLE ".trim($nomearq).";\n");
 	  }
      }
   }
@@ -242,10 +242,10 @@ echo "</table>";
 					  and a.codarq = $valor1");
 	   if (pg_numrows($seq) > 0){
               $rsseq = pg_fetch_array($seq);
-  	      fputs($fd, "DROP SEQUENCE ".$rsseq["nomesequencia"].";\n");      	 
+  	      fputs($fd, "DROP SEQUENCE ".$rsseq["nomesequencia"].";\n");
            }
-      } 
- } 
+      }
+ }
   //cria  sequences;
   fputs($fd, "\n\n-- Criando  sequences\n");
   while (list($campo2,$valor2) = each($csequencias)){
@@ -261,12 +261,12 @@ echo "</table>";
   	      fputs($fd,"CREATE SEQUENCE ".$rscseq["nomesequencia"]."\n");
   	      fputs($fd,"INCREMENT ".trim($rscseq["incrseq"])."\n");
   	      fputs($fd, "MINVALUE ".trim($rscseq["minvalueseq"])."\n");
-  	      fputs($fd, "MAXVALUE ".trim($rscseq["maxvalueseq"])."\n");		 
-  	      fputs($fd, "START ".trim($rscseq["startseq"])."\n");		 		 
+  	      fputs($fd, "MAXVALUE ".trim($rscseq["maxvalueseq"])."\n");
+  	      fputs($fd, "START ".trim($rscseq["startseq"])."\n");
   	      fputs($fd, "CACHE ".trim($rscseq["cacheseq"]).";\n");
-	      fputs($fd,"\n\n"); 
+	      fputs($fd,"\n\n");
            }
-      } 
+      }
    }
    //cria as tabelas e sua estrutura
      fputs($fd,"-- TABELAS E ESTRUTURA\n");
@@ -278,9 +278,9 @@ echo "</table>";
                                      on am.codmod = m.codmod
                                      inner join db_sysarquivo a
                                      on a.codarq = am.codarq
-                              where a.codarq = $valor3  
+                              where a.codarq = $valor3
                               order by codmod");
-	    
+
            if(pg_numrows($tabela) > 0){
                 db_fieldsmemory($tabela,0);
            }
@@ -295,7 +295,7 @@ echo "</table>";
 	  $Ncampos = pg_numrows($campo);
 	  if ($Ncampos > 0) {
              fputs($fd, "\n-- Módulo: ".trim($nomemod)."\n");
-             fputs($fd, "CREATE TABLE ".trim($nomearq)."(\n");      
+             fputs($fd, "CREATE TABLE ".trim($nomearq)."(\n");
         for($j = 0;$j < $Ncampos;$j++) {
           if($j == $Ncampos - 1) {
             // Chave Primaria
@@ -317,7 +317,7 @@ echo "</table>";
                 $primary_key = "(";
                 $nomePK = trim($nomearq)."_";
                 for($p = 0;$p < $Npk;$p++) {
-                  $cc = split("_",trim(pg_result($pk,$p,"nomecam")));
+                  $cc =explode("_",trim(pg_result($pk,$p,"nomecam")));
                   if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
                     $nomePK = $nomePK."ae_";
                   else if(strlen(strstr(strtoupper(@$cc[1]),"MESUSU")) > 0)
@@ -363,7 +363,7 @@ echo "</table>";
 	}
       }
     }
-  }  
+  }
 // Foreign Key
 if (isset($fk)) {
    fputs ($fd,"\n\n\n-- CHAVE ESTRANGEIRA\n\n\n");
@@ -393,7 +393,7 @@ if (isset($fk)) {
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).")";
 	   else
           $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).",";
-        $cc = split("_",trim(pg_result($fk,$f,"nomecam")));
+        $cc =explode("_",trim(pg_result($fk,$f,"nomecam")));
         if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
           $NomeFK = $NomeFK."ae_";
         else if(strlen(strstr(strtoupper(@$cc[1]),"MESEXE")) > 0)
@@ -402,7 +402,7 @@ if (isset($fk)) {
           $ICC = sizeof($cc) == 1?0:1;
           if(strlen($cc[$ICC]) >=4 )
 		    $NomeFK = $NomeFK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
-          else			
+          else
             $NomeFK = $NomeFK.@$cc[$ICC];
 		}
         $TabPai = trim(pg_result($fk,$f,"t_pai"));
@@ -444,7 +444,7 @@ if (isset($indice)) {
         }
         $campos = $campos.");";
         fputs($fd,"CREATE ".( pg_result($ind,$j,"campounico")=="1"?"UNIQUE":"")." INDEX ".trim(pg_result($ind,$j,"nomeind"))." ON ".trim(pg_result($nome,0,"nomearq")).$campos."\n\n");
-     } 
+     }
      }
     }
   }
@@ -456,9 +456,9 @@ if(isset($funcoes)) {
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '0'");
   $numrows = pg_numrows($result);
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");	
-  }  
-  fputs($fd,"\n\n\n");  
+    fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");
+  }
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
   }
@@ -470,8 +470,8 @@ if(isset($views)) {
   $numrows = pg_numrows($result);
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP VIEW ".trim(pg_result($result,$i,"nomefuncao")).";\n");
-  }  
-  fputs($fd,"\n\n\n");  
+  }
+  fputs($fd,"\n\n\n");
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
   }
@@ -492,7 +492,7 @@ if(isset($triggers)) {
                                               on a.codarq = am.codarq".
                                               $meta."
                                        order by codmod");
- 
+
            fputs($fd,"\n\n\n-- TRIGGERS\n\n\n");
            $numrows = pg_numrows($RecordsetTabMod);
            $c = "";
@@ -515,12 +515,12 @@ if(isset($triggers)) {
               fputs($fd,"DROP TRIGGER ".trim(pg_result($result,$i,"nometrigger"))." ON ".trim(pg_result($result,$i,"nomearq")).";\n");
            }
            //drop functions
-           fputs($fd,"\n\n\n");  
+           fputs($fd,"\n\n\n");
            for ($i = 0;$i < $numrows;$i++) {
               fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");
            }
           //cria as funções das triggers
-          fputs($fd,"\n\n\n");  
+          fputs($fd,"\n\n\n");
           for ($i = 0;$i < $numrows;$i++) {
              fputs ($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
           }
@@ -547,7 +547,7 @@ $salvando = 1;
 </body>
 </html>
      <script>
-     <?
+     <?php
      if(!isset($salvando)){
      ?>
       arquivo = '';
@@ -560,7 +560,7 @@ $salvando = 1;
 	}
       }
       document.estrut.nome_arq.value = '';
-      <?
+      <?php
       }
       ?>
       function js_preenchenome(obj,obj1){

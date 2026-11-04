@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -93,7 +93,7 @@ if(isset($incluir)){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <br><br>
-     <?
+     <?php
      include(modification("forms/db_frmitenserv111.php"));
      ?>
     </center>
@@ -102,7 +102,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clitenserv->erro_status=="0"){
     $clitenserv->erro(true,false);

@@ -34,6 +34,9 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $clacordo = new cl_acordo;
+$clacordocomissaomembro = new cl_acordocomissaomembro;
+$clacordoproc = new cl_acordoproc;
+$clprotprocesso = new cl_protprocesso;
 db_postmemory($HTTP_POST_VARS);
 $db_opcao = 22;
 $db_botao = false;
@@ -66,12 +69,43 @@ if (isset($chavepesquisa)) {
   if ($rsAcordo && pg_num_rows($rsAcordo) > 0) {
 
     $iSituacao = db_utils::fieldsMemory($rsAcordo, 0)->ac17_sequencial;
+    db_fieldsmemory($rsAcordo, 0);
     if ($iSituacao == 4) {
-
       $db_opcao          = 3;
       $db_opcao_editavel = 2;
-      db_fieldsmemory($rsAcordo, 0);
+
     }
+
+    $cl_acordoparam = new cl_acordoparam;
+    $iInstituicaoSessao = db_getsession('DB_instit');
+    $sql = $cl_acordoparam->sql_query_file(null, "*", null, "ac59_instituicao = {$iInstituicaoSessao}");
+    $retorno = pg_fetch_assoc($cl_acordoparam->sql_record($sql));
+    $parametro_exibe_fiscal = $retorno['ac59_cadastrocomissoesfiscal'] === 't' ? true : false;
+    if ($parametro_exibe_fiscal) {
+        $sSqlComissaoMembros = $clacordocomissaomembro->sql_query(null, "*", null, "ac07_acordocomissao = $ac16_acordocomissao and ac42_sequencial = 4");
+        $rsComissaoMembros = db_query($sSqlComissaoMembros);
+
+        for ($i = 0; $i < pg_num_rows($rsComissaoMembros); $i++) {
+            db_fieldsmemory($rsComissaoMembros, $i);
+            $fiscalcgm[] = $ac07_numcgm;
+        }
+        $sSqlComissaoMembros = $clacordocomissaomembro->sql_query(null, "*", null, "ac07_acordocomissao = $ac16_acordocomissao and ac42_sequencial = 1");
+        $rsComissaoMembros = db_query($sSqlComissaoMembros);
+        db_fieldsmemory($rsComissaoMembros, 0);
+        $gestorcgm = $ac07_numcgm;
+    }
+  }
+
+  $sSqlAcordoProc = $clacordoproc->sql_query_file(null, "ac62_protprocesso", "", "ac62_acordo = {$chavepesquisa}");
+  $rsAcordoProc = $clacordoproc->sql_record($sSqlAcordoProc);
+  if ($clacordoproc->numrows > 0) {
+      $ac62_protprocesso = db_utils::fieldsMemory($rsAcordoProc, 0)->ac62_protprocesso;
+
+      $sSqlProtProcesso = $clprotprocesso->sql_query($ac62_protprocesso, "z01_nome");
+      $rsProtProcesso = $clprotprocesso->sql_record($sSqlProtProcesso);
+      if ($clprotprocesso->numrows > 0) {
+          $ac16_descprocesso = db_utils::fieldsMemory($rsProtProcesso, 0)->z01_nome;
+      }
   }
 }
 
@@ -84,9 +118,11 @@ unset($_SESSION["oContrato"]);
 <meta http-equiv="Expires" CONTENT="0">
 <?php
 db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js");
-db_app::load("dbmessageBoard.widget.js, prototype.js, contratos.classe.js");
+db_app::load("dbmessageBoard.widget.js, prototype.js, contratos.classe.js,http/http.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
+<script type="text/javascript" src="scripts/prototype.js"></script>
+<script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <?php

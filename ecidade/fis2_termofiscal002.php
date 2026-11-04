@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,13 +25,14 @@
  *                                licenca/licenca_pt.txt 
  */
 
-include(modification("fpdf151/pdf.php"));
-include(modification("libs/db_sql.php"));
-include(modification("classes/db_parfiscal_classe.php"));
-include(modification("classes/db_termovist_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-//db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_sql.php");
+require_once modification("classes/db_parfiscal_classe.php");
+require_once modification("classes/db_termovist_classe.php");
+require_once modification("dbforms/db_funcoes.php");
+db_postmemory($_SERVER);
 
 $clparfiscal     = new cl_parfiscal;
 $cltermovist     = new cl_termovist;
@@ -50,6 +51,7 @@ $termovist="";
 $tipoori="";
 $inscrnaoger="";
 $naoimprime = false;
+
 if(isset($inscricao) && $inscricao != ""){
   $where .= " $and issbase.q02_inscr = $inscricao ";
   $and = " and ";
@@ -130,19 +132,18 @@ if($numtipo == 0){
   $primeiro = 'f';
 }
 
-$head2 = "Termo de Fiscalização";
-
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new ECidade\Pdf\Pdf();
+$pdf->init(false);
 $pdf->AliasNbPages();
 $geratermo = 'f';
 $mostrapdf = 'f';
-//ss$mostrapdf = 't'; // linha para teste... tirar depois...
-
-
 $rsTipo  = null;
 $numtipo = null;
-//db_msgbox($reemis);
+$titulo = "Termo de Fiscalização";
+$numeroDoTermo = "";
+
+$pdf->addTitulo($titulo);
+
 for($cont=0;$cont < $int_linhas;$cont++) {
 	db_fieldsmemory($result,$cont);  
   if(isset($reemis) && $reemis == 's' ){
@@ -153,12 +154,11 @@ for($cont=0;$cont < $int_linhas;$cont++) {
     $numtipo = $cltermovist->numrows;
     
     if($numtipo==0){
-      //          continue;
 	    $naoimprime = true;
     }else{
       db_fieldsmemory($rsTermo,0);
       $mostrapdf = 't';
-      $head3 = "TERMO DE VISTORIA N° ".$y91_termovist;
+      $numeroDoTermo = $y91_termovist;
     }
     
   }else{
@@ -172,11 +172,12 @@ for($cont=0;$cont < $int_linhas;$cont++) {
       if ($numrows>0){
         db_fieldsmemory($rsTermovist,0);
       }
-      $head3 = "TERMO DE VISTORIA N° ".$termovist;
+      if(!isset($numeroDoTermo) || $numeroDoTermo == ""){
+        $numeroDoTermo = $termovist;
+      }
 
       // ROTINA DE INCLUSÃO NA TABELA TERMOVIST
 
-      //      $sqlerro=false;
       db_inicio_transacao();
       $cltermovist->y91_inscr     = $q02_inscr;
       $cltermovist->y91_datatermo = date ('Y',db_getsession("DB_datausu"))."-".date ('m',db_getsession("DB_datausu"))."-".date('d',db_getsession("DB_datausu"));
@@ -193,7 +194,6 @@ for($cont=0;$cont < $int_linhas;$cont++) {
       }
       db_fim_transacao($sqlerro);
     }else{
-      //die("ja temmmmmmm");
       $naoimprime = true;
     }
   }
@@ -208,29 +208,31 @@ for($cont=0;$cont < $int_linhas;$cont++) {
   inner join db_tipodoc on db08_codigo  = db03_tipodoc
   inner join db_paragrafo on db04_idparag = db02_idparag 
   where db03_tipodoc = 1013 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
-    //die($sqlparag);
     $resparag = db_query($sqlparag);
     if ( pg_numrows($resparag) == 0 ) {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do Termo de Vistoria!');
       exit;
     }
     $numrows = pg_numrows($resparag);
-    //$pdf1->inicia     = $db02_inicia;
     $pdf->setx($col);
     $pdf->setfont('Arial','B',14);
-    $pdf->cell(155,10,$head3,0,1,"C",0); //$pdf->cell(155,10,"TERMO DE VISTORIA N° ".$y91_termovist,0,1,"C",0);
+
+    if(isset($numeroDoTermo) && $numeroDoTermo != ""){
+      $pdf->cell(155,10,mb_strtoupper($titulo)." N° ".$numeroDoTermo,0,1,"C",0);
+    } else {
+      $pdf->cell(155,10,mb_strtoupper($titulo)." N° ".$y91_termovist,0,1,"C",0);
+    }
+
     $pdf->setfont('Arial','',10);
     
     for($i=0;$i<$numrows;$i++){
       db_fieldsmemory($resparag,$i);
       if ($i==0){
-        $pdf1->inicia     = $db02_inicia;
+        $pdf->inicia = $db02_inicia;
       }
+
       if (isset($db02_descr) && $db02_descr == 'TERMO VISTORIA PARAG 1'){
         $pdf->setx($col);
-        
-        //$pdf->MultiCell(170,4,"          ".db_geratexto($db02_texto),0,"J");
-        //Informa??es
         
         /*
          * VARIÁVEIS DO PARAGRAFO 
@@ -258,7 +260,6 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         } else {
           $zona = "____________";   
         } 
-        
         $pdf->roundedrect($col,$pdf->gety()+2,150+20,75,2,'1234');
         $pdf->setfont('Arial','B',10);
         $pdf->setx($col);
@@ -285,7 +286,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         $pdf->setfont('Arial','B',10);
         $pdf->cell(65,5,"ATIVIDADE LICENCIADA : ",0,0,"J",0);
         $pdf->setfont('Arial','',10);
-        $pdf->cell(100,5,$q03_ativ.' - '.$q03_descr,0,1,"J",0);
+        $pdf->multicell(100,5,$q03_ativ.' - '.$q03_descr,0,"J",0);
         $pdf->setx($col);
         $pdf->setfont('Arial','B',10);
         $pdf->cell(65,5,"CONDIÇÕES DE FUNCIONAMENTO : ",0,0,"J",0);
@@ -306,14 +307,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
 
         for( $y=0; $y<$int_linhas_isscalc; $y++ ){
           db_fieldsmemory( $res_isscalc, $y );
-          if( $q01_cadcal == 1  and empty( $str_alvara )){ //6  	ALVAR?
-            //  $str_alvara = func_alvara( $q01_numpre );
-             
-          }
-          else if( $q01_cadcal == 6 and empty( $str_sanitario ) ){ //6  	ALVAR? SANIT?RIO
-            //    $str_sanitario = func_alvara( $q01_numpre );
-          }
-          else if( ( $q01_cadcal == 2 or $q01_cadcal == 3 ) and empty( $str_issqn ) ){ //2 ISS FIXO - 3 ISS VAR
+          if( ( $q01_cadcal == 2 or $q01_cadcal == 3 ) and empty( $str_issqn ) ){ //2 ISS FIXO - 3 ISS VAR
             $str_issqn = func_issqn( $q01_numpre, $q01_cadcal );
           }
         }
@@ -322,7 +316,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
 
         //************** TFV... alvara **************
         $sqltfv = "
-		select y69_numpre,y71_codvist as visttfv
+		select y69_numpre,y71_codvist as visttfv, y70_obs as obs_vist
 		from vistorias 
 		inner join vistinscr       on y71_codvist = y70_codvist
 		inner join vistorianumpre  on y69_codvist = y70_codvist
@@ -331,13 +325,10 @@ for($cont=0;$cont < $int_linhas;$cont++) {
 		  and not exists (select 1 from vistoriasanu where y28_codvist = y70_codvist)		
 		order by y70_data desc limit 1";
         $resulttfv= db_query($sqltfv);
-        
-        
         $linhastfv = pg_num_rows($resulttfv);
-        //  echo "<br>1-$linhastfv";
+
         if($linhastfv>0){
           db_fieldsmemory( $resulttfv, 0 );
-          // busca debitos
           $sqldebtfv="
         select  
         vistorias.y70_data  as datatfv,
@@ -361,7 +352,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
           where divold.k10_numpre = $y69_numpre limit 1 ) as divpaga
         from vistorias 
         where vistorias.y70_codvist= $visttfv and  y70_instit = ".db_getsession('DB_instit')  ;
-          //echo $sqldebtfv; exit;
+
           $resultdebtfv= db_query($sqldebtfv);
           $linhasdebtfv = pg_num_rows($resultdebtfv);
           if ($linhasdebtfv>0) {
@@ -495,24 +486,21 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         $pdf->MultiCell(100,5,$str_issqn ,0,1,"J",0);
         $pdf->setx($col);
 
-        if( eregi("IRR",$str_issqn) ) {
+        if (preg_match("/IRR/",$str_issqn)) {
           $pdf->cell(160,2,"",0,1,"L",0);        	
         } else {
         	$pdf->cell(160,5,"",0,1,"L",0);
         }
-        
+
         $pdf->setx($col);
         $pdf->MultiCell(170,4,"Zona: $q35_zona - $j50_descr          Area: $q30_area          N. de funcionarios: $q30_quant          Telefone: $z01_telef" ,0,"J");
         $pdf->setx($col);
-        
         $pdf->ln(9);
+
       }else{
-      	
         $pdf->setx($col);
-        $pdf->MultiCell(170,4, db_geratexto($db02_texto),0,"J"); //"          ".db_geratexto($db02_texto)
+        $pdf->MultiCell(170,4, db_geratexto($db02_texto),0,"J"); //"".db_geratexto($db02_texto)
         $pdf->cell(160,3,"",0,1,"L",0);     
-        
-        
       }
     }
   }
@@ -526,7 +514,7 @@ if(isset($inscrnaoinc)&&$inscrnaoinc!=""){
 }
 
 if(isset($mostrapdf) && $mostrapdf == 't'){
-  $pdf->Output();
+  $pdf->output('I');
 }else{
   db_redireciona('db_erros.php?fechar=true&db_erro=Ja foram gerados termos para todas as inscrições do filtro selecionado nesse exercício! ');
   exit;
@@ -582,9 +570,8 @@ function func_issqn( $q01_numpre, $q01_cadcal ){
   $str_sql1 .= "        inner join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre ";
   $str_sql1 .= "  where arreinscr.k00_inscr  = $q02_inscr ";
   $str_sql1 .= "    and arrecad.k00_dtvenc < '".date("Y/m/d",db_getsession('DB_datausu'))."' ) as xxx";
-  //	die($str_sql1);
+
   $rsIssvar  = db_query($str_sql1);
-  //db_criatabela($rsIssvar);exit;
   $intIssvar = pg_numrows($rsIssvar);
 
   if( $intIssvar > 0 ){
@@ -656,7 +643,7 @@ function func_parcel( $q02_inscr ){
 	  inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre
 	  where     arreinscr.k00_inscr = $q02_inscr 
 	        and arrecad.k00_dtvenc < '".date('Y-m-d',db_getsession('DB_datausu'))."' limit 1";
-    //die($str_sql);
+
     $result = db_query( $str_sql ) or die ("FALHA: $str_sql");
     $linhaspar = pg_num_rows($result);
     if( $linhaspar> 0 ){

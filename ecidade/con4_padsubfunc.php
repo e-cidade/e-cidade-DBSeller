@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,14 +27,14 @@
 class subfunc {
    var $arq = null;
 
-  function subfunc($header){
+  public function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/SUBFUNC.TXT",'w+');
      fputs($this->arq,$header);
      fputs($this->arq,"\r\n");
   }
 
-  function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
+  public function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
      global $contador,$nomeinst;
 
      $contador=0;
@@ -48,7 +48,7 @@ class subfunc {
                $clarqpad->sql_query(null,"*",null," c54_nomearq = 'SUBFUNC.TXT' and c54_anousu=".db_getsession("DB_anousu")."  and c54_codtrib = $tribinst "));
 
     if($clarqpad->numrows > 0){
-      $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+      $rubant =explode("\r\n",pg_result($res,0,"c54_arquivo"));
       for($yy=0;$yy<sizeof($rubant);$yy++){
          $contador++;
          $line = $rubant[$yy];
@@ -74,7 +74,7 @@ class subfunc {
 	            			 inner join orcdotacao  on o58_subfuncao = o53_subfuncao
                where o58_instit in ($instit)
                and o58_anousu in({$anoSessao}, {$anoAnterior})
-               
+
                union
 select distinct e60_anousu as anousu,
  	                   o53_subfuncao as codigo ,

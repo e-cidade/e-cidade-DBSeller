@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -286,7 +286,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
-        <?
+        <?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
         $sql = "SELECT  codigo as db_codigo,nomeinst,ender as endereço,telef as telefone,munic as município,uf,figura,
                         db21_codigomunicipoestado
@@ -380,17 +380,17 @@ input {
             <tr> 
               <td nowrap><strong>Data da Contabilidade:</strong></td>
               <td nowrap> 
-                <? db_data("dtcont",@$dtcont_dia,@$dtcont_mes,@$dtcont_ano) ?>
+                <?php db_data("dtcont",@$dtcont_dia,@$dtcont_mes,@$dtcont_ano) ?>
               </td>
             </tr>
             <tr> 
               <td nowrap title="<?=$Tcodtrib?>"><?=$Lcodtrib?></td>
               <td nowrap> 
-                <? db_input("codtrib",4,$Icodtrib,"true","text",$db_opcao) ?>
+                <?php db_input("codtrib",4,$Icodtrib,"true","text",$db_opcao) ?>
               </td>
               <td nowrap title="<?=$Ttribinst?>"><?=$Ltribinst?></td>
               <td nowrap> 
-                <? db_input("tribinst",10,$Itribinst,"true","text",$db_opcao) ?>
+                <?php db_input("tribinst",10,$Itribinst,"true","text",$db_opcao) ?>
               </td>
             </tr>
             <tr> 
@@ -412,21 +412,21 @@ input {
             </tr>
             <tr> 
               <td nowrap>&nbsp;</td>
-              <td nowrap> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-                &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-                &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+              <td nowrap> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+                &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+                &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
                 &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar" value="Procurar"></td>
             </tr>
           </table>
         </form>
-        <?
+        <?php
 		}
 		?>
       </center>
     </td>
   </tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

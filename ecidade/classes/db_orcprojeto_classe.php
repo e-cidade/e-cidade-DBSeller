@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,13 +78,13 @@ class cl_orcprojeto {
                  o39_usalimite = bool = Usa limite da Loa 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojeto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojeto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_orcprojeto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o39_codproj = ($this->o39_codproj == ""?@$GLOBALS["HTTP_POST_VARS"]["o39_codproj"]:$this->o39_codproj);
        $this->o39_descr = ($this->o39_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["o39_descr"]:$this->o39_descr);
@@ -127,7 +127,7 @@ class cl_orcprojeto {
      }
    }
    // funcao para inclusao
-   function incluir ($o39_codproj){ 
+   public function incluir ($o39_codproj){ 
       $this->atualizacampos();
      if($this->o39_descr == null ){ 
        $this->erro_sql = " Campo descr do projeto nao Informado.";
@@ -283,7 +283,7 @@ class cl_orcprojeto {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($o39_codproj=null) { 
+   public function alterar ($o39_codproj=null) { 
       $this->atualizacampos();
      $sql = " update orcprojeto set ";
      $virgula = "";
@@ -466,7 +466,7 @@ class cl_orcprojeto {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($o39_codproj=null,$dbwhere=null) { 
+   public function excluir ($o39_codproj=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o39_codproj));
      }else{ 
@@ -539,7 +539,7 @@ class cl_orcprojeto {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -561,7 +561,7 @@ class cl_orcprojeto {
       }
      return $result;
    }
-   function sql_query($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
                 $sql = "select ";
                 if ($campos != "*") {
                         $campos_sql = explode("#", $campos);
@@ -599,7 +599,7 @@ class cl_orcprojeto {
                 }
                 return $sql;
         }
-   function sql_query_file($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_file($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
                 $sql = "select ";
                 if ($campos != "*") {
                         $campos_sql = explode("#", $campos);
@@ -634,7 +634,7 @@ class cl_orcprojeto {
                 }
                 return $sql;
         }
-   function sql_query_proj($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_proj($o39_codproj = null, $campos = "*", $ordem = null, $dbwhere = "") {
                 $sql = "select ";
                 if ($campos != "*") {
                         $campos_sql = explode("#", $campos);

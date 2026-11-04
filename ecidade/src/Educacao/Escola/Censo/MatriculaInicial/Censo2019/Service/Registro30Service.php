@@ -152,6 +152,12 @@ class Registro30Service
             $profissionaisEscolaMatriculaUnificada[$profissionalEscola->getCgm()->getCpf()] = $profissionalEscola;
         }
 
+        foreach ($this->buscaGestores() as $gestor) {
+            if (!in_array($gestor, $profissionaisEscola)) {
+                 $profissionaisEscolaMatriculaUnificada[$gestor->getCgm()->getCpf()] = $gestor;
+            }
+        }
+
         foreach ($profissionaisEscolaMatriculaUnificada as $profissionalEscola) {
             $repositoryFormacao = new ProfissionalFormacaoRepository();
             $formacoesProfissional = $repositoryFormacao
@@ -328,5 +334,21 @@ class Registro30Service
         }
 
         return null;
+    }
+
+    public function buscaGestores()
+    {
+        $gestores = [];
+        $sql = "select ed325_rechumano from escolagestorcenso where ed325_escola = {$this->escola->getCodigo()}";
+        $rs = db_query($sql);
+        while ($gestor = pg_fetch_assoc($rs)) {
+            $dao = new \cl_rechumano();
+            $where = ["ed75_i_rechumano = {$gestor['ed325_rechumano']}"];
+            $sql = $dao->sqlProfissionaisEscola(null, $this->escola->getCodigo(), $where);
+            $prof = pg_fetch_assoc(db_query($sql));
+            $profissional = ProfissionalEscola::fromState($prof);
+            $gestores[] = $profissional;
+        }
+        return $gestores;
     }
 }

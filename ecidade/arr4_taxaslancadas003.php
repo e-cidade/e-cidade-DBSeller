@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,6 +39,15 @@ $clrotulo->label("q02_inscr");
 $clrotulo->label("y27_codtipo");
 $clrotulo->label("y27_descr");
 
+$oDaoNumpref = new cl_numpref;
+
+$iInstit = db_getsession("DB_instit");
+$iAnoUsu = db_getsession("DB_anousu");
+
+$sSqlPermissaoUsoGrupoTaxas = $oDaoNumpref->sql_query_file($iAnoUsu,$iInstit,'k03_usagrupotaxa');
+$rsPermissaoUsoGrupoTaxas   = db_query($sSqlPermissaoUsoGrupoTaxas);
+$permissaoUsoGrupoTaxas     = db_utils::getCollectionByRecord($rsPermissaoUsoGrupoTaxas);
+$permissaoUsoGrupoTaxas     = $permissaoUsoGrupoTaxas[0]->k03_usagrupotaxa == 't';
 ?>
 <html>
 
@@ -49,8 +58,16 @@ $clrotulo->label("y27_descr");
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+
+<style>
+    .hideElement{
+        display: none;
+    }
+</style>
 
 <body>
     <div class="container">
@@ -64,7 +81,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora("<strong>Nome/Razão Social:</strong>", "js_pesquisaCgm(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_input("z01_numcgm", 5, @$Iz01_numcgm, true, "text", 1, "onchange='js_pesquisaCgm(false);'");
                             db_input("z01_nome", 30, false, true, "text");
                             ?>
@@ -75,7 +92,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora(@$Lj01_matric, "js_pesquisaMatricula(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_input("j01_matric", 5, @$Ij01_matric, true, "text", 1, "onchange='js_pesquisaMatricula(false);'");
                             ?>
                         </td>
@@ -85,39 +102,62 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_input("q02_inscr", 5, @$Iq02_inscr, true, "text", 1, "onchange='js_pesquisaInscricao(false);'");
                             ?>
                         </td>
                     </tr>
-                    <tr>
+
+                    <tr class="<?= $permissaoUsoGrupoTaxas ? '' : 'hideElement'?>">
+                        <td style="width: 70px;">
+                            <strong>Grupos de Taxas:</strong>
+                        </td>
+                        <td id="tdGruposTaxas"></td>
+                    </tr>
+                    <tr id="trGruposTaxas">
+                        <td style="width: 70px;"></td>
+                        <td id="tdTableGruposTaxas">
+                            <table id="tableGruposTaxas"></table>
+                        </td>
+                    </tr>
+
+                    <tr class="<?= $permissaoUsoGrupoTaxas ? 'hideElement' : ''?>">
                         <td style="width: 70px;">
                             <strong>Taxas:</strong>
                         </td>
                         <td id="tdTaxas"></td>
                     </tr>
+                    <tr id="trSubtaxas" class="<?= $permissaoUsoGrupoTaxas ? 'hideElement' : ''?>">
+                        <td style="width: 70px;"></td>
+                        <td id="tdSubtaxas">
+                            <table id="tableSubtaxas"></table>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td style="width: 70px;">
                             <strong>Quantidade:</strong>
                         </td>
                         <td>
-                            <input type="text" name="quantidade" id="quantidade" size="5" isMandatory="true" labelValidacao="Quantidade" onkeyup="js_calculaValor()">
+                            <input type="text" name="quantidade" id="quantidade" size="5" isMandatory="true" labelValidacao="Quantidade" onkeyup="js_recalculaValor()">
                         </td>
                     </tr>
-                    <tr>
+
+                    <tr class="<?= $permissaoUsoGrupoTaxas ? 'hideElement' : ''?>">
                         <td style="width: 70px;">
                             <strong>Valor Unitário R$:</strong>
                         </td>
                         <td>
-                            <input type="text" name="valor" id="valor" isMandatory="true" labelValidacao="Valor" size="5" onkeypress="return js_adicionaMascaraMoeda(this,'.',',',event, 'js_calculaValor')">
+                            <input type="text" disabled size="10" name="valor" id="valor" isMandatory="true" labelValidacao="Valor" size="5" onkeypress="return js_adicionaMascaraMoeda(this,'.',',',event, 'js_incrementaValorUnitario')">
                         </td>
                     </tr>
+
                     <tr>
                         <td style="width: 70px;">
                             <strong>Valor Total R$:</strong>
                         </td>
                         <td>
-                            <input type="text" name="valorFinal" id="valorFinal" disabled size="7">
+                            <input type="text" name="valorFinal" id="valorFinal" disabled size="10">
                         </td>
                     </tr>
                     <tr>
@@ -125,17 +165,26 @@ $clrotulo->label("y27_descr");
                             <strong>Data para Vencimento:</strong>
                         </td>
                         <td>
-                            <?
+                            <?php
                                 db_inputdata("dataVencimento", "", "", "", true, 'text', 1)
                             ?>
                         </td>
                     </tr>
+                    <tr>
+                        <td style="width: 70px;">
+                            <strong>Processo:</strong>
+                        </td>
+                        <td>
+                            <input type="text" name='processo' id='processo' style="width: 105px;">
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
                     <tr id="trFiscalizacao" style="display: none;">
                         <td style="width: 70px;">
                             <?= db_ancora("<strong>Tipo de Fiscalização:</strong>", "js_pesquisaFiscalização(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                                 db_input('y27_codtipo', 5, $Iy27_codtipo, true, 'text', 1, "onchange='js_pesquisaFiscalização(false);'");
                                 db_input('y27_descr', 30, $Iy27_descr, true, 'text', 3, "");
                             ?>
@@ -157,7 +206,7 @@ $clrotulo->label("y27_descr");
             <input name="processar" id="processar" type="button" onclick="js_geraRecibo();" value="Processar">
         </form>
     </div>
-    <? db_menu(); ?>
+    <?php db_menu(); ?>
 </body>
 
 </html>
@@ -170,8 +219,87 @@ $clrotulo->label("y27_descr");
     document.getElementById("y27_codtipo").setAttribute("labelValidacao", "Tipo de Fiscalização");
 
     var campoCalendario = "";
+    let taxasVinculadas = [];
+    let taxaPrincipal   = {};
+    let grupoTaxasHabilitado = 'false';
+    let procedencia = '';
+
+    js_carregaTaxas();
+    js_mostarSubtaxas([]);
+
+    function js_adicionaTaxasVinculadas(novaTaxa) {
+        if (novaTaxa.valor && Number(novaTaxa.valor > 0)) {
+            taxasVinculadas.push(novaTaxa);
+        }
+    }
+
+    function js_limpaTaxasVinculadas() {
+        taxasVinculadas = [];
+    }
+
+    function js_alteraValorTaxasVinculadas(sequencialTaxa, novoValor) {
+        taxasVinculadas = taxasVinculadas.map(taxa => {
+            if (taxa.sequencial.toString() === sequencialTaxa.toString()) {
+                return {
+                    ...taxa, valor: formatNumber(String(novoValor))
+                }
+
+            } else {
+                return taxa
+            }
+        });
+
+        js_recalculaValor();
+    }
+
+    function js_alteraValorTaxaGrupoTaxas(sequencialTaxa, novoValor) {
+        taxasVinculadas = taxasVinculadas.map(taxa => {
+            if (taxa.sequencial.toString() === sequencialTaxa.toString()) {
+                return {
+                    ...taxa, valor: formatNumber(String(novoValor))
+                }
+
+            } else {
+                return taxa
+            }
+        });
+
+        js_calculaValorOnCheckboxCheck();
+    }
+
+    function js_incrementaValorUnitario() {
+        const novoValor = Number(document.getElementById("valor").value.replaceAll(".", "").replace(",", "."));
+
+        if (taxasVinculadas.length === 0){
+            js_calculaValor();
+        } else {
+            taxasVinculadas[0].valor = novoValor;
+            js_recalculaValor();
+        }
+    }
+
+    function js_recalculaValor()
+    {
+        const quantidade = document.getElementById("quantidade").value;
+        const valor = document.getElementById("valor").value.replaceAll(".", "").replace(",", ".");
+
+        let valorFinal = 0;
+
+        for (const subtaxa of taxasVinculadas) {
+            valorFinal += subtaxa.valor;
+        };
+
+        valorFinal = valorFinal;
+
+        if (taxasVinculadas.length > 0){
+            document.getElementById("valor").value = js_formatNumber(taxasVinculadas[0].valor);
+            document.getElementById("valorFinal").value = js_formatNumber(valorFinal * quantidade);
+            js_mostarSubtaxas(taxasVinculadas);
+        }
+    }
 
     function js_pesquisaCgm(mostra) {
+        js_carregaGruposTaxas(2);
         js_limpaCampos("C");
 
         if(mostra==true){
@@ -201,6 +329,7 @@ $clrotulo->label("y27_descr");
     }
 
     function js_pesquisaMatricula(mostra) {
+        js_carregaGruposTaxas(3);
         js_limpaCampos("M");
 
         if (mostra == true) {
@@ -229,6 +358,7 @@ $clrotulo->label("y27_descr");
     }
 
     function js_pesquisaInscricao(mostra) {
+        js_carregaGruposTaxas(4);
         js_limpaCampos("I");
 
         if (mostra == true) {
@@ -312,8 +442,6 @@ $clrotulo->label("y27_descr");
         }
     }
 
-    js_carregaTaxas();
-
     function js_carregaTaxas()
     {
         var oParam = new Object();
@@ -333,9 +461,9 @@ $clrotulo->label("y27_descr");
 
         const tdTaxas = document.getElementById("tdTaxas");
         const select = document.createElement("select");
+        select.setAttribute("id", "selectTaxas");
         select.setAttribute("onchange", "js_buscarTaxa(this.value);");
         select.setAttribute("labelValidacao", "Taxas");
-        select.setAttribute("isMandatory", "true");
         select.setAttribute("name", "taxa");
         select.setAttribute("style", "width: 228;");
 
@@ -367,6 +495,7 @@ $clrotulo->label("y27_descr");
         valor.value = "";
 
         document.getElementById("valorFinal").value = "";
+        tableSubtaxas.innerHTML = '';
 
         if (sequencial == "") {
             montarCamposDinamicos([]);
@@ -390,13 +519,31 @@ $clrotulo->label("y27_descr");
         const obj = document.form1;
 
         if (oRetorno.oTaxa.ar44_tipo == 1) {
-            obj.valor.enable();
+            // obj.valor.enable();
         } else {
             obj.valor.disable();
-            obj.valor.value = oRetorno.oTaxa.i02_valor.toLocaleString('pt-BR', { maximumFractionDigits: 2});
-
-            js_calculaValor();
+            obj.valor.value = js_formatNumber(oRetorno.oTaxa.i02_valor)
         }
+
+        taxaPrincipal = {
+            ...oRetorno.oTaxa,
+            sequencial: oRetorno.oTaxa.ar44_sequencial,
+            valor: oRetorno.oTaxa.i02_valor,
+            descricao: oRetorno.oTaxa.ar44_descricao,
+            principal: true
+        };
+        js_limpaTaxasVinculadas();
+        js_adicionaTaxasVinculadas({
+            sequencial: oRetorno.oTaxa.ar44_sequencial,
+            valor: oRetorno.oTaxa.i02_valor,
+            descricao: oRetorno.oTaxa.ar44_descricao,
+            ativa: true,
+            principal: true
+        });
+
+        tableSubtaxas.innerHTML = '';
+        js_calculaValor(oRetorno.oTaxa.subTaxas);
+        js_mostarSubtaxas([oRetorno.oTaxa, ...oRetorno.oTaxa.subTaxas]);
 
         const trFiscalizacao = document.getElementById("trFiscalizacao");
         const y27_codtipo = document.getElementById("y27_codtipo");
@@ -422,14 +569,331 @@ $clrotulo->label("y27_descr");
         montarCamposDinamicos(oRetorno.oTaxa.camposDinamicos);
     }
 
-    function js_calculaValor()
+    function js_mostarSubtaxas(subTaxas = [])
     {
+        const trSubtaxas = document.getElementById("trSubtaxas");
+        const tableSubtaxas = document.getElementById("tableSubtaxas");
+        grupoTaxasHabilitado = 'false';
+        
+        if (subTaxas.length === 0) {
+            trSubtaxas.hide();
+        } else {
+            trSubtaxas.show();
+        }
+
+        for (const subtaxa of subTaxas) {
+            if (subtaxa && subtaxa.i02_valor) {
+                const novaLinha = document.createElement('tr');
+                
+                const descricaoSubtaxa = document.createElement('td');
+                descricaoSubtaxa.innerHTML = `${subtaxa.ar44_descricao}:`;
+                
+                const tdValorSubtaxa = document.createElement('td');
+                tdValorSubtaxa.innerHTML = 'R$';
+                
+                const tdInputValorSubtaxa = document.createElement('td');
+                
+                const divValorSubtaxa = document.createElement('div');
+                divValorSubtaxa.innerHTML = js_formatNumber(subtaxa.i02_valor);
+                
+                if (subtaxa.ar44_tipo && subtaxa.ar44_tipo.toString() === '1') {
+                    tdInputValorSubtaxa.insertAdjacentHTML('beforeend', `
+                    <input value="${subtaxa.i02_valor}" onchange="js_alteraValorTaxasVinculadas(${subtaxa.ar44_sequencial},this.value)" id='valorTaxaPrincipal' ></input>
+                    `);
+                } else {
+                    tdInputValorSubtaxa.appendChild(divValorSubtaxa);
+                }
+                
+                novaLinha.appendChild(descricaoSubtaxa);
+                novaLinha.appendChild(tdValorSubtaxa);
+                novaLinha.appendChild(tdInputValorSubtaxa);
+                
+                tableSubtaxas.appendChild(novaLinha);
+            }
+        }
+
+        if (taxasVinculadas.length > 0){
+            document.getElementById("valor").value = js_formatNumber(taxasVinculadas[0].valor);
+        }
+    }
+
+    function js_calculaValorTaxasGrupo(taxas = []) {
+        const quantidade = document.getElementById("quantidade").value;
+        valorSomado = 0;
+        js_limpaTaxasVinculadas();
+
+        for (const taxa of taxas) {
+            const {ar44_sequencial, ar44_descricao, i02_valor} = taxa
+            js_adicionaTaxasVinculadas({
+                sequencial: ar44_sequencial,
+                valor: i02_valor,
+                descricao: ar44_descricao,
+                ativa: true,
+                principal: false
+            });
+            //valorSomado += i02_valor;
+        };
+
+        valorSomado = js_formatNumber(valorSomado * quantidade);
+
+        document.getElementById("valorFinal").value = valorSomado;
+    }
+
+    function js_calculaValorOnCheckboxCheck() {
+        const checkboxesTaxas = document.getElementsByClassName('checkboxTaxa');
+        const quantidade = document.getElementById("quantidade").value;
+        valorSomado = 0;
+
+        for (const checkboxesTaxa of checkboxesTaxas) {
+            const {sequencial,valorTaxa,checked} = checkboxesTaxa
+            if (checked) {
+                const taxaEncontrada = taxasVinculadas.find(item => item.sequencial == sequencial);
+                valorSomado += taxaEncontrada.valor;
+                taxasVinculadas = taxasVinculadas.map(taxaVinvulada => {
+                 return {...taxaVinvulada, ativa: (taxaVinvulada.sequencial == sequencial) ? true : taxaVinvulada.ativa}
+                })
+            } else {
+                taxasVinculadas = taxasVinculadas.map(taxaVinvulada => {
+                 return {...taxaVinvulada, ativa: (taxaVinvulada.sequencial == sequencial) ? false : taxaVinvulada.ativa}
+                })
+            }
+        };
+
+        valorSomado = js_formatNumber(valorSomado * quantidade);
+
+        document.getElementById("valorFinal").value = valorSomado;
+    }
+
+    function js_mostarTaxasGrupo(taxas = [])
+    {
+        const trGruposTaxas = document.getElementById("trGruposTaxas");
+        const tableGruposTaxas = document.getElementById("tableGruposTaxas");
+        grupoTaxasHabilitado = 'true';
+
+        for (const taxa of taxas) {
+            if (taxa && taxa.i02_valor) {
+                const novaLinha = document.createElement('tr');
+                novaLinha.classList.add("linhagrupotaxas");
+                novaLinha.id = `linhataxa-${taxa.ar44_sequencial}`;
+
+                const checkboxTaxa = document.createElement('input')
+                checkboxTaxa.type = 'checkbox';
+                checkboxTaxa.classList.add('checkboxTaxa');
+                checkboxTaxa.sequencial = taxa.ar44_sequencial;
+                checkboxTaxa.checked = false;
+                checkboxTaxa.onchange = js_calculaValorOnCheckboxCheck;
+                checkboxTaxa.valorTaxa = taxa.i02_valor;
+
+                const descricaoTaxa = document.createElement('td');
+                descricaoTaxa.innerHTML = `${taxa.ar44_descricao}:`;
+                
+                const tdValorTaxa = document.createElement('td');
+                tdValorTaxa.innerHTML = 'R$';
+                
+                const tdInputValorTaxa = document.createElement('td');
+                
+                const divValorTaxa = document.createElement('div');
+                divValorTaxa.innerHTML = js_formatNumber(taxa.i02_valor);
+                
+                if (taxa.ar44_tipo && taxa.ar44_tipo.toString() === '1') {
+                    tdInputValorTaxa.insertAdjacentHTML('beforeend', `
+                    <input value="${taxa.i02_valor}" onchange="js_alteraValorTaxaGrupoTaxas(${taxa.ar44_sequencial},this.value)" id='valorTaxaPrincipal' ></input>
+                    `);
+                } else {
+                    tdInputValorTaxa.appendChild(divValorTaxa);
+                }
+                
+                novaLinha.appendChild(checkboxTaxa)
+                novaLinha.appendChild(descricaoTaxa);
+                novaLinha.appendChild(tdValorTaxa);
+                novaLinha.appendChild(tdInputValorTaxa);
+                
+                tableGruposTaxas.appendChild(novaLinha);
+            }
+        }
+    }
+
+    function js_carregaGruposTaxas(filtroOrigemGrupo = null)
+    {
+        var oParam = new Object();
+		oParam.executa = "listargrupos";
+        oParam.isDepartamento = true;
+
+        if (filtroOrigemGrupo) {
+            oParam.filtroOrigem = filtroOrigemGrupo;
+        }
+
+		new AjaxRequest("arr4_taxaslancadas.RPC.php", oParam, js_getListarGrupoTaxas).execute();
+    }
+
+    function js_getListarGrupoTaxas(oRetorno)
+    {
+        js_resetGruposTaxas();
+
+        if (oRetorno.erro) {
+            alert(oRetorno.mensagem);
+            document.getElementById("processar").disable();
+			return;
+        }
+
+        let select;
+
+        if (!document.getElementById("selectGrupoTaxas")) {   
+            const tdGruposTaxas = document.getElementById("tdGruposTaxas");
+            select = document.createElement("select");
+            select.id = 'selectGrupoTaxas'
+            select.setAttribute("onchange", "js_buscarGrupoTaxas(this.value);");
+            select.setAttribute("labelValidacao", "Taxas");
+            select.setAttribute("name", "taxa");
+            select.setAttribute("style", "width: 228;");
+        } else {
+            select = document.getElementById("selectGrupoTaxas");
+            select.innerHTML = '';
+        }
+
+        const option0 = document.createElement("option");
+        option0.setAttribute("value", "");
+        const text = document.createTextNode("Selecione");
+        option0.appendChild(text);
+
+        select.appendChild(option0);
+
+        oRetorno.aGruposTaxas.forEach(function (oGrupo){
+            const option = document.createElement("option");
+            option.setAttribute("value", oGrupo.ar55_sequencial);
+            const text = document.createTextNode(oGrupo.ar55_sequencial + " - " + oGrupo.ar55_descricao);
+            option.appendChild(text);
+
+            select.appendChild(option);
+        });
+
+        tdGruposTaxas.appendChild(select);
+    }
+
+    function js_buscarGrupoTaxas(sequencial)
+    {
+        const quantidade = document.getElementById("quantidade");
+        quantidade.value = 1;
+
+        const valor = document.getElementById("valor");
+        valor.value = 0;
+
+        const valorFinal = document.getElementById("valorFinal");
+        valorFinal.value = 0;
+
+        tableGruposTaxas.innerHTML = '';
+
+        if (sequencial == "") {
+            return false;
+        }
+
+        var oParam = new Object();
+		oParam.executa = "buscargrupo";
+		oParam.ar55_sequencial = sequencial;
+
+		new AjaxRequest("arr4_taxaslancadas.RPC.php", oParam, js_getBuscarGruposTaxas).execute();
+    }
+
+    function js_getBuscarGruposTaxas(oRetorno)
+    {
+        if (oRetorno.erro) {
+            alert(oRetorno.mensagem);
+			return;
+        }
+
+        const obj = document.form1;
+
+        const {oGrupo} = oRetorno;
+        procedencia = oGrupo.ar55_procedenciaprinc;
+
+        document.getElementById('tableGruposTaxas').innerHTML = '';
+        js_calculaValorTaxasGrupo(oGrupo.taxas);
+        js_mostarTaxasGrupo(oGrupo.taxas);
+
+        const trFiscalizacao = document.getElementById("trFiscalizacao");
+        const y27_codtipo = document.getElementById("y27_codtipo");
+        const y27_descr = document.getElementById("y27_descr");
+
+        if (oGrupo.ar44_recursoadm == "t") {
+            trFiscalizacao.show();
+            y27_codtipo.setAttribute("isMandatory", "true");
+            y27_descr.setAttribute("isMandatory", "true");
+        } else {
+            trFiscalizacao.hide();
+            y27_codtipo.removeAttribute("isMandatory");
+            y27_descr.removeAttribute("isMandatory");
+        }
+
+        const inputData = document.getElementById('dataVencimento');
+        const botaoSelectData = document.getElementById('dtjs_dataVencimento');
+
+        if (oRetorno.oGrupo.ar55_datalimite && oRetorno.oGrupo.ar55_datalimite.toString().trim() != '') {
+            botaoSelectData.setAttribute('readonly', 'true');
+            botaoSelectData.setAttribute('disabled', 'true');
+        } else {
+            botaoSelectData.removeAttribute('readonly');
+            botaoSelectData.removeAttribute('disabled');
+        }
+
+        obj.geraDebito.value = true;
+
+        let maiorDiaVencimento = 0;
+        if (oRetorno.oGrupo.taxas && oRetorno.oGrupo.taxas.length > 0) {
+            maiorDiaVencimento = oRetorno.oGrupo.taxas.sort((a,b) => {
+                return Number(a.ar44_diasvencimento) < Number(b.ar44_diasvencimento)
+            })[0].ar44_diasvencimento;
+            inputData.setAttribute('readonly', 'true');
+            inputData.setAttribute('disabled', 'true');
+        } else {
+            inputData.removeAttribute('readonly');
+            inputData.removeAttribute('disabled');
+        }
+
+        let dataDeVencimento = new Date();
+        dataDeVencimento.setDate(dataDeVencimento.getDate() + Number(maiorDiaVencimento))
+        dataDeVencimento = dataDeVencimento.toISOString().split('T')[0];
+        obj.dataVencimento.value = new Date(dataDeVencimento).toJSON().slice(0,10).split('-').reverse().join('/')
+    }
+
+    function js_resetGruposTaxas() {
+        js_limpaTaxasVinculadas()
+        tableGruposTaxas.innerHTML = '';
+        document.form1.taxa.value = '';
+        document.form1.dataVencimento.value = '';
+        document.form1.valorFinal.value = '';
+        document.form1.valor.value = '';
+        document.getElementById("selectTaxas").value = '';
+        js_buscarTaxa('');
+    }
+
+    function js_calculaValor(subTaxas = []) {
         const quantidade = document.getElementById("quantidade").value;
         const valor = document.getElementById("valor").value.replaceAll(".", "").replace(",", ".");
 
-        const valorFinal = parseFloat(quantidade * valor);
+        let valorFinal = quantidade * valor;
 
-        document.getElementById("valorFinal").value = valorFinal.toLocaleString('pt-BR', { maximumFractionDigits: 2});
+        // adiciona valor das subtaxas ao valor total
+        for (const subtaxa of subTaxas) {
+            const {ar44_sequencial, ar44_descricao, i02_valor} = subtaxa
+
+            js_adicionaTaxasVinculadas({
+                sequencial: ar44_sequencial,
+                valor: i02_valor,
+                descricao: ar44_descricao,
+                ativa:true,
+                principal: false 
+            });
+
+            valorFinal += i02_valor;
+        };
+
+        valorFinal = js_formatNumber(valorFinal);
+
+        document.getElementById("valorFinal").value = valorFinal;
+    }
+
+    function js_formatNumber(num) {
+        return (parseFloat(num)).toFixed(2).toLocaleString('pt-BR', { maximumFractionDigits: 2});
     }
 
     function js_verificaCampo()
@@ -490,22 +954,35 @@ $clrotulo->label("y27_descr");
             }
         }
 
+        const sequencialTaxa = (obj.taxa.value && obj.taxa.value) != '' ? obj.taxa.value : taxasVinculadas[0].sequencial;
+        const valorCalculado = (obj.valor.value && Number(obj.valor.value) > 0)
+                                    ? obj.valor.value.replaceAll(".", "").replace(",", ".")
+                                    : obj.valorFinal.value;
+
+        taxasVinculadas[0].principal = true;
+
         var sUrl = 'arr4_taxaslancadas004.php?';
             sUrl += 'z01_numcgm='+obj.z01_numcgm.value+'&';
             sUrl += 'j01_matric='+obj.j01_matric.value+'&';
             sUrl += 'q02_inscr='+obj.q02_inscr.value+'&';
-            sUrl += 'taxa='+obj.taxa.value+'&';
+            sUrl += 'taxa=' + sequencialTaxa + '&';
             sUrl += 'quantidade='+obj.quantidade.value+'&';
-            sUrl += 'valor='+obj.valor.value.replaceAll(".", "").replace(",", ".")+'&';
+            sUrl += 'valor=' + valorCalculado + '&';
             sUrl += 'valorFinal='+obj.valorFinal.value.replaceAll(".", "").replace(",", ".")+'&';
             sUrl += 'dataVencimento='+obj.dataVencimento.value+'&';
             sUrl += 'historico='+escape(obj.historico.value)+"&";
             sUrl += 'y27_codtipo='+obj.y27_codtipo.value+"&";
-            sUrl += 'campoDinamicos='+JSON.stringify(aCamposDinamicos);
+            sUrl += 'processo=' + escape(obj.processo.value)+"&";
+            sUrl += 'grupoTaxasHabilitado=' + grupoTaxasHabilitado + '&';
+            sUrl += 'procedencia=' + procedencia + '&';
+            sUrl += 'campoDinamicos='+JSON.stringify(aCamposDinamicos)+"&";
+            sUrl += 'taxasVinculadas='+JSON.stringify(taxasVinculadas);
 
         jan = window.open(sUrl, '', 'width='+(screen.availWidth-5)+', height='+(screen.availHeight-40)+', scrollbars=1, location=0');
         jan.moveTo(0,0);
 
+        js_mostarSubtaxas([]);
+        js_mostarTaxasGrupo([]);
         obj.reset();
     }
 
@@ -785,4 +1262,11 @@ $clrotulo->label("y27_descr");
             return false;
         }
     }
+
+    function formatNumber(stringNumber) {
+        const formatedNumber = stringNumber.replaceAll(',','.');
+        return Number(formatedNumber.replace(/\.(?=.*\.)/g, ''));
+    }
+
+    js_carregaGruposTaxas(1)
 </script>

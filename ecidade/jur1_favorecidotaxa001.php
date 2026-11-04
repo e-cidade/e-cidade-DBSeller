@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $oRotulos->label("v87_taxa");
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
    db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, estilos.css, grid.style.css");
   ?>
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
@@ -82,7 +82,7 @@ $oRotulos->label("v87_taxa");
                 <B>Favorecido: </B>
               </td>
             <td> 
-              <?
+              <?php
                 db_input('v87_favorecido',5,$Iv87_favorecido,true,'text',3);
                 db_input('z01_nome',55,$Iz01_nome,true,'text',3,'')
               ?>
@@ -90,12 +90,12 @@ $oRotulos->label("v87_taxa");
           </tr>
           <tr>
             <td nowrap title="<?=@$Tv87_taxa?>">
-              <?
+              <?php
               db_ancora(@$Lv87_taxa,"js_pesquisav87_taxa(true);",$db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('v87_taxa',5,$Iv87_taxa,true,'text',$db_opcao," onchange='js_pesquisav87_taxa(false);'");
               db_input('ar36_descricao',55,$Iar36_descricao,true,'text',3,'')
               ?>

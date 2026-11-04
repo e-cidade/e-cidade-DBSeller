@@ -56,13 +56,13 @@ class cl_conplanoexerecurso {
                  c89_vlrdeb = float8 = Saldo Abertura a Débito
                  ";
    //funcao construtor da classe
-   function cl_conplanoexerecurso() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoexerecurso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_conplanoexerecurso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c89_anousu = ($this->c89_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c89_anousu"]:$this->c89_anousu);
        $this->c89_recurso = ($this->c89_recurso == ""?@$GLOBALS["HTTP_POST_VARS"]["c89_recurso"]:$this->c89_recurso);
@@ -85,7 +85,7 @@ class cl_conplanoexerecurso {
      }
    }
    // funcao para inclusao
-   function incluir ($c89_anousu,$c89_recurso,$c89_reduz){
+   public function incluir ($c89_anousu,$c89_recurso,$c89_reduz){
       $this->atualizacampos();
      if($this->c89_vlrcre == null ){
        $this->erro_sql = " Campo Saldo Abertura a Credito nao Informado.";
@@ -175,7 +175,7 @@ class cl_conplanoexerecurso {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c89_anousu=null,$c89_recurso=null,$c89_reduz=null) {
+   public function alterar ($c89_anousu=null,$c89_recurso=null,$c89_reduz=null) {
       $this->atualizacampos();
      $sql = " update conplanoexerecurso set ";
      $virgula = "";
@@ -288,7 +288,7 @@ class cl_conplanoexerecurso {
      }
    }
    // funcao para exclusao
-   function excluir ($c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$dbwhere=null) {
+   public function excluir ($c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c89_anousu,$c89_recurso,$c89_reduz));
      }else{
@@ -353,7 +353,7 @@ class cl_conplanoexerecurso {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -375,10 +375,10 @@ class cl_conplanoexerecurso {
       }
      return $result;
    }
-   function sql_query ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_conplanoexerecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,10 +428,10 @@ class cl_conplanoexerecurso {
      }
      return $sql;
   }
-   function sql_query_file ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_conplanoexerecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

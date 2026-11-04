@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ function js_imprimir() {
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?
+               <?php
                  // $aux = new cl_arquivo_auxiliar;
                   $aux->cabecalho = "<strong>Credores</strong>";
                   $aux->codigo = "c76_numcgm"; //chave de retorno da func
@@ -129,7 +129,7 @@ function js_imprimir() {
       <tr>
           <td nowrap colspan=3>
                <b> Período </b>
-               <? 
+               <?php 
 	          $dia="01";
 		  $mes="01";
 		  $ano= db_getsession("DB_anousu");
@@ -197,7 +197,7 @@ function js_imprimir() {
   </tr>
 </table>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
   </body>
 </html>

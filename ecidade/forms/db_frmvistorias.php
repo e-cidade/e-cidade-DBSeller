@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,7 +64,7 @@ if(isset($cgm)){
 
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php
 
 
 if ($db_opcao==1){
@@ -83,7 +83,7 @@ if (isset ($z01_numcgm) && $z01_numcgm != "") {
         			(window.CurrentWindow || parent.CurrentWindow).corpo.location = 'fis1_vistorias001.php?cgm=1';
        			}
       		</script>
-<?
+<?php
 
 
 		}
@@ -118,7 +118,7 @@ elseif (isset ($j01_matric) && $j01_matric != "") {
        				(window.CurrentWindow || parent.CurrentWindow).corpo.location = 'fis1_vistorias001.php?matric=1';
       			}
      		</script>
-<?
+<?php
 
 
 		}
@@ -160,7 +160,7 @@ elseif (isset ($q02_inscr) && $q02_inscr != "") {
         (window.CurrentWindow || parent.CurrentWindow).corpo.location = 'fis1_vistorias001.php?inscr=1';
        }
       </script>
-    <?
+    <?php
 
 		}
 	}
@@ -208,7 +208,7 @@ elseif (isset ($y80_codsani) && $y80_codsani != "") {
          (window.CurrentWindow || parent.CurrentWindow).corpo.location = 'fis1_vistorias001.php?sani=1';
         }
        </script>
-     <?
+     <?php
 
 
 
@@ -279,13 +279,13 @@ if ($db_opcao!=1){
 <center>
 <br>
 <table border="0" width="790">
-  <?if(isset($y70_ativo)&&($y70_ativo=="f")){?>
+  <?php if(isset($y70_ativo)&&($y70_ativo=="f")){?>
   <tr>
     <td colspan=2 nowrap>
        <b><h2>Vistoria Anulada</h2></b>
     </td>
   <tr>
-  <?}?>
+  <?php }?>
   <tr>
     <td colspan=2 nowrap>
   <fieldset>
@@ -296,7 +296,7 @@ if ($db_opcao!=1){
        <?=@$Ly70_codvist?>
     </td>
     <td>
-<?
+<?php
 
 db_input('y70_codvist', 10, $Iy70_codvist, true, 'text', 3, "");
 db_input('y39_codandam', 10, $Iy39_codandam, true, 'hidden', $db_opcao, "");
@@ -309,7 +309,7 @@ echo "&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp;".@ $dados."&nbsp;</strong>";
        <?=@$Ly70_numbloco?>
     </td>
     <td>
-<?
+<?php
 
 
 
@@ -317,7 +317,7 @@ db_input('y70_numbloco', 10, $Iy70_numbloco, true, 'text', $db_opcao, "");
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 ?>
        <?=@$Ly70_data?>
-<?
+<?php
 
 if ($db_opcao == 1) {
 	$y70_data_dia = date("d", db_getsession("DB_datausu"));
@@ -333,7 +333,7 @@ db_inputdata('y70_data', @ $y70_data_dia, @ $y70_data_mes, @ $y70_data_ano, true
        <?=@$Ly70_obs?>
     </td>
     <td>
-<?
+<?php
 
  db_textarea('y70_obs', 2, 60, $Iy70_obs, true, 'text', $db_opcao, "")
 ?>
@@ -344,12 +344,12 @@ db_inputdata('y70_data', @ $y70_data_dia, @ $y70_data_mes, @ $y70_data_ano, true
        <?=@$Ly70_contato?>
     </td>
     <td>
-<?
+<?php
 
  db_input('y70_contato', 35, $Iy70_contato, true, 'text', $db_opcao, "")
 ?>
        <?=@$Ly70_hora?>
-<?
+<?php
 
  db_input('y70_ultandam', 5, $Iy70_ultandam, true, 'hidden', 1, "");
 db_input('y70_id_usuario', 5, $Iy70_id_usuario, true, 'hidden', 1, "");
@@ -361,7 +361,7 @@ if ($db_opcao == 1) {
 ?>
     </td>
   </tr>
-  <?
+  <?php
    if ($db_opcao==1){
 	  $y10_codigo=$rua;
 	  $y10_codi=$bairro;
@@ -389,12 +389,12 @@ if ($db_opcao == 1) {
   ?>
   <tr>
     <td nowrap title="<?=@$Ty70_tipovist?>" >
-       <?
+       <?php
 db_ancora(@ $Ly70_tipovist, "js_pesquisay70_tipovist(true);", $db_opcao);
 ?>
     </td>
     <td>
-<?
+<?php
 
 db_input('y70_tipovist', 10, $Iy70_tipovist, true, 'text', $db_opcao, " onchange='js_pesquisay70_tipovist(false);'");
 db_input('y70_coddepto', 10, $Iy70_coddepto, true, 'hidden', $db_opcao, "");
@@ -412,15 +412,15 @@ if ($db_opcao == 1) {
   </tr>
 	<tr>
     <td nowrap title="<?=@$Ty100_sequencial?>">
-       <?
+       <?php
        db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('procfiscal',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisaprocfiscal(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -437,7 +437,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
       <table width="100%" border="0">
 	<tr>
 	  <td nowrap title="<?=@$Ty10_codigo?>" width="210">
-	     <?
+	     <?php
 
 
 
@@ -445,7 +445,7 @@ db_ancora(@ $Ly10_codigo, "js_ruas1(true);", 3);
 ?>
 	  </td>
 	  <td>
-      <?
+      <?php
 db_input('y10_codigo', 10, $Iy10_codigo, true, 'text', 3, " onChange='js_ruas1(false)'");
 db_input('j14_nome', 50, $Ij14_nome, true, 'text', 3, "");
 ?>
@@ -456,13 +456,13 @@ db_input('j14_nome', 50, $Ij14_nome, true, 'text', 3, "");
 	     <?=@$Ly10_numero?>
 	  </td>
 	  <td>
-      <?
+      <?php
 
 
 db_input('y10_numero', 10, $Iy10_numero, true, 'text', 3, "")
 ?>
 	     <?=@$Ly10_compl?>
-      <?
+      <?php
 
  db_input('y10_compl', 37, $Iy10_compl, true, 'text', 3, "")
 ?>
@@ -470,13 +470,13 @@ db_input('y10_numero', 10, $Iy10_numero, true, 'text', 3, "")
 	</tr>
 	<tr>
 	  <td nowrap title="<?=@$Ty10_codi?>">
-	    <?
+	    <?php
 
  db_ancora(@ $Ly10_codi, "js_bairro1(true);", 3);
 ?>
 	  </td>
 	  <td nowrap>
-	    <?
+	    <?php
 
 
 
@@ -496,12 +496,12 @@ db_input('j13_descr', 50, $Ij13_descr, true, 'text', 3);
       <table width="100%" border="0">
 	<tr>
 	  <td nowrap title="<?=@$Ty11_codigo?>" width="210">
-	     <?
+	     <?php
 db_ancora(@ $Ly11_codigo, "js_ruas(true);", $db_opcao);
 ?>
 	  </td>
 	  <td nowrap>
-	    <?
+	    <?php
 db_input('y11_codigo', 10, $Iy11_codigo, true, 'text', $db_opcao, " onChange='js_ruas(false)'");
 db_input('j14_nome', 50, $Ij14_nome, true, 'text', 3, "", "j14_nome_exec");
 ?>
@@ -512,14 +512,14 @@ db_input('j14_nome', 50, $Ij14_nome, true, 'text', 3, "", "j14_nome_exec");
 	     <?=@$Ly11_numero?>
 	  </td>
 	  <td>
-      <?
+      <?php
 
 
 
 db_input('y11_numero', 10, $Iy11_numero, true, 'text', $db_opcao, "")
 ?>
 	     <?=@$Ly11_compl?>
-      <?
+      <?php
 
  db_input('y11_compl', 37, $Iy11_compl, true, 'text', $db_opcao, "")
 ?>
@@ -527,13 +527,13 @@ db_input('y11_numero', 10, $Iy11_numero, true, 'text', $db_opcao, "")
 	</tr>
 	<tr>
 	  <td nowrap title="<?=@$Ty11_codi?>">
-	    <?
+	    <?php
 
  db_ancora(@ $Ly11_codi, "js_bairro(true);", $db_opcao);
 ?>
 	  </td>
 	  <td nowrap>
-	    <?
+	    <?php
 
 
 
@@ -551,14 +551,14 @@ db_input('j13_descr', 50, $Ij13_descr, true, 'text', 3, "", "j13_descr_exec");
   </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?=($db_opcao==22||$db_opcao==2||$db_opcao==33||$db_opcao==3)?"":"onblur='js_setatabulacao();'"?>>
-<?
+<?php
 
 
 
 if ($db_opcao == 22 || $db_opcao == 2 || $db_opcao == 33 || $db_opcao == 3) {
 ?>
 <input name="novo" type="button" id="novo" value="Incluir Novo" onclick="parent.location.href='fis1_vistorias005.php?<?=$url?>';" onblur="js_setatabulacao();">
-<?
+<?php
 
 
 
@@ -727,7 +727,7 @@ function js_mostraprocfiscal1(chave1,chave2,dep_prot,depart,dep_atual){
 
 function js_preenchepesquisa(chave){
   db_iframe_vistorias.hide();
-  <?
+  <?php
 
 
 
@@ -743,7 +743,7 @@ function js_abre(pagina){
   js_OpenJanelaIframe('','db_iframe_consulta',pagina,'Pesquisa',true,0);
 }
 </script>
-<?
+<?php
 
 
 

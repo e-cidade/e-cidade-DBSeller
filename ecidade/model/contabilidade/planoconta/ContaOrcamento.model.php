@@ -1009,7 +1009,8 @@ class ContaOrcamento extends ContaPlano {
       $oDaoReduzido       = new cl_conplanoorcamentoanalitica();
       $sWhereReduzido     = "     conplanoorcamentoanalitica.c61_codcon = {$this->getCodigoConta()}";
       $sWhereReduzido    .= " and conplanoorcamentoanalitica.c61_anousu = " . db_getsession("DB_anousu");
-      $sSqlBuscaReduzidos = $oDaoReduzido->sql_query(null, null, "*", null, $sWhereReduzido);
+
+      $sSqlBuscaReduzidos = $oDaoReduzido->sql_query2(null, null, '*', null, $sWhereReduzido);
       $rsBuscaReduzidos   = $oDaoReduzido->sql_record($sSqlBuscaReduzidos);
 
       if ($oDaoReduzido->numrows > 0) {

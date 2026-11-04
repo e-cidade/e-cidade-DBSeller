@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -130,7 +130,7 @@ function js_select(tipo){
   </table>
 
 <!--   -->
-<?
+<?php
   if (!isset($o69_codparamrel) || $o69_codparamrel ==""){
          $o69_codparamrel=0;
          $o69_codseq=0;  	 
@@ -280,7 +280,7 @@ function js_select(tipo){
   </div>
   <div id='div_desp' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-  <?
+  <?php
    // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($d_codcon);$i++) {

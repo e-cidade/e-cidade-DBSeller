@@ -32,6 +32,7 @@ use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
 use ECidade\Tributario\Juridico;
 use \Recibo as ReciboModel;
 use \DateTime;
+use db_utils;
 
 final class PartilhaJuridicaRecibo extends PartilhaJuridica implements Interfaces\PartilhaRecibo
 {
@@ -54,7 +55,11 @@ final class PartilhaJuridicaRecibo extends PartilhaJuridica implements Interface
         $taxasEmissao = parent::processar();
 
         $partilhasPagas = $this->getPartilhasPagas();
-        $taxasEmissao = $this->processaRemocaoTaxaPaga($taxasEmissao, $partilhasPagas);
+
+        /**
+         * desativado remocao de custas pagas para valenca
+         */
+        // $taxasEmissao = $this->processaRemocaoTaxaPaga($taxasEmissao, $partilhasPagas);
 
         $aIniciais = $this->verificaIniciaisVinculadasProcesso();
 
@@ -110,9 +115,13 @@ final class PartilhaJuridicaRecibo extends PartilhaJuridica implements Interface
                     continue;
                 }
 
-                $valorPago = $this->processoForoPartilhaRepository->getValorPago($taxaEmissao, $this->processoForo);
+                /**
+                * desativado diminuicao do preco das custas quando ja pago
+                */
+                // if (db_utils::ativaParcelamentoCustas()){}
+                // $valorPago = $this->processoForoPartilhaRepository->getValorPago($taxaEmissao, $this->processoForo);
 
-                $valorCusta -= $valorPago;
+                // $valorCusta -= $valorPago;
 
                 if ($valorCusta <= 0) {
                     continue;

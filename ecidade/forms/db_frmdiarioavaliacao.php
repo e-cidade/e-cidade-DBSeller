@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed41_i_codigo");
        <?=@$Led72_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_i_codigo',10,$Ied72_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted72_i_diario?>">
-       <?
+       <?php
        db_ancora(@$Led72_i_diario,"js_pesquisaed72_i_diario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_i_diario',10,$Ied72_i_diario,true,'text',$db_opcao," onchange='js_pesquisaed72_i_diario(false);'")
 ?>
-       <?
+       <?php
 db_input('ed95_i_codigo',10,$Ied95_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted72_i_procavaliacao?>">
-       <?
+       <?php
        db_ancora(@$Led72_i_procavaliacao,"js_pesquisaed72_i_procavaliacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_i_procavaliacao',10,$Ied72_i_procavaliacao,true,'text',$db_opcao," onchange='js_pesquisaed72_i_procavaliacao(false);'")
 ?>
-       <?
+       <?php
 db_input('ed41_i_codigo',10,$Ied41_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed41_i_codigo',10,$Ied41_i_codigo,true,'text',3,'')
        <?=@$Led72_i_numfaltas?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_i_numfaltas',10,$Ied72_i_numfaltas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('ed72_i_numfaltas',10,$Ied72_i_numfaltas,true,'text',$db_opcao,"")
        <?=@$Led72_i_valornota?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_i_valornota',10,$Ied72_i_valornota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('ed72_i_valornota',10,$Ied72_i_valornota,true,'text',$db_opcao,"")
        <?=@$Led72_c_valorconceito?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_c_valorconceito',2,$Ied72_c_valorconceito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('ed72_c_valorconceito',2,$Ied72_c_valorconceito,true,'text',$db_opcao,"
        <?=@$Led72_t_parecer?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed72_t_parecer',0,0,$Ied72_t_parecer,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_textarea('ed72_t_parecer',0,0,$Ied72_t_parecer,true,'text',$db_opcao,"")
        <?=@$Led72_c_aprovmin?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_c_aprovmin',1,$Ied72_c_aprovmin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('ed72_c_aprovmin',1,$Ied72_c_aprovmin,true,'text',$db_opcao,"")
        <?=@$Led72_c_amparo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed72_c_amparo',1,$Ied72_c_amparo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -191,7 +191,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_diarioavaliacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

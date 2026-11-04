@@ -28,7 +28,7 @@ class RegraLicitaconTipoBeneficio extends RegraLicitacon {
 
   protected $sMensagem = "O campo Tipo de Beneficio à Microempresa e Empresa de Pequeno Porte é de preenchimento obrigatório para a modalidade da Licitação.";
 
-  protected $aModalidades = array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'CHP');
+  protected $aModalidades = array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'CHP', 'CCE', 'CCP', 'PCE', 'PCP', 'ESE', 'EST', 'RDE');
 
   /**
    * @return array

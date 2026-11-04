@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,19 +43,19 @@ $clrotulo->label("sd63_c_nome");
             <?=@$Ltf12_i_codigo?>
           </td>
           <td nowrap="nowrap" colspan="3"> 
-            <?
+            <?php
             db_input('tf12_i_codigo',10,$Itf12_i_codigo,true,'text',3,"")
             ?>
           </td>
         </tr>
         <tr>
           <td class="field-size2" nowrap="nowrap" title="<?=@$Ttf12_i_procedimento?>">
-             <?
+             <?php
              db_ancora(@$Ltf12_i_procedimento,"js_pesquisatf12_i_procedimento(true);",$db_opcao);
              ?>
           </td>
           <td nowrap="nowrap" colspan="3"> 
-            <?
+            <?php
             db_input('sd63_c_procedimento',10,'',true,'text',$db_opcao," onchange='js_pesquisatf12_i_procedimento(false);'");
             db_input('tf12_i_procedimento',10,'',true,'hidden',3,'');
             db_input('sd63_c_nome',50,$Isd63_c_nome,true,'text',3,'');
@@ -67,7 +67,7 @@ $clrotulo->label("sd63_c_nome");
             <?=@$Ltf12_descricao?>
           </td>
           <td nowrap="nowrap" colspan="3" title="<?=@$Ttf12_descricao?>">
-            <?
+            <?php
             db_input('tf12_descricao', 64, @$Itf12_descricao, true, 'text', $db_opcao, '');
             ?>
           </td>
@@ -77,7 +77,7 @@ $clrotulo->label("sd63_c_nome");
             <?=@$Ltf12_f_valor?>
           </td>
           <td nowrap="nowrap"  class="field-size6" colspan="3"> 
-            <?
+            <?php
             db_input('tf12_f_valor',10,$Itf12_f_valor,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -85,14 +85,14 @@ $clrotulo->label("sd63_c_nome");
         <tr>
           <td class="field-size2" nowrap="nowrap" title="<?=@$Ttf12_acompanhente?>"><?=@$Ltf12_acompanhente?></td>
           <td nowrap="nowrap">
-            <?
+            <?php
               $aX = array('f'=>'NÃO', 't'=>'SIM',);
               db_select('tf12_acompanhente', $aX, true, $db_opcao, '');
             ?>
           </td>
           <td nowrap="nowrap" title="<?=@$Ttf12_faturabpa?>" align="right"><?=@$Ltf12_faturabpa?></td>
           <td nowrap="nowrap" > 
-            <?
+            <?php
             $aX = array('t'=>'SIM', 'f'=>'NÃO');
             db_select('tf12_faturabpa', $aX, true, $db_opcao, '');
             ?>
@@ -109,7 +109,7 @@ $clrotulo->label("sd63_c_nome");
             <?=@$Ltf12_d_validadeini?>
           </td>
           <td nowrap="nowrap" class="field-size7" > 
-            <?
+            <?php
             if(isset($tf12_d_validadeini) && !empty($tf12_d_validadeini)) {
           
               $dTmp = explode('/', $tf12_d_validadeini);
@@ -129,7 +129,7 @@ $clrotulo->label("sd63_c_nome");
             <?=@$Ltf12_d_validadefim?>
           </td>
           <td nowrap="nowrap" > 
-            <?
+            <?php
             if(isset($tf12_d_validadefim) && !empty($tf12_d_validadefim)) {
           
               $dTmp = explode('/', $tf12_d_validadefim);
@@ -157,7 +157,7 @@ $clrotulo->label("sd63_c_nome");
 <table width="100%">
   <tr>
 	  <td valign="top"><br>
-        <?
+        <?php
 				$aChavepri = array ('tf12_i_codigo' => @$tf12_i_codigo,
  				                    'tf12_faturabpa' => @$tf12_faturabpa,
                             'tf12_acompanhente' => @$tf12_acompanhente,
@@ -208,7 +208,7 @@ $clrotulo->label("sd63_c_nome");
 <script type="text/javascript">
 
 function js_cancelar() {
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }
@@ -310,7 +310,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave) {
   
   db_iframe_tfd_ajudacusto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

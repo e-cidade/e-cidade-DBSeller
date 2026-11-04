@@ -64,6 +64,7 @@ class BalanceteDespesaCsv extends Dumper
             'Elemento',
             'Descrição Elemento',
             'Recurso',
+            'Subrecurso',
             'Descrição Recurso',
             'Complemento',
             'Descrição Complemento',
@@ -88,6 +89,7 @@ class BalanceteDespesaCsv extends Dumper
             'Total Créditos',
             'Saldo Disponível',
             'Á Liquidar',
+            'Á Pagar',
             'Á Pagar Liquidado',
         ];
     }
@@ -112,32 +114,33 @@ class BalanceteDespesaCsv extends Dumper
             $dado->elemento,
             $dado->descricao_elemento,
             $recurso->recurso,
+            $dado->fonte_recurso,
             $recurso->descricao_recurso,
             $recurso->complemento,
             $recurso->descricao_complemento,
             $dado->nome_instituicao,
 
-            db_formatar($recurso->valores->empenhado, 'f'),
-            db_formatar($recurso->valores->anulado, 'f'),
-            db_formatar($recurso->valores->empenhado_liquido, 'f'),
-            db_formatar($recurso->valores->liquidado, 'f'),
-            db_formatar($recurso->valores->pago, 'f'),
+            db_formatar($recurso->valores->empenhado, 'f'), // Empenhado Mês
+            db_formatar($recurso->valores->anulado, 'f'), // Anulado Mês
+            db_formatar($recurso->valores->empenhado_liquido, 'f'), // Empenho Líquido Mês
+            db_formatar($recurso->valores->liquidado, 'f'), // Liquidado Mês
+            db_formatar($recurso->valores->pago, 'f'), // Pago Mês
 
-            db_formatar($recurso->valores->empenhado_acumulado, 'f'),
-            db_formatar($recurso->valores->anulado_acumulado, 'f'),
-            db_formatar($recurso->valores->empenhado_liquido_acumulado, 'f'),
-            db_formatar($recurso->valores->liquidado_acumulado, 'f'),
-            db_formatar($recurso->valores->pago_acumulado, 'f'),
+            db_formatar($recurso->valores->empenhado_acumulado, 'f'), // Empenhado Ano
+            db_formatar($recurso->valores->anulado_acumulado, 'f'), // Anulado Ano
+            db_formatar($recurso->valores->empenhado_liquido_acumulado, 'f'), // Empenho Líquido Ano
+            db_formatar($recurso->valores->liquidado_acumulado, 'f'), // Liquidado Ano
+            db_formatar($recurso->valores->pago_acumulado, 'f'), // Pago Ano
 
-            db_formatar($dado->saldo_inicial, 'f'),
-            db_formatar($dado->suplementado, 'f'),
-            db_formatar($dado->suplementado_especial, 'f'),
-            db_formatar($dado->reducoes, 'f'),
-            db_formatar($dado->saldo_disponivel, 'f'),
-            db_formatar($totalCreditos, 'f'),
-            db_formatar($dado->a_liquidar, 'f'),
-            db_formatar($dado->a_pagar, 'f'),
-            db_formatar($dado->a_pagar_liquidado, 'f'),
+            db_formatar($dado->saldo_inicial, 'f'), // Saldo Inicial
+            db_formatar($dado->suplementado, 'f'), // Suplementação
+            db_formatar($dado->suplementado_especial, 'f'), // Crédito Especiais
+            db_formatar($dado->reducoes, 'f'), // Reduções
+            db_formatar($dado->saldo_disponivel, 'f'), // Total Créditos
+            db_formatar($totalCreditos, 'f'), // Saldo Disponível
+            db_formatar($dado->a_liquidar, 'f'), // Á Liquidar
+            db_formatar($dado->a_pagar, 'f'), // Á Pagar
+            db_formatar($dado->a_pagar_liquidado, 'f'), // // Á Pagar Liquidado
         ];
     }
 
@@ -160,6 +163,7 @@ class BalanceteDespesaCsv extends Dumper
             $dado->elemento,
             $dado->descricao_elemento,
             $recurso->recurso,
+            $dado->fonte_recurso,
             $recurso->descricao_recurso,
             $recurso->complemento,
             $recurso->descricao_complemento,
@@ -176,6 +180,7 @@ class BalanceteDespesaCsv extends Dumper
             db_formatar($recurso->valores->empenhado_liquido_acumulado, 'f'),
             db_formatar($recurso->valores->liquidado_acumulado, 'f'),
             db_formatar($recurso->valores->pago_acumulado, 'f'),
+            '',
             '',
             '',
             '',

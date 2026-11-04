@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -82,6 +82,19 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
 
 
 ?>
+<script>
+  function js_alertaRisco(){
+    let alertaCBO = '<?= $alertaCBO; ?>';
+    let alertaCNAE = '<?= $alertaCNAE; ?>';
+    if(alertaCNAE == 'emitir'){
+      alert('Atividade Principal Não possui CNAE com Risco.\n\n Inscrição ficará sem risco preenchido.');
+    }else if(alertaCBO == 'emitir'){
+      alert('Atividade Principal não possui CBO com Risco.\n\n Inscrição ficará sem risco preenchido.');
+    }
+  }
+
+  js_alertaRisco();
+</script>
 <form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" onload='js_testadata();' >
 <fieldset>
 <legend>Vincular Atividades</legend>
@@ -91,7 +104,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=$Lq07_seq?>
     </td>
     <td>
-		<?
+		<?php
 			db_input('q07_seq',10,$Iq07_seq,true,'text',3);
 		?>
     </td>
@@ -101,10 +114,10 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=$Lq07_inscr?>
     </td>
     <td>
-			<?
+			<?php
 				db_input('q07_inscr',10,$Iq07_inscr,true,'text',3);
 			?>
-       <?
+       <?php
 					$z01_nome = stripslashes($z01_nome);
 					db_input('z01_nome',50,$Iz01_nome,true,'text',3);
        ?>
@@ -112,15 +125,15 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq07_ativ?>">
-       <?
+       <?php
        	db_ancora(@$Lq07_ativ,"js_pesquisaq07_ativ(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 				db_input('q07_ativ',10,$Iq07_ativ,true,'text',$db_opcao," onchange='js_pesquisaq07_ativ(false);'")
 			?>
-       <?
+       <?php
        	db_input('q03_descr',50,$Iq03_descr,true,'text',3,'')
        ?>
     </td>
@@ -130,7 +143,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
       <b>Atividade principal:</b>
     </td>
     <td>
-      <?
+      <?php
       if(isset($princ) && $princ=="t" && $db_opcao==2){
         $db_opcao_02=3;
         $npods=false;
@@ -146,7 +159,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a nowrap title="<?=@$Tq07_imprimealvara?>"></a>
       <span id='imprime_alvara'><?=@$Lq07_imprimealvara?></span>
-        <?
+        <?php
         $imprime = array("Sim"=>"SIM","Não"=>"NÃO");
         db_select('q07_imprimealvara',$imprime,true,1);
         ?>
@@ -157,7 +170,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=@$Lq07_quant?>
     </td>
     <td>
-			<?
+			<?php
 				if(empty($q07_quant)){
 				  $q07_quant=1;
 				}
@@ -170,7 +183,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=@$Lq07_perman?>
     </td>
     <td>
-			<?
+			<?php
 				$xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
 				db_select('q07_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
 			?>
@@ -181,7 +194,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=@$Lq07_datain?>
     </td>
     <td>
-			<?
+			<?php
 				if(empty($q07_datain_dia)){
 
 				  $q07_datain_dia = date("d",db_getsession("DB_datausu"));
@@ -197,7 +210,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
        <?=@$Lq07_datafi?>
     </td>
     <td>
-			<?
+			<?php
 				db_inputdata('q07_datafi',@$q07_datafi_dia,@$q07_datafi_mes,@$q07_datafi_ano,true,'text',$db_opcao,"");
 			?>
     </td>
@@ -207,17 +220,17 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
   <!--
     <td nowrap title="<?=@$Tq11_tipcalc?>">
 
-       <?
+       <?php
    //  db_ancora(@$Lq11_tipcalc,"js_tipcalc(true);",$db_opcao);
        ?>
     </td>
    -->
 
     <td>
-			<?
+			<?php
 			  db_input('q11_tipcalc',10,$Iq07_inscr,true,'hidden',$db_opcao,'onchange="js_tipcalc(false);"');
 			?>
-       <?
+       <?php
        	db_input('q81_descr',50,$Iz01_nome,true,'hidden',3,"","","#E6E4F1");
        ?>
     </td>
@@ -228,7 +241,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
            <?=@$Lq07_horaini?>
     </td>
     <td colspan="2">
-           <?
+           <?php
              db_input('q07_horaini',5,$Iq07_horaini,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
           ?>
     </td>
@@ -239,7 +252,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
            <?=@$Lq07_horafim?>
     </td>
     <td colspan="2">
-           <?
+           <?php
              db_input('q07_horafim',5,$Iq07_horafim,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name)';");
            ?>
     </td>
@@ -375,7 +388,7 @@ function js_dtfim(){
  <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
  <tr>
    <td >
-   <?
+   <?php
     $chavepri= array("q07_inscr"=>$q07_inscr,"q07_seq"=>@$q07_seq);
     $campos="q07_inscr,q07_seq,q07_val_ativ_int,q88_inscr,q03_ativ,q03_descr,q07_datain,q07_horaini,q07_horafim,q07_datafi,q07_databx,q07_perman,q07_quant, q07_imprimealvara";
     $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -427,7 +440,7 @@ if(isset($q07_inscr) && $q07_inscr!=""){
 function js_cancelar(){
   location.href="iss1_tabativ004.php?q07_inscr=<?=$q07_inscr?>&z01_nome=<?=$z01_nome?>";
 }
-<?
+<?php
 }
 ?>
 function js_tipcalc(mostra){
@@ -483,7 +496,7 @@ function js_mostraativid1(chave1,chave2,chave3,chave4){
 
   db_iframe_ativid.hide();
 }
-<?
+<?php
 if(isset($excluprinc)){
   echo "\n\nalert('Esta é a atividade principal. Exclusão não permitida.');";
 }

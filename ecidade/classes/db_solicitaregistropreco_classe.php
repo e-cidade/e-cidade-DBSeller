@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -64,13 +64,13 @@ class cl_solicitaregistropreco {
                  pc54_formacontrole = int4 = Forma de Controle
                  ";
    //funcao construtor da classe
-   function cl_solicitaregistropreco() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitaregistropreco");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_solicitaregistropreco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc54_sequencial = ($this->pc54_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc54_sequencial"]:$this->pc54_sequencial);
        $this->pc54_solicita = ($this->pc54_solicita == ""?@$GLOBALS["HTTP_POST_VARS"]["pc54_solicita"]:$this->pc54_solicita);
@@ -106,7 +106,7 @@ class cl_solicitaregistropreco {
      }
    }
    // funcao para inclusao
-   function incluir ($pc54_sequencial){
+   public function incluir ($pc54_sequencial){
       $this->atualizacampos();
      if($this->pc54_solicita == null ){
        $this->erro_sql = " Campo numero da solicitacao não informado.";
@@ -514,6 +514,7 @@ class cl_solicitaregistropreco {
      $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = solicita.pc10_login";
      $sql .= "      inner join db_depart  on  db_depart.coddepto = solicita.pc10_depto";
      $sql .= "      inner join solicitacaotipo  on  solicitacaotipo.pc52_sequencial = solicita.pc10_solicitacaotipo";
+     $sql .= "      left  join solicitaprotprocesso on solicitaprotprocesso.pc90_solicita = solicita.pc10_numero";
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc54_sequencial)) {
@@ -548,10 +549,10 @@ class cl_solicitaregistropreco {
      return $sql;
   }
 
-   function sql_query_solicitaanulada ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_solicitaanulada ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +579,7 @@ class cl_solicitaregistropreco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -587,10 +588,10 @@ class cl_solicitaregistropreco {
      }
      return $sql;
   }
-   function sql_query_origem ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_origem ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +619,7 @@ class cl_solicitaregistropreco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -628,10 +629,10 @@ class cl_solicitaregistropreco {
      return $sql;
   }
 
-  function sql_query_registro_licitacao ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_registro_licitacao ( $pc54_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -666,7 +667,7 @@ class cl_solicitaregistropreco {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

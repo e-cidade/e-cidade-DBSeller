@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,7 +31,7 @@ $clveictipoabast->rotulo->label();
 <form name="form1" method="post" action="">
   <div class="container">
     <fieldset>
-      <legend>Tipo de Abastecimento de Veículo</legend>
+      <legend>Tipo de Abastecimento de VeÃ­culo</legend>
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tve07_sequencial?>">

@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -211,101 +211,98 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 	<table width="100%" height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
 		<tr>
 			<td height="63" align="center" valign="top">
-				<form name="form2" method="post" action="">
-					<div class="container">
-						<fieldset>
-							<legend>Pesquisa</legend>
-							<table width="100%" border="0" cellspacing="0">
+				<table width="100%" border="0" cellspacing="0">
+					<form name="form2" method="post" action="">
+						<?php
+						db_input('filtro', 6, "", true, 'hidden', 3);
+						db_input('incproc', 6, "", true, 'hidden', 3);
+						?>
+						<tr>
+							<td align="right">
+								<label for="numcgmDigitadoParaPesquisa">Código:</label>
+							</td>
+							<td>
 								<?php
-								db_input('filtro', 6, "", true, 'hidden', 3);
-								db_input('incproc', 6, "", true, 'hidden', 3);
+								db_input('z01_numcgm', 6, $Iz01_numcgm, true, 'text', 4, "onkeyup='js_ValidaCampos(this,1,\"Código\",\"\",\"\",event);'", "numcgmDigitadoParaPesquisa");
 								?>
-								<tr>
-									<td align="right">
-										<label for="numcgmDigitadoParaPesquisa"><b>Código:</b></label>
-									</td>
-									<td>
-										<?php
-										db_input('z01_numcgm', 6, $Iz01_numcgm, true, 'text', 4, "onkeyup='js_ValidaCampos(this,1,\"Código\",\"\",\"\",event);'", "numcgmDigitadoParaPesquisa");
-										?>
-									</td>
+							</td>
+							<td align="right">
+								<?php if ($filtro == 1 || $filtro == 0) { ?>
+									<label for="cpf"><?= $DBtxt30 ?>:</label>
+							</td>
+							<td>
+								<?php
+									db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'", 'cpf');
+								?>
 
-								</tr>
-								<tr>
-									<td align="right">
-										<label for="nomeDigitadoParaPesquisa"><b>Nome:</b></label>
-									</td>
-									<td>
-										<?php
-										db_input('z01_nome', 40, $Iz01_nome, true, 'text', 4, "", 'nomeDigitadoParaPesquisa');
-										?>
-									</td>
-									<td align="right">
-										<?php if ($filtro == 1 || $filtro == 0) { ?>
-											<label for="cpf"><b><?= $DBtxt30 ?>:</b></label>
-									</td>
-									<td>
-										<?php
-											db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'", 'cpf');
-										?>
+							<?php } ?>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<label for="nomeDigitadoParaPesquisa">Nome:</label>
+							</td>
+							<td>
+								<?php
+								db_input('z01_nome', 40, $Iz01_nome, true, 'text', 4, "", 'nomeDigitadoParaPesquisa');
+								?>
+							</td>
+							<td align="right">
+								<?php if ($filtro == 2 || $filtro == 0) { ?>
+									<label for="cnpj"><?= $DBtxt31 ?>:</label>
+							</td>
+							<td>
+								<?php
+									db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'", 'cnpj');
+								?>
+							<?php } ?>
+							</td>
+						</tr>
 
-									<?php } ?>
-									</td>
-								</tr>
-								<tr>
-									<td align="right">
-										<label for="emailDigitadoParaPesquisa"><b>E-mail:</b></label>
-									</td>
-									<td>
-										<?php
-										db_input('z01_email', 40, $Iz01_email, true, 'text', 4, "", 'emailDigitadoParaPesquisa');
-										?>
-									</td>
-									<td align="right">
-										<?php if ($filtro == 2 || $filtro == 0) { ?>
-											<label for="cnpj"><b><?= $DBtxt31 ?>:</b></label>
-									</td>
-									<td>
-										<?php
-											db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'", 'cnpj');
-										?>
-									<?php } ?>
-									</td>
-								</tr>
-							</table>
-						</fieldset>
-
-						<input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
-						<input name="limpar" type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
-						<input name="Fechar" type="button" id="limpar" value="Fechar" onClick="<?= isset($ifrname) ? 'parent.func_nome.hide();' : 'js_close();'; ?>">
-						<?php
-						if ((!isset($nomeDigitadoParaPesquisa) || trim($nomeDigitadoParaPesquisa) == "") && isset($lTelaCgmAlt)) {
-						?>
-							<input name='proccgmalt' type='button' id='proccgmalt' value='Procurar Nomes Alterados' onClick="js_pesquisacgmalt(document.form2.nomeDigitadoParaPesquisa.value);">
-						<?php
-						}
-
-						if (isset($testanome)) {
-
-							$sStringFunc = "";
-							if (empty($func_antes)) {
-								$sStringFunc = $func_antes;
-							}
-						?>
-							<input name="Incluir" type="button" value="Incluir Novo CGM" onClick="location.href = 'prot1_cadcgm001.php?testanome=<?= $sStringFunc ?>&valores=<?= $valores ?>&funcao_js=<?= $sStringFunc . $valores ?>&vldCGM=true'">
-							<script>
-								var permissao_parcelamento = <?= db_permissaomenu(db_getsession("DB_anousu"), 604, 1305) ?>;
-
-								if (permissao_parcelamento == false) {
-									document.form2.Incluir.disabled = true;
+						<tr>
+							<td align="right">
+								<label for="emailDigitadoParaPesquisa">E-mail:</label>
+							</td>
+							<td>
+								<?php
+								db_input('z01_email', 40, $Iz01_email, true, 'text', 4, "", 'emailDigitadoParaPesquisa');
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" align="center"><br>
+								<input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
+								<input name="limpar" type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
+								<input name="Fechar" type="button" id="limpar" value="Fechar" onClick="<?= isset($ifrname) ? 'parent.func_nome.hide();' : 'js_close();'; ?>">
+								<?php
+								if ((!isset($nomeDigitadoParaPesquisa) || trim($nomeDigitadoParaPesquisa) == "") && isset($lTelaCgmAlt)) {
+								?>
+									<input name='proccgmalt' type='button' id='proccgmalt' value='Procurar Nomes Alterados' onClick="js_pesquisacgmalt(document.form2.nomeDigitadoParaPesquisa.value);">
+								<?php
 								}
-							</script>
-						<?php
-						}
-						?>
 
-					</div>
-				</form>
+								if (isset($testanome)) {
+
+									$sStringFunc = "";
+									if (empty($func_antes)) {
+										$sStringFunc = $func_antes;
+									}
+								?>
+									<input name="Incluir" type="button" value="Incluir Novo CGM" onClick="location.href = 'prot1_cadgeralmunic004.php'">
+									<script>
+										var permissao_parcelamento = <?= db_permissaomenu(db_getsession("DB_anousu"), 604, 1305) ?>;
+
+										if (permissao_parcelamento == false) {
+											document.form2.Incluir.disabled = true;
+										}
+									</script>
+								<?php
+								}
+								?>
+							</td>
+						</tr>
+					</form>
+				</table>
 			</td>
 			<script>
 				/*
@@ -367,13 +364,13 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 								</script>";
 
 					if (isset($campos) == false) {
-						$campos = "cgm.z01_numcgm, z01_nome,trim(z01_cgccpf) as z01_cgccpf, case when length(trim(z01_cgccpf)) = 14 then 'JURIDICA' else 'FÍSICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep, z01_email";
-					}
 
+                        $campos = "cgm.z01_numcgm, z01_nome,trim(z01_cgccpf) as z01_cgccpf, case when length(trim(z01_cgccpf)) = 14 then 'JURIDICA' else 'FÍSICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep, z01_email";
+					}
 					if ($filtro == 1) {
-						$campos = "cgm.z01_numcgm, z01_nome,trim(z01_cpf) as z01_cpf,case when length(trim(z01_cpf)) = 11 then 'FISICA' else 'JURIDICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep, z01_email";
+						$campos = "cgm.z01_numcgm, z01_nome,trim(z01_cgccpf) as z01_cpf,case when length(trim(z01_cgccpf)) = 11 then 'FISICA' else 'JURIDICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep,z01_sexo,z01_nasc, z01_email, z04_nomesocial,z01_estciv,z01_escolaridade,z01_naturalidade";
 					} elseif ($filtro == 2) {
-						$campos = "cgm.z01_numcgm, z01_nome,trim(z01_cgc) as z01_cgc, case when length(trim(z01_cgc)) = 14 then 'JURIDICA' else 'FISICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep, z01_email";
+						$campos = "cgm.z01_numcgm, z01_nome,trim(z01_cgccpf) as z01_cgc, case when length(trim(z01_cgccpf)) = 14 then 'JURIDICA' else 'FISICA' end as tipo, trim(z01_ender) as z01_ender, z01_munic, z01_uf, z01_cep, z01_email";
 					}
 
 					if (isset($lCadTecMunic)) {
@@ -389,9 +386,10 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 
 						$nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
 						$sql = $clCgm->sqlnome($nomeDigitadoParaPesquisa, $campos, $filtro);
-					} else if (isset($emailDigitadoParaPesquisa) && ($emailDigitadoParaPesquisa != "")) {
+
+					}else if (isset($emailDigitadoParaPesquisa) && ($emailDigitadoParaPesquisa != "")) {
 						$emailDigitadoParaPesquisa = strtoupper($emailDigitadoParaPesquisa);
-						$sql = $clCgm->sql_query(null, $campos, "to_ascii(z01_email)", "to_ascii(upper(z01_email)) like to_ascii('{$emailDigitadoParaPesquisa}%')");
+						$sql = $clCgm->sql_query(null, $campos,"to_ascii(z01_email)", "to_ascii(upper(z01_email)) like to_ascii('{$emailDigitadoParaPesquisa}%')");
 					} else if (isset($numcgmDigitadoParaPesquisa) && $numcgmDigitadoParaPesquisa != "") {
 
 						if (!is_int((int)$numcgmDigitadoParaPesquisa)) {
@@ -399,6 +397,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 						}
 
 						$sql = $clCgm->$sMetodoExecutar($numcgmDigitadoParaPesquisa, $campos);
+
 					} else if (isset($cpf) && $cpf != "") {
 						$sql = $clCgm->$sMetodoExecutar("", $campos, "", " z01_cgccpf = '$cpf' ");
 					} else if (isset($cnpj) && $cnpj != "") {
@@ -496,7 +495,6 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 									"emailDigitadoParaPesquisa" => (isset($emailDigitadoParaPesquisa) ? "$emailDigitadoParaPesquisa" : "")
 								);
 
-
 								db_lovrot($sql, 14, "()", "", $funcao_js, "", "NoMe", $aVarRepassa);
 							}
 						}
@@ -553,12 +551,13 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 								}
 								echo "</script>\n";
 							} else {
+								//echo "<script> alert('Código (".$pesquisa_chave.") não Encontrado')</script>";
 								echo "<script>" . $funcao_js . "(true,'Código (" . $pesquisa_chave . ") não Encontrado');</script>\n";
 							}
 						}
 					} else {
-						echo "<script>" . $funcao_js . "(false, '');</script>";
-					}
+                        echo "<script>".$funcao_js."('','',false);</script>";
+                    }
 				}
 				?>
 			</td>

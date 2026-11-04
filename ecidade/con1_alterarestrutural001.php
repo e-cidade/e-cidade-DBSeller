@@ -61,7 +61,7 @@ $clrotulo->label("c61_reduz");
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/dbtextFieldData.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js, widgets/dbtextField.widget.js");
   db_app::load("estilos.css, grid.style.css");

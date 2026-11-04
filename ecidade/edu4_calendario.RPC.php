@@ -41,6 +41,10 @@ require_once(modification("model/educacao/censo/DadosCenso.model.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
 require_once(modification("model/CgmFactory.model.php"));
 
+use ECidade\Educacao\Escola\Repository\RegenciaHorarioRepository;
+use ECidade\Educacao\Escola\Repository\MatriculaMovRepository;
+use ECidade\Educacao\Escola\Repository\PeriodoCalendarioRepository;
+
 $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
@@ -117,17 +121,48 @@ try {
             throw new DBException( _M( $sCaminhoMensagens . "incluir_parametro_regra_calculo", $oMensagem ) );
           }
         }
+
+        if (!empty($oParam->dDataFim) && isset($oParam->dDataFim) && $oParam->sOpcao != "Incluir") {
+          $escola = db_getsession('DB_coddepto');
+          $dtFim = str_replace("/", "-", $oParam->dDataFim);
+          $dtFim = date('Y-m-d', strtotime($dtFim));
+          $sqlRegenciaHorario = "
+            update regenciahorario as regh
+            set ed58_datafim = '{$dtFim}'
+            from regenciahorario as rh
+            inner join regencia on rh.ed58_i_regencia = ed59_i_codigo
+            inner join turma  on ed59_i_turma = ed57_i_codigo
+            where rh.ed58_ativo = true and rh.ed58_i_diasemana != 7 and ed57_i_escola = {$escola}
+            and EXTRACT(year FROM rh.ed58_datainicio) = {$oParam->iAno}
+            and regh.ed58_i_codigo = rh.ed58_i_codigo and ed57_i_calendario = {$oParam->iCodigoCalendario}
+          ";
+
+          $rs = db_query($sqlRegenciaHorario);
+
+          if (!$rs) {
+            throw new Exception("Erro ao atualizar data final");
+          }
+        }
       }
 
-      $oCalendario->setDescricao         (db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricao));
-      $oCalendario->setPeriodicidade     ($oParam->iPeriodicidade);
-      $oCalendario->setPeriodo           ($oParam->iPeriodo);
-      $oCalendario->setAnoExecucao       ($oParam->iAno);
-      $oCalendario->setDataInicio        (new DBDate($oParam->dDataInicio));
-      $oCalendario->setDataFim           (new DBDate($oParam->dDataFim));
+      if($oParam->sOpcao == "Alterar") {
+        $dtIncioAnterior  = $oCalendario->getDataInicio()->getDate('Y-m-d');
+        $dtFimAnterior    = $oCalendario->getDataFinal()->getDate('Y-m-d');
+      }
+
+      $oCalendario->setDescricao(db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricao));
+      $oCalendario->setPeriodicidade($oParam->iPeriodicidade);
+      $oCalendario->setPeriodo($oParam->iPeriodo);
+      $oCalendario->setAnoExecucao($oParam->iAno);
+      $oCalendario->setDataInicio(new DBDate($oParam->dDataInicio));
+      $oCalendario->setDataFim(new DBDate($oParam->dDataFim));
       $oCalendario->setDataResultadoFinal(new DBDate($oParam->dDataResultadoFinal));
-      $oCalendario->setDiasLetivos       ($oParam->iDiasLetivos);
-      $oCalendario->setSemanasLetivos    ($oParam->iSemanasLetivas);
+      $oCalendario->setDiasLetivos($oParam->iDiasLetivos);
+      $oCalendario->setSemanasLetivos($oParam->iSemanasLetivas);
+      $oCalendario->setObs(db_stdClass::normalizeStringJsonEscapeString($oParam->sObs));
+      if (!empty($oParam->iCodigoCalendarioBase)) {
+        $oCalendario->setCodigoCalendarioBase($oParam->iCodigoCalendarioBase);
+      }
 
       $oCalendarioAnterior = new Calendario($oParam->iCodigoCalendarioAnterior);
       $oCalendario->setCalendarioAnterior($oCalendarioAnterior);
@@ -138,6 +173,7 @@ try {
       }
 
       if ($oParam->sOpcao == "Incluir" && !empty($oParam->iCodigoCalendarioBase)) {
+
         $oCalendario->setTipoOperacao('Salvar');
         $oCalendarioBase = new Calendario($oParam->iCodigoCalendarioBase);
 
@@ -145,7 +181,6 @@ try {
          * Dados dos periodos de avaliação
          */
         foreach ($oCalendarioBase->getPeriodos() as $oPeriodo) {
-
           $oCalendario->setPeriodos($oPeriodo);
         }
 
@@ -155,7 +190,7 @@ try {
         if ($oCalendarioBase->getEventos() != null) {
 
           foreach ($oCalendarioBase->getEventos() as $oEvento) {
-
+            $oEvento->setCodigoEvento(null);
             $oCalendario->setEventos($oEvento);
           }
         }
@@ -167,9 +202,62 @@ try {
       $oCalendario->save();
 
       /**
+        * Salva alterações de data, caso for Secretária, nas escolas que importaram o calendário
+        */
+
+      if (db_getsession("DB_modulo") == 7159 && $oParam->sOpcao == "Alterar") {
+
+        $CodigoEscolas  = array();
+        $oDaoCalendario = new cl_calendarioescola();
+
+        $sWhere = " ed38_calendariobase = {$iCodigoCalendario}";
+
+        $sSqlCalendario = $oDaoCalendario->sql_query_file(null, "ed38_i_calendario", null, $sWhere);
+        $rsCalendario = $oDaoCalendario->sql_record($sSqlCalendario);
+
+        $periodoRepository = new PeriodoCalendarioRepository();
+        $matriculaMovRepository = new MatriculaMovRepository();
+        $regenciaHorarioRepository = new RegenciaHorarioRepository();
+
+        $periodoRepository->savePeriodo($iCodigoCalendario, $oParam, $dtIncioAnterior, $dtFimAnterior);
+
+        if ($oDaoCalendario->numrows > 0) {
+          $CodigoEscolas = db_utils::getCollectionByRecord($rsCalendario, false, false, true);
+
+          foreach($CodigoEscolas as $codigo) {
+
+            $oCalendarioEscola   = new Calendario($codigo->ed38_i_calendario);
+            $oCalendarioEscola->setDataInicio (new DBDate($oParam->dDataInicio));
+            $oCalendarioEscola->setDataFim    (new DBDate($oParam->dDataFim));
+            $oCalendarioEscola->setDataResultadoFinal(new DBDate($oParam->dDataResultadoFinal));
+            $oCalendarioEscola->setDescricao(db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricao));
+            $oCalendarioEscola->setTipoOperacao('Importar');
+            $oCalendarioEscola->setCodigoCalendarioBase($iCodigoCalendario);
+
+            $sObsAtual = $oCalendarioEscola->getObs();
+            if ($sObsAtual == "") {
+              $oCalendarioEscola->setObs($oCalendario->getObs());
+            } else {
+              $oCalendarioEscola->setObs($sObsAtual);
+            }
+
+            $oCalendarioEscola->save();
+
+            $periodoRepository->savePeriodo($codigo->ed38_i_calendario, $oParam, $dtIncioAnterior, $dtFimAnterior);
+            $matriculaMovRepository->saveMatricula($codigo->ed38_i_calendario, $oParam, $dtIncioAnterior);
+            $regenciaHorarioRepository->saveRegenciaHorario( $codigo->ed38_i_calendario, $oParam,
+                                                    $dtIncioAnterior, $dtFimAnterior);
+
+          }
+        }
+      }
+
+      // uma vez salva, deve verificar se é secretaria pelo módulo, pesquisar calendarios de escolas
+      // com esse calendario e passar atualizações na data inicio e fim
+
+      /**
        * Após salvar o calendario, salvo os feriados padrões caso não tenha sido eles já definidos
        */
-
       if ($oParam->sOpcao == "Incluir" && $oParam->iCodigoCalendarioBase == null) {
 
         $Y = $oCalendario->getAnoExecucao();      // Ano
@@ -332,6 +420,7 @@ try {
       $oDadosCalendario->iSemanasLetivas              = $oCalendarioClone->getSemanasLetivas();
       $oDadosCalendario->iCodigoCalendarioAnterior    = $oCalendarioClone->getCalendarioAnterior()->getCodigo();
       $oDadosCalendario->sDescricaoCalendarioAnterior = urlencode($oCalendarioClone->getCalendarioAnterior()->getDescricao());
+      $oDadosCalendario->sObs                         = $oCalendarioClone->getObs();
 
       $oRetorno->oDadosCalendarioClone = $oDadosCalendario;
       $oRetorno->iCodigoBaseCalendario = $oParam->iCalendario;
@@ -393,6 +482,49 @@ try {
       $oRetorno->dataFim    = $oCalendario->getDataFinal()->convertTo(DBDate::DATA_PTBR);
 
     break;
+    case 'atualizarCalendariosEscolas':
+      if (empty($oParam->iCodigoCalendario)) {
+        throw new Exception('Código do Calendário não informado.');
+      }
+
+      db_inicio_transacao();
+
+      $calendarioBase = CalendarioRepository::getCalendarioByCodigo($oParam->iCodigoCalendario);
+      $daoCalendario = new cl_calendario();
+      $sqlCalendarios = $daoCalendario->sql_query_file(null, 'ed52_i_codigo', null, "ed52_i_codigo_base = {$calendarioBase->getCodigo()}");
+      $rsCalendarios = db_query($sqlCalendarios);
+      $aCalendarios = db_utils::getCollectionByRecord($rsCalendarios);
+
+      foreach ($aCalendarios as $oCalendario) {
+        $calendario = CalendarioRepository::getCalendarioByCodigo($oCalendario->ed52_i_codigo);
+        $calendario->setCodigoCalendarioBase($oCalendario->ed52_i_codigo);
+        $calendario->setPeriodicidade($calendarioBase->getPeriodicidade());
+        $calendario->setAnoExecucao($calendarioBase->getAnoExecucao());
+        $calendario->setPeriodo($calendarioBase->getPeriodo());
+        $calendario->setDataInicio(new DBDate($calendarioBase->getDataInicio()));
+        $calendario->setDataFim(new DBDate($calendarioBase->getDataFinal()));
+        $calendario->setDataResultadoFinal(new DBDate($calendarioBase->getDataResultadoFinal()));
+        $calendario->setDiasLetivos($calendarioBase->getDiasLetivos());
+        $calendario->setSemanasLetivos($calendarioBase->getSemanasLetivas());
+
+        $calendario->excluirPeriodos();
+        foreach ($calendarioBase->getPeriodos() as $periodoCalendario) {
+          $periodoCalendario->setCodigoPeriodoCalendario(null);
+          $calendario->setPeriodos($periodoCalendario);
+        }
+        $calendario->excluirEventos();
+        foreach ($calendarioBase->getEventos() as $eventoCalendario) {
+          $eventoCalendario->setCodigoEvento(null);
+          $calendario->setEventos($eventoCalendario);
+        }
+
+          $calendario->setTipoOperacao('Salvar');
+          $calendario->save();
+      }
+
+      $oRetorno->message = "Calendarios das Escolas atualizadas com sucesso!";
+      db_fim_transacao(false);
+    break;
   }
 
 } catch (Exception $oErro) {
@@ -403,3 +535,5 @@ try {
 }
 $oRetorno->erro = $oRetorno->status == 2;
 echo $oJson->encode($oRetorno);
+
+?>

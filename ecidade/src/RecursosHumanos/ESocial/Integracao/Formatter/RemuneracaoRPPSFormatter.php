@@ -8,15 +8,19 @@ use CgmJuridico;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRPPS;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRPPSService;
+use ECidade\RecursosHumanos\Pessoal\Service\DataPagamentoFolhaService;
 use Rubrica;
 use RubricaRepository;
 use stdClass;
 use Exception;
 use CgmRepository;
+use ECidade\RecursosHumanos\ESocial\Service\DadosRRAService;
 use ServidorRepository;
+use DBDate;
 
 /**
  * Class remuneracaoRPPSFormatter
+ *
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
  */
 class RemuneracaoRPPSFormatter extends Formatter
@@ -47,6 +51,8 @@ class RemuneracaoRPPSFormatter extends Formatter
 
     private $isUltimaParcelaDecimoTerceiro = false;
 
+    private $matriculaAtual = null;
+
     /**
      * @var ESocialRubricasRepository
      */
@@ -57,7 +63,6 @@ class RemuneracaoRPPSFormatter extends Formatter
      */
     private $rubricasValidas;
 
-
     /**
      * @var \Instituicao
      */
@@ -67,6 +72,11 @@ class RemuneracaoRPPSFormatter extends Formatter
      * @var CompetenciaHelper
      */
     private $competencia;
+
+    /**
+     * @var boolean
+     */
+    private $dadosComplementares = true;
 
     /**
      * @var [] Servidor
@@ -114,16 +124,16 @@ class RemuneracaoRPPSFormatter extends Formatter
     private $isRescisao = false;
 
      /**
-     * @var bool
-     * Variável que retorna dados da remuneração
-     */
+      * @var bool
+      * Variável que retorna dados da remuneração
+      */
     private $possuiMatriculas = false;
 
 
     /**
      * Realiza a formatação dos dados para envio da API
      *
-     * @param array $dados
+     * @param  array $dados
      * @return array|stdClass[]
      * @throws \BusinessException
      * @throws \DBException
@@ -141,9 +151,12 @@ class RemuneracaoRPPSFormatter extends Formatter
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
         $dadosFormatados = [];
+
         foreach ($dados->cgms as $cgm) {
+            $this->dadosComplementares = true;
             $cgmServidor = CgmRepository::getByCodigo($cgm);
             if ($cgmServidor instanceof CgmFisico) {
+                $this->matriculaAtual = null;
                 $dado = $this->buscarDadosECidade($cgm);
                 if ($dado) {
                     $dadosFormatados[] = $dado;
@@ -158,19 +171,21 @@ class RemuneracaoRPPSFormatter extends Formatter
     }
 
     /**
-     * @param $cgm
+     * @param  $cgm
      * @return stdClass
      * @throws \BusinessException
      * @throws \DBException
      */
     private function buscarDadosECidade($cgm)
     {
+        $anoCompetencia = $this->anoCompetencia;
+        $mesCompetencia = $this->mesCompetencia;
+
         $this->cgmAtual = $cgm;
         $this->remuneracaoRPPSService = new RemuneracaoRPPSService($this->anoCompetencia, $this->mesCompetencia);
         $this->remuneracaoRPPSService->setAnoCompetencia($this->anoCompetencia);
         $this->remuneracaoRPPSService->setMesCompetencia($this->mesCompetencia);
         $this->validaVinculo();
-
 
         $dadoFormatado = new stdClass();
         $dadoFormatado->dmDev = array();
@@ -212,12 +227,27 @@ class RemuneracaoRPPSFormatter extends Formatter
 
             $indiceDmDev = 0;
             foreach ($remuneracoesRPPS as $index => $remuneracaoRPPS) {
+                if (!$remuneracaoRPPS->getServidor()->isAtivo()) {
+                    continue;
+                }
                 if (isset($remuneracaoRPPS->quantidadeServidor) && $remuneracaoRPPS->quantidadeServidor > 1) {
                     $this->possuiMatriculas = true;
                 }
                 $pagamentos = $remuneracaoRPPS->getPagamentos();
-                if (!$remuneracaoRPPS->getServidor()->isRpps()) {
-                    continue;
+                // Na validacao de Rpps, caso nao seja rpps, efetuamos as seguintes validacoes
+                if (!$remuneracaoRPPS->getServidor()->isRpps($anoCompetencia, $mesCompetencia)) {
+                    // caso tenha o tipo de previdencia preenchido, ignoramos a matricula
+                    if ($remuneracaoRPPS->getServidor()->getTipoPrevidencia($anoCompetencia, $mesCompetencia)) {
+                        continue;
+                    } else {
+                        //Caso nao tenha tabela de previdencia, verificamos se o servidor é cedido
+                        //Caso seja cedido, continuamos com o processamento, caso contrario (matricula vazia)
+                        //ignoramos a matricula
+                        $cedencia = new \Cedencia($remuneracaoRPPS->getServidor()->getMatricula());
+                        if (empty($cedencia->getMatricula())) {
+                            continue;
+                        }
+                    }
                 }
                 foreach ($pagamentos as $indexFolha => $tipoFolha) {
                     $this->remuneracaoRPPS = $remuneracaoRPPS;
@@ -234,6 +264,15 @@ class RemuneracaoRPPSFormatter extends Formatter
                     $this->organizarDadosComplementares($dadoFormatado);
                     $this->organizarDadosPagamentos($dadoFormatado, $tipoFolha, $indexFolha, $indiceDmDev);
 
+                    //SE remunOrgSuc for igual a 'S' remove a matricula conforme Layout
+                    if (isset($dadoFormatado->dmDev[0]->infoPerAnt)
+                        && $dadoFormatado->dmDev[0]->infoPerAnt->remunOrgSuc == 'S'
+                    ) {
+                        unset(
+                            $dadoFormatado->dmDev[0]->infoPerAnt->idePeriodo[0]
+                                ->ideEstab[0]->remunPerAnt[0]->matricula
+                        );
+                    }
                     //verifica se existem informacoes de pagamentos
                     $removeIndice = $this->validaRemocaoIndiceDmDev($dadoFormatado, $indiceDmDev);
 
@@ -247,7 +286,7 @@ class RemuneracaoRPPSFormatter extends Formatter
                          * demonstrativo
                          * ou se a geracao do arquivo ANUAL é diferente de 12
                          */
-                        $removeIndice = null; //$this->validaRemocaoIndiceDmDev($dadoFormatado, $indiceDmDev);
+                        $removeIndice = null;
                         if ($removeIndice || ($this->isDecimoTerceiro && !$this->isUltimaParcelaDecimoTerceiro)
                         ) {
                             unset($dadoFormatado->dmDev[$indiceDmDev]);
@@ -266,7 +305,7 @@ class RemuneracaoRPPSFormatter extends Formatter
     }
 
     /**
-     * @param $dadoFormatado
+     * @param  $dadoFormatado
      * @throws Exception
      */
     private function montarRemuneracaoPeriodoApuracao(
@@ -291,6 +330,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         }
 
         $adiantamento = false;
+        $competenciaAno =  $this->remuneracaoRPPSService->getAnoCompetencia();
         // Montamos conforme o demonstrativo se e salario/adiantamento13/13
         if (empty($indApuracao)) {
             $sigla = 'SAL';
@@ -310,7 +350,6 @@ class RemuneracaoRPPSFormatter extends Formatter
                     break;
             }
             //Validamos se é salario ou adiantamento do decimo pela primeira rubrica da remuneracao atual
-            $competenciaAno =  $this->remuneracaoRPPSService->getAnoCompetencia();
             $identificadorDemonstrativo = $matriculaTemp . $sigla . $competenciaAno . $this->remuneracaoRPPSService
                 ->getMesCompetencia() . $indApuracao;
         } else {
@@ -321,21 +360,39 @@ class RemuneracaoRPPSFormatter extends Formatter
         $dmDev = new stdClass();
         $dmDev->ideDmDev = $identificadorDemonstrativo;
         $dmDev->codCateg = $this->codigoCategoria = (int) $this->buscarCodigoCategoria();
+
+        $processoJudicial = DadosRRAService::getDados(
+            $this->remuneracaoRPPSService->getAnoCompetencia(),
+            $this->remuneracaoRPPSService->getMesCompetencia(),
+            $this->remuneracaoRPPS->getServidor()
+        );
+
+        if ($processoJudicial) {
+            $dmDev->indRRA = 'S';
+            $dmDev->infoRRA = $processoJudicial->infoRRA;
+        }
         /**
          * Verificamos se o servidor possui 2 ou mais matriculas
          * sendo pelo menos 1 com vinculo e 1 sem vinculo ao mesmo tempo
          */
 
-       // $this->organizarDadosComplementaresContrato($dmDev);
+        // $this->organizarDadosComplementaresContrato($dmDev);
 
         if (count($this->remuneracaoRPPS->getPagamentos()) > 0) {
             $ideEstab = new stdClass();
             $ideEstab->tpInsc = 1;
             $ideEstab->nrInsc = $this->inscricaoEmpregador;
-
+            if (!empty($this->remuneracaoRPPS->getServidor()->getLocalTrabalhoPrincial())
+                && !empty($this->remuneracaoRPPS->getServidor()->getLocalTrabalhoPrincial()->getNumeroInscricao())
+            ) {
+                    $ideEstab->nrInsc = $this->remuneracaoRPPS
+                        ->getServidor()
+                        ->getLocalTrabalhoPrincial()
+                        ->getNumeroInscricao();
+            }
             if ($this->isRescisao) {
                 $dmDev->infoPerAnt = new stdClass();
-                $dmDev->infoPerAnt->remunOrgSuc = 'S';
+                $dmDev->infoPerAnt->remunOrgSuc = 'N';
                 $dmDev->infoPerAnt->idePeriodo = [];
                 $dmDev->infoPerAnt->idePeriodo[0] = [];
                 $dmDev->infoPerAnt->idePeriodo[0]['ideEstab'] = [];
@@ -372,8 +429,8 @@ class RemuneracaoRPPSFormatter extends Formatter
     }
 
     /**
-     * @param $dadoFormatado
-     * @param $index
+     * @param  $dadoFormatado
+     * @param  $index
      * @throws \BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
@@ -428,6 +485,11 @@ class RemuneracaoRPPSFormatter extends Formatter
             $item->qtdRubr = $this->truncar((float) $pagamento->quantidade);
             $item->vrRubr = $this->truncar((float) $pagamento->valor);
             $item->indApurIR = 0;
+            $recisaoFalecimento = $this->remuneracaoRPPS->getServidor()->getDadosRescisao()->r59_motivoesocial;
+            if ((int) $recisaoFalecimento == 10) {
+                $item->indApurIR = 1;
+            }
+
             if ($this->rubricaDiferenca == $codigoRubrica) {
                 $itensRemunDiferenca[] = $item;
             } else {
@@ -444,23 +506,34 @@ class RemuneracaoRPPSFormatter extends Formatter
                 ->itensRemun = $itensRemun;
         } else {
             if (!empty($itensRemunDiferenca)) {
-                if (!isset($dadoFormatado
-                ->dmDev[$indexDmDev]
-                ->infoPerAnt)) {
+                if (!isset($dadoFormatado                    ->dmDev[$indexDmDev]                    ->infoPerAnt)
+                ) {
+                    $remunOrgSuc = 'N';
+                    if ($this->remuneracaoRPPS->getServidor()->isRescindido()) {
+                        $remunOrgSuc = 'S';
+                    }
+                    $idePeriodo = new stdClass();
+                    $idePeriodo = $this->remuneracaoRPPSService->buscarPeriodoAnterior(
+                        $this->remuneracaoRPPS->getServidor()->getMatricula()
+                    );
+                    $idePeriodo->ideEstab = [];
                     $dmDev = $dadoFormatado
                         ->dmDev[$indexDmDev];
                     $dmDev->infoPerAnt = new stdClass();
-                    $dmDev->infoPerAnt->remunOrgSuc = 'S';
+                    $dmDev->infoPerAnt->remunOrgSuc = $remunOrgSuc;
                     $dmDev->infoPerAnt->idePeriodo = [];
                     $dmDev->infoPerAnt->idePeriodo[0] = [];
                     $ideEstab = new stdClass();
-                    $dmDev->infoPerAnt->idePeriodo[0] = $ideEstab;
+                    $dmDev->infoPerAnt->idePeriodo[0] = $idePeriodo;
                     $dmDev->infoPerAnt->idePeriodo[0]->ideEstab[0] = '';
                     $ideEstabInfoPerAnt = new stdClass();
                     $ideEstabInfoPerAnt->tpInsc = 1;
                     $ideEstabInfoPerAnt->nrInsc = $this->inscricaoEmpregador;
                     $ideEstabInfoPerAnt->remunPerAnt = [];
                     $itensRemunValores = new stdClass();
+                    if (!empty($this->matriculaAtual)) {
+                        $itensRemunValores->matricula = $this->matriculaAtual;
+                    }
                     $ideEstabInfoPerAnt->remunPerAnt[0] = $itensRemunValores;
                     $dmDev->infoPerAnt->idePeriodo[0]->ideEstab[0] = $ideEstabInfoPerAnt;
                     $dadoFormatado->dmDev[$indexDmDev] = $dmDev;
@@ -490,8 +563,12 @@ class RemuneracaoRPPSFormatter extends Formatter
             if ($this->validaEnvioMatricula(
                 $this->remuneracaoRPPS->getServidor()->getMatricula(),
                 $this->getEmpregador()
-            )) {
+            )
+            ) {
                 $remunPerAnt->matricula = $this->remuneracaoRPPS->getServidor()->getMatricula();
+            }
+            if ($this->remuneracaoRPPS->getServidor()->getMatriculaAnterior() != "") {
+                $remunPerAnt->matricula = $this->remuneracaoRPPS->getServidor()->getMatriculaAnterior();
             }
             $remunPerAnt->itensRemun = [];
             $dadoFormatado->dmDev[$indexDmDev]->infoPerAnt->idePeriodo[0]->ideEstab[0]->remunPerAnt[$index] =
@@ -501,9 +578,14 @@ class RemuneracaoRPPSFormatter extends Formatter
             if ($this->validaEnvioMatricula(
                 $this->remuneracaoRPPS->getServidor()->getMatricula(),
                 $this->getEmpregador()
-            )) {
+            )
+            ) {
                 $remunPerApur->matricula = $this->remuneracaoRPPS->getServidor()->getMatricula();
             }
+            if ($this->remuneracaoRPPS->getServidor()->getMatriculaAnterior() != "") {
+                $remunPerApur->matricula = $this->remuneracaoRPPS->getServidor()->getMatriculaAnterior();
+            }
+            $this->matriculaAtual = $remunPerApur->matricula;
             $remunPerApur->itensRemun = [];
             $dadoFormatado->dmDev[$indexDmDev]->infoPerApur->ideEstab[0]->remunPerApur[$index] = $remunPerApur;
         }
@@ -563,12 +645,14 @@ class RemuneracaoRPPSFormatter extends Formatter
             $dadoideEstab = $dadoFormatado->dmDev[$indiceDmDev]->infoPerAnt->idePeriodo[0]->ideEstab[0];
             //Caso nao exista ideEstab ou ideEstab = 0, remove o indice
             if (!isset($dadoideEstab)
-                || (isset($dadoideEstab) && sizeof($dadoideEstab) == 0)) {
+                || (isset($dadoideEstab) && sizeof($dadoideEstab) == 0)
+            ) {
                     $removeIndice = true;
             } else {
                 // caso não exista remunPerApur ou remunPerApur = 0, remove o indice
                 if (!isset($dadoideEstab->remunPerAnt)
-                || (isset($dadoideEstab->remunPerAnt) && sizeof($dadoideEstab->remunPerAnt) == 0)) {
+                    || (isset($dadoideEstab->remunPerAnt) && sizeof($dadoideEstab->remunPerAnt) == 0)
+                ) {
                     $removeIndice = true;
                 } else {
                     // Caso não exista itensRemun ou itensRemun = 0, remove o indice
@@ -576,7 +660,8 @@ class RemuneracaoRPPSFormatter extends Formatter
                     $remunPerAnts = $dadoideEstab->remunPerAnt;
                     foreach ($remunPerAnts as $remunPerAnt) {
                         if (!isset($remunPerAnt->itensRemun)
-                            || isset($remunPerAnt->itensRemun) && (sizeof($remunPerAnt->itensRemun) == 0)) {
+                            || isset($remunPerAnt->itensRemun) && (sizeof($remunPerAnt->itensRemun) == 0)
+                        ) {
                                 $removeIndice = true;
                         }
                     }
@@ -587,12 +672,14 @@ class RemuneracaoRPPSFormatter extends Formatter
 
             //Caso nao exista ideEstab ou ideEstab = 0, remove o indice
             if (!isset($dadoideEstab)
-                || (isset($dadoideEstab) && (is_array($dadoideEstab) && sizeof($dadoideEstab) == 0))) {
+                || (isset($dadoideEstab) && (is_array($dadoideEstab) && sizeof($dadoideEstab) == 0))
+            ) {
                     $removeIndice = true;
             } else {
                 // caso não exista remunPerApur ou remunPerApur = 0, remove o indice
                 if (!isset($dadoideEstab->remunPerApur)
-                    || (isset($dadoideEstab->remunPerApur) && sizeof($dadoideEstab->remunPerApur) == 0)) {
+                    || (isset($dadoideEstab->remunPerApur) && sizeof($dadoideEstab->remunPerApur) == 0)
+                ) {
                     $removeIndice = true;
                 } else {
                     // Caso não exista itensRemun ou itensRemun = 0, remove o indice
@@ -600,7 +687,8 @@ class RemuneracaoRPPSFormatter extends Formatter
                     $remunPerApurs = $dadoideEstab->remunPerApur;
                     foreach ($remunPerApurs as $remunPerApur) {
                         if (!isset($remunPerApur->itensRemun)
-                            || isset($remunPerApur->itensRemun) && (sizeof($remunPerApur->itensRemun) == 0)) {
+                            || isset($remunPerApur->itensRemun) && (sizeof($remunPerApur->itensRemun) == 0)
+                        ) {
                             $removeIndice = true;
                         }
                     }
@@ -611,12 +699,66 @@ class RemuneracaoRPPSFormatter extends Formatter
     }
 
     /**
-     * Validamos se o cgm possui + de 1 matricula sendo pelo menos 1 com vinculo e 1 sem vinculo simultaneamente
+     * Validamos se o cgm não possui matriculas com vinculo
      * e no loop esta na matricula sem vinculo
      */
     private function organizarDadosComplementares(&$dadoFormatado)
     {
-        if ($this->possuiVinculoNaoVinculo && $this->enviaDadosComplementares) {
+        /*
+        * Regra MOS
+        * 10.2.1. Tabela de categorias elegíveis para os eventos S-2190, S-2200 e S-2300
+        * 11.1. Trabalhadores não incluídos no RET
+        */
+        $categoriaObrigatoriaS2300 = [201,
+            202,
+            304,
+            305,
+            308,
+            401,
+            410,
+            721,
+            722,
+            723,
+            731,
+            734,
+            738,
+            761,
+            771,
+            901,
+            902,
+            906];
+
+        /**
+         * Validacao alterada, seguindo o manual do layout S1.2
+         * Grupo obrigatorio quando servidor nao possuir cadastro no RET(eSocial)
+         * Pela analise, é quando o servidor for desligado em competencias anteriores (pagamento Posterior)
+         */
+        if ($this->remuneracaoRPPS->getServidor()->isRescindido()) {
+            $dataRecisao = $this->remuneracaoRPPS->getServidor()->getDadosRescisao()->rh05_datapagamento;
+            if (!$dataRecisao) {
+                $dataRecisao = $this->getDataPagamentoCompetencia();
+            } else {
+                $dataRecisao = new DBDate($dataRecisao);
+            }
+            $dataRecisao = new DBDate($dataRecisao);
+            $ultimoDiaCompetencia = DBDate::getQuantidadeDiasMes($this->mesCompetencia, $this->anoCompetencia);
+            $dataCompetencia = new DBDate("{$this->anoCompetencia}-{$this->mesCompetencia}-{$ultimoDiaCompetencia}");
+            if ($dataRecisao <= $dataCompetencia) {
+                if (($dataRecisao->getMes() == $dataCompetencia->getMes())
+                    && ($dataRecisao->getAno() == $dataCompetencia->getAno())
+                ) {
+                    $this->dadosComplementares = false;
+                } else {
+                    $this->dadosComplementares = false;
+                }
+            } else {
+                $this->dadosComplementares = false;
+            }
+        } else {
+            $this->dadosComplementares = false;
+        }
+
+        if ($this->dadosComplementares) {
             $infoComplem = new stdClass();
             $infoComplem->nmTrab = $this->remuneracaoRPPS->getDadosTrabalhador()->nome;
             $infoComplem->dtNascto = $this->remuneracaoRPPS->getDadosTrabalhador()->nascimento;
@@ -664,5 +806,16 @@ class RemuneracaoRPPSFormatter extends Formatter
             }
         }
         return $valor;
+    }
+
+    private function getDataPagamentoCompetencia()
+    {
+        $pagamentoService = new DataPagamentoFolhaService();
+        $parametros = new stdClass();
+        $parametros->instituicao = $this->instituicao->getSequencial();
+        $parametros->ano = $this->anoCompetencia;
+        $parametros->mes = $this->mesCompetencia;
+        $dataPagamento = $pagamentoService->buscarDataPagamentoInstituicaoCompetencia($parametros);
+        return $dataPagamento[0]->getDataPagamento();
     }
 }

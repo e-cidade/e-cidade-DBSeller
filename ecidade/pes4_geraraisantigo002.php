@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,20 +52,20 @@ db_inicio_transacao();
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br><br>
 <center>
-<?
+<?php
 db_criatermometro('calculo_folha','Concluído...','blue',1,'Efetuando Geração da RAIS');
 ?>
 
-<?
+<?php
 db_criatermometro('calculo_folha1','Concluído...','blue',1,'Processando Meses');
 ?>
 </center>
 
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
-<?
+<?php
 
 global $db_config , $r70_numcgm , $whererhlota ;
 //db_selectmax("db_config","select numero,ender,cgc,nomeinst,bairro,cep,munic,uf,telef, email,lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
@@ -137,7 +137,7 @@ global $ano_base,$mes_base,$obs,$nome_resp, $cpfr, $datan, $cnpj_sind,$cnpj_asso
     $separa = ",";
 
 
-    global $$codigo;
+    global ${$codigo};
     eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
  }
  $quais_diversos .= ';';

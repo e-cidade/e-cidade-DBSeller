@@ -157,7 +157,7 @@ DBViewGeracaoAutorizacao = function (sInstancia, oNode, iTipoOrigemDados) {
         sContentForm += "            <td id='td_tipoempenho_" + me.sInstancia + "'>" + me.oTipoEmpenho.toInnerHtml() + "</td>";
         sContentForm += "          </tr>";
         sContentForm += "          <tr>";
-        sContentForm += "            <td nowrap='nowrap'><b>Critério de Julgamento:</b></td>";
+        sContentForm += "            <td nowrap='nowrap'><b>Tipo de Licitação:</b></td>";
         sContentForm += "            <td id='td_tipolicitacao_" + me.sInstancia + "'>" + me.oTipoLicitacao.toInnerHtml() + "</td>";
         sContentForm += "          </tr>";
         sContentForm += "          <tr>";
@@ -381,6 +381,7 @@ DBViewGeracaoAutorizacao = function (sInstancia, oNode, iTipoOrigemDados) {
             $('oTxtAnoLicitacao').value = oRetorno.anoLicitacao;
             $('oTxtNumeroLicitacao').setAttribute('readonly', 'readonly');
             $('oTxtAnoLicitacao').setAttribute('readonly', 'readonly');
+            $('oTxtTipoCompra').setAttribute('disabled', 'disabled');
             $('oTxtNumeroLicitacao').className += ' readonly';
             $('oTxtAnoLicitacao').className += ' readonly';
             if (isPB) {
@@ -535,7 +536,7 @@ DBViewGeracaoAutorizacao = function (sInstancia, oNode, iTipoOrigemDados) {
             "center"
         ]); // 16
 
-        me.oDataGridItens.setCellWidth(['4%', '8%', '4%', '18%', '10%', '12%', '13%', '4%', '3%', '3%', '5%', '5%', '5%', '3%', '0%', '3%']);
+        me.oDataGridItens.setCellWidth(['4%', '8%', '4%', '18%', '10%', '12%', '10%', '4%', '3%', '3%', '5%', '5%', '5%', '6%', '0%', '3%']);
         me.oDataGridItens.setCheckbox(0);
         me.oDataGridItens.setHeader([
                 "Cod", // 1
@@ -551,7 +552,7 @@ DBViewGeracaoAutorizacao = function (sInstancia, oNode, iTipoOrigemDados) {
                 "Quant", // 11
                 "Val Unt", // 12
                 "Total", // 13
-                "R", // 14
+                "Reservado", // 14
                 "Indice", // 15
                 "I"
             ]); // 16
@@ -723,7 +724,7 @@ f
                     nValorTotal = new Number(oItem.quanttotaldotacao) * new Number(oItem.valorunitariofornecedor);
                 }
                 aRow[10].addStyle("height", '100%');
-                aRow[11] = parseFloat(oItem.valorunitariofornecedor);
+                aRow[11] = js_round(parseFloat(oItem.valorunitariofornecedor), 2);
                 aRow[12] = eval(sNomeValor + " = new DBTextField('" + sNomeValor + "', '" + sNomeValor + "', '" + js_round(nValorTotal, 2) + "', 5);");
                 aRow[12].addEvent('onKeyPress', ';return ' + me.sInstancia + '.validaValor(event);');
                 aRow[12].addStyle('text-align', 'right');
@@ -749,9 +750,9 @@ f
 
                 aRow[12].addStyle("height", '100%');
 
-                aRow[13] = oItem.valorreserva > 0 ? "S" : "N";
-                aRow[14] = new String(id);
-                aRow[15] = "<span id='span_" + new String(id) + "' style='font-weight:bold;color:red;'>&nbsp;&nbsp;!&nbsp;&nbsp;</span>";
+                aRow[13] = oItem.valorreserva > 0 ? 'Sim' : 'Não';
+                aRow[14] = id.toString();
+                aRow[15] = "<span id='span_" + id.toString() + "' style='font-weight:bold;color:red;'>&nbsp;&nbsp;!&nbsp;&nbsp;</span>";
 
 
                 me.oDataGridItens.addRow(aRow, false, lDisabled);
@@ -891,6 +892,9 @@ f
 
         me.oTipoLicitacao.clearItens();
         if (oRetorno.aTiposLicitacao != "") {
+            if (oRetorno.aTiposLicitacao.length > 1) {
+                $('oCboTipoLicitacao').removeAttribute('disabled');
+            }
             oRetorno.aTiposLicitacao.each(function (oItem) {
                 me.oTipoLicitacao.addItem(oItem.l03_tipo, oItem.l03_tipo + " - " + oItem.l03_descr);
             });
@@ -988,20 +992,22 @@ f
              * Valida se não foi selecionado mais de uma vez o mesmo item.
              */
             var aValidacao = [];
+            var aValidacaoDotacao = [];
             var lConflito = false;
 
             oItensSelecionados.each(function (oItem, iLinha) {
 
                 var oItemLicitacao = me.aItens[oItem.aCells[15].getValue()];
-                if (aValidacao.in_array(oItemLicitacao.codigoitemsolicitacao)) {
+                if (aValidacao.in_array(oItemLicitacao.codigoitemsolicitacao) && aValidacaoDotacao.in_array(oItemLicitacao.codigodotacaoitem)) {
                     lConflito = true;
                     throw $break;
                 }
                 aValidacao.push(oItemLicitacao.codigoitemsolicitacao);
+                aValidacaoDotacao.push(oItemLicitacao.codigodotacaoitem);
             });
 
             if (lConflito) {
-                alert('Em licitações de Chamamento Público / Credenciamento, deve-se gerar autorização por fornecedor.');
+                alert('Em licitações de Chamamento Público, deve-se gerar autorização por fornecedor.');
                 return false;
             }
         }

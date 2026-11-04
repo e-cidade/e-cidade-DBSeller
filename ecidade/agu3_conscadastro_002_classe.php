@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,19 +57,44 @@ class ConsultaAguaBase {
 	var $_AguaCorteMatMovDAO;
 	var $_AguaCondominioMatDAO;
 
+	/**
+	 * Parametro para pesquisa de ocorrencia
+	 *
+	 * @var int|null $tipo
+	 */
+	public $tipo = null;
+
+	/**
+	 * Data incial da ocorrï¿½ncia
+	 * 
+	 * @var string|null $dataOcorrenciaInicial format Y-m-d
+	 */
+	public $dataOcorrenciaInicial = null;
+
+	/**
+	 * Data final da ocorrï¿½ncia
+	 * 
+	 * @var string|null $dataOcorrenciaFinal format Y-m-d
+	 */
+	public $dataOcorrenciaFinal = null;
+
+	public function __construct($Matric = null) {
+		$this->SetMatric($Matric);
+	}
+
 	function ConsultaAguaBase($Matric) {
 		$this->SetMatric($Matric);
 	}
 
-	function SetMatric($Matric) {
+	public function SetMatric($Matric) {
 		$this->_Matric = $Matric;
 	}
 
-	function GetMatric() {
+	public function GetMatric() {
 		return $this->_Matric;
 	}
 
-	function GetAguaBaseDAO() {
+	public function GetAguaBaseDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaBaseDAO) {
 			$this->_AguaBaseDAO = new cl_aguabase();
@@ -77,7 +102,7 @@ class ConsultaAguaBase {
 		return $this->_AguaBaseDAO;
 	}
 	
-	function GetAguaIsencaoRecDAO() {
+	public function GetAguaIsencaoRecDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaIsencaoRecDAO) {
 			$this->_AguaIsencaoRecDAO = new cl_aguaisencaorec();
@@ -85,7 +110,7 @@ class ConsultaAguaBase {
 		return $this->_AguaIsencaoRecDAO;
 	}
 
-	function GetAguaConstrCarDAO() {
+	public function GetAguaConstrCarDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaConstrCarDAO) {
 			$this->_AguaConstrCarDAO = new cl_aguaconstrcar();
@@ -93,7 +118,7 @@ class ConsultaAguaBase {
 		return $this->_AguaConstrCarDAO;
 	}
 	
-	function GetAguaLeituraDAO() {
+	public function GetAguaLeituraDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaLeituraDAO) {
 			$this->_AguaLeituraDAO = new cl_agualeitura();
@@ -101,7 +126,7 @@ class ConsultaAguaBase {
 		return $this->_AguaLeituraDAO;
 	}
 
-	function GetAguaBaseCorrespDAO() {
+	public function GetAguaBaseCorrespDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaBaseCorrespDAO) {
 			$this->_AguaBaseCorrespDAO = new cl_aguabasecorresp();
@@ -109,7 +134,7 @@ class ConsultaAguaBase {
 		return $this->_AguaBaseCorrespDAO;
 	}
   
-	function GetAguaCorteMatMovDAO() {
+	public function GetAguaCorteMatMovDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaCorteMatMovDAO) {
 			$this->_AguaCorteMatMovDAO = new cl_aguacortematmov();
@@ -117,7 +142,7 @@ class ConsultaAguaBase {
 		return $this->_AguaCorteMatMovDAO;
 	}
 	
-	function GetAguaCondominioMatDAO() {
+	public function GetAguaCondominioMatDAO() {
 		// Singleton (instancia unica)
 		if(!$this->_AguaCondominioMatDAO) {
 			$this->_AguaCondominioMatDAO = new cl_aguacondominiomat();
@@ -125,7 +150,7 @@ class ConsultaAguaBase {
 		return $this->_AguaCondominioMatDAO;
 	}
 
-	function GetAguaBaseCorrespSQL() {
+	public function GetAguaBaseCorrespSQL() {
 		$dao = $this->GetAguaBaseCorrespDAO();
 
 		return $dao->sql_query($this->GetMatric(), 
@@ -140,7 +165,7 @@ class ConsultaAguaBase {
 			 aguacorresp.x02_orientacao ");
 	}
 
-	function GetAguaIsencaoRecSQL() {
+	public function GetAguaIsencaoRecSQL() {
 		$dao = $this->GetAguaIsencaoRecDAO();
 
 		return $dao->sql_query(null, 
@@ -154,7 +179,7 @@ class ConsultaAguaBase {
 			 "x10_matric=".$this->GetMatric());
 	}
   
-	function GetAguaCorteMatMovSQL() {
+	public function GetAguaCorteMatMovSQL() {
 		$dao = $this->GetAguaCorteMatMovDAO();
 
 		return $dao->sql_query(null, 
@@ -169,7 +194,7 @@ class ConsultaAguaBase {
 			 "x41_matric=".$this->GetMatric());
 	}
 
-	function GetAguaLeituraSQL($_limit=0) {
+	public function GetAguaLeituraSQL($_limit=0) {
 		
 		$matric = $this->GetMatric();
 
@@ -193,7 +218,7 @@ class ConsultaAguaBase {
              CASE WHEN x21_status in (2,3) THEN '0'
                ELSE fc_agua_saldocompensado(x21_exerc, x21_mes, x04_matric) 
              END as x34_saldoutilizado,
-            CASE WHEN x21_tipo = 1 THEN 'Digitação Manual' 
+            CASE WHEN x21_tipo = 1 THEN 'Digitaï¿½ï¿½o Manual' 
                 WHEN x21_tipo = 2 THEN 'Exportada Coletor' 
                 ELSE 'Importada Coletor'
             END as x21_tipo, 
@@ -220,7 +245,7 @@ class ConsultaAguaBase {
 	}
 
 
-	function GetAguaBaseCarSQL() {
+	public function GetAguaBaseCarSQL() {
 		return "
 				select	j31_codigo,
 						j31_descr,
@@ -235,7 +260,7 @@ class ConsultaAguaBase {
 				where	x30_matric = ".$this->GetMatric();
 	}
 
-	function GetAguaHidroMatricSQL() {
+	public function GetAguaHidroMatricSQL() {
 		return "
 				select	x04_nrohidro,
 						x04_qtddigito,
@@ -253,7 +278,7 @@ class ConsultaAguaBase {
 	}
 
 
-  function GetAguaCondominioMatricSQL() {
+  public function GetAguaCondominioMatricSQL() {
     $dao = $this->GetAguaCondominioMatDAO();
     
     return $dao->sql_query(null, $this->GetMatric(),
@@ -265,7 +290,7 @@ class ConsultaAguaBase {
   }
 
 	// Retorna RecordSet com consulta ao Aguabase
-	function RecordSetAguaBase() {
+	public function RecordSetAguaBase() {
 		$dao = $this->GetAguaBaseDAO();
 
 		$sql = $dao->sql_query($this->GetMatric());
@@ -274,32 +299,32 @@ class ConsultaAguaBase {
 	}
 
 	// Retorna RecordSet com consulta ao AguaBaseCorresp
-	function RecordSetAguaBaseCorresp() {
+	public function RecordSetAguaBaseCorresp() {
 		return db_query($this->GetAguaBaseCorrespSQL());
 	}
 
 	// Retorna RecordSet com consulta ao AguaBaseCar
-	function RecordSetAguaBaseCar() {
+	public function RecordSetAguaBaseCar() {
 		return db_query($this->GetAguaBaseCarSQL());
 	}
 	
 	// Retorna RecordSet com consulta ao AguaIsencaoRec
-	function RecordSetAguaIsencaoRec() {
+	public function RecordSetAguaIsencaoRec() {
 		return db_query($this->GetAguaIsencaoRecSQL());
 	}
 
 	// Retorna RecordSet com consulta ao AguaHidroMatric
-	function RecordSetAguaHidroMatric() {
+	public function RecordSetAguaHidroMatric() {
 		return db_query($this->GetAguaHidroMatricSQL());
 	}
 
 	// Retorna RecordSet com consulta ao AguaLeitura
-	function RecordSetAguaLeitura($_limit=0) {
+	public function RecordSetAguaLeitura($_limit=0) {
 		return db_query($this->GetAguaLeituraSQL($_limit));
 	}
 
 	// Retorna RecordSet com consulta ao AguaConstrCar
-	function RecordSetAguaConstrCar() {
+	public function RecordSetAguaConstrCar() {
 		$dao = $this->GetAguaConstrCarDAO();
 
 		$sql = $dao->sql_query(null,null,"*",null,"x01_matric=".$this->GetMatric());
@@ -309,7 +334,7 @@ class ConsultaAguaBase {
 	}
 
 	// Retorna RecordSet com consulta ao AguaCalc
-	function RecordSetAguaCalc() {
+	public function RecordSetAguaCalc() {
 		$sql = "
 			select 	aguacalc.*,
 					aguaconsumo.*,
@@ -326,7 +351,7 @@ class ConsultaAguaBase {
 	}
 
 	// Retorna RecordSet com consulta ao AguaCalc
-	function RecordSetAguaCalcVal($Calculo) {
+	public function RecordSetAguaCalcVal($Calculo) {
 		$sql = "
 				select	*
 				from	aguacalcval
@@ -338,7 +363,7 @@ class ConsultaAguaBase {
 	}
 
 	// Retorna RecordSet com consulta ao AguaCondominio
-	function RecordSetAguaCondominio() {
+	public function RecordSetAguaCondominio() {
 		return db_query($this->GetAguaCondominioMatricSQL());
 	}
 	
@@ -408,23 +433,49 @@ class ConsultaAguaBase {
      return $sql;
   }
   
-  function getHistOcorrenciaMatric(){
-    
-    
-    $campos = "case when histocorrencia.ar23_tipo = '1' then 'Manual' else 'Automatica' end as Tipo, ";
-    $campos .= "histocorrencia.ar23_descricao, ";
-    $campos .= "histocorrencia.ar23_ocorrencia, ";
-    $campos .= "histocorrencia.ar23_data, ";
-    $campos .= "histocorrencia.ar23_hora, ";
-    $campos .= "db_usuarios.login, ";
-    $campos .= "db_modulos.nome_modulo ";
-    $clhistocorrenciamatric = new cl_histocorrenciamatric;
-    $sSql = $clhistocorrenciamatric->sql_query("", "$campos", "histocorrencia.ar23_data", "histocorrenciamatric.ar25_matric = ".$this->_Matric." and ar23_instit = ". db_getsession("DB_instit"));
-    
-    return $sSql;
-  }
+  	public function getHistOcorrenciaMatric($tipo = null)
+  	{
+		$instit = db_getsession("DB_instit");
+
+		$campos =<<<SQL
+			case when histocorrencia.ar23_tipo = '2' then 'Manual' else 'Automatica' end as Tipo, 
+			histocorrencia.ar23_descricao,
+			histocorrencia.ar23_ocorrencia,
+			histocorrencia.ar23_data,
+			histocorrencia.ar23_hora,
+			db_usuarios.login,
+			db_modulos.nome_modulo
+SQL;
+
+		$where = [
+			"histocorrenciamatric.ar25_matric = {$this->_Matric}",
+			"ar23_instit = {$instit}"
+		];
+
+		if (!empty($this->tipo) and is_numeric($this->tipo)) {
+			$where[] = "histocorrencia.ar23_tipo = {$this->tipo}";
+		}
+
+		if (!empty($this->dataOcorrenciaInicial) and !empty($this->dataOcorrenciaFinal)) {
+			$where[] = "(histocorrencia.ar23_data BETWEEN '{$this->dataOcorrenciaInicial}' and '{$this->dataOcorrenciaFinal}')";
+		} elseif (!empty($this->dataOcorrenciaInicial)) {
+			$where[] = "histocorrencia.ar23_data >= '{$this->dataOcorrenciaInicial}'";
+		} elseif (!empty($this->dataOcorrenciaFinal)) {
+			$where[] = "histocorrencia.ar23_data <= '{$this->dataOcorrenciaFinal}'";
+		}
+
+		$clhistocorrenciamatric = new cl_histocorrenciamatric;
+		$sSql = $clhistocorrenciamatric->sql_query(
+			"",
+			"$campos",
+			"histocorrencia.ar23_data",
+			implode(" and ", $where)
+		);
+		
+    	return $sSql;
+  	}
    
-  function getHistAguaBaixaImoveis(){
+  public function getHistAguaBaixaImoveis(){
     
     $campos  = "aguabasebaixa.x08_data, ";
     $campos .= "aguabasebaixa.x08_obs, ";

@@ -48,7 +48,7 @@ try {
                 throw new BusinessException("Cgm não informado.");
             }
             $configuracao = new Configuracao();
-            $formularioId = $configuracao->getFormulario(Tipo::MONITORIAMENTO_SAUDE);
+            $formularioId = $configuracao->getFormulario(Tipo::MONITORAMENTO_SAUDE);
 
             $avaliacao = AvaliacaoRepository::getAvaliacaoByCodigo($formularioId);
             $avaliacaoEsocial = new AvaliacaoEsocialAdapter($avaliacao);

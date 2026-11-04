@@ -50,11 +50,11 @@ $clmedicamentoslaboratorio->rotulo->label("la43_nome");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for='la43_abreviatura'><?=$Lla43_abreviatura?></label></td>
-          <td><? db_input("la43_abreviatura",10,$Ila43_abreviatura,true,"text",4,"","chave_la43_abreviatura"); ?></td>
+          <td><?php db_input("la43_abreviatura",10,$Ila43_abreviatura,true,"text",4,"","chave_la43_abreviatura"); ?></td>
         </tr>
         <tr>
           <td><label for='la43_nome'><?=$Lla43_nome?></label></td>
-          <td><? db_input("la43_nome",50,$Ila43_nome,true,"text",4,"","chave_la43_nome");?></td>
+          <td><?php db_input("la43_nome",50,$Ila43_nome,true,"text",4,"","chave_la43_nome");?></td>
         </tr>
       </table>
     </fieldset>

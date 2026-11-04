@@ -48,20 +48,26 @@ if (empty($ed52_i_ano)) {
 }
 
 $censo = new ECidade\Educacao\Escola\Censo\Censo($ed52_i_ano);
-
 $dataCenso = $censo->getDataCenso();
-$data_censo_dia = $dataCenso->getDia();
-$data_censo_mes = $dataCenso->getMes();
-$data_censo_ano = $dataCenso->getAno();
+$dataCensoBaseCalculada = $censo->getDataCenso()->getDate(DBDate::DATA_PTBR);
+
+if (!is_null($data_censo) && $data_censo != $dataCensoBaseCalculada) {
+    $dataPartes = explode("/", $data_censo);
+    $data_censo_dia = $dataPartes[0];
+    $data_censo_mes = $dataPartes[1];
+    $data_censo_ano = $dataPartes[2];
+} else {
+    $data_censo_dia = $dataCenso->getDia();
+    $data_censo_mes = $dataCenso->getMes();
+    $data_censo_ano = $dataCenso->getAno();
+}
 
 $sEscolaOrder = " ed52_d_inicio asc, ed52_d_fim desc ";
 $sCampos = " ed52_d_inicio , ed52_d_fim ";
 $sWhere = " ed52_i_ano = $ed52_i_ano AND ed38_i_escola = $iEscola ";
 
 $sSqlAnoCenso = $oDaoCalendarioEscola->sql_query("", $sCampos, $sEscolaOrder, "$sWhere");
-//die($sSqlAnoCenso);
 $rsAnoCenso = $oDaoCalendarioEscola->sql_record($sSqlAnoCenso);
-//d($oDadosInicioFim);
 $oDadosInicioFim = db_utils::fieldsmemory($rsAnoCenso, 0);
 
 $bVerif = false;
@@ -134,15 +140,31 @@ $ed52_d_fim_ano = $aDataFim[2];
                     <tr>
                         <td class="field-size3"><?= $Led52_d_inicio ?></td>
                         <td>
-                            <?php db_inputdata('ed52_d_inicio', $ed52_d_inicio_dia, $ed52_d_inicio_mes,
-                                $ed52_d_inicio_ano, true, 'text', $db_opcao, ""); ?>
+                            <?php db_inputdata(
+                                'ed52_d_inicio',
+                                $ed52_d_inicio_dia,
+                                $ed52_d_inicio_mes,
+                                $ed52_d_inicio_ano,
+                                true,
+                                'text',
+                                $db_opcao,
+                                ""
+                            ); ?>
                         </td>
                         <td>
                             <?= $Led52_d_fim ?>
                         </td>
                         <td>
-                            <?php db_inputdata('ed52_d_fim', $ed52_d_fim_dia, $ed52_d_fim_mes,
-                                $ed52_d_fim_ano, true, 'text', $db_opcao, ""); ?>
+                            <?php db_inputdata(
+                                'ed52_d_fim',
+                                $ed52_d_fim_dia,
+                                $ed52_d_fim_mes,
+                                $ed52_d_fim_ano,
+                                true,
+                                'text',
+                                $db_opcao,
+                                ""
+                            ); ?>
                         </td>
                     </tr>
                 </table>
@@ -212,10 +234,10 @@ $ed52_d_fim_ano = $aDataFim[2];
             return false;
         }
 
-        if (document.form1.ed52_i_ano.value != document.form1.ed52_d_inicio_ano.value
-            || document.form1.ed52_i_ano.value != document.form1.ed52_d_fim_ano.value) {
+        if (document.form1.ed52_i_ano.value < document.form1.ed52_d_inicio_ano.value
+            || document.form1.ed52_i_ano.value > document.form1.ed52_d_fim_ano.value) {
 
-            alert("Data Inicial e Final do Calendário deve estar dentro do Ano do Censo!");
+            alert("Data Inicial e Final do Calendário deve conter o Ano do Censo!");
             return false;
         }
 
@@ -261,7 +283,8 @@ $ed52_d_fim_ano = $aDataFim[2];
 
         const filtros = {
             "ano" : $F('ed52_i_ano'),
-            "escolas": escolas
+            "escolas": escolas,
+            "data_censo": $F('data_censo')
         }
 
         window.open('edu2_alunosdocentesseminep002.php?filtros=' + btoa(JSON.stringify(filtros)), '', 'scrollbars=1,location=0');
@@ -273,6 +296,7 @@ $ed52_d_fim_ano = $aDataFim[2];
         const data = new FormData();
         data.append('acao', 'gerarArquivoIdentificacao');
         data.append('ano', $F('ed52_i_ano'));
+        data.append('data_censo', $F('data_censo'));
 
         aLinhas.each(function (linha) {
             data.append('escolas[]', linha.aCells[0].getValue());
@@ -298,6 +322,7 @@ $ed52_d_fim_ano = $aDataFim[2];
         var oParametro = {};
         oParametro.exec = 'getEscolas';
         oParametro.filtraModulo = true;
+        oParametro.ordemAlfabetica = true;
 
         var oAjax = new Ajax.Request(
             sUrlRPC,

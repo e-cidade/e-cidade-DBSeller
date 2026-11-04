@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,14 +69,14 @@ $clrotulo->label('DBtxt28');
                 <b>Tipo:</b>
               </td>
               <td>
-                <?
+                <?php
                    $aTipo = array("f"=>"Funcionários",
                                   "p"=>"Pensão Alimentícia");
                    db_select("tipoGera",$aTipo,true,1,"onChange='document.form1.submit();'");
                 ?>
               </td>             
             </tr>					
-					  <?
+					  <?php
 					  
 					  if(!isset($oPost->tipo)){
 					    $tipo = "t";
@@ -182,7 +182,7 @@ $clrotulo->label('DBtxt28');
     </td>
   </tr>
 </table>  
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

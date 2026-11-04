@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -43,21 +43,21 @@ include(modification("dbforms/db_funcoes.php"));
 <table align="center" border="0" cellspacing="0" cellpading="0">
 <tr>
  <td>
- <?
+ <?php
  if (isset($GLOBALS["_FILES"]["la24_o_assinatura"])) {
    db_postmemory($GLOBALS["_FILES"]["la24_o_assinatura"]);
   if ($error==0) {
-  	
+
    if ($type!="image/jpeg" and $type!="image/pjpeg") {
-   	
+
      db_msgbox("Imagem não é um formato válido!\\n\\nUtilize somente imagens no formato JPG!");
-     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?
-     
+     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?php
+
    } elseif($size > 300000) {
-   	
+
      db_msgbox("Tamanho da imagem é maior que o permitido!\\n\\nUtilize imagens até 300 kb!");
-     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?
-    
+     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?php
+
    } else {
     // Pega o tamanho da imagem e proporção de resize
      $img_size = getimagesize($tmp_name);
@@ -88,30 +88,30 @@ include(modification("dbforms/db_funcoes.php"));
     echo "<center>";
     ?>
       <img src="<?=$imagem_gerada?>">
-    <?
+    <?php
     if (empty( $scale )) {
-    	
+
        echo "<p>Visualização não disponível";
        $parentname = "";
-       
+
     }
      ?>
       <script>
         parent.document.form1.la24_o_assinatura.value = "<?=$parentname?>";
       </script>
-     <?
+     <?php
      echo "</center>";
    }
   } else {?>
      <script>
        alert("Erro na importação da imagem");
      </script>
-    <?
+    <?php
   }
  }
  if (isset($_GET["imagem_gerada"])) {?>
   <img src="<?=$imagem_gerada?>">
- <?}?>
+ <?php }?>
  </td>
 </tr>
 <table>

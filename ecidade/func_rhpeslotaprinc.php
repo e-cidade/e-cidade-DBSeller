@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
               <?=$Lrh11_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh11_mesusu",2,$Irh11_mesusu,true,"text",4,"","chave_rh11_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
               <?=$Lrh11_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh11_regist",6,$Irh11_regist,true,"text",4,"","chave_rh11_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
               <?=$Lrh11_lotac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh11_lotac",6,$Irh11_lotac,true,"text",4,"","chave_rh11_lotac");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
               <?=$Lrh11_lotac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh11_lotac",6,$Irh11_lotac,true,"text",4,"","chave_rh11_lotac");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpeslotaprinc.php")==true){
@@ -141,12 +141,12 @@ $clrhpeslotaprinc->rotulo->label("rh11_lotac");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,13 +58,13 @@ db_inicio_transacao();
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br><br>
 <center>
-<? 
+<?php 
 db_criatermometro('calculo_folha','Concluido...','blue',1,'Efetuando Geracao do Arquivo de Remessa PASEP');
 ?>
 
 </center>
 </body>
-<?
+<?php
 
 global $db_config;
 db_selectmax("db_config","select cgc,email,lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));

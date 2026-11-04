@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -68,7 +68,7 @@ if (isset($oPost->db_opcaoal)) {
           <b>Código:</b>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ht06_sequencial',10,$Iht06_sequencial,true,'text',3,"")
           ?>
         </td>
@@ -78,7 +78,7 @@ if (isset($oPost->db_opcaoal)) {
           <?=@$Lht06_habittipogrupoprograma?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ht06_habittipogrupoprograma',10,$Iht06_habittipogrupoprograma,true,'text',3,"");
             db_input('ht02_descricao',50,$Iht02_descricao,true,'text',3,'');
           ?>
@@ -86,12 +86,12 @@ if (isset($oPost->db_opcaoal)) {
       </tr>
       <tr>
         <td nowrap title="<?=@$Tht07_sequencial?>">
-          <?
+          <?php
             db_ancora("<b>Forma Avaliação:</b>","js_pesquisaht07_sequencial(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ht07_sequencial',10,$Iht07_sequencial,true,'text',$db_opcao," onchange='js_pesquisaht07_sequencial(false);'");
             db_input('ht07_descricao',50,$Iht07_descricao,true,'text',3,'');
           ?>
@@ -122,7 +122,7 @@ if (isset($oPost->db_opcaoal)) {
   <table>
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
           $chavepri= array("ht06_sequencial"=>@$ht06_sequencial);
           
           $sWhere                              = "ht06_habittipogrupoprograma = ".@$ht06_habittipogrupoprograma;

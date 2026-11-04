@@ -1,5 +1,7 @@
 <?php
 
+use ECidade\RecursosHumanos\RH\Recadastramento\Processar;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -125,7 +127,8 @@ class Recadastramento
                         LEFT JOIN db_config ON
                             p51_instit = codigo
                         WHERE
-                            ov33_informacoesprocesso ->> 'acao' = 'atualizacao_cadastral'
+                            p58_obs ILIKE '%Recadastramento acesso arquivado pelo sistema%'
+
             )
             SELECT
                         numero_atendimento,
@@ -226,7 +229,7 @@ WITH  atendimento AS (
             LEFT JOIN db_config ON
                 p51_instit = codigo
             WHERE
-                ov33_informacoesprocesso ->> 'acao' = 'atualizacao_cadastral'
+                 p58_obs ILIKE '%Recadastramento acesso arquivado pelo sistema%'
 )
 SELECT
             rh01_numcgm AS cgm,
@@ -357,8 +360,7 @@ SELECT
                             LEFT JOIN db_config ON
                                 p51_instit = codigo
                             WHERE
-                                ov33_informacoesprocesso ->> 'acao' = 'atualizacao_cadastral'
-                            and p58_obs ILIKE '%Recadastramento acesso arquivado pelo sistema%'
+                                p58_obs ILIKE '%Recadastramento acesso arquivado pelo sistema%'
                             and p51_instit IN ({$instituicao})
             );");
 
@@ -489,12 +491,15 @@ SELECT
             $erros = array();
 
             foreach ($this->request->selecao as $servidor) {
+                $servidor = (object) $servidor;
                 try {
                     $atendimento = explode("/", $servidor->numero_atendimento);
                     if (count($atendimento) != 2) {
-                        throw new \Exception("Atendimento referente a matricula {$servidor->matricula}  tem formato inválido!");
+                        throw new \Exception(
+                            "Atendimento referente a matricula {$servidor->matricula}  tem formato inválido!"
+                        );
                     }
-                    $processar = new \ECidade\RecursosHumanos\RH\Recadastramento\Processar();
+                    $processar = new Processar();
                     $processar->setInstituicao(db_getsession("DB_instit"));
                     $processar->setMatricula($servidor->matricula);
                     $processar->setAtendimentoNumero($atendimento[0]);

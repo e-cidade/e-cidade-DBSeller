@@ -58,6 +58,8 @@ class cl_parjuridico
     public $v19_codorgao = null;
     public $v19_consultaanaliticainicial = 'f';
     public $v19_advogadopadrao = null;
+    public $v19_parcelahonorariosmanual = 't';
+    public $v19_parcelacustasmanual = 't';
 
     // cria propriedade com as variaveis do arquivo
     public $campos = "
@@ -75,10 +77,12 @@ class cl_parjuridico
                  v19_senha = varchar(20) = Senha 
                  v19_codorgao = varchar(50) = Código Orgão 
                  v19_consultaanaliticainicial = bool = Consulta analítica de Inicial do Foro 
-                 v19_advogadopadrao = int4 = Advogado padrão";
+                 v19_advogadopadrao = int4 = Advogado padrão
+                 v19_parcelahonorariosmanual = bool = Parcela honorários com autorização
+                 v19_parcelacustasmanual = bool = Parcela custas com autorização";
 
     //funcao construtor da classe
-    function cl_parjuridico()
+    public function cl_parjuridico()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("parjuridico");
@@ -86,7 +90,7 @@ class cl_parjuridico
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -97,7 +101,7 @@ class cl_parjuridico
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->v19_anousu = ($this->v19_anousu == "" ? @$GLOBALS["HTTP_POST_VARS"]["v19_anousu"] : $this->v19_anousu);
@@ -114,6 +118,8 @@ class cl_parjuridico
             $this->v19_senha = ($this->v19_senha == "" ? @$GLOBALS["HTTP_POST_VARS"]["v19_senha"] : $this->v19_senha);
             $this->v19_codorgao = ($this->v19_codorgao == "" ? @$GLOBALS["HTTP_POST_VARS"]["v19_codorgao"] : $this->v19_codorgao);
             $this->v19_consultaanaliticainicial = ($this->v19_consultaanaliticainicial == "f" ? @$GLOBALS["HTTP_POST_VARS"]["v19_consultaanaliticainicial"] : $this->v19_consultaanaliticainicial);
+            $this->v19_parcelahonorariosmanual = ($this->v19_parcelahonorariosmanual == "f" ? @$GLOBALS["HTTP_POST_VARS"]["v19_parcelahonorariosmanual"] : $this->v19_parcelahonorariosmanual);
+            $this->v19_parcelacustasmanual = ($this->v19_parcelacustasmanual == "f" ? @$GLOBALS["HTTP_POST_VARS"]["v19_parcelacustasmanual"] : $this->v19_parcelacustasmanual);
         } else {
             $this->v19_anousu = ($this->v19_anousu == "" ? @$GLOBALS["HTTP_POST_VARS"]["v19_anousu"] : $this->v19_anousu);
             $this->v19_instit = ($this->v19_instit == "" ? @$GLOBALS["HTTP_POST_VARS"]["v19_instit"] : $this->v19_instit);
@@ -121,7 +127,7 @@ class cl_parjuridico
     }
 
     // funcao para Inclusão
-    function incluir($v19_anousu, $v19_instit)
+    public function incluir($v19_anousu, $v19_instit)
     {
         $this->atualizacampos();
         if ($this->v19_envolinicialiptu == null) {
@@ -175,6 +181,24 @@ class cl_parjuridico
         if ($this->v19_consultaanaliticainicial == null) {
             $this->erro_sql = " Campo Consulta analítica de Inicial do Foro não informado.";
             $this->erro_campo = "v19_consultaanaliticainicial";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->v19_parcelahonorariosmanual == null) {
+            $this->erro_sql = " Campo Parcela honorários com autorização não informado.";
+            $this->erro_campo = "v19_parcelahonorariosmanual";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->v19_parcelacustasmanual == null) {
+            $this->erro_sql = " Campo Parcela custas com autorização não informado.";
+            $this->erro_campo = "v19_parcelacustasmanual";
             $this->erro_banco = "";
             $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
@@ -241,38 +265,42 @@ class cl_parjuridico
             }
         }
         $sql = "insert into parjuridico(
-                                       v19_anousu 
-                                      ,v19_instit 
-                                      ,v19_envolinicialiptu 
-                                      ,v19_envolinicialiss 
-                                      ,v19_envolprinciptu 
-                                      ,v19_vlrexecmin 
-                                      ,v19_partilha 
-                                      ,v19_templateinicialquitada 
-                                      ,v19_templateparcelamento 
-                                      ,v19_urlwebservice 
-                                      ,v19_login 
-                                      ,v19_senha 
-                                      ,v19_codorgao 
-                                      ,v19_consultaanaliticainicial 
+                                       v19_anousu
+                                      ,v19_instit
+                                      ,v19_envolinicialiptu
+                                      ,v19_envolinicialiss
+                                      ,v19_envolprinciptu
+                                      ,v19_vlrexecmin
+                                      ,v19_partilha
+                                      ,v19_templateinicialquitada
+                                      ,v19_templateparcelamento
+                                      ,v19_urlwebservice
+                                      ,v19_login
+                                      ,v19_senha
+                                      ,v19_codorgao
+                                      ,v19_consultaanaliticainicial
                                       ,v19_advogadopadrao
+                                      ,v19_parcelahonorariosmanual
+                                      ,v19_parcelacustasmanual
                        )
                 values (
-                                $this->v19_anousu 
-                               ,$this->v19_instit 
-                               ,$this->v19_envolinicialiptu 
-                               ,$this->v19_envolinicialiss 
-                               ,'$this->v19_envolprinciptu' 
-                               ,$this->v19_vlrexecmin 
-                               ,'$this->v19_partilha' 
-                               ,$this->v19_templateinicialquitada 
-                               ,$this->v19_templateparcelamento 
-                               ,'$this->v19_urlwebservice' 
-                               ,'$this->v19_login' 
-                               ,'$this->v19_senha' 
-                               ,'$this->v19_codorgao' 
-                               ,'$this->v19_consultaanaliticainicial' 
+                                $this->v19_anousu
+                               ,$this->v19_instit
+                               ,$this->v19_envolinicialiptu
+                               ,$this->v19_envolinicialiss
+                               ,'$this->v19_envolprinciptu'
+                               ,$this->v19_vlrexecmin
+                               ,'$this->v19_partilha'
+                               ,$this->v19_templateinicialquitada
+                               ,$this->v19_templateparcelamento
+                               ,'$this->v19_urlwebservice'
+                               ,'$this->v19_login'
+                               ,'$this->v19_senha'
+                               ,'$this->v19_codorgao'
+                               ,'$this->v19_consultaanaliticainicial'
                                ," . ($this->v19_advogadopadrao === null || $this->v19_advogadopadrao === '' ? 'NULL' : $this->v19_advogadopadrao) . "
+                               ,'$this->v19_parcelahonorariosmanual' 
+                               ,'$this->v19_parcelacustasmanual' 
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -325,6 +353,8 @@ class cl_parjuridico
                 $resac = db_query("insert into db_acount values($acount,2029,19711,'','" . AddSlashes(pg_result($resaco, 0, 'v19_codorgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 $resac = db_query("insert into db_acount values($acount,2029,1009673,'','" . AddSlashes(pg_result($resaco, 0, 'v19_consultaanaliticainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 $resac = db_query("INSERT INTO db_acount VALUES ($acount,2029,1010586,'','" . AddSlashes(pg_result($resaco, 0, 'v19_advogadopadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2029,1015239,'','" . AddSlashes(pg_result($resaco, 0, 'v19_parcelahonorariosmanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2029,1015240,'','" . AddSlashes(pg_result($resaco, 0, 'v19_parcelacustasmanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -509,6 +539,32 @@ class cl_parjuridico
                 return false;
             }
         }
+        if (trim($this->v19_parcelahonorariosmanual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelahonorariosmanual"])) {
+            $sql .= $virgula . " v19_parcelahonorariosmanual = '$this->v19_parcelahonorariosmanual' ";
+            $virgula = ",";
+            if (trim($this->v19_parcelahonorariosmanual) == null) {
+                $this->erro_sql = " Campo Parcela honorários com autorização não informado.";
+                $this->erro_campo = "v19_parcelahonorariosmanual";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->v19_parcelacustasmanual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelacustasmanual"])) {
+            $sql .= $virgula . " v19_parcelacustasmanual = '$this->v19_parcelacustasmanual' ";
+            $virgula = ",";
+            if (trim($this->v19_parcelacustasmanual) == null) {
+                $this->erro_sql = " Campo Parcela custas com autorização não informado.";
+                $this->erro_campo = "v19_parcelacustasmanual";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_status = "0";
+                return false;
+            }
+        }
         if (trim($this->v19_advogadopadrao) !== '' && $this->v19_advogadopadrao !== null) {
             $sql .= "{$virgula} v19_advogadopadrao = {$this->v19_advogadopadrao} ";
         } else {
@@ -566,6 +622,10 @@ class cl_parjuridico
                         $resac = db_query("insert into db_acount values($acount,2029,1009673,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_consultaanaliticainicial')) . "','$this->v19_consultaanaliticainicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["v19_advogadopadrao"]) || $this->v19_advogadopadrao != "")
                         $resac = db_query("insert into db_acount values($acount,2029,1010586,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_advogadopadrao')) . "','$this->v19_advogadopadrao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    if (isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelahonorariosmanual"]) || $this->v19_parcelahonorariosmanual != "")
+                        $resac = db_query("insert into db_acount values($acount,2029,1015239,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_parcelahonorariosmanual')) . "','$this->v19_parcelahonorariosmanual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    if (isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelacustasmanual"]) || $this->v19_parcelacustasmanual != "")
+                        $resac = db_query("insert into db_acount values($acount,2029,1015240,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_parcelacustasmanual')) . "','$this->v19_parcelacustasmanual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -640,6 +700,8 @@ class cl_parjuridico
                     $resac = db_query("insert into db_acount values($acount,2029,19711,'','" . AddSlashes(pg_result($resaco, $iresaco, 'v19_codorgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     $resac = db_query("insert into db_acount values($acount,2029,1009673,'','" . AddSlashes(pg_result($resaco, $iresaco, 'v19_consultaanaliticainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     $resac = db_query("insert into db_acount values($acount,2029,1010586,'','" . AddSlashes(pg_result($resaco, $iresaco, 'v19_advogadopadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2029,1015239,'','" . AddSlashes(pg_result($resaco, $iresaco, 'v19_parcelahonorariosmanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2029,1015240,'','" . AddSlashes(pg_result($resaco, $iresaco, 'v19_parcelacustasmanual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -787,7 +849,7 @@ class cl_parjuridico
      * @param integre $v19_instit
      * @return boolean
      */
-    function alterar_camposNulos($v19_anousu = null, $v19_instit = null)
+    public function alterar_camposNulos($v19_anousu = null, $v19_instit = null)
     {
         $this->atualizacampos();
         $sql = " UPDATE parjuridico SET ";
@@ -978,6 +1040,22 @@ class cl_parjuridico
             $virgula = ",";
         }
 
+        if (trim($this->v19_parcelahonorariosmanual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelahonorariosmanual"])) {
+            if (trim($this->v19_parcelahonorariosmanual) == "") {
+                $this->v19_parcelahonorariosmanual = "null";
+            }
+            $sql .= $virgula . " v19_parcelahonorariosmanual = '$this->v19_parcelahonorariosmanual'";
+            $virgula = ",";
+        }
+
+        if (trim($this->v19_parcelacustasmanual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelacustasmanual"])) {
+            if (trim($this->v19_parcelacustasmanual) == "") {
+                $this->v19_parcelacustasmanual = "null";
+            }
+            $sql .= $virgula . " v19_parcelacustasmanual = '$this->v19_parcelacustasmanual'";
+            $virgula = ",";
+        }
+
         if (trim($this->v19_advogadopadrao) !== '' && $this->v19_advogadopadrao !== null) {
             $sql .= "{$virgula} v19_advogadopadrao = {$this->v19_advogadopadrao} ";
         } else {
@@ -1026,6 +1104,10 @@ class cl_parjuridico
                     $resac = db_query("insert into db_acount values($acount,2029,19711,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_codorgao')) . "','$this->v19_codorgao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v19_consultaanaliticainicial"]) || $this->v19_consultaanaliticainicial != "")
                     $resac = db_query("insert into db_acount values($acount,2029,1009673,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_codorgao')) . "','$this->v19_consultaanaliticainicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                if (isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelahonorariosmanual"]) || $this->v19_parcelahonorariosmanual != "")
+                    $resac = db_query("insert into db_acount values($acount,2029,1015239,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_codorgao')) . "','$this->v19_parcelahonorariosmanual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                if (isset($GLOBALS["HTTP_POST_VARS"]["v19_parcelacustasmanual"]) || $this->v19_parcelacustasmanual != "")
+                    $resac = db_query("insert into db_acount values($acount,2029,1015240,'" . AddSlashes(pg_result($resaco, $conresaco, 'v19_codorgao')) . "','$this->v19_parcelacustasmanual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         $result = db_query($sql);
@@ -1067,7 +1149,7 @@ class cl_parjuridico
      * @param integer $iAnoUsu
      * @return Ambigous <array(), multitype:_db_fields >|boolean
      */
-    function getParametrosJuridico($iInstit, $iAnoUsu = null)
+    public function getParametrosJuridico($iInstit, $iAnoUsu = null)
     {
 
         $sSql = "select * from parjuridico where v19_instit = " . $iInstit;
@@ -1091,11 +1173,11 @@ class cl_parjuridico
      * @param string $ordem
      * @param string $dbwhere
      */
-    function sql_query_alternativo($v19_anousu = null, $v19_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_alternativo($v19_anousu = null, $v19_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1129,7 +1211,7 @@ class cl_parjuridico
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1139,7 +1221,7 @@ class cl_parjuridico
         return $sql;
     }
 
-    function sql_query_advog($v19_anousu = null, $v19_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_advog($v19_anousu = null, $v19_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select {$campos} ";
         $sql .= " from parjuridico                                                                                               ";

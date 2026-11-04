@@ -27,7 +27,7 @@ try {
             $dadosContaDebito = buscarInformacoes(implode(',', $parametro->contas_debito), 'D');
             $dadosContaCredito = buscarInformacoes(implode(',', $parametro->contas_credito), 'C');
             $contaDebito = db_utils::getCollectionByRecord($dadosContaDebito);
-            foreach ($contaDebito as &$conta) {
+            foreach ($contaDebito as $conta) {
                 if ($conta->codigo_sistema == "1") {
                     $conta->valor = getValorAtributoMSC($conta, $conta->sigla_atributo);
                 } else {
@@ -35,7 +35,7 @@ try {
                 }
             }
             $contaCredito = db_utils::getCollectionByRecord($dadosContaCredito);
-            foreach ($contaCredito as &$conta) {
+            foreach ($contaCredito as $conta) {
                 if ($conta->codigo_sistema == "1") {
                     $conta->valor = getValorAtributoMSC($conta, $conta->sigla_atributo);
                 } else {

@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: atendimento
 //CLASSE DA ENTIDADE atendtipoausencia
-class cl_atendtipoausencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $at71_codigo = 0; 
-   var $at71_descr = null; 
-   var $at71_tipo = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_atendtipoausencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $at71_codigo = 0;
+   var $at71_descr = null;
+   var $at71_tipo = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 at71_codigo = int4 = Código Ausência 
-                 at71_descr = char(20) = Descrição da Ausência 
-                 at71_tipo = bool = Ausente(S/N) 
+                 at71_codigo = int4 = Código Ausência
+                 at71_descr = char(20) = Descrição da Ausência
+                 at71_tipo = bool = Ausente(S/N)
                  ";
-   //funcao construtor da classe 
-   function cl_atendtipoausencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("atendtipoausencia"); 
+     $this->rotulo = new rotulo("atendtipoausencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_atendtipoausencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->at71_codigo = ($this->at71_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["at71_codigo"]:$this->at71_codigo);
        $this->at71_descr = ($this->at71_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["at71_descr"]:$this->at71_descr);
@@ -77,9 +77,9 @@ class cl_atendtipoausencia {
      }
    }
    // funcao para inclusao
-   function incluir ($at71_codigo){ 
+   public function incluir ($at71_codigo){
       $this->atualizacampos();
-     if($this->at71_descr == null ){ 
+     if($this->at71_descr == null ){
        $this->erro_sql = " Campo Descrição da Ausência nao Informado.";
        $this->erro_campo = "at71_descr";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_atendtipoausencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->at71_tipo == null ){ 
+     if($this->at71_tipo == null ){
        $this->erro_sql = " Campo Ausente(S/N) nao Informado.";
        $this->erro_campo = "at71_tipo";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_atendtipoausencia {
        return false;
      }
      if($at71_codigo == "" || $at71_codigo == null ){
-       $result = db_query("select nextval('atendtipoausencia_at71_codigo_seq')"); 
+       $result = db_query("select nextval('atendtipoausencia_at71_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: atendtipoausencia_at71_codigo_seq do campo: at71_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: atendtipoausencia_at71_codigo_seq do campo: at71_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->at71_codigo = pg_result($result,0,0); 
+       $this->at71_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from atendtipoausencia_at71_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $at71_codigo)){
@@ -118,10 +118,10 @@ class cl_atendtipoausencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->at71_codigo = $at71_codigo; 
+         $this->at71_codigo = $at71_codigo;
        }
      }
-     if(($this->at71_codigo == null) || ($this->at71_codigo == "") ){ 
+     if(($this->at71_codigo == null) || ($this->at71_codigo == "") ){
        $this->erro_sql = " Campo at71_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_atendtipoausencia {
        return false;
      }
      $sql = "insert into atendtipoausencia(
-                                       at71_codigo 
-                                      ,at71_descr 
-                                      ,at71_tipo 
+                                       at71_codigo
+                                      ,at71_descr
+                                      ,at71_tipo
                        )
                 values (
-                                $this->at71_codigo 
-                               ,'$this->at71_descr' 
-                               ,'$this->at71_tipo' 
+                                $this->at71_codigo
+                               ,'$this->at71_descr'
+                               ,'$this->at71_tipo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de Ausência ($this->at71_codigo) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_atendtipoausencia {
        $resac = db_query("insert into db_acount values($acount,1900,11029,'','".AddSlashes(pg_result($resaco,0,'at71_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($at71_codigo=null) { 
+   public function alterar ($at71_codigo=null) {
       $this->atualizacampos();
      $sql = " update atendtipoausencia set ";
      $virgula = "";
-     if(trim($this->at71_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_codigo"])){ 
+     if(trim($this->at71_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_codigo"])){
        $sql  .= $virgula." at71_codigo = $this->at71_codigo ";
        $virgula = ",";
-       if(trim($this->at71_codigo) == null ){ 
+       if(trim($this->at71_codigo) == null ){
          $this->erro_sql = " Campo Código Ausência nao Informado.";
          $this->erro_campo = "at71_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_atendtipoausencia {
          return false;
        }
      }
-     if(trim($this->at71_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_descr"])){ 
+     if(trim($this->at71_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_descr"])){
        $sql  .= $virgula." at71_descr = '$this->at71_descr' ";
        $virgula = ",";
-       if(trim($this->at71_descr) == null ){ 
+       if(trim($this->at71_descr) == null ){
          $this->erro_sql = " Campo Descrição da Ausência nao Informado.";
          $this->erro_campo = "at71_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_atendtipoausencia {
          return false;
        }
      }
-     if(trim($this->at71_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_tipo"])){ 
+     if(trim($this->at71_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at71_tipo"])){
        $sql  .= $virgula." at71_tipo = '$this->at71_tipo' ";
        $virgula = ",";
-       if(trim($this->at71_tipo) == null ){ 
+       if(trim($this->at71_tipo) == null ){
          $this->erro_sql = " Campo Ausente(S/N) nao Informado.";
          $this->erro_campo = "at71_tipo";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_atendtipoausencia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Ausência nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->at71_codigo;
@@ -267,14 +267,14 @@ class cl_atendtipoausencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($at71_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($at71_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($at71_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_atendtipoausencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Ausência nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$at71_codigo;
@@ -330,11 +330,11 @@ class cl_atendtipoausencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_atendtipoausencia {
       }
      return $result;
    }
-   function sql_query ( $at71_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $at71_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_atendtipoausencia {
      $sql2 = "";
      if($dbwhere==""){
        if($at71_codigo!=null ){
-         $sql2 .= " where atendtipoausencia.at71_codigo = $at71_codigo "; 
-       } 
+         $sql2 .= " where atendtipoausencia.at71_codigo = $at71_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_atendtipoausencia {
      }
      return $sql;
   }
-   function sql_query_file ( $at71_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $at71_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_atendtipoausencia {
      $sql2 = "";
      if($dbwhere==""){
        if($at71_codigo!=null ){
-         $sql2 .= " where atendtipoausencia.at71_codigo = $at71_codigo "; 
-       } 
+         $sql2 .= " where atendtipoausencia.at71_codigo = $at71_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

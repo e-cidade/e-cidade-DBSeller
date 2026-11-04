@@ -1,8 +1,33 @@
 <?php
-
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
 
 namespace ECidade\Saude\Laboratorio\Repository;
 
+use db_utils;
 use Exception;
 
 class RequisicaoLaboratorialRepository
@@ -14,7 +39,7 @@ class RequisicaoLaboratorialRepository
 
     /**
      * RequisicaoLaboratorialRepository constructor.
-     * @param \cl_lab_requisicao $dao
+     * @param  \cl_lab_requisicao  $dao
      */
     public function __construct(\cl_lab_requisicao $dao)
     {
@@ -23,7 +48,7 @@ class RequisicaoLaboratorialRepository
 
     /**
      * @param $id
-     * @param string $columns
+     * @param  string  $columns
      * @return bool|\RequisicaoLaboratorial|null
      * @throws Exception
      */
@@ -55,7 +80,7 @@ class RequisicaoLaboratorialRepository
 
     /**
      * @param $codigoRequisicao
-     * @param \cl_lab_requiitem $daoRequisicaoItem
+     * @param  \cl_lab_requiitem  $daoRequisicaoItem
      * @return array|bool
      */
     public function getMateriaisPorRequisicao($codigoRequisicao, \cl_lab_requiitem $daoRequisicaoItem)
@@ -80,7 +105,6 @@ class RequisicaoLaboratorialRepository
         $codigoMaterial,
         \cl_lab_requiitem $daoRequisicaoItem
     ) {
-
         $sql = $daoRequisicaoItem->sql_query_materiais_exame_requisicao(
             $codigoRequisicao,
             'la08_i_codigo, la08_c_descr, la21_c_situacao, la21_i_codigo, la22_i_cgs, la21_observacao,
@@ -101,7 +125,6 @@ class RequisicaoLaboratorialRepository
         $codigoRequisicao,
         \cl_lab_requiitem $daoRequisicaoItem
     ) {
-
         $sql = $daoRequisicaoItem->sql_query_exame_requisicao(
             $codigoRequisicao,
             'la08_i_codigo, la08_c_descr, la21_c_situacao, la21_i_codigo, la22_i_cgs, la21_observacao,
@@ -136,5 +159,70 @@ class RequisicaoLaboratorialRepository
         }
 
         return pg_fetch_object($rs);
+    }
+
+    /**
+     * @param $id
+     * @param  string  $columns
+     * @return bool|\RequisicaoLaboratorial|null
+     * @throws \DomainException
+     */
+    public function getRequisicao($id, $columns = '*')
+    {
+        $sql = $this->dao->sql_query($id, $columns);
+        $resultadoSql = db_query($sql);
+
+        if (!$resultadoSql) {
+            throw new \DomainException("Requisição não encontrada!");
+        }
+
+        if (pg_num_rows($resultadoSql) === 0) {
+            return false;
+        }
+
+        $valores = pg_fetch_array($resultadoSql);
+        $requisicao = null;
+
+        try {
+            $requisicao = \RequisicaoLaboratorial::fromState($valores);
+        } catch (\Exception $e) {
+            throw new \DomainException("Falha ao devolver requisição!");
+        }
+
+        return $requisicao;
+    }
+
+    /**
+     * @param  string  $idsItensRequisicao
+     * @param  int  $limit
+     * @param  int  $offset
+     * @return array
+     */
+    public function getRelacaoRequisicaoExames($idsItensRequisicao, $limit, $offset)
+    {
+        $sql = $this->dao->getRelacaoRequisicaoExames($idsItensRequisicao, $limit, $offset);
+        $resultadoSql = db_query($sql);
+
+        if (pg_num_rows($resultadoSql) === 0) {
+            return [];
+        }
+
+        return db_utils::getCollectionByRecord($resultadoSql);
+    }
+
+    /**
+     * Recupera os exames vínculados a um grupo de liberação.
+     * @param  int  $grupoLiberacaoId
+     * @return array|\stdClass[]
+     */
+    public function getExamesByGrupoLiberacao($grupoLiberacaoId)
+    {
+        $sql = $this->dao->getExamesByGrupoLiberacao($grupoLiberacaoId);
+        $resultadoSql = db_query($sql);
+
+        if (pg_num_rows($resultadoSql) === 0) {
+            return [];
+        }
+        return db_utils::getCollectionByRecord($resultadoSql);
     }
 }

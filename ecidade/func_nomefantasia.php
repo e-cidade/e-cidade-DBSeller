@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ function js_limpa(){
   <tr> 
     <td align="center" valign="top"> 
 		
-      <?
+      <?php
 //	die($funcao_js);
 	  $funcao_js = 'parent.mostraDadosInscricao|q02_inscr';
     if(!isset($pesquisa_chave)){

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,7 +110,7 @@ function js_emite(){
               </td>
             </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Tipo de Empenho</strong>";
                  $aux->codigo = "e40_codhist"; //chave de retorno da func
@@ -136,7 +136,7 @@ function js_emite(){
 	<td align="right"> <strong>Opção : </strong>
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?
+          <?php
             $xx = array("l"=>"Liquidado","e"=>"Empenhado","p"=>"Pago");
             db_select('tipoemp',$xx,true,4,"");
 	  ?>
@@ -158,7 +158,7 @@ function js_emite(){
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

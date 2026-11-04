@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("k68_data");
        <?=@$Lk83_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k83_sequencial',10,$Ik83_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk83_conciliatipo?>">
-       <?
+       <?php
        db_ancora(@$Lk83_conciliatipo,"js_pesquisak83_conciliatipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k83_conciliatipo',10,$Ik83_conciliatipo,true,'text',$db_opcao," onchange='js_pesquisak83_conciliatipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k65_descricao',50,$Ik65_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk83_concilia?>">
-       <?
+       <?php
        db_ancora(@$Lk83_concilia,"js_pesquisak83_concilia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k83_concilia',10,$Ik83_concilia,true,'text',$db_opcao," onchange='js_pesquisak83_concilia(false);'")
 ?>
-       <?
+       <?php
 db_input('k68_data',10,$Ik68_data,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('k68_data',10,$Ik68_data,true,'text',3,'')
        <?=@$Lk83_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k83_hora',5,$Ik83_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('k83_hora',5,$Ik83_hora,true,'text',$db_opcao,"")
        <?=@$Lk83_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_input('k83_usuario',10,$Ik83_usuario,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliaitem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

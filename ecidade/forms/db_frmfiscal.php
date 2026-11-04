@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,8 +26,8 @@
  */
 
 //MODULO: fiscal
-include(modification("classes/db_ruas_classe.php"));
-include(modification("classes/db_bairro_classe.php"));
+require_once(modification("classes/db_ruas_classe.php"));
+require_once(modification("classes/db_bairro_classe.php"));
 $clruas = new cl_ruas;
 $clbairro = new cl_bairro;
 $clfiscal->rotulo->label();
@@ -55,9 +55,10 @@ $clrotulo->label("z01_nome");
 $get="";
 ?>
 <form name="form1" method="post" action="">
-<?
-$rua="";
-$bairro="";
+<?php $codigoRua = "";
+$rua = "";
+$codigoBairro = "";
+$bairro = "";
 $numero="";
 $compl="";
 if ($db_opcao==2){
@@ -66,26 +67,19 @@ if ($db_opcao==2){
     db_fieldsmemory($result,0);
   }
 }
-/*
-if(isset($y30_codnoti) && $y30_codnoti != "" && $db_opcao != 1){
-  $result = $clfiscal->sql_record($clfiscal->sql_querycgm($y30_codnoti));
-  if($clfiscal->numrows > 0){
-    db_fieldsmemory($result,0);
-  }
-}
-*/
+
 if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica=="Matrícula")){
 	if(isset($identifica)){
 		$j01_matric=$codigo;
 	}
   db_input('j01_matric',5,$Ij01_matric,true,'hidden',1,"");
-  include(modification("classes/db_iptubase_classe.php"));
+  require_once(modification("classes/db_iptubase_classe.php"));
   $cliptubase = new cl_iptubase;
   $get = "&tipo=y102_matric&valor=$j01_matric";
   $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric));
   if($cliptubase->numrows > 0){
     db_fieldsmemory($result,0);
-    include(modification("classes/db_cgm_classe.php"));
+    require_once(modification("classes/db_cgm_classe.php"));
     $clcgm = new cl_cgm;
     $result = $clcgm->sql_record($clcgm->sql_query($j01_numcgm));
     if($clcgm->numrows > 0){
@@ -96,10 +90,12 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
   $result = $cliptubase->sql_record($cliptubase->proprietario_query($j01_matric));
   if($cliptubase->numrows > 0){
     db_fieldsmemory($result,0);
-    $rua=$j14_codigo;
-    $bairro=$j34_bairro;
-    $numero=$j39_numero;
-    $compl=$j39_compl;
+    $codigoRua = $j14_codigo;
+    $rua=$j14_nome;
+    $codigoBairro = $j13_codi;
+    $bairro=$j13_descr;
+    $numero=$j39_numero ? $j39_numero : 0;
+    $compl=$j39_compl ? $j39_compl : "Sem complemento";
   }
   }
   $dados = "<a style='text-decoration:none;color:#6699cc;background-color:yellow' onMouseOver='this.style.color=\"blue\"' onMouseOut='this.style.color=\"#6699cc\"' onClick=\"js_abre('cad3_conscadastro_002.php?cod_matricula=$j01_matric');return false\" href=''>matrícula: ".$j01_matric." &nbsp;|&nbsp;".@$z01_nome."</a>";
@@ -109,13 +105,13 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
 		$q02_inscr=$codigo;
 	}
   db_input('q02_inscr',5,$Iq02_inscr,true,'hidden',1,"");
-  include(modification("classes/db_issbase_classe.php"));
+  require_once(modification("classes/db_issbase_classe.php"));
   $clissbase = new cl_issbase;
 	$get = "&tipo=y103_inscr&valor=$q02_inscr";
   $result = $clissbase->sql_record($clissbase->sql_query($q02_inscr));
   if($clissbase->numrows > 0){
     db_fieldsmemory($result,0);
-    include(modification("classes/db_cgm_classe.php"));
+    require_once(modification("classes/db_cgm_classe.php"));
     $clcgm = new cl_cgm;
     $result = $clcgm->sql_record($clcgm->sql_query($q02_numcgm));
     if($clcgm->numrows > 0){
@@ -126,10 +122,12 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
   $result = $clissbase->sql_record($clissbase->empresa_query($q02_inscr));
   if($clissbase->numrows > 0){
     db_fieldsmemory($result,0);
-    $rua=$q02_lograd;
-    $bairro=$q02_bairro;
-    $numero=$z01_numero;
-    $compl=$z01_compl;
+    $codigoRua = $q02_lograd;
+    $rua=$z01_ender;
+    $codigoBairro = $q02_bairro;
+    $bairro=$z01_bairro;
+    $numero=$z01_numero ? $z01_numero : 0;
+    $compl=$z01_compl ? $z01_compl : "Sem complemento";
   }
   }
   $dados = "<a style='text-decoration:none;color:#6699cc;background-color:yellow' onMouseOver='this.style.color=\"blue\"' onMouseOut='this.style.color=\"#6699cc\"' onClick=\"js_abre('iss3_consinscr003.php?numeroDaInscricao=$q02_inscr');return false\" href=''>inscrição: ".$q02_inscr." &nbsp;|&nbsp;".@$z01_nome."</a>";
@@ -139,19 +137,21 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
 		$y80_codsani=$codigo;
 	}
   db_input('y80_codsani',5,$Iy80_codsani,true,'hidden',1,"");
-  include(modification("classes/db_sanitario_classe.php"));
+  require_once(modification("classes/db_sanitario_classe.php"));
   $clsanitario = new cl_sanitario;
 	$get = "&tipo=y104_codsani&valor=$y80_codsani";
   $result = $clsanitario->sql_record($clsanitario->sql_query($y80_codsani));
   if($clsanitario->numrows > 0){
     db_fieldsmemory($result,0);
     if($db_opcao==1){
-    $rua=$y80_codrua;
-    $bairro=$y80_codbairro;
-    $numero=$y80_numero;
-    $compl=$y80_compl;
+      $codigoRua = $y80_codrua;
+      $rua=$j14_nome;
+      $codigoBairro = $y80_codbairro;
+      $bairro=$j13_descr;
+      $numero=$y80_numero ? $y80_numero : 0;
+      $compl=$y80_compl ? $y80_compl : "Sem complemento";
     }
-    include(modification("classes/db_cgm_classe.php"));
+    require_once(modification("classes/db_cgm_classe.php"));
     $clcgm = new cl_cgm;
     $result = $clcgm->sql_record($clcgm->sql_query($y80_numcgm));
     if($clcgm->numrows > 0){
@@ -167,48 +167,50 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
 		$y70_codvist=$codigo;
 	}
   db_input('y70_codvist',5,$Iy70_codvist,true,'hidden',1,"");
-  include(modification("classes/db_vistorias_classe.php"));
+  require_once(modification("classes/db_vistorias_classe.php"));
   $clvistorias = new cl_vistorias;
   $result = $clvistorias->sql_record($clvistorias->sql_query($y70_codvist));
   if($clvistorias->numrows > 0){
     db_fieldsmemory($result,0);
     if ($db_opcao==1){
-    include(modification("classes/db_vistlocal_classe.php"));
+    require_once(modification("classes/db_vistlocal_classe.php"));
   	$clvistlocal = new cl_vistlocal;
   	$result = $clvistlocal->sql_record($clvistlocal->sql_query($y70_codvist));
   	if($clvistlocal->numrows > 0){
   		db_fieldsmemory($result,0);
-  		$rua=$y10_codigo;
-    	$bairro=$y10_codi;
-    	$numero=$y10_numero;
-    	$compl=$y10_compl;
+      $codigoRua = $y10_codigo;
+      $rua = $j14_nome;
+      $codigoBairro = $y10_codi;
+      $bairro = $j13_descr;
+      $numero=$y10_numero ? $y10_numero : 0;
+      $compl=$y10_compl ? $y10_compl : "Sem complemento";
   	}
     }
-    include(modification("classes/db_vistinscr_classe.php"));
+    require_once(modification("classes/db_vistinscr_classe.php"));
     $clvistinscr = new cl_vistinscr;
     $result = $clvistinscr->sql_record($clvistinscr->sql_query($y70_codvist));
     if($clvistinscr->numrows > 0){
       db_fieldsmemory($result,0);
     }
-    include(modification("classes/db_vistmatric_classe.php"));
+    require_once(modification("classes/db_vistmatric_classe.php"));
     $clvistmatric = new cl_vistmatric;
     $result = $clvistmatric->sql_record($clvistmatric->sql_query($y70_codvist));
     if($clvistmatric->numrows > 0){
       db_fieldsmemory($result,0);
     }
-    include(modification("classes/db_vistsanitario_classe.php"));
+    require_once(modification("classes/db_vistsanitario_classe.php"));
     $clvistsanitario = new cl_vistsanitario;
     $result = $clvistsanitario->sql_record($clvistsanitario->sql_query($y70_codvist));
     if($clvistsanitario->numrows > 0){
       db_fieldsmemory($result,0);
     }
-    include(modification("classes/db_vistcgm_classe.php"));
+    require_once(modification("classes/db_vistcgm_classe.php"));
     $clvistcgm = new cl_vistcgm;
     $result = $clvistcgm->sql_record($clvistcgm->sql_query($y70_codvist));
     if($clvistcgm->numrows > 0){
       db_fieldsmemory($result,0);
     }
-    include(modification("classes/db_cgm_classe.php"));
+    require_once(modification("classes/db_cgm_classe.php"));
     $clcgm = new cl_cgm;
     $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm));
     if($clcgm->numrows > 0){
@@ -223,21 +225,24 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
 		$z01_numcgm=$codigo;
 	}
   db_input('z01_numcgm',5,$Iz01_numcgm,true,'hidden',1,"");
-  include(modification("classes/db_cgm_classe.php"));
+  require_once(modification("classes/db_cgm_classe.php"));
   $clcgm = new cl_cgm;
 	$get = "&tipo=y101_numcgm&valor=$z01_numcgm";
   $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm));
   if($clcgm->numrows > 0){
     db_fieldsmemory($result,0);
-    $numero=$z01_numero;
-    $compl=$z01_compl;
+    $codigoRua = "";
+    $rua = "";
+    $codigoBairro = "";
+    $bairro = "";
+    $numero = "";
+    $compl = "";
   }
 
   $dados = "<a style='text-decoration:none;color:#6699cc;background-color:yellow' onMouseOver='this.style.color=\"blue\"' onMouseOut='this.style.color=\"#6699cc\"' onClick=\"js_abre('prot3_conscgm002.php?fechar=func_nome&numcgm=$z01_numcgm');return false\" href=''>CGM: ".$z01_numcgm." &nbsp;|&nbsp;".@$z01_nome."</a>";
 }
-
-
 ?>
+
 <center>
 <table border="0">
   <tr>
@@ -245,7 +250,7 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
        <?=@$Ly30_codnoti?>
     </td>
     <td>
-<?
+<?php
 db_input('y30_codnoti',20,$Iy30_codnoti,true,'text',3,"");
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp;".@$dados."&nbsp;</strong>";
 ?>
@@ -256,11 +261,11 @@ echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n
        <?=@$Ly30_numbloco?>
     </td>
     <td>
-<?
+<?php
 db_input('y30_numbloco',20,$Iy30_numbloco,true,'text',$db_opcao,"");
 ?><b>
 Prazo p/ Recurso:
- </b><?
+ </b><?php
 db_inputdata('y30_prazorec',@$y30_prazorec_dia,@$y30_prazorec_mes,@$y30_prazorec_ano,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -270,7 +275,7 @@ db_inputdata('y30_prazorec',@$y30_prazorec_dia,@$y30_prazorec_mes,@$y30_prazorec
        <?=@$Ly30_data?>
     </td>
     <td>
-<?
+<?php
 if(empty($y30_data_dia)){
   $y30_data_dia = date("d",db_getsession("DB_datausu"));
   $y30_data_mes = date("m",db_getsession("DB_datausu"));
@@ -279,7 +284,7 @@ if(empty($y30_data_dia)){
 db_inputdata('y30_data',@$y30_data_dia,@$y30_data_mes,@$y30_data_ano,true,'text',$db_opcao,"")
 ?>
 &nbsp;&nbsp;       <?=@$Ly30_hora?>
-<?
+<?php
 db_input('y30_hora',5,$Iy30_hora,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.y30_hora.value = '".db_hora()."'</script>";
@@ -292,22 +297,22 @@ if($db_opcao == 1){
        <?=@$Ly30_obs?>
     </td>
     <td>
-<?
+<?php
 db_textarea('y30_obs',2,50,$Iy30_obs,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty30_setor?>">
-       <?
+       <?php
        db_ancora(@$Ly30_setor,"js_pesquisay30_setor(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y30_setor',5,$Iy30_setor,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
@@ -317,7 +322,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        <?=@$Ly30_nome?>
     </td>
     <td>
-<?
+<?php
 db_input('y30_nome',35,$Iy30_nome,true,'text',$db_opcao,"");
 if(isset($z01_nome)){
   echo "<script>document.form1.y30_nome.value = '$z01_nome'</script>";
@@ -328,15 +333,15 @@ if(isset($z01_nome)){
 
   <tr>
     <td nowrap title="<?=@$Ty100_sequencial?>">
-       <?
+       <?php
        db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?
+			<?php
 			db_input('procfiscal',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisaprocfiscal(false);'")
 			?>
-       <?
+       <?php
 			db_input('nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -348,12 +353,12 @@ if(isset($z01_nome)){
       <table>
   <tr>
     <td nowrap width="100" title="<?=@$Ty12_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ly12_codigo,"js_ruas1(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y12_codigo',10,$Iy12_codigo,true,'text',$db_opcao," onChange='js_ruas1(false)'");
 db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
 ?>
@@ -364,23 +369,23 @@ db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
        <?=@$Ly12_numero?>
     </td>
     <td>
-<?
+<?php
 db_input('y12_numero',10,$Iy12_numero,true,'text',$db_opcao,"")
 ?>
        <?=@$Ly12_compl?>
-<?
+<?php
 db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty12_codi?>">
-      <?
+      <?php
       db_ancora(@$Ly12_codi,"js_bairro1(true);",$db_opcao);
       ?>
     </td>
     <td nowrap>
-      <?
+      <?php
         db_input('y12_codi',10,$Iy12_codi,true,'text',$db_opcao," onChange='js_bairro1(false)'");
         db_input('j13_descr',50,$Ij13_descr,true,'text',3);
       ?>
@@ -397,12 +402,12 @@ db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
       <table>
   <tr>
     <td nowrap width="100" title="<?=@$Ty13_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ly13_codigo,"js_ruas(true);",$db_opcao);
        ?>
     </td>
     <td nowrap>
-      <?
+      <?php
 	db_input('y13_codigo',10,$Iy13_codigo,true,'text',$db_opcao," onChange='js_ruas(false)'");
 	db_input('j14_nome',50,$Ij14_nome,true,'text',3,"","j14_nome_exec");
       ?>
@@ -413,23 +418,23 @@ db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
        <?=@$Ly13_numero?>
     </td>
     <td>
-<?
+<?php
 db_input('y13_numero',10,$Iy13_numero,true,'text',$db_opcao,"")
 ?>
        <?=@$Ly13_compl?>
-<?
+<?php
 db_input('y13_compl',20,$Iy13_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty13_codi?>">
-      <?
+      <?php
       db_ancora(@$Ly13_codi,"js_bairro(true);",$db_opcao);
       ?>
     </td>
     <td nowrap>
-      <?
+      <?php
         db_input('y13_codi',10,$Iy13_codi,true,'text',$db_opcao," onChange='js_bairro(false)'");
         db_input('j13_descr',50,$Ij13_descr,true,'text',3,"","j13_descr_exec");
       ?>
@@ -444,15 +449,15 @@ db_input('y13_compl',20,$Iy13_compl,true,'text',$db_opcao,"")
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();"  <?=($db_opcao==22||$db_opcao==2||$db_opcao==33||$db_opcao==3)?"":"onblur='js_setatabulacao();'"?>>
 
-<?
+<?php
 if ($db_opcao==22||$db_opcao==2||$db_opcao==33||$db_opcao==3){
 ?>
 <input name="novo" type="button" id="novo" value="Incluir Novo" onclick="parent.location.href='fis1_fiscal005.php?como=cgm';" onblur="js_setatabulacao();">
-<?
+<?php
 }
 ?>
 </form>
-<?
+<?php
 if($db_opcao==1){
 	if ($rua==""||$bairro==""){
   	$op=1;
@@ -464,18 +469,6 @@ if($db_opcao==1){
 				$sql_munic = "select munic from db_config";
 				$result_munic = db_query($sql_munic);
 				db_fieldsmemory($result_munic,0);
-				// if(strtoupper($z01_munic) == strtoupper($munic)){
-  		// 		echo "
-	  	// 			<script>
-	  	// 				alert('Atualize o endereço no CGM antes de prosseguir');
-	  	// 				for(i=0;i<document.form1.length;i++){
-		  // 					document.form1.elements[i].disabled = true
-				// 		  }
-				// 		  if(confirm('Deseja Alterar o cgm agora?')){
-    //          		js_OpenJanelaIframe('','db_iframe_altcgm','prot1_cadcgm002.php?chavepesquisa=$z01_numcgm&testanome=true&autonotific=true','Altera Cgm',true,0);
-    //     			}
-				// 	  </script>";
-				// }
   		}
   	}
 	}
@@ -538,13 +531,13 @@ function js_ruas(mostra){
     js_OpenJanelaIframe('','db_iframe_ruas','func_ruas.php?rural=1&funcao_js=parent.js_preencheruas1&pesquisa_chave='+document.form1.y13_codigo.value+'','Pesquisa',false);
   }
 }
-function js_preencheruas(chave,chave1){
-  document.form1.y13_codigo.value = chave;
-  document.form1.j14_nome_exec.value = chave1;
+function js_preencheruas(chave1,chave2){
+  document.form1.y13_codigo.value = chave1;
+  document.form1.j14_nome_exec.value = chave2;
   db_iframe_ruas.hide();
 }
-function js_preencheruas1(chave,erro){
-  document.form1.j14_nome_exec.value = chave;
+function js_preencheruas1(chave1,chave2){
+  document.form1.j14_nome_exec.value = chave2;
   if(erro == true){
     document.form1.y13_codigo.focus();
     document.form1.y13_codigo.value='';
@@ -558,13 +551,13 @@ function js_ruas1(mostra){
     js_OpenJanelaIframe('','db_iframe_ruas','func_ruas.php?rural=1&funcao_js=parent.js_preencheender1&pesquisa_chave='+document.form1.y12_codigo.value+'','Pesquisa',false);
   }
 }
-function js_preencheender(chave,chave1){
-  document.form1.y12_codigo.value = chave;
-  document.form1.j14_nome.value = chave1;
+function js_preencheender(chave1, chave2){
+  document.form1.y12_codigo.value = chave1;
+  document.form1.j14_nome.value = chave2;
   db_iframe_ruas.hide();
 }
-function js_preencheender1(chave,erro){
-  document.form1.j14_nome.value = chave;
+function js_preencheender1(chave1, chave2){
+  document.form1.j14_nome.value = chave2;
   if(erro==true){
     document.form1.y12_codigo.focus();
     document.form1.y12_codigo.value = '';
@@ -632,14 +625,14 @@ function js_mostraprocfiscal1(chave1,chave2,dep_prot,depart,dep_atual){
 function js_abre(pagina){
   js_OpenJanelaIframe('','db_iframe_consulta',pagina,'Pesquisa',true,0);
 }
-<?if(!isset($pesqandam)){
+<?php if(!isset($pesqandam)){
 ?>
 function js_pesquisa(){
   js_OpenJanelaIframe('','db_iframe_fiscal','func_fiscal.php?funcao_js=parent.js_preenchepesquisa|y30_codnoti','Pesquisa',true);
 }
 function js_preenchepesquisa(chave){
   db_iframe_fiscal.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_fiscal002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -647,11 +640,11 @@ function js_preenchepesquisa(chave){
     }
   ?>
 }
-<?
+<?php
 }
 ?>
 </script>
-<?
+<?php
 if($db_opcao==1){
   echo "<script>document.form1.y30_setor.value='".db_getsession("DB_coddepto")."'</script>";
   echo "<script>js_pesquisay30_setor(false)</script>";
@@ -689,7 +682,7 @@ if($db_opcao != 1){
 
 if($db_opcao == 1){
   if(isset($q02_inscr) && $q02_inscr != ""){
-    include(modification("classes/db_issruas_classe.php"));
+    require_once(modification("classes/db_issruas_classe.php"));
     $clissruas = new cl_issruas;
     $result = $clissruas->sql_record($clissruas->sql_query($q02_inscr));
     if($clissruas->numrows == 0){
@@ -724,15 +717,149 @@ if($db_opcao == 1){
     echo "<script>document.form1.y12_codi.value='$j13_codi';js_bairro1(false)</script>";
     echo "<script>document.form1.y12_codi.readOnly = true</script>";
   }
-  if(isset($z01_numero) && $z01_numero != ""){
-    echo "<script>document.form1.y12_numero.value='$z01_numero';</script>";
-    echo "<script>document.form1.y13_numero.value='$z01_numero';</script>";
-    echo "<script>document.form1.y12_numero.readOnly = true</script>";
+
+  if(isset($codigoRua) && $codigoRua != ""){
+    if(isset($z01_numero) && $z01_numero != ""){
+      echo "<script>document.form1.y12_numero.value='$z01_numero';</script>";
+      echo "<script>document.form1.y13_numero.value='$z01_numero';</script>";
+      echo "<script>document.form1.y12_numero.readOnly = true</script>";
+    }
+    if(isset($z01_compl) && $z01_compl != ""){
+      echo "<script>document.form1.y12_compl.value='$z01_compl';</script>";
+      echo "<script>document.form1.y13_compl.value='$z01_compl';</script>";
+      echo "<script>document.form1.y12_compl.readOnly = true</script>";
+    }
   }
-  if(isset($z01_compl) && $z01_compl != ""){
-    echo "<script>document.form1.y12_compl.value='$z01_compl';</script>";
-    echo "<script>document.form1.y13_compl.value='$z01_compl';</script>";
-    echo "<script>document.form1.y12_compl.readOnly = true</script>";
+
+  if(isset($codigoBairro) && trim($codigoBairro) != ""){
+    if(!isset($y12_codi)){
+      echo "<script>
+      const codigoBairroRegistrado = document.form1.y12_codi;
+      if(codigoBairroRegistrado.value.trim() == ''){
+        codigoBairroRegistrado.value = '$codigoBairro';
+      }
+      </script>
+      ";
+    }
+          
+    if(!isset($y13_codi)){
+      echo "<script>
+      const codigoBairroLocalizado = document.form1.y13_codi;
+        if(codigoBairroLocalizado.value.trim() == ''){
+          codigoBairroLocalizado.value = '$codigoBairro';
+          }
+      </script>
+      ";
+    }
+  }
+
+  if(isset($bairro) && trim($bairro) != ""){
+    if(!isset($j13_descr)){
+      echo "<script>
+      const bairroRegistrado = document.form1.j13_descr;
+      if(bairroRegistrado.value.trim() == ''){
+        bairroRegistrado.value = '$bairro';
+      }
+      </script>
+      ";
+    }
+    
+    if(!isset($j13_descr_exec)){
+      echo "<script>
+      const bairroLocalizado = document.form1.j13_descr_exec;
+      if(bairroLocalizado.value.trim() == ''){
+        bairroLocalizado.value = '$bairro';
+      }
+      </script>
+      ";
+    }
+  }
+
+  if(isset($codigoRua) && trim($codigoRua) != ""){
+    if(!isset($y12_codigo)){
+      echo "<script>
+      const codigoRuaRegistrada = document.form1.y12_codigo;
+      if(codigoRuaRegistrada.value.trim() == ''){
+        codigoRuaRegistrada.value = '$codigoRua';
+      }
+      </script>
+      ";
+    }
+    
+    if(!isset($y13_codigo)){
+      echo "<script>
+      const codigoRuaLocalizada = document.form1.y13_codigo;
+      if(codigoRuaLocalizada.value.trim() == ''){
+        codigoRuaLocalizada.value = '$codigoRua';
+      }
+      </script>
+      ";
+    }
+  }
+
+  if(isset($rua) && trim($rua) != ""){
+    if(!isset($j14_nome)){
+      echo "<script>
+      const ruaRegistrada = document.form1.j14_nome;
+      if(ruaRegistrada.value.trim() == ''){
+        ruaRegistrada.value = '$rua';
+      }
+      </script>
+      ";
+    }
+    if(!isset($j14_nome_exec)){
+      echo "<script>
+      const ruaLocalizada = document.form1.j14_nome_exec;
+      if(ruaLocalizada.value.trim() == ''){
+        ruaLocalizada.value = '$rua';
+      }
+      </script>
+      ";
+    }
+  }
+
+  if(isset($numero) && trim($numero) != ""){
+    if(!isset($y12_numero)){
+      echo "<script>
+      const numeroRegistrado = document.form1.y12_numero;
+      if(numeroRegistrado.value.trim() == ''){
+        numeroRegistrado.value = '$numero';
+      }
+      </script>
+      ";
+    }
+    
+    if(!isset($y13_numero)){
+      echo "<script>
+      const numeroLocalizado = document.form1.y13_numero;
+      if(numeroLocalizado.value.trim() == ''){
+        numeroLocalizado.value = '$numero';
+      }
+      </script>
+      ";
+    }
+  }
+
+  if(isset($compl) && trim($compl) != ""){
+    if(!isset($y12_compl)){
+      echo "<script>
+      const complementoRegistrado = document.form1.y12_compl;
+      if(complementoRegistrado.value.trim() == ''){
+        complementoRegistrado.value = '$compl';
+      }
+      </script>
+      ";
+    }
+    
+    if(!isset($y13_compl)){
+      echo "<script>
+      const complementoLocalizado = document.form1.y13_compl;
+      if(complementoLocalizado.value.trim() == ''){
+        complementoLocalizado.value = '$compl';
+      }
+      </script>
+      ";
+    }
   }
 }
 ?>

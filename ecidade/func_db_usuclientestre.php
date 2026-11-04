@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -100,7 +100,7 @@ function js_atualiza(codigo,nome){
   </tr> 
   <tr> 
     <td colspan='2'>
-<?
+<?php
 
 $result = $cldb_usuclientes->sql_record($cldb_usuclientes->sql_query(null,"at10_usuario,at10_login,at10_nome","at10_nome"," at10_codcli = $cliente "));
 echo "<table>";

@@ -52,13 +52,13 @@ class cl_carconstr {
                  j48_caract = int4 = Caracteristica
                  ";
    //funcao construtor da classe
-   function cl_carconstr() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carconstr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_carconstr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j48_matric = ($this->j48_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j48_matric"]:$this->j48_matric);
        $this->j48_idcons = ($this->j48_idcons == ""?@$GLOBALS["HTTP_POST_VARS"]["j48_idcons"]:$this->j48_idcons);
@@ -79,7 +79,7 @@ class cl_carconstr {
      }
    }
    // funcao para inclusao
-   function incluir ($j48_matric,$j48_idcons,$j48_caract){
+   public function incluir ($j48_matric,$j48_idcons,$j48_caract){
       $this->atualizacampos();
        $this->j48_matric = $j48_matric;
        $this->j48_idcons = $j48_idcons;
@@ -157,7 +157,7 @@ class cl_carconstr {
      return true;
    }
    // funcao para alteracao
-   function alterar ($j48_matric=null,$j48_idcons=null,$j48_caract=null) {
+   public function alterar ($j48_matric=null,$j48_idcons=null,$j48_caract=null) {
       $this->atualizacampos();
      $sql = " update carconstr set ";
      $virgula = "";
@@ -234,7 +234,7 @@ class cl_carconstr {
      }
    }
    // funcao para exclusao
-   function excluir ($j48_matric=null,$j48_idcons=null,$j48_caract=null,$dbwhere=null) {
+   public function excluir ($j48_matric=null,$j48_idcons=null,$j48_caract=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j48_matric,$j48_idcons,$j48_caract));
      }else{
@@ -311,7 +311,7 @@ class cl_carconstr {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -333,7 +333,7 @@ class cl_carconstr {
       }
      return $result;
    }
-   function sql_query ( $j48_matric=null,$j48_idcons=null,$j48_caract=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j48_matric=null,$j48_idcons=null,$j48_caract=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -385,7 +385,7 @@ class cl_carconstr {
      }
      return $sql;
   }
-   function sql_query_file ( $j48_matric=null,$j48_idcons=null,$j48_caract=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $j48_matric=null,$j48_idcons=null,$j48_caract=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -435,7 +435,7 @@ class cl_carconstr {
      return $sql;
   }
 
-  function sql_queryCaracteristicas($iMatricula, $iCodigoConstrucao) {
+  public function sql_queryCaracteristicas($iMatricula, $iCodigoConstrucao) {
 
     $sSql  = "select *                                          ";
     $sSql .= "  from carconstr                                  ";
@@ -455,7 +455,7 @@ class cl_carconstr {
    * @param integer $iIdConstrucao
    * @return string
    */
-  function sql_querySelecaoCaracteristicas($iMatricula, $iIdConstrucao) {
+  public function sql_querySelecaoCaracteristicas($iMatricula, $iIdConstrucao) {
 
     $sSql = "select distinct                                                                                      \n";
     $sSql.= "   j32_grupo,                                                                                        \n";
@@ -491,7 +491,7 @@ class cl_carconstr {
     return $sSql;
   }
 
-  function sql_caracteristicas_selecionadas($iMatric, $iIdConstr, $sGrupo)
+  public function sql_caracteristicas_selecionadas($iMatric, $iIdConstr, $sGrupo)
   {
     $sSql  = "SELECT *
                 FROM carconstr

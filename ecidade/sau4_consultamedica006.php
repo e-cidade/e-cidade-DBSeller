@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -113,7 +113,7 @@ if (isset($botao_ok) && $botao_ok == 'Ok') {
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?
+      <?php
       require_once(modification("forms/db_frmfatoresderisco.php"));
       ?>
     </center>
@@ -125,7 +125,7 @@ if (isset($botao_ok) && $botao_ok == 'Ok') {
 <script>
   js_tabulacaoforms("form1","z01_t_obs",true,1,"z01_t_obs",true);
 </script>
-<?
+<?php
 if (isset($botao_ok) && $botao_ok == "Ok") {
 
   if ($oDaoCgsUnd->erro_status=="0") {

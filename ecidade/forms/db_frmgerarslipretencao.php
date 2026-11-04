@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,274 +24,295 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
 ?>
-<form name="form1" method="post" action="">
-<table>
-  <tr>
-    <td>
-      <fieldset>
-        <legend><b>Periodo</b></legend>
-        <table>
-          <tr>
-            <td>
-               <b>Data Inicial:</b>
-            </td>
-            <td>
-              <?
-                db_inputdata("datainicial",null,null,null,true,"text", 1);
-              ?>
-            </td>
-            <td>
-              <b>Data Final:</b>
-            </td>
-            <td>
-              <?
-                db_inputdata("datafinal",null,null,null,true,"text", 1);
-              ?>
-            </td>
-          </tr>
-          <tr>
-            <td>
-               <b>Agrupar Por:</b>
-            </td>
-            <td>
-              <?
-               $aAgrupar = array(
-                                 1 => 'Débito/Crédito',
-                                 2 => 'Ordem Pagamento'
-                                );
-                db_select("agrupar", $aAgrupar, true,1);
-              ?>
-            </td>
-          </tr>
-          <tr>
-            <td>
-               <b>Ordem de Pagamento:</b>
-            </td>
-            <td>
-              <?
-                db_input("e50_codord",10,null,null,"text", 1, "onchange='js_mudaOrdem();'");
-              ?>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="4" style='text-align:center'>
-              <input type='button' value='Pesquisar' onclick="js_getMovimentosAgrupados()">
-            </td>
-          </tr>
-        </table>
-      </fieldset>
-    </td>
-  </tr>
-  <tr>
-     <td colspan="2" style='text-align:center'>
-        <input type='button' value='Processar' onclick="js_gerarsLip();">
-     </td>
-  </tr>
-</table>
-<table >
-  <fieldset style='width: 70%'>
-    <legend><b>Valores a serem transferidos</b></legend>
-    <div id='gridSlip' >
+
+<html>
+<head>
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+
+    <?php
+    db_app::load("scripts.js");
+    db_app::load("prototype.js");
+    db_app::load("datagrid.widget.js");
+    db_app::load("strings.js");
+    db_app::load("grid.style.css");
+    db_app::load("estilos.css");
+    ?>
+    <script type="text/javascript" src="scripts/arrays.js"></script>
+</head>
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<center>
+    <div style="<?= $style ?>" class="alert alert-danger text-left" role="alert">
+        <?= $msg ?>
     </div>
-  </fieldset>
-</table>
-</form>
 
-<script type="text/javascript">
+    <form name="form1" method="post" action="">
+        <table>
+            <tr>
+                <td>
+                    <fieldset>
+                        <legend><b>Periodo</b></legend>
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>Data Inicial:</b>
+                                </td>
+                                <td>
+                                    <?php
+                                    db_inputdata("datainicial", null, null, null, true, "text", $db_opcao);
+                                    ?>
+                                </td>
+                                <td>
+                                    <b>Data Final:</b>
+                                </td>
+                                <td>
+                                    <?php
+                                    db_inputdata("datafinal", null, null, null, true, "text", $db_opcao);
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Agrupar Por:</b>
+                                </td>
+                                <td>
+                                    <?php
+                                    $aAgrupar = array(
+                                        1 => 'Débito/Crédito',
+                                        2 => 'Ordem Pagamento'
+                                    );
+                                    db_select("agrupar", $aAgrupar, true, $db_opcao);
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Ordem de Pagamento:</b>
+                                </td>
+                                <td>
+                                    <?php
+                                    db_input("e50_codord", 10, null, null, "text", $db_opcao, "onchange='js_mudaOrdem();'");
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style='text-align:center'>
+                                    <input type='button' value='Pesquisar'
+                                           onclick="js_getMovimentosAgrupados()" <?= $desabilitaPesquisa ?>>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style='text-align:center'>
+                    <input type='button' value='Processar' onclick="js_gerarsLip();" <?= $desabilitaPesquisa ?>>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <fieldset style='width: 70%'>
+                <legend><b>Valores a serem transferidos</b></legend>
+                <div id='gridSlip'>
+                </div>
+            </fieldset>
+        </table>
+    </form>
 
-/**
- * Iniciamos a construcao do aplicativo.
- */
-function init() {
+    <script type="text/javascript">
 
-  iTipoGerarSlip         = 1;
-  oGridSlip              = new DBGrid("gridSlip");
-  oGridSlip.nameInstance = "oGridSlip";
-  oGridSlip.setCheckbox(0);
-  oGridSlip.setCellAlign(new Array("right", "Right", "left", "right", "left", "right"));
-  var aHeaders = new Array(
-                           "Seq",
-                           "Cta Credito",
-                           "Descrica",
-                           "Cta Debito",
-                           "Descricao",
-                           "Valor"
-                          );
-  oGridSlip.setHeader(aHeaders);
-  oGridSlip.show($('gridSlip'));
+        /**
+         * Iniciamos a construcao do aplicativo.
+         */
+        function init() {
 
+            iTipoGerarSlip = 1;
+            oGridSlip = new DBGrid("gridSlip");
+            oGridSlip.nameInstance = "oGridSlip";
+            oGridSlip.setCheckbox(0);
+            oGridSlip.setCellAlign(["right", "Right", "left", "right", "left", "right"]);
+            var aHeaders = ["Seq",
+                "Cta Credito",
+                "Descrica",
+                "Cta Debito",
+                "Descricao",
+                "Valor"];
+            oGridSlip.setHeader(aHeaders);
+            oGridSlip.show($('gridSlip'));
+        }
 
-}
-sUrlRPC = "emp4_gerarslipRPC.php";
+        sUrlRPC = "emp4_gerarslipRPC.php";
 
-function js_mudaOrdem() {
-  codigoordem = $F('e50_codord');
+        function js_mudaOrdem() {
+            codigoordem = $F('e50_codord');
 
-  if (codigoordem != "") {
-    $('agrupar').value  = 2;
-  }
-}
+            if (codigoordem != "") {
+                $('agrupar').value = 2;
+            }
+        }
 
-function js_getMovimentosAgrupados() {
+        function js_getMovimentosAgrupados() {
 
-  dtInicial   = $F('datainicial');
-  dtFinal     = $F('datafinal');
-  codigoordem = $F('e50_codord');
+            dtInicial = $F('datainicial');
+            dtFinal = $F('datafinal');
+            codigoordem = $F('e50_codord');
 
-  if (dtInicial == "") {
+            if (dtInicial == "") {
+                alert('Data Inicial nao Informada');
+                $('datainicial').focus();
+                return false;
+            }
 
-    alert('Data Inicial nao Informada');
-    $('datainicial').focus();
-    return false;
+            if (dtFinal == "") {
+                dtFinal = dtInicial;
+            }
 
-  }
+            if (codigoordem != "") {
+                $('agrupar').value = 2;
+            }
 
-  if (dtFinal == "") {
-    dtFinal = dtInicial;
-  }
+            js_divCarregando("Aguarde, consultando informações.", "msgBox");
+            js_controleBotoes(true);
+            var oRequisicao = new Object();
+            oRequisicao.exec = "getMovimentos";
+            oRequisicao.options = new Object();
+            oRequisicao.options.dtIni = dtInicial;
+            oRequisicao.options.dtFim = dtFinal;
+            oRequisicao.options.agrupar = $F('agrupar');
+            oRequisicao.options.codigoordem = $F('e50_codord');
 
-  if (codigoordem != "") {
-    $('agrupar').value = 2;
-  }
+            var sJson = js_objectToJson(oRequisicao);
+            var oAjax = new Ajax.Request(
+                sUrlRPC,
+                {
+                    method: 'post',
+                    parameters: 'json=' + sJson,
+                    onComplete: js_retornoGetMovimentosAgrupados
+                }
+            );
+        }
 
-  js_divCarregando("Aguarde, consultando informações.","msgBox");
-  js_controleBotoes(true);
-  var oRequisicao                 = new Object();
-  oRequisicao.exec                = "getMovimentos";
-  oRequisicao.options             = new Object();
-  oRequisicao.options.dtIni       = dtInicial;
-  oRequisicao.options.dtFim       = dtFinal;
-  oRequisicao.options.agrupar     = $F('agrupar');
-  oRequisicao.options.codigoordem = $F('e50_codord');
+        function js_retornoGetMovimentosAgrupados(oAjax) {
 
-  var sJson = js_objectToJson(oRequisicao);
-  var oAjax = new Ajax.Request(
-                           sUrlRPC,
-                           {
-                            method    : 'post',
-                            parameters: 'json='+sJson,
-                            onComplete: js_retornoGetMovimentosAgrupados
+            js_removeObj("msgBox");
+            js_controleBotoes(false);
+            var oRetorno = JSON.parse(oAjax.responseText);
+
+            $('col2').innerHTML = 'Seq';
+            if (oRetorno.agrupar == "2") {
+                $('col2').innerHTML = 'OP';
+            }
+
+            iTipoGerarSlip = oRetorno.agrupar;
+            oGridSlip.clearAll(true);
+            if (oRetorno.status == 1) {
+
+                var iRowAtiva = 0;
+                for (var i = 0; i < oRetorno.aSlips.length; i++) {
+                    with (oRetorno.aSlips[i]) {
+                        var aLinha = new Array();
+                        if (k107_valor > 0) {
+                            aLinha[0] = (i + 1);
+                            if (oRetorno.agrupar == 2) {
+                                aLinha[0] = e82_codord;
                             }
-                          );
-}
+                            aLinha[1] = k107_ctacredito;
+                            aLinha[2] = creditar.urlDecode();
+                            aLinha[3] = k107_ctadebito
+                            aLinha[4] = debitar.urlDecode();
+                            aLinha[5] = js_formatar(k107_valor, "f");
+                            oGridSlip.addRow(aLinha);
+                        }
+                    }
+                }
+                oGridSlip.renderRows();
+            } else {
+                alert(oRetorno.message.urlDecode());
+            }
+        }
 
-function js_retornoGetMovimentosAgrupados(oAjax) {
+        function js_objectToJson(oObject) {
+            return JSON.stringify(oObject);
+        }
 
-  js_removeObj("msgBox");
-  js_controleBotoes(false);
-  var oRetorno = JSON.parse(oAjax.responseText);
+        function js_gerarsLip() {
 
-  $('col2').innerHTML = 'Seq';
-  if (oRetorno.agrupar == "2") {
-    $('col2').innerHTML = 'OP';
-  }
+            var aItens = oGridSlip.getSelection("object");
+            if (aItens.length == 0) {
 
-  iTipoGerarSlip = oRetorno.agrupar;
-  oGridSlip.clearAll(true);
-  if (oRetorno.status == 1) {
+                alert("Nenhum Registro Selecionado.");
+                return false;
+            }
 
-    var iRowAtiva = 0;
-    for (var i = 0; i < oRetorno.aSlips.length;i++ ){
+            var oRequisicao = new Object();
+            oRequisicao.exec = "gerarSlips";
+            oRequisicao.tipoOperacao = 17;
+            oRequisicao.options = new Object();
+            oRequisicao.options.dtIni = dtInicial;
+            oRequisicao.options.dtFim = dtFinal;
+            oRequisicao.options.aSlips = new Array();
+            oRequisicao.options.lAgenda = true;
+            oRequisicao.options.agrupar = iTipoGerarSlip;
+            for (var i = 0; i < aItens.length; i++) {
 
-      with (oRetorno.aSlips[i]) {
+                var oSlip = new Object();
+                oSlip.iCtaCredito = aItens[i].aCells[2].getValue();
+                oSlip.iCtaDebito = aItens[i].aCells[4].getValue();
+                oSlip.nValor = js_strToFloat(aItens[i].aCells[6].getValue()).valueOf();
+                oSlip.iCodigoOrdem = '';
+                if (iTipoGerarSlip == 2) {
+                    oSlip.iCodigoOrdem = js_strToFloat(aItens[i].aCells[1].getValue()).valueOf();
+                }
+                oRequisicao.options.aSlips.push(oSlip);
+            }
+            if (!confirm('Confirma a emissão dos slips?')) {
+                return false;
+            }
+            js_divCarregando("Aguarde, Gerando slips.", "msgBox");
+            var sJson = js_objectToJson(oRequisicao);
+            var oAjax = new Ajax.Request(
+                sUrlRPC,
+                {
+                    method: 'post',
+                    parameters: 'json=' + sJson,
+                    onComplete: js_retornoGerarSlips
+                }
+            );
+        }
 
-	  	var aLinha = new Array();
+        function js_retornoGerarSlips(oAjax) {
 
-	  	if( k107_valor > 0) {
-	  	  aLinha[0] = (i + 1);
-	  	  if (oRetorno.agrupar == 2) {
-	  		aLinha[0] = e82_codord;
-	  	  }
-	  	  aLinha[1] = k107_ctacredito;
-	  	  aLinha[2] = creditar.urlDecode();
-	  	  aLinha[3] = k107_ctadebito
-	  	  aLinha[4] = debitar.urlDecode();
-	  	  aLinha[5] = js_formatar(k107_valor, "f");
-	  	  oGridSlip.addRow(aLinha);
-	    }
-      }
-    }
-    oGridSlip.renderRows();
-  } else {
-    alert(oRetorno.message.urlDecode());
-  }
-}
+            js_removeObj("msgBox");
+            var oRetorno = JSON.parse(oAjax.responseText);
+            if (oRetorno.status == 1) {
+                var sSlis = oRetorno.aSlipsRetorno.implode(',');
+                if (confirm(('Splis (' + sSlis + ') Gerados com Sucesso.\nDeseja Emiti-los?'))) {
+                    js_emiteSlips(sSlis);
+                }
+                $('e50_codord').value = "";
+                js_getMovimentosAgrupados();
+            }
+        }
 
-function js_objectToJson(oObject) {
-  return JSON.stringify(oObject);
-}
+        function js_emiteSlips(sSlips) {
+            window.open('cai3_emiteslips002.php?slips=' + sSlips, '', 'location=0');
+        }
 
-function js_gerarsLip() {
+        function js_controleBotoes(lDisabled) {
 
-  var aItens = oGridSlip.getSelection("object");
-  if (aItens.length == 0) {
+            var aItens = $$('input[type=submit], input[type=button], button');
+            aItens.each(function (input, id) {
+                input.disabled = lDisabled;
+            });
+        }
 
-    alert("Nenhum Registro Selecionado.");
-    return false;
-  }
-
-  var oRequisicao             = new Object();
-  oRequisicao.exec            = "gerarSlips";
-  oRequisicao.options         = new Object();
-  oRequisicao.options.dtIni   = dtInicial;
-  oRequisicao.options.dtFim   = dtFinal;
-  oRequisicao.options.aSlips  = new Array();
-  oRequisicao.options.lAgenda = true;
-  oRequisicao.options.agrupar = iTipoGerarSlip;
-  for (var i = 0; i < aItens.length;i++ ) {
-
-    var oSlip = new Object();
-    oSlip.iCtaCredito  = aItens[i].aCells[2].getValue();
-    oSlip.iCtaDebito   = aItens[i].aCells[4].getValue();
-    oSlip.nValor       = js_strToFloat(aItens[i].aCells[6].getValue()).valueOf();
-    oSlip.iCodigoOrdem = '';
-    if (iTipoGerarSlip == 2) {
-      oSlip.iCodigoOrdem = js_strToFloat(aItens[i].aCells[1].getValue()).valueOf();
-    }
-    oRequisicao.options.aSlips.push(oSlip);
-  }
-  if (!confirm('Confirma a emissão dos slips?')) {
-    return false;
-  }
-  js_divCarregando("Aguarde, Gerando slips.","msgBox");
-  var sJson = js_objectToJson(oRequisicao);
-  var oAjax = new Ajax.Request(
-                           sUrlRPC,
-                           {
-                            method    : 'post',
-                            parameters: 'json='+sJson,
-                            onComplete: js_retornoGerarSlips
-                            }
-                          );
-}
-function js_retornoGerarSlips(oAjax) {
-
-  js_removeObj("msgBox");
-  var oRetorno = JSON.parse(oAjax.responseText);
-  if (oRetorno.status == 1 ) {
-
-    var sSlis = oRetorno.aSlipsRetorno.implode(',');
-    if (confirm(('Splis ('+sSlis+') Gerados com Sucesso.\nDeseja Emiti-los?'))) {
-      js_emiteSlips(sSlis);
-    }
-    $('e50_codord').value = "";
-    js_getMovimentosAgrupados();
-  }
-}
-
-function js_emiteSlips(sSlips) {
-   window.open('cai3_emiteslips002.php?slips='+sSlips,'','location=0');
-}
-
-function js_controleBotoes(lDisabled) {
-
-   var aItens = $$('input[type=submit], input[type=button], button');
-   aItens.each(function(input,id) {
-
-     input.disabled = lDisabled;
-
-   });
-}
-init();
-</script>
+        init();
+    </script>
+</center>
+</body>
+</html>

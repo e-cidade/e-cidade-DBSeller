@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("c91_anousudestino");
        <?=@$Lo75_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_sequencial',5,$Io75_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To75_conaberturaexe?>">
-       <?
+       <?php
        db_ancora(@$Lo75_conaberturaexe,"js_pesquisao75_conaberturaexe(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_conaberturaexe',5,$Io75_conaberturaexe,true,'text',$db_opcao," onchange='js_pesquisao75_conaberturaexe(false);'")
 ?>
-       <?
+       <?php
 db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,'')
        <?=@$Lo75_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Despesa','2'=>'Receita');
 db_select('o75_tipo',$x,true,$db_opcao,"");
 ?>
@@ -74,7 +74,7 @@ db_select('o75_tipo',$x,true,$db_opcao,"");
        <?=@$Lo75_previsaoinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_previsaoinicial',10,$Io75_previsaoinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('o75_previsaoinicial',10,$Io75_previsaoinicial,true,'text',$db_opcao,""
        <?=@$Lo75_acrescimos?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_acrescimos',10,$Io75_acrescimos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('o75_acrescimos',10,$Io75_acrescimos,true,'text',$db_opcao,"")
        <?=@$Lo75_reducoes?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_reducoes',10,$Io75_reducoes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('o75_reducoes',10,$Io75_reducoes,true,'text',$db_opcao,"")
        <?=@$Lo75_atualizado?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_atualizado',10,$Io75_atualizado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('o75_atualizado',10,$Io75_atualizado,true,'text',$db_opcao,"")
        <?=@$Lo75_valorduplicar?>
     </td>
     <td> 
-<?
+<?php
 db_input('o75_valorduplicar',5,$Io75_valorduplicar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_input('o75_valorduplicar',5,$Io75_valorduplicar,true,'text',$db_opcao,"")
        <?=@$Lo75_importar?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('o75_importar',$x,true,$db_opcao,"");
 ?>
@@ -164,7 +164,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcduplicacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

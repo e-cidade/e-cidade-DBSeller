@@ -6,11 +6,13 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
   this.oWindowAuxAvaliacao = null;
   this.lProgressaoParcial  = false;
   this.iTurma              = null;
+  this.iTipoTurma          = null;
   this.iEtapa              = null;
   this.sTurma              = '';
   this.sDisplay            = '';
   this.sLarguraDivConteudo = '70%';
-
+  this.validarProfessorLogado = true;
+  this.iFluxoManual        = null;
   /**
    * iEncerra = 1 Encerrar
    * iEncerra = 2 Cancelar
@@ -104,6 +106,7 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
     var oParametro                = {};
     oParametro.exec               = 'getDadosDiario';
     oParametro.lProgressaoParcial = me.lProgressaoParcial;
+    oParametro.lValidarProfessorLogado = me.validarProfessorLogado;
     js_divCarregando("Aguarde, carregando dados do diário de classe.", "msgBox");
     new Ajax.Request('edu4_lancamentoavaliacao.RPC.php',
                       {
@@ -126,6 +129,13 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
     var aCellWidth   = new Array('8%', '5%', '58%', '25%', '5%');
     var aAlinharGrid = new Array('right', 'right', 'left', 'left', 'center', 'center');
     var aColunasGrid = new Array('Código', 'Ordem', 'Aluno', 'Resultado Final', 'Status');
+
+    // Altera cabeçalho para turma de SIGA
+    if (me.iTipoTurma == 7 && me.iFluxoManual == 1) {
+        aCellWidth   = new Array('8%', '5%', '58%', '25%', '5%');
+        aAlinharGrid = new Array('right', 'right', 'left', 'left', 'center', 'center');
+        aColunasGrid = new Array('Código', 'Ordem', 'Aluno', 'Resultado Final', 'Etapa Destino', 'Status');
+    }
 
     if (!me.lEncerramentoGeral || me.lProgressaoParcial) {
       me.oDataGridAlunos.setCheckbox(0);
@@ -403,7 +413,39 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
               sResultadoFinal = oAluno.sResultadoFinal.urlDecode();
           }
           aLinha[3]  = sResultadoFinal;
-          aLinha[4]  = sStatus;
+          if (me.iTipoTurma == 7 && me.iFluxoManual == 1) {
+              const selectEtapaDestino = new Element('select');
+              selectEtapaDestino.id = 'etapaDestino#' + oAluno.iCodigoAluno;
+              selectEtapaDestino.name = 'etapasDestino';
+              selectEtapaDestino.style.width = '100%';
+              if (oAluno.sResultadoFinal != 'APROVADO' || oAluno.lConcluido == true || oAluno.lEncerrado == true) {
+                  selectEtapaDestino.disabled = 'disabled';
+              }
+              oRetorno.etapasLimiteAprovacao.each(function (oEtapa) {
+                  if (oAluno.sResultadoFinal === 'APROVADO') {
+                      if (oAluno.iOrdemEtapaOrigem >= oEtapa.ordem) {
+                          return;
+                      }
+                      const option = new Element('option');
+                      option.value = oEtapa.codigo;
+                      option.innerHTML = oEtapa.nome.urlDecode();
+                      if (oAluno.lConcluido === true && oEtapa.codigo === oAluno.iEtapaDestino) {
+                          selectEtapaDestino.dataset.valor = oEtapa.codigo;
+                      }
+                      selectEtapaDestino.appendChild(option);
+                  }
+                  if (oAluno.iOrdemEtapaOrigem === oEtapa.ordem && oAluno.sResultadoFinal !== 'APROVADO') {
+                      const option = new Element('option');
+                      option.value = oEtapa.codigo;
+                      option.innerHTML = oEtapa.nome.urlDecode();
+                      selectEtapaDestino.appendChild(option);
+                  }
+              });
+              aLinha[4]  = selectEtapaDestino.outerHTML;
+              aLinha[5]  = sStatus;
+          } else {
+              aLinha[4] = sStatus;
+          }
       }
 
       var lDesabilitaAluno = false;
@@ -488,6 +530,11 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
         }
       }
     });
+    document.getElementsByName('etapasDestino').forEach(function (element) {
+        if (element.dataset.valor) {
+            element.value = element.dataset.valor;
+        }
+    });
   };
 
   /**
@@ -560,6 +607,18 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
 
   this.setProgressaoParcial = function(lProgressaoParcial) {
     me.lProgressaoParcial = lProgressaoParcial;
+  };
+
+  /**
+  * Define se devemos validar usuário logado como professor
+  * ... se TRUE, só irá trazer as turmas que o professor possuir vinculo
+  * ... se FALSE, irá trazer todas turmas da escola
+  *
+  * @default true
+  * @param {Boolean} validarProfessorLogado
+  */
+  this.setValidarProfessorLogado = function(validarProfessorLogado) {
+    me.validarProfessorLogado = validarProfessorLogado;
   };
 
 
@@ -684,6 +743,14 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
       oParametro.exec               = sCaseExecutar;
       oParametro.aTurmas            = aTurmas;
       oParametro.aAlunos            = aAlunosSelecionados;
+      oParametro.aEtapasLimiteAprovacao = [];
+      document.getElementsByName('etapasDestino').forEach(function (element) {
+          oParametro.aEtapasLimiteAprovacao.push({
+                codigoAluno: element.id.split('#')[1],
+                etapaDestino: element.value
+          });
+      });
+      console.log(oParametro.aEtapasLimiteAprovacao);
       oParametro.lEncerramentoGeral = me.lEncerramentoGeral;
 
       js_divCarregando("Aguarde, encerrando avaliações.", "msgBox");
@@ -890,6 +957,14 @@ DBViewEncerramentoAvaliacoesFiltro = function (sInstancia, iEncerra) {
     me.sLarguraDivConteudo = '100%';
     me.lEncerramentoGeral  = false;
   };
+
+  this.setTipoTurma = function(iTipoTurma) {
+    me.iTipoTurma = iTipoTurma;
+  };
+
+    this.setFluxoManual = function(iFluxoManual) {
+        me.iFluxoManual = iFluxoManual;
+    };
 
   this.setCallbackProcessar = function(fFunction) {
     me.oCallBackProcessar = fFunction;

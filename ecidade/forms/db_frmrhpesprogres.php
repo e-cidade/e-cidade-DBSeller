@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpesprogres->rotulo->label();
        <?=@$Lrh07_seqpes?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh07_seqpes',6,$Irh07_seqpes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh07_seqpes',6,$Irh07_seqpes,true,'text',$db_opcao,"")
        <?=@$Lrh07_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh07_data',@$rh07_data_dia,@$rh07_data_mes,@$rh07_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpesprogres.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

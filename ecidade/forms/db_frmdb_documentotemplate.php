@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,22 +48,22 @@ if (isset($db82_arquivo)) {
 		       <?=@$Ldb82_sequencial?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('db82_sequencial',10,$Idb82_sequencial,true,'text',3,"")
 					?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tdb82_templatetipo?>">
-		       <?
+		       <?php
 		       db_ancora(@$Ldb82_templatetipo,"js_pesquisadb82_templatetipo(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('db82_templatetipo',10,$Idb82_templatetipo,true,'text',$db_opcao," onchange='js_pesquisadb82_templatetipo(false);'")
 					?>
-		      <?
+		      <?php
 					db_input('db80_descricao',40,$Idb80_descricao,true,'text',3,'');
 		      ?>
 		    </td>
@@ -71,15 +71,15 @@ if (isset($db82_arquivo)) {
 		  <?php /*
 		  <tr>
 		    <td nowrap title="<?=@$Tdb82_instit?>">
-		       <?
+		       <?php
 		       //db_ancora(@$Ldb82_instit,"js_pesquisadb82_instit(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('db82_instit',10,$Idb82_instit,true,'hidden',$db_opcao," onchange='js_pesquisadb82_instit(false);'")
 					?>
-		      <?
+		      <?php
 					db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
 		      ?>
 		    </td>
@@ -90,7 +90,7 @@ if (isset($db82_arquivo)) {
 		       <?=@$Ldb82_descricao?>
 		    </td>
 		    <td>
-					<?
+					<?php
 					db_input('db82_descricao',53,$Idb82_descricao,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -100,7 +100,7 @@ if (isset($db82_arquivo)) {
 		       <?=@$Ldb82_arquivo?>
 		    </td>
 		    <td id="arquivo">
-				<?
+				<?php
 				db_input('db82_arquivo',40,0,true,'file',$db_opcao,"")
 				?>
 				<input type="hidden" name="db82_arquivo1" id="db82_arquivo1" style="background-color: #DEB887" size="53" readonly="readonly">
@@ -117,7 +117,7 @@ if (isset($db82_arquivo)) {
 <input name="template" type="button" id="template" value="Importar Template Padrão" onclick="js_pesquisatemplate();" >
 <input name="template" type="hidden" id="novo" value="Novo" onclick="js_novo();" >
 <input name="vertemplates" type="button" id="vertemplates" value="Ver Templates" onclick="js_ver_templates();" >
-<?
+<?php
   if ($db_opcao == 2) {
    echo "<input name=\"download\" type=\"button\" id=\"download\" value=\"Download\" onclick=\"js_download('$sUrlArquivo');\">";
   }
@@ -208,7 +208,7 @@ function js_novo(){
 
 function js_preenchepesquisa(chave){
   db_iframe_db_documentotemplate.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

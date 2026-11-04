@@ -26,6 +26,6 @@ class EmissaoPlanoContasController
     {
         $service = new MapeamentoPcaspService();
         $service->filtros($request->all());
-        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vículadas.');
+        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vinculadas.');
     }
 }

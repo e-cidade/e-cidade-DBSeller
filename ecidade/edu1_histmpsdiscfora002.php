@@ -131,7 +131,7 @@ if( isset( $registrodisc ) ) {
   parent.arvore.location.href     = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
   parent.disciplina.location.href = "edu1_historicodisciplinafora.php?ed100_i_historicompsfora=<?=@$ed99_i_codigo?>";
 </script>
-<?
+<?php
   db_redireciona("edu1_historicompsfora002.php?chavepesquisa=$ed100_i_historicompsfora");
   exit;
 } else if( isset( $ed100_i_historicompsfora ) ) {
@@ -188,7 +188,7 @@ if( isset( $registrodisc ) ) {
      <center>
      <fieldset style="width:95%;">
        <legend><b>Disciplina - Etapa cursada fora da Rede Municipal</b></legend>
-       <?include(modification("forms/db_frmhistmpsdiscfora.php"));?>
+       <?php include(modification("forms/db_frmhistmpsdiscfora.php"));?>
      </fieldset>
      </center>
     </td>

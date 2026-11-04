@@ -75,13 +75,13 @@ class cl_iptuisen {
                  j46_arealo = float8 = Área do lote M2
                  ";
    //funcao construtor da classe
-   function cl_iptuisen() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptuisen");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_iptuisen {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j46_codigo = ($this->j46_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j46_codigo"]:$this->j46_codigo);
        $this->j46_matric = ($this->j46_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j46_matric"]:$this->j46_matric);
@@ -128,7 +128,7 @@ class cl_iptuisen {
      }
    }
    // funcao para inclusao
-   function incluir ($j46_codigo){
+   public function incluir ($j46_codigo){
       $this->atualizacampos();
      if($this->j46_matric == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -299,7 +299,7 @@ class cl_iptuisen {
      return true;
    }
    // funcao para alteracao
-   function alterar ($j46_codigo=null) {
+   public function alterar ($j46_codigo=null) {
       $this->atualizacampos();
      $sql = " update iptuisen set ";
      $virgula = "";
@@ -517,7 +517,7 @@ class cl_iptuisen {
      }
    }
    // funcao para exclusao
-   function excluir ($j46_codigo=null,$dbwhere=null) {
+   public function excluir ($j46_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j46_codigo));
      }else{
@@ -587,7 +587,7 @@ class cl_iptuisen {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -609,7 +609,7 @@ class cl_iptuisen {
       }
      return $result;
    }
-   function sql_query ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -647,7 +647,7 @@ class cl_iptuisen {
      }
      return $sql;
   }
-   function sql_query_file ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -680,7 +680,7 @@ class cl_iptuisen {
      }
      return $sql;
   }
-   function sql_query_isen ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_isen ( $j46_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

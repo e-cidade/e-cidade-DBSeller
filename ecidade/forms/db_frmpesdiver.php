@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $r07_instit = db_getsession("DB_instit");
       <strong>Ano / Mês :&nbsp;&nbsp;</strong>
     </td>
     <td>
-      <?
+      <?php
       
       if(!isset($r07_anousu)){
         $r07_anousu = db_anofolha();
@@ -45,7 +45,7 @@ $r07_instit = db_getsession("DB_instit");
       db_input('r07_anousu',4,$Ir07_anousu,true,'text',3,'');
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       if(!isset($r07_mesusu)){
         $r07_mesusu = db_mesfolha();
       }
@@ -59,7 +59,7 @@ $r07_instit = db_getsession("DB_instit");
       <?=@$Lr07_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r07_codigo',4,$Ir07_codigo,true,'text',($db_opcao==1?"1":"3"))
       ?>
     </td>
@@ -69,7 +69,7 @@ $r07_instit = db_getsession("DB_instit");
       <?=@$Lr07_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r07_descr',30,$Ir07_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -79,7 +79,7 @@ $r07_instit = db_getsession("DB_instit");
       <?=@$Lr07_valor?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r07_valor',15,$Ir07_valor,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -114,7 +114,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_pesdiver.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

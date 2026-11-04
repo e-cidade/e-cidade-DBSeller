@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmaterialtipogrupo->rotulo->label("m03_descricao");
               <?=$Lm03_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m03_sequencial",10,$Im03_sequencial,true,"text",4,"","chave_m03_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmaterialtipogrupo->rotulo->label("m03_descricao");
               <?=$Lm03_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m03_descricao",100,$Im03_descricao,true,"text",4,"","chave_m03_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmaterialtipogrupo->rotulo->label("m03_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_materialtipogrupo.php")==true){
@@ -122,12 +122,12 @@ $clmaterialtipogrupo->rotulo->label("m03_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

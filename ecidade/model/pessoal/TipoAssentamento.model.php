@@ -74,6 +74,18 @@ class TipoAssentamento
     private $natureza;
 
     /**
+     * Lancamento Mensal
+     * @var integer
+     */
+    private $lancamentomensal;
+
+    /**
+     * Lancamento Anual
+     * @var integer
+     */
+    private $lancamentoanual;
+
+    /**
      * Gerar faltas no ponto eletrônico
      */
     private $geraFaltas = false;
@@ -96,10 +108,10 @@ class TipoAssentamento
         }
 
         $oDaoTipoasse = new cl_tipoasse;
-        $rsTipoAssentamento = db_query($oDaoTipoasse->sql_query($iSequencial, "h12_assent, h12_descr, h12_tipo, h12_natureza, h12_gerafaltas::int, h12_tiporeajuste, h12_permiteduplicar"));
+        $rsTipoAssentamento = db_query($oDaoTipoasse->sql_query($iSequencial, "h12_assent, h12_descr, h12_tipo, h12_natureza, h12_gerafaltas::int, h12_tiporeajuste, h12_permiteduplicar, h12_lancamentomensal, h12_lancamentoanual"));
 
         if (!$rsTipoAssentamento) {
-            throw new BDException($oDaoTipoasse->erro_msg);
+            throw new DBException(pg_last_error());
         }
 
         if (pg_num_rows($rsTipoAssentamento) == 0) {
@@ -116,6 +128,8 @@ class TipoAssentamento
         $this->setGeraFaltas($oTipoAssentamento->h12_gerafaltas);
         $this->setTipoReajuste($oTipoAssentamento->h12_tiporeajuste);
         $this->setPermiteDuplicar($oTipoAssentamento->h12_permiteduplicar === 't' ? true : false);
+        $this->setLancamentoMensal($oTipoAssentamento->h12_lancamentomensal);
+        $this->setLancamentoAnual($oTipoAssentamento->h12_lancamentoanual);
     }
 
     /**
@@ -151,11 +165,43 @@ class TipoAssentamento
     }
 
     /**
+     * @param $lancamentomensal
+     */
+    public function setLancamentoMensal($lancamentomensal)
+    {
+        $this->lancamentomensal = $lancamentomensal;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLancamentoMensal()
+    {
+        return $this->lancamentomensal;
+    }
+
+    /**
+     * @param $lancamentomensal
+     */
+    public function setLancamentoAnual($lancamentoanual)
+    {
+        $this->lancamentoanual = $lancamentoanual;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLancamentoAnual()
+    {
+        return $this->lancamentoanual;
+    }
+
+    /**
      * @param type $geraFaltas
      */
     public function setGeraFaltas($geraFaltas)
     {
-        $this->geraFaltas = (boolean)$geraFaltas;
+        $this->geraFaltas = (bool)$geraFaltas;
         return $this;
     }
 
@@ -341,7 +387,6 @@ class TipoAssentamento
             }
 
             return db_utils::fieldsMemory($rsTipoassefinanceiro, 0);
-
         } catch (Exception $oErro) {
             return $oErro->getMessage();
         }
@@ -430,7 +475,6 @@ class TipoAssentamento
                     $oAssentamento = AssentamentoFactory::getByCodigo(db_utils::fieldsMemory($rsAssentamentos, $iIndAssentamentos)->h16_codigo);
                     $this->aAssentamentos[] = $oAssentamento;
                 }
-
             } catch (Exception $oErro) {
                 throw new DBException($oErro->getMessage());
             }
@@ -494,5 +538,83 @@ class TipoAssentamento
                 return $oAtributo;
             }
         }
+    }
+
+    /**
+     * Obtém as informações do tipo de assentamento, incluindo os limites.
+     *
+     * @param integer $codigoAssentamento
+     * @return array
+     */
+    public static function getTipoAssentamentoInfo($codigoAssentamento)
+    {
+        $query = "SELECT
+                        h12_codigo,
+                        h12_lancamentomensal,
+                        h12_lancamentoanual
+                    FROM
+                        tipoasse
+                    WHERE h12_codigo = {$codigoAssentamento} and h12_bloqueioassentamento = 't'";
+
+        $rsTipoAssentamento = db_query($query);
+
+        return \db_utils::getCollectionByRecord($rsTipoAssentamento, true);
+    }
+
+    /**
+     * Conta assentamentos com valores diferentes de zero nos campos h12_lancamentomensal e h12_lancamentoanual.
+     *
+     * @return array
+     * @throws DBException
+     */
+    public static function contaLancamentosPorServidor($dataInicial,$tipoAssentamento,$matricula)
+    {
+        $query = "SELECT
+                    h16_regist,
+                    sum(h16_quant) as quantidade_ano,
+                        sum(
+                            case
+                                when EXTRACT(MONTH FROM h16_dtconc) = '{$dataInicial->getDate('m')}' then h16_quant else 0 end
+                            ) as quantidade_mes
+                    FROM
+                        tipoasse
+                            INNER JOIN assenta ON h16_assent = h12_codigo
+                        WHERE h16_regist = $matricula AND
+                              h16_assent = $tipoAssentamento AND
+                              (h12_lancamentomensal <> 0 OR h12_lancamentoanual <> 0)
+                            AND EXTRACT(YEAR FROM h16_dtconc) = '{$dataInicial->getDate('Y')}'
+                    GROUP BY
+                        h16_regist";
+
+
+        $rsQuantidadeLancamentos = db_query($query);
+
+        if (!$rsQuantidadeLancamentos) {
+            throw new Exception("Erro ao buscar quantidade de lançamentos do assentamento");
+        }
+        return \db_utils::fieldsmemory($rsQuantidadeLancamentos, 0);
+    }
+
+    /**
+     * Valida se existem outros assentamentos com bloqueio
+     * no intervalo escolhido
+     */
+    public static function getExisteAssentamentosComBloqueio ($matricula, $dataInicial, $dataFinal)
+    {
+        $where = "h16_regist = $matricula
+                  and h12_bloqueioassentamento = 't'
+                    AND ('$dataInicial'::date BETWEEN h16_dtconc AND h16_dtterm
+                        OR '$dataFinal'::date BETWEEN  h16_dtconc and h16_dtterm
+                        );";
+        $daoAssenta = new cl_assenta();
+        $sql = $daoAssenta->sql_query_assentamentos("h16_regist", null,$where);
+
+        $rsAssenta = db_query($sql);
+        if (!$rsAssenta) {
+            throw new Exception("Erro ao buscar assentamentos com bloqueio");
+        }
+        return (bool) pg_num_rows($rsAssenta);
+
+
     }
 }

@@ -91,13 +91,13 @@ if(isset($incluir)) {
 
   $repassar_rubricas_com_replacer = str_replace("chk_","",$repassar_rubricas);
 
-  $arr_rubricas_que_serao_incluid = split(",",$rubricas_selecionadas_enviar);
-  $arr_rubricas_que_serao_repassa = split(",",$repassar_rubricas_com_replacer);
-  $arr_rubricas_qtd_serao_incluid = split(",",$quantidade_rubricas_selecionadas_enviar);
-  $arr_rubricas_val_serao_incluid = split(",",$valores_rubricas_selecionadas_enviar);
-  $arr_rubricas_dat_serao_incluid = split(",",$datlim_rubricas_selecionadas_enviar);
-  $arr_rubricas_tpp_serao_incluid = split(",",$tpp_rubricas_selecionadas_enviar);
-  $arr_rubricas_opc_serao_incluid = split(",",$opcoes_rubricas);
+  $arr_rubricas_que_serao_incluid =explode(",",$rubricas_selecionadas_enviar);
+  $arr_rubricas_que_serao_repassa =explode(",",$repassar_rubricas_com_replacer);
+  $arr_rubricas_qtd_serao_incluid =explode(",",$quantidade_rubricas_selecionadas_enviar);
+  $arr_rubricas_val_serao_incluid =explode(",",$valores_rubricas_selecionadas_enviar);
+  $arr_rubricas_dat_serao_incluid =explode(",",$datlim_rubricas_selecionadas_enviar);
+  $arr_rubricas_tpp_serao_incluid =explode(",",$tpp_rubricas_selecionadas_enviar);
+  $arr_rubricas_opc_serao_incluid =explode(",",$opcoes_rubricas);
   $lotacao_matricula_sera_incluid = $lotacao_matricula;
 
   $q = count($arr_rubricas_que_serao_incluid);
@@ -237,7 +237,7 @@ if(isset($incluir)) {
       if($ponto == "fs" || $ponto == "Rfs" || $repassa == true){
 
         if($ponto == "fx" || $ponto == "Rfx"){
-          $arr_ano_mes_usu = split("-",$admissa_matricula);
+          $arr_ano_mes_usu =explode("-",$admissa_matricula);
           $ano_da_admissao = $arr_ano_mes_usu[0];
           $mes_da_admissao = $arr_ano_mes_usu[1];
           $dia_da_admissao = $arr_ano_mes_usu[2] - 1;

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: compras
 //CLASSE DA ENTIDADE processocompralote
 class cl_processocompralote { 
@@ -26,13 +26,13 @@ class cl_processocompralote {
                  pc68_pcproc = int8 = Processo de Compra 
                  ";
    //funcao construtor da classe 
-   function cl_processocompralote() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processocompralote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_processocompralote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc68_sequencial = ($this->pc68_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc68_sequencial"]:$this->pc68_sequencial);
        $this->pc68_nome = ($this->pc68_nome == ""?@$GLOBALS["HTTP_POST_VARS"]["pc68_nome"]:$this->pc68_nome);
@@ -51,7 +51,7 @@ class cl_processocompralote {
      }
    }
    // funcao para inclusao
-   function incluir ($pc68_sequencial){ 
+   public function incluir ($pc68_sequencial){ 
       $this->atualizacampos();
      if($this->pc68_nome == null ){ 
        $this->erro_sql = " Campo Nome do Lote não informado.";

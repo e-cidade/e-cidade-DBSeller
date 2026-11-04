@@ -1,11 +1,9 @@
 <?php
 
-
 namespace ECidade\Financeiro\Contabilidade\Relatorio\Razao\PorConta;
 
 class PDF extends Relatorio
 {
-
     private $pdf;
     const TAMANHO = '4';
 
@@ -19,9 +17,13 @@ class PDF extends Relatorio
     private function writeHeader()
     {
         $head2 = "RAZÃO POR CONTA";
-        $head5 = "PERÍODO : " . db_formatar($this->getDataInicial(), 'd')
-            . " à "
-            . db_formatar($this->getDataFinal(), 'd');
+
+        $head5 = sprintf(
+            'PERÍODO : %s à %s',
+            db_formatar($this->getDataInicial(), 'd'),
+            db_formatar($this->getDataFinal(), 'd')
+        );
+
         $this->pdf->addHeaderDescription("\n" . $head2);
         $this->pdf->addHeaderDescription("\n\n" . $head5);
         $this->pdf->Open();
@@ -46,7 +48,6 @@ class PDF extends Relatorio
 
     private function writeSaldoDoDia($saldo, $sinal, $quebraLinha = false)
     {
-
         if ($quebraLinha) {
             $this->pdf->ln();
         }
@@ -60,7 +61,6 @@ class PDF extends Relatorio
 
     public function writeSaldo($saldo, $sinal)
     {
-
         if ($sinal == 'D') {
             $this->pdf->Cell(20, self::TAMANHO, db_formatar(abs($saldo), 'f'), '0', 0, "R");
             $this->pdf->Cell(20, self::TAMANHO, '', '0', 1, "R");
@@ -82,7 +82,6 @@ class PDF extends Relatorio
 
     private function writeSaldoFinal($total_saldo_final, $sinal_final)
     {
-
         $this->pdf->setX(228);
         $this->pdf->Cell(30, self::TAMANHO, "SALDO FINAL:", '0', 0, "R");
         $this->pdf->Cell(5, self::TAMANHO, $sinal_final, '0', 0, "C");
@@ -363,6 +362,36 @@ class PDF extends Relatorio
                         if (!empty($conta->codigo_movimento)) {
                             $this->pdf->Cell(40, self::TAMANHO, "", 0, 0, "L", $iCor);
                             $this->pdf->Cell(233, self::TAMANHO, "OP:  {$conta->codigo_movimento}", 0, 1, "L", $iCor);
+                        }
+
+                        $contaBuscar = $conta->c69_credito;
+                        $naturezaContaBuscar = 'C';
+                        if ($conta_atual == $conta->c69_debito) {
+                            $contaBuscar = $conta->c69_debito;
+                            $naturezaContaBuscar = 'D';
+                        }
+
+                        $sqlRecurso = "
+                        select *
+                          from contabilidade.recurso_exercicio
+                         where o15_codigo = contabilidade.fc_recurso_conta_lancamento(
+                                $conta->c69_codlan, $contaBuscar, '$naturezaContaBuscar'
+                            )
+                           and exercicio = {$this->getAnoUsu()}
+                        ";
+
+                        $rs = db_query($sqlRecurso);
+                        if ($rs && pg_num_rows($rs) == 1) {
+                            $recurso = \db_utils::fieldsMemory($rs, 0);
+                            $msg = sprintf(
+                                'RECURSO: Siconfi %s, Gestão %s, Subrecurso %s, Complemento %s',
+                                $recurso->codigo_siconfi,
+                                $recurso->gestao,
+                                $recurso->o15_recurso,
+                                $recurso->o15_complemento
+                            );
+                            $this->pdf->Cell(40, self::TAMANHO, "", 0, 0, "L", $iCor);
+                            $this->pdf->Cell(233, self::TAMANHO, $msg, 0, 1, "L", $iCor);
                         }
 
                         $sHistorico = "HISTORICO: {$conta->c50_descr} {$conta->c72_complem} {$txt}";

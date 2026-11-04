@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ $clorcprojeto->rotulo->label("o39_descr");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To39_codproj?>"><?=$Lo39_codproj?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o39_codproj",8,$Io39_codproj,true,"text",4,"","chave_o39_codproj");?>
+              <?php db_input("o39_codproj",8,$Io39_codproj,true,"text",4,"","chave_o39_codproj");?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To39_descr?>"><?=$Lo39_descr?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o39_descr",20,$Io39_descr,true,"text",4,"","chave_o39_descr");  ?>
+              <?php db_input("o39_descr",20,$Io39_descr,true,"text",4,"","chave_o39_descr");  ?>
             </td>
           </tr>
           <tr> 
@@ -74,7 +74,7 @@ $clorcprojeto->rotulo->label("o39_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprojeto.php")==true){
@@ -113,12 +113,12 @@ $clorcprojeto->rotulo->label("o39_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

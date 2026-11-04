@@ -25,6 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
+use App\Domain\Saude\Farmacia\Services\EstoqueMovimentacaoBnafarService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_utils.php"));
@@ -66,33 +69,34 @@ db_app::import("Dotacao");
 
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$clempparametro     = new cl_empparametro;
-$clmatestoque       = new cl_matestoque;
-$clmatestoqueitem   = new cl_matestoqueitem;
-$clmatestoqueini    = new cl_matestoqueini;
+$clempparametro = new cl_empparametro;
+$clmatestoque = new cl_matestoque;
+$clmatestoqueitem = new cl_matestoqueitem;
+$clmatestoqueini = new cl_matestoqueini;
 $clmatestoqueinimei = new cl_matestoqueinimei;
-$cldb_depart        = new cl_db_depart;
-$cltransmater       = new cl_transmater;
-$clempempitem       = new cl_empempitem;
-$oDaoMatEstoqueItemNotaFiscal = db_utils::getDao("matestoqueitemnotafiscalmanual");
+$cldb_depart = new cl_db_depart;
+$cltransmater = new cl_transmater;
+$clempempitem = new cl_empempitem;
+$oDaoMatEstoqueItemNotaFiscal = new cl_matestoqueitemnotafiscalmanual;
 
-$res_empparametro = $clempparametro->sql_record($clempparametro->sql_query(db_getsession("DB_anousu"),"e30_numdec"));
-if ($clempparametro->numrows > 0){
-  db_fieldsmemory($res_empparametro,0);
-  if (trim($e30_numdec) == "" || $e30_numdec == 0){
-    $numdec = 2;
-  } else {
-    $numdec = $e30_numdec;
-  }
+$sql = $clempparametro->sql_query(db_getsession("DB_anousu"), "e30_numdec");
+$res_empparametro = $clempparametro->sql_record($sql);
+if ($clempparametro->numrows > 0) {
+    db_fieldsmemory($res_empparametro, 0);
+    if (trim($e30_numdec) == "" || $e30_numdec == 0) {
+        $numdec = 2;
+    } else {
+        $numdec = $e30_numdec;
+    }
 } else {
-  $numdec = 2;
+    $numdec = 2;
 }
 
 $db_opcao = 1;
 $db_botao = true;
-$passou   = false;
+$passou = false;
 
 $iCodidoMovimentacaoEstoque = '';
 
@@ -101,13 +105,11 @@ $iCodidoMovimentacaoEstoque = '';
  */
 
 if (isset($incluir)) {
-
-  if (isset($m60_codmater) && trim($m60_codmater)!=""){
-
-		if ($m71_valor == 0 or $m71_quant == 0) {
-			$sqlerro = true;
-			$erro_msg = "Valores zerados!";
-		} else {
+    if (isset($m60_codmater) && trim($m60_codmater) != "") {
+        if ($m71_valor == 0 or $m71_quant == 0) {
+            $sqlerro = true;
+            $erro_msg = "Valores zerados!";
+        } else {
             $sqlerro = false;
             db_inicio_transacao();
             $daoDeposito = new cl_db_almox();
@@ -120,7 +122,9 @@ if (isset($incluir)) {
 
             $coddepto = pg_fetch_array($rsDeposito)['m91_depto'];
 
-            $result_matestoque = $clmatestoque->sql_record($clmatestoque->sql_query_file(null, "m70_codigo,m70_quant,m70_valor", "", "m70_codmatmater=$m60_codmater and m70_coddepto=$coddepto"));
+            $where = "m70_codmatmater={$m60_codmater} and m70_coddepto={$coddepto}";
+            $sql = $clmatestoque->sql_query_file(null, "m70_codigo,m70_quant,m70_valor", "", $where);
+            $result_matestoque = $clmatestoque->sql_record($sql);
             if ($clmatestoque->numrows > 0) {
                 db_fieldsmemory($result_matestoque, 0);
                 $quant = 0;
@@ -129,186 +133,200 @@ if (isset($incluir)) {
                 if ($quant > 0) {
                     $valor = $m70_valor + $m71_valor;
                 }
-				$clmatestoque->m70_valor = "$valor";
-				$clmatestoque->m70_quant = "$quant";
-				$clmatestoque->m70_codigo= $m70_codigo;
-				$clmatestoque->alterar($m70_codigo);
-				if($clmatestoque->erro_status==0){
-					$sqlerro=true;
-				}
-				$erro_msg = $clmatestoque->erro_msg;
-			}else{
-				$clmatestoque->m70_codmatmater = $m60_codmater;
-				$clmatestoque->m70_coddepto    = $coddepto;
-				$clmatestoque->m70_valor       = $m71_valor;
-				$clmatestoque->m70_quant       = $m71_quant;
-				$clmatestoque->incluir(null);
-				if($clmatestoque->erro_status==0){
-					$sqlerro=true;
-				}
-				$m70_codigo = $clmatestoque->m70_codigo;
-				$erro_msg   = $clmatestoque->erro_msg;
-			}
-			if($sqlerro == false){
-				$clmatestoqueini->m80_login          = db_getsession("DB_id_usuario");
-				$clmatestoqueini->m80_data           = date("Y-m-d",db_getsession("DB_datausu"));
-				$clmatestoqueini->m80_hora           = date('H:i:s');
-				$clmatestoqueini->m80_obs            = $m80_obs;
-				$clmatestoqueini->m80_codtipo        = $m80_codtipo;
-				$clmatestoqueini->m80_coddepto       = $coddepto;
-				$clmatestoqueini->incluir(@$m80_codigo);
-				if($clmatestoqueini->erro_status==0){
-					$sqlerro=true;
-				}
-
-				$iCodidoMovimentacaoEstoque = $clmatestoqueini->m80_codigo;
-				$m82_matestoqueini          = $clmatestoqueini->m80_codigo;
-				$erro_msg                   = $clmatestoqueini->erro_msg;
-			}
-			if($sqlerro == false){
-				if(isset($m70_codigo) && trim($m70_codigo)!=""){
-					$clmatestoqueitem->m71_codmatestoque = $m70_codigo;
-					$clmatestoqueitem->m71_data          = date("Y-m-d",db_getsession("DB_datausu"));
-					$clmatestoqueitem->m71_valor         = $m71_valor;
-					$clmatestoqueitem->m71_quant         = $m71_quant;
-					$clmatestoqueitem->m71_quantatend    = '0';
-					$clmatestoqueitem->incluir(null);
-					if($clmatestoqueitem->erro_status==0){
-						$sqlerro=true;
-					}
-					$m80_matestoqueitem = $clmatestoqueitem->m71_codlanc;
-					$erro_msg           = $clmatestoqueitem->erro_msg;
-				}
-
-				if (!$sqlerro) {
-
-				  /**
-				   * Inclui nota fiscal manual
-				   */
-				  if (!empty($m79_notafiscal) && !empty($m79_data)) {
-
-  				  $oDaoMatEstoqueItemNotaFiscal->m79_sequencial     = null;
-  				  $oDaoMatEstoqueItemNotaFiscal->m79_matestoqueitem = $m80_matestoqueitem;
-  				  $oDaoMatEstoqueItemNotaFiscal->m79_notafiscal     = $m79_notafiscal;
-  				  $oDaoMatEstoqueItemNotaFiscal->m79_data           = $m79_data;
-				    $oDaoMatEstoqueItemNotaFiscal->incluir(null);
-				  }
-				}
-
-				if ($sqlerro == false) {
-
-				  if (trim($m77_lote) != "") {
-
-				    $clmatestoqueitemlote = db_utils::getDao("matestoqueitemlote");
-				    $clmatestoqueitemlote->m77_lote = $m77_lote;
-				    $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", $m77_dtvalidade)));
-				    $clmatestoqueitemlote->m77_matestoqueitem = $m80_matestoqueitem;
-				    $clmatestoqueitemlote->incluir(null);
-				    if ($clmatestoqueitemlote->erro_status == 0){
-
-				      $erro_msg = $clmatestoqueitemlote->erro_msg;
-					    $sqlerro  = true;
-				    }
-				  }
-				}
-				if (!$sqlerro) {
-
-				  if (trim($m78_matfabricante) != "") {
-
-				    $clmatestoqueitemfabric = db_utils::getDao("matestoqueitemfabric");
-				    $clmatestoqueitemfabric->m78_matestoqueitem = $m80_matestoqueitem;
-				    $clmatestoqueitemfabric->m78_matfabricante  = $m78_matfabricante;
-				    $clmatestoqueitemfabric->incluir(null);
-				    if ($clmatestoqueitemfabric->erro_status  == 0) {
-
-				      $erro_msg = $clmatestoqueitemfabric->erro_msg;
-					    $sqlerro  = true;
-				    }
-				  }
-				}
-				if ($sqlerro == false) {
-
-					$clmatestoqueinimei->m82_matestoqueitem = $m80_matestoqueitem;
-					$clmatestoqueinimei->m82_matestoqueini  = $m82_matestoqueini;
-					$clmatestoqueinimei->m82_quant          = $m71_quant;
-					$clmatestoqueinimei->incluir(@$m82_codigo);
-					if($clmatestoqueinimei->erro_status==0){
-
-						$erro_msg = $clmatestoqueinimei->erro_msg;
-						$sqlerro=true;
-					}
-				}
-			}
-
-			if ($sqlerro==false){
-				$passou=true;
-			}
-
-      if ($sqlerro == false) {
-
-        $oDataImplantacao = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
-        $oInstituicao     = new Instituicao(db_getsession('DB_instit'));
-
-        /**
-         * Efetua os Lancamentos Contabeis de entrada no estoque
-         * - valida parametro de integracao da contabilidade com material
-         */
-        if ( USE_PCASP && ParametroIntegracaoPatrimonial::possuiIntegracaoMaterial($oDataImplantacao, $oInstituicao) ) {
-
-          try {
-
-            $oDadosEntrada                       = new stdClass();
-            $oDadosEntrada->iMovimentoEstoque    = $clmatestoqueinimei->m82_codigo;
-            $oDadosEntrada->sObservacaoHistorico = $m80_obs;
-            $oDadosEntrada->nValorLancamento     = $m71_valor;
-            $oDadosEntrada->iContaPCASP          = $m66_codcon;
-            $oDadosEntrada->iCodigoMaterial      = $m60_codmater;
-
-            $oAlmoxarifado = new Almoxarifado(db_getsession('DB_coddepto'));
-
-            if (isset($entrada) && $entrada == "true") {
-              $oAlmoxarifado->entradaManual($oDadosEntrada);
+                $clmatestoque->m70_valor = "$valor";
+                $clmatestoque->m70_quant = "$quant";
+                $clmatestoque->m70_codigo = $m70_codigo;
+                $clmatestoque->alterar($m70_codigo);
+                if ($clmatestoque->erro_status == 0) {
+                    $sqlerro = true;
+                }
+                $erro_msg = $clmatestoque->erro_msg;
             } else {
-              $oAlmoxarifado->implantacaoEstoque($oDadosEntrada);
+                $clmatestoque->m70_codmatmater = $m60_codmater;
+                $clmatestoque->m70_coddepto = $coddepto;
+                $clmatestoque->m70_valor = $m71_valor;
+                $clmatestoque->m70_quant = $m71_quant;
+                $clmatestoque->incluir(null);
+                if ($clmatestoque->erro_status == 0) {
+                    $sqlerro = true;
+                }
+                $m70_codigo = $clmatestoque->m70_codigo;
+                $erro_msg = $clmatestoque->erro_msg;
+            }
+            if ($sqlerro == false) {
+                $clmatestoqueini->m80_login = db_getsession("DB_id_usuario");
+                $clmatestoqueini->m80_data = date("Y-m-d", db_getsession("DB_datausu"));
+                $clmatestoqueini->m80_hora = date('H:i:s');
+                $clmatestoqueini->m80_obs = $m80_obs;
+                $clmatestoqueini->m80_codtipo = $m80_codtipo;
+                $clmatestoqueini->m80_coddepto = $coddepto;
+                $clmatestoqueini->incluir(@$m80_codigo);
+                if ($clmatestoqueini->erro_status == 0) {
+                    $sqlerro = true;
+                }
+
+                $iCodidoMovimentacaoEstoque = $clmatestoqueini->m80_codigo;
+                $m82_matestoqueini = $clmatestoqueini->m80_codigo;
+                $erro_msg = $clmatestoqueini->erro_msg;
+            }
+            if ($sqlerro == false) {
+                if (isset($m70_codigo) && trim($m70_codigo) != "") {
+                    $clmatestoqueitem->m71_codmatestoque = $m70_codigo;
+                    $clmatestoqueitem->m71_data = date("Y-m-d", db_getsession("DB_datausu"));
+                    $clmatestoqueitem->m71_valor = $m71_valor;
+                    $clmatestoqueitem->m71_quant = $m71_quant;
+                    $clmatestoqueitem->m71_quantatend = '0';
+                    $clmatestoqueitem->incluir(null);
+                    if ($clmatestoqueitem->erro_status == 0) {
+                        $sqlerro = true;
+                    }
+                    $m80_matestoqueitem = $clmatestoqueitem->m71_codlanc;
+                    $erro_msg = $clmatestoqueitem->erro_msg;
+                }
+
+                if (!$sqlerro) {
+
+                    /**
+                     * Inclui nota fiscal manual
+                     */
+                    if (!empty($m79_notafiscal) && !empty($m79_data)) {
+                        $oDaoMatEstoqueItemNotaFiscal->m79_sequencial = null;
+                        $oDaoMatEstoqueItemNotaFiscal->m79_matestoqueitem = $m80_matestoqueitem;
+                        $oDaoMatEstoqueItemNotaFiscal->m79_notafiscal = $m79_notafiscal;
+                        $oDaoMatEstoqueItemNotaFiscal->m79_data = $m79_data;
+                        $oDaoMatEstoqueItemNotaFiscal->incluir(null);
+                    }
+                }
+
+                if ($sqlerro == false) {
+                    if (trim($m77_lote) != "") {
+                        $dataValidade = implode("-", array_reverse(explode("/", $m77_dtvalidade)));
+                        $clmatestoqueitemlote = new cl_matestoqueitemlote;
+                        $clmatestoqueitemlote->m77_lote = $m77_lote;
+                        $clmatestoqueitemlote->m77_dtvalidade = $dataValidade;
+                        $clmatestoqueitemlote->m77_matestoqueitem = $m80_matestoqueitem;
+                        $clmatestoqueitemlote->incluir(null);
+                        if ($clmatestoqueitemlote->erro_status == 0) {
+                            $erro_msg = $clmatestoqueitemlote->erro_msg;
+                            $sqlerro = true;
+                        }
+                    }
+                }
+                if (!$sqlerro) {
+                    if (trim($m78_matfabricante) != "") {
+                        $clmatestoqueitemfabric = new cl_matestoqueitemfabric;
+                        $clmatestoqueitemfabric->m78_matestoqueitem = $m80_matestoqueitem;
+                        $clmatestoqueitemfabric->m78_matfabricante = $m78_matfabricante;
+                        $clmatestoqueitemfabric->incluir(null);
+                        if ($clmatestoqueitemfabric->erro_status == 0) {
+                            $erro_msg = $clmatestoqueitemfabric->erro_msg;
+                            $sqlerro = true;
+                        }
+                    }
+                }
+                if ($sqlerro == false) {
+                    $clmatestoqueinimei->m82_matestoqueitem = $m80_matestoqueitem;
+                    $clmatestoqueinimei->m82_matestoqueini = $m82_matestoqueini;
+                    $clmatestoqueinimei->m82_quant = $m71_quant;
+                    $clmatestoqueinimei->incluir(@$m82_codigo);
+                    if ($clmatestoqueinimei->erro_status == 0) {
+                        $erro_msg = $clmatestoqueinimei->erro_msg;
+                        $sqlerro = true;
+                    }
+                }
             }
 
-          } catch (BusinessException $eErro) {
-
-            $sqlerro  = true;
-            $erro_msg = $eErro->getMessage();
-
-          } catch (ParameterException $eErro) {
-
-            $sqlerro  = true;
-            $erro_msg = ($eErro->getMessage());
-            /**
-             * Erro Originado por conta corrente:
-             */
-            if ($eErro->getCode() == '1010') {
-
-              $erro_msg .= "\nDicas: Verifique o cadastro das contas do grupo do material.";
+            if ($sqlerro == false) {
+                $passou = true;
             }
 
-          } catch (Exception $eErro) {
+            if ($sqlerro == false) {
+                $oDataImplantacao = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
+                $oInstituicao = new Instituicao(db_getsession('DB_instit'));
 
-            $sqlerro  = true;
-            $erro_msg = ($eErro->getMessage());
-          }
+                /**
+                 * Efetua os Lancamentos Contabeis de entrada no estoque
+                 * - valida parametro de integracao da contabilidade com material
+                 */
+                if (USE_PCASP && ParametroIntegracaoPatrimonial::possuiIntegracaoMaterial($oDataImplantacao, $oInstituicao)) {
+                    try {
+                        $oDadosEntrada = new stdClass();
+                        $oDadosEntrada->iMovimentoEstoque = $clmatestoqueinimei->m82_codigo;
+                        $oDadosEntrada->sObservacaoHistorico = $m80_obs;
+                        $oDadosEntrada->nValorLancamento = $m71_valor;
+                        $oDadosEntrada->iContaPCASP = $m66_codcon;
+                        $oDadosEntrada->iCodigoMaterial = $m60_codmater;
 
+                        $oAlmoxarifado = new Almoxarifado(db_getsession('DB_coddepto'));
+
+                        if (isset($entrada) && $entrada == "true") {
+                            $oAlmoxarifado->entradaManual($oDadosEntrada);
+                        } else {
+                            $oAlmoxarifado->implantacaoEstoque($oDadosEntrada);
+                        }
+                    } catch (BusinessException $eErro) {
+                        $sqlerro = true;
+                        $erro_msg = $eErro->getMessage();
+                    } catch (ParameterException $eErro) {
+                        $sqlerro = true;
+                        $erro_msg = ($eErro->getMessage());
+                        /**
+                         * Erro Originado por conta corrente:
+                         */
+                        if ($eErro->getCode() == '1010') {
+                            $erro_msg .= "\nDicas: Verifique o cadastro das contas do grupo do material.";
+                        }
+                    } catch (Exception $eErro) {
+                        $sqlerro = true;
+                        $erro_msg = ($eErro->getMessage());
+                    }
+                }
+            }
+
+            if ($sqlerro == false && FarmaciaHelper::utilizaIntegracaoBnafar()) {
+                try {
+                    $permite = FarmaciaHelper::validaMovimentacaoMaterial(
+                        (object)[
+                            'tipoMovimentacao' => $cod_tipo,
+                            'cgm' => $cgm,
+                            'unidade' => $unidade,
+                            'm78_matfabricante' => $m78_matfabricante,
+                            'm77_lote' => $m77_lote,
+                            'm77_dtvalidade' => $m77_dtvalidade,
+                            'm79_notafiscal' => $m79_notafiscal,
+                            'm79_data' => $m79_data
+                        ],
+                        $m60_codmater,
+                        false,
+                        $m71_quant
+                    );
+
+                    if ($permite) {
+                        EstoqueMovimentacaoBnafarService::salvar(
+                            (object)[
+                                'tipoMovimentacao' => $cod_tipo,
+                                'cgm' => $cgm,
+                                'unidade' => $unidade
+                            ],
+                            $iCodidoMovimentacaoEstoque
+                        );
+                    }
+                } catch (Exception $e) {
+                    $sqlerro = true;
+                    $erro_msg = $e->getMessage();
+                }
+            }
+            db_fim_transacao($sqlerro);
         }
-      }
-
-			db_fim_transacao($sqlerro);
-			//exit;
-		}
-  }else{
-    $sqlerro = true;
-    $erro_msg = "Usuário: \\n\\nCódigo do material não informado.\\n\\nAdministrador:";
-  }
+    } else {
+        $sqlerro = true;
+        $erro_msg = "Usuário: \\n\\nCódigo do material não informado.\\n\\nAdministrador:";
+    }
 }
-if (!isset($coddepto)||$coddepto==""){
-  $result_departamento = $cldb_depart->sql_record($cldb_depart->sql_query_file(db_getsession("DB_coddepto"),"coddepto,descrdepto"));
-  db_fieldsmemory($result_departamento,0);
+if (!isset($coddepto) || $coddepto == "") {
+    $sql = $cldb_depart->sql_query_file(db_getsession("DB_coddepto"), "coddepto,descrdepto");
+    $result_departamento = $cldb_depart->sql_record($sql);
+    db_fieldsmemory($result_departamento, 0);
 }
 ?>
 <html>
@@ -332,28 +350,28 @@ if (!isset($coddepto)||$coddepto==""){
     </tr>
 </table>
 <center>
-<?
-  include(modification("forms/db_frmmatestoqueini.php"));
-?>
+    <?php
+    include(modification("forms/db_frmmatestoqueini.php"));
+    ?>
 </center>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 </body>
 </html>
-<?
-if(isset($incluir)){
-  db_msgbox($erro_msg);
-  if($sqlerro==false){
-    $location = "";
-    if($m80_codtipo==3) {
-      $location = "?entrada=true";
-    }
-    echo "
+<?php
+if (isset($incluir)) {
+    db_msgbox($erro_msg);
+    if ($sqlerro == false) {
+        $location = "";
+        if ($m80_codtipo == 3) {
+            $location = "?entrada=true";
+        }
+        echo "
     <script>
     location.href = 'mat1_matestoqueini001.php$location';
     </script>
     ";
-  }
+    }
 }
 ?>

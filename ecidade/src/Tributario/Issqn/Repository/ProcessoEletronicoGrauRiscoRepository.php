@@ -3,13 +3,15 @@
 
 namespace ECidade\Tributario\Issqn\Repository;
 
+use ECidade\Tributario\Issqn\Model\IssCadastroSimples;
 use ECidade\Tributario\Issqn\Model\ProcessoEletronicoGrauRisco;
 use Exception;
 
 class ProcessoEletronicoGrauRiscoRepository
 {
+
     /**
-     * @var cl_isscadsimples
+     * @var \cl_processoeletronicograurisco
      */
     private $dao;
 
@@ -19,10 +21,9 @@ class ProcessoEletronicoGrauRiscoRepository
     private static $instance;
 
     /**
-     * ParametroProcessoEletronicoRepository constructor.
-     * @param cl_isscadsimples $dao
+     * @param \cl_processoeletronicograurisco $dao
      */
-    private function __construct($dao)
+    private function __construct(\cl_processoeletronicograurisco $dao)
     {
         $this->dao = $dao;
     }
@@ -31,7 +32,7 @@ class ProcessoEletronicoGrauRiscoRepository
      * @param $dao
      * @return ParametroProcessoEletronicoRepository
      */
-    public static function getInstance($dao)
+    public static function getInstance(\cl_processoeletronicograurisco $dao)
     {
         if (is_null(static::$instance)) {
             static::$instance = new self($dao);
@@ -48,8 +49,8 @@ class ProcessoEletronicoGrauRiscoRepository
     }
 
     /**
-     * @param IssCadastroSimples $entity
-     * @return IssCadastroSimples
+     * @param ProcessoEletronicoGrauRisco $entity
+     * @return ProcessoEletronicoGrauRisco
      * @throws Exception
      */
     public function save(ProcessoEletronicoGrauRisco $entity)
@@ -69,7 +70,7 @@ class ProcessoEletronicoGrauRiscoRepository
         if ($this->dao->q151_sequencial != null) {
             $this->dao->alterar($this->dao->q151_sequencial);
         } else {
-            $this->dao->incluir();
+            $this->dao->incluir(null);
             $entity->setCodigo($this->dao->q151_sequencial);
         }
 
@@ -82,6 +83,11 @@ class ProcessoEletronicoGrauRiscoRepository
         return $entity;
     }
 
+    /**
+     * @param $processo
+     * @return ProcessoEletronicoGrauRisco
+     * @throws Exception
+     */
     public function findByProcesso($processo)
     {
         $this->dao->q151_processo = $processo;

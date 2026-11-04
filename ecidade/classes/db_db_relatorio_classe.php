@@ -29,50 +29,50 @@
 class cl_db_relatorio
 {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status = null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
-  // cria variaveis do arquivo 
-  var $db63_sequencial = 0;
-  var $db63_db_gruporelatorio = 0;
-  var $db63_db_tiporelatorio = 0;
-  var $db63_nomerelatorio = null;
-  var $db63_versao_xml = null;
-  var $db63_data_dia = null;
-  var $db63_data_mes = null;
-  var $db63_data_ano = null;
-  var $db63_data = null;
-  var $db63_xmlestruturarel = null;
-  var $db63_db_relatorioorigem = 0;
-  // cria propriedade com as variaveis do arquivo 
-  var $campos = "
-                 db63_sequencial = int4 = Sequencial 
-                 db63_db_gruporelatorio = int4 = Grupo do relatório 
-                 db63_db_tiporelatorio = int4 = Tipo de relatório 
-                 db63_nomerelatorio = varchar(50) = Nome relatório 
-                 db63_versao_xml = varchar(40) = Versão XML 
-                 db63_data = date = Data do relatório 
-                 db63_xmlestruturarel = text = Estrutuda do XML 
-                 db63_db_relatorioorigem = int4 = Origem Relatório 
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status = null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
+  // cria variaveis do arquivo
+  public $db63_sequencial = 0;
+  public $db63_db_gruporelatorio = 0;
+  public $db63_db_tiporelatorio = 0;
+  public $db63_nomerelatorio = null;
+  public $db63_versao_xml = null;
+  public $db63_data_dia = null;
+  public $db63_data_mes = null;
+  public $db63_data_ano = null;
+  public $db63_data = null;
+  public $db63_xmlestruturarel = null;
+  public $db63_db_relatorioorigem = 0;
+  // cria propriedade com as variaveis do arquivo
+  public $campos = "
+                 db63_sequencial = int4 = Sequencial
+                 db63_db_gruporelatorio = int4 = Grupo do relatório
+                 db63_db_tiporelatorio = int4 = Tipo de relatório
+                 db63_nomerelatorio = varchar(50) = Nome relatório
+                 db63_versao_xml = varchar(40) = Versão XML
+                 db63_data = date = Data do relatório
+                 db63_xmlestruturarel = text = Estrutuda do XML
+                 db63_db_relatorioorigem = int4 = Origem Relatório
                  ";
-  //funcao construtor da classe 
-  function cl_db_relatorio()
+  //funcao construtor da classe
+  public function __construct()
   {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("db_relatorio");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
-  //funcao erro 
-  function erro($mostra, $retorna)
+  //funcao erro
+  public function erro($mostra, $retorna)
   {
     if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
       echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -82,7 +82,7 @@ class cl_db_relatorio
     }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao = false)
+  public function atualizacampos($exclusao = false)
   {
     if ($exclusao == false) {
       $this->db63_sequencial = ($this->db63_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["db63_sequencial"] : $this->db63_sequencial);
@@ -105,7 +105,7 @@ class cl_db_relatorio
     }
   }
   // funcao para inclusao
-  function incluir($db63_sequencial)
+  public function incluir($db63_sequencial)
   {
     $this->atualizacampos();
     if ($this->db63_db_gruporelatorio == null) {
@@ -204,24 +204,24 @@ class cl_db_relatorio
       return false;
     }
     $sql = "insert into db_relatorio(
-                                       db63_sequencial 
-                                      ,db63_db_gruporelatorio 
-                                      ,db63_db_tiporelatorio 
-                                      ,db63_nomerelatorio 
-                                      ,db63_versao_xml 
-                                      ,db63_data 
-                                      ,db63_xmlestruturarel 
-                                      ,db63_db_relatorioorigem 
+                                       db63_sequencial
+                                      ,db63_db_gruporelatorio
+                                      ,db63_db_tiporelatorio
+                                      ,db63_nomerelatorio
+                                      ,db63_versao_xml
+                                      ,db63_data
+                                      ,db63_xmlestruturarel
+                                      ,db63_db_relatorioorigem
                        )
                 values (
-                                $this->db63_sequencial 
-                               ,$this->db63_db_gruporelatorio 
-                               ,$this->db63_db_tiporelatorio 
-                               ,'$this->db63_nomerelatorio' 
-                               ,'$this->db63_versao_xml' 
-                               ," . ($this->db63_data == "null" || $this->db63_data == "" ? "null" : "'" . $this->db63_data . "'") . " 
-                               ,'$this->db63_xmlestruturarel' 
-                               ,$this->db63_db_relatorioorigem 
+                                $this->db63_sequencial
+                               ,$this->db63_db_gruporelatorio
+                               ,$this->db63_db_tiporelatorio
+                               ,'$this->db63_nomerelatorio'
+                               ,'$this->db63_versao_xml'
+                               ," . ($this->db63_data == "null" || $this->db63_data == "" ? "null" : "'" . $this->db63_data . "'") . "
+                               ,'$this->db63_xmlestruturarel'
+                               ,$this->db63_db_relatorioorigem
                       )";
     $result = db_query($sql);
     if ($result == false) {
@@ -247,25 +247,11 @@ class cl_db_relatorio
     $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
     $this->erro_status = "1";
     $this->numrows_incluir = pg_affected_rows($result);
-    $resaco = $this->sql_record($this->sql_query_file($this->db63_sequencial));
-    if (($resaco != false) || ($this->numrows != 0)) {
-      $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-      $acount = pg_result($resac, 0, 0);
-      $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-      $resac = db_query("insert into db_acountkey values($acount,12277,'$this->db63_sequencial','I')");
-      $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_result($resaco, 0, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_result($resaco, 0, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_result($resaco, 0, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_result($resaco, 0, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_result($resaco, 0, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_result($resaco, 0, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-    }
+
     return true;
   }
   // funcao para alteracao
-  function alterar($db63_sequencial = null)
+  public function alterar($db63_sequencial = null)
   {
     $this->atualizacampos();
     $sql = " update db_relatorio set ";
@@ -392,31 +378,7 @@ class cl_db_relatorio
     if ($db63_sequencial != null) {
       $sql .= " db63_sequencial = $this->db63_sequencial";
     }
-    $resaco = $this->sql_record($this->sql_query_file($this->db63_sequencial));
-    if ($this->numrows > 0) {
-      for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
-        $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-        $resac = db_query("insert into db_acountkey values($acount,12277,'$this->db63_sequencial','A')");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_sequencial"]) || $this->db63_sequencial != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12277,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_sequencial')) . "','$this->db63_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_gruporelatorio"]) || $this->db63_db_gruporelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12281,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_gruporelatorio')) . "','$this->db63_db_gruporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_tiporelatorio"]) || $this->db63_db_tiporelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12282,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_tiporelatorio')) . "','$this->db63_db_tiporelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_nomerelatorio"]) || $this->db63_nomerelatorio != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12267,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_nomerelatorio')) . "','$this->db63_nomerelatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_versao_xml"]) || $this->db63_versao_xml != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12268,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_versao_xml')) . "','$this->db63_versao_xml'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_data"]) || $this->db63_data != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12269,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_data')) . "','$this->db63_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_xmlestruturarel"]) || $this->db63_xmlestruturarel != "")
-          $resac = db_query("insert into db_acount values($acount,2134,12270,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_xmlestruturarel')) . "','$this->db63_xmlestruturarel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        if (isset($GLOBALS["HTTP_POST_VARS"]["db63_db_relatorioorigem"]) || $this->db63_db_relatorioorigem != "")
-          $resac = db_query("insert into db_acount values($acount,2134,14175,'" . AddSlashes(pg_result($resaco, $conresaco, 'db63_db_relatorioorigem')) . "','$this->db63_db_relatorioorigem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      }
-    }
+
     $result = db_query($sql);
     if ($result == false) {
       $this->erro_banco = str_replace("\n", "", @pg_last_error());
@@ -449,30 +411,9 @@ class cl_db_relatorio
       }
     }
   }
-  // funcao para exclusao 
-  function excluir($db63_sequencial = null, $dbwhere = null)
+  // funcao para exclusao
+  public function excluir($db63_sequencial = null, $dbwhere = null)
   {
-    if ($dbwhere == null || $dbwhere == "") {
-      $resaco = $this->sql_record($this->sql_query_file($db63_sequencial));
-    } else {
-      $resaco = $this->sql_record($this->sql_query_file(null, "*", null, $dbwhere));
-    }
-    if (($resaco != false) || ($this->numrows != 0)) {
-      for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
-        $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
-        $resac = db_query("insert into db_acountkey values($acount,12277,'$db63_sequencial','E')");
-        $resac = db_query("insert into db_acount values($acount,2134,12277,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12281,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_gruporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12282,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_tiporelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12267,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_nomerelatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12268,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_versao_xml')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12269,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,12270,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_xmlestruturarel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2134,14175,'','" . AddSlashes(pg_result($resaco, $iresaco, 'db63_db_relatorioorigem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-      }
-    }
     $sql = " delete from db_relatorio
                     where ";
     $sql2 = "";
@@ -518,8 +459,8 @@ class cl_db_relatorio
       }
     }
   }
-  // funcao do recordset 
-  function sql_record($sql)
+  // funcao do recordset
+  public function sql_record($sql)
   {
     $result = db_query($sql);
     if ($result == false) {
@@ -542,8 +483,8 @@ class cl_db_relatorio
     }
     return $result;
   }
-  // funcao do sql 
-  function sql_query($db63_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+  // funcao do sql
+  public function sql_query($db63_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
   {
     $sql = "select ";
     if ($campos != "*") {
@@ -580,8 +521,8 @@ class cl_db_relatorio
     }
     return $sql;
   }
-  // funcao do sql 
-  function sql_query_file($db63_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+  // funcao do sql
+  public function sql_query_file($db63_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
   {
     $sql = "select ";
     if ($campos != "*") {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ if(isset($confirma)){
   if($clprojmelhorias->erro_status=='0'){
     $clprojmelhorias->erro(true,false);
     $sqlerro = true;
-  } 
+  }
 
 //die($clprojmelhoriasmatric->sql_query($clprojmelhorias->d40_codigo,'','d41_matric'));
   $clprojmelhorias->d40_codigo = $d40_codigo;
@@ -72,12 +72,12 @@ if(isset($confirma)){
       }
     }
   }
-  $tes = split("X",$testada);
-  $eixo = split("X",$eixo);
-  $obs = split("X",$obs);
-  $pgto = split("X",$pgto);
+  $tes =explode("X",$testada);
+  $eixo =explode("X",$eixo);
+  $obs =explode("X",$obs);
+  $pgto =explode("X",$pgto);
   for($ii=0;$ii<sizeof($tes);$ii++){
-    $chave = split('-',$tes[$ii]);
+    $chave =explode('-',$tes[$ii]);
     $clprojmelhoriasmatric->d41_codigo = $clprojmelhorias->d40_codigo;
     $clprojmelhoriasmatric->d41_matric = $chave[0];
     $clprojmelhoriasmatric->d41_testada= $chave[1]+0;
@@ -85,11 +85,11 @@ if(isset($confirma)){
     $clprojmelhoriasmatric->d41_obs    = $obs[$ii];
     $clprojmelhoriasmatric->d41_pgtopref = $pgto[$ii];
     $HTTP_POST_VARS['d41_auto']   = true;
-    
+
     $clprojmelhoriasmatric->incluir($clprojmelhorias->d40_codigo,$chave[0]);
     if($clprojmelhoriasmatric->erro_status=='0'){
       $sqlerro = true;
-    } 
+    }
   }
   //die($clprojmelhoriasresp->sql_query($d40_codigo,"d42_codigo as codigo,d42_numcgm as numcgm"));
   $respp=$clprojmelhoriasresp->sql_record($clprojmelhoriasresp->sql_query($d40_codigo,"d42_codigo as codigo,d42_numcgm as numcgm"));
@@ -100,7 +100,7 @@ if(isset($confirma)){
     $clprojmelhoriasresp->excluir($d40_codigo);
     if($clprojmelhoriasresp->erro_status=='0'){
       $sqlerro = true;
-    } 
+    }
   }
   if($d42_numcgm!=""){
      $clprojmelhoriasresp->d42_codigo=$d40_codigo;
@@ -109,9 +109,9 @@ if(isset($confirma)){
     if($clprojmelhoriasresp->erro_status=='0'){
       $clprojmelhoriasresp->erro(true,false);
       $sqlerro = true;
-    } 
-  }  
-  
+    }
+  }
+
   db_fim_transacao($sqlerro);
   $chavepesquisa = $d40_codigo;
 }
@@ -120,7 +120,7 @@ if(isset($chavepesquisa)){
   //die($clprojmelhorias->sql_query($chavepesquisa));
   $result = $clprojmelhorias->sql_record($clprojmelhorias->sql_query($chavepesquisa));
   db_fieldsmemory($result,0);
-  
+
   $r = $clprojmelhoriasresp->sql_record($clprojmelhoriasresp->sql_query($chavepesquisa,"d42_numcgm,z01_nome"));
   if($clprojmelhoriasresp->numrows>0){
     db_fieldsmemory($r,0);
@@ -157,7 +157,7 @@ function js_matricontri2(matri,refant,nome,setor,quadra,lote,zona,test,eixo,obs)
 function js_relatorio(tipo){
   jan = window.open('con2_relprojmelhorias002.php?d40_codigo='+document.form1.d40_codigo.value+'&tipo='+tipo,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
-       
+
 }
 
 function js_confirma(){
@@ -175,7 +175,7 @@ function js_confirma(){
     return false;
   }
 
-  
+
   for(i=0;i<obj.length;i++){
     if(obj.elements[i].type=='checkbox' && obj.elements[i].checked && obj.elements[i].name.substr(0,5)=="CHECK"){
       testsel=true;
@@ -187,7 +187,7 @@ function js_confirma(){
          vlrpgto  = true;
       }else{
          vlrpgto  = false;
-      } 	 
+      }
         if(vlrtes.match(expr)) {
 	  obj.elements['d41_testada_'+matric].select();
           alert("Este campo deve preenchido somente com números decimais!");
@@ -200,20 +200,20 @@ function js_confirma(){
 	  erro=true;
 	  break;
 	}
-      testada += xx+matric+'-'+vlrtes;   
-      eixo += xx+vlreixo;   
-      obs += xx+vlrobs;   
-      pgto += xx+vlrpgto;   
+      testada += xx+matric+'-'+vlrtes;
+      eixo += xx+vlreixo;
+      obs += xx+vlrobs;
+      pgto += xx+vlrpgto;
       xx="X";
     }
   }
   if(testsel==false){
     alert("Selecione uma matrícula!");
     erro=true;
-  } 
+  }
 
 
-  
+
   document.form1.testada.value=testada;
   document.form1.eixo.value=eixo;
   document.form1.obs.value=obs;
@@ -223,10 +223,10 @@ function js_confirma(){
   objconf.setAttribute('type','hidden');
   document.form1.appendChild(objconf);
 
-  
+
   if(erro==false){
     document.form1.submit();
-  }  
+  }
 
 }
 </script>
@@ -236,7 +236,7 @@ function js_confirma(){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -244,11 +244,11 @@ function js_confirma(){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
 
-<?
+<?php
 //MODULO: contrib
 $clprojmelhorias->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -272,8 +272,8 @@ $clrotulo->label("d42_numcgm");
     <td nowrap title="<?=@$Td40_codigo?>">
        <?=@$Ld40_codigo?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('d40_codigo',10,$Id40_codigo,true,'text',3,"")
 ?>
     </td>
@@ -282,26 +282,26 @@ db_input('d40_codigo',10,$Id40_codigo,true,'text',3,"")
     <td nowrap title="<?=@$Td40_codlog?>">
        <?=$Ld40_codlog?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('d40_codlog',7,$Id40_codlog,true,'text',3," onchange='js_pesquisad40_codlog(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Td42_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Ld42_numcgm,"js_pesquisad42_numcgm(true);",$db_opcao);
        ?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('d42_numcgm',7,$Id42_numcgm,true,'text',$db_opcao," onchange='js_pesquisad42_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -310,8 +310,8 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
     <td nowrap title="<?=@$Td40_profun?>">
        <?=@$Ld40_profun?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('d40_profun',6,$Id40_profun,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -320,8 +320,8 @@ db_input('d40_profun',6,$Id40_profun,true,'text',$db_opcao,"")
     <td nowrap title="<?=@$Td40_trecho?>">
        <?=@$Ld40_trecho?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('d40_trecho',60,$Id40_trecho,true,'text',2,"")
 ?>
     </td>
@@ -331,10 +331,10 @@ db_input('d40_trecho',60,$Id40_trecho,true,'text',2,"")
   <tr>
   <td colspan="2">
   <iframe name="matriculas" id="matriculas" src="" width="750" height="270"></iframe>
-  
+
   </td>
   </tr>
-  
+
   </table>
   <input name="pesquisa" type="button" onclick="js_pesquisa();" id="pesquisa" value="Pesquisa Listas" >
   <input name="confirma" type="button" style='visibility:hidden' onclick='js_confirma()' id="confirma" value="Atualiza Lotes" >
@@ -355,10 +355,10 @@ function js_pesquisad42_numcgm(mostra){
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.d42_numcgm.focus(); 
-    document.form1.d42_numcgm.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.d42_numcgm.focus();
+    document.form1.d42_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -377,10 +377,10 @@ function js_pesquisad40_codlog(mostra){
   }
 }
 function js_mostraruas(chave,erro){
-  document.form1.j14_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.d40_codlog.focus(); 
-    document.form1.d40_codlog.value = ''; 
+  document.form1.j14_nome.value = chave;
+  if(erro==true){
+    document.form1.d40_codlog.focus();
+    document.form1.d40_codlog.value = '';
   }
 }
 function js_mostraruas1(chave1,chave2){
@@ -399,7 +399,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -410,21 +410,21 @@ $func_iframe->iniciarVisivel = false;
 $func_iframe->mostrar();
 if($db_opcao==22){
   echo "<script>document.form1.pesquisa.click();</script>";
-}  
+}
 ?>
 
 
-	
+
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($confirma)){
   if($clprojmelhorias->erro_status=="0"){
     $clprojmelhorias->erro(true,false);
@@ -438,7 +438,7 @@ if(isset($confirma)){
     $clprojmelhorias->erro(true,false);
     db_redireciona('con1_projmelhorias005.php');
   };
-}  
+}
 
 if(isset($chavepesquisa)){
  echo "<script>

@@ -29,10 +29,7 @@
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
 use cl_curric;
-use cl_tabcurri;
-use cl_tabcurritipo;
 use db_utils;
-use ECidade\RecursosHumanos\Pessoal\Model\InfoEndereco;
 use ECidade\RecursosHumanos\Pessoal\Repository\DependenteRepository;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor as ServidorEntity;
 use ECidade\RecursosHumanos\Pessoal\Model\Deficiente;
@@ -40,7 +37,6 @@ use ECidade\RecursosHumanos\Pessoal\Model\ContratoEmergencial;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
 use AdmissaoDado;
 use Admissao;
-use DateTime;
 use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model\ContratoJornada;
 use Servidor as ServidorModel;
@@ -53,6 +49,7 @@ use cl_rhestagiovinculo;
 use Cedencia;
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use ECidade\RecursosHumanos\Pessoal\Repository\MenorAprendizRepository;
 
 /**
  * Classe responsável por organizar os dados do formulário de conferência S-2200
@@ -85,8 +82,9 @@ class ServidorService
         2 => 1,
         6 => 4,
         8 => 3,
-        9 => 6,
-        4 => 2
+        9 => '',
+        4 => 2,
+        11 => '',
     ];
 
     /**
@@ -190,6 +188,11 @@ class ServidorService
     private $admissaoMatricula;
 
     /**
+     * Recebe a instância do objeto endereco
+     */
+    private $endereco;
+
+    /**
      * ServidorService constructor.
      * @param ServidorModel $servidor
      * @param ServidorMovimentacao $servidorMovimentacao
@@ -260,6 +263,16 @@ class ServidorService
             $dadosTrabalhador['sexo'] = $this->servidor->getSexo();
             $dadosTrabalhador['racaCor'] = $this->deParaRacaCor[$this->servidor->getRacaCor()];
 
+            /**
+             * Validamos se foi preenchida uma opcao do cadastro do servidor valida
+             *  caso a opcao seja invalida, removemos o campo para forcar erro de preenchimento no envio
+             *  assim o usuario irá efetuar o devido preenchimento
+             * Essa regra foi implementada devida a atualizacao da versao S1.2
+             */
+            if (empty($dadosTrabalhador['racaCor'])) {
+                unset($dadosTrabalhador['racaCor']);
+            }
+
             if (isset($this->dadosServidor->trabalhador['estCiv'])) {
                 $dadosTrabalhador['estCiv'] = $this->dadosServidor->trabalhador['estCiv'];
             }
@@ -271,11 +284,21 @@ class ServidorService
             $dadosTrabalhador['grauInstr'] = str_pad($this->servidor->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
 
             if (array_key_exists($this->servidor->getGrauInstrucao(), $this->deParaGrauInstrucao)) {
-                $dadosTrabalhador['grauInstr'] = $this->deParaGrauInstrucao[$this->servidor->getGrauInstrucao()];
+                foreach ($this->deParaGrauInstrucao as $key => $value) {
+                    if ($this->servidor->getGrauInstrucao() == $value) {
+                        $dadosTrabalhador['grauInstr'] = strval($key);
+                    }
+                }
             }
 
             $dadosTrabalhador['nmSoc'] = $this->servidor->getCgm()->getNomeSocial();
             $dadosTrabalhador['nascimento'] = [];
+            try {
+                $dadosTrabalhador['nascimento']['dtNascto'] = $this->servidor->getDataNascimento()->getDate();
+            } catch (\ParameterException $e) {
+                $sMsgErro = $this->getMensagemValidaData('data nascimento');
+                throw new \ParameterException($sMsgErro);
+            }
             $dadosTrabalhador['nascimento']['dtNascto'] = $this->servidor->getDataNascimento()->getDate();
             $dadosTrabalhador['nascimento']['paisNascto'] = $this->servidor->getCgm()->getCodigoPaisNascimento();
             $dadosTrabalhador['nascimento']['paisNac'] = $this->servidor->getCgm()->getCodigoPaisNacionalidade();
@@ -337,36 +360,40 @@ class ServidorService
 
         $dadosEndereco = [];
         if ($this->servidor->getCgm() instanceof \CgmFisico) {
-            $dadosEndereco['brasil']['dscLograd'] = $this->servidor->getCgm()->getLogradouro();
-            $dadosEndereco['brasil']['nrLograd'] = $this->servidor->getCgm()->getNumero();
+            /**
+             *  Alterando regra pois os dados do getCgm as vezes nao estao batendo com o endereco primario, que é
+             *  o que é exibido na alteração do cgm
+             */
+            $dadosEndereco['brasil']['dscLograd'] = $this->endereco->getDescricaoRua();
+            $dadosEndereco['brasil']['nrLograd'] = $this->endereco->getNumeroLocal();
+            $dadosEndereco['brasil']['bairro'] = $this->endereco->getDescricaoBairro();
+            $dadosEndereco['brasil']['cep'] = $this->endereco->getCepEndereco();
+            $dadosEndereco['brasil']['uf'] = $this->endereco->getSiglaEstado();
+            $dadosEndereco['brasil']['tpLograd'] = $this->endereco->getSiglaRua();
+            $codigoMunicipio = $this->endereco->getCodigoSistemaExterno();
 
-        /**
-         * Solucao Antiga, descomentar ela, caso a nova solucao apresente problema,
-         * se nao, deletar classe InfoEndereco e deletar essas 2 linhas
-         */
-        //$iMunicipio = $endereco->findCep($this->servidor->getCgm()->getCep())[0]->imunicipio;
-        //$infoEndereco = new InfoEndereco($iMunicipio, $this->servidor->getCgm()->getLogradouro());
             if (empty($dadosEndereco['brasil']['nrLograd'])) {
                 $dadosEndereco['brasil']['nrLograd'] = 'S/N';
             }
             if ($this->servidor->getCgm()->getComplemento() !== '') {
-                $dadosEndereco['brasil']['complemento'] = $this->servidor->getCgm()->getComplemento();
+                $dadosEndereco['brasil']['complemento'] = substr($this->servidor->getCgm()->getComplemento(), 0, 30);
             }
-            $dadosEndereco['brasil']['bairro'] = $this->servidor->getCgm()->getBairro();
-            $dadosEndereco['brasil']['cep'] = $this->servidor->getCgm()->getCep();
-            $dadosEndereco['brasil']['uf'] = $this->servidor->getCgm()->getUf();
-            $dadosEndereco['brasil']['tpLograd'] = $this->endereco->getSiglaRua();
-            $codigoMunicipio = $this->endereco->getCodigoSistemaExterno();
+
+            // caso nao tenha o codigo ibge, buscamos pelo cep do endereco primario
             if (empty($codigoMunicipio)) {
-                $codigoMunicipio = endereco::getCodigoExternoSistemaByCep($this->servidor->getCgm()->getCep());
+                $matricula = $this->servidor->getMatricula();
+                $enderecoCep = $this->endereco->getCepEndereco();
+                $codigoMunicipio = endereco::getCodigoExternoSistemaByCep($enderecoCep, $matricula);
             }
+
             $dadosEndereco['brasil']['codMunic'] =  $codigoMunicipio;
             $this->dadosServidor->trabalhador['endereco']['exterior'] = [];
 
             $dadosEndereco['exterior']['paisResid'] = $this->servidor->getCgm()->getCodigoPaisExterior();
             $dadosEndereco['exterior']['dscLograd'] = $this->servidor->getCgm()->getLogradouroExterior();
             $dadosEndereco['exterior']['nrLograd'] = $this->servidor->getCgm()->getNumeroExterior();
-            $dadosEndereco['exterior']['complemento'] = $this->servidor->getCgm()->getComplementoExterior();
+            $dadosComplementoExterior = $this->servidor->getCgm()->getComplementoExterior();
+            $dadosEndereco['exterior']['complemento'] = substr($dadosComplementoExterior, 0, 30);
             $dadosEndereco['exterior']['bairro'] = $this->servidor->getCgm()->getBairroExterior();
             $dadosEndereco['exterior']['nmCid'] = $this->servidor->getCgm()->getCidadeExterior();
             $dadosEndereco['exterior']['codPostal'] = $this->servidor->getCgm()->getCodigoPostalExterior();
@@ -386,19 +413,43 @@ class ServidorService
         $dadosVinculoTrabalho['matricula'] = $this->servidor->getMatricula();
         $dadosVinculoTrabalho['tpRegTrab'] = $this->deParaRegimeTrabalho[$this->servidor->getTipoRegime()];
         $dadosVinculoTrabalho['tpRegPrev'] = null;
+
+        /**
+         *  Regra do Else
+         *  Sempre que tiver um Adido sem previdência, colocar "RPPS".
+         */
+
         if ($this->servidor->getTabelaPrevidencia() != 0) {
             $dadosVinculoTrabalho['tpRegPrev'] = $this->servidor->isRgps() ? 1 : 2;
+        } else {
+            $registroCedencia = new Cedencia($this->servidor->getMatricula());
+            if ($registroCedencia->getTipoCedencia() == 'A') {
+                $dadosVinculoTrabalho['tpRegPrev'] = 2;
+            }
         }
-        $dataAdmissao = $this->servidor->getDataAdmissao()->getDate();
+        
+        try {
+            $dataAdmissao = $this->servidor->getDataAdmissao()->getDate();
+        } catch (\ParameterException $e) {
+            $sMsgErro = $this->getMensagemValidaData('data admissão');
+            throw new \ParameterException($sMsgErro);
+        }
 
-        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
+        
+        try {
+            $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
+        } catch (\ParameterException $e) {
+            $msg = "Favor revisar a data de obrigatoriedade da fase 2, na seguinte rotina: \n " .
+                "DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Parâmetros > Gerais";
+            $sMsgErro = $this->getMensagemValidaData($msg, true);
+            throw new \ParameterException($sMsgErro);
+        }
 
         if (!$dataObrigatoriedade) {
             throw new Exception("Data de obrigatoriedade inválida para este evento.");
         } else {
             $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2)->getDate();
         }
-
         if ($dataAdmissao > $dataObrigatoriedade) {
             $dadosVinculoTrabalho['cadIni'] = 'N';
         } else {
@@ -419,7 +470,12 @@ class ServidorService
         if ($celetista) {
             $dadosCeletista = [];
             $dadosCeletista['infoCeletista'] = [];
-            $dadosCeletista['infoCeletista']['dtAdm'] = $this->servidor->getDataAdmissao()->getDate();
+            try {
+                $dadosCeletista['infoCeletista']['dtAdm'] = $this->servidor->getDataAdmissao()->getDate();
+            } catch (\ParameterException $e) {
+                $sMsgErro = $this->getMensagemValidaData('data admissão celetista');
+                throw new \ParameterException($sMsgErro);
+            }
             $dadosCeletista['infoCeletista']['tpAdmissao'] = (int) $this->servidor->getVinculo()->getTipoAdmissao();
             $dadosCeletista['infoCeletista']['indAdmissao'] = 1;
             //NÃO SERÁ PREEENCHIDO
@@ -475,9 +531,24 @@ class ServidorService
                         ->getCNPJ();
                 }
             }
-            $dadosCeletista['infoCeletista']['aprend'] = [];
-            $dadosCeletista['infoCeletista']['aprend']['tpInsc'] = '';
-            $dadosCeletista['infoCeletista']['aprend']['nrInsc'] = '';
+            $menorAprendiz = MenorAprendizRepository::findByMatricula($this->servidor->getMatricula());
+            if (!empty($menorAprendiz)) {
+                $dadosCeletista['infoCeletista']['aprend']['indAprend'] = (int) $menorAprendiz->getModalidade();
+                if ($menorAprendiz->getModalidade() == 1) {
+                    $dadosCeletista['infoCeletista']['aprend']['cnpjEntQual'] = $menorAprendiz->getCnpjDireta();
+                } else {
+                    // Valida CNPJ/CPF
+                    if (strlen($menorAprendiz->getCnpjIndireta()) == 14) {
+                        $dadosCeletista['infoCeletista']['aprend']['tpInsc'] = 1;
+                    } else {
+                        $dadosCeletista['infoCeletista']['aprend']['tpInsc'] = 2;
+                    }
+                    $dadosCeletista['infoCeletista']['aprend']['nrInsc'] = $menorAprendiz->getCnpjIndireta();
+                }
+                if (!empty($menorAprendiz->getCnpjPratica())) {
+                    $dadosCeletista['infoCeletista']['aprend']['cnpjPrat'] = $menorAprendiz->getCnpjPratica();
+                }
+            }
             $this->servidorEntity->setCeletista($dadosCeletista);
         }
     }
@@ -650,8 +721,22 @@ class ServidorService
 
         if (!empty($this->servidor->getDataRescisao())) {
             $dataFormatada = $this->servidor->getDataRescisao()->format('Y-m-d');
-            $dataRescicao = new DBDate($dataFormatada);
-            $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
+            try {
+                $dataRescicao = new DBDate($dataFormatada);
+            } catch (\ParameterException $e) {
+                $sMsgErro = $this->getMensagemValidaData('data rescisão');
+                throw new \ParameterException($sMsgErro);
+            }
+            
+            try {
+                $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
+            } catch (\ParameterException $e) {
+                $msg = "Favor revisar a data de obrigatoriedade da fase 2, na seguinte rotina: \n " .
+                    "DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Parâmetros > Gerais";
+                $sMsgErro = $this->getMensagemValidaData($msg, true);
+                throw new \ParameterException($sMsgErro);
+            }
+            
             if ($dataObrigatoriedade > $dataRescicao) {
                 $dadosDesligamento['dtDeslig'] = $dataFormatada;
             }
@@ -674,7 +759,9 @@ class ServidorService
                 $dadosDuracaoContrato['dtTerm'] = $contratoEmergencial->getDataFim();
 
                 $dadosDuracaoContrato['tpContr'] = '';
-                if (!empty($dadosDuracaoContrato['dtTerm']) || !empty($dadosDuracaoContrato['clauAssec'])) {
+                if (!empty($dadosDuracaoContrato['dtTerm'])
+                    || !empty($dadosDuracaoContrato['clauAssec'])
+                ) {
                     $dadosDuracaoContrato['tpContr'] = 2;
                 } else {
                     $dadosDuracaoContrato['tpContr'] = 1;
@@ -683,10 +770,11 @@ class ServidorService
                     $dadosDuracaoContrato['objDet'] = $isTemporario;
                 }
             } else {
-                if (empty($contratoEmergencial->getCodigo())) {
+                // Comentado if pois estavamos tendo diversos retornos de erros devido ao nao preenchimento do campo
+                // if (empty($contratoEmergencial->getCodigo())) {
                     //seta o tipo de contrato como prazo indeterminado
                     $dadosDuracaoContrato['tpContr'] = 1;
-                }
+                // }
             }
         }
         $this->servidorEntity->setDuracaoContrato($dadosDuracaoContrato);
@@ -712,13 +800,16 @@ class ServidorService
 
         $tipoInscricao = '';
         $numeroInscricao = '';
-
+        $descricao = '';
+        
         if ($this->servidor->getLocalTrabalhoPrincial()) {
             $tipoInscricao = $this->servidor->getLocalTrabalhoPrincial()->getTipoInscricao();
             $numeroInscricao = $this->servidor->getLocalTrabalhoPrincial()->getNumeroInscricao();
+            $descricao = $this->servidor->getLocalTrabalhoPrincial()->getDescricao();
             if ($tipoInscricao == "" || empty($tipoInscricao)) {
                 $tipoInscricao = 1;
                 $numeroInscricao = $this->servidor->getLocalTrabalhoPrincial()->getInstituicao()->getCNPJ();
+                $descricao = $this->servidor->getLocalTrabalhoPrincial()->getInstituicao()->getCgm()->getNome();
             }
         }
 
@@ -730,7 +821,7 @@ class ServidorService
         if ($numeroInscricao != "") {
             $dadosLocalTrabalhoContrato['localTrabGeral']['nrInsc'] = $numeroInscricao;
         }
-        $dadosLocalTrabalhoContrato['localTrabGeral']['descComp'] = '';
+        $dadosLocalTrabalhoContrato['localTrabGeral']['descComp'] = substr($descricao, 0, 80);
 
         /*
         TEMPORARIAMENTE EM DESUSO
@@ -770,27 +861,43 @@ class ServidorService
         $dependentes = $dependenteRepository
             ->scopeMatricula($this->servidor->getMatricula())
             ->orderBy(array('rh31_nome'))
+            ->scopeIrrfComplemetar('true', '!=')
             ->setUseJoin(true)
-            ->get(array(
+            ->get([
                 'rh31_nome',
                 'rh31_dtnasc',
                 'rh31_irf',
                 'dp01_cpf',
                 'rh31_fins_previdenciarios',
                 'rh31_gparen',
-                'dp01_sexo'
-            ));
+                'dp01_sexo',
+                'rh31_tipoparentesco',
+                'rh31_descricaoparentesco',
+            ]);
         $dadosDependentes = [];
-
         foreach ($dependentes as $dependente) {
             $dados = [];
             $dados['nmDep'] = $dependente->getNome();
             $dados['dtNascto'] = "";
             if (!is_null($dependente->getDataNascimento())) {
-                $dados['dtNascto'] = $dependente->getDataNascimento()->getDate();
+                try {
+                    $dados['dtNascto'] = $dependente->getDataNascimento()->getDate();
+                } catch (\ParameterException $e) {
+                    $sMsgErro = $this->getMensagemValidaData('data nascimento de dependente');
+                    throw new \ParameterException($sMsgErro);
+                }
             }
             $dados['cpfDep'] = $dependente->getCpf();
-            $dados['tpDep'] = $this->deParaTipoDependente[$dependente->getGrauParentesco()];
+            if (!empty($dependente->getTipoParentesco())) {
+                $dados['tpDep'] = $dependente->getTipoParentesco();
+                if ($dependente->getTipoParentesco() == "99") {
+                    if (!empty($dependente->getDescricaoParentesco())) {
+                        $dados['descrDep'] = $dependente->getDescricaoParentesco();
+                    }
+                }
+            } else {
+                $dados['tpDep'] = $this->deParaTipoDependente[$dependente->getGrauParentesco()];
+            }
             $dados['sexoDep'] = $dependente->getSexo();
             $regPrev = $this->servidor->isRgps() ? 1 : 2;
             if ($regPrev !== 2) {
@@ -816,7 +923,7 @@ class ServidorService
     }
 
     /**
-     * Organiza os dados do grupo 'trabalhador->dependente'
+     * Organiza os dados do grupo 'trabalhador->trabImig'
      */
     private function dadosImigrantes()
     {
@@ -863,7 +970,13 @@ class ServidorService
             $matricula = $this->servidor->getMatricula();
 
             $dadoEstatutario['tpProv'] = (int) $tipoProvimento;
-            $dadoEstatutario['dtExercicio'] = $this->servidor->getDataAdmissao()->getDate();
+            try {
+                $dadoEstatutario['dtExercicio'] = $this->servidor->getDataAdmissao()->getDate();
+            } catch (\ParameterException $e) {
+                $sMsgErro = $this->getMensagemValidaData('data admissão estatutário');
+                throw new \ParameterException($sMsgErro);
+            }
+            
 
             $regPrev = $this->servidor->isRgps() ? 1 : 2;
             if ($regPrev == 2) {
@@ -871,7 +984,15 @@ class ServidorService
                 $dadoEstatutario['indTetoRGPS'] = $this->servidorMovimentacao->getIndTetoRGPS($matricula);
                 $dadoEstatutario['indAbonoPerm'] = 'N';
                 $dadoEstatutario['dtIniAbono'] = '';
-                $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2)->getDate();
+                try {
+                    $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2)->getDate();
+                } catch (\ParameterException $e) {
+                    $msg = "Favor revisar a data de obrigatoriedade da fase 2, na seguinte rotina: \n " .
+                        "DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Parâmetros > Gerais";
+                    $sMsgErro = $this->getMensagemValidaData($msg, true);
+                    throw new \ParameterException($sMsgErro);
+                }
+                
                 if (!empty($this->servidorMovimentacao->getDataPermanenciaAbonada())) {
                     $dataAbono = $this->servidorMovimentacao->getDataPermanenciaAbonada()->format('Y-m-d');
                 }
@@ -947,7 +1068,15 @@ class ServidorService
     private function dadosAfastamento()
     {
         $servidor = \ServidorRepository::getInstanciaByCodigo($this->servidor->getMatricula());
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+        try {
+            $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+        } catch (\ParameterException $e) {
+            $msg = "Favor revisar a data de obrigatoriedade da fase 2, na seguinte rotina: \n " .
+                "DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Parâmetros > Gerais";
+            $sMsgErro = $this->getMensagemValidaData($msg, true);
+            throw new \ParameterException($sMsgErro);
+        }
+        
         $servidorValidaData = \AssentamentoRepository::servidorValidaData($servidor, $dataObrigatoriedade);
         $dadoAfastamento = [];
         if (!empty($servidorValidaData->h16_dtconc)) {
@@ -967,8 +1096,15 @@ class ServidorService
     private function dadosCessao()
     {
         $dadoCessao = [];
-        $dadoCessao['dtIniCessao'] = $this->servidorMovimentacao->getDataCedencia();
-
+        $iniCessao = new Cedencia($this->servidor->getMatricula());
+        try {
+            $dadoCessao['dtIniCessao'] =
+            $iniCessao->getDataMovimentacao() ? $iniCessao->getDataMovimentacao()->getDate() : '';
+        } catch (\ParameterException $e) {
+            $sMsgErro = $this->getMensagemValidaData('data início de cessão');
+            throw new \ParameterException($sMsgErro);
+        }
+        
         $this->servidorEntity->setCessao($dadoCessao);
     }
 
@@ -984,7 +1120,12 @@ class ServidorService
         $cboFuncao = '';
         $cargoFuncao['nmCargo'] = $this->servidor->getDadosCargo()->rh37_descr;
         $cargoFuncao['CBOCargo'] = $this->servidor->getDadosCargo()->rh37_cbo;
-        $cargoFuncao['dtIngrCargo'] = $this->servidor->getDataAdmissao()->getDate();
+        try {
+            $cargoFuncao['dtIngrCargo'] = $this->servidor->getDataAdmissao()->getDate();
+        } catch (\ParameterException $e) {
+            $sMsgErro = $this->getMensagemValidaData('data admissão');
+            throw new \ParameterException($sMsgErro);
+        }
 
         if (!empty($this->servidor->getDadosCargo()->rh37_acumcargo)) {
             $cargoFuncao['acumCargo'] = $this->servidor->getDadosCargo()->rh37_acumcargo === 'true' ? 'S' : 'N';
@@ -1104,31 +1245,6 @@ class ServidorService
         }
     }
 
-    private function cedenciaEsocial()
-    {
-        $cedencia = new \cl_rhcedencia();
-        $numMatricula =$this->servidor->getMatricula();
-        $campos = ['rh261_seqpes',
-                   'rh261_credencial',
-                   'rh261_onus',
-                   'rh261_ressarcimento',
-                   'rh261_datamovimentacao',
-                   'rh261_devolucao',
-                   'rh261_numcgm',
-                   'rh261_matorigemcedente',
-                   'rh261_servidorcedido',
-                   'rh261_regist'
-        ];
-        $campos = implode(', ', $campos);
-        $sql_cedencia = $cedencia->sql_query(null, $campos, "rh261_seqpes desc", "rh261_regist = " . $numMatricula);
-        $rsCedencia = db_query($sql_cedencia);
-        if (!$rsCedencia) {
-            throw new \DBException("Erro ao executar a query: {$sql_cedencia}");
-        }
-        $cedencia = db_utils::fieldsMemory($rsCedencia, 0);
-        return $cedencia;
-    }
-
     /**
      * Cedência
      */
@@ -1149,7 +1265,12 @@ class ServidorService
                 $dadoCedencia['cnpjCednt'] = $registroCedencia->getCnpjCedencia();
                 $dadoCedencia['matricCed'] = $registroCedencia->getMatriculaCedencia();
                 if (!empty($registroCedencia->getDataAdmissaoOrigem())) {
-                    $dadoCedencia['dtAdmCed'] = $registroCedencia->getDataAdmissaoOrigem()->getDate();
+                    try {
+                        $dadoCedencia['dtAdmCed'] = $registroCedencia->getDataAdmissaoOrigem()->getDate();
+                    } catch (\ParameterException $e) {
+                        $sMsgErro = $this->getMensagemValidaData('data admissão');
+                        throw new \ParameterException($sMsgErro);
+                    }
                 }
                 $dadoCedencia['tpRegTrab'] = $registroCedencia->getTipoRegimeOrigem() ?
                     (int) $registroCedencia->getTipoRegimeOrigem() : '';
@@ -1209,9 +1330,30 @@ class ServidorService
             );
             $dadoAlteracaoContratual = [];
             if ($registroAlteracao) {
-                $dadoAlteracaoContratual['dtAlteracao'] = $registroAlteracao->getDataS2306()->getDate();
+                try {
+                    $dadoAlteracaoContratual['dtAlteracao'] = $registroAlteracao->getDataS2306()->getDate();
+                } catch (\ParameterException $e) {
+                    $sMsgErro = $this->getMensagemValidaData('data alteração evento S-2306');
+                    throw new \ParameterException($sMsgErro);
+                }
             }
             $this->servidorEntity->setAlteracaoContratualSemVinculo($dadoAlteracaoContratual);
         }
+    }
+
+    /**
+     * Valida a data
+     * Retorna uma mensagem amigável quando a data não é válida.
+     * @throws \DBException
+     */
+    private function getMensagemValidaData($mensagem = '', $configuracao = false)
+    {
+        $matricula = $this->servidor->getMatricula();
+        $nome = $this->servidor->getCgm()->getNome();
+        $mensagemErro = "O servidor {$matricula} - {$nome} possui data inválida em {$mensagem}. Favor Revisar";
+        if ($configuracao) {
+            $mensagemErro = $mensagem;
+        }
+        return $mensagemErro;
     }
 }

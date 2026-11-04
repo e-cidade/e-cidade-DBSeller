@@ -2,7 +2,7 @@
 // $pluginAfetaArquivos
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("nome");
     <div class="container">
         <table border="0">
             <tr>
-                <td nowrap title="<?= @$Tz10_codigo ?>">
-                    <?= @$Lz10_codigo ?>
+                <td nowrap title="<?php echo @$Tz10_codigo ?>">
+                    <?php echo @$Lz10_codigo ?>
                 </td>
                 <td>
                     <?php db_input('z10_codigo', 10, $Iz10_codigo, true, 'text', 3, "") ?>
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?= @$Tz10_numcgm ?>">
+                <td nowrap title="<?php echo @$Tz10_numcgm ?>">
                     <?php
                     db_ancora(@$Lz10_numcgm, "js_pesquisaz10_numcgm(true);", $db_opcao);
                     ?>
@@ -55,8 +55,8 @@ $clrotulo->label("nome");
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?= @$Tz10_data ?>">
-                    <?= @$Lz10_data ?>
+                <td nowrap title="<?php echo @$Tz10_data ?>">
+                    <?php echo @$Lz10_data ?>
                 </td>
                 <td>
                     <?php
@@ -71,8 +71,8 @@ $clrotulo->label("nome");
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?= @$Tz10_hora ?>">
-                    <?= @$Lz10_hora ?>
+                <td nowrap title="<?php echo @$Tz10_hora ?>">
+                    <?php echo @$Lz10_hora ?>
                 </td>
                 <td>
                     <?php
@@ -85,7 +85,7 @@ $clrotulo->label("nome");
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?= @$Tz10_login ?>">
+                <td nowrap title="<?php echo @$Tz10_login ?>">
                     <?php
                     db_ancora(@$Lz10_login, "js_pesquisaz10_login(true);", 3);
                     ?>
@@ -102,8 +102,8 @@ $clrotulo->label("nome");
                 </td>
             </tr>
             <tr>
-                <td nowrap title="<?= @$Tz10_proc ?>">
-                    <?= @$Lz10_proc ?>
+                <td nowrap title="<?php echo @$Tz10_proc ?>">
+                    <?php echo @$Lz10_proc ?>
                 </td>
                 <td>
                     <?php
@@ -113,7 +113,7 @@ $clrotulo->label("nome");
                 </td>
             </tr>
         </table>
-        <input name="db_opcao" type="submit" id="db_opcao" value="<?= ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?= ($db_botao == false ? "disabled" : "") ?>>
+        <input name="db_opcao" type="submit" id="db_opcao" value="<?php echo ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?php echo ($db_botao == false ? "disabled" : "") ?>>
         <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
     </div>
 </form>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,14 +87,14 @@ if (isset($alterar)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-            <?
+            <?php
               include(modification("forms/db_frmturno.php"));
             ?>
           </center>
         </td>
       </tr>
     </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),
@@ -104,7 +104,7 @@ if (isset($alterar)) {
   </body>
 </html>
 
-<?
+<?php
 
 if (isset($alterar)) {
 

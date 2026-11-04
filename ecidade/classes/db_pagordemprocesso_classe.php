@@ -1,38 +1,38 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemprocesso
-class cl_pagordemprocesso { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e03_sequencial = 0; 
-   var $e03_pagordem = 0; 
-   var $e03_numeroprocesso = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pagordemprocesso {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e03_sequencial = 0;
+   var $e03_pagordem = 0;
+   var $e03_numeroprocesso = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e03_sequencial = int4 = sequencial 
-                 e03_pagordem = int4 = pagordem 
-                 e03_numeroprocesso = varchar(15) = numero processo 
+                 e03_sequencial = int4 = sequencial
+                 e03_pagordem = int4 = pagordem
+                 e03_numeroprocesso = varchar(15) = numero processo
                  ";
-   //funcao construtor da classe 
-   function cl_pagordemprocesso() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pagordemprocesso"); 
+     $this->rotulo = new rotulo("pagordemprocesso");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_pagordemprocesso {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e03_sequencial = ($this->e03_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e03_sequencial"]:$this->e03_sequencial);
        $this->e03_pagordem = ($this->e03_pagordem == ""?@$GLOBALS["HTTP_POST_VARS"]["e03_pagordem"]:$this->e03_pagordem);
@@ -51,9 +51,9 @@ class cl_pagordemprocesso {
      }
    }
    // funcao para inclusao
-   function incluir ($e03_sequencial){ 
+   public function incluir ($e03_sequencial){
       $this->atualizacampos();
-     if($this->e03_pagordem == null ){ 
+     if($this->e03_pagordem == null ){
        $this->erro_sql = " Campo pagordem não informado.";
        $this->erro_campo = "e03_pagordem";
        $this->erro_banco = "";
@@ -63,16 +63,16 @@ class cl_pagordemprocesso {
        return false;
      }
      if($e03_sequencial == "" || $e03_sequencial == null ){
-       $result = db_query("select nextval('pagordemprocesso_e03_sequencial_seq')"); 
+       $result = db_query("select nextval('pagordemprocesso_e03_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pagordemprocesso_e03_sequencial_seq do campo: e03_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pagordemprocesso_e03_sequencial_seq do campo: e03_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->e03_sequencial = pg_result($result,0,0); 
+       $this->e03_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pagordemprocesso_e03_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $e03_sequencial)){
@@ -83,10 +83,10 @@ class cl_pagordemprocesso {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->e03_sequencial = $e03_sequencial; 
+         $this->e03_sequencial = $e03_sequencial;
        }
      }
-     if(($this->e03_sequencial == null) || ($this->e03_sequencial == "") ){ 
+     if(($this->e03_sequencial == null) || ($this->e03_sequencial == "") ){
        $this->erro_sql = " Campo e03_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,17 +95,17 @@ class cl_pagordemprocesso {
        return false;
      }
      $sql = "insert into pagordemprocesso(
-                                       e03_sequencial 
-                                      ,e03_pagordem 
-                                      ,e03_numeroprocesso 
+                                       e03_sequencial
+                                      ,e03_pagordem
+                                      ,e03_numeroprocesso
                        )
                 values (
-                                $this->e03_sequencial 
-                               ,$this->e03_pagordem 
-                               ,'$this->e03_numeroprocesso' 
+                                $this->e03_sequencial
+                               ,$this->e03_pagordem
+                               ,'$this->e03_numeroprocesso'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "pagordemprocesso ($this->e03_sequencial) nao Incluído. Inclusao Abortada.";
@@ -145,16 +145,16 @@ class cl_pagordemprocesso {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e03_sequencial=null) { 
+   public function alterar ($e03_sequencial=null) {
       $this->atualizacampos();
      $sql = " update pagordemprocesso set ";
      $virgula = "";
-     if(trim($this->e03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_sequencial"])){ 
+     if(trim($this->e03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_sequencial"])){
        $sql  .= $virgula." e03_sequencial = $this->e03_sequencial ";
        $virgula = ",";
-       if(trim($this->e03_sequencial) == null ){ 
+       if(trim($this->e03_sequencial) == null ){
          $this->erro_sql = " Campo sequencial não informado.";
          $this->erro_campo = "e03_sequencial";
          $this->erro_banco = "";
@@ -164,10 +164,10 @@ class cl_pagordemprocesso {
          return false;
        }
      }
-     if(trim($this->e03_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_pagordem"])){ 
+     if(trim($this->e03_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_pagordem"])){
        $sql  .= $virgula." e03_pagordem = $this->e03_pagordem ";
        $virgula = ",";
-       if(trim($this->e03_pagordem) == null ){ 
+       if(trim($this->e03_pagordem) == null ){
          $this->erro_sql = " Campo pagordem não informado.";
          $this->erro_campo = "e03_pagordem";
          $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_pagordemprocesso {
          return false;
        }
      }
-     if(trim($this->e03_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_numeroprocesso"])){ 
+     if(trim($this->e03_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e03_numeroprocesso"])){
        $sql  .= $virgula." e03_numeroprocesso = '$this->e03_numeroprocesso' ";
        $virgula = ",";
      }
@@ -208,7 +208,7 @@ class cl_pagordemprocesso {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pagordemprocesso nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e03_sequencial;
@@ -236,11 +236,11 @@ class cl_pagordemprocesso {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e03_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e03_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -249,7 +249,7 @@ class cl_pagordemprocesso {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($e03_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -280,7 +280,7 @@ class cl_pagordemprocesso {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "pagordemprocesso nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e03_sequencial;
@@ -308,11 +308,11 @@ class cl_pagordemprocesso {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -334,11 +334,11 @@ class cl_pagordemprocesso {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $e03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $e03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -354,15 +354,15 @@ class cl_pagordemprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($e03_sequencial!=null ){
-         $sql2 .= " where pagordemprocesso.e03_sequencial = $e03_sequencial "; 
-       } 
+         $sql2 .= " where pagordemprocesso.e03_sequencial = $e03_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -371,11 +371,11 @@ class cl_pagordemprocesso {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $e03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $e03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,15 +388,15 @@ class cl_pagordemprocesso {
      $sql2 = "";
      if($dbwhere==""){
        if($e03_sequencial!=null ){
-         $sql2 .= " where pagordemprocesso.e03_sequencial = $e03_sequencial "; 
-       } 
+         $sql2 .= " where pagordemprocesso.e03_sequencial = $e03_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

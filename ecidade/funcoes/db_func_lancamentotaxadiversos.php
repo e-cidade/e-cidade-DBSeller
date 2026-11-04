@@ -1,4 +1,4 @@
-<?
+<?php
 $campos  = "distinct lancamentotaxadiversos.y120_sequencial,                                                     ";
 $campos .= "lancamentotaxadiversos.y120_cgm,                                                                     ";
 $campos .= "cgm.z01_nome,                                                                                        ";

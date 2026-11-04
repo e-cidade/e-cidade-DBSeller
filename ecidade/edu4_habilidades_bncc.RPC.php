@@ -240,6 +240,7 @@ try {
             $service = new ConteudoDesenvolvidoService();
             $retorno->conteudo = null;
             $retorno->codigo = null;
+
             $conteudoDesenvolvido = $service->buscarConteudo($regencia, $data, $turnoReferente->ed336_codigo);
             if (!is_null($conteudoDesenvolvido)) {
                 $retorno->conteudo = $conteudoDesenvolvido->getConteudo();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if(isset($db_opcaoal)){
 <form name="form2" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('db34_codarq',6,$Idb34_codarq,true,'hidden',$db_opcao,"")
 ?>
   <tr>
@@ -63,7 +63,7 @@ db_input('db34_codarq',6,$Idb34_codarq,true,'hidden',$db_opcao,"")
        <?=@$Ldb34_codcpd?>
     </td>
     <td> 
-<?
+<?php
 if(isset($codcpd))
   $db34_codcpd = $codcpd;
 
@@ -76,7 +76,7 @@ db_input('db34_codcpd',6,$Idb34_codcpd,true,'text',3,"")
        <?=@$Ldb34_descr?>
     </td>
     <td> 
-<?
+<?php
 $x = array("SQL"=>"SQL","MENUS"=>"MENUS","ARQ"=>"ARQUIVO");
 db_select('db34_descr',$x,$Idb34_descr,2);
 //db_input('db34_descr',15,$Idb34_descr,true,'text',$db_opcao,"")
@@ -88,7 +88,7 @@ db_select('db34_descr',$x,$Idb34_descr,2);
        <?=@$Ldb34_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db34_obs',2,70,$Idb34_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_textarea('db34_obs',2,70,$Idb34_obs,true,'text',$db_opcao,"")
        <?=@$Ldb34_arq?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('db34_arq',6,70,$Idb34_arq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_textarea('db34_arq',6,70,$Idb34_arq,true,'text',$db_opcao,"")
   <table>
     <tr>
      <td valign="top"  align="center">
-     <?
+     <?php
        $chavepri= array("db34_codarq"=>@$db34_codarq);
        $cliframe_alterar_excluir->chavepri=$chavepri;
 //       echo $cldb_versaocpdarq->sql_query_file(null,"*","","db34_codcpd=".@$db34_codcpd);
@@ -142,7 +142,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   alert(chave);
   db_iframe_db_versaocpdarq.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

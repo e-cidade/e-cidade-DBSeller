@@ -50,11 +50,11 @@ $clempnotasuspensao->rotulo->label("cc36_sequencial");
     <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
       <tr>
         <td><label><?= $Lcc36_sequencial ?></label></td>
-        <td><? db_input("cc36_sequencial", 10, $Icc36_sequencial, true, "text", 4, "", "chave_cc36_sequencial"); ?></td>
+        <td><?php db_input("cc36_sequencial", 10, $Icc36_sequencial, true, "text", 4, "", "chave_cc36_sequencial"); ?></td>
       </tr>
       <tr>
         <td><label><?= $Lcc36_sequencial ?></label></td>
-        <td><? db_input("cc36_sequencial", 10, $Icc36_sequencial, true, "text", 4, "", "chave_cc36_sequencial"); ?></td>
+        <td><?php db_input("cc36_sequencial", 10, $Icc36_sequencial, true, "text", 4, "", "chave_cc36_sequencial"); ?></td>
       </tr>
     </table>
   </fieldset>
@@ -109,12 +109,12 @@ if (!isset($pesquisa_chave)) {
 ?>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

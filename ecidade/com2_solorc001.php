@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -71,13 +71,13 @@ function js_abre(){
     }
   }
 }
-function js_mostrapcorcamsol(chave){ 
+function js_mostrapcorcamsol(chave){
   document.form1.pc20_codorc.value = chave;
   document.form1.pc10_numero.value = "";
   db_iframe_pcorcam.hide();
   document.location.href = "com2_solorc001.php?pc20_codorc="+chave;
 }
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="document.form1.pc20_codorc.focus();" bgcolor="#cccccc">
@@ -96,19 +96,19 @@ function js_mostrapcorcamsol(chave){
     <td ></td>
     <td ></td>
   </tr>
-  <tr> 
-    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <? db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
+  <tr>
+    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <?php db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("pc20_codorc",8,$Ipc20_codorc,true,"text",3,"onchange='js_pesquisa_pcorcam(false);'"); 
+      <?php
+         db_input("pc20_codorc",8,$Ipc20_codorc,true,"text",3,"onchange='js_pesquisa_pcorcam(false);'");
       ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="right" nowrap title="<?=$Tpc10_numero?>"> <? db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>  </td>
+  <tr>
+    <td  align="right" nowrap title="<?=$Tpc10_numero?>"> <?php db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("pc10_numero",8,$Ipc10_numero,true,"text",4,"onchange='js_pesquisapc10_numero(false);'"); 
+      <?php
+         db_input("pc10_numero",8,$Ipc10_numero,true,"text",4,"onchange='js_pesquisapc10_numero(false);'");
       ?>
     </td>
   </tr>
@@ -118,13 +118,13 @@ function js_mostrapcorcamsol(chave){
       <input name="limpar" type="button" onclick='js_limparcampos();'  value="Limpar campos">
     </td>
   </tr>
-  <?if(isset($pc20_codorc)){?>
-  <tr> 
+  <?php if(isset($pc20_codorc)){?>
+  <tr>
     <td colspan=2>
     <iframe name="iframe_fornec" id="fornecedores" marginwidth="0" marginheight="0" frameborder="0" src="com1_selfornecedor001.php?pc21_codorc=<?=$pc20_codorc?>" width="400" height="250"></iframe>
     </td>
   </tr>
-  <?}?>
+  <?php }?>
   <tr height="20px">
     <td ></td>
     <td ></td>
@@ -132,7 +132,7 @@ function js_mostrapcorcamsol(chave){
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_limparcampos(){
@@ -144,15 +144,15 @@ function js_pesquisa_pcorcam(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pcorcam','func_pcorcamlancval.php?sol=true&sel=true&numero=true&funcao_js=parent.js_mostrapcorcam1|pc20_codorc','Pesquisa',true);
   }else{
-     if(document.form1.pc20_codorc.value != ''){ 
+     if(document.form1.pc20_codorc.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pcorcam','func_pcorcamlancval.php?pesquisa_chave='+document.form1.pc20_codorc.value+'&numero=true&sol=true&sel=true&funcao_js=parent.js_mostrapcorcam','Pesquisa',true);
      }
   }
 }
 function js_mostrapcorcam(chave,erro){
-  if(erro==true){ 
-    document.form1.pc20_codorc.focus(); 
-    document.form1.pc20_codorc.value = ''; 
+  if(erro==true){
+    document.form1.pc20_codorc.focus();
+    document.form1.pc20_codorc.value = '';
     document.location.href = "com2_solorc001.php";
   }else{
     document.location.href = "com2_solorc001.php?pc20_codorc="+chave;

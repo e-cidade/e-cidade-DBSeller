@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcgmsituacaocpf->rotulo->label("z17_sequencial");
               <?=$Lz17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z17_sequencial",10,$Iz17_sequencial,true,"text",4,"","chave_z17_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcgmsituacaocpf->rotulo->label("z17_sequencial");
               <?=$Lz17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z17_sequencial",10,$Iz17_sequencial,true,"text",4,"","chave_z17_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcgmsituacaocpf->rotulo->label("z17_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgmsituacaocpf.php")==true){
@@ -122,12 +122,12 @@ $clcgmsituacaocpf->rotulo->label("z17_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

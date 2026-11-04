@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,7 +94,7 @@ function js_al(obj){
   <tr>
     <td align="center" valign="top">
       <table border='1' width="100%">
-<?    
+<?php    
      if(isset($q07_inscr)){
        $result21=$clativprinc->sql_record($clativprinc->sql_query_file($q07_inscr,"q88_seq as xq88_seq"));
        if($clativprinc->numrows>0){

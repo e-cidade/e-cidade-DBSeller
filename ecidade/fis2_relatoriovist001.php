@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Tipo de vistorias","g2"=>"Rua da vistoria","g3"=>"Bairro da vistoria");
        $clcriaabas->title = array("g1"=>"Selecionar vistoria","g2"=>"Selecionar rua da vistoria","g3"=>"Selecionar bairro da vistoria");
        $clcriaabas->src = array("g1"=>"fis2_relvistaba001.php","g2"=>"fis2_relvistaba002.php","g3"=>"fis2_relvistaba003.php");
@@ -66,7 +66,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

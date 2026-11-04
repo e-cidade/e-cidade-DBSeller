@@ -26,13 +26,13 @@ class cl_avaliacaogruporespostacgm {
                  eso03_cgm = int4 = CGM
                  ";
    //funcao construtor da classe
-   function cl_avaliacaogruporespostacgm() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaogruporespostacgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_avaliacaogruporespostacgm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->eso03_sequencial = ($this->eso03_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["eso03_sequencial"]:$this->eso03_sequencial);
        $this->eso03_avaliacaogruporesposta = ($this->eso03_avaliacaogruporesposta == ""?@$GLOBALS["HTTP_POST_VARS"]["eso03_avaliacaogruporesposta"]:$this->eso03_avaliacaogruporesposta);
@@ -51,7 +51,7 @@ class cl_avaliacaogruporespostacgm {
      }
    }
    // funcao para Inclusão
-   function incluir ($eso03_sequencial){
+   public function incluir ($eso03_sequencial){
       $this->atualizacampos();
      if($this->eso03_avaliacaogruporesposta == null ){
        $this->erro_sql = " Campo Grupo Resposta não informado.";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ if($db_opcao!= 1 and isset($j93_codigo)){
            <?=@$Lj93_codigo?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j93_codigo',6,$Ij93_codigo,true,'text',3,"")
           ?>
         </td>
@@ -63,7 +63,7 @@ if($db_opcao!= 1 and isset($j93_codigo)){
            <?=@$Lj93_descr?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j93_descr',20,$Ij93_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -73,7 +73,7 @@ if($db_opcao!= 1 and isset($j93_codigo)){
            <?=@$Lj93_regra?>
         </td>
         <td> 
-          <?
+          <?php
             $x = array('1'=>'Proprietario','2'=>'Promitente');
             db_select('j93_regra',$x,true,$opcaoAverba,"");
           ?>
@@ -84,22 +84,22 @@ if($db_opcao!= 1 and isset($j93_codigo)){
            <?=@$Lj93_datalimite?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('j93_datalimite',@$j93_datalimite_dia,@$j93_datalimite_mes,@$j93_datalimite_ano,true,'text',$db_opcao,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj93_averbagrupo?>">
-           <?
+           <?php
     	       db_ancora(@$Lj93_averbagrupo,"js_pesquisaj93_averbagrupo(true);",$opcaoAverba);
            ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j93_averbagrupo',10,$Ij93_averbagrupo,true,'text',$opcaoAverba," onchange='js_pesquisaj93_averbagrupo(false);'")
           ?>
-           <?
+           <?php
             db_input('j105_descr',40,$Ij105_descr,true,'text',3,'')
            ?>
         </td>
@@ -138,7 +138,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_averbatipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

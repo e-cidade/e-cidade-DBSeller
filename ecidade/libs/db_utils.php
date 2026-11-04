@@ -51,7 +51,7 @@ class db_utils
     /**
      * Construtor da Classe
      */
-    function db_utils()
+    public function __construct()
     {
     }
 
@@ -75,7 +75,7 @@ class db_utils
             $sFieldType = @pg_field_type($rs, $i);
 
             if ($iTotalLinhas > 0) {
-                $sValor = trim(@pg_result($rs, $idx, $sFieldName));
+                $sValor = trim(@pg_fetch_result($rs, $idx, $sFieldName));
             }
             if ($formata) {
                 switch ($sFieldType) {
@@ -107,6 +107,7 @@ class db_utils
             }
 
             $oFields->$sFieldName = $sValor;
+            unset($sValor);
         }
         return $oFields;
     }
@@ -423,5 +424,20 @@ class db_utils
         } catch (Exception $exception) {
             return null;
         }
+    }
+
+    /**
+     * Funcao criada para validar se cliente esta usando a regra de parcelamento de custas juridicas
+     *
+     * @return bool
+     */
+    public static function ativaParcelamentoCustas()
+    {
+        $sqlBusca = "select v19_parcelahonorariosmanual
+                     from parjuridico
+                     where v19_anousu = 2023 and v19_instit = " . db_getsession("DB_instit");
+        $rsBusca = db_query($sqlBusca);
+        $resultado = db_utils::getCollectionByRecord($rsBusca)[0]->v19_parcelahonorariosmanual  == 'f';
+        return $resultado;
     }
 }

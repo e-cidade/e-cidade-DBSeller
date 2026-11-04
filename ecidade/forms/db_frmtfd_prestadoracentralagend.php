@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,19 +38,19 @@ $clrotulo->label("z01_nome");
       <?=@$Ltf10_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf10_i_codigo',10,$Itf10_i_codigo,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf10_i_centralagend?>">
-      <?
+      <?php
       db_ancora(@$Ltf10_i_centralagend,"js_pesquisatf10_i_centralagend(true);",3);
       ?>
     </td>
     <td nowrap> 
-      <?
+      <?php
       db_input('tf10_i_centralagend',10,$Itf10_i_centralagend,true,'text',3,'');
       db_input('z01_nome2',50,$Iz01_nome,true,'text',3,'');
       ?>
@@ -58,12 +58,12 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf10_i_prestadora?>">
-      <?
+      <?php
       db_ancora(@$Ltf10_i_prestadora,"js_pesquisatf10_i_prestadora(true);",$db_opcao);
       ?>
     </td>
     <td nowrap> 
-      <?
+      <?php
       db_input('tf10_i_prestadora',10,$Itf10_i_prestadora,true,'text',$db_opcao," onchange='js_pesquisatf10_i_prestadora(false);'");
       db_input('z01_nome',50,$Iz01_nome,true,'text',3,'');
       ?>
@@ -78,7 +78,7 @@ $clrotulo->label("z01_nome");
               <?=@$Ltf10_d_validadeini?>
             </td>
             <td> 
-              <?
+              <?php
               if(isset($tf10_d_validadeini) && !empty($tf10_d_validadeini)) {
 
                 $dTmp = explode('/', $tf10_d_validadeini);
@@ -98,7 +98,7 @@ $clrotulo->label("z01_nome");
               <?=@$Ltf10_d_validadefim?>
             </td>
             <td> 
-              <?
+              <?php
               if(isset($tf10_d_validadefim) && !empty($tf10_d_validadefim)) {
 
                 $dTmp = explode('/', $tf10_d_validadefim);
@@ -131,7 +131,7 @@ $clrotulo->label("z01_nome");
   <table width="100%">
 	  <tr>
 		  <td valign="top"><br>
-        <?
+        <?php
 				$aChavepri = array ('tf10_i_codigo' => @$tf10_i_codigo,
                             'tf09_i_codigo' => @$tf09_i_codigo,
                             'tf10_i_prestadora' => @$tf10_i_prestadora,
@@ -184,7 +184,7 @@ function js_novo() {
 
 function js_cancelar() {
 
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf10_i_centralagend=$tf10_i_centralagend&z01_nome2=$z01_nome2'";
   ?>
 
@@ -290,7 +290,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_prestadoracentralagend.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

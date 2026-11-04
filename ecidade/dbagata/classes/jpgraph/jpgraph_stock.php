@@ -19,7 +19,7 @@ class StockPlot extends Plot {
     var $iStockColor1='white',$iStockColor2='darkred',$iStockColor3='darkred';
 //---------------
 // CONSTRUCTOR
-    function StockPlot(&$datay,$datax=false) {
+    public function __construct(&$datay,$datax=false) {
 	if( count($datay) % $this->iTupleSize ) {
 	    JpGraphError::RaiseL(21001,$this->iTupleSize);//('Data values for Stock charts must contain an even multiple of '.$this->iTupleSize.' data points.');
 	}
@@ -28,25 +28,25 @@ class StockPlot extends Plot {
     }
 //---------------
 // PUBLIC METHODS
-	
-    function SetColor($aColor,$aColor1='white',$aColor2='darkred',$aColor3='darkred') {
+
+    public function SetColor($aColor,$aColor1='white',$aColor2='darkred',$aColor3='darkred') {
 	$this->color = $aColor;
 	$this->iStockColor1 = $aColor1;
 	$this->iStockColor2 = $aColor2;
 	$this->iStockColor3 = $aColor3;
     }
 
-    function SetWidth($aWidth) {
+    public function SetWidth($aWidth) {
 	// Make sure it's odd
 	$this->iWidth = 2*floor($aWidth/2)+1;
     }
 
-    function HideEndLines($aHide=true) {
+    public function HideEndLines($aHide=true) {
 	$this->iEndLines = !$aHide;
     }
 
     // Gets called before any axis are stroked
-    function PreStrokeAdjust(&$graph) {
+    public function PreStrokeAdjust(&$graph) {
 	if( $this->center ) {
 	    $a=0.5; $b=0.5;
 	    $this->numpoints++;
@@ -54,11 +54,11 @@ class StockPlot extends Plot {
 	    $a=0; $b=0;
 	}
 	$graph->xaxis->scale->ticks->SetXLabelOffset($a);
-	$graph->SetTextScaleOff($b);						
+	$graph->SetTextScaleOff($b);
     }
-	
+
     // Stroke stock plot
-    function Stroke(&$img,$xscale,$yscale) {
+    public function Stroke(&$img,$xscale,$yscale) {
 	$n=$this->numpoints;
 	if( $this->center ) $n--;
 	if( isset($this->coords[1]) ) {
@@ -68,14 +68,14 @@ class StockPlot extends Plot {
 	    else
 		$exist_x = true;
 	}
-	else 
+	else
 	    $exist_x = false;
 
 	if( $exist_x )
 	    $xs=$this->coords[1][0];
 	else
 	    $xs=0;
-		
+
 	$ts = $this->iTupleSize;
 	$this->csimareas = '';
 	for( $i=0; $i<$n; ++$i) {
@@ -86,7 +86,7 @@ class StockPlot extends Plot {
 	    if( $exist_x ) $x=$this->coords[1][$i];
 	    else $x=$i;
 	    $xt = $xscale->Translate($x);
-	    
+
 	    $neg = $this->coords[0][$i*$ts] > $this->coords[0][$i*$ts+1] ;
 	    $yopen  = $yscale->Translate($this->coords[0][$i*$ts]);
 	    $yclose = $yscale->Translate($this->coords[0][$i*$ts+1]);
@@ -97,17 +97,17 @@ class StockPlot extends Plot {
 	    $xl = $xt - $dx;
 	    $xr = $xt + $dx;
 
-	    if( $neg ) 
+	    if( $neg )
 		$img->SetColor($this->iStockColor3);
 	    else
 		$img->SetColor($this->iStockColor1);
 	    $img->FilledRectangle($xl,$yopen,$xr,$yclose);
 	    $img->SetLineWeight($this->weight);
-	    if( $neg ) 
+	    if( $neg )
 		$img->SetColor($this->iStockColor2);
 	    else
 		$img->SetColor($this->color);
-	
+
 	    $img->Rectangle($xl,$yopen,$xr,$yclose);
 
 	    if( $yopen < $yclose ) {
@@ -135,7 +135,7 @@ class StockPlot extends Plot {
 	    if( !empty($this->csimtargets[$i]) ) {
 		$this->csimareas.= '<area shape="rect" coords="'.
 		    round($xl).','.round($ytop).','.
-		    round($xr).','.round($ybottom).'" ';   
+		    round($xr).','.round($ybottom).'" ';
 		$this->csimareas .= ' href="'.$this->csimtargets[$i].'"';
 		if( !empty($this->csimalts[$i]) ) {
 		    $sval=$this->csimalts[$i];
@@ -143,12 +143,12 @@ class StockPlot extends Plot {
 		}
 		$this->csimareas.= "  />\n";
 	    }
-	}			
+	}
 	return true;
     }
 
     // A hook for subclasses to modify the plot
-    function ModBox($img,$xscale,$yscale,$i,$xl,$xr,$neg) {}
+    public function ModBox($img,$xscale,$yscale,$i,$xl,$xr,$neg) {}
 
 } // Class
 
@@ -157,22 +157,22 @@ class StockPlot extends Plot {
 //===================================================
 class BoxPlot extends StockPlot {
     var $iPColor='black',$iNColor='white';
-    function BoxPlot($datay,$datax=false) {
+    public function __construct($datay,$datax=false) {
 	$this->iTupleSize=5;
 	parent::StockPlot($datay,$datax);
     }
 
-    function SetMedianColor($aPos,$aNeg) {
+    public function SetMedianColor($aPos,$aNeg) {
 	$this->iPColor = $aPos;
 	$this->iNColor = $aNeg;
     }
 
-    function ModBox(&$img,$xscale,$yscale,$i,$xl,$xr,$neg) {
-	if( $neg ) 
+    public function ModBox(&$img,$xscale,$yscale,$i,$xl,$xr,$neg) {
+	if( $neg )
 	    $img->SetColor($this->iNColor);
 	else
 	    $img->SetColor($this->iPColor);
-	
+
 	$y = $yscale->Translate($this->coords[0][$i*5+4]);
 	$img->Line($xl,$y,$xr,$y);
     }

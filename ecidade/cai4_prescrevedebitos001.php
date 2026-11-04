@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -54,7 +54,7 @@ textInLoad.innerHTML="<DIV id='msg_proc' style='border:1px solid #eaeaea;backgro
    </div>
   </div>
 </div>
-<?
+<?php
 $clprescricao = new cl_prescricao;
 $clarrecad    = new cl_arrecad;
 $clarreprescr = new cl_arreprescr;
@@ -65,7 +65,7 @@ $db_botao = true;
 //db_msgbox("dfhaskd hflkashd lfkhasdl flash k");
 //pega nome do usuário
 $sql = "select db_usuarios.nome as db_usunome
-          from db_usuarios 
+          from db_usuarios
 	       where db_usuarios.id_usuario = ".db_getsession("DB_id_usuario");
 $result = db_query($sql);
 db_fieldsmemory($result,0);
@@ -74,10 +74,10 @@ db_fieldsmemory($result,0);
  <tr><td height="15"></td></tr>
 </table>
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-<?
+<?php
 //MODULO: caixa
 $clprescricao->rotulo->label();
 $clarreprescr->rotulo->label();
@@ -98,31 +98,31 @@ $func_nome ->mostrar();
   <tr>
   </tr>
   <tr id="numcgm">
-    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
     <td> 
-        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+        <?php db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+        <?php db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
     </td>    
   </tr>
   <tr id="matricula">
-     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
      <td> 
-        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+        <?php db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
      </td>    
    </tr>
    <tr id="inscr">
-    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
     <td> 
-        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+        <?php db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
     </td>    
   </tr>
-  
-   <tr> 
+
+   <tr>
             <td width="" align="left" nowrap title="">
                <b>Prescrever Débitos Notificados: </b>
             </td>
             <td width="" align="left" nowrap title="">
-             <?
+             <?php
 				$arr_op = array("n"=>"Não","s"=>"Sim");
 				db_select("prescrnoti",$arr_op,true,"text");
 				?>
@@ -144,10 +144,10 @@ function js_verifica(){
   matric = '';
   inscr  = '';
   if(document.form1.k31_numcgm.value != ''){
-     numcgm = document.form1.k31_numcgm.value;    
+     numcgm = document.form1.k31_numcgm.value;
   }
   if(document.form1.k31_matric.value != ''){
-     matric = document.form1.k31_matric.value;    
+     matric = document.form1.k31_matric.value;
   }
   if(document.form1.k31_inscr.value != ''){
      inscr = document.form1.k31_inscr.value;
@@ -172,7 +172,7 @@ function js_verifica(){
   }
   querystring = 'numcgm='+numcgm+'&matric='+matric+'&inscr='+inscr+'&prescrnoti='+document.form1.prescrnoti.value;
   js_OpenJanelaIframe('','db_iframe_proc','func_prescreverdivida.php?'+querystring,'Prescrição de Divida',true);
-}  
+}
 function js_prescreve_gp( opcao ){
   if( opcao == 1 ){
     document.getElementById('numcgm').style.visibility="visible";
@@ -208,7 +208,7 @@ function js_pesquisa_numcgm(mostra){
 
 function js_mostracgm(chave1,chave2){
  document.form1.k31_matric.value = '';
- document.form1.k31_inscr.value = ''; 
+ document.form1.k31_inscr.value = '';
  document.form1.k31_numcgm.value = chave1;
  document.form1.k31_nome.value = chave2;
  func_nome.hide();
@@ -274,8 +274,8 @@ function js_mostrainscricao(mostra){
   }
 }
 function js_preencheinscricao(chave,chave1,chave2){
-   document.form1.k31_numcgm.value = ''; 	
-   document.form1.k31_matric.value = ''; 	
+   document.form1.k31_numcgm.value = '';
+   document.form1.k31_matric.value = '';
    document.form1.k31_inscr.value = chave;
    document.form1.k31_nome.value = chave2;
    func_nome.hide();
@@ -287,13 +287,13 @@ function js_preencheinscricao1(chave,erro){
      document.form1.k31_inscr.value = '';
    }
 }
- 
+
 </script>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

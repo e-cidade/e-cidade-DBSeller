@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -134,7 +134,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
                         <?=@$Lo69_manual?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         $x = array("f"=>"NAO","t"=>"SIM");
                         db_select('o69_manual',$x,true,$db_opcao,"");
                         ?>
@@ -157,7 +157,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
                         <?=@$Lo69_totalizador?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         $x = array("f"=>"NAO","t"=>"SIM");
                         db_select('o69_totalizador',$x,true,$db_opcao,"onchange='js_verificaLinhaTotalizadora()'");
                         ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -78,7 +78,7 @@ function js_validaSuspensao() {
        <?=@$Lk23_codigo?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('k23_codigo',10,$Ik23_codigo,true,'text',3,"");
           db_input('suspensao',10,$Ik23_codigo,true,'hidden',3,"");
         ?>
@@ -90,9 +90,9 @@ function js_validaSuspensao() {
         <?=@$Lk23_data?>
       </td>
       <td> 
-       <? db_inputdata('k23_data',@$k23_data_dia,@$k23_data_mes,@$k23_data_ano,true,'text',3,"");?>
+       <?php db_inputdata('k23_data',@$k23_data_dia,@$k23_data_mes,@$k23_data_ano,true,'text',3,"");?>
        <?=@$Lk23_hora?>
-       <? db_input('k23_hora',5,$Ik23_hora,true,'text',3,"") ?>
+       <?php db_input('k23_hora',5,$Ik23_hora,true,'text',3,"") ?>
 
       </td>
     </tr>
@@ -101,7 +101,7 @@ function js_validaSuspensao() {
         <?=@$Lk23_usuario?>
       </td>
       <td> 
-        <? 
+        <?php 
           db_input('k23_usuario',10,$Ik23_usuario,true,'text',3,"");
           db_input('nome_proc',35,$Inome,true,'text',3,"") ;
         ?>
@@ -111,21 +111,21 @@ function js_validaSuspensao() {
     </tr>
     <tr>
       <td><strong>Observações:</strong></td><td>
-        <? db_textarea('k23_obs',2,47,$Ik23_obs,true,'text',3,"","","")?></td>
+        <?php db_textarea('k23_obs',2,47,$Ik23_obs,true,'text',3,"","","")?></td>
     </tr>
     <tr>
 	    <td><strong>Tipo:</strong></td>
-	    <td><? db_input('cancdebitostipoproc',10,"",true,'text',3,"")?></td>
+	    <td><?php db_input('cancdebitostipoproc',10,"",true,'text',3,"")?></td>
     </tr>
-      <? if(isset($k23_cancdebitostipo) and $k23_cancdebitostipo == 2 ) { ?>
+      <?php if(isset($k23_cancdebitostipo) and $k23_cancdebitostipo == 2 ) { ?>
     <tr>
 	    <td><strong>Caracteristica Peculiar:</strong></td>
-  	  <td><? db_input('tipoproc',10,"",true,'text',3,"");
+  	  <td><?php db_input('tipoproc',10,"",true,'text',3,"");
   	         db_input('caracproc',35,"",true,'text',3,"");
   	      ?>
   	  </td>
     </tr>
-        <? } ?>
+        <?php } ?>
  </table>
 </fieldset>
 
@@ -139,7 +139,7 @@ function js_validaSuspensao() {
         <?=@$Lk20_codigo?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('k20_codigo',10,$Ik20_codigo,true,'text',3,"")
         ?>
       </td>
@@ -149,7 +149,7 @@ function js_validaSuspensao() {
          <?=@$Lk20_hora?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('k20_hora',5,$Ik20_hora,true,'text',3,"")
         ?>
       </td>
@@ -159,7 +159,7 @@ function js_validaSuspensao() {
          <?=@$Lk20_data?>
       </td>
       <td> 
-        <? db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
+        <?php db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
       </td>
     </tr>
     <tr>
@@ -167,7 +167,7 @@ function js_validaSuspensao() {
          <?=@$Lk20_usuario?>
       </td>
       <td> 
-      <? db_input('k20_usuario',10,$Ik20_usuario,true,'text',3,"");
+      <?php db_input('k20_usuario',10,$Ik20_usuario,true,'text',3,"");
          db_input('nome',35,$Inome,true,'text',3,"");
       ?>
       </td>
@@ -175,9 +175,9 @@ function js_validaSuspensao() {
   
     <tr>
 	    <td><strong>Tipo:</strong></td>
-	    <td><? db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
+	    <td><?php db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
     </tr>
-      <? 
+      <?php 
   	    if (isset($suspensao) && $suspensao == "s" ) {
 	   
   	      echo "<tr>	    ";
@@ -192,20 +192,20 @@ function js_validaSuspensao() {
   
       ?>  
   
-      <? if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
+      <?php if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
     <tr>
 	    <td><strong>Caracteristica Peculiar:</strong></td>
-	    <td><? db_input('tipo',10,"",true,'text',3,"");
+	    <td><?php db_input('tipo',10,"",true,'text',3,"");
 	       db_input('caracteristica',35,"",true,'text',3,"");
 	    ?>
 	    </td>
     </tr>
-  <? } ?>
+  <?php } ?>
     
  </table>
 </fieldset>
 
-	<?
+	<?php
      if(isset($chavepesquisa) && $chavepesquisa != ""){
 					 $sql = $clcancdebitos->sql_pendentesproc(" distinct k21_sequencia,
                                                      k21_numpre,
@@ -295,7 +295,7 @@ function js_pesquisaSuspensao(iCodSuspensao){
 function js_preenchepesquisa(chave){
 
   db_iframe_cancdebitos.hide();
-  <?
+  <?php
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   ?>
 }

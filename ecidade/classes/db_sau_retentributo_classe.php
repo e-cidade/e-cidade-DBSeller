@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE sau_retentributo
-class cl_sau_retentributo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd39_i_cod_reten = 0; 
-   var $sd39_v_situacao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sau_retentributo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd39_i_cod_reten = 0;
+   var $sd39_v_situacao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd39_i_cod_reten = int4 = Código retenção 
-                 sd39_v_situacao = varchar(60) = Situação 
+                 sd39_i_cod_reten = int4 = Código retenção
+                 sd39_v_situacao = varchar(60) = Situação
                  ";
-   //funcao construtor da classe 
-   function cl_sau_retentributo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sau_retentributo"); 
+     $this->rotulo = new rotulo("sau_retentributo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_sau_retentributo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd39_i_cod_reten = ($this->sd39_i_cod_reten == ""?@$GLOBALS["HTTP_POST_VARS"]["sd39_i_cod_reten"]:$this->sd39_i_cod_reten);
        $this->sd39_v_situacao = ($this->sd39_v_situacao == ""?@$GLOBALS["HTTP_POST_VARS"]["sd39_v_situacao"]:$this->sd39_v_situacao);
@@ -74,9 +74,9 @@ class cl_sau_retentributo {
      }
    }
    // funcao para inclusao
-   function incluir ($sd39_i_cod_reten){ 
+   public function incluir ($sd39_i_cod_reten){
       $this->atualizacampos();
-     if($this->sd39_v_situacao == null ){ 
+     if($this->sd39_v_situacao == null ){
        $this->erro_sql = " Campo Situação nao Informado.";
        $this->erro_campo = "sd39_v_situacao";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_sau_retentributo {
        $this->erro_status = "0";
        return false;
      }
-       $this->sd39_i_cod_reten = $sd39_i_cod_reten; 
-     if(($this->sd39_i_cod_reten == null) || ($this->sd39_i_cod_reten == "") ){ 
+       $this->sd39_i_cod_reten = $sd39_i_cod_reten;
+     if(($this->sd39_i_cod_reten == null) || ($this->sd39_i_cod_reten == "") ){
        $this->erro_sql = " Campo sd39_i_cod_reten nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_sau_retentributo {
        return false;
      }
      $sql = "insert into sau_retentributo(
-                                       sd39_i_cod_reten 
-                                      ,sd39_v_situacao 
+                                       sd39_i_cod_reten
+                                      ,sd39_v_situacao
                        )
                 values (
-                                $this->sd39_i_cod_reten 
-                               ,'$this->sd39_v_situacao' 
+                                $this->sd39_i_cod_reten
+                               ,'$this->sd39_v_situacao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "retentributo ($this->sd39_i_cod_reten) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_sau_retentributo {
        $resac = db_query("insert into db_acount values($acount,1956,11409,'','".AddSlashes(pg_result($resaco,0,'sd39_v_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd39_i_cod_reten=null) { 
+   public function alterar ($sd39_i_cod_reten=null) {
       $this->atualizacampos();
      $sql = " update sau_retentributo set ";
      $virgula = "";
-     if(trim($this->sd39_i_cod_reten)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd39_i_cod_reten"])){ 
+     if(trim($this->sd39_i_cod_reten)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd39_i_cod_reten"])){
        $sql  .= $virgula." sd39_i_cod_reten = $this->sd39_i_cod_reten ";
        $virgula = ",";
-       if(trim($this->sd39_i_cod_reten) == null ){ 
+       if(trim($this->sd39_i_cod_reten) == null ){
          $this->erro_sql = " Campo Código retenção nao Informado.";
          $this->erro_campo = "sd39_i_cod_reten";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_sau_retentributo {
          return false;
        }
      }
-     if(trim($this->sd39_v_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd39_v_situacao"])){ 
+     if(trim($this->sd39_v_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd39_v_situacao"])){
        $sql  .= $virgula." sd39_v_situacao = '$this->sd39_v_situacao' ";
        $virgula = ",";
-       if(trim($this->sd39_v_situacao) == null ){ 
+       if(trim($this->sd39_v_situacao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "sd39_v_situacao";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_sau_retentributo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "retentributo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd39_i_cod_reten;
@@ -214,14 +214,14 @@ class cl_sau_retentributo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd39_i_cod_reten=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd39_i_cod_reten=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd39_i_cod_reten));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_sau_retentributo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "retentributo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd39_i_cod_reten;
@@ -276,11 +276,11 @@ class cl_sau_retentributo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_sau_retentributo {
       }
      return $result;
    }
-   function sql_query ( $sd39_i_cod_reten=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd39_i_cod_reten=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,15 +318,15 @@ class cl_sau_retentributo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd39_i_cod_reten!=null ){
-         $sql2 .= " where sau_retentributo.sd39_i_cod_reten = $sd39_i_cod_reten "; 
-       } 
+         $sql2 .= " where sau_retentributo.sd39_i_cod_reten = $sd39_i_cod_reten ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -335,10 +335,10 @@ class cl_sau_retentributo {
      }
      return $sql;
   }
-   function sql_query_file ( $sd39_i_cod_reten=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd39_i_cod_reten=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,15 +351,15 @@ class cl_sau_retentributo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd39_i_cod_reten!=null ){
-         $sql2 .= " where sau_retentributo.sd39_i_cod_reten = $sd39_i_cod_reten "; 
-       } 
+         $sql2 .= " where sau_retentributo.sd39_i_cod_reten = $sd39_i_cod_reten ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

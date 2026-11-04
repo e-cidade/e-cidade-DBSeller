@@ -519,7 +519,7 @@ if(isset($r33_codigo) && trim($r33_codigo) != "") {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-        <?
+        <?php
         include(modification("forms/db_frminssirf001.php"));
         ?>
       </center>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("nomeinst");
 	       <?=@$Lc48_sequencial?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('c48_sequencial', 10, $Ic48_sequencial, true, 'text', 3);
 				?>
 	    </td>
@@ -51,7 +51,7 @@ $clrotulo->label("nomeinst");
 	      <b>Ano / Mes:</b>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_input('c48_ano', 4, $Ic48_ano, true, 'text', $db_opcao);
 	        echo '&nbsp;/&nbsp;';
 	        db_input('c48_mes', 2, $Ic48_mes, true, 'text', $db_opcao);
@@ -63,7 +63,7 @@ $clrotulo->label("nomeinst");
 	       <?=@$Lc48_descricao?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_input('c48_descricao', 60, $Ic48_descricao, true, 'text', $db_opcao);
 	      ?>
 	    </td>
@@ -73,7 +73,7 @@ $clrotulo->label("nomeinst");
 	       <?=@$Lc48_datapublicacao?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	        db_inputdata('c48_datapublicacao', @$c48_datapublicacao_dia, @$c48_datapublicacao_mes, @$c48_datapublicacao_ano, true, 'text', $db_opcao);
 	      ?>
 	    </td>
@@ -83,7 +83,7 @@ $clrotulo->label("nomeinst");
 	       <?=@$Lc48_meiocomunicacaosigap?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        $oDaoDbConfig              = db_utils::getDao("db_config");
 	        $sWhere                    = "codigo = {$iInstit}";
 	        $sSqlDbConfig              = $oDaoDbConfig->sql_query_file(null, "uf", null, $sWhere);
@@ -114,7 +114,7 @@ $clrotulo->label("nomeinst");
 	       <?=@$Lc48_tiporelatoriofiscal?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  $aTipoRelatorio = array('01' => 'Relatório Resumido de Execução Orçamentária',
 				                          '02' => 'Relatório de Gestão Fiscal');
 				  db_select('c48_tiporelatoriofiscal', $aTipoRelatorio, true, $db_opcao);
@@ -181,7 +181,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_publicidadesigap.hide();
-  <?
+  <?php
 	  if($db_opcao!=1){
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }

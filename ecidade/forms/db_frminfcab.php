@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("i01_descr");
           <?=@$Li03_codigo?>
         </td>
         <td> 
-          <?
+          <?php
 db_input('i03_codigo',6,$Ii03_codigo,true,'text',3,"")
 ?>
         <td>
@@ -47,7 +47,7 @@ db_input('i03_codigo',6,$Ii03_codigo,true,'text',3,"")
           <?=@$Li04_dtoper?>
         </td>
         <td> 
-          <?
+          <?php
 $i04_dtoper_dia = date("d",db_getsession("DB_datausu")); 
 $i04_dtoper_mes = date("m",db_getsession("DB_datausu"));
 $i04_dtoper_ano = date("Y",db_getsession("DB_datausu"));
@@ -60,7 +60,7 @@ db_inputdata('i04_dtoper',@$i04_dtoper_dia,@$i04_dtoper_mes,@$i04_dtoper_ano,tru
           <?=@$Li03_descr?>
         </td>
         <td> 
-          <?
+          <?php
 db_input('i03_descr',40,$Ii03_descr,true,'text',$db_opcao,"")
 ?>
         <td> 
@@ -68,7 +68,7 @@ db_input('i03_descr',40,$Ii03_descr,true,'text',$db_opcao,"")
           <?=@$Li04_dtvenc?>
         </td>
         <td>
-          <?
+          <?php
 $i04_dtvenc_dia = date("d",db_getsession("DB_datausu")); 
 $i04_dtvenc_mes = date("m",db_getsession("DB_datausu"));
 $i04_dtvenc_ano = date("Y",db_getsession("DB_datausu"));
@@ -79,25 +79,25 @@ db_inputdata('i04_dtvenc',@$i04_dtvenc_dia,@$i04_dtvenc_mes,@$i04_dtvenc_ano,tru
       </tr> 
       <tr> 
         <td nowrap title="<?=@$Ti03_numcgm?>"> 
-          <?
+          <?php
        db_ancora(@$Li03_numcgm,"js_pesquisai03_numcgm(true);",$db_opcao);
        ?>
         </td>
         <td> 
-          <?
+          <?php
 db_input('i03_numcgm',8,$Ii03_numcgm,true,'text',$db_opcao," onchange='js_pesquisai03_numcgm(false);'")
 ?>
-          <?
+          <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
         <td> 
         <td nowrap title="<?=@$Ti04_valor?>"> 
-          <?
+          <?php
        echo $Li04_valor;
        ?>
         </td>
         <td> 
-          <?
+          <?php
 $i04_valor = 1;
 db_input('i04_valor',15,$Ii04_valor,true,'text',$db_opcao,'')
        ?>
@@ -108,7 +108,7 @@ db_input('i04_valor',15,$Ii04_valor,true,'text',$db_opcao,'')
           <?=@$Li03_dtbase?>
         </td>
         <td> 
-          <?
+          <?php
 $i03_dtbase_dia = date("d",db_getsession("DB_datausu")); 
 $i03_dtbase_mes = date("m",db_getsession("DB_datausu"));
 $i03_dtbase_ano = date("Y",db_getsession("DB_datausu"));
@@ -120,7 +120,7 @@ db_inputdata('i03_dtbase',@$i03_dtbase_dia,@$i03_dtbase_mes,@$i03_dtbase_ano,tru
           <?=@$Li04_obs?>
         </td>
         <td> 
-          <?
+          <?php
 db_input('i04_obs',20,$Ii04_obs,true,'text',$db_opcao,'')
 ?>
         <td> 
@@ -134,13 +134,13 @@ db_input('i04_obs',20,$Ii04_obs,true,'text',$db_opcao,'')
         <td>
 
         <td nowrap title="<?=@$Ti04_receit?>">
-          <?
+          <?php
        echo @$Li04_receit;
        ?>
         </td>
 	
         <td>
-          <?
+          <?php
 		  $cltabrec = new cl_tabrec;
           db_selectrecord('i04_receit',$cltabrec->sql_record($cltabrec->sql_query("","k02_codigo#k02_drecei","k02_codigo","")),true,4,"","","","","",1);
           ?>
@@ -276,7 +276,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -2,14 +2,11 @@
 
 namespace ECidade\Financeiro\Empenho\Retencao\Apropriacao;
 
-use App\Domain\Financeiro\Orcamento\Models\Recurso;
 use cl_saltes;
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoDotacao;
 use db_utils;
 use ECidade\Financeiro\Empenho\Autenticacao;
-use EmpenhoFinanceiro;
 use Exception;
-use Instituicao;
+use ParametroCaixa;
 use planilhaRetencao;
 use recibo;
 use retencaoNota;
@@ -96,6 +93,19 @@ class Apropriacao
         $this->ano = $ano;
     }
 
+    public function filtrarRetencaoZerada($retencoes)
+    {
+
+        $retencaoFiltrada = [];
+        foreach ($retencoes as $retencoes) {
+            if ($retencoes->e23_valorretencao <= 0) {
+                continue;
+            }
+            $retencaoFiltrada[] = $retencoes;
+        }
+        return $retencaoFiltrada;
+    }
+
     /**
      * Realiza a baixa das retenções envolvidas no movimento informado
      *
@@ -105,7 +115,6 @@ class Apropriacao
      */
     public function apropriar($nota, $ordemPagamento, $codigoGrupoAutenticacao = null, $movimento = null)
     {
-
         $this->estorno = false;
         /**
          * Incluindo grupo de autenticação
@@ -144,6 +153,11 @@ class Apropriacao
         $oRetencaoNota->setCodigoMovimento($movimento);
 
         $retencoes = $oRetencaoNota->getRetencoesFromDB($ordemPagamento, false);
+        /**
+         * remove retencoes zeradas da folha , somente para o processamento
+         */
+        $retencoes = $this->filtrarRetencaoZerada($retencoes);
+
         $contaPagadora = \cl_translan::getContaParaPagamento($this->empenho->getNumero(), $dadosNota->e50_anousu);
 
         $oRetencaoNota->setGrupoAutenticacao($codigoGrupoAutenticacao);
@@ -159,10 +173,14 @@ class Apropriacao
         $autenticacao->setGrupoAutenticacao($codigoGrupoAutenticacao);
         $stringAutenticacao = $autenticacao->autenticar();
 
+        $slipAutomatico = ParametroCaixa::getParametroMomentoSlipAutomatico(db_getsession("DB_instit"));
+
         foreach ($retencoes as $retencao) {
             $this->realizarLancamentoContabilDaRetencao($retencao);
             if ($retencao->k02_tipo === 'E') {
                 $this->gerarDadosParaSlip($retencao, $movimento);
+            } elseif ($retencao->k02_tipo === 'O' && !$this->empenho->isRecursoLivre() && $slipAutomatico == 0) {
+                $this->gerarDadosParaSlipOrcamentario($retencao, $movimento);
             }
             $this->realizarLancamentoNaInstituicaoInformada($retencao);
             /**
@@ -281,6 +299,7 @@ class Apropriacao
         }
         return $stringAutenticacao;
     }
+
 
     /**
      * Retorna o texto formatado da retencao
@@ -471,7 +490,7 @@ class Apropriacao
         $oDaoEmpAgeSlip->k107_retencao = $retencao->e23_sequencial;
         $oDaoEmpAgeSlip->incluir(null);
         if ($oDaoEmpAgeSlip->erro_status == 0) {
-            throw new Exception("Erro Ao incluir informacoes do slip.\n Processamento cancelado.");
+            throw new Exception("Erro Ao incluir informações do slip.\n Processamento cancelado.");
         }
     }
 
@@ -483,7 +502,6 @@ class Apropriacao
      */
     private function getContaExtraOrcamentariaDaRetencao($codigoRetencao)
     {
-
         $sSqlTipoRec = " SELECT k02_reduz                                                   ";
         $sSqlTipoRec .= "   from retencaotiporec ";
         $sSqlTipoRec .= "       inner join tabrec  on e21_receita = k02_codigo               ";
@@ -1046,5 +1064,51 @@ class Apropriacao
     public function setCodigoLancamentoEmpenho($codigoLancamentoEmpenho)
     {
         $this->codigoLancamentoEmpenho = $codigoLancamentoEmpenho;
+    }
+
+    /**
+     * Criado função para preparar os slips de transferências bancárias de retenções.
+     *
+     * Essa função só é usada quando:
+     * - o parâmetro Gerar Slip Automático das Retenções e Transferências: estiver configurado como
+     * "Não gera slips automático"
+     * - Apenas quando o empenho é de recurso vinculado
+     * - Retenção Orçamentária
+     *
+     * @param $retencao
+     * @param $movimento
+     * @return void
+     * @throws Exception
+     */
+    private function gerarDadosParaSlipOrcamentario($retencao, $movimento)
+    {
+        $sql = "
+            select k13_conta as creditar,
+                   coalesce(k103_contrapartida, 0) as debitar
+            from empagepag
+            left join empagetipo on empagetipo.e83_codtipo = empagepag.e85_codtipo
+            left join saltes on saltes.k13_conta = empagetipo.e83_conta
+            left join saltescontrapartida on saltescontrapartida.k103_saltes = saltes.k13_conta
+            where e85_codmov = $movimento
+        ";
+
+        $rs = db_query($sql);
+        if (!$rs) {
+            throw new Exception('Erro ao buscar conta da contra partida.');
+        }
+
+        $contas = db_utils::fieldsMemory($rs, 0);
+
+        $oDaoEmpAgeSlip = new \cl_empagemovslips;
+        $oDaoEmpAgeSlip->k107_data = $this->dataEvento->format("Y-m-d");
+        $oDaoEmpAgeSlip->k107_empagemov = $movimento;
+        $oDaoEmpAgeSlip->k107_valor = $retencao->e23_valorretencao;
+        $oDaoEmpAgeSlip->k107_ctadebito = empty($contas->debitar) ? 0 : $contas->debitar;
+        $oDaoEmpAgeSlip->k107_ctacredito = empty($contas->creditar) ? 0 : $contas->creditar;
+        $oDaoEmpAgeSlip->k107_retencao = $retencao->e23_sequencial;
+        $oDaoEmpAgeSlip->incluir(null);
+        if ($oDaoEmpAgeSlip->erro_status == 0) {
+            throw new Exception("Erro Ao incluir informações do slip.\n Processamento cancelado.");
+        }
     }
 }

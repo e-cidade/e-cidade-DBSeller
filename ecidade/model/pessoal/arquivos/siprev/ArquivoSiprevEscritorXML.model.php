@@ -143,7 +143,7 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
 
   public function escreveElemento($oLinha, &$oXmlWriter, &$oElemento, $sNome = '') {
 
-    if (empty($oLinha->$oElemento["nome"])) {
+    if (empty($oLinha->{$oElemento["nome"]})) {
       return false;
     }
 
@@ -168,15 +168,15 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
 
         $sValor  = null;
 
-        if (isset($oLinha->$oElemento["nome"]->$sPropriedade)) {
-          $sValor = $oLinha->$oElemento["nome"]->$sPropriedade;
+        if (isset(($oLinha->$oElemento)["nome"]->$sPropriedade)) {
+          $sValor = ($oLinha->$oElemento)["nome"]->$sPropriedade;
         }
 
         if ($sValor !== null) {
           $oXmlWriter->writeAttribute($sPropriedade, utf8_encode($sValor));
         }
       } else {
-        $this->escreveElemento($oLinha->$oElemento["nome"], $oXmlWriter, $sPropriedade);
+        $this->escreveElemento(($oLinha->$oElemento)["nome"], $oXmlWriter, $sPropriedade);
       }
     }
 

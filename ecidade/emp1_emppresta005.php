@@ -61,8 +61,8 @@ if (isset($alterar)) {
     $db_opcao = 2;
     $db_botao = true;
 
-    $sSql = $clemppresta->sql_query_emp(null,
-        "e60_codemp, emppresta.*, e44_descr, e60_vlrpag",
+    $sSql = $clemppresta->sql_query_prest_contas(null,
+        "e60_codemp, emppresta.*, e44_descr, e60_vlrpag, e53_codord, e53_vlrpag",
         null,
         "e45_numemp = {$chavepesquisa} and e45_codmov = {$chavemovimento}");
     $result = $clemppresta->sql_record($sSql);
@@ -71,8 +71,8 @@ if (isset($alterar)) {
     if ($clemppresta->numrows == 0) {
 
         // Caso não exista busca o primeiro registro da tabela emppresta para o empenho selecionado
-        $sSql = $clemppresta->sql_query_emp(null,
-            "e60_codemp, emppresta.*, e44_descr, e60_vlrpag",
+        $sSql = $clemppresta->sql_query_prest_contas(null,
+            "e60_codemp, emppresta.*, e44_descr, e60_vlrpag, e53_codord, e53_vlrpag",
             null,
             "e45_numemp = {$chavepesquisa} limit 1");
         $result = $clemppresta->sql_record($sSql);
@@ -155,7 +155,7 @@ if (isset($alterar)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" style="margin-top: 30px;">
 <center>
-    <?
+    <?php
     include(modification("forms/db_frmemppresta.php"));
 
     if (empty($e60_vlrpag)) {
@@ -169,7 +169,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
     if ($sqlerro == true) {
         db_msgbox($erro_msg);

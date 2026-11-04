@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -158,7 +158,7 @@ function js_atualizaconta(qual) {
 			<table width="100%">
                 <tr> 
                   <td > 
-                    <?
+                    <?php
 				  if($acao==1)
 				     echo "Arrecadação a Maior";
 				  else
@@ -174,7 +174,7 @@ function js_atualizaconta(qual) {
                 <tr> 
                   <td align="right">Conta:</td>
                   <td><select onChange="js_atualizaconta(this.name)" name="reduz" id="reduz">
-                      <?
+                      <?php
 		for($i=0;$i<pg_numrows($result_conta);$i++){
 		  db_fieldsmemory($result_conta,$i);
   	      echo "<option value=\"$c01_reduz\" ".(isset($HTTP_POST_VARS["reduz"])?($HTTP_POST_VARS["reduz"]==$c01_reduz?"selected":""):"").">$c01_reduz</option>";
@@ -184,7 +184,7 @@ function js_atualizaconta(qual) {
                     </select>
                     &nbsp;&nbsp;
                     <select onChange="js_atualizaconta(this.name)" name="descrconta" id="descrconta">
-                      <?
+                      <?php
 		for($i=0;$i<pg_numrows($result_conta);$i++){
 		  db_fieldsmemory($result_conta,$i);
   	      echo "<option value=\"$c01_reduz\" ".(isset($HTTP_POST_VARS["descr"])?($HTTP_POST_VARS["descrconta"]==$c01_reduz?"selected":""):"").">$c01_descr</option>";
@@ -195,16 +195,16 @@ function js_atualizaconta(qual) {
                 <tr> 
                   <td width="39%" align="right">C&oacute;digo Arrecada&ccedil;&atilde;o:</td>
                   <td width="61%"> 
-                    <?
+                    <?php
 					if($pesquisar != true){
 					?>
                     <input name="numpre" type="text" id="numpre2" size="30" maxlength="100"> 
                     <input name="pesquisa" type="button" id="pesquisa" value="Pesquisa" onClick="js_verifica()"> 
-                    <?
+                    <?php
 					}else{
 					?>
                     <input name="numpre" type="text" id="numpre2" readonly size="30" maxlength="100" value="<?=$HTTP_POST_VARS["numpre"]?>"> 
-                    <?
+                    <?php
 					}
 					?>
                   </td>
@@ -212,7 +212,7 @@ function js_atualizaconta(qual) {
               </table></td>
           </tr>
           <tr> 
-		    <?
+		    <?php
             if($pesquisar == true)
   		      db_fieldsmemory($result,0); 
 			?>
@@ -229,7 +229,7 @@ function js_atualizaconta(qual) {
                   <td align="right">Receita:</td>
                   <td>
 				  <select onChange="js_atualizarec(this.name)" name="receitas" id="receitas">
-                      <?
+                      <?php
 					  $vlrtot = "";
                     if($pesquisar == true){
 					  for($x=0;$x < pg_numrows($result);$x++){
@@ -242,7 +242,7 @@ function js_atualizaconta(qual) {
 					?>
                     </select>
 					<select onChange="js_atualizarec(this.name)" name="descr" id="descr">
-                      <?
+                      <?php
                     if($pesquisar == true){
 					  for($x=0;$x < pg_numrows($result);$x++){
 					    db_fieldsmemory($result,$x);
@@ -273,7 +273,7 @@ function js_atualizaconta(qual) {
                   <td height="21">&nbsp;</td>
                   <td>&nbsp;</td>
                 </tr>
-				<?
+				<?php
 				if($pesquisar == true){
 				?>
                 <tr> 
@@ -284,7 +284,7 @@ function js_atualizaconta(qual) {
 				      <input name="cancelar" type="button" id="cancelar" value="Cancelar" onclick="location.href='cai4_difarrec001.php?acao=<?=$acao?>'"> 
                   </td>
                 </tr>
-				<?
+				<?php
 				}
 				?>
               </table>
@@ -294,12 +294,12 @@ function js_atualizaconta(qual) {
       </form></td>
   </tr>
 </table>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
  if($erro!="")
     echo "<script>alert('".$erro."')</script>";
 ?>

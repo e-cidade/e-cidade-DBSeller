@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancambol
-class cl_conlancambol { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $c77_codlan = 0; 
-   var $c77_anousu = 0; 
-   var $c77_boletim = 0; 
-   var $c77_databol_dia = null; 
-   var $c77_databol_mes = null; 
-   var $c77_databol_ano = null; 
-   var $c77_databol = null; 
-   var $c77_dataproc_dia = null; 
-   var $c77_dataproc_mes = null; 
-   var $c77_dataproc_ano = null; 
-   var $c77_dataproc = null; 
-   var $c77_valor = 0; 
-   var $c77_instit = 0; 
-   var $c77_id = 0; 
-   var $c77_autent = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_conlancambol {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $c77_codlan = 0;
+   var $c77_anousu = 0;
+   var $c77_boletim = 0;
+   var $c77_databol_dia = null;
+   var $c77_databol_mes = null;
+   var $c77_databol_ano = null;
+   var $c77_databol = null;
+   var $c77_dataproc_dia = null;
+   var $c77_dataproc_mes = null;
+   var $c77_dataproc_ano = null;
+   var $c77_dataproc = null;
+   var $c77_valor = 0;
+   var $c77_instit = 0;
+   var $c77_id = 0;
+   var $c77_autent = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 c77_codlan = int8 = codigo do lançamento 
-                 c77_anousu = int4 = ano 
-                 c77_boletim = float8 = numero do boletim 
-                 c77_databol = date = data do boletim 
-                 c77_dataproc = date = data_proc 
-                 c77_valor = float8 = valor 
-                 c77_instit = int4 = insituição 
-                 c77_id = int4 = Autenticação 
-                 c77_autent = int4 = Código Autenticação 
+                 c77_codlan = int8 = codigo do lançamento
+                 c77_anousu = int4 = ano
+                 c77_boletim = float8 = numero do boletim
+                 c77_databol = date = data do boletim
+                 c77_dataproc = date = data_proc
+                 c77_valor = float8 = valor
+                 c77_instit = int4 = insituição
+                 c77_id = int4 = Autenticação
+                 c77_autent = int4 = Código Autenticação
                  ";
-   //funcao construtor da classe 
-   function cl_conlancambol() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("conlancambol"); 
+     $this->rotulo = new rotulo("conlancambol");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_conlancambol {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c77_codlan = ($this->c77_codlan == ""?@$GLOBALS["HTTP_POST_VARS"]["c77_codlan"]:$this->c77_codlan);
        $this->c77_anousu = ($this->c77_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c77_anousu"]:$this->c77_anousu);
@@ -115,9 +115,9 @@ class cl_conlancambol {
      }
    }
    // funcao para inclusao
-   function incluir ($c77_codlan){ 
+   public function incluir ($c77_codlan){
       $this->atualizacampos();
-     if($this->c77_anousu == null ){ 
+     if($this->c77_anousu == null ){
        $this->erro_sql = " Campo ano nao Informado.";
        $this->erro_campo = "c77_anousu";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_boletim == null ){ 
+     if($this->c77_boletim == null ){
        $this->erro_sql = " Campo numero do boletim nao Informado.";
        $this->erro_campo = "c77_boletim";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_databol == null ){ 
+     if($this->c77_databol == null ){
        $this->erro_sql = " Campo data do boletim nao Informado.";
        $this->erro_campo = "c77_databol_dia";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_dataproc == null ){ 
+     if($this->c77_dataproc == null ){
        $this->erro_sql = " Campo data_proc nao Informado.";
        $this->erro_campo = "c77_dataproc_dia";
        $this->erro_banco = "";
@@ -153,7 +153,7 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_valor == null ){ 
+     if($this->c77_valor == null ){
        $this->erro_sql = " Campo valor nao Informado.";
        $this->erro_campo = "c77_valor";
        $this->erro_banco = "";
@@ -162,7 +162,7 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_instit == null ){ 
+     if($this->c77_instit == null ){
        $this->erro_sql = " Campo insituição nao Informado.";
        $this->erro_campo = "c77_instit";
        $this->erro_banco = "";
@@ -171,14 +171,14 @@ class cl_conlancambol {
        $this->erro_status = "0";
        return false;
      }
-     if($this->c77_id == null ){ 
+     if($this->c77_id == null ){
        $this->c77_id = "0";
      }
-     if($this->c77_autent == null ){ 
+     if($this->c77_autent == null ){
        $this->c77_autent = "0";
      }
-       $this->c77_codlan = $c77_codlan; 
-     if(($this->c77_codlan == null) || ($this->c77_codlan == "") ){ 
+       $this->c77_codlan = $c77_codlan;
+     if(($this->c77_codlan == null) || ($this->c77_codlan == "") ){
        $this->erro_sql = " Campo c77_codlan nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -187,29 +187,29 @@ class cl_conlancambol {
        return false;
      }
      $sql = "insert into conlancambol(
-                                       c77_codlan 
-                                      ,c77_anousu 
-                                      ,c77_boletim 
-                                      ,c77_databol 
-                                      ,c77_dataproc 
-                                      ,c77_valor 
-                                      ,c77_instit 
-                                      ,c77_id 
-                                      ,c77_autent 
+                                       c77_codlan
+                                      ,c77_anousu
+                                      ,c77_boletim
+                                      ,c77_databol
+                                      ,c77_dataproc
+                                      ,c77_valor
+                                      ,c77_instit
+                                      ,c77_id
+                                      ,c77_autent
                        )
                 values (
-                                $this->c77_codlan 
-                               ,$this->c77_anousu 
-                               ,$this->c77_boletim 
-                               ,".($this->c77_databol == "null" || $this->c77_databol == ""?"null":"'".$this->c77_databol."'")." 
-                               ,".($this->c77_dataproc == "null" || $this->c77_dataproc == ""?"null":"'".$this->c77_dataproc."'")." 
-                               ,$this->c77_valor 
-                               ,$this->c77_instit 
-                               ,$this->c77_id 
-                               ,$this->c77_autent 
+                                $this->c77_codlan
+                               ,$this->c77_anousu
+                               ,$this->c77_boletim
+                               ,".($this->c77_databol == "null" || $this->c77_databol == ""?"null":"'".$this->c77_databol."'")."
+                               ,".($this->c77_dataproc == "null" || $this->c77_dataproc == ""?"null":"'".$this->c77_dataproc."'")."
+                               ,$this->c77_valor
+                               ,$this->c77_instit
+                               ,$this->c77_id
+                               ,$this->c77_autent
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "c77 ($this->c77_codlan) nao Incluído. Inclusao Abortada.";
@@ -249,16 +249,16 @@ class cl_conlancambol {
        $resac = db_query("insert into db_acount values($acount,1087,8858,'','".AddSlashes(pg_result($resaco,0,'c77_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($c77_codlan=null) { 
+   public function alterar ($c77_codlan=null) {
       $this->atualizacampos();
      $sql = " update conlancambol set ";
      $virgula = "";
-     if(trim($this->c77_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_codlan"])){ 
+     if(trim($this->c77_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_codlan"])){
        $sql  .= $virgula." c77_codlan = $this->c77_codlan ";
        $virgula = ",";
-       if(trim($this->c77_codlan) == null ){ 
+       if(trim($this->c77_codlan) == null ){
          $this->erro_sql = " Campo codigo do lançamento nao Informado.";
          $this->erro_campo = "c77_codlan";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_conlancambol {
          return false;
        }
      }
-     if(trim($this->c77_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_anousu"])){ 
+     if(trim($this->c77_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_anousu"])){
        $sql  .= $virgula." c77_anousu = $this->c77_anousu ";
        $virgula = ",";
-       if(trim($this->c77_anousu) == null ){ 
+       if(trim($this->c77_anousu) == null ){
          $this->erro_sql = " Campo ano nao Informado.";
          $this->erro_campo = "c77_anousu";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_conlancambol {
          return false;
        }
      }
-     if(trim($this->c77_boletim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_boletim"])){ 
+     if(trim($this->c77_boletim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_boletim"])){
        $sql  .= $virgula." c77_boletim = $this->c77_boletim ";
        $virgula = ",";
-       if(trim($this->c77_boletim) == null ){ 
+       if(trim($this->c77_boletim) == null ){
          $this->erro_sql = " Campo numero do boletim nao Informado.";
          $this->erro_campo = "c77_boletim";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_conlancambol {
          return false;
        }
      }
-     if(trim($this->c77_databol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"] !="") ){ 
+     if(trim($this->c77_databol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"] !="") ){
        $sql  .= $virgula." c77_databol = '$this->c77_databol' ";
        $virgula = ",";
-       if(trim($this->c77_databol) == null ){ 
+       if(trim($this->c77_databol) == null ){
          $this->erro_sql = " Campo data do boletim nao Informado.";
          $this->erro_campo = "c77_databol_dia";
          $this->erro_banco = "";
@@ -306,11 +306,11 @@ class cl_conlancambol {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c77_databol_dia"])){
          $sql  .= $virgula." c77_databol = null ";
          $virgula = ",";
-         if(trim($this->c77_databol) == null ){ 
+         if(trim($this->c77_databol) == null ){
            $this->erro_sql = " Campo data do boletim nao Informado.";
            $this->erro_campo = "c77_databol_dia";
            $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_conlancambol {
          }
        }
      }
-     if(trim($this->c77_dataproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"] !="") ){ 
+     if(trim($this->c77_dataproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"] !="") ){
        $sql  .= $virgula." c77_dataproc = '$this->c77_dataproc' ";
        $virgula = ",";
-       if(trim($this->c77_dataproc) == null ){ 
+       if(trim($this->c77_dataproc) == null ){
          $this->erro_sql = " Campo data_proc nao Informado.";
          $this->erro_campo = "c77_dataproc_dia";
          $this->erro_banco = "";
@@ -333,11 +333,11 @@ class cl_conlancambol {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["c77_dataproc_dia"])){
          $sql  .= $virgula." c77_dataproc = null ";
          $virgula = ",";
-         if(trim($this->c77_dataproc) == null ){ 
+         if(trim($this->c77_dataproc) == null ){
            $this->erro_sql = " Campo data_proc nao Informado.";
            $this->erro_campo = "c77_dataproc_dia";
            $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_conlancambol {
          }
        }
      }
-     if(trim($this->c77_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_valor"])){ 
+     if(trim($this->c77_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_valor"])){
        $sql  .= $virgula." c77_valor = $this->c77_valor ";
        $virgula = ",";
-       if(trim($this->c77_valor) == null ){ 
+       if(trim($this->c77_valor) == null ){
          $this->erro_sql = " Campo valor nao Informado.";
          $this->erro_campo = "c77_valor";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_conlancambol {
          return false;
        }
      }
-     if(trim($this->c77_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_instit"])){ 
+     if(trim($this->c77_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_instit"])){
        $sql  .= $virgula." c77_instit = $this->c77_instit ";
        $virgula = ",";
-       if(trim($this->c77_instit) == null ){ 
+       if(trim($this->c77_instit) == null ){
          $this->erro_sql = " Campo insituição nao Informado.";
          $this->erro_campo = "c77_instit";
          $this->erro_banco = "";
@@ -374,17 +374,17 @@ class cl_conlancambol {
          return false;
        }
      }
-     if(trim($this->c77_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_id"])){ 
-        if(trim($this->c77_id)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c77_id"])){ 
-           $this->c77_id = "0" ; 
-        } 
+     if(trim($this->c77_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_id"])){
+        if(trim($this->c77_id)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c77_id"])){
+           $this->c77_id = "0" ;
+        }
        $sql  .= $virgula." c77_id = $this->c77_id ";
        $virgula = ",";
      }
-     if(trim($this->c77_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_autent"])){ 
-        if(trim($this->c77_autent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c77_autent"])){ 
-           $this->c77_autent = "0" ; 
-        } 
+     if(trim($this->c77_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c77_autent"])){
+        if(trim($this->c77_autent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c77_autent"])){
+           $this->c77_autent = "0" ;
+        }
        $sql  .= $virgula." c77_autent = $this->c77_autent ";
        $virgula = ",";
      }
@@ -420,7 +420,7 @@ class cl_conlancambol {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "c77 nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->c77_codlan;
@@ -448,14 +448,14 @@ class cl_conlancambol {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($c77_codlan=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($c77_codlan=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c77_codlan));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -489,7 +489,7 @@ class cl_conlancambol {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "c77 nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$c77_codlan;
@@ -517,11 +517,11 @@ class cl_conlancambol {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -543,10 +543,10 @@ class cl_conlancambol {
       }
      return $result;
    }
-   function sql_query ( $c77_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $c77_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -563,15 +563,15 @@ class cl_conlancambol {
      $sql2 = "";
      if($dbwhere==""){
        if($c77_codlan!=null ){
-         $sql2 .= " where conlancambol.c77_codlan = $c77_codlan "; 
-       } 
+         $sql2 .= " where conlancambol.c77_codlan = $c77_codlan ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -580,10 +580,10 @@ class cl_conlancambol {
      }
      return $sql;
   }
-   function sql_query_file ( $c77_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $c77_codlan=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -596,15 +596,15 @@ class cl_conlancambol {
      $sql2 = "";
      if($dbwhere==""){
        if($c77_codlan!=null ){
-         $sql2 .= " where conlancambol.c77_codlan = $c77_codlan "; 
-       } 
+         $sql2 .= " where conlancambol.c77_codlan = $c77_codlan ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

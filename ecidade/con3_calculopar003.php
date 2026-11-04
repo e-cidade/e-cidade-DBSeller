@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -145,7 +145,7 @@ function js_trocacontri(obj){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <form name="form1" method="post" action="">
  <tr> 
-  <?
+  <?php
     for($d=0; $d<$numrows; $d++){
       db_fieldsmemory($result,$d);
       $result01=$cleditalrua->sql_record($cleditalrua->sql_query_file($d07_contri,"d02_codedi","d02_codedi limit 1"));
@@ -167,7 +167,7 @@ function js_trocacontri(obj){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',6,$Id02_contri,true,'text',3);
   db_input('j14_nome',50,$Ij14_nome,true,'text',3);
   ?>
@@ -178,7 +178,7 @@ function js_trocacontri(obj){
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',3,"");
   db_input('z01_nome',50,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -189,7 +189,7 @@ function js_trocacontri(obj){
       <b>Parcelas</b>
       </td>
       <td> 
-<?
+<?php
   db_input('parcelas',4,5,true,'text',1);
 ?>
       </td>
@@ -199,7 +199,7 @@ function js_trocacontri(obj){
        <b>1° Vencimento</b>
       </td>  
       <td nowrap title="Data do primeiro vencimento">
-    <?
+    <?php
      db_inputdata('privenc',@$privenc_dia,@$privenc_mes,@$privenc_ano,true,'text',$db_opcao,"");
    ?>  
       </td>
@@ -209,7 +209,7 @@ function js_trocacontri(obj){
         <b>Dia vencimento</b>
       </td>  
       <td nowrap title="Dia dos próximos vencimentos">
-    <?
+    <?php
      db_input('provenc',4,0,'true','text',$db_opcao,"")
    ?>  
       </td>
@@ -226,7 +226,7 @@ function js_trocacontri(obj){
       <br>
       <b>Contribuições da matricula</b>
       <select name="contribs" size="2" onchange="js_trocacontri(this)" >
-       <?
+       <?php
          for($i=0; $i<$numrows; $i++){
 	   db_fieldsmemory($result,$i);
            $resu=$clcontricalc->sql_record($clcontricalc->sql_query_file("","*","","d09_contr = $d07_contri and d09_matric = $j01_matric"));
@@ -257,14 +257,14 @@ function js_trocacontri(obj){
  </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php
 if(isset($confirmar)){
     db_msgbox($erro);
 }

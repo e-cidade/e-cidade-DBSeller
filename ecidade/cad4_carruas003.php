@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -67,7 +67,7 @@ if(isset($atualizar) && $atualizar!=""){
   $sqlerro=false;
   db_inicio_transacao();
 
-  $matriz01 = split(",",$faces);
+  $matriz01 =explode(",",$faces);
   for($i=0; $i<sizeof($matriz01); $i++){
 
     $x="caracter_".$matriz01[$i];
@@ -176,7 +176,7 @@ function js_atualizar(){
 a:hover {
 color:blue;
 }
-a:visited {text-decoration:;
+a:visited {
 color: black;
 font-weight: bold;
 }
@@ -207,7 +207,7 @@ background-color:#ccddcc;
  <tr>
    <td  bgcolor="#cccccc" valign="top" align="center">
      <table border="1" >
-<?
+<?php
      db_input('j14_codigo',50,"",true,'hidden',3);
      db_input('j32_grupo',50,"",true,'hidden',3);
      db_input('faces',50,"",true,'hidden',3);
@@ -221,20 +221,20 @@ background-color:#ccddcc;
 	 </td>
        </tr>
 
-<?
+<?php
     }else{
 ?>
 
        <tr>
          <td title="Principal" colspan="5">
 	 <b>Característica principal </b>
-	 <?
+	 <?php
             db_select('j31_codigo',$matriz,true,2,"onchange='js_trocar(this);'");
          ?>
 	 </td>
        </tr>
 
-<?
+<?php
     }
 ?>
        <tr class="cabec">
@@ -242,19 +242,19 @@ background-color:#ccddcc;
          <td title="<?=$Tj37_setor?>"><?=$RLj37_setor?></td>
          <td title="<?=$Tj37_quadra?>"><?=$RLj37_quadra?></td>
          <td title="<?=$Tj37_face?>"><?=$RLj37_face?></td>
-<?
+<?php
     if(isset($selecionar)){
 ?>
        <td align='center'><a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'>M</a></td>
-<?
+<?php
     }else{
 ?>
          <td title="<?=$Tj31_descr?>"><?=$RLj31_descr?></td>
-<?
+<?php
     }
 ?>
        </tr>
-      <?
+      <?php
         for($i=0; $i<$numrows58; $i++){
 	  db_fieldsmemory($result58,$i);
 	  $result45=$clcarface->sql_record($clcarface->sql_query("","","j38_caract","","j32_grupo=$j32_grupo and j38_face=$j37_face "));
@@ -269,20 +269,20 @@ background-color:#ccddcc;
          <td title="<?=$Tj37_setor?>">&nbsp;<?=$j37_setor?></td>
          <td title="<?=$Tj37_quadra?>">&nbsp;<?=$j37_quadra?></td>
          <td title="<?=$Tj37_face?>">&nbsp;<?=$j37_face?></td>
-<?
+<?php
     if(isset($selecionar)){
 ?>
        <td align='left'><input id='CHECK_<?=$j37_face?>' name='CHECK_<?=$j37_face?>'   checked type='checkbox'></td>
-<?
+<?php
     }else{
 ?>
          <td title="Principal">
-	 <?
+	 <?php
 
             db_select("caracter_$j37_face",$matriz,true,2);
          ?>
 	 </td>
-<?
+<?php
     echo "
      <script>
         parent.document.form1.selecionar.style.visibility='hidden';
@@ -293,7 +293,7 @@ background-color:#ccddcc;
     }
 ?>
        </tr>
-      <?
+      <?php
         }
       ?>
      </table>
@@ -303,7 +303,7 @@ background-color:#ccddcc;
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($atualizar) && $atualizar!=""){
   db_msgbox($erro_msg);
 }

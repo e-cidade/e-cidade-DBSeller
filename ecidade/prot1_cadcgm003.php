@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -243,18 +243,18 @@ if (isset ($HTTP_POST_VARS ["db_opcao"]) && $HTTP_POST_VARS ["db_opcao"] == "Exc
 	cellspacing="0">
 	<tr>
 		<td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-			<?
+			<?php
 			  include(modification("forms/db_frmcgm.php"));
 			?>
 	</td>
 	</tr>
 </table>
-<?
+<?php
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>
 </html>
-<?
+<?php
 if ($db_botao == false) {
 	echo "<script>js_func_nome();func_nome.show();</script>\n";
 }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -45,7 +45,7 @@ include(modification("classes/db_transfmarca_classe.php"));
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 $clcgm = new cl_cgm;
 $clmarca = new cl_marca;
 $clmarcaloc = new cl_marcaloc;
@@ -71,7 +71,7 @@ if(isset($cgm)){
  <tr>
   <td colspan="3" align="center"><b>Consulta de Marcas Canceladas: <?=$titulo?></b></td>
  </tr>
- <?
+ <?php
  $cor1="#E796A4";
  $cor2="#97B5E6";
  $cor=$cor1;
@@ -90,7 +90,7 @@ if(isset($cgm)){
         <tr>
          <td><b>Dados da Marca:</b></td>
          <td align="right"><b>Situação:</b>
-         <?
+         <?php
          if($ma01_c_ativo=="S"){
           echo "ATIVA";
          }else{
@@ -115,14 +115,14 @@ if(isset($cgm)){
          <td><?=$Lz01_nome?></td>
          <td colspan="2"><?=$z01_nome?></td>
         </tr>
-        <?
+        <?php
          $campos1 = "localmarca.*";
          $result_loc = $clmarcaloc->sql_record($clmarcaloc->sql_query("",$campos1,"ma04_c_descr"," ma05_i_marca = $ma01_i_codigo"));
         ?>
         <tr>
          <td valign="top"><b>Localidades:</b></td>
          <td colspan="2">
-          <?
+          <?php
           for($w=0;$w<$clmarcaloc->numrows;$w++){
            db_fieldsmemory($result_loc,$w);
            echo $ma04_c_descr." - ".$ma04_c_subdistrito."<br>";
@@ -157,7 +157,7 @@ if(isset($cgm)){
        </table>
       </td>
       <td valign="top" rowspan="3" >
-       <?
+       <?php
        $campos = "transfmarca.*,cgm1.z01_nome as ant,cgm4.z01_nome as novo,cgm2.z01_nome as req";
        $result_trans = $cltransfmarca->sql_record($cltransfmarca->sql_query("",$campos,"ma02_d_data","ma02_i_marca = $ma01_i_codigo"));
        if($cltransfmarca->numrows!=0){
@@ -171,14 +171,14 @@ if(isset($cgm)){
          <?=$novo?><br>
          <?=$Lma02_i_codproc?> <?=$ma02_i_codproc?><br>
          <?=$Lma02_t_obs?> <?=$ma02_t_obs?><p>
-         <?
+         <?php
         }
        }else{
         echo "Marca sem transferências";
        }?>
       </td>
       <td rowspan="3" align="center" width="105">
-       <?
+       <?php
        if($ma01_o_imagem!=0){
         $arquivo = "tmp/".$ma01_c_nomeimagem;
         db_query("begin");
@@ -197,7 +197,7 @@ if(isset($cgm)){
       <td>
        <table border="0" cellspacing="0" width="100%">
         <tr>
-        <?
+        <?php
         $campos = "cgm.z01_nome,cgm.z01_numcgm,cancmarca.*";
         $sql = $clcancmarca->sql_query("",$campos,"ma03_d_data","ma01_i_codigo = $ma01_i_codigo");
         $result_canc = $clcancmarca->sql_record($sql);
@@ -210,16 +210,16 @@ if(isset($cgm)){
            <?=$Lma03_i_codproc?> <?=$ma03_i_codproc?>&nbsp;&nbsp;&nbsp;
            <b>Tipo:</b> <?=$ma03_c_tipo=="C"?"Cancelamento":"Reativação"?><br>
            <?=$Lma03_t_obs?> <?=$ma03_t_obs?>
-           <?if($clcancmarca->numrows>1){?><br><br><?}?>
+           <?php if($clcancmarca->numrows>1){?><br><br><?php }?>
           </td>
-          <?
+          <?php
           if(($t%2)!=0){
            echo "</tr><tr><td height='10'></td></tr>";
           }
          }?>
         <?}else{?>
          <td>Marca sem cancelamentos</td>
-        <?}?>
+        <?php }?>
         </tr>
        </table>
       </td>
@@ -227,7 +227,7 @@ if(isset($cgm)){
      <tr>
       <td colspan="3" bgcolor="#CCCCCC" height="5"></td>
      </tr>
-    <?}?>
+    <?php }?>
     <table>
    <?}else{?>
     <tr>

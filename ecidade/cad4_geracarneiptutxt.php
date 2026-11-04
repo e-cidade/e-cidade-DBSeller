@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -282,7 +282,7 @@ try {
     if (!db_query("PREPARE sSqlCalcQntTaxasReceita (integer, integer) AS {$sSqlCalcQntTaxasReceita}")) {
         throw new DBException("Erro ao buscar a quantidade de taxas por receita.");
     }
-    
+
     /**
      * $sSqlCalcValorIptu
      * @param $1 = $anousu      integer
@@ -678,12 +678,12 @@ try {
     if (isset($unica) && $unica != "") {
 
         $aUnicas = explode("U", $unica);
-        $vt = split("U", $unica);
+        $vt =explode("U", $unica);
         $unicas = array();
 
         foreach ($vt as $i => $v) {
 
-            $check = split("=", $v);
+            $check =explode("=", $v);
             if (isset($check) && $check != "") {
                 array_push($unicas, $check[0] . "-" . $check[1] . "-" . $check[2]) . "#";
             }
@@ -725,7 +725,7 @@ try {
     </tr>
     <tr>
       <td width="100%" align="center">
-          <? db_criatermometro('termometro', 'Concluido...', 'blue', 1); ?>
+          <?php db_criatermometro('termometro', 'Concluido...', 'blue', 1); ?>
       </td>
     </tr>
   </table>
@@ -1512,7 +1512,7 @@ try {
                             $j40_refant = "....";
                         }
 
-                        $sqlsub = split('\.', $j40_refant);
+                        $sqlsub =explode('.', $j40_refant);
                         if ($gerar == "dados") {
 
                             if ($tipo == "txt") {
@@ -2251,7 +2251,7 @@ try {
 
                                         if ($gerar == "dados") {
                                             $fc_febraban = $linhadigitavel . "," . $codigobarras;
-                                            $numpreunica = db_numpre($k03_numpreunica) . str_pad(null, 3, "0",
+                                            $numpreunica = db_numpre($k03_numpreunica) . str_pad("", 3, "0",
                                                 STR_PAD_LEFT);
                                             if ($tipo == "txt") {
                                                 fputs($clabre_arquivo->arquivo, $numpreunica);
@@ -2738,7 +2738,7 @@ try {
 
                                     } else {
 
-                                        $numpre = db_numpre($k03_numprepar) . str_pad(null, 3, "0", STR_PAD_LEFT);
+                                        $numpre = db_numpre($k03_numprepar) . str_pad("", 3, "0", STR_PAD_LEFT);
 
                                         if ($gerar == "dados") {
 
@@ -3010,7 +3010,7 @@ try {
                                         if ($j21_valor == 0) {
                                             fputs($arqTXTISENTOS, "{$j23_matric} - {$j17_descr}{$sQuebraLinha}");
 
-                                            fputs($clabre_arquivo->arquivo, str_pad(null, 40));
+                                            fputs($clabre_arquivo->arquivo, str_pad("", 40));
                                             fputs($clabre_arquivo->arquivo,
                                               str_pad(db_formatar(0, 'f', ' ', 10), "0", STR_PAD_LEFT));
                                             fputs($clabre_arquivo->arquivo, str_pad("", 18, ' ', STR_PAD_LEFT));
@@ -3033,7 +3033,7 @@ try {
                                             /* PLUGIN SAPIRANGA - MELHORIA 13409 - 4 */
                                             $valorTaxa = round($j21_valor / pg_numrows($resultfin2), 2);
                                             $numeroTotalParcelas = pg_numrows($resultfin2);
-                                
+
                                             if ($j17_codhis == 11) {
                                                 $valorTaxaBomPgd[$j17_codhis] = floatval($valorTaxa);
                                                 $valorTotalDesconto[] = $j21_valor;
@@ -3607,7 +3607,7 @@ try {
 
                                         if ($j21_valor == 0) {
 
-                                            fputs($clabre_arquivo->arquivo, str_pad(null, 40));
+                                            fputs($clabre_arquivo->arquivo, str_pad("", 40));
                                             fputs($clabre_arquivo->arquivo,
                                               str_pad(db_formatar(0, 'f', ' ', 10), "0", STR_PAD_LEFT));
 
@@ -4087,18 +4087,18 @@ try {
                             }
                         }
                     }
-                        
+
                     $sSqlCalcValorIptuExec = "EXECUTE sSqlCalcValorIptu($anousu, $j23_matric)";
                     $resultcalciptu = \db_query($sSqlCalcValorIptuExec) or die($sSqlCalcValorIptuExec);
 
                     if (pg_num_rows($resultcalciptu) == 0) {
 
-                      $total_valor_iptu = 0;            
+                      $total_valor_iptu = 0;
                     } else {
 
                       extract((array)\db_utils::fieldsMemory($resultcalciptu, 0, true));
                     }
-                     
+
                     if ($gerar == "dados") {
                         fputs($clabre_arquivo->arquivo, str_pad(db_formatar($total_valor_iptu, 'f', ' ', 15),"0",STR_PAD_LEFT));
                     } else {
@@ -4106,8 +4106,8 @@ try {
                             fputs($clabre_arquivo->arquivo, db_contador("TOTVALORIPTU","TOTAL DOS VALORES LANCADOS (IMPOSTO/TAXAS/DESCONTOS)",$contador,15));
                         }
                     }
-                    
-                    
+
+
                         ########################################################################################################################
                         // Melhoria na emissao para gerar parcelas e unicas opcionais de vencimentos, aplicando correção
                         include(modification("cad4_geracarneiptutxtParcelasOpcionais.php"));

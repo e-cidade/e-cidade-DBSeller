@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -55,7 +55,7 @@ class cl_disciplina
                  ";
 
     //funcao construtor da classe
-    function cl_disciplina()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("disciplina");
@@ -63,7 +63,7 @@ class cl_disciplina
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -74,7 +74,7 @@ class cl_disciplina
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed12_i_codigo = ($this->ed12_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed12_i_codigo"] : $this->ed12_i_codigo);
@@ -87,7 +87,7 @@ class cl_disciplina
     }
 
     // funcao para inclusao
-    function incluir($ed12_i_codigo)
+    public function incluir($ed12_i_codigo)
     {
         $this->atualizacampos();
         if ($this->ed12_i_ensino == null) {
@@ -155,7 +155,7 @@ class cl_disciplina
                                 $this->ed12_i_codigo
                                ,$this->ed12_i_ensino
                                ,$this->ed12_i_caddisciplina
-                               ,$this->ed12_matrizcurricular 
+                               ,$this->ed12_matrizcurricular
                       )";
         $result = db_query($sql);
         if ($result == false) {
@@ -207,7 +207,7 @@ class cl_disciplina
     }
 
     // funcao para alteracao
-    function alterar($ed12_i_codigo = null, $sWhere = null)
+    public function alterar($ed12_i_codigo = null, $sWhere = null)
     {
         $this->atualizacampos();
         $sql = " update disciplina set ";
@@ -258,7 +258,7 @@ class cl_disciplina
             $sql .= $virgula . " ed12_matrizcurricular = $this->ed12_matrizcurricular ";
             $virgula = ",";
         }
-        
+
         $sql .= " where ";
         if ($ed12_i_codigo != null) {
             $sql .= " ed12_i_codigo = $this->ed12_i_codigo";
@@ -689,9 +689,9 @@ class cl_disciplina
         return $sql;
     }
 
-    function sql_disciplinas_ensino($ensino) {
+    public function sql_disciplinas_ensino($ensino) {
         $sql = "
-        
+
         select ed12_i_codigo as id_vinculo, ed232_i_codigo as codigo_disciplina, ed232_c_descr as disciplina, ed12_matrizcurricular,
                (select distinct 1
                 from (select ed335_disciplina from avaliacaoclassificacao where ed335_disciplina = ed12_i_codigo
@@ -727,7 +727,7 @@ class cl_disciplina
                       select ed23_i_disciplina from relacaotrabalho where ed23_i_disciplina = ed12_i_codigo) as x
                       ) as com_vinculo
             from disciplina
-            join caddisciplina ON caddisciplina.ed232_i_codigo = disciplina.ed12_i_caddisciplina  
+            join caddisciplina ON caddisciplina.ed232_i_codigo = disciplina.ed12_i_caddisciplina
             where ed12_i_ensino = {$ensino}
         ";
 

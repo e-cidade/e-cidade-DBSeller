@@ -78,6 +78,16 @@ return array(
                 'required' => false,
                 'label' => 'Observação.',
                 'type' => 'string'
+            ),
+            'ultDiaTrab' => array(
+                'required' => false,
+                'label' => 'Último dia trabalhado.',
+                'type' => 'string'
+            ),
+            'houveAfast' => array(
+                'required' => false,
+                'label' => 'Houve afastamento?',
+                'type' => 'string'
             )
         ),
         'groups' => array(

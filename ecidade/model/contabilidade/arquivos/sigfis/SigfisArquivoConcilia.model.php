@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("interfaces/iPadArquivoTxtBase.interface.php"));
@@ -35,7 +35,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
 
   public function gerarDados() {
 
-
+    $iAnoSessao = db_getsession('DB_anousu');
     /**
      * Busca os dados da db_config
      */
@@ -138,7 +138,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
+        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomes                = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -158,7 +158,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
        if( $iAnoSessao < 2013 ){
           $oStdLinhaArquivo->codigolinha              = 576;
         }else{
-          $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad(' ', 30, ' ', STR_PAD_LEFT);
+          $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad($oStdContaConciliacao->k68_contabancaria, 15, ' ', STR_PAD_RIGHT);
           $oStdLinhaArquivo->codigolinha              = 666;
         }
         $this->aDados[]                             = $oStdLinhaArquivo;
@@ -177,7 +177,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
                                                                                     $sCamposPendenciaExtrato,
                                                                                     "tipomovimentacao, k86_data",
                                                                                     $sWherePendenciaExtrato);
-      if ( $oStdContaConciliacao->k68_contabancaria == 758 ){                                                                               
+      if ( $oStdContaConciliacao->k68_contabancaria == 758 ){
        // die($sSqlPendeciaExtrato);
       }
       $rsPendenciaExtrato  = db_query($sSqlPendeciaExtrato);
@@ -189,7 +189,7 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
         list($iAno, $iMes, $iDia)   = explode("-", $oStdPendenciaExtrato->data_conciliacao);
         list($iCodigoTabelaConciliacao,$sDescricaoTabelaConciliacao) = $this->getDadosTabelaConciliacao(false,
                                                                               $oStdPendenciaExtrato->tipomovimentacao);
-        
+
 
         if ( $oStdPendenciaExtrato->k86_sequencial == 26849 ) {
           //echo $sSqlPendeciaExtrato."\n";
@@ -213,10 +213,10 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
         $oStdLinhaArquivo->nu_sequencialconciliacao = $oStdPendenciaExtrato->k86_sequencial; //($iRowConciliacao+1).($iRowPendenciaExtrato+1)."1";
 //         echo "E : $oStdLinhaArquivo->nu_sequencialconciliacao -- $oStdLinhaArquivo->vl_movconciliado\n";
 
-         if( $iAnoSessao < 2013 ){             
+         if( $iAnoSessao < 2013 ){
           $oStdLinhaArquivo->codigolinha              = 576;
         }else{
-          $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad(' ', 15, ' ', STR_PAD_LEFT);
+          $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad($oStdContaConciliacao->k68_contabancaria, 15, ' ', STR_PAD_RIGHT);
           $oStdLinhaArquivo->codigolinha              = 666;
         }
 
@@ -262,10 +262,10 @@ class SigfisArquivoConcilia extends SigfisArquivoBase implements iPadArquivoTXTB
       */
       $oStdLinhaArquivo->nu_sequencialconciliacao = ($iRowConciliacao+1)."03";
 
-       if( $iAnoSessao < 2013 ){               
+       if( $iAnoSessao < 2013 ){
         $oStdLinhaArquivo->codigolinha              = 576;
       }else{
-        $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad(' ', 15, ' ', STR_PAD_LEFT);
+        $oStdLinhaArquivo->Cd_Conta_Corrente        = str_pad($oStdContaConciliacao->k68_contabancaria, 15, ' ', STR_PAD_RIGHT);
         $oStdLinhaArquivo->codigolinha              = 666;
       }
       $this->aDados[]                             = $oStdLinhaArquivo;

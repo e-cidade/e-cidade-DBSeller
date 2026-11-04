@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ $datainicial_ano = $aDataInicial[0];
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -101,7 +101,7 @@ $datainicial_ano = $aDataInicial[0];
     <tr> 
       <td><strong>Código: </strong> </td>
       <td>
-        <? db_input('h72_sequencial',10,"Sequencial da Promoção",true,'text',3,""); ?>
+        <?php db_input('h72_sequencial',10,"Sequencial da Promoção",true,'text',3,""); ?>
       </td>
     </tr>	  
 	  <tr> 
@@ -109,7 +109,7 @@ $datainicial_ano = $aDataInicial[0];
 	      <strong>Matrícula: </strong>
 	    </td>
 	    <td nowrap>
-	      <?
+	      <?php
 	        db_input('rh01_regist', 10, "Matrícula do Servidor", true, 'text', 3, "");
 	        db_input('z01_nome', 60, "Nome do Servidor", true, 'text', 3, '');
 	      ?>
@@ -118,7 +118,7 @@ $datainicial_ano = $aDataInicial[0];
     <tr> 
       <td><strong>Data Inicial: </strong> </td>
       <td>
-        <? db_inputdata('datainicial',$datainicial_dia,$datainicial_mes,$datainicial_ano,true,'text',3,''); ?>
+        <?php db_inputdata('datainicial',$datainicial_dia,$datainicial_mes,$datainicial_ano,true,'text',3,''); ?>
       </td>
     </tr> 	  
 	</table>
@@ -153,7 +153,7 @@ $datainicial_ano = $aDataInicial[0];
 					  <table align="left" width="98%" border="0" cellspacing="4" cellpadding="0" >
 					    <tr>
 					      <td>
-					        <? db_textarea("h73_observacao", 5, 90, "", true, 'text', 1 ); ?>
+					        <?php db_textarea("h73_observacao", 5, 90, "", true, 'text', 1 ); ?>
 					      </td>
 					    </tr>
 					  </table>   				  
@@ -197,7 +197,7 @@ $datainicial_ano = $aDataInicial[0];
 </form>
 
 
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

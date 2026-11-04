@@ -29,38 +29,40 @@
 //CLASSE DA ENTIDADE promitente
 class cl_promitente { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j41_matric = 0; 
-   var $j41_numcgm = 0; 
-   var $j41_tipopro = 'f'; 
-   var $j41_promitipo = null; 
+   public $j41_matric = 0; 
+   public $j41_numcgm = 0; 
+   public $j41_tipopro = 'f'; 
+   public $j41_promitipo = null; 
+   public $j41_tipopromitente = null;
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j41_matric = int4 = Matricula 
                  j41_numcgm = int4 = Numcgm 
                  j41_tipopro = bool = Responsável 
-                 j41_promitipo = char(1) = Tipo do promitente 
+                 j41_promitipo = char(1) = Abreviação do tipo do promitente 
+                 j41_tipopromitente = int4 = Tipo do promitente
                  ";
    //funcao construtor da classe 
-   function cl_promitente() { 
+   public function cl_promitente() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("promitente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,19 +71,20 @@ class cl_promitente {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j41_matric = ($this->j41_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_matric"]:$this->j41_matric);
        $this->j41_numcgm = ($this->j41_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_numcgm"]:$this->j41_numcgm);
        $this->j41_tipopro = ($this->j41_tipopro == "f"?@$GLOBALS["HTTP_POST_VARS"]["j41_tipopro"]:$this->j41_tipopro);
        $this->j41_promitipo = ($this->j41_promitipo == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_promitipo"]:$this->j41_promitipo);
+       $this->j41_tipopromitente = ($this->j41_tipopromitente == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_tipopromitente"]:$this->j41_tipopromitente);
      }else{
        $this->j41_matric = ($this->j41_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_matric"]:$this->j41_matric);
        $this->j41_numcgm = ($this->j41_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j41_numcgm"]:$this->j41_numcgm);
      }
    }
    // funcao para inclusao
-   function incluir ($j41_matric,$j41_numcgm){ 
+   public function incluir ($j41_matric,$j41_numcgm){ 
       $this->atualizacampos();
      if($this->j41_tipopro == null ){ 
        $this->erro_sql = " Campo Responsável nao Informado.";
@@ -119,17 +122,22 @@ class cl_promitente {
        $this->erro_status = "0";
        return false;
      }
+     if(($this->j41_tipopromitente == null) || ($this->j41_tipopromitente == "") ){ 
+      $this->j41_tipopromitente = 'null';
+    }
      $sql = "insert into promitente(
                                        j41_matric 
                                       ,j41_numcgm 
                                       ,j41_tipopro 
                                       ,j41_promitipo 
+                                      ,j41_tipopromitente
                        )
                 values (
                                 $this->j41_matric 
                                ,$this->j41_numcgm 
                                ,'$this->j41_tipopro' 
                                ,'$this->j41_promitipo' 
+                               ,$this->j41_tipopromitente
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -166,11 +174,12 @@ class cl_promitente {
        $resac = db_query("insert into db_acount values($acount,33,169,'','".AddSlashes(pg_result($resaco,0,'j41_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,33,2363,'','".AddSlashes(pg_result($resaco,0,'j41_tipopro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,33,2531,'','".AddSlashes(pg_result($resaco,0,'j41_promitipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,33,2532,'','".AddSlashes(pg_result($resaco,0,'j41_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j41_matric=null,$j41_numcgm=null) { 
+   public function alterar ($j41_matric=null,$j41_numcgm=null) { 
       $this->atualizacampos();
      $sql = " update promitente set ";
      $virgula = "";
@@ -226,6 +235,10 @@ class cl_promitente {
          return false;
        }
      }
+     if(trim($this->j41_tipopromitente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j41_tipopromitente"])){ 
+      $sql  .= $virgula." j41_tipopromitente = $this->j41_tipopromitente ";
+      $virgula = ",";
+    }
      $sql .= " where ";
      if($j41_matric!=null){
        $sql .= " j41_matric = $this->j41_matric";
@@ -249,6 +262,8 @@ class cl_promitente {
            $resac = db_query("insert into db_acount values($acount,33,2363,'".AddSlashes(pg_result($resaco,$conresaco,'j41_tipopro'))."','$this->j41_tipopro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j41_promitipo"]))
            $resac = db_query("insert into db_acount values($acount,33,2531,'".AddSlashes(pg_result($resaco,$conresaco,'j41_promitipo'))."','$this->j41_promitipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j41_tipopromitente"]))
+           $resac = db_query("insert into db_acount values($acount,33,2532,'".AddSlashes(pg_result($resaco,$conresaco,'j41_tipopromitente'))."','$this->j41_tipopromitente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -284,7 +299,7 @@ class cl_promitente {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j41_matric=null,$j41_numcgm=null,$dbwhere=null) { 
+   public function excluir ($j41_matric=null,$j41_numcgm=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j41_matric,$j41_numcgm));
      }else{ 
@@ -301,6 +316,7 @@ class cl_promitente {
          $resac = db_query("insert into db_acount values($acount,33,169,'','".AddSlashes(pg_result($resaco,$iresaco,'j41_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,33,2363,'','".AddSlashes(pg_result($resaco,$iresaco,'j41_tipopro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,33,2531,'','".AddSlashes(pg_result($resaco,$iresaco,'j41_promitipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,33,2532,'','".AddSlashes(pg_result($resaco,$iresaco,'j41_tipopromitente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from promitente
@@ -355,7 +371,7 @@ class cl_promitente {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,7 +393,7 @@ class cl_promitente {
       }
      return $result;
    }
-   function sql_query ( $j41_matric=null,$j41_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j41_matric=null,$j41_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -390,10 +406,12 @@ class cl_promitente {
        $sql .= $campos;
      }
      $sql .= " from promitente ";
-     $sql .= "      inner join iptubase  on  iptubase.j01_matric = promitente.j41_matric";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = promitente.j41_numcgm";
-     $sql .= "      inner join lote  on  lote.j34_idbql = iptubase.j01_idbql";
-     $sql .= "      inner join cgm  as a on   a.z01_numcgm = iptubase.j01_numcgm";
+     $sql .= "      inner join tipopromitente ON promitente.j41_promitipo = tipopromitente.j164_promitipo ";
+     $sql .= "        or tipopromitente.j164_tipopromitente = promitente.j41_tipopromitente               ";
+     $sql .= "      inner join iptubase  on  iptubase.j01_matric = promitente.j41_matric                  ";
+     $sql .= "      inner join cgm  on  cgm.z01_numcgm = promitente.j41_numcgm                            ";
+     $sql .= "      inner join lote  on  lote.j34_idbql = iptubase.j01_idbql                              ";
+     $sql .= "      inner join cgm  as a on   a.z01_numcgm = iptubase.j01_numcgm                          ";
      $sql2 = "";
      if($dbwhere==""){
        if($j41_matric!=null ){
@@ -422,7 +440,7 @@ class cl_promitente {
      }
      return $sql;
   }
-   function sql_query_file ( $j41_matric=null,$j41_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j41_matric=null,$j41_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -464,7 +482,7 @@ class cl_promitente {
      return $sql;
   }
 		
-		function sql_query_enderecoEntrega($iNumCgmPromitente = null, $sCampos = "*", $sWhere = null) {
+		public function sql_query_enderecoEntrega($iNumCgmPromitente = null, $sCampos = "*", $sWhere = null) {
 			
 			if (empty($sWhere) && !empty($iNumCgmPromitente)) {
 				$sWhere = " where j41_numcgm = {$iNumCgmPromitente} ";

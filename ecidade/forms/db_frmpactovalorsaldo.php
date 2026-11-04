@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,16 +41,16 @@ $clrotulo->label("104_descricao");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To103_pactovalor?>">
-       <?
+       <?php
        db_input('o103_sequencial',10,$Io103_sequencial,true,'hidden',$db_opcao,"");
        db_ancora(@$Lo103_pactovalor,"js_pesquisao103_pactovalor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o103_pactovalor',10,$Io103_pactovalor,true,'text',$db_opcao," onchange='js_pesquisao103_pactovalor(false);'")
 ?>
-       <?
+       <?php
 db_input('o109_descricao',40,$Io87_pactotipoitem,true,'text',3,'')
        ?>
     </td>
@@ -60,7 +60,7 @@ db_input('o109_descricao',40,$Io87_pactotipoitem,true,'text',3,'')
        <?=@$Lo103_anousu?>
     </td>
     <td> 
-<?
+<?php
 $o103_anousu = db_getsession('DB_anousu');
 db_input('o103_anousu',10,$Io103_anousu,true,'text',$db_opcao,"")
 ?>
@@ -71,7 +71,7 @@ db_input('o103_anousu',10,$Io103_anousu,true,'text',$db_opcao,"")
        <b>Tipo Planejamento:</b>
     </td>
     <td> 
-    <?
+    <?php
     $aTipos = array(
                      1 => "Planejamento",
                      3 => "CP 100% Reconhecida",
@@ -85,7 +85,7 @@ db_input('o103_anousu',10,$Io103_anousu,true,'text',$db_opcao,"")
        <?=@$Lo103_mesusu?>
     </td>
     <td> 
-<?
+<?php
 db_input('o103_mesusu',10,$Io103_mesusu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_input('o103_mesusu',10,$Io103_mesusu,true,'text',$db_opcao,"")
        <?=@$Lo103_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o103_valor',10,$Io103_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactovalorsaldo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

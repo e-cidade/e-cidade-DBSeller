@@ -55,12 +55,12 @@ DBViewRemocaoPeriodoGradeHorario.prototype.criaWindow = function () {
       sConteudo += "          </td>                                                                 ";
       sConteudo += "          <td>                                                                  ";
       sConteudo += "            <select id='tipoRemocao'>                                           ";
-      sConteudo += "              <option value='1'>Remoção permanente</option>                     ";
-      sConteudo += "              <option value='2'>Vigência do período até a data</option>         ";
+      sConteudo += "              <option value='1'>Vigência do período até a data</option>         ";
+      sConteudo += "              <option value='2'>Remoção permanente</option>                     ";
       sConteudo += "            </select>                                                           ";
       sConteudo += "          </td>                                                                 ";
       sConteudo += "        </tr>                                                                   ";
-      sConteudo += "        <tr id='linhaData' style='display:none'>                                ";
+      sConteudo += "        <tr id='linhaData' style='display:table-row'>                           ";
       sConteudo += "          <td>                                                                  ";
       sConteudo += "            <label for='dataFinalPeriodo'>Data: </label>                        ";
       sConteudo += "          </td>                                                                 ";
@@ -99,12 +99,11 @@ DBViewRemocaoPeriodoGradeHorario.prototype.show = function ( ) {
   $('tipoRemocao').addEventListener('change', function () {
 
     if ( this.value == 1 ) {
-
-      $('linhaData').style.display = 'none';
+      $('linhaData').style.display = 'table-row';
       return;
     }
 
-    $('linhaData').style.display = 'table-row';
+    $('linhaData').style.display = 'none';
   });
 
   $('btnConfirmar').addEventListener('click', function () {
@@ -120,17 +119,17 @@ DBViewRemocaoPeriodoGradeHorario.prototype.confirmarRemocao = function ( ) {
       iRegencia : this.iRegencia
   };
 
-  if ( oParamentros.iTipo == 1 && !confirm( _M(this.sFonteMsg + 'confirmar_remocao_permanente') ) ) {
+  if ( oParamentros.iTipo == 2 && !confirm( _M(this.sFonteMsg + 'confirmar_remocao_permanente') ) ) {
     return false;
   }
 
-  if ( oParamentros.iTipo == 2 && empty($F('dataFinalPeriodo'))) {
+  if ( oParamentros.iTipo == 1 && empty($F('dataFinalPeriodo'))) {
 
     alert ( _M(this.sFonteMsg + 'informe_data') );
     return;
   }
 
-  if ( oParamentros.iTipo == 2 ) {
+  if ( oParamentros.iTipo == 1 ) {
 
     oParamentros.exec  = 'removerPeriodoAteData';
     oParamentros.sData = $F('dataFinalPeriodo');

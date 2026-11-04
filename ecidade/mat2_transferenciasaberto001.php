@@ -69,7 +69,7 @@ list($iAno, $iMes, $iDia) = explode("-", date("Y-m-d", db_getsession("DB_datausu
   </form>
 
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

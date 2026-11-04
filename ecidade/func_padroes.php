@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,14 +65,14 @@ $clrotulo->label("DBtxt25");
                <strong>Ano / Mês :&nbsp;&nbsp;</strong>
              </td>
              <td colspan='3'>
-             <?
+             <?php
              if(!isset($chave_r02_anousu)){
                $chave_r02_anousu = db_anofolha();
              }
              db_input('DBtxt23',4,$IDBtxt23,true,'text',2,"",'chave_r02_anousu');
              ?>
              &nbsp;/&nbsp;
-             <?
+             <?php
              if(!isset($chave_r02_mesusu)){
                $chave_r02_mesusu = db_mesfolha();
              }
@@ -85,7 +85,7 @@ $clrotulo->label("DBtxt25");
                 <?=$Lr02_regime?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
              db_input("r02_regime",12,$Ir02_regime,true,"text",4,"","chave_r02_regime");
              ?>
               </td>
@@ -95,7 +95,7 @@ $clrotulo->label("DBtxt25");
                 <?=$Lr02_codigo?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
              db_input("r02_codigo",12,$Ir02_codigo,true,"text",4,"","chave_r02_codigo");
              ?>
               </td>
@@ -105,7 +105,7 @@ $clrotulo->label("DBtxt25");
                 <?=$Lr02_descr?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
              db_input("r02_descr",30,$Ir02_descr,true,"text",4,"","chave_r02_descr");
              ?>
               </td>
@@ -128,7 +128,7 @@ $clrotulo->label("DBtxt25");
     <td align="center" valign="top">
       <fieldset>
         <legend>Resultado da Pesquisa</legend>
-      <?
+      <?php
       $dbwhere = "";
       if(isset($regime) && trim($regime)!=""){
       	$dbwhere = " and r02_regime = $regime ";
@@ -174,12 +174,12 @@ $clrotulo->label("DBtxt25");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

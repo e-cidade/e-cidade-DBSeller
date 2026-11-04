@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -87,7 +87,7 @@ class verticalTab {
    * @param [bool $lActive define se aba esta ativa, ou nao]
    */
 
-  function add ($saName, $sLabel = '', $sUrl = '', $lActive = true) {
+  function add ($saName, $sLabel = '', $sUrl = '', $lActive = true, $openIframe = false) {
 
     /*
      * verficamos se o o primeiro paramentro passado é um array
@@ -118,7 +118,8 @@ class verticalTab {
                                   "sName"   => $aAbas["sName"],
                                   "sUrl"    => $aAbas["sUrl"],
                                   "sLabel"  => $sLabel,
-                                  "lActive" => $lActive
+                                  "lActive" => $lActive,
+                                  "openIframe" => $openIframe
                                  );
 
         }
@@ -131,7 +132,8 @@ class verticalTab {
                              "sName"   => $saName,
                              "sUrl"    => $sUrl,
                              "sLabel"  => $sLabel,
-                             "lActive" => $lActive
+                             "lActive" => $lActive,
+                             "openIframe" => $openIframe
                              );
     }
     return true;
@@ -145,6 +147,8 @@ class verticalTab {
      * percorremos as abas adicionadas.
      * caso nao existe nenhuma, abortamos a executacao do metodo.
      */
+
+      $oGet = db_utils::postMemory($_GET);
      $sAbas = null;
      if (count($this->aAbas) == 0 ) {
        die("<b>[ERRO]:</b> não foram adicionado abas. ");
@@ -163,8 +167,14 @@ class verticalTab {
            $sDisabled  = "return false;";
          }
          $sAbas .= "<a class='{$sClassName}' id='{$aAba["sName"]}' style='display:block;border-top:1px solid white'\n";
-         $sAbas .= "   onclick='{$sDisabled} js_marcaTab(this);this.blur()'";
-         $sAbas .= "   href='{$aAba["sUrl"]}'";
+
+         if (!$aAba["openIframe"]) {
+             $sAbas .= "   href='{$aAba["sUrl"]}'";
+             $sAbas .= "   onclick='{$sDisabled} js_marcaTab(this);this.blur()'";
+         } else {
+             $sAbas .= "   onclick='openIframeMensagem({$oGet->codproc}); js_marcaTab(this);this.blur()'";
+         }
+
          $sAbas .= "   target='{$this->sName}Detalhes'>{$aAba["sLabel"]}</a>";
          $i++;
        }

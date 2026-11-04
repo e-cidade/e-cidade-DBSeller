@@ -216,6 +216,7 @@ class Registro30Validator
         $this->validarDeficienciaOuAltismoOuSuperdotacao();
         $this->validarDeficiencia();
         $this->validarCegueira();
+        $this->validarVisaoMonocular();
         $this->validarBaixaVisao();
         $this->validarSurdez();
         $this->validarDeficienciaAuditiva();
@@ -274,6 +275,8 @@ class Registro30Validator
         $this->validarEducacaoCampo();
         $this->validarEducacaoAmbiental();
         $this->validarEducacaoDireitosHumanos();
+        $this->validarEducacaoBilingueSurdos();
+        $this->validarEducacaoTIC();
         $this->validarGeneroDiversidadeSexual();
         $this->validarDireitosCriancaAdolescente();
         $this->validarEducacaoEtnicoRaciais();
@@ -325,7 +328,8 @@ class Registro30Validator
             return true;
         }
 
-        // TODO: Validar regra 4 do campo 3
+        // Validacao da regra 4 do campo 3 (pessoa fisica informada duas vezes na mesma escola)
+        // garantida pela verificacao de integridade do sistema
     }
 
     private function validarCodigoInep()
@@ -345,7 +349,8 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        // TODO: Validar regra 6 do campo 4
+        // Validacao regra 6 do campo 4 (pessoa fisica informada duas vezes na mesma escola)
+        // garantida pela verificacao de integridade do sistema
     }
 
     private function validarCpf()
@@ -353,6 +358,12 @@ class Registro30Validator
         $dado = $this->registro->getCpf();
         $nacionalidade = $this->registro->getNacionalidade();
         $campo = 'Número do CPF';
+        if (!empty($this->registro60) &&
+            !$this->isPreenchido($dado) && $this->turmaEtapaAny([69, 70, 72, 71, 67, 73, 74])) {
+            $this->log("CPF ALUNO - A pessoa física foi importada,
+            mas está faltando o número do CPF que deverá ser informado na hora do fechamento da escola.");
+            return;
+        }
 
         if (!$this->isPreenchido($dado) && in_array($nacionalidade, array(1, 2)) && !empty($this->registro40)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -672,6 +683,35 @@ class Registro30Validator
         }
     }
 
+    public function validarVisaoMonocular()
+    {
+        $deficiencia = $this->registro->getDeficienciaOuAltismoOuSuperdotacao();
+        $dado = $this->registro->getVisaoMonocular();
+        $surdocegueira = $this->registro->getSurdocegueira();
+        $campo = 'Visão monocular';
+
+        if (!$this->isPreenchido($dado) && $deficiencia == 1) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+            return;
+        }
+
+        if ($this->isPreenchido($dado) && $deficiencia != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        if (!in_array($dado, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($dado == 1 && $surdocegueira == 1) {
+            $this->log(sprintf('O campo "%s" incompatível com o campo "Surdocegueira".', $campo));
+        }
+    }
+
     private function validarCegueira()
     {
         $dado = $this->registro->getCegueira();
@@ -679,6 +719,7 @@ class Registro30Validator
         $visaoBaixa = $this->registro->getBaixaVisao();
         $surdez = $this->registro->getSurdez();
         $surdocegueira = $this->registro->getSurdocegueira();
+        $visaoMonocular = $this->registro->getVisaoMonocular();
         $campo = 'Tipo de deficiência, transtorno do espectro autista e altas habilidades/superdotação - Cegueira';
 
         if (!$this->isPreenchido($dado) && $deficiencia == 1) {
@@ -702,6 +743,9 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" incompatível com o campo "Baixa visão".', $campo));
         }
 
+        if ($dado == 1 && $visaoBaixa == 1) {
+            $this->log(sprintf('O campo "%s" incompatível com o campo "Visão Monocular".', $campo));
+        }
         if ($dado == 1 && $surdez == 1) {
             $this->log(sprintf('O campo "%s" incompatível com o campo "Surdez".', $campo));
         }
@@ -1109,6 +1153,7 @@ class Registro30Validator
         $campos = array();
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
+        $campos[] = $visaoMonocular = $this->registro->getVisaoMonocular();
         $campos[] = $this->registro->getSurdez();
         $campos[] = $this->registro->getDeficienciaAuditiva();
         $campos[] = $surdocegueira = $this->registro->getSurdocegueira();
@@ -1156,6 +1201,7 @@ class Registro30Validator
         if ($dado == 1 && !in_array(1, array(
                 $cegueira,
                 $visaoBaixa,
+                $visaoMonocular,
                 $surdocegueira,
                 $deficienciaFisica,
                 $deficienciaIntelectual,
@@ -1874,10 +1920,19 @@ class Registro30Validator
         if (strlen($dado) != 32) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
+        $tipoCertidao = intval(substr($dado, 14, 1));
 
-        $inicio = mb_substr($dado, 0, 30);
-        $verificador = mb_strtolower(mb_substr($dado, 30, 2));
-        if (!DBString::isSomenteNumero($inicio) || !(DBString::isSomenteNumero($verificador) || $verificador == "xx")) {
+        if ($tipoCertidao === 2) {
+            $this->log("A certidão informada não pode ser de casamento.");
+        }
+        $ano = intval(substr($dado, 10, 4));
+        $nascimento = \DateTime::createFromFormat('d/m/Y', $this->registro->getDataNascimento());
+        $nascimento = $nascimento->format('Y');
+        if (!verificaValidadeNumeroMatriculaCertidao($dado) ||
+            $ano < $nascimento ||
+            $ano > (new \DateTime())->format('Y')
+
+        ) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1963,7 +2018,9 @@ class Registro30Validator
     private function validarMunicipioResidencia()
     {
         $dado = $this->registro->getMunicipioResidencia();
+
         $cep = $this->registro->getCep();
+
         $campo = 'Município de residência';
 
         if (!$this->isPreenchido($dado) && $this->isPreenchido($cep)) {
@@ -2018,7 +2075,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 7))) {
+        if (!in_array($dado, array(1, 2, 3, 7, 8))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2434,13 +2491,25 @@ class Registro30Validator
         $posGraduacoes = $this->registro->getPosGraduacoes();
         $escolaridade = $this->registro->getEscolaridade();
         $nenhumaPos = empty($this->registro->getPosGraduacoes());
+        $verificaPos = [];
         if ($nenhumaPos || $escolaridade != 6) {
             return;
         } else {
             foreach ($posGraduacoes as $key => $pos) {
+                $hash = "{$pos['ed183_tipoformacao']}#{$pos['ed183_areaformacao']}#{$pos['ed183_anoconclusao']}";
+                $verificaPos[$hash][] = $pos;
                 $this->validarTipoPosGraduacao($pos, $key);
                 $this->validarAreaPosGraduacao($pos, $key);
                 $this->validarAnoConclusaoPosGraduacao($pos, $key);
+            }
+
+            foreach ($verificaPos as $hash => $pos) {
+                if (count($pos) > 1) {
+                    $msg = "Pós-Graduações concluídas não foram preenchidas corretamente. Não pode haver duas ou";
+                    $msg .= " mais pós-graduações concluídas com todos os seus campos (Tipo de pós-graduação, ";
+                    $msg .= "Área da pós-graduação e Ano de conclusão da pós-graduação) iguais.";
+                    $this->log($msg);
+                }
             }
         }
     }
@@ -2469,9 +2538,16 @@ class Registro30Validator
     {
         $campo = sprintf('Ano de conclusão da pós-graduação ', $key + 1);
         $anosConclusoesMedio = [];
-        $anosConclusoesMedio[] = $this->registro->getAnoConclusao1();
-        $anosConclusoesMedio[] = $this->registro->getAnoConclusao2();
-        $anosConclusoesMedio[] = $this->registro->getAnoConclusao3();
+
+        if (!is_null($this->registro->getAnoConclusao1())) {
+            $anosConclusoesMedio[] = $this->registro->getAnoConclusao1();
+        }
+        if (!is_null($this->registro->getAnoConclusao2())) {
+            $anosConclusoesMedio[] = $this->registro->getAnoConclusao2();
+        }
+        if (!is_null($this->registro->getAnoConclusao3())) {
+            $anosConclusoesMedio[] = $this->registro->getAnoConclusao3();
+        }
 
         $dado = $pos['ed183_anoconclusao'];
         $anoInferior = 0;
@@ -2577,11 +2653,11 @@ class Registro30Validator
         $nenhumaPos = $this->registro->getNenhumaPos();
         $escolaridade = $this->registro->getEscolaridade();
         $campo = 'Não tem pós-graduação concluída';
-       
+
         if ($nenhumaPos == 1 && $escolaridade != 6) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
- 
+
         if ($nenhumaPos != 1 && $nenhumaPos != null) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -2906,6 +2982,67 @@ class Registro30Validator
         $nenhumCurso = $this->registro->getNenhumCurso();
         $campo = 'Outros cursos específicos (Formação continuada com mínimo de 80 horas) - Educação ambiental';
 
+        if (!$this->isPreenchido($dado) && (!empty($this->registro40) || !empty($this->registros50))) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+            return;
+        }
+
+        if ($this->isPreenchido($dado) && empty($this->registro40) && empty($this->registros50)) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        if (!in_array($dado, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($nenhumCurso == 1 && $dado == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Nenhum" for preenchido com "Sim".',
+                $campo
+            ));
+        }
+    }
+
+    private function validarEducacaoTIC()
+    {
+        $dado = $this->registro->getEducacaoTIC();
+        $nenhumCurso = $this->registro->getNenhumCurso();
+        $campo = 'Educação e Tecnologia de Informação e Comunicação (TIC)';
+
+        if (!$this->isPreenchido($dado) && (!empty($this->registro40) || !empty($this->registros50))) {
+            $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
+            return;
+        }
+
+        if ($this->isPreenchido($dado) && empty($this->registro40) && empty($this->registros50)) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        if (!in_array($dado, array(0, 1))) {
+            $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
+        }
+
+        if ($nenhumCurso == 1 && $dado == 1) {
+            $this->log(sprintf(
+                'O campo "%s" não pode ser preenchido com "Sim" quando o campo "Nenhum" for preenchido com "Sim".',
+                $campo
+            ));
+        }
+    }
+
+    private function validarEducacaoBilingueSurdos()
+    {
+        $dado = $this->registro->getEducacaoBilingueSurdos();
+        $nenhumCurso = $this->registro->getNenhumCurso();
+        $campo = 'Educação bilíngue de surdos';
         if (!$this->isPreenchido($dado) && (!empty($this->registro40) || !empty($this->registros50))) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;

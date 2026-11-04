@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,13 +50,13 @@ class cl_matestoquetransf {
                  m83_coddepto = int4 = Depart.
                  ";
    //funcao construtor da classe
-   function cl_matestoquetransf() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquetransf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_matestoquetransf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m83_matestoqueini = ($this->m83_matestoqueini == ""?@$GLOBALS["HTTP_POST_VARS"]["m83_matestoqueini"]:$this->m83_matestoqueini);
        $this->m83_coddepto = ($this->m83_coddepto == ""?@$GLOBALS["HTTP_POST_VARS"]["m83_coddepto"]:$this->m83_coddepto);
@@ -74,7 +74,7 @@ class cl_matestoquetransf {
      }
    }
    // funcao para inclusao
-   function incluir ($m83_matestoqueini){
+   public function incluir ($m83_matestoqueini){
       $this->atualizacampos();
      if($this->m83_coddepto == null ){
        $this->erro_sql = " Campo Depart. nao Informado.";
@@ -138,7 +138,7 @@ class cl_matestoquetransf {
      return true;
    }
    // funcao para alteracao
-   function alterar ($m83_matestoqueini=null) {
+   public function alterar ($m83_matestoqueini=null) {
       $this->atualizacampos();
      $sql = " update matestoquetransf set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_matestoquetransf {
      }
    }
    // funcao para exclusao
-   function excluir ($m83_matestoqueini=null,$dbwhere=null) {
+   public function excluir ($m83_matestoqueini=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m83_matestoqueini));
      }else{
@@ -280,7 +280,7 @@ class cl_matestoquetransf {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,7 +302,7 @@ class cl_matestoquetransf {
       }
      return $result;
    }
-   function sql_query ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -341,7 +341,7 @@ class cl_matestoquetransf {
      }
      return $sql;
   }
-   function sql_query_file ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -374,7 +374,7 @@ class cl_matestoquetransf {
      }
      return $sql;
   }
-   function sql_query_inill ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_inill ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -422,7 +422,7 @@ class cl_matestoquetransf {
      }
      return $sql;
   }
-   function sql_query_mater ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_mater ( $m83_matestoqueini=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

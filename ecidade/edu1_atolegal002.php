@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ if (isset($alterar)) {
     parent.document.formaba.a2.disabled = false;
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href   = 'edu1_edu_anexoatolegal001.php?chavepesquisa=<?=$ed05_i_codigo?>';
   </script>
-<?
+<?php
 }
 ?>
 <html>
@@ -75,11 +75,11 @@ if (isset($alterar)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Ato Legal</b></legend>
-       <?include(modification("forms/db_frmatolegal.php"));?>
+       <?php include(modification("forms/db_frmatolegal.php"));?>
       </fieldset>
      </center>
     </td>
@@ -87,7 +87,7 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 	
   if ($oDaoAtoLegal->erro_status == "0") {

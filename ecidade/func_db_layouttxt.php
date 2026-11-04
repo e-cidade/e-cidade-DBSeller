@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_layouttxt->rotulo->label("db50_descr");
               <?=$Ldb50_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db50_codigo",6,$Idb50_codigo,true,"text",4,"","chave_db50_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_layouttxt->rotulo->label("db50_descr");
               <?=$Ldb50_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db50_descr",40,$Idb50_descr,true,"text",4,"","chave_db50_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_layouttxt->rotulo->label("db50_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layouttxt.php")==true){
@@ -122,12 +122,12 @@ $cldb_layouttxt->rotulo->label("db50_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

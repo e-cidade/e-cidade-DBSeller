@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE impexemplaritem
-class cl_impexemplaritem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $bi25_codigo = 0; 
-   var $bi25_impexemplar = 0; 
-   var $bi25_exemplar = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_impexemplaritem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $bi25_codigo = 0;
+   var $bi25_impexemplar = 0;
+   var $bi25_exemplar = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 bi25_codigo = int8 = Código 
-                 bi25_impexemplar = int8 = Impressão 
-                 bi25_exemplar = int8 = Exemplar 
+                 bi25_codigo = int8 = Código
+                 bi25_impexemplar = int8 = Impressão
+                 bi25_exemplar = int8 = Exemplar
                  ";
-   //funcao construtor da classe 
-   function cl_impexemplaritem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("impexemplaritem"); 
+     $this->rotulo = new rotulo("impexemplaritem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_impexemplaritem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi25_codigo = ($this->bi25_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi25_codigo"]:$this->bi25_codigo);
        $this->bi25_impexemplar = ($this->bi25_impexemplar == ""?@$GLOBALS["HTTP_POST_VARS"]["bi25_impexemplar"]:$this->bi25_impexemplar);
@@ -77,9 +77,9 @@ class cl_impexemplaritem {
      }
    }
    // funcao para inclusao
-   function incluir ($bi25_codigo){ 
+   public function incluir ($bi25_codigo){
       $this->atualizacampos();
-     if($this->bi25_impexemplar == null ){ 
+     if($this->bi25_impexemplar == null ){
        $this->erro_sql = " Campo Impressão nao Informado.";
        $this->erro_campo = "bi25_impexemplar";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_impexemplaritem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->bi25_exemplar == null ){ 
+     if($this->bi25_exemplar == null ){
        $this->erro_sql = " Campo Exemplar nao Informado.";
        $this->erro_campo = "bi25_exemplar";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_impexemplaritem {
        return false;
      }
      if($bi25_codigo == "" || $bi25_codigo == null ){
-       $result = db_query("select nextval('impexemplaritem_bi25_codigo_seq')"); 
+       $result = db_query("select nextval('impexemplaritem_bi25_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: impexemplaritem_bi25_codigo_seq do campo: bi25_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: impexemplaritem_bi25_codigo_seq do campo: bi25_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->bi25_codigo = pg_result($result,0,0); 
+       $this->bi25_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from impexemplaritem_bi25_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $bi25_codigo)){
@@ -118,10 +118,10 @@ class cl_impexemplaritem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->bi25_codigo = $bi25_codigo; 
+         $this->bi25_codigo = $bi25_codigo;
        }
      }
-     if(($this->bi25_codigo == null) || ($this->bi25_codigo == "") ){ 
+     if(($this->bi25_codigo == null) || ($this->bi25_codigo == "") ){
        $this->erro_sql = " Campo bi25_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_impexemplaritem {
        return false;
      }
      $sql = "insert into impexemplaritem(
-                                       bi25_codigo 
-                                      ,bi25_impexemplar 
-                                      ,bi25_exemplar 
+                                       bi25_codigo
+                                      ,bi25_impexemplar
+                                      ,bi25_exemplar
                        )
                 values (
-                                $this->bi25_codigo 
-                               ,$this->bi25_impexemplar 
-                               ,$this->bi25_exemplar 
+                                $this->bi25_codigo
+                               ,$this->bi25_impexemplar
+                               ,$this->bi25_exemplar
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Ítens por Impressão de Exemplarares ($this->bi25_codigo) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_impexemplaritem {
        $resac = db_query("insert into db_acount values($acount,2130,12254,'','".AddSlashes(pg_result($resaco,0,'bi25_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($bi25_codigo=null) { 
+   public function alterar ($bi25_codigo=null) {
       $this->atualizacampos();
      $sql = " update impexemplaritem set ";
      $virgula = "";
-     if(trim($this->bi25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_codigo"])){ 
+     if(trim($this->bi25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_codigo"])){
        $sql  .= $virgula." bi25_codigo = $this->bi25_codigo ";
        $virgula = ",";
-       if(trim($this->bi25_codigo) == null ){ 
+       if(trim($this->bi25_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "bi25_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_impexemplaritem {
          return false;
        }
      }
-     if(trim($this->bi25_impexemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_impexemplar"])){ 
+     if(trim($this->bi25_impexemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_impexemplar"])){
        $sql  .= $virgula." bi25_impexemplar = $this->bi25_impexemplar ";
        $virgula = ",";
-       if(trim($this->bi25_impexemplar) == null ){ 
+       if(trim($this->bi25_impexemplar) == null ){
          $this->erro_sql = " Campo Impressão nao Informado.";
          $this->erro_campo = "bi25_impexemplar";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_impexemplaritem {
          return false;
        }
      }
-     if(trim($this->bi25_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_exemplar"])){ 
+     if(trim($this->bi25_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi25_exemplar"])){
        $sql  .= $virgula." bi25_exemplar = $this->bi25_exemplar ";
        $virgula = ",";
-       if(trim($this->bi25_exemplar) == null ){ 
+       if(trim($this->bi25_exemplar) == null ){
          $this->erro_sql = " Campo Exemplar nao Informado.";
          $this->erro_campo = "bi25_exemplar";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_impexemplaritem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ítens por Impressão de Exemplarares nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->bi25_codigo;
@@ -267,14 +267,14 @@ class cl_impexemplaritem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($bi25_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($bi25_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bi25_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_impexemplaritem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Ítens por Impressão de Exemplarares nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$bi25_codigo;
@@ -330,11 +330,11 @@ class cl_impexemplaritem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_impexemplaritem {
       }
      return $result;
    }
-   function sql_query ( $bi25_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $bi25_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,15 +378,15 @@ class cl_impexemplaritem {
      $sql2 = "";
      if($dbwhere==""){
        if($bi25_codigo!=null ){
-         $sql2 .= " where impexemplaritem.bi25_codigo = $bi25_codigo "; 
-       } 
+         $sql2 .= " where impexemplaritem.bi25_codigo = $bi25_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,10 +395,10 @@ class cl_impexemplaritem {
      }
      return $sql;
   }
-   function sql_query_file ( $bi25_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $bi25_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,15 +411,15 @@ class cl_impexemplaritem {
      $sql2 = "";
      if($dbwhere==""){
        if($bi25_codigo!=null ){
-         $sql2 .= " where impexemplaritem.bi25_codigo = $bi25_codigo "; 
-       } 
+         $sql2 .= " where impexemplaritem.bi25_codigo = $bi25_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorclei->rotulo->label();
        <?=@$Lo45_codlei?>
     </td>
     <td> 
-<?
+<?php
 db_input('o45_codlei',4,$Io45_codlei,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o45_codlei',4,$Io45_codlei,true,'text',3,"")
        <?=@$Lo45_numlei?>
     </td>
     <td> 
-<?
+<?php
 db_input('o45_numlei',30,$Io45_numlei,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('o45_numlei',30,$Io45_numlei,true,'text',$db_opcao,"")
        <?=@$Lo45_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o45_descr',4,25,$Io45_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_textarea('o45_descr',4,25,$Io45_descr,true,'text',$db_opcao,"")
        <?=@$Lo45_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('o45_dataini',@$o45_dataini_dia,@$o45_dataini_mes,@$o45_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_inputdata('o45_dataini',@$o45_dataini_dia,@$o45_dataini_mes,@$o45_dataini_ano
        <?=@$Lo45_datafim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('o45_datafim',@$o45_datafim_dia,@$o45_datafim_mes,@$o45_datafim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orclei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

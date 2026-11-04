@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk64_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k64_codigo",6,$Ik64_codigo,true,"text",4,"","chave_k64_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk64_docum?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k64_docum",8,$Ik64_docum,true,"text",4,"","chave_k64_docum");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_listadoc.php")==true){
@@ -119,12 +119,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

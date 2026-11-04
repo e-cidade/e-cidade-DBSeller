@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE funcaorhrubricas
 class cl_funcaorhrubricas { 
@@ -32,13 +32,13 @@ class cl_funcaorhrubricas {
                  rh177_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_funcaorhrubricas() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("funcaorhrubricas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -47,7 +47,7 @@ class cl_funcaorhrubricas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh177_sequencial = ($this->rh177_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh177_sequencial"]:$this->rh177_sequencial);
        $this->rh177_funcao = ($this->rh177_funcao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh177_funcao"]:$this->rh177_funcao);
@@ -60,7 +60,7 @@ class cl_funcaorhrubricas {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh177_sequencial){ 
+   public function incluir ($rh177_sequencial){ 
       $this->atualizacampos();
      if($this->rh177_funcao == null ){ 
        $this->erro_sql = " Campo Função não informado.";

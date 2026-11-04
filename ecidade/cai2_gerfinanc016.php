@@ -1,31 +1,33 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdf.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
@@ -38,12 +40,12 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 $sqlCondCgm = "";
 
 if (isset($matric)) {
-  
+
 	$from = "arrematric";
   $sqlCgmMat = "select rinumcgm as j01_numcgm
-                  from fc_busca_envolvidos(true, 
-                                           (select db21_regracgmiptu from db_config where codigo = ".db_getsession('DB_instit')."), 
-                                           'M', 
+                  from fc_busca_envolvidos(true,
+                                           (select db21_regracgmiptu from db_config where codigo = ".db_getsession('DB_instit')."),
+                                           'M',
                                            ".$matric.")";
 
   $rsCgmMat = db_query($sqlCgmMat);
@@ -73,35 +75,38 @@ $sql = "select distinct p.k00_numpre                 as numpre,
                k01_descr                             as deschis,
                0                                     as k00_conta,
                null                                  as k00_dtpaga,
-               cancdebitosreg.k21_obs||' - '||cancdebitosproc.k23_obs as histtxt,
+               concat_ws('/', p58_numero, p58_ano)   as processo,
+               cancdebitosreg.k21_obs,
+               cancdebitosproc.k23_obs,
                k23_data as dtlhist,
                k23_hora as hrlhist,
                login        as usuario  ,
-               cancdebitosreg.k21_codigo                            
+               cancdebitosreg.k21_codigo
         from $from o
-         inner join arrenumcgm q               on q.k00_numpre  = o.k00_numpre  $sqlCondCgm  
-				 
+         inner join arrenumcgm q               on q.k00_numpre  = o.k00_numpre  $sqlCondCgm
+
 				 inner join arrecant p                 on p.k00_numpre                          = o.k00_numpre
-				 
-				 inner join arreinstit                 on arreinstit.k00_numpre                 = p.k00_numpre 
+
+				 inner join arreinstit                 on arreinstit.k00_numpre                 = p.k00_numpre
 						                                      and arreinstit.k00_instit                 =	".db_getsession('DB_instit')."
-                 left join cancdebitosreg     on cancdebitosreg.k21_numpre             = p.k00_numpre 
+                 left join cancdebitosreg     on cancdebitosreg.k21_numpre             = p.k00_numpre
                                                   and cancdebitosreg.k21_numpar         = p.k00_numpar
                  left join cancdebitosprocreg on cancdebitosprocreg.k24_cancdebitosreg = cancdebitosreg.k21_sequencia
 				         inner join cancdebitosproc    on cancdebitosprocreg.k24_codigo         = cancdebitosproc.k23_codigo
-				         left  join arreprescr         on arreprescr.k30_numpre                 = p.k00_numpre 
+				         left  join arreprescr         on arreprescr.k30_numpre                 = p.k00_numpre
 				                                          and arreprescr.k30_anulado is false
-              	 left outer join arrepaga a    on p.k00_numpre                          = a.k00_numpre 
+              	 left outer join arrepaga a    on p.k00_numpre                          = a.k00_numpre
                                               and p.k00_numpar                          = a.k00_numpar
 						                                  and p.k00_receit                          = a.k00_receit
-                 left join arrehist aa         on p.k00_numpre                          = aa.k00_numpre 
+                 left join arrehist aa         on p.k00_numpre                          = aa.k00_numpre
                                                   and (p.k00_numpar                     = aa.k00_numpar or aa.k00_numpar = 0)
-                 left outer join db_usuarios   on id_usuario                            = cancdebitosproc.k23_usuario  
+                 left outer join db_usuarios   on id_usuario                            = cancdebitosproc.k23_usuario
                  inner join tabrec             on p.k00_receit                          = k02_codigo
                  inner join tabrecjm           on tabrecjm.k02_codjm                    = tabrec.k02_codjm
-                 inner join histcalc           on p.k00_hist                            = k01_codigo 
-                 
-                 "; 
+                 inner join histcalc           on p.k00_hist                            = k01_codigo
+                 left join cancdebitosprot on k25_cancdebitos = cancdebitosreg.k21_codigo
+                 left join protprocesso on p58_codproc = cancdebitosprot.k25_codproc
+                 ";
 
 if(isset($numcgm)) {
   $sql = $sql . " where o.k00_numcgm = ".$numcgm;
@@ -122,8 +127,8 @@ if(isset($receita)){
 if(isset($datainicial) || isset($dataini) ){
   $sql .= " and cancdebitosproc.k23_data between '$dataini' and '$datafim' ";
 }
-	  
-$sql = $sql . " and a.k00_numpre is null 
+
+$sql = $sql . " and a.k00_numpre is null
                 order by p.k00_numpre,
                          p.k00_numpar";
 if(!isset($numcgm) && !isset($matric) && !isset($inscr) && !isset($numpre)) {
@@ -132,7 +137,7 @@ if(!isset($numcgm) && !isset($matric) && !isset($inscr) && !isset($numpre)) {
 
 
 $result  = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
@@ -155,8 +160,8 @@ if ($clcgm->numrows == 0){
   $head7 = $z01_munic." / ".$z01_uf;
 }
 
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new ECidade\Pdf\Pdf();
+$pdf->init(false);
 $pdf->AliasNbPages();
 $pdf->setfillcolor(215);
 $total = 0;
@@ -164,15 +169,38 @@ $troca = 1;
 $p     = 1;
 $alt   = 4;
 
+$pdf->addTitulo($head2, 2);
+$pdf->addTitulo($head5, 5);
+$pdf->addTitulo($head6, 6);
+$pdf->addTitulo($head7, 7);
+($head3) ? $pdf->addTitulo($head3, 3) : "";
+
 for ($cont = 0; $cont < $numrows; $cont++){
-  
+
   db_fieldsmemory($result,$cont);
-  
-  if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
-    
+
+  /**
+   * mostrar apenas um dos obs caso sejam iguais.
+   * caso contrário mostrar ambos
+   */
+  if (!empty($k21_obs) && !empty($k23_obs)) {
+    $histtxt = trim($k21_obs);
+    if (strtolower($histtxt) !== strtolower(trim($k23_obs))) {
+        $histtxt = trim($k21_obs) . " - " . trim($k23_obs);
+    }
+  } else {
+    $histtxt = trim($k21_obs) ?: trim($k23_obs);
+  }
+
+  if (!empty($processo)) {
+    $processo = " - Processo: " . $processo;
+  }
+
+  if ($pdf->getY() > $pdf->getH() - 30 || $troca != 0 ) {
+
     $pdf->addpage("L");
     $pdf->setfont('arial','b',8);
-    
+
     $pdf->cell(15,$alt,"NUMPRE",     1, 0, "C", 1);
     $pdf->cell(15,$alt,"PAR.",       1, 0, "C", 1);
     $pdf->cell(15,$alt,"TOT.",       1, 0, "C", 1);
@@ -181,12 +209,12 @@ for ($cont = 0; $cont < $numrows; $cont++){
     $pdf->cell(15,$alt,"HIST.",      1, 0, "C", 1);
     $pdf->cell(60,$alt,"DESCRIÇÃO",  1, 0, "C", 1);
     $pdf->cell(15,$alt,"REC.",       1, 0, "C", 1);
-    $pdf->cell(60,$alt,"DESCRIÇÃO",  1, 0, "C", 1);	
+    $pdf->cell(60,$alt,"DESCRIÇÃO",  1, 0, "C", 1);
     $pdf->cell(15,$alt,"VALOR",      1, 0, "C", 1);
     $pdf->cell(35,$alt,"USUÁRIO",    1, 1, "C", 1);
     $pdf->cell(280,$alt,"HISTÓRICO", 1, 1, "C", 1);
     $pdf->cell(280,1,"",             0, 1, "C", 0);
-    
+
     $troca = 0;
   }
   $pdf->setfont('arial','',6);
@@ -205,10 +233,10 @@ for ($cont = 0; $cont < $numrows; $cont++){
   $pdf->cell(15, $alt, $hist,                        "0", 0, "C", 1);
   $pdf->cell(60, $alt, $deschis,                     "0", 0, "L", 1);
   $pdf->cell(15, $alt, $rec,                         "0", 0, "C", 1);
-  $pdf->cell(60, $alt, $descrec,                     "0", 0, "L", 1);    
+  $pdf->cell(60, $alt, $descrec,                     "0", 0, "L", 1);
   $pdf->cell(15, $alt, db_formatar(($valor*-1),"f"), "0", 0, "R", 1);
   $pdf->cell(35, $alt, $usuario,                     "0", 1, "L", 1);
-  $pdf->multicell(280,$alt,db_formatar($dtlhist,"d") . " (" .$hrlhist. ") - " . $histtxt,0,"J",1);
+  $pdf->multicell(280,$alt,db_formatar($dtlhist,"d") . " (" .$hrlhist. ") - " . $histtxt . $processo,0,"J",1);
   $total += ($valor*-1);
 }
 

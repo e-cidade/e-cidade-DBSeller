@@ -1,91 +1,91 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE bancoaplic
-class cl_bancoaplic { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k90_id = 0; 
-   var $k90_conta = 0; 
-   var $k90_data_dia = null; 
-   var $k90_data_mes = null; 
-   var $k90_data_ano = null; 
-   var $k90_data = null; 
-   var $k90_cpvlraplic = 0; 
-   var $k90_cpvlrresg = 0; 
-   var $k90_cpsldaplic = 0; 
-   var $k90_pfsldaplicant = 0; 
-   var $k90_pfvlraplic = 0; 
-   var $k90_pfvlrresg = 0; 
-   var $k90_pfsldaplicf = 0; 
-   var $k90_vlrdisp = 0; 
-   var $k90_sldtot = 0; 
-   var $k90_codreceita = 0; 
-   var $k90_vlrjuros = 0; 
-   var $k90_cpsldaplicant = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_bancoaplic {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k90_id = 0;
+   var $k90_conta = 0;
+   var $k90_data_dia = null;
+   var $k90_data_mes = null;
+   var $k90_data_ano = null;
+   var $k90_data = null;
+   var $k90_cpvlraplic = 0;
+   var $k90_cpvlrresg = 0;
+   var $k90_cpsldaplic = 0;
+   var $k90_pfsldaplicant = 0;
+   var $k90_pfvlraplic = 0;
+   var $k90_pfvlrresg = 0;
+   var $k90_pfsldaplicf = 0;
+   var $k90_vlrdisp = 0;
+   var $k90_sldtot = 0;
+   var $k90_codreceita = 0;
+   var $k90_vlrjuros = 0;
+   var $k90_cpsldaplicant = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k90_id = int8 = Código do Lançamento 
-                 k90_conta = int8 = Conta reduzida do banco 
-                 k90_data = date = Data do Lançamento 
-                 k90_cpvlraplic = float8 = Valor Aplicato-cp 
-                 k90_cpvlrresg = float8 = Valor Resgate-cp 
-                 k90_cpsldaplic = float8 = Saldo Aplic.-cp 
-                 k90_pfsldaplicant = float8 = Saldo Aplicado Ant.-pf 
-                 k90_pfvlraplic = float8 = Valor Aplicado-pf 
-                 k90_pfvlrresg = float8 = Valor Resgate-pf 
-                 k90_pfsldaplicf = float8 = Saldo Final Aplicado-pf 
-                 k90_vlrdisp = float8 = Valor Disponível 
-                 k90_sldtot = float8 = Saldo Total 
-                 k90_codreceita = int8 = Codigo receita 
-                 k90_vlrjuros = float8 = Vlr.juros 
-                 k90_cpsldaplicant = float8 = Saldo Aplicado Ant.-cp 
+                 k90_id = int8 = Código do Lançamento
+                 k90_conta = int8 = Conta reduzida do banco
+                 k90_data = date = Data do Lançamento
+                 k90_cpvlraplic = float8 = Valor Aplicato-cp
+                 k90_cpvlrresg = float8 = Valor Resgate-cp
+                 k90_cpsldaplic = float8 = Saldo Aplic.-cp
+                 k90_pfsldaplicant = float8 = Saldo Aplicado Ant.-pf
+                 k90_pfvlraplic = float8 = Valor Aplicado-pf
+                 k90_pfvlrresg = float8 = Valor Resgate-pf
+                 k90_pfsldaplicf = float8 = Saldo Final Aplicado-pf
+                 k90_vlrdisp = float8 = Valor Disponível
+                 k90_sldtot = float8 = Saldo Total
+                 k90_codreceita = int8 = Codigo receita
+                 k90_vlrjuros = float8 = Vlr.juros
+                 k90_cpsldaplicant = float8 = Saldo Aplicado Ant.-cp
                  ";
-   //funcao construtor da classe 
-   function cl_bancoaplic() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("bancoaplic"); 
+     $this->rotulo = new rotulo("bancoaplic");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -94,7 +94,7 @@ class cl_bancoaplic {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k90_id = ($this->k90_id == ""?@$GLOBALS["HTTP_POST_VARS"]["k90_id"]:$this->k90_id);
        $this->k90_conta = ($this->k90_conta == ""?@$GLOBALS["HTTP_POST_VARS"]["k90_conta"]:$this->k90_conta);
@@ -123,9 +123,9 @@ class cl_bancoaplic {
      }
    }
    // funcao para inclusao
-   function incluir ($k90_id){ 
+   public function incluir ($k90_id){
       $this->atualizacampos();
-     if($this->k90_conta == null ){ 
+     if($this->k90_conta == null ){
        $this->erro_sql = " Campo Conta reduzida do banco nao Informado.";
        $this->erro_campo = "k90_conta";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_bancoaplic {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k90_data == null ){ 
+     if($this->k90_data == null ){
        $this->erro_sql = " Campo Data do Lançamento nao Informado.";
        $this->erro_campo = "k90_data_dia";
        $this->erro_banco = "";
@@ -143,34 +143,34 @@ class cl_bancoaplic {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k90_cpvlraplic == null ){ 
+     if($this->k90_cpvlraplic == null ){
        $this->k90_cpvlraplic = "0";
      }
-     if($this->k90_cpvlrresg == null ){ 
+     if($this->k90_cpvlrresg == null ){
        $this->k90_cpvlrresg = "0";
      }
-     if($this->k90_cpsldaplic == null ){ 
+     if($this->k90_cpsldaplic == null ){
        $this->k90_cpsldaplic = "0";
      }
-     if($this->k90_pfsldaplicant == null ){ 
+     if($this->k90_pfsldaplicant == null ){
        $this->k90_pfsldaplicant = "0";
      }
-     if($this->k90_pfvlraplic == null ){ 
+     if($this->k90_pfvlraplic == null ){
        $this->k90_pfvlraplic = "0";
      }
-     if($this->k90_pfvlrresg == null ){ 
+     if($this->k90_pfvlrresg == null ){
        $this->k90_pfvlrresg = "0";
      }
-     if($this->k90_pfsldaplicf == null ){ 
+     if($this->k90_pfsldaplicf == null ){
        $this->k90_pfsldaplicf = "0";
      }
-     if($this->k90_vlrdisp == null ){ 
+     if($this->k90_vlrdisp == null ){
        $this->k90_vlrdisp = "0";
      }
-     if($this->k90_sldtot == null ){ 
+     if($this->k90_sldtot == null ){
        $this->k90_sldtot = "0";
      }
-     if($this->k90_codreceita == null ){ 
+     if($this->k90_codreceita == null ){
        $this->erro_sql = " Campo Codigo receita nao Informado.";
        $this->erro_campo = "k90_codreceita";
        $this->erro_banco = "";
@@ -179,23 +179,23 @@ class cl_bancoaplic {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k90_vlrjuros == null ){ 
+     if($this->k90_vlrjuros == null ){
        $this->k90_vlrjuros = "0";
      }
-     if($this->k90_cpsldaplicant == null ){ 
+     if($this->k90_cpsldaplicant == null ){
        $this->k90_cpsldaplicant = "0";
      }
      if($k90_id == "" || $k90_id == null ){
-       $result = db_query("select nextval('bancoaplic_k90_id_seq')"); 
+       $result = db_query("select nextval('bancoaplic_k90_id_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: bancoaplic_k90_id_seq do campo: k90_id"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: bancoaplic_k90_id_seq do campo: k90_id";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k90_id = pg_result($result,0,0); 
+       $this->k90_id = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from bancoaplic_k90_id_seq");
        if(($result != false) && (pg_result($result,0,0) < $k90_id)){
@@ -206,10 +206,10 @@ class cl_bancoaplic {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k90_id = $k90_id; 
+         $this->k90_id = $k90_id;
        }
      }
-     if(($this->k90_id == null) || ($this->k90_id == "") ){ 
+     if(($this->k90_id == null) || ($this->k90_id == "") ){
        $this->erro_sql = " Campo k90_id nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -218,41 +218,41 @@ class cl_bancoaplic {
        return false;
      }
      $sql = "insert into bancoaplic(
-                                       k90_id 
-                                      ,k90_conta 
-                                      ,k90_data 
-                                      ,k90_cpvlraplic 
-                                      ,k90_cpvlrresg 
-                                      ,k90_cpsldaplic 
-                                      ,k90_pfsldaplicant 
-                                      ,k90_pfvlraplic 
-                                      ,k90_pfvlrresg 
-                                      ,k90_pfsldaplicf 
-                                      ,k90_vlrdisp 
-                                      ,k90_sldtot 
-                                      ,k90_codreceita 
-                                      ,k90_vlrjuros 
-                                      ,k90_cpsldaplicant 
+                                       k90_id
+                                      ,k90_conta
+                                      ,k90_data
+                                      ,k90_cpvlraplic
+                                      ,k90_cpvlrresg
+                                      ,k90_cpsldaplic
+                                      ,k90_pfsldaplicant
+                                      ,k90_pfvlraplic
+                                      ,k90_pfvlrresg
+                                      ,k90_pfsldaplicf
+                                      ,k90_vlrdisp
+                                      ,k90_sldtot
+                                      ,k90_codreceita
+                                      ,k90_vlrjuros
+                                      ,k90_cpsldaplicant
                        )
                 values (
-                                $this->k90_id 
-                               ,$this->k90_conta 
-                               ,".($this->k90_data == "null" || $this->k90_data == ""?"null":"'".$this->k90_data."'")." 
-                               ,$this->k90_cpvlraplic 
-                               ,$this->k90_cpvlrresg 
-                               ,$this->k90_cpsldaplic 
-                               ,$this->k90_pfsldaplicant 
-                               ,$this->k90_pfvlraplic 
-                               ,$this->k90_pfvlrresg 
-                               ,$this->k90_pfsldaplicf 
-                               ,$this->k90_vlrdisp 
-                               ,$this->k90_sldtot 
-                               ,$this->k90_codreceita 
-                               ,$this->k90_vlrjuros 
-                               ,$this->k90_cpsldaplicant 
+                                $this->k90_id
+                               ,$this->k90_conta
+                               ,".($this->k90_data == "null" || $this->k90_data == ""?"null":"'".$this->k90_data."'")."
+                               ,$this->k90_cpvlraplic
+                               ,$this->k90_cpvlrresg
+                               ,$this->k90_cpsldaplic
+                               ,$this->k90_pfsldaplicant
+                               ,$this->k90_pfvlraplic
+                               ,$this->k90_pfvlrresg
+                               ,$this->k90_pfsldaplicf
+                               ,$this->k90_vlrdisp
+                               ,$this->k90_sldtot
+                               ,$this->k90_codreceita
+                               ,$this->k90_vlrjuros
+                               ,$this->k90_cpsldaplicant
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Aplicações Bancárias ($this->k90_id) nao Incluído. Inclusao Abortada.";
@@ -298,16 +298,16 @@ class cl_bancoaplic {
        $resac = db_query("insert into db_acount values($acount,1199,7236,'','".AddSlashes(pg_result($resaco,0,'k90_cpsldaplicant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k90_id=null) { 
+   public function alterar ($k90_id=null) {
       $this->atualizacampos();
      $sql = " update bancoaplic set ";
      $virgula = "";
-     if(trim($this->k90_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_id"])){ 
+     if(trim($this->k90_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_id"])){
        $sql  .= $virgula." k90_id = $this->k90_id ";
        $virgula = ",";
-       if(trim($this->k90_id) == null ){ 
+       if(trim($this->k90_id) == null ){
          $this->erro_sql = " Campo Código do Lançamento nao Informado.";
          $this->erro_campo = "k90_id";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_bancoaplic {
          return false;
        }
      }
-     if(trim($this->k90_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_conta"])){ 
+     if(trim($this->k90_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_conta"])){
        $sql  .= $virgula." k90_conta = $this->k90_conta ";
        $virgula = ",";
-       if(trim($this->k90_conta) == null ){ 
+       if(trim($this->k90_conta) == null ){
          $this->erro_sql = " Campo Conta reduzida do banco nao Informado.";
          $this->erro_campo = "k90_conta";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_bancoaplic {
          return false;
        }
      }
-     if(trim($this->k90_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"] !="") ){ 
+     if(trim($this->k90_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"] !="") ){
        $sql  .= $virgula." k90_data = '$this->k90_data' ";
        $virgula = ",";
-       if(trim($this->k90_data) == null ){ 
+       if(trim($this->k90_data) == null ){
          $this->erro_sql = " Campo Data do Lançamento nao Informado.";
          $this->erro_campo = "k90_data_dia";
          $this->erro_banco = "";
@@ -342,11 +342,11 @@ class cl_bancoaplic {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k90_data_dia"])){
          $sql  .= $virgula." k90_data = null ";
          $virgula = ",";
-         if(trim($this->k90_data) == null ){ 
+         if(trim($this->k90_data) == null ){
            $this->erro_sql = " Campo Data do Lançamento nao Informado.";
            $this->erro_campo = "k90_data_dia";
            $this->erro_banco = "";
@@ -357,73 +357,73 @@ class cl_bancoaplic {
          }
        }
      }
-     if(trim($this->k90_cpvlraplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlraplic"])){ 
-        if(trim($this->k90_cpvlraplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlraplic"])){ 
-           $this->k90_cpvlraplic = "0" ; 
-        } 
+     if(trim($this->k90_cpvlraplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlraplic"])){
+        if(trim($this->k90_cpvlraplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlraplic"])){
+           $this->k90_cpvlraplic = "0" ;
+        }
        $sql  .= $virgula." k90_cpvlraplic = $this->k90_cpvlraplic ";
        $virgula = ",";
      }
-     if(trim($this->k90_cpvlrresg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlrresg"])){ 
-        if(trim($this->k90_cpvlrresg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlrresg"])){ 
-           $this->k90_cpvlrresg = "0" ; 
-        } 
+     if(trim($this->k90_cpvlrresg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlrresg"])){
+        if(trim($this->k90_cpvlrresg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpvlrresg"])){
+           $this->k90_cpvlrresg = "0" ;
+        }
        $sql  .= $virgula." k90_cpvlrresg = $this->k90_cpvlrresg ";
        $virgula = ",";
      }
-     if(trim($this->k90_cpsldaplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplic"])){ 
-        if(trim($this->k90_cpsldaplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplic"])){ 
-           $this->k90_cpsldaplic = "0" ; 
-        } 
+     if(trim($this->k90_cpsldaplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplic"])){
+        if(trim($this->k90_cpsldaplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplic"])){
+           $this->k90_cpsldaplic = "0" ;
+        }
        $sql  .= $virgula." k90_cpsldaplic = $this->k90_cpsldaplic ";
        $virgula = ",";
      }
-     if(trim($this->k90_pfsldaplicant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicant"])){ 
-        if(trim($this->k90_pfsldaplicant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicant"])){ 
-           $this->k90_pfsldaplicant = "0" ; 
-        } 
+     if(trim($this->k90_pfsldaplicant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicant"])){
+        if(trim($this->k90_pfsldaplicant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicant"])){
+           $this->k90_pfsldaplicant = "0" ;
+        }
        $sql  .= $virgula." k90_pfsldaplicant = $this->k90_pfsldaplicant ";
        $virgula = ",";
      }
-     if(trim($this->k90_pfvlraplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlraplic"])){ 
-        if(trim($this->k90_pfvlraplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlraplic"])){ 
-           $this->k90_pfvlraplic = "0" ; 
-        } 
+     if(trim($this->k90_pfvlraplic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlraplic"])){
+        if(trim($this->k90_pfvlraplic)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlraplic"])){
+           $this->k90_pfvlraplic = "0" ;
+        }
        $sql  .= $virgula." k90_pfvlraplic = $this->k90_pfvlraplic ";
        $virgula = ",";
      }
-     if(trim($this->k90_pfvlrresg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlrresg"])){ 
-        if(trim($this->k90_pfvlrresg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlrresg"])){ 
-           $this->k90_pfvlrresg = "0" ; 
-        } 
+     if(trim($this->k90_pfvlrresg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlrresg"])){
+        if(trim($this->k90_pfvlrresg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfvlrresg"])){
+           $this->k90_pfvlrresg = "0" ;
+        }
        $sql  .= $virgula." k90_pfvlrresg = $this->k90_pfvlrresg ";
        $virgula = ",";
      }
-     if(trim($this->k90_pfsldaplicf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicf"])){ 
-        if(trim($this->k90_pfsldaplicf)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicf"])){ 
-           $this->k90_pfsldaplicf = "0" ; 
-        } 
+     if(trim($this->k90_pfsldaplicf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicf"])){
+        if(trim($this->k90_pfsldaplicf)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_pfsldaplicf"])){
+           $this->k90_pfsldaplicf = "0" ;
+        }
        $sql  .= $virgula." k90_pfsldaplicf = $this->k90_pfsldaplicf ";
        $virgula = ",";
      }
-     if(trim($this->k90_vlrdisp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrdisp"])){ 
-        if(trim($this->k90_vlrdisp)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrdisp"])){ 
-           $this->k90_vlrdisp = "0" ; 
-        } 
+     if(trim($this->k90_vlrdisp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrdisp"])){
+        if(trim($this->k90_vlrdisp)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrdisp"])){
+           $this->k90_vlrdisp = "0" ;
+        }
        $sql  .= $virgula." k90_vlrdisp = $this->k90_vlrdisp ";
        $virgula = ",";
      }
-     if(trim($this->k90_sldtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_sldtot"])){ 
-        if(trim($this->k90_sldtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_sldtot"])){ 
-           $this->k90_sldtot = "0" ; 
-        } 
+     if(trim($this->k90_sldtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_sldtot"])){
+        if(trim($this->k90_sldtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_sldtot"])){
+           $this->k90_sldtot = "0" ;
+        }
        $sql  .= $virgula." k90_sldtot = $this->k90_sldtot ";
        $virgula = ",";
      }
-     if(trim($this->k90_codreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_codreceita"])){ 
+     if(trim($this->k90_codreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_codreceita"])){
        $sql  .= $virgula." k90_codreceita = $this->k90_codreceita ";
        $virgula = ",";
-       if(trim($this->k90_codreceita) == null ){ 
+       if(trim($this->k90_codreceita) == null ){
          $this->erro_sql = " Campo Codigo receita nao Informado.";
          $this->erro_campo = "k90_codreceita";
          $this->erro_banco = "";
@@ -433,17 +433,17 @@ class cl_bancoaplic {
          return false;
        }
      }
-     if(trim($this->k90_vlrjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrjuros"])){ 
-        if(trim($this->k90_vlrjuros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrjuros"])){ 
-           $this->k90_vlrjuros = "0" ; 
-        } 
+     if(trim($this->k90_vlrjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrjuros"])){
+        if(trim($this->k90_vlrjuros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_vlrjuros"])){
+           $this->k90_vlrjuros = "0" ;
+        }
        $sql  .= $virgula." k90_vlrjuros = $this->k90_vlrjuros ";
        $virgula = ",";
      }
-     if(trim($this->k90_cpsldaplicant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplicant"])){ 
-        if(trim($this->k90_cpsldaplicant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplicant"])){ 
-           $this->k90_cpsldaplicant = "0" ; 
-        } 
+     if(trim($this->k90_cpsldaplicant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplicant"])){
+        if(trim($this->k90_cpsldaplicant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k90_cpsldaplicant"])){
+           $this->k90_cpsldaplicant = "0" ;
+        }
        $sql  .= $virgula." k90_cpsldaplicant = $this->k90_cpsldaplicant ";
        $virgula = ",";
      }
@@ -491,7 +491,7 @@ class cl_bancoaplic {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Aplicações Bancárias nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k90_id;
@@ -519,14 +519,14 @@ class cl_bancoaplic {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k90_id=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k90_id=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k90_id));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -566,7 +566,7 @@ class cl_bancoaplic {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Aplicações Bancárias nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k90_id;
@@ -594,11 +594,11 @@ class cl_bancoaplic {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -620,10 +620,10 @@ class cl_bancoaplic {
       }
      return $result;
    }
-   function sql_query ( $k90_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k90_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,15 +639,15 @@ class cl_bancoaplic {
      $sql2 = "";
      if($dbwhere==""){
        if($k90_id!=null ){
-         $sql2 .= " where bancoaplic.k90_id = $k90_id "; 
-       } 
+         $sql2 .= " where bancoaplic.k90_id = $k90_id ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -656,10 +656,10 @@ class cl_bancoaplic {
      }
      return $sql;
   }
-   function sql_query_file ( $k90_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k90_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -672,15 +672,15 @@ class cl_bancoaplic {
      $sql2 = "";
      if($dbwhere==""){
        if($k90_id!=null ){
-         $sql2 .= " where bancoaplic.k90_id = $k90_id "; 
-       } 
+         $sql2 .= " where bancoaplic.k90_id = $k90_id ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

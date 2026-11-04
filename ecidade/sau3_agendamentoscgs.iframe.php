@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,7 +86,7 @@ if(isset($z01_i_cgsund)){
       <td align="left" valign="top" bgcolor="#CCCCCC"> 
         <center>
           <fieldset style='width: 92%;'> <legend><b>Agendamentos do Paciente</b></legend> 
-            <?
+            <?php
               db_input('z01_i_cgsund', 10, '', true, 'hidden', 3, '');
               if ($sSql != "") {
               	

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,22 +42,22 @@ $clrotulo->label("sd68_c_nome");
        <?=@$Lsd66_i_codigo?>
     </td>
     <td>
-<?
+<?php
 db_input('sd66_i_codigo',5,$Isd66_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd66_i_procprincipal?>">
-       <?
+       <?php
        db_ancora(@$Lsd66_i_procprincipal,"js_pesquisasd66_i_procprincipal(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd66_i_procprincipal',5,$Isd66_i_procprincipal,true,'text',$db_opcao," onchange='js_pesquisasd66_i_procprincipal(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nome',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -67,7 +67,7 @@ db_input('sd63_c_nome',60,$Isd63_c_nome,true,'text',3,'')
        <?=@$Lsd66_i_regprincipal?>
     </td>
     <td>
-       <?
+       <?php
        include(modification("classes/db_sau_registro_classe.php"));
        $clsau_registro = new cl_sau_registro;
        $result = $clsau_registro->sql_record($clsau_registro->sql_query("","sd84_i_codigo, sd84_c_nome"));
@@ -77,15 +77,15 @@ db_input('sd63_c_nome',60,$Isd63_c_nome,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd66_i_proccompativel?>">
-       <?
+       <?php
        db_ancora(@$Lsd66_i_proccompativel,"js_pesquisasd66_i_proccompativel(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd66_i_proccompativel',5,$Isd66_i_proccompativel,true,'text',$db_opcao," onchange='js_pesquisasd66_i_proccompativel(false);'")
 ?>
-       <?
+       <?php
 db_input('sd63_c_nomecomp',60,$Isd63_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('sd63_c_nomecomp',60,$Isd63_c_nome,true,'text',3,'')
        <?=@$Lsd66_i_regcompativel?>
     </td>
     <td>
-       <?
+       <?php
        $result = $clsau_registro->sql_record($clsau_registro->sql_query("","sd84_i_codigo, sd84_c_nome"));
        db_selectrecord("sd66_i_regcompativel",$result,true,$db_opcao);
        ?>
@@ -106,7 +106,7 @@ db_input('sd63_c_nomecomp',60,$Isd63_c_nome,true,'text',3,'')
        <?=@$Lsd66_i_compatibilidade?>
     </td>
     <td>
-       <?
+       <?php
        include(modification("classes/db_sau_tipocompatibilidade_classe.php"));
        $clsau_tipocompatibilidade = new cl_sau_tipocompatibilidade;
        $result = $clsau_tipocompatibilidade->sql_record($clsau_tipocompatibilidade->sql_query("","*"));
@@ -119,7 +119,7 @@ db_input('sd63_c_nomecomp',60,$Isd63_c_nome,true,'text',3,'')
        <?=@$Lsd66_i_qtd?>
     </td>
     <td>
-<?
+<?php
 db_input('sd66_i_qtd',4,$Isd66_i_qtd,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('sd66_i_qtd',4,$Isd66_i_qtd,true,'text',$db_opcao,"")
        <?=@$Lsd66_i_anocomp?>/<?=@$Lsd66_i_mescomp?>
     </td>
     <td>
-<?
+<?php
 db_input('sd66_i_anocomp',4,$Isd66_i_anocomp,true,'text',$db_opcao,""); echo "/";
 db_input('sd66_i_mescomp',2,$Isd66_i_mescomp,true,'text',$db_opcao,"");
 ?>
@@ -201,7 +201,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_sau_proccompativel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

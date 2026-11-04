@@ -39,6 +39,8 @@ use Illuminate\Support\Facades\DB;
  * @property $o57_fonte
  * @property $o57_descr
  * @property $o57_finali
+ * @property $nome
+ * @property $natureza
  */
 class FonteReceita extends Model
 {
@@ -49,5 +51,29 @@ class FonteReceita extends Model
         return collect(DB::select(
             "select 1 from orcamento.orcfontesdes where o60_codfon = {$codFon} and o60_anousu = {$exercicio}"
         ))->count() > 0;
+    }
+
+    protected $casts = [
+        'o57_codfon' => 'integer',
+        'o57_anousu' => 'integer',
+        'o57_fonte' => 'string',
+        'o57_descr' => 'string',
+        'o57_finali' => 'string',
+    ];
+
+    /**
+     * @return string
+     */
+    public function getNomeAttribute()
+    {
+        return $this->o57_descr;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNaturezaAttribute()
+    {
+        return $this->o57_fonte;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,14 +83,14 @@ function calcula_data($data, $dias = 0, $meses = 0, $ano = 0)
     <link type="text/css" href="estilos.css" rel="stylesheet">
     <link type="text/css" href="grid.style.css" rel="styleshet">
     <link
-        type="text/css"
-        href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.core.css"
-        rel="stylesheet"
+            type="text/css"
+            href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.core.css"
+            rel="stylesheet"
     />
     <link
-        type="text/css"
-        href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
-        rel="stylesheet"
+            type="text/css"
+            href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
+            rel="stylesheet"
     />
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
     <script rel="script" type="text/javascript" src="scripts/prototype.js"></script>
@@ -99,6 +99,7 @@ function calcula_data($data, $dias = 0, $meses = 0, $ano = 0)
     <script rel="script" type="text/javascript" src="scripts/widgets/dbautocomplete.widget.js"></script>
     <script rel="script" type="text/javascript" src="scripts/webseller.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/classes/saude/validaCNS.js"></script>
 
     <style type="text/css">
         .classContinuado {
@@ -124,9 +125,11 @@ function calcula_data($data, $dias = 0, $meses = 0, $ano = 0)
     </style>
 </head>
 <body class="body-default">
-<?php validaDepartamentoLogado('unidade'); ?>
+<?php
+validaDepartamentoLogado('unidade'); ?>
 <div class="container">
-    <?php include(modification("forms/db_frmfar_retirada.php")); ?>
+    <?php
+    include(modification("forms/db_frmfar_retirada.php")); ?>
 </div>
 <?php
 db_menu();
@@ -144,6 +147,9 @@ if (isset($oConfigFarmacia)) {
             break;
         case 3:
             $sCampoFoco = "z01_v_nome";
+            break;
+        case 4:
+            $sCampoFoco = "z01_v_cgccpf";
             break;
         default:
             $sCampoFoco = "fa04_i_cgsund";

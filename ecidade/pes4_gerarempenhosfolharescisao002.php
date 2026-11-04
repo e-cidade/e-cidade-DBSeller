@@ -43,6 +43,11 @@ require_once(modification("libs/JSON.php"));
 $oPost = db_utils::postMemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
+$ocultaDadosNaContabilidade = '';
+if (isset($_GET['contabilidade'])) {
+    $ocultaDadosNaContabilidade = 'display:none';
+}
+
 $oRotulo = new rotulocampo();
 $oRotulo->label("rh72_projativ");
 $oRotulo->label("rh72_programa");
@@ -60,6 +65,8 @@ $oRotulo->label("o54_descr");
 $oRotulo->label("o56_codele");
 $oRotulo->label("o15_recurso");
 $oRotulo->label("o200_descricao");
+$oRotulo->label("gestao");
+$oRotulo->label("descricao");
 
 $oJson = new Services_JSON();
 $oParam = $oJson->decode(str_replace("\\", "", $_GET["json"]));
@@ -223,7 +230,7 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
             <tr>
                 <td>
 
-                    <fieldset>
+                    <fieldset style="<?=$ocultaDadosNaContabilidade?>">
 
                         <table width="100%" height="100%" cellspacing="0">
                             <tr>
@@ -259,9 +266,9 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
                 </td>
             </tr>
             <tr>
-                <td colspan="7" style="text-align: center;">
-          <span id='buttonReservas'>
-          </span>
+                <td colspan="7" style="text-align: center; <?=$ocultaDadosNaContabilidade?>">
+                    <span id='buttonReservas'>
+                    </span>
                     <input type='button' onclick="js_gerarEmpenhos()" id='empenhar' value='Gerar Empenhos' disabled>
                 </td>
             </tr>
@@ -382,8 +389,9 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
                             <td>
                                 <?php
                                 db_input('rh72_recurso', 10, $Irh72_recurso, true, 'hidden', 1);
-                                db_input('o15_recurso', 10, $Io15_recurso, true, 'text', 1, "onchange='js_pesquisac62_codrec(false);'");
-                                db_input('o15_descr', 35, 0, true, 'text', 3, "");
+                                db_input('gestao', 5, $Igestao, true, 'text', 3);
+                                db_input('o15_recurso', 5, $Io15_recurso, true, 'text', 3);
+                                db_input('o15_descr', 30, 0, true, 'text', 3, "");
                                 ?>
                             </td>
                         </tr>
@@ -746,7 +754,7 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
 
                     var oCellRecurso = document.createElement("TD");
                     oCellRecurso.style.textAlign = 'right';
-                    oCellRecurso.innerHTML = o15_loaespecificacao + "(" + o15_complemento + ")";
+                    oCellRecurso.innerHTML = gestao + "(" + o15_complemento + ")";
                     oCellRecurso.innerHTML += "<input type='hidden' size=5 id='recurso_" + rh72_sequencial + "' value='" + rh72_recurso + "'>";
                     oCellRecurso.className = "border";
                     oCellRecurso.id = 'recurso' + rh72_sequencial;
@@ -1357,49 +1365,24 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
             js_OpenJanelaIframe(
                 '',
                 'db_iframe_orctiporec',
-                'func_fonterecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|o15_descr',
+                'func_fontesubrecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|o15_descr|gestao',
                 'Recursos', true, 0, 0,
                 document.body.clientWidth - 40,
                 document.body.scrollHeight - 180);
             $('Jandb_iframe_orctiporec').style.zIndex = 100000;
         } else {
-            if (document.form1.o15_recurso.value != '') {
-                js_OpenJanelaIframe('',
-                    'db_iframe_orctiporec',
-                    'func_fonterecurso.php?pesquisa_chave='
-                    + document.form1.o15_recurso.value + '&funcao_js=parent.js_mostraorctiporec',
-                    'Recursos',
-                    false,
-                    0,
-                    0,
-                    document.body.clientWidth - 40,
-                    document.body.scrollHeight - 180);
-            } else {
-                document.form1.o15_descr.value = '';
-            }
+            document.form1.o15_descr.value = '';
         }
     }
 
-    function js_mostraorctiporec(descricao, erro) {
 
-        document.form1.o15_descr.value = descricao;
-        if (erro) {
-            document.form1.o15_recurso.focus();
-            document.form1.o15_recurso.value = '';
-            document.form1.rh72_recurso.value = '';
-            montaSelectComplemento([]);
-            return ;
-        }
-
-        buscarComplementosRecurso(document.form1.o15_recurso.value);
-    }
-
-    function js_mostraorctiporec1(recurso, descricao) {
+    function js_mostraorctiporec1(recurso, descricao, gestao) {
 
         document.form1.o15_recurso.value = recurso;
+        document.form1.gestao.value = gestao;
         document.form1.o15_descr.value = descricao;
 
-        buscarComplementosRecurso(recurso);
+        buscarComplementosRecurso(recurso, gestao);
 
         db_iframe_orctiporec.hide();
     }
@@ -1871,11 +1854,12 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
     }
 
 
-    const buscarComplementosRecurso = (recurso) => {
+    const buscarComplementosRecurso = (recurso, gestao) => {
 
         const formData = new FormData();
         formData.append('acao', 'buscarComplementos');
-        formData.append('fonteRecurso', recurso);
+        formData.append('fonteRecurso', gestao);
+        formData.append('subrecurso', recurso);
         HttpClient.post('orc4_fonterecursos.RPC.php', {body: formData}).then(response => {
 
             if (response.erro) {
@@ -1901,7 +1885,8 @@ $rsConfirma = $oDaoConfirma->sql_record($sSqlConfirma);
 
             $('rh72_recurso').value = response.codigo;
             $('o15_recurso').value = response.recurso;
-            $('o15_descr').value = response.descricao;
+            $('gestao').value = response.fonte.gestao;
+            $('o15_descr').value = response.fonte.descricao;
 
             montaSelectComplemento(response.complementos, response.complemento);
 

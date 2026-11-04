@@ -70,9 +70,9 @@ require_once modification("dbforms/db_funcoes.php");
 <div id="ctnAbas"></div>
 <div>
     <div id="abaPlanoSaude">
-        <div class="aviso">
+        <!-- <div class="aviso">
             Para uso dessa rotina, o ponto já deve estar inicializado.
-        </div>
+        </div> -->
         <?php require_once modification('forms/db_fromlancarplanosaudeservidor.php'); ?>
     </div>
     <div id="abaDependentes">
@@ -101,6 +101,9 @@ require_once modification("dbforms/db_funcoes.php");
     const inputCodigoDependente = formDependente.querySelector('#codigoDependente');
     const inputNomeDependente = formDependente.querySelector('#nomeDependente');
     const selectTipoDependente = formDependente.querySelector('#tipoDependente');
+    const inputCodigoRubricaDependente = formDependente.querySelector('#codigoRubricaDependente');
+    const inputDescricaoRubricaDependente = formDependente.querySelector('#descricaoRubricaDependente');
+
     const inputSalvarDependente = formDependente.querySelector('#salvarDependente');
 
     const dbInputValorTitular = new DBInputValor(formServidorOperadoraSaude.querySelector('#valorServidor'));
@@ -133,7 +136,7 @@ require_once modification("dbforms/db_funcoes.php");
         'sArquivo': 'func_rhrubricas.php',
         'sObjetoLookUp': 'db_iframe_rhrubricas',
         'sLabel': 'Pesquisar Rubricas',
-        'aParametrosAdicionais': ['tipo_rubrica=2', 'fixas=true']
+        'aParametrosAdicionais': ['tipo_rubrica=2']
     });
 
     const lookUpDependente = new DBLookUp(aDependente, inputCodigoDependente, inputNomeDependente, {
@@ -141,6 +144,13 @@ require_once modification("dbforms/db_funcoes.php");
         'sObjetoLookUp': 'db_iframe_rhdepend',
         'sLabel': 'Pesquisar Dependentes',
         'atualizarParametros': true
+    });
+
+    new DBLookUp($('ancoraRubricaDependente'), inputCodigoRubricaDependente, inputDescricaoRubricaDependente, {
+        'sArquivo': 'func_rhrubricas.php',
+        'sObjetoLookUp': 'db_iframe_rhrubricas',
+        'sLabel': 'Pesquisar Rubricas',
+        'aParametrosAdicionais': ['tipo_rubrica=2']
     });
 
     const dadosServidorValidos = () => {
@@ -170,6 +180,7 @@ require_once modification("dbforms/db_funcoes.php");
             nome: dependente.dependente.nome,
             tipo: dependente.tipo,
             valor: dependente.valor,
+            rubrica: dependente.rubrica,
             objeto: dependente
         });
     };
@@ -361,10 +372,17 @@ require_once modification("dbforms/db_funcoes.php");
         dataGridCollectionServidorOperadoraSaudeDependente.addColumn('tipo', {
             label: 'Tipo',
             align: 'left',
-            width: '450px'
+            width: '200px'
         }).transform(function(valor, dado) {
             const tipo = tiposDepentente.get(dado.objeto.tipo);
             return '<label title="' + tipo + '">' + tipo + '</label>';
+        });
+        dataGridCollectionServidorOperadoraSaudeDependente.addColumn('rubrica', {
+            label: 'Rubrica',
+            align: 'left',
+            width: '200px'
+        }).transform(function(valor, dado) {
+            return dado.objeto.rubrica.codigo + ' - ' + dado.objeto.rubrica.descricao;
         });
 
         dataGridCollectionServidorOperadoraSaudeDependente.addColumn('valor', {
@@ -378,6 +396,8 @@ require_once modification("dbforms/db_funcoes.php");
             inputSequencialDependente.value = linha.sequencial;
             inputNomeDependente.value = linha.nome;
             selectTipoDependente.value = linha.tipo;
+            inputCodigoRubricaDependente.value = linha.rubrica.codigo;
+            inputDescricaoRubricaDependente.value = linha.rubrica.descricao;
             dbInputValorDependente.setValue(linha.valor);
         });
 
@@ -422,6 +442,19 @@ require_once modification("dbforms/db_funcoes.php");
             if (selectTipoDependente.value === '') {
                 throw 'O campo "Tipo" é obrigatório.';
             }
+
+            if (inputCodigoRubrica.value === '') {
+                throw 'O campo "Rubrica" é obrigatório.';
+            }
+
+            collectionServidorOperadoraSaudeDependente.itens.forEach((item) => {
+                if (item.rubrica.codigo === inputCodigoRubricaDependente.value
+                && item.objeto.dependente.codigo != inputCodigoDependente.value) {
+                    throw 'Rubrica já cadastrada para outro dependente. Favor revisar.';
+                }
+            });
+
+
 
         } catch (e) {
             alert(e);

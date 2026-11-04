@@ -73,8 +73,10 @@ CREATE SEQUENCE transparencia.departamento_id_seq;
 CREATE TABLE transparencia.departamentos (
 
   id INTEGER NOT NULL DEFAULT nextval('departamento_id_seq'),
+  codigo_departamento INTEGER NOT NULL,
   descricao TEXT DEFAULT null,
-  CONSTRAINT departamento_id_pk PRIMARY KEY (id)
+  CONSTRAINT departamento_id_pk PRIMARY KEY (id),
+  CONSTRAINT codigo_departamento_unique UNIQUE (codigo_departamento)
 );
 
 CREATE SEQUENCE transparencia.departamento_divisoes_id_seq;

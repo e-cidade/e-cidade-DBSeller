@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ $clclientes->rotulo->label();
 		      <?=@$Lat01_codcli?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_input('at01_codcli',5,$Iat01_codcli,true,'text',3,"")
 					?>
 		    </td>
@@ -55,7 +55,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_cnpj?>
         </td>
         <td align="right"> 
-          <?
+          <?php
             db_input('at01_cnpj',15,$Iat01_cnpj,true,'text',$db_opcao,"")
           ?>
         </td>		    
@@ -65,7 +65,7 @@ $clclientes->rotulo->label();
 		      <?=@$Lat01_nomecli?>
 		    </td>
 		    <td colspan="3"> 
-					<?
+					<?php
 					  db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -75,7 +75,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_uf?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
 
             require_once(modification("classes/db_db_uf_classe.php"));
             
@@ -92,7 +92,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_cidade?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
             db_input('at01_cidade',40,$Iat01_cidade,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -102,7 +102,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_ender?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
             db_input('at01_ender',40,$Iat01_ender,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -112,7 +112,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_cep?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('at01_cep',10,$Iat01_cep,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -120,7 +120,7 @@ $clclientes->rotulo->label();
           <?=@$Lat01_telefone?>
         </td>
         <td align="right"> 
-          <?
+          <?php
             db_input('at01_telefone',15,$Iat01_telefone,true,'text',$db_opcao,"")
           ?>
         </td>        
@@ -130,7 +130,7 @@ $clclientes->rotulo->label();
 		      <?=@$Lat01_site?>
 		    </td>
 		    <td colspan="3"> 
-					<?
+					<?php
 					  db_input('at01_site',40,$Iat01_site,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -140,7 +140,7 @@ $clclientes->rotulo->label();
 	        <?=@$Lat01_status?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 						$x = array("f"=>"NAO","t"=>"SIM");
 						db_select('at01_status',$x,true,$db_opcao,"style='width:90px'");
 					?>
@@ -149,30 +149,30 @@ $clclientes->rotulo->label();
           <?=@$Lat01_sigla?>
         </td>
         <td align="right"> 
-          <?
+          <?php
             db_input('at01_sigla',15,$Iat01_sigla,true,'text',$db_opcao,"")
           ?>
         </td>		    
 		  </tr>
-      <? if ( $db_opcao != 3 && $db_opcao != 33 ) { ?>      
+      <?php if ( $db_opcao != 3 && $db_opcao != 33 ) { ?>      
 		  <tr>
         <td nowrap title="<?=@$Tat01_codver?>">
           <?=@$Lat01_codver?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
 	            $sql = " select db30_codver , '2.'||db30_codversao ||'.'|| db30_codrelease as versao from db_versao order by db30_codver";
 	            db_selectrecord("at01_codver",db_query($sql),true,$db_opcao,"style='width:90px'",'','','','',1);
           ?>
         </td>		    
 		  </tr>
-       <? } ?>
+       <?php } ?>
       <tr>
         <td nowrap title="<?=@$Tat01_tipocliente?>">
           <?=@$Lat01_tipocliente?>
         </td>
         <td colspan="3"> 
-          <?
+          <?php
           
             $aTipoCliente = array("1"=>"Prefeitura",
                                   "2"=>"Câmara",
@@ -192,7 +192,7 @@ $clclientes->rotulo->label();
 		      <?=@$Lat01_ativo?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 						$x = array("f"=>"NAO","t"=>"SIM");
 						db_select('at01_ativo',$x,true,$db_opcao,"style='width:90px;'");
 					?>
@@ -201,7 +201,7 @@ $clclientes->rotulo->label();
 	        <?=@$Lat01_base?>
 		    </td>
 		    <td align="right" > 
-					<?
+					<?php
 						$x = array("f"=>"NAO","t"=>"SIM");
 						db_select('at01_base',$x,true,$db_opcao,"style='width:90px;'");
 					?>
@@ -216,7 +216,7 @@ $clclientes->rotulo->label();
 			      <table>
 			        <tr>
 				        <td> 
-				          <?
+				          <?php
 				            db_textarea('at01_obs',10,48,$Iat01_obs,true,'text',$db_opcao,"")
 				          ?>
 				        </td>		        
@@ -237,7 +237,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_clientes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

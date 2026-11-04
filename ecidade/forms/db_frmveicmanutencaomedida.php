@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,22 +42,22 @@ $ve66_usuario = db_getsession("DB_id_usuario");
       <?=@$Lve66_sequencial?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('ve66_sequencial',10,$Ive66_sequencial,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tve66_veiculo?>">
-      <?
+      <?php
       db_ancora(@$Lve66_veiculo,"js_pesquisave66_veiculo(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('ve66_veiculo',10,$Ive66_veiculo,true,'text',$db_opcao," onchange='js_pesquisave66_veiculo(false);'")
       ?>
-      <?
+      <?php
       db_input('ve01_codigo',20,$Ive01_codigo,true,'text',3,'')
       ?>
     </td>
@@ -67,7 +67,7 @@ $ve66_usuario = db_getsession("DB_id_usuario");
       <?=@$Lve66_medidaanterior?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('ve66_medidaanterior',10,$Ive66_medidaanterior,true,'text', 3);
       ?>
     </td>
@@ -77,7 +77,7 @@ $ve66_usuario = db_getsession("DB_id_usuario");
       <?=@$Lve66_data?>
     </td>
     <td> 
-      <?
+      <?php
       $ve66_data_dia = date("d", db_getsession("DB_datausu"));
       $ve66_data_mes = date("m", db_getsession("DB_datausu"));
       $ve66_data_ano = date("Y", db_getsession("DB_datausu"));
@@ -90,13 +90,13 @@ $ve66_usuario = db_getsession("DB_id_usuario");
       <?=@$Lve66_hora?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('ve66_hora',10,$Ive66_hora,true,'text',3,"")
       ?>
     </td>
   </tr>
   
-  <?
+  <?php
   db_input('ve66_usuario',10,$Ive66_usuario,true,'hidden',$db_opcao," onchange='js_pesquisave66_usuario(false);'");
   ?>
 
@@ -104,7 +104,7 @@ $ve66_usuario = db_getsession("DB_id_usuario");
     <td colspan="2">
       <fieldset>
         <legend><strong><?=@$Lve66_motivo?></strong></legend> 
-          <?
+          <?php
           db_textarea('ve66_motivo',10,60,$Ive66_motivo,true,'text',$db_opcao,"")
           ?>
       </fieldset>
@@ -115,7 +115,7 @@ $ve66_usuario = db_getsession("DB_id_usuario");
       <?=@$Lve66_ativo?>
     </td>
     <td> 
-      <?
+      <?php
       $x = array("t"=>"SIM","f"=>"NAO");
       db_select('ve66_ativo',$x,true,$db_opcao,"");
       ?>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veicmanutencaomedida.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

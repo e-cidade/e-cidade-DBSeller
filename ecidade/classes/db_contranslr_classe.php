@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,13 +66,13 @@ class cl_contranslr {
                  c47_tiporesto = int4 = tipo resto
                  ";
    //funcao construtor da classe
-   function cl_contranslr() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contranslr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_contranslr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c47_seqtranslr = ($this->c47_seqtranslr == ""?@$GLOBALS["HTTP_POST_VARS"]["c47_seqtranslr"]:$this->c47_seqtranslr);
        $this->c47_seqtranslan = ($this->c47_seqtranslan == ""?@$GLOBALS["HTTP_POST_VARS"]["c47_seqtranslan"]:$this->c47_seqtranslan);
@@ -98,7 +98,7 @@ class cl_contranslr {
      }
    }
    // funcao para inclusao
-   function incluir ($c47_seqtranslr){
+   public function incluir ($c47_seqtranslr){
       $this->atualizacampos();
      if($this->c47_seqtranslan == null ){
        $this->erro_sql = " Campo Sequência nao Informado.";
@@ -266,7 +266,7 @@ class cl_contranslr {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c47_seqtranslr=null) {
+   public function alterar ($c47_seqtranslr=null) {
       $this->atualizacampos();
      $sql = " update contranslr set ";
      $virgula = "";
@@ -454,7 +454,7 @@ class cl_contranslr {
      }
    }
    // funcao para exclusao
-   function excluir ($c47_seqtranslr=null,$dbwhere=null) {
+   public function excluir ($c47_seqtranslr=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c47_seqtranslr));
      }else{
@@ -524,7 +524,7 @@ class cl_contranslr {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -546,11 +546,11 @@ class cl_contranslr {
       }
      return $result;
    }
-   function sql_query ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,11 +585,11 @@ class cl_contranslr {
      return $sql;
   }
 
-  function sql_queryRegraLancamento ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_queryRegraLancamento ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -626,10 +626,10 @@ class cl_contranslr {
  }
 
 
-   function sql_query_file ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c47_seqtranslr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -650,7 +650,7 @@ class cl_contranslr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,7 +664,7 @@ class cl_contranslr {
 
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = explode("#",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -690,7 +690,7 @@ class cl_contranslr {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  		$campos_sql = split("#",$ordem);
+  		$campos_sql = explode("#",$ordem);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   		$sql .= $virgula.$campos_sql[$i];

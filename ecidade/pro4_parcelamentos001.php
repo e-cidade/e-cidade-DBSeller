@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -323,44 +323,44 @@ function js_funcaotipo1(chave,chave1){
     <form name="form1" method="post">
 	
           <table border="0" cellspacing="0" cellpadding="0">
-	  <?
+	  <?php
 	  if(!isset($z01_numcgm) || !isset($j01_matric) || !isset($q02_inscr)){
 	  ?>
             <tr> 
               <td height="25" title="<?=$Tz01_nome?>"> 
-                <?
+                <?php
 				db_ancora($Lz01_nome,'js_mostranomes(true);',4)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("z01_numcgm",6,$Iz01_numcgm,true,'text',4," onchange='js_mostranomes(false);'")
 				?>
-                <?
+                <?php
 				db_input("z01_nome",40,$Iz01_nome,true,'text',5)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tj01_matric?>"> 
-                <?
+                <?php
 				db_ancora($Lj01_matric,'js_mostramatricula(true);',2)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("j01_matric",6,$Ij01_matric,true,'text',4)
 				?>
               </td>
             </tr>
             <tr> 
               <td height="25" title="<?=$Tq02_inscr?>"> 
-                <?
+                <?php
 				db_ancora($Lq02_inscr,'js_mostrainscricao(true);',4)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("q02_inscr",6,$Iq02_inscr,true,'text',4)
 				?>
               </td>
@@ -385,7 +385,7 @@ function js_funcaotipo1(chave,chave1){
 	      return false;
 	    }
 	    </script>
-	    <?
+	    <?php
 	    }else{
 	      $result = $clarretipo->sql_record($clarretipo->sql_query("6","k00_tipo,k00_descr","k00_tipo"));
 	      if($clarretipo->numrows > 0){
@@ -407,15 +407,15 @@ function js_funcaotipo1(chave,chave1){
 	    ?>
             <tr> 
               <td height="25" title="<?=$Tk02_codigo?>"> 
-                <?
+                <?php
 	          db_ancora($Lk02_descr,'js_receitas(true);',4)
   	        ?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("k02_codigo",6,$Ik02_codigo,true,'text',4," onchange='js_receitas(false);'")
 				?>
-                <?
+                <?php
 				db_input("k02_descr",40,$Ik02_descr,true,'text',3)
 				?>
               </td>
@@ -423,15 +423,15 @@ function js_funcaotipo1(chave,chave1){
 
             <tr> 
               <td height="25" title="<?=$Tk01_codigo?>"> 
-                <?
+                <?php
 	          db_ancora($Lk01_descr,'js_histcalc(true);',4)
   	        ?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("k01_codigo",6,$Ik01_codigo,true,'text',4," onchange='js_histclac(false);'")
 				?>
-                <?
+                <?php
 				db_input("k01_descr",40,$Ik01_descr,true,'text',3)
 				?>
               </td>
@@ -439,15 +439,15 @@ function js_funcaotipo1(chave,chave1){
 	    
             <tr> 
               <td height="25" title="<?=$Tk00_tipo?>"> 
-                	<?
+                	<?php
 				db_ancora($Lk00_descr,'js_mostratipo(true);',4)
 				?>
               </td>
               <td height="25"> 
-                <?
+                <?php
 				db_input("k00_tipo",6,$Ik00_tipo,true,'text',4," onchange='js_mostratipo(false);'")
 				?>
-                <?
+                <?php
 				db_input("k00_descr",40,$Ik00_descr,true,'text',3)
 				?>
               </td>
@@ -457,7 +457,7 @@ function js_funcaotipo1(chave,chave1){
 	        <b>Total de parcelas: </b>
 	      </td>
 	      <td>
-                <?
+                <?php
 			db_input("parcelas",6,"",true,'text',4,"")
 				?>
 	      </td>
@@ -468,7 +468,7 @@ function js_funcaotipo1(chave,chave1){
 	        <b>Parcela inicial: </b>
 	      </td>
 	      <td>
-                <?
+                <?php
 		if (!isset($parcini)) {
 		  $parcini = 2;
 		}
@@ -483,7 +483,7 @@ function js_funcaotipo1(chave,chave1){
 	        <b>Valor de cada parcela: </b>
 	      </td>
 	      <td>
-                <?
+                <?php
 			db_input("valor",6,"",true,'text',4,"onKeyUp='this.value = this.value.replace(\",\",\".\")'")
 				?>
 	      </td>
@@ -493,7 +493,7 @@ function js_funcaotipo1(chave,chave1){
 	        <b>Primeiro vencimento: </b>
 	      </td>
 	      <td>
-                <?
+                <?php
 if(empty($dtvenc_dia)){
 //  $dtvenc_dia = date("d",db_getsession("DB_datausu"));
 //  $dtvenc_mes = date("m",db_getsession("DB_datausu"));
@@ -509,7 +509,7 @@ db_inputdata('dtvenc',@$dtvenc_dia,@$dtvenc_mes,@$dtvenc_ano,true,'text',$db_opc
 	        <b>Data de operação: </b>
 	      </td>
 	      <td>
-                <?
+                <?php
 if(empty($dtoper_dia)){
 //  $dtoper_dia = date("d",db_getsession("DB_datausu"));
 //  $dtoper_mes = date("m",db_getsession("DB_datausu"));
@@ -525,32 +525,32 @@ db_inputdata('dtoper',@$dtoper_dia,@$dtoper_mes,@$dtoper_ano,true,'text',$db_opc
                 <?=$Lv07_hist?>
               </td>
               <td height="25"> 
-                <?
+                <?php
                 db_textarea('v07_hist',3,50,$Iv07_hist,true,'text',$db_opcao,"")
 				?>
               </td>
             </tr>
-	      <?
+	      <?php
 	      if(isset($parcelar)){
 	      ?>  
               <tr> 
                 <td height="25">&nbsp;</td>
                 <td height="25"><input  type="submit" value="Parcelar" name="processar"></td>
               </tr>
-	      <?
+	      <?php
 	      }else{
 	      ?>
               <tr> 
                 <td height="25">&nbsp;</td>
                 <td height="25"><input  type="submit" value="Processar" name="parcelar"></td>
               </tr>
-	      <?
+	      <?php
 	      }
 	      ?>
-	    <?
+	    <?php
 	    }
 	    ?>
-	    <?
+	    <?php
 	    if(isset($parcelar)){
 	      echo "<table cellpading='0' cellspacing='2' bgcolor='#6699cc'>
 		     <tr >
@@ -575,12 +575,12 @@ db_inputdata('dtoper',@$dtoper_dia,@$dtoper_mes,@$dtoper_ano,true,'text',$db_opc
         </form>
     </table>
  </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;

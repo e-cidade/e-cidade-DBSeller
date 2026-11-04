@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -103,7 +103,7 @@ if (isset($incluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
         <fieldset style='width: 75%;'> <legend><b>Profissional Fora da Rede</b></legend>
-          <?
+          <?php
           require_once(modification("forms/db_frmsau_medicosforarede.php"));
           ?>
         </fieldset>
@@ -112,7 +112,7 @@ if (isset($incluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 if (!isset($lBotao) || $lBotao != 'true') {
 
   db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'),
@@ -126,7 +126,7 @@ if (!isset($lBotao) || $lBotao != 'true') {
 <script>
 js_tabulacaoforms("form1", "s154_i_medico", true, 1, "s154_i_medico", true);
 </script>
-<?
+<?php
 if (isset($incluir) && $lIncluir) {
 
   if ($oDaoMedicos->erro_status == '0') {

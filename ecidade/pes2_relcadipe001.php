@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
        <strong>Ordem:</strong>
      </td>
      <td align="left">
-       <?
+       <?php
        $aOrdem = array("a"=>"Alfabética","n"=>"Registro","v"=>"Valor","c"=>"Cgm","i"=>"Matrícula Ipe");
        db_select('ordem',$aOrdem,true,1);
        ?>
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
 
 </div>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

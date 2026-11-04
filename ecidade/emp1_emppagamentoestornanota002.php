@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,7 +126,7 @@ $oParametro     = db_utils::fieldsMemory($rsParametro, 0);
 $clconparametro  = new cl_conparametro();
 $rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
 $conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
@@ -137,61 +137,55 @@ if($conparametro->c90_confirmadata == 't'){
  * Verifica se foi passado o código do movimento e pega a ordem de pagamento pelo movimento
  */
 if (isset($e81_codmov) && !empty($e81_codmov)) {
+    $clempord      = new cl_empord();
+    $sSql          = $clempord->sql_query_file($e81_codmov, null, 'e82_codord');
+    $rsCodigoOrdem = $clempord->sql_record($sSql);
 
-  $clempord      = new cl_empord();
-  $sSql          = $clempord->sql_query_file($e81_codmov, null, 'e82_codord');
-  $rsCodigoOrdem = $clempord->sql_record( $sSql );
-
-  if ($clempord->numrows == 0) {
-    unset($pag_ord);
-  } else {
-
-    $oCodigoOrdem  = db_utils::fieldsMemory($rsCodigoOrdem, 0);
-    $e50_codord    = $oCodigoOrdem->e82_codord;
-  }
+    if ($clempord->numrows == 0) {
+        unset($pag_ord);
+    } else {
+        $oCodigoOrdem  = db_utils::fieldsMemory($rsCodigoOrdem, 0);
+        $e50_codord    = $oCodigoOrdem->e82_codord;
+    }
 }
 
 if (isset($confirmar)) {
-  try {
+    try {
+        db_inicio_transacao();
+        $oOrdemPagamento = new ordemPagamento($e50_codord);
+        $oOrdemPagamento->setCheque($k12_cheque);
+        $oOrdemPagamento->setChequeAgenda($e91_codcheque);
+        $oOrdemPagamento->setConta($k13_conta);
+        $oOrdemPagamento->setValorPago($vlrpag_estornar);
+        $oOrdemPagamento->setHistorico($c72_complem);
+        $oOrdemPagamento->estornarOrdem();
 
-    db_inicio_transacao();
-    $oOrdemPagamento = new ordemPagamento($e50_codord);
-    $oOrdemPagamento->setCheque($k12_cheque);
-    $oOrdemPagamento->setChequeAgenda($e91_codcheque);
-    $oOrdemPagamento->setConta($k13_conta);
-    $oOrdemPagamento->setValorPago($vlrpag_estornar);
-    $oOrdemPagamento->setHistorico($c72_complem);
-    $oOrdemPagamento->estornarOrdem();
-
-    db_fim_transacao(false);
-    $sqlerro       = false;
-    $erro_msg      = "Pagamento efetuado com sucesso.";
-    $k11_tipautent = $oOrdemPagamento->oAutentica->k11_tipautent;
-    $retorno       = $oOrdemPagamento->getRetornoautenticacao();
-    $c70_codlan    = $oOrdemPagamento->iCodLanc;
-
-  } catch (Exception $e) {
-
-    $sqlerro    = true;
-    $erro_msg   = str_replace("\n","\\n",$e->getMessage());
-    db_fim_transacao(true);
-  }
+        db_fim_transacao(false);
+        $sqlerro       = false;
+        $erro_msg      = "Pagamento efetuado com sucesso.";
+        $k11_tipautent = $oOrdemPagamento->oAutentica->k11_tipautent;
+        $retorno       = $oOrdemPagamento->getRetornoautenticacao();
+        $c70_codlan    = $oOrdemPagamento->iCodLanc;
+    } catch (Exception $e) {
+        $sqlerro    = true;
+        $erro_msg   = str_replace("\n", "\\n", $e->getMessage());
+        db_fim_transacao(true);
+    }
 
   //final rotina corrente////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 // autentica na impressora
- if( ( isset($confirmar) && $sqlerro==false && $k11_tipautent == 1)  || isset($retorno_imp)) {
+if (( isset($confirmar) && $sqlerro==false && $k11_tipautent == 1)  || isset($retorno_imp)) {
+    if (isset($retorno_imp)) {
+        $retorno = $retorno_imp;
+    }
 
-  if (isset($retorno_imp)) {
-    $retorno = $retorno_imp;
-  }
-
-  require_once modification("model/impressaoAutenticacao.php");
-  $oImpressao = new impressaoAutenticacao($retorno);
-  $oModelo = $oImpressao->getModelo();
-  $oModelo->imprimir();
+    require_once modification("model/impressaoAutenticacao.php");
+    $oImpressao = new impressaoAutenticacao($retorno);
+    $oModelo = $oImpressao->getModelo();
+    $oModelo->imprimir();
 
   /*
   $fd = @fsockopen(db_getsession('DB_ip'),4444);
@@ -206,66 +200,69 @@ if (isset($confirmar)) {
   */
 }
 
-function php_erro($msg, $erro = null) {
+function php_erro($msg, $erro = null)
+{
 
-  global $e60_numemp, $e50_codord;
-  $erro = base64_encode("erro=$erro&erro_msg=$msg&e50_codord=$e50_codord&e60_numemp=$e60_numemp");
-  db_redireciona("emp1_emppagamentoestorna001.php?$erro");
+    global $e60_numemp, $e50_codord;
+    $erro = base64_encode("erro=$erro&erro_msg=$msg&e50_codord=$e50_codord&e60_numemp=$e60_numemp");
+    db_redireciona("emp1_emppagamentoestorna001.php?$erro");
 }
 
-if (isset($pag_emp) && empty($confirmar) ) {
-  $db_opcao = 2;
-  $db_botao = true;
+if (isset($pag_emp) && empty($confirmar)) {
+    $db_opcao = 2;
+    $db_botao = true;
   //rotina que traz os dados de empempenho
-  if (isset($e60_codemp) && $e60_codemp != '') {
-    $arr = split("/", $e60_codemp);
-    if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
-      $dbwhere_ano = " and e60_anousu = ".$arr[1];
+    if (isset($e60_codemp) && $e60_codemp != '') {
+        $arr = explode("/", $e60_codemp);
+        if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
+            $dbwhere_ano = " and e60_anousu = ".$arr[1];
+        } else {
+            $dbwhere_ano = " and e60_anousu =".db_getsession("DB_anousu");
+        }
+
+        $sql = $clempempenho->sql_query(
+            "",
+            "*",
+            "e60_numemp",
+            " e60_codemp =  '".$arr[0]."' $dbwhere_ano and e60_instit = ".db_getsession("DB_instit")
+        );
     } else {
-      $dbwhere_ano = " and e60_anousu =".db_getsession("DB_anousu");
+        $sql = $clempempenho->sql_query($e60_numemp);
     }
+    $result = $clempempenho->sql_record($sql);
 
-    $sql = $clempempenho->sql_query("", "*", "e60_numemp",
-         " e60_codemp =  '".$arr[0]."' $dbwhere_ano and e60_instit = ".db_getsession("DB_instit"));
-  } else {
-    $sql = $clempempenho->sql_query($e60_numemp);
-  }
-  $result = $clempempenho->sql_record($sql);
-
-  if ($clempempenho->numrows > 0) {
-    db_fieldsmemory($result, 0, true);
-  } else {
-    php_erro("Empenho inválido!");
-    exit;
-  }
+    if ($clempempenho->numrows > 0) {
+        db_fieldsmemory($result, 0, true);
+    } else {
+        php_erro("Empenho inválido!");
+        exit;
+    }
 
   // $result01 = $clpagordemele->sql_record($clpagordemele->sql_query(null,null,'(sum(e53_valor)-sum(e53_vlranu)) as saldo  ',"","e50_numemp = $e60_numemp "));
 
-  $result01 = $clpagordem->sql_record($clpagordem->sql_query(null, 'e50_codord as codord ', "", "e50_numemp = $e60_numemp"));
-  $numrows01 = $clpagordem->numrows;
+    $result01 = $clpagordem->sql_record($clpagordem->sql_query(null, 'e50_codord as codord ', "", "e50_numemp = $e60_numemp"));
+    $numrows01 = $clpagordem->numrows;
 
-  if ($numrows01 > 0) {
-    $existe_ordem = true;
-    // db_fieldsmemory($result01,0);
-    // if($saldo!=0){
-    php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !",'true');
-    exit;
-    // }
-
-  }
-} else if (isset($pag_ord)) {
-  $db_opcao = 2;
-  $db_botao = true;
+    if ($numrows01 > 0) {
+        $existe_ordem = true;
+      // db_fieldsmemory($result01,0);
+      // if($saldo!=0){
+        php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !", 'true');
+        exit;
+      // }
+    }
+} elseif (isset($pag_ord)) {
+    $db_opcao = 2;
+    $db_botao = true;
   //rotina que traz os dados de pagordem
-  $result = $clpagordem->sql_record($clpagordem->sql_query($e50_codord));
-  if ($clpagordem->numrows > 0) {
-    db_fieldsmemory($result, 0, true);
-    $result01 = $clpagordem->sql_record($clpagordem->sql_query(null, 'e50_codord as codord', "", "e50_numemp = $e50_numemp"));
-    db_fieldsmemory($result01, 0, true);
-  } else {
-    php_erro("Ordem de pagamento inválido!");
-  }
-
+    $result = $clpagordem->sql_record($clpagordem->sql_query($e50_codord));
+    if ($clpagordem->numrows > 0) {
+        db_fieldsmemory($result, 0, true);
+        $result01 = $clpagordem->sql_record($clpagordem->sql_query(null, 'e50_codord as codord', "", "e50_numemp = $e50_numemp"));
+        db_fieldsmemory($result01, 0, true);
+    } else {
+        php_erro("Ordem de pagamento inválido!");
+    }
 }
 
 ?>
@@ -296,19 +293,19 @@ db_app::load("estilos.css");
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-	<?
+    <?php
 
 
-if (isset ($confirmar) && $sqlerro == false) {
-	$c72_complem = '';
-}
-if ($oParametro->e30_agendaautomatico == "t") {
-  require_once(modification("forms/db_frmestornamovimento.php"));
-} else {
-  require_once(modification("forms/db_frmemppagamentoestorna.php"));
-}
-db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
-?>
+    if (isset($confirmar) && $sqlerro == false) {
+        $c72_complem = '';
+    }
+    if ($oParametro->e30_agendaautomatico == "t") {
+        require_once(modification("forms/db_frmestornamovimento.php"));
+    } else {
+        require_once(modification("forms/db_frmemppagamentoestorna.php"));
+    }
+    db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+    ?>
 </body>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
 <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
@@ -321,17 +318,17 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
     }
 </script>
 </html>
-<?
+<?php
 
 
 if ($db_opcao == 22) {
-//	echo "<script>document.form1.pesquisar.click();</script>";
+//  echo "<script>document.form1.pesquisar.click();</script>";
 }
-if (isset ($confirmar)) {
-	if ($sqlerro == true) {
-		db_msgbox($erro_msg);
-	} else {
-		echo "
+if (isset($confirmar)) {
+    if ($sqlerro == true) {
+        db_msgbox($erro_msg);
+    } else {
+        echo "
 		       <script>
 		          if(confirm('Alteração efetuada com sucesso. \\n \\n Deseja imprimir o relatório? ')){
 			    jan = window.open('emp2_emiteestornoemp002.php?codord=$e50_codord&codlan=$c70_codlan','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
@@ -340,12 +337,11 @@ if (isset ($confirmar)) {
 		       </script>
 
 		    ";
-
-	}
+    }
 }
 
-if( (isset($retorno) && $k11_tipautent == 1) ||  (isset($retorno_imp)) ){
-   echo "
+if ((isset($retorno) && $k11_tipautent == 1) ||  (isset($retorno_imp))) {
+    echo "
        <script>
          // função para dispara a autenticação
 	 function aut(){

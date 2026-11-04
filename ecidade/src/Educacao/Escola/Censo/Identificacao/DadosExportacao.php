@@ -31,6 +31,7 @@ use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\Identificacao\Service\ExportacaoService;
 use Escola;
 use Exception;
+use DBDate;
 
 /**
  * Class DadosExportacao
@@ -52,6 +53,29 @@ class DadosExportacao
      * @var ExportacaoService
      */
     private $service;
+
+    /**
+     * @var DBDate
+     */
+    private $dataCensoPersonalizada;
+
+    /**
+     * @param DBDate $dataCensoPersonalizada
+     * @return DadosExportacao
+     */
+    public function setDataCensoPersonalizada(DBDate $dataCensoPersonalizada)
+    {
+        $this->dataCensoPersonalizada = $dataCensoPersonalizada;
+        return $this;
+    }
+
+    /**
+     * @return DBDate
+     */
+    public function getDataCensoPersonalizada()
+    {
+        return $this->dataCensoPersonalizada;
+    }
 
     /**
      * @return ExportacaoService
@@ -97,6 +121,9 @@ class DadosExportacao
         $this->service = new ExportacaoService();
         $this->service->setCenso($this->censo);
         $this->service->setEscolas($this->escolas);
+        if ($this->dataCensoPersonalizada) {
+            $this->service->setDataCensoPersonalizada($this->dataCensoPersonalizada);
+        }
         $this->service->buscarDados();
     }
 }

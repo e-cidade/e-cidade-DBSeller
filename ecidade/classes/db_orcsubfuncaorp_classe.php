@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_orcsubfuncaorp {
                  o31_finali = text = Finalidade 
                  ";
    //funcao construtor da classe 
-   function cl_orcsubfuncaorp() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcsubfuncaorp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_orcsubfuncaorp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o31_anousu = ($this->o31_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o31_anousu"]:$this->o31_anousu);
        $this->o31_subfuncao = ($this->o31_subfuncao == ""?@$GLOBALS["HTTP_POST_VARS"]["o31_subfuncao"]:$this->o31_subfuncao);
@@ -84,7 +84,7 @@ class cl_orcsubfuncaorp {
      }
    }
    // funcao para inclusao
-   function incluir ($o31_anousu,$o31_subfuncao){ 
+   public function incluir ($o31_anousu,$o31_subfuncao){ 
       $this->atualizacampos();
      if($this->o31_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -176,7 +176,7 @@ class cl_orcsubfuncaorp {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($o31_anousu=null,$o31_subfuncao=null) { 
+   public function alterar ($o31_anousu=null,$o31_subfuncao=null) { 
       $this->atualizacampos();
      $sql = " update orcsubfuncaorp set ";
      $virgula = "";
@@ -296,7 +296,7 @@ class cl_orcsubfuncaorp {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($o31_anousu=null,$o31_subfuncao=null,$dbwhere=null) { 
+   public function excluir ($o31_anousu=null,$o31_subfuncao=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o31_anousu,$o31_subfuncao));
      }else{ 
@@ -368,7 +368,7 @@ class cl_orcsubfuncaorp {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

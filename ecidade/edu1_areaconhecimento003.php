@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ if (isset($excluir)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 
-    <?
+    <?php
       $sLibs  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,";
       $sLibs .= "estilos.css,grid.style.css";
       db_app::load($sLibs);
@@ -103,7 +103,7 @@ if (isset($excluir)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
- 	          <?
+ 	          <?php
 	            include(modification("forms/db_frmareaconhecimento.php"));
 	          ?>
           </center>
@@ -111,7 +111,7 @@ if (isset($excluir)) {
       </tr>
     </table>
     </center>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),db_getsession("DB_instit")
              );
@@ -119,7 +119,7 @@ if (isset($excluir)) {
   </body>
 </html>
 
-<?
+<?php
 
 if (isset($excluir)) {
 

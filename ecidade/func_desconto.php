@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r27_mesusu",2,$Ir27_mesusu,true,"text",4,"","chave_r27_mesusu");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r27_codigo",4,$Ir27_codigo,true,"text",4,"","chave_r27_codigo");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r27_descr",30,$Ir27_descr,true,"text",4,"","chave_r27_descr");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldesconto->rotulo->label("r27_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_desconto.php")==true){
@@ -130,12 +130,12 @@ $cldesconto->rotulo->label("r27_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

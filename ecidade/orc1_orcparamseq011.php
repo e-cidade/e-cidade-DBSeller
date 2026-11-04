@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ $result=$clorcparamelemento->sql_record($sql);
 <body>
 <Center>
 <form name="form1" method="post" action="">
-<?
+<?php
   $clrotulo = new rotulocampo;
   $clrotulo->label("c60_estrut");
   $clrotulo->label("c60_codcon");

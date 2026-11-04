@@ -60,8 +60,8 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_seq', 10, $Ibi06_seq, true, 'text', 3);
-              ?>
+                db_input('bi06_seq', 10, $Ibi06_seq, true, 'text', 3);
+                ?>
           </td>
         </tr>
         <tr>
@@ -70,9 +70,9 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_biblioteca', 10, $Ibi06_biblioteca, true, 'text', 3);
-              db_input('bi17_nome', 40, $Ibi17_nome, true, 'text', 3);
-              ?>
+                db_input('bi06_biblioteca', 10, $Ibi06_biblioteca, true, 'text', 3);
+                db_input('bi17_nome', 40, $Ibi17_nome, true, 'text', 3);
+                ?>
           </td>
         </tr>
         <tr>
@@ -81,8 +81,8 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_titulo', 54, $Ibi06_titulo, true, 'text', $db_opcao, " onKeyPress='tab(event,15)'");
-              ?>
+                db_input('bi06_titulo', 54, $Ibi06_titulo, true, 'text', $db_opcao, " onKeyPress='tab(event,15)'");
+                ?>
           </td>
         </tr>
         <tr>
@@ -91,8 +91,8 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_subtitulo', 54, $Ibi06_subtitulo, true, 'text', $db_opcao);
-              ?>
+                db_input('bi06_subtitulo', 54, $Ibi06_subtitulo, true, 'text', $db_opcao);
+                ?>
           </td>
         </tr>
         <tr>
@@ -101,8 +101,8 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_titulooriginal', 54, $Ibi06_titulooriginal, true, 'text', $db_opcao);
-              ?>
+                db_input('bi06_titulooriginal', 54, $Ibi06_titulooriginal, true, 'text', $db_opcao);
+                ?>
           </td>
         </tr>
 
@@ -121,9 +121,16 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_inputdata('bi06_dataregistro', $bi06_dataregistro_dia, $bi06_dataregistro_mes, $bi06_dataregistro_ano,
-                true, 'text', $db_opcao);
-              ?>
+                db_inputdata(
+                    'bi06_dataregistro',
+                    $bi06_dataregistro_dia,
+                    $bi06_dataregistro_mes,
+                    $bi06_dataregistro_ano,
+                    true,
+                    'text',
+                    $db_opcao
+                );
+                ?>
           </td>
         </tr>
       </table>
@@ -137,9 +144,20 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_classcdd', 30, $Ibi06_classcdd, true, 'text', $db_opcao, " onKeyPress='tab(event,16)'", '',
-                '', '', 12);
-              ?>
+                db_input(
+                    'bi06_classcdd',
+                    30,
+                    $Ibi06_classcdd,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onKeyPress='tab(event,16)'",
+                    '',
+                    '',
+                    '',
+                    12
+                );
+                ?>
           </td>
         </tr>
         <tr>
@@ -148,55 +166,22 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_cutter', 30, $Ibi06_cutter, true, 'text', $db_opcao, " onKeyPress='tab(event,16)'", '', '',
-                '', 12);
-              ?>
+                db_input(
+                    'bi06_cutter',
+                    30,
+                    $Ibi06_cutter,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onKeyPress='tab(event,16)'",
+                    '',
+                    '',
+                    '',
+                    12
+                );
+                ?>
           </td>
         </tr>
-        <tr>
-          <td nowrap="nowrap" title="<?= $Tbi06_isbn ?>">
-            <label for="bi06_isbn"><?= $Lbi06_isbn ?></label>
-          </td>
-          <td nowrap="nowrap">
-              <?php
-              db_input('bi06_isbn', 30, $Ibi06_isbn, true, 'text', $db_opcao, " onKeyPress='tab(event,17)'");
-              ?>
-          </td>
-        </tr>
-
-        <tr>
-          <td nowrap="nowrap" title="<?= $Tbi06_paginacao ?>">
-            <label for="bi06_paginacao"><?= $Lbi06_paginacao ?></label>
-          </td>
-          <td nowrap="nowrap">
-              <?php
-              db_input('bi06_paginacao', 10, $Ibi06_paginacao, true, 'text', $db_opcao, " onKeyPress='tab(event,19)'");
-              ?>
-          </td>
-        </tr>
-
-        <tr>
-          <td nowrap="nowrap" title="<?= $Tbi06_volume ?>">
-            <label for="bi06_volume"><?= $Lbi06_volume ?></label>
-          </td>
-          <td nowrap="nowrap">
-              <?php
-              db_input('bi06_volume', 10, $Ibi06_volume, true, 'text', $db_opcao, " onKeyPress='tab(event,19)'");
-              ?>
-          </td>
-        </tr>
-
-        <tr>
-          <td nowrap="nowrap" title="<?= $Tbi06_tomo ?>">
-            <label for="bi06_tomo"><?= $Lbi06_tomo ?></label>
-          </td>
-          <td nowrap="nowrap">
-              <?php
-              db_input('bi06_tomo', 10, $Ibi06_tomo, true, 'text', $db_opcao, " onKeyPress='tab(event,19)'");
-              ?>
-          </td>
-        </tr>
-
         <tr>
           <td nowrap="nowrap" class="field-size4" title="<?= $Tbi06_tipoitem ?>">
             <label for="bi06_tipoitem">
@@ -207,10 +192,17 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_tipoitem', 10, $Ibi06_tipoitem, true, 'text', $db_opcao,
-                " onchange='js_pesquisabi06_tipoitem(false);' onKeyPress='tab(event,4)'");
-              db_input('bi05_nome', 40, $Ibi05_nome, true, 'text', 3);
-              ?>
+                db_input(
+                    'bi06_tipoitem',
+                    10,
+                    $Ibi06_tipoitem,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onchange='js_pesquisabi06_tipoitem(false);' onKeyPress='tab(event,4)'"
+                );
+                db_input('bi05_nome', 40, $Ibi05_nome, true, 'text', 3);
+                ?>
           </td>
         </tr>
         <tr>
@@ -223,10 +215,17 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_editora', 10, $Ibi06_editora, true, 'text', $db_opcao,
-                " onchange='js_pesquisabi06_editora(false);' onKeyPress='tab(event,6)'");
-              db_input('bi02_nome', 40, $Ibi02_nome, true, 'text', 3);
-              ?>
+                db_input(
+                    'bi06_editora',
+                    10,
+                    $Ibi06_editora,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onchange='js_pesquisabi06_editora(false);' onKeyPress='tab(event,6)'"
+                );
+                db_input('bi02_nome', 40, $Ibi02_nome, true, 'text', 3);
+                ?>
           </td>
         </tr>
         <tr>
@@ -239,10 +238,17 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_classiliteraria', 10, $Ibi06_classiliteraria, true, 'text', $db_opcao,
-                " onchange='js_pesquisabi06_classiliteraria(false);' onKeyPress='tab(event,8)'");
-              db_input('bi03_classificacao', 40, $Ibi03_classificacao, true, 'text', 3);
-              ?>
+                db_input(
+                    'bi06_classiliteraria',
+                    10,
+                    $Ibi06_classiliteraria,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onchange='js_pesquisabi06_classiliteraria(false);' onKeyPress='tab(event,8)'"
+                );
+                db_input('bi03_classificacao', 40, $Ibi03_classificacao, true, 'text', 3);
+                ?>
           </td>
         </tr>
         <tr>
@@ -255,10 +261,17 @@ if (empty($bi06_dataregistro_dia)) {
           </td>
           <td nowrap="nowrap">
               <?php
-              db_input('bi06_colecaoacervo', 10, $Ibi06_colecaoacervo, true, 'text', $db_opcao,
-                " onchange='js_pesquisaColecao(false);' ");
-              db_input('bi29_nome', 40, $Ibi29_nome, true, 'text', 3);
-              ?>
+                db_input(
+                    'bi06_colecaoacervo',
+                    10,
+                    $Ibi06_colecaoacervo,
+                    true,
+                    'text',
+                    $db_opcao,
+                    " onchange='js_pesquisaColecao(false);' "
+                );
+                db_input('bi29_nome', 40, $Ibi29_nome, true, 'text', 3);
+                ?>
           </td>
         </tr>
 
@@ -413,11 +426,11 @@ if (empty($bi06_dataregistro_dia)) {
 
   function js_preenchepesquisa(chave) {
     db_iframe_acervo.hide();
-      <?
-      if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
-      }
-      ?>
+      <?php
+        if ($db_opcao != 1) {
+            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+        }
+        ?>
   }
 
   function tab(event, form) {

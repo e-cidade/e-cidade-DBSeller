@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,7 +71,7 @@
             ?>
           </td>
           <td> 
-            <?
+            <?php
               //db_input('x14_matric',10,$Ix14_matric,true,'text',$db_opcao," onchange='js_pesquisax14_matric(false);'");
               db_input('x14_matric', 10, $Ix14_matric, true, 'text', 3, " onchange='js_pesquisax14_matric(false);'");
               //db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'');
@@ -80,12 +80,12 @@
         </tr>
         <tr>
           <td nowrap title="<?=@$Tx14_numcgm?>">
-            <?
+            <?php
               db_ancora(@$Lx14_numcgm, "js_pesquisax14_numcgm(true);", $db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('x14_numcgm', 10, $Ix14_numcgm, true, 'text', $db_opcao, " onchange='js_pesquisax14_numcgm(false);'");
               db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
             ?>
@@ -107,7 +107,7 @@
       <table>
         <tr>
           <td valign="top"  align="center">  
-            <?
+            <?php
  						  $chavepri= array("x14_matric"=>@$x14_matric);
 	 					  $cliframe_alterar_excluir->chavepri      = $chavepri;
 		 				  $cliframe_alterar_excluir->sql           = $claguabaseresp->sql_query($x14_matric);

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -54,7 +54,7 @@ $escola = db_getsession("DB_coddepto");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?php db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -70,16 +70,16 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if (!isset($pesquisa_chave)) {
-   	
+
     if (isset($campos)==false) {
-    	
+
      if (file_exists("funcoes/db_func_mer_cardapio.php")==true) {
       include(modification("funcoes/db_func_mer_cardapio.php"));
      } else {
        $campos = "mer_cardapio.*";
-     }     
+     }
     }
     if (isset($chave_me01_c_nome) && (trim($chave_me01_c_nome)!="")) {
       $sql = $clmer_cardapio->sql_query("",
@@ -99,11 +99,11 @@ $escola = db_getsession("DB_coddepto");
       $repassa = array("chave_me01_c_nome"=>$chave_me01_c_nome);
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
-    
+
    } else {
-   	
+
      if ($pesquisa_chave!=null && $pesquisa_chave!="") {
-     	
+
      $result = $clmer_cardapio->sql_record($clmer_cardapio->sql_query("",
                                                                       "",
                                                                       "",
@@ -111,16 +111,16 @@ $escola = db_getsession("DB_coddepto");
                                                                        me01_i_codigo = $pesquisa_chave"
                                                                      ));
      if ($clmer_cardapio->numrows!=0) {
-     	
+
        db_fieldsmemory($result,0);
        echo "<script>".$funcao_js."('$me01_c_nome',false);</script>";
-       
+
      } else {
        echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
-     }     
+     }
     } else {
       echo "<script>".$funcao_js."('',false);</script>";
-    }    
+    }
    }
    ?>
   </td>

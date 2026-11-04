@@ -97,6 +97,7 @@ class tceFolhaPagamentoPosterior extends tceEstruturaBasica
             SELECT
                 rh237_identificador AS idfolha,
                 rh237_matricula AS codigoregistrofuncionario,
+                rh237_matricula || '00' AS matriculafuncionario,
                 rh237_datapagamento AS datapagamento,
                 round(sum(
                     CASE WHEN rh237_identificacaovalor = 'D'

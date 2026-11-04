@@ -1,4 +1,5 @@
 <?php
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -25,13 +26,13 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_app.utils.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("dbforms/db_funcoes.php"));
+require_once  modification("libs/db_stdlib.php");
+require_once  modification("libs/db_conecta.php");
+require_once  modification("libs/db_sessoes.php");
+require_once  modification("libs/db_app.utils.php");
+require_once  modification("libs/db_utils.php");
+require_once  modification("libs/db_usuariosonline.php");
+require_once  modification("dbforms/db_funcoes.php");
 
 db_postmemory($_GET);
 ?>
@@ -144,7 +145,7 @@ db_postmemory($_GET);
     }
 
 
-    function js_processaRequest(data,conta){
+    function js_processaRequest(data,conta, lCarregarPendente, datainicio){
 
       js_divCarregando('Aguarde processando...','msgBoxAutent');
 
@@ -152,12 +153,17 @@ db_postmemory($_GET);
 
       var concilia  = parent.document.form1.concilia.value;
       var url       = 'cai4_carregadadosautent.php';
-      var parametro = 'data='+data+'&conta='+conta+'&concilia='+concilia;
+      var parametro = 'data='+data+'&conta='+conta+'&concilia='+concilia+'&datainicio='+datainicio;
+
+      if (lCarregarPendente == undefined) {
+        lCarregarPendente = "";
+      }
+      parametro += "&lCarregarPendente="+lCarregarPendente;
+
       var objAjax   = new Ajax.Request (url,{method:'post',parameters:parametro, onComplete:js_loadTable});
 
     }
 
-    var aListaArquivos = [];
     function js_loadTable(resposta){
 
       var retorno = resposta.responseText.split('|||');
@@ -166,6 +172,8 @@ db_postmemory($_GET);
       document.getElementById('tabelaAutenticacoes').innerHTML = '';
 
       eval('var objJ = '+retorno[1]+';');
+
+
       if (retorno[0].replace('\n','') != '1' || objJ.length == 0) {
 
         $('divloading_autenticacao').innerHTML = ' <b> Nenhum registro para a data selecionada.  </b>';
@@ -183,15 +191,16 @@ db_postmemory($_GET);
                "      <td class='cabe' align='center' nowrap > <a href='' onClick='return js_marcarTodos();'><b> M </b> </a> </td> "+
                "      <td class='cabe' align='center' nowrap > <b> Caixa        </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Detalhes     </b></td> "+
+
                "      <td class='cabe' align='center' nowrap > <b> Data         </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Autent.      </b></td> "+
-               "      <td class='cabe' align='center' nowrap > <b> Arquivo      </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Val. Debito  </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Val. Credito </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Cheque       </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> Credor       </b></td> "+
                "      <td class='cabe' align='center' nowrap > <b> J            </b></td> "+
                "    </tr> ";
+
 
       for (i = 0; i < objJ.length; i++) {
 
@@ -232,20 +241,18 @@ db_postmemory($_GET);
         "   <td nowrap id='mi"+i+"'      align='center' > <a href='' onClick='return js_mostraDetalhes(\""+objJ[i].detalhe+"\",event);'> MI </a> </td> "+
         "   <td nowrap id='data"+i+"'    align='center' > "+objJ[i].data+"                                                                       </td> "+
         "   <td nowrap id='autent"+i+"'  align='center' > "+objJ[i].autent+"                                                                     </td> "+
-        "   <td nowrap id='arquivo"+i+"' align='center' > "+objJ[i].arquivo+"                                                                    </td> "+
         "   <td nowrap id='valdeb"+i+"'  align='right'  > "+objJ[i].valorDebito+"                                                                </td> "+
         "   <td nowrap id='valcred"+i+"' align='right'  > "+objJ[i].valorCredito+"                                                               </td> "+
         "   <td nowrap id='cheque"+i+"'  align='center' > "+objJ[i].numeroCheque+"                                                               </td> "+
         "   <td nowrap id='credor"+i+"'  align='left'   > "+objJ[i].credor.urlDecode()+"                                                         </td> "+
         "   <td nowrap id='hist"+i+"'    align='left'   >";
         if ( objJ[i].classe == 'pendente' || objJ[i].classe == 'normal' ) {
+
           tabela+="     <input type='button' title='Justiticativa' name='justificativa' value='J' "+
           "             onclick='js_justificativaAutenticacao(\"tabLinha"+i+"\", \"objJSON"+i+"\", "+ iCaixaLinha +", " + iAutenticacao + ");' /> ";
         }
         tabela+="   </td>"+
         " </tr>  ";
-
-        aListaArquivos.push( objJ[i].arquivo );
       }
 
       tabela = tabela+ "</table>";
@@ -361,6 +368,7 @@ db_postmemory($_GET);
     }
 
     function js_marcarTodos(){
+
       var objTableAutent   = document.getElementById('tabelaAutent');
       for (i=1;i < objTableAutent.rows.length; i++ ){
         if(objTableAutent.rows[i].style.display == '' && objTableAutent.rows[i].className != 'conciliado' ){
@@ -386,7 +394,7 @@ db_postmemory($_GET);
     <div id="divloading_autenticacao"> <b>Aguarde, processando...</b> </div>
 
     <div id="tabelaAutenticacoes">
-      <script> js_processaRequest("<?=$data?>","<?=$conta?>"); </script>
+      <script> js_processaRequest("<?=$data?>","<?=$conta?>", false, "<?=$datainicio?>"); </script>
     </div>
 
   </form>

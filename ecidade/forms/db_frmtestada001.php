@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,15 +46,15 @@ if ($testa!="") {
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj36_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lj36_idbql,"js_pesquisaj36_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j36_idbql',4,$Ij36_idbql,true,'text',$db_opcao," onchange='js_pesquisaj36_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     <td>
@@ -64,22 +64,22 @@ db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        <?=@$Lj36_face?>
     </td>
     <td> 
-<?
+<?php
 db_input('j36_face',4,$Ij36_face,true,'text',$db_opcao,"")
 ?>
     <td>
   <tr>
   <tr>
     <td nowrap title="<?=@$Tj36_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj36_codigo,"js_pesquisaj36_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j36_codigo',4,$Ij36_codigo,true,'text',$db_opcao," onchange='js_pesquisaj36_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     <td>
@@ -89,7 +89,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lj36_testad?>
     </td>
     <td> 
-<?
+<?php
 db_input('j36_testad',15,$Ij36_testad,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -99,7 +99,7 @@ db_input('j36_testad',15,$Ij36_testad,true,'text',$db_opcao,"")
        <?=@$Lj36_testle?>
     </td>
     <td> 
-<?
+<?php
 db_input('j36_testle',15,$Ij36_testle,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -164,7 +164,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

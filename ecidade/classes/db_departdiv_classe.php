@@ -56,13 +56,13 @@ class cl_departdiv {
                  t30_numcgm = int4 = Responsável 
                  ";
    //funcao construtor da classe 
-   function cl_departdiv() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("departdiv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_departdiv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t30_codigo = ($this->t30_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["t30_codigo"]:$this->t30_codigo);
        $this->t30_descr = ($this->t30_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["t30_descr"]:$this->t30_descr);
@@ -83,7 +83,7 @@ class cl_departdiv {
      }
    }
    // funcao para inclusao
-   function incluir ($t30_codigo){ 
+   public function incluir ($t30_codigo){ 
       $this->atualizacampos();
      if($this->t30_descr == null ){ 
        $this->erro_sql = " Campo Descrição da divisão nao Informado.";
@@ -206,7 +206,7 @@ class cl_departdiv {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($t30_codigo=null) { 
+   public function alterar ($t30_codigo=null) { 
       $this->atualizacampos();
      $sql = " update departdiv set ";
      $virgula = "";
@@ -331,7 +331,7 @@ class cl_departdiv {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($t30_codigo=null,$dbwhere=null) { 
+   public function excluir ($t30_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t30_codigo));
      }else{ 
@@ -396,7 +396,7 @@ class cl_departdiv {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,7 +418,7 @@ class cl_departdiv {
       }
      return $result;
    }
-   function sql_query ( $t30_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t30_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -456,7 +456,7 @@ class cl_departdiv {
      }
      return $sql;
   }
-   function sql_query_div ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_div ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -494,7 +494,7 @@ class cl_departdiv {
      }
      return $sql;
   }
-   function sql_query_file ( $t30_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t30_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

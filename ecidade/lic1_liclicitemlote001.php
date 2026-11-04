@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,12 +64,12 @@ if (isset($alterar)&&trim($alterar)!=""){
 
      db_inicio_transacao();
 
-     $vetor = split(",", $descricao);
+     $vetor =explode(",", $descricao);
 
      $l04_liclicitem = "";
      $l04_descricao  = "";
      for($i = 0; $i < sizeof($vetor); $i++){
-          $vetor_codigos  = split("_",$vetor[$i]);
+          $vetor_codigos  =explode("_",$vetor[$i]);
 
           $l04_liclicitem = $vetor_codigos[0]*1;
           $l04_descricao  = $vetor_codigos[1];
@@ -122,7 +122,7 @@ if (!isset($selecionado)&&trim(@$selecionado)==""){
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1" action="lic1_liclicitemlote001.php" method="post">
-<?
+<?php
     db_input("licitacao",10,"",true,"hidden",3);
     db_input("selecionado",1,"",true,"hidden",3);
     db_input("descricao",500,"",true,"hidden",3);
@@ -152,15 +152,15 @@ if (!isset($selecionado)&&trim(@$selecionado)==""){
    }
 
    function js_selecionado(){
-<?
+<?php
        if (!empty($l08_altera) && $l08_altera == "t"){
 ?>
        js_habilitar(false);
-<?
+<?php
       } else {
 ?>
        js_habilitar(true);
-<?
+<?php
       }
 ?>
    }
@@ -197,7 +197,7 @@ if (!isset($selecionado)&&trim(@$selecionado)==""){
        js_OpenJanelaIframe('CurrentWindow.corpo.iframe_liclicitemlote','db_iframe_loteexcluir','lic1_liclicitemlote003.php?licitacao='+licitacao,'Excluir Lote',true,"0");
    }
 </script>
-<?
+<?php
   if ($selecionado==0){
        echo "<script>js_habilitar(true);</script>";
   }

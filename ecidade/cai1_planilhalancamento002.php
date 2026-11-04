@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,19 +63,19 @@ $db_opcao = 1;
 * se o campo db_config.db21_usasisagua for true, usamos a func_aguabase.
 * se for false, usamos a func_iptubase
 */
-$oDaoDBConfig = db_utils::getDao("db_config");
+$oDaoDBConfig = new cl_db_config();
 $rsInstit     = $oDaoDBConfig->sql_record($oDaoDBConfig->sql_query_file(db_getsession("DB_instit")));
 $oInstit      = db_utils::fieldsMemory($rsInstit, 0);
 $sFuncaoBusca = "js_pesquisaMatricula";
 if ($oInstit->db21_usasisagua == "t") {
-  $sFuncaoBusca = "js_pesquisa_agua";
+    $sFuncaoBusca = "js_pesquisa_agua";
 }
 
 //Checa parametro e mostra alerta de confirmacao de data
 $clconparametro  = new cl_conparametro();
 $rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
 $conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
@@ -100,7 +100,7 @@ if($conparametro->c90_confirmadata == 't'){
     db_app::load("widgets/windowAux.widget.js");
     db_app::load("widgets/dbmessageBoard.widget.js");
     db_app::load("dbcomboBox.widget.js");
-  ?>
+    ?>
 <style>
 
   #k81_origem {
@@ -135,24 +135,24 @@ if($conparametro->c90_confirmadata == 't'){
 </style>
 
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<center>
+<body>
+<div class="container">
 
-<form name="form1" method="post" action="<?=$db_action?>">
+<form name="form1" method="post">
 
-<fieldset style="margin-top: 30px; width: 800px;">
-  <legend><strong>Planilha de Arrecadação</strong></legend>
+<fieldset style="width: 800px;">
+  <legend>Planilha de Arrecadação > Estorno</legend>
   <fieldset style='width:95%;'>
-    <legend><strong>Dados da Planilha</strong></legend>
+    <legend>Dados da Planilha</legend>
 
-    <table  width="100%" border="0">
+    <table>
       <!-- Número da Planilha -->
       <tr>
         <td class='tamanho-primeira-col' nowrap><strong>Código da Planilha:</strong></td>
         <td>
-          <?
-          db_input('k80_codpla',10, $Ik80_codpla,true,'text',3,"")
-          ?>
+          <?php
+            db_input('k80_codpla', 10, $Ik80_codpla, true, 'text', 3, "")
+            ?>
         </td>
       </tr>
 
@@ -160,42 +160,35 @@ if($conparametro->c90_confirmadata == 't'){
         <td nowrap width="50px"><strong>Data:</strong></td>
         <td>
           <?php
-          db_inputdata('k80_data',@$k80_data_dia,@$k80_data_mes,@$k80_data_ano,true,'text',3,"")
-          ?>
+            db_inputdata('k80_data', @$k80_data_dia, @$k80_data_mes, @$k80_data_ano, true, 'text', 3, "")
+            ?>
         </td>
       </tr>
-
-
-        <tr>
-          <td nowrap="nowrap">
-            <strong>Processo Administrativo:</strong>
-          </td>
-
-          <td >
-             <? db_input('k144_numeroprocesso', 10, null, true, 'text', 3, null,null,null,null,15);?>
-          </td>
-        </tr>
+ 
+      <tr>
+        <td nowrap="nowrap">
+          <strong>Processo Administrativo:</strong>
+        </td>
+        <td>
+           <? db_input('k144_numeroprocesso', 10, null, true, 'text', 3, null,null,null,null,15);?>
+        </td>
+      </tr>
 
   </table>
   </fieldset>
 
+<div id='ctnReceitas' style="margin-top: 20px;"></div>
 
-
-
-
-<br>
-<div id='ctnReceitas' style="margin-top: 20px;">
-</div>
 </fieldset>
 
 <input type="button" value='Estornar Planilha' id='salvar' style="margin-top: 10px;" onclick='js_verificaSlipAutomatico()'/>
 <input type="button" value='Pesquisa Planilha' id='salvar' style="margin-top: 10px;" onclick='js_pesquisaPlanilha()'/>
 </form>
 
-</center>
+</div>
 
-<?
-	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+ db_menu();
 ?>
 
 </body>
@@ -300,7 +293,7 @@ function js_getPlanilha(iCodigoPlanilha) {
   oParametro.exec      = 'importarPlanilha';
   oParametro.iPlanilha = iCodigoPlanilha;
 
-  var oAjax            = new Ajax.Request(sRPC,
+  var oAjax = new Ajax.Request(sRPC,
       {
        method: 'post',
        parameters: 'json='+Object.toJSON(oParametro),
@@ -314,6 +307,13 @@ function js_completaImportar (oAjax) {
 
   js_removeObj('msgBox');
   var oRetorno          = JSON.parse(oAjax.responseText);
+
+  if (oRetorno.status == 2) {
+     alert(oRetorno.message.urlDecode());
+     js_pesquisaPlanilha();
+     return false;
+  }
+
   $('k80_codpla').value = oRetorno.oPlanilha.iPlanilha;
   $('k80_data').value   = oRetorno.oPlanilha.dtDataCriacao;
 
@@ -356,8 +356,6 @@ function js_completaImportar (oAjax) {
 
 
 function js_verificaSlipAutomatico(){
-
-
   var oParam = new Object();
       oParam.iPlanilha =  $F('k80_codpla');
       oParam.exec      = 'verificaSlipsAutomaticos';
@@ -373,7 +371,6 @@ function js_verificaSlipAutomatico(){
 }
 
 function js_RetornoverificaSlipAutomatico(oAjax){
-
     var oRetorno = JSON.parse(oAjax.responseText);
     if (oRetorno.sSlipAutomatico != "" ) {
 
@@ -395,7 +392,6 @@ function js_RetornoverificaSlipAutomatico(oAjax){
  * @returns {boolean}
  */
 function js_estornarPlanilha() {
-
   if ($F('k80_codpla') == '') {
     alert("Informe o código de uma planilha.")
   }

@@ -6,9 +6,20 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Domain\Tributario\Cadastro\Models\Ruas
+ * App\Domain\Tributario\Cadastro\Models\Ruas
  *
+ * @property int $j14_codigo
+ * @property string|null $j14_nome
+ * @property int|null $j14_tipo
+ * @property bool|null $j14_rural
+ * @property string|null $j14_lei
+ * @property string|null $j14_dtlei
+ * @property string|null $j14_bairro
+ * @property string|null $j14_obs
+ * @method static Builder|Ruas cep($cep)
+ * @method static Builder|Ruas joinCep()
  * @method static Builder|Ruas nome($nome)
+ * @mixin \Eloquent
  */
 class Ruas extends Model
 {
@@ -26,5 +37,15 @@ class Ruas extends Model
             "upper(to_ascii(j14_nome)) = ?",
             [strtoupper(\DBString::removerCaracteresEspeciaisAcentos($nome))]
         );
+    }
+
+    public function scopeJoinCep(Builder $query)
+    {
+        return $query->join("ruascep", "j29_codigo", "j14_codigo");
+    }
+
+    public function scopeCep(Builder $query, $cep)
+    {
+        return $query->where("j29_cep", $cep);
     }
 }

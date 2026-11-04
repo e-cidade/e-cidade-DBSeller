@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -200,7 +200,7 @@ input {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
       <form name="form1" method="post">
-        <?
+        <?php
 	        if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["ambiente"])) {
 	      ?>
         <table border="0" cellspacing="0" cellpadding="0">
@@ -216,7 +216,7 @@ input {
             <td> 
               <strong>M&oacute;dulo:</strong><br> 
 			        <select onDblClick="document.form1.selecionar.click()" name="modulos" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-                <?
+                <?php
 			            if(db_getsession("DB_id_usuario") == "1") {
 				          
                     $result = pg_exec("select m.id_item,m.nome_modulo,m.descr_modulo 
@@ -253,14 +253,14 @@ input {
           </tr>
 
         </table>
-        <?
+        <?php
 	        } else {
 	      ?>
         <table width="100%" border="1" cellspacing="0" cellpadding="5">
 
           <tr> 
             <td align="center" nowrap> <strong>M&oacute;dulo: </strong> 
-              <? 
+              <?php 
 			          $aux = $HTTP_POST_VARS["modulos"];
 			          echo substr(strstr($aux,"||"),2);
 			        ?>
@@ -269,9 +269,9 @@ input {
           
           <tr style='display:none'> 
             <td align="center"><strong>Ambiente:</strong> <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">	
-              <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+              <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
               <label for="web"><strong>Web</strong></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <? echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>> 
+              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>> 
               <label for="caracter"><strong>Caracter</strong></label> 
             </td>
           </tr>
@@ -290,16 +290,16 @@ input {
           </tr> 
 
         </table>       
-        <?
+        <?php
           $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);
           include(modification("libs/db_submenus.php"));
         ?>
             
-        <?
+        <?php
 		      }		 
 		    ?>
       </form>
-      <?
+      <?php
        db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   	  ?>
     </td>

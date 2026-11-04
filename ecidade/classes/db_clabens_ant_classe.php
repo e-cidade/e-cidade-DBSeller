@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,13 +68,13 @@ class cl_clabens_ant {
                  t01_ultcod = int4 = Numero do Ultimo codigo Cad. 
                  ";
    //funcao construtor da classe 
-   function cl_clabens_ant() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clabens_ant"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_clabens_ant {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t01_class = ($this->t01_class == ""?@$GLOBALS["HTTP_POST_VARS"]["t01_class"]:$this->t01_class);
        $this->t01_descr = ($this->t01_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["t01_descr"]:$this->t01_descr);
@@ -100,7 +100,7 @@ class cl_clabens_ant {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->t01_class == null ){ 
        $this->erro_sql = " Campo Codigo de Classificacao do Bem nao Informado.";
@@ -253,7 +253,7 @@ class cl_clabens_ant {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update clabens_ant set ";
      $virgula = "";
@@ -431,7 +431,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from clabens_ant
                     where ";
      $sql2 = "";
@@ -470,7 +470,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

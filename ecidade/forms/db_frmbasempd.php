@@ -1,31 +1,31 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-//MODULO: educação
+//MODULO: educaï¿½ï¿½o
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clbasempd->rotulo->label();
@@ -53,20 +53,20 @@ if(isset($opcao) && $opcao=="alterar"){
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted35_i_base?>">
-   <?db_ancora(@$Led35_i_base,"",3);?>
+   <?php db_ancora(@$Led35_i_base,"",3);?>
   </td>
   <td>
-   <?db_input('ed35_i_base',10,$Ied35_i_base,true,'text',3,"")?>
-   <?db_input('ed31_c_descr',40,@$Ied31_c_descr,true,'text',3,'')?>
+   <?php db_input('ed35_i_base',10,$Ied35_i_base,true,'text',3,"")?>
+   <?php db_input('ed31_c_descr',40,@$Ied31_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted35_i_disciplina?>">
-   <?db_ancora(@$Led35_i_disciplina,"js_pesquisaed35_i_disciplina(true);",$db_opcao);?>
+   <?php db_ancora(@$Led35_i_disciplina,"js_pesquisaed35_i_disciplina(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed35_i_disciplina',10,$Ied35_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed35_i_disciplina(false);'")?>
-   <?db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
+   <?php db_input('ed35_i_disciplina',10,$Ied35_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed35_i_disciplina(false);'")?>
+   <?php db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -74,9 +74,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led35_i_qtdperiodo?>
   </td>
   <td>
-   <?db_input('ed35_i_qtdperiodo',10,$Ied35_i_qtdperiodo,true,'text',$db_opcao,"")?>
-   <?//=@$Led35_i_chtotal?>
-   <?//db_input('ed35_i_chtotal',10,$Ied35_i_chtotal,true,'text',$db_opcao,"")?>
+   <?php db_input('ed35_i_qtdperiodo',10,$Ied35_i_qtdperiodo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -84,8 +82,8 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led35_c_condicao?>
   </td>
   <td>
-   <?
-   $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+   <?php
+   $x = array('OB'=>'OBRIGATï¿½RIA','OP'=>'OPCIONAL');
    db_select('ed35_c_condicao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -98,14 +96,14 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top"><br>
-  <?
-   $campos = "ed35_i_codigo,ed35_i_base,ed31_c_descr,ed35_i_disciplina,ed232_c_descr,ed35_i_qtdperiodo,ed35_i_chtotal, case when ed35_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed35_c_condicao";
+  <?php
+   $campos = "ed35_i_codigo,ed35_i_base,ed31_c_descr,ed35_i_disciplina,ed232_c_descr,ed35_i_qtdperiodo,ed35_i_chtotal, case when ed35_c_condicao='OB' then 'OBRIGATï¿½RIA' else 'OPCIONAL' end as ed35_c_condicao";
    $chavepri= array("ed35_i_codigo"=>@$ed35_i_codigo,"ed31_c_descr"=>@$ed31_c_descr,"ed35_i_disciplina"=>@$ed35_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr,"ed35_i_qtdperiodo"=>@$ed35_i_qtdperiodo,"ed35_i_chtotal"=>@$ed35_i_chtotal,"ed35_c_condicao"=>@$ed35_c_condicao);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clbasempd->sql_query("",$campos,"ed34_i_ordenacao"," ed35_i_base = $ed35_i_base");
    $cliframe_alterar_excluir->campos  ="ed232_c_descr,ed35_i_qtdperiodo,ed35_c_condicao";
    $cliframe_alterar_excluir->legenda="Registros";
-   $cliframe_alterar_excluir->msg_vazio ="Não foi encontrado nenhum registro.";
+   $cliframe_alterar_excluir->msg_vazio ="Nï¿½o foi encontrado nenhum registro.";
    $cliframe_alterar_excluir->textocabec ="#DEB887";
    $cliframe_alterar_excluir->textocorpo ="#444444";
    $cliframe_alterar_excluir->fundocabec ="#444444";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("h12_assent");
        <?=@$Lh50_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('h50_sequencial',10,$Ih50_sequencial,true,'text',3,"")
        <?=@$Lh50_lei?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_lei',20,$Ih50_lei,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('h50_lei',20,$Ih50_lei,true,'text',$db_opcao,"")
        <?=@$Lh50_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_descr',40,$Ih50_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('h50_descr',40,$Ih50_descr,true,'text',$db_opcao,"")
        <?=@$Lh50_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h50_obs',8,60,$Ih50_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_textarea('h50_obs',8,60,$Ih50_obs,true,'text',$db_opcao,"")
        <?=@$Lh50_confobs?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Quesito','2'=>'Pergunta','3'=>'Ambos');
 db_select('h50_confobs',$x,true,$db_opcao,"");
 ?>
@@ -95,37 +95,37 @@ db_select('h50_confobs',$x,true,$db_opcao,"");
        <?=@$Lh50_minimopontos?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_minimopontos',10,$Ih50_minimopontos,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th50_assentaaprova?>">
-       <?
+       <?php
        db_ancora(@$Lh50_assentaaprova,"js_pesquisah50_assentaaprova(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_assentaaprova',10,$Ih50_assentaaprova,true,'text',$db_opcao," onchange='js_pesquisah50_assentaaprova(false);'")
 ?>
-       <?
+       <?php
 db_input('h12_assent',5,$Ih12_assent,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th50_assentaaprova?>">
-       <?
+       <?php
        db_ancora(@$Lh50_assentareprova,"js_pesquisah50_assentareprova(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_assentareprova',10,$Ih50_assentareprova,true,'text',$db_opcao," onchange='js_pesquisah50_assentareprova(false);'")
 ?>
-       <?
+       <?php
 db_input('h12_assent2',10,$Ih12_assent,true,'text',3,'')
        ?>
     </td>
@@ -135,7 +135,7 @@ db_input('h12_assent2',10,$Ih12_assent,true,'text',3,'')
        <?=@$Lh50_duracaoestagio?>
     </td>
     <td> 
-<?
+<?php
 db_input('h50_duracaoestagio',10,$Ih50_duracaoestagio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -201,7 +201,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -25,6 +25,8 @@ const CAMINHO_MENSAGEM_ATRIBUTO_EXAME = "laboratorio.AtributoExame";
 
 /**
  * Atributos de um exame laboratorial
+ * Representa a tabela lab_atributo
+ *
  * @package Laboratorio
  * @author Iuri Guntchnigg iuri@dbseller.com.br
  * @version $Revision: 1.2 $
@@ -126,6 +128,51 @@ class AtributoExame
     protected $oExame;
 
     /**
+     * Indica uma vinculação com um dos campos de 'outras informações' da tela de criação de requisição
+     * @var string
+     */
+    protected $outrasInformacoes;
+
+        /**
+     * @var String Unidade de Medida do atributo
+     */
+    protected $unidadeMedida;
+
+    public static function fromState(array $state)
+    {
+        $self = new self();
+        if (array_key_exists('la25_i_codigo', $state)) {
+            $self->setCodigo($state['la25_i_codigo']);
+        }
+        if (array_key_exists('la25_c_estrutural', $state)) {
+            $self->setEstrutural($state['la25_c_estrutural']);
+        }
+        if (array_key_exists('la25_i_nivel', $state)) {
+            $self->setNivel($state['la25_i_nivel']);
+        }
+        if (array_key_exists('la25_c_descr', $state)) {
+            $self->setNome($state['la25_c_descr']);
+        }
+        if (array_key_exists('la25_c_tipo', $state)) {
+            $self->setTipo($state['la25_c_tipo']);
+        }
+        if (array_key_exists('la25_sigla', $state)) {
+            $self->setSigla($state['la25_sigla']);
+        }
+        if (array_key_exists('la25_formula', $state)) {
+            $self->setFormula($state['la25_formula']);
+        }
+        if (array_key_exists('la25_preenchimentoobrigatorio', $state)) {
+            $self->setPreenchimentoObrigatorio($state['la25_preenchimentoobrigatorio'] === 't');
+        }
+        if (array_key_exists('la25_outrasinformacoes', $state)) {
+            $self->setOutrasInformacoes($state['la25_outrasinformacoes']);
+        }
+
+        return $self;
+    }
+
+    /**
      * Instancia um  atributo cadastrado no sistema, ou uma instancia vazia
      *
      * @param integer $iCodigo codigo do atributo
@@ -148,6 +195,7 @@ class AtributoExame
             $oDaoAtributo = new cl_lab_atributo();
 
             $sCampos = "lab_atributo.*,";
+            $sCampos .= "lab_undmedida.*,";
             $sCampos .= "lab_valorreferencia.*,";
             $sCampos .= "exists (select 1 ";
             $sCampos .= "          from lab_tiporeferenciaalnumerico";
@@ -181,6 +229,8 @@ class AtributoExame
             $this->setSigla($oDadosAtributo->la25_sigla);
             $this->setFormula($oDadosAtributo->la25_formula);
             $this->setPreenchimentoObrigatorio($oDadosAtributo->la25_preenchimentoobrigatorio === 't');
+            $this->setOutrasInformacoes($oDadosAtributo->la25_outrasinformacoes);
+            $this->setUnidadeMedidaAtributo($oDadosAtributo->la13_c_descr);
 
             $this->iCodigoUnidadeMedida = $oDadosAtributo->la27_i_unidade;
             $this->iCodigoReferencia = $oDadosAtributo->la27_i_codigo;
@@ -308,12 +358,39 @@ class AtributoExame
     }
 
     /**
+     * @param int $iCodigoReferencia
+     * @return void
+     */
+    public function setCodigoReferencia($iCodigoReferencia)
+    {
+        $this->iCodigoReferencia = $iCodigoReferencia;
+    }
+
+    /**
+     * @param int $iTipoReferencia
+     * @return void
+     */
+    public function setTipoReferencia($iTipoReferencia)
+    {
+        $this->iTipoReferencia = $iTipoReferencia;
+    }
+
+    /**
      * Retorna o tipo de Referencia do atributo
      * @return int
      */
     public function getTipoReferencia()
     {
         return $this->iTipoReferencia;
+    }
+
+    /**
+     * @param int $iCodigoUnidadeMedida
+     * @return void
+     */
+    public function setCodigoUnidadeMedida($iCodigoUnidadeMedida)
+    {
+        $this->iCodigoUnidadeMedida = $iCodigoUnidadeMedida;
     }
 
     /**
@@ -351,7 +428,9 @@ class AtributoExame
 
                     switch ($oDadosValor->tipo) {
                         case 2:
-                            $this->aValoresDeReferencia[] = new AtributoValorReferenciaNumerico($oDadosValor->la30_i_codigo);
+                            $this->aValoresDeReferencia[] = new AtributoValorReferenciaNumerico(
+                                $oDadosValor->la30_i_codigo
+                            );
                             break;
                     }
                 }
@@ -432,9 +511,11 @@ class AtributoExame
     protected function getAtributoAlfaNumerico()
     {
         $oDaoReferenciaFixa = new cl_lab_tiporeferenciaalfa();
-        $sSqlReferenciaFixa = $oDaoReferenciaFixa->sql_query_file(null, "*",
-          null,
-          "la29_i_valorref = {$this->iCodigoReferencia}"
+        $sSqlReferenciaFixa = $oDaoReferenciaFixa->sql_query_file(
+            null,
+            "*",
+            null,
+            "la29_i_valorref = {$this->iCodigoReferencia}"
         );
         $rsReferenciaFixa = $oDaoReferenciaFixa->sql_record($sSqlReferenciaFixa);
         if (!$rsReferenciaFixa || $oDaoReferenciaFixa->numrows == 0) {
@@ -443,7 +524,7 @@ class AtributoExame
 
         $oDadosReferenciaFixa = db_utils::fieldsMemory($rsReferenciaFixa, 0);
         $oReferenciaFixa = new AtributoValorReferenciaAlfaNumerico($oDadosReferenciaFixa->la29_i_codigo);
-        $oReferenciaFixa->setTamanho($oDadosReferenciaFixa->la29_i_fixo);
+        $oReferenciaFixa->setTamanho($oDadosReferenciaFixa->la29_v_fixo);
 
         return $oReferenciaFixa;
     }
@@ -552,5 +633,36 @@ class AtributoExame
     public function setPreenchimentoObrigatorio($preenchimentoObrigatorio)
     {
         $this->preenchimentoObrigatorio = $preenchimentoObrigatorio;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutrasInformacoes()
+    {
+        return $this->outrasInformacoes;
+    }
+
+        /**
+     * @return string
+     */
+    public function getUnidadeMedidaAtributo()
+    {
+        return $this->unidadeMedida;
+    }
+
+    /**
+     * @param string $outrasInformacoes
+     */
+    public function setOutrasInformacoes($outrasInformacoes)
+    {
+        $this->outrasInformacoes = $outrasInformacoes;
+    }
+
+       /**
+     * @param string $unidadeMedida
+     */
+    public function setUnidadeMedidaAtributo($unidadeMedida){
+        $this->unidadeMedida = $unidadeMedida;
     }
 }

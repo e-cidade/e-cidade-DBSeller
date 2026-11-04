@@ -117,7 +117,7 @@ if (isset($excluir)) {
 <script>
     js_tabulacaoforms("form1", "ed16_i_tiposala", true, 1, "ed16_i_tiposala", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
     if ($clsala->erro_status == "0") {
         $clsala->erro(true, false);

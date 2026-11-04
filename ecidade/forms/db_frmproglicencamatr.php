@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -43,17 +43,17 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led122_i_codigo?>
   </td>
   <td>
-   <?db_input('ed122_i_codigo',10,$Ied122_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed122_i_codigo',10,$Ied122_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted122_i_progmatricula?>">
-   <?db_ancora(@$Led122_i_progmatricula,"js_pesquisaed122_i_progmatricula(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led122_i_progmatricula,"js_pesquisaed122_i_progmatricula(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed122_i_progmatricula',10,$Ied122_i_progmatricula,true,'hidden',3,"")?>
-   <?db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
-   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed122_i_progmatricula',10,$Ied122_i_progmatricula,true,'hidden',3,"")?>
+   <?php db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
+   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -61,10 +61,10 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
+   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
    <?=@$Led112_i_progclasse?>
-   <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
-   <?if($db_opcao!=1){
+   <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+   <?php if($db_opcao!=1){
     if(@$ed112_c_situacao=="A"){
      $ed112_c_situacao = "ABERTA";
     }elseif(@$ed112_c_situacao=="I"){
@@ -75,16 +75,16 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
     ?>
     <?=@$Led112_c_situacao?>
     <input name="ed112_c_situacao" type="text" value="<?=@$ed112_c_situacao?>" style="background:#DEB887;" readonly>
-   <?}?>
+   <?php }?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted122_i_proglicenca?>">
-   <?db_ancora(@$Led122_i_proglicenca,"js_pesquisaed122_i_proglicenca(true);",$db_opcao);?>
+   <?php db_ancora(@$Led122_i_proglicenca,"js_pesquisaed122_i_proglicenca(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed122_i_proglicenca',10,$Ied122_i_proglicenca,true,'text',$db_opcao," onchange='js_pesquisaed122_i_proglicenca(false);'")?>
-   <?db_input('ed121_c_descr',50,@$Ied121_c_descr,true,'text',3,'')?>
+   <?php db_input('ed122_i_proglicenca',10,$Ied122_i_proglicenca,true,'text',$db_opcao," onchange='js_pesquisaed122_i_proglicenca(false);'")?>
+   <?php db_input('ed121_c_descr',50,@$Ied121_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -92,7 +92,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led122_d_inicio?>
   </td>
   <td>
-   <?db_inputdata('ed122_d_inicio',@$ed122_d_inicio_dia,@$ed122_d_inicio_mes,@$ed122_d_inicio_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
+   <?php db_inputdata('ed122_d_inicio',@$ed122_d_inicio_dia,@$ed122_d_inicio_mes,@$ed122_d_inicio_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
   </td>
  </tr>
  <tr>
@@ -100,7 +100,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led122_d_final?>
   </td>
   <td>
-   <?db_inputdata('ed122_d_final',@$ed122_d_final_dia,@$ed122_d_final_mes,@$ed122_d_final_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed122_d_final',@$ed122_d_final_dia,@$ed122_d_final_mes,@$ed122_d_final_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -108,7 +108,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led122_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed122_t_obs',2,70,$Ied122_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed122_t_obs',2,70,$Ied122_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -116,7 +116,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led122_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed122_d_data',@$ed122_d_data_dia,@$ed122_d_data_mes,@$ed122_d_data_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed122_d_data',@$ed122_d_data_dia,@$ed122_d_data_mes,@$ed122_d_data_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -188,7 +188,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_proglicencamatr.hide();
- <?
+ <?php
  if($db_opcao!=1){
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

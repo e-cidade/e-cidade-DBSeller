@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ if(isset($excluir)){
 	</td>
   </tr>
 </table>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -82,7 +82,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed222_i_turmaac",true,1,"ed222_i_turmaac",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clturmaacprof->erro_status=="0"){
     $clturmaacprof->erro(true,false);
@@ -108,7 +108,7 @@ if(isset($alterar)){
     }
   }else{
     $clturmaacprof->erro(true,false);?>
-    <? db_redireciona("edu1_turmaacprof001.php?ed222_i_turmaac=$ed222_i_turmaac&ed268_c_descr=$ed268_c_descr");
+    <?php db_redireciona("edu1_turmaacprof001.php?ed222_i_turmaac=$ed222_i_turmaac&ed268_c_descr=$ed268_c_descr");
   }
 }
 if(isset($excluir)){

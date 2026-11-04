@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clitbirural->rotulo->label("it18_area");
               <?=$Lit18_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it18_guia",10,$Iit18_guia,true,"text",4,"","chave_it18_guia");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbirural->rotulo->label("it18_area");
               <?=$Lit18_area?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it18_area",20,$Iit18_area,true,"text",4,"","chave_it18_area");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbirural->rotulo->label("it18_area");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbirural.php")==true){
@@ -118,12 +118,12 @@ $clitbirural->rotulo->label("it18_area");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -92,6 +92,10 @@ class DadosDiarioClasse
      */
     private $nomeRegente;
     /**
+     * @var string
+     */
+    private $nomeSocialRegente;
+    /**
      * @var \ProcedimentoAvaliacao
      */
     private $procedimentoAvaliacaoTurma;
@@ -290,6 +294,24 @@ class DadosDiarioClasse
     public function getNomeRegente()
     {
         return $this->nomeRegente;
+    }
+
+     /**
+     * @param string $nome_social
+     * @return $this
+     */
+    public function setNomeSocialRegente($nome_social)
+    {
+        $this->nomeSocialRegente = $nome_social;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNomeSocialRegente()
+    {
+        return $this->nomeSocialRegente;
     }
 
     /**

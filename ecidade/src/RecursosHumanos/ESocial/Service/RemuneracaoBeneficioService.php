@@ -41,6 +41,7 @@ use CalculoFolha;
 use EventoFinanceiroFolha;
 use DBCompetencia;
 use DBPessoal;
+use FolhaPagamento;
 
 /**
  * Class RemuneracaoSService
@@ -171,11 +172,19 @@ class RemuneracaoBeneficioService
          */
         $pagamentos = array();
 
+        if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceirosHistorico(
+                FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR
+            );
+        } else {
+            $calculoComplementar = $calculoFinanceiroComplementar->getEventosFinanceiros();
+        }
+
         foreach ($calculoFinanceiroSalario->getEventosFinanceiros() as $eventoFinanceiro) {
             $pagamentos[self::TIPOSALARIO][] = $this->geraEventoESocial($eventoFinanceiro, self::SALARIO);
         }
 
-        foreach ($calculoFinanceiroComplementar->getEventosFinanceiros() as $eventoFinanceiro) {
+        foreach ($calculoComplementar as $eventoFinanceiro) {
             $pagamentos[self::TIPOCOMPLEMENTAR][] = $this->geraEventoESocial($eventoFinanceiro, self::COMPLEMENTAR);
         }
 

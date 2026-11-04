@@ -1,4 +1,4 @@
-<?
+<?php
 //include(modification("cabec_rodape.php"));
 include(modification("fpdf151/assinatura.php"));
 
@@ -6,12 +6,12 @@ include(modification("fpdf151/assinatura.php"));
 //       ALTERAÇÕES NA CLASSE impcarne                                                    //
 //                                                                                        //
 //  1 - OS NOVOS MODELO INCLUIDOS NAO DEVERRÃO SER DESENVOLVIDOS DIRETAMENTE NA CLASSE     //
-//  2 - APENAS SERA INCLUIDO UM ARQUIVO EXTERNO POR MEIO DE include_once                  //  
+//  2 - APENAS SERA INCLUIDO UM ARQUIVO EXTERNO POR MEIO DE include_once                  //
 //  3 - OS MODELOS NOVOS E ANTIGOS VÃO FICAR NA PASTA fpdf151/impmodelos/                 //
 //  4 - COLABORE, ORGANIZE O CODIGO, SIGA O PADRÃO                                        //
 //                                                                                        //
 //========================================================================================//
-// DIRETORIO DOS MODELOS        ===>>> 	fpdf151/impmodelos/                               // 
+// DIRETORIO DOS MODELOS        ===>>> 	fpdf151/impmodelos/                               //
 // PADRÃO PARA NOME DOS MODELOS ===>>>  mod_imprime<xx>.php ex: mod_imprime1.php          //
 //========================================================================================//
 
@@ -39,13 +39,13 @@ class db_impcarne extends cl_assinatura {
   var $fax       = null;
   var $contato   = null;
   var $cep       = null;
-  
 
-  
+
+
 
   var $Sdescrdepto      = '';    //responsï¿½vel pelo departamento
   var $Snumdepart       = '';    //responsï¿½vel pelo departamento
-  
+
 
 
 // Variáveis necessárias para requisição de retirada de medicamentos da farmacia
@@ -62,11 +62,11 @@ class db_impcarne extends cl_assinatura {
   var $Rrequisitante      = null;
   var $Rident             = null;
   var $Rendereco          = null;
-  var $Rnumeros           = null;  
+  var $Rnumeros           = null;
   var $rcodmaterial       = null;
   var $rdescmaterial      = null;
   var $runidadesaida      = null;
-  var $rquantdeitens      = null;  
+  var $rquantdeitens      = null;
   var $casadec            = null;
   var $ratendente         = null;
   var $rcodatend          = null;
@@ -75,11 +75,11 @@ class db_impcarne extends cl_assinatura {
   var $rlocalizacao       = null;
   var $robsdositens       = null;
   var $Rcoddepart         = null;
-  
+
 
 //variaveis do modulo laboratorio para emitir o comprovante de requisicao de exames
 //****************************************************************//
-  var $Rmedico         = null; 
+  var $Rmedico         = null;
   var $Rusuario        = null;
   var $Rpaciente       = null;
   var $Rresponsavel    = null;
@@ -106,7 +106,7 @@ class db_impcarne extends cl_assinatura {
   var $Ratendente    = null;
   var $rcodcgs       = null;
   var $rbeneficiado  = null;
-  var $rvalor        = null;       
+  var $rvalor        = null;
   var $rprocedimento =null;
   // VARIAVEIS DO RETÂNGULO PACIENTE
   var $sRNomePaciente     = null;
@@ -118,7 +118,7 @@ class db_impcarne extends cl_assinatura {
   var $sRMaePaciente      = null;
   var $sRSexoPaciente     = null;
   var $sREnderecoPaciente = null;
-  var $sRNumeroPaciente   = null; 
+  var $sRNumeroPaciente   = null;
   var $sRComplPaciente    = null;
   var $sRBairroPaciente   = null;
   var $sRMunicPaciente    = null;
@@ -126,21 +126,21 @@ class db_impcarne extends cl_assinatura {
   var $sRCepPaciente      = null;
   var $sRTelPaciente      = null;
   var $sRCelPaciente      = null;
-  
+
   var $sRtf15_observacao  = null;
   var $sRtf12_descricao   = null;
   var $iRtf01_i_codigo    = null;
-  
+
   // VARIAVEIS DA CAPA DE PROCESSO
   var $result_vars;
 
 //************************************************************//
-    
-  function db_impcarne($objpdf,$impmodelo){
+
+  public function __construct($objpdf,$impmodelo){
     $this->objpdf = $objpdf;
-    $this->impmodelo = $impmodelo; 
+    $this->impmodelo = $impmodelo;
   }
-  function muda_pag($pagina,$xlin,$xcol,$fornec="false",&$contapagina,$mais=1){
+  public function muda_pag($pagina,$xlin,$xcol,$fornec="false",&$contapagina,$mais=1){
     global $resparag, $resparagpadrao, $db61_texto, $db02_texto, $maislin, $xtotal, $flag_rodape;
 
     $x = false;
@@ -181,7 +181,7 @@ class db_impcarne extends cl_assinatura {
                     	    inner join db_tipodoc on db08_codigo  = db03_tipodoc
                 	        inner join db_paragrafo on db04_idparag = db02_idparag
                	     where db03_tipodoc = 1400 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
-			 
+
         $resparag = @db_query($sqlparag);
 
         if(@pg_numrows($resparag) > 0){
@@ -196,9 +196,9 @@ class db_impcarne extends cl_assinatura {
                      	              inner join db_tipodoc         on db08_codigo   = db60_tipodoc
                  	                  inner join db_paragrafopadrao on db61_codparag = db62_codparag
                	               where db60_tipodoc = 1400 and db60_instit = " . db_getsession("DB_instit")." order by db62_ordem";
-			 
+
             $resparagpadrao = @db_query($sqlparagpadrao);
-            
+
             if(@pg_numrows($resparagpadrao) > 0){
                 db_fieldsmemory($resparagpadrao,0);
 
@@ -206,20 +206,20 @@ class db_impcarne extends cl_assinatura {
                 $flag_rodape = true;
             }
         }
-      }  
+      }
       $contapagina+=1;
       $this->objpdf->addpage();
-      $pagina += 1;	   
+      $pagina += 1;
       $muda_pag = true;
-      
+
       $this->objpdf->settopmargin(1);
       $xlin = 20;
       $xcol = 4;
-  
-      
+
+
       $getlogo = db_getnomelogo();
 			$logo    = ($getlogo==false?'':$getlogo);
-			
+
 			// Imprime cabeï¿½alho com dados sobre a prefeitura se mudar de pï¿½gina
       $this->objpdf->setfillcolor(245);
       $this->objpdf->rect($xcol-2,$xlin-18,206,292,2,'DF','1234');
@@ -244,8 +244,8 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->text(40,$xlin+ 1,db_formatar($this->cgcpref,'cnpj'));
 //      $this->objpdf->text(40,$xlin+2,'Continuaï¿½ï¿½o da Pï¿½gina '.($contapagina-1));
       $this->objpdf->text(130,$xlin+2,'Página '.$contapagina);
-      
-      $xlin = 0;      
+
+      $xlin = 0;
       if((isset($fornec) && $fornec=="false") || !isset($fornec)){
 	$this->objpdf->Setfont('Arial','B',8);
 
@@ -257,7 +257,7 @@ class db_impcarne extends cl_assinatura {
 	$this->objpdf->rect($xcol+142,$xlin+24,30,6,2,'DF','12');
 	$this->objpdf->rect($xcol+172,$xlin+24,30,6,2,'DF','12');
 
-    /*    
+    /*
         if(strtoupper(trim($this->municpref)) == 'SAPIRANGA'){
 	  $xlin -= 10;
 	}
@@ -267,7 +267,7 @@ class db_impcarne extends cl_assinatura {
 	$this->objpdf->rect($xcol,    $xlin+30,10,262,2,'DF','34');
         // Caixa da quantidade
 	$this->objpdf->rect($xcol+ 10,$xlin+30,12,262,2,'DF','34');
-	
+
 	$this->objpdf->rect($xcol+ 22,$xlin+30,22,262,2,'DF','34');
         // Caixa dos materiais ou serviï¿½os
 	$this->objpdf->rect($xcol+ 44,$xlin+30,98,262,2,'DF','34');
@@ -300,8 +300,8 @@ class db_impcarne extends cl_assinatura {
     }
     return $x;
   }
-  
-  function imprime(){
+
+  public function imprime(){
   	include(modification("fpdf151/impmodelos/mod_imprime".$this->impmodelo.".php"));
   }
  }

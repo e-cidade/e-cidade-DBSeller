@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,13 +40,13 @@ $db_opcao = 1;
 
       <tr>
         <td nowrap title="<?=$Tv13_certid?>">
-          <?
+          <?php
             db_ancora($Lv13_certid,"js_pesquisa_certid_ini(true);",1);
           ?>
         </td>
         <td>
           <strong>
-          <?
+          <?php
             db_input("v13_certidini",10,$Iv13_certid,true,"text",4,"onchange='js_pesquisa_certid_ini(false);'");
 
             db_ancora("até","js_pesquisa_certid_fim(true);",1);

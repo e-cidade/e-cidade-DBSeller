@@ -1,4 +1,4 @@
-<?
+<?php
 
 include("/var/www/dbportal2/libs/db_stdlib.php");
 

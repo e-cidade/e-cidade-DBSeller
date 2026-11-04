@@ -110,11 +110,14 @@ function persistirRegimeJornadaTrabalho()
             ->scopeMes($mes)
             ->scopeMatricula($matricula)
             ->first();
+        if (!empty($servidorMovimentacao)) {
+          $servidorMovimentacao->setRegimeJornadaTrabalho($parametros->regime_jornada_trabalho) ;
+          ServidorMovimentacaoRepository::save($servidorMovimentacao);
 
-        $servidorMovimentacao->setRegimeJornadaTrabalho($parametros->regime_jornada_trabalho);
-        ServidorMovimentacaoRepository::save($servidorMovimentacao);
-
-        return true;
+          return true;
+        } else {
+          return false;
+        }
     } catch (Exception $exception) {
         db_msgbox($exception->getMessage());
     }
@@ -125,9 +128,11 @@ function persistirRegimeJornadaTrabalho()
 
 if (isset($incluir) && !$lErro) {
   db_inicio_transacao();
-  if ($rh02_rhtipoapos == 0) {
-      $rh02_descinstrumento = '';
-      $rh02_sitpagbeneficio = 'N';
+  if(isset($rh02_rhtipoapos)) {
+    if ($rh02_rhtipoapos == 0) {
+        $rh02_descinstrumento = '';
+        $rh02_sitpagbeneficio = 'N';
+    }
   }
   $sqlerro = false;
 
@@ -193,7 +198,7 @@ if (isset($incluir) && !$lErro) {
 
   if($sqlerro == false){
 
-    $mensagem = validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao);
+    $mensagem = validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao, $rh02_regist, $rh02_anousu, $rh02_mesusu);
     if($mensagem != null) {
         $erro_msg = $mensagem;
         $sqlerro  = true;
@@ -570,7 +575,7 @@ if (isset($incluir) && !$lErro) {
   $excluiponto = false;
   if($sqlerro == false){
 
-    $mensagem = validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao);
+    $mensagem = validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao, $rh02_regist, $rh02_anousu, $rh02_mesusu);
     if($mensagem != null) {
         $erro_msg = $mensagem;
         $sqlerro  = true;
@@ -1198,7 +1203,7 @@ function validarCgm($codigoCgm)
  * Valida se está sendo enviado o arquivo S2299 - Desligamento do eSocial.
  * Caso esteja, retorna mensagem de validação para não permitir cadastrar rescisão através dessa rotina.
  */
-function validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao)
+function validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao, $rh02_regist, $rh02_anousu, $rh02_mesusu)
 {
     $configuracaoEsocialDesligamento = new \ECidade\RecursosHumanos\ESocial\Configuracao\S2229();
     $dataInicioEnvioDesligamento = new DateTime($configuracaoEsocialDesligamento->get()->data_envio);
@@ -1226,7 +1231,15 @@ function validarDataEnvioDesligamentoEsocial($rh05_recis, $dataRescisao)
         $mensagem .= "dados necessários para o envio do eSocial. \n\n";
         $mensagem .= "Para cadastrar rescisão, acesse o menu: DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Rescisão > Cadastro de Rescisão.";
     }
-
+    $servidor = ServidorRepository::getInstanciaByCodigo($rh02_regist, $rh02_anousu, $rh02_mesusu);
+        // Verificamos se ja existia a rescisao cadastrada, pois nao podemos deixar cadastrar por essa rotina
+        if ($servidor->isRescindido()) {
+            $dadosRescisao = $servidor->getDadosRescisao();
+            // Verificamos se nao foi alterada a data da rescisao
+            if ($dadosRescisao->rh05_recis == $data) {
+                $mensagem = null;
+            }
+        }
     return $mensagem;
 }
 /**

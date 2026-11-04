@@ -1,75 +1,75 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE correntemov
-class cl_correntemov { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k12_idmov = 0; 
-   var $k12_idautent = 0; 
-   var $k12_dtmov_dia = null; 
-   var $k12_dtmov_mes = null; 
-   var $k12_dtmov_ano = null; 
-   var $k12_dtmov = null; 
-   var $k12_horamov = null; 
-   var $k12_valormov = 0; 
-   var $k12_tipomov = 0; 
-   var $k12_obsmov = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_correntemov {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k12_idmov = 0;
+   var $k12_idautent = 0;
+   var $k12_dtmov_dia = null;
+   var $k12_dtmov_mes = null;
+   var $k12_dtmov_ano = null;
+   var $k12_dtmov = null;
+   var $k12_horamov = null;
+   var $k12_valormov = 0;
+   var $k12_tipomov = 0;
+   var $k12_obsmov = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k12_idmov = int4 = Sequência 
-                 k12_idautent = int4 = Autenticadora 
-                 k12_dtmov = date = Data da Movimentação 
-                 k12_horamov = varchar(5) = Hora da Movimentação 
-                 k12_valormov = float8 = Valor da Movimentação 
-                 k12_tipomov = int4 = Tipo de Movimentação 
-                 k12_obsmov = text = Observação 
+                 k12_idmov = int4 = Sequência
+                 k12_idautent = int4 = Autenticadora
+                 k12_dtmov = date = Data da Movimentação
+                 k12_horamov = varchar(5) = Hora da Movimentação
+                 k12_valormov = float8 = Valor da Movimentação
+                 k12_tipomov = int4 = Tipo de Movimentação
+                 k12_obsmov = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_correntemov() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("correntemov"); 
+     $this->rotulo = new rotulo("correntemov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_correntemov {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k12_idmov = ($this->k12_idmov == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_idmov"]:$this->k12_idmov);
        $this->k12_idautent = ($this->k12_idautent == ""?@$GLOBALS["HTTP_POST_VARS"]["k12_idautent"]:$this->k12_idautent);
@@ -99,9 +99,9 @@ class cl_correntemov {
      }
    }
    // funcao para inclusao
-   function incluir ($k12_idmov){ 
+   public function incluir ($k12_idmov){
       $this->atualizacampos();
-     if($this->k12_idautent == null ){ 
+     if($this->k12_idautent == null ){
        $this->erro_sql = " Campo Autenticadora nao Informado.";
        $this->erro_campo = "k12_idautent";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_dtmov == null ){ 
+     if($this->k12_dtmov == null ){
        $this->erro_sql = " Campo Data da Movimentação nao Informado.";
        $this->erro_campo = "k12_dtmov_dia";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_horamov == null ){ 
+     if($this->k12_horamov == null ){
        $this->erro_sql = " Campo Hora da Movimentação nao Informado.";
        $this->erro_campo = "k12_horamov";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_valormov == null ){ 
+     if($this->k12_valormov == null ){
        $this->erro_sql = " Campo Valor da Movimentação nao Informado.";
        $this->erro_campo = "k12_valormov";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_tipomov == null ){ 
+     if($this->k12_tipomov == null ){
        $this->erro_sql = " Campo Tipo de Movimentação nao Informado.";
        $this->erro_campo = "k12_tipomov";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k12_obsmov == null ){ 
+     if($this->k12_obsmov == null ){
        $this->erro_sql = " Campo Observação nao Informado.";
        $this->erro_campo = "k12_obsmov";
        $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_correntemov {
        return false;
      }
      if($k12_idmov == "" || $k12_idmov == null ){
-       $result = db_query("select nextval('correntemov_k12_idmov_seq')"); 
+       $result = db_query("select nextval('correntemov_k12_idmov_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: correntemov_k12_idmov_seq do campo: k12_idmov"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: correntemov_k12_idmov_seq do campo: k12_idmov";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k12_idmov = pg_result($result,0,0); 
+       $this->k12_idmov = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from correntemov_k12_idmov_seq");
        if(($result != false) && (pg_result($result,0,0) < $k12_idmov)){
@@ -176,10 +176,10 @@ class cl_correntemov {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k12_idmov = $k12_idmov; 
+         $this->k12_idmov = $k12_idmov;
        }
      }
-     if(($this->k12_idmov == null) || ($this->k12_idmov == "") ){ 
+     if(($this->k12_idmov == null) || ($this->k12_idmov == "") ){
        $this->erro_sql = " Campo k12_idmov nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -188,25 +188,25 @@ class cl_correntemov {
        return false;
      }
      $sql = "insert into correntemov(
-                                       k12_idmov 
-                                      ,k12_idautent 
-                                      ,k12_dtmov 
-                                      ,k12_horamov 
-                                      ,k12_valormov 
-                                      ,k12_tipomov 
-                                      ,k12_obsmov 
+                                       k12_idmov
+                                      ,k12_idautent
+                                      ,k12_dtmov
+                                      ,k12_horamov
+                                      ,k12_valormov
+                                      ,k12_tipomov
+                                      ,k12_obsmov
                        )
                 values (
-                                $this->k12_idmov 
-                               ,$this->k12_idautent 
-                               ,".($this->k12_dtmov == "null" || $this->k12_dtmov == ""?"null":"'".$this->k12_dtmov."'")." 
-                               ,'$this->k12_horamov' 
-                               ,$this->k12_valormov 
-                               ,$this->k12_tipomov 
-                               ,'$this->k12_obsmov' 
+                                $this->k12_idmov
+                               ,$this->k12_idautent
+                               ,".($this->k12_dtmov == "null" || $this->k12_dtmov == ""?"null":"'".$this->k12_dtmov."'")."
+                               ,'$this->k12_horamov'
+                               ,$this->k12_valormov
+                               ,$this->k12_tipomov
+                               ,'$this->k12_obsmov'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Movimentação Interna ($this->k12_idmov) nao Incluído. Inclusao Abortada.";
@@ -244,19 +244,19 @@ class cl_correntemov {
        $resac = db_query("insert into db_acount values($acount,620,4699,'','".AddSlashes(pg_result($resaco,0,'k12_obsmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k12_idmov=null) { 
+   public function alterar ($k12_idmov=null) {
       $this->atualizacampos();
      $sql = " update correntemov set ";
      $virgula = "";
-     if(trim($this->k12_idmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
-        if(trim($this->k12_idmov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
-           $this->k12_idmov = "0" ; 
-        } 
+     if(trim($this->k12_idmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){
+        if(trim($this->k12_idmov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){
+           $this->k12_idmov = "0" ;
+        }
        $sql  .= $virgula." k12_idmov = $this->k12_idmov ";
        $virgula = ",";
-       if(trim($this->k12_idmov) == null ){ 
+       if(trim($this->k12_idmov) == null ){
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "k12_idmov";
          $this->erro_banco = "";
@@ -266,13 +266,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_idautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
-        if(trim($this->k12_idautent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
-           $this->k12_idautent = "0" ; 
-        } 
+     if(trim($this->k12_idautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){
+        if(trim($this->k12_idautent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){
+           $this->k12_idautent = "0" ;
+        }
        $sql  .= $virgula." k12_idautent = $this->k12_idautent ";
        $virgula = ",";
-       if(trim($this->k12_idautent) == null ){ 
+       if(trim($this->k12_idautent) == null ){
          $this->erro_sql = " Campo Autenticadora nao Informado.";
          $this->erro_campo = "k12_idautent";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_dtmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"] !="") ){ 
+     if(trim($this->k12_dtmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"] !="") ){
        $sql  .= $virgula." k12_dtmov = '$this->k12_dtmov' ";
        $virgula = ",";
-       if(trim($this->k12_dtmov) == null ){ 
+       if(trim($this->k12_dtmov) == null ){
          $this->erro_sql = " Campo Data da Movimentação nao Informado.";
          $this->erro_campo = "k12_dtmov_dia";
          $this->erro_banco = "";
@@ -294,11 +294,11 @@ class cl_correntemov {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"])){
          $sql  .= $virgula." k12_dtmov = null ";
          $virgula = ",";
-         if(trim($this->k12_dtmov) == null ){ 
+         if(trim($this->k12_dtmov) == null ){
            $this->erro_sql = " Campo Data da Movimentação nao Informado.";
            $this->erro_campo = "k12_dtmov_dia";
            $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_correntemov {
          }
        }
      }
-     if(trim($this->k12_horamov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horamov"])){ 
+     if(trim($this->k12_horamov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horamov"])){
        $sql  .= $virgula." k12_horamov = '$this->k12_horamov' ";
        $virgula = ",";
-       if(trim($this->k12_horamov) == null ){ 
+       if(trim($this->k12_horamov) == null ){
          $this->erro_sql = " Campo Hora da Movimentação nao Informado.";
          $this->erro_campo = "k12_horamov";
          $this->erro_banco = "";
@@ -322,13 +322,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_valormov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
-        if(trim($this->k12_valormov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
-           $this->k12_valormov = "0" ; 
-        } 
+     if(trim($this->k12_valormov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){
+        if(trim($this->k12_valormov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){
+           $this->k12_valormov = "0" ;
+        }
        $sql  .= $virgula." k12_valormov = $this->k12_valormov ";
        $virgula = ",";
-       if(trim($this->k12_valormov) == null ){ 
+       if(trim($this->k12_valormov) == null ){
          $this->erro_sql = " Campo Valor da Movimentação nao Informado.";
          $this->erro_campo = "k12_valormov";
          $this->erro_banco = "";
@@ -338,13 +338,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
-        if(trim($this->k12_tipomov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
-           $this->k12_tipomov = "0" ; 
-        } 
+     if(trim($this->k12_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){
+        if(trim($this->k12_tipomov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){
+           $this->k12_tipomov = "0" ;
+        }
        $sql  .= $virgula." k12_tipomov = $this->k12_tipomov ";
        $virgula = ",";
-       if(trim($this->k12_tipomov) == null ){ 
+       if(trim($this->k12_tipomov) == null ){
          $this->erro_sql = " Campo Tipo de Movimentação nao Informado.";
          $this->erro_campo = "k12_tipomov";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_obsmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_obsmov"])){ 
+     if(trim($this->k12_obsmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_obsmov"])){
        $sql  .= $virgula." k12_obsmov = '$this->k12_obsmov' ";
        $virgula = ",";
-       if(trim($this->k12_obsmov) == null ){ 
+       if(trim($this->k12_obsmov) == null ){
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "k12_obsmov";
          $this->erro_banco = "";
@@ -395,7 +395,7 @@ class cl_correntemov {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Movimentação Interna nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k12_idmov;
@@ -423,14 +423,14 @@ class cl_correntemov {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k12_idmov=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k12_idmov=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k12_idmov));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -462,7 +462,7 @@ class cl_correntemov {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Movimentação Interna nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k12_idmov;
@@ -490,11 +490,11 @@ class cl_correntemov {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -516,10 +516,10 @@ class cl_correntemov {
       }
      return $result;
    }
-   function sql_query ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,8 +533,8 @@ class cl_correntemov {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_idmov!=null ){
-         $sql2 .= " where correntemov.k12_idmov = $k12_idmov "; 
-       } 
+         $sql2 .= " where correntemov.k12_idmov = $k12_idmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -542,7 +542,7 @@ class cl_correntemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,10 +551,10 @@ class cl_correntemov {
      }
      return $sql;
   }
-   function sql_query_file ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -568,8 +568,8 @@ class cl_correntemov {
      $sql2 = "";
      if($dbwhere==""){
        if($k12_idmov!=null ){
-         $sql2 .= " where correntemov.k12_idmov = $k12_idmov "; 
-       } 
+         $sql2 .= " where correntemov.k12_idmov = $k12_idmov ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -577,7 +577,7 @@ class cl_correntemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

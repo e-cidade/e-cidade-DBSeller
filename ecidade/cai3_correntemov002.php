@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ font-size:12px;
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
 <center>
 <table width="100%" border="0" cellpadding="0" cellspacing="1">
-   <? 
+   <?php 
  if (isset($caixa)){
     if ($caixa > 0){
        $xcaixa  = ' and k12_idautent = '.$caixa;
@@ -141,7 +141,7 @@ group by k13_conta,k13_descr,c60_codsis
     <th width="15%">Valor</th>
     <th width="50" >Observação</th>
   </tr>
-   <?
+   <?php
        $cor="#EFE029";
        $total = 0; 
        for ($i = 0;$i < pg_numrows($result);$i++){
@@ -159,7 +159,7 @@ group by k13_conta,k13_descr,c60_codsis
            <td align="right"  nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($k12_valormov,'f')?></td>
            <td align="left"  nowrap bgcolor="<?=$cor?>">&nbsp;<?=$k12_obsmov?></td>
          <tr>	
-   <?
+   <?php
          if ($k12_tipomov == '0'){
             $total -= $k12_valormov;
 	 }else{
@@ -176,7 +176,7 @@ group by k13_conta,k13_descr,c60_codsis
            <td align="right" style="font-size:12px" nowrap bgcolor="#ffcc66">&nbsp;<?=db_formatar($total,'f')?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="#ffcc66">&nbsp;</td>
          <tr>
-   <?
+   <?php
        $totalcontas = 0;
        for ($i = 0;$i < pg_numrows($result1);$i++){
 	 db_fieldsmemory($result1,$i);
@@ -191,7 +191,7 @@ group by k13_conta,k13_descr,c60_codsis
            <td align="right" style="font-size:12px" nowrap bgcolor="#ffcc66">&nbsp;<?=db_formatar($totcaixa,'f')?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="#ffcc66">&nbsp;</td>
          <tr>
-   <?
+   <?php
        if($c60_codsis == 5) 
           $totalcontas += $totcaixa;
         
@@ -217,7 +217,7 @@ group by k13_conta,k13_descr,c60_codsis
     <th width="15%">Valor</th>
     <th width="50" >Credor</th>
   </tr>
-  <?
+  <?php
        $cor="#EFE029";
        $vlremp = 0;
        for ($i = 0;$i < $num2;$i++){
@@ -235,7 +235,7 @@ group by k13_conta,k13_descr,c60_codsis
            <td align="right"  nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($valor,'f')?></td>
            <td align="left"  nowrap bgcolor="<?=$cor?>">&nbsp;<?=$z01_nome?></td>
          <tr>
-    <?
+    <?php
          $vlremp += $valor;
        }
     ?>
@@ -250,7 +250,7 @@ group by k13_conta,k13_descr,c60_codsis
            <td align="left" style="font-size:12px" nowrap bgcolor="#ffcc66">&nbsp;</td>
          <tr>
 
- <?
+ <?php
  }
  ?>
   </table>

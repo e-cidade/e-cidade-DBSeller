@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ if (isset($serie_codigos)) {
    parent.db_iframe_outraserie.hide();
    parent.js_refresh();
   </script>
-  <?
+  <?php
   exit;
 }
 ?>
@@ -105,7 +105,7 @@ if (isset($serie_codigos)) {
  <tr>
   <td align="center" valign="top">
    <b>Selecione as outras etapas para conter esta disciplina.</b>
-   <?
+   <?php
    $sCampos = "si.ed11_i_sequencia as inicial,sf.ed11_i_sequencia as final,si.ed11_i_ensino as ensino";
    $sql     = $clbaseserie->sql_query("",
                                       $sCampos,
@@ -135,13 +135,13 @@ if (isset($serie_codigos)) {
       parent.db_iframe_outraserie.hide();
       parent.js_refresh();
      </script>
-     <?
+     <?php
      exit;
 
    }
    ?>
    <select name="series[]" id="series" size="10" style="font-size:9px;width:330px;" multiple>
-   <?
+   <?php
    for ($x = 0; $x < $linhas1; $x++) {
 
      db_fieldsmemory($result1,$x);
@@ -194,7 +194,7 @@ function js_confirmaserie(){
 
 function js_fechar() {
 
-  <?
+  <?php
   $sql    = $clbasemps->sql_query("",
                                   "distinct ed31_i_curso,ed31_c_descr,ed11_c_descr",
                                   "",

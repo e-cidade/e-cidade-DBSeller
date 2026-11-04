@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,12 +62,12 @@ $clrotulo->label ( "s108_c_exame" );
 				<table>
 					<tr>
 						<td nowrap title="<?=@$Ts118_i_numcgs?>">
-								<?
+								<?php
 								db_ancora ( @$Ls118_i_numcgs, "js_pesquisas118_i_numcgs(true);", 1 );
 								?>
 							</td>
 						<td colspan="3">
-								<?
+								<?php
 								db_input ( 's118_i_codigo', 10, $Is118_i_codigo, true, 'hidden', 1);
 								db_input ( 's118_i_numcgs', 10, $Is118_i_numcgs, true, 'text', $db_opcao==1?1:3, "onChange='js_pesquisas118_i_numcgs(false);'" );
 								db_input ( 'z01_v_nome', 48, $Iz01_v_nome, true, 'text', 3 );
@@ -79,19 +79,19 @@ $clrotulo->label ( "s108_c_exame" );
 								<?=@$Lz01_v_ident?>
 							</td>
 						<td>
-								<?
+								<?php
 								db_input ( 'z01_v_ident', 15, $Iz01_v_ident, true, 'text', 3, "" );
 								?>
 							</td>
 						<td align="center">
 								<?=@$Lz01_v_cgccpf?>
-								<?
+								<?php
 								db_input ( 'z01_v_cgccpf', 15, $Iz01_v_cgccpf, true, 'text', 3, "" );
 								?>
 							</td>
 						<td align="right">
 								<?=@$Ls118_d_preferencia?>
-								<?
+								<?php
 								db_inputdata ( 's118_d_preferencia', @$s118_d_preferencia_dia, @$s118_d_preferencia_mes, @$s118_d_preferencia_ano, true, 'text', $db_opcao, "" );
 								?>								
 							</td>
@@ -109,7 +109,7 @@ $clrotulo->label ( "s108_c_exame" );
 								<?=@$Ls118_c_tipoagenda?>
 						</td>
 						<td>
-								<?
+								<?php
 								$x = array ('C' => 'Consulta', 'E' => 'Exame' );
 								db_select ( 's118_c_tipoagenda', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 								?>
@@ -122,7 +122,7 @@ $clrotulo->label ( "s108_c_exame" );
 							<?=@$Ls118_v_encaminhamento?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_input ( 's118_v_encaminhamento', 10, $Is118_v_encaminhamento, true, 'text', $db_opcao );
 							?>						
 						</td>
@@ -132,12 +132,12 @@ $clrotulo->label ( "s108_c_exame" );
 					<!-- Consulta -->
 					<tr id="tipo_consulta">
 						<td nowrap title="<?=@$Ts119_i_especialidade?>">
-								<?
+								<?php
 								db_ancora ( @$Ls119_i_especialidade, "js_pesquisasd27_i_rhcbo(true);", 1 );
 								?>								
 						</td>
 						<td>
-								<?
+								<?php
 								db_input ( 's119_i_especialidade', 10, $Is119_i_especialidade, true, 'text', 1, "onChange='js_pesquisasd27_i_rhcbo(false);'" );
 								db_input ( 'rh70_estrutural',10,$Irh70_estrutural,true,'text',3,'');
 								db_input ( 'rh70_descr', 48, @$Irh70_descr, true, 'text', 3 );
@@ -147,12 +147,12 @@ $clrotulo->label ( "s108_c_exame" );
 					<!-- Exame -->
 					<tr id="tipo_exame" style="display:none">
 						<td nowrap title="<?=@$Ts120_i_exame?>">
-								<?
+								<?php
 								db_ancora ( @$Ls120_i_exame, "js_pesquisas120_i_exame(true);", 1 );
 								?>								
 						</td>
 						<td>
-								<?
+								<?php
 								db_input ( 's120_i_exame', 10, $Is120_i_exame, true, 'text', 1, "onChange='js_pesquisas120_i_exame(false);'" );
 								db_input ( 's108_c_exame', 48, @$Is108_c_exame, true, 'text', 3 );
 								?>
@@ -162,12 +162,12 @@ $clrotulo->label ( "s108_c_exame" );
 					<!-- Prestadora -->
 					<tr>
 						<td nowrap title="<?=@$Ts118_i_prestador?>">
-								<?
+								<?php
 								db_ancora ( @$Ls118_i_prestador, "js_pesquisas118_i_prestador(true);", 1 );
 								?>
 							</td>
 						<td>
-								<?
+								<?php
 								db_input ( 's118_i_prestador', 10, $Is118_i_prestador, true, 'text', 1, "onChange='js_pesquisas118_i_prestador(false);'" );
 								db_input ( 'z01_nome', 48, $Iz01_nome, true, 'text', 3 );
 								?>
@@ -181,15 +181,15 @@ $clrotulo->label ( "s108_c_exame" );
 								<?=@$Ls118_d_marcada?>
 							</td>
 						<td>
-								<?
+								<?php
 								db_inputdata ( 's118_d_marcada', @$s118_d_marcada_dia, @$s118_d_marcada_mes, @$s118_d_marcada_ano, true, 'text', $db_opcao, "" );
 								?>
 								<?=@$Ls118_c_horamarcada?>
-								<?
+								<?php
 								db_input ( 's118_c_horamarcada', 10, $Is118_c_horamarcada, true, 'text', $db_opcao );
 								?>
 								<?=@$Ls118_v_protocolo?>
-								<?
+								<?php
 								db_input ( 's118_v_protocolo', 10, $Is118_v_protocolo, true, 'text', $db_opcao );
 								?>
 						</td>
@@ -215,7 +215,7 @@ $clrotulo->label ( "s108_c_exame" );
 			</tr>
 			<tr>
 				<td colspan="2">
-						<?
+						<?php
 						$chavepri = array ("s118_i_codigo" => @$s118_i_codigo );
 						
 						$cliframe_alterar_excluir->chavepri = $chavepri;

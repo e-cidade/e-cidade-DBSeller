@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clfaixaetarias->rotulo->label("sd13_c_descr");
               <?=$Lsd13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd13_i_codigo",5,$Isd13_i_codigo,true,"text",4,"","chave_sd13_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfaixaetarias->rotulo->label("sd13_c_descr");
               <?=$Lsd13_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd13_c_descr",40,$Isd13_c_descr,true,"text",4,"","chave_sd13_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfaixaetarias->rotulo->label("sd13_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_faixaetarias.php")==true){
@@ -122,12 +122,12 @@ $clfaixaetarias->rotulo->label("sd13_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

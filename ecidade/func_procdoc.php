@@ -16,7 +16,7 @@ foreach ($queryString as $key => $value) {
 
 $clprocdoc = new cl_procdoc();
 $clprocdoc->rotulo->label('p56_coddoc');
-$clprocdoc->rotulo->label('p56_coddoc');
+$clprocdoc->rotulo->label('p56_descr');
 
 ?>
 <!doctype html>
@@ -34,11 +34,11 @@ $clprocdoc->rotulo->label('p56_coddoc');
         <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
             <tr>
                 <td><label for="chave_p56_coddoc"><?=$Lp56_coddoc?></label></td>
-                <td><?php db_input("p56_coddoc",3, $Ip56_coddoc, true, "text", 4, "", "chave_p56_coddoc"); ?></td>
+                <td><?php db_input("p56_coddoc",20, $Ip56_coddoc, true, "text", 4, "", "chave_p56_coddoc"); ?></td>
             </tr>
             <tr>
-                <td><label for="chave_p56_coddoc"><?=$Lp56_coddoc?></label></td>
-                <td><?php db_input("p56_coddoc",3, $Ip56_coddoc, true, "text", 4, "", "chave_p56_coddoc"); ?></td>
+                <td><label for="chave_p56_descr"><?=$Lp56_descr?></label></td>
+                <td><?php db_input("p56_descr",'', $Ip56_descr, true, "text", 4, "", "chave_p56_descr"); ?></td>
             </tr>
         </table>
     </fieldset>
@@ -57,8 +57,8 @@ if (isset($pesquisa_chave) === false) {
     }
         if(isset($chave_p56_coddoc) && (trim($chave_p56_coddoc)!="") ){
 	         $sql = $clprocdoc->sql_query($chave_p56_coddoc,$campos,"p56_coddoc");
-        }else if(isset($chave_p56_coddoc) && (trim($chave_p56_coddoc)!="") ){
-	         $sql = $clprocdoc->sql_query("",$campos,"p56_coddoc"," p56_coddoc like '$chave_p56_coddoc%' ");
+        }else if(isset($chave_p56_descr) && (trim($chave_p56_descr)!="") ){
+	         $sql = $clprocdoc->sql_query("",$campos,"p56_descr"," p56_descr ilike '$chave_p56_descr%' ");
         }else{
            $sql = $clprocdoc->sql_query("",$campos,"p56_coddoc","");
         }
@@ -77,7 +77,7 @@ if (isset($pesquisa_chave) === false) {
           $result = $clprocdoc->sql_record($clprocdoc->sql_query($pesquisa_chave));
           if($clprocdoc->numrows!=0){
             db_fieldsmemory($result,0);
-            echo "<script>".$funcao_js."('$p56_coddoc',false);</script>";
+            echo "<script>".$funcao_js."('$p56_coddoc',false, '$p56_descr');</script>";
         } else {
             echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
         }
@@ -88,14 +88,14 @@ if (isset($pesquisa_chave) === false) {
 ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
     ?>
   <script>
     document.form2.chave_p56_coddoc.focus();
     document.form2.chave_p56_coddoc.select();
   </script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

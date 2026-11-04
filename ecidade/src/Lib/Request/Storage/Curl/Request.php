@@ -122,6 +122,7 @@ class Request
     {
         $this->options[CURLOPT_RETURNTRANSFER] = true;
         $this->options[CURLOPT_CUSTOMREQUEST] = $this->tipoRequisicao;
+        $this->options[CURLOPT_SSL_VERIFYPEER] = !$this->autenticacao->isDisableSSLverification();
 
         $url = !empty($this->codigoArquivo) ? self::URL . $this->codigoArquivo : self::URL;
         $this->options[CURLOPT_URL] = $url;

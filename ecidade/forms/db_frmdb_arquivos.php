@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_arquivos->rotulo->label();
        <?=@$Lcodfilho?>
     </td>
     <td> 
-<?
+<?php
 db_input('codfilho',5,$Icodfilho,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('codfilho',5,$Icodfilho,true,'text',3,"")
        <?=@$Larqfilho?>
     </td>
     <td> 
-<?
+<?php
 db_input('arqfilho',100,$Iarqfilho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('arqfilho',100,$Iarqfilho,true,'text',$db_opcao,"")
        <?=@$Ldescfilho?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('descfilho',10,100,$Idescfilho,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_arquivos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
               <?=$Lrh74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh74_sequencial",10,$Irh74_sequencial,true,"text",4,"","chave_rh74_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
               <?=$Lrh74_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh74_rubric",4,$Irh74_rubric,true,"text",4,"","chave_rh74_rubric");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhempenhofolhaexcecaorubrica.php")==true){
@@ -122,12 +122,12 @@ $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

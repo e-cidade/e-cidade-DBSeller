@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -329,7 +329,7 @@ if ($oGet->emissao == 1) {
   }
 
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$oPdf, $oGet->periodo, 195);
+  $oRelatorio->getNotaExplicativa($pdf, $oGet->periodo, 195);
 
   $oPdf->Ln(5);
 
@@ -339,7 +339,7 @@ if ($oGet->emissao == 1) {
   $oPdf->SetFont('arial', '', $iTamFonte-2);
   $oPdf->Ln(20);
 
-  assinaturas(&$oPdf, &$classinatura, 'GF');
+  assinaturas($pdf, $classinatura, 'GF');
 } else {
 
   $oPdf->AddPage("L");
@@ -556,14 +556,14 @@ if ($oGet->emissao == 1) {
    * Assinaturas e notas explicativas.
    */
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$oPdf, $oGet->periodo, 284);
+  $oRelatorio->getNotaExplicativa($pdf, $oGet->periodo, 284);
 
   $oPdf->Ln(5);
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Ln(20);
 
-  assinaturas(&$oPdf, &$classinatura, 'GF');
+  assinaturas($pdf, $classinatura, 'GF');
 }
 
 $oPdf->Output();

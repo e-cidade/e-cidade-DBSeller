@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -98,7 +98,7 @@ $aDadosAndamentoJson = json_encode($aAndamentos);
 
 var oGet = js_urlToObject();
 
-var aDadosAndamento = <? echo $aDadosAndamentoJson?>;
+var aDadosAndamento = <?php echo $aDadosAndamentoJson?>;
 var oGridAndamento  = new DBGrid('gridAndamento');
 oGridAndamento.nameInstance = 'oGridAndamento';
 oGridAndamento.setCellWidth(['10%', '8%', '30%', '10%','42%']);

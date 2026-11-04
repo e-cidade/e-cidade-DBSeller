@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("db90_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh44_seqpes?>">
-       <?
+       <?php
        db_ancora(@$Lrh44_seqpes,"js_pesquisarh44_seqpes(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_seqpes',10,$Irh44_seqpes,true,'text',$db_opcao," onchange='js_pesquisarh44_seqpes(false);'")
 ?>
-       <?
+       <?php
 db_input('rh02_seqpes',6,$Irh02_seqpes,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh44_codban?>">
-       <?
+       <?php
        db_ancora(@$Lrh44_codban,"js_pesquisarh44_codban(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_codban',10,$Irh44_codban,true,'text',$db_opcao," onchange='js_pesquisarh44_codban(false);'")
 ?>
-       <?
+       <?php
 db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
        <?=@$Lrh44_agencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_agencia',10,$Irh44_agencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('rh44_agencia',10,$Irh44_agencia,true,'text',$db_opcao,"")
        <?=@$Lrh44_dvagencia?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_dvagencia',2,$Irh44_dvagencia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('rh44_dvagencia',2,$Irh44_dvagencia,true,'text',$db_opcao,"")
        <?=@$Lrh44_conta?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_conta',50,$Irh44_conta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('rh44_conta',50,$Irh44_conta,true,'text',$db_opcao,"")
        <?=@$Lrh44_dvconta?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh44_dvconta',2,$Irh44_dvconta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpesbanco.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

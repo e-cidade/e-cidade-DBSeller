@@ -230,8 +230,18 @@ var DBViewImportacaoDiversos = function(sInstancia, sNomeComponente) {
         oInstancia.gridDebitos.aRows.each(
           function (row, indice) {
 
-            if ((Number(checkBoxOrigem.value) === Number(row.aCells[1].getValue())) || (oRow.aCells[7].getValue().trim() !== "" &&(Number(oRow.aCells[7].getValue()) === (Number(row.aCells[7].getValue()))))) {
-              linhasParaMarcar.push(indice);
+            let numpreChecked = Number(checkBoxOrigem.value);
+            let numparChecked = Number(oRow.aCells[2].getValue());
+            let numpreRow = Number(row.aCells[1].getValue());
+            let numparRow = Number(row.aCells[2].getValue());
+
+            let hasAuto = oRow.aCells[7].getValue().trim() !== "";
+            let autoChecked = Number(oRow.aCells[7].getValue());
+            let autoRow = Number(row.aCells[7].getValue());
+
+            // agrupa marcacao mesmo numpre e numpar ou mesmo auto
+            if ((numpreChecked === numpreRow && numparChecked === numparRow) || (hasAuto && (autoChecked === autoRow))) {
+                linhasParaMarcar.push(indice);
             }
           }
         );
@@ -400,6 +410,7 @@ var DBViewImportacaoDiversos = function(sInstancia, sNomeComponente) {
 
       aProcedenciasDiversos = oRetorno.aProcdiver;
       aDebitosSelecao = oRetorno.aDebitos;
+      aVinculoReceitaProced = oRetorno.aVinculoReceitaProced;
       procedenciasDividaAtiva = oRetorno.procedenciaDividaAtiva;
     }
 
@@ -505,8 +516,8 @@ var DBViewImportacaoDiversos = function(sInstancia, sNomeComponente) {
 
       if (this.importaDividaAtiva === false) {
 
-        aCelulas[2] = '<select id="procdiver_' + aDebito[4] + '" name="procdiver_' + aDebito[4] + '" style="width: 190px; font-size: 12px; margin: 3px;">';
-        aCelulas[2] += '<option value="">Selecione...</option>';
+        var sOptions = "";
+        var existsPreConfiguracao = 0; 
         for (var p = 0; p < aProcedenciasDiversos.length; p++) {
 
           var oProcedenciaDiversos = {};
@@ -515,23 +526,49 @@ var DBViewImportacaoDiversos = function(sInstancia, sNomeComponente) {
 
             var sDescricao  = oProcedenciaDiversos.dv09_procdiver + ' - ' + oProcedenciaDiversos.dv09_descra.urlDecode();
                 sDescricao += ' - ' + oProcedenciaDiversos.receita.urlDecode();
-            aCelulas[2] += '<option title="' + oProcedenciaDiversos.dv09_descr.urlDecode() + '" value="' + oProcedenciaDiversos.dv09_procdiver + '">' + sDescricao + '</option>';
+            if(oProcedenciaDiversos.dv09_procdiver == aVinculoReceitaProced[aCelulas[0]]) {
+              
+              sOptions += '<option title="' + oProcedenciaDiversos.dv09_descr.urlDecode() + '" value="' + oProcedenciaDiversos.dv09_procdiver + '" selected>' + sDescricao + '</option>';              
+              existsPreConfiguracao = 1;
+            } else {
+              
+              sOptions += '<option title="' + oProcedenciaDiversos.dv09_descr.urlDecode() + '" value="' + oProcedenciaDiversos.dv09_procdiver + '">' + sDescricao + '</option>';
+            }   
           }
         }
 
-        aCelulas[2] += '</select>';
+               if(existsPreConfiguracao == 0 ) {
+          
+          aCelulas[2]  = '<select id="procdiver_' + aDebito[4] + '" name="procdiver_' + aDebito[4] + '" style="width: 190px; font-size: 12px; margin: 3px;">';
+          aCelulas[2] += '<option value="">Selecione...</option>';
+        } else {
+
+          aCelulas[2] = '<select id="procdiver_' + aDebito[4] + '" name="procdiver_' + aDebito[4] + '" style="width: 190px; font-size: 12px; margin: 3px;" disabled>';
+        }
+        
+        aCelulas[2] += sOptions;aCelulas[2] += '</select>';
       }
 
       if (this.importaDividaAtiva === true) {
 
         var comboboxProcedencia = '<select id="procdiver_' + aDebito[4] + '" name="procdiver_' + aDebito[4] + '" style="width: 190px; font-size: 12px; margin: 3px;">';
         comboboxProcedencia    += '<option value="">Selecione...</option>';
+        if(aVinculoReceitaProced[aDebito[1]]) {
+
+           comboboxProcedencia = '<select id="procdiver_' + aDebito[4] + '" name="procdiver_' + aDebito[4] + '" style="width: 190px; font-size: 12px; margin: 3px;" disabled>'; 
+        }
 
         procedenciasDividaAtiva.each(
           function (procedencia) {
 
             var sDescricao  = procedencia.codigo + ' - ' + procedencia.descricao.urlDecode();
                 sDescricao += ' - ' + procedencia.receita.urlDecode();
+            if(aVinculoReceitaProced[aDebito[1]] == procedencia.codigo) {    
+
+              var option = "<option value='"+procedencia.codigo+"' selected>" + sDescricao + "</option>";
+              comboboxProcedencia += option;
+              return false;              
+            }
             var option = "<option value='"+procedencia.codigo+"'>" + sDescricao + "</option>";
             comboboxProcedencia += option;
           }

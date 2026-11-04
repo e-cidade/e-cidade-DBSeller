@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcimpactoperiodo->rotulo->label();
        <?=@$Lo96_codperiodo?>
     </td>
     <td> 
-<?
+<?php
 db_input('o96_codperiodo',5,$Io96_codperiodo,true,'text',3);
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o96_codperiodo',5,$Io96_codperiodo,true,'text',3);
        <?=@$Lo96_anoini?>
     </td>
     <td> 
-<?
+<?php
 db_input('o96_anoini',5,$Io96_anoini,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('o96_anoini',5,$Io96_anoini,true,'text',$db_opcao,"")
        <?=@$Lo96_anofim?>
     </td>
     <td> 
-<?
+<?php
 db_input('o96_anofim',5,$Io96_anofim,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('o96_anofim',5,$Io96_anofim,true,'text',$db_opcao,"")
        <?=@$Lo96_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('o96_descr',40,$Io96_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcimpactoperiodo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

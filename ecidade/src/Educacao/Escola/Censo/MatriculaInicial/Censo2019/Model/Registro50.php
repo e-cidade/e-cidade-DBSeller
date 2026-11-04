@@ -53,6 +53,16 @@ class Registro50
     protected $codigo13;
     protected $codigo14;
     protected $codigo15;
+    protected $codigo16;
+    protected $codigo17;
+    protected $codigo18;
+    protected $codigo19;
+    protected $codigo20;
+    protected $codigo21;
+    protected $codigo22;
+    protected $codigo23;
+    protected $codigo24;
+    protected $codigo25;
     private $eletivas = null;
     private $librasUnidadeCurricular = null;
     private $lingaIndigena = null;
@@ -61,6 +71,188 @@ class Registro50
     private $linguaOutra = null;
     private $projetoVida = null;
     private $trilhaAprofundamento = null;
+
+    private $outrasUnidades = null;
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo16()
+    {
+        return $this->codigo16;
+    }
+
+    /**
+     * @param mixed $codigo16
+     * @return Registro50
+     */
+    public function setCodigo16($codigo16)
+    {
+        $this->codigo16 = $codigo16;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo17()
+    {
+        return $this->codigo17;
+    }
+
+    /**
+     * @param mixed $codigo17
+     * @return Registro50
+     */
+    public function setCodigo17($codigo17)
+    {
+        $this->codigo17 = $codigo17;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo18()
+    {
+        return $this->codigo18;
+    }
+
+    /**
+     * @param mixed $codigo18
+     * @return Registro50
+     */
+    public function setCodigo18($codigo18)
+    {
+        $this->codigo18 = $codigo18;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo19()
+    {
+        return $this->codigo19;
+    }
+
+    /**
+     * @param mixed $codigo19
+     * @return Registro50
+     */
+    public function setCodigo19($codigo19)
+    {
+        $this->codigo19 = $codigo19;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo20()
+    {
+        return $this->codigo20;
+    }
+
+    /**
+     * @param mixed $codigo20
+     * @return Registro50
+     */
+    public function setCodigo20($codigo20)
+    {
+        $this->codigo20 = $codigo20;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo21()
+    {
+        return $this->codigo21;
+    }
+
+    /**
+     * @param mixed $codigo21
+     * @return Registro50
+     */
+    public function setCodigo21($codigo21)
+    {
+        $this->codigo21 = $codigo21;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo22()
+    {
+        return $this->codigo22;
+    }
+
+    /**
+     * @param mixed $codigo22
+     * @return Registro50
+     */
+    public function setCodigo22($codigo22)
+    {
+        $this->codigo22 = $codigo22;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo23()
+    {
+        return $this->codigo23;
+    }
+
+    /**
+     * @param mixed $codigo23
+     * @return Registro50
+     */
+    public function setCodigo23($codigo23)
+    {
+        $this->codigo23 = $codigo23;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo24()
+    {
+        return $this->codigo24;
+    }
+
+    /**
+     * @param mixed $codigo24
+     * @return Registro50
+     */
+    public function setCodigo24($codigo24)
+    {
+        $this->codigo24 = $codigo24;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigo25()
+    {
+        return $this->codigo25;
+    }
+
+    /**
+     * @param mixed $codigo25
+     * @return Registro50
+     */
+    public function setCodigo25($codigo25)
+    {
+        $this->codigo25 = $codigo25;
+        return $this;
+    }
 
     /**
      * @return string
@@ -502,6 +694,16 @@ class Registro50
         "codigo13" => $this->getCodigo13(),
         "codigo14" => $this->getCodigo14(),
         "codigo15" => $this->getCodigo15(),
+        "codigo16" => $this->getCodigo16(),
+        "codigo17" => $this->getCodigo17(),
+        "codigo18" => $this->getCodigo18(),
+        "codigo19" => $this->getCodigo19(),
+        "codigo20" => $this->getCodigo20(),
+        "codigo21" => $this->getCodigo21(),
+        "codigo22" => $this->getCodigo22(),
+        "codigo23" => $this->getCodigo23(),
+        "codigo24" => $this->getCodigo24(),
+        "codigo25" => $this->getCodigo25(),
         "eletivas" => null,
         "librasUnidadeCurricular" => null,
         "lingaIndigena" => null,
@@ -509,7 +711,8 @@ class Registro50
         "linguaFrances" => null,
         "linguaOutra" => null,
         "projetoVida" => null,
-        "trilhaAprofundamento" => null
+        "trilhaAprofundamento" => null,
+        "outrasUnidades" => null
         );
     }
 }

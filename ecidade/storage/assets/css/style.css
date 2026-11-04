@@ -1,0 +1,67 @@
+@page {
+    margin: 0px;
+    padding: 0px;
+}
+
+body,
+main {
+    font-family: Arial;
+}
+
+.logo {
+    height: 100;
+    margin: 10;
+    width: 90;
+}
+
+.td1-header1 {
+    width: 130;
+}
+
+.td2-header1 {
+    width: 500;
+}
+.td3-header1 {
+    width: 300;
+    height: 20;
+    margin-top: 10;
+    padding: 10;
+    background-color: rgb(214, 214, 214);
+}
+
+h4,p{
+font-family:Arial ;
+font-style: italic;
+font-size: 10px;
+}
+
+.container {
+    margin: 10px;
+}
+
+table{
+    width: 100%;
+}
+
+.relatorio {
+    font-size: 10;
+    font-weight: bold;
+    color: floralwhite;
+}
+
+.corporelatorio {
+    font-size: 9;
+    text-align: center;
+}
+
+.tr-header {
+    text-align: center;
+    background-color: darkblue;
+    width: "100%";
+}
+
+.tr-header-subcontratado {
+    text-align: center;
+    background-color: #808080;
+    width: "100%";
+}

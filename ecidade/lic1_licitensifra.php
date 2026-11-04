@@ -50,6 +50,9 @@ $clpcorcamitemlic   = new cl_pcorcamitemlic;
 $clpcparam          = new cl_pcparam;
 $clliclicitemlote   = new cl_liclicitemlote;
 $clpcorcamitem      = new cl_pcorcamitem;
+$clacordo           = new cl_acordo;
+$clpcorcam          = new cl_pcorcam;
+$clliclicita        = new cl_liclicita;
 
 $db_opcao=1;
 $db_botao=true;
@@ -90,7 +93,7 @@ if (!empty($chaves) && isset($chaves)){
   }
 
   if (trim($cods) == ""){
-    $info = split('#',$chaves);
+    $info =explode('#',$chaves);
     $vir  = "";
     for($xx = 0; $xx < count($info); $xx++){
       if (trim($info[$xx]) != ""){
@@ -127,7 +130,7 @@ if (!empty($chaves) && isset($chaves)){
            }
 
            if (strlen(trim($itens_incluidos)) > 0){
-                $arr_itens = split(",",$itens_incluidos);
+                $arr_itens =explode(",",$itens_incluidos);
            }
       }
 
@@ -146,7 +149,7 @@ if (!empty($chaves) && isset($chaves)){
 
     //echo "FIM ".$cods; exit;
     if ($sqlerro == false) {
-  	  $dados = split('#',$chaves);
+  	  $dados =explode('#',$chaves);
       $sql_ult_ordem  = "select l21_ordem ";
       $sql_ult_ordem .= "from liclicitem ";
       $sql_ult_ordem .= "where l21_codliclicita=$licitacao ";
@@ -354,7 +357,7 @@ function js_submit_form(){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
 
            db_input("tipojulg"  ,1 ,'',true,"hidden",3);
            db_input('licitacao' ,10,'',true,'hidden',3);
@@ -369,6 +372,17 @@ function js_submit_form(){
             $sWhere  = " and pc10_solicitacaotipo in(1,2)";
           }
 
+           $oDaoPcparam    = new cl_pcparam();
+
+           $rsPcparam       = $oDaoPcparam->sql_record($oDaoPcparam->sql_query_file(db_getsession("DB_instit"), "pc30_tipojulgamentoorcamento"));
+           $iTipoJulgamento = db_utils::fieldsMemory($rsPcparam, 0)->pc30_tipojulgamentoorcamento;
+           if ($iTipoJulgamento == 2) {
+               $sCampos = "avg(case when pc23_vlrun <> 0 then pc23_vlrun else pc11_vlrun end) as pc11_vlrun";
+           } else {
+               $sCampos = "min(case when pc23_vlrun <> 0 then pc23_vlrun else pc11_vlrun end) as pc11_vlrun";
+           }
+           $sGroupBy = "group by pc81_codprocitem, pc11_seq, pc11_codigo, pc11_quant, m61_descr, pc01_codmater, pc01_descrmater, pc11_resum";
+
            if (isset($codproc)&&$codproc!=""){
               $sql = $clpcprocitem->sqlItensRegistroPreco(null,
               		                                  "distinct
@@ -376,13 +390,13 @@ function js_submit_form(){
               		                                   pc11_seq,
               		                                   pc11_codigo,
               		                                   pc11_quant,
-              		                                   pc11_vlrun,
+              		                                   $sCampos,
               		                                   m61_descr,
               		                                   pc01_codmater,
               		                                   pc01_descrmater,
               		                                   pc11_resum",
               		                                  "pc11_seq",
-              		                                  "pc81_codproc=$codproc $sWhere");
+              		                                  "pc81_codproc=$codproc and pc80_situacao = 2 and pc67_sequencial is null $sWhere $sGroupBy");
 
               $sql_disabled = $clpcprocitem->sql_query_pcmater(null,
                                                                "distinct pc81_codprocitem",
@@ -391,6 +405,7 @@ function js_submit_form(){
                                                                 and (    l21_codliclicita <> {$licitacao}
                                                                       or l21_codliclicita = {$licitacao} and l21_codigo is not null
                                                                       or ( e54_anulad is null and e55_sequen is not null)
+                                                                      or ( pc11_vlrun = 0 or pc11_vlrun is null) and (pc23_vlrun = 0 or pc23_vlrun is null)
                                                                     ) $sWhere");
               if (isset($cods)&&$cods!=""){
                 $sql_marca = $clpcprocitem->sql_query_pcmater(null,
@@ -411,6 +426,36 @@ function js_submit_form(){
                                                                $sWhere
                                                               ");
               }
+
+              $sSqlAcordo = $clacordo->sql_queryProcessosVinculados(null, "ac16_sequencial", null, "and pc81_codproc = $codproc");
+              $clacordo->sql_record($sSqlAcordo);
+
+              if ($clacordo->numrows != 0) {
+                  $sql = null;
+              }
+
+               $sSqlOrcamentoSol = "select sum(pc23_vlrun) as soma_pc23_vlrun
+                                                from pcprocitem
+                                                left join pcorcamitemproc
+                                                    on pcprocitem.pc81_codprocitem = pcorcamitemproc.pc31_pcprocitem
+                                                left join pcorcamval
+                                                    on pcorcamitemproc.pc31_orcamitem = pcorcamval.pc23_orcamitem
+                                                where pc81_codproc = {$codproc}";
+
+              $rsOrcamentoSol = $clpcorcam->sql_record($sSqlOrcamentoSol);
+              $isOrcNulo = false;
+              $fieldOrc = db_utils::fieldsMemory($rsOrcamentoSol, 0)->soma_pc23_vlrun;
+              if (!$fieldOrc || $fieldOrc == 0) {
+                  $isOrcNulo = true;
+              }
+
+              $sSqlLicitacao = $clliclicita->sql_query($licitacao, "l20_usaregistropreco");
+              $rsLicitacao = $clliclicita->sql_record($sSqlLicitacao);
+              db_fieldsmemory($rsLicitacao, 0);
+
+              if ($isOrcNulo && $l20_usaregistropreco == "t") {
+                  $sql = null;
+              }
            }
 
            $cliframe_seleciona->campos  = "pc81_codprocitem,pc11_seq,pc11_codigo,pc11_quant,pc11_vlrun,m61_descr,pc01_codmater,pc01_descrmater,pc11_resum";
@@ -418,7 +463,7 @@ function js_submit_form(){
            $cliframe_seleciona->sql=@$sql;
            $cliframe_seleciona->sql_marca=@$sql_marca;
 
-           
+
 
            if (isset($codproc)&&$codproc!="") {
 

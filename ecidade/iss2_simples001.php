@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -69,21 +69,21 @@ require_once(modification("dbforms/db_funcoes.php"));
 			</tr>
 			<tr>
 				<td height="30"><strong>Considerar CNPJ com débito não vencido como apto?</strong></td>
-				<td height="30"><?
+				<td height="30"><?php
 				$arr_aptos_deb = array("n"=>"Não","s"=>"Sim");
 				db_select("cons_debvenc",$arr_aptos_deb,true,"text",1);
 				?></td>
 			</tr>
 			<tr>
 				<td height="30"><strong>Tipo:</strong></td>
-				<td height="30"><?
+				<td height="30"><?php
 				$arr_aptos_deb = array("1"=>"aptos ao simples","2"=>"Não Aptos ao Simples");
 				db_select("tipo",$arr_aptos_deb,true,"text",1);
 				?></td>
 			</tr>
 			<tr>
 				<td><b>Data:</b></td>
-				<td><?db_inputdata('data','','','',true,'text',1,""); ?></td>
+				<td><?php db_inputdata('data','','','',true,'text',1,""); ?></td>
 			</tr>
 
 			<tr>

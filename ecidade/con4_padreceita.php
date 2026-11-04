@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,21 +25,25 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Factories\ReceitaFactory;
 
 class receita
 {
-    var $arq = null;
+    protected $arq = null;
+    protected $header;
+    protected $emissaoMGS = false;
 
-    function receita($header)
+    public function __construct($header)
     {
-        umask(74);
-        $this->arq = fopen("tmp/RECEITA.TXT", 'w+');
-        fputs($this->arq, $header);
-        fputs($this->arq, "\r\n");
+        $this->header = $header;
     }
 
-    function acerta_valor($valor, $quant)
+    public function isMGS($bool)
+    {
+        $this->emissaoMGS = $bool;
+    }
+
+    public function acerta_valor($valor, $quant)
     {
         if ($valor < 0) {
             $valor *= -1;
@@ -59,10 +63,26 @@ class receita
      * @return string
      * @throws BusinessException
      */
-    function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst = null, $subelemento = "")
+    public function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst = null, $subelemento = "")
     {
+        $anousu = db_getsession("DB_anousu");
+        if ($anousu >= 2023) {
+            $instituicoes = InstituicaoRepository::getInstituicaoConsolida(db_getsession('DB_instit'));
+            $service = ReceitaFactory::getService($anousu, $instituicoes, $data_ini, $data_fim);
+            $service->setHeader($this->header);
+
+            $service->processa();
+
+            return true;
+        }
+
+        umask(74);
+        $this->arq = fopen("tmp/RECEITA.TXT", 'w+');
+        fputs($this->arq, $this->header);
+        fputs($this->arq, "\r\n");
+
         global $o70_anousu, $o70_instit, $instituicoes, $o70_codrec, $contador, $o70_valor, $nomeinst, $o57_fonte, $o57_fontes, $janeiro, $fevereiro, $marco, $abril, $maio, $junho, $julho, $agosto, $setembro, $outubro, $novembro, $dezembro, $o70_concarpeculiar;
-        global $prev_jan, $prev_fev,$complemento,
+        global $prev_jan, $prev_fev, $complemento,
                $prev_mar, $prev_abr, $prev_mai, $prev_jun, $prev_jul, $prev_ago, $prev_set, $prev_out, $prev_nov, $prev_dez;
         $contador = 0;
 
@@ -100,6 +120,7 @@ class receita
             } else {
                 $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
             }
+
             $line .= formatar($orgaotrib, 4, 'n');
 
             $concarpeculiar = "000";
@@ -131,7 +152,6 @@ class receita
             }
 
             if (db_conplano_grupo($o70_anousu, substr($o57_fonte, 0, 2) . "%", 9000) == true) {  // 49
-
                 if ($dezembro <> 0) {
                     $dezembro = abs($dezembro) * -1;
                 }
@@ -139,7 +159,6 @@ class receita
                 if ($prev_dez <> 0) {
                     $prev_dez = abs($prev_dez) * -1;
                 }
-
             }
 
             $line .= $this->acerta_valor($janeiro, 13);
@@ -220,10 +239,5 @@ class receita
 
         $teste = "true";
         return $teste;
-
     }
-
 }
-
-
-?>

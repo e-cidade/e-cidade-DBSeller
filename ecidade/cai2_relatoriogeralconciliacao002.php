@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -91,7 +91,9 @@ FROM
                (SELECT array_accum(DISTINCT c61_instit)
                 FROM contabilidade.conplanocontabancaria
                 INNER JOIN contabilidade.conplanoreduz ON c61_anousu = c56_anousu
-                AND c61_codcon = c56_codcon
+                                                      AND c61_codcon = c56_codcon
+                                                      and c61_reduz = c56_reduz  
+                                                      and c61_instit = {$iInstituicao}         
                 INNER JOIN configuracoes.db_config ON c61_instit = codigo
                 WHERE db83_sequencial = c56_contabancaria
                   AND c56_anousu = {$iAnoUsu} ),', ') AS instit,
@@ -100,7 +102,9 @@ FROM
                 (SELECT array_accum(c61_reduz)
                  FROM contabilidade.conplanocontabancaria
                  INNER JOIN contabilidade.conplanoreduz ON c61_anousu = c56_anousu
-                 AND c61_codcon = c56_codcon
+                                                       AND c61_codcon = c56_codcon
+                                                       and c61_reduz = c56_reduz  
+                                                       and c61_instit = {$iInstituicao} 
                  INNER JOIN configuracoes.db_config ON c61_instit = codigo
                  WHERE db83_sequencial = c56_contabancaria
                    AND c56_anousu =  {$iAnoUsu} ),', ') AS reduzido_contabil,
@@ -313,6 +317,7 @@ FROM
                      FROM contabilidade.conplanocontabancaria
                INNER JOIN contabilidade.conplanoreduz ON c61_anousu = c56_anousu
                                                      AND c61_codcon = c56_codcon
+                                                     and c61_reduz = c56_reduz
                                                      and c61_instit = ({$iInstituicao})
                INNER JOIN configuracoes.db_config ON c61_instit = codigo
                     WHERE db83_sequencial = c56_contabancaria

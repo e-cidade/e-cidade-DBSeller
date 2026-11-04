@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_avaliacaoconteudo {
                  ed240_i_avaliacao = int4 = Avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoconteudo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoconteudo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_avaliacaoconteudo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed240_i_codigo = ($this->ed240_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed240_i_codigo"]:$this->ed240_i_codigo);
        $this->ed240_i_subconteudo = ($this->ed240_i_subconteudo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed240_i_subconteudo"]:$this->ed240_i_subconteudo);
@@ -77,7 +77,7 @@ class cl_avaliacaoconteudo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed240_i_codigo){ 
+   public function incluir ($ed240_i_codigo){ 
       $this->atualizacampos();
      if($this->ed240_i_subconteudo == null ){ 
        $this->erro_sql = " Campo Subconteudo nao Informado.";
@@ -176,7 +176,7 @@ class cl_avaliacaoconteudo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed240_i_codigo=null) { 
+   public function alterar ($ed240_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update avaliacaoconteudo set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_avaliacaoconteudo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed240_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed240_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed240_i_codigo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_avaliacaoconteudo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

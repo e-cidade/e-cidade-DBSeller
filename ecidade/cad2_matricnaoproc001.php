@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ function js_emite(){
       </tr>
       <tr>
            <td nowrap>
-<?
+<?php
 		 $result=$clcfiptu->sql_record($clcfiptu->sql_query_file(null,"j18_anousu","j18_anousu desc",""));
 
        ?>
@@ -77,12 +77,12 @@ function js_emite(){
 	       
 	       <b>  Ano : </b>
                <select name="ano">
-	         <?
+	         <?php
 		 for ($i=0;$i< $clcfiptu->numrows; $i++ ){
 		   db_fieldsmemory($result,$i);
 		   ?>
                     <option name="ano" value="<?=$j18_anousu?>"><?=$j18_anousu?> </option>
-               <?
+               <?php
                }
                ?>
 	       </select><br><br><br>
@@ -100,7 +100,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

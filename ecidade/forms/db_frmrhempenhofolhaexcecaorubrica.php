@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("rh74_tipofolha");
 ?>
 <form class="container" name="form1" method="post" action="" style="width: 700px;">
 
-    <?
+    <?php
       db_input('rh128_sequencial',10,null,true,'hidden',3);
       db_input('db_opcao',10,$db_opcao,true,'hidden',3);
     ?>
@@ -78,13 +78,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr>
               <td nowrap title="<?=@$Trh74_orgao?>">
                 <label id="lbl_rh74_orgao" for="rh74_orgao">
-                <?
+                <?php
                   db_ancora(@$Lrh74_orgao,"js_pesquisarh74_orgao(true);",$db_opcao);
                 ?>
                 </label>
               </td>
               <td>
-                <?
+                <?php
                   db_input('rh74_orgao',10,$Irh74_orgao,true,'text',$db_opcao," onchange='js_pesquisarh74_orgao(false);'");
                   db_input('o40_descr',40,$Io41_descr,true,'text',3,'');
                 ?>
@@ -93,13 +93,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr>
               <td nowrap title="<?=@$Trh74_unidade?>">
                 <label id="lbl_rh74_unidade" for="rh74_unidade">
-                <?
+                <?php
                   db_ancora(@$Lrh74_unidade,"js_pesquisarh74_unidade(true);",$db_opcao);
                 ?>
               </label>
               </td>
               <td>
-                <?
+                <?php
                   db_input('rh74_unidade',10,$Irh74_unidade,true,'text',$db_opcao," onchange='js_pesquisarh74_unidade(false);'");
                   db_input('o41_descr',40,$Io41_descr,true,'text',3,'');
                 ?>
@@ -108,13 +108,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr>
               <td nowrap title="<?=@$Trh74_projativ?>">
                 <label id="lbl_rh74_projativ" for="rh74_projativ">
-                <?
+                <?php
                   db_ancora(@$Lrh74_projativ,"js_pesquisarh74_projativ(true);",$db_opcao);
                 ?>
                 </labe>
               </td>
               <td>
-                <?
+                <?php
                   db_input('rh74_projativ',10,$Irh74_projativ,true,'text',$db_opcao," onchange='js_pesquisarh74_projativ(false);'");
                   db_input('o55_descr',40,$Io55_descr,true,'text',3,'');
                 ?>
@@ -124,13 +124,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr>
               <td nowrap title="<?=@$Trh74_recurso?>">
                 <label id="lbl_rh74_recurso" for="rh74_recurso">
-                <?
+                <?php
                   db_ancora(@$Lrh74_recurso,"js_pesquisarh74_recurso(true);",$db_opcao);
                 ?>
                 </label>
               </td>
               <td>
-                <?
+                <?php
                   db_input('rh74_recurso',10,$Irh74_recurso,true,'text',$db_opcao," onchange='js_pesquisarh74_recurso(false);'");
                   db_input('o15_descr',40,$Io15_descr,true,'text',3,'');
                 ?>
@@ -176,13 +176,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr>
               <td nowrap title="<?=@$Trh74_concarpeculiar?>">
                 <label id="lbl_rh74_concarpeculiar" for="rh74_concarpeculiar">
-                <?
+                <?php
                   db_ancora(@$Lrh74_concarpeculiar,"js_pesquisarh74_concarpeculiar(true);",$db_opcao);
                 ?>
                 </label>
               </td>
               <td>
-                <?
+                <?php
                   db_input("rh74_concarpeculiar",10,$Irh74_concarpeculiar,true,"text",$db_opcao,"onChange='js_pesquisarh74_concarpeculiar(false);'");
                   db_input("c58_descr",40,0,true,"text",3);
                 ?>
@@ -191,13 +191,13 @@ $clrotulo->label("rh74_tipofolha");
             <tr id='linhaDesdobramento'>
               <td>
                 <label id="lbl_rh74_codele" for="rh74_codele">
-                <?
+                <?php
                   db_ancora(@$Lrh74_codele,"js_pesquisarh74_codele(true);",$db_opcao);
                 ?>
                 </label>
               </td>
               <td>
-              <?
+              <?php
                 db_input('rh74_codele',10,$Irh74_codele,true,'text',$db_opcao," onchange='js_pesquisarh74_codele(false);'");
                 db_input('o56_descr',40,$Io56_descr,true,'text',3,'');
               ?>
@@ -210,7 +210,7 @@ $clrotulo->label("rh74_tipofolha");
               </label>
             </td>
             <td>
-              <?
+              <?php
                 $aTipoFolha = Array( "0" => "Todos",
                                      "1" => "Salário",
                                      "2" => "Complementar",

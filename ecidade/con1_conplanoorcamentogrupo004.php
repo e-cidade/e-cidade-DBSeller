@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -47,9 +47,9 @@ $oGet = db_utils::postMemory($_GET);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
-  db_app::load("prototype.js"); 
+  db_app::load("prototype.js");
   db_app::load("strings.js, grid.style.css, datagrid.widget.js");
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -63,15 +63,15 @@ $oGet = db_utils::postMemory($_GET);
           <tr>
             <td><b>Código Conta:</b></td>
             <td>
-              <?
+              <?php
                 db_input("iCodigoConta", 10, null, true, "text", 3);
               ?>
             </td>
           </tr>
           <tr>
-            <td><?db_ancora('<b>Grupo:</b>', "js_pesquisaGrupos(true);", 1)?></td>
+            <td><?php db_ancora('<b>Grupo:</b>', "js_pesquisaGrupos(true);", 1)?></td>
             <td>
-              <?
+              <?php
                 db_input("c20_sequencial", 10, @$Ic20_sequencial, true, 'text', 1, "onChange='js_pesquisaGrupos(false);'");
                 db_input('c20_descr',50, @$Ic20_descr,true,'text',3,"");
               ?>
@@ -106,7 +106,7 @@ oGridGrupo.show($('divGridGrupo'));
 function js_carregaGrupos() {
 
   js_divCarregando("Aguarde, carregando Grupos...", "msgBox");
-  
+
   var oParam          = new Object();
   oParam.exec         = "getGrupos";
   oParam.iCodigoConta = iCodigoConta;
@@ -129,7 +129,7 @@ function js_preencheGridGrupo(oAjax) {
     oRetorno.aGrupoContas.each(function (oGrupo, iLinha) {
 
       var aLinha = new Array();
-      aLinha[0]  = oGrupo.c20_sequencial; 
+      aLinha[0]  = oGrupo.c20_sequencial;
       aLinha[1]  = oGrupo.c20_descr.urlDecode();
       aLinha[2]  = '<input type="button" id="btnReduzExc_'+iLinha+'" value="E"';
       aLinha[2] += '       title="Excluir Registro" onclick="js_excluirGrupo('+oGrupo.c20_sequencial+')">';
@@ -175,7 +175,7 @@ function js_pesquisaGrupos(mostra) {
                         "db_iframe_grupo",
                         "func_congrupo.php?funcao_js=parent.js_mostraGrupos|c20_sequencial|c20_descr",
                         "Pesquisa", true, '0');
-  } else { 
+  } else {
 
     var sValorCampo = $F('c20_sequencial');
     if (sValorCampo !== '') {
@@ -209,12 +209,12 @@ function js_mostraGrupos() {
 function js_incluirGrupo() {
 
   js_divCarregando('Aguarde, incluindo conta', 'msgBox');
-  
+
   var oParam = new Object();
       oParam.exec         = "incluirGrupo";
       oParam.iCodigoConta = iCodigoConta;
       oParam.iCodigoGrupo = $F('c20_sequencial');
-      
+
   var oAjax = new Ajax.Request('con1_conplanoorcamento.RPC.php',
                                {method: 'POST',
                                 parameters:'json='+Object.toJSON(oParam),
@@ -226,7 +226,7 @@ function js_retornoInclusaoGrupo(oAjax) {
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno.status === 1) {
-    
+
     alert('Grupo incluído com sucesso');
     $('c20_sequencial').value = '';
     $('c20_descr').value      = '';

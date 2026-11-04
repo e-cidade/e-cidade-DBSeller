@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -257,13 +257,13 @@ function js_filtra(){
         <tr>
           <td colspan="2" align="center">
             <font color="red">Sem complementar para este período.</font>
-            <?
+            <?php
             $r48_semest = 0;
             db_input("r48_semest", 2,0, true, 'hidden', 3);
             ?>
           </td>
         </tr>
-        <?
+        <?php
           }
         }
         ?>
@@ -271,7 +271,7 @@ function js_filtra(){
 	<tr>
 	  <td align="right" ><strong>Ordem:</strong></td>
 	  <td>
-	  <?
+	  <?php
 	  $arr=array("L"=>"Estrutural das lotações","N"=>"Nome dos funcionários","M"=>"Matrícula dos funcionários");
 	  db_select("ordem",$arr,true,2);
 	  ?>
@@ -280,7 +280,7 @@ function js_filtra(){
 	<tr>
 	  <td  align="right" ><strong>Número de Vias:</strong></td>
 	  <td>
-	  <?
+	  <?php
 	  $arr_vias=array("1"=>"1","2"=>"2","3"=>"3");
 	  db_select("num_vias",$arr_vias,true,2);
 	  ?>
@@ -289,7 +289,7 @@ function js_filtra(){
 	<tr>
 	  <td align="right" ><strong>Filtro:</strong></td>
 	  <td>
-	  <?
+	  <?php
     if(!isset($filtro)){
       $filtro = 'M';
     }
@@ -298,13 +298,13 @@ function js_filtra(){
 	  ?>
 	  </td>
 	</tr>
-	<?
+	<?php
 	if (isset($filtro)&&$filtro!=""&&$filtro!="N"){
 	?>
 	<tr>
 	  <td align="right" ><strong>Filtrar por:</strong></td>
 	  <td>
-	  <?
+	  <?php
     if(!isset($filtrar)){
       $filtrar = 'S';
     }
@@ -313,7 +313,7 @@ function js_filtra(){
 	  ?>
 	  </td>
 	</tr>
-	<?
+	<?php
 	}
 
   if(isset($filtrar)&&isset($filtro)&&$filtro!="N"){
@@ -331,9 +331,9 @@ function js_filtra(){
             <strong><?=((isset($info) && !empty($info)) ? $info : '')?> de</strong>
           </td>
           <td>
-            <? db_input('cod_ini',8,'',true,'text',1," onchange='js_copiacampo();'","")  ?>
+            <?php db_input('cod_ini',8,'',true,'text',1," onchange='js_copiacampo();'","")  ?>
             <strong> à </strong>
-            <? db_input('cod_fim',8,'',true,'text',1,"","")  ?>
+            <?php db_input('cod_fim',8,'',true,'text',1,"","")  ?>
           </td>
         </tr>
     <?php
@@ -370,7 +370,7 @@ function js_filtra(){
   ?>
       <tr>
         <td colspan="2" >
-        <?
+        <?php
         $aux->cabecalho = "<strong>$info</strong>";
         $aux->codigo = "$cod"; //chave de retorno da func
         $aux->descr  = "$descr";   //chave de retorno
@@ -402,15 +402,15 @@ function js_filtra(){
 <table>
     <tr>
       <td nowrap title="<?=((isset($Trh56_localtrab) && !empty($Trh56_localtrab)) ? $Trh56_localtrab : '')?>" align="right">
-        <?
+        <?php
         db_ancora("<b>Local de trabalho:</b>","js_pesquisarh56_localtrab(true);",1);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('rh56_localtrab',6,$Irh56_localtrab,true,'text',1," onchange='js_pesquisarh56_localtrab(false);'")
         ?>
-        <?
+        <?php
         db_input('rh55_descr',40,$Irh55_descr,true,'text',3,'')
         ?>
       </td>
@@ -420,7 +420,7 @@ function js_filtra(){
 	  <td align="left" ><strong>Tipo Local:</strong>
     </td>
     <td>
-	   <?
+	   <?php
 	    $arr_local=array("s"=>"Somente o Local","e"=>"Exceto o Local");
 	    db_select("tipo_local",$arr_local,true,2);
 	   ?>
@@ -446,7 +446,7 @@ function js_filtra(){
   </fieldset>
         <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite(arguments[0]);">
   </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

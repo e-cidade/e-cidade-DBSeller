@@ -1,7 +1,7 @@
 <?php
     /*
      *     E-cidade Software Publico para Gestao Municipal
-     *  Copyright (C) 2014  DBSeller Servicos de Informatica
+     *  Copyright (C) 2009  DBSeller Servicos de Informatica
      *                            www.dbseller.com.br
      *                         e-cidade@dbseller.com.br
      *
@@ -185,8 +185,10 @@
                     <th width="10%" colspan="1">Primária</th>
                     <th width="10%" colspan="1">Secundária(s)</th>
                     <th width="25%" colspan="1">Processo</th>
-                    <th width="25%" colspan="1">Inicial</th>
-                    <th width="25%" colspan="1">Origem</th>
+                    <th width="10%" colspan="1">Inicial</th>
+                    <th width="25%" colspan="1">Tipo Débito</th>
+                    <th width="10%" colspan="1">Data</th>
+                    <th width="5.5%" colspan="1">Origem</th>
                     <th width="4.5%" colspan="1"></th>
                 </tr>
             </thead>
@@ -430,6 +432,7 @@
             }
 
             Object.values(oResponse.iniciais).forEach((oInicial) => {
+
                 oDados.appendChild(js_defaultInicialBody(oInicial));
 
                 Object.values(oInicial.cdas).forEach((oCda, key) => {
@@ -528,10 +531,12 @@
             tr.appendChild(js_createTd(checkboxSec, 10, "center"));
 
             tr.appendChild(js_createTd(oInicial.codigo_processo, 25, "center"));
-            tr.appendChild(js_createTd(oInicial.codigo_inicial, 25, "center"));
+            tr.appendChild(js_createTd(oInicial.codigo_inicial, 10, "center"));
+            tr.appendChild(js_createTd(oInicial.tipo_debito, 25, "center"));
+            tr.appendChild(js_createTd(oInicial.data_inicial, 10, "center"));
 
             const sOrigem = oInicial.origem.join(", ");
-            tr.appendChild(js_createTd(sOrigem, 25, "center"));
+            tr.appendChild(js_createTd(sOrigem, 5.5, "center"));
 
             const icon = document.createElement("i");
             icon.setAttribute("class", "fas fa-arrow-alt-circle-left");
@@ -549,7 +554,7 @@
             tr.appendChild(js_createTd("<strong>CDA</strong>", 10, "center"));
             tr.appendChild(js_createTd("<strong>Exercício</strong>", 10, "center"));
             tr.appendChild(js_createTd("<strong>Receitas</strong>", 50, "center", 2));
-            tr.appendChild(js_createTd("<strong>Total</strong>", 25, "center", 2));
+            tr.appendChild(js_createTd("<strong>Total</strong>", 30, "center", 4));
 
             return tr;
         }
@@ -563,7 +568,7 @@
             tr.appendChild(js_createTd(oCda.codigo_certidao, 10, "center"));
             tr.appendChild(js_createTd(oCda.exercicio_divida, 10, "center"));
             tr.appendChild(js_createTd(sReceitas, 50, null, 2));
-            tr.appendChild(js_createTd(sValor, 25, "center", 2));
+            tr.appendChild(js_createTd(sValor, 30, "center", 4));
 
             return tr;
         }

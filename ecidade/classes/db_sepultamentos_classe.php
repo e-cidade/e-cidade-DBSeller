@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -96,13 +96,13 @@ class cl_sepultamentos {
                  cm01_c_nomefuneraria = varchar(60) = Funerária
                  ";
    //funcao construtor da classe
-   function cl_sepultamentos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepultamentos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -111,7 +111,7 @@ class cl_sepultamentos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm01_i_codigo = ($this->cm01_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm01_i_codigo"]:$this->cm01_i_codigo);
        $this->cm01_i_medico = ($this->cm01_i_medico == ""?@$GLOBALS["HTTP_POST_VARS"]["cm01_i_medico"]:$this->cm01_i_medico);
@@ -154,7 +154,7 @@ class cl_sepultamentos {
      }
    }
    // funcao para Inclusão
-   function incluir ($cm01_i_codigo){
+   public function incluir ($cm01_i_codigo){
       $this->atualizacampos();
      if($this->cm01_i_causa == null ){
        $this->erro_sql = " Campo Causa não informado.";
@@ -839,10 +839,10 @@ class cl_sepultamentos {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $cm01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $cm01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -877,7 +877,7 @@ class cl_sepultamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -906,13 +906,13 @@ class cl_sepultamentos {
      return $sql;
   }
 
-  function sql_query_dados_sepultamento($cm01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = ""){
+  public function sql_query_dados_sepultamento($cm01_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = ""){
 
     $sql = "select ";
 
     if($campos != "*" ) {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
 
       $virgula = "";
 
@@ -965,7 +965,7 @@ class cl_sepultamentos {
     if($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula = "";
 
       for($i = 0; $i < sizeof($campos_sql); $i++) {

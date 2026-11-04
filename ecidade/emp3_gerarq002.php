@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,7 +112,7 @@ if(isset($e87_codgera) && trim($e87_codgera)!=""){
     <td>
     <center>
       <table bordercolor=\"#000000\" style=\"font-size:12px\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
-<?
+<?php
 
         db_lovrot($sql,15,"","");
 

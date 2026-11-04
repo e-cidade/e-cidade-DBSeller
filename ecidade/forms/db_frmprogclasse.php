@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ if(isset($atualizar)){
       <?=@$Led107_i_codigo?>
      </td>
      <td>
-      <?db_input('ed107_i_codigo',10,$Ied107_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed107_i_codigo',10,$Ied107_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ if(isset($atualizar)){
       <?=@$Led107_c_descr?>
      </td>
      <td>
-      <?db_input('ed107_c_descr',20,$Ied107_c_descr,true,'text',$db_opcao,"")?>
+      <?php db_input('ed107_c_descr',20,$Ied107_c_descr,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ if(isset($atualizar)){
       <?=@$Led107_f_percentual?>
      </td>
      <td>
-      <?db_input('ed107_f_percentual',10,$Ied107_f_percentual,true,'text',$db_opcao,"")?>
+      <?php db_input('ed107_f_percentual',10,$Ied107_f_percentual,true,'text',$db_opcao,"")?>
      </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ if(isset($atualizar)){
      <td>
       <b>Ordenar Classes:</b><br>
       <select name="campos[]" id="campos" size="4" style="width:125px" multiple>
-      <?
+      <?php
        $sql = "SELECT ed107_i_codigo,ed107_c_descr from progclasse order by ed107_i_sequencia";
        $query = db_query($sql);
        $linhas = pg_num_rows($query);
@@ -127,7 +127,7 @@ if(isset($atualizar)){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("ed107_i_codigo"=>@$ed107_i_codigo,"ed107_c_descr"=>@$ed107_c_descr,"ed107_f_percentual"=>@$ed107_f_percentual);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprogclasse->sql_query($ed107_i_codigo,"*","ed107_i_sequencia");

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -63,7 +63,7 @@ $clrotulo->label("ed47_v_nome");
                     <?=$Led47_i_codigo?>
                   </td>
                   <td nowrap>
-                    <?db_input( "ed47_i_codigo", 10, $Ied47_i_codigo, true, "text", 4, "", "chave_ed47_i_codigo" );?>
+                    <?php db_input( "ed47_i_codigo", 10, $Ied47_i_codigo, true, "text", 4, "", "chave_ed47_i_codigo" );?>
                   </td>
                 </tr>
                 <tr>
@@ -71,7 +71,7 @@ $clrotulo->label("ed47_v_nome");
                     <?=$Led47_v_nome?>
                   </td>
                   <td nowrap>
-                    <?db_input( "ed47_v_nome", 40, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome" );?>
+                    <?php db_input( "ed47_v_nome", 40, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome" );?>
                   </td>
                 </tr>
               </table>
@@ -89,9 +89,9 @@ $clrotulo->label("ed47_v_nome");
          <?php
            $escola = db_getsession("DB_coddepto");
            $sWhere = "";
-           
+
            if ( !isset( $pesquisa_chave ) ) {
-             
+
              $sql  = "SELECT *                                                                                              ";
              $sql .= "  FROM (                                                                                              ";
              $sql .= "         SELECT distinct on (aluno.ed47_i_codigo) aluno.ed47_i_codigo,                                ";
@@ -101,10 +101,10 @@ $clrotulo->label("ed47_v_nome");
              $sql .= "                serie.ed11_c_descr as dl_etapa,                                                       ";
              $sql .= "                case                                                                                  ";
              $sql .= "                     when (    alunocurso.ed56_c_situacao       != ''                                 ";
-             $sql .= "                            or trim(alunocurso.ed56_c_situacao) != 'CANDIDATO' )                      "; 
+             $sql .= "                            or trim(alunocurso.ed56_c_situacao) != 'CANDIDATO' )                      ";
              $sql .= "                     then ( select ed57_c_descr                                                       ";
              $sql .= "                              from matricula                                                          ";
-             $sql .= "                                   inner join turma on ed57_i_codigo = ed60_i_turma                   "; 
+             $sql .= "                                   inner join turma on ed57_i_codigo = ed60_i_turma                   ";
              $sql .= "                             where ed47_i_codigo = ed60_i_aluno                                       ";
              $sql .= "                             order by ed60_i_codigo desc                                              ";
              $sql .= "                             limit 1 )                                                                ";
@@ -132,7 +132,7 @@ $clrotulo->label("ed47_v_nome");
              $sql .= "                left join alunopossib on alunopossib.ed79_i_alunocurso = alunocurso.ed56_i_codigo     ";
              $sql .= "                left join serie       on serie.ed11_i_codigo           = alunopossib.ed79_i_serie     ";
              $sql .= "                left join matricula   on matricula.ed60_i_aluno        = aluno.ed47_i_codigo          ";
-             
+
              $sWhere  = " WHERE ed56_i_escola    = {$escola}          ";
              $sWhere .= "   AND ed56_c_situacao != 'TRANSFERIDO REDE' ";
              $sWhere .= "   AND ed56_c_situacao != 'TRANSFERIDO FORA' ";
@@ -142,29 +142,29 @@ $clrotulo->label("ed47_v_nome");
              $sWhere .= "   AND ed60_c_situacao  = 'MATRICULADO'      ";
              $sWhere .= "   AND ed60_c_concluida = 'N'                ";
              $sWhere .= "   AND ed60_c_ativa     = 'S'                ";
-             
+
              $repassa = array();
-             
+
              if ( isset( $chave_ed47_i_codigo ) ) {
                $repassa = array( "chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome );
              }
-             
+
              if ( isset( $chave_ed47_i_codigo ) && ( trim( $chave_ed47_i_codigo ) != "" ) ) {
                $sWhere .= " AND ed47_i_codigo = {$chave_ed47_i_codigo}";
              } else if ( isset( $chave_ed47_v_nome ) && ( trim( $chave_ed47_v_nome ) != "" ) ) {
                $sWhere .= " AND ed47_v_nome like '{$chave_ed47_v_nome}%'";
              }
-             
+
              $sWhere .= ") as x ORDER BY ed47_v_nome";
              $sql    .= $sWhere;
-             
+
              db_lovrot( @$sql, 12, "()", "", $funcao_js, "", "NoMe", $repassa );
            } else {
 
              if ( $pesquisa_chave != null && $pesquisa_chave != "" ) {
 
                $result = $claluno->sql_record( $claluno->sql_query_pesq( "", "*", "", $where." AND ed47_i_codigo = {$pesquisa_chave}" ) );
-               
+
                if ( $claluno->numrows != 0 ) {
 
                  db_fieldsmemory( $result, 0 );

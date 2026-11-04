@@ -37,7 +37,6 @@ require_once(modification("libs/exceptions/BusinessException.php"));
 $oGet = db_utils::postMemory($_GET);
 $oConfiguracaoGed = GerenciadorEletronicoDocumentoConfiguracao::getInstance();
 if ($oConfiguracaoGed->utilizaGED()) {
-
     if (empty($oGet->e54_autori_ini) && !empty($oGet->e54_autori)) {
         $oGet->e54_autori_ini = $oGet->e54_autori;
     }
@@ -47,7 +46,6 @@ if ($oConfiguracaoGed->utilizaGED()) {
     }
 
     if (!empty($oGet->dtInicial) || !empty($oGet->dtFinal) || $oGet->e54_autori_ini != $oGet->e54_autori_fim) {
-
         $sMsgErro = "O parâmetro para utilização do GED (Gerenciador Eletrônico de Documentos) está ativado.<br><br>";
         $sMsgErro .= "Neste não é possível informar interválos de códigos ou datas.<br><br>";
         db_redireciona("db_erros.php?fechar=true&db_erro={$sMsgErro}");
@@ -79,18 +77,14 @@ db_fieldsmemory($resultpref, 0);
 $dbwhere = '1=1 ';
 
 if (isset($e54_autori)) {
-
     $dbwhere = "   e54_autori  = $e54_autori";
-
-} else if (isset($e54_autori_ini) && $e54_autori_ini != "" || isset($e54_autori_fim) && $e54_autori_fim != "") {
-
+} elseif (isset($e54_autori_ini) && $e54_autori_ini != "" || isset($e54_autori_fim) && $e54_autori_fim != "") {
     $dbwhereautori = "";
     if (isset($e54_autori_ini) && $e54_autori_ini != "") {
         $dbwhereautori .= " and  e54_autori>$e54_autori_ini";
     }
 
     if (isset($e54_autori_fim) && $e54_autori_fim != "") {
-
         if (trim($dbwhereautori) == "") {
             $dbwhereautori = " and  e54_autori<$e54_autori_fim";
         } else {
@@ -101,16 +95,14 @@ if (isset($e54_autori)) {
             }
         }
     }
-    $dbwhere .= $dbwhereautori;
 
-} else if (isset($sDocAutorizacoes) && trim($sDocAutorizacoes) != "") {
+    $dbwhere .= $dbwhereautori;
+} elseif (isset($sDocAutorizacoes) && trim($sDocAutorizacoes) != "") {
     /**
      * Adicionado para recupearar uma STRING já tratada para ser utilizada como IN na busca das autorizações.
      */
     $dbwhere .= " and e54_autori in ({$sDocAutorizacoes}) ";
-
 } else {
-
     if (isset($dtini_dia)) {
         $dbwhere .= " and e54_emiss>='$dtini_ano-$dtini_mes-$dtini_dia'";
     }
@@ -127,71 +119,63 @@ $sqlmater = "
 		o40_descr,
 		o58_unidade,
 		o41_descr,
-       		o58_coddot,
-              	o56_descr,
+       	o58_coddot,
+        o56_descr,
 		o55_projativ,
 		o55_descr,
 		o15_codigo,
 		o15_descr,
-		  orcdotacao.o58_subfuncao,
-		  orcdotacao.o58_programa,
-		  orcsubfuncao.o53_subfuncao as o53_subfuncao,
-		  orcsubfuncao.o53_descr     as o53_descr,
-		  orcprograma.o54_programa   as o54_programa,
-		  orcprograma.o54_descr      as o54_descr,
-		  cgm.*,
-		  z01_uf,
-      e60_numemp,e60_anousu,e60_codemp,
-		  fc_estruturaldotacao(e54_anousu,o58_coddot) as estrutural,
-      e54_concarpeculiar,
-      c58_descr
+		orcdotacao.o58_subfuncao,
+		orcdotacao.o58_programa,
+		orcsubfuncao.o53_subfuncao as o53_subfuncao,
+		orcsubfuncao.o53_descr     as o53_descr,
+		orcprograma.o54_programa   as o54_programa,
+		orcprograma.o54_descr      as o54_descr,
+		cgm.*,
+		z01_uf,
+        e60_numemp,e60_anousu,e60_codemp,
+		fc_estruturaldotacao(e54_anousu,o58_coddot) as estrutural,
+        e54_concarpeculiar,
+        c58_descr
 	  from empautoriza
         inner join concarpeculiar on concarpeculiar.c58_sequencial = empautoriza.e54_concarpeculiar
-	      inner join empautidot on e56_autori=e54_autori
+	    inner join empautidot on e56_autori=e54_autori
+        inner join orcdotacao 	on  o58_coddot = empautidot.e56_coddot
+				   and o58_anousu = e54_anousu
+				   and o58_instit = " . db_getsession("DB_instit") . "
 
-		  inner join orcdotacao 	on  o58_coddot = empautidot.e56_coddot
-					  and o58_anousu = e54_anousu
-					  and o58_instit = " . db_getsession("DB_instit") . "
+		inner join orcsubfuncao on orcsubfuncao.o53_subfuncao = orcdotacao.o58_subfuncao
+		inner join orcprograma  on orcprograma.o54_programa   = orcdotacao.o58_programa
+		           and orcprograma.o54_anousu     = orcdotacao.o58_anousu
 
-		  inner join orcsubfuncao on orcsubfuncao.o53_subfuncao = orcdotacao.o58_subfuncao
-		  inner join orcprograma  on orcprograma.o54_programa   = orcdotacao.o58_programa and
-								     orcprograma.o54_anousu     = orcdotacao.o58_anousu
+		inner join orcorgao on  o58_orgao = o40_orgao
+                   and o58_anousu = o40_anousu
 
-		  inner join orcorgao 	on  o58_orgao = o40_orgao
-					  and o58_anousu = o40_anousu
-
-		  inner join orcunidade 	on  o58_unidade = o41_unidade
-					  and o58_orgao = o41_orgao
-					  and o58_anousu = o41_anousu
+		inner join orcunidade 	on  o58_unidade = o41_unidade
+				   and o58_orgao = o41_orgao
+				   and o58_anousu = o41_anousu
 
 	/*
 	  não pode haver projeto atividas com mesmo numero, nao importa a instituição
-
 	 */
-		  inner join orcprojativ 	on  o58_projativ = o55_projativ
-									  and o58_anousu   = o55_anousu
-
-		  inner join orctiporec 	on  o58_codigo = o15_codigo
-
-		  inner join orcelemento 	on o58_codele = o56_codele
-					 and o58_anousu = o56_anousu
-
-		  left join cgm 		on e54_numcgm = z01_numcgm
-
-
-		  left join empempaut on e61_autori=e54_autori
-		  left join empempenho on e61_numemp=e60_numemp
-
-		  inner join pctipocompra on e54_codcom = pc50_codcom
-
+		inner join orcprojativ 	on  o58_projativ = o55_projativ
+				   and o58_anousu   = o55_anousu
+		inner join orctiporec 	on  o58_codigo = o15_codigo
+		inner join orcelemento 	on o58_codele = o56_codele
+				   and o58_anousu = o56_anousu
+		left join cgm on e54_numcgm = z01_numcgm
+		left join empempaut on e61_autori=e54_autori
+		left join empempenho on e61_numemp=e60_numemp
+		inner join pctipocompra on e54_codcom = pc50_codcom
 	  where $dbwhere
 	  order by e54_autori
     ";
 
+//die($sqlmater);
 $result = db_query($sqlmater);
 
 if (pg_numrows($result) == 0) {
-    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado ! ");
+    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado ! " . pg_last_error());
     exit;
 } else {
     db_fieldsmemory($result, 0);
@@ -211,18 +195,12 @@ if (pg_numrows($result) == 0) {
     }
 }
 
-
-//db_criatabela($result);
-//echo $e54_resumo;
-//exit;
-
 //rotina que pega o numero de vias
 $result02 = $clempparametro->sql_record($clempparametro->sql_query_file(db_getsession("DB_anousu"), "e30_nroviaaut,e30_numdec"));
 
 if ($clempparametro->numrows > 0) {
     db_fieldsmemory($result02, 0);
     //echo " [4] " . db_criatabela($result02). "<br>------------------<br>";
-
 }
 
 $pdf = new scpdf();
@@ -234,12 +212,20 @@ $pdf1->objpdf->SetTextColor(0, 0, 0);
 
 
 for ($i = 0; $i < pg_numrows($result); $i++) {
-
     db_fieldsmemory($result, $i);
-    $origem = \ECidade\Financeiro\Orcamento\Recurso\Origem::getAutorizacao($e54_autori);
-    $recurso = RecursoRepository::getRecursoPorCodigo($origem->o206_recurso);
 
-    // echo " [5] " . db_criatabela($result). "<br>------------------<br>";
+    // define o código do recurso da autorização como padrão
+    $codigoRecurso = $o15_codigo;
+    // se a origem foi alterada, busca da origem
+    $origem = \ECidade\Financeiro\Orcamento\Recurso\Origem::getAutorizacao($e54_autori);
+    if ($origem) {
+        $codigoRecurso = $origem->o206_recurso;
+    }
+
+    $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+        ->where('exercicio', $e54_anousu)
+        ->where('orctiporec_id', $codigoRecurso)
+        ->first();
 
     $sqlitem = " select distinct pc01_descrmater,
        								 case when e55_descr is null then pc01_complmater else e55_descr end,
@@ -291,7 +277,6 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $o74_descricao = null;
     $o78_pactoplano = null;
     if (pg_num_rows($rsPacto) > 0) {
-
         //echo " [7] " . db_criatabela($rsPacto). "<br>------------------<br>";
 
         $oPacto = db_utils::fieldsMemory($rsPacto, 0);
@@ -311,8 +296,6 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 
     if ($rsBuscaProcessoAdmin && $oDaoEmpAutorizaProcesso->numrows > 0) {
         $sProcessoAdministrativo = db_utils::fieldsMemory($rsBuscaProcessoAdmin, 0)->e150_numeroprocesso;
-
-        //echo " [8] " . db_criatabela($rsBuscaProcessoAdmin). "<br>------------------<br>";
     }
 
     $pdf1->subfuncao = $o53_subfuncao;
@@ -336,8 +319,16 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->munic = $z01_munic;
     $pdf1->ufFornecedor = $z01_uf;
     $pdf1->dotacao = $estrutural;
-    $pdf1->recurso = $recurso->getRecurso();
-    $pdf1->descr_recurso = substr($recurso->getDescricao(), 0, 27);
+
+    $pdf1->recurso = '';
+    $pdf1->descr_recurso = '';
+    $pdf1->complemento = '';
+    if (!empty($fonteRecurso)) {
+        $recurso = $fonteRecurso->recurso;
+        $pdf1->recurso = $fonteRecurso->gestao;
+        $pdf1->descr_recurso = substr($fonteRecurso->descricao, 0, 27);
+        $pdf1->complemento = "{$recurso->o15_complemento} - {$recurso->complemento->o200_descricao}";
+    }
     $pdf1->projativ = $o55_projativ;
     $pdf1->descr_projativ = $o55_descr;
     $pdf1->descrdotacao = $o56_descr;
@@ -389,7 +380,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->edital_licitacao = '';
     $pdf1->ano_licitacao = '';
     $result_licita = $clempautitem->sql_record($clempautitem->sql_query_lic(null, null, "distinct l20_edital,l20_numero, l20_anousu, l20_objeto,l03_descr", null, "e55_autori = $e54_autori "));
-    
+
     if ($clempautitem->numrows > 0) {
         db_fieldsmemory($result_licita, 0);
         //echo " [9] " . db_criatabela($result_licita). "<br>------------------<br>";
@@ -398,7 +389,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf1->numero_licitacao = $l20_numero;
         $pdf1->ano_licitacao = $l20_anousu;
         $resumo_lic = htmlspecialchars_decode($l20_objeto);
-        
+
         $pdf1->observacaoitem = "pc23_obs";
     }
 
@@ -410,9 +401,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         } else {
             $pdf1->resumo = trim($resumo_lic);
         }
-
     } else {
-
         if (isset($e54_resumo) && trim($e54_resumo) != "") {
             $pdf1->resumo = trim($e54_resumo);
         } else {
@@ -432,7 +421,6 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $rpc = db_query("select l03_descr from cflicita where l03_codcom=$e54_codcom and l03_tipo='$e54_tipol'");
         if (pg_numrows($rpc) > 0) {
             $pdf1->descr_licitacao = substr(pg_result($rpc, 0, 0), 0, 32);
-
         } else {
             $pdf1->descr_licitacao = substr($pc50_descr, 0, 32);
         }
@@ -442,10 +430,11 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->descr_analitico = "o56_descr";
     $pdf1->Snumeroproc = "pc81_codproc";
     $pdf1->Snumero = "pc11_numero";
-    if (!empty($e60_numemp))
+    if (!empty($e60_numemp)) {
         $pdf1->Scodemp = trim($e60_codemp) . "/$e60_anousu";
-    else
+    } else {
         $pdf1->Scodemp = "";
+    }
 
     if (!isset($informa_adic) || trim($informa_adic) == "" || $informa_adic == null) {
         $informa_adic = "AM";
@@ -458,11 +447,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 if (isset($argv[1])) {
     $pdf1->objpdf->Output("/tmp/teste.pdf");
 } else {
-
     if ($oConfiguracaoGed->utilizaGED()) {
-
         try {
-
             if (!empty($oGet->e54_autori)) {
                 $e54_autori_ini = $oGet->e54_autori;
             }
@@ -478,7 +464,6 @@ if (isset($argv[1])) {
             $oStdDadosGED->valor = $e54_autori_ini;
             $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e54_autori_ini}.pdf");
             $oGerenciador->moverArquivo(array($oStdDadosGED));
-
         } catch (Exception $eErro) {
             db_redireciona("db_erros.php?fechar=true&db_erro=" . $eErro->getMessage());
         }

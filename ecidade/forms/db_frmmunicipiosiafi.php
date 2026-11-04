@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clmunicipiosiafi->rotulo->label();
 			      <?=@$Lq110_sequencial?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_input('q110_sequencial',10,$Iq110_sequencial,true,'text',3,"")
 						?>
 			    </td>
@@ -49,7 +49,7 @@ $clmunicipiosiafi->rotulo->label();
 			      <?=@$Lq110_codigo?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_input('q110_codigo',4,$Iq110_codigo,true,'text',$db_opcao,"")
 						?>
 			    </td>
@@ -59,7 +59,7 @@ $clmunicipiosiafi->rotulo->label();
 			      <?=@$Lq110_descricao?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_input('q110_descricao',50,$Iq110_descricao,true,'text',$db_opcao,"")
 						?>
 			    </td>
@@ -69,7 +69,7 @@ $clmunicipiosiafi->rotulo->label();
 			      <?=@$Lq110_uf?>
 			    </td>
 			    <td>
-						<?
+						<?php
 						  require_once(modification("classes/db_db_uf_classe.php"));
 						  
 						  $cldb_uf = new cl_db_uf();
@@ -89,7 +89,7 @@ $clmunicipiosiafi->rotulo->label();
 			      <?=@$Lq110_cnpj?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_input('q110_cnpj',14,$Iq110_cnpj,true,'text',$db_opcao,"")
 						?>
 			    </td>
@@ -105,7 +105,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_municipiosiafi.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

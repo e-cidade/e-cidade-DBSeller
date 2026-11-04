@@ -91,6 +91,11 @@ class MonitoramentoSaudeFormatter extends Formatter
         } else {
             $vinculo->codCateg = $servidor->getVinculo()->getCodigoCategoria();
         }
+        if ($servidor->getMatriculaAnterior() != "") {
+            $vinculo->matricula = $servidor->getMatriculaAnterior();
+        }
+
+
         return $vinculo;
     }
 

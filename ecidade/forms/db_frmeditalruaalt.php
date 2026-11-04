@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -212,7 +212,7 @@ function js_trocarua(valor){
            <?=@$Ld02_contri?>
        </td>
        <td> 
-          <?
+          <?php
              db_input('d02_contri',10,$Id02_contri,true,'text',3,"")
           ?>
        </td>
@@ -220,12 +220,12 @@ function js_trocarua(valor){
 
     <tr>
          <td nowrap title="<?=@$Td02_codedi?>">
-                <?
+                <?php
                 db_ancora(@$Ld02_codedi,"js_pesquisad02_codedi(true);",$db_opcao);
                 ?>
        	</td>
          <td> 
-               <?
+               <?php
                  if(empty($d02_codedi)|| isset($d02_codedi) && $d02_codedi==""){
                    $d01_descr="";  
                  }
@@ -237,7 +237,7 @@ function js_trocarua(valor){
     </tr>
     
 
-    <?
+    <?php
               if (isset($numedital)&& $numedital!="" && $d02_codedi!="") {
                 if ($db_opcao==1) {
                   $result=$cleditalproj->sql_record($cleditalproj->sql_query($numedital,"","d40_codigo,d40_trecho,d40_codlog,j14_nome,d40_profun","","d40_codigo not in (select d11_codproj from editalruaproj)  and d10_codedi=$numedital"));
@@ -291,7 +291,7 @@ function js_trocarua(valor){
 
 
 	         <tr>
-	         <?
+	         <?php
 	           if(isset($numrows2) && $numrows2>0){
 	             $d02_codigo=$d40_codlog;
 	             $db_opcao2=3;
@@ -300,12 +300,12 @@ function js_trocarua(valor){
 	           }
 	          ?>
 	           <td nowrap title="<?=@$Td02_codigo?>">
-	              <?
+	              <?php
 	              db_ancora(@$Ld02_codigo,"js_pesquisad02_codigo(true);",$db_opcao2);
 	              ?>
 	           </td>
 	           <td> 
-           	 <?
+           	 <?php
              	 if(empty($d02_codigo)|| isset($d02_codigo) && $d02_codigo==""){
              	   $j14_nome="";  
              	 }
@@ -323,7 +323,7 @@ function js_trocarua(valor){
 	            <?=$Ld02_profun?>
 	           </td>
 	           <td nowrap> 
-           	<?
+           	<?php
                $db_opcao69=$db_opcao;
                if (isset($d40_codigo)) {
                  $result69=$cleditalproj->sql_record($cleditalproj->sql_query($d02_codedi,$d40_codigo,'d40_profun as d02_profun'));
@@ -341,7 +341,7 @@ function js_trocarua(valor){
 	            <?=$Ld02_valorizacao?>
 	           </td>
 	           <td nowrap> 
-	           <?
+	           <?php
 	             db_input('d02_valorizacao',10,$Id02_valorizacao,true,'text',$db_opcao);
            	 ?>
 	           </td>   
@@ -350,7 +350,7 @@ function js_trocarua(valor){
    
 
 
-	     <?
+	     <?php
    		 $d02_autori="f";
    		 db_input('d02_autori',3,$Id02_autori,true,'hidden',3,'')
    		 ?>
@@ -369,12 +369,12 @@ function js_trocarua(valor){
 
 <tr>
 				  <td nowrap title="<?=@$Td03_tipos?>">
-				   <?
+				   <?php
 				     db_ancora(@$Ld03_tipos,"js_tipos(true);",$db_opcao);
            ?>
           </td>
 				  <td nowrap>         
-           <?
+           <?php
 	           db_input('d03_tipos',10,$Id03_tipos,true,'text',$db_opcao,"onchange='js_tipos(false);'");
            	 db_input('d03_descr',50,$Id03_descr,true,'text',3);
          	 ?>
@@ -383,7 +383,7 @@ function js_trocarua(valor){
             <b>Multiplicador:</b>
           </td>
           <td nowrap>
-				  <?
+				  <?php
 					  if (!isset($d04_mult) or $d04_mult == "") {
 					    $d04_mult = 1;
   				  }
@@ -396,7 +396,7 @@ function js_trocarua(valor){
            <?=@$Ld04_forma?>
           </td>
           <td nowrap> 
-      			<?
+      			<?php
 	    		  $x = array('1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional');
 	    	  	db_select('d04_forma',$x,true,$db_opcao,"onChange='js_controlaFormaCalculo(this.value)';");
 	      		?>
@@ -405,7 +405,7 @@ function js_trocarua(valor){
 	    	    <?=@$Ld04_quant?>
 	    	  </td>
 	    	  <td nowrap> 
-        	  <?
+        	  <?php
           	  db_input('d04_quant',10,$Id04_quant,true,'text',$db_opcao,"")
           	?>
         	</td>
@@ -416,7 +416,7 @@ function js_trocarua(valor){
 	   	      <?=@$Ld04_vlrcal?>
           </td>
           <td nowrap>
-          <?
+          <?php
          	  db_input('d04_vlrcal',10,$Id04_vlrcal,true,'text',$db_opcao,"")
          	?>       
 	     	  </td>   
@@ -424,7 +424,7 @@ function js_trocarua(valor){
 	   	      <?=@$Ld04_vlrval?>
           </td>
           <td>
-          	<?
+          	<?php
           	db_input('d04_vlrval',10,$Id04_vlrval,true,'text',$db_opcao,"")
           	?>       
          	</td>
@@ -435,7 +435,7 @@ function js_trocarua(valor){
             <?=@$Ld04_vlrobra?>
           </td>
           <td> 
-          <?
+          <?php
             db_input('d04_vlrobra',10,$Id04_vlrobra,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -468,7 +468,7 @@ function js_trocarua(valor){
 </div>
 </form>
 <script>
-<?
+<?php
 if (isset($terminolistas) && $db_opcao==1 && empty($execucao) ) {
   echo "function hj(){\n";
   echo "  alert('As listas deste edital já estam sendo usadas em outras contribuições.');\n";
@@ -612,15 +612,15 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe04.hide();
-  <?
+  <?php
   if ($db_opcao!=1) {
     ?>
     location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
-    <?
+    <?php
   }
   ?>
 }
-<?
+<?php
 if (($db_opcao==33 || $db_opcao==22) && empty($calcnops) && empty($chavepesquisa)) {
   
   echo "\njs_pesquisa();";

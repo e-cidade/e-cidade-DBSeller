@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if(isset($db_opcaoal)){
           <?=@$Lx11_codconstr?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_codconstr',10,$Ix11_codconstr,true,'text',3,"");
 		  ?>
     	</td>
@@ -75,7 +75,7 @@ if(isset($db_opcaoal)){
           <?=@$Lx11_matric?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_matric',10,$Ix11_matric,true,'text',3," onchange='js_pesquisax11_matric(false);'");
 		  ?>
 	    </td>
@@ -85,7 +85,7 @@ if(isset($db_opcaoal)){
        	  <?=@$Lx11_numero?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_numero',10,$Ix11_numero,true,'text',$db_opcao,"");
 		  ?>
     	</td>
@@ -95,7 +95,7 @@ if(isset($db_opcaoal)){
        	  <?=@$Lx11_complemento?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_complemento',20,$Ix11_complemento,true,'text',$db_opcao,"");
 		  ?>
     	</td>
@@ -105,7 +105,7 @@ if(isset($db_opcaoal)){
        	  <?=@$Lx11_area?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_area',10,$Ix11_area,true,'text',$db_opcao,"");
 		  ?>
   	    </td>
@@ -115,7 +115,7 @@ if(isset($db_opcaoal)){
        	  <?=@$Lx11_pavimento?>
     	</td>
     	<td> 
-	   	  <?
+	   	  <?php
 		 	db_input('x11_pavimento',20,$Ix11_pavimento,true,'text',$db_opcao,"");
 	   	  ?>
     	</td>
@@ -125,7 +125,7 @@ if(isset($db_opcaoal)){
        	  <?=@$Lx11_qtdfamilia?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_qtdfamilia',5,$Ix11_qtdfamilia,true,'text',$db_opcao,"");
 		  ?>
   	    </td>
@@ -135,7 +135,7 @@ if(isset($db_opcaoal)){
     	  <?=@$Lx11_qtdpessoas?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 			db_input('x11_qtdpessoas',5,$Ix11_qtdpessoas,true,'text',$db_opcao,"");
 		  ?>
     	</td>
@@ -145,7 +145,7 @@ if(isset($db_opcaoal)){
       	  <?=@$Lx11_tipo?>
     	</td>
     	<td> 
-	  	  <?
+	  	  <?php
 		    $aTipoConstr = array("P"=>"Principal","S"=>"Secundária");
 		  	db_select("x11_tipo",$aTipoConstr,true,$db_opcao,"");
 //		  	db_select();
@@ -155,13 +155,13 @@ if(isset($db_opcaoal)){
 	  <tr>
    	    <td>
     	  <b>
-			<?
+			<?php
   			  db_ancora("Caracteristicas","js_mostracaracteristica();",1);
 			?>
     	  </b>
    		</td>
    		<td>
-		  <?
+		  <?php
   		    db_input('caracteristica',15,1,true,'hidden',1,"");
 		  ?>
    		</td>
@@ -176,7 +176,7 @@ if(isset($db_opcaoal)){
  	<table>
   	  <tr>
 	    <td valign="top"  align="center">  
-	      <?
+	      <?php
 	      
 	        $sCampos  = " x11_codconstr,   ";
 	        $sCampos .= " x11_matric, 	   ";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clnotisitu->rotulo->label("k59_descr");
               <?=$Lk59_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k59_codigo",8,$Ik59_codigo,true,"text",4,"","chave_k59_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clnotisitu->rotulo->label("k59_descr");
               <?=$Lk59_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k59_descr",40,$Ik59_descr,true,"text",4,"","chave_k59_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clnotisitu->rotulo->label("k59_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_notisitu.php")==true){
@@ -118,12 +118,12 @@ $clnotisitu->rotulo->label("k59_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

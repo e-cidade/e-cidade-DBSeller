@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -147,11 +147,11 @@ if(isset($confirmar)){
     $arr_codeleval = array();
 
     //$arr_dados é um array com todos os elementos
-    $arr_dados = split("#",$dados);
+    $arr_dados =explode("#",$dados);
 
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-       $arr_ele = split("-",$arr_dados[$i]);
+       $arr_ele =explode("-",$arr_dados[$i]);
        $elemento = $arr_ele[0];
        $valor    = $arr_ele[1];
 
@@ -189,7 +189,7 @@ if(isset($confirmar)){
 
   //rotina pega as notas marcadas para atualizar os valores liquidados da notas
    if($sqlerro==false && isset($chaves) && $chaves!=''){
-      $arr_notas = split("#",$chaves);
+      $arr_notas =explode("#",$chaves);
       $tam = count($arr_notas);
       for($i=0; $i<$tam; $i++){
 	  $nota = $arr_notas[$i];
@@ -287,7 +287,7 @@ if(isset($confirmar)){
 	      /*conlancamnota*/
 
 	      if($sqlerro==false && isset($chaves) && $chaves!=''){
-                 $arr_notas = split("#",$chaves);
+                 $arr_notas =explode("#",$chaves);
                  $tam = count($arr_notas);
                  for($inota=0; $inota<$tam; $inota++){
                    $clconlancamnota->c66_codnota = $arr_notas[$inota];
@@ -520,19 +520,19 @@ if(isset($e60_numemp)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmempliquidaestorna.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($db_opcao==22){
   echo "<script>document.form1.pesquisar.click();</script>";
 }

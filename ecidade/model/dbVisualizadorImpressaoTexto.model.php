@@ -229,7 +229,7 @@
                                                         );
         oVisualizador.setDimensoes(<?=$this->iLinhasPagina?>, <?=$this->iColunasPagina?>);
         
-<?
+<?php
         foreach ($this->aArquivos as $sArquivo) {
 
           $sArquivo = str_replace(array('"', "\n"), array('\"', '\n'), $sArquivo);
@@ -239,7 +239,7 @@
 
 ?>
           oVisualizador.addArquivo("<?=$sArquivo?>");
-<?
+<?php
         } // Fim foreach
 ?>
         oVisualizador.renderizarArquivos();
@@ -311,7 +311,7 @@
 
         oElementoPai.appendChild(oCenter);
      </script>
-<?
+<?php
     }
    
     /**

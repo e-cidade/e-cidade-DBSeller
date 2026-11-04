@@ -46,7 +46,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -70,12 +70,12 @@ include(modification("dbforms/db_funcoes.php"));
          <table>
            <tr>
              <td nowrap title="">
-               <?
+               <?php
                  db_ancora('<b>Almoxarifado:</b>',"js_pesquisam91_depto(true);",1);
                ?>
              </td>
              <td> 
-               <?  
+               <?php  
                  db_input('m91_depto',10,'',true,'text',1,"onchange='js_pesquisam91_depto(false);'");
                  db_input('descrdepto',40,'',true,'text',3)
                ?>
@@ -86,7 +86,7 @@ include(modification("dbforms/db_funcoes.php"));
                <b>Período:</b>
              </td>
              <td> 
-               <? 
+               <?php 
                  db_inputdata('dtInicial',null,null,null,true,'text',1,"");                
                   echo "<b> a </b> ";
                  db_inputdata('dtFinal',null,null,null,true,'text',1,"");
@@ -108,7 +108,7 @@ include(modification("dbforms/db_funcoes.php"));
     </table>
   </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

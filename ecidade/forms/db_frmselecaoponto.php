@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,19 +51,19 @@ if($db_opcao==1){
 	       <?=@$Lr72_sequencial?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('r72_sequencial',10,$Ir72_sequencial,true,'text',3,"")
 				?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tr72_selecao?>">
-	      <?
+	      <?php
 	        db_ancora(@$Lr72_selecao,"js_pesquisar72_selecao(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 				  db_input('r72_selecao',10,$Ir72_selecao,true,'text',$db_opcao," onchange='js_pesquisar72_selecao(false);'");
 				  db_input('r44_descr',37,$Ir44_descr,true,'text',3,'');
 	      ?>
@@ -74,7 +74,7 @@ if($db_opcao==1){
 	       <?=@$Lr72_descricao?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('r72_descricao',50,$Ir72_descricao,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -116,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_selecaoponto.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

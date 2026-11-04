@@ -97,7 +97,7 @@
 
     <tr>
       <td>
-        <label for="z01_c_bolsafamilia">Auxílio Brasil:</label>
+        <label for="z01_c_bolsafamilia">Bolsa Família:</label>
       </td>
       <td>
         <select name="z01_c_bolsafamilia" id="z01_c_bolsafamilia">

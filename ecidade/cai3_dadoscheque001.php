@@ -196,7 +196,7 @@ db_postmemory($_GET);
 <table width="100%" align="center" style="margin-top: 20px;">
     <tr align="center">
         <td>
-            <?
+            <?php
             db_input('e91_cheque', 10, 0, false, 'hidden');
             db_input('c63_banco', 10, 0, false, 'hidden');
             db_input('c63_agencia', 10, 0, false, 'hidden');

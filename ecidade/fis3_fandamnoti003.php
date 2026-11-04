@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -136,7 +136,7 @@ if($clfiscalultandam->numrows > 0){
     <fieldset width="100%">
     <legend align="center">NOTICAÇÃO</legend>
     <center>
-	<?
+	<?php
 	  $db_opcao = 3;
 	  db_ancora(@$Ly30_codnoti,"js_fiscal(true);",1);
 	  db_input('y30_codnoti',20,$Iy30_codnoti,true,'text',3,"")
@@ -150,7 +150,7 @@ if($clfiscalultandam->numrows > 0){
     <fieldset>
     <legend align="center">ANDAMENTO</legend>
     <center>
-	<?
+	<?php
 	$db_opcao=3;
         if($db_opcao==3 && !isset($chavepesquisa)){
 	  $db_opcao=33;
@@ -165,7 +165,7 @@ if($clfiscalultandam->numrows > 0){
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
   if($clfandam->erro_status=="0"){
     $clfandam->erro(true,false);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ function js_submit(codsol){
      <td><b>Solicitação:</b></td>
     <td>
     
-    <?
+    <?php
     
     $result_solicita=$clsolicita->sql_record($clsolicita->sql_query_prot(null,"distinct pc10_numero","pc10_numero","pc49_solicitem is not null and p58_coddepto = ".db_getsession("DB_coddepto")." and p61_codandam is null and p63_codproc is null"));    
     if (isset($codsol)&&$codsol!=""){
@@ -99,7 +99,7 @@ function js_submit(codsol){
 	    //  
     ?>
     </td>
-    <?
+    <?php
     if (isset($codsol)&&$codsol!=""){
       $result_solicita=$clsolicita->sql_record($clsolicita->sql_query($codsol));
       db_fieldsmemory($result_solicita,0);
@@ -109,7 +109,7 @@ function js_submit(codsol){
       <strong>Usuário:</strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('nome',41,$Inome,true,'text',3);
     ?>
     </td>
@@ -120,7 +120,7 @@ function js_submit(codsol){
       <strong>Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('pc10_data_dia',2,0,true,'text',3);
       db_input('pc10_data_mes',2,0,true,'text',3);
       db_input('pc10_data_ano',4,0,true,'text',3);
@@ -130,7 +130,7 @@ function js_submit(codsol){
       <strong>Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('descrdepto',41,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -140,7 +140,7 @@ function js_submit(codsol){
       <strong>Resumo: </strong>
     </td>
     <td colspan="3" nowrap>
-    <?
+    <?php
       db_textarea('pc10_resumo',2,73,$Ipc10_resumo,true,'text',3,"")     
     ?>
     </td>

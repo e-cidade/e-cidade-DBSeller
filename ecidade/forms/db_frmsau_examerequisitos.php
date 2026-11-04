@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=@$Ls109_i_codigo?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('s109_i_codigo',10,$Is109_i_codigo,true,'text',3,"")
      ?>
     </td>
@@ -54,25 +54,25 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
       <?=@$Ls108_c_exame?>
     </td>
     <td> 
-    <?
+    <?php
      db_input('s109_i_exame',10,@$Is109_i_exame,true,'text',3,"")
     ?>
-    <?
+    <?php
      db_input('s108_c_exame',40,@$Is108_c_exame,true,'text',3,'')
     ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts109_i_requisito?>">
-       <?
+       <?php
        db_ancora(@$Ls109_i_requisito,"js_pesquisas109_i_requisito(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?
+     <?php
        db_input('s109_i_requisito',10,$Is109_i_requisito,true,'text',$db_opcao," onchange='js_pesquisas109_i_requisito(false);'")
      ?>
-     <?
+     <?php
        db_input('s107_c_requisito',40,@$Is107_c_requisito,true,'text',3,'')
      ?>
     </td>
@@ -82,7 +82,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 <table>
 <tr>
 	<td>
-		<?
+		<?php
 		$chavepri= array("s109_i_requisito"=>@$s109_i_requisito,"s109_i_codigo"=>@$s109_i_codigo);
 		$cliframe_alterar_excluir->chavepri=$chavepri;
 		@$cliframe_alterar_excluir->sql = $clsau_examerequisitos->sql_query(null,'*',null,"s109_i_exame=$s109_i_exame");
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_examerequisitos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("e69_codnota");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tm74_codmatestoqueitem?>">
-       <?
+       <?php
        db_ancora(@$Lm74_codmatestoqueitem,"js_pesquisam74_codmatestoqueitem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m74_codmatestoqueitem',10,$Im74_codmatestoqueitem,true,'text',$db_opcao," onchange='js_pesquisam74_codmatestoqueitem(false);'")
 ?>
-       <?
+       <?php
 db_input('m71_codmatestoque',10,$Im71_codmatestoque,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm74_codempnota?>">
-       <?
+       <?php
        db_ancora(@$Lm74_codempnota,"js_pesquisam74_codempnota(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m74_codempnota',6,$Im74_codempnota,true,'text',$db_opcao," onchange='js_pesquisam74_codempnota(false);'")
 ?>
-       <?
+       <?php
 db_input('e69_codnota',6,$Ie69_codnota,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_matestoqueitemnota.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("z01_nome");
   <tr>
     <td align="right"><b>Data do pedido:</b></td>
     <td align="left">
-			<?
+			<?php
 	    db_inputdata("pedido",date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,'text',1,"");
 			?>
     </td>
@@ -46,7 +46,7 @@ $clrotulo->label("z01_nome");
   <tr>
     <td align="right"><b>Data de efetivação:</b></td>
     <td align="left">
-			<?
+			<?php
 	    db_inputdata("efetiv",date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,'text',1,"");
 			?>
     </td>
@@ -54,7 +54,7 @@ $clrotulo->label("z01_nome");
   <tr>
     <td align="right"><b>Pedido:</b></td>
     <td align="left">
-    <?
+    <?php
       $arr_pedido = Array("1"=>"Normal","2"=>"Complementar");
       db_select("pedido",$arr_pedido,true,1);
     ?>
@@ -63,7 +63,7 @@ $clrotulo->label("z01_nome");
   </td>
   <td align="right"><b>Emitir Func. c/ valor zerado:</b></td>
     <td align="left">
-      <?
+      <?php
        db_input('listazerados',1,"",false,'checkbox',1,"");
       ?>
     </td>
@@ -77,7 +77,7 @@ $clrotulo->label("z01_nome");
       <input type="button" name="processar" value="Processar" onclick="js_retornacampos();">
     </td>
   </tr>
-  <?
+  <?php
   db_input('opcaopesquisa',40,0,true,'hidden',3,'');
   db_input('lstzerado',3,0,true,'hidden',3,'');
   ?>

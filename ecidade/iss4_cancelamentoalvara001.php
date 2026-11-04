@@ -47,28 +47,28 @@ require_once(modification("libs/db_app.utils.php"));
 <body class="body-default">
 <div class="container">
   <form name="form1" id="form1" methos="post" action="" >
-    <? db_input('q120_issalvara',8,'',true,'hidden', 3,"",""); ?>
+    <?php db_input('q120_issalvara',8,'',true,'hidden', 3,"",""); ?>
     <fieldset style="width:400px;">
       <legend>Cancelar última movimentação de alvará</legend>
       <table width="100%">
         <tr>
-          <td nowrap="nowrap"><? db_ancora("<b>Inscrição:</b>", "js_pesquisaAlvara(true,'');", 1); ?></td>
-          <td nowrap="nowrap"><? db_input('q123_inscr',8,'',true,'text', 1,"onchange='js_pesquisaAlvara(false,this.value);'") ?></td>
-          <td nowrap="nowrap"><? db_input('z01_nome',40,'',true,'text', 3,"","") ?></td>
+          <td nowrap="nowrap"><?php db_ancora("<b>Inscrição:</b>", "js_pesquisaAlvara(true,'');", 1); ?></td>
+          <td nowrap="nowrap"><?php db_input('q123_inscr',8,'',true,'text', 1,"onchange='js_pesquisaAlvara(false,this.value);'") ?></td>
+          <td nowrap="nowrap"><?php db_input('z01_nome',40,'',true,'text', 3,"","") ?></td>
         </tr>
         <tr>
           <td nowrap="nowrap"><b>Tipo do movimento:</b></td>
-          <td nowrap="nowrap" colspan="2"><? db_input('q121_descr', 52, "", true, 'text', 3); ?></td>
+          <td nowrap="nowrap" colspan="2"><?php db_input('q121_descr', 52, "", true, 'text', 3); ?></td>
         </tr>
         <tr>
           <td nowrap="nowrap"><b>Data da movimentação:</b></td>
-          <td nowrap="nowrap" colspan="2"><? db_input('q120_dtmov', 15, "", true, 'text', 3); ?></td>
+          <td nowrap="nowrap" colspan="2"><?php db_input('q120_dtmov', 15, "", true, 'text', 3); ?></td>
         </tr>
         <tr>
           <td nowrap="nowrap" colspan="3">
             <fieldset>
               <legend><strong>Resumo do cancelamento:</strong></legend>
-              <? db_textarea('q120_obs', 10, 67, '', true, 'text', 1); ?>
+              <?php db_textarea('q120_obs', 10, 67, '', true, 'text', 1); ?>
             </fieldset>
           </td>
         </tr>

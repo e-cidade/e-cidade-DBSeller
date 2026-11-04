@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clpcorcam->rotulo->label();
@@ -34,8 +34,8 @@ $clpcorcam->rotulo->label();
     <td nowrap title="<?=@$Tpc20_codorc?>">
       <?=@$Lpc20_codorc?>
     </td>
-    <td> 
-	  <?
+    <td>
+	  <?php
   		db_input('pc20_codorc',8,$Ipc20_codorc,true,'text',3);
   		db_input('pc10_numero',8,0,true,'hidden',3);
 	  ?>
@@ -48,12 +48,12 @@ $clpcorcam->rotulo->label();
     <td nowrap title="<?=@$Tpc20_dtate?>">
       <?=@$Lpc20_dtate?>
     </td>
-    <td colspan="2"> 
-	  <?
+    <td colspan="2">
+	  <?php
 	   if(!isset($pc20_dtate_dia) && !isset($pc20_dtate_mes) && !isset($pc20_dtate_ano) && !isset($pc20_dtate)){
-		 
+
 	   	 $somadata = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_dias,pc30_horas as pc20_hrate"));
-	   	 
+
 		 if($clpcparam->numrows>0){
 		    db_fieldsmemory($somadata,0);
 		    $diadefault = $clpcparam->sql_record("select date_part('year','".date("Y-m-d",db_getsession("DB_datausu"))."'::date + '$pc30_dias days'::interval) as pc20_dtate_ano,date_part('months','".date("Y-m-d",db_getsession("DB_datausu"))."'::date + '$pc30_dias days'::interval) as pc20_dtate_mes,date_part('day','".date("Y-m-d",db_getsession("DB_datausu"))."'::date + '$pc30_dias days'::interval) as pc20_dtate_dia");
@@ -74,12 +74,12 @@ $clpcorcam->rotulo->label();
     <td nowrap title="<?=@$Tpc20_hrate?>">
       <?=@$Lpc20_hrate?>
     </td>
-    <td> 
-	  <?
+    <td>
+	  <?php
 	   if(!isset($pc20_hrate)){
 	     $pc20_hrate = db_hora();
 	   }
-	    
+
 	   db_input('pc20_hrate',8,$Ipc20_hrate,true,'text',$db_opcao,"onchange='js_verifica_hora(this.value,this.name);'")
 	  ?>
     </td>
@@ -92,7 +92,7 @@ $clpcorcam->rotulo->label();
     <?=$Lpc20_obs?>
     </td>
     <td colspan="2">
-    <?
+    <?php
       @$pc20_obs = stripslashes($pc20_obs);
       db_textarea("pc20_obs",10,81,"",true,"text",$db_opcao,"onKeydown='js_validaTamanhoObs(this,event)' onKeyUp='js_incrementaCaracDig(this.value.length)'");
     ?>
@@ -103,7 +103,7 @@ $clpcorcam->rotulo->label();
      <?=@$Lpc20_prazoentrega?>
     </td>
     <td>
-     <?
+     <?php
        db_input('pc20_prazoentrega',10,$Ipc20_prazoentrega,true,'text',$db_opcao);
       ?>
     </td>
@@ -118,7 +118,7 @@ $clpcorcam->rotulo->label();
      <?=@$Lpc20_validadeorcamento?>
     </td>
     <td colspan="2">
-    <?
+    <?php
     db_input('pc20_validadeorcamento',10,$Ipc20_validadeorcamento,true,'text',$db_opcao);
     ?>
     </td>
@@ -145,22 +145,22 @@ $clpcorcam->rotulo->label();
 <script>
 
 function js_validaTamanhoObs(elem,event){
-  
+
   var sValorCampo   = new String(elem.value);
   var iTamanhoCampo = sValorCampo.length;
   var iLimite		= 800;
-  
-  if (event.keyCode != 8 && event.keyCode != 16 && event.keyCode != 20 && event.keyCode != 18){ 
+
+  if (event.keyCode != 8 && event.keyCode != 16 && event.keyCode != 20 && event.keyCode != 18){
     if ( iTamanhoCampo >= iLimite ) {
       elem.value = sValorCampo.substr(0,iLimite);
       js_incrementaCaracDig(elem.value.length);
       alert('Máximo '+iLimite+' caracteres!');
       return false;
-    } 
+    }
   }
-  
+
   js_incrementaCaracDig(iTamanhoCampo);
-  
+
 }
 
 function js_incrementaCaracDig(iTamanhoCampo){
@@ -169,25 +169,25 @@ function js_incrementaCaracDig(iTamanhoCampo){
 
 function js_verifica_hora(valor,campo){
   erro= 0;
-  <?
+  <?php
   $hora = "00";
   $minu = "00";
   if(isset($pc30_horas)){
-    $arr_horas = split(":",$pc30_horas);    
+    $arr_horas =explode(":",$pc30_horas);
     $hora = $arr_horas[0];
     $minu = $arr_horas[1];
   }
   ?>
   hora= "<?$hora?>" ;
   minu= "<?$minu?>";
-  
+
   ms  = "";
   hs  = "";
-  
+
   tam = "";
   pos = "";
   tam = valor.length;
-  pos = valor.indexOf(":");  
+  pos = valor.indexOf(":");
   if(pos!=-1){
     if(pos==0 || pos>2){
       erro++;
@@ -230,13 +230,13 @@ function js_verifica_hora(valor,campo){
       }
       hora = hs;
       minu = ms;
-    }    
+    }
   }
 
   if(erro>0){
     alert("Informe uma hora válida.");
   }
-  if(valor!=""){    
+  if(valor!=""){
     eval("document.form1."+campo+".focus();");
     eval("document.form1."+campo+".value='"+hora+":"+minu+"';");
   }
@@ -246,7 +246,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcorcam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -254,5 +254,5 @@ function js_preenchepesquisa(chave){
 }
 
  js_incrementaCaracDig(document.form1.pc20_obs.value.length);
- 
+
 </script>

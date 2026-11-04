@@ -52,11 +52,11 @@ $clempnota->rotulo->label();
 $clempnotaele->rotulo->label();
 $cltabrec->rotulo->label();
 if ($tela_estorno) {
-    $operacao = 2;//operacao a ser realizada:1 = liquidacao, 2 estorno
+    $operacao = 2; //operacao a ser realizada:1 = liquidacao, 2 estorno
     $labelVal = "SALDO A ESTORNAR";
     $metodo = "estornarLiquidacaoAJAX";
 } else {
-    $operacao = 1;//operacao a ser realizada:1 = liquidacao, 2 estorno
+    $operacao = 1; //operacao a ser realizada:1 = liquidacao, 2 estorno
     $labelVal = "SALDO A LIQUIDAR";
     $metodo = "liquidarAjax";
 }
@@ -95,9 +95,46 @@ $Te11_cfop = isset($Te11_cfop) ? $Te11_cfop : null;
 $isPB = isParaiba();
 $Ie11_basecalculoicms = isset($Ie11_basecalculoicms) ? $Ie11_basecalculoicms : null;
 $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11_basecalculosubstitutotrib : null;
+$isRJ = isRioDeJaneiro();
+
+// Diarias
+$labelDiariaTipo = 'Tipo diária:';
+$labelDiariaDestino = 'Destino:';
+$labelObjetoDiaria = 'Motivo/Descrição';
+$exibirCamposAdicionaisRJ = false;
+$listaTiposDiaria = ['0' => 'Internacional', '1' => 'Nacional'];
+
+if ($isRJ) {
+    $exibirCamposAdicionaisRJ = true;
+    $labelDiariaDestino = 'Cidade(s) / Destino:';
+    $labelObjetoDiaria = 'Objeto da Diária:';
+    $labelDiariaTipo = 'Destino:';
+    $diariaTipo = 1;
+
+}
 
 ?>
+<script type="text/javascript" src="scripts/scripts.js"></script>
+<script type="text/javascript" src="scripts/prototype.js"></script>
+<script type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script rel="script" type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+<style>
+    div.files {
+        display: inline-block;
+        background: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        border: solid #0a0a0a 1px;
+    }
 
+    div#arquivos-selecionados {
+        width: 400px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+</style>
 <form name=form1 action="" method="POST">
     <table width='80%' cellspacing='0' style='padding:0px; margin-top: 20px;' border='0'>
         <tr>
@@ -117,8 +154,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                             <td colspan=2><?php db_input('z01_nome', 52, $Iz01_nome, true, 'text', 3, ''); ?></td>
                         </tr>
                         <tr>
-                            <td><label for="codigo_classificacao"
-                                       class="bold"><?= $Lcc31_classificacaocredores ?></label></td>
+                            <td><label for="codigo_classificacao" class="bold"><?= $Lcc31_classificacaocredores ?></label></td>
                             <td nowrap colspan="3">
                                 <?php
                                 db_input('codigo_classificacao', 13, '', true, 'text', 3);
@@ -136,7 +172,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                             <td nowrap><?php db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
                             <td width="20"><?= db_ancora($Lo15_codigo, "", 3) ?></td>
                             <td nowrap><?php db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3);
-                                db_input('o15_descr', 33, $Io15_descr, true, 'text', 3) ?></td>
+                                        db_input('o15_descr', 33, $Io15_descr, true, 'text', 3) ?></td>
                         </tr>
                         <tr id='controlepit' style='display: <?= $iControlaPit == 1 ? "" : "none" ?>'>
                             <td><b>Tipo da Entrada: </b></td>
@@ -147,12 +183,11 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                                 $aItens[0] = "selecione";
                                 for ($i = 0; $i < $oDaoDocumentoFiscais->numrows; $i++) {
                                     $oItens = db_utils::fieldsMemory($rsDocs, $i);
-                                    $aItens [$oItens->e12_sequencial] = $oItens->e12_descricao;
+                                    $aItens[$oItens->e12_sequencial] = $oItens->e12_descricao;
                                 }
                                 db_select('e69_tipodocumentofiscal', $aItens, true, 1, "onchange=js_abreNotaExtra()");
                                 ?>
-                                <a href='#' onclick='js_abreNotaExtra()' style='display: none'
-                                   id='dadosnotacomplementar'>Outros Dados</a>
+                                <a href='#' onclick='js_abreNotaExtra()' style='display: none' id='dadosnotacomplementar'>Outros Dados</a>
                             </td>
                         </tr>
 
@@ -174,6 +209,17 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
                         <!--[Extensao OrdenadorDespesa] inclusao_ordenador-->
 
+                        <?php if ($isRJ) : ?>
+                            <tr>
+                                <td>
+                                    <label class="bold" for="competenciaFolhaPagamentolabel" id="competenciaFolhaPagamentolabel">Data Competência:</label>
+                                </td>
+                                <td>
+                                    <?php db_input('competenciaFolhaPagamento', 13, '', true, 'text', $db_opcao, null, null, null, null, 15); ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
                     </table>
 
 
@@ -193,19 +239,18 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                             </tr>
 
                             <tr id="linhaNumeroChave" style="display: none">
-                                <td><label for="numeroChave"  class="bold" >Número da Chave: </label></td>
+                                <td><label for="numeroChave" class="bold">Número da Chave: </label></td>
                                 <td colspan="3">
-                                    <input type="text" id="numeroChave" name="numeroChave" class="field-size-max"
-                                           maxlength="44">
+                                    <input type="text" id="numeroChave" name="numeroChave" class="field-size-max" maxlength="44">
                                 </td>
                             </tr>
                             <tr id="linhaNumeroSerie" style="display: none">
-                                <td><label for="numeroSerie"  class="bold" >Número de Série: </label></td>
+                                <td><label for="numeroSerie" class="bold">Número de Série: </label></td>
                                 <td colspan="3">
                                     <input type="text" id="numeroSerie" name="numeroSerie" class="field-size-max">
                                 </td>
                             </tr>
-                            <tr id="linhaNumeroNota" >
+                            <tr id="linhaNumeroNota">
                                 <td nowrap>
                                     <label class="bold" for="e69_numnota">Número da Nota: </label>
                                 </td>
@@ -266,7 +311,18 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                                     <?php db_input('e69_localrecebimento', 13, '', true, 'text', 1, 'style="width: 100%;"'); ?>
                                 </td>
                             </tr>
+                            <tr id="componente-arquivos">
+                                <td nowrap>
+                                    <label class="bold" for="arquivo_notafsical">Arquivo Nota Fiscal:</label>
+                                </td>
+                                <td colspan="3">
+                                    <input type="file" name="arquivo" id="arquivo" multiple>
+                                </td>
+                            </tr>
                         </table>
+                    </fieldset>
+                    <fieldset id="field-arquivos">
+                        <div id="arquivos-selecionados"></div>
                     </fieldset>
                     <fieldset id="infoSagres" class="separator" style="display: none">
                         <legend>Informações Sagres - TCE/PB</legend>
@@ -277,72 +333,183 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                                     <label class="bold" for="codigo_agrupamento">Agrupamento da folha de pagamento:</label>
                                 </td>
                                 <td>
-                                    <?php db_input('codigo_agrupamento', 8, 1, true, 'text', 1,"onkeypress='validaTamanho(event)'"); ?>
+                                    <?php db_input('codigo_agrupamento', 8, 1, true, 'text', 1, "onkeypress='validaTamanho(event)'"); ?>
                                 </td>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </fieldset>
-            </td>
-            <td valign='top' style='padding:0px'>
-                <fieldset>
-                    <legend><b>&nbsp;Valores do Empenho&nbsp;</b></legend>
-                    <table style="width:200px;height:100%">
-                        <tr>
-                            <td nowrap><?= $Le60_vlremp ?></td>
-                            <td align=right><?php db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
-                        </tr>
-                        <tr>
-                            <td nowrap><?= $Le60_vlranu ?></td>
-                            <td align=right><?php db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
-                        </tr>
-                        <tr>
-                            <td nowrap><?= $Le60_vlrliq ?></td>
-                            <td align=right><?php db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
-                        </tr>
-                        <tr>
-                            <td nowrap><?= $Le60_vlrpag ?></td>
-                            <td align=right><?php db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
-                        </tr>
-                        <!-- Extensao [CotaMensalLiquidacao] - Parte 1 -->
-                        <tr>
-                            <td nowrap><b>Saldo</b></td>
-                            <td align=right><?php db_input('saldodis', 12, 0, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
-                        </tr>
-                    </table>
-                </fieldset>
             </td>
         </tr>
-        <tr>
-            <td colspan='2' style='padding:0px'>
-                <fieldset>
-                    <legend><b>&nbsp;Itens&nbsp;</b></legend>
-                    <div style='border:2px inset white'>
-                        <table cellspacing=0 cellpadding=0 width='100%'>
-                            <tr>
-                                <th class='table_header'>
-                                    <input type='checkbox' style='display:none' id='mtodos' onclick='js_marca()'>
-                                    <a onclick='js_marca()' style='cursor:pointer'>M</a></b>
-                                </th>
-                                <th class='table_header' width='30%'>Material</th>
-                                <th class='table_header'>Sequência</th>
-                                <th class='table_header'>Valor Unitário</th>
-                                <th class='table_header'>Quantidade</th>
-                                <th class='table_header'>Valor Total</th>
-                                <th class='table_header'>Quantidade <br>Entregue</th>
-                                <th class='table_header'>Valor <br>Entregue</th>
-                                <?php
-                                if ($iTipoControleCustos > 0) {
-                                    echo "<th class='table_header'>Centro de Custo</th>";
-                                }
-                                ?>
-                                <th class='table_header' style='width:18px'>&nbsp;</th>
-                            </tr>
-                            <tbody id='dados'
-                                   style='height:150;width:95%;overflow:scroll;overflow-x:hidden;background-color:white'>
-                            </tbody>
-                            <tfoot>
+    </table>
+    </fieldset>
+    <fieldset id="infoDiarias" class="separator d-none">
+        <legend>Diárias</legend>
+        <table>
+            <tr>
+                <td>
+                    <label for="diariaRegist">
+                        <b><a href="#" onclick="js_pesquisarh01_regist(true)">Matrícula: </a></b>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" id="diariaRegist" size="10" onchange="js_pesquisarh01_regist(false)">
+                    <input type="text" id="diariaNome" size="30" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="diariaSaida"><b>Data de Saída:</b></label></td>
+                <td><?php db_inputdata('diariaSaida', '', '', '', true, 'text', 1) ?>
+                    <div style="<?= $exibirCamposAdicionaisRJ ? 'display:inline;' : 'display:none;'; ?>">
+                        <label for="qtde"><b>Qtde:</b></label>
+                        <?php db_input('qtde', 13, null, true, 'text', 1, "", null, null, null, 20); ?>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td><label for="diariaRetorno"><b>Data de Retorno:</b></label></td>
+                <td><?php db_inputdata('diariaRetorno', '', '', '', true, 'text', 1) ?></td>
+            </tr>
+            <tr>
+                <td><label for="diariaTipo"></label><b><?= $labelDiariaTipo ?></b></td>
+                <td>
+                    <?php db_select("diariaTipo", $listaTiposDiaria, true, 1); ?>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="diariaDestino"><b><?= $labelDiariaDestino ?></b></label></td>
+                <td><input type="text" name="diariaDestino" id="diariaDestino" size="40"></td>
+            </tr>
+            <tr class="<?= $exibirCamposAdicionaisRJ ? '' : 'd-none'; ?>">
+                <td nowrap>
+                    <label class="bold" for="estadoDestino">Estado(s) de Destino:</label>
+                </td>
+                <td>
+                    <?php
+                    db_input('estadoDestino', 40, null, true, 'text', 1, "", null, null, null, 20);
+
+                    $estados = "select db71_sigla, db71_descricao from cadenderestado where db71_cadenderpais = 1";
+                    $rsEstados = db_query($estados);
+                    db_selectrecord("listaEstados", $rsEstados, true, 1, null, null, null, null, null, 1);
+                    ?>
+                </td>
+            </tr>
+
+            <tr class="<?= $exibirCamposAdicionaisRJ ? '' : 'd-none'; ?>">
+                <td nowrap>
+                    <label class="bold" for="paisDestino">País de Destino:</label>
+                </td>
+                <td>
+                    <?php db_input('paisDestino', 40, null, true, 'text', 1, "", null, null, null, 20); ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <fieldset>
+                        <legend><b><?= $labelObjetoDiaria ?></b></legend>
+                        <textarea name="diariaDescr" id="diariaDescr" cols="60" rows="5"></textarea>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset id="infoSigfis" class="separator d-none" style="margin-top: 0.5rem;">
+        <legend>Informações SIGFIS - TCE/RJ</legend>
+
+        <!-- tipo documento  -->
+        <div id="infoTipodocliquidacao" class="d-none">
+            <table>
+                <tr>
+                    <td>
+                        <label for="tipodocliquidacao">
+                            <b>Tipo de documento: </b>
+                        </label>
+                        <select id="tipodocliquidacao">
+                            <option value="" selected disabled>Selecione</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- danfe -->
+        <div id="infoDanfe" class="d-none">
+            <fieldset>
+                <legend>Danfe</legend>
+                <table>
+                    <tr>
+                        <td>
+                            <label for=""><b>Número: </b></label>
+                            <input id="danfeNumero" type="text" />
+                        </td>
+                        <td>
+                            <label for=""><b>Chave: </b></label>
+                            <input id="danfeChave" type="text" pattern="" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+
+        <!-- atestadores -->
+        <div id="infoAtestadores" class="d-none"></div>
+    </fieldset>
+    </fieldset>
+    </td>
+    <td valign='top' style='padding:0px'>
+        <fieldset>
+            <legend><b>&nbsp;Valores do Empenho&nbsp;</b></legend>
+            <table style="width:200px;height:100%">
+                <tr>
+                    <td nowrap><?= $Le60_vlremp ?></td>
+                    <td align=right><?php db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                </tr>
+                <tr>
+                    <td nowrap><?= $Le60_vlranu ?></td>
+                    <td align=right><?php db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                </tr>
+                <tr>
+                    <td nowrap><?= $Le60_vlrliq ?></td>
+                    <td align=right><?php db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                </tr>
+                <tr>
+                    <td nowrap><?= $Le60_vlrpag ?></td>
+                    <td align=right><?php db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                </tr>
+                <!-- Extensao [CotaMensalLiquidacao] - Parte 1 -->
+                <tr>
+                    <td nowrap><b>Saldo</b></td>
+                    <td align=right><?php db_input('saldodis', 12, 0, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                </tr>
+            </table>
+        </fieldset>
+    </td>
+    </tr>
+    <tr>
+        <td colspan='2' style='padding:0px'>
+            <fieldset>
+                <legend><b>&nbsp;Itens&nbsp;</b></legend>
+                <div style='border:2px inset white'>
+                    <table cellspacing=0 cellpadding=0 width='100%'>
+                        <tr>
+                            <th class='table_header'>
+                                <input type='checkbox' style='display:none' id='mtodos' onclick='js_marca()'>
+                                <a onclick='js_marca()' style='cursor:pointer'>M</a></b>
+                            </th>
+                            <th class='table_header' width='30%'>Material</th>
+                            <th class='table_header'>Sequência</th>
+                            <th class='table_header'>Valor Unitário</th>
+                            <th class='table_header'>Quantidade</th>
+                            <th class='table_header'>Valor Total</th>
+                            <th class='table_header'>Quantidade <br>Entregue</th>
+                            <th class='table_header'>Valor <br>Entregue</th>
+                            <?php
+                            if ($iTipoControleCustos > 0) {
+                                echo "<th class='table_header'>Centro de Custo</th>";
+                            }
+                            ?>
+                            <th class='table_header' style='width:18px'>&nbsp;</th>
+                        </tr>
+                        <tbody id='dados' style='height:150;width:95%;overflow:scroll;overflow-x:hidden;background-color:white'>
+                        </tbody>
+                        <tfoot>
                             <tr>
                                 <th colspan='7' style='text-align:right' class='table_footer'>Valor Total:</th>
                                 <th class='table_footer' id='valorTotalItens'>&nbsp;</th>
@@ -352,35 +519,34 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                                 ?>
                                 <th class='table_footer' style='width:18px'>&nbsp;</th>
                             </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </fieldset>
-            </td>
-        </tr>
-        <tr>
-            <td colspan='2' style='padding:0px'>
-                <fieldset>
-                    <legend><b>&nbsp;Histórico&nbsp;</b></legend>
-                    <table>
-                        <tr>
-                            <td>
-                                <?php db_textarea('historico', 5, 200, 0, true, 'text', 1, "") ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan='2'>
-
-                            </td>
-                        </tr>
+                        </tfoot>
                     </table>
-                </fieldset>
-            </td>
-        </tr>
+                </div>
+            </fieldset>
+        </td>
+    </tr>
+    <tr>
+        <td colspan='2' style='padding:0px'>
+            <fieldset>
+                <legend><b>&nbsp;Histórico&nbsp;</b></legend>
+                <table>
+                    <tr>
+                        <td>
+                            <?php db_textarea('historico', 5, 200, 0, true, 'text', 1, "") ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
     </table>
 
-    <input name="confirmar" type="button" id="confirmar" value="Confirmar"
-           onclick="return js_liquidar('<?= $metodo ?>')" disabled>
+    <input name="confirmar" type="button" id="confirmar" value="Confirmar" onclick="return js_liquidar('<?= $metodo ?>')" disabled>
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
     <input name="zeraritens" type="button" id="zeraritens" value="Zerar Itens" onclick="js_zeraItens();">
     <input name="preenche" type="button" id="preenche" value="Preencher Itens" onclick="js_preencheItens();">
@@ -482,17 +648,21 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
     </table>
 </div>
 <script>
-    iTipoControle = <?=$iTipoControleCustos;?>;
-    iControlaPit = <?=$iControlaPit?>;
+    const exibirCamposAdicionaisRJ = '<?= $exibirCamposAdicionaisRJ ?>' === '1';
+    iTipoControle = <?= $iTipoControleCustos; ?>;
+    iControlaPit = <?= $iControlaPit ?>;
 
-    var lUsaPCASP = <?php echo $lUsaPCASP;?>;
+    var lUsaPCASP = <?php echo $lUsaPCASP; ?>;
     var sDataSessao = '<?= $sData ?>';
     var isEmpenhoFolha = false;
-    var UF = '<?=getEstadoInstituicao()?>';
+    var UF = '<?= getEstadoInstituicao() ?>';
     var isPB = UF === 'PB'
+    var isRJ = UF === 'RJ'
+    var lEmpenhoDiaria = false;
+    var isDespesaPessoal = false;
 
-    $('e69_dtrecebe').value = '<?= $sData;?>';
-    $('e69_dtnota').value = '<?= $sData;?>';
+    $('e69_dtrecebe').value = '<?= $sData; ?>';
+    $('e69_dtnota').value = '<?= $sData; ?>';
     var aParcelasRegimeCompetencia = [];
 
     const linhaTipoNota = document.getElementById('linhaTipoNota');
@@ -507,6 +677,10 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
     if (!isPB) {
         linhaNumeroNota.style.display = 'table-row';
+    }
+
+    if (isRJ) {
+        const oInputCompetenciaFolha = new MaskedInput($('competenciaFolhaPagamento'), '99/9999');
     }
 
     const tiposNota = [];
@@ -529,7 +703,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
             if (tipo.data == 0) {
                 inputDataNota.value = '';
             } else {
-                $('e69_dtnota').value = '<?= $sData;?>';
+                $('e69_dtnota').value = '<?= $sData; ?>';
             }
         });
     }
@@ -555,7 +729,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
     function js_preenchepesquisa(chave) {
         db_iframe_empempenho.hide();
-        js_consultaEmpenho(chave, <?=$operacao?>);
+        js_consultaEmpenho(chave, <?= $operacao ?>);
     }
 
     function js_marca() {
@@ -635,8 +809,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         //$('pesquisar').disabled = true;
         url = 'emp4_liquidacao004.php';
         oAjax = new Ajax.Request(
-            url,
-            {
+            url, {
                 method: 'post',
                 parameters: 'json=' + strJson,
                 onComplete: js_saida
@@ -648,30 +821,29 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
         for (var i = 0; i < obj.data.length; i++) {
 
-            var sTextEvent = "<b>Elemento: </b>"+obj.data[i].elemento+"</br>";
+            var sTextEvent = "<b>Elemento: </b>" + obj.data[i].elemento + "</br>";
 
             if (obj.data[i].unidademed == '' || obj.data[i].unidademed == undefined) {
                 sTextEvent += "<b>Unidade: </b> UNIDADE </br>";
-            }
-            else {
-                sTextEvent += "<b>Unidade: </b>"+obj.data[i].unidademed+"</br>";
+            } else {
+                sTextEvent += "<b>Unidade: </b>" + obj.data[i].unidademed + "</br>";
             }
 
             if (obj.data[i].resumo == '' || obj.data[i].resumo == undefined) {
                 sTextEvent += "<b>Resumo: </b> Sem observação";
             } else {
-                sTextEvent += "<b>Resumo: </b>"+obj.data[i].resumo.urlDecode();
+                sTextEvent += "<b>Resumo: </b>" + obj.data[i].resumo.urlDecode();
             }
 
-            var oDBHint    = eval("oDBHint_"+'descr'+[i+1]+" = new DBHint('oDBHint_"+'descr'+[i+1]+"')");
+            var oDBHint = eval("oDBHint_" + 'descr' + [i + 1] + " = new DBHint('oDBHint_" + 'descr' + [i + 1] + "')");
             oDBHint.setText(sTextEvent);
             oDBHint.setShowEvents(["onmouseover"]);
             oDBHint.setHideEvents(["onmouseout"]);
             oDBHint.setPosition('B', 'L');
             oDBHint.setUseMouse(true);
             oDBHint.setWidth(350);
-            oDBHint.make($('descr'+[i+1]));
-            }
+            oDBHint.make($('descr' + [i + 1]));
+        }
     }
 
     /**
@@ -686,6 +858,12 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
         js_removeObj("msgBox");
         obj = JSON.parse(oAjax.responseText);
+
+        if (obj.lSuspenderLiquidacao == 't') {
+            alert("Ficha financeira suspensa para liquidações.");
+            js_pesquisa();
+            return false;
+        }
 
         if (obj.lEmpenhoRestoAPagar) {
             habilitaRegimeCompetencia(false);
@@ -726,7 +904,9 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                     case "7":
                     case "8":
                     case "10":
-                        sMensagemGrupoDesdobramento = _M('financeiro.empenho.emp4_empempenho004.liquidacao_item_consumo_imediato', {sGrupo: sGrupo});
+                        sMensagemGrupoDesdobramento = _M('financeiro.empenho.emp4_empempenho004.liquidacao_item_consumo_imediato', {
+                            sGrupo: sGrupo
+                        });
                         break;
                 }
             }
@@ -750,7 +930,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         $('e69_numnota').value = 'S/N';
         $('e69_localrecebimento').value = obj.nomeInstituicao;
 
-       if (isPB) {
+        if (isPB) {
             if (obj.isEmpenhoFolha && obj.necessitaCodigoAgrupamento) {
                 $('infoSagres').show();
                 isEmpenhoFolha = true;
@@ -766,6 +946,20 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         } else {
             $('infoSagres').hide();
         }
+
+        if (isRJ) {
+            isDespesaPessoal = obj.isDespesaPessoal;
+            if (isDespesaPessoal == true) {
+                document.getElementById("competenciaFolhaPagamentolabel").style.display = "block";
+                document.getElementById("competenciaFolhaPagamento").style.display = "block";
+            } else {
+                document.getElementById("competenciaFolhaPagamentolabel").style.display = "none";
+                document.getElementById("competenciaFolhaPagamento").style.display = "none";
+            }
+
+            clearSigfis();
+        }
+
         if (empty(obj.sClassificacao)) {
             obj.sClassificacao = "Empenho não classificado";
         }
@@ -777,6 +971,19 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
         $('codigo_classificacao').value = obj.iClassificacao;
         $('descricao_classificacao').value = obj.sClassificacao.urlDecode().toUpperCase();
+
+        if (obj.lEmpenhoDiaria == true) {
+            lEmpenhoDiaria = true;
+            document.querySelector('#infoDiarias')
+                .classList.remove('d-none');
+            if (isRJ && lEmpenhoDiaria) {
+                ajustarOption('tipodocliquidacao', '6');
+            }
+        } else {
+            lEmpenhoDiaria = false;
+            document.querySelector('#infoDiarias')
+                .classList.add('d-none');
+        }
 
         saida = '';
         $('dados').innerHTML = '';
@@ -909,6 +1116,13 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
         iEmpenho = obj.e60_numemp;
 
+        if (obj.eletronico === false) {
+            var elemento = document.getElementById("componente-arquivos");
+            elemento.style.display = "none";
+            var elemento2 = document.getElementById("field-arquivos");
+            elemento2.style.display = "none";
+        }
+
         aParcelasRegimeCompetencia = obj.aParcelasRegimeCompetencia;
 
         js_criarCaixaHint(obj);
@@ -941,6 +1155,14 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                 return false;
             }
         }
+
+        if (isRJ && isDespesaPessoal) {
+            if ($F('competenciaFolhaPagamento').trim() == "" || $F('competenciaFolhaPagamento').trim() == "/") {
+                alert("Campo Data competência é de preenchimento obrigatório.");
+                return false;
+            }
+        }
+
         $('pesquisar').disabled = true;
         $('confirmar').disabled = true;
         valorTotal = 0;
@@ -1029,6 +1251,30 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
             $('pesquisar').disabled = false;
             $('confirmar').disabled = false;
             return false;
+        }
+
+        if (!$F(e03_numeroprocesso) && UF === 'RJ') {
+            $('pesquisar').disabled = false;
+            $('confirmar').disabled = false;
+            alert('Processo Administrativo deve ser informado.');
+            return false;
+        }
+
+        /**
+         * Sigfis Validacoes
+         */
+        if (UF === 'RJ') {
+            if (!js_validaTidocliquidacao()) {
+                $('pesquisar').disabled = false;
+                $('confirmar').disabled = false;
+                return false;
+            }
+
+            if (!js_validaAtestadores()) {
+                $('pesquisar').disabled = false;
+                $('confirmar').disabled = false;
+                return false;
+            }
         }
 
         if (aNotas.length != 0) {
@@ -1123,9 +1369,9 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                 oParam.outrosDados = js_objectToJson(outrosDados);
 
                 oParam.outrosDadosNota = JSON.stringify({
-                    "tipo_nota" : inputTipoNota.value,
-                    "chave_nota" : inputNumeroChave.value,
-                    "serie_nota" : inputNumeroSerie.value
+                    "tipo_nota": inputTipoNota.value,
+                    "chave_nota": inputNumeroChave.value,
+                    "serie_nota": inputNumeroSerie.value
                 });
             }
 
@@ -1135,10 +1381,57 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
                 oParam.tipo_instrumento_contratual = eTipoInstrumentoContratual.value;
             }
 
+            oParam.competenciaPessoal = null;
+            if (isRJ && isDespesaPessoal) {
+                oParam.competenciaPessoal = $F('competenciaFolhaPagamento');
+            }
+
+            oParam.uploadNota = fileList;
+
+            if (lEmpenhoDiaria) {
+                oParam.lEmpenhoDiaria = true;
+                oParam.oInfoDiaria = {
+                    'saida': $F('diariaSaida'),
+                    'retorno': $F('diariaRetorno'),
+                    'tipo': $F('diariaTipo'),
+                    'destino': encodeURIComponent(tagString($F('diariaDestino'))),
+                    'descr': encodeURIComponent(tagString($F('diariaDescr'))),
+                    'regist': $F('diariaRegist')
+                };
+
+                if (exibirCamposAdicionaisRJ) {
+                    oParam.oInfoDiaria.qtde = $F('qtde');
+                    oParam.oInfoDiaria.estadoDestino = $F('estadoDestino');
+                    oParam.oInfoDiaria.paisDestino = $F('paisDestino');
+                }
+            }
+
+            // sigfis
+            if (isRJ) {
+                // atestadores
+                if (oDBLancadorAtestadores.getRegistros().length) {
+                    oParam.atestadores = oDBLancadorAtestadores.getRegistros();
+                }
+
+                // tipo documento
+                if ($F('tipodocliquidacao')) {
+                    oParam.tipodocliquidacao = $F('tipodocliquidacao');
+                }
+
+                // danfe
+                if ($F('danfeNumero') || $F('danfeChave')) {
+                    oParam.outrosDadosNota = JSON.stringify({
+                        "danfe": {
+                            "numero": $F('danfeNumero'),
+                            "chave": $F('danfeChave')
+                        }
+                    });
+                }
+            }
+
             url = 'emp4_liquidacao004.php';
             oAjax = new Ajax.Request(
-                url,
-                {
+                url, {
                     method: 'post',
                     parameters: 'json=' + js_objectToJson(oParam),
                     onComplete: js_saidaLiquidacao
@@ -1185,14 +1478,14 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
             limparCampos();
             msgConfirm = "A Ordem de Pagamento " + obj.e50_codord + " foi gerada.\nDeseja Visualiza-la?";
             if (isPB) {
-                msgConfirm = "A Nota de Liquidação" + obj.e50_codord +  " foi gerada.\nDeseja Visualiza-la?";
+                msgConfirm = "A Nota de Liquidação" + obj.e50_codord + " foi gerada.\nDeseja Visualiza-la?";
             }
             if (confirm(msgConfirm)) {
                 js_emitir(obj.e50_codord);
                 iCodigoOrdemPagamento = obj.e50_codord;
             }
 
-            js_consultaEmpenho($F('e60_numemp'), <?=$operacao?>);
+            js_consultaEmpenho($F('e60_numemp'), <?= $operacao ?>);
             $('retencoes').disabled = false;
             $('e81_codmov').value = obj.iCodMov;
             $('e50_codord').value = obj.e50_codord;
@@ -1302,8 +1595,8 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         } else {
             if (document.form1.e49_numcgm.value != '') {
                 js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_cgm',
-                    'func_nome.php?pesquisa_chave=' + document.form1.e49_numcgm.value
-                    + '&funcao_js=parent.js_mostracgm', 'Pesquisa', false);
+                    'func_nome.php?pesquisa_chave=' + document.form1.e49_numcgm.value +
+                    '&funcao_js=parent.js_mostracgm', 'Pesquisa', false);
             } else {
                 document.form1.z01_credor.value = '';
             }
@@ -1351,8 +1644,8 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         var iNumEmp = $F('e60_numemp');
         js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_retencao',
             'emp4_lancaretencoes.php?iNumNota=' + iCodNota +
-            '&iNumEmp=' + iNumEmp + '&iCodOrd=' + iCodOrd + "&lSession=" + lSession
-            + '&iCodMov=' + iCodMov + '&callback=true',
+            '&iNumEmp=' + iNumEmp + '&iCodOrd=' + iCodOrd + "&lSession=" + lSession +
+            '&iCodMov=' + iCodMov + '&callback=true',
             'Lancar Retenções', true);
 
     }
@@ -1450,7 +1743,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
     function js_validarNumeroNota() {
         if ($F('e69_tipodocumentofiscal') == 50) {
             $('e69_numnota').value = '';
-            $('e69_numnota').observe("keypress", function (event) {
+            $('e69_numnota').observe("keypress", function(event) {
                 var lValidar = js_mask(event, "0-9");
                 if (!lValidar) {
                     event.stopPropagation();
@@ -1475,7 +1768,9 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
     }
 
 
-    var oInputCompetencia = new MaskedInput($('competencia_regime'), '99/9999', {placeholder: '_'});
+    var oInputCompetencia = new MaskedInput($('competencia_regime'), '99/9999', {
+        placeholder: '_'
+    });
 
     function validarCompetencia() {
 
@@ -1499,7 +1794,7 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
             var lCompetenciaValida = false;
 
-            aParcelasRegimeCompetencia.each(function (oParcela) {
+            aParcelasRegimeCompetencia.each(function(oParcela) {
 
                 var oMesParcela = new Number(oParcela.mes);
                 var oAnoParcela = new Number(oParcela.ano);
@@ -1531,26 +1826,26 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
 
     }
 
-    const exibeEmpenhosDaNota = ( empenhos ) => {
+    const exibeEmpenhosDaNota = (empenhos) => {
 
-      var sNota = $F("e69_numnota");
-      $("btnNotasVinculadas").style.display = "";
-      windowNotasEmpenho = new windowAux('wnddadosnota', 'Empenhos Vinculados a Nota: ' + sNota, 600, 400);
-      var quebra = 1;
+        var sNota = $F("e69_numnota");
+        $("btnNotasVinculadas").style.display = "";
+        windowNotasEmpenho = new windowAux('wnddadosnota', 'Empenhos Vinculados a Nota: ' + sNota, 600, 400);
+        var quebra = 1;
 
-      var total = empenhos.length;
-      var sContent  = "";
-          sContent += "<fieldset>";
-          sContent += "  <legend><strong>Empenhos Vinculados</strong></legend>";
-          sContent += "  <div id='ctnVinculos' style='background-color: white; height: 300px; overflow: auto;'>";
+        var total = empenhos.length;
+        var sContent = "";
+        sContent += "<fieldset>";
+        sContent += "  <legend><strong>Empenhos Vinculados</strong></legend>";
+        sContent += "  <div id='ctnVinculos' style='background-color: white; height: 300px; overflow: auto;'>";
 
-          sContent += "   <table>";
-          sContent += "     <tr>";
+        sContent += "   <table>";
+        sContent += "     <tr>";
 
-          for (i = 0; i < total; i++) {
+        for (i = 0; i < total; i++) {
 
             empenho = empenhos[i];
-            sContent += "       <td style='width:105px'>"+empenho+"</td>";
+            sContent += "       <td style='width:105px'>" + empenho + "</td>";
             if (quebra == 7) {
 
                 sContent += "</tr>";
@@ -1558,39 +1853,39 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
             }
 
             quebra++;
-          }
+        }
 
-          sContent += "    </table>";
-          sContent += "  </div>";
-          sContent += "</fieldset>";
+        sContent += "    </table>";
+        sContent += "  </div>";
+        sContent += "</fieldset>";
 
-      windowNotasEmpenho.setContent(sContent);
-      windowNotasEmpenho.show(100, 300);
+        windowNotasEmpenho.setContent(sContent);
+        windowNotasEmpenho.show(100, 300);
     }
 
     function js_verificaNota() {
 
-      var sNota = $F('e69_numnota');
-	  if(sNota != ''){
+        var sNota = $F('e69_numnota');
+        if (sNota != '') {
 
-	      js_divCarregando("Aguarde, Validando nota", "msgNota");
+            js_divCarregando("Aguarde, Validando nota", "msgNota");
 
-          url = 'emp4_liquidacao004.php';
+            url = 'emp4_liquidacao004.php';
 
-          var oParametros = new Object();
-          oParametros.method = 'verificaNota';
-          oParametros.sNota = encodeURIComponent(tagString(sNota));
-          oParametros.iCgmFornecedor = $F('e60_numcgm');
-          oParametros.m51_codordem = "";
-          oParametros.iEmpenho = $F("e60_numemp");
+            var oParametros = new Object();
+            oParametros.method = 'verificaNota';
+            oParametros.sNota = encodeURIComponent(tagString(sNota));
+            oParametros.iCgmFornecedor = $F('e60_numcgm');
+            oParametros.m51_codordem = "";
+            oParametros.iEmpenho = $F("e60_numemp");
 
-          var oAjaxLista = new Ajax.Request(url, {
-              method: "post",
-              parameters: 'json=' + Object.toJSON(oParametros),
-              onComplete: js_retornoVerificaNota
-          });
+            var oAjaxLista = new Ajax.Request(url, {
+                method: "post",
+                parameters: 'json=' + Object.toJSON(oParametros),
+                onComplete: js_retornoVerificaNota
+            });
 
-	  }
+        }
     }
 
     function js_retornoVerificaNota(oAjax) {
@@ -1606,12 +1901,12 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
     }
 
     const validaTamanho = (event) => {
-            let codigo = $F('codigo_agrupamento');
-            codigo += event.key;
-            if(codigo.length > 8){
-                alert("O código de agrupamento deve ter no máximo 8 dígitos");
-                event.preventDefault();
-            }
+        let codigo = $F('codigo_agrupamento');
+        codigo += event.key;
+        if (codigo.length > 8) {
+            alert("O código de agrupamento deve ter no máximo 8 dígitos");
+            event.preventDefault();
+        }
     }
 
     const validacoesCampoParaiba = () => {
@@ -1667,11 +1962,15 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         if (isPB) {
             return validacoesCampoParaiba();
         }
+
+        if (lEmpenhoDiaria) {
+            return js_validaDiaria();
+        }
+
         return true;
     };
 
-    function alertaConfirmaData()
-    {
+    function alertaConfirmaData() {
         <?php
         $clconparametro = new cl_conparametro();
         $rsconparametro = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
@@ -1684,4 +1983,362 @@ $Ie11_basecalculosubstitutotrib = isset($Ie11_basecalculosubstitutotrib) ? $Ie11
         }
     }
 
+    /**
+     * Funcoes referentes a Epenhos de diaria
+     **/
+
+    function js_pesquisarh01_regist(mostra) {
+        const func = 'func_rhpessoal.php?funcao_js=';
+        const chave = $F('diariaRegist');
+        const instit = <?= (db_getsession("DB_instit")); ?>
+
+        const diariaRegist = document.querySelector('#diariaRegist');
+        const diariaNome = document.querySelector('#diariaNome');
+
+        let funcao_js = '';
+        let params = '';
+
+        if (mostra == true) {
+            funcao_js = 'parent.js_mostrapessoal1|rh01_regist|z01_nome';
+            params = `&lTodos=true`;
+
+        } else {
+            if (chave != '') {
+                funcao_js = 'parent.js_mostrapessoal';
+                params = `&pesquisa_chave=${chave}&lTodos=true`;
+            } else {
+                diariaNome.value = '';
+            }
+        }
+
+        js_OpenJanelaIframe('',
+            'db_iframe_rhpessoal',
+            `${func}${funcao_js}${params}`,
+            'Pesquisa',
+            mostra
+        );
+    }
+
+    function js_mostrapessoal(chave, erro) {
+        diariaNome.value = chave;
+        if (erro == true) {
+            diariaRegist.focus();
+            diariaRegist.value = '';
+        }
+    }
+
+    function js_mostrapessoal1(chave1, chave2) {
+        diariaRegist.value = chave1;
+        diariaNome.value = chave2;
+        db_iframe_rhpessoal.hide();
+    }
+
+    function js_validaDiaria() {
+        // matriucla
+        if (!$F('diariaRegist')) {
+            alert('[Diária] Matrícula não informada.');
+            return false;
+        }
+
+        // datas
+        if (!$F('diariaSaida') || !$F('diariaRetorno')) {
+            alert('[Diária] Data de saída e retorno deverão ser informadas');
+            return false;
+        }
+
+        // destino
+        if (!$F('diariaDestino')) {
+            alert('[Diária] Destino deve ser informado.');
+            return false;
+        }
+
+        // descricao
+        if (!$F('diariaDescr')) {
+            alert('[Diária] Descrição deve ser informado.');
+            return false;
+        }
+
+        if (exibirCamposAdicionaisRJ) {
+            return js_validaDiariaCamposAdicionaisRJ();
+        }
+
+        return true;
+    }
+
+    function js_validaDiariaCamposAdicionaisRJ() {
+        // qtde
+        if (!$F('qtde')) {
+            alert('[Qtde] não informada.');
+            return false;
+        }
+
+        // estadoDestino
+        if (!$F('estadoDestino')) {
+            alert('[Estado de destino] não informado.');
+            return false;
+        }
+
+        //paisDestino
+        if (!$F('paisDestino')) {
+            alert('[País de destino] não informado.');
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Sessao destinada ao SIGFIS TCE/RJ
+     **/
+    if (isRJ) {
+
+        // Elementos
+        const infoSigfisEl = document.querySelector('#infoSigfis');
+        const infoAtestadoresEl = document.querySelector('#infoAtestadores');
+        const infoTipodocliquidacao = document.querySelector('#infoTipodocliquidacao');
+        const tipodocliquidacao = document.querySelector('#tipodocliquidacao');
+        const infoDanfe = document.querySelector('#infoDanfe');
+
+        infoSigfisEl.classList.remove('d-none');
+
+        // Preeche tipo de documento liquidacao
+        const getTipodocliquidacao = async () => {
+            const url = 'v4/api/financeiro/empenho/sigfis/tipodocliquidacao';
+            const request = await CurrentWindow.axios(url);
+            const {
+                data: response
+            } = request;
+            const {
+                data: responseData
+            } = response;
+
+            if (responseData.message == true) {
+                alert('Erro ao buscar tipos de documento de liquidacao.');
+                return false;
+            }
+
+            infoTipodocliquidacao.classList.remove('d-none');
+
+            const tipos = responseData.tipos;
+            tipos.forEach(item => {
+                const option = document.createElement('option');
+
+                option.innerHTML = item.e177_descr;
+                option.value = item.e177_sequencial;
+                option.dataset.codigo = item.e177_codigo;
+                option.dataset.decimo = item.e177_decimo;
+                option.dataset.tipodiverso = item.e177_tipodiverso;
+
+                tipodocliquidacao.appendChild(option);
+            });
+        }
+
+        getTipodocliquidacao();
+
+        // Lancador Atestadores
+        var oDBLancadorAtestadores = new DBLancador('oDBLancadorAtestadores');
+        oDBLancadorAtestadores.setNomeInstancia('oDBLancadorAtestadores');
+        oDBLancadorAtestadores.setTextoFieldset("Atestadores");
+        oDBLancadorAtestadores.setLabelAncora('cgm:');
+        oDBLancadorAtestadores.setGridHeight(100);
+        oDBLancadorAtestadores.setParametrosPesquisa('func_cgm.php', ['z01_numcgm', 'z01_nome']);
+        oDBLancadorAtestadores.show(infoAtestadoresEl);
+
+        // Atestadores
+        const showFieldAtestadores = (option) => {
+            const tipo = Number(option.dataset.codigo);
+            const tipodocaccept = [1, 3];
+
+            if (tipodocaccept.includes(tipo)) {
+                infoAtestadoresEl.classList.remove('d-none');
+            } else {
+                infoAtestadoresEl.classList.add('d-none');
+            }
+        }
+
+        function js_validaAtestadores() {
+            const optionEl = tipodocliquidacao.options[tipodocliquidacao.selectedIndex];
+            const tipo = Number(optionEl.dataset.codigo);
+            const tipodocaccept = [1, 3];
+
+            if (tipodocaccept.includes(tipo)) {
+                if (!oDBLancadorAtestadores.getRegistros().length) {
+                    alert('[Atestador] Atestadores devem ser informados.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function js_validaTidocliquidacao() {
+            if (!tipodocliquidacao.value) {
+                alert('Tipo documento deve ser informado.');
+                return false;
+            }
+
+            return true
+        }
+
+        // danfe
+        const showFieldDanfe = (option) => {
+            const tipo = Number(option.dataset.codigo);
+            const tipodocaccept = [1];
+
+            if (tipodocaccept.includes(tipo)) {
+                infoDanfe.classList.remove('d-none');
+            } else {
+                infoDanfe.classList.add('d-none');
+            }
+        }
+
+        // listeners
+        const handleTipodocChange = (e) => {
+            const selectEl = e.target;
+            const optionEl = selectEl.options[selectEl.selectedIndex];
+
+            showFieldAtestadores(optionEl);
+            showFieldDanfe(optionEl);
+        }
+
+        tipodocliquidacao.addEventListener('change', handleTipodocChange);
+
+        // Reseta os campos destinado ao sigfis
+        function clearSigfis() {
+
+            // Limpa tipo documento
+            tipodocliquidacao.value = '';
+
+            // Limpa Atestadores
+            infoAtestadoresEl.classList.add('d-none');
+            oDBLancadorAtestadores.clearAll();
+
+            // Limpa danfe
+            infoDanfe.classList.add('d-none');
+            infoDanfe.querySelectorAll('input').forEach(e => e.value = '');
+        }
+
+        $("listaEstados").options[0] = new Option('Selecione', '', true, true);
+        $("listaEstados").style.width = "280px";
+        $('estadoDestino').style.display = 'none';
+        $('paisDestino').value = "BRASIL";
+        $('paisDestino').readOnly = 'readonly';
+
+        $('diariaTipo').observe("change", function(event) {
+
+            $('estadoDestino').value = "";
+            $('listaEstados').options[0].selected = true;
+
+            switch (this.value) {
+
+                case '1':
+
+                    // esconder estadoDestino
+                    $('estadoDestino').style.display = 'none';
+                    // aparecer listaEstados
+                    $('listaEstados').style.display = '';
+                    $('paisDestino').value = "BRASIL";
+                    $('paisDestino').readOnly = 'readonly';
+                    break;
+
+                case '0':
+
+                    // esconder listaEstados
+                    $('listaEstados').style.display = 'none';
+                    // aparecer estadoDestino
+                    $('estadoDestino').style.display = '';
+                    $('paisDestino').value = "";
+                    $('paisDestino').readOnly = '';
+                    break;
+            }
+
+        });
+
+        $('listaEstados').observe("change", function(event) {
+            $('estadoDestino').value = this.value;
+        });
+
+
+    }
+
+    /**
+     * Função para ajustar as opções de um elemento <select>.
+     * A função verifica se o elemento <select> existe na página e, em seguida,
+     * itera sobre todas as suas opções.
+     *
+     * Se o valor da opção não corresponder ao valor fornecido, a opção é removida do <select>.
+     * Se o valor da opção corresponder ao valor fornecido, a opção é marcada como selecionada e desabilitada.
+     *
+     * @param {string} selectId - O id do elemento <select> a ser ajustado.
+     * @param {string} valorParaManter - O valor da opção que deve ser mantida, selecionada e desabilitada.
+     */
+    const ajustarOption = (selectId, valorParaManter) => {
+
+        const optionTag = document.querySelector(`#${selectId}`);
+
+
+        if (optionTag) {
+
+            const options = optionTag.querySelectorAll('option');
+
+
+            options.forEach(option => {
+
+                if (option.value !== valorParaManter) {
+                    option.remove();
+                } else {
+
+                    option.selected = true;
+                    option.disabled = true;
+                }
+            });
+        }
+    };
+
+    const FILE_RPC = 'pro4_andamento_processo.RPC.php';
+    const fileInput = document.getElementById("arquivo");
+    const divArquivosSelecionados = document.getElementById("arquivos-selecionados");
+    var fileList = [];
+
+    fileInput.addEventListener('change', function(e) {
+        let i = 0;
+        var data = new FormData();
+        for (i; i < fileInput.files.length; i++) {
+            data.append('anexos[]', fileInput.files[i]);
+        }
+
+        data.append('acao', 'prepararDocumentos');
+        data.append('getExtArq', 0);
+        HttpClient.post(FILE_RPC, {
+            body: data
+        }).then(function(response) {
+            if (response.erro) {
+                alert(response.mensagem);
+                return;
+            }
+            response.documentos.map(function(documento) {
+                fileList.push(Object.assign({}, documento));
+                renderNamesFiles();
+            });
+        });
+        fileInput.value = "";
+    });
+
+    function removeFile(indexFile) {
+        fileList = fileList.filter(function(file, index) {
+            console.log(index, indexFile, (index != indexFile))
+            return index != indexFile;
+        });
+        renderNamesFiles();
+    }
+
+    function renderNamesFiles() {
+        let html = [];
+
+        fileList.forEach(function(file, index) {
+            html.push(`
+                  <div class='files'>${file.descricao} <a onclick="removeFile(${index})">X<a></div>
+               `);
+        });
+        divArquivosSelecionados.innerHTML = html.join("");
+    }
 </script>

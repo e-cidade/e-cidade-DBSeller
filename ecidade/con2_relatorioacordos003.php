@@ -144,7 +144,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
 		            ?>
 		          </td>
 		          <td>
-		            <?
+		            <?php
 		              db_input('ac50_sequencial', 10, $Iac50_descricao, true, 'text', 1,
 		                       "onchange=js_pesquisaac50_descricao(false)");
 		              db_input('ac50_descricao', 40, $Iac50_descricao, true, 'text', 3);
@@ -166,7 +166,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
                 <?=@$Lac16_datainicio?>
               </td>
               <td align="left">
-                <?
+                <?php
                   db_inputdata('ac16_datainicio',@$ac16_datainicio_dia,@$ac16_datainicio_mes,@$ac16_datainicio_ano,true,
                                'text',1);
                 ?>
@@ -175,7 +175,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
                 <?php echo @$Lac16_datafim; ?>
               </td>
               <td align="right">
-                <?
+                <?php
                   db_inputdata('ac16_datafim',@$ac16_datafim_dia,@$ac16_datafim_mes,@$ac16_datafim_ano,true,
                                'text',1)
                 ?>
@@ -291,7 +291,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
                  <b>Ordem:</b>
               </td>
               <td colspan="3">  
-                <?
+                <?php
                   $aOrdem = array(1=>'Data da Criação',
                                   2=>'Contratado',
                                   3=>'Número do Contrato',

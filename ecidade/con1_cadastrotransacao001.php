@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $oGet = db_utils::postMemory($_GET);
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
        $oDaoAbas->identifica = array("contranslan"=>"Evento Contábil","contranslr"=>"Regras do Evento Contábil", "conhistdocregra" => "Regra do Documento");
        $oDaoAbas->sizecampo  = array("contranslan" => "30", "contranslr" => "30", "conhistdocregra" => "30"); 
        $oDaoAbas->src        = array("contranslan"=>"con1_cadastrotransacao011.php?db_opcao={$oGet->db_opcao}", 
@@ -65,7 +65,7 @@ $oGet = db_utils::postMemory($_GET);
 </table>
   <form name="form1">
   </form>
-      <? 
+      <?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $r59_anousu = db_anofolha();
 $r59_mesusu = db_mesfolha();
 ?>
 <br />
-<form name="form1" method="post" action="">
+<form name="form1" method="post" action="" onload="exibePDV()" >
 <center>
 
 <fieldset style="width:650px;">
@@ -51,7 +51,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_regime?>
 	    </td>
 	    <td colspan=2> 
-	      <?
+	      <?php
 	      $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null));
 	      db_selectrecord("r59_regime",$result_regime,true,($db_opcao!=1?3:1));
 	      db_input('r59_anousu',4,$Ir59_anousu,true,'hidden',3);
@@ -61,15 +61,15 @@ $r59_mesusu = db_mesfolha();
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tr59_causa?>">
-	      <?
+	      <?php
 	      db_ancora(@$Lr59_causa,"js_pesquisar59_causa(true,false);",( ( $db_opcao != 1 ) ? 3 : 1 ));
 	      ?>
 	    </td>
 	    <td colspan=2>
-	      <?
+	      <?php
 	      db_input('r59_causa',6,$Ir59_causa,true,'text',( ( $db_opcao != 1 ) ? 3 : 1 ), "onchange='js_pesquisar59_causa(true,true)'")
 	      ?>
-	      <?
+	      <?php
 	      db_input('r59_descr',43,$Ir59_descr,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -77,15 +77,15 @@ $r59_mesusu = db_mesfolha();
 	  
 	  <tr>
 	    <td nowrap title="<?=@$Tr59_caub?>">
-	      <?
+	      <?php
 	      db_ancora(@$Lr59_caub,"",3);
 	      ?>
 	    </td>
 	    <td colspan=2>
-	      <?
+	      <?php
 	      db_input('r59_caub',6,$Ir59_caub,true,'text',( ( $db_opcao != 1 ) ? 3 : 1 ), "")
 	      ?>
-	      <?
+	      <?php
 	      db_input('r59_descr1',43,$Ir59_descr1,true,'text',(($db_opcao != 1 && ((isset($r59_caub) && trim($r59_caub) == "") || !isset( $r59_caub ) ) ) ? 3 : $db_opcao),"")
 	      ?>
 	    </td>
@@ -120,7 +120,7 @@ $r59_mesusu = db_mesfolha();
 	       <?=@$Lr59_movsef?>
 	    </td>
 	    <td colspan=2> 
-	      <?
+	      <?php
 	      $sDbWhere      = " r66_tipo = 'D' ";
 	      $sDbWhere     .= " and r66_anousu={$r59_anousu} and r66_mesusu = {$r59_mesusu}"; 
 	      $result_movsef = $clcodmovsefip->sql_record($clcodmovsefip->sql_query_file(null, null, null,
@@ -135,12 +135,11 @@ $r59_mesusu = db_mesfolha();
             </td>
             <td colspan=2>
                 <?php
-
                 $tiposDeRescisao = new TipoRescisao();
                 $tipos = $tiposDeRescisao->getTipos();
                 $tipos[0] = "Selecione";
                 ksort($tipos).
-                db_select("r59_motivoesocial", $tipos, true, $db_opcao);
+                db_select("r59_motivoesocial", $tipos, true, $db_opcao, "onChange=exibePDV()");
                 ?>
             </td>
         </tr>
@@ -150,7 +149,6 @@ $r59_mesusu = db_mesfolha();
             </td>
             <td colspan=2>
                 <?php
-
                 $tiposDeCessacaoBeneficios = new CessacaoBeneficios();
                 $tiposCessacao = $tiposDeCessacaoBeneficios->getTiposCessacao();
                 $tiposCessacao[0] = "Selecione";
@@ -159,12 +157,23 @@ $r59_mesusu = db_mesfolha();
                 ?>
             </td>
         </tr>
+		<tr id="trpdv">
+            <td nowrap title="<?=@$Tr59_demissaovoluntaria?>">
+                <?=@$Lr59_demissaovoluntaria?>
+            </td>
+            <td colspan=2>
+                <?php
+                $opcoesDemissaoVoluntaria = ['t' => 'Sim', 'f' => 'Não'];
+                db_select("r59_demissaovoluntaria", $opcoesDemissaoVoluntaria, true, $db_opcao);
+                ?>
+            </td>
+        </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tr59_aviso?>">
 	      <?=@$Lr59_aviso?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      $arr_SorN = Array('f'=>'Não','t'=>'Sim');
 	      db_select('r59_aviso',$arr_SorN,true,$db_opcao,"");
 	      ?>
@@ -183,17 +192,17 @@ $r59_mesusu = db_mesfolha();
 		  <tr>
 		    <td width="37%" align="right"><b>Férias:</b></td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_finss',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_ffgts',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_firrf',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
@@ -201,17 +210,17 @@ $r59_mesusu = db_mesfolha();
 		  <tr>
 		    <td width="37%" align="right"><b>13o. Salário:</b></td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_13inss',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_13fgts',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_13irrf',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
@@ -219,17 +228,17 @@ $r59_mesusu = db_mesfolha();
 		  <tr>
 		    <td width="37%" align="right"><b>Aviso Inden.:</b></td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_rinss',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_rfgts',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
 		    <td width="21%" align="center">
-	              <?
+	              <?php
 	              db_select('r59_rirrf',$arr_SorN,true,$db_opcao,"");
 	              ?>
 		    </td>
@@ -244,7 +253,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_13sal?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_select('r59_13sal',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -254,7 +263,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_fprop?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_select('r59_fprop',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -264,7 +273,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_fvenc?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_select('r59_fvenc',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -274,7 +283,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_tercof?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_input('r59_tercof',6,$Ir59_tercof,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -284,7 +293,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_codsaq?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_input('r59_codsaq',6,$Ir59_codsaq,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -294,7 +303,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_mfgts?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_input('r59_mfgts',6,$Ir59_mfgts,true,'text',$db_opcao,"")
 	      ?>
 	    </td>
@@ -304,7 +313,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_grfp?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_select('r59_grfp',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -314,7 +323,7 @@ $r59_mesusu = db_mesfolha();
 	      <?=@$Lr59_479clt?>
 	    </td>
 	    <td> 
-	      <?
+	      <?php
 	      db_select('r59_479clt',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -409,7 +418,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4,chave5){
   db_iframe_rescisao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4+'&chavepesquisa5='+chave5";
   }
@@ -417,8 +426,25 @@ function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4,chave5){
 }
 document.getElementById('r59_motivoesocial').style.width='500px';
 document.getElementById('r59_cessacaobeneficios').style.width='500px';
+
+function exibePDV() {
+	let valoresNaoPermitidos = [10, 11, 12, 13, 28, 29, 30, 34, 36, 37, 40, 43, 44];
+	let length = valoresNaoPermitidos.length;
+	let exibe = true;
+    for(var i = 0; i < length; i++) {
+		if (valoresNaoPermitidos[i] == document.form1.r59_motivoesocial.value) {
+			exibe = false;
+		}
+    }
+	if (exibe == true) {
+		document.getElementById('trpdv').style.display='';
+	} else {
+		document.getElementById('trpdv').style.display='none';
+		document.form1.r59_demissaovoluntaria.value = 'f';
+	}
+}
 </script>
-<?
+<?php
 if ($db_opcao==2){
   if(isset($r59_movsef)&&$r59_movsef!=""){
  //   db_msgbox($r59_movsef );

@@ -69,21 +69,21 @@ $db_opcao = 1;
             <table>
               <tr>
                 <td nowrap title="<?=@$Te82_codord?>">
-                 <? db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
+                 <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
                 </td>
                 <td nowrap>
-                 <? db_input('e50_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
+                 <?php db_input('e50_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Tz01_numcgm?>">
-                 <? db_ancora(@$Lz01_numcgm,"js_pesquisaz01_numcgm(true);",$db_opcao);  ?>
+                 <?php db_ancora(@$Lz01_numcgm,"js_pesquisaz01_numcgm(true);",$db_opcao);  ?>
                 </td>
                 <td nowrap>
-                 <? db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")  ?>
+                 <?php db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")  ?>
                 </td>
                 <td nowrap>
-                 <? db_input('z01_nome',40,$Iz01_nome,true,'text', 3," onchange='js_pesquisaz01_numcgm(false);'")  ?>
+                 <?php db_input('z01_nome',40,$Iz01_nome,true,'text', 3," onchange='js_pesquisaz01_numcgm(false);'")  ?>
                 </td>
               </tr>
             </table>
@@ -112,7 +112,7 @@ $db_opcao = 1;
   </center>
   </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

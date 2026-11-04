@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,13 +54,13 @@ class cl_tabcurritipo {
                  h02_tipotreinamento = int4 = tipo de treinamento do esocial
                  ";
    //funcao construtor da classe
-   function cl_tabcurritipo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabcurritipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_tabcurritipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h02_codigo = ($this->h02_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["h02_codigo"]:$this->h02_codigo);
        $this->h02_descr = ($this->h02_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["h02_descr"]:$this->h02_descr);
@@ -80,7 +80,7 @@ class cl_tabcurritipo {
      }
    }
    // funcao para inclusao
-   function incluir ($h02_codigo){
+   public function incluir ($h02_codigo){
       $this->atualizacampos();
      if($this->h02_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -104,7 +104,7 @@ class cl_tabcurritipo {
        $this->h02_tipotreinamento = 'null';
      }
      if($h02_codigo == "" || $h02_codigo == null ){
-         $result = db_query("select nextval('tabcurritipo_h02_codigo_seq')");
+       $result = db_query("select nextval('tabcurritipo_h02_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
          $this->erro_sql   = "Verifique o cadastro da sequencia: tabcurritipo_h02_codigo_seq do campo: h02_codigo";
@@ -114,7 +114,6 @@ class cl_tabcurritipo {
          return false;
        }
        $this->h02_codigo = pg_result($result,0,0);
-
      }else{
        $result = db_query("select last_value from tabcurritipo_h02_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $h02_codigo)){
@@ -186,7 +185,7 @@ class cl_tabcurritipo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($h02_codigo=null) {
+   public function alterar ($h02_codigo=null) {
       $this->atualizacampos();
      $sql = " update tabcurritipo set ";
      $virgula = "";
@@ -288,7 +287,7 @@ class cl_tabcurritipo {
      }
    }
    // funcao para exclusao
-   function excluir ($h02_codigo=null,$dbwhere=null) {
+   public function excluir ($h02_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h02_codigo));
      }else{
@@ -351,7 +350,7 @@ class cl_tabcurritipo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -373,10 +372,10 @@ class cl_tabcurritipo {
       }
      return $result;
    }
-   function sql_query ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +396,7 @@ class cl_tabcurritipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,10 +405,10 @@ class cl_tabcurritipo {
      }
      return $sql;
   }
-   function sql_query_file ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +429,7 @@ class cl_tabcurritipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,6 +438,5 @@ class cl_tabcurritipo {
      }
      return $sql;
   }
-
 }
 ?>

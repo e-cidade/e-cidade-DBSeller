@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("y87_baixaproc");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty86_codautotipo?>">
-       <?
+       <?php
        db_ancora(@$Ly86_codautotipo,"js_pesquisay86_codautotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y86_codautotipo',8,$Iy86_codautotipo,true,'text',$db_opcao," onchange='js_pesquisay86_codautotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('y59_codigo',8,$Iy59_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty86_codbaixaproc?>">
-       <?
+       <?php
        db_ancora(@$Ly86_codbaixaproc,"js_pesquisay86_codbaixaproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y86_codbaixaproc',8,$Iy86_codbaixaproc,true,'text',$db_opcao," onchange='js_pesquisay86_codbaixaproc(false);'")
 ?>
-       <?
+       <?php
 db_input('y87_baixaproc',8,$Iy87_baixaproc,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_autotipobaixa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

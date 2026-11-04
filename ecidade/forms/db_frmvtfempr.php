@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,14 +38,14 @@ $clrotulo->label("rh35_descr");
       <strong>Ano / Mês :&nbsp;&nbsp;</strong>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($r16_anousu)){
         $r16_anousu = db_anofolha();
       }
       db_input('r16_anousu',4,$Ir16_anousu,true,'text',$db_opcao,'')
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       if(!isset($r16_mesusu)){
         $r16_mesusu = db_mesfolha();
       }
@@ -58,7 +58,7 @@ $clrotulo->label("rh35_descr");
       <?=@$Lr16_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r16_codigo',4,$Ir16_codigo,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -68,7 +68,7 @@ $clrotulo->label("rh35_descr");
       <?=@$Lr16_descr?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r16_descr',30,$Ir16_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -78,7 +78,7 @@ $clrotulo->label("rh35_descr");
       <?=@$Lr16_valor?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r16_valor',15,$Ir16_valor,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -88,22 +88,22 @@ $clrotulo->label("rh35_descr");
       <?=@$Lr16_perc?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r16_perc',15,$Ir16_perc,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr16_empres?>">
-      <?
+      <?php
       db_ancora(@$Lr16_empres,"js_pesquisar16_empres(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('r16_empres',4,$Ir16_empres,true,'text',$db_opcao," onchange='js_pesquisar16_empres(false);'")
       ?>
-      <?
+      <?php
       db_input('rh35_descr',40,$Irh35_descr,true,'text',3,'')
       ?>
     </td>
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_vtfempr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

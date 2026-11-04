@@ -337,7 +337,7 @@ $result_conta2 = $result_conta1;
   </tr>
 </table>
 
-      <?
+      <?php
 
 
 if (!isset ($pesquisa) && ($altera == false)) {
@@ -348,7 +348,7 @@ if (!isset ($pesquisa) && ($altera == false)) {
 	    <tr>
 	      <td align='center' colspan='2' >
 	      <br>
-	       <b> <? db_ancora("SLIP","js_slip(true);",1);  ?></b>
+	       <b> <?php db_ancora("SLIP","js_slip(true);",1);  ?></b>
 	       <?=db_input('k17_codigo',8,'',true,'text',1,"onchange='js_slip(false);'")?>
 	       </td>
 	    </tr>
@@ -373,13 +373,13 @@ if (!isset ($pesquisa) && ($altera == false)) {
       <script>
         document.form1.k17_codigo.focus();
       </script>
-      <?
+      <?php
 
 } else {
 	if (isset ($pesquisa)) {
 ?>
 		   <center>
-		   <?
+		   <?php
 
 		$sql = "select slip.k17_codigo as Codigo,
 		               k17_data as Data,
@@ -420,7 +420,7 @@ if (!isset ($pesquisa) && ($altera == false)) {
 		db_lov($sql, 30, "cai4_auttransf.php");
 ?>
 		   </center>
-		   <?
+		   <?php
 
 
 	} else {
@@ -461,7 +461,7 @@ function js_mostraslip02(chave,erro){
   }
 }
 </script>
-<?
+<?php
 
 
 if ($db_erro != "") {
@@ -496,8 +496,8 @@ if ($k11_tipautent == 1) {
 
 if ((isset ($autentica) || isset ($estorna)) && isset ($fc_auttransf)) {
 	$autent = db_query("select k11_aut1,k11_aut2 from cfautent where k11_instit = ".db_getsession("DB_instit")." and k11_ipterm = '".$ip."'");
-	$aut1 = split(",", pg_result($autent, 0, 0));
-	$aut2 = split(",", pg_result($autent, 0, 1));
+	$aut1 =explode(",", pg_result($autent, 0, 0));
+	$aut2 =explode(",", pg_result($autent, 0, 1));
 	$str_aut1 = "";
 	$str_aut2 = "";
 	if (trim(pg_result($autent, 0, 0)) != "") {

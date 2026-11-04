@@ -54,13 +54,13 @@ class cl_cfpatri {
                  t06_controlaplacainstituicao = bool = Contolar placa por instituição 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatri() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cfpatri {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t06_codcla = ($this->t06_codcla == ""?@$GLOBALS["HTTP_POST_VARS"]["t06_codcla"]:$this->t06_codcla);
        $this->t06_pesqorgao = ($this->t06_pesqorgao == "f"?@$GLOBALS["HTTP_POST_VARS"]["t06_pesqorgao"]:$this->t06_pesqorgao);
@@ -80,7 +80,7 @@ class cl_cfpatri {
      }
    }
    // funcao para inclusao
-   function incluir ($t06_codcla){ 
+   public function incluir ($t06_codcla=null){ 
       $this->atualizacampos();
      if($this->t06_pesqorgao == null ){ 
        $this->erro_sql = " Campo Utiliza Pesquisa por Órgão não informado.";
@@ -168,7 +168,7 @@ class cl_cfpatri {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($t06_codcla=null) { 
+   public function alterar ($t06_codcla=null) { 
       $this->atualizacampos();
      $sql = " update cfpatri set ";
      $virgula = "";
@@ -279,7 +279,7 @@ class cl_cfpatri {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($t06_codcla=null,$dbwhere=null) { 
+   public function excluir ($t06_codcla=null,$dbwhere=null) { 
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -352,7 +352,7 @@ class cl_cfpatri {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -375,7 +375,7 @@ class cl_cfpatri {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $t06_codcla=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $t06_codcla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -411,7 +411,7 @@ class cl_cfpatri {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $t06_codcla=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $t06_codcla=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -445,7 +445,7 @@ class cl_cfpatri {
      return $sql;
   }
   // funcao para alteracao de parametro sem where
-  function alterar_parametro ($t06_codcla=null) {
+  public function alterar_parametro ($t06_codcla=null) {
     $this->atualizacampos();
     $sql = " update cfpatri set ";
     $virgula = "";
@@ -511,7 +511,7 @@ class cl_cfpatri {
   }
   
    //funcao para alteracao
-function alterarModeloEtiquetaNulo ($t06_codcla=null) { 
+public function alterarModeloEtiquetaNulo ($t06_codcla=null) { 
       $this->atualizacampos();
      $sql = " update cfpatri set ";
      $virgula = "";

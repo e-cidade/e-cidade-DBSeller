@@ -88,7 +88,7 @@ if ($oParam->exec == "getExames") {
       $oRetorno->itens->valoresatributos = "";
       if ($oRetorno->itens->s133_i_codigo != "") {
 
-        $oDaoExames    = db_utils::getDao("sau_examesatributos");
+        $oDaoExames    = new cl_sau_examesatributos;
         $sWhere        = "s134_i_agendaexameconfirma = {$oRetorno->itens->s133_i_codigo}";
         $sSqlAtributos = $oDaoExames->sql_query_atributovalores(null,"*","s132_i_codigo", $sWhere,$oRetorno->itens->s133_i_codigo );
         $rsAtributos   = $oDaoExames->sql_record($sSqlAtributos);
@@ -112,7 +112,7 @@ if ($oParam->exec == "getExames") {
 
   db_inicio_transacao ();
 
-  $oDaoAgendaExame = db_utils::getDao("sau_agendaexameconfirma");
+  $oDaoAgendaExame = new cl_sau_agendaexameconfirma;
   $sSqlAgenda      = $oDaoAgendaExame->sql_query_file(null,"*",null,"s133_i_agendaexames = {$oParam->iExame}");
 
   $rsAgenda        = $oDaoAgendaExame->sql_record($sSqlAgenda);
@@ -132,38 +132,14 @@ if ($oParam->exec == "getExames") {
     $oDaoAgendaExame->alterar($oAgenda->s133_i_codigo);
 
   }
+
   if ($oDaoAgendaExame->erro_status == 0) {
 
     $oRetorno->status  = 2;
     $oRetorno->message = urlencode($oDaoAgendaExame->erro_msg);
 
   }
-  if ($oRetorno->status == 1 ) {
-    /*
-     * excluimos todos os resultados do exame e incluimos novamente
-     */
-    $oDaoAgendaExameResultado = db_utils::getDao("sau_agendaexameconfirmaresultado");
-    $oDaoAgendaExameResultado->excluir(null,"s134_i_agendaexameconfirma = {$oDaoAgendaExame->s133_i_codigo}");
-    if ($oParam->sResultadoExame != "") {
 
-      $aAtributos = explode(",", $oParam->sResultadoExame);
-      foreach ($aAtributos as $iAtributo => $sValor) {
-
-        $aValor = explode("-",$sValor);
-        $oDaoAgendaExameResultado->s134_i_agendaexameconfirma = $oDaoAgendaExame->s133_i_codigo;
-        $oDaoAgendaExameResultado->s134_i_examesatributos     = $aValor[0];
-        $oDaoAgendaExameResultado->s134_c_valor               = "$aValor[1]";
-        $oDaoAgendaExameResultado->incluir(null);
-        if ($oDaoAgendaExameResultado->erro_status == 0) {
-
-          $oRetorno->status  = 2;
-          $oRetorno->message = urlencode($oDaoAgendaExameResultado->erro_msg);
-          break;
-
-        }
-      }
-    }
-  }
   if ($oRetorno->status == 1) {
     db_fim_transacao(false);
   }else {
@@ -173,8 +149,8 @@ if ($oParam->exec == "getExames") {
 
   db_inicio_transacao ();
   $oRetorno->iCGS = $oParam->iCGS;
-  $oDaoAgendaExame          = db_utils::getDao("sau_agendaexameconfirma");
-  $oDaoAgendaExameResultado = db_utils::getDao("sau_agendaexameconfirmaresultado");
+  $oDaoAgendaExame          = new cl_sau_agendaexameconfirma;
+  $oDaoAgendaExameResultado = new cl_sau_agendaexameconfirmaresultado;
   $oDaoAgendaExameResultado->excluir(null,"s134_i_agendaexameconfirma = {$oParam->iConfirmaExame}");
   if ($oDaoAgendaExameResultado->erro_status == 0) {
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -125,7 +125,7 @@ if (isset($modulo_testa)) {
     <body bgcolor=#CCCCCC marginwidth="0" marginheight="0" bgcolor="#cccccc">
     <form name="form1">
         <table width='100%' cellspacing="2" cellpadding="0" bgcolor="#cccccc">
-            <?
+            <?php
             if ($vazio == 1){
 
                 // cria as layers com o conteúdo das tabelas
@@ -220,7 +220,7 @@ if (isset($modulo_testa)) {
             </tr>
             <tr>
                 <td>
-                    <?
+                    <?php
                     if ($naolibclass == 'f') {
                         echo "<input id='g_classes' name='g_classes' type='checkbox' checked>";
                     }
@@ -228,7 +228,7 @@ if (isset($modulo_testa)) {
                 </td>
                 <td>Gera Classes PHP ...</td>
                 <td height="40">
-                    <?
+                    <?php
                     if ($naolibclass == 'f') {
                         echo "<iframe id='processa003' src='' height='20' class='cl_iframe'></iframe> ";
                     } else {
@@ -239,7 +239,7 @@ if (isset($modulo_testa)) {
             </tr>
             <tr>
                 <td>
-                    <?
+                    <?php
                     if ($naolibfunc == 'f') {
                         echo " <input id='g_funcao' name='g_funcao' type='checkbox' checked>";
                     }
@@ -247,7 +247,7 @@ if (isset($modulo_testa)) {
                 </td>
                 <td>Gera Função Pesquisa ...</td>
                 <td height="40">
-                    <?
+                    <?php
                     if ($naolibfunc == 'f') {
                         echo "<iframe id='processa004' src='' height='20' class='cl_iframe'></iframe>";
                     } else {
@@ -258,7 +258,7 @@ if (isset($modulo_testa)) {
             </tr>
             <tr>
                 <td>
-                    <?
+                    <?php
                     if ($naolibform == 'f') {
                         echo "<input id='g_form' name='g_form' type='checkbox' checked>";
                     }
@@ -266,7 +266,7 @@ if (isset($modulo_testa)) {
                 </td>
                 <td>Gera Formulário Manutenção ...</td>
                 <td height="40">
-                    <?
+                    <?php
                     if ($naolibform == 'f') {
                         echo "<iframe id='processa005' src='' height='20' class='cl_iframe'></iframe>";
                     } else {
@@ -277,7 +277,7 @@ if (isset($modulo_testa)) {
             </tr>
             <tr>
                 <td>
-                    <?
+                    <?php
                     if ($naolibprog == 'f') {
                         echo "<input id='g_prog' name='g_prog' type='checkbox' checked>";
                     }
@@ -285,7 +285,7 @@ if (isset($modulo_testa)) {
                 </td>
                 <td>Gera Programas Manutenção ...</td>
                 <td height="40">
-                    <?
+                    <?php
                     if ($naolibprog == 'f') {
                         echo "<iframe id='processa006' src='' height='20' class='cl_iframe'></iframe>";
                     } else {
@@ -308,7 +308,7 @@ if (isset($modulo_testa)) {
                     <iframe id='processa007' src='' height='20' class='cl_iframe'></iframe>
                 </td>
             </tr>
-            <?
+            <?php
             $result01 = $cldb_sysarqarq->sql_record($cldb_sysarqarq->sql_query_filho($tabela, null,
                 "db_sysarqarq.codarq,nomearq"));
             if ($cldb_sysarqarq->numrows > 0) {
@@ -326,7 +326,7 @@ if (isset($modulo_testa)) {
                                         <legend>
                                             <small>ABAS</small>
                                         </legend>
-                                        <?
+                                        <?php
                                         db_selectmultiple("tabela_filho", $result01, 3, 1, "", "", "", "");
                                         ?>
                                     </fieldset>
@@ -335,7 +335,7 @@ if (isset($modulo_testa)) {
                         </table>
                     </td>
                     <td height="40">
-                        <?
+                        <?php
                         if ($naolibfunc == 'f') {
                             echo "<iframe id='processa008' src='' height='' class='cl_iframe'></iframe>";
                         } else {
@@ -344,14 +344,14 @@ if (isset($modulo_testa)) {
                         ?>
                     </td>
                 </tr>
-                <?
+                <?php
             } ?>
             <tr>
                 <td colspan="3" align="center">
                     <br>
                     <input name="processar" type="button" value="Processar Opções" onclick="processa_rotina();">
                 </td>
-                <?
+                <?php
                 }
                 }
                 ?>
@@ -362,7 +362,7 @@ if (isset($modulo_testa)) {
 
     <script>
 
-        <?
+        <?php
         if($vazio != 0){
         ?>
 
@@ -370,7 +370,7 @@ if (isset($modulo_testa)) {
 
             document.getElementById('processa002').src = '';
 
-            <?
+            <?php
             if ($naolibclass == 'f') {
                 echo "document.getElementById('processa003').src = '';";
             }
@@ -386,7 +386,7 @@ if (isset($modulo_testa)) {
             ?>
 
 
-            <?
+            <?php
             if($cldb_sysarqarq->numrows > 0){
             ?>
 
@@ -408,7 +408,7 @@ if (isset($modulo_testa)) {
                         document.form1.arquivo.value + '&codfilhos=' + codfilhos;
                 }
             }
-            <?
+            <?php
             }
             ?>
 
@@ -419,7 +419,7 @@ if (isset($modulo_testa)) {
                     document.form1.arquivo.value;
             }
 
-            <?
+            <?php
             if ($naolibclass == 'f') {
                 echo " if(document.getElementById('g_classes').checked==true)
              document.getElementById('processa003').src = 'sys4_processa003.php?codarq='+document.form1.arquivo.value;";

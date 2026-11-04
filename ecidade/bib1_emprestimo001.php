@@ -101,7 +101,7 @@ if($linhas != 0) {
 <body >
 
 <?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
-<?
+<?php
 if (isset($acumula)) {
 
   //grava emprestimo
@@ -169,7 +169,7 @@ if (isset($leitor)&&$leitor != "") {
         location.href = "bib1_emprestimo001.php";
       }
     </script>
-    <?
+    <?php
     exit;
   } else if ($clcarteira->numrows > 0 && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
 
@@ -182,7 +182,7 @@ if (isset($leitor)&&$leitor != "") {
         location.href="bib1_emprestimo001.php";
       }
     </script>
-    <?
+    <?php
     exit;
   }
   $permitido = pg_result($resultY, 0, 'bi07_qtdlivros');
@@ -204,7 +204,7 @@ if (isset($leitor)&&$leitor != "") {
                 <td><b>Título</b></td>
                 <td>&nbsp;</td>
               </tr>
-              <?
+              <?php
               $cor1       = "#dbdbdb";
               $cor2       = "#f3f3f3";
               $cor        = "";
@@ -245,7 +245,7 @@ if (isset($leitor)&&$leitor != "") {
                            <?=count($qtd_lista)==1?"style='visibility:hidden'":""?>>
                   </td>
                 </tr>
-                <?
+                <?php
               }
               ?>
               <tr bgcolor="#999999">
@@ -261,7 +261,7 @@ if (isset($leitor)&&$leitor != "") {
                   <input name="qtd_lista" type="hidden" id="qtd_lista" value="<?=$contador?>">
                   <input name="confirmar" type="button" id="confirmar" value="Confirmar"
                          onclick="js_confirma('<?=$permitido?>',<?=$cldevolucaoacervo->numrows?>)"
-                         <?if($cldevolucaoacervo->numrows>=$permitido){echo 'disabled';}?>>
+                         <?php if($cldevolucaoacervo->numrows>=$permitido){echo 'disabled';}?>>
                   <input name="cancelar" type="button" id="cancelar" value="Cancelar" onclick="location='bib1_emprestimo001.php'">
                   <input type="checkbox" name="emite" value="true"> Emitir Comprovante
                 </td>
@@ -269,7 +269,7 @@ if (isset($leitor)&&$leitor != "") {
             </form>
           </table>
         </fieldset>
-        <?
+        <?php
         if ($cldevolucaoacervo->numrows >= $permitido) {
           db_msgbox("N° máximo de empréstimos($permitido) para este leitor já atingido!");
         }
@@ -279,7 +279,7 @@ if (isset($leitor)&&$leitor != "") {
     <tr>
       <td colspan="2">
         <fieldset width="100%"><legend><font color='red'><b>Empréstimos pendentes:</b></font></legend>
-        <?
+        <?php
         if ($cldevolucaoacervo->numrows == 0) {
           echo "<center><font color='green'><b>Nenhum empréstimo pendente.</b></font></center>";
         } else {
@@ -293,7 +293,7 @@ if (isset($leitor)&&$leitor != "") {
               <td><b>Devolver</b></td>
               <td><b>Situação</b></td>
             </tr>
-            <?
+            <?php
             for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
 
               db_fieldsmemory($resultX,$x);
@@ -314,14 +314,14 @@ if (isset($leitor)&&$leitor != "") {
                 <td><?=db_formatar($bi18_devolucao, 'd')?></td>
                 <td align="center" bgcolor="<?=$situacao?>" style="color:#FFFFFF;"><?=$texto?></td>
               </tr>
-            <?}?>
+            <?php }?>
            </table>
-       <?}?>
+       <?php }?>
        </fieldset>
       </td>
     </tr>
   </table>
-  <?
+  <?php
 } else {
 
   if (empty($bi18_retirada_dia)) {
@@ -788,11 +788,11 @@ function js_codbarras() {
   }
 }
 
-<?if ((isset($bi23_codigo) && isset($leitor) && $leitor == "")) {?>
+<?php if ((isset($bi23_codigo) && isset($leitor) && $leitor == "")) {?>
 
     document.form1.db_lanca_emprestimo.onclick = js_insSelectemprestimo;
     document.form1.db_lanca_emprestimo.click();
-<?}?>
+<?php }?>
 
 if ( oGet.bi23_codigo ) {
   js_BuscaDadosArquivoemprestimo(false);

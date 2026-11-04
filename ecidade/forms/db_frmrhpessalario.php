@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpessalario->rotulo->label();
        <?=@$Lrh04_seqpes?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh04_seqpes',6,$Irh04_seqpes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh04_seqpes',6,$Irh04_seqpes,true,'text',$db_opcao,"")
        <?=@$Lrh04_salari?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh04_salari',15,$Irh04_salari,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpessalario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

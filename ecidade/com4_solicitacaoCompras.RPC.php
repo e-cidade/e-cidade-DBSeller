@@ -54,7 +54,7 @@ switch ($oParam->exec) {
       $oItemRetorno = new stdClass;
       $oItemRetorno->codigoitem        = $oItem->getCodigoMaterial();
       $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-      $oItemRetorno->descricaoitem     = $oItem->getDescricaoMaterial();
+      $oItemRetorno->descricaoitem     = urlencode(urldecode($oItem->getDescricaoMaterial()));
       $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
       $oItemRetorno->quantidade        = $oItem->getQuantidade();
       $oItemRetorno->automatico        = $oItem->isAutomatico();
@@ -98,7 +98,7 @@ switch ($oParam->exec) {
       $oSolicita->save();
 
       $oRetorno->iCodigoSolicita = $oSolicita->getCodigoSolicitacao();
-      $oRetorno->resumo = urlencode($oSolicita->getResumo());
+      $oRetorno->resumo = db_stdClass::db_stripTagsJsonSemEscape(urldecode($oParam->resumo));
 
       $_SESSION["oSolicita"] = $oSolicita;
       $itens = $oSolicita->getItens();
@@ -108,7 +108,7 @@ switch ($oParam->exec) {
 
           $oItemRetorno->codigoitem        = $oItem->getCodigoMaterial();
           $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-          $oItemRetorno->descricaoitem     = $oItem->getDescricaoMaterial();
+          $oItemRetorno->descricaoitem     = urlencode(urldecode($oItem->getDescricaoMaterial()));
           $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
           $oItemRetorno->quantidade        = $oItem->getQuantidade();
           $oItemRetorno->automatico        = $oItem->isAutomatico();
@@ -166,7 +166,7 @@ switch ($oParam->exec) {
       $oEstimativa->save();
 
       $oRetorno->iCodigoSolicita = $oEstimativa->getCodigoSolicitacao();
-      $oRetorno->resumo = urlencode($oEstimativa->getResumo());
+      $oRetorno->resumo = db_stdClass::db_stripTagsJsonSemEscape(urldecode($oParam->resumo));
 
       $itens = $oEstimativa->getItens();
 
@@ -181,7 +181,7 @@ switch ($oParam->exec) {
         $oItemRetorno = new stdClass;
         $oItemRetorno->codigoitem    = $oItem->getCodigoMaterial();
         $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-        $oItemRetorno->descricaoitem = $oItem->getDescricaoMaterial();
+        $oItemRetorno->descricaoitem = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade    = $oItem->getQuantidade();
         $oItemRetorno->automatico    = $oItem->isAutomatico();
@@ -226,10 +226,10 @@ switch ($oParam->exec) {
         $oItemNovo->setQuantidade($oParam->quantidade);
       }
 
-      $oItemNovo->setResumo(db_stdClass::normalizeStringJsonEscapeString($oParam->sResumo));
-      $oItemNovo->setJustificativa(db_stdClass::normalizeStringJsonEscapeString($oParam->sJustificativa));
-      $oItemNovo->setPagamento(db_stdClass::normalizeStringJsonEscapeString($oParam->sPgto));
-      $oItemNovo->setPrazos(db_stdClass::normalizeStringJsonEscapeString($oParam->sPrazo));
+      $oItemNovo->setResumo(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode($oParam->sResumo)));
+      $oItemNovo->setJustificativa(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode($oParam->sJustificativa)));
+      $oItemNovo->setPagamento(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode($oParam->sPgto)));
+      $oItemNovo->setPrazos(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode($oParam->sPrazo)));
       $oItemNovo->setUnidade($oParam->iUnidade);
       $oItemNovo->setQuantidadeUnidade($oParam->nQuantUnidade);
       $oSolicita->addItem($oItemNovo);
@@ -246,7 +246,7 @@ switch ($oParam->exec) {
         $oItemRetorno = new stdClass;
         $oItemRetorno->codigoitem        = $oItem->getCodigoMaterial();
         $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-        $oItemRetorno->descricaoitem     = $oItem->getDescricaoMaterial();
+        $oItemRetorno->descricaoitem     = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
@@ -260,8 +260,8 @@ switch ($oParam->exec) {
         $oItemRetorno->temestimativa     = $lTemEstimativa;
 
         $oRetorno->itens[] = $oItemRetorno;
-
       }
+
     } catch (Exception $eErro) {
 
       $oRetorno->status  = 2;
@@ -272,9 +272,14 @@ switch ($oParam->exec) {
   case "salvarItensAbertura":
 
     try {
-
       db_inicio_transacao();
       $oSolicita =  $_SESSION["oSolicita"];
+
+      if (empty($oSolicita->getItens())) {
+          $oRetorno->status  = 2;
+          $oRetorno->message = urlencode('É preciso cadastrar pelo menos um item.');
+          break;
+      }
 
       if (!is_object($oSolicita)) {
         throw new Exception("Erro ao salvar dados. Procedimento abortado.");
@@ -287,6 +292,7 @@ switch ($oParam->exec) {
         throw new Exception("Não foi possível carregar a Solicitação de Compras.");
       }
 
+        $oSolicita->setResumo(db_stdClass::normalizeStringJsonEscapeString($oParam->resumo));
         $oSolicita->save();
 
         if ($oSolicita instanceof estimativaRegistroPreco) {
@@ -385,7 +391,10 @@ switch ($oParam->exec) {
         case 3:
 
           $oSolicita             = new aberturaRegistroPreco($oParam->iSolicitacao);
-          $_SESSION["oSolicita"] = $oSolicita;
+          if (empty($oParam->ignorarSessao)) {
+              $_SESSION["oSolicita"] = $oSolicita;
+          }
+
           if (count($oSolicita->getEstimativas()) > 0) {
             $lTemEstimativa = true;
           }
@@ -394,7 +403,9 @@ switch ($oParam->exec) {
         case 4:
 
           $oSolicita             = new estimativaRegistroPreco($oParam->iSolicitacao);
-          $_SESSION["oSolicita"] = $oSolicita;
+          if (empty($oParam->ignorarSessao)) {
+            $_SESSION["oSolicita"] = $oSolicita;
+          }
           $oRetorno->lCorreto    = $oSolicita->isAlterado();
 
           break;
@@ -407,7 +418,7 @@ switch ($oParam->exec) {
         $oItemRetorno = new stdClass;
         $oItemRetorno->codigoitem            = $oItem->getCodigoMaterial();
         $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-        $oItemRetorno->descricaoitem         = $oItem->getDescricaoMaterial();
+        $oItemRetorno->descricaoitem         = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetorno->quantidade            = $oItem->getQuantidade();
         $oItemRetorno->quantidadeUnidade     = $oItem->getQuantidadeUnidade();
         $oItemRetorno->automatico            = $oItem->isAutomatico();
@@ -472,7 +483,7 @@ switch ($oParam->exec) {
         $oItemRetorno = new stdClass;
         $oItemRetorno->codigoitem        = $oItem->getCodigoMaterial();
         $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-        $oItemRetorno->descricaoitem     = $oItem->getDescricaoMaterial();
+        $oItemRetorno->descricaoitem     = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
@@ -487,6 +498,9 @@ switch ($oParam->exec) {
         $oRetorno->itens[] = $oItemRetorno;
 
       }
+
+      $oRetorno->solicitacao = $oSolicita->getCodigoSolicitacao();
+      $oRetorno->tipoSolicitacao = $oSolicita->getTipoSolicitacao();
     } catch (Exception $eErro) {
 
 
@@ -526,10 +540,10 @@ switch ($oParam->exec) {
       $oSolicita =  $_SESSION["oSolicita"];
       $itens    = $oSolicita->getItens();
       $oItem     = $itens[$oParam->iIndice];
-      $oItem->setResumo(db_stdClass::normalizeStringJsonEscapeString($oParam->sResumo));
-      $oItem->setJustificativa(db_stdClass::normalizeStringJsonEscapeString($oParam->sJustificativa));
-      $oItem->setPagamento(db_stdClass::normalizeStringJsonEscapeString($oParam->sPgto));
-      $oItem->setPrazos(db_stdClass::normalizeStringJsonEscapeString($oParam->sPrazo));
+      $oItem->setResumo(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode($oParam->sResumo)));
+      $oItem->setJustificativa(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode(($oParam->sJustificativa))));
+      $oItem->setPagamento(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode(($oParam->sPgto))));
+      $oItem->setPrazos(db_stdClass::db_stripTagsJsonSemEscape(utf8_decode(($oParam->sPrazo))));
       if($oItem->getCodigoItemSolicitacao()){
           $oItem->save($oSolicita->getCodigoSolicitacao());
       } else {
@@ -548,7 +562,7 @@ switch ($oParam->exec) {
         $oItemRetorno = new stdClass;
         $oItemRetorno->codigoitem        = $oItem->getCodigoMaterial();
         $oItemRetorno->codigoItemSolicitacao = $oItem->getCodigoItemSolicitacao();
-        $oItemRetorno->descricaoitem     = $oItem->getDescricaoMaterial();
+        $oItemRetorno->descricaoitem     = urlencode(urldecode($oItem->getDescricaoMaterial()));
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
@@ -588,6 +602,17 @@ switch ($oParam->exec) {
     );
     $oRetorno->media    = itemSolicitacao::calculaMediaPrecoOrcamentos($oRetorno->itens);
     $oRetorno->unidades = itemSolicitacao::getUnidadesMaterial($oParam->iMaterial);
+    break;
+
+  case 'limparItensTemporarios':
+    $solicitacao = $_SESSION['oSolicita'];
+
+    foreach ($solicitacao->getItens() as $key => $item) {
+        if (empty($item->getCodigoItemSolicitacao())) {
+            $solicitacao->removerItem($key);
+        }
+    }
+
     break;
 
   case 'pesquisarEstimativaDepartamento':

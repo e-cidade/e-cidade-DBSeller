@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clcontacorrente->rotulo->label();
          <?=@$Lc17_sequencial?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('c17_sequencial',10,$Ic17_sequencial,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -47,7 +47,7 @@ $clcontacorrente->rotulo->label();
          <?=@$Lc17_contacorrente?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('c17_contacorrente',10,$Ic17_contacorrente,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -57,7 +57,7 @@ $clcontacorrente->rotulo->label();
          <?=@$Lc17_descricao?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('c17_descricao',45,$Ic17_descricao,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -75,7 +75,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contacorrente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
               <?=$Lpc06_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc06_codtipo",6,$Ipc06_codtipo,true,"text",4,"","chave_pc06_codtipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
               <?=$Lpc06_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc06_codele",6,$Ipc06_codele,true,"text",4,"","chave_pc06_codele");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pctipoelemento.php")==true){
@@ -118,12 +118,12 @@ $clpctipoelemento->rotulo->label("pc06_codele");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

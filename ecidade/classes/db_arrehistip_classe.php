@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_arrehistip {
                  k45_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_arrehistip() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrehistip"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_arrehistip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k45_idhist = ($this->k45_idhist == ""?@$GLOBALS["HTTP_POST_VARS"]["k45_idhist"]:$this->k45_idhist);
        $this->k45_ip = ($this->k45_ip == ""?@$GLOBALS["HTTP_POST_VARS"]["k45_ip"]:$this->k45_ip);
@@ -77,7 +77,7 @@ class cl_arrehistip {
      }
    }
    // funcao para inclusao
-   function incluir ($k45_idhist){ 
+   public function incluir ($k45_idhist){ 
       $this->atualizacampos();
      if($this->k45_ip == null ){ 
        $this->erro_sql = " Campo Número do IP nao Informado.";
@@ -153,7 +153,7 @@ class cl_arrehistip {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k45_idhist=null) { 
+   public function alterar ($k45_idhist=null) { 
       $this->atualizacampos();
      $sql = " update arrehistip set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_arrehistip {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k45_idhist=null,$dbwhere=null) { 
+   public function excluir ($k45_idhist=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k45_idhist));
      }else{ 
@@ -311,7 +311,7 @@ class cl_arrehistip {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

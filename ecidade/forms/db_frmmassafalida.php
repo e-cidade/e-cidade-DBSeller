@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -119,7 +119,7 @@ function js_iframe(valormatr){
        <?=@$Lj58_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j58_codigo',10,$Ij58_codigo,true,'text',3,"")
 ?>
     </td>
@@ -129,22 +129,22 @@ db_input('j58_codigo',10,$Ij58_codigo,true,'text',3,"")
        <?=@$Lj58_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j58_data',@$j58_data_dia,@$j58_data_mes,@$j58_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj58_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj58_numcgm,"js_pesquisaj58_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j58_numcgm',10,$Ij58_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj58_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',30,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -154,7 +154,7 @@ db_input('z01_nome',30,$Iz01_nome,true,'text',3,'')
        <?=@$Lj58_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('j58_obs',0,0,$Ij58_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -170,7 +170,7 @@ db_textarea('j58_obs',0,0,$Ij58_obs,true,'text',$db_opcao,"")
     </tr>
     <tr>
       <td align="left" valign="top">
-        <?
+        <?php
 	echo $Lj01_matric;
 	?>
 	<br>
@@ -179,7 +179,7 @@ db_textarea('j58_obs',0,0,$Ij58_obs,true,'text',$db_opcao,"")
       </td>
       <td rowspan="6" valign="top" align="center" width="120">
         <select id="selmassafalida" style="background:#cccccc;border-color:red;" name="selmassafalida" size="6"  onchange="js_iframe(this.value)" <?=($db_opcao==3?"disabled":"")?>  >                       
-	<?
+	<?php
         /// db_select("selmassafalida","","true",$db_opcao,"onchange='js_iframe(this.value)'","","#cccccc");
 	?>  
   	
@@ -232,7 +232,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

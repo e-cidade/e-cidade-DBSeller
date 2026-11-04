@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -72,18 +72,18 @@ $clrotulo->label("o56_elemento");
 $db_opcao = 1;
 $db_botao = true;
 if (isset($incluir) && $incluir != "") {
-  
+
 	db_inicio_transacao();
 	$sqlerro            = false;
 	$sCamposParametros  = "pc30_mincar, pc30_obrigamat, pc30_obrigajust, pc30_seltipo, pc30_sugforn, pc30_permsemdotac, ";
 	$sCamposParametros .= "pc30_contrandsol, pc30_tipoprocsol, pc30_gerareserva, pc30_passadepart";
 	$sSqlParametros     = $clpcparam->sql_query_file(db_getsession("DB_instit"), $sCamposParametros);
 	$result_tipo        = $clpcparam->sql_record($sSqlParametros);
-	
+
 	if ($clpcparam->numrows > 0) {
 		db_fieldsmemory($result_tipo, 0);
 	}
-	
+
 	$sSqlItensAnt      = "select distinct pc11_seq    ,                                                                      ";
 	$sSqlItensAnt     .= "			 pc11_codigo as codigo_ant,                                                              ";
 	$sSqlItensAnt     .= "			 pc16_codmater,                                                                          ";
@@ -105,12 +105,12 @@ if (isset($incluir) && $incluir != "") {
 	$result_itens_ant  = db_query($sSqlItensAnt);
 	$numrows_itens_ant = pg_numrows($result_itens_ant);
 	$sequencia = 0;
-  
+
 	for ($w = 0; $w < $numrows_itens_ant; $w ++) {
-	  
+
 		db_fieldsmemory($result_itens_ant, $w);
 		$sequencia ++;
-		
+
 		$sWhereItem   = " pc11_codigo = {$codigo_ant}";
 		$sCamposItem  = "pc11_codigo as codigo, pc11_numero, pc11_seq, pc11_quant, pc11_vlrun, pc11_prazo, pc11_pgto, ";
 		$sCamposItem .= "pc11_resum, pc11_just, pc11_liberado ";
@@ -120,7 +120,7 @@ if (isset($incluir) && $incluir != "") {
 		db_fieldsmemory($result_importacaoitem, 0);
 
 		if ($sqlerro == false) {
-		  
+
 			$clsolicitem->pc11_numero = $codnovo;
 			$clsolicitem->pc11_seq = $sequencia;
 			$clsolicitem->pc11_quant = $pc11_quant;
@@ -129,13 +129,13 @@ if (isset($incluir) && $incluir != "") {
 			$clsolicitem->pc11_pgto = $pc11_pgto;
 			$clsolicitem->pc11_resum = addslashes($pc11_resum);
 			$clsolicitem->pc11_just = $pc11_just;
-			$clsolicitem->pc11_liberado = "false";		
+			$clsolicitem->pc11_liberado = "false";
 			$clsolicitem->incluir(null);
 			$pc11_codigo = $clsolicitem->pc11_codigo;
 			$erro_msg = $clsolicitem->erro_msg;
 			if ($clsolicitem->erro_status == 0) {
 				$sqlerro = true;
-				$erro_msg = $clsolicitem->erro_msg;			
+				$erro_msg = $clsolicitem->erro_msg;
 				break;
 			}
 		}
@@ -181,12 +181,12 @@ if (isset($incluir) && $incluir != "") {
 		}
 
 		if ($pc30_contrandsol == 't') {
-		  
+
 				if ($sqlerro == false) {
-				  
+
 				  $sSqlConfig     = $cldb_config->sql_query(null, "numcgm,z01_nome", null, "codigo=".db_getsession("DB_instit"));
 					$result_cgmpref = $cldb_config->sql_record($sSqlConfig);
-					
+
 					db_fieldsmemory($result_cgmpref, 0);
 					$clprotprocesso->p58_codigo = $pc30_tipoprocsol;
 					$clprotprocesso->p58_dtproc = date('Y-m-d', db_getsession("DB_datausu"));
@@ -221,36 +221,36 @@ if (isset($incluir) && $incluir != "") {
 				}
 			}
 
-			
+
 		if ($sqlerro == false) {
 
 		  $sCampoImportaDotacao = "pc13_anousu,pc13_coddot,pc13_depto,pc13_quant,pc13_valor,pc13_codele";
 		  $sSqlImportaDotacao   = $clpcdotac->sql_query_file($codigo, null, null, $sCampoImportaDotacao);
 			$result_importacaodot = $clpcdotac->sql_record($sSqlImportaDotacao);
 			$numrows_importacaodot = $clpcdotac->numrows;
-			
+
 			for ($ii = 0; $ii < $numrows_importacaodot; $ii ++) {
-			  
+
 				db_fieldsmemory($result_importacaodot, $ii);
 				$pc13_coddot_pos = "pc13_coddot_$pc16_codmater"."_".$pc13_coddot;
 				$pc13_coddot = $$pc13_coddot_pos;
 				$pc13_anousu = db_getsession("DB_anousu");
-				
+
 				if (trim($pc13_coddot) != "") {
-				  
+
 					$result_codele = $clorcdotacao->sql_record($clorcdotacao->sql_query_file($pc13_anousu, $pc13_coddot));
 					if ($clorcdotacao->numrows > 0) {
-					  
+
 						db_fieldsmemory($result_codele, 0);
 						$pc13_codele = $o58_codele;
 					}
 					if (isset ($pc13_coddot) && $pc13_coddot != "") {
 						// ===================================================>>
 						// *******rotina que verifica se ainda existe saldo disponivel******************//
-						// rotina para calcular o saldo final                       
+						// rotina para calcular o saldo final
 						$result = db_dotacaosaldo(8, 2, 2, "true", "o58_coddot=$pc13_coddot", db_getsession("DB_anousu"));
 						db_fieldsmemory($result, 0, true);
-						
+
 						$tot = ((0 + $atual_menos_reservado) - (0 + $pc13_valor));
 					}
 
@@ -318,7 +318,7 @@ if (isset($incluir) && $incluir != "") {
 				}
 			}
 		}
-	}	
+	}
 	db_fim_transacao($sqlerro);
 }
 ?>
@@ -347,29 +347,29 @@ if (isset($incluir) && $incluir != "") {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+<table width="790" border="0" cellspacing="0" cellpadding="0" class="container">
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <form name='form1'>
-    <?
+    <?php
 db_input("codnovo", 10, "", true, "hidden", 3);
 db_input("importado", 10, "", true, "hidden", 3);
 
-$sSql = "select distinct 
-                pc16_codmater, 
+$sSql = "select distinct
+                pc16_codmater,
                 pc01_descrmater,
-                pc13_coddot, 
-                pc13_depto, 
-                pc13_codele, 
-                o56_elemento 
-           from solicitem 
+                pc13_coddot,
+                pc13_depto,
+                pc13_codele,
+                o56_elemento
+           from solicitem
           left  join pcdotac          on pc13_codigo    = pc11_codigo
-          inner join solicitempcmater on pc16_solicitem = pc11_codigo 
-          inner join solicita         on pc10_numero    = pc11_numero 
+          inner join solicitempcmater on pc16_solicitem = pc11_codigo
+          inner join solicita         on pc10_numero    = pc11_numero
           left  join orcelemento      on o56_codele     = pc13_codele
-                                     and o56_anousu     = extract (year from pc10_data) 
-          inner join pcmater          on pc01_codmater  = pc16_codmater  
+                                     and o56_anousu     = extract (year from pc10_data)
+          inner join pcmater          on pc01_codmater  = pc16_codmater
           where pc11_numero = $importado";
 $rsResult = db_query($sSql);
 $iNumrows = pg_numrows($rsResult);
@@ -384,25 +384,25 @@ if ($iNumrows > 0) {
         <td class='bordas' align='center'><b><small><?=@$RLo56_elemento?></small></b></td>
 	      <td class='bordas' align='center'><b><small>Nova Dotação</small></b></td>
 	    </tr>
-    <?
+    <?php
 	    for ($x = 0; $x < $iNumrows; $x ++) {
 		    db_fieldsmemory($rsResult, $x);
     ?>
-			<tr>  	            
+			<tr>
 			  <td	 class='bordas_corp' align='center'><small><?=@$pc16_codmater?></small></td>
 		   	<td	 class='bordas_corp' nowrap align='left' title='<?=@$pc01_descrmater?>'><small><?=@substr($pc01_descrmater,0,20)?>&nbsp;</small></td>
 		   	<td	 class='bordas_corp' align='center'><small><?=@$pc13_coddot?></small></td>
-				<td	 class='bordas_corp' align='center'><small><?=@$pc13_codele?></small></td>                
+				<td	 class='bordas_corp' align='center'><small><?=@$pc13_codele?></small></td>
 			  <td	 class='bordas_corp' align='right'><small><?=@$o56_elemento?></small></td>
 			  <td	 class='bordas_corp' align='right'><small><?=db_ancora(@$Lpc13_coddot,"js_pesquisapc13_coddot(true,$o56_elemento,$pc16_codmater,$pc13_coddot);",1);db_input("pc13_coddot_$pc16_codmater"."_".$pc13_coddot,8,$Ipc13_coddot,true,'text',3);?> &nbsp;</small></td>
 		  </tr>
-		<?
+		<?php
 	    }
     ?>
     </table>
-<?
+<?php
 }
-?>	
+?>
   <input name="incluir" type="submit" id="db_opcao" value="Incluir" >
     </form>
     </center>
@@ -419,19 +419,19 @@ function js_pesquisapc13_coddot(mostra,elemento,mater,dot){
   coddot=dot;
   qry= 'obriga_depto=sim';
   qry+= '&elemento='+elemento;
-  qry+= '&departamento=<?=(db_getsession("DB_coddepto")) ?>';  
+  qry+= '&departamento=<?=(db_getsession("DB_coddepto")) ?>';
   qry+= '&retornadepart=true';
-  if(mostra==true){  	
+  if(mostra==true){
     qry+= '&funcao_js=parent.js_mostraorcdotacao1|o58_coddot';
     js_OpenJanelaIframe('','db_iframe_orcdotacao','func_permorcdotacao.php?'+qry,'Pesquisa',true,0);
   }
 }
-function js_mostraorcdotacao1(chave1,chave2){  
-  eval("document.form1.pc13_coddot_"+codmater+"_"+coddot+".value ="+ chave1);                       
+function js_mostraorcdotacao1(chave1,chave2){
+  eval("document.form1.pc13_coddot_"+codmater+"_"+coddot+".value ="+ chave1);
   db_iframe_orcdotacao.hide();
 }
 </script>
-<?
+<?php
 if (isset ($incluir) && $incluir != "") {
 	if($sqlerro == true){
 	 db_msgbox($erro_msg);

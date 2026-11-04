@@ -60,7 +60,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
   global $anousu, $mesusu, $DB_instit;
   global $siglap, $db21_codcli, $cfpess, $subpes,$r110_regisi,$pensao;
-  global $$chamada_geral_arquivo, $minha_calcula_pensao, $campos_pessoal;
+  global ${$chamada_geral_arquivo}, $minha_calcula_pensao, $campos_pessoal;
 
   global $opcao_filtro,$opcao_gml,$r110_regisf,$r110_lotaci, $r110_lotacf,$faixa_regis,$faixa_lotac;
 
@@ -974,7 +974,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
       $condicaoaux  = " and ".$siglap."regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"] );
       $condicaoaux .= " and ".$siglap."rubric = ".db_sqlformat($rubrica_pensao );
 
-      global $$qual_ponto;
+      global ${$qual_ponto};
       if (db_selectmax($qual_ponto, "select * from ".$qual_ponto." ".bb_condicaosubpes($siglap ).$condicaoaux )) {
         $acao = "altera";
       } else {
@@ -984,7 +984,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
       if ($chamada_geral_arquivo == "gerfs13") {
 
         if ($lCalculaPensaoAdiantamento13) {
-          if (db_debug) {
+          if ($db_debug) {
             echo "[calc_pensao:Chamada : $iDebugNumeroChamada] calculando valor da pensao com adiantamento<br>";
             echo "[calc_pensao:Chamada : $iDebugNumeroChamada] valor da pensao = (valor da pensao * (r52_percadiantamento13)/100) = {$valor_pensao} * (".$pensao[$Ipensao]["r52_percadiantamento13"]."/100) = ".($valor_pensao * ($pensao[$Ipensao]["r52_percadiantamento13"]/100))."<br>";
           }  
@@ -1297,7 +1297,6 @@ function getRubricasPensaoAlimenticia( $iInstituicao  = null) {
   /**
    * SQL Com as Faixas de Cálculo
    */
-  $oDaoPensao = db_utils::getDao( "pensaocalculo" );
   $oDaoPensao = new cl_pensaocalculo();
   $sCamposFaixas = "rh117_sequencial, rh117_ordem, rh117_rubrica, rh117_instit";
   $sSqlFaixas = $oDaoPensao->sql_query_file( null, "*", null, " rh117_instit = " . db_getsession( "DB_instit" ) . " order by rh117_ordem " );

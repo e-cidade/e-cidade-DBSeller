@@ -99,24 +99,24 @@ db_postmemory($_POST);
     <legend>Consulta de Bens:</legend>
     <table class="form-container">
       <tr>
-        <td title="<?=$Tt52_ident?>"> <? db_ancora(@$Lt52_ident,"",3);?>  </td>
+        <td title="<?=$Tt52_ident?>"> <?php db_ancora(@$Lt52_ident,"",3);?>  </td>
         <td>
-          <?
+          <?php
           db_input("t52_ident",20,$It52_ident,true,"text",4,"");
           ?>
         </td>
       </tr>
       <tr>
-        <td title="<?=$Tt52_bem?>"> <? db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
+        <td title="<?=$Tt52_bem?>"> <?php db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
         <td>
-          <?
+          <?php
           db_input("t52_bem",8,$It52_bem,true,"text",4,"onchange='js_pesquisa_bem(false);'");
           db_input("t52_descr",40,$It52_descr,true,"text",3);
           ?>
         </td>
       </tr>
       <tr>
-        <td title="<?= $Tt52_depart?>"><? db_ancora(@$Lt52_depart, "js_pesquisa_depart(true);", 1)?></td>
+        <td title="<?= $Tt52_depart?>"><?php db_ancora(@$Lt52_depart, "js_pesquisa_depart(true);", 1)?></td>
         <td>
           <?php
           db_input("t52_depart", 8, $It52_depart, true, "text", 4, "onchange='js_pesquisa_depart(false);'");
@@ -128,7 +128,7 @@ db_postmemory($_POST);
   </fieldset>
   <input name="pesquisa" type="button" onclick='js_abre(this.name);'  value="Pesquisa">
 </form>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 
   //--------------------------------

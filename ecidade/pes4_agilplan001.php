@@ -76,12 +76,12 @@ db_postmemory($HTTP_POST_VARS);
             <strong>Ano / Mês :&nbsp;&nbsp;</strong>
             </td>
             <td>
-              <?
+              <?php
                $DBtxt23 = db_anofolha();
                db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
                $DBtxt25 = db_mesfolha();
                db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
               ?>
@@ -92,7 +92,7 @@ db_postmemory($HTTP_POST_VARS);
               <strong>Dia Vencimento:</strong>
             </td>
             <td>
-            <?
+            <?php
               db_input('diavencimento',4, $IDBtxt25,true,'text',2,'');
             ?>
             </td>
@@ -104,13 +104,13 @@ db_postmemory($HTTP_POST_VARS);
        </div> 
     </div>
     <div id='termometro' style='background-color: transparent;display: none'>
-    <? 
+    <?php 
      db_criatermometro('pessoal', 'concluido');
     ?>
     </div> 
   </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 if (isset($_POST["processar"])) {
   

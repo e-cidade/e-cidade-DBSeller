@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $oDaoCgsUnd->rotulo->label();
 				<b>Não Lançados:</b><br>
 				<select name="fatorderisco" id="fatorderisco" size="10" onclick="js_desabinc()" 
           style="font-size:9px;width:330px;height:120px" multiple>
-				<?
+				<?php
         $sSql           = $oDaoSauFatorDeRisco->sql_query(null, '*', 's105_v_descricao', 
                                                           's105_i_codigo not in '.
                                                           '(select s106_i_fatorderisco from cgsfatorderisco '.
@@ -74,7 +74,7 @@ $oDaoCgsUnd->rotulo->label();
 				<b>Lançados:</b><br>
 				<select name="cgsfatorderisco" id="cgsfatorderisco" size="10" onclick="js_desabexc()" 
           style="font-size:9px;width:330px;height:120px" multiple>
-				<?
+				<?php
         $sSql              = $oDaoCgsFatorDeRisco->sql_query(null, '*', 's105_v_descricao', 
                                                              "s106_i_cgs = $chavepesquisacgs"
                                                             );
@@ -95,7 +95,7 @@ $oDaoCgsUnd->rotulo->label();
 		</tr>
 		<tr>
 			<td colspan="3" align="center">
-				<?
+				<?php
 				$z01_t_obs = !isset($z01_t_obs)?' ':$z01_t_obs;
 				db_textarea('z01_t_obs', 3, 95, @$z01_t_obs, true, 'text', $db_opcao, "disabled");
         db_input('chavepesquisacgs', 10, '', true, 'hidden', 3, '');

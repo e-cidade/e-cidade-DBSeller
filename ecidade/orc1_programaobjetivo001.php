@@ -66,7 +66,7 @@ $oRotuloMeta->label();
 <style>
 
   .divAbas {
-    postion:relative;
+    position:relative;
     left:5px;
   }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clfiscalusuario->rotulo->label("y38_obs");
               <?=$Ly38_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y38_codnoti",20,$Iy38_codnoti,true,"text",4,"","chave_y38_codnoti");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clfiscalusuario->rotulo->label("y38_obs");
               <?=$Ly38_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y38_id_usuario",5,$Iy38_id_usuario,true,"text",4,"","chave_y38_id_usuario");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clfiscalusuario->rotulo->label("y38_obs");
               <?=$Ly38_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y38_obs",100,$Iy38_obs,true,"text",4,"","chave_y38_obs");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clfiscalusuario->rotulo->label("y38_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscalusuario.php")==true){
@@ -129,12 +129,12 @@ $clfiscalusuario->rotulo->label("y38_obs");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

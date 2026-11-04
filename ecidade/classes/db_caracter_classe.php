@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,19 +48,19 @@ class cl_caracter {
    var $j31_pontos = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j31_codigo = int8 = Cód. Característica 
-                 j31_descr = varchar(40) = Descrição 
-                 j31_grupo = int4 = Grupo 
-                 j31_pontos = int4 = Pontos 
+                 j31_codigo = int8 = Cód. Característica
+                 j31_descr = varchar(40) = Descrição
+                 j31_grupo = int4 = Grupo
+                 j31_pontos = int4 = Pontos
                  ";
    //funcao construtor da classe
-   function cl_caracter() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caracter");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_caracter {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j31_codigo = ($this->j31_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j31_codigo"]:$this->j31_codigo);
        $this->j31_descr = ($this->j31_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j31_descr"]:$this->j31_descr);
@@ -80,9 +80,9 @@ class cl_caracter {
      }
    }
    // funcao para Inclusão
-   function incluir ($j31_codigo){ 
+   public function incluir ($j31_codigo){
       $this->atualizacampos();
-     if($this->j31_descr == null ){ 
+     if($this->j31_descr == null ){
        $this->erro_sql = " Campo Descrição não informado.";
        $this->erro_campo = "j31_descr";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_caracter {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j31_grupo == null ){ 
+     if($this->j31_grupo == null ){
        $this->erro_sql = " Campo Grupo não informado.";
        $this->erro_campo = "j31_grupo";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_caracter {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j31_pontos == null ){ 
+     if($this->j31_pontos == null ){
        $this->erro_sql = " Campo Pontos não informado.";
        $this->erro_campo = "j31_pontos";
        $this->erro_banco = "";
@@ -133,7 +133,7 @@ class cl_caracter {
          $this->j31_codigo = $j31_codigo;
        }
      }
-     if(($this->j31_codigo == null) || ($this->j31_codigo == "") ){ 
+     if(($this->j31_codigo == null) || ($this->j31_codigo == "") ){
        $this->erro_sql = " Campo j31_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -191,7 +191,7 @@ class cl_caracter {
      return true;
    }
    // funcao para alteracao
-   public function alterar ($j31_codigo=null) { 
+   public function alterar ($j31_codigo=null) {
       $this->atualizacampos();
      $sql = " update caracter set ";
      $virgula = "";
@@ -201,7 +201,7 @@ class cl_caracter {
         }
        $sql  .= $virgula." j31_codigo = $this->j31_codigo ";
        $virgula = ",";
-       if(trim($this->j31_codigo) == null ){ 
+       if(trim($this->j31_codigo) == null ){
          $this->erro_sql = " Campo Cód. Característica não informado.";
          $this->erro_campo = "j31_codigo";
          $this->erro_banco = "";
@@ -214,7 +214,7 @@ class cl_caracter {
      if(trim($this->j31_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j31_descr"])){
        $sql  .= $virgula." j31_descr = '$this->j31_descr' ";
        $virgula = ",";
-       if(trim($this->j31_descr) == null ){ 
+       if(trim($this->j31_descr) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "j31_descr";
          $this->erro_banco = "";
@@ -230,7 +230,7 @@ class cl_caracter {
         }
        $sql  .= $virgula." j31_grupo = $this->j31_grupo ";
        $virgula = ",";
-       if(trim($this->j31_grupo) == null ){ 
+       if(trim($this->j31_grupo) == null ){
          $this->erro_sql = " Campo Grupo não informado.";
          $this->erro_campo = "j31_grupo";
          $this->erro_banco = "";
@@ -246,7 +246,7 @@ class cl_caracter {
         }
        $sql  .= $virgula." j31_pontos = $this->j31_pontos ";
        $virgula = ",";
-       if(trim($this->j31_pontos) == null ){ 
+       if(trim($this->j31_pontos) == null ){
          $this->erro_sql = " Campo Pontos não informado.";
          $this->erro_campo = "j31_pontos";
          $this->erro_banco = "";
@@ -310,7 +310,7 @@ class cl_caracter {
      }
    }
    // funcao para exclusao
-   function excluir ($j31_codigo=null,$dbwhere=null) {
+   public function excluir ($j31_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j31_codigo));
      }else{
@@ -342,7 +342,7 @@ class cl_caracter {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Caracteristicas não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j31_codigo;
@@ -370,11 +370,11 @@ class cl_caracter {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -396,7 +396,7 @@ class cl_caracter {
       }
      return $result;
    }
-   function sql_query ( $j31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $j31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -430,7 +430,7 @@ class cl_caracter {
      }
      return $sql;
   }
-   function sql_query_file ( $j31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $j31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

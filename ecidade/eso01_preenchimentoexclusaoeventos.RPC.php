@@ -95,9 +95,11 @@ try {
             $parametros->aFiltros->naoExcluidos = true;
             if ($parametros->aFiltros->cpf) {
                 switch ($parametros->aFiltros->idEvento) {
+                    case Tipo::S1207:
                     case Tipo::S1210:
                     case Tipo::S2400:
-                            $parametros->aFiltros->eventojson = json_encode(array('cpfBenef' => $parametros->aFiltros->cpf));
+                    case Tipo::S2410:
+                        $parametros->aFiltros->eventojson = json_encode(array('cpfBenef' => $parametros->aFiltros->cpf));
                         break;
                     default:
                         $parametros->aFiltros->eventojson = json_encode(array('cpfTrab' => $parametros->aFiltros->cpf));
@@ -109,9 +111,7 @@ try {
             if (empty($dados)) {
                 throw new \BusinessException("Não há nenhum recibo cadastrado para o empregador {$cgm->getCnpj()}.");
             }
-
             $retorno->recibos = array();
-
             foreach ($dados as $dado) {
                 $eSocialEnvio = new ESocialEnvio();
                 $eSocialEnvio->setEvento(preg_replace('/[^0-9]/', '', $dado->tipo));
@@ -124,6 +124,7 @@ try {
                     $item->cpftrab = '';
 
                     switch ($parametros->aFiltros->idEvento) {
+                        case Tipo::S1207:
                         case Tipo::S1210:
                             $item->cpftrab = JSON::hasKey('cpfBenef', $dado->evento)
                                 ? db_formatar(JSON::search('cpfBenef', $dado->evento), 'CPF')

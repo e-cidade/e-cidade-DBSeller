@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -39,7 +39,7 @@ $clrotulo->label("z01_nome");
           <label for='v82_sequencial'><?=@$Lv82_sequencial?></label>
         </td>
         <td>
-          <?
+          <?php
             db_input('v82_sequencial',10,$Iv82_sequencial,true,'text',3,"");
             db_input('v82_extrajudicial',10,$v82_extrajudicial,true,'hidden');
           ?>
@@ -50,22 +50,22 @@ $clrotulo->label("z01_nome");
           <label for='v82_descricao'><?=@$Lv82_descricao?></label>
         </td>
         <td>
-          <?
+          <?php
             db_input('v82_descricao',50,$Iv82_descricao,true,'text',$db_opcao,"")
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tv82_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lv82_numcgm,"js_pesquisav82_numcgm(true);",$db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('v82_numcgm',10,$Iv82_numcgm,true,'text',$db_opcao," onchange='js_pesquisav82_numcgm(false);'")
           ?>
-          <?
+          <?php
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
           ?>
         </td>
@@ -74,7 +74,7 @@ $clrotulo->label("z01_nome");
         <td nowrap title="<?=@$Tv82_obs?>" colspan="2">
           <fieldset class="separator">
             <legend><label for='v82_obs'><?=@$Lv82_obs?></label></legend>
-            <?
+            <?php
               db_textarea('v82_obs',5,50,$Iv82_obs,true,'text',$db_opcao,"")
             ?>
           </fieldset>

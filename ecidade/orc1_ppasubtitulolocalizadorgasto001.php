@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,7 +62,7 @@ if(isset($incluir)){
       </td>
     </tr>
   </table>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>
@@ -70,7 +70,7 @@ if(isset($incluir)){
   <script>
     js_tabulacaoforms("form1","o11_codigo",true,1,"o11_codigo",true);
   </script>
-<?
+<?php
 if(isset($incluir)){
   if($clppasubtitulolocalizadorgasto->erro_status=="0"){
     $clppasubtitulolocalizadorgasto->erro(true,false);

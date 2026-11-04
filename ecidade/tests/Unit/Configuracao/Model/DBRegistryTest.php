@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class DBRegistryTest extends TestCase
 {
-    function testShouldAddSingleArray()
+    public function testShouldAddSingleArray()
     {
         $items = array(
             'item1' => 'item1',
@@ -24,13 +24,13 @@ class DBRegistryTest extends TestCase
         }
     }
 
-    function testShouldVerifyIfRegistryHasItem()
+    public function testShouldVerifyIfRegistryHasItem()
     {
         DBRegistry::add('item1', 'item1');
         self::assertTrue(DBRegistry::has('item1'));
     }
 
-    function testShouldAddObject()
+    public function testShouldAddObject()
     {
         $object = (object)array(
             'prop1' => 'prop1'
@@ -42,7 +42,7 @@ class DBRegistryTest extends TestCase
         self::assertEquals($objectFromRegistry->prop1, 'prop1');
     }
 
-    function testShouldAddItemsToArray()
+    public function testShouldAddItemsToArray()
     {
         $item1 = (object)array(
             'item1Key' => 'item1Value'
@@ -61,7 +61,7 @@ class DBRegistryTest extends TestCase
         self::assertEquals($itemsFromRegistry[1], $item2);
     }
 
-    function testShouldAddItemsToArrayInSomeIndex()
+    public function testShouldAddItemsToArrayInSomeIndex()
     {
         $item1 = (object)array(
             'item1Key' => 'item1Value'
@@ -80,7 +80,7 @@ class DBRegistryTest extends TestCase
         self::assertEquals($itemsFromRegistry['y'], $item2);
     }
 
-    function testShouldRemoveItem()
+    public function testShouldRemoveItem()
     {
         $item = (object)array(
             'item1' => 'item1'
@@ -93,7 +93,7 @@ class DBRegistryTest extends TestCase
         self::assertNull(DBRegistry::get('item'));
     }
 
-    function testShouldCountItemsInRegistry()
+    public function testShouldCountItemsInRegistry()
     {
         DBRegistry::add('item1', 'item1');
         DBRegistry::add('item2', 'item2');
@@ -102,7 +102,7 @@ class DBRegistryTest extends TestCase
         self::assertEquals(3, DBRegistry::getTotalItens());
     }
 
-    function testShouldReturnAllItems()
+    public function testShouldReturnAllItems()
     {
         DBRegistry::add('item1', 'item1');
         DBRegistry::add('item2', 'item2');
@@ -113,14 +113,14 @@ class DBRegistryTest extends TestCase
         self::assertEquals(4, sizeof($allItemsFromRegistry));
     }
 
-    function testShouldReturnNullWhenIndexNotExists()
+    public function testShouldReturnNullWhenIndexNotExists()
     {
         $item = DBRegistry::get('NotFoundItem');
         self::assertNull($item);
         self::assertEmpty($item);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         DBRegistry::clean();

@@ -1,0 +1,20 @@
+<?xml version='1.0' ?>
+<consulta distinct="false">
+  <campos>
+    <campo campo="diverimportaold.dv13_diversos" label="diversos"    />
+    <campo campo="diverimportaold.dv13_numpre"   label="numpre"      />
+    <campo campo="diverimportaold.dv13_numpar"   label="numpar"      />
+    <campo campo="diverimportaold.dv13_receita"  label="receita"     />
+    <campo campo="diversos.dv05_numpre"          label="numpre_novo" />
+  </campos>
+  <from tabela="diverimportaold" />
+  <juncoes>
+    <join tipo="inner" tabela="diversos"   condicao="diversos.dv05_coddiver = diverimportaold.dv13_diversos" />
+  </juncoes>
+  <filtros>
+    <filtro label="numpre" condicao="diverimportaold.dv13_numpre = '$numpre'" obrigatorio="true" />
+    <filtro label="numpar" condicao="diverimportaold.dv13_numpar = '$numpar'" obrigatorio="true"  />
+  </filtros>
+  <agrupamento campos="" />
+  <ordenacao   campos="" />
+</consulta>

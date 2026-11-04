@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ if (isset($excluir)) {
   $rsAtoJustificativa = $oDaoAtoJustificativa->sql_record($sSqlJustificativa);
   
   if ($oDaoAtoJustificativa->numrows > 0) {
-    ?><script>alert("Ato Legal não pode ser excluído,  pois está relacionado com uma Justificativa");</script><?
+    ?><script>alert("Ato Legal não pode ser excluído,  pois está relacionado com uma Justificativa");</script><?php
   } else {
   	
     db_inicio_transacao();
@@ -76,7 +76,7 @@ if (isset($excluir)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href   = 'edu1_edu_anexoatolegal003.php?chavepesquisa=<?=$ed05_i_codigo?>';
   </script>
 
-<?
+<?php
 }
 ?>
 <html>
@@ -104,7 +104,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
 	
   if ($oDaoAtoLegal->erro_status == "0") {

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("interfaces/iPadArquivoTxtBase.interface.php"));
@@ -43,6 +43,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
      * Busca os dados da db_config
      */
     $oDadoConfig    = db_stdClass::getDadosInstit();
+    $iAnoSessao         = db_getsession('DB_anousu');
 
     $this->addLog("=====Arquivo".$this->getNomeArquivo()." Erros:\n");
 
@@ -86,7 +87,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 //    die($sSqlContasConciliacao) ;
     $rsContasConciliacao     = db_query($sSqlContasConciliacao) ;
     $iTotalLinhasConciliacao = pg_num_rows($rsContasConciliacao);
-    
+
     if ( !$rsContasConciliacao || $iTotalLinhasConciliacao == 0) {
       throw new BusinessException("Sem contas conciliadas para a competência selecionada.");
     }
@@ -142,7 +143,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
+        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomesconc            = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -178,7 +179,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
         if( $iAnoSessao < 2013 ){
           $oStdLinhaArquivo->codigolinha              = 577;
         }else{
-          $oStdLinhaArquivo->Cd_ContaCorrente         = str_pad(str_repeat(' ', 30),  30, ' ', STR_PAD_LEFT);
+          $oStdLinhaArquivo->Cd_Conta_Corrente          = str_pad($oStdContaConciliacao->c61_reduz,  30, ' ', STR_PAD_RIGHT);
           $oStdLinhaArquivo->codigolinha              = 667;
         }
 //        var_dump($oStdLinhaArquivo);
@@ -250,7 +251,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
         if( $iAnoSessao < 2013 ){
           $oStdLinhaArquivo->codigolinha              = 577;
         }else{
-          $oStdLinhaArquivo->Cd_ContaCorrente         = str_pad(str_repeat(' ', 15),  15, ' ', STR_PAD_LEFT);
+          $oStdLinhaArquivo->Cd_Conta_Corrente          = str_pad($oStdContaConciliacao->c61_reduz,  15, ' ', STR_PAD_RIGHT);
           $oStdLinhaArquivo->codigolinha              = 667;
         }
 

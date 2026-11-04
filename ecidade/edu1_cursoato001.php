@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -153,7 +153,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Atos Legais que regulamentam este curso na escola <?=$ed18_c_nome?></b></legend>
-    <?
+    <?php
     if($clcursoescola->numrows==0){
      echo "<br><center>Para ter acesso a esta rotina, primeiro vincule este curso nesta escola. (Aba Vincular Curso)</center>";
      exit;
@@ -172,7 +172,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed215_i_atolegal",true,1,"ed215_i_atolegal",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($clcursoato->erro_status=="0"){
   $clcursoato->erro(true,false);

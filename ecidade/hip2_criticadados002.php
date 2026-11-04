@@ -1,34 +1,34 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification('fpdf151/pdf.php'));
 require_once(modification('libs/db_utils.php'));
 
-$oDaoFarAcompPacHiperdia = db_utils::getdao('far_cadacomppachiperdia');
+$oDaoFarAcompPacHiperdia = new cl_far_cadacomppachiperdia;
 
 /* Cabeçalho dos passageiros normais */
 function novoCabecalho($oPdf) {
@@ -67,7 +67,7 @@ function novaLinha($oPdf, $oDados) {
  $aCampos[ ] = "s152_i_pressaodiastolica";
  $aCampos[ ] = "s152_i_cintura";
  $aCampos[ ] = "s152_n_peso";
- $aCampos[ ] = "s152_i_altura"; 
+ $aCampos[ ] = "s152_i_altura";
  $aCampos[ ] = "s152_i_glicemia";
  $aCampos[ ] = "fa50_i_outrosmedicamentos";
  $aCampos[ ] = "fa50_i_naomedicamentoso";
@@ -75,7 +75,7 @@ function novaLinha($oPdf, $oDados) {
  $aCampos[ ] = "z01_d_nasc";
  $aCampos[ ] = "z01_v_mae";
  $aCampos[ ] = "z01_i_estciv";
- 
+
  $aCampos2    = array();
  $aCampos2[ ] = "CGS";
  $aCampos2[ ] = "Nome";
@@ -87,7 +87,7 @@ function novaLinha($oPdf, $oDados) {
  $aCampos2[ ] = "Pressão Diastolica";
  $aCampos2[ ] = "Cintura";
  $aCampos2[ ] = "Peso";
- $aCampos2[ ] = "Altura"; 
+ $aCampos2[ ] = "Altura";
  $aCampos2[ ] = "Glicemia";
  $aCampos2[ ] = "Outros Medicamentos";
  $aCampos2[ ] = "Não medicamentoso";
@@ -114,7 +114,7 @@ if ($oDaoFarAcompPacHiperdia->numrows == 0) {
       </td>
     </tr>
   </table>
-  <?
+  <?php
   exit;
 
 }
@@ -136,11 +136,11 @@ for ($iInd = 0; $iInd < $oDaoFarAcompPacHiperdia->numrows; $iInd++) {
   $aDados = array();
 
   for ($iInd2=0; $iInd2 < count($aCampos); $iInd2++) {
-    if ($oDados->$aCampos[$iInd2] == '' || $oDados->$aCampos[$iInd2] == null) {
+    if ($oDados->{$aCampos[$iInd2]} == '' || $oDados->{$aCampos[$iInd2]} == null) {
 
       $iIndex                  = count($aDados);
-      $aDados[$iIndex]->iCgs   = $oDados->$aCampos[0];
-      $aDados[$iIndex]->sNome  = $oDados->$aCampos[1];
+      $aDados[$iIndex]->iCgs   = ($oDados->$aCampos)[0];
+      $aDados[$iIndex]->sNome  = ($oDados->$aCampos)[1];
       $aDados[$iIndex]->sCampo = 'Campo '.$aCampos2[$iInd2].' Não informado';
 
     }

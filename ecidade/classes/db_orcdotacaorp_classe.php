@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_orcdotacaorp {
                  o73_subprograma = int8 = Subprograma 
                  ";
    //funcao construtor da classe 
-   function cl_orcdotacaorp() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcdotacaorp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_orcdotacaorp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o73_anousu = ($this->o73_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o73_anousu"]:$this->o73_anousu);
        $this->o73_coddot = ($this->o73_coddot == ""?@$GLOBALS["HTTP_POST_VARS"]["o73_coddot"]:$this->o73_coddot);
@@ -84,7 +84,7 @@ class cl_orcdotacaorp {
      }
    }
    // funcao para inclusao
-   function incluir ($o73_anousu,$o73_coddot){ 
+   public function incluir ($o73_anousu,$o73_coddot){ 
       $this->atualizacampos();
      if($this->o73_funcao == null ){ 
        $this->erro_sql = " Campo Função nao Informado.";
@@ -185,7 +185,7 @@ class cl_orcdotacaorp {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($o73_anousu=null,$o73_coddot=null) { 
+   public function alterar ($o73_anousu=null,$o73_coddot=null) { 
       $this->atualizacampos();
      $sql = " update orcdotacaorp set ";
      $virgula = "";
@@ -314,7 +314,7 @@ class cl_orcdotacaorp {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($o73_anousu=null,$o73_coddot=null,$dbwhere=null) { 
+   public function excluir ($o73_anousu=null,$o73_coddot=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o73_anousu,$o73_coddot));
      }else{ 
@@ -386,7 +386,7 @@ class cl_orcdotacaorp {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

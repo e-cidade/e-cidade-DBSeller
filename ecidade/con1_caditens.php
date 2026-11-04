@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -350,7 +350,7 @@ function js_remItem(obj) {
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="5">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
-	<?
+	<?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
         if(!isset($HTTP_POST_VARS["filtro"]))
 		  $filtro = $HTTP_POST_VARS["descricao"];
@@ -401,9 +401,9 @@ function js_remItem(obj) {
 
                   <tr style='display:none'> 
                     <td height="25" nowrap><strong>Ambiente:</strong></td>
-                    <td height="25" nowrap> <input name="itemativo" id="itemativo1" type="radio" value="1" <? echo isset($retorno)?($itemativo=='1'?"checked":""):"checked" ?>> 
+                    <td height="25" nowrap> <input name="itemativo" id="itemativo1" type="radio" value="1" <?php echo isset($retorno)?($itemativo=='1'?"checked":""):"checked" ?>> 
                       <label for="itemativo1"><strong>Web&nbsp;&nbsp;&nbsp;&nbsp;</strong></label> 
-                      <input type="radio" name="itemativo" id="itemativo2" value="0" <? echo isset($retorno)?($itemativo=='0'?"checked":""):"" ?>> 
+                      <input type="radio" name="itemativo" id="itemativo2" value="0" <?php echo isset($retorno)?($itemativo=='0'?"checked":""):"" ?>> 
                       <label for="itemativo2"><strong>Caracter</strong></label> 
                     </td>
                   </tr>
@@ -429,9 +429,9 @@ function js_remItem(obj) {
                     <td height="25" nowrap><label for="temexerc1" id="at4" disabled>
                       <strong>Tem Exerc&iacute;cio:</strong></label>
                     </td>
-                    <td height="25" nowrap><input name="temexerc" id="temexerc1" type="radio" value="t" <? echo isset($temexerc)?($temexerc=='t'?"checked":""):"" ?> disabled> 
+                    <td height="25" nowrap><input name="temexerc" id="temexerc1" type="radio" value="t" <?php echo isset($temexerc)?($temexerc=='t'?"checked":""):"" ?> disabled> 
                       <label for="temexerc1" id="at5" disabled><strong>Sim</strong></label> 
-                      <input type="radio" id="temexerc2" name="temexerc" <? echo isset($temexerc)?($temexerc=='f'?"checked":""):"checked" ?> value="f" disabled> 
+                      <input type="radio" id="temexerc2" name="temexerc" <?php echo isset($temexerc)?($temexerc=='f'?"checked":""):"checked" ?> value="f" disabled> 
                       <label for="temexerc2" id="at6" disabled><strong>N&atilde;o</strong></label> 
                     </td>
                   </tr>
@@ -447,15 +447,15 @@ function js_remItem(obj) {
 
  <tr>
     <td nowrap title="<?=@$Tcodproced?>">
-       <?
+       <?php
        db_ancora(@$Lcodproced,"js_pesquisacodproced(true);",@$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('codproced',8,$Icodproced,true,'text',@$db_opcao," onchange='js_pesquisacodproced(false);'")
 ?>
-       <?
+       <?php
 db_input('descrproced',40,$Idescrproced,true,'text',3,'')
        ?>
     </td>
@@ -463,9 +463,9 @@ db_input('descrproced',40,$Idescrproced,true,'text',3,'')
                   
                   <tr> 
                     <td height="25" nowrap>&nbsp;</td>
-                    <td height="25" nowrap> <input name="incluir" onClick="Botao='incluir'" accesskey="i" type="submit" id="incluir" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-                      &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-                      &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+                    <td height="25" nowrap> <input name="incluir" onClick="Botao='incluir'" accesskey="i" type="submit" id="incluir" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+                      &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+                      &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
                       &nbsp; <input name="procurar" onClick="Botao='procurar'" accesskey="p" type="submit" id="procurar" value="Procurar">
                       &nbsp; <input name="Seleciona" onClick="js_pesquisa();" accesskey="s" type="button" id="seleciona" value="Seleciona">
 		      </td>
@@ -487,20 +487,20 @@ db_input('descrproced',40,$Idescrproced,true,'text',3,'')
       <table border="0">
       
          <tr>
-            <?
+            <?php
 	    $clrotulocampo = new rotulocampo;
 	    $clrotulocampo->label('codfilho');
 	    $clrotulocampo->label('arqfilho');
             ?>
              <td nowrap title="<?=@$Tcodarq?>" >
-            <?
+            <?php
 	    db_ancora($Lcodfilho,"js_arquivos(true);",2);
             ?>
-            <?
+            <?php
               db_input('codfilho',8,'',true,'text',2," onchange='js_arquivos(false);'")
             ?>
 	    <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <?
+            <?php
               db_input('arqfilho',25,'',true,'text',3,'')
             ?>
 	    <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -511,7 +511,7 @@ db_input('descrproced',40,$Idescrproced,true,'text',3,'')
          <tr>   
 	   <td align="right" colspan="" width="80%">
               <select name="itensfilho[]" id="itensfilho" size="15" style="width:250px" multiple onDblClick="js_excluir_item()">
-	      <?
+	      <?php
 	      if(isset($id_item)){
 	        $sql = "select db_arquivos.*  
 	                from db_itensfilho f
@@ -547,13 +547,13 @@ db_input('descrproced',40,$Idescrproced,true,'text',3,'')
             </tr>
           </table>
           </form>
-		<?
+		<?php
 		}
 		?>
       </center></td>
   </tr>
 </table>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -685,7 +685,7 @@ function js_mostradb_syscadproced1(chave1,chave2){
 
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

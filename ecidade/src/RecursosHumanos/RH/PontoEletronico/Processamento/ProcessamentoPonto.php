@@ -138,7 +138,6 @@ class ProcessamentoPonto extends Base
 
         file_put_contents('tmp/tempo_por_matricula.log', $matricula ." - " . $tempo . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-        unset($this->parametros->servidor);
         unset($this->parametros->aDatasProcessarCriacaoMarcacoes);
         unset($this->parametros->oPeriodo);
         unset($this->parametros->aDatasProcessar);

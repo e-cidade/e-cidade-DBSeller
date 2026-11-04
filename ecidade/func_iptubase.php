@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -242,7 +242,23 @@ if ( isset($oPost->j107_nome) ) {
               </td>
             </tr>
             <tr>
-
+                <td width="34%" align="right" nowrap title="<?= @$Tj16_bairro ?>">
+                    <b>
+                        <?php
+                        db_ancora("Bairro :", "js_bairro(true);", $db_opcao);
+                        ?>
+                    </b>
+                </td>
+                <td>
+                    <?php
+                    db_input('j16_bairro', 10, $Ij16_bairro, true, 'text', $db_opcao, " onchange='js_bairro(false);'")
+                    ?>
+                    <?php
+                    db_input('j13_descr', 40, $Ij13_descr, true, 'text', 3, '')
+                    ?>
+                </td>
+            </tr>
+            <tr>
               <td width="34%" align="right" nowrap title="<?= $Tj34_setor ?>">
                   <?= $Lj34_setor ?>
                 /
@@ -264,7 +280,7 @@ if ( isset($oPost->j107_nome) ) {
                 <tr>
                   <td width="34%" align="right" nowrap title="<?= $Tj06_setorloc ?>"><?= $Lj06_setorloc ?></td>
                   <td>
-                      <?
+                      <?php
                       db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos',
                         'js_carregaQuadra(this.value)');
                       ?>
@@ -354,6 +370,9 @@ if ( isset($oPost->j107_nome) ) {
                 $j14_codigo = addslashes($j14_codigo);
             }
 
+            if (isset($j16_bairro)) {
+              $j16_bairro = addslashes($j16_bairro);
+            }
 
             if (isset($campos) == false) {
                 $campos = "iptubase.*";
@@ -373,6 +392,7 @@ if ( isset($oPost->j107_nome) ) {
                           then ruas.j14_nome
                           else ruase.j14_nome
                         end as j14_nome,
+                        (j16_bairro || ' - ' || j13_descr) as j13_descr,
                         case when j15_numero > 0 and j39_matric is null then j15_numero else j39_numero end as j39_numero,
                         j39_compl, j34_setor, j34_quadra, j34_lote, j01_baixa
                    from iptubase
@@ -381,6 +401,8 @@ if ( isset($oPost->j107_nome) ) {
                         left outer join testpri       on j49_idbql        = j01_idbql
                         left outer join testadanumero on testadanumero.j15_idbql = testpri.j49_idbql and testadanumero.j15_face = testpri.j49_face
                         left outer join ruas          on j14_codigo       = j49_codigo
+                        left join ruasbairro          on j16_lograd       = j14_codigo
+                        left join bairro              on j16_bairro       = j13_codi
                         inner join cgm                on z01_numcgm       = j01_numcgm
                         left outer join iptuconstr    on j01_matric       = j39_matric
                                                      and j39_idprinc is true
@@ -409,6 +431,8 @@ if ( isset($oPost->j107_nome) ) {
             } elseif (isset($j14_codigo) && (trim($j14_codigo) != "")) {
                 $sql2 = " where ruas.j14_codigo = $j14_codigo or ruase.j14_codigo  = $j14_codigo ";
                 $sql3 = " order by j39_numero";
+            } elseif (isset($j16_bairro) && (trim($j16_bairro) != "")) {
+                $sql2 = " where ruasbairro.j16_bairro = $j16_bairro";
             } elseif (isset($z01_nome) && (trim($z01_nome) != "")) {
                 $sql2 = " where z01_nome like '$z01_nome%'";
                 $sql3 = " order by z01_nome";
@@ -698,7 +722,6 @@ if ( isset($oPost->j107_nome) ) {
     }
   }
 
-
   function js_preencheruas(chave, chave1) {
 
     if(chave1 == true) {
@@ -715,6 +738,28 @@ if ( isset($oPost->j107_nome) ) {
     db_iframe_ruas.hide();
   }
 
+  function js_bairro(mostra) {
+        if (mostra == true) {
+            js_OpenJanelaIframe('', 'db_iframe_bairros', 'func_bairro.php?funcao_js=parent.js_preenchebairro|j13_codi|j13_descr', 'pesquisa', true);
+        } else {
+            js_OpenJanelaIframe('', 'db_iframe_bairros', 'func_bairro.php?funcao_js=parent.js_preenchebairro1&pesquisa_chave=' + document.form1.j16_bairro.value, 'pesquisa', false);
+        }
+    }
+
+    function js_preenchebairro(chave, chave1) {
+        document.form1.j16_bairro.value = chave;
+        document.form1.j13_descr.value = chave1;
+        db_iframe_bairros.hide();
+    }
+
+    function js_preenchebairro1(chave, erro) {
+        document.form1.j13_descr.value = chave;
+        if (erro == true) {
+            document.form1.j16_bairro.focus();
+            document.form1.j16_bairro.value = '';
+        }
+        db_iframe_bairros.hide();
+    }
 </script>
 <?php
 if (!isset($pesquisa_chave)) {

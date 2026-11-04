@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcondominio->rotulo->label("j107_nome");
               <?=$Lj107_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j107_sequencial",10,$Ij107_sequencial,true,"text",4,"","chave_j107_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcondominio->rotulo->label("j107_nome");
               <?=$Lj107_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j107_nome",40,$Ij107_nome,true,"text",4,"","chave_j107_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcondominio->rotulo->label("j107_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_condominio.php")==true){
@@ -128,12 +128,12 @@ $clcondominio->rotulo->label("j107_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

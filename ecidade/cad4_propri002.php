@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ function js_lo4(){
         <?=@$Lj42_matric?>
       </td>
       <td> 
-<?
+<?php
   db_input('j42_matric',4,$Ij42_matric,true,'text',3," onchange='js_pesquisaj42_matric(false);'");
   db_input('z01_nome',45,$Ij01_numcgm,true,'text',3,'','z01_nomematri');
 ?>
@@ -160,12 +160,12 @@ function js_lo4(){
     </tr>
     <tr> 
       <td nowrap title="<?=@$Tj42_numcgm?>">
-<?
+<?php
   db_ancora($Lj42_numcgm,' js_cgm(true); ',(isset($j42_numalt)?3:1));
 ?>
       </td>
       <td> 
-<?
+<?php
   db_input('j42_numcgm',4,$Ij42_numcgm,true,'text',(isset($j42_numalt)?3:1),"onchange='js_cgm(false)'");
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"");
 ?>
@@ -184,7 +184,7 @@ function js_lo4(){
     <tr>
       <td colspan="2">
       <center>
-<?
+<?php
   if($outros==true){  
     $result = $clpropri->sql_record($clpropri->sql_query($j42_matric,"","propri.*#cgm.z01_nome"));
     $num = $clpropri->numrows;
@@ -206,7 +206,7 @@ function js_lo4(){
   </tr>         
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -270,7 +270,7 @@ function js_mostra(erro,chave){
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

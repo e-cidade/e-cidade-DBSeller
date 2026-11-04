@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ function js_marca(obj){
        <?=@$Ld01_codedi?>
     </td>
     <td> 
-<?
+<?php
 db_input('d01_codedi',4,$Id01_codedi,true,'text',3,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_input('d01_codedi',4,$Id01_codedi,true,'text',3,"")
        <?=@$Ld01_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('d01_numero',20,$Id01_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('d01_numero',20,$Id01_numero,true,'text',$db_opcao,"")
        <?=@$Ld01_perc?>
     </td>
     <td> 
-<?
+<?php
 if(!isset($d01_perc)){
   $d01_perc="0";
 }
@@ -100,14 +100,14 @@ db_input('d01_perc',15,$Id01_perc,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Td01_receit?>">
-       <?
+       <?php
        db_ancora(@$Ld01_receit,"js_pesquisad01_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d01_receit',4,$Id01_receit,true,'text',$db_opcao," onchange='js_pesquisad01_receit(false);'")?>
-       <?
+       <?php
 db_input('k02_descr',25,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -117,7 +117,7 @@ db_input('k02_descr',25,$Ik02_descr,true,'text',3,'')
        <?=@$Ld01_numtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('d01_numtot',4,$Id01_numtot,true,'text',$db_opcao)?>
     </td>
   </tr>
@@ -126,7 +126,7 @@ db_input('d01_numtot',4,$Id01_numtot,true,'text',$db_opcao)?>
        <?=@$Ld01_privenc?>
     </td>
     <td> 
-     <?
+     <?php
      db_inputdata('d01_privenc',@$d01_privenc_dia,@$d01_privenc_mes,@$d01_privenc_ano,true,'text',$db_opcao,"");
    ?>  
     </td>
@@ -136,7 +136,7 @@ db_input('d01_numtot',4,$Id01_numtot,true,'text',$db_opcao)?>
        <?=@$Ld01_perunica?>
     </td>
     <td> 
-<?
+<?php
 db_input('d01_perunica',5,$Id01_perunica,true,'text',$db_opcao)?>
     </td>
   </tr>
@@ -145,7 +145,7 @@ db_input('d01_perunica',5,$Id01_perunica,true,'text',$db_opcao)?>
        <?=@$Ld01_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,12 +159,12 @@ db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
   </table>
  </td>
  <td valign="top">
-      <?
+      <?php
       if(isset($chavepesquisa) || isset($HTTP_POST_VARS["db_opcao"]) || $db_opcao=="1"){
       ?>  
       <fieldset><Legend><b>Listas-<a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'<?=($db_opcao==3?'disabled':'')?> >M</a></b></legend>
       <table id="id_tabela" align="right">
-      <?
+      <?php
         if($db_opcao!=1){
           $sql="select  d10_codigo from  editalproj where d10_codedi=$d01_codedi";
            $result=db_query($sql);
@@ -189,7 +189,7 @@ db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
       ?>  
       </table>	
       </fieldset>
-     <?
+     <?php
      }
      ?> 
 </td>
@@ -252,16 +252,16 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  <?
+  <?php
     if($db_opcao!=1){
   ?>  
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
-  <?
+  <?php
     }
   ?>
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

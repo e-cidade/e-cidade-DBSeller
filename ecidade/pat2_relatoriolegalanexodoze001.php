@@ -59,7 +59,7 @@ $dtFinal_ano = date("Y", db_getsession("DB_datausu"));
             Data Inicial:
           </td>
           <td>
-            <?
+            <?php
               db_inputdata('dtDataInicial','','','',true,'text',1);
             ?>
           </td>
@@ -69,7 +69,7 @@ $dtFinal_ano = date("Y", db_getsession("DB_datausu"));
             Data Final:
           </td>
           <td>
-            <?
+            <?php
               db_inputdata('dtDataFinal',$dtFinal_dia, $dtFinal_mes, $dtFinal_ano,true,'text',1);
             ?>
           </td>
@@ -79,7 +79,7 @@ $dtFinal_ano = date("Y", db_getsession("DB_datausu"));
     <input type='button' name="btnImprimir" value="Imprimir" onclick="js_imprimir();">
     </form>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 <script>
 

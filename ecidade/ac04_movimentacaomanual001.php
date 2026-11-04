@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,9 +73,9 @@ $oRotulo->label('ac16_sequencial');
         </td>
         <td>
           <?php
-          db_input('ac16_sequencial', 10, 1, true, 'text', 1, 'onchange="pesquisaAcordo(false);"');
-          db_input('ac16_resumoobjeto', 70, 1, true, 'text', 3, null, null, null, 'width:85%');
-          ?>
+            db_input('ac16_sequencial', 10, 1, true, 'text', 1, 'onchange="pesquisaAcordo(false);"');
+            db_input('ac16_resumoobjeto', 70, 1, true, 'text', 3, null, null, null, 'width:85%');
+            ?>
         </td>
       </tr>
       <tr>
@@ -86,8 +86,8 @@ $oRotulo->label('ac16_sequencial');
         </td>
         <td>
           <?php
-          db_input('percentual', 10, 1, true, 'text', 3);
-          ?>
+            db_input('percentual', 10, 1, true, 'text', 3);
+            ?>
         </td>
       </tr>
     </table>
@@ -114,32 +114,32 @@ $oRotulo->label('ac16_sequencial');
         <td class="bold"><label for="quantidade">Quantidade:</label></td>
         <td>
           <?php
-          $Squantidade = "Quantidade";
-          db_input('quantidade', 10, 4, true, 'text', 1);
-          ?>
+            $Squantidade = "Quantidade";
+            db_input('quantidade', 10, 4, true, 'text', 1);
+            ?>
         </td>
         <td class="bold" ><label for="valor">Valor:</label></td>
         <td>
           <?php
-          $Svalor = "Valor";
-          db_input('valor', 10, 4, true, 'text', 1);
-          ?>
+            $Svalor = "Valor";
+            db_input('valor', 10, 4, true, 'text', 1);
+            ?>
         </td>
       </tr>
       <tr>
         <td class="bold"><label for="data_inicial">De:</label></td>
         <td width="140">
           <?php
-          $Sdata_inicial = "Data Inicial";
-          db_inputdata('data_inicial', null, null, null, true, 'text', 1);
-          ?>
+            $Sdata_inicial = "Data Inicial";
+            db_inputdata('data_inicial', null, null, null, true, 'text', 1);
+            ?>
         </td>
         <td class="bold"><label for="data_final">até:</label></td>
         <td>
           <?php
-          $Svalor = "data_final";
-          db_inputdata('data_final', null, null, null, true, 'text', 1);
-          ?>
+            $Svalor = "data_final";
+            db_inputdata('data_final', null, null, null, true, 'text', 1);
+            ?>
         </td>
       </tr>
     </table>
@@ -167,7 +167,17 @@ $oRotulo->label('ac16_sequencial');
             ?>
           </td>
         </tr>
-      </table>
+        <tr>
+          <td colspan="4">
+            <fieldset style="width: 96%;">
+              <legend><b> Observações </b></legend>
+               <?php
+                db_textarea('observacao', 5, 80, '', true, 'text', '', "")
+                ?>
+            </fieldset>
+          </td>
+        </tr>
+</table>
     </fieldset>
     <p align="center">
       <input type="button" value="Salvar" id="btnSalvar" onclick="salvar()"/>
@@ -185,7 +195,7 @@ $oRotulo->label('ac16_sequencial');
 </div>
 
 <?php
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
@@ -210,11 +220,12 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
   var oGridExecucao          = new DBGrid('oGridExecucao');
   oGridExecucao.nameInstance = 'oGridExecucao';
-  oGridExecucao.setCellAlign(['center', 'center', 'right', 'right', 'center', 'left', 'left']);
-  oGridExecucao.setCellWidth(['20%', '20%', '20%', '20%', '20%', '0%', '0%']);
-  oGridExecucao.setHeader(['Data Inicial', 'Data Final', 'Quantidade', 'Valor', 'Ação', 'NotaFiscal', 'Processo']);
+  oGridExecucao.setCellAlign(['center', 'center', 'right', 'right', 'center', 'left', 'left', 'left']);
+  oGridExecucao.setCellWidth(['20%', '20%', '20%', '20%', '20%', '0%', '0%', '0%']);
+  oGridExecucao.setHeader(['Data Inicial', 'Data Final', 'Quantidade', 'Valor', 'Ação', 'NotaFiscal', 'Processo', 'Observacao']);
   oGridExecucao.aHeaders[5].lDisplayed = false;
   oGridExecucao.aHeaders[6].lDisplayed = false;
+  oGridExecucao.aHeaders[7].lDisplayed = false;
   oGridExecucao.hasTotalizador = true;
   oGridExecucao.show($('ctnGridExecucao'));
 
@@ -360,7 +371,8 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
               js_formatar(oExecucao.valor, 'f'),
               sAcao,
               oExecucao.nota_fiscal.urlDecode(),
-              oExecucao.processo.urlDecode()
+              oExecucao.processo.urlDecode(),
+              oExecucao.observacao.urlDecode()
             ];
             oGridExecucao.addRow(aLinha);
           }
@@ -390,6 +402,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     $('valor').value           = js_strToFloat(oRow.aCells[3].getValue());
     $('nota_fiscal').value     = oRow.aCells[5].getValue().trim();
     $('numero_processo').value = oRow.aCells[6].getValue().trim();
+    $('observacao').value      = oRow.aCells[7].getValue().trim();
   }
 
   function salvar() {
@@ -407,7 +420,8 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
       data_inicial    : $F('data_inicial'),
       data_final      : $F('data_final'),
       nota_fiscal     : encodeURIComponent(tagString($F('nota_fiscal'))),
-      processo        : encodeURIComponent(tagString($F('numero_processo')))
+      processo        : encodeURIComponent(tagString($F('numero_processo'))),
+      observacao      : encodeURIComponent(tagString($F('observacao')))
     };
 
     new AjaxRequest(
@@ -420,12 +434,21 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
           alert(oRetorno.mensagem.urlDecode());
           return false;
         }
+        emiteRelatorioExecucao(oRetorno.codigo_execucao);
         limparCamposWindow(false);
         carregarExecucoes();
       }
     ).setMessage('Aguarde, salvando execução...').execute();
   }
 
+  function emiteRelatorioExecucao(iCodigoExecucao) {
+     window.open(
+         'aco2_acordoitemexecucao002.php?acordoitemexecucao='+iCodigoExecucao,
+         '',
+         'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
+     );
+  }
+  
   function validarFormulario() {
 
     if ($F('quantidade') == "") {
@@ -583,6 +606,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     $('data_final').value      = '';
     $('nota_fiscal').value     = '';
     $('numero_processo').value = '';
+    $('observacao').value      = '';
   }
 
   function fecharJanela() {

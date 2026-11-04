@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,14 +53,14 @@ if(isset($e80_data_ano)){
 
   $sqlerro=false;
 if(isset($atualizar)){
-  
+
   db_inicio_transacao();
- 
-  
+
+
   //-----------------------------------
   //rotina que inclui os movimentos
   if($sqlerro==false && $movs !=''){
-     
+
     $clempagegera->e87_descgera = "Arquivo gerado";
     $clempagegera->e87_data     = date("Y-m-d",db_getsession("DB_datausu"));
     $clempagegera->e87_hora     = db_hora();
@@ -70,11 +70,11 @@ if(isset($atualizar)){
       $sqlerro = true;
     }else{
       $gera = $clempagegera->e87_codgera;
-    } 
-    $arr =  split("XX",$movs);
+    }
+    $arr = explode("XX",$movs);
     $tot_valor ='';
     for($i=0; $i<count($arr); $i++ ){
-       $mov = $arr[$i];  
+       $mov = $arr[$i];
        //-----------------------------------
        //inclui na tabela empagemov
        if($sqlerro==false){
@@ -86,18 +86,18 @@ if(isset($atualizar)){
 	 $erro_msg = $clempageconf->erro_msg;
 	 if($clempageconf->erro_status==0){
 	       $sqlerro = true;
-	 }     
-       }  
+	 }
+       }
        //-----------------------------------
 
-       //-----------------------------  
+       //-----------------------------
        //rotina para calcular o valor total dos movimentos
         $result = $clempagemov->sql_record($clempagemov->sql_query($mov,"e81_valor as valor"));
 	db_fieldsmemory($result,0);
 	$tot_valor += $valor;
 
-       
-    }	
+
+    }
 
     $result = $clempagetipo->sql_record($clempagetipo->sql_query($e83_codtipo));
     if($clempagetipo->numrows>0){
@@ -110,11 +110,11 @@ if(isset($atualizar)){
 if(isset($entrar) || isset($nova)){
   db_inicio_transacao();
   $sqlerro=false;
-  
+
   if(empty($nova)){
     $result01 = $clempage->sql_record($clempage->sql_query_file(null,'e80_codage','',"e80_data='$data' and e80_instit = " . db_getsession("DB_instit")));
     $numrows01 = $clempage->numrows;
-  } 
+  }
 
   if(isset($nova) || (isset($numrows01) && $numrows01 == 0) ){
     $clempage->e80_data = $data;
@@ -124,7 +124,7 @@ if(isset($entrar) || isset($nova)){
          $sqlerro = true;
     }else{
       $e80_codage = $clempage->e80_codage;
-    }	 
+    }
   }else{
     $jatem =  true;
   }
@@ -142,7 +142,7 @@ if(isset($entrar) || isset($nova)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-    <tr> 
+    <tr>
       <td width="360" height="18">&nbsp;</td>
       <td width="263">&nbsp;</td>
       <td width="25">&nbsp;</td>
@@ -150,27 +150,27 @@ if(isset($entrar) || isset($nova)){
     </tr>
   </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-   <?
+   <?php
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
-   
-//sempre que ja existir agenda entra nesta opcao  
-  if(isset($e80_codage)){  
+
+//sempre que ja existir agenda entra nesta opcao
+  if(isset($e80_codage)){
 	include(modification("forms/db_frmempageconf.php"));
 
-//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda 
+//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda
   }else if(empty($entrar) && empty($e80_codage)){?>
         <form name="form1" method="post" action="">
           <table border="0" cellspacing="0" cellpadding="0">
             <tr><br>
               <td nowrap title="<?=@$Te80_data?>">
                 <?=$Le80_data?>
-              </td>	
-              <td>	
-              <?
+              </td>
+              <td>
+              <?php
                 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
               ?>
               </td>
@@ -182,8 +182,8 @@ if(isset($entrar) || isset($nova)){
             </tr>
           </table>
         </form>
-	
-<?  
+
+<?php
 //entra nesta opcao para escolher uma das agendas ou então selecionar uma jah existente
    }else if(isset($jatem)){?>
         <form name="form1" method="post" action="">
@@ -194,16 +194,16 @@ if(isset($entrar) || isset($nova)){
 	   <tr>
 	      <td nowrap title="<?=@$Te80_data?>" align='right'>
 	      <?=$Le80_data?>
-	      </td>	
-	      <td>	
-	       <?
+	      </td>
+	      <td>
+	       <?php
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 	       ?>
 	      </td>
 	   </tr>
            <tr>
 	     <td class='bordas' align='right'><b>Agendas:</b></td>
-<?
+<?php
 	  for($i=0; $i<$numrows01; $i++){
 	    db_fieldsmemory($result01,$i);
             $arr[$e80_codage] = $e80_codage;
@@ -215,24 +215,24 @@ if(isset($entrar) || isset($nova)){
               <td colspan="2" align="center">
 	      	<input name="alterar" type="submit" value="Alterar selecionda">
 	      	<input name="nova" type="submit"    value="Incluir nova">
-	      </td>	
+	      </td>
             </tr>
 
 	 </table>
-       </form>	 
-<?   	
-   }  
+       </form>
+<?php
+   }
 ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($sqlerro == true && isset($atualizar)){
   db_msgbox($erro_msg);
 }
@@ -250,15 +250,15 @@ if((isset($e83_codmod) && $e83_codmod == 1) || isset($reemite)){
 
    // pesquisa codigo da conta
 
-   $sql = "select c63_banco 
+   $sql = "select c63_banco
            from conplanoreduz
 	        inner join conplanoconta on c61_codcon = c63_codcon and c61_anousu=c63_anousu and c63_reduz = c61_reduz
 	   where c61_anousu = ".db_getsession("DB_anousu")." and c61_reduz = $e83_conta";
-   
+
    $result = db_query($sql);
-  
+
    $codbco = pg_result($result,0,0);
-  
+
    //$fd = fsockopen(db_getsession('DB_ip'),4444);
    $fd = fsockopen('192.168.0.111',4444);
    // grava a autenticacao
@@ -280,7 +280,7 @@ if((isset($e83_codmod) && $e83_codmod == 1) || isset($reemite)){
            obj.setAttribute('type','hidden');\n
            obj.setAttribute('value','$movs');\n
            document.form1.appendChild(obj);\n
-           
+
 	   obj=document.createElement('input');\n
            obj.setAttribute('name','tot_valor');\n
            obj.setAttribute('type','hidden');\n

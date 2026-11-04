@@ -17,6 +17,10 @@ abstract class PadService
      */
     protected $fileName;
 
+    protected $ano;
+
+    protected $dataInicial;
+    protected $dataFinal;
 
     /**
      * @var array
@@ -34,12 +38,31 @@ abstract class PadService
     protected $instituicoes = [];
 
     /**
-     * seta o cabeçalho do arquivo
+     * @deprecated A partir de 2024/06 o MGS se adequou ao TCE-RS e essa propriedade não é mais válida
+     * @var bool
+     */
+    protected $emissaoMGS = false;
+
+    /**
+     * Seta o cabeçalho do arquivo
      * @param string $header
      */
     public function setHeader($header)
     {
         $this->header = $header;
+    }
+
+    /**
+     * Até 2023 tanto PAD e MGS emitiam o arquivo no mesmo layout.
+     * Isso mudou agora e esse parâmetro visa realizar os ajustes no layout
+     *
+     * @deprecated A partir de 2024/06 o MGS se adequou ao TCE-RS e essa propriedade não é mais válida
+     * @param $bool
+     * @return void
+     */
+    public function emitirModeloMGS($bool = false)
+    {
+        $this->emissaoMGS = $bool;
     }
 
     /**
@@ -64,7 +87,7 @@ abstract class PadService
         foreach ($this->getDados() as $dado) {
             $dadoLayout = $dado->parse($dado->toArray());
             $dump->writeLine($dadoLayout);
-            $linhas ++;
+            $linhas++;
         }
 
         $dump->writeFooter($linhas);

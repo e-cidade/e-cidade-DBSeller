@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $db_botao = true;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-     <?
+     <?php
     
         include(modification("forms/db_frmgerautaut.php"));
 
@@ -65,11 +65,11 @@ $db_botao = true;
         
        ?>  
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>
-<?
+<?php
 
 if(isset($pc80_codproc) && trim($pc80_codproc)!="" || isset($anul) || (isset($pc10_numero) && trim($pc10_numero)!="")){	   
  

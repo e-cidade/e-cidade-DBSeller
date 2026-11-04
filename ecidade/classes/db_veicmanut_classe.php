@@ -86,13 +86,13 @@ class cl_veicmanut {
                  ve62_veicmotoristas = int4 = Motorista
                  ";
    //funcao construtor da classe
-   function cl_veicmanut() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmanut");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -101,7 +101,7 @@ class cl_veicmanut {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ve62_codigo = ($this->ve62_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ve62_codigo"]:$this->ve62_codigo);
        $this->ve62_veiculos = ($this->ve62_veiculos == ""?@$GLOBALS["HTTP_POST_VARS"]["ve62_veiculos"]:$this->ve62_veiculos);
@@ -139,7 +139,7 @@ class cl_veicmanut {
      }
    }
    // funcao para Inclusão
-   function incluir ($ve62_codigo){
+   public function incluir ($ve62_codigo){
       $this->atualizacampos();
      if($this->ve62_veiculos == null ){
        $this->erro_sql = " Campo Veículo não informado.";
@@ -186,15 +186,6 @@ class cl_veicmanut {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ve62_veiccadtiposervico == null ){
-       $this->erro_sql = " Campo Tipo de Serviço não informado.";
-       $this->erro_campo = "ve62_veiccadtiposervico";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
      if($this->ve62_usuario == null ){
        $this->erro_sql = " Campo Usuário não informado.";
        $this->erro_campo = "ve62_usuario";
@@ -216,15 +207,6 @@ class cl_veicmanut {
      if($this->ve62_hora == null ){
        $this->erro_sql = " Campo Hora da Inclusão/Alteração não informado.";
        $this->erro_campo = "ve62_hora";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->ve62_medida == null ){
-       $this->erro_sql = " Campo Medida não informado.";
-       $this->erro_campo = "ve62_medida";
        $this->erro_banco = "";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -317,11 +299,11 @@ class cl_veicmanut {
                                ,$this->ve62_vlrpecas
                                ,'$this->ve62_descr'
                                ,'$this->ve62_notafisc'
-                               ,$this->ve62_veiccadtiposervico
+                               ,".($this->ve62_veiccadtiposervico == "null" || $this->ve62_veiccadtiposervico == ""?"null":"'".$this->ve62_veiccadtiposervico."'")."
                                ,$this->ve62_usuario
                                ,".($this->ve62_data == "null" || $this->ve62_data == ""?"null":"'".$this->ve62_data."'")."
                                ,'$this->ve62_hora'
-                               ,$this->ve62_medida
+                               ,".($this->ve62_medida == "null" || $this->ve62_medida == ""?"null":"'".$this->ve62_medida."'")."
                                ,'$this->ve62_observacao'
                                ,$this->ve62_situacao
                                ,$this->ve62_numero
@@ -814,7 +796,7 @@ class cl_veicmanut {
 
      $sql  = "select {$campos}";
      $sql .= "  from veicmanut ";
-     $sql .= "      inner join veiccadtiposervico  on  veiccadtiposervico.ve28_codigo = veicmanut.ve62_veiccadtiposervico";
+     $sql .= "      left join veiccadtiposervico  on  veiccadtiposervico.ve28_codigo = veicmanut.ve62_veiccadtiposervico";
      $sql .= "      inner join veiculos  on  veiculos.ve01_codigo = veicmanut.ve62_veiculos";
      $sql .= "      left  join veicmotoristas  on  veicmotoristas.ve05_codigo = veicmanut.ve62_veicmotoristas";
      $sql .= "      left  join cgm as motorista  on  veicmotoristas.ve05_numcgm = motorista.z01_numcgm";
@@ -893,10 +875,10 @@ class cl_veicmanut {
      return $sql;
   }
 
-   function sql_query_info ( $ve62_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_info ( $ve62_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -906,7 +888,7 @@ class cl_veicmanut {
        $sql .= $campos;
      }
      $sql .= " from veicmanut ";
-     $sql .= "      inner join veiccadtiposervico    on veiccadtiposervico.ve28_codigo     = veicmanut.ve62_veiccadtiposervico";
+     $sql .= "      left join veiccadtiposervico     on veiccadtiposervico.ve28_codigo     = veicmanut.ve62_veiccadtiposervico";
      $sql .= "      inner join veiculos              on veiculos.ve01_codigo               = veicmanut.ve62_veiculos";
      $sql .= "      inner join ceplocalidades        on ceplocalidades.cp05_codlocalidades = veiculos.ve01_ceplocalidades";
      $sql .= "      inner join veiccadtipo           on veiccadtipo.ve20_codigo   = veiculos.ve01_veiccadtipo";
@@ -932,7 +914,7 @@ class cl_veicmanut {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

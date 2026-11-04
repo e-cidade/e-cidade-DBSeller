@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -164,7 +164,7 @@ function js_relatorio(){
 </table>
 
     <center>
-    <?	
+    <?php 
 	$mensagem_semdebitos = false;
 	$com_debitos = true;
 	if(isset($r01_regist)){
@@ -264,7 +264,7 @@ function js_relatorio(){
                       <tr> 
                         <td nowrap title="Clique Aqui para ver os dados cadastrais." class="tabcols">
                           <strong style=\"color:blue\>
-                            <?
+                            <?php
                             db_ancora("NumCgm:&nbsp;","js_mostracgm();return false;", 1);
                             ?>
                           </strong>
@@ -272,7 +272,7 @@ function js_relatorio(){
                         <td class="tabcols" nowrap title="Clique Aqui para ver os dados cadastrais."> 
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
-                          <?
+                          <?php
 					      parse_str($arg);
 					      echo "<strong style=\"color:blue\">";
 					      db_ancora("$Lr01_regist","js_mostrapessoal();return false;", 1);
@@ -307,7 +307,7 @@ function js_relatorio(){
                       </tr>
                       <tr> 
                         <td height="21" colspan="2" nowrap class="tabcols"> 
-                          <?
+                          <?php
                           if(isset($r01_regist))
                             db_input('r01_regist', 8, $Ir01_regist, true, 'hidden', 3);
                           if(isset($z01_numcgm))
@@ -323,7 +323,7 @@ function js_relatorio(){
                     <table border="1" cellspacing="0" cellpadding="0">
 		              <tr class="links">
 		                <td valign="top" style="font-size:11px">
-                          <?
+                          <?php
                           if(!isset($xopcao) || (isset($xopcao) && trim($xopcao)=="")){
                             $xopcao = '';
                           }
@@ -426,7 +426,7 @@ function js_relatorio(){
                 <tr> 
                   <td align="center"> 
                     <iframe id="debitos" height="90%" width="95%" name="debitos" src="pes3_conspontoregistro021.php?opcao=<?=$xopcao?>&numcgm=<?=$z01_numcgm?>&matricula=<?=$matricula?>&ano=<?=$ano?>&mes=<?=$mes?>&tbprev=<?$r01_tbprev?>"></iframe>
-                    <? 
+                    <?php 
                      $opcao = $xopcao;
                      db_input('opcao', 8, 0, true, 'hidden', 3);
                     ?>
@@ -437,7 +437,7 @@ function js_relatorio(){
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
-              <?
+              <?php
               $novapesquisa = "pes3_conspontoregistro001.php";
               ?>
               <input name="retornar" type="button" id="retornar" value="Nova Pesquisa" title="Inicio da Consulta" onclick="location.href='<?=($novapesquisa)?>'"> 
@@ -450,23 +450,23 @@ function js_relatorio(){
                 Período:
               </strong>
               &nbsp;&nbsp;
-       	      <?
+       	      <?php
     	      db_input("ano",4,'',true,'text',4)
 	          ?>
 	          &nbsp;/&nbsp;
-	          <?
+	          <?php
     	      db_input("mes",2,'',true,'text',4)
 	          ?>
             </td>   
            </tr>
         </table>
       </form>
-    <?
+    <?php
 	}
 	?>
       </center>
 
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -534,7 +534,7 @@ function js_mostradetalhes(chave){
 
 </script>
 
-<?
+<?php
 
 $func_nome = new janela('func_nome','');
 $func_nome ->posX=1;

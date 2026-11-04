@@ -42,7 +42,7 @@ $clrotulo->label('ar30_exercicio');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 
   db_app::load('scripts.js');
   db_app::load('estilos.css');
@@ -82,7 +82,7 @@ function validaForm() {
       <td title="<?=$Tar30_exercicio?>"><?=$Lar30_exercicio?></td>
       
       <td>
-      <?
+      <?php
         db_input('ar30_exercicio', 15, $Iar30_exercicio, true, 'text', 1);
       ?>
       </td>
@@ -94,7 +94,7 @@ function validaForm() {
       <td title="Origem da Declara&ccedil;&atilde;o"><strong>Origem</strong></td>
       
       <td>
-      <?
+      <?php
         $origem = 'matric';
         $aOrigem = array('cgm'=>'CGM Geral', 'somentecgm'=>'Somente CGM', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o');
         db_select('origem', $aOrigem, true, 1, 'style="width: 200px"'); 
@@ -108,7 +108,7 @@ function validaForm() {
       <td title="Tipo de emiss&atilde;o"><strong>Tipo de Emissão</strong></td>
       
       <td>
-      <?
+      <?php
         $aTipo = array('txt'=>'TXT', 'pdf'=>'PDF');
         db_select('tipo', $aTipo, true, 1, 'style="width: 200px"'); 
       ?>
@@ -121,7 +121,7 @@ function validaForm() {
       <td title="[TODAS DO EXERCÍCIO] = Gera no arquivo todas as declarações do exercício informado. [SOMENTE NÃO GERADAS/CANCELADAS] = Novas declarações que foram quitadas ou canceladas desde o último processamento"><strong>Emitir Declarações</strong></td>
       
       <td>
-      <?
+      <?php
         $aArquivo = array('T'=>'TODAS DO EXERCÍCIO', 'S'=>'SOMENTE NÃO GERADAS/CANCELADAS');
         
         db_select('arquivo', $aArquivo, true, 1, 'style="width: 200px"');
@@ -140,7 +140,7 @@ function validaForm() {
 
   </table>
 </fieldset>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>

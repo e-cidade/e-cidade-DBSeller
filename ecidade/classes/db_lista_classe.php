@@ -1,75 +1,75 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE lista
-class cl_lista { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k60_codigo = 0; 
-   var $k60_descr = null; 
-   var $k60_tipo = null; 
-   var $k60_datadeb_dia = null; 
-   var $k60_datadeb_mes = null; 
-   var $k60_datadeb_ano = null; 
-   var $k60_datadeb = null; 
-   var $k60_filtros = null; 
-   var $k60_usuario = 0; 
-   var $k60_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_lista {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k60_codigo = 0;
+   var $k60_descr = null;
+   var $k60_tipo = null;
+   var $k60_datadeb_dia = null;
+   var $k60_datadeb_mes = null;
+   var $k60_datadeb_ano = null;
+   var $k60_datadeb = null;
+   var $k60_filtros = null;
+   var $k60_usuario = 0;
+   var $k60_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k60_codigo = int4 = Código da lista 
-                 k60_descr = varchar(100) = Descrição 
-                 k60_tipo = varchar(1) = Tipo da Lista 
-                 k60_datadeb = date = Data Base do Débito 
-                 k60_filtros = text = Filtros 
-                 k60_usuario = int4 = Usuário 
-                 k60_instit = int4 = Cód. Instituição 
+                 k60_codigo = int4 = Código da lista
+                 k60_descr = varchar(100) = Descrição
+                 k60_tipo = varchar(1) = Tipo da Lista
+                 k60_datadeb = date = Data Base do Débito
+                 k60_filtros = text = Filtros
+                 k60_usuario = int4 = Usuário
+                 k60_instit = int4 = Cód. Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_lista() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("lista"); 
+     $this->rotulo = new rotulo("lista");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_lista {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k60_codigo = ($this->k60_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["k60_codigo"]:$this->k60_codigo);
        $this->k60_descr = ($this->k60_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["k60_descr"]:$this->k60_descr);
@@ -99,9 +99,9 @@ class cl_lista {
      }
    }
    // funcao para inclusao
-   function incluir ($k60_codigo){ 
+   public function incluir ($k60_codigo){
       $this->atualizacampos();
-     if($this->k60_descr == null ){ 
+     if($this->k60_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "k60_descr";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_lista {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k60_tipo == null ){ 
+     if($this->k60_tipo == null ){
        $this->erro_sql = " Campo Tipo da Lista nao Informado.";
        $this->erro_campo = "k60_tipo";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_lista {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k60_datadeb == null ){ 
+     if($this->k60_datadeb == null ){
        $this->erro_sql = " Campo Data Base do Débito nao Informado.";
        $this->erro_campo = "k60_datadeb_dia";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_lista {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k60_filtros == null ){ 
+     if($this->k60_filtros == null ){
        $this->erro_sql = " Campo Filtros nao Informado.";
        $this->erro_campo = "k60_filtros";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_lista {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k60_usuario == null ){ 
+     if($this->k60_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "k60_usuario";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_lista {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k60_instit == null ){ 
+     if($this->k60_instit == null ){
        $this->erro_sql = " Campo Cód. Instituição nao Informado.";
        $this->erro_campo = "k60_instit";
        $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_lista {
        return false;
      }
      if($k60_codigo == "" || $k60_codigo == null ){
-       $result = db_query("select nextval('lista_k60_codigo_seq')"); 
+       $result = db_query("select nextval('lista_k60_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: lista_k60_codigo_seq do campo: k60_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: lista_k60_codigo_seq do campo: k60_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k60_codigo = pg_result($result,0,0); 
+       $this->k60_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from lista_k60_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $k60_codigo)){
@@ -176,10 +176,10 @@ class cl_lista {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k60_codigo = $k60_codigo; 
+         $this->k60_codigo = $k60_codigo;
        }
      }
-     if(($this->k60_codigo == null) || ($this->k60_codigo == "") ){ 
+     if(($this->k60_codigo == null) || ($this->k60_codigo == "") ){
        $this->erro_sql = " Campo k60_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -188,25 +188,25 @@ class cl_lista {
        return false;
      }
      $sql = "insert into lista(
-                                       k60_codigo 
-                                      ,k60_descr 
-                                      ,k60_tipo 
-                                      ,k60_datadeb 
-                                      ,k60_filtros 
-                                      ,k60_usuario 
-                                      ,k60_instit 
+                                       k60_codigo
+                                      ,k60_descr
+                                      ,k60_tipo
+                                      ,k60_datadeb
+                                      ,k60_filtros
+                                      ,k60_usuario
+                                      ,k60_instit
                        )
                 values (
-                                $this->k60_codigo 
-                               ,'$this->k60_descr' 
-                               ,'$this->k60_tipo' 
-                               ,".($this->k60_datadeb == "null" || $this->k60_datadeb == ""?"null":"'".$this->k60_datadeb."'")." 
-                               ,'$this->k60_filtros' 
-                               ,$this->k60_usuario 
-                               ,$this->k60_instit 
+                                $this->k60_codigo
+                               ,'$this->k60_descr'
+                               ,'$this->k60_tipo'
+                               ,".($this->k60_datadeb == "null" || $this->k60_datadeb == ""?"null":"'".$this->k60_datadeb."'")."
+                               ,'$this->k60_filtros'
+                               ,$this->k60_usuario
+                               ,$this->k60_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lista  ($this->k60_codigo) nao Incluído. Inclusao Abortada.";
@@ -244,16 +244,16 @@ class cl_lista {
        $resac = db_query("insert into db_acount values($acount,631,10724,'','".AddSlashes(pg_result($resaco,0,'k60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k60_codigo=null) { 
+   public function alterar ($k60_codigo=null) {
       $this->atualizacampos();
      $sql = " update lista set ";
      $virgula = "";
-     if(trim($this->k60_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_codigo"])){ 
+     if(trim($this->k60_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_codigo"])){
        $sql  .= $virgula." k60_codigo = $this->k60_codigo ";
        $virgula = ",";
-       if(trim($this->k60_codigo) == null ){ 
+       if(trim($this->k60_codigo) == null ){
          $this->erro_sql = " Campo Código da lista nao Informado.";
          $this->erro_campo = "k60_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_lista {
          return false;
        }
      }
-     if(trim($this->k60_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_descr"])){ 
+     if(trim($this->k60_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_descr"])){
        $sql  .= $virgula." k60_descr = '$this->k60_descr' ";
        $virgula = ",";
-       if(trim($this->k60_descr) == null ){ 
+       if(trim($this->k60_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k60_descr";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_lista {
          return false;
        }
      }
-     if(trim($this->k60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_tipo"])){ 
+     if(trim($this->k60_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_tipo"])){
        $sql  .= $virgula." k60_tipo = '$this->k60_tipo' ";
        $virgula = ",";
-       if(trim($this->k60_tipo) == null ){ 
+       if(trim($this->k60_tipo) == null ){
          $this->erro_sql = " Campo Tipo da Lista nao Informado.";
          $this->erro_campo = "k60_tipo";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_lista {
          return false;
        }
      }
-     if(trim($this->k60_datadeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"] !="") ){ 
+     if(trim($this->k60_datadeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"] !="") ){
        $sql  .= $virgula." k60_datadeb = '$this->k60_datadeb' ";
        $virgula = ",";
-       if(trim($this->k60_datadeb) == null ){ 
+       if(trim($this->k60_datadeb) == null ){
          $this->erro_sql = " Campo Data Base do Débito nao Informado.";
          $this->erro_campo = "k60_datadeb_dia";
          $this->erro_banco = "";
@@ -301,11 +301,11 @@ class cl_lista {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k60_datadeb_dia"])){
          $sql  .= $virgula." k60_datadeb = null ";
          $virgula = ",";
-         if(trim($this->k60_datadeb) == null ){ 
+         if(trim($this->k60_datadeb) == null ){
            $this->erro_sql = " Campo Data Base do Débito nao Informado.";
            $this->erro_campo = "k60_datadeb_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_lista {
          }
        }
      }
-     if(trim($this->k60_filtros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_filtros"])){ 
+     if(trim($this->k60_filtros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_filtros"])){
        $sql  .= $virgula." k60_filtros = '$this->k60_filtros' ";
        $virgula = ",";
-       if(trim($this->k60_filtros) == null ){ 
+       if(trim($this->k60_filtros) == null ){
          $this->erro_sql = " Campo Filtros nao Informado.";
          $this->erro_campo = "k60_filtros";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_lista {
          return false;
        }
      }
-     if(trim($this->k60_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_usuario"])){ 
+     if(trim($this->k60_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_usuario"])){
        $sql  .= $virgula." k60_usuario = $this->k60_usuario ";
        $virgula = ",";
-       if(trim($this->k60_usuario) == null ){ 
+       if(trim($this->k60_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "k60_usuario";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_lista {
          return false;
        }
      }
-     if(trim($this->k60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_instit"])){ 
+     if(trim($this->k60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k60_instit"])){
        $sql  .= $virgula." k60_instit = $this->k60_instit ";
        $virgula = ",";
-       if(trim($this->k60_instit) == null ){ 
+       if(trim($this->k60_instit) == null ){
          $this->erro_sql = " Campo Cód. Instituição nao Informado.";
          $this->erro_campo = "k60_instit";
          $this->erro_banco = "";
@@ -383,7 +383,7 @@ class cl_lista {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lista  nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k60_codigo;
@@ -411,14 +411,14 @@ class cl_lista {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k60_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k60_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k60_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -450,7 +450,7 @@ class cl_lista {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lista  nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k60_codigo;
@@ -478,11 +478,11 @@ class cl_lista {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -504,10 +504,10 @@ class cl_lista {
       }
      return $result;
    }
-   function sql_query ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,15 +523,15 @@ class cl_lista {
      $sql2 = "";
      if($dbwhere==""){
        if($k60_codigo!=null ){
-         $sql2 .= " where lista.k60_codigo = $k60_codigo "; 
-       } 
+         $sql2 .= " where lista.k60_codigo = $k60_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,10 +540,10 @@ class cl_lista {
      }
      return $sql;
   }
-   function sql_query_file ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,15 +556,15 @@ class cl_lista {
      $sql2 = "";
      if($dbwhere==""){
        if($k60_codigo!=null ){
-         $sql2 .= " where lista.k60_codigo = $k60_codigo "; 
-       } 
+         $sql2 .= " where lista.k60_codigo = $k60_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,11 +573,11 @@ class cl_lista {
      }
      return $sql;
   }
-  
-   function sql_query_prescricao ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query_prescricao ( $k60_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,15 +593,15 @@ class cl_lista {
      $sql2 = "";
      if($dbwhere==""){
        if($k60_codigo!=null ){
-         $sql2 .= " where lista.k60_codigo = $k60_codigo "; 
-       } 
+         $sql2 .= " where lista.k60_codigo = $k60_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,6 +610,6 @@ class cl_lista {
      }
      return $sql;
   }
-  
+
 }
 ?>

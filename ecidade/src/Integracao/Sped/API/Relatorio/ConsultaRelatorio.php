@@ -4,6 +4,7 @@ namespace ECidade\Integracao\Sped\API\Relatorio;
 
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use PDFDocument;
+use JSON;
 
 class ConsultaRelatorio
 {
@@ -145,7 +146,7 @@ class ConsultaRelatorio
         }
 
         $this->pdf->addHeaderDescription(
-            $tipoResponsavel. ' ' .ucwords(strtolower($this->cgmResponsavel->getNomeCompleto()))
+            $tipoResponsavel . ' ' . ucwords(strtolower($this->cgmResponsavel->getNomeCompleto()))
         );
         if (!empty($this->parametros->evento) && !empty($this->parametros->layout)) {
             $this->pdf->addHeaderDescription(
@@ -156,9 +157,11 @@ class ConsultaRelatorio
                 )
             );
         }
-        $this->pdf->addHeaderDescription('Competência: '. $this->parametros->competencia);
-        $this->pdf->addHeaderDescription('Quantidade de Registros: '. sizeof($this->dados));
-
+        $this->pdf->addHeaderDescription('Competência: ' . $this->parametros->competencia);
+        $this->pdf->addHeaderDescription('Quantidade de Registros: ' . sizeof($this->dados));
+        $this->pdf->addHeaderDescription(
+            'Data de fechamento: ' . date_format(date_create($this->parametros->dt), "d/m/Y")
+        );
         $this->pdf->SetFont('arial', '', static::TAMANHO_FONTE);
         $this->pdf->AddPage();
 
@@ -229,10 +232,12 @@ class ConsultaRelatorio
      */
     private function montaRelatorio()
     {
-        $this->caminhoArquivo = 'tmp/retorno_sped_'. time() . '.pdf';
+        $this->caminhoArquivo = 'tmp/retorno_sped_' . time() . '.pdf';
         foreach ($this->dados as $grupos) {
             foreach ($grupos as $grupo) {
-                $this->imprimeGrupo($grupo);
+                if (isset($grupo->children)) {
+                    $this->imprimeGrupo($grupo);
+                }
             }
         }
 
@@ -262,17 +267,16 @@ class ConsultaRelatorio
 
         return $this->caminhoArquivo;
     }
-    
 
 
     public function montarCSV()
     {
-        $this->caminhoArquivo = 'tmp/retorno_sped_'. time() . '.csv';
-        
+        $this->caminhoArquivo = 'tmp/retorno_sped_' . time() . '.csv';
+
         foreach ($this->dados as $dados) {
             foreach ($dados as $dado) {
                 $info[] = $dado->description;
-                
+
                 foreach ($dado->children as $dadoChildren) {
                     $children = [];
                     $children[] = $dadoChildren->description;
@@ -280,21 +284,21 @@ class ConsultaRelatorio
                     $info[] = $children;
                 }
             }
-            
+
             $info[] = "\n";
         }
         file_put_contents($this->caminhoArquivo, '');
-        
+
         foreach ($info as $key => &$value) {
             if (is_array($value)) {
                 $value = implode(';', $value);
             }
-            file_put_contents($this->caminhoArquivo, $value.PHP_EOL, FILE_APPEND);
+            file_put_contents($this->caminhoArquivo, $value . PHP_EOL, FILE_APPEND);
         }
-        
+
         return $this->caminhoArquivo;
     }
-    
+
 
     public function gerarCSV()
     {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -113,7 +113,7 @@ if (isset($alterar) && $lAlterar) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
         <fieldset style='width: 75%;'> <legend><b>Profissional Fora da Rede</b></legend>
-          <?
+          <?php
           require_once(modification("forms/db_frmsau_medicosforarede.php"));
           ?>
         </fieldset>
@@ -122,7 +122,7 @@ if (isset($alterar) && $lAlterar) {
   </tr>
 </table>
 </center>
-<?
+<?php
 if (!isset($lBotao) || $lBotao != 'true') {
 
   db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'),
@@ -133,7 +133,7 @@ if (!isset($lBotao) || $lBotao != 'true') {
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar) && $lAlterar) {
 
   if ($oDaoMedicos->erro_status == '0') {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,7 +104,7 @@ $clsuspensao->rotulo->label();
   	            <b>Código:</b>
   	          </td>
   	          <td>
-  	            <?
+  	            <?php
 				  db_input("ar18_sequencial",10,"",true,"text",3,"");
   	            ?>
   	          </td>
@@ -114,7 +114,7 @@ $clsuspensao->rotulo->label();
 		        <b>Processo:</b>
 			  </td>
 		  	  <td>
-		  	    <?
+		  	    <?php
 				  
 				  $rsProcjur = $clprocjur->sql_record($clprocjur->sql_query_file(null,"v62_sequencial,v62_descricao","v62_sequencial"," v62_situacao = 1 ")); 
 				  if ( $clprocjur->numrows > 0 ) {
@@ -131,10 +131,10 @@ $clsuspensao->rotulo->label();
 		   <table width="100%">
 			<tr>
 			  <td width="110px;">
-			  	<? echo $Lar18_data ?>
+			  	<?php echo $Lar18_data ?>
 			  </td>
 			  <td>
-			  	<? 
+			  	<?php 
 			  	   db_inputdata("ar18_data",@$ar18_data_dia,@$ar18_data_mes,@$ar18_data_ano,true,"text",3); 	  
 			  	?>
 			  </td>
@@ -142,7 +142,7 @@ $clsuspensao->rotulo->label();
 			  	<?=@$Lar18_hora?>
 			  </td>
 			  <td  align="left" width="53px;">
-			  	<?
+			  	<?php
 			  	   db_input("ar18_hora",5,$Iar18_hora,true,"text",3,"");
 			  	?>
 			  </td>
@@ -151,10 +151,10 @@ $clsuspensao->rotulo->label();
 		   <table>				
 			<tr>
 			  <td width="110px;">
-			  	<? echo $Lar18_obs ?>
+			  	<?php echo $Lar18_obs ?>
 			  </td>
 			  <td>
-			  	<? 
+			  	<?php 
 			  	  db_textarea("ar18_obs"  ,3,51,$Iar18_obs,true,"text",1);
 			  	?>
 			  </td>
@@ -164,7 +164,7 @@ $clsuspensao->rotulo->label();
 			  	<b>Usuário :</b>
 			  </td>
 			  <td>
-			  	<?
+			  	<?php
 			  	   $rsNomeUsu 	 = $cldb_usuarios->sql_record($cldb_usuarios->sql_query(db_getsession('DB_id_usuario'),"id_usuario,nome",null,""));
 			  	   $oNomeUsu  	 = db_utils::fieldsMemory($rsNomeUsu,0);
 			  	   $nomeUsu 	 = $oNomeUsu->nome;
@@ -192,7 +192,7 @@ $clsuspensao->rotulo->label();
   </table>
 </body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -205,7 +205,7 @@ $clsuspensao->rotulo->label();
   } 
   
 </script>
-<?
+<?php
 	if (isset($oPost->alterar)) {
 
 		if($lSqlErro){	

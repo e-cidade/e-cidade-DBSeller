@@ -28,6 +28,71 @@ class ContraChequePdf
     private $instituicao;
 
     /**
+     * @param  mixed  $matricula
+     */
+    public function setMatricula($matricula)
+    {
+        $this->matricula = $matricula;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatricula()
+    {
+        return $this->matricula;
+    }
+
+    /**
+     * @param  mixed  $folha
+     */
+    public function setFolha($folha)
+    {
+        $this->folha = $folha;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFolha()
+    {
+        return $this->folha;
+    }
+
+    /**
+     * @param  mixed  $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param  mixed  $instituicao
+     */
+    public function setInstituicao($instituicao)
+    {
+        $this->instituicao = $instituicao;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstituicao()
+    {
+        return $this->instituicao;
+    }
+
+
+    /**
      * @param $matricula
      * @param $ano
      * @param $mes
@@ -47,8 +112,6 @@ class ContraChequePdf
         /**
          * Carregar URL do processo eletrônico
          */
-        $dotenv = new \Dotenv\Dotenv('./');
-        $dotenv->load();
         $this->urlAutenticidade = env('BASE_URL_AUTENTICIDADE') . "/contracheque";
     }
 
@@ -176,6 +239,7 @@ class ContraChequePdf
                         r70_descr AS lotacao,
                         rh37_descr AS cargo,
                         rh04_descr AS funcao,
+                        cgmfisico.z04_nomesocial as nomesocial,
                         rh44_codban AS banco,
                         rh44_conta AS conta,
                         rh44_agencia AS agencia,
@@ -219,6 +283,7 @@ class ContraChequePdf
                                     AND rh02_instit = {$iInstituicao}
             INNER JOIN rhregime ON rh02_codreg = rh30_codreg AND rh02_instit = rh30_instit
             INNER JOIN cgm ON rh01_numcgm = z01_numcgm
+            LEFT JOIN cgmfisico ON cgm.z01_numcgm = cgmfisico.z04_numcgm
             LEFT JOIN rhfuncao ON rh37_funcao = rh02_funcao AND rh37_instit = rh02_instit
             LEFT JOIN rhlota ON  r70_codigo = rh02_lota AND r70_instit = rh02_instit
             LEFT JOIN rhpescargo ON rh20_seqpes = rh02_seqpes AND rh20_instit = rh02_instit
@@ -234,11 +299,17 @@ class ContraChequePdf
             );
             $sWhereAuxiliar .= $sWhereSemest;
 
+            $codicaoColuna_semest = "";
+            if (trim($configTipoFolha->prefixo) == "r48") {
+                $codicaoColuna_semest  = ",{$configTipoFolha->prefixo}_semest";
+            }
+
             $sSql = "
         SELECT DISTINCT z01_nome                 AS nome,
                         r70_descr                AS lotacao,
                         rh37_descr               AS cargo,
                         rh04_descr               AS funcao,
+                        cgmfisico.z04_nomesocial as nomesocial,
                         rh44_codban              AS banco,
                         rh44_agencia             AS agencia,
                         rh44_conta               AS conta,
@@ -263,9 +334,8 @@ class ContraChequePdf
         FROM (
             SELECT DISTINCT {$configTipoFolha->prefixo}_regist,
                             {$configTipoFolha->prefixo}_anousu,
-                            {$configTipoFolha->prefixo}_mesusu,
-                            {$configTipoFolha->prefixo}_lotac,
-                            {$configTipoFolha->prefixo}_semest
+                            {$configTipoFolha->prefixo}_mesusu
+                            {$codicaoColuna_semest}
                 FROM {$configTipoFolha->arquivo}
             {$sWhereAuxiliar}
             ) AS {$configTipoFolha->arquivo}
@@ -276,6 +346,7 @@ class ContraChequePdf
                                            AND rh02_instit = {$iInstituicao}
             INNER JOIN rhregime ON rh02_codreg = rh30_codreg AND rh02_instit = rh30_instit
             INNER JOIN cgm ON rh01_numcgm = z01_numcgm
+            LEFT JOIN cgmfisico ON cgm.z01_numcgm = cgmfisico.z04_numcgm
             LEFT  JOIN  rhfuncao ON rh37_funcao = rh02_funcao AND rh37_instit = rh02_instit
             LEFT  JOIN  rhlota ON  r70_codigo = rh02_lota AND r70_instit = rh02_instit
             LEFT  JOIN  rhpescargo ON rh20_seqpes = rh02_seqpes AND rh20_instit = rh02_instit
@@ -431,6 +502,7 @@ class ContraChequePdf
             $oPDF->nome = $oServidor->nome;
             $oPDF->descr_funcao = $oServidor->funcao;
             $oPDF->descr_cargo      = $oServidor->cargo;
+            $oPDF->nomesocial = $oServidor->nomesocial;
             $oPDF->descr_lota = "{$oServidor->estrutural}-{$oServidor->lotacao}";
             $oPDF->f010 = $oServidor->salario;
             $oPDF->padrao = $oServidor->padrao;
@@ -462,7 +534,7 @@ class ContraChequePdf
 
         $storageConfig = StorageHelper::getStorageConfig();
         $allowed = [];
-        if (isset($storageConfig->client_id_ouvidoria) && !empty($storageConfig->client_id_ouvidoria)) {
+        if (!empty($storageConfig->client_id_ouvidoria)) {
             $allowed[] = $storageConfig->client_id_ouvidoria;
         }
 

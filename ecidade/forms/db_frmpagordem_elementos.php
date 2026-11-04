@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -221,7 +221,7 @@ if($desabilita==true || $db_opcao==3){
     <input name='verificador' type='hidden' value='ok'>
     <center>
   <table border='1' cellspacing="0" cellpadding="1" class='bordas02'>
- <?
+ <?php
  if(isset($e60_numemp) && $e60_numemp!= ""){
 //     echo $clempelemento->sql_query($e60_numemp,null,"*","e64_codele");
       $result = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,null,"*","e64_codele"));
@@ -448,7 +448,7 @@ if($desabilita==true || $db_opcao==3){
 </body>
 </html>
 <script>
-<?
+<?php
 if(isset($eles)){
 ?>
 
@@ -486,7 +486,7 @@ function js_tranca(){
      }
    }
  }
-<?
+<?php
 }
 ?>
 </script>

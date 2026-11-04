@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcindicaperiodicidade->rotulo->label("o09_descricao");
               <?=$Lo09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o09_sequencial",10,$Io09_sequencial,true,"text",4,"","chave_o09_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcindicaperiodicidade->rotulo->label("o09_descricao");
               <?=$Lo09_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o09_descricao",40,$Io09_descricao,true,"text",4,"","chave_o09_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcindicaperiodicidade->rotulo->label("o09_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcindicaperiodicidade.php")==true){
@@ -122,12 +122,12 @@ $clorcindicaperiodicidade->rotulo->label("o09_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

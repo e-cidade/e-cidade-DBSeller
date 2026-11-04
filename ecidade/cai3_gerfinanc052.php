@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -51,7 +51,7 @@ $oGet  = db_utils::postMemory($_GET);
 </head>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php
 
 
   /**
@@ -63,6 +63,12 @@ $oGet  = db_utils::postMemory($_GET);
   if ( isset($oGet->numcgm) ) {
 
     $sInnerCredito = " inner join arrenumcgm on arrenumcgm.k00_numpre = abatimentorecibo.k127_numprerecibo ";
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sInnerCredito .= " inner join arreauto on arrenumcgm.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sInnerCredito .= " inner join arrelanc on arrenumcgm.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+    }
     $sWhereCredito = " and arrenumcgm.k00_numcgm = ".$oGet->numcgm;
     $sTipoPesquisa = "C";
     $sChavePesquisa= $oGet->numcgm;
@@ -75,6 +81,12 @@ $oGet  = db_utils::postMemory($_GET);
   } else if ( isset($oGet->matric) ) {
 
     $sInnerCredito = " inner join arrematric on arrematric.k00_numpre = abatimentorecibo.k127_numprerecibo ";
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sInnerCredito .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sInnerCredito .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+    }
     $sWhereCredito = " and arrematric.k00_matric = " . $oGet->matric;
     $sTipoPesquisa = "M";
     $sChavePesquisa= $oGet->matric;
@@ -87,6 +99,13 @@ $oGet  = db_utils::postMemory($_GET);
   } else if ( isset($oGet->inscr) ) {
 
     $sInnerCredito = " inner join arreinscr on arreinscr.k00_numpre = abatimentorecibo.k127_numprerecibo ";
+    if(isset($oGet->y50_codauto) && $oGet->y50_codauto != ''){
+      $sInnerCredito .= " inner join arreauto on arreinscr.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$oGet->y50_codauto;
+    }
+    if(isset($oGet->nl01_codlanc) && $oGet->nl01_codlanc != ''){
+      $sInnerCredito .= " inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$oGet->nl01_codlanc;
+    }
+
     $sWhereCredito = " and arreinscr.k00_inscr = " . $oGet->inscr;
     $sTipoPesquisa = "I";
     $sChavePesquisa= $oGet->inscr;
@@ -134,40 +153,6 @@ $oGet  = db_utils::postMemory($_GET);
   $rsCreditosDisponiveis    = db_query($sSqlCreditosDisponiveis);
   $iLinhasCreditos          = pg_num_rows($rsCreditosDisponiveis);
   $aDadosSaida = array();
-
-  /**
-   * BUSCA OS DESCONTOS CONCEDIDOS
-   * ADICIONANDO A VARIAVEL $aDadosSaida[]
-   */
-  // TODO: Verificar se deve aparecer no relatório das compensações utilizadas
-  $aDescontos = !isset($sChavePesquisa) ?
-                array() :
-                Desconto::getDescontosPorOrigem($sTipoPesquisa, $sChavePesquisa);
-
-  foreach ( $aDescontos as $oDescontos) {
-
-    $oDados                  = new stdClass();
-    $oDados->k01_codigo      = $oDescontos->getTipoAbatimento();
-    $oDados->k125_sequencial = $oDescontos->getCodigo();
-    $oDados->k00_tipo        = $oDescontos->getTipoDebito();
-    $oDados->k00_descr       = !empty($oDados->k00_tipo) ? getDescricaoTipoDebito($oDescontos->getTipoDebito()) : "";
-    $oDados->k125_datalanc   = $oDescontos->getDataLancamento()->getDate();
-    $oDados->k00_hist        = Desconto::HISTORICO;
-    $oDados->k01_descr       = 'DESCONTO';
-    $oDados->k170_numpre     = $oDescontos->getNumpre();
-    $oDados->k170_numpar     = $oDescontos->getNumpar();
-    $oDados->k02_descr       = $oDescontos->getDescRec();
-
-    if ( $oDescontos->getSituacao() == Abatimento::SITUACAO_CANCELADO ) {
-
-      $oDados->k00_hist      = Desconto::HISTORICO_CANCELAMENTO;
-      $oDados->k01_descr     = 'DESCONTO CANCELADO';
-    }
-
-    $oDados->k00_valor       = $oDescontos->getValor();
-    $oDados->sTipo           = 'desconto';
-    $aDadosSaida[]           = $oDados;
-  }
 
   if (isset($oGet->devolucao)) {
     $iLinhasCreditos = 0;
@@ -252,25 +237,25 @@ $oGet  = db_utils::postMemory($_GET);
   $sqlTransferenciaOrigemDestino = "
     SELECT distinct
       k158_abatimentoorigem, k158_abatimentodestino
-    FROM abatimentoutilizacao                                                                              
-        LEFT JOIN abatimentoutilizacaodestino 
-          on k170_utilizacao = k157_sequencial                       
-        INNER JOIN abatimento                  
-          on k125_sequencial = k157_abatimento                       
-        INNER JOIN abatimentorecibo            
-          on k125_sequencial = k127_abatimento                       
-        INNER JOIN recibo                      
-          on recibo.k00_numpre = k127_numprerecibo                   
-        INNER JOIN abatimentoarreckey 
-          on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial  
-        INNER JOIN arreckey 
-          on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey                 
+    FROM abatimentoutilizacao
+        LEFT JOIN abatimentoutilizacaodestino
+          on k170_utilizacao = k157_sequencial
+        INNER JOIN abatimento
+          on k125_sequencial = k157_abatimento
+        INNER JOIN abatimentorecibo
+          on k125_sequencial = k127_abatimento
+        INNER JOIN recibo
+          on recibo.k00_numpre = k127_numprerecibo
+        INNER JOIN abatimentoarreckey
+          on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial
+        INNER JOIN arreckey
+          on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey
         INNER JOIN arretipo
-          on arretipo.k00_tipo = arreckey.k00_tipo                   
-        {$sInnerDevolucao}                                                                               
-        INNER JOIN abatimentotransferencia 
+          on arretipo.k00_tipo = arreckey.k00_tipo
+        {$sInnerDevolucao}
+        INNER JOIN abatimentotransferencia
           on abatimento.k125_sequencial = k158_abatimentoorigem
-    WHERE 
+    WHERE
       abatimento.k125_instit = {$iInstit} {$sWhereDevolucao}
       AND k170_utilizacao is null
   ";
@@ -285,7 +270,7 @@ $oGet  = db_utils::postMemory($_GET);
   }
 
   $sSqlTransferenciaDados = "
-    SELECT 
+    SELECT
       x.*, recibo.k00_receit, recibo.k00_numpre, abatimento.k125_sequencial,
       recibo.k00_numpar, arretipo.k00_descr, x.k158_abatimentoorigem,
       COALESCE (abatimentoregracompensacao.k156_observacao, x.k157_observacao) as observacao
@@ -297,7 +282,7 @@ $oGet  = db_utils::postMemory($_GET);
       INNER JOIN arretipo
               ON recibo.k00_tipo = arretipo.k00_tipo
       INNER JOIN (
-                SELECT 
+                SELECT
                   abatimentoutilizacao.*, abatimentotransferencia.k158_abatimentodestino,
                   abatimentotransferencia.k158_abatimentoorigem
                 FROM abatimentoutilizacao
@@ -307,11 +292,11 @@ $oGet  = db_utils::postMemory($_GET);
       ) x ON x.k158_abatimentodestino  = abatimento.k125_sequencial
       LEFT JOIN abatimentoregracompensacao
                 ON abatimentoregracompensacao.k156_abatimento = x.k158_abatimentodestino
-    WHERE  
-      abatimento.k125_instit = 1 
+    WHERE
+      abatimento.k125_instit = 1
       AND k125_sequencial in ({$idsAbatimentoDevolucao});
   ";
-  
+
   $rsTransferenciaDados = db_query($sSqlTransferenciaDados);
   $iLinhasTransferencia = pg_num_rows($rsTransferenciaDados);
 
@@ -324,7 +309,7 @@ $oGet  = db_utils::postMemory($_GET);
     for ( $iInd=0; $iInd < $iLinhasTransferencia; $iInd++ ) {
 
       $oCredito = db_utils::fieldsMemory($rsTransferenciaDados, $iInd);
-      
+
       $oDados = new stdClass();
       $oDados->k01_codigo      = '';
       $oDados->k125_datalanc   = $oCredito->k157_data;
@@ -348,23 +333,51 @@ $oGet  = db_utils::postMemory($_GET);
   // Devolucao
 
   $sqlDevolucao = "
-    SELECT DISTINCT on (k157_abatimento)                                                                                    
-         k157_abatimento, abatimentorecibo.k127_numprerecibo, arreckey.k00_numpar, recibo.k00_receit,                     
-         arretipo.k00_tipo, k00_descr, k157_valor, k157_usuario, k157_data, k157_hora, k157_observacao     
-    FROM abatimentoutilizacao                                                                              
-         left  join abatimentoutilizacaodestino on k170_utilizacao = k157_sequencial                       
-         inner join abatimento                  on k125_sequencial = k157_abatimento                       
-         inner join abatimentorecibo            on k125_sequencial = k127_abatimento                       
-         inner join recibo                      on recibo.k00_numpre = k127_numprerecibo                   
-         inner join abatimentoarreckey on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial  
-         inner join arreckey on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey                 
-         inner join arretipo                    on arretipo.k00_tipo = arreckey.k00_tipo                   
-         {$sInnerDevolucao}                                                                                
-   WHERE 
-    abatimento.k125_instit = {$iInstit} 
+    SELECT DISTINCT on (k157_abatimento)
+         k157_abatimento, abatimentorecibo.k127_numprerecibo, arreckey.k00_numpar, recibo.k00_receit,
+         arretipo.k00_tipo, k00_descr, k157_valor, k157_usuario, k157_data, k157_hora, k157_observacao
+    FROM abatimentoutilizacao
+         left  join abatimentoutilizacaodestino on k170_utilizacao = k157_sequencial
+         inner join abatimento                  on k125_sequencial = k157_abatimento
+         inner join abatimentorecibo            on k125_sequencial = k127_abatimento
+         inner join recibo                      on recibo.k00_numpre = k127_numprerecibo
+         inner join abatimentoarreckey on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial
+         inner join arreckey on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey
+         inner join arretipo                    on arretipo.k00_tipo = arreckey.k00_tipo
+         {$sInnerDevolucao}
+   WHERE
+    abatimento.k125_instit = {$iInstit}
     AND abatimentoutilizacao.k157_tipoutilizacao = '3'
     {$sWhereDevolucao}
     AND k170_utilizacao is null
+    union all
+    SELECT
+      DISTINCT k157_abatimento,
+        abatimentorecibo.k127_numprerecibo,
+        arreckey.k00_numpar,
+        recibo.k00_receit,
+        arretipo.k00_tipo,
+        'Devoluo origem Manual' as k00_tipo,
+        k157_valor,
+        k157_usuario,
+        k157_data,
+        k157_hora,
+        k157_observacao
+    FROM
+        abatimentoutilizacao
+        left join abatimentoutilizacaodestino on k170_utilizacao = k157_sequencial
+        inner join abatimento on k125_sequencial = k157_abatimento
+        inner join abatimentorecibo on k125_sequencial = k127_abatimento
+        inner join recibo on recibo.k00_numpre = k127_numprerecibo
+        left join abatimentoarreckey on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial
+        left join arreckey on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey
+        left join arretipo on arretipo.k00_tipo = arreckey.k00_tipo
+        ".str_replace( 'arreckey', 'recibo', $sInnerDevolucao)."
+    WHERE
+      abatimento.k125_instit = {$iInstit}
+      and abatimentoutilizacao.k157_tipoutilizacao = '3'
+      {$sWhereDevolucao}
+      and k170_utilizacao is null
   ";
   // die($sqlDevolucao);
   $rsDevolucao = db_query($sqlDevolucao);
@@ -377,7 +390,7 @@ $oGet  = db_utils::postMemory($_GET);
   if ( $iLinhasDevolucao > 0 ) {
     for ( $iInd=0; $iInd < $iLinhasDevolucao; $iInd++ ) {
       $oCredito = db_utils::fieldsMemory($rsDevolucao, $iInd);
-      
+
       $oDados = new stdClass();
       $oDados->k01_codigo      = '';
       $oDados->k125_datalanc   = $oCredito->k157_data;
@@ -396,7 +409,7 @@ $oGet  = db_utils::postMemory($_GET);
       $aDadosSaida[] = $oDados;
     }
   }
- 
+
  if ( count( $aDadosSaida ) > 0 ) {
 
     ?>
@@ -411,7 +424,7 @@ $oGet  = db_utils::postMemory($_GET);
         <th nowrap>Data                </th>
         <th nowrap>Observação          </th>
       </tr>
-    <?
+    <?php
 
     $sCor1   = "#EFE029";
     $sCor2   = "#E4F471";
@@ -431,6 +444,7 @@ $oGet  = db_utils::postMemory($_GET);
             /**
              * Verifica se deve exibir as informações do desconto ou da compensação
              */
+
             if ( $oCredito->sTipo == 'desconto' ) {
               db_ancora('MI',"js_consultaDesconto({$oCredito->k125_sequencial})",1,'');
             } else {
@@ -447,7 +461,7 @@ $oGet  = db_utils::postMemory($_GET);
         <td align="center" nowrap ><?=db_formatar($oCredito->k125_datalanc, 'd') ?>&nbsp;</td>
         <td align="left" nowrap ><?= (isset($oCredito->k157_observacao) ? $oCredito->k157_observacao  : '') ?>&nbsp;</td>
       </tr>
-    <?
+    <?php
     }
 
   ?>

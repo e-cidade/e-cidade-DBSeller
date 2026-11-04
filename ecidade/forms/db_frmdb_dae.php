@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cldb_dae->rotulo->label();
        <?=@$Lw04_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('w04_codigo',10,$Iw04_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('w04_codigo',10,$Iw04_codigo,true,'text',$db_opcao,"")
        <?=@$Lw04_inscr?>
     </td>
     <td> 
-<?
+<?php
 db_input('w04_inscr',10,$Iw04_inscr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('w04_inscr',10,$Iw04_inscr,true,'text',$db_opcao,"")
        <?=@$Lw04_enviado?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('w04_enviado',$x,true,$db_opcao,"");
 ?>
@@ -67,7 +67,7 @@ db_select('w04_enviado',$x,true,$db_opcao,"");
        <?=@$Lw04_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('w04_ano',4,$Iw04_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('w04_ano',4,$Iw04_ano,true,'text',$db_opcao,"")
        <?=@$Lw04_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('w04_data',@$w04_data_dia,@$w04_data_mes,@$w04_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

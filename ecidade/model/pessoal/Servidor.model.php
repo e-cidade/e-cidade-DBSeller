@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\Pessoal\Model\Sindicato;
 use ECidade\RecursosHumanos\Pessoal\Repository\SindicatoRepository;
 use ECidade\RecursosHumanos\RH\Efetividade\Repository\EscalaServidor;
@@ -62,6 +63,12 @@ class Servidor
      * @var integer
      */
     private $iMatricula;
+
+    /**
+     * Matrícula anterior do servidor
+     * @var string
+     */
+    private $matriculaAnterior;
 
     /**
      * Fgts do servidor
@@ -354,6 +361,13 @@ class Servidor
     private $naturalidade;
 
     /**
+     * Código do Cargo
+     *
+     * @var int
+     */
+    private $cargo;
+
+    /**
      * Servidor constructor.
      * @param int $iMatricula
      * @param int $iAnoCompetencia
@@ -366,8 +380,10 @@ class Servidor
         $iAnoCompetencia = null,
         $iMesCompetencia = null,
         $iInstituicao = null,
-        $usaInstituicao = true
+        $usaInstituicao = true,
+        $bSomenteCalculo = false
     ) {
+
         if (!empty($iAnoCompetencia)) {
             $this->iAnoCompetencia = $iAnoCompetencia;
         } else {
@@ -385,6 +401,10 @@ class Servidor
         } else {
             $this->iCodigoInstituicao = db_getsession("DB_instit");
         }
+        if (!empty($iMatricula)) {
+            $iMatricula = $this->buscarMatriculaEcidade($iMatricula);
+
+        }
 
         if (!empty($iMatricula) && !DBNumber::isInteger($iMatricula)) {
             throw new BusinessException("Formato de matrícula inválida.");
@@ -398,18 +418,18 @@ class Servidor
             }
             $sSqlPessoal = $oDaoPessoal->sql_query_file(
                 null,
-                '*',
+                'rh01_regist',
                 null,
                 $where
             );
 
-            $rsPessoal = db_query($sSqlPessoal);
+            $rsPessoal = $oDaoPessoal->sql_record($sSqlPessoal);
 
-            if (!$rsPessoal) {
-                throw new DBException("Erro ao Buscar Servidor." . pg_last_error());
+            if (!$rsPessoal && $oDaoPessoal->erro_sql == "Erro ao selecionar os registros.") {
+                throw new DBException("Erro ao Buscar Servidor.\n" . $oDaoPessoal->erro_msg);
             }
 
-            if (pg_num_rows($rsPessoal) === 0) {
+            if ($oDaoPessoal->numrows === 0) {
                 throw new BusinessException("Matrícula {$iMatricula} não cadastrada no e-Cidade.");
             }
 
@@ -419,17 +439,26 @@ class Servidor
 
             $this->setMatricula($iMatricula);
 
+            if ($bSomenteCalculo) {
+                return;
+            }
+
+            $sCampos = "rh01_numcgm, rh02_seqpes, rh02_lota, rh02_salari, rh02_funcao, rh01_tipadm, rh01_instit, rh01_ponto, ";
+            $sCampos .= "rh01_observacao, rh02_abonopermanencia, rh02_tbprev, rh02_portadormolestia, rh02_ocorre, rh02_codreg, rh02_tpcont, ";
+            $sCampos .= "rh01_admiss, rh01_trienio, rh01_progres, rh01_nasc, rh01_sexo, rh02_diasgozoferias, rh01_rhsindicato, ";
+            $sCampos .= "rh01_nacion, rh01_estciv, rh02_hrsmen, rh01_raca, rh01_instru, rh01_registrapontoeletronico, rh01_matriculaanterior";
             $oDaoRhPessoalMov = new cl_rhpessoalmov();
             $sSqlRhPessoalMov = $oDaoRhPessoalMov->sql_queryDadosServidor(
                 $this->iAnoCompetencia,
                 $this->iMesCompetencia,
                 $this->iCodigoInstituicao,
-                $iMatricula
+                $iMatricula,
+                $sCampos
             );
-            $rsRhPessoal = db_query($sSqlRhPessoalMov);
+            $rsRhPessoal = $oDaoRhPessoalMov->sql_record($sSqlRhPessoalMov);
 
-            if (!$rsRhPessoal) {
-                throw new DBException("Erro ao Buscar Servidor." . pg_last_error());
+            if (!$rsRhPessoal && $oDaoRhPessoalMov->erro_sql == "Erro ao selecionar os registros.") {
+                throw new DBException("Erro ao Buscar Servidor.\n" . $oDaoRhPessoalMov->erro_msg);
             }
 
             if (pg_num_rows($rsRhPessoal) === 0) {
@@ -442,8 +471,10 @@ class Servidor
             $this->iCodigoLotacao = $oRhPessoal->rh02_lota;
             $this->iSalario = $oRhPessoal->rh02_salari;
 
+            $this->setTpCont($oRhPessoal->rh02_tpcont);
             $this->setCodigoCargo($oRhPessoal->rh02_funcao);
             $this->setTipoAdmissao($oRhPessoal->rh01_tipadm);
+            $this->setMatriculaAnterior($oRhPessoal->rh01_matriculaanterior);
             $this->setCodigoInstituicao($oRhPessoal->rh01_instit);
             $this->setNumeroPonto($oRhPessoal->rh01_ponto);
             $this->setObservacaoServidor($oRhPessoal->rh01_observacao);
@@ -492,8 +523,8 @@ class Servidor
                 $sSqlNacionalidade = $oDaoNacionalidade->sql_query($this->codigoNacionalidade);
                 $rsNacionalidade = $oDaoNacionalidade->sql_record($sSqlNacionalidade);
 
-                if (!$rsNacionalidade) {
-                    throw new DBException("Erro ao buscar dados da nacionalidade do servidor ({$iMatricula})." . pg_last_error());
+                if (!$rsNacionalidade && $oDaoNacionalidade->erro_sql == "Erro ao selecionar os registros.") {
+                    throw new DBException("Erro ao buscar dados da nacionalidade do servidor ({$iMatricula}).\n" . $oDaoNacionalidade->erro_sql);
                 }
 
                 if (pg_num_rows($rsNacionalidade) > 0) {
@@ -508,8 +539,8 @@ class Servidor
                 $sSqlEstadoCivil = $oDaoEstadoCivil->sql_query($this->estadoCivil);
                 $rsEstadoCivil = $oDaoEstadoCivil->sql_record($sSqlEstadoCivil);
 
-                if (!$rsEstadoCivil) {
-                    throw new DBException("Erro ao buscar dados do estado civil do servidor ({$iMatricula})." . pg_last_error());
+                if (!$rsEstadoCivil && $oDaoEstadoCivil->erro_sql == "Erro ao selecionar os registros.") {
+                    throw new DBException("Erro ao buscar dados do estado civil do servidor ({$iMatricula}).\n" . $oDaoEstadoCivil->erro_msg);
                 }
 
                 if (pg_num_rows($rsEstadoCivil) > 0) {
@@ -551,6 +582,7 @@ class Servidor
                 $oRegistrapontoeletronicohistorico = db_utils::fieldsMemory($rsRegistrapontoeletronicohistorico, 0);
                 $this->lRegistraPontoEletronico = $oRegistrapontoeletronicohistorico->rh215_registrapontoeletronico == 't' ? true : false;
             }
+            unset($oRhPessoal);
         }
     }
 
@@ -563,6 +595,11 @@ class Servidor
         return $this->iMatricula;
     }
 
+    public function getMatriculaAnterior()
+    {
+        return $this->matriculaAnterior;
+    }
+
     /**
      * Define a matrícula do servidor
      * @param integer $iMatricula
@@ -571,6 +608,12 @@ class Servidor
     {
         $this->iMatricula = $iMatricula;
     }
+
+    public function setMatriculaAnterior($matriculaAnterior)
+    {
+        $this->matriculaAnterior = $matriculaAnterior;
+    }
+
 
     /**
      * Retorna um objeto DBDate contendo a data da opção do fgts
@@ -969,7 +1012,7 @@ class Servidor
      */
     public function getTipoRegime()
     {
-        $oDaoRhRegime = db_utils::getDao('rhregime');
+        $oDaoRhRegime = new cl_rhregime;
         $sSqlRhRegime = $oDaoRhRegime->sql_query_file($this->iCodigoRegime);
         $rsRhRegime = $oDaoRhRegime->sql_record($sSqlRhRegime);
         if ($oDaoRhRegime->numrows == 0) {
@@ -1018,9 +1061,11 @@ class Servidor
     {
 
         if (empty($this->documentos)) {
-            $oDaoRHPesDoc = db_utils::getDao('rhpesdoc');
-            $sSqlDocumentos = $oDaoRHPesDoc->sql_query_file($this->getMatricula());
-            $rsDocumentos = db_query($sSqlDocumentos);
+            $oDaoRHPesDoc = new cl_rhpesdoc;
+            $sCampos = "rh16_ctps_s, rh16_titele, rh16_catres, rh16_ctps_n, rh16_ctps_uf, rh16_secaoe, rh16_zonael, rh16_carth_n, ";
+            $sCampos .= "rh16_reserv, rh16_carth_val, rh16_ctps_d, r16_carth_cat, rh16_pis";
+            $sSqlDocumentos = $oDaoRHPesDoc->sql_query_file($this->getMatricula(), $sCampos);
+            $rsDocumentos = $oDaoRHPesDoc->sql_record($sSqlDocumentos);
 
             $oRetorno = new stdClass();
             $oRetorno->iSerieCTPS = '';
@@ -1037,11 +1082,7 @@ class Servidor
             $oRetorno->sCategoriaHabilitacao = '';
             $oRetorno->sPIS = '';
 
-            if (!$rsDocumentos) {
-                throw new DBException('Erro ao Buscar os Documentos do Servidor.');
-            }
-
-            if (pg_num_rows($rsDocumentos) == 0) {
+            if (!$rsDocumentos || pg_num_rows($rsDocumentos) == 0) {
                 return $oRetorno;
             }
 
@@ -1061,6 +1102,7 @@ class Servidor
             $oRetorno->sCategoriaHabilitacao = $oDocumentos->r16_carth_cat; // Categoria da carteira nacional de habilitação.        varchar(3)
             $oRetorno->sPIS = $oDocumentos->rh16_pis; // Código do PIS/PASEP/CI                                varchar(11)
             $this->documentos = $oRetorno;
+            unset($oDocumentos);
         }
         return $this->documentos;
     }
@@ -1218,12 +1260,12 @@ class Servidor
             throw new BusinessException('Matrícula do servidor não informada para consulta dos dependentes.');
         }
 
-        $oDaoRhDepend = db_utils::getDao('rhdepend');
+        $oDaoRhDepend = new cl_rhdepend;
         $sSqlDependentes = $oDaoRhDepend->sql_query_file(
             null,
             "*",
             "rh31_codigo",
-            "rh31_regist = {$this->getMatricula()}"
+            "rh31_regist = {$this->getMatricula()} and rh31_irfcomplementar != true"
         );
         $rsDependentes = $oDaoRhDepend->sql_record($sSqlDependentes);
 
@@ -1283,7 +1325,7 @@ class Servidor
             throw new Exception('Matrícula do servidor não informada.');
         }
 
-        $oDaoRhpesorigem = db_utils::getDao('rhpesorigem');
+        $oDaoRhpesorigem = new cl_rhpesorigem;
         $sSqlServidorOrigem = $oDaoRhpesorigem->sql_queryServidorOrigem($this->getMatricula());
         $rsServidorOrigem = $oDaoRhpesorigem->sql_record($sSqlServidorOrigem);
 
@@ -1321,6 +1363,17 @@ class Servidor
      * @return mixed
      * @throws DBException
      */
+
+    public function setTpCont($tpCont)
+    {
+        $this->iTpCont = $tpCont;
+    }
+
+    public function getTpCont()
+    {
+        return $this->iTpCont;
+    }
+
     public function getSalario($retornarValorPadrao = false)
     {
         $salario = $this->iSalario;
@@ -1328,13 +1381,13 @@ class Servidor
         if ($retornarValorPadrao === true && empty($salario)) {
             $daoRhPesPadrao = new cl_rhpespadrao();
             $sqlRhPesPadrao = $daoRhPesPadrao->sql_query_padroes($this->iCodigoMovimentacao, 'r02_valor');
-            $rsRhPesPadrao = db_query($sqlRhPesPadrao);
+            $rsRhPesPadrao = $daoRhPesPadrao->sql_record($sqlRhPesPadrao);
 
-            if (!$rsRhPesPadrao) {
-                throw new DBException('Erro ao buscar o valor padrão do salário.');
+            if (!$rsRhPesPadrao && $daoRhPesPadrao->erro_sql == "Erro ao selecionar os registros.") {
+                throw new DBException('Erro ao buscar o valor padrão do salário.\n' . $daoRhPesPadrao->erro_msg);
             }
 
-            if (pg_num_rows($rsRhPesPadrao) === 0) {
+            if ($daoRhPesPadrao->numrows === 0) {
                 return $salario;
             }
 
@@ -1363,7 +1416,7 @@ class Servidor
             throw new BusinessException('Matrícula do servidor não informada para verificação de servidor ativo.');
         }
 
-        $oDaoRhPessoal = db_utils::getDao('rhpessoal');
+        $oDaoRhPessoal = new cl_rhpessoal;
         $rsSituacao = $oDaoRhPessoal->sql_record($oDaoRhPessoal->sql_verificaSituacaoServidor(
             $this->iMatricula,
             $this->iAnoCompetencia,
@@ -1379,7 +1432,7 @@ class Servidor
             return false;
         }
 
-        throw new BusinessException('Não foi possivel verificar se o servidor esta ativo.');
+        throw new BusinessException('Não foi possivel verificar se o servidor de matrícula ' . $this->iMatricula . ' esta ativo. Favor revisar.');
     }
 
     /**
@@ -1394,7 +1447,7 @@ class Servidor
             throw new BusinessException('Matrícula do servidor não informada para verificação de servidor pensionista.');
         }
 
-        $oDaoRhPessoal = db_utils::getDao('rhpessoal');
+        $oDaoRhPessoal = new cl_rhpessoal;
         $rsSituacao = $oDaoRhPessoal->sql_record($oDaoRhPessoal->sql_verificaSituacaoServidor(
             $this->iMatricula,
             $this->iAnoCompetencia,
@@ -1504,7 +1557,7 @@ class Servidor
             $sSqlContaBancaria = $oDaoRHPessoalMovContaBancaria->sql_query_file(null, "rh138_contabancaria", null, "rh138_rhpessoalmov = {$this->iCodigoMovimentacao}");
             $rsContaServidor = db_query($sSqlContaBancaria);
             if (!$rsContaServidor) {
-                throw new DBException("Erro ao buscar os dados da Conta Bancária.");
+                throw new DBException("Erro ao buscar os dados da Conta Bancária.\n" .  $oDaoRHPessoalMovContaBancaria->erro_msg);
             }
 
             $iCodigo = null;
@@ -1524,15 +1577,25 @@ class Servidor
      *
      * @return bool
      */
-    public function isRpps()
+    public function isRpps($ano = null, $mes = null)
     {
-        /**
-         * Velharias do sistema
-         */
-        $tipoPrevidencia = $this->getTipoPrevidencia();
+        $tipoPrevidencia = null;
+        if (!empty($ano) && !empty($mes)) {
+            $tipoPrevidencia = $this->getTipoPrevidencia($ano, $mes);
+        }
+        if (empty($tipoPrevidencia)) {
+            $tipoPrevidencia = $this->getTipoPrevidencia();
+        }
         if (!empty($tipoPrevidencia)) {
             if (!$this->isRgps()) {
                 return true;
+            }
+        } else {
+            $cedencia = new \Cedencia($this->getMatricula());
+            if (!empty($cedencia->getMatricula())) {
+                if ($cedencia->getTipoRegimePrevidencia() == 2) {
+                    return true;
+                }
             }
         }
         return false;
@@ -1542,9 +1605,15 @@ class Servidor
      * Diz se o servidor pertence a um regime de rgps
      * @return bool
      */
-    public function isRgps()
+    public function isRgps($ano = null, $mes = null)
     {
-        $tipoPrevidencia = $this->getTipoPrevidencia();
+        $tipoPrevidencia = null;
+        if (!empty($ano) && !empty($mes)) {
+            $tipoPrevidencia = $this->getTipoPrevidencia($ano, $mes);
+        }
+        if (empty($tipoPrevidencia)) {
+            $tipoPrevidencia = $this->getTipoPrevidencia();
+        }
         // 2 -> RGPS
         // outros -> RPPS
         switch ($tipoPrevidencia) {
@@ -1556,8 +1625,14 @@ class Servidor
         return false;
     }
 
-    public function getTipoPrevidencia()
+    public function getTipoPrevidencia($ano = null, $mes = null)
     {
+        if (empty($ano)) {
+            $ano = "fc_anofolha({$this->getCodigoInstituicao()})";
+        }
+        if (empty($mes)) {
+            $mes = "fc_mesfolha({$this->getCodigoInstituicao()})";
+        }
         /*
          * É somado + 2 pois o codigo 1 e 2 nao IRFF e na tela da movimentacao ele nao é exibido
          * e o codigo 1 que aparece é referente ao codigo 3
@@ -1571,11 +1646,10 @@ class Servidor
                  pessoal.inssirf
                  inner join pessoal.regimeprevidenciainssirf on rh129_codigo = r33_codigo and rh129_instit = r33_instit
             where
-                r33_anousu = fc_anofolha({$this->getCodigoInstituicao()})
-                and r33_mesusu = fc_mesfolha({$this->getCodigoInstituicao()})
+                r33_anousu = {$ano}
+                and r33_mesusu = {$mes}
                 and r33_instit = {$this->getCodigoInstituicao()}
                 and r33_codtab = {$tabelaPrevidencia}";
-
         $rs = db_query($sql);
 
         if (!$rs) {
@@ -1667,7 +1741,7 @@ class Servidor
         $rsQuery = db_query($sSqlVinculo);
 
         if (!$rsQuery) {
-            throw new DBException("Erro ao buscar vinculo do Servidor");
+            throw new DBException("Erro ao buscar vinculo do Servidor.\n");
         }
 
         if (pg_num_rows($rsQuery) == 0) {
@@ -1722,10 +1796,12 @@ class Servidor
          */
         $oDaoGerfsal = new cl_gerfsal();
         $sRubricaSqlGerfsal = $oDaoGerfsal->sql_query_file($this->iAnoCompetencia, $this->iMesCompetencia, $this->iMatricula, $sRubrica);
-        $rsRubricaSqlGerfsal = db_query($sRubricaSqlGerfsal);
+        $rsRubricaSqlGerfsal = $oDaoGerfsal->sql_record($sRubricaSqlGerfsal);
 
-        if (!$rsRubricaSqlGerfsal) {
-            throw new DBException(_M(self::MENSAGEM . "erro_consultar_margem_consignado"));
+        if (!$rsRubricaSqlGerfsal && $oDaoGerfsal->erro_sql == "Erro ao selecionar os registros.") {
+            $sMsg = "Ocorreu um erro ao buscar informações da rubrica {$sRubrica}, matricula {$this->iMatricula}\n";
+            $sMsg .= "{$oDaoGerfsal->erro_msg}";
+            throw new DBException($sMsg);
         }
 
         if (pg_num_rows($rsRubricaSqlGerfsal) > 0) {
@@ -1768,10 +1844,10 @@ class Servidor
             $sWhereAssentamento
         );
 
-        $rsAssentamento = db_query($sSqlAssentamento);
+        $rsAssentamento = $oDaoAssentamento->sql_record($sSqlAssentamento);
 
-        if (!$rsAssentamento) {
-            throw new BusinessException("Erro ao buscar assentamentos para o servidor");
+        if (!$rsAssentamento && $oDaoAssentamento->erro_sql == "Erro ao selecionar os registros.") {
+            throw new BusinessException("Erro ao buscar assentamentos para o servidor.\n" . $oDaoAssentamento->erro_msg);
         } else {
             if (pg_num_rows($rsAssentamento) > 0) {
                 $aAssentamentos = db_utils::getCollectionByRecord($rsAssentamento);
@@ -1856,12 +1932,12 @@ class Servidor
         $aWhere[] = "(r45_dtreto is null or r45_dtreto >= '{$sDataFinal}')";
         $sWhere = implode(" and ", $aWhere);
         $sSqlAfastamentosSemRemuneracao = $oDaoAfastamento->sql_query_file(null, "*", null, $sWhere);
-        $rsAfastamentos = db_query($sSqlAfastamentosSemRemuneracao);
-        if (!$rsAfastamentos) {
-            throw new BusinessException("Erro ao buscar afastamentos para o servidor");
+        $rsAfastamentos = $oDaoAfastamento->sql_record($sSqlAfastamentosSemRemuneracao);
+        if (!$rsAfastamentos && $oDaoAfastamento->erro_sql == "Erro ao selecionar os registros.") {
+            throw new BusinessException("1 - Erro ao buscar afastamentos para o servidor\n$oDaoAfastamento->erro_msg");
         }
 
-        if (pg_num_rows($rsAfastamentos) > 0) {
+        if ($oDaoAfastamento->numrows > 0) {
             return false;
         }
         return true;
@@ -1896,20 +1972,22 @@ class Servidor
         $aWhere[] = $sWhereDatas;
         $sWhere = implode(" and ", $aWhere);
         $sSqlAfastamentosSemRemuneracao = $oDaoAfastamento->sql_query_file(null, "*", 'r45_dtafas, r45_dtreto', $sWhere);
-        $rsAfastamentos = db_query($sSqlAfastamentosSemRemuneracao);
-        if (!$rsAfastamentos) {
-            throw new BusinessException("Erro ao buscar afastamentos para o servidor");
+        $rsAfastamentos = $oDaoAfastamento->sql_record($sSqlAfastamentosSemRemuneracao);
+        if (!$rsAfastamentos && $oDaoAfastamento->erro_sql == "Erro ao selecionar os registros.") {
+            throw new BusinessException("2 - Erro ao buscar afastamentos para o servidor\n$oDaoAfastamento->erro_msg");
         }
 
-        $iLinhasAfastamento = pg_num_rows($rsAfastamentos);
-        for ($iAfastamento = 0; $iAfastamento < $iLinhasAfastamento; $iAfastamento++) {
-            $oAfastamentoStd = db_utils::fieldsMemory($rsAfastamentos, $iAfastamento);
-            $oAfastamento = AfastamentoRepository::getInstanciaPorCodigo($oAfastamentoStd->r45_codigo);
+        if ($oDaoAfastamento->numrows > 0) {
+            for ($iAfastamento = 0; $iAfastamento < $oDaoAfastamento->numrows; $iAfastamento++) {
+                $oAfastamentoStd = db_utils::fieldsMemory($rsAfastamentos, $iAfastamento);
+                $oAfastamento = AfastamentoRepository::getInstanciaPorCodigo($oAfastamentoStd->r45_codigo);
 
-            $oAfastamentoStd->dias = $oAfastamento->getNumeroDeDiasNaCompetencia($oCompetencia);
-            if (isset($aAfastamentos[$oAfastamentoStd->r45_situac])) {
-                $aAfastamentos[$oAfastamentoStd->r45_situac]->dias += $oAfastamentoStd->dias;
-                continue;
+                $oAfastamentoStd->dias = $oAfastamento->getNumeroDeDiasNaCompetencia($oCompetencia);
+                if (isset($aAfastamentos[$oAfastamentoStd->r45_situac])) {
+                    $aAfastamentos[$oAfastamentoStd->r45_situac]->dias += $oAfastamentoStd->dias;
+                    continue;
+                }
+                $aAfastamentos[$oAfastamentoStd->r45_situac] = $oAfastamentoStd;
             }
             $aAfastamentos[$oAfastamentoStd->r45_situac] = $oAfastamentoStd;
         }
@@ -1937,10 +2015,10 @@ class Servidor
      * Retorna a escala do servidor em uma data específica
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor
      */
-    public function getEscala($oDataPonto)
+    public function getEscala($oDataPonto, $forcar = false)
     {
 
-        if (empty($this->escala)) {
+        if ($forcar || empty($this->escala)) {
             $this->escala = EscalaServidor::getEscalas($this, $oDataPonto);
         }
 
@@ -2019,10 +2097,10 @@ class Servidor
     {
         $oDaoRHPessoal = new cl_rhpessoal();
         $sSqlRHPessoal = $oDaoRHPessoal->sql_query_cargo($this->iMatricula, 'rhfuncao.*');
-        $rsRHPessoal = db_query($sSqlRHPessoal);
+        $rsRHPessoal = $oDaoRHPessoal->sql_record($sSqlRHPessoal);
 
-        if (!$rsRHPessoal) {
-            throw new DBException('Erro ao buscar os dados do Cargo do Servidor.');
+        if (!$rsRHPessoal && $oDaoRHPessoal->erro_sql == "Erro ao selecionar os registros.") {
+            throw new DBException("Erro ao buscar os dados do Cargo do Servidor, matricula {$this->iMatricula}.\n" . $oDaoRHPessoal->erro_msg);
         }
 
         return db_utils::makeFromRecord($rsRHPessoal, function ($oRetorno) {
@@ -2047,7 +2125,7 @@ class Servidor
         $aWhere = array_filter($aWhere);
 
         $sSql = "SELECT  padroes.*, padroesfilho.r02_codigo as filho_codigo ,padroesfilho.r02_descr as filho_desc ,padroesfilho.r02_classe as
-        filho_classe, padroesfilho.r02_nivel as  filho_nivel  FROM  rhpessoalmov";
+        filho_classe, padroesfilho.r02_nivel as  filho_nivel  FROM  rhpessoalmov                                                 \n";
         $sSql .= "       inner  join rhpespadrao          on rhpespadrao.rh03_seqpes       = rhpessoalmov.rh02_seqpes            \n";
         $sSql .= "                                      and rhpespadrao.rh03_anousu       = rhpessoalmov.rh02_anousu             \n";
         $sSql .= "                                      and rhpespadrao.rh03_mesusu       = rhpessoalmov.rh02_mesusu             \n";
@@ -2056,21 +2134,18 @@ class Servidor
         $sSql .= "                                      and padroes.r02_regime            = rhpespadrao.rh03_regime              \n";
         $sSql .= "                                      and padroes.r02_codigo            = rhpespadrao.rh03_padrao              \n";
         $sSql .= "                                      and padroes.r02_instit            = rhpessoalmov.rh02_instit             \n";
-        $sSql .= "       inner  join padroes as padroesfilho   on padroesfilho.r02_padraopai_codigo  = padroes.r02_codigo            \n";
+        $sSql .= "       inner  join padroes as padroesfilho   on padroesfilho.r02_padraopai_codigo  = padroes.r02_codigo        \n";
         $sSql .= "                                                AND  padroesfilho.r02_mesusu = padroes.r02_mesusu              \n";
         $sSql .= "                                                AND padroesfilho.r02_anousu = padroes.r02_anousu               \n";
-        $sSql .= "                                                AND padroesfilho.r02_padraopai_regime = padroes.r02_regime      \n";
-
+        $sSql .= "                                                AND padroesfilho.r02_padraopai_regime = padroes.r02_regime     \n";
 
         $sSql .= " WHERE " . implode(" AND ", $aWhere);
-
 
         $rsPadrao = db_query($sSql);
 
         if (pg_num_rows($rsPadrao) > 1) {
             throw new DBException('Erro ao buscar o padrão , existe um mesmo padrão vinculado a outros padrões.');
         }
-
 
         return pg_fetch_object($rsPadrao);
     }
@@ -2089,6 +2164,201 @@ class Servidor
         }
 
         return $this->locaisTrabalho;
+    }
+
+    /*
+    * Retorna a identificação de lotacao/lotações no periodo de competência definido.
+    */
+    public function getLotacaoPorPeriodo(\Servidor $servidor,
+        $ano = null,
+        $mes = null,
+        $anoCompetenciaAtual = null,
+        $mesCompetenciaAtual = null)
+    {
+
+        if (empty($ano)) {
+            $ano = \DBPessoal::getAnoFolha();
+        }
+
+        if (empty($mes)) {
+            $mes = \DBPessoal::getMesFolha();
+        }
+        if (empty($anoCompetenciaAtual)) {
+            $anoCompetenciaAtual = \DBPessoal::getAnoFolha();
+        }
+
+        if (empty($mesCompetenciaAtual)) {
+            $mesCompetenciaAtual = \DBPessoal::getMesFolha();
+        }
+
+        $mes = str_pad($mes, 2, '0', STR_PAD_LEFT);
+        $ano = str_pad($ano, 4, '0', STR_PAD_LEFT);
+        $instituicaoServidor = $servidor->getCodigoInstituicao();
+        $matricula = $servidor->getMatricula();
+
+        $daoRhLocalTrab = new cl_rhlocaltrab();
+        $where  = " rh55_instit = {$instituicaoServidor}";
+        $where .= " and rh02_anousu = {$anoCompetenciaAtual}";
+        $where .= " and rh02_mesusu = {$mesCompetenciaAtual}";
+        $where .= " and rh02_regist = {$matricula}";
+        $whereDataInicio = " and rh56_datainicio is not null";
+        $order = "rh56_datainicio, rh56_datafim";
+
+        $sql = $daoRhLocalTrab->sql_query_servidor(
+            "distinct on (rh56_datainicio)
+            rh55_lotacaotributaria as lotacaoTributaria,
+            rh56_datainicio as datainicio,
+            rh56_datafim as datafim,
+            date_part('year', rh56_datainicio) as anoInicio,
+            date_part('month', rh56_datainicio) as mesInicio,
+            date_part('year', rh56_datafim) as anoFim,
+            date_part('month', rh56_datafim) as mesFim,
+            lag(rh56_datafim) over (order by rh56_datafim) as dataFimAnterior
+            ",
+            $where . $whereDataInicio,
+            $order
+        );
+
+        $result = db_query($sql);
+
+        // Validamos se não retorna nenhuma configuração de local de trabalho
+        if (pg_num_rows($result) == 0) {
+            // caso nao tenha, buscamos mais uma vez se existe pelo menos 1 local de trabalho, mesmo não preenchido os
+            // dados de data inicio
+            $sql = $daoRhLocalTrab->sql_query_servidor(
+                "distinct on (rh56_datainicio)
+                rh55_lotacaotributaria as lotacaoTributaria,
+                rh56_datainicio as datainicio,
+                rh56_datafim as datafim,
+                date_part('year', rh56_datainicio) as anoInicio,
+                date_part('month', rh56_datainicio) as mesInicio,
+                date_part('year', rh56_datafim) as anoFim,
+                date_part('month', rh56_datafim) as mesFim,
+                lag(rh56_datafim) over (order by rh56_datafim) as dataFimAnterior
+                ",
+                $where,
+                $order
+            );
+            $result = $daoRhLocalTrab->sql_record($sql);
+            //Caso exista mais de 1 lotacao tributaria configurada, retornamos erro
+            if ($daoRhLocalTrab->numrows > 1) {
+                throw new DBException("Mais de uma lotação tributária para a matricula: {$matricula}.");
+            }
+            /**
+             * Caso não exista Nenhuma lotação tributaria vinculada ao local de trabalho ainda
+             *  Verificamos a quantidade de lotacoes configuradas para a instituicao
+             *  Caso seja apenas 1, o servidor será vinculado a essa lotacao tributaria
+             */
+            if ($daoRhLocalTrab->numrows == 0) {
+                $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoServidor);
+                $codigoCgm = $instituicao->getCgm()->getCodigo();
+                $sql = <<<SQL
+                    select
+                        rh268_codigolotacao as lotacaoTributaria,
+                        null as datainicio,
+                        null as datafim,
+                        $ano as anoinicio,
+                        $mes as mesinicio,
+                        null as anoFim,
+                        null as mesFim,
+                        null as dataFimAnterior
+                    from
+                        recursoshumanos.rhlotacaotributaria
+                    where
+                        rh268_numcgm = $codigoCgm
+                    ;
+SQL;
+                $result = \db_query($sql);
+                //Caso exista mais de 1 lotacao tributaria configurada, retornamos erro
+                if (pg_num_rows($result) != 1) {
+                    throw new DBException("Erro ao buscar a lotação tributária da Matricula: {$matricula}.");
+                }
+            }
+        }
+
+        $lotacao = $this->montarLotacoes($result, $ano, $mes);
+
+        if (sizeof($lotacao) == 0) {
+            $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoServidor);
+            $codigoCgm = $instituicao->getCgm()->getCodigo();
+            $sql = <<<SQL
+                select
+                    rh268_codigolotacao as lotacaoTributaria,
+                    null as datainicio,
+                    null as datafim,
+                    $ano as anoinicio,
+                    $mes as mesinicio,
+                    null as anoFim,
+                    null as mesFim,
+                    null as dataFimAnterior
+                from
+                    recursoshumanos.rhlotacaotributaria
+                where
+                    rh268_numcgm = $codigoCgm
+                ;
+SQL;
+            $result = \db_query($sql);
+            //Caso exista mais de 1 lotacao tributaria configurada, retornamos erro
+            if (pg_num_rows($result) != 1) {
+                throw new DBException("Erro ao buscar a lotação tributária da Matricula: {$matricula}.");
+            }
+            $lotacao = $this->montarLotacoes($result, $ano, $mes);
+        }
+
+        return $lotacao;
+    }
+
+    private function montarLotacoes($result, $ano, $mes) {
+        $lotacao = [];
+        for ($row = 0; $row < pg_num_rows($result); $row++) {
+            $lotacao[] = \db_utils::fieldsMemory($result, $row);
+        }
+
+        foreach ($lotacao as $key => $value) {
+
+            /**
+             * Caso não possua Data Fim.
+             */
+            if (empty($value->datafim)) {
+                if (($value->anoinicio == $ano) && $value->mesinicio == $mes) {
+                    continue;
+                }
+
+            } else {
+
+                /**
+                 * Ano Menor que ano de Competência.
+                 */
+                if ($value->anofim < $ano) {
+                    unset($lotacao[$key]);
+                }
+
+                /**
+                 * Ano Igual e mês menor.
+                 */
+                if ($value->anofim == $ano && $value->mesfim < $mes) {
+                    unset($lotacao[$key]);
+                }
+
+                /**
+                 * Ano e mês Inferior a competência Atual.
+                 */
+                if (!empty($value->datafim) &&
+                    ($value->anofim < $ano) &&
+                    ($value->mesfim < $mes)) {
+                    unset($lotacao[$key]);
+                }
+            }
+
+            if ($value->anoinicio > $ano) {
+                unset($lotacao[$key]);
+            }
+
+            if ($value->anoinicio == $ano && $value->mesinicio > $mes) {
+                unset($lotacao[$key]);
+            }
+        }
+        return $lotacao;
     }
 
     /**
@@ -2139,18 +2409,19 @@ class Servidor
             if (empty($this->iMatricula)) {
                 throw new BusinessException('Matrícula do servidor não informada para consulta da situacao do servidor.');
             }
-            $oDaoRhPessoal = db_utils::getDao('rhpessoal');
-            $rsSituacao = db_query($oDaoRhPessoal->sql_verificaSituacaoServidor(
+            $oDaoRhPessoal = new cl_rhpessoal;
+            $rsSituacao = $oDaoRhPessoal->sql_verificaSituacaoServidor(
                 $this->iMatricula,
                 DBPessoal::getAnoFolha(),
                 DBPessoal::getMesFolha()
-            ));
-
-            if (!$rsSituacao) {
-                throw new BusinessException('Não foi possivel verificar se o servidor esta rescindido.');
+            );
+            $rsSituacao = db_query($rsSituacao);
+            if (!$rsSituacao == "Erro ao selecionar os registros.") {
+                throw new BusinessException("1 - Não foi possivel verificar se o servidor esta rescindido.\n" . $oDaoRhPessoal->erro_msg);
             }
             $this->carregouDadosRescisao = true;
 
+            $this->dadosRescisao = new stdClass();
             if (pg_num_rows($rsSituacao) > 0) {
                 $this->dadosRescisao = db_utils::fieldsMemory($rsSituacao, 0);
             }
@@ -2170,24 +2441,29 @@ class Servidor
                 throw new BusinessException('Matrícula do servidor não informada para consulta da situacao do servidor.');
             }
             $oDaoRhPessoal = db_utils::getDao('rhpessoal');
-
-            $rsSituacao = db_query($oDaoRhPessoal->sql_query_rescisao(
-                null,
-                "rh30_vinculo, rh05_recis, rh05_datapagamento",
-                null,
-                "rhpessoal.rh01_regist = {$this->iMatricula} and
-                to_char(rh05_recis, 'YYYYMM') <= concat({$this->iAnoCompetencia}, lpad({$this->iMesCompetencia}, 2, 0)) "
-            ));
-
-            if (!$rsSituacao) {
-                throw new BusinessException('Não foi possivel verificar se o servidor esta rescindido.');
-            }
-            $this->carregouDadosRescisao = true;
-
-            if (pg_num_rows($rsSituacao) > 0) {
-                $this->dadosRescisao = db_utils::fieldsMemory($rsSituacao, 0);
-            }
         }
+        if (empty($this->iMatricula)) {
+            throw new BusinessException('Matrícula do servidor não informada para consulta da situacao do servidor.');
+        }
+        $oDaoRhPessoal = new cl_rhpessoal;
+
+        $rsSituacao = db_query($oDaoRhPessoal->sql_query_rescisao(
+            null,
+            "rh30_vinculo, rh05_recis, rh05_datapagamento",
+            null,
+            "rhpessoal.rh01_regist = {$this->iMatricula} and
+            to_char(rh05_recis, 'YYYYMM') <= concat({$this->iAnoCompetencia}, lpad({$this->iMesCompetencia}, 2, 0)) "
+        ));
+        if (!$rsSituacao) {
+            throw new BusinessException("2 - Não foi possivel verificar se o servidor esta rescindido.\n" . $oDaoRhPessoal->erro_msg);
+        }
+        $this->carregouDadosRescisao = false;
+
+        $this->dadosRescisao = new stdClass();
+        if (pg_num_rows($rsSituacao) > 0) {
+            $this->dadosRescisao = db_utils::fieldsMemory($rsSituacao, 0);
+        }
+
         return $this->dadosRescisao;
     }
 
@@ -2202,7 +2478,7 @@ class Servidor
         $sqlServidor = $daoServidor->sql_query_func_rhpessoal(null, "*", null, $where);
         $rsServidor = db_query($sqlServidor);
 
-        if (empty($rsServidor)) {
+        if (!$rsServidor) {
             throw new DBException("Erro ao validar se o Trabalhador tem vínculo empregatício.");
         }
 
@@ -2501,7 +2777,7 @@ class Servidor
             $instituicao
         );
 
-        $rs = db_query($sql);
+        $rs = $rhpessoal->sql_record($sql);
         $servidor = pg_fetch_object($rs);
         if (empty($servidor)) {
             return false;
@@ -2521,7 +2797,7 @@ class Servidor
             "z01_cgccpf ={$cpf}"
         );
 
-        $rs = db_query($sql);
+        $rs = $rhpessoal->sql_record($sql);
         $servidor = pg_fetch_object($rs);
         if (empty($servidor)) {
             return false;
@@ -2740,6 +3016,7 @@ class Servidor
 
     private function getSeqPes()
     {
+        unset($seq_pes_result);
         $sql ="SELECT rh02_seqpes FROM rhpessoalmov
         WHERE  rh02_anousu = '{$this->iAnoCompetencia}' AND rh02_mesusu = '{$this->iMesCompetencia}'
         AND rh02_instit = '{$this->iCodigoInstituicao}' AND rh02_regist = '{$this->iMatricula}'";
@@ -2763,7 +3040,7 @@ class Servidor
         $clrhcontratoemergencialrenovacao    = new cl_rhcontratoemergencialrenovacao;
         $sWhereContratoEmergencialRenovacoes = " rh163_matricula = {$this->iMatricula}";
         $sSqlContratosEmergenciais           = $clrhcontratoemergencialrenovacao->sql_query(null, "rh164_datafim", null, $sWhereContratoEmergencialRenovacoes);
-        $rsContratosEmergenciais             = db_query($sSqlContratosEmergenciais);
+        $rsContratosEmergenciais             = $clrhcontratoemergencialrenovacao->sql_record($sSqlContratosEmergenciais);
 
         if (!$rsContratosEmergenciais) {
             return false;
@@ -2867,18 +3144,21 @@ class Servidor
     }
 
 
+
+
     /**
      * @return bool
      *
-     * Metodo implementado com a finalidade de validar se a folha de pagaemnto do servidor rescindido deverá ser enviado
-     * nos eventos S1200 e S1202 ao inves do S2299
+     * Metodo implementado com a finalidade de validar se o periodo aquisitivo do evento S-2230 deverá ser enviado
      * Sera retornado false quando o servidor nao estiver nas categorias indicadas e true caso contrario
      */
-    public function validaCategoriaRescisao()
+    public function validaCategoriaPeriodoAquisitivo()
     {
-        $categorias = [301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313];
+        $categorias = [301, 302, 303, 304, 306, 307, 309, 310, 312, 410];
         return in_array($this->getVinculo()->getCodigoCategoria(), $categorias);
     }
+
+
 
     /**
      * @return bool
@@ -2893,7 +3173,7 @@ class Servidor
         return !in_array($this->getVinculo()->getCodigoCategoria(), $categorias);
     }
 
-    /**
+     /**
      * @return string
      * Retorna a lotação tributária que deverá ser enviada ao evento S1200.
      */
@@ -2906,18 +3186,281 @@ class Servidor
             $daoLotacaoTributaria = new \cl_rhlotacaotributaria();
             $whereLotacaoTributaria = " db_config.codigo = {$this->iCodigoInstituicao}";
             $sqlLotacaoTributaria = $daoLotacaoTributaria->sql_query(null, "rh268_codigolotacao", null, $whereLotacaoTributaria);
-            $rsLotacaoTributaria = db_query($sqlLotacaoTributaria);
-    
+            $rsLotacaoTributaria = $daoLotacaoTributaria->sql_record($sqlLotacaoTributaria);
+
             if (!$rsLotacaoTributaria) {
                 return null;
             }
-    
+
             if (pg_num_rows($rsLotacaoTributaria) === 0) {
                 return null;
             }
-    
+
             $lotacaoTributaria = db_utils::fieldsMemory($rsLotacaoTributaria, 0);
             return $lotacaoTributaria->rh268_codigolotacao;
         }
+    }
+
+    public function getTipoPagamentoEsocialAPI($ano = null, $mes = null)
+    {
+        if (!$this->isAtivo() || $this->isPensionista()) {
+            return Tipo::S1207_API;
+        }
+        if ($this->isRgps($ano, $mes)) {
+           return Tipo::S1200_API;
+        }
+        if ($this->isRpps($ano, $mes)) {
+            return Tipo::S1202_API;
+        }
+        //Caso nao tenha tabela de previdencia, verificamos se o servidor é cedido
+        if (!$this->getTipoPrevidencia()) {
+            //Caso seja cedido, continuamos com o processamento como RPPS (S-1202)
+            $cedencia = new \Cedencia($this->getMatricula());
+            if (!empty($cedencia->getMatricula())) {
+                return Tipo::S1202_API;
+            }
+        }
+
+        return Tipo::S1200_API;
+    }
+
+    /**
+     * Método responsavel por definir se as rubricas de rescisao seram enviadas no evento S-1200/S-1202 ou S-2299
+     * retorno true = envia nos eventos S-1200/S-1202
+     * retorno false = envia nos eventos S-2299
+     */
+    public function validacaoEnvioRescisaoEsocialComVinculo()
+    {
+        /**
+         * COLOCAR UMA RESSALVA PARA PROCESSAR SOMENTE O VINCULO CADASTRADO COM O
+         * REGIME = 3-CCE NO CAMPO: "CÓDIGO DE CATEGORIA"(RH30_CODIGOCATEGORIA)
+         * ESTIVER O CÓDIGO: 901.
+         */
+        if ($this->getVinculo()->getCodigoCategoria() == 901
+            && $this->getVinculo()->getRegime()->getCodigo() == 3) {
+            return false;
+        }
+
+        /**
+         * Campo: REGIME (RH30_REGIME), GERAR SOMENTE PARA QUEM POSSUI O CÓDIGO 2-CLT,
+         * VINCULADO AO CADASTRO DO VINCULO.
+         */
+        if ($this->getVinculo()->getRegime()->getCodigo() == 2) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Caso retorne true, significa que a data de rescisao é superior a obrigatoriedade
+     * Caso contrario, o servidor foi desligado antes do inicio da obrigatoriedade
+     */
+    private function validaDataRescisaoObrigatoriedade()
+    {
+        $retorno = true;
+        if (!empty($this->getDadosRescisao())) {
+            if (isset($this->getDadosRescisao()->rh05_recis) && !empty($this->getDadosRescisao()->rh05_recis)) {
+                $dataRescicao = new DBDate($this->getDadosRescisao()->rh05_recis);
+                $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
+                if ($dataRescicao < $dataObrigatoriedade) {
+                    return false;
+                }
+            }
+        }
+        return $retorno;
+    }
+
+    /**
+     * Método responsavel por definir se as rubricas de rescisao seram enviadas no evento S-1200/S-1202 ou S-2399
+     * retorno true = envia nos eventos S-1200/S-1202
+     * retorno false = envia nos eventos S-2399
+     */
+    public function validacaoEnvioRescisaoEsocialSemVinculo()
+    {
+        /**
+         * COLOCAR UMA RESSALVA PARA PROCESSAR SOMENTE O VINCULO CADASTRADO COM O
+         * REGIME = 3-CCE NO CAMPO: "CÓDIGO DE CATEGORIA"(RH30_CODIGOCATEGORIA)
+         * ESTIVER O CÓDIGO: 721.
+         */
+        if ($this->getVinculo()->getCodigoCategoria() == 721
+            && $this->getVinculo()->getRegime()->getCodigo() == 3) {
+            return false;
+        }
+
+        /**
+         * Campo: REGIME (RH30_REGIME), GERAR SOMENTE PARA QUEM POSSUI O CÓDIGO 2-CLT,
+         * VINCULADO AO CADASTRO DO VINCULO.
+         */
+        if ($this->getVinculo()->getRegime()->getCodigo() == 2) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public function getDadosReintegracao()
+    {
+
+        $iMatricula = $this->getMatricula();
+        $iInstit    = $this->getInstituicao()->getSequencial();
+        $sCampos    = "h25_tiporeintegracao, h25_numeroprocesso, h25_leianistia, h25_dataefetivoretorno, h25_datareintegracao";
+        $sWhere     = "h25_regist = {$iMatricula} and h25_instit = {$iInstit}";
+
+        $daoAdmissaoDado = new cl_rhadmissaodado;
+        $rsAdmissaoDado  = $daoAdmissaoDado->sql_Record($daoAdmissaoDado->sql_Query(null, $sCampos, null, $sWhere));
+        $oAdmissaoDado   = db_utils::fieldsMemory($rsAdmissaoDado, 0);
+
+        return $oAdmissaoDado;
+
+    }
+
+    /**
+     *  Valida se é obrigatorio preencher o campo PensAlim
+     * no evento S2399
+     */
+    public function validarEnvioPensaoAlimenticia () {
+        $categoriasEnvioPensao = [201,202,721];
+        $dtTerm = $this->getDadosRescisao()->rh05_recis;
+        $dtTermObrigatorio = '2019-04-21';
+        if (in_array($this->getVinculo()->getCodigoCategoria(),$categoriasEnvioPensao)
+            && $dtTerm > $dtTermObrigatorio) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $matriculaAnterior
+     * @return mixed
+     * @throws BusinessException
+     * @throws DBException
+     * metodo para buscar rh01_regist atraves da matricula anterior
+     */
+    private function buscarMatriculaEcidade($matriculaAnterior) {
+        $oDaoPessoal = new cl_rhpessoal;
+
+        $where = "rh01_matriculaanterior = '{$matriculaAnterior}' ";
+        $sSqlPessoal = $oDaoPessoal->sql_query_file(
+            null,
+            'rh01_regist',
+            null,
+            $where
+        );
+
+        $rsPessoal = $oDaoPessoal->sql_record($sSqlPessoal);
+
+        if (!$rsPessoal && $oDaoPessoal->erro_sql == "Erro ao selecionar os registros.") {
+            throw new DBException("Erro ao Buscar Servidor.\n" . $oDaoPessoal->erro_msg);
+        }
+
+        if ($oDaoPessoal->numrows > 0) {
+            $rh01_regist = db_utils::fieldsMemory($rsPessoal,0)->rh01_regist;
+            $this->setMatriculaAnterior($matriculaAnterior);
+            return $rh01_regist;
+        }
+
+        return $matriculaAnterior;
+
+    }
+
+    /**
+     * @return string
+     * @throws DBException
+     * Retorna o tipo de IR de acordo com o codigo da receita para o S-1210
+     * caso o servidor for inativo ou pensionista, retornara 353301
+     * caso contrario, se tiver vinculo de emprego, retornara 051607
+     * se nao tiver retornara 056108
+     *
+     */
+    public function getTipoIRCR($mesAtual = "", $anoAtual = "")
+    {
+        $daoPessoalMov = new cl_rhpessoalmov();
+
+        if (empty($mesAtual)) {
+            $mesAtual = $this->getMesCompetencia();
+        }
+
+        if (empty($anoAtual)) {
+            $anoAtual = $this->getAnoCompetencia();
+        }
+
+        if (!$daoPessoalMov->temDescontoIRRF(
+            $this->getMatricula(),
+            $mesAtual,
+            $anoAtual)
+        ) {
+            return null;
+        }
+
+        $regime = $this->getRegime();
+        if ($regime->rh30_vinculo == "A") {
+            if ($regime->rh30_vinculoemprego = "t") {
+                return "056107";
+            } else {
+                return "058806";
+            }
+        } else {
+               return "353301";
+        }
+
+    }
+
+    private function getRegime() {
+
+        $daoRhRegime = new cl_rhregime();
+        $sqlRegime = $daoRhRegime->sql_query($this->getCodigoRegime());
+        $rsRegime = $daoRhRegime->sql_record($sqlRegime);
+
+        if (!$rsRegime && $daoRhRegime->erro_sql == "Erro ao selecionar os registros.") {
+            throw new DBException("Erro ao buscar regime do servidor.\n" . $daoRhRegime->erro_msg);
+        }
+
+        $regime = db_utils::fieldsMemory($rsRegime,0);
+        return $regime;
+    }
+
+    public function getTipoRegimeOrigem () {
+      return (new \Cedencia())->getRegimeOrigem($this->getMatricula());
+    }
+
+    /**
+     * Retorna a primeira competência de remuneração da rescisão da matrícula definida.
+     * @param  integer   $matricula             //matrícula do servidor
+     * @return stdClass
+    **/
+    public function getCompetenciaPagamentoRecisao($matricula)
+    {
+
+        if (empty($matricula)) {
+            throw new BusinessException("Matrícula não informada. Favor revisar.");
+        }
+
+        $sql = "select
+                    r20_anousu as anoCompetencia,
+	                r20_mesusu as mesCompetencia,
+                    coalesce(extract(year from rh05_datapagamento),extract(year from rh225_datapagamento)) as anoCompetenciaCaixa,
+	                coalesce(extract(month from rh05_datapagamento),extract(MONTH from rh225_datapagamento)) as mesCompetenciaCaixa,
+	                rh05_recis as dataRescisao,
+                    rh05_datapagamento as datapagamento,
+	                rh02_regist as matricula,
+	                rh02_seqpes as sequencial
+                from pessoal.rhpessoalmov
+                join pessoal.gerfres on r20_regist = rh02_regist
+                join pessoal.rhpesrescisao on
+	            rh02_seqpes = rh05_seqpes
+	            and rh02_regist = {$matricula}
+                left join pessoal.rhdatapagamentofolha on rh225_instituicao=rh02_instit and
+                r20_anousu = extract(year from rh225_datapagamento) and 
+                r20_mesusu = extract(MONTH from rh225_datapagamento)
+                order by rh05_datapagamento, rh225_datapagamento limit 1";
+        $rs = db_query($sql);
+        if (!$rs) {
+            $msg = "Data de rescisão do servidor de número matrícula {$matricula} é inválida. Favor revisar.";
+            throw new BusinessException($msg);
+        }
+        $retorno = db_utils::fieldsMemory($rs, 0);
+        return $retorno;
     }
 }

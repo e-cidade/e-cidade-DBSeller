@@ -65,6 +65,65 @@ function quantDias($data1, $data2) {
   return round((mktime(0,0,0,$aVet2[1],$aVet2[0],$aVet2[2])-
                 mktime(0,0,0,$aVet1[1],$aVet1[0],$aVet1[2])) / (24 * 60 * 60), 0);
 }
+//Verifica se o risco automatico esta ativo
+$riscoAutomatico = db_query("select q60_riscoautomatico from issqn.parissqn;");
+
+
+//Verifica se é pessoa fisica ou juridica
+function verificaPessoa($q07_inscr){
+    $verificaPessoa = db_query("select z01_cgccpf from protocolo.cgm c 
+    inner join issqn.issbase i on i.q02_numcgm = c.z01_numcgm 
+    where i.q02_inscr = {$q07_inscr};"
+  );
+  switch(strlen(pg_fetch_result($verificaPessoa,0,"z01_cgccpf"))){
+    case 14:
+      $pessoa = 'j';
+    break;
+    case 11:
+      $pessoa = 'f';
+    break;
+    default:
+      $pessoa = 'f';
+    break;
+  }
+  return $pessoa;
+}
+
+function verificaRisco($q07_inscr){
+  $anoUsuario = db_getsession('DB_anousu');
+  $pessoa = verificaPessoa($q07_inscr);
+  if($pessoa == 'j'){
+    //Pega o risco do CNAE vinculado a atividade se a pessoa for juridica
+    $sqlRiscoCNAE = db_query("select c2.q71_classificacaorisco from issqn.ativprinc ap
+                        inner join issqn.tabativ t on ap.q88_seq = t.q07_seq and ap.q88_inscr = t.q07_inscr 
+                        inner join issqn.atividcnae a on a.q74_ativid = t.q07_ativ 
+                        inner join issqn.cnaeanalitica c on c.q72_sequencial = a.q74_cnaeanalitica 
+                        inner join issqn.cnae c2 on c2.q71_sequencial = c.q72_cnae 
+                        where ap.q88_inscr = {$q07_inscr};
+                      ");
+  }else{
+    //Pega o risco do CBO vinculado a atividade se a pessoa for fisica
+    $sqlRiscoCBO = db_query("select ap.q88_inscr, r.rh70_classificacaorisco from issqn.ativprinc ap
+                          inner join issqn.tabativ t on ap.q88_seq = t.q07_seq and ap.q88_inscr = t.q07_inscr 
+                          inner join issqn.atividcbo a on a.q75_ativid = t.q07_ativ 
+                          inner join pessoal.rhcbo r on r.rh70_sequencial = a.q75_rhcbo 
+                          where ap.q88_inscr = {$q07_inscr};");
+  }
+
+  
+  //Atualiza o risco da issquant e adiciona no historico
+  if(isset($sqlRiscoCNAE) && pg_fetch_result($sqlRiscoCNAE,0,"q71_classificacaorisco") != null){
+    $risco = strtoupper(pg_fetch_result($sqlRiscoCNAE,0,"q71_classificacaorisco"));
+  }elseif(isset($sqlRiscoCBO) && pg_fetch_result($sqlRiscoCBO,0,"rh70_classificacaorisco") != null){
+    $risco = strtoupper(pg_fetch_result($sqlRiscoCBO,0,"rh70_classificacaorisco"));
+  }else{
+    $risco = null;
+  }
+
+  db_query("update issqn.issquant set q30_graurisco = '{$risco}' where q30_inscr = {$q07_inscr} and q30_anousu = {$anoUsuario};");
+  db_query("insert into issqn.histriscoinscr (q201_inscr, q201_risco, q201_dtrisco) values ({$q07_inscr}, '{$risco}', now());");
+  return $risco;
+}
 
 //verifica o parametro na tabela parissqn para gerar sanitario automaticamente apartir do ISSQN
 $rsParissqn      = $clparissqn->sql_record($clparissqn->sql_query(null, "q60_integrasani", null, ""));
@@ -200,6 +259,9 @@ if (isset($incluir) && !$sqlerro) {
     $clativprinc->q88_inscr = $q07_inscr;
     $clativprinc->q88_seq   = $q07_seq;
     $clativprinc->incluir($q07_inscr);
+    if(pg_fetch_result($riscoAutomatico,0,"q60_riscoautomatico")=="t"){
+      $risco = verificaRisco($q07_inscr);
+    }  
     if ($clativprinc->erro_status==0) {
       $erromsg = "Inclusão ativprinc : ".$clativprinc->erro_msg;
       $sqlerro = true;
@@ -213,6 +275,9 @@ if (isset($incluir) && !$sqlerro) {
       $clativprinc->q88_inscr = $q07_inscr;
       $clativprinc->q88_seq   = $q07_seq;
       $clativprinc->incluir($q07_inscr);
+      if(pg_fetch_result($riscoAutomatico,0,"q60_riscoautomatico")=="t"){
+        $risco = verificaRisco($q07_inscr);
+      }  
       if ($clativprinc->erro_status==0) {
         $erromsg = "Inclusão ativprint erro 2 : ".$clativprinc->erro_msg;
         $sqlerro = true;
@@ -220,7 +285,7 @@ if (isset($incluir) && !$sqlerro) {
     }
   }
 
-//**********************************************************************************************************************************
+  //**********************************************************************************************************************************
 
   if($sqlerro==false){
 
@@ -230,7 +295,7 @@ if (isset($incluir) && !$sqlerro) {
       // verifica se porte, eh do tipo juridica
       $sql = " select q40_fisica from issbaseporte inner join issporte on q45_codporte = q40_codporte where q40_fisica is false and q45_inscr = $q07_inscr";
       $rsPorte = $clissporte->sql_record($sql);
-//    echo "<br><br>".$clissporte->sql_query(null," q40_fisica ",null," q40_fisica is false ");
+  //    echo "<br><br>".$clissporte->sql_query(null," q40_fisica ",null," q40_fisica is false ");
       if($clissporte->numrows > 0){
         $incluisani = 't';
         $incluiativ = 't';
@@ -247,7 +312,7 @@ if (isset($incluir) && !$sqlerro) {
       }
     }
 
-//**********************************************************************************************
+  //**********************************************************************************************
 
     if (isset($incluisani) && $incluisani = 't') {
       $rsSanitario = $clsanitario->sql_record($clsanitario->sql_query_file($q07_inscr,"*",null,""));
@@ -540,6 +605,11 @@ if($sqlerro==false){
        $clativprinc->q88_inscr=$q07_inscr;
        $clativprinc->q88_seq=$q07_seq;
        $clativprinc->incluir($q07_inscr);
+
+       if(pg_fetch_result($riscoAutomatico,0,"q60_riscoautomatico")=="t"){
+          $risco = verificaRisco($q07_inscr);
+       }  
+        
        if($clativprinc->erro_status==0){
           $erromsg = "Inclusão ativprinc : ".$clativprinc->erro_msg;
           $sqlerro = true;
@@ -844,7 +914,7 @@ if ($lGeraAutomatico == 'false') {
 
 if ($lInserirAlvara == 'true' && $lAtivPrinc == 't' && isset($incluir)){
 
-	try{
+  try{
 
     db_inicio_transacao();
 
@@ -903,8 +973,32 @@ if ($lInserirAlvara == 'true' && $lAtivPrinc == 't' && isset($incluir)){
 
 }
 
+  $verificaAlerta = verificaPessoa($q07_inscr);
+  if($verificaAlerta == 'j'){
+    //Pega o risco do CNAE vinculado a atividade se a pessoa for juridica
+    $RiscoCNAE = db_query("select ap.q88_inscr, c2.q71_classificacaorisco from issqn.ativprinc ap
+                          inner join issqn.tabativ t on ap.q88_seq = t.q07_seq and ap.q88_inscr = t.q07_inscr 
+                          left join issqn.atividcnae a on a.q74_ativid = t.q07_ativ 
+                          left join issqn.cnaeanalitica c on c.q72_sequencial = a.q74_cnaeanalitica 
+                          left join issqn.cnae c2 on c2.q71_sequencial = c.q72_cnae 
+                          where ap.q88_inscr = {$q07_inscr};
+                        ");           
+  }else{
+    //Pega o risco do CBO vinculado a atividade se a pessoa for fisica
+    $RiscoCBO = db_query("select ap.q88_inscr, r.rh70_classificacaorisco from issqn.ativprinc ap
+                          inner join issqn.tabativ t on ap.q88_seq = t.q07_seq and ap.q88_inscr = t.q07_inscr 
+                          inner join issqn.atividcbo a on a.q75_ativid = t.q07_ativ 
+                          inner join pessoal.rhcbo r on r.rh70_sequencial = a.q75_rhcbo 
+                          where ap.q88_inscr = {$q07_inscr};");
+  }
 
-
+  $alertaCNAE = 'nEmitir';
+  $alertaCBO = 'nEmitir';
+  if(isset($RiscoCNAE) && pg_num_rows($RiscoCNAE) > 0 && pg_fetch_result($RiscoCNAE,0,"q71_classificacaorisco") == null){
+    $alertaCNAE = 'emitir';
+  }elseif(isset($RiscoCBO) && pg_num_rows($RiscoCBO) > 0 && pg_fetch_result($RiscoCBO,0,"rh70_classificacaorisco") == null){
+    $alertaCBO = 'emitir';
+  }
 ?>
 <html>
   <head>
@@ -920,7 +1014,7 @@ if ($lInserirAlvara == 'true' && $lAtivPrinc == 't' && isset($incluir)){
     </div>
   </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
 
   if($sqlerro==true){

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ function js_retornaInicial(iCodigoInicial) {
             <?=$Lv70_sequencial?>
           </td>
           <td nowrap> 
-            <?
+            <?php
               db_input("v70_sequencial",10,$Iv70_sequencial,true,"text",4,"","chave_v70_sequencial");
             ?>
           </td>
@@ -146,36 +146,36 @@ function js_retornaInicial(iCodigoInicial) {
             <?=$Lv70_codforo?>
           </td>
           <td nowrap> 
-            <?
+            <?php
               db_input("v70_codforo",30,$Iv70_codforo,true,"text",4,"","chave_v70_codforo");
             ?>
           </td>
         </tr>
         <tr> 
           <td nowrap title="<?=$Tv71_inicial?>">
-            <?
+            <?php
               db_ancora($Lv71_inicial, "js_pesquisaInicial(true)", 1)?>
           </td>
           <td nowrap> 
-            <?
+            <?php
               db_input("v71_inicial",10,$Iv71_inicial,true,"text",4,"onchange='js_pesquisaInicial(false)'","chave_v71_inicial");
             ?>
           </td>
         </tr>          
         <tr>
           <td nowrap title="<?=@$Tv58_numcgm?>">
-             <?
+             <?php
               db_ancora(@$Lv58_numcgm," js_pesquisacgm(true); ",1);
              ?>
           </td>
           <td> 
-             <?
+             <?php
               db_input('v58_numcgm',10,$Iv58_numcgm,true,'text',4," onchange='js_pesquisacgm(false);'","chave_v58_numcgm");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3);
              ?>
           </td>
         </tr>
-        <?
+        <?php
           if (isset($oGet->lSituacao) && $oGet->lSituacao == 'true') {
         ?>
         <tr>
@@ -183,7 +183,7 @@ function js_retornaInicial(iCodigoInicial) {
              <b>Situação:</b>
           </td>
           <td> 
-             <?
+             <?php
                $aSituacao = array('T'  => 'Todos',
                                   'AT' => 'Ativo',
                                   'AN' => 'Anulado');
@@ -191,7 +191,7 @@ function js_retornaInicial(iCodigoInicial) {
              ?>
           </td>
         </tr>
-        <?
+        <?php
           }
         ?>
         
@@ -227,7 +227,7 @@ function js_retornaInicial(iCodigoInicial) {
       <table align="center">
         <tr> 
           <td align="center" valign="top"> 
-            <?
+            <?php
             
             if (count((array) $oPost) == 0) {
               echo ("<script>
@@ -363,12 +363,12 @@ function js_retornaInicial(iCodigoInicial) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>  
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

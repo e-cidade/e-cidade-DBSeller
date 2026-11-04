@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clalunoprimat->rotulo->label("ed76_i_codigo");
               <?=$Led76_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed76_i_codigo",20,$Ied76_i_codigo,true,"text",4,"","chave_ed76_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clalunoprimat->rotulo->label("ed76_i_codigo");
               <?=$Led76_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed76_i_codigo",20,$Ied76_i_codigo,true,"text",4,"","chave_ed76_i_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clalunoprimat->rotulo->label("ed76_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_alunoprimat.php")==true){
@@ -122,12 +122,12 @@ $clalunoprimat->rotulo->label("ed76_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

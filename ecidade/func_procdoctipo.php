@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprocdoctipo->rotulo->label("p57_codigo");
               <?=$Lp57_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p57_codigo",3,$Ip57_codigo,true,"text",4,"","chave_p57_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprocdoctipo->rotulo->label("p57_codigo");
               <?=$Lp57_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p57_coddoc",3,$Ip57_coddoc,true,"text",4,"","chave_p57_coddoc");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprocdoctipo->rotulo->label("p57_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "p57_codigo as db_p57_codigo,p57_coddoc as db_p57_coddoc,p51_descr,p56_descr";
@@ -115,14 +115,14 @@ $clprocdoctipo->rotulo->label("p57_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p57_codigo.focus();
 document.form2.chave_p57_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

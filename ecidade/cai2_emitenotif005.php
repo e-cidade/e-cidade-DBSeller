@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_sql.php"));
@@ -41,7 +41,7 @@ if (isset($notifparc)){
 
 	$sSqlNotifParc = " select k55_matric   as j01_matric,
 					          k56_inscr	   as q02_inscr,
-					          k57_numcgm   as z01_numcgm, 
+					          k57_numcgm   as z01_numcgm,
 					          case when k55_matric is not null
 					               then (select lpad(z01_numcgm,6,0)||' '||z01_nome
 					                     from proprietario_nome
@@ -60,7 +60,7 @@ if (isset($notifparc)){
 					        left  join notimatric  on k43_notifica = k55_notifica
 					        left  join notiinscr   on k43_notifica = k56_notifica
 					        left  join notinumcgm  on k43_notifica = k57_notifica
-					  where k43_notifica = {$notifica}	     
+					  where k43_notifica = {$notifica}
 					   group by k43_notifica,
 					        k55_matric,
 					        k56_inscr,
@@ -69,9 +69,9 @@ if (isset($notifparc)){
 
      $result      = db_query($sSqlNotifParc) or die($sSqlNotifParc);
      $oNotifParc  = db_utils::fieldsMemory($result,0);
-     
+
 		if (isset($oNotifParc->j01_matric) && trim($oNotifParc->j01_matric) != ""){
-			
+
 			$k60_tipo = "M";
 		    $xtipo    = 'Matrícula';
 		    $xcodigo  = 'matric';
@@ -81,7 +81,7 @@ if (isset($notifparc)){
 		    $xxcodigo = 'k55_notifica';
 
 		} else if(isset($oNotifParc->q02_inscr) && trim($oNotifParc->q02_inscr) != ""){
-			
+
 			$k60_tipo = "I";
 		    $xtipo    = 'Inscrição';
 		    $xcodigo  = 'inscr';
@@ -89,7 +89,7 @@ if (isset($notifparc)){
 		    $xxcodigo1 = 'k56_inscr';
 		    $xxmatric = ' inner join notiinscr on inscr = k56_inscr ';
 		    $xxcodigo = 'k56_notifica';
-		
+
 		} else {
 			$k60_tipo = "N";
 		    $xtipo    = 'Numcgm';
@@ -98,13 +98,13 @@ if (isset($notifparc)){
 		    $xxcodigo1 = 'k57_numcgm';
 		    $xxmatric = ' inner join notinumcgm on numcgm = k57_numcgm ';
 		    $xxcodigo = 'k57_notifica';
-		    
+
 		}
-  
+
   $lim1 = 0;
-  $lim2 = pg_num_rows($result);	
-		
-	
+  $lim2 = pg_num_rows($result);
+
+
 } else {
 
 $sql = "select * from lista where k60_codigo = $lista and k60_instit = $instit ";
@@ -112,10 +112,10 @@ $sql = "select * from lista where k60_codigo = $lista and k60_instit = $instit "
 $result = db_query($sql);
 db_fieldsmemory($result,0);
 
-$sqllistatipo = "select listatipos.*, k03_descr 
-					from listatipos 
-					inner join arretipo on k00_tipo = k62_tipodeb 
-					inner join cadtipo on arretipo.k03_tipo = cadtipo.k03_tipo 
+$sqllistatipo = "select listatipos.*, k03_descr
+					from listatipos
+					inner join arretipo on k00_tipo = k62_tipodeb
+					inner join cadtipo on arretipo.k03_tipo = cadtipo.k03_tipo
 					where k62_lista = $lista";
 $resultlistatipo = db_query($sqllistatipo);
 $virgula = '';
@@ -193,15 +193,15 @@ if($fim > 0 && $intervalo == 'n'){
 }
 
 $sql999 = "select $xxcodigo as notifica,$xcodigo1,z01_numcgm,z01_nome,sum(valor_vencidos) as xvalor
-        from 
+        from
              (select distinct $xcodigo as $xcodigo1,
                      $xxcodigo,
                      z01_numcgm,
                      z01_nome,
                      valor_vencidos
-              from 
-                   (select distinct k61_numpre,k61_codigo,k60_datadeb 
- 	            from listadeb 
+              from
+                   (select distinct k61_numpre,k61_codigo,k60_datadeb
+ 	            from listadeb
 	 	         inner join lista on k60_codigo = k61_codigo and k60_instit = $instit
                     where k61_codigo = $lista ) as a
               inner join devedores b on a.k61_numpre = b.numpre and b.data = a.k60_datadeb
@@ -221,7 +221,7 @@ $sql = "select $xxcodigo as notifica,$xxcodigo1 as $xcodigo1,z01_numcgm,z01_nome
              inner join devedores on k63_numpre = numpre and k60_datadeb = data
              $xxmatric $limite $contr and $xxcodigo = k63_notifica
              inner join cgm on z01_numcgm = numcgm
-        where k60_codigo = $lista 
+        where k60_codigo = $lista
         group by $xxcodigo,
                  $xxcodigo1,
                  z01_numcgm,
@@ -231,13 +231,13 @@ $sql = "select $xxcodigo as notifica,$xxcodigo1 as $xcodigo1,z01_numcgm,z01_nome
 //die($sql);
 $result = db_query($sql);
 if (pg_numrows($result) == 0){
-  
+
    $oParms = new stdClass();
    $oParms->sLista = $lista;
    $sMsg = _M('tributario.notificacoes.cai2_emitenotif005.nenhuma_notificacao', $oParms);
    db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
-   exit; 
-} 
+   exit;
+}
 
 
 if($fim > 0 && $intervalo != 'n'){
@@ -280,7 +280,7 @@ for($x=$lim1;$x < $lim2;$x++) {
     $resultender = db_query($sqlender);
     db_fieldsmemory($resultender,0);
 
-    $endereco = split("#",$fc_iptuender);
+    $endereco =explode("#",$fc_iptuender);
 
     $z01_ender    = @$endereco[0];
     $z01_numero   = @$endereco[1];
@@ -290,7 +290,7 @@ for($x=$lim1;$x < $lim2;$x++) {
     $z01_uf       = @$endereco[5];
     $z01_cep      = @$endereco[6];
     $z01_cxpostal = @$endereco[7];
-    
+
   } elseif ($k60_tipo == 'I'){
 
     $imprime = "INSCRICAO: $q02_inscr";
@@ -302,7 +302,7 @@ for($x=$lim1;$x < $lim2;$x++) {
     }
 
   } else {
-   
+
     $imprime = "CGM: $z01_numcgm";
 
     $sqlender = "select z01_ender, z01_numero, z01_compl, z01_bairro, z01_munic, z01_uf, z01_cep, z01_cxpostal from cgm where z01_numcgm = $z01_numcgm";

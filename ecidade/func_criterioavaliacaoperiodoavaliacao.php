@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -34,7 +34,7 @@ $clcriterioavaliacaoperiodoavaliacao = new cl_criterioavaliacaoperiodoavaliacao;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_criterioavaliacaoperiodoavaliacao.php")==true){
@@ -65,12 +65,12 @@ $clcriterioavaliacaoperiodoavaliacao = new cl_criterioavaliacaoperiodoavaliacao;
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

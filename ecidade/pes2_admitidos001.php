@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -24,6 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt 
  *                                licenca/licenca_pt.txt 
  */
+
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -31,11 +32,25 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhregime_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
+include modification("dbforms/db_classesgenericas.php");
+
 $clrhregime = new cl_rhregime;
 $clrhcadregime = new cl_rhcadregime;
 $rotulocampo = new rotulocampo;
+$clrotulo = new rotulocampo;
+$gform = new cl_formulario_rel_pes;
+
 $rotulocampo->label("k11_id");
 $rotulocampo->label("k13_conta");
+$rotulocampo->label("DBtxt23");
+$rotulocampo->label("DBtxt25");
+$clrotulo->label('DBtxt23');
+$clrotulo->label('DBtxt25');
+$clrotulo->label('DBtxt27');
+$clrotulo->label('DBtxt28');
+
+db_postmemory($HTTP_POST_VARS);
+
 if(!isset($datai_dia) && 
    !isset($datai_mes) &&
    !isset($datai_ano) ){
@@ -75,7 +90,7 @@ if(!isset($datai_dia) &&
               <strong>Tipo :</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_adm_dem = array("a"=>"Admitidos","d"=>"Demitidos");
               db_select('adm_dem',$arr_adm_dem,true,4,"");
               ?>
@@ -86,13 +101,13 @@ if(!isset($datai_dia) &&
               <strong>Admitidos entre:</strong>
             </td>
             <td align="left" nowrap>
-              <?
+              <?php
               db_inputdata("datai",$datai_dia,$datai_mes,$datai_ano, true,"text",1)
               ?>
             </td> 
             <td align="left" nowrap>
               &nbsp;<strong>e</strong>&nbsp;
-              <?
+              <?php
               db_inputdata("dataf",$dataf_dia,$dataf_mes,$dataf_ano, true,"text",1)
               ?>
             </td>
@@ -102,7 +117,7 @@ if(!isset($datai_dia) &&
               <strong>Ordem:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_ordem = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
               if(!isset($ordem)){
                 $ordem = "a";
@@ -124,7 +139,7 @@ if(!isset($datai_dia) &&
               <strong>Quebrar por:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_quebra = array("n"=>"Sem quebra","l"=>"Por lotação","c"=>"Por cargo");
               if(!isset($lota)){
                 $lota = "n";
@@ -146,7 +161,7 @@ if(!isset($datai_dia) &&
               <strong>Quebra de página:</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_SouN = array("s"=>"Sim","n"=>"Não");
               if(!isset($quebra)){
                 $quebra = "n";
@@ -155,7 +170,7 @@ if(!isset($datai_dia) &&
               ?>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_SouN = array("s"=>"Sim","n"=>"Não");
               if(isset($listapens)){
                 $chk_listapens = "checked";
@@ -171,7 +186,7 @@ if(!isset($datai_dia) &&
               <strong>Tipo :</strong>
             </td>
             <td align="left">
-              <?
+              <?php
               $arr_SouN = array("r"=>"Regime","v"=>"Vínculos");
               if(!isset($tipo)){
                 $tipo = "r";
@@ -184,8 +199,17 @@ if(!isset($datai_dia) &&
               }
               ?>
             </td>
-            <td align="left">
+            <td align="rigth">
         	      <input type="checkbox" name="listarescis" value="listarescis"<?=$chk_listarescis?>>Listar rescindidos
+            </td>
+          </tr>
+          <tr>
+            <td align="right" nowrap><b>Formato de saída:</b></td>
+            <td>
+              <?php
+              $aTiposSaida = array('pdf' => 'PDF', 'csv' => 'CSV');
+              db_select('tipoSaida', $aTiposSaida, true, 1, "style='width:75px;'");
+              ?>
             </td>
           </tr>
 					<tr					>
@@ -194,7 +218,7 @@ if(!isset($datai_dia) &&
 					</td>
           <tr>
             <td align="right" nowrap colspan=3>
-              <?
+              <?php
               if($tipo == "r"){
 	              $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"rh52_regime,rh52_regime||' - '||rh52_descr as rh52_descr  "));
                 db_multiploselect("rh52_regime", "rh52_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
@@ -216,7 +240,7 @@ if(!isset($datai_dia) &&
     </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -239,7 +263,7 @@ function js_relatorio2(){
     qry = "?datai="+datai;
     qry+= "&dataf="+dataf;
     qry+= "&adm_dem="+F.adm_dem.value;
-    qry+= "&ordem="+F.ordem.value;
+    qry+= "&ordem="+F.ordem.value;   
     if(F.listaponto.checked == true){
       qry+= "&fixo=s";
     }else{
@@ -257,6 +281,7 @@ function js_relatorio2(){
     qry+= "&tipo="+F.tipo.value;
     qry+= "&lota="+F.lota.value;
     qry+= "&quebrapagina="+F.quebra.value;
+    qry+= "&tipoSaida="+F.tipoSaida.value;
     selecionados = "";
     virgula_ssel = "";
     for(var i=0; i<document.form1.sselecionados.length; i++){
@@ -264,11 +289,29 @@ function js_relatorio2(){
       virgula_ssel = ",";
     }
     qry+= "&regime="+selecionados;
-    jan = window.open('pes2_admitidos002.php'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    jan.moveTo(0,0);
+
+    
+
+    if (F.tipoSaida.value == 'csv') {
+      var msgDiv = "Gerando arquivo CSV \n Aguarde ...";
+      js_divCarregando(msgDiv, 'msgBox');
+      js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_relfuncret', 'pes2_admitidos002.php'+qry, 'Gerando Arquivo', false);
+    } else {
+      jan = window.open('pes2_admitidos002.php'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+      jan.moveTo(0,0);
+    }
+
   }
 }
+
 function js_opcao_selecionada(){
   document.form1.submit();
+}
+
+function js_detectaarquivo1(sArquivo) {
+    js_removeObj('msgBox');
+    var sListagem = sArquivo + "#Download arquivo CSV ";
+    (window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_relfuncret.hide();
+    js_montarlista(sListagem, "form1");
 }
 </script>

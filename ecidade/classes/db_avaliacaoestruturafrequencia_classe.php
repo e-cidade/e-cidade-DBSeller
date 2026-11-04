@@ -61,14 +61,14 @@ class cl_avaliacaoestruturafrequencia
                  ed328_ano = int4 = Ano 
                  ";
     //funcao construtor da classe
-    function cl_avaliacaoestruturafrequencia()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("avaliacaoestruturafrequencia");
         $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -78,7 +78,7 @@ class cl_avaliacaoestruturafrequencia
         }
     }
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed328_sequencial = ($this->ed328_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed328_sequencial"] : $this->ed328_sequencial);
@@ -93,7 +93,7 @@ class cl_avaliacaoestruturafrequencia
         }
     }
     // funcao para inclusao
-    function incluir($ed328_sequencial)
+    public function incluir($ed328_sequencial)
     {
         $this->atualizacampos();
         if ($this->ed328_escola == null) {
@@ -232,7 +232,7 @@ class cl_avaliacaoestruturafrequencia
         return true;
     }
     // funcao para alteracao
-    function alterar($ed328_sequencial = null)
+    public function alterar($ed328_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update avaliacaoestruturafrequencia set ";
@@ -380,7 +380,7 @@ class cl_avaliacaoestruturafrequencia
         }
     }
     // funcao para exclusao
-    function excluir($ed328_sequencial = null, $dbwhere = null)
+    public function excluir($ed328_sequencial = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -457,7 +457,7 @@ class cl_avaliacaoestruturafrequencia
         }
     }
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -481,7 +481,7 @@ class cl_avaliacaoestruturafrequencia
         return $result;
     }
     // funcao do sql
-    function sql_query($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -526,7 +526,7 @@ class cl_avaliacaoestruturafrequencia
         return $sql;
     }
     // funcao do sql
-    function sql_query_file($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -561,7 +561,7 @@ class cl_avaliacaoestruturafrequencia
         return $sql;
     }
 
-    function sql_query_configuracao_escola($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_configuracao_escola($ed328_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";

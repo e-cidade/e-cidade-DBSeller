@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clcgm->rotulo->label();
       <table border="0" align="center">
         <tr>
           <td>
-		        <?
+		        <?php
 		          db_input('j34_loteam',10,$Ij34_loteam,true,'text',3,"");
 		          
 		          if ( isset($oPost->j120_sequencial) ) {
@@ -46,19 +46,19 @@ $clcgm->rotulo->label();
 		        ?>          
           </td>
           <td>
-            <?
+            <?php
               db_input('j34_descr',40,$Ij34_descr,true,'text',3,"");
             ?>          
           </td>          
         </tr>
         <tr>
           <td>
-            <?
+            <?php
               db_ancora('<b>CGM:</b>',' js_pesquisacgm(true); ',$db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisacgm(false)'");
               db_input('z01_nome',30,0,true,'text',3,"");
             ?>
@@ -80,7 +80,7 @@ $clcgm->rotulo->label();
       <table>
         <tr>
           <td valign="top"  align="center">  
-            <?
+            <?php
             
               $aChavePri = array( "j120_sequencial" => @$j120_sequencial,
                                   "j120_loteam"     => @$j120_cgm,

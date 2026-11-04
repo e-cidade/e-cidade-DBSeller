@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -120,7 +120,7 @@ function js_selecionar() {
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
      <form name="form1" method="post">
-       <?
+       <?php
        $sql = "select m.descricao as dmenu, o.nome_modulo
                from db_menu d
 	            inner join db_itensmenu m on m.id_item = d.id_item
@@ -159,7 +159,7 @@ function js_selecionar() {
 	 </td>
 	 </tr>
 	 </table>
-	 <?
+	 <?php
        }else{
          ?>
 	 <table>
@@ -170,7 +170,7 @@ function js_selecionar() {
 	 <tr>
 	 <td>
          <select name="campos[]" id="campos" size="17" style="width:250px" multiple >
-         <?
+         <?php
          for($i = 0;$i < pg_numrows($result);$i++) {
 	    echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"descricao")."</option>\n";
 	 }
@@ -192,7 +192,7 @@ function js_selecionar() {
 	 </td>
 	 </tr>
 	 </table>
-       <?
+       <?php
        }
        ?>
 
@@ -200,7 +200,7 @@ function js_selecionar() {
   </center>
   </td></tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

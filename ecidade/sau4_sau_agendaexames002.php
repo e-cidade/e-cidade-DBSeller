@@ -84,7 +84,7 @@ a:active {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
 
-<?
+<?php
 
 
 db_postmemory($_POST);
@@ -138,9 +138,11 @@ $iQuantidadeMensal     = 0;
 $sWhereDatas = " (s112_d_valfinal is null or
                                       (s112_d_valfinal is not null and s112_d_valfinal > '{$dataAgendamento}'::date )
                                   )";
+
+$prestadorHorario = (!empty($obj_prestadorhorarios->s112_i_codigo) ? $obj_prestadorhorarios->s112_i_codigo : '');
 //Agenda
 $sWhereExames           = "s113_d_exame = '{$ano}-{$mes}-{$dia}'::date ";
-$sWhereExames          .= " and s113_i_prestadorhorarios = {$obj_prestadorhorarios->s112_i_codigo}";
+$sWhereExames          .= " and s113_i_prestadorhorarios = {$prestadorHorario}";
 $sWhereSomaTotalExames  = "s113_d_exame = '{$dataAgendamento}'::date and s113_i_prestadorhorarios = sau_prestadorhorarios.s112_i_codigo";
 $sInnerJoin             = "";
 
@@ -345,7 +347,7 @@ echo "</script>";
 
     $iTotalFichas = $nro_fichas + $reservadas;
     $mi_interva1  = 0;
-    $mi_interva2  = 1;
+    $mi_interva2  = 0;
 
     ?>
       <tr class='cabec'>
@@ -363,7 +365,7 @@ echo "</script>";
 
       </tr>
 
-    <?
+      <?php
     for ($h = 1; $h <= $iTotalFichas; $h++) {
 
       $id_ficha  = 0;
@@ -440,10 +442,10 @@ echo "</script>";
           <a title='Comprovante de Agendamento' href='#' onclick='js_comprovante(<?=$codigo?>);return false;'>&nbsp;C&nbsp;</a>
         </td>
       </tr>
-      <?
+        <?php
         if( $intervalo != 0){
         $hora_ini    = cl_agendamentos_ext::somahora($hora_ini,($intervalo+$mi_interva2));
-        $mi_interva1 = -1;
+        $mi_interva1 = 0;
         $mi_interva2 = 0;
         }
     } // fim for h

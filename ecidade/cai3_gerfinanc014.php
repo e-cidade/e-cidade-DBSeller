@@ -49,14 +49,14 @@ $sqlparag .= "   and db03_instit = ".db_getsession("DB_instit")." ";
 $sqlparag .= " order by db04_ordem ";
 $resparag = db_query($sqlparag);
 
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
   $head3 = "SECRETARIA DA FAZENDA";
 } else {
   db_fieldsmemory($resparag, 0);
   $head3 = $db02_texto;
 }
 
-$head4 = "Relatrio dos Pagamentos Efetuados";
+$head4 = "Relatório dos Pagamentos Efetuados";
 
 $aWherePagamento    = array();
 $sWhereNumpreNormal = "";
@@ -74,7 +74,7 @@ if (isset($numcgm)) {
 
   $nome  = 'CGM         : '.$oEnderCgm->z01_numcgm.' - '.$oEnderCgm->z01_nome;
   $ender = $oEnderCgm->z01_ender.', '.$oEnderCgm->z01_numero.' '.$oEnderCgm->z01_compl.' '.$oEnderCgm->z01_bairro.' - '.$oEnderCgm->z01_cep.' - '.$oEnderCgm->z01_munic.'/'.$oEnderCgm->z01_uf;;
-  
+
   $aWherePagamento[] = " arrenumcgm.k00_numcgm = ".$numcgm;
 
 } else if(isset($matric)) {
@@ -82,7 +82,7 @@ if (isset($numcgm)) {
   $sSqlEnderMatric  = " select * ";
   $sSqlEnderMatric .= "   from proprietario         ";
   $sSqlEnderMatric .= "  where j01_matric = $matric ";
-  
+
   $oEnderMatric     = db_utils::fieldsMemory(db_query($sSqlEnderMatric),0);
 
   $sSqlEnvol        = " select rvnome                                                                   ";
@@ -90,10 +90,10 @@ if (isset($numcgm)) {
 
   $oEnvolvidos      = db_utils::fieldsMemory(db_query($sSqlEnvol),0);
 
-  
+
   $nome  = 'Matrícula : '.$matric.' - '  . $oEnvolvidos->rvnome;
-  $ender = $oEnderMatric->tipopri 
-           . ' '  .$oEnderMatric->nomepri    
+  $ender = $oEnderMatric->tipopri
+           . ' '  .$oEnderMatric->nomepri
            . ', ' .$oEnderMatric->j39_numero
            . ' '  .$oEnderMatric->j39_compl
            . ' - '.$oEnderMatric->j13_descr
@@ -175,7 +175,6 @@ if ( isset($datainicial) ) {
   $head5 = 'Perodo : '.db_formatar($datainicial,'d').' a '.db_formatar($datafinal,'d');
   $aWherePagamento[] = " arrepaga.k00_dtpaga between '$datainicial' and '$datafinal' ";
 }
-
 if (isset($receita)) {
   $head6             = 'Receita : '.$receita;
   $aWherePagamento[] = " arrepaga.k00_receit = ".$receita;
@@ -192,29 +191,40 @@ if ( isset($conta) ) {
 
 if (isset($v70_sequencial)) {
 
-    $sInnerPagamento .= " inner join ( select distinct ";
-    $sInnerPagamento .= "                      case ";
-    $sInnerPagamento .= "                       when termo.v07_numpre is null";
-    $sInnerPagamento .= "                         then inicialnumpre.v59_numpre";
-    $sInnerPagamento .= "                       else termo.v07_numpre ";
-    $sInnerPagamento .= "                     end as numpre, ";
-    $sInnerPagamento .= "                     processoforoinicial.v71_processoforo ";
-    $sInnerPagamento .= "                from processoforoinicial";
-    $sInnerPagamento .= "                left join termoini      on inicial          = v71_inicial";
-    $sInnerPagamento .= "                left join termo         on termo.v07_parcel = termoini.parcel";
-    $sInnerPagamento .= "                                       and termo.v07_situacao = 1";
-    $sInnerPagamento .= "                left join inicialnumpre on inicialnumpre.v59_inicial = v71_inicial";
+    $sInnerPagamento .= " inner join ( select termo.v07_numpre  as numpre, v71_processoforo";
+    $sInnerPagamento .= "                from processoforoinicial ";
+    $sInnerPagamento .= "                left join termoini      on inicial          = v71_inicial ";
+    $sInnerPagamento .= "                left join termo         on termo.v07_parcel = termoini.parcel ";
+    $sInnerPagamento .= "                                       and termo.v07_situacao IN (1,2) ";
     $sInnerPagamento .= "               where processoforoinicial.v71_processoforo = {$v70_sequencial}
                                         union all
-                                        select distinct
-                                             abatimentorecibo.k127_numprerecibo,
-                                             processoforoinicial.v71_processoforo
+                                        select inicialnumpre.v59_numpre as numpre, v71_processoforo
                                         from processoforoinicial
-                                             inner join inicialnumpre on inicialnumpre.v59_inicial = processoforoinicial.v71_inicial
-                                             inner join arreckey on arreckey.k00_numpre = inicialnumpre.v59_numpre
-                                             inner join abatimentoarreckey on abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
-                                             inner join abatimentorecibo on abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
-                                       where processoforoinicial.v71_processoforo = {$v70_sequencial}
+                                          join inicialnumpre on inicialnumpre.v59_inicial = v71_inicial
+                                        where processoforoinicial.v71_processoforo = {$v70_sequencial}
+                                          UNION ALL
+                                        SELECT DISTINCT
+                                                abatimentorecibo.k127_numprerecibo as numpre,v71_processoforo
+                                          FROM processoforoinicial
+                                                INNER JOIN inicialnumpre ON inicialnumpre.v59_inicial = processoforoinicial.v71_inicial
+                                                INNER JOIN arreckey ON arreckey.k00_numpre = inicialnumpre.v59_numpre
+                                                INNER JOIN abatimentoarreckey ON abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
+                                                INNER JOIN abatimentorecibo ON abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
+                                        WHERE processoforoinicial.v71_processoforo = {$v70_sequencial}
+                                        union all
+                                          select
+                                             k127_numprerecibo as numpre,
+                                              v71_processoforo
+                                          from
+                                              processoforoinicial
+                                              left join termoini on inicial = v71_inicial
+                                              left join termo on termo.v07_parcel = termoini.parcel
+                                              and termo.v07_situacao in (1, 2)
+                                              inner join arreckey on termo.v07_numpre = arreckey.k00_numpre
+                                              inner join abatimentoarreckey on abatimentoarreckey.k128_arreckey = arreckey.k00_sequencial
+                                              inner join abatimentorecibo on abatimentorecibo.k127_abatimento = abatimentoarreckey.k128_abatimento
+                                          where
+                                          processoforoinicial.v71_processoforo = {$v70_sequencial}
     ";
     $sInnerPagamento .= "            ) as processoforo on processoforo.numpre = arrepaga.k00_numpre ";
 
@@ -261,7 +271,7 @@ $sSqlPagamentos .= "        end as divida                                       
 $sSqlPagamentos .= "     from arrepaga                                                                                                   ";
 $sSqlPagamentos .= "        {$sInnerPagamento}                                                                                           ";
 $sSqlPagamentos .= "        inner join arrenumcgm    on arrenumcgm.k00_numpre = arrepaga.k00_numpre                                      ";
-$sSqlPagamentos .= "        left  join arrematric    on arrematric.k00_numpre = arrepaga.k00_numpre                                     ";
+$sSqlPagamentos .= "        left  join arrematric    on arrematric.k00_numpre = arrepaga.k00_numpre                                      ";
 $sSqlPagamentos .= "        left  join arreinscr     on arreinscr.k00_numpre  = arrepaga.k00_numpre                                      ";
 $sSqlPagamentos .= "        left  join arrecant      on arrecant.k00_numpre   = arrepaga.k00_numpre                                      ";
 $sSqlPagamentos .= "                                and arrecant.k00_numpar   = arrepaga.k00_numpar                                      ";
@@ -275,12 +285,18 @@ $sSqlPagamentos .= "        inner join histcalc      on histcalc.k01_codigo   = 
 $sSqlPagamentos .= "        left  join arreidret     on arreidret.k00_numpre  = arrepaga.k00_numpre                                      ";
 $sSqlPagamentos .= "                                and arreidret.k00_numpar  = arrepaga.k00_numpar                                      ";
 $sSqlPagamentos .= "        left  join disbanco      on disbanco.idret        = arreidret.idret                                          ";
+if(isset($nl01_codlanc)){
+  $sSqlPagamentos .= "inner join arrelanc on arreinscr.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc = {$nl01_codlanc}";
+}
+if(isset($y50_codauto)){
+  $sSqlPagamentos .= "inner join arreauto on arreauto.k00_numpre = arrepaga.k00_numpre and arreauto.k00_auto = {$y50_codauto}";
+}
 $sSqlPagamentos .= "  where not exists ( select 1                                                                                        ";
 $sSqlPagamentos .= "                       from abatimentorecibo                                                                         ";
 $sSqlPagamentos .= "                            inner join abatimento on abatimento.k125_sequencial = abatimentorecibo.k127_abatimento   ";
 $sSqlPagamentos .= "                      where abatimentorecibo.k127_numprerecibo = arrepaga.k00_numpre                                 ";
-$sSqlPagamentos .= "                        and abatimento.k125_tipoabatimento     IN (1, 4)                                                   ";
-$sSqlPagamentos .= "                       limit 1 )                                                                                     
+$sSqlPagamentos .= "                        and abatimento.k125_tipoabatimento  = 1                                                   ";
+$sSqlPagamentos .= "                       limit 1 )
                             and not exists(
                               select 1 from abatimentoutilizacaodestino
                                 inner join abatimentoutilizacao on k157_sequencial = k170_utilizacao
@@ -360,10 +376,13 @@ $sSqlPagamentos .= "        coalesce( arreinscr.k00_perc,0)  as percinscr,      
 $sSqlPagamentos .= "        false as divida                                                                                              ";
 $sSqlPagamentos .= "   from abatimentorecibo                                                                                             ";
 $sSqlPagamentos .= "        inner join abatimento         on abatimento.k125_sequencial         = abatimentorecibo.k127_abatimento       ";
-$sSqlPagamentos .= "         left join abatimentodisbanco on abatimentodisbanco.k132_abatimento = abatimento.k125_sequencial             ";
-$sSqlPagamentos .= "         left join disbanco           on disbanco.idret                     = abatimentodisbanco.k132_idret          ";
+$sSqlPagamentos .= "        inner join abatimentodisbanco on abatimentodisbanco.k132_abatimento = abatimento.k125_sequencial             ";
+$sSqlPagamentos .= "        inner join disbanco           on disbanco.idret                     = abatimentodisbanco.k132_idret          ";
 $sSqlPagamentos .= "        inner join abatimentoarreckey on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial             ";
 $sSqlPagamentos .= "        inner join arreckey           on arreckey.k00_sequencial            = abatimentoarreckey.k128_arreckey       ";
+if(isset($y50_codauto)){
+    $sSqlPagamentos .= "inner join arreauto on arreauto.k00_numpre = arreckey.k00_numpre and arreauto.k00_auto = {$y50_codauto}";
+}
 $sSqlPagamentos .= "        inner join tabrec             on tabrec.k02_codigo                  = arreckey.k00_receit                    ";
 $sSqlPagamentos .= "        inner join histcalc           on histcalc.k01_codigo                = arreckey.k00_hist                      ";
 $sSqlPagamentos .= "        inner join arrenumcgm         on arrenumcgm.k00_numpre              = abatimentorecibo.k127_numprerecibo     ";
@@ -387,9 +406,10 @@ $sSqlPagamentos .= "        {$sWherePagamento}                                  
 $sSqlPagamentos .= " order by efetpagto,                                                                                                 ";
 $sSqlPagamentos .= "        k00_numpre,                                                                                                  ";
 $sSqlPagamentos .= "        k00_numpar                                                                                                   ";
-// die($sSqlPagamentos);
+
 $rsPagamentos    = db_query($sSqlPagamentos);
 $aPagamentos     = db_utils::getCollectionByRecord($rsPagamentos);
+
 
 $pdf = new PDF();
 $pdf->Open();
@@ -412,12 +432,12 @@ $pdf->SetFont('Arial', 'B', 8);
 $pdf->Cell(35, 5, "ENDEREÇO"                                 ,  0, 0, "R", 0);
 $pdf->SetFont('Arial', 'I', 8);
 $pdf->Cell(80, 5, ': ' . $ender                          ,  0, 1, "L", 0);
-if(isset($refant)) { 
-  
+if(isset($refant)) {
+
   $pdf->SetFont('Arial', 'B', 8);
   $pdf->Cell(35, 5, $labelrefant                                 ,  0, 0, "R", 0);
   $pdf->SetFont('Arial', 'I', 8);
-  $pdf->Cell(80, 5, ': ' . $refant                          ,  0, 1, "L", 0); 
+  $pdf->Cell(80, 5, ': ' . $refant                          ,  0, 1, "L", 0);
 }
 
 $pdf->Cell(270, 2, ''                                         ,"B", 1, "R", 0);
@@ -471,7 +491,7 @@ foreach ($aPagamentos as $oPagamento) {
      $pdf->SetFont('Arial','B',8);
      $pdf->Cell(0,21,'',"TB",0,'C');
 
-     $pdf->Text($X     ,$Y + 12,"Endereo : ");
+     $pdf->Text($X     ,$Y + 12,"Endereço : ");
      $pdf->Text($X     ,$Y +  8,$nome);
      $pdf->Text($X + 16,$Y + 12,$ender);
 
@@ -503,7 +523,7 @@ foreach ($aPagamentos as $oPagamento) {
 
     $sBuscaParcelamentos = "select v07_parcel from divida.termo where v07_numpre = " . $oPagamento->k00_numpre;
     $rsBuscaParcelamentos = db_query($sBuscaParcelamentos);
-    if ( pg_numrows($rsBuscaParcelamentos) > 0 ) {
+    if ( pg_num_rows($rsBuscaParcelamentos) > 0 ) {
       $oBuscaPagamentos = db_utils::getCollectionByRecord($rsBuscaParcelamentos);
       $aParcelamentos[] = $oPagamento->k00_numpre;
     }
@@ -534,8 +554,8 @@ foreach ($aPagamentos as $oPagamento) {
     (float)$perc = (float)100;
   }
 
-  $iCountMatric = @pg_result(db_query("select coalesce(count(*),0) from arrematric where k00_numpre = $oPagamento->k00_numpre"),0,0);
-  $iCountInscr  = @pg_result(db_query("select coalesce(count(*),0) from arreinscr  where k00_numpre = $oPagamento->k00_numpre"),0,0);
+  $iCountMatric = @pg_fetch_result(db_query("select coalesce(count(*),0) from arrematric where k00_numpre = $oPagamento->k00_numpre"),0,0);
+  $iCountInscr  = @pg_fetch_result(db_query("select coalesce(count(*),0) from arreinscr  where k00_numpre = $oPagamento->k00_numpre"),0,0);
 
   $oPagamento->k00_valor = $oPagamento->k00_valor *-1;
 
@@ -551,7 +571,6 @@ foreach ($aPagamentos as $oPagamento) {
   $pdf->Cell(10,04,$oPagamento->k00_conta                   ,0,0,"C",0);
   $pdf->Cell(12,04,db_formatar($oPagamento->k00_dtpaga,'d') ,0,0,"C",0);
   $pdf->Cell(15,04,db_formatar($oPagamento->efetpagto ,'d') ,0,1,"C",0);
-
   /**
    * Caso a consulta tenha sido pelo CGM, agrupamos por numpre_numpar_receit_hist (e inscr caso exista)
    * Seno, apenas soma os valores
@@ -566,6 +585,8 @@ foreach ($aPagamentos as $oPagamento) {
 
     if ( !array_key_exists( $iIndice, $aTotal ) ) {
       $aTotal[$iIndice] = $oPagamento->k00_valor;
+    } else {
+      $aTotal[$iIndice] += $oPagamento->k00_valor;
     }
   } else {
 
@@ -588,27 +609,14 @@ $pdf->cell(35,4,'',1,1,"C",0);
 $pdf->Ln(3);
 
 if ( sizeof($aParcelamentos) > 0 ) {
-  
-  if ($pdf->getAvailHeight() <= 11) {
-    $pdf->AddPage('L');
-    $pdf->SetFont('Arial','B',6);
-    $pdf->cell(130, 04, "Origem dos parcelamentos",1,1,"L");
-    $pdf->cell(20,04, "Numpre"             ,1,0,"L",0);
-    $pdf->cell(20,04, "Parcelamento"       ,1,0,"L",0);
-    $pdf->cell(50,04, "Anos"               ,1,0,"L",0);
-    $pdf->cell(40,04, "Ocorrência"               ,1,0,"L",0);
-    $pdf->ln();
-    $pdf->SetFont('Arial','',6);
-  } else {  
-    $pdf->SetFont('Arial','B',6);
-    $pdf->cell(130, 04, "Origem dos parcelamentos",1,1,"L");
-    $pdf->cell(20,04, "Numpre"             ,1,0,"L",0);
-    $pdf->cell(20,04, "Parcelamento"       ,1,0,"L",0);
-    $pdf->cell(50,04, "Anos"               ,1,0,"L",0);
-    $pdf->cell(40,04, "Ocorrência"               ,1,0,"L",0);
-    $pdf->ln();
-    $pdf->SetFont('Arial','',6);
-  }  
+
+  $pdf->SetFont('Arial','B',6);
+  $pdf->cell(100, 04, "Origem dos parcelamentos",1,1,"L");
+  $pdf->cell(20,04, "Numpre"             ,1,0,"L",0);
+  $pdf->cell(20,04, "Parcelamento"       ,1,0,"L",0);
+  $pdf->cell(60,04, "Anos"               ,1,0,"L",0);
+  $pdf->ln();
+  $pdf->SetFont('Arial','',6);
 
   for ( $iParcelamento = 0; $iParcelamento < sizeof($aParcelamentos); $iParcelamento++ ) {
     $iNumpreParcelamento = $aParcelamentos[$iParcelamento];
@@ -648,20 +656,20 @@ if ( sizeof($aParcelamentos) > 0 ) {
                 group by
                   termo.v07_parcel ";
     $sAnos .= " union ";
-    $sAnos .= " select distinct 
+    $sAnos .= " select distinct
                   v07_parcel,
                   EXTRACT(YEAR FROM v07_dtlanc)::text as exerc,
                   3 as motivo
-                from 
+                from
                   fc_origemparcelamento_agrupa(( $iNumpreParcelamento )) as x
-                inner join termo      on 
+                inner join termo      on
                   termo.v07_parcel      = x.riparcel
                 where
-                  rireparc = ( select 
+                  rireparc = ( select
                                   v07_parcel
-                                from 
+                                from
                                   termo
-                                where 
+                                where
                                   v07_numpre = {$iNumpreParcelamento} )";
     $sAnos .= " union ";
     $sAnos .= " select distinct
@@ -672,36 +680,54 @@ if ( sizeof($aParcelamentos) > 0 ) {
                   divida.termoanu
                 inner join divida.termo on
                   v07_parcel = v09_parcel
-                inner join caixa.arrepaga on 
+                inner join caixa.arrepaga on
                   k00_numpre = v07_numpre
                 where
                   k00_numpre = {$iNumpreParcelamento}";
+    $sAnos .= " union ";
+    $sAnos .= " select distinct
+                  v07_parcel,
+		              array_to_string( array_accum(distinct dv05_exerc), ', ' ) as exerc,
+                  5 as motivo
+                from
+                  divida.termo
+                inner join divida.termodiver on
+                  dv10_parcel = v07_parcel
+                inner join diversos on
+                  dv10_coddiver = dv05_coddiver
+                where
+                  v07_numpre = {$iNumpreParcelamento} and v07_situacao != 2
+                group by
+		              termo.v07_parcel";
     $sAnos  = " select * from ( $sAnos ) as x where trim(exerc) <> '' order by exerc asc";
     $rsAnos = db_query($sAnos);
-    
-    if ( pg_numrows( $rsAnos ) > 0 ) {
+
+    if ( pg_num_rows( $rsAnos ) > 0 ) {
 
       for ($i = 0; $i < pg_num_rows($rsAnos); $i++) {
 
         $oAnos = db_utils::fieldsMemory($rsAnos, $i);
         switch ($oAnos->motivo) {
-          case 1: 
+          case 1:
             $oAnos->motivo = 'Parcelamento inscrito em dvida ativa';
             break;
-          case 2: 
+          case 2:
             $oAnos->motivo = 'Parcelamento de iniciais';
             break;
-          case 3: 
+          case 3:
             $oAnos->motivo = 'Reparcelamento';
             break;
-          case 4: 
+          case 4:
             $oAnos->motivo = 'Parcelamento anulado';
-            break;          
+            break;
+          case 5:
+            $oAnos->motivo = 'Parcelamento Diversos/Cob Administrativa';
+            break;
         }
 
         /**
        * Cria outra linha caso o número de inscrições seja maior que o tamanho da célula
-       */ 
+       */
 
         if($pdf->GetStringWidth($oAnos->exerc) > 50){
           $y = $pdf->y;
@@ -714,15 +740,15 @@ if ( sizeof($aParcelamentos) > 0 ) {
           $pdf->setX(100);
           $pdf->Cell(40,04, $oAnos->motivo    ,0,0,"L",0);
           $pdf->setY($ym);
-        
+
         } else {
 
           $pdf->cell(20,04, $iNumpreParcelamento ,0,0,"L",0);
           $pdf->cell(20,04, $oAnos->v07_parcel   ,0,0,"L",0);
           $pdf->cell(50,04, $oAnos->exerc    ,0,0,"L",0);
           $pdf->cell(40,04, $oAnos->motivo    ,0,0,"L",0);
-          $pdf->ln();  
-    
+          $pdf->ln();
+
         }
       }
     }
@@ -737,7 +763,7 @@ if ( sizeof($aParcelamentos) > 0 ) {
 
 
 if ( isset($v70_sequencial) ) {
-  $oDaoProcessoForoPartilhaCusta = db_utils::getDao("processoforopartilhacusta");
+  $oDaoProcessoForoPartilhaCusta = new cl_processoforopartilhacusta;
 
   $nTotalTaxas = 0;
 
@@ -809,7 +835,7 @@ if ($oDaoProcessoForoPartilhaCusta->numrows > 0) {
 
     $pdf->setx(5);
     $pdf->SetFont('Arial','B',6);
-    $pdf->cell(73, 4,  "Observao : ",1,0,"L");
+    $pdf->cell(73, 4,  "Observação : ",1,0,"L");
 
     $pdf->setY($pdf->GetY()+4);
     $pdf->setx(5);

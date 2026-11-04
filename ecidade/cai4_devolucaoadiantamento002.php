@@ -182,7 +182,7 @@ db_app::load("dbtextFieldData.widget.js");
 
         <tr>
           <td width="10%">
-            <strong><?db_ancora("Receita:","js_pesquisaTipoReceita(true)",$db_opcao);?> </strong>
+            <strong><?php db_ancora("Receita:","js_pesquisaTipoReceita(true)",$db_opcao);?> </strong>
           </td>
           <td>
             <?php db_input('iReceita', 10, null, true, 'text', $db_opcao, "onchange='js_pesquisaTipoReceita(false);'"); ?>

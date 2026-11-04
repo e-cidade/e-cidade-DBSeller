@@ -7,7 +7,7 @@
  */
 function db_numero_to_palavra($iNumero, $array_row = null) {
   
-  $nValor = ereg_replace(",", "\.", $iNumero);
+  $nValor = preg_replace(",", "\.", $iNumero);
 
   $zeros = '000.000.000,00';
   $nValor = number_format($nValor,2);

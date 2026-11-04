@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,6 +36,14 @@ $clrotulo->label('j01_matric');
 $clrotulo->label('q02_inscr');
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('z01_nome');
+
+$ar23_tipo = isset($ar23_tipo) ? (int)$ar23_tipo : 2;
+  
+if ($ar23_tipo == 2) {
+	$db_botao = true;
+} else {
+	$db_botao = false;
+}
 ?>
 
 <form name="form1" method="post" action="">
@@ -49,13 +57,13 @@ if((isset($z01_numcgm)) and ($z01_numcgm != '')) {
 	<tr>
 		<td align="left" valign="top" bgcolor="#CCCCCC"><?=$Lz01_nome?></td>
 		<td>
-		<?
+		<?php
 		  db_input("z01_numcgm", 10, $Iz01_numcgm, true, 'text', 3, " onchange='js_mostranomes(false);'");
 		  db_input("z01_nome", 40, $Iz01_nome, true, 'text', 3);
 		?>
 		</td>
 	</tr>
-	<?
+	<?php
 }
 //gerar historico por matricula
 else if((isset($j01_matric)) and ($j01_matric != '')){
@@ -63,45 +71,45 @@ else if((isset($j01_matric)) and ($j01_matric != '')){
 	<tr>
 		<td title="<?=$Tj01_matric?>"><?=$Lj01_matric?></td>
 		<td>
-		<?
+		<?php
   		db_input("j01_matric", 10, $Ij01_matric, true, 'text', 3);
   		db_input("z01_nome", 40, $Iz01_nome, true, 'text', 3);
 		?>
 		</td>
 	</tr>
-	<?
+	<?php
 }
 else if((isset($q02_inscr)) && ($q02_inscr != '')) {
   ?>
 	<tr>
 		<td><?=$Lq02_inscr?></td>
 		<td>
-		<?
+		<?php
 		  db_input('q02_inscr', 10, $Iq02_inscr,true,'text',3,"onchange='js_inscr(false)'");
 		  db_input("z01_nome", 40, $Iz01_nome, true, 'text', 3);
 		?>
 		</td>
 	</tr>
-	<?
+	<?php
 }
   if($db_opcao != 1) {?>
     <tr>
       <td nowrap title="<?=@$Tar23_sequencial?>"><?=@$Lar23_sequencial?></td>
       <td>
-        <?
+        <?php
           db_input('ar23_sequencial',10,$Iar23_sequencial,true,'text',3," readonly = \"readonly\"");
         ?>
       </td>
       </tr>
 		<tr>
-	<?
+	<?php
 	}
 	?>
 
 	<tr>
 		<td nowrap title="<?=@$Tar23_data?>"><?=@$Lar23_data?></td>
 		<td>
-		<?
+		<?php
 		  db_inputdata('ar23_data',@$ar23_data_dia,@$ar23_data_mes,@$ar23_data_ano,true,'text',3,"");
 		?>
 		</td>
@@ -109,7 +117,7 @@ else if((isset($q02_inscr)) && ($q02_inscr != '')) {
 	<tr>
 		<td nowrap title="<?=@$Tar23_hora?>"><?=@$Lar23_hora?></td>
 		<td>
-		<?
+		<?php
 		  db_input('ar23_hora',10,$Iar23_hora,true,'text',3,"");
 		?>
 		</td>
@@ -118,9 +126,8 @@ else if((isset($q02_inscr)) && ($q02_inscr != '')) {
 		<td nowrap title="<?=@$Tar23_tipo?>"><?=@$Lar23_tipo?></td>
 		<td>
 		<?php
-		  $ar23_tipo = 1;
 		  db_input('ar23_tipo', 10, $Iar23_tipo, true, 'hidden', 3);
-		  $ar23_tipo_nome = "Manual";
+		  $ar23_tipo_nome = $ar23_tipo == 2 ? "Manual" : 'Automático';
 		  db_input('ar23_tipo_nome', 10, 1, true, 'text', 3);
 		?>
 		</td>
@@ -128,7 +135,7 @@ else if((isset($q02_inscr)) && ($q02_inscr != '')) {
 	<tr>
 		<td nowrap title="<?=@$Tar23_descricao?>"><?=@$Lar23_descricao?></td>
 		<td>
-		<?
+		<?php
 		  db_input('ar23_descricao',54,$Iar23_descricao,true,'text',$db_opcao,"");
 		?>
 		</td>
@@ -136,7 +143,7 @@ else if((isset($q02_inscr)) && ($q02_inscr != '')) {
 	<tr>
 		<td nowrap title="<?=@$Tar23_ocorrencia?>"><?=@$Lar23_ocorrencia?></td>
 		<td>
-		<?
+		<?php
 		  db_textarea('ar23_ocorrencia',10,52,$Iar23_ocorrencia,true,'text',$db_opcao,"");
 		?>
 		</td>
@@ -145,14 +152,14 @@ else if((isset($q02_inscr)) && ($q02_inscr != '')) {
 </center>
 
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"	<?=($db_botao==false?"disabled":"")?>>
-<?
+<?php
   if($db_opcao != 1){ ?>
 	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-<?}
+<?php }
   if (db_permissaomenu(db_getsession("DB_anousu"), db_getsession("DB_modulo"),7929) =='true'){
 ?>
 	<input name="novo" type="button" id="novo" value="Novo" onclick="return js_voltar()">
-<?
+<?php
   }
 ?>
 </form>
@@ -168,7 +175,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
 	db_iframe_histocorrencia.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
@@ -177,7 +184,7 @@ function js_preenchepesquisa(chave){
 
 function js_preenchepesquisaCGM(chave, chave2){
 	db_iframe_histocorrencia.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=cgm&chavepesquisa='+chave+'&idchave='+chave2";
     }
@@ -186,7 +193,7 @@ function js_preenchepesquisaCGM(chave, chave2){
 
 function js_preenchepesquisaMatric(chave, chave2){
 	db_iframe_histocorrencia.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=matric&chavepesquisa='+chave+'&idchave='+chave2";
     }
@@ -195,7 +202,7 @@ function js_preenchepesquisaMatric(chave, chave2){
 
 function js_preenchepesquisaInscr(chave, chave2){
 	db_iframe_histocorrencia.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=inscr&chavepesquisa='+chave+'&idchave='+chave2";
     }

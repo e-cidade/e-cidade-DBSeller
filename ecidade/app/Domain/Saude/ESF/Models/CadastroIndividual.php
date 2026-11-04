@@ -134,11 +134,11 @@ class CadastroIndividual extends Model
     protected $primaryKey = 'psf5_id';
 
     protected $casts = [
-        'psf5_profissional_data' => 'DateTime',
-        'psf5_nascimento_responsavel' => 'DateTime',
-        'psf5_data_naturalizacao' => 'DateTime',
-        'psf5_data_entrada' => 'DateTime',
-        'psf5_data_obito' => 'DateTime'
+        'psf5_profissional_data' => 'datetime',
+        'psf5_nascimento_responsavel' => 'datetime',
+        'psf5_data_naturalizacao' => 'datetime',
+        'psf5_data_entrada' => 'datetime',
+        'psf5_data_obito' => 'datetime'
     ];
 
     /**

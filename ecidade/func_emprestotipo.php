@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clemprestotipo->rotulo->label("e90_descr");
               <?=$Le90_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e90_codigo",10,$Ie90_codigo,true,"text",4,"","chave_e90_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clemprestotipo->rotulo->label("e90_descr");
               <?=$Le90_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e90_descr",70,$Ie90_descr,true,"text",4,"","chave_e90_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clemprestotipo->rotulo->label("e90_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emprestotipo.php")==true){
@@ -122,12 +122,12 @@ $clemprestotipo->rotulo->label("e90_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

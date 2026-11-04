@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,32 +42,35 @@ $clrotulo->label("o56_elemento");
 <table border="0">
   <tr>
       <td nowrap title="<?=@$Te56_autori?>"><?=@$Le56_autori?></td>
-      <td><? db_input('e56_autori',8,$Ie56_autori,true,'text',3); ?> </td>
+      <td><?php db_input('e56_autori',8,$Ie56_autori,true,'text',3); ?> </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$Te56_anousu?>"><?=$Le56_anousu?></td>
-      <td><?  if(empty($e56_anousu)){
+      <td><?php if(empty($e56_anousu)){
                $e56_anousu = db_getsession('DB_anousu');
              }
              db_input('e56_anousu',4,$Ie56_anousu,true,'text',3);
           ?></td>
       </tr>
   <tr>
-      <td nowrap title="<?=@$To47_coddot?>"> <? db_ancora(@$Lo47_coddot,"js_pesquisao47_coddot(true);",$db_opcao); ?> </td>
-      <td><? db_input('o47_coddot',8,$Io47_coddot,true,'text',$db_opcao,"onchange='js_dot();'"); ?> </td>
+      <td nowrap title="<?=@$To47_coddot?>"> <?php db_ancora(@$Lo47_coddot,"js_pesquisao47_coddot(true);",$db_opcao); ?> </td>
+      <td><?php db_input('o47_coddot',8,$Io47_coddot,true,'text',$db_opcao,"onchange='js_dot();'"); ?> </td>
       <td> &nbsp;  </td>
       <td> &nbsp;  </td>
       <td> &nbsp;  </td>
       <td> &nbsp;  </td>
       </tr>
 
-     <?    /* busca dados da dotação  */
+    <?php /* busca dados da dotação  */
      if((isset($o47_coddot) && !$o47_coddot== "") && empty($confirmar) && empty($cancelar)){
           $instit=db_getsession('DB_instit');
+          $anousu=db_getsession("DB_anousu");
           $clorcdotacao->sql_record($clorcdotacao->sql_query_file("","","*","","o58_coddot=$o47_coddot and o58_instit=$instit"));
           if($clorcdotacao->numrows >0){
-              $result= db_dotacaosaldo(8,2,2,"true","o58_coddot=$o47_coddot" ,db_getsession("DB_anousu")) ;
-	      $rnum = pg_numrows($result);
+              $resdotsql= db_dotacaosaldo(8,2,2,"true","o58_coddot=$o47_coddot" ,$anousu,null,null,8,0,true);
+              $sql = "select x.*,fonterecurso.gestao,fonterecurso.descricao from ($resdotsql) as x join fonterecurso on orctiporec_id = o58_codigo and exercicio = $anousu";
+              $result = db_query($sql);
+	          $rnum = pg_numrows($result);
 	      if ($rnum > 0 ){
                   db_fieldsmemory($result,0);
 	          $atual=number_format($atual,2,",",".");
@@ -81,45 +84,45 @@ $clrotulo->label("o56_elemento");
       ?>
   <tr>
       <td nowrap title="<?=@$To58_orgao ?>"><?=@$Lo58_orgao ?> </td>
-      <td><? db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?> </td>
-      <td colspan=3><? db_input('o40_descr',50,"",true,'text',3,"");  ?> </td>
+      <td><?php db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?> </td>
+      <td colspan=3><?php db_input('o40_descr',50,"",true,'text',3,"");  ?> </td>
       <td> </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_unidade ?>"><?=@$Lo58_unidade ?> </td>
-      <td><? db_input('o58_unidade',8,"",true,'text',3,"");  ?> </td>
-      <td colspan=3 ><? db_input('o41_descr',50,"",true,'text',3,"");  ?>  </td>
+      <td><?php db_input('o58_unidade',8,"",true,'text',3,"");  ?> </td>
+      <td colspan=3 ><?php db_input('o41_descr',50,"",true,'text',3,"");  ?>  </td>
       <td>  </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_funcao ?>"><?=@$Lo58_funcao ?> </td>
-      <td> <? db_input('o58_funcao',8,"",true,'text',3,"");  ?> </td>
-      <td> <? db_input('o52_descr',50,"",true,'text',3,"");  ?>  </td>
+      <td> <?php db_input('o58_funcao',8,"",true,'text',3,"");  ?> </td>
+      <td> <?php db_input('o52_descr',50,"",true,'text',3,"");  ?>  </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_subfuncao ?>" ><?=@$Lo58_subfuncao ?> </td>
-      <td> <? db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>  </td>
-      <td><? db_input('o53_descr',50,"",true,'text',3,"");  ?></td>
+      <td> <?php db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>  </td>
+      <td><?php db_input('o53_descr',50,"",true,'text',3,"");  ?></td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_programa ?>"    ><?=@$Lo58_programa ?> </td>
-      <td><? db_input('o58_programa',8,"",true,'text',3,"");  ?> </td>
-      <td><? db_input('o54_descr',50,"",true,'text',3,"");  ?>       </td>
+      <td><?php db_input('o58_programa',8,"",true,'text',3,"");  ?> </td>
+      <td><?php db_input('o54_descr',50,"",true,'text',3,"");  ?>       </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_projativ ?>"><?=@$Lo58_projativ ?> </td>
-      <td><? db_input('o58_projativ',8,"",true,'text',3,"");  ?> </td>
-      <td><? db_input('o55_descr',50,"",true,'text',3,"");  ?>    </td>
+      <td><?php db_input('o58_projativ',8,"",true,'text',3,"");  ?> </td>
+      <td><?php db_input('o55_descr',50,"",true,'text',3,"");  ?>    </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To56_elemento ?>" ><?=@$Lo56_elemento ?> </td>
-      <td> <? db_input('o58_elemento',8,"",true,'text',3,"");  ?>  </td>
-      <td> <? db_input('o56_descr',50,"",true,'text',3,"");  ?>       </td>
+      <td> <?php db_input('o58_elemento',8,"",true,'text',3,"");  ?>  </td>
+      <td> <?php db_input('o56_descr',50,"",true,'text',3,"");  ?>       </td>
       </tr>
   <tr>
       <td nowrap title="<?=@$To58_codigo ?>" ><?=@$Lo58_codigo ?> </td>
-      <td> <? db_input('o58_codigo',8,"",true,'text',3,"");  ?> </td>
-      <td> <? db_input('o15_descr',50,"",true,'text',3,"");  ?> </td>
+      <td> <?php db_input('gestao',8,"",true,'text',3,"");  ?> </td>
+      <td> <?php db_input('descricao',50,"",true,'text',3,"");  ?> </td>
       </tr>
   <tr>
       <td>&nbsp;</td>
@@ -127,18 +130,18 @@ $clrotulo->label("o56_elemento");
               <table>
 	         <tr>
 		   <td>Saldo da dotação:</td>
-		   <td><? db_input('atual',13,"",true,'text',3,""); ?></td>
+		   <td><?php db_input('atual',13,"",true,'text',3,""); ?></td>
 		 </tr>
 		   <td>Valor reservado:</td>
-		   <td>  <? db_input('reservado',13,"",true,'text',3,""); ?></td>
+		   <td>  <?php db_input('reservado',13,"",true,'text',3,""); ?></td>
 		</tr>
 		<tr>
 		   <td>Valor disponível: </td>
-		   <td><? db_input('atudo',13,"",true,'text',3,"");?></td>
+		   <td><?php db_input('atudo',13,"",true,'text',3,"");?></td>
 		</tr>
 		<tr>
 		   <td><?=$RLe54_valor?></td>
-		   <?
+            <?php
 		     $result = $clempautitem->sql_record($clempautitem->sql_query_file($e56_autori,null,"sum(e55_vltot) as e54_valor"));
 		     if ($clempautitem->numrows > 0 ) {
 		         db_fieldsmemory($result,0);
@@ -149,7 +152,7 @@ $clrotulo->label("o56_elemento");
 		            $e54_valor=number_format($e54_valor,2,",",".");
 		     }
 		   ?>
-	        <td><? db_input('e54_valor',13,"",true,'text',3,""); ?></td>
+	        <td><?php db_input('e54_valor',13,"",true,'text',3,""); ?></td>
   	       </tr>
 	      </table>
       </td>

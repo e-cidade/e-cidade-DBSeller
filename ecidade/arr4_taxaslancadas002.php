@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -75,7 +75,7 @@ $clIframeSeleciona->iframe_nome   ="ifr_departamentos";
                 <input name="salvar" id="salvar" type="button" onclick="js_salvarDepartamentos();" value="Salvar">
             </form>
         </div>
-        <? db_menu(); ?>
+        <?php db_menu(); ?>
     </body>
 </html>
 <script>

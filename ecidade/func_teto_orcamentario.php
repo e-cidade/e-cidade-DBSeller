@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,7 +24,7 @@ $clteto_orcamentario->rotulo->label("c40_sequencial");
         <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
             <tr>
                 <td><label><?= $Lc40_sequencial ?></label></td>
-                <td><? db_input("c40_sequencial", 10, $Ic40_sequencial, true, "text", 4, "",
+                <td><?php db_input("c40_sequencial", 10, $Ic40_sequencial, true, "text", 4, "",
                         "chave_c40_sequencial"); ?></td>
             </tr>
         </table>
@@ -33,7 +33,7 @@ $clteto_orcamentario->rotulo->label("c40_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar">
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_teto_orcamentario.hide();">
 </form>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     if (isset($campos) == false) {
         if (file_exists("funcoes/db_func_teto_orcamentario.php") == true) {
@@ -81,12 +81,12 @@ if (!isset($pesquisa_chave)) {
 ?>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
     </script>
-    <?
+    <?php
 }
 ?>
 <script>

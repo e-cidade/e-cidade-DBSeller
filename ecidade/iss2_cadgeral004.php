@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ function js_nome(obj){
 				<table align="center">
 					<tr >
 						<td colspan=2 >
-							<?
+							<?php
 								$cliframe_seleciona->campos  = "j13_codi,j13_descr";
 								$cliframe_seleciona->legenda="Bairro da Inscrição";
 								$cliframe_seleciona->sql=$clissbairro->sql_query("","distinct j13_codi, j13_descr","j13_codi, j13_descr","");

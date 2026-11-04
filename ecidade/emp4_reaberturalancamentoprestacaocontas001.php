@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $oEmpPresta->label();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, prototype.js, strings.js");
 db_app::load("estilos.css");
 ?>
@@ -61,6 +61,7 @@ db_app::load("estilos.css");
           <td nowrap="nowrap">
             <?php
               db_input('e45_sequencial', 10, $Ie45_sequencial, true, 'hidden', 3);
+              db_input('e82_codord', 10, "", true, 'text', 3);
             ?>
           </td>
         </tr>
@@ -109,7 +110,7 @@ db_app::load("estilos.css");
     <input type="button" id='btnProcessar' name='btnProcessar' value='Processar'>
   </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -125,9 +126,9 @@ var sRpc = "emp4_suprimentoFundos.RPC.php";
  */
 function js_pesquisa() {
 
-  var sUrl  = 'func_emppresta.php?';
+  var sUrl  = 'func_emppresta_reabertura.php?';
   sUrl     += 'fechamento=null&acertoPrestacaoContas=notnull&exibeMovimento=1'; 
-  sUrl     += '&funcao_js=parent.js_preenchePesquisa|e45_sequencial|e60_numemp|e45_codmov|z01_nome|e45_acerta';
+  sUrl     += '&funcao_js=parent.js_preenchePesquisa|e45_sequencial|e60_numemp|e45_codmov|z01_nome|e45_acerta|e82_codord';
     
   js_OpenJanelaIframe('',
                       'db_iframe_emppresta',
@@ -135,10 +136,11 @@ function js_pesquisa() {
                       'Pesquisa',true);
 }
 
-function js_preenchePesquisa(iSequencial, iNumeroEmpenho, iCodigoMovimento, sCredor, dtAcertoPrestacaoContas) {
+function js_preenchePesquisa(iSequencial, iNumeroEmpenho, iCodigoMovimento, sCredor, dtAcertoPrestacaoContas, e82_codord) {
   
   db_iframe_emppresta.hide();
   $('e45_sequencial').value = iSequencial;
+  $('e82_codord').value = e82_codord;
   $('e45_numemp').value     = iNumeroEmpenho;
   $('e45_codmov').value     = iCodigoMovimento;
   $('credor').value         = sCredor;
@@ -155,6 +157,7 @@ $('btnProcessar').observe('click', function() {
   var oObject            = new Object();
   oObject.exec           = "reaberturaPrestacaoConta";
   oObject.iSequencialEmpenho = $F('e45_sequencial');
+  oObject.op = $F('e82_codord');
   
   js_divCarregando('Processando Reabertura...','msgBox');
   var objAjax   = new Ajax.Request (sRpc,{

@@ -51,7 +51,7 @@ class cl_avaliacaogruporespostaafastamentoesocial extends DAOBasica
      * @param array $where
      * @return string
      */
-    public function sql_avaliacao_afastamentos($instituicao, array $where, $ano = null, $mes = null)
+    public function sql_avaliacao_afastamentos($instituicao, array $where, $ano = null, $mes = null, $cgmEmpregador = null)
     {
         $where = implode(' AND ', $where);
 
@@ -66,7 +66,7 @@ class cl_avaliacaogruporespostaafastamentoesocial extends DAOBasica
         }
 
         $sql = "
-            SELECT 
+            SELECT
                preenchimento.preenchimento,
                preenchimento.identificador,
                preenchimento.matricula,
@@ -74,38 +74,39 @@ class cl_avaliacaogruporespostaafastamentoesocial extends DAOBasica
                data_inicial,
                data_retorno
             FROM (
-                SELECT DISTINCT 
+                SELECT DISTINCT
                     db107_sequencial AS preenchimento,
                     eso12_assenta AS identificador,
                     eso12_rhpessoal AS matricula,
                     avaliacaopergunta.db103_descricao,
-                    (SELECT 
+                    (SELECT
                         avaliacaoresposta.db106_resposta
-                    FROM 
+                    FROM
                         avaliacaopergunta ap
                         JOIN avaliacaoperguntaopcao apo ON apo.db104_avaliacaopergunta = ap.db103_sequencial
                         JOIN avaliacaoresposta AS ar ON ar.db106_avaliacaoperguntaopcao = apo.db104_sequencial
-                    WHERE 
+                    WHERE
                         db104_identificadorcampo = 'codMotAfast'
                         AND ar.db106_sequencial = avaliacaoresposta.db106_sequencial
                     ) AS mtv,
                     h16_dtconc AS data_inicial,
                     h16_dtterm AS data_retorno,
                     z01_cgccpf AS inscricao_empregador
-                FROM 
+                FROM
                     avaliacaogruporespostaafastamentoesocial
                     JOIN afastamentoservidoresocial ON eso12_sequencial = eso13_afastamentoservidoresocial
                     JOIN assenta ON eso12_assenta = h16_codigo
+                    JOIN rhpessoal ON rh01_regist = h16_regist
                     JOIN avaliacaogruporesposta ON db107_sequencial = eso13_avaliacaogruporesposta
                     JOIN avaliacaogrupoperguntaresposta ON db108_avaliacaogruporesposta = db107_sequencial
                     JOIN avaliacaoresposta ON db106_sequencial = db108_avaliacaoresposta
                     JOIN avaliacaoperguntaopcao ON db104_sequencial = db106_avaliacaoperguntaopcao
                     JOIN avaliacaopergunta ON db103_sequencial = db104_avaliacaopergunta
-                    JOIN cgm ON z01_numcgm = eso13_empregador
+                    JOIN cgm ON z01_numcgm = {$cgmEmpregador}
                 WHERE {$where}
                 ORDER BY db103_descricao
             ) AS preenchimento
-            WHERE            
+            WHERE
                 mtv is not null
                 AND (
                     extract(MONTH FROM data_inicial) = {$mesFolha}
@@ -114,7 +115,7 @@ class cl_avaliacaogruporespostaafastamentoesocial extends DAOBasica
                     data_retorno is not null
                     AND  extract(month from data_retorno) = {$mesFolha}
                     AND extract(year from data_retorno) = {$anoFolha}
-                ) 
+                )
             order by matricula asc, data_inicial asc;
         ";
         return $sql;

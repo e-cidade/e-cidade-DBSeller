@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,10 +51,10 @@ if ($codigo!="") {
        <?=@$Lj54_idbql?>
 	</td>
     <td> 
-<?
+<?php
 db_input('j54_idbql',4,$Ij54_idbql,true,'text',$db_opcao," onchange='js_pesquisaj54_idbql(false);'")
 ?>
-       <?
+       <?php
 db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
        ?>
     <td>
@@ -64,10 +64,10 @@ db_input('j34_setor',4,$Ij34_setor,true,'text',3,'')
       <?=@$Lj54_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_codigo',4,$Ij54_codigo,true,'text',$db_opcao," onchange='js_pesquisaj54_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     <td>
@@ -77,7 +77,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lj54_distan?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_distan',15,$Ij54_distan,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -87,7 +87,7 @@ db_input('j54_distan',15,$Ij54_distan,true,'text',$db_opcao,"")
        <?=@$Lj54_ponto?>
     </td>
     <td> 
-<?
+<?php
 db_input('j54_ponto',10,$Ij54_ponto,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -163,7 +163,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

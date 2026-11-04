@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,12 +86,12 @@ try{
               <a id="procurarMatricula"><?php echo $Lrh01_regist; ?></a>
             </td>
             <td>
-              <?
+              <?php
                 db_input('rh01_regist', 10, '', true, 'text', 1, "");
               ?>
             </td>
             <td title="<?php echo $Tz01_nome?>">
-              <?
+              <?php
                 db_input('z01_nome', 50, '', true, 'text', 3, "");
               ?>
             </td>
@@ -101,7 +101,7 @@ try{
               <?php echo $Lrh164_datainicio; ?>
             </td>
             <td colspan="2">
-              <?
+              <?php
                 db_inputdata('rh164_datainicio', @$rh164_datainicio_dia, @$rh164_datainicio_mes, @$rh164_datainicio_ano, true, 'text', 2, "");
               ?>
             </td>
@@ -111,7 +111,7 @@ try{
               <?php echo $Lrh164_datafim; ?>
             </td>
             <td colspan="2">
-              <?
+              <?php
                 db_inputdata('rh164_datafim', @$rh164_datafim_dia, @$rh164_datafim_mes, @$rh164_datafim_ano, true, 'text', 2, "");
               ?>
             </td>
@@ -120,7 +120,7 @@ try{
         <table id="tableGridRenovacoes" class="container- form">
           <tr style="display: none">
             <td colspan="3">
-              <?
+              <?php
                 db_input('sequencialContrato', 10, '', true, 'hidden', 3, "");
                 db_input('sequencialRenovacao', 10, '', true, 'hidden', 3, "");
                 db_inputdata('dataFimAnterior', @$dataFimAnterior_dia, @$dataFimAnterior_mes, @$dataFimAnterior_ano, true, 'hidden', 3, "");
@@ -136,7 +136,7 @@ try{
       </fieldset>  
     </form>
 
-    <?
+    <?php
       if(isset($sErro) && $sErro !="") {
         echo "<script type=\"text/javascript\">alert(\"$sErro\");</script>";
       }

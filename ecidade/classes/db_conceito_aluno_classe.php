@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,13 +57,13 @@ class cl_conceito_aluno {
                  ed06_d_data = date = Data
                  ";
    //funcao construtor da classe
-   function cl_conceito_aluno() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conceito_aluno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_conceito_aluno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed06_i_codigo = ($this->ed06_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed06_i_codigo"]:$this->ed06_i_codigo);
        $this->ed06_i_conceito = ($this->ed06_i_conceito == ""?@$GLOBALS["HTTP_POST_VARS"]["ed06_i_conceito"]:$this->ed06_i_conceito);
@@ -90,7 +90,7 @@ class cl_conceito_aluno {
      }
    }
    // funcao para inclusao
-   function incluir ($ed06_i_codigo){
+   public function incluir ($ed06_i_codigo){
       $this->atualizacampos();
      if($this->ed06_i_conceito == null ){
        $this->erro_sql = " Campo Conceito nao Informado.";
@@ -177,7 +177,7 @@ class cl_conceito_aluno {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed06_i_codigo=null) {
+   public function alterar ($ed06_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update conceito_aluno set ";
      $virgula = "";
@@ -300,7 +300,7 @@ class cl_conceito_aluno {
      }
    }
    // funcao para exclusao
-   function excluir ($ed06_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed06_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed06_i_codigo));
      }else{
@@ -363,7 +363,7 @@ class cl_conceito_aluno {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -386,7 +386,7 @@ class cl_conceito_aluno {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -424,7 +424,7 @@ class cl_conceito_aluno {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

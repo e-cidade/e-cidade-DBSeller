@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,13 +54,13 @@ class cl_turmacensoetapa {
                  ed132_ano = int4 = Ano
                  ";
    //funcao construtor da classe
-   function cl_turmacensoetapa() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmacensoetapa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_turmacensoetapa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed132_codigo = ($this->ed132_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed132_codigo"]:$this->ed132_codigo);
        $this->ed132_turma = ($this->ed132_turma == ""?@$GLOBALS["HTTP_POST_VARS"]["ed132_turma"]:$this->ed132_turma);
@@ -80,7 +80,7 @@ class cl_turmacensoetapa {
      }
    }
    // funcao para inclusao
-   function incluir ($ed132_codigo){
+   public function incluir ($ed132_codigo){
       $this->atualizacampos();
      if($this->ed132_turma == null ){
        $this->erro_sql = " Campo Turma não informado.";

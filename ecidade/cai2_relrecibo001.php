@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,13 +81,13 @@ function js_mostratabrec1(chave1,chave2){
   <tr> 
     <td align="right">
       <br>
-      <?
+      <?php
       db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",4);
       ?>
     </td>
     <td align="right"> 
       <br>
-      <?
+      <?php
       db_input('k02_codigo',4,$Ik02_codigo,true,'text',4,"onchange='js_pesquisatabrec(false);'");
       db_input('k02_drecei',40,$Ik02_drecei,true,'text',3);
       ?>
@@ -100,7 +100,7 @@ function js_mostratabrec1(chave1,chave2){
     </td>
     <td>
       <br>
-      <?
+      <?php
       db_inputdata('data1','','','',true,'text',1,"");
       echo "<b> a</b>";
       db_inputdata('data2','','','',true,'text',1,"");
@@ -115,7 +115,7 @@ function js_mostratabrec1(chave1,chave2){
     </td>
     <td>
       <br>
-      <? 
+      <?php 
       $tipo_ordem = array("n"=>"Nome","d"=>"Data de operação","e"=>"Data de pagamento");
       db_select("ordem",$tipo_ordem,true,2); 
       ?>
@@ -128,7 +128,7 @@ function js_mostratabrec1(chave1,chave2){
     </td>
     <td>
       <br>
-      <? 
+      <?php 
       $tipo_busca = array("t"=>"Todos","p"=>"Pagos","n"=>"Não Pagos");
       db_select("busca",$tipo_busca,true,2); 
       ?>
@@ -143,6 +143,6 @@ function js_mostratabrec1(chave1,chave2){
 </table>  
 </body>
 </html>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

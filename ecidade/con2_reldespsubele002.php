@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -46,8 +46,8 @@ $tipo_mesfim = 1;
 // 2 = subfuncao
 // 3 = programa
 // 4 = projeto/atividade
-// 5 = elemento 
-// 6 = recurso 
+// 5 = elemento
+// 6 = recurso
 $tipo_agrupa = 3;
 $tipo_nivel = 6;
 
@@ -69,7 +69,7 @@ db_postmemory($HTTP_POST_VARS);
 $head1 = "DEMONSTRATIVO DA DESPESA/SUBELEMENTO";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -77,10 +77,10 @@ $flag_abrev = false;
 for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   if (strlen(trim($nomeinstabrev)) > 0){
-       $descr_inst .= $xvirg.$nomeinstabrev; 
+       $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   }else{
-       $descr_inst .= $xvirg.$nomeinst; 
+       $descr_inst .= $xvirg.$nomeinst;
   }
 
   $xvirg = ', ';
@@ -127,13 +127,13 @@ if (substr($nivel,1,1) == 'A'){
 
   db_query("begin");
   db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
-    
-  $xcampos = split("-",$orgaos);
-  
+
+  $xcampos =explode("-",$orgaos);
+
   for($i=0;$i < sizeof($xcampos);$i++){
      $where = '';
-     $virgula = ''; 
-     $xxcampos = split("_",$xcampos[$i]);
+     $virgula = '';
+     $xxcampos =explode("_",$xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
         if($ii > 0){
           $where .= $virgula.$xxcampos[$ii];
@@ -177,9 +177,9 @@ $result = db_dotacaosaldo($nivela,1,2,true,$sele_work,$anousu,$dataini,$datafin)
 
 db_query("commit");
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
@@ -259,7 +259,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $totunidapago   = 0;
     $totunidaatual  = 0;
   }
-  
+
   if($xorgao != $o58_orgao && $quebra_orgao =='S' ){
     $pdf->setfont('arial','b',7);
     $pagina = 1;
@@ -312,7 +312,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoliqui += $liquidado_acumulado;
       $totorgaopago  += $pago_acumulado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidadotini+= $dotini;
       $totunidaempen += $empenhado_acumulado - $anulado_acumulado;
       $totunidaliqui += $liquidado_acumulado;
@@ -341,7 +341,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoliqui += $liquidado_acumulado;
       $totorgaopago  += $pago_acumulado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $dotini;
       $totunidaempen += $empenhado_acumulado - $anulado_acumulado;
       $totunidaliqui += $liquidado_acumulado;
@@ -352,7 +352,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $pdf->cell(60,$alt,$o41_descr,0,1,"L",0);
     }
   }
-  
+
   if("$o58_orgao.$o58_unidade.$o58_funcao" != "$xfuncao" && $o58_funcao != 0 ){
     $xfuncao = "$o58_orgao.$o58_unidade.$o58_funcao";
     $descr = $o52_descr;
@@ -369,7 +369,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoempen += $empenhado_acumulado - $anulado_acumulado;
       $totorgaoliqui += $liquidado_acumulado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $dotini;
       $totunidaempen += $empenhado_acumulado - $anulado_acumulado;
       $totunidaliqui += $liquidado_acumulado;
@@ -397,7 +397,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoliqui += $liquidado_acumulado;
       $totorgaopago  += $pago_acumulado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $dotini;
       $totunidaempen += $empenhado_acumulado - $anulado_acumulado;
       $totunidaliqui += $liquidado_acumulado;
@@ -425,7 +425,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoliqui += $liquidado_acumulado;
       $totorgaopago  += $pago_acumulado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $dotini;
       $totunidaempen += $empenhado_acumulado - $anulado_acumulado;
       $totunidaliqui += $liquidado_acumulado;
@@ -451,7 +451,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaoanter += $dotini;
       $totorgaoreser += $reservado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $atual;
       $totunidareser += $reservado;
       $totunidaatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
@@ -482,7 +482,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $totorgaodotini += $dotini;
       $totorgaoreser += $reservado;
       $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totunidaanter += $atual;
       $totunidareser += $reservado;
       $totunidaatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
@@ -503,23 +503,23 @@ for($i=0;$i<pg_numrows($result);$i++){
     $pdf->cell(20,$alt,db_formatar($liquidado,'f'),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($pago,'f'),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($dotini + $suplementado_acumulado - $reduzido_acumulado,'f'),1,1,"R",0);
-      
+
       $totdotini += $dotini;
       $totempen += $empenhado - $anulado;
       $totliqui += $liquidado;
       $totpago  += $pago;
       $totatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-      
+
       $totanter += $dotini;
       $totempen += $empenhado - $anulado;
       $totliqui += $liquidado;
       $totpago  += $pago;
       $totatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-    
+
     $totorgaodotini += $dotini;
     $totorgaoreser += $reservado;
     $totorgaoatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
-    
+
     $totunidaanter += $atual;
     $totunidareser += $reservado;
     $totunidaatual += $dotini + $suplementado_acumulado - $reduzido_acumulado;
@@ -528,12 +528,12 @@ for($i=0;$i<pg_numrows($result);$i++){
     $sql = "select o56_codele,
                    o56_elemento,
 		   o56_descr,
-		   sum(case when c71_coddoc = 1 then c70_valor else 0 end ) as emp, 
-		   sum(case when c71_coddoc = 2 then c70_valor else 0 end ) as anu_emp, 
-		   sum(case when c71_coddoc = 3 then c70_valor else 0 end ) as liq, 
-		   sum(case when c71_coddoc = 4 then c70_valor else 0 end ) as anu_liq, 
-		   sum(case when c71_coddoc = 5 then c70_valor else 0 end ) as pag, 
-		   sum(case when c71_coddoc = 6 then c70_valor else 0 end ) as anu_pag 
+		   sum(case when c71_coddoc = 1 then c70_valor else 0 end ) as emp,
+		   sum(case when c71_coddoc = 2 then c70_valor else 0 end ) as anu_emp,
+		   sum(case when c71_coddoc = 3 then c70_valor else 0 end ) as liq,
+		   sum(case when c71_coddoc = 4 then c70_valor else 0 end ) as anu_liq,
+		   sum(case when c71_coddoc = 5 then c70_valor else 0 end ) as pag,
+		   sum(case when c71_coddoc = 6 then c70_valor else 0 end ) as anu_pag
 	   from orcdotacao
 	        inner join conlancamdot on c73_coddot = o58_coddot
   	        inner join conlancamele on c67_codlan = c73_codlan
@@ -548,7 +548,7 @@ for($i=0;$i<pg_numrows($result);$i++){
 				 ";
 
 /*
-      $sql = "select o56_codele,o56_elemento,o56_descr,sum(c70_valor) as total 
+      $sql = "select o56_codele,o56_elemento,o56_descr,sum(c70_valor) as total
               from orcdotacao
 	           inner join conlancamele on o58_codele = c67_codele
 		   inner join orcelemento  on o56_codele = o58_codele
@@ -557,7 +557,7 @@ for($i=0;$i<pg_numrows($result);$i++){
 	      where o58_coddot = $o58_coddot
 		    and c70_data between '$dataini' and '$datafin'
 		    and o58_anousu = ".db_getsession('DB_anousu')."
-		    
+
 	      group by o56_codele,o56_elemento,o56_descr";
 */
       $res = db_query($sql);
@@ -575,12 +575,12 @@ for($i=0;$i<pg_numrows($result);$i++){
        $pdf->cell(20,4,db_formatar($pag - $anu_pag,'f'),0,0,"R",0);
        $pdf->cell(20,4,'',0,1,"R",0);
       }
-      
+
     }
-    
+
   }
 }
-if($quebra_unidade == 'S'){ 
+if($quebra_unidade == 'S'){
 $pdf->setfont('arial','b',7);
 $pdf->ln(3);
 $pdf->cell(50,$alt,'',0,0,"L",0);
@@ -614,10 +614,10 @@ $pdf->cell(20,$alt,db_formatar($totorgaoatual,'f'),0,1,"R",0);
   if($nivela == 1){
     $where .= " w.o58_orgao in ($xcampos)";
   }elseif($nivela == 2){
-    $xunid = split(",",$xcampos);
+    $xunid =explode(",",$xcampos);
     $virgula = "";
     for($xu=0;$xu < sizeof($xunid);$xu++){
-      @$xxcampos .= $virgula."'".$xunid[$xu]."'"; 
+      @$xxcampos .= $virgula."'".$xunid[$xu]."'";
       $virgula = ', ';
     }
     $where .= " lpad(w.o58_orgao,2,'0')||lpad(w.o58_unidade,2,'0') in ($xxcampos)";
@@ -649,9 +649,9 @@ $result = db_dotacaosaldo($nivela,3,2,true,$where,$anousu,$dataini,$datafin);
 
 
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
@@ -828,7 +828,7 @@ for($k=0;$k<pg_numrows($result);$k++){
       $totunidareser += $reservado;
       $totunidaatual += $atual_menos_reservado;
     }
-  
+
 }
 
 $pdf->ln(3);

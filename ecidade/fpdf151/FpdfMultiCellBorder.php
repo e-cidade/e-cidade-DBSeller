@@ -433,7 +433,6 @@ class FpdfMultiCellBorder extends scpdf
      */
     public function exibeHeader($lShow)
     {
-
         $this->lExibeHeader = $lShow;
     }
 
@@ -448,9 +447,11 @@ class FpdfMultiCellBorder extends scpdf
 
     function Header()
     {
+
         if (!$this->lExibeHeader) {
             return false;
         }
+
         //#00#//header
         //#10#//Este método é usado gerar o cabeçalho da página. É chamado automaticamente por |addPage| e não
         //#10#//deve ser chamado diretamente pela aplicação. A implementação em FPDF está  vazia,  então  você
@@ -547,14 +548,15 @@ class FpdfMultiCellBorder extends scpdf
                 $telefoneescola = "";
             }
             $this->SetFont('Arial', 'BI', $TamFonteNome);
-            $this->Text(33, 9, $nome);
-            $this->Text(33, 14, $nomeescola);
+            $this->Text(33, 8, $nome);
+            $this->Text(33, 12, $nomeescola);
             $this->SetFont('Arial', 'I', 8);
-            $this->Text(33, 18, $ruaescola . ", " . $numescola . " - " . $bairroescola);
-            $this->Text(33, 22, $cidadeescola . " - " . $estadoescola);
-            $this->Text(33, 26, $telefoneescola);
-            $comprim = ($this->w - $this->rMargin - $this->lMargin);
-            $this->Text(33, 30, ($emailescola != "" ? $emailescola . " - " : "") . $url);
+            $this->Text(33, 16, $ruaescola . ", " . $numescola . " - " . $bairroescola);
+            $this->Text(33, 20, $cidadeescola . " - " . $estadoescola);
+            $this->Text(33, 24, $telefoneescola);
+            $comprim = ($this->w - $this->rMargin);
+            $this->Text(33, 28, ($emailescola != "" ? $emailescola : " - "));
+            $this->Text(33, 32, ($url != "" ? $url : " - " ));
             $Espaco = $this->w - 80;
             $this->SetFont('Arial', '', 7);
             $margemesquerda = $this->lMargin;

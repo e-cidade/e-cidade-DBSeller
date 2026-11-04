@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if(isset($incluir)){
      
      <tr> 
         <td><?=$Lk94_data ?></td>
-        <td><? db_inputdata('k94_data',@$k94_data_dia,@$k94_data_mes,@$k94_data_ano,true,'text',$db_opcao);?></td>
+        <td><?php db_inputdata('k94_data',@$k94_data_dia,@$k94_data_mes,@$k94_data_ano,true,'text',$db_opcao);?></td>
         <td><input class=btn type=submit name='pesquisar' value='Pesquisar' ></td>
 	<td> &nbsp; </td>
      </tr>  
@@ -89,7 +89,7 @@ if(isset($incluir)){
  </tr>
  <tr> 
  <td height="90%" valign=top>
-   <?
+   <?php
     $tipo='';
     if (isset($notif)){
        $tipo='notif';
@@ -106,7 +106,7 @@ if(isset($incluir)){
 
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -118,7 +118,7 @@ function js_lanca_transf(){
 
 </script>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clcaitransfseq->erro_status=="0"){
     $clcaitransfseq->erro(true,false);

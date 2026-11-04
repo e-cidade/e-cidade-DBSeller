@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clefetiv->rotulo->label("r57_regist");
               <?=$Lr57_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r57_mesusu",2,$Ir57_mesusu,true,"text",4,"","chave_r57_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clefetiv->rotulo->label("r57_regist");
               <?=$Lr57_codrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r57_codrel",4,$Ir57_codrel,true,"text",4,"","chave_r57_codrel");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clefetiv->rotulo->label("r57_regist");
               <?=$Lr57_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r57_regist",6,$Ir57_regist,true,"text",4,"","chave_r57_regist");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clefetiv->rotulo->label("r57_regist");
               <?=$Lr57_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r57_regist",6,$Ir57_regist,true,"text",4,"","chave_r57_regist");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clefetiv->rotulo->label("r57_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_efetiv.php")==true){
@@ -141,12 +141,12 @@ $clefetiv->rotulo->label("r57_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

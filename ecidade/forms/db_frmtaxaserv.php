@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clrotulo->label("k01_descr");
         <?=@$Lcm11_i_codigo?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_i_codigo',10,$Icm11_i_codigo,true,'text',3,"")
         ?>
       </td>
@@ -53,7 +53,7 @@ $clrotulo->label("k01_descr");
         <?=@$Lcm11_c_descr?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_c_descr',30,$Icm11_c_descr,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -63,7 +63,7 @@ $clrotulo->label("k01_descr");
         <?=@$Lcm11_d_datalimite?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('cm11_d_datalimite',@$cm11_d_datalimite_dia,@$cm11_d_datalimite_mes,@$cm11_d_datalimite_ano,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -71,60 +71,60 @@ $clrotulo->label("k01_descr");
     
     <tr>
       <td nowrap title="<?=@$Tcm11_i_receita?>">
-        <?
+        <?php
           db_ancora(@$Lcm11_i_receita,"js_pesquisacm11_i_receita(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_i_receita',10,$Icm11_i_receita,true,'text',$db_opcao," onchange='js_pesquisacm11_i_receita(false);'")
         ?>
-        <?
+        <?php
           db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
         ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tcm11_i_proced?>">
-        <?
+        <?php
           db_ancora(@$Lcm11_i_proced,"js_pesquisacm11_i_proced(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_i_proced',10,$Icm11_i_proced,true,'text',$db_opcao," onchange='js_pesquisacm11_i_proced(false);'")
         ?>
-        <?
+        <?php
           db_input('dv09_descr',20,$Idv09_descr,true,'text',3,'')
         ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tcm11_i_historico?>">
-        <?
+        <?php
           db_ancora(@$Lcm11_i_historico,"js_pesquisacm11_i_historico(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_i_historico',10,$Icm11_i_historico,true,'text',$db_opcao," onchange='js_pesquisacm11_i_historico(false);'")
         ?>
-        <?
+        <?php
           db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
         ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tcm11_i_tipo?>">
-        <?
+        <?php
           db_ancora(@$Lcm11_i_tipo,"js_pesquisacm11_i_tipo(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('cm11_i_tipo',10,$Icm11_i_tipo,true,'text',$db_opcao," onchange='js_pesquisacm11_i_tipo(false);'")
         ?>
-        <?
+        <?php
           db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
         ?>
       </td>
@@ -281,7 +281,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_taxaserv.hide();
-  <?
+  <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

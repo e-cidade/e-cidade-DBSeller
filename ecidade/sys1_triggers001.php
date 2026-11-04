@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -140,7 +140,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC"> 
-      <?
+      <?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
 		 $sql = "SELECT codtrigger as \"Código\",nometrigger as \"Nome\"
                  FROM db_systriggers
@@ -159,21 +159,21 @@ input {
           </tr>
           <tr> 
             <td height="30" nowrap><strong>Quando disparar evento: </strong> <select name="quandotrigger" id="quandotrigger">
-                <option value="BEFORE" <? echo @$quandotrigger=="BEFORE"?"selected":"" ?>>Antes</option>
-                <option value="AFTER" <? echo @$quandotrigger=="AFTER"?"selected":"" ?>>Depois</option>
+                <option value="BEFORE" <?php echo @$quandotrigger=="BEFORE"?"selected":"" ?>>Antes</option>
+                <option value="AFTER" <?php echo @$quandotrigger=="AFTER"?"selected":"" ?>>Depois</option>
               </select> &nbsp;&nbsp;<strong>Evento: </strong> <select name="eventotrigger" id="eventotrigger">
-                <option value="INSERT" <? echo @$eventotrigger=="INSERT"?"selected":"" ?>>Inserir</option>
-                <option value="UPDATE" <? echo @$eventotrigger=="UPDATE"?"selected":"" ?>>Atualizar</option>
-                <option value="INSERT OR UPDATE" <? echo @$eventotrigger=="INSERT OR UPDATE"?"selected":"" ?>>Inserir or Atualizar</option>
-                <option value="DELETE" <? echo @$eventotrigger=="DELETE"?"selected":"" ?>>Excluir</option>
+                <option value="INSERT" <?php echo @$eventotrigger=="INSERT"?"selected":"" ?>>Inserir</option>
+                <option value="UPDATE" <?php echo @$eventotrigger=="UPDATE"?"selected":"" ?>>Atualizar</option>
+                <option value="INSERT OR UPDATE" <?php echo @$eventotrigger=="INSERT OR UPDATE"?"selected":"" ?>>Inserir or Atualizar</option>
+                <option value="DELETE" <?php echo @$eventotrigger=="DELETE"?"selected":"" ?>>Excluir</option>
               </select> </td>
           </tr>
           <tr>
             <td height="30" nowrap title="$Tcodarq">
-              <?
+              <?php
                 db_ancora(@$Lcodarq,"js_pesquisacodarq(true);",1);
 	      ?>
-              <? 
+              <?php 
                 db_input('codarq',5,$Icodarq,true,'text',1," onchange='js_pesquisacodarq(false);'");
                 db_input('nomearq',40,$Inomearq,true,'text',3,"");
 	      ?>
@@ -181,7 +181,7 @@ input {
           </tr>
           <tr> 
            <td height="30" nowrap> 
-              <?
+              <?php
                 db_ancora(@$Lcodfuncao,"js_pesquisacodfuncao(true);",1);
                 db_input('codfuncao',5,$Icodfuncao,true,'text',1," onchange='js_pesquisacodfuncao(false);'");
                 db_input('nomefuncao',40,$Inomefuncao,true,'text',3,"");
@@ -189,20 +189,20 @@ input {
             </td>
           </tr>
           <tr> 
-            <td height="30" nowrap> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+            <td height="30" nowrap> <input name="incluir" onClick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="alterar" accesskey="a" type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
               &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar"></td>
           </tr>
         </table>
       </form> 
-      <?
+      <?php
 	} // fim do else do       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
     ?>
     </td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>
@@ -259,7 +259,7 @@ function js_preenchepesquisafun1(chave,chave1){
 }
 
 </script>
-<?
+<?php
 $db_iframe = new janela('db_iframe','');
 $db_iframe->posX=1;
 $db_iframe->posY=20;

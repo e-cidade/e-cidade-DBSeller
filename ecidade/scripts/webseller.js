@@ -1,3 +1,42 @@
+
+;(function(global) {
+
+  // script ja carregado
+  if (global.CurrentWindow) {
+    return false;
+  }
+
+  var
+
+    // confirm() builtin do navegador
+    _confirm = global.confirm,
+
+    // tanta buscar a variavel CurrentWindow do parent
+    CurrentWindow = global.CurrentWindow || parent.CurrentWindow || window.frameElement.CurrentWindow,
+
+    /**
+     * @param {String} message
+     * @param {Function} done
+     * @return {Boolean}
+     */
+    confirm = function(message, done) {
+
+      if (!done) {
+        return _confirm.call(global, message);
+      }
+
+      return CurrentWindow.confirm.call(global, message, done);
+    }
+  ;
+
+  global.CurrentWindow = CurrentWindow;
+  global.Desktop = CurrentWindow.Desktop;
+  global.alert = CurrentWindow.alert;
+  global.confirm = confirm;
+
+  document.addEventListener('mousedown', CurrentWindow._eventHandler);
+
+})(this);
 /*
  * @access public
  * @author Adriano Quilião de Oliveira <adriano.oliveira@dbseller.com.br>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,7 +66,7 @@ $clrotulo = new rotulocampo;
     <tr> 
       <td width="52%" height="20" align="right">Numpre:</td>
       <td width="48%"> 
-        <?
+        <?php
     $clrotulo->label("k00_numpre");
 	db_input('k00_numpre',8,$Ik00_numpre,true,'text',2)
 	?>
@@ -80,7 +80,7 @@ $clrotulo = new rotulocampo;
     </tr>
   </form>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

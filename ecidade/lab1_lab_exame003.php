@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ if(isset($excluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 75%;'> <legend><b>Exames</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_exame.php"));
 	?>
 	</fieldset>
@@ -85,7 +85,7 @@ if(isset($excluir)){
 </body>
 </center>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($cllab_exame->erro_status=="0"){
     $cllab_exame->erro(true,false);

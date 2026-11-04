@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,7 +79,7 @@ $clrotulo->label("e50_codord");
         </tr>
         <tr>
 	  <td>
-<?	  
+<?php   
         db_lovrot($sql, 15,"()","",$js_funcao, "", "NoMe", array(), false);
 ?>	    
 	</tr>

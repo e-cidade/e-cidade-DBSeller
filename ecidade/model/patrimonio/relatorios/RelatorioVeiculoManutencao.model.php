@@ -37,6 +37,11 @@ class RelatorioVeiculoManutencao {
   private $iSituacao;
 
   /**
+   * @var integer Categoria do veículo
+   */
+  private $iCategoria;
+
+  /**
    * @var DBDate Data inicial do período para emissão do relatório.
    */
   private $oDataInicial;
@@ -107,7 +112,7 @@ class RelatorioVeiculoManutencao {
    * @param Instituicao    $oInstituicao
    * @param DBDepartamento $oDepartamento
    */
-  public function __construct($oInstituicao, $oDepartamento) {
+  public function __construct($oInstituicao, $oDepartamento = null) {
 
     $this->oInstituicao  = $oInstituicao;
     $this->oDepartamento = $oDepartamento;
@@ -119,6 +124,10 @@ class RelatorioVeiculoManutencao {
    */
   public function setSituacao($iSituacao) {
     $this->iSituacao = $iSituacao;
+  }
+
+  public function setCategoria($iCategoria) {
+    $this->iCategoria = $iCategoria;
   }
 
   /**
@@ -295,7 +304,7 @@ class RelatorioVeiculoManutencao {
     $iPosicaoX = $this->oPdf->GetX();
     $this->oPdf->SetXY($iPosicaoX, $iPosicaoY);
     $this->oPdf->MultiCell($this->iLargura * 0.04, $this->iAltura * 2, "MÉDIA", 'TBL', 'C');
-    $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura * 2, "LAVAGEM", 'TBL', 'C');
+    // $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura * 2, "LAVAGEM", 'TBL', 'C');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, "PEÇAS E ACESSÓRIOS", 'TBL', 'C');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura * 2, "MÃO DE OBRA", 'TBL', 'C');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura * 2, "TOTAL", 1, 'C');
@@ -357,7 +366,7 @@ class RelatorioVeiculoManutencao {
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->litros_abastecido, 'f'), 'LB', 'R');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->valor_abastecido, 'f'), 'LB', 'R');
     $this->oPdf->MultiCell($this->iLargura * 0.04, $this->iAltura, trim(db_formatar($oLinha->media, 'f')), 'LB', 'C');
-    $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->lavagem, 'f'), 'LB', 'R');
+    // $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->lavagem, 'f'), 'LB', 'R');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->pecas, 'f'), 'LB', 'R');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->mao_de_obra, 'f'), 'LB', 'R');
     $this->oPdf->MultiCell($this->iLargura * 0.08, $this->iAltura, db_formatar($oLinha->total, 'f'), 'RLB', 'R');
@@ -377,7 +386,8 @@ class RelatorioVeiculoManutencao {
     $sSqlCombustivel = $oDaoCombustivel->sql_query(null, $sCampos, null, $sWhere);
     $rsCombustiveis = $oDaoCombustivel->sql_record($sSqlCombustivel);
     if ($rsCombustiveis == false || $oDaoCombustivel->numrows == 0) {
-      throw new Exception("Combustíveis não encontrados.");
+        return $this->aDadosCombustivel = [];
+    //   throw new Exception("Combustíveis não encontrados.");
     }
 
     $aDadosCombustivel = array();
@@ -409,7 +419,10 @@ class RelatorioVeiculoManutencao {
     $sWhere .= " or veicretirada.ve60_datasaida between '{$sDataInicial}' and '{$sDataFinal}' ";
     $sWhere .= " or veicdevolucao.ve61_datadevol between '{$sDataInicial}' and '{$sDataFinal}') ";
     $sWhere .= " and db_config.codigo = " . $this->oInstituicao->getCodigo();
-    $sWhere .= " and db_depart.coddepto = " . $this->oDepartamento->getCodigo();
+
+    if ($this->oDepartamento) {
+        $sWhere .= " and db_depart.coddepto = " . $this->oDepartamento->getCodigo();
+    }
 
     if (!empty($this->aVeiculo)) {
       $sWhere .= " and ve01_codigo in (" . implode(", ", $this->aVeiculo) . ") ";
@@ -425,8 +438,12 @@ class RelatorioVeiculoManutencao {
       $sWhere .= " and ve62_situacao = {$this->iSituacao} ";
     }
 
+    if (!empty($this->iCategoria)) {
+        $sWhere .= " and ve01_veiccadcateg = {$this->iCategoria} ";
+    }
+
     $sSql = $oDaoVeiculo->sql_query_movimentos(null, $sCampos, $sOrder, $sWhere, $sGroup, $sDataInicial, $sDataFinal);
-    
+
     $aVeiculos       = array();
     $aCodigoVeiculos = array();
 
@@ -477,7 +494,7 @@ class RelatorioVeiculoManutencao {
     $sWhere   = " ve70_dtabast BETWEEN '{$sDataInicial}' and '{$sDataFinal}' ";
     $sWhere  .= " and ve70_veiculos in (" . implode(", ", $this->aCodigoVeiculos) . ") ";
     $sWhere  .= " and NOT EXISTS ( SELECT  ve74_veicabast FROM  veicabastanu  WHERE  ve74_veicabast = ve70_codigo )  ";
-    
+
     if (!empty($this->aCombustivel)) {
       $sWhere  .= " and ve70_veiculoscomb in (" . implode(", ", $this->aCombustivel) . ") ";
     }

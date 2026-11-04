@@ -573,13 +573,11 @@ abstract class AjusteIRRF {
    */
   static public function ajustar($arquivo, $rubrica_base, $sequencia, $sigla_ajuste)
   {
-
       LogCalculoFolha::write("Variáveis:");
       LogCalculoFolha::write(" - Tabela......: {$arquivo}");
       LogCalculoFolha::write(" - Rubrica Base: {$rubrica_base}");
       LogCalculoFolha::write(" - Sequencia...: {$sequencia}");
       LogCalculoFolha::write(" - Sigla Ajuste: {$sigla_ajuste}");
-      global $quais_diversos;
       global $ajusteir;
       global $campos_pessoal;
       global $ajusteir_;
@@ -596,7 +594,7 @@ abstract class AjusteIRRF {
       global $quais_diversos;
       global $opcao_geral;
       global $faixa_regis;
-      global $opcao_tipo;
+      global $opcao_tipo;    
 
       eval($quais_diversos);
 
@@ -962,14 +960,29 @@ abstract class AjusteIRRF {
 
               }
 
+              LogCalculoFolha::write("  - JuntarDeducoes = SomaDescontoPrevidencia + SomaDescontoDependentes + SomaDeducoes");
+              LogCalculoFolha::write("  - JuntarDeducoes = $soma_desc_previdencia + $soma_depend + $soma_deducoes");
+              $juntarDeducoes = round(($soma_desc_previdencia + $soma_depend + $soma_deducoes),2 );
+              LogCalculoFolha::write("  - JuntarDeducoes = $juntarDeducoes");
+
               LogCalculoFolha::write("  - Soma valor Previdencia.: $soma_desc_previdencia");
               LogCalculoFolha::write();
-              LogCalculoFolha::write("  - Fórmula para Base Líquida:");
-              LogCalculoFolha::write("  - BaseLiquida = SomaBase   - TotalDeducoes");
-              LogCalculoFolha::write("  - BaseLiquida = SomaBase   - (SomaDescontoPrevidencia + SomaDescontoDependentes + SomaDeducoes + SomaDescontoIdade )");
-              LogCalculoFolha::write("  - BaseLiquida = $soma_base - ($soma_desc_previdencia + $soma_depend + $soma_deducoes + $soma_didade )");
+              LogCalculoFolha::write("  - Formula para Base Li­quida:");
 
-              $base_liquida = round(($soma_base - $soma_desc_previdencia - $soma_depend - $soma_deducoes - $soma_didade), 2);
+              if($juntarDeducoes <= $D950){
+                $juntarDeducoes = $D950;
+                LogCalculoFolha::write("  - BaseLiquida = SomaBase   - JuntarDeducoes");
+                LogCalculoFolha::write("  - BaseLiquida = $soma_base - $juntarDeducoes");  
+                $base_liquida = round(( $soma_base - $juntarDeducoes),2 );
+              }else{
+                LogCalculoFolha::write("  - BaseLiquida = SomaBase   - JuntarDeducoes");
+                LogCalculoFolha::write("  - BaseLiquida = $soma_base - $juntarDeducoes");  
+                $base_liquida = round(( $soma_base - $juntarDeducoes),2 );
+              }
+              // Desconto Idade e uma deducao a parte por isso foi separada das outras deducoes      
+              LogCalculoFolha::write("  - BaseLiquida - SomaDescontoIdade:");
+              LogCalculoFolha::write("  - BaseLiquida = $base_liquida - $soma_didade");
+              $base_liquida = round(($base_liquida - $soma_didade),2) ;
               LogCalculoFolha::write("  - BaseLiquida = $base_liquida");
 
               $valor_desconto_total = 0;

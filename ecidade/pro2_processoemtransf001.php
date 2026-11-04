@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -79,12 +79,12 @@ $db_opcao = 1;
             <table border="0" cellpadding="0">
                 <tr>
                     <td nowrap title="<?=@$Tid_usuario?>">
-                        <?
+                        <?php
                         db_ancora(@$Lnome,"js_usu(true);",$db_opcao);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('id_usuario',7,$Iid_usuario,true,'text',$db_opcao," onchange='js_usu(false);'");
                         db_input('nome',40,$Inome,true,'text',3,'');
                         ?>
@@ -92,12 +92,12 @@ $db_opcao = 1;
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Tcoddepto?>">
-                        <?
+                        <?php
                         db_ancora(@$Lcoddepto,"js_coddepto(true);",$db_opcao);
                         ?>
                     </td>
                     <td>
-                        <?
+                        <?php
                         db_input('coddepto',7,$Icoddepto,true,'text',$db_opcao," onchange='js_coddepto(false);'");
                         db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
                         ?>
@@ -107,7 +107,7 @@ $db_opcao = 1;
                 <tr>
                     <td nowrap title="Opções"><b>Opções:</b></td>
                     <td>
-                        <?
+                        <?php
                         $listar = 1; // Por padrão Listar Ativos
                         $x = array("1"=>"Usuário/Departamento que Receberá","2"=>"Usuário/Departamento que Enviou");
                         db_select('listar',$x,true,$db_opcao,"");
@@ -182,7 +182,7 @@ $db_opcao = 1;
     document.form1.id_usuario.focus();
 </script>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

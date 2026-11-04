@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clempautitem->rotulo->label("e55_descr");
               <?=$Le55_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e55_autori",8,$Ie55_autori,true,"text",4,"","chave_e55_autori");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempautitem->rotulo->label("e55_descr");
               <?=$Le55_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e55_sequen",6,$Ie55_sequen,true,"text",4,"","chave_e55_sequen");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clempautitem->rotulo->label("e55_descr");
               <?=$Le55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e55_descr",1,$Ie55_descr,true,"text",4,"","chave_e55_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clempautitem->rotulo->label("e55_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empautitem.php")==true){
@@ -129,12 +129,12 @@ $clempautitem->rotulo->label("e55_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -4,7 +4,7 @@ namespace App\Domain\Financeiro\Contabilidade\Services;
 
 use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Financeiro\Contabilidade\Models\ConplanoOrcamento;
-use App\Domain\Financeiro\Contabilidade\Services\Relatorios\BalanceteReceitaService;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\BalanceteReceitaComplementoService;
 use App\Domain\Financeiro\Orcamento\Models\FonteReceita;
 use App\Domain\Financeiro\Orcamento\Models\Receita;
 use App\Domain\Financeiro\Planejamento\Models\EstimativaReceita;
@@ -86,11 +86,11 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
             "natureza" => $estrutural,
             "dataInicio" => sprintf('01/01/%s', $exercicio),
             "dataFinal" => sprintf('31/12/%s', $exercicio),
-            "nivel_agrupar" => 0,
+            "nivelAgrupar" => 0,
             "apenasComMovimentacao" => 0
         ];
 
-        $service = new BalanceteReceitaService();
+        $service = new BalanceteReceitaComplementoService();
         $service->setFiltrosRequest($filtros);
 
         $service->setInstituicoes(DBConfig::select(['codigo', 'nomeinst'])->get());

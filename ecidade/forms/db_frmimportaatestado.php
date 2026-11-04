@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $arquivo_importacao = "";
 <legend><b> Importação de Atestados </b></legend>
 
 <table border="0">
-<?
+<?php
 db_input('acao', 5, "",true,'hidden', 3,"")
 ?>
   <tr>
@@ -47,7 +47,7 @@ db_input('acao', 5, "",true,'hidden', 3,"")
        <b>Ano:</b>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('ano_folha', 5, "",true,'text', 1,"")
 			?>
     <td>
@@ -58,7 +58,7 @@ db_input('acao', 5, "",true,'hidden', 3,"")
        <b>Mês:</b>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('mes_folha', 5, "",true,'text', 1,"")
 			?>
     <td>
@@ -68,7 +68,7 @@ db_input('acao', 5, "",true,'hidden', 3,"")
        <b>Arquivo:</b>
     </td>
     <td> 
-			<?
+			<?php
 			 db_input('arquivo_importacao',30, "",true,'file',$db_opcao,"")
 			?>
     <td>

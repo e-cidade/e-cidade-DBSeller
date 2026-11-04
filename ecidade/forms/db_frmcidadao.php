@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -101,30 +101,30 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 				<tr>
 					<td nowrap title="<?=@$Tov02_sequencial?>"><?=@$Lov02_sequencial;?></td>
 					<td>
-					  <?
+					  <?php
 					    db_input('ov02_sequencial',10,$Iov02_sequencial,true,'text',3,"");
 					    db_input('cadatendimento' ,10,'',true,'hidden',3,"");
 					  ?>
 					</td>
 					<td style="<?=$sStyleProcessado?>">
 						<strong>Processado:</strong>
-						<? db_input('ov03_numcgm',10,$Iov03_numcgm,true,'text',3,"");?>
-						<? db_input('z01_nome',30,$Iz01_nome,true,'text',3,"");?>
+						<?php db_input('ov03_numcgm',10,$Iov03_numcgm,true,'text',3,"");?>
+						<?php db_input('z01_nome',30,$Iz01_nome,true,'text',3,"");?>
 					</td>
 				</tr>
 				<tr>
 					<td nowrap title="<?=@$Tov02_nome?>"><?=@$Lov02_nome?></td>
 					<td colspan="2">
-						<?db_input('ov02_nome',80,$Iov02_nome,true,'text',$db_opcao,"");?>
+						<?php db_input('ov02_nome',80,$Iov02_nome,true,'text',$db_opcao,"");?>
 					</td>
 				</tr>
 				<tr>
 					<td nowrap title="<?=@$Tov02_ident?>"><?=@$Lov02_ident?></td>
 					<td>
-						<?db_input('ov02_ident',20,$Iov02_ident,true,'text',$db_opcao,"");?>
+						<?php db_input('ov02_ident',20,$Iov02_ident,true,'text',$db_opcao,"");?>
 					</td>
 					<td nowrap title="<?=@$Tov02_cnpjcpf?>" align="left"><?=@$Lov02_cnpjcpf?>
-						<?
+						<?php
 						db_input('ov02_cnpjcpf',14,$Iov02_cnpjcpf,true,'text',$db_opcao,"")
 						?>
 				  </td>
@@ -144,7 +144,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 				<tr style="<?=$sStyleProcessado?>">
 					<td><strong>Tipo Retorno:</strong></td>
 					<td colspan="2" id="tiporetorno">
-						<?
+						<?php
 							$rsTipoRetorno = $cltiporetorno->sql_record($cltiporetorno->sql_query_file());
 							$iNumRowsTipoRetorno = pg_num_rows($rsTipoRetorno);
 							if($iNumRowsTipoRetorno > 0){
@@ -166,11 +166,11 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 				<table>
 				<tr>
 					<td nowrap title="<?=@$Tov02_endereco?>">
-						<?
+						<?php
 						db_ancora(@$Lov02_endereco,"js_pesquisaov02_endereco(true);",$db_opcao,'','ancora_endereco');
 						?>
 					<td>
-						<?
+						<?php
 						db_input('ov02_endereco',50,$Iov02_endereco,true,'text',$db_opcao,"")
 						?>
 					</td>
@@ -178,19 +178,19 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 						<?=@$Lov02_numero?>
 					</td>
 					<td>
-						<?
+						<?php
 						db_input('ov02_numero',20,$Iov02_numero,true,'text',$db_opcao,"")
 						?>
 					</td>
 				</tr>
 				<tr>
 					<td nowrap title="<?=@$Tov02_bairro?>">
-					<?
+					<?php
 					db_ancora(@$Lov02_bairro,"js_pesquisaov02_bairro(true);",$db_opcao,'','ancora_bairro');
        		?>
        		</td>
 					<td>
-						<?
+						<?php
 						db_input('ov02_bairro',50,$Iov02_bairro,true,'text',$db_opcao,"")
 						?>
 					</td>
@@ -198,7 +198,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 						<?=@$Lov02_compl?>
 					</td>
 					<td>
-						<?
+						<?php
 						db_input('ov02_compl',20,$Iov02_compl,true,'text',$db_opcao,"")
 						?>
 					</td>
@@ -206,17 +206,17 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 				<tr>
 					<td nowrap title="<?=@$Tov02_munic?>"><?=@$Lov02_munic?></td>
 					<td>
-						<?
+						<?php
 						db_input('ov02_munic',30,$Iov02_munic,true,'text',$db_opcao,"")
 						?>
 						<?=@$Lov02_uf?>
-						<?
+						<?php
 						db_input('ov02_uf',2,$Iov02_uf,true,'text',$db_opcao,"")
 						?>
 					</td>
 					<td nowrap title="<?=@$Tov02_cep?>" align="right"><?=@$Lov02_cep?></td>
 					<td>
-						<?db_input('ov02_cep',20,$Iov02_cep,true,'text',$db_opcao,"")?>
+						<?php db_input('ov02_cep',20,$Iov02_cep,true,'text',$db_opcao,"")?>
 					</td>
 				</tr>
 				</table>
@@ -229,7 +229,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
     			<td nowrap title="<?=@$Tov08_email?>"><?=@$Lov08_email?></td>
     			<td>
     				<input type="hidden" id="alteraEmail" value="" name="alteraEmail">
-						<?
+						<?php
 						db_input('ov08_email',60,$Iov08_email,true,'text',$db_opcao,"onkeyUp='js_email_lower(this.value);'");
 
 						echo "&nbsp;".@$Lov08_principal;
@@ -276,7 +276,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 			    </td>
 			    <td nowrap title="<?=@$Tov07_principal?>" align="right"><?=@$Lov07_principal?></td>
 			    <td>
-			    <?
+			    <?php
 			    	$xxx = array('t'=>'Sim','f'=>'Não');
 						db_select('ov07_principal',$xxx,true,$db_opcao);
 					?>
@@ -287,19 +287,19 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
   			<tr>
 			    <td nowrap title="<?=@$Tov07_ddd?>"><?=@$Lov07_ddd?></td>
     			<td>
-						<?
+						<?php
 						db_input('ov07_ddd',10,$Iov07_ddd,true,'text',$db_opcao,"")
 						?>
 			    </td>
     			<td nowrap title="<?=@$Tov07_numero?>" align="right"><?=@$Lov07_numero?></td>
     			<td>
-					<?
+					<?php
 					db_input('ov07_numero',10,$Iov07_numero,true,'text',$db_opcao,"")
 					?>
 			    </td>
 			    <td nowrap title="<?=@$Tov07_ramal?>" align="right"><?=@$Lov07_ramal?></td>
     			<td align="left">
-					<?
+					<?php
 					db_input('ov07_ramal',10,$Iov07_ramal,true,'text',$db_opcao,"")
 					?>
 			    </td>
@@ -307,7 +307,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
   			<tr>
   				<td nowrap title="<?=@$Tov07_obs?>"><?=@$Lov07_obs?></td>
     			<td colspan="5">
-					<?
+					<?php
 					db_textarea('ov07_obs',3,80,$Iov07_obs,true,'text',$db_opcao,"")
 					?>
 			    </td>
@@ -778,7 +778,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave,chave1){
   db_iframe_cidadao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
@@ -1264,7 +1264,7 @@ function js_NovoTelefone(){
 
 
 </script>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 
 $('ov02_nome').focus();
 js_frmListaEmails();
@@ -1441,7 +1441,6 @@ function js_RenderGridTelefone(aTelefone,acao,indice,acaoBotao){
 	  }
 	}
 
--->
 
 var oCboTipoFamiliar = new DBComboBox("CboTipoFamiliar", "oCboTipoFamiliar", null, "350px", 1);
 oCboTipoFamiliar.setMultiple(false);

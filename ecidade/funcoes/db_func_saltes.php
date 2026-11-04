@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,5 +37,6 @@ $campos = "
   c63_dvconta,
   saltes.k13_vlratu,
   saltes.k13_datvlr,
-  o15_recurso
+  o15_recurso,
+  codigo_siconfi
 ";

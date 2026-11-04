@@ -255,7 +255,7 @@ $this->objpdf->SetFillColor(0, 0, 0);
 $this->objpdf->SetFont('Arial', '', 10);
 
 $this->objpdf->SetFont('Arial', '', 4);
-$this->objpdf->TextWithDirection(2, $y + 30, $this->texto, 'U'); // texto no canhoto do carne
+$this->objpdf->TextWithDirection(2, $y + 53, $this->texto, 'U'); // texto no canhoto do carne
 $this->objpdf->TextWithDirection(87, $y + 35, 'A U T E N T I C A C A O   M E C Â N I C A',
   'U'); // texto no canhoto do carne
 $this->objpdf->TextWithDirection(203, $y + 35, 'A U T E N T I C A C A O   M E C Â N I C A',

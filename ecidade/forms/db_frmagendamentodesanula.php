@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -61,41 +61,41 @@ $oDaorotulo->label("rh70_descr");
 								<!-- PROFISSIONAL -->
 								<tr>
 									<td nowrap title="<?=@$Tsd03_i_codigo?>" >
-										<? db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao); ?>
 									</td>
 									<td valing="top" align="top">
-										<? 
+										<?php 
 											db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false); js_verificacoesMedico();' onFocus=\"nextfield='rh70_estrutural'\"");
 										?>
 									</td>
 									<td colspan="2">
-										<? db_input('z01_nome',30,$Iz01_nome,true,'text',3,''); ?>
+										<?php db_input('z01_nome',30,$Iz01_nome,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<!-- CBO -->
 								<tr>
 									<td nowrap title="<?=@$Tsd04_i_cbo?>">
-										<? db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao); ?>
+										<?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao); ?>
 									</td>
 									<td>
-										<?
+										<?php
 											db_input('sd27_i_codigo',10,$Isd27_i_codigo,true,'hidden',$db_opcao,"");
 											db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
 											db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);js_verificacoesEspecialidade();' onFocus=\"nextfield='sd23_d_consulta'\"");
 										?>
 									</td>
 									<td colspan="2">
-										<? db_input('rh70_descr',30,$Irh70_descr,true,'text',3,''); ?>
+										<?php db_input('rh70_descr',30,$Irh70_descr,true,'text',3,''); ?>
 									</td>
 								</tr>
 								<tr>
 									<td nowrap title="<?=@$Tsd23_d_consulta?>"><?=@$Lsd23_d_consulta?></td>
 									<td>
-                      <? db_inputdatasaude( 'document.form1.sd27_i_codigo.value','sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd23_d_consulta_ano,true,'text',$db_opcao," onchange='js_diasem(true)' onFocus=\"nextfield='sd03_i_codigo2'\" ", "", "", "parent.js_diasem(); "); ?>
+                      <?php db_inputdatasaude( 'document.form1.sd27_i_codigo.value','sd23_d_consulta',@$sd23_d_consulta_dia,@$sd23_d_consulta_mes,@$sd23_d_consulta_ano,true,'text',$db_opcao," onchange='js_diasem(true)' onFocus=\"nextfield='sd03_i_codigo2'\" ", "", "", "parent.js_diasem(); "); ?>
 									</td>
 									<td>
-										<? 
+										<?php 
 											db_input('diasemana',30,@$diasemana,true,'text',3,''); 
 											db_input('dia',10,@$dia,true,'hidden',3,''); 
 										?>
@@ -129,7 +129,7 @@ $oDaorotulo->label("rh70_descr");
                       <b>Data Desanula&ccedil;&atilde;o:</b>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       $s151_d_datadesanulamento_dia = date("d",db_getsession("DB_datausu"));
                       $s151_d_datadesanulamento_mes = date("m",db_getsession("DB_datausu"));
                       $s151_d_datadesanulamento_ano = date("Y",db_getsession("DB_datausu"));
@@ -142,7 +142,7 @@ $oDaorotulo->label("rh70_descr");
                       <b>Motivo:<b>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       db_input('s151_c_motivodesanulamento',40,$Is151_c_motivodesanulamento,true,'text',1,"")
                       ?>
                     </td>

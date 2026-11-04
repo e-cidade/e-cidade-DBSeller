@@ -340,8 +340,12 @@ if (isset($this->valororigem) && !empty($this->valororigem)) {
     $sInstrucao .= " Valor origem = " . trim($this->valororigem);
 }
 
-if (isset($this->valtotal) && !empty($this->valtotal)) {
-    $sInstrucao .= " Valor corrigido = " . trim($this->valtotal);
+if(!empty($this->valor_corrigido)){
+    $sInstrucao .= " Valor corrigido = " . trim($this->valor_corrigido);
+}else{
+    if (isset($this->valtotal) && !empty($this->valtotal)) {
+        $sInstrucao .= " Valor corrigido = " . trim($this->valtotal);
+    }
 }
 
 if (isset($this->desconto_abatimento) && !empty($this->desconto_abatimento)) {

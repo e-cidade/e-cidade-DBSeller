@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,16 +56,16 @@ $clrotulo->label("o46_codlei");
 	  <!---   
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc79_codlan?>"><?=$Lc79_codlan?></td>
-             <td width="96%" align="left" nowrap><? db_input("c79_codlan",8,$Ic79_codlan,true,"text",4,"","chave_c79_codlan"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c79_codlan",8,$Ic79_codlan,true,"text",4,"","chave_c79_codlan"); ?> </td>
           </tr>
 	  --->
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc79_codsup?>"><?=$Lc79_codsup?></td>
-             <td width="96%" align="left" nowrap><? db_input("c79_codsup",10,$Ic79_codsup,true,"text",4,"","chave_c79_codsup"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c79_codsup",10,$Ic79_codsup,true,"text",4,"","chave_c79_codsup"); ?> </td>
           </tr>
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$To46_codlei_codsup?>"><?=$Lo46_codlei?></td>
-             <td width="96%" align="left" nowrap><? db_input("o46_codlei",10,$Io46_codlei,true,"text",4,"","chave_o46_codlei"); ?></td>
+             <td width="96%" align="left" nowrap><?php db_input("o46_codlei",10,$Io46_codlei,true,"text",4,"","chave_o46_codlei"); ?></td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -80,7 +80,7 @@ $clrotulo->label("o46_codlei");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos="distinct c79_codsup,o46_data,o46_codlei,o45_numlei,o45_descr,o46_tiposup,o48_descr";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -120,12 +120,12 @@ $clrotulo->label("o46_codlei");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

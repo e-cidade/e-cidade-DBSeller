@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,24 +25,25 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_arretipo_classe.php"));
-include(modification("classes/db_arrecad_classe.php"));
-include(modification("classes/db_arrecant_classe.php"));
-include(modification("classes/db_arrehist_classe.php"));
-include(modification("classes/db_arreold_classe.php"));
-include(modification("classes/db_divida_classe.php"));
-include(modification("classes/db_divold_classe.php"));
-include(modification("classes/db_issvardiv_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("dbforms/db_classesgenericas.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("model/cancelamentoDebitos.model.php"));
-require_once(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("classes/db_arretipo_classe.php");
+require_once modification("classes/db_arrecad_classe.php");
+require_once modification("classes/db_arrecant_classe.php");
+require_once modification("classes/db_arrehist_classe.php");
+require_once modification("classes/db_arreold_classe.php");
+require_once modification("classes/db_divida_classe.php");
+require_once modification("classes/db_divold_classe.php");
+require_once modification("classes/db_issvardiv_classe.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("dbforms/db_classesgenericas.php");
+require_once modification("libs/db_utils.php");
+require_once modification("model/cancelamentoDebitos.model.php");
+require_once modification("libs/db_sql.php");
+
+db_postmemory($_POST);
 $oCancelaDebito     = new cancelamentoDebitos();
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clarretipo         = new cl_arretipo;
@@ -63,12 +64,12 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
   $numpar     = "";
   $receita    = "";
   $vir        = "";
-  $info       = split('#',$chaves);
+  $info       =explode('#',$chaves);
   db_inicio_transacao();
   $aDebitos = array();
   for ( $w=0; $w < count($info); $w++ ) {
-  	
-    $dados          = split('-',$info[$w]);
+
+    $dados          =explode('-',$info[$w]);
     $numpre         = $dados[0];
     $numpar         = $dados[1];
     $receita        = $dados[2];
@@ -78,7 +79,7 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
                                                                 arrecad.k00_receit    = $receita and 
                                                                 arreinstit.k00_instit = ".db_getsession('DB_instit') ));
     $nurows_arrediv = $clarrecad->numrows;
-    for ($y=0; $y < $nurows_arrediv; $y++) {
+    for ($y = 0; $y < $nurows_arrediv; $y++) {
     	
       db_fieldsmemory($result_arrediv,$y);
       $coddiv    = $v01_coddiv;
@@ -94,13 +95,13 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
 	    
       $result_divold  = $cldivold->sql_record($cldivold->sql_query_old(null,"divold.*",null,"k10_coddiv = $v01_coddiv"));
       $numrows_divold = $cldivold->numrows;
-      for($i=0;$i<$numrows_divold;$i++){
+      for($i = 0;$i<$numrows_divold;$i++){
 	     db_fieldsmemory($result_divold,$i);		
 	     $result_arreold  = $clarreold->sql_record($clarreold->sql_query_file(null,'*',null,"k00_numpre = $k10_numpre and 
 	                                                                                         k00_numpar = $k10_numpar and 
 	                                                                                         k00_receit = $k10_receita"));
 	     $numrows_arreold = $clarreold->numrows;
-	     for($z=0;$z<$numrows_arreold;$z++){
+	     for($z = 0;$z<$numrows_arreold;$z++){
 	        db_fieldsmemory($result_arreold,$z);
 	        $clarrecad->k00_numpre = $k00_numpre;
 	        $clarrecad->k00_numpar = $k00_numpar;
@@ -115,14 +116,14 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
 	        $clarrecad->k00_tipo   = $k00_tipo  ;
 	        $clarrecad->k00_tipojm = "$k00_tipojm";
 	        $clarrecad->incluir();
-	        if($clarrecad->erro_status==0){
-	          $sqlerro=true;
+	        if($clarrecad->erro_status == 0){
+	          $sqlerro = true;
 	          $erro_msg = $clarrecad->erro_msg."--- Inclusão Arrecad";
 	          break;
 	        }
 	     }
 	     $clissvardiv->excluir($k10_coddiv);
-	     if($clissvardiv->erro_status=='0'){
+	     if($clissvardiv->erro_status == '0'){
 	        $sqlerro=true;
 	        $erro_msg = $clissvardiv->erro_msg;
 	        break;
@@ -131,16 +132,16 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
 	                              k10_numpre  = $k10_numpre and 
 	                              k10_numpar  = $k10_numpar and 
 	                              k10_receita = $k10_receita");
-	     if($cldivold->erro_status==0){
+	     if($cldivold->erro_status == 0){
 	        $erro_msg = $cldivold->erro_msg."--- Exclusão divold";
 	        $sqlerro=true;
 	        break;
 	     }
 
 	      $clarreold->excluir_where("k00_numpre=$k10_numpre and k00_numpar=$k10_numpar and k00_receit=$k10_receita");
-	      if($clarreold->erro_status==0){
+	      if($clarreold->erro_status == 0){
 	        $erro_msg = $clarreold->erro_msg."--- Exclusão arreold";
-	        $sqlerro=true;
+	        $sqlerro = true;
 	        break;
 	      }
       }
@@ -148,19 +149,16 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
   }
    
   if ( count($aDebitos) > 0 ) {
-    try {
-                   
+    try {      
       $oCancelaDebito->setArreHistTXT("CANCELAMENTO DE INSCRIÇÃO EM DÍVIDA");
       $oCancelaDebito->setTipoCancelamento(2);
       $oCancelaDebito->setCadAcao(5);
-      $oCancelaDebito->geraCancelamento($aDebitos);
-                   
+      $oCancelaDebito->geraCancelamento($aDebitos);          
     } catch (Exception $eException) {
       $erro_msg = $eException->getMessage();
       $sqlerro  = true;
     }
   }  
-  
   db_fim_transacao($sqlerro);
 }
 
@@ -198,23 +196,33 @@ function js_submit_form(){
     <td ></td>
     <td ></td>
   </tr>
-  <? 
-  $inner_arrecad = "";
-  $inner_tipo = "";
-  $inner = "";
-  $where = "";
-  if (isset($q02_inscr)&&$q02_inscr!=""){
+  <?php 
+    $inner_arrecad = "";
+    $inner_tipo = "";
+    $left = "";
+    $where = "";
+    $pesquisarPorInscricao = isset($q02_inscr) && $q02_inscr != '';
+    $pesquisarPorCgm = isset($z_numcgm) && $z_numcgm != '';
+
+    if($pesquisarPorInscricao){
+    $tab = " arreinscr  ";
     $inner_arrecad = " inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre 
 		                   inner join arreinstit on arreinstit.k00_numpre = arrecad.k00_numpre 
-											                      and arreinstit.k00_instit = ".db_getsession('DB_instit')." ";
-    $inner = " inner join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre ";
-  	$where = " and arreinscr.k00_inscr = $q02_inscr ";
-    $tab = " arreinscr  ";
-  }
+											  and arreinstit.k00_instit = ".db_getsession('DB_instit')." ";
+    $where = " and k00_inscr = $q02_inscr ";
+
+    } else if($pesquisarPorCgm){
+      $tab = " arrenumcgm  ";
+      $inner_arrecad = " inner join arrecad on arrecad.k00_numpre = arrenumcgm.k00_numpre
+      inner join arreinstit on arreinstit.k00_numpre = arrecad.k00_numpre 
+       and arreinstit.k00_instit = ".db_getsession('DB_instit')." ";
+      $left = " left join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre ";
+      $where = " and arrenumcgm.k00_numcgm = $z_numcgm ";
+    }
   ?>
   <tr>
     <td colspan=2>
-    <?
+    <?php
     $campos = " distinct divida.v01_exerc,arrecad.k00_numpre,arrecad.k00_numpar,arrecad.k00_receit,k02_descr,arrecad.k00_dtvenc ";
     $sql_numpres = "select $campos 
 	         		from $tab
@@ -229,16 +237,16 @@ function js_submit_form(){
 		    			inner join arreold on arreold.k00_numpre = k10_numpre 
 		    			                  and arreold.k00_numpar = k10_numpar 
 		    			                  and arreold.k00_receit = k10_receita
-		    			inner join arretipo arretipoold on arretipoold.k00_tipo = arreold.k00_tipo			
+		    			inner join arretipo arretipoold on arretipoold.k00_tipo = arreold.k00_tipo
+              $left
+              left join issbase on q02_inscr = k00_inscr	
              		where arretipoold.k03_tipo = 3 
              		  and arretipo.k03_tipo = 5 
              		      $where
 		     		order by arrecad.k00_numpre,arrecad.k00_numpar";
-    
     $cliframe_seleciona->campos  = "v01_exerc,k00_numpre,k00_numpar,k00_receit,k02_descr,k00_dtvenc";
     $cliframe_seleciona->legenda="Numpre's";
     $cliframe_seleciona->sql=$sql_numpres;
-    //$cliframe_seleciona->sql_marca=$sql_marca;
     $cliframe_seleciona->iframe_height ="250";
     $cliframe_seleciona->iframe_width ="500";
     $cliframe_seleciona->iframe_nome ="numpres"; 
@@ -257,27 +265,20 @@ function js_submit_form(){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_input('q02_inscr',10,'',true,'hidden',3);
 db_input('inner',10,'',true,'hidden',3);
 db_input('where',10,'',true,'hidden',3);
 ?>
 </form>
 </center>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<script>
-/*
-function js_mandadados(tipor,tipdes,inner,where){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','div4_importadivida033.php?k00_tipo_or='+tipor+'&k00_tipo_des='+tipdes+'&txt_where='+where+'&txt_inner='+inner,'Pesquisa',true);
-    jan.moveTo(0,0);
-}
-*/
-</script>
-<?
+
+<?php
 if (isset($cancelar)){
   if ($sqlerro==false){
     db_msgbox("Cancelamento Efetuado!!");

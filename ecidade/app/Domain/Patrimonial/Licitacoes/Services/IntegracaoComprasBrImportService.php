@@ -2,6 +2,16 @@
 
 namespace App\Domain\Patrimonial\Licitacoes\Services;
 
+use App\Domain\Patrimonial\Compras\Models\Orcamento;
+use App\Domain\Patrimonial\Licitacoes\Models\OrcamentoFornecedorLicitacao;
+use App\Domain\Patrimonial\Compras\Models\OrcamentoItem;
+use App\Domain\Patrimonial\Compras\Models\OrcamentoFornecedor;
+use App\Domain\Patrimonial\Compras\Models\OrcamentoJulgamento;
+use App\Domain\Patrimonial\Compras\Models\OrcamentoJulgamentoLogItem;
+use App\Domain\Patrimonial\Compras\Models\OrcamentoValor;
+use App\Domain\Patrimonial\Licitacoes\Models\OrcamentoItemLicitacao;
+use App\Domain\Patrimonial\Licitacoes\Requests\ImportacaoComprasBrRequest;
+
 use CgmFactory;
 use cl_pcorcam;
 use cl_pcorcamforne;
@@ -13,7 +23,6 @@ use ECidade\File\Csv\LerCsv;
 use ItemLicitacao;
 use LicitacaoRepository;
 use OrcamentoCompra;
-use OrcamentoFornecedor;
 use stdClass;
 
 class IntegracaoComprasBrImportService
@@ -35,13 +44,36 @@ class IntegracaoComprasBrImportService
     /**
      * Importacao do arquivo do compras BR
      *
-     * @param string $file Caminho do arquivo
-     * @return boolean
+     * @param ImportacaoComprasBrRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function importFilePregao($file, $licitacao)
+    public function importFilePregao(ImportacaoComprasBrRequest $request)
     {
-        $this->licitacao = LicitacaoRepository::getByCodigo($licitacao);
+        $file = $request->file('importFile')->getRealPath();
+        $this->licitacao = LicitacaoRepository::getByCodigo($request->licitacao);
+        $this->verificaLicitacaoAptaImportacao();
         $this->processFileImport($file);
+
+        return response()->json(true);
+    }
+
+    /**
+     * @throws \Exception
+     * @return void
+     */
+    private function verificaLicitacaoAptaImportacao()
+    {
+        if ($this->licitacao->getSituacao()->getCodigo() !== '0') {
+            throw new \Exception('A licitação não está em andamento.');
+        }
+
+        if ($this->licitacao->hasOrcamento()) {
+            throw new \Exception('A licitação já possui orçamento.');
+        }
+
+        if ($this->licitacao->hasFornecedor()) {
+            throw new \Exception('A licitação já possui fornecedor.');
+        }
     }
 
     /**
@@ -74,6 +106,96 @@ class IntegracaoComprasBrImportService
         $this->licitacao->alterarSituacao(1);
     }
 
+    public function reprocessar($request)
+    {
+        $this->licitacao = LicitacaoRepository::getByCodigo($request->licitacao);
+        $this->verificaLicitacaoAptaReprocessamento();
+        $this->removeOrcamento();
+        $this->licitacao->alterarSituacao(0);
+
+        return response()->json(true);
+    }
+
+    private function verificaLicitacaoAptaReprocessamento()
+    {
+        $modalidade = $this->licitacao->getModalidade()->getCodigo();
+
+        if (!in_array($modalidade, ['52', '44'])) {
+            throw new \Exception(
+                'Apenas licitações com modalidade Pregão Eletrônico ou Concorrência Eletrônica podem ser reprocessadas.'
+            );
+        }
+    }
+
+    private function removeOrcamento()
+    {
+        $codigoOrcamento = $this->licitacao->getCodigoOrcamento();
+        $orcamento = new Orcamento();
+        $orcamento = $orcamento
+            ->where('pc20_codorc', $codigoOrcamento)
+            ->with([
+                'itens.vinculoItensLicitacao',
+                'itens.julgamentos',
+                'itens.valores'
+            ])
+            ->first();
+
+        if (empty($orcamento)) {
+            return;
+        }
+
+        if ($orcamento->itens->isNotEmpty()) {
+            $itensDelete = array_column($orcamento->itens->toArray(), 'pc22_orcamitem');
+
+            $vinculoItensLicitacao = new OrcamentoItemLicitacao();
+            $vinculoItensLicitacao->whereIn('pc26_orcamitem', $itensDelete)->delete();
+
+            $julgamento = new OrcamentoJulgamento();
+            $julgamento->whereIn('pc24_orcamitem', $itensDelete)->delete();
+
+            $valor = new OrcamentoValor();
+            $valor->whereIn('pc23_orcamitem', $itensDelete)->delete();
+
+            $logJulgamento = new OrcamentoJulgamentoLogItem();
+            $logJulgamento->whereIn('pc93_pcorcamitem', $itensDelete)->delete();
+
+            $this->removeFornecedor($codigoOrcamento);
+
+            $orcamentoItem = new OrcamentoItem();
+            $orcamentoItem->where('pc22_codorc', $codigoOrcamento)->delete();
+        }
+
+
+
+        $orcamento
+            ->where('pc20_codorc', $codigoOrcamento)
+            ->delete();
+    }
+
+    private function removeFornecedor($codigoOrcamento)
+    {
+        $orcamentoFornecedor = new OrcamentoFornecedor();
+        $fornecedores = $orcamentoFornecedor
+            ->where('pc21_codorc', $codigoOrcamento)
+            ->get();
+
+        if ($fornecedores->isNotEmpty()) {
+            $fornecedoresLicitacaoDelete = array_column(
+                $fornecedores->toArray(),
+                'pc21_orcamforne'
+            );
+
+            $orcamentoFornecedorLicitacao = new OrcamentoFornecedorLicitacao();
+            $orcamentoFornecedorLicitacao
+                ->whereIn('pc31_orcamforne', $fornecedoresLicitacaoDelete)
+                ->delete();
+
+            $orcamentoFornecedor
+                ->where('pc21_codorc', $codigoOrcamento)
+                ->delete();
+        }
+    }
+
     /**
      * Refatora os dados do registro de fornecedor
      *
@@ -86,24 +208,24 @@ class IntegracaoComprasBrImportService
     private function refactoryFornecedor($data)
     {
         return [
-            'tipo_registro'   => $data[0],
-            'numero_edital'   => $data[1],
-            'ano_edital'      => $data[2],
-            'tipo_documento'  => ($data[3] == 1) ? 'cnpj' : 'cpf',
-            'documento'       => preg_replace('/\D/', '', $data[4]),
-            'razao_social'    => substr($data[5], 0, 40),
-            'end_rua'         => $data[6],
-            'end_numero'      => $data[7],
-            'end_bairro'      => $data[8],
+            'tipo_registro' => $data[0],
+            'numero_edital' => $data[1],
+            'ano_edital' => $data[2],
+            'tipo_documento' => ($data[3] == 1) ? 'cnpj' : 'cpf',
+            'documento' => preg_replace('/\D/', '', $data[4]),
+            'razao_social' => substr($data[5], 0, 40),
+            'end_rua' => $data[6],
+            'end_numero' => $data[7],
+            'end_bairro' => $data[8],
             'end_complemento' => $data[9],
-            'end_cidade'      => $data[10],
-            'end_estado'      => $data[11],
-            'end_cep'         => $data[12],
-            'contato'         => substr($data[13], 0, 40),
-            'telefone'        => $data[14],
-            'celular'         => $data[15],
-            'email'           => $data[16],
-            'microempresa'    => $data[17]
+            'end_cidade' => $data[10],
+            'end_estado' => $data[11],
+            'end_cep' => $data[12],
+            'contato' => substr($data[13], 0, 40),
+            'telefone' => $data[14],
+            'celular' => $data[15],
+            'email' => $data[16],
+            'microempresa' => $data[17]
         ];
     }
 
@@ -119,16 +241,16 @@ class IntegracaoComprasBrImportService
     private function refactoryLances($data)
     {
         return [
-            'tipo_registro'   => $data[0],
-            'numero_edital'   => $data[1],
-            'ano_edital'      => $data[2],
-            'numero_lote'     => $data[3],
-            'numero_item'     => $data[4],
-            'tipo_documento'  => preg_replace('/\D/', '', $data[5]),
-            'documento'       => $data[6],
-            'preco'           => $data[7],
-            'marca'           => $data[8],
-            'vencedor'        => $data[9],
+            'tipo_registro' => $data[0],
+            'numero_edital' => $data[1],
+            'ano_edital' => $data[2],
+            'numero_lote' => $data[3],
+            'numero_item' => $data[4],
+            'tipo_documento' => preg_replace('/\D/', '', $data[5]),
+            'documento' => $data[6],
+            'preco' => $data[7],
+            'marca' => $data[8],
+            'vencedor' => $data[9],
         ];
     }
 
@@ -143,7 +265,7 @@ class IntegracaoComprasBrImportService
         $orcamento = new cl_pcorcam;
         $orcamento->pc20_dtate = date('Y-m-d');
         $orcamento->pc20_hrate = date('H:i');
-        $orcamento->pc20_obs   = 'Importação Pregão Compras BR';
+        $orcamento->pc20_obs = 'Importação Pregão Compras BR';
 
         $orcamento->incluir(null);
 
@@ -196,8 +318,8 @@ class IntegracaoComprasBrImportService
                 $fornecedor->save();
             }
 
-            $orcamentoFornecedor->pc21_codorc    = $this->orcamentoCompra->getCodigo();
-            $orcamentoFornecedor->pc21_numcgm    = $fornecedor->getCodigo();
+            $orcamentoFornecedor->pc21_codorc = $this->orcamentoCompra->getCodigo();
+            $orcamentoFornecedor->pc21_numcgm = $fornecedor->getCodigo();
             $orcamentoFornecedor->pc21_importado = 't';
 
             $orcamentoFornecedor->incluir(null);
@@ -223,7 +345,7 @@ class IntegracaoComprasBrImportService
                 $itemLicitacao = new ItemLicitacao($codigoLicLicitem);
                 $this->validateItemLicitacao($itemLicitacao);
 
-                $orcamItem  = $this->insertOrcamItem($itemLicitacao);
+                $orcamItem = $this->insertOrcamItem($itemLicitacao);
                 $fornecedor = CgmFactory::getCgmByCnpjCpf($item['documento']);
                 $orcamForne = $this->orcamentoCompra->getOrcamentoDoFornecedor($fornecedor);
 
@@ -277,7 +399,7 @@ class IntegracaoComprasBrImportService
     {
         $orcamItem = false;
 
-        $sqlDadosOrcamItem  = "SELECT o.*";
+        $sqlDadosOrcamItem = "SELECT o.*";
         $sqlDadosOrcamItem .= "FROM pcorcamitem o ";
         $sqlDadosOrcamItem .= "INNER JOIN pcorcamitemlic i ON i.pc26_orcamitem = o.pc22_orcamitem ";
         $sqlDadosOrcamItem .= "WHERE o.pc22_codorc = {$this->orcamentoCompra->getCodigo()} ";
@@ -311,7 +433,7 @@ class IntegracaoComprasBrImportService
     private function insertOrcamItemLic($orcamItem, $itemLicitacao)
     {
         $orcamItemLic = new cl_pcorcamitemlic;
-        $orcamItemLic->pc26_orcamitem  = $orcamItem->pc22_orcamitem;
+        $orcamItemLic->pc26_orcamitem = $orcamItem->pc22_orcamitem;
         $orcamItemLic->pc26_liclicitem = $itemLicitacao->getCodigo();
         $orcamItemLic->incluir();
 
@@ -338,8 +460,8 @@ class IntegracaoComprasBrImportService
     {
         $orcamJulg = new cl_pcorcamjulg;
 
-        $orcamJulg->pc24_pontuacao  = ($item['vencedor'] == 1) ? 1 : 2;
-        $orcamJulg->pc24_orcamitem  = $orcamItem->pc22_orcamitem;
+        $orcamJulg->pc24_pontuacao = ($item['vencedor'] == 1) ? 1 : 2;
+        $orcamJulg->pc24_orcamitem = $orcamItem->pc22_orcamitem;
         $orcamJulg->pc24_orcamforne = $orcamForne->getCodigo();
 
         $orcamJulg->incluir(
@@ -371,7 +493,7 @@ class IntegracaoComprasBrImportService
         $orcamVal->pc23_vlrun = $item['preco'];
         $orcamVal->pc23_quant = $itemLicitacao->getItemSolicitacao()->getQuantidade();
         $orcamVal->pc23_valor = $orcamVal->pc23_vlrun * $orcamVal->pc23_quant;
-        $orcamVal->pc23_obs   = 'MARCA: ' . mb_strtoupper($item['marca']);
+        $orcamVal->pc23_obs = 'MARCA: ' . mb_strtoupper($item['marca']);
 
         $orcamVal->incluir(
             $orcamForne->getCodigo(),
@@ -416,11 +538,11 @@ class IntegracaoComprasBrImportService
         $liclicitem = new \cl_liclicitem();
         $lictacaoCodigo = $this->licitacao->getCodigo();
 
-        $where  = "l21_codliclicita = {$lictacaoCodigo}";
+        $where = "l21_codliclicita = {$lictacaoCodigo}";
         $where .= " and l21_ordem = {$item}";
 
         $sqlBuscaCodigo = $liclicitem->sql_query_file(null, "l21_codigo", null, $where);
-        $resultCodigo   = db_query($sqlBuscaCodigo);
+        $resultCodigo = db_query($sqlBuscaCodigo);
 
         if (pg_num_rows($resultCodigo) !== 1) {
             throw new \Exception("Item {$item} não encontrado na licitação.");

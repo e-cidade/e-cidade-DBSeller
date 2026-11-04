@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -182,7 +182,7 @@ if(isset($gerar)){
 js_tabulacaoforms("form1","r54_anousu",true,1,"r54_anousu",true);
 </script>
 </html>
-<?
+<?php
 if(isset($gerar) || isset($confirma)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

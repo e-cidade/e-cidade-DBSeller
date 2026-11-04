@@ -108,7 +108,7 @@ if (lEscola) {
                                                            +'&ed31_c_descr=<?=$ed31_c_descr?>';
 }
 </script>
- <?
+ <?php
 }
 
 ?>
@@ -303,7 +303,7 @@ if( isset( $alterar ) ) {
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href = 'edu1_base002.php?chavepesquisa=<?=$ed31_i_codigo?>';
     }
     </script>
-    <?
+    <?php
   }
 };
 

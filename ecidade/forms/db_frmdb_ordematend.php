@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,30 +39,30 @@ $clrotulo->label("at05_solicitado");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tor10_codordem?>">
-       <?
+       <?php
        db_ancora(@$Lor10_codordem,"js_pesquisaor10_codordem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('or10_codordem',10,$Ior10_codordem,true,'text',$db_opcao," onchange='js_pesquisaor10_codordem(false);'")
 ?>
-       <?
+       <?php
 db_input('descricao',40,$Idescricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tor10_codatend?>">
-       <?
+       <?php
        db_ancora(@$Lor10_codatend,"js_pesquisaor10_codatend(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('or10_codatend',6,$Ior10_codatend,true,'text',$db_opcao," onchange='js_pesquisaor10_codatend(false);'")
 ?>
-       <?
+       <?php
 db_input('at05_solicitado',1,$Iat05_solicitado,true,'text',3,'');
 db_input('at05_solicitado',1,$Iat05_solicitado,true,'text',3,'')
        ?>
@@ -70,15 +70,15 @@ db_input('at05_solicitado',1,$Iat05_solicitado,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Tor10_seq?>">
-       <?
+       <?php
        db_ancora(@$Lor10_seq,"js_pesquisaor10_seq(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('or10_seq',4,$Ior10_seq,true,'text',$db_opcao," onchange='js_pesquisaor10_seq(false);'")
 ?>
-       <?
+       <?php
 db_input('at05_solicitado',1,$Iat05_solicitado,true,'text',3,'');
 db_input('at05_solicitado',1,$Iat05_solicitado,true,'text',3,'')
        ?>
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_db_ordematend.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

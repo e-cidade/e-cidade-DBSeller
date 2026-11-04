@@ -119,11 +119,17 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
       if ($oDisciplina->oFrequencia->nPercentualFrequencia !== '') {
         $sPercentualFrequencia = "{$oDisciplina->oFrequencia->nPercentualFrequencia}%";
       }
+      $nFaltasAbonadas = '';
+      if ($oDisciplina->oFrequencia->iFaltasAbonadas != 0) {
+        $nFaltasAbonadas = $oDisciplina->oFrequencia->iFaltasAbonadas;
+      } else {
+        $nFaltasAbonadas = "-";
+      }
       $this->oPdf->SetFont("Arial", "", 7);
-      $this->oPdf->Cell($this->iColunaAD,   $iAlturaLinha, $oDisciplina->oFrequencia->iTotalAulas,                1, 0, "C");
-      $this->oPdf->Cell($this->iColunaTF,   $iAlturaLinha, $oDisciplina->oFrequencia->iTotalFaltas,               1, 0, "C");
-      $this->oPdf->Cell($this->iColunaFA,   $iAlturaLinha, "{$oDisciplina->oFrequencia->iFaltasAbonadas}",        1, 0, "C");
-      $this->oPdf->Cell($this->iColunaFreq, $iAlturaLinha, "{$sPercentualFrequencia}", 1, 0, "C");
+      $this->oPdf->Cell($this->iColunaAD,   $iAlturaLinha, $oDisciplina->oFrequencia->iTotalAulas,  1, 0, "C");
+      $this->oPdf->Cell($this->iColunaTF,   $iAlturaLinha, $oDisciplina->oFrequencia->iTotalFaltas, 1, 0, "C");
+      $this->oPdf->Cell($this->iColunaFA,   $iAlturaLinha, "{$nFaltasAbonadas}",                    1, 0, "C");
+      $this->oPdf->Cell($this->iColunaFreq, $iAlturaLinha, "{$sPercentualFrequencia}",              1, 0, "C");
 
       if ( $oDisciplina->oResultadoFinal->nAproveitamentoFinal != '' && $oDisciplina->oResultadoFinal->sResultadoAprovacao != "A") {
         $this->oPdf->SetFont("Arial", "B", 7);
@@ -212,7 +218,6 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
     $iEnsino    = $oMatricula->getEtapaDeOrigem()->getEnsino()->getCodigo();
     $iAno       = $oMatricula->getTurma()->getCalendario()->getAnoExecucao();
 
-
     if ( $sAndamento == "APROVADO" ) {
 
       $aDadosTermo = DBEducacaoTermo::getTermoEncerramento($iEnsino, "A", $iAno);
@@ -228,6 +233,10 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
       if ( isset($aDadosTermo[0]) ) {
         $sAndamento = $aDadosTermo[0]->sDescricao;
       }
+    }
+
+    if ( $sAndamento == "TRANSFERIDO FORA" || $sAndamento == "TRANSFERIDO REDE" ) {
+      $sAndamento .= " (CURSANDO)";
     }
 
     $this->oPdf->SetFont("Arial", "B", 8);

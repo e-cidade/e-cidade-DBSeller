@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $cltipovistoriasrec->rotulo->label("y78_descr");
               <?=$Ly78_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y78_codtipo",10,$Iy78_codtipo,true,"text",4,"","chave_y78_codtipo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltipovistoriasrec->rotulo->label("y78_descr");
               <?=$Ly78_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y78_receit",4,$Iy78_receit,true,"text",4,"","chave_y78_receit");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $cltipovistoriasrec->rotulo->label("y78_descr");
               <?=$Ly78_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y78_descr",50,$Iy78_descr,true,"text",4,"","chave_y78_descr");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $cltipovistoriasrec->rotulo->label("y78_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipovistoriasrec.php")==true){
@@ -129,12 +129,12 @@ $cltipovistoriasrec->rotulo->label("y78_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

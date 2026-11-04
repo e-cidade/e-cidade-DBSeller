@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -261,15 +261,15 @@ if (isset($cod)&&$cod!=""){
   <tr>
     <td nowrap title="<?=@$Ty50_codauto?>"colspan="2">
       <strong>Código:</strong>
-      <?
+      <?php
       db_input('y50_codauto',10,$Iy50_codauto,true,'text',3,"");
       ?>
       <?=@$Ly50_numbloco?>
-      <?
+      <?php
       db_input('y50_numbloco',10,$Iy50_numbloco,true,'text',$db_opcao,"");
       ?>
     <strong>Data:</strong>
-      <?
+      <?php
       if(empty($y50_data_dia)){
 
         $y50_data_dia = date("d",db_getsession("DB_datausu"));
@@ -279,7 +279,7 @@ if (isset($cod)&&$cod!=""){
       db_inputdata('y50_data',@$y50_data_dia,@$y50_data_mes,@$y50_data_ano,true,'text',$db_opcao,"")
       ?>
              <strong>Hora:</strong>
-      <?
+      <?php
       db_input('y50_hora',5,$Iy50_hora,true,'text',$db_opcao,"");
       if($db_opcao == 1){
         echo "<script>document.form1.y50_hora.value='".db_hora()."'</script>";
@@ -289,7 +289,7 @@ if (isset($cod)&&$cod!=""){
   </tr>
   <tr>
     <td nowrap colspan="2" >
-    <?
+    <?php
       echo "<strong>".@$dados."&nbsp;</strong>";
       db_ancora(@$Ly29_tipofisc,"js_pesquisa_tipofisc(true);",$db_opcao);
       $result_tipofisc=$cltipofiscaliza->sql_record($cltipofiscaliza->sql_query_file(null,"*",null," y27_instit = ".db_getsession('DB_instit') ));
@@ -302,19 +302,19 @@ if (isset($cod)&&$cod!=""){
        <?=@$Ly50_obs?>
     </td>
     <td>
-      <?
+      <?php
       db_textarea('y50_obs',1,50,$Iy50_obs,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty50_setor?>">
-       <?
+       <?php
        db_ancora(@$Ly50_setor,"js_pesquisay50_setor(true);",3);
        ?>
     </td>
     <td>
-      <?
+      <?php
       if ($db_opcao==1){
         $y50_setor=db_getsession("DB_coddepto");
         $result_depto=$cldb_depart->sql_record($cldb_depart->sql_query_file($y50_setor));
@@ -333,7 +333,7 @@ if (isset($cod)&&$cod!=""){
        <?=@$Ly50_nome?>
     </td>
     <td>
-      <?
+      <?php
       db_input('y50_nome',50,$Iy50_nome,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -343,7 +343,7 @@ if (isset($cod)&&$cod!=""){
        <?=@$Ly50_dtvenc?>
       </td>
     <td>
-      <?
+      <?php
       if(empty($y50_dtvenc_dia)){
 
         $dia = date("d",db_getsession("DB_datausu"));
@@ -356,7 +356,7 @@ if (isset($cod)&&$cod!=""){
       db_inputdata('y50_dtvenc',@$y50_dtvenc_dia,@$y50_dtvenc_mes,@$y50_dtvenc_ano,true,'text',$db_opcao,"");
       ?>
       <strong>Prazo p/ Recurso:</strong>
-      <?
+      <?php
       db_inputdata('y50_prazorec',@$y50_prazorec_dia,@$y50_prazorec_mes,@$y50_prazorec_ano,true,'text',$db_opcao,"");
       ?>
     </td>
@@ -364,7 +364,7 @@ if (isset($cod)&&$cod!=""){
 
   <tr>
     <td nowrap title="<?=@$Ty100_sequencial?>">
-       <?
+       <?php
        db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
        ?>
     </td>
@@ -446,7 +446,7 @@ if (isset($cod)&&$cod!=""){
        ?>
     </td>
     <td>
-      <?
+      <?php
       $j14_nome = (@$y14_codigo=="" or @$y14_codigo==null)?"":@$j14_nome;
       db_input('y14_codigo',10,$Iy14_codigo,true,'text',$op," onChange='js_ruas1(false)'");
       db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
@@ -458,21 +458,21 @@ if (isset($cod)&&$cod!=""){
       <?=@$Ly14_numero?>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($y14_numero)){
        $y14_numero = 0;
       }
       db_input('y14_numero',10,$Iy14_numero,true,'text',$op,"")
       ?>
       <?=@$Ly14_compl?>
-      <?
+      <?php
       db_input('y14_compl',20,$Iy14_compl,true,'text',$op,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty14_codi?>">
-      <?
+      <?php
       db_ancora(@$Ly14_codi,"js_bairro1(true);",$op);
       ?>
     </td>
@@ -495,12 +495,12 @@ if (isset($cod)&&$cod!=""){
       <table>
   <tr>
     <td nowrap width="100" title="<?=@$Ty15_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ly15_codigo,"js_ruas(true);",$db_opcao);
        ?>
     </td>
     <td nowrap>
-      <?
+      <?php
         $j14_nome_exec = (@$y15_codigo=="" or @$y15_codigo==null)?"":@$j14_nome_exec;
         db_input('y15_codigo',10,$Iy15_codigo,true,'text',$db_opcao," onChange='js_ruas(false)'");
         db_input('j14_nome',50,$Ij14_nome,true,'text',3,"","j14_nome_exec");
@@ -512,26 +512,26 @@ if (isset($cod)&&$cod!=""){
        <?=@$Ly15_numero?>
     </td>
     <td>
-      <?
+      <?php
       if(!isset($y15_numero)){
        $y15_numero = 0;
       }
       db_input('y15_numero',10,$Iy15_numero,true,'text',$db_opcao,"")
       ?>
              <?=@$Ly15_compl?>
-      <?
+      <?php
       db_input('y15_compl',20,$Iy15_compl,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty15_codi?>">
-      <?
+      <?php
       db_ancora(@$Ly15_codi,"js_bairro(true);",$db_opcao);
       ?>
     </td>
     <td nowrap>
-      <?
+      <?php
         $j13_descr_exec = (@$y15_codi=="" or @$y15_codi==null)?"":@$j13_descr_exec;
         db_input('y15_codi',10,$Iy15_codi,true,'text',$db_opcao," onChange='js_bairro(false)'");
         db_input('j13_descr',50,$Ij13_descr,true,'text',3,"","j13_descr_exec");
@@ -546,11 +546,11 @@ if (isset($cod)&&$cod!=""){
   </fieldset>
   <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick="return js_validaFormulario();"/>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" />
-<?
+<?php
 if ($db_opcao==22||$db_opcao==2){
 ?>
 <input name="novo" type="button" id="novo" value="Incluir Novo" onclick="parent.location.href='fis1_auto005.php';" >
-<?
+<?php
 }
 if($db_opcao==1||$db_opcao==2){
 
@@ -820,7 +820,7 @@ function js_pesquisare(num,origem){
 
 function js_preenchepesquisa(chave){
   db_iframe_auto.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_auto002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){

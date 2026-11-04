@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ if(isset($HTTP_POST_VARS["excluir"])){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 //
 if(!isset($excluir)){
   
@@ -114,7 +114,7 @@ if(!isset($excluir)){
      </td></tr></table>
      <input name="arquivo" value="<?=$codarq?>" type="hidden">
      </form>
-     <?
+     <?php
    }else{
      //
      db_query('begin');
@@ -437,7 +437,7 @@ if(!isset($excluir)){
 	// 
 	?>
 	<table width="100%"><tr><td align="center"><h3>Item Cadastrado...</h3></td></tr></table>
-	<?
+	<?php
       }else if($tipotabela=="1"){
 
 	$sql = "insert into db_itensmenu (id_item,
@@ -522,13 +522,13 @@ if(!isset($excluir)){
 	// 
 	?>
 	<table width="100%"><tr><td align="center"><h3>Item Cadastrado...</h3></td></tr></table>
-	<?
+	<?php
         //	
       }else{
 	// 
 	?>
 	<table width="100%"><tr><td title="Esta tabela não possui menu." align="center"><h3>Tabela Dependente. Sem menus.</h3></td></tr></table>
-	<?
+	<?php
       }
 
       /// inclusao de funcao e forms como arquivos auxiliares

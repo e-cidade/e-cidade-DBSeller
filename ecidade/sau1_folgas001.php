@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ if(isset($alterar)){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmfolgas.php"));
         ?>
     </center>
@@ -96,7 +96,7 @@ if(isset($alterar)){
 <script>
 js_tabulacaoforms("form1","sd04_d_folgaini_dia",true,1,"sd04_d_folgaini_dia",true);
 </script>
-<?
+<?php
 if(isset($alterar)){
  if($clunidademedicos->erro_status=="0"){
   $clunidademedicos->erro(true,true);

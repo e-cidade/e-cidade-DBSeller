@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -74,13 +74,13 @@ class cl_sau_prestadorhorarios {
                  s112_d_valfinal = date = Validade Final
                  ";
    //funcao construtor da classe
-   function cl_sau_prestadorhorarios() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_prestadorhorarios");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +89,7 @@ class cl_sau_prestadorhorarios {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s112_i_codigo = ($this->s112_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s112_i_codigo"]:$this->s112_i_codigo);
        $this->s112_i_prestadorvinc = ($this->s112_i_prestadorvinc == ""?@$GLOBALS["HTTP_POST_VARS"]["s112_i_prestadorvinc"]:$this->s112_i_prestadorvinc);
@@ -121,7 +121,7 @@ class cl_sau_prestadorhorarios {
      }
    }
    // funcao para Inclusão
-   function incluir ($s112_i_codigo){
+   public function incluir ($s112_i_codigo){
       $this->atualizacampos();
      if($this->s112_i_prestadorvinc == null ){
        $this->erro_sql = " Campo Prestador Vinculo não informado.";
@@ -633,7 +633,6 @@ class cl_sau_prestadorhorarios {
      $sql .= "  from sau_prestadorhorarios ";
      $sql .= "      inner join sau_tipoficha  on  sau_tipoficha.sd101_i_codigo = sau_prestadorhorarios.s112_i_tipoficha";
      $sql .= "      inner join sau_prestadorvinculos  on  sau_prestadorvinculos.s111_i_codigo = sau_prestadorhorarios.s112_i_prestadorvinc";
-     $sql .= "      inner join diasemana  on  diasemana.ed32_i_codigo = sau_prestadorhorarios.s112_i_diasemana";
      $sql .= "      inner join sau_procedimento  on  sau_procedimento.sd63_i_codigo = sau_prestadorvinculos.s111_procedimento";
      $sql .= "      inner join sau_prestadores  on  sau_prestadores.s110_i_codigo = sau_prestadorvinculos.s111_i_prestador";
      $sql2 = "";
@@ -698,7 +697,6 @@ class cl_sau_prestadorhorarios {
      $sql .= "  from sau_prestadorhorarios ";
      $sql .= "      inner join sau_tipoficha  on  sau_tipoficha.sd101_i_codigo = sau_prestadorhorarios.s112_i_tipoficha";
      $sql .= "      inner join sau_prestadorvinculos  on  sau_prestadorvinculos.s111_i_codigo = sau_prestadorhorarios.s112_i_prestadorvinc";
-     $sql .= "      inner join diasemana  on  diasemana.ed32_i_codigo = sau_prestadorhorarios.s112_i_diasemana";
      $sql .= "      inner join sau_procedimento  on  sau_procedimento.sd63_i_codigo = sau_prestadorvinculos.s111_procedimento";
      $sql .= "      inner join sau_prestadores  on  sau_prestadores.s110_i_codigo = sau_prestadorvinculos.s111_i_prestador";
      $sql .= "      inner join grupoexameprestador  on  age03_prestadorvinculos = s111_i_codigo";

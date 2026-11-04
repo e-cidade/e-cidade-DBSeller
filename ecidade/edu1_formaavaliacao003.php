@@ -94,9 +94,9 @@ if (isset($excluir)) {
 db_menu();
 
 if (isset($ed37_c_tipo) && $ed37_c_tipo == "NIVEL") {
-  ?><script>document.getElementById("conceito").style.visibility = "visible";</script><?
+  ?><script>document.getElementById("conceito").style.visibility = "visible";</script><?php
 } elseif (isset($ed37_c_tipo) && $ed37_c_tipo == "PARECER") {
-  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?
+  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?php
 } elseif (isset($ed37_c_tipo) && $ed37_c_tipo == "NOTA") {
 
  ?>
@@ -106,7 +106,7 @@ if (isset($ed37_c_tipo) && $ed37_c_tipo == "NIVEL") {
    document.form1.ed37_i_maiorvalor.value = "<?=number_format($ed37_i_maiorvalor,2,'.','.')?>";
    document.form1.ed37_i_variacao.value = "<?=number_format($ed37_i_variacao,2,'.','.')?>";
   </script>
- <?
+ <?php
 
 }
 

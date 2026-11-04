@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App\Domain\Configuracao\RelarorioLegal\Controller;
 
-use App\Domain\Configuracao\RelarorioLegal\Model\Periodo;
 use App\Domain\Configuracao\RelarorioLegal\Model\Relatorio;
 use App\Domain\Configuracao\RelarorioLegal\Services\RelatoriosLegaisService;
 use App\Domain\Configuracao\RelarorioLegal\Services\TemplatesXlsRelatoriosLegaisService;
@@ -22,15 +20,13 @@ class RelatoriosLegaisController extends Controller
         return new DBJsonResponse($relatorios->toArray(), "Relatórios");
     }
 
-
     public function periodos($relatorio)
     {
-
         $relatorio = Relatorio::find($relatorio);
         $periodos = $relatorio->periodos->map(function ($c) {
-            return[
-                "codigo" => $c->pivot->o113_periodo,
-                "periodo" => Periodo::find($c->pivot->o113_periodo)->toArray()
+            return [
+                "codigo" => $c->o114_sequencial,
+                "periodo" => $c->toArray()
             ];
         })->toArray();
 

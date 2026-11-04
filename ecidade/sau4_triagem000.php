@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($proceguir)){
      <script>
        alert("Deverá ser efetuada a pesquisa da FAA para lançar a triagem!");
      </script>
-    <?
+    <?php
   
   }else{
 
@@ -148,7 +148,7 @@ if($linhas1>0 && ( !isset( $sd03_i_codigo ) || (int)$sd03_i_codigo == 0 )) {
         <script>
           alert('Usuário <?=db_getsession("DB_id_usuario")?>  não é um Profissional da Saúde.')
         </script>
-    <?  
+    <?php  
 }
 
 
@@ -170,7 +170,7 @@ if($linhas1>0 && ( !isset( $sd03_i_codigo ) || (int)$sd03_i_codigo == 0 )) {
     <br><br>
     <center>
     <fieldset style="width:95%"><legend><b>Triagem</b></legend>
-        <?
+        <?php
         include(modification("forms/db_frmtriagem.php"));
         ?>
      </fieldset>
@@ -181,21 +181,21 @@ if($linhas1>0 && ( !isset( $sd03_i_codigo ) || (int)$sd03_i_codigo == 0 )) {
 <?//db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php
    if( (int)$sd24_i_profissional == 0 ){
      ?>
        <script>
          //js_pesquisasd04_i_cbo(true)
          js_tabulacaoforms("form1","sd24_v_motivo",true,1,"sd24_v_motivo",true);
        </script>
-     <?
+     <?php
    }    
 if( $profissional_branco == false ){
 	?>
 		<script>
 			js_pesquisasd04_i_cbo(true);
 		</script>
-	<?   
+	<?php   
 }
 if(isset($proceguir)){
   if($clprontuarios->erro_status=="0"){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("pc70_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc72_pctipocertif?>" align="right">
-       <?
+       <?php
        db_ancora(@$Lpc72_pctipocertif,"js_pesquisapc72_pctipocertif(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc72_pctipocertif',4,$Ipc72_pctipocertif,true,'text',$db_opcao," onchange='js_pesquisapc72_pctipocertif(false);'")
 ?>
-       <?
+       <?php
 db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
        ?>
     </td>

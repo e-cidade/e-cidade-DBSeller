@@ -51,7 +51,7 @@ if (isset($p51_prottipodocumentoprocesso)) {
        <?=@$Lp51_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('p51_codigo',3,$Ip51_codigo,true,'text',3,"")
 ?>
     <td>
@@ -61,7 +61,7 @@ db_input('p51_codigo',3,$Ip51_codigo,true,'text',3,"")
        <?=@$Lp51_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('p51_descr',60,$Ip51_descr,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -86,7 +86,7 @@ db_input('p51_descr',60,$Ip51_descr,true,'text',$db_opcao,"")
        <?=@$Lp51_dtlimite?>
     </td>
     <td> 
-<?
+<?php
 $matriz = array('t'=>"Sim",'f'=>"Nao");
 db_inputdata('p51_dtlimite',@$p51_dtlimite_dia,@$p51_dtlimite_mes,@$p51_dtlimite_ano,true,'text',$db_opcao,"");
 ?>

@@ -60,7 +60,7 @@ $oRotulo->label('z01_v_nome');
               <b>CGS:</b>
             </td>
             <td align="left" nowrap> 
-               <?
+               <?php
                  db_input("z01_i_cgsund",10,$Iz01_i_cgsund,true,"text",4,"","chave_z01_i_cgsund");
               ?>
               
@@ -69,7 +69,7 @@ $oRotulo->label('z01_v_nome');
               <b>Nome</b>
             </td>
             <td  align="left" nowrap> 
-               <?
+               <?php
                 db_input("z01_v_nome",30,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
                ?>
             </td>
@@ -79,7 +79,7 @@ $oRotulo->label('z01_v_nome');
               <b>Data do Exame:</b>
             </td>
             <td>
-               <?
+               <?php
                if (!isset($chave_s113_d_exame)) {
                  
                  $dia  = date("d", db_getsession("DB_datausu"));  
@@ -110,7 +110,7 @@ $oRotulo->label('z01_v_nome');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_abonofalta.php")==true){
@@ -166,12 +166,12 @@ $oRotulo->label('z01_v_nome');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

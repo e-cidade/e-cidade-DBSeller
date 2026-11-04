@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,17 +37,17 @@ $clrotulo->label("z01_nome");
     <table cellpadding="0" cellspacing="0" class="form-container">
       <tr>
         <td align="right" nowrap title="<?=@$Tr30_regist?>" width="100">
-          <?
+          <?php
           $mensagemlote='n';
           db_input('mensagemlote', 4, 0,'', 'hidden', 3);
           db_ancora(@$Lr30_regist, "js_pesquisar30_regist(true);", $db_opcao);
           ?>
         </td>
         <td width="500">
-          <?
+          <?php
           db_input('r30_regist', 8, $Ir30_regist, true, 'text', $db_opcao, " onchange='js_pesquisar30_regist(false);'")
           ?>
-          <?
+          <?php
           db_input('z01_nome', 60, $Iz01_nome, true, 'text', 3);
           ?>
         </td>

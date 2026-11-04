@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcepbairros->rotulo->label("cp01_bairro");
               <?=$Lcp01_codbairro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cp01_codbairro",10,$Icp01_codbairro,true,"text",4,"","chave_cp01_codbairro");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcepbairros->rotulo->label("cp01_bairro");
               <?=$Lcp01_bairro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("cp01_bairro",72,$Icp01_bairro,true,"text",4,"","chave_cp01_bairro");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcepbairros->rotulo->label("cp01_bairro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cepbairros.php")==true){
@@ -122,12 +122,12 @@ $clcepbairros->rotulo->label("cp01_bairro");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

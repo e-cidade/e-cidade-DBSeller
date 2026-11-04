@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -60,7 +60,7 @@ $clrotulo = new rotulocampo();
       <tr>
         <td width="4%" align="right" nowrap title="<?=$Tc60_estrut?>"><?=$Lc60_estrut?></td>
         <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("c60_estrut", 50, $Ic60_estrut, true, "text", 4, "", "chave_c60_estrut");
               ?>
         </td>
@@ -68,7 +68,7 @@ $clrotulo = new rotulocampo();
       <tr>
         <td width="4%" align="right" nowrap title="<?=$Tc60_descr?>"><?=$Lc60_descr?></td>
         <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("c60_descr", 50, $Ic60_descr, true, "text", 4, "", "chave_c60_descr");
               ?>
         </td>
@@ -87,7 +87,7 @@ $clrotulo = new rotulocampo();
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $ano = db_getsession('DB_anousu');
       $qtdWhere = 0;
       $sSqlEstrut = "SELECT * FROM (SELECT DISTINCT c.c60_estrut,
@@ -146,14 +146,14 @@ $clrotulo = new rotulocampo();
 </table>
 </body>
 </html>
-<?
+<?php
 if (! isset($pesquisa_chave)) {
   ?>
 <script>
 document.form2.chave_c60_estrut.focus();
 document.form2.chave_c60_estrut.select();
   </script>
-<?
+<?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o65_codseqimpmov",5,$Io65_codseqimpmov,true,"text",4,"","chave_o65_codseqimpmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o65_mes",2,$Io65_mes,true,"text",4,"","chave_o65_mes");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o65_valor",12,$Io65_valor,true,"text",4,"","chave_o65_valor");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalmovmes.php")==true){
@@ -129,12 +129,12 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -41,7 +41,7 @@ $oRotulo->label("z01_nome");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -77,14 +77,14 @@ $oRotulo->label("z01_nome");
     <table  align="center" width="100%" cellpadding="" border="0">
       <tr>
         <td><b>
-				  <?
+				  <?php
 				    db_ancora($Lz01_nome, 'js_mostranomes(true);', 4)
 				  ?></b>
         </td>
         <td>
 			   <input type="text" name="z01_numcgm" id="z01_numcgm" maxlength="8" size="8" onchange="js_mostranomes(false);" />
 			  
-			   <?
+			   <?php
 			     db_input("z01_nome", 40,"", true, 'text', 3)
 			   ?>
         </td>        
@@ -95,7 +95,7 @@ $oRotulo->label("z01_nome");
            <b>Situação do CPF :</b>   
         </td>
         <td>
-           <?
+           <?php
              $aSituacao = array( '0' => 'Selecione...',
                                  '1' => 'Regular',
                                  '2' => 'Irregular',
@@ -123,7 +123,7 @@ $oRotulo->label("z01_nome");
 </div>
 
 </center>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

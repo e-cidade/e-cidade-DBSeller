@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $rotulo->label("j14_nome");
               <?=$Ld02_contri?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d02_contri",4,$Id02_contri,true,"text",4,"","chave_d02_contri");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $rotulo->label("j14_nome");
               <?=$Ld02_codedi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("d02_codedi",4,$Id02_codedi,true,"text",4,"","chave_d02_codedi");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $rotulo->label("j14_nome");
               <?=$Lj14_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j14_nome",40,$Ij14_nome,true,"text",4,"","chave_j14_nome");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $rotulo->label("j14_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_editalrua.php")==true){
@@ -134,12 +134,12 @@ $rotulo->label("j14_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

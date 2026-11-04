@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("la08_i_codigo");
        <?=@$Lla18_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la18_i_codigo',10,$Ila18_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla18_i_sinonima?>">
-       <?
+       <?php
        db_ancora(@$Lla18_i_sinonima,"js_pesquisala18_i_sinonima(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la18_i_sinonima',10,$Ila18_i_sinonima,true,'text',$db_opcao," onchange='js_pesquisala18_i_sinonima(false);'")
 ?>
-       <?
+       <?php
 db_input('la10_i_codigo',10,$Ila10_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla18_i_exame?>">
-       <?
+       <?php
        db_ancora(@$Lla18_i_exame,"js_pesquisala18_i_exame(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la18_i_exame',10,$Ila18_i_exame,true,'text',$db_opcao," onchange='js_pesquisala18_i_exame(false);'")
 ?>
-       <?
+       <?php
 db_input('la08_i_codigo',10,$Ila08_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_exasinonima.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

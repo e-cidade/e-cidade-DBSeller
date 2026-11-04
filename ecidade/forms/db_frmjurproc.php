@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,12 +50,12 @@
   </tr>
   <tr> 
         <td width="14%"> 
-          <?
+          <?php
 	  db_label_blur('tipojur','tipo','tipo','tipodescr');
 	?>
         </td>
     <td width="33%"> 
-	<?
+	<?php
 	  db_text_blur('tipojur','tipo','tipodescr',5,10,$v50_tipo,$v50_tipo);
 	  db_text_blur('tipojur','tipodescr','tipo',15,15,$tipodescr,$tipodescr);	
 	?>
@@ -67,23 +67,23 @@
   </tr>
   <tr> 
         <td width="14%">
-		<?
+		<?php
 	      db_label_blur('localiza','localização','localizacao','localizacaodescr');	  
 	    ?>
 		</td>
     <td width="33%">
-	<?
+	<?php
 	  db_text_blur('localiza','localizacao','localizacaodescr',5,10,$v50_local,$v50_local);
 	  db_text_blur('localiza','localizacaodescr','localizacao',15,15,$localizacaodescr,$localizacaodescr);
 	?>
     </td>
         <td width="17%">
-		<?
+		<?php
 	      db_label_blur('situacao','situação','situacao','situacaodescr');	  
 	    ?>		
 		</td>
     <td width="36%"> 
-	<?
+	<?php
 	  db_text_blur('situacao','situacao','situacaodescr',5,10,$v50_situa,$v50_situa);
 	  db_text_blur('situacao','situacaodescr','situacao',15,15,$situacaodescr,$situacaodescr);
 	?>	
@@ -91,23 +91,23 @@
   </tr>
   <tr> 
         <td width="14%">
-		<?
+		<?php
 	      db_label_blur('vara','vara','vara','varadescr');	  
 	    ?>		
 		</td>
     <td width="33%"> 
-	<?
+	<?php
 	  db_text_blur('vara','vara','varadescr',5,10,$v50_vara,$v50_vara);
 	  db_text_blur('vara','varadescr','vara',15,15,$varadescr,$varadescr);
 	?>	
     </td>
     <td width="17%"><b>Data:</b></td>
     <td width="36%">
-	<?
+	<?php
 	  db_data("data",@$data_dia,@$data_mes,@$data_ano);
 	?>
       <b>at&eacute;</b> 
-	<?
+	<?php
 	  db_data("data_cons");
 	?>  
     </td>
@@ -132,7 +132,7 @@
                     </table></td>
                   <td width="90%">&nbsp;
 				 <select style="width:130px" name="autor" size="5">
-                    <?
+                    <?php
 					$aux_autor = "";
 					if(isset($Alterar_PopularSelect)) {
 					  $result = db_query("select v55_autor from autproc where v55_proces = $retorno order by  v55_seq");

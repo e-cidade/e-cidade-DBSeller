@@ -1,7 +1,7 @@
 <?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
-*  Copyright (C) 2009  DBselller Servicos de Informatica
+*  Copyright (C) 2009  DBSeller Servicos de Informatica
 *                            www.dbseller.com.br
 *                         e-cidade@dbseller.com.br
 *
@@ -28,145 +28,153 @@ namespace ECidade\Financeiro\Tesouraria;
 
 use \ECidade\Financeiro\Tesouraria\Repository\Receita as ReceitaRepository;
 
-class Receita {
+class Receita
+{
 
-  /**
-   * @var integer
-   */
-  protected $codigo;
-
-  /**
-   * @var string
-   */
-  protected $nome;
-
-  /**
-   * Receita de Multa
-   * @var int
-   */
-  protected $receitaMulta;
-
-  /**
-   * Receita de Juros
-   * @var int
-   */
-  protected $receitaJuros;
-
-  /**
-   * @var string
-   */
-  protected $descricao;
-
-  /**
-   * @var stdClass
-   */
-  protected $dadosReceita;
-
-  /**
-   * @return int
-   */
-  public function getCodigo() {
-    return $this->codigo;
-  }
-
-  /**
-   * @param int $codigo
-   */
-  public function setCodigo($codigo) {
-    $this->codigo = $codigo;
-  }
-
-  /**
-   * @return string
-   */
-  public function getDescricao() {
-    return $this->descricao;
-  }
-
-  /**
-   * @param string $descricao
-   */
-  public function setDescricao($descricao) {
-    $this->descricao = $descricao;
-  }
-
-  /**
-   * @return string
-   */
-  public function getNome() {
-    return $this->nome;
-  }
-
-  /**
-   * @param string $nome
-   */
-  public function setNome($nome) {
-    $this->nome = $nome;
-  }
-
-  /**
-   * @return \ECidade\Financeiro\Tesouraria\Receita
-   */
-  public function getReceitaMulta() {
-
-    if (!empty($this->dadosReceita->k02_recmul) && empty($this->receitaMulta)) {
-
-      try {
-
-        $oReceitaMulta      = ReceitaRepository::getById($this->dadosReceita->k02_recmul);
-        $this->receitaMulta = $oReceitaMulta;
-      } catch (\BusinessException $businessException) {
-        $this->dadosReceita->k02_recmul = null;
-      }
+    /**
+     * @var integer
+     */
+    protected $codigo;
+  
+    /**
+     * @var string
+     */
+    protected $nome;
+  
+    /**
+     * Receita de Multa
+     * @var int
+     */
+    protected $receitaMulta;
+  
+    /**
+     * Receita de Juros
+     * @var int
+     */
+    protected $receitaJuros;
+  
+    /**
+     * @var string
+     */
+    protected $descricao;
+  
+    /**
+     * @var stdClass
+     */
+    protected $dadosReceita;
+  
+    /**
+     * @return int
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
     }
-    return $this->receitaMulta;
-  }
-
-  /**
-   * @param \ECidade\Financeiro\Tesouraria\Receita $receitaMulta
-   */
-  public function setReceitaMulta($receitaMulta) {
-    $this->receitaMulta = $receitaMulta;
-  }
-
-  /**
-   * @return \ECidade\Financeiro\Tesouraria\Receita
-   */
-  public function getReceitaJuros() {
-
-    if (!empty($this->dadosReceita->k02_recjur) && empty($this->receitaJuros)) {
-
-      try {
-
-        $oReceitaJuros = ReceitaRepository::getById($this->dadosReceita->k02_recjur);
-        $this->receitaJuros = $oReceitaJuros;
-      } catch (\BusinessException $businessException) {
-        $this->dadosReceita->k02_recjur = null;
-      }
+  
+    /**
+     * @param int $codigo
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
     }
+  
+    /**
+     * @return string
+     */
+    public function getDescricao()
+    {
+        return $this->descricao;
+    }
+  
+    /**
+     * @param string $descricao
+     */
+    public function setDescricao($descricao)
+    {
+        $this->descricao = $descricao;
+    }
+  
+    /**
+     * @return string
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+  
+    /**
+     * @param string $nome
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+    }
+  
+    /**
+     * @return \ECidade\Financeiro\Tesouraria\Receita
+     */
+    public function getReceitaMulta()
+    {
 
-    return $this->receitaJuros;
-  }
-
-  /**
-   * @param \ECidade\Financeiro\Tesouraria\Receita $receitaJuros
-   */
-  public function setReceitaJuros($receitaJuros) {
-    $this->receitaJuros = $receitaJuros;
-  }
-
-  /**
-   * @param mixed $dadosReceita
-   */
-  public function setDadosReceita($dadosReceita) {
-    $this->dadosReceita = $dadosReceita;
-  }
-
-  /**
-   * Retorna dados da receita
-   */
-  public function getDadosReceita() {
-    return $this->dadosReceita;
-  }
-   
+        if (!empty($this->dadosReceita->k02_recmul) && empty($this->receitaMulta)) {
+            try {
+                $oReceitaMulta      = ReceitaRepository::getById($this->dadosReceita->k02_recmul);
+                $this->receitaMulta = $oReceitaMulta;
+            } catch (\BusinessException $businessException) {
+                $this->dadosReceita->k02_recmul = null;
+            }
+        }
+        return $this->receitaMulta;
+    }
+  
+    /**
+     * @param \ECidade\Financeiro\Tesouraria\Receita $receitaMulta
+     */
+    public function setReceitaMulta($receitaMulta)
+    {
+        $this->receitaMulta = $receitaMulta;
+    }
+  
+    /**
+     * @return \ECidade\Financeiro\Tesouraria\Receita
+     */
+    public function getReceitaJuros()
+    {
+  
+        if (!empty($this->dadosReceita->k02_recjur) && empty($this->receitaJuros)) {
+            try {
+                $oReceitaJuros = ReceitaRepository::getById($this->dadosReceita->k02_recjur);
+                $this->receitaJuros = $oReceitaJuros;
+            } catch (\BusinessException $businessException) {
+                $this->dadosReceita->k02_recjur = null;
+            }
+        }
+  
+        return $this->receitaJuros;
+    }
+  
+    /**
+     * @param \ECidade\Financeiro\Tesouraria\Receita $receitaJuros
+     */
+    public function setReceitaJuros($receitaJuros)
+    {
+        $this->receitaJuros = $receitaJuros;
+    }
+  
+    /**
+     * @param mixed $dadosReceita
+     */
+    public function setDadosReceita($dadosReceita)
+    {
+        $this->dadosReceita = $dadosReceita;
+    }
+  
+    /**
+     * Retorna dados da receita
+     */
+    public function getDadosReceita()
+    {
+        return $this->dadosReceita;
+    }
 }

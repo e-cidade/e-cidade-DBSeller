@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,16 +66,16 @@ if(isset($excluir)){
   </tr>
 </table>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorccenarioeconomicoparam.php"));
 	?>
     </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clorccenarioeconomicoparam->erro_status=="0"){
     $clorccenarioeconomicoparam->erro(true,false);

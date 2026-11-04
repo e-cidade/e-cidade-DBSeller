@@ -240,10 +240,19 @@ class db_stdClass
      *        String  $sCaminhoSalvoSxw
      *        String  $sNomeRelatorio
      *
-     * @return void
+     * @return void|bool
      */
-    public static function oo2pdf($tipoDoc, $codDoc = null, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio)
-    {
+    public static function oo2pdf(
+        $tipoDoc,
+        $codDoc,
+        $sAgt,
+        $aParam,
+        $sCaminhoSalvoSxw,
+        $sNomeRelatorio,
+        $redirect = true,
+        $useLegacyConverter = true,
+        $lTemTransacaoAtiva = false
+    ) {
         $clagata = new cl_dbagata($sAgt);
         $api = $clagata->api;
         $api->setOutputPath($sCaminhoSalvoSxw);
@@ -252,28 +261,43 @@ class db_stdClass
             $api->setParameter($sParN, $sParVal);
         }
 
+        $hasError = false;
+        $redirectString = "";
+
         try {
-            $oDocumentoTemplate = new documentoTemplate($tipoDoc, $codDoc);
+            $oDocumentoTemplate = new documentoTemplate($tipoDoc, $codDoc, "", $lTemTransacaoAtiva);
         } catch (Exception $eException) {
-            $sErroMsg = $eException->getMessage();
-            db_redireciona("db_erros.php?fechar=true&db_erro={$sErroMsg}");
+            $redirectString = "db_erros.php?fechar=true&db_erro=" . $eException->getMessage();
+            $hasError = true;
         }
 
-        $lProcessado = $api->parseOpenOffice($oDocumentoTemplate->getArquivoTemplate());
+        if (!$hasError) {
+            $lProcessado = $api->parseOpenOffice($oDocumentoTemplate->getArquivoTemplate());
 
-        if ($lProcessado) {
+            if ($lProcessado) {
+                try {
+                    if ($useLegacyConverter) {
+                        DocumentConverter::docToPdf($sCaminhoSalvoSxw, $sNomeRelatorio);
+                    } else {
+                        convertToPdf($sCaminhoSalvoSxw, ECIDADE_PATH."tmp");
+                    }
 
-            try {
-                DocumentConverter::docToPdf($sCaminhoSalvoSxw, $sNomeRelatorio);
-            } catch (Exception $e) {
-                db_redireciona("db_erros.php?fechar=true&db_erro=" . $e->getMessage());
+                    $redirectString = $sNomeRelatorio;
+                } catch (Exception $e) {
+                    $redirectString = "db_erros.php?fechar=true&db_erro=" . $e->getMessage();
+                    $hasError = true;
+                }
+            } else {
+                $redirectString = "db_erros.php?fechar=true&db_erro=Falha ao gerar relatório !!!";
+                $hasError = true;
             }
-            db_redireciona($sNomeRelatorio);
-
-        } else {
-            db_redireciona("db_erros.php?fechar=true&db_erro=Falha ao gerar relatório !!!");
         }
 
+        if ($redirect) {
+            db_redireciona($redirectString);
+        } else {
+            return !$hasError;
+        }
     }
 
     /**

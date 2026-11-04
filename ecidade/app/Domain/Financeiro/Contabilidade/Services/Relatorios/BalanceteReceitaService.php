@@ -1,68 +1,117 @@
 <?php
 
-
 namespace App\Domain\Financeiro\Contabilidade\Services\Relatorios;
 
 use App\Domain\Configuracao\Instituicao\Model\DBConfig;
-use App\Domain\Financeiro\Contabilidade\Relatorios\Balancete\Receita\BalanceteReceitaPaisagem;
+use App\Domain\Financeiro\Contabilidade\Models\PlanoReceita;
+use App\Domain\Financeiro\Contabilidade\Relatorios\Balancete\Receita\BalanceteReceitaCsv;
+use App\Domain\Financeiro\Contabilidade\Relatorios\Balancete\Receita\BalanceteReceitaPaisagemPdf;
+use App\Domain\Financeiro\Contabilidade\Relatorios\Balancete\Receita\PrevisaoInicialReceitaCsv;
+use App\Domain\Financeiro\Contabilidade\Relatorios\Balancete\Receita\PrevisaoInicialReceitaPdf;
 use App\Domain\Financeiro\Orcamento\Models\FonteReceita;
 use Carbon\Carbon;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita;
-use Exception;
-use Illuminate\Support\Facades\DB;
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceitaFormatter;
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceitaPadrao;
+use stdClass;
 
-class BalanceteReceitaService
+/**
+ * Abstração para emissão dos Balancos
+ */
+abstract class BalanceteReceitaService
 {
     /**
      * Estrutural da receita
      * @var array
      */
-    private $filtrarNatureza;
+    protected $filtrarNatureza;
 
     /**
      * Lista de IDs das instituições selecionadas
      * @var \Illuminate\Support\Collection
      */
-    private $filtrarInstituicoes;
+    protected $filtrarInstituicoes;
 
     /**
      * @var \Illuminate\Support\Collection
      */
-    private $filtrarRecursos;
+    protected $filtrarRecursos;
 
     /**
      * @var Carbon
      */
-    private $filtroDataInicio;
+    protected $filtroDataInicio;
 
     /**
      * @var Carbon
      */
-    private $filtroDataFinal;
+    protected $filtroDataFinal;
 
     /**
      * @var array
      */
-    private $filtrarOrgaoUnidade = [];
+    protected $filtrarOrgaoUnidade = [];
 
     /**
      * @var integer
      */
-    private $agrupador;
+    protected $agrupador;
     /**
      * @var bool
      */
-    private $filtrarApenasComMovimentacao = false;
+    protected $filtrarApenasComMovimentacao = false;
     /**
      * @var int
      */
-    private $ano;
+    protected $ano;
 
     /**
      * @var string[]
      */
-    private $nomeInstituicoes = [];
+    protected $nomeInstituicoes = [];
 
+    /**
+     * @var bool
+     */
+    protected $planoEcidade = true;
+
+    /**
+     * Dados que deve apresentar:
+     * Se o Orçamento = "orcamento" apenas saldo inicial
+     * Se o Balanço = "balanco" com execução
+     * @string Tipo do
+     */
+    protected $dadosEmissao;
+
+    /**
+     * Valores possíveis
+     *  - ecidade
+     *  - uniao
+     *  - estadual
+     * @var string
+     */
+    protected $ementario;
+
+    /**
+     * Fontes de receita
+     * @var array
+     */
+    protected $fontesReceitas;
+
+    /**
+     * Um dos bugs mais comuns ao alterar a massa de dados nesse relatório, é que ao agrupar as informações no metodo
+     * processar(), se a função que monta o hash foi mal aplicada, vai sobrescrever um index do array.
+     *
+     * Para tentar garantir que as linhas buscadas na query estão presente no balancete, criei esse parâmetro como
+     * forma de debug. Ative apenas para garantir que todas as linhas estão presente no balancete.
+     *
+     * @var bool
+     */
+    protected $validarQuantidadeDeContasAnaliticas = false;
+    /**
+     * @var string
+     */
+    protected $apresentar;
 
     public function setFiltrosRequest(array $filtros)
     {
@@ -92,6 +141,10 @@ class BalanceteReceitaService
             $this->filtrarRecursos = collect($filtros['recursos']);
         }
 
+        if (!empty($filtros['dadosEmissao'])) {
+            $this->dadosEmissao = $filtros['dadosEmissao'];
+        }
+
         if (!empty($filtros['filtros'])) {
             $dados = str_replace('\"', '"', $filtros['filtros']);
             $dados = \JSON::create()->parse($dados);
@@ -100,11 +153,32 @@ class BalanceteReceitaService
             }
         }
 
-        $this->filtroDataInicio = Carbon::createFromFormat('d/m/Y', $filtros['dataInicio']);
-        $this->filtroDataFinal = Carbon::createFromFormat('d/m/Y', $filtros['dataFinal']);
+        if (strpos($filtros['dataInicio'], '/') !== false) {
+            $this->filtroDataInicio = Carbon::createFromFormat('d/m/Y', $filtros['dataInicio']);
+            $this->filtroDataFinal = Carbon::createFromFormat('d/m/Y', $filtros['dataFinal']);
+        } else {
+            $this->filtroDataInicio = Carbon::createFromFormat('Y-m-d', $filtros['dataInicio']);
+            $this->filtroDataFinal = Carbon::createFromFormat('Y-m-d', $filtros['dataFinal']);
+        }
+
         $this->ano = $this->filtroDataFinal->year;
 
-        $this->agrupador = $filtros['nivel_agrupar'];
+        $this->agrupador = 0;
+        if (isset($filtros['nivelAgrupar'])) {
+            $this->agrupador = $filtros['nivelAgrupar'];
+        }
+
+        $this->ementario = 'ecidade';
+        if (isset($filtros['ementario'])) {
+            $this->ementario = $filtros['ementario'];
+            if ($filtros['ementario'] !== 'ecidade') {
+                $this->planoEcidade = false;
+            }
+        }
+
+        if (!empty($filtros['apresentar'])) {
+            $this->apresentar = $filtros['apresentar'];
+        }
     }
 
     /**
@@ -118,120 +192,124 @@ class BalanceteReceitaService
         });
     }
 
-    public function emitir()
+    /**
+     * Emite em Pdf
+     * @param $dados
+     * @return array
+     */
+    public function emitirPdf($dados)
     {
-        $dados = $this->processar();
-
-        $periodo = sprintf(
-            '%s até %s',
-            $this->filtroDataInicio->format('d/m/Y'),
-            $this->filtroDataFinal->format('d/m/Y')
-        );
-
-        $relatorio = new BalanceteReceitaPaisagem();
-        $relatorio->headers($periodo, implode(', ', $this->nomeInstituicoes));
+        $titulo = $this->getHeaderTitulo();
+        $periodo = $this->getHeaderPeriodo();
+        $plano = $this->getHeaderTipoPlano();
+        $relatorio = $this->getInstanciaBalancetePdf($this->apresentar);
+        $relatorio->headers($titulo, $periodo, implode(', ', $this->nomeInstituicoes), $plano);
         $relatorio->setDadosBalancete($dados);
 
         return $relatorio->imprimir();
     }
 
+    /**
+     * Emite em csv
+     * @param $dados
+     * @return array
+     */
+    public function emitirCsv($dados)
+    {
+        $relatorio = $this->getInstanciaBalanceteCSV();
+        $relatorio->setCsvControl(";");
+        $relatorio->setDados($dados);
+        return $relatorio->emitir();
+    }
+
+    /**
+     * Retorna a arvore do balancete
+     * @return array
+     */
     public function getArvore()
     {
         return $this->processar();
     }
 
-    private function processar()
+    public function emitir()
     {
-        $receitas = $this->buscarDadosBalancete();
-        if ($this->agrupador == 0) {
-            $balancete = $this->montaArvore($receitas);
-        } else {
-            $balancete = $this->montaArvorePorGrupo($receitas);
+        $dados = $this->processar();
+
+        return array_merge($this->emitirPdf($dados), $this->emitirCsv($dados));
+    }
+
+
+    /**
+     * Retorna o formatter para os estruturais de receita do e-Cidade.
+     * @param $natureza
+     * @return EstruturalReceitaFormatter|EstruturalReceitaPadrao|EstruturalReceita
+     */
+    protected function estruturalFormatter($natureza)
+    {
+        if ($this->planoEcidade) {
+            return new EstruturalReceita($natureza);
         }
-
-        return $balancete;
+        return new EstruturalReceitaPadrao($natureza);
     }
 
-    private function buscarDadosBalancete()
+    protected function montaArvore($receitas)
     {
-        list($where, $dataInicio, $dataFinal) = $this->montaWhere();
-
-        $sql = "
-            select balancete_receita_complemento.*,
-                   substr(natureza,1,1)::int4 as classe,
-                   substr(natureza, 2)::varchar as resto
-              from orcreceita
-              join balancete_receita_complemento(
-                     o70_anousu, o70_codfon, o70_concarpeculiar, '{$dataInicio}', '{$dataFinal}'
-                   ) on o70_codfon = fonte and o70_anousu = ano
-              where {$where}
-              order by resto, natureza;
-        ";
-        return DB::select($sql);
-    }
-
-    private function montaFiltroOrgaoUnidade()
-    {
-        $orgaoUnidade = [];
-        foreach ($this->filtrarOrgaoUnidade as $dadoOrgaoUnidade) {
-            $dados = explode('-', $dadoOrgaoUnidade);
-            $orgaoUnidade[] = "(o70_orcorgao = {$dados[0]} and o70_orcunidade = {$dados[1]})";
-        }
-
-        $filtro = "(" . implode(' or ', $orgaoUnidade) . ")";
-        return $filtro;
-    }
-
-    private function montaArvore($receitas)
-    {
-        $fontesReceitas = FonteReceita::where('o57_anousu', '=', $this->ano)->get();
-
         $arvore = [];
         foreach ($receitas as $receita) {
-            $estrutural = new EstruturalReceita($receita->natureza);
+            $estrutural = $this->estruturalFormatter($receita->natureza);
+            $receita->natureza = $estrutural->getEstrutural();
             $nivel = $estrutural->getNivel();
 
-            $hash = "{$receita->natureza}#{$receita->cp}#$receita->fonte_recurso#$receita->complemento_lancamento";
+            $hash = $this->montaHashArvore($receita);
+
             $arvore[$hash] = $this->mapperReceitaAnalitica($receita, $estrutural);
-            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
-        }
-        ksort($arvore);
-        return $arvore;
-    }
-
-    private function montaArvorePorGrupo($receitas)
-    {
-        $fontesReceitas = FonteReceita::where('o57_anousu', '=', $this->ano)->get();
-
-        $arvore = [];
-        foreach ($receitas as $receita) {
-            $estrutural = new EstruturalReceita($receita->natureza);
-            $hash = "{$receita->resto}#{$receita->cp}#$receita->recurso_lancamento#$receita->classe";
-            $arvore[$hash] = $this->mapperReceitaAnalitica($receita, $estrutural);
-            //Se a classe da receita for 9 (dedução) altera pela classe 4, para deduzir nas contas pais
-            if ($receita->classe = 9) {
-                $estrutural = new EstruturalReceita("4{$receita->resto}");
-            }
-            $nivel = $estrutural->getNivel();
-
-            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
+            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $receita);
         }
         ksort($arvore);
         return $arvore;
     }
 
     /**
-     * @param $nivel
-     * @param $estrutural
+     * @param array $receitas
+     * @return void
+     */
+    protected function montaArvorePorGrupo(array $receitas)
+    {
+        $arvore = [];
+        foreach ($receitas as $receita) {
+            $estrutural = $this->estruturalFormatter($receita->natureza);
+            $hash = $this->montaHashGrupo($receita);
+            $arvore[$hash] = $this->mapperReceitaAnalitica($receita, $estrutural);
+            //Se a classe da receita for 9 (dedução) altera pela classe 4, para deduzir nas contas pais
+            if ($receita->classe = 9) {
+                $estrutural = $this->estruturalFormatter("4{$receita->resto}");
+            }
+            $nivel = $estrutural->getNivel();
+
+            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $receita);
+        }
+        ksort($arvore);
+        return $arvore;
+    }
+
+    /**
+     * @param int $nivel
+     * @param EstruturalReceitaFormatter $estrutural
      * @param array $arvore
-     * @param $fontesReceitas
-     * @param $receita
+     * @param stdClass $receita
      * @return array
      */
-    private function montaContaPai($nivel, $estrutural, array $arvore, $fontesReceitas, $receita)
+    protected function montaContaPai($nivel, EstruturalReceitaFormatter $estrutural, $arvore, $receita)
     {
         while ($nivel != 1) {
-            $estrutural = new EstruturalReceita($estrutural->getCodigoEstruturalPai());
+            $estrutural = $this->estruturalFormatter($estrutural->getCodigoEstruturalPai());
+            /**
+             * As classes de formatter do estrutural, não validam a existência do estrutural no sistema.
+             * A função buscaFonteReceita realiza uma busca recursiva pelo estrutural pai caso o estrutural informado
+             * por parâmetro não exista no sistema.
+             */
+            $fonteReceita = $this->buscaFonteReceita($estrutural->getEstrutural());
+            $estrutural = $this->estruturalFormatter($fonteReceita->natureza);
 
             $hash = $fonte = $estrutural->getEstrutural();
             $nivel = $estrutural->getNivel();
@@ -242,19 +320,8 @@ class BalanceteReceitaService
                 $hash = substr($fonte, 1);
             }
 
-            if (!array_key_exists($fonte, $arvore)) {
-                /**
-                 * @var FonteReceita $fonteReceita
-                 */
-                $fonteReceita = $fontesReceitas->filter(function (FonteReceita $fonteReceita) use ($fonte) {
-                    return $fonteReceita->o57_fonte === $fonte;
-                })->shift();
-
-                if (is_null($fonteReceita)) {
-                    throw new Exception("Não foi encontrado a fonte de receita: $fonte.\nRevise o cadastro.");
-                }
-
-                $arvore[$hash] = $this->mapperReceitaSintetica($fonteReceita, $estrutural);
+            if (!array_key_exists($hash, $arvore)) {
+                $arvore[$hash] = $this->mapperReceitaSintetica($fonteReceita->nome, $estrutural);
             }
 
             $arvore[$hash]->valor_inicial += $receita->valor_inicial;
@@ -266,49 +333,135 @@ class BalanceteReceitaService
             $arvore[$hash]->arrecadado_acumulado += $receita->arrecadado_acumulado;
             $arvore[$hash]->previsao_adicional += $receita->previsao_adicional;
         }
+
         return array($estrutural, $arvore);
     }
 
-    private function mapperReceitaAnalitica($receita, EstruturalReceita $estrutural)
+    /**
+     * Retorna as fontes de receita do e-cidade
+     * @return array
+     */
+    protected function getFontesReceitas()
     {
-        $std = $this->criaObjetoReceita();
-        $std->natureza = $receita->natureza;
-        $std->mascara = $estrutural->getEstruturalComMascara();
-        $std->reduzido = $receita->reduzido;
-        $std->fonte = $receita->fonte;
-        $std->ano = $receita->ano;
-        $std->descricao = $receita->descricao;
-        $std->cp = $receita->cp;
-        $std->instituicao = $receita->instituicao;
-        $std->orgao = $receita->orgao;
-        $std->unidade = $receita->unidade;
-        $std->esfera = $receita->esfera;
-        $std->fonte_recurso = $receita->fonte_recurso;
-        $std->recurso_lancamento = $receita->recurso_lancamento;
-        $std->complemento_lancamento = $receita->complemento_lancamento;
-        $std->valor_inicial = $receita->valor_inicial;
-        $std->previsao_adicional_acumulado = $receita->previsao_adicional_acumulado;
-        $std->previsao_atualizada = $receita->previsao_atualizada;
-        $std->arrecadado_anterior = $receita->arrecadado_anterior;
-        $std->arrecadado_periodo = $receita->arrecadado_periodo;
-        $std->valor_a_arrecadar = $receita->valor_a_arrecadar;
-        $std->arrecadado_acumulado = $receita->arrecadado_acumulado;
-        $std->previsao_adicional = $receita->previsao_adicional;
-        $std->ordem = $receita->ordem;
-        return $std;
+        if (is_null($this->fontesReceitas)) {
+            $this->fontesReceitas = getFontesEmentario($this->ementario, $this->ano);
+        }
+
+        return $this->fontesReceitas;
     }
 
-    private function mapperReceitaSintetica(FonteReceita $fonteReceita, EstruturalReceita $estrutural)
+    /**
+     * @param $fonte
+     * @return FonteReceita|PlanoReceita
+     */
+    protected function buscaFonteReceita($fonte)
     {
-        $std = $this->criaObjetoReceita();
-        $std->natureza = $estrutural->getEstrutural();
-        $std->mascara = $estrutural->getEstruturalComMascara();
-        $std->descricao = $fonteReceita->o57_descr;
-        $std->sintetico = true;
-        return $std;
+        if (!array_key_exists($fonte, $this->getFontesReceitas())) {
+            $estruturalPai = $this->estruturalFormatter($fonte)->getEstruturalPai();
+            $fonte = $estruturalPai->getEstrutural();
+            return $this->buscaFonteReceita($fonte);
+        }
+        return $this->fontesReceitas[$fonte];
     }
 
-    private function criaObjetoReceita()
+    /**
+     * Retorna um array com os dados do balancete
+     */
+    abstract public function processar();
+
+    /**
+     * @return mixed
+     */
+    abstract protected function getDados();
+
+    /**
+     * @param stdClass $receita
+     * @return string
+     */
+    abstract protected function montaHashArvore($receita);
+
+    /**
+     * @param stdClass $receita
+     * @return string
+     */
+    abstract protected function montaHashGrupo($receita);
+
+    /**
+     * @return array
+     */
+    protected function montaWhere()
+    {
+        $instituicoes = $this->filtrarInstituicoes->implode(',');
+
+        $where = [
+            "ano = {$this->ano}",
+            "instituicao in ($instituicoes)",
+        ];
+
+        if (!empty($this->filtrarNatureza)) {
+            $naturezas = array_map(function ($natureza) {
+                $estrutural = $this->estruturalFormatter($natureza);
+                return "(natureza like '{$estrutural->getEstruturalAteNivel()}%')";
+            }, $this->filtrarNatureza);
+
+            $where[] = '(' . implode(' or ', $naturezas) . ')';
+        }
+
+        if (!empty($this->filtrarRecursos)) {
+            $where[] = $this->montaWhereFiltraRecurso();
+        }
+
+        if ($this->filtrarApenasComMovimentacao) {
+            $where[] = sprintf(
+                "(%s or %s or %s or %s)",
+                'previsao_adicional_acumulado != 0',
+                'valor_a_arrecadar != 0',
+                'arrecadado_periodo != 0',
+                'arrecadado_acumulado != 0'
+            );
+        }
+
+        if (!empty($this->filtrarOrgaoUnidade)) {
+            $where[] = $this->montaWhereOrgaoUnidade();
+        }
+
+        $dataInicio = $this->filtroDataInicio->format('Y-m-d');
+        $dataFinal = $this->filtroDataFinal->format('Y-m-d');
+        $where = implode(' and ', $where);
+        return array($where, $dataInicio, $dataFinal);
+    }
+
+    /**
+     * @return string
+     */
+    protected function montaWhereOrgaoUnidade()
+    {
+        $orgaoUnidade = [];
+        foreach ($this->filtrarOrgaoUnidade as $dadoOrgaoUnidade) {
+            $dados = explode('-', $dadoOrgaoUnidade);
+            $orgaoUnidade[] = "(o70_orcorgao = {$dados[0]} and o70_orcunidade = {$dados[1]})";
+        }
+
+        $filtro = "(" . implode(' or ', $orgaoUnidade) . ")";
+        return $filtro;
+    }
+
+    /**
+     * ATENÇÃO por default, essa classe está filtrando o recurso da receita, para usar no balancete por complemento
+     * sobrescreva a condição por: "recurso_lancamento"
+     *
+     * @return string
+     */
+    protected function montaWhereFiltraRecurso()
+    {
+        $recursos = $this->filtrarRecursos->implode(',');
+        return "recurso_receita in ($recursos)";
+    }
+
+    /**
+     * @return object
+     */
+    protected function criaObjetoReceita()
     {
         return (object)[
             "natureza" => '',
@@ -323,9 +476,11 @@ class BalanceteReceitaService
             "unidade" => null,
             "esfera" => null,
             "valor_inicial" => 0,
-            "fonte_recurso" => null,
+            "subrecurso" => null,
+            "gestao" => null,
+            "siconfi" => null,
             "recurso_lancamento" => null,
-            "complemento_lancamento" => null,
+            "complemento" => null,
             "previsao_adicional_acumulado" => 0,
             "previsao_atualizada" => 0,
             "arrecadado_anterior" => 0,
@@ -338,50 +493,125 @@ class BalanceteReceitaService
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function montaWhere()
+    protected function mapperReceitaAnalitica($receita, EstruturalReceitaFormatter $estrutural)
     {
-        $instituicoes = $this->filtrarInstituicoes->implode(',');
+        $std = $this->criaObjetoReceita();
 
+        $std->natureza = $receita->natureza;
+        $std->mascara = $estrutural->getEstruturalComMascara();
+        $std->reduzido = $receita->reduzido;
+        $std->fonte = $receita->fonte;
+        $std->ano = $receita->ano;
+        $std->descricao = $receita->descricao;
+        $std->cp = $receita->cp;
+        $std->instituicao = $receita->instituicao;
+        $std->orgao = $receita->orgao;
+        $std->unidade = $receita->unidade;
+        $std->esfera = $receita->esfera;
+        $std->subrecurso = $receita->subrecurso;
+        $std->gestao = $receita->gestao;
+        $std->siconfi = $receita->siconfi;
+        $std->complemento = $receita->complemento;
+        $std->valor_inicial = $receita->valor_inicial;
+        $std->previsao_adicional_acumulado = $receita->previsao_adicional_acumulado;
+        $std->previsao_atualizada = $receita->previsao_atualizada;
+        $std->arrecadado_anterior = $receita->arrecadado_anterior;
+        $std->arrecadado_periodo = $receita->arrecadado_periodo;
+        $std->valor_a_arrecadar = $receita->valor_a_arrecadar;
+        $std->arrecadado_acumulado = $receita->arrecadado_acumulado;
+        $std->previsao_adicional = $receita->previsao_adicional;
+        return $std;
+    }
 
-        $where = [
-            "o70_anousu = {$this->ano}",
-            "instituicao in ($instituicoes)",
-        ];
+    protected function mapperReceitaSintetica($nomeReceita, EstruturalReceitaFormatter $estrutural)
+    {
+        $std = $this->criaObjetoReceita();
+        $std->natureza = $estrutural->getEstrutural();
+        $std->mascara = $estrutural->getEstruturalComMascara();
+        $std->descricao = $nomeReceita;
+        $std->sintetico = true;
+        return $std;
+    }
 
-        if (!empty($this->filtrarNatureza)) {
-            $naturezas = array_map(function ($natureza) {
-                $estrutural = new EstruturalReceita($natureza);
-                return "(natureza like '{$estrutural->getEstruturalAteNivel()}%')";
-            }, $this->filtrarNatureza);
-
-            $where[] = '(' . implode(' or ', $naturezas) . ')';
+    protected function getInstanciaBalanceteCSV()
+    {
+        if ($this->dadosEmissao === 'orcamento') {
+            return new PrevisaoInicialReceitaCsv();
         }
+        return new BalanceteReceitaCsv();
+    }
 
-        if (!empty($this->filtrarRecursos)) {
-            $recursos = $this->filtrarRecursos->implode(',');
-            $where[] = "recurso_lancamento in ($recursos)";
+    protected function getInstanciaBalancetePdf($apresentar)
+    {
+
+        if ($this->dadosEmissao === 'orcamento') {
+            $balancete = new PrevisaoInicialReceitaPdf();
+        } else {
+            $balancete = new BalanceteReceitaPaisagemPdf();
         }
+        $balancete->setDados($apresentar);
+        return $balancete;
+    }
 
-        if ($this->filtrarApenasComMovimentacao) {
-            $where[] = sprintf(
-                "(%s or %s or %s or %s)",
-                'previsao_adicional_acumulado != 0',
-                'valor_a_arrecadar != 0',
-                'arrecadado_periodo != 0',
-                'arrecadado_acumulado != 0'
-            );
+
+    /**
+     * Essa função só retorna o label para aplicar no header do relatório do Tipo de Plano que esta sendo emitido
+     * @return string
+     */
+    protected function getHeaderTipoPlano()
+    {
+        $plano = 'e-Cidade';
+        if ($this->ementario === 'uniao') {
+            $plano = 'Plano União/Federação';
         }
-
-        if (!empty($this->filtrarOrgaoUnidade)) {
-            $where[] = $this->montaFiltroOrgaoUnidade();
+        if ($this->ementario === 'estadual') {
+            $plano = 'Plano Estadual/Regional';
         }
+        return $plano;
+    }
 
-        $dataInicio = $this->filtroDataInicio->format('Y-m-d');
-        $dataFinal = $this->filtroDataFinal->format('Y-m-d');
-        $where = implode(' and ', $where);
-        return array($where, $dataInicio, $dataFinal);
+    /**
+     * Essa função só retorna o label para aplicar no header do relatório
+     * @return string
+     */
+    public function getHeaderPeriodo()
+    {
+        return sprintf(
+            '%s até %s',
+            $this->filtroDataInicio->format('d/m/Y'),
+            $this->filtroDataFinal->format('d/m/Y')
+        );
+    }
+
+    /**
+     * Essa função só retorna o label para aplicar no header do relatório
+     * @return string
+     */
+    protected function getHeaderTitulo()
+    {
+        return 'BALANCETE DA RECEITA';
+    }
+
+    /**
+     * Um dos bugs mais comuns ao alterar a massa de dados nesse relatório, é que ao agrupar as informações no metodo
+     * processar(), se a função que monta o hash foi mal aplicada, vai sobrescrever um index do array.
+     *
+     * Para tentar garantir que as linhas buscadas na query estão presente no balancete, criei esse parâmetro como
+     * forma de debug. Ative apenas para garantir que todas as linhas estão presente no balancete.
+     *
+     * @param array $receitas receitas analiticas buscadas na query
+     * @param array $balancete arvore do balancete
+     * @throws Exception
+     */
+    protected function validarQuantidadeDeContasAnaliticas($receitas, $balancete)
+    {
+        $totalContasAnaliticasBalancete = collect($balancete)->filter(function ($conta) {
+            return !$conta->sintetico;
+        })->count();
+
+        if (count($receitas) !== $totalContasAnaliticasBalancete) {
+            throw new Exception('Há uma inconsistência no relatório.');
+        }
+        dd(count($receitas), $totalContasAnaliticasBalancete);
     }
 }

@@ -92,18 +92,18 @@ db_app::load('estilos.css, grid.style.css');
         <legend>Cancelamento de Importação de Débitos<?php echo $sTituloFieldset ?>:</legend>
         <table class="form-container">
         <tr>
-          <td title="<?=$Tz01_nome?>"><?
+          <td title="<?=$Tz01_nome?>"><?php
           db_ancora($Lz01_nome,' js_cgm(true); ',1);?></td>
-          <td><?
+          <td><?php
           db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"class='pesquisa' onchange='js_cgm(false);jsLimpa(this.value, this.id);'");
           db_input('z01_nome',30,0,true,'text',3,"class='label'","z01_nomecgm");
           ?>
           </td>
         </tr>
         <tr>
-          <td title="<?=$Tj01_matric?>"><?
+          <td title="<?=$Tj01_matric?>"><?php
           db_ancora($Lj01_matric,' js_matri(true); ',1);?></td>
-          <td><?
+          <td><?php
           db_input('j01_matric',5,$Ij01_matric,true,'text',1,"class='pesquisa' onchange='js_matri(false);jsLimpa(this.value, this.id);'");
           db_input('z01_nome',30,0, true,'text',3,"class='label'","z01_nomematri");
           ?>
@@ -111,7 +111,7 @@ db_app::load('estilos.css, grid.style.css');
         </tr>
         <tr>
           <td title="<?=$Tk00_numpre?>"><?=$Lk00_numpre?></td>
-          <td><?
+          <td><?php
           db_input('k00_numpre',10,$Ik00_numpre,true,'text',1,"onchange='jsLimpa(this.value, this.id);'");
           ?>
           </td>
@@ -144,7 +144,7 @@ db_app::load('estilos.css, grid.style.css');
         </tr>
         </table>
   </form>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

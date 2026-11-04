@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -65,7 +65,7 @@ $iInstit  = db_getsession('DB_instit');
 $sSqlParFiscal  = $clparfiscal->sql_query($iInstit,"parfiscal.y32_procprotbaixaauto",null,"");
 $rsSqlParFiscal = $clparfiscal->sql_record($sSqlParFiscal);
 if ($clparfiscal->numrows > 0) {
-	
+
 	$oParFiscal = db_utils::fieldsMemory($rsSqlParFiscal,0);
 	if (isset($oParFiscal->y32_procprotbaixaauto) && $oParFiscal->y32_procprotbaixaauto == 1) {
 		$lProcProtBaixaAuto = true;
@@ -73,27 +73,27 @@ if ($clparfiscal->numrows > 0) {
 }
 
 if (isset($baixar)) {
-	
-  
+
+
   db_inicio_transacao();
-  
+
   $sqlerro      = false;
   $dtbaixa      = $q07_databx_ano.'-'.$q07_databx_mes.'-'.$q07_databx_dia;
   $data         = date('Y-m-d',db_getsession('DB_datausu'));
   $usu          = db_getsession('DB_id_usuario');
-  
+
   $sWhereAutoTipo  = "y87_dtbaixa   = '{$dtbaixa}'    and y87_data    = '{$data}' and y87_usuario = {$usu} and ";
   $sWhereAutoTipo .= "y59_codauto = {$y50_codauto}                                                             ";
-  
+
   if (isset($y114_processo) && !empty($y114_processo)) {
-    $sWhereAutoTipo .= " and autotipobaixaprocproc.y114_processo = {$y114_processo} ";  	
+    $sWhereAutoTipo .= " and autotipobaixaprocproc.y114_processo = {$y114_processo} ";
   }
-  
+
   $sSqlAutoTipo    = $clautotipo->sql_query_baixa(null,"*",null,$sWhereAutoTipo);
   $result_baixa    = $clautotipo->sql_record($sSqlAutoTipo);
-  
+
   if ($clautotipo->numrows == 0) {
-  	
+
     $clautotipobaixaproc->y87_dtbaixa  = $dtbaixa;
     $clautotipobaixaproc->y87_data     = date('Y-m-d',db_getsession('DB_datausu'));
     $clautotipobaixaproc->y87_hora     = db_hora();
@@ -103,85 +103,85 @@ if (isset($baixar)) {
     if ($clautotipobaixaproc->erro_status == 0) {
        $sqlerro=true;
     }
-    
+
     $codigo = $clautotipobaixaproc->y87_baixaproc;
   } else {
-  	
+
     db_fieldsmemory($result_baixa,0);
     $codigo = $y87_baixaproc;
     $erro   = 'Inclusão efetuada com Sucesso!!';
   }
-  
+
   if ($sqlerro == false) {
-  	
+
 	  if (isset($lProcProtBaixaAuto) && $lProcProtBaixaAuto == true || isset($y114_processo) && !empty($y114_processo)) {
-	    
+
 	    $clautotipobaixaprocproc->y114_baixaproc = $clautotipobaixaproc->y87_baixaproc;
 	    $clautotipobaixaprocproc->y114_processo  = $y114_processo;
 	    $clautotipobaixaprocproc->incluir(null);
 	    if ($clautotipobaixaprocproc->erro_status == 0) {
-	    	
+
 	       $sqlerro = true;
 	       $erro    = $clautotipobaixaprocproc->erro_msg;
 	    }
 	  }
   }
-  
+
   if ($sqlerro == false) {
-  	
-    $cods = split('#',$chaves);
+
+    $cods =explode('#',$chaves);
     for($x = 0; $x < count($cods); $x++) {
-    	
+
       if ($sqlerro == false) {
-      	
+
 	      $clautotipobaixa->y86_codbaixaproc = $codigo;
 	      $clautotipobaixa->incluir($cods[$x]);
 	      if ($clautotipobaixa->erro_status == 0) {
-	      	
+
 	        $sqlerro = true;
 	        $erro    = $clautotipobaixa->erro_msg;
 	      }
       }
     }
-    
+
     $sWhereAutoNumpre = "y17_codauto = {$y50_codauto}";
     $result_numpre    = $clautonumpre->sql_record($clautonumpre->sql_query_file(null,"*",null,$sWhereAutoNumpre));
     if ($clautonumpre->numrows > 0) {
-    	
+
     	$numrows_numpre = $clautonumpre->numrows;
     	for($w = 0; $w < $numrows; $w++) {
-    		
+
     		db_fieldsmemory($result_numpre,$w);
     		$clarrecad->excluir(null,"k00_numpre = {$y17_numpre}");
     		if ($clarrecad->erro_status == 0) {
-    			
+
     			$sqlerro=true;
     			$erro=$clarrecad->erro_msg;
     			break;
     		}
     	}
-    	
+
     	if ($sqlerro == false) {
-    		
+
     		$clautonumpre->excluir(null,"y17_codauto = {$y50_codauto}");
     		if ($clautonumpre->erro_status == 0) {
-    			
+
 	  			$sqlerro=true;
 	  			$erro=$clautonumpre->erro_msg;
 			  }
     	}
-      
+
     	$sWhereAutoTipo  = "y59_codauto = {$y50_codauto} and y86_codautotipo is null";
     	$sSqlAutoTipo    = $clautotipo->sql_query_baixa(null,"*",null,$sWhereAutoTipo);
     	$result_baixadas = $clautotipo->sql_record($sSqlAutoTipo);
 	    if ($clautotipo->numrows > 0) {
-	    	
+
     	  $result_calc = $clauto->sql_calculo($y50_codauto);
         db_fieldsmemory($result_calc,0);
-        $info = $fc_autodeinfracao;	
+        $info = $fc_autodeinfracao;
     	}
     }
-    
+
     db_fim_transacao($sqlerro);
   }
 }
@@ -202,33 +202,33 @@ if (isset($baixar)) {
   <tr>
     <td>&nbsp;</td>
   </tr>
-  <tr> 
-    <td align="left" valign="top" bgcolor="#CCCCCC"> 
-			<?
+  <tr>
+    <td align="left" valign="top" bgcolor="#CCCCCC">
+			<?php
 			  include(modification("forms/db_frmautobaixaproc.php"));
 			?>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
-<?
+<?php
 if (isset($baixar)) {
-	
-  if ($sqlerro == true) { 
-  	
+
+  if ($sqlerro == true) {
+
     db_msgbox($erro);
     if ($clautotipobaixaproc->erro_campo != "") {
-    	
+
       echo "<script> document.form1.".$clautotipobaixaproc->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clautotipobaixaproc->erro_campo.".focus();</script>";
-    } 
+    }
   } else {
-  	 
+
     if (isset($erro) && !empty($erro)) {
-      db_msgbox($erro); 
+      db_msgbox($erro);
     }
   }
 }

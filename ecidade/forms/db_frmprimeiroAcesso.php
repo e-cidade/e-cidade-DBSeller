@@ -82,6 +82,6 @@
     })
 
     <?php if (isset($sErro)): ?>
-      alert("<? echo $sErro; ?>")
+      alert("<?php echo $sErro; ?>")
     <?php endif; ?>
   </script>

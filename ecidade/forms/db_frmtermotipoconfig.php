@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,37 +40,37 @@ $clrotulo->label("nomeinst");
        <?=@$Lk42_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k42_sequencial',10,$Ik42_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk42_cadtipo?>">
-       <?
+       <?php
        db_ancora(@$Lk42_cadtipo,"js_pesquisak42_cadtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k42_cadtipo',10,$Ik42_cadtipo,true,'text',$db_opcao," onchange='js_pesquisak42_cadtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k03_descr',60,$Ik03_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk42_tiponovo?>">
-       <?
+       <?php
        db_ancora(@$Lk42_tiponovo,"js_pesquisak42_tiponovo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k42_tiponovo',10,$Ik42_tiponovo,true,'text',$db_opcao," onchange='js_pesquisak42_tiponovo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',60,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -134,7 +134,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_termotipoconfig.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

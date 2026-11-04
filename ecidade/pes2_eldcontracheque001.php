@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,12 +95,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -109,13 +109,13 @@ function js_emite(){
   <tr>
     <td><b>Arquivo:</b</td>
     <td>
-     <?
+     <?php
        $x = array("r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento");
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>
      </tr>
-     <?
+     <?php
      if(isset($arquivo) && $arquivo == "r48"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest as rh40_sequencia"));
        if($clgerfcom->numrows > 0){
@@ -153,7 +153,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -184,7 +184,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

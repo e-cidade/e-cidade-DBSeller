@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -361,13 +361,13 @@ if ($sqlerro==false){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC style='margin-top: 25px' topmargin="0" marginwidth="0" marginheight="0" onLoad="js_pesquisa_ultimamedida(); a=1;">
-	<?
+	<?php
 	include(modification("forms/db_frmveicabast.php"));
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>
 </html>
-<?
+<?php
 
 if(isset($alterar)&& $self =! ""){ 
   if($clveicabast->erro_status=="0"||$sqlerro==true){

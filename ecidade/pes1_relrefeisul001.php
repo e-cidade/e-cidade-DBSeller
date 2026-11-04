@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ $sPrefeituraProducao  = trim(strtolower($oConfigPrefeitura->munic));
         <tr>
           <td width="40"><b>Competência:</b></td>
           <td>
-            <?
+            <?php
               db_input("anofolha", 5, '', true, 'text', 1);
               echo " / ";
               db_input("mesfolha", 3, '', true, 'text', 1);
@@ -75,7 +75,7 @@ $sPrefeituraProducao  = trim(strtolower($oConfigPrefeitura->munic));
         <tr>
           <td><b>Base:</b></td>
           <td>
-            <?
+            <?php
               $sSqlDataBases = "select datname,datname from pg_database where substr(datname, 1, 6) != 'templa' and " . (substr(db_getsession('DB_base'),0,5) == "ontem"?"true":" datname != '".db_getsession('DB_base') . "'") . " order by datname;";
               $rsDatabases   = db_query($sSqlDataBases);
               db_selectrecord('datname', $rsDatabases, true, 1, "style: width:100%;", '', '', '', '', 1);
@@ -89,7 +89,7 @@ $sPrefeituraProducao  = trim(strtolower($oConfigPrefeitura->munic));
   </center>
   
   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

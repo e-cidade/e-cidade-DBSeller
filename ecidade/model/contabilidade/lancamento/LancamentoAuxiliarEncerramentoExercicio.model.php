@@ -22,7 +22,6 @@
  *                                 licenca/licenca_pt.txt
  */
 
-
 require_once(modification("interfaces/ILancamentoAuxiliar.interface.php"));
 require_once(modification("model/contabilidade/lancamento/LancamentoAuxiliarBase.model.php"));
 
@@ -31,8 +30,6 @@ require_once(modification("model/contabilidade/lancamento/LancamentoAuxiliarBase
  */
 class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase implements ILancamentoAuxiliar
 {
-
-
     /**
      * Complemento para o lançamento contábil
      * @var string
@@ -103,6 +100,8 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
      * @var integer
      */
     private $codigoRecurso;
+
+    private $codigoDocumento;
 
     /**
      * @see ILancamentoAuxiliar::setHistorico()
@@ -446,6 +445,21 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
         return false;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCodigoDocumento()
+    {
+        return $this->codigoDocumento;
+    }
 
-
+    /**
+     * @param mixed $codigoDocumento
+     * @return LancamentoAuxiliarEncerramentoExercicio
+     */
+    public function setCodigoDocumento($codigoDocumento)
+    {
+        $this->codigoDocumento = $codigoDocumento;
+        return $this;
+    }
 }

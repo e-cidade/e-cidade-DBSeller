@@ -56,8 +56,10 @@ class AnexosRREOFactory
                 return self::getDadosViewAnexoVI($exercicio);
             case 8:
                 return self::getDadosViewAnexoVIII($exercicio);
+            case 12:
+                return self::getDadosViewAnexoXII($exercicio);
             default:
-                throw new Exception('Relatório não encotrado.');
+                throw new Exception('Relatório não encontrado.');
         }
     }
 
@@ -84,5 +86,10 @@ class AnexosRREOFactory
     private static function getDadosViewAnexoI($exercicio)
     {
         return AnexoUmFactory::getDadosView($exercicio);
+    }
+
+    private static function getDadosViewAnexoXII($exercicio)
+    {
+        return AnexoDozeFactory::getDadosView($exercicio);
     }
 }

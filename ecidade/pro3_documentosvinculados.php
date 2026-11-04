@@ -30,12 +30,11 @@
   require_once(modification("libs/db_app.utils.php"));
   require_once(modification("libs/db_conecta.php"));
   require_once(modification("libs/db_sessoes.php"));
-
+  $tela_documento = (bool) $_GET['tela_documento'];
 ?>
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     <?php
       db_app::load("scripts.js, strings.js, prototype.js, estilos.css");
@@ -54,10 +53,9 @@
 </html>
 
 <script>
-
+  var tela_documento = "<?php echo $tela_documento; ?>";
   var sUrlRPC = "prot4_processodocumento.RPC.php";
   var oGet    = js_urlToObject();
-
 
   var oGridDocumento = new DBGrid('oGridDocumento');
   oGridDocumento.nameInstance = "oGridDocumento";
@@ -70,16 +68,17 @@
    * Localiza no servidor os arquivos vinculados ao processo
    */
   function js_carregarDocumentos() {
+      if(!tela_documento){
+          js_divCarregando(_M("patrimonial.protocolo.prot4_processodocumento.carregando_documentos"), "msgBox");
+      }
 
-    js_divCarregando(_M("patrimonial.protocolo.prot4_processodocumento.carregando_documentos"), "msgBox");
+      var oParam = {"exec":"carregarDocumentos", "iCodigoProcesso":oGet.codigo_processo};
 
-    var oParam = {"exec":"carregarDocumentos", "iCodigoProcesso":oGet.codigo_processo};
-
-    new Ajax.Request(sUrlRPC,
-                     {method: 'post',
-                      parameters: 'json='+Object.toJSON(oParam),
-                      onComplete: preencherGridComDocumentos
-                     });
+      new Ajax.Request(sUrlRPC,
+          {method: 'post',
+              parameters: 'json='+Object.toJSON(oParam),
+              onComplete: preencherGridComDocumentos
+          });
   }
 
   /**
@@ -114,7 +113,9 @@
    */
   function downloadDocumento(iCodigoDocumento) {
 
-    js_divCarregando(_M("patrimonial.protocolo.prot4_processodocumento.salvando_em_disco"), "msgBox");
+    if(!tela_documento){
+        js_divCarregando(_M("patrimonial.protocolo.prot4_processodocumento.salvando_em_disco"), "msgBox");
+    }
     var oParam = {"exec":"download", "iCodigoDocumento":iCodigoDocumento};
 
     new Ajax.Request(sUrlRPC,

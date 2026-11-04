@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clinicial->rotulo->label("v50_data");
               <?=$Lv50_inicial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v50_inicial",6,$Iv50_inicial,true,"text",4,"","chave_v50_inicial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clinicial->rotulo->label("v50_data");
               <?=$Lv50_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v50_data",8,$Iv50_data,true,"text",4,"","chave_v50_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clinicial->rotulo->label("v50_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inicial.php")==true){
@@ -122,12 +122,12 @@ $clinicial->rotulo->label("v50_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

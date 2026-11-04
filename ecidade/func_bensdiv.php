@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clbensdiv->rotulo->label("t33_bem");
               <?=$Lt33_bem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t33_bem",10,$It33_bem,true,"text",4,"","chave_t33_bem");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbensdiv->rotulo->label("t33_bem");
               <?=$Lt33_bem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t33_bem",10,$It33_bem,true,"text",4,"","chave_t33_bem");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbensdiv->rotulo->label("t33_bem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensdiv.php")==true){
@@ -122,12 +122,12 @@ $clbensdiv->rotulo->label("t33_bem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

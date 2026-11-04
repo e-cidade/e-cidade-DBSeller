@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("libs/db_sql.php"));
@@ -47,23 +47,23 @@ $clrotulo->label('');
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 if (isset($dadosini)&&$dadosini!=""){
-  $matriz = split("xx",$dadosini);
+  $matriz =explode("xx",$dadosini);
 }
 $result = $cldb_docparag->sql_record($cldb_docparag->sql_query(null,null,"db_docparag.*,db02_alinhamento,db02_texto,db02_espaca,db02_alinha,db02_inicia","db04_ordem","db03_tipodoc=4"));
 $numrows = $cldb_docparag->numrows;
 if ($numrows == 0 ) {
- db_redireciona('db_erros.php?fechar=true&db_erro=Sem documento configurado');	
+ db_redireciona('db_erros.php?fechar=true&db_erro=Sem documento configurado');
 }
 $pdf = new PDF1();
 $pdf->Open();
 $pdf->AliasNbPages();
 for($q=0;$q<sizeof($matriz);$q++){
   if ($matriz[$q]!=""){
-	$dadosi = split("ww",$matriz[$q]);
+	$dadosi =explode("ww",$matriz[$q]);
 	$inicial = $dadosi[0];
 	$chave = $dadosi[1];
 	$modo = $dadosi[2];
-	
+
     if ($modo=='inscricao'){
 	  $result_issbase = $clissbase->sql_record($clissbase->sql_query($chave,"distinct z01_nome as nome"));
 	  db_fieldsmemory($result_issbase,0);
@@ -83,7 +83,7 @@ for($q=0;$q<sizeof($matriz);$q++){
 	if ($clinicial->numrows>0){
 	  db_fieldsmemory($result_local,0); //pega localiza
 	}
-	
+
 	$sWhere = "processoforoinicial.v71_inicial = {$inicial} and processoforoinicial.v71_anulado is false";
 	$sSqlProcessoForoInicial = $clprocessoforoinicial->sql_query(null,"processoforo.v70_codforo,vara.v53_descr",null,$sWhere);
 	$result_foro = $clprocessoforoinicial->sql_record($sSqlProcessoForoInicial);
@@ -112,7 +112,7 @@ for($q=0;$q<sizeof($matriz);$q++){
   $yy = $pdf->h - 11;
   $pdf->SetFont('Arial','',5);
   $pdf->Text(10,$yy,'Controle Administrativo nº '.$inicial);
-  }  
+  }
 }
 $pdf->Output();
 

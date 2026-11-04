@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -111,11 +111,14 @@ class RelatorioProfessorEscolaSintetico extends RelatorioProfessorEscola {
         $this->validaQuebraPagina(4);
         $this->oPdf->setfont('arial', 'B', 7);
 
+        $nomeSocial = explode("/", $oProfessor->sNome);
+
           if ($this->somenteServidoresAtivos) {
-              $this->oPdf->cell(146, 4, "Professor: " . $oProfessor->sNome, 0, 0, 'L');
-              $this->oPdf->cell(45, 4, "Data Ingresso: " . $oProfessor->dtIngresso, 0, 1, 'L');
+            $this->oPdf->cell(131, 4, "Professor: " . $nomeSocial[0] , 0, 0, 'L');
+            $this->oPdf->cell(45, 4, "Data Ingresso: " . $oProfessor->dtIngresso, 0, 1, 'L');
+              $this->oPdf->cell(131, 4,  $nomeSocial[1] , 0, 0, 'L');
           } else {
-              $this->oPdf->cell(100, 4, "Professor: " . $oProfessor->sNome, 0, 0, 'L');
+              $this->oPdf->cell(100, 4, "Professor: " . $nomeSocial[0], 0, 0, 'L');
               $this->oPdf->cell(45, 4, "Data Ingresso: " . $oProfessor->dtIngresso, 0, 0, 'L');
               if (isset($oProfessor->dtSaida)) {
                   $this->oPdf->cell(46, 4, "Data Saida: " . $oProfessor->dtSaida, 0, 1, 'L');
@@ -128,7 +131,7 @@ class RelatorioProfessorEscolaSintetico extends RelatorioProfessorEscola {
 
           $this->validaQuebraPagina(4);
           $this->oPdf->setfont('arial', 'B', 7);
-          $this->oPdf->cell(191, 4, "Área de Trabalho: " . $oArea->sAreaTrabalho, 0, 1, 'L');
+          $this->oPdf->cell(60, 4, "Área de Trabalho: " . $oArea->sAreaTrabalho, 0, 1, 'L');
 
           $lImprimeCabecalho = true;
 

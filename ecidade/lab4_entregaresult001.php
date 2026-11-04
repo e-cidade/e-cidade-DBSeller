@@ -134,7 +134,7 @@ if( isset( $incluir ) ) {
 <script>
 js_tabulacaoforms("form1","la23_c_descr",true,1,"la23_c_descr",true);
 </script>
-<?
+<?php
 if( isset( $incluir ) ) {
 
   if( $cllab_entrega->erro_status == "0" ) {

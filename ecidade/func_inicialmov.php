@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clinicialmov->rotulo->label("v56_codmov");
              <?=$Lv56_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <? db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov"); ?>
+             <?php db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov"); ?>
             </td>
           </tr>
           <tr> 
@@ -62,7 +62,7 @@ $clinicialmov->rotulo->label("v56_codmov");
               <?=$Lv56_codmov?>
             </td>
             <td width="96%" align="left" nowrap>
-	    <?  db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov"); ?>
+	    <?php  db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov"); ?>
             </td>
           </tr>
           <tr> 
@@ -78,7 +78,7 @@ $clinicialmov->rotulo->label("v56_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "inicialmov.*";
@@ -111,14 +111,14 @@ $clinicialmov->rotulo->label("v56_codmov");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v56_codmov.focus();
 document.form2.chave_v56_codmov.select();
   </script>
-  <?
+  <?php
 }
 ?>
 require(modification("libs/db_stdlib.php"));
@@ -150,7 +150,7 @@ $clinicialmov->rotulo->label("v56_codmov");
               <?=$Lv56_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov");
 		       ?>
             </td>
@@ -160,7 +160,7 @@ $clinicialmov->rotulo->label("v56_codmov");
               <?=$Lv56_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v56_codmov",6,$Iv56_codmov,true,"text",4,"","chave_v56_codmov");
 		       ?>
             </td>
@@ -178,7 +178,7 @@ $clinicialmov->rotulo->label("v56_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "inicialmov.*";
@@ -210,14 +210,14 @@ $clinicialmov->rotulo->label("v56_codmov");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v56_codmov.focus();
 document.form2.chave_v56_codmov.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -178,7 +178,7 @@ $escola = db_getsession("DB_coddepto");
                   if( <?=trim( $z01_i_familiamicroarea)?> == itemArray[i][1] ) {
                     indice = i;
                   }
-                <?}?>
+                <?php }?>
                 j++;
               }
 
@@ -190,20 +190,20 @@ $escola = db_getsession("DB_coddepto");
               } else {
               ?>
                 selectCtrl.options[0].selected = true;
-              <?}?>
+              <?php }?>
             }
           }
         </script>
         <tr title="<?=@$Trh70_descr?>">
           <td  align="left" nowrap  >
             <strong>
-              <?
+              <?php
               db_ancora("Ocupação", "js_pesquisaCbo(true);", $db_opcao);
               ?>
             </strong>
           </td>
           <td colspan="4" align="left">
-            <?
+            <?php
             db_input("z01_i_codocupacao",  10, "", true, "text", $db_opcao, "onchange='js_pesquisaCbo(false);'");
             db_input("z01_i_descocupacao",  110, "",  true, "text", 3, "");
             ?>

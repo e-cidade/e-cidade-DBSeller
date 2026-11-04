@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ $result_rhlota = $clrhlota->sql_record($clrhlota->sql_query_file(null, "r70_codi
       <b>Período:</b>
     </td>
     <td nowrap>
-      <?
+      <?php
       $dataf_dia = 10;
       $dataf_mes = date('m');
       $dataf_ano = date('Y');
@@ -86,14 +86,14 @@ $result_rhlota = $clrhlota->sql_record($clrhlota->sql_query_file(null, "r70_codi
       db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 1);
       ?>
       <b>&nbsp;a&nbsp;</b>
-      <?
+      <?php
       db_inputdata("dataf", @$dataf_dia, @$dataf_mes, @$dataf_ano, true, 'text', 1);
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap colspan="2">
-    <?
+    <?php
     $arr_rhlota_inicial = Array();
     $arr_rhlota_final   = Array();
     if(isset($clrhlota->numrows)){
@@ -117,7 +117,7 @@ $result_rhlota = $clrhlota->sql_record($clrhlota->sql_query_file(null, "r70_codi
   </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

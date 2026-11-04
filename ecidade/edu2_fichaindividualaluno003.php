@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,9 +32,8 @@ require_once(modification("libs/db_utils.php"));
 $resultedu           = eduparametros(db_getsession("DB_coddepto"));
 $permitenotaembranco = VerParametroNota(db_getsession("DB_coddepto"));
 $escola              = db_getsession("DB_coddepto");
-$oGet                = db_utils::postMemory( $_GET );
-$obs1                = base64_decode($obs1);
-
+$oGet                = db_utils::postMemory($_GET);
+$obs1                = utf8_decode($obs1);
 $oGet->secretario = base64_decode($oGet->secretario);
 
 $clmatricula       = new cl_matricula;
@@ -56,9 +55,9 @@ $clrotulo->label("ed76_d_data");
 /**
  * Busca o município da escola
  */
-$sSqlDadosEscola = $clEscola->sql_query( "", "ed261_c_nome as mun_escola", "", "ed18_i_codigo = {$escola}" );
-$rsDadosEscola   = db_query( $sSqlDadosEscola );
-$oDadosEscola    = db_utils::fieldsMemory( $rsDadosEscola, 0 );
+$sSqlDadosEscola = $clEscola->sql_query("", "ed261_c_nome as mun_escola", "", "ed18_i_codigo = {$escola}");
+$rsDadosEscola   = db_query($sSqlDadosEscola);
+$oDadosEscola    = db_utils::fieldsMemory($rsDadosEscola, 0);
 $mun_escola      = $oDadosEscola->mun_escola;
 
 /**
@@ -101,8 +100,8 @@ $camp .= "  case when ed76_c_tipo = 'M' ";
 $camp .= "   then escolaprimat.ed18_c_nome else escolaproc.ed82_c_nome end as nomeescola, ";
 $camp .= "   aluno.*  ";
 
-$sSqlMatricula = $clmatricula->sql_query( "", $camp, "ed60_d_datamatricula desc", " ed60_i_codigo in ($alunos)" );
-$result1       = $clmatricula->sql_record( $sSqlMatricula );
+$sSqlMatricula = $clmatricula->sql_query("", $camp, "ed60_d_datamatricula desc", " ed60_i_codigo in ($alunos)");
+$result1       = $clmatricula->sql_record($sSqlMatricula);
 
 $sSqlTipoSanguineo = $oDaoTipoSanguineo->sql_query_file("", "*", "sd100_sequencial", "");
 $rsTipoSanguineo   = $oDaoTipoSanguineo->sql_record($sSqlTipoSanguineo);
@@ -110,10 +109,8 @@ $iLinhas           = $oDaoTipoSanguineo->numrows;
 
 $aTiposSanguineos = array();
 
-if ( isset( $rsTipoSanguineo ) && $iLinhas > 0) {
-
-    for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
-
+if (isset($rsTipoSanguineo) && $iLinhas > 0) {
+    for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
         $oDados = db_utils::fieldsMemory($rsTipoSanguineo, $iContador);
         $aTiposSanguineos[$oDados->sd100_sequencial] = $oDados->sd100_tipo;
     }
@@ -122,8 +119,8 @@ if ( isset( $rsTipoSanguineo ) && $iLinhas > 0) {
 /**
  * Caso não encontre registros da matrícula do aluno, apresenta a mensagem de nenhum registro encontrado
  */
-if ( $clmatricula->numrows == 0 ) {
-    db_redireciona( "db_erros.php?fechar=true&db_erro=Nenhum registro encontrado." );
+if ($clmatricula->numrows == 0) {
+    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.");
 }
 
 /**
@@ -134,7 +131,7 @@ $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->ln(5);
 
-db_fieldsmemory( $result1, 0 );
+db_fieldsmemory($result1, 0);
 $ed47_v_nome = is_null($ed47_v_nomesocial) || empty($ed47_v_nomesocial) ? $ed47_v_nome : $ed47_v_nomesocial;
 /**
  * Cabeçalho da ficha do aluno
@@ -148,16 +145,19 @@ $pdf->setfillcolor(223);
 $u       = 0;
 $iCodigo = 0;
 
-if (!empty($iDataEmissao)){
-  $data_emiExp = explode("/",$iDataEmissao);
-  $dEmissao = $data_emiExp[2]."-".$data_emiExp[1]."-".$data_emiExp[0];
+if (!empty($iDataEmissao)) {
+    $data_emiExp = explode("/", $iDataEmissao);
+    if (strlen($data_emiExp[2]) == 4) {
+        $dEmissao = $data_emiExp[0]."-".$data_emiExp[1]."-".$data_emiExp[2];
+    } else {
+         $dEmissao = $data_emiExp[2]."-".$data_emiExp[1]."-".$data_emiExp[0];
+    }
 }
 
 /**
  * Percorre as matrículas encontradas
  */
-for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
-
+for ($ww = 0; $ww < $clmatricula->numrows; $ww ++) {
     db_fieldsmemory($result1, $ww);
     $ed47_v_nome = is_null($ed47_v_nomesocial) || empty($ed47_v_nomesocial) ? $ed47_v_nome : $ed47_v_nomesocial;
     $dataEmissao  = !empty($iDataEmissao) ? strtotime($dEmissao) : DB_getsession("DB_datausu") ;
@@ -188,9 +188,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $head2 = "{$ed47_i_codigo} - {$ed47_v_nome}";
 
     if ($iCodigo != $ed60_i_codigo) {
-
         if ($ww != 0) {
-
             $pdf->ln(5);
             $pdf->Addpage('P');
         }
@@ -250,11 +248,11 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
     if ($ed47_i_estciv == 1) {
         $ed47_i_estciv = "SOLTEIRO";
-    } else if ($ed47_i_estciv == 2) {
+    } elseif ($ed47_i_estciv == 2) {
         $ed47_i_estciv = "CASADO";
-    } else if ($ed47_i_estciv == 3) {
+    } elseif ($ed47_i_estciv == 3) {
         $estciv = "VIÚVO";
-    } else if ($ed47_i_estciv == 4) {
+    } elseif ($ed47_i_estciv == 4) {
         $ed47_i_estciv = "DIVORCIADO";
     }
 
@@ -321,23 +319,10 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
      * ********************************
      */
     if ($clmatricula->numrows > 0) {
-
         $contador = 0;
         db_fieldsmemory($result1, $ww);
 
         $oTurma = TurmaRepository::getTurmaByCodigo($ed57_i_codigo);
-
-
-        $clObsFichaIndAluno = new cl_obsfichaindaluno;
-        $iEscola = $oTurma->getEscola()->getCodigo();
-        $sSql = $clObsFichaIndAluno->sql_query("", "ed286_t_obs", "", " ed286_i_escola = $iEscola");
-
-        $resultobs = $clObsFichaIndAluno->sql_record($sSql);
-        if ($clObsFichaIndAluno->numrows > 0) {
-
-            $oDadosObs = db_utils::fieldsmemory($resultobs, 0);
-            $obs1 = $oDadosObs->ed286_t_obs;
-        }
 
         $oMatricula = MatriculaRepository::getMatriculaByCodigo($ed60_i_codigo);
 
@@ -367,11 +352,18 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
         if (trim($ed60_c_situacao) == "AVANÇADO" || trim($ed60_c_situacao) == "CLASSIFICADO") {
             $sitt = trim($ed60_c_situacao);
         } else {
-
             if ($ed60_c_concluida == "S") {
-                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . "(CONCLUÍDA)";
+                if (trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA - CURSANDO)";
+                } else {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA)";
+                }
             } else {
-                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+                if (trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CURSANDO)";
+                } else {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+                }
             }
         }
 
@@ -379,7 +371,6 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
         if (trim(Situacao($ed60_c_situacao, $ed60_i_codigo)) != "MATRICULADO"
             && trim(Situacao($ed60_c_situacao, $ed60_i_codigo)) != "REMATRICULADO") {
-
             $pdf->setfont('arial', '', 7);
             $pdf->cell(35, 4, "Data Saída:", "L", 0, "L", 1);
 
@@ -420,7 +411,6 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
         if ($oMatricula->getTurma()->getTurno()->isIntegral()
             && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
         ) {
-
             $aDescricaoTurno = array();
             $aTurnoReferente = array(1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE');
 
@@ -433,13 +423,13 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
         $oEtapa = EtapaRepository::getEtapaByCodigo($ed11_i_codigo);
         $sCargaHoraria = "";
-        if($oGet->sCargaHorariaOpcional == "") {
+        if ($oGet->sCargaHorariaOpcional == "") {
             try {
                 $sCargaHoraria = $oTurma->getCargaHoraria($oEtapa);
             } catch (Exception $oErro) {
                 db_redireciona('db_erros.php?fechar=true&db_erro=' . trim($oErro->getMessage()));
             }
-        }else {
+        } else {
             $sCargaHoraria = $oGet->sCargaHorariaOpcional;
         }
 
@@ -458,17 +448,22 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
         $pdf->setfont('arial', 'b', 7);
         $pdf->cell(40, 4, $sCargaHoraria, 0, 0, "L", 1);
 
-        $pdf->setfont('arial', '', 7);
-        $pdf->cell(30, 4, "Dias Letivos:", 0, 0, "L", 1);
+        if ($oGet->lExibeDiasLetivos == "true") {
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell(30, 4, "Dias Letivos:", 0, 0, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell(85, 4, $oTurma->getCalendario()->getDiasLetivos(), "R", 1, "L", 1);
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell(35, 4, "Classificação:", "L", 0, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell(155, 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+        } else {
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell(35, 4, "Classificação:", 0, 0, "L", 1);
 
-        $pdf->setfont('arial', 'b', 7);
-        $pdf->cell(85, 4, $oTurma->getCalendario()->getDiasLetivos(), "R", 1, "L", 1);
-
-        $pdf->setfont('arial', '', 7);
-        $pdf->cell(35, 4, "Classificação:", "L", 0, "L", 1);
-
-        $pdf->setfont('arial', 'b', 7);
-        $pdf->cell(155, 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell(80, 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+        }
     }
 
     $cont_geral = 0;
@@ -476,9 +471,11 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $result11 = $clregencia->sql_record($sSqlRegencia);
 
     if ($clregencia->numrows > 0 && $punico == "yes") {
-
-        db_fieldsmemory($result11, 0);
-        $condicao = "and ed59_i_codigo = {$regencia}";
+        $regencias = [];
+        for ($i = 0; $i < $clregencia->numrows; $i++) {
+            $regencias[] = db_utils::fieldsMemory($result11, $i)->regencia;
+        }
+        $condicao = "and ed59_i_codigo in (".implode(",", $regencias).")";
     } else {
         $condicao = "AND ed95_i_regencia in({$disciplinas})";
     }
@@ -515,20 +512,16 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
      * Percorre as informações adicionais retornadas da matrícula
      */
     for ($r = 0; $r < $linhas0; $r++) {
-
         db_fieldsmemory($result, $r);
         $pdf->setfont('arial', 'b', 7);
 
         if ($punico == "yes") {
-
             $pdf->cell(190, 4, "Período de Avaliação: " . $ed09_c_descr, 1, 1, "C", 0);
             $pdf->cell(190, 4, $punico == "yes" ? "PARECER ÚNICO" : $ed232_c_descr, 1, 1, "LR", 0);
             $pdf->cell(100, 4, "Faltas :" . $ed72_i_numfaltas, 1, 0, "L", 0);
             $pdf->cell(90, 4, "Aulas Dadas: " . $ed78_i_aulasdadas, 1, 1, "R", 0);
         } else {
-
             if ($u != $ed09_i_codigo) {
-
                 $pdf->cell(190, 4, "Período de Avaliação: " . $ed09_c_descr, 1, 1, "C", 1);
                 $u = $ed09_i_codigo;
             }
@@ -542,7 +535,6 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
          * Imprime as informações de parecer
          */
         if ($parecer != "") {
-
             $pdf->cell(190, 4, "Parecer", 1, 1, "C", 1);
             $pdf->setfont('arial', '', 7);
             $pdf->multicell(190, 3, "  " . trim($parecer), "LRB", "J", 0, 0);
@@ -552,7 +544,6 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
          * Imprime observações referentes a matrícula
          */
         if ($ed72_t_obs != "") {
-
             $pdf->setfont('arial', 'b', 7);
             $pdf->cell(190, 4, "Observações:", 1, 1, "L", 1);
 
@@ -571,12 +562,10 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $result66 = $cldiarioresultado->sql_record($sSqlDiarioResultado);
 
     for ($e = 0; $e < $cldiarioresultado->numrows; $e++) {
-
         db_fieldsmemory($result66, $e);
         $pdf->setfont('arial', '', 7);
 
         if ($ed73_t_parecer != "") {
-
             $pdf->setfont('arial', 'b', 7);
             $pdf->cell(190, 4, "Parecer Final", 1, 1, "C", 1);
 
@@ -590,29 +579,28 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
      * Retorna o resultado final do aluno
      */
     $sResultadoFinal = ResultadoFinal($ed60_i_codigo, $ed60_i_aluno, $ed60_i_turma, trim($ed60_c_situacao), trim($ed60_c_concluida), $ensino);
+    if (trim($sResultadoFinal == "TRANSFERIDO FORA") || trim($sResultadoFinal == "TRANSFERIDO REDE")) {
+        $sResultadoFinal .= " (CURSANDO)";
+    }
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(190, 4, "Resultado Final : " . $sResultadoFinal, 1, 1, "L", 1);
     $pdf->cell(190, 4, "", 0, 1, "C", 0);
 
     if ($linhas0 > 0) {
-
         db_fieldsmemory($result, 0);
         if ($ed74_t_obs != "") {
-
             $pdf->setfont('arial', 'b', 7);
             $pdf->cell(190, 4, "Observações Diário final:", 1, 1, "L", 1);
 
             $pdf->setfont('arial', '', 7);
             $pdf->multicell(190, 4, mb_strtoupper($ed74_t_obs), 1, "L", 0, 0);
         }
-
     }
 
     if ($obs1 != "") {
-
         $pdf->setfont('arial', 'b', 7);
         $pdf->cell(190, 4, "", 0, 1, "L", 0);
-        $pdf->cell(190, 4, "Observações Geral:", 1, 1, "L", 1);
+        $pdf->cell(190, 4, "Observações Gerais:", 1, 1, "L", 1);
 
         $pdf->setfont('arial', '', 7);
         $pdf->multicell(190, 4, $obs1, 1, "L", 0, 0);
@@ -638,7 +626,6 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     }
 
     imprimirAssinaturas($pdf, $oGet, $oTurma);
-
 }
 $pdf->Output();
 
@@ -681,14 +668,21 @@ function imprimirAssinaturas($pdf, $oGet, $oTurma)
     }
 
     if ($oGet->lExibeAssinaturaProfessor == "true") {
-
         $regenteClasse = $oTurma->getProfessorConselheiro();
-        $regente = $regenteClasse->getCgm()->getNome();
-        $nome = $regente ? $regente : "";
+        if ($regenteClasse) {
+            $regente = $regenteClasse->getCgm()->getNome();
+            $nome = $regente ? $regente : "";
 
+            $assinaturas[] = (object)[
+                'nome' => $nome,
+                'cargo' => 'Professor'
+            ];
+        }
+    }
+
+    if ($oGet->lExibeAssinaturaResponsavel == "true") {
         $assinaturas[] = (object)[
-            'nome' => $nome,
-            'cargo' => 'Professor'
+            'cargo' => 'Responsável'
         ];
     }
 
@@ -734,9 +728,7 @@ function nomeDiretorEscola()
     $iLinhasDiretor = $oDaoEscolaDiretor->numrows;
     $nome = "";
     if ($iLinhasDiretor > 0) {
-
         $nome = trim(db_utils::fieldsmemory($rsDiretor, 0)->nome);
     }
     return $nome;
 }
-?>

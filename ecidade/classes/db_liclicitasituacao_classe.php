@@ -63,13 +63,13 @@ class cl_liclicitasituacao {
                  l11_hora = char(5) = Hora do Movimento 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitasituacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitasituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_liclicitasituacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l11_sequencial = ($this->l11_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["l11_sequencial"]:$this->l11_sequencial);
        $this->l11_id_usuario = ($this->l11_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["l11_id_usuario"]:$this->l11_id_usuario);
@@ -99,7 +99,7 @@ class cl_liclicitasituacao {
      }
    }
    // funcao para inclusao
-   function incluir ($l11_sequencial){ 
+   public function incluir ($l11_sequencial){ 
       $this->atualizacampos();
      if($this->l11_id_usuario == null ){ 
        $this->erro_sql = " Campo Usuário nao Informado.";
@@ -231,7 +231,7 @@ class cl_liclicitasituacao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($l11_sequencial=null) { 
+   public function alterar ($l11_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update liclicitasituacao set ";
      $virgula = "";
@@ -373,7 +373,7 @@ class cl_liclicitasituacao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($l11_sequencial=null,$dbwhere=null) { 
+   public function excluir ($l11_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l11_sequencial));
      }else{ 
@@ -440,7 +440,7 @@ class cl_liclicitasituacao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -462,7 +462,7 @@ class cl_liclicitasituacao {
       }
      return $result;
    }
-   function sql_query ( $l11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $l11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -502,7 +502,7 @@ class cl_liclicitasituacao {
      }
      return $sql;
   }
-   function sql_query_file ( $l11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $l11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

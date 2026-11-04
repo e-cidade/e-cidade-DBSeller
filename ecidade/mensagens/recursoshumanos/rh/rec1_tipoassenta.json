@@ -1,5 +1,7 @@
 {
-  "procedimento_portaria" : "Assentamento sem Procedimentos de Portaria configurado.",
-  "portaria_envolvida"    : "Assentamento sem Portaria Envolvida configurado.",
-  "ato_portaria"          : "Assentamento sem Tipo de Ato de Portaria configurado."
-}
+    "procedimento_portaria" : "Assentamento sem Procedimentos de Portaria configurado.",
+    "portaria_envolvida"    : "Assentamento sem Portaria Envolvida configurado.",
+    "ato_portaria"          : "Assentamento sem Tipo de Ato de Portaria configurado.",
+    "lancamento_mensal"     : "Assentamento sem Lançamento Mensal configurado.",
+    "lancamento_anual"      : "Assentamento sem Lançamento Anual configurado."
+  }

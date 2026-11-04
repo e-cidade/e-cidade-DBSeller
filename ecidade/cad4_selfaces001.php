@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ $clrotulo->label("j67_naogeracarne");
        <b>       <?//=@$Lj67_naogeracarne?></b>
     </td>
     <td> 
-<?
+<?php
 db_input('j67_naogeracarne',10,$Ij67_naogeracarne,true,'hidden',3,"")
 ?>
     </td>

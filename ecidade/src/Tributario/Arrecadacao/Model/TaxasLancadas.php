@@ -80,6 +80,11 @@ class TaxasLancadas
     private $origem;
 
     /**
+     * @var boolean
+     */
+    private $permitesubtaxas;
+
+    /**
      * @return integer
      */
     public function getSequencial()
@@ -387,6 +392,26 @@ class TaxasLancadas
     public function setOrigem($origem)
     {
         $this->origem = $origem;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPermiteSubtaxas()
+    {
+        return $this->permitesubtaxas;
+    }
+
+    /**
+     * @param boolean $recursoadm
+     *
+     * @return self
+     */
+    public function setPermiteSubtaxas($permitesubtaxas)
+    {
+        $this->permitesubtaxas = $permitesubtaxas;
 
         return $this;
     }

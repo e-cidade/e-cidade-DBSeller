@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("o56_elemento");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc91_codele?>">
-       <?
+       <?php
        db_ancora(@$Lc91_codele,"js_pesquisac91_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c91_codele',6,$Ic91_codele,true,'text',$db_opcao," onchange='js_pesquisac91_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        <?=@$Lc91_codconpas?>
     </td>
     <td> 
-<?
+<?php
 db_input('c91_codconpas',6,$Ic91_codconpas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conparlancam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

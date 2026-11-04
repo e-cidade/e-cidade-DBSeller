@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $oLabel->label("ed57_c_descr");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
      db_app::load("scripts.js, prototype.js, strings.js, datagrid.widget.js, windowAux.widget.js, arrays.js");
      db_app::load("dbmessageBoard.widget.js, dbtextFieldData.widget.js, dbcomboBox.widget.js");
      db_app::load("estilos.css, grid.style.css");
@@ -65,24 +65,24 @@ $oLabel->label("ed57_c_descr");
           <table>
             <tr>
               <td>
-                <?
+                <?php
                  db_ancora("<b>Lote:</b>", "js_pesquisaLote(true)", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input("ed305_sequencial", 10, $Ied305_sequencial, true, "text", 3);
                 ?>
               </td>
             </tr>
             <tr>
               <td>
-                <?
+                <?php
                  db_ancora("<b>Turma:</b>", "js_pesquisaTurma(true)", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input("ed57_i_codigo", 10, $Ied57_i_codigo, true, "text", 1, "onchange='js_pesquisaTurma(false)'");
                  db_input("ed57_c_descr", 30, $Ied57_c_descr, true, "text", 3);
                 ?>
@@ -90,12 +90,12 @@ $oLabel->label("ed57_c_descr");
             </tr>
             <tr>
               <td>
-                <?
+                <?php
                  db_ancora("<b>Aluno:</b>", "js_pesquisaAluno(true)", 1);
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input("ed60_i_aluno", 10, $Ied60_i_aluno, "text", true, 1, "onchange='js_pesquisaAluno(false)'");
                  db_input("ed47_v_nome", 30, $Ied47_v_nome, "text", true, 3);
                 ?>
@@ -104,7 +104,7 @@ $oLabel->label("ed57_c_descr");
             <tr>
               <td><b>Situação:</b></td>
               <td>
-                <?
+                <?php
                  $oDaoSituacaoCarteira   = db_utils::getDao("cartaoidentificacaosituacao");
                  $sSqlSituacoesCarteirao = $oDaoSituacaoCarteira->sql_query(null, "*", "ed307_sequencial");
                  $rsSituacaoCartao       = $oDaoSituacaoCarteira->sql_record($sSqlSituacoesCarteirao);
@@ -135,7 +135,7 @@ $oLabel->label("ed57_c_descr");
      id='ctnDisplayFoto'>
    <img  width="95" height="120"  style='border:1px inset white' id='previewfotogrid'>
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
         db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>

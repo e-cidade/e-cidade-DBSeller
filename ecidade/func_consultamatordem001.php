@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"");
 		       ?>
             </td>
@@ -71,7 +71,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_data",10,$Im51_data,true,"text",4,"");
 		       ?>
             </td>
@@ -81,7 +81,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_numcgm",10,$Im51_numcgm,true,"text",4,"");
 		       ?>
             </td>
@@ -91,7 +91,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",10,$Iz01_nome,true,"text",4,"");
 		       ?>
             </td>
@@ -101,7 +101,7 @@ $clrotulo->label("m52_numemp");
               <?=$Le60_codemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e60_codemp",10,$Ie60_codemp,true,"text",4,"");
 		       ?>
             </td>
@@ -110,7 +110,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm52_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m52_numemp",10,$Im52_numemp,true,"text",4,"");
 		       ?>
             </td>
@@ -129,7 +129,7 @@ $clrotulo->label("m52_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordemempcgm.php")==true){
@@ -173,12 +173,12 @@ $clrotulo->label("m52_numemp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,14 +71,14 @@ db_app::load('prototype.js, strings.js');
               <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?>:</b>  
             </td>
             <td nowrap> 
-              <?
+              <?php
               if(!isset($x21_exerc) || (isset($x21_exerc) && trim($x21_exerc) == "")){
                 $x21_exerc = db_getsession("DB_anousu");
               }
               db_input('x21_exerc',4,$Ix21_exerc,true,'text',$db_opcao==1?1:3,"");
               ?>
               <b>&nbsp;/&nbsp;</b>  
-              <?
+              <?php
               if(!isset($x21_mes) || (isset($x21_mes) && trim($x21_mes) == "")){
                 $x21_mes = date("m",db_getsession("DB_datausu"));
               }
@@ -90,42 +90,42 @@ db_app::load('prototype.js, strings.js');
               ?> 
             </td>
             <td nowrap title="<?=@$Tx21_dtleitura?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_dtleitura,"",3);
               ?>
             </td>
             <td nowrap colspan="3"> 
-              <?
+              <?php
               db_inputdata('x21_dtleitura',@$x21_dtleitura_dia,@$x21_dtleitura_mes,@$x21_dtleitura_ano,true,'text',$db_opcao,"","");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_codrua?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_codrua,"js_pesquisax01_codrua(true);",$db_opcao==1?1:3);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x01_codrua',8,$Ix01_codrua,true,'text',$db_opcao==1?1:3,"onchange='js_pesquisax01_codrua(false);'","x01_codruaref");
               ?>
-              <?
+              <?php
               db_input('j14_nome',47,$Ij14_nome,true,'text',3,"","j14_nomeref");
               ?> 
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx21_numcgm?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_numcgm,"js_pesquisax21_numcgm(true);",$db_opcao);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x21_numcgm',8,$Ix21_numcgm,true,'text',$db_opcao,"onchange='js_pesquisax21_numcgm(false);'","");
               ?>
-              <?
+              <?php
               db_input('z01_nome',47,$Iz01_nome,true,'text',3,"","");
               ?>
             </td>
@@ -141,12 +141,12 @@ db_app::load('prototype.js, strings.js');
         <table width="100%">
           <tr>
             <td nowrap title="<?=@$Tx04_matric?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx04_matric,"js_pesquisax04_matric(true);",$db_opcao==1?1:3);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x04_matric',8,$Ix04_matric,true,'text',$db_opcao==1?1:3," onchange='js_pesquisax04_matric(false); js_verifica_matricula();'");
               ?>
               <!--
@@ -158,69 +158,69 @@ db_app::load('prototype.js, strings.js');
                 </td>
                 <td colspan="5"> 
               -->
-              <?
+              <?php
               db_input('x01_numcgm',8,$Ix01_numcgm,true,'text',3,"");
               ?>
-              <?
+              <?php
               db_input('z01_nome',36,$Iz01_nome,true,'text',3,"","z01_nomedad");
               ?> 
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_codrua?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_codrua,"",3);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x01_codrua',8,$Ix01_codrua,true,'text',3,"");
               ?>
-              <?
+              <?php
               db_input('j14_nome',47,$Ij14_nome,true,'text',3,"");
               ?> 
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_numero?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_numero,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x01_numero',8,$Ix01_numero,true,'text',3,"");
               ?>
             </td>
             <td nowrap title="<?=@$Tx01_letra?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_letra,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x01_letra',8,$Ix01_letra,true,'text',3,"");
               ?>
             </td>
             <td nowrap title="<?=@$Tx01_zona?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_zona,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x01_zona',8,$Ix01_zona,true,'text',3,"");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx01_qtdeconomia?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx01_qtdeconomia,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x01_qtdeconomia',8,$Ix01_qtdeconomia,true,'text',3,"");
               ?>
             </td>
@@ -228,13 +228,13 @@ db_app::load('prototype.js, strings.js');
             <td nowrap>&nbsp;</td>
             <td nowrap title="<?=@$Tx01_multiplicador?>" align="right">
               <b>
-              <?
+              <?php
               db_ancora(@$RLx01_multiplicador.":","",3);
               ?>
               </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x01_multiplicador',8,0,true,'text',3,"");
               ?>
             </td>
@@ -253,7 +253,7 @@ db_app::load('prototype.js, strings.js');
               <?=@$Lx04_nrohidro?>  
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x04_nrohidro',30,$Ix04_nrohidro,true,'text',3,"");
               db_input('x21_codhidrometro',6,$Ix21_codhidrometro,true,'hidden',3,"");
               db_input('x21_codleitura',6,$Ix21_codleitura,true,'hidden',3,"");
@@ -262,24 +262,24 @@ db_app::load('prototype.js, strings.js');
               ?>
             </td>
             <td nowrap title="<?=@$Tx04_qtddigito?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx04_qtddigito,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x04_qtddigito',12,$Ix04_qtddigito,true,'text',3,"");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx03_nomemarca?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx03_nomemarca,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x03_nomemarca',30,$Ix03_nomemarca,true,'text',3,"");
               ?>
             </td>
@@ -287,7 +287,7 @@ db_app::load('prototype.js, strings.js');
               <?=@$Lx15_diametro?>  
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x15_diametro',12,$Ix15_diametro,true,'text',3,"");
               ?>
             </td>
@@ -303,42 +303,42 @@ db_app::load('prototype.js, strings.js');
         <table width="100%">
           <tr>
             <td nowrap title="<?=@$Tx21_situacao?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_situacao,"",3);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x21_situacao',8,$Ix21_situacao,true,'text',3,"","x21_situacant");
               ?>
-              <?
+              <?php
               db_input('x17_descr',49,$Ix17_descr,true,'text',3,"","x17_descrant");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx21_numcgm?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_numcgm,"",3);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x21_numcgm',8,$Ix21_numcgm,true,'text',3,"","x21_numcgmant");
               ?>
-              <?
+              <?php
               db_input('z01_nome',49,$Iz01_nome,true,'text',3,"","z01_nomeant");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx21_dtleitura?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_dtleitura,"",3);
               ?>
             </td>
             <td nowrap colspan="3"> 
-              <?
+              <?php
               db_inputdata('x21_dtleitura',@$x21_dtleituraant_dia,@$x21_dtleituraant_mes,@$x21_dtleituraant_ano,true,'text',3,"","x21_dtleituraant");
               ?>
             </td>
@@ -346,43 +346,43 @@ db_app::load('prototype.js, strings.js');
               <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?>:</b>  
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_exerc',4,$Ix21_exerc,true,'text',3,"","x21_exercant");
               ?>
               <b>/</b>  
-              <?
+              <?php
               db_input('x21_mes',2,$Ix21_mes,true,'text',3,"","x21_mesant");
               ?> 
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx21_leitura?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_leitura,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_leitura',8,$Ix21_leitura,true,'text',3,"","x21_leituraant");
               ?>
             </td>
             <td nowrap title="<?=@$Tx21_consumo?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_consumo,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_consumo',8,$Iz01_nome,true,'text',3,"","x21_consumoant");
               ?>
             </td>
             <td nowrap title="<?=@$Tx21_excesso?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_excesso,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_excesso',8,$Ix21_excesso,true,'text',3,"","x21_excessoant");
               ?>
             </td>
@@ -398,47 +398,47 @@ db_app::load('prototype.js, strings.js');
         <table width="100%">
           <tr>
             <td nowrap title="<?=@$Tx21_situacao?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_situacao,"js_pesquisax21_situacao(true);",$db_opcao);
               ?>
             </td>
             <td nowrap colspan="5"> 
-              <?
+              <?php
               db_input('x21_situacao',8,$Ix21_situacao,true,'text',$db_opcao,"onchange='js_pesquisax21_situacao(false);'","");
               ?>
-              <?
+              <?php
               db_input('x17_descr',49,$Ix17_descr,true,'text',3,"","");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tx21_leitura?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_leitura,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_leitura',8,$Ix21_leitura,true,'text',$db_opcao,"onchange='js_ver_leitura_anterior();'","");
               ?>
             </td>
             <td nowrap title="<?=@$Tx21_consumo?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_consumo,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_consumo',8,$Iz01_nome,true,'text',(db_permissaomenu(db_getsession("DB_anousu"),4555,5070)=="true"?1:3),"","");
               ?>
             </td>
             <td nowrap title="<?=@$Tx21_excesso?>" align="right">
-              <?
+              <?php
               db_ancora(@$Lx21_excesso,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('x21_excesso',8,$Ix21_excesso,true,'text',(db_permissaomenu(db_getsession("DB_anousu"),4555,5071)=="true"?1:3),"","");
               ?>
             </td>
@@ -447,7 +447,7 @@ db_app::load('prototype.js, strings.js');
       </fieldset>
     </td>
   </tr>
-<?
+<?php
 if($x21_status == 3) {
   $db_opcao_textarea = 3;
   $db_botao = false;
@@ -460,7 +460,7 @@ if($x21_status == 3) {
   	</fieldset>
   	</td>
   </tr>
-<?
+<?php
 }else {
   $db_opcao_textarea = 1;
   $db_botao = true;
@@ -474,7 +474,7 @@ if($x21_status == 3) {
   				<tr>
           	<td nowrap title="<?=$Tx47_motivo?>"></td>
           	<td nowrap>
-          	<?
+          	<?php
           	  db_textarea('x47_motivo', 10, 70, $Ix47_motivo, true, 'text', $db_opcao_textarea);
           	?>
           	</td>
@@ -831,7 +831,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agualeitura.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

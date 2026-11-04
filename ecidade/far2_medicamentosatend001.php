@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -35,7 +35,7 @@ require(modification("libs/db_app.utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-$clrotulo = new rotulocampo; 
+$clrotulo = new rotulocampo;
 $clrotulo->label("fa04_i_unidadess");
 $clrotulo->label("fa06_i_matersaude");
 
@@ -43,7 +43,7 @@ $clrotulo->label("fa06_i_matersaude");
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <?
+    <?php
     db_app::load("strings.js");
     db_app::load("/widgets/dbautocomplete.widget.js");
     db_app::load("prototype.js");
@@ -58,7 +58,7 @@ $clrotulo->label("fa06_i_matersaude");
     <form name="form1" method="post" action="">
       <br>
       <br>
-      <center> 
+      <center>
         <fieldset style="width:50%">
           <legend>
               <b>
@@ -67,17 +67,17 @@ $clrotulo->label("fa06_i_matersaude");
             </a>
 
           </legend>
-            
+
              <table>
              <tr>
               <td align="left">
                 <b>Data Inicial:</b>
-                <?
+                <?php
                   db_inputdata('data_inicio', '', '', '', true, 'text', 1, "");
                 ?>
               </td>
               <td>
-                <?
+                <?php
                  echo' <b>Data Final:</b> ';
                   db_inputdata('data_fim', '', '', '', true, 'text', 1, "");
                  ?>
@@ -86,13 +86,13 @@ $clrotulo->label("fa06_i_matersaude");
             <tr>
               <td align="left">
                 <b>Idade Inicial:</b>
-                <?
+                <?php
                   db_input('idade_inicio', 3, "", true, 'text', 1, "", "", "", "", 3);
                 ?>
               </td>
               <td>
                  <b>Idade Final:</b>
-                <?
+                <?php
                   db_input('idade_fim', 3, "", true, 'text', 1, "", "", "", "", 3);
                 ?>
               </td>
@@ -100,8 +100,8 @@ $clrotulo->label("fa06_i_matersaude");
             <tr>
               <td>
                 <b>Tipo Retirada:</b>
-                <?
-                 $aRetirada = array("1"=>"NORMAL", "2"=>"NÃO PADRONIZADA"); 
+                <?php
+                 $aRetirada = array("1"=>"NORMAL", "2"=>"NÃO PADRONIZADA");
                  db_select('aRetirada', $aRetirada, true, "");
                 ?>
               </td>
@@ -112,7 +112,7 @@ $clrotulo->label("fa06_i_matersaude");
           <legend>
             <a  id='esconderAlmoxarifado' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeAlmoxarifado('');">
               <b>
-                Almoxarifado: 
+                Almoxarifado:
               </b>
               <img src='imagens/seta.gif' id='toggleAlmoxarifado' border='0'>
             </a>
@@ -121,12 +121,12 @@ $clrotulo->label("fa06_i_matersaude");
           <table width="100%" border="0"  id="tabAlmoxarifado" style="display:none">
             <tr>
               <td>
-                <?
+                <?php
                   db_ancora("<b>Almoxarifado</b>", "js_pesquisafa04_i_unidades(true);", "");
                 ?>
-              
-              
-                <?
+
+
+                <?php
                   db_input('fa04_i_unidades',
                            10,
                            @$Ifa04_i_unidadess,
@@ -138,26 +138,26 @@ $clrotulo->label("fa06_i_matersaude");
                   db_input('descrdepto', 50, @$Idescrdepto, false, 'text', 3, "");?>
                   </td>
                   <td>
-                  <input type='button'value='Lan&ccedil;ar'name='lancar_unidade' id='lancar_unidade' 
+                  <input type='button'value='Lan&ccedil;ar'name='lancar_unidade' id='lancar_unidade'
                   onclick="js_incluir_item_unidade();">
                   </td>
-                
+
                   </tr>
                   <tr>
-           <td colspan='2'> 
+           <td colspan='2'>
                 <select multiple size='6'
-                        name='select_unidade' 
-                        id='select_unidade' 
-                        style="width: 100%;" 
+                        name='select_unidade'
+                        id='select_unidade'
+                        style="width: 100%;"
                         onDblClick="js_excluir_item_unidade();">
                 </select>
-           </td> 
+           </td>
             </tr>
           </table>
         </fieldset>
         <fieldset style="width:50%">
           <legend>
-             <a  id='escondermedicamentos'  
+             <a  id='escondermedicamentos'
                  style="-moz-user-select: none;cursor: pointer" onClick="js_escondeMedicamentos('');">
               <b>
                 Medicamentos:
@@ -167,13 +167,13 @@ $clrotulo->label("fa06_i_matersaude");
           </legend>
             <table width="100%" id='tabMedicamentos' style="display:none" >
              <tr>
-              <td>             
-                  <?
+              <td>
+                  <?php
                     db_ancora(@$Lfa06_i_matersaude, "js_pesquisafa01_i_medicamento(true);", "");
                   ?>
-              
-               
-                  <?
+
+
+                  <?php
                     db_input('fa01_i_codigo',
                              10,
                              @$Ifa01_i_codigo,
@@ -181,32 +181,32 @@ $clrotulo->label("fa06_i_matersaude");
                              'text',
                              1,
                              " onchange='js_pesquisafa01_i_medicamento(false);'");
-                             db_input('m60_descr', 50, @$Im60_descr, false, 'text', 3, ''
+                             db_input('m60_descr', 50, @$Im60_descr, false, 'text', 3, " onchange='descricaoVazia();'"
                             );
                   ?>
                   </td>
                   <td>
-                  <input type='button' 
-                         value='Lan&ccedil;ar' 
-                         name='lancar_medicamento' 
+                  <input type='button'
+                         value='Lan&ccedil;ar'
+                         name='lancar_medicamento'
                          id='lancar_medicamento'
                          onclick="js_incluir_item_medicamento();">
                   </td>
               </tr>
               <tr>
               <td colspan= '2'>
-                  <select multiple 
+                  <select multiple
                           size='6'
                           name='select_medicamento[]'
                           id='select_medicamento'
                           style="width: 100%;"
                           onDblClick="js_excluir_item_medicamento();">
-                  </select> 
+                  </select>
                   </td>
               </tr>
             </table>
-        </fieldset>  
-      </center>  
+        </fieldset>
+      </center>
     </form>
     <center>
       <table>
@@ -220,9 +220,9 @@ $clrotulo->label("fa06_i_matersaude");
         </tr>
       </table>
     </center>
-   
-    <?
-      db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+
+    <?php
+      db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
       db_getsession("DB_anousu"), db_getsession("DB_instit"));
     ?>
   </body>
@@ -240,46 +240,46 @@ oAutoComplete1.setTxtFieldId(document.getElementById('fa04_i_unidades'));
 oAutoComplete1.setHeightList(180);
 oAutoComplete1.show();
 
-/* 
-*Function tem por objetivo apagar todos os campos do relatorio, 
+/*
+*Function tem por objetivo apagar todos os campos do relatorio,
 *deixando todos aqueles que foram preenchidos em branco.
 */
 function js_Limpa() {
- 
+
   var iElem     = document.form1.select_medicamento.options.length;
   var iElem2    = document.form1.select_unidade.options.length;
   var sInput    = document.getElementsByTagName('input')
   var sSelect   = document.getElementsByTagName('select')
   var sTextarea = document.getElementsByTagName('textarea')
-   
+
   //for percorre a quantidade de elementos do select de medicamentos e exclui todos.
-  for (var iConta = 0; iConta < iElem; iConta++) { 
-    document.form1.select_medicamento.remove (select_medicamento.length-1); 
+  for (var iConta = 0; iConta < iElem; iConta++) {
+    document.form1.select_medicamento.remove (select_medicamento.length-1);
   }  //fim do for que percorre os medicamentos selecionados
 
   // for que percorre a quantidade de elementos do select unidades e exclui todos.
-  for(var iConta = 0; iConta <iElem2; iConta++) { 
+  for(var iConta = 0; iConta <iElem2; iConta++) {
   document.form1.select_unidade.remove (select_unidade.length-1);
   }//fim do for que percorre as unidades selecionadas
 
   //percorre os campos selects do formulario resetandos as informaçoes aleteradas
-  for(var iConta=0; iConta<sSelect.length; iConta++) {  
+  for(var iConta=0; iConta<sSelect.length; iConta++) {
     sSelect[iConta].selectedIndex = 0;
   }// fim do for que percorre os selects
 
 //percorre todos os text areas do formulamrio apagando os seus valores
-  for(var iConta=0; iConta<sTextarea.length; iConta++) { 
+  for(var iConta=0; iConta<sTextarea.length; iConta++) {
       sTextarea[iConta].value = '';
   }// fim do for que percorre todos os text areas do formulario
-  
+
   //percorre todos os inputs do forumlario apagando os valores contidos
-  for(var iConta=0; iConta<sInput.length; iConta++) { 
-  
+  for(var iConta=0; iConta<sInput.length; iConta++) {
+
     switch (sInput[iConta].type){
       case 'text'     :   sInput[iConta].value      = ''; break;
       case 'radio'    :   sInput[iConta].checked    = ''; break;
       case 'checkbox' :   sInput[iConta].checked    = ''; break;
-  
+
     }
 
   }// fim do for que percorre os inputs
@@ -290,12 +290,12 @@ function js_incluir_item_medicamento(){
 
   var texto=document.form1.m60_descr.value;
   var valor=document.form1.fa01_i_codigo.value;
-  
+
   if (texto != "" && valor != "") {
     F = document.getElementById("select_medicamento");
     var tam = F.length;
     var testa = false;
-  
+
     for (x=0; x < F.length; x++) {
 
       if (F.options[x].value == valor){
@@ -310,7 +310,7 @@ function js_incluir_item_medicamento(){
     if (testa == false) {
 
       F.options[tam] = new Option(texto,valor);
-      
+
       for (i=0; i < F.length; i++){
         F.options[i].selected = false;
       }
@@ -328,17 +328,17 @@ function js_incluir_item_medicamento(){
 function js_excluir_item_medicamento(){
 
   F = document.getElementById("select_medicamento");
-  
+
   if (F.length == 1) {
     F.options[0].selected = true;
   }
 
   var SI = F.selectedIndex;
-  
+
   if (F.selectedIndex != -1 && F.length > 0) {
 
     F.options[SI] = null;
-   
+
     if (SI <= (F.length - 1)) {
       F.options[SI].selected = true;
     }
@@ -351,13 +351,13 @@ function js_incluir_item_unidade(){
 
   texto = document.form1.descrdepto.value;
   valor = document.form1.fa04_i_unidades.value;
-  
+
   if (texto != "" && valor != "") {
 
     F     = document.getElementById("select_unidade");
     tam   = F.length;
     testa = false;
-  
+
     for (x=0; x < F.length; x++){
 
       if (F.options[x].value == valor) {
@@ -372,7 +372,7 @@ function js_incluir_item_unidade(){
     if (testa == false) {
 
       F.options[tam] = new Option(texto,valor);
-      
+
       for (i=0; i < F.length; i++) {
         F.options[i].selected = false;
       }
@@ -380,7 +380,7 @@ function js_incluir_item_unidade(){
       F.options[tam].selected = true;
 
     }
-    
+
   }
 
   document.form1.descrdepto.value      = "";
@@ -396,10 +396,10 @@ function js_excluir_item_unidade(){
     F.options[0].selected = true;
   }
   var SI = F.selectedIndex;
-  
+
   if (F.selectedIndex != -1 && F.length > 0) {
     F.options[SI] = null;
-    
+
     if (SI <= (F.length - 1)) {
       F.options[SI].selected = true;
     }
@@ -409,7 +409,7 @@ function js_excluir_item_unidade(){
 }
 
 function js_pesquisafa01_i_medicamento(mostra){
-  
+
   if (mostra == true) {
 
     js_OpenJanelaIframe('',
@@ -422,8 +422,8 @@ function js_pesquisafa01_i_medicamento(mostra){
 
   } else {
 
-    if (document.form1.fa01_i_codigo.value != '') { 
-  
+    if (document.form1.fa01_i_codigo.value != '') {
+
       js_OpenJanelaIframe('',
                         'db_iframe_far_matersaude',
                         'func_far_matersaude.php'
@@ -437,17 +437,17 @@ function js_pesquisafa01_i_medicamento(mostra){
 
 }
 
-function js_mostramatersaude(chave, erro) {
+function js_mostramatersaude(chave, descricao, erro) {
 
-  document.form1.m60_descr.value = chave; 
-  
+  document.form1.m60_descr.value = descricao;
+
   if (erro == true) {
 
-    document.form1.fa01_i_codigo.focus(); 
+    document.form1.fa01_i_codigo.focus();
     document.form1.fa01_i_codigo.value = '';
 
   } else {
-    document.form1.m60_descr.value=chave;
+    document.form1.m60_descr.value=descricao;
   }
 
 }
@@ -457,12 +457,12 @@ function js_mostramatersaude1(chave1, chave2) {
   document.form1.fa01_i_codigo.value = chave1;
   document.form1.m60_descr.value     = chave2;
   db_iframe_far_matersaude.hide();
-  
+
 }
 
 function js_pesquisafa04_i_unidades(mostra){
   if (mostra == true) {
-  
+
     js_OpenJanelaIframe('',
                         'db_iframe_unidades',
                         'func_unidades.php?funcao_js=parent.js_mostraunidade1|sd02_i_codigo|descrdepto',
@@ -489,11 +489,11 @@ function js_pesquisafa04_i_unidades(mostra){
 
 function js_mostraunidade(chave, erro) {
 
-  document.form1.descrdepto.value = chave; 
+  document.form1.descrdepto.value = chave;
 
   if (erro == true) {
 
-    document.form1.fa04_i_unidades.focus(); 
+    document.form1.fa04_i_unidades.focus();
     document.form1.fa04_i_unidades.value = '';
 
   }
@@ -564,7 +564,7 @@ function js_validadata(){
 }
 
 function js_validaenvio(){
- 
+
 /*if(document.form1.select_unidade.length <= 0){ não é obrigatorio informar o Almoxarifado
 
     alert('Selecione ao menos uma Unidade.');
@@ -595,7 +595,7 @@ function js_mandadados(){
 
       medicamentos = '&sMedicamentos=';
       vir = '';
-      
+
       for (x=0; x < document.form1.select_medicamento.length; x++) {
 
         medicamentos += vir + document.form1.select_medicamento.options[x].value;
@@ -605,10 +605,10 @@ function js_mandadados(){
 
     } else {
       medicamentos = '';
-    
+
     }
-    
-    
+
+
     if(document.form1.idade_inicio.value != ''){
       idade = '&iIdadeIni='+document.form1.idade_inicio.value+'&iIdadeFim='+idade_fim.value;
     } else {
@@ -628,12 +628,12 @@ function js_mandadados(){
 function js_escondeMedicamentos(lExibe) {
 
   if($('tabMedicamentos').style.display == '' && lExibe == true) {
-   
+
     $('toggleMedicamentos').style.display = '';
     $('toggleMedicamentos').src           = 'imagens/setabaixo.gif';
-    
+
     } else if ($('tabMedicamentos').style.display == '') {
-    
+
       $('tabMedicamentos').style.display = 'none';
       $('toggleMedicamentos').src        = 'imagens/seta.gif';
 
@@ -641,7 +641,7 @@ function js_escondeMedicamentos(lExibe) {
 
       $('tabMedicamentos').style.display = '';
       $('toggleMedicamentos').src = 'imagens/setabaixo.gif';
-    
+
     }
 
   }
@@ -649,36 +649,36 @@ function js_escondeMedicamentos(lExibe) {
 function js_escondeAlmoxarifado(lExibe){
 
   if ($('tabAlmoxarifado').style.display == '' && lExibe == true) {
-        
+
     $('tabAlmoxarifado').style.display = '';
     $('toggleAlmoxarifado').src        = 'imagens/setabaixo.gif';
-      
+
   }  else if ($('tabAlmoxarifado').style.display == '') {
-      
+
         $('tabAlmoxarifado').style.display = 'none';
         $('toggleAlmoxarifado').src        = 'imagens/seta.gif';
-        
+
   } else if ($('tabAlmoxarifado').style.display == 'none') {
-        
+
         $('tabAlmoxarifado').style.display = '';
         $('toggleAlmoxarifado').src        = 'imagens/setabaixo.gif';
-        
+
   }
 
   function js_validaCamposMedicamentos() {
 
     alert("Dentro da function valida medicamentos");
-    
+
     if ($('fa01_i_codigo').value.trim() == '') {
-      
+
       alert("Por favor preencha todos os campos!");
-      $('fa01_i_codigo').focus();    
+      $('fa01_i_codigo').focus();
       return false;
 
     }
-    
+
     if ($('m60_descr').value.trim() == '') {
-      
+
       alert("Por favor preencha todos os campos!");
       js_escondeMedicamentos(true);
       $('m60_descr').focus();
@@ -687,9 +687,18 @@ function js_escondeAlmoxarifado(lExibe){
     }
 
     return true;
-    
+
   }
-   
+
+}
+
+function descricaoVazia() {
+    let descricao = document.form1.m60_descr.value;
+    let codigo = document.form1.fa01_i_codigo;
+
+    if (descricao === '') {
+        codigo.value = '';
+    }
 }
 
 </script>

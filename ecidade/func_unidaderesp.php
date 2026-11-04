@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clunidaderesp->rotulo->label("o20_descricao");
               <?=$Lo20_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o20_sequencial",10,$Io20_sequencial,true,"text",4,"","chave_o20_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clunidaderesp->rotulo->label("o20_descricao");
               <?=$Lo20_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o20_descricao",100,$Io20_descricao,true,"text",4,"","chave_o20_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clunidaderesp->rotulo->label("o20_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_unidaderesp.php")==true){
@@ -122,12 +122,12 @@ $clunidaderesp->rotulo->label("o20_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

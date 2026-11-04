@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clemprestimo->rotulo->label("bi18_retirada");
               <?=$Lbi18_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi18_codigo",10,$Ibi18_codigo,true,"text",4,"","chave_bi18_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clemprestimo->rotulo->label("bi18_retirada");
               <?=$Lbi18_retirada?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("bi18_retirada",10,$Ibi18_retirada,true,"text",4,"","chave_bi18_retirada");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clemprestimo->rotulo->label("bi18_retirada");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emprestimo.php")==true){
@@ -119,12 +119,12 @@ $clemprestimo->rotulo->label("bi18_retirada");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

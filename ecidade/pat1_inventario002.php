@@ -1,7 +1,7 @@
 <?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -111,7 +111,7 @@ $db_opcao = 3;
           <?=@$Lt75_periodofinal?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('t75_periodofinal',@$t75_periodofinal_dia,@$t75_periodofinal_mes,@$t75_periodofinal_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -121,7 +121,7 @@ $db_opcao = 3;
           <?=@$Lt75_exercicio?>
         </td>
         <td> 
-          <?
+          <?php
             //$t75_exercicio = db_getsession("DB_anousu");
             db_input('t75_exercicio',10,$It75_exercicio,true,'text', 3,"")
           ?>
@@ -129,12 +129,12 @@ $db_opcao = 3;
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt75_processo?>">
-          <?
+          <?php
             db_ancora(@$Lt75_processo,"js_pesquisat75_processo(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t75_processo',10,$It75_processo,true,'hidden',$db_opcao," onchange='js_pesquisat75_processo(false);'");
             db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'');
           ?>
@@ -142,12 +142,12 @@ $db_opcao = 3;
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt75_acordocomissao?>">
-          <?
+          <?php
             db_ancora(@$Lt75_acordocomissao,"js_pesquisat75_acordocomissao(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t75_acordocomissao',10,$It75_acordocomissao,true,'text',$db_opcao," onchange='js_pesquisat75_acordocomissao(false);'");
             db_input('ac08_descricao',39,$Iac08_descricao,true,'text',3,'');
           ?>
@@ -157,7 +157,7 @@ $db_opcao = 3;
         <td nowrap title="<?=@$Tt75_observacao?>" colspan="2">
           <fieldset class="separator">
             <legend><?=@$Lt75_observacao?></legend>
-            <?
+            <?php
               db_textarea('t75_observacao',2,50,$It75_observacao,true,'text',$db_opcao,"")
             ?>
           </fieldset>
@@ -167,7 +167,7 @@ $db_opcao = 3;
         <td nowrap title="<?=@$Tt76_motivo?>" colspan="2">
           <fieldset class="separator">
             <legend>Motivo do Cancelamento:</legend>
-            <?
+            <?php
               db_textarea('t76_motivo',2,50,$It76_motivo,true,'text',1,"")
             ?>
           </fieldset>
@@ -179,7 +179,7 @@ $db_opcao = 3;
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

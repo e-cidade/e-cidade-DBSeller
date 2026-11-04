@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcidadaocadastrounico->rotulo->label("as02_cidadao");
               <?=$Las02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("as02_sequencial",10,$Ias02_sequencial,true,"text",4,"","chave_as02_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcidadaocadastrounico->rotulo->label("as02_cidadao");
               <?=$Las02_cidadao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("as02_cidadao",10,$Ias02_cidadao,true,"text",4,"","chave_as02_cidadao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcidadaocadastrounico->rotulo->label("as02_cidadao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cidadaocadastrounico.php")==true){
@@ -141,12 +141,12 @@ $clcidadaocadastrounico->rotulo->label("as02_cidadao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

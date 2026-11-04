@@ -49,8 +49,7 @@ $clrotulo->label("");
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<script>
-</script>
+
 <style>
 <?//$cor="#999999"?>
 .bordas{
@@ -79,10 +78,11 @@ $clrotulo->label("");
 <table border='0'>
   </tr>
 
-<?
+<?php
 
 if (isset($l20_codigo) && !empty($l20_codigo)) {
-
+  $funcao_js = "";
+  $arquivo = "";
   $sSqlLog = "select l14_liclicita  from liclicitaitemlog where l14_liclicita = {$l20_codigo}";
   $rslog   = db_query($sSqlLog);
   $lLog    = false;
@@ -104,27 +104,25 @@ if (isset($l20_codigo) && !empty($l20_codigo)) {
   if ($sIn == '') {
   	$sIn = 0;
   }
-
 	if ($tipo == "p") {
-
+      $funcao_js = "js_consultaProcesso|pc80_codproc";
+      $arquivo = '()';
 	  $sCampos = "distinct pc80_codproc, pc80_data, pc80_usuario, nome, pc80_depto, descrdepto, pc80_resumo";
 	  if ($lLog) {
-
 	    $clpcprocitem = new cl_pcprocitem();
       $sql          = $clpcprocitem->sql_query(null, $sCampos, null, "pc81_codprocitem in({$sIn})");
     } else {
 	    $sql = $clliclicitem->sql_query_proc(null, $sCampos, null, "l21_codliclicita=$l20_codigo");
     }
 	} else if ($tipo=="s") {
-
-	  $sCampos = "distinct pc10_numero, pc90_numeroprocesso, pc10_data, pc10_login, nome, pc10_depto, descrdepto, pc10_resumo";
+      $funcao_js = "js_consultaSolicitacao|pc10_numero|pc10_solicitacaotipo|pc53_solicitapai";
+      $arquivo = "()";
+      $sCampos = "distinct pc10_numero, pc90_numeroprocesso, pc10_data, pc10_login, nome, pc10_depto, descrdepto, pc10_resumo, pc10_solicitacaotipo, pc53_solicitapai";
 	  if ($lLog) {
-
 	    $clpcprocitem = new cl_pcprocitem();
       $sql          = $clpcprocitem->sql_query_dotac(null, $sCampos, null, "pc81_codprocitem in({$sIn})");
     } else {
-
-		  $sql = $clliclicitem->sql_query_sol(null, $sCampos, null, "l21_codliclicita=$l20_codigo");
+          $sql = $clliclicitem->sql_query_sol(null, $sCampos, null, "l21_codliclicita=$l20_codigo");
     }
 	} else if ($tipo ='m') {
 
@@ -132,7 +130,7 @@ if (isset($l20_codigo) && !empty($l20_codigo)) {
 		$sql     = $clliclicitasituacao->sql_query(null, $sCampos, "l11_data, l11_hora", "l11_liclicita=$l20_codigo");
 	}
 }
-db_lovrot(@$sql,15,"","","");
+db_lovrot(@$sql,15,$arquivo,"",$funcao_js);
 ?>
 </table>
 
@@ -141,3 +139,34 @@ db_lovrot(@$sql,15,"","","");
 </table>
 </body>
 </html>
+<script>
+    function js_consultaSolicitacao(pc10_numero, pc10_tiposolicitacao, pc53_solicitapai) {
+        if (pc10_tiposolicitacao === '6') {
+            return js_OpenJanelaIframe(
+                'CurrentWindow.corpo',
+                'db_iframe_infosol',
+                'com4_consabertregistro003.php?pc10_numero=' + pc53_solicitapai,
+                'Consulta Compila��o',
+                true
+            );
+        }
+
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_infosol',
+            'com3_conssolicitacao002.php?pc10_numero='+pc10_numero,
+            'Consulta Solicita��o',
+            true
+        );
+    }
+
+    function js_consultaProcesso(codigoProcesso) {
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_processo',
+            "com3_pesquisaprocessocompras003.php?pc80_codproc=" + codigoProcesso,
+            'Consulta de Processo',
+            true
+        );
+    }
+</script>

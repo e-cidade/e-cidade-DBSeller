@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+if [[ -z "${2:-}" ]]; then
+  exit 1
+fi
+
+TAG=$(echo "${2:-}" | tr [:upper:] [:lower:])
+
+if [[ "${1:-}" == "artisan" ]]; then
+  for _B in $(env PGPASSWORD="" psql -A -t -h -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT datname FROM pg_database WHERE datname LIKE 'dbportal_schema_v2_3_57_${TAG}';"); do
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '"${_B}"' AND pg_stat_activity.pid <> pg_backend_pid();" > /dev/null 2>&1
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "DROP DATABASE ${_B};" > /dev/null 2>&1
+  done
+  for _B in $(env PGPASSWORD="" psql -A -t -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT datname FROM pg_database WHERE datname LIKE 'dbportal_demo_v2_3_57_${TAG}';"); do
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '"${_B}"' AND pg_stat_activity.pid <> pg_backend_pid();" > /dev/null 2>&1
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "DROP DATABASE ${_B};" > /dev/null 2>&1
+  done
+elif [[ "${1:-}" == "integracao" ]]; then
+  for _B in $(env PGPASSWORD="" psql -A -t -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT datname FROM pg_database WHERE datname LIKE 'dbportal_demo_v2_3_57_integracao_${TAG}';"); do
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '"${_B}"' AND pg_stat_activity.pid <> pg_backend_pid();" > /dev/null 2>&1
+    env PGPASSWORD="" psql -U ecidade -h pgs02.rs.dbseller.com.br -p 6433 -d postgres -c "DROP DATABASE ${_B};" > /dev/null 2>&1
+  done
+else
+  exit 1
+fi

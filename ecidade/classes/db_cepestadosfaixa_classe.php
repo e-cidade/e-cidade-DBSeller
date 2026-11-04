@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_cepestadosfaixa {
                  cp04_cepfinal = varchar(8) = Cep final 
                  ";
    //funcao construtor da classe 
-   function cl_cepestadosfaixa() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepestadosfaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_cepestadosfaixa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cp04_sigla = ($this->cp04_sigla == ""?@$GLOBALS["HTTP_POST_VARS"]["cp04_sigla"]:$this->cp04_sigla);
        $this->cp04_faixa = ($this->cp04_faixa == ""?@$GLOBALS["HTTP_POST_VARS"]["cp04_faixa"]:$this->cp04_faixa);
@@ -81,7 +81,7 @@ class cl_cepestadosfaixa {
      }
    }
    // funcao para inclusao
-   function incluir ($cp04_sigla,$cp04_faixa){ 
+   public function incluir ($cp04_sigla,$cp04_faixa){ 
       $this->atualizacampos();
      if($this->cp04_cepinicial == null ){ 
        $this->erro_sql = " Campo Cep inicial nao Informado.";
@@ -170,7 +170,7 @@ class cl_cepestadosfaixa {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($cp04_sigla=null,$cp04_faixa=null) { 
+   public function alterar ($cp04_sigla=null,$cp04_faixa=null) { 
       $this->atualizacampos();
      $sql = " update cepestadosfaixa set ";
      $virgula = "";
@@ -284,7 +284,7 @@ class cl_cepestadosfaixa {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($cp04_sigla=null,$cp04_faixa=null,$dbwhere=null) { 
+   public function excluir ($cp04_sigla=null,$cp04_faixa=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cp04_sigla,$cp04_faixa));
      }else{ 
@@ -355,7 +355,7 @@ class cl_cepestadosfaixa {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

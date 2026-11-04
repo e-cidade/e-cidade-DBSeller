@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,37 +57,37 @@ $clrotulo->label("j01_matric");
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Ty50_codauto?>"><?=$Ly50_codauto?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("y50_codauto",10,$Iy50_codauto,true,"text",4,"","chave_y50_codauto"); ?>
+              <?php db_input("y50_codauto",10,$Iy50_codauto,true,"text",4,"","chave_y50_codauto"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tz01_numcgm?>"><?=$Lz01_numcgm?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
+              <?php db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tj01_matric?>"><?=$Lj01_matric?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("j01_matric",10,$Ij01_matric,true,"text",4,"","chave_j01_matric"); ?>
+              <?php db_input("j01_matric",10,$Ij01_matric,true,"text",4,"","chave_j01_matric"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tq02_inscr?>"><?=$Lq02_inscr?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr"); ?>
+              <?php db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Ty80_codsani?>"><?=$Ly80_codsani?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("y80_codsani",10,$Iy80_codsani,true,"text",4,"","chave_y80_codsani"); ?>
+              <?php db_input("y80_codsani",10,$Iy80_codsani,true,"text",4,"","chave_y80_codsani"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="Notificação"><b>Notificação</b></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("y30_codnoti",10,@$y30_codnoti,true,"text",4,"","chave_y30_codnoti"); ?>
+              <?php db_input("y30_codnoti",10,@$y30_codnoti,true,"text",4,"","chave_y30_codnoti"); ?>
             </td>
           </tr>
           <tr>
@@ -103,7 +103,7 @@ $clrotulo->label("j01_matric");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 
 		$where = "";

@@ -57,7 +57,7 @@ $clcgmcorreto->rotulo->label("z01_numcgm");
               <?=$Lz10_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
            db_input("z10_codigo",10,$Iz10_codigo,true,"text",4,"","chave_z10_codigo");
            ?>
             </td>
@@ -68,7 +68,7 @@ $clcgmcorreto->rotulo->label("z01_numcgm");
               <?=$Lz10_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
            db_input("z10_numcgm",8,$Iz10_numcgm,true,"text",4,"","chave_z10_numcgm");
            ?>
             </td>
@@ -87,7 +87,7 @@ $clcgmcorreto->rotulo->label("z01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -125,12 +125,12 @@ $clcgmcorreto->rotulo->label("z01_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

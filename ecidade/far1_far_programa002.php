@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,26 +25,31 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("classes/db_far_programa_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
-require(modification("libs/db_stdlibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_far_programa_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlibwebseller.php"));
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 $clfar_programa = new cl_far_programa;
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){
   db_inicio_transacao();
   $db_opcao = 2;
+  if(isset($fa12_ativo)){
+    $clfar_programa->fa12_ativo = 't';
+  } else {
+    $clfar_programa->fa12_ativo = 'f';
+  }
   $clfar_programa->alterar($fa12_i_codigo);
   db_fim_transacao();
 }else if(isset($chavepesquisa)){
    $db_opcao = 2;
-   $result = $clfar_programa->sql_record($clfar_programa->sql_query($chavepesquisa)); 
+   $result = db_query($clfar_programa->sql_query($chavepesquisa)); 
    db_fieldsmemory($result,0);
    $db_botao = true;
 }
@@ -64,20 +69,20 @@ if(isset($alterar)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Alteração de Programa</b></legend>
-	<?
-	include(modification("forms/db_frmfar_programa.php"));
+	<?php
+	require_once(modification("forms/db_frmfar_programa.php"));
 	?>
    </fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clfar_programa->erro_status=="0"){
     $clfar_programa->erro(true,false);

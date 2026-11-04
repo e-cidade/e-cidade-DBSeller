@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("o125_cronogramaperspectiva");
        <?=@$Lo125_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_sequencial',10,$Io125_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To125_cronogramaperspectiva?>">
-       <?
+       <?php
        db_ancora(@$Lo125_cronogramaperspectiva,"js_pesquisao125_cronogramaperspectiva(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_cronogramaperspectiva',10,$Io125_cronogramaperspectiva,true,'text',$db_opcao," onchange='js_pesquisao125_cronogramaperspectiva(false);'")
 ?>
-       <?
+       <?php
 db_input('o124_descricao',100,$Io124_descricao,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('o124_descricao',100,$Io124_descricao,true,'text',3,'')
        <?=@$Lo125_mes?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_mes',10,$Io125_mes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('o125_mes',10,$Io125_mes,true,'text',$db_opcao,"")
        <?=@$Lo125_ano?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_ano',10,$Io125_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('o125_ano',10,$Io125_ano,true,'text',$db_opcao,"")
        <?=@$Lo125_percentual?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_percentual',10,$Io125_percentual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('o125_percentual',10,$Io125_percentual,true,'text',$db_opcao,"")
        <?=@$Lo125_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o125_valor',10,$Io125_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cronogramabasecalculo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

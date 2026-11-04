@@ -155,6 +155,9 @@ Registry::get('app.container')->register('app.configData', function() {
 // END EVENT SETUP
 //
 
+$dotenv = \Dotenv\Dotenv::createImmutable(ECIDADE_PATH);
+$dotenv->safeLoad();
+
 /**********************************************************************************************************************/
 
 //
@@ -174,4 +177,24 @@ Registry::get('app.container')->register('configuracao.container', function($app
 });
 //
 // END OF APPLICATION BUSINESS CONTENT
+//
+
+/**********************************************************************************************************************/
+
+//
+// PROFILING XHPROF - ONLY IN LOCAL ENVIRONMENT
+//
+if (env('APP_ENV') === 'local' && extension_loaded('xhprof')) {
+    try {
+        if (file_exists('config/xhprof.php') && class_exists('\Xhgui\Profiler\Profiler')) {
+            $config = require_once('config/xhprof.php');
+            $profiler = new \Xhgui\Profiler\Profiler($config);
+            $profiler->start();
+        }
+    } catch (Exception $e) {
+        Registry::get('app.container')->get('app.logger')->warning($e->getMessage());
+    }
+}
+//
+// END PROFILING
 //

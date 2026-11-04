@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Agua
 //CLASSE DA ENTIDADE aguacoletorexportadadosreceita
-class cl_aguacoletorexportadadosreceita { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x52_sequencial = 0; 
-   var $x52_receita = 0; 
-   var $x52_aguacoletorexportadados = 0; 
-   var $x52_descricao = null; 
-   var $x52_numpar = null; 
-   var $x52_valor = 0; 
-   var $x52_numpre = 0; 
-   var $x52_numtot = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguacoletorexportadadosreceita {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x52_sequencial = 0;
+   var $x52_receita = 0;
+   var $x52_aguacoletorexportadados = 0;
+   var $x52_descricao = null;
+   var $x52_numpar = null;
+   var $x52_valor = 0;
+   var $x52_numpre = 0;
+   var $x52_numtot = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x52_sequencial = int4 = Código 
-                 x52_receita = int4 = Receita 
-                 x52_aguacoletorexportadados = int4 = Código Exportação Dados 
-                 x52_descricao = varchar(17) = Descricao da Receita 
-                 x52_numpar = varchar(9) = Numero Parcela 
-                 x52_valor = float8 = Valor 
-                 x52_numpre = int4 = Número Arrecadação 
-                 x52_numtot = int4 = Número Total de Parcelas 
+                 x52_sequencial = int4 = Código
+                 x52_receita = int4 = Receita
+                 x52_aguacoletorexportadados = int4 = Código Exportação Dados
+                 x52_descricao = varchar(17) = Descricao da Receita
+                 x52_numpar = varchar(9) = Numero Parcela
+                 x52_valor = float8 = Valor
+                 x52_numpre = int4 = Número Arrecadação
+                 x52_numtot = int4 = Número Total de Parcelas
                  ";
-   //funcao construtor da classe 
-   function cl_aguacoletorexportadadosreceita() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguacoletorexportadadosreceita"); 
+     $this->rotulo = new rotulo("aguacoletorexportadadosreceita");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_aguacoletorexportadadosreceita {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x52_sequencial = ($this->x52_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["x52_sequencial"]:$this->x52_sequencial);
        $this->x52_receita = ($this->x52_receita == ""?@$GLOBALS["HTTP_POST_VARS"]["x52_receita"]:$this->x52_receita);
@@ -92,9 +92,9 @@ class cl_aguacoletorexportadadosreceita {
      }
    }
    // funcao para inclusao
-   function incluir ($x52_sequencial){ 
+   public function incluir ($x52_sequencial){
       $this->atualizacampos();
-     if($this->x52_receita == null ){ 
+     if($this->x52_receita == null ){
        $this->erro_sql = " Campo Receita nao Informado.";
        $this->erro_campo = "x52_receita";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_aguacoletorexportadados == null ){ 
+     if($this->x52_aguacoletorexportadados == null ){
        $this->erro_sql = " Campo Código Exportação Dados nao Informado.";
        $this->erro_campo = "x52_aguacoletorexportadados";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_descricao == null ){ 
+     if($this->x52_descricao == null ){
        $this->erro_sql = " Campo Descricao da Receita nao Informado.";
        $this->erro_campo = "x52_descricao";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_numpar == null ){ 
+     if($this->x52_numpar == null ){
        $this->erro_sql = " Campo Numero Parcela nao Informado.";
        $this->erro_campo = "x52_numpar";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_valor == null ){ 
+     if($this->x52_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "x52_valor";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_numpre == null ){ 
+     if($this->x52_numpre == null ){
        $this->erro_sql = " Campo Número Arrecadação nao Informado.";
        $this->erro_campo = "x52_numpre";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_aguacoletorexportadadosreceita {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x52_numtot == null ){ 
+     if($this->x52_numtot == null ){
        $this->erro_sql = " Campo Número Total de Parcelas nao Informado.";
        $this->erro_campo = "x52_numtot";
        $this->erro_banco = "";
@@ -158,16 +158,16 @@ class cl_aguacoletorexportadadosreceita {
        return false;
      }
      if($x52_sequencial == "" || $x52_sequencial == null ){
-       $result = db_query("select nextval('aguacoletorexportadadosreceita_x52_sequencial_seq')"); 
+       $result = db_query("select nextval('aguacoletorexportadadosreceita_x52_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacoletorexportadadosreceita_x52_sequencial_seq do campo: x52_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: aguacoletorexportadadosreceita_x52_sequencial_seq do campo: x52_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->x52_sequencial = pg_result($result,0,0); 
+       $this->x52_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguacoletorexportadadosreceita_x52_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $x52_sequencial)){
@@ -178,10 +178,10 @@ class cl_aguacoletorexportadadosreceita {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->x52_sequencial = $x52_sequencial; 
+         $this->x52_sequencial = $x52_sequencial;
        }
      }
-     if(($this->x52_sequencial == null) || ($this->x52_sequencial == "") ){ 
+     if(($this->x52_sequencial == null) || ($this->x52_sequencial == "") ){
        $this->erro_sql = " Campo x52_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,27 +190,27 @@ class cl_aguacoletorexportadadosreceita {
        return false;
      }
      $sql = "insert into aguacoletorexportadadosreceita(
-                                       x52_sequencial 
-                                      ,x52_receita 
-                                      ,x52_aguacoletorexportadados 
-                                      ,x52_descricao 
-                                      ,x52_numpar 
-                                      ,x52_valor 
-                                      ,x52_numpre 
-                                      ,x52_numtot 
+                                       x52_sequencial
+                                      ,x52_receita
+                                      ,x52_aguacoletorexportadados
+                                      ,x52_descricao
+                                      ,x52_numpar
+                                      ,x52_valor
+                                      ,x52_numpre
+                                      ,x52_numtot
                        )
                 values (
-                                $this->x52_sequencial 
-                               ,$this->x52_receita 
-                               ,$this->x52_aguacoletorexportadados 
-                               ,'$this->x52_descricao' 
-                               ,'$this->x52_numpar' 
-                               ,$this->x52_valor 
-                               ,$this->x52_numpre 
-                               ,$this->x52_numtot 
+                                $this->x52_sequencial
+                               ,$this->x52_receita
+                               ,$this->x52_aguacoletorexportadados
+                               ,'$this->x52_descricao'
+                               ,'$this->x52_numpar'
+                               ,$this->x52_valor
+                               ,$this->x52_numpre
+                               ,$this->x52_numtot
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Agua Coletor Exporta Dados Receita ($this->x52_sequencial) nao Incluído. Inclusao Abortada.";
@@ -249,16 +249,16 @@ class cl_aguacoletorexportadadosreceita {
        $resac = db_query("insert into db_acount values($acount,2704,15405,'','".AddSlashes(pg_result($resaco,0,'x52_numtot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x52_sequencial=null) { 
+   public function alterar ($x52_sequencial=null) {
       $this->atualizacampos();
      $sql = " update aguacoletorexportadadosreceita set ";
      $virgula = "";
-     if(trim($this->x52_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_sequencial"])){ 
+     if(trim($this->x52_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_sequencial"])){
        $sql  .= $virgula." x52_sequencial = $this->x52_sequencial ";
        $virgula = ",";
-       if(trim($this->x52_sequencial) == null ){ 
+       if(trim($this->x52_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "x52_sequencial";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_receita"])){ 
+     if(trim($this->x52_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_receita"])){
        $sql  .= $virgula." x52_receita = $this->x52_receita ";
        $virgula = ",";
-       if(trim($this->x52_receita) == null ){ 
+       if(trim($this->x52_receita) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "x52_receita";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_aguacoletorexportadados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_aguacoletorexportadados"])){ 
+     if(trim($this->x52_aguacoletorexportadados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_aguacoletorexportadados"])){
        $sql  .= $virgula." x52_aguacoletorexportadados = $this->x52_aguacoletorexportadados ";
        $virgula = ",";
-       if(trim($this->x52_aguacoletorexportadados) == null ){ 
+       if(trim($this->x52_aguacoletorexportadados) == null ){
          $this->erro_sql = " Campo Código Exportação Dados nao Informado.";
          $this->erro_campo = "x52_aguacoletorexportadados";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_descricao"])){ 
+     if(trim($this->x52_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_descricao"])){
        $sql  .= $virgula." x52_descricao = '$this->x52_descricao' ";
        $virgula = ",";
-       if(trim($this->x52_descricao) == null ){ 
+       if(trim($this->x52_descricao) == null ){
          $this->erro_sql = " Campo Descricao da Receita nao Informado.";
          $this->erro_campo = "x52_descricao";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numpar"])){ 
+     if(trim($this->x52_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numpar"])){
        $sql  .= $virgula." x52_numpar = '$this->x52_numpar' ";
        $virgula = ",";
-       if(trim($this->x52_numpar) == null ){ 
+       if(trim($this->x52_numpar) == null ){
          $this->erro_sql = " Campo Numero Parcela nao Informado.";
          $this->erro_campo = "x52_numpar";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_valor"])){ 
+     if(trim($this->x52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_valor"])){
        $sql  .= $virgula." x52_valor = $this->x52_valor ";
        $virgula = ",";
-       if(trim($this->x52_valor) == null ){ 
+       if(trim($this->x52_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "x52_valor";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numpre"])){ 
+     if(trim($this->x52_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numpre"])){
        $sql  .= $virgula." x52_numpre = $this->x52_numpre ";
        $virgula = ",";
-       if(trim($this->x52_numpre) == null ){ 
+       if(trim($this->x52_numpre) == null ){
          $this->erro_sql = " Campo Número Arrecadação nao Informado.";
          $this->erro_campo = "x52_numpre";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_aguacoletorexportadadosreceita {
          return false;
        }
      }
-     if(trim($this->x52_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numtot"])){ 
+     if(trim($this->x52_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x52_numtot"])){
        $sql  .= $virgula." x52_numtot = $this->x52_numtot ";
        $virgula = ",";
-       if(trim($this->x52_numtot) == null ){ 
+       if(trim($this->x52_numtot) == null ){
          $this->erro_sql = " Campo Número Total de Parcelas nao Informado.";
          $this->erro_campo = "x52_numtot";
          $this->erro_banco = "";
@@ -389,7 +389,7 @@ class cl_aguacoletorexportadadosreceita {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Agua Coletor Exporta Dados Receita nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x52_sequencial;
@@ -417,14 +417,14 @@ class cl_aguacoletorexportadadosreceita {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x52_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x52_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x52_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -457,7 +457,7 @@ class cl_aguacoletorexportadadosreceita {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Agua Coletor Exporta Dados Receita nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x52_sequencial;
@@ -485,11 +485,11 @@ class cl_aguacoletorexportadadosreceita {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -511,11 +511,11 @@ class cl_aguacoletorexportadadosreceita {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,15 +541,15 @@ class cl_aguacoletorexportadadosreceita {
      $sql2 = "";
      if($dbwhere==""){
        if($x52_sequencial!=null ){
-         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial "; 
-       } 
+         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,11 +558,11 @@ class cl_aguacoletorexportadadosreceita {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -575,15 +575,15 @@ class cl_aguacoletorexportadadosreceita {
      $sql2 = "";
      if($dbwhere==""){
        if($x52_sequencial!=null ){
-         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial "; 
-       } 
+         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -592,11 +592,11 @@ class cl_aguacoletorexportadadosreceita {
      }
      return $sql;
   }
-// funcao do sql 
-   function sql_query_dados ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+// funcao do sql
+   public function sql_query_dados ( $x52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,19 +618,19 @@ class cl_aguacoletorexportadadosreceita {
      $sql .= "      inner join aguarota  on  aguarota.x06_codrota = aguacoletorexportadados.x50_rota";
      $sql .= "      left  join ruastipo  on  ruastipo.j88_codigo = aguacoletorexportadados.x50_tipo";
      $sql .= "      inner join aguacoletorexporta  as a on   a.x49_sequencial = aguacoletorexportadados.x50_aguacoletorexporta";
-     
+
      $sql2 = "";
      if($dbwhere==""){
        if($x52_sequencial!=null ){
-         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial "; 
-       } 
+         $sql2 .= " where aguacoletorexportadadosreceita.x52_sequencial = $x52_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

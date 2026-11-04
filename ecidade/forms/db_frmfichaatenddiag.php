@@ -61,6 +61,11 @@ if( $_SESSION['DB_itemmenu_acessado'] == 6828) {
         </legend>
         <table>
           <!-- Prontuário -->
+            <tr>
+                <td colspan="2">
+                    <div style="padding-left: 320px" id="linhaDaIdadeCompleta"></div>
+                </td>
+            </tr>
           <tr>
             <td nowrap title="<?=@$Tsd24_i_codigo?>">
               <?=@$Lsd24_i_codigo?>
@@ -352,4 +357,21 @@ function js_prontuarioMedico() {
 	  js_OpenJanelaIframe('', 'db_iframe_relatorioprontuario', sUrl, 'Prontuário Médico', true, '20', iLeft, 700, 320);
   }
 }
+
+function retornaIdadePaciente(oRetorno, lErro) {
+    let idadeCompleta = oRetorno.oCgs.sIdadeCompleta.urlDecode();
+    $('linhaDaIdadeCompleta').innerHTML  = `<p style="display: inline-block">Idade: <span style="color: red;">${idadeCompleta}</span></p>`;
+}
+
+function existeCgsUnd() {
+    let cgsUnd = document.getElementById('z01_i_numcgs').value;
+
+    if (cgsUnd !== '') {
+        let diretrizes    = {'sExecucao': 'buscarDadosCgs','iCgs': cgsUnd}
+        let oAjaxRequest  = new AjaxRequest('sau4_cgs.RPC.php', diretrizes, retornaIdadePaciente);
+        oAjaxRequest.execute();
+    }
+}
+existeCgsUnd();
+
 </script>

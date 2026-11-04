@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipovinculo->rotulo->label("ed324_descricao");
               <?=$Led324_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed324_sequencial",10,$Ied324_sequencial,true,"text",4,"","chave_ed324_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipovinculo->rotulo->label("ed324_descricao");
               <?=$Led324_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed324_descricao",20,$Ied324_descricao,true,"text",4,"","chave_ed324_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipovinculo->rotulo->label("ed324_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipovinculo.php")==true){
@@ -122,12 +122,12 @@ $cltipovinculo->rotulo->label("ed324_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

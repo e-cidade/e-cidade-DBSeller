@@ -58,6 +58,18 @@ abstract class ProcessamentoAbstract
     protected $mesCompetencia;
 
     /**
+     * @var int
+     *  Variavel que identifica o ano do pagamento de caixa para eventos da folha
+     */
+    protected $anoCaixa;
+
+    /**
+     * @var int
+     *  Variavel que identifica o mes de pagamento de caixa para eventos da folha
+     */
+    protected $mesCaixa;
+
+    /**
      * @var string
      *  Variavel que identifica o tipo de data de pagamento
      *      "ultimoDia" -> Ultimo dia da competência
@@ -82,6 +94,11 @@ abstract class ProcessamentoAbstract
      *  Lista de rubricas
      */
     protected $listaRubricas = [];
+
+    /**
+     * @var DBCompetencia
+     */
+    protected $competenciaAnterior;
 
     /**
      * @return Date
@@ -299,6 +316,37 @@ abstract class ProcessamentoAbstract
         $this->mesCompetencia = $mesCompetencia;
     }
 
+    /**
+     * @return int
+     */
+    public function getAnoCaixa()
+    {
+        return $this->anoCaixa;
+    }
+
+    /**
+     * @param int $anoCaixa
+     */
+    public function setAnoCaixa($anoCaixa)
+    {
+        $this->anoCaixa = $anoCaixa;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMesCaixa()
+    {
+        return $this->mesCaixa;
+    }
+
+    /**
+     * @param int $mesCaixa
+     */
+    public function setMesCaixa($mesCaixa)
+    {
+        $this->mesCaixa = $mesCaixa;
+    }
     /**
      * @return string
      */

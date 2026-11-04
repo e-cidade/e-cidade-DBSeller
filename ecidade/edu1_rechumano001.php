@@ -165,6 +165,7 @@ if (isset($incluir)) {
     $sql   .= " left  join rhlota       on  rhlota.r70_codigo = rhpessoalmov.rh02_lota ";
     $sql   .= "                        and  rhlota.r70_instit = rhpessoalmov.rh02_instit ";
     $sql   .= " inner join cgm as cgmrh on  cgmrh.z01_numcgm = rhpessoal.rh01_numcgm ";
+    $sql   .= "   left join cgmfisico  on  cgmfisico.z04_numcgm = cgmrh.z01_numcgm ";
     $sql   .= " inner join db_config    on  db_config.codigo = rhpessoal.rh01_instit ";
     $sql   .= " inner join rhestcivil   on  rhestcivil.rh08_estciv = rhpessoal.rh01_estciv ";
     $sql   .= " inner join rhraca       on  rhraca.rh18_raca = rhpessoal.rh01_raca ";
@@ -189,6 +190,7 @@ if (isset($incluir)) {
     $sql1    = " select $camposcgm ";
     $sql1   .= "  from cgm as cgmcgm ";
     $sql1   .= "   left join cgmdoc on cgmdoc.z02_i_cgm = cgmcgm.z01_numcgm ";
+    $sql1   .= "   left join cgmfisico  on  cgmfisico.z04_numcgm = cgmcgm.z01_numcgm ";
     $sql1   .= "   left join rechumanocgm on rechumanocgm.ed285_i_cgm = cgmcgm.z01_numcgm ";
     $sql1   .= "   left join rechumano on rechumano.ed20_i_codigo = rechumanocgm.ed285_i_rechumano ";
     $sql1   .= "   left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime ";

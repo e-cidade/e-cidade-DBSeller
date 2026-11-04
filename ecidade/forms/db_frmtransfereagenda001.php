@@ -2,27 +2,27 @@
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 //MODULO: saude
 $oDaoAgendamentos->rotulo->label();
@@ -107,7 +107,7 @@ $oRotulo->label('rh70_descr');
                         $sd23_d_consulta_dia = !empty($sd23_d_consulta_dia) ? $sd23_d_consulta_dia : "";
                         $sd23_d_consulta_mes = !empty($sd23_d_consulta_mes) ? $sd23_d_consulta_mes : "";
                         $sd23_d_consulta_ano = !empty($sd23_d_consulta_ano) ? $sd23_d_consulta_ano : "";
-  
+
                         db_inputdatasaude(
                                            'document.form1.sd27_i_codigo.value',
                                            'sd23_d_consulta',
@@ -128,15 +128,17 @@ $oRotulo->label('rh70_descr');
                       </td>
                       <td>
                         <?php
+                        $diasemana = !empty($diasemana) ? $diasemana : null;
+                        $dia = !empty($dia) ? $dia : null;
                         db_input( 'diasemana', 30, $diasemana, true, 'text',   3 );
                         db_input( 'dia',       10, $dia,       true, 'hidden', 3 );
                         ?>
                       </td>
                     </tr>
                   </table>
-                </fieldset>              
+                </fieldset>
               </td>
-  
+
               <td valign="top" colspan="2">
                 <fieldset>
                   <legend>Para</legend>
@@ -170,7 +172,7 @@ $oRotulo->label('rh70_descr');
                       <td>
                         <?php
                         $sScript = " onchange='js_pesquisasd04_i_cbo(false, 2);' onFocus=\"nextfield='sd23_d_consulta2'\"";
-  
+
                         db_input( 'sd27_i_codigo2',   10, $Isd27_i_codigo,   true, 'hidden', $db_opcao );
                         db_input( 'rh70_sequencial2', 10, $Irh70_sequencial, true, 'hidden', $db_opcao );
                         db_input( 'rh70_estrutural2', 10, $Irh70_estrutural, true, 'text',   $db_opcao, $sScript );
@@ -189,7 +191,7 @@ $oRotulo->label('rh70_descr');
                         $sd23_d_consulta2_dia = !empty($sd23_d_consulta2_dia) ? $sd23_d_consulta2_dia : "";
                         $sd23_d_consulta2_mes = !empty($sd23_d_consulta2_mes) ? $sd23_d_consulta2_mes : "";
                         $sd23_d_consulta2_ano = !empty($sd23_d_consulta2_ano) ? $sd23_d_consulta2_ano : "";
-  
+
                         db_inputdatasaude(
                                            'document.form1.sd27_i_codigo2.value',
                                            'sd23_d_consulta2',
@@ -216,8 +218,8 @@ $oRotulo->label('rh70_descr');
                       </td>
                     </tr>
                   </table>
-                </fieldset>              
-              </td>          
+                </fieldset>
+              </td>
             </tr>
             <tr>
               <td colspan="2" align="center"><br>
@@ -285,7 +287,7 @@ $oRotulo->label('rh70_descr');
     echo "sAgendamentosMarcar = '$sAgendamentos';";
   }
 ?>
-  
+
 function js_ajax(oParam, jsRetorno, sUrl) {
 
   var mRetornoAjax;
@@ -294,7 +296,7 @@ function js_ajax(oParam, jsRetorno, sUrl) {
     sUrl = 'sau4_agendamento.RPC.php';
   }
 
-  var objAjax = new Ajax.Request(sUrl, 
+  var objAjax = new Ajax.Request(sUrl,
                                  {
                                   method: 'post',
                                   asynchronous: false,
@@ -354,7 +356,7 @@ function js_transferir() {
   }
 
   for (var iCont = 0; iCont < oCkLadoPara.length; iCont++) {
-    
+
     aDadosAntes = oLadoPara.getElementById('transf_'+iCont).value.split(' ## ');
     if (aDadosAntes.length == 3) { // deve ser transferido, pois os dados antigos estão preenchidos
 
@@ -383,7 +385,7 @@ function js_transferir() {
 }
 
 function js_retornoTransferir(oRetorno) {
-  
+
   oRetorno = JSON.parse(oRetorno.responseText);
 
   if (oRetorno.iStatus == 1) {
@@ -391,10 +393,10 @@ function js_retornoTransferir(oRetorno) {
     alert('Transferência realizada com sucesso.');
     js_diasem(1);
     js_diasem(2);
-    
+
     <?php
     if (isset($lBotao)) {
-      
+
       if ($lBotao == 'true') {
         echo 'parent.js_agendados();';
       }
@@ -427,7 +429,7 @@ function js_moveEsquerda() {
          aDados[2] -> id da linha */
 
       // Dados que o agendamento iria possuir
-      var aDadosAtual = oCkLadoPara[iCont].value.split(' ## '); 
+      var aDadosAtual = oCkLadoPara[iCont].value.split(' ## ');
 
       // Dados que o agendamento já possuía (no lado de)
       var aDadosOrigem = oLadoPara.getElementById('transf_'+aDadosAtual[2]).value.split(' ## ');
@@ -446,7 +448,7 @@ function js_moveEsquerda() {
 
       /* Atualizo o campo hidden, colocando true, pois agora o horário está livre novamente */
       oLadoPara.getElementById('livre_'+aDadosAtual[2]).value = 'true ## '+aDadosAtual[2];
-      
+
       /* Desaabilito o checkbox do agendamento transferido e o deseleciono, pois agora o lugar está vazio */
       oLadoPara.getElementById('ckbox_'+aDadosAtual[2]).checked  = false;
       oLadoPara.getElementById('ckbox_'+aDadosAtual[2]).disabled = true;
@@ -455,7 +457,7 @@ function js_moveEsquerda() {
       oLadoDe.getElementById('ckbox_'+aDadosOrigem[2]).checked  = true;
       oLadoDe.getElementById('ckbox_'+aDadosOrigem[2]).disabled = false;
 
-      /* retiro os dados do campo hidden dos agendamentos transferidos, 
+      /* retiro os dados do campo hidden dos agendamentos transferidos,
          pois o agendamento voltou para seu lugar de origem */
       oLadoPara.getElementById('transf_'+aDadosAtual[2]).value = '';
     } // fim if agendamento do lado para foi marcado para ser transferido
@@ -487,7 +489,7 @@ function js_moveDireita() {
       lHorarioSel = true;
 
       for (var iCont2 = 0; iCont2 < oCkLadoPara.length; iCont2++) { // verif se alguma grade foi marc p/ recebr o agend
-       
+
         if (oCkLadoPara[iCont2].checked) {
 
           lMarcada = true;
@@ -496,7 +498,7 @@ function js_moveDireita() {
           var aLivres = new Array();
 
           for (var iCont3 = 0; iCont3 < oLivres.length; iCont3++) { // verifico se tem algum horario livre para a grade
-            
+
             /* aLivres[0] -> 'true' ou 'false', indicando se está ou não livre
                aLivres[1] -> id da linha */
             aLivres = oLivres[iCont3].value.split(' ## ');
@@ -522,7 +524,7 @@ function js_moveDireita() {
 
               /* Atualizo o campo hidden, colocando false, pois agora o horário não está mais livre */
               oLivres[iCont3].value = 'false ## '+aLivres[1];
-             
+
              /* Desaabilito o checkbox do agendamento transferido e o deseleciono, pois agora o lugar está vazio */
               oCkLadoDe[iCont].checked  = false;
               oCkLadoDe[iCont].disabled = true;
@@ -592,7 +594,7 @@ function js_moveBaixo() {
 
           // Quando a grade for período, só movo para outra grade, pois não faz diferença mover para a mesma
           if (sTipoGrade == 'Período') {
-          
+
             aDadosTmp = oLadoPara.getElementById('ckbox_'+iCont2).value.split(' ## ');
             if (aDadosTmp[1] == aDados[1]) { // ainda é a mesma grade
               continue;
@@ -602,29 +604,29 @@ function js_moveBaixo() {
           // Dados que o agendamento já possuía (no lado de) para o novo horário e apago do antigo
           oLadoPara.getElementById('transf_'+iCont2).value    = oLadoPara.getElementById('transf_'+aDados[2]).value;
           oLadoPara.getElementById('transf_'+aDados[2]).value = '';
-          
+
           /* Copio o CGS e nome de quem o agendamento está sendo transferido */
           var iCgs  = oLadoPara.getElementById('td'+'_'+aDados[2]+'6').innerHTML;
           var sNome = oLadoPara.getElementById('td'+'_'+aDados[2]+'7').innerHTML;
-          
+
           /* Apago o CGS e o nome do agendamento sendo transferido */
           oLadoPara.getElementById('td'+'_'+aDados[2]+'6').innerHTML = '';
           oLadoPara.getElementById('td'+'_'+aDados[2]+'7').innerHTML = '---------';
-          
+
           /* Coloco o CGS e nome do agendamento sendo transferido no lugar para onde quero transferir */
           oLadoPara.getElementById('td'+'_'+iCont2+'6').innerHTML = iCgs;
           oLadoPara.getElementById('td'+'_'+iCont2+'7').innerHTML = sNome;
-          
+
           /* Atualizo o campo hidden, colocando false, pois agora o horário não está livre */
           oLadoPara.getElementById('livre_'+iCont2).value = 'false ## '+iCont2;
 
           /* Atualizo o campo hidden do horario onde o agendamento estava antes, pois agora o horário está livre */
           oLadoPara.getElementById('livre_'+aDados[2]).value = 'true ## '+aDados[2];
-          
+
           /* Desabilito o checkbox do agendamento transferido e o deseleciono, pois agora o lugar está vazio */
           oLadoPara.getElementById('ckbox_'+aDados[2]).checked  = false;
           oLadoPara.getElementById('ckbox_'+aDados[2]).disabled = true;
-          
+
           /* Habilito o checkbox do novo lugar do agendamento transferido e o seleciono */
           oLadoPara.getElementById('ckbox_'+iCont2).checked  = true;
           oLadoPara.getElementById('ckbox_'+iCont2).disabled = false;
@@ -672,7 +674,7 @@ function js_moveCima() {
 
           // Quando a grade for período, só movo para outra grade, pois não faz diferença mover para a mesma
           if (sTipoGrade == 'Período') {
-          
+
             aDadosTmp = oLadoPara.getElementById('ckbox_'+iCont2).value.split(' ## ');
             if (aDadosTmp[1] == aDados[1]) { // ainda é a mesma grade
               continue;
@@ -682,29 +684,29 @@ function js_moveCima() {
           // Dados que o agendamento já possuía (no lado de) para o novo horário e apago do antigo
           oLadoPara.getElementById('transf_'+iCont2).value    = oLadoPara.getElementById('transf_'+aDados[2]).value;
           oLadoPara.getElementById('transf_'+aDados[2]).value = '';
-          
+
           /* Copio o CGS e nome de quem o agendamento está sendo transferido */
           var iCgs  = oLadoPara.getElementById('td'+'_'+aDados[2]+'6').innerHTML;
           var sNome = oLadoPara.getElementById('td'+'_'+aDados[2]+'7').innerHTML;
-          
+
           /* Apago o CGS e o nome do agendamento sendo transferido */
           oLadoPara.getElementById('td'+'_'+aDados[2]+'6').innerHTML = '';
           oLadoPara.getElementById('td'+'_'+aDados[2]+'7').innerHTML = '---------';
-          
+
           /* Coloco o CGS e nome do agendamento sendo transferido no lugar para onde quero transferir */
           oLadoPara.getElementById('td'+'_'+iCont2+'6').innerHTML = iCgs;
           oLadoPara.getElementById('td'+'_'+iCont2+'7').innerHTML = sNome;
-          
+
           /* Atualizo o campo hidden, colocando false, pois agora o horário não está livre */
           oLadoPara.getElementById('livre_'+iCont2).value = 'false ## '+iCont2;
 
           /* Atualizo o campo hidden do horario onde o agendamento estava antes, pois agora o horário está livre */
           oLadoPara.getElementById('livre_'+aDados[2]).value = 'true ## '+aDados[2];
-          
+
           /* Desabilito o checkbox do agendamento transferido e o deseleciono, pois agora o lugar está vazio */
           oLadoPara.getElementById('ckbox_'+aDados[2]).checked  = false;
           oLadoPara.getElementById('ckbox_'+aDados[2]).disabled = true;
-          
+
           /* Habilito o checkbox do novo lugar do agendamento transferido e o seleciono */
           oLadoPara.getElementById('ckbox_'+iCont2).checked  = true;
           oLadoPara.getElementById('ckbox_'+iCont2).disabled = false;
@@ -753,7 +755,7 @@ function js_agendados(depara) {
     sd27_i_codigo  = $F('sd27_i_codigo2');
     iframe         = document.getElementById('frameagendadospara');
   }
-  
+
   if (sd23_d_consulta != '') {
 
     iAno        = sd23_d_consulta.substr(6, 4);
@@ -781,7 +783,7 @@ function js_agendados(depara) {
 function js_diasem(depara) {
 
   if (depara == 1) {
-    
+
     if ($F('sd23_d_consulta') == '') {
 
       js_limpaDataConsulta(1);
@@ -824,7 +826,7 @@ function js_diasem(depara) {
     document.form1.diasemana2.value = sNomeDia[iDiaSemana];
     document.form1.dia2.value       = (iDiaSemana + 1);
   }
-  
+
   js_agendados(depara);
 }
 
@@ -834,7 +836,7 @@ function js_calend() {
   sUrl       += '?nome_objeto_data=sd23_d_consulta';
   sUrl       += '&sd27_i_codigo='+$F('sd27_i_codigo');
   sUrl       += '&shutdown_function=parent.js_agendados()';
-  
+
   iframe = $('framecalendario');
   iframe.src = x;
 }
@@ -920,7 +922,7 @@ function js_pesquisasd04_i_cbo(mostra, depara) {
 
     if (depara == 2) {
 
-      if (document.form1.rh70_estrutural2.value != '') { 
+      if (document.form1.rh70_estrutural2.value != '') {
 
         js_OpenJanelaIframe('', 'db_iframe_especmedico', 'func_especmedico.php?chave_rh70_estrutural='+
                             document.form1.rh70_estrutural2.value+'&funcao_js=parent.js_mostrarhcbo2|'+
@@ -964,8 +966,8 @@ function js_mostrarhcbo1(chave1, chave2, chave3, chave4) {
 
   if (chave2 == '') {
 
-    document.form1.rh70_estrutural.focus(); 
-    document.form1.rh70_estrutural.value = ''; 
+    document.form1.rh70_estrutural.focus();
+    document.form1.rh70_estrutural.value = '';
   }
 }
 
@@ -976,9 +978,9 @@ function js_mostrarhcbo2(chave1, chave2, chave3, chave4) {
   document.form1.rh70_estrutural2.value = chave2;
   document.form1.rh70_descr2.value      = chave3;
   document.form1.rh70_sequencial2.value = chave4;
-  
+
   db_iframe_especmedico.hide();
-  
+
   if ((chave2 == '') || (document.form1.rh70_sequencial2.value != document.form1.rh70_sequencial.value) ) {
 
     if (document.form1.rh70_sequencial2.value != document.form1.rh70_sequencial.value) {
@@ -1007,7 +1009,7 @@ function js_pesquisasd03_i_codigo(mostra, depara) {
     } else {
 
       js_OpenJanelaIframe('', 'db_iframe_medicos', 'func_medicos.php?funcao_js=parent.js_mostramedicos1|'+
-                          'sd03_i_codigo|z01_nome&chave_sd06_i_unidade='+document.form1.sd02_i_codigo.value, 
+                          'sd03_i_codigo|z01_nome&chave_sd06_i_unidade='+document.form1.sd02_i_codigo.value,
                           'Pesquisa', true
                          );
     }
@@ -1049,7 +1051,7 @@ function js_mostramedicos_1(chave, erro) {
     document.form1.rh70_estrutural.value = '';
     document.form1.rh70_descr.value      = '';
   } else {
-    js_pesquisasd04_i_cbo(true, 1);    
+    js_pesquisasd04_i_cbo(true, 1);
   }
 }
 
@@ -1065,7 +1067,7 @@ function js_mostramedicos_2(chave, erro) {
     document.form1.rh70_estrutural2.value = '';
     document.form1.rh70_descr2.value      = '';
   } else {
-    js_pesquisasd04_i_cbo(true, 2);    
+    js_pesquisasd04_i_cbo(true, 2);
   }
 }
 

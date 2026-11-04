@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadenderparam->rotulo->label("db99_cadenderpais");
               <?=$Ldb99_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db99_sequencial",10,$Idb99_sequencial,true,"text",4,"","chave_db99_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadenderparam->rotulo->label("db99_cadenderpais");
               <?=$Ldb99_cadenderpais?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db99_cadenderpais",10,$Idb99_cadenderpais,true,"text",4,"","chave_db99_cadenderpais");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadenderparam->rotulo->label("db99_cadenderpais");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderparam.php")==true){
@@ -122,12 +122,12 @@ $clcadenderparam->rotulo->label("db99_cadenderpais");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_varfixval {
                  q34_dtval = date = data do valor
                  ";
    //funcao construtor da classe
-   function cl_varfixval() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("varfixval");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_varfixval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q34_codigo = ($this->q34_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q34_codigo"]:$this->q34_codigo);
        $this->q34_numpar = ($this->q34_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["q34_numpar"]:$this->q34_numpar);
@@ -98,7 +98,7 @@ class cl_varfixval {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->q34_codigo == null ){
        $this->erro_sql = " Campo Código nao Informado.";
@@ -207,7 +207,7 @@ class cl_varfixval {
      return true;
    }
    // funcao para alteracao
-   function alterar($oid = null, $sWhere = null) {
+   public function alterar($oid = null, $sWhere = null) {
       $this->atualizacampos();
      $sql = " update varfixval set ";
      $virgula = "";
@@ -355,7 +355,7 @@ class cl_varfixval {
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from varfixval
                     where ";
      $sql2 = "";
@@ -394,7 +394,7 @@ class cl_varfixval {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -416,10 +416,10 @@ class cl_varfixval {
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="varfixval.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="varfixval.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_varfixval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,10 +453,10 @@ class cl_varfixval {
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_varfixval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

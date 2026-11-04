@@ -60,17 +60,17 @@ $j18_nomefunc = "func_iptubase.php";
       <table>
       	<tr>
           <td align="rigth" ><strong>Data Inicial :</strong>
-          <?db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
+          <?php db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
           </td>
           <td align="left" ><strong>Data Final :</strong>
-          <?
+          <?php
            $datausu = date("Y/m/d",db_getsession("DB_datausu"));
            $dataf_ano = substr($datausu,0,4);
            $dataf_mes = substr($datausu,5,2);
            $dataf_dia = substr($datausu,8,2);
 
           ?>
-          <?db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
+          <?php db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
           </td>
         </tr>
         <tr>
@@ -170,7 +170,7 @@ function js_preenchematricula2(chave,chave1){
         	};
             new EmissaoRelatorio("arr2_reldebcontapedidomatricula002.php", oParametros).open();
         }
-        
+
     }
   </script>
 </body>

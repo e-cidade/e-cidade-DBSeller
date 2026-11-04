@@ -36,6 +36,15 @@ require_once(modification("libs/db_app.utils.php"));
 $oGet  = db_utils::postMemory($_GET);
 $iInstituicao = db_getsession("DB_instit");
 
+$tipo = null;
+$situacao = null;
+$data_lancamento_inicio_ano = '';
+$data_lancamento_inicio_mes = '';
+$data_lancamento_inicio_dia = '';
+$data_lancamento_final_ano  = '';
+$data_lancamento_final_mes  = '';
+$data_lancamento_final_dia  = '';
+
 ?>
 <html>
     <head>
@@ -64,6 +73,23 @@ $iInstituicao = db_getsession("DB_instit");
                 $sWhereCredito = "and abatimentorecibo.k127_numprerecibo = ".$oGet->numpre;
             }
 
+            $where = '';
+            if(!empty($oGet->data_lancamento_inicio)){
+                $datafim = empty($oGet->data_lancamento_final) ? date("d/m/Y") : $oGet->data_lancamento_final;
+                $where .= " and DATE( k125_datalanc ) between '$oGet->data_lancamento_inicio' and '$datafim' ";
+            }
+                
+            if(!empty($oGet->situacao)){
+                $where .= " and status = '$oGet->situacao' ";
+            }
+
+            if(!empty($oGet->tipo)){
+                if($oGet->tipo == 1){
+                    $where .= " and k156_regracompensacao = 7 ";
+                }else{
+                    $where .= " and k156_regracompensacao is null or k156_regracompensacao != 7";
+                }
+            }
             $dDataSistema = date('Y-m-d', db_getsession('DB_datausu'));
             $iAnoUsu  = db_getsession("DB_anousu");
             $sSqlCreditosDisponiveis  = " select k125_sequencial,                                                                                                                           \n";
@@ -125,7 +151,7 @@ $iInstituicao = db_getsession("DB_instit");
                                           from ({$sSqlCreditosDisponiveis}) as creditos;";
 
             $sSqlCreditosDisponiveis .= "drop table if exists w_abatimento_credito; create temp table w_abatimento_credito as {$sSqlCreditosDisponiveis}                                    \n";
-            $sSqlCreditosDisponiveis .= "select k125_sequencial            ,
+            $sSqlCreditosDisponiveis .= "select k125_sequencial,
                                                 abatimento_valordisponivel ,
                                                 k00_numpre                 ,
                                                 array_to_string(array_agg(k00_receit), ', ') codrecs         ,
@@ -142,6 +168,10 @@ $iInstituicao = db_getsession("DB_instit");
                                                 sum(valor_disponivel) valor_disponivel,
                                                 valor_disponivel_corrigido 
                                            from w_abatimento_credito
+                                           left join  abatimentoregracompensacao on  k125_sequencial = k156_abatimento
+                                           where
+                                                1=1
+                                                $where
                                        group by k125_sequencial            ,
                                                 abatimento_valordisponivel ,
                                                 k00_numpre                 ,
@@ -153,15 +183,74 @@ $iInstituicao = db_getsession("DB_instit");
                                                 valor_corrigido            ,
                                                 k125_datalanc              ,
                                                 qtd_registros              ,
-                                                valor_disponivel_corrigido;"; 
+                                                valor_disponivel_corrigido"; 
             
             //echo $sSqlCreditosDisponiveis; die;
-
             $rsCreditosDisponiveis    = db_query($sSqlCreditosDisponiveis);
             $iLinhasCreditos          = pg_num_rows($rsCreditosDisponiveis);
 
-            if ($iLinhasCreditos > 0) {
             ?>
+            <form action="" method="GET">
+                <input type="hidden" name="numcgm" value="<?= $oGet->numcgm ?>">
+                <input type="hidden" name="matric" value="<?= $oGet->matric ?>">
+                <input type="hidden" name="inscr" value="<?= $oGet->inscr ?>">
+
+                <table style="margin-bottom: 0.5em">
+                    <tr>
+                        <td>Data de lançamento:</td>
+                        <td style="position: relative;">
+                            <?= 
+                                db_inputdata(
+                                    "data_lancamento_inicio",
+                                    $data_lancamento_inicio_dia,
+                                    $data_lancamento_inicio_mes,
+                                    $data_lancamento_inicio_ano,
+                                    false,
+                                    'text',
+                                    1
+                                ) 
+                            ?>
+                        </td>
+                        <td> até </td>
+                        <td>
+                            <?= 
+                                db_inputdata(
+                                    "data_lancamento_final",
+                                    $data_lancamento_final_dia,
+                                    $data_lancamento_final_mes,
+                                    $data_lancamento_final_ano,
+                                    false,
+                                    'text',
+                                    1
+                                )
+                            ?>    
+                        </td>
+                        <td>Tipo:</td>
+                        <td>
+                            <select name="tipo">
+                                <option selected  value="">Todos</option>
+                                <option value="1">Manual</option>
+                                <option value="2">Automática</option>
+                            </select>
+                        </td>
+                        <td>Situação:</td>
+                        <td>
+                            <select name="situacao">
+                                <option selected  value="">Todos</option>
+                                <option value="ATIVO">Ativos</option>
+                                <option value="INATIVO">Inativos</option>
+                            </select>
+                        </td>
+                        <td>
+                        <input type="submit" value="Pesquisar">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <?php
+
+            if ($iLinhasCreditos > 0) {            
+             ?>
                 <table border="1" cellspacing="0" cellpadding="3">
                     <tr bgcolor="#FFCC66">
                         <th nowrap>MI                  </th>
@@ -288,6 +377,7 @@ $iInstituicao = db_getsession("DB_instit");
                             <td align="right"  nowrap ><b><?php echo db_formatar($totValorDisponivelCorrigido,'f'); // total valor disponivel?></b></td>
                         </tr>
                 </table>
+                <input type="button" name="imprimir" value="Imprimir" onclick="js_imprime()">
                 <?php 
             }?>
         </center>
@@ -300,4 +390,31 @@ $iInstituicao = db_getsession("DB_instit");
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_abatimento',sUrl,'Origem Cr\E9dito',true);
 
   }
+
+  function js_imprime() {
+      jandb = window.open('cai3_gerfinanc076.php?<?php
+        if(!empty($oGet->matric)){
+           echo "matric=$oGet->matric";
+        }else if(!empty($oGet->inscr)){
+           echo "inscr=$oGet->inscr";
+        }else if(!empty($oGet->numcgm)){
+           echo "numcgm=$oGet->numcgm";
+        }else {
+           echo "numpre=$oGet->numpre";
+        }
+
+        if(!empty($oGet->data_lancamento_inicio)) {
+           echo "&data_lancamento_inicio=".$oGet->data_lancamento_inicio;
+           echo "&data_lancamento_final=".$datafim;
+        }
+        if(!empty($oGet->situacao)) {
+            echo "&situacao=".$oGet->situacao;
+        }
+        if(!empty($oGet->tipo)) {
+           echo "&tipo=".$oGet->tipo;
+        }
+
+      ?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+      jandb.moveTo(0,0);
+   }
 </script>

@@ -10,4 +10,9 @@ class QueuedJob extends Model
     {
         return $this->belongsTo(BatchJob::class);
     }
+
+    public function failedJob()
+    {
+        return $this->hasOne(FailedJob::class, "payload", "payload");
+    }
 }

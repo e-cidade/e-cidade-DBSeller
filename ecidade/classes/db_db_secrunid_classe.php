@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,13 +54,13 @@ class cl_db_secrunid {
                  s_titulo = varchar(200) = Título 
                  ";
    //funcao construtor da classe 
-   function cl_db_secrunid() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_secrunid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_secrunid {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s_codigounidade = ($this->s_codigounidade == ""?@$GLOBALS["HTTP_POST_VARS"]["s_codigounidade"]:$this->s_codigounidade);
        $this->s_codigosecr = ($this->s_codigosecr == ""?@$GLOBALS["HTTP_POST_VARS"]["s_codigosecr"]:$this->s_codigosecr);
@@ -79,7 +79,7 @@ class cl_db_secrunid {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->s_codigounidade == null ){ 
        $this->erro_sql = " Campo Código unidade nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_secrunid {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update db_secrunid set ";
      $virgula = "";
@@ -242,7 +242,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from db_secrunid
                     where ";
      $sql2 = "";
@@ -281,7 +281,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

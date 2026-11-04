@@ -50,7 +50,7 @@ final class ProcessoAndamentoRepository extends BaseRepository implements Reposi
         $this->dao->p61_dtandam    = $model->getData();
         $this->dao->p61_despacho   = $model->getDespacho();
         $this->dao->p61_coddepto   = $model->getDepartamento();
-        $this->dao->p61_publico    = ($model->getPublico() == true) ? 't' : 'f';
+        $this->dao->p61_publico    = $model->getPublico() ? 't' : 'f';
         $this->dao->p61_hora       = $model->getHora();
 
         if (!empty($model->getCodigo())) {
@@ -64,5 +64,7 @@ final class ProcessoAndamentoRepository extends BaseRepository implements Reposi
         if ($this->dao->erro_status == 0) {
             throw new \Exception($this->dao->erro_msg);
         }
+
+        return $model;
     }
 }

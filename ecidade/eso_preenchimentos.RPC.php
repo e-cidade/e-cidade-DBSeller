@@ -32,7 +32,7 @@ try {
             $relatorioFactory = MapeadorFactory::get($filtros->tipoFormulario);
             $formulario = ConfiguracaoFactory::getFormularioDoTipoNaVersaoAtual(Tipo::ESOCIAL, $filtros->tipoFormulario);
             $filtroRubricas = null;
-            if (!empty($filtros->rubricas)) {
+            if (!empty($filtros->rubricas)  ) {
                 $filtroRubricas = $filtros->rubricas;
             }
             if (empty($filtros->ano)) {

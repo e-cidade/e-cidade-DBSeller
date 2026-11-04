@@ -723,7 +723,7 @@ class cl_obras
 
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -761,7 +761,7 @@ class cl_obras
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -1019,6 +1019,7 @@ class cl_obras
                               ELSE 'T'
                           END AS tipohabitese,
                           sql_base.ob08_area AS areaobra,
+                          sql_base.ob09_area as areaobrahabite,
                           sql_base.j29_cep AS cepobra,
                           sql_base.j13_descr AS bairroobra,
                           sql_base.ob07_inicio AS datainicioobra,
@@ -1047,6 +1048,7 @@ class cl_obras
                                   ob09_data,
                                   ob09_parcial,
                                   ob08_area,
+                                  ob09_area,
                                   j29_cep,
                                   j13_descr,
                                   ob07_inicio,
@@ -1111,6 +1113,7 @@ class cl_obras
                                   ob09_data,
                                   ob09_parcial,
                                   ob08_area,
+                                  ob09_area,
                                   j29_cep,
                                   j13_descr,
                                   ob07_inicio,

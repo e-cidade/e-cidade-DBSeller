@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,14 +50,14 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     <strong>Ano / Mês :&nbsp;&nbsp;</strong>
     </td>
     <td>
-      <?
+      <?php
        if(!isset($DBtxt23) || (isset($DBtxt23) && (trim($DBtxt23) == "" || $DBtxt23 == 0))){
          $DBtxt23 = db_anofolha();
        }
        db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
        if(!isset($DBtxt25) || (isset($DBtxt23) && (trim($DBtxt25) == "" || $DBtxt25 == 0))){
          $DBtxt25 = db_mesfolha();
        }
@@ -68,13 +68,13 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   <tr>
     <td><b>Ponto:</b></td>
     <td>
-     <?
+     <?php
        $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
        db_select('ponto',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>
      </tr>
-     <?
+     <?php
      if(isset($ponto) && $ponto == "c"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest as seq"));
        if($clgerfcom->numrows > 0){
@@ -113,19 +113,19 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
   <tr>
     <td><b>Gerado por:</b></td>
     <td>
-    <?
+    <?php
        $x = array("G"=>"Geral","O"=>"Orgão","U"=>"Unidade");
        db_select("gerado",$x,true,4,"");
     ?>
     </td>
   </tr>
   <tr>
-    <td><b><? db_ancora("Fornecedor: ","js_pesquisapc21_numcgm(true);",4) ?></b></td>
+    <td><b><?php db_ancora("Fornecedor: ","js_pesquisapc21_numcgm(true);",4) ?></b></td>
     <td> 
-<?
+<?php
 db_input('pc21_numcgm',8,$Ipc21_numcgm,true,'text',4," onchange='js_pesquisapc21_numcgm(false);'")
 ?>
-<?
+<?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3);
 ?>
     </td>
@@ -140,7 +140,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3);
 </body>
 <script>
 function js_verifica(){
-<?
+<?php
   if (!isset($mostra)){
     $mostra = false;
 }

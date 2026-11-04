@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -1176,12 +1176,12 @@ if (!isset($arqinclude)){ //
   $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS PREVIDENCIÁRIAS DO REGIME PRÓPRIO DOS SERVIDORES";
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt = strtoupper(db_mes('01'));
-  $dt  = split("-",$dtDataFinal);
+  $dt  =explode("-",$dtDataFinal);
   $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu";
   $head5 = "$txt";
    $dados  = data_periodo($anousu, $sSiglaPeriodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini =explode("-",$dados[0]);
+  $perfin =explode("-",$dados[1]);
 
   $txtper = strtoupper($dados["periodo"]);
   $mesini = db_mes($perini[1],1);
@@ -1621,11 +1621,11 @@ if (!isset($arqinclude)){ //
   $pdf->cell($tam_desp, $alt, "({nb}/{nb})", 'TB', 1, "R", 0);
   //assinatura
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$pdf,$iCodigoPeriodo,180);
+  $oRelatorio->getNotaExplicativa($pdf,$iCodigoPeriodo,180);
   $pdf->ln(10);
   $pdf->setfont('arial','',6);
 
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
 
   $pdf->Output();
 

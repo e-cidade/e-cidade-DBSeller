@@ -27,8 +27,9 @@
 
 namespace ECidade\Tributario\Divida;
 
+use cl_arrenumcgm;
+use db_utils;
 use ECidade\Tributario\Arrecadacao\CadTipo;
-use ECidade\Tributario\Divida\Termo\Repository\Termo as TermoRepository;
 use ECidade\Tributario\Divida\Service\TermoInscricaoService;
 use Exception;
 
@@ -111,7 +112,12 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     {
         $this->onProgressBarSetMessageLog("Buscando débitos na base de dados (Etapa 3/11)");
 
-        $rsBuscaDebitos = $this->buscarDebitos($sWhere);
+        if ($this->getTipoDebitoOrigem() == self::TIPO_ORIGEM_PARCELAMENTO_COBRANCA_ADM) {
+            $rsBuscaDebitos = $this->buscarDebitos($sWhere);
+        } else {
+            $rsBuscaDebitos = $this->buscarDebitosPorParcela($sWhere);
+        }
+
         $iTotalRegistros = pg_num_rows($rsBuscaDebitos);
 
         if ($iTotalRegistros == 0) {
@@ -356,9 +362,27 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 if (!$resuladoArrecad) {
                     throw new \DBException("Erro ao trocar o tipo de débito para inicial do foro.");
                 }
+
+                $this->geraArrenumcgm($dadosCertidao->cgm, $divida->iNumpre);
             }
 
             $this->onProgressBarUpdatePercentual($contadorRegistros);
+        }
+    }
+
+    /**
+     * Funcao para gerar arrenumcgm dos debitos caso nao exista
+     * @param int $iNumcgm
+     * @param int $iNumpre
+     * @return void
+     */
+    private function geraArrenumcgm($iNumcgm, $iNumpre)
+    {
+        $oDaoArrenumCgm = new cl_arrenumcgm();
+        $sSqlBuscaRegistros = $oDaoArrenumCgm->sql_query_file($iNumcgm, $iNumpre);
+        $rsBuscaRegistros = db_query($sSqlBuscaRegistros);
+        if (pg_num_rows($rsBuscaRegistros) == 0) {
+            $oDaoArrenumCgm->incluir($iNumcgm, $iNumpre);
         }
     }
 
@@ -1068,158 +1092,212 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
     {
         $this->onProgressBarSetMessageLog("Inserindo débitos em dívida ativa (Etapa 9/11)");
 
-        $debitos = $this->oDadosDebitos;
         $dataInscricao = date('Y-m-d', db_getsession('DB_datausu'));
         $contadorRegistros = 0;
 
         $this->onProgressBarUpdatePercentual($contadorRegistros);
 
-        foreach ($debitos as $debito) {
-            $sql = "";
-            $contadorRegistros++;
-
-            $parcelas = explode(',', $debito->colecao_numpar);
-            $valores = explode(',', $debito->colecao_valor);
-            $datasVencimento = explode(',', $debito->data_vencimento);
-            $historicos = explode(',', $debito->colecao_historico);
-            $competencias = explode(',', $debito->colecao_competencia);
-
-            $unificou = false;
-
+        /**
+         * Agrupar debitos por procedencia, numpre e numpar
+         */
+        $debitos = [];
+        foreach ($this->oDadosDebitos as $debito) {
             $procedenciaDivida = $this->aReceitaProcedencia[$debito->k00_receit];
-            $historicoCalculoProcedencia = $procedenciaDivida->getHistoricoCalculo();
+            $procedencia = $procedenciaDivida->getProcedenciaDivida();
 
-            $dados = array(
-                'numpre_novo' => $relacaoNumpreAntigoNovo[$debito->k00_numpre],
-                'receita' => $procedenciaDivida->getReceitaDivida(),
-                'tipo' => $procedenciaDivida->getTipoDebito(),
-                'numero_total' => $debito->k00_numtot
-            );
+            if (!array_key_exists($procedencia, $debitos)) {
+                $debitos[$procedencia] = [];
+            }
 
-            asort($parcelas);
+            if (!array_key_exists($debito->k00_numpre, $debitos[$procedencia])) {
+                $debitos[$procedencia][$debito->k00_numpre] = [];
+            }
 
-            if (!empty($debito->colecao_numpar)) {
-                foreach ($parcelas as $chaveParcela => $parcela) {
-                    $dados['valor'] = $valores[$chaveParcela];
-                    $dados['data_vencimento'] = $datasVencimento[$chaveParcela];
-                    $dados['historico'] = $historicoCalculoProcedencia;
+            if ($this->lUnificarDebitos) {
+                if (!array_key_exists(1, $debitos[$procedencia][$debito->k00_numpre])) {
+                    $debitos[$procedencia][$debito->k00_numpre][1] = [];
+                }
+                $debitos[$procedencia][$debito->k00_numpre][1][] = $debito;
+                continue;
+            }
 
-                    if (empty($historicoCalculoProcedencia)) {
-                        $dados['historico'] = $historicos[$chaveParcela];
-                    }
+            if (!array_key_exists($debito->k00_numpar, $debitos[$procedencia][$debito->k00_numpre])) {
+                $debitos[$procedencia][$debito->k00_numpre][$debito->k00_numpar] = [];
+            }
 
-                    $numpar = $parcela;
+            $debitos[$procedencia][$debito->k00_numpre][$debito->k00_numpar][] = $debito;
+        }
 
+        /**
+         * Processa debitos
+         */
+        foreach ($debitos as $proced => $numpre) {
+            foreach ($numpre as $numpre => $parcelas) {
+                foreach ($parcelas as $numpar => $parcela) {
+                    $sql = '';
+                    $contadorRegistros++;
+
+                    // Cria divida agrupada por parcela
+                    $dadosDivida = [
+                        'numpre_novo' => $relacaoNumpreAntigoNovo[$numpre],
+                        'procedencia' => $proced,
+                        'numero_total' => $parcela[0]->k00_numtot,
+                        'valor' => array_reduce($parcela, function ($total, $item) {
+                            return bcadd($total, $item->k00_valor, 2);
+                        }, "0"),
+                        'data_vencimento' => $parcela[0]->data_vencimento
+                    ];
+
+                    // Data vencimento dos dados unificado
                     if ($this->lUnificarDebitos) {
-                        $parcela = 1;
-                        $dados['valor'] = $debito->k00_valor;
-                        $dados['numero_total'] = 1;
-                        $dados['data_vencimento'] = $this->maiorDataVencimento() ?
-                            $debito->maior_data_vencimento :
-                            $debito->menor_data_vencimento;
+                        $dataVencimento = array_map(function ($item) {
+                            return $item->data_vencimento;
+                        }, $parcela);
+                        $dadosDivida['data_vencimento'] = $this->maiorDataVencimento()
+                            ? max($dataVencimento)
+                            : min($dataVencimento);
 
                         if ($this->escolhaDataVencimento()) {
-                            $dados['data_vencimento'] = $this->getDataVencimento()->getDate();
+                            $dadosDivida['data_vencimento'] = $this->getDataVencimento()->getDate();
                         }
                     }
 
-                    $debito->competencia = $competencias[$chaveParcela];
+                    $sql .= $this->criarDivida($parcela[0], $dadosDivida, $numpar, $dataInscricao, $proced);
 
-                    if (!$unificou) {
-                        $sql .= $this->criarDivida(
-                            $debito,
-                            $dados,
-                            $parcela,
-                            $dataInscricao,
-                            $procedenciaDivida->getProcedenciaDivida()
-                        );
+                    // Criar debitos (arrecad) individuais
+                    $receitaAtribuida = [];
+                    foreach ($parcela as $debito) {
+                        $sql .= $this->incluirDivOld($numpre, $debito->k00_numpar, $debito->k00_receit);
+
+                        if ($this->lUnificarDebitos) {
+                            // verifica se a receita ja foi atribuida
+                            if (in_array($debito->k00_receit, $receitaAtribuida)) {
+                                $this->excluirDebitoAntigo($debito, $debito->k00_numpar);
+                                continue;
+                            }
+
+                            // pega os valores do somatorio da receita
+                            $valorReceita = array_reduce($parcela, function ($total, $item) use ($debito) {
+                                return $item->k00_receit == $debito->k00_receit
+                                    ? bcadd($total, $item->k00_valor, 2)
+                                    : $total;
+                            }, 0);
+
+                            // seta nas receoitas ja atribuidas
+                            $receitaAtribuida[] = $debito->k00_receit;
+                        }
+
+                        // receita da procedencia do debito
+                        $sqlProcedDebito = "
+                            select proced.v03_receit, proced.k00_hist, procedarretipo.v06_arretipo
+                            from divida.proced
+                            inner join diversos.procdiver on procdiver.dv09_proced = proced.v03_codigo
+                            left join caixa.procedarretipo on procedarretipo.v06_proced = proced.v03_codigo
+                            where procdiver.dv09_receit = {$debito->k00_receit}
+                        ";
+                        $rsProcedDebito = db_query($sqlProcedDebito);
+                        if (!$rsProcedDebito && pg_num_rows($rsProcedDebito) < 0) {
+                            throw new Exception("Procedencia da receita {$debito->k00_receit} nao encontrada");
+                        }
+                        $procedenciaDebito = db_utils::fieldsMemory($rsProcedDebito, 0);
+
+                        $dadosDebitos = [
+                            'numpre_novo' => $relacaoNumpreAntigoNovo[$numpre],
+                            'receita' => $procedenciaDebito->v03_receit,
+                            'tipo' => $procedenciaDebito->v06_arretipo,
+                            'historico' => $procedenciaDebito->k00_hist,
+                            'numero_total' => ($this->lUnificarDebitos) ? "1" : $debito->k00_numtot,
+                            'valor' => ($this->lUnificarDebitos) ? $valorReceita : $debito->k00_valor,
+                            'data_vencimento' => ($this->lUnificarDebitos)
+                                ? $dadosDivida['data_vencimento']
+                                : $debito->data_vencimento
+                        ];
+
+                        $sql .= $this->criarDebito($debito, $dadosDebitos, $numpar, $debito->k00_numpar);
                     }
 
-                    $sql .= $this->incluirDivOld($debito->k00_numpre, $numpar, $debito->k00_receit);
+                    // cria arrematric
+                    if (!empty($debito->colecao_matricula)) {
+                        $matriculas = explode(',', $debito->colecao_matricula);
 
-                    if ($unificou) {
-                        $sql .= $this->excluirDebitoAntigo($debito, $numpar);
+                        foreach ($matriculas as $matricula) {
+                            list($codigoMatricula, $percentualMatricula) = explode('|', $matricula);
+
+                            $sSqlMatric = "SELECT k00_numpre FROM arrematric
+                                WHERE k00_numpre = {$dadosDebitos['numpre_novo']}
+                                AND k00_matric = {$codigoMatricula} ;";
+
+                            $rsMatric = db_query($sSqlMatric);
+
+                            if (pg_num_rows($rsMatric) > 0) {
+                                continue;
+                            }
+
+                            $sql .= "insert into arrematric (k00_numpre, k00_matric, k00_perc)
+                                values ({$dadosDebitos['numpre_novo']}, {$codigoMatricula}, {$percentualMatricula});";
+                        }
+                    }
+
+                    // cria arreinscr
+                    if (!empty($debito->colecao_inscricao)) {
+                        $inscricoes = explode(',', $debito->colecao_inscricao);
+
+                        foreach ($inscricoes as $indice => $inscricao) {
+                            list($codigoInscricao, $percentualInscricao) = explode('|', $inscricao);
+
+                            $sSqlInscr = "SELECT  k00_numpre FROM  arreinscr
+                                WHERE k00_numpre = {$dadosDebitos['numpre_novo']} AND k00_inscr = {$codigoInscricao} ;";
+                            $rsInscr = db_query($sSqlInscr);
+
+                            if (pg_num_rows($rsInscr) > 0) {
+                                continue;
+                            }
+
+                            $sql .= "insert into arreinscr (k00_numpre, k00_inscr, k00_perc)
+                                values ({$dadosDebitos['numpre_novo']}, {$codigoInscricao}, {$percentualInscricao});";
+                        }
+                    }
+
+                    $resultado = db_query($sql);
+                    if (!$resultado) {
+                        throw new \Exception('Erro.' . pg_last_error());
+                    }
+
+                    // insere na termo
+                    $sqlDivida = "select
+                                    v01_coddiv,
+                                    v01_dtvenc,
+                                    v01_dtinsc,
+                                    v01_vlrhis,
+                                    v01_dtoper
+                                from
+                                    divida
+                                where
+                                    v01_numpre = $relacaoNumpreAntigoNovo[$numpre]
+                                    and v01_numpar = $numpar
+                                    and v01_proced = $proced";
+
+                    $rs = db_query($sqlDivida);
+                    if (pg_num_rows($rs) == 0) {
                         continue;
                     }
 
-                    $sql .= $this->criarDebito($debito, $dados, $parcela, $numpar);
+                    $oDivida = \db_utils::fieldsMemory($rs, 0);
+                    $dataInsc = date("Y-m-d", db_getsession('DB_datausu'));
+                    $usuario = db_getsession('DB_id_usuario');
+                    $instit = db_getsession('DB_instit');
+                    TermoInscricaoService::salvar(
+                        $relacaoNumpreAntigoNovo[$numpre],
+                        $oDivida,
+                        $procedenciaDivida->getReceitaDivida(),
+                        $dataInsc,
+                        $usuario,
+                        $instit
+                    );
 
-                    if ($this->lUnificarDebitos) {
-                        $unificou = true;
-                    }
+                    $this->onProgressBarUpdatePercentual($contadorRegistros);
                 }
             }
-
-            if (!empty($debito->colecao_matricula)) {
-                $matriculas = explode(',', $debito->colecao_matricula);
-
-                foreach ($matriculas as $indice => $matricula) {
-                    list($codigoMatricula, $percentualMatricula) = explode('|', $matricula);
-
-                    $sSqlMatric = "SELECT  k00_numpre FROM  arrematric
-                                   WHERE k00_numpre = {$dados['numpre_novo']} AND k00_matric = {$codigoMatricula} ;";
-
-                    $rsMatric = db_query($sSqlMatric);
-
-                    if (pg_num_rows($rsMatric) > 0) {
-                        continue;
-                    }
-
-                    $sql .= "insert into arrematric (k00_numpre, k00_matric, k00_perc)
-                             values ({$dados['numpre_novo']}, {$codigoMatricula}, {$percentualMatricula});";
-                }
-            }
-
-            if (!empty($debito->colecao_inscricao)) {
-                $inscricoes = explode(',', $debito->colecao_inscricao);
-
-                foreach ($inscricoes as $indice => $inscricao) {
-                    list($codigoInscricao, $percentualInscricao) = explode('|', $inscricao);
-
-                    $sSqlInscr = "SELECT  k00_numpre FROM  arreinscr
-                                  WHERE k00_numpre = {$dados['numpre_novo']} AND k00_inscr = {$codigoInscricao} ;";
-                    $rsInscr = db_query($sSqlInscr);
-
-                    if (pg_num_rows($rsInscr) > 0) {
-                        continue;
-                    }
-
-                    $sql .= "insert into arreinscr (k00_numpre, k00_inscr, k00_perc)
-                             values ({$dados['numpre_novo']}, {$codigoInscricao}, {$percentualInscricao});";
-                }
-            }
-
-            if (!empty($debito->colecao_numpar)) {
-                $resultado = db_query($sql);
-                if (!$resultado) {
-                    throw new \Exception('Erro.' . pg_last_error());
-                }
-
-                $numpre = $dados['numpre_novo'];
-                $receita = $dados['receita'];
- 
-                $sqlDivida = "select 
-                                v01_coddiv,
-                                v01_dtvenc,
-                                v01_dtinsc,
-                                v01_vlrhis,
-                                v01_dtoper 
-                            from 
-                                divida 
-                            where 
-                                v01_numpre = $numpre
-                                and v01_numpar = $parcela
-                                and v01_proced = {$procedenciaDivida->getProcedenciaDivida()}";
-                $rs = db_query($sqlDivida);
-                $oDivida = \db_utils::fieldsMemory($rs, 0);
-
-                $dataInsc = date("Y-m-d", db_getsession('DB_datausu'));
-                $usuario = db_getsession('DB_id_usuario');
-                $instit = db_getsession('DB_instit');
-                TermoInscricaoService::salvar($numpre, $oDivida, $receita, $dataInsc, $usuario, $instit);
-            }
-
-            $this->onProgressBarUpdatePercentual($contadorRegistros);
         }
     }
 
@@ -1661,5 +1739,117 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
                 unset($this->aDividasArrecadParcelamento[$indiceDono]);
             }
         }
+    }
+
+    /**
+     * Função que realiza a consulta dos débitos que serão importados
+     * @param $sWhere
+     * @return bool|\PgSql\Result
+     * @throws DBException
+     */
+    protected function buscarDebitosPorParcela($sWhereArrecad)
+    {
+        $sSqlCaseValor  = " case                                                          ";
+        $sSqlCaseValor .= "   when arretipo.k03_tipo = 3 and arrecad.k00_valor = 0 then ( ";
+        $sSqlCaseValor .= "     select case                                               ";
+        $sSqlCaseValor .= "              when issvar.q05_valor > 0 then issvar.q05_valor  ";
+        $sSqlCaseValor .= "              when issvar.q05_valor = 0 then issvar.q05_vlrinf ";
+        $sSqlCaseValor .= "            end                                                ";
+        $sSqlCaseValor .= "       from issvar                                             ";
+        $sSqlCaseValor .= "      where issvar.q05_numpre = arrecad.k00_numpre             ";
+        $sSqlCaseValor .= "        and issvar.q05_numpar = arrecad.k00_numpar             ";
+        $sSqlCaseValor .= "   )                                                           ";
+        $sSqlCaseValor .= "   else arrecad.k00_valor                                      ";
+        $sSqlCaseValor .= " end                                                           ";
+
+        $campos = implode(", ", array(
+            "arrecad.k00_numpre",
+            "arrecad.k00_numpar",
+            "arrecad.k00_numcgm",
+            "array_to_string(array_accum(arrecad.k00_dtoper), ',') AS colecao_dtoper",
+            "arrecad.k00_receit",
+            "array_to_string(array_accum(k00_hist), ',') as colecao_historico",
+            "arrecad.k00_tipo",
+            "arretipo.k03_tipo",
+            "arrecad.k00_tipojm",
+            "arrecad.k00_numtot",
+            "array_to_string(array_accum(arrecad.k00_numdig), ',') as k00_numdig",
+            "sum({$sSqlCaseValor}) as k00_valor",
+            "min(arrecad.k00_dtvenc) as menor_data_vencimento",
+            "max(arrecad.k00_dtvenc) as maior_data_vencimento",
+            "array_to_string(array_accum(arrecad.k00_numpar), ',') as colecao_numpar",
+            "array_to_string(array_accum({$sSqlCaseValor}), ',') as colecao_valor",
+            "(select array_to_string(array_accum(k00_matric || '|' ||k00_perc), ',')
+                from arrematric where arrematric.k00_numpre = arrecad.k00_numpre) as colecao_matricula",
+            "(select array_to_string(array_accum(k00_inscr || '|' ||k00_perc), ',')
+                from arreinscr where arreinscr.k00_numpre = arrecad.k00_numpre) as colecao_inscricao",
+            "(select array_to_string(array_accum(distinct arrenumcgm.k00_numcgm), ',')
+                from arrenumcgm where arrenumcgm.k00_numpre = arrecad.k00_numpre) as colecao_cgm",
+            "(select array_to_string(array_accum(q05_mes||'/'||q05_ano), ',')) as colecao_competencia",
+            "array_to_string(array_accum(k00_dtvenc), ',') as data_vencimento",
+            "(select dv05_obs from diversos where dv05_numpre = arrecad.k00_numpre) as obs",
+            "(select dv05_exerc as exercicio from diversos where dv05_numpre = arrecad.k00_numpre) AS exercicio_divida"
+        ));
+
+        $subsql = "select ";
+
+        $campos_sql = explode("#", $campos);
+        $virgula = "";
+
+        for ($i = 0; $i < sizeof($campos_sql); $i++) {
+            $subsql .= $virgula.$campos_sql[$i];
+            $virgula = ",";
+        }
+
+        $subsql .= " from arretipo ";
+        $subsql .= "      inner join arrecad on arrecad.k00_tipo = arretipo.k00_tipo          ";
+        $subsql .= "                        and ($sWhereArrecad) ";
+        $subsql .= "      inner join arreinstit on arreinstit.k00_numpre = arrecad.k00_numpre ";
+        $subsql .= "                           and arreinstit.k00_instit = ".db_getsession('DB_instit');
+        $subsql .= "      left join diversos on arrecad.k00_numpre = diversos.dv05_numpre";
+
+        $subsql .= " left join (
+            select distinct dv13_diversos, dv13_numpar, dv13_numpre from diverimportaold) as diold
+            on dv05_coddiver = dv13_diversos and dv13_numpar = arrecad.k00_numpar
+        ";
+
+        $subsql .= "      left join issvar on dv13_numpre = q05_numpre and q05_numpar = dv13_numpar";
+        $subsql .= " group by arrecad.k00_numpre, arrecad.k00_numpar, arrecad.k00_numcgm, arrecad.k00_receit, ";
+        $subsql .= " arrecad.k00_tipo, arrecad.k00_tipojm, arrecad.k00_numtot, arretipo.k03_tipo ";
+
+        $sql  = " select k00_numpre,               ";
+        $sql .= "        k00_numpar,               ";
+        $sql .= "        k00_numcgm,               ";
+        $sql .= "        colecao_dtoper,           ";
+        $sql .= "        k00_receit,               ";
+        $sql .= "        colecao_historico,        ";
+        $sql .= "        k00_tipo,                 ";
+        $sql .= "        k03_tipo,                 ";
+        $sql .= "        k00_tipojm,               ";
+        $sql .= "        k00_numtot,               ";
+        $sql .= "        k00_numdig,               ";
+        $sql .= "        k00_valor,                ";
+        $sql .= "        menor_data_vencimento,    ";
+        $sql .= "        maior_data_vencimento,    ";
+        $sql .= "        colecao_numpar,           ";
+        $sql .= "        colecao_valor,            ";
+        $sql .= "        colecao_matricula,        ";
+        $sql .= "        colecao_inscricao,        ";
+        $sql .= "        colecao_cgm,              ";
+        $sql .= "        colecao_competencia,      ";
+        $sql .= "        data_vencimento,          ";
+        $sql .= "        obs,                      ";
+        $sql .= "        exercicio_divida          ";
+        $sql .= "  from ({$subsql}) as x           ";
+        $sql .= " where k00_valor > 0              ";
+        $sql .= " order by k00_numpre              ";
+
+        $rsBuscaDebitos = db_query($sql);
+
+        if (!$rsBuscaDebitos) {
+            throw new \DBException("Não foi possível consultar os dados a serem importados.");
+        }
+
+        return $rsBuscaDebitos;
     }
 }

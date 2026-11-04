@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhlotaexe
-class cl_rhlotaexe { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh26_anousu = 0; 
-   var $rh26_codigo = 0; 
-   var $rh26_orgao = 0; 
-   var $rh26_unidade = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhlotaexe {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh26_anousu = 0;
+   var $rh26_codigo = 0;
+   var $rh26_orgao = 0;
+   var $rh26_unidade = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh26_anousu = int4 = Exercício 
-                 rh26_codigo = int4 = Código da Lotação 
-                 rh26_orgao = int4 = Órgão 
-                 rh26_unidade = int4 = Unidade 
+                 rh26_anousu = int4 = Exercício
+                 rh26_codigo = int4 = Código da Lotação
+                 rh26_orgao = int4 = Órgão
+                 rh26_unidade = int4 = Unidade
                  ";
-   //funcao construtor da classe 
-   function cl_rhlotaexe() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhlotaexe"); 
+     $this->rotulo = new rotulo("rhlotaexe");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_rhlotaexe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh26_anousu = ($this->rh26_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh26_anousu"]:$this->rh26_anousu);
        $this->rh26_codigo = ($this->rh26_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh26_codigo"]:$this->rh26_codigo);
@@ -81,9 +81,9 @@ class cl_rhlotaexe {
      }
    }
    // funcao para inclusao
-   function incluir ($rh26_anousu,$rh26_codigo){ 
+   public function incluir ($rh26_anousu,$rh26_codigo){
       $this->atualizacampos();
-     if($this->rh26_orgao == null ){ 
+     if($this->rh26_orgao == null ){
        $this->erro_sql = " Campo Órgão nao Informado.";
        $this->erro_campo = "rh26_orgao";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_rhlotaexe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh26_unidade == null ){ 
+     if($this->rh26_unidade == null ){
        $this->erro_sql = " Campo Unidade nao Informado.";
        $this->erro_campo = "rh26_unidade";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_rhlotaexe {
        $this->erro_status = "0";
        return false;
      }
-       $this->rh26_anousu = $rh26_anousu; 
-       $this->rh26_codigo = $rh26_codigo; 
-     if(($this->rh26_anousu == null) || ($this->rh26_anousu == "") ){ 
+       $this->rh26_anousu = $rh26_anousu;
+       $this->rh26_codigo = $rh26_codigo;
+     if(($this->rh26_anousu == null) || ($this->rh26_anousu == "") ){
        $this->erro_sql = " Campo rh26_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_rhlotaexe {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh26_codigo == null) || ($this->rh26_codigo == "") ){ 
+     if(($this->rh26_codigo == null) || ($this->rh26_codigo == "") ){
        $this->erro_sql = " Campo rh26_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_rhlotaexe {
        return false;
      }
      $sql = "insert into rhlotaexe(
-                                       rh26_anousu 
-                                      ,rh26_codigo 
-                                      ,rh26_orgao 
-                                      ,rh26_unidade 
+                                       rh26_anousu
+                                      ,rh26_codigo
+                                      ,rh26_orgao
+                                      ,rh26_unidade
                        )
                 values (
-                                $this->rh26_anousu 
-                               ,$this->rh26_codigo 
-                               ,$this->rh26_orgao 
-                               ,$this->rh26_unidade 
+                                $this->rh26_anousu
+                               ,$this->rh26_codigo
+                               ,$this->rh26_orgao
+                               ,$this->rh26_unidade
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lotações analíticas ($this->rh26_anousu."-".$this->rh26_codigo) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_rhlotaexe {
        $resac = db_query("insert into db_acount values($acount,1181,7133,'','".AddSlashes(pg_result($resaco,0,'rh26_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh26_anousu=null,$rh26_codigo=null) { 
+   public function alterar ($rh26_anousu=null,$rh26_codigo=null) {
       $this->atualizacampos();
      $sql = " update rhlotaexe set ";
      $virgula = "";
-     if(trim($this->rh26_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_anousu"])){ 
+     if(trim($this->rh26_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_anousu"])){
        $sql  .= $virgula." rh26_anousu = $this->rh26_anousu ";
        $virgula = ",";
-       if(trim($this->rh26_anousu) == null ){ 
+       if(trim($this->rh26_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "rh26_anousu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_rhlotaexe {
          return false;
        }
      }
-     if(trim($this->rh26_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_codigo"])){ 
+     if(trim($this->rh26_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_codigo"])){
        $sql  .= $virgula." rh26_codigo = $this->rh26_codigo ";
        $virgula = ",";
-       if(trim($this->rh26_codigo) == null ){ 
+       if(trim($this->rh26_codigo) == null ){
          $this->erro_sql = " Campo Código da Lotação nao Informado.";
          $this->erro_campo = "rh26_codigo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_rhlotaexe {
          return false;
        }
      }
-     if(trim($this->rh26_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_orgao"])){ 
+     if(trim($this->rh26_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_orgao"])){
        $sql  .= $virgula." rh26_orgao = $this->rh26_orgao ";
        $virgula = ",";
-       if(trim($this->rh26_orgao) == null ){ 
+       if(trim($this->rh26_orgao) == null ){
          $this->erro_sql = " Campo Órgão nao Informado.";
          $this->erro_campo = "rh26_orgao";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_rhlotaexe {
          return false;
        }
      }
-     if(trim($this->rh26_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_unidade"])){ 
+     if(trim($this->rh26_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh26_unidade"])){
        $sql  .= $virgula." rh26_unidade = $this->rh26_unidade ";
        $virgula = ",";
-       if(trim($this->rh26_unidade) == null ){ 
+       if(trim($this->rh26_unidade) == null ){
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "rh26_unidade";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_rhlotaexe {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotações analíticas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh26_anousu."-".$this->rh26_codigo;
@@ -280,14 +280,14 @@ class cl_rhlotaexe {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh26_anousu=null,$rh26_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh26_anousu=null,$rh26_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh26_anousu,$rh26_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_rhlotaexe {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotações analíticas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh26_anousu."-".$rh26_codigo;
@@ -351,11 +351,11 @@ class cl_rhlotaexe {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,10 +377,10 @@ class cl_rhlotaexe {
       }
      return $result;
    }
-   function sql_query ( $rh26_anousu=null,$rh26_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh26_anousu=null,$rh26_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,10 +390,10 @@ class cl_rhlotaexe {
        $sql .= $campos;
      }
      $sql .= " from rhlotaexe ";
-     $sql .= "      inner join orcunidade  on  orcunidade.o41_anousu  = rhlotaexe.rh26_anousu 
-                                          and  orcunidade.o41_orgao   = rhlotaexe.rh26_orgao 
+     $sql .= "      inner join orcunidade  on  orcunidade.o41_anousu  = rhlotaexe.rh26_anousu
+                                          and  orcunidade.o41_orgao   = rhlotaexe.rh26_orgao
                                           and  orcunidade.o41_unidade = rhlotaexe.rh26_unidade";
-     $sql .= "      inner join orcorgao    on  orcorgao.o40_anousu    = orcunidade.o41_anousu 
+     $sql .= "      inner join orcorgao    on  orcorgao.o40_anousu    = orcunidade.o41_anousu
                                           and  orcorgao.o40_orgao     = orcunidade.o41_orgao   ";
      /*
      $sql .= "      inner join orcorgao  as a on   a.o40_anousu = orcunidade.o41_anousu and   a.o40_orgao = orcunidade.o41_orgao";
@@ -402,23 +402,23 @@ class cl_rhlotaexe {
      $sql2 = "";
      if($dbwhere==""){
        if($rh26_anousu!=null ){
-         $sql2 .= " where rhlotaexe.rh26_anousu = $rh26_anousu "; 
-       } 
+         $sql2 .= " where rhlotaexe.rh26_anousu = $rh26_anousu ";
+       }
        if($rh26_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhlotaexe.rh26_codigo = $rh26_codigo "; 
-       } 
+         }
+         $sql2 .= " rhlotaexe.rh26_codigo = $rh26_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,10 +427,10 @@ class cl_rhlotaexe {
      }
      return $sql;
   }
-   function sql_query_file ( $rh26_anousu=null,$rh26_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh26_anousu=null,$rh26_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,23 +443,23 @@ class cl_rhlotaexe {
      $sql2 = "";
      if($dbwhere==""){
        if($rh26_anousu!=null ){
-         $sql2 .= " where rhlotaexe.rh26_anousu = $rh26_anousu "; 
-       } 
+         $sql2 .= " where rhlotaexe.rh26_anousu = $rh26_anousu ";
+       }
        if($rh26_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhlotaexe.rh26_codigo = $rh26_codigo "; 
-       } 
+         }
+         $sql2 .= " rhlotaexe.rh26_codigo = $rh26_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,16 +469,16 @@ class cl_rhlotaexe {
      return $sql;
   }
 
-  function sql_query_servidores( $iAnoUsu, $iMesUsu, $sCampos = null, $sWhere, $iInstituicao = null ) {
+  public function sql_query_servidores( $iAnoUsu, $iMesUsu, $sCampos = null, $sWhere, $iInstituicao = null ) {
 
   	if ( empty($sCampos) ) {
   		$sCampos = "*";
   	}
-  	 
+
   	if ( empty($iInstituicao) ) {
 			$iInstituicao = db_getsession('DB_instit');
   	}
-  	 
+
   	$sSql = "select $sCampos                                           \n";
   	$sSql.= "  from rhpessoalmov                                       \n";
   	$sSql.= "       inner join rhlota     on r70_codigo  = rh02_lota   \n";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -101,7 +101,7 @@ a:active {
   font-size: 11;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -137,7 +137,7 @@ a:active {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;<?=$sLoad?>" >
-<?
+<?php
 db_postmemory($HTTP_POST_VARS);
 
 $ano                         = substr( $sd23_d_consulta, 6, 4 );
@@ -223,7 +223,7 @@ $int_size = strlen($str_tipograde)>80?80:strlen($str_tipograde);
         cellpadding = "1px"
         bgcolor     = "#cccccc"
 >
-<?
+    <?php
 
 //Unidade Paralisada
 $sSql=$clsau_upsparalisada->sql_query_ext(null,
@@ -293,7 +293,7 @@ if ($clausencias->numrows > 0 && $iGradePorTempo == 0) {
           <font size="4" color="red">Motivo de aus&ecirc;ncia do Profissional: <?=$sMotivosausencias ?></font>
         </td>
       </tr>
-     <?
+      <?php
      $in=false;
   }
 }else if ($clsau_upsparalisada->numrows > 0) {
@@ -306,7 +306,7 @@ if ($clausencias->numrows > 0 && $iGradePorTempo == 0) {
         <font size="4"  color="red">Unidade Paralisada. Motivo: <?=$oParalisado->s139_c_descr?></font>
       </td>
     </tr>
-    <?$in=false;
+    <?php $in=false;
 
   }
 }
@@ -328,7 +328,7 @@ if ($in == true) {
           </b>
         </td>
       </tr>
-      <?
+        <?php
     }else{
     $reservadas            = $obj_undmedhorario->sd30_i_reservas;
     $nro_fichas            = $obj_undmedhorario->sd30_i_fichas+$reservadas;
@@ -366,7 +366,7 @@ if ($in == true) {
     }
     $diferenca   = $nro_fichas-$reservadas;
     $mi_interva1 = 0;
-    $mi_interva2 = 1;
+    $mi_interva2 = 0;
 
     if (isset($lUnificado)) {
       $sDisplayCabecalho = 'none';
@@ -425,21 +425,21 @@ if ($in == true) {
     ?>
     <tr class='cabec' id="<?=trim($obj_undmedhorario->sd30_i_codigo)?>" style="display: <?=$sDisplayCabecalho?>;">
       <td colspan="8" align="left">
-                <? if (isset($sTransf) && $sTransf == "true" && $sLado == "para") { //verifica se vem da transferencia ?>
+          <?php if (isset($sTransf) && $sTransf == "true" && $sLado == "para") { //verifica se vem da transferencia ?>
                     <input type    = "checkbox"
                            name    = "ckboxPara"
                            value   = "<?=trim($obj_undmedhorario->sd30_i_codigo)?>"
                            id      = "ckboxPara_<?=$obj_undmedhorario->sd30_i_codigo?>"
                            onclick = "js_marcarUm( <?=trim($obj_undmedhorario->sd30_i_codigo)?>, 'ckboxPara' )"
                     >
-                <? } elseif (!isset($sTransf)) { ?>
+          <?php } elseif (!isset($sTransf)) { ?>
                     <img src="skins/img.php?file=Controles/seta_down.png" onclick="js_ocultar(this,<?=$obj_undmedhorario->sd30_i_codigo ?>)">
-                <? } ?>
+          <?php } ?>
                 <?=$obj_undmedhorario->sd30_i_codigo." - ".$obj_undmedhorario->sd101_c_descr ?>
       </td>
     </tr>
-    <tr class='cabec' <? if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
-      <? if( isset($sTransf) && $sTransf == "true" && $sLado == "de") { //verifica se vem da transferencia lado de ?>
+    <tr class='cabec' <?php if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
+        <?php if( isset($sTransf) && $sTransf == "true" && $sLado == "de") { //verifica se vem da transferencia lado de ?>
       <td class="cabec" align="center" style="display: <?=$sDisplayCkBox?>;">
         <input type="button"
                value="M"
@@ -447,7 +447,7 @@ if ($in == true) {
                name="marcarTodos"
                onclick="js_marcarTodos(this, '<?=(isset($lUnificado) ? '' : trim($obj_undmedhorario->sd30_i_codigo))?>');">
       </td>
-      <?
+            <?php
       } elseif (isset($sTransf) && $sTransf == "true" && $sLado == "para") { //verifica se vem da transferencia lado para
       ?>
         <td class="cabec" align="center" style="display: <?=$sDisplayCkBox?>">
@@ -457,7 +457,7 @@ if ($in == true) {
                name="marcarTodos"
                onclick="js_marcarTodos(this, '<?=trim($obj_undmedhorario->sd30_i_codigo)?>');">
       </td>
-      <?
+            <?php
       }
 
       ?>
@@ -473,7 +473,7 @@ if ($in == true) {
       <td class='cabec' align="center" >Opções</td>
 
     </tr>
-      <?$arrAgenda = array(
+      <?php $arrAgenda = array(
                             array("codigo"=>"",
                                   "h"=>"",
                                   "hora_ini"=>"",
@@ -645,13 +645,13 @@ if ($in == true) {
         if ($intervalo != 0) {
 
           $hora_ini2   = $hora_ini = $clagendamentos->somahora($hora_ini,($intervalo+$mi_interva2));
-          $mi_interva1 = -1;
+          $mi_interva1 = 0;
           $mi_interva2 = 0;
 
         } else {
 
           $hora_ini2   = $clagendamentos->somahora($hora_ini2,($intervalo2+$mi_interva2));
-          $mi_interva1 = -1;
+          $mi_interva1 = 0;
           $mi_interva2 = 0;
 
       }
@@ -734,7 +734,7 @@ if ($in == true) {
     if ($arrAgenda[$intCountagenda]["ausente"] == true) {
         ?>
         <tr bgcolor="white">
-        <?
+        <?php
         if (isset($sTransf) && $sTransf == "true") {
         ?>
           <td id="td<?='_'.$intCountagenda2?>0" style="border:1px solid #AACCCC; display: <?=$sDisplayCkBox?>;" class='corpo2' align="center">
@@ -772,7 +772,7 @@ if ($in == true) {
               name="ausencia" id="ausencia_<?=$intCountagenda2?>">
 
           </td>
-        <?
+            <?php
         }
         ?>
 
@@ -795,13 +795,13 @@ if ($in == true) {
         <td id="td<?='_'.$intCountagenda2?>10" style="border:1px solid #AACCCC; "  class='corpo' align="center">
           "---------"
         </td>
-        <?
+        <?php
     } else {
       ?>
       <tr style="display:<?=$codigo != 0 && $intervalo == 0 && (($linhas - 1) > $intCountagenda) && !isset($sTransf) ? 'none' : '' ?>;"
         title="<?=$sObs?>"
           id="<?=$codigo!=0?($obj_undmedhorario->sd30_i_codigo.'_'.$intCountagenda):'' ?>" >
-          <?
+          <?php
           if (isset($sTransf) && $sTransf == "true" && $sLado == "de") { //verifica se vem da transferencia
 
             $sDisabled = (!isset($codigo) || empty($codigo)) ? "disabled" : "";
@@ -844,7 +844,7 @@ if ($in == true) {
                   name="ausencia" id="ausencia_<?=$intCountagenda2?>">
 
             </td>
-          <?
+              <?php
           } elseif (isset($sTransf) && $sTransf == "true" && $sLado == "para") {
 
           ?>
@@ -888,7 +888,7 @@ if ($in == true) {
 
             </td>
 
-          <?
+              <?php
           }
           ?>
         <td id="td<?='_'.$intCountagenda2?>8" style="border:1px solid #AACCCC; display: <?=$sDisplaySeq?>;"
@@ -911,7 +911,7 @@ if ($in == true) {
         </td>
 
       </tr>
-      <?
+        <?php
       }
     }//fim for countagenda
 
@@ -928,7 +928,7 @@ if ($in == true) {
 //Tempo estimado para recarregar agenda
 //window.setInterval( js_reload, 40000 );
 
-<?
+<?php
 if (isset($lUnificado)) {
   echo 'js_habilitaTodos(false);';
 }

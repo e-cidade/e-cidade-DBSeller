@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrelrubmov->rotulo->label("rh46_codigo");
               <?=$Lrh46_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh46_seq",10,$Irh46_seq,true,"text",4,"","chave_rh46_seq");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrelrubmov->rotulo->label("rh46_codigo");
               <?=$Lrh46_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh46_codigo",6,$Irh46_codigo,true,"text",4,"","chave_rh46_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrelrubmov->rotulo->label("rh46_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_relrubmov.php")==true){
@@ -118,12 +118,12 @@ $clrelrubmov->rotulo->label("rh46_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

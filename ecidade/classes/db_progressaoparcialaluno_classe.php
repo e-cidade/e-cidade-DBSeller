@@ -62,13 +62,13 @@ class cl_progressaoparcialaluno {
                  ed114_situacaoeducacao = int4 = Situação da progressão
                  ";
    //funcao construtor da classe
-   function cl_progressaoparcialaluno() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialaluno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_progressaoparcialaluno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed114_sequencial = ($this->ed114_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed114_sequencial"]:$this->ed114_sequencial);
        $this->ed114_disciplina = ($this->ed114_disciplina == ""?@$GLOBALS["HTTP_POST_VARS"]["ed114_disciplina"]:$this->ed114_disciplina);
@@ -92,7 +92,7 @@ class cl_progressaoparcialaluno {
      }
    }
    // funcao para inclusao
-   function incluir ($ed114_sequencial){
+   public function incluir ($ed114_sequencial){
       $this->atualizacampos();
      if($this->ed114_disciplina == null ){
        $this->erro_sql = " Campo Disciplina não informado.";
@@ -251,7 +251,7 @@ class cl_progressaoparcialaluno {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed114_sequencial=null) {
+   public function alterar ($ed114_sequencial=null) {
       $this->atualizacampos();
      $sql = " update progressaoparcialaluno set ";
      $virgula = "";
@@ -422,7 +422,7 @@ class cl_progressaoparcialaluno {
      }
    }
    // funcao para exclusao
-   function excluir ($ed114_sequencial=null,$dbwhere=null) {
+   public function excluir ($ed114_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -499,7 +499,7 @@ class cl_progressaoparcialaluno {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -522,7 +522,7 @@ class cl_progressaoparcialaluno {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -577,7 +577,7 @@ class cl_progressaoparcialaluno {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -610,7 +610,7 @@ class cl_progressaoparcialaluno {
      }
      return $sql;
   }
-   function sql_query_aluno_escola ($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_aluno_escola ($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -666,7 +666,7 @@ class cl_progressaoparcialaluno {
    * @param string $sWhere
    * @return string
    */
-  function sql_query_aluno_em_progressao($iCodigo = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
+  public function sql_query_aluno_em_progressao($iCodigo = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
 
     $sql = "select ";
     if ($sCampos != "*") {
@@ -710,7 +710,7 @@ class cl_progressaoparcialaluno {
     }
     return $sql;
   }
-   function sql_query_matricula($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_matricula($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -751,7 +751,7 @@ class cl_progressaoparcialaluno {
     }
     return $sql;
   }
-   function sql_query_alunos_turma ($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_alunos_turma ($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -794,7 +794,7 @@ class cl_progressaoparcialaluno {
     }
     return $sql;
   }
-   function sql_query_resultado_final($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+   public function sql_query_resultado_final($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -836,7 +836,7 @@ class cl_progressaoparcialaluno {
     return $sql;
   }
 
-  function sql_query_resultado_regencia($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_resultado_regencia($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
@@ -881,7 +881,7 @@ class cl_progressaoparcialaluno {
     return $sql;
   }
 
-  function sql_query_regencia_turma($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_regencia_turma($ed114_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {

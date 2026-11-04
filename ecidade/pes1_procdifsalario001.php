@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -386,7 +386,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js, widgets/dbtextField.widget.js");
       db_app::load("widgets/dbcomboBox.widget.js, estilos.css, grid.style.css");
@@ -417,13 +417,13 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
       <tr>
         <td width="170px">
           <strong>
-          <?
+          <?php
             db_ancora("Banco de Dados:", "js_selecionaBanco(); js_buscaBases();", 1);
           ?>
           </strong>
         </td>
         <td>
-          <?
+          <?php
             db_input("sBancoOrigem",       40, '', true, "text",   3);
             db_input('iIPOrigemHidden',    30, '', true, 'hidden', 1);
             db_input('sBancoOrigemHidden', 30, '', true, 'hidden', 1);
@@ -437,7 +437,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           </strong>
         </td>
         <td>
-          <?
+          <?php
             db_input('iAnoOrigem', 3, '', true, 'text', 1);
             echo " / ";
             db_input('iMesOrigem', 1, '', true, 'text', 1);
@@ -451,7 +451,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           </strong>
         </td>
         <td>
-          <?
+          <?php
             $aTipoFolha = array( "0" => "Selecione", "1" => "Salário", "2" => "Complementar" );
             db_select('iTipoFolhaOrigem', $aTipoFolha, true, 1, "style='width: 150px;'");
           ?>
@@ -464,7 +464,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           </strong>
         </td>
         <td>
-          <?
+          <?php
             db_input("aConfRubrica", 30, '', true, 'hidden');
 
             $aProcessaDiferencas = array( "0" => "Total de Proventos", "1" => "Rubricas" );
@@ -484,7 +484,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           </strong>
         </td>
         <td>
-          <?
+          <?php
             db_input("sConteudoSelecaoIframe", 30, '', 1, 'hidden'); // Guarda Somente IDS
             db_input("sTipoFiltroIframe", 30, '', 1, 'hidden');      // Guarda o Tipo de Filtro dentro do IFRAME
             db_input("sSelecaoIframe", 30, '', 1, 'hidden');         // Guarda o VALUE da SELECAO
@@ -511,7 +511,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           <b>Base de Destino:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('sBaseDestino', 40, '', true, 'text', 3);
           ?>
         </td>
@@ -521,7 +521,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           <b>Competência:</b>
         </td>
         <td>
-          <?
+          <?php
             db_input('iAnoDestino', 3, '', true, 'text', 1);
             echo " / ";
             db_input('iMesDestino', 1, '', true, 'text', 1);
@@ -533,7 +533,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           <b>Tipo de Folha:</b>
         </td>
         <td>
-          <?
+          <?php
             $aTipoFolhaDestino = array( 0 => "Selecione", 1 => "Salário", 2 => "Complementar" );
             db_select('iTipoFolhaDestino', $aTipoFolhaDestino, true, 1, "style='width: 150px;'");
           ?>
@@ -542,13 +542,13 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
       <tr>
         <td>
           <b>
-            <?
+            <?php
               db_ancora("Rubrica:",'js_pesqRubricaDestino(true)', 1);
             ?>
           </b>
         </td>
         <td>
-          <?
+          <?php
             db_input('iRubricaDestino', 5, '', true, 'text', 1, 'onchange=js_pesqRubricaDestino(false);');
 
             db_input('rh27_descr', 31, '', true, 'text', 3);
@@ -560,7 +560,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           <b>Ação para Lançamentos Existentes:</b>
         </td>
         <td>
-          <?
+          <?php
             $aOpcaoLancamentoExistente = array(0 => "Selecione", 1 => "Somar", 2 =>"Substituir");
             db_select('iOperacao',$aOpcaoLancamentoExistente, true, 1, "style='width: 150px;'");
           ?>
@@ -572,7 +572,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
   <input type="submit" name="btnProcessaDiferSalario" id="btnProcessaDiferSalario" value="Processar">
 </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -1032,7 +1032,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
 </script>
 
 
-<?
+<?php
 if ( isset ($oPost->btnProcessaDiferSalario) ) {
   db_msgbox($sMsgErro);
 }

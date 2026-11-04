@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,12 +69,12 @@ function js_submit(){
      
      <tr>   
        <td>
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -90,7 +90,7 @@ function js_submit(){
 
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

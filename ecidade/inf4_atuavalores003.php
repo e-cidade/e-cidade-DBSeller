@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </table>
 </body>
 </html>
-<?
+<?php
 $result = db_query("select fc_corre(".$receit.",'".$dtoper."',".$valor.",'".$dtbase."',".db_getsession("DB_anousu").",'".$dtvenc."') as correcao");
 db_fieldsmemory($result,0);
 

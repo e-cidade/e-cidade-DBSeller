@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBselller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $query1 = $clcaddisciplina->sql_record($clcaddisciplina->sql_query("", "*", "ed2
                     <?= $Led232_c_abrev ?>
                 </td>
             </tr>
-            <?
+            <?php
             $cor1 = "#DBDBDB";
             $cor2 = "#f3f3f3";
             $cor = "";
@@ -105,7 +105,7 @@ $query1 = $clcaddisciplina->sql_record($clcaddisciplina->sql_query("", "*", "ed2
                         &nbsp;&nbsp;<?= $ed232_c_abrev ?>
                     </td>
                 </tr>
-                <?
+                <?php
             }
             ?>
         </table>

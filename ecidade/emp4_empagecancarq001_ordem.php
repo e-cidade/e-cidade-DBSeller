@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -64,7 +64,7 @@ $clrotulo->label("e81_codmov");
 
 $iInstit = db_getsession('DB_instit');
 
-$sCampos  = " e81_codmov,                                 ";   
+$sCampos  = " e81_codmov,                                 ";
 $sCampos .= " e83_codtipo as codtipo,                     ";
 $sCampos .= " e83_descr,                                  ";
 $sCampos .= " case                                        ";
@@ -106,12 +106,12 @@ $sWhere  = "e90_codgera = {$codarq} and ";
 $sWhere .= "e75_codret is null      and ";
 $sWhere .= "e80_instit  = {$iInstit}    ";
 if (isset($lCancelado) && $lCancelado == '0') {
-  
+
   $sWhere .= " and empageconfgera.e90_cancelado is false ";
 }
 
 $sql    = $clempageconfgera->sql_query_arqcanc(null, null, $sCampos, $sOrdem, $sWhere );
-        
+
 $result = $clempageconfgera->sql_record($sql);
 $numrows= $clempageconfgera->numrows;
 ?>
@@ -142,11 +142,11 @@ $numrows= $clempageconfgera->numrows;
 }
 </style>
 <script>
-function js_marca(obj){ 
+function js_marca(obj){
   var OBJ = document.form1;
   for(i=0;i<OBJ.length;i++){
     if(OBJ.elements[i].type == 'checkbox' && OBJ.elements[i].disabled==false){
-      OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+      OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
     }
   }
   return false;
@@ -158,26 +158,26 @@ function js_calcula(campo){
   mov = campo.value;
   if(campo.checked==true){
     soma   = new Number(total+valor);
-    
+
   }else{
     soma = new Number(total-valor);
   }
-  parent.document.form1.total.value = soma.toFixed(2); 
+  parent.document.form1.total.value = soma.toFixed(2);
 }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
 <form name="form1" method="post" action="">
-           <?
+           <?php
              db_input("cgm",10,'',true,'hidden',1);
-            ?>       
+            ?>
     <center>
       <table  class='bordas'>
         <tr>
-        <?if($numrows>0){?>
+        <?php if($numrows>0){?>
     <td class='bordas02' align='center'><a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'>M</a></td>
           <td class='bordas02'><small><b><?=$RLe81_codmov?></b></small></td>
           <td class='bordas02'><small><b><?=$RLe60_codemp?></b></small></td>
@@ -190,16 +190,16 @@ function js_calcula(campo){
 	    	$disabled = true;
 	    ?>
 	    	<td>
-	    	<b>Arquivo não encontrado ou retorno já processado</b>	    	
-	    	</td>	    	
-	    <?}?>
+	    	<b>Arquivo não encontrado ou retorno já processado</b>
+	    	</td>
+	    <?php }?>
 	</tr>
-        <?
-	 $tot='0.00'; 
+        <?php
+	 $tot='0.00';
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 	    $ck = '';
-	    
+
 	    if (isset($movs) && array_key_exists($e81_codmov,$arr_m)) {
                $ck = ' checked ';
 	       $tot+=$e81_valor;
@@ -211,22 +211,22 @@ function js_calcula(campo){
           <td class='bordas' align='center'><small id="e60_numemp_<?=$e82_codord?>"> <?=$e60_codemp?></small></td>
           <td class='bordas' align='center'><small><?=$e82_codord?></small></td>
           <td class='bordas' align='right'><small><?=$z01_nome?>  </small></td>
-           <?
+           <?php
 	     $x= "z01_numcgm_$e81_codmov";
   	     $$x = $z01_numcgm;
              db_input("z01_numcgm_$e81_codmov",10,'',true,'hidden',1);
-            ?>       
+            ?>
           <td class='bordas' align='center'><small><?=$e60_emiss?>  </small></td>
           <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
-           <?
+           <?php
 	     $x= "valor_$e81_codmov";
   	     $$x = $e81_valor;
              db_input("valor_$e81_codmov",10,'',true,'hidden',1);
-            ?>       
-	  
+            ?>
+
           <td class='bordas' align='left'><small><?=$e83_descr?></small></td>
 	</tr>
-        <?
+        <?php
 	  }
 	?>
       </table>
@@ -238,7 +238,7 @@ function js_calcula(campo){
 </body>
 </html>
 <script>
-<?
+<?php
   if(isset($disabled)){
   	echo "
     parent.document.form1.cancela.disabled = true;

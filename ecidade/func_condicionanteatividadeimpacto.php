@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,11 +50,11 @@ $clcondicionanteatividadeimpacto->rotulo->label("am11_condicionante");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam11_sequencial?></label></td>
-          <td><? db_input("am11_sequencial",10,$Iam11_sequencial,true,"text",4,"","chave_am11_sequencial"); ?></td>
+          <td><?php db_input("am11_sequencial",10,$Iam11_sequencial,true,"text",4,"","chave_am11_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam11_condicionante?></label></td>
-          <td><? db_input("am11_condicionante",10,$Iam11_condicionante,true,"text",4,"","chave_am11_condicionante");?></td>
+          <td><?php db_input("am11_condicionante",10,$Iam11_condicionante,true,"text",4,"","chave_am11_condicionante");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +62,7 @@ $clcondicionanteatividadeimpacto->rotulo->label("am11_condicionante");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_condicionanteatividadeimpacto.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_condicionanteatividadeimpacto.php")==true){
@@ -104,12 +104,12 @@ $clcondicionanteatividadeimpacto->rotulo->label("am11_condicionante");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

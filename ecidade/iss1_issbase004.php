@@ -30,11 +30,13 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_cgm_classe.php"));
 
 /** Extensao : Inicio [integracao-icad] */
 db_postmemory($HTTP_SERVER_VARS);
 /** Extensao : Fim [integracao-icad] */
-
+$clcgm = new cl_cgm;
+$clcgm->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('q02_numcgm');
 $clrotulo->label('z01_nome');
@@ -55,11 +57,11 @@ $clrotulo->label('z01_nome');
         <table>
           <tr>
             <td nowrap title="<?php echo $Tq02_numcgm; ?>">
-              <?php db_ancora($Lz01_nome,' js_cgm(true); ',1); ?>
+              <?php db_ancora($Lz01_nome,' js_pesquisaq02_numcgm(true); ',1); ?>
             </td>
             <td>
              <?php
-              db_input('q02_numcgm',5,$Iq02_numcgm,true,'text',1,"onchange='js_cgm(false)'");
+              db_input('q02_numcgm',10,$Iq02_numcgm,true,'text',1,"onchange='js_pesquisaq02_numcgm(false)'");
               db_input('z01_nome',40,0,true,'text',3,"");
              ?>
             </td>
@@ -86,28 +88,33 @@ function js_checa(){
   return true;
 }
 
-function js_cgm(mostra){
-  var numcgm=document.form1.q02_numcgm.value;
-  if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','func_nome.php?testanome=true&funcao_js=parent.js_mostra|z01_numcgm|z01_nome','Pesquisa',true);
-  }else{
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','func_nome.php?testanome=true&pesquisa_chave='+numcgm+'&funcao_js=parent.js_mostra1','Pesquisa',false);
+function js_pesquisaq02_numcgm(mostra) {
+    if (mostra == true) {
+      js_OpenJanelaIframe('CurrentWindow.corpo', 'func_nome', 'func_nome.php?testanome=true&funcao_js=parent.js_mostranumcgm1|z01_numcgm|z01_nome', 'Pesquisa', true);
+    } else {
+      if (document.form1.q02_numcgm.value != '') {
+        js_OpenJanelaIframe('CurrentWindow.corpo', 'func_nome', 'func_nome.php?testanome=true&pesquisa_chave=' + document.form1.q02_numcgm.value + '&funcao_js=parent.js_mostranumcgm', 'Pesquisa', false);
+      } else {
+        document.form1.z01_nome.value = "";
+      }
+    }
   }
-}
-function js_mostra(chave1,chave2){
-  document.form1.q02_numcgm.value = chave1;
-  document.form1.z01_nome.value = chave2;
-  db_iframe.hide();
-}
-function js_mostra1(erro,chave){
-  document.form1.z01_nome.value = chave;
-  if(erro==true){
-    document.form1.q02_numcgm.focus();
-    document.form1.q02_numcgm.value = '';
+
+  function js_mostranumcgm(erro, chave) {
+    document.form1.z01_nome.value = chave;
+    if (erro == true) {
+      document.form1.q02_numcgm.value = '';
+      document.form1.q02_numcgm.focus();
+    }
   }
-}
+
+  function js_mostranumcgm1(chave1, chave2) {
+    document.form1.q02_numcgm.value = chave1;
+    document.form1.z01_nome.value = chave2;
+    func_nome.hide();
+  }
 </script>
-<?
+<?php
 
 if(isset($cgccpf)){
   db_msgbox('Atualize o CGCCPF do contribuinte no CGM');

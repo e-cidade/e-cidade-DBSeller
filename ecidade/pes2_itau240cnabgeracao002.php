@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -66,8 +66,8 @@ $sqlerro = false;
 
 db_sel_instit();
 
-//die($clrharqbanco->sql_query($rh34_codarq));    
-$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));    
+//die($clrharqbanco->sql_query($rh34_codarq));
+$result_arqbanco=$clrharqbanco->sql_record($clrharqbanco->sql_query($rh34_codarq));
 if($clrharqbanco->numrows>0){
 
   db_fieldsmemory($result_arqbanco,0);
@@ -83,8 +83,8 @@ if($clrharqbanco->numrows>0){
     $contaheader = $rh34_conta;
     $contalote   = $rh34_conta;
 
-    $conveniobanco = trim($rh34_convenio); 
-    
+    $conveniobanco = trim($rh34_convenio);
+
     $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
 
     $dvagenciaheader = "0";
@@ -106,17 +106,17 @@ if($clrharqbanco->numrows>0){
     $dvcontalote    = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
 
-    $datageracao = $datagera; 
+    $datageracao = $datagera;
     $horageracao = date("H").date("i").date("s");
- 
+
     if(isset($datageracao) && $datageracao!=""){
-      $datag = split('-',$datageracao);
+      $datag =explode('-',$datageracao);
       $datag_dia = $datag[2];
       $datag_mes = $datag[1];
       $datag_ano = $datag[0];
     }
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad =explode('-',$datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -127,7 +127,7 @@ if($clrharqbanco->numrows>0){
 
     $adatadegeracao = $datag_ano."-".$datag_mes."-".$datag_dia;
     $datadedeposito = $datad_ano."-".$datad_mes."-".$datad_dia;
- 
+
     $sequenciaarqui = $rh34_sequencial;
     $versaodoarquiv = "030";
 
@@ -142,7 +142,7 @@ if($clrharqbanco->numrows>0){
         $conveniobanco = substr($rh34_convenio,0,6)."060001        ";
 			}
     }else{
-      $conveniobanco = trim($rh34_convenio); 
+      $conveniobanco = trim($rh34_convenio);
     }
     ////// DADOS SOMENTE CNAB240 CEF
     $parametrotransmiss = substr($rh34_convenio,10,2);
@@ -160,10 +160,10 @@ if($clrharqbanco->numrows>0){
 
 if(!isset($rh34_where) || (isset($rh34_where) && trim($rh34_where) == "")){
   $rh34_wherefolha = "";
-  $rh34_wherepensa = ""; 
+  $rh34_wherepensa = "";
 }else{
   $rh34_wherefolha = $rh34_where." and ";
-  $rh34_wherepensa = $rh34_where." and "; 
+  $rh34_wherepensa = $rh34_where." and ";
 }
 
 $rh34_wherefolha  = " rh44_codban = '$rh34_codban'  and rh104_rhgeracaofolha = {$oGet->rh104_rhgeracaofolha}";
@@ -193,7 +193,7 @@ if($sqlerro == false){
                                                rh104_vlrliquido as valorori",
                                               "rh44_codban,z01_nome",
                                               "$rh34_wherefolha");
-  	
+
     $result  = $clfolha->sql_record($sql);
     $numrows = $clfolha->numrows;
   }else{
@@ -228,12 +228,12 @@ if($sqlerro == false){
 //		db_criatabela($result);exit;
     $numrows = $clpensao->numrows;
   }
-  
-  
+
+
   // Coleta os dados da consulta sql e coloca em um vetor
   $oDados  = db_utils::getCollectionByRecord($result);
-  
-  
+
+
   if($numrows > 0){
     db_fieldsmemory($result,0);
 
@@ -242,7 +242,7 @@ if($sqlerro == false){
     if(!is_writable("/tmp/")){
       $sqlerro= true;
       $erro_msg = 'Sem permissão de gravar o arquivo. Contate suporte.';
-    }  
+    }
 
     ///// INICIA IMPRESSÃO DO RELATÓRIO
     $pdf = new PDF();
@@ -325,7 +325,7 @@ if($sqlerro == false){
 //	  echo "<br> matricula --> $numerocontrolemov agencia --> $agenciafavorecido   dvagencia --> $dvagenciafavorecido   conta --> $contafavorecido  dvconta --> $dvcontafavorecido ";
       //////////////////////////////////////////////
       //////////////////////////////////////////////
-      
+
       $valordebito = $rh104_vlrliquido;
       $dataprocessamento = $datadedeposito;
       //      $sequencialreg = "      ";
@@ -447,14 +447,14 @@ if($numrows > 0){
     db_msgbox($clrhgeracaofolhaarquivo->erro_msg);
     $erro = true;
   } else {
-    
+
     foreach ($oDados as $oLinhas){
-      
+
       $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhareg     = $oLinhas->rh104_sequencial;
       $clrhgeracaofolhaarquivoreg->rh106_rhgeracaofolhaarquivo = $clrhgeracaofolhaarquivo->rh105_sequencial;
       $clrhgeracaofolhaarquivoreg->incluir("");
       if($clrhgeracaofolhaarquivoreg->erro_status == "0"){
-        
+
         db_msgbox($clrhgeracaofolhaarquivoreg->erro_msg);
         $erro = true;
         exit;

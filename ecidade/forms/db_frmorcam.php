@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcam->rotulo->label();
        <?=@$Lo02_anousu?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_anousu',4,$Io02_anousu,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -46,7 +46,7 @@ db_input('o02_anousu',4,$Io02_anousu,true,'text',$db_opcao,"")
        <?=@$Lo02_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_codigo',13,$Io02_codigo,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -56,7 +56,7 @@ db_input('o02_codigo',13,$Io02_codigo,true,'text',$db_opcao,"")
        <?=@$Lo02_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_descr',40,$Io02_descr,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -66,7 +66,7 @@ db_input('o02_descr',40,$Io02_descr,true,'text',$db_opcao,"")
        <?=@$Lo02_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_valor',15,$Io02_valor,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -76,7 +76,7 @@ db_input('o02_valor',15,$Io02_valor,true,'text',$db_opcao,"")
        <?=@$Lo02_codtce?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_codtce',13,$Io02_codtce,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -86,7 +86,7 @@ db_input('o02_codtce',13,$Io02_codtce,true,'text',$db_opcao,"")
        <?=@$Lo02_percen?>
     </td>
     <td> 
-<?
+<?php
 db_input('o02_percen',10,$Io02_percen,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -108,7 +108,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

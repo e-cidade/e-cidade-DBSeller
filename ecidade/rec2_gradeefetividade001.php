@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,15 +72,15 @@ if(isset($rh01_regist) && trim($rh01_regist) != ""){
   <form name="form1" method="post" action="" >
   <tr>
     <td align="right" title="<?=$Trh01_regist?>">
-      <?
+      <?php
       db_ancora(@$Lrh01_regist, "js_pesquisarh01_regist(true);", 1);
       ?>
     </td>
     <td>
-      <?
+      <?php
       db_input('rh01_regist', 8, $Irh01_regist, true, 'text', 1, " onchange='js_pesquisarh01_regist(false);'")
       ?>
-      <?
+      <?php
       db_input('z01_nome', 30, $Iz01_nome, true, 'text', 3, '');
       ?>
     </td>
@@ -90,7 +90,7 @@ if(isset($rh01_regist) && trim($rh01_regist) != ""){
       <b>Processo:</b>
     </td>
     <td>
-      <?
+      <?php
       db_input('processo', 8, 1, true, 'text', 1, "")
       ?>
     </td>
@@ -100,11 +100,11 @@ if(isset($rh01_regist) && trim($rh01_regist) != ""){
       <b>Período:</b>
     </td>
     <td nowrap>
-      <?
+      <?php
       db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 1);
       ?>
       <b>&nbsp;a&nbsp;</b>
-      <?
+      <?php
       db_inputdata("dataf", @$dataf_dia, @$dataf_mes, @$dataf_ano, true, 'text', 1);
       ?>
     </td>
@@ -116,7 +116,7 @@ if(isset($rh01_regist) && trim($rh01_regist) != ""){
   </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

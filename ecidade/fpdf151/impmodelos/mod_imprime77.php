@@ -85,7 +85,7 @@ $this->objpdf->Setfont('Arial','',6);
  * ao invés de termos vários \n ou \r, teremos apenas um \n
  */
 $Sresumo = "";
-$aResumo = array_unique(split("\n\r", $this->Sresumo));
+$aResumo = array_unique(explode("\n", $this->Sresumo));
 $Sresumo = implode("\n",$aResumo);
 
 $Sresumo = str_replace("\n", "", $Sresumo); // Retira todas as quebras de linha do resumo - TI Prefeitura de Maricá
@@ -186,13 +186,13 @@ if ($this->linhasdosfornec>0) {
   $this->objpdf->SetWidths(array(15,64,63,40,20));
   for ($i=0; $i<$this->linhasdosfornec; $i++) {
     db_fieldsmemory($this->recorddosfornec,$i);
-    $cgmforn   = trim(pg_result($this->recorddosfornec,$i,$this->cgmforn));
-    $nomeforn  = trim(pg_result($this->recorddosfornec,$i,$this->nomeforn));
-    $enderforn = trim(pg_result($this->recorddosfornec,$i,$this->enderforn));
-    $numforn   = trim(pg_result($this->recorddosfornec,$i,$this->numforn));
-    $municforn = trim(pg_result($this->recorddosfornec,$i,$this->municforn));
-    $foneforn  = trim(pg_result($this->recorddosfornec,$i,$this->foneforn));
-    $cgccpf    = trim(pg_result($this->recorddosfornec,$i,$this->cgccpf));
+    $cgmforn   = trim(pg_fetch_result($this->recorddosfornec,$i,$this->cgmforn));
+    $nomeforn  = trim(pg_fetch_result($this->recorddosfornec,$i,$this->nomeforn));
+    $enderforn = trim(pg_fetch_result($this->recorddosfornec,$i,$this->enderforn));
+    $numforn   = trim(pg_fetch_result($this->recorddosfornec,$i,$this->numforn));
+    $municforn = trim(pg_fetch_result($this->recorddosfornec,$i,$this->municforn));
+    $foneforn  = trim(pg_fetch_result($this->recorddosfornec,$i,$this->foneforn));
+    $cgccpf    = trim(pg_fetch_result($this->recorddosfornec,$i,$this->cgccpf));
     $this->objpdf->Row(array($cgmforn,$nomeforn."\n"."CNPJ/CPF: ".$cgccpf,$enderforn.", ".$numforn,$municforn,$foneforn),4,false,4);
     break;
   }
@@ -303,15 +303,16 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
   if ($this->sImprimeDadosDotacao == "t") {
 
     db_fieldsmemory($this->recorddasdotac, $ii);
-    $danousu    = pg_result($this->recorddasdotac, $ii, $this->danousu);
-    $dotacao    = pg_result($this->recorddasdotac, $ii, $this->dcoddot);
-    $estrutu    = pg_result($this->recorddasdotac, $ii, $this->delemento);
-    $descrunid  = pg_result($this->recorddasdotac, $ii, $this->descrunid);
-    $dcprojativ = pg_result($this->recorddasdotac, $ii, $this->dcprojativ);
-    $dctiporec  = pg_result($this->recorddasdotac, $ii, $this->dctiporec);
-    $dprojativ  = pg_result($this->recorddasdotac, $ii, $this->dprojativ);
-    $dtiporec   = pg_result($this->recorddasdotac, $ii, $this->dtiporec);
-    $ddescrest  = pg_result($this->recorddasdotac, $ii, $this->ddescrest);
+    $danousu    = pg_fetch_result($this->recorddasdotac, $ii, $this->danousu);
+    $dotacao    = pg_fetch_result($this->recorddasdotac, $ii, $this->dcoddot);
+    $estrutu    = pg_fetch_result($this->recorddasdotac, $ii, $this->delemento);
+    $descrunid  = pg_fetch_result($this->recorddasdotac, $ii, $this->descrunid);
+    $dcprojativ = pg_fetch_result($this->recorddasdotac, $ii, $this->dcprojativ);
+    $dctiporec  = pg_fetch_result($this->recorddasdotac, $ii, $this->dctiporec);
+    $dprojativ  = pg_fetch_result($this->recorddasdotac, $ii, $this->dprojativ);
+    $dtiporec   = pg_fetch_result($this->recorddasdotac, $ii, $this->dtiporec);
+    $ddescrest  = pg_fetch_result($this->recorddasdotac, $ii, $this->ddescrest);
+    $complemento_recurso  = pg_fetch_result($this->recorddasdotac, $ii, $this->complemento_recurso);
 
     $this->objpdf->SetWidths(array (10, 12, 24, 95, 30, 30));
     $this->objpdf->SetAligns(array ('C', 'C', 'C', 'J', 'R', 'R'));
@@ -357,10 +358,11 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
         $x      = $this->muda_pag3($pagina,$mostra,$xcol,"false",$contapagina,$mais);
         $this->objpdf->Row(array ('', '', '', "Elemento: ".$ddescrest, '', ''), 3, false, 3, 0, 0, true);
 
-        $mais   = $this->objpdf->NbLines(95,"Recurso: $dctiporec - ".$dtiporec);
+          $recurso = sprintf ('Recurso: %s - %s - %s', $dctiporec, $complemento_recurso, $dtiporec) ;
+          $mais   = $this->objpdf->NbLines(95, $recurso);
         $mostra = $xlin;
         $x      = $this->muda_pag3($pagina,$mostra,$xcol,"false",$contapagina,$mais);
-        $this->objpdf->Row(array ('', '', '', "Recurso: $dctiporec - ".$dtiporec, '', ''), 3, false, 3, 0, 0, true);
+        $this->objpdf->Row(array ('', '', '', $recurso, '', ''), 3, false, 3, 0, 0, true);
       }
     } else {
       $mais = $this->objpdf->NbLines(95,"ITEM SEM DOTAÇÃO");
@@ -394,45 +396,41 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
 //       $muda_pag = false;
   }
   //number_format($valtot, 2, '.', '')
-  $codigo         = pg_result($this->recorddositens,$ii,"pc11_codigo");
-  $item           = pg_result($this->recorddositens,$ii,$this->item);
-  $quantitem      = pg_result($this->recorddositens,$ii,$this->quantitem);
-  $descricaoitem  = pg_result($this->recorddositens,$ii,$this->descricaoitem);
-  $valoritem      = pg_result($this->recorddositens,$ii,$this->valoritem);
-  $valtot         = pg_result($this->recorddositens,$ii,$this->svalortot);
+  $codigo         = pg_fetch_result($this->recorddositens,$ii,"pc11_codigo");
+  $item           = pg_fetch_result($this->recorddositens,$ii,$this->item);
+  $quantitem      = pg_fetch_result($this->recorddositens,$ii,$this->quantitem);
+  $descricaoitem  = pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem);
+  $valoritem      = pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
+  $valtot         = pg_fetch_result($this->recorddositens,$ii,$this->svalortot);
 
   if ($valtot == 0) {
     $valtot = ($valoritem * $quantitem);
   }
 
   $valimp         = db_formatar($valtot,'f');
-  $prazo          = pg_result($this->recorddositens,$ii,$this->sprazo);
-  $pgto           = pg_result($this->recorddositens,$ii,$this->spgto);
-  $resum          = pg_result($this->recorddositens,$ii,$this->sresum);
+  $prazo          = pg_fetch_result($this->recorddositens,$ii,$this->sprazo);
+  $pgto           = pg_fetch_result($this->recorddositens,$ii,$this->spgto);
+  $resum          = pg_fetch_result($this->recorddositens,$ii,$this->sresum);
   $resum          = stripslashes(addslashes($resum));
-  $just           = pg_result($this->recorddositens,$ii,$this->sjust);
-  $unid           = pg_result($this->recorddositens,$ii,$this->sunidade);
-  $abrevunid      = pg_result($this->recorddositens,$ii,$this->sabrevunidade);
-  $servico        = pg_result($this->recorddositens,$ii,$this->sservico);
-  $servicoquant   = pg_result($this->recorddositens,$ii,$this->sservicoquant);
-  $quantunid      = pg_result($this->recorddositens,$ii,$this->squantunid);
-  $susaquant      = pg_result($this->recorddositens,$ii,$this->susaquant);
-  $scodpcmater    = pg_result($this->recorddositens,$ii,$this->scodpcmater);
-  $selemento      = pg_result($this->recorddositens,$ii,$this->selemento);
-  $sdelemento     = pg_result($this->recorddositens,$ii,$this->sdelemento);
-  $iCodigoSolicita = pg_result($this->recorddositens,$ii,$this->pc10_numero);
-  $sProcessoAdministrativo = pg_result($this->recorddositens,$ii,$this->processo_administrativo);
+  $just           = pg_fetch_result($this->recorddositens,$ii,$this->sjust);
+  $unid           = pg_fetch_result($this->recorddositens,$ii,$this->sunidade);
+  if (empty($unid)) {
+      $unid = 'SERVICO';
+  }
+  $abrevunid      = pg_fetch_result($this->recorddositens,$ii,$this->sabrevunidade);
+  $servico        = pg_fetch_result($this->recorddositens,$ii,$this->sservico);
+  $servicoquant   = pg_fetch_result($this->recorddositens,$ii,$this->sservicoquant);
+  $quantunid      = pg_fetch_result($this->recorddositens,$ii,$this->squantunid);
+  $susaquant      = pg_fetch_result($this->recorddositens,$ii,$this->susaquant);
+  $scodpcmater    = pg_fetch_result($this->recorddositens,$ii,$this->scodpcmater);
+  $selemento      = pg_fetch_result($this->recorddositens,$ii,$this->selemento);
+  $sdelemento     = pg_fetch_result($this->recorddositens,$ii,$this->sdelemento);
+  $iCodigoSolicita = pg_fetch_result($this->recorddositens,$ii,$this->pc10_numero);
+  $sProcessoAdministrativo = pg_fetch_result($this->recorddositens,$ii,$this->processo_administrativo);
 
   $xtotal    += number_format($valtot, 2, '.', '');
-  if (!is_null($this->casadec_medicamentos)) {
-    //
-  }
   $xtotalitem+= number_format($valoritem,2, ',', '');
 
-  if ($item == 8){
-//    echo $this->objpdf->h."<br><br>";
-//    echo $ii." => ".$this->objpdf->gety()." => ".var_dump($muda_pag)."<br>";
-  }
   if ((isset($descricaoitem) && (trim($descricaoitem)=="" || $descricaoitem==null)) || !isset($descricaoitem)) {
     $descricaoitem=stripslashes(addslashes($resum));
     unset($resum);
@@ -465,7 +463,6 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
       $unid .= " \n$quantunid UNIDADES\n";
     }
   }
-
   //    $descricaoitem .= " - ".$unid;
 
   $distanciar = 0;
@@ -553,14 +550,11 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
         $alturapaginafunc = (int)$alturapaginafunc;
 
         $resum = $this->objpdf->Row_multicell(array('','','',stripslashes($resum),'',''),3,false,$dist,0,true,true,3,$alturapaginafunc);
-//      $resum = $this->objpdf->Row_multicell(array('','','','','',''),3,false,$dist,0,true,true,3,$alturapaginafunc);
         $x = $this->muda_pag3($pagina,$mostra,$xcol,"false",$contapagina,$mais);
       }
-//       $this->objpdf->Setfont('Arial','',7);
     }
 
     if (isset($just) && $just!="") {
-      // $mais = $this->objpdf->NbLines(95,$just);
       $mais = 0;
       $mostra = $xlin;
       while ($just != "") {
@@ -641,7 +635,7 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
   $sSqlMenuAcess .= "    and modulo        = ".db_getsession("DB_modulo");
 
   $rsMenuAcess    = db_query($sSqlMenuAcess);
-  $sMenuAcess     = substr(pg_result($rsMenuAcess, 0, "menu"), 0, 50);
+  $sMenuAcess     = substr(pg_fetch_result($rsMenuAcess, 0, "menu"), 0, 50);
 
   $sNomeArquivo   = $_SERVER["PHP_SELF"];
   $sNomeArquivo   = substr( $sNomeArquivo, strrpos($_SERVER["PHP_SELF"], "/") + 1);
@@ -649,7 +643,7 @@ for ($ii = 0; $ii < $this->linhasdositens ; $ii++) {
   $sEmissor       = "";
 
   if ( pg_num_rows($rsNomeUsuario) > 0 ) {
-  	$sEmissor = trim(pg_result($rsNomeUsuario, 0, 0));
+  	$sEmissor = trim(pg_fetch_result($rsNomeUsuario, 0, 0));
   }
 
   if ( empty($sEmissor) ) {

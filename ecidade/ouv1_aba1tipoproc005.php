@@ -123,7 +123,8 @@ SQL
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
@@ -159,7 +160,7 @@ if (isset($oGet->chavepesquisa)) {
         parent.iframe_formreclamacao
             .location.href = 'ouv1_aba3formrecl004.php?p51_codigo=<?= $oGet->chavepesquisa ?>&db_opcao=2';
         parent.iframe_andamentopadrao.location
-            .href = 'pro1_andpadrao001.php?p53_codigo=<?= @$p51_codigo;?>&p51_descr=" . @$p51_descr . "&aba=true';
+            .href = 'pro1_andpadrao001.php?p53_codigo=<?= @$p51_codigo;?>&p51_descr=<?= @$p51_descr?>&aba=true';
         parent.iframe_formformulariojson
             .location.href = 'ouv1_aba3formularioJson004.php?p51_codigo=<?= $oGet->chavepesquisa ?>&db_opcao=2';
         parent.iframe_linkSaibaMais

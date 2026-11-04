@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmobimportacao->rotulo->label("j95_pda");
               <?=$Lj95_codimporta?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j95_codimporta",8,$Ij95_codimporta,true,"text",4,"","chave_j95_codimporta");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmobimportacao->rotulo->label("j95_pda");
               <?=$Lj95_pda?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j95_pda",3,$Ij95_pda,true,"text",4,"","chave_j95_pda");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmobimportacao->rotulo->label("j95_pda");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_mobimportacao.php")==true){
@@ -122,12 +122,12 @@ $clmobimportacao->rotulo->label("j95_pda");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

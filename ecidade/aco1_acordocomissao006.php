@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,12 +72,12 @@ if(isset($excluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-	<?
+	<?php
 	include(modification("forms/db_frmacordocomissao.php"));
 	?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

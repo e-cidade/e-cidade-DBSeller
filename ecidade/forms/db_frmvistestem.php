@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,34 +46,34 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty25_codvist?>">
-       <?
+       <?php
        db_ancora(@$Ly25_codvist,"js_pesquisay25_codvist(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y25_codvist',10,$Iy25_codvist,true,'text',3," onchange='js_pesquisay25_codvist(false);'")
 ?>
-       <?
+       <?php
 db_input('y70_id_usuario',10,$Iy70_id_usuario,true,'hidden',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty25_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Ly25_numcgm,"js_pesquisay25_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y25_numcgm',8,$Iy25_numcgm,true,'text',$db_opcao," onchange='js_pesquisay25_numcgm(false);'");
 if($db_opcao == 2){
   db_input('y25_numcgm',8,$Iy25_numcgm,true,'hidden',$db_opcao," ","y25_numcgm_old");
   echo "<script>document.form1.y25_numcgm_old.value='$y25_numcgm'</script>";
 }
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -81,18 +81,18 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="center" colspan="2">
       <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_vistestem001.php?y25_codvist=<?=$y25_codvist?>&y39_codandam=<?=$y39_codandam?>'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("y25_codvist"=>$y25_codvist,"y25_numcgm"=>@$y25_numcgm);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y25_codvist,y25_numcgm,z01_nome";

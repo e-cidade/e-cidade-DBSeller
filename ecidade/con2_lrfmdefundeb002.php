@@ -1,34 +1,34 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 if (!isset($arqinclude)){
   // se este arquivo no esta incluido por outro
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -39,15 +39,15 @@ if (!isset($arqinclude)){
   include(modification("classes/db_conrelinfo_classe.php"));
   include(modification("classes/db_conrelvalor_classe.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
   db_postmemory($HTTP_SERVER_VARS);
-  
+
   $classinatura  = new cl_assinatura;
   $orcparamrel   = new cl_orcparamrel;
   $clconrelinfo  = new cl_conrelinfo;
   $clconrelvalor = new cl_conrelvalor;
-  
+
   $anousu = db_getsession("DB_anousu");
   $dt     = data_periodo($anousu,$periodo);
 
@@ -58,7 +58,7 @@ if (!isset($arqinclude)){
   // data inicial do periodo
   $dt_fin = $dt[1];
   // data final do periodo
-  $periodo = $dt["periodo"]; 
+  $periodo = $dt["periodo"];
   $texto   = $dt["texto"];
 } else {
   $periodo = "";
@@ -69,7 +69,7 @@ $somador31_valor = 0;
 
 // PARAMETROS - RECEITAS
 for ($linha = 1; $linha <= 37; $linha++){
-  $m_receita[$linha]["estrut"]     = $orcparamrel->sql_parametro("31",$linha); 
+  $m_receita[$linha]["estrut"]     = $orcparamrel->sql_parametro("31",$linha);
   $m_receita[$linha]["nivel"]      = $orcparamrel->sql_nivel("31",$linha);
   $m_receita[$linha]["recurso"]    = $orcparamrel->sql_recurso("31",$linha);
 
@@ -88,7 +88,7 @@ for ($linha = 38; $linha <= 52; $linha++){
   $m_despesa[$linha]["estrut"]        = $orcparamrel->sql_parametro("31",$linha);
   $m_despesa[$linha]["nivel"]         = $orcparamrel->sql_nivel("31",$linha);
   $m_despesa[$linha]["nivelexclusao"] = $orcparamrel->sql_nivelexclusao("31",$linha);
-  $m_despesa[$linha]["funcao"]        = $orcparamrel->sql_funcao("31",$linha);  
+  $m_despesa[$linha]["funcao"]        = $orcparamrel->sql_funcao("31",$linha);
   $m_despesa[$linha]["subfunc"]       = $orcparamrel->sql_subfunc("31",$linha);
   $m_despesa[$linha]["recurso"]       = $orcparamrel->sql_recurso("31",$linha);
 
@@ -221,7 +221,7 @@ for ($i = 0; $i < pg_numrows($result); $i++){
 for ($col = 1; $col <= 4; $col++){
   $pcol =array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio");
 
-  // Imposto IPTU                             
+  // Imposto IPTU
   $receita[3][$pcol[$col]] = $m_receita[1][$pcol[$col]];
   // Outros encargos IPTU
   $receita[4][$pcol[$col]] = $m_receita[2][$pcol[$col]];
@@ -242,12 +242,12 @@ for ($col = 1; $col <= 4; $col++){
   $receita[10][$pcol[$col]] = $m_receita[7][$pcol[$col]];
   // Outros encargos Divida Ativa ITBI
   $receita[11][$pcol[$col]] = $m_receita[8][$pcol[$col]];
-  
+
   // 1.2 - Receita Resultante de ITBI
   $receita[7][$pcol[$col]] = $receita[8][$pcol[$col]]  + $receita[9][$pcol[$col]]+
                              $receita[10][$pcol[$col]] + $receita[11][$pcol[$col]];
-  
-  // Imposto ISS 
+
+  // Imposto ISS
   $receita[13][$pcol[$col]] = $m_receita[9][$pcol[$col]];
   // Outros encargos ISS
   $receita[14][$pcol[$col]] = $m_receita[10][$pcol[$col]];
@@ -255,7 +255,7 @@ for ($col = 1; $col <= 4; $col++){
   $receita[15][$pcol[$col]] = $m_receita[11][$pcol[$col]];
   // Outros encargos Divida Ativa ISS
   $receita[16][$pcol[$col]] = $m_receita[12][$pcol[$col]];
-  
+
   // 1.3 - Receita Resultante de ISS
   $receita[12][$pcol[$col]] = $receita[13][$pcol[$col]] + $receita[14][$pcol[$col]]+
                               $receita[15][$pcol[$col]] + $receita[16][$pcol[$col]];
@@ -277,23 +277,23 @@ for ($col = 1; $col <= 4; $col++){
   $receita[1][$pcol[$col]] = $receita[2][$pcol[$col]]  + $receita[7][$pcol[$col]] +
                              $receita[12][$pcol[$col]] + $receita[17][$pcol[$col]];
 
-  // 2.1 FPM                             
+  // 2.1 FPM
   $receita[23][$pcol[$col]] = $m_receita[17][$pcol[$col]];
-  // 2.2 ICMS                            
+  // 2.2 ICMS
   $receita[24][$pcol[$col]] = $m_receita[18][$pcol[$col]];
-  // 2.3 Desoneracao ICMS                            
+  // 2.3 Desoneracao ICMS
   $receita[25][$pcol[$col]] = $m_receita[19][$pcol[$col]];
-  // 2.4 IPI                            
+  // 2.4 IPI
   $receita[26][$pcol[$col]] = $m_receita[20][$pcol[$col]];
-  // 2.5 ITR                            
+  // 2.5 ITR
   $receita[27][$pcol[$col]] = $m_receita[21][$pcol[$col]];
-  // 2.6 IPVA                           
+  // 2.6 IPVA
   $receita[28][$pcol[$col]] = $m_receita[22][$pcol[$col]];
-  // 2.7 IOF                            
+  // 2.7 IOF
   $receita[29][$pcol[$col]] = $m_receita[23][$pcol[$col]];
 
   // 2 - RECEITA DE TRANSFERENCIAS
-  $receita[22][$pcol[$col]] = $receita[23][$pcol[$col]] + $receita[24][$pcol[$col]] + $receita[25][$pcol[$col]] + 
+  $receita[22][$pcol[$col]] = $receita[23][$pcol[$col]] + $receita[24][$pcol[$col]] + $receita[25][$pcol[$col]] +
                               $receita[26][$pcol[$col]] + $receita[27][$pcol[$col]] + $receita[28][$pcol[$col]] +
                               $receita[29][$pcol[$col]];
 
@@ -308,14 +308,14 @@ for ($col = 1; $col <= 4; $col++){
 
   // 5 - CONVENIOS DESTINADOS A PROGRAMAS DE EDUCACAO
   $receita[33][$pcol[$col]] = $m_receita[26][$pcol[$col]];
-  // 6 - OPERACOES DE CREDITO 
+  // 6 - OPERACOES DE CREDITO
   $receita[34][$pcol[$col]] = $m_receita[27][$pcol[$col]];
-  // 7 - OUTRAS RECEITAS DESTINADAS A EDUCACAO       
+  // 7 - OUTRAS RECEITAS DESTINADAS A EDUCACAO
   $receita[35][$pcol[$col]] = $m_receita[28][$pcol[$col]];
-  
-  // 9.2 Cota FPM       
+
+  // 9.2 Cota FPM
   $receita[37][$pcol[$col]] = $m_receita[29][$pcol[$col]];
-  // 9.2 Cota ICMS      
+  // 9.2 Cota ICMS
   $receita[38][$pcol[$col]] = $m_receita[30][$pcol[$col]];
   // 9.3 ICMS Desoneracao
   $receita[39][$pcol[$col]] = $m_receita[31][$pcol[$col]];
@@ -325,7 +325,7 @@ for ($col = 1; $col <= 4; $col++){
   $receita[41][$pcol[$col]] = $m_receita[33][$pcol[$col]];
   // 9.6 Cota IPVA
   $receita[42][$pcol[$col]] = $m_receita[34][$pcol[$col]];
-  
+
   // 9 - RECEITAS DO FUNDEB
   $receita[36][$pcol[$col]] = $receita[37][$pcol[$col]] + $receita[38][$pcol[$col]] + $receita[39][$pcol[$col]] +
                               $receita[40][$pcol[$col]] + $receita[41][$pcol[$col]] + $receita[42][$pcol[$col]];
@@ -380,7 +380,7 @@ $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin)
 
 for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
   db_fieldsmemory($result_despesa, $i);
-  
+
   for ($linha = 38; $linha <= 52; $linha++) {
     $nivel        = $m_despesa[$linha]["nivel"];
     $estrutural   = $o58_elemento."00";
@@ -389,7 +389,7 @@ for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
     $v_funcao     = $o58_funcao;
     $v_subfuncao  = $o58_subfuncao;
     $v_recurso    = $o58_codigo;
-    
+
     if (in_array($v_estrutural, $m_despesa[$linha]["estrut"])) {
       if (count($m_despesa[$linha]["funcao"])      == 0 || in_array($v_funcao, $m_despesa[$linha]["funcao"])) {
         if (count($m_despesa[$linha]["subfunc"])   == 0 || in_array($v_subfuncao, $m_despesa[$linha]["subfunc"])) {
@@ -403,11 +403,11 @@ for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
       }
     }
   }
-}  
+}
 
 for ($col = 1; $col <= 4; $col++){
   $pcol = array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio");
-  
+
   // 12.1 PGTO PROFISSIONAIS - Educacao Infantil
   $despesa[2][$pcol[$col]] = $m_despesa[38][$pcol[$col]];
   // 12.2 PGTO PROFISSIONAIS - Ensino Fundamental
@@ -439,7 +439,7 @@ for ($col = 1; $col <= 4; $col++){
 
   // 18 ENSINO FUNDAMENTAL
   $despesa[10][$pcol[$col]] = $despesa[11][$pcol[$col]] + $despesa[12][$pcol[$col]];
-  
+
   // 19 ENSINO MEDIO
   $despesa[13][$pcol[$col]] = $m_despesa[46][$pcol[$col]];
   // 20 ENSINO SUPERIOR
@@ -497,8 +497,8 @@ $result_restos_mde = db_rpsaldo($anousu,
                                 $db_filtro,
                                 $dt_ini2,
                                 $dt_fin,
-                                " o58_codigo    in (".$v_codigo.")  and 
-                                  o58_funcao    in (".$v_funcao.")  and 
+                                " o58_codigo    in (".$v_codigo.")  and
+                                  o58_funcao    in (".$v_funcao.")  and
                                   o58_subfuncao in (".$v_subfunc.") ");
 
 $cancelado = 0;
@@ -535,7 +535,7 @@ for($i = 0; $i < pg_numrows($result_bal_ver); $i++){
 
   if (in_array($estrutural,$m_fluxo_fundeb["estrut"])){
     $m_fluxo_fundeb["valor_inscricao"] += $saldo_anterior;
-    $m_fluxo_fundeb["valor_atual"]     += $saldo_final; 
+    $m_fluxo_fundeb["valor_atual"]     += $saldo_final;
     $m_fluxo_fundeb["valor_credito"]   += $saldo_anterior_credito;
     $m_fluxo_fundeb["valor_debito"]    += $saldo_anterior_debito;
   }
@@ -548,7 +548,7 @@ $fluxo[1]["txt"] = "38 - SALDO FINANCEIRO DO FUNDEB EM 31 DE DEZEMBRO DE ".($ano
 $fluxo[2]["txt"] = "     38.1 - (+) INGRESSO DE RECURSOS DO FUNDEB ATÉ O ".strtoupper($periodo);
 $fluxo[3]["txt"] = "     38.2 - (-) PAGAMENTOS EFETUADOS ATÉ O ".strtoupper($periodo);
 $fluxo[4]["txt"] = "     38.3 - (+) RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS DO FUNDEB ATÉ O ".strtoupper($periodo);
-$fluxo[5]["txt"] = "39 - (=) SALDO FINANCEIRO DO FUNDEB NO EXERCÍCIO ATUAL";   
+$fluxo[5]["txt"] = "39 - (=) SALDO FINANCEIRO DO FUNDEB NO EXERCÍCIO ATUAL";
 
 for($linha = 1; $linha <= 5; $linha++){
   $fluxo[$linha]["valor"] = 0;
@@ -561,7 +561,7 @@ $fluxo[5]["valor"] = $m_fluxo_fundeb["valor_atual"];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if (!isset($arqinclude)){
-  $xinstit    = split("-",$db_selinstit);
+  $xinstit    =explode("-",$db_selinstit);
   $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
   $descr_inst = "";
   $xvirg      = "";
@@ -574,25 +574,25 @@ if (!isset($arqinclude)){
     } else {
       $descr_inst .= $xvirg.$nomeinst;
     }
-      
+
     $xvirg = ', ';
   }
-    
+
   if ($flag_abrev == false) {
     if (strlen($descr_inst) > 42) {
       $descr_inst = substr($descr_inst,0,100);
     }
   }
-    
+
   $head1 = $descr_inst;
   $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS COM DESENVOLVIMENTO E MANUTENÇÃO DO ENSINO - MDE";
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
 
-  $dt    = split("-",$dt_ini);
+  $dt    =explode("-",$dt_ini);
   $txt   = strtoupper(db_mes($dt[1]))."-";
-  $dt    = split("-",$dt_fin);
+  $dt    =explode("-",$dt_fin);
   $txt  .= strtoupper(db_mes($dt[1]))." $anousu/".$texto;
 
   $head5 = "$txt";
@@ -617,7 +617,7 @@ if (!isset($arqinclude)){
   $pdf->cell(190,($alt-2)," ","T",1,"L",0);
   $pdf->setfont('arial','B',6);
   $pdf->cell(190,($alt*2),"RECEITAS DO ENSINO",0,1,"C",0);
-  
+
   $pdf->setfont('arial','',6);
 
 // Cabecalho de receitas
@@ -675,7 +675,7 @@ if (!isset($arqinclude)){
     @$pdf->cell(20,$alt,db_formatar(($receita[$linha]['exercicio']*100)/$receita[$linha]['atualizada'],'f'),0,0,"R",0);
     $pdf->Ln();
   }
-  
+
   $somador8_inicial     = $receita[30]["inicial"]    + $receita[33]["inicial"] +
                           $receita[34]["inicial"]    + $receita[35]["inicial"];
   $somador8_atualizada  = $receita[30]["atualizada"] + $receita[33]["atualizada"] +
@@ -695,7 +695,7 @@ if (!isset($arqinclude)){
 
   $pdf->setfont('arial','B',6);
   $pdf->cell(190,($alt*2),"FUNDEB",0,1,"C",0);
-  
+
   $pdf->setfont('arial','',6);
 
   $pdf->cell(90,($alt*2),"RECEITAS DO FUNDEB",'TBR',0,"C",0);
@@ -708,7 +708,7 @@ if (!isset($arqinclude)){
   $pdf->cell(20,$alt,"Até o $periodo(b)",1,0,"C",0);
   $pdf->cell(20,$alt,"% (c) = (b/a)x100",'TB',0,"C",0);
   $pdf->ln();
-  
+
   for ($linha=36; $linha <= 46; $linha++) {
     if ($linha == 45){
       $pdf->cell(150,($alt*2),'Continuação da página 1',0,1,"L",0);
@@ -731,7 +731,7 @@ if (!isset($arqinclude)){
   $somador11_atualizada  = $receita[44]["atualizada"] - $receita[36]["atualizada"];
   $somador11_nobimestre  = $receita[44]["bimestre"]   - $receita[36]["bimestre"];
   $somador11_atebimestre = $receita[44]["exercicio"]  - $receita[36]["exercicio"];
-  
+
   $pdf->cell(90,$alt,"11 - RESULTADO LÍQUIDO DAS TRANSFERÊNCIAS DO FUNDEB(10.1 - 9)","TBR",0,"L",0);
   $pdf->cell(20,$alt,db_formatar(abs($somador11_inicial),"f"),"TBR",0,"R",0);
   $pdf->cell(20,$alt,db_formatar(abs($somador11_atualizada),"f"),"TBR",0,"R",0);
@@ -783,16 +783,16 @@ if (!isset($arqinclude)){
   $perc_10    = $receita[43]["exercicio"];
 
   $percentual = @(($perc_12/$perc_10)*100);
-                 
+
   $pdf->cell(170,$alt,"15 - MÍNIMO DAS DESPESAS DO FUNDEB(12/10) x 100%","TBR",0,"L",0);
   @$pdf->cell(20,$alt,db_formatar($percentual,'f'),'TB',0,"R",0);
   $pdf->ln();
-  
+
   $pdf->setfont('arial','B',6);
   $pdf->cell(190,($alt*2),"CÁLCULO DO LIMITE MÍNIMO COM MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",0,1,"C",0);
-  
+
   $pdf->setfont('arial','',6);
-  
+
   $pdf->cell(90,($alt*2),"RECEITAS COM AÇÕES TÍPICAS DE MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",'TBR',0,"C",0);
   $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
   $pdf->cell(20,($alt*2),"ATUALIZADA(a)",1,0,"C",0);
@@ -803,7 +803,7 @@ if (!isset($arqinclude)){
   $pdf->cell(20,$alt,"Até o $periodo(b)",1,0,"C",0);
   $pdf->cell(20,$alt,"% (c) = (b/a)x100",'TB',0,"C",0);
   $pdf->ln();
-  
+
   $pdf->cell(90,$alt,"16 - IMPOSTOS E TRANSFERÊNCIAS DESTINADAS À MDE (25% de 3)","TBR",0,"L",0);
   $pdf->cell(20,$alt,db_formatar(($somador3_inicial*25)/100,"f"),"TBR",0,"R",0);
   $pdf->cell(20,$alt,db_formatar(($somador3_atualizada*25)/100,"f"),"TBR",0,"R",0);
@@ -811,7 +811,7 @@ if (!isset($arqinclude)){
   $pdf->cell(20,$alt,db_formatar(($somador3_atebimestre*25)/100,"f"),"TBR",0,"R",0);
   @$pdf->cell(20,$alt,db_formatar(((($somador3_atebimestre*100)/$somador3_atualizada)*25)/100,'f'),'TB',0,"R",0);
   $pdf->ln();
-  
+
   $pdf->cell(90,($alt*2),"DESPESAS COM AÇÕES TÍPICAS DE MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",'TBR',0,"C",0);
   $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
   $pdf->cell(20,($alt*2),"ATUALIZADA(d)",1,0,"C",0);
@@ -832,18 +832,18 @@ if (!isset($arqinclude)){
     @$pdf->cell(20,$alt,db_formatar(($despesa[$linha]['exercicio']*100)/$despesa[$linha]['atualizada'],'f'),0,0,"R",0);
     $pdf->Ln();
   }
-  
-  $somador23_inicial     = $despesa[7]["inicial"]     + $despesa[10]["inicial"]    + $despesa[13]["inicial"]    + 
-                           $despesa[14]["inicial"]    + $despesa[15]["inicial"]    + $despesa[16]["inicial"];  
 
-  $somador23_atualizada  = $despesa[7]["atualizada"]  + $despesa[10]["atualizada"] + $despesa[13]["atualizada"] + 
-                           $despesa[14]["atualizada"] + $despesa[15]["atualizada"] + $despesa[16]["atualizada"];  
+  $somador23_inicial     = $despesa[7]["inicial"]     + $despesa[10]["inicial"]    + $despesa[13]["inicial"]    +
+                           $despesa[14]["inicial"]    + $despesa[15]["inicial"]    + $despesa[16]["inicial"];
 
-  $somador23_nobimestre  = $despesa[7]["bimestre"]    + $despesa[10]["bimestre"]   + $despesa[13]["bimestre"]   + 
-                           $despesa[14]["bimestre"]   + $despesa[15]["bimestre"]   + $despesa[16]["bimestre"];  
+  $somador23_atualizada  = $despesa[7]["atualizada"]  + $despesa[10]["atualizada"] + $despesa[13]["atualizada"] +
+                           $despesa[14]["atualizada"] + $despesa[15]["atualizada"] + $despesa[16]["atualizada"];
 
-  $somador23_atebimestre = $despesa[7]["exercicio"]   + $despesa[10]["exercicio"]  + $despesa[13]["exercicio"]  + 
-                           $despesa[14]["exercicio"]  + $despesa[15]["exercicio"]  + $despesa[16]["exercicio"];  
+  $somador23_nobimestre  = $despesa[7]["bimestre"]    + $despesa[10]["bimestre"]   + $despesa[13]["bimestre"]   +
+                           $despesa[14]["bimestre"]   + $despesa[15]["bimestre"]   + $despesa[16]["bimestre"];
+
+  $somador23_atebimestre = $despesa[7]["exercicio"]   + $despesa[10]["exercicio"]  + $despesa[13]["exercicio"]  +
+                           $despesa[14]["exercicio"]  + $despesa[15]["exercicio"]  + $despesa[16]["exercicio"];
 
   $pdf->setfont('arial','',5);
   $pdf->cell(90,$alt,"23 - TOTAL DAS DESP. COM AÇÕES TÍPICAS DE MANUT. E DESENV. DO ENSINO(17+18+19+20+21+22)","TBR",0,"L",0);
@@ -877,7 +877,7 @@ if (!isset($arqinclude)){
       $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo = $c83_codigo and c83_periodo = '$periodo_selecionado' and c83_instit in (".str_replace("-",",",$db_selinstit).")"));
       if ($clconrelvalor->numrows > 0){
         db_fieldsmemory($res_valor,0);
-        $valor = $c83_informacao;  
+        $valor = $c83_informacao;
       } else {
         $valor = 0;
       }
@@ -916,7 +916,7 @@ if (!isset($arqinclude)){
 
   $pdf->cell(150,$alt,"31 - MÍNIMO DE 25% DAS RECEITAS RESULTANTES DE IMP. NA MANUT. E DESENV. DO ENSINO[(17+18)-(30)/(3)]x100%","TBR",0,"L",0);
   $pdf->cell(40,$alt,db_formatar($somador31_valor,"f"),"TB",1,"R",0);
-  
+
   $pdf->cell(90,($alt*2),"OUTRAS DESPESAS CUSTEADAS COM RECURSOS DESTINADOS À MDE",'TBR',0,"C",0);
   $pdf->cell(20,($alt*2),"INICIAL",1,0,"C",0);
   $pdf->cell(20,($alt*2),"ATUALIZADA(d)",1,0,"C",0);
@@ -927,7 +927,7 @@ if (!isset($arqinclude)){
   $pdf->cell(20,$alt,"Até o $periodo(e)",1,0,"C",0);
   $pdf->cell(20,$alt,"% (f) = (e/d)x100",'TB',0,"C",0);
   $pdf->ln();
-  
+
   for ($linha = 17; $linha <= 19; $linha++) {
     $pdf->cell(90,$alt,$despesa[$linha]['txt'],'R',0,"L",0);
     $pdf->cell(20,$alt,db_formatar($despesa[$linha]['inicial'],'f'),'R',0,"R",0);
@@ -937,7 +937,7 @@ if (!isset($arqinclude)){
     @$pdf->cell(20,$alt,db_formatar(($despesa[$linha]['exercicio']*100)/$despesa[$linha]['atualizada'],'f'),0,0,"R",0);
     $pdf->Ln();
   }
-  
+
   $somador35_inicial     = $despesa[17]["inicial"]    + $despesa[18]["inicial"]    +
                            $despesa[19]["inicial"];
   $somador35_atualizada  = $despesa[17]["atualizada"] + $despesa[18]["atualizada"] +
@@ -946,7 +946,7 @@ if (!isset($arqinclude)){
                            $despesa[19]["bimestre"];
   $somador35_atebimestre = $despesa[17]["exercicio"]  + $despesa[18]["exercicio"]  +
                            $despesa[19]["exercicio"];
-  
+
   $pdf->setfont('arial','',5);
   $pdf->cell(90,$alt,"35 - TOTAL DAS OUTRAS DESPESAS CUSTEADAS COM REC. DESTINADOS À MDE(32 + 33 + 34)","TBR",0,"L",0);
   $pdf->setfont('arial','',6);
@@ -973,7 +973,7 @@ if (!isset($arqinclude)){
 
   $pdf->setfont('arial','B',6);
   $pdf->cell(190,($alt*2),"OUTRAS INFORMAÇÕES PARA CONTROLE FINANCEIRO",0,1,"C",0);
-  
+
   $pdf->setfont('arial','',6);
 
   $pdf->cell(90,($alt*2),"RESTOS A PAGAR INSCRITOS COM DISP. FINANC. DE REC. DE IMP. VINC. AO ENSINO","TBR",0,"C",0);
@@ -985,7 +985,7 @@ if (!isset($arqinclude)){
   $pdf->cell(40,$alt,db_formatar($m_restos_mde["saldo"],"f"),"TBR",0,"R",0);
   $pdf->cell(60,$alt,db_formatar($m_restos_mde["cancelado"],"f"),"TB",0,"R",0);
   $pdf->ln();
- 
+
   $pdf->cell(150,($alt*2),'Continua na página 3',0,1,"L",0);
 
 //  $pdf->cell(190,($alt-2),"",0,1,"C",0);
@@ -1001,13 +1001,13 @@ if (!isset($arqinclude)){
     $pdf->ln();
   }
 
-// Rodape  
+// Rodape
   $pdf->cell(190,$alt,"FONTE: Contabilidade","T",0,"L",0);
 // Assinaturas
   $pdf->Ln(30);
 
-  assinaturas(&$pdf,&$classinatura,'LRF');
-    
+  assinaturas($pdf,$classinatura,'LRF');
+
   $pdf->Output();
 }
 ?>

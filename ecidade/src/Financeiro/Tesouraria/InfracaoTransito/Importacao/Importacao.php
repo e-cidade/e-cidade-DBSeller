@@ -33,6 +33,7 @@ use ECidade\Financeiro\Tesouraria\InfracaoTransito\Multa;
 use ECidade\Financeiro\Tesouraria\InfracaoTransito\Repository\ReceitaInfracao as ReceitaInfracaoRepository;
 use ECidade\Financeiro\Tesouraria\InfracaoTransito\Repository\InfracaoTransito as InfracaoTransitoRepository;
 use ECidade\Financeiro\Tesouraria\InfracaoTransito\Repository\ArquivoInfracao as ArquivoInfracaoRepository;
+use ECidade\Financeiro\Orcamento\Recurso\Recurso;
 use \DBLayoutReader;
 use \cl_taborc;
 use \cl_tabrec;
@@ -108,7 +109,7 @@ class Importacao
      * Multas não cadastradas no sistema
      * @var Multa[]
      */
-    private $multasNaoCadastradas = array();
+    private $multasNaoCadastradas = [];
 
     /**
      * Existe registro de Trailler do arquivo. caso a o paremetro for false,arquivo nao foi importado.
@@ -120,7 +121,7 @@ class Importacao
      * Agrupa de linhas da receita
      * @var
     **/
-    private $linhasAgrupadas = array();
+    private $linhasAgrupadas = [];
 
     /**
      * @param $sCaminhoArquivo
@@ -202,7 +203,9 @@ class Importacao
         $oPlanilhaArrecadacao = new PlanilhaArrecadacao();
         $dtArrecadacao = date('Y-m-d', db_getsession('DB_datausu'));
         $oPlanilhaArrecadacao->setDataCriacao($dtArrecadacao);
-        $oPlanilhaArrecadacao->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit')));
+        $oPlanilhaArrecadacao->setInstituicao(
+            InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'))
+        );
 
         $this->oPlanilhaArrecadacao = $oPlanilhaArrecadacao;
     }
@@ -222,7 +225,11 @@ class Importacao
         $this->remessa_arquivo = $oLinha->sequencialremessa;
 
         $oArquivoInfracaoRepository = ArquivoInfracaoRepository::getInstance();
-        $oArquivoInfracaoModel = $oArquivoInfracaoRepository->getByDataConvenioRemessa($this->data_arquivo, $this->convenio_arquivo, $this->remessa_arquivo);
+        $oArquivoInfracaoModel = $oArquivoInfracaoRepository->getByDataConvenioRemessa(
+            $this->data_arquivo,
+            $this->convenio_arquivo,
+            $this->remessa_arquivo
+        );
 
         if (!empty($oArquivoInfracaoModel)) {
             throw new \BusinessException("Este arquivo já foi importado e processado!");
@@ -278,29 +285,58 @@ class Importacao
 
         $codigoConta = $oReceitaInfracaoLancamento->getConta();
         if (empty($this->linhasAgrupadas[$codigoConta])) {
-            $this->linhasAgrupadas[$codigoConta] = array();
+            $this->linhasAgrupadas[$codigoConta] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita] = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo] = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo]               = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo] = [];
         }
 
-        if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]               = array();
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valor']      = array();
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valortotal'] = 0;
+        if (empty($this->linhasAgrupadas[$codigoConta]
+                                        [$iReceita]
+                                        [$this->convenio_arquivo]
+                                        [$this->remessa_arquivo]
+                                        [$oMulta->getDataRepasse()->format('Y-m-d')])
+           ) {
+            $this->linhasAgrupadas[$codigoConta]
+                                  [$iReceita]
+                                  [$this->convenio_arquivo]
+                                  [$this->remessa_arquivo]
+                                  [$oMulta->getDataRepasse()->format('Y-m-d')] = [];
+
+            $this->linhasAgrupadas[$codigoConta]
+                                  [$iReceita]
+                                  [$this->convenio_arquivo]
+                                  [$this->remessa_arquivo]
+                                  [$oMulta->getDataRepasse()->format('Y-m-d')]['valor'] = [];
+
+            $this->linhasAgrupadas[$codigoConta]
+                                  [$iReceita]
+                                  [$this->convenio_arquivo]
+                                  [$this->remessa_arquivo]
+                                  [$oMulta->getDataRepasse()->format('Y-m-d')]['valortotal'] = 0;
         }
 
-        $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valor'][]     = $oMulta->getValorPrefeitura();
-        $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valortotal'] += $oMulta->getValorPrefeitura();
+        $this->linhasAgrupadas[$codigoConta]
+                              [$iReceita]
+                              [$this->convenio_arquivo]
+                              [$this->remessa_arquivo]
+                              [$oMulta->getDataRepasse()->format('Y-m-d')]['valor'][] = $oMulta->getValorPrefeitura();
+
+        $this->linhasAgrupadas[$codigoConta]
+                              [$iReceita]
+                              [$this->convenio_arquivo]
+                              [$this->remessa_arquivo]
+                              [$oMulta->getDataRepasse()->format('Y-m-d')]
+                              ['valortotal'] += $oMulta->getValorPrefeitura();
 
         return true;
     }
@@ -328,11 +364,19 @@ class Importacao
                         $codigoRemessa = $key;
                         foreach ($remessa as $key => $datarepasse) {
                             /* Obtem codigo da receita orcamentaria */
-                            $iCodigoReceitaOrcamentaria = $this->getIdReceitaOrcamentariaByIdReceitaTesouraria($codigoReceita);
+                            $iCodigoReceitaOrcamentaria = $this->getIdReceitaOrcamentariaByIdReceitaTesouraria(
+                                $codigoReceita
+                            );
 
                             /* Obtem a model da Receita Contabil */
                             $oReceita = new ReceitaContabil($iCodigoReceitaOrcamentaria);
                             $oDaoReceita = $this->getReceitaById($codigoReceita);
+
+                            /*
+                             * @todo verificar a informação do complementode recurso nesta rotina
+                             */
+                            $recurso = new Recurso($oReceita->getRecurso()->getCodigo());
+                            $complementoRecurso = $recurso->getComplemento();
 
                             $sObservacao = "Lançamento referente a infração de trânsito importada no arquivo da data: ";
                             $sObservacao .= $this->data_arquivo->format('d/m/Y');
@@ -345,8 +389,11 @@ class Importacao
                             $oReceitaPlanilha->setTipoReceita($oDaoReceita->k02_codigo);
                             $oReceitaPlanilha->setValor($datarepasse["valortotal"]);
                             $oReceitaPlanilha->setObservacao($sObservacao);
-                            $oReceitaPlanilha->setCaracteristicaPeculiar(new CaracteristicaPeculiar($oReceita->getCaracteristicaPeculiar())); // 000 - Nao se aplica
+                            $oReceitaPlanilha->setCaracteristicaPeculiar(new CaracteristicaPeculiar(
+                                $oReceita->getCaracteristicaPeculiar()
+                            )); // 000 - Nao se aplica
                             $oReceitaPlanilha->setRecurso($oReceita->getRecurso());
+                            $oReceitaPlanilha->setComplementoRecurso($complementoRecurso);
 
                             $oDataRepasse = new DBDate($key);
                             $oReceitaPlanilha->setDataRecebimento($oDataRepasse);
@@ -495,7 +542,9 @@ class Importacao
         $oDados = pg_fetch_object($rsDao);
 
         if (empty($oDados)) {
-            throw new \BusinessException("A receita {$iId} não esta vinculada com a receita orçamentária para o ano {$iAno}");
+            throw new \BusinessException(
+                "A receita {$iId} não esta vinculada com a receita orçamentária para o ano {$iAno}"
+            );
         }
 
         return $oDados->k02_codrec;
@@ -534,7 +583,8 @@ class Importacao
         $oDataRepasse = new DateTime($oLinha->datarepasse);
 
         /* Formata o valor */
-        $fValorPrefeitura = (float)substr($oLinha->valorprefeitura, 0, 12) . '.' . substr($oLinha->valorprefeitura, 12, 2);
+        $fValorPrefeitura = (float)substr($oLinha->valorprefeitura, 0, 12) . '.'
+        . substr($oLinha->valorprefeitura, 12, 2);
         $fValorBruto = (float)substr($oLinha->valorbruto, 0, 12) . '.' . substr($oLinha->valorbruto, 12, 2);
         $fValorDetran = (float)substr($oLinha->valordetran, 0, 12) . '.' . substr($oLinha->valordetran, 12, 2);
         $fValorFunset = (float)substr($oLinha->valorfunset, 0, 12) . '.' . substr($oLinha->valorfunset, 12, 2);

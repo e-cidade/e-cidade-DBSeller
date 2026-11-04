@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "protelac.h19_codigo,protelac.h19_assent,protelac.h19_tipo,protelac.h19_dia01,protelac.h19_dia02,protelac.h19_dia03,protelac.h19_dia04,protelac.h19_dia05,protelac.h19_dia06,protelac.h19_dia07,protelac.h19_dia08,protelac.h19_dia09,protelac.h19_dia10,protelac.h19_op01,protelac.h19_op02,protelac.h19_op03,protelac.h19_op04,protelac.h19_op05,protelac.h19_op06,protelac.h19_op07,protelac.h19_op08,protelac.h19_op09,protelac.h19_op10,protelac.h19_per01,protelac.h19_per02,protelac.h19_per03,protelac.h19_per04,protelac.h19_per05,protelac.h19_per06,protelac.h19_per07,protelac.h19_per08,protelac.h19_per09,protelac.h19_per10,protelac.h19_tpcalc";
+$campos = "protelac.h19_codigo,tipoasse.h12_assent,protelac.h19_tipo,protelac.h19_dia01,protelac.h19_dia02,protelac.h19_dia03,protelac.h19_dia04,protelac.h19_dia05,protelac.h19_dia06,protelac.h19_dia07,protelac.h19_dia08,protelac.h19_dia09,protelac.h19_dia10,protelac.h19_op01,protelac.h19_op02,protelac.h19_op03,protelac.h19_op04,protelac.h19_op05,protelac.h19_op06,protelac.h19_op07,protelac.h19_op08,protelac.h19_op09,protelac.h19_op10,protelac.h19_per01,protelac.h19_per02,protelac.h19_per03,protelac.h19_per04,protelac.h19_per05,protelac.h19_per06,protelac.h19_per07,protelac.h19_per08,protelac.h19_per09,protelac.h19_per10,protelac.h19_tpcalc,protelac.h19_instit";
 ?>

@@ -56,6 +56,7 @@ if (isset($incluir)) {
         $oTaxa->setValorMaximo($ar36_valormax);
         $oTaxa->aplicaJuroMulta($ar36_aplicajurosmulta == 't');
         $oTaxa->aplicaHonorario($ar36_honorario == 't');
+        $oTaxa->setPermissaoParcelamento($ar36_permiteparcelamento  == 't');
 
         if (isset($ar36_debitoscomprocesso)) {
             $oTaxa->setDebitosComProcesso($ar36_debitoscomprocesso);

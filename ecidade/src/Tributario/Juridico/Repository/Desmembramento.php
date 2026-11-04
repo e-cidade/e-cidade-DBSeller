@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,17 +43,29 @@ final class Desmembramento
 
     public function getByCgm($cgm)
     {
-        return $this->get($cgm, "arrenumcgm.k00_numcgm", "inner join arrenumcgm on arrenumcgm.k00_numpre = arrecad.k00_numpre");
+        return $this->get(
+            $cgm,
+            "arrenumcgm.k00_numcgm",
+            "inner join arrenumcgm on arrenumcgm.k00_numpre = arrecad.k00_numpre"
+        );
     }
 
     public function getByMatricula($matricula)
     {
-        return $this->get($matricula, "arrematric.k00_matric", "inner join arrematric on arrematric.k00_numpre = arrecad.k00_numpre");
+        return $this->get(
+            $matricula,
+            "arrematric.k00_matric",
+            "inner join arrematric on arrematric.k00_numpre = arrecad.k00_numpre"
+        );
     }
 
     public function getByInscricao($inscricao)
     {
-        return $this->get($inscricao, "arreinscr.k00_inscr", "inner join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre");
+        return $this->get(
+            $inscricao,
+            "arreinscr.k00_inscr",
+            "inner join arreinscr on arreinscr.k00_numpre = arrecad.k00_numpre"
+        );
     }
 
     public function getByProcessoForo($processoForo)
@@ -74,7 +86,13 @@ final class Desmembramento
     {
         $dao = new \cl_certdiv();
 
-        $sql = $dao->sql_query_file(null, null, '*', null, 'v14_coddiv NOT IN(' . implode(',', $dividas) . ') AND v14_certid = ' . $cda);
+        $sql = $dao->sql_query_file(
+            null,
+            null,
+            '*',
+            null,
+            'v14_coddiv NOT IN(' . implode(',', $dividas) . ') AND v14_certid = ' . $cda
+        );
 
         $result = \db_query($sql);
 
@@ -164,7 +182,13 @@ final class Desmembramento
         $dividas = implode(',', $dividas);
 
         $dao = new \cl_certdiv();
-        $sql = $dao->sql_query(null, null, 'DISTINCT v14_certid', null, "v14_coddiv IN({$dividas})");
+        $sql = $dao->sql_query(
+            null,
+            null,
+            'DISTINCT v14_certid',
+            null,
+            "v14_coddiv IN({$dividas})"
+        );
 
         $result = \db_query($sql);
 
@@ -229,7 +253,7 @@ final class Desmembramento
      */
     private function get($valor, $campo, $tabela = '')
     {
-        $sql = "select distinct 
+        $sql = "select distinct
                        processoforo.v70_codforo as codigo_processo,
                        processoforo.v70_sequencial as sequencial_processo,
                        inicial.v50_inicial as codigo_inicial,
@@ -253,14 +277,15 @@ final class Desmembramento
                                    substr(fc_calcula, 28, 13)::float8,
                                    substr(fc_calcula, 41, 13)::float8,
                                    substr(fc_calcula, 54, 13)::float8,
-                                   (substr(fc_calcula, 15, 13)::float8 + 
-                                    substr(fc_calcula, 28, 13)::float8 + 
-                                    substr(fc_calcula, 41, 13)::float8 - 
+                                   (substr(fc_calcula, 15, 13)::float8 +
+                                    substr(fc_calcula, 28, 13)::float8 +
+                                    substr(fc_calcula, 41, 13)::float8 -
                                     substr(fc_calcula, 54, 13)::float8))
-                          from (select fc_calcula(arrecad.k00_numpre, 
-                                                  arrecad.k00_numpar, 
-                                                  arrecad.k00_receit, 
-                                                  '" . date('Y-m-d', $this->data) . "','" . date("Y-m-d", $this->data) . "'," . $this->ano . ")
+                          from (select fc_calcula(arrecad.k00_numpre,
+                                                  arrecad.k00_numpar,
+                                                  arrecad.k00_receit,
+                                                  '" . date('Y-m-d', $this->data) . "',
+                                                  '" . date("Y-m-d", $this->data) . "'," . $this->ano . ")
                                                  ) as fc_calcula
                        ) as valores
                   from arrecad
@@ -270,8 +295,8 @@ final class Desmembramento
                        inner join arretipo on arretipo.k00_tipo = arrecad.k00_tipo
                        inner join divida on divida.v01_numpre = arrecad.k00_numpre
                                         and divida.v01_numpar = arrecad.k00_numpar
-                       inner join proced on proced.v03_codigo = divida.v01_proced                 
-                       inner join certdiv on certdiv.v14_coddiv = divida.v01_coddiv 
+                       inner join proced on proced.v03_codigo = divida.v01_proced
+                       inner join certdiv on certdiv.v14_coddiv = divida.v01_coddiv
                        inner join certid on certid.v13_certid = certdiv.v14_certid
                        inner join inicialcert on inicialcert.v51_certidao = certid.v13_certid
                        inner join inicial on inicial.v50_inicial = inicialcert.v51_inicial

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $db_opcao = 1;
 								<strong>Detalhar Empenhos :</strong>
 							</td>
 							<td>
-                 <?
+                 <?php
 								 $aMigrados = array("M"=>"Migrados","N"=>"Não Migrados"); 
 								 db_select("selfiltros",$aMigrados,true,4,"");
                
@@ -76,7 +76,7 @@ $db_opcao = 1;
 								<strong>Situação :</strong>
 							</td>
 							<td>
-                 <?
+                 <?php
 								 $aSituacao = array("T"=>"Todos","S"=>"Saldo a Pagar"); 
 								 db_select("situacao",$aSituacao,true,4,"");
                
@@ -96,7 +96,7 @@ $db_opcao = 1;
 </center>
 </body>
 </html>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

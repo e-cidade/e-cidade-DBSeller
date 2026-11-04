@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,12 +102,12 @@ function js_processar() {
             <strong>Ano / Mês :&nbsp;&nbsp;</strong>
           </td>
           <td>
-          <?
+          <?php
             $DBtxt23 = db_anofolha();
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
             $DBtxt25 = db_mesfolha();
             db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -118,7 +118,7 @@ function js_processar() {
             <strong>Ponto:</strong>
           </td>
           <td>
-          <?
+          <?php
             $aTipoPonto = array("r14"=>"Salário",
                                 "r48"=>"Complementar",
                                 "r35"=>"13o. Salário",
@@ -128,7 +128,7 @@ function js_processar() {
           ?>
           </td>
         </tr>
-        <?
+        <?php
           if (isset($ponto) && $ponto == "r48") {
           
             echo "<tr>                                                  ";
@@ -175,7 +175,7 @@ function js_processar() {
     </center>
     
   </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -205,7 +205,7 @@ function js_mostratabdesc1(chave1,chave2){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_processar();

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ $modo=base64_decode($modo);
 </tr>
 <tr>
   <td>
-  <?
+  <?php
   db_lovrot($sql,15);
   ?>
   </td>

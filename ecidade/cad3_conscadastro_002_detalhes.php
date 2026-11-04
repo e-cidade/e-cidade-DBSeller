@@ -197,7 +197,7 @@ table.form-container tr td {
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php
-  db_postmemory($HTTP_GET_VARS,0);
+  db_postmemory($_GET,0);
   $btnmatric = @$parametro;
 
   /**
@@ -226,9 +226,12 @@ table.form-container tr td {
 
    }else if ($solicitacao == 'dadosbaixa'){
 
-    	$sqlDadosBaixa  = " select * from iptubaixa ";
-    	$sqlDadosBaixa .= "        inner join db_usuarios   on id_usuario = j02_usuario ";
-    	$sqlDadosBaixa .= "        left  join iptubaixaproc on j02_matric = j03_matric  ";
+    	$sqlDadosBaixa  = " select *, ";
+      $sqlDadosBaixa .= "   (select (p58_numero || '/' || p58_ano) as processo ";
+      $sqlDadosBaixa .= "     from protprocesso where p58_codproc = j03_codproc) as numerodoprocesso ";
+      $sqlDadosBaixa .= " from iptubaixa ";
+    	$sqlDadosBaixa .= "   inner join db_usuarios   on id_usuario = j02_usuario ";
+    	$sqlDadosBaixa .= "   left  join iptubaixaproc on j02_matric = j03_matric  ";
     	$sqlDadosBaixa .= " where j02_matric = $parametro ";
     	$rsDadosBaixa   = db_query($sqlDadosBaixa);
     	db_fieldsmemory($rsDadosBaixa, 0);
@@ -253,8 +256,8 @@ table.form-container tr td {
     	echo "     <td align='left' wrap> $j02_motivo </td> ";
     	echo "   </tr> ";
     	echo "   <tr align='left'>  ";
-    	echo "     <td nowrap> Codigo do processo : </td> ";
-    	echo "     <td align='left' wrap> $j03_codproc </td> ";
+    	echo "     <td nowrap> Código do processo : </td> ";
+    	echo "     <td align='left' wrap> $numerodoprocesso </td> ";
     	echo "   </tr> ";
 
     	echo " </table> ";
@@ -288,7 +291,7 @@ table.form-container tr td {
 		  order by j31_grupo";
 
   $result = db_query($sql);
-	for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+	for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	  db_fieldsmemory($result,$contador);
   ?>
   <tr align="center">
@@ -332,9 +335,9 @@ table.form-container tr td {
     <td colspan="2" nowrap>&nbsp;</td>
   </tr>
   <?php
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
 
-    for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 
 	  db_fieldsmemory($result,$contador);
 
@@ -343,7 +346,7 @@ table.form-container tr td {
 		                         where j47_codigo = $j46_codigo
                           order by j47_anousu ");
 
-	  $numrows = pg_numrows($result_lim);
+	  $numrows = pg_num_rows($result_lim);
 
 	  if ($numrows > 0) {
   ?>
@@ -462,7 +465,7 @@ table.form-container tr td {
 		              j39_dtlan,
 		              j39_habite,
 		              j39_obs,
-                              j83_pontos
+                  j83_pontos
              from iptuconstr
 		              left  join carconstr      on j39_matric        = j48_matric
 		                                       and j39_idcons        = j48_idcons
@@ -494,9 +497,32 @@ table.form-container tr td {
       </tr>
     </table>
     <?php
-    if( pg_numrows($result) != 0 ) {
 
-      for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    if( pg_num_rows($result) != 0 ) {
+      $sqlUtilpontos = "select j18_utilpontos from cfiptu where j18_anousu = ".db_getsession("DB_anousu");
+      $resultUtilpontos = db_query($sqlUtilpontos);
+      $utilizaPontosConstrucao = pg_fetch_result($resultUtilpontos,0);
+
+      //Verifica se utiliza os pontos da construção ou não.
+      $pontos = [];
+      if($utilizaPontosConstrucao){
+        foreach ($aResult as $row) {
+          if (isset($pontos[$row->idcons])) {
+            continue;
+          }
+          $pontos[$row->idcons] = $row->j83_pontos;
+        }
+      } else {
+        foreach ($aResult as $row) {
+          if (isset($pontos[$row->idcons])) {
+            $pontos[$row->idcons] += $row->j31_pontos;
+            continue;
+          }
+          $pontos[$row->idcons] = $row->j31_pontos;
+        }
+      }
+
+      for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 
         db_fieldsmemory($result,$contador);
           if( $id_numero != $idcons ){
@@ -590,7 +616,7 @@ table.form-container tr td {
                 </td>
                 <td width="30%" align="left" nowrap bgcolor="#CCCCCC"><?="$Sj83_pontos:"?>
                 </td>
-                <td width="13%" align="left" nowrap bgcolor="#FFFFFF"><?=db_formatar($j83_pontos, 'p');?>&nbsp;</td>
+                <td width="13%" align="left" nowrap bgcolor="#FFFFFF"><?=db_formatar($pontos[$idcons], 'p');?>&nbsp;</td>
               </tr>
               <tr>
                 <td align="left"  bgcolor="#CCCCCC" >Observações: </td>
@@ -604,7 +630,7 @@ table.form-container tr td {
             <?php
             $sqldemo = "select iptuconstrdemo.*, db_usuarios.login from iptuconstrdemo inner join db_usuarios on j60_usuario = id_usuario where j60_matric = $parametro and j60_idcons = $idcons";
             $resultdemo = db_query($sqldemo);
-            if (pg_numrows($resultdemo) > 0) {
+            if (pg_num_rows($resultdemo) > 0) {
             ?>
               <br>
               <table width="95%" border="0" align="center"  cellpadding="0" cellspacing="2">
@@ -623,7 +649,7 @@ table.form-container tr td {
                 <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
               </tr>
             <?php
-              for ($contadordemo=0;$contadordemo < pg_numrows($resultdemo);$contadordemo++) {
+              for ($contadordemo=0;$contadordemo < pg_num_rows($resultdemo);$contadordemo++) {
                 db_fieldsmemory($resultdemo,$contadordemo);
             ?>
                 <tr>
@@ -688,7 +714,7 @@ table.form-container tr td {
                     <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
                   </tr>
             <?php
-                  for ($iIndHabite=0;$iIndHabite < pg_numrows($rsHabite);$iIndHabite++){
+                  for ($iIndHabite=0;$iIndHabite < pg_num_rows($rsHabite);$iIndHabite++){
                     $oDadosHabite = db_utils::fieldsmemory($rsHabite,$iIndHabite, true);
             ?>
                     <tr>
@@ -843,8 +869,8 @@ table.form-container tr td {
     <td colspan="4">&nbsp; </td>
   </tr>
   <?php
-  if( pg_numrows($result) != 0 ) {
-	 for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+  if( pg_num_rows($result) != 0 ) {
+	 for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
   	   if( $id_numero != $idcons ){
 		  $impcar = 0;
@@ -956,7 +982,7 @@ table.form-container tr td {
 
 $sqldemo    = "select iptuconstrdemo.*, db_usuarios.login from iptuconstrdemo inner join db_usuarios on j60_usuario = id_usuario where j60_matric = $parametro and j60_idcons = $idcons";
 $resultdemo = db_query($sqldemo);
-if (pg_numrows($resultdemo) > 0) {
+if (pg_num_rows($resultdemo) > 0) {
 ?>
 
  <br>
@@ -978,7 +1004,7 @@ if (pg_numrows($resultdemo) > 0) {
   </tr>
 
 <?php
-  for ($contadordemo=0;$contadordemo < pg_numrows($resultdemo);$contadordemo++){
+  for ($contadordemo=0;$contadordemo < pg_num_rows($resultdemo);$contadordemo++){
     db_fieldsmemory($resultdemo,$contadordemo);
 ?>
 
@@ -1160,8 +1186,8 @@ if ( $cliptuconstrhabite->numrows > 0) {
     <td colspan="4">&nbsp; </td>
   </tr>
 <?php
-  if( pg_numrows($result) != 0 ) {
-	 for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+  if( pg_num_rows($result) != 0 ) {
+	 for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
   	   if( $id_numero != $idcons ){
 		  $confere = 0;
@@ -1213,7 +1239,7 @@ $sCampos = "j131_sequencial,
               else cast(p58_codproc as varchar)
             end as j131_codprot";
 $rsHabite = $cliptuconstrhabite->sql_record($cliptuconstrhabite->sql_query_dados(null, $sCampos, null, "j131_matric = {$parametro} and j131_idcons = {$idcons}"));
-if (@pg_numrows($rsHabite) > 0) {
+if (@pg_num_rows($rsHabite) > 0) {
 ?>
 <br>
   <table width="95%" border="0" align="center"  cellpadding="0" cellspacing="2">
@@ -1229,7 +1255,7 @@ if (@pg_numrows($rsHabite) > 0) {
     <td width="20%" nowrap bgcolor="#CCCCCC">Usuario</td>
   </tr>
 <?php
-  for ($iIndHabite=0;$iIndHabite < pg_numrows($rsHabite);$iIndHabite++){
+  for ($iIndHabite=0;$iIndHabite < pg_num_rows($rsHabite);$iIndHabite++){
    $oDadosHabite = db_utils::fieldsmemory($rsHabite,$iIndHabite);
 ?>
   <tr>
@@ -1358,8 +1384,8 @@ if (@pg_numrows($rsHabite) > 0) {
 		   ";
       
     $result1 = db_query($sql);
-    if( pg_numrows($result1) != 0 ) {
-      for ($contador1=0;$contador1 < pg_numrows($result1);$contador1 ++ ){
+    if( pg_num_rows($result1) != 0 ) {
+      for ($contador1=0;$contador1 < pg_num_rows($result1);$contador1 ++ ){
 	    db_fieldsmemory($result1,$contador1);
 ?>
   <tr>
@@ -1455,8 +1481,8 @@ if (@pg_numrows($rsHabite) > 0) {
 	            where j38_face  = $j37_face
 				";
        $result = db_query($sql);
-       if( pg_numrows($result) != 0 ) {
-         for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+       if( pg_num_rows($result) != 0 ) {
+         for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	       db_fieldsmemory($result,$contador);
 		?>
         <tr>
@@ -1525,8 +1551,8 @@ if (@pg_numrows($rsHabite) > 0) {
                    left  join lote as interno on interno.j34_idbql = j69_idbql
              where j39_idbql = $parametro ";
     $result = db_query($sql);
-    if( pg_numrows($result) != 0 ) {
-      for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    if( pg_num_rows($result) != 0 ) {
+      for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	    db_fieldsmemory($result,$contador); ?>
 
         <tr>
@@ -1568,7 +1594,7 @@ if (@pg_numrows($rsHabite) > 0) {
   </tr>
 <?php
 
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
 ?>
   <tr align="center" bgcolor="#CCCCCC">
     <td nowrap>Endere&ccedil;o</td>
@@ -1580,7 +1606,7 @@ if (@pg_numrows($rsHabite) > 0) {
   </tr>
 <?php
 
-    for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+    for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	  db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
@@ -1608,45 +1634,47 @@ if (@pg_numrows($rsHabite) > 0) {
 
    } else if ($solicitacao == "OutrosProprietarios") {
 ?>
-<table width="95%" border="0" align="center" cellpadding="0" cellspacing="2">
-  <tr>
-    <td colspan="3" align="center"><u>Outros Propriet&aacute;rios</u></td>
-  </tr>
-  <tr>
-    <td colspan="3" align="center">&nbsp;</td>
-  </tr>
+<div class="container">
+<fieldset>
+        <legend>Outros Propriet&aacute;rios</legend>
+<table class="form-container" border="1" style="width: 850px">
   <?php
+    $sql = "SELECT z01_numcgm,
+                    z01_nome,
+                    z01_ender,
+                    j163_descricao
+            FROM
+                propri
+                INNER JOIN cgm ON cgm.z01_numcgm = propri.j42_numcgm
+                INNER JOIN tipoproprietario ON tipoproprietario.j163_tipoproprietario = propri.j42_tipoproprietario
+            WHERE
+                j42_matric = {$parametro}
+                AND j42_numcgm = z01_numcgm";
 
- // Recebe $cod_matricula como parametro
- $sql = "select z01_numcgm,z01_nome,z01_ender from propri,cgm
-		 where j42_matric = $parametro and
-		 j42_numcgm = z01_numcgm";
- $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+    $result = db_query($sql);
+      if( pg_num_rows($result) != 0 ) {
  ?>
-  <tr >
-    <td width="45%" bgcolor="#CCCCCC">&nbsp;
-      Nome
-    </td>
-    <td width="45%" bgcolor="#CCCCCC">&nbsp;
-      Endereço
-    </td>
-    <td bgcolor="#CCCCCC"></td>
-  </tr>
+   <thead>
+        <tr style="background-color: #e1e1e1">
+            <th class="text-left field-size8">&nbsp;Nome</th>
+            <th class="text-left field-size4">&nbsp;Tipo do proprietário</th>
+            <th class="text-left">&nbsp;Endereço</th>
+            <th class="text-left"></th>
+        </tr>
+    </thead>
+        <tbody>
   <?php
 
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+     for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	   db_fieldsmemory($result,$contador);
+
 ?>
-  <tr  onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm;?>')" >
-    <td bgcolor="#CCCCCC">&nbsp;
-      <?=$z01_nome;?>
-    </td>
-    <td bgcolor="#CCCCCC">&nbsp;
-      <?=$z01_ender;?>
-    </td>
-    <td bgcolor="#CCCCCC" title="Clique aqui para outros dados"><a href="" onclick='return false;' >Outros</a></td>
-  </tr>
+    <tr class="cores" onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm;?>')" >
+        <td class="text-left">&nbsp;<?=$z01_nome;?></td>
+        <td class="text-left">&nbsp;<?=$j163_descricao;?></td>
+        <td class="text-left">&nbsp;<?=$z01_ender;?></td>
+        <td bgcolor="#CCCCCC" title="Clique aqui para outros dados"><a href="" onclick='return false;' >Outros</a></td>
+    </tr>
   <?php
     }
   } else {
@@ -1657,58 +1685,71 @@ if (@pg_numrows($rsHabite) > 0) {
 <?php
   }
 ?>
-</table>
+          </tbody>
+      </table>
+  </fieldset>
+</div>
 <?php
   } else if ($solicitacao == "OutrosPromitentes") {
 ?>
-<table width="95%" border="0" align="center" cellpadding="0" cellspacing="2">
-  <tr>
-    <td colspan="3" align="center"><u>Promitentes Compradores</u></td>
-  </tr>
-  <tr>
-    <td colspan="3" align="center">&nbsp;</td>
-  </tr>
+<div class="container">
+    <fieldset>
+        <legend>Responsáveis</legend>
+<table class="form-container" border="1" style="width: 850px">
   <?php
  // Recebe $cod_matricula como parametro
- $sql = "select z01_numcgm,z01_nome,z01_ender from promitente,cgm
-		 where j41_matric = $parametro and
-		 j41_numcgm = z01_numcgm";
+ $sql = "SELECT z01_numcgm,
+                   z01_nome,
+                   z01_ender,
+                   j41_promitipo,
+                   j41_tipopro,
+                   j164_descricao
+              FROM promitente
+             INNER JOIN cgm
+                ON z01_numcgm = j41_numcgm
+             INNER JOIN tipopromitente
+                ON j164_promitipo = j41_promitipo
+             WHERE j41_matric = {$parametro}
+             ORDER BY j41_tipopro DESC";
+
  $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+   if( pg_num_rows($result) != 0 ) {
  ?>
-  <tr >
-    <td width="45%" bgcolor="#CCCCCC">&nbsp;
-      Nome
-    </td>
-    <td width="45%" bgcolor="#CCCCCC">&nbsp;
-      Endereço
-    </td>
-    <td bgcolor="#CCCCCC"></td>
-  </tr>
-  <?php
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
-	   db_fieldsmemory($result,$contador);
+   <thead>
+        <tr style="background-color: #e1e1e1">
+            <th class="text-left field-size8">&nbsp;Nome</th>
+            <th class="text-left field-size4">&nbsp;Tipo do promitente</th>
+            <th class="text-left">&nbsp;Endereço</th>
+            <th class="text-left"> Principal</th>
+            <th class="text-left"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+for ($contador = 0; $contador < pg_num_rows($result); $contador++) {
+			db_fieldsmemory($result, $contador);
+			?>
+            <tr class="cores" onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm;?>')" >
+                <td class="text-left">&nbsp;<?=$z01_nome;?></td>
+                <td class="text-left">&nbsp;<?=$j164_descricao;?></td>
+                <td class="text-left">&nbsp;<?=$z01_ender;?></td>
+                <td class="text-left"> <?=$j41_tipopro == 't' ? 'SIM' : 'NÃO';?></td>
+                <td class="text-center" title="Clique aqui para outros dados"><a href="" onclick='return false;' >Outros</a></td>
+            </tr>
+            <?php
+}
+} else {
+  ?>
+      <tr>
+          <td  colspan="3" class="text-center"><strong>Sem Responsáveis</strong></td>
+      </tr>
+      <?php
+}
 ?>
-  <tr  onclick="js_JanelaAutomatica('cgm','<?=$z01_numcgm?>')" >
-    <td bgcolor="#CCCCCC">&nbsp;
-      <?=$z01_nome?>
-    </td>
-    <td bgcolor="#CCCCCC">&nbsp;
-      <?=$z01_ender?>
-    </td>
-    <td bgcolor="#CCCCCC" title="Clique aqui para outros dados"><a href="" onclick='return false;' >Outros</a></td>
-  </tr>
-  <?php
-    }
-  } else {
-?>
-  <tr>
-    <td  colspan="3" align="center"><strong>Sem Promitentes</strong></td>
-  </tr>
-<?php
-  }
-?>
+  </tbody>
 </table>
+  </fieldset>
+</div>
 <?php
   } else if ($solicitacao == "Averbacao") {
 ?>
@@ -1728,7 +1769,7 @@ if (@pg_numrows($rsHabite) > 0) {
                 inner join cgm        on z01_numcgm = j01_numcgm
 	       where  j75_matric = $parametro ";
    $result = db_query($sql);
-     if( pg_numrows($result) != 0 ) {
+     if( pg_num_rows($result) != 0 ) {
 ?>
   <tr align="center">
     <td bgcolor="#CCCCCC">Matr&iacute;cula</td>
@@ -1740,7 +1781,7 @@ if (@pg_numrows($rsHabite) > 0) {
     <td bgcolor="#CCCCCC">Situação</td>
   </tr>
 <?php
-       for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+       for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	     db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
@@ -1797,8 +1838,8 @@ if (@pg_numrows($rsHabite) > 0) {
 
   } else if ($solicitacao == "Calculo") {
     $resano = db_query("select distinct j23_anousu from iptucalc where j23_matric = $parametro order by j23_anousu desc");
-if(pg_numrows ($resano) > 0){
-  for($xx=0;$xx<pg_numrows($resano);$xx++){
+if(pg_num_rows ($resano) > 0){
+  for($xx=0;$xx<pg_num_rows($resano);$xx++){
     db_fieldsmemory($resano,$xx);
 ?>
 <table width="95%" border="0" align="center" cellpadding="0" cellspacing="2">
@@ -1833,7 +1874,7 @@ if(pg_numrows ($resano) > 0){
 order by iptucalc.j23_anousu desc
 		 ";
       $result = db_query($sql);
-   if( pg_numrows($result) != 0 ) {
+   if( pg_num_rows($result) != 0 ) {
 
                  $matricula = \db_utils::fieldsmemory($result, 0)->j23_matric;
 		 $sql2 = "select k02_codigo,                                                             ";
@@ -1853,7 +1894,11 @@ order by iptucalc.j23_anousu desc
 		 $sql2 .= "							 and x.j21_receit = iptucalv.j21_receit                          ";
 		 $sql2 .= "							 and x.j21_codhis = iptucalhconf.j89_codhis)                     ";
 		 $sql2 .= "         else 0                                                               ";
-		 $sql2 .= "       end as j21_valorisen                                                   ";
+     $sql2 .= "       end as j21_valorisen, 	
+                      CASE
+                        WHEN j21_gerafinanc THEN 'Sim'
+                        ELSE 'Não'
+                      end as gerafinanc                                                      ";
 		 $sql2 .= "  from iptucalv                                                               ";
                  $sql2 .= "       inner join iptucalh        on iptucalh.j17_codhis        = j21_codhis  ";
                  $sql2 .= "       left join iptunump        on iptunump.j20_anousu        = $j23_anousu ";
@@ -1882,7 +1927,8 @@ order by iptucalc.j23_anousu desc
                                  WHERE x.j152_iptutaxanump = iptutaxacalv.j152_iptutaxanump
                                    AND x.j152_codhis = iptucalhconf.j89_codhis)
                           ELSE 0
-                      END AS j21_valorisen
+                      END AS j21_valorisen,
+                      'Não' as gerafinanc
                  FROM iptutaxanump
                       INNER JOIN iptutaxacalv ON iptutaxacalv.j152_iptutaxanump = iptutaxanump.j151_codigo
                       INNER JOIN iptucalh ON iptucalh.j17_codhis = iptutaxacalv.j152_codhis
@@ -1899,7 +1945,7 @@ order by iptucalc.j23_anousu desc
 
      $result2 = db_query($sql2);
 
-     for ($contador=0;$contador < pg_numrows($result);$contador ++ ){
+     for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
 	     db_fieldsmemory($result,$contador);
 ?>
   <tr align="center">
@@ -1988,7 +2034,8 @@ order by iptucalc.j23_anousu desc
       	$soma     = 0;
     		$somacalc = 0;
     		$somaisen = 0;
-        for ($contador2=0;$contador2 < pg_numrows($result2);$contador2 ++ ){
+
+        for ($contador2=0;$contador2 < pg_num_rows($result2);$contador2 ++ ){
 
     	    db_fieldsmemory($result2,$contador2);
 
@@ -2025,9 +2072,24 @@ order by iptucalc.j23_anousu desc
         <?php
 
     }
+    $habilitaGeraFinac = false;
+    $oDaocfiptu = new cl_cfiptu;
+    $sqlcfiptu = $oDaocfiptu->sql_query_file(db_getsession("DB_anousu"),'j18_taxaseparada, j18_simulacaocalculo');
+    $rs = pg_fetch_object(db_query($sqlcfiptu));
+
+    if($rs->j18_taxaseparada == 0 && $rs->j18_simulacaocalculo == 't'){
+      $habilitaGeraFinac = true;
+    }
+
 ?>
   <tr align="left">
-    <th colspan="5" align="right" nowrap bgcolor="#CCCCCC">TOTAL :
+    <th align="right" nowrap bgcolor="#CCCCCC">
+      <?= $habilitaGeraFinac ? 'Calcular Financeiro' : ''; ?>
+		</th>
+    <th  align="center" nowrap bgcolor="#CCCCCC">
+      <strong><?= $habilitaGeraFinac ? $gerafinanc : ''; ?></strong>
+		</th>
+    <th colspan="3" align="right" nowrap bgcolor="#CCCCCC">TOTAL :
 		</th>
     <td width="12%" align="right" nowrap bgcolor="#CCCCCC">
       <strong><?=db_formatar($somacalc, 'f');?></strong>
@@ -2062,7 +2124,7 @@ order by iptucalc.j23_anousu desc
 		              where j22_matric = $j23_matric and j22_anousu = $j23_anousu";
 
 	 $resultSqlIptucale = db_query($sqlIptucale);
-     if( pg_numrows($resultSqlIptucale) != 0 ) {
+     if( pg_num_rows($resultSqlIptucale) != 0 ) {
 ?>
   <tr align="center">
     <td>&nbsp; </td>
@@ -2080,8 +2142,8 @@ order by iptucalc.j23_anousu desc
           <td width="15%" align="center">Pontua&ccedil;&atilde;o</td>
           <td width="34%" align="right">Valor Venal</td>
         </tr>
-        <?
-	    for ($i=0;$i<pg_numrows($resultSqlIptucale);$i++) {
+        <?php
+	    for ($i=0;$i<pg_num_rows($resultSqlIptucale);$i++) {
             db_fieldsmemory($resultSqlIptucale,$i);
             $sqlIptuconstrareahistorico = "";
 
@@ -2094,7 +2156,7 @@ order by iptucalc.j23_anousu desc
              * respectiva salva na tabela de historico que é adicionada pelo mesmo.
              */
 
-            if(pg_numrows($resultValidaPluginAtivo) != 0)
+            if(pg_num_rows($resultValidaPluginAtivo) != 0)
             {
                 $sqlIptuconstrareahistorico =
                     "select sum(area) as area from plugins.iptuconstrareahistorico
@@ -2151,7 +2213,7 @@ order by iptucalc.j23_anousu desc
 
     echo "</table> <table> <tr>";
 
-    for ($calclog=0; $calclog < pg_numrows($resultcalclog); $calclog++) {
+    for ($calclog=0; $calclog < pg_num_rows($resultcalclog); $calclog++) {
       db_fieldsmemory($resultcalclog, $calclog);
 
       echo "<tr>";
@@ -2227,7 +2289,7 @@ order by iptucalc.j23_anousu desc
   </tr>
 <?php
 
-  if( pg_numrows($result) != 0 ) {
+  if( pg_num_rows($result) != 0 ) {
     db_fieldsmemory($result,0);
 ?>
   <tr align="center" bgcolor="#CCCCCC">
@@ -2300,7 +2362,7 @@ order by iptucalc.j23_anousu desc
 
 	db_query("begin");
    $result = db_query("select distinct j23_anousu from iptucalc where j23_matric = $parametro");
-   if(pg_numrows($result) > 1 && !isset($j23_anousu)) {
+   if(pg_num_rows($result) > 1 && !isset($j23_anousu)) {
   ?>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 	  <tr>
@@ -2308,7 +2370,7 @@ order by iptucalc.j23_anousu desc
 	  </tr>
 <?php
 
-     for($tt=0;$tt<pg_numrows($result);$tt++){
+     for($tt=0;$tt<pg_num_rows($result);$tt++){
        db_fieldsmemory($result,$tt);
 ?>
 	  <tr align="center">
@@ -2324,7 +2386,7 @@ order by iptucalc.j23_anousu desc
 
 <?php
 
-   }elseif(pg_numrows($result) == 1 || isset($j23_anousu)){
+   }elseif(pg_num_rows($result) == 1 || isset($j23_anousu)){
 
      if(!isset($j23_anousu)){
        db_fieldsmemory($result,0);
@@ -2390,6 +2452,79 @@ order by iptucalc.j23_anousu desc
     $funcao_js = "js_consultaDetalhesITBI|it06_guia";
 
     db_lovrot($sSqlListaITBI,50,"()","",$funcao_js,"");
+
+  } else if ($solicitacao == "historicoProprietarios") { 
+  ?>
+  <table width="95%" border="0" align="center" cellpadding="0" cellspacing="2">
+    <tr align="center">
+      <td colspan="4"><u>Hist&oacute;rico de Propriet&aacute;rios</u></td>
+    </tr>
+    <tr align="center">
+      <td colspan="4">&nbsp;</td>
+    </tr>
+    <?php
+      $clhistoricoproprietarios = new cl_historicoproprietarios();
+      $sql = $clhistoricoproprietarios->sqlHistoricoProprietariosAverbacao($parametro);
+      $result = db_query($sql);
+
+      $clrotulo = new rotulocampo;
+      $clrotulo->label("j172_percentual");
+
+      if( pg_num_rows($result) != 0 ) {
+    ?>
+    <tr align="center">
+      <td bgcolor="#CCCCCC"><strong>Matr&iacute;cula</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Protocolo</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Tipo Lan&ccedil;amento</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Data</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Tipo Propriet&aacute;rio</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Tipo Promitente</strong></td>
+      <td bgcolor="#CCCCCC"><strong>Adquirente</strong></td>
+      <td bgcolor="#CCCCCC"><?=$Lj172_percentual?></td>
+      <td bgcolor="#CCCCCC"><strong>Obs</strong></td>
+    </tr>
+    <?php
+    for ($contador=0;$contador < pg_num_rows($result);$contador ++ ){
+      db_fieldsmemory($result,$contador);
+    ?>
+      <tr align="center">
+        <td bgcolor="#FFFFFF">
+          <?=$matricula;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$protocolo;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$tipolancamento;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=db_formatar($datahistorico, 'd');?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$tipoproprietario;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$tipopromitente;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$adquirente;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$percentual;?>
+          &nbsp;</td>
+        <td bgcolor="#FFFFFF">
+          <?=$observacao;?>
+          &nbsp;</td>
+      </tr>
+      <?php
+      }
+    } else {
+    ?>
+      <tr>
+        <td  colspan="4" align="center"><strong>Sem histórico de proprietários</strong></td>
+      </tr>
+    <?php
+    }
   }
   ?>
 </body>

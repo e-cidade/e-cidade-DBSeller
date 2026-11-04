@@ -200,11 +200,11 @@ for($x = 0; $x < $numrows;$x++){
       $pdf->cell(8,$alt,$RLj34_lote,1,0,"C",1);
       $pdf->cell(16,$alt,"Area Lote",1,0,"C",1);
       $pdf->cell(16,$alt,"Area Constr",1,0,"C",1);
-      $pdf->cell(50,$alt,"Testada Principal",1,0,"C",1);
+      $pdf->cell(45,$alt,"Testada Principal",1,0,"C",1);
       $pdf->cell(12,$alt,"N°",1,0,"C",1);
       $pdf->cell(15,$alt,"Compl",1,0,"C",1);
       $pdf->cell(50,$alt,"Proprietario",1,0,"C",1);
-      $pdf->cell(28,$alt,"Cidade",1,0,"C",1);
+      $pdf->cell(33,$alt,"Cidade",1,0,"C",1);
       $pdf->cell(50,$alt,"Possuidor",1,0,"C",1); 
       $pdf->cell(5,$alt,"Tp",1,1,"C",1); 
       $troca = 0;
@@ -217,11 +217,11 @@ for($x = 0; $x < $numrows;$x++){
    $pdf->cell(8,$alt,$j34_lote,0,0,"L",$p);
    $pdf->cell(16,$alt,db_formatar($area_lote+0,'p'),0,0,"R",$p);
    $pdf->cell(16,$alt,db_formatar($area_const+0,'p'),0,0,"R",$p);
-   $pdf->cell(50,$alt,substr($testada_principal,0,30),0,0,"L",$p);
+   $pdf->cell(45,$alt,substr($testada_principal,0,29),0,0,"L",$p);
    $pdf->cell(12,$alt,$j39_numero,0,0,"R",$p);
    $pdf->cell(15,$alt,substr($j39_compl,0,9),0,0,"L",$p);
    $pdf->cell(50,$alt,substr($proprietario,0,30),0,0,"L",$p);
-   $pdf->cell(28,$alt,substr($z01_municpri,0,29),0,0,"L",$p);
+   $pdf->cell(33,$alt,substr($z01_municpri,0,20),0,0,"L",$p);
    $pdf->cell(50,$alt,substr($possuidor,0,32),0,0,"L",$p);
    $pdf->cell(5,$alt,substr($tipo,0,1),0,1,"L",$p);
    

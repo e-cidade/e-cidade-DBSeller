@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Contratos\Services\AcordoLicitacaoCompartilhadaService;
 use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\ResponsavelCon as RegraContrato;
 
 /**
@@ -112,15 +113,18 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
             $oRegraContrato = new RegraContrato($this->oCabecalho->getDataGeracao());
             $oLicitacao = $oRegraContrato->getDadosDaLicitacaoDoContrato($oResponsavel->ac16_sequencial);
             $sCaminhoArquivo = '';
+            $service = new AcordoLicitacaoCompartilhadaService();
+            $dados = $service->buscarDados($oResponsavel->ac16_sequencial);
+            $modalidade = $service->getModalidade($dados->ac63_modalidade)->getSiglaTipoCompraTribunal();
 
             if ($oResponsavel->ac07_nomearquivo) {
                 $sCaminhoArquivo = "DOCUMENTO_CON\\" . $oResponsavel->ac07_nomearquivo;
             }
 
             $oStdResponsavel = new stdClass;
-            $oStdResponsavel->NR_LICITACAO = $oLicitacao->numero;
-            $oStdResponsavel->ANO_LICITACAO = $oLicitacao->ano;
-            $oStdResponsavel->CD_TIPO_MODALIDADE = $oLicitacao->tipo;
+            $oStdResponsavel->NR_LICITACAO = $dados->ac63_sequencial == "" ? $oLicitacao->numero : $dados->ac63_numero;
+            $oStdResponsavel->ANO_LICITACAO = $dados->ac63_sequencial == "" ? $oLicitacao->ano : $dados->ac63_ano;
+            $oStdResponsavel->CD_TIPO_MODALIDADE = $dados->ac63_sequencial == "" ? $oLicitacao->tipo : $modalidade;
             $oStdResponsavel->NR_CONTRATO = $oResponsavel->ac16_numero;
             $oStdResponsavel->ANO_CONTRATO = $oResponsavel->ac16_anousu;
             $oStdResponsavel->TP_INSTRUMENTO = $aTiposInstrumento[$oResponsavel->ac16_tipoinstrumento];

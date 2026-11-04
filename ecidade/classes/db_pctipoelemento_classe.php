@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pctipoelemento
-class cl_pctipoelemento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc06_codtipo = 0; 
-   var $pc06_codele = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pctipoelemento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc06_codtipo = 0;
+   var $pc06_codele = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc06_codtipo = int4 = Código do Tipo 
-                 pc06_codele = int4 = Código Elemento 
+                 pc06_codtipo = int4 = Código do Tipo
+                 pc06_codele = int4 = Código Elemento
                  ";
-   //funcao construtor da classe 
-   function cl_pctipoelemento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pctipoelemento"); 
+     $this->rotulo = new rotulo("pctipoelemento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pctipoelemento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc06_codtipo = ($this->pc06_codtipo == ""?@$GLOBALS["HTTP_POST_VARS"]["pc06_codtipo"]:$this->pc06_codtipo);
        $this->pc06_codele = ($this->pc06_codele == ""?@$GLOBALS["HTTP_POST_VARS"]["pc06_codele"]:$this->pc06_codele);
@@ -75,11 +75,11 @@ class cl_pctipoelemento {
      }
    }
    // funcao para inclusao
-   function incluir ($pc06_codtipo,$pc06_codele){ 
+   public function incluir ($pc06_codtipo,$pc06_codele){
       $this->atualizacampos();
-       $this->pc06_codtipo = $pc06_codtipo; 
-       $this->pc06_codele = $pc06_codele; 
-     if(($this->pc06_codtipo == null) || ($this->pc06_codtipo == "") ){ 
+       $this->pc06_codtipo = $pc06_codtipo;
+       $this->pc06_codele = $pc06_codele;
+     if(($this->pc06_codtipo == null) || ($this->pc06_codtipo == "") ){
        $this->erro_sql = " Campo pc06_codtipo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_pctipoelemento {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->pc06_codele == null) || ($this->pc06_codele == "") ){ 
+     if(($this->pc06_codele == null) || ($this->pc06_codele == "") ){
        $this->erro_sql = " Campo pc06_codele nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_pctipoelemento {
        return false;
      }
      $sql = "insert into pctipoelemento(
-                                       pc06_codtipo 
-                                      ,pc06_codele 
+                                       pc06_codtipo
+                                      ,pc06_codele
                        )
                 values (
-                                $this->pc06_codtipo 
-                               ,$this->pc06_codele 
+                                $this->pc06_codtipo
+                               ,$this->pc06_codele
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de Elemento ($this->pc06_codtipo."-".$this->pc06_codele) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_pctipoelemento {
        $resac = db_query("insert into db_acount values($acount,867,5499,'','".AddSlashes(pg_result($resaco,0,'pc06_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc06_codtipo=null,$pc06_codele=null) { 
+   public function alterar ($pc06_codtipo=null,$pc06_codele=null) {
       $this->atualizacampos();
      $sql = " update pctipoelemento set ";
      $virgula = "";
-     if(trim($this->pc06_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc06_codtipo"])){ 
+     if(trim($this->pc06_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc06_codtipo"])){
        $sql  .= $virgula." pc06_codtipo = $this->pc06_codtipo ";
        $virgula = ",";
-       if(trim($this->pc06_codtipo) == null ){ 
+       if(trim($this->pc06_codtipo) == null ){
          $this->erro_sql = " Campo Código do Tipo nao Informado.";
          $this->erro_campo = "pc06_codtipo";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_pctipoelemento {
          return false;
        }
      }
-     if(trim($this->pc06_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc06_codele"])){ 
+     if(trim($this->pc06_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc06_codele"])){
        $sql  .= $virgula." pc06_codele = $this->pc06_codele ";
        $virgula = ",";
-       if(trim($this->pc06_codele) == null ){ 
+       if(trim($this->pc06_codele) == null ){
          $this->erro_sql = " Campo Código Elemento nao Informado.";
          $this->erro_campo = "pc06_codele";
          $this->erro_banco = "";
@@ -192,7 +192,7 @@ class cl_pctipoelemento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Elemento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc06_codtipo."-".$this->pc06_codele;
@@ -220,14 +220,14 @@ class cl_pctipoelemento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc06_codtipo=null,$pc06_codele=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc06_codtipo=null,$pc06_codele=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc06_codtipo,$pc06_codele));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -261,7 +261,7 @@ class cl_pctipoelemento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Elemento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc06_codtipo."-".$pc06_codele;
@@ -289,11 +289,11 @@ class cl_pctipoelemento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_pctipoelemento {
       }
      return $result;
    }
-   function sql_query ( $pc06_codtipo=null,$pc06_codele=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc06_codtipo=null,$pc06_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -333,23 +333,23 @@ class cl_pctipoelemento {
      $sql2 = "";
      if($dbwhere==""){
        if($pc06_codtipo!=null ){
-         $sql2 .= " where pctipoelemento.pc06_codtipo = $pc06_codtipo "; 
-       } 
+         $sql2 .= " where pctipoelemento.pc06_codtipo = $pc06_codtipo ";
+       }
        if($pc06_codele!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pctipoelemento.pc06_codele = $pc06_codele "; 
-       } 
+         }
+         $sql2 .= " pctipoelemento.pc06_codele = $pc06_codele ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,10 +358,10 @@ class cl_pctipoelemento {
      }
      return $sql;
   }
-   function sql_query_file ( $pc06_codtipo=null,$pc06_codele=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc06_codtipo=null,$pc06_codele=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -374,23 +374,23 @@ class cl_pctipoelemento {
      $sql2 = "";
      if($dbwhere==""){
        if($pc06_codtipo!=null ){
-         $sql2 .= " where pctipoelemento.pc06_codtipo = $pc06_codtipo "; 
-       } 
+         $sql2 .= " where pctipoelemento.pc06_codtipo = $pc06_codtipo ";
+       }
        if($pc06_codele!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pctipoelemento.pc06_codele = $pc06_codele "; 
-       } 
+         }
+         $sql2 .= " pctipoelemento.pc06_codele = $pc06_codele ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

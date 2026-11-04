@@ -78,24 +78,24 @@ class Servidor extends ProcessamentoAbstract implements ProcessamentoInterface
         if (empty($this->getMesCompetencia()) && !empty($this->getAnoCompetencia())) {
             throw new \BusinessException("Mês da competência, não informado.");
         }
-
+        
         if (!empty($this->getMesCompetencia()) && empty($this->getAnoCompetencia())) {
             throw new \BusinessException("Ano da competência, não informado.");
         }
-
+        
         /** Criamos as propriedades internas de ano e mes, devido aos cases de competencia e a necessidade de busca
          *  e necessidade de busca por ano e mes
          */
         $ano = $this->anoCompetencia;
         $mes = $this->mesCompetencia;
-
+        
         if (empty($ano)) {
             $ano = CompetenciaHelper::get()->getAno();
         }
         if (empty($mes)) {
             $mes = CompetenciaHelper::get()->getMes();
         }
-
+        
         if (empty($this->servidores)) {
             if (!empty($this->selecao)) {
                 try {

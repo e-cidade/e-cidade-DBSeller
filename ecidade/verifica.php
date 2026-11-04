@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -119,10 +119,10 @@ function js_liberasel(){
     <td align="left" valign="top">
     <input type="hidden" name="matricu" value="<?=@$matricu?>">
     <input type="hidden" name="valormatr" value="<?=@$valormatr?>">
-    <?
+    <?php
     if($ex){
     ?>    
-<?
+<?php
  db_input('j01_matric',9,$Ij01_matric,true,'text',3,'')
 ?>
     </td>
@@ -130,10 +130,10 @@ function js_liberasel(){
   <tr>
     <td align="left" height="100" valign="top">
       <input name="excluir" type="submit" value="Excluir" id="excluir" onclick="return js_liberasel()" >
-    <?
+    <?php
     }else{
     ?>
-<?
+<?php
  db_input('j01_matric',9,$Ij01_matric,true,'text',1,'')
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_liberasel(){
   <tr>
     <td align="left" height="100" valign="top">
 	<input name="adicionar" type="submit" value="Adicionar" <?=($db_botao==false?"disabled":"")?> >            
-    <?
+    <?php
     }
     ?>
     </td>
@@ -150,7 +150,7 @@ function js_liberasel(){
 </form>
 </body>
 </html>
-<?
+<?php
 if(isset($matricu)||isset($liber)){
     echo "
       <script>

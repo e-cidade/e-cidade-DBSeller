@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("v82_sequencial");
        <?=@$Lv70_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_sequencial',10,$Iv70_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -52,52 +52,52 @@ db_input('v70_sequencial',10,$Iv70_sequencial,true,'text',$db_opcao,"")
        <?=@$Lv70_codforo?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_codforo',30,$Iv70_codforo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv70_processoforomov?>">
-       <?
+       <?php
        db_ancora(@$Lv70_processoforomov,"js_pesquisav70_processoforomov(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_processoforomov',10,$Iv70_processoforomov,true,'text',$db_opcao," onchange='js_pesquisav70_processoforomov(false);'")
 ?>
-       <?
+       <?php
 db_input('v73_sequencial',10,$Iv73_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv70_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lv70_id_usuario,"js_pesquisav70_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_id_usuario',10,$Iv70_id_usuario,true,'text',$db_opcao," onchange='js_pesquisav70_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv70_vara?>">
-       <?
+       <?php
        db_ancora(@$Lv70_vara,"js_pesquisav70_vara(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_vara',10,$Iv70_vara,true,'text',$db_opcao," onchange='js_pesquisav70_vara(false);'")
 ?>
-       <?
+       <?php
 db_input('v53_descr',40,$Iv53_descr,true,'text',3,'')
        ?>
     </td>
@@ -107,7 +107,7 @@ db_input('v53_descr',40,$Iv53_descr,true,'text',3,'')
        <?=@$Lv70_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v70_data',@$v70_data_dia,@$v70_data_mes,@$v70_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -117,7 +117,7 @@ db_inputdata('v70_data',@$v70_data_dia,@$v70_data_mes,@$v70_data_ano,true,'text'
        <?=@$Lv70_valorinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_valorinicial',10,$Iv70_valorinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -127,7 +127,7 @@ db_input('v70_valorinicial',10,$Iv70_valorinicial,true,'text',$db_opcao,"")
        <?=@$Lv70_observacao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('v70_observacao',0,0,$Iv70_observacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ db_textarea('v70_observacao',0,0,$Iv70_observacao,true,'text',$db_opcao,"")
        <?=@$Lv70_anulado?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('v70_anulado',$x,true,$db_opcao,"");
 ?>
@@ -145,30 +145,30 @@ db_select('v70_anulado',$x,true,$db_opcao,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv70_instit?>">
-       <?
+       <?php
        db_ancora(@$Lv70_instit,"js_pesquisav70_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_instit',10,$Iv70_instit,true,'text',$db_opcao," onchange='js_pesquisav70_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv70_cartorio?>">
-       <?
+       <?php
        db_ancora(@$Lv70_cartorio,"js_pesquisav70_cartorio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v70_cartorio',10,$Iv70_cartorio,true,'text',$db_opcao," onchange='js_pesquisav70_cartorio(false);'")
 ?>
-       <?
+       <?php
 db_input('v82_sequencial',10,$Iv82_sequencial,true,'text',3,'')
        ?>
     </td>
@@ -299,7 +299,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_processoforo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

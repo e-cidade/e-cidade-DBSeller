@@ -1,60 +1,60 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE leitor
-class cl_leitor { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $bi10_codigo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_leitor {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $bi10_codigo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 bi10_codigo = int8 = Código do Leitor 
+                 bi10_codigo = int8 = Código do Leitor
                  ";
-   //funcao construtor da classe 
-   function cl_leitor() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("leitor"); 
+     $this->rotulo = new rotulo("leitor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -63,7 +63,7 @@ class cl_leitor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->bi10_codigo = ($this->bi10_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["bi10_codigo"]:$this->bi10_codigo);
      }else{
@@ -71,19 +71,19 @@ class cl_leitor {
      }
    }
    // funcao para inclusao
-   function incluir ($bi10_codigo){ 
+   public function incluir ($bi10_codigo){
       $this->atualizacampos();
      if($bi10_codigo == "" || $bi10_codigo == null ){
-       $result = db_query("select nextval('leitor_bi10_codigo_seq')"); 
+       $result = db_query("select nextval('leitor_bi10_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: leitor_bi10_codigo_seq do campo: bi10_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: leitor_bi10_codigo_seq do campo: bi10_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->bi10_codigo = pg_result($result,0,0); 
+       $this->bi10_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from leitor_bi10_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $bi10_codigo)){
@@ -94,10 +94,10 @@ class cl_leitor {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->bi10_codigo = $bi10_codigo; 
+         $this->bi10_codigo = $bi10_codigo;
        }
      }
-     if(($this->bi10_codigo == null) || ($this->bi10_codigo == "") ){ 
+     if(($this->bi10_codigo == null) || ($this->bi10_codigo == "") ){
        $this->erro_sql = " Campo bi10_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -106,13 +106,13 @@ class cl_leitor {
        return false;
      }
      $sql = "insert into leitor(
-                                       bi10_codigo 
+                                       bi10_codigo
                        )
                 values (
-                                $this->bi10_codigo 
+                                $this->bi10_codigo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Leitor ($this->bi10_codigo) nao Incluído. Inclusao Abortada.";
@@ -144,16 +144,16 @@ class cl_leitor {
        $resac = db_query("insert into db_acount values($acount,1008018,1008139,'','".AddSlashes(pg_result($resaco,0,'bi10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($bi10_codigo=null) { 
+   public function alterar ($bi10_codigo=null) {
       $this->atualizacampos();
      $sql = " update leitor set ";
      $virgula = "";
-     if(trim($this->bi10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi10_codigo"])){ 
+     if(trim($this->bi10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi10_codigo"])){
        $sql  .= $virgula." bi10_codigo = $this->bi10_codigo ";
        $virgula = ",";
-       if(trim($this->bi10_codigo) == null ){ 
+       if(trim($this->bi10_codigo) == null ){
          $this->erro_sql = " Campo Código do Leitor nao Informado.";
          $this->erro_campo = "bi10_codigo";
          $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_leitor {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Leitor nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->bi10_codigo;
@@ -207,14 +207,14 @@ class cl_leitor {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($bi10_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($bi10_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($bi10_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -240,7 +240,7 @@ class cl_leitor {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Leitor nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$bi10_codigo;
@@ -268,11 +268,11 @@ class cl_leitor {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -294,10 +294,10 @@ class cl_leitor {
       }
      return $result;
    }
-   function sql_query ( $bi10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $bi10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -325,15 +325,15 @@ class cl_leitor {
      $sql2 = "";
      if($dbwhere==""){
        if($bi10_codigo!=null ){
-         $sql2 .= " where leitor.bi10_codigo = $bi10_codigo "; 
-       } 
+         $sql2 .= " where leitor.bi10_codigo = $bi10_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -342,10 +342,10 @@ class cl_leitor {
      }
      return $sql;
   }
-   function sql_query_file ( $bi10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $bi10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -358,15 +358,15 @@ class cl_leitor {
      $sql2 = "";
      if($dbwhere==""){
        if($bi10_codigo!=null ){
-         $sql2 .= " where leitor.bi10_codigo = $bi10_codigo "; 
-       } 
+         $sql2 .= " where leitor.bi10_codigo = $bi10_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,49 +375,49 @@ class cl_leitor {
      }
      return $sql;
   }
-  
-  function sql_query_leitorcidadao ( $bi10_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
-    
+
+  public function sql_query_leitorcidadao ( $bi10_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+
     $sql = "select ";
     if ($campos != "*" ) {
-      
-      $campos_sql = split("#",$campos);
+
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
-      
+
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }
     } else {
       $sql .= $campos;
     }
-    
+
     $sql .= " from leitor                                                                                       \n";
     $sql .= "      left join leitorcidadao on leitorcidadao.bi28_leitor = leitor.bi10_codigo                    \n";
     $sql .= "      left join cidadao       on cidadao.ov02_sequencial   = leitorcidadao.bi28_cidadao_sequencial \n";
     $sql .= "                             and cidadao.ov02_seq          = leitorcidadao.bi28_cidadao_seq        \n";
     $sql2 = "";
-    
+
     if ($dbwhere == "") {
-      
+
       if ($bi10_codigo != null ) {
         $sql2 .= " where leitor.bi10_codigo = $bi10_codigo ";
       }
     } else if($dbwhere != "") {
       $sql2 = " where $dbwhere";
     }
-    
+
     $sql .= $sql2;
-    
+
     if ($ordem != null ) {
-      
+
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
-      
+
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
-        
+
         $sql     .= $virgula.$campos_sql[$i];
         $virgula  = ",";
       }

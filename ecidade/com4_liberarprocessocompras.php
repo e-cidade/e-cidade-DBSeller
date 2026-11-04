@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ $oDaoSolicita->rotulo->label();
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js");
       db_app::load("prototype.js");
       db_app::load("widgets/windowAux.widget.js");
@@ -69,12 +69,12 @@ $oDaoSolicita->rotulo->label();
              <table>
                <tr>
                  <td>
-                   <?
+                   <?php
                     db_ancora("<b>Código:</b>" , 'js_abrePesquisaProcesso()', 1);
                    ?>
                  </td>
                  <td>
-                   <?
+                   <?php
                      db_input('pc80_codproc', 10, $Ipc80_codproc, true, 'text', 3);
                    ?>
                  </td>
@@ -82,7 +82,7 @@ $oDaoSolicita->rotulo->label();
                    <span style="font-weight: bold;">Data Emissão:</span>
                  </td>
                  <td style="text-align: right">
-                   <?
+                   <?php
                      db_input('pc80_data', 10, $Ipc80_data, true, 'text', 3);
                    ?>
                  </td>
@@ -93,7 +93,7 @@ $oDaoSolicita->rotulo->label();
                  </td>
                  <td colspan="4">
                  
-                    <?
+                    <?php
                      db_input('pc80_depto', 45, 0, true, 'text', 3);
                    ?>
                  </td>
@@ -105,7 +105,7 @@ $oDaoSolicita->rotulo->label();
                    </b>
                  </td>
                  <td  colspan="4">
-                 <?
+                 <?php
                    $aSituacoes = array(
                                        2 => "Autorizado", 
                                        1 => "Análise",
@@ -125,7 +125,7 @@ $oDaoSolicita->rotulo->label();
     </center>
   </body>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

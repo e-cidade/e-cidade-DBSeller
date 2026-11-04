@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ function js_imprime(){
     <table bgcolor="#cccccc">
      <tr>
         <td>
-        <? if (isset($codproc)){
+        <?php if (isset($codproc)){
               $sqlandam = "select p61_codandam as db_p61_codandam,
                                   p61_codproc,
                                   p61_dtandam,
@@ -92,7 +92,7 @@ function js_imprime(){
 
          ?>
          <table border=1 cellspacing=0 style="border:1px solid black">
-         <?
+         <?php
              
              // db_lovrot($sqlandam,10,"","","");
             $rs = db_query($sqlandam);  

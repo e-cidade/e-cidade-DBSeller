@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ if (isset($oPost->db_opcaoal)) {
         <b>Cod. Licitação:</b>
       </td>
       <td> 
-        <?
+        <?php
           db_input('l43_sequencial',10,"",true,'hidden',3,"");
           db_input('l20_codigo',10,$Il20_codigo,true,'text',3,"");
         ?>
@@ -75,11 +75,11 @@ if (isset($oPost->db_opcaoal)) {
         <?=@$Ll20_dataaber?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('l20_dataaber',@$l20_dataaber_dia,@$l20_dataaber_mes,@$l20_dataaber_ano,true,'text',3,"");
         ?>
         <?=@$Ll20_horaaber?>
-        <?
+        <?php
           db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3,"");
         ?>
       </td>
@@ -89,7 +89,7 @@ if (isset($oPost->db_opcaoal)) {
         <?=@$Ll20_dtpublic?>
       </td>
       <td> 
-        <?
+        <?php
           db_inputdata('l20_dtpublic',@$l20_dtpublic_dia,@$l20_dtpublic_mes,@$l20_dtpublic_ano,true,'text',3,"");
         ?>
       </td>
@@ -99,7 +99,7 @@ if (isset($oPost->db_opcaoal)) {
         <?=@$Ll20_local?>
       </td>
       <td> 
-        <?
+        <?php
           db_textarea('l20_local',0,60,$Il20_local,true,'text',3,"");
         ?>
       </td>
@@ -109,7 +109,7 @@ if (isset($oPost->db_opcaoal)) {
         <?=@$Ll20_objeto?>
       </td>
       <td> 
-        <?
+        <?php
           db_textarea('l20_objeto',0,60,$Il20_objeto,true,'text',3,"");
         ?>
       </td>
@@ -119,7 +119,7 @@ if (isset($oPost->db_opcaoal)) {
         <b>Minuta:</b>
       </td>
       <td> 
-        <?
+        <?php
           db_input("l43_arquivo",30,0,true,"file",1);
         ?>
       </td>
@@ -141,7 +141,7 @@ if (isset($oPost->db_opcaoal)) {
 <table>
   <tr>
     <td valign="top"  align="center">  
-      <?
+      <?php
         $chavepri= array("l43_sequencial"=>@$l43_sequencial);
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $cliframe_alterar_excluir->sql     = $clliclicitaminuta->sql_query(null,"*",null,"l43_liclicita=".@$l20_codigo);
@@ -171,7 +171,7 @@ function js_pesquisa() {
 
 function js_preenchepesquisa(chave) {
   db_iframe_liclicita.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   ?>
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("j34_lote");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js');
   db_app::load('prototype.js');
   db_app::load('datagrid.widget.js');
@@ -139,7 +139,7 @@ function js_emite(){
                        <strong>Setor/Quadra/Lote:</strong>
                     </td>
                     <td colspan='3'> 
-                    <?
+                    <?php
                      db_input('j34_setor',10,$Ij34_setor,true,'text',1);
                        db_input('j34_quadra',10,$Ij34_quadra,true,'text',1);
                        db_input('j34_lote',10,$Ij34_lote,true,'text',1);
@@ -151,7 +151,7 @@ function js_emite(){
                       <b>Logradouro :</b>            
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php
                         db_input('logradouroid',40,'',true,'hidden',3);
                         db_input('it18_nomelograd',40,$Iit18_nomelograd,true,'text',1);
                       ?>                 
@@ -162,7 +162,7 @@ function js_emite(){
                       <b>Tipo :</b>
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php
                         $aTipo = array( 't'=>'Todos',
                                         'u'=>'Urbano',
                                         'r'=>'Rural' );
@@ -176,13 +176,13 @@ function js_emite(){
                       <b>Periodo de :</b>
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php
                         db_inputdata('dtIni', '', '', '', true, 'text', 1, '');
                       ?>                    
                       &nbsp;
                       <b> a </b>
                       &nbsp;
-                      <?
+                      <?php
                         db_inputdata('dtFim', '', '', '', true, 'text', 1, '');
                       ?>                    
                     </td>
@@ -192,7 +192,7 @@ function js_emite(){
                       <b>Situaçao:</b>
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php
                         $aSituacao = array( '1'=>'Todos',
                                             '2'=>'Aberto',
                                             '3'=>'Pago',
@@ -209,7 +209,7 @@ function js_emite(){
                       <b>Ordenar :</b>
                     </td>
                     <td>
-                      <?
+                      <?php
                         $aOrdem = array( 'g'=>'Guia',
                                          'log'=>'Logradouro',
                                          's'=>'Setor',
@@ -249,7 +249,7 @@ function js_emite(){
     </tr> 
   </table>
 </form>
-<?
+<?php
   db_menu(db_getsession('DB_id_usuario'),db_getsession('DB_modulo'),db_getsession('DB_anousu'),db_getsession('DB_instit'));
 ?>
 </body>

@@ -32,7 +32,7 @@ class Anexo8 extends Base implements In22
         $parser->addVariable('mes_ano_emissao', $periodo->getDescricao() . "/{$this->ano}");
         $dados = $this->processarDados();
         $totalValorPago = 0;
-        foreach ($dados as &$dado) {
+        foreach ($dados as $dado) {
             $totalValorPago += $dado->valorpago;
             $dado->elemento = ' ' . $dado->elemento . ' ';
             $dado->valorpago = $this->formataValor($dado->valorpago);

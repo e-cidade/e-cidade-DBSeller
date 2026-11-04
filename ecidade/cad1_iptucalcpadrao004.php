@@ -98,7 +98,7 @@ $j10_anousu = db_getsession('DB_anousu');
   </div>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

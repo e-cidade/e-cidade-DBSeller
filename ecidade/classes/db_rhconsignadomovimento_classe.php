@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimento
 class cl_rhconsignadomovimento { 
@@ -44,13 +44,13 @@ class cl_rhconsignadomovimento {
                  rh151_situacao = char(1) = Situação do consignado 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -59,7 +59,7 @@ class cl_rhconsignadomovimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh151_sequencial = ($this->rh151_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh151_sequencial"]:$this->rh151_sequencial);
        $this->rh151_ano = ($this->rh151_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["rh151_ano"]:$this->rh151_ano);
@@ -78,7 +78,7 @@ class cl_rhconsignadomovimento {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh151_sequencial){ 
+   public function incluir ($rh151_sequencial){ 
       $this->atualizacampos();
      if($this->rh151_ano == null ){ 
        $this->erro_sql = " Campo Ano não informado.";

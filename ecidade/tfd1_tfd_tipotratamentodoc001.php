@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -91,7 +91,7 @@ if(isset($excluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Documentos</b></legend>
-	      <?
+	      <?php
       	require_once(modification("forms/db_frmtfd_tipotratamentodoc.php"));
 	      ?>
       </fieldset>
@@ -100,7 +100,7 @@ if(isset($excluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -108,7 +108,7 @@ if(isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","tf06_i_tipotratamento",true,1,"tf06_i_tipotratamento",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cltfd_tipotratamentodoc->erro_status=="0"){
     $cltfd_tipotratamentodoc->erro(true,false);

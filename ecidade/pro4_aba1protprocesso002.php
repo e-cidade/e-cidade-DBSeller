@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -79,7 +79,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   }
   $clprotprocesso->p58_numero = $p58_numero;
   $clprotprocesso->alterar($p58_codproc);
-  $chaves = split("#",$docs);
+  $chaves =explode("#",$docs);
   $clprocprocessodoc->excluir($p58_codproc);
   //$clprocprocessodoc->erro(true,false);
   for($i=0;$i<sizeof($chaves);$i++){
@@ -89,7 +89,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     $clprocprocessodoc->incluir($p58_codproc,$chaves[$i]);
     //$clprocprocessodoc->erro(true,false);
   }
-  $chaves = split("#",$ndocs);
+  $chaves =explode("#",$ndocs);
   for($i=0;$i<sizeof($chaves);$i++){
     $HTTP_POST_VARS['p81_doc'] = 'f';
     $clprocprocessodoc->p81_codproc = $p58_codproc;
@@ -141,7 +141,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 }elseif(!isset($btnalterar) ){
     if(isset($chavepesquisa) ){
        $db_opcao = 2;
-       $result   = $clprotprocesso->sql_record($clprotprocesso->sql_query($chavepesquisa)); 
+       $result   = $clprotprocesso->sql_record($clprotprocesso->sql_query($chavepesquisa));
        db_fieldsmemory($result,0);
        $db_botao = true;
        $result_andam = $clprotprocesso->sql_record($clprotprocesso->sql_query_alt($p58_codproc,"*",null,"p58_codproc = $p58_codproc and p61_codandam is null and p63_codtran is null "));
@@ -172,7 +172,7 @@ if (!isset($btnalterar)){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 if (isset($oGet->alt) && $oGet->alt == 1) {
   if(isset($db_opcao)){
   	$sOnLoad = " onload='js_preenchepesquisa(".$oGet->chavepesquisa.");'";
@@ -189,7 +189,7 @@ if (isset($oGet->alt) && $oGet->alt == 1) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-      <?
+      <?php
          include(modification("forms/db_frmprotprocessoalt.php"));
       ?>
     </td>
@@ -199,7 +199,7 @@ if (isset($oGet->alt) && $oGet->alt == 1) {
 </form>
 </body>
 </html>
-<?
+<?php
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
   echo "<script> window.open('pro4_capaprocesso.php?codproc=".$clprotprocesso->p58_codproc."','','location=0'); </script>";
   $result_param = $clprotparam->sql_record($clprotparam->sql_query_file());

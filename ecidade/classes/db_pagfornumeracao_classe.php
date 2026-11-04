@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE pagfornumeracao
 class cl_pagfornumeracao { 
@@ -28,13 +28,13 @@ class cl_pagfornumeracao {
                  o152_empagegera = int4 = Código da Remessa 
                  ";
    //funcao construtor da classe 
-   function cl_pagfornumeracao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagfornumeracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_pagfornumeracao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o152_sequencial = ($this->o152_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["o152_sequencial"]:$this->o152_sequencial);
        $this->o152_instit = ($this->o152_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["o152_instit"]:$this->o152_instit);
@@ -54,7 +54,7 @@ class cl_pagfornumeracao {
      }
    }
    // funcao para Inclusão
-   function incluir ($o152_sequencial){ 
+   public function incluir ($o152_sequencial){ 
       $this->atualizacampos();
      if($this->o152_instit == null ){ 
        $this->erro_sql = " Campo Código da Instituição não informado.";

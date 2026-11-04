@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Configuracao\Helpers\StorageHelper;
+
 require_once(modification("std/db_stdClass.php"));
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -134,7 +136,9 @@ switch ($oParam->exec) {
     case "carregaInclusao":
         try {
             $iParametroPlaca = BensParametroPlaca::getCodigoParametro();
-            $oRetorno->dados = buscaSequencia($iParametroPlaca, $oPlacaBem, $oRetorno);
+            if ($iParametroPlaca != 2) {
+                $oRetorno->dados = buscaSequencia($iParametroPlaca, $oPlacaBem, $oRetorno);
+            }
         } catch (Exception $exception) {
             db_fim_transacao(true);
             $oRetorno->status = 2;
@@ -202,6 +206,7 @@ switch ($oParam->exec) {
             $lTipoManual = true;
         }
 
+
         /**
          * Só para quando for inclusão de Bem
          * Se já houver depreciação, não se pode cadastrar um bem com a data inferior ao ultimo mes/ano depreciado
@@ -261,19 +266,20 @@ switch ($oParam->exec) {
                  * 4 : PLACA_SEQUENCIAL_DIGITADO
                  */
                 $iParametroPlaca = BensParametroPlaca::getCodigoParametro();
+                $oPlacaBem->setTipoPlaca($iParametroPlaca);
 
                 /**
                  * SEQUENCIAL DIGITADO
                  */
                 if ($iParametroPlaca == BensParametroPlaca::PLACA_SEQUENCIAL_DIGITADO) {
-                    $oParam->t41_placa = mb_strtoupper($oParam->t41_placa);
+                    $oParam->t41_placa = $oParam->t41_placa;
                     $oPlacaBem->setPlacaSeq($oParam->t41_placa);
                 } else {
                     /**
                      * SEQUENCIAL AUTOMATICO || CLASSIFICACAO + SEQUENCIAL
                      * - Busca proxima placa
                      */
-                    $oPlacaBem->setPlacaSeq($oPlacaBem->getProximaPlaca($oParam->sPlaca));
+                    $oPlacaBem->setPlacaSeq(intval($oParam->t41_placa));
 
                     /**
                      * CLASSIFICACAO + SEQUENCIAL
@@ -283,7 +289,6 @@ switch ($oParam->exec) {
                         $oPlacaBem->setPlaca($oParam->sPlaca);
                     }
                 }
-
                 $oPlacaBem->setData(date("d/m/Y", db_getsession("DB_datausu")));
 
                 if (empty($oParam->obser)) {
@@ -330,30 +335,41 @@ switch ($oParam->exec) {
                 throw new Exception("Informe a observação do lançamento.");
             }
 
+            $oBem->setProcesso(addslashes(db_stdClass::normalizeStringJson($oParam->t52_processo)));
             $oBem->setObservacao(addslashes(db_stdClass::normalizeStringJson($oParam->obser)));
             $oBem->setInstituicao(db_getsession("DB_instit"));
             $oBem->setCodigoItemNota($oParam->iCodigoItemNota);
             $oBem->setFoto(null);
+            $oBem->setEstorage('f');
+
+            if ($oParam->acao !== "Incluir") {
+                $dadosBem = buscaDadosBem($oParam->t52_bem);
+
+                if ($oParam->pathImage === '' && $dadosBem->t52_estorage === 't' ||
+                    $oParam->pathImage !== '' && $dadosBem->t52_estorage === 't'
+                ) {
+                    StorageHelper::deleteArquivo($dadosBem->t52_foto);
+                }
+            }
 
             // Salva imagem no banco
             if (!empty($oParam->pathImage)) {
-                $oid = DBLargeObject::criaOID(true);
-                $imagemSalva = DBLargeObject::escrita($oParam->pathImage, $oid);
-
-                if (!$imagemSalva) {
-                    throw new Exception('Não foi possível salvar imagem.');
-                }
-
-                $oBem->setFoto($oid);
+                $id = StorageHelper::uploadArquivo($oParam->pathImage, [], true, null, null, $oParam->nameImage);
+                $oBem->setFoto($id);
+                $oBem->setEstorage('t');
             }
 
             $oBem->salvar();
+
             db_fim_transacao(false);
             $oRetorno->dados->t52_bem = $oBem->getCodigoBem();
         } catch (Exception $oException) {
             db_fim_transacao(true);
             $oRetorno->status = 2;
             $oRetorno->message = urlencode($oException->getMessage());
+            if (!empty($oParam->pathImage)) {
+                StorageHelper::deleteArquivo($id);
+            }
         }
 
         break;
@@ -365,26 +381,18 @@ switch ($oParam->exec) {
         $oInstituicao = new Instituicao(db_getsession("DB_instit"));
 
         $oRetorno->lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracaoPatrimonio($oDataAtual,
-          $oInstituicao);
+            $oInstituicao);
         $oRetorno->imagePath = '';
 
-        $oid = $oRetorno->dados->t52_foto;
-        if (!empty($oid)) {
-            $imagePath = "tmp/bem{$oRetorno->dados->t52_bem}";
-
-            db_query($conn, 'begin;');
-            $readImageFile = DBLargeObject::leitura($oid, $imagePath);
-            db_query($conn, 'commit;');
-
-            if (!$readImageFile) {
-                throw new Exception('Não foi possível abrir imagem.');
+        if ($oRetorno->dados->t52_estorage === 't') {
+            try {
+                $imagePath = StorageHelper::downloadArquivo($oRetorno->dados->t52_foto);
+                $relativePath = str_replace(ECIDADE_PATH, '', $imagePath);
+                $oRetorno->imagePath = $relativePath;
+            } catch (Exception $exception) {
+                $oRetorno->status = 2;
+                $oRetorno->message = urlencode($exception->getMessage() ?: "Falha na Autenticação do e-storage.");
             }
-
-            if (!file_exists($imagePath)) {
-                throw new Exception('Arquivo buscado não existe.');
-            }
-
-            $oRetorno->imagePath = $imagePath;
         }
 
         break;
@@ -405,13 +413,14 @@ switch ($oParam->exec) {
 
             $iMotivo = $oParam->iMotivo;
             $dDataBaixa = $oParam->dtBaixa;  //metodo baixar espera a data:  dia/mes/ano
-            $sObservacao = db_stdClass::normalizeStringJson($oParam->sObservacao);
+            $sObservacao = addslashes(db_stdClass::normalizeStringJson($oParam->sObservacao));
+            $nomeArquivo = \DBString::removerAcentuacao($oParam->nomeArquivo);
 
             db_inicio_transacao();
 
             foreach ($oParam->aBens as $iCodigoBem) {
                 $oBem = new Bem($iCodigoBem);
-                $oBem->baixar($iMotivo, $dDataBaixa, $sObservacao, $oParam->caminhoArquivo);
+                $oBem->baixar($iMotivo, $dDataBaixa, $sObservacao, $oParam->caminhoArquivo, $nomeArquivo);
             }
 
             db_fim_transacao(false);
@@ -573,13 +582,6 @@ switch ($oParam->exec) {
             );
 
             $extension = $mimeExtensions[mime_content_type($documentPath)];
-
-            /**
-             * Necessário adicionar extensão do arquivo no final, pois '$oBem->getCaminhoDocumentoBaixa()'
-             * retorna o caminho sem a extensão do arquivo.
-             * */
-            rename("{$documentPath}", "{$documentPath}.{$extension}");
-            $documentPath = "{$documentPath}.{$extension}";
         }
 
         $oRetorno->oDadosBaixa->documentPath = $documentPath;
@@ -611,10 +613,10 @@ function buscaDadosBem($iCodigoBem)
     $oBem = new Bem($iCodigoBem);
     $oDadosBem = new stdClass();
     $iParametroPlaca = BensParametroPlaca::getCodigoParametro();
-
     $oDadosBem->t52_bem = $oBem->getCodigoBem();
     $oDadosBem->sPlaca = $oBem->getPlaca()->getPlaca();
     $oDadosBem->t41_placa = $oBem->getPlaca()->getPlacaSeq();
+    $oDadosBem->t52_estorage = $oBem->getEstorage();
 
     if ($iParametroPlaca == 4) {
         $oDadosBem->t41_placa = $oBem->getPlaca()->getNumeroPlaca();
@@ -631,6 +633,7 @@ function buscaDadosBem($iCodigoBem)
     $oDadosBem->t52_dtaqu = db_formatar($oBem->getDataAquisicao(), 'd');
     $oDadosBem->t52_dtinclusao = db_formatar($oBem->getDataInclusao(), 'd');
     $oDadosBem->t52_descr = urlencode($oBem->getDescricao());
+    $oDadosBem->t52_processo = urlencode($oBem->getProcesso());
     $oDadosBem->t64_class = urlencode($oBem->getClassificacao()->getClassificacao());
     $oDadosBem->t64_codcla = $oBem->getClassificacao()->getCodigo();
     $oDadosBem->t64_descr = urlencode($oBem->getClassificacao()->getDescricao());
@@ -844,4 +847,4 @@ function getDataImplantacaoDepreciacao()
     return null;
 }
 
-echo $oJson->encode($oRetorno);
+echo JSON::create()->stringify($oRetorno);

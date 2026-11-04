@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -53,10 +53,10 @@ db_app::load("prototype.js");
       <table class="form-container">
         <tr>
           <td title="<?=@$Tv70_codforo?>" >
-            <?db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4);?>
+            <?php db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4);?>
           </td>
           <td>
-            <?
+            <?php
               db_input("v70_sequencial",  4, $Iv70_sequencial, true, "text", 4, "onchange='js_pesquisaprocessoforo(false);'");
               db_input("v70_codforo",  40, $Iv70_codforo,  true, "text", 3, "");
             ?>
@@ -66,7 +66,7 @@ db_app::load("prototype.js");
     </fieldset>
     <input type="button" id="processar"  disabled="disabled" value="Processar" onclick="return js_processar();" onmouseover="js_pesquisaprocessoforo(false);">
   </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

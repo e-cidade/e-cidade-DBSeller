@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ input {
 
 </head>
 <body bgcolor="#CCCCCC" bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-  <?
+  <?php
   if(isset($HTTP_POST_VARS["numcgm"])) {
         $cgccpf = @$HTTP_POST_VARS["ck_cgccpf"]=="1"?@$HTTP_POST_VARS["cgccpf"]:@$HTTP_POST_VARS["z01_cgccpf"];
         $nome = @$HTTP_POST_VARS["ck_nome"]=="1"?@$HTTP_POST_VARS["nome"]:@$HTTP_POST_VARS["z01_nome"];
@@ -438,7 +438,7 @@ input {
 <script>
 parent.document.getElementById("atualizar").disabled = false;
 </script>
-<?
+<?php
 } else {
   $query = "SELECT w11_sequencial as seq,w11_nome,substr(w11_cgccpf,1,3)||'.'||substr(w11_cgccpf,4,3)||'.'||substr(w11_cgccpf,7,3)||'/'||substr(w11_cgccpf,10,2) as cgccpf,w11_ender as endereço,w11_bairro,substr(w11_cep,1,2)||'.'||substr(w11_cep,3,3)||'-'||substr(w11_cep,6,3) as cep FROM db_cgmatualiza WHERE w11_revisado = 'f' ORDER BY w11_nome";
   echo "<center><Br><Br>\n";

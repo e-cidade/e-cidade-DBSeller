@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -189,7 +189,7 @@ db_app::load("webseller.js");
 </table>
 <br><br>
 <center>
-<?if ($iResponsavelTecnico == 0) {
+<?php if ($iResponsavelTecnico == 0) {
 
   echo"<br><br><center><strong><b> Usuario não é um profissional do laboratorio! ";
   echo"</b></strong></center></center></center>";
@@ -208,7 +208,7 @@ db_app::load("webseller.js");
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -216,7 +216,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1", "vc20_d_dataini", true, 1, "vc20_d_dataini", true);
 </script>
-<?
+<?php
 if (isset($confirma)) {
   if ($oDaoLabEmissao->erro_status == "0") {
     $oDaoLabEmissao->erro(true,false);

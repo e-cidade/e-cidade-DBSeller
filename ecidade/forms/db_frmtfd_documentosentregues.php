@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("tf07_i_codigo");
       <?=@$Ltf22_i_pedidotfd?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf01_i_codigo',10,$Itf01_i_codigo,true,'text',3);
 
       /**** Obtém os documentos do tipo de tratamento */
@@ -84,7 +84,7 @@ $clrotulo->label("tf07_i_codigo");
       <?=@$Ltf01_i_cgsund?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf01_i_cgsund',10,$Itf01_i_cgsund,true,'text',3);
       db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
       ?>

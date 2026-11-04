@@ -62,13 +62,13 @@ class cl_lab_labusuario {
                  la05_d_fim = date = Fim 
                  ";
    //funcao construtor da classe 
-   function cl_lab_labusuario() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_labusuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_lab_labusuario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la05_i_codigo = ($this->la05_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la05_i_codigo"]:$this->la05_i_codigo);
        $this->la05_i_laboratorio = ($this->la05_i_laboratorio == ""?@$GLOBALS["HTTP_POST_VARS"]["la05_i_laboratorio"]:$this->la05_i_laboratorio);
@@ -103,7 +103,7 @@ class cl_lab_labusuario {
      }
    }
    // funcao para inclusao
-   function incluir ($la05_i_codigo){ 
+   public function incluir ($la05_i_codigo){ 
       $this->atualizacampos();
      if($this->la05_i_laboratorio == null ){ 
        $this->erro_sql = " Campo Laboratório nao Informado.";
@@ -220,7 +220,7 @@ class cl_lab_labusuario {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($la05_i_codigo=null) { 
+   public function alterar ($la05_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update lab_labusuario set ";
      $virgula = "";
@@ -355,7 +355,7 @@ class cl_lab_labusuario {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($la05_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($la05_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($la05_i_codigo));
      }else{ 
@@ -420,7 +420,7 @@ class cl_lab_labusuario {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -443,7 +443,7 @@ class cl_lab_labusuario {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $la05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $la05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -479,7 +479,7 @@ class cl_lab_labusuario {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $la05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $la05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

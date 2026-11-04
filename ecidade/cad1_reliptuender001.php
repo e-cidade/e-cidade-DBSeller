@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,34 +99,34 @@ $clrotulo->label("j30_descr");
 				     <table align="center" border="0">
 				    	 <tr>
 				    	   <td align="right" title="Matricula do ímovel">
-	                <?
+	                <?php
 	                  db_ancora("<b>Matrícula do ímovel:</b>", "js_pesquisamatricula(true);", 1);
 	                ?>				    	   
 				    	   </td>
 				    	   <td align="left">
-	                <?
+	                <?php
                     db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1, "onChange='js_pesquisamatricula(false);'");
                   ?>			    	   
 				    	   </td>
 				    	   <td align="left">
-				    	    <?
+				    	    <?php
                     db_input('z01_nomepropri', 40, $Ij14_nome, true, 'text', 3, "");
 				    	    ?>
 				    	   </td>
 				    	 </tr>	
                <tr>
                  <td align="right" title="Setor Quadra Lote">
-                  <?
+                  <?php
                     db_ancora("<b>Setor:</b>", "js_pesquisasetor(true);", 1);
                   ?>                 
                  </td>
                  <td align="left">
-                  <?
+                  <?php
                     db_input('j30_codi', 10, $Ij30_codi, true, 'text', 1, "onChange='js_pesquisasetor(false);'");
                   ?>               
                  </td>
                  <td align="left">
-                  <?
+                  <?php
                     db_input('j30_descr', 40, $Ij30_descr, true, 'text', 3, "");
                   ?>
                  </td>
@@ -136,7 +136,7 @@ $clrotulo->label("j30_descr");
                    <b>Ordem Impressão:</b>
                  </td>
                  <td align="left" colspan="2">
-		              <?
+		              <?php
 		                $aOrdemImp = array (
 		                                  "cl"  => "Cidade/Logradouro",
 		                                  "bl"  => "Bairro/Logradouro",
@@ -156,7 +156,7 @@ $clrotulo->label("j30_descr");
                    <b>Imprimir:</b>
                  </td>
                  <td align="left" colspan="2">
-		              <?
+		              <?php
 		                $aImprimir = array (
 		                                    "amb"  => "Ambos",
 		                                    "sem"  => "Somente sem Endereço",
@@ -172,7 +172,7 @@ $clrotulo->label("j30_descr");
                    <b>Filtro Baixa:</b>
                  </td>
                  <td align="left" colspan="2">
-		              <?
+		              <?php
 		                $aFiltro = array (
 		                                  "t"  => "Todas",
 		                                  "b"  => "Baixadas",
@@ -188,7 +188,7 @@ $clrotulo->label("j30_descr");
                    <b>Formato:</b>
                  </td>
                  <td align="left" colspan="2">
-	                <?
+	                <?php
 	                  $aFormato = array (
 	                    "pdf" => "PDF",
 	                    "csv" => "CSV",
@@ -209,7 +209,7 @@ $clrotulo->label("j30_descr");
 	  <input name="emite" onclick="return js_relatorio()" type="button" id="emite" value="Gerar Relatório">
 	</div>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

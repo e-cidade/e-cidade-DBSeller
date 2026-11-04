@@ -26,7 +26,6 @@ class ResultadoExameService
         }
 
         $resultado = null;
-        $exame = $requisicaoExame->getExame();
         $resultadoExame = $requisicaoExame->getResultado();
         // pré carrega o resultado anterior, caso exista.
         $resultadoExame->getResultadoAnterior();
@@ -35,10 +34,9 @@ class ResultadoExameService
         if ($dataExameAnterior !== null) {
             $dataExameAnterior = $dataExameAnterior->convertTo('Y-m-d');
         }
-
-        foreach ($exame->getAtributos() as $atributo) {
-            $resultadoAtributo = $resultadoExame->getValorDoAtributo($atributo);
-
+        $resultadoAtributos = $resultadoExame->getResultadoCompleto();
+        foreach ($resultadoAtributos as $resultadoAtributo) {
+            $atributo = $resultadoAtributo->getAtributo();
             $atributoExame = (object)[
                 'nome' => $atributo->getNome(),
                 'nivel' => $atributo->getNivel(),
@@ -54,18 +52,16 @@ class ResultadoExameService
                 $atributoExame->dataResultadoAnterior = $dataExameAnterior;
             }
 
-            if (!empty($resultadoAtributo)) {
-                $atributoFormatado = $this->formataResultadoAtributo(
-                    $resultadoAtributo,
-                    $requisicaoExame,
-                    $atributo->getTipoReferencia()
-                );
+            $atributoFormatado = $this->formataResultadoAtributo(
+                $resultadoAtributo,
+                $requisicaoExame,
+                $atributo->getTipoReferencia()
+            );
 
-                $atributoExame->valorAbsoluto = $atributoFormatado->valorAbsoluto;
-                $atributoExame->valorPercentual = $atributoFormatado->valorPercentual;
-                $atributoExame->referencia = $atributoFormatado->referencia;
-                $atributoExame->titulacao = $atributoFormatado->titulacao;
-            }
+            $atributoExame->valorAbsoluto = $atributoFormatado->valorAbsoluto;
+            $atributoExame->valorPercentual = $atributoFormatado->valorPercentual;
+            $atributoExame->referencia = $atributoFormatado->referencia;
+            $atributoExame->titulacao = $atributoFormatado->titulacao;
 
             $resultadoAnterior = $resultadoExame->getValorDoAtributoResultadoAnterior($atributo);
 

@@ -9,10 +9,11 @@ class DecretoService2022 extends DecretoService
 {
     protected $suplementacoesRemanejamentoRecursos = [];
 
-    protected function getDados()
+    /**
+     * @return bool|resource|null
+     */
+    protected function queryPrincipal()
     {
-
-        $this->suplementacoesRemanejamentoRecursos();
         $where = [
             "o39_anousu = {$this->ano}",
             "o49_data BETWEEN '{$this->dataInicial}' AND '{$this->dataFinal}'",
@@ -29,7 +30,7 @@ class DecretoService2022 extends DecretoService
                o39_data AS data_decreto,
                o46_codsup AS codigo_suplementacao,
                o46_tiposup AS tipo_suplementacao,
-               
+
                case when (
                     select count(distinct(dt.o58_instit))
                       from orcsuplemval s
@@ -63,7 +64,8 @@ class DecretoService2022 extends DecretoService
 
                case when c53_tipo in (41, 60) then true else false end reducao,
 
-               o15_recurso
+               o15_recurso,
+               codigo_siconfi
         FROM orcprojeto
         join orclei on o45_codlei = o39_codlei
         join orcsuplem on o46_codlei = orcprojeto.o39_codproj
@@ -76,14 +78,23 @@ class DecretoService2022 extends DecretoService
         JOIN orcsuplemlan ON orcsuplemlan.o49_codsup= o46_codsup
         join conlancam on conlancam.c70_codlan = conlancamsup.c79_codlan
         JOIN orctiporec ON orctiporec.o15_codigo = orcdotacao.o58_codigo
+        join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+             and fonterecurso.exercicio = o39_anousu
         LEFT JOIN orcsuplemretif ON o48_retificado = orcprojeto.o39_codproj
         WHERE {$where}
         ORDER BY o46_codsup, o45_numlei, o45_dataini, o39_numero, o39_data
         ";
 
-
         $rs = db_query($sql);
+        return $rs;
+    }
 
+    /**
+     * @param $rs
+     * @return array
+     */
+    protected function agrupaValoresDecreto($rs)
+    {
         $suplementacoes = [];
         while ($dados = pg_fetch_assoc($rs)) {
             // cria um hash agrupador pelo código da suplementacao e do recurso
@@ -98,10 +109,10 @@ class DecretoService2022 extends DecretoService
                 $suplementacoes[$hash]['entre_entidades'] = $dados['entre_entidades'] == 't';
                 $suplementacoes[$hash]['valor_credito'] += $dados['valor_credito'];
                 $suplementacoes[$hash]['valor_reducao'] += $dados['valor_reducao'];
-
                 $suplementacoes[$hash]['valor_alteracao_orcamentaria'] += $dados['valor_alteracao_orcamentaria'];
                 $suplementacoes[$hash]['valor_saldo_reaberto'] += $dados['valor_saldo_reaberto'];
             }
+
             if ($dados['reducao'] == 't') {
                 $suplementacoes[$hash]['recurso_reducao'] = $dados['o15_recurso'];
             } else {
@@ -113,6 +124,13 @@ class DecretoService2022 extends DecretoService
                     $dados['data_reabertura_credito_adicional'];
             }
         }
+        return $suplementacoes;
+    }
+
+    protected function getDados()
+    {
+        $this->suplementacoesRemanejamentoRecursos();
+        $suplementacoes = $this->agrupaValoresDecreto($this->queryPrincipal());
 
         foreach ($this->suplementacoesRemanejamentoRecursos as $remanejamentoRecurso) {
             $suplementacoes[] = $remanejamentoRecurso;
@@ -129,7 +147,7 @@ class DecretoService2022 extends DecretoService
         return new DecretoBuilder2022();
     }
 
-    private function suplementacoesRemanejamentoRecursos()
+    protected function suplementacoesRemanejamentoRecursos()
     {
         $sql = "
         with suplementacao_1015 as (
@@ -146,25 +164,32 @@ class DecretoService2022 extends DecretoService
         ), casos_suplementacao as (
           select o46_codsup,
                  o47_valor as valor_suplementacao,
-                 o15_recurso as recurso_suplementacao
+                 o15_recurso as recurso_suplementacao,
+                 codigo_siconfi
             from orcsuplemval
             join suplementacao_1015 on suplementacao_1015.o46_codsup = orcsuplemval.o47_codsup
             join orcdotacao on (o58_anousu, o58_coddot) = (o47_anousu, o47_coddot)
             join orctiporec on o15_codigo = o58_codigo
+            join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                 and fonterecurso.exercicio = o58_anousu
            where o47_valor > 0
         ), casos_reducao as (
          select o46_codsup,
                 o47_valor *-1 as valor_reducao,
-                o15_recurso as recurso_reducao
+                o15_recurso as recurso_reducao,
+                codigo_siconfi
             from orcsuplemval
             join suplementacao_1015 on suplementacao_1015.o46_codsup = orcsuplemval.o47_codsup
             join orcdotacao on (o58_anousu, o58_coddot) = (o47_anousu, o47_coddot)
             join orctiporec on o15_codigo = o58_codigo
+            join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                 and fonterecurso.exercicio = o58_anousu
            where o47_valor < 0
         ), com_recursos_diferentes as (
           select casos_suplementacao.o46_codsup,
                  valor_suplementacao,
                  recurso_suplementacao,
+                 casos_suplementacao.codigo_siconfi,
                  valor_reducao ,
                  recurso_reducao
             from casos_suplementacao, casos_reducao
@@ -197,6 +222,7 @@ class DecretoService2022 extends DecretoService
           join orcprojeto on orcprojeto.o39_codproj = orcsuplem.o46_codlei
           join orclei on orclei.o45_codlei = orcprojeto.o39_codlei
           ";
+
         $rs = db_query($sql);
         if (pg_num_rows($rs) > 0) {
             while ($dados = pg_fetch_assoc($rs)) {

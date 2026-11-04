@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,14 +56,14 @@ include(modification("libs/db_usuariosonline.php"));
 <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
     <form name="form1" method="post">
-      <?
+      <?php
       ?>	  
     </form>
   </center>
 </td>
 </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

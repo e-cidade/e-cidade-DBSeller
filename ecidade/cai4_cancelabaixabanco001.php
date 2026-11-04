@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,7 +53,7 @@ $cldb_usuarios = new cl_db_usuarios;
 $rsUsuarios = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file(db_getsession('DB_id_usuario'),"administrador"));
 $oUsuarios  = db_utils::fieldsMemory($rsUsuarios,0);
 
-if (db_getsession("DB_id_usuario") == 1 || ( $oConfig->db21_codcli == 19985 && $oUsuarios->administrador == 1 ) ) {
+if (db_getsession("DB_id_usuario") == 1 || $oUsuarios->administrador == 1  ) {
 
 ?>
   <form name="form1" method="POST">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,16 +56,22 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
-       $clcriaabas->identifica = array("g1"=>"Dados Ação",
-								       "g2"=>"Programação Física");
-       
-       $clcriaabas->title      = array("g1"=>"Dados Ação",
-								       "g2"=>"Programação Física");       
-       								   
-       
-       $clcriaabas->src        = array("g1"=>"orc1_orcprojativ013.php",
-       								   "g2"=>"orc1_orcprojativprogramfisica001.php");
+     <?php
+       if(isNiteroi()){
+          $clcriaabas->identifica = array("g1"=>"Dados Ação");
+          $clcriaabas->title = array("g1"=>"Dados Ação");
+          $clcriaabas->src = array("g1"=>"orc1_orcprojativ013.php");
+       } else {
+        $clcriaabas->identifica = array("g1"=>"Dados Ação",
+                                        "g2"=>"Programação Física");
+
+        $clcriaabas->title      = array("g1"=>"Dados Ação",
+                                        "g2"=>"Programação Física");       
+           
+        $clcriaabas->src        = array("g1"=>"orc1_orcprojativ013.php",
+                                        "g2"=>"orc1_orcprojativprogramfisica001.php");
+       }
+
        $clcriaabas->cria_abas();    
      ?> 
      </td>
@@ -73,7 +79,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

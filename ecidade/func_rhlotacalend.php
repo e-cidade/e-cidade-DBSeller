@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhlotacalend->rotulo->label("rh64_calend");
               <?=$Lrh64_lota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh64_lota",4,$Irh64_lota,true,"text",4,"","chave_rh64_lota");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhlotacalend->rotulo->label("rh64_calend");
               <?=$Lrh64_calend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh64_calend",10,$Irh64_calend,true,"text",4,"","chave_rh64_calend");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhlotacalend->rotulo->label("rh64_calend");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotacalend.php")==true){
@@ -122,12 +122,12 @@ $clrhlotacalend->rotulo->label("rh64_calend");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

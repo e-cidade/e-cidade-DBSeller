@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,13 +59,13 @@ class cl_notas {
                  ed11_c_fechado = char(1) = Fechado
                  ";
    //funcao construtor da classe
-   function cl_notas() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_notas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed11_i_codigo = ($this->ed11_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed11_i_codigo"]:$this->ed11_i_codigo);
        if($this->ed11_d_data == ""){
@@ -93,7 +93,7 @@ class cl_notas {
      }
    }
    // funcao para inclusao
-   function incluir ($ed11_i_codigo){
+   public function incluir ($ed11_i_codigo){
       $this->atualizacampos();
      if($this->ed11_d_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
@@ -215,7 +215,7 @@ class cl_notas {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed11_i_codigo=null) {
+   public function alterar ($ed11_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update notas set ";
      $virgula = "";
@@ -353,7 +353,7 @@ class cl_notas {
      }
    }
    // funcao para exclusao
-   function excluir ($ed11_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed11_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed11_i_codigo));
      }else{
@@ -417,7 +417,7 @@ class cl_notas {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -440,7 +440,7 @@ class cl_notas {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed11_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed11_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -478,7 +478,7 @@ class cl_notas {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed11_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed11_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

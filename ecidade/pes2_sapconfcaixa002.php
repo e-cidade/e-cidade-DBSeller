@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -38,9 +38,9 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //$ano = 2005;
 //$mes = 8;
-  
+
   if($db_rec != ''){
-    $split_rec = split('-',$db_rec);
+    $split_rec =explode('-',$db_rec);
     $virg = '';
     $xreceitas = '';
     for($x = 0 ;$x < sizeof($split_rec);$x++){
@@ -49,7 +49,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
     }
   }
   if($db_ded_rec != ''){
-    $split_ded_rec = split('-',$db_ded_rec);
+    $split_ded_rec =explode('-',$db_ded_rec);
     $virg = '';
     $xded_rec = '';
     for($xx = 0 ;$xx < sizeof($split_ded_rec);$xx++){
@@ -58,7 +58,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
     }
   }
   if($db_desp_ext != ''){
-    $split_desp_ext = split('-',$db_desp_ext);
+    $split_desp_ext =explode('-',$db_desp_ext);
     $virg = '';
     $xdesp_ext = '';
     for($xxx = 0 ;$xxx < sizeof($split_desp_ext);$xxx++){
@@ -69,7 +69,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 $x_semest  = '';
 $x_semest1 = '';
 if($folha == 'r14'){
-  $arquivo = 'gerfsal'; 
+  $arquivo = 'gerfsal';
 }elseif($folha == 'r35'){
   $arquivo = 'gerfs13';
 }elseif($folha == 'r48'){
@@ -79,7 +79,7 @@ if($folha == 'r14'){
     $x_semest1 = " and rh40_sequencia = $semest ";
   }
 }else{
-  $arquivo = 'gerfadi'; 
+  $arquivo = 'gerfadi';
 }
 
 $head3 = "RELATÓRIO DE CONFERÊNCIA MAPA";
@@ -106,32 +106,32 @@ $head5 = "PERÍODO : ".$mes." / ".$ano;
    ded_receitas,
    (empenho+des_ext)-(receita-ded_receitas) as total,
    banco
-  from 
+  from
   (
   select recurso,
-   round(sum(empenho),2) as empenho, 
-   round(sum(des_ext),2) as des_ext, 
-   round(sum(receita),2) as receita, 
-   round(sum(ded_receitas),2) as ded_receitas, 
+   round(sum(empenho),2) as empenho,
+   round(sum(des_ext),2) as des_ext,
+   round(sum(receita),2) as receita,
+   round(sum(ded_receitas),2) as ded_receitas,
    round(sum(banco),2) as banco
-  from 
+  from
   (
-  select rh40_recurso as recurso, 
+  select rh40_recurso as recurso,
    provento - desconto as empenho,
    0 as des_ext,
-   0 as receita, 
+   0 as receita,
    0 as ded_receitas,
    0 as banco
   from
   (
   select sum(rh40_provento) as provento,
-   rh40_recurso, 
+   rh40_recurso,
    sum(rh40_desconto) as desconto
-  from rhempfolha 
-  where rh40_mesusu = $mes 
+  from rhempfolha
+  where rh40_mesusu = $mes
     and rh40_anousu = $ano
     and rh40_siglaarq = '$folha'
-    and rh40_instit = ".db_getsession('DB_instit')." 
+    and rh40_instit = ".db_getsession('DB_instit')."
     $x_semest1
   group by rh40_recurso
   )as x
@@ -144,16 +144,16 @@ $head5 = "PERÍODO : ".$mes." / ".$ano;
    0,
    0,
    0
-  from 
+  from
   (
-  select ".$folha."_rubric, 
+  select ".$folha."_rubric,
    ".$folha."_valor as valor,
    rh25_recurso as recurso
   from ".$arquivo."
        inner join rhlota   on r70_codigo = to_number(".$folha."_lotac,'9999')
-                          and r70_instit = ".$folha."_instit  
+                          and r70_instit = ".$folha."_instit
        inner join (select distinct rh25_codigo,rh25_recurso from rhlotavinc where rh25_anousu = $ano ) as rhlotavinc on rh25_codigo = r70_codigo
-  where ".$folha."_anousu = $ano 
+  where ".$folha."_anousu = $ano
     and ".$folha."_mesusu = $mes
     and ".$folha."_instit = ".db_getsession("DB_instit")."
     $x_semest
@@ -165,20 +165,20 @@ $head5 = "PERÍODO : ".$mes." / ".$ano;
 
   select recurso,
    0,
-   0, 
+   0,
    round(sum(valor),2),
    0,
    0
-  from 
+  from
   (
-  select ".$folha."_rubric, 
+  select ".$folha."_rubric,
    ".$folha."_valor as valor,
    rh25_recurso as recurso
-  from ".$arquivo." 
+  from ".$arquivo."
        inner join rhlota   on r70_codigo = to_number(".$folha."_lotac,'9999')
-                          and r70_instit = ".$folha."_instit  
+                          and r70_instit = ".$folha."_instit
        inner join (select distinct rh25_codigo,rh25_recurso from rhlotavinc where rh25_anousu = $ano  ) as rhlotavinc on rh25_codigo = r70_codigo
-  where ".$folha."_anousu = $ano 
+  where ".$folha."_anousu = $ano
     and ".$folha."_mesusu = $mes
     and ".$folha."_instit = ".db_getsession("DB_instit")."
     $x_semest
@@ -194,16 +194,16 @@ $head5 = "PERÍODO : ".$mes." / ".$ano;
    0,
    round(sum(valor),2),
    0
-  from 
+  from
   (
-  select ".$folha."_rubric as r14_rubric, 
+  select ".$folha."_rubric as r14_rubric,
    ".$folha."_valor as valor,
    rh25_recurso as recurso
   from $arquivo
        inner join rhlota   on r70_codigo = to_number(".$folha."_lotac,'9999')
-                          and r70_instit = ".$folha."_instit  
+                          and r70_instit = ".$folha."_instit
        inner join (select distinct rh25_codigo,rh25_recurso from rhlotavinc where rh25_anousu = $ano ) as rhlotavinc on rh25_codigo = r70_codigo
-  where ".$folha."_anousu = $ano 
+  where ".$folha."_anousu = $ano
     and ".$folha."_mesusu = $mes
     and ".$folha."_instit = ".db_getsession("DB_instit")."
     $x_semest
@@ -218,16 +218,16 @@ union
          0,
          0,
          0,
-         round(sum( case 
-                     when ".$folha."_pd = 1 then ".$folha."_valor 
-                     else ".$folha."_valor * (-1) 
-                    end 
-                  ),2) as r38_liq  
+         round(sum( case
+                     when ".$folha."_pd = 1 then ".$folha."_valor
+                     else ".$folha."_valor * (-1)
+                    end
+                  ),2) as r38_liq
   from $arquivo
        inner join rhlota   on r70_codigo = to_number(".$folha."_lotac,'9999')
-                          and r70_instit = ".$folha."_instit  
+                          and r70_instit = ".$folha."_instit
        inner join (select distinct rh25_codigo,rh25_recurso from rhlotavinc where rh25_anousu = $ano ) as rhlotavinc on rh25_codigo = r70_codigo
-  where ".$folha."_anousu = $ano 
+  where ".$folha."_anousu = $ano
     and ".$folha."_mesusu = $mes
     and ".$folha."_instit = ".db_getsession("DB_instit")."
     $x_semest
@@ -252,9 +252,9 @@ if ($xxnum == 0){
 
 }
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -308,7 +308,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->cell(20,$alt,db_formatar($total,'f'),0,0,"R",$pre);
    $pdf->cell(20,$alt,db_formatar($banco,'f'),0,0,"R",$pre);
    $pdf->cell(20,$alt,db_formatar($diferenca,'f'),0,1,"R",$pre);
-  
+
    $tempenho      += $empenho     ;
    $tdes_ext      += $des_ext     ;
    $treceita      += $receita     ;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_empprestaitemempagemov {
                  e26_codmov = int4 = Código do Movimento
                  ";
    //funcao construtor da classe
-   function cl_empprestaitemempagemov() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empprestaitemempagemov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_empprestaitemempagemov {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e26_sequencial = ($this->e26_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e26_sequencial"]:$this->e26_sequencial);
        $this->e26_empprestaitem = ($this->e26_empprestaitem == ""?@$GLOBALS["HTTP_POST_VARS"]["e26_empprestaitem"]:$this->e26_empprestaitem);
@@ -77,7 +77,7 @@ class cl_empprestaitemempagemov {
      }
    }
    // funcao para inclusao
-   function incluir ($e26_sequencial){
+   public function incluir ($e26_sequencial){
       $this->atualizacampos();
      if($this->e26_empprestaitem == null ){
        $this->erro_sql = " Campo emprestaitem não informado.";
@@ -182,7 +182,7 @@ class cl_empprestaitemempagemov {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e26_sequencial=null) {
+   public function alterar ($e26_sequencial=null) {
       $this->atualizacampos();
      $sql = " update empprestaitemempagemov set ";
      $virgula = "";
@@ -284,7 +284,7 @@ class cl_empprestaitemempagemov {
      }
    }
    // funcao para exclusao
-   function excluir ($e26_sequencial=null,$dbwhere=null) {
+   public function excluir ($e26_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -356,7 +356,7 @@ class cl_empprestaitemempagemov {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -379,7 +379,7 @@ class cl_empprestaitemempagemov {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $e26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -418,7 +418,7 @@ class cl_empprestaitemempagemov {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $e26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

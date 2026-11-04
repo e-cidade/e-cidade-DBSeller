@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,9 +55,9 @@ if(isset($incluir)){
   }
 
   if(!$sqlerro && $valores!=''){
-    $matriz01=split('HHH',$valores);
+    $matriz01= explode('HHH',$valores);
     for($i=0; $i<count($matriz01); $i++){
-      $matriz=split('-',$matriz01[$i]);
+      $matriz= explode('-',$matriz01[$i]);
       $result55 = $cllevvalorpgtos->sql_record($cllevvalorpgtos->sql_query_file($y63_sequencia,""," max(y68_seq) +1 as seq"));
       db_fieldsmemory($result55,0);
       $y68_seq = $seq == ""?"1":$seq;
@@ -76,10 +76,10 @@ if(isset($incluir)){
   //rotina para incluir na tabela levantanotas
   if(!$sqlerro && $notas!=''){
 
-    $matriz01=split('HHH',$notas);
+    $matriz01= explode('HHH',$notas);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('_sep_',$matriz01[$i]);
+      $matriz= explode('_sep_',$matriz01[$i]);
       $data1 = explode("/",$matriz[2]);
 			$data  = $data1[2].str_pad($data1[1],2,"0",STR_PAD_LEFT).str_pad($data1[0],2,"0",STR_PAD_LEFT);
       $cllevantanotas->y79_documento = $matriz[0];
@@ -125,10 +125,10 @@ if(isset($incluir)){
   //rotina para incluir na tabela levvalorpgtos
   if(!$sqlerro && $valores!=''){
 
-    $matriz01=split('HHH',$valores);
+    $matriz01= explode('HHH',$valores);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('-',$matriz01[$i]);
+      $matriz= explode('-',$matriz01[$i]);
       $result55 = $cllevvalorpgtos->sql_record($cllevvalorpgtos->sql_query_file($y63_sequencia,""," max(y68_seq) +1 as seq"));
       db_fieldsmemory($result55,0);
       $y68_seq = $seq == ""?"1":$seq;
@@ -160,10 +160,10 @@ if(isset($incluir)){
   //rotina para incluir na tabela levantanotas
   if($sqlerro==false && $notas!=''){
 
-    $matriz01=split('HHH',$notas);
+    $matriz01= explode('HHH',$notas);
     for($i=0; $i<count($matriz01); $i++){
 
-      $matriz=split('_sep_',$matriz01[$i]);
+      $matriz= explode('_sep_',$matriz01[$i]);
       $data1 = explode("/",$matriz[2]);
 			$data  = $data1[2].str_pad($data1[1],2,"0",STR_PAD_LEFT).str_pad($data1[0],2,"0",STR_PAD_LEFT);
       $cllevantanotas->y79_documento = $matriz[0];
@@ -328,7 +328,7 @@ if((isset($novo) && $novo=="ok")|| (isset($sqlerro) && $sqlerro==false)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmlevvalor.php"));
 	?>
     </center>

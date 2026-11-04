@@ -39,7 +39,6 @@ require_once(modification("fpdf151/pdf.php"));
  */
 abstract class CalculoFolha
 {
-
     const CALCULO_SALARIO = "gerfsal";
     const CALCULO_ADIANTAMENTO = "gerfadi";
     const CALCULO_FERIAS = "gerffer";
@@ -82,12 +81,28 @@ abstract class CalculoFolha
     private $oServidor;
 
     /**
+     * Valor Líquido da folha complementar
+     *
+     * @var float
+     * @access private
+     */
+    private $valorLiquidoComplementar;
+
+    /**
      * Array com matrículas a exlcuir do histórico do ponto
      *
      * @var Array
      * @access public
      */
     public static $aMatriculasExcluirHistoricoPonto;
+
+    /**
+     * Array para guardar os eventos
+     *
+     * @var Array
+     * @access public
+     */
+    public static $aRegistros;
 
     /**
      * Construtor da Classe
@@ -156,7 +171,8 @@ abstract class CalculoFolha
     public function getMovimentacoes($iSemestre = null, $sRubrica = null)
     {
 
-        $oDaoGeracaoFolha = db_utils::getDao($this->sTabela);
+        $sClasseTabela = "cl_{$this->sTabela}";
+        $oDaoGeracaoFolha = new $sClasseTabela;
         $sWhere = "    {$this->sSigla}_regist = {$this->oServidor->getMatricula()}                    ";
         $sWhere .= "and {$this->sSigla}_anousu = {$this->oServidor->getAnoCompetencia()}               ";
         $sWhere .= "and {$this->sSigla}_mesusu = {$this->oServidor->getMesCompetencia()}               ";
@@ -219,6 +235,7 @@ abstract class CalculoFolha
             $aMovimentacoes[] = $oRetorno;
         }
 
+        unset($oDaoGeracaoFolha);
         return $aMovimentacoes;
     }
 
@@ -264,7 +281,8 @@ abstract class CalculoFolha
     protected function __getEventosFinanceiros($iSemestre = null, $mRubrica = null)
     {
 
-        $oDaoGeracaoFolha = db_utils::getDao($this->sTabela);
+        $sClasseTabela = "cl_{$this->sTabela}";
+        $oDaoGeracaoFolha = new $sClasseTabela;
         $sWhere = "     {$this->sSigla}_regist = {$this->oServidor->getMatricula()}                    ";
         $sWhere .= " and {$this->sSigla}_anousu = {$this->oServidor->getAnoCompetencia()}               ";
         $sWhere .= " and {$this->sSigla}_mesusu = {$this->oServidor->getMesCompetencia()}               ";
@@ -346,8 +364,10 @@ abstract class CalculoFolha
             $oEvento->setCalculo($this);
 
             $aMovimentacoes[] = $oEvento;
+            unset($oMovimentacao);
         }
 
+        unset($oDaoGeracaoFolha);
         return $aMovimentacoes;
     }
 
@@ -361,7 +381,6 @@ abstract class CalculoFolha
      */
     public function getEventosFinanceirosHistorico($iTipoFolha, $iSemestre = null)
     {
-
         $oDaoHistorico = new cl_rhhistoricocalculo;
 
         $aCampo[] = 'rh143_rubrica    AS rubrica';
@@ -395,7 +414,7 @@ abstract class CalculoFolha
 
         $aEvento = array();
         $aHistorico = db_utils::getCollectionbyRecord($rsHistorico);
-
+        $valorLiquidoComplementar = 0;
         foreach ($aHistorico as $oHistorico) {
 
             $oEvento = new EventoFinanceiroFolha();
@@ -407,8 +426,19 @@ abstract class CalculoFolha
             $oEvento->setValor($oHistorico->valor);
             $oEvento->setNatureza($oHistorico->tipo);
 
+            if ((int) $oHistorico->tipo == EventoFinanceiroFolha::PROVENTO) {
+                $valorLiquidoComplementar += $oHistorico->valor;
+            }
+
+            if ((int) $oHistorico->tipo == EventoFinanceiroFolha::DESCONTO) {
+                $valorLiquidoComplementar -= $oHistorico->valor;
+            }
+
             $aEvento[] = $oEvento;
+            unset($oRubrica);
         }
+        unset($oDaoHistorico);
+        $this->setValorLiquidoComplementar($valorLiquidoComplementar);
 
         return $aEvento;
     }
@@ -421,9 +451,7 @@ abstract class CalculoFolha
      */
     public function getRubricas()
     {
-
-
-        $oDaoRhrubricas = db_utils::getDao('rhrubricas');
+        $oDaoRhrubricas = new cl_rhrubricas;
         $sSql = $oDaoRhrubricas->sql_queryRubricas($this->oServidor->getMatricula(),
             $this->sTabela,
             $this->sSigla,
@@ -445,6 +473,7 @@ abstract class CalculoFolha
             $aRubricas[] = RubricaRepository::getInstanciaByCodigo($oRubrica->codigo_rubrica);
         }
 
+        unset($oDaoRhrubricas);
         return $aRubricas;
     }
 
@@ -461,7 +490,8 @@ abstract class CalculoFolha
         $iMesCompetencia = $this->getServidor()->getMesCompetencia();
         $iMatricula = $this->getServidor()->getMatricula();
 
-        $oDaoCalculo = db_utils::getDao($this->sTabela);
+        $sClasseTabela = "cl_{$this->sTabela}";
+        $oDaoCalculo = new $sClasseTabela;
         $sWhere = "    {$this->sSigla}_instit = " . db_getsession('DB_instit');
         $sWhere .= "and {$this->sSigla}_regist = $iMatricula ";
         $sWhere .= "and {$this->sSigla}_anousu = $iAnoCompetencia ";
@@ -520,7 +550,8 @@ abstract class CalculoFolha
     public function salvar()
     {
 
-        $oDaoFolha = db_utils::getDao($this->sTabela);
+        $sClasseTabela = "cl_{$this->sTabela}";
+        $oDaoFolha = new $sClasseTabela;
 
         foreach ($this->aRegistros as $oRegistro) {
 
@@ -559,6 +590,7 @@ abstract class CalculoFolha
 
         }
 
+        unset($sClasseTabela);
         return true;
     }
 
@@ -1055,7 +1087,8 @@ abstract class CalculoFolha
     public static function hasCalculo(FolhaPagamento $oFolhaPagamento)
     {
 
-        $oDaoFolha = db_utils::getDao($oFolhaPagamento->getTabelaCalculo());
+        $sClasseTabela = "cl_".$oFolhaPagamento->getTabelaCalculo();
+        $oDaoFolha = new $sClasseTabela;
         $sWhere = "    {$oFolhaPagamento->getSiglaCalculo()}_anousu = {$oFolhaPagamento->getCompetencia()->getAno()}        ";
         $sWhere .= "and {$oFolhaPagamento->getSiglaCalculo()}_mesusu = {$oFolhaPagamento->getCompetencia()->getMes()}        ";
         $sWhere .= "and {$oFolhaPagamento->getSiglaCalculo()}_instit = {$oFolhaPagamento->getInstituicao()->getSequencial()} ";
@@ -1222,7 +1255,7 @@ abstract class CalculoFolha
      *
      * @return Number
      */
-    public function calcularParcelaIsentaAposentadoPensionista($nValorTeto, $nValorMaximoAtual, $nValorAtual, $nValorVinculado = null)
+    public function calcularParcelaIsentaAposentadoPensionista($nValorTeto, $nValorMaximoAtual, $nValorAtual, $nValorVinculado = 0)
     {
 
         LogCalculoFolha::write('');
@@ -1247,7 +1280,7 @@ abstract class CalculoFolha
         /**
          * Verifica se foi passado valor de isenção para servidor vinculado
          */
-        if (!empty($nValorVinculado)) {
+        if ($nValorVinculado > 0) {
 
             /**
              * Verifica se o valor passado referente ao servidor vinculado
@@ -1625,7 +1658,6 @@ abstract class CalculoFolha
                     throw new Exception($mensagem);
                 }
 
-
                 // Atualiza quantidade e valor da rubrica
                 $sqlAtualiza = "UPDATE {$tabela} SET {$sigla}_valor = {$valorAtualizado}, {$sigla}_quant = {$quantidadeAtualizada} WHERE {$whereIn}";
                 $rsAtualiza = db_query($sqlAtualiza);
@@ -1927,7 +1959,12 @@ abstract class CalculoFolha
 
         $faixasProcessadas = self::ordenaValoresFaixaInss($faixas);
         $valorTotal = 0;
+        $prevMunicipal = false;
         foreach ($faixasProcessadas as $faixa) {
+            if ($faixa->nome == "PREVIDENCIA MUN") {
+                $prevMunicipal = true;
+            }
+
             if (($baseInss >= $faixa->valorInicial) && ($baseInss <= $faixa->valorFinal)) {
                 $valorTotal += (($baseInss - $faixa->valorInicial) / 100) * $faixa->porcentagem;
                 break;
@@ -1936,17 +1973,19 @@ abstract class CalculoFolha
 
         }
 
-        $result = floor($valorTotal * 100) / 100;
-
+        if ($prevMunicipal && isValenca()) {
+            $result = self::arredondaValenca($valorTotal);
+        } else {
+            $result = floor($valorTotal * 100) / 100;
+        }
         return $result;
     }
-
-
 
     public static function ordenaValoresFaixaInss(array $faixas) {
         $retorno = array();
         foreach ($faixas as $faixa) {
             $dados = new stdClass();
+            $dados->nome = $faixa['r33_nome'];
             $dados->valorInicial = $faixa['r33_inic'];
             $dados->valorFinal = $faixa['r33_fim'];
             $dados->porcentagem = $faixa['r33_perc'];
@@ -1957,10 +1996,184 @@ abstract class CalculoFolha
         }
         sort($retorno);
         $valorInicio = 0;
-        foreach ($retorno as &$dado) {
+        foreach ($retorno as $dado) {
             $dado->valorDefault = floor((($dado->valorFinal - $valorInicio) / 100) * $dado->porcentagem * 100) / 100;
             $valorInicio = $dado->valorFinal;
         }
         return $retorno;
+    }
+
+    /**
+     * Get valor Líquido da folha complementar
+     *
+     * @return  float
+     */
+    public function getValorLiquidoComplementar()
+    {
+        return $this->valorLiquidoComplementar;
+    }
+
+    /**
+     * Set valor Líquido da folha complementar
+     *
+     * @param  float  $valorLiquidoComplementar  Valor Líquido da folha complementar
+     *
+     */
+    public function setValorLiquidoComplementar($valorLiquidoComplementar)
+    {
+        $this->valorLiquidoComplementar = $valorLiquidoComplementar;
+    }   
+
+    /* 
+    - Aqui é realizado o agrupamento das Rubricas de Cálculo do Adiantamento do 13º Salário em uma Rubrica única somando todos os valores de proventos.
+    - Primeiro verificar se o cálculo é de 13º salario ou se é de adiantamento verficando a sua competência, se ela for menor que 12 é cálculo de adiantamento.
+    - Depois verifica se está configurado a rubrica de agrupamento na rotina de Rubricas Especiais.
+    - No script trás todos os funcionários, agrupa os valores de proventos, deleta e insere novamente na rubrica configurada.
+    */
+
+    public static function calcularRubricasAgrupadas($anousu, $mesusu, $cfpess, $DB_instit, $where_regist_fim)
+    {
+        $sqlCalculoDecimo = " SELECT r35_regist AS matricula,
+                   r35_rubric AS rubrica,
+                   r35_valor  AS valor,
+                   r35_quant  AS quantidade,
+                   r35_lotac  AS lotacao
+              FROM gerfs13
+              INNER JOIN rhpessoalmov ON rh02_regist = r35_regist
+                AND rh02_anousu = r35_anousu
+                AND rh02_mesusu = r35_mesusu
+                AND r35_instit = $DB_instit
+              WHERE r35_anousu = $anousu
+                AND r35_mesusu = $mesusu
+                AND r35_pd = 1
+              $where_regist_fim ";
+
+        $sqlResultCalculo = db_query($sqlCalculoDecimo);
+        $rubricasSeparadas = pg_fetch_all($sqlResultCalculo);
+
+        foreach ($rubricasSeparadas as $deleteRubricasSeparadas) {
+
+            $deleteRubricas = "delete from gerfsad13 where r95_anousu = $anousu and r95_mesusu = $mesusu
+            and r95_regist = {$deleteRubricasSeparadas['matricula']}
+            and r95_rubric = '{$deleteRubricasSeparadas['rubrica']}'
+            and r95_instit = $DB_instit and r95_pd = 1";
+
+            $result = db_query($deleteRubricas);
+
+            if ($result == false) {
+                throw new Exception("Não foi possível efetuar a inclusão do cálculo das Rubricas Agrupadas 1");
+            }
+        }
+
+        foreach ($rubricasSeparadas as $linhasRubricasSeparadas) {
+
+            $linhasRubricasSeparadas = "insert into gerfsad13 values ($anousu,$mesusu,{$linhasRubricasSeparadas['matricula']},
+            '{$linhasRubricasSeparadas['rubrica']}',{$linhasRubricasSeparadas['valor']},'1',{$linhasRubricasSeparadas['quantidade']},
+            '{$linhasRubricasSeparadas['lotacao']}',0,'0',$DB_instit)";
+
+            $result = db_query($linhasRubricasSeparadas);
+
+            if ($result == false) {
+                die("Não foi possível efetuar a inclusão do cálculo1".pg_last_error());
+            }
+        }
+
+        $rubricaAgrupamento = $cfpess[0]["r11_rubagrupaadiantamento"];
+
+        $sqlDecimoSomadas = " SELECT sum(r35_valor) AS valor,
+                                     r35_regist     AS matricula,
+                                     r35_lotac      AS lotacao
+                              FROM gerfs13
+                              INNER JOIN rhpessoalmov ON rh02_regist = r35_regist
+                                AND rh02_anousu = r35_anousu
+                                AND rh02_mesusu = r35_mesusu
+                                AND r35_instit = $DB_instit
+                              WHERE r35_anousu = $anousu
+                                AND r35_mesusu = $mesusu
+                                AND r35_pd = 1
+                              $where_regist_fim
+                              GROUP BY r35_regist,
+                                       r35_lotac";
+
+        $sqlResultSomadas = db_query($sqlDecimoSomadas);
+        $rubricasAgrupadas = pg_fetch_all($sqlResultSomadas);
+
+        foreach ($rubricasAgrupadas as $linhasRubricasAgrupadas) {
+
+            $deleteRubricas = "delete from gerfs13 where r35_anousu = $anousu and r35_mesusu = $mesusu
+                    and r35_regist = {$linhasRubricasAgrupadas['matricula']}
+                    and r35_instit = $DB_instit and r35_pd = 1";
+
+            $result = db_query($deleteRubricas);
+
+            if ($result == false) {
+                throw new Exception("Não foi possível efetuar a exclusão do cálculo das Rubricas Agrupadas 2");
+            }
+
+            $insereRubricaAgrupada = "insert into gerfs13 values ($anousu,$mesusu,{$linhasRubricasAgrupadas['matricula']},'$rubricaAgrupamento',
+                {$linhasRubricasAgrupadas['valor']},'1','1','{$linhasRubricasAgrupadas['lotacao']}','0',$DB_instit)";
+
+            $result = db_query($insereRubricaAgrupada);
+
+            if ($result == false) {
+                throw new Exception("Não foi possível efetuar a inclusão do cálculo das Rubricas Agrupadas 2");
+            }
+        }
+    }
+
+    public static function atualizarRubricasAdiantamento($anousu, $mesusu, $DB_instit, $where_regist_fim)
+    {
+        $sqlRubricaAdiantamento =
+            " WITH rubrica_adiantamento AS (
+            SELECT
+                rh27_rubric as rubrica_mae,
+                rh262_rubrica_adiantamento AS rubrica_filha
+            FROM
+                rhrubricas
+                JOIN gerfs13 ON r35_rubric = rh27_rubric
+                AND r35_anousu = $anousu
+                AND r35_mesusu = $mesusu
+                AND r35_instit = $DB_instit
+                JOIN rhrubricasadiantamento ON rh262_rubrica_principal = rh27_rubric
+                and rh262_instituicao = rh27_instit
+                JOIN rhpessoalmov ON rh02_anousu = r35_anousu
+                AND rh02_mesusu = r35_mesusu
+                AND rh02_instit = $DB_instit
+                and rh02_regist  = r35_regist
+                $where_regist_fim
+                and rh27_instit = $DB_instit
+          )
+          UPDATE
+            gerfs13
+          SET
+            r35_rubric = rubrica_filha
+          FROM
+            rubrica_adiantamento
+          WHERE
+            r35_rubric = rubrica_mae
+            AND r35_anousu = $anousu
+            AND r35_mesusu = $mesusu
+            AND r35_instit = $DB_instit";
+
+        $sqlResult = db_query($sqlRubricaAdiantamento);
+
+        if ($sqlResult == false) {
+            echo ("Não foi possível efetuar o cálculo");
+        }
+    }
+
+    public static function arredondaValenca($valor)
+    {
+        $valor = abs(round($valor, 6));
+        $novoValor = (string) $valor;
+        $novoValor = explode(".", $novoValor);
+        if (sizeof($novoValor) > 1) {
+            if (strlen($novoValor[1]) > 2) {
+                $novoValor[1] = substr($novoValor[1], 0, 2);
+                $valor = (float)($novoValor[0] . "." . $novoValor[1]);
+                $valor += 0.01;
+            }
+        }
+        return $valor;
     }
 }

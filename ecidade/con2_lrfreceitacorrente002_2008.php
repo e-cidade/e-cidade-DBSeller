@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 if (!isset($arqinclude)) {
@@ -54,7 +54,7 @@ include(modification("classes/db_db_config_classe.php"));
 $cldb_config = new cl_db_config;
 
 // -------------------------------------
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,munic,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -101,13 +101,13 @@ if ($dtini!=''&&$dtfin!='') {
   $dt_ini = $dtini;
   $dt_fin = $dtfin;
 
-  $dt     = split("-",$dt_ini);
+  $dt     =explode("-",$dt_ini);
   $mes    = $dt[1];
 
   // 1 Bimestre
   if ($mes >= 1 && $mes <= 2){
-    $bimestre = 1;      
-  }elseif ($mes >= 3  && $mes <= 4 ){  // 2 Bimestre 
+    $bimestre = 1;
+  }elseif ($mes >= 3  && $mes <= 4 ){  // 2 Bimestre
     $bimestre = 2;
   }elseif ($mes >= 5  && $mes <= 6 ){  // 3 Bimestre
     $bimestre = 3;
@@ -116,22 +116,22 @@ if ($dtini!=''&&$dtfin!='') {
   }elseif ($mes >= 9  && $mes <= 10){  // 5 Bimestre
     $bimestre = 5;
   }elseif ($mes >= 11 && $mes <= 12){  // 6 Bimestre
-    $bimestre = 6;      
+    $bimestre = 6;
   }
 
-  $dt = split('-',$dt_fin);
+  $dt =explode('-',$dt_fin);
   $dt_ini_ant = $anousu_ant.'-'.$dt[1].'-'.$dt[2];
-  $dt = split('-',$dt_fin);
+  $dt =explode('-',$dt_fin);
   $dt_fin_ant = $anousu_ant.'-'.$dt[1].'-'.$dt[2];
 
-}  
+}
 
 // calculo do mes inicial que sera considerado no exercicio anterior
 $bimestre_anterior = ($bimestre*2)+1;
 
-if ($bimestre_anterior==13){  
+if ($bimestre_anterior==13){
   // aqui é pq esta emitindo o relatorio do sexto bimestre então é só o exercicio atual a ser mostrado
-  // echo "<Br> bim, ante = 13";exit;  
+  // echo "<Br> bim, ante = 13";exit;
 }
 
 if ($tipo_emissao=="datas"){
@@ -152,43 +152,43 @@ if (!isset($arqinclude)){
 
 
   if ($tipo_emissao!='datas'){
-    $dtd1   = split('-',$dt_ini);
-    $dtd2   = split('-',$dt_fin);
+    $dtd1   =explode('-',$dt_ini);
+    $dtd2   =explode('-',$dt_fin);
     $dt1    = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
     $dt2    = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
     $txt    = strtoupper(db_mes('01'));
-    $dt     = split("-",$dt_fin);
+    $dt     =explode("-",$dt_fin);
     $txt   .= " A ".strtoupper(db_mes($dt[1]));
     $txt   .= "  / ".$anousu;
 
   }else {
-    $dtd1  = split('-',$dt_ini);
-    $dtd2  = split('-',$dt_fin);
+    $dtd1  =explode('-',$dt_ini);
+    $dtd2  =explode('-',$dt_fin);
     $dt1   = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
     $dt2   = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
     $head5 = "EMISSÃO POR DATAS";
-    $head6 = 'Periodo:  '.$dt1.' à '.$dt2;  
+    $head6 = 'Periodo:  '.$dt1.' à '.$dt2;
   }
   switch($bimestre){
 
     case 1:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('01'))." - ".strtoupper(db_mes('02')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('01'))." - ".strtoupper(db_mes('02'));
+      break;
     case 2:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('03'))." - ".strtoupper(db_mes('04')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('03'))." - ".strtoupper(db_mes('04'));
+      break;
     case 3:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('05'))." - ".strtoupper(db_mes('06')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('05'))." - ".strtoupper(db_mes('06'));
+      break;
     case 4:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('07'))." - ".strtoupper(db_mes('08')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('07'))." - ".strtoupper(db_mes('08'));
+      break;
     case 5:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('09'))." - ".strtoupper(db_mes('10')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('09'))." - ".strtoupper(db_mes('10'));
+      break;
     case 6:
-      $txt   .= " - BIMESTRE ".strtoupper(db_mes('11'))." - ".strtoupper(db_mes('12')); 
-      break;  
+      $txt   .= " - BIMESTRE ".strtoupper(db_mes('11'))." - ".strtoupper(db_mes('12'));
+      break;
   }
 
   $head6 = "$txt";
@@ -251,15 +251,15 @@ $lista = '(';
 $tt = sizeof($m_todos);
 for ($x=0; $x <sizeof($m_todos);$x++){
   $lista .= $virgula."'".$m_todos[$x]."'";
-  if ($x == $tt-1)  	
+  if ($x == $tt-1)
     $virgula ='';
-  else $virgula =',';   	  
+  else $virgula =',';
 }
 
 $lista = $lista.')';
 
 // monta receita do bimestre do exercicio anterior, quando for o caso
-$dt1 = ($anousu - 1).'-01-01'; 
+$dt1 = ($anousu - 1).'-01-01';
 $dt2 = ($anousu - 1).'-12-31';
 
 $todasinstit="";
@@ -286,7 +286,7 @@ for ($p=1;$p<=21;$p++) {
   for ($i=0;$i<$clreceita_saldo_mes->numrows;$i++){
     db_fieldsmemory($clreceita_saldo_mes->result,$i);
     $estrutural = $o57_fonte;
-    if (in_array($estrutural,$param[$p])){       
+    if (in_array($estrutural,$param[$p])){
 
       if ($p == 21 ) {
 
@@ -303,7 +303,7 @@ for ($p=1;$p<=21;$p++) {
         $novembro  *= -1;
         $dezembro  *= -1;
 
-      } 
+      }
       if (!isset($rec[$p][1]))  $rec[$p][1]= $janeiro;    else $rec[$p][1] += $janeiro;
       if (!isset($rec[$p][2]))  $rec[$p][2]= $fevereiro;  else $rec[$p][2] += $fevereiro;
       if (!isset($rec[$p][3]))  $rec[$p][3]= $marco;      else $rec[$p][3] += $marco;
@@ -332,22 +332,22 @@ for ($p=1;$p<=21;$p++) {
         if (!isset($Trec[0][9]))  $Trec[0][9]= $setembro;   else $Trec[0][9] += $setembro;
         if (!isset($Trec[0][10])) $Trec[0][10]= $outubro;   else $Trec[0][10]+= $outubro;
         if (!isset($Trec[0][11])) $Trec[0][11]= $novembro;  else $Trec[0][11]+= $novembro;
-        if (!isset($Trec[0][12])) $Trec[0][12]= $dezembro;  else $Trec[0][12]+= $dezembro;	  
+        if (!isset($Trec[0][12])) $Trec[0][12]= $dezembro;  else $Trec[0][12]+= $dezembro;
       } else {
         // Trec da linha 1 contem o total da dedução da receita corrente
-        if (db_conplano_grupo($anousu - 1, substr($estrutural, 0, 3)."%", 9001) == true){  // 497 e 917 
-          if (!isset($Trec[1][1]))  $Trec[1][1]  = ($janeiro);    else {$Trec[1][1]  += ($janeiro); }  
-          if (!isset($Trec[1][2]))  $Trec[1][2]  = ($fevereiro);  else {$Trec[1][2]  += ($fevereiro); }  
+        if (db_conplano_grupo($anousu - 1, substr($estrutural, 0, 3)."%", 9001) == true){  // 497 e 917
+          if (!isset($Trec[1][1]))  $Trec[1][1]  = ($janeiro);    else {$Trec[1][1]  += ($janeiro); }
+          if (!isset($Trec[1][2]))  $Trec[1][2]  = ($fevereiro);  else {$Trec[1][2]  += ($fevereiro); }
           if (!isset($Trec[1][3]))  $Trec[1][3]  = ($marco);      else {$Trec[1][3]  += ($marco);  }
-          if (!isset($Trec[1][4]))  $Trec[1][4]  = ($abril);      else {$Trec[1][4]  += ($abril); } 
-          if (!isset($Trec[1][5]))  $Trec[1][5]  = ($maio);       else {$Trec[1][5]  += ($maio);  } 
-          if (!isset($Trec[1][6]))  $Trec[1][6]  = ($junho);      else { $Trec[1][6]  += ($junho); } 
-          if (!isset($Trec[1][7]))  $Trec[1][7]  = ($julho);      else {$Trec[1][7]  += ($julho);  } 
-          if (!isset($Trec[1][8]))  $Trec[1][8]  = ($agosto);     else {$Trec[1][8]  += ($agosto);    } 
-          if (!isset($Trec[1][9]))  $Trec[1][9]  = ($setembro);   else {$Trec[1][9]  += ($setembro);  } 
-          if (!isset($Trec[1][10])) $Trec[1][10] = ($outubro);    else {$Trec[1][10] += ($outubro);   } 
+          if (!isset($Trec[1][4]))  $Trec[1][4]  = ($abril);      else {$Trec[1][4]  += ($abril); }
+          if (!isset($Trec[1][5]))  $Trec[1][5]  = ($maio);       else {$Trec[1][5]  += ($maio);  }
+          if (!isset($Trec[1][6]))  $Trec[1][6]  = ($junho);      else { $Trec[1][6]  += ($junho); }
+          if (!isset($Trec[1][7]))  $Trec[1][7]  = ($julho);      else {$Trec[1][7]  += ($julho);  }
+          if (!isset($Trec[1][8]))  $Trec[1][8]  = ($agosto);     else {$Trec[1][8]  += ($agosto);    }
+          if (!isset($Trec[1][9]))  $Trec[1][9]  = ($setembro);   else {$Trec[1][9]  += ($setembro);  }
+          if (!isset($Trec[1][10])) $Trec[1][10] = ($outubro);    else {$Trec[1][10] += ($outubro);   }
           if (!isset($Trec[1][11])) $Trec[1][11] = ($novembro);   else {$Trec[1][11] += ($novembro);  }
-          if (!isset($Trec[1][12])) $Trec[1][12] = ($dezembro);   else {$Trec[1][12] += ($dezembro);  } 
+          if (!isset($Trec[1][12])) $Trec[1][12] = ($dezembro);   else {$Trec[1][12] += ($dezembro);  }
         }else{
           if (!isset($Trec[1][1]))  $Trec[1][1] = ($janeiro);    else $Trec[1][1] += ($janeiro);
           if (!isset($Trec[1][2]))  $Trec[1][2] = ($fevereiro);  else $Trec[1][2] += ($fevereiro);
@@ -361,11 +361,11 @@ for ($p=1;$p<=21;$p++) {
           if (!isset($Trec[1][10])) $Trec[1][10]= ($outubro);    else $Trec[1][10] += ($outubro);
           if (!isset($Trec[1][11])) $Trec[1][11]= ($novembro);   else $Trec[1][11] += ($novembro);
           if (!isset($Trec[1][12])) $Trec[1][12]= ($dezembro);  else $Trec[1][12] += ($dezembro);
-        }	  
-      } 	      
-    }     
-  } 
-} 
+        }
+      }
+    }
+  }
+}
 
 // --------------------------------------------------------
 // monta receita do bimestre escolhido
@@ -437,7 +437,7 @@ for ($p=1;$p<=21;$p++) {
         $o70_valor *= -1;
         $adicional *= -1;
 
-      }  
+      }
       if (!isset($recB[$p][1]))  $recB[$p][1]= $janeiro;    else $recB[$p][1] += $janeiro;
       if (!isset($recB[$p][2]))  $recB[$p][2]= $fevereiro;  else $recB[$p][2] += $fevereiro;
       if (!isset($recB[$p][3]))  $recB[$p][3]= $marco;      else $recB[$p][3] += $marco;
@@ -450,13 +450,13 @@ for ($p=1;$p<=21;$p++) {
       if (!isset($recB[$p][10])) $recB[$p][10]= $outubro;   else $recB[$p][10]+= $outubro;
       if (!isset($recB[$p][11])) $recB[$p][11]= $novembro;  else $recB[$p][11]+= $novembro;
       if (!isset($recB[$p][12])) $recB[$p][12]= $dezembro;  else $recB[$p][12]+= $dezembro;
-      // a coluna 13 ira guardar a previsao 
+      // a coluna 13 ira guardar a previsao
       if (!isset($recB[$p][13])) $recB[$p][13]= ($o70_valor+$adicional);  else $recB[$p][13]+= ($o70_valor+$adicional);
 
       /*
          chamamos de "recB" esta segunda matriz, porque "rec" é foi a primeira matriz criada
          que ira quardar os dados do exercicio-1, e este "recB" ira guardar dados do exercicio atual
-       */       
+       */
       if ($p <=18) {
         // Trec da linha 0 (zero) contem o total da arrecadação da receita corrente
         if (!isset($TrecB[0][1]))  $TrecB[0][1]= $janeiro;    else $TrecB[0][1] += $janeiro;
@@ -470,11 +470,11 @@ for ($p=1;$p<=21;$p++) {
         if (!isset($TrecB[0][9]))  $TrecB[0][9]= $setembro;   else $TrecB[0][9] += $setembro;
         if (!isset($TrecB[0][10])) $TrecB[0][10]= $outubro;   else $TrecB[0][10]+= $outubro;
         if (!isset($TrecB[0][11])) $TrecB[0][11]= $novembro;  else $TrecB[0][11]+= $novembro;
-        if (!isset($TrecB[0][12])) $TrecB[0][12]= $dezembro;  else $TrecB[0][12]+= $dezembro;	  
+        if (!isset($TrecB[0][12])) $TrecB[0][12]= $dezembro;  else $TrecB[0][12]+= $dezembro;
         if (!isset($TrecB[0][13])) $TrecB[0][13]= ($o70_valor+$adicional); else $TrecB[0][13]+= ($o70_valor+$adicional);
       } else {
         // Trec da linha 1 contem o total da dedução da receita corrente
-        if (db_conplano_grupo($anousu,substr($estrutural,0,3)."%",9001) == true){  // 497 e 917 
+        if (db_conplano_grupo($anousu,substr($estrutural,0,3)."%",9001) == true){  // 497 e 917
           if (!isset($TrecB[1][1]))  $TrecB[1][1]= ($janeiro);    else $TrecB[1][1] += ($janeiro);
           if (!isset($TrecB[1][2]))  $TrecB[1][2]= ($fevereiro);  else $TrecB[1][2] += ($fevereiro);
           if (!isset($TrecB[1][3]))  $TrecB[1][3]= ($marco);      else $TrecB[1][3] += ($marco);
@@ -486,7 +486,7 @@ for ($p=1;$p<=21;$p++) {
           if (!isset($TrecB[1][9]))  $TrecB[1][9]= ($setembro);   else $TrecB[1][9] += ($setembro);
           if (!isset($TrecB[1][10])) $TrecB[1][10]= ($outubro);   else $TrecB[1][10]+= ($outubro);
           if (!isset($TrecB[1][11])) $TrecB[1][11]= ($novembro);  else $TrecB[1][11]+= ($novembro);
-          if (!isset($TrecB[1][12])) $TrecB[1][12]= ($dezembro);  else $TrecB[1][12]+= ($dezembro);	  
+          if (!isset($TrecB[1][12])) $TrecB[1][12]= ($dezembro);  else $TrecB[1][12]+= ($dezembro);
           if (!isset($TrecB[1][13])) $TrecB[1][13]= ($o70_valor+$adicional); else $TrecB[1][13]+= ($o70_valor+$adicional);
         }else{
           if (!isset($TrecB[1][1]))  $TrecB[1][1]= ($janeiro);    else $TrecB[1][1] += ($janeiro);
@@ -500,27 +500,27 @@ for ($p=1;$p<=21;$p++) {
           if (!isset($TrecB[1][9]))  $TrecB[1][9]= ($setembro);   else $TrecB[1][9] += ($setembro);
           if (!isset($TrecB[1][10])) $TrecB[1][10]= ($outubro);   else $TrecB[1][10]+= ($outubro);
           if (!isset($TrecB[1][11])) $TrecB[1][11]= ($novembro);  else $TrecB[1][11]+= ($novembro);
-          if (!isset($TrecB[1][12])) $TrecB[1][12]= ($dezembro);  else $TrecB[1][12]+= ($dezembro);	  
+          if (!isset($TrecB[1][12])) $TrecB[1][12]= ($dezembro);  else $TrecB[1][12]+= ($dezembro);
           if (!isset($TrecB[1][13])) $TrecB[1][13]= ($o70_valor+$adicional); else $TrecB[1][13]+= ($o70_valor+$adicional);
         }
-      } 
-    }     
-  } 
-} 
+      }
+    }
+  }
+}
 
 // ------------------------------
 // somadores avulsos
 $tot_rec_trib = array(); //zera matriz
 for ($x=0;$x<=13;$x++){
   $tot_rec_trib[0][$x]=0;
-}  
+}
 for ($x=1;$x<=4;$x++){
   for ($y=$bimestre_anterior;$y<=12;$y++){
     if (isset($rec[$x][$y])){
       $tot_rec_trib[0][$y] += $rec[$x][$y];
     } else
       $tot_rec_trib[0][$y] += 0;
-  }  
+  }
   // procura valores do exercicio atual
   for ($y=1;$y <=$bimestre*2;$y++){
     if ($tipo_emissao=="datas"){
@@ -533,27 +533,27 @@ for ($x=1;$x<=4;$x++){
     } else{
       $tot_rec_trib[0][$y] += 0;
     }
-  }  
+  }
   // listamos a previsão
   if (isset($recB[$x][13])){
-    $tot_rec_trib[0][13] += $recB[$x][13];	
+    $tot_rec_trib[0][13] += $recB[$x][13];
   }else{
     $tot_rec_trib[0][13] += 0;
   }
 }
 
-// 
+//
 $tot_transf = array(); //zera matriz
 for ($x=0;$x<=13;$x++){
   $tot_transf[0][$x]=0;
-}  
+}
 for ($x=10;$x<=17;$x++){
   for ($y=$bimestre_anterior;$y<=12;$y++){
     if (isset($rec[$x][$y])){
       $tot_transf[0][$y] += $rec[$x][$y];
     } else
       $tot_transf[0][$y] += 0;
-  }  
+  }
   // procura valores do exercicio atual
   for ($y=1;$y <=$bimestre*2;$y++){
     if ($tipo_emissao=="datas"){
@@ -565,11 +565,11 @@ for ($x=10;$x<=17;$x++){
       $tot_transf[0][$y] += $recB[$x][$y];
     } else
       $tot_transf[0][$y] += 0;
-  }  
+  }
 
   // listamos a previsão
   if (isset($recB[$x][13])) {
-    $tot_transf[0][13] += $recB[$x][13];	
+    $tot_transf[0][13] += $recB[$x][13];
   } else {
     $tot_transf[0][13] += 0;
   }
@@ -592,9 +592,9 @@ $mes_dresc[12]	= 'Dezembro';
 if (!isset($arqinclude)){
 
   //-------------------------------------------------------------------------------------------------
-  $pdf = new PDF(); 
-  $pdf->Open(); 
-  $pdf->AliasNbPages(); 
+  $pdf = new PDF();
+  $pdf->Open();
+  $pdf->AliasNbPages();
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','',6);
   $alt            = 4;
@@ -615,13 +615,13 @@ if (!isset($arqinclude)){
   $pdf->cell(60,$alt,"",'BR',0,"C",0);
 
   if ($bimestre_anterior!=13){
-    /* 
+    /*
      * lista meses do periodo anterior ( exercicio anterior )
      */
     for ($x=$bimestre_anterior;$x<=12;$x++){
       $pdf->cell($cl,$alt,$mes_dresc[$x],'TBR',0,"C",0);
-    }  
-  }  
+    }
+  }
   // meses do exercicio atual
   for ($x=1;$x <=$bimestre*2;$x++){
     if ($tipo_emissao=="datas"){
@@ -630,29 +630,29 @@ if (!isset($arqinclude)){
       }
     }
     $pdf->cell($cl,$alt,$mes_dresc[$x],'TBR',0,"C",0);
-  }  
+  }
   $pdf->cell($cl,$alt,"ULT 12 MESES",'BR',0,"C",0);
   $pdf->cell($cl,$alt,"ATUAL EXERC",'B',0,"C",0);
   $pdf->ln();
 
   $total = 0; // esse total é sempre calculado para cada linha
 
-  // imprime as linhas/valores do exercicio anterior  
+  // imprime as linhas/valores do exercicio anterior
   for ($x=1;$x<=21;$x++){ // 18 é a qtd de parametros existentes
 
     // ----------------------------------
     if ($x==1){
       // aqui imprime a linha com os totalizadores
       $pdf->setfont('arial','b',6);
-      $pdf->cell(60,$alt,"RECEITA CORRENTE(I)",'R',0,"L",0);    
+      $pdf->cell(60,$alt,"RECEITA CORRENTE(I)",'R',0,"L",0);
       $total = 0;
       for ($y=$bimestre_anterior;$y<=12;$y++){
         if (isset($Trec[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($Trec[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($Trec[0][$y],'f'),'R',0,"R",0);
           $total += $Trec[0][$y];
         }else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }   
+      }
       for ($y=1;$y <=$bimestre*2;$y++){
         if ($tipo_emissao=="datas"){
           if ($y==($bimestre*2)){
@@ -660,29 +660,29 @@ if (!isset($arqinclude)){
           }
         }
         if (isset($TrecB[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y],'f'),'R',0,"R",0);
           $total += $TrecB[0][$y];
         }else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  
+      }
       $pdf->cell($cl,$alt,db_formatar($total,'f'),'R',0,"R",0);
       if (isset($TrecB[0][13])){
-        $pdf->cell($cl,$alt,db_formatar($TrecB[0][13],'f'),0,0,"R",0);	 	   
+        $pdf->cell($cl,$alt,db_formatar($TrecB[0][13],'f'),0,0,"R",0);
       }else{
-        $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);       
+        $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
       }
       $pdf->ln();
       //-------------------------------
       $pdf->setfont('arial','',6);
-      $pdf->cell(60,$alt," Receita Tributária",'R',0,"L",0);        
+      $pdf->cell(60,$alt," Receita Tributária",'R',0,"L",0);
       $total = 0;
       for ($y=$bimestre_anterior;$y<=12;$y++){
         if (isset($tot_rec_trib[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][$y],'f'),'R',0,"R",0);
           $total += $tot_rec_trib[0][$y];
         } else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  
+      }
       for ($y=1;$y <=$bimestre*2;$y++){
         if ($tipo_emissao=="datas"){
           if ($y==($bimestre*2)){
@@ -690,34 +690,34 @@ if (!isset($arqinclude)){
           }
         }
         if (isset($tot_rec_trib[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][$y],'f'),'R',0,"R",0);
           $total += $tot_rec_trib[0][$y];
         } else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  	
+      }
       // listamos o total das 12 colunas
       $pdf->cell($cl,$alt,db_formatar($total,'f'),'R',0,"R",0);
 
       // listamos a previsão
       if (isset($tot_rec_trib[0][13]))
-        $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][13],'f'),0,0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($tot_rec_trib[0][13],'f'),0,0,"R",0);
       else
         $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
-      $pdf->ln();   
+      $pdf->ln();
 
-    }  
+    }
     //-------------------------------
     if ($x==10){
       $pdf->setfont('arial','',6);
-      $pdf->cell(60,$alt," Transferências Correntes",'R',0,"L",0);        
+      $pdf->cell(60,$alt," Transferências Correntes",'R',0,"L",0);
       $total = 0;
       for ($y=$bimestre_anterior;$y<=12;$y++){
         if (isset($tot_transf[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($tot_transf[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($tot_transf[0][$y],'f'),'R',0,"R",0);
           $total += $tot_transf[0][$y];
         } else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  
+      }
       for ($y=1;$y <=$bimestre*2;$y++){
         if ($tipo_emissao=="datas"){
           if ($y==($bimestre*2)){
@@ -725,37 +725,37 @@ if (!isset($arqinclude)){
           }
         }
         if (isset($tot_transf[0][$y])){
-          $pdf->cell($cl,$alt,db_formatar($tot_transf[0][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($tot_transf[0][$y],'f'),'R',0,"R",0);
           $total += $tot_transf[0][$y];
         } else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  	
+      }
       // listamos o total das 12 colunas
       $pdf->cell($cl,$alt,db_formatar($total,'f'),'R',0,"R",0);
 
       // listamos a previsão
       if (isset($tot_transf[0][13]))
-        $pdf->cell($cl,$alt,db_formatar($tot_transf[0][13],'f'),0,0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($tot_transf[0][13],'f'),0,0,"R",0);
       else
         $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
-      $pdf->ln();   
+      $pdf->ln();
 
     }
 
-    // ----------------------------------        
+    // ----------------------------------
     if ($x==19){
       // aqui imprime a linha com os totalizadores das deduções
       $pdf->setfont('arial','b',6);
-      $pdf->cell(60,$alt,"DEDUÇÕES(II)",'R',0,"L",0);    
+      $pdf->cell(60,$alt,"DEDUÇÕES(II)",'R',0,"L",0);
 
       $total = 0;
       for ($y=$bimestre_anterior;$y<=12;$y++){
         if (isset($Trec[1][$y])){
-          $pdf->cell($cl,$alt,db_formatar($Trec[1][$y],'f'),'R',0,"R",0);	 
+          $pdf->cell($cl,$alt,db_formatar($Trec[1][$y],'f'),'R',0,"R",0);
           $total += $Trec[1][$y];
         } else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }   
+      }
       for ($y=1;$y <=$bimestre*2;$y++){
         if ($tipo_emissao=="datas"){
           if ($y==($bimestre*2)){
@@ -763,33 +763,33 @@ if (!isset($arqinclude)){
           }
         }
         if (isset($TrecB[1][$y])){
-          $pdf->cell($cl,$alt,db_formatar(($TrecB[1][$y]),'f'),'R',0,"R",0);	 
-          $total += $TrecB[1][$y]; 
+          $pdf->cell($cl,$alt,db_formatar(($TrecB[1][$y]),'f'),'R',0,"R",0);
+          $total += $TrecB[1][$y];
         }else
           $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-      }  
+      }
       $pdf->cell($cl,$alt,db_formatar(($total),'f'),'R',0,"R",0);
       if (isset($TrecB[1][13])) {
-        $pdf->cell($cl,$alt,db_formatar(($TrecB[1][13]),'f'),0,0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar(($TrecB[1][13]),'f'),0,0,"R",0);
       } else {
-        $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);       
-      }  
+        $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
+      }
       $pdf->ln();
-    }   
+    }
     //deducoes
     /*
        if ($x==19){
        $pdf->setfont('arial','',6);
-       $pdf->cell(60,$alt,"   Contrib. Plano Seg. Social Servidor  ",'R',0,"L",0);        
+       $pdf->cell(60,$alt,"   Contrib. Plano Seg. Social Servidor  ",'R',0,"L",0);
     // Procura valores do exercicio anterior (anousu -1) e imprime
     $total = 0;
     for ($y=$bimestre_anterior;$y<=12;$y++){
     if (isset($rec[$x][$y])){
-    $pdf->cell($cl,$alt,db_formatar($rec[$x][$y],'f'),'R',0,"R",0);	 
+    $pdf->cell($cl,$alt,db_formatar($rec[$x][$y],'f'),'R',0,"R",0);
     $total += $rec[$x][$y];
     } else
     $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-    }  
+    }
 
     // procura valores do exercicio atual
     for ($y=1;$y <=$bimestre*2;$y++){
@@ -799,28 +799,28 @@ if (!isset($arqinclude)){
     }
     }
     if (isset($recB[$x][$y])){
-    $pdf->cell($cl,$alt,db_formatar($recB[$x][$y],'f'),'R',0,"R",0);	 
+    $pdf->cell($cl,$alt,db_formatar($recB[$x][$y],'f'),'R',0,"R",0);
     $total += $recB[$x][$y];
     } else
     $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-    }  
+    }
     // listamos o total das 12 colunas
     $pdf->cell($cl,$alt,db_formatar($total,'f'),'R',0,"R",0);
 
     // listamos a previsão
     if (isset($recB[$x][13])){
-    $pdf->cell($cl,$alt,db_formatar($recB[$x][13],'f'),0,0,"R",0);	 
+    $pdf->cell($cl,$alt,db_formatar($recB[$x][13],'f'),0,0,"R",0);
     }else{
     $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
     }
 
-    $pdf->ln();   
-    } 
-     */ 
-    // ----------------------------------        
+    $pdf->ln();
+    }
+     */
+    // ----------------------------------
     // imprime os nomes das linhas
     $pdf->setfont('arial','',6);
-    $pdf->cell(60,$alt,$rec[$x][0],'R',0,"L",0);        
+    $pdf->cell(60,$alt,$rec[$x][0],'R',0,"L",0);
     // Procura valores do exercicio anterior (anousu -1) e imprime
     $total = 0;
     for ($y=$bimestre_anterior;$y<=12;$y++){
@@ -828,12 +828,12 @@ if (!isset($arqinclude)){
         //ivertemos o sinal para apresentação;
         if ($x == 21) {
           $rec[$x][$y] *= -1;
-        }  
-        $pdf->cell($cl,$alt,db_formatar($rec[$x][$y],'f'),'R',0,"R",0);	 
+        }
+        $pdf->cell($cl,$alt,db_formatar($rec[$x][$y],'f'),'R',0,"R",0);
         $total += $rec[$x][$y];
       } else
         $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-    }  
+    }
     // procura valores do exercicio atual
     for ($y=1;$y <=$bimestre*2;$y++){
       if ($tipo_emissao=="datas"){
@@ -844,12 +844,12 @@ if (!isset($arqinclude)){
       if (isset($recB[$x][$y])){
         if ($x == 21) {
           $recB[$x][$y] *= -1;
-        }  
-        $pdf->cell($cl,$alt,db_formatar($recB[$x][$y],'f'),'R',0,"R",0);	 
+        }
+        $pdf->cell($cl,$alt,db_formatar($recB[$x][$y],'f'),'R',0,"R",0);
         $total += $recB[$x][$y];
       } else
         $pdf->cell($cl,$alt,db_formatar(0,'f'),'R',0,"R",0);
-    }  
+    }
     // listamos o total das 12 colunas
     $pdf->cell($cl,$alt,db_formatar($total,'f'),'R',0,"R",0);
 
@@ -858,34 +858,34 @@ if (!isset($arqinclude)){
     if (isset($recB[$x][13])) {
       if ($x == 21) {
         $recB[$x][13] *= -1;
-      }  
-      $pdf->cell($cl,$alt,db_formatar($recB[$x][13],'f'),0,0,"R",0);	 
+      }
+      $pdf->cell($cl,$alt,db_formatar($recB[$x][13],'f'),0,0,"R",0);
     } else {
       $pdf->cell($cl,$alt,db_formatar(0,'f'),0,0,"R",0);
-    } 
-    $pdf->ln();   
+    }
+    $pdf->ln();
 
   }//endfor
 
   // aqui imprime a linha com os totalizadores das deduções
 
   $pdf->setfont('arial','b',6);
-  $pdf->cell(60,$alt,"RECEITA CORRENTE LÍQUIDA (III) = (I-II)",'RBT',0,"L",0);    
+  $pdf->cell(60,$alt,"RECEITA CORRENTE LÍQUIDA (III) = (I-II)",'RBT',0,"L",0);
   $total = 0;
 
   for ($y=$bimestre_anterior;$y<=12;$y++){
-    if (isset($Trec[0][$y])){ 
+    if (isset($Trec[0][$y])){
       if(isset($Trec[1][$y])){
-        $pdf->cell($cl,$alt,db_formatar($Trec["0"]["$y"]-$Trec["1"]["$y"],'f'),'RBT',0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($Trec["0"]["$y"]-$Trec["1"]["$y"],'f'),'RBT',0,"R",0);
         $total += $Trec["0"]["$y"]-$Trec["1"]["$y"];
       } else {
-        $pdf->cell($cl,$alt,db_formatar($Trec[0][$y],'f'),'RBT',0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($Trec[0][$y],'f'),'RBT',0,"R",0);
         $total += $Trec[0][$y];
-      }  
+      }
     } else{
       $pdf->cell($cl,$alt,db_formatar(0,'f'),'RBT',0,"R",0);
-    }   
-  }   
+    }
+  }
   // bimestre do exercício corrente
   for ($y=1;$y <=$bimestre*2;$y++){
     if ($tipo_emissao=="datas"){
@@ -895,12 +895,12 @@ if (!isset($arqinclude)){
     }
     if (isset($TrecB[0][$y])){
       if (isset($TrecB[1][$y])){
-        $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y]-$TrecB[1][$y],'f'),'RTB',0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y]-$TrecB[1][$y],'f'),'RTB',0,"R",0);
         $total += $TrecB[0][$y]-$TrecB[1][$y];
       }else{
-        $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y],'f'),'RTB',0,"R",0);	 
+        $pdf->cell($cl,$alt,db_formatar($TrecB[0][$y],'f'),'RTB',0,"R",0);
         $total += $TrecB[0][$y];
-      }	
+      }
     }else {
       $pdf->cell($cl,$alt,db_formatar(0,'f'),'TRB',0,"R",0);
     }
@@ -910,19 +910,19 @@ if (!isset($arqinclude)){
   $pdf->cell($cl,$alt,db_formatar($total,'f'),'TRB',0,"R",0);
   if (isset($TrecB[0][13])){
     if (isset($TrecB[1][13])){
-      $pdf->cell($cl,$alt,db_formatar($TrecB[0][13]-$TrecB[1][13],'f'),'TB',0,"R",0);	 
+      $pdf->cell($cl,$alt,db_formatar($TrecB[0][13]-$TrecB[1][13],'f'),'TB',0,"R",0);
     } else{
-      $pdf->cell($cl,$alt,db_formatar($TrecB[0][13],'f'),'TB',0,"R",0);	      
-    }  
+      $pdf->cell($cl,$alt,db_formatar($TrecB[0][13],'f'),'TB',0,"R",0);
+    }
   }else{
-    $pdf->cell($cl,$alt,db_formatar(0,'f'),'TB',0,"R",0);       
-  }   
+    $pdf->cell($cl,$alt,db_formatar(0,'f'),'TB',0,"R",0);
+  }
 
   $pdf->ln();
   // ----------------------------------------------------------------
-  notasExplicativas(&$pdf, 27,"{$bimestre}B",280); 
+  notasExplicativas($pdf, 27,"{$bimestre}B",280);
   $pdf->ln(15);
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
   $pdf->Output();
 
 }

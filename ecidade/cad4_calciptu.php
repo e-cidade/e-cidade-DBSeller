@@ -100,7 +100,7 @@ if (isset($calcular)) {
             $sql = "select fc_iptu_verificacalculo($j01_matric::integer,$anousu::integer, 0, 0)";
             $result = db_query($sql);
 
-            $retorno_result = pg_result($result,0,0);
+            $retorno_result = pg_fetch_result($result,0,0);
 
             $retorno_erro = substr($retorno_result,3,2);
             $retorno_erro = str_replace(")", "", $retorno_erro);
@@ -119,14 +119,15 @@ if (isset($calcular)) {
             } else {
                 db_fieldsmemory($resultnextval,0);
                 db_query("begin");
-                $insert = "insert into iptucalclog values ($j27_codigo,$anousu,'".date('Y-m-d',db_getsession("DB_datausu"))."','".db_hora()."',".db_getsession('DB_id_usuario').",true,1, '$j27_observacao')";
+                $insert = "insert into iptucalclog values ($j27_codigo,$anousu,'".date('Y-m-d',db_getsession("DB_datausu"))."','".db_hora()."',".db_getsession('DB_id_usuario').",true,1, '$j27_observacao',". ($financeiro==0?"true":"false") .")";
+
                 $resultinsert = db_query($insert) or die($insert);
                 if ($resultinsert == false) {
                     echo "<script>alert('Erro ao gerar lancamento na tabela iptucalclog!');</script>";
                 } else {
                     $result = db_query("select distinct j18_anousu, j18_permvenc from cfiptu order by j18_anousu desc");
                     $j18_permvenc = 1;
-                    if (pg_numrows($result) > 0) {
+                    if (pg_num_rows($result) > 0) {
                         db_fieldsmemory($result,0);
                     }
                     if ($j18_permvenc == 0) {
@@ -187,7 +188,6 @@ if (isset($calcular)) {
                        $clIptucalcold  = new cl_iptucalcold;
 
                        $retIptucalcold = $clIptucalcold->salvarIptucalcOld($anousu, $j01_matric, $j27_codigo);
-   
                        if (!$retIptucalcold == 't') {
                            db_query("ROLLBACK");
                            throw new DBException("Não foi possivel salvar informações do cálculo anteriror (".pg_last_error().")");
@@ -208,6 +208,7 @@ if (isset($calcular)) {
                        // iptucaleold (construcoes)
                        $clIptucaleold = new cl_iptucaleold;
                        $retIptucaleold = $clIptucaleold->salvarIptucaleOld($anousu, $j01_matric, $j27_codigo);
+
                        if (!$retIptucaleold) {
                            $sqlerro=true;
                            db_query("ROLLBACK");
@@ -275,8 +276,8 @@ if (isset($calcular)) {
                      }
 
                     //fim tabelas old
-
-                    $sql = "select fc_calculoiptu($j01_matric::integer,$anousu::integer,true::boolean,false::boolean,false::boolean,false::boolean,false::boolean,$arraypl)";
+                    db_query("select fc_putsession('DB_Gerafinanc','$financeiro')");
+                    $sql = "select fc_calculoiptu($j01_matric::integer,$anousu::integer," . ($financeiro==0?"true":"false") . ",false::boolean,false::boolean,false::boolean,false::boolean,$arraypl)";
                     $result = @db_query($sql);
 
                     if (!$result) {
@@ -312,7 +313,7 @@ if (isset($calcular)) {
                             db_query("ROLLBACK");
                         }
 
-                        if (pg_numrows($result2) > 0) {
+                        if (pg_num_rows($result2) > 0) {
 
                             db_fieldsmemory($result2, 0);
 
@@ -348,8 +349,8 @@ if (isset($calcular)) {
 
                         $cliptubase->erro_msg = $sErro;
                         $cliptubase->erro_status = '0';
-                    } else if (pg_numrows($result) > 0 && !$taxa_erro) {
-                        $retorno_result = pg_result($result,0,0);
+                    } else if (pg_num_rows($result) > 0 && !$taxa_erro) {
+                        $retorno_result = pg_fetch_result($result,0,0);
 
                         preg_match('/[0-9]*/', trim($retorno_result), $aTipoLogCalc);
 
@@ -362,7 +363,7 @@ if (isset($calcular)) {
                             $cliptubase->erro_msg = "Cálculo Efetuado.";
                             $cliptubase->erro_status = '1';
                         }
-                        $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$retorno,'".trim(preg_replace('/^[0-9]*/', '',trim($retorno_result)))."')";
+                        $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$retorno,'".trim(preg_replace('/^[0-9]*/', '',trim($retorno_result)))."',". ($financeiro==0?"true":"false") .")";
                         $resultinsert = db_query($insert) or die($insert);
 
                         db_query("commit");
@@ -409,14 +410,14 @@ if (isset($calcular)) {
                                 $erro = true;
                                 $perc = 0;
 
-                                if (pg_numrows($sqlunica) != 0) {
-                                    $perc = pg_result($sqlunica,0,'k00_percdes');
+                                if (pg_num_rows($sqlunica) != 0) {
+                                    $perc = pg_fetch_result($sqlunica,0,'k00_percdes');
                                     $sqlresultunica = "delete from recibounica where k00_numpre = $j20_numpre and k00_dtvenc = '$anousu-$mesini-$diavenc'";
                                     $resultunica = db_query($sqlresultunica );
                                     $descricao_erro = "Vencimento Excluído.";
                                 }
 
-                                if (($perc != $percentualdesconto) || (pg_numrows($sqlunica) == 0)) {
+                                if (($perc != $percentualdesconto) || (pg_num_rows($sqlunica) == 0)) {
                                     $oDaoReciboUnica->k00_numpre = $j20_numpre;
                                     $oDaoReciboUnica->k00_dtvenc = "$anousu-$mesini-$diavenc";
                                     $oDaoReciboUnica->k00_dtoper = date("Y-m-d",db_getsession("DB_datausu"));
@@ -492,7 +493,7 @@ if (isset($demonstrativo)) {
     } else { 
         if (isset($HTTP_POST_VARS['j01_matric'])) {
             $result = db_query("select distinct j18_anousu, j18_permvenc from cfiptu order by j18_anousu desc");
-            if (pg_numrows($result) > 0) {
+            if (pg_num_rows($result) > 0) {
                 db_fieldsmemory($result, 0);
             } else {
                 $j18_permvenc = 0;
@@ -506,7 +507,7 @@ if (isset($demonstrativo)) {
             } else {
                 $arraypl = "array['" . (int)$parcelas . "','" . (int)$diavenc . "','" . (int)$mesini . "']";
             }
-
+            db_query("select fc_putsession('DB_Gerafinanc','0')");
             $sql = "select fc_calculoiptu($j01_matric::integer,$anousu::integer,true::boolean,false::boolean,false::boolean,false::boolean,true::boolean," . $arraypl . ")";
             $result = @db_query($sql);
 
@@ -521,8 +522,8 @@ if (isset($demonstrativo)) {
                 $cliptubase->erro_msg = $sErro;
                 $cliptubase->erro_status = '0';
 
-            } else if (pg_numrows($result) > 0) {
-                $retorno_result = pg_result($result,0,0);
+            } else if (pg_num_rows($result) > 0) {
+                $retorno_result = pg_fetch_result($result,0,0);
                 preg_match('/[0-9]*/', trim($retorno_result), $aTipoLogCalc);
                 $retorno = $aTipoLogCalc[0];
 
@@ -683,9 +684,9 @@ if (isset($demonstrativo)) {
                             <td>
                                 <?php
                                 $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-                                if (pg_numrows($result) > 0) {
+                                if (pg_num_rows($result) > 0) {
                                     $opcoes = array();
-                                    for ($i = 0; $i < pg_numrows($result); $i++) {
+                                    for ($i = 0; $i < pg_num_rows($result); $i++) {
                                         db_fieldsmemory($result, $i);
                                         $opcoes[$j18_anousu] = $j18_anousu;
                                     }
@@ -696,6 +697,27 @@ if (isset($demonstrativo)) {
                                 ?>
                             </td>
                         </tr>
+                        <?php
+                            $oDaocfiptu = new cl_cfiptu;
+                            $sqlcfiptu = $oDaocfiptu->sql_query_file(db_getsession("DB_anousu"),'j18_taxaseparada, j18_simulacaocalculo');
+                            $rs = pg_fetch_object(db_query($sqlcfiptu));
+ 
+                            if($rs->j18_taxaseparada == 0 && $rs->j18_simulacaocalculo == 't'){
+                            ?>
+                            <tr>
+                                <td><strong><label for="financeiro">Calcular Financeiro:</label></strong></td>
+                                <td>
+                                    <?php
+                                    $x = array("0" => "Sim", "1" => "Não");
+                                    db_select("financeiro", $x, true, 2, "style=\"width: 55px;\"");
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php
+                                
+                            }
+                            ?>
+                        
                         <tr>
                             <td title="<?php echo $Tj27_observacao;?>">
                                 <label for="j27_observacao"><strong><?php echo $Lj27_observacao;?></strong></label>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clacordocomissao->rotulo->label();
           <?=@$Lac08_sequencial?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ac08_sequencial',10,$Iac08_sequencial,true,'text',3,"")
           ?>
         </td>
@@ -65,7 +65,7 @@ $clacordocomissao->rotulo->label();
           <?=@$Lac08_descricao?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('ac08_descricao',44,$Iac08_descricao,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -75,7 +75,7 @@ $clacordocomissao->rotulo->label();
           <?=@$Lac08_datainicial?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('ac08_datainicial',@$ac08_datainicial_dia,@$ac08_datainicial_mes,@$ac08_datainicial_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -85,7 +85,7 @@ $clacordocomissao->rotulo->label();
           <?=@$Lac08_datafim?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('ac08_datafim',@$ac08_datafim_dia,@$ac08_datafim_mes,@$ac08_datafim_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -94,7 +94,7 @@ $clacordocomissao->rotulo->label();
         <td colspan="2">
           <fieldset class="separator">
             <legend><?=@$Lac08_observacao?></legend>
-        		<?
+        		<?php
         		  db_textarea('ac08_observacao',3,48,$Iac08_observacao,true,'text',$db_opcao,"")
         		?>
           </fieldset>
@@ -115,7 +115,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_acordocomissao.hide();
 
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     //echo "js_consultaAcordo(chave)";

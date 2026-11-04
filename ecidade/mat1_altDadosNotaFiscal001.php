@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,6 +26,8 @@
  */
 
 //echo ($HTTP_SERVER_VARS['QUERY_STRING']);exit;
+use App\Domain\Financeiro\Empenho\Services\DocumentoService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("std/db_stdClass.php"));
 require_once(modification('libs/db_utils.php'));
@@ -75,9 +77,24 @@ $iControlaPit = 2;
 $db_opcao = 1;
 $aParamKeys = [db_getsession("DB_instit")];
 
+$documentoService = new DocumentoService();
+
 $aParametrosPit = db_stdClass::getParametro("matparaminstit", $aParamKeys);
 if (count($aParametrosPit) > 0) {
     $iControlaPit = $aParametrosPit[0]->m10_controlapit;
+}
+
+if (isset($oGet->excluirArquivoNotaFiscal) && !empty($oGet->excluirArquivoNotaFiscal)) {
+    db_inicio_transacao();
+    $lSqlErro = false;
+    $clempnota->e69_codnota = $oGet->chavepesquisa;
+    $clempnota->alterar($clempnota->e69_codnota);
+
+    if ($clempnota->erro_status == "0") {
+        $lSqlErro = true;
+        $erro_msg = $clempnota->erro_msg;
+    }
+    db_fim_transacao($lSqlErro);
 }
 
 if (isset($oPost->alterar)) {
@@ -116,6 +133,18 @@ if (isset($oPost->alterar)) {
             $clempnota->e69_outrosdados = json_encode($outrosDados);
         }
 
+        if (isRioDeJaneiro()) {
+            if ($oPost->danfeNumero || $oPost->danfeChave) {
+                $outrosDados = new \stdClass;
+                $outrosDados->danfe = new \stdClass;
+
+                $outrosDados->danfe->numero = $oPost->danfeNumero ?: '';
+                $outrosDados->danfe->chave = $oPost->danfeChave ?: '';
+
+                $clempnota->e69_outrosdados = json_encode($outrosDados);
+            }
+        }
+
         if (!empty($oNotaDados)) {
             $clempnota->e69_dtvencimento = $oNotaDados->e69_dtvencimento;
             $clempnota->e69_localrecebimento = $oNotaDados->e69_localrecebimento;
@@ -129,7 +158,6 @@ if (isset($oPost->alterar)) {
         if ($clempnota->erro_status == "0") {
             $lSqlErro = true;
             $erro_msg = $clempnota->erro_msg;
-
         }
         $oDaoEmpnotadados = new cl_empnotadadospit;
         $sSqlDadosPit = $oDaoEmpnotadados->sql_query_notas(null,
@@ -188,6 +216,65 @@ if (isset($oPost->alterar)) {
             }
         }
 
+
+        if (isset($oPost->arrayDocumentosDelete) && $oPost->arrayDocumentosDelete != null) {
+            $documentoService->deleteDocumentos($oPost->arrayDocumentosDelete);
+        }
+
+        if (isset($oPost->arrayDocumentos) && $oPost->arrayDocumentos != null) {
+            $documentoService->saveDocumentos($oPost->arrayDocumentos, $oPost->m51_codordem);
+        }
+
+        if (isRioDeJaneiro()) {
+            // tipo documento
+            if (isset($oPost->tipodocliquidacao)) {
+                $oDaoTipodoc = new cl_empnotasigfistipodocliquidacao;
+                $oDaoTipodoc->e178_empnota = $oPost->e69_codnota;
+                $oDaoTipodoc->e178_sigfistipodocliquidacao = $oPost->tipodocliquidacao;
+
+                // verificar se ja existe tipodoc para a empnota
+                $sSqlTipodoc = $oDaoTipodoc->sql_query(
+                    null,
+                    'e178_sequencial',
+                    null,
+                    "e178_empnota = {$oPost->e69_codnota}"
+                );
+
+                $rsTipodoc = db_query($sSqlTipodoc);
+
+                if ($rsTipodoc && pg_num_rows($rsTipodoc) > 0) {
+                    $iTipodocSeq = pg_fetch_result($rsTipodoc, 0);
+                    $oDaoTipodoc->e178_sequencial = $iTipodocSeq;
+                }
+
+                $lTipodocSaved = isset($iTipodocSeq) ? $oDaoTipodoc->alterar() : $oDaoTipodoc->incluir(null);
+
+                if (!$lTipodocSaved) {
+                    $lSqlErro = true;
+                    $erro_msg = 'Erro ao salvar tipo documento';
+                }
+            }
+
+            // atestadores
+            if (isset($oPost->atestadores) && !empty($oPost->atestadores)) {
+                $oDaoAtestador = new cl_empnotaatestador;
+                $aAtestadores = json_decode($oPost->atestadores);
+
+                $oDaoAtestador->excluir(null, "e169_empnota = {$oPost->e69_codnota}");
+
+                foreach ($aAtestadores as $atestador) {
+                    $oDaoAtestador->e169_numcgm  = $atestador;
+                    $oDaoAtestador->e169_empnota = $oPost->e69_codnota;
+                    $oDaoAtestador->incluir(null);
+
+                    if ($oDaoAtestador->erro_status == 0) {
+                        $lSqlErro = true;
+                        $erro_msg = 'Erro ao salvar atestadores';
+                    }
+                }
+            }
+        }
+
         db_fim_transacao($lSqlErro);
     } catch (Exception $e) {
         db_fim_transacao(true);
@@ -224,6 +311,7 @@ if (isset($oGet->chavepesquisa) && $oGet->chavepesquisa != "") {
         $e70_valor = $oNota->e70_valor;
         $e69_localrecebimento = $oNota->e69_localrecebimento;
         $e69_dtvencimento = $oNota->e69_dtvencimento;
+        $e69_outrosdados = $oNota->e69_outrosdados ? json_decode($oNota->e69_outrosdados) : '';
 
         $e70_vlranu = $oNota->e70_vlranu;
         $e70_vlrliq = $oNota->e70_vlrliq;
@@ -244,6 +332,54 @@ if (isset($oGet->chavepesquisa) && $oGet->chavepesquisa != "") {
             }
             db_fieldsmemory($rsDadosPit, 0);
         }
+
+        if ($documentoService->isEletronico($m51_codordem)) {
+            $_POST['eletronico'] = true;
+            $_POST['arquivos'] = $documentoService->getDocumentos($oNota->e69_codnota);
+        }else{
+            $_POST['eletronico'] = false;
+        }
+
+        // campos sigfis
+        if (isRioDeJaneiro()) {
+
+            // atestadores da nota
+            $oDaoAtestador = new cl_empnotaatestador;
+            $sCamposAtestador = 'e169_sequencial, z01_numcgm, z01_nome';
+            $sSqlAtestador = $oDaoAtestador->sql_query(
+                null,
+                $sCamposAtestador,
+                null,
+                "e169_empnota = {$e69_codnota}"
+            );
+            $rsAtestador = db_query($sSqlAtestador);
+
+            if ($rsAtestador) {
+                $aAtestadores  = db_utils::getCollectionByRecord($rsAtestador);
+                $aAtestadores  = json_encode($aAtestadores);
+            }
+
+            // danfe
+            if (is_object($e69_outrosdados) && isset($e69_outrosdados->danfe)) {
+                $danfe = $e69_outrosdados->danfe;
+            }
+
+            // tipo documento
+            $oDaoTipodoc = new cl_empnotasigfistipodocliquidacao;
+            $sSqlTipodoc = $oDaoTipodoc->sql_query(
+                null,
+                'e178_sigfistipodocliquidacao as codigo',
+                null,
+                "e178_empnota = {$e69_codnota}"
+            );
+
+            $rsTipodoc = db_query($sSqlTipodoc);
+
+            if ($rsTipodoc && pg_num_rows($rsTipodoc) > 0) {
+                $iTipodocliquidacao = pg_fetch_result($rsTipodoc, 0);
+            }
+        }
+
     } else {
         $lMsgError = true;
     }
@@ -260,6 +396,7 @@ if (isset($oGet->chavepesquisa) && $oGet->chavepesquisa != "") {
     <script type="text/javascript" src="scripts/strings.js"></script>
     <script type="text/javascript" src="scripts/prototype.js"></script>
     <script type="text/javascript" src="scripts/classes/http/http.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBFileUpload.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <link href="empenho.css" rel="stylesheet" type="text/css">
 </head>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@
     <table border="0" width="100%">
       <tr>
         <td align="center">
-          <?
+          <?php
           db_input('iCgs', 10, '', true, 'hidden', 3, '');
           ?>
           <input type="button" name="confirmar" value="Confirmar" onclick="return js_confirmar();">
@@ -270,16 +270,16 @@ function js_renderizaGrid() {
     aLinha[4] += '" onfocus="js_validaEntrada(this);" onkeyup="return js_mascaraData(this,event);"';
     aLinha[4] += '  onblur="js_validaDbData(this);" '+sOnchange; 
     aLinha[4] += '  value="'+js_formataData(aDadosVacinas[iCont].dataAplicacao)+'" '+sDisabled+'>'; 
-    aLinha[4] += '<input type="hidden" name="dt_dia" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_dia">'; 
-    aLinha[4] += '<input type="hidden" name="dt_mes" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_mes">'; 
-    aLinha[4] += '<input type="hidden" name="dt_ano" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_ano">'; 
-    aLinha[5]  = '<input type="text" name="observacao" id="observacao'+aDadosVacinas[iCont].vc07_i_codigo;
-    aLinha[5] += '" value="'+aDadosVacinas[iCont].obsAplicacao.urlDecode()+'" size="30" '+sDisabled+sOnchange; 
-    aLinha[5] += '<input type="hidden" id="alterado'+aDadosVacinas[iCont].vc07_i_codigo+'">';
-    aLinha[5] += '<input type="hidden" id="altOuInc'+aDadosVacinas[iCont].vc07_i_codigo+'" value="'+sAltInc+'">';
-    aLinha[5] += '<input type="hidden" id="codAplica'+aDadosVacinas[iCont].vc07_i_codigo+'" ';
-    aLinha[5] += '  value="'+aDadosVacinas[iCont].vc16_i_codigo+'">';
-    aLinha[5] += '<input type="hidden" name="identificador" value="'+aDadosVacinas[iCont].vc07_i_codigo+'">';
+    aLinha[5] = '<input type="text" name="observacao" id="observacao'+aDadosVacinas[iCont].vc07_i_codigo;
+    aLinha[5] += '" value="'+aDadosVacinas[iCont].obsAplicacao.urlDecode()+'" size="30" '+sDisabled+sOnchange;    
+    aLinha[6] = '<input type="hidden" name="dt_dia" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_dia">'; 
+    aLinha[7] = '<input type="hidden" name="dt_mes" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_mes">'; 
+    aLinha[8] = '<input type="hidden" name="dt_ano" id="dt'+aDadosVacinas[iCont].vc07_i_codigo+'_ano">';  
+    aLinha[9] = '<input type="hidden" id="alterado'+aDadosVacinas[iCont].vc07_i_codigo+'">';
+    aLinha[10] = '<input type="hidden" id="altOuInc'+aDadosVacinas[iCont].vc07_i_codigo+'" value="'+sAltInc+'">';
+    aLinha[11] = '<input type="hidden" id="codAplica'+aDadosVacinas[iCont].vc07_i_codigo+'" ';
+    aLinha[11] += '  value="'+aDadosVacinas[iCont].vc16_i_codigo+'">';
+    aLinha[12] = '<input type="hidden" name="identificador" value="'+aDadosVacinas[iCont].vc07_i_codigo+'">';
 
     oDBGridVacinas.addRow(aLinha);
     sDisabled = '';

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ $clrotulo->label("c69_valor");
 <table border="0">
   <tr>
     <td nowrap > 
-    <? switch ($pesquisa){
+    <?php switch ($pesquisa){
           case 0: db_ancora("Codigo do Lançamento",'js_pesquisa();',1); break;
           case 1: db_ancora("Numero do Lote/Chave",'js_pesquisa();',1); break;
 	  case 2: db_ancora("Codigo do Lançamento",'js_pesquisa();',1); break;
@@ -71,15 +71,15 @@ $clrotulo->label("c69_valor");
        }	
        
     ?></td>
-    <td><?  db_input("codigo",12,"",true,'text',1);   ?>
+    <td><?php  db_input("codigo",12,"",true,'text',1);   ?>
     </td>
   </tr>
 
   <tr>
   <td nowrap>  Período   </td>
-      <td><? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+      <td><?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
           à
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
   </tr>
@@ -96,7 +96,7 @@ $clrotulo->label("c69_valor");
  -->
 <script>
 function js_pesquisa(){
-  <?
+  <?php
    switch ($pesquisa){
      case 0:
          echo "js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_conlancamlan','func_conlancamlan.php?funcao_js=parent.js_preenchepesquisa|c70_codlan','Pesquisa',true);";
@@ -129,7 +129,7 @@ function js_pesquisa(){
   ?>
 }
 function js_preenchepesquisa(chave){
-  <?
+  <?php
     switch ($pesquisa){
        case 0: echo "db_iframe_conlancamlan.hide();"; break;
        case 1: echo "db_iframe_conlancamdig.hide();"; break;

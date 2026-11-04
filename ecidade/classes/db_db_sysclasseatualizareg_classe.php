@@ -1,81 +1,81 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_sysclasseatualizareg
-class cl_db_sysclasseatualizareg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codatualiza = 0; 
-   var $ip = null; 
-   var $codusu = 0; 
-   var $dataalt_dia = null; 
-   var $dataalt_mes = null; 
-   var $dataalt_ano = null; 
-   var $dataalt = null; 
-   var $horaalt = null; 
-   var $codarq = 0; 
-   var $nomearq = null; 
-   var $metodo = null; 
-   var $fontenovo = null; 
-   var $fonteoriginal = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_sysclasseatualizareg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codatualiza = 0;
+   var $ip = null;
+   var $codusu = 0;
+   var $dataalt_dia = null;
+   var $dataalt_mes = null;
+   var $dataalt_ano = null;
+   var $dataalt = null;
+   var $horaalt = null;
+   var $codarq = 0;
+   var $nomearq = null;
+   var $metodo = null;
+   var $fontenovo = null;
+   var $fonteoriginal = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codatualiza = int4 = Código 
-                 ip = varchar(50) = IP 
-                 codusu = int4 = Código do usuário 
-                 dataalt = date = Data da alteração 
-                 horaalt = char(5) = Hora da alteração 
-                 codarq = int4 = Codigo Arquivo 
-                 nomearq = char(40) = Nome do Arquivo 
-                 metodo = varchar(100) = Nome do método 
-                 fontenovo = text = Fonte novo 
-                 fonteoriginal = text = Fonte original 
+                 codatualiza = int4 = Código
+                 ip = varchar(50) = IP
+                 codusu = int4 = Código do usuário
+                 dataalt = date = Data da alteração
+                 horaalt = char(5) = Hora da alteração
+                 codarq = int4 = Codigo Arquivo
+                 nomearq = char(40) = Nome do Arquivo
+                 metodo = varchar(100) = Nome do método
+                 fontenovo = text = Fonte novo
+                 fonteoriginal = text = Fonte original
                  ";
-   //funcao construtor da classe 
-   function cl_db_sysclasseatualizareg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_sysclasseatualizareg"); 
+     $this->rotulo = new rotulo("db_sysclasseatualizareg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -84,7 +84,7 @@ class cl_db_sysclasseatualizareg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codatualiza = ($this->codatualiza == ""?@$GLOBALS["HTTP_POST_VARS"]["codatualiza"]:$this->codatualiza);
        $this->ip = ($this->ip == ""?@$GLOBALS["HTTP_POST_VARS"]["ip"]:$this->ip);
@@ -108,9 +108,9 @@ class cl_db_sysclasseatualizareg {
      }
    }
    // funcao para inclusao
-   function incluir ($codatualiza){ 
+   public function incluir ($codatualiza){
       $this->atualizacampos();
-     if($this->ip == null ){ 
+     if($this->ip == null ){
        $this->erro_sql = " Campo IP nao Informado.";
        $this->erro_campo = "ip";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->codusu == null ){ 
+     if($this->codusu == null ){
        $this->erro_sql = " Campo Código do usuário nao Informado.";
        $this->erro_campo = "codusu";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dataalt == null ){ 
+     if($this->dataalt == null ){
        $this->erro_sql = " Campo Data da alteração nao Informado.";
        $this->erro_campo = "dataalt_dia";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->horaalt == null ){ 
+     if($this->horaalt == null ){
        $this->erro_sql = " Campo Hora da alteração nao Informado.";
        $this->erro_campo = "horaalt";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->codarq == null ){ 
+     if($this->codarq == null ){
        $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
        $this->erro_campo = "codarq";
        $this->erro_banco = "";
@@ -155,7 +155,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->nomearq == null ){ 
+     if($this->nomearq == null ){
        $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
        $this->erro_campo = "nomearq";
        $this->erro_banco = "";
@@ -164,7 +164,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->metodo == null ){ 
+     if($this->metodo == null ){
        $this->erro_sql = " Campo Nome do método nao Informado.";
        $this->erro_campo = "metodo";
        $this->erro_banco = "";
@@ -173,7 +173,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fontenovo == null ){ 
+     if($this->fontenovo == null ){
        $this->erro_sql = " Campo Fonte novo nao Informado.";
        $this->erro_campo = "fontenovo";
        $this->erro_banco = "";
@@ -182,7 +182,7 @@ class cl_db_sysclasseatualizareg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->fonteoriginal == null ){ 
+     if($this->fonteoriginal == null ){
        $this->erro_sql = " Campo Fonte original nao Informado.";
        $this->erro_campo = "fonteoriginal";
        $this->erro_banco = "";
@@ -192,16 +192,16 @@ class cl_db_sysclasseatualizareg {
        return false;
      }
      if($codatualiza == "" || $codatualiza == null ){
-       $result = db_query("select nextval('db_sysclasseatualizareg_codatualiza_seq')"); 
+       $result = db_query("select nextval('db_sysclasseatualizareg_codatualiza_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_sysclasseatualizareg_codatualiza_seq do campo: codatualiza"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_sysclasseatualizareg_codatualiza_seq do campo: codatualiza";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->codatualiza = pg_result($result,0,0); 
+       $this->codatualiza = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_sysclasseatualizareg_codatualiza_seq");
        if(($result != false) && (pg_result($result,0,0) < $codatualiza)){
@@ -212,10 +212,10 @@ class cl_db_sysclasseatualizareg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->codatualiza = $codatualiza; 
+         $this->codatualiza = $codatualiza;
        }
      }
-     if(($this->codatualiza == null) || ($this->codatualiza == "") ){ 
+     if(($this->codatualiza == null) || ($this->codatualiza == "") ){
        $this->erro_sql = " Campo codatualiza nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,31 +224,31 @@ class cl_db_sysclasseatualizareg {
        return false;
      }
      $sql = "insert into db_sysclasseatualizareg(
-                                       codatualiza 
-                                      ,ip 
-                                      ,codusu 
-                                      ,dataalt 
-                                      ,horaalt 
-                                      ,codarq 
-                                      ,nomearq 
-                                      ,metodo 
-                                      ,fontenovo 
-                                      ,fonteoriginal 
+                                       codatualiza
+                                      ,ip
+                                      ,codusu
+                                      ,dataalt
+                                      ,horaalt
+                                      ,codarq
+                                      ,nomearq
+                                      ,metodo
+                                      ,fontenovo
+                                      ,fonteoriginal
                        )
                 values (
-                                $this->codatualiza 
-                               ,'$this->ip' 
-                               ,$this->codusu 
-                               ,".($this->dataalt == "null" || $this->dataalt == ""?"null":"'".$this->dataalt."'")." 
-                               ,'$this->horaalt' 
-                               ,$this->codarq 
-                               ,'$this->nomearq' 
-                               ,'$this->metodo' 
-                               ,'$this->fontenovo' 
-                               ,'$this->fonteoriginal' 
+                                $this->codatualiza
+                               ,'$this->ip'
+                               ,$this->codusu
+                               ,".($this->dataalt == "null" || $this->dataalt == ""?"null":"'".$this->dataalt."'")."
+                               ,'$this->horaalt'
+                               ,$this->codarq
+                               ,'$this->nomearq'
+                               ,'$this->metodo'
+                               ,'$this->fontenovo'
+                               ,'$this->fonteoriginal'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Atualiza Classse ($this->codatualiza) nao Incluído. Inclusao Abortada.";
@@ -289,16 +289,16 @@ class cl_db_sysclasseatualizareg {
        $resac = db_query("insert into db_acount values($acount,1714,9991,'','".AddSlashes(pg_result($resaco,0,'fonteoriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codatualiza=null) { 
+   public function alterar ($codatualiza=null) {
       $this->atualizacampos();
      $sql = " update db_sysclasseatualizareg set ";
      $virgula = "";
-     if(trim($this->codatualiza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codatualiza"])){ 
+     if(trim($this->codatualiza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codatualiza"])){
        $sql  .= $virgula." codatualiza = $this->codatualiza ";
        $virgula = ",";
-       if(trim($this->codatualiza) == null ){ 
+       if(trim($this->codatualiza) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codatualiza";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
+     if(trim($this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){
        $sql  .= $virgula." ip = '$this->ip' ";
        $virgula = ",";
-       if(trim($this->ip) == null ){ 
+       if(trim($this->ip) == null ){
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "ip";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->codusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codusu"])){ 
+     if(trim($this->codusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codusu"])){
        $sql  .= $virgula." codusu = $this->codusu ";
        $virgula = ",";
-       if(trim($this->codusu) == null ){ 
+       if(trim($this->codusu) == null ){
          $this->erro_sql = " Campo Código do usuário nao Informado.";
          $this->erro_campo = "codusu";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->dataalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"] !="") ){ 
+     if(trim($this->dataalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"] !="") ){
        $sql  .= $virgula." dataalt = '$this->dataalt' ";
        $virgula = ",";
-       if(trim($this->dataalt) == null ){ 
+       if(trim($this->dataalt) == null ){
          $this->erro_sql = " Campo Data da alteração nao Informado.";
          $this->erro_campo = "dataalt_dia";
          $this->erro_banco = "";
@@ -346,11 +346,11 @@ class cl_db_sysclasseatualizareg {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["dataalt_dia"])){
          $sql  .= $virgula." dataalt = null ";
          $virgula = ",";
-         if(trim($this->dataalt) == null ){ 
+         if(trim($this->dataalt) == null ){
            $this->erro_sql = " Campo Data da alteração nao Informado.";
            $this->erro_campo = "dataalt_dia";
            $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_db_sysclasseatualizareg {
          }
        }
      }
-     if(trim($this->horaalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["horaalt"])){ 
+     if(trim($this->horaalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["horaalt"])){
        $sql  .= $virgula." horaalt = '$this->horaalt' ";
        $virgula = ",";
-       if(trim($this->horaalt) == null ){ 
+       if(trim($this->horaalt) == null ){
          $this->erro_sql = " Campo Hora da alteração nao Informado.";
          $this->erro_campo = "horaalt";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim($this->codarq) == null ){
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearq"])){ 
+     if(trim($this->nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearq"])){
        $sql  .= $virgula." nomearq = '$this->nomearq' ";
        $virgula = ",";
-       if(trim($this->nomearq) == null ){ 
+       if(trim($this->nomearq) == null ){
          $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
          $this->erro_campo = "nomearq";
          $this->erro_banco = "";
@@ -400,10 +400,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->metodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["metodo"])){ 
+     if(trim($this->metodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["metodo"])){
        $sql  .= $virgula." metodo = '$this->metodo' ";
        $virgula = ",";
-       if(trim($this->metodo) == null ){ 
+       if(trim($this->metodo) == null ){
          $this->erro_sql = " Campo Nome do método nao Informado.";
          $this->erro_campo = "metodo";
          $this->erro_banco = "";
@@ -413,10 +413,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->fontenovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fontenovo"])){ 
+     if(trim($this->fontenovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fontenovo"])){
        $sql  .= $virgula." fontenovo = '$this->fontenovo' ";
        $virgula = ",";
-       if(trim($this->fontenovo) == null ){ 
+       if(trim($this->fontenovo) == null ){
          $this->erro_sql = " Campo Fonte novo nao Informado.";
          $this->erro_campo = "fontenovo";
          $this->erro_banco = "";
@@ -426,10 +426,10 @@ class cl_db_sysclasseatualizareg {
          return false;
        }
      }
-     if(trim($this->fonteoriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fonteoriginal"])){ 
+     if(trim($this->fonteoriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fonteoriginal"])){
        $sql  .= $virgula." fonteoriginal = '$this->fonteoriginal' ";
        $virgula = ",";
-       if(trim($this->fonteoriginal) == null ){ 
+       if(trim($this->fonteoriginal) == null ){
          $this->erro_sql = " Campo Fonte original nao Informado.";
          $this->erro_campo = "fonteoriginal";
          $this->erro_banco = "";
@@ -473,7 +473,7 @@ class cl_db_sysclasseatualizareg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Atualiza Classse nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codatualiza;
@@ -501,14 +501,14 @@ class cl_db_sysclasseatualizareg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codatualiza=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codatualiza=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codatualiza));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -543,7 +543,7 @@ class cl_db_sysclasseatualizareg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Atualiza Classse nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codatualiza;
@@ -571,11 +571,11 @@ class cl_db_sysclasseatualizareg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -597,10 +597,10 @@ class cl_db_sysclasseatualizareg {
       }
      return $result;
    }
-   function sql_query ( $codatualiza=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $codatualiza=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -614,15 +614,15 @@ class cl_db_sysclasseatualizareg {
      $sql2 = "";
      if($dbwhere==""){
        if($codatualiza!=null ){
-         $sql2 .= " where db_sysclasseatualizareg.codatualiza = $codatualiza "; 
-       } 
+         $sql2 .= " where db_sysclasseatualizareg.codatualiza = $codatualiza ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -631,10 +631,10 @@ class cl_db_sysclasseatualizareg {
      }
      return $sql;
   }
-   function sql_query_file ( $codatualiza=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $codatualiza=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,15 +647,15 @@ class cl_db_sysclasseatualizareg {
      $sql2 = "";
      if($dbwhere==""){
        if($codatualiza!=null ){
-         $sql2 .= " where db_sysclasseatualizareg.codatualiza = $codatualiza "; 
-       } 
+         $sql2 .= " where db_sysclasseatualizareg.codatualiza = $codatualiza ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

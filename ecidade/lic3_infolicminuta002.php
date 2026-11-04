@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ if ( isset($oGet->oid_arq) && $oGet->oid_arq != "" ){
               <b>Lista de Minutas</b>
             </legend>
 	          <table width="100%">
-		        	<?
+		        	<?php
 		        	  $sWhereAnexos = "l43_liclicita = {$oGet->l20_codigo}";
 		        	  $sSqlAnexos   = $clliclicitaminuta->sql_query_file(null,"*",null,$sWhereAnexos);
 		         	  $rsAnexos     = $clliclicitaminuta->sql_record($sSqlAnexos);

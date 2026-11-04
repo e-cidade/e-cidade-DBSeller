@@ -592,7 +592,7 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($email) > 50) {
+        if (strlen($email) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -630,7 +630,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($localizacao, array(1, 2, 3, 7))) {
+        if (!in_array($localizacao, array(1, 2, 3, 7, 8))) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 

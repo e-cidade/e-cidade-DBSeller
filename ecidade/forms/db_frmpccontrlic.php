@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("l03_tipo");
        <?=@$Lp75_codcontr?>
     </td>
     <td> 
-<?
+<?php
 db_input('p75_codcontr',10,$Ip75_codcontr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp75_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lp75_tipo,"js_pesquisap75_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p75_tipo',1,$Ip75_tipo,true,'text',$db_opcao," onchange='js_pesquisap75_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('l03_tipo',1,$Il03_tipo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('l03_tipo',1,$Il03_tipo,true,'text',3,'')
        <?=@$Lp75_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('p75_numero',8,$Ip75_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pccontrlic.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

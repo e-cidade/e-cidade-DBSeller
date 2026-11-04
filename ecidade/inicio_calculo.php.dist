@@ -1,0 +1,295 @@
+<?PHP
+
+
+if( $opcao_geral == 1 ) {
+
+	//processa registros para quantidade de dias afastados no período da folha
+	//
+
+	$sqlafasta = "delete from pontofs
+		      where r10_anousu = $anousu
+			and r10_mesusu = $mesusu
+			and r10_instit = ".db_getsession("DB_instit")."
+			and r10_rubric in ('0794','0777','0798','0799')
+			and r10_regist in ($faixa_regis)";
+
+	$afasta_re = pg_query($sqlafasta);
+	if( !$afasta_re ){
+
+	   echo "Erro ao remover rubricas do ponto para reprocesssar. $sqlafasta";exit;
+
+	}
+
+	//----- afastados geral
+
+	$sqlafasta1 = "insert into pontofs 
+		       select rh02_anousu, rh02_mesusu, h16_regist, '0794', 
+			      case when count(dias) > 30 then 30  
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as valor, 
+			      case when count(dias) > 30 then 30  
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as dias, 
+			      rh02_lota, '', rh02_instit
+		       from
+			    (select distinct h16_regist,
+				    generate_series(h16_dtconc, 
+				    case when h16_dtterm is null then fc_ultimodiames_data($anousu,$mesusu) else h16_dtterm end,'1 day') as dias
+			     from assenta
+				  inner join tipoasse on h12_codigo = h16_assent
+			     where h16_assent in (113, 106, 11)
+			       and h16_dtconc <= fc_ultimodiames_data($anousu,$mesusu)
+			       and (h16_dtterm is null or h16_dtterm > '$anousu-$mesusu-01')
+			       and h16_regist in ($faixa_regis)
+			    ) as x
+				 inner join rhpessoalmov on rh02_regist = h16_regist
+							and rh02_anousu = $anousu
+							and rh02_mesusu = $mesusu
+				 where dias between '$anousu-$mesusu-01'
+				   and fc_ultimodiames_data($anousu,$mesusu)
+				 group by rh02_anousu, rh02_mesusu,h16_regist, rh02_lota, rh02_instit
+				 order by h16_regist " ;
+	$afasta_re = pg_query($sqlafasta1);
+	if( !$afasta_re ){
+
+	   echo "Erro ao gerar rubrica 0794 no inicio do calculo.";exit;
+
+	}
+
+
+	//
+	//---- afastado licença premio
+	//
+
+	$sqlafasta2 = "insert into pontofs 
+		       select rh02_anousu, rh02_mesusu, h16_regist, '0798', 
+			      case when count(dias) > 30 then 30  
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as valor , 
+			      case when count(dias) > 30 then 30  
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as dias, 
+			      rh02_lota, '', rh02_instit
+		       from
+			 (select distinct h16_regist,
+				 generate_series(h16_dtconc, 
+				 case when h16_dtterm is null then fc_ultimodiames_data($anousu,$mesusu) else h16_dtterm end,'1 day') as dias
+			  from assenta
+			       inner join tipoasse on h12_codigo = h16_assent
+			  where h16_assent in (103)
+			    and h16_dtconc <= fc_ultimodiames_data($anousu,$mesusu)
+			    and (h16_dtterm is null or h16_dtterm > '$anousu-$mesusu-01')
+			       and h16_regist in ($faixa_regis)
+			 ) as x
+			      inner join rhpessoalmov on rh02_regist = h16_regist
+						     and rh02_anousu = $anousu
+						     and rh02_mesusu = $mesusu
+			 where dias between '$anousu-$mesusu-01' and fc_ultimodiames_data($anousu,$mesusu)
+			 group by rh02_anousu, rh02_mesusu,h16_regist, rh02_lota, rh02_instit
+			 order by h16_regist" ;
+
+	$afasta_re = pg_query($sqlafasta2);
+	if( !$afasta_re ){
+
+	   echo "Erro ao gerar rubrica 0798 no inicio do calculo.";exit;
+
+	}
+
+	//
+	//----- afastados estudo
+	//
+
+	$sqlafasta3 = "insert into pontofs
+		       select rh02_anousu, rh02_mesusu, h16_regist, '0799', 
+			      case when count(dias) > 30 then 30 
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as valor , 
+			      case when count(dias) > 30 then 30 
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as dias, 
+			      rh02_lota, '', rh02_instit
+		       from
+			   (select distinct h16_regist,
+				   generate_series(h16_dtconc, 
+				   case when h16_dtterm is null then fc_ultimodiames_data($anousu,$mesusu) else h16_dtterm end,'1 day') as dias
+			    from assenta
+				 inner join tipoasse on h12_codigo = h16_assent
+			    where h16_assent in (24, 114)
+				  and h16_dtconc <= fc_ultimodiames_data($anousu,$mesusu)
+				  and (h16_dtterm is null or h16_dtterm > '$anousu-$mesusu-01')
+			       and h16_regist in ($faixa_regis)
+			   ) as x
+				inner join rhpessoalmov on rh02_regist = h16_regist
+						       and rh02_anousu = $anousu
+						       and rh02_mesusu = $mesusu
+			   where dias between '$anousu-$mesusu-01'  and fc_ultimodiames_data($anousu,$mesusu)
+			   group by rh02_anousu, rh02_mesusu,h16_regist, rh02_lota, rh02_instit
+			   order by h16_regist ";
+
+	$afasta_re = pg_query($sqlafasta3);
+	if( !$afasta_re ){
+
+	   echo "Erro ao gerar rubrica 0799 no inicio do calculo.";exit;
+
+	}
+
+	//
+	//---- afastado licença politica
+	//
+
+	$sqlafasta4 = "insert into pontofs 
+		       select rh02_anousu, rh02_mesusu, h16_regist, '0777', 
+			      case when count(dias) > 30 then 30 
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as valor , 
+			      case when count(dias) > 30 then 30 
+				   when count(dias) = 29 and $anousu = 2024 and $mesusu = 2 then 30
+                                   else count(dias)
+                              end as dias, 
+                              rh02_lota, '', rh02_instit
+		       from
+			   (select distinct h16_regist,
+				   generate_series(h16_dtconc, 
+				   case when h16_dtterm is null then fc_ultimodiames_data($anousu,$mesusu) else h16_dtterm end,'1 day') as dias
+			     from assenta
+				  inner join tipoasse on h12_codigo = h16_assent
+			     where h16_assent in (102)
+			       and h16_dtconc <= fc_ultimodiames_data($anousu,$mesusu)
+			       and (h16_dtterm is null or h16_dtterm > '$anousu-$mesusu-01')
+			       and h16_regist in ($faixa_regis)
+			   ) as x
+				inner join rhpessoalmov on rh02_regist = h16_regist
+						       and rh02_anousu = $anousu
+						       and rh02_mesusu = $mesusu
+			   where dias between '$anousu-$mesusu-01' and fc_ultimodiames_data($anousu,$mesusu)
+			   group by rh02_anousu, rh02_mesusu,h16_regist, rh02_lota, rh02_instit
+			   order by h16_regist" ;
+	$afasta_re = pg_query($sqlafasta4);
+	if( !$afasta_re ){
+
+	   echo "Erro ao gerar rubrica 0777 no inicio do calculo.";exit;
+
+	}
+
+
+        // processa ferias a partir do cadferias
+	//
+
+        $sqlferias = "delete from pontofs 
+		      where r10_anousu = $anousu
+                        and r10_mesusu = $mesusu
+			and r10_rubric = '0516'
+                        and r10_valor = 0
+			and r10_regist in ($faixa_regis) ";
+	$afasta_sqlf = pg_query($sqlferias);
+	if( !$afasta_sqlf ){
+
+	   echo "Erro ao apagar rubrica 0516-FERIAS no inicio do calculo.($sqlferias)";exit;
+
+	}
+
+        $sqlferias = "
+	insert into pontofs 
+        select distinct rh02_anousu,
+                        rh02_mesusu,
+               rhferias.rh109_regist,
+                        '0516',
+                        0,
+                        30,
+                        rh02_lota,
+                        '',
+                        rh02_instit
+        from rhferiasperiodo
+             inner join rhferias     on rhferias.rh109_sequencial = rhferiasperiodo.rh110_rhferias
+             inner join rhpessoal    on rhpessoal.rh01_regist     = rhferias.rh109_regist
+             inner join cgm          on rh01_numcgm = z01_numcgm
+             inner join rhpessoalmov on rh02_anousu = $anousu
+                                    and rh02_mesusu = $mesusu
+                                    and rh02_regist = rh01_regist
+             left join rhpesrescisao on rh02_seqpes = rh05_seqpes
+        where rh110_datainicial >= '".($mesusu==12?$anousu+1:$anousu)."-".($mesusu==12?1:$mesusu+1)."-01'
+          and rh110_datainicial <= fc_ultimodiames_data(".($mesusu==12?$anousu+1:$anousu).",".($mesusu==12?1:$mesusu+1).")
+	  and rh05_seqpes is null
+          and rh110_diaspagar > 0 
+	  and rh110_pagaterco = 't'
+	  and rh109_regist in ($faixa_regis) 
+          and rh109_regist not in ( select r10_regist from pontofs 
+                      where r10_anousu = $anousu
+                        and r10_mesusu = $mesusu
+                        and r10_rubric = '0516'
+			and r10_regist in ($faixa_regis) )";
+
+	$afasta_sqlf = pg_query($sqlferias);
+	if( !$afasta_sqlf ){
+
+	   echo "Erro ao incluir rubrica 0516-FERIAS no inicio do calculo.($sqlferias)";exit;
+
+	}
+
+
+        $sqlferias1 = "delete from pontofs 
+  	               where r10_anousu = $anousu
+                         and r10_mesusu = $mesusu
+			 and r10_rubric = '0502' 
+                         and r10_valor = 0
+                         and r10_regist in ($faixa_regis) 
+                         ";
+	$afasta_sqlf = pg_query($sqlferias1);
+	if( !$afasta_sqlf ){
+
+	   echo "Erro ao apagar rubrica 0502-ABONO FERIAS no inicio do calculo.";exit;
+
+	}
+
+
+        $sqlferias1 = "
+	insert into pontofs 
+        select distinct rh02_anousu,
+                        rh02_mesusu,
+               rhferias.rh109_regist,
+                        '0502',
+                        0,
+                        10,
+                        rh02_lota,
+                        '',
+                        rh02_instit
+        from rhferiasperiodo
+             inner join rhferias  on rhferias.rh109_sequencial = rhferiasperiodo.rh110_rhferias
+             inner join rhpessoal on rhpessoal.rh01_regist     = rhferias.rh109_regist
+             inner join cgm       on rh01_numcgm = z01_numcgm
+             inner join rhpessoalmov on rh02_anousu = $anousu
+                                 and rh02_mesusu = $mesusu
+                                 and rh02_regist = rh01_regist
+             left join rhpesrescisao on rh02_seqpes = rh05_seqpes
+        where rh110_datainicial >= '".($mesusu==12?$anousu+1:$anousu)."-".($mesusu==12?1:$mesusu+1)."-01'
+          and rh110_datainicial <= fc_ultimodiames_data(".($mesusu==12?$anousu+1:$anousu).",".($mesusu==12?1:$mesusu+1).")
+	
+          and rh110_diasabono  > 0
+          and rh05_seqpes is null
+	  and rh110_pagaterco = 't' 
+	  and rh109_regist in ($faixa_regis)
+           and rh109_regist not in (
+                       select r10_regist from pontofs 
+                       where r10_anousu = $anousu
+                         and r10_mesusu = $mesusu
+                         and r10_rubric = '0502' 
+                         and r10_regist in ($faixa_regis)) ";
+
+	$afasta_sqlf = pg_query($sqlferias1);
+	if( !$afasta_sqlf ){
+
+	   echo "Erro ao incluir rubrica 0502-ABONO FERIAS no inicio do calculo.";exit;
+
+	}
+
+ 
+}
+?>
+

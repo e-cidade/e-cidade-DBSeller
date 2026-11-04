@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,7 +92,7 @@ function js_imprimedespacho(codproc,codprocandamint){
     <table    width="100%" >
       <tr>
 	<td>
-	<?
+	<?php
 
 $result_param=$clprotparam->sql_record($clprotparam->sql_query(null,"*",null,"p90_instit=".db_getsession("DB_instit")));
 if ($clprotparam->numrows>0){

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -40,7 +40,7 @@ $classinatura = new cl_assinatura;
 
 //$tipo_agrupa = substr($nivel,0,1);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -66,7 +66,7 @@ $head3 = "EXERCICIO: ".db_getsession("DB_anousu")." - ".$xtipo;
 $head4 = "NIVEL $nivel";
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$xcampos = split("-",$orgaos);
+$xcampos =explode("-",$orgaos);
 
 
 if(substr($nivel,0,1) == '1'){
@@ -78,7 +78,7 @@ if(substr($nivel,0,1) == '1'){
 }
 $virgula1 = ' ';
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos =explode("_",$xcampos[$i]);
    $virgula = '';
    $where  = "'";
    $where1 = "'";
@@ -91,7 +91,7 @@ for($i=0;$i < sizeof($xcampos);$i++){
    }
    $xwhere1 .= $virgula1.$where1."'";
    $virgula1 = ', ';
-   
+
 }
 
 
@@ -126,7 +126,7 @@ $sql1 = db_dotacaosaldo(3,2,3,true,$xwhere1,$anousu,$dataini,$datafin,2,3,true);
 
 if (isset($nivel) && $nivel=='2A'){
    //nivel de unidade
-  $sql = "select o58_orgao, 
+  $sql = "select o58_orgao,
                  o58_unidade,
 	         ".$sql."
 	         o41_descr as o40_descr
@@ -138,26 +138,26 @@ if (isset($nivel) && $nivel=='2A'){
         order by o58_orgao,o58_unidade";
 } else {
   // todos os outros casos
-  $sql = "select o58_orgao, 
+  $sql = "select o58_orgao,
                o58_unidade,
 	       ".$sql."
-	       o40_descr 
+	       o40_descr
         from ( $sql1 ) as d
 	     left  outer join orcfuncao f on f.o52_funcao = d.o58_funcao
 	group by o58_orgao,
 	         o58_unidade,
-	         o40_descr 
+	         o40_descr
         order by o58_orgao,o58_unidade";
- 
+
 }
 $result = db_query($sql);
 
 //db_criatabela($result);
 //exit;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -176,7 +176,7 @@ for($i=0;$i<pg_numrows($result);$i++){
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     $pagina = 0;
     $pdf->addpage("L");
-       
+
     $pdf->setfont('arial','b',7);
 
     $pdf->cell(12,$alt,"CÓDIGO",1,0,"L",0);
@@ -184,9 +184,9 @@ for($i=0;$i<pg_numrows($result);$i++){
        $pdf->cell(85,$alt,"UNIDADE",1,0,"L",0);
     } else {
        $pdf->cell(85,$alt,"ÓRGÃO",1,0,"L",0);
-    }  
+    }
     $quantascolunas = ($quantascolunas-4);
-    
+
     $fim = true;
     if($quantascolunas<=0){
       $x = $quantascolunas+4;
@@ -197,7 +197,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $campo = pg_fieldname($result,$contador);
       $contador ++;
       $sql = "select o52_descr
-              from orcfuncao 
+              from orcfuncao
 	      where o52_funcao = ".substr($campo,2);
       $resultc = db_query($sql);
       db_fieldsmemory($resultc,0);
@@ -205,14 +205,14 @@ for($i=0;$i<pg_numrows($result);$i++){
     }
     $pdf->cell(0,$alt,'',0,1,"L",0);
   }
-  
+
   $pdf->cell(10,$alt,db_formatar($o58_orgao,'orgao').db_formatar($o58_unidade,'orgao'),0,0,"L",0);
   $pdf->cell(85,$alt,$o40_descr,0,0,"L",0);
   if($x>=1){
     $valor = pg_fieldname($result,$contador-4);
     $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
     $tvalor1 += $$valor;
-  } 
+  }
   if($x>=2){
     $valor = pg_fieldname($result,$contador-3);
     $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
@@ -252,7 +252,7 @@ $pdf->ln(14);
 
 if($origem != "O"){
   assinaturas($pdf, $classinatura,'BG');
-}  
+}
 
 $pdf->Output();
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("j34_setor");
        <?=@$Lj01_matric?>
     </td>
     <td> 
-<?
+<?php
 db_input('j01_matric',8,$Ij01_matric,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj01_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj01_numcgm,"js_pesquisaj01_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j01_numcgm',4,$Ij01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj01_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lj01_baixa?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j01_baixa',@$j01_baixa_dia,@$j01_baixa_mes,@$j01_baixa_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('j01_baixa',@$j01_baixa_dia,@$j01_baixa_mes,@$j01_baixa_ano,true,'t
        <?=@$Lj01_fracao?>
     </td>
     <td> 
-<?
+<?php
 db_input('j01_fracao',15,$Ij01_fracao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -138,7 +138,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

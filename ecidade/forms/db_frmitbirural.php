@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("it01_guia");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit18_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit18_guia,"js_pesquisait18_guia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_guia',10,$Iit18_guia,true,'text',$db_opcao," onchange='js_pesquisait18_guia(false);'")
 ?>
-       <?
+       <?php
 db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        <?=@$Lit18_area?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_area',20,$Iit18_area,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('it18_area',20,$Iit18_area,true,'text',$db_opcao,"")
        <?=@$Lit18_areatrans?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_areatrans',20,$Iit18_areatrans,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('it18_areatrans',20,$Iit18_areatrans,true,'text',$db_opcao,"")
        <?=@$Lit18_frente?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_frente',20,$Iit18_frente,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('it18_frente',20,$Iit18_frente,true,'text',$db_opcao,"")
        <?=@$Lit18_fundos?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_fundos',20,$Iit18_fundos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('it18_fundos',20,$Iit18_fundos,true,'text',$db_opcao,"")
        <?=@$Lit18_prof?>
     </td>
     <td> 
-<?
+<?php
 db_input('it18_prof',20,$Iit18_prof,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbirural.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

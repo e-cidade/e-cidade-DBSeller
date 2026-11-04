@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clouvidoriacadlocal->rotulo->label("ov25_descricao");
               <?=$Lov25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov25_sequencial",10,$Iov25_sequencial,true,"text",4,"","chave_ov25_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clouvidoriacadlocal->rotulo->label("ov25_descricao");
               <?=$Lov25_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ov25_descricao",100,$Iov25_descricao,true,"text",4,"","chave_ov25_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clouvidoriacadlocal->rotulo->label("ov25_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       
       $sWhere = "(   ov25_validade is null  
                   or ov25_validade > '".date('Y-m-d',db_getsession('DB_datausu'))."')";
@@ -125,12 +125,12 @@ $clouvidoriacadlocal->rotulo->label("ov25_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

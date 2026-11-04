@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -218,7 +218,7 @@ function js_verificar() {
   </tr>
   <tr>
     <td height="330" valign="top" bgcolor="#FFFF64">	
-	<?
+	<?php
 	$result = db_query("select *,to_char(ag40_data,'DD') as ag40_data_dia,to_char(ag40_data,'MM') as ag40_data_mes,to_char(ag40_data,'YYYY') as ag40_data_ano 
 	                   from atendmed 
 					   where ag40_codigo = ".db_getsession("COD_atendimento"));
@@ -257,7 +257,7 @@ function js_verificar() {
           </tr>
           <tr> 
             <td nowrap> 
-              <?
+              <?php
 			db_data("ag40_data","$ag40_data_dia","$ag40_data_mes","$ag40_data_ano");
 			?>
             </td>
@@ -272,7 +272,7 @@ function js_verificar() {
             <td nowrap><strong>Peso:</strong>
             <input name="ag40_peso" type="text" id="ag40_peso" value="<?=@$ag40_peso?>" size="6" maxlength="20"></td>
             <td colspan="6" nowrap><strong>Hora de In&iacute;cio: 
-              <input name="ag40_horainiate" type="text" value="<? echo @$ag40_horainiate==""?date("H:i"):$ag40_horainiate ?>" size="5" maxlength="5">
+              <input name="ag40_horainiate" type="text" value="<?php echo @$ag40_horainiate==""?date("H:i"):$ag40_horainiate ?>" size="5" maxlength="5">
               &nbsp;&nbsp;Hora de Fim: 
               <input name="ag40_horafimate" type="text" value="<?=$ag40_horafimate?>" size="5" maxlength="5">
               &nbsp;&nbsp;&nbsp; 

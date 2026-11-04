@@ -26,8 +26,12 @@
  */
 
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita;
+use \ECidade\Pdf\Pdf;
 
-require_once(modification("fpdf151/pdf.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/JSON.php"));
@@ -36,7 +40,6 @@ require_once(modification("libs/db_libcontabilidade.php"));
 require_once(modification("classes/db_orcreceita_classe.php"));
 require_once(modification("fpdf151/assinatura.php"));
 require_once(modification("libs/ReceitaSaldo.php"));
-
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -51,13 +54,11 @@ $sqlRecursos = $daoOrctiporec->sql_query_file();
 $rsRecursos = db_query($sqlRecursos);
 $totalRecursos = pg_num_rows($rsRecursos);
 for ($i = 0; $i < $totalRecursos; $i++) {
-
     $dadosRecurso = db_utils::fieldsMemory($rsRecursos, $i);
     $recursos[$dadosRecurso->o15_codigo] = $dadosRecurso;
 }
 class PDFBalanco extends PDF
 {
-
     public function Header()
     {
 
@@ -163,17 +164,15 @@ $tipo_impressao = 1;
 // 1 = orcamento
 // 2 = balanco
 
+parse_str($_SERVER['QUERY_STRING']);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-//db_postmemory($HTTP_SERVER_VARS,2);
-
-$xinstit = split("-", $db_selinstit);
-$resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ',
-        $db_selinstit) . ") ");
+$xinstit = explode("-", $db_selinstit);
+$listaInstituicoes = str_replace('-', ', ', $db_selinstit);
+$resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in ($listaInstituicoes) ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     if (strlen(trim($nomeinstabrev)) > 0) {
         $descr_inst .= $xvirg . $nomeinstabrev;
@@ -185,6 +184,7 @@ for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
     $xvirg = ', ';
 }
 
+$head6 = '';
 if ($origem == "O") {
     $xtipo = "ORÇAMENTO";
 } else {
@@ -192,15 +192,12 @@ if ($origem == "O") {
     if ($opcao == 3) {
         $head6 = "PERÍODO : " . db_formatar($perini, 'd') . " A " . db_formatar($perfin, 'd');
     } else {
-        $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . strtoupper(db_mes(substr($perfin, 5,
-                2)));
+        $mesFim = strtoupper(db_mes(substr($perfin, 5, 2)));
+        $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . $mesFim;
     }
 }
-$db_filtro = ' o70_instit in (' . str_replace('-', ', ', $db_selinstit) . ')';
+$db_filtro = " o70_instit in ($listaInstituicoes)";
 
-//echo "<pre>";
-//print_r($oFiltros->recurso);
-//echo "</pre>";
 if (count($oFiltros->recurso->aRecursos) > 0) {
     $sListaRecursos = implode(",", $oFiltros->recurso->aRecursos);
     $sOperador = "in";
@@ -236,13 +233,25 @@ if (!isset($tipo)) {
 
     $head5 = "INSTITUIÇÕES : " . $descr_inst;
 } else {
-    $head2 = "DEMONSTRATIVO DA RECEITA";
+    $head1 = "DEMONSTRATIVO DA RECEITA";
     $head3 = "EXERCÍCIO: " . db_getsession("DB_anousu");
     $head4 = "INSTITUIÇÕES : " . $descr_inst;
 }
 
 $pdf = new PDFBalanco();
-$pdf->Open();
+$pdf->init(false);
+$pdf->addTitulo($head1);
+$pdf->addTitulo($head3);
+$pdf->addTitulo($head4);
+if (!empty($head5)) {
+    $pdf->addTitulo($head5);
+}
+
+if (!empty($head6)) {
+    $pdf->addTitulo($head6);
+}
+
+
 $pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(241);
@@ -251,25 +260,27 @@ $pdf->setleftmargin(3);
 $troca = 1;
 $alt = 4;
 
-$tm_fonte = 6;
+$tm_fonte = 5.8;
 $tm_valor = 17;
-$tm_descr = 60;
-$tm_concarpeculiar = 5;
-$tm_estrut = 24;
-$tm_reduz = 10;
+$tm_descr = 57;
+$tm_concarpeculiar = 4;
+$tm_estrut = 23.5;
+$tm_reduz = 8;
+$tm_recurso = 17;
+$tm_perc = 7;
 $fundo = 0;
 
 if ($impressao == 'paisagem') {
     $pdf->setfont('arial', 'b', 10);
-    $tm_fonte = 8;
+    $tm_fonte = 7;
     $tm_valor = 24;
-    $tm_descr = 90;
-    $tm_estrut = 33;
-    $tm_reduz = 15;
+    $tm_descr = 80;
+    $tm_estrut = 30;
+    $tm_reduz = 12;
+    $tm_recurso = 15;
+    $tm_perc = 20;
 }
 
-//$sql = "select * from work order by elemento";
-//$result = db_query($sql);
 $anousu = db_getsession("DB_anousu");
 $dataini = $perini;
 $datafin = $perfin;
@@ -280,12 +291,11 @@ if (EMENTARIO_RECEITA) {
     $formatacaoReceita = 'receita';
 }
 
-if ( ! empty($oGet->recursos_selecionados) ) {
+if (! empty($oGet->recursos_selecionados)) {
     $db_filtro .= " and o70_codigo in ({$oGet->recursos_selecionados})";
 }
 
 if ($estrut_inicial != '') {
-
     $estrut_inicial = str_replace('.', '', $estrut_inicial);
     $aEstrutural      = explode(",", $estrut_inicial);
     $aWhereEstrutural = array();
@@ -301,23 +311,18 @@ if ($estrut_inicial != '') {
     }
 }
 
-$filtroPrevisao = "WHERE
-                        CAST(COALESCE(NULLIF(substr(fc_receitasaldo, 81, 12), ''), '0') AS float8) <> '0'
-                        OR
-                        CAST(COALESCE(NULLIF(substr(fc_receitasaldo, 15, 12), ''), '0') AS float8) <> '0'
-                        OR
-                        CAST(COALESCE(nullif(substr(fc_receitasaldo, 68, 12), ''), '0') AS float8) <> '0'
-                        OR
-                        CAST(COALESCE(nullif(substr(fc_receitasaldo,55,12),''),'0') AS float8) <> '0'
-                        ";
-if($previsao=='nao'){
+$filtroPrevisao = "
+ WHERE     CAST(COALESCE(NULLIF(substr(fc_receitasaldo, 81, 12), ''), '0') AS float8) <> '0'
+        OR CAST(COALESCE(NULLIF(substr(fc_receitasaldo, 15, 12), ''), '0') AS float8) <> '0'
+        OR CAST(COALESCE(nullif(substr(fc_receitasaldo, 68, 12), ''), '0') AS float8) <> '0'
+        OR CAST(COALESCE(nullif(substr(fc_receitasaldo,55,12),''),'0') AS float8) <> '0'
+";
+if ($previsao=='nao' || $opcao == 1) {
     $filtroPrevisao = "";
 }
-
-
 if ($nivel_agrupar == 0) {
     if (EMENTARIO_RECEITA) {
-        $result = ReceitaSaldo(11, 1, $opcao, true, $db_filtro, $anousu, $dataini, $datafin, false, ' * ', true, $nivel_agrupar,$filtroPrevisao);
+        $result = ReceitaSaldo(11, 1, $opcao, true, $db_filtro, $anousu, $dataini, $datafin, false, ' * ', true, $nivel_agrupar, $filtroPrevisao);
     } else {
         $result = db_receitasaldo(11, 1, $opcao, true, $db_filtro, $anousu, $dataini, $datafin, false, ' * ', true, $nivel_agrupar);
     }
@@ -328,7 +333,7 @@ if ($nivel_agrupar == 0) {
     $total_saldo_arrecadado_acumulado = 0;
     $total_saldo_a_arrecadar = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         //  if($o57_fonte == '400000000000000' || $o57_fonte == '900000000000000'){
         if (db_conplano_grupo($anousu, $o57_fonte, 9004) == true) {
@@ -380,7 +385,6 @@ if ($nivel_agrupar == 0) {
     }
     $sql .= "select o57_anousu,
                      o70_codrec,
-
                      case when o70_codrec is not null then '4'||substr(o57_fonte,2,14) else o57_fonte end as o57_fonte,
 
                      o57_descr,
@@ -447,7 +451,6 @@ if ($nivel_agrupar == 0) {
     }
 
     $result = db_query($sql);
-//    db_criatabela($result);exit;
 
     $sql = "select *
               from db_estrutura
@@ -462,7 +465,6 @@ if ($nivel_agrupar == 0) {
         db_redireciona("db_erros.php?db_erro={$sErro}");
         exit;
     }
-
     $niveis = array(
         1 => array("inicio" => 0 , "tamanho" => 1),
         2 => array("inicio" => 1 , "tamanho" => 1),
@@ -477,7 +479,7 @@ if ($nivel_agrupar == 0) {
         11 => array("inicio" => 13 , "tamanho" => 2),
     );
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         $fonte = pg_result($result, $i, 'o57_fonte');
 
         if ($anousu >= 2018) {
@@ -508,7 +510,7 @@ if ($nivel_agrupar == 0) {
         $total_saldo_prev_anterior = 0;
 
         $tem_valores_sintetico = false;
-        for ($x = $i + 1; $x < pg_numrows($result); $x++) {
+        for ($x = $i + 1; $x < pg_num_rows($result); $x++) {
             if ($parte_estrutural == substr(pg_result($result, $x, 'o57_fonte'), $inicio, $tamanho)) {
                 if (pg_result($result, $x, 'tipo_conta') == 'A') {
                     $total_saldo_inicial += pg_result($result, $x, 'saldo_inicial');
@@ -546,7 +548,7 @@ if ($nivel_agrupar == 0) {
     $total_saldo_arrecadado_acumulado = 0;
     $total_saldo_a_arrecadar = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         $total_saldo_inicial += $saldo_inicial;
         $total_saldo_prevadic_acum += $saldo_prevadic_acum;
@@ -561,7 +563,8 @@ $pagina = 1;
 $tottotal = 0;
 $analitica = false;
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     $elemento = $o57_fonte;
     $descr = $o57_descr;
@@ -571,7 +574,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     }
 
 
-    if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+    if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
         $pagina = 0;
         if ($impressao == 'paisagem') {
             $pdf->addpage('L');
@@ -583,7 +586,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell($tm_descr, $alt, "DESCRIÇÃO", 0, 0, "L", 0);
         $pdf->cell($tm_concarpeculiar, $alt, "CP", 0, 0, "L", 0);
         $pdf->cell($tm_reduz, $alt, "REDUZ", 0, 0, "L", 0);
-        $pdf->cell($tm_reduz, $alt, "REC", 0, 0, "L", 0);
+        $pdf->cell($tm_recurso, $alt, "REC", 0, 0, "L", 0);
         if ($origem == "O") {
             $pdf->cell($tm_valor, $alt, "PREVISTO", 0, 0, "R", 0);
             $pdf->cell($tm_valor, $alt, "PREV.ADIC.", 0, 0, "R", 0);
@@ -594,9 +597,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
             $pdf->cell($tm_valor, $alt, "ARREC. ANO", 0, 0, "R", 0);
             $pdf->cell($tm_valor, $alt, "DIFERENÇA", 0, 0, "R", 0);
         }
-        $pdf->cell(10, $alt, "Perc", 0, 1, "R", 0);
+        $pdf->cell($tm_perc, $alt, "Perc", 0, 1, "R", 0);
         $pdf->ln(3);
-
     }
     /**
      *  contas analiticas possuem "o70_codrec" e serão apresentadas sombeadas
@@ -616,12 +618,17 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     if ($descr == "") {
         $pdf->cell($tm_descr, $alt, "***ESTRUTURAL NÃO EXISTE NA CONTABILIDADE", 0, 0, "L", $fundo);
     } else {
-        $pdf->cell($tm_descr, $alt, substr($descr, 0, 45), 0, 0, "L", $fundo);
+        $pdf->cell($tm_descr, $alt, substr($descr, 0, ($impressao == 'paisagem'?80:43)), 0, 0, "L", $fundo);
     }
 
     if (isset($o70_concarpeculiar)) {
-        $res_orcreceita = $clorcreceita->sql_record($clorcreceita->sql_query(null, null, "c58_descr", null,
-            "o70_anousu = $anousu and o57_fonte = '$o57_fonte'"));
+        $res_orcreceita = $clorcreceita->sql_record($clorcreceita->sql_query(
+            null,
+            null,
+            "c58_descr",
+            null,
+            "o70_anousu = $anousu and o57_fonte = '$o57_fonte'"
+        ));
         if ($clorcreceita->numrows > 0) {
             db_fieldsmemory($res_orcreceita, 0);
             $pdf->cell($tm_concarpeculiar, $alt, $o70_concarpeculiar, 0, 0, "L", $fundo);
@@ -638,30 +645,34 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf->cell($tm_reduz, $alt, '', 0, 0, "C", $fundo);
     }
     if (isset($o70_codigo) && $o70_codigo != 0) {
-
-//        $recurso = db_formatar($o70_codigo, 'recurso');
-        $recurso = $gestao;
-
-//        if ($anousu >= 2019) {
-//
-//            $recurso = RecursoRepository::getRecursoPorCodigo($o70_codigo);
-//            $o70_codigo = $recurso->getFonteDeRecurso();
-//            $recurso = $o70_codigo;
-//        }
-//        $pdf->cell($tm_reduz, $alt, $recurso, 0, 0, "L", $fundo);
-        $pdf->cell($tm_reduz, $alt, $recurso, 0, 0, "L", $fundo);
+        $recurso = descricaoCompletaRecurso($o70_codigo, $anousu, $apresentar);
+        $pdf->cell($tm_recurso, $alt, $recurso, 0, 0, "L", $fundo);
     } else {
-        $pdf->cell($tm_reduz, $alt, '', 0, 0, "L", $fundo);
+        $pdf->cell($tm_recurso, $alt, '', 0, 0, "L", $fundo);
     }
     if ($origem == "O") {
         if ($nivel_agrupar == 0 || ($nivel_agrupar != 0 and $tipo_conta == 'A')) {
             $pdf->cell($tm_valor, $alt, db_formatar($saldo_inicial, 'f'), 0, 0, "R", $fundo);
             $pdf->cell($tm_valor, $alt, db_formatar($saldo_prevadic_acum, 'f'), 0, 0, "R", $fundo);
         } else {
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_inicial'], 'f'), 0, 0, "R",
-                $fundo);
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_prevadic_acum'], 'f'), 0, 0, "R",
-                $fundo);
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_inicial'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_prevadic_acum'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
             $saldo_inicial = $matriz_sintetico[$i]['total_saldo_inicial'];
             $saldo_prevadic_acum = $matriz_sintetico[$i]['total_saldo_prevadic_acum'];
         }
@@ -673,16 +684,51 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
             $pdf->cell($tm_valor, $alt, db_formatar($saldo_arrecadado_acumulado, 'f'), 0, 0, "R", $fundo);
             $pdf->cell($tm_valor, $alt, db_formatar($saldo_a_arrecadar, 'f'), 0, 0, "R", $fundo);
         } else {
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_inicial'], 'f'), 0, 0, "R",
-                $fundo);
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_prevadic_acum'], 'f'), 0, 0, "R",
-                $fundo);
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_arrecadado'], 'f'), 0, 0, "R",
-                $fundo);
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_arrecadado_acumulado'], 'f'), 0,
-                0, "R", $fundo);
-            $pdf->cell($tm_valor, $alt, db_formatar($matriz_sintetico[$i]['total_saldo_a_arrecadar'], 'f'), 0, 0, "R",
-                $fundo);
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_inicial'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_prevadic_acum'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_arrecadado'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_arrecadado_acumulado'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
+            $pdf->cell(
+                $tm_valor,
+                $alt,
+                db_formatar($matriz_sintetico[$i]['total_saldo_a_arrecadar'], 'f'),
+                0,
+                0,
+                "R",
+                $fundo
+            );
 
             $saldo_inicial = $matriz_sintetico[$i]['total_saldo_inicial'];
             $saldo_prevadic_acum = $matriz_sintetico[$i]['total_saldo_prevadic_acum'];
@@ -691,19 +737,22 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     }
 
     if ($saldo_inicial + $saldo_prevadic_acum != 0) {
-        $pdf->cell($tm_reduz, $alt,
-            db_formatar($saldo_arrecadado_acumulado / ($saldo_inicial + $saldo_prevadic_acum) * 100, 'f'), 0, 1, "R",
-            $fundo);
+        $pdf->cell(
+            $tm_perc,
+            $alt,
+            db_formatar($saldo_arrecadado_acumulado / ($saldo_inicial + $saldo_prevadic_acum) * 100, 'f'),
+            0,
+            1,
+            "R",
+            $fundo
+        );
     } else {
-        $pdf->cell($tm_reduz, $alt, db_formatar(0, 'f'), 0, 1, "R", $fundo);
+        $pdf->cell($tm_perc, $alt, db_formatar(0, 'f'), 0, 1, "R", $fundo);
     }
-
 }
 $pdf->setfont('arial', 'B', $tm_fonte);
 $pdf->cell($tm_estrut, $alt, '', 0, 0, "L", 0);
-$pdf->cell($tm_descr + ($tm_reduz * 2), $alt, 'TOTAL ', 0, 0, "L", 0);
-$pdf->cell($tm_concarpeculiar, $alt, "", 0, 0, "L", 0);
-//$pdf->cell(10,$alt,'',0,0,"L",0);
+$pdf->cell($tm_descr + ($tm_reduz + $tm_recurso + $tm_concarpeculiar), $alt, 'TOTAL ', 0, 0, "L", 0);
 if ($origem == "O") {
     $pdf->cell($tm_valor, $alt, db_formatar($total_saldo_inicial, 'f'), 0, 0, "R", 0);
     $pdf->cell($tm_valor, $alt, db_formatar($total_saldo_prevadic_acum, 'f'), 0, 1, "R", 0);
@@ -715,11 +764,20 @@ if ($origem == "O") {
     $pdf->cell($tm_valor, $alt, db_formatar($total_saldo_a_arrecadar, 'f'), 0, 0, "R", 0);
 
     if ($total_saldo_inicial + $total_saldo_prevadic_acum != 0) {
-        $pdf->cell($tm_reduz, $alt,
-            db_formatar($total_saldo_arrecadado_acumulado / ($total_saldo_inicial + $total_saldo_prevadic_acum) * 100,
-                'f'), 0, 1, "R", 0);
+        $pdf->cell(
+            $tm_perc,
+            $alt,
+            db_formatar(
+                $total_saldo_arrecadado_acumulado / ($total_saldo_inicial + $total_saldo_prevadic_acum) * 100,
+                'f'
+            ),
+            0,
+            1,
+            "R",
+            0
+        );
     } else {
-        $pdf->cell($tm_reduz, $alt, db_formatar(0, 'f'), 0, 1, "R", 0);
+        $pdf->cell($tm_prec, $alt, db_formatar(0, 'f'), 0, 1, "R", 0);
     }
 }
 
@@ -735,7 +793,7 @@ $ass_cont = $classinatura->assinatura(1005, $cont);
 
 //echo $ass_pref;
 $pdf->setfont('arial', 'B', 8);
-if ($pdf->gety() > ($pdf->h - 50)) {
+if ($pdf->gety() > ($pdf->getH() - 50)) {
     if ($impressao == 'paisagem') {
         $pdf->addpage('L');
     } else {
@@ -743,28 +801,27 @@ if ($pdf->gety() > ($pdf->h - 50)) {
     }
 }
 
-if($pdf->getAvailHeight() > 270 and isParaiba())
-{
-    $pdf->setfont('arial','',7);
-    $pdf->cell($pdf->w,$pdf->h,"NADA A REGISTRAR",0,0,"C",0);
-    $pdf->sety($pdf->h-60);
+if ($pdf->getAvailHeight() > 270 and isParaiba()) {
+    $pdf->setfont('arial', '', 7);
+    $pdf->cell($pdf->getW(), $pdf->getH(), "NADA A REGISTRAR", 0, 0, "C", 0);
+    $pdf->sety($pdf->getH()-60);
 }
 
 
 if (!isset($tipo)) {
-    $largura = ($pdf->w) / 2;
+    $largura = ($pdf->getW()) / 2;
     $pdf->ln(10);
     $pos = $pdf->gety();
     $pdf->multicell($largura, 4, $ass_pref, 0, "C", 0, 0);
-    if(isParaiba()){
-        $pdf->setxy($largura-47,$pos);
+    if (isParaiba()) {
+        $pdf->setxy($largura-47, $pos);
         $pdf->multicell($largura, 4, $ass_sec, 0, "C", 0, 0);
     }
     $pdf->setxy($largura, $pos);
     $pdf->multicell($largura, 4, $ass_cont, 0, "C", 0, 0);
 }
 
-$pdf->Output();
+$pdf->Output('I');
 
 db_query("commit");
 

@@ -5,6 +5,8 @@ namespace App\Domain\Financeiro\Contabilidade\Factories;
 use App\Domain\Financeiro\Contabilidade\Contracts\AnexosFactoryInterface;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresInRsService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresMdf2022Service;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresMdf2023Service;
+use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresMdf2024Service;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresMdfService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresService;
 use Exception;
@@ -59,8 +61,11 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
                 return 259;
             case 2022:
                 return 262;
+            case 2023:
+                return 270;
+            case 2024:
             default:
-                return 262;
+                return 275;
         }
     }
 
@@ -109,8 +114,8 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
 
     /**
      * Retorna o service responsável pelo processamento do modelo MDF
-     * @throws Exception
      * @return AnexoTresService
+     * @throws Exception
      */
     public static function getServiceMdf($exercicio, $filtros)
     {
@@ -118,8 +123,12 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
             case 2021:
                 return new AnexoTresMdfService($filtros);
             case 2022:
-            default:
                 return new AnexoTresMdf2022Service($filtros);
+            case 2023:
+                return new AnexoTresMdf2023Service($filtros);
+            case 2024:
+            default:
+                return new AnexoTresMdf2024Service($filtros);
         }
     }
 
@@ -146,7 +155,7 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function transformPeriodo($codigo)
     {
-        if (in_array($codigo, [6, 7, 8, 9, 10, 11, 17,  18,  19,  20,  21,  22,  23,  24,  25,  26, 27, 28])) {
+        if (in_array($codigo, [6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28])) {
             return $codigo;
         }
         switch ($codigo) {

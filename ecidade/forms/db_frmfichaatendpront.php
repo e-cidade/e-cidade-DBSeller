@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -61,7 +61,7 @@ $clrotulo->label("sd04_i_cbo");
       ?>
     </td>
   </tr>
-  
+
   <!-- MOTIVO -->
   <tr>
     <td nowrap title="<?=@$Tsd24_v_motivo?>">
@@ -73,7 +73,7 @@ $clrotulo->label("sd04_i_cbo");
       ?>
     </td>
   </tr>
-  
+
   <!-- MOTIVO SI/SIH
   <tr>
     <td nowrap title="<?=@$Tsd24_i_siasih?>" valign="middle" align="top">
@@ -85,7 +85,7 @@ $clrotulo->label("sd04_i_cbo");
       <?php
         db_input('sd24_i_siasih',10,$Isd70_c_cid,true,'text',$db_opcao,"onchange='js_pesquisasd24_i_siasih(false);'")
       ?>
-    </td>  
+    </td>
     <td>
       <?php
          db_textarea('sd92_c_nome',1,57,@$Isd92_c_nome,true,'text',3,"")
@@ -100,23 +100,23 @@ $clrotulo->label("sd04_i_cbo");
        <?=@$Lsd24_v_pressao?>
     </td>
     <td>
-      <?db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
+      <?php db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
     </td>
     <td align="right" >
        <?=@$Lsd24_f_peso?>
-      <?db_input('sd24_f_peso',10,$Isd24_f_peso,true,'text',$db_opcao)?>
+      <?php db_input('sd24_f_peso',10,$Isd24_f_peso,true,'text',$db_opcao)?>
     </td>
   </tr>
-  
+
   <tr>
     <td nowrap title="<?=@$Tsd24_f_temperatura?>">
        <?=@$Lsd24_f_temperatura?>
     </td>
     <td colspan="4">
-      <?db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
+      <?php db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
     </td>
   </tr>
-  <!-- PROFISSIONAL 
+  <!-- PROFISSIONAL
   <tr>
     <td nowrap title="<?=@$Tsd24_i_profissional?>">
        <?
@@ -175,9 +175,9 @@ $clrotulo->label("sd04_i_cbo");
          </td>
        </tr>
 
-  
 
-  <!-- DIAGNOSTICO 
+
+  <!-- DIAGNOSTICO
   <tr>
     <td nowrap title="<?=@$Tsd24_t_diagnostico?>">
        <?=@$Lsd24_t_diagnostico?>
@@ -190,7 +190,7 @@ $clrotulo->label("sd04_i_cbo");
     </td>
   </tr>
 
-  <!-- CID 
+  <!-- CID
   <tr>
     <td nowrap title="<?=@$Tsd70_c_cid?>" valign="top" align="top">
        <?php
@@ -202,14 +202,14 @@ $clrotulo->label("sd04_i_cbo");
         db_input('sd24_i_cid',10,$Isd24_i_cid,true,'hidden',$db_opcao,"");
         db_input('sd70_c_cid',10,$Isd70_c_cid,true,'text',$db_opcao,"onchange='js_pesquisasd70_c_cid(false);'")
       ?>
-    </td>  
+    </td>
     <td>
       <?php
          db_textarea('sd70_c_nome',1,57,@$Isd70_c_nome,true,'text',3,"")
       ?>
     </td>
   </tr>
--->  
+-->
   </table>
 			</fieldset>
 		</td>
@@ -242,8 +242,8 @@ function js_limpartriagem(){
 }
 
 function js_reload(){
-	parent.mo_camada('a1');	
-	parent.iframe_a1.location.href='sau4_fichaatendabas001.php?chavepesquisaprontuario=<?=$chavepesquisaprontuario?>'	
+	parent.mo_camada('a1');
+	parent.iframe_a1.location.href='sau4_fichaatendabas001.php?chavepesquisaprontuario=<?=$chavepesquisaprontuario?>'
 }
 
 
@@ -270,7 +270,7 @@ function js_pesquisasd24_i_siasih(mostra){
 }
 function js_mostrasd24_i_siasih(chave, erro){
   document.form1.sd92_c_nome.value = chave;
-  if(erro==true){ 
+  if(erro==true){
     document.form1.sd24_i_siasih.focus();
   }
 }
@@ -320,7 +320,7 @@ function js_pesquisasd70_c_cid(mostra){
         document.form1.sd24_i_cid.value = '';
         document.form1.sd70_c_nome.value = '';
         js_OpenJanelaIframe('','db_iframe_sau_cid','func_sau_cid.php?chave_sd70_c_cid='+document.form1.sd70_c_cid.value+'&funcao_js=parent.js_mostrasd70_c_cid1|sd70_i_codigo|sd70_c_cid|sd70_c_nome','Pesquisa',false);
-        
+
      }else{
        document.form1.sd24_i_cid.value = '';
        document.form1.sd70_c_cid.value = '';
@@ -363,8 +363,8 @@ function js_mostrarhcbo(erro,chave1, chave2, chave3,chave4){
   document.form1.sd24_i_profissional.value = chave3;
   document.form1.rh70_sequencial.value = chave4;
   if(erro==true){
-    document.form1.rh70_estrutural.focus(); 
-    document.form1.rh70_estrutural.value = ''; 
+    document.form1.rh70_estrutural.focus();
+    document.form1.rh70_estrutural.value = '';
   }
 }
 
@@ -376,9 +376,9 @@ function js_mostrarhcbo1(chave1,chave2,chave3,chave4){
   db_iframe_especmedico.hide();
 
   if(chave2=''){
-    document.form1.rh70_estrutural.focus(); 
-    document.form1.rh70_estrutural.value = ''; 
-  }  
+    document.form1.rh70_estrutural.focus();
+    document.form1.rh70_estrutural.value = '';
+  }
 }
 
 </script>

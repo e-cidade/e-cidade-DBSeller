@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhestagiocomissao->rotulo->label("h59_sequencial");
               <?=$Lh59_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h59_sequencial",10,$Ih59_sequencial,true,"text",4,"","chave_h59_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhestagiocomissao->rotulo->label("h59_sequencial");
               <?=$Lh59_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h59_sequencial",10,$Ih59_sequencial,true,"text",4,"","chave_h59_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhestagiocomissao->rotulo->label("h59_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = " h59_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +123,12 @@ $clrhestagiocomissao->rotulo->label("h59_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

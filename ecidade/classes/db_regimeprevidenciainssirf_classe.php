@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,19 +48,19 @@ class cl_regimeprevidenciainssirf {
    var $rh129_instit = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh129_sequencial = int4 = Código 
-                 rh129_regimeprevidencia = int4 = Código Regime Previdência 
-                 rh129_codigo = int8 = Código INSSIRF 
-                 rh129_instit = int4 = Código Instituição 
+                 rh129_sequencial = int4 = Código
+                 rh129_regimeprevidencia = int4 = Código Regime Previdência
+                 rh129_codigo = int8 = Código INSSIRF
+                 rh129_instit = int4 = Código Instituição
                  ";
    //funcao construtor da classe
-   function cl_regimeprevidenciainssirf() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regimeprevidenciainssirf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_regimeprevidenciainssirf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh129_sequencial = ($this->rh129_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh129_sequencial"]:$this->rh129_sequencial);
        $this->rh129_regimeprevidencia = ($this->rh129_regimeprevidencia == ""?@$GLOBALS["HTTP_POST_VARS"]["rh129_regimeprevidencia"]:$this->rh129_regimeprevidencia);
@@ -80,7 +80,7 @@ class cl_regimeprevidenciainssirf {
      }
    }
    // funcao para inclusao
-   function incluir ($rh129_sequencial){
+   public function incluir ($rh129_sequencial){
       $this->atualizacampos();
      if($this->rh129_regimeprevidencia == null ){
        $this->erro_sql = " Campo Código Regime Previdência não informado.";
@@ -142,16 +142,16 @@ class cl_regimeprevidenciainssirf {
        return false;
      }
      $sql = "insert into regimeprevidenciainssirf(
-                                       rh129_sequencial 
-                                      ,rh129_regimeprevidencia 
-                                      ,rh129_codigo 
-                                      ,rh129_instit 
+                                       rh129_sequencial
+                                      ,rh129_regimeprevidencia
+                                      ,rh129_codigo
+                                      ,rh129_instit
                        )
                 values (
-                                $this->rh129_sequencial 
-                               ,$this->rh129_regimeprevidencia 
-                               ,$this->rh129_codigo 
-                               ,$this->rh129_instit 
+                                $this->rh129_sequencial
+                               ,$this->rh129_regimeprevidencia
+                               ,$this->rh129_codigo
+                               ,$this->rh129_instit
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -197,7 +197,7 @@ class cl_regimeprevidenciainssirf {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh129_sequencial=null) {
+   public function alterar ($rh129_sequencial=null) {
       $this->atualizacampos();
      $sql = " update regimeprevidenciainssirf set ";
      $virgula = "";
@@ -314,7 +314,7 @@ class cl_regimeprevidenciainssirf {
      }
    }
    // funcao para exclusao
-   function excluir ($rh129_sequencial=null,$dbwhere=null) {
+   public function excluir ($rh129_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -387,7 +387,7 @@ class cl_regimeprevidenciainssirf {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -410,7 +410,7 @@ class cl_regimeprevidenciainssirf {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $rh129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -438,7 +438,7 @@ class cl_regimeprevidenciainssirf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,10 +448,10 @@ class cl_regimeprevidenciainssirf {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_regimeprevidenciainssirf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

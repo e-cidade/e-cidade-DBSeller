@@ -25,6 +25,7 @@ class cl_rhlocaltrabagentesnocivos
     public $rh256_tolerancialimite = null; 
     public $rh256_medida = null; 
     public $rh256_tecnicamedicao = null; 
+    public $rh256_processo = null; 
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  rh256_sequencial = int4 = Sequencial 
@@ -36,6 +37,7 @@ class cl_rhlocaltrabagentesnocivos
                  rh256_tolerancialimite = varchar(10) = Limite de tolerância 
                  rh256_medida = varchar(3) = Medida 
                  rh256_tecnicamedicao = varchar(40) = Técnica utilizada 
+                 rh256_processo = varchar(21) = Processo 
                  ";
 
     public function __construct()
@@ -66,6 +68,7 @@ class cl_rhlocaltrabagentesnocivos
        $this->rh256_tolerancialimite = ($this->rh256_tolerancialimite == ""?@$GLOBALS["HTTP_POST_VARS"]["rh256_tolerancialimite"]:$this->rh256_tolerancialimite);
        $this->rh256_medida = ($this->rh256_medida == ""?@$GLOBALS["HTTP_POST_VARS"]["rh256_medida"]:$this->rh256_medida);
        $this->rh256_tecnicamedicao = ($this->rh256_tecnicamedicao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh256_tecnicamedicao"]:$this->rh256_tecnicamedicao);
+       $this->rh256_processo = ($this->rh256_processo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh256_processo"]:$this->rh256_processo);
      }else{
        $this->rh256_sequencial = ($this->rh256_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh256_sequencial"]:$this->rh256_sequencial);
      }
@@ -137,6 +140,7 @@ class cl_rhlocaltrabagentesnocivos
                                       ,rh256_tolerancialimite 
                                       ,rh256_medida 
                                       ,rh256_tecnicamedicao 
+                                      ,rh256_processo 
                        )
                 values (
                                 $this->rh256_sequencial 
@@ -148,6 +152,7 @@ class cl_rhlocaltrabagentesnocivos
                                ,'$this->rh256_tolerancialimite' 
                                ,'$this->rh256_medida' 
                                ,'$this->rh256_tecnicamedicao' 
+                               ,'$this->rh256_processo' 
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -193,6 +198,7 @@ class cl_rhlocaltrabagentesnocivos
          $resac = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_result($resaco,0,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_result($resaco,0,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_result($resaco,0,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1015580,'','".AddSlashes(pg_result($resaco,0,'rh256_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -269,6 +275,10 @@ class cl_rhlocaltrabagentesnocivos
        $sql  .= $virgula." rh256_tecnicamedicao = '$this->rh256_tecnicamedicao' ";
        $virgula = ",";
      }
+     if(trim($this->rh256_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_processo"])){ 
+       $sql  .= $virgula." rh256_processo = '$this->rh256_processo' ";
+       $virgula = ",";
+     }
      $sql .= " where ";
      if($rh256_sequencial!=null){
        $sql .= " rh256_sequencial = $this->rh256_sequencial";
@@ -304,6 +314,8 @@ class cl_rhlocaltrabagentesnocivos
              $resac = db_query("insert into db_acount values($acount,1010858,1013675,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_medida'))."','$this->rh256_medida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_tecnicamedicao"]) || $this->rh256_tecnicamedicao != "")
              $resac = db_query("insert into db_acount values($acount,1010858,1013676,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_tecnicamedicao'))."','$this->rh256_tecnicamedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_processo"]) || $this->rh256_processo != "")
+             $resac = db_query("insert into db_acount values($acount,1010858,1015580,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_processo'))."','$this->rh256_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -369,6 +381,7 @@ class cl_rhlocaltrabagentesnocivos
            $resac  = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1015580,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

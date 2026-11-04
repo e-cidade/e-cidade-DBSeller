@@ -154,9 +154,6 @@ class AnexoII extends ProcessamentoRelatorioLegal
 
         $this->aLinhasConsistencia[39]->descricao = 'APROPRIAÇÃO DE DEPÓSITOS JUDICIAIS';
 
-        unset($this->aLinhasConsistencia[40], $this->aLinhasConsistencia[41]);
-        ksort($this->aLinhasConsistencia);
-
         foreach (array_keys($this->aLinhasConsistencia) as $iIndice) {
             $this->aLinhasConsistencia[$iIndice]->primeiro_periodo = 0;
             $this->aLinhasConsistencia[$iIndice]->segundo_periodo = 0;
@@ -242,6 +239,9 @@ class AnexoII extends ProcessamentoRelatorioLegal
                 (($this->aLinhasConsistencia['25']->terceiro_periodo /
                         $this->aLinhasConsistencia['26.2']->terceiro_periodo) * 100);
         }
+
+        unset($this->aLinhasConsistencia[40], $this->aLinhasConsistencia[41]);
+        ksort($this->aLinhasConsistencia);
 
         $this->aLinhas = $this->aLinhasConsistencia;
     }

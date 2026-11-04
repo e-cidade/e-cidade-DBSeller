@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	       <b> Competência: Ano/Mês</b>
 	     </td>
 	     <td>
-	     <?          
+	     <?php          
 	      db_input('anocomp1',4,@$anocomp1,true,'text',$db_opcao,""); echo "/";
 	      db_input('mescomp1',2,@$mescomp1,true,'text',$db_opcao,"Onchange= 'document.form1.submit()'");
 		  if(isset($anocomp1)){
@@ -104,7 +104,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	       <b>Agrupar:</b>
 	     </td>
 	     <td>
-	     <?
+	     <?php
 			$x = array('0'=>'NENHUM','1'=>'UNIDADE');
 			db_select('agrupar',$x,true,$db_opcao,"");
 	     ?>
@@ -113,7 +113,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	       <b>BPA</b>
 	     </td>
 	     <td>
-	     <?
+	     <?php
 			$x = array('0'=>'Analítico','1'=>'Sintético');
 			db_select('bpa',$x,true,$db_opcao,"");
 	     ?>
@@ -122,7 +122,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	       <b>Tipo BPA</b>
 	     </td>
        <td>
-         <?
+         <?php
 	       if (! isset ( $pab )) {
 			     $pab = "3";
 		  	 }
@@ -133,7 +133,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
      </tr>
      &nbsp;&nbsp;&nbsp;
       <table border="1" cellpadding="0" cellspacing="0" width="90%">
-     <?
+     <?php
      $strWhere = $objSau_config->s103_i_departamentos == 1 ? "":"db_depusu.id_usuario = ".db_getsession("DB_id_usuario");
      $result = $clunidades->sql_record( $clunidades->sql_query_ext("","distinct unidades.sd02_i_codigo, db_depart.descrdepto", "descrdepto",$strWhere) );
      //$result = $clunidades->sql_record($clunidades->sql_query());
@@ -176,7 +176,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
   </td>
  </tr>
 </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clconlancamcgm = new cl_conlancamcgm;
               <?=$Lz01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
+              <?php db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
             </td>
           </tr>
           <tr> 
@@ -67,7 +67,7 @@ $clconlancamcgm = new cl_conlancamcgm;
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");   ?>
+              <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");   ?>
             </td>
           </tr>
           <tr> 
@@ -83,7 +83,7 @@ $clconlancamcgm = new cl_conlancamcgm;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos = "distinct c76_numcgm , z01_nome";
       if(!isset($pesquisa_chave)){
         if(isset($chave_z01_numcgm) && (trim($chave_z01_numcgm)!="") ){
@@ -118,14 +118,14 @@ $clconlancamcgm = new cl_conlancamcgm;
 </table>
 </body>
 </html>
-<?
+<?php
    if(!isset($pesquisa_chave)){
    ?>
    <script>
         document.form2.chave_z01_nome.focus();
         document.form2.chave_z01_nome.select();
    </script>
-   <?
+   <?php
   }
 ?>
 <script type="text/javascript">

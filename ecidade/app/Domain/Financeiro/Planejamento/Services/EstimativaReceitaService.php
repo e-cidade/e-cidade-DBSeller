@@ -104,6 +104,12 @@ class EstimativaReceitaService
             }
         )->shift();
 
+        if (is_null($cronograma)) {
+            $service = new CronogramaDesembolsoReceitaService();
+            $service->criarCronogramaExercicio($estimativa, $valor, $exercicio);
+            return true;
+        }
+
         $service = new CronogramaDesembolsoReceitaService();
         $service->updateRateioAutomatico($cronograma, $modelValor);
     }
@@ -205,7 +211,7 @@ class EstimativaReceitaService
         return EstimativaReceita::when(!empty($filtros['planejamento']), function ($query) use ($filtros) {
             $query->where('planejamento_id', '=', $filtros['planejamento']);
         })->when(!empty($filtrarInstituicao), function ($query) use ($filtrarInstituicao) {
-                $query->where('instituicao_id', '=', $filtrarInstituicao);
+            $query->where('instituicao_id', '=', $filtrarInstituicao);
         })->when(!empty($filtros['instituicao_id']), function ($query) use ($filtros) {
             $query->where('instituicao_id', '=', $filtros['instituicao_id']);
         })->when(!empty($filtros['inclusaomanual']), function ($query) use ($filtros) {

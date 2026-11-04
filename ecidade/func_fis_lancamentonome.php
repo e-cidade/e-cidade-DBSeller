@@ -1,0 +1,106 @@
+<?php 
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
+
+require(modification("libs/db_stdlib.php"));
+require(modification("libs/db_conecta.php"));
+include(modification("libs/db_sessoes.php"));
+include(modification("libs/db_usuariosonline.php"));
+include(modification("dbforms/db_funcoes.php"));
+include(modification("classes/db_fis_lancamento_classe.php"));
+include(modification("classes/db_fis_lanctipo_classe.php"));
+db_postmemory($HTTP_POST_VARS);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+$cllanc = new cl_fis_lancamento;
+$cllanctipo = new cl_fis_lanctipo;
+$cllanc->rotulo->label("nl01_codlanc");
+$cllanc->rotulo->label("nl01_nome");
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+</head>
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
+  <tr>
+    <td height="63" align="center" valign="top">
+        <table width="35%" border="0" align="center" cellspacing="0">
+	     <form name="form2" method="post" action="" >
+             </form>
+        </table>
+      </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top">
+      <?php 
+      if(!isset($pesquisa_chave)){
+
+      }else{
+        if($pesquisa_chave!=null && $pesquisa_chave!=""){
+          $result_numcgm = $cllanc->sql_record($cllanc->sql_querycgm($pesquisa_chave));
+          if($cllanc->numrows!=0){
+            db_fieldsmemory($result_numcgm,0);
+            $result_cgmlanc = $cllanc->sql_record($cllanc->sql_query_cgm(null,"z01_numcgm=$z01_numcgm and nl01_codlanc<>$pesquisa_chave"));
+	          $numrows=$cllanc->numrows;
+	          if ($numrows!=0){
+	            db_fieldsmemory($result_cgmlanc,0);
+
+              $sWhere = " nl18_codlanc = $nl01_codlanc and nl18_codtipo = $codtipo ";
+              $sSql = $cllanctipo->sql_query_file(null, "*", null, $sWhere);
+	            $result_proced=$cllanctipo->sql_record($sSql);
+	            if ($cllanctipo->numrows!=0){
+                echo "<script>".$funcao_js."(true);</script>";
+	            }else{
+                echo "<script>".$funcao_js."(false);</script>";
+              }
+	          }
+          }else{
+	          echo "<script>".$funcao_js."(erro);</script>";
+          }
+        }
+      }
+      ?>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<?php 
+if(!isset($pesquisa_chave)){
+  ?>
+  <script>
+  </script>
+  <?php 
+}
+?>
+<script type="text/javascript">
+(function() {
+  var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');
+  input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
+})();
+</script>

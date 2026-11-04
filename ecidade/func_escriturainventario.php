@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ if (isset($estornado) && !empty($estornado)) {
               <?=$Lc88_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("c88_sequencial",10,$Ic88_sequencial,true,"text",4,"","chave_c88_sequencial");
 		       ?>
             </td>
@@ -79,7 +79,7 @@ if (isset($estornado) && !empty($estornado)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_escriturainventario.php")==true){
@@ -126,12 +126,12 @@ if (isset($estornado) && !empty($estornado)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

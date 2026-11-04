@@ -1,75 +1,75 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE transferenciafinanceirarecebimento
-class cl_transferenciafinanceirarecebimento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k151_sequencial = 0; 
-   var $k151_transferenciafinanceira = 0; 
-   var $k151_slip = 0; 
-   var $k151_db_usuario = 0; 
-   var $k151_hora = null; 
-   var $k151_data_dia = null; 
-   var $k151_data_mes = null; 
-   var $k151_data_ano = null; 
-   var $k151_data = null; 
-   var $k151_estornado = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_transferenciafinanceirarecebimento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k151_sequencial = 0;
+   var $k151_transferenciafinanceira = 0;
+   var $k151_slip = 0;
+   var $k151_db_usuario = 0;
+   var $k151_hora = null;
+   var $k151_data_dia = null;
+   var $k151_data_mes = null;
+   var $k151_data_ano = null;
+   var $k151_data = null;
+   var $k151_estornado = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k151_sequencial = int4 = Sequencial 
-                 k151_transferenciafinanceira = int4 = Codigo da Transferencia 
-                 k151_slip = int4 = Código Slip 
-                 k151_db_usuario = int4 = Usuário 
-                 k151_hora = varchar(8) = Hora 
-                 k151_data = date = Data do recebimento 
-                 k151_estornado = bool = Estornado 
+                 k151_sequencial = int4 = Sequencial
+                 k151_transferenciafinanceira = int4 = Codigo da Transferencia
+                 k151_slip = int4 = Código Slip
+                 k151_db_usuario = int4 = Usuário
+                 k151_hora = varchar(8) = Hora
+                 k151_data = date = Data do recebimento
+                 k151_estornado = bool = Estornado
                  ";
-   //funcao construtor da classe 
-   function cl_transferenciafinanceirarecebimento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("transferenciafinanceirarecebimento"); 
+     $this->rotulo = new rotulo("transferenciafinanceirarecebimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_transferenciafinanceirarecebimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k151_sequencial = ($this->k151_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k151_sequencial"]:$this->k151_sequencial);
        $this->k151_transferenciafinanceira = ($this->k151_transferenciafinanceira == ""?@$GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"]:$this->k151_transferenciafinanceira);
@@ -99,9 +99,9 @@ class cl_transferenciafinanceirarecebimento {
      }
    }
    // funcao para inclusao
-   function incluir ($k151_sequencial){ 
+   public function incluir ($k151_sequencial){
       $this->atualizacampos();
-     if($this->k151_transferenciafinanceira == null ){ 
+     if($this->k151_transferenciafinanceira == null ){
        $this->erro_sql = " Campo Codigo da Transferencia nao Informado.";
        $this->erro_campo = "k151_transferenciafinanceira";
        $this->erro_banco = "";
@@ -110,7 +110,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k151_slip == null ){ 
+     if($this->k151_slip == null ){
        $this->erro_sql = " Campo Código Slip nao Informado.";
        $this->erro_campo = "k151_slip";
        $this->erro_banco = "";
@@ -119,7 +119,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k151_db_usuario == null ){ 
+     if($this->k151_db_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "k151_db_usuario";
        $this->erro_banco = "";
@@ -128,7 +128,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k151_hora == null ){ 
+     if($this->k151_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "k151_hora";
        $this->erro_banco = "";
@@ -137,7 +137,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k151_data == null ){ 
+     if($this->k151_data == null ){
        $this->erro_sql = " Campo Data do recebimento nao Informado.";
        $this->erro_campo = "k151_data_dia";
        $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k151_estornado == null ){ 
+     if($this->k151_estornado == null ){
        $this->erro_sql = " Campo Estornado nao Informado.";
        $this->erro_campo = "k151_estornado";
        $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_transferenciafinanceirarecebimento {
        return false;
      }
      if($k151_sequencial == "" || $k151_sequencial == null ){
-       $result = db_query("select nextval('transferenciafinanceirarecebimento_k151_sequencial_seq')"); 
+       $result = db_query("select nextval('transferenciafinanceirarecebimento_k151_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: transferenciafinanceirarecebimento_k151_sequencial_seq do campo: k151_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: transferenciafinanceirarecebimento_k151_sequencial_seq do campo: k151_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k151_sequencial = pg_result($result,0,0); 
+       $this->k151_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from transferenciafinanceirarecebimento_k151_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k151_sequencial)){
@@ -176,10 +176,10 @@ class cl_transferenciafinanceirarecebimento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k151_sequencial = $k151_sequencial; 
+         $this->k151_sequencial = $k151_sequencial;
        }
      }
-     if(($this->k151_sequencial == null) || ($this->k151_sequencial == "") ){ 
+     if(($this->k151_sequencial == null) || ($this->k151_sequencial == "") ){
        $this->erro_sql = " Campo k151_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -188,25 +188,25 @@ class cl_transferenciafinanceirarecebimento {
        return false;
      }
      $sql = "insert into transferenciafinanceirarecebimento(
-                                       k151_sequencial 
-                                      ,k151_transferenciafinanceira 
-                                      ,k151_slip 
-                                      ,k151_db_usuario 
-                                      ,k151_hora 
-                                      ,k151_data 
-                                      ,k151_estornado 
+                                       k151_sequencial
+                                      ,k151_transferenciafinanceira
+                                      ,k151_slip
+                                      ,k151_db_usuario
+                                      ,k151_hora
+                                      ,k151_data
+                                      ,k151_estornado
                        )
                 values (
-                                $this->k151_sequencial 
-                               ,$this->k151_transferenciafinanceira 
-                               ,$this->k151_slip 
-                               ,$this->k151_db_usuario 
-                               ,'$this->k151_hora' 
-                               ,".($this->k151_data == "null" || $this->k151_data == ""?"null":"'".$this->k151_data."'")." 
-                               ,'$this->k151_estornado' 
+                                $this->k151_sequencial
+                               ,$this->k151_transferenciafinanceira
+                               ,$this->k151_slip
+                               ,$this->k151_db_usuario
+                               ,'$this->k151_hora'
+                               ,".($this->k151_data == "null" || $this->k151_data == ""?"null":"'".$this->k151_data."'")."
+                               ,'$this->k151_estornado'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "transferenciafinanceirarecebimento ($this->k151_sequencial) nao Incluído. Inclusao Abortada.";
@@ -244,16 +244,16 @@ class cl_transferenciafinanceirarecebimento {
        $resac = db_query("insert into db_acount values($acount,3415,19234,'','".AddSlashes(pg_result($resaco,0,'k151_estornado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k151_sequencial=null) { 
+   public function alterar ($k151_sequencial=null) {
       $this->atualizacampos();
      $sql = " update transferenciafinanceirarecebimento set ";
      $virgula = "";
-     if(trim($this->k151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_sequencial"])){ 
+     if(trim($this->k151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_sequencial"])){
        $sql  .= $virgula." k151_sequencial = $this->k151_sequencial ";
        $virgula = ",";
-       if(trim($this->k151_sequencial) == null ){ 
+       if(trim($this->k151_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k151_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_transferenciafinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"])){ 
+     if(trim($this->k151_transferenciafinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"])){
        $sql  .= $virgula." k151_transferenciafinanceira = $this->k151_transferenciafinanceira ";
        $virgula = ",";
-       if(trim($this->k151_transferenciafinanceira) == null ){ 
+       if(trim($this->k151_transferenciafinanceira) == null ){
          $this->erro_sql = " Campo Codigo da Transferencia nao Informado.";
          $this->erro_campo = "k151_transferenciafinanceira";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_slip"])){ 
+     if(trim($this->k151_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_slip"])){
        $sql  .= $virgula." k151_slip = $this->k151_slip ";
        $virgula = ",";
-       if(trim($this->k151_slip) == null ){ 
+       if(trim($this->k151_slip) == null ){
          $this->erro_sql = " Campo Código Slip nao Informado.";
          $this->erro_campo = "k151_slip";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_db_usuario"])){ 
+     if(trim($this->k151_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_db_usuario"])){
        $sql  .= $virgula." k151_db_usuario = $this->k151_db_usuario ";
        $virgula = ",";
-       if(trim($this->k151_db_usuario) == null ){ 
+       if(trim($this->k151_db_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "k151_db_usuario";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_hora"])){ 
+     if(trim($this->k151_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_hora"])){
        $sql  .= $virgula." k151_hora = '$this->k151_hora' ";
        $virgula = ",";
-       if(trim($this->k151_hora) == null ){ 
+       if(trim($this->k151_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k151_hora";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"] !="") ){ 
+     if(trim($this->k151_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"] !="") ){
        $sql  .= $virgula." k151_data = '$this->k151_data' ";
        $virgula = ",";
-       if(trim($this->k151_data) == null ){ 
+       if(trim($this->k151_data) == null ){
          $this->erro_sql = " Campo Data do recebimento nao Informado.";
          $this->erro_campo = "k151_data_dia";
          $this->erro_banco = "";
@@ -327,11 +327,11 @@ class cl_transferenciafinanceirarecebimento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"])){
          $sql  .= $virgula." k151_data = null ";
          $virgula = ",";
-         if(trim($this->k151_data) == null ){ 
+         if(trim($this->k151_data) == null ){
            $this->erro_sql = " Campo Data do recebimento nao Informado.";
            $this->erro_campo = "k151_data_dia";
            $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_transferenciafinanceirarecebimento {
          }
        }
      }
-     if(trim($this->k151_estornado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_estornado"])){ 
+     if(trim($this->k151_estornado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_estornado"])){
        $sql  .= $virgula." k151_estornado = '$this->k151_estornado' ";
        $virgula = ",";
-       if(trim($this->k151_estornado) == null ){ 
+       if(trim($this->k151_estornado) == null ){
          $this->erro_sql = " Campo Estornado nao Informado.";
          $this->erro_campo = "k151_estornado";
          $this->erro_banco = "";
@@ -383,7 +383,7 @@ class cl_transferenciafinanceirarecebimento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "transferenciafinanceirarecebimento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k151_sequencial;
@@ -411,14 +411,14 @@ class cl_transferenciafinanceirarecebimento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k151_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k151_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k151_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -450,7 +450,7 @@ class cl_transferenciafinanceirarecebimento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "transferenciafinanceirarecebimento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k151_sequencial;
@@ -478,11 +478,11 @@ class cl_transferenciafinanceirarecebimento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -504,11 +504,11 @@ class cl_transferenciafinanceirarecebimento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,15 +527,15 @@ class cl_transferenciafinanceirarecebimento {
      $sql2 = "";
      if($dbwhere==""){
        if($k151_sequencial!=null ){
-         $sql2 .= " where transferenciafinanceirarecebimento.k151_sequencial = $k151_sequencial "; 
-       } 
+         $sql2 .= " where transferenciafinanceirarecebimento.k151_sequencial = $k151_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,11 +544,11 @@ class cl_transferenciafinanceirarecebimento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,15 +561,15 @@ class cl_transferenciafinanceirarecebimento {
      $sql2 = "";
      if($dbwhere==""){
        if($k151_sequencial!=null ){
-         $sql2 .= " where transferenciafinanceirarecebimento.k151_sequencial = $k151_sequencial "; 
-       } 
+         $sql2 .= " where transferenciafinanceirarecebimento.k151_sequencial = $k151_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

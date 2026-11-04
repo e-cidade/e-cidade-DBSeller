@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("p58_codproc");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj11_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj11_codigo,"js_pesquisaj11_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j11_codigo',10,$Ij11_codigo,true,'text',$db_opcao," onchange='js_pesquisaj11_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('j12_numero',10,$Ij12_numero,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj11_processo?>">
-       <?
+       <?php
        db_ancora(@$Lj11_processo,"js_pesquisaj11_processo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j11_processo',10,$Ij11_processo,true,'text',$db_opcao," onchange='js_pesquisaj11_processo(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_lotenumero_proc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

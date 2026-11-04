@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -71,7 +71,7 @@ echo "<script>";
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-     <?
+     <?php
      include(modification("forms/db_frmquadracemit.php"));
      ?>
     </center>
@@ -80,7 +80,7 @@ echo "<script>";
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
  if($clquadracemit->erro_status=="0"){
   $clquadracemit->erro(true,false);

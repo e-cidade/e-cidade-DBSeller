@@ -73,8 +73,8 @@ if ($reimprime == 1) {
       <table width="35%" border="0" align="center" cellspacing="0">
         <form name="form2" method="post" action="">
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tp58_codproc ?>">
-                <?= $Lp58_codproc ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tp58_codproc ?>">
+                <?php echo $Lp58_codproc ?>
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
@@ -83,8 +83,8 @@ if ($reimprime == 1) {
             </td>
           </tr>
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tp58_numero ?>">
-                <?= $Lp58_numero ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tp58_numero ?>">
+                <?php echo $Lp58_numero ?>
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
@@ -93,8 +93,8 @@ if ($reimprime == 1) {
             </td>
           </tr>
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tp58_requer ?>">
-                <?= $Lp58_requer ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tp58_requer ?>">
+                <?php echo $Lp58_requer ?>
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
@@ -124,6 +124,7 @@ if ($reimprime == 1) {
 
         $where[] = "p51_tipoprocgrupo = {$grupo}";
         $where[] = "not exists(select p30_procprincipal from processosapensados where p30_procapensado = p58_codproc)";
+        $where[] = "db_depart.instit = " . db_getsession('DB_instit');
 
         if (!isset($pesquisa_chave)) {
             if (isset($chave_p58_codproc) && (trim($chave_p58_codproc) != "")) {
@@ -159,29 +160,29 @@ if ($reimprime == 1) {
             }
 
             $where = implode(' AND ', $where);
-            $sql = "select p58_codproc as dl_cod_processo, 
-		                   p58_numero  as dl_processo, 
-		                   z01_nome    as dl_nome_ou_Razão_social,   
-		                   p58_dtproc  , 
-		                   p58_obs, 
-		                   p68_codproc 
+            $sql = "select p58_codproc as dl_cod_processo,
+		                   p58_numero  as dl_processo,
+		                   z01_nome    as dl_nome_ou_Razão_social,
+		                   p58_dtproc  ,
+		                   p58_obs,
+		                   p68_codproc
 		               from ( select p58_codproc,
                 			              p58_numero||'/'||p58_ano as p58_numero,
                 				            z01_nome,
 		                                p58_dtproc,
-                                    p58_obs,                                    
+                                    p58_obs,
                 				            arqproc.p68_codproc
                 			         from protprocesso
                 			               inner join tipoproc on p51_codigo = p58_codigo
-                				              
+                			               join db_depart on protprocesso.p58_coddepto = db_depart.coddepto
                                      inner join cgm on p58_numcgm = z01_numcgm
                 				             " . ($reimprime == 1 ? "left" : "inner") . " join procandam on p58_codandam = p61_codandam
-                				             left join arqproc on arqproc.p68_codproc = protprocesso.p58_codproc 
+                				             left join arqproc on arqproc.p68_codproc = protprocesso.p58_codproc
                                      $join
                 			       where $where ) as x
 			           where   x.p68_codproc is null order by x.p58_codproc desc";
 
-            
+
             db_lovrot($sql, 15, "()", "", $funcao_js);
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
@@ -203,7 +204,7 @@ if ($reimprime == 1) {
 
                 $sql = "select * from (
                      				   select p58_codproc,
-                     				          p58_numero, 
+                     				          p58_numero,
                                       p58_ano,
                            					  p58_requer,
                            					  z01_nome,
@@ -215,9 +216,10 @@ if ($reimprime == 1) {
                            					  inner join cgm on p58_numcgm = z01_numcgm
                            					  " . ($reimprime == 1 ? "left" : "inner") . " join procandam on p58_codandam = p61_codandam
                            					  left join arqproc on arqproc.p68_codproc = protprocesso.p58_codproc
+                           					  join db_depart on protprocesso.p58_coddepto = db_depart.coddepto
                      				    where $where ) as x
 		   	  	   where   x.p68_codproc is null order by x.p58_codproc desc";
-                 
+
                 $result = db_query($sql);
                 if (pg_numrows($result) != 0) {
                     db_fieldsmemory($result, 0);

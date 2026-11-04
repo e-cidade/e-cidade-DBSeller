@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,30 +53,30 @@ $clcgm->rotulo->label("z01_nome");
   <td height="63" align="center" valign="top">
    <table width="100%" border="0" align="center" cellspacing="0">
    <form name="form2" method="post" action="" >
-   <?if(isset($marca)){?>
+   <?php if(isset($marca)){?>
    <tr>
     <td width="50%" align="right" nowrap title="<?=$Tma01_i_codigo?>">
      <?=$Lma01_i_codigo?>
     </td>
     <td width="50%" align="left" nowrap>
-     <?
+     <?php
      db_input("ma01_i_codigo",10,$Ima01_i_codigo,true,"text",4,"","chave_ma01_i_codigo");
      ?>
     </td>
    </tr>
-   <?}?>
-   <?if(isset($cgm)){?>
+   <?php }?>
+   <?php if(isset($cgm)){?>
    <tr>
     <td width="40%" align="right" nowrap title="<?=$Tz01_nome?>">
      <?=$Lz01_nome?>
     </td>
     <td width="60%" align="left" nowrap>
-     <?
+     <?php
      db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
      ?>
     </td>
    </tr>
-   <?}?>
+   <?php }?>
    <tr>
     <td colspan="2" align="center">
      <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
@@ -90,7 +90,7 @@ $clcgm->rotulo->label("z01_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if(!isset($pesquisa_chave)){
     if(isset($chave_ma01_i_codigo) && (trim($chave_ma01_i_codigo)!="") ){
      $campos = "transfmarca.ma02_i_marca,cgm3.z01_numcgm,cgm3.z01_nome";

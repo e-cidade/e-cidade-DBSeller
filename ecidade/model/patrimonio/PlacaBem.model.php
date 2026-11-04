@@ -156,7 +156,6 @@ class PlacaBem {
     if (!db_utils::inTransaction()) {
       throw new Exception("No momento não ha uma transação em aberto. \nAguarde um momento e repita a ação.");
     }
-
     $this->iTipoPlaca = BensParametroPlaca::getCodigoParametro();
 
     switch ($this->iTipoPlaca) {
@@ -193,9 +192,8 @@ class PlacaBem {
 
     if (empty($this->iCodigoPlaca)) {
 
-      $this->iTipoPlaca = BensParametroPlaca::getCodigoParametro();
-
-      switch ($this->iTipoPlaca) {
+      $this->setTipoPlaca(BensParametroPlaca::getCodigoParametro());
+      switch ($this->getTipoPlaca()) {
 
         case BensParametroPlaca::PLACA_SEQUENCIAL_AUTOMATICO : // SEQUENCIAL AUTOMÁTICO
 
@@ -233,12 +231,62 @@ class PlacaBem {
     {
         $dados = ['bem' => '', 'historico' => ''];
         $dao = new \cl_bensplaca();
-        $sql = $dao->sqlQueryIsPlacaDisponivel(!empty($this->sPlaca) ? $this->sPlaca : $this->sPlacaSeq);
+
+        if ($this->getTipoPlaca() == BensParametroPlaca::PLACA_CLASSIFICACAO_SEQUENCIAL) {
+            $sql = $this->sqlQueryIsPlacaDisponivel($this->sPlacaSeq, $this->sPlaca);
+        } else {
+            $sql = $this->sqlQueryIsPlacaDisponivel(!empty($this->sPlaca) ? $this->sPlaca : $this->sPlacaSeq);
+        }
+
         $rs = $dao->sql_record($sql);
         if ($rs !== false && $dao->numrows > 0) {
             $dados = pg_fetch_assoc($rs);
         }
         return $dados;
+    }
+
+    public function sqlQueryIsPlacaDisponivel($sequencialPlaca, $stringPlaca = false)
+    {
+
+
+        if ($stringPlaca) {
+            $sql = "
+            SELECT
+            t52_bem as bem,
+            CASE
+                WHEN t41_placaseq = 0 THEN t41_placa
+                ELSE t41_placaseq::VARCHAR(20)
+            END historico
+        FROM
+            bensplaca
+        LEFT JOIN bens
+            ON bens.t52_ident = t41_placaseq::VARCHAR(20) OR bens.t52_ident = t41_placa
+        WHERE
+            t41_excluido = 'f'
+            AND (t41_placaseq = {$sequencialPlaca} AND t41_placa = '{$stringPlaca}')
+            AND (select count(t52_bem) from bens where t52_bem = bensplaca.t41_bem and bens.t52_instit = ".db_getsession('DB_instit')." ) > 0
+            and t52_instit = ".db_getsession('DB_instit')."
+            ";
+        } else {
+            $sql = "
+            SELECT
+            t52_bem as bem,
+            CASE
+                WHEN t41_placaseq = 0 THEN t41_placa
+                ELSE t41_placaseq::VARCHAR(20)
+            END historico
+        FROM
+            bensplaca
+        LEFT JOIN bens
+            ON bens.t52_ident = t41_placaseq::VARCHAR(20) OR bens.t52_ident = t41_placa
+        WHERE
+            t41_excluido = 'f'
+            AND (t41_placaseq = {$sequencialPlaca} OR t41_placa = '{$sequencialPlaca}')
+            AND (select count(t52_bem) from bens where t52_bem = bensplaca.t41_bem and bens.t52_instit = ".db_getsession('DB_instit')." ) > 0
+            and t52_instit = ".db_getsession('DB_instit')."
+            ";
+        }
+        return $sql;
     }
 
   /**
@@ -266,13 +314,13 @@ class PlacaBem {
       /**
        * Atualizar a tabela CFpatriplaca.
        */
-      if ($this->iTipoPlaca == 1) {
+      if ($this->getTipoPlaca() == 1) {
 
         $oDaoPatriPlaca = db_utils::getDao("cfpatriplaca");
         $oDaoPatriPlaca->t07_instit     = db_getsession("DB_instit");
         $oDaoPatriPlaca->t07_sequencial = str_replace(".", "", ($this->sPlacaSeq+1));
 
-        if ($this->iTipoPlaca == 4) {
+        if ($this->getTipoPlaca() == 4) {
         	$oDaoPatriPlaca->t07_sequencial = str_replace(".", "", ($this->sPlacaSeq));
         }
 
@@ -327,14 +375,13 @@ class PlacaBem {
   * @return mixed
   */
   protected function buscaSequencialMaximoPeloTipo($mParam) {
-
     if (empty($mParam)) {
       throw new Exception("Você tem que passar a classe por parâmetro.");
     }
 
     $mParam  = strtoupper($mParam);
     $sCampos = "max(t41_placaseq) as placa";
-    $sWhere  = "t41_placa = '{$mParam}' ";
+    $sWhere  = "t41_placa ilike '{$mParam}' ";
 
     if (BensParametroPlaca::controlaPlacaPorInstituicao()) {
       $sWhere  .= " and t52_instit = ".db_getsession("DB_instit");
@@ -434,6 +481,13 @@ class PlacaBem {
     }
   }
 
+  public function setTipoPlaca($tipoPlaca = false){
+    if ($this->iTipoPlaca != null) return $this->iTipoPlaca;
+    $this->iTipoPlaca = $tipoPlaca ? $tipoPlaca : BensParametroPlaca::getCodigoParametro();
+    return $this;
+  }
 
-
+  public function getTipoPlaca(){
+    return $this->iTipoPlaca != null ? $this->iTipoPlaca : $this->setTipoPlaca()->iTipoPlaca;
+  }
 }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,7 +44,7 @@ if (isset ($atualizar)&&$atualizar!="") {
 		$cltransmater->m63_codmatmater = $m60_codmater;
 		$cltransmater->excluir(null,"m63_codmatmater=$m60_codmater");
 		if ($cltransmater->erro_status == '0') {
-			$sqlerro = true;		
+			$sqlerro = true;
 		}
 	}
 	$sqlerro = false;
@@ -54,8 +54,8 @@ if (isset ($atualizar)&&$atualizar!="") {
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
 		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = split("_", $chave);
-			
+			$dados =explode("_", $chave);
+
 			$cltransmater->m63_codpcmater = $dados[1];
 			$cltransmater->m63_codmatmater = $m60_codmater;
 			$cltransmater->incluir();
@@ -66,9 +66,9 @@ if (isset ($atualizar)&&$atualizar!="") {
 		}
 		$proximo = next($vt);
 	}
-	
+
 	db_fim_transacao($sqlerro);
-	
+
 }
 ?>
 <html>
@@ -82,11 +82,11 @@ function js_atualizar(){
   document.form1.atualizar.value="ok";
   document.form1.submit();
 }
-function js_marca(obj){ 
+function js_marca(obj){
    var OBJ = document.form1;
    for(i=0;i<OBJ.length;i++){
      if(OBJ.elements[i].type == 'checkbox'){
-       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
      }
    }
    return false;
@@ -97,13 +97,13 @@ function js_marca(obj){
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc;       
+background-color:#aacccc;
 border-color: darkblue;
 }
 .corpo {
 text-align: center;
 color: black;
-background-color:#ccddcc;       
+background-color:#ccddcc;
 }
 </style>
 </head>
@@ -112,27 +112,27 @@ background-color:#ccddcc;
  <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<? 
+<?php
 
 
 db_input('m60_codmater', 8, '', true, 'hidden', 3);
 db_input('atualizar', 8, '', true, 'hidden', 3);
 db_input('pc01_descrmater', 8, '', true, 'hidden', 3);
-?>     
+?>
       <table border='1' width="100%" nowrap>
-<? 
+<?php
 
 
 if (isset ($pc01_descrmater)) {
 	$result01 = $clpcmater->sql_record($clpcmater->sql_query_file(null,"*",null,"pc01_descrmater ilike '$pc01_descrmater%' and pc01_ativo is false"));
 	$numrows01 = $clpcmater->numrows;
 	if ($numrows01 > 0) {
-		echo " 
+		echo "
 			           <tr>
 				     <td class='cabec'  title='Inverte marcação' align='center'><a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'>M</a></td>
 				     <td class='cabec' align='center'  title='$Tpc01_codmater'>".str_replace(":", "", $Lpc01_codmater)."</td>
-				     <td class='cabec' align='center'  title='$Tpc01_descrmater'>".str_replace(":", "", $Lpc01_descrmater)."</td>    
-				     
+				     <td class='cabec' align='center'  title='$Tpc01_descrmater'>".str_replace(":", "", $Lpc01_descrmater)."</td>
+
 				   </tr>
 			          ";
 	}
@@ -149,18 +149,18 @@ if (isset ($pc01_descrmater)) {
 		  	           <td  class='corpo' title='Inverte a marcação' align='center'><input $che type='checkbox' name='CHECK_$pc01_codmater' id='CHECK_".$pc01_codmater."'></td>
 		              <td  class='corpo'  align='center' title='$Tpc01_descrmater'><label for='CHECK_".$pc01_codmater."' style=\"cursor: hand\"><small>$pc01_codmater</small></label></td>
 		              <td  class='corpo'  align='center' title='$Tpc01_descrmater'><label for='CHECK_".$pc01_codmater."' style=\"cursor: hand\"><small>$pc01_descrmater</small></label></td>
-        
+
 	              </tr>";
 	}
 }
 ?>    </table>
     </td>
-  </tr>  
+  </tr>
   </table>
 </form>
-</body>  
+</body>
 </html>
-<?
+<?php
 
 
 

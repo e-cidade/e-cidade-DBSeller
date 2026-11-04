@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: dividaativa
 //CLASSE DA ENTIDADE termotipoconfig
-class cl_termotipoconfig { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k42_sequencial = 0; 
-   var $k42_cadtipo = 0; 
-   var $k42_tiponovo = 0; 
-   var $k42_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_termotipoconfig {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k42_sequencial = 0;
+   var $k42_cadtipo = 0;
+   var $k42_tiponovo = 0;
+   var $k42_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k42_sequencial = int4 = Codigo 
-                 k42_cadtipo = int4 = Grupo de Debito da Origem 
-                 k42_tiponovo = int4 = Tipo de Debito do Parcelamento 
-                 k42_instit = int4 = Cod. Instituição 
+                 k42_sequencial = int4 = Codigo
+                 k42_cadtipo = int4 = Grupo de Debito da Origem
+                 k42_tiponovo = int4 = Tipo de Debito do Parcelamento
+                 k42_instit = int4 = Cod. Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_termotipoconfig() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("termotipoconfig"); 
+     $this->rotulo = new rotulo("termotipoconfig");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_termotipoconfig {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k42_sequencial = ($this->k42_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k42_sequencial"]:$this->k42_sequencial);
        $this->k42_cadtipo = ($this->k42_cadtipo == ""?@$GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"]:$this->k42_cadtipo);
@@ -80,9 +80,9 @@ class cl_termotipoconfig {
      }
    }
    // funcao para inclusao
-   function incluir ($k42_sequencial){ 
+   public function incluir ($k42_sequencial){
       $this->atualizacampos();
-     if($this->k42_cadtipo == null ){ 
+     if($this->k42_cadtipo == null ){
        $this->erro_sql = " Campo Grupo de Debito da Origem nao Informado.";
        $this->erro_campo = "k42_cadtipo";
        $this->erro_banco = "";
@@ -91,7 +91,7 @@ class cl_termotipoconfig {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k42_tiponovo == null ){ 
+     if($this->k42_tiponovo == null ){
        $this->erro_sql = " Campo Tipo de Debito do Parcelamento nao Informado.";
        $this->erro_campo = "k42_tiponovo";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_termotipoconfig {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k42_instit == null ){ 
+     if($this->k42_instit == null ){
        $this->erro_sql = " Campo Cod. Instituição nao Informado.";
        $this->erro_campo = "k42_instit";
        $this->erro_banco = "";
@@ -110,16 +110,16 @@ class cl_termotipoconfig {
        return false;
      }
      if($k42_sequencial == "" || $k42_sequencial == null ){
-       $result = db_query("select nextval('termotipoconfig_k42_sequencial_seq')"); 
+       $result = db_query("select nextval('termotipoconfig_k42_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: termotipoconfig_k42_sequencial_seq do campo: k42_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: termotipoconfig_k42_sequencial_seq do campo: k42_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k42_sequencial = pg_result($result,0,0); 
+       $this->k42_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from termotipoconfig_k42_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k42_sequencial)){
@@ -130,10 +130,10 @@ class cl_termotipoconfig {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k42_sequencial = $k42_sequencial; 
+         $this->k42_sequencial = $k42_sequencial;
        }
      }
-     if(($this->k42_sequencial == null) || ($this->k42_sequencial == "") ){ 
+     if(($this->k42_sequencial == null) || ($this->k42_sequencial == "") ){
        $this->erro_sql = " Campo k42_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,19 +142,19 @@ class cl_termotipoconfig {
        return false;
      }
      $sql = "insert into termotipoconfig(
-                                       k42_sequencial 
-                                      ,k42_cadtipo 
-                                      ,k42_tiponovo 
-                                      ,k42_instit 
+                                       k42_sequencial
+                                      ,k42_cadtipo
+                                      ,k42_tiponovo
+                                      ,k42_instit
                        )
                 values (
-                                $this->k42_sequencial 
-                               ,$this->k42_cadtipo 
-                               ,$this->k42_tiponovo 
-                               ,$this->k42_instit 
+                                $this->k42_sequencial
+                               ,$this->k42_cadtipo
+                               ,$this->k42_tiponovo
+                               ,$this->k42_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de debito a apos parcelamento ($this->k42_sequencial) nao Incluído. Inclusao Abortada.";
@@ -189,16 +189,16 @@ class cl_termotipoconfig {
        $resac = db_query("insert into db_acount values($acount,1766,10649,'','".AddSlashes(pg_result($resaco,0,'k42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k42_sequencial=null) { 
+   public function alterar ($k42_sequencial=null) {
       $this->atualizacampos();
      $sql = " update termotipoconfig set ";
      $virgula = "";
-     if(trim($this->k42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_sequencial"])){ 
+     if(trim($this->k42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_sequencial"])){
        $sql  .= $virgula." k42_sequencial = $this->k42_sequencial ";
        $virgula = ",";
-       if(trim($this->k42_sequencial) == null ){ 
+       if(trim($this->k42_sequencial) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "k42_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_cadtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"])){ 
+     if(trim($this->k42_cadtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_cadtipo"])){
        $sql  .= $virgula." k42_cadtipo = $this->k42_cadtipo ";
        $virgula = ",";
-       if(trim($this->k42_cadtipo) == null ){ 
+       if(trim($this->k42_cadtipo) == null ){
          $this->erro_sql = " Campo Grupo de Debito da Origem nao Informado.";
          $this->erro_campo = "k42_cadtipo";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_tiponovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_tiponovo"])){ 
+     if(trim($this->k42_tiponovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_tiponovo"])){
        $sql  .= $virgula." k42_tiponovo = $this->k42_tiponovo ";
        $virgula = ",";
-       if(trim($this->k42_tiponovo) == null ){ 
+       if(trim($this->k42_tiponovo) == null ){
          $this->erro_sql = " Campo Tipo de Debito do Parcelamento nao Informado.";
          $this->erro_campo = "k42_tiponovo";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_termotipoconfig {
          return false;
        }
      }
-     if(trim($this->k42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_instit"])){ 
+     if(trim($this->k42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k42_instit"])){
        $sql  .= $virgula." k42_instit = $this->k42_instit ";
        $virgula = ",";
-       if(trim($this->k42_instit) == null ){ 
+       if(trim($this->k42_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "k42_instit";
          $this->erro_banco = "";
@@ -269,7 +269,7 @@ class cl_termotipoconfig {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de debito a apos parcelamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k42_sequencial;
@@ -297,14 +297,14 @@ class cl_termotipoconfig {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k42_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k42_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k42_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -333,7 +333,7 @@ class cl_termotipoconfig {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de debito a apos parcelamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k42_sequencial;
@@ -361,11 +361,11 @@ class cl_termotipoconfig {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -387,10 +387,10 @@ class cl_termotipoconfig {
       }
      return $result;
    }
-   function sql_query ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_termotipoconfig {
      $sql2 = "";
      if($dbwhere==""){
        if($k42_sequencial!=null ){
-         $sql2 .= " where termotipoconfig.k42_sequencial = $k42_sequencial "; 
-       } 
+         $sql2 .= " where termotipoconfig.k42_sequencial = $k42_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,10 +426,10 @@ class cl_termotipoconfig {
      }
      return $sql;
   }
-   function sql_query_file ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,15 +442,15 @@ class cl_termotipoconfig {
      $sql2 = "";
      if($dbwhere==""){
        if($k42_sequencial!=null ){
-         $sql2 .= " where termotipoconfig.k42_sequencial = $k42_sequencial "; 
-       } 
+         $sql2 .= " where termotipoconfig.k42_sequencial = $k42_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ input {
 </style>
 <script>
 /*
-<?if(isset($inicial)){?>
+<?php if(isset($inicial)){?>
 function js_geratu(){
   obj=document.getElementsByTagName("INPUT");
   var nums="";
@@ -109,7 +109,7 @@ function js_geratu(){
     location.href="jur2_inclupropri.php";
   }  
 }
-<?
+<?php
 }
 ?>
 */
@@ -150,7 +150,7 @@ function js_gera(){
       <b>Selecione apenas um outro proprietário para incluir:</b>      
     </td>
   </tr>
-<?
+<?php
      if(isset($j01_matric)){
         $repro = $clpropri->sql_record($clpropri->sql_query($j01_matric,"","cgm.z01_nome as nome,cgm.z01_numcgm")); 
         $numpropri=$clpropri->numrows;

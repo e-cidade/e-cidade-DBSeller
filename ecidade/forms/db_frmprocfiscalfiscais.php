@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,7 +62,7 @@ if(isset($db_opcaoal)){
        <?=@$Ly106_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('y106_sequencial',10,$Iy106_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('y106_sequencial',10,$Iy106_sequencial,true,'text',3,"")
       
     </td>
     <td> 
-<?
+<?php
 db_input('y106_procfiscal',10,$Iy106_procfiscal,true,'text',3)
 ?>
      
@@ -81,15 +81,15 @@ db_input('y106_procfiscal',10,$Iy106_procfiscal,true,'text',3)
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty106_cadfiscais?>">
-       <?
+       <?php
        db_ancora(@$Ly106_cadfiscais,"js_pesquisay106_cadfiscais(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y106_cadfiscais',10,$Iy106_cadfiscais,true,'text',$db_opcao," onchange='js_pesquisay106_cadfiscais(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Ly106_principal?>
     </td>
     <td> 
-<?
+<?php
  $prin = array("t"=>"Sim","f"=>"Não");
  db_select("y106_principal",$prin,true,2); 
  ?>
@@ -117,7 +117,7 @@ db_input('nome',40,$Iz01_nome,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 		
 		$sql = "select * from procfiscalfiscais where y106_procfiscal=$y106_procfiscal";
 	//	echo $sql;

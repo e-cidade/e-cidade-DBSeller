@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,15 +82,15 @@ function js_emite(){
       </tr>
       <tr >
         <td align="left" nowrap title="<?=@$Tcodsubrec?>" >
-          <?
+          <?php
              db_ancora(@$Lcodsubrec,"js_pesquisatabdesc(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('codsubrec',4,$Icodsubrec,true,'text',4,"onchange='js_pesquisatabdesc(false);'")
           ?>
-          <?
+          <?php
             db_input('k07_descr',40,$Ik07_descr,true,'text',3,'')
           ?>
 
@@ -105,7 +105,7 @@ function js_emite(){
       <tr>
         <td align="left" ><strong>Data Final :</strong></td>
         <td>
-        <?
+        <?php
          $datausu = date("Y/m/d",db_getsession("DB_datausu"));
          $dataf_ano = substr($datausu,0,4);
          $dataf_mes = substr($datausu,5,2);
@@ -136,7 +136,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -167,7 +167,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

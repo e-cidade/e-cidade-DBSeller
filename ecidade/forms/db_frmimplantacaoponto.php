@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *  
@@ -99,7 +99,6 @@ $oIframe                = new cl_iframe_alterar_excluir();
                 ?>
               </td>
             </tr>
-    
           </table>
         </fieldset>
 
@@ -147,6 +146,14 @@ $oIframe                = new cl_iframe_alterar_excluir();
               </td>
             </tr>
           </table>
+          <div>
+            <fieldset>
+                <legend>Histórico:</legend>
+                <?php
+                  db_textarea('observacao', 3, 90, "", true, 'text', $db_opcao);
+                ?>
+            </fieldset>
+          </div>
         </fieldset>
 
         <?php 

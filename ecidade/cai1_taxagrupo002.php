@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Grupo de Taxas","g2"=>"Taxas do Grupo");
        $clcriaabas->title      = array("g1"=>"Selecionar Grupo de Taxas","g2"=>"Selecionar Taxas para o Grupo");
        $clcriaabas->src         = array("g1"=>"cai1_taxagrupo_aba002.php","g2"=>"cai1_taxagruporeg_aba001.php");
@@ -65,7 +65,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

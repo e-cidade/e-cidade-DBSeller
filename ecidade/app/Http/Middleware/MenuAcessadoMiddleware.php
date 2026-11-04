@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class MenuAcessadoMiddleware
+ *
  * @package App\Http\Middleware
  */
 class MenuAcessadoMiddleware

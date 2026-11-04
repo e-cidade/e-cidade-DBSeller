@@ -67,12 +67,12 @@ $oRotuloCampos->label("e42_dtpagamento");
               <tr>
                 <td>
                    <b>
-                   <? db_ancora("<b>Código da Ordem Auxiliar</b>","js_pesquisae43_ordempagamento(true);",1);  ?>
+                   <?php db_ancora("<b>Código da Ordem Auxiliar</b>","js_pesquisae43_ordempagamento(true);",1);  ?>
 
                    </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input("e43_ordempagamento", 10, $Ie43_ordempagamento, true,"text",1,"onchange='js_pesquisae43_ordempagamento(false)';");
                   ?>
                 </td>
@@ -84,7 +84,7 @@ $oRotuloCampos->label("e42_dtpagamento");
                    </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_inputdata("e42_dtpagamento", null,null,null,true,"text",1);
                   ?>
                 </td>
@@ -104,7 +104,7 @@ $oRotuloCampos->label("e42_dtpagamento");
   </form>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script>

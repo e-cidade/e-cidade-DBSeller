@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $objNumpreNota         = db_utils::fieldsMemory($rsNumpreNota,0);
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-<?
+<?php
 //sql para recibos pagos
 $sSql = "select k00_dtpaga, 
                arrepaga.k00_valor,

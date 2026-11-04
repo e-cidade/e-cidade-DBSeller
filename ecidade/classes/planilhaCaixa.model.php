@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ class planilhaCaixa {
    * @param integer $iCodPlanilha Código da planilha
    *
    */
-  function planilhaCaixa($iCodPlanilha) {
+  public function __construct($iCodPlanilha) {
 
     $this->iPlanilha = $iCodPlanilha;
     $this->iAnoUsu   = db_getsession("DB_anousu");
@@ -46,7 +46,7 @@ class planilhaCaixa {
    * @param object oReceita recebe como parametro um Objeto db_utils com as informações das planilhas;
    */
 
-  function adicionarReceita($oReceita) {
+  public function adicionarReceita($oReceita) {
 
     $oDaoPlaCaixaRec = db_utils::getDao("placaixarec");
     if ($oReceita->k81_origem == 2 ) {
@@ -125,7 +125,7 @@ class planilhaCaixa {
    * @param object oReceita recebe como parametro um Objeto db_utils com as informações das planilhas;
    */
 
-  function alterarReceita($iSeqPlanilha, $oReceita) {
+  public function alterarReceita($iSeqPlanilha, $oReceita) {
 
     $oDaoPlaCaixaRec = db_utils::getDao("placaixarec");
     $rsReceitaPla    = $oDaoPlaCaixaRec->sql_record($oDaoPlaCaixaRec->sql_query_file($iSeqPlanilha));
@@ -232,7 +232,7 @@ class planilhaCaixa {
   }
   
 
-  function excluirReceita($iSeqPlanilha) {
+  public function excluirReceita($iSeqPlanilha) {
 
     $oDaoPlaCaixaRec = db_utils::getDao("placaixarec");
     $rsReceitaPla    = $oDaoPlaCaixaRec->sql_record($oDaoPlaCaixaRec->sql_query_file($iSeqPlanilha));

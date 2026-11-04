@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempauthist->rotulo->label("e57_codhist");
               <?=$Le57_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e57_autori",6,$Ie57_autori,true,"text",4,"","chave_e57_autori");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempauthist->rotulo->label("e57_codhist");
               <?=$Le57_codhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e57_codhist",6,$Ie57_codhist,true,"text",4,"","chave_e57_codhist");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempauthist->rotulo->label("e57_codhist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empauthist.php")==true){
@@ -118,12 +118,12 @@ $clempauthist->rotulo->label("e57_codhist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,7 +64,7 @@ $oRotulo->label("z01_nome");
 ?>
 <html>
 <head>
-<?
+<?php
 db_app::load("scripts.js, prototype.js, strings.js, datagrid.widget.js");
 db_app::load("grid.style.css, estilos.css");
 db_app::load("dbcomboBox.widget.js");
@@ -104,7 +104,7 @@ $clrotulo->label('DBtxt25');
         <b>Tipo:</b>
       </td>
       <td>
-       <?
+       <?php
        
          $aTipos = array(
                          "1" => "Salário        ",
@@ -122,7 +122,7 @@ $clrotulo->label('DBtxt25');
         <b>Ponto:</b>
       </td>
       <td>
-       <?
+       <?php
        
          $aSigla = array();
          
@@ -215,7 +215,7 @@ $clrotulo->label('DBtxt25');
 
 </body>
 </html>   
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?> 
 <script>

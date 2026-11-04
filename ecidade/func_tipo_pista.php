@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipo_pista->rotulo->label("tr03_descr");
               <?=$Ltr03_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tr03_id",5,$Itr03_id,true,"text",4,"","chave_tr03_id");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipo_pista->rotulo->label("tr03_descr");
               <?=$Ltr03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("tr03_descr",35,$Itr03_descr,true,"text",4,"","chave_tr03_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipo_pista->rotulo->label("tr03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipo_pista.php")==true){
@@ -118,12 +118,12 @@ $cltipo_pista->rotulo->label("tr03_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

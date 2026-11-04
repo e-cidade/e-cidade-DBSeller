@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconparlancam->rotulo->label("c91_codconpas");
               <?=$Lc91_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c91_codele",6,$Ic91_codele,true,"text",4,"","chave_c91_codele");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconparlancam->rotulo->label("c91_codconpas");
               <?=$Lc91_codconpas?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c91_codconpas",6,$Ic91_codconpas,true,"text",4,"","chave_c91_codconpas");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconparlancam->rotulo->label("c91_codconpas");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conparlancam.php")==true){
@@ -118,12 +118,12 @@ $clconparlancam->rotulo->label("c91_codconpas");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -146,7 +146,7 @@ $iLinhas  = $oDaoFarRetiradaitens->numrows;
 
 <center>
   <table border='0' cellspacing='0' width='730'>
-    <?
+    <?php
     if (!isset($lConsultaGeral)) {
     ?>
     <tr>
@@ -159,13 +159,13 @@ $iLinhas  = $oDaoFarRetiradaitens->numrows;
     </tr>
     <tr>
       <td nowrap width='12%'>
-        <? db_input('cgs_get', 10, '', true, 'text', 3, ""); ?>
+        <?php db_input('cgs_get', 10, '', true, 'text', 3, ""); ?>
       </td>
       <td align='left' nowrap>
-        <? db_input('nome', 75, '', true, 'text', 3, ""); ?>
+        <?php db_input('nome', 75, '', true, 'text', 3, ""); ?>
       </td>
     </tr>
-    <?
+    <?php
     }
     ?>
     <tr>
@@ -208,7 +208,7 @@ $iLinhas  = $oDaoFarRetiradaitens->numrows;
         <b>Usuário</b>
       </td>
     </tr>
-<?
+<?php
 for($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
   $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -230,7 +230,7 @@ for($iCont = 0; $iCont < $iLinhas; $iCont++) {
   </table>
 </center>
 
-<?
+<?php
 if (!isset($lConsultaGeral)) {
 ?>
 <center>
@@ -238,15 +238,15 @@ if (!isset($lConsultaGeral)) {
     <tr>
       <td align='center'>
         <font color='#FF0000' face='arial'>
-            <?
+            <?php
             if ($iLinhas > 0) {
             ?>
             <input type='button' value='Relatório' onclick='js_relatorio()'>
-            <?
+            <?php
             } else {
             ?>
             	<b>Nenhum registro encontrado.<br>
-            <?
+            <?php
             }
             ?>
             <input type='button' value='Fechar' onclick='js_fechar()'>            
@@ -256,7 +256,7 @@ if (!isset($lConsultaGeral)) {
     </tr>
   </table>
 </center>
-<?
+<?php
 }
 ?>
 <script>

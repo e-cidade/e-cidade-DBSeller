@@ -138,7 +138,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                   <label for="r33_perc"><?=$Lr33_perc?></label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('r33_perc', 12, $Ir33_perc, true, 'text', $db_opcao );
                   ?>
                 </td>
@@ -150,7 +150,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                   db_input('r33_deduzi', 12, $Ir33_deduzi, true, 'text',($alteraform==false?$db_opcao:"3"),"");
                   ?>
                 </td>
-                <?
+                <?php
                 if($alteraform == true) {
                 ?>
               </tr>
@@ -446,7 +446,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                 </td>
               </tr>
 
-              <?
+              <?php
               }
               ?>
             </table>
@@ -815,7 +815,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
 
   function js_preenchepesquisa(chave,chave1,chave2){
     db_iframe_inssirf.hide();
-    <?
+    <?php
     if(isset($opcao)){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
     }
@@ -826,7 +826,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
     valor = new Number(valor);
     valor = valor.toFixed(2);
     erro = 0;
-    <?
+    <?php
     for($i=0; $i<count($arr_faixasini); $i++){
       $ini = $arr_faixasini[$i];
       $fim = $arr_faixasfim[$i];
@@ -848,7 +848,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
   }
 
   function js_setar_foco(){
-    <?
+    <?php
     if(!isset($opcao) || (isset($opcao) && trim($opcao) == "alterar")){
       echo 'js_tabulacaoforms("form1","'.$campofocoi.'",true,1,"'.$campofocoi.'",true);';
     }else{

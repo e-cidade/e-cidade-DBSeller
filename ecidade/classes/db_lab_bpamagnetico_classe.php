@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_lab_bpamagnetico {
                  la55_o_arquivo = oid = Arquivo
                  ";
    //funcao construtor da classe
-   function cl_lab_bpamagnetico() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_bpamagnetico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_lab_bpamagnetico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->la55_i_codigo = ($this->la55_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["la55_i_codigo"]:$this->la55_i_codigo);
        $this->la55_i_fechamento = ($this->la55_i_fechamento == ""?@$GLOBALS["HTTP_POST_VARS"]["la55_i_fechamento"]:$this->la55_i_fechamento);
@@ -98,7 +98,7 @@ class cl_lab_bpamagnetico {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->la55_i_codigo == null ){
        $la55_i_codigo="";
@@ -225,7 +225,7 @@ class cl_lab_bpamagnetico {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null ) {
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update lab_bpamagnetico set ";
      $virgula = "";
@@ -365,7 +365,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from lab_bpamagnetico
                     where ";
      $sql2 = "";
@@ -404,7 +404,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -427,10 +427,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      return $result;
    }
    // funcao do sql
-   function sql_query ( $oid = null,$campos="lab_bpamagnetico.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="lab_bpamagnetico.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,10 +463,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
  * Função que retorna o sql da produção do BPA
  * @param object $dados
  */
-function sql_querry_prd_bpa($oDados) {
+public function sql_querry_prd_bpa($oDados) {
 
   $sSql2  = " select ";
   $sSql2 .= "    la02_i_cnes as prd_ups, ";
@@ -628,7 +628,7 @@ function sql_querry_prd_bpa($oDados) {
  * Função que retorna o sql da produção do BPA
  * @param object $dados
  */
-function sql_querry_cbr_bpa($oDados, $sSql) {
+public function sql_querry_cbr_bpa($oDados, $sSql) {
 
   $sSql1  = " select ";
   $sSql1 .= "   '#BPA#' as cbc_hdr, ";

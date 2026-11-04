@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,7 +73,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Departamentos</strong>";
                  $aux->codigo = "coddepto"; //chave de retorno da func
@@ -98,7 +98,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
+               <?php 
 	               db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                  db_inputdata('data2','','','',true,'text',1,"");
@@ -116,7 +116,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Quebra por departamento :&nbsp;&nbsp;</strong>
              </td>
              <td align="left">
-	             <? 
+	             <?php 
 	               $tipo_que = array("N"=>"Não","S"=>"Sim");
 	               db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); 
 	             ?>
@@ -128,7 +128,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Ordem :&nbsp;&nbsp;</strong>
              </td>
              <td>  
-	               <? 
+	               <?php 
 	                 $tipo_ordem = array("c"=>"Alfabética","a"=>"Codigo","b"=>"Departamento");
 	                 db_select("ordem",$tipo_ordem,true,2); 
 	               ?>
@@ -139,7 +139,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Listar estoque zerado :&nbsp;&nbsp;</strong>
              </td>   
 	           <td>
-	             <? 
+	             <?php 
 	               $tipo_est = array("N"=>"Não", "S"=>"Sim");
 	               db_select("list_zera",$tipo_est,true,2); 
 	             ?>   
@@ -150,7 +150,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Listar:&nbsp;&nbsp;</strong>
              </td>
              <td>  
-	             <? 
+	             <?php 
 	               $somente_serv = array("M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços");
 	               db_select("listar_serv",$somente_serv,true,2);
 		           ?>
@@ -161,7 +161,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Tipo:&nbsp;&nbsp;</strong>
              </td>
              <td>  
-	             <? 
+	             <?php 
 	               $tipo_rel = array("S"=>"Sintético","A"=>"Analítico","C"=>"Conferência");
 	               db_select("tipo",$tipo_rel,true,2); 
 	             ?>

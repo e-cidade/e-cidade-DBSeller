@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -46,15 +46,15 @@ $db_botao      = false;
 $escola        = db_getsession("DB_coddepto");
 
 if (isset($alterar)) {
-	
+
   db_inicio_transacao();
   $db_opcao                       = 2;
   $oDaoAtestVaga->ed102_i_usuario = db_getsession("DB_id_usuario");
   $oDaoAtestVaga->alterar($ed102_i_codigo);
   db_fim_transacao();
-  
+
 } elseif (isset($chavepesquisa)) {
-	
+
   $db_opcao      = 2;
   $sSqlAtestVaga = $oDaoAtestVaga->sql_query($chavepesquisa);
   $rsAtestVaga   = $oDaoAtestVaga->sql_record($sSqlAtestVaga);
@@ -62,24 +62,24 @@ if (isset($alterar)) {
   $ed52_d_inicio = db_formatar($ed52_d_inicio, 'd');
   $ed52_d_fim    = db_formatar($ed52_d_fim, 'd');
   $sCampos       = " aluno.ed47_i_codigo, aluno.ed47_v_nome, alunocurso.ed56_c_situacao as situacao, ";
-  $sCampos      .= " serie.ed11_i_codigo as codigoserie, serie.ed11_c_descr as nomeserie, "; 
+  $sCampos      .= " serie.ed11_i_codigo as codigoserie, serie.ed11_c_descr as nomeserie, ";
   $sCampos      .= " case ";
   $sCampos      .= "  when alunocurso.ed56_i_codigo is not null ";
   $sCampos      .= " then escola.ed18_i_codigo ";
-  $sCampos      .= " else null end as codigoescola, "; 
+  $sCampos      .= " else null end as codigoescola, ";
   $sCampos      .= " case ";
   $sCampos      .= " when alunocurso.ed56_i_codigo is not null";
   $sCampos      .= " then escola.ed18_c_nome ";
-  $sCampos      .= " else null end as nomeescola, "; 
-  $sCampos      .= " cursoedu.ed29_i_codigo as codigocurso, cursoedu.ed29_c_descr as nomecurso, "; 
-  $sCampos      .= " calendario.ed52_c_descr as calendario, calendario.ed52_i_ano as anocal, "; 
+  $sCampos      .= " else null end as nomeescola, ";
+  $sCampos      .= " cursoedu.ed29_i_codigo as codigocurso, cursoedu.ed29_c_descr as nomecurso, ";
+  $sCampos      .= " calendario.ed52_c_descr as calendario, calendario.ed52_i_ano as anocal, ";
   $sCampos      .= " to_char((select ed60_d_datamatricula from matricula where ed60_i_aluno = ed56_i_aluno ";
   $sCampos      .= " order by ed60_d_datamatricula desc limit 1), 'DD/MM/YYYY') as datamatricula";
   $sSqlAluno     = $oDaoAluno->sql_query_atestvaga("",$sCampos,"","ed47_i_codigo = $ed102_i_aluno");
   $rsAluno       = $oDaoAluno->sql_record($sSqlAluno);
   db_fieldsmemory($rsAluno, 0);
   $db_botao = true;
- 
+
 }
 ?>
 <html>
@@ -94,11 +94,11 @@ if (isset($alterar)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Atestado de Vaga</b></legend>
-       <?include(modification("forms/db_frmatestvagaalt.php"));?>
+       <?php include(modification("forms/db_frmatestvagaalt.php"));?>
       </fieldset>
      </center>
     </td>
@@ -106,25 +106,25 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
-	
+
   if($oDaoAtestVaga->erro_status == "0") {
-  	
+
     $oDaoAtestVaga->erro(true, false);
     $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($oDaoAtestVaga->erro_campo != "") {
-    	
-    	
+
+
       echo "<script> document.form1.".$oDaoAtestVaga->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$oDaoAtestVaga->erro_campo.".focus();</script>";
-      
+
     }
-    
+
   } else {
-  	
+
     $oDaoAtestVaga->erro(true, false);
     ?>
     <script>
@@ -132,10 +132,9 @@ if (isset($alterar)) {
      parent.document.form1.nomecaldest.value = '<?=$ed52_c_descr?>';
      parent.db_iframe_atestvaga.hide();
     </script>
-    <?
-    
+    <?php
   }
-  
+
 }
 ?>
 <script>

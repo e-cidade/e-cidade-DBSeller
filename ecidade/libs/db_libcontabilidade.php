@@ -173,7 +173,10 @@ class cl_receita_saldo_mes_complemento
 
                             FROM (
                             SELECT
-                            complemento_lancamento,
+                            case
+                                 when complemento_lancamento is null then complemento_recurso
+                                 else complemento_lancamento
+                            end as complemento_lancamento,
                             O70_ANOUSU,
                             O70_CODREC,
                             o70_instit,
@@ -230,11 +233,19 @@ class cl_receita_saldo_mes_complemento
                                       ELSE 0::FLOAT8 END ),2) AS ARRECADADO,
 
                                       case
-                                      when complemento_lancamento.o200_sequencial is not null and complemento_lancamento.o200_tribunal is true
-                                        then complemento_lancamento.o200_sequencial
-                                      when complemento_lancamento.o200_sequencial is null or complemento_lancamento.o200_tribunal is false
-                                        then 0
-                                    end as complemento_lancamento
+                                        when o201_complemento is not null and complemento_lancamento.o200_tribunal is true
+                                          then o201_complemento
+                                        when o201_sequencial is null
+                                          then null
+                                        when complemento_lancamento.o200_tribunal is false
+                                          then 0
+                                      end as complemento_lancamento,
+
+                                      case
+                                        when complemento_recurso.o200_tribunal is true
+                                          then complemento_recurso.o200_sequencial
+                                        else 0
+                                      end as complemento_recurso
 
 
                                  FROM ORCRECEITA
@@ -244,12 +255,16 @@ class cl_receita_saldo_mes_complemento
             . "
                                       left JOIN CONLANCAM    ON C74_CODLAN = C70_CODLAN
 
+                                     inner join orcamento.orctiporec recurso on o70_codigo = recurso.o15_codigo
+                                     inner join orcamento.fonterecurso on orctiporec_id = recurso.o15_codigo
+                                                and fonterecurso.exercicio = orcreceita.o70_anousu
+                                     inner join orcamento.complementofonterecurso as complemento_recurso
+                                           on complemento_recurso.o200_sequencial = recurso.o15_complemento
 
 
                                       left join contabilidade.conlancamcomplementorecurso on o201_codlan = c70_codlan
-                                      left join orcamento.complementofonterecurso as complemento_lancamento on complemento_lancamento.o200_sequencial = o201_complemento
-
-
+                                      left join orcamento.complementofonterecurso as complemento_lancamento
+                                         on complemento_lancamento.o200_sequencial = o201_complemento
 
                                       left JOIN CONLANCAMDOC ON C71_CODLAN = C70_CODLAN
                                       left JOIN CONHISTDOC ON C53_CODDOC = C71_CODDOC
@@ -264,10 +279,10 @@ class cl_receita_saldo_mes_complemento
             $this->sql .= " AND O70_CODREC = " . $this->receita;
         }
 
-        $this->sql .= " GROUP BY complemento_lancamento.o200_sequencial,O70_ANOUSU,O70_CODREC,o70_instit,O71_MES,O57_FONTE,O57_DESCR, O70_VALOR
+        $this->sql .= " GROUP BY complemento_lancamento, complemento_recurso, O70_ANOUSU, O70_CODREC,o70_instit,O71_MES,O57_FONTE,O57_DESCR, O70_VALOR
     ) AS X
 
-    group by complemento_lancamento,O70_ANOUSU, O70_CODREC, o70_instit, O71_MES,ARRECADADO,o57_fonte, o57_descr, O70_VALOR, ADICIONAL
+    group by complemento_lancamento, complemento_recurso, O70_ANOUSU, O70_CODREC, o70_instit, O71_MES,ARRECADADO,o57_fonte, o57_descr, O70_VALOR, ADICIONAL
 
     ";
 
@@ -293,10 +308,6 @@ class cl_receita_saldo_mes_complemento
         }
 
         $this->sql .= " order by o57_fonte ";
-
-        //db_criatabela(db_query($this->sql));die();
-
-        //die($this->sql);
     }
 
     function sql_record_file()
@@ -306,13 +317,13 @@ class cl_receita_saldo_mes_complemento
         }
         $this->result = db_query($this->sql);
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
     }
 
-    function sql_record()
+    function sql_record($returSql = false)
     {
         global $complemento_lancamento,$o70_anousu, $o70_codrec, $o57_fonte, $o57_descr, $janeiro, $fevereiro, $marco, $abril, $maio, $junho, $julho, $agosto, $setembro, $outubro, $novembro, $dezembro, $o70_valor, $adicional;
         global $prev_jan, $prev_fev, $prev_mar, $prev_abr, $prev_mai, $prev_jun, $prev_jul, $prev_ago, $prev_set, $prev_out, $prev_nov, $prev_dez;
@@ -331,7 +342,7 @@ class cl_receita_saldo_mes_complemento
         db_query("CREATE TEMPORARY TABLE work_plano AS " . $this->sql);
         db_query("CREATE INDEX work_plano_estrut ON work_plano(o57_fonte)");
         $result = db_query("SELECT * FROM work_plano");
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             $sSqlSaldoPrevisao = "SELECT mes,coalesce(o34_valor, 0) as valor, {$o70_codrec} as receita
                                  from  generate_series(1,12) as mes";
@@ -408,17 +419,17 @@ class cl_receita_saldo_mes_complemento
 
                 $sSql = "select o57_descr from work_plano where o57_fonte = '$estrutural'";
                 $result_estrut = db_query($sSql);
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $result_estrut = db_query(
                         "select o57_descr from orcfontes where o57_anousu = " . $this->anousu . " and o57_fonte = '$estrutural'");
 
-                    if (pg_numrows($result_estrut) <= 0) {
+                    if (pg_num_rows($result_estrut) <= 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando:<br>"
                             . "select o57_descr from orcfontes where o57_anousu = " . $this->anousu
                             . " and o57_fonte = '$estrutural'";
 
-                            db_criatabela(db_query("select * from work_plano"));
-                            echo "<br>$sSql<br>";
+                           // db_criatabela(db_query("select * from work_plano"));
+                           // echo "<br>$sSql<br>";
 
                         exit;
                     }
@@ -542,12 +553,14 @@ class cl_receita_saldo_mes_complemento
             $sql .= "where O57_FONTE IN  " . $this->estrut;
         }
         $sql .= "order by o57_fonte ";
-        $this->result = db_query($sql);
-        if ($this->anousu == 2010) {
-            //db_criatabela($this->result);
+
+        if ($returSql) {
+            return $sql;
         }
+        $this->result = db_query($sql);
+
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -749,7 +762,7 @@ class cl_receita_saldo_mes
         }
         $this->result = db_query($this->sql);
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -774,7 +787,7 @@ class cl_receita_saldo_mes
         db_query("CREATE TEMPORARY TABLE work_plano AS " . $this->sql);
         db_query("CREATE INDEX work_plano_estrut ON work_plano(o57_fonte)");
         $result = db_query("SELECT * FROM work_plano");
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             $sSqlSaldoPrevisao = "SELECT mes,coalesce(o34_valor, 0) as valor, {$o70_codrec} as receita
                                  from  generate_series(1,12) as mes";
@@ -850,11 +863,11 @@ class cl_receita_saldo_mes
                 }
 
                 $result_estrut = db_query("select o57_descr from work_plano where o57_fonte = '$estrutural'");
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $result_estrut = db_query(
                         "select o57_descr from orcfontes where o57_anousu = " . $this->anousu . " and o57_fonte = '$estrutural'");
 
-                    if (pg_numrows($result_estrut) == 0) {
+                    if (pg_num_rows($result_estrut) == 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando:"
                             . "select o57_descr from orcfontes where o57_anousu = " . $this->anousu
                             . " and o57_fonte = '$estrutural'";
@@ -982,7 +995,7 @@ class cl_receita_saldo_mes
             //db_criatabela($this->result);
         }
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -1601,6 +1614,7 @@ class cl_translan extends cl_contranslan
                     $sWhere  = "     c45_coddoc      = {$this->coddoc}";
                     $sWhere .= " and c45_anousu      = {$anousu}";
                     $sWhere .= " and c46_seqtranslan = {$c46_seqtranslan}";
+                    $sWhere .= " and c47_instit = " . db_getsession("DB_instit");
                     $sqlTransacao = $daoTransacao->sql_query(null, "*", "c114_elemento desc", $sWhere);
                     $rsTransacao   = $daoTransacao->sql_record($sqlTransacao);
 
@@ -1928,7 +1942,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_numrows($result);
+            $numrows = @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -1955,8 +1969,116 @@ class cl_translan extends cl_contranslan
         }
     }
 
-    function db_trans_pagamentoApropriacao($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null, $iCodOrd)
+
+
+
+    function db_trans_pagamentoApropriacaoEstorno($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null, $iCodOrd, $iLancamento = null)
     {
+
+        $this->result = $this->getRegrasTransacao($iCodigoDocumento, $anousu, db_getsession('DB_anousu'));
+
+        $oEmpenho = new EmpenhoFinanceiro($iNumEmp);
+
+        $aNotas = $oEmpenho->getNotasDeLiquidacao();
+
+        $iContador = 0;
+
+        $aDocsEstorno = array( 6011);
+
+
+        foreach ($aNotas as $oNotaLiquidacao) {
+
+           $aRetencoes = $oNotaLiquidacao->getRetencoes(null, $iCodigoDocumento, $iLancamento);
+
+           $iOrdemNota = $oNotaLiquidacao->getCodigoOrdemPagamento();
+
+           if ($iOrdemNota != $iCodOrd ) {
+
+             continue;
+           }
+
+           // percorre as retencoes
+           foreach ($aRetencoes as $oRetencao) {
+
+              $iTipoCalcRetencao = $oRetencao->e21_retencaotipocalc;
+              $iReduzidoRetencao = $oRetencao->k02_reduz;
+
+              // percorre as regras do doc para encontra o compara com o tipocalc da retencao
+
+              for ($i = 0; $i < pg_num_rows($this->result); $i++) {
+
+                $oDadosRegra = db_utils::fieldsMemory($this->result, $i);
+
+                $iCredito = $oDadosRegra->c47_credito;
+                $iDebito = $oDadosRegra->c47_debito;
+                
+                switch($oDadosRegra->c46_ordem){
+
+                    case "1" :
+                        
+                        if ($oDadosRegra->c47_debito != "0") {
+                            
+
+                         if ($iTipoCalcRetencao == $oDadosRegra->c47_ref  ){
+                            
+                            $this->arr_seqtranslr[$iContador] = $oDadosRegra->c47_seqtranslr;
+                            $this->arr_credito[$iContador] = $iCredito;
+                            $this->arr_debito[$iContador] = $iDebito;
+                            $this->arr_histori[$iContador] = $oDadosRegra->c50_codhist;
+                            $iContador++;
+
+                          }
+                         
+
+                        } else {
+
+                             if ($iTipoCalcRetencao == $oDadosRegra->c47_ref) {
+
+                                $this->arr_seqtranslr[$iContador] = $oDadosRegra->c47_seqtranslr;
+                                $this->arr_credito[$iContador] = $iCredito;
+                                $this->arr_debito[$iContador] = $iReduzidoRetencao;
+                                $this->arr_histori[$iContador] = $oDadosRegra->c50_codhist;
+                                $iContador++;
+                            }
+
+                        }
+
+                        break;
+
+                    case "2" :
+                    case "3" :
+                    case "4" :
+
+                        if ($oDadosRegra->c47_credito != 0) {
+
+                            $this->arr_seqtranslr[$iContador] = $oDadosRegra->c47_seqtranslr;
+                            $this->arr_credito[$iContador] = $iCredito;
+                            $this->arr_debito[$iContador] = $iDebito;
+                            $this->arr_histori[$iContador] = $oDadosRegra->c50_codhist;
+                            $iContador++;
+                        }
+
+                        break;
+
+                }
+
+              }
+
+           }
+
+
+        }
+
+        $this->arr_credito = array_unique( $this->arr_credito );
+        $this->arr_debito = array_unique($this->arr_debito);
+    }
+
+
+
+
+    function db_trans_pagamentoApropriacao($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null, $iCodOrd, $iLancamento = null)
+    {
+
 
         $this->result = $this->getRegrasTransacao($iCodigoDocumento, $anousu, db_getsession('DB_anousu'));
 
@@ -1968,11 +2090,10 @@ class cl_translan extends cl_contranslan
 
         $aDocsEstorno = array(6003, 6005, 6009, 6011);
 
-       // dump($aNotas);
 
         foreach ($aNotas as $oNotaLiquidacao) {
 
-           $aRetencoes = $oNotaLiquidacao->getRetencoes();
+           $aRetencoes = $oNotaLiquidacao->getRetencoes(null, $iCodigoDocumento, $iLancamento);
 
            $iOrdemNota = $oNotaLiquidacao->getCodigoOrdemPagamento();
 
@@ -1980,7 +2101,6 @@ class cl_translan extends cl_contranslan
 
              continue;
            }
-           //dd(">>" , $aRetencoes);
 
            // percorre as retencoes
            foreach ($aRetencoes as $oRetencao) {
@@ -1989,13 +2109,13 @@ class cl_translan extends cl_contranslan
               $iReduzidoRetencao = $oRetencao->k02_reduz;
 
               // percorre as regras do doc para encontra o compara com o tipocalc da retencao
-              for ($i = 0; $i < pg_numrows($this->result); $i++) {
+
+              for ($i = 0; $i < pg_num_rows($this->result); $i++) {
 
                 $oDadosRegra = db_utils::fieldsMemory($this->result, $i);
 
                 $iCredito = $oDadosRegra->c47_credito;
                 $iDebito = $oDadosRegra->c47_debito;
-
 
                 if ( in_array( $iCodigoDocumento,  $aDocsEstorno) ) {
 
@@ -2007,18 +2127,16 @@ class cl_translan extends cl_contranslan
 
                     case "1" :
 
+
                         if ($oDadosRegra->c47_credito != 0) {
 
-                         //   dump($iTipoCalcRetencao, $oDadosRegra->c47_ref);
-                     //    dump($oDadosRegra->c46_ordem, $oRetencao);
-                     //    echo " TipoCalc:  $iTipoCalcRetencao ,  oDadosRegra->c47_ref: {$oDadosRegra->c47_ref} ||
-                     //          iReduzidoRetencao:  $iReduzidoRetencao ,
-                     //          oDadosRegra->c47_credito: $oDadosRegra->c47_credito <br>";
+                     //  dump($iTipoCalcRetencao, $oDadosRegra->c47_ref ,$iReduzidoRetencao, $oDadosRegra->c47_credito);
+                     //  dump($oDadosRegra->c46_ordem, $oRetencao);
+                     //  echo " TipoCalc:  $iTipoCalcRetencao ,  oDadosRegra->c47_ref: {$oDadosRegra->c47_ref} ||
+                     //         iReduzidoRetencao:  $iReduzidoRetencao ,
+                     //         oDadosRegra->c47_credito: $oDadosRegra->c47_credito <br>";
 
-                         if ($iTipoCalcRetencao == $oDadosRegra->c47_ref &&
-                             $iReduzidoRetencao == $oDadosRegra->c47_credito ){
-
-                         //     dump($oDadosRegra->c46_ordem);
+                         if ($iTipoCalcRetencao == $oDadosRegra->c47_ref  ){
 
                             $this->arr_seqtranslr[$iContador] = $oDadosRegra->c47_seqtranslr;
                             $this->arr_credito[$iContador] = $iCredito;
@@ -2028,13 +2146,26 @@ class cl_translan extends cl_contranslan
 
                           }
 
+                        } else {
+                             // credito = a zero deverá buscar pelo elemento da regra
+                             // o reduzido da retencao
+
+                            if ($iTipoCalcRetencao == $oDadosRegra->c47_ref) {
+
+                                $this->arr_seqtranslr[$iContador] = $oDadosRegra->c47_seqtranslr;
+                                $this->arr_credito[$iContador] = $iReduzidoRetencao;
+                                $this->arr_debito[$iContador] = $iDebito;
+                                $this->arr_histori[$iContador] = $oDadosRegra->c50_codhist;
+                                $iContador++;
+                            }
+
                         }
 
                         break;
 
                     case "2" :
                     case "3" :
-
+                    case "4" :
 
                       //  dump($oDadosRegra->c46_ordem);
                         if ($oDadosRegra->c47_credito != 0) {
@@ -2050,7 +2181,6 @@ class cl_translan extends cl_contranslan
 
                 }
 
-
               }
 
            }
@@ -2061,10 +2191,7 @@ class cl_translan extends cl_contranslan
         $this->arr_credito = array_unique( $this->arr_credito );
         $this->arr_debito = array_unique($this->arr_debito);
 
-       // dd($this->arr_credito, $this->arr_debito);
-
     }
-
 
     function db_trans_pagamento_prestacao_contas($codele, $reduzido, $anousu, $iNumeroEmpenho = null)
     {
@@ -2135,23 +2262,37 @@ class cl_translan extends cl_contranslan
      *
      * @return mixed
      * @throws Exception
+     *
+     * foi necessario buscar a liquidacao a partir do ano do empenho,
+     * ocorreu de um empenho de 2019 se r pago em 2022
+     * funcao buscava somente um ano pra tras do ano do pagamento, no caso
+     * buscava somente em 2021
      */
     public static function getContaLiquidacao(
         $iNumeroEmpenho,
         array $aCodigoDocumento,
         $iAnoSessao = null,
-        $lTipoConta = 1
+        $lTipoConta = 1,
+        $anoEmpenho = null
     ) {
 
+
+        $oEmpenho = new EmpenhoFinanceiro($iNumeroEmpenho);
+        $resto = $oEmpenho->isRestoAPagar(db_getsession("DB_anousu"));
+        if ($resto && empty($anoEmpenho) ) {
+            $anoEmpenho = $oEmpenho->getAnouso();
+        }
 
         if (UTILIZA_INCORPORACAO_BEM) {
             $aCodigoDocumento = array(3,23,33,39,84,202,204,206, 412);
             $iAnoSessao       = null;
         }
+
         $sCodigoDocumento = implode(",", $aCodigoDocumento);
 
         $conta = "conlancamval.c69_credito";
-        if ($lTipoConta <> 1) {
+
+        if ($lTipoConta <> 1 ) {
             $conta = "conlancamval.c69_debito";
         }
         $sSqlContaCreditoLiquidacao = " select {$conta} as conta";
@@ -2159,17 +2300,20 @@ class cl_translan extends cl_contranslan
         $sSqlContaCreditoLiquidacao .= "        inner join conlancam    on conlancam.c70_codlan    = conlancamemp.c75_codlan";
         $sSqlContaCreditoLiquidacao .= "        inner join conlancamdoc on conlancamdoc.c71_codlan = conlancam.c70_codlan";
         $sSqlContaCreditoLiquidacao .= "        inner join conlancamval on conlancamval.c69_codlan = conlancam.c70_codlan";
-        $sSqlContaCreditoLiquidacao .= "  where conlancamemp.c75_numemp  = {$iNumeroEmpenho}";
+        $sSqlContaCreditoLiquidacao .= "  where conlancamemp.c75_numemp  = {$iNumeroEmpenho} ";
+        $sSqlContaCreditoLiquidacao .= " and c69_ordem = 1 "; // sempre ordem 1 pois o primeiro lançamento a regra pega da liquidação ou controle
         $sSqlContaCreditoLiquidacao .= "    and conlancamdoc.c71_coddoc in ({$sCodigoDocumento})";
-        if (!empty($iAnoSessao)) {
+
+        if (!empty($iAnoSessao) &&  !$resto ) {
             $sSqlContaCreditoLiquidacao .= "    and conlancam.c70_anousu     = {$iAnoSessao}";
         }
-        $sSqlContaCreditoLiquidacao .= "  order by conlancamval.c69_codlan desc, conlancamval.c69_sequen asc ";
-        $sSqlContaCreditoLiquidacao .= "  limit 1";
 
+        if (!empty($anoEmpenho) || $resto ) {
+            $sSqlContaCreditoLiquidacao .= "    and conlancam.c70_anousu >= {$anoEmpenho}";
+        }
         $rsBuscaContaLiquidacao = db_query($sSqlContaCreditoLiquidacao);
         if (!$rsBuscaContaLiquidacao || pg_num_rows($rsBuscaContaLiquidacao) == 0) {
-            throw new Exception("Ocorreu um erro ao buscar a conta da liquidação do empenho {$iNumeroEmpenho}.\n". $sSqlContaCreditoLiquidacao . pg_last_error());
+            throw new Exception("Ocorreu um erro ao buscar a conta da liquidação do empenho {$iNumeroEmpenho}.  \n". $sSqlContaCreditoLiquidacao . pg_last_error());
         }
         return db_utils::fieldsMemory($rsBuscaContaLiquidacao, 0)->conta;
     }
@@ -2191,7 +2335,7 @@ class cl_translan extends cl_contranslan
 
    */
 
-    function db_trans_estorna_pagamento($codele, $reduzido, $anousu, $iNumEmp, $iCodigoDocumento = null)
+    function db_trans_estorna_pagamento($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null)
     {
         global $c46_codhist, $c47_credito, $c47_debito, $c47_seqtranslr, $c61_reduz;
         $this->cl_zera_variaveis();
@@ -2327,7 +2471,7 @@ class cl_translan extends cl_contranslan
             $sSqlBuscaContaPagamento .= "       inner join conlancamval on conlancamval.c69_codlan = conlancamemp.c75_codlan";
             $sSqlBuscaContaPagamento .= " where conlancamemp.c75_numemp = {$iNumEmp}";
             $sSqlBuscaContaPagamento .= "   and conlancamdoc.c71_coddoc = 5";
-            $sSqlBuscaContaPagamento .= " order by conlancamval.c69_sequen asc";
+            $sSqlBuscaContaPagamento .= " order by c69_ordem, conlancamval.c69_sequen asc";
             $sSqlBuscaContaPagamento .= " limit 1;";
 
             $rsBuscaContasPagamento = db_query($sSqlBuscaContaPagamento);
@@ -2349,7 +2493,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_numrows($result);
+            $numrows = @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -2559,7 +2703,7 @@ class cl_translan extends cl_contranslan
         //----------------------------------------------------------------------
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_result($result, 0, 0);
         } else {
@@ -2597,16 +2741,25 @@ class cl_translan extends cl_contranslan
                     $c47_debito = self::getContaLiquidacao($numemp, array(210, 200, 208, 212, 214, 216), $iAnoLancamento);
 
                 } else {
+
+
                     if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento, array(33))) {
 
                         $c47_debito = self::getContaLiquidacao($numemp, array(33), $iAnoLancamento);
 
                     } else {
-                        if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento - 1, array(210, 200, 208, 212, 214, 216))) {
 
-                            $c47_debito = self::getContaLiquidacao($numemp, array(210, 200, 208, 212, 214, 216), $iAnoLancamento - 1);
+                        /**
+                         * passar a condicao de maior ou igual o ano do empenho
+                         */
+                        $oEmpenho = new EmpenhoFinanceiro($numemp);
+                        if ($this->coddoc == 37 && empenho::possuiLancamentoDeControleAnoEmpenho($numemp, $oEmpenho->getAno(), array(210, 200, 208, 212, 214, 216))) {
+
+                            $c47_debito = self::getContaLiquidacao($numemp, array(210, 200, 208, 212, 214, 216), null, 1, $oEmpenho->getAno());
 
                         } else {
+
+
                             $sSqlContaCredito = " select c69_credito
                                   from conlancamemp
                                        inner join conlancamdoc  on conlancamemp.c75_codlan = conlancamdoc.c71_codlan
@@ -2618,6 +2771,7 @@ class cl_translan extends cl_contranslan
                                  order by c69_sequen
                                  limit 1";
                             $rsBuscaContaCredito = db_query($sSqlContaCredito);
+
                             if (pg_num_rows($rsBuscaContaCredito) == 0) {
                                 $this->sqlerro = true;
                                 $this->erro_msg = "Conta creditada na liquidação de RP não encontrada. Contate o suporte.";
@@ -2628,6 +2782,9 @@ class cl_translan extends cl_contranslan
                     }
                 }
             }
+           // dump("BUSCOU CONTA: $c47_debito");
+
+
 
             //------------------------------------------------------------------------
             //verificação para naum incluir duas vezes o mesmo seqtranslan
@@ -2676,7 +2833,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_result($result, 0, 0);
         } else {
@@ -2773,7 +2930,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_result($result, 0, 0);
         } else {
@@ -2818,7 +2975,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_result($result, 0, 0);
         } else {
@@ -2867,7 +3024,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e60_anousu from empempenho where e60_numemp=$numemp";
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $anousu = @pg_result($result, 0, 0);
         } else {
@@ -2877,7 +3034,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu=" . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_result($result, 0, 0);
         } else {
@@ -2897,7 +3054,7 @@ class cl_translan extends cl_contranslan
 
         // db_criatabela($result);
 
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $cont = 0;
             for ($i = 0; $i < $numrows; $i++) {
@@ -2951,7 +3108,7 @@ class cl_translan extends cl_contranslan
       c46_obrigatorio ='t'
       ";
             $result = @db_query($sql);
-            $numrows = pg_numrows($result);
+            $numrows = pg_num_rows($result);
             if ($numrows > 0) {
                 $qtd_obrigatoria = pg_result($result, 0, 0);
                 if ($qtd_obrigatoria != sizeof($arr_obrigatorio)) {
@@ -2999,6 +3156,8 @@ class cl_translan extends cl_contranslan
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
 
+            //db_criatabela($this->result); die();
+
             if ($c46_ordem == 1 && $c47_credito == 0 && $c47_debito == 0) {
                 $this->arr_credito[$cont] = $codcon; // reduzido da receita
                 $this->arr_debito[$cont] = $conta; // reduzido caixa ou banco
@@ -3027,7 +3186,7 @@ class cl_translan extends cl_contranslan
 
                     $rsDeducao = db_query($sSqlDeducao);
 
-                    if (pg_numrows($rsDeducao) > 0 ) {
+                    if (pg_num_rows($rsDeducao) > 0 ) {
                         continue;
                     }
                 }
@@ -3071,8 +3230,19 @@ class cl_translan extends cl_contranslan
                     $cont++;
                 }
 
+            } elseif ($c47_compara == 15) {
+
+                $this->arr_debito[$cont] = $c47_debito;
+                $this->arr_credito[$cont] = $codcon;
+                $this->arr_histori[$cont] = $c46_codhist;
+                $this->arr_seqtranslr[$cont] = $c47_seqtranslr;
+                $cont++;
+
             }
         }
+
+        $this->arr_credito = array_unique( $this->arr_credito );
+        $this->arr_debito = array_unique($this->arr_debito);
     }
 
     function db_trans_estorno_receita(
@@ -3127,7 +3297,7 @@ class cl_translan extends cl_contranslan
                        and substring(o57_fonte, 1, 1) = '9' ";
 
                     $rsDeducao = db_query($sSqlDeducao);
-                    if (pg_numrows($rsDeducao) > 0 ) {
+                    if (pg_num_rows($rsDeducao) > 0 ) {
                         continue;
                     }
                 }
@@ -3711,7 +3881,7 @@ class cl_estrutura_sistema
         $title = "T" . $picture;
         $label = "L" . $picture;
 
-        global $$label, $$title, $$picture, $mascara;
+        global ${$label}, ${$title}, ${$picture}, $mascara;
         if (!class_exists('cl_conparametro')) {
             db_msgbox('Classe conparametro não incluida!');
             exit;
@@ -3747,7 +3917,7 @@ class cl_estrutura_sistema
 
                 </td>
             </tr>
-            <?
+            <?php
 
         }
     if ($this->input == false) {
@@ -3757,7 +3927,7 @@ class cl_estrutura_sistema
                 <?= @$$label ?>
             </td>
             <td>
-                <?
+                <?php
 
                 }
                 ?>
@@ -3769,7 +3939,7 @@ class cl_estrutura_sistema
                     <?= $funcao ?> <?= ($this->db_opcao == 22 || $this->db_opcao == 33 || $this->db_opcao == 3 ? "readonly style=\"background-color:#DEB887\" "
                     : "") ?>
                 >
-                <?
+                <?php
 
                 if ($this->botao == true) {
                     ?>
@@ -3785,17 +3955,17 @@ class cl_estrutura_sistema
                         ->db_opcao
                     == 3 ? "disabled "
                         : "") ?> >
-                    <?
+                    <?php
 
                 }
                 ?>
-                <?
+                <?php
 
                 if ($this->input == false) {
                 ?>
             </td>
         </tr>
-        <?
+        <?php
 
     }
         ?>
@@ -3828,7 +3998,7 @@ class cl_estrutura_sistema
                 while (obj.search(/\./) != '-1') {
                     obj = obj.replace(/\./, '');
                 }
-                <?
+                <?php
 
                 if ($this->autocompletar == true) {
                 ?>
@@ -3838,7 +4008,7 @@ class cl_estrutura_sistema
                         obj = obj + '0';
                     }
                 }
-                <?
+                <?php
 
                 }
                 ?>
@@ -3867,7 +4037,7 @@ class cl_estrutura_sistema
                 document;
             .<?=$this->nomeform ?>.<?=$picture ?>.
                 value = obj;
-                <?
+                <?php
 
                 if ($this->reload == true) {
                 ?>
@@ -3877,7 +4047,7 @@ class cl_estrutura_sistema
                 obj.setAttribute('value', 'atualizar');
                 document.<?=$this->nomeform ?>.appendChild(obj);
                 document.<?=$this->nomeform ?>.submit();
-                <?
+                <?php
 
                 }
                 ?>
@@ -3890,7 +4060,7 @@ class cl_estrutura_sistema
                 while (obj.search(/\./) != '-1') {
                     obj = obj.replace(/\./, '');
                 }
-                <?
+                <?php
 
                 if ($this->autocompletar == true) {
                 ?>
@@ -3898,7 +4068,7 @@ class cl_estrutura_sistema
                 for (i = obj.length; i < tam; i++) {
                     obj = obj + '0';
                 }
-                <?
+                <?php
 
                 }
                 ?>
@@ -3930,7 +4100,7 @@ class cl_estrutura_sistema
                 value = obj;
             }
         </script>
-        <?
+        <?php
 
         $this->nomeform = "form1";
         $this->reload = false;
@@ -4236,7 +4406,7 @@ function db_planosissaldo($anousu, $dataini, $datafim, $retsql = false, $where =
     $tot_saldo_final = 0;
     GLOBAL $estrut_mae, $estrut, $c61_reduz, $c60_descr, $c60_finali, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $result_estrut, $sinal_anterior, $sinal_final, $c64_descr;
     $nivel = 0;
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         //  for($i = 0;$i < 4;$i++){
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
@@ -4253,8 +4423,8 @@ function db_planosissaldo($anousu, $dataini, $datafim, $retsql = false, $where =
             "insert into work_planosis values('$estrut_mae',
       '$estrut',
       $c61_reduz,
-      '" . pg_scape_string($c60_descr) . "',
-      '" . pg_scape_string($c60_finali) . "',
+      '" . pg_escape_string($c60_descr) . "',
+      '" . pg_escape_string($c60_finali) . "',
       $saldo_anterior,
       $saldo_anterior_debito,
       $saldo_anterior_credito,
@@ -4270,7 +4440,7 @@ function db_planosissaldo($anousu, $dataini, $datafim, $retsql = false, $where =
             }
             $result_estrut = db_query("select saldo_anterior from work_planosis where estrut = '$estrutural'");
             //db_criatabela($result_estrut);
-            if (@pg_numrows($result_estrut) != true) {
+            if (@pg_num_rows($result_estrut) != true) {
                 $res = db_query("select c64_descr from conplanosis where c64_estrut = '$estrutural'");
                 db_fieldsmemory($res, 0);
 
@@ -4463,7 +4633,7 @@ select estrut_mae,
     $work_plano = array();
     $seq = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         //  for($i = 0;$i < 20;$i++){
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
@@ -4521,7 +4691,7 @@ select estrut_mae,
                     "select c60_descr,c60_finali,c60_codcon, c60_identificadorfinanceiro
             from conplano
             where c60_anousu=" . $anousu . " and c60_estrut = '$estrutural'");
-                if ($res == false || pg_numrows($res) == 0) {
+                if ($res == false || pg_num_rows($res) == 0) {
                     $sMensagemErro = "Está faltando cadastrar esse estrutural na contabilidade. Nível : {$nivel}  Estrutural : {$estrutural} - ano: {$anousu}";
 
                     if ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
@@ -4816,7 +4986,7 @@ function db_planocontassaldo_desp_rec(
     $work_planoestrut = array();
     $work_plano = array();
     $seq = 0;
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
             $saldo_anterior *= -1;
@@ -4864,7 +5034,7 @@ function db_planocontassaldo_desp_rec(
                 $res = db_query(
                     "select c60_descr,c60_finali,c60_codcon from conplano where c60_anousu=" . db_getsession("DB_anousu")
                     . " and c60_estrut = '$estrutural'");
-                if ($res == false || pg_numrows($res) == 0) {
+                if ($res == false || pg_num_rows($res) == 0) {
                     db_redireciona(
                         "db_erros.php?fechar=true&db_erro=Está faltando cadastrar esse estrutural na contabilidade. Nível : $nivel  Estrutural : $estrutural - ano: " + db_getsession("DB_anousu"));
                     exit;
@@ -5182,7 +5352,7 @@ function db_elementosaldo(
 
     GLOBAL $o58_orgao, $o40_descr, $o58_unidade, $o41_descr, $o56_descr, $codele, $elemento, $descr, $dot_ini, $saldo_anterior, $empenhado, $anulado, $liquidado, $pago, $suplementado, $reduzido, $atual, $reservado, $atual_menos_reservado, $atual_a_pagar, $atual_a_pagar_liquidado, $empenhado_acumulado, $anulado_acumulado, $liquidado_acumulado, $pago_acumulado, $suplementado_acumulado, $reduzido_acumulado, $especial, $especial_acumulado, $suplemen;
     // for($i = 0;$i < 10;$i++){
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         $tot_dot_ini = $dot_ini;
         $tot_saldo_anterior = $saldo_anterior;
@@ -5252,10 +5422,10 @@ function db_elementosaldo(
             $result_estrut = db_query("select dot_ini from work_plano where elemento = '$estrutural' $agrupa3");
 
             //       db_criatabela($result_estrut);
-            if (@pg_numrows($result_estrut) != true) {
+            if (@pg_num_rows($result_estrut) != true) {
                 $res = db_query(
                     "select o56_descr from orcelemento where o56_anousu = $anousu and o56_elemento = '$estrutural'");
-                if (@pg_numrows($res) != true) {
+                if (@pg_num_rows($res) != true) {
                     break;
                 }
                 db_fieldsmemory($res, 0);
@@ -5448,7 +5618,7 @@ function grupoconta(
         // Começo da estruturação da tabela temporaria
         $result_rec = db_query($creat_sql);
         $result_rec = db_query($sql22);
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
             //aqui é colocado os valores da DB_DOTAÇÂOSALDO recomento e alerto ao mesmo tempo pode, pode se buscar mais valores desde tome o cuidado citado acima no começo da função
             $valor1 = $saldo_anterior;
@@ -5499,7 +5669,7 @@ function grupoconta(
             . 'valor_debito    		float8,' . 'valor_credito  	 	float8,' . 'valor_final 				float8' . ')';
         global $estrutural, $c60_descr, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final;
         db_query($criatabela);
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             for ($x = 0; $x < count($paramconta); $x++) {
                 if (in_array($estrutural, $paramconta[$x])) {
@@ -5555,7 +5725,7 @@ function grupoconta(
         $result_rec = db_query($sql11);
         // novamente eu copio, da vontade de mandar ler o DICAS.PHP, torama q o comum q esteja dando manutenção aqui nesse codigo seja um dos velhos IF velho THEN deve estar lembrando de mim ELSE pergunta para os velhos
         // Começo da estruturação da tabela temporaria
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
             // eu ja disse o que pode fazer aqui, se não sei acima vai ler
             $valor1 = $anterior;
@@ -5592,7 +5762,7 @@ function grupoconta(
             . 'valor_ini    		float8,' . 'valor_exec  	 	float8' . ')';
         global $estrutural, $c60_descr, $anterior, $inicial, $executado;
         db_query($criatabela);
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             for ($x = 0; $x < count($paramconta); $x++) {
                 if (in_array($estrutural, $paramconta[$x])) {
@@ -5677,7 +5847,7 @@ function calcula_rcl($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false)
     for ($p = 1; $p <= 18; $p++) {
         // 18 é a quantidade de parametros ou linhas existentes nos parametros
 
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
 
             $estrutural = $o57_fonte;
@@ -5935,7 +6105,7 @@ function calcula_rcl2($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false, $
         }
 
 
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             $oReceita = db_utils::fieldsmemory($result_rec, $i);
             $estrutural = $oReceita->o57_fonte;
             $oParametro = $param[$p]->parametro;
@@ -6100,7 +6270,7 @@ function db_conplano_grupo($anousu = null, $estrut = "", $grupo = 0)
 
     $sql_result = analiseQueryPlanoOrcamento("select fc_conplano_grupo($anousu, '$estrut', $grupo) as retorno");
     $result = db_query($sql_result);
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     if ($numrows != 0) {
         $retorno = pg_result($result, 0, 0);
         if ($retorno == 't') {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,10 +35,10 @@ $clrotulo->label("z01_nome");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('pc32_orcamitem',10,$Ipc32_orcamitem,true,'hidden',3," onchange='js_pesquisapc32_orcamitem(false);'")
 ?>
-<?
+<?php
 db_input('pc32_orcamforne',10,$Ipc32_orcamforne,true,'hidden',3," onchange='js_pesquisapc32_orcamforne(false);'")
 ?>
   <tr>
@@ -46,18 +46,18 @@ db_input('pc32_orcamforne',10,$Ipc32_orcamforne,true,'hidden',3," onchange='js_p
        <?=@$Lpc32_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('pc32_motivo',10,80,$Ipc32_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   </table>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 if($db_opcao == 2){
 ?>
 <input name="excluir" type="submit" id="db_opcao" value="Excluir" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 }
 ?>
 <input name="fechar" type="button" id="fechar" value="Fechar" onClick="js_fechar();">
@@ -115,7 +115,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_pcorcamdescla.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,31 +51,31 @@ $db_opcao=3;
        <?=@$Lz01_cgccpf?>
     </td>
     <td colspan='2'> 
-      <?
+      <?php
        db_input('q53_cgccpf',17,$Iz01_cgccpf,true,'text',$db_opcao,"onblur='document.form1.submit()'")
       ?>
      </td>
 		 </tr>
 		 <tr>
      <td nowrap title="<?=@$Tq54_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq54_inscr,"js_pesquisaq52_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
        db_input('q54_inscr',10,$Iq54_inscr,true,'text',$db_opcao," onchange='js_pesquisaq52_inscr(false);'")
       ?>
     </td>
 		</tr>
    <tr>
     <td nowrap title="<?=@$Tz01_nome?>">
-    <?
+    <?php
 		db_ancora(@$Lz01_nome,"js_pesquisa_tomador(true);",$db_opcao);
 		?>
     </td>
     <td colspan='5'> 
-   <?
+   <?php
    db_input('q61_numcgm',70,'',true,'hidden',3,"");
    db_input('q53_nome',70,$Iz01_nome,true,'text',3,"")
    ?>
@@ -88,7 +88,7 @@ $db_opcao=3;
        <?=@$Lz01_ender?>
     </td>
     <td colspan='2'> 
-    <?
+    <?php
      db_input('q53_endereco',50,$Iz01_ender,true,'text',3,"")
     ?>
     </td>
@@ -96,7 +96,7 @@ $db_opcao=3;
        <?=@$Lz01_numero?>
     </td>
     <td> 
-    <? 
+    <?php 
      db_input('q53_numero',15,$Iz01_numero,true,'text',3,"")
      ?>
     </td>
@@ -106,7 +106,7 @@ $db_opcao=3;
        <?=@$Lz01_bairro?>
     </td>
     <td colspan='4'> 
-       <?
+       <?php
         db_input('q53_bairro',50,$Iz01_bairro,true,'text',3,"")
        ?>
     </td>
@@ -116,7 +116,7 @@ $db_opcao=3;
        <?=@$Lz01_munic?>
     </td>
     <td colspan='4'> 
-       <?
+       <?php
         db_input('q53_municipio',50,$Iz01_munic,true,'text',3,"")
        ?>
     </td>
@@ -126,7 +126,7 @@ $db_opcao=3;
        <?=@$Lz01_uf?>
     </td>
     <td colspan='2'> 
-<?
+<?php
 db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
 ?>
     </td>
@@ -136,7 +136,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_cep?>
     </td>
     <td> 
-    <?
+    <?php
      db_input('q53_cep',8,$Iz01_cep,true,'text',3,"")
    ?>
     </td>
@@ -144,7 +144,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_email?>
     </td>
     <td colspan='2'> 
-    <?
+    <?php
      db_input('q53_email',60,$Iz01_email,true,'text',3,"")
     ?>
     </td>
@@ -154,7 +154,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_telef?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('q53_fone',15,$Iz01_telef,true,'text',3,"")
      ?>
     </td>
@@ -162,7 +162,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lq53_dtservico?>
     </td>
     <td colspan='3'> 
-    <?
+    <?php
     db_inputdata('q53_dtservico',@$q53_dtservico_dia,@$q53_dtservico_mes,@$q53_dtservico_ano,true,'text',$db_opcao,"")
     ?>
     </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,16 +117,16 @@ if (count($aParametrosCustos) > 0) {
   </tr>
 </table>
     <center>
-	<?
+	<?php
 include(modification("forms/db_frmatendrequi.php"));
 ?>
     </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset ($incluir)) {
 	if ($clatendrequi->erro_status == "0") {
 		$clatendrequi->erro(true, false);

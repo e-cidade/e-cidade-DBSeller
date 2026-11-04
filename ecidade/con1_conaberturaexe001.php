@@ -211,6 +211,7 @@ if (isset($p->incluir)) {
 
             $clconaberturaexe->c91_anousuorigem = $p->c91_anousuorigem;
             $clconaberturaexe->c91_anousudestino = $p->c91_anousudestino;
+            $clconaberturaexe->c91_instit = $instituicaoLogada;
 
             // só inclui a abertura de exercício
             if (!$jaExisteAberturaExercicio) {
@@ -377,6 +378,50 @@ if (isset($p->incluir)) {
                         $sErro .= "Erro: {$clconplanoreduz->erro_msg}";
                         throw new Exception($sErro);
                     }
+                }
+            }
+
+            $contasBancarias = "
+                select conplanocontabancaria.*
+                from conplanocontabancaria
+                left join conplanocontabancaria contaexercicio on contaexercicio.c56_reduz = conplanocontabancaria.c56_reduz
+                    and contaexercicio.c56_codcon = conplanocontabancaria.c56_codcon
+                    and contaexercicio.c56_anousu = {$clconaberturaexe->c91_anousudestino}
+                inner join conplanoreduz
+                    on conplanocontabancaria.c56_reduz = conplanoreduz.c61_reduz
+                    and conplanocontabancaria.c56_anousu = conplanoreduz.c61_anousu
+                where conplanocontabancaria.c56_anousu = {$clconaberturaexe->c91_anousuorigem}
+                    and conplanoreduz.c61_instit = {$clconaberturaexe->c91_instit}
+                    and contaexercicio.c56_anousu is null
+            ";
+            $rsContasBancarias = db_query($contasBancarias);
+
+            if (pg_num_rows($rsContasBancarias) > 0) {
+                echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Contas Bancarias - {$iAno}'</script>";
+                flush();
+
+                $incluirCB = [];
+                while ($state = pg_fetch_assoc($rsContasBancarias)) {
+                    $dados = [
+                        "nextval('conplanocontabancaria_c56_sequencial_seq')",
+                        $state['c56_contabancaria'],
+                        $state['c56_codcon'],
+                        $clconaberturaexe->c91_anousudestino,
+                        $state['c56_reduz']
+                    ];
+
+                    $incluirCB[] = sprintf('(%s)', implode(', ', $dados));
+                }
+
+                $sqlIncluirCB = sprintf(
+                    "insert into contabilidade.conplanocontabancaria values %s ;",
+                    implode(', ', $incluirCB)
+                );
+                $rs = db_query($sqlIncluirCB);
+                if (!$rs) {
+                    $sErro = "Erro ao incluir dados em contabancaria.<br>";
+                    $sErro .= "Erro: " . pg_last_error();
+                    throw new Exception($sErro);
                 }
             }
 
@@ -594,7 +639,7 @@ if (isset($p->incluir)) {
             ";
             $rsOrg = db_query($sql1);
             $linhas = pg_num_rows($rsOrg);
-            if (pg_num_rows($rs) > 0) {
+            if ($linhas > 0) {
                 for ($i = 0; $i < $linhas; $i++) {
                     db_atutermometro($i, $linhas, 'divimp2');
 

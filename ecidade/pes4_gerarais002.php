@@ -145,7 +145,7 @@ db_inicio_transacao();
     /**
      * Busca o tipo de sistema de controle de ponto.
      */
-    $oDaoCfpess = db_utils::getDao('cfpess');
+    $oDaoCfpess = new cl_cfpess;
     $sSqlCfpess = $oDaoCfpess->sql_query_file(
         $subpes_ano,
         $subpes_mes,
@@ -216,7 +216,7 @@ db_inicio_transacao();
             $quais_diversos .= $separa . '$' . $codigo;
             $separa = ",";
 
-            global $$codigo;
+            global ${$codigo};
             eval('$$codigo = ' . $diversos[$Idiversos]["r07_valor"] . ";");
         }
 

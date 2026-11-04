@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("la01_i_codigo");
        <?=@$Lla07_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la07_i_codigo',10,$Ila07_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla07_i_laboratorio?>">
-       <?
+       <?php
        db_ancora(@$Lla07_i_laboratorio,"js_pesquisala07_i_laboratorio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la07_i_laboratorio',10,$Ila07_i_laboratorio,true,'text',$db_opcao," onchange='js_pesquisala07_i_laboratorio(false);'")
 ?>
-       <?
+       <?php
 db_input('la02_c_descr',10,$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla07_i_turno?>">
-       <?
+       <?php
        db_ancora(@$Lla07_i_turno,"js_pesquisala07_i_turno(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la07_i_turno',10,$Ila07_i_turno,true,'text',$db_opcao," onchange='js_pesquisala07_i_turno(false);'")
 ?>
-       <?
+       <?php
 db_input('la01_c_descr',10,$Ila01_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('la01_c_descr',10,$Ila01_c_descr,true,'text',3,'')
        <?=@$Lla07_c_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_input('la07_c_inicio',5,$Ila07_c_inicio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('la07_c_inicio',5,$Ila07_c_inicio,true,'text',$db_opcao,"")
        <?=@$Lla07_c_fim?>
     </td>
     <td> 
-<?
+<?php
 db_input('la07_c_fim',5,$Ila07_c_fim,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_turnohora.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

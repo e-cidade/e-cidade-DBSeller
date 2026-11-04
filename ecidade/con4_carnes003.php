@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-if(isset($HTTP_POST_VARS["codigo"])) {	
-  $codigo = $HTTP_POST_VARS["codigo"];	
+if(isset($HTTP_POST_VARS["codigo"])) {
+  $codigo = $HTTP_POST_VARS["codigo"];
   db_query("begin");
   db_query("delete from db_carnescampos where codmodelo = $codigo") or die("Erro excluindo db_carnescampos");
   $tam_vetor = sizeof($HTTP_POST_VARS);
@@ -42,13 +42,13 @@ if(isset($HTTP_POST_VARS["codigo"])) {
   //$aux[1] posy
   //$aux[2] nomcam
   for($i = 1;$i < $tam_vetor;$i++) {
-    $aux = split(";",$HTTP_POST_VARS[key($HTTP_POST_VARS)]);
+    $aux =explode(";",$HTTP_POST_VARS[key($HTTP_POST_VARS)]);
 	$result = db_query("select 0 from db_syscampo where nomecam = '".trim($aux[2])."'");
-	if(pg_numrows($result)==0) 
+	if(pg_numrows($result)==0)
 	   $var = 'f';
 	else
 	   $var = 't';
-	 
+
 echo    $sql = "insert into db_carnescampos values(".$codigo.",".$aux[0].",".$aux[1].",'".$aux[2]."','".$var."')";
 	$result = db_query($sql) or die("Erro inserindo em db_carnescampos");
     next($HTTP_POST_VARS);
@@ -71,7 +71,7 @@ function js_posicao() {
 	return false;
   }
   parent.cadpos.document.form1.posx.value = event.offsetX;
-  parent.cadpos.document.form1.posy.value = event.offsetY; 
+  parent.cadpos.document.form1.posy.value = event.offsetY;
 
   if (parent.cadpos.document.form1.dados.options[parent.cadpos.document.form1.dados.selectedIndex].value!=0){
      var nomecam = parent.cadpos.document.form1.dados.options[parent.cadpos.document.form1.dados.selectedIndex].text;
@@ -90,30 +90,30 @@ function js_posicao() {
      var tot = parent.cadpos.document.form1.texto.options[parent.cadpos.document.form1.texto.selectedIndex].value;
      var x  = new String(parent.cadpos.document.form1.texto.options[parent.cadpos.document.form1.texto.selectedIndex].text);
      var xx = x.split("->");
-     str = xx[1];  
+     str = xx[1];
   }
 
   //cria hidden
-  var chi = document.createElement("INPUT"); 
+  var chi = document.createElement("INPUT");
   chi.setAttribute("id","hid" + Contador);
-  chi.setAttribute("name","hid" + Contador);  
-  chi.setAttribute("type","hidden");  
-  chi.setAttribute("value",event.offsetX + ";" + event.offsetY + ';' + nomecam);  
-  document.getElementById('idform').appendChild(chi);  
+  chi.setAttribute("name","hid" + Contador);
+  chi.setAttribute("type","hidden");
+  chi.setAttribute("value",event.offsetX + ";" + event.offsetY + ';' + nomecam);
+  document.getElementById('idform').appendChild(chi);
   //cria div
-  var marcacao = document.createElement("DIV"); 
+  var marcacao = document.createElement("DIV");
   marcacao.setAttribute("id","cod" + Contador);
-  marcacao.setAttribute("title",nomecam);  
+  marcacao.setAttribute("title",nomecam);
 //position:absolute;layer-background-color: #993366;z-index:1; left:" + event.offsetX + "px; top:" + event.offsetY + "px;width:135px; height:90px;visibility: visible;
   marcacao.appendChild(document.createTextNode(str));
-  document.body.appendChild(marcacao);  
+  document.body.appendChild(marcacao);
   document.getElementById('cod' + Contador).style.position = 'absolute';
-  document.getElementById('cod' + Contador).style.left = event.offsetX;  
-  document.getElementById('cod' + Contador).style.top = event.offsetY - 10;  
+  document.getElementById('cod' + Contador).style.left = event.offsetX;
+  document.getElementById('cod' + Contador).style.top = event.offsetY - 10;
   document.getElementById('cod' + Contador).style.visibility = 'visible';
   document.getElementById('cod' + Contador).style.layerBackgroundColor = '#EABFD5';
-  document.getElementById('cod' + Contador).style.color = 'red';   
-  document.getElementById('cod' + Contador).style.cursor = 'hand';   
+  document.getElementById('cod' + Contador).style.color = 'red';
+  document.getElementById('cod' + Contador).style.cursor = 'hand';
   document.getElementById('cod' + Contador).onmousedown = function() {js_inserirPos(js_parse_int(this.id));js_engage(this);};
   document.getElementById('cod' + Contador).onmouseup = function() {js_release(this);};
   document.getElementById('cod' + Contador).onmousemove = function() {js_moverPos(js_parse_int(this.id));js_dragIt(this);};
@@ -123,7 +123,7 @@ function js_posicao() {
 function js_moverPos(cod) {
   var posx = document.getElementById('cod' + cod).style.pixelLeft;
   var posy = document.getElementById('cod' + cod).style.pixelTop;
-  var nomecam = document.getElementById('cod' + cod).title;  
+  var nomecam = document.getElementById('cod' + cod).title;
   parent.cadpos.document.form1.posx.value = posx;
   parent.cadpos.document.form1.posy.value = posy;
   document.getElementById('hid' + cod).value = posx + ';' + (posy + 10) + ';' + nomecam;
@@ -133,7 +133,7 @@ function js_inserirPos(cod) {
   str = str.split(";");
   parent.cadpos.document.form1.posx.value = str[0];
   parent.cadpos.document.form1.posy.value = str[1];
-  parent.cadpos.document.form1.nomecam.value = str[2];  
+  parent.cadpos.document.form1.nomecam.value = str[2];
   var sel = parent.cadpos.document.form1.dados;
   for(var i = 0;i < sel.length;i++) {
     if(sel.options[i].text == str[2]) {
@@ -144,7 +144,7 @@ function js_inserirPos(cod) {
 }
 function removeElem(cod) {
   var elem = document.getElementById("cod" + cod);
-  elem.parentNode.removeChild(elem);	
+  elem.parentNode.removeChild(elem);
   var elem = document.getElementById("hid" + cod);
   elem.parentNode.removeChild(elem);
 }
@@ -152,7 +152,7 @@ function removeElem(cod) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-		<?
+		<?php
 
 		if(isset($codigo)) {//var vem do parse_str
           $result = db_query("select nomemodelo,imgmodelo from db_carnesimg where codmodelo = $codigo");
@@ -163,25 +163,25 @@ function removeElem(cod) {
             $oid = pg_result($result,0,"imgmodelo");
             pg_loexport($oid,$arquivo);
             db_query("end");
-            echo "<img style=\"position:absolute;left:0px; top:0px\" src=\"".$arquivo."\" border=\"0\" onclick=\"js_posicao()\">\n";			  
+            echo "<img style=\"position:absolute;left:0px; top:0px\" src=\"".$arquivo."\" border=\"0\" onclick=\"js_posicao()\">\n";
 		    ///escreve os campos///
 			$reccampos = db_query("select nomecam,posxmodelo,posymodelo from db_carnescampos where codmodelo = $codigo");
 			$numcampos = pg_numrows($reccampos);
-//			if($numcampos > 0) {			  
+//			if($numcampos > 0) {
 			  //escreve as div
 			  for($i = 0;$i < $numcampos;$i++) {
 			    db_fieldsmemory($reccampos,$i);
 				$comprimento = db_query("select tamanho
-		                                from db_syscampo							            
+		                                from db_syscampo
 							            where nomecam = '".$nomecam."'");
 				if(pg_numrows($comprimento) == 0){
-				   $xx = split("->",$nomecam);
+				   $xx =explode("->",$nomecam);
 				   $comprimento = db_query("select length(txcampo),txcampo
-		                                   from db_carnesdados							            
+		                                   from db_carnesdados
 							               where idtx = '".trim($xx[0])."'::integer");
 				   if(pg_numrows($comprimento) == 0){
 				     db_msgbox("Erro: campo $nomecam não encontrado em db_syscampo ou db_carnesdados.");
-				   }   
+				   }
 				   $comp = pg_result($comprimento,0,1);
 			       $comprimento = pg_result($comprimento,0,0);
 				}else{
@@ -201,7 +201,7 @@ function removeElem(cod) {
 			  }
 			  echo "</form>\n";
 //			}
-			/////////////////////// 	        			
+			///////////////////////
 		  } else {
 		    db_erro("Imagem não encontrada");
 		  }

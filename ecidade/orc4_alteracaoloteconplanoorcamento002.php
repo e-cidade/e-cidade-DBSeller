@@ -56,7 +56,7 @@ require_once(modification("libs/db_app.utils.php"));
 
 <div class="container" style="margin-top: 30px; width: 98%;">
 
-    <fieldset style="600px">
+    <fieldset style="width:600px">
         <legend class="bold">Dotações Encontradas</legend>
         <div id="ctnAlteracaoLoteConplanoorcamento"></div>
     </fieldset>

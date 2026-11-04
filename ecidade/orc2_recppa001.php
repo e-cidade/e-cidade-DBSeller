@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -109,15 +109,15 @@ function js_emite(){
     </tr>
     <tr>
       <td nowrap title="<?=@$To21_codleippa?>" align='right'>
-	<?
+	<?php
 	db_ancora(@$Lo21_codleippa,"js_pesquisao21_codleippa(true);",1);
 	?>
-	<?
+	<?php
 	db_input('o21_codleippa',8,$Io21_codleippa,true,'text',1," onchange='js_pesquisao21_codleippa(false);'")
 	?>
       </td>
       <td align='left' colspan='1'> 
-	<?
+	<?php
 	db_input('o21_descr',40,$Io21_descr,true,'text',3,'')
 	?>
       </td>
@@ -127,7 +127,7 @@ function js_emite(){
 	<table>
 	  <tr>
 	    <td align="center">
-	      <?
+	      <?php
 	      $aux = new cl_arquivo_auxiliar;
 	      $aux->cabecalho = "<strong>RECURSOS</strong>";
 	      $aux->codigo = "o15_codigo";
@@ -155,7 +155,7 @@ function js_emite(){
 	<strong>Opção de Seleção :<strong>
       </td>
       <td align="left"> 
-	<?
+	<?php
 	$xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
 	db_select('param',$xxx,true,2);
 	?>
@@ -166,7 +166,7 @@ function js_emite(){
 	<strong>Tipo :<strong>
       </td>
       <td align="left"> 
-	<?
+	<?php
 	$xxy = array("a"=>"Analítico&nbsp;","s"=>"Sintético&nbsp;");
 	db_select('tiporel',$xxy,true,2);
 	?>
@@ -178,7 +178,7 @@ function js_emite(){
 	<strong>Quebrar por :</strong>
       </td>
       <td align='left' >
-	<? 
+	<?php 
 	$tipo_ordem = array("RC"=>"Receita","R"=>"Recurso");
 	db_select("tipo",$tipo_ordem,true,2); 
 	?>	&nbsp;&nbsp;&nbsp;&nbsp;
@@ -187,7 +187,7 @@ function js_emite(){
     <tr>
     <td align='center' colspan = 2>
     <strong>Anos :<strong>
-    <?
+    <?php
     $result_anosescolha = $clorcppalei->sql_record($clorcppalei->sql_query_file(@$o21_codleippa,"o21_anoini,o21_anofim"));
     $arr_indexdescr = Array();
       db_fieldsmemory($result_anosescolha,0);
@@ -207,7 +207,7 @@ function js_emite(){
     
   </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

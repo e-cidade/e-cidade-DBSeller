@@ -85,13 +85,13 @@ class cl_agendamentos {
                  sd23_i_upssolicitante = int4 = Unidade
                  ";
    //funcao construtor da classe
-   function cl_agendamentos() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendamentos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -100,7 +100,7 @@ class cl_agendamentos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd23_i_codigo = ($this->sd23_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd23_i_codigo"]:$this->sd23_i_codigo);
        $this->sd23_i_undmedhor = ($this->sd23_i_undmedhor == ""?@$GLOBALS["HTTP_POST_VARS"]["sd23_i_undmedhor"]:$this->sd23_i_undmedhor);
@@ -143,7 +143,7 @@ class cl_agendamentos {
      }
    }
    // funcao para inclusao
-   function incluir ($sd23_i_codigo){
+   public function incluir ($sd23_i_codigo){
       $this->atualizacampos();
      if($this->sd23_i_undmedhor == null ){
        $this->erro_sql = " Campo Horário do Médico nao Informado.";
@@ -350,7 +350,7 @@ class cl_agendamentos {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sd23_i_codigo=null) {
+   public function alterar ($sd23_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update agendamentos set ";
      $virgula = "";
@@ -616,7 +616,7 @@ class cl_agendamentos {
      }
    }
    // funcao para exclusao
-   function excluir ($sd23_i_codigo=null,$dbwhere=null) {
+   public function excluir ($sd23_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd23_i_codigo));
      }else{
@@ -691,7 +691,7 @@ class cl_agendamentos {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -714,10 +714,10 @@ class cl_agendamentos {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -744,7 +744,7 @@ class cl_agendamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -754,10 +754,10 @@ class cl_agendamentos {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -778,7 +778,7 @@ class cl_agendamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -790,10 +790,10 @@ class cl_agendamentos {
    /*
 Query utilizada na consulta geral da saúde
 */
-function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+public function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -823,7 +823,7 @@ function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -832,10 +832,10 @@ function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,
      }
      return $sql;
   }
-   function sql_query_marcados( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_marcados( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
  $sql = "select ";
  if($campos != "*" ){
-    $campos_sql = split("#",$campos);
+    $campos_sql = explode("#",$campos);
     $virgula = "";
     for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -861,7 +861,7 @@ function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,
       $sql .= $sql2;
    if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
           $sql .= $virgula.$campos_sql[$i];
@@ -878,7 +878,7 @@ function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,
   * @return boolean indica se o agendamento indicado possuia ou nao um prontuario
   */
 
-  function excluir_prontuario_agendamento($iAgendamento) {
+  public function excluir_prontuario_agendamento($iAgendamento) {
 
     $oDaoprontproced      = new cl_prontproced_ext();
     $oDaoprontprocedcid   = new cl_prontprocedcid();
@@ -957,12 +957,12 @@ function sql_query_consulta_geral ( $sd23_i_codigo=null,$campos="*",$ordem=null,
 *@param {String} $sDbwhere string que receberá no codigo a condição para o sql;
 *@return String,  retorna o comando sql estruturado com todas as informações necessária para realizar a consulta;
 */
-function sql_query_prontuarios ($sd23_i_codigo = null, $sCampos = "*", $sOrdem = null, $sDbwhere = "") {
+public function sql_query_prontuarios ($sd23_i_codigo = null, $sCampos = "*", $sOrdem = null, $sDbwhere = "") {
 
   $sSql = "select ";
   if($sCampos != "*" ) {
 
-    $sCampos_sql = split("#", $sCampos);
+    $sCampos_sql = explode("#", $sCampos);
     $sVirgula = "";
 
     for ($iCont = 0; $iCont < sizeof ($sCampos_sql); $iCont++){
@@ -1003,7 +1003,7 @@ function sql_query_prontuarios ($sd23_i_codigo = null, $sCampos = "*", $sOrdem =
    if($sOrdem != null ) {
 
      $sSql .= "order by";
-     $sCampos_sql = split("#", $sOrdem);
+     $sCampos_sql = explode("#", $sOrdem);
      $sVirgula = "";
 
      for($iCont = 0; $iCont < sizeof($sCampos_sql); $iCont++) {
@@ -1025,7 +1025,7 @@ function sql_query_comprovante($iCodigo = null, $sCampos = '*', $sOrdem = null, 
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -1065,7 +1065,7 @@ function sql_query_comprovante($iCodigo = null, $sCampos = '*', $sOrdem = null, 
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -1085,7 +1085,7 @@ function sql_query_comprovante($iCodigo = null, $sCampos = '*', $sOrdem = null, 
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -1119,7 +1119,7 @@ function sql_query_comprovante($iCodigo = null, $sCampos = '*', $sOrdem = null, 
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

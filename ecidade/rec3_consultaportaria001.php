@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -84,7 +84,7 @@ $clportaria->rotulo->label();
 </table>
 </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -106,29 +106,29 @@ $clportaria->rotulo->label();
  }
 
   function buscaArquivoEstorage() {
-    var parametros = `idestorage=${$('id_estorage').value}&exec=getArquivoEstorage`;
-    
-    const oAjax   = new Ajax.Request( 
-      'rh_processaassinaturadigital.RPC.php', 
-      {
-        method: 'post',
-        parameters: parametros,
-        onComplete: imprimePortaria
-      }
+      var parametros = `idestorage=${$('id_estorage').value}&exec=getArquivoEstorage`;
+
+      const oAjax   = new Ajax.Request(
+          'rh_processaassinaturadigital.RPC.php',
+          {
+            method: 'post',
+            parameters: parametros,
+            onComplete: imprimePortaria
+          }
     );
   }
 
   function imprimePortaria(oAjax) {
     const response = JSON.parse(oAjax.responseText);
-    
+
     if (response.path) {
       window.open(`db_download.php?arquivo=${response.path}`);
     } else {
       const aux = $('portaria').value.split('/');
       const parametros = `sAcao=consultaPortarias&iPortariaInicial=${aux[0]}&iPortariaFinal=${aux[0]}&iAnoUsu=${aux[1]}`;
-      
-      var oAjax   = new Ajax.Request( 
-        'rec1_portariasRPC.php', 
+
+      var oAjax   = new Ajax.Request(
+        'rec1_portariasRPC.php',
         {
           method: 'post',
           parameters: parametros,
@@ -143,7 +143,7 @@ $clportaria->rotulo->label();
 
     if (aRetorno.erro == true) {
       alert(aRetorno.msg.urlDecode());
-      
+
       return false;
     } else {
       js_imprimeRelatorio(aRetorno.iModIndividual,js_downloadArquivo,JSON.stringify(aRetorno.aParametros));

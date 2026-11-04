@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -90,11 +90,12 @@ $rs = db_query($sql);
 $result = (object) pg_fetch_assoc($rs);
 $fundamentacao = $result->db18_valor;
 
-if ($result->db110_valor == "OUTD") {
+if ($result->db110_valor == "OUTD" || $result->db110_valor == "OUT" || $result->db110_valor == "OUTC" || $result->db110_valor == "OUTI") {
     $sql = "select db110_valor, db110_db_cadattdinamicoatributos from db_cadattdinamicoatributosvalor
+            inner join db_cadattdinamicoatributos on db110_db_cadattdinamicoatributos = db_cadattdinamicoatributos.db109_sequencial
              where db110_cadattdinamicovalorgrupo in
                    (select l16_cadattdinamicovalorgrupo from liclicitacadattdinamicovalorgrupo where l16_liclicita = {$l20_codigo})
-                    and db110_db_cadattdinamicoatributos in (19, 20, 21) order by db110_db_cadattdinamicoatributos asc " ;
+                    and db109_nome in ('numeroartigo', 'inciso', 'lei') order by db110_db_cadattdinamicoatributos asc " ;
     $rs = db_query($sql);
 
     $cont = 0;
@@ -120,16 +121,15 @@ if ($oLibDocumento->lErro) {
 }
 
 db_fieldsmemory($rsLicitacao, 0);
-$l20_datacria = substr($l20_datacria, 0, 4);
 
 $head3 = "ADJUDICA플O DE PROCESSO ";
-$head4 = "LICITA플O : $l20_numero/$l20_datacria";
+$head4 = "LICITA플O : $l20_numero/$l20_anousu";
 $head5 = "SEQUENCIAL: $l20_codigo";
 $oPDF->addpage();
 $oPDF->ln();
 $oPDF->setfont('arial', 'b', 14);
 $oPDF->cell(0, 8, "ADJUDICA플O DE PROCESSO", 0, 1, "C", 0);
-$oPDF->cell(0, 8, "LICITA플O : $l20_numero/$l20_datacria", 0, 1, "C", 0);
+$oPDF->cell(0, 8, "LICITA플O : $l20_numero/$l20_anousu", 0, 1, "C", 0);
 $oPDF->cell(0, 8, "Fundamenta豫o : $fundamentacao", 0, 1, "C", 0);
 $oPDF->ln();
 $oPDF->ln();
@@ -137,7 +137,7 @@ $oPDF->setfont('arial', '', 8);
 $olicitacao = db_utils::fieldsMemory($rsLicitacao, 0);
 $oLibDocumento->l20_numero = $olicitacao->l20_numero;
 $oLibDocumento->l03_descr = trim($olicitacao->l03_descr);
-$oLibDocumento->l20_datacria = substr($olicitacao->l20_datacria, 0, 4);
+$oLibDocumento->l20_datacria = $olicitacao->l20_anousu;
 $oLibDocumento->l20_codigo = $olicitacao->l20_codigo;
 $oLibDocumento->l30_portaria = $olicitacao->l30_portaria;
 

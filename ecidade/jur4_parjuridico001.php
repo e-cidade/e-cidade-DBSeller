@@ -62,6 +62,8 @@ if (isset($alterar)) {
     $clparjuridico->v19_codorgao = $oPost->v19_codorgao;
     $clparjuridico->v19_consultaanaliticainicial = $oPost->v19_consultaanaliticainicial;
     $clparjuridico->v19_advogadopadrao = $oPost->v19_advogadopadrao;
+    $clparjuridico->v19_parcelahonorariosmanual = $oPost->v19_parcelahonorariosmanual;
+    $clparjuridico->v19_parcelacustasmanual = $oPost->v19_parcelacustasmanual;
 
     $clparjuridico->alterar_camposNulos($v19_anousu, $v19_instit);
 
@@ -86,6 +88,8 @@ if (isset($alterar)) {
     $clparjuridico->v19_codorgao = $oPost->v19_codorgao;
     $clparjuridico->v19_consultaanaliticainicial = $oPost->v19_consultaanaliticainicial;
     $clparjuridico->v19_advogadopadrao = $oPost->v19_advogadopadrao;
+    $clparjuridico->v19_parcelahonorariosmanual = $oPost->v19_parcelahonorariosmanual;
+    $clparjuridico->v19_parcelacustasmanual = $oPost->v19_parcelacustasmanual;
     $clparjuridico->incluir(db_getsession('DB_anousu'), db_getsession('DB_instit'));
 
     if ($clparjuridico->erro_status == "0") {

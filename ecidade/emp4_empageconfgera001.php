@@ -48,6 +48,15 @@ require_once(modification("classes/db_conplanoconta_classe.php"));
 require_once(modification("classes/db_empagemod_classe.php"));
 require_once(modification("classes/db_db_bancos_classe.php"));
 
+/*
+ * Foi necessrio criar um novo arquivo para VR pois eles precisam do txt do banco itau 341 para baixa manual.
+ * No  utilizado para enviar ao banco, foi usado o mesmo layout do banco 104. Solicitao exclusiva de VR.
+ * No esquecer de atualizar o arquivo emp4_empageconfgera001VR tbm.
+ */
+if (isVoltaRedonda()) {
+    header('Location: emp4_empageconfgera001VR.php');
+}
+
 $cllayout_BBBS    = new cl_layout_BBBS;
 $clempage         = new cl_empage;
 $clempagetipo     = new cl_empagetipo;
@@ -403,8 +412,8 @@ if (isset($atualizar)) {
             $pc63_banco = db_formatar($pc63_banco, 's', '0', 3, 'e', 0);
             if ($codigomodelo == 3 && $sqlerro == false) {
 
-                $arr_data  = split('-', $e87_data);
-                $arr_datap = split('-', $e87_dataproc);
+                $arr_data  =explode('-', $e87_data);
+                $arr_datap =explode('-', $e87_dataproc);
                 $data      = $arr_data[2] . $arr_data[1] . $arr_data[0];
                 $dat_cred  = $arr_datap[2] . $arr_datap[1] . $arr_datap[0];
                 /// criar campo de sequencia do arquivo no empagetipo.
@@ -733,17 +742,16 @@ if (isset($atualizar)) {
 
                             // HEADER DO LOTE
                             if ($banco == "041") {
-
-                                $conta_pre                        = db_formatar(str_replace('.',
-                                    '',
-                                    str_replace('-',
-                                        '',
-                                        $c63_conta . $dvconta_pre)),
+                                $conta_pre = db_formatar(
+                                    str_replace('.', '', str_replace(
+                                        '-', '', $c63_conta . $dvconta_pre
+                                    )),
                                     's',
                                     '0',
                                     10,
                                     'e',
-                                    0);
+                                    0
+                                );
                                 $cllayout_BBBS->BSheaderL_001_003 = $banco;
                                 $cllayout_BBBS->BSheaderL_004_007 = db_formatar($seq_header, 's', '0', 4, 'e', 0);
                                 $cllayout_BBBS->BSheaderL_008_008 = "1";
@@ -843,7 +851,6 @@ if (isset($atualizar)) {
                                 $cllayout_BBBS->geraHEADERLoteBB();
 
                             } else if ($banco == "104") {
-
                                 $loteservico   = db_formatar($seq_header, 's', '0', 4, 'e', 0);
                                 $tiposervico   = ($e74_tipofatura == 2 ? "98" : "20");
                                 $finalidadedoc = $finalidade;
@@ -860,7 +867,7 @@ if (isset($atualizar)) {
                                 $formalancamento    = ($e74_tipofatura == 2 ? "11" : $formalancamento);
 
                                 $conveniobanco      = substr($convenio, 0, 6);
-                                $codigocompromisso  = "{$e83_codigocompromisso}";
+                                $codigocompromisso  = "0001";
                                 $parametrotransmiss = substr($convenio, 10, 2);
                                 $tipocompromisso    =  ($e74_tipofatura == 2 ? "03" : "01");
                                 $agencialote        = $agencia_pre;
@@ -958,6 +965,8 @@ if (isset($atualizar)) {
                         }
                         // REGISTROS
                         if ($banco == "041") {
+                            /* Plugin PagamentoTransmissaoTED compensacao - Banrisul */
+
                             $cllayout_BBBS->BSregist_001_003 = $banco;
                             $cllayout_BBBS->BSregist_004_007 = db_formatar($seq_header, 's', '0', 4, 'e', 0);
                             $cllayout_BBBS->BSregist_008_008 = "3";
@@ -1002,6 +1011,8 @@ if (isset($atualizar)) {
                             $cllayout_BBBS->BSregist_231_240 = str_repeat(' ', 10);
                             $cllayout_BBBS->geraREGISTROSBS();
                         } else if ($banco == "001") {
+                            /* Plugin PagamentoTransmissaoTED compensacao - BB */
+
                             // REGISTROS SEGMENTO A
                             if ($pc63_banco == $banco) {
                                 $compensacao = str_repeat('0', 3);
@@ -1161,7 +1172,7 @@ if (isset($atualizar)) {
                                 $tipodaconta = $pc63_tipoconta;
                             }
 
-                            /* Plugin PagamentoTransmissaoTED compensacao */
+                            /* Plugin PagamentoTransmissaoTED compensacao - Caixa */
 
                             $valordebito = $valor;
                             $qtdparcelas = "01";
@@ -1404,13 +1415,13 @@ if (isset($data)) {
     <table width="100%" height="95%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-                <?
+                <?php
                 include(modification("forms/db_frmempageconfgera.php"));
                 ?>
             </td>
         </tr>
     </table>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -1429,7 +1440,7 @@ if (isset($data)) {
         );
       }
       function js_mostra(codage, data) {
-        arr = data.split('-');
+        arr = data.explode('-');
 
         obj = document.form1;
 
@@ -1450,7 +1461,7 @@ if (isset($data)) {
 
       }
     </script>
-<?
+<?php
 if (isset($atualizar)) {
     if ($sqlerro == true) {
         db_msgbox($erro_msg);

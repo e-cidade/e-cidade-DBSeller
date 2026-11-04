@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("at40_descr");
        <?=@$Ldb29_seqvertar?>
     </td>
     <td> 
-<?
+<?php
 db_input('db29_seqvertar',8,$Idb29_seqvertar,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb29_codver?>">
-       <?
+       <?php
        db_ancora(@$Ldb29_codver,"js_pesquisadb29_codver(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db29_codver',6,$Idb29_codver,true,'text',$db_opcao," onchange='js_pesquisadb29_codver(false);'")
 ?>
-       <?
+       <?php
 db_input('db30_codversao',6,$Idb30_codversao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb29_tarefa?>">
-       <?
+       <?php
        db_ancora(@$Ldb29_tarefa,"js_pesquisadb29_tarefa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db29_tarefa',10,$Idb29_tarefa,true,'text',$db_opcao," onchange='js_pesquisadb29_tarefa(false);'")
 ?>
-       <?
+       <?php
 db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_versaotarefa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

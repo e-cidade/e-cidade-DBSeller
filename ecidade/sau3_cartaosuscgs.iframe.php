@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             <table border="0" width="90%">
               <tr>
                 <td>
-                  <?
+                  <?php
                   db_input('z01_i_cgsund', 10, '', true, 'hidden', 3, '');
                   ?>
                   <div id='grid_cns' style='width: 100%;'></div>

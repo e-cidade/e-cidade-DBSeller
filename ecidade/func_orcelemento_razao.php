@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,19 +61,19 @@ if ($clorcparametro->numrows > 0 ){
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To56_codele?>"><?=$Lo56_codele?></td>
             <td width="96%" align="left" nowrap> 
-              <?  db_input("o56_codele",6,$Io56_codele,true,"text",4,"","chave_o56_codele");   ?>
+              <?php  db_input("o56_codele",6,$Io56_codele,true,"text",4,"","chave_o56_codele");   ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To56_elemento?>"><?=$Lo56_elemento?></td>
             <td width="96%" align="left" nowrap> 
-              <?  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");  ?>
+              <?php  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");  ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To56_descr?>"><?=$Lo56_descr?> </td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o56_descr",15,$Io56_descr,true,"text",4,"","chave_o56_descr");   ?>
+              <?php db_input("o56_descr",15,$Io56_descr,true,"text",4,"","chave_o56_descr");   ?>
             </td>
           </tr>
 
@@ -90,7 +90,7 @@ if ($clorcparametro->numrows > 0 ){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
         //$campos ="orcelemento.*";
 	$campos = "distinct o56_codele,o56_elemento,o56_descr,o56_finali ";
         $dbwhere='';
@@ -135,12 +135,12 @@ if ($clorcparametro->numrows > 0 ){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

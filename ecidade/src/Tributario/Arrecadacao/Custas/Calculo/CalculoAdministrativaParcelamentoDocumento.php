@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -37,7 +37,7 @@ final class CalculoAdministrativaParcelamentoDocumento extends CalculoColecao im
 
     private $inicial;
 
-    public function __construct(Termo $termo, Inicial $inicial) 
+    public function __construct(Termo $termo, Inicial $inicial)
     {
         $this->termo = $termo;
         $this->inicial = $inicial;
@@ -46,18 +46,19 @@ final class CalculoAdministrativaParcelamentoDocumento extends CalculoColecao im
     public function calcular()
     {
         $sql = " select generate_series(1, termo.v07_totpar) as numpar,
-                        sum(arreoldcalc.k00_vlrcor + arreoldcalc.k00_vlrjur + arreoldcalc.k00_vlrmul + arreoldcalc.k00_vlrdes) as valor 
-                   from termo                                                                                                           
-                        inner join termoini on termoini.parcel = termo.v07_parcel                                                       
-                        inner join inicialcert on inicialcert.v51_inicial = termoini.inicial                                            
-                        inner join certdiv on certdiv.v14_certid = inicialcert.v51_certidao                                             
-                        inner join divida on divida.v01_coddiv = certdiv.v14_coddiv                                                     
-                        inner join arreold on arreold.k00_numpre = divida.v01_numpre                                                    
-                                          and arreold.k00_numpar = divida.v01_numpar                                                    
-                        inner join arreoldcalc on arreoldcalc.k00_numpre = arreold.k00_numpre                                           
-                                              and arreoldcalc.k00_numpar = arreold.k00_numpar                                           
-                                              and arreoldcalc.k00_receit = arreold.k00_receit                                           
-                  where termo.v07_parcel = {$this->termo->getCodigo()}                                                                                     
+                        sum(arreoldcalc.k00_vlrcor + arreoldcalc.k00_vlrjur + arreoldcalc.k00_vlrmul +
+                            arreoldcalc.k00_vlrdes) as valor
+                   from termo
+                        inner join termoini on termoini.parcel = termo.v07_parcel
+                        inner join inicialcert on inicialcert.v51_inicial = termoini.inicial
+                        inner join certdiv on certdiv.v14_certid = inicialcert.v51_certidao
+                        inner join divida on divida.v01_coddiv = certdiv.v14_coddiv
+                        inner join arreold on arreold.k00_numpre = divida.v01_numpre
+                                          and arreold.k00_numpar = divida.v01_numpar
+                        inner join arreoldcalc on arreoldcalc.k00_numpre = arreold.k00_numpre
+                                              and arreoldcalc.k00_numpar = arreold.k00_numpar
+                                              and arreoldcalc.k00_receit = arreold.k00_receit
+                  where termo.v07_parcel = {$this->termo->getCodigo()}
                     and termoini.inicial = {$this->inicial->getCodigo()}
                   group by numpar
                   order by 1 asc ";

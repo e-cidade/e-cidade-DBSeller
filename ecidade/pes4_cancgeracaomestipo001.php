@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -140,7 +140,7 @@ if ( isset($oPost->cancelar) ) {
 				        <b>Ano/Mês:</b>
 				      </td>
 				      <td>
-				        <?
+				        <?php
                   db_input("anofolha",4,"",true,"text",$db_opcao,"");
                   db_input("mesfolha",2,"",true,"text",$db_opcao,"");
 				        ?>
@@ -151,7 +151,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Tipo Geração:</b>
               </td>
               <td>
-                <?
+                <?php
                    $aTipo = array("f"=>"Funcionários",
                                   "p"=>"Pensão Alimentícia");
                    db_select("tipoGera",$aTipo,true,1,"onChange='document.form1.submit();' style='width:150px;'");
@@ -163,7 +163,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Tipo Folha:</b>
               </td>
               <td>
-                <?  
+                <?php  
                   if ( isset($oPost->tipoGera) && $oPost->tipoGera == "p" ) {
 			               $aTipoFolha = array(
 			                                    "7"=>"Salário",
@@ -198,7 +198,7 @@ if ( isset($oPost->cancelar) ) {
    </tr>
 	</table> 	  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -219,7 +219,7 @@ function js_cancelar(){
 
 </script>
 
-<?
+<?php
    
    if ( isset($oPost->cancelar) ) {
 

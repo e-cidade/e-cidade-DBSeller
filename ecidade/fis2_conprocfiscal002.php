@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -209,7 +209,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
 			</fieldset>
 			<fieldset><Legend align="center"><b>Vistorias</b></legend>
 			  
-				<? 
+				<?php 
 				 if($linhasvistorias > 0){
 				 	echo "
 					<table border='0' width='100%' class='tab_cinza'>
@@ -259,7 +259,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
 			</fieldset>
 			
 			<fieldset><Legend align="center"><b>Notificação fiscal</b></legend>
-				<? 
+				<?php 
 				 if($linhasnotificacao > 0){
 				 	echo "
 					<table border='0' width='100%' class='tab_cinza'>
@@ -296,7 +296,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
    		</table>
 			</fieldset>
 			<fieldset><Legend align="center"><b>Auto de infração</b></legend>
-				<? 
+				<?php 
 				 if($linhasauto > 0){
 				 	echo "
 					<table border='0' width='100%' class='tab_cinza'>
@@ -333,7 +333,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
    		</table>
 			</fieldset>
 			<fieldset><Legend align="center"><b>Levantamento fiscal</b></legend>
-				<?  
+				<?php  
 				 if($linhaslevanta > 0){
 				 	echo "
 					<table border='0' width='100%' class='tab_cinza'>
@@ -367,7 +367,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
 			</fieldset>
 			</fieldset>
 			<fieldset><Legend align="center"><b>Lançamento de estimativa</b></legend>
-				<?   
+				<?php   
 				 if($linhasvarfix > 0){
 				 	echo "
 					<table border='0' width='100%' class='tab_cinza'>
@@ -408,7 +408,7 @@ $linhasvarfix = pg_num_rows($rsvarfix);
 </table>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

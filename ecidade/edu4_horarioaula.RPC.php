@@ -1,5 +1,4 @@
 <?php
-
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -37,7 +36,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 
-define( 'MSG_EDU4_HORARIOAULA_RPC', 'educacao.escola.edu4_horarioaulaRPC.' );
+const MSG_EDU4_HORARIOAULA_RPC = "educacao.escola.edu4_horarioaulaRPC.";
 
 $iEscola = db_getsession("DB_coddepto");
 $oJson   = new Services_JSON();
@@ -116,8 +115,12 @@ try {
 
         foreach ($oParam->aPeriodosExcluidos as $iCodigoPeriodoEscola) {
 
-          $oPeriodoEscola = new PeriodoEscola($iCodigoPeriodoEscola);
-          $oPeriodoEscola->remover();
+          try {
+            $oPeriodoEscola = new PeriodoEscola($iCodigoPeriodoEscola);
+            $oPeriodoEscola->remover();
+          } catch (DBException $dbErro) {
+            throw new DBException($dbErro->getMessage());
+          }
         }
       }
 

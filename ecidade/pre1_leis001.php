@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -264,7 +264,7 @@ function js_submeter() {
       <tr> 
         <td height="25" nowrap><strong>Data da Lei:</strong></td>
         <td height="25">
-		   <?
+		   <?php
 		     include(modification("dbforms/db_funcoes.php"));
 			 db_data("datalei",@$datalei_dia,@$datalei_mes,@$datalei_ano);
 		   ?>
@@ -285,16 +285,16 @@ function js_submeter() {
       </tr>
       <tr> 
         <td height="25" nowrap>&nbsp;</td>
-        <td height="25"><input name="incluir" type="submit" id="incluir" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>>
+        <td height="25"><input name="incluir" type="submit" id="incluir" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>>
           &nbsp; 
-          <input name="alterar" type="submit" id="alterar" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>>
+          <input name="alterar" type="submit" id="alterar" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>>
           &nbsp; 
-          <input name="excluir" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>></td>
+          <input name="excluir" type="submit" id="excluir" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>></td>
       </tr>
     </table>
   </form>
 </center>
-<?
+<?php
   echo "<center>\n";
   db_lov("select id_lei as db_id_lei,numerolei as \"Número da Lei\",to_char(datalei,'DD-MM-YYYY') as data,ementa from db_leis order by db_id_lei",20,"pre1_leis001.php"); 
   echo "</center>\n";

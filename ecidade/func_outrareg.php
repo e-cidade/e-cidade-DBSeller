@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ if(isset($disciplina_codigos)){
  <script>
   parent.db_iframe_outrareg.hide();
  </script>
- <?
+ <?php
  exit;
 }
 ?>
@@ -75,7 +75,7 @@ if(isset($disciplina_codigos)){
  <tr>
   <td align="center" valign="top">
    <b>Selecione as outras disciplinas<br>para conter as alterações de <?=$tipofreq?>.<br></b>
-   <?
+   <?php
    //$result1 = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr","ed59_i_turma = $ed59_i_turma AND ed59_i_codigo != $regencia"));
    $sql1 = "SELECT ed78_i_codigo,ed232_c_descr
             FROM regenciaperiodo
@@ -92,7 +92,7 @@ if(isset($disciplina_codigos)){
    $linhas1 = pg_num_rows($result1);
    ?>
    <select name="disciplinas[]" id="disciplinas" size="10" style="font-size:9px;width:330px;" multiple>
-   <?
+   <?php
    for($x=0;$x<$linhas1;$x++){
     db_fieldsmemory($result1,$x);
     echo "<option value='$ed78_i_codigo'>$ed232_c_descr</option>";

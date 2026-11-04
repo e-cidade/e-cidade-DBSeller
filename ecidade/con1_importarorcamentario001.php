@@ -184,6 +184,11 @@ require_once modification("dbforms/db_funcoes.php");
             <i class="fas fa-print"></i>
             Imprimir
         </button>
+
+        <button type="button" id="btnAtualiza" class="btn btn-light" disabled>
+            <i class="fas fa-save"></i>
+            Atualizar Nomes
+        </button>
     </form>
 </div>
 <script type="text/javascript" src="scripts/widgets/DBFileUpload.widget.js"></script>
@@ -197,6 +202,8 @@ require_once modification("dbforms/db_funcoes.php");
     const cboTipoPlanilha = document.getElementById('tipoPlanilha');
     const cboExercicio = document.getElementById('exercicio');
 
+    const btnImportar = document.getElementById('btnImportar');
+    const btnAtualiza = document.getElementById('btnAtualiza');
     const exemploReceita = document.getElementById('exemploReceita');
     const exemploDespesa = document.getElementById('exemploDespesa');
 
@@ -216,18 +223,15 @@ require_once modification("dbforms/db_funcoes.php");
     const routs = {
         receita: 'financeiro/contabilidade/plano-contas/importar/orcamentario/receita',
         despesa: 'financeiro/contabilidade/plano-contas/importar/orcamentario/despesa',
+        atualizarDespesa: 'financeiro/contabilidade/plano-contas/importar/orcamentario/atualizar-despesa',
+        atualizarReceita: 'financeiro/contabilidade/plano-contas/importar/orcamentario/atualizar-receita',
         emitir: 'financeiro/contabilidade/plano-contas/emitir/orcamentario'
     }
-
-    const data = new Date();
-    const exercicio = data.getUTCFullYear();
-    cboExercicio.add(new Option(exercicio, exercicio));
-    cboExercicio.add(new Option(exercicio + 1, exercicio + 1));
-
 
     const erroRetornoArquivo = mensagem => {
         alert(mensagem);
         btnImportar.disabled = true;
+        btnAtualiza.disabled = true;
         fileUpload.clear();
     }
 
@@ -243,6 +247,7 @@ require_once modification("dbforms/db_funcoes.php");
         }
 
         btnImportar.disabled = false;
+        btnAtualiza.disabled = false;
     }
 
     const fileUpload = new DBFileUpload({callBack: retornoEnvioArquivo, labelButton: 'Arquivo'});
@@ -261,30 +266,19 @@ require_once modification("dbforms/db_funcoes.php");
     };
 
     PHPSession.loadData().then(() => {
+        let exercicio = Number(PHPSession.getValueSession('DB_anousu'))
+        cboExercicio.add(new Option(exercicio, exercicio));
+        cboExercicio.add(new Option(exercicio + 1, exercicio + 1));
+
         document.getElementById('btnImportar').addEventListener('click', () => {
-
-            if (!validar()) {
-                return false;
-            }
-
-            const formData = new FormData(formulario);
-            formData.append('file', JSON.stringify({
-                "extension": fileUpload.extension,
-                "name": fileUpload.file,
-                "path": fileUpload.filePath
-            }));
-            PHPSession.appendFormData(formData);
-
             let rota = cboTipoPlanilha.value === 'receita' ? routs.receita : routs.despesa;
-
-            HttpClient.post(`${PHPSession.requestApi}/${rota}`, {body: formData}).then(response => {
-                alert(response.message);
-                if (response.error) {
-                    return;
-                }
-            });
+            enviaPlanilha(rota);
         });
 
+        btnAtualiza.addEventListener('click', () => {
+            let rota = cboTipoPlanilha.value === 'receita' ? routs.atualizarReceita : routs.atualizarDespesa;
+            enviaPlanilha(rota);
+        })
 
         document.getElementById('btnImprimir').addEventListener('click', () => {
             let exercicio = cboExercicio.value;
@@ -308,6 +302,27 @@ require_once modification("dbforms/db_funcoes.php");
                 });
         });
     });
+
+    const enviaPlanilha = rota => {
+        if (!validar()) {
+            return false;
+        }
+
+        const formData = new FormData(formulario);
+        formData.append('file', JSON.stringify({
+            "extension": fileUpload.extension,
+            "name": fileUpload.file,
+            "path": fileUpload.filePath
+        }));
+        PHPSession.appendFormData(formData);
+
+        HttpClient.post(`${PHPSession.requestApi}/${rota}`, {body: formData}).then(response => {
+            alert(response.message);
+            if (response.error) {
+                return;
+            }
+        });
+    }
 </script>
 <?php db_menu(); ?>
 </body>

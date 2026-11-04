@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 $clrotulo = new rotulocampo;
@@ -44,8 +44,8 @@ $clrotulo->label('e53_valor');
       <b>Valor da Nota</b>
     </td>
     <td align=right width=10%>
-      <?db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right')?>
-    </td> 
+      <?php db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right')?>
+    </td>
   </tr>
   <tr bgcolor="#BDC6BD">
     <td>
@@ -64,7 +64,7 @@ $clrotulo->label('e53_valor');
       <b>VALOR</b>
     </td>
   </tr>
-  <?
+  <?php
   $retencoes = array ();
   $res = $clpagordemtiporec->sql_record($clpagordemtiporec->sql_query_retencao(null, "e65_seq, k02_drecei, e59_codrec, e59_aliquota,
                                                                                       case when e65_receita is null then e59_codrec else e65_receita end as e65_receita,
@@ -93,29 +93,29 @@ $clrotulo->label('e53_valor');
           <input id="chk_<?=$cont?>" type=checkbox name=regra <?=($op==1?"":"disabled")?>  <?=($marca==true?"checked":""); ?> onChange="js_calculaRetencao(this,false);">
         </td>
         <td>
-          <? 
+          <?php
           $v  = 'receita_chk_'.$cont;
           $$v = $e59_codrec;
-          global $$v;                  
+          global ${$v};
           db_input('receita_chk_'.$cont, 10, '', true, 'text',3);
           ?>
         </td>
         <td><?=$k02_drecei?></td>
         <td align=right>
-          <?
+          <?php
           $v = 'aliquota_chk_'.$cont;
           $$v   = $e59_aliquota;
-          global $$v;
+          global ${$v};
           db_input('aliquota_chk_'.$cont, 15, $Ie53_valor, true, 'text',$bloqueia_aliquota, '','','','text-align:right')
           ?>
         </td>
         <td align=right>
-          <?
+          <?php
           db_input('valor_chk_'.$cont, 15, $Ie53_valor, true, 'text',$op, ' onchange=js_testaRetencao();','','','text-align:right')
           ?>
         </td>
       </tr>
-      <?
+      <?php
       $cont ++;
     }
   }
@@ -131,7 +131,7 @@ $clrotulo->label('e53_valor');
       <input type="button" name="nova_linha" value="Nova receita" onclick="return js_adiciona_linha();">
     </td>
   </tr>
-  <?
+  <?php
   }
   ?>
 </table>
@@ -169,7 +169,7 @@ function js_mostrareceita(chave1, chave2){
 
   db_iframe_tabrec.hide();
 }
-function setValorNota(valor){	
+function setValorNota(valor){
   var vl = new Number(parseFloat(valor));
   document.form1.valor_nota.value=vl.valueOf().toFixed(2);
   js_mostrardiv(false);
@@ -183,7 +183,7 @@ function retencoes(){
   }
 
   var str_lista='';
-  var sep = '';	
+  var sep = '';
   obj =  document.form1;
   qtd = obj.length;
   for(linha=0;linha < qtd; linha++){
@@ -198,7 +198,7 @@ function retencoes(){
 	aliquota = eval('document.form1.'+_aliquota+'.value');
 	valor     = eval('document.form1.'+_valor+'.value');
 
-	str_lista += sep+'ret_'+receita+'_'+aliquota+'_'+valor; 
+	str_lista += sep+'ret_'+receita+'_'+aliquota+'_'+valor;
 	sep='|';
       }
     }
@@ -209,7 +209,7 @@ function retencoes(){
 
 function teste(){
   var lista = retencoes(); // invora a funcao retencoes e pega o retorno
-  alert(lista);   
+  alert(lista);
 }
 function js_calculaRetencao(objeto, opcao){
   valor_nota = document.form1.valor_nota.value;
@@ -223,9 +223,9 @@ function js_calculaRetencao(objeto, opcao){
   }else if(objeto.checked==true){
     aliquota.value = (100 * valor.value / valor_nota).toFixed(2);
   }else{
-    obj_valor = 'valor_'+id;  
+    obj_valor = 'valor_'+id;
     objeto_nota = eval('document.form1.'+obj_valor);
-    objeto_nota.value = '0.00';  	 
+    objeto_nota.value = '0.00';
   }
 }
 
@@ -235,16 +235,16 @@ function js_testaRetencao(){
   qtd = obj.length;
   totalRetencao=0;
   for(linha=0;linha < qtd; linha++){
-    if(obj[linha].type=='checkbox'){	           
+    if(obj[linha].type=='checkbox'){
        objeto = obj[linha];
       if(objeto.checked==true){
-        id = objeto.id; // peta o nome do objeto.	   	           
+        id = objeto.id; // peta o nome do objeto.
         _valor = 'valor_'+id;   // captura o objeto valor
         valor     = eval('document.form1.'+_valor);
-        totalRetencao = totalRetencao + parseFloat(valor.value) ;   	    	       
+        totalRetencao = totalRetencao + parseFloat(valor.value) ;
       }
     }
-  }    
+  }
   totalRetencao = new Number(parseFloat(totalRetencao));
   valor_nota       = new Number(parseFloat(valor_nota));
   if(totalRetencao.valueOf() > valor_nota.valueOf()){
@@ -254,7 +254,7 @@ function js_testaRetencao(){
   return true;
 }
 function js_mostrardiv(TorF){
-  <?
+  <?php
   if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
   ?>
   if(TorF == true){
@@ -265,6 +265,6 @@ function js_mostrardiv(TorF){
     document.getElementById('processando').style.visibility = 'hidden';
     document.getElementById('texto').innerHTML = '';
   }
-  <?}?>
+  <?php }?>
 }
 </script>

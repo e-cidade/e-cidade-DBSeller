@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhferiasperiodopontofe
-class cl_rhferiasperiodopontofe { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh112_sequencial = 0; 
-   var $rh112_rhferiasperiodo = 0; 
-   var $rh112_anousu = 0; 
-   var $rh112_mesusu = 0; 
-   var $rh112_regist = 0; 
-   var $rh112_rubric = null; 
-   var $rh112_tpp = null; 
-   var $rh112_quantidade = 0; 
-   var $rh112_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhferiasperiodopontofe {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh112_sequencial = 0;
+   var $rh112_rhferiasperiodo = 0;
+   var $rh112_anousu = 0;
+   var $rh112_mesusu = 0;
+   var $rh112_regist = 0;
+   var $rh112_rubric = null;
+   var $rh112_tpp = null;
+   var $rh112_quantidade = 0;
+   var $rh112_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh112_sequencial = int4 = Sequencial 
-                 rh112_rhferiasperiodo = int4 = Periodo de ferias 
-                 rh112_anousu = int4 = Ano 
-                 rh112_mesusu = int4 = Mês 
-                 rh112_regist = int4 = Matricula 
-                 rh112_rubric = char(4) = Rubrica 
-                 rh112_tpp = char(1) = Tipo de ponto 
-                 rh112_quantidade = float8 = Quantidade 
-                 rh112_valor = float8 = Valor 
+                 rh112_sequencial = int4 = Sequencial
+                 rh112_rhferiasperiodo = int4 = Periodo de ferias
+                 rh112_anousu = int4 = Ano
+                 rh112_mesusu = int4 = Mês
+                 rh112_regist = int4 = Matricula
+                 rh112_rubric = char(4) = Rubrica
+                 rh112_tpp = char(1) = Tipo de ponto
+                 rh112_quantidade = float8 = Quantidade
+                 rh112_valor = float8 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_rhferiasperiodopontofe() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhferiasperiodopontofe"); 
+     $this->rotulo = new rotulo("rhferiasperiodopontofe");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_rhferiasperiodopontofe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh112_sequencial = ($this->rh112_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh112_sequencial"]:$this->rh112_sequencial);
        $this->rh112_rhferiasperiodo = ($this->rh112_rhferiasperiodo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh112_rhferiasperiodo"]:$this->rh112_rhferiasperiodo);
@@ -95,9 +95,9 @@ class cl_rhferiasperiodopontofe {
      }
    }
    // funcao para inclusao
-   function incluir ($rh112_sequencial){ 
+   public function incluir ($rh112_sequencial){
       $this->atualizacampos();
-     if($this->rh112_rhferiasperiodo == null ){ 
+     if($this->rh112_rhferiasperiodo == null ){
        $this->erro_sql = " Campo Periodo de ferias nao Informado.";
        $this->erro_campo = "rh112_rhferiasperiodo";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_anousu == null ){ 
+     if($this->rh112_anousu == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "rh112_anousu";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_mesusu == null ){ 
+     if($this->rh112_mesusu == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "rh112_mesusu";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_regist == null ){ 
+     if($this->rh112_regist == null ){
        $this->erro_sql = " Campo Matricula nao Informado.";
        $this->erro_campo = "rh112_regist";
        $this->erro_banco = "";
@@ -133,7 +133,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_rubric == null ){ 
+     if($this->rh112_rubric == null ){
        $this->erro_sql = " Campo Rubrica nao Informado.";
        $this->erro_campo = "rh112_rubric";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_tpp == null ){ 
+     if($this->rh112_tpp == null ){
        $this->erro_sql = " Campo Tipo de ponto nao Informado.";
        $this->erro_campo = "rh112_tpp";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_quantidade == null ){ 
+     if($this->rh112_quantidade == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "rh112_quantidade";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_rhferiasperiodopontofe {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh112_valor == null ){ 
+     if($this->rh112_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "rh112_valor";
        $this->erro_banco = "";
@@ -170,16 +170,16 @@ class cl_rhferiasperiodopontofe {
        return false;
      }
      if($rh112_sequencial == "" || $rh112_sequencial == null ){
-       $result = db_query("select nextval('rhferiasperiodopontofe_rh112_sequencial_seq')"); 
+       $result = db_query("select nextval('rhferiasperiodopontofe_rh112_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhferiasperiodopontofe_rh112_sequencial_seq do campo: rh112_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhferiasperiodopontofe_rh112_sequencial_seq do campo: rh112_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->rh112_sequencial = pg_result($result,0,0); 
+       $this->rh112_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhferiasperiodopontofe_rh112_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $rh112_sequencial)){
@@ -190,10 +190,10 @@ class cl_rhferiasperiodopontofe {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->rh112_sequencial = $rh112_sequencial; 
+         $this->rh112_sequencial = $rh112_sequencial;
        }
      }
-     if(($this->rh112_sequencial == null) || ($this->rh112_sequencial == "") ){ 
+     if(($this->rh112_sequencial == null) || ($this->rh112_sequencial == "") ){
        $this->erro_sql = " Campo rh112_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -202,29 +202,29 @@ class cl_rhferiasperiodopontofe {
        return false;
      }
      $sql = "insert into rhferiasperiodopontofe(
-                                       rh112_sequencial 
-                                      ,rh112_rhferiasperiodo 
-                                      ,rh112_anousu 
-                                      ,rh112_mesusu 
-                                      ,rh112_regist 
-                                      ,rh112_rubric 
-                                      ,rh112_tpp 
-                                      ,rh112_quantidade 
-                                      ,rh112_valor 
+                                       rh112_sequencial
+                                      ,rh112_rhferiasperiodo
+                                      ,rh112_anousu
+                                      ,rh112_mesusu
+                                      ,rh112_regist
+                                      ,rh112_rubric
+                                      ,rh112_tpp
+                                      ,rh112_quantidade
+                                      ,rh112_valor
                        )
                 values (
-                                $this->rh112_sequencial 
-                               ,$this->rh112_rhferiasperiodo 
-                               ,$this->rh112_anousu 
-                               ,$this->rh112_mesusu 
-                               ,$this->rh112_regist 
-                               ,'$this->rh112_rubric' 
-                               ,'$this->rh112_tpp' 
-                               ,$this->rh112_quantidade 
-                               ,$this->rh112_valor 
+                                $this->rh112_sequencial
+                               ,$this->rh112_rhferiasperiodo
+                               ,$this->rh112_anousu
+                               ,$this->rh112_mesusu
+                               ,$this->rh112_regist
+                               ,'$this->rh112_rubric'
+                               ,'$this->rh112_tpp'
+                               ,$this->rh112_quantidade
+                               ,$this->rh112_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Periodo de ferias do ponto ($this->rh112_sequencial) nao Incluído. Inclusao Abortada.";
@@ -270,16 +270,16 @@ class cl_rhferiasperiodopontofe {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh112_sequencial=null) { 
+   public function alterar ($rh112_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhferiasperiodopontofe set ";
      $virgula = "";
-     if(trim($this->rh112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_sequencial"])){ 
+     if(trim($this->rh112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_sequencial"])){
        $sql  .= $virgula." rh112_sequencial = $this->rh112_sequencial ";
        $virgula = ",";
-       if(trim($this->rh112_sequencial) == null ){ 
+       if(trim($this->rh112_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh112_sequencial";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_rhferiasperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_rhferiasperiodo"])){ 
+     if(trim($this->rh112_rhferiasperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_rhferiasperiodo"])){
        $sql  .= $virgula." rh112_rhferiasperiodo = $this->rh112_rhferiasperiodo ";
        $virgula = ",";
-       if(trim($this->rh112_rhferiasperiodo) == null ){ 
+       if(trim($this->rh112_rhferiasperiodo) == null ){
          $this->erro_sql = " Campo Periodo de ferias nao Informado.";
          $this->erro_campo = "rh112_rhferiasperiodo";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_anousu"])){ 
+     if(trim($this->rh112_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_anousu"])){
        $sql  .= $virgula." rh112_anousu = $this->rh112_anousu ";
        $virgula = ",";
-       if(trim($this->rh112_anousu) == null ){ 
+       if(trim($this->rh112_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "rh112_anousu";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_mesusu"])){ 
+     if(trim($this->rh112_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_mesusu"])){
        $sql  .= $virgula." rh112_mesusu = $this->rh112_mesusu ";
        $virgula = ",";
-       if(trim($this->rh112_mesusu) == null ){ 
+       if(trim($this->rh112_mesusu) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "rh112_mesusu";
          $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_regist"])){ 
+     if(trim($this->rh112_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_regist"])){
        $sql  .= $virgula." rh112_regist = $this->rh112_regist ";
        $virgula = ",";
-       if(trim($this->rh112_regist) == null ){ 
+       if(trim($this->rh112_regist) == null ){
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "rh112_regist";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_rubric"])){ 
+     if(trim($this->rh112_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_rubric"])){
        $sql  .= $virgula." rh112_rubric = '$this->rh112_rubric' ";
        $virgula = ",";
-       if(trim($this->rh112_rubric) == null ){ 
+       if(trim($this->rh112_rubric) == null ){
          $this->erro_sql = " Campo Rubrica nao Informado.";
          $this->erro_campo = "rh112_rubric";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_tpp"])){ 
+     if(trim($this->rh112_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_tpp"])){
        $sql  .= $virgula." rh112_tpp = '$this->rh112_tpp' ";
        $virgula = ",";
-       if(trim($this->rh112_tpp) == null ){ 
+       if(trim($this->rh112_tpp) == null ){
          $this->erro_sql = " Campo Tipo de ponto nao Informado.";
          $this->erro_campo = "rh112_tpp";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_quantidade"])){ 
+     if(trim($this->rh112_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_quantidade"])){
        $sql  .= $virgula." rh112_quantidade = $this->rh112_quantidade ";
        $virgula = ",";
-       if(trim($this->rh112_quantidade) == null ){ 
+       if(trim($this->rh112_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "rh112_quantidade";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_rhferiasperiodopontofe {
          return false;
        }
      }
-     if(trim($this->rh112_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_valor"])){ 
+     if(trim($this->rh112_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh112_valor"])){
        $sql  .= $virgula." rh112_valor = $this->rh112_valor ";
        $virgula = ",";
-       if(trim($this->rh112_valor) == null ){ 
+       if(trim($this->rh112_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "rh112_valor";
          $this->erro_banco = "";
@@ -432,7 +432,7 @@ class cl_rhferiasperiodopontofe {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Periodo de ferias do ponto nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh112_sequencial;
@@ -460,11 +460,11 @@ class cl_rhferiasperiodopontofe {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh112_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh112_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -473,7 +473,7 @@ class cl_rhferiasperiodopontofe {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($rh112_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -510,7 +510,7 @@ class cl_rhferiasperiodopontofe {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Periodo de ferias do ponto nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh112_sequencial;
@@ -538,11 +538,11 @@ class cl_rhferiasperiodopontofe {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -564,11 +564,11 @@ class cl_rhferiasperiodopontofe {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $rh112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $rh112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -583,15 +583,15 @@ class cl_rhferiasperiodopontofe {
      $sql2 = "";
      if($dbwhere==""){
        if($rh112_sequencial!=null ){
-         $sql2 .= " where rhferiasperiodopontofe.rh112_sequencial = $rh112_sequencial "; 
-       } 
+         $sql2 .= " where rhferiasperiodopontofe.rh112_sequencial = $rh112_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -600,11 +600,11 @@ class cl_rhferiasperiodopontofe {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $rh112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $rh112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -617,15 +617,15 @@ class cl_rhferiasperiodopontofe {
      $sql2 = "";
      if($dbwhere==""){
        if($rh112_sequencial!=null ){
-         $sql2 .= " where rhferiasperiodopontofe.rh112_sequencial = $rh112_sequencial "; 
-       } 
+         $sql2 .= " where rhferiasperiodopontofe.rh112_sequencial = $rh112_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

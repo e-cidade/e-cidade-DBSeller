@@ -55,6 +55,9 @@ class LancamentoItbiService
 
     private $defaultSession;
 
+    /**
+     * @var Processo
+     */
     private $processo;
 
     public function __construct()
@@ -87,15 +90,18 @@ class LancamentoItbiService
     }
 
     /**
-     * @param mixed $processo
+     * @param Processo $processo
      * @return LancamentoItbiService
      */
-    public function setProcesso($processo)
+    public function setProcesso(Processo $processo)
     {
         $this->processo = $processo;
         return $this;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function lancar()
     {
         $this->lancarDadosImovel($this->secoes->dadosImovel);
@@ -155,6 +161,9 @@ class LancamentoItbiService
         $this->inserirFormasPagamento($dadosImovel);
     }
 
+    /**
+     * @throws \Exception
+     */
     private function inserirGuiaItbi($dadosImovel)
     {
         $itbi = new Itbi();
@@ -180,6 +189,7 @@ class LancamentoItbiService
              ->setPercentualareatransmitida($dadosImovel->percAreaTrans)
              ->setNotificado("t")
              ->setProcesso("{$this->processo->getNumero()}/{$this->processo->getAno()}")
+             ->setProcessoSequencial($this->processo->getCodigoProcesso())
              ->setTituprocesso(null)
              ->setDtprocesso(null)
              ->setCartorioextra((isset($dadosImovel->cartorio) ? $dadosImovel->cartorio : null));

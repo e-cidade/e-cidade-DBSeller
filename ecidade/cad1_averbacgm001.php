@@ -36,66 +36,173 @@ require_once(modification("classes/db_iptubase_classe.php"));
 require_once(modification("classes/db_propri_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
-$claverbacgm    = new cl_averbacgm;
+$claverbacgm = new cl_averbacgm;
 $claverbacgmold = new cl_averbacgmold;
-$claverbacao    = new cl_averbacao;
-$cliptubase     = new cl_iptubase;
-$clpropri       = new cl_propri;
+$claverbacao = new cl_averbacao;
+$cliptubase = new cl_iptubase;
+$clpropri = new cl_propri;
+$clcfiptu = new cl_cfiptu;
 
 $db_opcao = 22;
 $db_botao = false;
-$sqlerro  = false;
+$sqlerro = false;
 
-if(isset($incluir)){
-  if($sqlerro==false){
-    db_inicio_transacao();
+$verificaPrincipal = 'true';
 
-	$sql_tipo =  "select j93_regra ,j75_tipo,j75_matric from averbacao inner join averbatipo on j75_tipo = j93_codigo where averbacao.j75_codigo = $j76_averbacao";
-	$result_tipo =  db_query($sql_tipo);
-	db_fieldsmemory($result_tipo,0);
+$camposCfiptu = "j18_validaproprietario";
+$sqlParametrosCfiptu = $clcfiptu->sql_query(db_getsession("DB_anousu"), $camposCfiptu);
+$rsParametrosCfiptu = db_query($sqlParametrosCfiptu);
+$parametrosCfiptu = db_utils::fieldsMemory($rsParametrosCfiptu,0);
 
-	  $claverbacgm->j76_tipo = $j93_regra;
-    $claverbacgm->incluir($j76_codigo);
-    $erro_msg = $claverbacgm->erro_msg;
+// Verifica se na Averbação atual possui cgm principal
+if ($j76_codigo) {
+    $sql_principal = "select j76_principal from averbacgm where j76_averbacao = $j76_averbacao  and j76_codigo != $j76_codigo and j76_principal = 't'";
+} else {
+    $sql_principal = "select j76_principal from averbacgm where j76_averbacao = $j76_averbacao and j76_principal = 't'";
+}
+$result_principal = db_query($sql_principal);
+db_fieldsmemory($result_principal, 0);
 
-    if($claverbacgm->erro_status==0){
-      $sqlerro=true;
+// Se houver principal, desabilita select 'Principal'
+if (pg_num_rows($result_principal) > 0) {
+    $verificaPrincipal = 'false';
+}
+
+if (isset($incluir)) {
+    if ($sqlerro == false) {
+        db_inicio_transacao();
+        $sql_tipo = "select j93_regra ,j75_tipo,j75_matric from averbacao inner join averbatipo on j75_tipo = j93_codigo where averbacao.j75_codigo = $j76_averbacao";
+        $result_tipo = db_query($sql_tipo);
+        db_fieldsmemory($result_tipo, 0);
+        
+        $getCgmProprietarioPrincipal = "select j01_numcgm from iptubase where j01_numcgm = $j76_numcgm and j01_matric = $j75_matric";
+        $resultGetCgmProprietarioPrincipal = db_query($getCgmProprietarioPrincipal);
+
+        $podeIncluirProprietarioAtual = $parametrosCfiptu->j18_validaproprietario == 'f' && $_POST['j76_principal'] == 't';
+
+        if(pg_num_rows($resultGetCgmProprietarioPrincipal) > 0 && !$podeIncluirProprietarioAtual){
+            $erro_msg = "CGM deve ser diferente do proprietário principal atual.";
+            $sqlerro = true;
+        } else if ($_POST['j76_principal'] == 'f') {
+            $erro_msg = "CGM do proprietário principal atual deve ser incluido como principal.";
+            $sqlerro = true;
+        }
+
+        if (isset($j76_tipoproprietario) && $sqlerro == false) {
+            $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j76_tipoproprietario";
+            $result_pessoa = db_query($sql_pessoa);
+            db_fieldsmemory($result_pessoa, 0);
+        }
+
+        if($j76_tipoproprietario){
+            $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j76_tipoproprietario";
+            $result_pessoa = db_query($sql_pessoa);
+            db_fieldsmemory($result_pessoa, 0);
+            $cgmInstance = \CgmFactory::getInstanceByCgm($j76_numcgm);
+            if ($cgmInstance instanceof CgmFisico && $j163_pesfisjur == 2) {
+                $erro_msg = "CGM deve ser de Pessoa Jurídica.";
+                $sqlerro = true;
+            } elseif ($cgmInstance instanceof CgmJuridico && $j163_pesfisjur == 1) {
+                $erro_msg = "CGM deve ser de Pessoa Física.";
+                $sqlerro = true;
+            }
+        }
+
+        if ($sqlerro == false) {
+            $claverbacgm->j76_tipo = $j93_regra;
+            $claverbacgm->j76_tipopromitente = $j76_tipopromitente;
+            $claverbacgm->j76_tipoproprietario = $j76_tipoproprietario;
+            $claverbacgm->incluir($j76_codigo);
+            $erro_msg = $claverbacgm->erro_msg;
+
+            // Verifica se na Averbação atual possui cgm principal
+            $sql_principal = "select j76_principal from averbacgm where j76_averbacao = $j76_averbacao and j76_principal = 't'";
+            $result_principal = db_query($sql_principal);
+            db_fieldsmemory($result_principal, 0);
+
+            // Se houver principal, desabilita select 'Principal'
+            if (pg_num_rows($result_principal) > 0) {
+                $verificaPrincipal = 'false';
+            }
+
+            if ($claverbacgm->erro_status == 0) {
+                $sqlerro = true;
+            }
+        }
+
+        db_fim_transacao($sqlerro);
+    }
+} else if (isset($alterar)) {
+    if ($sqlerro == false) {
+        db_inicio_transacao();
+        if($j76_tipoproprietario){
+            $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j76_tipoproprietario";
+            $result_pessoa = db_query($sql_pessoa);
+            db_fieldsmemory($result_pessoa, 0);
+            $cgmInstance = \CgmFactory::getInstanceByCgm($j76_numcgm);
+            if ($cgmInstance instanceof CgmFisico && $j163_pesfisjur == 2) {
+                $erro_msg = "CGM deve ser de Pessoa Jurídica.";
+                $sqlerro = true;
+            } elseif ($cgmInstance instanceof CgmJuridico && $j163_pesfisjur == 1) {
+                $erro_msg = "CGM deve ser de Pessoa Física.";
+                $sqlerro = true;
+            }
+        }
+        
+        if ($sqlerro == false) {
+            $claverbacgm->j76_tipoproprietario = $j76_tipoproprietario;
+            $claverbacgm->j76_tipopromitente = $j76_tipopromitente;
+            $claverbacgm->alterar($j76_codigo);
+            // Verifica se na Averbação atual possui cgm principal
+            $sql_principal = "select j76_principal from averbacgm where j76_averbacao = $j76_averbacao and j76_principal = 't'";
+            $result_principal = db_query($sql_principal);
+            db_fieldsmemory($result_principal, 0);
+
+            // Se houver principal, desabilita select 'Principal'
+            if (pg_num_rows($result_principal) > 0) {
+                $verificaPrincipal = 'false';
+            }
+            $erro_msg = $claverbacgm->erro_msg;
+
+            if ($claverbacgm->erro_status == 0) {
+                $sqlerro = true;
+            }
+        }
+
     }
     db_fim_transacao($sqlerro);
-  }
-}else if(isset($alterar)){
-  if($sqlerro==false){
-    db_inicio_transacao();
-    $claverbacgm->alterar($j76_codigo);
-    $erro_msg = $claverbacgm->erro_msg;
-    if($claverbacgm->erro_status==0){
-      $sqlerro=true;
-    }
-    db_fim_transacao($sqlerro);
-  }
-}else if(isset($excluir)){
-  if($sqlerro==false){
-    db_inicio_transacao();
-    $claverbacgm->excluir($j76_codigo);
-    $erro_msg = $claverbacgm->erro_msg;
-    if($claverbacgm->erro_status==0){
-      $sqlerro=true;
-    }
-    db_fim_transacao($sqlerro);
-  }
-}else if(isset($opcao)){
+} else if (isset($excluir)) {
+    if ($sqlerro == false) {
+        db_inicio_transacao();
+        $claverbacgm->excluir($j76_codigo);
+        // Verifica se na Averbação atual possui cgm principal
+        $sql_principal = "select j76_principal from averbacgm where j76_averbacao = $j76_averbacao and j76_principal = 't'";
+        $result_principal = db_query($sql_principal);
+        db_fieldsmemory($result_principal, 0);
 
-   $result = $claverbacgm->sql_record($claverbacgm->sql_query($j76_codigo));
-   if($result!=false && $claverbacgm->numrows>0){
-     db_fieldsmemory($result,0);
-   }
+// Se houver principal, desabilita select 'Principal'
+        if (pg_num_rows($result_principal) > 0) {
+            $verificaPrincipal = 'false';
+        }
+        $erro_msg = $claverbacgm->erro_msg;
+        if ($claverbacgm->erro_status == 0) {
+            $sqlerro = true;
+        }
+        db_fim_transacao($sqlerro);
+    }
+} else if (isset($opcao)) {
+
+    $result = $claverbacgm->sql_record($claverbacgm->sql_query($j76_codigo));
+    if ($result != false && $claverbacgm->numrows > 0) {
+        db_fieldsmemory($result, 0);
+    }
 
 }
 
-	 $sqlVerItbi = "select j75_regra,j75_codigo,j103_itbi from averbacao
+$sqlVerItbi = "select j75_regra,j75_codigo,j103_itbi from averbacao
 									inner join averbatipo     on j93_codigo      = j75_tipo
 									inner join averbaguia     on j75_codigo      = j104_averbacao
 									inner join averbaguiaitbi on j103_averbaguia = j104_sequencial
@@ -103,77 +210,78 @@ if(isset($incluir)){
 									where j75_codigo = {$j76_averbacao}
 									  and j76_codigo is null ";
 
-	 $rsVerItbi     = db_query($sqlVerItbi);
-   $linhasVerItbi = pg_num_rows($rsVerItbi);
-	 if($linhasVerItbi > 0){
-	 	 // é uma averbação do tipo 6 de itbi com guia do sistema.
-		 // então grava automatico os cgms dos compradores desta guia itbi. j104_guia
+$rsVerItbi = db_query($sqlVerItbi);
+$linhasVerItbi = pg_num_rows($rsVerItbi);
+if ($linhasVerItbi > 0) {
+    // é uma averbação do tipo 6 de itbi com guia do sistema.
+    // então grava automatico os cgms dos compradores desta guia itbi. j104_guia
 
-		 db_fieldsmemory($rsVerItbi,0);
+    db_fieldsmemory($rsVerItbi, 0);
 
-		 $sqlNome = "select it03_princ,it03_nome,it21_numcgm
+    $sqlNome = "select it03_princ,it03_nome,it21_numcgm
 		             from itbinome
 			 					 inner join itbinomecgm on it21_itbinome=it03_seq
 				 				 where upper(it03_tipo) = 'C'
 								   and it03_guia = {$j103_itbi}";
 
-		 $rsNome     =	db_query($sqlNome);
-		 $linhasNome = pg_num_rows($rsNome);
-		 if($linhasNome > 0){
-		 	$sqlerro = false;
-		 	db_inicio_transacao();
-		 	 for($i=0;$i<$linhasNome;$i++){
-				 db_fieldsmemory($rsNome,$i);
-					// incluir na averbacgm.
+    $rsNome = db_query($sqlNome);
+    $linhasNome = pg_num_rows($rsNome);
+    if ($linhasNome > 0) {
+        $sqlerro = false;
+        db_inicio_transacao();
+        for ($i = 0; $i < $linhasNome; $i++) {
+            db_fieldsmemory($rsNome, $i);
+            // incluir na averbacgm.
 
-          if($it03_princ == "t"){
-          	$it03_princ = "true";
-          }else{
-          	$it03_princ = "false";
-          }
-					$claverbacgm->j76_averbacao  = $j75_codigo;
-					$claverbacgm->j76_numcgm     = $it21_numcgm;
-					$claverbacgm->j76_tipo       = $j75_regra;
-					$claverbacgm->j76_principal  = $it03_princ;
-					$claverbacgm->incluir(null);
+            if ($it03_princ == "t") {
+                $it03_princ = "true";
+            } else {
+                $it03_princ = "false";
+            }
+            $claverbacgm->j76_averbacao = $j75_codigo;
+            $claverbacgm->j76_numcgm = $it21_numcgm;
+            $claverbacgm->j76_tipo = $j75_regra;
+            $claverbacgm->j76_principal = $it03_princ;
+            $claverbacgm->incluir(null);
 
-          if($claverbacgm->erro_status==0){
-          	$erro_msg = $claverbacgm->erro_msg;
-            $sqlerro=true;
-						db_msgbox($erro_msg);
-          }
+            if ($claverbacgm->erro_status == 0) {
+                $erro_msg = $claverbacgm->erro_msg;
+                $sqlerro = true;
+                db_msgbox($erro_msg);
+            }
 
-		   }
+        }
 
-			 db_fim_transacao($sqlerro);
-		 }
+        db_fim_transacao($sqlerro);
+    }
 
-	 }
+}
 
 ?>
 <html>
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body class="body-default" onLoad="a=1" >
+<body class="body-default" onLoad="a=1">
 
-	<?php
-	include(modification("forms/db_frmaverbacgm.php"));
-	?>
+<?php
+include(modification("forms/db_frmaverbacgm.php"));
+?>
 
 </body>
 </html>
-<?
-if(isset($alterar) || isset($excluir) || isset($incluir)){
+<?php
+if (isset($alterar) || isset($excluir) || isset($incluir)) {
     db_msgbox($erro_msg);
-    if($claverbacgm->erro_campo!=""){
-        echo "<script> document.form1.".$claverbacgm->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-        echo "<script> document.form1.".$claverbacgm->erro_campo.".focus();</script>";
+    if ($claverbacgm->erro_campo != "") {
+        echo "<script> document.form1." . $claverbacgm->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
+        echo "<script> document.form1." . $claverbacgm->erro_campo . ".focus();</script>";
     }
 }
 ?>

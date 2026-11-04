@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE prontuariomedico
-class cl_prontuariomedico { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd32_i_codigo = 0; 
-   var $sd32_i_unidade = 0; 
-   var $sd32_i_numcgs = 0; 
-   var $sd32_i_medico = 0; 
-   var $sd32_d_atendimento_dia = null; 
-   var $sd32_d_atendimento_mes = null; 
-   var $sd32_d_atendimento_ano = null; 
-   var $sd32_d_atendimento = null; 
-   var $sd32_c_horaatend = null; 
-   var $sd32_t_descricao = null; 
-   var $sd32_d_datacad_dia = null; 
-   var $sd32_d_datacad_mes = null; 
-   var $sd32_d_datacad_ano = null; 
-   var $sd32_d_datacad = null; 
-   var $sd32_c_horacad = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_prontuariomedico {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd32_i_codigo = 0;
+   var $sd32_i_unidade = 0;
+   var $sd32_i_numcgs = 0;
+   var $sd32_i_medico = 0;
+   var $sd32_d_atendimento_dia = null;
+   var $sd32_d_atendimento_mes = null;
+   var $sd32_d_atendimento_ano = null;
+   var $sd32_d_atendimento = null;
+   var $sd32_c_horaatend = null;
+   var $sd32_t_descricao = null;
+   var $sd32_d_datacad_dia = null;
+   var $sd32_d_datacad_mes = null;
+   var $sd32_d_datacad_ano = null;
+   var $sd32_d_datacad = null;
+   var $sd32_c_horacad = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd32_i_codigo = int4 = Código 
-                 sd32_i_unidade = int4 = Unidade 
-                 sd32_i_numcgs = int4 = CGS 
-                 sd32_i_medico = int4 = Médico 
-                 sd32_d_atendimento = date = Data Atendimento 
-                 sd32_c_horaatend = varchar(5) = Hora Atendimento 
-                 sd32_t_descricao = text = Descrição 
-                 sd32_d_datacad = date = Data Cadastro 
-                 sd32_c_horacad = varchar(20) = Hora Cadastro 
+                 sd32_i_codigo = int4 = Código
+                 sd32_i_unidade = int4 = Unidade
+                 sd32_i_numcgs = int4 = CGS
+                 sd32_i_medico = int4 = Médico
+                 sd32_d_atendimento = date = Data Atendimento
+                 sd32_c_horaatend = varchar(5) = Hora Atendimento
+                 sd32_t_descricao = text = Descrição
+                 sd32_d_datacad = date = Data Cadastro
+                 sd32_c_horacad = varchar(20) = Hora Cadastro
                  ";
-   //funcao construtor da classe 
-   function cl_prontuariomedico() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("prontuariomedico"); 
+     $this->rotulo = new rotulo("prontuariomedico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_prontuariomedico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd32_i_codigo = ($this->sd32_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd32_i_codigo"]:$this->sd32_i_codigo);
        $this->sd32_i_unidade = ($this->sd32_i_unidade == ""?@$GLOBALS["HTTP_POST_VARS"]["sd32_i_unidade"]:$this->sd32_i_unidade);
@@ -115,9 +115,9 @@ class cl_prontuariomedico {
      }
    }
    // funcao para inclusao
-   function incluir ($sd32_i_codigo){ 
+   public function incluir ($sd32_i_codigo){
       $this->atualizacampos();
-     if($this->sd32_i_unidade == null ){ 
+     if($this->sd32_i_unidade == null ){
        $this->erro_sql = " Campo Unidade nao Informado.";
        $this->erro_campo = "sd32_i_unidade";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_prontuariomedico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd32_i_numcgs == null ){ 
+     if($this->sd32_i_numcgs == null ){
        $this->erro_sql = " Campo CGS nao Informado.";
        $this->erro_campo = "sd32_i_numcgs";
        $this->erro_banco = "";
@@ -135,10 +135,10 @@ class cl_prontuariomedico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd32_i_medico == null ){ 
+     if($this->sd32_i_medico == null ){
        $this->sd32_i_medico = "null";
      }
-     if($this->sd32_d_atendimento == null ){ 
+     if($this->sd32_d_atendimento == null ){
        $this->erro_sql = " Campo Data Atendimento nao Informado.";
        $this->erro_campo = "sd32_d_atendimento_dia";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_prontuariomedico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd32_c_horaatend == null ){ 
+     if($this->sd32_c_horaatend == null ){
        $this->erro_sql = " Campo Hora Atendimento nao Informado.";
        $this->erro_campo = "sd32_c_horaatend";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_prontuariomedico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd32_t_descricao == null ){ 
+     if($this->sd32_t_descricao == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "sd32_t_descricao";
        $this->erro_banco = "";
@@ -165,23 +165,23 @@ class cl_prontuariomedico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd32_d_datacad == null ){ 
+     if($this->sd32_d_datacad == null ){
        $this->sd32_d_datacad = "now()";
      }
-     if($this->sd32_c_horacad == null ){ 
+     if($this->sd32_c_horacad == null ){
        $this->sd32_c_horacad = "'||current_time||'";
      }
      if($sd32_i_codigo == "" || $sd32_i_codigo == null ){
-       $result = db_query("select nextval('prontuariomedico_codigo_seq')"); 
+       $result = db_query("select nextval('prontuariomedico_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: prontuariomedico_codigo_seq do campo: sd32_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: prontuariomedico_codigo_seq do campo: sd32_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd32_i_codigo = pg_result($result,0,0); 
+       $this->sd32_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from prontuariomedico_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd32_i_codigo)){
@@ -192,10 +192,10 @@ class cl_prontuariomedico {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd32_i_codigo = $sd32_i_codigo; 
+         $this->sd32_i_codigo = $sd32_i_codigo;
        }
      }
-     if(($this->sd32_i_codigo == null) || ($this->sd32_i_codigo == "") ){ 
+     if(($this->sd32_i_codigo == null) || ($this->sd32_i_codigo == "") ){
        $this->erro_sql = " Campo sd32_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -204,29 +204,29 @@ class cl_prontuariomedico {
        return false;
      }
      $sql = "insert into prontuariomedico(
-                                       sd32_i_codigo 
-                                      ,sd32_i_unidade 
-                                      ,sd32_i_numcgs 
-                                      ,sd32_i_medico 
-                                      ,sd32_d_atendimento 
-                                      ,sd32_c_horaatend 
-                                      ,sd32_t_descricao 
-                                      ,sd32_d_datacad 
-                                      ,sd32_c_horacad 
+                                       sd32_i_codigo
+                                      ,sd32_i_unidade
+                                      ,sd32_i_numcgs
+                                      ,sd32_i_medico
+                                      ,sd32_d_atendimento
+                                      ,sd32_c_horaatend
+                                      ,sd32_t_descricao
+                                      ,sd32_d_datacad
+                                      ,sd32_c_horacad
                        )
                 values (
-                                $this->sd32_i_codigo 
-                               ,$this->sd32_i_unidade 
-                               ,$this->sd32_i_numcgs 
-                               ,$this->sd32_i_medico 
-                               ,".($this->sd32_d_atendimento == "null" || $this->sd32_d_atendimento == ""?"null":"'".$this->sd32_d_atendimento."'")." 
-                               ,'$this->sd32_c_horaatend' 
-                               ,'$this->sd32_t_descricao' 
-                               ,".($this->sd32_d_datacad == "null" || $this->sd32_d_datacad == ""?"null":"'".$this->sd32_d_datacad."'")." 
-                               ,'$this->sd32_c_horacad' 
+                                $this->sd32_i_codigo
+                               ,$this->sd32_i_unidade
+                               ,$this->sd32_i_numcgs
+                               ,$this->sd32_i_medico
+                               ,".($this->sd32_d_atendimento == "null" || $this->sd32_d_atendimento == ""?"null":"'".$this->sd32_d_atendimento."'")."
+                               ,'$this->sd32_c_horaatend'
+                               ,'$this->sd32_t_descricao'
+                               ,".($this->sd32_d_datacad == "null" || $this->sd32_d_datacad == ""?"null":"'".$this->sd32_d_datacad."'")."
+                               ,'$this->sd32_c_horacad'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Prontuário Médico ($this->sd32_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -266,16 +266,16 @@ class cl_prontuariomedico {
        $resac = db_query("insert into db_acount values($acount,1935,11266,'','".AddSlashes(pg_result($resaco,0,'sd32_c_horacad'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd32_i_codigo=null) { 
+   public function alterar ($sd32_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update prontuariomedico set ";
      $virgula = "";
-     if(trim($this->sd32_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_codigo"])){ 
+     if(trim($this->sd32_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_codigo"])){
        $sql  .= $virgula." sd32_i_codigo = $this->sd32_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd32_i_codigo) == null ){ 
+       if(trim($this->sd32_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd32_i_codigo";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_prontuariomedico {
          return false;
        }
      }
-     if(trim($this->sd32_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_unidade"])){ 
+     if(trim($this->sd32_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_unidade"])){
        $sql  .= $virgula." sd32_i_unidade = $this->sd32_i_unidade ";
        $virgula = ",";
-       if(trim($this->sd32_i_unidade) == null ){ 
+       if(trim($this->sd32_i_unidade) == null ){
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "sd32_i_unidade";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_prontuariomedico {
          return false;
        }
      }
-     if(trim($this->sd32_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_numcgs"])){ 
+     if(trim($this->sd32_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_numcgs"])){
        $sql  .= $virgula." sd32_i_numcgs = $this->sd32_i_numcgs ";
        $virgula = ",";
-       if(trim($this->sd32_i_numcgs) == null ){ 
+       if(trim($this->sd32_i_numcgs) == null ){
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "sd32_i_numcgs";
          $this->erro_banco = "";
@@ -311,17 +311,17 @@ class cl_prontuariomedico {
          return false;
        }
      }
-     if(trim($this->sd32_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_medico"])){ 
-        if(trim($this->sd32_i_medico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_medico"])){ 
-           $this->sd32_i_medico = "0" ; 
-        } 
+     if(trim($this->sd32_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_medico"])){
+        if(trim($this->sd32_i_medico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd32_i_medico"])){
+           $this->sd32_i_medico = "0" ;
+        }
        $sql  .= $virgula." sd32_i_medico = $this->sd32_i_medico ";
        $virgula = ",";
      }
-     if(trim($this->sd32_d_atendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"] !="") ){ 
+     if(trim($this->sd32_d_atendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"] !="") ){
        $sql  .= $virgula." sd32_d_atendimento = '$this->sd32_d_atendimento' ";
        $virgula = ",";
-       if(trim($this->sd32_d_atendimento) == null ){ 
+       if(trim($this->sd32_d_atendimento) == null ){
          $this->erro_sql = " Campo Data Atendimento nao Informado.";
          $this->erro_campo = "sd32_d_atendimento_dia";
          $this->erro_banco = "";
@@ -330,11 +330,11 @@ class cl_prontuariomedico {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_atendimento_dia"])){
          $sql  .= $virgula." sd32_d_atendimento = null ";
          $virgula = ",";
-         if(trim($this->sd32_d_atendimento) == null ){ 
+         if(trim($this->sd32_d_atendimento) == null ){
            $this->erro_sql = " Campo Data Atendimento nao Informado.";
            $this->erro_campo = "sd32_d_atendimento_dia";
            $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_prontuariomedico {
          }
        }
      }
-     if(trim($this->sd32_c_horaatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_c_horaatend"])){ 
+     if(trim($this->sd32_c_horaatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_c_horaatend"])){
        $sql  .= $virgula." sd32_c_horaatend = '$this->sd32_c_horaatend' ";
        $virgula = ",";
-       if(trim($this->sd32_c_horaatend) == null ){ 
+       if(trim($this->sd32_c_horaatend) == null ){
          $this->erro_sql = " Campo Hora Atendimento nao Informado.";
          $this->erro_campo = "sd32_c_horaatend";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_prontuariomedico {
          return false;
        }
      }
-     if(trim($this->sd32_t_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_t_descricao"])){ 
+     if(trim($this->sd32_t_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_t_descricao"])){
        $sql  .= $virgula." sd32_t_descricao = '$this->sd32_t_descricao' ";
        $virgula = ",";
-       if(trim($this->sd32_t_descricao) == null ){ 
+       if(trim($this->sd32_t_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "sd32_t_descricao";
          $this->erro_banco = "";
@@ -371,16 +371,16 @@ class cl_prontuariomedico {
          return false;
        }
      }
-     if(trim($this->sd32_d_datacad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"] !="") ){ 
+     if(trim($this->sd32_d_datacad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"] !="") ){
        $sql  .= $virgula." sd32_d_datacad = '$this->sd32_d_datacad' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd32_d_datacad_dia"])){
          $sql  .= $virgula." sd32_d_datacad = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->sd32_c_horacad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_c_horacad"])){ 
+     if(trim($this->sd32_c_horacad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd32_c_horacad"])){
        $sql  .= $virgula." sd32_c_horacad = '$this->sd32_c_horacad' ";
        $virgula = ",";
      }
@@ -416,7 +416,7 @@ class cl_prontuariomedico {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Prontuário Médico nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd32_i_codigo;
@@ -444,14 +444,14 @@ class cl_prontuariomedico {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd32_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd32_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd32_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -485,7 +485,7 @@ class cl_prontuariomedico {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Prontuário Médico nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd32_i_codigo;
@@ -513,11 +513,11 @@ class cl_prontuariomedico {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -539,10 +539,10 @@ class cl_prontuariomedico {
       }
      return $result;
    }
-   function sql_query ( $sd32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,15 +561,15 @@ class cl_prontuariomedico {
      $sql2 = "";
      if($dbwhere==""){
        if($sd32_i_codigo!=null ){
-         $sql2 .= " where prontuariomedico.sd32_i_codigo = $sd32_i_codigo "; 
-       } 
+         $sql2 .= " where prontuariomedico.sd32_i_codigo = $sd32_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,10 +578,10 @@ class cl_prontuariomedico {
      }
      return $sql;
   }
-   function sql_query_file ( $sd32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd32_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,15 +594,15 @@ class cl_prontuariomedico {
      $sql2 = "";
      if($dbwhere==""){
        if($sd32_i_codigo!=null ){
-         $sql2 .= " where prontuariomedico.sd32_i_codigo = $sd32_i_codigo "; 
-       } 
+         $sql2 .= " where prontuariomedico.sd32_i_codigo = $sd32_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

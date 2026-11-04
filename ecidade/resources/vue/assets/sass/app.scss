@@ -1,0 +1,244 @@
+html,
+body,
+main {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #e1dede;
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    padding: 20px 10px;
+}
+
+@layer primevue {
+    .p-button {
+        background: #4a789c;
+        border-color: #4a789c;
+    }
+
+    .p-button:not(:disabled):hover {
+        background: #4f7c9e;
+        border-color: #4f7c9e;
+    }
+}
+
+.p-selectbutton .p-button.p-highlight {
+    background: #4a789c;
+    color: #fff;
+    border-color: #4a789c;
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+    background: #106ebe;
+    color: #fff;
+    border-color: #106ebe;
+}
+
+.p-panel-content {
+    background: #e1dede !important;
+    color: #000000 !important;
+}
+
+.p-dialog-header {
+    padding: 1rem !important;
+    background: #4a789c !important;
+    color: #ffffff !important;
+
+}
+
+.p-dialog-header-close-icon {
+    color: #ffffff !important;
+}
+
+.p-panel .p-panel-header {
+    background: #4a789c;
+    color: #ffffff;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    background: #4a789c;
+    color: #ffffff;
+}
+
+.p-panel .p-panel-header .p-panel-header-icon {
+    color: #ffffff;
+}
+
+.p-datatable .p-sortable-column:not(.p-highlight):hover {
+    background: #28465e;
+    color: #ffffff;
+    transition: 0.4s;
+}
+
+.p-datatable .p-sortable-column .p-sortable-column-icon {
+    color: #ffffff;
+}
+
+.p-progressbar-determinate .p-progressbar-label {
+    display: block !important;
+    margin-top: 4px;
+}
+
+a[href="#"], a[href="#"]::after {
+    color: #4a789c !important;
+    text-decoration: none;
+}
+
+:root {
+    --surface-a: #ffffff;
+    --surface-b: #fafafa;
+    --surface-c: rgba(0, 0, 0, .04);
+    --surface-d: rgba(0, 0, 0, .12);
+    --surface-e: #ffffff;
+    --surface-f: #ffffff;
+    --text-color: rgba(0, 0, 0, 0.87);
+    --text-color-secondary: rgba(0, 0, 0, 0.6);
+    --primary-color: #000;
+    --primary-color-text: #ffffff;
+    --font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+    --surface-0: #ffffff;
+    --surface-50: #FAFAFA;
+    --surface-100: #F5F5F5;
+    --surface-200: #EEEEEE;
+    --surface-300: #E0E0E0;
+    --surface-400: #BDBDBD;
+    --surface-500: #9E9E9E;
+    --surface-600: #757575;
+    --surface-700: #616161;
+    --surface-800: #424242;
+    --surface-900: #212121;
+    --gray-50: #FAFAFA;
+    --gray-100: #F5F5F5;
+    --gray-200: #EEEEEE;
+    --gray-300: #E0E0E0;
+    --gray-400: #BDBDBD;
+    --gray-500: #9E9E9E;
+    --gray-600: #757575;
+    --gray-700: #616161;
+    --gray-800: #424242;
+    --gray-900: #212121;
+    --content-padding: 1rem;
+    --inline-spacing: 0.5rem;
+    --border-radius: 4px;
+    --surface-ground: #fafafa;
+    --surface-section: #ffffff;
+    --surface-card: #ffffff;
+    --surface-overlay: #ffffff;
+    --surface-border: rgba(0, 0, 0, .12);
+    --surface-hover: rgba(0, 0, 0, .04);
+    --focus-ring: none;
+    --maskbg: rgba(0, 0, 0, 0.32);
+}
+
+.p-message.p-message-info {
+    border: 0 none;
+    border-width: 0 0 0 6px;
+    color: #004085 !important;
+    background-color: #cce5ff !important;
+    border-color: #b8daff !important;
+}
+
+.required::after {
+    color: red;
+    content: "*";
+}
+
+.p-dropdown-panel.p-component {
+    z-index: 99999 !important;
+}
+
+.ql-toolbar {
+    height: 90px;
+    background-color: #4a789c;
+}
+
+
+.p-inputgroup-addon {
+    color: white;
+    background-color: #4a789c;
+}
+
+.p-fieldset-legend {
+    background-color: #4a789c !important;
+}
+
+.p-fieldset-legend-text {
+    color: white !important;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+    background: #4a789c !important;
+    color: #fff;
+}
+
+.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+    color: #bdbdbd;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+    color: #fff;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+    color: #bdbdbd;
+}
+
+.p-accordion .p-accordion-content {
+    background: #e1dede;
+    color: #000;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #e1dede;
+    border-color: #3B82F6;
+    color: #3B82F6;
+}
+
+.p-tabview .p-tabview-panels {
+    background: #e1dede;
+}
+
+.p-dropdown-panel.p-component {
+    z-index: 99999 !important;
+}
+
+.p-inputgroup-addon {
+    color: white;
+    background-color: #4a789c;
+}
+
+.p-fieldset-legend {
+    background-color: #4a789c !important;
+}
+
+.p-fieldset-legend-text {
+    color: white !important;
+}
+
+.trumbowyg-editor {
+    background: white;
+}
+
+.trumbowyg-box {
+    min-height: 250px !important;
+}
+
+.trumbowyg-button-pane {
+  z-index: auto;
+}
+
+.p-float-label input:focus ~ label,
+.p-float-label input.p-filled ~ label,
+.p-float-label textarea:focus ~ label,
+.p-float-label textarea.p-filled ~ label,
+.p-float-label .p-inputwrapper-focus ~ label,
+.p-float-label .p-inputwrapper-filled ~ label {
+    font-weight: bold;
+    color: #000;
+}

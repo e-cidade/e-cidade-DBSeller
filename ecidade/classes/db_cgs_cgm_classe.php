@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_cgs_cgm {
                  z01_i_numcgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_cgm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_cgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_cgs_cgm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z01_i_cgscgm = ($this->z01_i_cgscgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z01_i_cgscgm"]:$this->z01_i_cgscgm);
        $this->z01_i_numcgm = ($this->z01_i_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z01_i_numcgm"]:$this->z01_i_numcgm);
@@ -74,7 +74,7 @@ class cl_cgs_cgm {
      }
    }
    // funcao para inclusao
-   function incluir ($z01_i_cgscgm){ 
+   public function incluir ($z01_i_cgscgm){ 
       $this->atualizacampos();
      if($this->z01_i_numcgm == null ){ 
        $this->erro_sql = " Campo CGM nao Informado.";
@@ -138,7 +138,7 @@ class cl_cgs_cgm {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($z01_i_cgscgm=null) { 
+   public function alterar ($z01_i_cgscgm=null) { 
       $this->atualizacampos();
      $sql = " update cgs_cgm set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_cgs_cgm {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($z01_i_cgscgm=null,$dbwhere=null) { 
+   public function excluir ($z01_i_cgscgm=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z01_i_cgscgm));
      }else{ 
@@ -280,7 +280,7 @@ class cl_cgs_cgm {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

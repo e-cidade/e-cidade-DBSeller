@@ -275,11 +275,24 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
 
     $oSolicita->oDadosFornecedor      = $oCompilacao->getFornecedorItem($oSolicita->pc01_codmater, $oSolicita->pc11_codigo);
     $oSolicita->empenhada             = $oCompilacao->getValorEmpenhadoItem($oSolicita->pc11_codigo, $iDepartamentoEstimativa);
+    $oSolicita->empenhadaAnulada      = $oCompilacao->getValorEmpenhadoAnuladoItem($oSolicita->pc11_codigo, $iDepartamentoEstimativa);
     $oSolicita->solicitada            = $oCompilacao->getValorSolicitadoItem($oSolicita->pc11_codigo, $iDepartamentoEstimativa);
 
     $lControlaValor                   = ($oCompilacao->getFormaDeControle() == aberturaRegistroPreco::CONTROLA_VALOR);
 
-    $oMovimentacao = $oEstimativa->getItemByCodigo($iCodigoItemEstimativa)->getMovimentacao();
+    $oItemEstimativa = new ItemEstimativa($iCodigoItemEstimativa);
+    $oMovimentacao = $oItemEstimativa->getMovimentacao();
+
+    $oItemCompilacao = new itemCompilacao($oSolicita->pc11_codigo);
+    $oSaldosItemCompilacao = $oItemCompilacao->getSaldo();
+
+    $saldo = 0;
+    if ($oMovimentacao->saldo <= $oSaldosItemCompilacao || !$oItemCompilacao->temReservaDeCota()) {
+        $saldo = $oMovimentacao->saldo;
+    } else {
+        $saldo = $oSaldosItemCompilacao;
+    }
+
     $oStdItemEstimativa               = new stdClass();
     $oStdItemEstimativa->iSeq         = $oSolicita->pc11_seq;
     $oStdItemEstimativa->iCodItem     = $oSolicita->pc01_codmater;
@@ -287,12 +300,12 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
     $oStdItemEstimativa->sCompl       = $oSolicita->pc11_resum;
     $oStdItemEstimativa->sUnidade     = $oSolicita->m61_descr;
     $oStdItemEstimativa->sFornecedor  = $oSolicita->oDadosFornecedor->vencedor;
-    $oStdItemEstimativa->iEmpenhada   = $oSolicita->empenhada;
+    $oStdItemEstimativa->iEmpenhada   = $oSolicita->empenhada - $oSolicita->empenhadaAnulada ?: '0';
     $oStdItemEstimativa->iLiquidada   = buscaQuantidadeLiquidada($oSolicita->pc11_codigo);
-    $oStdItemEstimativa->iSolicitada  = $oSolicita->solicitada;
+    $oStdItemEstimativa->iSolicitada  = $oSolicita->solicitada - $oSolicita->empenhadaAnulada ?: '0';
     $oStdItemEstimativa->iReservada   = buscaQuantidadeReservada($oSolicita->pc11_codigo);
     $oStdItemEstimativa->nQuantMax    = (empty($oSolicita->pc57_quantmax)                   ? '0' : $oSolicita->pc57_quantmax . '/' .$oEstimativa->getItemByCodigo($iCodigoItemEstimativa)->getQuantidade());
-    $oStdItemEstimativa->iSolicitar   = $oMovimentacao->saldo;
+    $oStdItemEstimativa->iSolicitar   = $saldo ?: '0';
     $oStdItemEstimativa->iEmpenhar    = ($oSolicita->solicitada - $oSolicita->empenhada);
     $oStdItemEstimativa->nQuantMin    = (empty($oSolicita->pc57_quantmin)                   ? '0' : $oSolicita->pc57_quantmin);
     $oStdItemEstimativa->nVlrUnitario = (empty($oSolicita->oDadosFornecedor->valorunitario) ? '0' : $oSolicita->oDadosFornecedor->valorunitario);
@@ -306,11 +319,6 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
         $sMsgErro = urlencode('Não foram encontrados itens para a estimativa de código: ' . $iCodigoItemEstimativa . '.');
         db_redireciona('db_erros.php?fechar=true&db_erro=' . $sMsgErro);
     }
-
-    $oStdItemEstimativa->iSolicitada  = $oSolicita->solicitada;
-    $oStdItemEstimativa->iReservada   = buscaQuantidadeReservada($oItem->getCodigoItemSolicitacao());
-    $oStdItemEstimativa->iEmpenhada   = $oSolicita->empenhada;
-    $oStdItemEstimativa->iLiquidada   = buscaQuantidadeLiquidada($oItem->getCodigoItemSolicitacao());
 
     /**
      * Verifica se controla o registro de preço por valor e troca a quantidade pelo valor

@@ -26,7 +26,7 @@
  */
 
 /**
- * Classe repository para classes PeriodoEscola
+ * Classe repository para classes PeriodoEscolaRepository
  * @author  Andrio Costa - andrio.costa@dbseller.com.br
  * @package Educacao
  * @version $Revision: 1.2 $
@@ -34,7 +34,7 @@
 class PeriodoEscolaRepository {
 
   /**
-   * Collection de PeriodoEscola
+   * Collection de PeriodoEscolaRepository
    * @var array
    */
   private $aItens = array();
@@ -52,8 +52,8 @@ class PeriodoEscolaRepository {
   }
 
   /**
-   * Retorna uma instancia do PeriodoEscola pelo Codigo
-   * @param integer $iCodigo Codigo do PeriodoEscola
+   * Retorna uma instancia do PeriodoEscolaRepository pelo Codigo
+   * @param integer $iCodigo Codigo do PeriodoEscolaRepository
    * @return PeriodoEscola
    */
   public static function getByCodigo($iCodigo) {
@@ -78,8 +78,8 @@ class PeriodoEscolaRepository {
   }
 
   /**
-   * Adiciona uma instancia de PeriodoEscola ao repositorio
-   * @param PeriodoEscola $oPeriodoEscola Instancia de PeriodoEscola
+   * Adiciona uma instancia de PeriodoEscolaRepository ao repositorio
+   * @param PeriodoEscola $oPeriodoEscola Instancia de PeriodoEscolaRepository
    * @return boolean
    */
   public static function adicionarPeriodoEscola(PeriodoEscola $oPeriodoEscola) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcparamelemento->rotulo->label("o44_anousu");
               <?=$Lo44_codparrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o44_codparrel",8,$Io44_codparrel,true,"text",4,"","chave_o44_codparrel");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clorcparamelemento->rotulo->label("o44_anousu");
               <?=$Lo44_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o44_codele",6,$Io44_codele,true,"text",4,"","chave_o44_codele");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcparamelemento->rotulo->label("o44_anousu");
               <?=$Lo44_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o44_anousu",4,$Io44_anousu,true,"text",4,"","chave_o44_anousu");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcparamelemento->rotulo->label("o44_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcparamelemento.php")==true){
@@ -130,12 +130,12 @@ $clorcparamelemento->rotulo->label("o44_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

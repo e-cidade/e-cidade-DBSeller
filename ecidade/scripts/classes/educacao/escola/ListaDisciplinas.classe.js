@@ -52,48 +52,33 @@ DBViewFormularioEducacao.ListaDisciplinas.prototype.setCallBackLoad = function (
  * @param iEtapa           código da etapa
  * @param lProfessorLogado se deve as disciplinas do professor logado
  */
-DBViewFormularioEducacao.ListaDisciplinas.prototype.getDisciplinas = function ( iTurma, iEtapa, lProfessorLogado ) {
+DBViewFormularioEducacao.ListaDisciplinas.prototype.getDisciplinas = async function ( iTurma, iEtapa, lProfessorLogado ) {
+    const route = `v4/api/educacao/escola/turma/${iTurma}/etapas/${iEtapa}/regencias?validaUsuario`;
+    const regencias = (await CurrentWindow.axios.get(route)).data.data
 
-  var oParametros                            = {};
-      oParametros.exec                       = "getRegencias";
-      oParametros.iTurma                     = iTurma;
-      oParametros.iEtapa                     = iEtapa;
-      oParametros.lDisciplinasProfessor      = lProfessorLogado;
-      oParametros.lSomenteDisciplinasGlobais = this.lSomenteDisciplinasGlobais;
+    this.regencias = regencias.map(regencia => {
+        return {
+            iRegencia: regencia.codigo,
+            iDisciplina: regencia.disciplina.codigo,
+            sDisciplina: regencia.disciplina.disciplina.nome,
+            lTemGradeHorario: regencia.temGradeHorario,
+            iProcedimentoAvaliacao: regencia.procedimentoAvaliacao.codigo,
+            sProcedimentoAvaliacao: regencia.procedimentoAvaliacao.nome
+        }
+    })
 
-  oSelf = this;
-  var oRequest = {};
-      oRequest.asynchronous = false;
-      oRequest.method = 'post';
-      oRequest.parameters = 'json='+Object.toJSON(oParametros);
-      oRequest.onComplete = function(oAjax) {
-        oSelf.retornoDisciplinas(oAjax);
-      };
-
-  js_divCarregando( _M(MSG_LISTA_DISCIPLINAS+"buscando_disciplinas"), "msgBoxA" );
-  new Ajax.Request(oSelf.sRPC, oRequest);
-};
-
-/**
- * Retorno das disciplinas
- * @param oAjax
- */
-DBViewFormularioEducacao.ListaDisciplinas.prototype.retornoDisciplinas = function( oAjax ) {
-
-  js_removeObj("msgBoxA");
-  var oRetorno = JSON.parse(oAjax.responseText);
-  var oSelf    = this;
-  oSelf.oToggleRegencia.clearAll();
-  oSelf.regencias = oRetorno.aRegencias;
-  oRetorno.aRegencias.each( function ( oRegencia ) {
-    oSelf.oToggleRegencia.addSelect( {'iRegencia'        : oRegencia.iRegencia,
-                                      'iDisciplina'      : oRegencia.iDisciplina,
-                                      'sRegencia'        : oRegencia.sDisciplina.urlDecode(),
-                                      'lTemGradeHorario' : oRegencia.lTemGradeHorario });
-  });
-
-  this.oToggleRegencia.renderRows();
-  this.fCallBackLoad();
+    this.oToggleRegencia.clearAll();
+    regencias.forEach(regencia => {
+        let option = {
+            iRegencia: regencia.codigo,
+            iDisciplina: regencia.disciplina.codigo,
+            sRegencia: regencia.disciplina.disciplina.nome,
+            lTemGradeHorario: regencia.temGradeHorario
+        }
+        this.oToggleRegencia.addSelect(option)
+    })
+    this.oToggleRegencia.renderRows();
+    this.fCallBackLoad();
 };
 
 /**

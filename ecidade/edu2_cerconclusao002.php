@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -113,11 +113,11 @@ for($cont = 0; $cont < $iLinhasAluno; $cont++){
   $oPdf->SetFont('Arial', 'b', 16);
   $oPdf->SetXY(0,48);
   $oPdf->MultiCell(297,6,$oDadosRelatModel->ed217_t_cabecalho, 0, "C", 0, 0);
-/*  $oPdf->Cell(85, 4, "PREFEITURA DE PETRÓPOLIS", 0, 0, "L", 0);
-  $oPdf->SetXY(107,55);
-  $oPdf->Cell(83, 4, "SECRETARIA DE EDUCAÇÃO", 0, 0, "L", 0);
-*/
-  $oPdf->SetXY(0,62);
+//$oPdf->Cell(85, 4, "PREFEITURA DE PETRÓPOLIS", 0, 0, "L", 0);
+//  $oPdf->SetXY(107,55);
+//  $oPdf->Cell(83, 4, "SECRETARIA DE EDUCAÇÃO", 0, 0, "L", 0);
+
+  $oPdf->SetXY(0,90 );
   $oPdf->Cell(297, 4,$escola, 0, 0, "C", 0);
   $oPdf->SetXY(117.5,80);
   $oPdf->SetFont('Arial', 'b', 25);
@@ -126,14 +126,14 @@ for($cont = 0; $cont < $iLinhasAluno; $cont++){
   $oPdf->SetXY(30,100);
   $oPdf->SetFont('Arial', '', 16);
   $oPdf->MultiCell(237, 8, "Certificamos, para os devidos fins, que o(a) aluno(a) ".$nomealuno.", nascido(a) em ".$nascimento.", filho(a) de ".$nomemae." e ".$nomepai.", concluiu o(a) ".$fase." do(a) ".$etapa." no ano de ".$ano.".", 0, "J", 0, 0);
- 
+
   $oPdf->SetXY(0,140);
   $oPdf->Cell(297, 4, "$Munic, $dDia de $nMes de $dAno.", 0, 0, "C", 0);
- 
-  $oPdf->SetXY(44,170); 
+
+  $oPdf->SetXY(44,170);
   $oPdf->Cell(90, 8, "Diretor(a)", "T", 0, "C", 0);
 
-  $oPdf->SetXY(162,170); 
+  $oPdf->SetXY(162,170);
   $oPdf->Cell(90, 8, "Secretário(a)", "T", 0, "C", 0);
 }
 

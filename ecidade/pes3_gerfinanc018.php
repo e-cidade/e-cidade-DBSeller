@@ -1,29 +1,31 @@
 <?php
 /**
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
+
+use App\Domain\RecursosHumanos\Pessoal\Services\Rubrica\ObservacaoRubricaService;
 
 set_time_limit(0);
 
@@ -40,8 +42,10 @@ require_once modification("classes/db_promitente_classe.php");
 
 require_once modification("dbforms/db_funcoes.php");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING'], $query);
 db_postmemory($_POST);
+$serviceObservacaoRubrica = new ObservacaoRubricaService();
+
 
 $xtipo = "'x'";
 
@@ -94,6 +98,12 @@ switch ($opcao) {
     $sTituloCalculo = '13º Salário';
     break;
 
+  case 'adiantamento13salario':
+    $sigla          = 'r95_';
+    $arquivo        = 'gerfsad13';
+    $sTituloCalculo = 'Adiantamento 13º Salário';
+    break;
+
   case 'fixo':
     $sigla          = 'r53_';
     $arquivo        = 'gerffx';
@@ -134,105 +144,105 @@ switch ($opcao) {
 if ($opcao != '') {
 
 if ($opcao != 'previden' && $opcao != 'irf'){
-  
+
   $sql = "  select '1' as ordem ,
                    {$sigla}rubric as rubrica,
-                   case 
-                     when rh27_pd = 3 then 0 
-                     else case 
-                            when {$sigla}pd = 1 then {$sigla}valor 
-                            else 0 
-                          end 
+                   case
+                     when rh27_pd = 3 then 0
+                     else case
+                            when {$sigla}pd = 1 then {$sigla}valor
+                            else 0
+                          end
                    end as Provento,
-                   case 
-                     when rh27_pd = 3 then 0 
-                     else case 
-                            when {$sigla}pd = 2 then {$sigla}valor 
-                            else 0 
-                          end 
+                   case
+                     when rh27_pd = 3 then 0
+                     else case
+                            when {$sigla}pd = 2 then {$sigla}valor
+                            else 0
+                          end
                    end as Desconto,
-                   {$sigla}quant as quant, 
-                   rh27_descr, 
-                   {$xtipo} as tipo , 
-                   case 
-                     when rh27_pd = 3 then 'Base' 
-                     else case 
-                            when {$sigla}pd = 1 then 'Provento' 
-            	              else 'Desconto' 
-            	            end 
+                   {$sigla}quant as quant,
+                   rh27_descr,
+                   {$xtipo} as tipo ,
+                   case
+                     when rh27_pd = 3 then 'Base'
+                     else case
+                            when {$sigla}pd = 1 then 'Provento'
+            	              else 'Desconto'
+            	            end
                    end as provdesc
-              from {$arquivo} 
-                   inner join rhrubricas on rh27_rubric = {$sigla}rubric 
+              from {$arquivo}
+                   inner join rhrubricas on rh27_rubric = {$sigla}rubric
                                         and rh27_instit = ".db_getsession("DB_instit")."
-              ".bb_condicaosubpesproc($sigla,$ano."/".$mes)." 
-               and {$sigla}regist = $matricula 
-               and {$sigla}pd != 3 
-  
+              ".bb_condicaosubpesproc($sigla,$ano."/".$mes)."
+               and {$sigla}regist = $matricula
+               and {$sigla}pd != 3
+
         union
-        
+
             select '2' as ordem,
                    'R950'::varchar(4) as rubrica,
                    provento,
                    desconto,
-                   0 as quant, 
-                   'TOTAL'::varchar(40) , 
-                   ''::varchar(1) as tipo , 
+                   0 as quant,
+                   'TOTAL'::varchar(40) ,
+                   ''::varchar(1) as tipo ,
                    ''::varchar(10) as provdesc
               from ( select sum(case when {$sigla}pd = 1 then {$sigla}valor else 0 end ) as provento,
                             sum(case when {$sigla}pd = 2 then {$sigla}valor else 0 end ) as desconto
                        from {$arquivo}
-                            inner join rhrubricas on rh27_rubric = {$sigla}rubric 
+                            inner join rhrubricas on rh27_rubric = {$sigla}rubric
                                                  and rh27_instit = ".db_getsession("DB_instit")."
-                       ".bb_condicaosubpesproc($sigla,$ano."/".$mes)." 
-                        and {$sigla}regist = $matricula 
+                       ".bb_condicaosubpesproc($sigla,$ano."/".$mes)."
+                        and {$sigla}regist = $matricula
                         and {$sigla}pd != 3
                    ) as  x
-  
+
         union
-  
+
             select '3' as ordem,
                    {$sigla}rubric as rubrica,
                    {$sigla}valor as Provento,
                    0 as Desconto ,
-                   {$sigla}quant as quant, 
-                   rh27_descr, 
-                   {$xtipo} as tipo , 
-                   case 
-                     when rh27_pd = 3 then 'Base' 
-                     else case 
-                            when {$sigla}pd = 1 then 'Provento' 
-            	              else 'Desconto' 
-            	            end 
+                   {$sigla}quant as quant,
+                   rh27_descr,
+                   {$xtipo} as tipo ,
+                   case
+                     when rh27_pd = 3 then 'Base'
+                     else case
+                            when {$sigla}pd = 1 then 'Provento'
+            	              else 'Desconto'
+            	            end
                    end as provdesc
-              from {$arquivo} 
+              from {$arquivo}
                    inner join rhrubricas on rh27_rubric = {$sigla}rubric and rh27_instit = ".db_getsession("DB_instit")."
-              ".bb_condicaosubpesproc($sigla,$ano."/".$mes)." 
-               and {$sigla}regist = $matricula 
-               and {$sigla}pd = 3 
-    
-    order by 1,2 ";  
-                   
+              ".bb_condicaosubpesproc($sigla,$ano."/".$mes)."
+               and {$sigla}regist = $matricula
+               and {$sigla}pd = 3
+
+    order by 1,8 desc, 2 ";
+
 
 } else if ($opcao == 'previden') {
 
   $sql = " select previden.*,
                   rhrubricas.rh27_rubric,
                   rhrubricas.rh27_descr,
-                  rhrubricas.rh27_pd 
+                  rhrubricas.rh27_pd
              from previden
-                  inner join rhrubricas on rh27_rubric = r60_rubric 
-                                       and rh27_instit = ".db_getsession("DB_instit")." 
-                  inner join rhpessoal on rh01_numcgm = $numcgm 
+                  inner join rhrubricas on rh27_rubric = r60_rubric
+                                       and rh27_instit = ".db_getsession("DB_instit")."
+                  inner join rhpessoal on rh01_numcgm = $numcgm
                                       and rh01_instit =  ".db_getsession("DB_instit")."
                                       and r60_regist = rh01_regist
-            where r60_anousu = $ano   
-              and r60_mesusu = $mes  
+            where r60_anousu = $ano
+              and r60_mesusu = $mes
               and r60_numcgm = $numcgm
               and r60_tbprev = $tbprev
-         order by r60_numcgm, 
-                  r60_tbprev, 
-                  r60_rubric, 
-                  r60_regist, 
+         order by r60_numcgm,
+                  r60_tbprev,
+                  r60_rubric,
+                  r60_regist,
                   r60_folha ";
 
 } else if ($opcao == 'irf') {
@@ -240,20 +250,20 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $sql = " select ajusteir.*,
                   rhrubricas.rh27_rubric,
                   rhrubricas.rh27_descr,
-                  rhrubricas.rh27_pd 
+                  rhrubricas.rh27_pd
              from ajusteir
                   inner join rhrubricas on rh27_rubric = r61_rubric and rh27_instit = ".db_getsession("DB_instit")."
-                  inner join rhpessoal on rh01_numcgm = $numcgm 
+                  inner join rhpessoal on rh01_numcgm = $numcgm
                                       and rh01_instit =  ".db_getsession("DB_instit")."
                                       and r61_regist = rh01_regist
-            where r61_anousu = $ano   
-              and r61_mesusu = $mes  
+            where r61_anousu = $ano
+              and r61_mesusu = $mes
               and r61_numcgm = $numcgm
-         order by r61_numcgm,  
-                  r61_rubric, 
-                  r61_regist, 
+         order by r61_numcgm,
+                  r61_rubric,
+                  r61_regist,
                   r61_folha ";
-  
+
 }
 //die($sql);
 $result = db_query($sql);
@@ -285,15 +295,37 @@ html, body, table {
 }
 
 #tabela-calculos tr:first-child {
-  border-right:1px outset #D3D3D3;  
+  border-right:1px outset #D3D3D3;
   padding:0;
   margin:0;
   white-space:nowrap;
   overflow: hidden;
 }
+#tabela-calculos tr.provento {
+  background-color: #D5D7DD !important;
+}
+#tabela-calculos tr.desconto {
+  background-color: #F1F4FE !important;
+}
+#tabela-calculos tr.base {
+  background-color: #DFEAFE !important;
+}
+#tabela-calculos tr.provento:hover,
+#tabela-calculos tr.desconto:hover,
+#tabela-calculos tr.base:hover {
+  background-color: #A3AFD7 !important;
+}
+.observacao-rubrica{
+      color:red;
+      font-weight: bold;
+      font-size: 14px;
+    }
 </style>
 <script type="text/javascript" src="scripts/scripts.js"></script>
 <script type="text/javascript" src="scripts/prototype.js"></script>
+<?php
+  db_app::load('DBHint.widget.js');
+?>
 </head>
 <body onload="js_alteraTamanho(); " >
 <center>
@@ -301,7 +333,7 @@ html, body, table {
 
 <table width="100%" id="tabela-calculos" cellspacing="0">
 <tr>
-<?
+<?php
 if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
      <th clase="borda" width="25" nowrap> Fórmula(*) </th>
@@ -312,123 +344,160 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" width="80" nowrap> Descontos  </th>
      <th class="borda" width="90" nowrap> Prov/Desc  </th>
 
-    <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+    <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
        <th class="borda" nowrap>Tipo</th>
-    <?}?>
+    <?php }?>
    </tr>
 
-<?
+<?php
   $tam_form = strlen(@$rub_formula);
   $cor      = "";
 
-  for ($x=0; $x < pg_numrows($result); $x++) {
-    
+  for ($x=0; $x < pg_num_rows($result); $x++) {
+
     db_fieldsmemory($result,$x,true);
-   
+
     if($ordem == '2'){
 ?>
          <tr>
            <td align="center" colspan="4" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong>TOTAL<strong></td>
-           <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($provento,'f')?></strong></td>
-           <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($desconto,'f')?></strong></td>
-           <td align="left"   style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
-              <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?=$tipo?></td>
-           <?}?>
+           <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?php echo db_formatar($provento,'f')?></strong></td>
+           <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?php echo db_formatar($desconto,'f')?></strong></td>
+           <td align="left"   style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?php echo $provdesc?></strong></td>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+              <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?php echo $tipo?></td>
+           <?php }?>
            </tr>
 
            <tr>
            <td align="center" colspan="4"   style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong>LÍQUIDO<strong></td>
-           <td colspan="2"    align="right" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($provento-$desconto,'f')?></strong></td>
-           <td align="left"   style="font-size:12px"               nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
-              <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?=$tipo?></td>
-           <?}?>
+           <td colspan="2"    align="right" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?php echo db_formatar($provento-$desconto,'f')?></strong></td>
+           <td align="left"   style="font-size:12px"               nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?php echo $provdesc?></strong></td>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+              <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?php echo $tipo?></td>
+           <?php }?>
          </tr>
-<?
+<?php
     } else {
+      switch ($provdesc) {
+      case 'Provento':
+        $class = 'class="provento"';
+        break;
+      case 'Desconto':
+        $class = 'class="desconto"';
+        break;
+      case 'Base':
+        $class = 'class="base"';
+        break;
+    }
 ?>
-         <tr>
-<?
+      <tr <?=$class?> id="linha-rubrica-<?=$rubrica?>">
+<?php
       global $subpes;
       $subpes = db_anofolha()."/".db_mesfolha();
       global $basesr;
       $achou  = false;
-      
+
       $condicaoaux  = " where rh54_base = ".db_sqlformat( $bases);
       $condicaoaux .= " and rh54_regist = ".db_sqlformat( $matricula );
-      
+
       if ( db_selectmax( "basesr", "select * from rhbasesreg ".$condicaoaux )) {
-        
+
         $condicaoaux .= " and rh54_rubric = ".db_sqlformat( $rubrica );
-        
+
         if ( db_selectmax( "basesr", "select * from rhbasesreg ".$condicaoaux )) {
           $achou = true;
         }
-        
+
       } else {
-        
+
         $condicaoaux  = " and r09_base = ".db_sqlformat( $bases );
         $condicaoaux .= " and r09_rubric = ".db_sqlformat( $rubrica );
-        
+
         if ( db_selectmax( "basesr", "select * from basesr ".bb_condicaosubpes("r09_").$condicaoaux )) {
           $achou = true;
         }
       }
-      
-      $condicao = "1"; 
+
+      $condicao = "1";
       $pos      = db_at($rubrica,@$rub_cond);
-      
+
       if ($pos > 0) {
-        $condicao = db_substr($rub_cond,$pos+4,1); 
+        $condicao = db_substr($rub_cond,$pos+4,1);
       }
-      
+
       $pos  = db_at($rubrica,@$rub_formula);
       $pos1 = db_at(",",@$rub_formula);
-      
+
       if ($pos > 0) {
-        $formula     = db_substr($rub_formula,$pos+5,($pos1-($pos+5))); 
-        $rub_formula = db_substr($rub_formula,$pos1+1,$tam_form-($pos+1)); 
+        $formula     = db_substr($rub_formula,$pos+5,($pos1-($pos+5)));
+        $rub_formula = db_substr($rub_formula,$pos1+1,$tam_form-($pos+1));
       }
-      
+
+      $dados = (object) [
+        'matricula'  => $matricula,
+        'rubrica'    => $rubrica,
+        'anousu'     => $ano,
+        'mesusu'     => $mes,
+        'instit'     => db_getsession('DB_instit'),
+        'tabela'      => $arquivo
+      ];
+
+      $dadosObservacao = $serviceObservacaoRubrica->getObservacaoRubricaServidor($dados);
+
       ?>
             <?php if(isset($formula)) { ?>
-                    <td title="<?=$formula?>" align="center" style="font-size:12px" nowrap ><?=$condicao?></td>
+                    <td title="<?php echo $formula?>" align="center" style="font-size:12px" nowrap ><?php echo $condicao?></td>
             <?php } else { ?>
                     <td title="" align="center" style="font-size:12px" nowrap >&nbsp</td>
             <?php } ?>
-      <?
+      <?php
 
       if ($achou) {
-        
+
         if(db_at($bases.$rubrica,$rub_bases) > 0){
       ?>
-          <td align="left"  style="font-size:12px" nowrap>&nbsp;#B<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?} else {?>
-          <td align="left"  style="font-size:12px" nowrap>&nbsp;&nbsp;&nbsp;#<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?}
-      
+          <td align="left"  style="font-size:12px" nowrap>&nbsp;#B<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?php } else {?>
+          <td align="left"  style="font-size:12px" nowrap>&nbsp;&nbsp;&nbsp;#<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?php }
+
       } else {
-        
+
         if(db_at($bases.$rubrica,@$rub_bases) > 0){
       ?>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;B<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?} else {?>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?}
-      
-      }?> 
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=strtoupper($rh27_descr)?></td>
-          <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($quant,'f')?></td>
-          <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($provento,'f')?></td>
-          <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($desconto,'f')?></td>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=$provdesc?></td>
-           
-     <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=$tipo?></td>
-     <?}?>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;B<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?php } else {?>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?php }
+
+      }?>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?php echo strtoupper($rh27_descr) . ($dadosObservacao->observacao ? '<span class="observacao-rubrica"> *</span>' : '')?></td>
+          <td align="right" style="font-size:12px" nowrap >&nbsp;<?php echo db_formatar($quant,'f')?></td>
+          <td align="right" style="font-size:12px" nowrap >&nbsp;<?php echo db_formatar($provento,'f')?></td>
+          <td align="right" style="font-size:12px" nowrap >&nbsp;<?php echo db_formatar($desconto,'f')?></td>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?php echo $provdesc?></td>
+
+     <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;<?php echo $tipo?></td>
+     <?php }?>
         </tr>
-<?
+
+
+<?php
+  
+      if ($dadosObservacao->observacao) {
+        echo "
+          <script>
+
+            var oHintRubrica{$rubrica} = new DBHint('oHintRubrica{$rubrica}');
+            oHintRubrica{$rubrica}.setText('".preg_replace( "/\r|\n/", "</br>",$dadosObservacao->observacao)."');
+            oHintRubrica{$rubrica}.setShowEvents(new Array('onmouseover'));
+            oHintRubrica{$rubrica}.setHideEvents(new Array('onmouseout'));
+            oHintRubrica{$rubrica}.make(document.getElementById('linha-rubrica-$rubrica'));
+          </script>
+        ";
+      }
     }
   }
 
@@ -441,7 +510,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php
 
   $cor          = "#EFE029";
   $tot_base_sal = 0;
@@ -450,16 +519,16 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $tot_desc_13  = 0;
   $tot_base_fer = 0;
   $tot_desc_fer = 0;
-  
-  for($x=0;$x<pg_numrows($result);$x++){
-    
+
+  for($x=0;$x<pg_num_rows($result);$x++){
+
     db_fieldsmemory($result,$x,true);
-    
+
     if ($cor=="#EFE029") {
       $cor = "#E4F471";
     } else if ($cor=="#E4F471") {
       $cor = "#EFE029";
-    } 
+    }
 
     if ($r60_rubric == 'R985') {
       $tot_base_sal += $r60_base;
@@ -473,39 +542,39 @@ if ($opcao != 'previden' && $opcao != 'irf'){
     }
 ?>
     <tr>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$rh27_rubric?></td>
-      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper($rh27_descr)?></td>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r60_regist?></td>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r60_folha?></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_base,'f')?></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_novod,'f')?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $rh27_rubric?></td>
+      <td align="left"   style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo strtoupper($rh27_descr)?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $r60_regist?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $r60_folha?></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo db_formatar($r60_base,'f')?></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo db_formatar($r60_novod,'f')?></td>
     </tr>
 
-<?
+<?php
   }
 ?>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base Salário</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_sal,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_sal,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_sal,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_sal,'f')?></strong></td>
     </tr>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base 13 Salário</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_13,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_13,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_13,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_13,'f')?></strong></td>
     </tr>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base Férias</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_fer,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_fer,'f')?></strong></td>
     </tr>
-<?
+<?php
 } else if ($opcao == 'irf') {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Código</th>
@@ -515,7 +584,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php
 
   $cor          = "#EFE029";
   $tot_base_sal = 0;
@@ -524,16 +593,16 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $tot_desc_13  = 0;
   $tot_base_fer = 0;
   $tot_desc_fer = 0;
-  
-  for ($x=0; $x < pg_numrows($result); $x++) {
-    
+
+  for ($x=0; $x < pg_num_rows($result); $x++) {
+
     db_fieldsmemory($result,$x,true);
-    
+
     if ($cor=="#EFE029") {
       $cor="#E4F471";
     } else if ($cor=="#E4F471") {
       $cor="#EFE029";
-    } 
+    }
 
     if ($r61_rubric == 'R981') {
       $tot_base_sal += $r61_base;
@@ -547,39 +616,39 @@ if ($opcao != 'previden' && $opcao != 'irf'){
     }
 ?>
     <tr>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$rh27_rubric?></td>
-      <td align="left"   style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=strtoupper($rh27_descr)?></td>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r61_regist?></td>
-      <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$r61_folha?></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_base,'f')?></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_novod,'f')?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $rh27_rubric?></td>
+      <td align="left"   style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo strtoupper($rh27_descr)?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $r61_regist?></td>
+      <td align="center" style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo $r61_folha?></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo db_formatar($r61_base,'f')?></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="<?php echo $cor?>">&nbsp;<?php echo db_formatar($r61_novod,'f')?></td>
     </tr>
 
-<?
+<?php
   }
 ?>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base Salário</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_sal,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_sal,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_sal,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_sal,'f')?></strong></td>
     </tr>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base 13 Salário</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_13,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_13,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_13,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_13,'f')?></strong></td>
     </tr>
     <tr>
       <td colspan="2" align="left" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong>Total Base Férias</strong></td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
       <td align="center" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;</td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
-      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_base_fer,'f')?></strong></td>
+      <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?php echo db_formatar($tot_desc_fer,'f')?></strong></td>
     </tr>
-<?
+<?php
 
 }
 
@@ -588,8 +657,8 @@ if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
 </table>
 
-    <input type="hidden" name="matricula" value="<?=@$matricula?>">
-    <input type="hidden" name="numcgm" value="<?=@$numcgm?>">
+    <input type="hidden" name="matricula" value="<?php echo @$matricula?>">
+    <input type="hidden" name="numcgm" value="<?php echo @$numcgm?>">
 
 </form>
 </center>
@@ -619,9 +688,9 @@ function js_mostrabic_inscricao(inscricao){
 
 
 function js_relatorio(){
-  jan = window.open('pes3_gerfinanc017.php?opcao=<?=$opcao?>&numcgm='+document.form1.numcgm.value+'&matricula='+document.form1.matricula.value+'&ano=<?=$ano?>&mes=<?=$mes?>&tbprev=<?=$tbprev?>','sdjklsdklsdf','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+  jan = window.open('pes3_gerfinanc017.php?opcao=<?php echo $opcao?>&numcgm='+document.form1.numcgm.value+'&matricula='+document.form1.matricula.value+'&ano=<?php echo $ano?>&mes=<?php echo $mes?>&tbprev=<?php echo $tbprev?>','sdjklsdklsdf','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
-	  
+
 }
 
 function js_Pesquisarubrica(rubrica) {
@@ -630,27 +699,25 @@ function js_Pesquisarubrica(rubrica) {
 }
 
 
-  parent.document.formatu.opcao.value = '<?=$opcao?>';
+  parent.document.formatu.opcao.value = '<?php echo $opcao?>';
 
 
 
   /**
    * Altera o Titulo da Folha.
    */
-   parent.document.getElementById('tituloFolha').innerHTML = "<?=$sTituloCalculo?>";
+   parent.document.getElementById('tituloFolha').innerHTML = "<?php echo $sTituloCalculo?>";
 
-   function js_alteraTamanho() {      
-      
+   function js_alteraTamanho() {
+
       var body = document.body,
           html = document.documentElement;
 
-      var height = Math.max( body.scrollHeight, body.offsetHeight, 
+      var height = Math.max( body.scrollHeight, body.offsetHeight,
                              html.clientHeight, html.scrollHeight, html.offsetHeight );
-  
+
       parent.document.getElementById('calculoFolha').style.height = height + 'px';
       parent.iframeLoaded();
    }
-
-  //js_removeObj('processamento_calculo_ponto');
 
 </script>

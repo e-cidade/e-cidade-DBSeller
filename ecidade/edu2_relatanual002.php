@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
-include(modification("fpdf151/pdfwebseller.php"));
-include(modification("classes/db_calendario_classe.php"));
+require modification("fpdf151/pdfwebseller.php");
+require modification("classes/db_calendario_classe.php");
 $clcalendario = new cl_calendario;
 $data_censo_dia = substr($data_censo, 0, 2);
 $data_censo_mes = substr($data_censo, 3, 2);
@@ -85,17 +85,17 @@ if ($linhas == 0) { ?>
             </td>
         </tr>
     </table>
-    <?
+  <?php
     exit;
 }
 
 $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
-$head1 = "RELATÓRIO ANUAL";
+$head1 = "RELATï¿½RIO ANUAL";
 $head2 = "Ano: " . $ano_censo;
 $head3 = "Data de Encerramento Ano Letivo: " . db_formatar($datarel, 'd');
-$head4 = "N° de Dias Letivos: $diasletivos";
+$head4 = "Nï¿½ de Dias Letivos: $diasletivos";
 $head5 = "Data do censo: " . $data_censo_dia . "/" . $data_censo_mes . "/" . $data_censo_ano;
 $pdf->ln(5);
 $troca = 1;
@@ -138,7 +138,7 @@ for ($c = 0; $c < $linhas; $c++) {
         $pdf->cell(10, 4, "Censo", "LRB", 2, "C", 1);
         $pdf->SetXY(57, $posy);
         $pdf->cell(10, 4, "Entra", "LRT", 2, "C", 1);
-        $pdf->cell(10, 4, "Após", "LR", 2, "C", 1);
+        $pdf->cell(10, 4, "Apï¿½s", "LR", 2, "C", 1);
         $pdf->cell(10, 4, "Censo", "LRB", 2, "C", 1);
         $pdf->SetXY(67, $posy);
         $pdf->cell(10, 4, "", "LRT", 2, "C", 1);
@@ -146,11 +146,11 @@ for ($c = 0; $c < $linhas; $c++) {
         $pdf->cell(10, 4, "Geral", "LRB", 2, "C", 1);
         $pdf->SetXY(77, $posy);
         $pdf->cell(10, 4, "Transf.", "LRT", 2, "C", 1);
-        $pdf->cell(10, 4, "Após", "LR", 2, "C", 1);
+        $pdf->cell(10, 4, "Apï¿½s", "LR", 2, "C", 1);
         $pdf->cell(10, 4, "Censo", "LRB", 2, "C", 1);
         $pdf->SetXY(87, $posy);
         $pdf->cell(10, 4, "Canc.", "LRT", 2, "C", 1);
-        $pdf->cell(10, 4, "Após", "LR", 2, "C", 1);
+        $pdf->cell(10, 4, "Apï¿½s", "LR", 2, "C", 1);
         $pdf->cell(10, 4, "Censo", "LRB", 2, "C", 1);
         $pdf->SetXY(97, $posy);
         $pdf->cell(10, 4, "", "LRT", 2, "C", 1);
@@ -160,16 +160,16 @@ for ($c = 0; $c < $linhas; $c++) {
         $pdf->cell(2, 12, "", 1, 0, "C", 1);
         $pdf->SetXY(109, $posy);
         $pdf->cell(20, 8, "Aprovados", 1, 2, "C", 1);
-        $pdf->cell(10, 4, "N°", 1, 0, "C", 1);
+        $pdf->cell(10, 4, "Nï¿½", 1, 0, "C", 1);
         $pdf->cell(10, 4, "%", 1, 0, "C", 1);
         $pdf->SetXY(129, $posy);
         $pdf->cell(40, 4, "Reprovados", 1, 2, "C", 1);
         $pdf->cell(20, 4, "Rendimento", 1, 0, "C", 1);
         $pdf->cell(20, 4, "Infreq./Evad.", 1, 0, "C", 1);
         $pdf->SetXY(129, $posy + 8);
-        $pdf->cell(10, 4, "N°", 1, 0, "C", 1);
+        $pdf->cell(10, 4, "Nï¿½", 1, 0, "C", 1);
         $pdf->cell(10, 4, "%", 1, 0, "C", 1);
-        $pdf->cell(10, 4, "N°", 1, 0, "C", 1);
+        $pdf->cell(10, 4, "Nï¿½", 1, 0, "C", 1);
         $pdf->cell(10, 4, "%", 1, 0, "C", 1);
         $pdf->SetXY(171, $posy + 8);
         $sql_disc = " SELECT DISTINCT ed232_i_codigo,ed232_c_abrev,ed232_c_descr ";
@@ -313,7 +313,7 @@ for ($c = 0; $c < $linhas; $c++) {
     $sql1 .= "               OR ed60_c_situacao = 'TRANSFERIDO FORA' ";
     $sql1 .= "               OR ed60_c_situacao = 'CANCELADO'  ";
     $sql1 .= "               OR ed60_c_situacao = 'FALECIDO'  ";
-    $sql1 .= "               OR ed60_c_situacao = 'AVANÇADO'  ";
+    $sql1 .= "               OR ed60_c_situacao = 'AVANï¿½ADO'  ";
     $sql1 .= "               OR ed60_c_situacao = 'CLASSIFICADO') ";
     $sql1 .= "          and ed60_c_situacao <> 'TROCA DE TURMA' ";
     $sql1 .= "          and ed60_d_datamatricula <= '$data_censo' ";
@@ -346,7 +346,7 @@ for ($c = 0; $c < $linhas; $c++) {
     $sql1 .= "          and (ed60_c_situacao = 'TRANSFERIDO FORA'  ";
     $sql1 .= "	             OR ed60_c_situacao = 'TRANSFERIDO REDE' ";
     $sql1 .= "	             OR ed60_c_situacao = 'FALECIDO'  ";
-    $sql1 .= "               OR ed60_c_situacao = 'AVANÇADO'  ";
+    $sql1 .= "               OR ed60_c_situacao = 'AVANï¿½ADO'  ";
     $sql1 .= "	             OR ed60_c_situacao = 'CLASSIFICADO') ";
     $sql1 .= "          and ed60_d_datasaida > '$data_censo' ";
     $sql1 .= "        ) as transfposcenso, ";
@@ -425,7 +425,7 @@ for ($c = 0; $c < $linhas; $c++) {
     $sql41 .= "  AND ed57_i_base = $ed31_i_codigo ";
     $sql41 .= "  AND ed52_i_ano = $ano_censo ";
     $sql41 .= "  AND ed221_c_origem = 'S' ";
-    $sql41 .= "  AND ed60_c_situacao = 'EVADIDO' ";
+    $sql41 .= "  AND ed60_c_situacao IN ('EVADIDO', 'ABANDONO ESCOLAR') ";
     $result41 = db_query($sql41);
     db_fieldsmemory($result41, 0);
     $soma_evadidos += $evadidos;

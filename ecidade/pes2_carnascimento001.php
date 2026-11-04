@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,12 +65,12 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Ano / Mês :</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -81,7 +81,7 @@ db_postmemory($HTTP_POST_VARS);
       <strong>Ordem :</strong>
     </td>
     <td align="left">
-      <?
+      <?php
       $array_ordem = array("n"=>"Numérica","a"=>"Alfabética","d"=>"Data");
       db_select('ordem',$array_ordem,true,1);
       ?>
@@ -92,7 +92,7 @@ db_postmemory($HTTP_POST_VARS);
                <b> Período :</b>
 	       </td>
 	       <td>
-               <? 
+               <?php 
 	          db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");
@@ -106,7 +106,7 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

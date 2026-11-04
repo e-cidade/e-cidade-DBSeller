@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmmeievento.php"));
 	?>
     </center>
@@ -70,12 +70,12 @@ if(isset($excluir)){
   </tr>
 </table>
 
-	<?
+	<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clmeievento->erro_status=="0"){
     $clmeievento->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -172,7 +172,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
-        <?
+        <?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
 	  
 	     $sql = "SELECT u.id_usuario as código,e.cgmlogin,nome,login,CASE WHEN usuarioativo = '1' THEN 'Ativo'::text ELSE 'Inativo'::text END as \"Usuário Ativo\", usuext
@@ -189,7 +189,7 @@ input {
           <table width="452" border="0" cellspacing="0" cellpadding="0">
             <tr> 
 	      <td height="25" nowrap><strong> 
-              <?
+              <?php
 	        db_ancora('CGM',"js_cgmlogin();",'1');
 	      ?>
               </strong></td>
@@ -218,7 +218,7 @@ input {
 	    </tr>
             <tr> 
               <td height="25" nowrap><strong>Usu&aacute;rio Ativo:</strong></td>
-              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <? echo (!isset($HTTP_POST_VARS["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
+              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <?php echo (!isset($HTTP_POST_VARS["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
             </tr>
             <tr> 
               <td height="25" nowrap><strong>Acesso Externo:</strong></td>
@@ -237,7 +237,7 @@ input {
             <tr> 
               <td height="25" valign="top" nowrap><strong>Institui&ccedil;&atilde;o:</strong></td>
               <td height="25" nowrap> <select name="instit[]" size="5" multiple>
-                  <?
+                  <?php
 		  if(isset($retorno)) {		  
 	        $result = db_query("select c.codigo,c.nomeinst,u.id_instit
                                from db_config c
@@ -258,15 +258,15 @@ input {
 	    
             <tr> 
               <td height="25" nowrap>&nbsp;</td>
-              <td height="25" nowrap> <input name="incluir" onclick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-                &nbsp; <input name="alterar" accesskey="a" onclick="Botao = 'alterar' "type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-                &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="Botao='excluir';return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+              <td height="25" nowrap> <input name="incluir" onclick="Botao = 'incluir'" accesskey="i" type="submit" id="incluir2" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>> 
+                &nbsp; <input name="alterar" accesskey="a" onclick="Botao = 'alterar' "type="submit" id="alterar2" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>> 
+                &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="Botao='excluir';return confirm('Quer realmente excluir este registro?')" <?php echo !isset($retorno)?"disabled":"" ?>> 
                 &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="submit" id="procurar2" value="Procurar">
                 &nbsp; <input name="limpa" type="button" onclick="location.href='con1_cadusu.php'" value="Limpa"></td>
             </tr>
           </table>
         </form>
-        <?
+        <?php
 		}
 		?>
       </center>
@@ -275,7 +275,7 @@ input {
 
 
 </table>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -297,7 +297,7 @@ function js_preenchecgm(cgm,nomecgm,email){
 </script>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('frame','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

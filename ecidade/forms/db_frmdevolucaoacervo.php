@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("bi19_codigo");
        <?=@$Lbi21_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi21_codigo',8,$Ibi21_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi21_emprestimoacervo?>">
-       <?
+       <?php
        db_ancora(@$Lbi21_emprestimoacervo,"js_pesquisabi21_emprestimoacervo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi21_emprestimoacervo',8,$Ibi21_emprestimoacervo,true,'text',$db_opcao," onchange='js_pesquisabi21_emprestimoacervo(false);'")
 ?>
-       <?
+       <?php
 db_input('bi19_codigo',10,$Ibi19_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('bi19_codigo',10,$Ibi19_codigo,true,'text',3,'')
        <?=@$Lbi21_entrega?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('bi21_entrega',@$bi21_entrega_dia,@$bi21_entrega_mes,@$bi21_entrega_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_inputdata('bi21_entrega',@$bi21_entrega_dia,@$bi21_entrega_mes,@$bi21_entrega
        <?=@$Lbi21_qtdunidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('bi21_qtdunidade',8,$Ibi21_qtdunidade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_devolucaoacervo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

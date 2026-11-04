@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -69,10 +69,10 @@ if (isset($alterar)) {
   db_fim_transacao();
 
   $aDiarioAvaliacaoDisciplina = $oDiario->getDisciplinas();
-  
+
   if ( !empty( $aDiarioAvaliacaoDisciplina ) ) {
     foreach ($aDiarioAvaliacaoDisciplina as $oDiarioAvaliacaoDisciplina ) {
-      
+
       if ( count($oDiarioAvaliacaoDisciplina->getOrdemPeriodosAplicaProporcionalidade()) > 0 ) {
 
         $lUtilizaProporcionalidade = true;
@@ -93,7 +93,7 @@ if (isset($alterar)) {
   /**
    * Valida se a data alterada esta dentro do periodo do calendario
    */
-  if ( $oDataAlterada->getTimeStamp() < $oDataInicio->getTimeStamp() || 
+  if ( $oDataAlterada->getTimeStamp() < $oDataInicio->getTimeStamp() ||
         $oDataAlterada->getTimeStamp() > $oDataTermino->getTimeStamp() ) {
 
         $oErro = new stdClass();
@@ -112,9 +112,9 @@ if (isset($alterar)) {
   if ( DBDate::calculaIntervaloEntreDatas( $oDataAlterada, $oDataInicio, 'd' ) > 0 ) {
     $lMatriculadoAntesDataInicial = false;
   }
-  
+
   /**
-   * Valida se o aluno utiliza proporcionalidade e se a data de matricula alterada está posterior a data de início do 
+   * Valida se o aluno utiliza proporcionalidade e se a data de matricula alterada está posterior a data de início do
    * primeiro período de avaliação, caso contrario não deixa alterar.
    */
   if ( $lUtilizaProporcionalidade && $lMatriculadoAntesDataInicial ) {
@@ -130,11 +130,11 @@ if (isset($alterar)) {
 
   $oAluno         = $oMatricula->getAluno();
   $aMatriculas    = MatriculaRepository::getTodasMatriculasAluno($oAluno, false, null);
-  
+
   if ( !empty($aMatriculas ) && isset($aMatriculas[1] ) ) {
 
     if ( in_array($aMatriculas[1]->getSituacao(), array('TRANSFERIDO REDE','TRANSFERIDO FORA') ) ) {
-      
+
       $oDataSaidaMatriculaAnterior = $aMatriculas[1]->getDataEncerramento();
       $lAplicaValidacao            = true;
 
@@ -154,18 +154,18 @@ if (isset($alterar)) {
       }
     }
   }
-  
+
   $clmatricula->ed60_d_datamodifant = $datamodifant;
-  $clmatricula->ed60_d_datasaida    = ($datasaida==""?"null":$datasaida);   
+  $clmatricula->ed60_d_datasaida    = ($datasaida==""?"null":$datasaida);
   $clmatricula->ed60_d_datamodif    = date("Y-m-d",db_getsession("DB_datausu"));
   $clmatricula->alterar($ed60_i_codigo);
   if (db_formatar($conferedata,'d') != $ed60_d_datamatricula || trim($confereobs) != trim($ed60_t_obs)) {
-  	
+
     $descricao = "";
     $sep       = "";
-    
+
     if (db_formatar($conferedata,'d') != $ed60_d_datamatricula) {
-    	
+
       $descricao .= "DATA DA MATRÍCULA MODIFICADA DE ".db_formatar($conferedata,'d')." PARA ".$ed60_d_datamatricula;
       $sep        = " | ";
       $sWhere     = " (ed229_c_procedimento = 'REMATRICULAR ALUNO' or";
@@ -177,25 +177,25 @@ if (isset($alterar)) {
                                                                            $sWhere
                                                                           )
                                                );
-                                               
+
       if ($clmatriculamov->numrows > 0) {
-      	
+
         db_fieldsmemory($result11,0);
         $dataevento                         = substr($ed60_d_datamatricula,6,4);
         $dataevento                        .= "-".substr($ed60_d_datamatricula,3,2)."-".substr($ed60_d_datamatricula,0,2);
         $clmatriculamov->ed229_d_dataevento = $dataevento;
         $clmatriculamov->ed229_i_codigo     = $codaltera;
         $clmatriculamov->alterar($codaltera);
-        
+
       }
     }
-    
+
     if (trim($confereobs) != trim($ed60_t_obs)) {
-    	
+
       $descricao .= $sep."OBSERVAÇÕES ALTERADAS:  ".($ed60_t_obs==""?"TODO CONTEÚDO APAGADO":$ed60_t_obs);
-      
+
     }
-    
+
     $ed229_i_codigo                       = "";
     $clmatriculamov->ed229_i_matricula    = $ed60_i_codigo;
     $clmatriculamov->ed229_i_usuario      = db_getsession("DB_id_usuario");
@@ -206,11 +206,11 @@ if (isset($alterar)) {
     $clmatriculamov->ed229_d_data         = date("Y-m-d",db_getsession("DB_datausu"));
     $clmatriculamov->incluir($ed229_i_codigo);
   }
-  
+
   if (isset($ed60_c_parecer) && trim($confereparec) != trim(@$ed60_c_parecer)) {
-    LimpaResultadoFinal($ed60_i_codigo);   
+    LimpaResultadoFinal($ed60_i_codigo);
   }
-  
+
   db_fim_transacao();
   $clmatricula->erro(true,false);
   ?>
@@ -219,7 +219,7 @@ if (isset($alterar)) {
     parent.location.href = "edu1_alunoturma001.php?ed60_i_turma=<?=$ed60_i_turma?>&ed57_c_descr=<?=$ed57_c_descr?>"+
                            "&ed52_c_descr=<?=$ed52_c_descr?>";
    </script>
-  <?
+  <?php
   exit;
 }
 
@@ -339,22 +339,22 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
      <form name="form1" method="post" action="">
      <br>
      <?=@$Led60_t_obs?><br>
-     <?db_textarea('ed60_t_obs',3,120,@$Ied60_t_obs,true,'text',$db_opcao,"")?><br>
+     <?php db_textarea('ed60_t_obs',3,120,@$Ied60_t_obs,true,'text',$db_opcao,"")?><br>
      <?=@$Led60_d_datamatricula?>
-     <?db_inputdata('ed60_d_datamatricula',@$ed60_d_datamatricula_dia,@$ed60_d_datamatricula_mes,
+     <?php db_inputdata('ed60_d_datamatricula',@$ed60_d_datamatricula_dia,@$ed60_d_datamatricula_mes,
                     @$ed60_d_datamatricula_ano,true,'text',(($ed60_c_situacao!="MATRICULADO")?3:$db_opcao),"")?>
-     <?db_input('datamatanterior',10,@$Idatamatanterior,true,'hidden',3,"")?>
-     <?db_input('datasaidaanterior',10,@$Idatasaidaanterior,true,'hidden',3,"")?>
-     <?if($clalunonecessidade->numrows>0 || $ed60_c_parecer=="S"){?>
+     <?php db_input('datamatanterior',10,@$Idatamatanterior,true,'hidden',3,"")?>
+     <?php db_input('datasaidaanterior',10,@$Idatasaidaanterior,true,'hidden',3,"")?>
+     <?php if($clalunonecessidade->numrows>0 || $ed60_c_parecer=="S"){?>
       <?=@$Led60_c_parecer?>
-      <?
+      <?php
       $x = array("N"=>"NÃO","S"=>"SIM");
       db_select('ed60_c_parecer',$x,true,$db_opcao,"");
      }
      ?>
      <br><br>
-     <input name="alterar" type="submit" value="Alterar" 
-            onclick="return js_alerta('<?=$ed60_d_datamatricula?>','<?=$ed52_d_inicio?>','<?=$ed52_d_fim?>')" 
+     <input name="alterar" type="submit" value="Alterar"
+            onclick="return js_alerta('<?=$ed60_d_datamatricula?>','<?=$ed52_d_inicio?>','<?=$ed52_d_fim?>')"
                                        <?=$ed60_c_ativa=="N"||$ed60_c_concluida=="S"?"disabled":""?>>
      <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_observacoes.hide();">
      <input name="ed60_i_codigo" type="hidden" value="<?=@$matricula?>">
@@ -378,7 +378,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
    <tr>
     <td colspan="2">
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php
       $array_mov = array();
       $sCampos  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
       $sCampos .= " ed57_c_descr,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome";
@@ -398,10 +398,10 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
 
           db_fieldsmemory($result,$f);
           $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-          $iContador = count($array_mov)-1; 
+          $iContador = count($array_mov)-1;
           $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
           $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-          $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;          
+          $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
         }
       }
       $sCampos  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
@@ -419,14 +419,14 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
 
         db_fieldsmemory($result1,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-        $iContador = count($array_mov)-1; 
+        $iContador = count($array_mov)-1;
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
         $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
       }
-      
+
       $sCampos  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
-      $sCampos .= " ed57_c_descr,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome"; 
+      $sCampos .= " ed57_c_descr,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome";
       $sOrder   = " ed229_d_dataevento DESC,ed229_i_codigo DESC LIMIT 1";
       $sWhere   = " ed60_matricula = {$iNumeroMatricula} AND ed229_c_procedimento LIKE  'ENCERRAR%'";
 
@@ -440,16 +440,16 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
 
         db_fieldsmemory($result2,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-        $iContador = count($array_mov)-1; 
+        $iContador = count($array_mov)-1;
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr."#".$ed229_c_procedimento;
         $array_mov[$iContador] .= "#".$ed229_t_descr."#".$nome;
       }
-      
+
       array_multisort($array_mov,SORT_ASC);
 
       if (count($array_mov) > 0) {
-      	
+
         ?>
         <tr class="titulo" align="center">
          <td>Data</td>
@@ -460,15 +460,15 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
          <td>Etapa</td>
          <td>Procedimento</td>
         </tr>
-        <?
+        <?php
         for($f=0;$f<count($array_mov);$f++){
-        	
+
           $array_mov1 = explode("|",$array_mov[$f]);
-          $array_mov2 = explode("#",$array_mov1[1]);               
+          $array_mov2 = explode("#",$array_mov1[1]);
           if ($f > 0) {
             ?>
 	        <tr><td height="1" bgcolor="black" colspan="7"></td></tr>
-            <?
+            <?php
           }
           ?>
           <tr bgcolor="#dbdbdb">
@@ -489,13 +489,13 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
               <?=$array_mov2[7]?>
              </td>
              <td align="right" valign="top">
-              <b>Usuário: </b><?=$array_mov2[8]?>             
+              <b>Usuário: </b><?=$array_mov2[8]?>
              </td>
             </tr>
            </table>
           </td>
          </tr>
-        <?
+        <?php
         }
       } else {
         ?>
@@ -504,7 +504,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
           Nenhum registro.
          </td>
         </tr>
-        <?
+        <?php
       }
       ?>
      </table>
@@ -523,32 +523,32 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
 const MENSAGEM_MATRICULA004 = "educacao.escola.edu1_matricula004.";
 
 function js_alerta(data,inicio,fim) {
-  
+
   if (document.form1.ed60_d_datamatricula.value == "") {
-	  
+
     alert( _M( MENSAGEM_MATRICULA004 + "informe_data_matricula" ) );
     document.form1.ed60_d_datamatricula.focus();
     document.form1.ed60_d_datamatricula.style.backgroundColor='#99A9AE';
     return false;
-    
+
   } else {
-	  
+
     datamat  = document.form1.ed60_d_datamatricula_ano.value+"-"+document.form1.ed60_d_datamatricula_mes.value;
     datamat += "-"+document.form1.ed60_d_datamatricula_dia.value;
     dataini  = inicio;
     datafim  = fim;
     check    = js_validata(datamat,dataini,datafim);
-    
+
     if (check == false) {
-        
+
       data_ini = dataini.substr(8,2)+"/"+dataini.substr(5,2)+"/"+dataini.substr(0,4);
       data_fim = datafim.substr(8,2)+"/"+datafim.substr(5,2)+"/"+datafim.substr(0,4);
       alert( _M( MENSAGEM_MATRICULA004 + "data_matricula_fora_calendario", {'dtInicio':data_ini,'dtFim':data_fim} ) )
       document.form1.ed60_d_datamatricula.focus();
       document.form1.ed60_d_datamatricula.style.backgroundColor='#99A9AE';
-      return false;      
+      return false;
     }
-    
+
     datamatanterior    = document.form1.datamatanterior.value.substr(0,4);
     datamatanterior   += document.form1.datamatanterior.value.substr(5,2);
     datamatanterior   += document.form1.datamatanterior.value.substr(8,2);
@@ -556,22 +556,22 @@ function js_alerta(data,inicio,fim) {
     datasaidaanterior += document.form1.datasaidaanterior.value.substr(5,2);
     datasaidaanterior += document.form1.datasaidaanterior.value.substr(8,2);
     datamat            = datamat.substr(0,4)+''+datamat.substr(5,2)+''+datamat.substr(8,2);
-        
+
     if (datamatanterior != "") {
-        
+
       if (parseInt(datamatanterior) > parseInt(datamat)) {
-          
+
         data_mat = datamatanterior.substr(6,2)+"/"+datamatanterior.substr(4,2)+"/"+datamatanterior.substr(0,4);
         alert( _M( MENSAGEM_MATRICULA004 + "data_matricula_menor", {'dtMatricula':data_mat}) )
         document.form1.ed60_d_datamatricula.focus();
         document.form1.ed60_d_datamatricula.style.backgroundColor='#99A9AE';
         return false;
-        
+
       }
-    } 
-    
+    }
+
     if (datasaidaanterior != "") {
-        
+
       if (parseInt(datasaidaanterior) > parseInt(datamat)) {
         data_sai = datasaidaanterior.substr(6,2)+"/"+datasaidaanterior.substr(4,2)+"/"+datasaidaanterior.substr(0,4);
         alert( _M( MENSAGEM_MATRICULA004 + "data_matricula_menor", {'dtMatricula':data_sai}) )
@@ -584,15 +584,15 @@ function js_alerta(data,inicio,fim) {
   return true;
 }
 
-<?if ($ed60_c_concluida == "S") {?>
+<?php if ($ed60_c_concluida == "S") {?>
     alert( _M( MENSAGEM_MATRICULA004 + "matricula_encerrada" ) )
-<?}?>
+<?php } ?>
 
 function js_historico(matricula) {
-	
+
   js_OpenJanelaIframe('','db_iframe_historico','edu1_matricula006.php?matricula='+matricula,'Histórico de Matrículas',
 		              true,0,0,screen.availWidth-50,screen.availHeight);
-  
+
 }
 
 function js_validata(datamat,dataini,datafim) {

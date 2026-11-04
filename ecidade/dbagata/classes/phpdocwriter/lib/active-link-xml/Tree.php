@@ -42,7 +42,7 @@ class Tree {
 	  *	@method		Tree
 	  *	@returns	none
 	  */
-	function Tree() {
+	public function __construct() {
 		$this->nodes = array();
 	}
 
@@ -53,7 +53,7 @@ class Tree {
 	  *	@param		mixed node
 	  *	@returns	true if successful, false otherwise
 	  */
-	function addNode($id, $node) {
+	public function addNode($id, $node) {
 		$success = true;
 		if($id == -1)
 			$this->nodes[] =& $node;
@@ -70,7 +70,7 @@ class Tree {
 	  *	@method		removeAllNodes
 	  *	@returns	none
 	  */
-	function removeAllNodes () {
+	public function removeAllNodes () {
 		$this->nodes = array();
 	}
 
@@ -80,7 +80,7 @@ class Tree {
 	  *	@param		mixed id
 	  *	@returns	true if successful, false otherwise
 	  */
-	function removeNode($id) {
+	public function removeNode($id) {
 		$success = false;
 		if(isset($this->nodes[$id])) {
 			unset($this->nodes[$id]);

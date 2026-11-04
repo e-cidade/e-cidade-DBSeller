@@ -6,6 +6,8 @@ use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use App\Domain\Financeiro\Contabilidade\Factories\TemplateFactory;
 use App\Domain\Financeiro\Contabilidade\Relatorios\LRF\RREO\XlsAnexoQuatro;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\AnexosService;
+use PhpOffice\PhpWord\Settings;
+use NcJoes\OfficeConverter\OfficeConverter;
 use DBDate;
 
 class AnexoQuatroService extends AnexosService
@@ -43,7 +45,11 @@ class AnexoQuatroService extends AnexosService
         $template = TemplateFactory::getTemplate($filtros['codigo_relatorio'], $filtros['periodo']);
 
         $this->constructAssinaturas($filtros['DB_instit']);
-        $this->constructInstituicoes(DBConfig::all());
+        if (isset($filtros["desvincularDadosInstituicaoCamara"]) && $filtros["desvincularDadosInstituicaoCamara"]) {
+            $this->constructInstituicoes(DBConfig::all()->where('db21_tipoinstit', '<>', 2));
+        } else {
+            $this->constructInstituicoes(DBConfig::all());
+        }
         $this->constructPeriodo($filtros['periodo']);
         $this->constructRelatorio($filtros['codigo_relatorio']);
         $this->processaEnteFederativo();
@@ -72,11 +78,18 @@ class AnexoQuatroService extends AnexosService
         $this->parser->setNomePrefeito($this->assinatura->assinaturaPrefeito());
         $this->parser->setNomeContador($this->assinatura->assinaturaContador());
         $this->parser->setNomeOrdenador($this->assinatura->assinaturaSecretarioFazenda());
+        
         $filename = $this->parser->gerar();
 
+        Settings::setTempDir('tmp/');
+        $filePdf = basename($filename, ".xlsx").".pdf";
+        $converter = new OfficeConverter($filename);
+        $converter->convertTo($filePdf);
+        
         return [
             'xls' => $filename,
-            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename
+            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename,
+            'pdf' => Settings::getTempDir().$filePdf
         ];
     }
 
@@ -229,5 +242,11 @@ class AnexoQuatroService extends AnexosService
             'nivel' => $nivel,
             'ate_bimestre' => $valor
         ];
+    }
+    
+    public function getLinhasProcessadas()
+    {
+        $this->processar();
+        return $this->linhas;
     }
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $clacordotipo->rotulo->label();
        <?=@$Lac04_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac04_sequencial',10,$Iac04_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('ac04_sequencial',10,$Iac04_sequencial,true,'text',3,"")
        <?=@$Lac04_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('ac04_descricao',40,$Iac04_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,10 +68,10 @@ db_input('ac04_descricao',40,$Iac04_descricao,true,'text',$db_opcao,"")
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-<? if($db_opcao != 1 && $db_opcao != 11) { ?>
+<?php if($db_opcao != 1 && $db_opcao != 11) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" type="button" id="novo" value="Novo" onclick="window.location.href='aco1_acordotipo001.php';" >
-<? } ?>
+<?php } ?>
 
 </form>
 <script>
@@ -80,7 +80,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acordotipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

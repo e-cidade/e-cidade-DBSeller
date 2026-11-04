@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: veiculos
 //CLASSE DA ENTIDADE veicutilizacao
-class cl_veicutilizacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ve15_sequencial = 0; 
-   var $ve15_veiccadutilizacao = 0; 
-   var $ve15_veiculos = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_veicutilizacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ve15_sequencial = 0;
+   var $ve15_veiccadutilizacao = 0;
+   var $ve15_veiculos = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ve15_sequencial = int4 = Cód. Sequencial 
-                 ve15_veiccadutilizacao = int4 = Utilização 
-                 ve15_veiculos = int4 = Veiculo 
+                 ve15_sequencial = int4 = Cód. Sequencial
+                 ve15_veiccadutilizacao = int4 = Utilização
+                 ve15_veiculos = int4 = Veiculo
                  ";
-   //funcao construtor da classe 
-   function cl_veicutilizacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("veicutilizacao"); 
+     $this->rotulo = new rotulo("veicutilizacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_veicutilizacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ve15_sequencial = ($this->ve15_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ve15_sequencial"]:$this->ve15_sequencial);
        $this->ve15_veiccadutilizacao = ($this->ve15_veiccadutilizacao == ""?@$GLOBALS["HTTP_POST_VARS"]["ve15_veiccadutilizacao"]:$this->ve15_veiccadutilizacao);
@@ -77,9 +77,9 @@ class cl_veicutilizacao {
      }
    }
    // funcao para inclusao
-   function incluir ($ve15_sequencial){ 
+   public function incluir ($ve15_sequencial){
       $this->atualizacampos();
-     if($this->ve15_veiccadutilizacao == null ){ 
+     if($this->ve15_veiccadutilizacao == null ){
        $this->erro_sql = " Campo Utilização nao Informado.";
        $this->erro_campo = "ve15_veiccadutilizacao";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_veicutilizacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ve15_veiculos == null ){ 
+     if($this->ve15_veiculos == null ){
        $this->erro_sql = " Campo Veiculo nao Informado.";
        $this->erro_campo = "ve15_veiculos";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_veicutilizacao {
        return false;
      }
      if($ve15_sequencial == "" || $ve15_sequencial == null ){
-       $result = db_query("select nextval('veicutilizacao_ve15_sequencial_seq')"); 
+       $result = db_query("select nextval('veicutilizacao_ve15_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: veicutilizacao_ve15_sequencial_seq do campo: ve15_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: veicutilizacao_ve15_sequencial_seq do campo: ve15_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ve15_sequencial = pg_result($result,0,0); 
+       $this->ve15_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from veicutilizacao_ve15_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ve15_sequencial)){
@@ -118,10 +118,10 @@ class cl_veicutilizacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ve15_sequencial = $ve15_sequencial; 
+         $this->ve15_sequencial = $ve15_sequencial;
        }
      }
-     if(($this->ve15_sequencial == null) || ($this->ve15_sequencial == "") ){ 
+     if(($this->ve15_sequencial == null) || ($this->ve15_sequencial == "") ){
        $this->erro_sql = " Campo ve15_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_veicutilizacao {
        return false;
      }
      $sql = "insert into veicutilizacao(
-                                       ve15_sequencial 
-                                      ,ve15_veiccadutilizacao 
-                                      ,ve15_veiculos 
+                                       ve15_sequencial
+                                      ,ve15_veiccadutilizacao
+                                      ,ve15_veiculos
                        )
                 values (
-                                $this->ve15_sequencial 
-                               ,$this->ve15_veiccadutilizacao 
-                               ,$this->ve15_veiculos 
+                                $this->ve15_sequencial
+                               ,$this->ve15_veiccadutilizacao
+                               ,$this->ve15_veiculos
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Utilização de veiculos ($this->ve15_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_veicutilizacao {
        $resac = db_query("insert into db_acount values($acount,1918,11122,'','".AddSlashes(pg_result($resaco,0,'ve15_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ve15_sequencial=null) { 
+   public function alterar ($ve15_sequencial=null) {
       $this->atualizacampos();
      $sql = " update veicutilizacao set ";
      $virgula = "";
-     if(trim($this->ve15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_sequencial"])){ 
+     if(trim($this->ve15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_sequencial"])){
        $sql  .= $virgula." ve15_sequencial = $this->ve15_sequencial ";
        $virgula = ",";
-       if(trim($this->ve15_sequencial) == null ){ 
+       if(trim($this->ve15_sequencial) == null ){
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "ve15_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_veicutilizacao {
          return false;
        }
      }
-     if(trim($this->ve15_veiccadutilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_veiccadutilizacao"])){ 
+     if(trim($this->ve15_veiccadutilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_veiccadutilizacao"])){
        $sql  .= $virgula." ve15_veiccadutilizacao = $this->ve15_veiccadutilizacao ";
        $virgula = ",";
-       if(trim($this->ve15_veiccadutilizacao) == null ){ 
+       if(trim($this->ve15_veiccadutilizacao) == null ){
          $this->erro_sql = " Campo Utilização nao Informado.";
          $this->erro_campo = "ve15_veiccadutilizacao";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_veicutilizacao {
          return false;
        }
      }
-     if(trim($this->ve15_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_veiculos"])){ 
+     if(trim($this->ve15_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve15_veiculos"])){
        $sql  .= $virgula." ve15_veiculos = $this->ve15_veiculos ";
        $virgula = ",";
-       if(trim($this->ve15_veiculos) == null ){ 
+       if(trim($this->ve15_veiculos) == null ){
          $this->erro_sql = " Campo Veiculo nao Informado.";
          $this->erro_campo = "ve15_veiculos";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_veicutilizacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Utilização de veiculos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ve15_sequencial;
@@ -267,14 +267,14 @@ class cl_veicutilizacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ve15_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ve15_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ve15_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_veicutilizacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Utilização de veiculos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ve15_sequencial;
@@ -330,11 +330,11 @@ class cl_veicutilizacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_veicutilizacao {
       }
      return $result;
    }
-   function sql_query ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,15 +388,15 @@ class cl_veicutilizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ve15_sequencial!=null ){
-         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial "; 
-       } 
+         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,10 +405,10 @@ class cl_veicutilizacao {
      }
      return $sql;
   }
-   function sql_query_file ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,15 +421,15 @@ class cl_veicutilizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ve15_sequencial!=null ){
-         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial "; 
-       } 
+         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,10 +438,10 @@ class cl_veicutilizacao {
      }
      return $sql;
   }
-   function sql_query_uso ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_uso ( $ve15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,15 +474,15 @@ class cl_veicutilizacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ve15_sequencial!=null ){
-         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial "; 
-       } 
+         $sql2 .= " where veicutilizacao.ve15_sequencial = $ve15_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

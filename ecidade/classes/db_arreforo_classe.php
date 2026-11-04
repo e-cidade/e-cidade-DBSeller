@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -78,13 +78,13 @@ class cl_arreforo {
                  k00_certidao = int4 = numero da certidao
                  ";
    //funcao construtor da classe
-   function cl_arreforo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreforo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_arreforo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numcgm = ($this->k00_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numcgm"]:$this->k00_numcgm);
        if($this->k00_dtoper == ""){
@@ -126,7 +126,7 @@ class cl_arreforo {
      }
    }
    // funcao para inclusao
-   function incluir (){
+   public function incluir (){
       $this->atualizacampos();
      if($this->k00_numcgm == null ){
        $this->erro_sql = " Campo cgm nao Informado.";
@@ -301,7 +301,7 @@ class cl_arreforo {
      return true;
    }
    // funcao para alteracao
-   function alterar ( $oid=null ) {
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update arreforo set ";
      $virgula = "";
@@ -533,7 +533,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao para exclusao
-   function excluir ( $oid=null ,$dbwhere=null) {
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from arreforo
                     where ";
      $sql2 = "";
@@ -572,7 +572,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -594,10 +594,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="arreforo.oid,*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $oid = null,$campos="arreforo.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -624,7 +624,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,10 +633,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -654,7 +654,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

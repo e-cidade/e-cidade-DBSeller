@@ -35,6 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('model/educacao/ArredondamentoNota.model.php'));
 
 $oGet = db_utils::postMemory($_GET);
+
 $aAlunosSelecionados = explode(",", $oGet->alunos);
 $lExibirReclassificao = $oGet->sExibirReclassificacao == 't' ? true : false;
 $iAnoLimite = (int)$oGet->sAno;
@@ -70,7 +71,6 @@ try {
         $oRelatorioEscolar->escreveCabecalho();
 
         $oRelatorioEscolar->criarTabelaComponentesCurriculares();
-        // dd(__FILE__ . ":" . __LINE__ . " => FIM");
         $oRelatorioEscolar->criarTabelaResumoEtapas();
         $oRelatorioEscolar->montaQuadroObservacao();
         $oRelatorioEscolar->escreverRodape($oGet->sDiretor, $oGet->sSecretario);

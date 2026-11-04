@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -26,7 +26,7 @@
  */
 
 class cl_sqlmatriculas {
-   function sqlmatriculas_ruas($pesquisaRua=0){
+   public function sqlmatriculas_ruas($pesquisaRua=0){
     $sql = "select iptubase.j01_matric, cgm.z01_nome,cgm.z01_ender,
                    cgm.z01_munic,cgm.z01_cep,cgm.z01_uf, j34_setor,                               j34_quadra, j34_lote,j34_idbql as db_idbql,
                    (CASE WHEN j49_idbql is null THEN 'secundario' ELSE 'principal' END) as dl_Tipo
@@ -40,7 +40,7 @@ class cl_sqlmatriculas {
      }
      return $sql;
    }
-   function sqlmatriculas_setor($pesquisasetor=0){
+   public function sqlmatriculas_setor($pesquisasetor=0){
     $sql = "select lote.j34_idbql as db_lote, j34_setor, j34_quadra, j34_lote
 	              , j34_area, j34_areal,j01_matric,
 	              ruas.j14_nome, bairro.j13_descr
@@ -54,7 +54,7 @@ class cl_sqlmatriculas {
      }
 	 return $sql;
    }
-   function sqlmatriculas_setorQuadra($pesquisasetor="",$pesquisaquadra=""){
+   public function sqlmatriculas_setorQuadra($pesquisasetor="",$pesquisaquadra=""){
     $sql = "select lote.j34_idbql as db_lote, j34_setor, j34_quadra, j34_lote
 	              , j34_area, j34_areal,j01_matric,
 	              ruas.j14_nome, bairro.j13_descr
@@ -68,7 +68,7 @@ class cl_sqlmatriculas {
      }
 	 return $sql;
    }
-   function sqlmatriculas_IDBQL($pesquisaPorIDBQL=0){
+   public function sqlmatriculas_IDBQL($pesquisaPorIDBQL=0){
 	$sql = "
 	select distinct * from (  select j01_matric, 'PROPRIETARIO'::varchar(12) as proprietario, j01_idbql, cgm.z01_nome
                                       from iptubase
@@ -82,7 +82,7 @@ class cl_sqlmatriculas {
 	";
  	 return $sql;
    }
-   function sqlmatriculas_nome($pesquisaPorNome=0){
+   public function sqlmatriculas_nome($pesquisaPorNome=0){
 	$sql = "
 	select distinct * from (  select j01_matric, 'PROPRIETARIO'::varchar(12) as proprietario, j01_idbql, cgm.z01_nome
                                       from iptubase
@@ -108,7 +108,7 @@ class cl_sqlmatriculas {
 	";
  	 return $sql;
    }
-   function sqlmatriculas_imobiliaria($pesquisaPorImobiliaria=0){
+   public function sqlmatriculas_imobiliaria($pesquisaPorImobiliaria=0){
 	$sql = "
     select distinct * from (  select j01_matric, c.z01_nome as proprietario, j01_idbql, cgm.z01_nome
                                       from imobil
@@ -124,7 +124,7 @@ class cl_sqlmatriculas {
 	";
  	 return $sql;
    }
-   function sqlmatriculas_bairros($pesquisaBairro=0){
+   public function sqlmatriculas_bairros($pesquisaBairro=0){
 	$sql = "
   select iptubase.j01_matric, cgm.z01_nome,cgm.z01_ender,cgm.z01_munic,cgm.z01_cep,cgm.z01_uf ,lote.*
           from lote
@@ -143,15 +143,15 @@ class cl_ruas {
   var $rotulo = null;
   var $db_erro = null;
 
-  function cl_ruas() {
+  public function __construct() {
     $this->rotulo = new rotulo("ruas");
   }
-  function cldb_erro($uri){
+  public function cldb_erro($uri){
      echo "<script>location.href=\"db_erros.php?db_erro=";
 	 echo $this->$db_erro;
 	 echo "&acao=$uri\"</script>";
   }
-  function dadosCodigo($filtro = "") {
+  public function dadosCodigo($filtro = "") {
     $result = db_query("select * from ruas ".($filtro != ""?"where j14_codigo = $filtro":"")." order by j14_codigo");
     if(pg_numrows($result) > 0)
 	  return $result;
@@ -159,13 +159,13 @@ class cl_ruas {
 	  $db_erro = 'Nenhum Registro Selecionado';
 	  return false;
   }
-  function sqldadosCodigo($filtro = "") {
+  public function sqldadosCodigo($filtro = "") {
     return "select j14_codigo, j14_nome, j14_tipo from ruas ".($filtro==""?"":" where j14_codigo = $filtro")." order by j14_codigo";
   }
-  function sqldadosNome($filtro = "") {
+  public function sqldadosNome($filtro = "") {
     return "select j14_codigo, j14_nome, j14_tipo from ruas where j14_nome like '$filtro%' order by j14_nome";
   }
-  function dadosNome($filtro = "") {
+  public function dadosNome($filtro = "") {
     $result = db_query("select * from ruas ".($filtro != ""?"where j14_nome like '$filtro%'":"")." order by j14_nome");
     if(pg_numrows($result) > 0)
 	  return $result;
@@ -173,7 +173,7 @@ class cl_ruas {
 	  $db_erro = 'Nenhum Registro Selecionado';
 	  return false;
   }
-  function incluir($codigo,$nome,$tipo) {
+  public function incluir($codigo,$nome,$tipo) {
     if($codigo==""){
 	   $this->$db_erro = 'Código da Rua/Avenida Inválido';
 	   return false;
@@ -193,7 +193,7 @@ class cl_ruas {
 	  return false;
 	}
   }
-  function alterar($codigo,$nome,$tipo) {
+  public function alterar($codigo,$nome,$tipo) {
     if($codigo==""){
 	   $this->$db_erro = 'Código da Rua/Avenida Inválido';
 	   return false;
@@ -208,7 +208,7 @@ class cl_ruas {
 	  return false;
 	}
   }
-  function excluir($codigo) {
+  public function excluir($codigo) {
     if($codigo==""){
 	   $this->$db_erro = 'Código do Logradouro Inválido';
 	   return false;
@@ -224,30 +224,30 @@ class cl_ruas {
 }
 class cl_bairro {
   var $rotulo = null;
-  function cl_bairro() {
+  public function __construct() {
     $this->rotulo = new rotulo("bairro");
   }
-  function dadosCodigo($filtro = "") {
+  public function dadosCodigo($filtro = "") {
     $result = db_query("select * from bairro ".($filtro != ""?"where j13_codi = $filtro":"")." order by j13_codi");
     if(pg_numrows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
-  function dadosNome($filtro = "") {
+  public function dadosNome($filtro = "") {
     $result = db_query("select * from bairro ".($filtro != ""?"where j13_descr like '$filtro%'":"")." order by j13_descr ");
     if(pg_numrows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
-  function sqldadosNome($filtro = "") {
+  public function sqldadosNome($filtro = "") {
     return "select j13_codi,  j13_descr, j13_codant from bairro where j13_descr ilike '%$filtro%' order by j13_descr ";
   }
-  function sqldadosCodigo($filtro = "") {
+  public function sqldadosCodigo($filtro = "") {
     return "select j13_codi,  j13_descr, j13_codant from bairro where j13_codi = $filtro order by j13_codi";
   }
-  function incluir($codigo,$nome,$codant) {
+  public function incluir($codigo,$nome,$codant) {
     if($codigo=="")
 	   return false;
     $result = db_query("insert into bairro(j13_codi,j13_descr,j13_codant) values($codigo,'$descr','$codant')");
@@ -256,7 +256,7 @@ class cl_bairro {
 	else
 	  return false;
   }
-  function alterar($codigo,$descr,$codant) {
+  public function alterar($codigo,$descr,$codant) {
     if($codigo=="")
 	   return false;
     $result = db_query("update bairro set j13_descr = '$descr',
@@ -267,7 +267,7 @@ class cl_bairro {
 	else
 	  return false;
   }
-  function excluir($codigo) {
+  public function excluir($codigo) {
     if($codigo=="")
 	   return false;
     $result = db_query("delete from bairro where j13_codi = $codigo");
@@ -279,24 +279,24 @@ class cl_bairro {
 }
 class cl_setor {
   var $rotulo = null;
-  function cl_setor() {
+  public function __construct() {
     $this->rotulo = new rotulo("setor");
   }
-  function dadosCodigo($filtro = "") {
+  public function dadosCodigo($filtro = "") {
     $result = db_query("select * from setor ".($filtro != ""?"where j30_codi = $filtro":"")." order by j30_codi");
     if(pg_numrows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
-  function dadosNome($filtro = "") {
+  public function dadosNome($filtro = "") {
     $result = db_query("select * from setor ".($filtro != ""?"where j30_descr like '$filtro%'":"")." order by j30_descr ");
     if(pg_numrows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
-  function incluir($codigo,$descr,$alipre = 0,$aliter = 0) {
+  public function incluir($codigo,$descr,$alipre = 0,$aliter = 0) {
     if($codigo=="")
 	   return false;
     $result = db_query("insert into setor(j30_codi,j30_descr,j30_alipre,j30_aliter) values($codigo,'$descr',$alipre,$aliter)");
@@ -305,7 +305,7 @@ class cl_setor {
 	else
 	  return false;
   }
-  function alterar($codigo,$descr,$alipre = 0,$aliter = 0) {
+  public function alterar($codigo,$descr,$alipre = 0,$aliter = 0) {
     if($codigo=="")
 	   return false;
     $result = db_query("update setor set j30_descr = '$descr',
@@ -317,7 +317,7 @@ class cl_setor {
 	else
 	  return false;
   }
-  function excluir($codigo) {
+  public function excluir($codigo) {
     if($codigo=="")
 	   return false;
     $result = db_query("delete from setor where j30_codi = $codigo");

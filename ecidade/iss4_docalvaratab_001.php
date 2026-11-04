@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -147,12 +147,12 @@ if (isset($oGet->q123_inscr)){
 
       <tr>
         <td><b>
-				  <?
+				  <?php
 				    db_ancora("Inscrição : ", 'js_mostranomes(true);', 3)
 				  ?></b>
         </td>
         <td>
-			   <?
+			   <?php
 			     db_input("q123_inscr", 8,true, true, 'text',$dbOpcao,"onchange='js_mostranomes(false);'" );
 			     db_input("z01_nome", 50,"", true, 'text', 3);
 			   ?>
@@ -164,7 +164,7 @@ if (isset($oGet->q123_inscr)){
         <td><b>Alvará : </b>
         </td>
         <td>
-			   <?
+			   <?php
 			     db_input("q120_issalvara", 8,"", true, 'text', 3);
 			   ?>
         </td>
@@ -194,7 +194,7 @@ if (isset($oGet->q123_inscr)){
     <table  align="center" width="100%" cellpadding="5" border="0">
       <tr>
          <td colspan="2" align="center">
-           <input type="submit" <? echo $lLiberado ?>  style="margin-left: 10px; margin-top: 10px;" name="liberar" id='liberar' value="Cadastrar" onclick="jsMontaDocumentos();return verifica();" />
+           <input type="submit" <?php echo $lLiberado ?>  style="margin-left: 10px; margin-top: 10px;" name="liberar" id='liberar' value="Cadastrar" onclick="jsMontaDocumentos();return verifica();" />
          </td>
       </tr>
     </table>
@@ -204,7 +204,7 @@ if (isset($oGet->q123_inscr)){
 </div>
 
 </center>
-<?
+<?php
  if (!isset($oGet->aba)){
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
  }
@@ -304,7 +304,7 @@ function verifica(){
 }
 
 </script>
-<?
+<?php
   if (pg_num_rows($rsIncricao) > 0) {
 
     echo "<script> oDocumentos.setCodigoAlvara($q123_sequencial); ";

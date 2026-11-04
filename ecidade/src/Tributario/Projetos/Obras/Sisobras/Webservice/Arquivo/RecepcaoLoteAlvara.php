@@ -102,7 +102,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
         }
         $nomeObra = $this->oXml->createElement(
             "nomeObra",
-            \DBString::removerAcentuacao($oRegistro->oRegistroAlvara->getNomeObra())
+            \DBString::removerAcentuacao(trim($oRegistro->oRegistroAlvara->getNomeObra()))
         );
         $dataAlvara = $this->oXml->createElement(
             "dataAlvara",
@@ -339,7 +339,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
         if (!empty($oRegistro->oRegistroAlvara->getObservacao())) {
             $observacao = $this->oXml->createElement(
                 "observacao",
-                \DBString::removerAcentuacao($oRegistro->oRegistroAlvara->getObservacao())
+                \DBString::removerAcentuacao(trim($oRegistro->oRegistroAlvara->getObservacao()))
             );
         }
 

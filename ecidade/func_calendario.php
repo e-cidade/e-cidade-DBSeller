@@ -95,7 +95,7 @@ class calendario{
             $str.="  class=\"fimsemana\" ";
          }
          $str .="  width=\"25\" height=\"25\">
-                 <a href=\"\" onclick=\"return janela($s,$mes,$ano);\">$s</a>
+                 <a  onclick=\"return janela($s,$mes,$ano);\">$s</a>
               </td>";
 
          if($this->sem[$diasem] == 7){
@@ -136,7 +136,7 @@ class calendario{
      <tr align=\"center\">
        <td width=\"100%\" colspan=\"7\" nowrap>
         <FONT SIZE='1' FACE='Verdana' COLOR='black'>
-         <a href=\"\" onclick=\"return janela_zera();return false;\" class=\"zeraData\">Zera Data</a>
+         <a  onclick=\"return janela_zera();return false;\" class=\"zeraData\">Zera Data</a>
         </FONT>
        </td>
      </tr>

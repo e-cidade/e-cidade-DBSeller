@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if(isset($db_opcaoal)){
        <?=@$Lcc06_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc06_sequencial',10,$Icc06_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -75,22 +75,22 @@ db_input('cc06_sequencial',10,$Icc06_sequencial,true,'text',3,"")
        <?=@$Lcc06_custoplanoanaliticabens?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc06_custoplanoanaliticabens',10,$Icc06_custoplanoanaliticabens,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr style='display: none;'>
     <td nowrap title="<?=@$Tcc06_custocriteriorateio?>">
-       <?
+       <?php
        db_ancora(@$Lcc06_custocriteriorateio,"js_pesquisacc06_custocriteriorateio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc06_custocriteriorateio',10,$Icc06_custocriteriorateio,true,'text',$db_opcao," onchange='js_pesquisacc06_custocriteriorateio(false);'")
 ?>
-       <?
+       <?php
 db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
        <?=@$Lcc06_ativo?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('cc06_ativo',$x,true,$db_opcao,"");
 ?>
@@ -119,7 +119,7 @@ db_select('cc06_ativo',$x,true,$db_opcao,"");
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("cc06_custocriteriorateio"=>@$cc06_custocriteriorateio);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcustocriteriorateiobens->sql_query(null,"*","cc06_sequencial",

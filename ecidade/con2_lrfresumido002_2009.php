@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(7000000000);
@@ -69,7 +69,7 @@ if ($emite_rec_desp==1||$emite_proj==1){
   for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $instit_rpps .= $xvirg.$codigo; // salva insituio
-    $xvirg        = ', ';		  
+    $xvirg        = ', ';
   }
 }
 
@@ -82,28 +82,28 @@ $periodo_selecao = $dados["periodo"];
 //die($bimestre);
 $anousu_ant = $anousu-1;
 
-$xinstit    = split("-",$db_selinstit);
+$xinstit    =explode("-",$db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
-if (!isset($arqinclude)){  
-	
+if (!isset($arqinclude)){
+
   $txt1  = "MUNICÍPIO DE ".$munic;
   $txt2  = "DEMONSTRATIVO SIMPLIFICADO DO RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $txt3  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-  $mes     = split("-",$dt_ini); 
+  $mes     =explode("-",$dt_ini);
   $mesini  = strtoupper(db_mes($mes[1]));
   $txt4    = "JANEIRO";
-  $mes     = split("-",$dt_fin); 
+  $mes     =explode("-",$dt_fin);
   $mesfin  = strtoupper(db_mes($mes[1]));
   $txt4   .= " A $mesfin/$anousu";
 
   if ($bimestre != "1S" && $bimestre != "2S"){
     $txt4 .= " - ".strtoupper($periodo_selecao)." $mesini - $mesfin";
   }
-  
-}  
+
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -418,7 +418,7 @@ if ($emite_balorc_rec==1||$emite_balorc_desp==1){
         $total_nobim  += $saldo_arrecadado;
         $total_atebim += $saldo_arrecadado_acumulado;
       }
-      }  
+      }
 
       // OPERACOES DE CREDITO/REFINANCIAMENTO(IV)
       // OPER. DE CREDITO INTERNAS MOBILIARIA
@@ -479,21 +479,21 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $estrutural .= "00";
     }
     if (substr($estrutural,0,3)=='331') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
       $total_emp_atebim   += $empenhado_acumulado  - $anulado_acumulado;
       $total_liq_nobim    += $liquidado;
       $total_liq_atebim   += $liquidado_acumulado;
-      
+
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if (substr($estrutural,0,3)=='332') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -502,11 +502,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if (substr($estrutural,0,3)=='333') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -515,11 +515,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if (substr($estrutural,0,3)=='344') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -528,11 +528,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if (substr($estrutural,0,3)=='345') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -541,11 +541,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if (substr($estrutural,0,3)=='346') {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -554,11 +554,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
 
     if ((substr($estrutural,0,3)=='399') || (substr($estrutural,0,3)=='377'))  {
-      
+
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
       $total_emp_nobim    += $empenhado  - $anulado;
@@ -567,15 +567,15 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       $total_liq_atebim   += $liquidado_acumulado;
       $total_rp_np_nobim  += abs($empenhado - $anulado - $liquidado);
       $total_rp_np_atebim += abs($empenhado_acumulado - $anulado_acumulado - $liquidado_acumulado);
-      
+
     }
   }
   // AMORTIZACAO DA DIVIDA INTERNA
-  // DIVIDA MOBILIARIA 
+  // DIVIDA MOBILIARIA
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 322 and 328 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
     $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
+    $total_adicional    += pg_result($res_valor,1,"c83_informacao");
     $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
     $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
     $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
@@ -586,7 +586,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 329 and 335 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
     $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
+    $total_adicional    += pg_result($res_valor,1,"c83_informacao");
     $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
     $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
     $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
@@ -594,11 +594,11 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
   }
 
   // AMORTIZACAO DA DIVIDA EXTERNA
-  // DIVIDA MOBILIARIA 
+  // DIVIDA MOBILIARIA
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 336 and 342 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
     $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
+    $total_adicional    += pg_result($res_valor,1,"c83_informacao");
     $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
     $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
     $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
@@ -609,7 +609,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 343 and 349 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
     $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
+    $total_adicional    += pg_result($res_valor,1,"c83_informacao");
     $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
     $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
     $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
@@ -638,30 +638,30 @@ if ($emite_desp_funcsub==1){
     $total_emp_atebim += $empenhado_acumulado  - $anulado_acumulado;
     $total_liq_nobim  += $liquidado;
     $total_liq_atebim += $liquidado_acumulado;
-  }  
+  }
 }
 */
 // FIM DAS DESPESAS POR FUNCAO/SUBFUNCAO ////////////////////////////////////////////////////////////////////////////////////
 
 // RECEITA CORRENTE LIQUIDA - RCL
-if ($emite_rcl==1||$emite_ppp==1){     
-  /* @db_query("begin"); 
-     @db_query("drop table work_receita"); 
+if ($emite_rcl==1||$emite_ppp==1){
+  /* @db_query("begin");
+     @db_query("drop table work_receita");
      @db_query("drop table work_pl");
      @db_query("drop table work_pl_estrut");
-     @db_query("drop table work_pl_estrutmae");     
-     @db_query("rollback"); 
+     @db_query("drop table work_pl_estrutmae");
+     @db_query("rollback");
    */
 
   // se o ano atual  bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-  $dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+  $dt =explode('-',$dt_fin);  // mktime -- (mes,dia,ano)
   $dt_ini_ant = "{$anousu_ant}-01-01";
-  $dt_fin_ant = "{$anousu_ant}-12-31";  
+  $dt_fin_ant = "{$anousu_ant}-12-31";
 
   /*
      echo $dt_ini." => ".$dt_fin."<br>";
      echo $dt_ini_ant." => ".$dt_fin_ant."<br>"; exit;
-   */  
+   */
 
   $total_rcl  = 0;
 
@@ -671,9 +671,9 @@ if ($emite_rcl==1||$emite_ppp==1){
 
   //include(modification("con2_lrfreceitacorrente002_2008.php"));
 
-  $Trec[0][13]  = 0; 
-  $Trec[1][13]  = 0; 
-  $TrecB[0][13] = 0; 
+  $Trec[0][13]  = 0;
+  $Trec[1][13]  = 0;
+  $TrecB[0][13] = 0;
   $TrecB[1][13] = 0;
 
   $indrec  = (int)substr($bimestre,0,1);
@@ -712,7 +712,7 @@ if ($emite_rcl==1||$emite_ppp==1){
   if ($anousu == 2009) {
 
     include_once(modification("classes/db_db_config_classe.php"));
-    include_once(modification("classes/db_orcparamelemento_classe.php")); 
+    include_once(modification("classes/db_orcparamelemento_classe.php"));
     $iExercAnt  = (db_getsession('DB_anousu')-1);
     $sCodParRel = "59";
     $cldb_config 		= new cl_db_config;
@@ -726,7 +726,7 @@ if ($emite_rcl==1||$emite_ppp==1){
     $sSqlWhere	      = " o44_codparrel = {$sCodParRel} ";
     $sSqlDuplicaEle   = " select fc_duplica_exercicio('orcparamelemento', 'o44_anousu', ".db_getsession('DB_anousu').",{$iExercAnt},'{$sSqlWhere}');";
     $rsDuplicaEle	  = db_query($sSqlDuplicaEle);
-    
+
   }
   //ano corrente
   $nTotalRcl  = calcula_rcl2($anousu,"{$anousu}-01-01",$dt_fin,$sTodasInstit, false,59);
@@ -739,16 +739,16 @@ if ($emite_rcl==1||$emite_ppp==1){
 
 // RECEITAS/DESPESAS DO RPPS
 if ($emite_rec_desp==1){
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
   $arqinclude = true;
@@ -768,12 +768,12 @@ if ($emite_rec_desp==1){
     $cldb_config  = new cl_db_config();
     $executar = "con2_lrfrecdesprpps002_2009.php";
   }
-  $periodo         = $bimestre;   
+  $periodo         = $bimestre;
   include(modification($executar));
-   
+
   $total_rpps_rec_nobim    = $total_rec_bimestre;
   $total_rpps_rec_atebim   = $total_rec_exercicio;
-  $total_rpps_desp_nobim   = $total_desp_bimestre; 
+  $total_rpps_desp_nobim   = $total_desp_bimestre;
   $total_rpps_desp_atebim  = $total_desp_exercicio;
 
   // RPs Nao Processados
@@ -781,7 +781,7 @@ if ($emite_rec_desp==1){
   $total_rpps_rp_np_atebim = $total_desp_rp_np_exe;
 
   // resultado
-  $res_rpps_prev_nobim    = $total_rec_bimestre - $total_desp_bimestre; 
+  $res_rpps_prev_nobim    = $total_rec_bimestre - $total_desp_bimestre;
   $res_rpps_prev_atebim   = $total_rec_exercicio - $total_desp_exercicio;
   unset($arqinclude);
 }
@@ -790,26 +790,26 @@ if ($emite_rec_desp==1){
 // RESULTADOS NOMINAL/PRIMARIO
 if ($emite_resultado==1){
 
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
   $arqinclude = true;
 
-  $META_NOMINAL = 0;    
+  $META_NOMINAL = 0;
   $dt_ini = $anousu.'-01-01';
 
   $periodo = $sPeriodo;
 
-  include(modification("con2_lrfnominal002.php"));    
+  include(modification("con2_lrfnominal002.php"));
 
   $tot_bi  = (($somador_III_bim  + $somador_IV_bim) - $somador_V_bim );
   $tot_ant = (($somador_III_ant + $somador_IV_ant) - $somador_V_ant);
@@ -823,7 +823,7 @@ if ($emite_resultado==1){
 
   $META_PRIMARIA = 0;
   $iAnoRelatorio = $anousu;
-  if ($anousu == 2009) { 
+  if ($anousu == 2009) {
     $iAnoRelatorio = 2008;
   }
   include(modification("con2_lrfprimario002_$iAnoRelatorio.php"));
@@ -832,12 +832,12 @@ if ($emite_resultado==1){
   if ($clconrelinfo->numrows > 0 ){
     db_fieldsmemory($result_info,0);
     $META_PRIMARIA = $c83_informacao;
-  } 
+  }
 
   $total_primario = ($receita_primaria_total[3]);
   if ($lUltimoBimestre) {
     $total_primario -= ($m_desp[1][3]+$m_desp[3][3]+ $m_desp[4][3]+$m_desp[7][3]+$m_desp[9][3]+$m_desp[10][3]+
-                        $m_desp[1][5]+$m_desp[3][5]+ $m_desp[4][5]+$m_desp[7][5]+$m_desp[9][5]+$m_desp[10][5]);   
+                        $m_desp[1][5]+$m_desp[3][5]+ $m_desp[4][5]+$m_desp[7][5]+$m_desp[9][5]+$m_desp[10][5]);
   } else {
     $total_primario -=  ($m_desp[1][3]+$m_desp[3][3]+$m_desp[4][3]+$m_desp[7][3]+$m_desp[9][3]+$m_desp[10][3]);
   }
@@ -848,7 +848,7 @@ if ($emite_rp == 1){
   $arqinclude = true;
 
   $iAnoRelatorio = $anousu;
-  if ($anousu == 2009) { 
+  if ($anousu == 2009) {
     $iAnoRelatorio = 2008;
   }
   $db_filtro  = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
@@ -891,19 +891,19 @@ if ($emite_rp == 1){
 
       unset($arqinclude);
 }
-// FIM DE RESTOS A PAGAR ////////////////////////////////////////////////////////////////////////////////////////////////////               
+// FIM DE RESTOS A PAGAR ////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNDEB - MDE
 if ($emite_mde==1) {
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
   $arqinclude = true;
@@ -915,8 +915,8 @@ if ($emite_mde==1) {
     include(modification("con2_lrfmdefundeb002_2009.php"));
   }
 
-  
-  
+
+
   $total_A = 0;
   $total_B = 0;
   $perc_A  = 0;
@@ -927,14 +927,14 @@ if ($emite_mde==1) {
   $nSoma60ParaRelatorioSimplificado = 0;
 
   @$total_A = @$nValorLinha38;
-  @$perc_A  = @$nValorLinha39; 
-  
-  $nTotal25AteBimestre = ( $aDespesas[7]['exercicio'] + $aDespesas[10]['exercicio'] ) - $nValorLinha37; 
-  $nTotal25Inscritas   =   $aDespesas[7]['inscritas'] + $aDespesas[10]['inscritas'];    
+  @$perc_A  = @$nValorLinha39;
+
+  $nTotal25AteBimestre = ( $aDespesas[7]['exercicio'] + $aDespesas[10]['exercicio'] ) - $nValorLinha37;
+  $nTotal25Inscritas   =   $aDespesas[7]['inscritas'] + $aDespesas[10]['inscritas'];
   @$total_B            = @(($aDespesas[1]["exercicio"]-($nValorLinha16+$nValorLinha17)));
   $nTotal60AteBimestre = $total_B;
-   
-  $nTotal60Inscritas   = @($aValoresDespesas[2]["inscritas"] + $aValoresDespesas[3]["inscritas"]); 
+
+  $nTotal60Inscritas   = @($aValoresDespesas[2]["inscritas"] + $aValoresDespesas[3]["inscritas"]);
   @$perc_B  = $nValorMinimo60Fundeb ;
 
   unset($arqinclude);
@@ -942,16 +942,16 @@ if ($emite_mde==1) {
 
 // OPERACOES DE CREDITO E DESPESAS DE CAPITAL
 if ($emite_oper==1){
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
 
@@ -970,7 +970,7 @@ if ($emite_oper==1){
 
       $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
       $result_desp    = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
-      
+
       for($i = 0; $i < pg_numrows($result_oper); $i++){
       db_fieldsmemory($result_oper, $i);
       $estrutural = $o57_fonte;
@@ -987,20 +987,20 @@ if ($emite_oper==1){
         $total_despesa += $liquidado_acumulado;
         $saldo_despesa += $liquidado_acumulado - $dot_ini;
       }
-      }  
+      }
 }
 // PROJECAO ATUARIAL DO RPPS
 if ($emite_proj==1){
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
 
@@ -1010,8 +1010,8 @@ if ($emite_proj==1){
   $total_desp         = 0;
   $total_res_rpps     = 0;
   $total_rep_rpps     = 0;
-  
-  
+
+
 //  $RPPS_10_EXERCICIO_PATRONAL = 0;
 //  $RPPS_20_EXERCICIO_PATRONAL = 0;
 //  $RPPS_35_EXERCICIO_PATRONAL = 0;
@@ -1086,11 +1086,11 @@ if ($emite_proj==1){
 //    }
 //  }
 
-  for ($linha=1;$linha<=28;$linha++){	
-    $m_receita[$linha]['estrut'] = $orcparamrel->sql_parametro('42',$linha); 
-  }	
+  for ($linha=1;$linha<=28;$linha++){
+    $m_receita[$linha]['estrut'] = $orcparamrel->sql_parametro('42',$linha);
+  }
 
-  for ($linha=29;$linha<=39;$linha++){	
+  for ($linha=29;$linha<=39;$linha++){
     $m_despesa[$linha]['estrut'] = $orcparamrel->sql_parametro('42',$linha);
     $m_despesa[$linha]['nivel']  = $orcparamrel->sql_nivel('42',$linha);
   }
@@ -1104,14 +1104,14 @@ if ($emite_proj==1){
   $sele_work = ' c61_instit in ('.$instit_rpps.')';
 
       // Exercicio Atual
-      $result_res_rep = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,$sele_work); 
-      @db_query("drop table work_pl"); 
+      $result_res_rep = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,$sele_work);
+      @db_query("drop table work_pl");
 
       $db_filtro = "o58_instit in (".$instit_rpps.") ";
 
       // Exercicio Atual
       $result_despesa = db_dotacaosaldo(8,2,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
-      
+
       for ($i=0; $i < pg_numrows($result_rec); $i++){
       db_fieldsmemory($result_rec,$i);
       $estrutural = $o57_fonte;
@@ -1124,13 +1124,13 @@ if ($emite_proj==1){
         $total_rec_patronal += $saldo_arrecadado;
       }
       }
-      }             
+      }
 
       for ($i=0; $i < pg_numrows($result_res_rep); $i++) {
         db_fieldsmemory($result_res_rep,$i);
 
         for ($linha=15;$linha<=28;$linha++){
-          if (substr($estrutural,0,1)=="6"){ // RESULTADOS(6) 
+          if (substr($estrutural,0,1)=="6"){ // RESULTADOS(6)
             if (in_array($estrutural,$m_receita[$linha]['estrut'])){
               $total_rec += $saldo_final;
             }
@@ -1148,28 +1148,28 @@ if ($emite_proj==1){
           $nivel        = $m_despesa[$linha]['nivel'];
           $estrutural   = $o58_elemento.'00';
           $estrutural   = substr($estrutural,0,$nivel);
-          $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);	
+          $v_estrutural = str_pad($estrutural, 15, "0", STR_PAD_RIGHT);
 
           if (in_array($v_estrutural, $m_despesa[$linha]['estrut'])){
             $total_desp += $liquidado;
           }
-        }     
+        }
       }
 
       $total_res_rpps = $total_rec - $total_desp;
 }
-// RECEITA DA ALIENACAO DE ATIVOS E APLICACAO DOS RECURSOS 
+// RECEITA DA ALIENACAO DE ATIVOS E APLICACAO DOS RECURSOS
 if ($emite_alienacao==1){
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
 
@@ -1198,16 +1198,16 @@ if ($emite_alienacao==1){
       }
       // DESPESAS COM SAUDE
       if ($emite_saude==1){
-      if (PostgreSQLUtils::isTableExists("work_receita")) { 
-      db_query("drop table work_receita"); 
+      if (PostgreSQLUtils::isTableExists("work_receita")) {
+      db_query("drop table work_receita");
       }
-      if (PostgreSQLUtils::isTableExists("work_pl")) { 
+      if (PostgreSQLUtils::isTableExists("work_pl")) {
         db_query("drop table work_pl");
       }
-      if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+      if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
         db_query("drop table work_pl_estrut");
       }
-      if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+      if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
         db_query("drop table work_pl_estrutmae");
       }
 
@@ -1215,31 +1215,31 @@ if ($emite_alienacao==1){
       $arqinclude = true;
       $txtper     = "";
       $periodo    = $bimestre;
-      include(modification("con2_lrfimpostossaude002_2009.php")); 
+      include(modification("con2_lrfimpostossaude002_2009.php"));
 
       $total_saude       = $total_V_atebim - $t_cancelado_rp;
       if ($lUltimoBimestre) {
-        
+
         $nTotalSaudeAteBimestre =  $total_IV_atebimfinal-$descustoutrecsau-$t_cancelado_rp;
         $nTotalSaudeInscritos   =  $total_V_rp;
-        
+
       }
       $perc_aplic_atebim = $t_participacao;
       unset($arqinclude);
-       
+
       }
 // DESPESA DE PPP
 if ($emite_ppp==1){
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
 
@@ -1248,7 +1248,7 @@ if ($emite_ppp==1){
 
   $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
   $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
-  
+
   for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
     db_fieldsmemory($result_despesa, $i);
     $estrutural = $o58_elemento;
@@ -1263,18 +1263,18 @@ if ($emite_ppp==1){
   }
 
 }
-if ($emite_oper == 1) {   
- 
-  if (PostgreSQLUtils::isTableExists("work_receita")) { 
-    db_query("drop table work_receita"); 
+if ($emite_oper == 1) {
+
+  if (PostgreSQLUtils::isTableExists("work_receita")) {
+    db_query("drop table work_receita");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl")) {
     db_query("drop table work_pl");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrut")) {
     db_query("drop table work_pl_estrut");
   }
-  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) { 
+  if (PostgreSQLUtils::isTableExists("work_pl_estrutmae")) {
     db_query("drop table work_pl_estrutmae");
   }
   $lNaoGeraPDF              = true;
@@ -1299,7 +1299,7 @@ if (!isset($arqinclude)){
   $head7  = "";
   $head8  = "";
   $head9  = "";
-  
+
   $head2  = "$txt1";
   $head3  = "$txt2";
   $head4  = "$txt3";
@@ -1307,9 +1307,9 @@ if (!isset($arqinclude)){
 
 }
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','',7);
 $alt     = 4;
@@ -1377,12 +1377,12 @@ if ($emite_balorc_rec == 1 || $emite_balorc_desp == 1) {
 
   $emite_balorc_rec = 1;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////              
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BALANCO ORCAMENTARIO - DESPESAS
 if ($emite_balorc_desp==1){
   $num_rel++;
 
-  if ($emite_balorc_rec==0){ 
+  if ($emite_balorc_rec==0){
     $pdf->cell(90,$alt,"BALANÇO ORÇAMENTÁRIO","BT",0,"C",0);
     $pdf->cell(50,$alt,"No ".$dados["periodo"],"BTRL",0,"C",0);
     $pdf->cell(50,$alt,"Até o ".$dados["periodo"],"BT",1,"C",0);
@@ -1414,20 +1414,20 @@ if ($emite_balorc_desp==1){
     $pdf->cell(90,$alt,espaco($n1).'Despesas Executadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim+$total_rp_np_atebim,'f'),'0',1,"R",0);
-    
+
     $pdf->cell(90,$alt,espaco($n1).'Despesas Liquidadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim,'f'),'0',1,"R",0);
     $pdf->cell(90,$alt,espaco($n1).'Inscritas em Restos a Pagar Não Processados','R',0,"L",0);
     $pdf->cell(50,$alt,"-",'R',0,"C",0);
     $pdf->cell(50,$alt,db_formatar($total_rp_np_atebim,'f'),'0',1,"R",0);
-    
+
   } else {
 
     $pdf->cell(90,$alt,espaco($n1).'Despesas Liquidadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim,'f'),'0',1,"R",0);
-    
+
   }
   //   SUPERAVIT
   $pos_superavit = $pdf->getY();
@@ -1440,7 +1440,7 @@ if ($emite_balorc_desp==1){
     $pdf->cell(50,$alt,'-','0',1,"C",0);
   }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////              
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DESPESAS POR FUNCAO/SUBFUNCAO
 if ($emite_desp_funcsub==1){
   $num_rel++;
@@ -1452,27 +1452,27 @@ if ($emite_desp_funcsub==1){
   $pdf->cell(90,$alt,'Despesas Empenhadas','R',0,"L",0);
   $pdf->cell(50,$alt,db_formatar($total_emp_nobim,'f'),'R',0,"R",0);
   $pdf->cell(50,$alt,db_formatar($total_emp_atebim,'f'),'0',1,"R",0);
-  
+
   if ($lUltimoBimestre) {
 
     $pdf->cell(90,$alt,'Despesas Executadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim+$total_rp_np_atebim,'f'),'0',1,"R",0);
-    
+
     $pdf->cell(90,$alt,'Despesas Liquidadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim,'f'),'0',1,"R",0);
     $pdf->cell(90,$alt,espaco($n1).'Inscritas em Restos a Pagar Não Processados','R',0,"L",0);
-    
+
     $pdf->cell(50,$alt,"-",'R',0,"C",0);
     $pdf->cell(50,$alt,db_formatar($total_rp_np_atebim,'f'),'0',1,"R",0);
-    
+
   } else {
 
     $pdf->cell(90,$alt,'Despesas Liquidadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_nobim,'f'),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_liq_atebim,'f'),'0',1,"R",0);
-    
+
   }
 }
 // RECEITA CORRENTE LIQUIDA - RCL
@@ -1505,11 +1505,11 @@ if ($emite_rec_desp==1){
   $pdf->cell(50,$alt,db_formatar($total_rpps_rec_nobim,"f"),'R',0,"R",0);
   $pdf->cell(50,$alt,db_formatar($total_rpps_rec_atebim,"f"),0,1,"R",0);
   if ($lUltimoBimestre){
-    
+
     $pdf->cell(90,$alt,'  Despesas Previdenciárias Executadas(V)','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_nobim,"f"),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_atebim+$total_rpps_rp_np_atebim,"f"),0,1,"R",0);
-    
+
     $pdf->cell(90,$alt,'    Liquidadas','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_nobim,"f"),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_atebim,"f"),0,1,"R",0);
@@ -1522,9 +1522,9 @@ if ($emite_rec_desp==1){
     $pdf->cell(90,$alt,'  Despesas Previdenciárias Liquidadas(V)','R',0,"L",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_nobim,"f"),'R',0,"R",0);
     $pdf->cell(50,$alt,db_formatar($total_rpps_desp_atebim,"f"),0,1,"R",0);
-    
+
   }
-  
+
   $pdf->cell(90,$alt,'  Resultado Previdenciário(VI) = (IV-V)','R',0,"L",0);
   $pdf->cell(50,$alt,db_formatar($res_rpps_prev_nobim,"f"),'R',0,"R",0);
   $pdf->cell(50,$alt,db_formatar($res_rpps_prev_atebim,"f"),0,1,"R",0);
@@ -1589,13 +1589,13 @@ if ($emite_rp==1){
   $pdf->cell(25,$alt,db_formatar($total_proc_insc,"f"),"RL",0,"R",0);    // Inscricao
   $pdf->cell(25,$alt,db_formatar($total_proc_canc,"f"),"RL",0,"R",0);    // Cancelados
   $pdf->cell(25,$alt,db_formatar($total_proc_pgto,"f"),"R",0,"R",0);     // Pagamentos
-  $pdf->cell(25,$alt,db_formatar($total_proc_a_pagar,"f"),"L",1,"R",0);  // a Pagar 
+  $pdf->cell(25,$alt,db_formatar($total_proc_a_pagar,"f"),"L",1,"R",0);  // a Pagar
 
   $pdf->cell(90,$alt,espaco($n2)."Poder Legislativo","R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($ltotal_proc_insc,"f"),"RL",0,"R",0);    // Inscricao
   $pdf->cell(25,$alt,db_formatar($ltotal_proc_canc,"f"),"RL",0,"R",0);    // Cancelados
   $pdf->cell(25,$alt,db_formatar($ltotal_proc_pgto,"f"),"R",0,"R",0);     // Pagamentos
-  $pdf->cell(25,$alt,db_formatar($ltotal_proc_a_pagar,"f"),"L",1,"R",0);  // a Pagar 
+  $pdf->cell(25,$alt,db_formatar($ltotal_proc_a_pagar,"f"),"L",1,"R",0);  // a Pagar
 
   $pdf->cell(90,$alt,espaco($n1)."RESTOS À PAGAR NÃO-PROCESSADOS","R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($tot_geral_naoproc_insc,"f"),"RL",0,"R",0);
@@ -1607,13 +1607,13 @@ if ($emite_rp==1){
   $pdf->cell(25,$alt,db_formatar($total_naoproc_insc,"f"),"RL",0,"R",0);    // Inscricao
   $pdf->cell(25,$alt,db_formatar($total_naoproc_canc,"f"),"RL",0,"R",0);    // Cancelados
   $pdf->cell(25,$alt,db_formatar($total_naoproc_pgto,"f"),"R",0,"R",0);     // Pagamentos
-  $pdf->cell(25,$alt,db_formatar($total_naoproc_a_pagar,"f"),"L",1,"R",0);  // a Pagar 
+  $pdf->cell(25,$alt,db_formatar($total_naoproc_a_pagar,"f"),"L",1,"R",0);  // a Pagar
 
   $pdf->cell(90,$alt,espaco($n2)."Poder Legislativo","R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($ltotal_naoproc_insc,"f"),"RL",0,"R",0);    // Inscricao
   $pdf->cell(25,$alt,db_formatar($ltotal_naoproc_canc,"f"),"RL",0,"R",0);    // Cancelados
   $pdf->cell(25,$alt,db_formatar($ltotal_naoproc_pgto,"f"),"R",0,"R",0);     // Pagamentos
-  $pdf->cell(25,$alt,db_formatar($ltotal_naoproc_a_pagar,"f"),"L",1,"R",0);  // a Pagar 
+  $pdf->cell(25,$alt,db_formatar($ltotal_naoproc_a_pagar,"f"),"L",1,"R",0);  // a Pagar
 
   $pdf->cell(90,$alt,"TOTAL","TR",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($tot_geral_proc_insc    + $tot_geral_naoproc_insc,"f"),"TRL",0,"R",0);
@@ -1658,11 +1658,11 @@ if ($emite_mde==1) {
     $pdf->cell(25,$alt,db_formatar($nTotal25Inscritas,"f"),"R",0,"R",0);
     $pdf->cell(25,$alt,"-","R",0,"C",0);
     $pdf->cell(50,$alt,"-",0,1,"R",0);
-    
+
   }
   if ($lUltimoBimestre) {
-    
-    
+
+
     $pdf->setfont('arial','',$fonte);
     $pdf->cell(90,$alt,"Mínimo Anual de 60% do FUNDEB na Rem. do Magistério com Educação Inf. e Ensino Fund.","R",0,"L",0);
     $pdf->setfont('arial','',($fonte+2));
@@ -1681,22 +1681,22 @@ if ($emite_mde==1) {
     $pdf->cell(25,$alt,db_formatar($nTotal60Inscritas,"f"),"BR",0,"R",0);
     $pdf->cell(25,$alt,"-","BR",0,"C",0);
     $pdf->cell(50,$alt,"-",0,1,"C",0);
-    
+
   } else {
-  
+
     $pdf->setfont('arial','',$fonte);
     $pdf->cell(90,$alt,"Mínimo Anual de 60% do FUNDEB na Rem. do Magistério com Educação Inf. e Ensino Fund.","BR",0,"L",0);
     $pdf->setfont('arial','',($fonte+2));
     $pdf->cell(25,$alt,db_formatar($total_B,"f"),"BR",0,"R",0);
     $pdf->cell(25,$alt,"60%","BR",0,"C",0);
     $pdf->cell(50,$alt,db_formatar($perc_B,"f"),"B",1,"R",0);
-    
+
   }
 }
 // OPERACOES DE CREDITO E DESPESAS DE CAPITAL
 if ($emite_oper==1){
   $num_rel++;
-  
+
   $pdf->setfont('arial','',$fonte);
   $pdf->cell(90,$alt,"RECEITAS DE OPERAÇÕES DE CRÉDITO E DESPESAS DE CAPITAL","TBR",0,"C",0);
   $pdf->cell(50,$alt,"Valor Apurado Até o ".$dados["periodo"],"TBR",0,"C",0);
@@ -1710,52 +1710,52 @@ if ($emite_oper==1){
 }
 // PROJECAO ATUARIAL DO RPPS
 if ($emite_proj==1){
-	
-	
-  $nRecPrevIExerc        = $clconrelinfo->getValorVariavel(477,db_getsession('DB_instit')); 
+
+
+  $nRecPrevIExerc        = $clconrelinfo->getValorVariavel(477,db_getsession('DB_instit'));
   $nRecPrevIExerc10      = $clconrelinfo->getValorVariavel(478,db_getsession('DB_instit'));
   $nRecPrevIExerc20      = $clconrelinfo->getValorVariavel(479,db_getsession('DB_instit'));
   $nRecPrevIExerc35      = $clconrelinfo->getValorVariavel(480,db_getsession('DB_instit'));
-  
-  $nDespPrevIIExerc      = $clconrelinfo->getValorVariavel(481,db_getsession('DB_instit')); 
+
+  $nDespPrevIIExerc      = $clconrelinfo->getValorVariavel(481,db_getsession('DB_instit'));
   $nDespPrevIIExerc10    = $clconrelinfo->getValorVariavel(482,db_getsession('DB_instit'));
   $nDespPrevIIExerc20    = $clconrelinfo->getValorVariavel(483,db_getsession('DB_instit'));
-  $nDespPrevIIExerc35    = $clconrelinfo->getValorVariavel(484,db_getsession('DB_instit'));  
+  $nDespPrevIIExerc35    = $clconrelinfo->getValorVariavel(484,db_getsession('DB_instit'));
 
-  $nResultPrevIIIExerc   = $clconrelinfo->getValorVariavel(485,db_getsession('DB_instit')); 
+  $nResultPrevIIIExerc   = $clconrelinfo->getValorVariavel(485,db_getsession('DB_instit'));
   $nResultPrevIIIExerc10 = $clconrelinfo->getValorVariavel(486,db_getsession('DB_instit'));
   $nResultPrevIIIExerc20 = $clconrelinfo->getValorVariavel(487,db_getsession('DB_instit'));
   $nResultPrevIIIExerc35 = $clconrelinfo->getValorVariavel(488,db_getsession('DB_instit'));
 
-  $nRecPrevIVExerc       = $clconrelinfo->getValorVariavel(489,db_getsession('DB_instit')); 
+  $nRecPrevIVExerc       = $clconrelinfo->getValorVariavel(489,db_getsession('DB_instit'));
   $nRecPrevIVExerc10     = $clconrelinfo->getValorVariavel(490,db_getsession('DB_instit'));
   $nRecPrevIVExerc20     = $clconrelinfo->getValorVariavel(491,db_getsession('DB_instit'));
   $nRecPrevIVExerc35     = $clconrelinfo->getValorVariavel(492,db_getsession('DB_instit'));
-  
-  $nDespPrevVExerc       = $clconrelinfo->getValorVariavel(493,db_getsession('DB_instit')); 
+
+  $nDespPrevVExerc       = $clconrelinfo->getValorVariavel(493,db_getsession('DB_instit'));
   $nDespPrevVExerc10     = $clconrelinfo->getValorVariavel(494,db_getsession('DB_instit'));
   $nDespPrevVExerc20     = $clconrelinfo->getValorVariavel(495,db_getsession('DB_instit'));
-  $nDespPrevVExerc35     = $clconrelinfo->getValorVariavel(496,db_getsession('DB_instit'));  
+  $nDespPrevVExerc35     = $clconrelinfo->getValorVariavel(496,db_getsession('DB_instit'));
 
-  $nResultPrevVIExerc    = $clconrelinfo->getValorVariavel(497,db_getsession('DB_instit')); 
+  $nResultPrevVIExerc    = $clconrelinfo->getValorVariavel(497,db_getsession('DB_instit'));
   $nResultPrevVIExerc10  = $clconrelinfo->getValorVariavel(498,db_getsession('DB_instit'));
   $nResultPrevVIExerc20  = $clconrelinfo->getValorVariavel(499,db_getsession('DB_instit'));
   $nResultPrevVIExerc35  = $clconrelinfo->getValorVariavel(500,db_getsession('DB_instit'));
-	
-  
-  
-  $nTotalExercGeralPrev   = $nRecPrevIExerc   + $nDespPrevIIExerc   + $nResultPrevIIIExerc;  
+
+
+
+  $nTotalExercGeralPrev   = $nRecPrevIExerc   + $nDespPrevIIExerc   + $nResultPrevIIIExerc;
   $nTotalExercGeralPrev10 = $nRecPrevIExerc10 + $nDespPrevIIExerc10 + $nResultPrevIIIExerc10;
   $nTotalExercGeralPrev20 = $nRecPrevIExerc20 + $nDespPrevIIExerc20 + $nResultPrevIIIExerc20;
   $nTotalExercGeralPrev35 = $nRecPrevIExerc35 + $nDespPrevIIExerc35 + $nResultPrevIIIExerc35;
-  
-  $nTotalExercProprioPrev   = $nRecPrevIVExerc   + $nDespPrevVExerc   + $nResultPrevVIExerc;  
+
+  $nTotalExercProprioPrev   = $nRecPrevIVExerc   + $nDespPrevVExerc   + $nResultPrevVIExerc;
   $nTotalExercProprioPrev10 = $nRecPrevIVExerc10 + $nDespPrevVExerc10 + $nResultPrevVIExerc10;
   $nTotalExercProprioPrev20 = $nRecPrevIVExerc20 + $nDespPrevVExerc20 + $nResultPrevVIExerc20;
-  $nTotalExercProprioPrev35 = $nRecPrevIVExerc35 + $nDespPrevVExerc35 + $nResultPrevVIExerc35;  
-  
-  
-  
+  $nTotalExercProprioPrev35 = $nRecPrevIVExerc35 + $nDespPrevVExerc35 + $nResultPrevVIExerc35;
+
+
+
   if ($num_rel > 0){
     if ($num_rel > 7){
       $pdf->cell(190,($alt+2),"Continução na página 2",0,1,"L",0);
@@ -1773,60 +1773,60 @@ if ($emite_proj==1){
   $pdf->cell(25,$alt,"10º Exercício","TBR",0,"C",0);
   $pdf->cell(25,$alt,"20º Exercício","TBR",0,"C",0);
   $pdf->cell(25,$alt,"35º Exercício","TB" ,1,"C",0);
-  
+
   $pdf->cell(90,$alt,"Regime Geral de Previdência Social"    ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercGeralPrev,'f')  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercGeralPrev10,'f'),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercGeralPrev20,'f'),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercGeralPrev35,'f')  ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Receitas Previdenciárias (I)"    ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIExerc,"f")  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIExerc10,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIExerc20,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIExerc35,"f")  ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Despesas Previdenciárias (II)"     ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevIIExerc  ,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevIIExerc10,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevIIExerc20,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevIIExerc35,"f")  ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Resultado Previdenciário (III) = (I-II)","R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevIIIExerc  ,"f")  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevIIIExerc10,"f")  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevIIIExerc20,"f")  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevIIIExerc35,"f")    ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Regime Próprio de Previdência dos Servidores ","R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercProprioPrev,'f')       ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercProprioPrev10,'f')     ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nTotalExercProprioPrev20,'f')     ,"R",0,"R",0);
-  $pdf->cell(25,$alt,db_formatar($nTotalExercProprioPrev35,'f')       ,0,1,"R",0);  
-  
+  $pdf->cell(25,$alt,db_formatar($nTotalExercProprioPrev35,'f')       ,0,1,"R",0);
+
   $pdf->cell(90,$alt,"Receitas Previdenciárias (IV)"    ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIVExerc  ,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIVExerc10,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIVExerc20,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nRecPrevIVExerc35,"f")  ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Despesas Previdenciárias (V)"     ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevVExerc,"f")  ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevVExerc10,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevVExerc20,"f"),"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nDespPrevVExerc35,"f")  ,0,1,"R",0);
-  
+
   $pdf->cell(90,$alt,"Resultado Previdenciário (VI) = (IV-V)" ,"R",0,"L",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevVIExerc  ,"f")   ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevVIExerc10,"f")   ,"R",0,"R",0);
   $pdf->cell(25,$alt,db_formatar($nResultPrevVIExerc20,"f")   ,"R",0,"R",0);
-  $pdf->cell(25,$alt,db_formatar($nResultPrevVIExerc35,"f")     ,0,1,"R",0);  
-  
+  $pdf->cell(25,$alt,db_formatar($nResultPrevVIExerc35,"f")     ,0,1,"R",0);
+
 }
 if (isset($emite_aplicacao_recursos) &&  $emite_aplicacao_recursos == 1 && $lUltimoBimestre ) {
-  
+
 //  if ($num_rel > 7 && $lUltimoBimestre){
-//     
+//
 //    $pdf->cell(190,($alt+2),"Continução na página 2",0,1,"L",0);
 //    $pdf->addpage();
 //    $pdf->cell(190,($alt+2),"Continução da página 1",0,1,"L",0);
@@ -1838,24 +1838,24 @@ if (isset($emite_aplicacao_recursos) &&  $emite_aplicacao_recursos == 1 && $lUlt
   $nValorAplicacaoAteBimestre  = db_formatar(0,"f");
   $nValorAplicacaoSaldoARealizar = db_formatar(0,"f");
   $sSqlValores   = $clconrelinfo->sql_query_valores(18, $instituicao);
-  
+
   $res_variaveis = $clconrelinfo->sql_record($sSqlValores);
   if ($clconrelinfo->numrows > 0){
-    
+
     for ($i = 0; $i < $clconrelinfo->numrows; $i++){
-      
+
       db_fieldsmemory($res_variaveis, $i);
       if ($c83_codigo == 372 ) {
-        $nValorReceitaAteBimestre = db_formatar($c83_informacao,"f"); 
+        $nValorReceitaAteBimestre = db_formatar($c83_informacao,"f");
       }
       if ($c83_codigo == 373) {
-        $nValorReceitaSaldoARealizar = db_formatar($c83_informacao,"f"); 
+        $nValorReceitaSaldoARealizar = db_formatar($c83_informacao,"f");
       }
       if ($c83_codigo == 374) {
-        $nValorAplicacaoAteBimestre = db_formatar($c83_informacao,"f"); 
+        $nValorAplicacaoAteBimestre = db_formatar($c83_informacao,"f");
       }
       if ($c83_codigo == 375) {
-        $nValorAplicacaoSaldoARealizar = db_formatar($c83_informacao,"f"); 
+        $nValorAplicacaoSaldoARealizar = db_formatar($c83_informacao,"f");
       }
     }
   }
@@ -1870,12 +1870,12 @@ if (isset($emite_aplicacao_recursos) &&  $emite_aplicacao_recursos == 1 && $lUlt
   $pdf->cell(50,$alt, $nValorAplicacaoAteBimestre,"BL",0,"R",0);
   $pdf->cell(50,$alt, $nValorAplicacaoSaldoARealizar,"BL",1,"R",0);
   $pdf->cell(190,$alt,"","T",1,"L",0);
-  
+
 }
-// RECEITA DA ALIENACAO DE ATIVOS E APLICACAO DOS RECURSOS 
+// RECEITA DA ALIENACAO DE ATIVOS E APLICACAO DOS RECURSOS
 if ($emite_alienacao==1){
   $num_rel++;
-   
+
   $pdf->cell(90,$alt,"RECEITA DA ALIENAÇÃO DE ATIVOS E APLICAÇÃO DOS RECURSOS","TBR",0,"C",0);
   $pdf->cell(50,$alt,"Valor Apurado Até o ".$dados["periodo"],"TBR",0,"C",0);
   $pdf->cell(50,$alt,"Saldo a Realizar","TB",1,"C",0);
@@ -1909,12 +1909,12 @@ if ($emite_saude==1){
   $pdf->cell(25,$alt,"15%","{$sBordaBottom}R",0,"R",0);
   $pdf->cell(50,$alt,db_formatar($perc_aplic_atebim,"f"),"{$sBordaBottom}",1,"R",0);
   if ($lUltimoBimestre) {
-    
+
     $pdf->cell(90,$alt,"  Liquidadas","R",0,"L",0);
     $pdf->cell(25,$alt,db_formatar($nTotalSaudeAteBimestre,"f"),"R",0,"R",0);
     $pdf->cell(25,$alt,"-","R",0,"C",0);
     $pdf->cell(50,$alt,"-","0",1,"R",0);
-    
+
     $pdf->cell(90,$alt,"  Inscritas em Restos a Pagar Não Processados","BR",0,"L",0);
     $pdf->cell(25,$alt,db_formatar($nTotalSaudeInscritos,"f"),"BR",0,"R",0);
     $pdf->cell(25,$alt,"-","BR",0,"C",0);
@@ -1923,25 +1923,25 @@ if ($emite_saude==1){
 }
 // DESPESA DE PPP
 if ($emite_ppp==1){
-	
+
 	$nTotalDespesaRCL = $clconrelinfo->getValorVariavel(501,db_getsession('DB_instit'));
-	
+
   $num_rel++;
 
   $pdf->cell(90, $alt,"DESPESAS DE CARÁCTER CONTINUADO DERIVADAS DE PPP","TR",0,"C",0);
   $pdf->cell(100,$alt,"VALOR APURADO NO EXERCÍCIO CORRENTE"              ,"T",1,"C",0);
-  
+
   $pdf->cell(90, $alt,"Total das Despesas/RCL (%)"                      ,"BR",0,"L",0);
   $pdf->cell(100,$alt,db_formatar($nTotalDespesaRCL,"f")                 ,"B",1,"R",0);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $pdf->cell(190,$alt,"","T",1,"L",0);
 
-notasExplicativas(&$pdf,18,"{$sPeriodo}",190);
+notasExplicativas($pdf,18,"{$sPeriodo}",190);
 
 $pdf->ln(20);
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 $pdf->Output();
 ?>

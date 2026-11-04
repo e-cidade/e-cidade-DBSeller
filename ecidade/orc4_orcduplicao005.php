@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -186,7 +186,7 @@ function js_calculaPerc2(campo1,campo2,campo3){
   <center>
 <form method='post' name='form1'>
 <center>
-<?
+<?php
    if ($iTipo == 2){
       $rsOrg = $clorcorgao->sql_record($clorcorgao->sql_query(db_getsession("DB_anousu"),null,"o40_orgao,o40_descr"));
 	    echo "<table><tr><td ><b> Filtrar por Órgão (Secretaria):</b></td>"; 
@@ -228,7 +228,7 @@ function js_calculaPerc2(campo1,campo2,campo3){
 	<a onclick='js_marca()' style='cursor:pointer'>M</a></b></td>
 </tr>	
 <tbody  style='height:350;overflow:scroll;border:2px inset black;overflow-x:hidden'>
-<?
+<?php
 if (isset($post->o40_orgao) or $iTipo == 3){
 
 		$sSql = "select distinct orcduplicacao.*,$campos 

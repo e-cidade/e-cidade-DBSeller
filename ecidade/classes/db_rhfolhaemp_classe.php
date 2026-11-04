@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhfolhaemp
-class cl_rhfolhaemp { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh42_anousu = 0; 
-   var $rh42_mesusu = 0; 
-   var $rh42_lotac = 0; 
-   var $rh42_proati = 0; 
-   var $rh42_rubric = null; 
-   var $rh42_codele = 0; 
-   var $rh42_proven = 0; 
-   var $rh42_descon = 0; 
-   var $rh42_arquiv = null; 
-   var $rh42_tipo = 0; 
-   var $rh42_reduz = 0; 
-   var $rh42_saldo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhfolhaemp {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh42_anousu = 0;
+   var $rh42_mesusu = 0;
+   var $rh42_lotac = 0;
+   var $rh42_proati = 0;
+   var $rh42_rubric = null;
+   var $rh42_codele = 0;
+   var $rh42_proven = 0;
+   var $rh42_descon = 0;
+   var $rh42_arquiv = null;
+   var $rh42_tipo = 0;
+   var $rh42_reduz = 0;
+   var $rh42_saldo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh42_anousu = int4 = Ano 
-                 rh42_mesusu = int4 = Mês 
-                 rh42_lotac = int4 = Lotação 
-                 rh42_proati = int4 = Projeto/Atividade 
-                 rh42_rubric = char(4) = Rubrica 
-                 rh42_codele = int4 = Elemento 
-                 rh42_proven = float8 = Provento 
-                 rh42_descon = float8 = Desconto 
-                 rh42_arquiv = varchar(4) = Arquivo 
-                 rh42_tipo = int4 = Item do Material 
-                 rh42_reduz = int4 = Reduzido 
-                 rh42_saldo = float8 = Saldo da Despesa 
+                 rh42_anousu = int4 = Ano
+                 rh42_mesusu = int4 = Mês
+                 rh42_lotac = int4 = Lotação
+                 rh42_proati = int4 = Projeto/Atividade
+                 rh42_rubric = char(4) = Rubrica
+                 rh42_codele = int4 = Elemento
+                 rh42_proven = float8 = Provento
+                 rh42_descon = float8 = Desconto
+                 rh42_arquiv = varchar(4) = Arquivo
+                 rh42_tipo = int4 = Item do Material
+                 rh42_reduz = int4 = Reduzido
+                 rh42_saldo = float8 = Saldo da Despesa
                  ";
-   //funcao construtor da classe 
-   function cl_rhfolhaemp() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhfolhaemp"); 
+     $this->rotulo = new rotulo("rhfolhaemp");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_rhfolhaemp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh42_anousu = ($this->rh42_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh42_anousu"]:$this->rh42_anousu);
        $this->rh42_mesusu = ($this->rh42_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh42_mesusu"]:$this->rh42_mesusu);
@@ -103,9 +103,9 @@ class cl_rhfolhaemp {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){
       $this->atualizacampos();
-     if($this->rh42_anousu == null ){ 
+     if($this->rh42_anousu == null ){
        $this->erro_sql = " Campo Ano nao Informado.";
        $this->erro_campo = "rh42_anousu";
        $this->erro_banco = "";
@@ -114,7 +114,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_mesusu == null ){ 
+     if($this->rh42_mesusu == null ){
        $this->erro_sql = " Campo Mês nao Informado.";
        $this->erro_campo = "rh42_mesusu";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_lotac == null ){ 
+     if($this->rh42_lotac == null ){
        $this->erro_sql = " Campo Lotação nao Informado.";
        $this->erro_campo = "rh42_lotac";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_proati == null ){ 
+     if($this->rh42_proati == null ){
        $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
        $this->erro_campo = "rh42_proati";
        $this->erro_banco = "";
@@ -141,7 +141,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_rubric == null ){ 
+     if($this->rh42_rubric == null ){
        $this->erro_sql = " Campo Rubrica nao Informado.";
        $this->erro_campo = "rh42_rubric";
        $this->erro_banco = "";
@@ -150,7 +150,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_codele == null ){ 
+     if($this->rh42_codele == null ){
        $this->erro_sql = " Campo Elemento nao Informado.";
        $this->erro_campo = "rh42_codele";
        $this->erro_banco = "";
@@ -159,7 +159,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_proven == null ){ 
+     if($this->rh42_proven == null ){
        $this->erro_sql = " Campo Provento nao Informado.";
        $this->erro_campo = "rh42_proven";
        $this->erro_banco = "";
@@ -168,7 +168,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_descon == null ){ 
+     if($this->rh42_descon == null ){
        $this->erro_sql = " Campo Desconto nao Informado.";
        $this->erro_campo = "rh42_descon";
        $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_arquiv == null ){ 
+     if($this->rh42_arquiv == null ){
        $this->erro_sql = " Campo Arquivo nao Informado.";
        $this->erro_campo = "rh42_arquiv";
        $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_tipo == null ){ 
+     if($this->rh42_tipo == null ){
        $this->erro_sql = " Campo Item do Material nao Informado.";
        $this->erro_campo = "rh42_tipo";
        $this->erro_banco = "";
@@ -195,7 +195,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_reduz == null ){ 
+     if($this->rh42_reduz == null ){
        $this->erro_sql = " Campo Reduzido nao Informado.";
        $this->erro_campo = "rh42_reduz";
        $this->erro_banco = "";
@@ -204,7 +204,7 @@ class cl_rhfolhaemp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->rh42_saldo == null ){ 
+     if($this->rh42_saldo == null ){
        $this->erro_sql = " Campo Saldo da Despesa nao Informado.";
        $this->erro_campo = "rh42_saldo";
        $this->erro_banco = "";
@@ -214,35 +214,35 @@ class cl_rhfolhaemp {
        return false;
      }
      $sql = "insert into rhfolhaemp(
-                                       rh42_anousu 
-                                      ,rh42_mesusu 
-                                      ,rh42_lotac 
-                                      ,rh42_proati 
-                                      ,rh42_rubric 
-                                      ,rh42_codele 
-                                      ,rh42_proven 
-                                      ,rh42_descon 
-                                      ,rh42_arquiv 
-                                      ,rh42_tipo 
-                                      ,rh42_reduz 
-                                      ,rh42_saldo 
+                                       rh42_anousu
+                                      ,rh42_mesusu
+                                      ,rh42_lotac
+                                      ,rh42_proati
+                                      ,rh42_rubric
+                                      ,rh42_codele
+                                      ,rh42_proven
+                                      ,rh42_descon
+                                      ,rh42_arquiv
+                                      ,rh42_tipo
+                                      ,rh42_reduz
+                                      ,rh42_saldo
                        )
                 values (
-                                $this->rh42_anousu 
-                               ,$this->rh42_mesusu 
-                               ,$this->rh42_lotac 
-                               ,$this->rh42_proati 
-                               ,'$this->rh42_rubric' 
-                               ,$this->rh42_codele 
-                               ,$this->rh42_proven 
-                               ,$this->rh42_descon 
-                               ,'$this->rh42_arquiv' 
-                               ,$this->rh42_tipo 
-                               ,$this->rh42_reduz 
-                               ,$this->rh42_saldo 
+                                $this->rh42_anousu
+                               ,$this->rh42_mesusu
+                               ,$this->rh42_lotac
+                               ,$this->rh42_proati
+                               ,'$this->rh42_rubric'
+                               ,$this->rh42_codele
+                               ,$this->rh42_proven
+                               ,$this->rh42_descon
+                               ,'$this->rh42_arquiv'
+                               ,$this->rh42_tipo
+                               ,$this->rh42_reduz
+                               ,$this->rh42_saldo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arquivo para empenho () nao Incluído. Inclusao Abortada.";
@@ -265,16 +265,16 @@ class cl_rhfolhaemp {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) {
       $this->atualizacampos();
      $sql = " update rhfolhaemp set ";
      $virgula = "";
-     if(trim($this->rh42_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_anousu"])){ 
+     if(trim($this->rh42_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_anousu"])){
        $sql  .= $virgula." rh42_anousu = $this->rh42_anousu ";
        $virgula = ",";
-       if(trim($this->rh42_anousu) == null ){ 
+       if(trim($this->rh42_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "rh42_anousu";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_mesusu"])){ 
+     if(trim($this->rh42_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_mesusu"])){
        $sql  .= $virgula." rh42_mesusu = $this->rh42_mesusu ";
        $virgula = ",";
-       if(trim($this->rh42_mesusu) == null ){ 
+       if(trim($this->rh42_mesusu) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "rh42_mesusu";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_lotac"])){ 
+     if(trim($this->rh42_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_lotac"])){
        $sql  .= $virgula." rh42_lotac = $this->rh42_lotac ";
        $virgula = ",";
-       if(trim($this->rh42_lotac) == null ){ 
+       if(trim($this->rh42_lotac) == null ){
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "rh42_lotac";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_proati"])){ 
+     if(trim($this->rh42_proati)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_proati"])){
        $sql  .= $virgula." rh42_proati = $this->rh42_proati ";
        $virgula = ",";
-       if(trim($this->rh42_proati) == null ){ 
+       if(trim($this->rh42_proati) == null ){
          $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
          $this->erro_campo = "rh42_proati";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_rubric"])){ 
+     if(trim($this->rh42_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_rubric"])){
        $sql  .= $virgula." rh42_rubric = '$this->rh42_rubric' ";
        $virgula = ",";
-       if(trim($this->rh42_rubric) == null ){ 
+       if(trim($this->rh42_rubric) == null ){
          $this->erro_sql = " Campo Rubrica nao Informado.";
          $this->erro_campo = "rh42_rubric";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_codele"])){ 
+     if(trim($this->rh42_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_codele"])){
        $sql  .= $virgula." rh42_codele = $this->rh42_codele ";
        $virgula = ",";
-       if(trim($this->rh42_codele) == null ){ 
+       if(trim($this->rh42_codele) == null ){
          $this->erro_sql = " Campo Elemento nao Informado.";
          $this->erro_campo = "rh42_codele";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_proven)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_proven"])){ 
+     if(trim($this->rh42_proven)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_proven"])){
        $sql  .= $virgula." rh42_proven = $this->rh42_proven ";
        $virgula = ",";
-       if(trim($this->rh42_proven) == null ){ 
+       if(trim($this->rh42_proven) == null ){
          $this->erro_sql = " Campo Provento nao Informado.";
          $this->erro_campo = "rh42_proven";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_descon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_descon"])){ 
+     if(trim($this->rh42_descon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_descon"])){
        $sql  .= $virgula." rh42_descon = $this->rh42_descon ";
        $virgula = ",";
-       if(trim($this->rh42_descon) == null ){ 
+       if(trim($this->rh42_descon) == null ){
          $this->erro_sql = " Campo Desconto nao Informado.";
          $this->erro_campo = "rh42_descon";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_arquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_arquiv"])){ 
+     if(trim($this->rh42_arquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_arquiv"])){
        $sql  .= $virgula." rh42_arquiv = '$this->rh42_arquiv' ";
        $virgula = ",";
-       if(trim($this->rh42_arquiv) == null ){ 
+       if(trim($this->rh42_arquiv) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "rh42_arquiv";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_tipo"])){ 
+     if(trim($this->rh42_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_tipo"])){
        $sql  .= $virgula." rh42_tipo = $this->rh42_tipo ";
        $virgula = ",";
-       if(trim($this->rh42_tipo) == null ){ 
+       if(trim($this->rh42_tipo) == null ){
          $this->erro_sql = " Campo Item do Material nao Informado.";
          $this->erro_campo = "rh42_tipo";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_reduz"])){ 
+     if(trim($this->rh42_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_reduz"])){
        $sql  .= $virgula." rh42_reduz = $this->rh42_reduz ";
        $virgula = ",";
-       if(trim($this->rh42_reduz) == null ){ 
+       if(trim($this->rh42_reduz) == null ){
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "rh42_reduz";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_rhfolhaemp {
          return false;
        }
      }
-     if(trim($this->rh42_saldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_saldo"])){ 
+     if(trim($this->rh42_saldo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh42_saldo"])){
        $sql  .= $virgula." rh42_saldo = $this->rh42_saldo ";
        $virgula = ",";
-       if(trim($this->rh42_saldo) == null ){ 
+       if(trim($this->rh42_saldo) == null ){
          $this->erro_sql = " Campo Saldo da Despesa nao Informado.";
          $this->erro_campo = "rh42_saldo";
          $this->erro_banco = "";
@@ -429,7 +429,7 @@ class cl_rhfolhaemp {
      }
      $sql .= " where ";
 $sql .= "oid = '$oid'";     $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivo para empenho nao Alterado. Alteracao Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -454,11 +454,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ( $oid=null ,$dbwhere=null) {
      $sql = " delete from rhfolhaemp
                     where ";
      $sql2 = "";
@@ -468,7 +468,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivo para empenho nao Excluído. Exclusão Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -493,11 +493,11 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -519,10 +519,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
       }
      return $result;
    }
-   function sql_query ( $oid = null,$campos="rhfolhaemp.oid,*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $oid = null,$campos="rhfolhaemp.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,10 +557,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      }
      return $sql;
   }
-   function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +578,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

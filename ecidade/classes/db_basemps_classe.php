@@ -31,6 +31,7 @@ class cl_basemps
     public $ed34_areaconhecimento = 0;
     public $ed34_procedimento = null;
     public $ed34_tipobase = null;
+    public $ed34_unidade_curricular = null;
    // cria propriedade com as variaveis do arquivo
     public $campos = "
                  ed34_i_codigo = int8 = Base
@@ -48,6 +49,7 @@ class cl_basemps
                  ed34_areaconhecimento = int4 = Área de Conhecimento
                  ed34_procedimento = int4 = Procedimento de Avaliação
                  ed34_tipobase = int4 = Tipo de Base
+                 ed34_unidade_curricular = int4 = Tipo de Base
                  ";
 
     public function __construct()
@@ -180,7 +182,7 @@ class cl_basemps
        return false;
      }
      if($this->ed34_areaconhecimento == null ){
-       $this->ed34_areaconhecimento = "0";
+       $this->ed34_areaconhecimento = 1006;
      }
      if($this->ed34_procedimento == null ){
        $this->ed34_procedimento = "null";
@@ -234,6 +236,7 @@ class cl_basemps
                                       ,ed34_areaconhecimento
                                       ,ed34_procedimento
                                       ,ed34_tipobase
+                                      ,ed34_unuidade_curricular
                        )
                 values (
                                 $this->ed34_i_codigo
@@ -251,6 +254,7 @@ class cl_basemps
                                ,$this->ed34_areaconhecimento
                                ,$this->ed34_procedimento
                                ,$this->ed34_tipobase
+                               ,$this->ed34_unidade_curricular
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -471,6 +475,9 @@ class cl_basemps
      if(trim($this->ed34_tipobase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed34_tipobase"])){
          $sql  .= $virgula." ed34_tipobase = $this->ed34_tipobase ";
      }
+    if(trim($this->ed34_unidade_curricular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed34_unidade_curricular"])){
+        $sql  .= $virgula." ed34_unidade_curricular = $this->ed34_unidade_curricular ";
+    }
      $sql .= " where ";
      if($ed34_i_codigo!=null){
        $sql .= " ed34_i_codigo = $this->ed34_i_codigo";

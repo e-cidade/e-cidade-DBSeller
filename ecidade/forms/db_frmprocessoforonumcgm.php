@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("v70_sequencial");
        <?=@$Lv75_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v75_sequencial',10,$Iv75_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv75_seqprocforo?>">
-       <?
+       <?php
        db_ancora(@$Lv75_seqprocforo,"js_pesquisav75_seqprocforo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v75_seqprocforo',10,$Iv75_seqprocforo,true,'text',$db_opcao," onchange='js_pesquisav75_seqprocforo(false);'")
 ?>
-       <?
+       <?php
 db_input('v70_sequencial',10,$Iv70_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv75_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lv75_numcgm,"js_pesquisav75_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v75_numcgm',10,$Iv75_numcgm,true,'text',$db_opcao," onchange='js_pesquisav75_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_processoforonumcgm.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

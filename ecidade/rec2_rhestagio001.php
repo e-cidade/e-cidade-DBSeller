@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
     <b>Período:</b>
   </td>
   <td nowrap>
-  <?
+  <?php
     db_inputdata('h64_dataini',null,null,null,true,'text',1,"");
     echo " <b>A</b> ";
     db_inputdata('h64_datafim',null,null,null,true,'text',1,"");
@@ -82,7 +82,7 @@ db_postmemory($HTTP_POST_VARS);
      <b>Avaliações:</b>
    </td>
    <td>
-   <?
+   <?php
     $opcoes = array(
                     "t" => "Todas",
                     "n" => "Não Aplicadas",
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
      <b>Mostrar:</b>
    </td>
    <td>
-   <?
+   <?php
     $opcoes = array(
                     "questionario" => "Lista questionário",
                     "avaliacoes"   => "Lista Funcionários",
@@ -109,7 +109,7 @@ db_postmemory($HTTP_POST_VARS);
    db_select('mostra',$opcoes,true,1,"");
    ?>
    </td>
-  <?
+  <?php
   if(!isset($tipo)){
     $tipo = "l";
   }
@@ -201,7 +201,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

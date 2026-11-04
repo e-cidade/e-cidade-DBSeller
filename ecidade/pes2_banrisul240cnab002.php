@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -110,14 +110,14 @@ if($clrharqbanco->numrows>0){
     $descricaobanco = $db90_descr;
 
     if(isset($datagera) && $datagera!=""){
-      $datag = split('-',$datagera);
+      $datag =explode('-',$datagera);
       $datag_dia=$datag[2];
       $datag_mes=$datag[1];
       $datag_ano=$datag[0];
     }
 
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad =explode('-',$datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -187,19 +187,25 @@ if($sqlerro == false){
       $campovalor = " r52_valres ";
       $rh34_wherepensa .= " and r52_valres > 0 ";
     }
-
-    $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"$campovalor as r38_liq, length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia,
+      $groupby = ' group by r52_numcgm, r52_codbco, r52_regist,
+            r52_conta, r52_dvconta,
+            r52_codage, r52_dvagencia,
+            cgm.z01_nome, cgm.z01_cgccpf, cgm.z01_numcgm,
+            func.z01_nome, r70_descr';
+      $orderby = ' order by r52_codbco,cgm.z01_nome';
+      $sql = $clpensao->sql_query_gerarqbag(null,null,null,null,"sum($campovalor) as r38_liq, length(trim(r52_codage)||trim(r52_dvagencia)) as qtddigitosagencia,
                                                r52_numcgm as r38_regist,
                                                r52_codbco as r38_banco,
                                                r52_regist,
                                                trim(r52_conta)||trim(coalesce(r52_dvconta,'')) as r38_conta,
                                                trim(r52_codage)||trim(coalesce(r52_dvagencia,'')) as r38_agenc,
-                                               cgm.*,func.z01_nome as nomefuncionario,
+                                               cgm.z01_nome,cgm.z01_cgccpf,cgm.z01_numcgm,func.z01_nome as nomefuncionario,
                                                r70_descr,
                                                length(trim(cgm.z01_cgccpf)) as tam,
-                                               $campovalor as valorori",
-                                              "r52_codbco,cgm.z01_nome",
-                                              "$rh34_wherepensa and $campovalor > 0");
+                                               sum($campovalor) as valorori",
+          "",
+          "$rh34_wherepensa and $campovalor > 0");
+      $sql .= $groupby . $orderby;
 
     $lPensionista = true;
     $result      = $clpensao->sql_record($sql);

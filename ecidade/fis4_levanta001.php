@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -110,7 +110,7 @@ $clrotulo->label("q02_inscr");
       <legend>Levantamento</legend>
 
       <table border="0">
-      <?
+      <?php
       if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições para um cgm
       ?>
         <tr>
@@ -118,7 +118,7 @@ $clrotulo->label("q02_inscr");
             <?=$Lz01_numcgm?>
           </td>
           <td>
-          <?
+          <?php
           if(empty($z01_numcgmx)){
             $z01_numcgmx=$z01_numcgm;
           }
@@ -132,14 +132,14 @@ $clrotulo->label("q02_inscr");
             <?=$Lz01_nome?>
           </td>
           <td>
-          <?
+          <?php
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
             ?>
           </td>
         </tr>
         <tr>
           <td colspan='2'>
-          <?
+          <?php
             if(!empty($sql01)){
              db_lovrot($sql01,15,"()","","js_retorna|q02_inscr");
             }
@@ -151,17 +151,17 @@ $clrotulo->label("q02_inscr");
       <input type="submit" name="entrar" value="Entrar">
       <input type="button" name="voltar" value="Voltar" onclick="js_voltar();">
 
-      <?
+      <?php
       }else{
       ?>
            <tr>
              <td title="<?=$Tq02_inscr?>">
-            <?
+            <?php
              db_ancora($Lq02_inscr,' js_inscr(true); ',1);
             ?>
              </td>
              <td>
-            <?
+            <?php
              db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
              db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
             ?>
@@ -169,12 +169,12 @@ $clrotulo->label("q02_inscr");
            </tr>
            <tr>
             <td title="<?=$Tz01_numcgm?>">
-            <?
+            <?php
              db_ancora($Lz01_nome,' js_cgm(true); ',1);
             ?>
              </td>
              <td>
-            <?
+            <?php
              db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
              db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
             ?>
@@ -184,7 +184,7 @@ $clrotulo->label("q02_inscr");
 
          </fieldset>
          <input type="submit" name="entrar" value="Entrar" onclick="return js_testacamp()" />
-      <?
+      <?php
       }
       ?>
     </form>
@@ -265,7 +265,7 @@ function js_mostracgm1(erro,chave){
   }
 }
 </script>
-<?
+<?php
 if(isset($msgerro)){
   db_msgbox($msgerro);
 }

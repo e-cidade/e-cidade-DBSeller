@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_codcondominio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x40_codcondominio",8,$Ix40_codcondominio,true,"text",4,"","chave_x40_codcondominio");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x40_matric",10,$Ix40_matric,true,"text",4,"","chave_x40_matric");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_codcondominio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x40_codcondominio",8,$Ix40_codcondominio,true,"text",4,"","chave_x40_codcondominio");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacondominiomat.php")==true){
@@ -129,12 +129,12 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

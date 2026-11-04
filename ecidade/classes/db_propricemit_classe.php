@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,13 +59,13 @@ class cl_propricemit {
                  cm28_d_aquisicao = date = Aquisição
                  ";
    //funcao construtor da classe
-   function cl_propricemit() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("propricemit");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_propricemit {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm28_i_codigo = ($this->cm28_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm28_i_codigo"]:$this->cm28_i_codigo);
        $this->cm28_i_processo = ($this->cm28_i_processo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm28_i_processo"]:$this->cm28_i_processo);
@@ -93,7 +93,7 @@ class cl_propricemit {
      }
    }
    // funcao para inclusao
-   function incluir ($cm28_i_codigo){
+   public function incluir ($cm28_i_codigo){
       $this->atualizacampos();
      if($this->cm28_i_processo == null || $this->cm28_i_processo == ''){
       $this->cm28_i_processo = 'null';
@@ -211,7 +211,7 @@ class cl_propricemit {
      return true;
    }
    // funcao para alteracao
-   function alterar ($cm28_i_codigo=null) {
+   public function alterar ($cm28_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update propricemit set ";
      $virgula = "";
@@ -356,7 +356,7 @@ class cl_propricemit {
      }
    }
    // funcao para exclusao
-   function excluir ($cm28_i_codigo=null,$dbwhere=null) {
+   public function excluir ($cm28_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm28_i_codigo));
      }else{
@@ -421,7 +421,7 @@ class cl_propricemit {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -443,10 +443,10 @@ class cl_propricemit {
       }
      return $result;
    }
-   function sql_query ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_propricemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,10 +491,10 @@ class cl_propricemit {
      }
      return $sql;
   }
-   function sql_query_file ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $cm28_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_propricemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $iInstituicao = db_getsession("DB_instit");
               <?=$Lc21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c21_sequencial",10,$Ic21_sequencial,true,"text",4,"","chave_c21_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $iInstituicao = db_getsession("DB_instit");
               <?=$Lc21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c21_sequencial",10,$Ic21_sequencial,true,"text",4,"","chave_c21_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $iInstituicao = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanoorcamentogrupo.php")==true){
@@ -126,12 +126,12 @@ $iInstituicao = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

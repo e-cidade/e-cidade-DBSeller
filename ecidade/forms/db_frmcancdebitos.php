@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,29 +43,50 @@ $clrotulo->label("nome");
 		<table border="0" width="550px">
 			<tr>
 				<td nowrap title="<?=@$Tk20_codigo?>"><?=@$Lk20_codigo?></td>
-				<td><?
+				<td><?php
 				db_input('k20_codigo',10,$Ik20_codigo,true,'text',3,"")
 				?></td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tk20_hora?>"><?=@$Lk20_hora?></td>
-				<td><?
+				<td><?php
 				db_input('k20_hora',10,$Ik20_hora,true,'text',3,"")
 				?></td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tk20_data?>"><?=@$Lk20_data?></td>
-				<td><? db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
+				<td><?php db_inputdata('k20_data',@$k20_data_dia,@$k20_data_mes,@$k20_data_ano,true,'text',3,"")?>
 				</td>
 			</tr>
+
+			<?php
+				if (isset($chavepesquisa) && !empty($chavepesquisa)) {
+			?>
 			<tr>
 				<td nowrap title="<?=@$Tk25_codproc?>"><?=@$Lk25_codproc?></td>
-				<td><? db_input('k25_codproc',20,$Ik25_codproc,true,'text',3,"");?>
+				<td><?php db_input('numerodoprocesso',20,'',true,'text',3,"");?>
 				</td>
 			</tr>
+			<tr style="display: none;" >
+				<td nowrap title="<?=@$Tk25_codproc?>"><?=@$Lk25_codproc?></td>
+				<td><?php db_input('k25_codproc',20,$Ik25_codproc,true,'text',3,"");?>
+				</td>
+			</tr>
+			<?php
+				} else {
+			?>
+			<tr>
+				<td nowrap title="<?=@$Tk25_codproc?>"><?=@$Lk25_codproc?></td>
+				<td><?php db_input('k25_codproc',20,$Ik25_codproc,true,'text',3,"");?>
+				</td>
+			</tr>
+			<?php
+				}
+			?>
+
 			<tr>
 				<td nowrap title="<?=@$Tk20_usuario?>"><?=@$Lk20_usuario?></td>
-				<td><? db_input('k20_usuario',10,$Ik20_usuario,true,'text',3,"");
+				<td><?php db_input('k20_usuario',10,$Ik20_usuario,true,'text',3,"");
 				       db_input('nome',49,$Inome,true,'text',3,"");
 				    ?>
 				</td>
@@ -73,27 +94,27 @@ $clrotulo->label("nome");
 
 			<tr>
 				<td><strong>Descrição:</strong></td>
-				<td><? db_input('k20_descr',50,$Ik20_descr,true,'text',3,"");
+				<td><?php db_input('k20_descr',50,$Ik20_descr,true,'text',3,"");
         ?></td>
 			</tr>
 
 			<tr>
 				<td><strong>Observações:</strong></td>
-				<td><? db_textarea('k21_obs',4,60,$Ik21_obs,true,'text',3,"") ?></td>
+				<td><?php db_textarea('k21_obs',4,60,$Ik21_obs,true,'text',3,"") ?></td>
 			</tr>
 			<tr>
 				<td><strong>Tipo:</strong></td>
-				<td><? db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
+				<td><?php db_input('cancdebitostipo',10,"",true,'text',3,"")?></td>
 			</tr>
-            <? if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
+            <?php if(isset($k20_cancdebitostipo) and $k20_cancdebitostipo == 2 ) { ?>
 			<tr>
 				<td><strong>Caracteristica Peculiar:</strong></td>
-				<td><? db_input('tipo',10,"",true,'text',3,"");
+				<td><?php db_input('tipo',10,"",true,'text',3,"");
 				       db_input('caracteristica',49,"",true,'text',3,"");
 				    ?>
 				</td>
 			</tr>
-			<? } ?>
+			<?php } ?>
 			
 		</table>
 		</fieldset>
@@ -103,7 +124,7 @@ $clrotulo->label("nome");
 
 <table>
 	<tr>
-		<td><?
+		<td><?php
 		if(isset($chavepesquisa) && $chavepesquisa != ""){
 		  
 		  $sql = $clcancdebitos->sql_pendentes("k21_sequencia,k21_numpre,k21_numpar,sum(k00_valor) as k00_valor,k21_receit,(select k00_numcgm from arrenumcgm where k00_numpre = k21_numpre limit 1) as k00_numcgm, (select k00_matric from arrematric where k00_numpre = k21_numpre limit 1) as k00_matric, (select k00_inscr from arreinscr where k00_numpre = k21_numpre limit 1) as k00_inscr","k21_numpre,k21_numpar"," k20_codigo = $chavepesquisa  and k20_instit = ".db_getsession("DB_instit")."GROUP BY k21_sequencia,k21_numpre,k21_numpar,k21_receit");
@@ -118,11 +139,11 @@ $clrotulo->label("nome");
             <table width='550px'>
             <tr>
 				<td><strong>Observações:</strong></td>
-				<td><? db_textarea('k23_obs',4,60,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
+				<td><?php db_textarea('k23_obs',4,60,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
 			</tr>
 			<tr>
 				<td><strong>Tipo de cancelamento:</strong></td>
-				<td><?
+				<td><?php
 				  $resulttipo = db_query("select k73_sequencial,k73_descricao from cancdebitostipo order by k73_sequencial");
 				  $linhasTipo = pg_num_rows($resulttipo);
 				  $tipo = array();
@@ -139,8 +160,8 @@ $clrotulo->label("nome");
 				</td>
 			</tr>
 			<tr  id="renuncia" style="display:none">
-				<td><b><? db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao); ?></b></td>
-				<td><? 
+				<td><b><?php db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao); ?></b></td>
+				<td><?php 
 				  db_input("c58_sequencial",10,$Ic58_sequencial,true,"text",$db_opcao,"onChange='js_pesquisac58_sequencial(false);'");
                   db_input("c58_descr",49,0,true,"text",3);
 				    ?>
@@ -161,7 +182,7 @@ $clrotulo->label("nome");
                               <th align='center'>Inscrição </th>
 							  <th align='center'>Valor    </th>
 						   </tr>
-			<?
+			<?php
 		    for($x = 0; $x < $linhas; $x++) {
 		      db_fieldsmemory($result,$x);
 		      echo "       <tr>
@@ -233,7 +254,7 @@ function js_mostraconcarpeculiar1(chave1,chave2){
   document.form1.c58_descr.value          = chave2;
   db_iframe_concarpeculiar.hide();
 }
-<?
+<?php
 if(isset($tipoDebito) and $tipoDebito==2){
   echo "js_mostraRenuncia(2);";	
 }
@@ -241,9 +262,9 @@ if(isset($tipoDebito) and $tipoDebito==2){
 
 function js_preenchepesquisa(chave){
   db_iframe_cancdebitos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

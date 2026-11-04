@@ -2202,9 +2202,10 @@ DBViewCadastroEndereco = function(sId, sNameInstance, iCodigoEndereco, aCamposOb
       $('cboCodigoPais'+sId).value = oRetorno.valoresPadrao[0].db70_sequencial;
       me.setPais(oRetorno.valoresPadrao[0].db70_sequencial);
       var iEstado = oRetorno.valoresPadrao[0].db72_cadenderestado;
+      var iRuasTipo2 = oRetorno.bairroRuaMunicipio[0].iruatipo;
 
       me.preencheCboEstados(oRetorno.estados, iEstado);
-      me.preencheCboRuasTipo(oRetorno.tiposRua, 3);
+      me.preencheCboRuasTipo(oRetorno.tiposRua, iRuasTipo2);
 
       if (oRetorno.municipio == false) {
 
@@ -2270,7 +2271,10 @@ DBViewCadastroEndereco = function(sId, sNameInstance, iCodigoEndereco, aCamposOb
 
       me.preencheCboPaises(oRetorno.aPaises, iPais);
       me.preencheCboEstados(oRetorno.estados, iEstado);
-      me.preencheCboRuasTipo(oRetorno.tiposRua, 3);
+      
+      if (me.getCodigoRuaMunicipio().trim().length <= 0) {
+        me.preencheCboRuasTipo(oRetorno.tiposRua, 3);
+      }
 
       if (oRetorno.municipio == false) {
 
@@ -2708,7 +2712,16 @@ DBViewCadastroEndereco = function(sId, sNameInstance, iCodigoEndereco, aCamposOb
    */
   this.salvarEndereco = function() {
     var mensagem = '';
+    
+    let string = me.getComplemento().toUpperCase();
+    let result = string.includes("'");
+    let result1 = string.includes('"');
 
+    if(result || result1){
+      alert("Caracteres especiais como ' e \" não são permitidos");
+      return ;
+    }
+    
     for (var i = 0; i < aCamposObrigatorios.length; i++) {
       var id = aCamposObrigatorios[i].id;
       var label = aCamposObrigatorios[i].label;

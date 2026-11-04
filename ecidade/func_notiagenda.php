@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk58_codage?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k58_codage",8,$Ik58_codage,true,"text",4,"","chave_k58_codage");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk58_codage?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k58_codage",8,$Ik58_codage,true,"text",4,"","chave_k58_codage");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_notiagenda.php")==true){
@@ -119,12 +119,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

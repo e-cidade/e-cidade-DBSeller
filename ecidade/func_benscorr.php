@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbenscorr->rotulo->label("t63_codbem");
               <?=$Lt63_codcor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t63_codcor",10,$It63_codcor,true,"text",4,"","chave_t63_codcor");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbenscorr->rotulo->label("t63_codbem");
               <?=$Lt63_codbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t63_codbem",10,$It63_codbem,true,"text",4,"","chave_t63_codbem");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clbenscorr->rotulo->label("t63_codbem");
               <?=$Lt63_codbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t63_codbem",10,$It63_codbem,true,"text",4,"","chave_t63_codbem");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clbenscorr->rotulo->label("t63_codbem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benscorr.php")==true){
@@ -130,12 +130,12 @@ $clbenscorr->rotulo->label("t63_codbem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

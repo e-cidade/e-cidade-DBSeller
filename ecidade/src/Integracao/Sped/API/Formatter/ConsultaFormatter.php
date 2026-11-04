@@ -72,16 +72,20 @@ class ConsultaFormatter
      */
     private function addProp($parent, $property, $isArray = false, $index = null)
     {
-        foreach ($property as $prop => $value) {
-            if (is_object($value)) {
-                $this->addProp($prop, $value);
-            } elseif (is_array($value)) {
-                foreach ($value as $nprop => $nvalue) {
-                    $this->addProp($prop, $nvalue, true, $nprop);
+        if (is_object($property) || is_array($property)) {
+            foreach ($property as $prop => $value) {
+                if (is_object($value)) {
+                    $this->addProp($prop, $value);
+                } elseif (is_array($value)) {
+                    foreach ($value as $nprop => $nvalue) {
+                        $this->addProp($prop, $nvalue, true, $nprop);
+                    }
+                } else {
+                    $this->addToFormattedData($parent, $prop, $value, $isArray, $index);
                 }
-            } else {
-                $this->addToFormattedData($parent, $prop, $value, $isArray, $index);
             }
+        } else {
+            $this->addToFormattedData($parent, $parent, $property, $isArray, $index);
         }
     }
 
@@ -163,20 +167,22 @@ class ConsultaFormatter
         }
 
         if ($isArray) {
-            if (empty($this->formattedData[$parent]->children[$index])
-                && !is_array($this->formattedData[$parent]->children[$index])) {
-                $this->formattedData[$parent]->children[$index] = [];
+            if (isset($this->formattedData[$parent]->children)) {
+                if (empty($this->formattedData[$parent]->children[$index])
+                    && !is_array($this->formattedData[$parent]->children[$index])) {
+                    $this->formattedData[$parent]->children[$index] = [];
+                }
+
+                if (is_object($this->formattedData[$parent]->children[$index])) {
+                    $childrenValid = clone $this->formattedData[$parent]->children[$index];
+
+                    $this->formattedData[$parent]->children[$index] = [];
+
+                    $this->formattedData[$parent]->children[$index][] = $childrenValid;
+                }
+
+                return $this->formattedData[$parent]->children[$index][] = $childrenNode;
             }
-
-            if (is_object($this->formattedData[$parent]->children[$index])) {
-                $childrenValid = clone $this->formattedData[$parent]->children[$index];
-
-                $this->formattedData[$parent]->children[$index] = [];
-
-                $this->formattedData[$parent]->children[$index][] = $childrenValid;
-            }
-
-            return $this->formattedData[$parent]->children[$index][] = $childrenNode;
         } else {
             $parentNode->children[] = $childrenNode;
             return $this->formattedData[$parent] = $parentNode;

@@ -60,7 +60,7 @@ try {
                 throw new ParameterException('Informe a dataInicio.');
             }
 
-        if(empty($oParametro->matriculasEnviar) && empty($oParametro->selecao)) {
+        if (empty($oParametro->matriculasEnviar) && empty($oParametro->selecao)) {
             throw new ParameterException('Informe uma(s) matrícula(s) para processar ou informe uma seleção.');
         }
       
@@ -88,10 +88,11 @@ try {
 
       if(empty($aMatriculasProcessar)) {
         
-        $aMatriculasProcessar = array_keys(ServidorRepository::getServidoresBySelecao(
+        $aMatriculasProcessar = array_keys(ServidorRepository::getMatriculasBySelecao(
           \DBPessoal::getAnoFolha(),
           \DBPessoal::getMesFolha(),
-          $selecao
+          $selecao,
+          $oDataFinalParametro
         ));
 
         if(empty($aMatriculasProcessar)) {
@@ -138,19 +139,17 @@ try {
 
           file_put_contents('tmp/log_importacao_arquivo_ponto.log', "Matricula: {$iMatricula}".PHP_EOL, FILE_APPEND);
 
-          try{
+          try {
           
-            $servidor   = ServidorRepository::getInstanciaByCodigo($iMatricula);            
             $parametros = array(
-              'servidor'                        => $servidor, 
               'aDatasProcessarCriacaoMarcacoes' => $aDatasProcessarCriacaoMarcacoes,
-              'iMatricula'                      => $iMatricula,
-              'oPeriodo'                        => $oPeriodo,
-              'aDatasProcessar'                 => $aDatasProcessar,
-              'flag'                            => true,
-              'inicializarMarcacoes'            => $oParametro->inicializarMarcacoes,
-              'sessao'                          => $_SESSION,
-              'arquivo'                         => $filename
+              'iMatricula' => $iMatricula,
+              'oPeriodo' => $oPeriodo,
+              'aDatasProcessar' => $aDatasProcessar,
+              'flag' => true,
+              'inicializarMarcacoes' => $oParametro->inicializarMarcacoes,
+              'sessao' => $_SESSION,
+              'arquivo' => $filename
             );
 
             $processoSegundoPlano = new ProcessamentoPontoSegundoPlano();

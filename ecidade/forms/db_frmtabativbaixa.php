@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,6 +34,7 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("q07_inscr");
 $clrotulo->label("q07_databx");
 $clrotulo->label("p58_requer");
+$clrotulo->label("p58_numero");
 
 if (!isset($veiculo)) {
   $veiculo = false;
@@ -76,11 +77,6 @@ function js_verifica(){
   }
   processo=document.form1.q11_processo.value;
 
- // if(processo.replace(" ","")==""){
- //   alert("Informe o processo do protocolo!");
- //   processo=document.form1.q11_processo.focus();
- //   return false;
- // }
   if(document.form1.q11_obs.value==""){
     alert("Informe as observacoes!");
     processo=document.form1.q11_obs.focus();
@@ -112,13 +108,11 @@ function js_verifica(){
 <table border="0">
   <tr>
     <td title="<?=$Tq07_inscr?>" >
-    <?
+     <?php
      db_input('calculo',5,0,true,'hidden',1);
      db_ancora($Lq07_inscr,' js_inscr(true); ',1);
     ?>
-    </td>
-    <td title="<?=$Tq07_inscr?>" colspan="4">
-    <?
+     <?php
       db_input('q07_inscr',5,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
       isset($q07_inscr)?$inscricao=$q07_inscr:"";
       db_input('inscricao',5,$Iq07_inscr,true,'hidden',1);
@@ -127,51 +121,69 @@ function js_verifica(){
     ?>
     </td>
   </tr>
-    <tr>
-      <td nowrap title="<?=@$Tq11_processo?>">
-	 <?
-       db_ancora(@$Lq11_processo,"js_pesquisaq11_processo(true);",$db_opcao);
-       ?>
+  <tr id="linhaProcessoSistemaInterno">
+      <td colspan="2">
+          <div>
+              <fieldset style="width: fit-content;">
+                  <legend><strong>Dados do Processo</strong></legend>
+                  <table align="center">
+                      <tr>
+                          <td title="<?= @$Tp58_numero ?>">
+                              <?php
+                              db_ancora($Lp58_numero, 'js_pesquisaProcesso(true)', 1)
+                              ?>
+                          </td>
+                          <td>
+                              <?php
+                              db_input('p58_numero', 10, '', true, 'text', $db_opcao, "onchange='js_pesquisaProcesso(false)'", '', '', '', 20);
+                              ?>
+                          </td>
+                          <td>
+                              <?php
+                              db_input('z01_nome', 42, isset($Iz01_nome) ? $Iz01_nome : '', true, 'text', 3, "", 'z01_nomeprocesso');
+                              ?>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td title="Ano">Ano</td>
+                          <td>
+                              <input type="number" id="anoSessao" name="anoSessao" value="<?=$anoSessao?>" style="width: 82px;" onchange='js_pesquisaProcesso(false)'>
+                          </td>
+                      </tr>
+                      <input type="hidden" id='p58_codproc' name='q11_processo' value=''>
+                      <input type="hidden" id='numeroProcessoConcatenado' name='numeroProcessoConcatenado' value=''>
+                  </table>
+              </fieldset>
+          </div>
       </td>
-      <td colspan=3>
-  <?
-  db_input('q11_processo',10,$Iq11_processo,true,'text',$db_opcao," onchange='js_pesquisaq11_processo(false);'")
-  ?>
-  <?db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
-
-  ?>
-      <td>
-    </tr>
+  </tr>
   <tr>
     <td nowrap title="<?=@$Tq11_oficio?>">
        <?=@$Lq11_oficio?>
+       <?php
+      $xe = array("false"=>"NORMAL","true"=>"OFÍCIO");
+      db_select('q11_oficio',$xe,true,$db_opcao);
+      ?>
     </td>
-    <td valign="top">
-<?
-$xe = array("false"=>"NORMAL","true"=>"OFÍCIO");
-db_select('q11_oficio',$xe,true,$db_opcao);
-?>
-
-    </td>
+  </tr>
+  <tr>
     <td nowrap title="<?=@$Tq07_databx?>">
-       <?=@$Lq07_databx?>
-    </td>
-    <td nowrap title="<?=@$Tq07_databx?>" align='left'>
-<?
-if(empty($q07_databx)){
-  $q07_databx_dia=date("d",db_getsession('DB_datausu'));
-  $q07_databx_mes=date("m",db_getsession('DB_datausu'));
-  $q07_databx_ano=date("Y",db_getsession('DB_datausu'));
-}
-db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,true,'text',$db_opcao)
-?>
+      <?=@$Lq07_databx?>
+      <?php
+      if(empty($q07_databx)){
+        $q07_databx_dia=date("d",db_getsession('DB_datausu'));
+        $q07_databx_mes=date("m",db_getsession('DB_datausu'));
+        $q07_databx_ano=date("Y",db_getsession('DB_datausu'));
+      }
+      db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,true,'text',$db_opcao)
+      ?>
     </td>
   </tr>
   <tr>
   </tr>
     <td nowrap colspan=4 title="<?=@$Tq11_obs?>">
     <?=$Lq11_obs?>
-    <?
+     <?php
     db_textarea('q11_obs',0,70,@$Iq11_obs,true,'text',$db_opcao);
     ?>
     </td>
@@ -187,7 +199,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 <td>
   <tr>
     <td align="center" colspan="2">
-   <?
+    <?php
      //todos as propiedades alteradas, deverão ser alterada em iss1_tabativbaixaiframe.php
      $query_string = "a=1";
    $campos= "q07_inscr,q07_seq,q88_inscr,q07_ativ,q03_descr,q07_datain,q07_datafi,q07_databx,q07_perman,q07_quant,q11_tipcalc, q81_descr";
@@ -205,7 +217,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
        echo "<script>";
 ################## quando for setado a propriedade chaves, sera gerado um input contendo todas as chaves#################
         if(isset($chaves)){
-           $matriz01=split(",",$chaves);
+           $matriz01=explode(",",$chaves);
            echo "
           function js_gera_chaves(){
             tabela=atividades.document.getElementById('tabela_seleciona');\n
@@ -238,8 +250,6 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
         }
      }
 ?>
-
-
     </td>
   </tr>
   </table>
@@ -247,6 +257,44 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
   </center>
 </form>
 <script>
+const numeroProcesso = document.getElementById('p58_numero');
+const numeroProcessoConcatenado = document.getElementById("numeroProcessoConcatenado");
+const nomeProcesso = document.getElementById('z01_nomeprocesso');
+const codigoProcesso = document.getElementById('p58_codproc');
+
+function js_pesquisaProcesso(mostra) {
+    numeroProcesso.value = numeroProcesso.value.split('/')[0];
+    numeroProcessoConcatenado.value = numeroProcesso.value + '/' + anoSessao.value;
+    if (mostra == true) {
+        js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?funcao_js=parent.js_mostraProcesso|p58_codproc|z01_nome|p58_numero', 'Pesquisa', true, '0');
+    } else {
+        if (numeroProcesso.value != '') {
+            js_OpenJanelaIframe('this', 'db_iframe_nomes', 'func_protprocesso_isencao.php?pesquisa_chave=' + numeroProcessoConcatenado.value + '&funcao_js=parent.js_mostraProcessoHide&sCampoPesquisa=p58_codproc', 'Pesquisa', false, '0');
+        } else {
+            nomeProcesso.value = '';
+            codigoProcesso.value = '';
+        }
+    }
+}
+
+function js_mostraProcessoHide(chave, chave1, erro) {
+    codigoProcesso.value = chave;
+    nomeProcesso.value = chave1;
+    if (erro == true) {
+        numeroProcesso.focus();
+        numeroProcesso.value = '';
+        codigoProcesso.value = '';
+    }
+}
+
+function js_mostraProcesso(chave1, chave2, chave3) {
+    codigoProcesso.value = chave1;
+    nomeProcesso.value = chave2;
+    numeroProcesso.value = chave3.split('/')[0]
+    db_iframe_nomes.hide();
+}
+
+
 function js_inscr(mostra){
   var inscr=document.form1.q07_inscr.value;
 

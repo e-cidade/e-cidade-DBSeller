@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,6 +78,6 @@ if ( $clturma->numrows > 0 ) {
      parent.document.form1.ed16_i_capacidade.value = "0";
    }
  </script>
- <?
+ <?php
 }
 ?>

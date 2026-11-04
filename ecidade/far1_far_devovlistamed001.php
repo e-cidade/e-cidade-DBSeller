@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ $clRotulo->label("m60_descr");
     <form name='form1'>
     <center>
  <table border='0' cellspacing="0" style="border: 2px inset white;background-color: white">
-<?
+<?php
 
 if (    isset( $fa22_i_cgsund ) && !empty( $fa22_i_cgsund ) 
      && isset( $fa23_i_matersaude ) && !empty( $fa23_i_matersaude ) ) {

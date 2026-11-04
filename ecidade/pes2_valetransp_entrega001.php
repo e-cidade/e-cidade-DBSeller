@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -89,7 +89,7 @@ function js_emite(){
       </tr>
   <tr>
     <td nowrap colspan="2">
-    <?
+    <?php
   $gform->strngtipores = "glt";                // OPÇÕES PARA MOSTRAR NO TIPO DE RESUMO g - geral,
   $gform->tipores = true;
 
@@ -123,7 +123,7 @@ function js_emite(){
       <tr>
         <td ><b>Ordem</b</td>
         <td >
-         <?
+         <?php
            $x = array("a"=>"Alfabética","n"=>"Numérica");
            db_select('ordem',$x,true,4,"");
          ?>
@@ -132,7 +132,7 @@ function js_emite(){
       <tr>
         <td ><b>Vale</b</td>
         <td >
-         <?
+         <?php
            $xv = array("t"=>"Todos","a"=>"Ativos","i"=>"Inativos");
            db_select('vale',$xv,true,4,"");
          ?>
@@ -142,7 +142,7 @@ function js_emite(){
       <tr>
         <td ><b>Imprime Endereço</b</td>
         <td >
-         <?
+         <?php
            $arr_end = array("n"=>"Não","s"=>"Sim");
            db_select('endereco',$arr_end,true,4,"");
          ?>
@@ -162,7 +162,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

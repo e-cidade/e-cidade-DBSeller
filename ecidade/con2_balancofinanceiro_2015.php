@@ -25,17 +25,17 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Financeiro\Contabilidade\Relatorio\DCASP\BalancoFincanceiroDcasp2024;
+
 require_once modification("libs/db_stdlib.php");
 require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
-require_once modification("fpdf151/assinatura.php");
 require_once modification("libs/db_utils.php");
 require_once modification("libs/db_app.utils.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("libs/db_libcontabilidade.php");
 require_once modification("libs/db_liborcamento.php");
-require_once modification("fpdf151/PDFDocument.php");
 
 $oGet = db_utils::postMemory($_GET);
 $iAnoUsu = db_getsession("DB_anousu");
@@ -62,12 +62,45 @@ try {
         throw new Exception("Tipo de impressão não informado.");
     }
 
-    $oBalancoFinanceiro = new BalancoFinanceiroDCASP2015($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
-    $oBalancoFinanceiro->setInstituicoes($sListaInstituicoes);
-    $oBalancoFinanceiro->setExibirExercicioAnterior($sExercicioAnterior == 'true');
-    $oBalancoFinanceiro->setTipo($sTipoImpressao);
-    $oBalancoFinanceiro->setImprimirQuadroAuxiliar($oGet->quadroAuxiliar == 1);
-    $oBalancoFinanceiro->emitir();
+    if ($iAnoUsu < 2024) {
+        require_once modification("fpdf151/assinatura.php");
+        require_once modification("fpdf151/PDFDocument.php");
+
+        $oBalancoFinanceiro = new BalancoFinanceiroDCASP2015($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
+        $prefeitrura = InstituicaoRepository::getInstituicaoPrefeitura();
+
+        if ($prefeitrura->getUf() === 'RJ' && $prefeitrura->getMunicipio() === 'PATY DO ALFERES') {
+            $oBalancoFinanceiro = new BalancoFinanceiroDCASPPaty($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
+        }
+        $oBalancoFinanceiro->setInstituicoes($sListaInstituicoes);
+        $oBalancoFinanceiro->setExibirExercicioAnterior($sExercicioAnterior == 'true');
+        $oBalancoFinanceiro->setTipo($sTipoImpressao);
+        $oBalancoFinanceiro->setImprimirQuadroAuxiliar($oGet->quadroAuxiliar == 1);
+        $oBalancoFinanceiro->emitir();
+    }
+
+    if ($iAnoUsu >= 2024) {
+        $app = require_once ECIDADE_PATH . 'bootstrap/app.php';
+        $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+        $response = $kernel->handle(
+            $request = Illuminate\Http\Request::capture()
+        );
+        $filtros = [
+            'DB_anousu' => $_SESSION['DB_anousu'],
+            'DB_instit' => $_SESSION['DB_instit'],
+            'instituicoes' => explode(',', $sListaInstituicoes),
+            'periodo' => $iCodigoPeriodo,
+            'codigo_relatorio' => $iCodigoRelatorio,
+            'quadroAuxiliar' => $oGet->quadroAuxiliar == 1,
+            'tipoImpressao' => $_GET['tipoImpressao'],
+            'apresentarRecurso' => $_GET['apresentarRecurso'],
+            'imprimirValorExercicioAnterior' => $_GET['imprimirValorExercicioAnterior'] == 'true',
+        ];
+
+        $service = new BalancoFincanceiroDcasp2024($filtros);
+        $service->emitir();
+    }
+
 } catch (Exception $e) {
     db_redireciona("db_erros.php?db_erro=" . $e->getMessage());
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -76,7 +76,7 @@
 	<tr>
 		<td title="<?=$Tj01_matric?>"><?=$Lj01_matric?></td>
 		<td>
-		<?
+		<?php
   		db_input("j01_matric", 10, $Ij01_matric, true, 'text', 3);
   
 		?>
@@ -86,7 +86,7 @@
 	<tr>
       <td nowrap title="<?=@$Tar23_sequencial?>"><?=@$Lar23_sequencial?></td>
       <td>
-        <?
+        <?php
           db_input('ar23_sequencial',10,$Iar23_sequencial,true,'text', 3," readonly = \"readonly\"");
         ?>
       </td>
@@ -96,7 +96,7 @@
 	<tr>
 		<td nowrap title="<?=@$Tar23_data?>"><?=@$Lar23_data?></td>
 		<td>
-		<?
+		<?php
 		  db_inputdata('ar23_data',@$ar23_data_dia,@$ar23_data_mes,@$ar23_data_ano,true,'text',3,"");
 		?>
 		</td>
@@ -104,7 +104,7 @@
 	<tr>
 		<td nowrap title="<?=@$Tar23_hora?>"><?=@$Lar23_hora?></td>
 		<td>
-		<?
+		<?php
 		  db_input('ar23_hora',10,$Iar23_hora,true,'text',3,"");
 		?>
 		</td>
@@ -112,7 +112,7 @@
 	<tr>
 		<td nowrap title="<?=@$Tar23_tipo?>"><?=@$Lar23_tipo?></td>
 		<td>
-		<?
+		<?php
       $ar23_tipo = 1;
       db_input('ar23_tipo', 10, $Iar23_tipo, true, 'hidden', 3);
       $ar23_tipo_nome = "Manual";
@@ -124,7 +124,7 @@
 	<tr>
 		<td nowrap title="<?=@$Tar23_descricao?>"><?=@$Lar23_descricao?></td>
 		<td>
-		<?
+		<?php
 		  db_input('ar23_descricao',54,$Iar23_descricao,true,'text',$db_opcao,"");
 		?>
 		</td>
@@ -132,7 +132,7 @@
 	<tr>
 		<td nowrap title="<?=@$Tar23_ocorrencia?>"><?=@$Lar23_ocorrencia?></td>
 		<td>
-		<?
+		<?php
 		  db_textarea('ar23_ocorrencia',10,52,$Iar23_ocorrencia,true,'text',$db_opcao,"");
 		?>
 		</td>
@@ -145,7 +145,7 @@
 <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
       
       $campos  = "ar23_sequencial, ";
       $campos .= "ar23_tipo, ";

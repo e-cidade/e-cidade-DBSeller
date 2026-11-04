@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,7 +34,7 @@ $clrotulo->label("sd04_i_medico");
 <form name="form1" method="post" action="">
 <center>
 <table border="1" cellpadding="0" cellspacing="0" width="100%">
- <?
+ <?php
   $sql = "select distinct sd03_i_codigo,z01_numcgm,z01_nome,sd04_i_codigo
           from unidademedicos
            inner join medicos on sd03_i_codigo = sd04_i_medico
@@ -128,7 +128,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

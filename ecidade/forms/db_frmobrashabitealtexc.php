@@ -117,7 +117,7 @@ if ($daoParProjetos->erro_status != "0") {
             ?>
         </td>
       </tr>
-        <?
+        <?php
         if (isset($ob22_codhab) && trim($ob22_codhab) != "") {
             ?>
           <tr>

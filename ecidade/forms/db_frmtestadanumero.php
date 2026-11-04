@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltestadanumero->rotulo->label();
        <?=@$Lj15_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j15_codigo',10,$Ij15_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('j15_codigo',10,$Ij15_codigo,true,'text',$db_opcao,"")
        <?=@$Lj15_idbql?>
     </td>
     <td> 
-<?
+<?php
 db_input('j15_idbql',6,$Ij15_idbql,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('j15_idbql',6,$Ij15_idbql,true,'text',$db_opcao,"")
        <?=@$Lj15_face?>
     </td>
     <td> 
-<?
+<?php
 db_input('j15_face',4,$Ij15_face,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('j15_face',4,$Ij15_face,true,'text',$db_opcao,"")
        <?=@$Lj15_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('j15_numero',10,$Ij15_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('j15_numero',10,$Ij15_numero,true,'text',$db_opcao,"")
        <?=@$Lj15_compl?>
     </td>
     <td> 
-<?
+<?php
 db_input('j15_compl',50,$Ij15_compl,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('j15_compl',50,$Ij15_compl,true,'text',$db_opcao,"")
        <?=@$Lj15_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('j15_obs',0,0,$Ij15_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_testadanumero.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

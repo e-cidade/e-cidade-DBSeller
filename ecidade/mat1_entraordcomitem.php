@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ $clrotulo->label("e62_descr");
     <form name='form1'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php
    if (isset($m51_codordem) && $m51_codordem!= "") {
      $result=$clmatordemitem->sql_record($clmatordemitem->sql_query_servico(null,"*","","m52_codordem=$m51_codordem"));
      $numrows = $clmatordemitem->numrows;

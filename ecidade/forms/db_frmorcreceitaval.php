@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,16 +38,16 @@ $clrotulo->label("o70_codfon");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To71_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lo71_anousu,"js_pesquisao71_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $o71_anousu = db_getsession('DB_anousu');
 db_input('o71_anousu',4,$Io71_anousu,true,'text',$db_opcao," onchange='js_pesquisao71_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
        ?>
@@ -55,15 +55,15 @@ db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$To71_codrec?>">
-       <?
+       <?php
        db_ancora(@$Lo71_codrec,"js_pesquisao71_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o71_codrec',6,$Io71_codrec,true,'text',$db_opcao," onchange='js_pesquisao71_codrec(false);'")
 ?>
-       <?
+       <?php
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
 db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
        ?>
@@ -74,7 +74,7 @@ db_input('o70_codfon',6,$Io70_codfon,true,'text',3,'');
        <?=@$Lo71_mes?>
     </td>
     <td> 
-<?
+<?php
 db_input('o71_mes',2,$Io71_mes,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('o71_mes',2,$Io71_mes,true,'text',$db_opcao,"");
        <?=@$Lo71_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o71_valor',15,$Io71_valor,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -176,7 +176,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_orcreceitaval.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

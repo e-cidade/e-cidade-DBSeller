@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,16 +25,19 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-$clcriaabas     = new cl_criaabas;
-$db_opcao = 1;
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
+
+db_postmemory($_POST);
+
+$clcriaabas = new cl_criaabas;
+$db_opcao   = 1;
 ?>
+
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -55,10 +58,13 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
-	 $clcriaabas->identifica = array("averbacao"=>"Averbação","averbacgm"=>"Cgm"); 
-	 $clcriaabas->src = array("averbacao"=>"cad1_averbacao004.php?j75_matric=$j01_matric&z01_nome=$z01_nome");
-	 $clcriaabas->disabled   =  array("averbacgm"=>"true"); 
+     <?php
+	 $clcriaabas->identifica = array("averbacao"=>"Averbação","averbacgm"=>"Cgm", "propri"=>"Fração por proprietário"); 
+	 $clcriaabas->src        = array(
+                              "averbacao"=>"cad1_averbacao004.php?j75_matric=$j01_matric&z01_nome=$z01_nome", 
+                              "propri"=>"cad1_proprialt.php?alterando=true&j01_matric=$j01_matric&j01_tipoimovel=1&apenasFracao=true"
+                            );
+	 $clcriaabas->disabled   = array("averbacgm"=>"true"); 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>
@@ -66,7 +72,7 @@ $db_opcao = 1;
   </table>
   <form name="form1">
   </form>
-      <? 
+      <?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 ##Modelo de estagio probatorio; 
 $troca = 1;
 $nomePresidente = $this->objEstagio->getPresidenteComissao(); 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ $clorcorgao->rotulo->label("o40_descr");
 <table width="35%" border="0" align="center" cellspacing="0">
 <form name="form1" method="post" action="" >
 
-<?
+<?php
 if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 <tr> 
@@ -66,7 +66,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 <?=$Lcodigo?>
 </td>
 <td width="96%" align="left" nowrap> 
-<?
+<?php
 	if (!isset($instituicao)) {
 		$instituicao = db_getsession("DB_instit");
 	}
@@ -75,7 +75,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 </td>
 </tr>
-<?
+<?php
 }
 ?>
 
@@ -84,7 +84,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 <?=$Lcoddepto?>
 </td>
 <td width="96%" align="left" nowrap> 
-<?
+<?php
 db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 ?>
 </td>
@@ -94,7 +94,7 @@ db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 <?=$Ldescrdepto?>
 </td>
 <td width="96%" align="left" nowrap> 
-<?
+<?php
 db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 ?>
 </td>
@@ -118,7 +118,7 @@ db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 </tr>
 <tr> 
 <td align="center" valign="top"> 
-<?
+<?php
 
 
 

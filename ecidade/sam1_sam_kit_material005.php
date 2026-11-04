@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if (isset($alterar)) {
                                           '&sm03_descr=<?=$sm03_descr?>';
 
    </script>
-   <?
+   <?php
 
 }
 ?>
@@ -79,7 +79,7 @@ if (isset($alterar)) {
         <tr> 
           <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
             <center>
-            <?
+            <?php
             include(modification("forms/db_frmsam_kit_material.php"));
             ?>
             </center>
@@ -89,7 +89,7 @@ if (isset($alterar)) {
     </center>
   </body>
 </html>
-<?
+<?php
 
 if (isset($alterar)) {
 

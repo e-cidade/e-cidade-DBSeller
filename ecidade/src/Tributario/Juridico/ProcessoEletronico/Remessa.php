@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -93,7 +93,6 @@ class Remessa
         $oRemessa = $entrega->entregarManifestacaoProcessual($dados);
 
         try {
-
             $oSoap    = new Servico($this->getConfiguracao()->getUrlParaRequisicao());
             $oRetorno = $oSoap->entregarManifestacaoProcessual($oRemessa);
 
@@ -104,11 +103,9 @@ class Remessa
             }
 
             return $oRetornoParsed;
-
         } catch (\Exception $oErro) {
             throw new \BusinessException("Erro de comunicação com o Serviço do TJ/RJ: ".$oErro->getMessage());
         }
-
     }
 
 

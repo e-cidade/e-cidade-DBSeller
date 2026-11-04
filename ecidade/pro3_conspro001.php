@@ -91,7 +91,7 @@ function js_mostra_andam(processo){
                  <strong>Numero do Processo:</strong>
               </td>
               <td> 
-                <?
+                <?php
                   db_input('numeroProcesso',10,"",true,'text',$db_opcao,"");
                 ?>
                </td>
@@ -99,12 +99,12 @@ function js_mostra_andam(processo){
           
 					  <tr>
 					    <td nowrap title="<?=@$Tp58_codproc?>">
-					       <?
+					       <?php
 					         db_ancora(@$Lp58_codproc,"js_pesquisap58_codproc(true);",$db_opcao);
 					       ?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_input('p58_codproc',10,$Ip58_codproc,true,'text',$db_opcao," onchange='js_pesquisap58_codproc(false);'");
 								  db_input('p58_requer',40,$Ip58_requer,true,'text',3,'');
 								?>
@@ -117,12 +117,12 @@ function js_mostra_andam(processo){
 					  ?>
 			      <tr>
 			        <td title="<?=$Tp58_numcgm;?>">
-			          <?
+			          <?php
 			            db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",1);
 			          ?>
 			        </td>
 			        <td>
-			          <?
+			          <?php
 			            db_input("p58_numcgm",10,"",true,"text", $db_opcao, "onchange='js_pesquisap58_numcgm(false);'");
 			            db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
 			          ?>
@@ -145,7 +145,7 @@ function js_mostra_andam(processo){
     </tr>
 	</table>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -205,7 +205,7 @@ onLoad=document.form1.p58_codproc.select();
 onLoad=document.form1.p58_codproc.focus();
 
 </script>
-<?
+<?php
 
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
  

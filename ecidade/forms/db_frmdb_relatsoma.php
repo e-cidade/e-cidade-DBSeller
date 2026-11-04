@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
        <?=@$Ldb96_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db96_codigo',10,$Idb96_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb96_codrel?>">
-       <?
+       <?php
        db_ancora(@$Ldb96_codrel,"js_pesquisadb96_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db96_codrel',10,$Idb96_codrel,true,'text',$db_opcao," onchange='js_pesquisadb96_codrel(false);'")
 ?>
-       <?
+       <?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb96_codcam?>">
-       <?
+       <?php
        db_ancora(@$Ldb96_codcam,"js_pesquisadb96_codcam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db96_codcam',5,$Idb96_codcam,true,'text',$db_opcao," onchange='js_pesquisadb96_codcam(false);'")
 ?>
-       <?
+       <?php
 db_input('nomecam',40,$Inomecam,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db96_codigo"=>@$db96_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatsoma->sql_query_file($db96_codigo);

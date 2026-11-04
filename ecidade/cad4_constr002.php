@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -55,21 +55,21 @@ if(isset($incluir)){
      $result = $cliptuconstr->sql_record($cliptuconstr->sql_query_file($j39_matric,"",'max(j39_idcons) as j39_idcons'));
      if($cliptuconstr->numrows>0){
        db_fieldsmemory($result,0);
-     }else{ 
+     }else{
        $j39_idcons = 0;
      }
      $j39_idcons = $j39_idcons + 1;
-   }      
+   }
    $cliptuconstr->incluir($j39_matric,$j39_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz=explode("X",$caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j48_caract = $matriz[$i];
      if($j48_caract!=""){
        $clcarconstr->incluir($j39_matric,$j39_idcons,$j48_caract);
-     }  
+     }
    }
   db_fim_transacao();
-  $db_botao=1; 
+  $db_botao=1;
 }else{
   if(isset($alterar)){
     db_inicio_transacao();
@@ -78,22 +78,22 @@ if(isset($incluir)){
     $clcarconstr->excluir();
 
     $cliptuconstr->alterar($j39_matric,$j39_idcons);
-    $matriz= split("X",$caracteristica);
+    $matriz=explode("X",$caracteristica);
     for($i=0;$i<sizeof($matriz);$i++){
       $j48_caract = $matriz[$i];
       if($j48_caract!=""){
         $clcarconstr->incluir($j39_matric,$j39_idcons,$j48_caract);
-      }  
+      }
     }
     db_fim_transacao();
-    $db_botao=2; 
-    
-  }else{ 
+    $db_botao=2;
+
+  }else{
     if(isset($j39_idcons)&&$j39_idcons!=""){
       $result = $cliptuconstr->sql_record($cliptuconstr->sql_query($j39_matric,$j39_idcons,"*","",""));
       if($cliptuconstr->numrows!=0){
         $db_opcaoid=3;
-        $db_botao=2;  
+        $db_botao=2;
         db_fieldsmemory($result,0);
         $result = $clcarconstr->sql_record($clcarconstr->sql_query($j39_matric,$j39_idcons,"","*"));
         $caracteristica = null;
@@ -103,19 +103,19 @@ if(isset($incluir)){
           $caracteristica .= $car.$j48_caract ;
           $car="X";
         }
-        $caracteristica .= $car; 
+        $caracteristica .= $car;
       }else{
-          $j39_idcons="";   
+          $j39_idcons="";
       }
     }else{
-      if(isset($j39_matric)){  
+      if(isset($j39_matric)){
         $result = $cliptuconstr->sql_record($cliptuconstr->sql_query($j39_matric,"","j39_matric"));
         @db_fieldsmemory($result,0);
         if($cliptuconstr->numrows==0){
           db_redireciona("cad4_constr001.php?invalido=true");
         }
-      }  
-    }   
+      }
+    }
   }
 }
 $db_opcao=1;
@@ -127,25 +127,25 @@ $db_opcao=1;
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<script> 	
+<script>
   function js_trocaid(valor){
    location.href="cad4_constr002.php?permi=true&j39_matric=<?=$j39_matric?>&j39_idcons="+valor;
   }
   function js_verificaid(valor){
-     num=(document.form1.selid.options.length)-1;   
+     num=(document.form1.selid.options.length)-1;
     for(i=1;i<=num;i++){
-      selid=document.form1.selid.options[i].value;   
-      if(valor==selid){ 
+      selid=document.form1.selid.options[i].value;
+      if(valor==selid){
         alert("Construção já cadastrada!");
         document.form1.j39_idcons.value="";
         document.form1.j39_idcons.focus();
-        return false;  
-        break;   
-      }  
+        return false;
+        break;
+      }
    }
 
   }
-</script> 	
+</script>
 <style type="text/css">
 <!--
 td {
@@ -165,7 +165,7 @@ input {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_trocacordeselect()"  >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -178,12 +178,12 @@ input {
     <td align="left" valign="center" bgcolor="#CCCCCC">
       <center>
       <table border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td>          
+        <tr>
+          <td>
            <?=$Lj39_matric?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   $result = $cliptubase->sql_record($cliptubase->sql_query($j39_matric,"z01_nome"));
   db_fieldsmemory($result,0);
   db_input('j39_matric',5,$Ij39_matric,true,'text',3,"");
@@ -191,108 +191,108 @@ input {
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_idcons?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_idcons',5,$Ij39_idcons,true,'text',$db_opcaoid,"");
 ?>
           </td>
-        
+
           <td rowspan="8" valign="top">
             <table border="0" cellpadding="0" cellspacing="0">
-              <tr><td><b>Construções já Cadastradas</b></td></tr> 
+              <tr><td><b>Construções já Cadastradas</b></td></tr>
               <tr>
-                <td align="center">  
-<?
+                <td align="center">
+<?php
   $result = $cliptuconstr->sql_record($cliptuconstr->sql_query_file($j39_matric,"","j39_idcons","",""));
   $num=$cliptuconstr->numrows;
-  if($num!=""){  
+  if($num!=""){
     echo "<select name='selid' onchange='js_trocaid(this.value)'  size='".($num>7?8:($num+1))."'>";
-    echo "<option value='nova' ".(!isset($j39_idcons)?"selected":"").">Nova</option>"; 
-    $idcons=$j39_idcons;  
-    for($i=0;$i<$num;$i++){  
+    echo "<option value='nova' ".(!isset($j39_idcons)?"selected":"").">Nova</option>";
+    $idcons=$j39_idcons;
+    for($i=0;$i<$num;$i++){
       db_fieldsmemory($result,$i);
-      echo "<option  value='".$j39_idcons."' ".($j39_idcons==$idcons?"selected":"").">$j39_idcons</option>";         
+      echo "<option  value='".$j39_idcons."' ".($j39_idcons==$idcons?"selected":"").">$j39_idcons</option>";
     }
-  } 
-?> 
+  }
+?>
                 </td>
               </tr>
-            </table>     
+            </table>
           </td>
         </tr>
-        <tr> 
-          <td>          
+        <tr>
+          <td>
            <?=$Lj39_ano?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_ano',5,$Ij39_ano,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_area?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_area',5,$Ij39_area,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_areap?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_areap',5,$Ij39_areap,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_dtlan?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',2,"");
 ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj39_codigo?>">
-<?
+<?php
   db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao);
 ?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_codigo',5,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
           <td>
         <tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_numero?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_numero',5,$Ij39_numero,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj39_compl?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j39_compl',5,$Ij39_compl,true,'text',1,"");
 ?>
           </td>
@@ -300,13 +300,13 @@ input {
         <tr>
           <td>
             <b>
-<?
+<?php
   db_ancora("Características","js_mostracaracteristica();",1);
 ?>
-            </b> 
+            </b>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('caracteristica',15,1,true,'hidden',1,"")
 ?>
           <td>
@@ -318,7 +318,7 @@ input {
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -352,14 +352,14 @@ function js_mostraruas1(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostraruas(chave,erro){
-  document.form1.j14_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.j39_codigo.focus(); 
-    document.form1.j39_codigo.value = ''; 
+  document.form1.j14_nome.value = chave;
+  if(erro==true){
+    document.form1.j39_codigo.focus();
+    document.form1.j39_codigo.value = '';
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

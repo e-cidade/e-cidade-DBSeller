@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clruas->rotulo->label("j14_nome");
               <?=$Lj14_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j14_codigo",7,$Ij14_codigo,true,"text",4,"","chave_j14_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clruas->rotulo->label("j14_nome");
               <?=$Lj14_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j14_nome",40,$Ij14_nome,true,"text",4,"","chave_j14_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clruas->rotulo->label("j14_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(isset($nomerua) && !isset($pesquisar)){
 	echo "<script>document.form2.chave_j14_nome.value = '$nomerua'</script>";
       }
@@ -135,12 +135,12 @@ $clruas->rotulo->label("j14_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

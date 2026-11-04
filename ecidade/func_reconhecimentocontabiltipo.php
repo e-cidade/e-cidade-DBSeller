@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $sWere  = "     1 = 1";
               <?=$Lc111_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c111_sequencial",10,$Ic111_sequencial,true,"text",4,"","chave_c111_sequencial");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $sWere  = "     1 = 1";
               <?=$Lc111_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c111_descricao",60,$Ic111_descricao,true,"text",4,"","chave_c111_descricao");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $sWere  = "     1 = 1";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_reconhecimentocontabiltipo.php")==true){
@@ -128,12 +128,12 @@ $sWere  = "     1 = 1";
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

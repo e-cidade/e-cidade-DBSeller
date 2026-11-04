@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,16 +39,16 @@ $clrotulo->label("c53_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To59_anousu?>">
-       <?
+       <?php
        db_ancora(@$Lo59_anousu,"js_pesquisao59_anousu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 $o59_anousu = db_getsession('DB_anousu');
 db_input('o59_anousu',4,$Io59_anousu,true,'text',$db_opcao," onchange='js_pesquisao59_anousu(false);'")
 ?>
-       <?
+       <?php
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
        ?>
@@ -56,15 +56,15 @@ db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$To59_coddot?>">
-       <?
+       <?php
        db_ancora(@$Lo59_coddot,"js_pesquisao59_coddot(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o59_coddot',6,$Io59_coddot,true,'text',$db_opcao," onchange='js_pesquisao59_coddot(false);'")
 ?>
-       <?
+       <?php
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
 db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
        ?>
@@ -75,22 +75,22 @@ db_input('o58_orgao',2,$Io58_orgao,true,'text',3,'');
        <?=@$Lo59_mes?>
     </td>
     <td> 
-<?
+<?php
 db_input('o59_mes',2,$Io59_mes,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To59_coddoc?>">
-       <?
+       <?php
        db_ancora(@$Lo59_coddoc,"js_pesquisao59_coddoc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o59_coddoc',4,$Io59_coddoc,true,'text',$db_opcao," onchange='js_pesquisao59_coddoc(false);'")
 ?>
-       <?
+       <?php
 db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')
        <?=@$Lo59_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o59_valor',15,$Io59_valor,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -211,7 +211,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_orcdotacaoval.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+require(modification("app/Helpers/Configuracao/VerificaMunicipio.php"));
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -35,6 +35,9 @@ db_postmemory($_POST);
 $clconcilia = new cl_concilia();
 $clconcilia->rotulo->label("k68_sequencial");
 $clconcilia->rotulo->label("k68_contabancaria");
+
+$instit = db_getsession('DB_instit');
+$anoUsu = db_getsession('DB_anousu');
 ?>
 <html>
 <head>
@@ -49,29 +52,35 @@ $clconcilia->rotulo->label("k68_contabancaria");
       <table width="35%" border="0" align="center" cellspacing="0">
         <form name="form2" method="post" action="">
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tk68_sequencial ?>">
-              <?= $Lk68_sequencial ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tk68_sequencial ?>">
+              <?php echo $Lk68_sequencial ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
               db_input("k68_sequencial", 10, $Ik68_sequencial, true, "text", 4, "", "chave_k68_sequencial");
               ?>
             </td>
           </tr>
           <tr>
-            <td width="4%" align="right" nowrap title="<?= $Tk68_contabancaria ?>">
-              <?= $Lk68_contabancaria ?>
+            <td width="4%" align="right" nowrap title="<?php echo $Tk68_contabancaria ?>">
+              <?php echo $Lk68_contabancaria ?>
             </td>
             <td width="96%" align="left" nowrap>
               <?php
 
               $sCamposContas = "distinct db83_sequencial , db83_descricao || '  Conta:' || db83_conta ||'-'|| db83_dvconta";
-              $sWhereContas  = "db83_contaplano is true and c61_instit = " . db_getsession('DB_instit');
+              $sWhereContas  = "db83_contaplano is true and c61_instit = " . $instit;
+              
+              if(isNiteroi()){
+                  $sWhereContas = "db83_contaplano is true and db83_instit = " . $instit;
+                  $sWhereContas .= " and c56_anousu = " . $anoUsu;
+              }
+
               $sOrderContas  = "db83_sequencial";
 
               $oDaoContas = new cl_contabancaria();
               $sql_contas = $oDaoContas->sql_query_planocontas(null, $sCamposContas, $sOrderContas, $sWhereContas);
-              $record_contas = pg_query($sql_contas);
+              $record_contas = db_query($sql_contas);
               db_selectrecord("db83_sequencial", $record_contas, true, 2, "", "", "", "", "document.form2.submit()");
               ?>
             </td>
@@ -91,10 +100,13 @@ $clconcilia->rotulo->label("k68_contabancaria");
     <td align="center" valign="top">
       <?php
 
-      $iInstituicao = db_getsession('DB_instit');
-
       $aWhere   = array();
-      $aWhere[] = "c61_instit = {$iInstituicao}";
+    
+      if(isNiteroi()){          
+          $aWhere[] = "db83_instit = {$instit}";          
+      } else {
+          $aWhere[] = "c61_instit = {$instit}";
+      }
 
       if (!isset($pesquisa_chave)) {
 
@@ -118,19 +130,22 @@ $clconcilia->rotulo->label("k68_contabancaria");
         } else if (isset($db83_sequencial) && $db83_sequencial != 0) {
 
           $sOrder = "k68_data desc";
-          $sWhere[] = "k68_contabancaria = {$db83_sequencial}";
+          $aWhere[] = "k68_contabancaria = {$db83_sequencial}";
         }
 
         $sCampos = "distinct {$campos}";
-        $sWhere = implode(" and ", $aWhere);
-        $sql    = $clconcilia->sql_query(null, $sCampos, $sOrder, $sWhere);
+        $sWhere = implode(" and ", $aWhere);                
+        $sql = $clconcilia->sql_query(null, $sCampos, $sOrder, $sWhere);
+
+        if(isNiteroi()){
+          $sql = $clconcilia->sql_query_conta(null, $sCampos, $sOrder, $sWhere);
+        }
 
         $repassa = array();
 
         if (isset($db83_sequencial)) {
           $repassa = array("k68_sequencial" => $k68_sequencial, "db83_sequencial" => $db83_sequencial);
-        }
-
+        }        
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
       } else {
 
@@ -157,12 +172,12 @@ $clconcilia->rotulo->label("k68_contabancaria");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

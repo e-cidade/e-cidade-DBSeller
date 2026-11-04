@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ $escola = db_getsession("DB_coddepto");
    <b>Selecione o Calendário:</b>
    <select name="calendario" onChange="js_procurar(this.value)" style="font-size:9px;width:250px;height:18px;">
     <option></option>
-    <?
+    <?php
     $sql = "SELECT ed52_i_codigo,ed52_c_descr
             FROM calendario
              inner join calendarioescola on ed38_i_calendario = ed52_i_codigo
@@ -89,13 +89,13 @@ $escola = db_getsession("DB_coddepto");
      $desc_curso=$row["ed52_c_descr"];
      ?>
      <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-     <?
+     <?php
     }
     ?>
    </select>
   </td>
  </tr>
- <?
+ <?php
  if(isset($calendario)){
   $result = $clturma->sql_record($clturma->sql_query_turmaserie("","DISTINCT ed11_i_ensino,ed11_c_descr,ed220_c_aprovauto,ed57_c_descr,ed10_c_descr,ed223_i_serie,ed10_c_abrev,ed11_i_sequencia,ed57_i_calendario","ed10_c_abrev,ed11_i_sequencia,ed57_c_descr"," ed57_i_calendario = $calendario"));
   $primeiro = "";
@@ -108,7 +108,7 @@ $escola = db_getsession("DB_coddepto");
      <tr class="titulo">
       <td colspan="3"><?=$ed10_c_descr?></td>
      </tr>
-     <?
+     <?php
      $primeiro = $ed11_i_ensino;
     }
     if($primeiro1!=$ed223_i_serie){
@@ -121,7 +121,7 @@ $escola = db_getsession("DB_coddepto");
       <td width="20%"><b>Turma</b></td>
       <td><b>Aprovação Automática</b></td>
      </tr>
-     <?
+     <?php
      $primeiro1 = $ed223_i_serie;
     }
     ?>
@@ -130,14 +130,14 @@ $escola = db_getsession("DB_coddepto");
      <td class="aluno" width="20%">&nbsp;&nbsp;<a href="javascript:parent.db_iframe_geral.hide();parent.location.href='edu4_aprovautomatica001.php?calendario=<?=$ed57_i_calendario?>&serie=<?=$ed223_i_serie?>'"><?=$ed57_c_descr?></a></td>
      <td><?=$ed220_c_aprovauto=="S"?"SIM":"NÃO"?></td>
     </tr>
-    <?
+    <?php
    }
   }else{
    ?>
    <tr class="cabec1">
     <td colspan="3" align="center"><br>Nenhuma turma cadastrada neste calendário.<br><br></td>
    </tr>
-   <?
+   <?php
   }
  }
  ?>

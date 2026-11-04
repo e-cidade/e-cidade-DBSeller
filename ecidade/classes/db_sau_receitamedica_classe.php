@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,13 +70,13 @@ class cl_sau_receitamedica {
                  s158_c_hora = char(5) = Hora do sistema
                  ";
    //funcao construtor da classe
-   function cl_sau_receitamedica() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_receitamedica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_sau_receitamedica {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s158_i_codigo = ($this->s158_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s158_i_codigo"]:$this->s158_i_codigo);
        $this->s158_i_profissional = ($this->s158_i_profissional == ""?@$GLOBALS["HTTP_POST_VARS"]["s158_i_profissional"]:$this->s158_i_profissional);
@@ -115,7 +115,7 @@ class cl_sau_receitamedica {
      }
    }
    // funcao para inclusao
-   function incluir ($s158_i_codigo){
+   public function incluir ($s158_i_codigo){
       $this->atualizacampos();
      if($this->s158_i_profissional == null ){
        $this->erro_sql = " Campo Profissional não Informado.";
@@ -286,7 +286,7 @@ class cl_sau_receitamedica {
      return true;
    }
    // funcao para alteracao
-   function alterar ($s158_i_codigo=null) {
+   public function alterar ($s158_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update sau_receitamedica set ";
      $virgula = "";
@@ -499,7 +499,7 @@ class cl_sau_receitamedica {
      }
    }
    // funcao para exclusao
-   function excluir ($s158_i_codigo=null,$dbwhere=null) {
+   public function excluir ($s158_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($s158_i_codigo));
      }else{
@@ -568,7 +568,7 @@ class cl_sau_receitamedica {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -591,10 +591,10 @@ class cl_sau_receitamedica {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -630,10 +630,10 @@ class cl_sau_receitamedica {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -654,7 +654,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,10 +664,10 @@ class cl_sau_receitamedica {
      return $sql;
   }
 
-  function sql_query_prontuario ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_prontuario ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -695,7 +695,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -705,11 +705,11 @@ class cl_sau_receitamedica {
      return $sql;
   }
 
-  function sql_query_medicamentos ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_medicamentos ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -742,7 +742,7 @@ class cl_sau_receitamedica {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

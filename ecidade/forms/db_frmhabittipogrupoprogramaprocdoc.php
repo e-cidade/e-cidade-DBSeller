@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,7 +70,7 @@ if (isset($db_opcaoal)) {
 		      <b>Código:</b>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('ht09_sequencial',10,$Iht09_sequencial,true,'text',3,"")
 		      ?>
 		    </td>
@@ -80,7 +80,7 @@ if (isset($db_opcaoal)) {
 		      <?=@$Lht09_habittipogrupoprograma?>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('ht09_habittipogrupoprograma',10,$Iht09_habittipogrupoprograma,true,'text',3,"");
 		        db_input('ht02_descricao',50,$Iht02_descricao,true,'text',3,'');
 		      ?>
@@ -88,12 +88,12 @@ if (isset($db_opcaoal)) {
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tht09_procdoc?>">
-		      <?
+		      <?php
 		        db_ancora(@$Lht09_procdoc,"js_pesquisaht09_procdoc(true);",$db_opcao);
 		      ?>
 		    </td>
 		    <td> 
-		      <?
+		      <?php
 		        db_input('ht09_procdoc',10,$Iht09_procdoc,true,'text',$db_opcao," onchange='js_pesquisaht09_procdoc(false);'");
 		        db_input('p56_descr',50,$Ip56_descr,true,'text',3,'');
 		      ?>
@@ -106,7 +106,7 @@ if (isset($db_opcaoal)) {
 		      <table>
 		        <tr>
 		          <td nowrap title="<?=@$Tht09_obs?>"> 
-		            <?
+		            <?php
 		              db_textarea('ht09_obs',8,78,$Iht09_obs,true,'text',$db_opcao,"");
 		            ?>
 		          </td>
@@ -124,7 +124,7 @@ if (isset($db_opcaoal)) {
 						      <?=@$Lht09_obrigatorio?>
 						    </td>
 						    <td> 
-						      <?
+						      <?php
 						        $aObrigatorio = array("t"=>"SIM","f"=>"NÃO");
 						        db_select('ht09_obrigatorio',$aObrigatorio,true,$db_opcao,"");
 						      ?>
@@ -161,7 +161,7 @@ if (isset($db_opcaoal)) {
   <table>
     <tr>
       <td valign="top"  align="center">  
-        <?
+        <?php
           $chavepri= array("ht09_sequencial"=>@$ht09_sequencial);
           
           $sWhere                       = "ht09_habittipogrupoprograma = ".@$ht02_sequencial;

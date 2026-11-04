@@ -56,7 +56,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("g1"=>"Dados Programa",
                                        "g5"=>"Objetivos",
                                        "g4"=>"Indicadores",
@@ -84,7 +84,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

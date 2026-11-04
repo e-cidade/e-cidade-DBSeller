@@ -109,21 +109,21 @@ if (isset($confirma)) {
     <table>
       <tr>
 		<td nowrap title="<?=@$Tla22_i_codigo?>">
-         <? db_ancora ( '<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "" );?>
+         <?php db_ancora ( '<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "" );?>
         </td>
 		<td>
-         <? db_input ( 'la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"", " onchange='js_pesquisala22_i_codigo(false);'" )?>
-         <? db_input ( 'z01_v_nome2', 50, @$Iz01_v_nome, true, 'text', 3, '' )?>
+         <?php db_input ( 'la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"", " onchange='js_pesquisala22_i_codigo(false);'" )?>
+         <?php db_input ( 'z01_v_nome2', 50, @$Iz01_v_nome, true, 'text', 3, '' )?>
         </td>
 	  </tr>
       <tr>
 		<td nowrap title="requiitem">
-         <? db_ancora ( '<b>Exame</b>', "js_pesquisala21_i_codigo(true);", "" );?>
+         <?php db_ancora ( '<b>Exame</b>', "js_pesquisala21_i_codigo(true);", "" );?>
         </td>
 		<td>
-		 <? db_input ( 'la08_i_codigo', 10, @$Ila08_i_codigo, true, 'text',"", " onchange='js_pesquisala21_i_codigo(false);'" )?>
-         <? db_input ( 'la21_i_codigo', 10, @$Ila21_i_codigo, true, 'hidden',"", " onchange='js_pesquisala21_i_codigo(false);'" )?>
-         <? db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
+		 <?php db_input ( 'la08_i_codigo', 10, @$Ila08_i_codigo, true, 'text',"", " onchange='js_pesquisala21_i_codigo(false);'" )?>
+         <?php db_input ( 'la21_i_codigo', 10, @$Ila21_i_codigo, true, 'hidden',"", " onchange='js_pesquisala21_i_codigo(false);'" )?>
+         <?php db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
         </td>
 	  </tr>
        <tr>
@@ -138,7 +138,7 @@ if (isset($confirma)) {
   </td>
  </tr>
 </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -244,7 +244,7 @@ function valida_form(e) {
 
 
 </script>
-<?
+<?php
 if (isset($confirma)) {
 
   if ($cllab_requiitem->erro_status=="0") {

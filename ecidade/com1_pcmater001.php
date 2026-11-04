@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,46 +44,47 @@ $clpcgrupo = new cl_pcgrupo;
 $clpcsubgrupo = new cl_pcsubgrupo;
 $db_opcao = 1;
 $db_botao = true;
-if(((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir")){	
+if(((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir")){
   db_inicio_transacao();
-  $sqlerro=false;  
+  $sqlerro=false;
   $clpcmater->pc01_descrmater = pg_escape_string(trim(@$pc01_descrmater));
+  $clpcmater->pc01_familia = $m105_sequencial ?: null;
   $clpcmater->pc01_libaut = @$pc01_libaut;
   $clpcmater->pc01_ativo = "false";
   $clpcmater->pc01_conversao = "false";
-  $clpcmater->incluir(null);  
+  $clpcmater->incluir(null);
   if($clpcmater->erro_status==0){
     $sqlerro = true;
   }else{
     $codmater =  $clpcmater->pc01_codmater;
   }
   if($sqlerro==false){
-    $arr =  split("XX",$codeles);
+    $arr = explode("XX",$codeles);
     for($i=0; $i<count($arr); $i++ ){
       if($sqlerro==false){
-        $elemento = $arr[$i];  
+        $elemento = $arr[$i];
         if(trim($elemento)!=""){
           $clpcmaterele->pc07_codmater = $codmater;
           $clpcmaterele->pc07_codele = $elemento;
-  	      $clpcmaterele->incluir($codmater,$elemento); 
+  	      $clpcmaterele->incluir($codmater,$elemento);
             if($clpcmaterele->erro_status==0){
               $sqlerro = true;
               break;
           }
         }
-      }      
-    }	 
+      }
+    }
   }
   db_fim_transacao($sqlerro);
 }
-if (isset($impmater)) {  
-	
+if (isset($impmater)) {
+
 	$sCampos        = "pc01_descrmater,pc01_complmater,pc01_codsubgrupo,pc01_ativo,pc01_conversao,";
 	$sCampos       .= "pc03_codgrupo as pc01_codgrupo,pc01_libaut,pc01_servico";
 	$sSqlPcMater    = $clpcmater->sql_query($impmater, $sCampos, null, "");
-  $result_pcmater = $clpcmater->sql_record($sSqlPcMater);  
+  $result_pcmater = $clpcmater->sql_record($sSqlPcMater);
   if($clpcmater->numrows>0){
-    db_fieldsmemory($result_pcmater,0);	  
+    db_fieldsmemory($result_pcmater,0);
   }
 }
 ?>
@@ -103,7 +104,7 @@ function js_iniciar() {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_iniciar()" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -112,24 +113,24 @@ function js_iniciar() {
 </table>
 <center>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
 		<td>&nbsp;</td>
-	</tr> 
-  <tr> 
-    <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-			<?
+	</tr>
+  <tr>
+    <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
+			<?php
 				include(modification("forms/db_frmpcmater.php"));
 			?>
 		</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
@@ -144,7 +145,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   };
 };
 ?>
-<?
+<?php
 if($db_opcao=="3"){
   echo "
   if(pcmater0011.document.form1.nexclui.value=='T'){
@@ -153,7 +154,7 @@ if($db_opcao=="3"){
     document.form1.db_opcao.disabled=false;
   }
   ";
-}else if($db_opcao=="1" && !(isset($HTTP_POST_VARS["db_opcao"])) && !isset($impmater) && !isset($codigomater) && !isset($pc01_codmater)){  
+}else if($db_opcao=="1" && !(isset($HTTP_POST_VARS["db_opcao"])) && !isset($impmater) && !isset($codigomater) && !isset($pc01_codmater)){
   echo "
   <script>
     document.form1.importar.click();

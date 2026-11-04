@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmatordemitem->rotulo->label("m52_codlanc");
               <?=$Lm52_codlanc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m52_codlanc",10,$Im52_codlanc,true,"text",4,"","chave_m52_codlanc");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatordemitem->rotulo->label("m52_codlanc");
               <?=$Lm52_codlanc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m52_codlanc",10,$Im52_codlanc,true,"text",4,"","chave_m52_codlanc");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatordemitem->rotulo->label("m52_codlanc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordemitem.php")==true){
@@ -118,12 +118,12 @@ $clmatordemitem->rotulo->label("m52_codlanc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

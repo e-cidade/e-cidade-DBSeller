@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,31 +123,31 @@ function js_mostraveiccadcomb1(chave1,chave2){
       </tr>      
       <tr>
     <td nowrap title="<?=@$Tve01_veiccadtipo?>">
-       <?
+       <?php
        db_ancora(@$Lve01_veiccadtipo,"js_pesquisave01_veiccadtipo(true);",4);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ve01_veiccadtipo',10,$Ive01_veiccadtipo,true,'text',4," onchange='js_pesquisave01_veiccadtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('ve20_descr',40,$Ive20_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tve06_veiccadcomb?>">
-       <?
+       <?php
        db_ancora(@$Lve06_veiccadcomb,"js_pesquisave06_veiccadcomb(true);",4);
        ?>
     </td>
     <td> 
-<?
+<?php
 
 db_input('ve06_veiccadcomb',10,$Ive06_veiccadcomb,true,'text',4," onchange='js_pesquisave06_veiccadcomb(false);'")
 ?>
-       <?
+       <?php
 db_input('ve26_descr',40,$Ive26_descr,true,'text',3,'')
        ?>
     </td>
@@ -157,7 +157,7 @@ db_input('ve26_descr',40,$Ive26_descr,true,'text',3,'')
        <?=@$Lve01_dtaquis?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ve01_dtaquis',@$ve01_dtaquis_dia,@$ve01_dtaquis_mes,@$ve01_dtaquis_ano,true,'text',4,"");
 echo "<b> a </b>";
 db_inputdata('ve01_dtaquis1',@$ve01_dtaquis_dia,@$ve01_dtaquis_mes,@$ve01_dtaquis_ano,true,'text',4,"");
@@ -169,7 +169,7 @@ db_inputdata('ve01_dtaquis1',@$ve01_dtaquis_dia,@$ve01_dtaquis_mes,@$ve01_dtaqui
         <strong>Buscar por :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <? 
+	  <?php 
 	  $tipo_busca = array("t"=>"Todos","b"=>"Baixados","n"=>"Não Baixados");
 	  db_select("busca",$tipo_busca,true,2); ?>
         </td>
@@ -187,7 +187,7 @@ db_inputdata('ve01_dtaquis1',@$ve01_dtaquis_dia,@$ve01_dtaquis_mes,@$ve01_dtaqui
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

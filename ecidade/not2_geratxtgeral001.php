@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -102,12 +102,12 @@ function js_emite(tiporel) {
 	<table class="form-container">
 	  <tr>
 	    <td title="<?=@$Tk60_codigo?>" >
-	      <?
+	      <?php
 	        db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
 	        db_input('k60_descr',40,$Ik60_descr,true,'text',3,'');
 	      ?>
@@ -118,7 +118,7 @@ function js_emite(tiporel) {
 	      Ordem:
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        $xx = array("a"=>"Alfabética","n"=>"Numérica",'t'=>'Notificação');
 	        db_select('ordem',$xx,true,$db_opcao,"");
 	      ?>
@@ -129,7 +129,7 @@ function js_emite(tiporel) {
 	      Modelo:
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        $xx = array('1'=>'CBR454', '2'=>'IGC702' ,'3' => "Gráfica" );
 	        db_select('modelo',$xx,true,$db_opcao,"");
 	      ?>
@@ -140,7 +140,7 @@ function js_emite(tiporel) {
 	      Tipo:
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        $xx = array('t'=>'Teste', 'f'=>'Final');
 	        db_select('tipo',$xx,true,$db_opcao,"");
 	      ?>
@@ -151,7 +151,7 @@ function js_emite(tiporel) {
 	      Quantidade de registros a processar:
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        db_input('quantidade',10,'',true,'text',$db_opcao);
 	      ?>
 	    </td>
@@ -161,7 +161,7 @@ function js_emite(tiporel) {
 	      Data de Vencimento:
 	    </td>
 	    <td>
-	      <?
+	      <?php
 	        $data        = date("Y-m-d",DB_getsession('DB_datausu'));
 	        $aData       = explode("-", $data); 
 	        $dtDataVenc  = date("Y-m-d",mktime(0,0,0,$aData[1], $aData[2]+30, $aData[0]));
@@ -177,7 +177,7 @@ function js_emite(tiporel) {
 	<?=($db_botao ? '' : 'disabled')?>>
 </form>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

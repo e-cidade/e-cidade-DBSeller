@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhferiasperiodopontofe->rotulo->label("rh112_sequencial");
               <?=$Lrh112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh112_sequencial",10,$Irh112_sequencial,true,"text",4,"","chave_rh112_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhferiasperiodopontofe->rotulo->label("rh112_sequencial");
               <?=$Lrh112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh112_sequencial",10,$Irh112_sequencial,true,"text",4,"","chave_rh112_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhferiasperiodopontofe->rotulo->label("rh112_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhferiasperiodopontofe.php")==true){
@@ -122,12 +122,12 @@ $clrhferiasperiodopontofe->rotulo->label("rh112_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

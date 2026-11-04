@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($db_opcao) && $db_opcao==2){
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?
+     <?php
        $clcriaabas->identifica = array("levanta"=>"Levantamento","levvalor"=>"Valores","levusu"=>"Fiscais");//nome do iframe do label
        $clcriaabas->title = array("levanta"=>"Levantamento","levvalor"=>"Levvalor","levusu"=>"Leveusu");//label do iframe e o label    
        $clcriaabas->sizecampo= array("levanta"=>"18");    
@@ -75,7 +75,7 @@ if(isset($db_opcao) && $db_opcao==2){
 <tr>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

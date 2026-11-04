@@ -43,7 +43,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("estilos.css");
@@ -53,7 +53,7 @@ db_app::load("estilos.css");
 <table align="center" style="padding-top:28px;">
   <tr>
     <td>
-      <?
+      <?php
       $clrotulo  = new rotulocampo;
       $clrotulo->label('DBtxt23');
       $clrotulo->label('DBtxt25');
@@ -70,12 +70,12 @@ db_app::load("estilos.css");
                   <b>Ano / Mês :</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $anofolha = db_anofolha();
                     db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto()'");
                   ?>
                   &nbsp;/&nbsp;
-                  <?
+                  <?php
                     $mesfolha = db_mesfolha();
                     db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto()'");
                   ?>
@@ -86,7 +86,7 @@ db_app::load("estilos.css");
                   <b>Ponto:</b>
                 </td>
                 <td>
-                 <?
+                 <?php
                  
                    $aSigla = array( "r14"=>"Salário",
                                     "r48"=>"Complementar",
@@ -114,7 +114,7 @@ db_app::load("estilos.css");
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

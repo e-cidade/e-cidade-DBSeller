@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -134,14 +134,14 @@ if (isset($matric) && trim($matric) != "") {
       <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?> inicial:</b>
     </td>
     <td nowrap>
-      <?
+      <?php
       if(!isset($chave_x21_exerc) || (isset($chave_x21_exerc) && trim($chave_x21_exerc) == "")){
 	$chave_x21_exerc = db_getsession("DB_anousu");
       }
       db_input('x21_exerc',4,$Ix21_exerc,true,'text',1,"","chave_x21_exerc");
       ?>
       <b>&nbsp;/&nbsp;</b>
-      <?
+      <?php
       if(!isset($chave_x21_mes) || (isset($chave_x21_mes) && trim($chave_x21_mes) == "")){
 	$chave_x21_mes = date("m",db_getsession("DB_datausu"));
       }
@@ -155,14 +155,14 @@ if (isset($matric) && trim($matric) != "") {
       <b><?=@$RLx21_exerc?>&nbsp;/&nbsp;<?=@$RLx21_mes?> final:</b>
     </td>
     <td nowrap>
-      <?
+      <?php
       if(!isset($chave_x21_exerc) || (isset($chave_x21_exerc) && trim($chave_x21_exerc) == "")){
 	$chave_x21_exerc = db_getsession("DB_anousu");
       }
       db_input('x21_exerc',4,$Ix21_exerc,true,'text',1,"","chave_x21_exercfim");
       ?>
       <b>&nbsp;/&nbsp;</b>
-      <?
+      <?php
       if(!isset($chave_x21_mes) || (isset($chave_x21_mes) && trim($chave_x21_mes) == "")){
 	$chave_x21_mes = date("m",db_getsession("DB_datausu"));
       }

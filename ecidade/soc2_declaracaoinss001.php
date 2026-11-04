@@ -50,7 +50,7 @@ if ($oDaoDocumento->numrows == 0) {
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
   db_app::load("scripts.js, prototype.js, strings.js, dates.js");
   db_app::load("estilos.css");
   ?>
@@ -64,7 +64,7 @@ if ($oDaoDocumento->numrows == 0) {
         <tr>
           <td nowrap="nowrap" style="font-weight: bold;">
 
-            <? db_ancora("NIS : ","js_pesquisaNIS(true);",1);?>
+            <?php db_ancora("NIS : ","js_pesquisaNIS(true);",1);?>
           <td nowrap="nowrap">
             <?php
               db_input("nis", 13, '', true, "text", 1, "onchange='js_pesquisaNIS(false);'");
@@ -77,7 +77,7 @@ if ($oDaoDocumento->numrows == 0) {
             <b>Documento Template:</b>
           </td>
           <td nowrap="nowrap">
-            <?
+            <?php
              db_selectrecord('documentotemplate', $rsDocumentoTemplate, true, 1, '');
             ?>
           </td>
@@ -203,7 +203,7 @@ function js_imprime() {
 </script>
 </body>
 </html>
-<?
+<?php
 if ($oDaoDocumento->numrows == 0) {
 
   $sCaminhoMenu = db_stdClass::getCaminhoMenu(7782);

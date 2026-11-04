@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -28,18 +28,17 @@
 
 class recurso
 {
-    var $arq = null;
+    public $arq = null;
 
-    function recurso($header)
+    public function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/RECURSO.TXT", 'w+');
         fputs($this->arq, $header);
         fputs($this->arq, "\r\n");
-
     }
 
-    function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst = "", $subelemento = "")
+    public function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst = "", $subelemento = "")
     {
         global $contador, $nomeinst;
 
@@ -52,16 +51,15 @@ class recurso
               from orctiporec
              where o15_codigo > 0
                and trim(o15_descr) != ''
+               and o15_recurso != ''
              order by o15_recurso
         ";
 
         $res = db_query($sql);
-        $rows = pg_numrows($res);
+        $rows = pg_num_rows($res);
 
         for ($x = 0; $x < $rows; $x++) {
             $oDadosRecurso = db_utils::fieldsMemory($res, $x);
-
-
             $codigo = formatar($oDadosRecurso->o15_recurso, 4, 'n');
             $nome = addslashes($oDadosRecurso->nome);
             $nome = formatar($nome, 80, 'c');

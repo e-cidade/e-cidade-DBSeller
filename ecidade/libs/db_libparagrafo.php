@@ -36,15 +36,15 @@ class libparagrafo {
   var $oParag         = null;
   var $aParametros    = array();
 
-  //function libparagrafo( $oParag, $aParametros ) {
-  function libparagrafo( $oParag ) {
+  //public function __construct( $oParag, $aParametros ) {
+  public function __construct( $oParag ) {
 
     $this->oParag      = $oParag;
 //    $this->aParametros = $aParametros;
 
   }
 
-  function getObjParagrafo () {
+  public function getObjParagrafo () {
 
     $oParagrafo = null;
 

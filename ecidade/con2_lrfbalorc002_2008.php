@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -57,9 +57,9 @@ function imprime_cabec_rec($alt,$pdf){
 }
 
 function imprime_cabec_desp($alt,$pdf, $bimestre) {
-  
+
    if ($bimestre != 6) {
-     
+
      $pdf->setfont('arial','',5);
      $pdf->cell(55,($alt*2),"DESPESAS",'TBR',0,"C",0);
      $pdf->cell(20,$alt,"DOTAÇÂO",'TR',0,"C",0);
@@ -80,9 +80,9 @@ function imprime_cabec_desp($alt,$pdf, $bimestre) {
      $pdf->cell(10,$alt,"% (g/f)",'BR',0,"C",0);
      $pdf->cell(14,$alt,"LIQUIDAR (f-g)",'B',0,"C",0);
      $pdf->ln(4);
-     
+
    } else {
-     
+
      $pdf->setfont('arial','',5);
      $pdf->cell(55,($alt*4),"DESPESAS",'TRB',0,"C",0);
      $pdf->cell(15,$alt,"DOTAÇÂO",'TR',0,"C",0);
@@ -92,7 +92,7 @@ function imprime_cabec_desp($alt,$pdf, $bimestre) {
      $pdf->cell(51,$alt,"DESPESAS EXECUTADAS",'TBR',0,"C",0);
      $pdf->cell(14,$alt,"SALDO A",'T',1,"C",0);
      $pdf->setX(65);
-     
+
      $pdf->cell(15,$alt,"INICIAL (d)",'R',0,"C",0);
      $pdf->cell(15,$alt,"ADICIONAIS (e)",'R',0,"C",0);
      $pdf->cell(15,$alt,"ATUALIZADA",'R',0,"C",0);
@@ -125,7 +125,7 @@ function imprime_cabec_desp($alt,$pdf, $bimestre) {
      $pdf->cell(10,$alt,"",'BR',0,"C",0);
      $pdf->cell(14,$alt,"",'B',0,"C",0);
      $pdf->ln(4);
-     
+
    }
 }
 
@@ -140,9 +140,9 @@ $orcparamrel     = new cl_orcparamrel;
 $clconrelvalor   = new cl_conrelvalor;
 $oDaoPeriodo     = db_utils::getDao("periodo");
 if ($anousu >= 2010 ) {
-  $sSqlPeriodo     = $oDaoPeriodo->sql_query($bimestre); 
+  $sSqlPeriodo     = $oDaoPeriodo->sql_query($bimestre);
   $iCodigoPeriodo  = $bimestre;
-  $sSiglaPeriodo   = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla; 
+  $sSiglaPeriodo   = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo),0)->o114_sigla;
   $dt              = data_periodo($anousu,$sSiglaPeriodo);
   $bimestre        = $sSiglaPeriodo;
 }
@@ -647,7 +647,7 @@ $somador_VII_liq_nobim  = 0;
 $somador_VII_liqatebim  = 0;
 $somador_VII_inscritos  = 0;
 $somador_IX_inicial     = 0;
-$somador_IX_adicional   = 0; 
+$somador_IX_adicional   = 0;
 $somador_IX_emp_nobim   = 0;
 $somador_IX_emp_atebim  = 0;
 $somador_IX_liq_nobim   = 0;
@@ -672,7 +672,7 @@ for ($i=0; $i<pg_numrows($result_bal); $i++) {
 }
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$xinstit    = split("-",$db_selinstit);
+$xinstit    =explode("-",$db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
@@ -680,14 +680,14 @@ $head2 = "MUNICÍPIO DE ".$munic;
 $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head4 = "BALANÇO ORÇAMENTÁRIO";
 $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
-$aDt_ini  = split("-",$dt_ini);
+$aDt_ini  =explode("-",$dt_ini);
 $txt = strtoupper(db_mes($aDt_ini[1]));
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";
 ;
-$dt  = split("-",$dt_ini);
+$dt  =explode("-",$dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head6 = "$txt";
 ////////////////////////// ///////////////////
@@ -710,7 +710,7 @@ $pdf->setfont('arial','',6);
 $pdf->cell(170,$alt,"RREO - Anexo I (LRF, Art. 52, inciso I, alíneas \"a\" e \"b\" do inciso II e §1º)",'0',0,"L",0);
 $pdf->cell(20,$alt,"R$ 1,00",'0',1,"R",0);
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 //--------------------------------
 $pos_rec_intra = $pdf->getY();
@@ -2784,7 +2784,7 @@ for ($i=0; $i<pg_numrows($result_rec); $i++) {
       $m_oper_externas_intra["nobim"]      += $saldo_arrecadado;
       $m_oper_externas_intra["atebim"]     += $saldo_arrecadado_acumulado;
       $m_oper_externas_intra["realizar"]   += $saldo_a_arrecadar;
-    } else { 
+    } else {
       $tot_inicial    += $saldo_inicial ;
       $tot_atualizada += $saldo_inicial_prevadic;
       $tot_nobim      += $saldo_arrecadado;
@@ -3869,11 +3869,11 @@ $pdf->setY($pos_atu);
 //-------------------------------- * --------------------------------------------------
 //
 
-$pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+$pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
 $pdf->AddPage();
-$pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0); 
+$pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0);
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,"RECEITAS (INTRA-ORÇAMENTÁRIAS) (II)",'R',0,"L",0);
@@ -4181,95 +4181,95 @@ $tot_atebim     += $m_outras_diversas_intra["atebim"];
 $tot_realizar   += $m_outras_diversas_intra["realizar"];
 
 if ($tot_inicial > 0) {
-  
+
   $iTotInicial  = db_formatar($tot_inicial,'f');
   $AlinhaIni    = "R";
 } else {
-  
+
   $iTotInicial  = " - ";
   $AlinhaIni    = "C";
 }
 
 if ($tot_atualizada > 0) {
-  
+
   $nTotAtualizada  = db_formatar($tot_atualizada,'f');
   $AlinhaAtu       = "R";
-  
+
 } else {
-  
+
   $nTotAtualizada  = " - ";
   $AlinhaAtu       = "C";
 }
 
 if ($tot_nobim > 0) {
-  
+
   $nTotNobimestre  = db_formatar($tot_nobim,'f');
   $AlinhaBim       = "R";
-  
+
 } else {
-  
+
   $nTotNobimestre  = " - ";
   $AlinhaBim       = "C";
-  
+
 }
 @$nTotBimAtu = ($tot_nobim*100)/$tot_atualizada;
 if ($nTotBimAtu > 0) {
-  
+
   $nTotBimAtu = db_formatar($nTotBimAtu,'f');
   $AlinhaBate = "R";
-  
+
 } else {
-  
+
   $nTotBimAtu = " - ";
   $AlinhaBate = "C";
-  
+
 }
 
 if ($tot_atebim > 0) {
-  
+
   $nTotAteBimestre = db_formatar($tot_atebim,'f');
   $AlinhaAte       = "R";
-  
+
 } else {
-  
+
   $nTotAteBimestre = " - ";
   $AlinhaAte       = "C";
-  
+
 }
 
 if ($tot_atebim > 0) {
-  
+
   $nTotAteBimestre = db_formatar($tot_atebim,'f');
   $AlinhaAte       = "R";
-  
+
 } else {
-  
+
   $nTotAteBimestre = " - ";
   $AlinhaAte       = "C";
-  
+
 }
 @$nTotAteBimAtual = ($tot_atebim*100)/$tot_atualizada;
 if ($nTotAteBimAtual > 0) {
-  
+
   $nTotAteBimAtual = db_formatar($nTotAteBimAtual,'f');
   $AlinhaBimAtual  = "R";
 } else {
-  
+
   $nTotAteBimAtual = "-";
   $AlinhaBimAtual  = "C";
-  
+
 }
 
 if ($tot_realizar > 0) {
-  
+
   $nTotRealizar = db_formatar($tot_realizar,'f');
   $AlinhaReal   = "R";
-  
+
 } else {
-  
+
   $nTotRealizar  = " - ";
   $AlinhaReal    = "C";
-  
+
 }
 $pdf->cell(20,$alt,$iTotInicial,'R',0, $AlinhaIni,0);
 $pdf->cell(20,$alt,$nTotAtualizada,'R',0,$AlinhaAtu,0);
@@ -4315,7 +4315,7 @@ if ($rec_trib_II_inicial_intra  > 0 || $rec_trib_II_atualizada_intra > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4339,11 +4339,11 @@ if ($m_impostos_intra["inicial"]  > 0 || $m_impostos_intra["atualizada"] > 0 ||
   @$pdf->cell(10,$alt,db_formatar(($m_impostos_intra["atebim"]*100)/$m_impostos_intra["atualizada"],'f'),'R',0,"R",0);
   // % (b/a)
   $pdf->cell(20,$alt,db_formatar($m_impostos_intra["realizar"],'f'),0,1,"R",0);
-  
+
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4426,7 +4426,7 @@ if ($rec_contr_II_inicial_intra  > 0 || $rec_contr_II_atualizada_intra > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4450,11 +4450,11 @@ if ($m_sociais_intra["inicial"]  > 0 || $m_sociais_intra["atualizada"] > 0 ||
   @$pdf->cell(10,$alt,db_formatar(($m_sociais_intra["atebim"]*100)/$m_sociais_intra["atualizada"],'f'),'R',0,"R",0);
   // % (b/a)
   $pdf->cell(20,$alt,db_formatar($m_sociais_intra["realizar"],'f'),0,1,"R",0);
-  
+
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4482,7 +4482,7 @@ if ($m_economicas_intra["inicial"]  > 0 || $m_economicas_intra["atualizada"] > 0
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4505,11 +4505,11 @@ if ($rec_patr_II_inicial_intra  > 0 || $rec_patr_II_atualizada_intra > 0 ||
   @$pdf->cell(10,$alt,db_formatar(($rec_patr_II_atebim_intra*100)/$rec_patr_II_atualizada_intra,'f'),'R',0,"R",0);
 // % (b/a)
   $pdf->cell(20,$alt,db_formatar($rec_patr_II_realizar_intra,'f'),0,1,"R",0);
-  
+
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4537,7 +4537,7 @@ if ($m_imobiliarias_intra["inicial"]  > 0 || $m_imobiliarias_intra["atualizada"]
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4565,7 +4565,7 @@ if ($m_valmobiliarias_intra["inicial"]  > 0 || $m_valmobiliarias_intra["atualiza
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4593,7 +4593,7 @@ if ($m_permissoes_intra["inicial"]  > 0 || $m_permissoes_intra["atualizada"] > 0
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4621,7 +4621,7 @@ if ($m_patrimoniais_intra["inicial"]  > 0 || $m_patrimoniais_intra["atualizada"]
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4648,7 +4648,7 @@ if ($rec_agro_II_inicial_intra  > 0 || $rec_agro_II_atualizada_intra > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4676,7 +4676,7 @@ if ($m_vegetal_intra["inicial"]  > 0 || $m_vegetal_intra["atualizada"] > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4704,7 +4704,7 @@ if ($m_animal_intra["inicial"]  > 0 || $m_animal_intra["atualizada"] > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4732,7 +4732,7 @@ if ($m_agropecuarias_intra["inicial"]  > 0 || $m_agropecuarias_intra["atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4759,7 +4759,7 @@ if ($rec_ind_II_inicial_intra  > 0 || $rec_ind_II_atualizada_intra > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4787,7 +4787,7 @@ if ($m_transformacao_intra["inicial"]  > 0 || $m_transformacao_intra["atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4815,7 +4815,7 @@ if ($m_construcao_intra["inicial"]  > 0 || $m_construcao_intra["atualizada"] > 0
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4843,7 +4843,7 @@ if ($m_industriais_intra["inicial"]  > 0 || $m_industriais_intra["atualizada"] >
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4871,7 +4871,7 @@ if ($m_servicos_intra["inicial"]  > 0 || $m_servicos_intra["atualizada"] > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4898,7 +4898,7 @@ if ($rec_transf_cor_II_inicial_intra  > 0 || $rec_transf_cor_II_atualizada_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4926,7 +4926,7 @@ if ($m_intergovernamental_intra["inicial"]  > 0 || $m_intergovernamental_intra["
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4954,7 +4954,7 @@ if ($m_privadas_intra["inicial"]  > 0 || $m_privadas_intra["atualizada"] > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4982,7 +4982,7 @@ if ($m_transf_exterior_intra["inicial"]  > 0 || $m_transf_exterior_intra["atuali
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -4991,7 +4991,7 @@ if ($m_transf_exterior_intra["inicial"]  > 0 || $m_transf_exterior_intra["atuali
   $flag_troca = false;
 }
 
-// Transferencias de Pessoas 
+// Transferencias de Pessoas
 if ($m_transf_pessoas_intra["inicial"]  > 0 || $m_transf_pessoas_intra["atualizada"] > 0 ||
     $m_transf_pessoas_intra["nobim"]    > 0 || $m_transf_pessoas_intra["atebim"]     > 0 ||
     $m_transf_pessoas_intra["realizar"] > 0){
@@ -5010,7 +5010,7 @@ if ($m_transf_pessoas_intra["inicial"]  > 0 || $m_transf_pessoas_intra["atualiza
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5019,7 +5019,7 @@ if ($m_transf_pessoas_intra["inicial"]  > 0 || $m_transf_pessoas_intra["atualiza
   $flag_troca = false;
 }
 
-// Transferencias de Convenios 
+// Transferencias de Convenios
 if ($m_transf_convenios_intra["inicial"]  > 0 || $m_transf_convenios_intra["atualizada"] > 0 ||
     $m_transf_convenios_intra["nobim"]    > 0 || $m_transf_convenios_intra["atebim"]     > 0 ||
     $m_transf_convenios_intra["realizar"] > 0){
@@ -5038,7 +5038,7 @@ if ($m_transf_convenios_intra["inicial"]  > 0 || $m_transf_convenios_intra["atua
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5066,7 +5066,7 @@ if ($m_transf_fome_intra["inicial"]  > 0 || $m_transf_fome_intra["atualizada"] >
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5093,7 +5093,7 @@ if ($rec_outras_cor_II_inicial_intra  > 0 || $rec_outras_cor_II_atualizada_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5121,7 +5121,7 @@ if ($m_multas_intra["inicial"]  > 0 || $m_multas_intra["atualizada"] > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5149,7 +5149,7 @@ if ($m_indenizacao_intra["inicial"]  > 0 || $m_indenizacao_intra["atualizada"] >
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5177,7 +5177,7 @@ if ($m_divida_ativa_intra["inicial"]  > 0 || $m_divida_ativa_intra["atualizada"]
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5201,11 +5201,11 @@ if ($m_correntes_diversas_intra["inicial"]  > 0 || $m_correntes_diversas_intra["
   @$pdf->cell(10,$alt,db_formatar(($m_correntes_diversas_intra["atebim"]*100)/$m_correntes_diversas_intra["atualizada"],'f'),'R',0,"R",0);
 // % (b/a)
   $pdf->cell(20,$alt,db_formatar($m_correntes_diversas_intra["realizar"],'f'),0,1,"R",0);
-  
+
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5232,7 +5232,7 @@ if ($rec_cap_II_inicial_intra  > 0 || $rec_cap_II_atualizada_intra > 0 ||
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5260,7 +5260,7 @@ if ($rec_oper_cred_cap_II_inicial_intra  > 0 || $rec_oper_cred_cap_II_atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5288,7 +5288,7 @@ if ($m_oper_internas_intra["inicial"]  > 0 || $m_oper_internas_intra["atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5316,7 +5316,7 @@ if ($m_oper_externas_intra["inicial"]  > 0 || $m_oper_externas_intra["atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5344,7 +5344,7 @@ if ($rec_alien_bens_cap_II_inicial_intra  > 0 || $rec_alien_bens_cap_II_atualiza
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5372,7 +5372,7 @@ if ($m_bens_moveis_intra["inicial"]  > 0 || $m_bens_moveis_intra["atualizada"] >
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5400,7 +5400,7 @@ if ($m_bens_imoveis_intra["inicial"]  > 0 || $m_bens_imoveis_intra["atualizada"]
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5428,7 +5428,7 @@ if ($m_emprestimos_intra["inicial"]  > 0 || $m_emprestimos_intra["atualizada"] >
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5456,7 +5456,7 @@ if ($rec_transf_cap_II_inicial_intra  > 0 || $rec_transf_cap_II_atualizada_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5484,7 +5484,7 @@ if ($m_transf_capital_intergovernamentais_intra["inicial"]  > 0 || $m_transf_cap
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5512,7 +5512,7 @@ if ($m_transf_capital_privadas_intra["inicial"]  > 0 || $m_transf_capital_privad
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5540,7 +5540,7 @@ if ($m_transf_capital_exterior_intra["inicial"]  > 0 || $m_transf_capital_exteri
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5568,7 +5568,7 @@ if ($m_transf_capital_pessoas_intra["inicial"]  > 0 || $m_transf_capital_pessoas
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5596,7 +5596,7 @@ if ($m_transf_capital_outras_intra["inicial"]  > 0 || $m_transf_capital_outras_i
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5624,7 +5624,7 @@ if ($m_transf_capital_convenios_intra["inicial"]  > 0 || $m_transf_capital_conve
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5652,7 +5652,7 @@ if ($m_transf_capital_fome_intra["inicial"]  > 0 || $m_transf_capital_fome_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5680,7 +5680,7 @@ if ($rec_outras_cap_II_inicial_intra  > 0 || $rec_outras_cap_II_atualizada_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5708,7 +5708,7 @@ if ($m_outras_social_intra["inicial"]  > 0 || $m_outras_social_intra["atualizada
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5736,7 +5736,7 @@ if ($m_outras_disponibilidades_intra["inicial"]  > 0 || $m_outras_disponibilidad
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5764,7 +5764,7 @@ if ($m_outras_restituicoes_intra["inicial"]  > 0 || $m_outras_restituicoes_intra
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5793,7 +5793,7 @@ if ($m_outras_diversas_intra["inicial"]  > 0 || $m_outras_diversas_intra["atuali
   if ($pdf->gety() > $pdf->h-40){
     $pdf->addpage();
     $pdf->setfont('arial','',5);
-    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+    $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
     $pdf->Ln(4);
 
     $flag_troca = true;
@@ -5842,10 +5842,10 @@ $pdf->cell(60,$alt,"Continua na página 2",'0',1,"L",0);
 if ($pdf->gety() > $pdf->h-40){
   $pdf->addpage();
   $pdf->setfont('arial','',5);
-  $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
+  $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0);
   $pdf->Ln(4);
 
-  imprime_cabec_rec($alt,&$pdf);
+  imprime_cabec_rec($alt,$pdf);
 }
 
 $pos_refi = $pdf->getY();
@@ -6174,7 +6174,7 @@ if ($clconrelvalor->numrows > 0){
   $tot_saldo_anteriormenosprevisao = db_formatar(@pg_result($res_valor,1,"c83_informacao"),'f');
 }
 if ( $tot_saldo_anterior              == "") { $tot_saldo_anterior = "-";              }
-if ( $tot_saldo_anteriormenosprevisao == "") { $tot_saldo_anteriormenosprevisao = "-"; } 
+if ( $tot_saldo_anteriormenosprevisao == "") { $tot_saldo_anteriormenosprevisao = "-"; }
 
 $pdf->setfont('arial','B',6);
 $pdf->cell(60,$alt,"SALDO DE EXERCÍCIOS ANTERIORES",'TR',0,"L",0);
@@ -6201,7 +6201,7 @@ $pdf->cell(20,$alt,'','B',1,"R",0);
 
 $pdf->Ln(2);
 
-imprime_cabec_desp($alt,&$pdf, $bimestre);
+imprime_cabec_desp($alt,$pdf, $bimestre);
 
 /*
  * #quadrodespesa#
@@ -6209,7 +6209,7 @@ imprime_cabec_desp($alt,&$pdf, $bimestre);
  */
 
 /*
- * quando for o ultimo bimestre ($bimestre = 6) , 
+ * quando for o ultimo bimestre ($bimestre = 6) ,
  * devemos acrescentar a informação de restos a pagar (usamos o campo a_liquidar da dotacao saldo)
  */
 $iTamDotInical     = 20;
@@ -6234,7 +6234,7 @@ if ($bimestre == 6) {
    $iTamRPInscritos   = 18;
    $iTampercentualGF  = 10;
    $iTamanhoFonte     = 4;
-   
+
 }
 //--------------------------------
 $pos_desp_VII = $pdf->getY();
@@ -6342,7 +6342,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
     db_fieldsmemory($result_desp,$i);
     // $estrutural = $c60_estrut;
     $estrutural = $o58_elemento."00";
-    
+
     if (substr($estrutural,0,3)=='332' && substr($estrutural,3,2)!='91') {
       // if (in_array($estrutural,$desp_juros)) {
         $tot_inicial    += $dot_ini;
@@ -6383,7 +6383,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
     $somador_VI_liq_nobim  += $tot_liq_nobim;
     $somador_VI_liqatebim  += $tot_liq_atebim;
     $somador_VI_inscritos  += $tot_inscritos_rp;
-    
+
     //--------------------------------
     $tot_inicial    = 0;
     $tot_adicional  = 0;
@@ -6396,7 +6396,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
       db_fieldsmemory($result_desp,$i);
       //  $estrutural = $c60_estrut;
       $estrutural = $o58_elemento."00";
-      
+
       if (substr($estrutural,0,3)=='333' && substr($estrutural,3,2)!='91') {
         // if (in_array($estrutural,$desp_outras)) {
           $tot_inicial    += $dot_ini;
@@ -6436,8 +6436,8 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
       $somador_VI_liq_nobim  += $tot_liq_nobim;
       $somador_VI_liqatebim  += $tot_liq_atebim;
       $somador_VI_inscritos  += $tot_inscritos_rp;
-      
-      
+
+
       // ----------------------------------
       $pos_atu = $pdf->y;
       // posição atual
@@ -6458,7 +6458,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
       $pdf->cell(14,$alt,db_formatar(($somador_VI_inicial+$somador_VI_adicional)-($somador_VI_inscritos+$somador_VI_liqatebim),'f'),'0',0,"R",0);
       $pdf->setY($pos_atu);
       // desce novamente até aki
-      
+
       //--------------------------------
       $pos_capital = $pdf->getY();
       //pega posição e guarda
@@ -6489,12 +6489,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
       $tot_liq_nobim   = 0;
       $tot_liq_atebim  = 0;
       $tot_inscritos_rp = 0;
-      
+
       for ($i=0; $i<pg_numrows($result_desp); $i++) {
         db_fieldsmemory($result_desp,$i);
         //  $estrutural = $c60_estrut;
         $estrutural = $o58_elemento."00";
-        
+
         if (substr($estrutural,0,3)=='344' && substr($estrutural,3,2)!='91') {
           //  if (in_array($estrutural,$desp_investimentos)) {
             $tot_inicial    += $dot_ini;
@@ -6507,7 +6507,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             if($bimestre == 6) {
               $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
             }
-            
+
           }
         }
         $tot_atualizada = $tot_inicial + $tot_adicional;
@@ -6535,7 +6535,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
         $somador_VI_liq_nobim  += $tot_liq_nobim;
         $somador_VI_liqatebim  += $tot_liq_atebim;
         $somador_VI_inscritos  += $tot_inscritos_rp;
-         
+
         $v_VI_inicial    = $tot_inicial ;
         $v_VI_adicional  = $tot_adicional;
         // ;
@@ -6544,9 +6544,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
         $v_VI_liq_nobim  = $tot_liq_nobim;
         $v_VI_liqatebim  = $tot_liq_atebim;
         $v_VI_inscritos  = $tot_inscritos_rp;
-        
-        
-        
+
+
+
         //--------------------------------
         $tot_inicial    = 0;
         $tot_adicional  = 0;
@@ -6559,7 +6559,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
           db_fieldsmemory($result_desp,$i);
           // $estrutural = $c60_estrut;
           $estrutural = $o58_elemento."00";
-          
+
           if (substr($estrutural,0,3)=='345' && substr($estrutural,3,2)!='91') {
             //  if (in_array($estrutural,$desp_inversoes)) {
               $tot_inicial    += $dot_ini;
@@ -6572,7 +6572,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               if($bimestre == 6) {
                 $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
               }
-              
+
             }
           }
           $tot_atualizada = $tot_inicial + $tot_adicional;
@@ -6608,8 +6608,8 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
           $v_VI_liq_nobim  += $tot_liq_nobim;
           $v_VI_liqatebim  += $tot_liq_atebim;
           $v_VI_inscritos  += $tot_inscritos_rp;
-          
-          
+
+
           //--------------------------------
           $tot_inicial      = 0;
           $tot_adicional    = 0;
@@ -6622,7 +6622,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             db_fieldsmemory($result_desp,$i);
             //  $estrutural = $c60_estrut;
             $estrutural = $o58_elemento."00";
-            
+
             if (substr($estrutural,0,3)=='346' && substr($estrutural,3,2)!='91') {
               // if (in_array($estrutural,$desp_amortizacao)) {
                 $tot_inicial    += $dot_ini;
@@ -6635,7 +6635,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
             $tot_atualizada = $tot_inicial + $tot_adicional;
@@ -6671,7 +6671,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_VI_liq_nobim  += $tot_liq_nobim;
             $v_VI_liqatebim  += $tot_liq_atebim;
             $v_VI_inscritos +=  $tot_inscritos_rp;
-            
+
             // ----------------------------------
             $pos_atu = $pdf->y;
             // posição atual
@@ -6690,10 +6690,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             }
             @$pdf->cell(10,$alt,db_formatar(($v_VI_liqatebim+$v_VI_inscritos)*100/($v_VI_inicial+$v_VI_adicional),'f'),'0',0,"R",0);
             $pdf->cell(14,$alt,db_formatar(($v_VI_inicial+$v_VI_adicional)-($v_VI_inscritos+$v_VI_liqatebim),'f'),'0',0,"R",0);
-            
+
             $pdf->setY($pos_atu);
             // desce novamente até aki
-            
+
             //--------------------------------
             $tot_inicial    = 0;
             $tot_adicional  = 0;
@@ -6716,7 +6716,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
             $tot_atualizada = $tot_inicial + $tot_adicional;
@@ -6744,8 +6744,8 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $somador_VI_liq_nobim  += $tot_liq_nobim;
             $somador_VI_liqatebim  += $tot_liq_atebim;
             $somador_VI_inscritos  += $tot_inscritos_rp;
-            
-            
+
+
             // // // // // // //  RPPS
             $tot_inicial    = 0;
             $tot_adicional  = 0;
@@ -6787,7 +6787,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
            // % (j/f)
             $pdf->cell(14,$alt,db_formatar(($tot_atualizada - ($tot_inscritos_rp+$tot_liq_atebim)),'f'),'0',1,"R",0);
             // (f-j)
-            
+
             $somador_VI_inicial    += $tot_inicial ;
             $somador_VI_adicional  += $tot_adicional;
             // ;
@@ -6796,7 +6796,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $somador_VI_liq_nobim  += $tot_liq_nobim;
             $somador_VI_liqatebim  += $tot_liq_atebim;
             $somador_VI_inscritos  += $tot_inscritos_rp;
-      
+
             $pos_atu = $pdf->y;
             // posição atual
             // sobe, escreve e desce
@@ -6816,7 +6816,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $pdf->cell(14,$alt,db_formatar(($somador_VI_inicial+$somador_VI_adicional)-($somador_VI_inscritos+$somador_VI_liqatebim),'f'),'0',0,"R",0);
             $pdf->setY($pos_atu);
             // desce novamente até aki
-            
+
             // // // // // // //  INTERFERENCIAS ORÇAMENTARIAS- DESPESAS(INTRA-ORÇAMENTÁRIAS) (IX)
             $tot_inicial      = 0;
             $tot_adicional    = 0;
@@ -6839,14 +6839,14 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
-            
+
             $tot_atualizada = $tot_inicial + $tot_adicional;
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
-                  
+
               $somador_IX_inicial    = 0;
               $somador_IX_adicional  = 0;
               $somador_IX_emp_nobim  = 0;
@@ -6862,7 +6862,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               $v_desp_cor_intra_liq_nobim  = 0;
               $v_desp_cor_intra_liqatebim  = 0;
               $v_desp_cor_intra_inscritos  = 0;
-              
+
               $v_desp_cap_intra_inicial    = 0;
               $v_desp_cap_intra_adicional  = 0;
               $v_desp_cap_intra_emp_nobim  = 0;
@@ -6916,7 +6916,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               // % (b/a)
               $pdf->cell(14,$alt,'',0,1,"R",0);
             }
-            
+
             //--------------------------------
             $tot_inicial    = 0;
             $tot_adicional  = 0;
@@ -6939,10 +6939,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
-            
+
             $v_desp_cor_intra_inicial    = $tot_inicial;
             $v_desp_cor_intra_adicional  = $tot_adicional;
             $v_desp_cor_intra_emp_nobim  = $tot_emp_nobim;
@@ -6970,7 +6970,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               $pdf->cell(14,$alt,db_formatar(($tot_atualizada - ($tot_inscritos_rp+$tot_liq_atebim)),'f'),'0',1,"R",0);
               // (f-j)
             }
-            
+
             //--------------------------------
             $tot_inicial    = 0;
             $tot_adicional  = 0;
@@ -6982,7 +6982,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             for ($i=0; $i<pg_numrows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-    
+
               if (substr($estrutural,0,3) == "332" && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -7005,7 +7005,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_desp_cor_intra_liqatebim  += $tot_liq_atebim;
             $v_desp_cor_intra_inscritos  += $tot_inscritos_rp;
             $tot_atualizada = $tot_inicial + $tot_adicional;
-            
+
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
               $pdf->setfont('arial','',$iTamanhoFonte);
@@ -7025,7 +7025,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               $pdf->cell(14,$alt,db_formatar(($tot_atualizada - ($tot_inscritos_rp+$tot_liq_atebim)),'f'),'0',1,"R",0);
               // (f-j)
             }
-            
+
             //--------------------------------
             $tot_inicial    = 0;
             $tot_adicional  = 0;
@@ -7037,7 +7037,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             for ($i=0; $i<pg_numrows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-    
+
               if (substr($estrutural,0,3) == "333" && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -7061,7 +7061,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_desp_cor_intra_inscritos  += $tot_inscritos_rp;
 
             $tot_atualizada = $tot_inicial + $tot_adicional;
-            
+
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
               $pdf->setfont('arial','', $iTamanhoFonte);
@@ -7116,7 +7116,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             for ($i=0; $i<pg_numrows($result_desp); $i++) {
                db_fieldsmemory($result_desp,$i);
                $estrutural = $o58_elemento."00";
-        
+
                if (substr($estrutural,0,3) == "344" && substr($estrutural,3,2) == "91") {
                  $tot_inicial    += $dot_ini;
                  $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -7126,10 +7126,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                  $tot_liq_nobim  += $liquidado;
                  $tot_liq_atebim += $liquidado_acumulado;
                  $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
-                 
+
                }
             }
-            
+
             $v_desp_cap_intra_inicial    = $tot_inicial;
             $v_desp_cap_intra_adicional  = $tot_adicional;
             $v_desp_cap_intra_emp_nobim  = $tot_emp_nobim;
@@ -7138,7 +7138,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_desp_cap_intra_liqatebim  = $tot_liq_atebim;
             $v_desp_cap_intra_inscritos  = $tot_inscritos_rp;
             $tot_atualizada = $tot_inicial + $tot_adicional;
-        
+
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
               $pdf->setfont('arial','',$iTamanhoFonte);
@@ -7169,7 +7169,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             for ($i=0; $i<pg_numrows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-        
+
               if (substr($estrutural,0,3) == "345" && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -7181,19 +7181,19 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
-            
+
             $v_desp_cap_intra_inicial    += $tot_inicial;
             $v_desp_cap_intra_adicional  += $tot_adicional;
             $v_desp_cap_intra_emp_nobim  += $tot_emp_nobim;
             $v_desp_cap_intra_emp_atebim += $tot_emp_atebim;
             $v_desp_cap_intra_liq_nobim  += $tot_liq_nobim;
             $v_desp_cap_intra_liqatebim  += $tot_liq_atebim;
-            $v_desp_cap_intra_inscritos  += $tot_inscritos_rp; 
+            $v_desp_cap_intra_inscritos  += $tot_inscritos_rp;
             $tot_atualizada = $tot_inicial + $tot_adicional;
-        
+
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
               $pdf->setfont('arial','',$iTamanhoFonte);
@@ -7213,7 +7213,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               $pdf->cell(14,$alt,db_formatar(($tot_atualizada - ($tot_inscritos_rp+$tot_liq_atebim)),'f'),'0',1,"R",0);
               // (f-j)
             }
-            
+
             $tot_inicial    = 0;
             $tot_adicional  = 0;
             $tot_emp_nobim  = 0;
@@ -7224,7 +7224,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             for ($i=0; $i<pg_numrows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-        
+
               if (substr($estrutural,0,3) == "346" && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -7236,10 +7236,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 if($bimestre == 6) {
                   $tot_inscritos_rp += $empenhado_acumulado-$anulado_acumulado-$liquidado_acumulado;
                 }
-                
+
               }
             }
-            
+
             $v_desp_cap_intra_inicial    += $tot_inicial;
             $v_desp_cap_intra_adicional  += $tot_adicional;
             $v_desp_cap_intra_emp_nobim  += $tot_emp_nobim;
@@ -7248,7 +7248,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_desp_cap_intra_liqatebim  += $tot_liq_atebim;
             $v_desp_cap_intra_inscritos  += $tot_inscritos_rp;
             $tot_atualizada = $tot_inicial + $tot_adicional;
-        
+
             if ($tot_inicial    > 0 || $tot_adicional > 0 || $tot_emp_nobim  > 0 ||
                 $tot_emp_atebim > 0 || $tot_liq_nobim > 0 || $tot_liq_atebim > 0){
               $pdf->setfont('arial','',$iTamanhoFonte);
@@ -7276,7 +7276,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               // sobe, escreve e desce
            //   $pdf->setY($pos_capital_intra);
             //  $pdf->setX(50);
-              $pdf->setfont('arial','b',$iTamanhoFonte); 
+              $pdf->setfont('arial','b',$iTamanhoFonte);
               $pdf->cell(55,$alt,"DESPESAS DE CAPITAL",'R',0,"L",0);
               $pdf->cell($iTamDotInical,$alt,db_formatar($v_desp_cap_intra_inicial,'f'),"R",0,"R",0);
               $pdf->cell($iTamCreditos,$alt,db_formatar($v_desp_cap_intra_adicional,'f'),"R",0,"R",0);
@@ -7294,7 +7294,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               // desce novamente até aki
             }
     //--------------------------------
-      
+
             // // // // // // //  subtotal das despesas(VI)
 
             $somador_VI_inicial    += $somador_IX_inicial;
@@ -7367,9 +7367,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_atualizada   = 0;
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 322 and 328 and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
-              
+
               $tot_inicial      = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional    = pg_result($res_valor,1,"c83_informacao"); 
+              $tot_adicional    = pg_result($res_valor,1,"c83_informacao");
               $tot_atualizada   = pg_result($res_valor,2,"c83_informacao");
               $tot_emp_nobim    = pg_result($res_valor,3,"c83_informacao");
               $tot_emp_atebim   = pg_result($res_valor,4,"c83_informacao");
@@ -7378,7 +7378,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               if($bimestre == 6) {
                 $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
               }
-              
+
             }
 
             $pdf->setfont('arial','', $iTamanhoFonte);
@@ -7395,7 +7395,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             }
             @$pdf->cell(10,$alt,db_formatar((($tot_liq_atebim+$tot_inscritos_rp)*100)/$tot_atualizada,'f'),'R',0,"R",0);
             $pdf->cell(14,$alt,db_formatar(($tot_atualizada - ($tot_inscritos_rp+$tot_liq_atebim)),'f'),'0',1,"R",0);
-            
+
             $somador_VII_inicial    += $tot_inicial ;
             $somador_VII_adicional  += $tot_adicional;
             // ;
@@ -7412,7 +7412,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_liq_nobim  = $tot_liq_nobim;
             $v_liqatebim  = $tot_liq_atebim;
             $v_inscritos  = $tot_inscritos_rp;
-            
+
             //--------------------------------
             $tot_inicial      = 0;
             $tot_adicional    = 0;
@@ -7421,12 +7421,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim    = 0;
             $tot_liq_atebim   = 0;
             $tot_inscritos_rp = 0;
-            
+
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 329 and 335 and c83_codigo = 369 and  c83_codigo = 368 and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
-              
+
               $tot_inicial      = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional    = pg_result($res_valor,1,"c83_informacao"); 
+              $tot_adicional    = pg_result($res_valor,1,"c83_informacao");
               $tot_atualizada   = pg_result($res_valor,2,"c83_informacao");
               $tot_emp_nobim    = pg_result($res_valor,3,"c83_informacao");
               $tot_emp_atebim   = pg_result($res_valor,4,"c83_informacao");
@@ -7435,7 +7435,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               if($bimestre == 6) {
                 $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
               }
-              
+
             }
 
             $pdf->setfont('arial','', $iTamanhoFonte);
@@ -7487,16 +7487,16 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             }
             @$pdf->cell(10,$alt,db_formatar((($v_liq_atebim+$v_inscritos_rp)*100)/$v_atualizada,'f'),'R',0,"R",0);
             $pdf->cell(14,$alt,db_formatar(($v_atualizada - ($v_inscritos+$v_liqatebim)),'f'),'0',1,"R",0);
-            
+
             $pdf->setY($pos_atu);
             // desce novamente até aki
-            
-            
-            
+
+
+
             //--------------------------------
             // pega altura e guarda
             $pos_y = $pdf->getY();
-            
+
             $pdf->setfont('arial','',$iTamanhoFonte);
             $pdf->cell(55,$alt,espaco($n1)."Amortização da Dívida Externa",'R',0,"L",0);
              $pdf->cell($iTamDotInical, $alt,'','R',0,"R",0);
@@ -7521,16 +7521,16 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_inscritos_rp = 0;
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"(c83_codigo between 336 and 342 and c83_codigo= 370) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0) {
-              
+
               $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional  = pg_result($res_valor,1,"c83_informacao"); 
+              $tot_adicional  = pg_result($res_valor,1,"c83_informacao");
               $tot_atualizada = pg_result($res_valor,2,"c83_informacao");
               $tot_emp_nobim  = pg_result($res_valor,3,"c83_informacao");
               $tot_emp_atebim = pg_result($res_valor,4,"c83_informacao");
               $tot_liq_nobim  = pg_result($res_valor,5,"c83_informacao");
               $tot_liq_atebim = pg_result($res_valor,6,"c83_informacao");
               $tot_liq_atebim = pg_result($res_valor,7,"c83_informacao");
-              
+
             }
 
             $pdf->setfont('arial','', $iTamanhoFonte);
@@ -7556,7 +7556,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $somador_VII_liq_nobim  += $tot_liq_nobim;
             $somador_VII_liqatebim  += $tot_liq_atebim;
             $somador_VII_inscritos    += $tot_inscritos_rp;
-            
+
             $v_inicial    = $tot_inicial ;
             $v_adicional  = $tot_adicional;
             // ;
@@ -7565,7 +7565,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_liq_nobim  = $tot_liq_nobim;
             $v_liqatebim  = $tot_liq_atebim;
             $v_inscritos  = $tot_inscritos_rp;
-            
+
             //--------------------------------
             $tot_inicial     = 0;
             $tot_adicional   = 0;
@@ -7574,12 +7574,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim   = 0;
             $tot_liq_atebim  = 0;
             $tot_inscritos_rp = 0;
-            
+
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"(c83_codigo between 343 and 349 and c83_codigo =371) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
-              
+
               $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional  = pg_result($res_valor,1,"c83_informacao"); 
+              $tot_adicional  = pg_result($res_valor,1,"c83_informacao");
               $tot_atualizada = pg_result($res_valor,2,"c83_informacao");
               $tot_emp_nobim  = pg_result($res_valor,3,"c83_informacao");
               $tot_emp_atebim = pg_result($res_valor,4,"c83_informacao");
@@ -7589,7 +7589,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                 $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
               }
             }
-            
+
             $pdf->setfont('arial','', $iTamanhoFonte);
             $pdf->cell(55,$alt,espaco($n2)."Outras Dívidas",'R',0,"L",0);
             $pdf->cell($iTamDotInical,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -7621,8 +7621,8 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $v_liq_nobim  += $tot_liq_nobim;
             $v_liqatebim  += $tot_liq_atebim;
             $v_inscritos  += $tot_inscritos_rp;
-            
-            
+
+
             // ------------------------------
             // --------------------------------
             $pos_atu = $pdf->y;
@@ -7642,9 +7642,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             }
             @$pdf->cell(10,$alt,db_formatar((($v_liq_atebim+$v_inscritos_rp)*100)/$v_atualizada,'f'),'R',0,"R",0);
             $pdf->cell(14,$alt,db_formatar(($v_atualizada - ($v_inscritos+$v_liqatebim)),'f'),'0',1,"R",0);
-            
-            
-            
+
+
+
             $pdf->setY($pos_div_amort);
             $pdf->setX(65);
             $pdf->cell($iTamDotInical,$alt,db_formatar($somador_VII_inicial,'f'),'0',0,"R",0);
@@ -7660,13 +7660,13 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             @$pdf->cell(10,$alt,db_formatar(($somador_VII_liqatebim+$somador_VII_inscritos)*100/($somador_VII_inicial+$somador_VII_adicional),'f'),'R',0,"R",0);
             // % (j/f)
             $pdf->cell(14,$alt,db_formatar(($somador_VII_inicial+$somador_VII_adicional)-($somador_VII_inscritos+$somador_VII_liqatebim),'f'),'0',0,"R",0);
-            
+
             $pdf->setY($pos_atu);
             // desce novamente até aki
-            
-            
+
+
             //--------------------------------
-            
+
             // // // // // // //  subtotal com refinamento
             $somador_VIII_inicial    =  $somador_VI_inicial   + $somador_VII_inicial;
             $somador_VIII_adicional  =  $somador_VI_adicional + $somador_VII_adicional ;
@@ -7676,9 +7676,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $somador_VIII_liq_nobim  =  $somador_VI_liq_nobim + $somador_VII_liq_nobim ;
             $somador_VIII_liqatebim  =  $somador_VI_liqatebim + $somador_VII_liqatebim ;
             $somador_VIII_inscritos  =  $somador_VI_inscritos + $somador_VII_inscritos ;
-            
-            
-            
+
+
+
             $pdf->setfont('arial','b',$iTamanhoFonte);
             $pdf->cell(55,$alt,"SUBTOTAL COM REFINANCIAMENTO (XII) = (X + XI)",'TBR',0,"L",0);
             $pdf->cell($iTamDotInical,$alt,db_formatar($somador_VIII_inicial,'f'),'TBR',0,"R",0);
@@ -7693,13 +7693,13 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                $pdf->cell($iTamLiqAteBim,$alt,db_formatar($somador_VIII_liqatebim,'f'),'TBR',0,"R",0);
             }
             @$pdf->cell(10,$alt,db_formatar(($somador_VIII_liqatebim+$somador_VIII_inscritos)*100/($somador_VIII_inicial+$somador_VIII_adicional),'f'),'TBR',0,"R",0);
-                                    
-            
+
+
             //$pdf->cell(14,$alt,'>>'.db_formatar((($somador_VIII_inicial+$somador_VIII_adicional) - ($somador_VII_inscritos+$somador_VIII_liqatebim)),'f'),'TB',1,"R",0);
             $pdf->cell(14,$alt,db_formatar((($somador_VI_inicial  +$somador_VI_adicional  ) - ($somador_VI_inscritos +$somador_VI_liqatebim)),'f'),'TB',1,"R",0);
-            
+
             //--------------------------------
-            
+
             // // // // // // //  subtotal com refinamento
             $pos_superavit = $pdf->getY();
             $pdf->setfont('arial','b', $iTamanhoFonte);
@@ -7719,7 +7719,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $pdf->cell(14,$alt,'-',0,1,"R",0);
             // (f-j)
             //--------------------------------
-            
+
             $pos_total_desp = $pdf->getY();
             $pdf->setfont('arial','b',$iTamanhoFonte);
             $pdf->cell(55,$alt,"TOTAL (XIV) = (XII + XIII)",'TBR',0,"L",0);
@@ -7741,9 +7741,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             // verifica se tem superávit
             $TEM_SUPERAVIT = false;
              if ($bimestre == 6){
-                 $verifica= $somador_VIII_liqatebim+$somador_VIII_inscritos;                     
+                 $verifica= $somador_VIII_liqatebim+$somador_VIII_inscritos;
               }else{
-                 $verifica= $somador_VIII_liqatebim;                                        
+                 $verifica= $somador_VIII_liqatebim;
               }
             $total_superavit = 0;
             $total_deficit   = 0;
@@ -7755,10 +7755,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
                   $somador_IX_liqatebim = $somador_III_atebim - $somador_VIII_liqatebim;
               }
               $pos = $pdf->getY();
-              
+
               $pdf->setY($pos_superavit);
               if ($bimestre == 6) {
-                $iPosicaoSuperAvit = 163;  
+                $iPosicaoSuperAvit = 163;
               } else {
                 $iPosicaoSuperAvit = 167;
               }
@@ -7790,9 +7790,9 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
 
               $total_superavit = 0;
               $total_deficit   = $somador_IV_atebim;
-             
+
             }
-            
+
             $pos = $pdf->getY();
             $pdf->setY($pos_total_rec);
             $somador_V_inicial    = $somador_III_inicial    + $somador_IV_inicial   ;
@@ -7801,7 +7801,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $somador_V_nobim      = $somador_III_nobim      + $somador_IV_nobim  ;
             $somador_V_atebim     = $somador_III_atebim     + $somador_IV_atebim ;
             $somador_V_realizar   = $somador_III_realizar   + $somador_IV_realizar;
-            
+
             $somador_VII_atebim   = $somador_III_atebim     + $total_deficit;
 
             $pdf->setfont('arial','B',6);
@@ -7811,13 +7811,13 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $pdf->cell(25,$alt,db_formatar($somador_V_nobim,'f'),'TBR',0,"R",0);
             @$pdf->cell(10,$alt,db_formatar(($somador_V_nobim*100)/$somador_V_atualizada,'f'),'TBR',0,"R",0);
             // %
-            
+
 
             $pdf->cell(25,$alt,db_formatar($somador_VII_atebim,'f'),'TBR',0,"R",0);
             @$pdf->cell(10,$alt,db_formatar(($somador_VII_atebim*100)/$somador_V_atualizada,'f'),'TBR',0,"R",0);
             // % (b/a)
             $pdf->cell(20,$alt,db_formatar($somador_V_realizar,'f'),'TB',1,"R",0);
-            
+
             /*
              * Totalizadores da despesa
              */
@@ -7836,31 +7836,31 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
               $iTamanhoCelulaSuperavit= $iTamLiqAteBim;
             }
 
-            if ($bimestre == 6) { 
+            if ($bimestre == 6) {
               $somador_XIV_atebim = $somador_VIII_liqatebim + $total_superavit + $somador_VIII_inscritos;
             } else {
               $somador_XIV_atebim = $somador_VIII_liqatebim + $total_superavit;
             }
             $pdf->cell($iTamanhoCelulaSuperavit,$alt,db_formatar($somador_XIV_atebim ,'f'),'TBR',0,"R",0);
-            
+
             @$pdf->cell(10,$alt,db_formatar($somador_VIII_liqatebim*100/($somador_VIII_inicial+$somador_VIII_adicional),'f'),'TBR',0,"R",0);
             // % (j/f)
             $pdf->cell(14,$alt,db_formatar((($somador_VI_inicial  +$somador_VI_adicional  ) - ($somador_VI_inscritos +$somador_VI_liqatebim)),'f'),'TB',1,"R",0);
             // (f-j)
-            
+
             $pdf->setY($pos);
             //--------------------------------
-            
+
             $pdf->ln(2);
 
-            notasExplicativas(&$pdf,22,"{$bimestre}B",190);
+            notasExplicativas($pdf,22,"{$bimestre}B",190);
 
             $pdf->ln(20);
-            
-            
+
+
             // assinaturas
-            assinaturas(&$pdf,&$classinatura,'LRF');
-            
+            assinaturas($pdf,$classinatura,'LRF');
+
             // saida
             $pdf->Output();
 ?>

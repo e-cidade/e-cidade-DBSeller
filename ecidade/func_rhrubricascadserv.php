@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -82,7 +82,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
               <?=$Lrh27_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh27_rubric",4,$Irh27_rubric,true,"text",4,"","chave_rh27_rubric");
 		       ?>
             </td>
@@ -92,7 +92,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
               <?=$Lrh27_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh27_descr",30,$Irh27_descr,true,"text",4,"","chave_rh27_descr");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
           <tr> 
              <td width="4%" align="left" nowrap title="selecionar todos, ativos ou inativos"><b>Seleção Por:</b></td>
              <td width="96%" align="left" nowrap>
-             <?
+             <?php
              if(!isset($opcao)){
 	           $opcao = "t";
              }
@@ -184,7 +184,7 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -202,7 +202,7 @@ if(!isset($pesquisa_chave)){
       
     })();
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

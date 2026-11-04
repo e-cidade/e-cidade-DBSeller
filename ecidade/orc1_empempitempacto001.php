@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -322,13 +322,13 @@ if ( isset($oPost->incluir) ) {
           <tr>
             <td width="110px;">
               <b>
-                <?
+                <?php
                   db_ancora("Empenho:","js_listaEmpenhos();",1);
                 ?>
               </b>
             </td>
             <td>
-              <?
+              <?php
                 db_input("numemp"       ,10,""  ,true,"text"  ,1,"onChange='js_habilitaBotaoItemEmp();'");
                 db_input("listaitensemp",5000,"",true,"hidden",1);
                 db_input("codpacto"     ,50,""  ,true,"hidden",1);
@@ -509,7 +509,7 @@ function js_verificaLista(){
 
 
 </script>
-<?
+<?php
 
   if ( isset($oPost->incluir)) {
     db_msgbox($sMsgErro);

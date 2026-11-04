@@ -46,23 +46,23 @@ class RejeitarAtendimento extends BaseFormRequest
     public function messages()
     {
         return [
-            DefaultSession::DB_INSTIT + ".required" => utf8_encode(
+            DefaultSession::DB_INSTIT . ".required" => utf8_encode(
                 "Código da instituicao não informado."
-            ),DefaultSession::DB_INSTIT + ".filled" => utf8_encode(
+            ), DefaultSession::DB_INSTIT . ".filled" => utf8_encode(
                 "O código da instituicao informado está vazio."
-            ),DefaultSession::DB_INSTIT + ".integer" => utf8_encode(
+            ), DefaultSession::DB_INSTIT . ".integer" => utf8_encode(
                 "Código inválido da instituicao."
-            ),DefaultSession::DB_CODDEPTO + ".required" => utf8_encode(
+            ), DefaultSession::DB_CODDEPTO . ".required" => utf8_encode(
                 "Código do departamento não informado."
-            ),DefaultSession::DB_CODDEPTO + ".filled" => utf8_encode(
+            ), DefaultSession::DB_CODDEPTO . ".filled" => utf8_encode(
                 "O código do departamento informado está vazio."
-            ),DefaultSession::DB_CODDEPTO + ".integer" => utf8_encode(
+            ), DefaultSession::DB_CODDEPTO . ".integer" => utf8_encode(
                 "Código inválido do departamento."
-            ),DefaultSession::DB_ID_USUARIO + ".required" => utf8_encode(
+            ), DefaultSession::DB_ID_USUARIO . ".required" => utf8_encode(
                 "Código do usuario não informado."
-            ),DefaultSession::DB_ID_USUARIO + ".filled" => utf8_encode(
+            ), DefaultSession::DB_ID_USUARIO . ".filled" => utf8_encode(
                 "O código do usuario informado está vazio."
-            ),DefaultSession::DB_ID_USUARIO + ".integer" => utf8_encode(
+            ), DefaultSession::DB_ID_USUARIO . ".integer" => utf8_encode(
                 "Código inválido do usuario."
             ),
             "motivo.required" => utf8_encode("Motivo não informado."),

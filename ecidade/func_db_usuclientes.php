@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_usuclientes->rotulo->label("at10_codcli");
               <?=$Lat10_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at10_codigo",10,$Iat10_codigo,true,"text",4,"","chave_at10_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_usuclientes->rotulo->label("at10_codcli");
               <?=$Lat10_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at10_codcli",4,$Iat10_codcli,true,"text",4,"","chave_at10_codcli");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_usuclientes->rotulo->label("at10_codcli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_usuclientes.php")==true){
@@ -118,12 +118,12 @@ $cldb_usuclientes->rotulo->label("at10_codcli");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

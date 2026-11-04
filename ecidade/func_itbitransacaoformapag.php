@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clitbitransacaoformapag->rotulo->label("it25_sequencial");
               <?=$Lit25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it25_sequencial",10,$Iit25_sequencial,true,"text",4,"","chave_it25_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbitransacaoformapag->rotulo->label("it25_sequencial");
               <?=$Lit25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it25_sequencial",10,$Iit25_sequencial,true,"text",4,"","chave_it25_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbitransacaoformapag->rotulo->label("it25_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbitransacaoformapag.php")==true){
@@ -122,12 +122,12 @@ $clitbitransacaoformapag->rotulo->label("it25_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

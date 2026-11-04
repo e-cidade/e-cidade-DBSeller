@@ -70,29 +70,15 @@ try {
         if ( !in_array($oMensageriaAcordoUsuario->getDias(), $aDiasRetorno) ) {
           $aDiasRetorno[] = $oMensageriaAcordoUsuario->getDias();
         }
-
-        if ( !in_array($oMensageriaAcordoUsuario->getUsuario()->getIdUsuario(), $aDestinatariosJaInclusos )) {
-
-          $aDestinatariosJaInclusos[]  = $oMensageriaAcordoUsuario->getUsuario()->getIdUsuario();
-          $oStdUsuario                 = new stdClass();
-          $oStdUsuario->iCodigoUsuario = $oMensageriaAcordoUsuario->getUsuario()->getIdUsuario();
-          $oStdUsuario->sNomeUsuario   = urlencode($oMensageriaAcordoUsuario->getUsuario()->getNome());
-          $aDestinatarioRetorno[]      = $oStdUsuario;
-        }
       }
 
       $oRetorno->sAssunto  = urlencode($oMensageriaAcordo->getAssunto());
       $oRetorno->sMensagem = urlencode($oMensageriaAcordo->getMensagem());
       $oRetorno->aDias     = $aDiasRetorno;
-      $oRetorno->aUsuarios = $aDestinatarioRetorno;
-
     break;
 
     case "salvarParametros":
-
-      $aDiasTela         = $oParam->aDias; //array(20, 40, 50, 120, 365);
-      $aUsuarioTela      = $oParam->aUsuarios; //array(1,2,3,4);
-
+      $aDiasTela         = $oParam->aDias;
       $sAssunto  = addslashes(db_stdClass::normalizeStringJson($oParam->sAssunto));
       $sMensagem = addslashes(db_stdClass::normalizeStringJson($oParam->sMensagem));
 
@@ -103,24 +89,9 @@ try {
       $oProcessamento = new MensageriaAcordoProcessamento();
       $oProcessamento->setMensageriaAcordo($oMensageriaAcordo);
       $oProcessamento->setDiasAviso($aDiasTela);
-      foreach ($aUsuarioTela as $iCodigoUsuario) {
-        $oProcessamento->adicionarUsuario(UsuarioSistemaRepository::getPorCodigo($iCodigoUsuario));
-      }
+      $oProcessamento->adicionarUsuario(UsuarioSistemaRepository::getPorCodigo(db_getsession("DB_id_usuario")));
       $oProcessamento->processarParametros();
       $oRetorno->sMessage = urlencode("Parâmetros salvos com sucesso.");
-
-      /**
-       * Cria arquivo xml com configuracoes de execucao diaria
-       */
-      $job = new Job();
-      $job->setNome('MensageriaAcordo');
-      $job->setCodigoUsuario(1);
-      $job->setDescricao('Mensageria acordo');
-      $job->setNomeClasse('MensageriaAcordoProcessamentoTask');
-      $job->setTipoPeriodicidade(Agenda::PERIODICIDADE_DIARIA);
-      $job->adicionarPeriodicidade("0600");
-      $job->setCaminhoPrograma('model/contrato/mensageria/MensageriaAcordoProcessamentoTask.model.php');
-      $job->salvar();
 
       db_fim_transacao(false);
     break;

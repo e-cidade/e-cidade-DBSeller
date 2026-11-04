@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("m61_descr");
        <?=@$Ls131_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('s131_i_codigo',10,$Is131_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ts131_matunid?>">
-       <?
+       <?php
        db_ancora(@$Ls131_matunid,"js_pesquisas131_matunid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('s131_matunid',10,$Is131_matunid,true,'text',$db_opcao," onchange='js_pesquisas131_matunid(false);'")
 ?>
-       <?
+       <?php
 db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        <?=@$Ls131_c_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('s131_c_descricao',54,$Is131_c_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_atributoexames.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

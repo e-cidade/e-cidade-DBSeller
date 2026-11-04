@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" > 
 <form name='form1'>
 <table border='0'>  
-<?
+<?php
 if (isset($codigo)&&$codigo!="") {
   
     $result=$clveicmanutitem->sql_record($clveicmanutitem->sql_query_pcmater(null,"*",null,"ve63_veicmanut = $codigo"));

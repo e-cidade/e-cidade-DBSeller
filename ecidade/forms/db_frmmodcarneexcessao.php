@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ if(isset($db_opcaoal)){
 	     <?=@$Lk36_modcarnepadrao?>
 	   </td>
        <td> 
-		 <?
+		 <?php
 		   db_input('k36_sequencial',10,"",true,'hidden',3,"");
 		   db_input('k36_modcarnepadrao',10,"",true,'text',3,"");
 		 ?>
@@ -70,7 +70,7 @@ if(isset($db_opcaoal)){
 	     <?=$Lk36_ip?>
 	   </td>
 	   <td> 
-		 <?
+		 <?php
 		   db_input('k36_ip',40,$Ik36_ip,true,'text',$db_opcao,"");
 		 ?>
 	   </td>
@@ -85,7 +85,7 @@ if(isset($db_opcaoal)){
   <table>
     <tr>
       <td valign="top"  align="center">  
-	    <?
+	    <?php
 		  $chavepri= array("k36_sequencial"=>@$k36_sequencial,"k36_modcarnepadrao"=>@$k36_modcarnepadra,"k36_ip"=>@$k36_ip);
 		  $cliframe_alterar_excluir->chavepri	   = $chavepri;
 		  $cliframe_alterar_excluir->sql     	   = $clmodcarneexcessao->sql_query_file(@$k36_sequencial,"*"," k36_sequencial "," k36_modcarnepadrao = ".@$k36_modcarnepadrao);

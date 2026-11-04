@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ if(isset($t52_bem) && $t52_bem!=""){
               <tr>
                 <td colspan='6' align='center' nowrap ><b> Dados atuais do bem </b></td>
               </tr>
-<?
+<?php
   if(isset($t52_bem) && trim($t52_bem) != ''){
      $result_bens = $clbens->sql_record($clbens->sql_query_file($t52_bem,'t52_descr,t52_depart,t52_dtaqu'));
      if($clbens->numrows>0){
@@ -140,15 +140,15 @@ if(isset($t52_bem) && $t52_bem!=""){
                     <?=@$Lt52_bem?>
                 </td>
                 <td>
-									<?
+									<?php
 									    db_input('t52_bem',8,$It52_bem,true,'text',3,"")
 									?>
-									<?
+									<?php
 									    db_input('t52_descr',40,$It52_descr,true,'text',3,"")
 									?>
                 </td>
               </tr>
-              <? 
+              <?php 
 							$resPesqOrgaoUnidade = $cldepartorg->sql_record($cldepartorg->sql_query_orgunid($t52_depart,db_getsession('DB_anousu'),'o40_orgao,o40_descr,o41_unidade,o41_descr'));
 							if($cldepartorg->numrows>0){
 								db_fieldsmemory($resPesqOrgaoUnidade,0);
@@ -159,10 +159,10 @@ if(isset($t52_bem) && $t52_bem!=""){
                    <b>Órgão:</b>    
                 </td>
                 <td>
-									<?
+									<?php
 									    db_input('o40_orgao',8,$o40_orgao,true,'text',3,"")
 									?>
-									<?
+									<?php
 									    db_input('o40_descr',40,$o40_descr,true,'text',3,"")
 									?>
                 </td>
@@ -172,10 +172,10 @@ if(isset($t52_bem) && $t52_bem!=""){
                     <b>Unidade:</b>
                 </td>
                 <td>
-									<?
+									<?php
 									    db_input('o41_unidade',8,$o41_unidade,true,'text',3,"")
 									?>
-									<?
+									<?php
 									    db_input('o41_descr',40,$o41_descr,true,'text',3,"")
 									?>
                 </td>
@@ -185,10 +185,10 @@ if(isset($t52_bem) && $t52_bem!=""){
                     <?=@$Lt52_depart?>
                 </td>
                 <td>
-								<?
+								<?php
 								    db_input('t52_depart',8,$It52_depart,true,'text',3,"")
 								?>
-								<?
+								<?php
 								    db_input('descrdepto',40,$Idescrdepto,true,'text',3,"")
 								?>
                 </td>
@@ -198,10 +198,10 @@ if(isset($t52_bem) && $t52_bem!=""){
                     <?=@$Lt64_class?>
                 </td>
                 <td>
-<?
+<?php
     db_input('t64_class',10,$It64_class,true,'text',3,"")
 ?>
-<?
+<?php
     db_input('t64_descr',38,$It64_descr,true,'text',3,"")
 ?>
                 </td>
@@ -211,24 +211,24 @@ if(isset($t52_bem) && $t52_bem!=""){
                     <?=@$Lt52_dtaqu?>
                 </td>
                 <td>
-<?
+<?php
     db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',3,"");
 ?>
                 </td>
               </tr>
-<?	      
+<?php       
 if ($opcao_obs == "S"){
      if (trim(@$t52_obs) != ""){
 ?>
   <tr>
     <td width="200" colspan="1" align="left" title="Características adicionais do bem"><b>Características adicionais do bem:</b></td>
     <td align="left" title="">
-<?
+<?php
     db_input("t52_obs",80,$It52_obs,true,"text",3);
 ?>
     </td> 
   </tr>
-<?
+<?php
      }
 }
 
@@ -237,12 +237,12 @@ if ($opcao_obs == "S"){
               <tr>  
                 <td nowrap valign="top" align="right" title='<?=$Tt55_obs?>'><?=$Lt55_obs?></td>
 		<td>
-<?
+<?php
     db_textarea("t55_obs",5,80,$It55_obs,true,"text",3);
 ?>
 		</td>
 	      </tr>	
-<?
+<?php
    }
 ?>
             </table>

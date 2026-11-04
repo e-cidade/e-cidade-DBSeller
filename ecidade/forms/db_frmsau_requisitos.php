@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clsau_requisitos->rotulo->label();
        <?=@$Ls107_i_codigo?>
     </td>
     <td> 
-     <? db_input('s107_i_codigo',10,$Is107_i_codigo,true,'text',3,"")?>
+     <?php db_input('s107_i_codigo',10,$Is107_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -44,7 +44,7 @@ $clsau_requisitos->rotulo->label();
        <?=@$Ls107_c_requisito?>
     </td>
     <td> 
-     <? db_input('s107_c_requisito',60,$Is107_c_requisito,true,'text',$db_opcao,"")?>
+     <?php db_input('s107_c_requisito',60,$Is107_c_requisito,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table><p>
@@ -58,7 +58,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_requisitos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

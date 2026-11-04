@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("q03_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tq80_ativ?>" align="right">
-       <?
+       <?php
        db_ancora(@$Lq80_ativ,"js_pesquisaq80_ativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q80_ativ',4,$Iq80_ativ,true,'text',$db_opcao," onchange='js_pesquisaq80_ativ(false);'")
 ?>
-       <?
+       <?php
 db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
        ?>
     </td>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -111,7 +111,7 @@ if (isset($atualizar)) {
                 <?=@$Led15_i_codigo?>
               </td>
               <td>
-                <?
+                <?php
                   db_input('ed15_i_codigo', 10, $Ied15_i_codigo, true, 'text', 3, "")
                 ?>
               </td>
@@ -121,7 +121,7 @@ if (isset($atualizar)) {
                 <?=@$Led15_c_nome?>
               </td>
               <td>
-                <?
+                <?php
                   db_input('ed15_c_nome', 20, $Ied15_c_nome, true, 'text', $db_opcao, "")
                 ?>
               </td>
@@ -162,7 +162,7 @@ if (isset($atualizar)) {
               <td>
                 <b>Ordenar Turnos:</b><br>
                 <select name="campos[]" id="campos" size="4" style="width:250px" multiple>
-                <?
+                <?php
                   $sql = "SELECT ed15_i_codigo,ed15_c_nome from turno order by ed15_i_sequencia";
                   $query = db_query($sql);
                   $linhas = pg_num_rows($query);
@@ -191,7 +191,7 @@ if (isset($atualizar)) {
     <table width="100%">
       <tr>
         <td valign="top"><br>
-          <?
+          <?php
             $campos = "ed15_i_codigo,
                        ed15_c_nome,
                        (select array(select case

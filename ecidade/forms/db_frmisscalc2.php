@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -80,12 +80,12 @@ function js_habilitacalculo(){
 <table border="0">
   <tr>   
     <td title="<?=$Tq07_inscr?>" >
-    <?
+    <?php
      db_ancora($Lq07_inscr,' js_inscr(true); ',1);
     ?>
     </td>    
     <td title="<?=$Tq07_inscr?>" colspan="4">
-    <? 
+    <?php 
      $z01_nome = stripslashes($z01_nome);
      db_input('q07_inscr',8,$Iq07_inscr,true,'text',3,"");
      isset($q07_inscr)?$inscricao=$q07_inscr:"";
@@ -128,7 +128,7 @@ function js_habilitacalculo(){
 <td>  
   <tr>   
     <td align="center" colspan="2"> 
-<?
+<?php
       $cliframe_seleciona->campos  = "q07_inscr,q07_seq,q88_inscr,q03_descr,q07_datain,q07_datafi,q07_databx,q07_perman,q07_quant,q11_tipcalc, q81_descr";
       $cliframe_seleciona->legenda="ATIVIDADES EM FUNCIONAMENTO";
       if(isset($q07_inscr) &&$q07_inscr!=""){

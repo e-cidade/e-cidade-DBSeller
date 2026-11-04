@@ -92,13 +92,11 @@ $sWhere = "exists (select pc11_quant, pc23_valor
 $sWhereContratos = " and 1 = 1 ";
 ?>
 <html>
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <link href="estilos.css" rel="stylesheet" type="text/css">
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
-
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
   <table height="100%" border="0" align="center" cellspacing="0" bgcolor="#CCCCCC">
     <tr>
@@ -110,7 +108,7 @@ $sWhereContratos = " and 1 = 1 ";
                 <?php echo $Ll20_codigo ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("l20_codigo", 10, $Il20_codigo, true, "text", 4, "", "chave_l20_codigo");
                 ?>
               </td>
@@ -121,7 +119,7 @@ $sWhereContratos = " and 1 = 1 ";
                 <?php echo $Ll20_edital ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
                 db_input("l20_edital", 10, $Il20_edital, true, "text", 4, "", "chave_l20_edital");
                 ?>
               </td>
@@ -145,8 +143,19 @@ $sWhereContratos = " and 1 = 1 ";
               </td>
               <td width="96%" align="left" nowrap>
                 <?php
-                db_input("l03_descr", 60, $Il03_descr, true, "text", 4, "", "chave_l03_descr");
-                db_input("param", 10, "", false, "hidden", 3);
+                $clcflicita = new cl_cflicita;
+                $dbWhereModalidade = "";
+                $todos = "0";
+
+                if (!empty($iModalidadeLicitacao)) {
+                    $dbWhereModalidade = " and l03_codigo in ({$iModalidadeLicitacao})";
+                    $todos = "";
+                }
+                $dbWhereClcflicita = "l03_instit = ".db_getsession("DB_instit") . "{$dbWhereModalidade}";
+
+                $resultClcflicita = $clcflicita->sql_record($clcflicita->sql_query("", "l03_codigo, l03_descr", "l03_codigo", $dbWhereClcflicita));
+
+                db_selectrecord("l03_codigo", $resultClcflicita, true, 1, "", "chave_l03_codigo", "", $todos, "", "2");
                 ?>
               </td>
             </tr>
@@ -238,15 +247,15 @@ $sWhereContratos = " and 1 = 1 ";
                 "$dbwhere l20_numero=$chave_l20_numero  and $dbwhere_instit"
               );
             } else {
-              if (isset($chave_l03_descr) && (trim($chave_l03_descr) != "")) {
+              if (isset($chave_l03_codigo) && (trim($chave_l03_codigo) != "0") && isset($l20_anousu) && (trim($l20_anousu) != "")) {
                 $sql = $clliclicita->sql_queryContratos(
                   null,
                   "distinct " . $campos,
                   "l20_codigo",
-                  "$dbwhere l03_descr like '$chave_l03_descr%'  and $dbwhere_instit"
+                  "$dbwhere l03_codigo=$chave_l03_codigo and l20_anousu = {$l20_anousu} and $dbwhere_instit"
                 );
               } else {
-                if (isset($chave_l03_codigo) && (trim($chave_l03_codigo) != "")) {
+                if (isset($chave_l03_codigo) && (trim($chave_l03_codigo) != "0")) {
                   $sql = $clliclicita->sql_queryContratos(
                     null,
                     "distinct " . $campos,
@@ -301,24 +310,15 @@ $sWhereContratos = " and 1 = 1 ";
                   "$dbwhere l20_numero=$chave_l20_numero"
                 );
               } else {
-                if (isset($chave_l03_descr) && (trim($chave_l03_descr) != "")) {
+                if (isset($chave_l03_codigo) && (trim($chave_l03_codigo) != "")) {
                   $sql = $clliclicitem->sql_query_inf(
                     null,
                     $campos,
                     "l20_codigo",
-                    "$dbwhere l03_descr like '$chave_l03_descr%'"
+                    "$dbwhere l03_codigo=$chave_l03_codigo"
                   );
                 } else {
-                  if (isset($chave_l03_codigo) && (trim($chave_l03_codigo) != "")) {
-                    $sql = $clliclicitem->sql_query_inf(
-                      null,
-                      $campos,
-                      "l20_codigo",
-                      "$dbwhere l03_codigo=$chave_l03_codigo"
-                    );
-                  } else {
-                    $sql = $clliclicitem->sql_query_inf("", $campos, "l20_codigo", "$dbwhere 1=1");
-                  }
+                  $sql = $clliclicitem->sql_query_inf("", $campos, "l20_codigo", "$dbwhere 1=1");
                 }
               }
             }
@@ -371,4 +371,13 @@ $sWhereContratos = " and 1 = 1 ";
       input = document.querySelector('input[value="Fechar"]');
     input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;
   })();
+
+  const limpar = document.getElementById('limpar');
+  limpar.addEventListener('click', function () {
+      select.options[select.selectedIndex].removeAttribute('selected');
+  })
+
+  var select = document.getElementById("chave_l03_codigo");
+  var optionValue = select.options[select.selectedIndex].value;
+  document.getElementById('chave_l03_codigodescr').value = optionValue;
 </script>

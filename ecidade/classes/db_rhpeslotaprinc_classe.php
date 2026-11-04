@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhpeslotaprinc
-class cl_rhpeslotaprinc { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh11_anousu = 0; 
-   var $rh11_mesusu = 0; 
-   var $rh11_regist = 0; 
-   var $rh11_lotac = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhpeslotaprinc {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh11_anousu = 0;
+   var $rh11_mesusu = 0;
+   var $rh11_regist = 0;
+   var $rh11_lotac = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh11_anousu = int4 = Ano 
-                 rh11_mesusu = int4 = Mês 
-                 rh11_regist = int4 = Matrícula 
-                 rh11_lotac = int4 = Lotação 
+                 rh11_anousu = int4 = Ano
+                 rh11_mesusu = int4 = Mês
+                 rh11_regist = int4 = Matrícula
+                 rh11_lotac = int4 = Lotação
                  ";
-   //funcao construtor da classe 
-   function cl_rhpeslotaprinc() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhpeslotaprinc"); 
+     $this->rotulo = new rotulo("rhpeslotaprinc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_rhpeslotaprinc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh11_anousu = ($this->rh11_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh11_anousu"]:$this->rh11_anousu);
        $this->rh11_mesusu = ($this->rh11_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["rh11_mesusu"]:$this->rh11_mesusu);
@@ -83,13 +83,13 @@ class cl_rhpeslotaprinc {
      }
    }
    // funcao para inclusao
-   function incluir ($rh11_anousu,$rh11_mesusu,$rh11_regist,$rh11_lotac){ 
+   public function incluir ($rh11_anousu,$rh11_mesusu,$rh11_regist,$rh11_lotac){
       $this->atualizacampos();
-       $this->rh11_anousu = $rh11_anousu; 
-       $this->rh11_mesusu = $rh11_mesusu; 
-       $this->rh11_regist = $rh11_regist; 
-       $this->rh11_lotac = $rh11_lotac; 
-     if(($this->rh11_anousu == null) || ($this->rh11_anousu == "") ){ 
+       $this->rh11_anousu = $rh11_anousu;
+       $this->rh11_mesusu = $rh11_mesusu;
+       $this->rh11_regist = $rh11_regist;
+       $this->rh11_lotac = $rh11_lotac;
+     if(($this->rh11_anousu == null) || ($this->rh11_anousu == "") ){
        $this->erro_sql = " Campo rh11_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -97,7 +97,7 @@ class cl_rhpeslotaprinc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh11_mesusu == null) || ($this->rh11_mesusu == "") ){ 
+     if(($this->rh11_mesusu == null) || ($this->rh11_mesusu == "") ){
        $this->erro_sql = " Campo rh11_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -105,7 +105,7 @@ class cl_rhpeslotaprinc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh11_regist == null) || ($this->rh11_regist == "") ){ 
+     if(($this->rh11_regist == null) || ($this->rh11_regist == "") ){
        $this->erro_sql = " Campo rh11_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -113,7 +113,7 @@ class cl_rhpeslotaprinc {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->rh11_lotac == null) || ($this->rh11_lotac == "") ){ 
+     if(($this->rh11_lotac == null) || ($this->rh11_lotac == "") ){
        $this->erro_sql = " Campo rh11_lotac nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -122,19 +122,19 @@ class cl_rhpeslotaprinc {
        return false;
      }
      $sql = "insert into rhpeslotaprinc(
-                                       rh11_anousu 
-                                      ,rh11_mesusu 
-                                      ,rh11_regist 
-                                      ,rh11_lotac 
+                                       rh11_anousu
+                                      ,rh11_mesusu
+                                      ,rh11_regist
+                                      ,rh11_lotac
                        )
                 values (
-                                $this->rh11_anousu 
-                               ,$this->rh11_mesusu 
-                               ,$this->rh11_regist 
-                               ,$this->rh11_lotac 
+                                $this->rh11_anousu
+                               ,$this->rh11_mesusu
+                               ,$this->rh11_regist
+                               ,$this->rh11_lotac
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Lotação Principal ($this->rh11_anousu."-".$this->rh11_mesusu."-".$this->rh11_regist."-".$this->rh11_lotac) nao Incluído. Inclusao Abortada.";
@@ -172,16 +172,16 @@ class cl_rhpeslotaprinc {
        $resac = db_query("insert into db_acount values($acount,974,6066,'','".AddSlashes(pg_result($resaco,0,'rh11_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null) { 
+   public function alterar ($rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null) {
       $this->atualizacampos();
      $sql = " update rhpeslotaprinc set ";
      $virgula = "";
-     if(trim($this->rh11_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_anousu"])){ 
+     if(trim($this->rh11_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_anousu"])){
        $sql  .= $virgula." rh11_anousu = $this->rh11_anousu ";
        $virgula = ",";
-       if(trim($this->rh11_anousu) == null ){ 
+       if(trim($this->rh11_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "rh11_anousu";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_rhpeslotaprinc {
          return false;
        }
      }
-     if(trim($this->rh11_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_mesusu"])){ 
+     if(trim($this->rh11_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_mesusu"])){
        $sql  .= $virgula." rh11_mesusu = $this->rh11_mesusu ";
        $virgula = ",";
-       if(trim($this->rh11_mesusu) == null ){ 
+       if(trim($this->rh11_mesusu) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "rh11_mesusu";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_rhpeslotaprinc {
          return false;
        }
      }
-     if(trim($this->rh11_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_regist"])){ 
+     if(trim($this->rh11_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_regist"])){
        $sql  .= $virgula." rh11_regist = $this->rh11_regist ";
        $virgula = ",";
-       if(trim($this->rh11_regist) == null ){ 
+       if(trim($this->rh11_regist) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "rh11_regist";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_rhpeslotaprinc {
          return false;
        }
      }
-     if(trim($this->rh11_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_lotac"])){ 
+     if(trim($this->rh11_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh11_lotac"])){
        $sql  .= $virgula." rh11_lotac = $this->rh11_lotac ";
        $virgula = ",";
-       if(trim($this->rh11_lotac) == null ){ 
+       if(trim($this->rh11_lotac) == null ){
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "rh11_lotac";
          $this->erro_banco = "";
@@ -264,7 +264,7 @@ class cl_rhpeslotaprinc {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotação Principal nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh11_anousu."-".$this->rh11_mesusu."-".$this->rh11_regist."-".$this->rh11_lotac;
@@ -292,14 +292,14 @@ class cl_rhpeslotaprinc {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh11_anousu,$rh11_mesusu,$rh11_regist,$rh11_lotac));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -349,7 +349,7 @@ class cl_rhpeslotaprinc {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Lotação Principal nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh11_anousu."-".$rh11_mesusu."-".$rh11_regist."-".$rh11_lotac;
@@ -377,11 +377,11 @@ class cl_rhpeslotaprinc {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -403,10 +403,10 @@ class cl_rhpeslotaprinc {
       }
      return $result;
    }
-   function sql_query ( $rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,61 +416,61 @@ class cl_rhpeslotaprinc {
        $sql .= $campos;
      }
      $sql .= " from rhpeslotaprinc ";
-     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = rhpeslotaprinc.rh11_anousu 
-		                                   and  pessoal.r01_mesusu = rhpeslotaprinc.rh11_mesusu 
+     $sql .= "      inner join pessoal  on  pessoal.r01_anousu = rhpeslotaprinc.rh11_anousu
+		                                   and  pessoal.r01_mesusu = rhpeslotaprinc.rh11_mesusu
 																			 and  pessoal.r01_regist = rhpeslotaprinc.rh11_regist
 																			 and  pessoal.r01_instit = ".db_getsession("DB_instit")." ";
      $sql .= "      inner join rhlota  on  rhlota.r70_codigo = rhpeslotaprinc.rh11_lotac
 		                                  and  rhlota.r70_instit = ".db_getsession("DB_instit")." ";
      $sql .= "      inner join cgm  on  cgm.z01_numcgm = pessoal.r01_numcgm";
-     $sql .= "      inner join funcao  on  funcao.r37_anousu = pessoal.r01_anousu 
-		                                  and  funcao.r37_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join funcao  on  funcao.r37_anousu = pessoal.r01_anousu
+		                                  and  funcao.r37_mesusu = pessoal.r01_mesusu
 																			and  funcao.r37_funcao = pessoal.r01_funcao
 																			and  funcao.r37_instit = pessoal.r01_instit ";
-     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pessoal.r01_anousu 
-		                                   and  lotacao.r13_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join lotacao  on  lotacao.r13_anousu = pessoal.r01_anousu
+		                                   and  lotacao.r13_mesusu = pessoal.r01_mesusu
 																			 and  lotacao.r13_codigo = pessoal.r01_lotac
 																			 and  lotacao.r13_instit = pessoal.r01_instit ";
-     $sql .= "      inner join cargo  on  cargo.r65_anousu = pessoal.r01_anousu 
-		                                 and  cargo.r65_mesusu = pessoal.r01_mesusu 
+     $sql .= "      inner join cargo  on  cargo.r65_anousu = pessoal.r01_anousu
+		                                 and  cargo.r65_mesusu = pessoal.r01_mesusu
 																		 and  cargo.r65_cargo = pessoal.r01_cargo ";
      $sql .= "      inner join db_estrutura  on  db_estrutura.db77_codestrut = rhlota.r70_codestrut";
      $sql2 = "";
      if($dbwhere==""){
        if($rh11_anousu!=null ){
-         $sql2 .= " where rhpeslotaprinc.rh11_anousu = $rh11_anousu "; 
-       } 
+         $sql2 .= " where rhpeslotaprinc.rh11_anousu = $rh11_anousu ";
+       }
        if($rh11_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_mesusu = $rh11_mesusu "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_mesusu = $rh11_mesusu ";
+       }
        if($rh11_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_regist = $rh11_regist "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_regist = $rh11_regist ";
+       }
        if($rh11_lotac!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_lotac = $rh11_lotac "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_lotac = $rh11_lotac ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,10 +479,10 @@ class cl_rhpeslotaprinc {
      }
      return $sql;
   }
-   function sql_query_file ( $rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh11_anousu=null,$rh11_mesusu=null,$rh11_regist=null,$rh11_lotac=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,39 +495,39 @@ class cl_rhpeslotaprinc {
      $sql2 = "";
      if($dbwhere==""){
        if($rh11_anousu!=null ){
-         $sql2 .= " where rhpeslotaprinc.rh11_anousu = $rh11_anousu "; 
-       } 
+         $sql2 .= " where rhpeslotaprinc.rh11_anousu = $rh11_anousu ";
+       }
        if($rh11_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_mesusu = $rh11_mesusu "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_mesusu = $rh11_mesusu ";
+       }
        if($rh11_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_regist = $rh11_regist "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_regist = $rh11_regist ";
+       }
        if($rh11_lotac!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " rhpeslotaprinc.rh11_lotac = $rh11_lotac "; 
-       } 
+         }
+         $sql2 .= " rhpeslotaprinc.rh11_lotac = $rh11_lotac ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

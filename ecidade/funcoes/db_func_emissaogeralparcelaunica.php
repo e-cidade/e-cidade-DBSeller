@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "emissaogeralparcelaunica.tr05_sequencial,emissaogeralparcelaunica.tr05_emissaogeral,emissaogeralparcelaunica.tr05_dataoperacao,emissaogeralparcelaunica.tr05_datavencimento,emissaogeralparcelaunica.tr05_percentual";
 ?>

@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pcorcamtroca
-class cl_pcorcamtroca { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc25_codtroca = 0; 
-   var $pc25_orcamitem = 0; 
-   var $pc25_motivo = null; 
-   var $pc25_forneant = 0; 
-   var $pc25_forneatu = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pcorcamtroca {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc25_codtroca = 0;
+   var $pc25_orcamitem = 0;
+   var $pc25_motivo = null;
+   var $pc25_forneant = 0;
+   var $pc25_forneatu = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc25_codtroca = int4 = Código sequencial do registro de troca 
-                 pc25_orcamitem = int4 = Código sequencial do item no orçamento 
-                 pc25_motivo = text = Motivo da troca de pontuação 
-                 pc25_forneant = int8 = Fornecedor Julgado anteriormente 
-                 pc25_forneatu = int8 = Fornecedor trocado após julgamento 
+                 pc25_codtroca = int4 = Código sequencial do registro de troca
+                 pc25_orcamitem = int4 = Código sequencial do item no orçamento
+                 pc25_motivo = text = Motivo da troca de pontuação
+                 pc25_forneant = int8 = Fornecedor Julgado anteriormente
+                 pc25_forneatu = int8 = Fornecedor trocado após julgamento
                  ";
-   //funcao construtor da classe 
-   function cl_pcorcamtroca() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcorcamtroca"); 
+     $this->rotulo = new rotulo("pcorcamtroca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_pcorcamtroca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc25_codtroca = ($this->pc25_codtroca == ""?@$GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"]:$this->pc25_codtroca);
        $this->pc25_orcamitem = ($this->pc25_orcamitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"]:$this->pc25_orcamitem);
@@ -83,9 +83,9 @@ class cl_pcorcamtroca {
      }
    }
    // funcao para inclusao
-   function incluir ($pc25_codtroca){ 
+   public function incluir ($pc25_codtroca){
       $this->atualizacampos();
-     if($this->pc25_orcamitem == null ){ 
+     if($this->pc25_orcamitem == null ){
        $this->erro_sql = " Campo Código sequencial do item no orçamento nao Informado.";
        $this->erro_campo = "pc25_orcamitem";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_pcorcamtroca {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc25_motivo == null ){ 
+     if($this->pc25_motivo == null ){
        $this->erro_sql = " Campo Motivo da troca de pontuação nao Informado.";
        $this->erro_campo = "pc25_motivo";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_pcorcamtroca {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc25_forneant == null ){ 
+     if($this->pc25_forneant == null ){
        $this->erro_sql = " Campo Fornecedor Julgado anteriormente nao Informado.";
        $this->erro_campo = "pc25_forneant";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_pcorcamtroca {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc25_forneatu == null ){ 
+     if($this->pc25_forneatu == null ){
        $this->erro_sql = " Campo Fornecedor trocado após julgamento nao Informado.";
        $this->erro_campo = "pc25_forneatu";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_pcorcamtroca {
        return false;
      }
      if($pc25_codtroca == "" || $pc25_codtroca == null ){
-       $result = db_query("select nextval('pcorcamtroca_pc25_codtroca_seq')"); 
+       $result = db_query("select nextval('pcorcamtroca_pc25_codtroca_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: pcorcamtroca_pc25_codtroca_seq do campo: pc25_codtroca"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: pcorcamtroca_pc25_codtroca_seq do campo: pc25_codtroca";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc25_codtroca = pg_result($result,0,0); 
+       $this->pc25_codtroca = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcorcamtroca_pc25_codtroca_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc25_codtroca)){
@@ -142,10 +142,10 @@ class cl_pcorcamtroca {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc25_codtroca = $pc25_codtroca; 
+         $this->pc25_codtroca = $pc25_codtroca;
        }
      }
-     if(($this->pc25_codtroca == null) || ($this->pc25_codtroca == "") ){ 
+     if(($this->pc25_codtroca == null) || ($this->pc25_codtroca == "") ){
        $this->erro_sql = " Campo pc25_codtroca nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_pcorcamtroca {
        return false;
      }
      $sql = "insert into pcorcamtroca(
-                                       pc25_codtroca 
-                                      ,pc25_orcamitem 
-                                      ,pc25_motivo 
-                                      ,pc25_forneant 
-                                      ,pc25_forneatu 
+                                       pc25_codtroca
+                                      ,pc25_orcamitem
+                                      ,pc25_motivo
+                                      ,pc25_forneant
+                                      ,pc25_forneatu
                        )
                 values (
-                                $this->pc25_codtroca 
-                               ,$this->pc25_orcamitem 
-                               ,'$this->pc25_motivo' 
-                               ,$this->pc25_forneant 
-                               ,$this->pc25_forneatu 
+                                $this->pc25_codtroca
+                               ,$this->pc25_orcamitem
+                               ,'$this->pc25_motivo'
+                               ,$this->pc25_forneant
+                               ,$this->pc25_forneatu
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Troca de pontuação dos orçamentos ($this->pc25_codtroca) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_pcorcamtroca {
        $resac = db_query("insert into db_acount values($acount,862,10623,'','".AddSlashes(pg_result($resaco,0,'pc25_forneatu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc25_codtroca=null) { 
+   public function alterar ($pc25_codtroca=null) {
       $this->atualizacampos();
      $sql = " update pcorcamtroca set ";
      $virgula = "";
-     if(trim($this->pc25_codtroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"])){ 
+     if(trim($this->pc25_codtroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"])){
        $sql  .= $virgula." pc25_codtroca = $this->pc25_codtroca ";
        $virgula = ",";
-       if(trim($this->pc25_codtroca) == null ){ 
+       if(trim($this->pc25_codtroca) == null ){
          $this->erro_sql = " Campo Código sequencial do registro de troca nao Informado.";
          $this->erro_campo = "pc25_codtroca";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"])){ 
+     if(trim($this->pc25_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"])){
        $sql  .= $virgula." pc25_orcamitem = $this->pc25_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc25_orcamitem) == null ){ 
+       if(trim($this->pc25_orcamitem) == null ){
          $this->erro_sql = " Campo Código sequencial do item no orçamento nao Informado.";
          $this->erro_campo = "pc25_orcamitem";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_motivo"])){ 
+     if(trim($this->pc25_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_motivo"])){
        $sql  .= $virgula." pc25_motivo = '$this->pc25_motivo' ";
        $virgula = ",";
-       if(trim($this->pc25_motivo) == null ){ 
+       if(trim($this->pc25_motivo) == null ){
          $this->erro_sql = " Campo Motivo da troca de pontuação nao Informado.";
          $this->erro_campo = "pc25_motivo";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_forneant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneant"])){ 
+     if(trim($this->pc25_forneant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneant"])){
        $sql  .= $virgula." pc25_forneant = $this->pc25_forneant ";
        $virgula = ",";
-       if(trim($this->pc25_forneant) == null ){ 
+       if(trim($this->pc25_forneant) == null ){
          $this->erro_sql = " Campo Fornecedor Julgado anteriormente nao Informado.";
          $this->erro_campo = "pc25_forneant";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_forneatu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneatu"])){ 
+     if(trim($this->pc25_forneatu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneatu"])){
        $sql  .= $virgula." pc25_forneatu = $this->pc25_forneatu ";
        $virgula = ",";
-       if(trim($this->pc25_forneatu) == null ){ 
+       if(trim($this->pc25_forneatu) == null ){
          $this->erro_sql = " Campo Fornecedor trocado após julgamento nao Informado.";
          $this->erro_campo = "pc25_forneatu";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_pcorcamtroca {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Troca de pontuação dos orçamentos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc25_codtroca;
@@ -327,14 +327,14 @@ class cl_pcorcamtroca {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc25_codtroca=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc25_codtroca=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc25_codtroca));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_pcorcamtroca {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Troca de pontuação dos orçamentos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc25_codtroca;
@@ -392,11 +392,11 @@ class cl_pcorcamtroca {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +418,10 @@ class cl_pcorcamtroca {
       }
      return $result;
    }
-   function sql_query ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_pcorcamtroca {
      $sql .= " from pcorcamtroca ";
      $sql .= "      inner join pcorcamitem on pcorcamitem.pc22_orcamitem = pcorcamtroca.pc25_orcamitem";
      $sql .= "      inner join pcorcam     on pcorcam.pc20_codorc        = pcorcamitem.pc22_codorc";
-     $sql .= "      left  join pcorcamforne as forneant on forneant.pc21_orcamforne = pcorcamtroca.pc25_forneant"; 
+     $sql .= "      left  join pcorcamforne as forneant on forneant.pc21_orcamforne = pcorcamtroca.pc25_forneant";
      $sql .= "      left  join pcorcamforne as forneatu on forneatu.pc21_orcamforne = pcorcamtroca.pc25_forneatu";
      $sql .= "      left  join cgm          on cgm.z01_numcgm = forneant.pc21_numcgm";
      $sql .= "      left  join cgm as a     on a.z01_numcgm   = forneatu.pc21_numcgm";
@@ -442,15 +442,15 @@ class cl_pcorcamtroca {
      $sql2 = "";
      if($dbwhere==""){
        if($pc25_codtroca!=null ){
-         $sql2 .= " where pcorcamtroca.pc25_codtroca = $pc25_codtroca "; 
-       } 
+         $sql2 .= " where pcorcamtroca.pc25_codtroca = $pc25_codtroca ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,10 +459,10 @@ class cl_pcorcamtroca {
      }
      return $sql;
   }
-   function sql_query_file ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,15 +480,15 @@ class cl_pcorcamtroca {
      $sql2 = "";
      if($dbwhere==""){
        if($pc25_codtroca!=null ){
-         $sql2 .= " where pcorcamtroca.pc25_codtroca = $pc25_codtroca "; 
-       } 
+         $sql2 .= " where pcorcamtroca.pc25_codtroca = $pc25_codtroca ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

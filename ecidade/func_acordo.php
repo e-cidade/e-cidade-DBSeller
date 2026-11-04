@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -206,7 +206,7 @@ $iInstituicaoSessao = db_getsession('DB_instit');
                   $aNumeroAcordo = explode('/', $ac16_numeroacordo);
                   $iNumero = $aNumeroAcordo[0];
                   $iAno = !empty($aNumeroAcordo[1]) ? $aNumeroAcordo[1] : db_getsession("DB_anousu");
-                  $sWhere = "ac16_numeroacordo = {$iNumero} and ac16_anousu = {$iAno} and ac16_instit = {$iInstituicaoSessao} and {$sDepartamentos}";
+                  $sWhere = "ac16_numeroacordo = {$iNumero} and ac16_anousu = {$iAno}";
               }
 
               if (isset($chave_ac16_sequencial) && (trim($chave_ac16_sequencial) != "")) {
@@ -286,7 +286,7 @@ if (!isset($pesquisa_chave)) {
     ?>
   <script>
   </script>
-    <?
+    <?php
 }
 ?>
 <script>

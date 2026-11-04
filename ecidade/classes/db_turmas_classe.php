@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE turmas
-class cl_turmas { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed05_i_codigo = 0; 
-   var $ed05_i_escola = 0; 
-   var $ed05_i_turno = 0; 
-   var $ed05_i_serie = 0; 
-   var $ed05_c_nome = null; 
-   var $ed05_i_criterio = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_turmas {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed05_i_codigo = 0;
+   var $ed05_i_escola = 0;
+   var $ed05_i_turno = 0;
+   var $ed05_i_serie = 0;
+   var $ed05_c_nome = null;
+   var $ed05_i_criterio = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed05_i_codigo = int4 = Código da Turma 
-                 ed05_i_escola = int8 = Escola 
-                 ed05_i_turno = int8 = Turno 
-                 ed05_i_serie = int8 = Série 
-                 ed05_c_nome = char(40) = Nome da Turma 
-                 ed05_i_criterio = int4 = Critério 
+                 ed05_i_codigo = int4 = Código da Turma
+                 ed05_i_escola = int8 = Escola
+                 ed05_i_turno = int8 = Turno
+                 ed05_i_serie = int8 = Série
+                 ed05_c_nome = char(40) = Nome da Turma
+                 ed05_i_criterio = int4 = Critério
                  ";
-   //funcao construtor da classe 
-   function cl_turmas() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("turmas"); 
+     $this->rotulo = new rotulo("turmas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_turmas {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed05_i_codigo = ($this->ed05_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"]:$this->ed05_i_codigo);
        $this->ed05_i_escola = ($this->ed05_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed05_i_escola"]:$this->ed05_i_escola);
@@ -86,9 +86,9 @@ class cl_turmas {
      }
    }
    // funcao para inclusao
-   function incluir ($ed05_i_codigo){ 
+   public function incluir ($ed05_i_codigo){
       $this->atualizacampos();
-     if($this->ed05_i_escola == null ){ 
+     if($this->ed05_i_escola == null ){
        $this->erro_sql = " Campo Escola nao Informado.";
        $this->erro_campo = "ed05_i_escola";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_turmas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_turno == null ){ 
+     if($this->ed05_i_turno == null ){
        $this->erro_sql = " Campo Turno nao Informado.";
        $this->erro_campo = "ed05_i_turno";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_turmas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_serie == null ){ 
+     if($this->ed05_i_serie == null ){
        $this->erro_sql = " Campo Série nao Informado.";
        $this->erro_campo = "ed05_i_serie";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_turmas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_c_nome == null ){ 
+     if($this->ed05_c_nome == null ){
        $this->erro_sql = " Campo Nome da Turma nao Informado.";
        $this->erro_campo = "ed05_c_nome";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_turmas {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed05_i_criterio == null ){ 
+     if($this->ed05_i_criterio == null ){
        $this->erro_sql = " Campo Critério nao Informado.";
        $this->erro_campo = "ed05_i_criterio";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_turmas {
        return false;
      }
      if($ed05_i_codigo == "" || $ed05_i_codigo == null ){
-       $result = @db_query("select nextval('turmas_ed05_i_codigo_seq')"); 
+       $result = @db_query("select nextval('turmas_ed05_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: turmas_ed05_i_codigo_seq do campo: ed05_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: turmas_ed05_i_codigo_seq do campo: ed05_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed05_i_codigo = pg_result($result,0,0); 
+       $this->ed05_i_codigo = pg_result($result,0,0);
      }else{
        $result = @db_query("select last_value from turmas_ed05_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed05_i_codigo)){
@@ -154,10 +154,10 @@ class cl_turmas {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed05_i_codigo = $ed05_i_codigo; 
+         $this->ed05_i_codigo = $ed05_i_codigo;
        }
      }
-     if(($this->ed05_i_codigo == null) || ($this->ed05_i_codigo == "") ){ 
+     if(($this->ed05_i_codigo == null) || ($this->ed05_i_codigo == "") ){
        $this->erro_sql = " Campo ed05_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_turmas {
        return false;
      }
      $sql = "insert into turmas(
-                                       ed05_i_codigo 
-                                      ,ed05_i_escola 
-                                      ,ed05_i_turno 
-                                      ,ed05_i_serie 
-                                      ,ed05_c_nome 
-                                      ,ed05_i_criterio 
+                                       ed05_i_codigo
+                                      ,ed05_i_escola
+                                      ,ed05_i_turno
+                                      ,ed05_i_serie
+                                      ,ed05_c_nome
+                                      ,ed05_i_criterio
                        )
                 values (
-                                $this->ed05_i_codigo 
-                               ,$this->ed05_i_escola 
-                               ,$this->ed05_i_turno 
-                               ,$this->ed05_i_serie 
-                               ,'$this->ed05_c_nome' 
-                               ,$this->ed05_i_criterio 
+                                $this->ed05_i_codigo
+                               ,$this->ed05_i_escola
+                               ,$this->ed05_i_turno
+                               ,$this->ed05_i_serie
+                               ,'$this->ed05_c_nome'
+                               ,$this->ed05_i_criterio
                       )";
-     $result = @db_query($sql); 
-     if($result==false){ 
+     $result = @db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Turmas ($this->ed05_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -218,16 +218,16 @@ class cl_turmas {
        $resac = db_query("insert into db_acount values($acount,1005005,1006315,'','".AddSlashes(pg_result($resaco,0,'ed05_i_criterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed05_i_codigo=null) { 
+   public function alterar ($ed05_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update turmas set ";
      $virgula = "";
-     if(trim($this->ed05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"])){ 
+     if(trim($this->ed05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_codigo"])){
        $sql  .= $virgula." ed05_i_codigo = $this->ed05_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed05_i_codigo) == null ){ 
+       if(trim($this->ed05_i_codigo) == null ){
          $this->erro_sql = " Campo Código da Turma nao Informado.";
          $this->erro_campo = "ed05_i_codigo";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_turmas {
          return false;
        }
      }
-     if(trim($this->ed05_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_escola"])){ 
+     if(trim($this->ed05_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_escola"])){
        $sql  .= $virgula." ed05_i_escola = $this->ed05_i_escola ";
        $virgula = ",";
-       if(trim($this->ed05_i_escola) == null ){ 
+       if(trim($this->ed05_i_escola) == null ){
          $this->erro_sql = " Campo Escola nao Informado.";
          $this->erro_campo = "ed05_i_escola";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_turmas {
          return false;
        }
      }
-     if(trim($this->ed05_i_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_turno"])){ 
+     if(trim($this->ed05_i_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_turno"])){
        $sql  .= $virgula." ed05_i_turno = $this->ed05_i_turno ";
        $virgula = ",";
-       if(trim($this->ed05_i_turno) == null ){ 
+       if(trim($this->ed05_i_turno) == null ){
          $this->erro_sql = " Campo Turno nao Informado.";
          $this->erro_campo = "ed05_i_turno";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_turmas {
          return false;
        }
      }
-     if(trim($this->ed05_i_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_serie"])){ 
+     if(trim($this->ed05_i_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_serie"])){
        $sql  .= $virgula." ed05_i_serie = $this->ed05_i_serie ";
        $virgula = ",";
-       if(trim($this->ed05_i_serie) == null ){ 
+       if(trim($this->ed05_i_serie) == null ){
          $this->erro_sql = " Campo Série nao Informado.";
          $this->erro_campo = "ed05_i_serie";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_turmas {
          return false;
        }
      }
-     if(trim($this->ed05_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_nome"])){ 
+     if(trim($this->ed05_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_c_nome"])){
        $sql  .= $virgula." ed05_c_nome = '$this->ed05_c_nome' ";
        $virgula = ",";
-       if(trim($this->ed05_c_nome) == null ){ 
+       if(trim($this->ed05_c_nome) == null ){
          $this->erro_sql = " Campo Nome da Turma nao Informado.";
          $this->erro_campo = "ed05_c_nome";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_turmas {
          return false;
        }
      }
-     if(trim($this->ed05_i_criterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_criterio"])){ 
+     if(trim($this->ed05_i_criterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed05_i_criterio"])){
        $sql  .= $virgula." ed05_i_criterio = $this->ed05_i_criterio ";
        $virgula = ",";
-       if(trim($this->ed05_i_criterio) == null ){ 
+       if(trim($this->ed05_i_criterio) == null ){
          $this->erro_sql = " Campo Critério nao Informado.";
          $this->erro_campo = "ed05_i_criterio";
          $this->erro_banco = "";
@@ -327,7 +327,7 @@ class cl_turmas {
        }
      }
      $result = @db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Turmas nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed05_i_codigo;
@@ -355,14 +355,14 @@ class cl_turmas {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed05_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed05_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed05_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -392,7 +392,7 @@ class cl_turmas {
        $sql2 = $dbwhere;
      }
      $result = @db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Turmas nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed05_i_codigo;
@@ -420,11 +420,11 @@ class cl_turmas {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = @db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -446,11 +446,11 @@ class cl_turmas {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,15 +468,15 @@ class cl_turmas {
      $sql2 = "";
      if($dbwhere==""){
        if($ed05_i_codigo!=null ){
-         $sql2 .= " where turmas.ed05_i_codigo = $ed05_i_codigo "; 
-       } 
+         $sql2 .= " where turmas.ed05_i_codigo = $ed05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,11 +485,11 @@ class cl_turmas {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,15 +502,15 @@ class cl_turmas {
      $sql2 = "";
      if($dbwhere==""){
        if($ed05_i_codigo!=null ){
-         $sql2 .= " where turmas.ed05_i_codigo = $ed05_i_codigo "; 
-       } 
+         $sql2 .= " where turmas.ed05_i_codigo = $ed05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

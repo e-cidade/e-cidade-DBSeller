@@ -95,7 +95,7 @@ if(trim($sEsconderNumeracaoPortaria) == '') {
                  <?=@$Lh31_dtportaria?>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('h31_dtportaria',@$h31_dtportaria_dia,@$h31_dtportaria_mes,@$h31_dtportaria_ano,true,'text',$db_opcao,"")
                 ?>
               </td>
@@ -105,7 +105,7 @@ if(trim($sEsconderNumeracaoPortaria) == '') {
                  <?=@$Lh31_dtinicio?>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('h31_dtinicio',@$h31_dtinicio_dia,@$h31_dtinicio_mes,@$h31_dtinicio_ano,true,'text',$db_opcao,"")
                 ?>
               </td>
@@ -115,7 +115,7 @@ if(trim($sEsconderNumeracaoPortaria) == '') {
                  <?=@$Lh31_dtlanc?>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('h31_dtlanc',@$h31_dtlanc_dia,@$h31_dtlanc_mes,@$h31_dtlanc_ano,true,'text',$db_opcao,"")
                 ?>
               </td>

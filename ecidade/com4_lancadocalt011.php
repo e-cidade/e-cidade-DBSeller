@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,12 +64,12 @@ function js_emite(){
       </tr>
       <tr>
          <td nowrap title="<?=@$Tpc74_codigo?>" align="right">
-           <?
+           <?php
            db_ancora(@ $Lpc74_codigo, "js_pesquisapc74_codigo(true);", 1);
            ?>
          </td>
          <td>
-           <?
+           <?php
            db_input('pc74_codigo', 4, $Ipc74_codigo, true, 'text', 1, " onchange='js_pesquisapc74_codigo(false);'");
            
            ?>
@@ -98,7 +98,7 @@ function js_emite(){
       </tr>
   </form>
 </table>
-<?
+<?php
 
  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>

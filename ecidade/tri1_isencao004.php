@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,31 +25,32 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_isencao_classe.php"));
-include(modification("classes/db_isencaoinscr_classe.php"));
-include(modification("classes/db_isencaomatric_classe.php"));
-include(modification("classes/db_isencaocgm_classe.php"));
-include(modification("classes/db_isencaoproc_classe.php"));
-include(modification("classes/db_isencaolanc_classe.php"));
-$clisencao    = new cl_isencao;
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_isencao_classe.php"));
+require_once(modification("classes/db_isencaoinscr_classe.php"));
+require_once(modification("classes/db_isencaomatric_classe.php"));
+require_once(modification("classes/db_isencaocgm_classe.php"));
+require_once(modification("classes/db_isencaoproc_classe.php"));
+require_once(modification("classes/db_isencaolanc_classe.php"));
+require_once(modification("classes/db_isencaotipo_classe.php"));
+require_once modification("libs/JSON.php");
 
-$clisencaocgm = new cl_isencaocgm;
-$clisencaoinscr = new cl_isencaoinscr;
-$clisencaomatric = new cl_isencaomatric;
-$clisencaoproc = new cl_isencaoproc;
-  /*
-$clisencaolanc = new cl_isencaolanc;
-  */
-db_postmemory($HTTP_POST_VARS);
-//db_postmemory($HTTP_GET_VARS,2);
+$clisencao         = new cl_isencao;
+$clisencaocgm      = new cl_isencaocgm;
+$clisencaoinscr    = new cl_isencaoinscr;
+$clisencaomatric   = new cl_isencaomatric;
+$clisencaoproc     = new cl_isencaoproc;
+$clisencaocalc = new cl_isencaocalc;
+
+db_postmemory($_POST);
+
 $db_opcao = 1;
-// db_msgbox($origem);
 $db_botao = true;
+
 if(isset($incluir)){
   $sqlerro=false;
   db_inicio_transacao();
@@ -95,6 +96,30 @@ if(isset($incluir)){
 		} 
 	}
 
+	if (!$sqlerro) {
+      /**
+       * Decodifica e insere os calculos liberados
+       * para essa isencao isencao
+       */
+      $oJson = new Services_JSON();
+      $calculosLiberados = $oJson->decode(str_replace("\\", "", $_POST['calculosSelecionados']));
+
+      foreach ($calculosLiberados as $calculo) {
+        if (isset($calculo)) {
+          $sequencialIsencaoCalc = db_utils::fieldsMemory(db_query("(select nextval('isencaocalc_v46_sequencial_seq'))"),0)->nextval;
+          
+          $clisencaocalc->v46_isencao = $clisencao->v10_sequencial;
+          $clisencaocalc->v46_cadcalc = $calculo->q85_codigo;
+		  $clisencaocalc->v46_percentual = 100;
+          $clisencaocalc->incluir($sequencialIsencaoCalc);
+
+          if($clisencaocalc->erro_status == 0) {
+            $sqlerro = true;
+          } 
+        }
+      }
+    }
+
   db_fim_transacao($sqlerro);
   $v10_sequencial = $clisencao->v10_sequencial;
   $db_opcao = 1;
@@ -108,23 +133,19 @@ if(isset($incluir)){
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <center>
-	<?
-	include(modification("forms/db_frmisencao.php"));
-	?>
-    </center>
-	</td>
-  </tr>
-</table>
+<div class="container">
+<?php
+include(modification("forms/db_frmisencao.php"));
+?>
+</div>
 </body>
 </html>
-<?
+<?php
 
 if(isset($incluir)){
   if($sqlerro==true){

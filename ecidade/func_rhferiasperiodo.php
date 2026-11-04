@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhferiasperiodo->rotulo->label("rh110_sequencial");
               <?=$Lrh110_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh110_sequencial",10,$Irh110_sequencial,true,"text",4,"","chave_rh110_sequencial");
 		       ?>
             </td>
@@ -129,12 +129,12 @@ $clrhferiasperiodo->rotulo->label("rh110_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

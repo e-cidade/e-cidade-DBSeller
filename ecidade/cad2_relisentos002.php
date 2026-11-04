@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,7 @@ $head4 = "ORDEM: " . ($order == "e"?"ENDERECO":($order == "z01_nome"?"NOME":"MAT
 function getRows($sql) {
     $result = db_query($sql);
     while($row = pg_fetch_assoc($result)) {
-        yield($row);
+        yield $row;
     }
 }
 

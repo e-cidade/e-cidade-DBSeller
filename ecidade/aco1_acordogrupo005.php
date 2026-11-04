@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ if (isset($alterar)) {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
         include(modification("forms/db_frmacordogrupo.php"));
       ?>
     </center>
@@ -96,7 +96,7 @@ if (isset($alterar)) {
   </tr>
 </table>
 </body>
-<?
+<?php
 if (isset($alterar)) {
 	
   if ($sqlerro == true) {

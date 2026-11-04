@@ -86,6 +86,13 @@ try {
                 if (db_utils::fieldsMemory($rs, 0)->count == 3) {
                     throw new Exception("Não é possível ter mais de 3 gestores.");
                 }
+
+                $sql = $dao->sql_query_file(null, "count(*)", null, " ed325_escola = $iCodigoEscola AND ed325_rechumano = " . $oParam->iRecHumano);
+                $rs = db_query($sql);
+                
+                if (db_utils::fieldsMemory($rs, 0)->count > 0) {
+                    throw new Exception("Gestor já cadastrado.");
+                }
             }
 
             $dao->ed325_escola = $iCodigoEscola;
@@ -94,9 +101,11 @@ try {
 
             if (empty($oParam->sequencial)) {
                 $dao->incluir(null);
+                $sInternalMessage = "Gestor cadastrado com sucesso.";
             } else {
                 $dao->ed325_sequencial = $oParam->sequencial;
                 $dao->alterar($oParam->sequencial);
+                $sInternalMessage = "Gestor editado com sucesso.";
             }
 
             if ($dao->erro_status == 0) {
@@ -104,7 +113,7 @@ try {
             }
 
             $oRetorno->sequencial = $dao->ed325_sequencial;
-            $oRetorno->sMessage = urlencode("Gestor cadastrado com sucesso.");
+            $oRetorno->sMessage = urlencode($sInternalMessage);
             break;
         case 'excluir':
 

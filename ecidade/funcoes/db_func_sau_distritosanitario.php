@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,8 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "sau_distritosanitario.s153_i_codigo,sau_distritosanitario.s153_c_codigo,sau_distritosanitario.s153_c_descr";
+$campos = "sau_distritosanitario.s153_i_codigo,
+           sau_distritosanitario.s153_c_codigo,
+           sau_distritosanitario.s153_c_descr,
+           case when sau_distritosanitario.s153_ativo = 't' then 'SIM' else 'NÃO' end as s153_ativo";
 ?>

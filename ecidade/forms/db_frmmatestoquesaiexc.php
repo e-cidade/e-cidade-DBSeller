@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,13 +75,13 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!="") {
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tm70_codmatmater?>" align="right" >
-          <?
+          <?php
            db_ancora(@$Lm70_codmatmater,"js_pesquisam70_codmatmater(true);",
            ((isset($m70_codmatmater) && trim($m70_codmatmater)!="" && (isset($numrows_matestoque) && $numrows_matestoque>0))?"3":"1"));
            ?>
           </td>
           <td align="left" nowrap>     
-           <? 
+           <?php 
            db_input('m70_codmatmater',10,$Im70_codmatmater,true,"text",
            ((isset($m70_codmatmater) && trim($m70_codmatmater)!="" && (isset($numrows_matestoque) && $numrows_matestoque>0))?"3":"1"),"onchange='js_pesquisam70_codmatmater(false);'");
            db_input('m60_descr',40,$Im60_descr,true,"text",3);
@@ -122,7 +122,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!="") {
             <th class='table_header' width='18px'>&nbsp;</th>
           </tr>
           <tbody id='dadosrequisicao' style='height:80;width:95%;overflow:scroll;overflow-x:hidden;background-color:white'>
-          <?
+          <?php
 
           if (isset($numrows_matestoque) && $numrows_matestoque > 0) {
             
@@ -278,7 +278,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoqueinimei.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,7 +53,7 @@ $clarreckey->rotulo->label();
 </head>
 <body bgcolor=#CCCCCC>
 <center>
-<?
+<?php
 $sWhereArrecadCompos  = "arreckey.k00_numpre = {$oGet->numpre} and ";  
 $sWhereArrecadCompos .= "arreckey.k00_numpar = {$oGet->numpar} and ";
 $sWhereArrecadCompos .= "arreckey.k00_receit = {$oGet->receita}    ";
@@ -74,7 +74,7 @@ if ($clarrecadcompos->numrows > 0) {
     <th class='table_header' align='center' style='width:18px'>&nbsp;</th>
   </tr>
   <tbody style='height:170px;overflow:scroll;overflow-x:hidden;background-color:white'>
-  <?
+  <?php
     for ($iInd = 0; $iInd < $clarrecadcompos->numrows; $iInd++) {
     	
       $oArrecadCompos = db_utils::fieldsMemory($rsArrecadCompos,$iInd);
@@ -87,17 +87,17 @@ if ($clarrecadcompos->numrows > 0) {
       <td class='linhagrid' style='text-align:right'><?=$oArrecadCompos->k00_juros;?></td>
       <td class='linhagrid' style='text-align:right'><?=$oArrecadCompos->k00_multa;?></td>
     </tr>
-  <?
+  <?php
     }
   ?>
     <tr style='height:auto;'><td>&nbsp;</td></tr>
   </tbody>
  </table>
-<?
+<?php
 } else {
 ?>	
 	<b>Nenhum registro encontrado</b>
-<?	
+<?php 
 }
 ?>
  </center>

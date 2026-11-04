@@ -54,11 +54,11 @@ $oRotulo->label("m60_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for="chave_sd107_sequencial" class="bold">Código Descarte:</label></td>
-          <td><? db_input("sd107_sequencial",10,$Isd107_sequencial,true,"text",4,"","chave_sd107_sequencial"); ?></td>
+          <td><?php db_input("sd107_sequencial",10,$Isd107_sequencial,true,"text",4,"","chave_sd107_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label for="chave_m60_descr" class="bold"><?=$Lsd107_medicamento?></label></td>
-          <td><? db_input("m60_descr",30, $Im60_descr,true,"text",4,"","chave_m60_descr");?></td>
+          <td><?php db_input("m60_descr",30, $Im60_descr,true,"text",4,"","chave_m60_descr");?></td>
         </tr>
       </table>
     </fieldset>

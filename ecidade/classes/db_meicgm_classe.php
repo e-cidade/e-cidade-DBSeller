@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: ISSQN
 //CLASSE DA ENTIDADE meicgm
-class cl_meicgm { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $q115_sequencial = 0; 
-   var $q115_meisitucao = 0; 
-   var $q115_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_meicgm {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $q115_sequencial = 0;
+   var $q115_meisitucao = 0;
+   var $q115_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 q115_sequencial = int4 = Sequencial 
-                 q115_meisitucao = int4 = Situação 
-                 q115_numcgm = int4 = CGM 
+                 q115_sequencial = int4 = Sequencial
+                 q115_meisitucao = int4 = Situação
+                 q115_numcgm = int4 = CGM
                  ";
-   //funcao construtor da classe 
-   function cl_meicgm() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("meicgm"); 
+     $this->rotulo = new rotulo("meicgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_meicgm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q115_sequencial = ($this->q115_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q115_sequencial"]:$this->q115_sequencial);
        $this->q115_meisitucao = ($this->q115_meisitucao == ""?@$GLOBALS["HTTP_POST_VARS"]["q115_meisitucao"]:$this->q115_meisitucao);
@@ -77,9 +77,9 @@ class cl_meicgm {
      }
    }
    // funcao para inclusao
-   function incluir ($q115_sequencial){ 
+   public function incluir ($q115_sequencial){
       $this->atualizacampos();
-     if($this->q115_meisitucao == null ){ 
+     if($this->q115_meisitucao == null ){
        $this->erro_sql = " Campo Situação nao Informado.";
        $this->erro_campo = "q115_meisitucao";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_meicgm {
        $this->erro_status = "0";
        return false;
      }
-     if($this->q115_numcgm == null ){ 
+     if($this->q115_numcgm == null ){
        $this->erro_sql = " Campo CGM nao Informado.";
        $this->erro_campo = "q115_numcgm";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_meicgm {
        return false;
      }
      if($q115_sequencial == "" || $q115_sequencial == null ){
-       $result = db_query("select nextval('meicgm_q115_sequencial_seq')"); 
+       $result = db_query("select nextval('meicgm_q115_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: meicgm_q115_sequencial_seq do campo: q115_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: meicgm_q115_sequencial_seq do campo: q115_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->q115_sequencial = pg_result($result,0,0); 
+       $this->q115_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from meicgm_q115_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $q115_sequencial)){
@@ -118,10 +118,10 @@ class cl_meicgm {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->q115_sequencial = $q115_sequencial; 
+         $this->q115_sequencial = $q115_sequencial;
        }
      }
-     if(($this->q115_sequencial == null) || ($this->q115_sequencial == "") ){ 
+     if(($this->q115_sequencial == null) || ($this->q115_sequencial == "") ){
        $this->erro_sql = " Campo q115_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_meicgm {
        return false;
      }
      $sql = "insert into meicgm(
-                                       q115_sequencial 
-                                      ,q115_meisitucao 
-                                      ,q115_numcgm 
+                                       q115_sequencial
+                                      ,q115_meisitucao
+                                      ,q115_numcgm
                        )
                 values (
-                                $this->q115_sequencial 
-                               ,$this->q115_meisitucao 
-                               ,$this->q115_numcgm 
+                                $this->q115_sequencial
+                               ,$this->q115_meisitucao
+                               ,$this->q115_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Cadastro do MEI ($this->q115_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_meicgm {
        $resac = db_query("insert into db_acount values($acount,2927,16648,'','".AddSlashes(pg_result($resaco,0,'q115_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($q115_sequencial=null) { 
+   public function alterar ($q115_sequencial=null) {
       $this->atualizacampos();
      $sql = " update meicgm set ";
      $virgula = "";
-     if(trim($this->q115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_sequencial"])){ 
+     if(trim($this->q115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_sequencial"])){
        $sql  .= $virgula." q115_sequencial = $this->q115_sequencial ";
        $virgula = ",";
-       if(trim($this->q115_sequencial) == null ){ 
+       if(trim($this->q115_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q115_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_meicgm {
          return false;
        }
      }
-     if(trim($this->q115_meisitucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_meisitucao"])){ 
+     if(trim($this->q115_meisitucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_meisitucao"])){
        $sql  .= $virgula." q115_meisitucao = $this->q115_meisitucao ";
        $virgula = ",";
-       if(trim($this->q115_meisitucao) == null ){ 
+       if(trim($this->q115_meisitucao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "q115_meisitucao";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_meicgm {
          return false;
        }
      }
-     if(trim($this->q115_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_numcgm"])){ 
+     if(trim($this->q115_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q115_numcgm"])){
        $sql  .= $virgula." q115_numcgm = $this->q115_numcgm ";
        $virgula = ",";
-       if(trim($this->q115_numcgm) == null ){ 
+       if(trim($this->q115_numcgm) == null ){
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "q115_numcgm";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_meicgm {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro do MEI nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->q115_sequencial;
@@ -267,14 +267,14 @@ class cl_meicgm {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($q115_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($q115_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q115_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_meicgm {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Cadastro do MEI nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$q115_sequencial;
@@ -330,11 +330,11 @@ class cl_meicgm {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_meicgm {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $q115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $q115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,15 +375,15 @@ class cl_meicgm {
      $sql2 = "";
      if($dbwhere==""){
        if($q115_sequencial!=null ){
-         $sql2 .= " where meicgm.q115_sequencial = $q115_sequencial "; 
-       } 
+         $sql2 .= " where meicgm.q115_sequencial = $q115_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,11 +392,11 @@ class cl_meicgm {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $q115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $q115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,15 +409,15 @@ class cl_meicgm {
      $sql2 = "";
      if($dbwhere==""){
        if($q115_sequencial!=null ){
-         $sql2 .= " where meicgm.q115_sequencial = $q115_sequencial "; 
-       } 
+         $sql2 .= " where meicgm.q115_sequencial = $q115_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,13 +52,13 @@ class cl_vinculoeventoscontabeis {
                  c115_conhistdocestorno = int4 = Histórico de estorno
                  ";
    //funcao construtor da classe
-   function cl_vinculoeventoscontabeis() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vinculoeventoscontabeis");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_vinculoeventoscontabeis {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c115_sequencial = ($this->c115_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c115_sequencial"]:$this->c115_sequencial);
        $this->c115_conhistdocinclusao = ($this->c115_conhistdocinclusao == ""?@$GLOBALS["HTTP_POST_VARS"]["c115_conhistdocinclusao"]:$this->c115_conhistdocinclusao);
@@ -77,7 +77,7 @@ class cl_vinculoeventoscontabeis {
      }
    }
    // funcao para inclusao
-   function incluir ($c115_sequencial){
+   public function incluir ($c115_sequencial){
       $this->atualizacampos();
      if($this->c115_conhistdocinclusao == null ){
        $this->erro_sql = " Campo Histórico de inclusão não informado.";
@@ -182,7 +182,7 @@ class cl_vinculoeventoscontabeis {
      return true;
    }
 
-   function incluirSemEstorno ($c115_sequencial=null){
+   public function incluirSemEstorno ($c115_sequencial=null){
       $this->atualizacampos();
      if($this->c115_conhistdocinclusao == null ){
        $this->erro_sql = " Campo Histórico de inclusão não informado.";
@@ -282,7 +282,7 @@ class cl_vinculoeventoscontabeis {
    }
 
    // funcao para alteracao
-   function alterar ($c115_sequencial=null) {
+   public function alterar ($c115_sequencial=null) {
       $this->atualizacampos();
      $sql = " update vinculoeventoscontabeis set ";
      $virgula = "";
@@ -384,7 +384,7 @@ class cl_vinculoeventoscontabeis {
      }
    }
    // funcao para exclusao
-   function excluir ($c115_sequencial=null,$dbwhere=null) {
+   public function excluir ($c115_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -456,7 +456,7 @@ class cl_vinculoeventoscontabeis {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -479,10 +479,10 @@ class cl_vinculoeventoscontabeis {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ class cl_vinculoeventoscontabeis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,10 +516,10 @@ class cl_vinculoeventoscontabeis {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_vinculoeventoscontabeis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

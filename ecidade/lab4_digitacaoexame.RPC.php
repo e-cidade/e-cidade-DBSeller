@@ -32,8 +32,12 @@ use ECidade\Saude\Laboratorio\Integracao\Luckmann\Importacao\ImportacaoResultado
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Builder\ImportacaoInconsistencia;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\IntegraResultados;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\Parametros as ParametrosService;
+use ECidade\Saude\Laboratorio\Repository\LaboratorioRepository;
 use ECidade\Saude\Laboratorio\Service\ItemRequisicaoService as ItemRequisicaoService;
 use ECidade\Saude\Laboratorio\Repository\ItemRequisicaoRepository as ItemRequisicaoRepository;
+use ECidade\Saude\Laboratorio\Service\LaboratorioService;
+use FormulaInterpreter\Exception\UnknownVariableException;
+use FormulaInterpreter\Parser\ParserException;
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_utils.php"));
@@ -57,18 +61,17 @@ try {
     db_inicio_transacao();
     switch ($oParam->exec) {
         case 'getAtributosDoExame':
-
             // $oParam->requisicao não é o código da requisição e sim do item da requisicao
             $oRequisicao = new RequisicaoExame($oParam->requisicao);
             $oExame = $oRequisicao->getExame();
             $oResultadoExame = $oRequisicao->getResultado();
-            $aAtributos = $oExame->getAtributos();
             $oRetorno->sObservacao = urlencode($oRequisicao->getObservacao());
             $oRetorno->sMotivoNovaColeta = urlencode($oRequisicao->getMotivoNovaColeta());
             $oRetorno->atributos = array();
             $oRetorno->dadosAtributos = array();
 
-            foreach ($aAtributos as $oAtributo) {
+            foreach ($oResultadoExame->getResultadoCompleto() as $oResultadoAtributo) {
+                $oAtributo = $oResultadoAtributo->getAtributo();
                 $oAtributoStd = new stdClass();
                 $oAtributoStd->codigo = urlencode($oAtributo->getCodigo());
                 $oAtributoStd->codigo_estrutural = urlencode($oAtributo->getEstrutural());
@@ -94,15 +97,11 @@ try {
                     $oRetorno->dadosAtributos[] = $oDadosAtrStd;
                 }
 
-                $oReferenciaSalva = null;
+                $oAtributoStd->titulacao = urlencode($oResultadoAtributo->getTitulacao());
 
-                if ($oResultadoExame->getValorDoAtributo($oAtributo) != '') {
-                    $oResultadoAtributo = $oResultadoExame->getValorDoAtributo($oAtributo);
-                    $oAtributoStd->titulacao = urlencode($oResultadoAtributo->getTitulacao());
-                    $oAtributoStd->valorabsoluto = urlencode($oResultadoAtributo->getValorAbsoluto());
-                    $oAtributoStd->valorpercentual = $oResultadoAtributo->getValorPercentual();
-                    $oReferenciaSalva = $oResultadoAtributo->getFaixaUtilizada();
-                }
+                $oAtributoStd->valorabsoluto = urlencode($oResultadoAtributo->getValorAbsoluto());
+                $oAtributoStd->valorpercentual = $oResultadoAtributo->getValorPercentual();
+                $oReferenciaSalva = $oResultadoAtributo->getFaixaUtilizada();
 
                 $oAtributoStd->referencia = '';
                 if ($oAtributoStd->tiporeferencia != '') {
@@ -143,18 +142,28 @@ try {
                             }
 
                             if ($oParam->lConferencia) {
-                                $oAtributoStd->valorabsoluto = MascaraValorAtributoExame::mascarar($iCasasDecimais,
-                                  $oAtributoStd->valorabsoluto);
+                                $oAtributoStd->valorabsoluto = MascaraValorAtributoExame::mascarar(
+                                    $iCasasDecimais,
+                                    $oAtributoStd->valorabsoluto
+                                );
                             }
-                            $oReferenciaStd->faixanormalminimo = MascaraValorAtributoExame::mascarar($iCasasDecimais,
-                              $oReferenciasAtributo->getValorMinimo());
+                            $oReferenciaStd->faixanormalminimo = MascaraValorAtributoExame::mascarar(
+                                $iCasasDecimais,
+                                $oReferenciasAtributo->getValorMinimo()
+                            );
                             $oAtributoStd->codigoreferencia = $oReferenciasAtributo->getCodigo();
-                            $oReferenciaStd->faixanormalmaximo = MascaraValorAtributoExame::mascarar($iCasasDecimais,
-                              $oReferenciasAtributo->getValorMaximo());
-                            $oReferenciaStd->faixaabsurdoinicio = MascaraValorAtributoExame::mascarar($iCasasDecimais,
-                              $oReferenciasAtributo->getValorAbsurdoMinimo());
-                            $oReferenciaStd->faixaasurdomaximo = MascaraValorAtributoExame::mascarar($iCasasDecimais,
-                              $oReferenciasAtributo->getValorAbsurdoMaximo());
+                            $oReferenciaStd->faixanormalmaximo = MascaraValorAtributoExame::mascarar(
+                                $iCasasDecimais,
+                                $oReferenciasAtributo->getValorMaximo()
+                            );
+                            $oReferenciaStd->faixaabsurdoinicio = MascaraValorAtributoExame::mascarar(
+                                $iCasasDecimais,
+                                $oReferenciasAtributo->getValorAbsurdoMinimo()
+                            );
+                            $oReferenciaStd->faixaasurdomaximo = MascaraValorAtributoExame::mascarar(
+                                $iCasasDecimais,
+                                $oReferenciasAtributo->getValorAbsurdoMaximo()
+                            );
                             $oReferenciaStd->tipocalculo = $oReferenciasAtributo->getTipoCalculo();
                             $oReferenciaStd->formula = $oReferenciasAtributo->getCalculavel();
                             $oReferenciaStd->casasdecimais = $oReferenciasAtributo->getCasasDecimaisApresentacao();
@@ -168,7 +177,7 @@ try {
                             break;
 
                         case AtributoExame::REFERENCIA_FIXA:
-                            $oReferenciaStd->fixo = $oReferenciasAtributo->getTamanho();
+                            $oReferenciaStd->fixo = urlencode($oReferenciasAtributo->getTamanho());
                             $oReferenciaStd->tipo = AtributoExame::REFERENCIA_FIXA;
                             $oAtributoStd->referencia = $oReferenciaStd;
                             break;
@@ -339,7 +348,14 @@ try {
               JSON::create());
             $requisicao = $importacao->executar();
 
+            if ($requisicao === false) {
+                $oRetorno->pastaLuckmanVazia = true;
+                $oRetorno->temInconsistencias = false;
+                break;
+            }
+
             $oRetorno->temInconsistencias = $importacao->temInconsistencias();
+            $oRetorno->pastaLuckmanVazia = false;
             $oRetorno->message = urlencode(_M(MSG_LAB4DIGITACAOEXAME . "resultados_importados"));
 
             if ($oRetorno->temInconsistencias === true) {
@@ -362,16 +378,19 @@ try {
 
                 $calculo = new Calculo($formula);
                 $oRetorno->valor = $calculo->executar();
+                if($oRetorno->valor == 'NAN' || $oRetorno->valor == 'INF' || $oRetorno->valor == ''){
+                    $oRetorno->valor = "0";
+                }
                 $oRetorno->codigoAtributo = $oParam->atributoExame;
             } catch (Exception $erro) {
                 $mensagem = $erro->getMessage();
 
-                if ($erro instanceof \FormulaInterpreter\Parser\ParserException) {
+                if ($erro instanceof ParserException) {
                     $mensagem = "Erro ao calcular o resultado do atributo. Verifique a fórmula do atributo";
                     $mensagem .= " '{$atributoExame->getNome()}'";
                 }
 
-                if ($erro instanceof \FormulaInterpreter\Exception\UnknownVariableException) {
+                if ($erro instanceof UnknownVariableException) {
                     $mensagem = "Erro ao calcular o resultado do atributo. Verifique a fórmula do atributo";
                     $mensagem .= " '{$atributoExame->getNome()}'";
                 }
@@ -381,8 +400,47 @@ try {
 
             break;
         case 'buscarProcedimento':
-            $itemRequisicaoService = new ItemRequisicaoService(new ItemRequisicaoRepository(new \cl_lab_requiitem()));
+            $itemRequisicaoService = new ItemRequisicaoService(new ItemRequisicaoRepository(new cl_lab_requiitem()));
             $oRetorno->procedimento = $itemRequisicaoService->buscarProcedimentoExameItemRequisicao($oParam)[0]['la53_i_procedimento'];
+            break;
+
+        case 'importarResultadosLepac':
+            $parametrosService = new ParametrosService(ParametrosEnum::JSON_CONFIGURACOES, ParametrosEnum::JSON_CONFIGURACOES_INFINITY);
+            $integraResultados = new IntegraResultados(
+                $parametrosService->getParametros(),
+                ParametrosEnum::RESULTADOS_INIFINITY
+            );
+
+            $importacao = new ImportacaoResultado($integraResultados, ImportacaoInconsistencia::getInstance(),
+                JSON::create());
+            $requisicao = $importacao->executar(true);
+
+            if ($requisicao === false) {
+                $oRetorno->pastaInfinityVazia = true;
+                $oRetorno->temInconsistencias = false;
+                break;
+            }
+
+            $oRetorno->temInconsistencias = $importacao->temInconsistencias();
+            $oRetorno->pastaInfinityVazia = false;
+
+            if ($oRetorno->temInconsistencias === true) {
+                $oRetorno->arquivo = $importacao->getArquivo();
+                $oRetorno->requisicao = $requisicao;
+                $oRetorno->message = urlencode('Importação concluída, porém inconsistências foram encontradas nos resultados. Deseja emitir o relatório?');
+            }
+            break;
+
+        case 'verificaInterfaceDepartamentoLaboratorio':
+            $codDepartamento = db_getsession('DB_coddepto');
+
+            $campos = 'la02_interfaceado ';
+            $where = "la03_i_departamento = {$codDepartamento}";
+
+            $service = new LaboratorioService(new LaboratorioRepository(new cl_lab_laboratorio()));
+            $labInterfaceado = $service->verificaLaboratorioInterfaceadoPorDepartamento($campos, $where);
+
+            $oRetorno->departamentoPossuiInterface = $labInterfaceado;
             break;
     }
 

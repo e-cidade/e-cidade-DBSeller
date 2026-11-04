@@ -31,11 +31,8 @@ class TipoRescisao
         $cd14 = "14 Rescisão do contrato de trabalho por encerramento da empresa, de seus estabelecimentos ou "
             . "supressão de parte de suas atividades ou falecimento do empregador individual ou empregador doméstico "
             . "sem continuação da atividade -Todos";
-        $cd15 = "15 Rescisão do contrato de aprendizagem por desempenho insuficiente, inadaptação ou ausência "
-            . "injustificada do aprendiz à escola que implique perda do ano letivo -Todos, exceto [104]";
         $cd16 = "16 Declaração de nulidade do contrato de trabalho por infringência ao inciso II do art. 37 da "
             . "Constituição Federal, quando mantido o direito ao salário -Todos, exceto [104]";
-        $cd20 = "20 Aposentadoria por idade e tempo de contribuição - [301, 302, 303, 306, 307, 309]";
         $cd26 = "26 Rescisão do contrato de trabalho por paralisação temporária ou definitiva da empresa, "
             . "estabelecimento ou parte das atividades motivada por atos de autoridade municipal, estadual ou federal "
             . "- Todos, exceto [104]";
@@ -44,6 +41,17 @@ class TipoRescisao
         $cd41 = "41 Rescisão do contrato de aprendizagem por desempenho insuficiente ou inadaptação do aprendiz -[103]";
         $cd42 = "42 Rescisão do contrato de aprendizagem por ausência injustificada do aprendiz à escola que implique"
             . " perda do ano letivo -[103]";
+        $cd43 = "43 Transferência de empregado de empresa considerada inapta por inexistência de fato";
+        $cd44 = "44 Agrupamento contratual";
+        $cd45 = "45  Exclusão de militar das Forças Armadas do serviço ativo, com efeitos financeiros";
+        $cd46 = "46  Exclusão de militar das Forças Armadas do serviço ativo, sem efeitos financeiros";
+        $cd47 = "47 - Rescisão do contrato de trabalho por encerramento da empresa, de seus estabelecimentos ou "
+            . "supressão de parte de suas atividades - Todos, exceto [104]";
+
+        $cd48 = "48 - Falecimento do empregador individual sem continuação da atividade - "
+            . "Todos, exceto [104]";
+        $cd49 = "49 - Falecimento do empregador doméstico sem continuação da atividade - [104]";
+
         $this->tipos = array(
             1  => "01 Rescisão com justa causa, por iniciativa do empregador -Todos",
             2  => "02 Rescisão sem justa causa, por iniciativa do empregador -Todos",
@@ -59,12 +67,8 @@ class TipoRescisao
             12 => $cd12,
             13 => $cd13,
             14 => $cd14,
-            15 => $cd15,
             16 => $cd16,
             17 => "17 Rescisão indireta do contrato de trabalho -Todos",
-            18 => "18 Aposentadoria compulsória -Todos, exceto [104]",
-            19 => "19 Aposentadoria por idade - [301, 302, 303, 306, 307, 309]",
-            20 => $cd20,
             21 => "21 Reforma militar - [307]",
             22 => "22 Reserva militar - [307]",
             23 => "23 Exoneração - [301, 302, 303, 306, 307, 309, 310, 312]",
@@ -72,21 +76,26 @@ class TipoRescisao
             25 => "25 Vacância de cargo efetivo - [301, 307]",
             26 => $cd26,
             27 => "27 Rescisão por motivo de força maior -Todos",
-            28 => "28 Término da cessão/requisição -Todos, exceto [104]",
             29 => "29 Redistribuição - [301, 303, 306, 307, 309]",
             30 => "30 Mudança de regime trabalhista - Todos, exceto [104]",
             31 => "31 Reversão de reintegração - Todos, exceto [104]",
             32 => "32 Extravio de militar - [307]",
             33 => "33 Rescisão por acordo entre as partes (art. 484-A da CLT)-Todos",
             34 => $cd34,
-            35 => "35 Extinção do contrato de trabalho intermitente -Todos, exceto [104]",
             36 => "36 Mudança de CPF - Todos",
             37 => "37 Remoção, em caso de alteração do órgão declarante -[301, 306, 307, 309]",
             38 => "38 Aposentadoria, exceto por invalidez -[101, 301, 302, 312]",
             39 => "39 Aposentadoria de servidor estatutário, por invalidez -[301, 306, 309]",
-            40 => "40 Término do exercício do mandato eletivo - [303]",
+            40 => "40 Término de exercício de mandato [301, 302, 303, 306, 307, 309, 310, 312, 314]",
             41 => $cd41,
             42 => $cd42,
+            43 => $cd43,
+            44 => $cd44,
+            45 => $cd45,
+            46 => $cd46,
+            47 => $cd47,
+            48 => $cd48,
+            49 => $cd49
         );
     }
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tj41_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj41_matric,"js_pesquisaj41_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j41_matric',4,$Ij41_matric,true,'text',$db_opcao," onchange='js_pesquisaj41_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',4,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj41_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lj41_numcgm,"js_pesquisaj41_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j41_numcgm',4,$Ij41_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj41_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -69,7 +69,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lj41_tipopro?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('j41_tipopro',$x,true,$db_opcao,"");
 ?>
@@ -80,7 +80,7 @@ db_select('j41_tipopro',$x,true,$db_opcao,"");
        <?=@$Lj41_promitipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j41_promitipo',1,$Ij41_promitipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -146,7 +146,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ $clempagegera->rotulo->label();
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
      db_app::load("scripts.js, datagrid.widget.js, windowAux.widget.js, prototype.js, dbmessageBoard.widget.js");
      db_app::load("strings.js, estilos.css, grid.style.css");
     ?>
@@ -55,9 +55,9 @@ $clempagegera->rotulo->label();
           <legend><b>Selecione o Arquivo</b></legend>     
           <table border='0'>
             <tr> 
-              <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+              <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
               <td align="left" nowrap>
-            <?
+            <?php
              db_input("e87_codgera",8,$Ie87_codgera,true,"text",4,"onchange='js_pesquisa_gera(false);'"); 
              db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);
             ?>
@@ -71,7 +71,7 @@ $clempagegera->rotulo->label();
     </center>
   </body>
 </html>        
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_gera(mostra){
   if (mostra) {

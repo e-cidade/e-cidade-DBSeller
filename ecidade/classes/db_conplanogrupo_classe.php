@@ -54,13 +54,13 @@ class cl_conplanogrupo {
                  c21_congrupo = int4 = Grupo
                  ";
    //funcao construtor da classe
-   function cl_conplanogrupo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanogrupo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_conplanogrupo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c21_sequencial = ($this->c21_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c21_sequencial"]:$this->c21_sequencial);
        $this->c21_anousu = ($this->c21_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c21_anousu"]:$this->c21_anousu);
@@ -80,7 +80,7 @@ class cl_conplanogrupo {
      }
    }
    // funcao para inclusao
-   function incluir ($c21_sequencial){
+   public function incluir ($c21_sequencial){
       $this->atualizacampos();
      if($this->c21_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
@@ -181,7 +181,7 @@ class cl_conplanogrupo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($c21_sequencial=null) {
+   public function alterar ($c21_sequencial=null) {
       $this->atualizacampos();
      $sql = " update conplanogrupo set ";
      $virgula = "";
@@ -275,10 +275,10 @@ class cl_conplanogrupo {
      }
    }
    // funcao para exclusao
-   function excluir ($c21_sequencial=null,$dbwhere=null) {
+   public function excluir ($c21_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($c21_sequencial));
-     }else{
+     }else{ 
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      $sql = " delete from conplanogrupo
@@ -327,7 +327,7 @@ class cl_conplanogrupo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -349,10 +349,10 @@ class cl_conplanogrupo {
       }
      return $result;
    }
-   function sql_query ( $c21_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $c21_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,7 +379,7 @@ class cl_conplanogrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,10 +388,10 @@ class cl_conplanogrupo {
      }
      return $sql;
   }
-   function sql_query_file ( $c21_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $c21_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_conplanogrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

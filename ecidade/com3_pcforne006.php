@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -67,18 +67,18 @@ $clrotulo->label("pc74_pctipocertif");
   <fieldset style="width: 600px;">
   <legend style="font-weight: bold;">&nbsp;Certificados&nbsp;</legend>
     <br />
-    <?
-      $sSqlCertificado  = "select * from (select pc74_pctipocertif, max(pc74_codigo) as codigo 
-                           from pcfornecertif  where pc74_pcforne = $pc60_numcgm group by pc74_pctipocertif) as x 
-                           inner join pcfornecertif on pcfornecertif.pc74_codigo = x.codigo 
+    <?php
+      $sSqlCertificado  = "select * from (select pc74_pctipocertif, max(pc74_codigo) as codigo
+                           from pcfornecertif  where pc74_pcforne = $pc60_numcgm group by pc74_pctipocertif) as x
+                           inner join pcfornecertif on pcfornecertif.pc74_codigo = x.codigo
                            inner join pctipocertif on pctipocertif.pc70_codigo = pcfornecertif.pc74_pctipocertif";
-                           
+
       $result_certif = db_query($sSqlCertificado);
       $numrows       = pg_numrows($result_certif);
       if ($numrows == 0) {
         echo "<h2 align=\"center\">Este fornecedor não possui certificado!</h2>";
       }
-      
+
       /**
         * Caso haja certificado, os mesmo serão mostrados abaixo
         */
@@ -88,7 +88,7 @@ $clrotulo->label("pc74_pctipocertif");
           $sLinkFrame  = "com3_pcforne007.php?pc60_numcgm={$pc60_numcgm}";
           $sLinkFrame .= "&pc74_codigo={$pc74_codigo}";
           $sLinkFrame .= "&pc74_pctipocertif={$pc74_pctipocertif}";
-      
+
     ?>
       <table width="650" border="0">
         <tr>
@@ -102,7 +102,7 @@ $clrotulo->label("pc74_pctipocertif");
           <td class="bgtd" colspan="3"><?=@$pc74_pctipocertif?> - <?=@$pc70_descr?></td>
         </tr>
       </table>
-   
+
             <iframe id          = "documentos"
                     frameborder = "0"
                     name        = "documentos"
@@ -111,8 +111,8 @@ $clrotulo->label("pc74_pctipocertif");
                     src         = "<?=$sLinkFrame;?>"
                     height      = "200"
                     width       = "600">
-            </iframe> 
-        <?}?>
+            </iframe>
+        <?php }?>
   </fieldset>
   </center>
 </body>

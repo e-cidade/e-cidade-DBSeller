@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -51,7 +51,7 @@ if($cldb_syscampo->numrows > 0){
   }
 }
 if(isset($valorvariavel) && trim($valorvariavel) != ""){
-	$arr_valorvariavel = split("[|]",$valorvariavel);
+	$arr_valorvariavel =explode("[|]",$valorvariavel);
 	$camporecebe = $nomecam;
 	for($i=1;$i<count($arr_valorvariavel);$i++){
 		$qualcampo  = $camporecebe.$i;
@@ -67,7 +67,7 @@ if(isset($valorvariavel) && trim($valorvariavel) != ""){
 <script>
 function js_enviarvalor(){
 	erro = 0;
-<?
+<?php
 if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bool") == "" && $conteudo != "date"){
 ?>
 	if(document.form1.<?=$campofoco?>.value != "" || document.form1.<?=$camporecb?>.value != ""){
@@ -79,7 +79,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?
+<?php
 }else if($conteudo == "date"){
 ?>
 	if(document.form1.<?=$campofoco?>.value != ""){
@@ -91,7 +91,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?
+<?php
 }else{
 ?>
 	if(document.form1.<?=$campofoco?>.value != ""){
@@ -102,7 +102,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?
+<?php
 }
 ?>
 
@@ -125,7 +125,7 @@ function js_fechar(){
   js_retornavalor();
   parent.db_iframe_interval.hide();
 }
-<?
+<?php
 flush();
 if($cldb_syscampo->numrows == 0){
 	echo "
@@ -145,8 +145,8 @@ js_retornavalor();
     <td nowrap title="<?=@$$Tnomecam?>">
       <?=@$$Lnomecam?>
     </td>
-    <td> 
-			<?
+    <td>
+			<?php
 			if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bool") == "" && $conteudo != "date"){
 			  db_input($nomecam."1",10,$$Inomecam,true,'text',1,"onchange='js_passaval();'");
 			  echo "&nbsp;<b>a</b>&nbsp;";
@@ -157,7 +157,7 @@ js_retornavalor();
 				$mes = $nomecam."_mes";
 				$ano = $nomecam."_ano";
 				if(isset($$teste1)){
-					$arr_teste1 = split("-",$$teste1);
+					$arr_teste1 =explode("-",$$teste1);
 					$$dia = $arr_teste1[2];
 					$$mes = $arr_teste1[1];
 					$$ano = $arr_teste1[0];
@@ -170,7 +170,7 @@ js_retornavalor();
 			  echo "&nbsp;<b>a</b>&nbsp;";
 				$teste2 = $nomecam."2";
 				if(isset($$teste2)){
-					$arr_teste2 = split("-",$$teste2);
+					$arr_teste2 =explode("-",$$teste2);
 					$$dia = $arr_teste2[2];
 					$$mes = $arr_teste2[1];
 					$$ano = $arr_teste2[0];
@@ -184,7 +184,7 @@ js_retornavalor();
   </tr>
   </form>
 </table>
-<input name="Enviar" type="button" id="enviar" value="Enviar" onclick="js_enviarvalor();"> 
+<input name="Enviar" type="button" id="enviar" value="Enviar" onclick="js_enviarvalor();">
 <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="js_fechar();">
 </center>
 </body>

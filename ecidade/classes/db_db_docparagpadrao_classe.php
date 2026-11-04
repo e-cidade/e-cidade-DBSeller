@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_db_docparagpadrao {
                  db62_ordem = int4 = Ordem do Parágrafo 
                  ";
    //funcao construtor da classe 
-   function cl_db_docparagpadrao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_docparagpadrao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_docparagpadrao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db62_coddoc = ($this->db62_coddoc == ""?@$GLOBALS["HTTP_POST_VARS"]["db62_coddoc"]:$this->db62_coddoc);
        $this->db62_codparag = ($this->db62_codparag == ""?@$GLOBALS["HTTP_POST_VARS"]["db62_codparag"]:$this->db62_codparag);
@@ -78,7 +78,7 @@ class cl_db_docparagpadrao {
      }
    }
    // funcao para inclusao
-   function incluir ($db62_coddoc,$db62_codparag){ 
+   public function incluir ($db62_coddoc,$db62_codparag){ 
       $this->atualizacampos();
      if($this->db62_ordem == null ){ 
        $this->erro_sql = " Campo Ordem do Parágrafo nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_docparagpadrao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db62_coddoc=null,$db62_codparag=null) { 
+   public function alterar ($db62_coddoc=null,$db62_codparag=null) { 
       $this->atualizacampos();
      $sql = " update db_docparagpadrao set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_db_docparagpadrao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db62_coddoc=null,$db62_codparag=null,$dbwhere=null) { 
+   public function excluir ($db62_coddoc=null,$db62_codparag=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db62_coddoc,$db62_codparag));
      }else{ 
@@ -324,7 +324,7 @@ class cl_db_docparagpadrao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -346,7 +346,7 @@ class cl_db_docparagpadrao {
       }
      return $result;
    }
-   function sql_query ( $db62_coddoc=null,$db62_codparag=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db62_coddoc=null,$db62_codparag=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -391,7 +391,7 @@ class cl_db_docparagpadrao {
      }
      return $sql;
   }
-   function sql_query_file ( $db62_coddoc=null,$db62_codparag=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db62_coddoc=null,$db62_codparag=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,13 +41,13 @@ $clrotulo->label("nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tk94_seqtransf?>"><?=@$Lk94_seqtransf?> </td>
-    <td><? db_input('k94_seqtransf',10,$Ik94_seqtransf,true,'text',3,"") ?></td>
+    <td><?php db_input('k94_seqtransf',10,$Ik94_seqtransf,true,'text',3,"") ?></td>
   </tr>
 
   <tr>
-    <td nowrap title="<?=@$Tk94_transf?>"><? db_ancora(@$Lk94_transf,"",3); ?> </td>
+    <td nowrap title="<?=@$Tk94_transf?>"><?php db_ancora(@$Lk94_transf,"",3); ?> </td>
     <td> 
-       <?       
+       <?php       
          $record = $clcaitransf->sql_record($clcaitransf->sql_query(null,'k91_transf,k91_descr'));         
          db_selectrecord("k94_transf",$record,'true',1);      
 
@@ -62,7 +62,7 @@ $clrotulo->label("nome");
        <?=@$Lk94_data?>
     </td>
     <td> 
-      <? db_inputdata('k94_data',@$k94_data_dia,@$k94_data_mes,@$k94_data_ano,true,'text',$db_opcao,"") ?>
+      <?php db_inputdata('k94_data',@$k94_data_dia,@$k94_data_mes,@$k94_data_ano,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
@@ -70,7 +70,7 @@ $clrotulo->label("nome");
        <?=@$Lk94_valor?>
     </td>
     <td> 
-       <? db_input('k94_valor',20,$Ik94_valor,true,'text',$db_opcao,"") ?>
+       <?php db_input('k94_valor',20,$Ik94_valor,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
@@ -78,7 +78,7 @@ $clrotulo->label("nome");
        <?=@$Lk94_finalidade?>
     </td>
     <td> 
-       <? db_textarea('k94_finalidade',0,50,$Ik94_finalidade,true,'text',$db_opcao,"") ?>
+       <?php db_textarea('k94_finalidade',0,50,$Ik94_finalidade,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   </table>

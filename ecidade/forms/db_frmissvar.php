@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -157,19 +157,19 @@ function js_trocaaliq(aliq){
   document.form1.q05_aliq.value=aliq.value;
 }
 </script>
-<?if($db_opcao==2|| $db_opcao==22){?>
+<?php if($db_opcao==2|| $db_opcao==22){?>
     <form name="form1" method="post" action="iss1_issvar015.php">
 <?}else if($db_opcao==1){?>
     <form name="form1" method="post" action="iss1_issvar014.php">
 <?}else if($db_opcao==3||$db_opcao==33){?>
     <form name="form1" method="post" action="iss1_issvar016.php">
-<?}?>
+<?php }?>
 <?=db_input('q05_codigo',10,$Iq05_codigo,true,'hidden',1)?>
 <center>
 <table border="0">
   <tr>
     <td align="center" colspan="3">
-<?
+<?php
 $substitui=false;
 if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
    echo "<fieldset><legend align=\"center\"><b><small><b>CONTRIBUINTE DE FORA DO MUNICÍPIO</b></small></b></legend>";
@@ -179,30 +179,30 @@ if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
 ?>
       <table>
         <tr>
-<?
+<?php
 if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
 ?>
           <td>
           <?=db_ancora($Lz01_numcgm,"js_JanelaAutomatica('cgm','$z01_numcgm')",2)?>
 	  <?=db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',3)?>
-         <?=@$Lz01_nome?><?
+         <?=@$Lz01_nome?><?php
          $result_nome=db_query(" select z01_nome from cgm where z01_numcgm = $z01_numcgm ");
          if (pg_numrows($result_nome)>0){
          	db_fieldsmemory($result_nome,0);
          }
          db_input('z01_nome',50,@$Iz01_nome,true,'text',3)?>
 
-<?
+<?php
 }else {
 ?>
     <td>
-      <?
+      <?php
       db_ancora($Lq02_inscr,"js_JanelaAutomatica('issbase','".@$q02_inscr."')",2);
       ?>
       <?=db_input('q02_inscr',6,$Iq02_inscr,true,'text',3)?>
       <?=@$Lz01_nome?><?=db_input('z01_nome',50,@$Iz01_nome,true,'text',3)?>
     </td>
-<?
+<?php
 }
 ?>
       </table>
@@ -218,7 +218,7 @@ if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
             <?=@$Lq05_ano?>
 	  </td>
 	  <td>
-<?
+<?php
 $anos=array();
 $anoatual=date("Y",db_getsession("DB_datausu"));
 for($i=$anoatual; $i>($anoatual-15); $i--){
@@ -256,7 +256,7 @@ if (!isset($q05_ano)){
     <?=@$Lq05_mes?>
  </td>
 <td>
-<?
+<?php
 
 $result=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
 
@@ -301,7 +301,7 @@ if ((isset($q05_ano)&&$q05_ano!=""&&is_numeric($q05_ano))&&(isset($q05_mes)&&$q0
             <?=@$Lq05_aliq?>
 	  </td>
 	  <td>
-<?
+<?php
 if(isset($numrows33)){
   $array=array();
   for($g=0; $g<$numrows33; $g++){
@@ -314,7 +314,7 @@ if(isset($numrows33)){
 <script>
 onLoad=document.form1.q05_aliq.value = document.form1.aliq.value;
 </script>
-<?
+<?php
 }else{
 	if (! isset($q05_aliq) || $q05_aliq == "") {
     $result66=$clparissqn->sql_record($clparissqn->sql_query_file("","q60_aliq as q05_aliq"));
@@ -335,7 +335,7 @@ onLoad=document.form1.q05_aliq.value = document.form1.aliq.value;
             <?=@$Lq05_bruto?>
 	  </td>
 	  <td>
-<?
+<?php
 if(empty($q05_bruto)){
   $q05_bruto="0";
 }
@@ -348,7 +348,7 @@ db_input('q05_bruto',10,$Iq05_bruto,true,'text',3)
             <?=@$Lq05_valor?>
           </td>
           <td>
-<?
+<?php
 if(empty($q05_valor)){
   $q05_valor="0";
 }
@@ -359,7 +359,7 @@ db_input('q05_valor',10,$Iq05_valor,true,'text',3)
       </table>
       </fieldset>
        <?=@$Lq05_histor?><br>
-<?
+<?php
 db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
 ?>
 
@@ -372,7 +372,7 @@ db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
           <?=@$Lq06_nota?>
           </td>
           <td>
-            <?
+            <?php
               db_input('q06_nota',10,$Iq06_nota,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -382,7 +382,7 @@ db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
        <?=@$Lq06_valor?>
           </td>
           <td>
-            <?
+            <?php
               db_input('q06_valor',10,$Iq06_valor,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -394,7 +394,7 @@ db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
 	</tr>
 	<tr>
 	<td colspan="2">
-         <?
+         <?php
 //           echo $sql_codigo;
       	   $cliframe_alterar_excluir_html->colunas       = array("q06_nota"=>$Lq06_nota,"q06_valor"=>$Lq06_valor."(R$)");
            $cliframe_alterar_excluir_html->iframe_width  = "290";
@@ -417,12 +417,12 @@ db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td colspan="2" align="center">
-     <?
+     <?php
        if ($substitui==true){
      ?>
       <b>Já existe um lançamento na competência informada.</b><br/>
       <input name="substituir" type="submit" value="substituir">
-     <?
+     <?php
        }
      ?>
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" <?=($db_opcao==1||$db_opcao==2?"onclick='return js_verifica();'":"")?> id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
@@ -445,12 +445,12 @@ function js_controla(){
 
 function js_voltar(){
 
-<?if($db_opcao==2|| $db_opcao==22){?>
+<?php if($db_opcao==2|| $db_opcao==22){?>
   location.href="iss1_issvar002.php";
 <?}else if($db_opcao==1){?>
   location.href="iss1_issvar001.php";
 <?}else if($db_opcao==3||$db_opcao==33){?>
   location.href="iss1_issvar003.php";
-<?}?>
+<?php }?>
 }
 </script>

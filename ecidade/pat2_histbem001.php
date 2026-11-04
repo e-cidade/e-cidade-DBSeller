@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ function js_abre(){
     <legend>Relatórios - Ficha de Bens/Histórico dos bens</legend>
     <table class="form-container">
       <!-- tr> 
-        <td  align="left" nowrap title="<?=$Tt52_bem?>"> <? db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
+        <td  align="left" nowrap title="<?=$Tt52_bem?>"> <?php db_ancora(@$Lt52_bem,"js_pesquisa_bem(true);",1);?>  </td>
         <td align="left" nowrap>
           <?/*
              db_input("t52_bem",8,$It52_bem,true,"text",4,"onchange='js_pesquisa_bem(false);'"); 
@@ -93,7 +93,7 @@ function js_abre(){
       </tr-->
       <tr>
          <td colspan=2 >
-         		<?
+         		<?php
              // $aux = new cl_arquivo_auxiliar;
              $aux_bem->cabecalho = "<strong>Bens</strong>";
              $aux_bem->codigo = "t52_bem"; //chave de retorno da func
@@ -121,7 +121,7 @@ function js_abre(){
           Características adicionais do bem:
         </td>
         <td>
-         <?
+         <?php
            $matriz = array("N"=>"NÃO","S"=>"SIM"); 
            db_select("opcao_obs",$matriz,true,1);
          ?>
@@ -131,7 +131,7 @@ function js_abre(){
   </fieldset>
   <input name="relatorio" type="button" onclick='js_abre();'  value="Gerar relatório">
 </form>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_bem(mostra){

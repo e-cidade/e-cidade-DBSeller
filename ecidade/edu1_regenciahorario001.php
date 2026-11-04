@@ -262,7 +262,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
        </option>
      </select>
    </legend>
-   <?
+   <?php
      if (!isset($excluir)) {
 
        /**
@@ -276,7 +276,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
            $('escolha').style.display         = "gradeHorario";
            $('frmGradeHorario').style.display = "inline";
          </script>
-         <?
+         <?php
        } else {
 
          include(modification("edu1_vinculaprofessordisciplina001.php"));
@@ -286,7 +286,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
            $('frmVinculaProfessorDisciplina').style.display = "inline";
            $('divVinculos').style.display                   = "";
          </script>
-         <?
+         <?php
        }
      }
    ?>

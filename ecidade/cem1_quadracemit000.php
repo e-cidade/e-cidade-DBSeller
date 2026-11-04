@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcriaabas     = new cl_criaabas;
 <table valign="top" marginwidth="0" height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC">
-     <?
+     <?php
       $clcriaabas->identifica = array("a1"=>"Quadra","a2"=>"Lotes");
       $clcriaabas->src = array("a1"=>"cem1_quadracemit00".$db_opcao.".php","a2"=>"cem1_lotecemit001.php");
       $clcriaabas->disabled   =  array("a2"=>"true");
@@ -64,7 +64,7 @@ $clcriaabas     = new cl_criaabas;
     </td>
     </tr>
   </table>
-  <?
+  <?php
      db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocandamint->rotulo->label("p78_sequencial");
               <?=$Lp78_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p78_sequencial",10,$Ip78_sequencial,true,"text",4,"","chave_p78_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocandamint->rotulo->label("p78_sequencial");
               <?=$Lp78_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p78_sequencial",10,$Ip78_sequencial,true,"text",4,"","chave_p78_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocandamint->rotulo->label("p78_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procandamint.php")==true){
@@ -118,12 +118,12 @@ $clprocandamint->rotulo->label("p78_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

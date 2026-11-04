@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -129,7 +129,7 @@ function js_emite(opcao,origem){
       </tr>
       <tr>
         <td align="center" colspan="3">
-	<?
+	<?php
 	db_selinstit('',300,100);
 	?>
 	</td>
@@ -143,7 +143,7 @@ function js_emite(opcao,origem){
 	    <tr>
               <td align="right" ><strong>Filtro :</strong></td>
               <td align="left">
-	        <?
+	        <?php
 	         $xy = array('1A'=>'Órgão','2A'=>'Unidade','3A'=>'Função','4A'=>'Subfunção','5A'=>'Programa','6A'=>'Proj/Ativ','7A'=>'Elemento','8A'=>'Recurso');
 	         db_select('nivel',$xy,true,2,"");
 	        ?>
@@ -157,7 +157,7 @@ function js_emite(opcao,origem){
             <tr>
               <td align="right" ><strong>Agrupar Por :</strong></td>
 	       <td align="left">
-                <?
+                <?php
                   $z = array("1"=>"Geral","2"=>"Órgão","3"=>"Unidade");
                   db_select('tipo_agrupa',$z,true,2,"");
                 ?>
@@ -169,7 +169,7 @@ function js_emite(opcao,origem){
        <b>Tipo :</b>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Todos','a'=>'Atividade','p'=>'Projetos','o'=>'Operações especiais');
   db_select('o55_tipo',$x,true,2);
 ?>
@@ -182,7 +182,7 @@ $x = array('t'=>'Todos','a'=>'Atividade','p'=>'Projetos','o'=>'Operações especia
         <td colspan="2" >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
-       <?
+       <?php
         db_selorcbalanco(false);
        ?>
       <tr>

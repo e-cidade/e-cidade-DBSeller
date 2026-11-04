@@ -25,7 +25,8 @@ class ImportarSaldosMatrizService
      * @var \int[][]
      */
     private $quantidadeColunas = [
-        2022 => ['quantidade_tipos' => 6]
+        2022 => ['quantidade_tipos' => 6],
+        2023 => ['quantidade_tipos' => 6],
     ];
 
     /**

@@ -37,7 +37,7 @@ include(modification("dbforms/db_funcoes.php"));
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
      db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
      db_app::load("widgets/windowAux.widget.js");
     ?>
@@ -51,20 +51,20 @@ include(modification("dbforms/db_funcoes.php"));
           <legend><b>Vincular responáveis aos órgãos</b></legend>
           <table>
             <tr>
-              <td><b><? db_ancora('Órgão:', 'js_pesquisaOrgao()', 1); ?></b></td>
+              <td><b><?php db_ancora('Órgão:', 'js_pesquisaOrgao()', 1); ?></b></td>
               <td>
-                <? db_input('o40_orgao', 10, '', true, 'text', 1); ?>
-                <? db_input('o40_descr', 40, '', true, 'text', 3); ?>
+                <?php db_input('o40_orgao', 10, '', true, 'text', 1); ?>
+                <?php db_input('o40_descr', 40, '', true, 'text', 3); ?>
               </td>
             </tr>
             <tr>
               <td><b>CPF Responsável:</b></td>
-              <td><? db_input('cpfresponsavel', 10, '', true, 'text', 1); ?></td>
+              <td><?php db_input('cpfresponsavel', 10, '', true, 'text', 1); ?></td>
             </tr>
             <tr>
               <td><b>Tipo de gestão de créditos:</b></td>
               <td>
-                <?
+                <?php
                   $aTiposGestaoCredito = array(
                                            "1" => "Total",
                                            "2" => "Parcial"
@@ -75,11 +75,11 @@ include(modification("dbforms/db_funcoes.php"));
             </tr>
             <tr>
               <td><b>Data de início da gestão:</b></td>
-              <td><? db_inputdata('datainiciogestao', '', '', '', true, 'text', 1, ''); ?></td>
+              <td><?php db_inputdata('datainiciogestao', '', '', '', true, 'text', 1, ''); ?></td>
             </tr>
             <tr>
               <td><b>Tipo de Ordenador:</b></td>
-              <td><? db_input('tipoordenador', 10, '', true, 'text', 1); ?></td>
+              <td><?php db_input('tipoordenador', 10, '', true, 'text', 1); ?></td>
             </tr>
             <tr height="15px">
               <td colspan="2"></td>
@@ -93,7 +93,7 @@ include(modification("dbforms/db_funcoes.php"));
     </center>
   </body>
 </html>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

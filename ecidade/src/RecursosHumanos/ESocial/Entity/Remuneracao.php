@@ -141,4 +141,54 @@ class Remuneracao
     {
         $this->pocessosJudiciais = $pocessosJudiciais;
     }
+
+
+    /**
+     * @param $pagamentos
+     * Soma os valores de remuneração por rubrica, lotação e tipo
+    */
+    public function ajustaPagamentos($pagamentos)
+    {
+        $rubricaUniValor = [];
+        foreach ($pagamentos as $pagamento) {
+            foreach ($pagamento as $y => $rubricaPagamento) {
+                if (array_key_exists($rubricaPagamento->codigo . '-' .
+                    $rubricaPagamento->lotacao . '-' .
+                    $rubricaPagamento->nomePagamento, $rubricaUniValor)) {
+                    $rubricaUniValor[$rubricaPagamento->codigo . '-' .
+                        $rubricaPagamento->lotacao . '-' .
+                        $rubricaPagamento->nomePagamento] +=
+                        $rubricaPagamento->valor;
+                } else {
+                    $rubricaUniValor[$rubricaPagamento->codigo . '-' .
+                        $rubricaPagamento->lotacao. '-' .
+                        $rubricaPagamento->nomePagamento] =
+                        $rubricaPagamento->valor;
+                }
+            }
+        }
+        $novoPagamento = [];
+        foreach ($pagamentos as $i => $tipoPagamento) {
+            $novoPagamento[$i] = [];
+            foreach ($tipoPagamento as $rubrica) {
+                $novoPagamento[$i][$rubrica->lotacao][$rubrica->codigo] = $rubrica;
+            }
+        }
+        $pagamentos = [];
+        $contador = 0;
+        foreach ($novoPagamento as $pagamento) {
+            $pagamentos[$contador] = [];
+            foreach ($pagamento as $lotacao) {
+                foreach ($lotacao as $rubrica) {
+                    $valorUnificado = $rubricaUniValor[$rubrica->codigo . '-' .
+                        $rubrica->lotacao . '-' .
+                        $rubrica->nomePagamento];
+                    $rubrica->valor = $valorUnificado;
+                    $pagamentos[$contador][] = $rubrica;
+                }
+            }
+            $contador += 1;
+        }
+        return $pagamentos;
+    }
 }

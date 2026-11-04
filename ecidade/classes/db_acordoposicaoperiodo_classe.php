@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoposicaoperiodo
-class cl_acordoposicaoperiodo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ac36_sequencial = 0; 
-   var $ac36_acordoposicao = 0; 
-   var $ac36_datainicial_dia = null; 
-   var $ac36_datainicial_mes = null; 
-   var $ac36_datainicial_ano = null; 
-   var $ac36_datainicial = null; 
-   var $ac36_datafinal_dia = null; 
-   var $ac36_datafinal_mes = null; 
-   var $ac36_datafinal_ano = null; 
-   var $ac36_datafinal = null; 
-   var $ac36_descricao = null; 
-   var $ac36_numero = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_acordoposicaoperiodo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ac36_sequencial = 0;
+   var $ac36_acordoposicao = 0;
+   var $ac36_datainicial_dia = null;
+   var $ac36_datainicial_mes = null;
+   var $ac36_datainicial_ano = null;
+   var $ac36_datainicial = null;
+   var $ac36_datafinal_dia = null;
+   var $ac36_datafinal_mes = null;
+   var $ac36_datafinal_ano = null;
+   var $ac36_datafinal = null;
+   var $ac36_descricao = null;
+   var $ac36_numero = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ac36_sequencial = int4 = Codigo_sequencial 
-                 ac36_acordoposicao = int4 = Acordo 
-                 ac36_datainicial = date = Data inicial 
-                 ac36_datafinal = date = Data final 
-                 ac36_descricao = varchar(50) = Descricão 
-                 ac36_numero = int4 = Numero 
+                 ac36_sequencial = int4 = Codigo_sequencial
+                 ac36_acordoposicao = int4 = Acordo
+                 ac36_datainicial = date = Data inicial
+                 ac36_datafinal = date = Data final
+                 ac36_descricao = varchar(50) = Descricão
+                 ac36_numero = int4 = Numero
                  ";
-   //funcao construtor da classe 
-   function cl_acordoposicaoperiodo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("acordoposicaoperiodo"); 
+     $this->rotulo = new rotulo("acordoposicaoperiodo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_acordoposicaoperiodo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac36_sequencial = ($this->ac36_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"]:$this->ac36_sequencial);
        $this->ac36_acordoposicao = ($this->ac36_acordoposicao == ""?@$GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"]:$this->ac36_acordoposicao);
@@ -106,9 +106,9 @@ class cl_acordoposicaoperiodo {
      }
    }
    // funcao para inclusao
-   function incluir ($ac36_sequencial){ 
+   public function incluir ($ac36_sequencial){
       $this->atualizacampos();
-     if($this->ac36_acordoposicao == null ){ 
+     if($this->ac36_acordoposicao == null ){
        $this->erro_sql = " Campo Acordo nao Informado.";
        $this->erro_campo = "ac36_acordoposicao";
        $this->erro_banco = "";
@@ -117,7 +117,7 @@ class cl_acordoposicaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac36_datainicial == null ){ 
+     if($this->ac36_datainicial == null ){
        $this->erro_sql = " Campo Data inicial nao Informado.";
        $this->erro_campo = "ac36_datainicial_dia";
        $this->erro_banco = "";
@@ -126,7 +126,7 @@ class cl_acordoposicaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac36_datafinal == null ){ 
+     if($this->ac36_datafinal == null ){
        $this->erro_sql = " Campo Data final nao Informado.";
        $this->erro_campo = "ac36_datafinal_dia";
        $this->erro_banco = "";
@@ -135,7 +135,7 @@ class cl_acordoposicaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac36_descricao == null ){ 
+     if($this->ac36_descricao == null ){
        $this->erro_sql = " Campo Descricão nao Informado.";
        $this->erro_campo = "ac36_descricao";
        $this->erro_banco = "";
@@ -144,7 +144,7 @@ class cl_acordoposicaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac36_numero == null ){ 
+     if($this->ac36_numero == null ){
        $this->erro_sql = " Campo Numero nao Informado.";
        $this->erro_campo = "ac36_numero";
        $this->erro_banco = "";
@@ -154,16 +154,16 @@ class cl_acordoposicaoperiodo {
        return false;
      }
      if($ac36_sequencial == "" || $ac36_sequencial == null ){
-       $result = db_query("select nextval('acordoposicaoperiodo_ac36_sequencial_seq')"); 
+       $result = db_query("select nextval('acordoposicaoperiodo_ac36_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoposicaoperiodo_ac36_sequencial_seq do campo: ac36_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: acordoposicaoperiodo_ac36_sequencial_seq do campo: ac36_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ac36_sequencial = pg_result($result,0,0); 
+       $this->ac36_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from acordoposicaoperiodo_ac36_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ac36_sequencial)){
@@ -174,10 +174,10 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ac36_sequencial = $ac36_sequencial; 
+         $this->ac36_sequencial = $ac36_sequencial;
        }
      }
-     if(($this->ac36_sequencial == null) || ($this->ac36_sequencial == "") ){ 
+     if(($this->ac36_sequencial == null) || ($this->ac36_sequencial == "") ){
        $this->erro_sql = " Campo ac36_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -186,23 +186,23 @@ class cl_acordoposicaoperiodo {
        return false;
      }
      $sql = "insert into acordoposicaoperiodo(
-                                       ac36_sequencial 
-                                      ,ac36_acordoposicao 
-                                      ,ac36_datainicial 
-                                      ,ac36_datafinal 
-                                      ,ac36_descricao 
-                                      ,ac36_numero 
+                                       ac36_sequencial
+                                      ,ac36_acordoposicao
+                                      ,ac36_datainicial
+                                      ,ac36_datafinal
+                                      ,ac36_descricao
+                                      ,ac36_numero
                        )
                 values (
-                                $this->ac36_sequencial 
-                               ,$this->ac36_acordoposicao 
-                               ,".($this->ac36_datainicial == "null" || $this->ac36_datainicial == ""?"null":"'".$this->ac36_datainicial."'")." 
-                               ,".($this->ac36_datafinal == "null" || $this->ac36_datafinal == ""?"null":"'".$this->ac36_datafinal."'")." 
-                               ,'$this->ac36_descricao' 
-                               ,$this->ac36_numero 
+                                $this->ac36_sequencial
+                               ,$this->ac36_acordoposicao
+                               ,".($this->ac36_datainicial == "null" || $this->ac36_datainicial == ""?"null":"'".$this->ac36_datainicial."'")."
+                               ,".($this->ac36_datafinal == "null" || $this->ac36_datafinal == ""?"null":"'".$this->ac36_datafinal."'")."
+                               ,'$this->ac36_descricao'
+                               ,$this->ac36_numero
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "acordoposicaoperiodo ($this->ac36_sequencial) nao Incluído. Inclusao Abortada.";
@@ -239,16 +239,16 @@ class cl_acordoposicaoperiodo {
        $resac = db_query("insert into db_acount values($acount,3187,18040,'','".AddSlashes(pg_result($resaco,0,'ac36_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ac36_sequencial=null) { 
+   public function alterar ($ac36_sequencial=null) {
       $this->atualizacampos();
      $sql = " update acordoposicaoperiodo set ";
      $virgula = "";
-     if(trim($this->ac36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"])){ 
+     if(trim($this->ac36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"])){
        $sql  .= $virgula." ac36_sequencial = $this->ac36_sequencial ";
        $virgula = ",";
-       if(trim($this->ac36_sequencial) == null ){ 
+       if(trim($this->ac36_sequencial) == null ){
          $this->erro_sql = " Campo Codigo_sequencial nao Informado.";
          $this->erro_campo = "ac36_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"])){ 
+     if(trim($this->ac36_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"])){
        $sql  .= $virgula." ac36_acordoposicao = $this->ac36_acordoposicao ";
        $virgula = ",";
-       if(trim($this->ac36_acordoposicao) == null ){ 
+       if(trim($this->ac36_acordoposicao) == null ){
          $this->erro_sql = " Campo Acordo nao Informado.";
          $this->erro_campo = "ac36_acordoposicao";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"] !="") ){ 
+     if(trim($this->ac36_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"] !="") ){
        $sql  .= $virgula." ac36_datainicial = '$this->ac36_datainicial' ";
        $virgula = ",";
-       if(trim($this->ac36_datainicial) == null ){ 
+       if(trim($this->ac36_datainicial) == null ){
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "ac36_datainicial_dia";
          $this->erro_banco = "";
@@ -283,11 +283,11 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"])){
          $sql  .= $virgula." ac36_datainicial = null ";
          $virgula = ",";
-         if(trim($this->ac36_datainicial) == null ){ 
+         if(trim($this->ac36_datainicial) == null ){
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "ac36_datainicial_dia";
            $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_acordoposicaoperiodo {
          }
        }
      }
-     if(trim($this->ac36_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"] !="") ){ 
+     if(trim($this->ac36_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"] !="") ){
        $sql  .= $virgula." ac36_datafinal = '$this->ac36_datafinal' ";
        $virgula = ",";
-       if(trim($this->ac36_datafinal) == null ){ 
+       if(trim($this->ac36_datafinal) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "ac36_datafinal_dia";
          $this->erro_banco = "";
@@ -310,11 +310,11 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"])){
          $sql  .= $virgula." ac36_datafinal = null ";
          $virgula = ",";
-         if(trim($this->ac36_datafinal) == null ){ 
+         if(trim($this->ac36_datafinal) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "ac36_datafinal_dia";
            $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_acordoposicaoperiodo {
          }
        }
      }
-     if(trim($this->ac36_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_descricao"])){ 
+     if(trim($this->ac36_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_descricao"])){
        $sql  .= $virgula." ac36_descricao = '$this->ac36_descricao' ";
        $virgula = ",";
-       if(trim($this->ac36_descricao) == null ){ 
+       if(trim($this->ac36_descricao) == null ){
          $this->erro_sql = " Campo Descricão nao Informado.";
          $this->erro_campo = "ac36_descricao";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_numero"])){ 
+     if(trim($this->ac36_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_numero"])){
        $sql  .= $virgula." ac36_numero = $this->ac36_numero ";
        $virgula = ",";
-       if(trim($this->ac36_numero) == null ){ 
+       if(trim($this->ac36_numero) == null ){
          $this->erro_sql = " Campo Numero nao Informado.";
          $this->erro_campo = "ac36_numero";
          $this->erro_banco = "";
@@ -377,7 +377,7 @@ class cl_acordoposicaoperiodo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "acordoposicaoperiodo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ac36_sequencial;
@@ -405,14 +405,14 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ac36_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ac36_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ac36_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -443,7 +443,7 @@ class cl_acordoposicaoperiodo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "acordoposicaoperiodo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ac36_sequencial;
@@ -471,11 +471,11 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -497,11 +497,11 @@ class cl_acordoposicaoperiodo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,15 +517,15 @@ class cl_acordoposicaoperiodo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac36_sequencial!=null ){
-         $sql2 .= " where acordoposicaoperiodo.ac36_sequencial = $ac36_sequencial "; 
-       } 
+         $sql2 .= " where acordoposicaoperiodo.ac36_sequencial = $ac36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,11 +534,11 @@ class cl_acordoposicaoperiodo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,15 +551,15 @@ class cl_acordoposicaoperiodo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac36_sequencial!=null ){
-         $sql2 .= " where acordoposicaoperiodo.ac36_sequencial = $ac36_sequencial "; 
-       } 
+         $sql2 .= " where acordoposicaoperiodo.ac36_sequencial = $ac36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

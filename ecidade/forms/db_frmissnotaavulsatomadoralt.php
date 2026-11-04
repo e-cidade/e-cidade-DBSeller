@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clrotulo->label("z01_email");
        <?=@$Lq51_numnota?>
      </td>
     <td> 
-     <?
+     <?php
      db_input('q51_numnota',10,$Iq51_numnota,true,'text',3,"");
      db_input('q53_sequencial',10,'',true,'hidden',3,"");
      ?>
@@ -66,7 +66,7 @@ $clrotulo->label("z01_email");
      ?> 
 		 </td>
      <td> 
-     <?
+     <?php
     db_inputdata('q51_dtemiss',@$q51_dtemiss_dia,@$q51_dtemiss_mes,@$q51_dtemiss_ano,true,'text',3,"");
      ?>
      </td>
@@ -82,7 +82,7 @@ $clrotulo->label("z01_email");
        <?=@$Lq02_inscr?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('q02_inscr',10,$Iq02_inscr,true,'text',3,"");
       ?>
     </td>
@@ -90,7 +90,7 @@ $clrotulo->label("z01_email");
 	   	<b>CPF/CGC:</b>
     </td>
     <td> 
-      <?
+      <?php
       db_input('z01_cpfcgc',14,'',true,'text',3,"");
       ?>
      </td>
@@ -100,7 +100,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_nome?>
     </td>
     <td nowrap colspan='3'> 
-      <?
+      <?php
         db_input('z01_nome',70,$Iz01_nome,true,'text',3,"");
       ?>
     </td>
@@ -110,11 +110,11 @@ $clrotulo->label("z01_email");
        <b>Endereço:</b>
     </td>
     <td nowrap colspan='3'> 
-      <?
+      <?php
         db_input('z01_endereco',50,'',true,'text',3,"");
       ?>
 			<b>&nbsp;Nº:</b>
-      <?
+      <?php
         db_input('z01_numero',10,'',true,'text',3,"");
       ?>
     </td>
@@ -129,23 +129,23 @@ $clrotulo->label("z01_email");
 	 <table border='0'>
    <tr>
     <td nowrap title="<?=@$Tz01_cgccpf?>">
-		<?
+		<?php
       db_ancora(@$Lz01_cgccpf,"",$db_opcao,"","cpfAncora");?>
     </td>
     <td colspan='2'> 
-      <?
+      <?php
        db_input('q53_cgccpf',17,$Iz01_cgccpf,true,'text',3);
       ?>
      </td>
 		 </tr>
 		 <tr>
      <td nowrap title="<?=@$Tq54_inscr?>">
-       <?
+       <?php
        db_ancora(@$Lq54_inscr,"",$db_opcao,"","inscrAncora");
        ?>
     </td>
     <td> 
-      <?
+      <?php
        db_input('q54_inscr',10,$Iq54_inscr,true,'text',$db_opcao," onchange='js_pesquisaq52_inscr(false);'");
       ?>
     </td>
@@ -155,7 +155,7 @@ $clrotulo->label("z01_email");
      <?=@$Lz01_nome?>
     </td>
     <td colspan='5'> 
-   <?
+   <?php
    db_input('q61_numcgm',70,'',true,'hidden',3,"");
    db_input('q53_nome',70,$Iz01_nome,true,'text',3,"")
    ?>
@@ -168,7 +168,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_ender?>
     </td>
     <td colspan='2'> 
-    <?
+    <?php
      db_input('q53_endereco',50,$Iz01_ender,true,'text',3,"")
     ?>
     </td>
@@ -176,7 +176,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_numero?>
     </td>
     <td> 
-    <? 
+    <?php 
      db_input('q53_numero',15,$Iz01_numero,true,'text',3,"")
      ?>
     </td>
@@ -186,7 +186,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_bairro?>
     </td>
     <td colspan='4'> 
-       <?
+       <?php
         db_input('q53_bairro',50,$Iz01_bairro,true,'text',3,"")
        ?>
     </td>
@@ -196,7 +196,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_munic?>
     </td>
     <td colspan='4'> 
-       <?
+       <?php
         db_input('q53_municipio',50,$Iz01_munic,true,'text',3,"")
        ?>
     </td>
@@ -206,7 +206,7 @@ $clrotulo->label("z01_email");
        <?=@$Lz01_uf?>
     </td>
     <td colspan='2'> 
-<?
+<?php
 db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
 ?>
     </td>
@@ -216,7 +216,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_cep?>
     </td>
     <td> 
-    <?
+    <?php
      db_input('q53_cep',8,$Iz01_cep,true,'text',3,"")
    ?>
     </td>
@@ -224,7 +224,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_email?>
     </td>
     <td colspan='2'> 
-    <?
+    <?php
      db_input('q53_email',60,$Iz01_email,true,'text',3,"")
     ?>
     </td>
@@ -234,7 +234,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lz01_telef?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('q53_fone',15,$Iz01_telef,true,'text',3,"")
      ?>
     </td>
@@ -242,7 +242,7 @@ db_input('q53_uf',2,$Iz01_uf,true,'text',3,"")
        <?=@$Lq53_dtservico?>
     </td>
     <td colspan='3'> 
-    <?
+    <?php
     db_inputdata('q53_dtservico',@$q53_dtservico_dia,@$q53_dtservico_mes,@$q53_dtservico_ano,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -329,7 +329,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsatomador.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -340,7 +340,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsatomador.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

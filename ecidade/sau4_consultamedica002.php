@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,7 +83,7 @@ if(isset($incluir)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmfichaatenddiag.php"));
         ?>
     </center>
@@ -97,7 +97,7 @@ if(isset($incluir)){
   document.form1.sd24_i_unidade.value = parent.iframe_a1.document.form1.sd24_i_unidade.value;
 
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clprontuarios->erro_status=="0"){
     $clprontuarios->erro(true,false);
@@ -115,7 +115,7 @@ if(isset($incluir)){
        //parent.iframe_a4.location.href='sau4_fichaatendabas003.php?chavepesquisaprontuario=<?=$chavepesquisaprontuario?>'
        //parent.mo_camada('a4');
      </script>
-    <?
+    <?php
   }
 
 

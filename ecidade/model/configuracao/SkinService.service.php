@@ -126,7 +126,12 @@ Class SkinService {
    * Seta na sessão a skin ativa
    */
   public function setCookie() {
-    setcookie( self::COOKIE_NOME, $this->getActiveSkin(), 0, '/' );
+    $options = [
+      'expires' => 0,
+      'path' => '/',
+      'samesite' => 'Lax'
+    ];
+    setcookie( self::COOKIE_NOME, $this->getActiveSkin(), $options );
   }
 
 }

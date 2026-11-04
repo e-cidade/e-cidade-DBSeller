@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@ db_fieldsmemory($rsConsultaTipo,0);
 		     <b>Processo:</b>
 		  </td>
 		  <td> 
-		  <?
+		  <?php
 		    db_input("p58_codproc",10,$Ip58_codproc,true,'text',3,'');
 		    db_input("p58_requer",50,$Ip58_requer,true,'text',3,'');
 		    db_input("p58_codigo",50,'',true,'hidden',3,'');
@@ -76,12 +76,12 @@ db_fieldsmemory($rsConsultaTipo,0);
 	    </tr>
 	    <tr>
 		  <td nowrap title="<?=$Tov01_sequencial?>" align="right">
-		  <?
+		  <?php
 		    db_ancora('<b>Atendimento:</b>',"js_pesquisaov01_sequencial(true);","");
 		  ?>
 		  </td>
 		  <td> 
-		  <?
+		  <?php
 		    db_input("ov01_sequencial",10,$Iov01_sequencial,true,'text',""," onchange='js_pesquisaov01_sequencial(false);'");
 		    db_input("ov01_requerente",50,$Iov01_requerente,true,'text',3,'');
 		  ?>
@@ -101,7 +101,7 @@ db_fieldsmemory($rsConsultaTipo,0);
       <table>
   	  <tr>
 	    <td valign="top"  align="center">  
-	      <? 	      
+	      <?php 	      
 		 	$chavepri                                = array("ov09_sequencial"=>@$oProcessoOuvidoria->ov09_sequencial);
 		 	$cliframe_alterar_excluir->chavepri      = $chavepri;
 		 	$cliframe_alterar_excluir->sql           = $sqlProcessoOuvidoria;

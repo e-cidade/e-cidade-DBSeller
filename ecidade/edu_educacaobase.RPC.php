@@ -59,21 +59,30 @@ try {
 
         case 'pesquisaEscola':
 
-            $aFiltros = array();
+            $sWhere = "";
 
             if (db_getsession("DB_modulo") == $iModuloEscola) {
-                $aFiltros[] = " ed18_i_codigo in ($iEscola) ";
-            }
-
-            $sWhere = "";
-            if (count($aFiltros) > 0) {
-                $sWhere = implode(" and ", $aFiltros);
+                $sWhere = " ed18_i_codigo in ($iEscola) ";
             }
 
             $oDaoEscola = new cl_escola();
-            $sCamposEscola = "ed18_i_codigo as codigo_escola, ed18_c_nome as nome_escola";
-            $sSqlEscola = $oDaoEscola->sql_query_file("", $sCamposEscola, "ed18_c_nome", $sWhere);
-            $rsResultEscola = $oDaoEscola->sql_record($sSqlEscola);
+
+            if (empty($sWhere))
+            {
+                $sCamposEscola = "select                                                                     \n";
+                $sCamposEscola .= "      distinct ed18_i_codigo as codigo_escola, ed18_c_nome as nome_escola \n";
+                $sCamposEscola .= "from escola                                                               \n";
+                $sCamposEscola .= "      inner join turma on turma.ed57_i_escola = escola.ed18_i_codigo      \n";
+                $sCamposEscola .= "order by ed18_c_nome";
+
+                $rsResultEscola = $oDaoEscola->sql_record($sCamposEscola);
+            }
+            else
+            {
+                $sCamposEscola = "ed18_i_codigo as codigo_escola, ed18_c_nome as nome_escola";
+                $sSqlEscola = $oDaoEscola->sql_query_file("", $sCamposEscola, "ed18_c_nome", $sWhere);
+                $rsResultEscola = $oDaoEscola->sql_record($sSqlEscola);
+            }
 
             $oRetorno->dados = db_utils::getCollectionByRecord($rsResultEscola, false, false, true);
 
@@ -781,53 +790,88 @@ try {
             /**
              * Validação criada para a rotina Horário das Turmas
              */
+
             !isset($oParam->escola) ?: $iEscola = $oParam->escola;
 
             $sEscola = " ed57_i_escola in ($iEscola) ";
-            if (isset($oParam->iEscola) && !empty($oParam->iEscola)) {
-                $sEscola = "ed57_i_escola in ({$oParam->iEscola})";
+            if (!empty($oParam->iEscola)) {
+                $sEscola = " ed57_i_escola in ({$oParam->iEscola}) ";
             }
 
             $aFiltros = array();
+            $aFiltrosB = array();
             $aFiltros[] = $sEscola;
             $aFiltros[] = " ed58_tipovinculo = {$oParam->tipoVinculo}";
+            $aFiltrosB[] = $sEscola;
+            $aFiltrosB[] = " ed175_tipovinculo = {$oParam->tipoVinculo}";
 
             if (isset($oParam->iCalendario) && !empty($oParam->iCalendario)) {
                 $aFiltros[] = " ed57_i_calendario in ({$oParam->iCalendario}) ";
+                $aFiltrosB[] = " ed57_i_calendario in ({$oParam->iCalendario}) ";
             }
 
             if (isset($oParam->lEncerrada) && trim($oParam->lEncerrada) == "true") {
-
                 $aFiltros[] = " EXISTS( select 1 from regencia where ed59_c_encerrada = 'S' and ed59_i_turma = ed57_i_codigo)";
+                $aFiltrosB[] = " EXISTS( select 1 from regencia where ed59_c_encerrada = 'S' and ed59_i_turma = ed57_i_codigo)";
             }
             $aFiltros[] = " ed221_c_origem = 'S' ";
+            $aFiltrosB[] = " ed221_c_origem = 'S' ";
 
             $sWhere = implode(" and ", $aFiltros);
+            $sWhereB = implode(" and ", $aFiltrosB);
             $sCampo = "DISTINCT ed220_i_codigo, trim(ed57_c_descr) as ed57_c_descr, trim(ed11_c_descr) as ed11_c_descr";
             $sOrder = "ed57_c_descr";
 
-
-            $sSqlTurma = " SELECT {$sCampo} ";
-            $sSqlTurma .= "  FROM turma                                                               ";
-            $sSqlTurma .= " inner join matricula           on ed60_i_turma    = ed57_i_codigo         ";
-            $sSqlTurma .= " inner join turmaserieregimemat on ed220_i_turma   = ed57_i_codigo         ";
-            $sSqlTurma .= " inner join serieregimemat      on ed223_i_codigo  = ed220_i_serieregimemat";
-            $sSqlTurma .= " inner join serie               on ed11_i_codigo   = ed223_i_serie          ";
-            $sSqlTurma .= " inner join regencia            on ed59_i_turma    = ed57_i_codigo          ";
-            $sSqlTurma .= " inner join regenciahorario     on ed58_i_regencia = ed59_i_codigo        ";
-            $sSqlTurma .= " inner join matriculaserie      on ed221_i_matricula = ed60_i_codigo      ";
-            $sSqlTurma .= "                               and ed221_i_serie = ed223_i_serie          ";
-            $sSqlTurma .= " WHERE {$sWhere}                                                          ";
-            $sSqlTurma .= " ORDER BY ed57_c_descr                                                    ";
+            $sql = "SELECT {$sCampo}
+                    FROM turma
+                        INNER JOIN matricula
+                            ON ed60_i_turma = ed57_i_codigo
+                        INNER JOIN turmaserieregimemat
+                            ON ed220_i_turma = ed57_i_codigo
+                        INNER JOIN serieregimemat
+                            ON ed223_i_codigo = ed220_i_serieregimemat
+                        INNER JOIN serie
+                            ON ed11_i_codigo = ed223_i_serie
+                        INNER JOIN regencia
+                            ON ed59_i_turma = ed57_i_codigo
+                        INNER JOIN regenciahorario
+                            ON ed58_i_regencia = ed59_i_codigo
+                        INNER JOIN matriculaserie
+                            ON ed221_i_matricula = ed60_i_codigo AND ed221_i_serie = ed223_i_serie
+                    where {$sWhere}
+                    union
+                    SELECT {$sCampo}
+                    FROM turma
+                        INNER JOIN matricula
+                            ON ed60_i_turma = ed57_i_codigo
+                        INNER JOIN turmaserieregimemat
+                            ON ed220_i_turma = ed57_i_codigo
+                        INNER JOIN serieregimemat
+                            ON ed223_i_codigo = ed220_i_serieregimemat
+                        INNER JOIN serie
+                            ON ed11_i_codigo = ed223_i_serie
+                        INNER JOIN regencia
+                            ON ed59_i_turma = ed57_i_codigo
+                        INNER JOIN regenciahorariodiscsemreg
+                            ON regenciahorariodiscsemreg.ed175_regencia = regencia.ed59_i_codigo
+                        INNER JOIN matriculaserie
+                            ON ed221_i_matricula = ed60_i_codigo AND ed221_i_serie = ed223_i_serie
+                    where {$sWhereB}
+                    ORDER BY ed57_c_descr ";
 
             $oDaoTurma = new cl_regenciahorario();
-            $rsTurma = $oDaoTurma->sql_record($sSqlTurma);
-
+            $rsTurma = $oDaoTurma->sql_record($sql);
+            $oRetorno->turmasSemRegente = [];
             if ($oDaoTurma->numrows > 0) {
-
                 $oRetorno->dados = db_utils::getCollectionByRecord($rsTurma, false, false, true);
-            } else {
 
+                foreach ($oRetorno->dados as $turma) {
+                    $professor = buscaProfessoresTurma($iEscola, $turma->ed220_i_codigo);
+                    if (empty($professor)) {
+                        $oRetorno->turmasSemRegente[] = $turma->ed220_i_codigo;
+                    }
+                }
+            } else {
                 $oRetorno->status = 2;
                 $oRetorno->message = urlencode("Não foi possível localizar as turmas solicitadas!");
             }
@@ -837,28 +881,12 @@ try {
             /**
              * Validação criada para a rotina Horário das Turmas
              */
-            !isset($oParam->escola) ?: $iEscola = $oParam->escola;
 
-            $sEscola = " ed57_i_escola in ($iEscola) ";
+            $retorno = buscaProfessoresTurma($oParam->escola,$oParam->iTurmaSerieRegimeMat);
 
-            $aFiltros = array();
-            $aFiltros[] = $sEscola;
-            $aFiltros[] = " ed220_i_codigo = {$oParam->iTurmaSerieRegimeMat}";
-
-            $sWhere = implode(" and ", $aFiltros);
-            $sWhere .= " AND ed58_ativo is true";
-            $sCampos = " DISTINCT ed20_i_codigo, z01_nome, z01_numcgm ";
-            $sOrder = " z01_nome ";
-
-            $oDaoTurma = new cl_regenciahorario();
-            $sSqlProfessores = $oDaoTurma->sql_query_rechumano_regimemat(null, $sCampos, $sOrder, $sWhere);
-            $rsProfessores = $oDaoTurma->sql_record($sSqlProfessores);
-
-            if ($oDaoTurma->numrows > 0) {
-
-                $oRetorno->dados = db_utils::getCollectionByRecord($rsProfessores, false, false, true);
+            if (count($retorno) > 0) {
+                $oRetorno->dados = $retorno;
             } else {
-
                 $oRetorno->status = 2;
                 $oRetorno->message = urlencode("Não foi possível localizar as turmas solicitadas!");
             }
@@ -1053,10 +1081,12 @@ try {
                 $aFiltros[] = "ed52_i_ano = {$oParam->iAno}";
                 $sWhere = implode(" and ", $aFiltros);
 
-                $sCampos = "DISTINCT ed11_i_codigo, ed11_c_descr, ed11_i_ensino, ed11_i_sequencia";
+                 $sCampos   = "DISTINCT ed10_i_codigo, ed10_c_descr, ed52_i_periodo,
+         ed11_i_codigo, ed11_c_descr, ed11_i_ensino, ed11_i_sequencia";
                 $sOrdem = "ed11_i_ensino,ed11_i_sequencia";
                 $oDaoTurma = new cl_turma;
                 $sSqlEtapa = $oDaoTurma->sql_query_relatorio(null, $sCampos, $sOrdem, $sWhere);
+
                 $rsEtapa = $oDaoTurma->sql_record($sSqlEtapa);
 
                 if ($oDaoTurma->numrows > 0) {
@@ -1072,7 +1102,40 @@ try {
                 $oRetorno->message = urlencode("Ano não informado!");
             }
 
+          break;
+
+          /**
+           * Pesquisa todos os tipos de necessidades especiais
+           */
+        case "pesquisaNecessidade":
+            $oDaoNecessidade = new cl_necessidade;
+            $sSqlNecessidade = $oDaoNecessidade->sql_query('','*','','');
+            $rsNecessidade = $oDaoNecessidade->sql_record($sSqlNecessidade);
+            $oRetorno->necessidades    = db_utils::getCollectionByRecord($rsNecessidade, false, false, true);
+          break;
+
+          /**
+           * Pesquisa todos os tipos de necessidades especiais
+           */
+        case "pesquisaSubdivisao":
+            $oDaoSubdivisao = new cl_necessidadesubdivisao;
+            $sWhere = "";
+            if($oParam->iNecessidades != 0){
+              $sWhere = "necessidade.ed48_i_codigo in ($oParam->iNecessidades) and";
+            }
+
+            $sSqlSubdivisao = $oDaoSubdivisao->sql_query('','*','ed185_descricao',"$sWhere necessidade.ed48_i_codigo <> 108");
+            $rsSubdivisao = $oDaoSubdivisao->sql_record($sSqlSubdivisao);
+            if ($rsSubdivisao && $oDaoSubdivisao->numrows > 0) {
+              $oRetorno->subdivisoes = db_utils::getCollectionByRecord($rsSubdivisao, false, false, true);;
+            } else {
+              $oRetorno->status  = 2;
+              $oRetorno->message = urlencode("Sem dados cadastrado.");
+            }
+          break;
+
         case 'buscaEmissor' :
+
 
             if (isset($oParam->iEscola) && !empty($oParam->iEscola)) {
 
@@ -1382,4 +1445,32 @@ function buscaCursos($iEscola)
         $aCursos[] = $oDadosRetorno;
     }
     return $aCursos;
+}
+
+function buscaProfessoresTurma($escola, $turmas)
+{
+    !isset($escola) ?: $iEscola = $escola;
+
+    $sEscola = " ed57_i_escola in ($iEscola) ";
+
+    $turmas = is_array($turmas) ?  implode(", ",$turmas) :
+        $turmas;
+
+    $aFiltros = array();
+    $aFiltros[] = $sEscola;
+    $aFiltros[] = " ed220_i_codigo in ({$turmas})";
+    $sWhere = implode(" and ", $aFiltros);
+    $sWhere .= " AND ed58_ativo is true";
+    $sCampos = " DISTINCT ed20_i_codigo, z01_nome, z01_numcgm ";
+    $sOrder = " z01_nome ";
+
+    $oDaoTurma = new cl_regenciahorario();
+    $sSqlProfessores = $oDaoTurma->sql_query_rechumano_regimemat(null, $sCampos, $sOrder, $sWhere);
+    $rsProfessores = $oDaoTurma->sql_record($sSqlProfessores);
+
+    if ($oDaoTurma->numrows > 0) {
+        return db_utils::getCollectionByRecord($rsProfessores, false, false, true);
+    } else {
+        return [];
+    }
 }

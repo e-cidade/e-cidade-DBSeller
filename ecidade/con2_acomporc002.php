@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -246,7 +246,7 @@ x.o58_elemento,
 x.o56_descr,
 x.o58_coddot,
 oc.o15_recurso,
-x.o15_descr,
+oc.o15_descr,
 sum(x.dot_ini) as dot_ini,
 sum(x.saldo_anterior) as saldo_anterior,
 sum(x.empenhado) as empenhado,
@@ -297,7 +297,7 @@ x.o58_elemento,
 x.o56_descr,
 x.o58_coddot,
 oc.o15_recurso,
-x.o15_descr
+oc.o15_descr
 ";
 
 

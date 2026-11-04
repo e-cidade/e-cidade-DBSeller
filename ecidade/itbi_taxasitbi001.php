@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -80,7 +80,7 @@ $clrotulo->label("ar44_descricao");
                                 <?= @$Sit36_sequencial ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("it36_sequencial", 5, @$Iit36_sequencial, "it36_sequencial", "text", 3);
                                 ?>
                             </td>
@@ -90,7 +90,7 @@ $clrotulo->label("ar44_descricao");
                                 <?= @$Sit36_descricao ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("it36_descricao", 50, @$Iit36_descricao, "it36_descricao", "text", 1);
                                 ?>
                             </td>
@@ -101,19 +101,19 @@ $clrotulo->label("ar44_descricao");
                             </td>
                             <td>
                                 <span>
-                                    <?
+                                    <?php
                                     db_input("it36_imovelurbano", 50, @$Iit36_imovelurbano, "it36_imovelurbano", "radio", 1, "onclick='js_desmarcarRadio(this)'");
                                     ?>
                                     <label for="it36_imovelurbano"><?= @$Sit36_imovelurbano ?></label>
                                 </span>
                                 <span>
-                                    <?
+                                    <?php
                                     db_input("it36_imovelrural", 50, @$Iit36_imovelrural, "it36_imovelrural", "radio", 1, "onclick='js_desmarcarRadio(this)'");
                                     ?>
                                     <label for="it36_imovelrural"><?= @$Sit36_imovelrural ?></label>
                                 </span>
                                 <span>
-                                    <?
+                                    <?php
                                     db_input("it36_imovelurbanopleno", 50, @$Iit36_imovelurbanopleno, "it36_imovelurbanopleno", "radio", 1, "onclick='js_desmarcarRadio(this)'");
                                     ?>
                                     <label for="it36_imovelurbanopleno"><?= @$Sit36_imovelurbanopleno ?></label>
@@ -139,7 +139,7 @@ $clrotulo->label("ar44_descricao");
                                     ?>
                             </td>
                             <td>
-                                    <?
+                                    <?php
                                     db_input("ar44_sequencial", 5, @$Iar44_sequencial, true, "text", 1, "onchange='js_pesquisaTaxa(false);'", "", "white");
                                     db_input("ar44_descricao", 70, false, true, "text", 5, "", "", "", "width: 260px;");
                                     ?>
@@ -156,7 +156,7 @@ $clrotulo->label("ar44_descricao");
                 <input name="salvar" id="salvar" type="button" onclick="js_salvarTaxa();" value="Salvar">
             </form>
         </div>
-        <? db_menu(); ?>
+        <?php db_menu(); ?>
     </body>
 </html>
 <script>

@@ -40,7 +40,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, estilos.css, prototype.js, arrays.js");
 ?>
 </head>
@@ -60,7 +60,7 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                        <table>
-                         <?
+                         <?php
                           $oListaDivisao = new cl_arquivo_auxiliar;
                            $oListaDivisao->cabecalho = "<strong>Divisoes</strong>";
                            $oListaDivisao->codigo = "t30_codigo"; //chave de retorno da func
@@ -90,7 +90,7 @@ include(modification("dbforms/db_funcoes.php"));
                       <b>Opções:</b>
                     </td>
                     <td>
-                        <?
+                        <?php
                           $aOpcoes = array(
                                           "comdivisao" => "Com as Divisões  selecionadas",
                                           "semdivisao" => "sem as Divisões selecionadas",

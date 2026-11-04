@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -117,7 +117,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 <meta http-equiv="Expires" CONTENT="0">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<?
+<?php
 $Rod    = isset($Rod) ? $Rod : '';
 $result = db_query("select mens,alinhamento from db_confmensagem where instit = {$iInstituicao} and cod = '{$Cab}' or cod = '{$Rod}' order by cod");
 if (!$result || pg_num_rows($result) == 0 ) {
@@ -363,7 +363,7 @@ fieldset {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-<?
+<?php
 echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,0,(strlen($Cab) - 4)))."</u></b>\n";
 ?>
 <form method="post" name="form1" onSubmit="js_submeter()">
@@ -403,10 +403,10 @@ echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,
                     </fieldset></td>
                   <td width="55%" nowrap> <fieldset>
                     <legend>Mensagem de:</legend>
-                    <input name="RG_cabrod" id="cabro1" type="radio" value="CB" onClick="js_cabrod()" <? echo isset($HTTP_POST_VARS["enviar"])?(@$HTTP_POST_VARS["RG_cabrod"]=="CB"?"checked":""):"checked"; ?>>
+                    <input name="RG_cabrod" id="cabro1" type="radio" value="CB" onClick="js_cabrod()" <?php echo isset($HTTP_POST_VARS["enviar"])?(@$HTTP_POST_VARS["RG_cabrod"]=="CB"?"checked":""):"checked"; ?>>
                     <label for="cabro1">Cabeçalho</label>
                     <br>
-                    <input type="radio" id="cabrod2" name="RG_cabrod" value="RP" onClick="js_cabrod()" <? echo @$HTTP_POST_VARS["RG_cabrod"]=="RP"?"checked":""; ?>>
+                    <input type="radio" id="cabrod2" name="RG_cabrod" value="RP" onClick="js_cabrod()" <?php echo @$HTTP_POST_VARS["RG_cabrod"]=="RP"?"checked":""; ?>>
                     <label for="cabrod2">Rodapé</label>
                     <br>
                     </fieldset></td>
@@ -496,7 +496,7 @@ echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,
 	</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

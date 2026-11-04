@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,13 +74,13 @@ if (isset($alterar)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Alteração Restrição Nutriente</b></legend>
-	<? 	include(modification("forms/db_frmmer_restrinutri.php"));?>
+	<?php 	include(modification("forms/db_frmmer_restrinutri.php"));?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -89,7 +89,7 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 	
   if ($clmer_restrinutri->erro_status=="0") {

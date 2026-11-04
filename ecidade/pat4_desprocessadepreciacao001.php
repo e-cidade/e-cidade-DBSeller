@@ -71,7 +71,7 @@ $iAnoSessao = db_getsession("DB_anousu");
 			    Tipo do Processamento:
 			  </td>
 			  <td>
-			  <?
+			  <?php
           $aTiposProcessamento = array(0 => "Selecione",
                                        1 => "Automático",
                                        2 => "Manual"
@@ -232,7 +232,6 @@ $iAnoSessao = db_getsession("DB_anousu");
     oParam.iTipoProcessamento = $F('tipoprocessamento');
     var oAjax = new Ajax.Request(sUrlRPC,
                                 {method: 'post',
-                                 asynchronous: false,
                                  parameters: 'json='+Object.toJSON(oParam),
                                  onComplete: js_retornoCancelaProcessamento
                                 }

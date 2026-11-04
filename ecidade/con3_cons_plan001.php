@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -149,18 +149,18 @@ function js_emite(opcao,origem){
 
           <table border="0">
           <tr>
-             <td><? db_ancora("$Lc61_codcon",'js_pesquisa();',1); ?>
-                 <? db_input('c61_codcon',8,"",true,'text',1);  ?>
-	         <? db_input('c61_reduz',8,"",true,'text',3);  ?>
-                 <? db_input('c60_descr' ,50,"",true,'text',3);  ?>
+             <td><?php db_ancora("$Lc61_codcon",'js_pesquisa();',1); ?>
+                 <?php db_input('c61_codcon',8,"",true,'text',1);  ?>
+	         <?php db_input('c61_reduz',8,"",true,'text',3);  ?>
+                 <?php db_input('c60_descr' ,50,"",true,'text',3);  ?>
 
   	    </td>
        	  </tr>
 	  </tr>
-   	     <td><? db_selorcbalanco(true,false); ?> </td>
+   	     <td><?php db_selorcbalanco(true,false); ?> </td>
            </tr>
            </table>
-           <? 
+           <?php 
  
            if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
                $perini=$ini;
@@ -195,7 +195,7 @@ function js_emite(opcao,origem){
    </td>
   </tr>
  </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
 <script>

@@ -96,7 +96,7 @@ class cl_matricula
                  ";
 
     //funcao construtor da classe
-    function cl_matricula()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("matricula");
@@ -104,7 +104,7 @@ class cl_matricula
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -115,7 +115,7 @@ class cl_matricula
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed60_i_codigo = ($this->ed60_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed60_i_codigo"] : $this->ed60_i_codigo);
@@ -170,7 +170,7 @@ class cl_matricula
     }
 
     // funcao para inclusao
-    function incluir($ed60_i_codigo)
+    public function incluir($ed60_i_codigo)
     {
         $this->atualizacampos();
         if ($this->ed60_i_aluno == null) {
@@ -396,7 +396,7 @@ class cl_matricula
     }
 
     // funcao para alteracao
-    function alterar($ed60_i_codigo = null)
+    public function alterar($ed60_i_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update matricula set ";
@@ -734,7 +734,7 @@ class cl_matricula
     }
 
     // funcao para exclusao
-    function excluir($ed60_i_codigo = null, $dbwhere = null)
+    public function excluir($ed60_i_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
 
@@ -818,7 +818,7 @@ class cl_matricula
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -843,7 +843,7 @@ class cl_matricula
     }
 
     // funcao do sql
-    function sql_query($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -906,7 +906,7 @@ class cl_matricula
     }
 
     // funcao do sql
-    function sql_query_file($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1001,7 +1001,7 @@ class cl_matricula
 
     }
 
-    function sql_query_restricao($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_restricao($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1061,7 +1061,7 @@ class cl_matricula
         return $sql;
     }
 
-    function sql_query_diario($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_diario($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2057,7 +2057,7 @@ class cl_matricula
         return $sSql;
     }
 
-    function sql_query_naturalidade_aluno($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $group = null)
+    public function sql_query_naturalidade_aluno($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "", $group = null)
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2103,6 +2103,7 @@ class cl_matricula
         $sql .= "      left join alunoprimat  on  alunoprimat.ed76_i_aluno = aluno.ed47_i_codigo";
         $sql .= "      left join escola  as escolaprimat on  escolaprimat.ed18_i_codigo = alunoprimat.ed76_i_escola";
         $sql .= "      left join escolaproc  on  escolaproc.ed82_i_codigo = alunoprimat.ed76_i_escola";
+        $sql .= "      left join alunonecessidade  on  aluno.ed47_i_codigo = alunonecessidade.ed214_i_aluno";
         $sql2 = "";
         if ($dbwhere == "") {
             if ($ed60_i_codigo != null) {
@@ -2133,7 +2134,7 @@ class cl_matricula
 
         return $sql;
     }
-    function sql_query_censo($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_censo($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -2201,7 +2202,7 @@ class cl_matricula
         return $sql;
     }
 
-    function sql_query_aluno_transferido($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_aluno_transferido($ed60_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,7 +52,7 @@ if(isset($pesquisar)){
   $cldb_syscampo->sql_record($cldb_syscampo->sql_query_file($codcam));
   if($cldb_syscampo->numrows==0){
      $erro_msg="Campo inválido!";
-  } 
+  }
 }
 
 ?>
@@ -89,13 +89,13 @@ function js_selecionar(){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_camp','con3_db_syscampo003.php?segundo='+secs+'&principal='+pri,'Pesquisa',true);
   }else{
     alert('Selecione um campo!');
-  }    
+  }
 }
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -104,16 +104,16 @@ function js_selecionar(){
 </table>
 <form name='form1'>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <table border="0" align='left'> 
+      <table border="0" align='left'>
 	<tr>
 	  <td nowrap title="<?=@$Tcodcam?>" colspan='2' align='center'>
-	     <?
+	     <?php
 	     db_ancora(@$Lnomecam,"js_pesquisacampo(true);",1);
 	     ?>
-      <?
+      <?php
       db_input('codcam',6,$Icodcam,true,'text',1," onchange='js_pesquisacampo(false);'");
       db_input('nomecam',40,$Inomecam,true,'text',3,'');
 	     ?>
@@ -127,22 +127,22 @@ function js_selecionar(){
 	<tr>
 	  <td colspan='2'>
 	    <table border="0">
-	    <?
+	    <?php
 	        if(isset($codcam) && $codcam!=""){
 	    ?>
 	      <tr>
 	        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		   <input name='selecionar' type='button' value='Selecionar' onclick='js_selecionar();'>
 		</td>
-	      </tr> 
-	      <?}?>
+	      </tr>
+	      <?php }?>
 	      <tr>
 	        <td>
 		     <iframe name="campos"   marginwidth="0" marginheight="0" frameborder="0" src="con3_db_syscampo002.php?codcam=<?=@$codcam?>" width="740" height="320">
 		     </iframe>
                 </td>
               </tr>
-            </table> 
+            </table>
 	  </td>
 	</tr>
       </table>
@@ -151,7 +151,7 @@ function js_selecionar(){
   </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -161,18 +161,18 @@ function js_pesquisacampo(mostra){
   if(mostra==true){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','func_db_syscampo.php?funcao_js=parent.js_mostracampo1|codcam|nomecam','Pesquisa',true);
   }else{
-     if(document.form1.codcam.value != ''){ 
+     if(document.form1.codcam.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe','func_db_syscampo.php?pesquisa_chave='+document.form1.codcam.value+'&funcao_js=parent.js_mostracampo','Pesquisa',false);
      }else{
-       document.form1.nomecam.value = ''; 
+       document.form1.nomecam.value = '';
      }
   }
 }
 function js_mostracampo(chave,erro){
-  document.form1.nomecam.value = chave; 
-  if(erro==true){ 
-    document.form1.codcam.focus(); 
-    document.form1.codcam.value = ''; 
+  document.form1.nomecam.value = chave;
+  if(erro==true){
+    document.form1.codcam.focus();
+    document.form1.codcam.value = '';
   }
 }
 function js_mostracampo1(chave1,chave2){
@@ -181,7 +181,7 @@ function js_mostracampo1(chave1,chave2){
   db_iframe.hide();
 }
 </script>
-<?
+<?php
 if(isset($erro_msg)){
   db_msgbox($erro_msg);
 }

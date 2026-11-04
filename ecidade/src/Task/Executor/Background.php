@@ -31,7 +31,7 @@ class Background
             $task = new TaskClosure($task);
         }
 
-        if(!empty($afterRunning)) {
+        if (!empty($afterRunning)) {
             $this->afterRunning->attach($task, $afterRunning);
         }
 
@@ -51,11 +51,9 @@ class Background
     private function tick()
     {
         do {
-
             $this->initialize();
             $this->track();
             $this->wait();
-
         } while (count($this->waiting) || count($this->running));
     }
 
@@ -69,7 +67,6 @@ class Background
     private function initialize()
     {
         foreach ($this->waiting as $key => $task) {
-
             if ($this->throughput()) {
                 break;
             }
@@ -81,8 +78,7 @@ class Background
             $this->running[] = $job;
             unset($this->waiting[$key]);
 
-            if($this->afterRunning->contains($task)) {
-                
+            if ($this->afterRunning->contains($task)) {
                 $callback = $this->afterRunning->offsetGet($task);
                 $this->afterRunning->detach($task);
                 $this->afterRunning->attach($job, $callback);
@@ -100,7 +96,7 @@ class Background
             $task             = unserialize(file_get_contents($process->dataPath));
             $this->complete[] = $task;
 
-            if($this->afterRunning->contains($process)) {
+            if ($this->afterRunning->contains($process)) {
                 call_user_func($this->afterRunning->offsetGet($process), $task);
             }
 
@@ -117,7 +113,7 @@ class Background
 
     public function limit($limit)
     {
-        if(!is_null($limit)) {
+        if (!is_null($limit)) {
             $this->limit = $limit;
         }
 
@@ -126,7 +122,7 @@ class Background
 
     private function createWorker($dataPath)
     {
-        return new Process(sprintf("php %s %s", $this->workerPath, $dataPath));
+        return new Process(["php", $this->workerPath, $dataPath]);
     }
 
     private function createData($task)

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -85,7 +85,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 $fornecedores = "";
 $vir = "";
 if(isset($forne) && $forne != "branco"){
-  $arr_forne = split("forn_",$forne);
+  $arr_forne =explode("forn_",$forne);
   for($i=1;$i<sizeof($arr_forne);$i++){
     $fornecedores .= $vir.$arr_forne[$i];
     $vir = ",";

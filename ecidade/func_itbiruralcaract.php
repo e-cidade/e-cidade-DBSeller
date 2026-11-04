@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clitbiruralcaract->rotulo->label("it19_valor");
               <?=$Lit19_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it19_guia",10,$Iit19_guia,true,"text",4,"","chave_it19_guia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbiruralcaract->rotulo->label("it19_valor");
               <?=$Lit19_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it19_codigo",4,$Iit19_codigo,true,"text",4,"","chave_it19_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clitbiruralcaract->rotulo->label("it19_valor");
               <?=$Lit19_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it19_valor",20,$Iit19_valor,true,"text",4,"","chave_it19_valor");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clitbiruralcaract->rotulo->label("it19_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiruralcaract.php")==true){
@@ -129,12 +129,12 @@ $clitbiruralcaract->rotulo->label("it19_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

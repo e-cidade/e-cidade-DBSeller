@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clinflan->rotulo->label();
        <?=@$Li01_codigo?>
     </td>
     <td> 
-       <?
+       <?php
 	if ( $db_opcao == 2 )
    	   $opcaotipo = 3;
 	else
@@ -50,7 +50,7 @@ $clinflan->rotulo->label();
        <?=@$Li01_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -60,7 +60,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
        <?=@$Li01_dm?>
     </td>
     <td> 
-    <?
+    <?php
       $x = array("1"=>"DIÁRIO","0"=>"MENSAL");
       db_select('i01_dm',$x,true,4,"");
     ?>
@@ -71,7 +71,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',$db_opcao,"")
        <?=@$Li01_tipo?>
     </td>
     <td> 
-<?
+<?php
    $rec = array("1"=>"Divide valor pelo índice da data base e multiplica pelo índice da data atual","2"=>"Aplica índice mês a mês sobre o valor","3"=>"Aplica índice do mês do vencimento sobre o valor","9"=>"Sem correção ( Moeda Corrente Nacional )"); 
    db_select("i01_tipo",$rec,true,4,"");
 
@@ -96,7 +96,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

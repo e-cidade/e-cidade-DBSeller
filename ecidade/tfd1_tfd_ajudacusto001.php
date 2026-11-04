@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ if (isset($excluir)) {
   </head>
 <body bgcolor=#CCCCCC >
 <div class="container">
-<?
+<?php
 	require_once(modification("forms/db_frmtfd_ajudacusto.php"));
 ?>
 </div>
@@ -111,7 +111,7 @@ if (isset($excluir)) {
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
   if($cltfd_ajudacusto->erro_status=="0"){
     $cltfd_ajudacusto->erro(true,false);

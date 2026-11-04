@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clrotulo->label("z01_v_nome");
               <?=$Lsd32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("sd32_i_codigo",10,$Isd32_i_codigo,true,"text",4,"","chave_sd32_i_codigo");
                  ?>
             </td>
@@ -69,7 +69,7 @@ $clrotulo->label("z01_v_nome");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                  db_input("z01_v_nome",60,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
                  ?>
             </td>
@@ -87,7 +87,7 @@ $clrotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontuariomedico.php")==true){
@@ -129,12 +129,12 @@ $clrotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

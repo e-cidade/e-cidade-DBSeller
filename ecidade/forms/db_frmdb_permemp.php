@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,7 +68,7 @@ $clrotulo->label("descrdepto");
 ?>
 <script>
   function js_atual(nome){
-    <?
+    <?php
       if(isset($opcao) && ($opcao=="alterar" || $opcao=="excluir")){
     ?>
     var opcao = document.createElement("input");
@@ -76,7 +76,7 @@ $clrotulo->label("descrdepto");
     opcao.setAttribute("name","opcao");
     opcao.setAttribute("value",'alterar');
     document.form1.appendChild(opcao);
-    <?
+    <?php
       }
     ?>
     var opcao = document.createElement("input");
@@ -115,7 +115,7 @@ $clrotulo->label("descrdepto");
   <fieldset>
     <legend>Manutenção de Permissões da Despesa</legend>
     <table border="0">
-      <?
+      <?php
       if((isset($coddepto) && $coddepto!='')){
         $query="coddepto=$coddepto&descrdepto=$descrdepto";
         ?>
@@ -124,13 +124,13 @@ $clrotulo->label("descrdepto");
             <?=$Lcoddepto?>
           </td>
           <td>
-            <?
+            <?php
             db_input('coddepto',5,$Icoddepto,true,'text',3);
             db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
             ?>
           <td>
         </tr>
-      <?
+      <?php
       }else if(isset($id_usuario) && $id_usuario!='') {
         $query="id_usuario=$id_usuario&nome=$nome";
         ?>
@@ -139,18 +139,18 @@ $clrotulo->label("descrdepto");
             <?=$Lnome?>
           </td>
           <td>
-            <?
+            <?php
             db_input('id_usuario',5,$Iid_usuario,true,'text',3);
             db_input('nome',40,$Inome,true,'text',3,'');
             ?>
           <td>
         </tr>
-      <?
+      <?php
       }
       ?>
       <tr>
         <td>
-          <?
+          <?php
           db_input('db20_codperm',5,$Idb20_codperm,true,'hidden',3);
           if(empty($db20_anousu)){
             $db20_anosus=$anousu;
@@ -163,7 +163,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_orgao?></td>
         <td nowrap>
-          <?
+          <?php
           //  echo $clorcorgao->sql_query(null,null,"o40_orgao as db20_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit"));
           $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"distinct o40_orgao as db20_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")));
           $sStringTodos = "0";
@@ -176,7 +176,7 @@ $clrotulo->label("descrdepto");
             <input name='incluir_todos' type="submit" value="Incluir Todos">
             <input name='excluir_todos' type="submit" value="Excluir Todos">
 
-          <?
+          <?php
           }
           ?>
         </td>
@@ -184,7 +184,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_unidade?></td>
         <td>
-          <?
+          <?php
           if(isset($db20_orgao) ){
             if($db20_orgao!='' && $db20_orgao!="0"){
               $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade as db20_unidade,o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$db20_orgao " ));
@@ -206,7 +206,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_funcao?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= " and o58_orgao= $db20_orgao ";
@@ -222,7 +222,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_subfuncao?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= " and o58_orgao= $db20_orgao ";
@@ -244,7 +244,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_programa?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= "  and o58_orgao= $db20_orgao ";
@@ -270,7 +270,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_projativ?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= "  and o58_orgao= $db20_orgao ";
@@ -296,7 +296,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_codele?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= " and o58_orgao= $db20_orgao ";
@@ -325,7 +325,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_codigo?></td>
         <td>
-          <?
+          <?php
           $dbwhere = "";
           if(isset($db20_orgao) && $db20_orgao > 0 ){
             $dbwhere .= " and o58_orgao= $db20_orgao ";
@@ -360,7 +360,7 @@ $clrotulo->label("descrdepto");
       <tr>
         <td><?=$Ldb20_tipoperm ?></td>
         <td>
-          <?
+          <?php
           $matriz = array("M"=>"Manutenção","C"=>"Consulta");
           db_select("db20_tipoperm",$matriz,true,$db_opcao);
           ?>

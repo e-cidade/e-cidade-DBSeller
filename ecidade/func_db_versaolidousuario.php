@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_versaolidousuario->rotulo->label("db35_codver");
               <?=$Ldb35_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db35_sequencial",10,$Idb35_sequencial,true,"text",4,"","chave_db35_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_versaolidousuario->rotulo->label("db35_codver");
               <?=$Ldb35_codver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db35_codver",6,$Idb35_codver,true,"text",4,"","chave_db35_codver");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_versaolidousuario->rotulo->label("db35_codver");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versaolidousuario.php")==true){
@@ -122,12 +122,12 @@ $cldb_versaolidousuario->rotulo->label("db35_codver");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

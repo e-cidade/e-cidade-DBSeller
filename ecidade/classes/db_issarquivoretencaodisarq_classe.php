@@ -52,13 +52,13 @@ class cl_issarquivoretencaodisarq {
                  q145_disarq = int4 = Disarq
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencaodisarq() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencaodisarq");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_issarquivoretencaodisarq {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q145_sequencial = ($this->q145_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["q145_sequencial"]:$this->q145_sequencial);
        $this->q145_issarquivoretencao = ($this->q145_issarquivoretencao == ""?@$GLOBALS["HTTP_POST_VARS"]["q145_issarquivoretencao"]:$this->q145_issarquivoretencao);
@@ -77,7 +77,7 @@ class cl_issarquivoretencaodisarq {
      }
    }
    // funcao para Inclusão
-   function incluir ($q145_sequencial){
+   public function incluir ($q145_sequencial){
       $this->atualizacampos();
      if($this->q145_issarquivoretencao == null ){
        $this->erro_sql = " Campo Código Arquivo de Retenção não informado.";

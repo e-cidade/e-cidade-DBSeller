@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -137,6 +137,8 @@ if( (int)@$z01_i_familiamicroarea <> 0 ){
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/saude.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
@@ -153,7 +155,7 @@ if( (int)@$z01_i_familiamicroarea <> 0 ){
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-     <?
+     <?php
 		$result = db_query( "select descrdepto
 		                                 from db_depart
 		                                inner join unidades on unidades.sd02_i_codigo = db_depart.coddepto
@@ -180,7 +182,7 @@ if( (int)@$z01_i_familiamicroarea <> 0 ){
      <table>
      <tr>
        <td valign="top" align="center"><br>
-       <?
+       <?php
         $chavepri= array("sd32_i_codigo"=>@$sd32_i_codigo);
 
         $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -204,7 +206,7 @@ if( (int)@$z01_i_familiamicroarea <> 0 ){
      </table>
 </center>
 </fieldset>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -212,7 +214,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","sd32_i_medico",true,1,"sd32_i_medico",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) ){
   if($clcgs_und->erro_status=="0"){
     $clcgs_und->erro(true,false);
@@ -245,7 +247,7 @@ if( isset($incluir) || isset($alterar) || isset($excluir) || isset($cancelar)){
         <script>
           location.href='sau1_prontuariomedico001.php?chavepesquisaprontuario=<?=$sd32_i_numcgs?>&z01_v_nome=<?=$z01_v_nome?>&z01_i_familiamicroarea=<?=$z01_i_familiamicroarea?>'
         </script>
-    <?
+    <?php
 }
  echo "<script>
        if( document.form1.sd32_i_unidade.value == '' ){

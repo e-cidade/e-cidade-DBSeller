@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ if (!isset($arqinclude)) {
 }
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select munic, uf from db_config where prefeitura is true");
 $lTem1Quad = false;
 $lTem2Quad = false;
@@ -92,7 +92,7 @@ if (!isset($arqinclude)) {
 	$dt_ini_ant   = $anousu_ant."-01-01";
 	$dt_fim_ant   = $anousu_ant."-12-31";
 	$mes_ini      = "JANEIRO";
-	$dt           = split("-",$dt_fim);
+	$dt           =explode("-",$dt_fim);
 	$mes_fim      = db_mes($dt[1],1);
 	$head6        = $mes_ini." A ".$mes_fim." DE ".$anousu;
 

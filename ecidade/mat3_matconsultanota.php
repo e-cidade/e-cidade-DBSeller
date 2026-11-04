@@ -79,7 +79,7 @@ $aDadosNota = db_utils::getCollectionByRecord($rsBuscaMaterial);
 <body style="background-color: #CCCCCC;">
 
 <center>
-  <fieldset style="width 700px;">
+  <fieldset style="width:700px;">
     <legend><b>Notas Fiscais</b></legend>
     <div id='divGridNotas'>
     </div>

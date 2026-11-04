@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -59,13 +59,10 @@ if ( !isset($cm10_d_data_dia) && $db_opcao == 1 ) {
 }
 
 if( isset($cm31_i_sepultamento) ){
-
-  $oDaoSepultamentos = db_utils::getDao('sepultamentos');
-
   $iCodigoSepultamento = $cm31_i_sepultamento;
 
-  $sSqlSepultamentos = $oDaoSepultamentos->sql_query_dados_sepultamento($iCodigoSepultamento, 'cgm.z01_nome as sepultado, cgm3.z01_nome as declarante');
-  $rsSepultamentos   = $oDaoSepultamentos->sql_record($sSqlSepultamentos);
+  $sSqlSepultamentos = $clepultamentos->sql_query_dados_sepultamento($iCodigoSepultamento, 'cgm.z01_nome as sepultado, cgm3.z01_nome as declarante');
+  $rsSepultamentos   = $clepultamentos->sql_record($sSqlSepultamentos);
 
   if( $rsSepultamentos ){
 
@@ -73,6 +70,8 @@ if( isset($cm31_i_sepultamento) ){
     $cm01_c_declarante = db_utils::fieldsMemory($rsSepultamentos, 0)->declarante;
   }
 }
+
+$semParametros = $_POST == [] && $_GET == [];
 ?>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/numbers.js"></script>
@@ -85,37 +84,37 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_i_codigo?>
     </td>
     <td>
-          <?
+          <?php
           db_input('cm10_i_codigo',10,$Icm10_i_codigo,true,'text',3,"")
           ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm31_i_sepultamento?>">
-       <?
-       db_ancora(@$Lcm31_i_sepultamento,"js_pesquisacm10_i_sepultamento(true);",$db_opcao);
+       <?php
+       db_ancora(@$Lcm31_i_sepultamento,"js_pesquisacm10_i_sepultamento(true);", ($semParametros ? 2 : 3));
        ?>
     </td>
     <td>
-     <?
-     db_input('cm31_i_sepultamento',10,$Icm31_i_sepultamento,true,'text',$db_opcao," onchange='js_pesquisacm10_i_sepultamento(false);'")
+     <?php
+     db_input('cm31_i_sepultamento',10,$Icm31_i_sepultamento,true,'text',3," onchange='js_pesquisacm10_i_sepultamento(false);'")
      ?>
-     <?
+     <?php
      db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
      ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm01_i_declarante?>">
-       <?
+       <?php
        db_ancora(@$Lcm01_i_declarante,"js_pesquisacm01_i_declarante(true);",3);
        ?>
     </td>
     <td>
-     <?
+     <?php
      db_input('cm01_i_declarante',10,$Icm01_i_declarante,true,'text',3," onchange='js_pesquisacm01_i_declarante(false);' ")
      ?>
-     <?
+     <?php
      db_input('cm01_c_declarante',50,@$Icm01_c_declarante,true,'text',3,'')
      ?>
     </td>
@@ -125,7 +124,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_d_data?>
     </td>
     <td>
-			<?
+			<?php
 				db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano,true,'text',3,"")
 			?>
     </td>
@@ -139,7 +138,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_i_taxaserv?>
     </td>
     <td>
-       <?
+       <?php
          $sWhere     = " (cm11_d_datalimite >= cast('{$dtAtual}' as date) or cm11_d_datalimite is null) ";
          $rsTaxaServ = $cltaxaserv->sql_record($cltaxaserv->sql_query(null,"*",null,$sWhere));
 
@@ -161,7 +160,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_f_valortaxa?>
     </td>
     <td>
-     <?
+     <?php
        db_input('cm10_f_valortaxa',10,$Icm10_f_valortaxa,true,'text',3,"")
      ?>
     </td>
@@ -171,7 +170,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_f_valor?>
     </td>
     <td>
-     <?
+     <?php
        db_input('cm10_f_valor',10,$Icm10_f_valor,true,'text',$db_opcao," onkeypress=\"return mascaraValor(event, this);\" onchange='js_habilitabotaocalcular();'");
      ?>
       <input name="calcular" type="button" id="calcular" value="Calcular" onclick="js_calcularValores();">
@@ -182,7 +181,7 @@ if( isset($cm31_i_sepultamento) ){
       <?=@$Lcm10_d_dtlanc?>
     </td>
     <td>
-      <?
+      <?php
         db_inputdata('cm10_d_dtlanc',@$cm10_d_dtlanc_dia,@$cm10_d_dtlanc_mes,@$cm10_d_dtlanc_ano,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -192,7 +191,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_d_privenc?>
     </td>
     <td>
-			<?
+			<?php
 			  db_inputdata('cm10_d_privenc',@$cm10_d_privenc_dia,@$cm10_d_privenc_mes,@$cm10_d_privenc_ano,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -202,7 +201,7 @@ if( isset($cm31_i_sepultamento) ){
        <?=@$Lcm10_t_obs?>
     </td>
     <td>
-			<?
+			<?php
 			  db_textarea('cm10_t_obs',3,50,$Icm10_t_obs,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -450,9 +449,9 @@ function js_mostradeclarante1(chave1,chave2) {
 function js_preenchepesquisa(chave) {
 
   db_iframe_itenserv.hide();
-  <?
+  <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

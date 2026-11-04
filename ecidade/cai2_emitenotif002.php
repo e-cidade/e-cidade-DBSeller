@@ -27,15 +27,16 @@
 
 ini_set("memory_limit", '-1');
 ini_set("display_errors", 'on');
+
 require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_libtributario.php"));
 require_once(modification("libs/db_libdocumento.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-//require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_utils.php"));
-//require_once(modification("fpdf151/scpdf.php"));
 
 use \ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
@@ -49,11 +50,10 @@ $notifica = '';
 
 global $sCepCxPostal, $sMunicipio, $lValidaOrdemEnderecoEntrega;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"]);
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-
 $aRegrasPorTipo = array();
 $lim1 = 0;
 $z01_bairro = null;
@@ -80,7 +80,7 @@ $sSqlCfiptu = " select j18_ordendent ";
 $sSqlCfiptu .= "   from cfiptu        ";
 $sSqlCfiptu .= "  where j18_anousu  = " . db_getsession("DB_anousu");
 $rsCfiptu = db_query($sSqlCfiptu);
-if (pg_numrows($rsCfiptu) == 0) {
+if (pg_num_rows($rsCfiptu) == 0) {
     $lValidaOrdemEnderecoEntrega = true;
 }
 
@@ -108,6 +108,7 @@ global $db12_extenso;
 global $logo;
 global $tx_banc;
 global $numbanco;
+global $db21_cnpj_efr;
 
 $rsDadosInstituicao = db_query($sSqlDadosInstituicao);
 db_fieldsmemory($rsDadosInstituicao, 0);
@@ -151,7 +152,7 @@ function recibodesconto(
     $sqlvenc = " select k00_dtvenc from arrecad where k00_numpre = $numpre and k00_numpar = $numpar";
     $resultvenc = db_query($sqlvenc) or die($sqlvenc);
 
-    if (pg_numrows($resultvenc) == 0) {
+    if (pg_num_rows($resultvenc) == 0) {
         return 0;
     }
 
@@ -169,7 +170,7 @@ function recibodesconto(
     $sSqlTipoParc .= "    and '$k00_dtvenc' <= k41_vencfim                               ";
 
     $rsTipoParc = db_query($sSqlTipoParc) or die($sSqlTipoParc);
-    $iLinhasTipoParc = pg_numrows($rsTipoParc);
+    $iLinhasTipoParc = pg_num_rows($rsTipoParc);
 
     if ($iLinhasTipoParc > 0) {
 
@@ -217,7 +218,7 @@ function recibodesconto(
 
         $rsTipoParc = db_query($sqltipoparc) or die($sqltipoparc);
 
-        if (pg_numrows($rsTipoParc) == 1) {
+        if (pg_num_rows($rsTipoParc) == 1) {
             db_fieldsmemory($rsTipoParc, 0);
         } else {
             $k40_todasmarc = false;
@@ -229,7 +230,7 @@ function recibodesconto(
 
     $passar = false;
 
-    if (pg_numrows($resulttipoparcdeb) == 0) {
+    if (pg_num_rows($resulttipoparcdeb) == 0) {
         $passar = true;
     } else {
 
@@ -243,13 +244,13 @@ function recibodesconto(
                           and '$k00_dtvenc' <= k41_vencfim ";
 
         $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
-        if (pg_numrows($resulttipoparcdeb) > 0) {
+        if (pg_num_rows($resulttipoparcdeb) > 0) {
             $passar = true;
         }
     }
 
     $desconto = $k40_codigo;
-    if (pg_numrows($rsTipoParc) == 0 || ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) || $passar == false) {
+    if (pg_num_rows($rsTipoParc) == 0 || ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) || $passar == false) {
         $desconto = 0;
     }
 
@@ -274,7 +275,7 @@ $sqlparag .= "order by db04_ordem                                             ";
 $resparag = db_query($sqlparag);
 
 $head1 = 'SECRETARIA DE FINANÇAS';
-if (pg_numrows($resparag) != 0) {
+if (pg_num_rows($resparag) != 0) {
 
     db_fieldsmemory($resparag, 0);
     $head1 = $db02_texto;
@@ -318,7 +319,7 @@ if (!isset($notifparc)) {
     db_fieldsmemory($result, 0);
 
     $sqlMaxDataDebitos = 'select max(k22_data) as max_datadeb from debitos';
-    $rsMaxDataDeb = db_query(max_datadeb);
+    $rsMaxDataDeb = db_query($sqlMaxDataDebitos);
     db_fieldsmemory($rsMaxDataDeb,0);
 
     if (empty($k60_datadeb) ) {
@@ -342,13 +343,16 @@ if (!isset($notifparc)) {
 
     global $z01_ender, $z01_numero, $z01_compl, $z01_munic, $z01_uf, $z01_cep, $z01_cxpostal, $z01_destinatario;
 
-    for ($iContador = 0; $iContador < pg_numrows($resultlistatipo); $iContador++) {
+    for ($iContador = 0; $iContador < pg_num_rows($resultlistatipo); $iContador++) {
 
         db_fieldsmemory($resultlistatipo, $iContador);
         $tipos .= $virgula . $k62_tipodeb;
         $descrtipo .= $virgula . trim($k03_descr);
         $virgula = ' , ';
     }
+
+    $tipos = trim($tipos, ' ');
+    $tipos = trim($tipos, ',');
 
     $sqllistadoc = "select * from listadoc where k64_codigo = {$lista}";
     $resultlistadoc = db_query($sqllistadoc);
@@ -360,7 +364,7 @@ if (!isset($notifparc)) {
         exit;
     }
 
-    if (pg_numrows($resultlistadoc) == 0) {
+    if (pg_num_rows($resultlistadoc) == 0) {
 
         $sMsg = _M('tributario.notificacoes.cai2_emitenotif002.documento_nao_encontrado');
         db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
@@ -532,7 +536,7 @@ if (!isset($notifparc)) {
 
     $result = db_query($sSql) or die($sSql);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
 
         $oParms = new stdClass();
         $oParms->sLista = $lista;
@@ -549,14 +553,14 @@ if (!isset($notifparc)) {
         }
 
         $lim2 = $fim;
-        if ($fim > pg_numrows($result)) {
-            $lim2 = pg_numrows($result);
+        if ($fim > pg_num_rows($result)) {
+            $lim2 = pg_num_rows($result);
         }
 
     } else {
 
         $lim1 = 0;
-        $lim2 = pg_numrows($result);
+        $lim2 = pg_num_rows($result);
     }
 
 } else {
@@ -631,11 +635,9 @@ if (!isset($notifparc)) {
     }
 }
 
-//$pdf = new SCPDF("P", 'mm', "A4");
-
 $pdf = new Pdf;
 
-$S = $pdf->lMargin;
+$S = $pdf->getLeftMargin();
 
 $iQtdNotificoesGeradas = 0;
 $aListaNotifica = array();
@@ -735,13 +737,13 @@ if ($tiporel == 1 || $tiporel == 11) {
 
         if ($k60_tipo == 'M') {
 
-            if (EnderecoNotif($tratamento, @$j01_matric, $z01_nome,
-                $z01_numcgm) == false && $imprimirmesmoembranco == "n") {
+            if (EnderecoNotif($tratamento, @$j01_matric, $z01_nome, $z01_numcgm) == false &&
+                $imprimirmesmoembranco == "n") {
                 continue;
             }
         }
 
-        if (pg_numrows($resultjapagou) == 0) {
+        if (pg_num_rows($resultjapagou) == 0) {
             continue;
         }
 
@@ -755,7 +757,7 @@ if ($tiporel == 1 || $tiporel == 11) {
             $somenteiptu = false;
         }
 
-        $pdf->AddPage();
+        $pdf->addPage();
 
         $iQtdNotificoesGeradas++;
 
@@ -812,7 +814,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                    group by k22_tipo,k00_descr";
 
             $result2 = db_query($sql2);
-            $num2 = pg_numrows($result2);
+            $num2 = pg_num_rows($result2);
         }
 
         $sSqlproced = " select distinct proced.v03_codigo,   proced.v03_dcomp        ";
@@ -827,7 +829,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
         global $procedencias;
         $procedencias = '';
-        for ($i = 0; $i < pg_numrows($resultaproced); $i++) {
+        for ($i = 0; $i < pg_num_rows($resultaproced); $i++) {
 
             db_fieldsmemory($resultaproced, $i);
             $procedencias .= $virgula . $v03_dcomp;
@@ -880,7 +882,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                      where j01_matric = $matric";
 
             $resultpropri = db_query($sqlpropri);
-            if (pg_numrows($resultpropri) > 0) {
+            if (pg_num_rows($resultpropri) > 0) {
 
                 db_fieldsmemory($resultpropri, 0);
                 $nomepri = ucwords(strtolower($nomepri));
@@ -944,7 +946,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                       where q02_inscr = $q02_inscr";
 
             $resultempresa = db_query($sqlempresa);
-            if (pg_numrows($resultempresa) > 0) {
+            if (pg_num_rows($resultempresa) > 0) {
                 db_fieldsmemory($resultempresa, 0);
             }
 
@@ -1056,23 +1058,28 @@ if ($tiporel == 1 || $tiporel == 11) {
         $lDesconto = true;
         $lTotalComDesconto = false;
         $lSeedResumido = false;
+        $quebraPaginaRecibos = false;
 
         foreach ($aDocumentoParagrafo as $iChave => $oDocumentoParagrafo) {
 
             if (strtoupper($oDocumentoParagrafo->db02_descr) == 'NAOEXIBIRDESCONTO') {
-
                 $lDesconto = false;
                 continue;
             }
 
             if (strtoupper($oDocumentoParagrafo->db02_descr) == 'TOTALPORANOCOMDESCONTO') {
-
                 $lTotalComDesconto = true;
                 continue;
             }
 
             if (strtoupper($oDocumentoParagrafo->db02_descr) == 'SEEDRESUMIDO') {
                 $lSeedResumido = true;
+                continue;
+            }
+
+            if (strtoupper($oDocumentoParagrafo->db02_descr) == 'TOTALPORANOCOMBOLETO') {
+                $quebraPaginaRecibos = true;
+                continue;
             }
         }
 
@@ -1090,13 +1097,13 @@ if ($tiporel == 1 || $tiporel == 11) {
         $pdf->SetFont('Arial', '', $fonte);
 
         if ($cgc != "92324706000127") {
-            $S = $pdf->lMargin;
+            $S = $pdf->getLeftMargin();
         }
 
         /**
          * For dos paragrafos da notificação
          */
-        for ($doc = 0; $doc < pg_numrows($resultdocparagr); $doc++) {
+        for ($doc = 0; $doc < pg_num_rows($resultdocparagr); $doc++) {
 
             db_fieldsmemory($resultdocparagr, $doc, "", false, false);
             $texto = db_geratexto($db02_texto);
@@ -1152,7 +1159,7 @@ if ($tiporel == 1 || $tiporel == 11) {
             $resultanos = db_query($sqlanos);
             $rsTotaisPorAnoCorrigido = $resultanos;
 
-            if ($resultanos == false) {
+            if (!$resultanos) {
 
                 $oParms = new stdClass();
                 $oParms->sSqlAnos = $sqlanos;
@@ -1170,7 +1177,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
             if (pg_num_rows($resultanos) > 0) {
 
-                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                     db_fieldsmemory($resultanos, $totano);
                     $totvlrhis1 += $k22_vlrhis;
@@ -1259,7 +1266,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $tottotal = 0;
                     $totdesconto = 0;
 
-                    for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                    for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                         db_fieldsmemory($resultanos, $totano);
                         $pdf->cell(2, 05, "", 0, 0, "C", 0);
@@ -1321,10 +1328,10 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                 $listaoutrosdebitos = "";
 
-                for ($outrosdeb = 0; $outrosdeb < pg_numrows($result_outros); $outrosdeb++) {
+                for ($outrosdeb = 0; $outrosdeb < pg_num_rows($result_outros); $outrosdeb++) {
 
                     db_fieldsmemory($result_outros, $outrosdeb);
-                    $listaoutrosdebitos .= $k00_descr . ($outrosdeb < pg_numrows($result_outros) - 1 ? ", " : "");
+                    $listaoutrosdebitos .= $k00_descr . ($outrosdeb < pg_num_rows($result_outros) - 1 ? ", " : "");
                 }
 
                 if (strlen(trim($listaoutrosdebitos)) > 0) {
@@ -1487,7 +1494,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     }
 
                 } else {
-                    if (strtoupper($db02_descr) == "TOTALPORANOCORRIGIDO" && $somenteparc == false) {
+                    if (strtoupper($db02_descr) == "TOTALPORANOCORRIGIDO" && !$somenteparc) {
 
                         $totvlrhis1 = 0;
                         $totvlrcor1 = 0;
@@ -1520,7 +1527,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(30, 05, "VLR TOTAL", 1, 1, "C", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                            for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                 db_fieldsmemory($resultanos, $totano);
 
@@ -1671,7 +1678,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             foreach ($aRegistros as $oReg) {
 
                                 if ($pdf->GetY() > 285) {
-                                    $pdf->addpage();
+                                    $pdf->addPage();
                                 }
 
                                 $ori = trim($oReg->v07_parcel ? "P - {$oReg->v07_parcel}" :
@@ -1738,7 +1745,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                         } elseif (strtoupper($db02_descr) == "NOTIFICACAO ASSINA") {
 
-                            if (isset($passou_por_aqui) && $passou_por_aqui == true) {
+                            if (isset($passou_por_aqui) && $passou_por_aqui) {
                                 $ass_notifica = $texto;
                             } else {
                                 $pdf->MultiCell(0, 4 + $db02_espaca, $texto, "0", "$db02_alinhamento", 0,
@@ -1753,7 +1760,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $tottotal = 0;
 
-                            if ($somenteparc == false && $somenteiptu == false) {
+                            if (!$somenteparc && !$somenteiptu) {
 
                                 if (isset($notifparc)) {
 
@@ -1799,7 +1806,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $resultanos = db_query($sqlanos) or die($sqlanos);
 
-                                if ($resultanos == false) {
+                                if (!$resultanos) {
 
                                     $oParms = new stdClass();
                                     $oParms->sSqlAnos = $sqlanos;
@@ -1816,7 +1823,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $descranos = "";
                                 $descricao = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
                                     if ($descricao != $k00_descr) {
@@ -1824,7 +1831,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                         $descricao = $k00_descr;
                                     }
 
-                                    $descranos .= $k22_ano . ($totano != pg_numrows($resultanos) - 1 ? "," : ".");
+                                    $descranos .= $k22_ano . ($totano != pg_num_rows($resultanos) - 1 ? "," : ".");
 
                                     $totvlrcor += $k22_vlrcor;
 
@@ -1834,7 +1841,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $tottotal += ($k22_total - (($k22_juros / 100) * 90) - (($k22_multa / 100) * 90));
                                 }
 
-                            } elseif ($somenteparc == false && $somenteiptu == true) {
+                            } elseif (!$somenteparc && $somenteiptu) {
 
                                 if (isset($notifparc)) {
 
@@ -1875,7 +1882,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 }
 
                                 $resultanos = db_query($sqlanos) or die($sqlanos);
-                                if ($resultanos == false) {
+                                if (!$resultanos) {
 
                                     $oParms = new stdClass();
                                     $oParms->sSqlAnos = $sqlanos;
@@ -1890,7 +1897,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $relanos = 0;
                                 $hifen = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
 
@@ -1957,7 +1964,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 }
 
                                 $resultanos = db_query($sqlanos) or die($sqlanos);
-                                if ($resultanos == false) {
+                                if (!$resultanos) {
 
                                     $oParms = new stdClass();
                                     $oParms->sSqlAnos = $sqlanos;
@@ -1972,7 +1979,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $parcel = 0;
                                 $hifen = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
 
@@ -2018,7 +2025,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $resulttipodebito = db_query($sqltipodebito) or die($sqltipodebito);
 
-                            if ($resulttipodebito == false) {
+                            if (!$resulttipodebito) {
 
                                 $oParms = new stdClass();
                                 $oParms->sSqlTipoDebito = $sqltipodebito;
@@ -2108,7 +2115,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $sqlloteador .= "   where j120_cgm = {$z01_numcgm}                                           ";
                                     $resultloteador = db_query($sqlloteador) or die($sqlloteador);
 
-                                    if (pg_numrows($resultloteador) > 0) {
+                                    if (pg_num_rows($resultloteador) > 0) {
 
                                         $lProcessaLoteador = true;
                                         $loteador = true;
@@ -2133,7 +2140,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                               $sWhereLoteador ";
 
                                 $resulttipoparc = db_query($sqltipoparc);
-                                if (pg_numrows($resulttipoparc) > 0) {
+                                if (pg_num_rows($resulttipoparc) > 0) {
                                     db_fieldsmemory($resulttipoparc, 0);
                                 } else {
                                     $k40_todasmarc = false;
@@ -2143,7 +2150,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $resulttipoparcdeb = db_query($sqltipoparcdeb);
                                 $passar = false;
 
-                                if (pg_numrows($resulttipoparcdeb) == 0) {
+                                if (pg_num_rows($resulttipoparcdeb) == 0) {
                                     $passar = true;
                                 } else {
 
@@ -2153,7 +2160,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                   and k41_arretipo = $tipo_debito ";
                                     $resulttipoparcdeb = db_query($sqltipoparcdeb);
 
-                                    if (pg_numrows($resulttipoparcdeb) > 0) {
+                                    if (pg_num_rows($resulttipoparcdeb) > 0) {
                                         $passar = true;
                                     }
                                 }
@@ -2198,19 +2205,12 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $resultcompara1 = db_query($sqlanos) or die($sqlanos);
 
                                 if (empty($tipos)) {
-                                    //dump('tipos 1');
                                     $sqlTiposNotifica = "SELECT DISTINCT k00_tipo AS tipo
                                                           FROM notidebitosreg
                                                     INNER JOIN arrecad ON k43_numpre = k00_numpre
                                                            AND k43_numpar = k00_numpar
                                                            AND k43_receit = k00_receit
-                                                         WHERE k43_notifica = {$notifica}
-                                                         UNION
-                                                        SELECT DISTINCT k22_tipo AS tipo
-                                                          FROM notidebitos
-                                                    INNER JOIN debitos ON k53_numpre = k22_numpre
-                                                           AND k53_numpar = k22_numpar
-                                                         WHERE k53_notifica = {$notifica}";
+                                                         WHERE k43_notifica = {$notifica}";
 
                                     $rTiposNotifica = db_query($sqlTiposNotifica) or die($sqlTiposNotifica);
                                     $tipos = "";
@@ -2220,14 +2220,13 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $virgula = "";
 
                                     foreach ($aRegistros as $oReg) {
-                                        $tipos .= $virgula . $oReg->tipo .$vergula;
+                                        $tipos .= $virgula . $oReg->tipo .$virgula;
                                         $virgula = ", ";
                                     }
 
-
+                                    $tipos = trim($tipos, ' ');
+                                    $tipos = trim($tipos, ',');
                                 }
-
-
 
                                 if (empty($k60_datadeb)) {
                                     $k60_datadeb = date("Y-m-d", db_getsession('DB_datausu'));
@@ -2290,15 +2289,15 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $resultcompara2 = db_query($sqlanostipos) or die($sqlanostipos);
 
-                                if (pg_numrows($resulttipoparc) == 0 ||
+                                if (pg_num_rows($resulttipoparc) == 0 ||
                                   $passar == false ||
-                                  ($k40_todasmarc == 't' ? pg_numrows($resultcompara1) <> pg_numrows($resultcompara2) : false)) {
+                                  ($k40_todasmarc == 't' ? pg_num_rows($resultcompara1) <> pg_num_rows($resultcompara2) : false)) {
                                     $desconto = 0;
                                 } else {
 
                                     $desconto = $k40_codigo;
                                     $rsDesconto = db_query(" select coalesce(descmul,1), coalesce(descjur,1) from tipoparc where cadtipoparc = $desconto and maxparc = 1");
-                                    if (pg_numrows($rsDesconto) > 0) {
+                                    if (pg_num_rows($rsDesconto) > 0) {
                                         db_fieldsmemory($rsDesconto, 0);
                                     }
                                 }
@@ -2325,7 +2324,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $sqlloteador .= "   where j120_cgm = {$z01_numcgm}                                           ";
 
                                 $resultloteador = db_query($sqlloteador) or die($sqlloteador);
-                                if (pg_numrows($resultloteador) > 0) {
+                                if (pg_num_rows($resultloteador) > 0) {
 
                                     $lProcessaLoteador = true;
                                     $loteador = true;
@@ -2347,19 +2346,19 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 exit;
                             }
 
-                            for ($regrecibo = 0; $regrecibo < pg_numrows($resultrecibo); $regrecibo++) {
+                            for ($regrecibo = 0; $regrecibo < pg_num_rows($resultrecibo); $regrecibo++) {
 
                                 db_fieldsmemory($resultrecibo, $regrecibo);
 
                                 if (isset($passou_por_aqui) && $passou_por_aqui == true) {
 
                                     $desconto = recibodesconto($k53_numpre, $k53_numpar, $k22_tipo, $k22_tipo,
-                                      $sWhereLoteador, pg_numrows($resultrecibo), pg_numrows($resultrecibo), $dt_venc,
+                                      $sWhereLoteador, pg_num_rows($resultrecibo), pg_num_rows($resultrecibo), $dt_venc,
                                       $k60_tipo);
                                     if ($desconto != 0) {
 
                                         $result_desc = db_query("select * from tipoparc where cadtipoparc = $desconto and maxparc = 1");
-                                        $numrows_desc = pg_numrows($result_desc);
+                                        $numrows_desc = pg_num_rows($result_desc);
 
                                         if ($numrows_desc > 0) {
 
@@ -2385,7 +2384,9 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 try {
 
                                     $oRecibo->addNumpre($k53_numpre, $k53_numpar);
-                                    $oRecibo->setDescontoReciboWeb($k53_numpre, $k53_numpar, $desconto);
+                                    if($procdescontorecibo == 's'){
+                                        $oRecibo->setDescontoReciboWeb($k53_numpre, $k53_numpar, $desconto);
+                                    }
                                 } catch (Exception $eException) {
 
                                     db_redireciona("db_erros.php?fechar=true&db_erro={$eException->getMessage()}");
@@ -2437,6 +2438,10 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 exit;
                             }
 
+                            $dtemissao = date("Y-m-d", db_getsession("DB_datausu"));
+                            $procdesct = $procdescontorecibo == "s" ? "true" : "false";
+                            $sqlNotdebrecibo = "insert into caixa.notdebitosboletos values ($k03_numpre,$notifica,'$db_datausu','$dtemissao',$procdesct)";
+                            db_query($sqlNotdebrecibo) or die($sqlNotdebrecibo);
                             db_fim_transacao();
 
                             $sql = "select r.k00_numcgm,
@@ -2470,7 +2475,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                              */
                             $datavencimento = pg_result($DadosPagamento, 0, "k00_dtoper");
                             $total_recibo = 0;
-                            for ($i = 0; $i < pg_numrows($DadosPagamento); $i++) {
+                            for ($i = 0; $i < pg_num_rows($DadosPagamento); $i++) {
                                 $total_recibo += pg_result($DadosPagamento, $i, "valor");
                             }
 
@@ -2600,11 +2605,11 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $resulthist = db_query($sqlhist);
 
-                                if (pg_numrows($resulthist) != false) {
+                                if (pg_num_rows($resulthist) != false) {
 
                                     $histparcela .= " - Parcela: ";
                                     $virgula = "";
-                                    for ($xy = 0; $xy < pg_numrows($resulthist); $xy++) {
+                                    for ($xy = 0; $xy < pg_num_rows($resulthist); $xy++) {
 
                                         $histparcela .= $virgula . "" . pg_result($resulthist, $xy, 1);
                                         $virgula = ",";
@@ -2621,6 +2626,512 @@ if ($tiporel == 1 || $tiporel == 11) {
                             } else {
                                 $historico = $descranos . $histparcela;
                             }
+
+                            $sSqlReEmiteRecibo = "select k00_numnov from recibopagahist where k00_numnov = $k03_numpre";
+                            $rsReEmiteRecibo = db_query($sSqlReEmiteRecibo);
+                            
+                            if (pg_num_rows($rsReEmiteRecibo) > 0) {
+                                $sqlObs = "select k00_historico
+                                           from recibopagahist
+                                          where k00_numnov = $k03_numpre";
+                                $rsObs = db_query($sqlObs);
+                            
+                                if (pg_num_rows($rsObs) > 0) {
+                                    if (pg_fetch_result($rsObs, 0, 0) && strlen(pg_fetch_result($rsObs, 0, 0)) > strlen($historico)) {
+                                        $historico = pg_fetch_result($rsObs, 0, 0);
+                                    }
+                                }
+                            } else {
+                                if (isset($_SESSION["DB_obsrecibo"])) {
+                                    $historico = db_getsession("DB_obsrecibo");
+                                } else {
+                                    $historico = $tipoidentificacao . " " . $numero . " " . (isset($pql_localizacao) && !empty($pql_localizacao) ? "PQL: $pql_localizacao" : "") . " \n" . $historico . (isset($k00_msgrecibo) && !empty($k00_msgrecibo) ? "\n" . $k00_msgrecibo : '');
+                                }
+                                $sqlObs = "insert into recibopagahist values ($k03_numpre,'" . addslashes($historico) . "')";
+                                db_query($sqlObs);
+                            }
+
+                            //////
+                            if (isset($tipo_debito)) {
+                                $resultTipoDebitotipo = db_query("select k03_tipo, k00_tipoagrup from arretipo where k00_tipo = $tipo_debito");
+                                db_fieldsmemory($resultTipoDebitotipo, 0);
+                            
+                                // Se existir algum tipo de Debito com o Tipo de Agrupamento = 2 (agrupa)
+                                // entao nao limita o tamanho do Historico em 210 Caracteres
+                                if ($k00_tipoagrup == 2) {
+                                    $lHistLimitado = false;
+                                }
+                            
+                                $sHistoricoIniciaisParcelamento = "";
+                                if ($k03_tipo == 5 && $k00_tipoagrup <> 2) {
+                                    $histparcela = "Divida: ";
+                                    $sqlhist = "select distinct
+                                                   v01_exerc,
+                                                   v01_numpar
+                                              from db_reciboweb
+                                                   left outer join divida on v01_numpre = k99_numpre
+                                                                         and v01_numpar = k99_numpar
+                                             where k99_numpre_n = $k03_numpre
+                                             group by v01_exerc,v01_numpar
+                                             order by v01_exerc,v01_numpar";
+                                    $resultTipoDebito = db_query($sqlhist);
+                                    if (pg_num_rows($resultTipoDebito) != false) {
+                                        $exercv = "0000";
+                                        for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                            if ($exercv != pg_fetch_result($resultTipoDebito, $xy, 0)) {
+                                                $exercv = pg_fetch_result($resultTipoDebito, $xy, 0);
+                                                $histparcela .= pg_fetch_result($resultTipoDebito, $xy, 0) . ":";
+                                            }
+                                            $histparcela .= pg_fetch_result($resultTipoDebito, $xy, 1) . "-";
+                                        }
+                                    }
+                                    $sqlobs = "select distinct
+                                                  v01_obs
+                                             from db_reciboweb
+                                            inner join divida on v01_numpre = k99_numpre
+                                                             and v01_numpar = k99_numpar
+                                            where k99_numpre_n = $k03_numpre";
+                                    $resultTipoDebito = db_query($sqlobs);
+                            
+                                    if (pg_num_rows($resultTipoDebito) > 0 && $imprimeobservacoes == 'true') {
+                                        $histparcela .= "\nOBS: ";
+                                        for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                            if (ltrim(rtrim(pg_fetch_result($resultTipoDebito, $xy, 0))) != "") {
+                                                $histparcela .= ltrim(rtrim(pg_fetch_result($resultTipoDebito, $xy, 0)));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if ($k03_tipo == 2 && $k00_tipoagrup <> 2) {
+                                        $histparcela = "Exercicio: ";
+                                        $sqlhist = "select distinct
+                                                   q01_anousu,
+                                                   k99_numpar
+                                              from db_reciboweb
+                                                   inner join isscalc on q01_numpre = k99_numpre
+                                             where k99_numpre_n = $k03_numpre
+                                             group by q01_anousu,k99_numpar
+                                             order by q01_anousu,k99_numpar";
+                                        $resultTipoDebito = db_query($sqlhist);
+                                        if (pg_num_rows($resultTipoDebito) != false) {
+                                            $exercv = "0000";
+                                            for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                if ($exercv != pg_fetch_result($resultTipoDebito, $xy, 0)) {
+                                                    $exercv = pg_fetch_result($resultTipoDebito, $xy, 0);
+                                                    $histparcela .= "  " . pg_fetch_result($resultTipoDebito, $xy, 0) . ": Parc:";
+                                                }
+                                                $histparcela .= "-" . pg_fetch_result($resultTipoDebito, $xy, 1);
+                                            }
+                                        }
+                                    } else {
+                                        if ($k03_tipo == 3 && $k00_tipoagrup <> 2) {
+                                            $histparcela = "Exercicio: ";
+                                            $sqlhist = "select distinct
+                                                   q05_ano,
+                                                   q05_mes
+                                              from db_reciboweb
+                                                   left outer join issvar on q05_numpre = k99_numpre
+                                                                         and q05_numpar = k99_numpar
+                                             where k99_numpre_n = $k03_numpre
+                                             group by q05_ano,q05_mes
+                                             order by q05_ano,q05_mes";
+                                            $resultTipoDebito = db_query($sqlhist);
+                                            if (pg_num_rows($resultTipoDebito) != false) {
+                                                $exercv = "0000";
+                            
+                                                for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                    if ($exercv != pg_fetch_result($resultTipoDebito, $xy, 0)) {
+                                                        $exercv = pg_fetch_result($resultTipoDebito, $xy, 0);
+                                                        $histparcela .= "  " . pg_fetch_result($resultTipoDebito, $xy, 0) . ": Mês:";
+                                                    }
+                                                    $histparcela .= "-" . pg_fetch_result($resultTipoDebito, $xy, 1);
+                            
+                                                    if (pg_fetch_result($resultTipoDebito, $xy, 1) != "") {
+                                                        $sqlhistor = "select distinct
+                                                           q05_histor
+                                                      from db_reciboweb
+                                                           inner join issvar on q05_numpre = k99_numpre
+                                                                            and q05_numpar = k99_numpar
+                                                     where k99_numpre_n = $k03_numpre and q05_numpar = " . pg_fetch_result($resultTipoDebito, $xy, 1);
+                                                        $resultTipoDebitohistor = db_query($sqlhistor);
+                                                        if (pg_num_rows($resultTipoDebitohistor) > 0) {
+                                                            db_fieldsmemory($resultTipoDebitohistor, 0);
+                                                            if ($q05_histor <> "Arrecadacao Normal") {
+                                                                $histparcela .= " - " . $q05_histor;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if ($k03_tipo == 6 && $k00_tipoagrup <> 2) {
+                                                $histparcela = '';
+                                                $parcelamento = '';
+                                                $sqlhist = "select v07_parcel,
+                                                   k99_numpar
+                                              from db_reciboweb
+                                                   left outer join termo on v07_numpre = k99_numpre
+                                             where k99_numpre_n = $k03_numpre
+                                             order by v07_parcel,k99_numpar";
+                                                $resultTipoDebito = db_query($sqlhist);
+                            
+                                                if (pg_num_rows($resultTipoDebito) != false) {
+                                                    for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                        if (pg_fetch_result($resultTipoDebito, $xy, 0) != $parcelamento) {
+                                                            $histparcela .= "\nParcelamento" . ($k03_tipo == 13 ? " do foro" : "") . ': ' . pg_fetch_result(
+                                                                $resultTipoDebito,
+                                                                $xy,
+                                                                0
+                                                            ) . " - ";
+                                                        }
+                            
+                                                        $histparcela .= pg_fetch_result($resultTipoDebito, $xy, 1) . ", ";
+                                                        $parcelamento = pg_fetch_result($resultTipoDebito, $xy, 0);
+                                                    }
+                                                }
+                                            } else {
+                                                if ($k03_tipo == 13 && $k00_tipoagrup <> 2) {
+                                                    $histparcela = "";
+                                                    $parcelamento = "";
+                                                    $iMinParc = "";
+                                                    $iMaxParc = "";
+                                                    $sProcessoForo = "";
+                                                    $sHistoricoIniciaisParcelamento = "";
+                                                    $aHistoricoIniciaisParcelamento = array();
+                            
+                                                    $sSqlHist = "select v07_parcel   as parcel,
+                                                    v07_numpre   as numpre,
+                                                    v07_totpar   as totpar,
+                                                    k99_numpre_n as numnov,
+                                                    k99_numpar   as numpar
+                                               from db_reciboweb
+                                                    left join termo on termo.v07_numpre = db_reciboweb.k99_numpre
+                                              where k99_numpre_n = $k03_numpre
+                                              order by v07_parcel,k99_numpar";
+                                                    $resultTipoDebito = db_query($sSqlHist);
+                            
+                                                    if (pg_num_rows($resultTipoDebito) != false) {
+                                                        for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                            $oHistParcelaTermo = db_utils::fieldsMemory($resultTipoDebito, $xy);
+                            
+                                                            if ($iMinParc > $oHistParcelaTermo->numpar || $iMinParc == "") {
+                                                                $iMinParc = $oHistParcelaTermo->numpar;
+                                                            }
+                            
+                                                            if ($oHistParcelaTermo->parcel != $parcelamento) {
+                                                                $histparcela .= " Parcelamento do foro : {$oHistParcelaTermo->parcel}\n Parcelas:";
+                                                            }
+                                                            $histparcela .= "{$oHistParcelaTermo->numpar}/$oHistParcelaTermo->totpar, ";
+                                                            $parcelamento = $oHistParcelaTermo->parcel;
+                            
+                                                            $sSqlIniciaisParcelamento = "select termoini.inicial as inicial,
+                                                                    processoforo.v70_sequencial,
+                                                                    processoforo.v70_codforo,
+                                                                            array_accum(distinct v01_exerc) as exerc,
+                                                                            (select case when v76_tipolancamento = 3
+                                                                                      then '(AJG)' else ''
+                                                                                    end
+                                                                               from processoforopartilha
+                                                                              where v76_processoforo = v70_sequencial order by v76_sequencial desc limit 1) as isento
+                                                               from fc_origemparcelamento({$oHistParcelaTermo->numpre}) as origemparcelamento
+                                                              inner join termo               on termo.v07_parcel                = riparcel
+                                                              inner join termoini            on termoini.parcel                 = riparcel
+                                                              inner join inicialcert         on inicial                         = v51_inicial
+                                                              inner join certdiv             on v14_certid                      = v51_certidao
+                                                              inner join divida              on divida.v01_coddiv               = v14_coddiv
+                                                                                            and divida.v01_instit               = " . db_getsession("DB_instit") . "
+                                                              inner join proced              on proced.v03_codigo               = divida.v01_proced
+                                                               left join processoforoinicial on processoforoinicial.v71_inicial = termoini.inicial
+                                                                                                    and processoforoinicial.v71_anulado = false
+                                                               left join processoforo        on processoforo. v70_sequencial    = processoforoinicial.v71_processoforo
+                                                                                                    and processoforo.v70_anulado = false
+                                                              group by termoini.inicial, processoforo.v70_codforo, processoforo.v70_sequencial";
+                                                            $rsIniciaisParcelamento = db_query($sSqlIniciaisParcelamento);
+                                                            if (pg_num_rows($rsIniciaisParcelamento) > 0) {
+                                                                for ($xy2 = 0; $xy2 < pg_num_rows($rsIniciaisParcelamento); $xy2++) {
+                                                                    $oDadosInicial = db_utils::fieldsmemory($rsIniciaisParcelamento, $xy2);
+                            
+                                                                    if (!empty($oDadosInicial->v70_sequencial)) {
+                                                                        $aProcessoForo[] = $oDadosInicial->v70_sequencial;
+                                                                    }
+                            
+                                                                    $aCodProcessoForo[] = $oDadosInicial->v70_codforo;
+                            
+                                                                    $sProcessoForo = "";
+                            
+                                                                    if (!empty($oDadosInicial->v70_codforo)) {
+                                                                        $sProcessoForo = "Processo do Foro: {$oDadosInicial->v70_codforo}";
+                                                                    }
+                            
+                                                                    $aHistoricoIniciaisParcelamento[(int)$oDadosInicial->inicial] = "Inicial: $oDadosInicial->inicial - {$sProcessoForo} Exercício(s): " . str_replace(
+                                                                        "{",
+                                                                        "",
+                                                                        str_replace("}", "", $oDadosInicial->exerc)
+                                                                    ) . "\n";
+                                                                }
+                                                            }
+                                                        }
+                            
+                                                        if (!empty($aHistoricoIniciaisParcelamento)) {
+                                                            $sHistoricoIniciaisParcelamento = implode("", $aHistoricoIniciaisParcelamento);
+                                                        }
+                                                    }
+                                                } else {
+                                                    if ($k03_tipo == 7 && $k00_tipoagrup <> 2) {
+                                                        $histparcela = "\nDiversos: ";
+                                                        $sqlhist = "select distinct
+                                                   dv05_exerc,
+                                                   k00_numpar
+                                              from db_reciboweb
+                                                   inner join arrecad on k99_numpre = k00_numpre and k99_numpar = k00_numpar
+                                                   inner join diversos on dv05_numpre = k99_numpre
+                                             where k99_numpre_n = $k03_numpre
+                                             group by dv05_exerc,k00_numpar
+                                             order by dv05_exerc,k00_numpar";
+                                                        $resultTipoDebito = db_query($sqlhist);
+                                                        if (pg_num_rows($resultTipoDebito) != false) {
+                                                            $exercv = "0000";
+                                                            for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                                if ($exercv != pg_fetch_result($resultTipoDebito, $xy, 0)) {
+                                                                    $exercv = pg_fetch_result($resultTipoDebito, $xy, 0);
+                                                                    $histparcela .= pg_fetch_result($resultTipoDebito, $xy, 0) . ":";
+                                                                }
+                                                                $histparcela .= pg_fetch_result($resultTipoDebito, $xy, 1) . "-";
+                                                            }
+                                                        }
+                            
+                                                        $sqlobs = "select distinct
+                                                  dv05_obs
+                                             from db_reciboweb
+                                            inner join diversos on dv05_numpre = k99_numpre
+                                            where k99_numpre_n = $k03_numpre";
+                                                        $resultTipoDebito = db_query($sqlobs);
+                                                        if (pg_num_rows($resultTipoDebito) > 0) {
+                                                            $histparcela .= "OBS: ";
+                                                            for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                                if (ltrim(rtrim(pg_fetch_result($resultTipoDebito, $xy, 0))) != "") {
+                                                                    $histparcela .= ltrim(rtrim(pg_fetch_result($resultTipoDebito, $xy, 0)));
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if ($k03_tipo == 18 && $k00_tipoagrup <> 2) {
+                                                            $histparcela = "\n";
+                            
+                                                            $sqlhist = "select *
+                                                            from (
+                                                              select distinct
+                                                                     'cda_divida' as tipo,
+                                                                     v59_inicial  as inicial,
+                                                                     null::int    as certidao,
+                                                                     (select case when v76_tipolancamento = 3
+                                                                                  then '(AJG)'
+                                                                                  else ''
+                                                                             end
+                                                                        from processoforopartilha
+                                                                       where v76_processoforo = v70_sequencial
+                                                                    order by v76_sequencial desc limit 1) as isento,
+                                                                     v70_sequencial,
+                                                                     v70_codforo,
+                                                                     v01_exerc as exerc
+                                                                from db_reciboweb
+                                                          inner join inicialnumpre       on k99_numpre       = v59_numpre
+                                                          inner join divida              on v01_numpre       = k99_numpre
+                                                                                        and v01_numpar       = k99_numpar
+                                                           left join processoforoinicial on v59_inicial      = v71_inicial
+                                                                                        and v71_anulado      = false
+                                                           left join processoforo        on v71_processoforo = v70_sequencial
+                                                                                        and v70_anulado      = false
+                                                               where k99_numpre_n = {$k03_numpre}
+                            
+                                                        union all
+                            
+                                                              select distinct
+                                                                     'cda_parcel' as tipo,
+                                                                     v59_inicial  as inicial,
+                                                                     v51_certidao as certidao,
+                                                                     (select case when v76_tipolancamento = 3
+                                                                                  then '(AJG)'
+                                                                                  else ''
+                                                                             end
+                                                                        from processoforopartilha
+                                                                       where v76_processoforo = v70_sequencial
+                                                                    order by v76_sequencial desc limit 1) as isento,
+                                                                     v70_sequencial,
+                                                                     v70_codforo,
+                                                                     v01_exerc as exerc
+                                                                from db_reciboweb
+                                                          inner join inicialnumpre       on k99_numpre       = v59_numpre
+                                                          inner join inicialcert         on v59_inicial      = v51_inicial
+                                                          inner join certter             on v51_certidao     = v14_certid
+                                                          inner join termodiv            on v14_parcel       = parcel
+                                                          inner join divida              on v01_coddiv       = coddiv
+                                                           left join processoforoinicial on v59_inicial      = v71_inicial
+                                                                                        and v71_anulado      = false
+                                                           left join processoforo        on v71_processoforo = v70_sequencial
+                                                                                        and v70_anulado      = false
+                                                               where k99_numpre_n = {$k03_numpre}
+                                                                 ) as x order by inicial, exerc";
+                            
+                                                            $resultTipoDebito = db_query($sqlhist);
+                                                            if (pg_num_rows($resultTipoDebito) != false) {
+                                                                $exercv = "0000";
+                                                                $sSeparador = "";
+                                                                for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                                    $oHistParcela = db_utils::fieldsMemory($resultTipoDebito, $xy);
+                            
+                                                                    if (!empty($oHistParcela->v70_sequencial)) {
+                                                                        $aProcessoForo[] = $oHistParcela->v70_sequencial;
+                                                                    }
+                            
+                                                                    $oHistParcela->v70_codforo = $oHistParcela->v70_codforo . "{$oHistParcela->isento}";
+                                                                    $aCodProcessoForo[] = $oHistParcela->v70_codforo;
+                                                                    if ($exercv != $oHistParcela->inicial) {
+                                                                        $exercv = $oHistParcela->inicial;
+                                                                        $histparcela .= ($xy != 0 ? " / " : "");
+                                                                        $histparcela .= "Inicial: {$oHistParcela->inicial}";
+                                                                        $histparcela .= (!empty($oHistParcela->v70_codforo) ? " - Processo do Foro: {$oHistParcela->v70_codforo} " : "");
+                                                                        $histparcela .= " - Exercício(s): ";
+                                                                        $sSeparador = "";
+                                                                    }
+                                                                    $histparcela .= $sSeparador . $oHistParcela->exerc;
+                            
+                                                                    $sSeparador = ", ";
+                                                                }
+                                                            }
+                                                        } else {
+                                                            if ($k03_tipo == 11 && $k00_tipoagrup <> 2) {
+                                                                $sSqlDadosHist = "select y50_codauto,
+                                                         y50_obs,
+                                                         y50_data,
+                                                         extract(year from arrecad.k00_dtoper) as exerc,
+                                                         k00_descr,
+                                                         k99_numpar
+                                                    from db_reciboweb
+                                                         inner join autonumpre on autonumpre.y17_numpre = db_reciboweb.k99_numpre
+                                                         inner join auto       on auto.y50_codauto      = autonumpre.y17_codauto
+                                                         inner join arrecad    on k99_numpre            = k00_numpre
+                                                                              and k99_numpar            = k00_numpar
+                                                         inner join arretipo   on arretipo.k00_tipo     = arrecad.k00_tipo
+                                                   where db_reciboweb.k99_numpre_n = {$k03_numpre}";
+                                                                $rsDadosHist = db_query($sSqlDadosHist);
+                                                                if (@pg_num_rows($rsDadosHist) > 0) {
+                                                                    $oDadosAuto = db_utils::fieldsmemory($rsDadosHist, 0);
+                                                                    $sObsAuto = "";
+                            
+                                                                    $aObs = explode("\n", $oDadosAuto->y50_obs);
+                                                                    if (count($aObs) > 3) {
+                                                                        $sObsAuto = $aObs[0] . "\n" . $aObs[1] . "\n" . $aObs[2];
+                                                                    } else {
+                                                                        $sObsAuto = $oDadosAuto->y50_obs;
+                                                                    }
+                            
+                                                                    $histparcela = $oDadosAuto->k00_descr . "=>" . $oDadosAuto->exerc . "/P:" . $oDadosAuto->k99_numpar . "\n";
+                                                                    $histparcela .= "Cod. Auto: " . $oDadosAuto->y50_codauto . " - Obs.: " . $sObsAuto;
+                                                                }
+                                                            } else {
+                                                                $histparcela = "";
+                                                                $sqlhist = "
+                                      select *
+                                        from (select distinct
+                                                     arretipo.k00_tipo,
+                                                     k00_descr,
+                                                     k99_numpar,
+                                                     case
+                                                       when divida.v01_exerc is not null
+                                                            then divida.v01_exerc
+                                                       when termo.v07_parcel is not null
+                                                            then termo.v07_parcel
+                                                       when aguacalc.x22_exerc is not null
+                                                            then aguacalc.x22_exerc
+                                                       else extract (year from arrecad.k00_dtoper)
+                                                     end as k00_origem
+                                                from db_reciboweb
+                                                     inner join arrecad on k99_numpre = k00_numpre and k99_numpar = k00_numpar
+                                                     inner join arretipo on arretipo.k00_tipo = arrecad.k00_tipo
+                                                     left join divida on divida.v01_numpre = arrecad.k00_numpre and divida.v01_numpar = arrecad.k00_numpar
+                                                     left join termo on termo.v07_numpre  = arrecad.k00_numpre
+                                                     left join aguacalc on x22_numpre = arrecad.k00_numpre
+                                                     left join iptutaxanump on iptutaxanump.j151_numpre = arrecad.k00_numpre
+                                               where k99_numpre_n = $k03_numpre
+                                                 and iptutaxanump.j151_numpre is null
+                                             ) as x
+                                       order by k00_origem,
+                                                k00_descr,
+                                                k99_numpar
+                                    ";
+                            
+                                                                $resultTipoDebito = db_query($sqlhist) or die($sqlhist);
+                                                                $tot = pg_num_rows($resultTipoDebito);
+                            
+                                                                if ($tot > 0) {
+                                                                    $histant = pg_fetch_result($resultTipoDebito, 0, "k00_origem") . "-" . pg_fetch_result(
+                                                                        $resultTipoDebito,
+                                                                        0,
+                                                                        "k00_descr"
+                                                                    );
+                                                                    $histparcela .= pg_fetch_result($resultTipoDebito, 0, "k00_descr") . "=>" . pg_fetch_result(
+                                                                        $resultTipoDebito,
+                                                                        0,
+                                                                        "k00_origem"
+                                                                    ) . " / P: ";
+                            
+                                                                    for ($xy = 0; $xy < pg_num_rows($resultTipoDebito); $xy++) {
+                                                                        if (pg_fetch_result($resultTipoDebito, $xy, "k00_origem") . "-" . pg_fetch_result(
+                                                                            $resultTipoDebito,
+                                                                            $xy,
+                                                                            "k00_descr"
+                                                                        ) <> $histant) {
+                                                                            $histparcela .= "-" . pg_fetch_result(
+                                                                                $resultTipoDebito,
+                                                                                $xy,
+                                                                                "k00_descr"
+                                                                            ) . "=>" . pg_fetch_result(
+                                                                                $resultTipoDebito,
+                                                                                $xy,
+                                                                                "k00_origem"
+                                                                            ) . " / P: ";
+                                                                            $histant = pg_fetch_result(
+                                                                                $resultTipoDebito,
+                                                                                $xy,
+                                                                                "k00_origem"
+                                                                            ) . "-" . pg_fetch_result($resultTipoDebito, $xy, "k00_descr");
+                                                                        }
+                            
+                                                                        $histparcela .= pg_fetch_result($resultTipoDebito, $xy, "k99_numpar") . " ";
+                                                                    }
+                                                                }
+                            
+                                                                $sqlhist = "
+                                      select iptucadtaxa.j07_descr || ' => ' || iptucadtaxaexe.j08_anousu || ' / P: ' || array_to_string(array_accum(db_reciboweb.k99_numpar), ', ') as descricao
+                                        from iptutaxanump
+                                             inner join db_reciboweb on db_reciboweb.k99_numpre = iptutaxanump.j151_numpre
+                                             inner join iptucadtaxaexe on iptucadtaxaexe.j08_iptucadtaxaexe = iptutaxanump.j151_iptucadtaxaexe
+                                             inner join iptucadtaxa on iptucadtaxa.j07_iptucadtaxa = iptucadtaxaexe.j08_iptucadtaxa
+                                       where db_reciboweb.k99_numpre_n = $k03_numpre
+                                       group by iptucadtaxa.j07_descr,
+                                                iptucadtaxaexe.j08_anousu
+                                    ";
+                            
+                                                                $resultTipoDebito = db_query($sqlhist) or die($sqlhist);
+                            
+                                                                $histant = pg_fetch_result($resultTipoDebito, 0, "descricao");
+                            
+                                                                if (!empty($histant)) {
+                                                                    $histparcela .= "\n" . $histant;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            
+                                $historico = $histparcela;
+                            }
+                            //////
 
                             $db_vlrbar = db_formatar(str_replace('.', '',
                               str_pad(number_format($total_recibo, 2, "", "."), 11, "0", STR_PAD_LEFT)), 's', '0', 11,
@@ -2731,9 +3242,15 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $taxaExpediente = '';
 
-                            if (!empty($reciboPaga->getValor())) {
+                            if ($reciboPaga && !empty($reciboPaga->getValor())) {
                                 $valor = trim(db_formatar($reciboPaga->getValor(), 'f'));
-                                $taxaExpediente = TaxaEspecificaModel::DESCRICAO_TAXA_EXPEDIENTE . " = {$valor} / ";
+                                $sqlTaxa = "select ar36_descricao from taxa where ar36_receita = ".$reciboPaga->getReceit();
+                                $taxa = db_query($sqlTaxa);
+                                if(pg_num_rows($taxa) > 0){
+                                    $taxaExpediente = pg_fetch_result($taxa,0) . " = {$valor} / ";
+                                }else {
+                                    $taxaExpediente = TaxaEspecificaModel::DESCRICAO_TAXA_EXPEDIENTE . " = {$valor} / ";
+                                }
                             }
                             $pdf->logo = $src;
                             $pdf->tipo_convenio = $oConvenio->getTipoConvenio();
@@ -2765,7 +3282,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->datacalc = date('d-m-Y', $DB_DATACALC);
                             $pdf->taxabanc = db_formatar($taxabancaria, 'f');
                             $pdf->recorddadospagto = $DadosPagamento;
-                            $pdf->linhasdadospagto = pg_numrows($DadosPagamento);
+                            $pdf->linhasdadospagto = pg_num_rows($DadosPagamento);
                             $pdf->receita = 'k00_receit';
                             $pdf->receitared = 'codreduz';
                             $pdf->dreceita = 'k02_descr';
@@ -2783,7 +3300,9 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $pdf->linhadigitavel = $linhadigitavel;
                             $pdf->codigobarras = $codigobarras;
-                            $pdf->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+                            $sql = 'select nome from db_usuarios where login = \''.db_getsession('DB_login').'\'';
+                            $rSql = db_query($sql);
+                            $pdf->texto = substr(pg_fetch_all($rSql)[0]['nome'], 0, 30) . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
                             $pdf->descr3_1 = trim(pg_result($Identificacao, 0, "z01_nome")); // contribuinte
                             $pdf->descr3_2 = trim(pg_result($Identificacao, 0,
                                 "z01_ender")) . ', ' . pg_result($Identificacao, 0,
@@ -2818,7 +3337,6 @@ if ($tiporel == 1 || $tiporel == 11) {
                             if ($oRegraEmissao->isCobranca()) {
 
                                 $pdf->especie = "R$";
-
                                 $pdf->agencia_cedente = $oConvenio->getAgenciaCedente();
                                 $pdf->carteira = $oConvenio->getCarteira();
                                 $pdf->descr11_1 = trim(pg_result($Identificacao, 0,
@@ -2835,7 +3353,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 if ($pdf->GetY() > 195) {
 
-                                    $pdf->addpage();
+                                    $pdf->addPage();
                                     $pdf->setY(20);
                                 } else {
                                     $pdf->setY(155);
@@ -2857,6 +3375,10 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $pdf->setY($pdf->GetY() + 10);
                                 }
 
+                                if ($quebraPaginaRecibos) {
+                                    $pdf->addPage();
+                                }
+
                                 $linha = $pdf->gety() + 50;
                                 $linha = $pdf->gety() +15;
                                 $pdf->ln(5);
@@ -2865,112 +3387,145 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $pdf->line($inirec, $linha, $fimrec, $linha);
                                 $xlin = $linha;
                                 $xcol = 18;
+
                                 for ($i = 0; $i < 2; $i++) {
-
-                                    $pdf->setfillcolor(245);
-                                    $pdf->roundedrect($xcol - 2, $xlin - 18, 178, 65, 2, 'DF', '1234');
-                                    $pdf->setfillcolor(255, 255, 255);
-                                    $pdf->Setfont('Arial', 'B', 11);
-                                    $pdf->text(150, $xlin - 13, 'RECIBO VÁLIDO ATÉ: ');
-                                    $pdf->text(145, $xlin - 8, "VENCIMENTO: " . $pdf->datacalc);
-
-                                    //Via
-                                    $str_via = 'Prefeitura';
                                     if ($i == 0) {
-                                        $str_via = 'Contribuinte';
-                                    }
+                                        //via do contribuinte
+                                        $pdf->setfillcolor(245);
+                                        $pdf->roundedrect($xcol - 2, $xlin - 18, 178, 75, 2, 'DF', '1234');
+                                        $pdf->setfillcolor(255, 255, 255);
 
-                                    $pdf->Setfont('Arial', 'B', 8);
-                                    $pdf->text(160, $xlin - 1, ($i + 1) . 'ª Via ' . $str_via);
-                                    $pdf->Image('imagens/files/' . $pdf->logo, 20, $xlin - 17, 12);
-                                    $pdf->Setfont('Arial', 'B', 9);
-                                    $pdf->text(40, $xlin - 15, $pdf->prefeitura);
-                                    $pdf->Setfont('Arial', '', 9);
-                                    $pdf->text(40, $xlin - 11.5, $pdf->enderpref);
-                                    $pdf->text(40, $xlin - 8, $pdf->municpref);
-                                    $pdf->text(40, $xlin - 5, $pdf->telefpref);
-                                    $pdf->text(40, $xlin - 2, $pdf->emailpref);
+                                        $pdf->Setfont('Arial', 'B', 9);
+                                        $pdf->text(40, $xlin - 1, 'RECIBO VÁLIDO ATÉ: ');
+                                        $pdf->text(75, $xlin - 1, $pdf->datacalc);
+    
+                                        $pdf->Setfont('Arial', 'B', 8);
+                                        $pdf->text(160, $xlin - 1, ($i + 1) . 'ª Via ' . 'Contribuinte');
+    
+                                        if (file_exists('imagens/files/' . $pdf->logo)) {
+                                            $pdf->Image('imagens/files/' . $pdf->logo, 20, $xlin - 17, 12);
+                                        }
+    
+                                        $pdf->Setfont('Arial', 'B', 9);
+                                        $pdf->text(40, $xlin - 15, $pdf->prefeitura);
+                                        $pdf->Setfont('Arial', '', 9);
+                                        $pdf->text(40, $xlin - 11.5, $pdf->enderpref);
+                                        $codigoInstituicao = db_getsession("DB_instit");
+                                        $sqlInstituicao = "select cgc,ender,numero,db21_compl,bairro from db_config where codigo = ".db_getsession("DB_instit");
+                                        $dadosInstituicao = db_utils::getCollectionByRecord(db_query($sqlInstituicao))[0];
 
-                                    $pdf->Roundedrect($xcol, $xlin + 2, $xcol + 100, 20, 2, 'DF', '1234');
-                                    $pdf->Setfont('Arial', '', 6);
-                                    $pdf->text($xcol + 2, $xlin + 4, 'Identificação:');
-                                    $pdf->Setfont('Arial', '', 8);
-                                    $pdf->text($xcol + 2, $xlin + 7, 'Nome :');
-                                    $pdf->text($xcol + 17, $xlin + 7, $pdf->cgm . " - " . $pdf->nome);
-                                    $pdf->text($xcol + 2, $xlin + 11, 'Endereço :');
-                                    $pdf->text($xcol + 17, $xlin + 11, $pdf->ender);
-                                    $pdf->text($xcol + 2, $xlin + 15, 'Município :');
-                                    $pdf->text($xcol + 17, $xlin + 15, trim($pdf->munic));
-                                    $pdf->text($xcol + 75, $xlin + 15, 'CEP :');
-                                    $pdf->text($xcol + 82, $xlin + 15, $pdf->cep);
-                                    $pdf->text($xcol + 2, $xlin + 19, 'Data :');
+                                        $pdf->text(40, $xlin - 8, "CNPJ: ". db_formatar($dadosInstituicao->cgc, (strlen($dadosInstituicao->cgc) < 12 ? 'cpf' : 'cnpj')));
+                                        $pdf->text(40, $xlin - 5, "ENDEREÇO: $ender, $numero $db21_compl - $bairro");
+    
+                                        $pdf->Roundedrect($xcol, $xlin + 2, $xcol + 92, 15, 2, 'DF', '1234');
+                                        $pdf->Setfont('Arial', '', 6);
+                                        $pdf->text($xcol + 2, $xlin + 4, 'Identificação:');
+                                        $pdf->Setfont('Arial', '', 8);
+                                        $pdf->text($xcol + 2, $xlin + 7, 'Nome :');
+                                        $pdf->text($xcol + 17, $xlin + 7, $pdf->cgm . " - " . $pdf->nome);
+                                        $pdf->text($xcol + 2, $xlin + 11, 'Endereço :');
+                                        $pdf->text($xcol + 17, $xlin + 11, $pdf->ender);
+                                        $pdf->text($xcol + 2, $xlin + 15, 'Município :');
+                                        $pdf->text($xcol + 17, $xlin + 15, trim($pdf->munic));
 
-                                    $pdf->text($xcol + 17, $xlin + 19, date("d-m-Y", db_getsession("DB_datausu")));
+                                        $pdf->text($xcol + 89, $xlin + 11, 'CEP: ');
+                                        $pdf->text($xcol + 96, $xlin + 11, $pdf->cep);
 
-                                    $pdf->text($xcol + 40, $xlin + 19, 'Hora: ' . date("H:i:s"));
+                                        $pdf->text($xcol + 68, $xlin + 15, 'CNPJ/CPF:');
 
-                                    $pdf->text($xcol + 75, $xlin + 19, 'CNPJ/CPF:');
-                                    $pdf->text($xcol + 90, $xlin + 19,
-                                      db_formatar($pdf->cgccpf, (strlen($pdf->cgccpf) < 12 ? 'cpf' : 'cnpj')));
+                                        $pdf->text($xcol + 83, $xlin + 15, db_formatar($pdf->cgccpf, (strlen($pdf->cgccpf) < 12 ? 'cpf' : 'cnpj')));
+    
+                                        $pdf->Setfont('Arial', '', 6);
+    
+                                        $pdf->Roundedrect($xcol + 111, $xlin + 2, 64, 15, 2, 'DF', '1234');
+    
+                                        $pdf->text($xcol + 120, $xlin + 4, $pdf->identifica_dados);
+    
+                                        $pdf->text($xcol + 112, $xlin + 7, $pdf->tipoinscr);
+                                        $pdf->text($xcol + 129, $xlin + 7, $pdf->nrinscr);
+                                        $pdf->text($xcol + 112, $xlin + 11, $pdf->tipolograd);
+                                        $pdf->text($xcol + 129, $xlin + 11, $pdf->nomepri);
+                                        $pdf->text($xcol + 112, $xlin + 15, $pdf->tipocompl);
 
-                                    $pdf->Setfont('Arial', '', 6);
+                                        $pdf->text($xcol + 121, $xlin + 15, $pdf->nrpri . " " . $pdf->complpri);
+                                        $pdf->text($xcol + 150, $xlin + 15, $pdf->tipobairro);
+                                        $pdf->text($xcol + 157, $xlin + 15, $pdf->bairropri);
 
-                                    $pdf->Roundedrect($xcol + 119, $xlin + 2, 56, 20, 2, 'DF', '1234');
-
-                                    $pdf->text($xcol + 120, $xlin + 4, $pdf->identifica_dados);
-
-                                    $pdf->text($xcol + 120, $xlin + 7, $pdf->tipoinscr);
-                                    $pdf->text($xcol + 137, $xlin + 7, $pdf->nrinscr);
-                                    $pdf->text($xcol + 120, $xlin + 11, $pdf->tipolograd);
-                                    $pdf->text($xcol + 137, $xlin + 11, $pdf->nomepri);
-                                    $pdf->text($xcol + 120, $xlin + 15, $pdf->tipocompl);
-                                    $pdf->text($xcol + 137, $xlin + 15, $pdf->nrpri . "      " . $pdf->complpri);
-                                    $pdf->text($xcol + 120, $xlin + 19, $pdf->tipobairro);
-                                    $pdf->text($xcol + 137, $xlin + 19, $pdf->bairropri);
-
-                                    if ($i == 0) {
-
-                                        $pdf->Roundedrect($xcol, $xlin + 25, 175, 20, 2, 'DF', '1234');
-                                        $pdf->SetY($xlin + 26);
+                                        $pdf->Roundedrect($xcol, $xlin + 18, 142, 33, 2, 'DF', '1234');
+                                        $pdf->SetY($xlin + 19);
                                         $pdf->SetX($xcol + 3);
                                         $pdf->Setfont('Arial', '', 5);
 
-                                        $sHistorico = 'HISTÓRICO :   ' . $pdf->historico;
+                                        $sHistorico = 'HISTÓRICO : ' . trim($pdf->historico);
+                                        $sHistorico = substr($sHistorico, 0, 2000);
+                                        $sHistorico = trim(preg_replace('/([a-z]|[A-Z]|[0-9])(\s\s+)/', '; ', $sHistorico));
+                                        $sHistorico = str_replace ( "\n" , "; " , $sHistorico );
                                         $iNumeroLinhas = $pdf->nbLines(110, $sHistorico);
 
-                                        if ($iNumeroLinhas > 6) {
-
-                                            $sNovoHistorico = '';
-                                            for ($iCaracter = 0; $iCaracter < strlen($sHistorico); $iCaracter++) {
-
-                                                if ($pdf->nbLines(110,
-                                                    $sNovoHistorico . $sHistorico[$iCaracter]) <= 5) {
-                                                    $sNovoHistorico .= $sHistorico[$iCaracter];
-                                                } else {
-
-                                                    $sNovoHistorico .= " ...";
-                                                    break;
-                                                }
-                                            }
-
-                                            $sHistorico = $sNovoHistorico;
-                                        }
-
-                                        $pdf->multicell(110, 3, $sHistorico, 0, "L");
+                                        $pdf->multicell(139, 3, $sHistorico, 0, "L");
                                         $pdf->SetX($xcol + 3);
 
                                         $pdf->Setfont('Arial', '', 6);
                                         $pdf->setx(15);
 
-                                        $pdf->Roundedrect(160, $xlin + 30, 32, 10, 2, 'DF', '1234');
-                                        $pdf->Roundedrect(134, $xlin + 30, 25, 10, 2, 'DF', '1234');
-                                        $pdf->text(164, $xlin + 32, 'Código de Arrecadação');
-                                        $pdf->text(135, $xlin + 32, 'Valor a Pagar em R$');
+                                        $pdf->Roundedrect(161, $xlin + 23, 32, 10, 2, 'DF', '1234');
+                                        $pdf->Roundedrect(161, $xlin + 35, 32, 10, 2, 'DF', '1234');
+                                        $pdf->text(165, $xlin + 25, 'Código de Arrecadação');
+                                        $pdf->text(165, $xlin + 37, 'Valor a Pagar em R$');
                                         $pdf->setfont('Arial', '', 10);
-                                        $pdf->text(162, $xlin + 37, $pdf->numpre);
-                                        $pdf->text(135, $xlin + 37, $pdf->valtotal);
+                                        $pdf->text(163, $xlin + 30, $pdf->numpre);
+                                        $pdf->text(163, $xlin + 42, $pdf->valtotal);
+
+                                        $pdf->text(19, $xlin + 55, $pdf->codigobarras);
 
                                     } else {
+                                        //via da prefeitura
+
+                                        $pdf->setfillcolor(245);
+                                        $pdf->roundedrect($xcol - 2, $xlin - 8, 178, 55, 2, 'DF', '1234');
+                                        $pdf->setfillcolor(255, 255, 255);
+                                        $pdf->Setfont('Arial', 'B', 9);
+                                        $pdf->text(20, $xlin - 1, 'RECIBO VÁLIDO ATÉ:');
+                                        $pdf->text(55, $xlin - 1, $pdf->datacalc);
+    
+                                        $pdf->Setfont('Arial', 'B', 8);
+                                        $pdf->text(155, $xlin - 1, ($i + 1) . 'ª Via ' . 'Prefeitura');
+    
+                                        $pdf->Setfont('Arial', 'B', 9);
+                                        $pdf->text(20, $xlin - 5, $pdf->prefeitura);
+                                        $pdf->Setfont('Arial', '', 9);
+    
+                                        $pdf->Roundedrect($xcol, $xlin + 2, $xcol + 100, 20, 2, 'DF', '1234');
+                                        $pdf->Setfont('Arial', '', 6);
+                                        $pdf->text($xcol + 2, $xlin + 4, 'Identificação:');
+                                        $pdf->Setfont('Arial', '', 8);
+                                        $pdf->text($xcol + 2, $xlin + 7, 'Nome :');
+                                        $pdf->text($xcol + 17, $xlin + 7, $pdf->cgm . " - " . $pdf->nome);
+                                        $pdf->text($xcol + 2, $xlin + 11, 'Endereço :');
+                                        $pdf->text($xcol + 17, $xlin + 11, $pdf->ender);
+                                        $pdf->text($xcol + 2, $xlin + 15, 'Município :');
+                                        $pdf->text($xcol + 17, $xlin + 15, trim($pdf->munic));
+                                        $pdf->text($xcol + 75, $xlin + 15, 'CEP: ');
+                                        $pdf->text($xcol + 82, $xlin + 15, $pdf->cep);
+    
+                                        $pdf->text($xcol + 2, $xlin + 19, 'CNPJ/CPF:');
+                                        $pdf->text($xcol + 17, $xlin + 19,
+                                          db_formatar($pdf->cgccpf, (strlen($pdf->cgccpf) < 12 ? 'cpf' : 'cnpj')));
+    
+                                        $pdf->Setfont('Arial', '', 6);
+    
+                                        $pdf->Roundedrect($xcol + 119, $xlin + 2, 56, 20, 2, 'DF', '1234');
+    
+                                        $pdf->text($xcol + 120, $xlin + 4, $pdf->identifica_dados);
+    
+                                        $pdf->text($xcol + 120, $xlin + 7, $pdf->tipoinscr);
+                                        $pdf->text($xcol + 137, $xlin + 7, $pdf->nrinscr);
+                                        $pdf->text($xcol + 120, $xlin + 11, $pdf->tipolograd);
+                                        $pdf->text($xcol + 137, $xlin + 11, $pdf->nomepri);
+                                        $pdf->text($xcol + 120, $xlin + 15, $pdf->tipocompl);
+                                        $pdf->text($xcol + 137, $xlin + 15, $pdf->nrpri . "      " . $pdf->complpri);
+                                        $pdf->text($xcol + 120, $xlin + 19, $pdf->tipobairro);
+                                        $pdf->text($xcol + 137, $xlin + 19, $pdf->bairropri);
 
                                         $pdf->Setfont('Arial', '', 6);
                                         $pdf->setx(15);
@@ -2989,8 +3544,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                         $pdf->setfillcolor(0, 0, 0);
                                         $pdf->SetFont('Arial', '', 4);
-                                        $pdf->textWithDirection(17.5, $xlin + 28, $pdf->texto,
-                                          'U'); // texto no canhoto do carne
+                                        $pdf->textWithDirection(20, $xlin + 1, $pdf->texto); // texto no canhoto do carne
                                         $pdf->setfont('Arial', '', 11);
                                         $pdf->text(19, $xlin + 28, $pdf->linhadigitavel);
 
@@ -3015,16 +3569,22 @@ if ($tiporel == 1 || $tiporel == 11) {
                                         $pdf->ln(30);
                                         $pdf->cell(0, 05, "ATENÇÃO: Recibo para pagamento na próxima página. ", 0, 1,
                                           "C", 0);
-                                        $pdf->addpage();
+                                        $pdf->addPage();
                                         $iQtdNotificoesGeradas++;
                                         $pdf = CabecNotif($pdf, 0, $variavel);
                                         $pdf->Setfont('Arial', '', 11);
                                         $pdf->cell(0, 05, "NOTIFICAÇÃO: $notifica/$lista ", 0, 1, "C", 0);
                                     }
 
-                                    $y = 193;
-                                    $x = 5;
+                                    if ($quebraPaginaRecibos) {
+                                        $pdf->addPage();
+                                        $y = 5;
 
+                                    } else {
+                                        $y = 193;
+                                    }
+
+                                    $x = 5;
                                     $xx = 15;
                                     $yy = 0;
 
@@ -3097,7 +3657,10 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                             try {
                                                 $sCaminhoLogo = cl_db_bancos::exportarLogoPorCodigoBanco($pdf->numbanco);
-                                                $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
+
+                                                if (file_exists($sCaminhoLogo)) {
+                                                    $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
+                                                }
                                             } catch (Exception $e) {
                                             }
                                             $pdf->numbanco = "{$pdf->numbanco}-0";
@@ -3105,8 +3668,10 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             break;
 
                                         case '001': // BB
+                                            if (file_exists('imagens/files/bb.jpg')){
+                                                $pdf->Image('imagens/files/bb.jpg', $x + 10, $y + 1, 6, 7);
+                                            }
 
-                                            $pdf->Image('imagens/files/bb.jpg', $x + 10, $y + 1, 6, 7);
                                             $pdf->Text($x + 18, $y + 7, "BANCO DO BRASIL");
                                             $pdf->numbanco = "{$pdf->numbanco}-9";
                                             break;
@@ -3115,7 +3680,10 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                             try {
                                                 $sCaminhoLogo = cl_db_bancos::exportarLogoPorCodigoBanco($pdf->numbanco);
-                                                $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
+
+                                                if(file_exists($sCaminhoLogo)){
+                                                    $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
+                                                }
                                             } catch (Exception $e) {
                                             }
                                             $pdf->numbanco = "{$pdf->numbanco}-0";
@@ -3419,7 +3987,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanostipos); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanostipos); $totano++) {
 
                                 db_fieldsmemory($resultanostipos, $totano);
                                 $pdf->cell(10, 05, "", 0, 0, "C", 0);
@@ -3600,7 +4168,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                and arrecad.k00_numpar = notidebitosreg.k43_numpar
                                and arrecad.k00_receit = notidebitosreg.k43_receit
                 inner join arretipo on arretipo.k00_tipo  = arrecad.k00_tipo
-                inner join diversos.diversos on dv05_numpre = arrecad.k00_numpre
+                inner join diversos.diversos on dv05_numpre = arrecad.k00_numpre 
                 inner join diversos.procdiver on dv05_procdiver = dv09_procdiver
             where
                 k43_notifica = {$notifica}
@@ -3802,7 +4370,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanostiposdeb); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanostiposdeb); $totano++) {
 
                                 db_fieldsmemory($resultanostiposdeb, $totano);
                                 $pdf->cell(15, 05, $k22_ano, 1, 0, "C", 0);
@@ -3920,7 +4488,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanoshistdeb); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanoshistdeb); $totano++) {
 
                                 db_fieldsmemory($resultanoshistdeb, $totano);
                                 $pdf->cell(15, 05, $k22_ano, 1, 0, "C", 0);
@@ -4210,7 +4778,133 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $pdf->setfillcolor(255);
 
-                            $pdf->Image("imagens/files/logo_correios.jpg", 15, $iAltAR, 23, 5);
+                            if (file_exists("imagens/files/logo_correios.jpg")){
+                                $pdf->Image("imagens/files/logo_correios.jpg", 15, $iAltAR, 23, 5);
+                            }
+
+                            $pdf->SetFont('Arial', 'B', $iFontAR + 14);
+                            $pdf->Text(40, $iAltAR + 5, "AR");
+                            $pdf->SetFont('Arial', 'IB', $iFontAR + 3);
+                            $pdf->Text(50, $iAltAR + 2, "AVISO DE");
+                            $pdf->Text(50, $iAltAR + 5, "RECEBIMENTO");
+
+                            $pdf->RoundedRect(15, $iAltAR + 6, 178, 76, 0, 'DF', '1234');
+
+                            $pdf->RoundedRect(15, $iAltAR + 6, 76, 55, 0, 'DF', '1234');
+                            $pdf->RoundedRect(91, $iAltAR + 6, 66, 62, 0, 'DF', '1234');
+                            $pdf->RoundedRect(15, $iAltAR + 61, 76, 7, 0, 'DF', '1234');
+
+                            $pdf->setfillcolor(245);
+
+                            $pdf->RoundedRect(157, $iAltAR + 6, 36, 51, 0, 'DF', '1234');
+                            $pdf->RoundedRect(157, $iAltAR + 56, 36, 26, 0, 'DF', '1234');
+
+                            $pdf->RoundedRect(15, $iAltAR + 68, 110, 7, 0, 'DF', '1234');
+                            $pdf->RoundedRect(15, $iAltAR + 75, 110, 7, 0, 'DF', '1234');
+
+                            $pdf->RoundedRect(119, $iAltAR + 68, 38, 7, 0, 'DF', '1234');
+                            $pdf->RoundedRect(119, $iAltAR + 75, 38, 7, 0, 'DF', '1234');
+
+                            $pdf->setfillcolor(255);
+
+                            $pdf->SetFont('Arial', 'B', $iFontAR + 3);
+                            $pdf->Text(17, $iAltAR + 9, "DESTINATÁRIO :");
+
+                            $pdf->SetY($iAltAR + 12);
+
+                            $sEnder = trim($z01_ender);
+
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($z01_nome), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($z01_ender), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($z01_bairro), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($z01_munic) . " - " . trim($z01_uf), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($z01_cep) . " - " . trim($z01_cxpostal), 0, 1, "L", 0);
+
+                            $pdf->Text(17, $iAltAR + 44, "ENDEREÇO PARA DEVOLUÇÃO DO AR :");
+
+                            $pdf->SetY($iAltAR + 47);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($nomeinst), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " CNPJ: " . db_formatar($cgc, "cnpj"), 0, 1, "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($ender) . ", " . trim($numero) . " - " . trim($bairro), 0, 1,
+                              "L", 0);
+                            $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim($cep) . " - " . trim($munic) . " - " . trim($uf), 0, 1, "L",
+                              0);
+
+                            $pdf->Text(93, $iAltAR + 10, "TENTATIVAS DE ENTREGA");
+
+                            $pdf->Text(96, $iAltAR + 16, "1º ______/______/______                 ______:______h");
+                            $pdf->Text(96, $iAltAR + 23, "2º ______/______/______                 ______:______h");
+                            $pdf->Text(96, $iAltAR + 30, "3º ______/______/______                 ______:______h");
+
+                            $pdf->Text(93, $iAltAR + 36, "ATENÇÃO:");
+
+                            $pdf->SetFont('Arial', '', $iFontAR + 3);
+                            $pdf->Text(93, $iAltAR + 40, "Após 3 (três) tentativas de entrega, devolver o objeto.");
+                            $pdf->Text(93, $iAltAR + 44, "MOTIVO DA DEVOLUÇÃO");
+
+                            $pdf->SetXY(93, $iAltAR + 48);
+                            $pdf->Cell(3, 3, "1", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Mudou-se", 0, 0, "L", 0);
+                            $pdf->Cell(3, 3, "5", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Recusado", 0, 1, "L", 0);
+                            $pdf->SetXY(93, $iAltAR + 52);
+                            $pdf->Cell(3, 3, "2", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Endereço Insuficiente", 0, 0, "L", 0);
+                            $pdf->Cell(3, 3, "6", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Não Procurado", 0, 1, "L", 0);
+                            $pdf->SetXY(93, $iAltAR + 56);
+                            $pdf->Cell(3, 3, "3", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Não Existe o Número", 0, 0, "L", 0);
+                            $pdf->Cell(3, 3, "7", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Ausente", 0, 1, "L", 0);
+                            $pdf->SetXY(93, $iAltAR + 60);
+                            $pdf->Cell(3, 3, "4", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Desconhecido", 0, 0, "L", 0);
+                            $pdf->Cell(3, 3, "8", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Falecido", 0, 1, "L", 0);
+                            $pdf->SetXY(93, $iAltAR + 64);
+                            $pdf->Cell(3, 3, "9", 1, 0, "C", 0);
+                            $pdf->Cell(30, 3, "Outros______________________________", 0, 1, "L", 0);
+
+                            $pdf->SetFont('Arial', '', $iFontAR + 3);
+                            $pdf->Text(30, $iAltAR + 36, "Nº DO REGISTRO E CÓDIGO DO CLIENTE ");
+
+                            $pdf->SetFont('Arial', '', $iFontAR + 1);
+                            $pdf->Text(17, $iAltAR + 63, "DECLARAÇÃO DE CONTEÚDO (OPCIONAL)");
+                            $pdf->Text(17, $iAltAR + 70, "ASSINATURA DO RECEBEDOR");
+                            $pdf->Text(17, $iAltAR + 77, "NOME LEGÍVEL DO RECEBEDOR");
+
+                            $pdf->Text(121, $iAltAR + 70, "DATA DE ENTREGA");
+                            $pdf->Text(121, $iAltAR + 77, "Nº DOCUMENTO DE IDENTIDADE");
+
+                            $pdf->Text(172, $iAltAR + 9, "CARIMBO");
+                            $pdf->Text(166, $iAltAR + 11, "UNIDADE DE ENTREGA");
+
+                            $pdf->Text(160, $iAltAR + 59, "RUBRICA E MATRÍCULA DO CARTEIRO");
+
+                            $pdf->SetFont('Arial', '', $iFontAR + 1);
+                            $pdf->Text(163, $iAltAR + 5, "ESPAÇO RESERVADO A MENÇÃO MP");
+
+                        } elseif (strtoupper($db02_descr) == "AR2" || strtoupper($db02_descr) == "ARTERCEIRAPAGINA") {
+
+                            $pdf->addPage();
+                            $iAltAR = 210;
+                            $iFontAR = 3;
+
+                            $pdf->setfillcolor(255);
+
+                            if (file_exists("imagens/files/logo_correios.jpg")){
+                                $pdf->Image("imagens/files/logo_correios.jpg", 15, $iAltAR, 23, 5);
+                            }
 
                             $pdf->SetFont('Arial', 'B', $iFontAR + 14);
                             $pdf->Text(40, $iAltAR + 5, "AR");
@@ -4327,7 +5021,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                         } else {
                             if (strtoupper($db02_descr) == "VERSO") {
 
-                                $pdf->AddPage();
+                                $pdf->addPage();
                                 $iQtdNotificoesGeradas++;
                                 $opcoesverso = explode("\n", $db02_texto);
 
@@ -4355,7 +5049,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                         if (trim($dadosopcoes[1]) == "ENDER_ENTREGA") {
 
-                                            $S = $pdf->lMargin;
+                                            $S = $pdf->getLeftMargin();
                                             $S = 10;
                                             global $variavel;
                                             $variavel = "";
@@ -4392,7 +5086,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                where j01_matric = $matric";
 
                                                 $resultpropri = db_query($sqlpropri);
-                                                if (pg_numrows($resultpropri) > 0) {
+                                                if (pg_num_rows($resultpropri) > 0) {
 
                                                     db_fieldsmemory($resultpropri, 0);
                                                     $nomepri = ucwords(strtolower($nomepri));
@@ -4415,7 +5109,8 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                     $resultender = db_query($sqlender);
                                                     db_fieldsmemory($resultender, 0, true);
                                                     $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-                                                    $z01_munic = trim($z01_munic) . "/" . $z01_uf . " - " . $z01_cep . "  " . $z01_cxpostal;
+						    $z01_munic = trim($z01_munic) . "/" . $z01_uf . "  " . $z01_cxpostal;
+						    $z01_cep   = substr($z01_cep,0,5)."-".substr($z01_cep,5,3);
 
                                                 } else {
 
@@ -4439,11 +5134,12 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 where q02_inscr = $q02_inscr";
                                                 $resultempresa = db_query($sqlempresa);
 
-                                                if (pg_numrows($resultempresa) > 0) {
+                                                if (pg_num_rows($resultempresa) > 0) {
                                                     db_fieldsmemory($resultempresa, 0);
                                                 }
                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-                                                $z01_munic = trim($z01_munic) . "/" . $z01_uf . " - " . $z01_cep . "  " . $z01_cxpostal;
+						$z01_munic = trim($z01_munic) . "/" . $z01_uf . "  " . $z01_cxpostal;
+						$z01_cep   = substr($z01_cep,0,5)."-".substr($z01_cep,5,3);
 
                                             } elseif ($k60_tipo == 'N' || $k60_tipo == 'C') {
 
@@ -4461,8 +5157,9 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                 $resultender = db_query($sqlender);
                                                 db_fieldsmemory($resultender, 0, true);
                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-                                                $z01_munic = trim($z01_munic) . "/" . $z01_uf . " - " . $z01_cep . "  " . $z01_cxpostal;
-                                            }
+                                                $z01_munic = trim($z01_munic) . "/" . $z01_uf . " " . $z01_cxpostal;
+					        $z01_cep   = substr($z01_cep,0,5)."-".substr($z01_cep,5,3);
+					    }
 
                                             $oLibDocumento = new libdocumento(1702, null);
                                             if ($oLibDocumento->lErro) {
@@ -4486,7 +5183,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                         } elseif (trim($dadosopcoes[1]) == "ENDER_ENTREGA2") {
 
-                                                $S = $pdf->lMargin;
+                                                $S = $pdf->getLeftMargin();
                                                 $S = 10;
                                                 global $variavel;
                                                 $variavel = "";
@@ -4523,7 +5220,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                    where j01_matric = $matric";
     
                                                     $resultpropri = db_query($sqlpropri);
-                                                    if (pg_numrows($resultpropri) > 0) {
+                                                    if (pg_num_rows($resultpropri) > 0) {
     
                                                         db_fieldsmemory($resultpropri, 0);
                                                         $nomepri = ucwords(strtolower($nomepri));
@@ -4570,7 +5267,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     where q02_inscr = $q02_inscr";
                                                     $resultempresa = db_query($sqlempresa);
     
-                                                    if (pg_numrows($resultempresa) > 0) {
+                                                    if (pg_num_rows($resultempresa) > 0) {
                                                         db_fieldsmemory($resultempresa, 0);
                                                     }
                                                     $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4610,9 +5307,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                 foreach ($aParagrafos as $oParag) {
                                                     eval($oParag->oParag->db02_texto);
                                                 }
-    
                                                 if (file_exists('imagens/files/correios.jpg')) {
-                                                    $pdf->Image('imagens/files/correios.jpg', 162, 110, 38);
+                                                    /* Alterada a altura para 125 para nao cortar o cabeçalho.
+                                                       Antes o valor era 110.
+                                                       Redmine 28631. */
+                                                    $pdf->Image('imagens/files/correios.jpg', 162, 125, 38);
                                                 }
 
                                         } else {
@@ -4620,7 +5319,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             $pdf->setfillcolor(255);
                                             $pdf->Roundedrect(15, 98, 179, 95, 2, 'DF', '1234');
 
-                                            $S = $pdf->lMargin;
+                                            $S = $pdf->getLeftMargin();
                                             $S = 10;
 
                                             $pdf = CabecNotif($pdf, 1, "");
@@ -4656,7 +5355,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                where j01_matric = $matric";
 
                                                 $resultpropri = db_query($sqlpropri);
-                                                if (pg_numrows($resultpropri) > 0) {
+                                                if (pg_num_rows($resultpropri) > 0) {
 
                                                     db_fieldsmemory($resultpropri, 0);
                                                     $nomepri = ucwords(strtolower($nomepri));
@@ -4697,7 +5396,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                    where j01_matric = $matric limit 1";
 
                                                         $rsEnder = db_query($sSqlEnder);
-                                                        if (pg_numrows($rsEnder) > 0) {
+                                                        if (pg_num_rows($rsEnder) > 0) {
 
                                                             db_fieldsmemory($rsEnder, 0);
                                                             $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4726,7 +5425,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                    where j01_matric = $matric limit 1";
 
                                                             $rsEnder = db_query($sSqlEnder) or die($sSqlEnderl);
-                                                            if (pg_numrows($rsEnder) > 0) {
+                                                            if (pg_num_rows($rsEnder) > 0) {
 
                                                                 db_fieldsmemory($rsEnder, 0);
                                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4759,7 +5458,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                       inner join cgm on z01_numcgm = q02_numcgm
                                 where q02_inscr = $q02_inscr";
                                                 $resultempresa = db_query($sqlempresa);
-                                                if (pg_numrows($resultempresa) > 0) {
+                                                if (pg_num_rows($resultempresa) > 0) {
                                                     db_fieldsmemory($resultempresa, 0);
                                                 }
                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4820,7 +5519,9 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                             $pdf->setfillcolor(255);
 
-                                            $pdf->Image("imagens/files/logo_correios.jpg", 15, $iAltAR, 23, 5);
+                                            if (file_exists("imagens/files/logo_correios.jpg")){
+                                                $pdf->Image("imagens/files/logo_correios.jpg", 15, $iAltAR, 23, 5);
+                                            }
 
                                             $pdf->SetFont('Arial', 'B', $iFontAR + 14);
                                             $pdf->Text(40, $iAltAR + 5, "AR");
@@ -5090,7 +5791,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             } else {
                                 if (strtoupper($db02_descr) == "ENDER_ENTREGA") {
 
-                                    $pdf->AddPage();
+                                    $pdf->addPage();
                                     $iQtdNotificoesGeradas++;
                                     global $variavel;
                                     $variavel = "";
@@ -5127,7 +5828,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                          where j01_matric = $matric";
 
                                         $resultpropri = db_query($sqlpropri);
-                                        if (pg_numrows($resultpropri) > 0) {
+                                        if (pg_num_rows($resultpropri) > 0) {
 
                                             db_fieldsmemory($resultpropri, 0);
                                             $nomepri = ucwords(strtolower($nomepri));
@@ -5182,7 +5883,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 inner join cgm on z01_numcgm = q02_numcgm
                           where q02_inscr = $q02_inscr";
                                         $resultempresa = db_query($sqlempresa);
-                                        if (pg_numrows($resultempresa) > 0) {
+                                        if (pg_num_rows($resultempresa) > 0) {
                                             db_fieldsmemory($resultempresa, 0);
                                         }
 
@@ -5240,7 +5941,29 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                     if (file_exists('imagens/files/correios.jpg')) {
                                         $pdf->Image('imagens/files/correios.jpg', 162, 110, 38);
-                                    }
+				                    }
+                   
+                                    $sSqlAR = " select  1
+						  from db_documento 
+                                            inner join db_docparag
+                                                    on db03_docum = db04_docum
+					    inner join db_paragrafo 
+						    on db04_idparag = db02_idparag
+                                                 where db03_docum = {$db04_docum}
+                                                    and db02_descr = 'AR'
+                                                    and db03_instit = ". db_getsession("DB_instit");
+
+                                    $rsSqlAR = db_query($sSqlAR);
+
+				    if (pg_num_rows($rsSqlAR) > 0) {
+                                       $imprime_logo_ar = true;
+                                    } else {
+                                       $imprime_logo_ar = false;
+		                    }
+
+				    if ( $imprime_logo_ar && file_exists('imagens/files/logo_ar.jpg')) {
+                                        $pdf->Image('imagens/files/logo_ar.jpg', 162, 150, 38);
+				    }
 
                                 } else {
 
@@ -5270,7 +5993,7 @@ if ($tiporel == 1 || $tiporel == 11) {
     if ($tiporel == 2) {
 
         $iQtdNotificoesGeradas++;
-        $pdf->addpage();
+        $pdf->addPage();
         $pdf->setfillcolor(235);
         $pdf->setfont('arial', 'b', 8);
         $pdf->cell(15, 05, 'Notificação', 1, 0, "c", 1);
@@ -5283,9 +6006,9 @@ if ($tiporel == 1 || $tiporel == 11) {
         for ($x = $lim1; $x < $lim2; $x++) {
 
             db_fieldsmemory($result, $x);
-            if ($pdf->gety() > $pdf->h - 35) {
+            if ($pdf->gety() > $pdf->getH() - 35) {
 
-                $pdf->addpage();
+                $pdf->addPage();
                 $iQtdNotificoesGeradas++;
                 $pdf->setfont('arial', 'b', 8);
                 $pdf->cell(15, 05, 'Notificação', 1, 0, "c", 1);
@@ -5318,7 +6041,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                 $iQtdNotificoesGeradas++;
                 db_fieldsmemory($result, $x);
-                $pdf->AddPage();
+                $pdf->addPage();
                 $pdf->SetFont('Arial', '', 13);
                 $numcgm = @$j01_numcgm;
                 $matric = @$j01_matric;
@@ -5367,7 +6090,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                 $result10 = db_query($sql10);
                 $xxtipos = '';
                 $virgula = '';
-                for ($i = 0; $i < pg_numrows($result10); $i++) {
+                for ($i = 0; $i < pg_num_rows($result10); $i++) {
 
                     db_fieldsmemory($result10, $i);
                     $xxtipos .= $virgula . $k00_descr;
@@ -5385,11 +6108,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                     strtotime($dDataDebito))) . " de " . date('Y', strtotime($dDataDebito)) . ".", 0, "R", 0, 0);
                 $pdf->ln(10);
 
-                for ($ip = 0; $ip < pg_numrows($resparag); $ip++) {
+                for ($ip = 0; $ip < pg_num_rows($resparag); $ip++) {
 
                     db_fieldsmemory($resparag, $ip);
                     if ($db02_alinha != 0) {
-                        $pdf->setx($pdf->lMargin + $db02_alinha);
+                        $pdf->setx((int)$pdf->getLeftMargin() + $db02_alinha);
                     }
 
                     $pdf->multicell(0, 6, db_geratexto($db02_texto), 0, "$db02_alinhamento", 0, $db02_inicia);
@@ -5401,7 +6124,11 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                 $pdf->setx(100);
                 $posicaoy = $pdf->gety();
-                $pdf->Image('imagens/assinatura/shimi.jpg', 115, $posicaoy + 10, 45);
+
+                if (file_exists('imagens/assinatura/shimi.jpg')){
+                    $pdf->Image('imagens/assinatura/shimi.jpg', 115, $posicaoy + 10, 45);
+                }
+
                 $pdf->MultiCell(90, 6, "\n\n\n" . "Jorge Alfredo Schmitt" . "\n" . "Coordenador de Unidade", 0, "C", 0,
                   15);
 
@@ -5417,7 +6144,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                       from iptuender
                      where j43_matric = " . $matric;
                     $result3 = db_query($sql3);
-                    if (pg_numrows($result3) > 0) {
+                    if (pg_num_rows($result3) > 0) {
 
                         db_fieldsmemory($result3, 0);
                         $sql3 = "select z01_nome from cgm where z01_numcgm = " . $cgm;
@@ -5435,7 +6162,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $result3 = db_query($sql3);
                 }
 
-                if (pg_numrows($result3) > 0) {
+                if (pg_num_rows($result3) > 0) {
 
                     db_fieldsmemory($result3, 0);
                     $pdf->text(10, 248, "Contribuinte: ");
@@ -5471,7 +6198,7 @@ if ($iQtdNotificoesGeradas > 0) {
         //$pdf1->Open();
         $pdf1->AliasNbPages();
         $pdf1->setfillcolor(235);
-        $pdf1->AddPage();
+        $pdf1->addPage();
         $iAlt = 5;
 
         $pdf1->SetFont("Arial", "B", 7);
@@ -5520,34 +6247,46 @@ function CabecNotif($pdf, $endereco, $central)
     global $uf;
     global $db12_extenso;
     global $logo;
+    global $db21_cnpj_efr;
 
-    $S = $pdf->lMargin;
+    $S = $pdf->getLeftMargin();
     $pdf->SetLeftMargin(10);
     $Letra = 'Times';
     $posini = 20;
 
     if ($endereco == 1) {
-
-        $pdf->Image("imagens/files/" . $logo, $posini, 100, 24);
+        if (file_exists("imagens/files/" . $logo)) {
+            $pdf->Image("imagens/files/" . $logo, $posini, 100, 24);
+        }
         $pdf->Ln(90);
     } else {
-        $pdf->Image("imagens/files/" . $logo, $posini, 8, 24);
+        if (file_exists("imagens/files/" . $logo)){
+            $pdf->Image("imagens/files/" . $logo, $posini, 8, 24);
+        }
     }
-
+    //Criado para bagé, redmine 28631 !!!INICIO
+    $espacamento = 0;
+    if($db21_cnpj_efr == '88073291000199'){
+       $espacamento = 28;
+    }
+    //Criado para bagé, redmine 28631 !!!FIM
     $pdf->Ln(5);
     $pdf->SetFont($Letra, '', 10);
+    $pdf->SetX($espacamento);
     $pdf->MultiCell(0, 4, $db12_extenso, 0, "C", 0);
     $pdf->SetFont($Letra, 'B', 13);
+    $pdf->SetX($espacamento);
     $pdf->MultiCell(0, 6, $nomeinst, 0, "C", 0);
     $pdf->SetFont($Letra, 'B', 12);
+    $pdf->SetX($espacamento);
     $pdf->MultiCell(0, 4, @$GLOBALS["head1"], 0, "C", 0);
     if ($endereco == 1) {
+        $pdf->SetX($espacamento);
         $pdf->MultiCell(0, 5, $central, 0, "C", 0);
     }
     $pdf->SetLeftMargin(15);
     $pdf->SetRightMargin(15);
     $pdf->Ln(3);
-
     return $pdf;
 }
 
@@ -5633,7 +6372,7 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
     $z01_ender = trim($z01_ender);
 
-    if (pg_numrows($resultendereco) > 0 && !empty($z01_ender)) {
+    if (pg_num_rows($resultendereco) > 0 && !empty($z01_ender)) {
 
         $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
         if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
@@ -5642,7 +6381,8 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
         $sMunicipio = trim($z01_munic) . " / " . $z01_uf;
         $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-        $z01_munic = trim($z01_munic) . " / " . $z01_uf . " - " . $sCepCxPostal;
+        $z01_munic = trim($z01_cep) . "-" . trim($z01_munic) . " / " . $z01_uf ;
+		$z01_cep   = substr($sCepCxPostal,0,5)."-".substr($sCepCxPostal,5,3);
 
         if ($z01_destinatario == "") {
             $z01_destinatario = $z01_nome;
@@ -5666,7 +6406,7 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
         $resultpropri = db_query($sqlpropri);
 
-        if (pg_numrows($resultpropri) > 0) {
+        if (pg_num_rows($resultpropri) > 0) {
 
             db_fieldsmemory($resultpropri, 0);
 

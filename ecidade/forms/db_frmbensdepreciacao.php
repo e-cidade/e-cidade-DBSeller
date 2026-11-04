@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("t52_descr");
        <?=@$Lt44_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_sequencial',10,$It44_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt44_bens?>">
-       <?
+       <?php
        db_ancora(@$Lt44_bens,"js_pesquisat44_bens(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_bens',10,$It44_bens,true,'text',$db_opcao," onchange='js_pesquisat44_bens(false);'")
 ?>
-       <?
+       <?php
 db_input('t52_descr',100,$It52_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt44_benstipoaquisicao?>">
-       <?
+       <?php
        db_ancora(@$Lt44_benstipoaquisicao,"js_pesquisat44_benstipoaquisicao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_benstipoaquisicao',10,$It44_benstipoaquisicao,true,'text',$db_opcao," onchange='js_pesquisat44_benstipoaquisicao(false);'")
 ?>
-       <?
+       <?php
 db_input('t45_descricao',150,$It45_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt44_benstipodepreciacao?>">
-       <?
+       <?php
        db_ancora(@$Lt44_benstipodepreciacao,"js_pesquisat44_benstipodepreciacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_benstipodepreciacao',10,$It44_benstipodepreciacao,true,'text',$db_opcao," onchange='js_pesquisat44_benstipodepreciacao(false);'")
 ?>
-       <?
+       <?php
 db_input('t46_descricao',150,$It46_descricao,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('t46_descricao',150,$It46_descricao,true,'text',3,'')
        <?=@$Lt44_vidautil?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_vidautil',10,$It44_vidautil,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_input('t44_vidautil',10,$It44_vidautil,true,'text',$db_opcao,"")
        <?=@$Lt44_valoratual?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_valoratual',10,$It44_valoratual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_input('t44_valoratual',10,$It44_valoratual,true,'text',$db_opcao,"")
        <?=@$Lt44_valorresidual?>
     </td>
     <td> 
-<?
+<?php
 db_input('t44_valorresidual',10,$It44_valorresidual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -125,7 +125,7 @@ db_input('t44_valorresidual',10,$It44_valorresidual,true,'text',$db_opcao,"")
        <?=@$Lt44_ultimaavaliacao?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('t44_ultimaavaliacao',@$t44_ultimaavaliacao_dia,@$t44_ultimaavaliacao_mes,@$t44_ultimaavaliacao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -210,7 +210,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensdepreciacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

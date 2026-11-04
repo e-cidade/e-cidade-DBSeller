@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
               <?=$Lat72_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at72_id",8,$Iat72_id,true,"text",4,"","chave_at72_id");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
               <?=$Lat72_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at72_id_usuario",10,$Iat72_id_usuario,true,"text",4,"","chave_at72_id_usuario");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendtecnicoocupado.php")==true){
@@ -122,12 +122,12 @@ $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

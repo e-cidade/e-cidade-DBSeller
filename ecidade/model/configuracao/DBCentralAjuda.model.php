@@ -46,7 +46,7 @@ abstract class DBCentralAjuda
         }
 
         include(modification('libs/db_acessa.php'));
-        $this->sVersao = "2.{$db_fonte_codversao}.{$db_fonte_codrelease}={$cgc}";
+        $this->sVersao = "2.{$db_fonte_codversao}.{$db_fonte_codrelease}-{$cgc}";
 
         $this->iIdItemMenu = $iIdItemMenu;
     }

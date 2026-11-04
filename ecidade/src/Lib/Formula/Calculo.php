@@ -50,9 +50,9 @@ class Calculo
     /**
      * @return mixed
      */
-    public function executar()
+    public function executar($exibirHistorico = false)
     {
-        return $this->formula->executarCalculo();
+        return $this->formula->executarCalculo($exibirHistorico);
     }
 
     /**

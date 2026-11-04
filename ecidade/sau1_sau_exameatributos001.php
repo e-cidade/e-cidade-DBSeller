@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if(isset($incluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Atributos</b></legend>
-	<? include(modification("forms/db_frmsau_examesatributos.php"));?>
+	<?php include(modification("forms/db_frmsau_examesatributos.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -90,7 +90,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","s132_i_atributoexames",true,1,"s132_i_atributoexames",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar)){
   if($clsau_examesatributos->erro_status=="0"){
     $clsau_examesatributos->erro(true,false);

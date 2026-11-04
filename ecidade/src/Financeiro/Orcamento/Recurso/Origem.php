@@ -16,7 +16,7 @@ class Origem
     const LANCAMENTO_CONTABIL = 2; // o206_numero = contabilidade.conlancam c70_codlan
     const AUTORIZACAO_EMPENHO = 100; // o206_numero) = autorizacao: empautoriza.e54_autori
     const PLANILHA_ARRECADACAO = 200; // k81_seqpla da tabela placaixarec... buscar o k81_seqpla pelo codigo da planilha
-    const RECIBO = 300;
+    const RECIBO = 300; // cornump k12_numpre
     const COMPLEMENTO_PADRAO = 400;
 
     private static function get($numero, $origem)

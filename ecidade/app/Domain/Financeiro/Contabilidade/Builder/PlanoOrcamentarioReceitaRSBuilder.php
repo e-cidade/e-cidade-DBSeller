@@ -42,6 +42,12 @@ class PlanoOrcamentarioReceitaRSBuilder extends PlanoOrcamentarioReceitaBuilder
         if (isset($dado['sintetica'])) {
             $dado['sintetica'] = $this->sintetica($dado['sintetica']);
         }
+
+        $dado['desdobramento2'] = str_pad($dado['desdobramento2'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento4'] = str_pad($dado['desdobramento4'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento5'] = str_pad($dado['desdobramento5'], 2, '0', STR_PAD_LEFT);
+        $dado['desdobramento6'] = str_pad($dado['desdobramento6'], 2, '0', STR_PAD_LEFT);
+
         $dado['created_at'] = Carbon::now();
         $dado['updated_at'] = Carbon::now();
 
@@ -53,22 +59,18 @@ class PlanoOrcamentarioReceitaRSBuilder extends PlanoOrcamentarioReceitaBuilder
                 $copia['conta'] = str_replace('X', $codigo, $copia['conta']);
                 $copia['nome'] = str_replace('[TIPO]', $tipo, $copia['nome']);
                 $dados[] = $copia;
-                $dados[] = $this->criaDeducao($copia);
 
                 if ($dado['categoria'] != 9) {
                     $intra = $this->criaIntra($copia);
                     $dados[] = $intra;
-                    $dados[] = $this->criaDeducao($intra);
                 }
             }
         } else {
             $dados[] = $dado;
-            $dados[] = $this->criaDeducao($dado);
 
             if ($dado['categoria'] != 9) {
                 $intra = $this->criaIntra($dado);
                 $dados[] = $intra;
-                $dados[] = $this->criaDeducao($intra);
             }
         }
 

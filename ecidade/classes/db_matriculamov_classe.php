@@ -68,13 +68,13 @@ class cl_matriculamov {
                  ed229_c_horaevento = char(5) = Hora Evento 
                  ";
    //funcao construtor da classe
-   function cl_matriculamov() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matriculamov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -83,7 +83,7 @@ class cl_matriculamov {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed229_i_codigo = ($this->ed229_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed229_i_codigo"]:$this->ed229_i_codigo);
        $this->ed229_i_matricula = ($this->ed229_i_matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["ed229_i_matricula"]:$this->ed229_i_matricula);
@@ -112,7 +112,7 @@ class cl_matriculamov {
      }
    }
    // funcao para inclusao
-   function incluir ($ed229_i_codigo){
+   public function incluir ($ed229_i_codigo){
       $this->atualizacampos();
      if($this->ed229_i_matricula == null ){
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -271,7 +271,7 @@ class cl_matriculamov {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed229_i_codigo=null) {
+   public function alterar ($ed229_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update matriculamov set ";
      $virgula = "";
@@ -469,7 +469,7 @@ class cl_matriculamov {
      }
    }
    // funcao para exclusao
-   function excluir ($ed229_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed229_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed229_i_codigo));
      }else{
@@ -537,7 +537,7 @@ class cl_matriculamov {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -560,7 +560,7 @@ class cl_matriculamov {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -607,7 +607,7 @@ class cl_matriculamov {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -641,7 +641,7 @@ class cl_matriculamov {
      return $sql;
   }
 
-  function sql_query2 ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query2 ( $ed229_i_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);

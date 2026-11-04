@@ -63,7 +63,7 @@ if (isset($alterar))
         }
         else
         {
-            // se n√£o existe arquivo ele inclui o arquivo
+            // se n„o existe arquivo ele inclui o arquivo
             $oidgrava = db_geraArquivoOid("db90_logo", "", 1, $conn);
         }
 
@@ -71,7 +71,7 @@ if (isset($alterar))
     }
     // else
     // {
-  	//     // se n√£o informou nenhum arquivo ele grava null... se tiver arquivo ja gravado tem q excluir.
+  	//     // se n„o informou nenhum arquivo ele grava null... se tiver arquivo ja gravado tem q excluir.
     //     if ($arquivoalt != "")
     //     {
     //         $oidgrava = db_geraArquivoOid("db90_logo","$arquivoalt",3,$conn);
@@ -119,6 +119,7 @@ else if (isset($chavepesquisa))
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
+    <link href="grid.style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">

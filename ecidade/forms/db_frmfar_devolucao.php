@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("nome");
        <?=@$Lfa22_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa22_i_codigo',10,$Ifa22_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa22_i_cgsund?>">
-       <?
+       <?php
        db_ancora(@$Lfa22_i_cgsund,"js_pesquisafa22_i_cgsund(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa22_i_cgsund',10,$Ifa22_i_cgsund,true,'text',$db_opcao," onchange='js_pesquisafa22_i_cgsund(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_i_cgsund',40,$Iz01_i_cgsund,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('z01_i_cgsund',40,$Iz01_i_cgsund,true,'text',3,'')
        <?=@$Lfa22_c_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa22_c_motivo',40,$Ifa22_c_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,22 +75,22 @@ db_input('fa22_c_motivo',40,$Ifa22_c_motivo,true,'text',$db_opcao,"")
        <?=@$Lfa22_c_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa22_c_hora',5,$Ifa22_c_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa22_i_login?>">
-       <?
+       <?php
        db_ancora(@$Lfa22_i_login,"js_pesquisafa22_i_login(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa22_i_login',10,$Ifa22_i_login,true,'text',$db_opcao," onchange='js_pesquisafa22_i_login(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lfa22_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('fa22_d_data',@$fa22_d_data_dia,@$fa22_d_data_mes,@$fa22_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -162,7 +162,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_devolucao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

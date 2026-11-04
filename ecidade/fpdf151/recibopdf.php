@@ -1,4 +1,4 @@
-<?
+<?php
 define('FPDF_FONTPATH','fpdf151/font/');
 require(modification('fpdf151/fpdf.php'));
 

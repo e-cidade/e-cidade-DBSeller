@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactovalele->rotulo->label("o94_codseqimp");
               <?=$Lo94_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o94_codseqimp",5,$Io94_codseqimp,true,"text",4,"","chave_o94_codseqimp");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactovalele->rotulo->label("o94_codseqimp");
               <?=$Lo94_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o94_codele",5,$Io94_codele,true,"text",4,"","chave_o94_codele");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clorcimpactovalele->rotulo->label("o94_codseqimp");
               <?=$Lo94_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o94_codseqimp",5,$Io94_codseqimp,true,"text",4,"","chave_o94_codseqimp");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clorcimpactovalele->rotulo->label("o94_codseqimp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalele.php")==true){
@@ -129,12 +129,12 @@ $clorcimpactovalele->rotulo->label("o94_codseqimp");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

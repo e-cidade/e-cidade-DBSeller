@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsuspensaofinaliza->rotulo->label("ar19_obs");
               <?=$Lar19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar19_sequencial",10,$Iar19_sequencial,true,"text",4,"","chave_ar19_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsuspensaofinaliza->rotulo->label("ar19_obs");
               <?=$Lar19_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ar19_obs",1,$Iar19_obs,true,"text",4,"","chave_ar19_obs");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsuspensaofinaliza->rotulo->label("ar19_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_suspensaofinaliza.php")==true){
@@ -122,12 +122,12 @@ $clsuspensaofinaliza->rotulo->label("ar19_obs");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

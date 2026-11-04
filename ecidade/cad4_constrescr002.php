@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -58,54 +58,54 @@ if($cliptubase->numrows==0){
   db_redireciona("cad4_constrescr001.php?invalido=true");
 }else{
   db_fieldsmemory($result,0);
-}  
-       
+}
+
 
 if(isset($j52_idcons)&&$j52_idcons=="nova"){
    $result = $cliptubase->sql_record($cliptubase->sql_query($j52_matric,"z01_nome",""));
    @db_fieldsmemory($result,0);
-   $j52_idcons=""; 
+   $j52_idcons="";
 }else if(isset($incluir)){
    db_inicio_transacao();
    if($j52_idcons==0){
      $result = $clconstrescr->sql_record($clconstrescr->sql_query_file($j52_matric,"",'max(j52_idcons) as j52_idcons'));
      if($clconstrescr->numrows>0){
        db_fieldsmemory($result,0);
-     }else{ 
+     }else{
        $j52_idcons = 0;
      }
      $j52_idcons = $j52_idcons + 1;
-   }      
+   }
    $clconstrescr->incluir($j52_matric,$j52_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz=explode("X",$caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j53_caract = $matriz[$i];
      if($j53_caract!=""){
        $clconstrcar->incluir($j52_matric,$j52_idcons,$j53_caract);
-     }  
-   } 
+     }
+   }
   db_fim_transacao();
-  $db_botao=1; 
+  $db_botao=1;
 }else if(isset($alterar)){
   db_inicio_transacao();
   $clconstrcar->j53_matric=$j52_matric;
   $clconstrcar->j53_idcons=$j52_idcons;
   $clconstrcar->excluir();
   $clconstrescr->alterar($j52_matric,$j52_idcons);
-  $matriz= split("X",$caracteristica);
+  $matriz=explode("X",$caracteristica);
   for($i=0;$i<sizeof($matriz);$i++){
     $j53_caract = $matriz[$i];
     if($j53_caract!=""){
       $clconstrcar->incluir($j52_matric,$j52_idcons,$j53_caract);
-    }  
+    }
   }
   db_fim_transacao();
- $db_botao=2; 
+ $db_botao=2;
 }else if(isset($j52_matric)&&isset($j52_idcons)){
   $result = $clconstrescr->sql_record($clconstrescr->sql_query($j52_matric,$j52_idcons,"*","",""));
   if($clconstrescr->numrows!=0){
     $db_opcaoid=3;
-    $db_botao=2;  
+    $db_botao=2;
     db_fieldsmemory($result,0);
     $result = $clconstrcar->sql_record($clconstrcar->sql_query($j52_matric,$j52_idcons,"","*"));
     $caracteristica = null;
@@ -115,8 +115,8 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
       $caracteristica .= $car.$j53_caract ;
       $car="X";
     }
-    $caracteristica .= $car; 
-     
+    $caracteristica .= $car;
+
   }
 
 
@@ -130,7 +130,7 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<script> 	
+<script>
 function js_verificaid(valor){
      num=(document.form1.selid.options.length)-1;
     for(i=1;i<=num;i++){
@@ -156,12 +156,12 @@ function js_verificaid(valor){
    }
   }
 
-<?if(isset($j52_matric)){?>
+<?php if(isset($j52_matric)){?>
   function js_trocaid(valor){
     location.href="cad4_constrescr002.php?j52_matric=<?=$j52_matric?>&j52_idcons="+valor+"&z01_nome="+document.form1.z01_nome.value;
-  } 
-<?}?>
-</script> 	
+  }
+<?php }?>
+</script>
 <style type="text/css">
 <!--
 td {
@@ -180,7 +180,7 @@ input {
 function js_lo2(){
   js_trocacordeselect();
   document.form1.j52_idcons.focus();
-  
+
 }
 </script>
 </head>
@@ -199,33 +199,33 @@ function js_lo2(){
     <td align="left" valign="top" bgcolor="#CCCCCC">
       <center>
       <table border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_matric?>
           </td>
-          <td> 
-          <?
+          <td>
+          <?php
            db_input('j52_matric',5,0,true,'text',3,"onchange='js_matri(false)'");
            db_input('z01_nome',30,0,true,'text',3,"");
           ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_idcons?>*
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_idcons',5,$Ij52_idcons,true,'text',$db_opcaoid,"");
 ?>
           </td>
-        
+
           <td rowspan="8" valign="top">
             <table border="0" cellpadding="0" cellspacing="0">
-              <tr><td><b>Construções já Cadastradas</b></td></tr> 
+              <tr><td><b>Construções já Cadastradas</b></td></tr>
               <tr>
-                <td align="center">  
-<?
+                <td align="center">
+<?php
 if(isset($j52_matric)){
 
 
@@ -233,94 +233,94 @@ if(isset($j52_matric)){
     $result = $clconstrescr->sql_record($clconstrescr->sql_query_file($j52_matric,"","j52_idcons","",""));
   }
   $num=$clconstrescr->numrows?$num=$clconstrescr->numrows:$num=0;
-  if($num!=0){  
+  if($num!=0){
     echo "<select name='selid' onchange='js_trocaid(this.value)'  size='".($num>7?8:($num+1))."'>";
-    echo "<option value='nova' ".(!isset($j52_idcons)?"selected":"").">Nova</option>"; 
-    $idcons=$j52_idcons;  
+    echo "<option value='nova' ".(!isset($j52_idcons)?"selected":"").">Nova</option>";
+    $idcons=$j52_idcons;
     $testasel=true;
-    for($i=0;$i<$num;$i++){  
+    for($i=0;$i<$num;$i++){
       db_fieldsmemory($result,$i);
       if($j52_idcons!=$idcons){
-        echo "<option  value='".$j52_idcons."' ".($j52_idcons==$idcons?"selected":"").">$j52_idcons</option>";         
+        echo "<option  value='".$j52_idcons."' ".($j52_idcons==$idcons?"selected":"").">$j52_idcons</option>";
       }
     }
   }
 }
-?> 	
+?>
                 </td>
               </tr>
-            </table>     
+            </table>
           </td>
         </tr>
-        <tr> 
-          <td>          
+        <tr>
+          <td>
            <?=$Lj52_ano?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_ano',5,$Ij52_ano,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_area?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_area',5,$Ij52_area,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_areap?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_areap',5,$Ij52_areap,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_dtlan?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_inputdata('j52_dtlan',@$j52_dtlan_dia,@$j52_dtlan_mes,@$j52_dtlan_ano,true,'text',2,"");
 ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj52_codigo?>">
-<?
+<?php
   db_ancora(@$Lj52_codigo,"js_pesquisaj52_codigo(true);",$db_opcao);
 ?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_codigo',5,$Ij52_codigo,true,'text',$db_opcao," onchange='js_pesquisaj52_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
           <td>
         <tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_numero?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_numero',5,$Ij52_numero,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj52_compl?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j52_compl',5,$Ij52_compl,true,'text',1,"");
 ?>
           </td>
@@ -328,13 +328,13 @@ if(isset($j52_matric)){
         <tr>
           <td>
             <b>
-<?
+<?php
   db_ancora("Características","js_mostracaracteristica();",1);
 ?>
-            </b> 
+            </b>
           </td>
-          <td> 
-<?
+          <td>
+<?php
 
   db_input('caracteristica',15,1,true,'hidden',1,"")
 ?>
@@ -359,7 +359,7 @@ if(isset($j52_matric)){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -385,10 +385,10 @@ function js_mostra(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostra1(chave,erro){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.j52_matric.focus(); 
-    document.form1.j52_matric.value = ''; 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
+    document.form1.j52_matric.focus();
+    document.form1.j52_matric.value = '';
   }
 }
 
@@ -420,14 +420,14 @@ function js_mostraruas1(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostraruas(chave,erro){
-  document.form1.j14_nome.value = chave; 
-  if(erro==true){ 
-    document.form1.j52_codigo.focus(); 
-    document.form1.j52_codigo.value = ''; 
+  document.form1.j14_nome.value = chave;
+  if(erro==true){
+    document.form1.j52_codigo.focus();
+    document.form1.j52_codigo.value = '';
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_divcontr {
                  v01_matric = int4 = matricula do cadastro imobiliário 
                  ";
    //funcao construtor da classe 
-   function cl_divcontr() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("divcontr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_divcontr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->v01_coddiv = ($this->v01_coddiv == ""?@$GLOBALS["HTTP_POST_VARS"]["v01_coddiv"]:$this->v01_coddiv);
        $this->v01_contr = ($this->v01_contr == ""?@$GLOBALS["HTTP_POST_VARS"]["v01_contr"]:$this->v01_contr);
@@ -77,7 +77,7 @@ class cl_divcontr {
      }
    }
    // funcao para inclusao
-   function incluir ($v01_coddiv){ 
+   public function incluir ($v01_coddiv){ 
       $this->atualizacampos();
      if($this->v01_contr == null ){ 
        $this->erro_sql = " Campo Contribuicao da divida nao Informado.";
@@ -153,7 +153,7 @@ class cl_divcontr {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($v01_coddiv=null) { 
+   public function alterar ($v01_coddiv=null) { 
       $this->atualizacampos();
      $sql = " update divcontr set ";
      $virgula = "";
@@ -248,7 +248,7 @@ class cl_divcontr {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($v01_coddiv=null,$dbwhere=null) { 
+   public function excluir ($v01_coddiv=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($v01_coddiv));
      }else{ 
@@ -311,7 +311,7 @@ class cl_divcontr {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

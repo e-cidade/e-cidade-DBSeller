@@ -64,7 +64,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","bi29_nome",true,1,"bi29_nome",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clcolecaoacervo->erro_status=="0"){
     $clcolecaoacervo->erro(true,false);

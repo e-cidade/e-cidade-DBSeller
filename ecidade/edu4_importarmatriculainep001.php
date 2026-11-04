@@ -242,7 +242,7 @@ $iCodigoInepBanco = db_utils::fieldsMemory($rsEscola, 0)->ed18_c_codigoinep;
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <? if (trim($iCodigoInepBanco) == "") : ?>
+                        <?php if (trim($iCodigoInepBanco) == "") : ?>
                             <div style="padding: 5px; color: red;">
                                 * Código INEP desta escola não informado no sistema. Operação Não Permitida. <br>
                                 <a href='edu1_escolaabas002.php'>Informar Código INEP</a>
@@ -310,7 +310,7 @@ $iCodigoInepBanco = db_utils::fieldsMemory($rsEscola, 0)->ed18_c_codigoinep;
         return true;
     }
 </script>
-<?
+<?php
 if (isset($oPost->importar)) {
 
     if ($lErro) {

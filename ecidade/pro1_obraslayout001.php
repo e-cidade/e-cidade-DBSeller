@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -216,7 +216,7 @@ if(isset($imprimir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
         
-	<?
+	<?php
 	if(isset($imprimir)){
           echo "<br><strong><a style='color:black'  href='http://192.168.1.15/~dbpaulo/dbportal2/$tmpfile'> Arquivo gerado em:  ".$tmpfile."<br>Clique aqui para salvar</a></strong><br><br>";
 	}
@@ -226,12 +226,12 @@ if(isset($imprimir)){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clobraslayout->erro_status=="0"){
     $clobraslayout->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ $oGet = db_utils::postMemory($_GET);
 <table align="center" valign="top" style="padding-top:25px;">
   <tr> 
     <td> 
-      <?
+      <?php
       
         if ( $oGet->sTipoTitular == 'Cidadao' ) {
         	$sWhere  = " and ov10_cidadao = {$oGet->iCodigo} "; 

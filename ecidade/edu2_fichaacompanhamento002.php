@@ -30,18 +30,17 @@
  *         Fabio Esteves fabio.esteves@dbseller.com.br
  * @version $Revision: 1.14 $
  */
-require_once(modification("fpdf151/FpdfMultiCellBorder.php"));
-require_once(modification("libs/db_sql.php"));
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_utils.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("libs/db_app.utils.php"));
-require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("model/educacao/avaliacao/iFormaObtencao.interface.php"));
-require_once(modification("model/educacao/avaliacao/iElementoAvaliacao.interface.php"));
-require_once(modification("std/DBDate.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_sql.php");
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_app.utils.php");
+require_once modification("dbforms/db_funcoes.php");
+require_once modification("model/educacao/avaliacao/iFormaObtencao.interface.php");
+require_once modification("model/educacao/avaliacao/iElementoAvaliacao.interface.php");
+require_once modification("std/DBDate.php");
 
 db_app::import("educacao.*");
 db_app::import("educacao.avaliacao.*");
@@ -124,13 +123,32 @@ foreach ($aDisciplinaTurma as $oRegencia) {
 /**
  * Imprimindo relatorio
  */
-$oPdf = new FpdfMultiCellBorder();
-$oPdf->Open();
+
+$oPdf = new ECidade\Pdf\Pdf();
+$oPdf->init(false);
 $oPdf->AliasNbPages();
 $oPdf->SetMargins(10, 10, 10);
 $oPdf->SetAutoPageBreak(true, 10);
 $oPdf->mostrarRodape(true);
 $oPdf->mostrarTotalDePaginas(true);
+
+$sNomeEscola = $oEscola->getDepartamento()->getNomeDepartamento();
+$iCodigoReferencia = $oEscola->getCodigoReferencia();
+
+if ($iCodigoReferencia = null || $iCodigoReferencia == "") {
+    $iCodigoEscola = $oEscola->getCodigo();
+    $sNomeEscola = "{$iCodigoEscola} - {$sNomeEscola}";
+} else {
+    $sNomeEscola = "{$iCodigoReferencia} - {$sNomeEscola}";
+}
+
+$title1 = $oEscola->getNomeEstadoExtenso();
+$title2 = $sNomeEscola;
+$title3 = $sSecretaria;
+
+$oPdf->addTitulo($title1, 1);
+$oPdf->addTitulo($title2, 2);
+$oPdf->addTitulo($title3, 3);
 
 for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
     /**
@@ -166,6 +184,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
     /**
      * Buscamos as avaliacoes dos pareceres
      */
+
     foreach ($aDiarioAvaliacaoDisciplina as $oDisciplina) {
         foreach ($oDisciplina->getAvaliacoes() as $oAvaliacao) {
             $iCodigoDisciplina = $oDisciplina->getDisciplina()->getCodigoDisciplina();
@@ -207,29 +226,13 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
             }
         }
     }
-    
+
     $oPdf->AddPage();
     $oPdf->SetFont('arial', '', 7);
 
     /** *****************************************************************************************************************
      **************************************** IMPRIMIMOS O CABEÇALHO DO RELATORIO ***************************************
      *******************************************************************************************************************/
-    $oPdf->Image("imagens/files/" . $oEscola->getLogo(), $oPdf->GetX(), $oPdf->GetY(), 15);
-
-    $sNomeEscola = $oEscola->getDepartamento()->getNomeDepartamento();
-    $iCodigoReferencia = $oEscola->getCodigoReferencia();
-
-    if ($iCodigoReferencia != null) {
-        $sNomeEscola = "{$iCodigoReferencia} - {$sNomeEscola}";
-    }
-
-    $oPdf->setfont('arial', 'b', 10);
-    $oPdf->SetX(30);
-    $oPdf->Cell(150, $iHeigth, $oEscola->getNomeEstadoExtenso(), 0, 1, "L");
-    $oPdf->SetX(30);
-    $oPdf->Cell(150, $iHeigth, $sNomeEscola, 0, 1, "L");
-    $oPdf->SetX(30);
-    $oPdf->Cell(150, $iHeigth, $sSecretaria, 0, 1, "L");
 
     $oPdf->ln(6);
     $oPdf->SetFont('arial', 'b', 11);
@@ -275,8 +278,10 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
     $sWhereAlunoNecessidades = "ed214_i_aluno = {$aAlunos[$iContador]->getCodigoAluno()}";
     $sSqlAlunoNecessidades = $oDaoAlunoNecessidades->sql_query_file(null, "*", null, $sWhereAlunoNecessidades);
     $sPossuiNecessidades = "(  ) Sim    ( x ) Não";
+    $result = db_query($sSqlAlunoNecessidades);
+    $numrows = pg_num_rows($result);
 
-    if ($oDaoAlunoNecessidades->numrows > 0) {
+    if ($numrows > 0) {
         $sPossuiNecessidades = "( x ) Sim    (  ) Não";
     }
     $sNecessidades = "Possui Necessidades Educativas Especiais com Laudo? {$sPossuiNecessidades}";
@@ -315,7 +320,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
             $iNumeroDePareceres = count($aParecer);
             $sNomeDisciplina = $oParecer->sDisciplina;
 
-            if ($oPdf->gety() > $oPdf->h - 15) {
+            if ($oPdf->gety() > $oPdf->getH() - 15) {
                 imprimeDisciplina($oPdf, $iYInicial, $iXInicial, $iAlturaRetangulo, $sNomeDisciplina, $iTamanhoCelulaDescricaoParecerCalculado);
                 $oPdf->AddPage();
                 setHeader($oPdf, $iHeigth, $aPeriodos, $iTamanhoCelulaDescricaoParecerCalculado, $iTamanhoCelulaPeriodoPadrao);
@@ -422,7 +427,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
         $iTamanhoString = $oPdf->GetStringWidth($sParecerDescritivo);
         $iXInicial = $oPdf->GetX();
         $iYInicial = $oPdf->GetY();
-        $iYFinalPagina = $oPdf->h - 100;
+        $iYFinalPagina = $oPdf->getH() - 100;
         $oPdf->multiCell(190, 3, $sParecerDescritivo, 1, "J", 0);
     } else {
         $iLinhasApontamento = ($iAlturaDoQuadro - ($oPdf->getY() - $iEixoYInicialApontamentos)) / 4;
@@ -434,7 +439,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
             $oPdf->Cell(190, $iHeigth, "", 1, 1, "C");
         }
     }
-    if ($oPdf->GetY() == ($oPdf->h - 55)) {
+    if ($oPdf->GetY() == ($oPdf->getH() - 55)) {
         $oPdf->AddPage();
     }
 
@@ -446,7 +451,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
     $sAcompanhamentoObservacao .= "escolares, atendendo as necessidades de diferenciação da metodologia e pedagogia ";
     $sAcompanhamentoObservacao .= "aplicada para o Ensino Fundamental e Educação de Jovens e Adultos.";
     $iTotalLinhasObservacao = $oPdf->NbLines(190, $sAcompanhamentoObservacao) + 4;
-    if ($oPdf->GetY() > ($oPdf->h - ($iTotalLinhasObservacao + 15))) {
+    if ($oPdf->GetY() > ($oPdf->getH() - ($iTotalLinhasObservacao + 15))) {
         $oPdf->AddPage();
     }
     $oPdf->SetFont('arial', 'b', 8);
@@ -454,7 +459,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
     $oPdf->SetFont('arial', '', 6);
     $oPdf->MultiCell(190, 3, $sAcompanhamentoObservacao, "LRB", 1, "C");
     $oPdf->Ln(2);
-    if ($oPdf->GetY() > ($oPdf->h - 39)) {
+    if ($oPdf->GetY() > ($oPdf->getH() - 39)) {
         $oPdf->AddPage();
     }
     /**
@@ -520,7 +525,7 @@ for ($iContador = 0; $iContador < $iContadorAlunos; $iContador++) {
 
 }
 
-$oPdf->Output();
+$oPdf->Output('I', 'edu2_fichaacompanhamento002', false);
 
 /**
  * Para poder-mos imprimir o nome da disciplina temos que setar a altura inicial do texto.

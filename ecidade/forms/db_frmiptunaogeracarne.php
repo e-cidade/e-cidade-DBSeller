@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if ($db_opcao==1){
        <?=@$Lj66_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('j66_sequencial',10,$Ij66_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -67,22 +67,22 @@ db_input('j66_sequencial',10,$Ij66_sequencial,true,'text',3,"")
        <?=@$Lj66_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('j66_data',@$j66_data_dia,@$j66_data_mes,@$j66_data_ano,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj66_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lj66_usuario,"js_pesquisaj66_usuario(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j66_usuario',10,$Ij66_usuario,true,'text',3," onchange='js_pesquisaj66_usuario(false);'");
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_iptunaogeracarne.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

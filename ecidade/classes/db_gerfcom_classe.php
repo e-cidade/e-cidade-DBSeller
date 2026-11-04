@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE gerfcom
-class cl_gerfcom { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r48_anousu = 0; 
-   var $r48_mesusu = 0; 
-   var $r48_regist = 0; 
-   var $r48_rubric = null; 
-   var $r48_valor = 0; 
-   var $r48_pd = 0; 
-   var $r48_quant = 0; 
-   var $r48_lotac = null; 
-   var $r48_semest = 0; 
-   var $r48_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_gerfcom {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r48_anousu = 0;
+   var $r48_mesusu = 0;
+   var $r48_regist = 0;
+   var $r48_rubric = null;
+   var $r48_valor = 0;
+   var $r48_pd = 0;
+   var $r48_quant = 0;
+   var $r48_lotac = null;
+   var $r48_semest = 0;
+   var $r48_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r48_anousu = int4 = Ano do Exercicio 
-                 r48_mesusu = int4 = Mes do Exercicio 
-                 r48_regist = int4 = Matrícula 
-                 r48_rubric = char(4) = Rubrica 
-                 r48_valor = float8 = Valor 
-                 r48_pd = int4 = P/D 
-                 r48_quant = float8 = Quantidade 
-                 r48_lotac = char(4) = Lotação 
-                 r48_semest = int4 = Semestre 
-                 r48_instit = int4 = codigo da instituicao 
+                 r48_anousu = int4 = Ano do Exercicio
+                 r48_mesusu = int4 = Mes do Exercicio
+                 r48_regist = int4 = Matrícula
+                 r48_rubric = char(4) = Rubrica
+                 r48_valor = float8 = Valor
+                 r48_pd = int4 = P/D
+                 r48_quant = float8 = Quantidade
+                 r48_lotac = char(4) = Lotação
+                 r48_semest = int4 = Semestre
+                 r48_instit = int4 = codigo da instituicao
                  ";
-   //funcao construtor da classe 
-   function cl_gerfcom() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("gerfcom"); 
+     $this->rotulo = new rotulo("gerfcom");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_gerfcom {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r48_anousu = ($this->r48_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r48_anousu"]:$this->r48_anousu);
        $this->r48_mesusu = ($this->r48_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r48_mesusu"]:$this->r48_mesusu);
@@ -101,9 +101,9 @@ class cl_gerfcom {
      }
    }
    // funcao para inclusao
-   function incluir ($r48_anousu,$r48_mesusu,$r48_regist,$r48_rubric){ 
+   public function incluir ($r48_anousu,$r48_mesusu,$r48_regist,$r48_rubric){
       $this->atualizacampos();
-     if($this->r48_valor == null ){ 
+     if($this->r48_valor == null ){
        $this->erro_sql = " Campo Valor não informado.";
        $this->erro_campo = "r48_valor";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r48_pd == null ){ 
+     if($this->r48_pd == null ){
        $this->erro_sql = " Campo P/D não informado.";
        $this->erro_campo = "r48_pd";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r48_quant == null ){ 
+     if($this->r48_quant == null ){
        $this->erro_sql = " Campo Quantidade não informado.";
        $this->erro_campo = "r48_quant";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r48_lotac == null ){ 
+     if($this->r48_lotac == null ){
        $this->erro_sql = " Campo Lotação não informado.";
        $this->erro_campo = "r48_lotac";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r48_semest == null ){ 
+     if($this->r48_semest == null ){
        $this->erro_sql = " Campo Semestre não informado.";
        $this->erro_campo = "r48_semest";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r48_instit == null ){ 
+     if($this->r48_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao não informado.";
        $this->erro_campo = "r48_instit";
        $this->erro_banco = "";
@@ -157,11 +157,11 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-       $this->r48_anousu = $r48_anousu; 
-       $this->r48_mesusu = $r48_mesusu; 
-       $this->r48_regist = $r48_regist; 
-       $this->r48_rubric = $r48_rubric; 
-     if(($this->r48_anousu == null) || ($this->r48_anousu == "") ){ 
+       $this->r48_anousu = $r48_anousu;
+       $this->r48_mesusu = $r48_mesusu;
+       $this->r48_regist = $r48_regist;
+       $this->r48_rubric = $r48_rubric;
+     if(($this->r48_anousu == null) || ($this->r48_anousu == "") ){
        $this->erro_sql = " Campo r48_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r48_mesusu == null) || ($this->r48_mesusu == "") ){ 
+     if(($this->r48_mesusu == null) || ($this->r48_mesusu == "") ){
        $this->erro_sql = " Campo r48_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r48_regist == null) || ($this->r48_regist == "") ){ 
+     if(($this->r48_regist == null) || ($this->r48_regist == "") ){
        $this->erro_sql = " Campo r48_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -185,7 +185,7 @@ class cl_gerfcom {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r48_rubric == null) || ($this->r48_rubric == "") ){ 
+     if(($this->r48_rubric == null) || ($this->r48_rubric == "") ){
        $this->erro_sql = " Campo r48_rubric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,31 +194,31 @@ class cl_gerfcom {
        return false;
      }
      $sql = "insert into gerfcom(
-                                       r48_anousu 
-                                      ,r48_mesusu 
-                                      ,r48_regist 
-                                      ,r48_rubric 
-                                      ,r48_valor 
-                                      ,r48_pd 
-                                      ,r48_quant 
-                                      ,r48_lotac 
-                                      ,r48_semest 
-                                      ,r48_instit 
+                                       r48_anousu
+                                      ,r48_mesusu
+                                      ,r48_regist
+                                      ,r48_rubric
+                                      ,r48_valor
+                                      ,r48_pd
+                                      ,r48_quant
+                                      ,r48_lotac
+                                      ,r48_semest
+                                      ,r48_instit
                        )
                 values (
-                                $this->r48_anousu 
-                               ,$this->r48_mesusu 
-                               ,$this->r48_regist 
-                               ,'$this->r48_rubric' 
-                               ,$this->r48_valor 
-                               ,$this->r48_pd 
-                               ,$this->r48_quant 
-                               ,'$this->r48_lotac' 
-                               ,$this->r48_semest 
-                               ,$this->r48_instit 
+                                $this->r48_anousu
+                               ,$this->r48_mesusu
+                               ,$this->r48_regist
+                               ,'$this->r48_rubric'
+                               ,$this->r48_valor
+                               ,$this->r48_pd
+                               ,$this->r48_quant
+                               ,'$this->r48_lotac'
+                               ,$this->r48_semest
+                               ,$this->r48_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Calculo da folha complementar ($this->r48_anousu."-".$this->r48_mesusu."-".$this->r48_regist."-".$this->r48_rubric) nao Incluído. Inclusao Abortada.";
@@ -268,16 +268,16 @@ class cl_gerfcom {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null, $r48_semest=null) { 
+   public function alterar ($r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null, $r48_semest=null) {
       $this->atualizacampos();
      $sql = " update gerfcom set ";
      $virgula = "";
-     if(trim($this->r48_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_anousu"])){ 
+     if(trim($this->r48_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_anousu"])){
        $sql  .= $virgula." r48_anousu = $this->r48_anousu ";
        $virgula = ",";
-       if(trim($this->r48_anousu) == null ){ 
+       if(trim($this->r48_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio não informado.";
          $this->erro_campo = "r48_anousu";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_mesusu"])){ 
+     if(trim($this->r48_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_mesusu"])){
        $sql  .= $virgula." r48_mesusu = $this->r48_mesusu ";
        $virgula = ",";
-       if(trim($this->r48_mesusu) == null ){ 
+       if(trim($this->r48_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio não informado.";
          $this->erro_campo = "r48_mesusu";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_regist"])){ 
+     if(trim($this->r48_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_regist"])){
        $sql  .= $virgula." r48_regist = $this->r48_regist ";
        $virgula = ",";
-       if(trim($this->r48_regist) == null ){ 
+       if(trim($this->r48_regist) == null ){
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "r48_regist";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_rubric"])){ 
+     if(trim($this->r48_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_rubric"])){
        $sql  .= $virgula." r48_rubric = '$this->r48_rubric' ";
        $virgula = ",";
-       if(trim($this->r48_rubric) == null ){ 
+       if(trim($this->r48_rubric) == null ){
          $this->erro_sql = " Campo Rubrica não informado.";
          $this->erro_campo = "r48_rubric";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_valor"])){ 
+     if(trim($this->r48_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_valor"])){
        $sql  .= $virgula." r48_valor = $this->r48_valor ";
        $virgula = ",";
-       if(trim($this->r48_valor) == null ){ 
+       if(trim($this->r48_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "r48_valor";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_pd"])){ 
+     if(trim($this->r48_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_pd"])){
        $sql  .= $virgula." r48_pd = $this->r48_pd ";
        $virgula = ",";
-       if(trim($this->r48_pd) == null ){ 
+       if(trim($this->r48_pd) == null ){
          $this->erro_sql = " Campo P/D não informado.";
          $this->erro_campo = "r48_pd";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_quant"])){ 
+     if(trim($this->r48_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_quant"])){
        $sql  .= $virgula." r48_quant = $this->r48_quant ";
        $virgula = ",";
-       if(trim($this->r48_quant) == null ){ 
+       if(trim($this->r48_quant) == null ){
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "r48_quant";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_lotac"])){ 
+     if(trim($this->r48_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_lotac"])){
        $sql  .= $virgula." r48_lotac = '$this->r48_lotac' ";
        $virgula = ",";
-       if(trim($this->r48_lotac) == null ){ 
+       if(trim($this->r48_lotac) == null ){
          $this->erro_sql = " Campo Lotação não informado.";
          $this->erro_campo = "r48_lotac";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_semest"])){ 
+     if(trim($this->r48_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_semest"])){
        $sql  .= $virgula." r48_semest = $this->r48_semest ";
        $virgula = ",";
-       if(trim($this->r48_semest) == null ){ 
+       if(trim($this->r48_semest) == null ){
          $this->erro_sql = " Campo Semestre não informado.";
          $this->erro_campo = "r48_semest";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_gerfcom {
          return false;
        }
      }
-     if(trim($this->r48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_instit"])){ 
+     if(trim($this->r48_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r48_instit"])){
        $sql  .= $virgula." r48_instit = $this->r48_instit ";
        $virgula = ",";
-       if(trim($this->r48_instit) == null ){ 
+       if(trim($this->r48_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao não informado.";
          $this->erro_campo = "r48_instit";
          $this->erro_banco = "";
@@ -462,7 +462,7 @@ class cl_gerfcom {
      }
 
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Calculo da folha complementar nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r48_anousu."-".$this->r48_mesusu."-".$this->r48_regist."-".$this->r48_rubric;
@@ -490,11 +490,11 @@ class cl_gerfcom {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -503,7 +503,7 @@ class cl_gerfcom {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($r48_anousu,$r48_mesusu,$r48_regist,$r48_rubric));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -561,9 +561,9 @@ class cl_gerfcom {
      } else {
        $sql2 = $dbwhere;
      }
-     
+
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Calculo da folha complementar nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r48_anousu."-".$r48_mesusu."-".$r48_regist."-".$r48_rubric;
@@ -591,11 +591,11 @@ class cl_gerfcom {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -617,8 +617,8 @@ class cl_gerfcom {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($r48_anousu = null,$r48_mesusu = null,$r48_regist = null,$r48_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($r48_anousu = null,$r48_mesusu = null,$r48_regist = null,$r48_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from gerfcom ";
@@ -638,32 +638,32 @@ class cl_gerfcom {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($r48_anousu)) {
-         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu "; 
-       } 
+         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu ";
+       }
        if (!empty($r48_mesusu)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu ";
+       }
        if (!empty($r48_regist)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_regist = $r48_regist "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_regist = $r48_regist ";
+       }
        if (!empty($r48_rubric)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -673,7 +673,7 @@ class cl_gerfcom {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($r48_anousu = null,$r48_mesusu = null,$r48_regist = null,$r48_rubric = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -681,32 +681,32 @@ class cl_gerfcom {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($r48_anousu)){
-         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu "; 
-       } 
+         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu ";
+       }
        if (!empty($r48_mesusu)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu ";
+       }
        if (!empty($r48_regist)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_regist = $r48_regist "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_regist = $r48_regist ";
+       }
        if (!empty($r48_rubric)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -717,10 +717,10 @@ class cl_gerfcom {
      return $sql;
   }
 
-   function sql_query_rhrubricas ( $r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_rhrubricas ( $r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -735,39 +735,39 @@ class cl_gerfcom {
      $sql2 = "";
      if($dbwhere==""){
        if($r48_anousu!=null ){
-         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu "; 
-       } 
+         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu ";
+       }
        if($r48_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu ";
+       }
        if($r48_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_regist = $r48_regist "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_regist = $r48_regist ";
+       }
        if($r48_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -776,10 +776,10 @@ class cl_gerfcom {
      }
      return $sql;
   }
-   function sql_query_seleciona ( $r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_seleciona ( $r48_anousu=null,$r48_mesusu=null,$r48_regist=null,$r48_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -798,39 +798,39 @@ class cl_gerfcom {
      $sql2 = "";
      if($dbwhere==""){
        if($r48_anousu!=null ){
-         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu "; 
-       } 
+         $sql2 .= " where gerfcom.r48_anousu = $r48_anousu ";
+       }
        if($r48_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_mesusu = $r48_mesusu ";
+       }
        if($r48_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_regist = $r48_regist "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_regist = $r48_regist ";
+       }
        if($r48_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfcom.r48_rubric = '$r48_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -841,13 +841,13 @@ class cl_gerfcom {
   }
 
   /**
-   * Retorna uma query para ser utilizada na verificação das folhas complementares fechadas da competência atual 
+   * Retorna uma query para ser utilizada na verificação das folhas complementares fechadas da competência atual
    * @param integer $iAnoUsu
    * @param integer $iMesUsu
-   * @return String 
+   * @return String
    */
   public function sql_query_complementar_fechadas($iAnoUsu, $iMesUsu){
-    
+
     $iInstituicao = db_getsession('DB_instit');
 
     $sSql         = "select distinct rh141_codigo from gerfcom";
@@ -863,7 +863,7 @@ class cl_gerfcom {
   }
 
   /**
-   * Retorna dados que estao na rhhistoricocalculo e insere 
+   * Retorna dados que estao na rhhistoricocalculo e insere
    * novamente na gerfcom na competência informada.
    * @param  Integer $iAno
    * @param  Integer $iMes
@@ -920,7 +920,7 @@ class cl_gerfcom {
 
   public function migraGerfCom($iInstituicao) {
 
-    $sSql  = "create table w_migracao_rhfolhapagamento as                                                                                                "; 
+    $sSql  = "create table w_migracao_rhfolhapagamento as                                                                                                ";
     $sSql .= "select distinct r48_anousu,                                                                                                                ";
     $sSql .= "                r48_mesusu,                                                                                                                ";
     $sSql .= "                r48_semest,                                                                                                                ";
@@ -933,7 +933,7 @@ class cl_gerfcom {
     $sSql .= "order by r48_anousu asc,                                                                                                                   ";
     $sSql .= "         r48_mesusu asc,                                                                                                                   ";
     $sSql .= "         r48_semest asc;                                                                                                                   ";
-                                                                                                                                                         
+
     $sSql .= "  insert into rhfolhapagamento                                                                                                             ";
     $sSql .= "select nextval('rhfolhapagamento_rh141_sequencial_seq'),                                                                                   ";
     $sSql .= "       r48_semest,                                                                                                                         ";
@@ -949,7 +949,7 @@ class cl_gerfcom {
     $sSql .= "order by r48_anousu asc,                                                                                                                   ";
     $sSql .= "          r48_mesusu asc,                                                                                                                  ";
     $sSql .= "          r48_semest asc;                                                                                                                  ";
-                                                                                                                                                         
+
     $sSql .= "    create table w_ultimafolhadecadacompetencia as                                                                                         ";
     $sSql .= "select max(rh141_codigo) as ultimafolha,                                                                                                   ";
     $sSql .= "                           rh141_anousu,                                                                                                   ";
@@ -957,7 +957,7 @@ class cl_gerfcom {
     $sSql .= "                           rh141_instit                                                                                                    ";
     $sSql .= "  from rhfolhapagamento                                                                                                                    ";
     $sSql .= "group by rh141_anousu,rh141_mesusu, rh141_instit;                                                                                          ";
-                                                                                                                                                         
+
     $sSql .= "insert into rhhistoricoponto                                                                                                               ";
     $sSql .= "  (rh144_sequencial,rh144_regist,rh144_folhapagamento,rh144_rubrica,rh144_quantidade,rh144_valor)                                          ";
     $sSql .= "select nextval('rhhistoricoponto_rh144_sequencial_seq'),                                                                                   ";
@@ -975,7 +975,7 @@ class cl_gerfcom {
     $sSql .= "                                           and w_ultimafolhadecadacompetencia.rh141_instit = rhfolhapagamento.rh141_instit                 ";
     $sSql .= "                                           and w_ultimafolhadecadacompetencia.ultimafolha  = rhfolhapagamento.rh141_codigo                 ";
     $sSql .= "order by rh141_sequencial;                                                                                                                 ";
-                                                                                                                                                         
+
     $sSql .= "insert into rhhistoricocalculo                                                                                                             ";
     $sSql .= "select nextval('rhhistoricocalculo_rh143_sequencial_seq'),                                                                                 ";
     $sSql .= "       r48_regist,                                                                                                                         ";
@@ -991,7 +991,7 @@ class cl_gerfcom {
     $sSql .= "                                           and  rh141_codigo    = r48_semest                                                               ";
     $sSql .= "                                           and  rh141_tipofolha = 3                                                                        ";
     $sSql .= "order by rh141_sequencial;                                                                                                                 ";
-                                                                                                                                                                                                                               
+
 
     return $sSql;
   }

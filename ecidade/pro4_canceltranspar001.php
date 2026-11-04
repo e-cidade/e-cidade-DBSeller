@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,9 +39,10 @@ db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
 $clproctransfer     = new cl_proctransfer;
 $clproctransferproc = new cl_proctransferproc;
+$clProcessosApensados = new cl_processosapensados();
 
 if (isset($cancel)) {
-    $codigoProcessos = split(',', $listaproc);
+    $codigoProcessos =explode(',', $listaproc);
 
     foreach ($codigoProcessos as $codigoProcesso) {
         $processo = ProcessoRepositorio::encontrar($codigoProcesso);
@@ -68,9 +69,32 @@ if (isset($cancel)) {
     }
     db_inicio_transacao();
     $sqlerro     = false;
-    $result_cont = $clproctransferproc->sql_record($clproctransferproc->sql_query_file($codtransfer));
+    $sqlproctransferproc = $clproctransferproc->sql_query_file(null,
+        null,
+        '*',
+        null,
+        "    p63_codtran = $codtransfer
+      and not exists (select 1
+        from processosapensados
+        where p30_procapensado = proctransferproc.p63_codproc) ");
+
+    $result_cont = $clproctransferproc->sql_record($sqlproctransferproc);
 
     if ($clproctransferproc->numrows == $contador) {
+        /* select processoapensado pela lista de processos excluir processos apensandos da lista */
+        $sSqlProcessosApensados = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal in ($listaproc) ");
+        $rsProcessosApensados   = $clProcessosApensados->sql_record($sSqlProcessosApensados);
+        for($iProcessoApensado = 0; $iProcessoApensado < pg_num_rows($rsProcessosApensados); $iProcessoApensado++) {
+
+            $oProcessoApensado = db_utils::fieldsmemory($rsProcessosApensados, $iProcessoApensado);
+            $clproctransferproc->excluir(null, null, "p63_codproc = $oProcessoApensado->p30_procapensado and p63_codtran = $codtransfer");
+            $erro = $clproctransferproc->erro_msg;
+            if ($clproctransferproc->erro_status==0){
+                $sqlerro=true;
+            }
+
+        }
+
         $clproctransferproc->excluir(null, null, "p63_codtran=$codtransfer");
         $erro = $clproctransferproc->erro_msg;
         if ($clproctransferproc->erro_status == 0) {
@@ -80,12 +104,26 @@ if (isset($cancel)) {
         if ($sqlerro == false) {
             $clproctransfer->excluir($codtransfer);
             $erro = $clproctransfer->erro_msg;
-            
+
             if ($clproctransfer->erro_status == 0) {
                 $sqlerro = true;
             }
         }
     } else {
+        /* select processoapensado pela lista de processos excluir processos apensandos da lista */
+        $sSqlProcessosApensados = $clProcessosApensados->sql_query_file(null, "*", null, "p30_procprincipal in ($listaproc) ");
+        $rsProcessosApensados   = $clProcessosApensados->sql_record($sSqlProcessosApensados);
+        for($iProcessoApensado = 0; $iProcessoApensado < pg_num_rows($rsProcessosApensados); $iProcessoApensado++) {
+
+            $oProcessoApensado = db_utils::fieldsmemory($rsProcessosApensados, $iProcessoApensado);
+            $clproctransferproc->excluir(null, null, "p63_codproc = $oProcessoApensado->p30_procapensado and p63_codtran = $codtransfer");
+            $erro = $clproctransferproc->erro_msg;
+            if ($clproctransferproc->erro_status==0){
+                $sqlerro=true;
+            }
+
+        }
+
         $clproctransferproc->excluir(null, null, "p63_codtran=$codtransfer and p63_codproc in ($listaproc)");
         $erro = $clproctransferproc->erro_msg;
 

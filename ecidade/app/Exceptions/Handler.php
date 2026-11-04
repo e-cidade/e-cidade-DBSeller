@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
@@ -28,10 +29,10 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         parent::report($exception);
     }
@@ -40,10 +41,10 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
         if ($exception instanceof ValidationException || substr($request->getPathInfo(), 0, 4) === '/web') {
             return parent::render($request, $exception);
@@ -67,16 +68,22 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return int
      */
-    protected function getStatusCode(Exception $exception)
+    protected function getStatusCode(Throwable $exception)
     {
         $statusCode = 500;
         if (is_callable(array($exception, 'getStatusCode'))
             && $exception->getStatusCode() >= 99 && $exception->getStatusCode() < 600
         ) {
             $statusCode = $exception->getStatusCode();
+        }
+
+        if (\TraceLog::getInstance()->isActive()) {
+            $oTraceLog = \TraceLog::getInstance();
+            $oTraceLog->makeMessage($exception->getTraceAsString(), true);
+            $oTraceLog->makeMessage($exception->getMessage(), true);
         }
 
         switch (true) {

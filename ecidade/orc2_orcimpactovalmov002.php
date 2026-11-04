@@ -100,7 +100,7 @@ if($numrows==0){
 
 $arr_dadosimprime = Array();
 for($i=$o96_anoini;$i<=$o96_anofim;$i++){
-  $arr_data = split("/",db_formatar($o62_data,"d"));
+  $arr_data =explode("/",db_formatar($o62_data,"d"));
   $dataorcimpactoger = $arr_data[2];
   if($i==$dataorcimpactoger){
     $arr_dadosimprime["A"][$i] = $o62_ativo;

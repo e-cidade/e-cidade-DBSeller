@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -321,7 +321,7 @@ $pdf->cell(25,$alt,db_formatar($aVariacoesPatrimoniais['TotaisAtivo']['TotalAtiv
 $pdf->cell(70,$alt,"TOTAL"            ,"1",0,"L",1);
 $pdf->cell(25,$alt,db_formatar($aVariacoesPatrimoniais['TotaisPassivo']['TotalPassivo'],'f')	,"BTL",1,"R",1);
 
-notasExplicativas(&$pdf,54,($mes>9?$mes:"0".$mes),190);
+notasExplicativas($pdf,54,($mes>9?$mes:"0".$mes),190);
 
 $pdf->Ln(14);
 $pdf->setfont('arial','',8);

@@ -16,15 +16,18 @@ $oDaoRotulo->label("l03_descr");
 
 $oGet = db_utils::postMemory($_GET);
 
-$sSqlBuscaLicitacao = $oDaoLicitacao->sql_query($l20_codigo);
+$sSqlBuscaLicitacao = $oDaoLicitacao->sql_query($oGet->l20_codigo);
 $rsLicitacao = $oDaoLicitacao->sql_record($sSqlBuscaLicitacao);
 if ($oDaoLicitacao->numrows == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Este registro não possui licitação.');
-    exit;
-} else {
-    $oLicitatacao = db_utils::fieldsMemory($rsLicitacao, 0);
 }
 
+$oLicitatacao = db_utils::fieldsMemory($rsLicitacao, 0);
+$licitacao = new licitacao($oGet->l20_codigo);
+$orcamentoLicitacao = new OrcamentoLicitacao($licitacao);
+
+$comprasPncp = new \App\Domain\Patrimonial\PNCP\Models\ComprasPncp();
+$existePncp = $comprasPncp->where(['pn03_liclicita' => $oGet->l20_codigo])->exists();
 
 $dtSituacao = "";
 $oDaoLicitacaoSituacao = db_utils::getDao("liclicitasituacao");
@@ -71,7 +74,7 @@ if (isParaiba()) {
 <fieldset>
     <legend style="font-weight: bolder;"> Dados da Licitação</legend>
 
-    <table style="" border='0'>
+    <table border='0'>
 
         <tr>
             <td title="<?= $Tl20_codigo ?>">
@@ -83,7 +86,6 @@ if (isParaiba()) {
             <td nowrap="nowrap" title="Numero do Processo">
                 <?php
                 if ($sProcessoProtocolo != '') {
-
                     db_ancora("Número do Processo:", "consultaProcesso('{$sProcessoProtocolo}')", 1);
                 } else {
                     echo "<b> Número do Processo: </b>";
@@ -203,6 +205,41 @@ if (isParaiba()) {
                 <?php echo $oLicitatacao->l20_tipo == 1 ? 'Gera Despesa' : 'Não Gera Despesa'; ?>
             </td>
         </tr>
+        <tr>
+            <td nowrap="nowrap">
+                <b><?= @$Ll20_tipojulg ?></b>
+            </td>
+            <td nowrap="nowrap" class="valor" style="text-align: left;">
+                <?php
+                $tipoJulgamento = 'Por item';
+                $tipoJulgamento = $oLicitatacao->l20_tipojulg === '2' ? 'Global' : $tipoJulgamento;
+                $tipoJulgamento = $oLicitatacao->l20_tipojulg === '3' ? 'Por lote' : $tipoJulgamento;
+
+                echo $tipoJulgamento;
+                ?>
+            </td>
+            <td nowrap="nowrap" title="<?= @$Tl20_id_usucria ?>">
+                <b><?= @$Ll20_usaregistropreco ?></b>
+            </td>
+            <td nowrap="nowrap" class="valor" style="text-align: left;">
+                <?= $licitacao->usaRegistroDePreco() ? 'Sim' : 'Não'?>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap="nowrap">
+                <b>PNCP: </b>
+            </td>
+            <td nowrap="nowrap" class="valor" style="text-align: left;">
+                <?= $existePncp ? 'Sim' : 'Não'; ?>
+            </td>
+
+            <td nowrap="nowrap" title="<?= @$Tl20_id_usucria ?>">
+                <b>Valor Total Estimado: </b>
+            </td>
+            <td nowrap="nowrap" class="valor" style="text-align: left;">
+                <?= db_formatar($orcamentoLicitacao->getValorTotalEstimado(), 'f'); ?>
+            </td>
+        </tr>
         <?php if (isParaiba()) : ?>
         <tr>
             <td nowrap="nowrap" title="">
@@ -216,16 +253,15 @@ if (isParaiba()) {
     </table>
 </fieldset>
 
+<div>
 <?php
 /**
  * Configuramos e exibimos as "abas verticais" (componente verticalTab)
  */
-$oVerticalTab = new verticalTab('detalhesLicitacao', 350);
+$oVerticalTab = new verticalTab('detalhesLicitacao', 530);
 $sGetUrl = "l20_codigo={$oGet->l20_codigo}";
 
-//  $oVerticalTab->add('dadosItensLicitacoes', 'Itens/Licitacões',
-//                     "forms/db_frminfolic.php?{$sGetUrl}");
-$oVerticalTab->add('dadosItensLicitacoes', 'Itens/Licitacões',
+$oVerticalTab->add('dadosItensLicitacoes', 'Itens da Licitação',
     "db_consultaitenslicitacao001.php?{$sGetUrl}");
 
 $oVerticalTab->add('dadosProcessosCompras', 'Processos de Compras',
@@ -249,17 +285,26 @@ $oVerticalTab->add('dadosMinutas', 'Minutas',
 $oVerticalTab->add('dadosAcordo', 'Acordos',
     "com3_pesquisalicitacaocontrato.php?{$sGetUrl}");
 
+$oVerticalTab->add('dadosEventos', 'Eventos',
+    "lic4_licitacaoeventos001.php?{$sGetUrl}&consulta=true");
+
+$oVerticalTab->add('dadosComissoes', 'Comissão',
+    "lic4_detalhecomissao001.php?{$sGetUrl}");
+
 $oVerticalTab->show();
 ?>
-
+</div>
 </body>
 
 <script>
-
     function consultaProcesso(sProtProcesso) {
-
-        var sUrlProcesso = "pro3_consultaprocesso002.php?numero=" + sProtProcesso;//42096/2013" ;// "lic3_licitacao002.php?l20_codigo="+iCodigoLicitacao
-        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_processo', sUrlProcesso, 'Consulta de Processo', true);
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_processo',
+            "pro3_consultaprocesso002.php?numero=" + sProtProcesso,
+            'Consulta de Processo',
+            true
+        );
     }
 
 </script>

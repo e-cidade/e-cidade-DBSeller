@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clobraspropri->rotulo->label("ob03_numcgm");
               <?=$Lob03_codobra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob03_codobra",10,$Iob03_codobra,true,"text",4,"","chave_ob03_codobra");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clobraspropri->rotulo->label("ob03_numcgm");
               <?=$Lob03_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ob03_numcgm",8,$Iob03_numcgm,true,"text",4,"","chave_ob03_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clobraspropri->rotulo->label("ob03_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obraspropri.php")==true){
@@ -118,12 +118,12 @@ $clobraspropri->rotulo->label("ob03_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

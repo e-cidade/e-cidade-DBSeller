@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lcm08_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_i_sepultamento',10,$Icm08_i_sepultamento,true,'hidden',$db_opcao,"");
 db_input('cm08_i_codigo',10,$Icm08_i_codigo,true,'text',$db_opcao,"");
 ?>
@@ -48,15 +48,15 @@ db_input('cm08_i_codigo',10,$Icm08_i_codigo,true,'text',$db_opcao,"");
   </tr>
 <!--  <tr>
     <td nowrap title="<?=@$Tcm08_i_sepultamento?>">
-       <?
+       <?php
        db_ancora(@$Lcm08_i_sepultamento,"js_pesquisacm08_i_sepultamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_i_sepultamento',10,$Icm08_i_sepultamento,true,'text',$db_opcao," onchange='js_pesquisacm08_i_sepultamento(false);'")
 ?>
-       <?
+       <?php
 db_input('cm01_i_codigo',10,$Icm01_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -64,15 +64,15 @@ db_input('cm01_i_codigo',10,$Icm01_i_codigo,true,'text',3,'')
 -->
   <tr>
     <td nowrap title="<?=@$Tcm08_i_retirante?>">
-       <?
+       <?php
        db_ancora(@$Lcm08_i_retirante,"js_pesquisacm08_i_retirante(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_i_retirante',10,$Icm08_i_retirante,true,'text',$db_opcao," onchange='js_pesquisacm08_i_retirante(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -82,7 +82,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lcm08_c_parentesco?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_c_parentesco',25,$Icm08_c_parentesco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ db_input('cm08_c_parentesco',25,$Icm08_c_parentesco,true,'text',$db_opcao,"")
        <?=@$Lcm08_c_causa?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_c_causa',100,$Icm08_c_causa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ db_input('cm08_c_causa',100,$Icm08_c_causa,true,'text',$db_opcao,"")
        <?=@$Lcm08_c_destino?>
     </td>
     <td> 
-<?
+<?php
 db_input('cm08_c_destino',100,$Icm08_c_destino,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ db_input('cm08_c_destino',100,$Icm08_c_destino,true,'text',$db_opcao,"")
        <?=@$Lcm08_d_retirada?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('cm08_d_retirada',@$cm08_d_retirada_dia,@$cm08_d_retirada_mes,@$cm08_d_retirada_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ db_inputdata('cm08_d_retirada',@$cm08_d_retirada_dia,@$cm08_d_retirada_mes,@$cm0
        <?=@$Lcm08_t_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('cm08_t_obs',5,40,$Icm08_t_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -184,7 +184,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_retiradas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

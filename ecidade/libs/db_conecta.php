@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -26,8 +26,12 @@
  */
 
 
+use ECidade\V3\Extension\Exceptions\ResponseException;
+use ECidade\V3\Extension\Registry;
 
-    $sPath = 'libs/';
+global $conn;
+
+$sPath = 'libs/';
 
 if (!isset($_SESSION)) {
     session_start();
@@ -40,6 +44,7 @@ if (isset($_SESSION[\ECidade\Lib\Session\DefaultSession::DB_REQUEST_FROM_API])) 
 
 if (empty($_SESSION['DB_login']) || empty($_SESSION['DB_id_usuario'])) {
     session_destroy();
+    Registry::get('app.response')->redirect('db_erros.php?fechar=true&db_erro='.urlencode("Sessão inválida."));
     echo "Sessão inválida (12).\nFeche seu navegador e faça login novamente.\n";
     exit;
 }
@@ -71,40 +76,42 @@ if (isset($_SESSION['DB_servidor'])) {
     $DB_SERVIDOR = $_SESSION["DB_servidor"];
 }
 
-if (!($conn = @pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA"))) {
 
-    echo "Contate com Administrador do Sistema! (Conexão Inválida.)   <br>Sessão terminada, feche seu navegador!\n";
-    session_destroy();
-    exit;
+if (empty($conn)) {
+    if (!($conn = @pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA"))) {
+        echo "Contate com Administrador do Sistema! (Conexão Inválida.)   <br>Sessão terminada, feche seu navegador!\n";
+        session_destroy();
+        Registry::get('app.response')->redirect('db_erros.php?fechar=true&db_erro='.urlencode("Sessï¿½o invï¿½lida."));
+        exit;
+    }
+
+    $database = \ECidade\V3\Datasource\Database::getInstance(false, $conn);
+
+    $capsuleManager = new Illuminate\Database\Capsule\Manager;
+    $capsuleManager->addConnection([
+        'driver'    => 'pgsql',
+        'host'      => $database->getServidor(),
+        'port'      => $database->getPorta(),
+        'database'  => $database->getBase(),
+        'username'  => $database->getUsuario(),
+        'password'  => $database->getSenha(),
+        'charset'   => 'latin1',
+        'collation' => '',
+        'prefix'    => '',
+    ]);
+    $capsuleManager->setAsGlobal();
+    $capsuleManager->bootEloquent();
 }
 
-$database = \ECidade\V3\Datasource\Database::getInstance(false, $conn);
-
-$capsuleManager = new Illuminate\Database\Capsule\Manager;
-$capsuleManager->addConnection([
-    'driver'    => 'pgsql',
-    'host'      => $database->getServidor(),
-    'port'      => $database->getPorta(),
-    'database'  => $database->getBase(),
-    'username'  => $database->getUsuario(),
-    'password'  => $database->getSenha(),
-    'charset'   => 'latin1',
-    'collation' => '',
-    'prefix'    => '',
-]);
-$capsuleManager->setAsGlobal();
-$capsuleManager->bootEloquent();
 
 /**
  * Verifica configuracoes customizadas do PostgreSQL para o sProgramaAtual
  */
-$sPgVersion = pg_result(pg_query($conn, "select substr(current_setting('server_version_num'),1,3)"), 0, 0);
+$sPgVersion = pg_fetch_result(pg_query($conn, "select substr(current_setting('server_version_num'),1,3)"), 0, 0);
 
 if (isset($DB_CUSTOM_PG_CONF[$sPgVersion][$sProgramaAtual])) {
-
     $sSqlSetConfig = "";
     foreach ($DB_CUSTOM_PG_CONF[$sPgVersion][$sProgramaAtual] as $sSetting => $sValue) {
-
         if (substr($sSetting, 0, 3) <> "SQL") {
             $sSqlSetConfig .= "SET $sSetting TO $sValue;";
         } else {
@@ -120,7 +127,6 @@ if (isset($DB_CUSTOM_PG_CONF[$sPgVersion][$sProgramaAtual])) {
  */
 
 if (isset($_SESSION["DB_instit"])) {
-
     $lUsarPcasp           = false;
 
     $sSqlConParametro     = " select c90_usapcasp               \n";
@@ -129,12 +135,11 @@ if (isset($_SESSION["DB_instit"])) {
 
     $lParametroUsaPCASP   = false;
 
-    if ( $rsConParametro && pg_num_rows($rsConParametro) > 0) {
-        $lParametroUsaPCASP   = pg_result($rsConParametro, 0, 0);
+    if ($rsConParametro && pg_num_rows($rsConParametro) > 0) {
+        $lParametroUsaPCASP   = pg_fetch_result($rsConParametro, 0, 0);
     }
 
     if ($lParametroUsaPCASP == 't') {
-
         $sSqlTipoInstituicao  = " select db21_tipoinstit                   \n";
         $sSqlTipoInstituicao .= "   from configuracoes.db_config           \n";
         $sSqlTipoInstituicao .= "  where codigo = {$_SESSION["DB_instit"]} \n";
@@ -142,10 +147,8 @@ if (isset($_SESSION["DB_instit"])) {
         $rsTipoInstituicao    = pg_query($conn, $sSqlTipoInstituicao);
 
         if (pg_num_rows($rsTipoInstituicao) == 1 && isset($_SESSION["DB_anousu"])) {
-
-            $iTipoInstituicao = pg_result($rsTipoInstituicao, 0, "db21_tipoinstit");
+            $iTipoInstituicao = pg_fetch_result($rsTipoInstituicao, 0, "db21_tipoinstit");
             if ($iTipoInstituicao == 101) {
-
                 if ($_SESSION["DB_anousu"] >= 2012) {
                     $lUsarPcasp = true;
                 }
@@ -157,8 +160,7 @@ if (isset($_SESSION["DB_instit"])) {
                  * no arquivo config/pcasp.txt.dist  sera renomeado para pcasp.txt e adicionado o ano desejado
                  */
                 $iAnoPcasp = 2013;
-                if ( file_exists("config/pcasp.txt") ) {
-
+                if (file_exists("config/pcasp.txt")) {
                     $aArquivo  = file("config/pcasp.txt");
                     if (!empty($aArquivo[0]) && $aArquivo[0] > 2013) {
                         $iAnoPcasp = $aArquivo[0];
@@ -167,25 +169,23 @@ if (isset($_SESSION["DB_instit"])) {
 
                 $_SESSION["DB_ano_pcasp"] = $iAnoPcasp;
 
-                if ( intval($_SESSION["DB_anousu"]) >= intval($iAnoPcasp) ) {
+                if (intval($_SESSION["DB_anousu"]) >= intval($iAnoPcasp)) {
                     $lUsarPcasp = true;
                 }
             }
         }
     }
 
-    if ( ! defined('USE_PCASP') ) {
+    if (! defined('USE_PCASP')) {
         define("USE_PCASP", $lUsarPcasp);
     }
     $_SESSION["DB_use_pcasp"] = USE_PCASP ? 't' : 'f';
-
 }
 
 
 $anoSessao = db_getsession('DB_anousu', false);
-if ( !empty($anoSessao) && (int)$anoSessao >= 2018) {
+if (!empty($anoSessao) && (int)$anoSessao >= 2018) {
     define("EMENTARIO_RECEITA", true);
-
 } else {
     define("EMENTARIO_RECEITA", false);
 }
@@ -195,9 +195,9 @@ if ( !empty($anoSessao) && (int)$anoSessao >= 2018) {
 /**
  * Define se apropriacao automatica de retencao esta ativada
  */
-if (file_exists("config/apropriacao_automatica_retencao.txt")){
+if (file_exists("config/apropriacao_automatica_retencao.txt")) {
     define("APROPRIACAO_RETENCAO", true);
-}else{
+} else {
     define("APROPRIACAO_RETENCAO", false);
 }
 
@@ -205,16 +205,16 @@ db_putsession('DB_usa_apropriacao_retencao', APROPRIACAO_RETENCAO ? 't' : 'f');
 /**
  * Define se fonte de recurso da uniao e novo formato recurso esta ativado
  */
-if (file_exists("config/fonte_recurso_uniao.txt")){
+if (file_exists("config/fonte_recurso_uniao.txt")) {
     define("FONTE_RECURSO_UNIAO", true);
     define("FONTE_RECURSO_2020", false); // aqui é false, se liga
-}else{
+} else {
     if ($anoSessao >= 2019) {
         define("FONTE_RECURSO_UNIAO", true);
-        define("FONTE_RECURSO_2020",  true);
-    }else{
+        define("FONTE_RECURSO_2020", true);
+    } else {
         define("FONTE_RECURSO_UNIAO", false);
-        define("FONTE_RECURSO_2020",  false);
+        define("FONTE_RECURSO_2020", false);
     }
 }
 
@@ -222,9 +222,9 @@ $_SESSION["DB_use_fonte_recurso_uniao"] = FONTE_RECURSO_UNIAO ? 't' : 'f';
 $_SESSION["DB_use_fonte_2020"]          = FONTE_RECURSO_2020 ? 't' : 'f';
 /* Define validação do recurso na agenda de pagamento
 */
-if (file_exists("config/valida_fonte_recurso.txt")){
+if (file_exists("config/valida_fonte_recurso.txt")) {
     define("VALIDA_FONTE_RECURSO", false);
-}else{
+} else {
     define("VALIDA_FONTE_RECURSO", true);
 }
 
@@ -232,9 +232,9 @@ $_SESSION["DB_use_valida_fonte_recurso"] = VALIDA_FONTE_RECURSO ? 't' : 'f';
 /**
  * Define se utiliza o domicilio bancário
  */
-if (file_exists("config/utiliza_domicilio_bancario.txt")){
+if (file_exists("config/utiliza_domicilio_bancario.txt")) {
     define("UTILIZA_DOMICILIO_BANCARIO", true);
-}else{
+} else {
     define("UTILIZA_DOMICILIO_BANCARIO", false);
 }
 
@@ -256,14 +256,12 @@ if (file_exists('config/patrimonio/incorporacao_bem.ini')) {
 require_once('config/ecidade_config.php');
 
 foreach ($aEcidadeConfig["aConstantesEcidade"] as $sAreaEcidade => $value) {
-
     foreach ($value as $sNomeParametro => $bValorParametro) {
         define($sNomeParametro, $bValorParametro);
     }
 }
 
 foreach ($aEcidadeConfig["aVariaveisEcidade"] as $sAreaEcidade => $value) {
-
     foreach ($value as $sNomeParametro => $bValorParametro) {
         $_SESSION[$sNomeParametro] = $bValorParametro;
     }
@@ -282,9 +280,8 @@ db_logs();
  * Registra application_name para ser utilizado no controle de transações
  */
 if (isset($conn)) {
-
     $sIdUsuario  = $_SESSION["DB_id_usuario"];
-    $iPidConexao = pg_result(db_query("select pg_backend_pid()"),0,0);
+    $iPidConexao = pg_fetch_result(db_query("select pg_backend_pid()"), 0, 0);
     $sMenu       = 0;
 
     if (!empty($_SESSION["DB_itemmenu_acessado"])) {
@@ -297,17 +294,16 @@ if (isset($conn)) {
     pg_query($conn, $sSqlSetConfig);
 }
 
-if (db_getsession("DB_id_usuario") != 1 && db_getsession("DB_administrador") != 1){
-
+if (db_getsession("DB_id_usuario") != 1 && db_getsession("DB_administrador") != 1) {
     $result1 = pg_exec($conn, "select db21_ativo from db_config where prefeitura = true")
     or die("Erro ao verificar se sistema está liberado! Contate suporte!");
 
-    $ativo   = pg_result($result1,0,0);
+    $ativo   = pg_fetch_result($result1, 0, 0);
 
     if ($ativo == 3) {
-
         echo "Sistema desativado pelo administrador!   <br>Sessão terminada, feche seu navegador!\n";
         session_destroy();
+        Registry::get('app.response')->redirect('db_erros.php?fechar=true&db_erro='.urlencode("Sessï¿½o invï¿½lida."));
         exit;
     }
 }
@@ -335,10 +331,9 @@ define('UTILIZAR_NOVO_CADASTRO_FERIAS', false);
  */
 $aItensMenu = array(1576, 10336);
 
-if ( isset($_SESSION["DB_itemmenu_acessado"])
-    && in_array($_SESSION["DB_itemmenu_acessado"],$aItensMenu)
+if (isset($_SESSION["DB_itemmenu_acessado"])
+    && in_array($_SESSION["DB_itemmenu_acessado"], $aItensMenu)
 ) {
-
     $sSqlStatActivity = "select application_name
                          from pg_stat_activity
                         where application_name ilike 'ecidade_%'
@@ -348,15 +343,12 @@ if ( isset($_SESSION["DB_itemmenu_acessado"])
     $rsStatActivity = db_query($sSqlStatActivity);
 
     if ($rsStatActivity) {
-
         for ($iIndice = 0; $iIndice < pg_num_rows($rsStatActivity); $iIndice++) {
-
-            $aDadosApplication = explode('_',pg_result($rsStatActivity, $iIndice, 'application_name'));
+            $aDadosApplication = explode('_', pg_fetch_result($rsStatActivity, $iIndice, 'application_name'));
             $iItemMenu = $aDadosApplication[2];
 
-            if ( in_array($iItemMenu,$aItensMenu) ) {
-
-                $sMsg  = "A Emissão Geral de IPTU já está em execução em outro acesso.\n";
+            if (in_array($iItemMenu, $aItensMenu)) {
+                throw new ResponseException("A Emissão Geral de IPTU já está em execução em outro acesso.\n");
                 $sMsg .= "Você está sendo redirecionado para tela de seleção de módulos.";
                 db_msgbox($sMsg);
                 db_redireciona('corpo.php');

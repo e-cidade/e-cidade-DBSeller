@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,7 +111,7 @@ if(isset($alterar) || isset($excluir) || isset($incluir) || isset($opcao)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js, strings.js, widgets/dbtextField.widget.js,
                dbViewNotificaFornecedor.js, dbmessageBoard.widget.js, dbautocomplete.widget.js,
                dbcomboBox.widget.js,datagrid.widget.js,widgets/dbtextFieldData.widget.js");
@@ -123,7 +123,7 @@ if(isset($alterar) || isset($excluir) || isset($incluir) || isset($opcao)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-			<?
+			<?php
 			  include(modification("forms/db_frmsugforn.php"));
 			?>
     </center>
@@ -132,7 +132,7 @@ if(isset($alterar) || isset($excluir) || isset($incluir) || isset($opcao)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   if($sqlerro==true){
   	db_msgbox($erro_msg);

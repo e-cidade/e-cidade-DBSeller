@@ -28,7 +28,7 @@ class RegraLicitaconRegimeDiferenciadoContratacao extends RegraLicitacon {
 
   protected $sMensagem = "Os campos Tipo de Execução, Tipo de Disputa e Pré-Qualificação são de preenchimento obrigatório.";
 
-  protected $aModalidades = array('RDC');
+  protected $aModalidades = array('RDC', 'RDE', 'CCE', 'CCP', 'PCE', 'PCP', 'EST', 'ESE', 'RCE');
 
   /**
    * @return array

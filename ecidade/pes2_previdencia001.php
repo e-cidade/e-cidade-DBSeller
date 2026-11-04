@@ -119,7 +119,7 @@ db_postmemory($_POST);
         <strong>Tabela de Previdência:</strong>
         </td>
         <td>
-          <?
+          <?php
           $res = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession('DB_instit'),"distinct (cast(r33_codtab as integer) - 2) as r33_codtab,r33_nome","r33_codtab"," r33_anousu = ".$anofolha." and r33_mesusu = ".$mesfolha." and r33_codtab > 2"));
           db_selectrecord('prev', $res, true, 4);
           ?>
@@ -130,7 +130,7 @@ db_postmemory($_POST);
         <strong>Cálculo:</strong>
         </td>
         <td>
-          <?
+          <?php
           $opcalculo = array(1=>"Com Cálculo", 2=>"Sem Cálculo", 3=>"Todos");
           db_select('calc',$opcalculo,true,4,"");
           ?>
@@ -141,7 +141,7 @@ db_postmemory($_POST);
         <strong>Filtro:</strong>
         </td>
         <td>
-          <?
+          <?php
             $aFiltro = array("0"=>"Todos",  
                              "1"=>"Somente Servidores",
                              "2"=>"Somente Autônomos");
@@ -155,7 +155,7 @@ db_postmemory($_POST);
         <strong>Quebra Página:</strong>
         </td>
         <td>
-          <?
+          <?php
           $quebra_pagina = array("n"=>"Não", "s"=>"Sim");
           db_select('quebra_pagina',$quebra_pagina,true,4,"");
           ?>
@@ -167,7 +167,7 @@ db_postmemory($_POST);
                 <Legend>
                   <b>Selecione os Vinculos</b>
                 </Legend>
-                <?
+                <?php
                 db_input("valor", 3, 0, true, 'hidden', 3);
                 db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
                 db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);

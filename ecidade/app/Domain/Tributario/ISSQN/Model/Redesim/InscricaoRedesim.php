@@ -2,7 +2,7 @@
 
 namespace App\Domain\Tributario\ISSQN\Model\Redesim;
 
-use App\Domain\Tributario\ISSQN\Model\IssBase;
+use App\Domain\Tributario\ISSQN\Model\Base\IssBase;
 use Illuminate\Database\Eloquent\Model;
 
 /**

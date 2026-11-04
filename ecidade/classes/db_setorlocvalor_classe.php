@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: cadastro
 //CLASSE DA ENTIDADE setorlocvalor
 class cl_setorlocvalor { 
@@ -28,13 +28,13 @@ class cl_setorlocvalor {
                  j05_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_setorlocvalor() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setorlocvalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_setorlocvalor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j05_sequencial = ($this->j05_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j05_sequencial"]:$this->j05_sequencial);
        $this->j05_setorloc = ($this->j05_setorloc == ""?@$GLOBALS["HTTP_POST_VARS"]["j05_setorloc"]:$this->j05_setorloc);
@@ -54,7 +54,7 @@ class cl_setorlocvalor {
      }
    }
    // funcao para inclusao
-   function incluir ($j05_sequencial){ 
+   public function incluir ($j05_sequencial){ 
       $this->atualizacampos();
      if($this->j05_setorloc == null ){ 
        $this->erro_sql = " Campo Setor localização não informado.";

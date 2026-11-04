@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,14 +69,14 @@ if(isset($incluir)){
   <tr align="center"> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmouvidor.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -84,7 +84,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ov21_db_usuario",true,1,"ov21_db_usuario",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
 	if($lExite){
 		db_msgbox('\nUsuário:\n\n Ouvidor já cadastrado !\n\nAdministrador:\n\n Cadastro de Ouvidor nao Incluído. Inclusao Abortada.');

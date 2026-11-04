@@ -25,12 +25,12 @@ require_once modification("dbforms/db_funcoes.php");
   <script type="text/javascript" src="scripts/widgets/DBAbasItem.widget.js"></script>
   <script type="text/javascript" src="scripts/widgets/DBAbas.widget.js"></script>
   <script type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
-  
+
   <style>
     #form1 button{
-      margin-left: 4px 
+      margin-left: 4px
     }
-  </style>  
+  </style>
 </head>
 
 <body class="body-default">
@@ -63,12 +63,12 @@ require_once modification("dbforms/db_funcoes.php");
     </div>
 
     <!-- <div id="modalEditar" class="container">
-        
+
     </div> -->
 
     <div id="modalItens" class="container">
         <div class="alert alert-primary text-left" role="alert">
-        Esta lista permitirirá a configuração de exclusividade dos itens, 
+        Esta lista permitirirá a configuração de exclusividade dos itens,
         sobrepondo a configuração da licitação, cotas reservadas não serão permitidas.
         </div>
         <fieldset style="margin-top: 20px;">
@@ -88,10 +88,10 @@ require_once modification("dbforms/db_funcoes.php");
         <table>
           <tr>
             <td nowrap="nowrap" title="Licitação para processar" style="padding:5px;">
-              <b><? db_ancora('Licitação: ', "", 1, null, "linklicitacao"); ?></b>
+              <b><?php db_ancora('Licitação: ', "", 1, null, "linklicitacao"); ?></b>
             </td>
             <td align="left" nowrap="nowrap">
-              <?
+              <?php
               db_input("l20_codigo", 10, $Il20_codigo, true, "text", 3, "onchange='js_pesquisa_liclicita(false);'");
               ?>
             </td>
@@ -108,7 +108,7 @@ require_once modification("dbforms/db_funcoes.php");
                 <i class="fa fa-plus"></i>
                 <span>Configurar documentos</span>
               </button>
-            </td>          
+            </td>
             <td>
               <button type="button" id="btnEnviar" class="btn btn-light">
                 <i class="far fa-save"></i>
@@ -130,7 +130,7 @@ require_once modification("dbforms/db_funcoes.php");
           </tr>
           <tr>
             <td>&nbsp;</td>
-          </tr>          
+          </tr>
         </table>
       </form>
 
@@ -146,10 +146,10 @@ require_once modification("dbforms/db_funcoes.php");
 
   <div id="ctnAbaRetorno" class="container">
     <div id="dadosRetorno">
-      
-    </div>          
+
+    </div>
   </div>
- 
+
   <div id="ctnAbas"></div>
   <?php db_menu() ?>
 
@@ -159,7 +159,7 @@ require_once modification("dbforms/db_funcoes.php");
      */
     var oDBAba = new DBAbas($('ctnAbas'));
     var oAbaEnvidoDados = oDBAba.adicionarAba("Enviar Dados", $('ctnAbaEnvio'));
-    
+
     var oAbaRetornoDados = oDBAba.adicionarAba("Retorno Dados", $('ctnAbaRetorno'));
     oAbaRetornoDados.lBloqueada = true;
   </script>
@@ -174,11 +174,11 @@ require_once modification("dbforms/db_funcoes.php");
   <script type="text/javascript">
 
     String.prototype.FormatoBanco = function (decimais) {
-    
+
       var valor = this;
-    
+
       valor = valor.replace(/\D/g, '')
-    
+
       switch (decimais) {
         case 3:
           valor = valor.replace(/(\d{1})(\d{1,3})$/, "$1.$2")
@@ -190,7 +190,7 @@ require_once modification("dbforms/db_funcoes.php");
           valor = valor.replace(/(\d{1})(\d{1,2})$/, "$1.$2")
         break;
       }
-    
+
       return valor;
     }
 
@@ -198,7 +198,7 @@ require_once modification("dbforms/db_funcoes.php");
   <script type="text/javascript">
     var tipoPregao = null
     var sRPC = 'lic4_integracaocompraspublicas.RPC.php'
-    
+
     function js_pesquisa_liclicita(mostra) {
 
       const formData = new FormData();
@@ -240,11 +240,12 @@ require_once modification("dbforms/db_funcoes.php");
 
       tipoPregao = chave2;
       document.form1.l20_codigo.value = chave1;
-      if(tipoPregao == "PRE") {
-
+      let pregoes = ['PRE', 'PCE', 'PRP', 'PCP', 'CCE'];
+      let pregao = pregoes.findIndex(pregao => pregao === tipoPregao);
+      if(pregao >= 0) {
         document.getElementById("btnAdicionar").removeAttribute("disabled")
       }
-      
+
       db_iframe_liclicita.hide();
       const formData = new FormData();
       formData.append('acao', 'verificaConfiguracao');
@@ -258,21 +259,23 @@ require_once modification("dbforms/db_funcoes.php");
           if (response.erro) {
 
             alert(response.mensagem);
+            document.getElementById("l20_codigo").value = ""
+            document.getElementById("btnAdicionar").setAttribute("disabled", '')
             return false;
           }
-          
+
           if(response.habilitaConfiguracao) {
 
             document.getElementById("btnConfigurarItem").removeAttribute("disabled")
           }
-        }); 
+        });
     }
 
     $.noConflict();
     jQuery(document).ready(function($) {
-      
+
       const buscaProcessos = function(row, criaBotao=true) {
-          
+
           const formData = new FormData();
           formData.append('acao', 'buscarDadosProcesso');
           formData.append('processo', row.idLicitacao);
@@ -303,13 +306,13 @@ require_once modification("dbforms/db_funcoes.php");
                   html +=' </fieldset>'
                   html +='<input type="hidden" id="codlicitacao" name="codlicitacao" value=""/> '
                   if(criaBotao) {
-                    
+
                     html +='<button type="button" id="btnImportar" class="btn btn-light" >'
                     html +='<i class="far fa-save"></i>'
                     html +='  Importar Dados'
                     html +='</button>'
                   }
-              jQuery("#dadosRetorno").html(html)   
+              jQuery("#dadosRetorno").html(html)
 
               const dadosPropostas = (dadosLinha) => {
 
@@ -331,7 +334,7 @@ require_once modification("dbforms/db_funcoes.php");
     {
       label: "Desconto(%):",
         valor: propostas.ValorDesconto!=undefined?propostas.ValorDesconto:0
-    },    
+    },
     {
       label: "Data:",
       valor: propostas.Data
@@ -372,7 +375,7 @@ if (dadosLinha.Vencedores != undefined) {
       {
         label: "Cancelado:",
         valor: vencedor.Cancelado ? 'Sim' : 'Não'
-      }                      
+      }
     ])
   })
 }
@@ -506,10 +509,10 @@ if (vencedor.length > 0) {
 }
 
 return html
-}       
-     /** 
+}
+     /**
        * Inicio - Lista participantes da licitação
-       */         
+       */
       var tableRetornoFornecedor = jQuery('#data-table-fornecedor');
       var colunasFornecedor = [{
           title: 'Tipo',
@@ -574,7 +577,7 @@ return html
           valign: 'middle',
           sortable: false
         }
-      ] 
+      ]
 
       tableRetornoFornecedor.bootstrapTable({
                 columns: colunasFornecedor,
@@ -588,15 +591,15 @@ return html
               })
 
 
-      /** 
+      /**
        * Fim - Lista participantes da licitação
-       */   
-         
-              /** 
+       */
+
+              /**
       * Inicio - Retorno do julgamento dos itens da licitação
-      */         
+      */
         var tableRetorno = jQuery('#data-table-response');
-        
+
         var colunasRetorno = [{
             title: 'Lote',
             field: 'NR_LOTE',
@@ -617,7 +620,7 @@ return html
             align: 'right',
             valign: 'middle',
             sortable: true
-          },          
+          },
           {
             title: 'Descrição',
             field: 'DS_ITEM',
@@ -653,8 +656,8 @@ return html
             valign: 'middle',
             sortable: true
           }
-        ] 
-      /** 
+        ]
+      /**
       * Fim - Retorno do julgamento dos itens da licitação
       */
 
@@ -676,26 +679,26 @@ return html
               oAbaRetornoDados.lBloqueada = false;
               oAbaEnvidoDados.setVisibilidade(false);
               oAbaRetornoDados.setVisibilidade(true);
-              tableRetornoFornecedor.bootstrapTable('load', response.dados.Participantes)              
-              
+              tableRetornoFornecedor.bootstrapTable('load', response.dados.Participantes)
+
               let itens = []
               response.dados.lotes.map((itenslote, indicelote) => {
-                
-                itenslote.itens.map((itensdados, indiceitem) => {                  
-                  
+
+                itenslote.itens.map((itensdados, indiceitem) => {
+
                   if (itenslote.Vencedores != undefined) {
-                    
+
                     itensdados.Vencedores = []
                     let Vencedor   = {}
-                    let menorValor = new Number(0) 
-                    itensdados.Lances = itensdados.Lances == undefined? itensdados.PropostasReadequadas != undefined? itensdados.PropostasReadequadas : [] : itensdados.Lances 
+                    let menorValor = new Number(0)
+                    itensdados.Lances = itensdados.Lances == undefined? itensdados.PropostasReadequadas != undefined? itensdados.PropostasReadequadas : [] : itensdados.Lances
                     itensdados.Lances.map((lancesFornecedor, indLance) => {
-                      
+
                       if(itenslote.Vencedores.length > 0) {
                         if(lancesFornecedor.IdFornecedor == itenslote.Vencedores[0].IdFornecedor) {
-                          
+
                           if(menorValor == 0 || (lancesFornecedor.ValorTotal < menorValor && lancesFornecedor.Valido == true)) {
-  
+
                             menorValor = lancesFornecedor.ValorTotal
                             Vencedor = {
                                         "Cancelado"    : lancesFornecedor.Cancelado,
@@ -704,20 +707,20 @@ return html
                                         "RazaoSocial"  : lancesFornecedor.RazaoSocial,
                                         "Tipo"         : lancesFornecedor.Tipo,
                                         "ValorTotal"   : lancesFornecedor.ValorTotal,
-                                        "ValorUnitario": lancesFornecedor.ValorUnitario, 
+                                        "ValorUnitario": lancesFornecedor.ValorUnitario,
                                         "ValorDesconto": lancesFornecedor.ValorDesconto!=undefined?lancesFornecedor.ValorDesconto:0
-                                       }  
-                          }                        
+                                       }
+                          }
                         }
-                      }  
-                    })                            
+                      }
+                    })
                     if(Vencedor != null) {
 
                       itensdados.Vencedores.push(Vencedor)
                     }
-                    
+
                   }
-                  
+
                   itens.push(itensdados)
                 })
               });
@@ -745,14 +748,14 @@ return html
 
                 return 0;
               })
-              
+
               tableRetorno.bootstrapTable('load', itens)
-              
+
               if(criaBotao) {
-  
+
                 const btnImportar           = jQuery('#btnImportar')
                 btnImportar.one('click', () => {
-                
+
                   const dados           = JSON.stringify(tableRetorno.bootstrapTable('getData'))
                   const dadosFornecedor = JSON.stringify(tableRetornoFornecedor.bootstrapTable('getData'))
                   const codlicitacao    = jQuery('#codlicitacao').val()
@@ -775,21 +778,21 @@ return html
                })
             }
             })
-            
+
       }
 
-      window.operateEvents = {  
-        
-        'click .editar': function(e, value, row, index) { 
-           
+      window.operateEvents = {
+
+        'click .editar': function(e, value, row, index) {
+
            if(jQuery('#data-table-editar').find("input").hasClass("calculaValor")) {
-             jQuery('.calculaValor').focus()  
+             jQuery('.calculaValor').focus()
              return
            }
-           
-           
+
+
             const calculaLimiteValor = function (limitValue, valoreditado, codigo, grouper) {
- 
+
              let valorLimite = new Number(limitValue)
              let agrupar = grouper
              let valorSoma = new Number(valoreditado)
@@ -808,46 +811,46 @@ return html
 
              return true
            }
-           
+
            jQuery('#data-table-editar')
-           .bootstrapTable('updateCell', 
-                            {index: index, 
-                             field: 'valorUnitario', 
+           .bootstrapTable('updateCell',
+                            {index: index,
+                             field: 'valorUnitario',
                              value: `<input type="text" class="calculaValor" size="8" title="Os valores devem ter ${row.casasdecimais} casas decimais" value="${row.valorUnitario}">`
                             }
                           )
            jQuery('.calculaValor').focus()
-           let valor = new Number(jQuery('.calculaValor').val())            
+           let valor = new Number(jQuery('.calculaValor').val())
            jQuery('.calculaValor').keyup(function() {
-            
+
             jQuery('.calculaValor').val(jQuery('.calculaValor').val().FormatoBanco(row.casasdecimais))
            }).change(function () {
-             
+
              let valorOriginal = valor
                          valor = new Number(this.value.replace(',', '.'))
-                      
+
              let quantidade    = new Number(row.quantidade)
-             let valorTotal    = valor>0?valor*quantidade:0 
+             let valorTotal    = valor>0?valor*quantidade:0
              let valorLimite   = row.valorTotalJulgado
 
              if (!calculaLimiteValor(valorLimite, valorTotal, row.codigo, row.lote)) {
 
                valor = valorOriginal
                jQuery('#data-table-editar')
-              .bootstrapTable('updateCell', 
-                            {index: index, 
-                             field: 'valorUnitario', 
+              .bootstrapTable('updateCell',
+                            {index: index,
+                             field: 'valorUnitario',
                              value: valor==''?0:valor
                             }
                           )
-               return false           
-             }  
-             
+               return false
+             }
+
              jQuery('#data-table-editar')
-             .bootstrapTable('updateRow', 
-                              {index: index, 
-                                 row: {valorTotal: valorTotal, 
-                                       valorUnitario: valor==''?0:valor  
+             .bootstrapTable('updateRow',
+                              {index: index,
+                                 row: {valorTotal: valorTotal,
+                                       valorUnitario: valor==''?0:valor
                                       }
                               }
                             )
@@ -856,18 +859,18 @@ return html
              function () {
 
               jQuery('#data-table-editar')
-              .bootstrapTable('updateCell', 
-                            {index: index, 
-                             field: 'valorUnitario', 
+              .bootstrapTable('updateCell',
+                            {index: index,
+                             field: 'valorUnitario',
                              value: valor==''?0:valor
                             }
                           )
            }
-           )               
+           )
         },
-                        
-        'click .configurar': function(e, value, row, index) { 
-          
+
+        'click .configurar': function(e, value, row, index) {
+
           tableItensLicitacao.bootstrapTable('getData').map((dados, indice) => {
              if(dados.l04_descricao == row.l04_descricao) {
 
@@ -879,10 +882,10 @@ return html
         'click .dadosLicitacao': function(e, value, row, index) {
           var sURLLicitacao = "lic3_licitacao002.php?l20_codigo=" + value
           js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_licitacao' + value, sURLLicitacao, 'Consulta de Licitação', true);
-        },        
+        },
         'click .cancelar': function(e, value, row, index) {
           if(confirm(`Deseja cancelar a importação da licitação ${row._id}`)) {
-            
+
             const formData = new FormData();
             formData.append('acao', 'cancelaImportacao');
             formData.append('codigoLicitacao',row._id);
@@ -891,15 +894,15 @@ return html
               reportMessage: 'Cancelando Importação ...'
             })
             .then(function(response) {
-              
+
               alert(response.mensagem)
               limparTela()
             })
           }
         },
         'click .visualizar': function(e, value, row, index) {
-          buscaProcessos(row, false);          
-        },        
+          buscaProcessos(row, false);
+        },
         'click .situacao': function(e, value, row, index) {
           const formData = new FormData();
           formData.append('acao', 'deparaSituacao');
@@ -948,9 +951,9 @@ return html
               windowSituacao.show(0, 0, true)
             })
         },
-        
+
         'click .editaImportacao': function(e, value, row, index) {
-          
+
           const formData = new FormData();
           formData.append('acao', 'buscarDadosProcessoEditar');
           formData.append('processo', row.idLicitacao);
@@ -964,11 +967,11 @@ return html
                 alert(response.mensagem);
                 return false;
               }
-              
+
               oAbaRetornoDados.lBloqueada = false;
               oAbaEnvidoDados.setVisibilidade(false);
               oAbaRetornoDados.setVisibilidade(true);
-                
+
               let html ='<fieldset id="ctnTableRetorno" style="margin-top: 20px;">   '
                   html +=' <legend class="mainLegend"></legend>'
                   html +='   <fieldset>'
@@ -988,9 +991,9 @@ return html
                   html +='<button type="button" id="btnImportarEditavel" class="btn btn-light" >'
                   html +='<i class="far fa-save"></i>'
                   html +='  Importar Dados'
-                  html +='</button>'                  
-                  jQuery("#dadosRetorno").html(html)   
-                  
+                  html +='</button>'
+                  jQuery("#dadosRetorno").html(html)
+
                   jQuery("#codlicitacao").val(response.dados.codlicitacao);
                   var tableRetornoFornecedor = jQuery('#data-table-fornecedor');
                   var colunasFornecedor = [
@@ -1058,7 +1061,7 @@ return html
                     sortable: false
                   }
                 ]
-                
+
                 tableRetornoFornecedor.bootstrapTable({
                           columns: colunasFornecedor,
                           locale: 'pt-BR',
@@ -1070,27 +1073,27 @@ return html
                           class: "table table-sm"
                         })
 
-                tableRetornoFornecedor.bootstrapTable('load', response.dados.fornecedores)   
-                
+                tableRetornoFornecedor.bootstrapTable('load', response.dados.fornecedores)
+
                 const formatterEditor = (value, row, index) => {
                    if(row.readequarvalor) {
                    return [
                        '<span class="editar" style="color: #2c5676"title="Readequar valores">',
                        '  <i class="fa fa-edit"></i>',
-                       '</span>'          
+                       '</span>'
                    ].join('')
                    }
 
                    return value;
                  }
-                
-                const formatterNumeric = (value, row, index) => {
-                  
-                  return js_formatar(value, 'f', row.casasdecimais) 
-                  
-                } 
 
-                var tableRetorno = jQuery('#data-table-editar');        
+                const formatterNumeric = (value, row, index) => {
+
+                  return js_formatar(value, 'f', row.casasdecimais)
+
+                }
+
+                var tableRetorno = jQuery('#data-table-editar');
                 var colunasRetorno = [
                     {
                       title: 'Lote',
@@ -1106,7 +1109,7 @@ return html
                       valign: 'middle',
                       sortable: true,
                       formatter: formatterNumeric
-                    },                    
+                    },
                     {
                       title: 'Código',
                       field: 'codigo',
@@ -1120,7 +1123,6 @@ return html
                       align: 'left',
                       valign: 'middle',
                       sortable: true,
-                      formatter: formatterDescription
                     },
                     {
                       title: 'Fornecedor',
@@ -1136,7 +1138,7 @@ return html
                       valign: 'middle',
                       sortable: true,
                       formatter: formatterNumeric
-                    },          
+                    },
                     {
                       title: 'Quantidade',
                       field: 'quantidade',
@@ -1166,7 +1168,7 @@ return html
                       valign: 'middle',
                       sortable: true,
                       visible: false
-                    },                    
+                    },
                     {
                       title: 'Readequar',
                       field: 'acoes',
@@ -1177,9 +1179,9 @@ return html
                       formatter: formatterEditor,
                     }
                 ]
-                
-                
-                tableRetorno.bootstrapTable({     
+
+
+                tableRetorno.bootstrapTable({
                   columns: colunasRetorno,
                   locale: 'pt-BR',
                   height: 350,
@@ -1187,12 +1189,12 @@ return html
                   pageSize: 5,
                   pageList: [5, 10, 15, 20, 25, 'All'],
                   showButtonText: true,
-                  class: "table table-sm"                    
+                  class: "table table-sm"
                 })
-                
-              
+
+
               tableRetorno.bootstrapTable('load', response.dados.itens)
-              
+
                 const btnImportarEditavel  = jQuery('#btnImportarEditavel')
                 btnImportarEditavel.on('click', () => {
 
@@ -1218,13 +1220,13 @@ return html
                     alert(oResponse.mensagem);
                   })
               })
-          }) 
+          })
 
-            
+
         },
         'click .buscar': function(e, value, row, index) {
-          
-          buscaProcessos(row);          
+
+          buscaProcessos(row);
         }
       }
 
@@ -1268,16 +1270,16 @@ return html
         windowDocumentos.hide()
       })
 
-      const modalItens = document.getElementById("modalItens")      
-      var windowItens = new windowAux('windowItens', 'Configure a exclusividade dos itens', 1000, 600);       
+      const modalItens = document.getElementById("modalItens")
+      var windowItens = new windowAux('windowItens', 'Configure a exclusividade dos itens', 1000, 600);
       windowItens.setContent(modalItens)
       windowItens.allowCloseWithEsc(true)
       windowItens.setShutDownFunction(function() {
-        
+
         if (!!windowItens.oDBMask) {
           windowItens.oDBMask.destroy();
         }
-        
+
         windowItens.hide()
       })
 
@@ -1293,37 +1295,37 @@ return html
       //     htmlModalEditar += '   </table>'
       //     htmlModalEditar += ' </fieldset> '
       //  jQuery('#modalEditar').html(htmlModalEditar)
-      //  var windowEditar = new windowAux('windowEditar', 'Readequação dos itens', 1000, 600);       
+      //  var windowEditar = new windowAux('windowEditar', 'Readequação dos itens', 1000, 600);
       //  windowEditar.setContent(modalEditar)
       //  windowEditar.allowCloseWithEsc(true)
-      //  windowEditar.setShutDownFunction(function() 
-      // {       
+      //  windowEditar.setShutDownFunction(function()
+      // {
       //   if (!!windowEditar.oDBMask) {
-       
-      //     windowEditar.oDBMask.destroy();       
+
+      //     windowEditar.oDBMask.destroy();
       //   }
-        
+
       //   windowEditar.hide()
-      // })   
+      // })
       /**
-       * 
+       *
        * Inicio - Declaração das tables utilizadas
-       * 
+       *
        */
-      
+
       /**
        * Inicio - Formatter das tables
-       */     
+       */
       const formatterLink = (value, row, index) => {
 
         const linkLicitacao = `<a class='dadosLicitacao' title='Clique para consultar licitação' >${value}</a>`
         return linkLicitacao
       };
-      
+
       const formatterImportacao = (value, row, index) => {
-        
+
         if(row.cdSituacao == 6) {
-          
+
           if(row.importado == true) {
             return [
                   '<a class="cancelar" href="javascript:void(0)" title="Cancelar importação dos dados">',
@@ -1332,23 +1334,23 @@ return html
                   '<a class="visualizar" href="javascript:void(0)" title="Visualizar dados importados">',
                   ' <i class="far fa-eye"></i>',
                   '</a>'
-              ].join('') 
-          } 
-          
+              ].join('')
+          }
+
           if(row.editaImportacao == true) {
 
             return [
                 '<a class="editaImportacao" href="javascript:void(0)" title="Clique para readequar os itens retornados">',
                 ' <i class="fas fa-upload"></i>',
                 '</a>'
-          ].join('')    
+          ].join('')
           }
 
           return [
                 '<a class="buscar" href="javascript:void(0)" title="Clique para validar/importar retorno dos dados">',
                 ' <i class="fas fa-upload"></i>',
                 '</a>'
-          ].join('')   
+          ].join('')
         }
       };
 
@@ -1360,46 +1362,41 @@ return html
 
           codigoSituacao = `<a class="situacao" title="Clique para atualizar a situação da licitação" >${value}</a>`;
         }
-        
+
         return codigoSituacao
       };
-      
-      const formatterDescription = (value, row, index) => {
-        
-        return value.urlDecode()
-      }
 
       const formatterConfigurar = (value, row, index) => {
-        
-        let valor = value==true?'Sim':'Não' 
+
+        let valor = value==true?'Sim':'Não'
         if(row.selecione == false) {
-          
+
           return '<span>Reservado</span>'
         }
 
         return `<a class="configurar">${valor}</a>`
       }
-      
+
       const formatterCheckBox = (value, row, index) => {
-        
+
         if(row.selecione == false) {
           return {disabled: true}
         }
 
       }
-          
+
       /**
        * Fim - Formatter das tables
        */
-      
-      /** 
+
+      /**
        * Inicio - Lista dos itens a serem configurados
-       */         
+       */
       var tableItensLicitacao = jQuery('#data-table-itens');
       var colunasItens = [{
             field: 'checkitem',
             checkbox: true,
-            formatter: formatterCheckBox             
+            formatter: formatterCheckBox
           },
           {
             title: 'Código Item',
@@ -1410,11 +1407,10 @@ return html
           },
         {
           title: 'Descrição',
-          field: 'l04_descricao',
+          field: 'pc04_descr',
           align: 'left',
           valign: 'middle',
           sortable: false,
-          formatter: formatterDescription
         },
         {
           title: 'Lote',
@@ -1422,7 +1418,6 @@ return html
           align: 'left',
           valign: 'middle',
           sortable: false,
-          formatter: formatterDescription
         },
         {
           title: 'Exclusivo?',
@@ -1431,10 +1426,10 @@ return html
           valign: 'middle',
           sortable: false,
           events: window.operateEvents,
-          formatter: formatterConfigurar      
+          formatter: formatterConfigurar
         }
       ]
-      
+
       tableItensLicitacao.createTable = function() {
 
         tableItensLicitacao.bootstrapTable({
@@ -1447,26 +1442,26 @@ return html
           showButtonText: true,
           class: "table table-sm"
         })
-      }        
+      }
 
       tableItensLicitacao.createTable()
-      /** 
+      /**
        * Fim - Lista dos itens a serem configurados
-       */         
-      
-            
-      
-      
-      /** 
-      * Inicio - Licitações enviadas para o julgamento dos itens no Portal
-      */         
-      /**
-       * Inicio - 
        */
-      
-      
+
+
+
+
       /**
-       * Fim - 
+      * Inicio - Licitações enviadas para o julgamento dos itens no Portal
+      */
+      /**
+       * Inicio -
+       */
+
+
+      /**
+       * Fim -
        */
 
       var table   = jQuery('#data-table');
@@ -1562,11 +1557,11 @@ return html
       }
 
       table.createTable()
-      /** 
+      /**
       * Fim - Licitações enviadas para o julgamento dos itens no Portal
-      */         
-      
-      /** 
+      */
+
+      /**
       * Inicio - Documentos necessários para habilitar fornecedores/participantes da licitação
       */
         var tableDocumentos = jQuery('#data-table-documento');
@@ -1589,7 +1584,7 @@ return html
             sortable: false
           }
         ]
-        
+
         tableDocumentos.createTable = function() {
 
           tableDocumentos.bootstrapTable({
@@ -1605,16 +1600,16 @@ return html
         }
 
         tableDocumentos.createTable()
-        
-      /** 
-      * Fim - Documentos necessários para habilitar fornecedores/participantes da licitação
-      */        
+
       /**
-       * 
+      * Fim - Documentos necessários para habilitar fornecedores/participantes da licitação
+      */
+      /**
+       *
        * Fim - Declaração das tables utilizadas
-       * 
+       *
        */
-      
+
       linkPesquisaLicitacao.on('click', () => {
 
         listaDocumentos = []
@@ -1626,18 +1621,18 @@ return html
       })
 
       btnEnviar.on('click', () => {
-        
+
         listaConfiguracao = []
         tableItensLicitacao.bootstrapTable('getSelections').map((lista, index) => {
           let lote = new Object()
               lote.exclusivo = lista.exclusivo
               lote.descricao = lista.l04_descricao
           listaConfiguracao.push(lote)
-          
+
         })
-        
+
         const licitacao = jQuery('#l20_codigo').val();
-        
+
         if (licitacao == "") {
 
           return alert('Pesquise uma licitação para enviar os dados ao Serviço Compras Públicas');
@@ -1653,13 +1648,13 @@ return html
 
           return false;
         }
-        
+
         const formData = new FormData();
         formData.append('acao', 'enviarDados');
         formData.append('licitacao', licitacao);
         formData.append('documentos', JSON.stringify(listaDocumentos));
         formData.append('configuracao', JSON.stringify(listaConfiguracao));
-        
+
         HttpClient.post(sRPC, {
             body: formData,
             reportMessage: 'Enviando os dados ...'
@@ -1710,7 +1705,7 @@ return html
             table.bootstrapTable('load', oResponse.processos);
           });
       });
-      
+
       function limparTela() {
 
         btnAdicionar.prop("disabled", true)
@@ -1757,7 +1752,7 @@ return html
       });
 
       btnConfigurarItem.on('click', () => {
-        
+
         windowItens.show(0, 0, true)
         const licitacao = jQuery('#l20_codigo').val();
         const formData = new FormData();
@@ -1770,7 +1765,6 @@ return html
         }).then(function(response) {
 
           if (response.erro) {
-
             alert(response.mensagem);
             return false;
           }
@@ -1778,7 +1772,7 @@ return html
           tableItensLicitacao.bootstrapTable('load', response.dadositens);
         })
       })
-      
+
     });
 
   </script>

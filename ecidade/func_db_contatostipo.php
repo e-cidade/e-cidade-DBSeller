@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_contatostipo->rotulo->label("g02_descr");
               <?=$Lg02_tipocon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("g02_tipocon",4,$Ig02_tipocon,true,"text",4,"","chave_g02_tipocon");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_contatostipo->rotulo->label("g02_descr");
               <?=$Lg02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("g02_descr",40,$Ig02_descr,true,"text",4,"","chave_g02_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_contatostipo->rotulo->label("g02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_contatostipo.php")==true){
@@ -122,12 +122,12 @@ $cldb_contatostipo->rotulo->label("g02_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

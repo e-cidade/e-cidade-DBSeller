@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -59,32 +59,58 @@ if ($sfileName == "emp4_anularrpproc.php"){
           <table >
             <tr>
               <td><?=db_ancora($Le60_codemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",$db_opcao_inf)?></td>
-              <td><? db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3)?> </td>
+              <td><?php db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3)?> </td>
               <td width='20'><?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",$db_opcao_inf)?></td>
-              <td><? db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3,"")?> </td>
+              <td><?php db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3,"")?> </td>
             </tr>
             <tr>
               <td><?=db_ancora($Le60_numcgm,"js_JanelaAutomatica('cgm',\$F('e60_numcgm'))",$db_opcao_inf)?></td>
-              <td><? db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
-              <td colspan=3><? db_input('z01_nome', 52, $Iz01_nome, true, 'text', 3, "");?></td>
+              <td><?php db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
+              <td colspan=3><?php db_input('z01_nome', 52, $Iz01_nome, true, 'text', 3, "");?></td>
             </tr>
             <tr>
               <td><?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'".@$e60_anousu."')",$db_opcao_inf)?></td>
-              <td nowrap ><? db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
+              <td nowrap ><?php db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
               <td width="20"><?=db_ancora($Lo15_codigo,"",3)?></td>
-              <td nowrap><? db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 33, $Io15_descr, true, 'text', 3)?></td>
+              <td nowrap><?php db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 33, $Io15_descr, true, 'text', 3)?></td>
             </tr>
             <tr>
-              <td><b>Motivo:</b></td>
-              <td colspan='4'>
+              <?php if(isRioDeJaneiro()){ ?>                                           
+                <td  colspan='4'>
+                  <fieldset>
+                    <legend class="bold">Motivo</legend>   
+                    <span>
+                        <b style ='color:red'>Campo obrigatório para uso no SIGFIS do TCE-RJ, 
+                          com no máximo 4000 caracteres.
+                        </b>
+                    </span>                
+                    <table>
+                      <tr>
+                        <td>
+                           <textarea id="motivo" name="motivo" rows="2" cols="70"  onkeyup="js_verificaCaracteresMotivo()"></textarea>
+                        </td>
+                      </tr>
+                      <tr>                        
+                        <td>
+                          <span> <b> N° de caracteres :</b></span>
+                          <input type = 'text' size='4' id= 'motivo_caracteres' value = '' disabled/>
+                        </td>                      
+                        </tr>                      
+                    </table>
+                  </fieldset>
+                </td>
+              <?php } else {?>
+                <td><b>Motivo:</b></td>
+                <td colspan='4'>
                 <textarea id="motivo" name="motivo" rows="2" cols="70"></textarea>
+              <?php }?>
             </tr>
             <tr>
               <td>
                 <b>Tipo:</b>
               </td>
               <td colspan='3' nowrap>
-                <?
+                <?php
                 $oEmpAnuladoTipo  = new cl_empanuladotipo;
                 $rsEmpAnuladoTipo = $oEmpAnuladoTipo->sql_record(
                   $oEmpAnuladoTipo->sql_query(null,"*",
@@ -103,15 +129,15 @@ if ($sfileName == "emp4_anularrpproc.php"){
       <td valign='top' style='padding:0px'>
         <fieldset ><legend><b>&nbsp;Valores do Empenho&nbsp;</b></legend>
           <table style="width:200px;height:100%" >
-            <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
-            <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
-            <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
-            <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
+            <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><?php db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
+            <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><?php db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
+            <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><?php db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
+            <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><?php db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
             <tr><td colspan='2' class='table_header'>Saldo a Anular </td></tr>
             <tr>
               <td nowrap><b><?=@$sLabelSaldo?></></td>
               <td align=right>
-                <? db_input('saldoRP', 12,'', true, 'text', 3, '','','','text-align:right')?>
+                <?php db_input('saldoRP', 12,'', true, 'text', 3, '','','','text-align:right')?>
               </td>
             </tr>
           </table>
@@ -150,7 +176,7 @@ if ($sfileName == "emp4_anularrpproc.php"){
     <tr style="display:<?=$sMostraItens;?>">
       <td colspan='2'>
         <fieldset><legend><b>Itens do Empenho</b></legend>
-          <table style='border:2px inset white;backgorund-color:white;' width='100%' cellspacing='0'>
+          <table style='border:2px inset white;background-color:white;' width='100%' cellspacing='0'>
             <thead>
             <tr>
               <th class='table_header'><input type='checkbox'  style='display:none'
@@ -410,6 +436,14 @@ if ($sfileName == "emp4_anularrpproc.php"){
     if (!confirm("Confirma Anulação do Empenho?")) {
       return false;
     }
+
+    let isRJ = '<?=isRioDeJaneiro()?>';
+    if (isRJ && sMotivo.length > 4000){
+            
+      alert('É obrigatório informar no motivo um limite de no máximo 4000 caracteres!');
+      return false;
+    }
+
     if (sMotivo.trim() == '') {
 
       alert('Preenchimento do motivo da anulação é Obrigatório.');
@@ -701,4 +735,8 @@ if ($sfileName == "emp4_anularrpproc.php"){
   }
 
   js_pesquisa();
+
+  function js_verificaCaracteresMotivo(){
+    $('motivo_caracteres').value = $F('motivo').length;
+  }   
 </script>

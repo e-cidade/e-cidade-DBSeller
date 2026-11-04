@@ -1,49 +1,49 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE rechumanomovimentacao
-class cl_rechumanomovimentacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed118_sequencial = 0; 
-   var $ed118_escola = 0; 
-   var $ed118_rechumano = 0; 
-   var $ed118_usuario = 0; 
-   var $ed118_data_dia = null; 
-   var $ed118_data_mes = null; 
-   var $ed118_data_ano = null; 
-   var $ed118_data = null; 
-   var $ed118_hora = null; 
-   var $ed118_resumo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rechumanomovimentacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed118_sequencial = 0;
+   var $ed118_escola = 0;
+   var $ed118_rechumano = 0;
+   var $ed118_usuario = 0;
+   var $ed118_data_dia = null;
+   var $ed118_data_mes = null;
+   var $ed118_data_ano = null;
+   var $ed118_data = null;
+   var $ed118_hora = null;
+   var $ed118_resumo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed118_sequencial = int4 = Código 
-                 ed118_escola = int4 = Escola 
-                 ed118_rechumano = int4 = Rec. Humano 
-                 ed118_usuario = int4 = Usuário 
-                 ed118_data = date = Data 
-                 ed118_hora = varchar(5) = Hora 
-                 ed118_resumo = text = Resumo 
+                 ed118_sequencial = int4 = Código
+                 ed118_escola = int4 = Escola
+                 ed118_rechumano = int4 = Rec. Humano
+                 ed118_usuario = int4 = Usuário
+                 ed118_data = date = Data
+                 ed118_hora = varchar(5) = Hora
+                 ed118_resumo = text = Resumo
                  ";
-   //funcao construtor da classe 
-   function cl_rechumanomovimentacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rechumanomovimentacao"); 
+     $this->rotulo = new rotulo("rechumanomovimentacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -52,7 +52,7 @@ class cl_rechumanomovimentacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed118_sequencial = ($this->ed118_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed118_sequencial"]:$this->ed118_sequencial);
        $this->ed118_escola = ($this->ed118_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed118_escola"]:$this->ed118_escola);
@@ -73,9 +73,9 @@ class cl_rechumanomovimentacao {
      }
    }
    // funcao para inclusao
-   function incluir ($ed118_sequencial){ 
+   public function incluir ($ed118_sequencial){
       $this->atualizacampos();
-     if($this->ed118_escola == null ){ 
+     if($this->ed118_escola == null ){
        $this->erro_sql = " Campo Escola não informado.";
        $this->erro_campo = "ed118_escola";
        $this->erro_banco = "";
@@ -84,7 +84,7 @@ class cl_rechumanomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed118_rechumano == null ){ 
+     if($this->ed118_rechumano == null ){
        $this->erro_sql = " Campo Rec. Humano não informado.";
        $this->erro_campo = "ed118_rechumano";
        $this->erro_banco = "";
@@ -93,7 +93,7 @@ class cl_rechumanomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed118_usuario == null ){ 
+     if($this->ed118_usuario == null ){
        $this->erro_sql = " Campo Usuário não informado.";
        $this->erro_campo = "ed118_usuario";
        $this->erro_banco = "";
@@ -102,7 +102,7 @@ class cl_rechumanomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed118_data == null ){ 
+     if($this->ed118_data == null ){
        $this->erro_sql = " Campo Data não informado.";
        $this->erro_campo = "ed118_data_dia";
        $this->erro_banco = "";
@@ -111,7 +111,7 @@ class cl_rechumanomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed118_hora == null ){ 
+     if($this->ed118_hora == null ){
        $this->erro_sql = " Campo Hora não informado.";
        $this->erro_campo = "ed118_hora";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_rechumanomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed118_resumo == null ){ 
+     if($this->ed118_resumo == null ){
        $this->erro_sql = " Campo Resumo não informado.";
        $this->erro_campo = "ed118_resumo";
        $this->erro_banco = "";
@@ -130,16 +130,16 @@ class cl_rechumanomovimentacao {
        return false;
      }
      if($ed118_sequencial == "" || $ed118_sequencial == null ){
-       $result = db_query("select nextval('rechumanomovimentacao_ed118_sequencial_seq')"); 
+       $result = db_query("select nextval('rechumanomovimentacao_ed118_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rechumanomovimentacao_ed118_sequencial_seq do campo: ed118_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rechumanomovimentacao_ed118_sequencial_seq do campo: ed118_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed118_sequencial = pg_result($result,0,0); 
+       $this->ed118_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rechumanomovimentacao_ed118_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed118_sequencial)){
@@ -150,10 +150,10 @@ class cl_rechumanomovimentacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed118_sequencial = $ed118_sequencial; 
+         $this->ed118_sequencial = $ed118_sequencial;
        }
      }
-     if(($this->ed118_sequencial == null) || ($this->ed118_sequencial == "") ){ 
+     if(($this->ed118_sequencial == null) || ($this->ed118_sequencial == "") ){
        $this->erro_sql = " Campo ed118_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -162,25 +162,25 @@ class cl_rechumanomovimentacao {
        return false;
      }
      $sql = "insert into rechumanomovimentacao(
-                                       ed118_sequencial 
-                                      ,ed118_escola 
-                                      ,ed118_rechumano 
-                                      ,ed118_usuario 
-                                      ,ed118_data 
-                                      ,ed118_hora 
-                                      ,ed118_resumo 
+                                       ed118_sequencial
+                                      ,ed118_escola
+                                      ,ed118_rechumano
+                                      ,ed118_usuario
+                                      ,ed118_data
+                                      ,ed118_hora
+                                      ,ed118_resumo
                        )
                 values (
-                                $this->ed118_sequencial 
-                               ,$this->ed118_escola 
-                               ,$this->ed118_rechumano 
-                               ,$this->ed118_usuario 
-                               ,".($this->ed118_data == "null" || $this->ed118_data == ""?"null":"'".$this->ed118_data."'")." 
-                               ,'$this->ed118_hora' 
-                               ,'$this->ed118_resumo' 
+                                $this->ed118_sequencial
+                               ,$this->ed118_escola
+                               ,$this->ed118_rechumano
+                               ,$this->ed118_usuario
+                               ,".($this->ed118_data == "null" || $this->ed118_data == ""?"null":"'".$this->ed118_data."'")."
+                               ,'$this->ed118_hora'
+                               ,'$this->ed118_resumo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "rechumanomovimentacao ($this->ed118_sequencial) nao Incluído. Inclusao Abortada.";
@@ -224,16 +224,16 @@ class cl_rechumanomovimentacao {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed118_sequencial=null) { 
+   public function alterar ($ed118_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rechumanomovimentacao set ";
      $virgula = "";
-     if(trim($this->ed118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_sequencial"])){ 
+     if(trim($this->ed118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_sequencial"])){
        $sql  .= $virgula." ed118_sequencial = $this->ed118_sequencial ";
        $virgula = ",";
-       if(trim($this->ed118_sequencial) == null ){ 
+       if(trim($this->ed118_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed118_sequencial";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_rechumanomovimentacao {
          return false;
        }
      }
-     if(trim($this->ed118_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_escola"])){ 
+     if(trim($this->ed118_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_escola"])){
        $sql  .= $virgula." ed118_escola = $this->ed118_escola ";
        $virgula = ",";
-       if(trim($this->ed118_escola) == null ){ 
+       if(trim($this->ed118_escola) == null ){
          $this->erro_sql = " Campo Escola não informado.";
          $this->erro_campo = "ed118_escola";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_rechumanomovimentacao {
          return false;
        }
      }
-     if(trim($this->ed118_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_rechumano"])){ 
+     if(trim($this->ed118_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_rechumano"])){
        $sql  .= $virgula." ed118_rechumano = $this->ed118_rechumano ";
        $virgula = ",";
-       if(trim($this->ed118_rechumano) == null ){ 
+       if(trim($this->ed118_rechumano) == null ){
          $this->erro_sql = " Campo Rec. Humano não informado.";
          $this->erro_campo = "ed118_rechumano";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_rechumanomovimentacao {
          return false;
        }
      }
-     if(trim($this->ed118_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_usuario"])){ 
+     if(trim($this->ed118_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_usuario"])){
        $sql  .= $virgula." ed118_usuario = $this->ed118_usuario ";
        $virgula = ",";
-       if(trim($this->ed118_usuario) == null ){ 
+       if(trim($this->ed118_usuario) == null ){
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "ed118_usuario";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_rechumanomovimentacao {
          return false;
        }
      }
-     if(trim($this->ed118_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"] !="") ){ 
+     if(trim($this->ed118_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"] !="") ){
        $sql  .= $virgula." ed118_data = '$this->ed118_data' ";
        $virgula = ",";
-       if(trim($this->ed118_data) == null ){ 
+       if(trim($this->ed118_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "ed118_data_dia";
          $this->erro_banco = "";
@@ -294,11 +294,11 @@ class cl_rechumanomovimentacao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["ed118_data_dia"])){
          $sql  .= $virgula." ed118_data = null ";
          $virgula = ",";
-         if(trim($this->ed118_data) == null ){ 
+         if(trim($this->ed118_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "ed118_data_dia";
            $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_rechumanomovimentacao {
          }
        }
      }
-     if(trim($this->ed118_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_hora"])){ 
+     if(trim($this->ed118_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_hora"])){
        $sql  .= $virgula." ed118_hora = '$this->ed118_hora' ";
        $virgula = ",";
-       if(trim($this->ed118_hora) == null ){ 
+       if(trim($this->ed118_hora) == null ){
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "ed118_hora";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_rechumanomovimentacao {
          return false;
        }
      }
-     if(trim($this->ed118_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_resumo"])){ 
+     if(trim($this->ed118_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed118_resumo"])){
        $sql  .= $virgula." ed118_resumo = '$this->ed118_resumo' ";
        $virgula = ",";
-       if(trim($this->ed118_resumo) == null ){ 
+       if(trim($this->ed118_resumo) == null ){
          $this->erro_sql = " Campo Resumo não informado.";
          $this->erro_campo = "ed118_resumo";
          $this->erro_banco = "";
@@ -370,7 +370,7 @@ class cl_rechumanomovimentacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "rechumanomovimentacao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed118_sequencial;
@@ -398,11 +398,11 @@ class cl_rechumanomovimentacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed118_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed118_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -411,7 +411,7 @@ class cl_rechumanomovimentacao {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($ed118_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -446,7 +446,7 @@ class cl_rechumanomovimentacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "rechumanomovimentacao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed118_sequencial;
@@ -474,11 +474,11 @@ class cl_rechumanomovimentacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -500,11 +500,11 @@ class cl_rechumanomovimentacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed118_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed118_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,15 +535,15 @@ class cl_rechumanomovimentacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ed118_sequencial!=null ){
-         $sql2 .= " where rechumanomovimentacao.ed118_sequencial = $ed118_sequencial "; 
-       } 
+         $sql2 .= " where rechumanomovimentacao.ed118_sequencial = $ed118_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,11 +552,11 @@ class cl_rechumanomovimentacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed118_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed118_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,15 +569,15 @@ class cl_rechumanomovimentacao {
      $sql2 = "";
      if($dbwhere==""){
        if($ed118_sequencial!=null ){
-         $sql2 .= " where rechumanomovimentacao.ed118_sequencial = $ed118_sequencial "; 
-       } 
+         $sql2 .= " where rechumanomovimentacao.ed118_sequencial = $ed118_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

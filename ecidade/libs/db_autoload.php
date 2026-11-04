@@ -99,6 +99,8 @@ function db_autoload($sClassName) {
   $aIncludeDirs[] = "model/licitacao/arquivos/licitacon/";
   $aIncludeDirs[] = "model/fiscal/";
   $aIncludeDirs[] = "model/fiscal/webservice/";
+  $aIncludeDirs[] = "model/fiscalizacao/";
+  $aIncludeDirs[] = "model/fiscalizacao/webservice/";
   $aIncludeDirs[] = "model/habitacao/";
   $aIncludeDirs[] = "model/impressoras/";
   $aIncludeDirs[] = "model/integracao/transparencia/";

@@ -136,7 +136,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($cllevanta->erro_status=="0"){
     $cllevanta->erro(true,false);

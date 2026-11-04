@@ -245,7 +245,6 @@ final class ProgressaoParcialVinculoDisciplina {
         $sMsgErro = "Erro ao salvar dados do vinculo da regência.\nErro Técnico:\n{$oDaoProgressaoMatricula->erro_msg}";
         throw new BusinessException($sMsgErro);
       }
-      unset($this);
     }
   }
 

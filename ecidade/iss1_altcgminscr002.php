@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -71,18 +71,18 @@ function js_emite(){
   }
 }
 
-</script>  
+</script>
 <style>
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc;       
+background-color:#aacccc;
 border-color: darkblue;
 }
 .corpo {
 text-align: center;
 color: black;
-background-color:#ccddcc;       
+background-color:#ccddcc;
 }
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -103,7 +103,7 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-<?
+<?php
 $result=$clissbase->sql_record($clissbase->sql_query($q02_inscr,"q02_numcgm as numcgm,z01_nome as nome"));
 if ($clissbase->numrows!=0){
    db_fieldsmemory($result,0);
@@ -112,18 +112,18 @@ if ($clissbase->numrows!=0){
 }
 
 ?>
-  <tr> 
+  <tr>
     <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><b>Numcgm atual:</b></td>
     <td align="left" nowrap>
-      <?db_input("numcgm",6,$Iz01_numcgm,true,"text",3,"");
-         db_input("nome",40,"$Iz01_nome",true,"text",3);  
+      <?php db_input("numcgm",6,$Iz01_numcgm,true,"text",3,"");
+         db_input("nome",40,"$Iz01_nome",true,"text",3);
         ?></td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora(@$Lz01_numcgm,"js_pesquisa(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora(@$Lz01_numcgm,"js_pesquisa(true);",1);?></td>
     <td align="left" nowrap>
-      <?db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",2,"onchange='js_pesquisa(false);'");
-         db_input("nome_novo",40,"$Iz01_nome",true,"text",3);  
+      <?php db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",2,"onchange='js_pesquisa(false);'");
+         db_input("nome_novo",40,"$Iz01_nome",true,"text",3);
         ?></td>
   </tr>
   <tr>
@@ -135,31 +135,31 @@ if ($clissbase->numrows!=0){
   <td ></td>
   <td ></td>
   </tr>
- 
+
   </table>
   </form>
- 
+
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisa(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome','Pesquisa',true);
   }else{
-     if(document.form1.z01_numcgm.value != ''){ 
+     if(document.form1.z01_numcgm.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cgm','func_nome.php?pesquisa_chave='+document.form1.z01_numcgm.value+'&funcao_js=parent.js_mostracgm','Pesquisa',false);
      }else{
-       document.form1.nome_novo.value = ''; 
+       document.form1.nome_novo.value = '';
      }
   }
 }
 function js_mostracgm(erro,chave){
-  document.form1.nome_novo.value = chave; 
-  if(erro==true){ 
-    document.form1.z01_numcgm.focus(); 
-    document.form1.z01_numcgm.value = ''; 
+  document.form1.nome_novo.value = chave;
+  if(erro==true){
+    document.form1.z01_numcgm.focus();
+    document.form1.z01_numcgm.value = '';
   }
 }
 function js_mostracgm1(chave1,chave2){
@@ -169,13 +169,13 @@ function js_mostracgm1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?
+<?php
 if ((isset($z01_numcgm) && $z01_numcgm!="") && (isset($alterar))){
     db_msgbox($erro_msg);
     if($clissbase->erro_campo!=""){
       echo "<script> document.form1.".$clissbase->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clissbase->erro_campo.".focus();</script>";
-    }else{ 
+    }else{
       echo"<script>(window.CurrentWindow || parent.CurrentWindow).corpo.location.href='iss1_altcgminscr001.php';</script>";
     }
 }

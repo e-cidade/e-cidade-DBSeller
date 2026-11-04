@@ -93,8 +93,15 @@ if( isset( $chavepesquisa ) ) {
           <table width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
             <tr>
               <td style="font-size:18px;font-weight:bold;font-family:verdana;">
-               &nbsp;&nbsp;CGM: <?=$z01_numcgm?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$z01_nomecomple?>
+               &nbsp;&nbsp;CGM: <?=$z01_numcgm?>&nbsp;&nbsp;-&nbsp;&nbsp;<?= $z01_nomecomple  ?>
               </td>
+              <?php if(!empty($z04_nomesocial)) : ?> 
+              <tr>
+              <td style="font-size:18px;font-weight:bold;font-family:verdana;">
+               &nbsp;&nbsp;NOME SOCIAL: <?=$z04_nomesocial?>&nbsp;&nbsp;
+              </td>
+              </tr>
+              <?php endif; ?>
               <td align="right">
                <label for="cod_matricula" class="bold">Matrícula/CGM:</label>
                <select id="cod_matricula" name="cod_matricula" onchange="js_trocaMatricula(this.value,<?=$chavepesquisa?>);">
@@ -176,7 +183,7 @@ if( isset( $chavepesquisa ) ) {
                     <?=$Lz01_sexo?> <?=$z01_sexo == "M" ? "Masculino" : "Feminino"?>
                     &nbsp;&nbsp;
                     <?=$Lz01_estciv?>
-                    <?
+                    <?php
                     if ($z01_estciv == 1) {
                       echo "Solteiro";
                     } else if ($z01_estciv == 2) {

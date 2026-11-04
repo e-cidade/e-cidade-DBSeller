@@ -169,7 +169,7 @@ if (isset($oPost->transf)) {
     <tr>
       <td valign="top" bgcolor="#CCCCCC">
         <center>
-            <?
+            <?php
             include(modification("forms/db_frmbenstransfcodigolote.php"));
             ?>
         </center>

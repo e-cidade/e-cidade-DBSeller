@@ -27,47 +27,48 @@
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE protprocesso
-class cl_protprocesso {
-   // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
-   // cria variaveis do arquivo
-   var $p58_codproc = 0;
-   var $p58_codigo = 0;
-   var $p58_dtproc_dia = null;
-   var $p58_dtproc_mes = null;
-   var $p58_dtproc_ano = null;
-   var $p58_dtproc = null;
-   var $p58_id_usuario = 0;
-   var $p58_numcgm = 0;
-   var $p58_requer = null;
-   var $p58_coddepto = 0;
-   var $p58_codandam = 0;
-   var $p58_obs = null;
-   var $p58_despacho = null;
-   var $p58_hora = null;
-   var $p58_interno = 'f';
-   var $p58_publico = 'f';
-   var $p58_instit = 0;
-   var $p58_numero = null;
-   var $p58_ano = 0;
-   var $p58_orgao = 0;
-   var $p58_tipoprocesso = 0;
-   var $p58_processopai = 0;
-   var $p58_volume = 0;
+class cl_protprocesso
+{
+    // cria variaveis de erro
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
+    // cria variaveis do arquivo
+    public $p58_codproc = 0;
+    public $p58_codigo = 0;
+    public $p58_dtproc_dia = null;
+    public $p58_dtproc_mes = null;
+    public $p58_dtproc_ano = null;
+    public $p58_dtproc = null;
+    public $p58_id_usuario = 0;
+    public $p58_numcgm = 0;
+    public $p58_requer = null;
+    public $p58_coddepto = 0;
+    public $p58_codandam = 0;
+    public $p58_obs = null;
+    public $p58_despacho = null;
+    public $p58_hora = null;
+    public $p58_interno = 'f';
+    public $p58_publico = 'f';
+    public $p58_instit = 0;
+    public $p58_numero = null;
+    public $p58_ano = 0;
+    public $p58_orgao = 0;
+    public $p58_tipoprocesso = 0;
+    public $p58_processopai = 0;
+    public $p58_volume = 0;
 
-   // cria propriedade com as variaveis do arquivo
-   var $campos = "
+    // cria propriedade com as variaveis do arquivo
+    public $campos = "
                  p58_codproc = int4 = Número de Controle
                  p58_codigo = int4 = Tipo
                  p58_dtproc = date = data do processo
@@ -89,200 +90,262 @@ class cl_protprocesso {
                  p58_processopai = int4 = Processo Pai
                  p58_volume = int4 = volume
                  ";
-   //funcao construtor da classe
-   function __construct() {
-     //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("protprocesso");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
-   }
-   //funcao erro
-   function erro($mostra,$retorna) {
-     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\");</script>";
-        if($retorna==true){
-           echo "<script>location.href='".$this->pagina_retorno."'</script>";
+
+    public function __construct()
+    {
+        //classes dos rotulos dos campos
+        $this->rotulo = new rotulo("protprocesso");
+        $this->pagina_retorno = basename($_SERVER["PHP_SELF"]);
+    }
+
+    //funcao erro
+    public function erro($mostra, $retorna)
+    {
+        if (($this->erro_status == "0") || ($mostra && $this->erro_status != null)) {
+            echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
+            if ($retorna) {
+                echo "<script>location.href='" . $this->pagina_retorno . "'</script>";
+            }
         }
-     }
-   }
-   // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
-     if($exclusao==false){
-       $this->p58_codproc = ($this->p58_codproc == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_codproc"]:$this->p58_codproc);
-       $this->p58_codigo = ($this->p58_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_codigo"]:$this->p58_codigo);
-       if($this->p58_dtproc == ""){
-         $this->p58_dtproc_dia = ($this->p58_dtproc_dia == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"]:$this->p58_dtproc_dia);
-         $this->p58_dtproc_mes = ($this->p58_dtproc_mes == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_mes"]:$this->p58_dtproc_mes);
-         $this->p58_dtproc_ano = ($this->p58_dtproc_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_ano"]:$this->p58_dtproc_ano);
-         if($this->p58_dtproc_dia != ""){
-            $this->p58_dtproc = $this->p58_dtproc_ano."-".$this->p58_dtproc_mes."-".$this->p58_dtproc_dia;
-         }
-       }
-       $this->p58_id_usuario = ($this->p58_id_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_id_usuario"]:$this->p58_id_usuario);
-       $this->p58_numcgm = ($this->p58_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_numcgm"]:$this->p58_numcgm);
-       $this->p58_requer = ($this->p58_requer == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_requer"]:$this->p58_requer);
-       $this->p58_coddepto = ($this->p58_coddepto == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_coddepto"]:$this->p58_coddepto);
-       $this->p58_codandam = ($this->p58_codandam == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_codandam"]:$this->p58_codandam);
-       $this->p58_obs = ($this->p58_obs == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_obs"]:$this->p58_obs);
-       $this->p58_despacho = ($this->p58_despacho == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_despacho"]:$this->p58_despacho);
-       $this->p58_hora = ($this->p58_hora == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_hora"]:$this->p58_hora);
-       $this->p58_interno = ($this->p58_interno == "f"?@$GLOBALS["HTTP_POST_VARS"]["p58_interno"]:$this->p58_interno);
-       $this->p58_publico = ($this->p58_publico == "f"?@$GLOBALS["HTTP_POST_VARS"]["p58_publico"]:$this->p58_publico);
-       $this->p58_instit = ($this->p58_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_instit"]:$this->p58_instit);
-       $this->p58_numero = ($this->p58_numero == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_numero"]:$this->p58_numero);
-       $this->p58_ano = ($this->p58_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_ano"]:$this->p58_ano);
-       $this->p58_tipoprocesso = ($this->p58_tipoprocesso == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_tipoprocesso"]:$this->p58_tipoprocesso);
-       $this->p58_orgao = ($this->p58_orgao == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_orgao"]:$this->p58_orgao);
-       $this->p58_processopai = ($this->p58_processopai == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_processopai"]:$this->p58_processopai);
-       $this->p58_volume = ($this->p58_volume == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_volume"]:$this->p58_volume);
-     }else{
-       $this->p58_codproc = ($this->p58_codproc == ""?@$GLOBALS["HTTP_POST_VARS"]["p58_codproc"]:$this->p58_codproc);
-     }
-   }
-   // funcao para inclusao
-   function incluir ($p58_codproc){
-      $this->atualizacampos();
-     if($this->p58_codigo == null ){
-       $this->erro_sql = " Campo Tipo nao Informado.";
-       $this->erro_campo = "p58_codigo";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_dtproc == null ){
-       $this->erro_sql = " Campo data do processo nao Informado.";
-       $this->erro_campo = "p58_dtproc_dia";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_id_usuario == null ){
-       $this->erro_sql = " Campo id do usuário nao Informado.";
-       $this->erro_campo = "p58_id_usuario";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_numcgm == null ){
-       $this->erro_sql = " Campo Titular nao Informado.";
-       $this->erro_campo = "p58_numcgm";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_requer == null ){
-       $this->erro_sql = " Campo Requerente nao Informado.";
-       $this->erro_campo = "p58_requer";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_coddepto == null ){
-       $this->erro_sql = " Campo Departamento Inicial nao Informado.";
-       $this->erro_campo = "p58_coddepto";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_codandam == null ){
-       $this->p58_codandam = "0";
-     }
-     if($this->p58_interno == null ){
-       $this->erro_sql = " Campo Interno ou não nao Informado.";
-       $this->erro_campo = "p58_interno";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_publico == null ){
-       $this->erro_sql = " Campo Despacho Publico nao Informado.";
-       $this->erro_campo = "p58_publico";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_instit == null ){
-       $this->erro_sql = " Campo Código da Instituição nao Informado.";
-       $this->erro_campo = "p58_instit";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_ano == null ){
-       $this->erro_sql = " Campo Ano do Processo nao Informado.";
-       $this->erro_campo = "p58_ano";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->p58_tipoprocesso == null ){
-       $this->p58_tipoprocesso = 1;
-     }
+    }
 
-     if($this->p58_volume == null ){
-      $this->p58_volume = 0;
-     }
+    // funcao para atualizar campos
+    public function atualizacampos($exclusao = false)
+    {
+        if (!$exclusao) {
+            $this->p58_codproc = ($this->p58_codproc == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_codproc"] : $this->p58_codproc);
+            $this->p58_codigo = ($this->p58_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_codigo"] : $this->p58_codigo);
+            if ($this->p58_dtproc == "") {
+                $this->p58_dtproc_dia = ($this->p58_dtproc_dia == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"] : $this->p58_dtproc_dia);
+                $this->p58_dtproc_mes = ($this->p58_dtproc_mes == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_mes"] : $this->p58_dtproc_mes);
+                $this->p58_dtproc_ano = ($this->p58_dtproc_ano == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_dtproc_ano"] : $this->p58_dtproc_ano);
+                if ($this->p58_dtproc_dia != "") {
+                    $this->p58_dtproc = $this->p58_dtproc_ano . "-" . $this->p58_dtproc_mes . "-" . $this->p58_dtproc_dia;
+                }
+            }
+            $this->p58_id_usuario = ($this->p58_id_usuario == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_id_usuario"] : $this->p58_id_usuario);
+            $this->p58_numcgm = ($this->p58_numcgm == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_numcgm"] : $this->p58_numcgm);
+            $this->p58_requer = ($this->p58_requer == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_requer"] : $this->p58_requer);
+            if(!empty( $this->p58_requer)){
+                $this->p58_requer = pg_escape_string($this->p58_requer);
+            }
+            $this->p58_coddepto = ($this->p58_coddepto == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_coddepto"] : $this->p58_coddepto);
+            $this->p58_codandam = ($this->p58_codandam == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_codandam"] : $this->p58_codandam);
+            $this->p58_obs = ($this->p58_obs == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_obs"] : $this->p58_obs);
+            $this->p58_despacho = ($this->p58_despacho == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_despacho"] : $this->p58_despacho);
+            $this->p58_hora = ($this->p58_hora == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_hora"] : $this->p58_hora);
+            $this->p58_interno = ($this->p58_interno == "f" ? @$GLOBALS["HTTP_POST_VARS"]["p58_interno"] : $this->p58_interno);
+            $this->p58_publico = ($this->p58_publico == "f" ? @$GLOBALS["HTTP_POST_VARS"]["p58_publico"] : $this->p58_publico);
+            $this->p58_instit = ($this->p58_instit == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_instit"] : $this->p58_instit);
+            $this->p58_numero = ($this->p58_numero == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_numero"] : $this->p58_numero);
+            $this->p58_ano = ($this->p58_ano == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_ano"] : $this->p58_ano);
+            $this->p58_tipoprocesso = ($this->p58_tipoprocesso == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_tipoprocesso"] : $this->p58_tipoprocesso);
+            $this->p58_orgao = ($this->p58_orgao == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_orgao"] : $this->p58_orgao);
+            $this->p58_processopai = ($this->p58_processopai == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_processopai"] : $this->p58_processopai);
+            $this->p58_volume = ($this->p58_volume == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_volume"] : $this->p58_volume);
+        } else {
+            $this->p58_codproc = ($this->p58_codproc == "" ? @$GLOBALS["HTTP_POST_VARS"]["p58_codproc"] : $this->p58_codproc);
+        }
+    }
 
-     if($this->p58_orgao == null ){
-      $this->p58_orgao = 0;
-     }
+    // funcao para inclusao
+    public function incluir($p58_codproc)
+    {
+        $this->atualizacampos();
+        if ($this->p58_codigo == null) {
+            $this->erro_sql = " Campo Tipo nao Informado.";
+            $this->erro_campo = "p58_codigo";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_dtproc == null) {
+            $this->erro_sql = " Campo data do processo nao Informado.";
+            $this->erro_campo = "p58_dtproc_dia";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_id_usuario == null) {
+            $this->erro_sql = " Campo id do usuário nao Informado.";
+            $this->erro_campo = "p58_id_usuario";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_numcgm == null) {
+            $this->erro_sql = " Campo Titular nao Informado.";
+            $this->erro_campo = "p58_numcgm";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_requer == null) {
+            $this->erro_sql = " Campo Requerente nao Informado.";
+            $this->erro_campo = "p58_requer";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_coddepto == null) {
+            $this->erro_sql = " Campo Departamento Inicial nao Informado.";
+            $this->erro_campo = "p58_coddepto";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_codandam == null) {
+            $this->p58_codandam = "0";
+        }
+        if ($this->p58_interno == null) {
+            $this->erro_sql = " Campo Interno ou não nao Informado.";
+            $this->erro_campo = "p58_interno";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_publico == null) {
+            $this->erro_sql = " Campo Despacho Publico nao Informado.";
+            $this->erro_campo = "p58_publico";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_instit == null) {
+            $this->erro_sql = " Campo Código da Instituição nao Informado.";
+            $this->erro_campo = "p58_instit";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_ano == null) {
+            $this->erro_sql = " Campo Ano do Processo nao Informado.";
+            $this->erro_campo = "p58_ano";
+            $this->erro_banco = "";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        if ($this->p58_tipoprocesso == null) {
+            $this->p58_tipoprocesso = 1;
+        }
 
-     if($this->p58_processopai == null ){
-      $this->p58_processopai = 0;
-     }
+        if ($this->p58_volume == null) {
+            $this->p58_volume = 0;
+        }
 
-     if($p58_codproc == "" || $p58_codproc == null ){
-       $result = db_query("select nextval('protprocesso_p58_codproc_seq')");
-       if($result==false){
-         $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: protprocesso_p58_codproc_seq do campo: p58_codproc";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-       $this->p58_codproc = pg_result($result,0,0);
-     }else{
-       $result = db_query("select last_value from protprocesso_p58_codproc_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p58_codproc)){
-         $this->erro_sql = " Campo p58_codproc maior que último número da sequencia.";
-         $this->erro_banco = "Sequencia menor que este número.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }else{
-         $this->p58_codproc = $p58_codproc;
-       }
-     }
-     if(($this->p58_codproc == null) || ($this->p58_codproc == "") ){
-       $this->erro_sql = " Campo p58_codproc nao declarado.";
-       $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     $sql = "insert into protprocesso(
+        if ($this->p58_orgao == null) {
+            $this->p58_orgao = 0;
+        }
+
+        if ($this->p58_processopai == null) {
+            $this->p58_processopai = 0;
+        }
+
+        if ($p58_codproc == "" || $p58_codproc == null) {
+            $result = db_query("select nextval('protprocesso_p58_codproc_seq')");
+            if (!$result) {
+                $this->erro_banco = str_replace("\n", "", @pg_last_error());
+                $this->erro_sql = "Verifique o cadastro da sequencia: protprocesso_p58_codproc_seq do campo: p58_codproc";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+            $this->p58_codproc = pg_fetch_result($result, 0, 0);
+        } else {
+            $result = db_query("select last_value from protprocesso_p58_codproc_seq");
+            if ($result && (pg_fetch_result($result, 0, 0) < $p58_codproc)) {
+                $this->erro_sql = " Campo p58_codproc maior que último número da sequencia.";
+                $this->erro_banco = "Sequencia menor que este número.";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            } else {
+                $this->p58_codproc = $p58_codproc;
+            }
+        }
+        if (($this->p58_codproc == null) || ($this->p58_codproc == "")) {
+            $this->erro_sql = " Campo p58_codproc nao declarado.";
+            $this->erro_banco = "Chave Primaria zerada.";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        $sql = "insert into protprocesso(
                                        p58_codproc
                                       ,p58_codigo
                                       ,p58_dtproc
@@ -307,7 +370,7 @@ class cl_protprocesso {
                 values (
                                 $this->p58_codproc
                                ,$this->p58_codigo
-                               ,".($this->p58_dtproc == "null" || $this->p58_dtproc == ""?"null":"'".$this->p58_dtproc."'")."
+                               ," . ($this->p58_dtproc == "null" || $this->p58_dtproc == "" ? "null" : "'" . $this->p58_dtproc . "'") . "
                                ,$this->p58_id_usuario
                                ,$this->p58_numcgm
                                ,'$this->p58_requer'
@@ -327,828 +390,846 @@ class cl_protprocesso {
                                ,$this->p58_volume
                       )";
 
-     $result = db_query($sql);
+        $result = db_query($sql);
 
-     if($result==false){
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = " ($this->p58_codproc) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = " já Cadastrado";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       }else{
-         $this->erro_sql   = " ($this->p58_codproc) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       }
-       $this->erro_status = "0";
-       $this->numrows_incluir= 0;
-       return false;
-     }
-     $this->erro_banco = "";
-     $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
-
-         $this->erro_sql .= "Valores : ".$this->p58_numero;
-     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-     $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-     $this->erro_status = "1";
-     $this->numrows_incluir= pg_affected_rows($result);
-     $resaco = $this->sql_record($this->sql_query_file($this->p58_codproc));
-     if(($resaco!=false)||($this->numrows!=0)){
-       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
-       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-       $resac = db_query("insert into db_acountkey values($acount,2454,'$this->p58_codproc','I')");
-       $resac = db_query("insert into db_acount values($acount,403,2454,'','".AddSlashes(pg_result($resaco,0,'p58_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2455,'','".AddSlashes(pg_result($resaco,0,'p58_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2456,'','".AddSlashes(pg_result($resaco,0,'p58_dtproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2457,'','".AddSlashes(pg_result($resaco,0,'p58_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2458,'','".AddSlashes(pg_result($resaco,0,'p58_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2459,'','".AddSlashes(pg_result($resaco,0,'p58_requer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2460,'','".AddSlashes(pg_result($resaco,0,'p58_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,2461,'','".AddSlashes(pg_result($resaco,0,'p58_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,4673,'','".AddSlashes(pg_result($resaco,0,'p58_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,4674,'','".AddSlashes(pg_result($resaco,0,'p58_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,6102,'','".AddSlashes(pg_result($resaco,0,'p58_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,6525,'','".AddSlashes(pg_result($resaco,0,'p58_interno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,6526,'','".AddSlashes(pg_result($resaco,0,'p58_publico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,10671,'','".AddSlashes(pg_result($resaco,0,'p58_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,18208,'','".AddSlashes(pg_result($resaco,0,'p58_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,18252,'','".AddSlashes(pg_result($resaco,0,'p58_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,1011256,'','".AddSlashes(pg_result($resaco,0,'p58_tipoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,1011792,'','".AddSlashes(pg_result($resaco,0,'p58_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,1011793,'','".AddSlashes(pg_result($resaco,0,'p58_processopai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,403,1011794,'','".AddSlashes(pg_result($resaco,0,'p58_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     }
-     return true;
-   }
-   // funcao para alteracao
-   function alterar ($p58_codproc=null) {
-      $this->atualizacampos();
-     $sql = " update protprocesso set ";
-     $virgula = "";
-     if(trim($this->p58_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codproc"])){
-       $sql  .= $virgula." p58_codproc = $this->p58_codproc ";
-       $virgula = ",";
-       if(trim($this->p58_codproc) == null ){
-         $this->erro_sql = " Campo Número de Controle nao Informado.";
-         $this->erro_campo = "p58_codproc";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codigo"])){
-       $sql  .= $virgula." p58_codigo = $this->p58_codigo ";
-       $virgula = ",";
-       if(trim($this->p58_codigo) == null ){
-         $this->erro_sql = " Campo Tipo nao Informado.";
-         $this->erro_campo = "p58_codigo";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_dtproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"] !="") ){
-       $sql  .= $virgula." p58_dtproc = '$this->p58_dtproc' ";
-       $virgula = ",";
-       if(trim($this->p58_dtproc) == null ){
-         $this->erro_sql = " Campo data do processo nao Informado.";
-         $this->erro_campo = "p58_dtproc_dia";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }     else{
-       if(isset($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"])){
-         $sql  .= $virgula." p58_dtproc = null ";
-         $virgula = ",";
-         if(trim($this->p58_dtproc) == null ){
-           $this->erro_sql = " Campo data do processo nao Informado.";
-           $this->erro_campo = "p58_dtproc_dia";
-           $this->erro_banco = "";
-           $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-           $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-           $this->erro_status = "0";
-           return false;
-         }
-       }
-     }
-     if(trim($this->p58_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_id_usuario"])){
-       $sql  .= $virgula." p58_id_usuario = $this->p58_id_usuario ";
-       $virgula = ",";
-       if(trim($this->p58_id_usuario) == null ){
-         $this->erro_sql = " Campo id do usuário nao Informado.";
-         $this->erro_campo = "p58_id_usuario";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_numcgm"])){
-       $sql  .= $virgula." p58_numcgm = $this->p58_numcgm ";
-       $virgula = ",";
-       if(trim($this->p58_numcgm) == null ){
-         $this->erro_sql = " Campo Titular nao Informado.";
-         $this->erro_campo = "p58_numcgm";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_requer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_requer"])){
-       $sql  .= $virgula." p58_requer = '$this->p58_requer' ";
-       $virgula = ",";
-       if(trim($this->p58_requer) == null ){
-         $this->erro_sql = " Campo Requerente nao Informado.";
-         $this->erro_campo = "p58_requer";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_coddepto"])){
-       $sql  .= $virgula." p58_coddepto = $this->p58_coddepto ";
-       $virgula = ",";
-       if(trim($this->p58_coddepto) == null ){
-         $this->erro_sql = " Campo Departamento Inicial nao Informado.";
-         $this->erro_campo = "p58_coddepto";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codandam"])){
-        if(trim($this->p58_codandam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["p58_codandam"])){
-           $this->p58_codandam = "0" ;
+        if (!$result) {
+            $this->erro_banco = str_replace("\n", "", @pg_last_error());
+            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+                $this->erro_sql = " ($this->p58_codproc) nao Incluído. Inclusao Abortada.";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_banco = " já Cadastrado";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+            } else {
+                $this->erro_sql = " ($this->p58_codproc) nao Incluído. Inclusao Abortada.";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+            }
+            $this->erro_status = "0";
+            $this->numrows_incluir = 0;
+            return false;
         }
-       $sql  .= $virgula." p58_codandam = $this->p58_codandam ";
-       $virgula = ",";
-     }
-     if(trim($this->p58_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_obs"])){
-       $sql  .= $virgula." p58_obs = '$this->p58_obs' ";
-       $virgula = ",";
-     }
-     if(trim($this->p58_despacho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_despacho"])){
-       $sql  .= $virgula." p58_despacho = '$this->p58_despacho' ";
-       $virgula = ",";
-     }
-     if(trim($this->p58_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_hora"])){
-       $sql  .= $virgula." p58_hora = '$this->p58_hora' ";
-       $virgula = ",";
-     }
-     if(trim($this->p58_interno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_interno"])){
-       $sql  .= $virgula." p58_interno = '$this->p58_interno' ";
-       $virgula = ",";
-       if(trim($this->p58_interno) == null ){
-         $this->erro_sql = " Campo Interno ou não nao Informado.";
-         $this->erro_campo = "p58_interno";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_publico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_publico"])){
-       $sql  .= $virgula." p58_publico = '$this->p58_publico' ";
-       $virgula = ",";
-       if(trim($this->p58_publico) == null ){
-         $this->erro_sql = " Campo Despacho Publico nao Informado.";
-         $this->erro_campo = "p58_publico";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_instit"])){
-       $sql  .= $virgula." p58_instit = $this->p58_instit ";
-       $virgula = ",";
-       if(trim($this->p58_instit) == null ){
-         $this->erro_sql = " Campo Código da Instituição nao Informado.";
-         $this->erro_campo = "p58_instit";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_numero"])){
-       $sql  .= $virgula." p58_numero = '$this->p58_numero' ";
-       $virgula = ",";
-     }
-     if(trim($this->p58_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_ano"])){
-       $sql  .= $virgula." p58_ano = $this->p58_ano ";
-       $virgula = ",";
-       if(trim($this->p58_ano) == null ){
-         $this->erro_sql = " Campo Ano do Processo nao Informado.";
-         $this->erro_campo = "p58_ano";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->p58_tipoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_tipoprocesso"])){
-       $sql  .= $virgula." p58_tipoprocesso = $this->p58_tipoprocesso ";
-       $virgula = ",";
-     }
-
-     if(trim($this->p58_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_orgao"])){
-      $sql  .= $virgula." p58_orgao = $this->p58_orgao ";
-      $virgula = ",";
-     }
-
-     if(trim($this->p58_processopai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_processopai"])){
-      $sql  .= $virgula." p58_processopai = $this->p58_processopai ";
-      $virgula = ",";
-     }
-
-     if(trim($this->p58_volume)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p58_volume"])){
-      $sql  .= $virgula." p58_volume = $this->p58_volume ";
-      $virgula = ",";
-     }
-
-     $sql .= " where ";
-     if($p58_codproc!=null){
-       $sql .= " p58_codproc = $this->p58_codproc";
-     }
-     $resaco = $this->sql_record($this->sql_query_file($this->p58_codproc));
-     if($this->numrows>0){
-       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,2454,'$this->p58_codproc','A')");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_codproc"]) || $this->p58_codproc != "")
-           $resac = db_query("insert into db_acount values($acount,403,2454,'".AddSlashes(pg_result($resaco,$conresaco,'p58_codproc'))."','$this->p58_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_codigo"]) || $this->p58_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,403,2455,'".AddSlashes(pg_result($resaco,$conresaco,'p58_codigo'))."','$this->p58_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_dtproc"]) || $this->p58_dtproc != "")
-           $resac = db_query("insert into db_acount values($acount,403,2456,'".AddSlashes(pg_result($resaco,$conresaco,'p58_dtproc'))."','$this->p58_dtproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_id_usuario"]) || $this->p58_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,403,2457,'".AddSlashes(pg_result($resaco,$conresaco,'p58_id_usuario'))."','$this->p58_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_numcgm"]) || $this->p58_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,403,2458,'".AddSlashes(pg_result($resaco,$conresaco,'p58_numcgm'))."','$this->p58_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_requer"]) || $this->p58_requer != "")
-           $resac = db_query("insert into db_acount values($acount,403,2459,'".AddSlashes(pg_result($resaco,$conresaco,'p58_requer'))."','$this->p58_requer',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_coddepto"]) || $this->p58_coddepto != "")
-           $resac = db_query("insert into db_acount values($acount,403,2460,'".AddSlashes(pg_result($resaco,$conresaco,'p58_coddepto'))."','$this->p58_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_codandam"]) || $this->p58_codandam != "")
-           $resac = db_query("insert into db_acount values($acount,403,2461,'".AddSlashes(pg_result($resaco,$conresaco,'p58_codandam'))."','$this->p58_codandam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_obs"]) || $this->p58_obs != "")
-           $resac = db_query("insert into db_acount values($acount,403,4673,'".AddSlashes(pg_result($resaco,$conresaco,'p58_obs'))."','$this->p58_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_despacho"]) || $this->p58_despacho != "")
-           $resac = db_query("insert into db_acount values($acount,403,4674,'".AddSlashes(pg_result($resaco,$conresaco,'p58_despacho'))."','$this->p58_despacho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_hora"]) || $this->p58_hora != "")
-           $resac = db_query("insert into db_acount values($acount,403,6102,'".AddSlashes(pg_result($resaco,$conresaco,'p58_hora'))."','$this->p58_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_interno"]) || $this->p58_interno != "")
-           $resac = db_query("insert into db_acount values($acount,403,6525,'".AddSlashes(pg_result($resaco,$conresaco,'p58_interno'))."','$this->p58_interno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_publico"]) || $this->p58_publico != "")
-           $resac = db_query("insert into db_acount values($acount,403,6526,'".AddSlashes(pg_result($resaco,$conresaco,'p58_publico'))."','$this->p58_publico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_instit"]) || $this->p58_instit != "")
-           $resac = db_query("insert into db_acount values($acount,403,10671,'".AddSlashes(pg_result($resaco,$conresaco,'p58_instit'))."','$this->p58_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_numero"]) || $this->p58_numero != "")
-           $resac = db_query("insert into db_acount values($acount,403,18208,'".AddSlashes(pg_result($resaco,$conresaco,'p58_numero'))."','$this->p58_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if(isset($GLOBALS["HTTP_POST_VARS"]["p58_ano"]) || $this->p58_ano != "")
-           $resac = db_query("insert into db_acount values($acount,403,18252,'".AddSlashes(pg_result($resaco,$conresaco,'p58_ano'))."','$this->p58_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if (isset($GLOBALS["HTTP_POST_VARS"]["p58_tipoprocesso"]) || $this->p58_tipoprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,403,1011256,'".AddSlashes(pg_result($resaco,$conresaco,'p58_tipoprocesso'))."','$this->p58_tipoprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if (isset($GLOBALS["HTTP_POST_VARS"]["p58_orgao"]) || $this->p58_orgao != "")
-           $resac = db_query("insert into db_acount values($acount,403,1011792,'".AddSlashes(pg_result($resaco,$conresaco,'p58_orgao'))."','$this->p58_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if (isset($GLOBALS["HTTP_POST_VARS"]["p58_processopai"]) || $this->p58_processopai != "")
-          $resac = db_query("insert into db_acount values($acount,403,1011793,'".AddSlashes(pg_result($resaco,$conresaco,'p58_processopai'))."','$this->p58_processopai',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         if (isset($GLOBALS["HTTP_POST_VARS"]["p58_volume"]) || $this->p58_volume != "")
-          $resac = db_query("insert into db_acount values($acount,403,1011794,'".AddSlashes(pg_result($resaco,$conresaco,'p58_volume'))."','$this->p58_volume',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
-       }
-
-     $result = db_query($sql);
-     if($result==false){
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
-         $this->erro_sql .= "Valores : ".$this->p58_codproc;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       $this->numrows_alterar = 0;
-       return false;
-     }else{
-       if(pg_affected_rows($result)==0){
-         $this->erro_banco = "";
-         $this->erro_sql = " nao foi Alterado. Alteracao Executada.\\n";
-         $this->erro_sql .= "Valores : ".$this->p58_codproc;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_alterar = 0;
-         return true;
-       }else{
-         $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
-         $this->erro_sql .= "Valores : ".$this->p58_numero;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_alterar = pg_affected_rows($result);
-         return true;
-       }
-     }
-   }
-   // funcao para exclusao
-   function excluir ($p58_codproc=null,$dbwhere=null) {
-     if($dbwhere==null || $dbwhere==""){
-       $resaco = $this->sql_record($this->sql_query_file($p58_codproc));
-     }else{
-       $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
-     }
-     if(($resaco!=false)||($this->numrows!=0)){
-       for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,2454,'$p58_codproc','E')");
-         $resac = db_query("insert into db_acount values($acount,403,2454,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2455,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2456,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_dtproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2457,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2458,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2459,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_requer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2460,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,2461,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,4673,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,4674,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,6102,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,6525,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_interno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,6526,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_publico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,10671,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,18208,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,403,18252,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac  = db_query("insert into db_acount values($acount,403,1011256,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_tipoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac  = db_query("insert into db_acount values($acount,403,1011792,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac  = db_query("insert into db_acount values($acount,403,1011793,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_processopai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac  = db_query("insert into db_acount values($acount,403,1011794,'','".AddSlashes(pg_result($resaco,$iresaco,'p58_volume'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
-     $sql = " delete from protprocesso
-                    where ";
-     $sql2 = "";
-     if($dbwhere==null || $dbwhere ==""){
-        if($p58_codproc != ""){
-          if($sql2!=""){
-            $sql2 .= " and ";
-          }
-          $sql2 .= " p58_codproc = $p58_codproc ";
-        }
-     }else{
-       $sql2 = $dbwhere;
-     }
-     $result = db_query($sql.$sql2);
-     if($result==false){
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
-       $this->erro_sql .= "Valores : ".$p58_codproc;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       $this->numrows_excluir = 0;
-       return false;
-     }else{
-       if(pg_affected_rows($result)==0){
-         $this->erro_banco = "";
-         $this->erro_sql = " nao Encontrado. Exclusão não Efetuada.\\n";
-         $this->erro_sql .= "Valores : ".$p58_codproc;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_excluir = 0;
-         return true;
-       }else{
-         $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
-         $this->erro_sql .= "Valores : ".$p58_numero;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_excluir = pg_affected_rows($result);
-         return true;
-       }
-     }
-   }
-   // funcao do recordset
-   function sql_record($sql) {
-     $result = db_query($sql);
-     if($result==false){
-       $this->numrows    = 0;
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     $this->numrows = pg_numrows($result);
-      if($this->numrows==0){
         $this->erro_banco = "";
-        $this->erro_sql   = "Record Vazio na Tabela:protprocesso";
-        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-        $this->erro_status = "0";
-        return false;
-      }
-     return $result;
-   }
-   // funcao do sql
-   function sql_query ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_config  on  db_config.codigo = protprocesso.p58_instit";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      inner join db_config  as a on   a.codigo = db_depart.instit";
-     $sql .= "      inner join tipoprocesso  on   tipoprocesso.p109_sequencial = protprocesso.p58_tipoprocesso";
-     $sql .= "      LEFT JOIN processoouvidoria ON processoouvidoria.ov09_protprocesso = protprocesso.p58_codproc";
-     $sql .= "      LEFT JOIN ouvidoriaatendimento ON ouvidoriaatendimento.ov01_sequencial = processoouvidoria.ov09_ouvidoriaatendimento";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   // funcao do sql
-   function sql_query_file ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   function sql_query_andam ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart a on  a.coddepto = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      inner join db_depart b on  b.coddepto = procandam.p61_coddepto";
-     $sql .= "      LEFT JOIN processoouvidoria ON processoouvidoria.ov09_protprocesso = protprocesso.p58_codproc";
-     $sql .= "      LEFT JOIN ouvidoriaatendimento ON ouvidoriaatendimento.ov01_sequencial = processoouvidoria.ov09_ouvidoriaatendimento";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   function sql_query_arq ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      left join arqproc  on p68_codproc = p58_codproc ";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-$virgula = ",";
-       }
-     }
-     return $sql;
-  }
-  function sql_query_deptand ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
 
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      inner join db_depart  on  db_depart.coddepto = procandam.p61_coddepto";
-     $sql .= "      left join arqproc  on p68_codproc = p58_codproc ";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-          $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   function sql_query_alt ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-	 $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      left join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam and procandam.p61_codproc = protprocesso.p58_codproc";
-     $sql .= "      left join proctransferproc  on   proctransferproc.p63_codproc = protprocesso.p58_codproc";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-
-   function sql_query_todos ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm          on  cgm.z01_numcgm         = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart a  on  a.coddepto             = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc     on  tipoproc.p51_codigo    = protprocesso.p58_codigo";
-     $sql .= "      left  join procandam    on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      left  join db_depart b  on  b.coddepto             = procandam.p61_coddepto";
-     $sql .= "      left  join arqproc      on  p68_codproc            = protprocesso.p58_codproc";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-
-   function sql_query_deptarq ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm					on  cgm.z01_numcgm				 = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart a	on  a.coddepto						 = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc			on  tipoproc.p51_codigo		 = protprocesso.p58_codigo";
-     $sql .= "      inner join procandam		on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      inner join db_depart b	on  b.coddepto						 = procandam.p61_coddepto";
-     $sql .= "      left  join arqproc			on  p68_codproc					   = protprocesso.p58_codproc";
-		 $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-   function sql_query_andam_ouvidoria ( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
-     $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart a on  a.coddepto = protprocesso.p58_coddepto";
-     $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
-     $sql .= "      left join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
-     $sql .= "      left join db_depart b on  b.coddepto = procandam.p61_coddepto";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-  function sql_query_transand( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-
-    $sql = "select ";
-
-    if($campos != "*" ){
-      $campos_sql = explode("#",$campos);
-      $virgula = "";
-      for($i=0;$i<sizeof($campos_sql);$i++){
-        $sql .= $virgula.$campos_sql[$i];
-        $virgula = ",";
-      }
-    } else {
-      $sql .= $campos;
+        $this->erro_sql .= "Valores : " . $this->p58_numero;
+        $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg .= str_replace(
+            '"',
+            "",
+            str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+        );
+        $this->erro_status = "1";
+        $this->numrows_incluir = pg_affected_rows($result);
+        return true;
     }
 
-      $sql .= " from protprocesso
+    // funcao para alteracao
+    public function alterar($p58_codproc = null)
+    {
+        $this->atualizacampos();
+        $sql = " update protprocesso set ";
+        $virgula = "";
+        if (trim($this->p58_codproc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codproc"])) {
+            $sql .= $virgula . " p58_codproc = $this->p58_codproc ";
+            $virgula = ",";
+            if (trim($this->p58_codproc) == null) {
+                $this->erro_sql = " Campo Número de Controle nao Informado.";
+                $this->erro_campo = "p58_codproc";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codigo"])) {
+            $sql .= $virgula . " p58_codigo = $this->p58_codigo ";
+            $virgula = ",";
+            if (trim($this->p58_codigo) == null) {
+                $this->erro_sql = " Campo Tipo nao Informado.";
+                $this->erro_campo = "p58_codigo";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim(
+                $this->p58_dtproc
+            ) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"] != "")) {
+            $sql .= $virgula . " p58_dtproc = '$this->p58_dtproc' ";
+            $virgula = ",";
+            if (trim($this->p58_dtproc) == null) {
+                $this->erro_sql = " Campo data do processo nao Informado.";
+                $this->erro_campo = "p58_dtproc_dia";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        } else {
+            if (isset($GLOBALS["HTTP_POST_VARS"]["p58_dtproc_dia"])) {
+                $sql .= $virgula . " p58_dtproc = null ";
+                $virgula = ",";
+                if (trim($this->p58_dtproc) == null) {
+                    $this->erro_sql = " Campo data do processo nao Informado.";
+                    $this->erro_campo = "p58_dtproc_dia";
+                    $this->erro_banco = "";
+                    $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                    $this->erro_msg .= str_replace(
+                        '"',
+                        "",
+                        str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                    );
+                    $this->erro_status = "0";
+                    return false;
+                }
+            }
+        }
+        if (trim($this->p58_id_usuario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_id_usuario"])) {
+            $sql .= $virgula . " p58_id_usuario = $this->p58_id_usuario ";
+            $virgula = ",";
+            if (trim($this->p58_id_usuario) == null) {
+                $this->erro_sql = " Campo id do usuário nao Informado.";
+                $this->erro_campo = "p58_id_usuario";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_numcgm) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_numcgm"])) {
+            $sql .= $virgula . " p58_numcgm = $this->p58_numcgm ";
+            $virgula = ",";
+            if (trim($this->p58_numcgm) == null) {
+                $this->erro_sql = " Campo Titular nao Informado.";
+                $this->erro_campo = "p58_numcgm";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_requer) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_requer"])) {
+            $sql .= $virgula . " p58_requer = '$this->p58_requer' ";
+            $virgula = ",";
+            if (trim($this->p58_requer) == null) {
+                $this->erro_sql = " Campo Requerente nao Informado.";
+                $this->erro_campo = "p58_requer";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_coddepto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_coddepto"])) {
+            $sql .= $virgula . " p58_coddepto = $this->p58_coddepto ";
+            $virgula = ",";
+            if (trim($this->p58_coddepto) == null) {
+                $this->erro_sql = " Campo Departamento Inicial nao Informado.";
+                $this->erro_campo = "p58_coddepto";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_codandam) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_codandam"])) {
+            if (trim($this->p58_codandam) == "" && isset($GLOBALS["HTTP_POST_VARS"]["p58_codandam"])) {
+                $this->p58_codandam = "0";
+            }
+            $sql .= $virgula . " p58_codandam = $this->p58_codandam ";
+            $virgula = ",";
+        }
+        if (trim($this->p58_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_obs"])) {
+            $sql .= $virgula . " p58_obs = '$this->p58_obs' ";
+            $virgula = ",";
+        }
+        if (trim($this->p58_despacho) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_despacho"])) {
+            $sql .= $virgula . " p58_despacho = '$this->p58_despacho' ";
+            $virgula = ",";
+        }
+        if (trim($this->p58_hora) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_hora"])) {
+            $sql .= $virgula . " p58_hora = '$this->p58_hora' ";
+            $virgula = ",";
+        }
+        if (trim($this->p58_interno) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_interno"])) {
+            $sql .= $virgula . " p58_interno = '$this->p58_interno' ";
+            $virgula = ",";
+            if (trim($this->p58_interno) == null) {
+                $this->erro_sql = " Campo Interno ou não nao Informado.";
+                $this->erro_campo = "p58_interno";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_publico) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_publico"])) {
+            $sql .= $virgula . " p58_publico = '$this->p58_publico' ";
+            $virgula = ",";
+            if (trim($this->p58_publico) == null) {
+                $this->erro_sql = " Campo Despacho Publico nao Informado.";
+                $this->erro_campo = "p58_publico";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_instit"])) {
+            $sql .= $virgula . " p58_instit = $this->p58_instit ";
+            $virgula = ",";
+            if (trim($this->p58_instit) == null) {
+                $this->erro_sql = " Campo Código da Instituição nao Informado.";
+                $this->erro_campo = "p58_instit";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_numero) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_numero"])) {
+            $sql .= $virgula . " p58_numero = '$this->p58_numero' ";
+            $virgula = ",";
+        }
+        if (trim($this->p58_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_ano"])) {
+            $sql .= $virgula . " p58_ano = $this->p58_ano ";
+            $virgula = ",";
+            if (trim($this->p58_ano) == null) {
+                $this->erro_sql = " Campo Ano do Processo nao Informado.";
+                $this->erro_campo = "p58_ano";
+                $this->erro_banco = "";
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "0";
+                return false;
+            }
+        }
+        if (trim($this->p58_tipoprocesso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_tipoprocesso"])) {
+            $sql .= $virgula . " p58_tipoprocesso = $this->p58_tipoprocesso ";
+            $virgula = ",";
+        }
+
+        if (trim($this->p58_orgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_orgao"])) {
+            $sql .= $virgula . " p58_orgao = $this->p58_orgao ";
+            $virgula = ",";
+        }
+
+        if (trim($this->p58_processopai) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_processopai"])) {
+            $sql .= $virgula . " p58_processopai = $this->p58_processopai ";
+            $virgula = ",";
+        }
+
+        if (trim($this->p58_volume) != "" || isset($GLOBALS["HTTP_POST_VARS"]["p58_volume"])) {
+            $sql .= $virgula . " p58_volume = $this->p58_volume ";
+            $virgula = ",";
+        }
+
+        $sql .= " where ";
+        if ($p58_codproc != null) {
+            $sql .= " p58_codproc = $this->p58_codproc";
+        }
+
+        $result = db_query($sql);
+        if (!$result) {
+            $this->erro_banco = str_replace("\n", "", @pg_last_error());
+            $this->erro_sql = " nao Alterado. Alteracao Abortada.\\n";
+            $this->erro_sql .= "Valores : " . $this->p58_codproc;
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            $this->numrows_alterar = 0;
+            return false;
+        } else {
+            if (pg_affected_rows($result) == 0) {
+                $this->erro_banco = "";
+                $this->erro_sql = " nao foi Alterado. Alteracao Executada.\\n";
+                $this->erro_sql .= "Valores : " . $this->p58_codproc;
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "1";
+                $this->numrows_alterar = 0;
+                return true;
+            } else {
+                $this->erro_banco = "";
+                $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+                $this->erro_sql .= "Valores : " . $this->p58_numero;
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "1";
+                $this->numrows_alterar = pg_affected_rows($result);
+                return true;
+            }
+        }
+    }
+
+    // funcao para exclusao
+    public function excluir($p58_codproc = null, $dbwhere = null)
+    {
+        $sql = " delete from protprocesso
+                    where ";
+        $sql2 = "";
+        if ($dbwhere == null || $dbwhere == "") {
+            if ($p58_codproc != "") {
+                if ($sql2 != "") {
+                    $sql2 .= " and ";
+                }
+                $sql2 .= " p58_codproc = $p58_codproc ";
+            }
+        } else {
+            $sql2 = $dbwhere;
+        }
+        $result = db_query($sql . $sql2);
+        if (!$result) {
+            $this->erro_banco = str_replace("\n", "", @pg_last_error());
+            $this->erro_sql = " nao Excluído. Exclusão Abortada.\\n";
+            $this->erro_sql .= "Valores : " . $p58_codproc;
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            $this->numrows_excluir = 0;
+            return false;
+        } else {
+            if (pg_affected_rows($result) == 0) {
+                $this->erro_banco = "";
+                $this->erro_sql = " nao Encontrado. Exclusão não Efetuada.\\n";
+                $this->erro_sql .= "Valores : " . $p58_codproc;
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "1";
+                $this->numrows_excluir = 0;
+                return true;
+            } else {
+                $this->erro_banco = "";
+                $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
+                $this->erro_sql .= "Valores : " . $p58_codproc;
+                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg .= str_replace(
+                    '"',
+                    "",
+                    str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+                );
+                $this->erro_status = "1";
+                $this->numrows_excluir = pg_affected_rows($result);
+                return true;
+            }
+        }
+    }
+
+    // funcao do recordset
+    public function sql_record($sql)
+    {
+        $result = db_query($sql);
+        if (!$result) {
+            $this->numrows = 0;
+            $this->erro_banco = str_replace("\n", "", @pg_last_error());
+            $this->erro_sql = "Erro ao selecionar os registros.";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        $this->numrows = pg_num_rows($result);
+        if ($this->numrows == 0) {
+            $this->erro_banco = "";
+            $this->erro_sql = "Record Vazio na Tabela:protprocesso";
+            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg .= str_replace(
+                '"',
+                "",
+                str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n")
+            );
+            $this->erro_status = "0";
+            return false;
+        }
+        return $result;
+    }
+
+    // funcao do sql
+    public function sql_query($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "", $join = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_config  on  db_config.codigo = protprocesso.p58_instit";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      inner join db_config  as a on   a.codigo = db_depart.instit";
+        $sql .= "      inner join tipoprocesso  on   tipoprocesso.p109_sequencial = protprocesso.p58_tipoprocesso";
+        $sql .= "      inner join prottipodocumentoprocesso on prottipodocumentoprocesso.p91_sequencial = tipoproc.p51_prottipodocumentoprocesso";
+        $sql .= "      LEFT JOIN processoouvidoria ON processoouvidoria.ov09_protprocesso = protprocesso.p58_codproc";
+        $sql .= "      LEFT JOIN ouvidoriaatendimento ON ouvidoriaatendimento.ov01_sequencial = processoouvidoria.ov09_ouvidoriaatendimento";
+        $sql .= "      LEFT JOIN arqproc ON arqproc.p68_codproc = protprocesso.p58_codproc";
+        $sql .= "      LEFT JOIN db_departorg on db_departorg.db01_coddepto = db_depart.coddepto and db_departorg.db01_anousu = protprocesso.p58_ano";
+        $sql .= "      LEFT JOIN procandam on procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      LEFT JOIN db_depart as la on la.coddepto = procandam.p61_coddepto";
+
+        if ($join) {
+            $sql .= $join;
+        }
+
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    // funcao do sql
+    public function sql_query_file($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_andam($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart a on  a.coddepto = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      inner join db_depart b on  b.coddepto = procandam.p61_coddepto";
+        $sql .= "      LEFT JOIN processoouvidoria ON processoouvidoria.ov09_protprocesso = protprocesso.p58_codproc";
+        $sql .= "      LEFT JOIN ouvidoriaatendimento ON ouvidoriaatendimento.ov01_sequencial = processoouvidoria.ov09_ouvidoriaatendimento";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_arq($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      left join arqproc  on p68_codproc = p58_codproc ";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_deptand($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      inner join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      inner join db_depart  on  db_depart.coddepto = procandam.p61_coddepto";
+        $sql .= "      left join arqproc  on p68_codproc = p58_codproc ";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_alt($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart  on  db_depart.coddepto = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      left join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam and procandam.p61_codproc = protprocesso.p58_codproc";
+        $sql .= "      left join proctransferproc  on   proctransferproc.p63_codproc = protprocesso.p58_codproc";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_todos($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm          on  cgm.z01_numcgm         = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart a  on  a.coddepto             = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc     on  tipoproc.p51_codigo    = protprocesso.p58_codigo";
+        $sql .= "      left  join procandam    on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      left  join db_depart b  on  b.coddepto             = procandam.p61_coddepto";
+        $sql .= "      left  join arqproc      on  p68_codproc            = protprocesso.p58_codproc";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_deptarq($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm					on  cgm.z01_numcgm				 = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart a	on  a.coddepto						 = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc			on  tipoproc.p51_codigo		 = protprocesso.p58_codigo";
+        $sql .= "      inner join procandam		on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      inner join db_depart b	on  b.coddepto						 = procandam.p61_coddepto";
+        $sql .= "      left  join arqproc			on  p68_codproc					   = protprocesso.p58_codproc";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_andam_ouvidoria($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm  on  cgm.z01_numcgm = protprocesso.p58_numcgm";
+        $sql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart a on  a.coddepto = protprocesso.p58_coddepto";
+        $sql .= "      inner join tipoproc  on  tipoproc.p51_codigo = protprocesso.p58_codigo";
+        $sql .= "      left join procandam  on  procandam.p61_codandam = protprocesso.p58_codandam";
+        $sql .= "      left join db_depart b on  b.coddepto = procandam.p61_coddepto";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_transand($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+
+        $sql .= " from protprocesso
                     inner join cgm                  on cgm.z01_numcgm            = protprocesso.p58_numcgm
                     inner join tipoproc             on tipoproc.p51_codigo       = protprocesso.p58_codigo
                     left  join procandam            on procandam.p61_codandam    = protprocesso.p58_codandam
@@ -1165,309 +1246,311 @@ $virgula = ",";
                     left  join processoouvidoria    on ov09_protprocesso         = protprocesso.p58_codproc
                     left  join ouvidoriaatendimento on ov01_sequencial           = ov09_ouvidoriaatendimento ";
 
-    $sql2 = "";
+        $sql2 = "";
 
-    if($dbwhere==""){
-      if($p58_codproc!=null ) {
-        $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-      }
-    } else if($dbwhere != "") {
-      $sql2 = " where $dbwhere";
-    }
-    $sql .= $sql2;
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
 
-    if($ordem != null ){
-      $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
-      $virgula = "";
-      for($i=0;$i<sizeof($campos_sql);$i++){
-        $sql .= $virgula.$campos_sql[$i];
-        $virgula = ",";
-      }
-    }
-    return $sql;
-  }
-
- function sql_query_andpadrao( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join andpadrao on andpadrao.p53_codigo = protprocesso.p58_codigo";
-
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-          $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-  function sql_query_despachos( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-
-    $sql = "select ";
-
-    if($campos != "*" ){
-      $campos_sql = explode("#",$campos);
-      $virgula = "";
-      for($i=0;$i<sizeof($campos_sql);$i++){
-        $sql .= $virgula.$campos_sql[$i];
-        $virgula = ",";
-      }
-    } else {
-      $sql .= $campos;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
     }
 
-    $sql .= " from protprocesso                                                                               ";
-    $sql .= "      inner join cgm               on cgm.z01_numcgm               = protprocesso.p58_numcgm     ";
-    $sql .= "      inner join tipoproc          on tipoproc.p51_codigo          = protprocesso.p58_codigo     ";
-    $sql .= "      left  join proctransferproc  on proctransferproc.p63_codproc = protprocesso.p58_codproc    ";
-    $sql .= "      left  join proctransfer      on proctransfer.p62_codtran     = proctransferproc.p63_codtran";
-    $sql .= "      left  join proctransand      on proctransand.p64_codtran     = proctransfer.p62_codtran    ";
-    $sql .= "      left  join procandam         on procandam.p61_codandam       = proctransand.p64_codandam   ";
-    $sql .= "      left  join db_usuarios       on db_usuarios.id_usuario       = procandam.p61_id_usuario    ";
-    $sql .= "      left  join db_depart         on db_depart.coddepto           = procandam.p61_coddepto      ";
-    $sql .= "      left  join db_usuarios a     on a.id_usuario                 = proctransfer.p62_id_usuario ";
-    $sql .= "      left  join db_depart   b     on b.coddepto                   = proctransfer.p62_coddepto   ";
-    $sql .= "      inner join db_usuarios c     on c.id_usuario                 = protprocesso.p58_id_usuario ";
-    $sql .= "      inner join db_depart   d     on d.coddepto                   = protprocesso.p58_coddepto   ";
+    public function sql_query_andpadrao($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join andpadrao on andpadrao.p53_codigo = protprocesso.p58_codigo";
 
-    $sql2 = "";
-
-    if($dbwhere==""){
-      if($p58_codproc!=null ) {
-        $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-      }
-    } else if($dbwhere != "") {
-      $sql2 = " where $dbwhere";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
     }
-    $sql .= $sql2;
 
-    if($ordem != null ){
-      $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
-      $virgula = "";
-      for($i=0;$i<sizeof($campos_sql);$i++){
-        $sql .= $virgula.$campos_sql[$i];
-        $virgula = ",";
-      }
+    public function sql_query_despachos($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+
+        $sql .= " from protprocesso                                                                               ";
+        $sql .= "      inner join cgm               on cgm.z01_numcgm               = protprocesso.p58_numcgm     ";
+        $sql .= "      inner join tipoproc          on tipoproc.p51_codigo          = protprocesso.p58_codigo     ";
+        $sql .= "      left  join proctransferproc  on proctransferproc.p63_codproc = protprocesso.p58_codproc    ";
+        $sql .= "      left  join proctransfer      on proctransfer.p62_codtran     = proctransferproc.p63_codtran";
+        $sql .= "      left  join proctransand      on proctransand.p64_codtran     = proctransfer.p62_codtran    ";
+        $sql .= "      left  join procandam         on procandam.p61_codandam       = proctransand.p64_codandam   ";
+        $sql .= "      left  join db_usuarios       on db_usuarios.id_usuario       = procandam.p61_id_usuario    ";
+        $sql .= "      left  join db_depart         on db_depart.coddepto           = procandam.p61_coddepto      ";
+        $sql .= "      left  join db_usuarios a     on a.id_usuario                 = proctransfer.p62_id_usuario ";
+        $sql .= "      left  join db_depart   b     on b.coddepto                   = proctransfer.p62_coddepto   ";
+        $sql .= "      inner join db_usuarios c     on c.id_usuario                 = protprocesso.p58_id_usuario ";
+        $sql .= "      inner join db_depart   d     on d.coddepto                   = protprocesso.p58_coddepto   ";
+
+        $sql2 = "";
+
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
     }
-    return $sql;
-  }
 
-  function sql_query_ouvidoria( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
+    public function sql_query_ouvidoria($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
 
-     $sql .= " from protprocesso ";
-     $sql .= "      inner join cgm               on cgm.z01_numcgm                      = protprocesso.p58_numcgm    ";
-     $sql .= "      inner join db_usuarios       on db_usuarios.id_usuario              = protprocesso.p58_id_usuario";
-     $sql .= "      inner join db_depart         on db_depart.coddepto                  = protprocesso.p58_coddepto  ";
-     $sql .= "      inner join tipoproc          on tipoproc.p51_codigo                 = protprocesso.p58_codigo    ";
-     $sql .= "      left  join arqproc           on p68_codproc                         = p58_codproc                ";
+        $sql .= " from protprocesso ";
+        $sql .= "      inner join cgm               on cgm.z01_numcgm                      = protprocesso.p58_numcgm    ";
+        $sql .= "      inner join db_usuarios       on db_usuarios.id_usuario              = protprocesso.p58_id_usuario";
+        $sql .= "      inner join db_depart         on db_depart.coddepto                  = protprocesso.p58_coddepto  ";
+        $sql .= "      inner join tipoproc          on tipoproc.p51_codigo                 = protprocesso.p58_codigo    ";
+        $sql .= "      left  join arqproc           on p68_codproc                         = p58_codproc                ";
 
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
 
 
-  function sql_query_andamento( $p58_codproc=null,$campos="*",$ordem=null,$dbwhere=""){
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = explode("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
+    public function sql_query_andamento($p58_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
 
-     $sql .= " from protprocesso ";
-     $sql .= "      left join procandam on procandam.p61_codproc = protprocesso.p58_codproc";
+        $sql .= " from protprocesso ";
+        $sql .= "      left join procandam on procandam.p61_codproc = protprocesso.p58_codproc";
 
-     $sql2 = "";
-     if($dbwhere==""){
-       if($p58_codproc!=null ){
-         $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
-       }
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
-  }
-
-  /**
-   * Busca os processos sem tramites
-   * @param integer $iGrupo (1 - Protocolo / 2 - Ouvidoria)
-   * @param String $sOrdem
-   * @param String $sWhere
-   * @return string sql
-   */
-  function sql_query_processosemtramit ($iGrupo, $sOrdem, $sWhere) {
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($p58_codproc != null) {
+                $sql2 .= " where protprocesso.p58_codproc = $p58_codproc ";
+            }
+        } elseif ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
 
     /**
-     * SQL da busca.
-     * Não foi utilizada a classe protprocesso por conta da complexibilidade da mesma.
+     * Busca os processos sem tramites
+     * @param integer $iGrupo (1 - Protocolo / 2 - Ouvidoria)
+     * @param String $sOrdem
+     * @param String $sWhere
+     * @return string sql
      */
-    $sSqlBuscaProcessos  = " select x.* ";
-    $sSqlBuscaProcessos .= "   from (select p58_codproc, p58_requer as z01_nome,  p51_descr,  p58_id_usuario, p58_codandam, ";
-    $sSqlBuscaProcessos .= "                coddepto, descrdepto, limite, p58_ano, p58_numero||'/'||p58_ano as processoprotocolo, ";
-    $sSqlBuscaProcessos .= "                ov01_numero, ov01_anousu, p58_processopai, p58_orgao ";
-    $sSqlBuscaProcessos .= "           from protprocesso ";
-    $sSqlBuscaProcessos .= "                inner join tipoproc  on p58_codigo = p51_codigo ";
-    $sSqlBuscaProcessos .= "                                    and p51_tipoprocgrupo = {$iGrupo} ";
-    $sSqlBuscaProcessos .= "                inner join andpadrao on p58_codigo = p53_codigo and p53_ordem = 1 ";
-    $sSqlBuscaProcessos .= "                inner join db_depart on p53_coddepto = coddepto ";
-    $sSqlBuscaProcessos .= "                inner join cgm       on p58_numcgm = z01_numcgm ";
-    $sSqlBuscaProcessos .= "                left  join arqproc   on arqproc.p68_codproc = protprocesso.p58_codproc ";
-    $sSqlBuscaProcessos .= "                left  join processoouvidoria    on ov09_protprocesso = p58_codproc ";
-    $sSqlBuscaProcessos .= "                left  join ouvidoriaatendimento on ov01_sequencial = ov09_ouvidoriaatendimento";
-    $sSqlBuscaProcessos .= "          where (   p58_id_usuario  = " . db_getsession("DB_id_usuario") ;
-    $sSqlBuscaProcessos .= "                 or p58_coddepto = " . db_getsession("DB_coddepto") . ")";
-    $sSqlBuscaProcessos .= "          and p68_codproc is null ";
-    $sSqlBuscaProcessos .= "          and p58_instit = ".  db_getsession("DB_instit");
-    $sSqlBuscaProcessos .= "         ) as x ";
-    /**
-    * Validamos se o grupo passado é 1.
-     * Em caso positivo desempenhamos um WHERE especifico.
-     */
-     if ($iGrupo == 1) {
+    public function sql_query_processosemtramit($iGrupo, $sOrdem, $sWhere)
+    {
+        /**
+         * SQL da busca.
+         * Não foi utilizada a classe protprocesso por conta da complexibilidade da mesma.
+         */
+        $sSqlBuscaProcessos = " select x.* ";
+        $sSqlBuscaProcessos .= "   from (select p58_codproc, p58_requer as z01_nome,  p51_descr,  p58_id_usuario, p58_codandam, ";
+        $sSqlBuscaProcessos .= "                coddepto, descrdepto, limite, p58_ano, p58_numero||'/'||p58_ano as processoprotocolo, ";
+        $sSqlBuscaProcessos .= "                ov01_numero, ov01_anousu, p58_processopai, p58_orgao ";
+        $sSqlBuscaProcessos .= "           from protprocesso ";
+        $sSqlBuscaProcessos .= "                inner join tipoproc  on p58_codigo = p51_codigo ";
+        $sSqlBuscaProcessos .= "                                    and p51_tipoprocgrupo = {$iGrupo} ";
+        $sSqlBuscaProcessos .= "                inner join andpadrao on p58_codigo = p53_codigo and p53_ordem = 1 ";
+        $sSqlBuscaProcessos .= "                inner join db_depart on p53_coddepto = coddepto ";
+        $sSqlBuscaProcessos .= "                inner join cgm       on p58_numcgm = z01_numcgm ";
+        $sSqlBuscaProcessos .= "                left  join arqproc   on arqproc.p68_codproc = protprocesso.p58_codproc ";
+        $sSqlBuscaProcessos .= "                left  join processoouvidoria    on ov09_protprocesso = p58_codproc ";
+        $sSqlBuscaProcessos .= "                left  join ouvidoriaatendimento on ov01_sequencial = ov09_ouvidoriaatendimento";
+        $sSqlBuscaProcessos .= "          where (   p58_id_usuario  = " . db_getsession("DB_id_usuario");
+        $sSqlBuscaProcessos .= "                 or p58_coddepto = " . db_getsession("DB_coddepto") . ")";
+        $sSqlBuscaProcessos .= "          and p68_codproc is null ";
+        $sSqlBuscaProcessos .= "          and p58_instit = " . db_getsession("DB_instit");
+        $sSqlBuscaProcessos .= "         ) as x ";
+        /**
+         * Validamos se o grupo passado é 1.
+         * Em caso positivo desempenhamos um WHERE especifico.
+         */
+        if ($iGrupo == 1) {
+            $sSqlBuscaProcessos .= "       left join proctransferproc on p63_codproc = p58_codproc ";
+            $sSqlBuscaProcessos .= "       left join procandam        on p61_codproc = p58_codproc ";
+            $sSqlBuscaProcessos .= " where p63_codproc is null and p61_codproc is null {$sWhere} order by {$sOrdem}";
+        } else {
+            $sSqlBuscaProcessos .= " where case ";
+            $sSqlBuscaProcessos .= "         when x.p58_codandam != 0 then false ";
+            $sSqlBuscaProcessos .= "         when not exists (select p63_codtran ";
+            $sSqlBuscaProcessos .= "                            from proctransferproc ";
+            $sSqlBuscaProcessos .= "                                 inner join protprocesso p on p.p58_codproc = p63_codproc ";
+            $sSqlBuscaProcessos .= "                                 left join proctransand t on t.p64_codtran = p63_codtran ";
+            $sSqlBuscaProcessos .= "                           where p63_codproc    = x.p58_codproc ";
+            $sSqlBuscaProcessos .= "                             and p.p58_codandam = 0 ";
+            $sSqlBuscaProcessos .= "                             and t.p64_codtran is null ";
+            $sSqlBuscaProcessos .= "                           limit 1 ) then true ";
+            $sSqlBuscaProcessos .= "         else false ";
+            $sSqlBuscaProcessos .= "       end ";
+            $sSqlBuscaProcessos .= "   and exists (select ov09_ouvidoriaatendimento ";
+            $sSqlBuscaProcessos .= "                 from processoouvidoria ";
+            $sSqlBuscaProcessos .= "                where ov09_protprocesso = x.p58_codproc) ";
+            $sSqlBuscaProcessos .= "   {$sWhere} order by {$sOrdem} ";
+        }
 
-       $sSqlBuscaProcessos .= "       left join proctransferproc on p63_codproc = p58_codproc ";
-       $sSqlBuscaProcessos .= "       left join procandam        on p61_codproc = p58_codproc ";
-       $sSqlBuscaProcessos .= " where p63_codproc is null and p61_codproc is null {$sWhere} order by {$sOrdem}";
-     } else {
-
-       $sSqlBuscaProcessos .= " where case ";
-       $sSqlBuscaProcessos .= "         when x.p58_codandam != 0 then false ";
-       $sSqlBuscaProcessos .= "         when not exists (select p63_codtran ";
-       $sSqlBuscaProcessos .= "                            from proctransferproc ";
-       $sSqlBuscaProcessos .= "                                 inner join protprocesso p on p.p58_codproc = p63_codproc ";
-       $sSqlBuscaProcessos .= "                                 left join proctransand t on t.p64_codtran = p63_codtran ";
-       $sSqlBuscaProcessos .= "                           where p63_codproc    = x.p58_codproc ";
-       $sSqlBuscaProcessos .= "                             and p.p58_codandam = 0 ";
-       $sSqlBuscaProcessos .= "                             and t.p64_codtran is null ";
-       $sSqlBuscaProcessos .= "                           limit 1 ) then true ";
-       $sSqlBuscaProcessos .= "         else false ";
-       $sSqlBuscaProcessos .= "       end ";
-       $sSqlBuscaProcessos .= "   and exists (select ov09_ouvidoriaatendimento ";
-       $sSqlBuscaProcessos .= "                 from processoouvidoria ";
-       $sSqlBuscaProcessos .= "                where ov09_protprocesso = x.p58_codproc) ";
-       $sSqlBuscaProcessos .= "   {$sWhere} order by {$sOrdem} ";
-     }
-
-     return $sSqlBuscaProcessos;
-  }
-
-  function sql_query_arqproc($iCodigoProcesso = null, $sCampos = "*", $sOrdem = null, $sWhere = "") {
-
-    if (empty($sCampos)) {
-      $sCampos = "*";
+        return $sSqlBuscaProcessos;
     }
 
-    $sql = "select " . $sCampos;
-    $sql .= " from protprocesso ";
-    $sql .= "      left join arqproc on p68_codproc = p58_codproc ";
+    public function sql_query_arqproc($iCodigoProcesso = null, $sCampos = "*", $sOrdem = null, $sWhere = "")
+    {
+        if (empty($sCampos)) {
+            $sCampos = "*";
+        }
 
-    if (!empty($sWhere) && !empty($iCodigoProcesso)) {
-      $sql .= " where {$sWhere} and p58_codproc = {$iCodigoProcesso} ";
-    } else if (!empty($sWhere)) {
-      $sql .= " where {$sWhere} ";
-    } else if (!empty($iCodigoProcesso)) {
-      $sql .= " where p58_codproc = {$iCodigoProcesso} ";
+        $sql = "select " . $sCampos;
+        $sql .= " from protprocesso ";
+        $sql .= "      left join arqproc on p68_codproc = p58_codproc ";
+
+        if (!empty($sWhere) && !empty($iCodigoProcesso)) {
+            $sql .= " where {$sWhere} and p58_codproc = {$iCodigoProcesso} ";
+        } elseif (!empty($sWhere)) {
+            $sql .= " where {$sWhere} ";
+        } elseif (!empty($iCodigoProcesso)) {
+            $sql .= " where p58_codproc = {$iCodigoProcesso} ";
+        }
+
+        if (!empty($sOrdem)) {
+            $sql .= " order by " . $sOrdem;
+        }
+
+        return $sql;
     }
 
-    if (!empty($sOrdem)) {
-      $sql .= " order by " . $sOrdem;
-    }
-
-    return $sql;
-  }
-
-  function sql_query_maior_numeracao_processo(
-    $proximoNumero,
-    $orgao = 0,
-    $tipoDocumento = 0
-  ) {
-    $sql = "
+    public function sql_query_maior_numeracao_processo(
+        $proximoNumero,
+        $orgao = 0,
+        $tipoDocumento = 0
+    ) {
+        $sql = "
       SELECT
         p58_numero::Integer
       FROM
         protprocesso
       WHERE
-        p58_instit = ". db_getsession('DB_instit') ."
-        and p58_ano = ". db_getsession('DB_anousu') ."
+        p58_instit = " . db_getsession('DB_instit') . "
+        and p58_ano = " . db_getsession('DB_anousu') . "
         and char_length(p58_numero) <= 10
         and p58_numero::Integer >= {$proximoNumero}
       ORDER BY 1 desc limit 1;
     ";
 
-    if (!empty($orgao) && !empty($tipoDocumento)) {
-      $sql = "
+        if (!empty($orgao) && !empty($tipoDocumento)) {
+            $sql = "
         SELECT cast(substring(RIGHT(p58_numero, 8) from 1 FOR 5) AS  integer) AS p58_numero
         FROM   protprocesso
         INNER JOIN tipoproc
             ON p58_codigo = p51_codigo
-        WHERE  p58_instit = ". db_getsession('DB_instit') ."
-        AND    p58_ano = ". db_getsession('DB_anousu') ."
+        WHERE  p58_instit = " . db_getsession('DB_instit') . "
+        AND    p58_ano = " . db_getsession('DB_anousu') . "
         AND    COALESCE((cast((
               CASE
                       WHEN char_length(p58_numero) > 10 THEN substring(RIGHT(p58_numero, 8) FROM 1 FOR 5)
@@ -1482,43 +1565,78 @@ $virgula = ",";
         AND    p51_prottipodocumentoprocesso = {$tipoDocumento}
         ORDER BY 1 desc LIMIT 1;
       ";
+        }
+
+        return $sql;
     }
 
-    return $sql;
-  }
+    public function set_volume()
+    {
+        $sql = "
+              SELECT
+                max(p58_volume) AS totalvolumes
+              FROM
+                protprocesso
+              WHERE
+                p58_processopai = {$this->p58_processopai}
+        ";
 
-  function set_volume()
-  {
-    $sql = "
-      SELECT
-        count(*) AS totalvolumes
-      FROM
-        protprocesso
-      WHERE
-        p58_processopai = {$this->p58_processopai}
-    ";
-
-    $postgresObject = db_query($sql);
-    if (pg_num_rows($postgresObject) > 0) {
-      $this->p58_volume = (int) (pg_fetch_assoc($postgresObject)['totalvolumes']) + 1;
-    } else {
-      $this->p58_volume = 1;
+        $postgresObject = db_query($sql);
+        if (pg_num_rows($postgresObject) > 0) {
+            $this->p58_volume = (int)(pg_fetch_assoc($postgresObject)['totalvolumes']) + 1;
+        } else {
+            $this->p58_volume = 1;
+        }
     }
-  }
 
-  /**
-   * @param $processo
-   * @param string $campos
-   * @return string
-   */
-  public function sql_query_procandamint($processo, $campos = "*")
-  {
-      $sql  = " select {$campos} ";
-      $sql .= "   from protprocesso ";
-      $sql .= "        inner join procandam on p61_codproc = p58_codproc ";
-      $sql .= "        inner join procandamint on p61_codandam = p78_codandam ";
-      $sql .= "  where p58_codproc = {$processo}; ";
+    /**
+     * @param $processo
+     * @param string $campos
+     * @return string
+     */
+    public function sql_query_procandamint($processo, $campos = "*")
+    {
+        $sql = " select {$campos} ";
+        $sql .= "   from protprocesso ";
+        $sql .= "        inner join procandam on p61_codproc = p58_codproc ";
+        $sql .= "        inner join procandamint on p61_codandam = p78_codandam ";
+        $sql .= "  where p58_codproc = {$processo}; ";
 
       return $sql;
-  }
+    }
+
+  /**
+   * @param string $fields
+   * @param string $where
+   * @param string|null $order
+   * @param string|null $group
+   *
+   * @return string $sql
+   */
+    public function sqlGetProcessoAdministrativo($fields = "*", $where = "", $order = null, $group = null){
+
+        $sql  = "select {$fields} ";
+        $sql .= " from protprocesso ";
+        $sql .= " inner join cgm on cgm.z01_numcgm = protprocesso.p58_numcgm ";
+        $sql .= " inner join db_config on db_config.codigo = protprocesso.p58_instit  ";
+        $sql .= " inner join db_usuarios on db_usuarios.id_usuario = protprocesso.p58_id_usuario  ";
+        $sql .= " inner join procandam on p58_codandam = p61_codandam and p58_codproc = p61_codproc  ";
+        $sql .= " inner join db_depart on db_depart.coddepto = p61_coddepto  ";
+        $sql .= " inner join tipoproc on tipoproc.p51_codigo = protprocesso.p58_codigo  ";
+        $sql .= " inner join db_config as a on a.codigo = db_depart.instit  ";
+
+        if ($where != '') {
+            $sql .= " where {$where}";
+        }
+
+        if ($order != null) {
+            $sql .= " order by {$order}";
+        }
+
+        if ($group != null) {
+            $sql .= " group by {$group}";
+        }
+
+        return $sql;
+    }
 }

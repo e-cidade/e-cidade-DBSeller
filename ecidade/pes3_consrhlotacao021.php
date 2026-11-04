@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -42,15 +42,15 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($HTTP_SERVER_VARS);
 if(isset($lotacao) && trim($lotacao)!=""){
   $porlotacao = true;
-  $result_funcionarios =	  	 
+  $result_funcionarios =
   $clrhlota->sql_record($clrhlota->sql_query_cgm(null,"rh01_regist as r01_regist,
                                                        z01_nome,
-                                                       case when rh30_vinculo='A' 
-                                                            then 'ATIVO' 
-                                                            else case when rh30_vinculo='I' 
-                                                                      then 'INATIVO' 
-                                                                      else 'PENSIONISTA' 
-                                                                 end 
+                                                       case when rh30_vinculo='A'
+                                                            then 'ATIVO'
+                                                            else case when rh30_vinculo='I'
+                                                                      then 'INATIVO'
+                                                                      else 'PENSIONISTA'
+                                                                 end
                                                        end as vinculo,
                                                        rh37_funcao,
                                                        rh37_descr",
@@ -101,7 +101,7 @@ th {
 <center>
 <form name="form1" method="post">
 <table border="1" cellpadding="0" cellspacing="0">
-<?
+<?php
 if($porlotacao == true){
 ?>
   <tr bgcolor="#FFCC66">
@@ -111,7 +111,7 @@ if($porlotacao == true){
     <th class="borda" style="font-size:12px" nowrap>Descrição</th>
     <th class="borda" style="font-size:12px" nowrap>Vínculo</th>
   </tr>
-  <?
+  <?php
   $cor = "#EFE029";
   $totalvalor = 0;
   $totalquant = 0;
@@ -126,7 +126,7 @@ if($porlotacao == true){
   ?>
   <tr>
     <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-      <?db_ancora($r01_regist,"js_consultaregistro('$r01_regist','$lotacao');","1");?>
+      <?php db_ancora($r01_regist,"js_consultaregistro('$r01_regist','$lotacao');","1");?>
       &nbsp;
     </td>
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$z01_nome?></td>
@@ -134,7 +134,7 @@ if($porlotacao == true){
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$rh37_descr?></td>
     <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$vinculo?></td>
   </tr>
-  <?
+  <?php
   }
 }else{
 ?>
@@ -145,7 +145,7 @@ if($porlotacao == true){
     <th class="borda" style="font-size:12px" nowrap>Órgão</th>
     <th class="borda" style="font-size:12px" nowrap>Descrição</th>
   </tr>
-  <?
+  <?php
   $cor = "#EFE029";
   $orgaoantigo = "";
   $totalp = 0;
@@ -159,7 +159,7 @@ if($porlotacao == true){
   ?>
   <tr>
     <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-      <?db_ancora($r70_codigo,"js_consultalotacao('$r70_codigo');","1");?>
+      <?php db_ancora($r70_codigo,"js_consultalotacao('$r70_codigo');","1");?>
       &nbsp;
     </td>
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$r70_estrut?></td>
@@ -167,7 +167,7 @@ if($porlotacao == true){
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$o40_orgao?></td>
     <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$o40_descr?></td>
   </tr>
-  <?
+  <?php
   }
 }
 ?>

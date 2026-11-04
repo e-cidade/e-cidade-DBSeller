@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/JSON.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_coletaitem_classe.php"));
-require_once(modification("fpdf151/scpdf.php"));
+require_once(modification("libs/db_stdlibwebseller.php"));
 
 use ECidade\Saude\Laboratorio\Exame\ColetaAmostra\Model\ColetaItem as ModelColetaItem;
 use ECidade\Saude\Laboratorio\Exame\ColetaAmostra\Relatorio\Modelo3;
@@ -54,10 +54,11 @@ try {
     $exames = explode(',', $get->sLista);
 
     $requisicaoLaboratorial = new RequisicaoLaboratorial($get->requisicao);
-    $pdf = new scpdf('l', 'mm', fpdf::FORMAT_ETIQUETA_60x25);
-    
+
+    $pdf = new ECidade\Pdf\Pdf('L', 'mm');
+
     $modelo3 = new Modelo3($requisicaoLaboratorial, $pdf);
-    
+
     foreach ($exames as $codigoExame) {
         $coletaItemService = new ColetaItemService(new ColetaItemRepository(new cl_lab_coletaitem()));
         $itemColeta = $coletaItemService->buscar($codigoExame);

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -60,7 +60,8 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
   </body>
 </html>
 <script>
-    var visualizarEmOutraJanela = <?=$visualizarEmOutraJanela?>;
+    var tela_documento = "<?php echo $oGet->tela_documento; ?>";
+    var visualizarEmOutraJanela = "<?php echo $visualizarEmOutraJanela; ?>";
     $('visualizarDocumentos').onclick = function () {
 
 	var codigoProcesso = '<?php echo $oGet->codigo_processo;?>';
@@ -91,12 +92,18 @@ $visualizarEmOutraJanela = $oPreferenciaUsuario->isVisulizarEmOutraJanela();
         	return false;
         }
 
-            if (visualizarEmOutraJanela) {
+            if (visualizarEmOutraJanela == "true") {
                 window.open(`db_visualizador_documentos.php?ids=${codigosEStorage}`);
             } else {
-                js_OpenJanelaIframe('CurrentWindow.corpo', 'db_visualizador_imagens', `db_visualizador_documentos.php?ids=${codigosEStorage}`, 'Visualizador de documentos', true);
+                if (tela_documento) {
+                    var width = CurrentWindow.corpo.innerWidth - 100;
+                    var height = CurrentWindow.corpo.innerHeight - 100;
+                    js_OpenJanelaIframe('window.parent', 'db_visualizador_imagens', `db_visualizador_documentos.php?ids=${codigosEStorage}`, 'Visualizador de documentos', true, 0, 0, width, height);
+                } else {
+                    const url = CurrentWindow.corpo.CurrentWindow.ECIDADE_REQUEST_PATH;
+                    js_OpenJanelaIframe('CurrentWindow.corpo', 'db_visualizador_imagens', `${url}db_visualizador_documentos.php?ids=${codigosEStorage}`, 'Visualizador de documentos', true);
+                }
             }
-
         });
     });
 }

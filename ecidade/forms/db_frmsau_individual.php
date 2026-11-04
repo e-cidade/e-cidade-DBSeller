@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -530,7 +530,7 @@ function js_pesquisafaa(chave){
 }
 function js_preenchepesquisafaa(chave){
 	db_iframe_prontuarios.hide();
-	<?
+	<?php
 		echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?idarq=" . @$idarq . "&db_botao=true&chavepesquisaprontuario='+chave";
 	?>
 }

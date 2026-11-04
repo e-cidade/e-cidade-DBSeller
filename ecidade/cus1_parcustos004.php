@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -128,7 +128,7 @@ if(isset($oPost->incluir)){
   <table style="padding-top:15px;">
     <tr> 
       <td> 
-	    <?
+	    <?php
 	 	  include(modification("forms/db_frmparcustos.php"));
 		?>
 	  </td>
@@ -136,12 +136,12 @@ if(isset($oPost->incluir)){
   </table>
 </center>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->incluir)){
   
   if($clparcustos->erro_status=="0"){

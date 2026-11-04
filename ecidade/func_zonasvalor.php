@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clzonasvalor->rotulo->label("j51_valorm2t");
               <?=$Lj51_zona?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j51_zona",10,$Ij51_zona,true,"text",4,"","chave_j51_zona");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clzonasvalor->rotulo->label("j51_valorm2t");
               <?=$Lj51_valorm2t?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j51_valorm2t",15,$Ij51_valorm2t,true,"text",4,"","chave_j51_valorm2t");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clzonasvalor->rotulo->label("j51_valorm2t");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_zonasvalor.php")==true){
@@ -119,12 +119,12 @@ $clzonasvalor->rotulo->label("j51_valorm2t");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

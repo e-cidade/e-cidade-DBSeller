@@ -73,8 +73,8 @@ if (isset($pesquisa_dot) && $o47_coddot!=""){
    if ($clorcdotacao->numrows > 0 ){
       db_fieldsmemory($res,0); // deve existir 1 registro
 
-      $resdot= db_dotacaosaldo(8,2,2,"true","o58_coddot=$o47_coddot",db_getsession("DB_anousu"),$anousu.'-01-01',$anousu.'-12-31');
-      db_fieldsmemory($resdot,0);
+       $resdot= db_dotacaosaldo(8,2,2,"true","o58_coddot=$o47_coddot",db_getsession("DB_anousu"),$anousu.'-01-01',$anousu.'-12-31');
+       db_fieldsmemory($resdot,0);
        // $atual_menos_reservado
 
    }

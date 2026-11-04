@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,7 +46,7 @@ $clrotulo->label("");
 			        <?=@$Lit01_guia?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php
 			          db_input('it01_guia',15,$Iit01_guia,true,'text',3,"");
 			        ?>
 			      </td>
@@ -56,16 +56,16 @@ $clrotulo->label("");
 			        <?=@$Lit01_data?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php
 			          if ( isset($it01_data) && $it01_data != "" ){
 
-			            $data = split('-',$it01_data);
+			            $data =explode('-',$it01_data);
 			            $dia  = $data[2];
 			            $mes  = $data[1];
 			            $ano  = $data[0];
 			          }
 
-			          db_inputdata("it01_data",@$dia,@$mes,@$ano,true,'text',$db_opcao)
+			          db_inputdata("it01_data",@$dia,@$mes,@$ano,true,'text',3)
 			        ?>
 			      </td>
 			    </tr>
@@ -74,10 +74,10 @@ $clrotulo->label("");
 			        <?=@$Lit14_dtvenc?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php
 			          if ( isset($it14_dtvenc) && $it14_dtvenc != "" ) {
 
-			            $data = split('-',$it14_dtvenc);
+			            $data =explode('-',$it14_dtvenc);
 			            $dia1 = $data[2];
 			            $mes1 = $data[1];
 			            $ano1 = $data[0];
@@ -92,16 +92,16 @@ $clrotulo->label("");
 			        <?=@$Lit14_dtliber?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php
 			          if ( isset($it14_dtliber) && $it14_dtliber != "" ){
 
-			            $data = split('-',$it14_dtliber);
+			            $data =explode('-',$it14_dtliber);
 			            $dia2 = $data[2];
 			            $mes2 = $data[1];
 			            $ano2 = $data[0];
 			          }
 
-			          db_inputdata("it14_dtliber",@$dia2,@$mes2,@$ano2,true,'text',$db_opcao);
+			          db_inputdata("it14_dtliber",@$dia2,@$mes2,@$ano2,true,'text',3);
 			        ?>
 			      </td>
 			    </tr>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,7 +123,7 @@ if ( isset($oPost->cancelar) ) {
 				        <b>Cód Geração:</b>
 				      </td>
 				      <td>
-				        <?
+				        <?php
                   db_input("r15_sequencial",10,$Ir15_sequencial,true,"text",3,"");
 				        ?>
 				      </td>
@@ -133,7 +133,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Descrição</b>
               </td>
               <td>
-                <?
+                <?php
                   db_input("r15_descricao",55,$Ir15_descricao,true,"text",$db_opcao,"");
                 ?>
               </td>
@@ -143,7 +143,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Cheque Inicial:</b>
               </td>
               <td>
-                <?
+                <?php
                   db_input("chequeInicial",10,$Ir18_numcheque,true,"text",$db_opcao,"");
                 ?>
               </td>
@@ -162,7 +162,7 @@ if ( isset($oPost->cancelar) ) {
 	  </tr>
 	</table> 	  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -266,7 +266,7 @@ function js_retornoEmissao(oAjax){
 
 </script>
 
-<?
+<?php
    
    if ( isset($oPost->cancelar) ) {
 

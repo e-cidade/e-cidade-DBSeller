@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,22 +50,22 @@ $clrotulo->label("at03_id_usuario");
        <?=@$Lat02_codatend?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_codatend',4,$Iat02_codatend,true,'3',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat02_codcli?>">
-       <?
+       <?php
        db_ancora(@$Lat02_codcli,"js_pesquisaat02_codcli(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_codcli',4,$Iat02_codcli,true,'text',$db_opcao,"onchange='js_pesquisaat02_codcli(false);'")
 ?>
-<?
+<?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
 ?>
     </td>
@@ -75,7 +75,7 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        <?=@$Lat03_id_usuario?>
     </td>
     <td> 
-<?
+<?php
 db_selectmultiple('at03_id_usuario',($cldb_usuarios->sql_record($cldb_usuarios->sql_query("","id_usuario,nome",""," usuext = 0 and usuarioativo = '1'"))),10,$db_opcao,"","","",($db_opcao==1||$db_opcao==22||$db_opcao==33?0:$cltecnico->sql_record($cltecnico->sql_query($at02_codatend,"","at03_id_usuario,nome","",""))))
 ?>
     </td>
@@ -85,7 +85,7 @@ db_selectmultiple('at03_id_usuario',($cldb_usuarios->sql_record($cldb_usuarios->
        <?=@$Lat02_codtipo?>
     </td>
     <td> 
-<?
+<?php
 db_selectrecord('at02_codtipo',($cltipoatend->sql_record($cltipoatend->sql_query(($db_opcao==2?"":@$at02_codtipo),"*","",""))),true,$db_opcao,"")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_selectrecord('at02_codtipo',($cltipoatend->sql_record($cltipoatend->sql_query
        <?=@$Lat02_solicitado?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at02_solicitado',0,40,$Iat02_solicitado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_textarea('at02_solicitado',0,40,$Iat02_solicitado,true,'text',$db_opcao,"")
        <?=@$Lat02_feito?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at02_feito',0,40,$Iat02_feito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_textarea('at02_feito',0,40,$Iat02_feito,true,'text',$db_opcao,"")
        <?=@$Lat02_dataini?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao == 1){
   $at02_dataini_dia = date("d",db_getsession("DB_datausu"));
   $at02_dataini_mes = date("m",db_getsession("DB_datausu"));
@@ -130,7 +130,7 @@ db_inputdata('at02_dataini',@$at02_dataini_dia,@$at02_dataini_mes,@$at02_dataini
        <?=@$Lat02_datafim?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao == 1){
   $at02_datafim_dia = date("d",db_getsession("DB_datausu"));
   $at02_datafim_mes = date("m",db_getsession("DB_datausu"));
@@ -145,7 +145,7 @@ db_inputdata('at02_datafim',@$at02_datafim_dia,@$at02_datafim_mes,@$at02_datafim
        <?=@$Lat02_horaini?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_horaini',5,$Iat02_horaini,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.at02_horaini.value='".db_hora()."'</script>";
@@ -158,7 +158,7 @@ if($db_opcao == 1){
        <?=@$Lat02_horafim?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_horafim',5,$Iat02_horafim,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.at02_horafim.value='".db_hora()."'</script>";
@@ -171,7 +171,7 @@ if($db_opcao == 1){
        <?=@$Lat02_observacao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at02_observacao',0,40,$Iat02_observacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -212,7 +212,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'ate1_atendimento002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -221,7 +221,7 @@ function js_preenchepesquisa(chave){
   ?>
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,12 +36,12 @@ class cl_carne {
   var $resultparcelas = null;
   var $result = null;
   
-  function cl_carne($numpre,$numparini,$numparfim) {
+  public function __construct($numpre,$numparini,$numparfim) {
     $this->np  = $numpre;
     $this->npi = $numparini;
     $this->npf = $numparfim;	
   }  
-  function verifica(){
+  public function verifica(){
     if($this->np == 0 or $this->np == ""){
 	   $this->db_erro = "Numpre Inválido.";
 	   return false;
@@ -69,7 +69,7 @@ class cl_carne {
 	}
 	return true;
   }
-  function calcula_valores(){
+  public function calcula_valores(){
      $this->sqlporreceita = "
 	               select k00_numpre,k00_numpar,k00_receit,k00_dtvenc,k00_dtoper,sum(k00_valor) as k00_valor 
 	               from arrecad 

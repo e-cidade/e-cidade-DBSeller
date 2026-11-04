@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
        		       </tr>
 		     <tr>
 		       <td align="center">
-			  <?
+			  <?php
 			    $aux->cabecalho = "<strong>Bairro da execução da vistoria</strong>";
 			    $aux->codigo = "j13_codi";
 			    $aux->descr  = "j13_descr";

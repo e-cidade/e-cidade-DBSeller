@@ -78,7 +78,7 @@
                     <?=@$Lob01_codobra?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob01_codobra',10,$Iob01_codobra,true,'text',3,"");
                         db_input('ob01_regular',10,$Iob01_regular,true,'hidden',3,"");
                     ?>
@@ -89,7 +89,7 @@
                     <?=@$Lob01_nomeobra?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob01_nomeobra', 54,$Iob01_nomeobra,true,'text',$db_opcao,"")
                     ?>
                 </td>
@@ -99,7 +99,7 @@
                     <?=@$Lob01_dtobra?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_inputdata('ob01_dtobra', @$ob01_dtobra_dia, @$ob01_dtobra_mes, @$ob01_dtobra_ano, true, 'text', $db_opcao)
                     ?>
                 </td>
@@ -109,7 +109,7 @@
                     <?=@$Lob01_tiporesp?>
                 </td>
                 <td id="tipo_responsavel">
-                    <?
+                    <?php
                         $result = $clobrastiporesp->sql_record($clobrastiporesp->sql_query_file());
                         db_selectrecord("ob01_tiporesp",$result,true,$db_opcao,"","ob01_tiporesp","",""," js_exibir_ocultar(this.value); ");
                     ?>
@@ -117,43 +117,43 @@
             </tr>
             <tr>
                 <td nowrap title="<?=@$Tob03_numcgm?>">
-                    <?
+                    <?php
                         db_ancora(@$Lob03_numcgm,"js_pesquisaob03_numcgm(true);",$db_opcao);
                     ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob03_numcgm',10,$Iob03_numcgm,true,'text',3," onchange='js_pesquisaob03_numcgm(false);'")
                     ?>
-                    <?
+                    <?php
                         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
                     ?>
                 </td>
             </tr>
-            <tr>    
+            <tr>
                 <td colspan="6">
                     <div id="divLancadorCGM"></div>
                 </td>
             </tr>
             <tr>
-            <?
+            <?php
                 if(@$ob01_regular == 't'){
                     ?>
                     <tr>
                         <td title="<?=$Tj01_matric?>">
-                            <?
+                            <?php
                                 db_ancora($Lj01_matric, 'js_pesquisaMatricula(true)', $db_opcao)
                             ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                                 db_input('j01_matric', 10, $Ij01_matric, true, 'text', $db_opcao, "onchange='js_pesquisaMatricula(false)'");
 
                                 db_input('z01_nome_matricula'  , 40, $Ij01_matric, true, 'text', 3);
                             ?>
                         </td>
                     </tr>
-                    <?
+                    <?php
                 }else{
                     db_input('ob05_idbql',6,$Iob05_idbql,true,'hidden',3," onchange='js_pesquisaob05_idbql(false);'");
                     ?>
@@ -163,33 +163,33 @@
                         </td>
                         <td colspan="2" nowrap title="<?=@$Tob06_setor?>" >
                             <?=@$Lob06_setor?>
-                            <?
+                            <?php
                                 db_input('ob06_setor',9,$Iob06_setor,true,'text',$db_opcao,"")
                             ?>
                             <?=@$Lob06_quadra?>
-                            <?
+                            <?php
                                 db_input('ob06_quadra',9,$Iob06_quadra,true,'text',$db_opcao,"")
                             ?>
                             <?=@$Lob06_lote?>
-                            <?
+                            <?php
                                 db_input('ob06_lote',9,$Iob06_lote,true,'text',$db_opcao,"")
                             ?>
                         </td>
                     </tr>
-                    <?
+                    <?php
                 }
             ?>
             <tr>
                 <td nowrap title="<?=@$Tob10_numcgm?>">
-                    <?
+                    <?php
                         db_ancora("Responsável Execução da Obra:","js_pesquisaob10_numcgm(true);",$db_opcao);
                     ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob10_numcgm',10,$Iob10_numcgm,true,'text',3," onchange='js_pesquisaob10_numcgm(false);'");
                     ?>
-                    <?
+                    <?php
                         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'','z01_nomeresp');
                     ?>
                 </td>
@@ -200,7 +200,7 @@
             ?>
             <tr>
                 <td nowrap title="Responsável pelo Projeto: ">
-                    <?
+                    <?php
                         db_ancora("Responsável pelo Projeto:","js_pesquisaob01_tecnico(true);",$db_opcao);
                     ?>
                 </td>
@@ -228,7 +228,7 @@
                     <?= @$Lob01_numerorrtprojeto ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob01_numerorrtprojeto', 10, @$Iob01_numerorrtprojeto, true, 'text', $db_opcao, "", "", "#FFF");
                     ?>
                 </td>
@@ -252,7 +252,7 @@
                     <?= @$Lob01_numeroarttecnico ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob01_numeroarttecnico', 10, @$Iob01_numeroarttecnico, true, 'text', $db_opcao, "", "", "#FFF");
                     ?>
                 </td>
@@ -262,7 +262,7 @@
                     <?= @$Lob01_numerorrttecnico ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_input('ob01_numerorrttecnico', 10, @$Iob01_numerorrttecnico, true, 'text', $db_opcao, "", "", "#FFF");
                     ?>
                 </td>
@@ -272,7 +272,7 @@
                     Processo do Sistema
                 </td>
                 <td>
-                    <?
+                    <?php
                         db_select('ob01_processosistema', array('S'=>'SIM', 'N'=>'NÃO'), true, 1, "onchange='js_trocaProcesso(this.value)'")
                     ?>
                 </td>
@@ -285,12 +285,12 @@
                             <table class="form-container">
                                 <tr>
                                     <td title="<?=@$Tob01_processo?>">
-                                        <?
+                                        <?php
                                             db_ancora($Lob01_processo, 'js_pesquisaProcesso(true)', 1)
                                         ?>
                                     </td>
                                     <td>
-                                        <?
+                                        <?php
                                             if (isset($ob01_processo)  and ($ob01_processosistema == "S")){
                                                 $ob01_processo_1       = $ob01_processo;
                                                 $ob01_nometitularproc_1 = $ob01_nometitularproc;
@@ -312,7 +312,7 @@
                                         <?=$Lob01_processo?>
                                     </td>
                                     <td>
-                                        <?
+                                        <?php
                                             if (isset($ob01_processo) and ($ob01_processosistema == "N")){
 
                                                 $ob01_processo_2        = $ob01_processo;
@@ -329,7 +329,7 @@
                                         <?=$Lob01_nometitularproc?>
                                     </td>
                                     <td>
-                                        <?
+                                        <?php
                                             db_input('ob01_nometitularproc_2', 40, $Iob01_nometitularproc, true, 'text', 1)
                                         ?>
                                     </td>
@@ -339,7 +339,7 @@
                                         <?=$Lob01_dtprocesso?>
                                     </td>
                                     <td>
-                                        <?
+                                        <?php
                                             db_inputdata('ob01_dtprocesso', @$ob01_dtprocesso_dia, @$ob01_dtprocesso_mes, @$ob01_dtprocesso_ano, true, 'text', $db_opcao)
                                         ?>
                                     </td>
@@ -353,7 +353,7 @@
                 <td title=<?=$Tob01_obs?> colspan="2">
                     <fieldset class="separator">
                         <legend><?=$Lob01_obs ?></legend>
-                        <?
+                        <?php
                             db_textarea('ob01_obs', 3, 50, $Iob01_obs, true, 'text', 1)
                         ?>
                     </fieldset>
@@ -518,12 +518,12 @@
     }
 
     js_exibir_ocultar(document.form1.ob01_tiporesp.value);
-    
+
     function js_exibir_ocultar(selectTipoResp) {
         if(selectTipoResp == 56) {
-            document.getElementById('divLancadorCGM').style.display = ''; 
+            document.getElementById('divLancadorCGM').style.display = '';
         } else {
-            document.getElementById('divLancadorCGM').style.display = 'none';      
+            document.getElementById('divLancadorCGM').style.display = 'none';
         }
     };
 
@@ -536,16 +536,16 @@
     oDBLancadorCGM.show($('divLancadorCGM'));
     var oFieldsetLancador = oDBLancadorCGM.getFieldset();
 
-    <? if ($db_opcao == 2) { ?>
+    <?php if ($db_opcao == 2) { ?>
         oFieldsetLancador.style.width = "86%";
-    <? } else { ?>
+    <?php } else { ?>
         oFieldsetLancador.style.width = "95%";
-    <? } ?>
+    <?php } ?>
     var sUrl = 'pro1_obras.RPC.php';
 
-    <? if ($db_opcao == 2 || $db_opcao == 3) { ?>
+    <?php if ($db_opcao == 2 || $db_opcao == 3) { ?>
         js_getParametros();
-    <? } ?>
+    <?php } ?>
 
     /**
      * funcao que ira popular a tela com os parametros configurados
@@ -555,7 +555,7 @@
         var oParam          = new Object();
             oParam.codigo_obra   = ob01_codobra.value;
             oParam.acao     = "buscaRegistros";
-              
+
         new Ajax.Request( sUrl, {
                             method: 'post',
                             parameters: 'json='+js_objectToJson(oParam),
@@ -608,15 +608,15 @@
     }
     function js_pesquisaob07_lograd(mostra){
         if(mostra==true){
-            <?
+            <?php
             if(@$ob01_regular == "t"){
             ?>
             js_OpenJanelaIframe('','db_iframe_ruas','func_ruasobras.php?pesquisa_chave='+document.form1.ob05_idbql.value+'&funcao_js=parent.js_mostraruas2|j36_codigo|j14_nome|j13_codi|j13_descr','Pesquisa',true);
-            <?
+            <?php
             }else{
             ?>
             js_OpenJanelaIframe('','db_iframe_ruas','func_ruas.php?funcao_js=parent.js_mostraruas1|j14_codigo|j14_nome','Pesquisa',true);
-            <?
+            <?php
             }
             ?>
         }else{
@@ -768,7 +768,7 @@
     }
     function js_preenchepesquisa(chave){
         db_iframe_obras.hide();
-        <?
+        <?php
         if($db_opcao == 2 || $db_opcao == 22){
             echo " location.href = 'pro1_obras002.php?abas=1&chavepesquisa='+chave;";
         }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -853,12 +853,12 @@
         }
     }
 
-    <?
+    <?php
     if($db_opcao == 2){
     ?>
     js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?pesquisa_chave=<?=@$ob03_numcgm?>&funcao_js=parent.js_mostracgm','Pesquisa',false);
     js_OpenJanelaIframe('','db_iframe_cgm','func_nome.php?pesquisa_chave=<?=@$ob10_numcgm?>&funcao_js=parent.js_mostracgmp','Pesquisa',false);
-    <?
+    <?php
     }
     ?>
     if(document.form1.ob01_tiporesp.value == 1){
@@ -912,36 +912,36 @@
                 return false;
             }
         }
-        
+
         return true;
     }
 
-    <? if($db_opcao == 1 || $db_opcao == 2) {?>
+    <?php if($db_opcao == 1 || $db_opcao == 2) {?>
     $('db_opcao').addEventListener('click', function() {
         if (js_validaCampos() == true) {
             js_salvar();
-        } 
+        }
     });
-    <? } else { ?>
+    <?php } else { ?>
     $('db_opcao').addEventListener('click', function() {
             js_excluir();
     });
-    <? } ?>
+    <?php } ?>
 
     function js_salvar(){
 
         var aUsuarios = getUsuariosLancados();
-        
+
         if (aUsuarios.length > 10) {
             alert("É possível incluir no máximo 10 outros proprietários");
         }
-        
+
         var oParam                       = new Object();
-        <? if($db_opcao == 1) {?>
+        <?php if($db_opcao == 1) {?>
             oParam.acao                  = "salvarRegistros";
-        <? } else { ?>
+        <?php } else { ?>
             oParam.acao                  = "alterarRegistros";
-        <? } ?>
+        <?php } ?>
             oParam.ob01_codobra          = ob01_codobra.value;
             oParam.ob03_numcgm           = ob03_numcgm.value;
             oParam.ob01_regular          = ob01_regular.value;
@@ -983,7 +983,7 @@
         js_removeObj('msgBox');
         var oRetorno  = JSON.parse(oAjax.responseText);
         if (oRetorno.status == 1) {
-            alert('Itens salvos com sucesso.');
+            alert('Itens salvos com sucesso!');
 
             parent.iframe_obras.location.href='pro1_obras002.php?chavepesquisa='+oRetorno.codobra+'&abas=1';
             parent.iframe_constr.location.href='pro1_obrasconstr001.php?ob08_codobra='+oRetorno.codobra+'&abas=1';

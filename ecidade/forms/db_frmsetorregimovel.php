@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -34,11 +34,11 @@ $clsetorregimovel->rotulo->label();
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Tj69_sequencial?>"><?=@$Lj69_sequencial?></td>
-        <td><? db_input('j69_sequencial',10,$Ij69_sequencial,true,'text',3,"") ?></td>
+        <td><?php db_input('j69_sequencial',10,$Ij69_sequencial,true,'text',3,"") ?></td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj69_descr?>"> <?=@$Lj69_descr?> </td>
-        <td> <? db_input('j69_descr',40,$Ij69_descr,true,'text',$db_opcao,"") ?> </td>
+        <td> <?php db_input('j69_descr',40,$Ij69_descr,true,'text',$db_opcao,"") ?> </td>
       </tr>
     </table>
   </fieldset>
@@ -52,7 +52,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_setorregimovel.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

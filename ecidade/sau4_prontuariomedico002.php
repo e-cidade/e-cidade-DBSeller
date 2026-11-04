@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -102,7 +102,7 @@ for($x=0; $x < $linhas; $x++){
           $pdf->cell(96,4,"Bairro: ".$z01_v_bairro,1,0,"L",1);
           $pdf->cell(96,4,"Estado Civil: ".$ec[ $z01_i_estciv ],1,1,"L",1);
           $pdf->cell(96,4,"Documento RG: ".$z01_v_ident,1,0,"L",1);
-          $pdf->cell(96,4,"Cartão SUS: ".$z01_c_cartaosus,1,1,"L",1);
+          $pdf->cell(96,4,"Cartão SUS: ".$s115_c_cartaosus,1,1,"L",1);
           $head1 = str_pad("Continuação", 50, " ", STR_PAD_LEFT);
           $head7 = "Nome: ".$z01_i_numcgs."-".$z01_v_nome;
 

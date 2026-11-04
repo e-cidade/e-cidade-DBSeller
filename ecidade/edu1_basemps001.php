@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,7 +107,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed34_i_disciplina",true,1,"ed34_i_disciplina",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($clbasemps->erro_status=="0"){
   $clbasemps->erro(true,false);
@@ -122,7 +122,7 @@ if(isset($incluir)){
   <script>
    js_OpenJanelaIframe('','db_iframe_outraserie','func_outraserie.php?disciplina=<?=$ed34_i_disciplina?>&base=<?=$ed34_i_base?>&serie=<?=$ed34_i_serie?>&nperiodos=<?=$ed34_i_qtdperiodo?>&condicao=<?=$ed34_c_condicao?>&discglob=<?=$discglob?>&qtdper=<?=$qtdper?>&lLancarHistorico=<?=$ed34_lancarhistorico?>','Incluir Disciplina <?=$ed232_c_descr?> em outras etapas',true,60,160,400,230);
   </script>
-  <?
+  <?php
   //$clbasemps->erro(false,true);
  };
 };
@@ -140,7 +140,7 @@ if(isset($alterar)){
   <script>
    js_OpenJanelaIframe('','db_iframe_outraseriealt','func_outraseriealt.php?disciplina=<?=$ed34_i_disciplina?>&base=<?=$ed34_i_base?>&serie=<?=$ed34_i_serie?>&nperiodos=<?=$ed34_i_qtdperiodo?>&condicao=<?=$ed34_c_condicao?>&discglob=<?=$discglob?>&qtdper=<?=$qtdper?>&lLancarHistorico=<?=$ed34_lancarhistorico?>','Alterar Disciplina <?=$ed232_c_descr?> em outras etapas',true,60,160,400,230);
   </script>
-  <?
+  <?php
   //$clbasemps->erro(false,true);
  };
 };
@@ -157,7 +157,7 @@ if(isset($cancelar)){
 ?>
 <script>
 function js_refresh(){
- <?
+ <?php
  $sql = $clbaseserie->sql_query("","si.ed11_i_sequencia as inicial,sf.ed11_i_sequencia as final,si.ed11_i_ensino as ensino",""," ed87_i_codigo = $ed34_i_base");
  $result = $clbaseserie->sql_record($sql);
  db_fieldsmemory($result,0);
@@ -171,7 +171,7 @@ function js_refresh(){
   db_fieldsmemory($result1,$x);
   ?>
    parent.iframe_b<?=$num?>.location.href="edu1_basemps001.php?ed34_i_base=<?=$ed34_i_base?>&ed31_c_descr=<?=$ed31_c_descr?>&curso=<?=$ed31_i_curso?>&ed34_i_serie=<?=$ed11_i_codigo?>&ed11_c_descr=<?=$ed11_c_descr?>&discglob=<?=$discglob?>&qtdper=<?=$qtdper?>";
-  <?
+  <?php
  }
  ?>
 }

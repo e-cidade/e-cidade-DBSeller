@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("p58_codproc");
        <?=@$Lq36_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q36_sequencial',10,$Iq36_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq36_varfix?>">
-       <?
+       <?php
        db_ancora(@$Lq36_varfix,"js_pesquisaq36_varfix(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q36_varfix',10,$Iq36_varfix,true,'text',$db_opcao," onchange='js_pesquisaq36_varfix(false);'")
 ?>
-       <?
+       <?php
 db_input('q33_codigo',8,$Iq33_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq36_processo?>">
-       <?
+       <?php
        db_ancora(@$Lq36_processo,"js_pesquisaq36_processo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q36_processo',10,$Iq36_processo,true,'text',$db_opcao," onchange='js_pesquisaq36_processo(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        <?=@$Lq36_notifica?>
     </td>
     <td> 
-<?
+<?php
 db_input('q36_notifica',10,$Iq36_notifica,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_varfixproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

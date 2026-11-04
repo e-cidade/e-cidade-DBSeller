@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed18_i_codigo");
        <?=@$Led226_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed226_i_codigo',10,$Ied226_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted226_i_alunopassagem?>">
-       <?
+       <?php
        db_ancora(@$Led226_i_alunopassagem,"js_pesquisaed226_i_alunopassagem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed226_i_alunopassagem',10,$Ied226_i_alunopassagem,true,'text',$db_opcao," onchange='js_pesquisaed226_i_alunopassagem(false);'")
 ?>
-       <?
+       <?php
 db_input('ed215_i_codigo',10,$Ied215_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted226_i_escola?>">
-       <?
+       <?php
        db_ancora(@$Led226_i_escola,"js_pesquisaed226_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed226_i_escola',10,$Ied226_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed226_i_escola(false);'")
 ?>
-       <?
+       <?php
 db_input('ed18_i_codigo',20,$Ied18_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_alunopassagemescola.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

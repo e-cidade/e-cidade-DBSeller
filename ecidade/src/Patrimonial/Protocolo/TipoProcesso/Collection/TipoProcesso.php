@@ -64,7 +64,7 @@ class TipoProcesso
      */
     public function getByCodigo($codigoTipoProcess)
     {
-        if (in_array($codigoTipoProcess, $this->colecao)) {
+        if (array_key_exists($codigoTipoProcess, $this->colecao)) {
             return $this->colecao[$codigoTipoProcess];
         }
 

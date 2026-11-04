@@ -1,9 +1,6 @@
-<?
+<?php
 //WebSeller
-set_time_limit(0);
 if(!defined('DB_BIBLIOT')){
-
-  session_cache_limiter('none');
   session_start();
 
   require_once(modification("libs/db_stdlib.php"));
@@ -81,7 +78,7 @@ class PDF extends FPDF {
     if (!isset($iEscola)){
       $iEscola = 	db_getsession("DB_coddepto");
     }
-    
+
   //$this->Cell(100,32,"",1);
     $dados1 = db_query($conn,"select ed18_c_nome,
                                    j14_nome,
@@ -151,7 +148,7 @@ class PDF extends FPDF {
 
     $this->setXY(33, 12);
     $this->multicell( $widthHeader,   4, $nomeescola, 0,   1, "L", 0 );
-    
+
     $this->SetFont('Arial','I',7);
     $this->setXY(33, 20);
     $this->cell( $widthHeader,   4, $ruaescola.", ".$numescola." - ".$bairroescola, 0,   1, "L", 0 );
@@ -188,7 +185,7 @@ class PDF extends FPDF {
     $this->setleftmargin($margemesquerda);
     $this->SetY(35);
    } else {
-     
+
      $dados = db_query($conn,"select nomeinst,
                                    db21_compl,
                                    trim(ender)||',
@@ -206,17 +203,17 @@ class PDF extends FPDF {
      $url = @pg_result($dados,0,"url");
      $this->SetXY(1,1);
      $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
-     
+
      //$this->Cell(100,32,"",1);
      $nome = pg_result($dados,0,"nomeinst");
      global $nomeinst;
      $nomeinst = pg_result($dados,0,"nomeinst");
-     
+
      if(strlen($nome) > 42)
        $TamFonteNome = 8;
      else
        $TamFonteNome = 9;
-     
+
      $this->SetFont('Arial','BI',$TamFonteNome);
      $this->Text(33,9,$nome);
      $this->SetFont('Arial','I',8);

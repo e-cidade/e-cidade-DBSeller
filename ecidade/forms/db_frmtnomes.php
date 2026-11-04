@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltnomes->rotulo->label();
        <?=@$Lyy_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('yy_codigo',4,$Iyy_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('yy_codigo',4,$Iyy_codigo,true,'text',$db_opcao,"")
        <?=@$Lyy_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('yy_nome',40,$Iyy_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('yy_nome',40,$Iyy_nome,true,'text',$db_opcao,"")
        <?=@$Lyy_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('yy_data',@$yy_data_dia,@$yy_data_mes,@$yy_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_inputdata('yy_data',@$yy_data_dia,@$yy_data_mes,@$yy_data_ano,true,'text',$db
        <?=@$Lyy_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('yy_obs',0,0,$Iyy_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tnomes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

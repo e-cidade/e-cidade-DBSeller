@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("y99_coddoc");
        <?=@$Ly99_coddoc?>
     </td>
     <td> 
-<?
+<?php
 db_input('y99_coddoc',10,$Iy99_coddoc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty99_codtiaf?>">
-       <?
+       <?php
        db_ancora(@$Ly99_codtiaf,"js_pesquisay99_codtiaf(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y99_codtiaf',10,$Iy99_codtiaf,true,'text',$db_opcao," onchange='js_pesquisay99_codtiaf(false);'")
 ?>
-       <?
+       <?php
 db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty99_tiafdoc?>">
-       <?
+       <?php
        db_ancora(@$Ly99_tiafdoc,"js_pesquisay99_tiafdoc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y99_tiafdoc',10,$Iy99_tiafdoc,true,'text',$db_opcao," onchange='js_pesquisay99_tiafdoc(false);'")
 ?>
-       <?
+       <?php
 db_input('y99_coddoc',10,$Iy99_coddoc,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('y99_coddoc',10,$Iy99_coddoc,true,'text',3,'')
        <?=@$Ly99_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y99_dtini',@$y99_dtini_dia,@$y99_dtini_mes,@$y99_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('y99_dtini',@$y99_dtini_dia,@$y99_dtini_mes,@$y99_dtini_ano,true,'t
        <?=@$Ly99_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y99_dtfim',@$y99_dtfim_dia,@$y99_dtfim_mes,@$y99_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_inputdata('y99_dtfim',@$y99_dtfim_dia,@$y99_dtfim_mes,@$y99_dtfim_ano,true,'t
        <?=@$Ly99_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y99_obs',0,0,$Iy99_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tiafdoc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

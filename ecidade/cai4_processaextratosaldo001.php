@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -174,11 +174,11 @@ if (isset($processar)) {
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tk86_contabancaria?>">
-            <? db_ancora(@$Lk86_contabancaria,"js_pesquisak86_contabancaria(true);",1); ?>
+            <?php db_ancora(@$Lk86_contabancaria,"js_pesquisak86_contabancaria(true);",1); ?>
           </td>
           <td nowrap>
-            <? db_input('Conta',10,$Ik86_contabancaria,true,'text',1," onchange='js_pesquisak86_contabancaria(false);'") ?>
-            <? db_input('db83_descricao',50,$Idb83_descricao,true,'text',3,'') ?>
+            <?php db_input('Conta',10,$Ik86_contabancaria,true,'text',1," onchange='js_pesquisak86_contabancaria(false);'") ?>
+            <?php db_input('db83_descricao',50,$Idb83_descricao,true,'text',3,'') ?>
           </td>
         </tr>
         <tr>
@@ -199,7 +199,7 @@ if (isset($processar)) {
             <strong>Saldo Anterior: </strong>
           </td>
           <td>
-            <? db_input('iSaldo',10,4,true,'text',1) ?>
+            <?php db_input('iSaldo',10,4,true,'text',1) ?>
           </td>
         </tr>
       </table>
@@ -213,7 +213,7 @@ if (isset($processar)) {
 
 </html>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -49,8 +49,8 @@
  */
 require_once(modification("model/educacao/avaliacao/iFormaObtencao.interface.php"));
 require_once(modification("model/educacao/avaliacao/FormaObtencao.model.php"));
-class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
-
+class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao 
+{
   /**
    * Define as notas que ira ser usaddo no calculo
    * Deverá ser instancias de AvaliacaoAproveitamento
@@ -59,7 +59,8 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
    * @param integer $iAno
    * @return int|string|ValorAproveitamentoNota
    */
-  public function processarResultado( $aAproveitamentos, $iAno ) {
+  public function processarResultado( $aAproveitamentos, $iAno )
+  {
 
     $mAproveitamento                     = $this->calcularResultado( $aAproveitamentos, $iAno );
     $aNotasPeriodos                      = $this->getElementosParaCalculo( $aAproveitamentos, $iAno );
@@ -109,7 +110,8 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
    * @param AvaliacaoAproveitamento[] $aElementosAvaliacoes
    * @return string
    */
-  public function calcularNotaProjetada(array $aElementosAvaliacoes) {
+  public function calcularNotaProjetada(array $aElementosAvaliacoes)
+  {
 
     $nMinimoAprovacao = $this->oResultadoAvaliacao->getAproveitamentoMinimo();
     $nSomaElementos   = 0;
@@ -129,7 +131,7 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
    */
   private function calcularProporcionalidade( $aElementosResultado, $aElementos ) {
 
-    $nSomaAvaliacao  = 0;
+    $nSomaAvaliacao  = '';
     $nSomaMaiorValor = 0;
     $lCalcularNota   = false;
 
@@ -169,6 +171,9 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
       if ( $oElemento->getValorAproveitamento()->getAproveitamento() !== '' ) {
         $lCalcularNota    = true;
       }
+      if (gettype($nSomaAvaliacao) == 'string' && $nSomaAvaliacao == '') {
+        $nSomaAvaliacao = 0;
+      }
       $nSomaAvaliacao  += $oElemento->getValorAproveitamento()->getAproveitamento();
       $nSomaMaiorValor += $oElemento->getElementoAvaliacao()->getFormaDeAvaliacao()->getMaiorValor();
 
@@ -176,8 +181,6 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
 
     $nValorCalculado               = $lCalcularNota ? ($nSomaAvaliacao * 100) / $nSomaMaiorValor : '';
     $nMaiorValorResultadoAvaliacao = $this->oResultadoAvaliacao->getFormaDeAvaliacao()->getMaiorValor();
-
-
 
     return ($nMaiorValorResultadoAvaliacao * $nValorCalculado) / 100;
   }
@@ -322,7 +325,12 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
       }
 
       if ($oNotaDoAproveitamento->getValorAproveitamento()->getAproveitamento() !== "") {
-        $mAproveitamento += $oNotaDoAproveitamento->getValorAproveitamento()->getAproveitamento();
+        if (gettype($mAproveitamento) == 'string' && $mAproveitamento == '') {
+          $mAproveitamento = 0;
+        }
+        $mAproveitamento += is_numeric($oNotaDoAproveitamento->getValorAproveitamento()->getAproveitamento())
+        ? $oNotaDoAproveitamento->getValorAproveitamento()->getAproveitamento()
+        : "0";
       }
     }
 

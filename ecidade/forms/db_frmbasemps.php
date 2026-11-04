@@ -1,31 +1,31 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-//MODULO: educação
+//MODULO: educaï¿½ï¿½o
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clbasemps->rotulo->label();
@@ -40,6 +40,7 @@ if (isset($opcao) && $opcao == "alterar" && $discglob != 0) {
   $db_opcao1       = 3;
   $db_opcao2       = 1;
   $db_opcao        = 2;
+  $db_botao1       = true;
   $db_botao1       = true;
   $ed34_c_condicao = $ed34_c_condicao == "OPCIONAL" ? "OP" : "OB";
 } else if (isset($opcao) && $opcao == "alterar" && $discglob == 0) {
@@ -95,20 +96,20 @@ if ($linhas1 > 0) {
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted34_i_serie?>">
-   <?db_ancora(@$Led34_i_serie,"",3);?>
+   <?php db_ancora(@$Led34_i_serie,"",3);?>
   </td>
   <td>
-   <?db_input('ed34_i_serie',15,$Ied34_i_serie,true,'text',3,"")?>
-   <?db_input('ed11_c_descr',40,@$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed34_i_serie',15,$Ied34_i_serie,true,'text',3,"")?>
+   <?php db_input('ed11_c_descr',40,@$Ied11_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted34_i_disciplina?>">
-   <?db_ancora(@$Led34_i_disciplina,"js_pesquisaed34_i_disciplina(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led34_i_disciplina,"js_pesquisaed34_i_disciplina(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed34_i_disciplina',15,$Ied34_i_disciplina,true,'text',$db_opcao1," onchange='js_pesquisaed34_i_disciplina(false);'")?>
-   <?db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
+   <?php db_input('ed34_i_disciplina',15,$Ied34_i_disciplina,true,'text',$db_opcao1," onchange='js_pesquisaed34_i_disciplina(false);'")?>
+   <?php db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -116,9 +117,8 @@ if ($linhas1 > 0) {
    <?=@$Led34_i_qtdperiodo?>
   </td>
   <td>
-   <?db_input('ed34_i_qtdperiodo',10,$Ied34_i_qtdperiodo,true,'text',$db_opcao2,"")?>
-   <?//=@$Led34_i_chtotal?>
-   <?db_input('ed34_i_chtotal',10,$Ied34_i_chtotal,true,'text',$db_opcao," style=\"visibility:hidden\"")?>
+   <?php db_input('ed34_i_qtdperiodo',10,$Ied34_i_qtdperiodo,true,'text',$db_opcao2,"")?>
+   <?php db_input('ed34_i_chtotal',10,$Ied34_i_chtotal,true,'text',$db_opcao," style=\"visibility:hidden\"")?>
   </td>
  </tr>
  <tr>
@@ -126,11 +126,11 @@ if ($linhas1 > 0) {
    <?=@$Led34_c_condicao?>
   </td>
   <td>
-   <?
+   <?php
    if(isset($ed34_i_qtdperiodo) && $ed34_i_qtdperiodo>0 && $discglob!=0){
-    $x = array('OB'=>'OBRIGATÓRIA');
+    $x = array('OB'=>'OBRIGATï¿½RIA');
    }else{
-    $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+    $x = array('OB'=>'OBRIGATï¿½RIA','OP'=>'OPCIONAL');
    }
    db_select('ed34_c_condicao',$x,true,$db_opcao,"onchange='js_lancarHistorico(this.value)'");
    ?>
@@ -143,7 +143,7 @@ if ($linhas1 > 0) {
    </td>
    <td>
      <?php
-       $aOpcoes = array('f'=>'NÃO', 't'=>'SIM');
+       $aOpcoes = array('f'=>'Nï¿½O', 't'=>'SIM');
        db_select('ed34_lancarhistorico',$aOpcoes,true,$db_opcao,"", 'ed34_lancarhistorico');
      ?>
    </td>
@@ -166,10 +166,10 @@ if ($linhas1 > 0) {
 <table width="90%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $campos  = "ed34_i_codigo, ed34_i_base, ed31_c_descr, ed34_i_serie, ed11_c_descr, ed34_i_disciplina, ed232_c_descr";
    $campos .= ", ed34_i_qtdperiodo, ed34_lancarhistorico, ed34_i_chtotal, ed293_descr as ed232_areaconhecimento";
-   $campos .= ", case when ed34_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed34_c_condicao";
+   $campos .= ", case when ed34_c_condicao='OB' then 'OBRIGATï¿½RIA' else 'OPCIONAL' end as ed34_c_condicao";
    $chavepri= array("ed34_i_codigo"        => @$ed34_i_codigo,
                     "ed31_c_descr"         => @$ed31_c_descr,
                     "ed34_i_disciplina"    => @$ed34_i_disciplina,
@@ -187,7 +187,7 @@ if ($linhas1 > 0) {
    $cliframe_alterar_excluir->campos        = "ed232_c_descr,ed34_i_qtdperiodo,ed34_c_condicao,ed232_areaconhecimento";
    $cliframe_alterar_excluir->labels        = "ed34_i_disciplina,ed34_i_qtdperiodo,ed34_c_condicao,ed293_descr";
    $cliframe_alterar_excluir->legenda       = "Registros";
-   $cliframe_alterar_excluir->msg_vazio     = "Não foi encontrado nenhum registro.";
+   $cliframe_alterar_excluir->msg_vazio     = "Nï¿½o foi encontrado nenhum registro.";
    $cliframe_alterar_excluir->textocabec    = "#DEB887";
    $cliframe_alterar_excluir->textocorpo    = "#444444";
    $cliframe_alterar_excluir->fundocabec    = "#444444";

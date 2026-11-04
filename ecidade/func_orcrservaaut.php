@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clorcrservaaut->rotulo->label("o83_autori");
               <?=$Lo83_codres?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o83_codres",8,$Io83_codres,true,"text",4,"","chave_o83_codres");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clorcrservaaut->rotulo->label("o83_autori");
               <?=$Lo83_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o83_autori",6,$Io83_autori,true,"text",4,"","chave_o83_autori");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clorcrservaaut->rotulo->label("o83_autori");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcrservaaut.php")==true){
@@ -118,12 +118,12 @@ $clorcrservaaut->rotulo->label("o83_autori");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,7 +54,7 @@ class ParecerTecnicoCondicionante {
 
   public function __construct( $iSequencial = null ) {
 
-    $oDaoParecerTecnicoCondicionante = db_utils::getDao('parecertecnicocondicionante');
+    $oDaoParecerTecnicoCondicionante = new cl_parecertecnicocondicionante;
     $rsParecerTecnicoCondicionante   = null;
 
     if (!is_null($iSequencial)) {
@@ -101,7 +101,7 @@ class ParecerTecnicoCondicionante {
 
     try {
 
-      $oDaoParecerTecnicoCondicionante = db_utils::getDao('parecertecnicocondicionante');
+      $oDaoParecerTecnicoCondicionante = new cl_parecertecnicocondicionante;
       $oDaoParecerTecnicoCondicionante->am12_parecertecnico = $this->oParecerTecnico->getSequencial();
       $oDaoParecerTecnicoCondicionante->am12_condicionante  = $this->oCondicionante->getSequencial();
       $oDaoParecerTecnicoCondicionante->incluir();

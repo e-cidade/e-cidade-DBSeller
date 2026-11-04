@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("it01_guia");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit06_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit06_guia,"js_pesquisait06_guia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it06_guia',10,$Iit06_guia,true,'text',$db_opcao," onchange='js_pesquisait06_guia(false);'")
 ?>
-       <?
+       <?php
 db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit06_matric?>">
-       <?
+       <?php
        db_ancora(@$Lit06_matric,"js_pesquisait06_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it06_matric',8,$Iit06_matric,true,'text',$db_opcao," onchange='js_pesquisait06_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',6,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_itbimatric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

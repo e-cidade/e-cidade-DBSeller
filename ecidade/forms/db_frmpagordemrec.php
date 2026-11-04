@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -94,13 +94,13 @@ function js_verifica(){
     alert('Valor digitado é maior que o saldo disponivel da ordem!');
     return false;
   }
-<?
+<?php
    if($db_opcao==2){
       echo " total =  ($tot_valor-$e52_valor)+valor;\n";
    }else{  
 ?>  
              total = new Number(tot_valor+valor);
-<? } ?>
+<?php } ?>
 
   if( total > vlrdis){
     alert('Valor digitado, somado com os já incluidos é maior que o saldo disponivel da ordem!');
@@ -119,14 +119,14 @@ function js_verifica(){
        <?=$Le52_codord?>
     </td>
     <td> 
-<?
+<?php
 db_input('e52_codord',6,$Ie52_codord,true,'text',3);
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te52_receit?>">
-       <?
+       <?php
 if(isset($opcao) && ($opcao=='alterar' || $opcao=="excluir" )){
   $db_op='3';
 }else{
@@ -137,10 +137,10 @@ if(isset($opcao) && ($opcao=='alterar' || $opcao=="excluir" )){
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e52_receit',4,$Ie52_receit,true,'text',$db_op," onchange='js_pesquisae52_receit(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -150,7 +150,7 @@ db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')
        <b>Total da ordem:</b>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrdis',15,0,true,'text',3);
 ?>
     </td>
@@ -160,7 +160,7 @@ db_input('vlrdis',15,0,true,'text',3);
        <?=@$Le52_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('e52_valor',15,$Ie52_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -175,7 +175,7 @@ db_input('e52_valor',15,$Ie52_valor,true,'text',$db_opcao,"")
   <table>
     <tr>
       <td valign="top"  align='center'>  
-       <?
+       <?php
 	$chavepri= array("e52_codord"=>$e52_codord,"e52_receit"=>@$e52_receit);
 	$cliframe_alterar_excluir->chavepri=$chavepri;
 	$cliframe_alterar_excluir->sql     = $clpagordemrec->sql_query($e52_codord,null,"e52_codord,e52_receit,e52_valor,k02_descr");
@@ -189,11 +189,11 @@ db_input('e52_valor',15,$Ie52_valor,true,'text',$db_opcao,"")
     </tr>
     <tr>
       <td><b>Total de receitas:</b>
-  <?
+  <?php
   db_input('tot_receit',8,0,true,'text',3);
   ?>
       <b>Total dos valores:</b>
-  <?
+  <?php
   db_input('tot_valor',13,0,true,'text',3)
   ?>
       

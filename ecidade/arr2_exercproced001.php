@@ -25,14 +25,14 @@
  *                                licenca/licenca_pt.txt
  */
 
-require modification('libs/db_stdlib.php');
-require modification('libs/db_conecta.php');
-include modification('libs/db_sessoes.php');
-include modification('libs/db_usuariosonline.php');
-include modification('dbforms/db_funcoes.php');
-include modification('classes/db_proced_classe.php');
-require_once modification('libs/db_utils.php');
-require_once modification('libs/db_libpostgres.php');
+require_once(modification('libs/db_stdlib.php'));
+require_once(modification('libs/db_conecta.php'));
+require_once(modification('libs/db_sessoes.php'));
+require_once(modification('libs/db_usuariosonline.php'));
+require_once(modification('dbforms/db_funcoes.php'));
+require_once(modification('classes/db_proced_classe.php'));
+require_once(modification('libs/db_utils.php'));
+require_once(modification('libs/db_libpostgres.php'));
 
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_SERVER_VARS);
@@ -49,6 +49,7 @@ $clrotulo->label('k51_descr');
 $clrotulo->label('v03_descr');
 
 $instit = db_getsession('DB_instit');
+
 if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
     db_msgbox('Problema nos índices da tabela débitos. Entre em contato com CPD.');
     $db_botao = false;
@@ -68,11 +69,12 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
       <script>
         function js_marca() {
           var ID = document.getElementById('marca');
-          //var BT = document.getElementById('btmarca');
+
           if(!ID)
             return false;
             var F = document.form1;
-            if(ID.innerHTML == 'D') {
+
+            if(ID.innerHTML === 'D') {
               var dis = false;
               ID.innerHTML = 'M';
             } else {
@@ -80,7 +82,7 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
               ID.innerHTML = 'D';
             }
             for(i = 0;i < F.elements.length;i++) {
-              if(F.elements[i].type == "checkbox"){
+              if(F.elements[i].type === "checkbox"){
                 F.elements[i].checked = dis;
               }
             }
@@ -90,7 +92,7 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
             var marcas = false;
             var F = document.form1;
             for(i = 0;i < F.elements.length;i++) {
-              if(F.elements[i].type == "checkbox" &&  F.elements[i].checked ){
+              if(F.elements[i].type === "checkbox" &&  F.elements[i].checked ){
                 marcas = true;
               }
             }
@@ -100,12 +102,12 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
             var xvirg = '';
             var F = document.form1;
             for(i = 0;i < F.elements.length;i++) {
-              if(F.elements[i].type == "checkbox" &&  F.elements[i].checked ){
+              if(F.elements[i].type === "checkbox" &&  F.elements[i].checked ){
                 exerc += xvirg+F.elements[i].value;
                 xvirg  = '-';
               }
             }
-            if (exerc != ''){
+            if (exerc !== ''){
                exerc = 'exerc='+exerc;
             }
             jan = window.open('arr2_exercproced002.php?xdata='+document.form1.xdata.value+
@@ -114,7 +116,8 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
                               '&'+exerc+
                               '&tipo='+tipo,
                               '',
-                              'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+                              'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+
+                              ',scrollbars=1,location=0 ');
             jan.moveTo(0,0);
           }
       </script>
@@ -126,11 +129,15 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
           <legend>Relatório de Exercício/Procedência - Cobrança Administrativa</legend>
           <table  class="form-container" >
             <tr>
-              <td>Data do calculo:</td>
+              <td>Data do cálculo:</td>
         <td>
           <?php
             $arrayDatas = [];
-            $sqlDataDebitos = "select distinct k115_data from datadebitos where k115_instit = $instit order by k115_data desc";
+            $sqlDataDebitos = "select distinct k115_data ";
+            $sqlDataDebitos .= "from datadebitos ";
+            $sqlDataDebitos .= "where k115_instit = {$instit} ";
+            $sqlDataDebitos .= "  and k115_completa is true ";
+            $sqlDataDebitos .= "order by k115_data desc ";
             $rsDataDebitos = db_query($sqlDataDebitos);
             $intDatas = pg_num_rows($rsDataDebitos);
 
@@ -142,8 +149,8 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
                 db_fieldsmemory($rsDataDebitos, 0);
             }
 
-                    db_select('xdata', $arrayDatas, true, $db_opcao, '');
-              ?>
+            db_select('xdata', $arrayDatas, true, $db_opcao, '');
+            ?>
           </td>
         </tr>
             <tr>
@@ -151,10 +158,10 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
               <td>
                 <?php
                      $matriz = ['r' => 'Resumido',
-                                  'c' => 'Completo',
+                                'c' => 'Completo',
                                  ];
-                  db_select('tiporel', $matriz, true, '');
-                   ?>
+                     db_select('tiporel', $matriz, true, '');
+                        ?>
             </td>
             </tr>
           <tr>
@@ -187,39 +194,40 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
                 $sqlmenor = 'select distinct v01_exerc as exercicio from divida order by v01_exerc';
                 $resultmenor = db_query($sqlmenor) or die($sqlmenor);
                 $cont = 0;
-                for ($x = 0; $x < pg_num_rows($resultmenor); ++$x) {
-                    db_fieldsmemory($resultmenor, $x);
-                    if (0 == $cont) {
-                        echo "<tr style='cursor: hand; height: 20px' bgcolor='$cor'>";
-                        if ('#E4F471' == $cor) {
-                            $cor = '#EFE029';
-                        } elseif ('#EFE029' == $cor) {
-                            $cor = '#E4F471';
-                        }
+            for ($x = 0; $x < pg_num_rows($resultmenor); ++$x) {
+                db_fieldsmemory($resultmenor, $x);
+                if (0 == $cont) {
+                    echo "<tr style='cursor: hand; height: 20px' bgcolor='$cor'>";
+                    if ('#E4F471' == $cor) {
+                        $cor = '#EFE029';
+                    } elseif ('#EFE029' == $cor) {
+                        $cor = '#E4F471';
                     }
-                    ++$cont; ?>
-                <td height="20px" width="25%" class="borda" style="font-size:11px" align="center" id="check<?=$i; ?>" nowrap>
+                }
+                ++$cont; ?>
+                <td height="20px" width="25%" class="borda" style="font-size:11px"
+                    align="center" id="check<?=$i; ?>" nowrap>
                   <input type="checkbox" value="<?=$exercicio; ?>"
                   name="check<?=$i; ?>" checked onclick="js_verifica()"><?=$exercicio; ?>
                 </td>
-              <?php
+                <?php
                 if (4 == $cont) {
                     echo '</tr>';
                     $cont = 0;
                 }
-                }
-              ?>
+            }
+            ?>
             </table>
           </fieldset>
         </fieldset>
         <input name="db_opcao" type="button" id="db_opcao" value="Imprimir" onClick="js_emite(1);"
-        <?=($db_botao ? '' : 'disabled'); ?>>
+        <?php echo ($db_botao ? '' : 'disabled'); ?>>
         <input name="db_opcao" type="button" id="db_opcao" value="Gerar TXT" onClick="js_emite(2);"
-        <?=($db_botao ? '' : 'disabled'); ?>>
+        <?php echo ($db_botao ? '' : 'disabled'); ?>>
       </form>
       <?php
-       db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'), db_getsession('DB_anousu'), db_getsession('DB_instit'));
-      ?>
+        db_menu();
+        ?>
     </body>
   </html>
 <script>

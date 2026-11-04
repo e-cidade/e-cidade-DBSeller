@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
               <?=$Lc89_recurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c89_recurso",4,$Ic89_recurso,true,"text",4,"","chave_c89_recurso");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
               <?=$Lc89_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c89_reduz",6,$Ic89_reduz,true,"text",4,"","chave_c89_reduz");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
               <?=$Lc89_recurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c89_recurso",4,$Ic89_recurso,true,"text",4,"","chave_c89_recurso");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanoexerecurso.php")==true){
@@ -134,12 +134,12 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

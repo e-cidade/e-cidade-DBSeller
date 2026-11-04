@@ -74,7 +74,7 @@ if ( isset($pesquisa_chave) ) {
         <tr>
           <td title="Opção de assentamento">Assentamento de:</td>
           <td>
-            <?
+            <?php
               $db_opcao_opc_assentamento = (isset($vinculo_portaria)||isset($iTipoFuncionamento)) ? 3 : 1;
               $aOpcaoAssentamento = array(1 => 'Efetividade', 2=>'Histórico Funcional');
               $sOpcaoAssentamento = (!isset($iTipoFuncionamento)) ? 2 : $iTipoFuncionamento;
@@ -87,7 +87,7 @@ if ( isset($pesquisa_chave) ) {
           <td title="<?=$Th12_assent?>">
             Tipo do Assentamento:</td>
           <td>
-            <?
+            <?php
             db_input("h12_assent",6,$Ih12_assent,true,"text",4,"","chave_h12_assent");
             ?>
           </td>
@@ -97,7 +97,7 @@ if ( isset($pesquisa_chave) ) {
             Matricula:
           </td>
           <td>
-            <?
+            <?php
             db_input("h16_regist",6,$Ih16_regist,true,"text",4,"","chave_h16_regist");
             ?>
           </td>
@@ -107,7 +107,7 @@ if ( isset($pesquisa_chave) ) {
             <?=$Lz01_nome?>
           </td>
           <td>
-            <?
+            <?php
             db_input("z01_nome",80,$Iz01_nome,true,"text",4,"","chave_z01_nome");
             ?>
           </td>

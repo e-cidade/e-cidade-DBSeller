@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ if(isset($chavepesquisa) || isset($e50_numemp) ){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmpagordem.php"));
 	?>
     </center>
@@ -130,7 +130,7 @@ if(isset($chavepesquisa) || isset($e50_numemp) ){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($incluirimp)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

@@ -510,9 +510,9 @@ class processoProtocolo
         }
 
 
-        $clProtProcesso = db_utils::getDao('protprocesso');
-        $clProcAndam = db_utils::getDao('procandam');
-        $clProcTransAnd = db_utils::getDao('proctransand');
+        $clProtProcesso = new cl_protprocesso;
+        $clProcAndam = new cl_procandam;
+        $clProcTransAnd = new cl_proctransand;
 
         if (trim($iCodTran) == '') {
             $sWhereProcesso = "     p58_codproc = {$this->getCodProcesso()} ";
@@ -819,6 +819,30 @@ class processoProtocolo
     }
 
     /**
+     * @return bool
+     */
+    public function isApensado(){
+
+        $oDaoProtProcessoApensados = new cl_processosapensados;
+
+        $sql = $oDaoProtProcessoApensados->sql_query_file(
+            null,
+            "*",
+            null,
+            "p30_procapensado = {$this->getCodProcesso()}"
+        );
+
+        $rs = db_query($sql);
+        $result = pg_fetch_object($rs);
+
+        if(!$result){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Retorna o número do processo
      * @return string
      */
@@ -1033,6 +1057,17 @@ class processoProtocolo
     public function isEletronico()
     {
         return $this->getTipoInclusaoProcesso() == self::ELETRONICO;
+    }
+
+    public function getDepartamentoAtualProcesso()
+    {
+        $codProc = $this->getCodProcesso();
+        $sql = "select p62_coddeptorec from protocolo.proctransferproc
+        left join protocolo.proctransfer on protocolo.proctransfer.p62_codtran = protocolo.proctransferproc.p63_codtran
+        where p63_codproc = $codProc order by p63_codtran desc limit 1";
+
+        $result = pg_fetch_array(db_query($sql));
+        return (integer) $result[0];
     }
 }
 

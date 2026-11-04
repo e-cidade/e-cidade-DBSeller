@@ -1,0 +1,621 @@
+[
+    { "ordem": 1, "totalizadora": true, "valorManual": false, "descricao": "RECEITAS CORRENTES (I)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar":[3,4,5,7,8,9,11,12,13,14,16,17,18]
+    },
+    { "ordem": 2, "totalizadora": true, "valorManual": false, "descricao": "Receita de Contribuições dos Segurados ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar":[3,4,5]
+    },
+    { "ordem": 3, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Segurados - Ativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 4, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Segurados - Inativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 5, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Segurados - Pensionista ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 6, "totalizadora": true, "valorManual": false, "descricao": "Receita de Contribuições Patronais", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar":[7,8,9]
+    },
+    { "ordem": 7, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Patronais - Ativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 8, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Patronais - Inativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 9, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Patronais - Pensionista ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 10, "totalizadora": true, "valorManual": false, "descricao": "Receita Patrimonial", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [11,12,13]
+    },
+    { "ordem": 11, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Receitas Imobiliárias", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 12, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Receitas de Valores Mobiliários", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 13, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Outras Receitas Patrimoniais", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 14, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Receita de Serviços", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 15, "totalizadora": true, "valorManual": false, "descricao": "Outras Receitas Correntes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [16,17,18]
+    },
+    { "ordem": 16, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Compensação Financeira entre os regimes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 17, "totalizadora": false, "valorManual": true, "descricao": "Aportes Periódicos para Amortização de Déficit Atuarial do RPPS (II)¹", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 18, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Demais Receitas Correntes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 19, "totalizadora": true, "valorManual": false, "descricao": "RECEITAS DE CAPITAL (III)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [20,21,22]
+    },
+    { "ordem": 20, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Alienação de Bens, Direitos e Ativos", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 21, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Amortização de Empréstimos", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 22, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Outras Receitas de Capital", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 23, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS RECEITAS DO FUNDO EM CAPITALIZAÇÃO - (IV) = (I + III - II)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [1,19]
+    },
+    { "ordem": 24, "totalizadora": true, "valorManual": false, "descricao": "Benefícios", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar": [25,26]
+    },
+    { "ordem": 25, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Aposentadorias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 26, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Pensões por Morte", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 27, "totalizadora": true, "valorManual": false, "descricao": "Outras Despesas Previdenciárias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar": [25,26]
+    },
+    { "ordem": 28, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Compensação Financeira entre os regimes", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 29, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Demais Despesas Previdenciárias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 30, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS DESPESAS DO FUNDO EM CAPITALIZAÇÃO (V)", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar": [24,27]
+    },
+    { "ordem": 31, "totalizadora": true, "valorManual": false, "descricao": "RESULTADO PREVIDENCIÁRIO - FUNDO EM CAPITALIZAÇÃO (VI) = (IV - V)²", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 32, "totalizadora": false, "valorManual": true, "descricao": "RECURSOS RPPS ARRECADADOS EM EXERCÍCIOS ANTERIORES - VALOR", "colunas":
+        [{"descricao": "Previsão Orçamentária","permiteEdicaoManual": true,"coluna": "valor_inicial","natureza": "D"}]
+    },
+    { "ordem": 33, "totalizadora": false, "valorManual": true, "descricao": "RESERVA ORÇAMENTÁRIA DO RPPS - VALOR", "colunas":
+        [{"descricao": "Previsão Orçamentária","permiteEdicaoManual": true,"coluna": "valor_inicial","natureza": "D"}]
+    },
+    { "ordem": 34, "totalizadora": false, "valorManual": true, "descricao": "Plano de Amortização - Contribuição Patronal Suplementar", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 35, "totalizadora": false, "valorManual": true, "descricao": "Plano de Amortização - Aporte Periódico de Valores Predefinidos", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 36, "totalizadora": false, "valorManual": true, "descricao": "Outros Aportes para o RPPS", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 37, "totalizadora": false, "valorManual": true, "descricao": "Recursos para Cobertura de Déficit Financeiro", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 38, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Caixa e Equivalentes de Caixa", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 39, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Investimentos e Aplicações", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 40, "totalizadora": false, "valorManual": true, "descricao": "CAPITALIZAÇÃO - Outros Bens e Direitos", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 41, "totalizadora": true, "valorManual": false, "descricao": "RECEITAS CORRENTES (VII)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [43,44,45,47,48,49,51,52,53,54,56,57]
+    },
+    { "ordem": 42, "totalizadora": true, "valorManual": false, "descricao": "Receita de Contribuições dos Segurados ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [43,44,45]
+    },
+    { "ordem": 43, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Segurados - Ativo", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 44, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Segurados - Inativo", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 45, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Segurados - Pensionista", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 46, "totalizadora": true, "valorManual": false, "descricao": "Receita de Contribuições Patronais ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [47,48,49]
+    },
+    { "ordem": 47, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Patronais - Ativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 48, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Patronais - Inativo ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 49, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Patronais - Pensionista ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 50, "totalizadora": true, "valorManual": false, "descricao": "Receita Patrimonial", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [51,52,53]
+    },
+    { "ordem": 51, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Receitas Imobiliárias", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 52, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Receitas de Valores Mobiliários", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 53, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Outras Receitas Patrimoniais", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 54, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Receita de Serviços", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 55, "totalizadora": true, "valorManual": false, "descricao": "Outras Receitas Correntes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [56,57]
+    },
+    { "ordem": 56, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Compensação Financeira entre os regimes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 57, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Demais Receitas Correntes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 58, "totalizadora": true, "valorManual": false, "descricao": "RECEITAS DE CAPITAL (VIII)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [59,60,61]
+    },
+    { "ordem": 59, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Alienação de Bens, Direitos e Ativos", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 60, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Amortização de Empréstimos", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 61, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Outras Receitas de Capital", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 62, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS RECEITAS DO FUNDO EM REPARTIÇÃO (IX) = (VII + VIII)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar":[41,58]
+    },
+    { "ordem": 63, "totalizadora": true, "valorManual": false, "descricao": "Benefícios", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar":[64,65]
+    },
+    { "ordem": 64, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Aposentadorias ", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 65, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Pensões por Morte", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 66, "totalizadora": true, "valorManual": false, "descricao": "Outras Despesas Previdenciárias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar":[67,68]
+    },
+    { "ordem": 67, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Compensação Financeira entre os regimes", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 68, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Demais Despesas Previdenciárias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 69, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS DESPESAS DO FUNDO EM REPARTIÇÃO (X) ", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar":[63, 66]
+    },
+    { "ordem": 70, "totalizadora": true, "valorManual": false, "descricao": "RESULTADO PREVIDENCIÁRIO - FUNDO EM REPARTIÇÃO (XI) = (IX - X)²", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 71, "totalizadora": false, "valorManual": true, "descricao": "Recursos para Cobertura de Insuficiências Financeiras", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 72, "totalizadora": false, "valorManual": true, "descricao": "Recursos para Formação de Reserva", "colunas":
+        [{"descricao": "Aportes Realizados","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "C"}]
+    },
+    { "ordem": 73, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Caixa e Equivalentes de Caixa", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 74, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Investimentos e Aplicações", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 75, "totalizadora": false, "valorManual": true, "descricao": "REPARTIÇÃO - Outros Bens e Direitos", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 76, "totalizadora": false, "valorManual": true, "descricao": "Receitas Correntes", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 77, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS RECEITAS DA ADMINISTRAÇÃO RPPS  (XII)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar":[76]
+    },
+    { "ordem": 78, "totalizadora": true, "valorManual": false, "descricao": "Despesas Correntes (XIII)", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar":[79,80]
+    },
+    { "ordem": 79, "totalizadora": false, "valorManual": true, "descricao": "Pessoal e Encargos Sociais", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 80, "totalizadora": false, "valorManual": true, "descricao": "Demais Despesas Correntes", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 81, "totalizadora": false, "valorManual": true, "descricao": "Despesas de Capital (XIV)", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 82, "totalizadora": false, "valorManual": true, "descricao": "TOTAL DAS DESPESAS DA ADMINISTRAÇÃO RPPS (XV) = (XIII + XIV)", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar":[78,81]
+    },
+    { "ordem": 83, "totalizadora": true, "valorManual": false, "descricao": "RESULTADO DA ADMINISTRAÇÃO RPPS (XVI) = (XII - XV)²", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 84, "totalizadora": false, "valorManual": true, "descricao": "ADMINISTRAÇÃO RPPS - Caixa e Equivalentes de Caixa", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 85, "totalizadora": false, "valorManual": true, "descricao": "ADMINISTRAÇÃO RPPS - Investimentos e Aplicações", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 86, "totalizadora": false, "valorManual": true, "descricao": "ADMINISTRAÇÃO RPPS - Outros Bens e Direitos", "colunas":
+        [{"descricao": "Saldo Atual","permiteEdicaoManual": true,"coluna": "saldo_final_acumulado","natureza": "D"}]
+    },
+    { "ordem": 87, "totalizadora": false, "valorManual": true, "descricao": "Contribuições dos Servidores ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 88, "totalizadora": false, "valorManual": true, "descricao": "Demais Receitas Previdenciárias ", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": true,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": true,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ]
+    },
+    { "ordem": 89, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS RECEITAS (BENEFÍCIOS MANTIDOS PELO TESOURO) (XVII)", "colunas":
+        [
+            {"descricao": "Previsão Atualizada","permiteEdicaoManual": false,"coluna": "previsao_atualizada","natureza": "D"},
+            {"descricao": "Receitas Realizadas","permiteEdicaoManual": false,"coluna": "arrecadado_acumulado","natureza": "C"}
+        ],
+        "somar": [88,89]
+    },
+    { "ordem": 90, "totalizadora": false, "valorManual": true, "descricao": "Aposentadorias ", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 91, "totalizadora": false, "valorManual": true, "descricao": "Pensões", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 92, "totalizadora": false, "valorManual": true, "descricao": "Outras Despesas Previdenciárias", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": true,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": true,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": true,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": true,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": true,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    },
+    { "ordem": 93, "totalizadora": true, "valorManual": false, "descricao": "TOTAL DAS DESPESAS (BENEFÍCIOS MANTIDOS PELO TESOURO) (XVIII) ", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ],
+        "somar": [90,91,92]
+    },
+    { "ordem": 94, "totalizadora": true, "valorManual": false, "descricao": "RESULTADO DOS BENEFÍCIOS MANTIDOS PELO TESOURO (XIX) = (XVII - XVIII)²", "colunas":
+        [
+            {"descricao": "Dotação Atualizada","permiteEdicaoManual": false,"coluna": "total_creditos","natureza": "D"},
+            {"descricao": "Despesas Empenhadas","permiteEdicaoManual": false,"coluna": "empenhado_liquido_acumulado","natureza": "C"},
+            {"descricao": "Despesas Liquidadas","permiteEdicaoManual": false,"coluna": "liquidado_acumulado","natureza": "C"},
+            {"descricao": "Despesas Pagas","permiteEdicaoManual": false,"coluna": "pago_acumulado","natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados","permiteEdicaoManual": false,"coluna": "a_liquidar","natureza": "C"}
+        ]
+    }
+]

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -145,7 +145,7 @@ if (isset($chave_rh109_sequencial) && !DBNumber::isInteger($chave_rh109_sequenci
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script type="text/javascript">
@@ -155,7 +155,7 @@ if(!isset($pesquisa_chave)){
       return true;
     }
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

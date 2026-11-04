@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
-<? if(!isset($HTTP_POST_VARS["consultar"])) { ?>
+<?php if(!isset($HTTP_POST_VARS["consultar"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360">&nbsp;</td>
@@ -122,7 +122,7 @@ input {
           <input name="data_mes" type="text" id="Idata_mes" onkeyUp="js_digitadata(this.name)" value="<?=@$data_mes?>" size="2" maxlength="2">
           / 
           <input name="data_ano" type="text" id="Idata_ano" value="<?=@$data_ano?>" size="4" maxlength="4">
-          <input name="data_nula" type="checkbox" id="data_nula" value="1" onClick="js_dataNula()" <? echo @$data_nula == "1"?"checked":"" ?>>
+          <input name="data_nula" type="checkbox" id="data_nula" value="1" onClick="js_dataNula()" <?php echo @$data_nula == "1"?"checked":"" ?>>
           datas nulas.</strong></td>
       </tr>
       <tr> 
@@ -136,7 +136,7 @@ input {
   </form>
   <iframe name="consulta" src="pre3_solicitantigas002.php" width="770" height="200"></iframe>
   </center>
-        <?
+        <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </td>
@@ -145,8 +145,8 @@ input {
         </td>
   </tr>
 </table>
-<? } else { ?>
-<?
+<?php } else { ?>
+<?php
 db_postmemory($HTTP_POST_VARS);
 
 $query = "SELECT 
@@ -205,6 +205,6 @@ else
   db_browse($query,'',10,$offset,"1&usr_nome=".@$usr_nome."&usr_login=".@$usr_login."&data_dia=".@$data_dia."&data_mes=".@$data_mes."&data_ano=".@$data_ano."&cgccpf=".@$cgccpf."&numcgm=".@$numcgm."&endereco=".@$endereco);
 */
 ?>
-<? } ?>
+<?php } ?>
 </body>
 </html>

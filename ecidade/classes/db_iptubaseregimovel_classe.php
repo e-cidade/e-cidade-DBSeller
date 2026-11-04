@@ -57,14 +57,14 @@ class cl_iptubaseregimovel {
                  j04_quadraregimo = varchar(20) = Quadra do registro de imóveis 
                  j04_loteregimo = varchar(20) = Lote do registro de imóveis 
                  ";
-   //funcao construtor da classe 
-   function cl_iptubaseregimovel() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptubaseregimovel"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_iptubaseregimovel {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j04_sequencial = ($this->j04_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j04_sequencial"]:$this->j04_sequencial);
        $this->j04_setorregimovel = ($this->j04_setorregimovel == ""?@$GLOBALS["HTTP_POST_VARS"]["j04_setorregimovel"]:$this->j04_setorregimovel);
@@ -86,7 +86,7 @@ class cl_iptubaseregimovel {
      }
    }
    // funcao para inclusao
-   function incluir ($j04_sequencial){ 
+   public function incluir ($j04_sequencial){
       $this->atualizacampos();
      if($this->j04_setorregimovel == null ){ 
        $this->erro_sql = " Campo Registro de Imóveis nao Informado.";
@@ -194,7 +194,7 @@ class cl_iptubaseregimovel {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j04_sequencial=null) { 
+   public function alterar ($j04_sequencial=null) {
       $this->atualizacampos();
      $sql = " update iptubaseregimovel set ";
      $virgula = "";
@@ -303,11 +303,11 @@ class cl_iptubaseregimovel {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j04_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j04_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j04_sequencial));
      }else{ 
@@ -369,11 +369,11 @@ class cl_iptubaseregimovel {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -395,7 +395,7 @@ class cl_iptubaseregimovel {
       }
      return $result;
    }
-   function sql_query ( $j04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -432,7 +432,7 @@ class cl_iptubaseregimovel {
      }
      return $sql;
   }
-   function sql_query_file ( $j04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

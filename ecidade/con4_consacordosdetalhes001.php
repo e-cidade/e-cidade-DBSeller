@@ -46,7 +46,7 @@ $oGet = db_utils::postMemory($_GET);
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js,
              classes/infoLancamentoContabil.classe.js,messageboard.widget.js, widgets/DBHint.widget.js");
   db_app::load("estilos.css, grid.style.css,tab.style.css");
-?>
+    ?>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_grvDetalhes();">
@@ -121,16 +121,36 @@ function js_retornoCompletaPesquisa(oAjax) {
           function (oDado, iInd) {
 
             switch(oRetorno.detalhe) {
+              case "execucoes":
+
+              var aLinha = new Array();
+                  aLinha[0]  = oDado.ordem;
+                  aLinha[1]  = oDado.descricao.urlDecode();
+                  aLinha[2]  = oDado.observacao.urlDecode().substr(0,21)+'...';
+                  aLinha[3]  = js_formatar(oDado.data_inicial, 'd');
+                  aLinha[4]  = js_formatar(oDado.data_final, 'd');
+                  aLinha[5]  = oDado.unidade;
+                  aLinha[6]  = oDado.quantidade;
+                  aLinha[7]  = js_formatar(oDado.valor, 'f');
+                  aLinha[8]  = '<input type="button" value="Emitir" onclick="emiteRelatorioExecucao('+oDado.codigo+')">';
+                  oGrvDetalhes.addRow(aLinha);
+
+                  var oDadosHint           = new Object();
+                  oDadosHint.idLinha   = oGrvDetalhes.aRows[iInd].sId;
+                  oDadosHint.sText     = (oDado.observacao.urlDecode() === ""?"Sem Observações":oDado.observacao.urlDecode());
+                  aDadosHintGrid.push(oDadosHint);
+                  
+              break;
 
               case 'licitacoes':
 
                 var aRow = new Array();
 
                 aRow[0] = "<b><a href='#' onclick='parent.js_consultaLicitacao("+oDado.iCodigoLicitacao+")' title='Consultar Licitacao'>" + oDado.iCodigoLicitacao + "</a></b>";
-                aRow[1] = decodeURIComponent(oDado.sObjetoLicitacao.replace(/\+/g, ""));
-                aRow[2] = decodeURIComponent(oDado.sLocalLicitacao.replace(/\+/g, ""));
+                aRow[1] = oDado.sObjetoLicitacao.replace(/\+/g, "");
+                aRow[2] = oDado.sLocalLicitacao.replace(/\+/g, "");
                 aRow[3] = js_formatar(oDado.dtCriacaoLicitacao, "d");
-                aRow[4] = oDado.iModalidadeLicitacao + " - " + decodeURIComponent(oDado.sModalidadeLicitacao.replace(/\+/g, ""));
+                aRow[4] = oDado.iModalidadeLicitacao + " - " + oDado.sModalidadeLicitacao.replace(/\+/g, "");
 
                 oGrvDetalhes.addRow(aRow);
 
@@ -155,9 +175,9 @@ function js_retornoCompletaPesquisa(oAjax) {
                 var aRow = new Array();
 
                 aRow[0] = "<b><a href='#' onclick='parent.js_consultaProcessoCompras(" + oDado.iCodigoProcesso + ")' title='Consultar Empenho'>" + oDado.iCodigoProcesso + "</a></b>";
-                aRow[1] = decodeURIComponent(oDado.sResumoProcesso.replace(/\+/g, ""));
+                aRow[1] = oDado.sResumoProcesso.replace(/\+/g, "");
                 aRow[2] = oDado.dtEmissaoProcesso;
-                aRow[3] = oDado.iCodigoDepartamento + decodeURIComponent(oDado.sDescricaoDepartamento.replace(/\+/g, ""));
+                aRow[3] = oDado.iCodigoDepartamento + oDado.sDescricaoDepartamento.replace(/\+/g, "");
 
                 oGrvDetalhes.addRow(aRow);
 
@@ -174,12 +194,12 @@ function js_retornoCompletaPesquisa(oAjax) {
                   aRow[2] = oDado.tipo == '' ? '1 - Inclusão' : oDado.tipo+' - '+oDado.aditamento.urlDecode();
                   aRow[3] = oDado.descricao.urlDecode();
                   aRow[4] = oDado.quantidade;
-                  aRow[5] = oDado.unidade;
+                  aRow[5] = oDado.unidade.urlDecode();
                   aRow[6] = oDado.vlrUnit;
                   aRow[7] = oDado.vlrTotal;
                   oGrvDetalhes.addRow(aRow);
 
-                  var sTextEvent  = "<b>Unidade: </b>"+oDado.unidademed+"</br>";
+                  var sTextEvent  = "<b>Unidade: </b>"+oDado.unidademed.urlDecode()+"</br>";
                       sTextEvent += "<b>Elemento: </b>"+oDado.elemento+"</br>";
 
                   if (oDado.observacao !== '') {
@@ -277,7 +297,7 @@ function js_retornoCompletaPesquisa(oAjax) {
 
         oGrvDetalhes.renderRows();
 
-        if (oRetorno.detalhe === 'itens') {
+        if (oRetorno.detalhe === 'itens' || oRetorno.detalhe === 'execucoes') {
 
           aDadosHintGrid.each(function(oHint, id) {
 
@@ -308,6 +328,18 @@ function js_showInfoItem(iLinha) {
 function js_grvDetalhes() {
 
   switch (detalhe) {
+    case 'execucoes':
+    oGrvDetalhes = new DBGrid('detalhes');
+    oGrvDetalhes.nameInstance = 'oGrvDetalhes';
+    oGrvDetalhes.setCellWidth(new Array('5%', '32%', '15%', '8%', '8%', '8%', '8%', '10%', '8%'));
+    oGrvDetalhes.setCellAlign(new Array("center", "left", "left", "center", "center", "center", "right", "right", "center"));
+    oGrvDetalhes.setHeader(new Array("Ordem","Descrição","Observação","Data Inicial", "Data Final", "Unidade","Quantidade","Valor","Relatório"));
+    
+    oGrvDetalhes.setHeight(230);
+    oGrvDetalhes.show($('grvDetalhes'));
+    oGrvDetalhes.clearAll(true);
+    oGrvDetalhes.renderRows();
+    break;              
 
     case 'itens':
 
@@ -449,6 +481,14 @@ function js_grvDetalhes() {
   }
 
   js_completaPesquisa(ac16_sequencial, detalhe);
+}
+
+function emiteRelatorioExecucao(iCodigoExecucao) {
+  window.open(
+      'aco2_acordoitemexecucao002.php?acordoitemexecucao='+iCodigoExecucao,
+      '',
+      'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
+  );
 }
 
 function js_documentoDownload(iCodigoDocumento) {

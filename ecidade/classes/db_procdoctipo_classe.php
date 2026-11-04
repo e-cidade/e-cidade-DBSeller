@@ -52,13 +52,13 @@ class cl_procdoctipo {
                  p57_ouvidoriaobrigatorio = boolean = Obrigatório( Sistema Externo ) 
                  ";
    //funcao construtor da classe 
-   function cl_procdoctipo() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoctipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_procdoctipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p57_codigo = ($this->p57_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["p57_codigo"]:$this->p57_codigo);
        $this->p57_coddoc = ($this->p57_coddoc == ""?@$GLOBALS["HTTP_POST_VARS"]["p57_coddoc"]:$this->p57_coddoc);
@@ -79,7 +79,7 @@ class cl_procdoctipo {
      }
    }
    // funcao para inclusao
-   function incluir ($p57_codigo,$p57_coddoc){ 
+   public function incluir ($p57_codigo,$p57_coddoc){ 
       $this->atualizacampos();
        $this->p57_codigo = $p57_codigo; 
        $this->p57_coddoc = $p57_coddoc; 
@@ -148,7 +148,7 @@ class cl_procdoctipo {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($p57_codigo=null,$p57_coddoc=null) { 
+   public function alterar ($p57_codigo=null,$p57_coddoc=null) { 
       $this->atualizacampos();
      $sql = " update procdoctipo set ";
      $virgula = "";
@@ -234,7 +234,7 @@ class cl_procdoctipo {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($p57_codigo=null,$p57_coddoc=null,$dbwhere=null) { 
+   public function excluir ($p57_codigo=null,$p57_coddoc=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($p57_codigo,$p57_coddoc));
      }else{ 
@@ -304,7 +304,7 @@ class cl_procdoctipo {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -326,7 +326,7 @@ class cl_procdoctipo {
       }
      return $result;
    }
-   function sql_query ( $p57_codigo=null,$p57_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $p57_codigo=null,$p57_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -369,7 +369,7 @@ class cl_procdoctipo {
      }
      return $sql;
   }
-   function sql_query_file ( $p57_codigo=null,$p57_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $p57_codigo=null,$p57_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

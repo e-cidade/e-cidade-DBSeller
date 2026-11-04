@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -73,6 +73,11 @@ $sProfissional = $oGet->sNomeProfissional;
         <legend>Solicitação e Avaliação de Exames</legend>
         <table>
           <tr>
+              <td colspan="2">
+                  <div style="padding-left: 395px" id="linhaDaIdadeCompleta"></div>
+              </td>
+          </tr>
+          <tr>
             <td nowrap="nowrap" class="bold"><?=$Lsd24_i_codigo?></td>
             <td nowrap="nowrap" >
               <?php
@@ -101,10 +106,10 @@ $sProfissional = $oGet->sNomeProfissional;
 
         <tr>
           <td nowrap >
-            <?db_ancora ( "Exames:", "js_pesquisala19_i_exame(true);", 1 );?>
+            <?php db_ancora ( "Exames:", "js_pesquisala19_i_exame(true);", 1 );?>
           </td>
           <td>
-            <?
+            <?php
               db_input ( 'iCodigoExame', 10, "", true, 'hidden', 1, "onchange='js_pesquisala19_i_exame(false);'" );
               db_input ( 'iSigla', 10, "", true, 'text', 3, "" );
               db_input ( 'sNomeExame', 62, "", true, 'text', 1, '' );
@@ -117,7 +122,7 @@ $sProfissional = $oGet->sNomeProfissional;
         <tr>
           <td><strong>Solicitado:</strong></td>
           <td>
-          <?
+          <?php
               $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
               db_select("lSolicitado", $aOpcoes, true, 1)
             ?>
@@ -128,7 +133,7 @@ $sProfissional = $oGet->sNomeProfissional;
         <tr>
           <td><strong>Avaliado:</strong></td>
           <td>
-            <?
+            <?php
               $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
               db_select("lAvaliado", $aOpcoes, true, 1)
             ?>
@@ -384,6 +389,21 @@ oAutoComplete.setCallBackFunction(function(id,label,data) {
 
 });
 
+function retornaIdadePaciente(oRetorno, lErro) {
+    let idadeCompleta = oRetorno.oCgs.sIdadeCompleta.urlDecode();
+    $('linhaDaIdadeCompleta').innerHTML  = `<p style="display: inline-block">Idade: <span style="color: red;">${idadeCompleta}</span></p>`;
+}
+
+function existeCgsUnd() {
+    let cgsUnd = document.getElementById('numCgs').value;
+
+    if (cgsUnd !== '') {
+        let diretrizes    = {'sExecucao': 'buscarDadosCgs','iCgs': cgsUnd}
+        let oAjaxRequest  = new AjaxRequest('sau4_cgs.RPC.php', diretrizes, retornaIdadePaciente);
+        oAjaxRequest.execute();
+    }
+}
+existeCgsUnd();
 
 </script>
 </html>

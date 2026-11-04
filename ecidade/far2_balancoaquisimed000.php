@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $ano          = date("Y");
                 <b>Período :</b>
               </td>
               <td nowrap>
-	            <?
+	            <?php
                   $x = array("0"=>"Escolha um Período","t"=>"Trimestre","a"=>"Anual");
                   db_select("escolha", $x, "", "","Onchange='js_escolha(this.value)'", "", "");
 	            ?>
@@ -112,7 +112,7 @@ $ano          = date("Y");
 	  <br>
 	  <input  name="emite2" id="emite2" type="button" value="Imprimir" onclick="js_emite();" ></center>
     </center>  
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>

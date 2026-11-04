@@ -28,33 +28,33 @@
 //CLASSE DA ENTIDADE rechumanoescola
 class cl_rechumanoescola {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed75_i_codigo = 0;
-   var $ed75_i_escola = 0;
-   var $ed75_i_rechumano = 0;
-   var $ed75_d_ingresso_dia = null;
-   var $ed75_d_ingresso_mes = null;
-   var $ed75_d_ingresso_ano = null;
-   var $ed75_d_ingresso = null;
-   var $ed75_c_simultaneo = null;
-   var $ed75_i_saidaescola_dia = null;
-   var $ed75_i_saidaescola_mes = null;
-   var $ed75_i_saidaescola_ano = null;
-   var $ed75_i_saidaescola = null;
+   public $ed75_i_codigo = 0;
+   public $ed75_i_escola = 0;
+   public $ed75_i_rechumano = 0;
+   public $ed75_d_ingresso_dia = null;
+   public $ed75_d_ingresso_mes = null;
+   public $ed75_d_ingresso_ano = null;
+   public $ed75_d_ingresso = null;
+   public $ed75_c_simultaneo = null;
+   public $ed75_i_saidaescola_dia = null;
+   public $ed75_i_saidaescola_mes = null;
+   public $ed75_i_saidaescola_ano = null;
+   public $ed75_i_saidaescola = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed75_i_codigo = int8 = Código
                  ed75_i_escola = int8 = Escola
                  ed75_i_rechumano = int8 = Matrícula
@@ -63,13 +63,13 @@ class cl_rechumanoescola {
                  ed75_i_saidaescola = date = Data de Saída
                  ";
    //funcao construtor da classe
-   function cl_rechumanoescola() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rechumanoescola");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_rechumanoescola {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed75_i_codigo = ($this->ed75_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed75_i_codigo"]:$this->ed75_i_codigo);
        $this->ed75_i_escola = ($this->ed75_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed75_i_escola"]:$this->ed75_i_escola);
@@ -105,7 +105,7 @@ class cl_rechumanoescola {
      }
    }
    // funcao para inclusao
-   function incluir ($ed75_i_codigo){
+   public function incluir ($ed75_i_codigo){
       $this->atualizacampos();
      if($this->ed75_i_escola == null ){
        $this->erro_sql = " Campo Escola não informado.";
@@ -509,6 +509,7 @@ class cl_rechumanoescola {
      $sql .= "      left join cgm as cgmrh on  cgmrh.z01_numcgm = rhpessoal.rh01_numcgm";
      $sql .= "      left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo";
      $sql .= "      left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
+
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($ed75_i_codigo)) {
@@ -543,13 +544,20 @@ class cl_rechumanoescola {
      return $sql;
   }
 
+    public function sql_query_atendimento_simultaneo ($campos = "*", $dbwhere = "") {
+        $sql = "SELECT {$campos}";
+        $sql .= " FROM rechumanoescola";
+        $sql .= " WHERE {$dbwhere}";
 
-  function sql_query_relacao_trabalho ( $ed75_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+        return $sql;
+    }
+
+  public function sql_query_relacao_trabalho ( $ed75_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sSql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -591,7 +599,7 @@ class cl_rechumanoescola {
     if ($ordem != null) {
 
       $sSql      .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

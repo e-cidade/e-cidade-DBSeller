@@ -122,7 +122,7 @@ if(isset($incluir)){
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmagendamento003.php"));
         ?>
     </center>
@@ -148,7 +148,7 @@ if(isset($incluir)||isset($excluir) ){
 			parent.document.getElementById('framecalendario').contentDocument.location.reload(true);
 			parent.document.getElementById('frameagendados').contentDocument.location.reload(true);
           	parent.db_iframe_agendamento.hide();
-    </script><?
+    </script><?php
   }
 }
 ?>

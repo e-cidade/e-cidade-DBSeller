@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,10 +66,10 @@ function js_selecionaselect(){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?if(!isset($emite2)){?>
+<?php if(!isset($emite2)){?>
 <table align="center">
   <form name="form1" method="post" action="">
-  <?
+  <?php
   db_input('arquivoimprime',70,0,true,'hidden',1,"");
   if(!isset($anofolha) || (isset($anofolha) && trim($anofolha) == "")){
     $anofolha = db_anofolha();
@@ -140,7 +140,7 @@ function js_selecionaselect(){
 	      <b>Linha 1:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem1',70,0,true,'text',1,"")
               ?>
             </td>
@@ -150,7 +150,7 @@ function js_selecionaselect(){
 	      <b>Linha 2:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem2',70,0,true,'text',1,"")
               ?>
             </td>
@@ -160,7 +160,7 @@ function js_selecionaselect(){
 	      <b>Linha 3:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem3',70,0,true,'text',1,"")
               ?>
             </td>
@@ -181,7 +181,7 @@ function js_selecionaselect(){
   <form name="form1">
   <tr>
     <td>
-    <?
+    <?php
     db_criatermometro("termometro");
     db_input('arquivoimprime',70,0,true,'hidden',1,"");
     ?>
@@ -189,7 +189,7 @@ function js_selecionaselect(){
   </tr>
   </form>
 </table>
-<?
+<?php
 }
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
@@ -203,7 +203,7 @@ function js_anomes(){
   }
 }
 </script>
-<?
+<?php
 //die($arquivoimprime);
 if(isset($emite2)){
   db_sel_instit();

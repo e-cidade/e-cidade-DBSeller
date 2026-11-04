@@ -141,7 +141,7 @@ class Favorecido extends ContaBancaria{
     try{
       
       db_inicio_transacao();
-      $oDaoFavorecido->excluir(null,"v86_numcgm = ".$this->getNumCgm());
+      $oDaoFavorecido->excluir(null,"v86_numcgm = ".$this->getNumCgm()." and v86_contabancaria = ".$this->getNumeroConta());  
       
       if($oDaoFavorecido->erro_status == "0"){
         

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,12 +121,12 @@ function js_mostrabase011(chave1,chave2){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -134,13 +134,13 @@ function js_mostrabase011(chave1,chave2){
       </tr>
       <tr>
         <td nowrap align="right" title="Digite a base desejada ou deixe em branco para todas." ><b>
-          <?
+          <?php
           db_ancora('Base :',"js_pesquisabase01(true)",@$db_opcao);
           ?>
 	      &nbsp;</b>
         </td>
         <td nowrap> 
-          <?
+          <?php
           db_input('base01',4,@$base01,true,'text',@$db_opcao,"onchange='js_pesquisabase01(false)'");
           db_input("r08_descr",50,@$Ir08_descr,true,"text",3,"","descr_base01");
           ?>
@@ -150,7 +150,7 @@ function js_mostrabase011(chave1,chave2){
         <td align="right" ><strong>Tipo :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $arr_tipo = array("r"=>"Rubricas Marcadas na Base","b"=>"Base em Fórmulas");
             db_select('tipo',$arr_tipo,true,4,"");
 	        ?>
@@ -160,7 +160,7 @@ function js_mostrabase011(chave1,chave2){
         <td align="right" ><strong>Imprime Rubricas :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $arr_ativos = array("t"=>"Ativas","f"=>"Inativas","i"=>"Todas");
             db_select('ativos',$arr_ativos,true,4,"");
 	        ?>
@@ -178,7 +178,7 @@ function js_mostrabase011(chave1,chave2){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

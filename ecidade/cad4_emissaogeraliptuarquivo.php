@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -101,11 +101,11 @@ $oParams = \db_utils::postMemory($_REQUEST);
       $oParams->tipo,
       ($oParams->opVenc == 1),
       function ($i, $tot) {
-          echo "<script>
-                    oProgressBar.setTotal({$tot}).setLinha({$i}).calculaPercentual();
-                </script>";
+          //echo "<script>
+          //          oProgressBar.setTotal({$tot}).setLinha({$i}).calculaPercentual();
+          //      </script>";
 
-          echo str_repeat(' ', 1024 * 64);
+          //echo str_repeat(' ', 1024 * 64);
           flush();
       },
       ($oParams->gerarPix == 1)

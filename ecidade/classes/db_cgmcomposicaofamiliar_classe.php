@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE cgmcomposicaofamiliar
-class cl_cgmcomposicaofamiliar { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $z15_sequencial = 0; 
-   var $z15_cgmfamilia = 0; 
-   var $z15_cgmtipofamiliar = 0; 
-   var $z15_numcgm = 0; 
-   var $z15_datainicial = 0; 
-   var $z15_datafinal_dia = null; 
-   var $z15_datafinal_mes = null; 
-   var $z15_datafinal_ano = null; 
-   var $z15_datafinal = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cgmcomposicaofamiliar {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $z15_sequencial = 0;
+   var $z15_cgmfamilia = 0;
+   var $z15_cgmtipofamiliar = 0;
+   var $z15_numcgm = 0;
+   var $z15_datainicial = 0;
+   var $z15_datafinal_dia = null;
+   var $z15_datafinal_mes = null;
+   var $z15_datafinal_ano = null;
+   var $z15_datafinal = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 z15_sequencial = int4 = Sequencial 
-                 z15_cgmfamilia = int4 = Familia 
-                 z15_cgmtipofamiliar = int4 = Tipo de Familiar 
-                 z15_numcgm = int4 = Cgm 
-                 z15_datainicial = int4 = Data Inicial 
-                 z15_datafinal = date = Data Final 
+                 z15_sequencial = int4 = Sequencial
+                 z15_cgmfamilia = int4 = Familia
+                 z15_cgmtipofamiliar = int4 = Tipo de Familiar
+                 z15_numcgm = int4 = Cgm
+                 z15_datainicial = int4 = Data Inicial
+                 z15_datafinal = date = Data Final
                  ";
-   //funcao construtor da classe 
-   function cl_cgmcomposicaofamiliar() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cgmcomposicaofamiliar"); 
+     $this->rotulo = new rotulo("cgmcomposicaofamiliar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_cgmcomposicaofamiliar {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z15_sequencial = ($this->z15_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["z15_sequencial"]:$this->z15_sequencial);
        $this->z15_cgmfamilia = ($this->z15_cgmfamilia == ""?@$GLOBALS["HTTP_POST_VARS"]["z15_cgmfamilia"]:$this->z15_cgmfamilia);
@@ -96,9 +96,9 @@ class cl_cgmcomposicaofamiliar {
      }
    }
    // funcao para inclusao
-   function incluir ($z15_sequencial){ 
+   public function incluir ($z15_sequencial){
       $this->atualizacampos();
-     if($this->z15_cgmfamilia == null ){ 
+     if($this->z15_cgmfamilia == null ){
        $this->erro_sql = " Campo Familia nao Informado.";
        $this->erro_campo = "z15_cgmfamilia";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_cgmcomposicaofamiliar {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z15_cgmtipofamiliar == null ){ 
+     if($this->z15_cgmtipofamiliar == null ){
        $this->erro_sql = " Campo Tipo de Familiar nao Informado.";
        $this->erro_campo = "z15_cgmtipofamiliar";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_cgmcomposicaofamiliar {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z15_numcgm == null ){ 
+     if($this->z15_numcgm == null ){
        $this->erro_sql = " Campo Cgm nao Informado.";
        $this->erro_campo = "z15_numcgm";
        $this->erro_banco = "";
@@ -125,23 +125,23 @@ class cl_cgmcomposicaofamiliar {
        $this->erro_status = "0";
        return false;
      }
-     if($this->z15_datainicial == null ){ 
+     if($this->z15_datainicial == null ){
        $this->z15_datainicial = "null";
      }
-     if($this->z15_datafinal == null ){ 
+     if($this->z15_datafinal == null ){
        $this->z15_datafinal = "null";
      }
      if($z15_sequencial == "" || $z15_sequencial == null ){
-       $result = db_query("select nextval('cgmcomposicaofamiliar_z15_sequencial_seq')"); 
+       $result = db_query("select nextval('cgmcomposicaofamiliar_z15_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmcomposicaofamiliar_z15_sequencial_seq do campo: z15_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cgmcomposicaofamiliar_z15_sequencial_seq do campo: z15_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->z15_sequencial = pg_result($result,0,0); 
+       $this->z15_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cgmcomposicaofamiliar_z15_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $z15_sequencial)){
@@ -152,10 +152,10 @@ class cl_cgmcomposicaofamiliar {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->z15_sequencial = $z15_sequencial; 
+         $this->z15_sequencial = $z15_sequencial;
        }
      }
-     if(($this->z15_sequencial == null) || ($this->z15_sequencial == "") ){ 
+     if(($this->z15_sequencial == null) || ($this->z15_sequencial == "") ){
        $this->erro_sql = " Campo z15_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,23 +164,23 @@ class cl_cgmcomposicaofamiliar {
        return false;
      }
      $sql = "insert into cgmcomposicaofamiliar(
-                                       z15_sequencial 
-                                      ,z15_cgmfamilia 
-                                      ,z15_cgmtipofamiliar 
-                                      ,z15_numcgm 
-                                      ,z15_datainicial 
-                                      ,z15_datafinal 
+                                       z15_sequencial
+                                      ,z15_cgmfamilia
+                                      ,z15_cgmtipofamiliar
+                                      ,z15_numcgm
+                                      ,z15_datainicial
+                                      ,z15_datafinal
                        )
                 values (
-                                $this->z15_sequencial 
-                               ,$this->z15_cgmfamilia 
-                               ,$this->z15_cgmtipofamiliar 
-                               ,$this->z15_numcgm 
-                               ,$this->z15_datainicial 
-                               ,".($this->z15_datafinal == "null" || $this->z15_datafinal == ""?"null":"'".$this->z15_datafinal."'")." 
+                                $this->z15_sequencial
+                               ,$this->z15_cgmfamilia
+                               ,$this->z15_cgmtipofamiliar
+                               ,$this->z15_numcgm
+                               ,$this->z15_datainicial
+                               ,".($this->z15_datafinal == "null" || $this->z15_datafinal == ""?"null":"'".$this->z15_datafinal."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Composição Familiar do CGM ($this->z15_sequencial) nao Incluído. Inclusao Abortada.";
@@ -217,16 +217,16 @@ class cl_cgmcomposicaofamiliar {
        $resac = db_query("insert into db_acount values($acount,3012,17045,'','".AddSlashes(pg_result($resaco,0,'z15_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($z15_sequencial=null) { 
+   public function alterar ($z15_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cgmcomposicaofamiliar set ";
      $virgula = "";
-     if(trim($this->z15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_sequencial"])){ 
+     if(trim($this->z15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_sequencial"])){
        $sql  .= $virgula." z15_sequencial = $this->z15_sequencial ";
        $virgula = ",";
-       if(trim($this->z15_sequencial) == null ){ 
+       if(trim($this->z15_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "z15_sequencial";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_cgmcomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->z15_cgmfamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_cgmfamilia"])){ 
+     if(trim($this->z15_cgmfamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_cgmfamilia"])){
        $sql  .= $virgula." z15_cgmfamilia = $this->z15_cgmfamilia ";
        $virgula = ",";
-       if(trim($this->z15_cgmfamilia) == null ){ 
+       if(trim($this->z15_cgmfamilia) == null ){
          $this->erro_sql = " Campo Familia nao Informado.";
          $this->erro_campo = "z15_cgmfamilia";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_cgmcomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->z15_cgmtipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_cgmtipofamiliar"])){ 
+     if(trim($this->z15_cgmtipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_cgmtipofamiliar"])){
        $sql  .= $virgula." z15_cgmtipofamiliar = $this->z15_cgmtipofamiliar ";
        $virgula = ",";
-       if(trim($this->z15_cgmtipofamiliar) == null ){ 
+       if(trim($this->z15_cgmtipofamiliar) == null ){
          $this->erro_sql = " Campo Tipo de Familiar nao Informado.";
          $this->erro_campo = "z15_cgmtipofamiliar";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_cgmcomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->z15_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_numcgm"])){ 
+     if(trim($this->z15_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_numcgm"])){
        $sql  .= $virgula." z15_numcgm = $this->z15_numcgm ";
        $virgula = ",";
-       if(trim($this->z15_numcgm) == null ){ 
+       if(trim($this->z15_numcgm) == null ){
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "z15_numcgm";
          $this->erro_banco = "";
@@ -275,18 +275,18 @@ class cl_cgmcomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->z15_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_datainicial"])){ 
-        if(trim($this->z15_datainicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["z15_datainicial"])){ 
-           $this->z15_datainicial = "0" ; 
-        } 
+     if(trim($this->z15_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_datainicial"])){
+        if(trim($this->z15_datainicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["z15_datainicial"])){
+           $this->z15_datainicial = "0" ;
+        }
        $sql  .= $virgula." z15_datainicial = $this->z15_datainicial ";
        $virgula = ",";
      }
-     if(trim($this->z15_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"] !="") ){ 
+     if(trim($this->z15_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"] !="") ){
        $sql  .= $virgula." z15_datafinal = '$this->z15_datafinal' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["z15_datafinal_dia"])){
          $sql  .= $virgula." z15_datafinal = null ";
          $virgula = ",";
        }
@@ -317,7 +317,7 @@ class cl_cgmcomposicaofamiliar {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Composição Familiar do CGM nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->z15_sequencial;
@@ -345,14 +345,14 @@ class cl_cgmcomposicaofamiliar {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($z15_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($z15_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z15_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -383,7 +383,7 @@ class cl_cgmcomposicaofamiliar {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Composição Familiar do CGM nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$z15_sequencial;
@@ -411,11 +411,11 @@ class cl_cgmcomposicaofamiliar {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -437,11 +437,11 @@ class cl_cgmcomposicaofamiliar {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $z15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $z15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,15 +457,15 @@ class cl_cgmcomposicaofamiliar {
      $sql2 = "";
      if($dbwhere==""){
        if($z15_sequencial!=null ){
-         $sql2 .= " where cgmcomposicaofamiliar.z15_sequencial = $z15_sequencial "; 
-       } 
+         $sql2 .= " where cgmcomposicaofamiliar.z15_sequencial = $z15_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,11 +474,11 @@ class cl_cgmcomposicaofamiliar {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $z15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $z15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,15 +491,15 @@ class cl_cgmcomposicaofamiliar {
      $sql2 = "";
      if($dbwhere==""){
        if($z15_sequencial!=null ){
-         $sql2 .= " where cgmcomposicaofamiliar.z15_sequencial = $z15_sequencial "; 
-       } 
+         $sql2 .= " where cgmcomposicaofamiliar.z15_sequencial = $z15_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -9,6 +9,14 @@ class MaterialEstoqueItem extends Model
     protected $table = 'material.matestoqueitem';
     protected $primaryKey = 'm71_codlanc';
     public $timestamps = false;
+    protected $fillable = [
+        'm71_codlanc',
+        'm71_codmatestoque',
+        'm71_data',
+        'm71_valor',
+        'm71_quant',
+        'm71_quantatend'
+    ];
 
     public function estoque()
     {

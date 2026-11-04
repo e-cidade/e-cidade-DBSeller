@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -108,7 +108,7 @@ function js_relatorio(){
       <div align="center">  
        
        <label id="label_iSituacao" for="iSituacao"><strong>Inscrições:</stong></label>
-       <?
+       <?php
          $selSituacao = array("T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas");
          db_select('sSituacao', $selSituacao, true, 1, "style='width: 150'");
        ?>  
@@ -123,7 +123,7 @@ function js_relatorio(){
 	    <th class="borda" align="center" style="font-size:12px" nowrap><?=$Lq86_numcgm?></th>
             <th class="borda" align="left" style="font-size:12px" nowrap><?=$Lz01_nome?></th>
           </tr>
-	  <?
+	  <?php
 	    $cor = '#E4F471';
             for($i = 0;$i < $cl_cadescrito->numrows;$i++) {
               db_fieldsmemory($result,$i);
@@ -141,13 +141,13 @@ function js_relatorio(){
             <td height="20px" class="borda" style="font-size:11px" align="center" nowrap><?=$q86_numcgm?></td>
 	    <td height="20px" class="borda" style="font-size:11px" align="left" nowrap><?=$z01_nome?></td>
           </tr>
-	  <?
+	  <?php
           }
 	  ?>
         </table>   
       </form>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

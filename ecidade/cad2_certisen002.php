@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Configuracao\DocumentosTemplate\Reports\Cadastro\CertidaoIsencaoIPTU;
+
 require_once(modification("fpdf151/impcarne.php"));
 require_once(modification("std/db_stdClass.php"));
 require_once(modification("libs/db_stdlib.php"));
@@ -39,8 +41,6 @@ require_once(modification("dbagata/classes/core/AgataAPI.class"));
 require_once(modification("model/documentoTemplate.model.php"));
 require_once(modification("model/cadastro/CertidaoIsencaoPdf.php"));
 
-$dotenv = new \Dotenv\Dotenv('./');
-$dotenv->load();
 
 db_postmemory($HTTP_SERVER_VARS);
 
@@ -51,22 +51,19 @@ $iCodigoIsencao = $oGet->codigoIsencao;
 $cliptuisen = new cl_iptuisen;
 $clcfiptu   = new cl_cfiptu;
 
-$rsCfIptu                    = $clcfiptu->sql_record($clcfiptu->sql_query_file(db_getsession("DB_anousu"), "j18_templatecertidaoisencao"));
-$j18_templatecertidaoisencao = db_utils::fieldsMemory($rsCfIptu, 0)->j18_templatecertidaoisencao;
-if ($j18_templatecertidaoisencao != "") {
-
-	$sDescrDoc        = date("YmdHis").db_getsession("DB_id_usuario");
-	$sNomeRelatorio   = "tmp/CertidaoIsencao{$sDescrDoc}.pdf";
-	$sCaminhoSalvoSxw = "tmp/CertidaoIsencao_{$sDescrDoc}_{$iMatricula}.sxw";
-
-	$sAgt = "cadastro/certidao_isencao.agt";
-
-	$aParam                  = array();
-  $aParam['$matricula']     = $iMatricula;
-	$aParam['$codigoisencao'] = $iCodigoIsencao;
-
-	db_stdClass::oo2pdf(44, $j18_templatecertidaoisencao, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);
-	exit;
+// Emissao Certidao PHPWord caso tenha template
+try {
+  $rsCfIptu = $clcfiptu->sql_record($clcfiptu->sql_query_file(db_getsession("DB_anousu"), "j18_templatecertidaoisencao"));
+  $iCodigoDocumento = db_utils::fieldsMemory($rsCfIptu, 0)->j18_templatecertidaoisencao;
+  if (!empty($iCodigoDocumento)) {
+    $certidaoIsencaoIPTU = new CertidaoIsencaoIPTU($iMatricula, $iCodigoIsencao, $iCodigoDocumento);
+    $certidaoIsencaoIPTU->configuraDadosVariaveis();
+    $pathDocumento = $certidaoIsencaoIPTU->processaTemplate();
+    db_redireciona($pathDocumento);
+  }
+} catch (\Exception $e) {
+  $sErroMsg = $e->getMessage();
+  db_redireciona("db_erros.php?fechar=true&db_erro={$sErroMsg}");
 }
 
 global $dia;
@@ -147,9 +144,9 @@ for($cont=0;$cont<$numrows;$cont++){
     // Assinatura Inspetor
   	$oPdf->isenassinatura2 = db_geratexto($db02_texto);
     if($db02_descr == "ASSINATURAS_CODIGOPHP") {
-      
+
       $oPdf->isenassinatura2 = $db02_texto;
-    }		
+    }
   }
   if($db04_ordem == 4){
     $oPdf->isenassinatura  = db_geratexto($db02_texto);		// Assinatura Secretario

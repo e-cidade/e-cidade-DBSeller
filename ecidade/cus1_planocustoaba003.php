@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ $clparcustos = new cl_parcustos();
           <tr>
             <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
               <center>
-                <?
+                <?php
 				  $clcriaabas->identifica = array("custoplano"=>"Plano de Custo","custoanaliticabens"=>"Bens");
 				  $clcriaabas->title      = array("custoplano"=>"Plano de Custo","custoanaliticabens"=>"Bens");
 				  $clcriaabas->src	      = array("custoplano"		  =>"cus1_custoplano003.php",
@@ -86,7 +86,7 @@ $clparcustos = new cl_parcustos();
           </tr>
         </table>
 		}
-      <?
+      <?php
 	    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
     </body>

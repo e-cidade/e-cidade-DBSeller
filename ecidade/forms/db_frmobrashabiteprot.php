@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,30 +37,30 @@ $clrotulo->label("p58_codproc");
   <tr>
     <td nowrap title="<?=@$Tob19_codhab?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Lob19_codhab,"js_pesquisaob19_codhab(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob19_codhab',10,$Iob19_codhab,true,'text',$db_opcao," onchange='js_pesquisaob19_codhab(false);'")
 ?>
-       <?
+       <?php
 db_input('ob09_habite',15,$Iob09_habite,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tob19_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lob19_codproc,"js_pesquisaob19_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob19_codproc',10,$Iob19_codproc,true,'text',$db_opcao," onchange='js_pesquisaob19_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrashabiteprot.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

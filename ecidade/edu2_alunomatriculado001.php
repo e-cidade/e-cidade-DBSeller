@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -64,7 +64,7 @@ $iModulo        = db_getsession("DB_modulo");
         <legend><strong>Relatório de Alunos Matriculados</strong></legend>
        <table border="0">
         <tr>
-         <?
+         <?php
            if ($iModulo == 7159) {
 
               echo '<td align="left">';
@@ -211,15 +211,15 @@ function js_etapa(calendario) {
 
   oParam.exec          = "PesquisaEtapa";
 
-  <? if ($iModulo != 7159) { ?>
+  <?php if ($iModulo != 7159) { ?>
 
     oParam.escola = <?=$iEscola?>
 
-  <? } else { ?>
+  <?php } else { ?>
 
     oParam.escola  =  $('escola').value;
 
-  <? } ?>
+  <?php } ?>
 
   oParam.calendario = calendario;
 
@@ -277,7 +277,7 @@ function js_liberaBotao(valor){
 
 </script>
 
-<?
+<?php
 
   if ($iModulo != 7159) {
 
@@ -287,7 +287,7 @@ function js_liberaBotao(valor){
   js_escola(<?=$iEscola?>);
 </script>
 
-<?
+<?php
 
   }
 

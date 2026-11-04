@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -44,7 +44,7 @@ $aux = new cl_arquivo_auxiliar;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 
 <script>
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -57,9 +57,9 @@ $aux = new cl_arquivo_auxiliar;
     <form name="form1" method="post" action="">
       <tr>
          <td align='right' ><b>  Ordem de compra &nbsp;</b></td>
-         <td ><b>Inicial:</b><?db_input('m51_codordem','5','',true,'text',1,'','m51_codordemINI')?><b>Final:</b><?db_input('m51_codordem','5','',true,'text',1,'','m51_codordemFIN')?>&nbsp;</td>
+         <td ><b>Inicial:</b><?php db_input('m51_codordem','5','',true,'text',1,'','m51_codordemINI')?><b>Final:</b><?php db_input('m51_codordem','5','',true,'text',1,'','m51_codordemFIN')?>&nbsp;</td>
       </tr>
-       <tr> 
+       <tr>
            <td colspan=2  align="center">
                 <strong>Opções:</strong>
                 <select name="ver">
@@ -69,7 +69,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Departamentos</strong>";
                  $aux->codigo = "coddepto"; //chave de retorno da func
@@ -94,8 +94,8 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
-	          db_inputdata('data1','','','',true,'text',1,"");   		          
+               <?php
+	          db_inputdata('data1','','','',true,'text',1,"");
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");
                ?>&nbsp;
@@ -107,13 +107,13 @@ $aux = new cl_arquivo_auxiliar;
 	   <tr>
              <td align="right"  title="Ordem por  Ordem de compra/Departamento/Cgm/Data" >
                <strong>Ordem :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php
 	       $tipo_ordem = array("a"=>"Ordem de Compra","b"=>"Departamento","c"=>"Cgm","d"=>"Data");
 	       db_select("ordem",$tipo_ordem,true,2); ?>
-        
+
                <td align="left"  title="Opções  Não Anuladas/Todas/Anuladas" >
                <strong>Opção de impressão :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php
 	       $tipo_opcao = array("b"=>"Não Anuladas","a"=>"Todas","c"=>"Anuladas");
 	       db_select("opcao",$tipo_opcao,true,2); ?>
             </td>
@@ -123,7 +123,7 @@ $aux = new cl_arquivo_auxiliar;
       </tr>
       <table   align = "center">
       <tr>
-        <td  align = "left"> 
+        <td  align = "left">
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_mandadados();" >
         </td>
            <td>

@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="remessa">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="codigoOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cpfGestor">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipoRemessa">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="3"/>
+            <xs:maxInclusive value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ano">
+        <xs:simpleType>
+          <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="2015"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dataCriacao" type="xs:date"/>
+      <xs:element name="sistemaGerador">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="anexo01" type="anexo01Tipo" maxOccurs="1"/>
+      <xs:element name="anexo02" type="anexo02Tipo" maxOccurs="1"/>
+      <xs:element name="anexo06" type="anexo06Tipo" maxOccurs="1"/>
+      <xs:element name="anexo07" type="anexo07Tipo" maxOccurs="1"/>
+      <xs:element name="anexo08" type="anexo08Tipo" maxOccurs="1"/>
+      <xs:element name="anexo09" type="anexo09Tipo" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:complexType name="anexo01Tipo">
+    <xs:sequence>
+      <xs:element name="receitaTributaria">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitadeContribuicoes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaPatrimonial">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaAgropecuaria">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaIndustrial">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitadeServicos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="transferenciasCorrentes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="outrasReceitasCorrentes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="deducaoRestituicoes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="deducaoTransferenciasFundeb">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="outrasDeducoes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="despesaPessoalEncargosSociais">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="despesaJurosEncargosDivida">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element> 
+      <xs:element name="outrasDespesasCorrentes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaOperacoesCredito">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaAlienacaoBens">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitaAmortizacaoEmprestimos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="transferenciasCapital">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="outrasReceitasCapital">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="receitasIntraorcamentarias">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element> 
+      <xs:element name="despesaInvestimentos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="despesaInversoesFinanceiras">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="despesaAmortizacaoDivida">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="reservaContingencia">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="anexo02Tipo">
+    <xs:sequence>
+      <xs:element name="despesasA02" type="despesasA02Tipo" maxOccurs="1"/>
+      <xs:element name="receitasA02" type="receitasA02Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="despesasA02Tipo">
+    <xs:sequence>
+      <xs:element name="despesaA02" type="despesaA02Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="despesaA02Tipo">
+    <xs:sequence>
+      <xs:element name="codigoDespesa">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorDespesa">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="receitasA02Tipo">
+    <xs:sequence>
+      <xs:element name="receitaA02" type="receitaA02Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="receitaA02Tipo">
+    <xs:sequence>
+      <xs:element name="codigoReceita">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorReceita">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="anexo06Tipo">
+    <xs:sequence>
+      <xs:element name="orgaosA06" type="orgaosA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="orgaosA06Tipo">
+    <xs:sequence>
+      <xs:element name="orgaoA06" type="orgaoA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="orgaoA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidadesA06" type="unidadesA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unidadesA06Tipo">
+    <xs:sequence>
+      <xs:element name="unidadeA06" type="unidadeA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:complexType name="unidadeA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="funcoesA06" type="funcoesA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcoesA06Tipo">
+    <xs:sequence>
+      <xs:element name="funcaoA06" type="funcaoA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcaoA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoFuncao" type="codigoFuncaoTipo"/>
+      <xs:element name="subfuncoesA06" type="subfuncoesA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncoesA06Tipo">
+    <xs:sequence>
+      <xs:element name="subfuncaoA06" type="subfuncaoA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncaoA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoSubfuncao" type="codigoSubfuncaoTipo"/>
+      <xs:element name="programasA06" type="programasA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programasA06Tipo">
+    <xs:sequence>
+      <xs:element name="programaA06" type="programaA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programaA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoPrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomePrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="acoesA06" type="acoesA06Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acoesA06Tipo">
+    <xs:sequence>
+      <xs:element name="acaoA06" type="acaoA06Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acaoA06Tipo">
+    <xs:sequence>
+      <xs:element name="codigoAcao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="4"/>
+            <xs:maxLength value="8"/>
+            <xs:pattern value="[0-9][a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]([0-9][0-9][0-9][0-9])*"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeAcao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorProjeto">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorAtividade">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="anexo07Tipo">
+    <xs:sequence>
+      <xs:element name="funcoesA07" type="funcoesA07Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcoesA07Tipo">
+    <xs:sequence>
+      <xs:element name="funcaoA07" type="funcaoA07Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcaoA07Tipo">
+    <xs:sequence>
+      <xs:element name="codigoFuncao" type="codigoFuncaoTipo"/>
+      <xs:element name="subfuncoesA07" type="subfuncoesA07Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncoesA07Tipo">
+    <xs:sequence>
+      <xs:element name="subfuncaoA07" type="subfuncaoA07Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncaoA07Tipo">
+    <xs:sequence>
+      <xs:element name="codigoSubfuncao" type="codigoSubfuncaoTipo"/>
+      <xs:element name="programasA07" type="programasA07Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programasA07Tipo">
+    <xs:sequence>
+      <xs:element name="programaA07" type="programaA07Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programaA07Tipo">
+    <xs:sequence>
+      <xs:element name="codigoPrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomePrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorProjeto">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorAtividade">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="anexo08Tipo">
+    <xs:sequence>
+      <xs:element name="funcoesA08" type="funcoesA08Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcoesA08Tipo">
+    <xs:sequence>
+      <xs:element name="funcaoA08" type="funcaoA08Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="funcaoA08Tipo">
+    <xs:sequence>
+      <xs:element name="codigoFuncao" type="codigoFuncaoTipo"/>
+      <xs:element name="subfuncoesA08" type="subfuncoesA08Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncoesA08Tipo">
+    <xs:sequence>
+      <xs:element name="subfuncaoA08" type="subfuncaoA08Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subfuncaoA08Tipo">
+    <xs:sequence>
+      <xs:element name="codigoSubfuncao" type="codigoSubfuncaoTipo"/>
+      <xs:element name="programasA08" type="programasA08Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programasA08Tipo">
+    <xs:sequence>
+      <xs:element name="programaA08" type="programaA08Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="programaA08Tipo">
+    <xs:sequence>
+      <xs:element name="codigoPrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:pattern value="[0-9][0-9][0-9][0-9]"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomePrograma">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorOrdinario">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorVinculado">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="anexo09Tipo">
+    <xs:sequence>
+      <xs:element name="orgaosA09" type="orgaosA09Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="orgaosA09Tipo">
+    <xs:sequence>
+      <xs:element name="orgaoA09" type="orgaoA09Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="orgaoA09Tipo">
+    <xs:sequence>
+      <xs:element name="codigoOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeOrgao">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidadesA09" type="unidadesA09Tipo" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unidadesA09Tipo">
+    <xs:sequence>
+      <xs:element name="unidadeA09" type="unidadeA09Tipo" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unidadeA09Tipo">
+    <xs:sequence>
+      <xs:element name="codigoUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nomeUnidadeGestora">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="8000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoLegislativa">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoAdministracao">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoSegurancaPublica">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoAssistenciaSocial">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoPrevidenciaSocial">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoSaude">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoTrabalho">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoEducacao">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoCultura">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoDireitosCidadania">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoUrbanismo">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoHabitacao">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoSaneamento">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoGestaoAmbiental">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element> 
+      <xs:element name="valorFuncaoCienciaTecnologia">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoAgricultura">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoIndustria">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoComercioServicos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoComunicacoes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoEnergia">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoTransporte">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoDesportoLazer">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valorFuncaoEncargosEspeciais">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="codigoFuncaoTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="01"/>
+    <xs:enumeration value="02"/>
+    <xs:enumeration value="03"/>
+    <xs:enumeration value="04"/>
+    <xs:enumeration value="05"/>
+    <xs:enumeration value="06"/>
+    <xs:enumeration value="07"/>
+    <xs:enumeration value="08"/>
+    <xs:enumeration value="09"/>
+    <xs:enumeration value="10"/>
+    <xs:enumeration value="11"/>
+    <xs:enumeration value="12"/>
+    <xs:enumeration value="13"/>
+    <xs:enumeration value="14"/>
+    <xs:enumeration value="15"/>
+    <xs:enumeration value="16"/>
+    <xs:enumeration value="17"/>
+    <xs:enumeration value="18"/>
+    <xs:enumeration value="19"/>
+    <xs:enumeration value="20"/>
+    <xs:enumeration value="21"/>
+    <xs:enumeration value="22"/>
+    <xs:enumeration value="23"/>
+    <xs:enumeration value="24"/>
+    <xs:enumeration value="25"/>
+    <xs:enumeration value="26"/>
+    <xs:enumeration value="27"/>
+    <xs:enumeration value="28"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="codigoSubfuncaoTipo">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="031"/>
+    <xs:enumeration value="032"/>
+    <xs:enumeration value="061"/>
+    <xs:enumeration value="062"/>
+    <xs:enumeration value="091"/>
+    <xs:enumeration value="092"/>
+    <xs:enumeration value="121"/>
+    <xs:enumeration value="122"/>
+    <xs:enumeration value="123"/>
+    <xs:enumeration value="124"/>
+    <xs:enumeration value="125"/>
+    <xs:enumeration value="126"/>
+    <xs:enumeration value="127"/>
+    <xs:enumeration value="128"/>
+    <xs:enumeration value="129"/>
+    <xs:enumeration value="130"/>
+    <xs:enumeration value="131"/>
+    <xs:enumeration value="151"/>
+    <xs:enumeration value="152"/>
+    <xs:enumeration value="153"/>
+    <xs:enumeration value="181"/>
+    <xs:enumeration value="182"/>
+    <xs:enumeration value="183"/>
+    <xs:enumeration value="211"/>
+    <xs:enumeration value="212"/>
+    <xs:enumeration value="241"/>
+    <xs:enumeration value="242"/>
+    <xs:enumeration value="243"/>
+    <xs:enumeration value="244"/>
+    <xs:enumeration value="271"/>
+    <xs:enumeration value="272"/>
+    <xs:enumeration value="273"/>
+    <xs:enumeration value="274"/>
+    <xs:enumeration value="301"/>
+    <xs:enumeration value="302"/>
+    <xs:enumeration value="303"/>
+    <xs:enumeration value="304"/>
+    <xs:enumeration value="305"/>
+    <xs:enumeration value="306"/>
+    <xs:enumeration value="331"/>
+    <xs:enumeration value="332"/>
+    <xs:enumeration value="333"/>
+    <xs:enumeration value="334"/>
+    <xs:enumeration value="361"/>
+    <xs:enumeration value="362"/>
+    <xs:enumeration value="363"/>
+    <xs:enumeration value="364"/>
+    <xs:enumeration value="365"/>
+    <xs:enumeration value="366"/>
+    <xs:enumeration value="367"/>
+    <xs:enumeration value="368"/>
+    <xs:enumeration value="391"/>
+    <xs:enumeration value="392"/>
+    <xs:enumeration value="421"/>
+    <xs:enumeration value="422"/>
+    <xs:enumeration value="423"/>
+    <xs:enumeration value="451"/>
+    <xs:enumeration value="452"/>
+    <xs:enumeration value="453"/>
+    <xs:enumeration value="481"/>
+    <xs:enumeration value="482"/>
+    <xs:enumeration value="511"/>
+    <xs:enumeration value="512"/>
+    <xs:enumeration value="541"/>
+    <xs:enumeration value="542"/>
+    <xs:enumeration value="543"/>
+    <xs:enumeration value="544"/>
+    <xs:enumeration value="545"/>
+    <xs:enumeration value="571"/>
+    <xs:enumeration value="572"/>
+    <xs:enumeration value="573"/>
+    <xs:enumeration value="605"/>
+    <xs:enumeration value="606"/>
+    <xs:enumeration value="607"/>
+    <xs:enumeration value="608"/>
+    <xs:enumeration value="609"/>
+    <xs:enumeration value="631"/>
+    <xs:enumeration value="632"/>
+    <xs:enumeration value="661"/>
+    <xs:enumeration value="662"/>
+    <xs:enumeration value="663"/>
+    <xs:enumeration value="664"/>
+    <xs:enumeration value="665"/>
+    <xs:enumeration value="691"/>
+    <xs:enumeration value="692"/>
+    <xs:enumeration value="693"/>
+    <xs:enumeration value="694"/>
+    <xs:enumeration value="695"/>
+    <xs:enumeration value="721"/>
+    <xs:enumeration value="722"/>
+    <xs:enumeration value="751"/>
+    <xs:enumeration value="752"/>
+    <xs:enumeration value="753"/>
+    <xs:enumeration value="754"/>
+    <xs:enumeration value="781"/>
+    <xs:enumeration value="782"/>
+    <xs:enumeration value="783"/>
+    <xs:enumeration value="784"/>
+    <xs:enumeration value="785"/>
+    <xs:enumeration value="811"/>
+    <xs:enumeration value="812"/>
+    <xs:enumeration value="813"/>
+    <xs:enumeration value="841"/>
+    <xs:enumeration value="842"/>
+    <xs:enumeration value="843"/>
+    <xs:enumeration value="844"/>
+    <xs:enumeration value="845"/>
+    <xs:enumeration value="846"/>
+    <xs:enumeration value="847"/>
+  </xs:restriction>
+</xs:simpleType>
+
+</xs:schema>

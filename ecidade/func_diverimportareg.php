@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldiverimportareg->rotulo->label("dv12_sequencial");
               <?=$Ldv12_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("dv12_sequencial",10,$Idv12_sequencial,true,"text",4,"","chave_dv12_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldiverimportareg->rotulo->label("dv12_sequencial");
               <?=$Ldv12_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("dv12_sequencial",10,$Idv12_sequencial,true,"text",4,"","chave_dv12_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldiverimportareg->rotulo->label("dv12_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_diverimportareg.php")==true){
@@ -122,12 +122,12 @@ $cldiverimportareg->rotulo->label("dv12_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

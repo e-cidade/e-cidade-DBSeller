@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -68,7 +68,7 @@ $db_botao=true;
       <strong>Solicitação: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       $desabilita = false;
       $arr_numero = array();
       $arr_index  = array();
@@ -85,7 +85,7 @@ $db_botao=true;
                   contafor = (window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados.length;
                   for(i=0;i<contafor;i++){
                     if((window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados[i]=='item_".$pc11_numero."_".$pc11_codigo."'){
-                      cont++;                      
+                      cont++;
                     }
                   }";
 		  if($pc11_liberado=='f'){
@@ -101,11 +101,11 @@ $db_botao=true;
         }
 	$arr_numero[$pc10_numero] = $pc10_numero;
 	$arr_index[$pc10_numero]  = $i;
-	$arr_data = split("/",$pc10_data);
+	$arr_data =explode("/",$pc10_data);
 	$pc10_data_dia = $arr_data[0];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[2];
-                
+
       }
       if($clsolicitem->numrows>0){
 	db_fieldsmemory($sql_solicita,0,true);
@@ -113,7 +113,7 @@ $db_botao=true;
 	$desabilita = true;
       }
 
-      if(isset($codigo) && trim($codigo)!=""){	
+      if(isset($codigo) && trim($codigo)!=""){
         $pc10_numero = $codigo;
       }
       db_select('pc10_numero',$arr_numero,true,1,"onchange='js_mudasolicita();'");
@@ -127,7 +127,7 @@ $db_botao=true;
 		}
 	      </script>";
 	db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-	$arr_data = split("-",$pc10_data);
+	$arr_data =explode("-",$pc10_data);
 	$pc10_data_dia = $arr_data[2];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[0];
@@ -137,10 +137,10 @@ $db_botao=true;
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tpc10_data?>">
-      <strong>Data: </strong>      
+      <strong>Data: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
   //    db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
       db_input('pc10_data_dia',2,0,true,'text',3);
       db_input('pc10_data_mes',2,0,true,'text',3);
@@ -148,20 +148,20 @@ $db_botao=true;
     ?>
     </td>
     <td align="right" nowrap title="<?=@$Tdescrdepto?>">
-      <strong>Departamento: </strong>      
+      <strong>Departamento: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php
       db_input('descrdepto',40,$Idescrdepto,true,'text',3);
     ?>
     </td>
   </tr>
   <tr>
     <td align="right" nowrap title="<?=@$Tpc10_resumo?>">
-      <strong>Resumo: </strong>      
+      <strong>Resumo: </strong>
     </td>
     <td colspan="3" nowrap>
-    <?
+    <?php
       db_textarea('pc10_resumo',2,77,$Ipc10_resumo,true,'text',3,"")
     ?>
     </td>
@@ -180,7 +180,7 @@ function js_mudasolicita(){
         for(ii=0;ii<(window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados.length;ii++){
           if((window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados[ii]==(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicitem.document.form1.elements[i].name){
             cont++;
-          }    
+          }
         }
         if(cont==0){
 	  (window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados.push((window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicitem.document.form1.elements[i].name);
@@ -193,14 +193,14 @@ function js_mudasolicita(){
         }
       }
     }
-  }  
-  (window.CurrentWindow || parent.CurrentWindow).corpo.document.form1.valores.value = (window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados.valueOf();  
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicita.location.href = 'com1_geralibsolicita.php?passou=true&pc10_numero='+document.form1.pc10_numero.value;  
+  }
+  (window.CurrentWindow || parent.CurrentWindow).corpo.document.form1.valores.value = (window.CurrentWindow || parent.CurrentWindow).corpo.arr_dados.valueOf();
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicita.location.href = 'com1_geralibsolicita.php?passou=true&pc10_numero='+document.form1.pc10_numero.value;
 }
 if(document.form1.pc10_numero.value!=""){
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicitem.location.href= 'com1_geralibsolicitem.php?solicita='+document.form1.pc10_numero.value;
 }
-<?
+<?php
   if($desabilita==true){
   echo "
     numele = parent.document.form1.length;

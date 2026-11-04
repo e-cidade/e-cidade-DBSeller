@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
               <?=$Ldb89_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db89_sequencial",10,$Idb89_sequencial,true,"text",4,"","chave_db89_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
               <?=$Ldb89_codagencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db89_codagencia",5,$Idb89_codagencia,true,"text",4,"","chave_db89_codagencia");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bancoagencia.php")==true){
@@ -137,12 +137,12 @@ $clbancoagencia->rotulo->label("db89_codagencia");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

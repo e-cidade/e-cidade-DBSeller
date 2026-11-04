@@ -14,7 +14,7 @@ class HourHelperTest extends TestCase
      */
     private $helper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->helper = new HourHelper();

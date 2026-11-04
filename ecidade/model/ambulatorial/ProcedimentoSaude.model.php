@@ -139,15 +139,15 @@ final class ProcedimentoSaude {
 
   /**
    * Setter financiamento da saude
-   * @param FinanciametoSaude $oFinanciamentoSaude
+   * @param FinanciamentoSaude $oFinanciamentoSaude
    */
-  public function setFinanciamentoSaude (FinanciametoSaude $oFinanciamentoSaude) {
+  public function setFinanciamentoSaude (FinanciamentoSaude $oFinanciamentoSaude) {
     $this->oFinanciamento = $oFinanciamentoSaude;
   }
 
   /**
    * Getter financiamento da saude
-   * @return FinanciametoSaude $oFinanciamentoSaude
+   * @return FinanciamentoSaude $oFinanciamentoSaude
    */
   public function getFinanciamentoSaude () {
     return $this->oFinanciamento;

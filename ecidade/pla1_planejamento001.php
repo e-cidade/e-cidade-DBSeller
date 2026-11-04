@@ -44,6 +44,35 @@ require_once modification("dbforms/db_funcoes.php");
         </fieldset>
     </div>
 </div>
+<div id="modalPlanoBase" style="display: none">
+    <div class="alert alert-primary text-left" role="alert">
+        Escolha o plano que deseja usar como base para criar o PPA.
+    </div>
+    <div class="container">
+        <table class="form-container">
+            <tr>
+                <td><label class="bold" for="planejamento">Plano Bae:</label></td>
+                <td>
+                    <select id="planejamento" class="field-size8">
+                        <option value="">Selecione um plano</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="bold" for="anoInicial">Exercício Inicial do PPA: </label></td>
+                <td>
+                    <input type="text" id="anoInicial" name="pl2_ano_inicial" class="field-size2"
+                           maxlength="4" oninput="js_ValidaCampos(this, 1, 'Ano', 'f', 'f', event)">
+                </td>
+            </tr>
+        </table>
+
+        <button type="button" id="criarPlano">
+            <i class="far fa-save"></i>
+            Criar PPA
+        </button>
+    </div>
+</div>
 
 <?php db_menu() ?>
 <script rel="script" type="text/javascript" src="scripts/session.js"></script>
@@ -51,6 +80,8 @@ require_once modification("dbforms/db_funcoes.php");
 <script type="text/javascript" src="assets/bootstrap-table/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
+<script type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+<script type="text/javascript" src="scripts/classes/planejamento/planejamento.js"></script>
 <script type="text/javascript">
 
     const status = 1; // Só pode buscar os Planos de Governo EM DESENVOLVIMENTO
@@ -67,9 +98,31 @@ require_once modification("dbforms/db_funcoes.php");
         index: 'financeiro/planejamento/consulta/planos',
         remove: 'financeiro/planejamento/remove',
         criarVinculo: 'financeiro/planejamento/criarVinculo',
+        criarPPA: 'financeiro/planejamento/criarPPA',
     }
 
-    const rota = "financeiro/planejamento/consulta/planos";
+    const modalPlano = {
+        container: document.getElementById('modalPlanoBase'),
+        anoInicial: document.getElementById('anoInicial'),
+        btnCriarPlano: document.getElementById('criarPlano')
+    }
+
+    const planejamento = new Planejamento(document.getElementById('planejamento'));
+
+
+    const fechaModal = (janela) => {
+        if (!!janela.oDBMask) {
+            janela.oDBMask.destroy();
+        }
+        janela.hide();
+    }
+
+    var windowPlanoBase = new windowAux('windowPlanoBase', 'Escolha o plano base', 450, 300);
+    windowPlanoBase.setContent(modalPlano.container);
+    windowPlanoBase.setShutDownFunction(() => {
+        fechaModal(windowPlanoBase)
+    });
+
     $.noConflict();
     jQuery(document).ready(function ($) {
 
@@ -190,10 +243,58 @@ require_once modification("dbforms/db_funcoes.php");
                         alert(response.message);
                     }
                 });
+            } else if (get.tipo === 'PPA') {
+                let msg = 'Deseja escolher um plano anterior como base para o novo PPA?'
+                alertify.confirm(msg, (e) => {
+                    if (e) {
+                        abrirModalPlano()
+                    } else {
+                        location.href = `pla1_planejamento.php?tipo=${get.tipo}`;
+                    }
+                });
             } else {
                 location.href = `pla1_planejamento.php?tipo=${get.tipo}`;
             }
         });
+
+        function abrirModalPlano() {
+
+            planejamento._considerarGet = false;
+            planejamento.load();
+            windowPlanoBase.show(0, 0, true);
+            modalPlano.container.style.display = '';
+        }
+
+        modalPlano.btnCriarPlano.addEventListener('click', () => {
+            if (planejamento.getValue() === '') {
+                alert('Selecione um plano.');
+                return
+            }
+            if (modalPlano.anoInicial.value === '' || modalPlano.anoInicial.value.length < 4) {
+                alert('Ano inicial deve ser informado e deve ser um exercício válido.')
+                return
+            }
+
+            const formData = new FormData();
+            formData.append('codigo', planejamento.getValue());
+            formData.append('anoInicial', modalPlano.anoInicial.value);
+            PHPSession.appendFormData(formData);
+
+            const parametros = {
+                body: formData,
+                reportProgress: true,
+                reportMessage: `Aguarde, criando plano.`
+            }
+
+            HttpClient.post(`${PHPSession.requestApi}/${routs.criarPPA}`, {body: formData}).then((response) => {
+                alert(response.message);
+                if (response.error) {
+                    return;
+                }
+
+                location.href = `pla1_planejamento.php?tipo=${get.tipo}&codigo=${response.data}`;
+            });
+        })
     });
 
 </script>

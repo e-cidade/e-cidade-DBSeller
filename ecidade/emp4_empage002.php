@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -42,11 +42,11 @@ $db_botao = false;
 $data = "$e80_data_ano-$e80_data_mes-$e80_data_dia";
 //die();
 if(isset($atualizar)){
-  
+
   db_inicio_transacao();
   $sqlerro=false;
-  
-  
+
+
 
   $clpcmater->incluir(null);
   if($clpcmater->erro_status==0){
@@ -55,18 +55,18 @@ if(isset($atualizar)){
     $codmater =  $clpcmater->pc01_codmater;
   }
   if($sqlerro==false){
-    $arr =  split("XX",$codeles);
+    $arr = explode("XX",$codeles);
     for($i=0; $i<count($arr); $i++ ){
-       $elemento = $arr[$i];  
+       $elemento = $arr[$i];
        $clpcmaterele->pc07_codmater = $codmater;
        $clpcmaterele->pc07_codele = $elemento;
-       $clpcmaterele->incluir($codmater,$elemento); 
+       $clpcmaterele->incluir($codmater,$elemento);
        if($clpcmaterele->erro_status==0){
 	 db_msgbox('erro');
          $sqlerro = true;
-       }	 
-      
-    }	 
+       }
+
+    }
   }
   db_fim_transacao($sqlerro);
 }
@@ -76,7 +76,7 @@ if(isset($atualizar)){
 if(isset($entrar)){
   db_inicio_transacao();
   $sqlerro=false;
-  
+
   $result01 = $clempage->sql_record($clempage->sql_query_file(null,'e80_codage','',"e80_data='$data' and e80_instit = " . db_getsession("DB_instit")));
   $numrows01 = $clempage->numrows;
   if($numrows01 == 0){
@@ -87,7 +87,7 @@ if(isset($entrar)){
          $sqlerro = true;
     }else{
       $e80_codage = $clempage->e80_codage;
-    }	 
+    }
   }else{
     $jatem =  true;
   }
@@ -105,7 +105,7 @@ if(isset($entrar)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-    <tr> 
+    <tr>
       <td width="360" height="18">&nbsp;</td>
       <td width="263">&nbsp;</td>
       <td width="25">&nbsp;</td>
@@ -113,27 +113,27 @@ if(isset($entrar)){
     </tr>
   </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-   <?
+   <?php
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
-   
-//sempre que ja existir agenda entra nesta opcao  
-  if(isset($e80_codage)){  
+
+//sempre que ja existir agenda entra nesta opcao
+  if(isset($e80_codage)){
 	include(modification("forms/db_frmempage.php"));
 
-//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda 
+//pela primeira vez que entrar neste arquivo, entra nesta opcao para digitar a data da agenda
   }else if(empty($entrar) && empty($e80_codage)){?>
         <form name="form1" method="post" action="">
           <table border="0" cellspacing="0" cellpadding="0">
             <tr><br>
               <td nowrap title="<?=@$Te80_data?>">
                 <?=$Le80_data?>
-              </td>	
-              <td>	
-              <?
+              </td>
+              <td>
+              <?php
                 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
               ?>
               </td>
@@ -145,8 +145,8 @@ if(isset($entrar)){
             </tr>
           </table>
         </form>
-	
-<?  
+
+<?php
 //entra nesta opcao para escolher uma das agendas ou então selecionar uma jah existente
    }else if(isset($jatem)){?>
         <form name="form1" method="post" action="">
@@ -157,23 +157,23 @@ if(isset($entrar)){
 	   <tr>
 	      <td nowrap title="<?=@$Te80_data?>" align='right'>
 	      <?=$Le80_data?>
-	      </td>	
-	      <td>	
-	       <?
+	      </td>
+	      <td>
+	       <?php
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 	       ?>
 	      </td>
 	   </tr>
 	 </table>
-       </form>	 
-<?   	
-   }  
+       </form>
+<?php
+   }
 ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

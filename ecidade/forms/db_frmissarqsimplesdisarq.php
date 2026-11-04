@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("q17_data");
        <?=@$Lq43_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q43_sequencial',8,$Iq43_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq43_issarqsimples?>">
-       <?
+       <?php
        db_ancora(@$Lq43_issarqsimples,"js_pesquisaq43_issarqsimples(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q43_issarqsimples',8,$Iq43_issarqsimples,true,'text',$db_opcao," onchange='js_pesquisaq43_issarqsimples(false);'")
 ?>
-       <?
+       <?php
 db_input('q17_data',10,$Iq17_data,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('q17_data',10,$Iq17_data,true,'text',3,'')
        <?=@$Lq43_disarq?>
     </td>
     <td> 
-<?
+<?php
 db_input('q43_disarq',6,$Iq43_disarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issarqsimplesdisarq.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

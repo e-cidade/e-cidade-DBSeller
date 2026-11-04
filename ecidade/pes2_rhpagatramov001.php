@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,31 +81,31 @@ if(!isset($rh58_datai_dia) && !isset($rh58_datai_mes) && !isset($rh58_datai_ano)
             <table>
               <tr>
                 <td nowrap title="<?=@$Trh58_data?>" align="right">
-                  <?
+                  <?php
                   db_ancora(@$Lrh58_data,"",3);
                   ?>
                 </td>
                 <td nowrap> 
-                  <?
+                  <?php
                   db_inputdata("rh58_datai", $rh58_datai_dia, $rh58_datai_mes, $rh58_datai_ano, true, 'text', 1);
                   ?>
 									<b>&nbsp;a&nbsp;</b>
-                  <?
+                  <?php
                   db_inputdata("rh58_dataf", $rh58_dataf_dia, $rh58_dataf_mes, $rh58_dataf_ano, true, 'text', 1);
                   ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Trh58_tipoocor?>" align="right">
-                  <?
+                  <?php
                   db_ancora(@$Lrh58_tipoocor,"js_pesquisarh58_tipoocor(true);",1);
                   ?>
                 </td>
                 <td nowrap> 
-                  <?
+                  <?php
                   db_input('rh58_tipoocor',8,$Irh58_tipoocor,true,'text',1," onchange='js_pesquisarh58_tipoocor(false);'")
                   ?>
-                  <?
+                  <?php
                   db_input('rh59_descr',40,$Irh59_descr,true,'text',3,'');
                   db_input('rh59_tipo',2,$Irh59_tipo,true,'hidden',3,'');
                   ?>
@@ -114,7 +114,7 @@ if(!isset($rh58_datai_dia) && !isset($rh58_datai_mes) && !isset($rh58_datai_ano)
               <tr>
                 <td align="right"><b>Pagar:</b></td>
                 <td>
-                  <?
+                  <?php
                   $arr_pagar = Array(0=>"Todos",1=>"Funcionários que não estão na justiça");
                   db_select("pagar", $arr_pagar, true, 1, "");
                   ?>
@@ -134,7 +134,7 @@ if(!isset($rh58_datai_dia) && !isset($rh58_datai_mes) && !isset($rh58_datai_ano)
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

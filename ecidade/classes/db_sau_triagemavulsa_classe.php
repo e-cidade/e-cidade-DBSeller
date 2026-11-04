@@ -863,7 +863,7 @@ class cl_sau_triagemavulsa
    /*
    Query utilizada para gerar o grid das triagens avulsa já realizadas
    */
-   function sql_query_grid ( $s152_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_grid ( $s152_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -907,7 +907,7 @@ class cl_sau_triagemavulsa
   /*
    *  Query utilizada para verificar se o CGS possui triagem e já consultou
    */
-  function sql_query_consulta ( $s152_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_consulta ( $s152_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);

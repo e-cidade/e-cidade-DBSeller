@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clretencaonatureza->rotulo->label();
        		  <?=@$Le30_sequencial?>
             </td>
             <td> 
-			<?
+			<?php
 			  db_input('e30_sequencial',10,$Ie30_sequencial,true,'text',3,"");
             ?>
             </td>
@@ -51,7 +51,7 @@ $clretencaonatureza->rotulo->label();
        		 <?=@$Le30_codigo?>
             </td>
             <td> 
-			<?
+			<?php
 			  db_input('e30_codigo',20,$Ie30_codigo,true,'text',$db_opcao,"")
 			?>
             </td>
@@ -61,7 +61,7 @@ $clretencaonatureza->rotulo->label();
        		<?=@$Le30_descricao?>
             </td>
             <td> 
-			<?
+			<?php
 			db_input('e30_descricao',50,$Ie30_descricao,true,'text',$db_opcao,"")
 			?>
             </td>
@@ -81,7 +81,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_retencaonatureza.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

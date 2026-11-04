@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -232,7 +232,7 @@ if(isset($excluir)){
 <table class="container" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-      <?
+      <?php
       include(modification("forms/db_frmveiculos.php"));
       ?>
 	  </td>
@@ -240,7 +240,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($clveiculos->erro_status=="0"&&$sqlerro==true){
   	db_msgbox($erro_msg);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,30 +55,30 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tx23_codcalc?>">
-       <?
+       <?php
        db_ancora(@$Lx23_codcalc,"js_pesquisax23_codcalc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x23_codcalc',5,$Ix23_codcalc,true,'text',$db_opcao," onchange='js_pesquisax23_codcalc(false);'")
 ?>
-       <?
+       <?php
 db_input('x22_matric',10,$Ix22_matric,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx23_codconsumotipo?>">
-       <?
+       <?php
        db_ancora(@$Lx23_codconsumotipo,"js_pesquisax23_codconsumotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x23_codconsumotipo',5,$Ix23_codconsumotipo,true,'text',$db_opcao," onchange='js_pesquisax23_codconsumotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('x25_descr',40,$Ix25_descr,true,'text',3,'')
        <?=@$Lx23_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('x23_valor',15,$Ix23_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('x23_valor',15,$Ix23_valor,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x23_codcalc"=>@$x23_codcalc,"x23_codconsumotipo"=>@$x23_codconsumotipo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacalcval->sql_query_file($x23_codcalc);

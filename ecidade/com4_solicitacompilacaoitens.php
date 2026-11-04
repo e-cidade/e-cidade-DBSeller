@@ -31,14 +31,14 @@
  * @revision $Author: dbjeferson.belmiro $
  * @version $Revision: 1.8 $
  */
-require(modification("libs/db_stdlib.php"));
-require(modification("std/db_stdClass.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_app.utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("std/db_stdClass.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_app.utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc16_codmater");
 $clrotulo->label("pc01_descrmater");
@@ -57,7 +57,7 @@ $db_opcao           = 1;
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -107,7 +107,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_prazo?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_prazo',3,30,$Ipc11_prazo,true,'text',$db_opcao)
                  ?>
                </td>
@@ -117,7 +117,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_pgto?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_pgto',3,30,$Ipc11_pgto, true, 'text', $db_opcao);
                  ?>
                </td>
@@ -127,7 +127,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_resum?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_resum',3,30,$Ipc11_resum,true,'text',$db_opcao)
                  ?>
                </td>
@@ -137,7 +137,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_just?>
                </td>
                <td>
-                 <?
+                 <?php
                   db_textarea('pc11_just',3,30,$Ipc11_just,true,'text',$db_opcao)
                  ?>
                </td>
@@ -147,7 +147,7 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Unidade:</b>
               </td>
               <td>
-              <?
+              <?php
                 db_select('pc17_unid',array(), true, 1, "style='width:150px' onchange='js_usaQuantidade(this)'");
                 db_input('pc17_quant', 5, 0, true, 'text', 1, "style='display:none'");
               ?>
@@ -159,7 +159,7 @@ db_app::load("widgets/windowAux.widget.js");
     </tr>
     <tr>
       <td colspan="4" style='text-align: center'>
-        <input type='button' value='Salvar Informações' id='btnFecharWindowAux' onclick='windowAuxiliar.hide()'>
+        <input type='button' value='Fechar' id='btnFecharWindowAux' onclick='windowAuxiliar.hide()'>
       </td>
     </tr>
   </table>
@@ -228,45 +228,6 @@ function js_mostrapcmater1(iCodigoMaterial, sDescricaoMaterial) {
   }
 }
 
-/**
- * Adiciona o item a solicitacao
- */
-function js_adicionarItem() {
-
-  js_divCarregando('Aguarde, adicionando item',"msgBox");
-  var iCodigoItem    = $F('pc16_codmater');
-  var oParam         = new Object();
-  oParam.exec        = "adicionarItemAbertura";
-  oParam.iCodigoItem = iCodigoItem;
-  oParam.quantidade  = $F('quantidade');
-  oParam.sJustificativa = encodeURIComponent(tagString($F('pc11_just')));
-  oParam.sResumo        = encodeURIComponent(tagString($F('pc11_resum')));
-  oParam.sPrazo         = encodeURIComponent(tagString($F('pc11_prazo')));
-  oParam.sPgto          = encodeURIComponent(tagString($F('pc11_pgto')));
-  oParam.iUnidade       = $F('pc17_unid');
-  oParam.nQuantUnidade  = $F('pc17_quant');
-  var oAjax          = new Ajax.Request(sUrlRC,
-                                         {
-                                          method: "post",
-                                          parameters:'json='+Object.toJSON(oParam),
-                                          onComplete: js_retornoadicionarItem
-                                         });
-}
-
-function js_retornoadicionarItem(oAjax) {
-
-  js_removeObj('msgBox');
-  var oRetorno = JSON.parse(oAjax.responseText);
-  if (oRetorno.status == 1) {
-
-    js_preencheGrid(oRetorno.itens);
-    js_limparForm();
-
-  } else {
-    alert(oRetorno.message.urlDecode());
-  }
-}
-
 function js_preencheGrid(aItens) {
 
   oGridItens.clearAll(true);
@@ -284,7 +245,7 @@ function js_preencheGrid(aItens) {
       aLinha[4] += "<span id='resumo"+indice+"'        style='display:none'>"+resumo.urlDecode()+"</span>";
       aLinha[4] += "<span id='pgto"+indice+"'          style='display:none'>"+pagamento.urlDecode()+"</span>";
       aLinha[4] += "<span id='prazo"+indice+"'         style='display:none'>"+prazo.urlDecode()+"</span>";
-      aLinha[4] += "<span><a href='#' onclick='js_showInfo("+indice+","+automatico+","+unidade+")'><img src='imagens/edittext.png' border='0' ></a>...</span>";
+      aLinha[4] += "<span><a href='#' onclick='js_showInfo("+indice+","+true+","+unidade+")'><img src='imagens/edittext.png' border='0' ></a>...</span>";
       aLinha[5]  = js_formatar(aItens[i].quantidade,'f');
       aLinha[6]  = js_formatar(aItens[i].qtdemin,'f');
       aLinha[7] = js_formatar(aItens[i].qtdemax,'f');
@@ -333,7 +294,7 @@ function js_retornoSalvarItem(oAjax) {
   js_removeObj('msgBox');
   var oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno.status == 1) {
-    alert('Itens Salvos Com sucesso.')
+    alert('Itens salvos com sucesso!');
   } else {
    alert(oRetorno.message.urlDecode());
   }
@@ -496,31 +457,8 @@ function js_showInfo(iIndice, lAutomatico, unidade) {
   $('pc11_prazo').value = $('prazo'+iIndice).innerHTML;
   $('pc17_unid').value  = unidade;
   $('pc17_quant').value = $('quantunid'+iIndice).innerHTML;
-  $('btnFecharWindowAux').onclick  = function () {
-
-    $('resumo'+iIndice).innerHTML        = $('pc11_resum').value;
-    $('justificativa'+iIndice).innerHTML = $('pc11_just').value ;
-    $('pgto'+iIndice).innerHTML          = $('pc11_pgto').value;
-    $('prazo'+iIndice).innerHTML         = $('pc11_prazo').value;
-    $('unidade'+iIndice).innerHTML       = $('pc17_unid').value;
-    $('quantunid'+iIndice).innerHTML     = $('pc17_quant').value;
-
-    $('pc11_resum').value = "";
-    $('pc11_just').value  = "";
-    $('pc11_pgto').value  = "";
-    $('pc11_prazo').value = "";
-    $('pc17_unid').value  = "";
-    $('pc17_quant').value = "";
-    $('btnFecharWindowAux').onclick  =  function() {
-      windowAuxiliar.hide();
-    }
-    js_alterarDados(iIndice);
-    windowAuxiliar.hide();
-
-  }
 
   windowAuxiliar.show(10,10);
-
 }
 
 function js_alterarDados(iIndice) {
@@ -566,15 +504,13 @@ function js_bloqueiaCamposWindowAux(lDisabled) {
 /**
  * Adicionamos as unidades ao combo pc17_unid
  */
- <?
+<?php
 
-  foreach ($aUnidades as $oUnidade) {
-
+foreach ($aUnidades as $oUnidade) {
     echo "var oOption = new Option('{$oUnidade->m61_descr}',{$oUnidade->m61_codmatunid});\n";
     echo "oOption.setAttribute('usadecimal', '{$oUnidade->m61_usadec}');\n";
     echo "oOption.setAttribute('usaquantidade', '{$oUnidade->m61_usaquant}');\n";
     echo "\$('pc17_unid').add(oOption, null);\n";
-
-  }
- ?>
+}
+?>
 </script>

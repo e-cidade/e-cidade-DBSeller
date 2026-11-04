@@ -62,13 +62,13 @@ class cl_aguaestruturatarifaria {
                  x37_aguacategoriaconsumo = int4 = Código da Categoria de Consumo
                  ";
    //funcao construtor da classe
-   function cl_aguaestruturatarifaria() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaestruturatarifaria");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_aguaestruturatarifaria {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x37_sequencial = ($this->x37_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["x37_sequencial"]:$this->x37_sequencial);
        $this->x37_aguaconsumotipo = ($this->x37_aguaconsumotipo == ""?@$GLOBALS["HTTP_POST_VARS"]["x37_aguaconsumotipo"]:$this->x37_aguaconsumotipo);
@@ -92,7 +92,7 @@ class cl_aguaestruturatarifaria {
      }
    }
    // funcao para Inclusão
-   function incluir ($x37_sequencial){
+   public function incluir ($x37_sequencial){
       $this->atualizacampos();
      if($this->x37_aguaconsumotipo == null ){
        $this->erro_sql = " Campo Código Tipo de Consumo não informado.";

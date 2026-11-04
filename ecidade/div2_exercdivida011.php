@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -159,7 +159,7 @@ function js_emite(){
              <td>&nbsp;</td>
           <tr>
          </tr>
-         <?
+         <?php
 	 $cor = '#E4F471';
 	 $exercicio = db_getsession("DB_anousu") - 15;
 	 for($x = 0;$x < 5;$x++){
@@ -180,7 +180,7 @@ function js_emite(){
               <input type="checkbox" value="<?=$x+11+$exercicio?>"  name="check<?=$i?>" checked onclick="js_verifica2()"><?=$x+11+$exercicio?>
            </td>
 	 </tr>						   
-	 <?
+	 <?php
 	 }
 	 ?>
 	 
@@ -199,7 +199,7 @@ function js_emite(){
   
     </table>
   </form>
-<?
+<?php
   //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

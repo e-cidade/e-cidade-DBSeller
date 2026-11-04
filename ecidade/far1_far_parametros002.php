@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($alterar)){
     <br> 
     <center>
    	<fieldset style="width:95%"><legend><b>Alteração de Parametros</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmfar_parametros.php"));
 	?>
 	</fieldset>
@@ -79,12 +79,12 @@ if(isset($alterar)){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clfar_parametros->erro_status=="0"){
     $clfar_parametros->erro(true,false);

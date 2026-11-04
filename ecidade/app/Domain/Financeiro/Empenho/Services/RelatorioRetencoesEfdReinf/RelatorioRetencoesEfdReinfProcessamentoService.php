@@ -13,27 +13,29 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
     {
         $sWhereSql = " and e60_instit = " . db_getsession("DB_instit");
 
+        $columFilterDate = in_array($filtros->filtroEvento, ['r4010', 'r4020', 'r4040']) ? 'k12_data' : 'e69_dtnota';
+
         if ($filtros->dataInicial != "" && $filtros->dataFinal == "") {
             $dataInicial = implode("-", array_reverse(explode("/", $filtros->dataInicial)));
-            $sWhereSql .= " and empnota.e69_dtnota = '{$dataInicial}'";
+            $sWhereSql .= " and {$columFilterDate} = '{$dataInicial}'";
             $headerData = "{$filtros->dataInicial} a {$filtros->dataInicial}";
         } elseif ($filtros->dataFinal != "" && $filtros->dataInicial != "") {
             $dataInicial = implode("-", array_reverse(explode("/", $filtros->dataInicial)));
             $dataFinal = implode("-", array_reverse(explode("/", $filtros->dataFinal)));
-            $sWhereSql .= " and empnota.e69_dtnota between '{$dataInicial}' and '{$dataFinal}'";
+            $sWhereSql .= " and {$columFilterDate} between '{$dataInicial}' and '{$dataFinal}'";
             $headerData = "{$filtros->dataInicial} a {$filtros->dataFinal}";
         }
 
         if (isset($filtros->filtroCredor) && !empty($filtros->filtroCredor)) {
-            $sWhereSql .= " and e60_numcgm = ".$filtros->filtroCredor;
+            $sWhereSql .= " and e60_numcgm = " . $filtros->filtroCredor;
         }
-        
+
         $headerOrgaoUnidade = "";
         if ($filtros->filtroOrgao != "") {
             $headerOrgaoUnidade = "Orgão: {$filtros->filtroOrgao}";
             $sWhereSql .= " and o58_orgao = {$filtros->filtroOrgao}";
         }
-        
+
         if ($filtros->filtroUnidade != "") {
             $headerOrgaoUnidade = " Orgão/Unidade: {$filtros->filtroOrgao}/{$filtros->filtroUnidade}";
             $sWhereSql .= " and o58_unidade = {$filtros->filtroUnidade}";
@@ -82,24 +84,45 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
         if ($filtros->filtroEvento == "r2010") {
             $sqlRetencoesEfdReinf = $this->sqlRetencoesR2010(
                 $preProcessamento['sCampoQuebrarSql'],
-                $preProcessamento['sWhereSql']
+                $preProcessamento['sWhereSql'],
+                ''
             );
         } elseif ($filtros->filtroEvento == "r2055") {
             $sqlRetencoesEfdReinf = $this->sqlRetencoesR2055(
                 $preProcessamento['sCampoQuebrarSql'],
-                $preProcessamento['sWhereSql']
+                $preProcessamento['sWhereSql'],
+                ''
             );
-        } elseif ($filtros->filtroEvento == "todos") {
+        } elseif ($filtros->filtroEvento == "r4010") {
+            $sqlRetencoesEfdReinf = $this->sqlRetencoesR4010(
+                $preProcessamento['sCampoQuebrarSql'],
+                $preProcessamento['sWhereSql'],
+                'r4010'
+            );
+        } elseif ($filtros->filtroEvento == "r4020") {
+            $sqlRetencoesEfdReinf = $this->sqlRetencoesR4020(
+                $preProcessamento['sCampoQuebrarSql'],
+                $preProcessamento['sWhereSql'],
+                'r4020'
+            );
+        } elseif ($filtros->filtroEvento == "todos1") {
             $sqlRetencoesEfdReinf = $this->sqlTodasRetencoesEfdReinf(
                 $preProcessamento['sCampoQuebrarSql'],
-                $preProcessamento['sWhereSql']
+                $preProcessamento['sWhereSql'],
+                ''
+            );
+        } elseif ($filtros->filtroEvento == "todos2") {
+            $sqlRetencoesEfdReinf = $this->sqlTodasRetencoesEfdReinf2(
+                $preProcessamento['sCampoQuebrarSql'],
+                $preProcessamento['sWhereSql'],
+                'r4010'
             );
         }
         $retencoesEfdReinf = DB::select($sqlRetencoesEfdReinf);
-        
+
         $sValorCompararQuebra = "";
         $aRetencoes = [];
-    
+
         $sCampoQuebrar = $preProcessamento['sCampoQuebrar'];
         $sNomeQuebra = $preProcessamento['sNomeQuebra'];
 
@@ -126,17 +149,18 @@ class RelatorioRetencoesEfdReinfProcessamentoService extends RelatorioRetencoesE
                         $texto .= " - CPF/CNPJ: $cCnpjCpf -";
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $texto;
                     } elseif ($filtros->filtroAgrupaPor == 5) {
-                        $texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
-                        $texto.= " - ".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
-                        $texto.= $oRetencao->o41_descr;
+                        $texto = $oRetencao->o41_orgao . "/" . str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto .= " - " . str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto .= $oRetencao->o41_descr;
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $texto;
                     } elseif ($filtros->filtroAgrupaPor == 6) {
-                        $texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
-                        $texto .= " - ".$oRetencao->o41_descr;
-                        $texto .= " Credor: ".$oRetencao->identificador_prestador." - ".$oRetencao->nome_prestador;
-                        $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $texto;
+                        $texto = $oRetencao->o41_orgao . "/" . str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT);
+                        $texto .= " - " . $oRetencao->o41_descr;
+                        $texto .= " Credor: " . $oRetencao->identificador_prestador . " - "
+                            . $oRetencao->nome_prestador;
+                        $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $texto;
                     }
-                    
+
                     if (isset($aRetencoes[$oRetencao->$sCampoQuebrar]->total)) {
                         $aRetencoes[$oRetencao->$sCampoQuebrar]->total += $oRetencao->valor_retencao;
                     } else {

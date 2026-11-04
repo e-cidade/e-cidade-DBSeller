@@ -76,6 +76,10 @@ class cl_protprocessodocumento
     public $p01_assinado = null;
     public $p01_assinado_por = null;
     public $p01_documento_hash = null;
+
+    public $p01_c70codlan = null;
+
+    public $p01_upload_name = null;
     public $campos = "p01_sequencial = int4 = Sequencial de Documentos
                       p01_protprocesso = int4 = Número de Controle
                       p01_descricao = varchar(200) = Descrição
@@ -109,7 +113,7 @@ class cl_protprocessodocumento
    // funcao para atualizar campos
     function atualizacampos($exclusao = false)
     {
-        if ($exclusao==false) {
+        if (!$exclusao) {
             $this->p01_sequencial = ($this->p01_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["p01_sequencial"]:$this->p01_sequencial);
             $this->p01_protprocesso = ($this->p01_protprocesso == ""?@$GLOBALS["HTTP_POST_VARS"]["p01_protprocesso"]:$this->p01_protprocesso);
             $this->p01_descricao = ($this->p01_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["p01_descricao"]:$this->p01_descricao);
@@ -191,10 +195,10 @@ class cl_protprocessodocumento
                 $this->erro_status = "0";
                 return false;
             }
-            $this->p01_sequencial = pg_result($result, 0, 0);
+            $this->p01_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM protprocessodocumento_p01_sequencial_seq");
-            if ($result && pg_result($result, 0, 0) < $p01_sequencial) {
+            if ($result && pg_fetch_result($result, 0, 0) < $p01_sequencial) {
                 $this->erro_sql = " Campo p01_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -230,7 +234,8 @@ class cl_protprocessodocumento
                 ,p01_ordem
                 ,p01_assinado
                 ,p01_assinado_por
-                ,p01_documento_hash
+                ,p01_c70codlan
+                ,p01_upload_name
             ) VALUES (
                  " . ($this->p01_sequencial === null || $this->p01_sequencial === '' ? 'NULL' : $this->p01_sequencial) . "
                 ," . ($this->p01_protprocesso === null || $this->p01_protprocesso === '' ? 'NULL' : $this->p01_protprocesso) . "
@@ -244,7 +249,8 @@ class cl_protprocessodocumento
                 ," . ($this->p01_ordem === null || $this->p01_ordem === '' ? '0' : $this->p01_ordem) . "
                 ," . ($this->p01_assinado === null || $this->p01_assinado === '' ? 'false' : $this->p01_assinado) . "
                 ," . ($this->p01_assinado_por === null || $this->p01_assinado_por === '' ? 'NULL' : $this->p01_assinado_por) . "
-                ," . ($this->p01_documento_hash === null || $this->p01_documento_hash === '' ? 'NULL' : $this->p01_documento_hash) . "
+                ," . ($this->p01_c70codlan === null || $this->p01_c70codlan === '' ? 'NULL' : $this->p01_c70codlan) . "
+                ," . ($this->p01_upload_name === null || $this->p01_upload_name === '' ? 'NULL' : "'{$this->p01_upload_name}'") . "
             )
         ";
         $result = db_query($sql);
@@ -270,27 +276,6 @@ class cl_protprocessodocumento
         $this->erro_msg .=  str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "1";
         $this->numrows_incluir= pg_affected_rows($result);
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-        && ($lSessaoDesativarAccount === false))) {
-            $resaco = $this->sql_record($this->sql_query_file($this->p01_sequencial));
-            if ($resaco != false || $this->numrows != 0) {
-                $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-                $acount = pg_result($resac, 0, 0);
-                $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
-                $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,20296,'$this->p01_sequencial','I')");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,20296,'','" . AddSlashes(pg_result($resaco, 0, 'p01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,20297,'','" . AddSlashes(pg_result($resaco, 0, 'p01_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,20298,'','" . AddSlashes(pg_result($resaco, 0, 'p01_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,20299,'','" . AddSlashes(pg_result($resaco, 0, 'p01_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,20302,'','" . AddSlashes(pg_result($resaco, 0, 'p01_nomedocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,1009504,'','" . AddSlashes(pg_result($resaco, 0, 'p01_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,1009503,'','" . AddSlashes(pg_result($resaco, 0, 'p01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,1009502,'','" . AddSlashes(pg_result($resaco, 0, 'p01_procandamint'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,3649,1010752,'','" . AddSlashes(pg_result($resaco, 0, 'p01_estorage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,3649,1011248,'','".AddSlashes(pg_result($resaco, 0, 'p01_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-            }
-        }
         return true;
     }
 
@@ -362,59 +347,6 @@ class cl_protprocessodocumento
             $sql .= " p01_sequencial = {$p01_sequencial}";
         }
 
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-        && ($lSessaoDesativarAccount === false))) {
-            $resaco = $this->sql_record($this->sql_query_file($this->p01_sequencial));
-            if ($this->numrows > 0) {
-                for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-                      $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                      $acount = pg_result($resac, 0, 0);
-                      $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-                      $resac = db_query("insert into db_acountkey values($acount,20296,'$this->p01_sequencial','A')");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_sequencial"]) || $this->p01_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,20296,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_sequencial'))."','$this->p01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_protprocesso"]) || $this->p01_protprocesso != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,20297,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_protprocesso'))."','$this->p01_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_descricao"]) || $this->p01_descricao != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,20298,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_descricao'))."','$this->p01_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_documento"]) || $this->p01_documento != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,20299,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_documento'))."','$this->p01_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_nomedocumento"]) || $this->p01_nomedocumento != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,20302,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_nomedocumento'))."','$this->p01_nomedocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_usuario"]) || $this->p01_usuario != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1009504,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_usuario'))."','$this->p01_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_data"]) || $this->p01_data != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1009503,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_data'))."','$this->p01_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_procandamint"]) || $this->p01_procandamint != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1009502,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_procandamint'))."','$this->p01_procandamint',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_estorage"]) || $this->p01_estorage != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1010752,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_estorage'))."','$this->p01_estorage',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_assinado"]) || $this->p01_assinado != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1014380,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_assinado'))."','$this->p01_assinado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_assinado_por"]) || $this->p01_assinado_por != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1014381,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_assinado_por'))."','$this->p01_assinado_por',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_documento_hash"]) || $this->p01_documento_hash ) {
-                        $resac = db_query("insert into db_acount values($acount,3649,1014453,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_documento_hash'))."','$this->p01_documento_hash',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["p01_ordem"]) || $this->p01_ordem != "") {
-                        $resac = db_query("insert into db_acount values($acount,3649,1011248,'".AddSlashes(pg_result($resaco, $conresaco, 'p01_ordem'))."','$this->p01_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    }
-                }
-            }
-        }
         $result = db_query($sql);
         if (!$result) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
@@ -450,36 +382,7 @@ class cl_protprocessodocumento
         if (empty($p01_sequencial)) {
             throw new Exception('Campo p01_sequencial é obrigatório!');
         }
-        $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-        if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-        && ($lSessaoDesativarAccount === false))) {
-            if (empty($dbwhere)) {
-                $resaco = $this->sql_record($this->sql_query_file($p01_sequencial));
-            } else {
-                $resaco = $this->sql_record($this->sql_query_file(null, "*", null, $dbwhere));
-            }
-            if (($resaco != false) || ($this->numrows!=0)) {
-                for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-                    $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
-                    $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-                    $resac  = db_query("insert into db_acountkey values($acount,20296,'$p01_sequencial','E')");
-                    $resac  = db_query("insert into db_acount values($acount,3649,20296,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,20297,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,20298,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,20299,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,20302,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_nomedocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1009504,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1009503,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1009502,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_procandamint'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1010752,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_estorage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1014380,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_assinado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1014381,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_assinado_por'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1014453,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_documento_hash'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,3649,1011248,'','".AddSlashes(pg_result($resaco, $iresaco, 'p01_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                }
-            }
-        }
+
         $sql = " delete from protprocessodocumento
                     where ";
         $sql2 = "";

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,33 +46,33 @@ $clrotulo->label("o56_elemento");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc06_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Lpc06_codtipo,"js_pesquisapc06_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc06_codtipo',6,$Ipc06_codtipo,true,'text',$db_opcao," onchange='js_pesquisapc06_codtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('pc05_descr',40,$Ipc05_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-<?
+<?php
    if(isset($pc06_codtipo) && $pc06_codtipo!=""){
 ?>
   <tr>
     <td nowrap title="<?=@$Tpc06_codele?>">
-       <?
+       <?php
        db_ancora(@$Lpc06_codele,"js_pesquisapc06_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc06_codele',6,$Ipc06_codele,true,'text',$db_opcao," onchange='js_pesquisapc06_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',40,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -84,7 +84,7 @@ db_input('o56_elemento',40,$Io56_elemento,true,'text',3,'')
   </tr>
   <tr>
     <td colspan='2' align ='center'>
-<?  
+<?php  
       $chavepri= array("pc06_codtipo"=>$pc06_codtipo,"pc06_codele"=>@$pc06_codele);
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->sql     = $clpctipoelemento->sql_query(null,null,"pc06_codtipo,pc06_codele,o56_descr","pc06_codele","pc06_codtipo=$pc06_codtipo");
@@ -97,7 +97,7 @@ db_input('o56_elemento',40,$Io56_elemento,true,'text',3,'')
 ?>
     </td>
   </tr>
-<?
+<?php
    }else{
 ?>
     <tr>
@@ -106,7 +106,7 @@ db_input('o56_elemento',40,$Io56_elemento,true,'text',3,'')
       </td>
     </tr>  
     
-<?
+<?php
    }
 ?>
   </table>
@@ -164,7 +164,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pctipoelemento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

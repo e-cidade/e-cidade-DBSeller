@@ -178,7 +178,13 @@ class Database
      */
     public function connect()
     {
-        $this->oConnection = pg_connect(
+        /**
+         * adicionado operador de supressão para não exibir dados da base em produção.
+         * @todo achar uma alternativa melhor.
+         * Talvez seja interessante logar o erro completo?
+         * Mostrar o erro normalmente caso o .env esteja diferente de production?
+         */
+        $this->oConnection = @pg_connect(
             "host={$this->sServidor}
             port={$this->sPorta}
             dbname={$this->sBase}
@@ -251,7 +257,7 @@ class Database
         $oObject = pg_fetch_object($resource, $index);
 
         // Tratamento feito para não dar erro nos campos texto vazios que são not null
-        foreach ($oObject as &$mValue) {
+        foreach ($oObject as $mValue) {
             $mValue = trim($mValue);
         }
 
@@ -327,11 +333,14 @@ class Database
             $servidor = !empty($_COOKIE['DB_servidor']) ? $_COOKIE['DB_servidor'] : $database->getServidor();
             $base = !empty($_COOKIE['DB_base']) ? $_COOKIE['DB_base'] : $database->getBase();
             $porta = !empty($_COOKIE['DB_porta']) ? $_COOKIE['DB_porta'] : $database->getPorta();
-            $usuario =  empty($database->getUsuario()) ? self::USUARIO_PADRAO : $database->getUsuario();
+            $usuario = !empty($_COOKIE['DB_usuario']) ? base64_decode($_COOKIE['DB_usuario']) : $database->getUsuario();
+            $senha = !empty($_COOKIE['DB_senha']) ? base64_decode($_COOKIE['DB_senha']) : $database->getSenha();
+
             $database->setBase($base);
             $database->setServidor($servidor);
             $database->setPorta($porta);
-            $database->setUsuario($usuario);
+            $database->setUsuario(empty($usuario) ? self::USUARIO_PADRAO : $usuario);
+            $database->setSenha($senha);
         }
 
         if (is_null($conexao)) {

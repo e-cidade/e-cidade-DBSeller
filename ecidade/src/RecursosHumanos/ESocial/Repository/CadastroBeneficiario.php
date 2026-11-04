@@ -63,7 +63,6 @@ class CadastroBeneficiario extends \BaseClassRepository
            * Buscamos todas as matriculas que possuem a situacao do vinculo do regime aposentado/inativo ou pensionista
            * e que nao possuem rescisao
            */
-            
             //validacao regime
             $where  = " rhregime.rh30_vinculo in ('I','P') ";
             
@@ -112,15 +111,10 @@ class CadastroBeneficiario extends \BaseClassRepository
                * Verificamos se a matricula informada eh aposentado ou pensionista e não possui rescisao
                */
                 $clRegime = new \cl_rhregime();
-              
-                //validacao regime
+
                 $where  = " rhregime.rh30_codreg = {$servidor->getCodigoRegime()} ";
                 $where .= " AND rhregime.rh30_vinculo in ('I','P')";
-                
-                //validacao da rescisao
-                $where .= " AND not exists (select 1 ";
-                $where .= "                   from rhpesrescisao ";
-                $where .= "                  where rh05_seqpes = {$servidor->getCodigoMovimentacao()}) ";
+                           
                 $rsRegime = $clRegime->sql_record($clRegime->sql_query_file(null, "rh30_codreg", null, $where));
                 if ($clRegime->numrows == 0) {
                     continue;

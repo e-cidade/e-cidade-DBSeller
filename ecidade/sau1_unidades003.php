@@ -76,7 +76,7 @@ $db_botao = true;
 </html>
 <?php
 if(isset($chavepesquisa)){
-  ?><script>iframe_dados.location.href = "sau1_unidades004.php?chavepesquisa=<?=$sd02_i_numcgm?>";</script><?
+  ?><script>iframe_dados.location.href = "sau1_unidades004.php?chavepesquisa=<?=$sd02_i_numcgm?>";</script><?php
 }
 if (isset($excluir)) {
 

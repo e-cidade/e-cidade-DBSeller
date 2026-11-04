@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -80,8 +80,9 @@ foreach ($aTurmas as $oTurma) {
   $oDadosTurma->iTotalHorasAula = 0;
 
   foreach ($oTurma->getDisciplinas() as $oRegencia) {
-    $oDadosTurma->iTotalAulas += $oRegencia->getTotalDeAulas();
-    $oDadosTurma->iTotalHorasAula += $oRegencia->getTotalHorasAula();
+    $oPeriodo = PeriodoAvaliacaoRepository::getPeriodoAvaliacaoByCodigo($oGet->iPeriodo);
+    $oDadosTurma->iTotalAulas += $oRegencia->getTotalDeAulasNoPeriodo($oPeriodo);
+    $oDadosTurma->iTotalHorasAula += $oRegencia->getTotalHorasAula($oPeriodo);
   }
 
   /**
@@ -103,8 +104,9 @@ foreach ($aTurmas as $oTurma) {
 
     foreach ($oDiario->getDisciplinas() as $oDiarioAvaliacaoDisciplina) {
 
-      $oAluno->iTotalFaltas   += $oDiarioAvaliacaoDisciplina->getTotalFaltas();
-      $oAluno->iTotalAbonadas += $oDiarioAvaliacaoDisciplina->getTotalFaltasAbonadas();
+      $oPeriodo = PeriodoAvaliacaoRepository::getPeriodoAvaliacaoByCodigo($oGet->iPeriodo);
+      $oAluno->iTotalFaltas   += $oDiarioAvaliacaoDisciplina->getTotalFaltasPorPeriodo($oPeriodo);
+      $oAluno->iTotalAbonadas += $oDiarioAvaliacaoDisciplina->getTotalFaltasAbonadasPorPeriodo($oPeriodo);
     }
 
     if ($oDadosTurma->iTotalAulas == 0) {
@@ -113,9 +115,10 @@ foreach ($aTurmas as $oTurma) {
       $nPercentualFrequencia = "";
     } else {
 
-      $iTotalFaltas              = $oAluno->iTotalFaltas - $oAluno->iTotalAbonadas;
-      $nPercentualFaltas         = ArredondamentoFrequencia::arredondar(($iTotalFaltas * 100) / $oDadosTurma->iTotalAulas, $oDadosTurma->iAno);
-      $nPercentualFrequencia     = ArredondamentoFrequencia::formatar(100 - $nPercentualFaltas, $oDadosTurma->iAno);
+      $iTotalFaltas                    = $oAluno->iTotalFaltas - $oAluno->iTotalAbonadas;
+      $nPercentualFaltasNaoArredondado = ($iTotalFaltas * 100) / $oDadosTurma->iTotalAulas;
+      $nPercentualFrequencia           = ArredondamentoFrequencia::formatar(100 - $nPercentualFaltasNaoArredondado, $oDadosTurma->iAno);
+      $nPercentualFaltas               = 100 - $nPercentualFrequencia;
     }
     $oAluno->nPercentualFrequencia = "{$nPercentualFrequencia}";
     $oAluno->nPercentualFaltas     = "{$nPercentualFaltas}";
@@ -146,6 +149,8 @@ foreach ($aTurmaProcessada as $oTurma) {
   $head3 = "Curso: {$oTurma->sCurso}";
   $head4 = "Etapa: {$oTurma->sEtapa}";
   $head5 = "Turma: {$oTurma->sTurma}";
+  $head6 = "Período: ".utf8_decode($oGet->oPeriodo);
+  $head7 = "Aulas Dadas / Dias Letivos: {$oTurma->iTotalAulas}";
 
   foreach ($oTurma->aAlunos as $oAluno) {
 
@@ -186,7 +191,6 @@ foreach ($aTurmaProcessada as $oTurma) {
 
   $lPrimeiraVolta = true;
 }
-//die("fim");
 
 $oPdf->Output();
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_fiscalbaixaproc {
                  y48_codproc = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalbaixaproc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalbaixaproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_fiscalbaixaproc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y48_codnoti = ($this->y48_codnoti == ""?@$GLOBALS["HTTP_POST_VARS"]["y48_codnoti"]:$this->y48_codnoti);
        $this->y48_codproc = ($this->y48_codproc == ""?@$GLOBALS["HTTP_POST_VARS"]["y48_codproc"]:$this->y48_codproc);
@@ -74,7 +74,7 @@ class cl_fiscalbaixaproc {
      }
    }
    // funcao para inclusao
-   function incluir ($y48_codnoti){ 
+   public function incluir ($y48_codnoti){ 
       $this->atualizacampos();
      if($this->y48_codproc == null ){ 
        $this->erro_sql = " Campo Código do processo nao Informado.";
@@ -138,7 +138,7 @@ class cl_fiscalbaixaproc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y48_codnoti=null) { 
+   public function alterar ($y48_codnoti=null) { 
       $this->atualizacampos();
      $sql = " update fiscalbaixaproc set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_fiscalbaixaproc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y48_codnoti=null,$dbwhere=null) { 
+   public function excluir ($y48_codnoti=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y48_codnoti));
      }else{ 
@@ -280,7 +280,7 @@ class cl_fiscalbaixaproc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

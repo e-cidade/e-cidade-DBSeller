@@ -10,10 +10,10 @@ class Dia extends AgataCore
         $this->agataTbLinks = $agataTbLinks;
         $this->project = $project;
         $this->posAction = $posAction;
-        
+
         $this->ProcessDia();
     }
-    
+
     function CheckColumn($column, $aColumns, $LineDistance)
     {
         $a = $column - 0.1;
@@ -24,11 +24,11 @@ class Dia extends AgataCore
         }
         return $column;
     }
-    
+
     function ProcessDia()
     {
         $DiaSoft = 'dia';
-        
+
         $FileName = $this->FileName;
         $aTables  = $this->aTables;
         $project  = $this->project;
@@ -37,14 +37,14 @@ class Dia extends AgataCore
         $ColumnDistance = $this->agataConfig['dia']['ColumnDistance'];
         $LevelDistance = $this->agataConfig['dia']['LevelDistance'];
         $TableOffSet = $this->agataConfig['dia']['TableOffSet'];
-        
+
         $fd = fopen($FileName, "w");
         if (!$fd)
         {
             new Dialog(_a('File Error'));
             return false;
         }
-        
+
         $fx = fopen('include/dia.template','r');
         while (!feof ($fx))
         {
@@ -84,7 +84,7 @@ class Dia extends AgataCore
         fwrite($fd, "        </dia:composite>\n");
         fwrite($fd, "      </dia:attribute>\n");
         fwrite($fd, "    </dia:object>\n");
-        
+
         $x = (int) count($aTables)/$levels;
         $a = 0;
         $b = 0;
@@ -96,7 +96,7 @@ class Dia extends AgataCore
             $conn = new AgataConnection;
             $conn->Open($this->agataDB);
             $Fields = $conn->LoadFields($table);
-            
+
             $compl = $conn->ShortQuery();
             $query = $conn->CreateQuery("select * from $table $compl");
             $ColumnTypes = $query->GetColumnTypes();
@@ -114,7 +114,7 @@ class Dia extends AgataCore
             $ColumnTypes = $Vector[2];
             $count = $Vector[3];
             $aResult[] = $table;
-            
+
             for ($levelcount=1; $levelcount<=$levels; $levelcount ++)
             {
                 if (($lin > ($levelcount * $x)) && (!$passed[$levelcount]))
@@ -132,7 +132,7 @@ class Dia extends AgataCore
             //$lines[$table] =  $count + 4;
             $ids[$table] = $lin;
             $points[$table] = array($a,  $b);
-            
+
             fwrite($fd, "    <dia:object type=\"UML - Class\" version=\"0\" id=\"$lin\">\n");
             fwrite($fd, "      <dia:attribute name=\"obj_pos\">\n");
             fwrite($fd, "        <dia:point val=\"$a,$b\"/>\n");
@@ -168,7 +168,7 @@ class Dia extends AgataCore
             fwrite($fd, "        <dia:color val=\"#ffffff\"/>\n");
             fwrite($fd, "      </dia:attribute>\n");
             fwrite($fd, "      <dia:attribute name=\"attributes\">\n");
-            
+
             $lin ++;
             $a += $ColumnDistance;
             $FieldNumber = 0;
@@ -180,7 +180,7 @@ class Dia extends AgataCore
                     $Type = $ColumnTypes[$FieldNumber];
                     $fieldcount[$table][$Field] = $FieldNumber;
                     $FieldNumber ++;
-                    
+
                     fwrite($fd,   "        <dia:composite type=\"umlattribute\">\n");
                     fwrite($fd,   "          <dia:attribute name=\"name\">\n");
                     fwrite($fd,   "            <dia:string>#". $Field ."#</dia:string>\n");
@@ -203,7 +203,7 @@ class Dia extends AgataCore
                     fwrite($fd,   "        </dia:composite>\n");
                 }
             }
-            
+
             fwrite($fd,     "      </dia:attribute>\n");
             fwrite($fd,     "      <dia:attribute name=\"operations\"/>\n");
             fwrite($fd,     "      <dia:attribute name=\"template\">\n");
@@ -217,7 +217,7 @@ class Dia extends AgataCore
         $ids[$table] = $lin;
         $points[$table] = array($a,  $b);
         */
-        
+
         if ($this->agataConfig['dia']['ShowLines'])
         {
             $assoc = $lin+1;
@@ -240,13 +240,13 @@ class Dia extends AgataCore
                                 $table2 = $link[0];
                                 $field2 = $link[1];
                                 $text = $table . '.'. $field . ' = '. $table2 . '.'. $field2;
-                                
+
                                 $a = $points[$table][0];
                                 $b = $points[$table][1] + ($fieldcount[$table][$field] * (0.8)) + 1.9;
-                                
+
                                 $c = $points[$table2][0];
                                 $d = $points[$table2][1] + ($fieldcount[$table2][$field2] * (0.8)) + 1.9;
-                                
+
                                 $linkcount[$table] ++;
                                 $conna = 8 + ($fieldcount[$table][$field] * 2);
                                 $connb = 8 + ($fieldcount[$table2][$field2] * 2);
@@ -259,20 +259,20 @@ class Dia extends AgataCore
                                 $columns["$c1"] = true;
                                 $columns["$c2"] = true;
 
-                                $a = ereg_replace(',','\.',  $a);
-                                $b = ereg_replace(',','\.',  $b);
-                                $d = ereg_replace(',','\.',  $d);
-                                $c1 = ereg_replace(',','\.', $c1);
-                                $c2 = ereg_replace(',','\.', $c2);
-                                $line = ereg_replace(',','\.', $line);
+                                $a = preg_replace(',','\.',  $a);
+                                $b = preg_replace(',','\.',  $b);
+                                $d = preg_replace(',','\.',  $d);
+                                $c1 = preg_replace(',','\.', $c1);
+                                $c2 = preg_replace(',','\.', $c2);
+                                $line = preg_replace(',','\.', $line);
 
                                 $tmp1 = $lines[$table];
-                                $tmp2 = $lines[$table2];                                                                                                      
+                                $tmp2 = $lines[$table2];
 
                                 $line = max($tmp1, $tmp2);
                                 $add[$line] += $LineDistance;
                                 $line += $add[$line];
-                                
+
                                 fwrite($fd,     "      <dia:object type=\"Standard - ZigZagLine\" version=\"0\" id=\"$assoc\">\n");
                                 fwrite($fd,     "        <dia:attribute name=\"obj_pos\">\n");
                                 fwrite($fd,     "          <dia:point val=\"$a,$b\"/>\n");
@@ -353,7 +353,7 @@ class Dia extends AgataCore
         }
         fwrite($fd,   "  </dia:layer>\n");
         fwrite($fd, "</dia:diagram>\n");
-        
+
         fclose($fd);
         if ($this->posAction)
         {
@@ -361,9 +361,9 @@ class Dia extends AgataCore
             $att = $this->posAction[1];
             $obj->{$att}();
         }
-        
+
         Project::OpenReport($FileName, $this->agataConfig);
-        
+
         return true;
     }
 }

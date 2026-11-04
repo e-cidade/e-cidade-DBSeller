@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -40,7 +40,7 @@ $clcgm = new cl_cgm;
 $clcgm->rotulo->label("z01_nome");
 ?>
 <html>
-	
+
 <head>
 <title>DBSeller Inform&aacute;tica Ltda</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -49,10 +49,10 @@ $clcgm->rotulo->label("z01_nome");
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?if(!isset($pop)){?>
+<?php if(!isset($pop)){?>
  <br>
-<?}?>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php } ?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <form name="form1" method="post">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
@@ -66,7 +66,7 @@ $clcgm->rotulo->label("z01_nome");
     <tr>
      <td nowrap>
       <b>Digite o(s) termo(s) para consulta:</b>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"");?>
       <input name="pesquisar" type="submit" value="Pesquisar">
      </td>
     </tr>
@@ -74,33 +74,33 @@ $clcgm->rotulo->label("z01_nome");
      <td nowrap>
       <b>Filtrar por Tipo:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <!--<input type="radio" name="filtro" value="" <?=@$filtro==""?"checked":""?>>TODOS-->
-      <?
+      <?php
      $result = $cltipoitem->sql_record($cltipoitem->sql_query("","*","",""));
 	  db_selectrecord("bi05_nome",$result,"","","","","","0 - TODAS","",1);
 	  ?>
-      <?if(isset($pop)){?>
+      <?php if(isset($pop)){?>
        <input type="hidden" name="pop" value="">
-      <?}?>
+      <?php } ?>
      </td>
     </tr>
     <tr>
      <td nowrap>
       <b>Filtrar por Classe:</b>
       <!--<input type="radio" name="filtro2" value="" <?=@$filtro2==""?"checked":""?>>TODAS-->
-      <?
+      <?php
       $result = $clclassiliteraria->sql_record($clclassiliteraria->sql_query("","*","",""));
 	  db_selectrecord("bi03_classificacao",$result,"","","","","","0 - TODAS","",1);
 	  ?>
-      <?if(isset($pop)){?>
+      <?php if(isset($pop)){?>
        <input type="hidden" name="pop" value="">
-      <?}?>
+      <?php } ?>
      </td>
     </tr>
    </table>
    <table width="100%">
     <tr>
      <td align="center" colspan="3">
-      <?
+      <?php
        include(modification("bib3_assunto002.php"));
       ?>
      </td>
@@ -114,7 +114,7 @@ $clcgm->rotulo->label("z01_nome");
 <script>
 document.form1.z01_nome.focus();
 </script>
-<?
+<?php
 if(!isset($pop)){
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }

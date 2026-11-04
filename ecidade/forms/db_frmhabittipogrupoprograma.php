@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $clhabittipogrupoprograma->rotulo->label();
       <b>Código:</b>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ht02_sequencial',10,$Iht02_sequencial,true,'text',3,"");
 			?>
     </td>
@@ -47,7 +47,7 @@ $clhabittipogrupoprograma->rotulo->label();
       <?=@$Lht02_descricao?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ht02_descricao',52,$Iht02_descricao,true,'text',3,"");
 			?>
     </td>
@@ -59,7 +59,7 @@ $clhabittipogrupoprograma->rotulo->label();
       <table>
 			  <tr>
 			    <td nowrap title="<?=@$Tht02_obs?>"> 
-			      <?
+			      <?php
 			        db_textarea('ht02_obs',8,60,$Iht02_obs,true,'text',3,"");
 			      ?>
 			    </td>
@@ -77,7 +77,7 @@ $clhabittipogrupoprograma->rotulo->label();
 				      <?=@$Lht02_datainicial?>
 				    </td>
 				    <td> 
-				      <?
+				      <?php
 				        db_inputdata('ht02_datainicial',@$ht02_datainicial_dia,@$ht02_datainicial_mes,@$ht02_datainicial_ano,true,'text',3,"");
 				      ?>
 				    </td>
@@ -85,7 +85,7 @@ $clhabittipogrupoprograma->rotulo->label();
 				       <?=@$Lht02_datafinal?>
 				    </td>
 				    <td> 
-				      <?
+				      <?php
 				        db_inputdata('ht02_datafinal',@$ht02_datafinal_dia,@$ht02_datafinal_mes,@$ht02_datafinal_ano,true,'text',3,"");
 				      ?>
 				    </td>
@@ -117,7 +117,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_habittipogrupoprograma.hide();
-  <?
+  <?php
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

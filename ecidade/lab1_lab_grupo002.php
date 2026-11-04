@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -147,13 +147,26 @@ db_postmemory($HTTP_POST_VARS);
         const btnAdicionar = document.getElementById('btn-adicionar');
         const btnVoltar = document.getElementById('btn-voltar');
 
+        inputCodigoSetor.addEventListener('change', (events) =>{
+            if(inputCodigoSetor.value.length == 0){                
+                lookupExame.setParametrosAdicionais(['la24_i_setor=']);
+            }
+        });
+
+        inputCodigoExame.addEventListener('change', (events) =>{
+            if(inputCodigoExame.value.length == 0){                
+                lookupSetor.setParametrosAdicionais(['exames=']);
+            }
+        });
+
         var table = jQuery('#data-table');
 
-        const lookupExame = new DBLookUp(ancoraExame, inputCodigoExame, inputDescricaoExame, {
+        const lookupExame = new DBLookUp(ancoraExame, inputCodigoExame, inputDescricaoExame, {                        
             'sArquivo': 'func_lab_exame.php',
+            'sQueryString':'&la02_i_codigo='+inputCodigoLaboratorio.value,
             'sLabel': 'Pesquisar Exame',
             'sObjetoLookUp': "db_iframe_lab_exame",
-            'fCallBack': (codigoSelecionado, descricao, codigo) => {
+            'fCallBack': (codigoSelecionado, descricao, codigo) => {                                
                 if(!codigo){
                     codigo = codigoSelecionado;
                 }
@@ -168,15 +181,17 @@ db_postmemory($HTTP_POST_VARS);
                             return false;
                         }
                     }
-                }
+                } 
+                lookupSetor.setParametrosAdicionais(['exames='+codigo]);               
             }
         });
 
-        new DBLookUp(ancoraSetor, inputCodigoSetor, inputDescricaoSetor, {
+        const lookupSetor = new DBLookUp(ancoraSetor, inputCodigoSetor, inputDescricaoSetor, {
             'sArquivo': 'func_lab_setor.php',
+            'sQueryString':'&laboratorio='+inputCodigoLaboratorio.value,
             'sLabel': 'Pesquisar Setor',
             'sObjetoLookUp': "db_iframe_lab_setor",
-            'fCallBack': (codigoSelecionado, descricao, codigo) => {
+            'fCallBack': (codigoSelecionado, descricao, codigo) => {            
                 if(!codigo){
                     codigo = codigoSelecionado;
                 }
@@ -195,7 +210,7 @@ db_postmemory($HTTP_POST_VARS);
                         }
                     }
                 }
-                lookupExame.setParametrosAdicionais(['la24_i_setor='+codigo,'la02_i_codigo='+inputCodigoLaboratorio.value]);
+                lookupExame.setParametrosAdicionais(['la24_i_setor='+codigo]);
             }
         });
 

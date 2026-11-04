@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
 	   $clcriaabas->identifica = array("db_almox"=>"Almoxarifado","db_almoxdepto"=>"Departamentos");
 	   $clcriaabas->sizecampo  = array("db_almox"=>"20","db_almoxdepto"=>"20");
 	   $clcriaabas->title      = array("db_almox"=>"Almoxarifado","db_almoxdepto"=>"Departamentos");
@@ -67,7 +67,7 @@ $db_opcao = 1;
       </tr>
     </table>
     </form>
-	<? 
+	<?php 
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
     </body>

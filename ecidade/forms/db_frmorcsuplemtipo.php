@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,25 +41,25 @@ $clrotulo->label("c53_descr");
   <tr>
     <td nowrap title="<?=@$To48_tiposup?>"> <?=@$Lo48_tiposup?>
     </td>
-    <td><? db_input('o48_tiposup',4,$Io48_tiposup,true,'text',$db_opcao,"") ?></td>
+    <td><?php db_input('o48_tiposup',4,$Io48_tiposup,true,'text',$db_opcao,"") ?></td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_descr?>"><?=@$Lo48_descr?> </td>
-    <td><? db_input('o48_descr',60,$Io48_descr,true,'text',$db_opcao,"") ?></td>
+    <td><?php db_input('o48_descr',60,$Io48_descr,true,'text',$db_opcao,"") ?></td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_coddocsup?>">
-     <?    db_ancora(@$Lo48_coddocsup,"js_pesquisao48_coddocsup(true);",$db_opcao);   ?>
+     <?php    db_ancora(@$Lo48_coddocsup,"js_pesquisao48_coddocsup(true);",$db_opcao);   ?>
     </td>
     <td> 
-       <? db_input('o48_coddocsup',4,$Io48_coddocsup,true,'text',$db_opcao," onchange='js_pesquisao48_coddocsup(false);'")?>
-       <? db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')  ?>
+       <?php db_input('o48_coddocsup',4,$Io48_coddocsup,true,'text',$db_opcao," onchange='js_pesquisao48_coddocsup(false);'")?>
+       <?php db_input('c53_descr',50,$Ic53_descr,true,'text',3,'')  ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_coddocred?>"><?=@$Lo48_coddocred?> </td>
     <td>
-      <? db_input('o48_coddocred',7,$Io48_coddocred,true,'text',$db_opcao,"")?> 
+      <?php db_input('o48_coddocred',7,$Io48_coddocred,true,'text',$db_opcao,"")?> 
        * habilita a Aba de Reduções
     </td>
   </tr>
@@ -68,7 +68,7 @@ $clrotulo->label("c53_descr");
        <?=@$Lo48_arrecadmaior?>
     </td>
     <td>
-     <? db_input('o48_arrecadmaior',7,$Io48_arrecadmaior,true,'text',$db_opcao,"")?>
+     <?php db_input('o48_arrecadmaior',7,$Io48_arrecadmaior,true,'text',$db_opcao,"")?>
       *habilita a Aba de Receitas
     
     </td>
@@ -78,7 +78,7 @@ $clrotulo->label("c53_descr");
        <?=@$Lo48_suplcreditoespecial?>
     </td>
     <td>
-     <? db_input('o48_suplcreditoespecial',7,$Io48_suplcreditoespecial,true,'text',$db_opcao,"")?>
+     <?php db_input('o48_suplcreditoespecial',7,$Io48_suplcreditoespecial,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -86,12 +86,12 @@ $clrotulo->label("c53_descr");
        <?=@$Lo48_redcreditoespecial?>
     </td>
     <td>
-     <? db_input('o48_redcreditoespecial',7,$Io48_redcreditoespecial,true,'text',$db_opcao,"")?>
+     <?php db_input('o48_redcreditoespecial',7,$Io48_redcreditoespecial,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_superavit?>"><?=@$Lo48_superavit?></td>
-    <td><?  $x = array("f"=>"NAO","t"=>"SIM");
+    <td><?php  $x = array("f"=>"NAO","t"=>"SIM");
             db_select('o48_superavit',$x,true,$db_opcao,"");
         ?>
     </td>
@@ -134,7 +134,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcsuplemtipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

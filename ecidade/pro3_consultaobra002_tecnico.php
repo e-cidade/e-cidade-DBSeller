@@ -86,7 +86,7 @@ if($oDaoObrasTecnicos->numrows > 0){
 	    </tr>
 	  </table> 
 	</fieldset>
-  <?     
+  <?php     
 
   /**
    * Se não existir técnico
@@ -113,7 +113,7 @@ function js_mostracgm(){
     func_nome.focus();
 }
 </script>
-<?
+<?php
 	$func_nome                  = new janela('func_nome', '');
 	$func_nome->posX            = 0;
 	$func_nome->posY            = 0;

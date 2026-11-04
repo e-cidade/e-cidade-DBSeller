@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ function js_atualiza2(qual){
            <td align="right" nowrap title="<?=@$Tk17_codigo?>"><?=@$Lk17_codigo?> </td>
             <td>
 			<input name="numslip" type="text" id="numslip" readonly value="<?=$numslip?>" size="10" >
-<?
+<?php
             $result = $clempageslip->sql_record(
                       $clempageslip->sql_query_configura(
                                                          null,
@@ -99,17 +99,17 @@ function js_atualiza2(qual){
 ?>
 			
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-              <?
+              <?php
 			   if($k17_autent>0){
 			   ?>
               <font color="#FF0000">Slip Já Autenticado</font> 
-              <?
+              <?php
 			   }
 			  ?>
             </td>
           </tr>
 
-           <?
+           <?php
 	     if($k17_autent>0){
 	      
   	        echo "<tr>"; 	 
@@ -128,11 +128,11 @@ function js_atualiza2(qual){
            <td align="right" nowrap title="<?=@$Tk17_debito?>"><?=@$Lk17_debito?> </td>
             <td> 
 
- 			<?
+ 			<?php
 			  if($debito==0 || $debito == ""){
 			    ?>
                 <select onChange="js_atualiza1(this.name)" name="debito" id="debito">
-                <?
+                <?php
 				    for($i=0;$i<pg_numrows($result_conta1);$i++){
 	                  db_fieldsmemory($result_conta1,$i,true,true);
   	                  echo "<option value=\"$c61_reduz\" ".(isset($debito)?($debito==$c61_reduz?"selected":""):"").">$c61_reduz</option>";
@@ -141,30 +141,30 @@ function js_atualiza2(qual){
               </select>
               &nbsp;&nbsp; 
               <select onChange="js_atualiza1(this.name)" name="descr_debito" id="descr_debito"> 
-              <?
+              <?php
  				    for($i=0;$i<pg_numrows($result_conta1);$i++){
 	                  db_fieldsmemory($result_conta1,$i);
   	                  echo "<option value=\"$c61_reduz\" ".(isset($debito)?($debito==$c61_reduz?"selected":""):"").">$c60_descr</option>";
 		            }
                     ?></select>
-            <?
+            <?php
 			}else{
 			?>
 			<input name="debito" type="text" id="debito" value="<?=$debito?>" size="4" maxlength="10" readonly>
             &nbsp;&nbsp; 
             <input name="descr_debito" type="text" readonly id="descr_debito" value="<?=$descr_debito?>" size="40"></td>
-            <?
+            <?php
 			}
 			?>
           </tr>
           <tr> 
            <td align="right" nowrap title="<?=@$Tk17_credito?>"><?=@$Lk17_credito?> </td>
             <td>
- 			<?
+ 			<?php
 			  if($credito==0 || $credito == ""){
 			    ?>
    			      <select onChange="js_atualiza2(this.name)" name="credito" id="credito">
-                  <?
+                  <?php
  				     for($i=0;$i<pg_numrows($result_conta2);$i++){
 	                     db_fieldsmemory($result_conta2,$i);
   	                     echo "<option value=\"$k13_reduz\" ".(isset($credito)?($credito==$c01_reduz?"selected":""):"").">$k13_reduz</option>";
@@ -173,19 +173,19 @@ function js_atualiza2(qual){
                    </select>
                    &nbsp;&nbsp; 
 				   <select onChange="js_atualiza2(this.name)" <?=$read_only?> name="descr_credito" id="descr_credito">
-				   <?
+				   <?php
  				   for($i=0;$i<pg_numrows($result_conta2);$i++){
 	                  db_fieldsmemory($result_conta2,$i);
   	                  echo "<option value=\"$k13_reduz\" ".(isset($credito)?($credito==$k13_reduz?"selected":""):"").">$k13_descr</option>";
 		           }
                    ?>
                    </select>
-			  <?
+			  <?php
 			  }else{
               ?>
 			    <input name="credito" type="text" id="credito2" value="<?=$credito?>" size="4" maxlength="10" readonly> &nbsp;&nbsp; 
                 <input name="descr_credito" type="text" id="descr_credito" readonly value="<?=$descr_credito?>" size="40"> 
-			  <?
+			  <?php
 			  }
 			  ?>
              </td>
@@ -210,7 +210,7 @@ function js_atualiza2(qual){
             <td height="85" align="right" valign="top" nowrap title="<?=@$Tk17_texto?>"><?=@$Lk17_texto?> </td>
             <td align="left" valign="top"><textarea name="texto" readonly cols="60" rows="8" id="texto"><?=$k17_texto?></textarea></td>
           </tr>
-          <? 
+          <?php 
            if ($k17_autent != 0 && (isset($e86_codmov) and $e86_codmov != "")) {
              
              echo "<tr>";
@@ -223,7 +223,7 @@ function js_atualiza2(qual){
           
           
           <tr align="center"> 
-            <?
+            <?php
 	      // echo($clempageslip->sql_query_file(null,$numslip,"e89_codmov as movimento"));
 	      $resulttranca = $clempageslip->sql_record($clempageslip->sql_query_slip(null,null,"e89_codmov as movimento", null, " e80_instit = " . db_getsession("DB_instit") . " and e89_codigo = $numslip"));
 	      $mensagem_agenda = "";
@@ -242,11 +242,11 @@ function js_atualiza2(qual){
         </fieldset>
         </td>
           </tr>
-          <?
+          <?php
           if($k17_autent==0){
       ?>
             <td colspan="2" valign="top" style='text-align:center'>
-         <?
+         <?php
          if(trim($mensagem_agenda)!=""){
           echo $mensagem_agenda;
          }
@@ -257,11 +257,11 @@ function js_atualiza2(qual){
             &nbsp;&nbsp;&nbsp;
                <input name="Imprime" type="button" id="imprime" onclick="window.open('cai1_slip003.php?<?=base64_encode(db_getsession()."&numslip=".$numslip)?>','','location=0')" value="Imprime">
       </td>
-      <?
+      <?php
        } else{
       ?>
             <td colspan="2" valign="top" nowrap style='text-align:center'>
-         <?
+         <?php
          if(trim($mensagem_agenda)!=""){
           echo $mensagem_agenda;
          }
@@ -272,7 +272,7 @@ function js_atualiza2(qual){
             &nbsp;&nbsp;&nbsp;
               <input name="Imprime" type="button" id="imprime" onclick="window.open('cai1_slip003.php?<?=base64_encode(db_getsession()."&numslip=".$numslip)?>','','location=0')" value="Imprime">
       </td>
-      <?
+      <?php
       }
       ?>
           </tr>

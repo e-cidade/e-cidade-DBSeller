@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orcprevdesp
-class cl_orcprevdesp { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o35_anousu = 0; 
-   var $o35_projativ = 0; 
-   var $o35_codigo = 0; 
-   var $o35_mes = 0; 
-   var $o35_perc = 0; 
-   var $o35_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orcprevdesp {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o35_anousu = 0;
+   var $o35_projativ = 0;
+   var $o35_codigo = 0;
+   var $o35_mes = 0;
+   var $o35_perc = 0;
+   var $o35_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o35_anousu = int4 = Exercício 
-                 o35_projativ = int4 = Projetos / Atividades 
-                 o35_codigo = int4 = Recurso 
-                 o35_mes = int4 = Mês 
-                 o35_perc = float8 = Percentual 
-                 o35_valor = float8 = Valor 
+                 o35_anousu = int4 = Exercício
+                 o35_projativ = int4 = Projetos / Atividades
+                 o35_codigo = int4 = Recurso
+                 o35_mes = int4 = Mês
+                 o35_perc = float8 = Percentual
+                 o35_valor = float8 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_orcprevdesp() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orcprevdesp"); 
+     $this->rotulo = new rotulo("orcprevdesp");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_orcprevdesp {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o35_anousu = ($this->o35_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["o35_anousu"]:$this->o35_anousu);
        $this->o35_projativ = ($this->o35_projativ == ""?@$GLOBALS["HTTP_POST_VARS"]["o35_projativ"]:$this->o35_projativ);
@@ -89,9 +89,9 @@ class cl_orcprevdesp {
      }
    }
    // funcao para inclusao
-   function incluir ($o35_anousu,$o35_projativ,$o35_codigo,$o35_mes){ 
+   public function incluir ($o35_anousu,$o35_projativ,$o35_codigo,$o35_mes){
       $this->atualizacampos();
-     if($this->o35_perc == null ){ 
+     if($this->o35_perc == null ){
        $this->erro_sql = " Campo Percentual nao Informado.";
        $this->erro_campo = "o35_perc";
        $this->erro_banco = "";
@@ -100,7 +100,7 @@ class cl_orcprevdesp {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o35_valor == null ){ 
+     if($this->o35_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "o35_valor";
        $this->erro_banco = "";
@@ -109,11 +109,11 @@ class cl_orcprevdesp {
        $this->erro_status = "0";
        return false;
      }
-       $this->o35_anousu = $o35_anousu; 
-       $this->o35_projativ = $o35_projativ; 
-       $this->o35_codigo = $o35_codigo; 
-       $this->o35_mes = $o35_mes; 
-     if(($this->o35_anousu == null) || ($this->o35_anousu == "") ){ 
+       $this->o35_anousu = $o35_anousu;
+       $this->o35_projativ = $o35_projativ;
+       $this->o35_codigo = $o35_codigo;
+       $this->o35_mes = $o35_mes;
+     if(($this->o35_anousu == null) || ($this->o35_anousu == "") ){
        $this->erro_sql = " Campo o35_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,7 +121,7 @@ class cl_orcprevdesp {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->o35_projativ == null) || ($this->o35_projativ == "") ){ 
+     if(($this->o35_projativ == null) || ($this->o35_projativ == "") ){
        $this->erro_sql = " Campo o35_projativ nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,7 +129,7 @@ class cl_orcprevdesp {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->o35_codigo == null) || ($this->o35_codigo == "") ){ 
+     if(($this->o35_codigo == null) || ($this->o35_codigo == "") ){
        $this->erro_sql = " Campo o35_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -137,7 +137,7 @@ class cl_orcprevdesp {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->o35_mes == null) || ($this->o35_mes == "") ){ 
+     if(($this->o35_mes == null) || ($this->o35_mes == "") ){
        $this->erro_sql = " Campo o35_mes nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -146,23 +146,23 @@ class cl_orcprevdesp {
        return false;
      }
      $sql = "insert into orcprevdesp(
-                                       o35_anousu 
-                                      ,o35_projativ 
-                                      ,o35_codigo 
-                                      ,o35_mes 
-                                      ,o35_perc 
-                                      ,o35_valor 
+                                       o35_anousu
+                                      ,o35_projativ
+                                      ,o35_codigo
+                                      ,o35_mes
+                                      ,o35_perc
+                                      ,o35_valor
                        )
                 values (
-                                $this->o35_anousu 
-                               ,$this->o35_projativ 
-                               ,$this->o35_codigo 
-                               ,$this->o35_mes 
-                               ,$this->o35_perc 
-                               ,$this->o35_valor 
+                                $this->o35_anousu
+                               ,$this->o35_projativ
+                               ,$this->o35_codigo
+                               ,$this->o35_mes
+                               ,$this->o35_perc
+                               ,$this->o35_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Previsão da despesa ($this->o35_anousu."-".$this->o35_projativ."-".$this->o35_codigo."-".$this->o35_mes) nao Incluído. Inclusao Abortada.";
@@ -202,16 +202,16 @@ class cl_orcprevdesp {
        $resac = db_query("insert into db_acount values($acount,1483,8696,'','".AddSlashes(pg_result($resaco,0,'o35_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null) { 
+   public function alterar ($o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null) {
       $this->atualizacampos();
      $sql = " update orcprevdesp set ";
      $virgula = "";
-     if(trim($this->o35_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_anousu"])){ 
+     if(trim($this->o35_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_anousu"])){
        $sql  .= $virgula." o35_anousu = $this->o35_anousu ";
        $virgula = ",";
-       if(trim($this->o35_anousu) == null ){ 
+       if(trim($this->o35_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o35_anousu";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_orcprevdesp {
          return false;
        }
      }
-     if(trim($this->o35_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_projativ"])){ 
+     if(trim($this->o35_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_projativ"])){
        $sql  .= $virgula." o35_projativ = $this->o35_projativ ";
        $virgula = ",";
-       if(trim($this->o35_projativ) == null ){ 
+       if(trim($this->o35_projativ) == null ){
          $this->erro_sql = " Campo Projetos / Atividades nao Informado.";
          $this->erro_campo = "o35_projativ";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_orcprevdesp {
          return false;
        }
      }
-     if(trim($this->o35_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_codigo"])){ 
+     if(trim($this->o35_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_codigo"])){
        $sql  .= $virgula." o35_codigo = $this->o35_codigo ";
        $virgula = ",";
-       if(trim($this->o35_codigo) == null ){ 
+       if(trim($this->o35_codigo) == null ){
          $this->erro_sql = " Campo Recurso nao Informado.";
          $this->erro_campo = "o35_codigo";
          $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_orcprevdesp {
          return false;
        }
      }
-     if(trim($this->o35_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_mes"])){ 
+     if(trim($this->o35_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_mes"])){
        $sql  .= $virgula." o35_mes = $this->o35_mes ";
        $virgula = ",";
-       if(trim($this->o35_mes) == null ){ 
+       if(trim($this->o35_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "o35_mes";
          $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_orcprevdesp {
          return false;
        }
      }
-     if(trim($this->o35_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_perc"])){ 
+     if(trim($this->o35_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_perc"])){
        $sql  .= $virgula." o35_perc = $this->o35_perc ";
        $virgula = ",";
-       if(trim($this->o35_perc) == null ){ 
+       if(trim($this->o35_perc) == null ){
          $this->erro_sql = " Campo Percentual nao Informado.";
          $this->erro_campo = "o35_perc";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_orcprevdesp {
          return false;
        }
      }
-     if(trim($this->o35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_valor"])){ 
+     if(trim($this->o35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o35_valor"])){
        $sql  .= $virgula." o35_valor = $this->o35_valor ";
        $virgula = ",";
-       if(trim($this->o35_valor) == null ){ 
+       if(trim($this->o35_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o35_valor";
          $this->erro_banco = "";
@@ -324,7 +324,7 @@ class cl_orcprevdesp {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Previsão da despesa nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o35_anousu."-".$this->o35_projativ."-".$this->o35_codigo."-".$this->o35_mes;
@@ -352,14 +352,14 @@ class cl_orcprevdesp {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o35_anousu,$o35_projativ,$o35_codigo,$o35_mes));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -411,7 +411,7 @@ class cl_orcprevdesp {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Previsão da despesa nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o35_anousu."-".$o35_projativ."-".$o35_codigo."-".$o35_mes;
@@ -439,11 +439,11 @@ class cl_orcprevdesp {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -465,10 +465,10 @@ class cl_orcprevdesp {
       }
      return $result;
    }
-   function sql_query ( $o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,39 +485,39 @@ class cl_orcprevdesp {
      $sql2 = "";
      if($dbwhere==""){
        if($o35_anousu!=null ){
-         $sql2 .= " where orcprevdesp.o35_anousu = $o35_anousu "; 
-       } 
+         $sql2 .= " where orcprevdesp.o35_anousu = $o35_anousu ";
+       }
        if($o35_projativ!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_projativ = $o35_projativ "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_projativ = $o35_projativ ";
+       }
        if($o35_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_codigo = $o35_codigo "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_codigo = $o35_codigo ";
+       }
        if($o35_mes!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_mes = $o35_mes "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_mes = $o35_mes ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,10 +526,10 @@ class cl_orcprevdesp {
      }
      return $sql;
   }
-   function sql_query_file ( $o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $o35_anousu=null,$o35_projativ=null,$o35_codigo=null,$o35_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,39 +542,39 @@ class cl_orcprevdesp {
      $sql2 = "";
      if($dbwhere==""){
        if($o35_anousu!=null ){
-         $sql2 .= " where orcprevdesp.o35_anousu = $o35_anousu "; 
-       } 
+         $sql2 .= " where orcprevdesp.o35_anousu = $o35_anousu ";
+       }
        if($o35_projativ!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_projativ = $o35_projativ "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_projativ = $o35_projativ ";
+       }
        if($o35_codigo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_codigo = $o35_codigo "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_codigo = $o35_codigo ";
+       }
        if($o35_mes!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " orcprevdesp.o35_mes = $o35_mes "; 
-       } 
+         }
+         $sql2 .= " orcprevdesp.o35_mes = $o35_mes ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE functeste
-class cl_functeste { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $funcant = null; 
-   var $descrfunc = null; 
-   var $padraoant = null; 
-   var $funcnova = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_functeste {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $funcant = null;
+   var $descrfunc = null;
+   var $padraoant = null;
+   var $funcnova = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 funcant = varchar(6) = Função Anterior 
-                 descrfunc = varchar(40) = Descrição 
-                 padraoant = varchar(4) = Padrão Anterior 
-                 funcnova = varchar(5) = Função Nova 
+                 funcant = varchar(6) = Função Anterior
+                 descrfunc = varchar(40) = Descrição
+                 padraoant = varchar(4) = Padrão Anterior
+                 funcnova = varchar(5) = Função Nova
                  ";
-   //funcao construtor da classe 
-   function cl_functeste() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("functeste"); 
+     $this->rotulo = new rotulo("functeste");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_functeste {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->funcant = ($this->funcant == ""?@$GLOBALS["HTTP_POST_VARS"]["funcant"]:$this->funcant);
        $this->descrfunc = ($this->descrfunc == ""?@$GLOBALS["HTTP_POST_VARS"]["descrfunc"]:$this->descrfunc);
@@ -81,9 +81,9 @@ class cl_functeste {
      }
    }
    // funcao para inclusao
-   function incluir ($funcant,$descrfunc){ 
+   public function incluir ($funcant,$descrfunc){
       $this->atualizacampos();
-     if($this->padraoant == null ){ 
+     if($this->padraoant == null ){
        $this->erro_sql = " Campo Padrão Anterior nao Informado.";
        $this->erro_campo = "padraoant";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_functeste {
        $this->erro_status = "0";
        return false;
      }
-     if($this->funcnova == null ){ 
+     if($this->funcnova == null ){
        $this->erro_sql = " Campo Função Nova nao Informado.";
        $this->erro_campo = "funcnova";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_functeste {
        $this->erro_status = "0";
        return false;
      }
-       $this->funcant = $funcant; 
-       $this->descrfunc = $descrfunc; 
-     if(($this->funcant == null) || ($this->funcant == "") ){ 
+       $this->funcant = $funcant;
+       $this->descrfunc = $descrfunc;
+     if(($this->funcant == null) || ($this->funcant == "") ){
        $this->erro_sql = " Campo funcant nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_functeste {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->descrfunc == null) || ($this->descrfunc == "") ){ 
+     if(($this->descrfunc == null) || ($this->descrfunc == "") ){
        $this->erro_sql = " Campo descrfunc nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_functeste {
        return false;
      }
      $sql = "insert into functeste(
-                                       funcant 
-                                      ,descrfunc 
-                                      ,padraoant 
-                                      ,funcnova 
+                                       funcant
+                                      ,descrfunc
+                                      ,padraoant
+                                      ,funcnova
                        )
                 values (
-                                '$this->funcant' 
-                               ,'$this->descrfunc' 
-                               ,'$this->padraoant' 
-                               ,'$this->funcnova' 
+                                '$this->funcant'
+                               ,'$this->descrfunc'
+                               ,'$this->padraoant'
+                               ,'$this->funcnova'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "functeste ($this->funcant."-".$this->descrfunc) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_functeste {
        $resac = db_query("insert into db_acount values($acount,980,6097,'','".AddSlashes(pg_result($resaco,0,'funcnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($funcant=null,$descrfunc=null) { 
+   public function alterar ($funcant=null,$descrfunc=null) {
       $this->atualizacampos();
      $sql = " update functeste set ";
      $virgula = "";
-     if(trim($this->funcant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcant"])){ 
+     if(trim($this->funcant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcant"])){
        $sql  .= $virgula." funcant = '$this->funcant' ";
        $virgula = ",";
-       if(trim($this->funcant) == null ){ 
+       if(trim($this->funcant) == null ){
          $this->erro_sql = " Campo Função Anterior nao Informado.";
          $this->erro_campo = "funcant";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->descrfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrfunc"])){ 
+     if(trim($this->descrfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrfunc"])){
        $sql  .= $virgula." descrfunc = '$this->descrfunc' ";
        $virgula = ",";
-       if(trim($this->descrfunc) == null ){ 
+       if(trim($this->descrfunc) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descrfunc";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->padraoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["padraoant"])){ 
+     if(trim($this->padraoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["padraoant"])){
        $sql  .= $virgula." padraoant = '$this->padraoant' ";
        $virgula = ",";
-       if(trim($this->padraoant) == null ){ 
+       if(trim($this->padraoant) == null ){
          $this->erro_sql = " Campo Padrão Anterior nao Informado.";
          $this->erro_campo = "padraoant";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->funcnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcnova"])){ 
+     if(trim($this->funcnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcnova"])){
        $sql  .= $virgula." funcnova = '$this->funcnova' ";
        $virgula = ",";
-       if(trim($this->funcnova) == null ){ 
+       if(trim($this->funcnova) == null ){
          $this->erro_sql = " Campo Função Nova nao Informado.";
          $this->erro_campo = "funcnova";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_functeste {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "functeste nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->funcant."-".$this->descrfunc;
@@ -280,14 +280,14 @@ class cl_functeste {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($funcant=null,$descrfunc=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($funcant=null,$descrfunc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($funcant,$descrfunc));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_functeste {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "functeste nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$funcant."-".$descrfunc;
@@ -351,11 +351,11 @@ class cl_functeste {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,10 +377,10 @@ class cl_functeste {
       }
      return $result;
    }
-   function sql_query ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,23 +393,23 @@ class cl_functeste {
      $sql2 = "";
      if($dbwhere==""){
        if($funcant!=null ){
-         $sql2 .= " where functeste.funcant = '$funcant' "; 
-       } 
+         $sql2 .= " where functeste.funcant = '$funcant' ";
+       }
        if($descrfunc!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " functeste.descrfunc = '$descrfunc' "; 
-       } 
+         }
+         $sql2 .= " functeste.descrfunc = '$descrfunc' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,10 +418,10 @@ class cl_functeste {
      }
      return $sql;
   }
-   function sql_query_file ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,23 +434,23 @@ class cl_functeste {
      $sql2 = "";
      if($dbwhere==""){
        if($funcant!=null ){
-         $sql2 .= " where functeste.funcant = '$funcant' "; 
-       } 
+         $sql2 .= " where functeste.funcant = '$funcant' ";
+       }
        if($descrfunc!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " functeste.descrfunc = '$descrfunc' "; 
-       } 
+         }
+         $sql2 .= " functeste.descrfunc = '$descrfunc' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

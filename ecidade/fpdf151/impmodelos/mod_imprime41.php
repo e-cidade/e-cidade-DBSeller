@@ -1,4 +1,4 @@
-<?
+<?php
 $this->objpdf->AliasNbPages();
 $this->objpdf->Setfont("Times", "B", 14);
 $this->objpdf->AddPage();
@@ -104,7 +104,7 @@ if (pg_num_rows($resproc)) {
 }
 $this->objpdf->Setfont("Times", "", 12);
 //alterado o tamanho do campo outros dados
-$this->objpdf->roundedrect(10, 90, 190, 30, 2, 'df', 1234);
+$this->objpdf->roundedrect(10, 90, 190, 35, 2, 'df', 1234);
 //
 $this->objpdf->setfillcolor(234);
 $this->objpdf->roundedrect(10, 90, 190, 5, 2, 'DF', 12);
@@ -115,12 +115,12 @@ $this->objpdf->cell(180, 5, 'OUTROS DADOS', 0, 1, "C");
 $this->objpdf->Setfont("Times", "", 10);
 
 $texto = $this->p58_obs;
-//$texto = str_replace("\n",", ",$this->p58_obs); 
+//$texto = str_replace("\n",", ",$this->p58_obs);
 //echo $texto;
 
 
 
-$this->objpdf->multicell(185, 5,mb_strimwidth($texto,0,300, "..."),0,1,"L");
+$this->objpdf->multicell(185, 5,mb_strimwidth($texto,0,500, "..."),0,1,"L");
 $this->objpdf->multicell(185, 5,$str,0,1,"L");
 
 
@@ -148,9 +148,9 @@ $this->objpdf->Setfont("Times", "", 12);
 
 //-----------------------------------DOCUMENTOS---------------------------------------------------
 //alterado para colocar mais para cima.
-$this->objpdf->roundedrect(10, 124, 190, 31, 2, 'df', 1234); //bloco de DOCUMENTOS
-$this->objpdf->roundedrect(10, 124, 190, 5, 2, 'DF', 12); //bloco de DOCUMENTOS
-$this->objpdf->sety(124); //posição titulo DOCUMENTOS
+$this->objpdf->roundedrect(10, 127, 190, 30, 2, 'df', 1234); //bloco de DOCUMENTOS
+$this->objpdf->roundedrect(10, 127, 190, 5, 2, 'DF', 12); //bloco de DOCUMENTOS
+$this->objpdf->sety(127); //posição titulo DOCUMENTOS
 //
 $this->objpdf->cell(177, 5, 'DOCUMENTOS', 0, 1, "C");
 $sql_doc = "select p81_doc,p56_descr from procprocessodoc
@@ -213,7 +213,7 @@ $this->objpdf->Setfont("Times", "", 10);
 $imprime_str = "";
 $tamstr = 290;
 
-$texto = mb_strimwidth($this->p58_obs, 0, 200, "...");
+$texto = mb_strimwidth($this->p58_obs, 0, 300, "...");
 $this->objpdf->multicell(185, 4,$texto,0,1,"L");
 $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->multicell(185, 4, "");
@@ -236,7 +236,7 @@ if ($this->result_vars != ""){
            $imprime_str .= ucfirst($rotulo).": ".$conteudo.$separador;
      }
 
-     $linha = split("-",$imprime_str);
+     $linha =explode("-",$imprime_str);
      $this->objpdf->multicell(185, 4, $imprime_str,0,1,"L");
 }
 

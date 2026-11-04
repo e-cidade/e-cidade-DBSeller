@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrecparprocdiver->rotulo->label("receita");
               <?=$Lprocdiver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("procdiver",5,$Iprocdiver,true,"text",4,"","chave_procdiver");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrecparprocdiver->rotulo->label("receita");
               <?=$Lreceita?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("receita",10,$Ireceita,true,"text",4,"","chave_receita");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrecparprocdiver->rotulo->label("receita");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_recparprocdiver.php")==true){
@@ -122,12 +122,12 @@ $clrecparprocdiver->rotulo->label("receita");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

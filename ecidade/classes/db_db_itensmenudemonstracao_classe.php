@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_db_itensmenudemonstracao {
                  demodescr = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_itensmenudemonstracao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_itensmenudemonstracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_db_itensmenudemonstracao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_item = ($this->id_item == ""?@$GLOBALS["HTTP_POST_VARS"]["id_item"]:$this->id_item);
        $this->demodescr = ($this->demodescr == ""?@$GLOBALS["HTTP_POST_VARS"]["demodescr"]:$this->demodescr);
@@ -74,7 +74,7 @@ class cl_db_itensmenudemonstracao {
      }
    }
    // funcao para inclusao
-   function incluir ($id_item){ 
+   public function incluir ($id_item){ 
       $this->atualizacampos();
      if($this->demodescr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -138,7 +138,7 @@ class cl_db_itensmenudemonstracao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($id_item=null) { 
+   public function alterar ($id_item=null) { 
       $this->atualizacampos();
      $sql = " update db_itensmenudemonstracao set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_db_itensmenudemonstracao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($id_item=null,$dbwhere=null) { 
+   public function excluir ($id_item=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($id_item));
      }else{ 
@@ -280,7 +280,7 @@ class cl_db_itensmenudemonstracao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

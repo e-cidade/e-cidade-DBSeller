@@ -62,4 +62,12 @@ class IptubaseRepository extends Repository
 
         return new IptubaseCollection($result);
     }
+
+
+    public function getConstrucoesMatricula($matricula, $codigosAreaIrregular = [])
+    {
+        $sql = $this->dao->sql_query_construcoesMatricula($matricula, $codigosAreaIrregular);
+        $result = $this->dataBase->execute($sql);
+        return $this->dataBase->getCollectionByRecord($result);
+    }
 }

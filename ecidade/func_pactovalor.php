@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpactovalor->rotulo->label();
               <?=$Lo87_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("o87_sequencial",10,$Io87_sequencial,true,"text",4,"","chave_o87_sequencial");
 		          ?>
             </td>
@@ -64,7 +64,7 @@ $clpactovalor->rotulo->label();
               <?=$Lo87_pactoplano?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
     		        db_input("o87_pactoplano",10,$Io87_pactoplano,true,"text",4,"","chave_o87_pactoplano");
 		          ?>
             </td>
@@ -82,7 +82,7 @@ $clpactovalor->rotulo->label();
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $sWhere = "";
       $aAnd   = "";
       if (isset($programa)) {
@@ -146,12 +146,12 @@ $clpactovalor->rotulo->label();
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

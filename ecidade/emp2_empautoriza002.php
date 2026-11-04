@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -70,17 +70,17 @@ function monta_where($inp="",$par="",$cod="",$descr_inp=""){
   $param_autoriza = "";
   $where_autorizacao = "";
   if(isset($cod) && trim($cod)!=""){
-    $cod_autoriza = split("-",$cod);
+    $cod_autoriza =explode("-",$cod);
     $ini_autoriza = $cod_autoriza[0];
     $fim_autoriza = $cod_autoriza[1];
     if($ini_autoriza!="NaN" && $fim_autoriza!="NaN"){
       $where_autorizacao .= $and.$descr_inp." between ".$ini_autoriza." and ".$fim_autoriza;
       $and = " and ";
     }else if($fim_autoriza=="NaN"){
-      $where_autorizacao .= $and.$descr_inp." >= ". $ini_autoriza; 
+      $where_autorizacao .= $and.$descr_inp." >= ". $ini_autoriza;
       $and = " and ";
     }else if($ini_autoriza=="NaN"){
-      $where_autorizacao .= $and.$descr_inp." <= ". $fim_autoriza; 
+      $where_autorizacao .= $and.$descr_inp." <= ". $fim_autoriza;
       $and = " and ";
     }
   }
@@ -161,7 +161,7 @@ if ($anula=='A'){
   $where.=" $a e54_anulad is null ";
   $a="and";
 }
-  
+
 
 if($ordem == "e54_autori"){
   $info = "CÓDIGO DAS AUTORIZAÇÕES";
@@ -216,12 +216,12 @@ $quanttot=0;
 $valortot=0;
 $conttot=0;
 $totalzao=0;
-//    $pdf->addpage("L");    
+//    $pdf->addpage("L");
 for($i=0;$i<$numrows;$i++){
   db_fieldsmemory($result_empautoriza,$i,true);
   if($c==1){$c=0;}else{$c=1;}
   if($pdf->gety() > $pdf->h - 32 || $troca != 0 ){
-    $pdf->addpage("L");    
+    $pdf->addpage("L");
     $pdf->setfont('arial','b',8);
     $pdf->cell(25,$alt,"Autorização",1,0,"C",1);
     $pdf->cell(25,$alt,"Emissão",1,0,"C",1);
@@ -234,8 +234,8 @@ for($i=0;$i<$numrows;$i++){
 
     $pdf->cell(53,$alt,"Estrutural"  ,1,0,"C",1);
     $pdf->cell(60,$alt,"Elemento"    ,1,0,"C",1);
-    $pdf->cell(60,$alt,"Secretaria"  ,1,0,"C",1); 
-    $pdf->cell(60,$alt,"Departamento",1,0,"C",1); 
+    $pdf->cell(60,$alt,"Secretaria"  ,1,0,"C",1);
+    $pdf->cell(60,$alt,"Departamento",1,0,"C",1);
     $pdf->cell(42,$alt,"Usuário"     ,1,1,"C",1);
 
     if ($listar=='s'){
@@ -244,7 +244,7 @@ for($i=0;$i<$numrows;$i++){
       $pdf->cell(58,$alt,$RLe55_descr	   ,1,0,"C",1);
       $pdf->cell(14,$alt,"Sub-ele."	   ,1,0,"C",1);
       $pdf->cell(22,$alt,"Estrutural"	   ,1,0,"C",1);
-      $pdf->cell(58,$alt,$RLo56_descr	   ,1,0,"C",1); 
+      $pdf->cell(58,$alt,$RLo56_descr	   ,1,0,"C",1);
       $pdf->cell(15,$alt,$RLe55_sequen	   ,1,0,"C",1);
       $pdf->cell(15,$alt,"Quant."	   ,1,0,"C",1);
       $pdf->cell(20,$alt,'Valor'	   ,1,1,"C",1);
@@ -252,8 +252,8 @@ for($i=0;$i<$numrows;$i++){
     $c = 0;
     $troca=0;
   }
-  
-  $result_valortot=$clempautitem->sql_record($clempautitem->sql_query_file($e54_autori)); 
+
+  $result_valortot=$clempautitem->sql_record($clempautitem->sql_query_file($e54_autori));
   $valortot=0;
   for($y=0;$y<$clempautitem->numrows;$y++){
     db_fieldsmemory($result_valortot,$y);
@@ -269,15 +269,15 @@ for($i=0;$i<$numrows;$i++){
   $pdf->cell(25,$alt,@$codemp                 ,0,0,"C",$c);
   $result_valortot=$clempautitem->sql_record($clempautitem->sql_query_file($e54_autori));
   $nempautitem = $clempautitem->numrows;
-  for($y=0;$y<$clempautitem->numrows;$y++){  
+  for($y=0;$y<$clempautitem->numrows;$y++){
     db_fieldsmemory($result_valortot,$y);
     break;
   }
-  
-  
+
+
   $sSqlEmpAutItemPcProcItem = $clempautitempcprocitem->sql_query(null, "pc81_codproc", null, "e54_autori = {$e54_autori}");
   $result_pcprocitem        = $clempautitempcprocitem->sql_record($sSqlEmpAutItemPcProcItem);
-  
+
   if ($clempautitempcprocitem->numrows > 0) {
     db_fieldsmemory($result_pcprocitem,0);
     $sql_solicita = "select fc_solproc($pc81_codproc)";
@@ -297,11 +297,11 @@ for($i=0;$i<$numrows;$i++){
   } else {
     $pdf->cell(25,$alt,""                     ,0,0,"C",$c);
   }
-  
+
   $pdf->cell(25,$alt,db_formatar(@$valortot,'f'),0,1,"R",$c);
   $totalzao+=$valortot;
-  
-  $arr_estrutural = split("\.",$estrutural);
+
+  $arr_estrutural =explode(".",$estrutural);
   $estrut_pesquisa= $arr_estrutural[6];
   $result_estruturalautori = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,"o56_descr as elementoautori",""," o56_elemento='$estrut_pesquisa' and o56_anousu = $e54_anousu"));
   if($clorcelemento->numrows>0){
@@ -321,14 +321,14 @@ for($i=0;$i<$numrows;$i++){
   //------------------
   if ($listar=='s'){
   	//die($clempautitem->sql_query($e54_autori,null,"e55_item,pc01_descrmater,e55_descr,e55_codele,o56_descr,e55_sequen,e55_quant,e55_vltot"));
-    $result_itens=$clempautitem->sql_record($clempautitem->sql_query($e54_autori,null,"e55_item,pc01_descrmater,e55_descr,e55_codele,o56_descr,e55_sequen,e55_quant,e55_vltot")); 
+    $result_itens=$clempautitem->sql_record($clempautitem->sql_query($e54_autori,null,"e55_item,pc01_descrmater,e55_descr,e55_codele,o56_descr,e55_sequen,e55_quant,e55_vltot"));
   //  fc_estruturaldotacao(e56_anousu,e56_coddot);
     $quanttot=0;
     $valortot=0;
     $conttot=0;
     for($y=0;$y<$clempautitem->numrows;$y++){
       if($pdf->gety() > $pdf->h - 32 || $troca != 0 ){
-	$pdf->addpage("L");    
+	$pdf->addpage("L");
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(25,$alt,"Autorização"    ,1,0,"L",1);
 	$pdf->cell(25,$alt,"Emissão"        ,1,0,"C",1);
@@ -340,20 +340,20 @@ for($i=0;$i<$numrows;$i++){
 
 	$pdf->cell(53,$alt,"Estrutural"  ,1,0,"C",1);
 	$pdf->cell(60,$alt,"Elemento"    ,1,0,"C",1);
-	$pdf->cell(60,$alt,"Secretaria"  ,1,0,"C",1); 
-	$pdf->cell(60,$alt,"Departamento",1,0,"C",1); 
+	$pdf->cell(60,$alt,"Secretaria"  ,1,0,"C",1);
+	$pdf->cell(60,$alt,"Departamento",1,0,"C",1);
 	$pdf->cell(42,$alt,"Usuário"     ,1,1,"C",1);
-	
+
 	$pdf->cell(15,$alt,$RLe55_item       ,1,0,"C",1);
 	$pdf->cell(58,$alt,$RLpc01_descrmater,1,0,"C",1);
 	$pdf->cell(58,$alt,$RLe55_descr      ,1,0,"C",1);
 	$pdf->cell(14,$alt,"Sub-Ele."        ,1,0,"C",1);
 	$pdf->cell(22,$alt,"Estrutural"	     ,1,0,"C",1);
-	$pdf->cell(58,$alt,$RLo56_descr	     ,1,0,"C",1); 
+	$pdf->cell(58,$alt,$RLo56_descr	     ,1,0,"C",1);
 	$pdf->cell(15,$alt,$RLe55_sequen     ,1,0,"C",1);
 	$pdf->cell(15,$alt,"Quant."          ,1,0,"C",1);
 	$pdf->cell(20,$alt,'Valor'           ,1,1,"C",1);
-	
+
 	$c = 0;
 	$troca=0;
       }
@@ -367,7 +367,7 @@ for($i=0;$i<$numrows;$i++){
       $pdf->cell(58,$alt,substr($e55_descr,0,35)      ,0,0,"L",$c);
       $pdf->cell(14,$alt,$e55_codele                  ,0,0,"C",$c);
       $pdf->cell(22,$alt,db_formatar($elementoitem,"elemento"),0,0,"C",$c);
-      $pdf->cell(58,$alt,substr(@$o56_descr,0,35)     ,0,0,"L",$c); 
+      $pdf->cell(58,$alt,substr(@$o56_descr,0,35)     ,0,0,"L",$c);
       $pdf->cell(15,$alt,$e55_sequen                  ,0,0,"C",$c);
       $pdf->cell(15,$alt,$e55_quant                   ,0,0,"C",$c);
       $pdf->cell(20,$alt,db_formatar($e55_vltot,'f')  ,0,1,"R",$c);
@@ -399,7 +399,7 @@ for($ii = 0; $ii < $clempautitem->numrows;$ii++){
   db_fieldsmemory($result_totestr,$ii);
   if($p==1){$p=0;}else{$p=1;}
   if($pdf->gety() > $pdf->h - 32 || $troca1 != 0 ){
-    $pdf->addpage("L");    
+    $pdf->addpage("L");
     $pdf->setfont('arial','b',8);
     if ($troca1==1){
       $pdf->cell(120,$alt,"Totalização por Estrutural",1,1,"C",1);
@@ -409,7 +409,7 @@ for($ii = 0; $ii < $clempautitem->numrows;$ii++){
     $p= 0;
     $troca1=0;
   }
-  
+
   $pdf->setfont('arial','b',7);
   $pdf->cell(60,$alt,@$estrutural,0,0,"L",$p);
   $pdf->cell(60,$alt,db_formatar(@$valor,'f'),0,1,"R",$p);
@@ -437,7 +437,7 @@ if(isset($inp_autoriza) && trim($inp_autoriza)!=""){
       db_fieldsmemory($result_selautori,$i,true);
       if($pdf->gety() > $pdf->h - 32 || $i == 0 ){
         if($pdf->gety()>$pdf->h - 32){
-	  $pdf->addpage("L");    
+	  $pdf->addpage("L");
         }
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(90,$alt,"AUTORIZAÇÕES $msg_nautoriza SELECIONADAS",1,1,"C",1);
@@ -472,7 +472,7 @@ if(isset($inp_cgm) && trim($inp_cgm)!=""){
       db_fieldsmemory($result_selcgm,$i,true);
       if($pdf->gety() > $pdf->h - 32 || $i == 0 ){
         if($pdf->gety()>$pdf->h - 32){
-	  $pdf->addpage("L");    
+	  $pdf->addpage("L");
         }
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(90,$alt,"CREDORES $msg_ncgm SELECIONADOS",1,1,"C",1);
@@ -506,7 +506,7 @@ if(isset($inp_usuarios) && trim($inp_usuarios)!=""){
       db_fieldsmemory($result_selusuarios,$i,true);
       if($pdf->gety() > $pdf->h - 32 || $i == 0 ){
         if($pdf->gety()>$pdf->h - 32){
-	  $pdf->addpage("L");    
+	  $pdf->addpage("L");
         }
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(90,$alt,"USUÁRIOS $msg_nusuarios SELECIONADOS",1,1,"C",1);
@@ -541,7 +541,7 @@ if(isset($inp_tipcompra) && trim($inp_tipcompra)!=""){
       db_fieldsmemory($result_seltipcompra,$i,true);
       if($pdf->gety() > $pdf->h - 32 || $i == 0 ){
         if($pdf->gety()>$pdf->h - 32){
-	  $pdf->addpage("L");    
+	  $pdf->addpage("L");
         }
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(90,$alt,"TIPOS DE COMPRA $msg_nautoriza SELECIONADOS",1,1,"C",1);
@@ -576,7 +576,7 @@ if(isset($inp_config) && trim($inp_config)!=""){
       db_fieldsmemory($result_selconfig,$i,true);
       if($pdf->gety() > $pdf->h - 32 || $i == 0 ){
         if($pdf->gety()>$pdf->h - 32){
-	  $pdf->addpage("L");    
+	  $pdf->addpage("L");
         }
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(90,$alt,"INSTITUIÇÕES $msg_ncgm SELECIONADAS",1,1,"C",1);

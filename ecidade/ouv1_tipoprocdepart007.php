@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -55,7 +55,7 @@
         <tr>
           <td align="center">
             <b>Opções;</b>
-            <?
+            <?php
               $aOpcaoDepartDestino = array(0 => "Com os departamentos selecionados", 1 => "Sem os departamentos selecionados");
               db_select("iOpcaoDepartDestino", $aOpcaoDepartDestino, true, 1);
             ?>
@@ -63,7 +63,7 @@
         </tr>
         <tr>
           <td nowrap width="50%">
-            <?
+            <?php
               $oAuxDepartDestino                              = new cl_arquivo_auxiliar();
               $oAuxDepartDestino->cabecalho                   = "<strong>Departamentos Selecionados</strong>";
               $oAuxDepartDestino->codigo                      = "coddepto"; //chave de retorno da func

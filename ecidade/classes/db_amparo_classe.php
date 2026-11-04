@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -28,28 +28,28 @@
 //MODULO: educação
 //CLASSE DA ENTIDADE amparo
 class cl_amparo {
-   // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
-   // cria variaveis do arquivo
-   var $ed81_i_codigo = 0;
-   var $ed81_i_diario = 0;
-   var $ed81_i_justificativa = 0;
-   var $ed81_i_convencaoamp = 0;
-   var $ed81_c_todoperiodo = null;
-   var $ed81_c_aprovch = null;
-   // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   // cria publiciaveis de erro
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria publiciaveis do arquivo
+   public $ed81_i_codigo = 0;
+   public $ed81_i_diario = 0;
+   public $ed81_i_justificativa = 0;
+   public $ed81_i_convencaoamp = 0;
+   public $ed81_c_todoperiodo = null;
+   public $ed81_c_aprovch = null;
+   // cria propriedade com as publiciaveis do arquivo
+   public $campos = "
                  ed81_i_codigo = int8 = Código
                  ed81_i_diario = int8 = Diário de Classe
                  ed81_i_justificativa = int8 = Justificativa Legal
@@ -58,13 +58,13 @@ class cl_amparo {
                  ed81_c_aprovch = char(1) = Aproveita Carga Horária
                  ";
    //funcao construtor da classe
-   function cl_amparo() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("amparo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?regencia=".@$GLOBALS["HTTP_POST_VARS"]["regencia"];
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_amparo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed81_i_codigo = ($this->ed81_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed81_i_codigo"]:$this->ed81_i_codigo);
        $this->ed81_i_diario = ($this->ed81_i_diario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed81_i_diario"]:$this->ed81_i_diario);
@@ -86,7 +86,7 @@ class cl_amparo {
      }
    }
    // funcao para inclusao
-   function incluir ($ed81_i_codigo){
+   public function incluir ($ed81_i_codigo){
       $this->atualizacampos();
      if($this->ed81_i_diario == null ){
        $this->erro_sql = " Campo Diário de Classe nao Informado.";
@@ -209,7 +209,7 @@ class cl_amparo {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed81_i_codigo=null) {
+   public function alterar ($ed81_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update amparo set ";
      $virgula = "";
@@ -337,7 +337,7 @@ class cl_amparo {
      }
    }
    // funcao para exclusao
-   function excluir ($ed81_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed81_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed81_i_codigo));
      }else{
@@ -403,7 +403,7 @@ class cl_amparo {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -425,7 +425,8 @@ class cl_amparo {
       }
      return $result;
    }
-   function sql_query ( $ed81_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+
+   public function sql_query ( $ed81_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -468,7 +469,7 @@ class cl_amparo {
      }
      return $sql;
   }
-   function sql_query_file ( $ed81_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed81_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

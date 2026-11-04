@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,12 +82,12 @@
             <table border="0" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
               <tr>
                 <td>
-                  <?
+                  <?php
                     db_ancora($Lj01_matric, ' js_matri(true); ', 1);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1, "onchange='js_matri(false)'");
                     db_input('z01_nome', 60, 0, true, 'text', 3, "", "z01_nomematri");
                   ?>
@@ -102,7 +102,7 @@
       </td>
     </tr>
 	</table>
-	<?
+	<?php
 	  db_menu(db_getsession("DB_id_usuario"),
 	          db_getsession("DB_modulo"),
 	          db_getsession("DB_anousu"),

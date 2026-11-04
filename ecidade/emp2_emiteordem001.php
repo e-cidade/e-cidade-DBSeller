@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -84,22 +84,22 @@ db_app::load("scripts.js,
     <table border="0">    
       <tr>
 		    <td width="20%" nowrap title="<?=@$Te60_codemp?>">
-		     <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+		     <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
 		    </td>
 		    <td> 
-		     <? db_input('e60_codemp',13,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesquisae60_codemp(false);'","e60_codemp_ini")  ?>
+		     <?php db_input('e60_codemp',13,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesquisae60_codemp(false);'","e60_codemp_ini")  ?>
           <strong> / </strong>   
-         <? db_input('e60_codemp',13,$Ie60_codemp,true,'text',$db_opcao,"","e60_codemp_fim" )  ?>
+         <?php db_input('e60_codemp',13,$Ie60_codemp,true,'text',$db_opcao,"","e60_codemp_fim" )  ?>
 		    </td>
       </tr>
       <tr>
 	      <td nowrap title="<?=@$Te50_codord?>">
-	       <? db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",1); ?>
+	       <?php db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",1); ?>
 	      </td>
 	      <td> 
-	       <? db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'","e50_codord_ini" )  ?>
+	       <?php db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'","e50_codord_ini" )  ?>
 	        <strong> à </strong>   
-	       <? db_input('e50_codord',8,$Ie50_codord,true,'text',4,"","e50_codord_fim" )  ?>
+	       <?php db_input('e50_codord',8,$Ie50_codord,true,'text',4,"","e50_codord_fim" )  ?>
 	      </td>
       </tr>
      <tr>
@@ -107,7 +107,7 @@ db_app::load("scripts.js,
        <b> Período:</b>
      </td>  
      <td>
-      <?  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");   		          
+      <?php  db_inputdata('dtini',@$dia,@$mes,@$ano,true,'text',1,"");   		          
           echo " a ";
           db_inputdata('dtfim',@$dia,@$mes,@$ano,true,'text',1,"");
        ?>
@@ -117,7 +117,7 @@ db_app::load("scripts.js,
        <b> Valor:</b>
      </td>  
      <td>
-      <?
+      <?php
         db_input('valor_ordem',20,$Ie53_valor,true,'text',2);  
        ?>
      </td>
@@ -129,7 +129,7 @@ db_app::load("scripts.js,
      <td colspan="2">
        <fieldset>
          <legend><strong>Histórico</strong></legend>
-         <? db_textarea('historico',5,70,0,true,'text',2); ?>
+         <?php db_textarea('historico',5,70,0,true,'text',2); ?>
        </fieldset>
      </td>
      </tr>
@@ -152,7 +152,7 @@ db_app::load("scripts.js,
  </tr>
 </table>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

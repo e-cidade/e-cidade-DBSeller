@@ -46,6 +46,7 @@ $displayCaracteristicaPeculiarClass = isParaiba() ? 'hide' : '';
     <link type="text/css" href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
           rel="stylesheet"/>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
     <script rel="script" type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>

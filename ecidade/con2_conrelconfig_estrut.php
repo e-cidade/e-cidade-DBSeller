@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -116,13 +116,13 @@ function js_refresh(){
 
 <form name="form1" method="post" action="" >
  <table  align="center" border=0>
- <tr><td align=left width=20%><? db_ancora(@$Lc83_codrel,"js_pesquisac60_codcla(true);",2);?></td>
-     <td><? db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
-         <? db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,"")?></td>
+ <tr><td align=left width=20%><?php db_ancora(@$Lc83_codrel,"js_pesquisac60_codcla(true);",2);?></td>
+     <td><?php db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
+         <?php db_input('o42_descrrel',40,$Io42_descrrel,true,'text',3,"")?></td>
  </tr>
  <tr>
    <td>Linha/Parâmetro : </td>
-   <td> <? 
+   <td> <?php 
 
 
 $record = $clorcparamseq->sql_record($clorcparamseq->sql_query($c83_codrel, $sequen, "o69_codseq,o69_descr"));
@@ -139,7 +139,7 @@ db_select("c69_codseq", $matriz, false, 1, "onchange='js_refresh();'");
 
  </tr>
   <td colspan=2 align="left">
-  <? 
+  <?php 
 include(modification("forms/db_frmorcparamseqrel.php"));
 ?>
   </td>
@@ -148,7 +148,7 @@ include(modification("forms/db_frmorcparamseqrel.php"));
 </form>
 </body>
 </html>
-<?
+<?php
 
 
 echo "<script>

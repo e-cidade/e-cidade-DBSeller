@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -216,7 +216,7 @@ function js_di(){
   document.getElementById("diaprox").style.display = 'none';
 }
 </script>
-<?
+<?php
 if ( $db_opcao == 1 ) {
   $p = 5;
 } elseif ( $db_opcao == 2 || $db_opcao == 22 ) {
@@ -267,11 +267,11 @@ if ( $db_opcao == 1 ) {
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tdv05_coddiver?>">
-          <?db_input('subtes',10,2,true,'hidden',1)?>
+          <?php db_input('subtes',10,2,true,'hidden',1)?>
           <?=@$Ldv05_coddiver?>
         </td>
         <td>
-         <?
+         <?php
           db_input('dv05_coddiver', 10, $Idv05_coddiver, true, 'text', 3, "", "")
          ?>
         </td>
@@ -281,12 +281,12 @@ if ( $db_opcao == 1 ) {
       ?>
       <tr>
         <td nowrap title="<?=@$Tdv05_numcgm?>">
-          <?
+          <?php
            db_ancora(@$Ldv05_numcgm,"",3);
           ?>
         </td>
         <td nowrap>
-          <?
+          <?php
            db_input('dv05_numcgm', 10,$Idv05_numcgm, true, 'text', 3, " onchange='js_pesquisadv05_numcgm(false);'");
            db_input('z01_nome', 40,$Iz01_nome, true, 'text', 3, '')
           ?>
@@ -300,7 +300,7 @@ if ( $db_opcao == 1 ) {
           <?=@$Ldv05_dtinsc?>
         </td>
         <td>
-        <?
+        <?php
           if( !isset($dv05_dtinsc_dia) && $db_opcao == 1 ) {
 
             $dv05_dtinsc_dia = $dia;
@@ -317,7 +317,7 @@ if ( $db_opcao == 1 ) {
            <?=@$Ldv05_exerc?>
         </td>
         <td>
-           <?
+           <?php
            if (!isset($dv05_exerc) && $db_opcao==1) {
              $dv05_exerc = db_getsession("DB_anousu");
            }
@@ -332,10 +332,10 @@ if ( $db_opcao == 1 ) {
             <table class="form-container">
               <tr>
                 <td nowrap title="<?=@$Tdv05_procdiver?>">
-                  <? db_ancora($Ldv05_procdiver,"js_pesquisaProcedencia(true)",$db_opcao); ?>
+                  <?php db_ancora($Ldv05_procdiver,"js_pesquisaProcedencia(true)",$db_opcao); ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php
                     db_input('dv05_procdiver',10,$Idv05_vlrhis,true,'text',$db_opcao,"onChange = \"js_pesquisaProcedencia(false);\"");
                     db_input('dv09_descr',44,$Idv05_vlrhis,true,'text',3);
                   ?>
@@ -346,7 +346,7 @@ if ( $db_opcao == 1 ) {
                   <?=@$Ldv05_privenc?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   if  ( !isset($dv05_privenc_dia) && $db_opcao == 1 ) {
                     $dv05_privenc_dia = $dia;
                     $dv05_privenc_mes = $mes;
@@ -361,7 +361,7 @@ if ( $db_opcao == 1 ) {
                   <?=@$Ldv05_vlrhis?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('dv05_vlrhis',10,$Idv05_vlrhis,true,'text',$db_opcao);
                     if(empty($selectImportarPlanilha)) {
                   ?>
@@ -376,7 +376,7 @@ if ( $db_opcao == 1 ) {
                   <?=@$Li02_codigo?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   if ( isset($subtes) && $subtes == "ok" && !isset($chavepesquisa) ) {
 
                     $oper        = $dv05_oper_ano."-".$dv05_oper_mes."-".$dv05_oper_dia;
@@ -409,7 +409,7 @@ if ( $db_opcao == 1 ) {
                  <?=@$Ldv05_oper?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     if(empty($dv05_oper_dia) && $db_opcao==1){
                       $dv05_oper_dia=$dia;
                       $dv05_oper_mes=$mes;
@@ -425,7 +425,7 @@ if ( $db_opcao == 1 ) {
                   <?=@$Ldv05_valor?>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('dv05_valor',10,$Idv05_valor,true,'text',$db_opcao,"onchange='js_trocatotal();'")
                   ?>
                   <b id="total">&nbsp;</b>
@@ -441,7 +441,7 @@ if ( $db_opcao == 1 ) {
            <?=@$Ldv05_numtot?>
         </td>
         <td>
-          <?
+          <?php
             db_input('dv05_numtot', 10, $Idv05_numtot, true, 'text', $db_opcao, "onchange = 'js_trocatot(this);'");
           ?>
         </td>
@@ -452,7 +452,7 @@ if ( $db_opcao == 1 ) {
           <?=@$Ldv05_provenc?>
         </td>
         <td>
-           <? db_inputdata('dv05_provenc',@$dv05_provenc_dia,@$dv05_provenc_mes,@$dv05_provenc_ano,true,'text',$db_opcao) ?>
+           <?php db_inputdata('dv05_provenc',@$dv05_provenc_dia,@$dv05_provenc_mes,@$dv05_provenc_ano,true,'text',$db_opcao) ?>
         </td>
       </tr>
 
@@ -461,7 +461,7 @@ if ( $db_opcao == 1 ) {
           <?=@$Ldv05_diaprox?>
         </td>
         <td >
-          <? db_input('dv05_diaprox', 10, $Idv05_diaprox, true, 'text', $db_opcao) ?>
+          <?php db_input('dv05_diaprox', 10, $Idv05_diaprox, true, 'text', $db_opcao) ?>
         </td>
       </tr>
 
@@ -469,7 +469,7 @@ if ( $db_opcao == 1 ) {
         <td colspan="2" title="<?=@$Tdv05_obs?>">
           <fieldset class="separator">
             <legend><?=@$Ldv05_obs?></legend>
-            <? db_textarea('dv05_obs', 10, 73, $Idv05_obs, true, 'text', $db_opcao, "") ?>
+            <?php db_textarea('dv05_obs', 10, 73, $Idv05_obs, true, 'text', $db_opcao, "") ?>
           </fieldset>
         </td>
       </tr>
@@ -530,9 +530,9 @@ function js_mostraProcedencia1(iCodigoProcedencia, sDescricaoProcedencia) {
 
 
 function js_volta() {
-  location.href = "dvr3_diversos00<?=($db_opcao == 2 ? 6 : 4) ?>.php";
+  location.href = "dvr3_diversos00<?=($db_opcao == 2 ? 6 : 7) ?>.php";
 }
-<?
+<?php
 echo "js_trocatotal();";
 
 if( isset($xxx) && $xxx == "ok" && !isset($HTTP_POST_VARS["db_opcao"])) {
@@ -553,12 +553,12 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave) {
 
   db_iframe.hide();
-  <? if ( $db_opcao !=1 ){ ?>
+  <?php if ( $db_opcao !=1 ){ ?>
     location.href = '<?= basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa=" + chave;
-  <? }  ?>
+  <?php }  ?>
 }
 </script>
-<?
+<?php
 if ( (!isset($dv05_numtot) || $dv05_numtot < 2 ) && $db_opcao != 22 && $db_opcao != 33 ){
   echo "<script>js_di();</script>";
 }

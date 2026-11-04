@@ -516,6 +516,82 @@
            hassequence="f" > 
             
     </field> 
+    <field codigo="10000569" 
+           campo_api='' 
+           name="h25_tiporeintegracao" 
+           conteudo="int4" 
+           description="Tipo de Reintegração"
+           inivalue="0" 
+           label="Tipo de Reintegração" 
+           size="1" 
+           null="t" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Reintegração" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="10000570" 
+           campo_api='' 
+           name="h25_dataefetivoretorno" 
+           conteudo="date" 
+           description="Data do Efetivo Retorno" 
+           inivalue="null" 
+           label="Data do Efetivo Retorno"
+           size="1" 
+           null="t" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Data do Efetivo Retorno" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field>
+    <field codigo="10000571" 
+           campo_api='' 
+           name="h25_numeroprocesso" 
+           conteudo="varchar(20)" 
+           description="Número do processo" 
+           inivalue="" 
+           label="Número do processo"
+           size="20" 
+           null="t" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Número do processo" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field>
+    <field codigo="10000572" 
+           campo_api='' 
+           name="h25_leianistia" 
+           conteudo="varchar(13)" 
+           description="Lei de Anistia" 
+           inivalue="" 
+           label="Lei de Anistia"
+           size="20" 
+           null="t" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Lei de Anistia" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field>
   </fields>
   <primarykey>
     <fieldpk name="h25_sequencial"></fieldpk> 

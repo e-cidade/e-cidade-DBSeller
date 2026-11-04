@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clworkflowativandpadrao->rotulo->label("db115_sequencial");
               <?=$Ldb115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db115_sequencial",10,$Idb115_sequencial,true,"text",4,"","chave_db115_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clworkflowativandpadrao->rotulo->label("db115_sequencial");
               <?=$Ldb115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db115_sequencial",10,$Idb115_sequencial,true,"text",4,"","chave_db115_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clworkflowativandpadrao->rotulo->label("db115_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_workflowativandpadrao.php")==true){
@@ -122,12 +122,12 @@ $clworkflowativandpadrao->rotulo->label("db115_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

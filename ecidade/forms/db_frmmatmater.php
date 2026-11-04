@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -61,7 +61,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_codmater?>
     </td>
     <td>
-      <?
+        <?php
         db_input('m60_codmater',10,$Im60_codmater,true,'text',3,"")
       ?>
     </td>
@@ -71,7 +71,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_descr?>
     </td>
     <td>
-      <?
+        <?php
         db_input('m60_descr',60,$Im60_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -96,7 +96,7 @@ $clrotulo->label("m63_codpcmater");
         }
         db_input('m60_codmatunid',10,$Im60_codmatunid,true,'text',$db_opcao," onchange='js_pesquisam60_codmatunid(false);'")
       ?>
-       <?
+      <?php
          db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        ?>
     </td>
@@ -111,6 +111,19 @@ $clrotulo->label("m63_codpcmater");
       <?php
         db_input('m62_codmatunid',10,$Im62_codmatunid,true,'text',$db_opcao," onchange='js_pesquisam62_codmatunid(false);'");
         db_input('descr_uni',40,'',true,'text',3);
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap title="<?=@$Tm105_sequencial?>">
+      <?php
+        db_ancora($Lm60_familia,"js_pesquisam105_sequencial(true);",$db_opcao);
+      ?>
+    </td>
+    <td>
+      <?php
+        db_input('m105_sequencial',10,$Im105_sequencial,true,'text', 3," onchange='js_pesquisam105_sequencial(false);'");
+        db_input('m105_descricao',40,'',true,'text',3);
       ?>
     </td>
   </tr>
@@ -147,7 +160,7 @@ $clrotulo->label("m63_codpcmater");
       </b>
     </td>
     <td>
-      <?
+        <?php
         db_input('m65_sequencial',10,'',true,'text',$iLiberaGrupo," onchange='js_pesquisaGrupo(false);'");
         db_input('db121_descricao',40,'text',$iLiberaGrupo,'');
       ?>
@@ -215,7 +228,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_controlavalidade?>
     </td>
     <td>
-    <?
+        <?php
      if (!isset($m60_controlavalidade)) {
        $m60_controlavalidade = 3;
      }
@@ -291,6 +304,39 @@ function js_pesquisam60_codmatunid(mostra) {
      }
   }
 }
+
+function js_pesquisam105_sequencial(mostra) {
+
+if (mostra == true) {
+  js_OpenJanelaIframe('','db_iframe_matfamilias','func_matfamilias.php?funcao_js=parent.js_mostramatfamilia1|m105_sequencial|m105_descricao','Pesquisa',true,0);
+} else {
+   if (document.form1.m105_sequencial.value != '') {
+      js_OpenJanelaIframe('','db_iframe_matfamilias','func_matfamilias.php?pesquisa_chave='+document.form1.m105_sequencial.value+'&funcao_js=parent.js_mostramatfamilia','Pesquisa',false);
+   } else {
+     document.form1.m105_descricao.value = '';
+   }
+}
+}
+
+function js_mostramatfamilia(chave,erro) {
+    console.log(chave, erro);
+    document.form1.m105_sequencial.value = chave;
+    if (erro == true) {
+
+    document.form1.m105_sequencial.focus();
+    document.form1.m105_sequencial.value = '';
+    } else {
+    document.form1.submit();
+    }
+}
+
+function js_mostramatfamilia1(chave1,chave2) {
+    document.form1.m105_sequencial.value = chave1;
+    document.form1.m105_descricao.value = chave2;
+    db_iframe_matfamilias.hide();
+    document.form1.submit();
+}
+
 function js_mostramatunid(chave,erro) {
 
   document.form1.m61_descr.value = chave;
@@ -371,17 +417,17 @@ function js_mostramatunid3(chave1,chave2) {
 }
 //-------------------------------------------------=
 function js_pesquisa() {
-  <?if($db_opcao!=1){?>
+    <?php if($db_opcao!=1) { ?>
      js_OpenJanelaIframe('','db_iframe_matmater','func_matmateralt.php?funcao_js=parent.js_preenchepesquisa|m60_codmater','Pesquisa',true,0);
-  <?}else{?>
+    <?php } else { ?>
      js_OpenJanelaIframe('','db_iframe_matmater','func_matmater.php?funcao_js=parent.js_preenchepesquisa|m60_codmater','Pesquisa',true,0);
-  <?}?>
+    <?php } ?>
 }
 
 function js_preenchepesquisa(chave) {
 
   db_iframe_matmater.hide();
-  <?
+    <?php
   if($db_opcao!=1) {
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

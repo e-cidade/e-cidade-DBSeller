@@ -175,7 +175,9 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
     $iAlturaDisponivel = $this->oPdf->getAvailHeight();
 
     if ($iAlturaDisponivel < 30) {
+        $this->oPdf->addPage();
     	$this->escreveCabecalho();
+        $this->oPdf->ln();
     }
 
     $oDadosConclusao = db_utils::fieldsMemory($rsCurso, 0);

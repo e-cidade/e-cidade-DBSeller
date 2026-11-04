@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcontacorrente->rotulo->label("c17_descricao");
               <?=$Lc17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("c17_sequencial",10,$Ic17_sequencial,true,"text",4,"","chave_c17_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcontacorrente->rotulo->label("c17_descricao");
               <?=$Lc17_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("c17_descricao",50,$Ic17_descricao,true,"text",4,"","chave_c17_descricao");
 		       ?>
             </td>
@@ -131,12 +131,12 @@ $clcontacorrente->rotulo->label("c17_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

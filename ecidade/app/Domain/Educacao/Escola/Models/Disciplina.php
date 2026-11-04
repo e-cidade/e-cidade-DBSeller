@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $ed232_c_abrev
  * @property integer $ed232_areaconhecimento
  * @property string $ed232_c_descrcompleta
+ * @method
  */
 class Disciplina extends Model
 {
@@ -88,5 +89,15 @@ class Disciplina extends Model
     public function getAbreviatura()
     {
         return $this->getAttribute('ed232_c_abrev');
+    }
+
+    public function areaConhecimento()
+    {
+        return $this->belongsTo(AreaConhecimento::class, 'ed232_areaconhecimento', 'ed293_sequencial');
+    }
+
+    public function disciplnasEquivalentesBNCC()
+    {
+        return $this->hasMany(DisciplinaEquivalenteBNCC::class, 'ed153_caddisciplina', 'ed232_i_codigo');
     }
 }

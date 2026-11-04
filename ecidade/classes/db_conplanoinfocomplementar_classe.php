@@ -31,4 +31,26 @@ class cl_conplanoinfocomplementar extends DAOBasica
     {
         parent::__construct("contabilidade.conplanoinfocomplementar");
     }
+
+    public function sqlAtributosSistema($campos = "*", $order = null, $where = "")
+    {
+        $sql = "
+        select {$campos}
+          from conplanoinfocomplementar
+          left join conplanosistemaatributos on c129_conplanoinfocomplementar = c121_sequencial
+          left join conplanosistema on c122_sequencial = c129_conplanosistema
+        ";
+
+        if (!empty($where)) {
+            $sql .= " where {$where} ";
+        }
+
+
+        if (!empty($order)) {
+            $sql .= " order by {$order} ";
+        }
+
+        return $sql;
+    }
+
 }

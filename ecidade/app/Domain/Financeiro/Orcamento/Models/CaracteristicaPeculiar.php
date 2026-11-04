@@ -38,6 +38,7 @@ class CaracteristicaPeculiar extends Model
 {
     protected $table = 'contabilidade.concarpeculiar';
     protected $primaryKey = 'c58_sequencial';
+    protected $keyType = 'string';
 
     protected $casts = [
         'c58_sequencial' => 'string'

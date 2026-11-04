@@ -55,7 +55,7 @@ $clrotulo     ->label("z01_nome");
 <?=$Le87_codgera?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 db_input("e87_codgera",6,$Ie87_codgera,true,"text",4,"","chave_e87_codgera");
 ?>
 </td>
@@ -64,7 +64,7 @@ db_input("e87_codgera",6,$Ie87_codgera,true,"text",4,"","chave_e87_codgera");
 <?=$Lz01_nome?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 ?>
 </td>
@@ -74,18 +74,18 @@ db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 <?=$Le87_descgera?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php
 db_input("e87_descgera",40,$Ie87_descgera,true,"text",4,"","chave_e87_descgera");
 ?>
 </td>
 <td width="100%" align="right" nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td width="100%" colspan="2" align="right" nowrap title="<?=$Te87_data?>">
 <strong>Período de </strong>
-<?
+<?php
 db_inputdata('e87_data',@$e87_data_dia,@$e87_data_mes,@$e87_data_ano,true,'text',4,"","e87_dataini");
 ?>
 <b> a </b>
-<?
+<?php
 db_inputdata('e87_data',@$e87_data_dia,@$e87_data_mes,@$e87_data_ano,true,'text',4,"","e87_datafim");
 ?>
 </td>
@@ -105,7 +105,7 @@ db_inputdata('e87_data',@$e87_data_dia,@$e87_data_mes,@$e87_data_ano,true,'text'
 </tr>
 <tr>
 <td align="center" valign="top">
-<?
+<?php
 $where = " e91_codcheque is null and e80_instit = " . db_getsession("DB_instit");
 
 /* [Inicio plugin GeracaoArquivoOBN - parte2] */
@@ -210,12 +210,12 @@ if(!isset($pesquisa_chave)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

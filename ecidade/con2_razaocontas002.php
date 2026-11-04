@@ -40,7 +40,6 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("libs/db_stdlib.php");
 require_once modification("libs/db_conecta.php");
 
-
 ini_set('memory_limit', '2048M');
 
 $estruturais = [];
@@ -48,9 +47,8 @@ $estruturais = [];
 if (!empty($_GET["estrut_inicial"])) {
     $estruturais = explode("," , $_GET["estrut_inicial"]);
 }
-
-
 $relatorio = new RelatorioRazaoPorConta($_GET["tiporelatorio"]);
+
 $relatorio->getRelatorio()->setAnoUsu(db_getsession("DB_anousu"));
 $relatorio->getRelatorio()->setInstituicao(db_getsession("DB_instit"));
 $relatorio->getRelatorio()->setDataInicial($_GET["data1"]);
@@ -63,7 +61,8 @@ $relatorio->getRelatorio()->setQuebraPaginaPorConta(
     $_GET["quebrapaginaporconta"] == 's'
 );
 $relatorio->getRelatorio()->setDocumentos($_GET["sDocumentos"]);
+$relatorio->getRelatorio()->setRecursos($_GET["recurso"]);
 if (!empty($lista)) {
-$relatorio->getRelatorio()->setContas($lista);
+    $relatorio->getRelatorio()->setContas($lista);
 }
 $relatorio->getRelatorio()->run();

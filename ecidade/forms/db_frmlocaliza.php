@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,7 +37,7 @@ $cllocaliza->rotulo->label();
           <?=@$Lv54_codlocal?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v54_codlocal',6,$Iv54_codlocal,true,'text',3,"")
           ?>
         </td>
@@ -47,7 +47,7 @@ $cllocaliza->rotulo->label();
           <?=@$Lv54_descr?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v54_descr',30,$Iv54_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -69,7 +69,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -61,7 +61,7 @@ $aux = new cl_arquivo_auxiliar;
 
       </tr>
       <tr >
-        <td colspan="2"><?
+        <td colspan="2"><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $cabecalho = "<strong>Medicamento</strong>";
                  $codigo = "coddepto"; //chave de retorno da func
@@ -169,7 +169,7 @@ $aux = new cl_arquivo_auxiliar;
             <table border="0">
               <tr>
 			        <td><b> Distribuição Zerada</b></td>
-                    <td><? $tipo_que = array("S"=>"Sim","N"=>"Não");
+                    <td><?php $tipo_que = array("S"=>"Sim","N"=>"Não");
 	                db_select("distribu",$tipo_que,true,2,""); ?></td>
               </tr>
 			  <tr>
@@ -177,7 +177,7 @@ $aux = new cl_arquivo_auxiliar;
                     <strong>Quebra</strong>
 	             </td>
 				 <td>
-					<?
+					<?php
 			            $tipo_que = array("n"=>"Nenhuma","d"=>"Deposito");
 	                db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
                  </td>
@@ -187,13 +187,13 @@ $aux = new cl_arquivo_auxiliar;
                      <strong>Ordem &nbsp;&nbsp;</strong>
 	             </td>
 				 <td>
-					 <?
+					 <?php
 	                 $tipo_ordem = array("a"=>"Alfabética","n"=>"Numerica");
 	                 db_select("ordem",$tipo_ordem,true,2); ?>
                   </td>
 	           </tr>
 	           <td><b> Materiais</b></td>
-	           <td><?
+	           <td><?php
 	           if(isset($lmater)){
 	             $tipo_que = array("2"=>"Geral");
 	           } else {
@@ -206,7 +206,7 @@ $aux = new cl_arquivo_auxiliar;
 	               <b>Ano</b>
 	             </td>
 	             <td>
-	               <?
+	               <?php
 	                  $iAno = date("Y",db_getsession("DB_datausu"));
 	                  db_input("iAno",4,'',true,'text',1);
 	               ?>
@@ -220,7 +220,7 @@ $aux = new cl_arquivo_auxiliar;
 </fieldset>
   <input  name="emite2" id="emite2" type="button" value="Imprimir" onclick="js_mandadados();" >
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 if (!function_exists('truncar')) {
     function truncar($valor)
     {
@@ -107,7 +107,7 @@ $this->objpdf->setxy($xcol+24.5,$xlin+18);
 $nTotalGeral = 0;
 $nTotalGeralUnitario = 0;
 $Sresumo = trim($this->Sresumo);
-$vresumo = split("\n",$Sresumo);
+$vresumo =explode("\n",$Sresumo);
 
 if (count($vresumo) > 1){
   $Sresumo   = "";

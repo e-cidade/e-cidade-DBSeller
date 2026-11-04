@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clpccertif->rotulo->label();
        <?=@$Lpc59_certif?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc59_certif',6,$Ipc59_certif,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('pc59_certif',6,$Ipc59_certif,true,'text',$db_opcao,"")
        <?=@$Lpc59_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('pc59_descr',40,$Ipc59_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('pc59_descr',40,$Ipc59_descr,true,'text',$db_opcao,"")
        <?=@$Lpc59_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('pc59_obs',5,40,$Ipc59_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pccertif.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

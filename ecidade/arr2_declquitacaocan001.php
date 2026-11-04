@@ -39,7 +39,7 @@ include(modification("libs/db_app.utils.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php 
 
   db_app::load('scripts.js');
   db_app::load('estilos.css');
@@ -97,7 +97,7 @@ function js_imprimir(){
         </td>
         
 			  <td>
-			  <? 
+			  <?php 
           db_inputdata('datainicial', null, null, null, true, 'text', 1)
 			  ?>
 			  </td>
@@ -107,7 +107,7 @@ function js_imprimir(){
         </td>
         
 			  <td>
-			  <? 
+			  <?php 
           db_inputdata('datafinal', null, null, null, true, 'text', 1)
         ?>
         </td>
@@ -118,7 +118,7 @@ function js_imprimir(){
 			
 			  <td align="center" colspan="4" title="Origem da Decla&ccedil;&atilde;o">
           <strong>Origem:</strong>
-				  <?
+				  <?php
 				    $aOrigens = array(''=>'Selecione', 'somentecgm'=>'Somente CGM', 'cgm'=>'CGM Geral', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o');
 				    db_select('origem', $aOrigens, true, 1, 'style="width: 150px"');
 				  ?>
@@ -130,7 +130,7 @@ function js_imprimir(){
 			
 			  <td align="center" colspan="4" title="Ordenar por...">
           <strong>Ordenar</strong>
-          <?
+          <?php
             $aOrdenar = array(''=>'Selecione', 'datacancelamento'=>'Data Cancelamento', 'declaracao'=>'Declara&ccedil;&atilde;o');
             db_select('ordenar', $aOrdenar, true, 1, 'style="width: 150px"');
           ?>  
@@ -149,7 +149,7 @@ function js_imprimir(){
   </fieldset>
   
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

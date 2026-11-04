@@ -104,7 +104,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oAuxOrcorgao->linhas                         = 5;
                 $oAuxOrcorgao->vwidth                         = 400;
                 $oAuxOrcorgao->nome_botao                     = 'db_lanca_orgao';
-                $oAuxOrcorgao->fieldset                       = false;
                 $oAuxOrcorgao->funcao_gera_formulario();
               ?>
             </td>
@@ -134,7 +133,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oAuxDpto->linhas                         = 5;
                 $oAuxDpto->vwidth                         = 400;
                 $oAuxDpto->nome_botao                     = 'db_lanca';
-                $oAuxDpto->fieldset                       = false;
                 $oAuxDpto->funcao_gera_formulario();
               ?>
             </td>
@@ -168,7 +166,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oDptoDivisao->linhas                        = 5;
                 $oDptoDivisao->vwidth                        = 400;
                 $oDptoDivisao->nome_botao                    = 'db_lancadivisao';
-                $oDptoDivisao->fieldset                      = false;
                 $oDptoDivisao->funcao_gera_formulario();
               ?>
             </td>
@@ -198,7 +195,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oAuxBem->linhas                        = 5;
                 $oAuxBem->vwidth                        = 400;
                 $oAuxBem->nome_botao                    = 'db_lanca_bem';
-                $oAuxBem->fieldset                      = false;
                 $oAuxBem->funcao_gera_formulario();
               ?>
             </td>
@@ -285,7 +281,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oAuxClassificacao->linhas         = 5;
                 $oAuxClassificacao->vwidth         = 400;
                 $oAuxClassificacao->nome_botao     = 'db_lanca_clabens';
-                $oAuxClassificacao->fieldset       = false;
                 $oAuxClassificacao->funcao_gera_formulario();
               ?>
             </td>
@@ -314,6 +309,15 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 db_inputdata("dtAquisicaoFinal", "", "", "", true, "text", 1);
               ?>
             </td>
+            <tr id="valorAtualAquisicao">             
+              <td>Dados Conforme Data Acima:</td>
+              <td>
+                  <?php
+                    $aVlrAtualAquisicao = array("t" => "Sim", "f" => "Não");
+                    db_select("lImprimeValorAtualAquisicao", $aVlrAtualAquisicao, true, 1);
+                  ?>
+                </td> 
+            </tr>
           </tr>
           <tr id="dtInc">
             <td>Data da Inclusão no Sistema:</td>
@@ -367,7 +371,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 $oListaCedente->top            = 0;
                 $oListaCedente->linhas         = 5;
                 $oListaCedente->obrigarselecao = false;
-                $oListaCedente->vwhidth        = '100%';
+                // $oListaCedente->vwhidth        = '100%';
                 $oListaCedente->funcao_gera_formulario();
               ?>
             </td>
@@ -436,6 +440,15 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
               ?>
             </td>
           </tr>
+          <tr>
+              <td>Substituir aquisição:</td>
+              <td>
+                  <?php
+                  $substituirAquisicao = array("1" => "Não", "2" => "Sim");
+                  db_select("substituirAquisicao", $substituirAquisicao, true, 1);
+                  ?>
+              </td>
+          </tr>
         </table>
       </fieldset>
       <input type="button" name="btnProcessar" id="btnProcessar" value="Processar" >
@@ -459,31 +472,33 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
 
   $("btnProcessar").observe("click", function() {
 
-    var sDepartamentos           = $F("lista_departamento");
-    var lUsarDivisao             = $F("usardivisao");
-    var sDivisoes                = $F("lista_divisaodepartamento");
-    var sClabens                 = "";
-    var sBens                    = "";
-    var sEstruturais             = "";
-    var sSituacaoBens            = "";
-    var sCedentes                = "";
-    var sOrgaos                  = "";
-    var sVirgula                 = "";
-    var dtAquisicaoInicial       = $F("dtAquisicaoInicial");
-    var dtAquisicaoFinal         = $F("dtAquisicaoFinal");
-    var dtInclusaoInicial        = $F("dtInclusaoInicial");
-    var dtInclusaoFinal          = $F("dtInclusaoFinal");
-    var dtBaixaInicial           = $F("dtBaixaInicial");
-    var dtBaixaFinal             = $F("dtBaixaFinal");
-    var iConvenio                = $F("vinculoconvenio");
-    var sDescricaoBem            = $F("sDescricaoBem");
-    var lCaracteristicaAdicional = $F("lCaracteristicaAdicional");
-    var lImprimeValorAquisicao   = $F("lImprimeValorAquisicao");
-    var filtroColunas            = $F("filtroColunas");
-    var iListarBens              = $F("iListarBens");
-    var iOrdem                   = $F("iOrdem");
-    var iQuebraPagina            = $F("iQuebraPagina");
-    var tipoData                 = $F('dataAquisicaoOuInclusao');
+    var sDepartamentos              = $F("lista_departamento");
+    var lUsarDivisao                = $F("usardivisao");
+    var sDivisoes                   = $F("lista_divisaodepartamento");
+    var sClabens                    = "";
+    var sBens                       = "";
+    var sEstruturais                = "";
+    var sSituacaoBens               = "";
+    var sCedentes                   = "";
+    var sOrgaos                     = "";
+    var sVirgula                    = "";
+    var dtAquisicaoInicial          = $F("dtAquisicaoInicial");
+    var dtAquisicaoFinal            = $F("dtAquisicaoFinal");
+    var lImprimeValorAtualAquisicao = $F("lImprimeValorAtualAquisicao");
+    var dtInclusaoInicial           = $F("dtInclusaoInicial");
+    var dtInclusaoFinal             = $F("dtInclusaoFinal");
+    var dtBaixaInicial              = $F("dtBaixaInicial");
+    var dtBaixaFinal                = $F("dtBaixaFinal");
+    var iConvenio                   = $F("vinculoconvenio");
+    var sDescricaoBem               = $F("sDescricaoBem");
+    var lCaracteristicaAdicional    = $F("lCaracteristicaAdicional");
+    var lImprimeValorAquisicao      = $F("lImprimeValorAquisicao");
+    var filtroColunas               = $F("filtroColunas");
+    var iListarBens                 = $F("iListarBens");
+    var iOrdem                      = $F("iOrdem");
+    var iQuebraPagina               = $F("iQuebraPagina");
+    var substituirAquisicao         = $F("substituirAquisicao");
+    var tipoData                    = $F('dataAquisicaoOuInclusao');
 
 
 
@@ -552,7 +567,6 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
       sVirgula   = ",";
     }
     sVirgula = "";
-
     var sQueryString  = "pat2_benspordepartamento002.php?";
     sQueryString     += "&sDepartamentos="+sDepartamentos;
     sQueryString     += "&sDivisoes="+sDivisoes;
@@ -570,18 +584,20 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
     } else {
         alert('A data deve ser preenchida!');
     }
+    sQueryString     += "&lImprimeValorAtualAquisicao="+lImprimeValorAtualAquisicao;
     sQueryString     += "&dtBaixaInicial="+dtBaixaInicial;
     sQueryString     += "&dtBaixaFinal="+dtBaixaFinal;
     sQueryString     += "&iConvenio="+iConvenio;
     sQueryString     += "&sCedentes="+sCedentes;
     sQueryString     += "&sDescricaoBem="+sDescricaoBem;
     sQueryString     += "&lCaracteristicaAdicional="+lCaracteristicaAdicional;
-    sQueryString     += "&lImprimeValorAquisicao="+lImprimeValorAquisicao;
+    sQueryString     += "&lImprimeValorAquisicao="+lImprimeValorAquisicao;    
     sQueryString     += "&filtroColunas="+filtroColunas;
     sQueryString     += "&iListarBens="+iListarBens;
     sQueryString     += "&sClabens=" + sClabens;
     sQueryString     += "&iOrdem="+iOrdem;
     sQueryString     += "&iQuebraPagina="+iQuebraPagina;
+    sQueryString     += "&substituirAquisicao="+substituirAquisicao;
     sQueryString     += "&sOrgaos="+sOrgaos;
     sQueryString     += "&tipoData="+tipoData;
 
@@ -629,16 +645,14 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
   }
 
   function js_buscaDivisaoDepartamentoSelecionado() {
+    let divisoes = $('divisao');
+    let divisoesSelecionadas = [];
 
-    var oObjDivisao           = $('divisao');
-    var iDivisoes             = oObjDivisao.length;
-    var sDivisoesSelecionadas = "";
-    var sVirgula              = "";
-
-    for (var iRow = 0; iRow < iDivisoes; iRow++) {
-      sDivisoesSelecionadas += sVirgula+oObjDivisao[iRow].value;
+    for (let i = 0; i < divisoes.length; i++) {
+        divisoesSelecionadas.push(divisoes[i].value);
     }
-    $("lista_divisaodepartamento").value = sDivisoesSelecionadas;
+
+    $("lista_divisaodepartamento").value = divisoesSelecionadas.join(',');
   }
 
   /**
@@ -687,7 +701,8 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
   }
 
   $('dtInc').style.display = 'none';
-  $('dtAqui').style.display = 'none'
+  $('dtAqui').style.display = 'none';
+  $('valorAtualAquisicao').style.display = 'none';
 
   function js_mudaData(){
       if($F('dataAquisicaoOuInclusao') == 1){
@@ -695,10 +710,12 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
           $('dtInclusaoFinal').value = '';
           $('dtInc').style.display = 'none';
           $('dtAqui').style.display = '';
+          $('valorAtualAquisicao').style.display = '';
       } else {
           $('dtAquisicaoInicial').value = '';
           $('dtAquisicaoFinal').value = '';
-          $('dtAqui').style.display = 'none'
+          $('dtAqui').style.display = 'none';
+          $('valorAtualAquisicao').style.display = 'none';
           $('dtInc').style.display = '';
       }
   }

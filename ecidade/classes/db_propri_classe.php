@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,34 +29,39 @@
 //CLASSE DA ENTIDADE propri
 class cl_propri { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j42_matric = 0; 
-   var $j42_numcgm = 0; 
+   public $j42_matric = 0; 
+   public $j42_numcgm = 0; 
+   public $j42_fracaoproprietario = 0; 
+   public $j42_arealoteproprietario = 0; 
+   public $j42_tipoproprietario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j42_matric = int4 = Matricula 
                  j42_numcgm = int4 = Numcgm 
+                 j42_fracaoproprietario = float8 = Fração por proprietário 
+                 j42_arealoteproprietario = float8 = Área do lote por proprietário 
                  ";
    //funcao construtor da classe 
-   function cl_propri() { 
+   public function cl_propri() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("propri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,17 +70,20 @@ class cl_propri {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j42_matric = ($this->j42_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_matric"]:$this->j42_matric);
        $this->j42_numcgm = ($this->j42_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_numcgm"]:$this->j42_numcgm);
+       $this->j42_fracaoproprietario = ($this->j42_fracaoproprietario == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_fracaoproprietario"]:$this->j42_fracaoproprietario);
+       $this->j42_arealoteproprietario = ($this->j42_arealoteproprietario == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_arealoteproprietario"]:$this->j42_arealoteproprietario);
      }else{
        $this->j42_matric = ($this->j42_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_matric"]:$this->j42_matric);
        $this->j42_numcgm = ($this->j42_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_numcgm"]:$this->j42_numcgm);
+       $this->j42_tipoproprietario = ($this->j42_tipoproprietario == ""?@$GLOBALS["HTTP_POST_VARS"]["j42_tipoproprietario"]:$this->j42_tipoproprietario);
      }
    }
    // funcao para inclusao
-   function incluir ($j42_matric,$j42_numcgm){ 
+   public function incluir ($j42_matric,$j42_numcgm){ 
       $this->atualizacampos();
        $this->j42_matric = $j42_matric; 
        $this->j42_numcgm = $j42_numcgm; 
@@ -95,13 +103,28 @@ class cl_propri {
        $this->erro_status = "0";
        return false;
      }
+     if($this->j42_fracaoproprietario == null ){ 
+       $this->j42_fracaoproprietario = "0";
+     }
+     if($this->j42_arealoteproprietario == null ){ 
+       $this->j42_arealoteproprietario = "0";
+     }
+     if($this->j42_tipoproprietario == null) {
+      $this->j42_tipoproprietario = "0";
+     }
      $sql = "insert into propri(
                                        j42_matric 
                                       ,j42_numcgm 
+                                      ,j42_fracaoproprietario 
+                                      ,j42_arealoteproprietario 
+                                      ,j42_tipoproprietario
                        )
                 values (
                                 $this->j42_matric 
                                ,$this->j42_numcgm 
+                               ,$this->j42_fracaoproprietario 
+                               ,$this->j42_arealoteproprietario 
+                               ,$this->j42_tipoproprietario
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -136,11 +159,14 @@ class cl_propri {
        $resac = db_query("insert into db_acountkey values($acount,171,'$this->j42_numcgm','I')");
        $resac = db_query("insert into db_acount values($acount,34,170,'','".AddSlashes(pg_result($resaco,0,'j42_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,34,171,'','".AddSlashes(pg_result($resaco,0,'j42_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,34,1013930,'','".AddSlashes(pg_result($resaco,0,'j42_fracaoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,34,1013931,'','".AddSlashes(pg_result($resaco,0,'j42_arealoteproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,34,1011161,'','".AddSlashes(pg_result($resaco,0,'j42_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j42_matric=null,$j42_numcgm=null) { 
+   public function alterar ($j42_matric=null,$j42_numcgm=null) { 
       $this->atualizacampos();
      $sql = " update propri set ";
      $virgula = "";
@@ -170,6 +196,24 @@ class cl_propri {
          return false;
        }
      }
+     if(trim($this->j42_fracaoproprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j42_fracaoproprietario"])){ 
+        if(trim($this->j42_fracaoproprietario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j42_fracaoproprietario"])){ 
+           $this->j42_fracaoproprietario = "0" ; 
+        } 
+       $sql  .= $virgula." j42_fracaoproprietario = $this->j42_fracaoproprietario ";
+       $virgula = ",";
+     }
+     if(trim($this->j42_arealoteproprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j42_arealoteproprietario"])){ 
+        if(trim($this->j42_arealoteproprietario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j42_arealoteproprietario"])){ 
+           $this->j42_arealoteproprietario = "0" ; 
+        } 
+       $sql  .= $virgula." j42_arealoteproprietario = $this->j42_arealoteproprietario ";
+       $virgula = ",";
+     }
+     if(trim($this->j42_tipoproprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j42_tipoproprietario"])){ 
+      $sql  .= $virgula." j42_tipoproprietario = $this->j42_tipoproprietario ";
+      $virgula = ",";
+    }
      $sql .= " where ";
      if($j42_matric!=null){
        $sql .= " j42_matric = $this->j42_matric";
@@ -189,6 +233,12 @@ class cl_propri {
            $resac = db_query("insert into db_acount values($acount,34,170,'".AddSlashes(pg_result($resaco,$conresaco,'j42_matric'))."','$this->j42_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j42_numcgm"]))
            $resac = db_query("insert into db_acount values($acount,34,171,'".AddSlashes(pg_result($resaco,$conresaco,'j42_numcgm'))."','$this->j42_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["j42_fracaoproprietario"]) || $this->j42_fracaoproprietario != "")
+             $resac = db_query("insert into db_acount values($acount,34,1013930,'".AddSlashes(pg_result($resaco,$conresaco,'j42_fracaoproprietario'))."','$this->j42_fracaoproprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["j42_arealoteproprietario"]) || $this->j42_arealoteproprietario != "")
+             $resac = db_query("insert into db_acount values($acount,34,1013931,'".AddSlashes(pg_result($resaco,$conresaco,'j42_arealoteproprietario'))."','$this->j42_arealoteproprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         if(isset($GLOBALS["HTTP_POST_VARS"]["j42_tipoproprietario"]))
+           $resac = db_query("insert into db_acount values($acount,34,1011161,'','".AddSlashes(pg_result($resaco,0,'j42_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -224,7 +274,7 @@ class cl_propri {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j42_matric=null,$j42_numcgm=null,$dbwhere=null) { 
+   public function excluir ($j42_matric=null,$j42_numcgm=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j42_matric,$j42_numcgm));
      }else{ 
@@ -239,6 +289,9 @@ class cl_propri {
          $resac = db_query("insert into db_acountkey values($acount,171,'$j42_numcgm','E')");
          $resac = db_query("insert into db_acount values($acount,34,170,'','".AddSlashes(pg_result($resaco,$iresaco,'j42_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,34,171,'','".AddSlashes(pg_result($resaco,$iresaco,'j42_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,34,1013930,'','".AddSlashes(pg_result($resaco,$iresaco,'j42_fracaoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,34,1013931,'','".AddSlashes(pg_result($resaco,$iresaco,'j42_arealoteproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,34,1011161,'','".AddSlashes(pg_result($resaco,$iresaco,'j42_tipoproprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from propri
@@ -293,7 +346,7 @@ class cl_propri {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +368,10 @@ class cl_propri {
       }
      return $result;
    }
-   function sql_query ( $j42_matric=null,$j42_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j42_matric=null,$j42_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,7 +404,7 @@ class cl_propri {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -360,10 +413,10 @@ class cl_propri {
      }
      return $sql;
   }
-   function sql_query_file ( $j42_matric=null,$j42_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j42_matric=null,$j42_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +445,7 @@ class cl_propri {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +455,7 @@ class cl_propri {
      return $sql;
   }
 
-		function sql_query_enderecoEntrega($iNumCgmProprietario = null, $sCampos = "*", $sWhere = null) {
+		public function sql_query_enderecoEntrega($iNumCgmProprietario = null, $sCampos = "*", $sWhere = null) {
 			
 			if (empty($sWhere) && !empty($iNumCgmProprietario)) {
 				$sWhere = " where j42_numcgm = {$iNumCgmProprietario} ";
@@ -417,5 +470,15 @@ class cl_propri {
 			$sSql .= $sWhere;
 			return $sSql;
 		}
+
+    public function sql_outrosProprietarios($matricula)
+    {
+      $sql  = "select z01_numcgm,                                                                               ";
+      $sql .= "     propri.j42_tipoproprietario || ' - ' || tipoproprietario.j163_descricao as tipoproprietario ";
+      $sql .= " from propri,cgm,tipoproprietario                                                                ";
+      $sql .= "     where j42_matric = $matricula                                                               ";
+      $sql .= "         and j42_numcgm = z01_numcgm and j42_tipoproprietario = j163_tipoproprietario            ";
+
+      return $sql;
+    }
 }
-?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
        <?=@$Ldb93_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db93_codigo',10,$Idb93_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb93_codrel?>">
-       <?
+       <?php
        db_ancora(@$Ldb93_codrel,"js_pesquisadb93_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db93_codrel',10,$Idb93_codrel,true,'text',$db_opcao," onchange='js_pesquisadb93_codrel(false);'")
 ?>
-       <?
+       <?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb93_codcam?>">
-       <?
+       <?php
        db_ancora(@$Ldb93_codcam,"js_pesquisadb93_codcam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db93_codcam',5,$Idb93_codcam,true,'text',$db_opcao," onchange='js_pesquisadb93_codcam(false);'")
 ?>
-       <?
+       <?php
 db_input('nomearq',40,$Inomearq,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('nomearq',40,$Inomearq,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db93_codigo"=>@$db93_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatselecionados->sql_query_file($db93_codigo);

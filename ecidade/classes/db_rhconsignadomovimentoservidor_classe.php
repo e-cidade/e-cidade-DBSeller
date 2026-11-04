@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimentoservidor
 class cl_rhconsignadomovimentoservidor { 
@@ -30,13 +30,13 @@ class cl_rhconsignadomovimentoservidor {
                  rh152_consignadomotivo = int4 = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimentoservidor() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimentoservidor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_rhconsignadomovimentoservidor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh152_sequencial = ($this->rh152_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh152_sequencial"]:$this->rh152_sequencial);
        $this->rh152_consignadomovimento = ($this->rh152_consignadomovimento == ""?@$GLOBALS["HTTP_POST_VARS"]["rh152_consignadomovimento"]:$this->rh152_consignadomovimento);
@@ -57,7 +57,7 @@ class cl_rhconsignadomovimentoservidor {
      }
    }
    // funcao para inclusao
-   function incluir ($rh152_sequencial){ 
+   public function incluir ($rh152_sequencial){ 
       $this->atualizacampos();
      if($this->rh152_consignadomovimento == null ){ 
        $this->erro_sql = " Campo Movimento não informado.";

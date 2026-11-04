@@ -91,22 +91,22 @@ if ( trim ( $aMatriculas ) != "" ) {
 }
 
 if ( (trim ($iAnoInicial) != "") and (trim ($iMesInicial) != "") ) {
-    
-    $sWhereData .= " and ( r52_anousu >= {$iAnoInicial} 
-                           and case 
-                                 when r52_anousu = $iAnoInicial 
-                                   then r52_mesusu >= {$iMesInicial} 
-                                 else true 
+
+    $sWhereData .= " and ( r52_anousu >= {$iAnoInicial}
+                           and case
+                                 when r52_anousu = $iAnoInicial
+                                   then r52_mesusu >= {$iMesInicial}
+                                 else true
                                end )   ";
 }
 
 if ( (trim ($iAnoFinal) != "") and (trim ($iMesFinal) != "") ) {
-    
-   $sWhereData  .= " and ( r52_anousu <= {$iAnoFinal} 
-                           and case 
-                                 when r52_anousu = {$iAnoFinal} 
-                                   then r52_mesusu <= {$iMesFinal} 
-                                 else true 
+
+   $sWhereData  .= " and ( r52_anousu <= {$iAnoFinal}
+                           and case
+                                 when r52_anousu = {$iAnoFinal}
+                                   then r52_mesusu <= {$iMesFinal}
+                                 else true
                                end ) ";
 }
 
@@ -123,7 +123,8 @@ $sCampos .= " cgm.z01_nome           as nome_dependente, ";
 $sCampos .= " (r52_valor + r52_valfer + r52_valcom + r52_val13 + r52_valres) as valor, ";
 $sCampos .= " r52_anousu             as ano_pensao, ";
 $sCampos .= " r52_mesusu             as mes_pensao, ";
-$sCampos .= " r52_observacao ";
+$sCampos .= " r52_observacao, ";
+$sCampos .= " r52_cgmalimentado ";
 
 $sWhere  .= " (r52_valor + r52_valfer + r52_valcom + r52_val13 + r52_valres) > 0 ";
 $sWhere  .= $sWhereData;
@@ -137,6 +138,7 @@ if (DBPessoal::utilizaFiltroLotacoesPorUsuario()) {
 
 $sSql        = $oDaoPensao->sql_query_infos(null, null, null, null, $sCampos, $sOrdem, $sWhere);
 $rsDAOPensao = $oDaoPensao->sql_record($sSql);
+
 
 if ( $oDaoPensao->numrows == 0 ) {
 
@@ -163,18 +165,25 @@ unset($aPensoes);
 unset($aDadosPensoes);
 
 $aPensoes = db_utils::getCollectionByRecord($rsDAOPensao);
-
 $iMatriculaServidor = null;
-
 foreach ($aPensoes as $oPensao) {
 
     $aDadosPensoes[$oPensao->matricula_servidor]['sNomeServidor'] = $oPensao->nome_servidor;
-    $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iSalario'] = $oPensao->salario;
+    if (isset($aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iSalario'])) {
+        $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iSalario'] += $oPensao->salario;
+    } else {
+        $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iSalario'] = $oPensao->salario;
+
+    }
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iFerias'] = $oPensao->ferias;
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iComplementar'] = $oPensao->complementar;
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iDecimo'] = $oPensao->o13;
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['iRescisao'] = $oPensao->rescisao;
-    $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['fValor'] = $oPensao->valor;
+    if (isset($aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['fValor'])) {
+        $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['fValor'] += $oPensao->valor;
+    } else {
+        $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['fValor'] = $oPensao->valor;
+    }
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['aPeriodos'][$oPensao->mes_pensao . "/" . $oPensao->ano_pensao]['sObservacao'] = $oPensao->r52_observacao;
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['sNomeDependente'] = $oPensao->nome_dependente;
     $aDadosPensoes[$oPensao->matricula_servidor]['aDependente'][$oPensao->cgm_dependente]['sNomeDependente'] = $oPensao->nome_dependente;
@@ -248,7 +257,6 @@ foreach ($aDadosPensoes as $iIndiceServidor => $oDadosServidor) {
     $lTrocaDependente = true;
 
     foreach ($oDadosDependente['aPeriodos'] as $iIndicePeriodo => $oDadosPeriodo) {
-
       if ($pdf->getY() > $pdf->getH() - 30 || $lTrocaPeriodo == true) {
 
         $pdf->setfont('arial', 'b', 7);
@@ -295,7 +303,7 @@ foreach ($aDadosPensoes as $iIndiceServidor => $oDadosServidor) {
       if ($lMostraObservacao == "t" && !empty($oDadosPeriodo['sObservacao'])) {
           $pdf->multicell(192,$alt,$oDadosPeriodo['sObservacao'],0);
       }
-      
+
       $fTotalPeriodo = $fTotalPeriodo + $oDadosPeriodo['fValor'];
     }
 

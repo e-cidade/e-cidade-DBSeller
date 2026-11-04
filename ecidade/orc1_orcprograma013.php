@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -188,7 +188,7 @@ if( isset($oPost->excluir) ){
   <tr>
     <td>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmorcprograma.php"));
 	?>
     </center>
@@ -197,7 +197,7 @@ if( isset($oPost->excluir) ){
 </table>
 </body>
 </html>
-<?
+<?php
 //if ($cldb_config->numrows == 0){
 //     db_msgbox("Somente instituicao prefeitura esta autorizada para este procedimento.Verifique.");
 //}

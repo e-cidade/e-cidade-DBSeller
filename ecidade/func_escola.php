@@ -26,15 +26,15 @@
  */
 
 //MODULO: educação
-require_once(modification("libs/db_stdlibwebseller.php"));
-require_once(modification("libs/db_stdlib.php"));
-require_once(modification("libs/db_conecta.php"));
-require_once(modification("libs/db_sessoes.php"));
-require_once(modification("libs/db_usuariosonline.php"));
-require_once(modification("dbforms/db_funcoes.php"));
+require_once modification("libs/db_stdlibwebseller.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $query_string);
 
 $clescola = new cl_escola;
 $clescola->rotulo->label("ed18_i_codigo");
@@ -48,7 +48,7 @@ $iEscola     = db_getsession('DB_coddepto');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<script type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
@@ -61,7 +61,7 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
+      <?php db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -69,14 +69,14 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
      </td>
     </tr>
     <tr>
      <td colspan="2" align="center">
-      <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
-      <input name="limpar" type="reset" id="limpar" value="Limpar" >
-      <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_escola.hide();">
+         <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
+         <input type="button" onclick="limparCampos()" value="Limpar">
+         <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_escola.hide();">
      </td>
     </tr>
     </form>
@@ -148,6 +148,16 @@ $iEscola     = db_getsession('DB_coddepto');
 </body>
 </html>
 <script type="text/javascript">
+
+    function limparCampos() {
+        var inputFields = document.querySelectorAll('input[type="text"]');
+
+        inputFields.forEach(function (input) {
+            input.value = '';
+        });
+    }
+
+//    IIFE - Immediately Invoked Function Expression - Função autoinvocada
 (function() {
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');
   input.onclick = parent[query] ? parent[query].hide.bind(parent[query]) : input.onclick;

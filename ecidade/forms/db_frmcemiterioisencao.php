@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clcemiterioisencao->rotulo->label();
 	       <?=@$Lcm34_sequencial?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('cm34_sequencial',10,$Icm34_sequencial,true,'text',3,"")
 				?>
 	    </td>
@@ -50,7 +50,7 @@ $clcemiterioisencao->rotulo->label();
 	       <?=@$Lcm34_descricao?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_input('cm34_descricao',40,$Icm34_descricao,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -60,7 +60,7 @@ $clcemiterioisencao->rotulo->label();
 	      <?=@$Lcm34_tipo?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 					$x = array('1'=>'Imune',
 					           '2'=>'Isento');
 					db_select('cm34_tipo',$x,true,$db_opcao,"style='width:125px;'");
@@ -72,7 +72,7 @@ $clcemiterioisencao->rotulo->label();
 	      <?=@$Lcm34_datalimite?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 	  			db_inputdata('cm34_datalimite',@$cm34_datalimite_dia,@$cm34_datalimite_mes,@$cm34_datalimite_ano,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -82,7 +82,7 @@ $clcemiterioisencao->rotulo->label();
 	      <?=@$Lcm34_obs?>
 	    </td>
 	    <td> 
-				<?
+				<?php
 				  db_textarea('cm34_obs',5,40,$Icm34_obs,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -91,7 +91,7 @@ $clcemiterioisencao->rotulo->label();
 	  </fieldset>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?if ( $db_opcao != 1 ) { ?>
+<?php if ( $db_opcao != 1 ) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <?} ?>
 </form>
@@ -101,7 +101,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cemiterioisencao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

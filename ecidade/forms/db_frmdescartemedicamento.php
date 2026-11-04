@@ -76,7 +76,7 @@ if ($db_opcao == 1) {
               <td>
                 <?php db_input('sd107_quantidade', 10, $Isd107_quantidade, true, 'text', $db_opcao, ""); ?>
               <span id="unidade_material">
-                <? if (!empty($m61_abrev)) {
+                <?php if (!empty($m61_abrev)) {
                   echo  $m61_abrev;
                 }
                 ?>

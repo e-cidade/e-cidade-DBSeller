@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -92,7 +92,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php
 $sql = "select dependente.w03_codigo,w01_regist,dependente.w03_nome as conjuge,fc_idade(dependente.w03_dtnasc,'".date("Y-m-d",db_getsession("DB_datausu"))."') as idadeconj,ag30_codigo,ag30_codage,ag30_data,ag30_hora,j01_nome,depen.w03_nome,ag30_regist,ag30_depend,fc_idade(depen.w03_dtnasc,'".date("Y-m-d",db_getsession("DB_datausu"))."') as idadedepen,fc_idade(w01_dtnasc,'".date("Y-m-d",db_getsession("DB_datausu"))."') as idade
                      from agenate
 					 inner join cadastro
@@ -151,7 +151,7 @@ $sql = "select dependente.w03_codigo,w01_regist,dependente.w03_nome as conjuge,f
           <td nowrap>&nbsp;</td>
           <Td nowrap>&nbsp;</Td>
         </tr>
-        <?
+        <?php
 	  /*
 	  echo trim($nomeconj)!=""?"<td><strong>Conjuge:&nbsp;&nbsp;</strong></td><td>$nomeconj</td><td>Idade:</td><td>$idadeconj</td>":"";
 	  echo trim($nomedepen)!=""?"<td><strong>Dependente:</strong></td><td>$nomedepen</td><td>Idade:</td><td>$idadedepen</td>":"";
@@ -167,7 +167,7 @@ $sql = "select dependente.w03_codigo,w01_regist,dependente.w03_nome as conjuge,f
 	</td>
   </tr>
 </table>
-<?
+<?php
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));				   
 ?>
 </body>

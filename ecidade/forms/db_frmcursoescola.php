@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -58,20 +58,20 @@ $ed71_i_escola = db_getsession("DB_coddepto");
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted71_i_curso?>">
-   <?db_ancora(@$Led71_i_curso,"",3);?>
+   <?php db_ancora(@$Led71_i_curso,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
-   <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+   <?php db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
+   <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted71_i_escola?>">
-   <?db_ancora(@$Led71_i_escola,"",3);?>
+   <?php db_ancora(@$Led71_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -79,7 +79,7 @@ $ed71_i_escola = db_getsession("DB_coddepto");
    <?=@$Led71_c_situacao?>
   </td>
   <td>
-   <?
+   <?php
    $x = array(''=>'','S'=>'SIM','N'=>'NÃO');
    db_select('ed71_c_situacao',$x,true,$db_opcao,"");
    ?>
@@ -90,7 +90,7 @@ $ed71_i_escola = db_getsession("DB_coddepto");
    <?=@$Led71_c_turmasala?>
   </td>
   <td>
-   <?
+   <?php
    $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
    db_select('ed71_c_turmasala',$x,true,$db_opcao,"");
    ?>
@@ -103,7 +103,7 @@ $ed71_i_escola = db_getsession("DB_coddepto");
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php
    $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo,
                     "ed71_i_escola"=>@$ed71_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,

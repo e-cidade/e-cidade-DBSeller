@@ -26,7 +26,7 @@
  */
 ?>
 <script>
-    parent.disciplina.location.href = "edu1_historicodisciplinafora.php?ed100_i_historicompsfora=<?=@$ed99_i_codigo?>";
+    parent.disciplina.location.href = "edu1_historicodisciplinafora.php?ed100_i_historicompsfora=<?= @$ed99_i_codigo ?>";
 </script>
 <?php
 $sDesabilitar = "";
@@ -55,7 +55,7 @@ $clrotulo->label("ed99_i_periodoref");
         <table border="0" width="100%">
             <tr>
                 <td nowrap>
-                    <? db_ancora("<b>Etapa:</b>", "", 3); ?>
+                    <?php db_ancora("<b>Etapa:</b>", "", 3); ?>
                 </td>
                 <td>
                     <?php
@@ -91,18 +91,8 @@ $clrotulo->label("ed99_i_periodoref");
                     echo @$Led99_i_periodoref;
                     db_input('ed99_i_periodoref', 4, $Ied99_i_periodoref, true, 'text', 3);
                     ?>
-                    <input type="button"
-                           id="btnLancarAreaConhecimento"
-                           name="btnLancarAreaConhecimento"
-                           value="Lançar Area de Conhecimento"
-                        <?= ($db_botao == false ? "disabled" : "") ?>
-                           onclick="parent.js_lancarAreasConhecimento($F('ed100_i_historicompsfora'), 2, iEnsino, iHistoricomps, $F('ed61_i_curso'), $F('ed99_i_anoref'));"/>
-                    <input type="button"
-                           id="btnLancarDisciplina"
-                           name="btnLancarDisciplina"
-                           value="Lançar Disciplina"
-                           onclick="parent.js_lancarDisciplina($F('ed100_i_historicompsfora'), 2, iEnsino, iHistoricomps, $F('ed61_i_curso'), $F('ed99_i_anoref'));"
-                        <?php echo $sDesabilitar; ?> />
+                    <input type="button" id="btnLancarAreaConhecimento" name="btnLancarAreaConhecimento" value="Lançar Area de Conhecimento" <?= ($db_botao == false ? "disabled" : "") ?> onclick="parent.js_lancarAreasConhecimento($F('ed100_i_historicompsfora'), 2, iEnsino, iHistoricomps, $F('ed61_i_curso'), $F('ed99_i_anoref'));" />
+                    <input type="button" id="btnLancarDisciplina" name="btnLancarDisciplina" value="Lançar Disciplina" onclick="parent.js_lancarDisciplina($F('ed100_i_historicompsfora'), 2, iEnsino, iHistoricomps, $F('ed61_i_curso'), $F('ed99_i_anoref'));" <?php echo $sDesabilitar; ?> />
                 </td>
             </tr>
             <tr>
@@ -113,20 +103,20 @@ $clrotulo->label("ed99_i_periodoref");
                      aceitar os campos como array.
                    -->
                     <input type="checkbox" name="individual" style='display:none' value="true">
-                    <input type="hidden" name="ed100_i_codigo"
-                           value="<?php if (isset($ed100_i_codigo)) echo $ed100_i_codigo; else echo ""; ?>">
-                    <input type="hidden" name="ed100_i_disciplina"
-                           value="<?php if (isset($ed12_i_codigo)) echo $ed12_i_codigo; else echo ""; ?>">
-                    <input type="hidden" name="ed100_c_tiporesultado"
-                           value="<?php if (isset($ed100_c_tiporesultado)) echo $ed100_c_tiporesultado; else echo ""; ?>">
-                    <input type="hidden" name="ed100_c_situacao"/>
-                    <input type="hidden" name="ed100_i_qtdch"/>
-                    <input type="hidden" name="ed100_c_resultadofinal"/>
-                    <input type="hidden" name="ed100_i_justificativa"/>
-                    <input type="hidden" name="ed100_t_resultobtido"/>
-                    <input type="hidden" name="ed100_c_termofinal"/>
-                    <input type="hidden" name="ed06_c_descr"/>
-                    <input type="hidden" name="sTipoRede" id="sTipoRede" value="2"/>
+                    <input type="hidden" name="ed100_i_codigo" value="<?php if (isset($ed100_i_codigo)) echo $ed100_i_codigo;
+                                                                        else echo ""; ?>">
+                    <input type="hidden" name="ed100_i_disciplina" value="<?php if (isset($ed12_i_codigo)) echo $ed12_i_codigo;
+                                                                            else echo ""; ?>">
+                    <input type="hidden" name="ed100_c_tiporesultado" value="<?php if (isset($ed100_c_tiporesultado)) echo $ed100_c_tiporesultado;
+                                                                                else echo ""; ?>">
+                    <input type="hidden" name="ed100_c_situacao" />
+                    <input type="hidden" name="ed100_i_qtdch" />
+                    <input type="hidden" name="ed100_c_resultadofinal" />
+                    <input type="hidden" name="ed100_i_justificativa" />
+                    <input type="hidden" name="ed100_t_resultobtido" />
+                    <input type="hidden" name="ed100_c_termofinal" />
+                    <input type="hidden" name="ed06_c_descr" />
+                    <input type="hidden" name="sTipoRede" id="sTipoRede" value="2" />
 
                     <table border="1" cellspacing="0" cellpading="0" width="100%">
                         <tr class="titulo">
@@ -151,20 +141,14 @@ $clrotulo->label("ed99_i_periodoref");
 
                             db_fieldsmemory($rsHistMpsDiscFora, $iTotalLinhas);
                             $ed100_basecomum == 't' ? $sBaseComum = "BASE COMUM" : $sBaseComum = "DIVERSIFICADA";
-                            ?>
-                            <tr onmouseover="Mostra('disc<?= $iTotalLinhas ?>')"
-                                onmouseout="Oculta('disc<?= $iTotalLinhas ?>')">
+                        ?>
+                            <tr onmouseover="Mostra('disc<?= $iTotalLinhas ?>')" onmouseout="Oculta('disc<?= $iTotalLinhas ?>')">
                                 <td> <?php echo $sBaseComum; ?> </td>
                                 <td style="font-size:10px;">
-                                    <input type="checkbox"
-                                           name="individual"
-                                           value="true"
-                                        <?= $ed100_i_codigo != "" ? "checked" : "" ?>
-                                           onclick="MarcaIndividual(this.value, <?= $iTotalLinhas ?>)">
+                                    <input type="checkbox" name="individual" value="true" <?= $ed100_i_codigo != "" ? "checked" : "" ?> onclick="MarcaIndividual(this.value, <?= $iTotalLinhas ?>)">
                                     <input type="hidden" name="ed100_i_codigo" value="<?= $ed100_i_codigo ?>">
                                     <input type="hidden" name="ed100_i_disciplina" value="<?= $ed12_i_codigo ?>">
-                                    <input type="hidden" name="ed100_c_tiporesultado"
-                                           value="<?= $ed100_c_tiporesultado ?>">
+                                    <input type="hidden" name="ed100_c_tiporesultado" value="<?= $ed100_c_tiporesultado ?>">
                                     <?= $ed232_c_abrev ?>
                                 </td>
                                 <td>
@@ -197,11 +181,7 @@ $clrotulo->label("ed99_i_periodoref");
                                         $visivel = "hidden";
                                     }
                                     ?>
-                                    <table id="resultado<?= $iTotalLinhas ?>"
-                                           style="visibility:<?= $visivel ?>;position:absolute;"
-                                           border="0"
-                                           cellspacing="2"
-                                           cellpading="2">
+                                    <table id="resultado<?= $iTotalLinhas ?>" style="visibility:<?= $visivel ?>;position:absolute;" border="0" cellspacing="2" cellpading="2">
                                         <tr>
                                             <td>
                                                 <?php
@@ -224,10 +204,7 @@ $clrotulo->label("ed99_i_periodoref");
                                                 <?php
                                                 $aprov_resultado = @$ed100_t_resultobtido;
                                                 ?>
-                                                <input type="text"
-                                                       name="ed100_t_resultobtido"
-                                                       value="<?= @$aprov_resultado ?>"
-                                                       size="6" <?= @$ed100_i_codigo == "" ? "disabled" : "" ?>>
+                                                <input type="text" name="ed100_t_resultobtido" value="<?= @$aprov_resultado ?>" size="6" <?= @$ed100_i_codigo == "" ? "disabled" : "" ?>>
                                             </td>
                                             <td>
                                                 <?php
@@ -245,11 +222,7 @@ $clrotulo->label("ed99_i_periodoref");
                                         $visivel = "hidden";
                                     }
                                     ?>
-                                    <table id="justificativa<?= $iTotalLinhas ?>"
-                                           style="visibility:<?= $visivel ?>;position:absolute;"
-                                           border="0"
-                                           cellspacing="0"
-                                           cellpading="0">
+                                    <table id="justificativa<?= $iTotalLinhas ?>" style="visibility:<?= $visivel ?>;position:absolute;" border="0" cellspacing="0" cellpading="0">
                                         <tr>
                                             <td nowrap title="<?= @$Ted100_i_justificativa ?>">
                                                 <?php
@@ -269,13 +242,7 @@ $clrotulo->label("ed99_i_periodoref");
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <table id="disc<?= $iTotalLinhas ?>"
-                                           name="disc<?= $iTotalLinhas ?>"
-                                           bgcolor="#f3f3f3"
-                                           style="border: 2px outset #CCCCCC; position: absolute; visibility: hidden;"
-                                           border="1"
-                                           cellspacing="0"
-                                           cellpading="0">
+                                    <table id="disc<?= $iTotalLinhas ?>" name="disc<?= $iTotalLinhas ?>" bgcolor="#f3f3f3" style="border: 2px outset #CCCCCC; position: absolute; visibility: hidden;" border="1" cellspacing="0" cellpading="0">
                                         <tr>
                                             <td>
                                                 <label class="bold"><?= $ed232_c_descr ?></label>
@@ -284,7 +251,7 @@ $clrotulo->label("ed99_i_periodoref");
                                     </table>
                                 </td>
                             </tr>
-                            <?php
+                        <?php
                             $ed100_i_codigo = "";
                             $ed100_c_situacao = "";
                             $ed100_c_resultadofinal = "";
@@ -307,23 +274,13 @@ $clrotulo->label("ed99_i_periodoref");
     if ($iLinhasHistMpsDiscFora > 0) {
 
         if ($db_opcao == 1) {
-            ?>
-            <input name="incluir"
-                   id="botao"
-                   type="button"
-                   value="Incluir"
-                   onclick="Salvar(<?= $iLinhasHistMpsDiscFora ?>, true);"
-                <?= ($db_botao == false ? "disabled" : "") ?> >
-            <?php
+    ?>
+            <input name="incluir" id="botao" type="button" value="Incluir" onclick="Salvar(<?= $iLinhasHistMpsDiscFora ?>, true);" <?= ($db_botao == false ? "disabled" : "") ?>>
+        <?php
         } else {
-            ?>
-            <input name="alterar"
-                   id="botao"
-                   type="button"
-                   value="Alterar"
-                   onclick="Salvar(<?= $iLinhasHistMpsDiscFora ?>, true);"
-                <?= ($db_botao == false ? "disabled" : "") ?> >
-            <?php
+        ?>
+            <input name="alterar" id="botao" type="button" value="Alterar" onclick="Salvar(<?= $iLinhasHistMpsDiscFora ?>, true);" <?= ($db_botao == false ? "disabled" : "") ?>>
+    <?php
         }
     }
     ?>
@@ -336,10 +293,10 @@ $clrotulo->label("ed99_i_periodoref");
         aCargasHorarias[iContador].setAttribute('maxlength', '7');
     }
 
-    var iEnsino = "<?=$ed11_i_ensino;?>";
-    var iSequenciaEtapa = "<?=$ed11_i_sequencia;?>";
-    var iHistoricomps = "<?=$ed100_i_historicompsfora;?>";
-    var iTotalLinhas = <?=$iTotalLinhas;?>;
+    var iEnsino = "<?= $ed11_i_ensino; ?>";
+    var iSequenciaEtapa = "<?= $ed11_i_sequencia; ?>";
+    var iHistoricomps = "<?= $ed100_i_historicompsfora; ?>";
+    var iTotalLinhas = <?= $iTotalLinhas; ?>;
 
     function MarcaIndividual(valor, i) {
 
@@ -439,8 +396,8 @@ $clrotulo->label("ed99_i_periodoref");
 
     function Salvar(linhas, lMensagem) {
 
-        iMinimoAprov = '<?=str_replace("'", "\'", $ed99_c_minimo)?>';
-        sResultadoFinal = '<?=$ed99_c_resultadofinal?>';
+        iMinimoAprov = '<?= str_replace("'", "\'", $ed99_c_minimo) ?>';
+        sResultadoFinal = '<?= $ed99_c_resultadofinal ?>';
         var lReprovado = false;
         var alguem = false;
 
@@ -472,8 +429,8 @@ $clrotulo->label("ed99_i_periodoref");
 
                 var aValorCargaHoraria = document.form1.ed100_i_qtdch[i].value.split('.');
 
-                if (aValorCargaHoraria[0] == ''
-                    || (aValorCargaHoraria[0] != '' && aValorCargaHoraria[0].length > 4)
+                if (aValorCargaHoraria[0] == '' ||
+                    (aValorCargaHoraria[0] != '' && aValorCargaHoraria[0].length > 4)
                 ) {
 
                     alert(_M(MENSAGENS_FORMULARIO_HISTMPSDISCFORA + 'valor_invalido_carga_horaria'));
@@ -483,8 +440,8 @@ $clrotulo->label("ed99_i_periodoref");
 
                 if (aValorCargaHoraria.length > 1) {
 
-                    if (aValorCargaHoraria[1] == ''
-                        || (aValorCargaHoraria[1] != '' && (aValorCargaHoraria[1].length == 0 || aValorCargaHoraria[1].length > 2))
+                    if (aValorCargaHoraria[1] == '' ||
+                        (aValorCargaHoraria[1] != '' && (aValorCargaHoraria[1].length == 0 || aValorCargaHoraria[1].length > 2))
                     ) {
 
                         alert(_M(MENSAGENS_FORMULARIO_HISTMPSDISCFORA + 'valor_invalido_carga_horaria'));
@@ -554,12 +511,12 @@ $clrotulo->label("ed99_i_periodoref");
                 /**
                  * Valida o minimo informado para disciplina com a sistuação do resultado informado
                  */
-                if (document.form1.ed100_c_resultadofinal[i].value == 'A'
-                    && !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value))
-                    && !isNaN(parseFloat(iMinimoAprov))
-                    && parseFloat(document.form1.ed100_t_resultobtido[i].value) < iMinimoAprov
-                    && document.form1.ed100_c_situacao[i].value == 'CONCLUÍDO'
-                    && lExibeMensagemMinimoAproveitamento == true) {
+                if (document.form1.ed100_c_resultadofinal[i].value == 'A' &&
+                    !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value)) &&
+                    !isNaN(parseFloat(iMinimoAprov)) &&
+                    parseFloat(document.form1.ed100_t_resultobtido[i].value) < iMinimoAprov &&
+                    document.form1.ed100_c_situacao[i].value == 'CONCLUÍDO' &&
+                    lExibeMensagemMinimoAproveitamento == true) {
 
                     var oMensagem = {};
                     oMensagem.iMinimoAproveitamento = iMinimoAprov;
@@ -578,11 +535,11 @@ $clrotulo->label("ed99_i_periodoref");
                 }
 
 
-                if (document.form1.ed100_c_resultadofinal[i].value == 'A'
-                    && !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value))
-                    && !isNaN(parseFloat(iMinimoAprov))
-                    && parseFloat(document.form1.ed100_t_resultobtido[i].value) < iMinimoAprov
-                    && document.form1.ed100_c_situacao[i].value == 'NÃO OPTANTE') {
+                if (document.form1.ed100_c_resultadofinal[i].value == 'A' &&
+                    !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value)) &&
+                    !isNaN(parseFloat(iMinimoAprov)) &&
+                    parseFloat(document.form1.ed100_t_resultobtido[i].value) < iMinimoAprov &&
+                    document.form1.ed100_c_situacao[i].value == 'NÃO OPTANTE') {
 
                     document.form1.ed100_t_resultobtido[i].focus();
                     document.form1.ed100_t_resultobtido[i].style.backgroundColor = '#99A9AE';
@@ -596,11 +553,11 @@ $clrotulo->label("ed99_i_periodoref");
 
                 }
 
-                if (document.form1.ed100_c_resultadofinal[i].value == 'R'
-                    && !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value))
-                    && !isNaN(parseFloat(iMinimoAprov))
-                    && parseFloat(document.form1.ed100_t_resultobtido[i].value) >= iMinimoAprov
-                    && document.form1.ed100_c_situacao[i].value == 'NÃO OPTANTE') {
+                if (document.form1.ed100_c_resultadofinal[i].value == 'R' &&
+                    !isNaN(parseFloat(document.form1.ed100_t_resultobtido[i].value)) &&
+                    !isNaN(parseFloat(iMinimoAprov)) &&
+                    parseFloat(document.form1.ed100_t_resultobtido[i].value) >= iMinimoAprov &&
+                    document.form1.ed100_c_situacao[i].value == 'NÃO OPTANTE') {
 
                     document.form1.ed100_t_resultobtido[i].focus();
                     document.form1.ed100_t_resultobtido[i].style.backgroundColor = '#99A9AE';
@@ -632,9 +589,8 @@ $clrotulo->label("ed99_i_periodoref");
             return false;
         }
 
-        location.href = "edu1_histmpsdiscfora002.php?ed100_i_historicompsfora=<?=$ed100_i_historicompsfora?>" +
-            "&registrodisc=" + registrodisc + '&lMensagem=' + lMensagem;
-        ;
+        location.href = "edu1_histmpsdiscfora002.php?ed100_i_historicompsfora=<?= $ed100_i_historicompsfora ?>" +
+            "&registrodisc=" + registrodisc + '&lMensagem=' + lMensagem;;
     }
 
     function js_alunoAprovado(oSel) {
@@ -675,30 +631,31 @@ $clrotulo->label("ed99_i_periodoref");
     <?php
     if (isset($lFechou) && $lFechou && isset($iQtdDisciplinas) && $iQtdDisciplinas > 0) {
     ?>
-    Salvar(<?=$iLinhasHistMpsDiscFora?>, 'false');
+        Salvar(<?= $iLinhasHistMpsDiscFora ?>, 'false');
     <?php
     }
     ?>
-    if (<?php echo $iLinhasHistMpsDiscFora; ?> == 0 && parent.lPrimeiroAcessoView && '<?php echo $ed99_c_situacao; ?>' == 'CONCLUÍDO'
-    )
-    {
+</script>
+    <?php
+    $isCondicao1 = ($iLinhasHistMpsDiscFora == 0);
+    $isCondicao2 = in_array($ed99_c_situacao, ['CONCLUÍDO', 'RECLASSIFICADO', 'AVANÇO']);
 
-        document.getElementById('btnLancarDisciplina').click();
-        parent.lPrimeiroAcessoView = false;
+    if ($isCondicao1 && $isCondicao2) {
+        echo "<script>
+                document.getElementById('btnLancarDisciplina').click();
+                parent.lPrimeiroAcessoView = false;
+            </script>";
     }
-
-    (function () {
-
+    ?>
+<script>
+    (function() {
         var oDadosManutencaoHistorico = CurrentWindow.corpo.oDadosManutencaoHistorico,
             iStatusManutencaoHistorico = oDadosManutencaoHistorico.iStatusAlteracaoHistorico,
             iOrdemEtapaAtual = oDadosManutencaoHistorico.aSenquenciaEtapas[iEnsino],
             oHistoricoEscolar = new HistoricoEscolar(iStatusManutencaoHistorico, iOrdemEtapaAtual, iSequenciaEtapa);
-
         if (!oHistoricoEscolar.permiteManutencao()) {
-
             $('btnLancarDisciplina').disabled = true;
             $('botao').disabled = true;
         }
     })();
-
 </script>

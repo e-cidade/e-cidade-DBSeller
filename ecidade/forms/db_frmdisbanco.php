@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,7 +75,7 @@ if(isset($db_opcaoal)){
        <?=@$Lk00_numbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numbco',15,$Ik00_numbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('k00_numbco',15,$Ik00_numbco,true,'text',$db_opcao,"")
        <?=@$Lk15_codbco?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_codbco',4,$Ik15_codbco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('k15_codbco',4,$Ik15_codbco,true,'text',$db_opcao,"")
        <?=@$Lk15_codage?>
     </td>
     <td> 
-<?
+<?php
 db_input('k15_codage',5,$Ik15_codage,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k15_codage',5,$Ik15_codage,true,'text',$db_opcao,"")
        <?=@$Lcodret?>
     </td>
     <td> 
-<?
+<?php
 db_input('codret',6,$Icodret,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('codret',6,$Icodret,true,'text',$db_opcao,"")
        <?=@$Ldtarq?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dtarq',@$dtarq_dia,@$dtarq_mes,@$dtarq_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ db_inputdata('dtarq',@$dtarq_dia,@$dtarq_mes,@$dtarq_ano,true,'text',$db_opcao,"
        <?=@$Ldtpago?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dtpago',@$dtpago_dia,@$dtpago_mes,@$dtpago_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ db_inputdata('dtpago',@$dtpago_dia,@$dtpago_mes,@$dtpago_ano,true,'text',$db_opc
        <?=@$Lvlrpago?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrpago',15,$Ivlrpago,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ db_input('vlrpago',15,$Ivlrpago,true,'text',$db_opcao,"")
        <?=@$Lvlrjuros?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrjuros',15,$Ivlrjuros,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ db_input('vlrjuros',15,$Ivlrjuros,true,'text',$db_opcao,"")
        <?=@$Lvlrmulta?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrmulta',15,$Ivlrmulta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -160,7 +160,7 @@ db_input('vlrmulta',15,$Ivlrmulta,true,'text',$db_opcao,"")
        <?=@$Lvlracres?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlracres',15,$Ivlracres,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -170,7 +170,7 @@ db_input('vlracres',15,$Ivlracres,true,'text',$db_opcao,"")
        <?=@$Lvlrdesco?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrdesco',15,$Ivlrdesco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -179,7 +179,7 @@ db_input('vlrdesco',15,$Ivlrdesco,true,'text',$db_opcao,"")
        <?=@$Lvlrtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrtot',15,$Ivlrtot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -189,7 +189,7 @@ db_input('vlrtot',15,$Ivlrtot,true,'text',$db_opcao,"")
        <?=@$Lcedente?>
     </td>
     <td> 
-<?
+<?php
 db_input('cedente',15,$Icedente,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -198,7 +198,7 @@ db_input('cedente',15,$Icedente,true,'text',$db_opcao,"")
        <?=@$Lvlrcalc?>
     </td>
     <td> 
-<?
+<?php
 db_input('vlrcalc',15,$Ivlrcalc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -211,7 +211,7 @@ db_input('vlrcalc',15,$Ivlrcalc,true,'text',$db_opcao,"")
     </td>
     <td>
     &nbsp; 
-<?
+<?php
 db_input('idret',6,$Iidret,true,'text',$db_opcao,"");
 db_input('k34_sequencial',6,$Ik34_sequencial,true,'hidden',3,"");
 db_input('k35_disbancotxt',6,$Ik35_disbancotxt,true,'hidden',3,"");
@@ -223,7 +223,7 @@ db_input('k35_disbancotxt',6,$Ik35_disbancotxt,true,'hidden',3,"");
        <?//=@$Lclassi?>
     </td>
     <td> 
-<?
+<?php
 //$x = array("f"=>"NAO","t"=>"SIM");
 //db_select('classi',$x,true,$db_opcao,"");
 ?>
@@ -234,7 +234,7 @@ db_input('k35_disbancotxt',6,$Ik35_disbancotxt,true,'hidden',3,"");
        <?=@$Lk00_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numpre',8,$Ik00_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -243,7 +243,7 @@ db_input('k00_numpre',8,$Ik00_numpre,true,'text',$db_opcao,"")
        <?=@$Lk00_numpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('k00_numpar',4,$Ik00_numpar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -253,7 +253,7 @@ db_input('k00_numpar',4,$Ik00_numpar,true,'text',$db_opcao,"")
        <?=@$Lconvenio?>
     </td>
     <td colspan=3> 
-<?
+<?php
 db_input('convenio',100,$Iconvenio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -269,7 +269,7 @@ db_input('convenio',100,$Iconvenio,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("idret"=>@$idret);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldisbanco->sql_query_txtreg(null,"*",null,"k35_disbancotxt=$k35_disbancotxt");

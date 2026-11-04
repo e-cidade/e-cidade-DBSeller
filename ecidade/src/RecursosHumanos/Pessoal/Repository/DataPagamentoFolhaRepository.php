@@ -203,7 +203,8 @@ class DataPagamentoFolhaRepository
      * @param string $operator
      * @return $this
      */
-    public function scopeSequencial($sequencial, $operator = '=') {
+    public function scopeSequencial($sequencial, $operator = '=')
+    {
         $this->scopes['sequencial'] = "rh225_sequencial {$operator} {$sequencial}";
         return $this;
     }
@@ -213,7 +214,8 @@ class DataPagamentoFolhaRepository
      * @param string $operator
      * @return $this
      */
-    public function scopeInstituicao(Instituicao $instituicao, $operator = '=') {
+    public function scopeInstituicao(Instituicao $instituicao, $operator = '=')
+    {
         $this->scopes['instituicao'] = "rh225_instituicao {$operator} {$instituicao->getCodigo()}";
         return $this;
     }
@@ -223,7 +225,8 @@ class DataPagamentoFolhaRepository
      * @param string $operator
      * @return $this
      */
-    public function scopeAno($ano, $operator = '=') {
+    public function scopeAno($ano, $operator = '=')
+    {
         $this->scopes['ano'] = "rh225_ano {$operator} {$ano}";
         return $this;
     }
@@ -233,8 +236,21 @@ class DataPagamentoFolhaRepository
      * @param string $operator
      * @return $this
      */
-    public function scopeMes($mes, $operator = '=') {
+    public function scopeMes($mes, $operator = '=')
+    {
         $this->scopes['mes'] = "rh225_mes {$operator} {$mes}";
+        return $this;
+    }
+
+    /**
+     * @param $mes
+     * @param $mes
+     * @return $this
+     */
+    public function scopeCompetenciaCaixa($ano, $mes)
+    {
+        $this->scopes['dataPagamento'] = " extract(MONTH from rh225_datapagamento) = {$mes} "
+            . "and extract (year from rh225_datapagamento) = {$ano} ";
         return $this;
     }
 
@@ -243,7 +259,8 @@ class DataPagamentoFolhaRepository
      * @param string $operator
      * @return $this
      */
-    public function scopeDataPagamento(DBDate $dataPagamento, $operator = '=') {
+    public function scopeDataPagamento(DBDate $dataPagamento, $operator = '=')
+    {
         $this->scopes['dataPagamento'] = "rh225_datapagamento {$operator} '{$dataPagamento->getDate()}'";
         return $this;
     }

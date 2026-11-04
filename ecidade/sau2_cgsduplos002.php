@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,106 +25,49 @@
  *                                licenca/licenca_pt.txt 
  */
 
-include(modification("fpdf151/pdf.php"));
-include(modification("libs/db_sql.php"));
-include(modification("classes/db_cgs_und_classe.php"));
+require_once(modification("fpdf151/pdf.php"));
+require_once(modification("libs/db_sql.php"));
+require_once(modification("classes/db_cgs_und_classe.php"));
+
 $clcgs_und = new cl_cgs_und ( );
 $clcgs_und->rotulo->label ();
 $clrotulo = new rotulocampo ( );
-parse_str ( $HTTP_SERVER_VARS ['QUERY_STRING'] );
-db_postmemory ( $HTTP_POST_VARS );
 
-$campos = "";
-$camposgroup = "";
-$count = "count(z01_i_cgsund)";
-$vir = "";
-$campos_where = array ();
-$Ncampos_where = array ();
-$index = 0;
-$index1 = 0;
-$campos_head = array ();
-$Ncampos_head = array ();
-$Ntam_campos = array ();
-if (isset ( $Cz01_v_nome )) {
-	$campos .= $vir . "z01_v_nome";
-	$camposgroup .= $vir . "z01_v_nome";
-	$campos_where [$index] = "z01_v_nome";
-	$campos_head [$index] = "NOME/RAZÃO SOCIAL";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_v_cgccpf )) {
-	$campos .= $vir . "case when length(trim(translate(z01_v_cgccpf,'0',''))) > 0 and length(trim(z01_v_cgccpf)) > 0 then trim(z01_v_cgccpf) else '' end as z01_v_cgccpf";
-	$camposgroup .= $vir . "case when length(trim(translate(z01_v_cgccpf,'0',''))) > 0 and length(trim(z01_v_cgccpf)) > 0 then trim(z01_v_cgccpf) else '' end ";
-	$campos_where [$index] = "z01_v_cgccpf";
-	$campos_head [$index] = "CPF/CNPJ";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_v_ender )) {
-	$campos .= $vir . "z01_v_ender";
-	$camposgroup .= $vir . "z01_v_ender";
-	$campos_where [$index] = "z01_v_ender";
-	$campos_head [$index] = "ENDEREÇO";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_i_numero )) {
-	$campos .= $vir . "z01_i_numero";
-	$camposgroup .= $vir . "z01_i_numero";
-	$campos_where [$index] = "z01_i_numero";
-	$campos_head [$index] = "NÚMERO";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_v_compl )) {
-	$campos .= $vir . "z01_v_compl";
-	$camposgroup .= $vir . "z01_v_compl";
-	$campos_where [$index] = "z01_v_compl";
-	$campos_head [$index] = "COMPLEMENTO";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_v_bairro )) {
-	$campos .= $vir . "z01_v_bairro";
-	$camposgroup .= $vir . "z01_v_bairro";
-	$campos_where [$index] = "z01_v_bairro";
-	$campos_head [$index] = "BAIRRO";
-	$vir = ",";
-	$index ++;
-}
-if (isset ( $z01_v_munic )) {
-	$campos .= $vir . "z01_v_munic";
-	$camposgroup .= $vir . "z01_v_munic";
-	$campos_where [$index] = "z01_v_munic";
-	$campos_head [$index] = "MUNICÍPIO";
-	$vir = ",";
-	$index ++;
-}
+parse_str ( $_SERVER ['QUERY_STRING'] );
+db_postmemory ($_GET);
+
 
 $where1 = " where 1=1 ";
 
-if (isset ( $Cz01_v_nome ) && isset ( $z01_v_nome ) && trim ( $z01_v_nome ) != "") {
-	$where1 .= " and trim(z01_v_nome) like '" . $z01_v_nome . "%' ";
+$head1 = "SELEÇÃO PARA CONTROLE DE CGSs MÚLTIPLOS POR";
+
+if (isset ( $nome ) && trim ( $nome ) != "") {
+	$where1 .= " and trim(z01_v_nome) like '" . $nome . "%' ";
+	$head3 = "Nome: ".$nome;
 }
 
-if ($zerados == 'n') {
-	$where1 .= " and length(trim(translate(z01_v_cgccpf,'0',''))) > 0 and length(trim(z01_v_cgccpf)) > 0";
+if (isset ( $nome_mae )  && trim ( $nome_mae ) != "") {
+	$where1 .= " and trim(z01_v_mae) like '" . $nome_mae . "%' ";
+	$head4 = "Nome da mãe: ".$nome_mae;
 }
 
-$result_cgs_und = $clcgs_und->sql_record ( "select $campos,$count from cgs_und $where1 group by $camposgroup having $count>1 order by $camposgroup" );
-$numrows_cgs_und = $clcgs_und->numrows;
+if (isset ( $nascimento ) && trim ( $nascimento ) != "") {
+	$where1 .= " and z01_d_nasc = " . "'$nascimento'";
+	$head5 = "Data de nascimento: ".$nascimento;
+}
+
+$sqlMultiplos = "select z01_v_nome,
+                        count(z01_i_cgsund) 
+                   from  cgs_und  
+			    $where1 
+			  group by z01_v_nome having count(z01_i_cgsund)>1 
+			  order by z01_v_nome";
+
+$result_cgs_und = db_query($sqlMultiplos);
+$numrows_cgs_und = pg_num_rows($result_cgs_und);
 if ($numrows_cgs_und == 0) {
-	db_redireciona ( 'db_erros.php?fechar=true&db_erro=Não existem duplos no cgs_und com os dados informados.' );
+	db_redireciona ( 'db_erros.php?fechar=true&db_erro=Não existem múltiplos no cgs_und com os dados informados.' );
 }
-$head1 = "SELEÇÃO DE DUPLOS NO CGS POR";
-$head3 = @$campos_head [0];
-$head4 = @$campos_head [1];
-$head5 = @$campos_head [2];
-$head6 = @$campos_head [3];
-$head7 = @$campos_head [4];
-$head8 = @$campos_head [5];
-$head9 = @$campos_head [6];
 
 $pdf = new PDF ( );
 $pdf->Open ();
@@ -137,31 +80,19 @@ $total = 0;
 $z01_cgccpf_setado = isset ( $z01_v_cgccpf );
 
 for($i = 0; $i < $numrows_cgs_und; $i ++) {
+	
 	db_fieldsmemory ( $result_cgs_und, $i );
 	
-	if ($z01_cgccpf_setado == true) {
-		if ($zerados == "m" and $z01_v_cgccpf != "") {
-			continue;
-		}
-	}
+	$where =  "trim(z01_v_nome)="."'$z01_v_nome'";		
+	$where .= " and  case when s115_c_cartaosus <> '' then s115_c_tipo = 'D' else 1=1 end ";
+	$campos = "z01_i_cgsund,z01_v_nome,trim(z01_v_cgccpf) as z01_v_cgccpf,z01_v_ender,z01_i_numero,";
+	$campos .= "z01_v_cep,z01_d_nasc,z01_v_mae,z01_v_bairro,z01_v_munic,z01_v_uf,s115_c_cartaosus as cns";
 	
-	$where = "";
-	$and = "      ";
-	for($ii = 0; $ii < sizeof ( $campos_where ); $ii ++) {
-		if (! isset ( $$campos_where [$ii] ) || $$campos_where [$ii] == "") {
-			$where .= $and . ($campos_where [$ii] != "z01_i_numero" ? "(trim(" . $campos_where [$ii] . ")='" . $$campos_where [$ii] . "' or " . $campos_where [$ii] . " is null)" : $campos_where [$ii] . "=" . $$campos_where [$ii]);
-		} else {
-			$where .= $and . ($campos_where [$ii] != "z01_i_numero" ? "trim(" . $campos_where [$ii] . ")='" . $$campos_where [$ii] . "'" : $campos_where [$ii] . "=" . $$campos_where [$ii]);
-		}
-		$and = "      and      ";
-	}
-	if ($where == "") {
-		$where == " 1=1 ";
-	}
-	$result_dadoscgs_und = $clcgs_und->sql_record ( $clcgs_und->sql_query_file ( null, "z01_i_cgsund,z01_v_nome,trim(z01_v_cgccpf) as z01_v_cgccpf,z01_v_ender,z01_i_numero,z01_v_cep,z01_v_compl,z01_v_cxpostal,z01_v_bairro,z01_v_munic,z01_v_uf", "z01_i_cgsund", $where ) );
-	$numrows_dadoscgs_und = $clcgs_und->numrows;
+	$result_dadoscgs_und = db_query($clcgs_und->sql_query ( null, $campos, "z01_i_cgsund", $where ) );
+	$numrows_dadoscgs_und = pg_num_rows($result_dadoscgs_und);
+
 	for($iii = 0; $iii < $numrows_dadoscgs_und; $iii ++) {
-		db_fieldsmemory ( $result_dadoscgs_und, $iii ); //echo "<BR><br>";
+		db_fieldsmemory ( $result_dadoscgs_und, $iii );
 		if (isset ( $z01_v_cgccpf ) && strlen ( $z01_v_cgccpf ) == 11) {
 			$z01_v_cgccpf = db_formatar ( $z01_v_cgccpf, "cpf" );
 		} else if (isset ( $z01_v_cgccpf ) && strlen ( $z01_v_cgccpf ) == 14) {
@@ -176,61 +107,44 @@ for($i = 0; $i < $numrows_cgs_und; $i ++) {
 		$muda_pag = false;
 		if ($pdf->gety () > $pdf->h - 32 || $troca == 0) {
 			if ($pdf->gety () > $pdf->h - 32) {
+
 				$muda_pag = true;
 			}
 			$pdf->addpage ( "L" );
 			$pdf->setfont ( 'arial', 'b', 8 );
-			$pdf->cell ( 75, $alt, @$campos_head [0], "LT", 0, "L", 1 );
-			$pdf->cell ( 25, $alt, @$campos_head [1], "T", 0, "L", 1 );
-			$pdf->cell ( 75, $alt, @$campos_head [2], "T", 0, "L", 1 );
-			$pdf->cell ( 20, $alt, @$campos_head [3], "T", 0, "L", 1 );
-			$pdf->cell ( 40, $alt, @$campos_head [4], "T", 0, "L", 1 );
-			$pdf->cell ( 40, $alt, @$campos_head [5], "TR", 1, "L", 1 );
-			if ($index > 5) {
-				$pdf->cell ( 75, $alt, @$campos_head [6], "L", 0, "L", 1 );
-				$pdf->cell ( 200, $alt, "", "R", 1, "R", 1 );
-			}
+
 			$pdf->cell ( 15, $alt, $RLz01_i_cgsund, 1, 0, "C", 1 );
 			$pdf->cell ( 50, $alt, $RLz01_v_nome, 1, 0, "C", 1 );
-			$pdf->cell ( 25, $alt, $RLz01_v_cgccpf, 1, 0, "C", 1 );
-			$pdf->cell ( 60, $alt, $RLz01_v_ender, 1, 0, "C", 1 );
-			$pdf->cell ( 15, $alt, $RLz01_v_cep, 1, 0, "C", 1 );
-			$pdf->cell ( 25, $alt, $RLz01_v_compl, 1, 0, "C", 1 );
-			$pdf->cell ( 25, $alt, $RLz01_v_cxpostal, 1, 0, "C", 1 );
+			$pdf->cell ( 18, $alt, $RLz01_d_nasc, 1, 0, "C", 1 );
+			$pdf->cell ( 20, $alt, $RLz01_v_cgccpf, 1, 0, "C", 1 );
+			$pdf->cell ( 22, $alt, "CNS", 1, 0, "C", 1 );
+			$pdf->cell ( 50, $alt, $RLz01_v_mae, 1, 0, "C", 1 );
+			$pdf->cell ( 50, $alt, $RLz01_v_ender, 1, 0, "C", 1 );					
 			$pdf->cell ( 30, $alt, $RLz01_v_bairro, 1, 0, "C", 1 );
 			$pdf->cell ( 30, $alt, $RLz01_v_munic, 1, 1, "C", 1 );
 			$pdf->ln ( 3 );
 			$troca = 1;
 		}
+
 		if ($iii == 0 || $muda_pag == true) {
+
 			$pdf->setfont ( 'arial', 'b', 7 );
-			$pdf->cell ( 75, $alt, @$$campos_where [0], "LT", 0, "L", 1 );
-			$pdf->cell ( 25, $alt, @$$campos_where [1], "T", 0, "L", 1 );
-			$pdf->cell ( 75, $alt, @$$campos_where [2], "T", 0, "L", 1 );
-			$pdf->cell ( 20, $alt, @$$campos_where [3], "T", 0, "L", 1 );
-			$pdf->cell ( 40, $alt, @$$campos_where [4], "T", 0, "L", 1 );
-			if ($index >= 5) {
-				$pdf->cell ( 40, $alt, @$$campos_where [5], "TR", 1, "L", 1 );
-			} else {
-				$pdf->cell ( 10, $alt, "", "T", 0, "R", 1 );
-				$pdf->cell ( 15, $alt, "Registros:", "LT", 0, "L", 1 );
-				$pdf->cell ( 15, $alt, @$count, "TR", 1, "R", 1 );
-			}
-			if ($index > 5) {
-				$pdf->cell ( 75, $alt, @$$campos_where [6], "L", 0, "L", 1 );
-				$pdf->cell ( 170, $alt, "", 0, 0, "R", 1 );
-				$pdf->cell ( 15, $alt, "Registros:", "LT", 0, "L", 1 );
-				$pdf->cell ( 15, $alt, @$count, "TR", 1, "R", 1 );
-			}
+			$pdf->cell ( 235, $alt,"", "LT", 0, "L", 1 );
+			$pdf->cell ( 10, $alt, "", "T", 0, "R", 1 );
+			$pdf->cell ( 15, $alt, "Registros:", "LT", 0, "L", 1 );
+			$pdf->cell ( 25, $alt, @$count, "TR", 1, "R", 1 );			
 		}
+		
 		$pdf->setfont ( 'arial', '', 7 );
 		$pdf->cell ( 15, $alt, $z01_i_cgsund, 1, 0, "C", 0 );
 		$pdf->cell ( 50, $alt, substr ( $z01_v_nome, 0, 31 ), 1, 0, "L", 0 );
-		$pdf->cell ( 25, $alt, $z01_v_cgccpf, 1, 0, "R", 0 );
-		$pdf->cell ( 60, $alt, substr ( $z01_v_ender, 0, 35 ) . ", " . $z01_i_numero, 1, 0, "L", 0 );
-		$pdf->cell ( 15, $alt, $z01_v_cep1 . "-" . $z01_v_cep2, 1, 0, "C", 0 );
-		$pdf->cell ( 25, $alt, $z01_v_compl, 1, 0, "L", 0 );
-		$pdf->cell ( 25, $alt, $z01_v_cxpostal, 1, 0, "R", 0 );
+		$pdf->cell ( 18, $alt, db_formatar($z01_d_nasc,'d'), 1, 0, "L", 0 );
+		$pdf->cell ( 20, $alt, $z01_v_cgccpf, 1, 0, "L", 0 );
+		$pdf->cell ( 22, $alt, $cns, 1, 0, "L", 0 );
+		$pdf->cell ( 50, $alt, strlen($z01_v_mae) > 28  ? substr($z01_v_mae,0,28).'..':$z01_v_mae, 1, 0, "C", 0 );
+		$endereco =  strlen($z01_v_ender) > 25  ? substr($z01_v_ender,0,25).'..':$z01_v_ender;
+		$endereco .= ", " . $z01_i_numero;
+		$pdf->cell ( 50, $alt, $endereco, 1, 0, "L", 0 );
 		$pdf->cell ( 30, $alt, substr ( $z01_v_bairro, 0, 19 ), 1, 0, "L", 0 );
 		$pdf->cell ( 30, $alt, substr ( $z01_v_munic, 0, 16 ) . "/" . $z01_v_uf, 1, 1, "L", 0 );
 		$total ++;

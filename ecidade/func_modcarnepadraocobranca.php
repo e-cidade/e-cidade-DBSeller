@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
               <?=$Lk22_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k22_sequencial",10,$Ik22_sequencial,true,"text",4,"","chave_k22_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
               <?=$Lk22_modcarnepadrao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k22_modcarnepadrao",10,$Ik22_modcarnepadrao,true,"text",4,"","chave_k22_modcarnepadrao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_modcarnepadraocobranca.php")==true){
@@ -122,12 +122,12 @@ $clmodcarnepadraocobranca->rotulo->label("k22_modcarnepadrao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

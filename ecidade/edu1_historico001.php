@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,7 +83,7 @@ if (isset($incluir)) {
     <td valign="top" bgcolor="#CCCCCC">
      <center>
       <fieldset style="width:95%;height:445px;"><legend><b>Curso</b></legend>
-       <?include(modification("forms/db_frmhistoricoesc.php"));?>
+       <?php include(modification("forms/db_frmhistoricoesc.php"));?>
       </fieldset>
      </center>
     </td>
@@ -91,7 +91,7 @@ if (isset($incluir)) {
   </table>
  </body>
 </html>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($oDaoHistorico->erro_status == "0") {
@@ -119,7 +119,7 @@ if (isset($incluir)) {
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>"+
                                    "&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 
 }

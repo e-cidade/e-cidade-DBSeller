@@ -93,39 +93,40 @@ $res = db_query($sql);
 $sql_where = "";
 $sp ="";
 if ($recurso > 0) {
-	$sql_where = " o15_recurso = '{$recurso}'";
+	$sql_where = " gestao = '{$recurso}'";
 	$sp = " and ";
 }
 $sql_where .= $sp." o48_instit in ({$listaInstituicoes}) ";
 $sql_where .= " and o48_anousu = {$anousu} ";
 
 $sql = "
-    select o15_recurso,
-           o15_descr,
+    select gestao,
+           descricao,
            sum(o48_valor) as valor
      from  orcparamrecursoval
     inner join orctiporec on o15_codigo = o48_codrec
+    join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
     where  $sql_where
       and orcparamrecursoval.o48_grupo = 1
-    group by o15_recurso, o15_descr
-    order by o15_recurso, o15_descr
+    group by gestao, descricao
+    order by gestao, descricao
 ";
 
 $result = db_query($sql);
 for ($x = 0; $x < pg_numrows($result); $x++) {
     db_fieldsmemory($result, $x);
-    $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
+    $sql = "select * from work_rel where recurso = '{$gestao}'";
     $rr = db_query($sql);
     if (pg_numrows($rr) > 0) {
         $sql = "
             update work_rel set res_anterior = coalesce(" . $valor . ",0)
-             where recurso = '{$o15_recurso}'
+             where recurso = '{$gestao}'
         ";
         db_query($sql);
     } else {
         $sql = "
             insert into work_rel  (recurso, recurso_descr, res_anterior)
-            values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round($valor, 2) . " )
+            values ('{$gestao}', '" . substr($descricao, 0, 30) . "'," . round($valor, 2) . " )
         ";
         if (!db_query($sql)) {
             db_redireciona("db_erros.php?fechar=true&db_erro=[1] - Erro ao inserir registro temporário.");
@@ -141,7 +142,7 @@ $idsRecursos = null;
 $nomeRecurso = '';
 $filtros = "(o15_datalimite is null or o15_datalimite > '{$dataSessao}')";
 if ($recurso > 0) {
-    $recursos = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getRecursosValidosPorFonteRecurso(
+    $recursos = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getRecursosValidosPorSubrecurso(
         $recurso,
         $filtros
     );
@@ -163,44 +164,45 @@ $sql_restos = $clempresto->sql_rp($anousu, $sele_work, $data_ini, $data_limite, 
 
 $sql = "
    select
- 		o15_recurso,
+ 		gestao,
 	    o15_descr,
 		sum(case when e60_anousu < $anousu_ant then saldo_rp  else    0 end ) as rp_anterior,
 		sum(case when e60_anousu = $anousu_ant then saldo_rp  else    0 end ) as rp_atual
    from (
    select
        e60_anousu,
-       orctiporec.o15_recurso,
+       gestao,
        x.o15_descr,
        round((sum(round(e91_vlremp,2)) - (sum(round(e91_vlranu,2))  + sum(round(vlranu,2)))
          - ( sum(round(e91_vlrpag,2)) + sum(round(vlrpag,2))  )),2) as saldo_rp
    from ($sql_restos) as x
    join orctiporec on orctiporec.o15_codigo = x.e91_recurso
+   join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
     {$filtroRecurso}
    group by
           e60_anousu,
-          o15_recurso,
+          gestao,
           x.o15_descr
    ) as xx
-  group by o15_recurso, o15_descr
+  group by gestao, o15_descr
 ";
 $result = db_query($sql);
 
 for ($x = 0; $x < pg_numrows($result); $x++) {
     db_fieldsmemory($result, $x);
-    $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
+    $sql = "select * from work_rel where recurso = '{$gestao}'";
     $rr = db_query($sql);
     if (pg_numrows($rr) > 0) {
         $sql = "
             update work_rel set rp_anterior = coalesce(" . $rp_anterior . ",0)  ,
 							    rp_atual    = coalesce(" . $rp_atual . ",0)
-						 where recurso = '{$o15_recurso}'
+						 where recurso = '{$gestao}'
         ";
         db_query($sql);
     } else {
         $sql = "
             insert into work_rel (recurso, recurso_descr, rp_anterior,rp_atual)
-            values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round($rp_anterior, 2) . " , " . round($rp_atual, 2) . " )
+            values ('{$gestao}', '" . substr($o15_descr, 0, 30) . "'," . round($rp_anterior, 2) . " , " . round($rp_atual, 2) . " )
         ";
         if (!db_query($sql)) {
             db_redireciona("db_erros.php?fechar=true&db_erro=[2] - Erro ao inserir registro temporário.");
@@ -216,23 +218,24 @@ if (!empty($idsRecursos)) {
 $sele_work = " w.o58_instit in ({$listaInstituicoes}) {$sql_where} ";
 $sql_baldesp = db_dotacaosaldo(8, 1, 4, true, $sele_work, $anousu, $anousu."-01-01", $data_limite, 8, 0, true);
 $sql_baldesp = "
-    select o15_recurso,
-           x.o15_descr,
+    select gestao,
+           x.descricao,
            sum(x.empenhado) as empenhado,
            sum(x.liquidado) as liquidado,
            sum(x.pago) as pago
     from (
         select o58_codigo,
-               o15_descr,
+               descricao,
                (sum(empenhado_acumulado)-sum(anulado_acumulado)) as empenhado,
                sum(liquidado_acumulado) as liquidado,
                sum(pago_acumulado) as pago
           from ($sql_baldesp) as x
-        group by o58_codigo,o15_descr
+        group by o58_codigo,descricao
         having o58_codigo > 0
         ) as x
     join orctiporec on orctiporec.o15_codigo = x.o58_codigo
-    group by o15_recurso, x.o15_descr
+    join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
+    group by gestao, x.descricao
 ";
 $result_baldesp = db_query($sql_baldesp);
 
@@ -240,20 +243,20 @@ if (pg_numrows($result_baldesp) > 0) {
     for ($x = 0; $x < pg_numrows($result_baldesp); $x++) {
         db_fieldsmemory($result_baldesp, $x);
 
-        $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
+        $sql = "select * from work_rel where recurso = '{$gestao}'";
         $rr = db_query($sql);
         if (pg_numrows($rr) > 0) {
             $sql = "
                 update work_rel
 				   set liquidado      = coalesce(" . ($liquidado - $pago) . ",0)  ,
 				       nao_liquidado  = coalesce(" . ($empenhado - $liquidado) . ",0)
-				where recurso = '{$o15_recurso}'
+				where recurso = '{$gestao}'
             ";
             db_query($sql);
         } else {
             $sql = "
             insert into work_rel  (recurso, recurso_descr, liquidado, nao_liquidado)
-			values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round(($liquidado - $pago), 2) . " , " . round(($empenhado - $liquidado), 2) . " )
+			values ('{$gestao}', '" . substr($descricao, 0, 30) . "'," . round(($liquidado - $pago), 2) . " , " . round(($empenhado - $liquidado), 2) . " )
 			";
             if (!db_query($sql)) {
                 db_redireciona("db_erros.php?fechar=true&db_erro=[3] - Erro ao inserir registro temporário.");
@@ -276,15 +279,16 @@ $sql="select o15_recurso,
         from (
              select k13_conta,
                     k13_descr,
-                    o15_recurso,
+                    gestao as o15_recurso,
                     c60_codsis,
-                    o15_descr,
+                    descricao as o15_descr,
 					fc_saltessaldo(k13_conta,'$data_limite','$data_limite', null, c61_instit)   as valor
 			        from saltes
 			              inner join conplanoexe on c62_anousu      = ".$anousu." and c62_reduz  = k13_conta
                           inner join conplanoreduz on c62_reduz     = c61_reduz   and c61_anousu = {$anousu}
 				          inner join conplano on c61_codcon         = c60_codcon  and c61_anousu = c60_anousu
                           inner join orctiporec on orctiporec.o15_codigo = conplanoreduz.c61_codigo
+                          join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
                           left  join conplanoconta on c63_anousu = c60_anousu and c63_reduz = c61_reduz
 				          left  join db_bancos on trim(db90_codban) = conplanoconta.c63_banco::varchar(10)
 			        where c60_codsis in (5,6)
@@ -341,8 +345,9 @@ if (pg_numrows($result_contas) > 0) {
 }
 
 $sql_where = "";
-$sSqlRecurso    = "select o15_codigo, o15_descr";
-$sSqlRecurso   .= "  from orctiporec ";
+$sSqlRecurso    = "select o15_codigo, descricao as o15_descr";
+$sSqlRecurso   .= " from orctiporec
+                    join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}";
 $sSqlRecurso   .= " ";
 
 if (!empty($filtroFonteRecurso)) {
@@ -371,9 +376,10 @@ if (pg_numrows($res) > 0) {
         $where = " and {$filtroFonteRecurso}";
     }
     $sql = "
-         select o15_recurso, o15_descr, sum(o48_valor) as saldo_final
+         select gestao as o15_recurso, descricao as o15_descr, sum(o48_valor) as saldo_final
          from orcparamrecursoval
          inner join orctiporec on o15_codigo=orcparamrecursoval.o48_codrec
+         join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
         where o48_grupo=2 and o48_anousu = {$anousu} $where
         group by o48_codrec, o15_descr
     ";
@@ -413,13 +419,13 @@ if (pg_numrows($res) > 0) {
     $sql_bver = db_planocontassaldo_matriz($anousu, $anousu . '-01-01', $data_limite, true, $where);
 
     $sql = "
-        select estrutural, c61_reduz, c60_descr, o15_recurso, o15_descr, saldo_final
+        select estrutural, c61_reduz, c60_descr, gestao as o15_recurso, descricao as o15_descr, saldo_final
           from ({$sql_bver}) as x
         join orctiporec on orctiporec.o15_codigo = x.c61_codigo
+        join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
         {$filtroRecurso}
         order by 1, 2
     ";
-
     $result_bver = db_query($sql);
 
     if (pg_numrows($result_bver) > 0) {
@@ -427,7 +433,9 @@ if (pg_numrows($res) > 0) {
             db_fieldsmemory($result_bver, $x);
 
             $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
+
             $rr = db_query($sql);
+
             //    db_criatabela($rr);
             if (pg_numrows($rr) > 0) {
                 $sql = "
@@ -448,7 +456,6 @@ if (pg_numrows($res) > 0) {
 }
 //  ------------------------------------------------------ //
 $res = db_query("select * from work_rel order by recurso");
-
 $rows = pg_numrows($res);
 $cols = pg_numfields($res);
 
@@ -463,7 +470,7 @@ if ($recurso == 0) {
 $head2 = "RESULTADOS FINANCEIROS POR RECURSO";
 $head3 = "RECURSO : ".$recurso." : ".$o15_descr;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
-$dt = split('-', $data_limite);
+$dt =explode('-', $data_limite);
 $head7 = 'DATA LIMITE :'."$dt[2]/$dt[1]/$dt[0]";
 
 $pdf = new PDF();

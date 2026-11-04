@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ $cldisbancotxt->rotulo->label();
        <?=@$Lk34_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k34_sequencial',10,$Ik34_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -53,7 +53,7 @@ db_input('k34_sequencial',10,$Ik34_sequencial,true,'text',3,"")
        <?=@$Lk34_numpremigra?>
     </td>
     <td> 
-<?
+<?php
 db_input('k34_numpremigra',50,$Ik34_numpremigra,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k34_numpremigra',50,$Ik34_numpremigra,true,'text',$db_opcao,"")
        <?=@$Lk34_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('k34_valor',15,$Ik34_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('k34_valor',15,$Ik34_valor,true,'text',$db_opcao,"")
        <?=@$Lk34_dtvenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k34_dtvenc',@$k34_dtvenc_dia,@$k34_dtvenc_mes,@$k34_dtvenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_inputdata('k34_dtvenc',@$k34_dtvenc_dia,@$k34_dtvenc_mes,@$k34_dtvenc_ano,tru
        <?=@$Lk34_dtpago?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k34_dtpago',@$k34_dtpago_dia,@$k34_dtpago_mes,@$k34_dtpago_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('k34_dtpago',@$k34_dtpago_dia,@$k34_dtpago_mes,@$k34_dtpago_ano,tru
        <?=@$Lk34_codret?>
     </td>
     <td> 
-<?
+<?php
 db_input('k34_codret',5,$Ik34_codret,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k34_codret',5,$Ik34_codret,true,'text',$db_opcao,"")
        <?=@$Lk34_diferenca?>
     </td>
     <td> 
-<?
+<?php
 db_input('k34_diferenca',15,$Ik34_diferenca,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_disbancotxt.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

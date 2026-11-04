@@ -34,340 +34,372 @@
  * @package contabilidade
  * @version $Revision: 1.13 $
  */
-abstract class LancamentoAuxiliarBase {
+abstract class LancamentoAuxiliarBase
+{
+    /**
+     * Código do lancamento
+     * @var integer
+     */
+    protected $iCodigoLancamento;
 
-	/**
-	 * Código do lancamento
-	 * @var integer
-	 */
-	protected $iCodigoLancamento;
+    /**
+     * Data de lancamento
+     * @var string
+     */
+    protected $dtLancamento;
 
-	/**
-	 * Data de lancamento
-	 * @var string
-	 */
-	protected $dtLancamento;
+    /**
+     * Codigo do elemento
+     * @var integer
+     */
+    protected $iCodigoElemento;
 
-	/**
-	 * Codigo do elemento
-	 * @var integer
-	 */
-	protected  $iCodigoElemento;
+    /**
+     * Complemento do Lancamento
+     * @var string
+     */
+    protected $sObservacao;
 
-	/**
-	 * Complemento do Lancamento
-	 * @var string
-	 */
-	protected  $sObservacao;
+    /**
+     * Favorecido do Empenho
+     * @var integer
+     */
+    protected $iFavorecido;
 
-	/**
-	 * Favorecido do Empenho
-	 * @var integer
-	 */
-	protected $iFavorecido;
+    /**
+     * Numero do Empenho
+     * @var integer
+     */
+    protected $iNumeroEmpenho;
 
-	/**
-	 * Numero do Empenho
-	 * @var integer
-	 */
-	protected $iNumeroEmpenho;
+    /**
+     * Codigo da dotação
+     * @var integer
+     */
+    protected $iCodigoDotacao;
 
-	/**
-	 * Codigo da dotação
-	 * @var integer
-	 */
-	protected  $iCodigoDotacao;
+    /**
+     * Código da nota de liquidação
+     * @var integer
+     */
+    protected $iCodigoNotaLiquidacao;
 
-	/**
-	 * Código da nota de liquidação
-	 * @var integer
-	 */
-	protected $iCodigoNotaLiquidacao;
-
-  /**
-   * @var ContaCorrenteDetalhe
-   */
-  protected $oContaCorrenteDetalhe;
+    /**
+     * @var ContaCorrenteDetalhe
+     */
+    protected $oContaCorrenteDetalhe;
 
     /**
      * @var bool
      */
-  protected $inversaoContas = false;
+    protected $inversaoContas = false;
 
-	/**
-	 * Define o código do lancamento
-	 * @param $integer $iCodigoLancamento
-	 */
-	protected function setCodigoLancamento($iCodigoLancamento) {
-		$this->iCodigoLancamento = $iCodigoLancamento;
-	}
+    /**
+     * @return int
+     */
+    public function getCodigoLancamento()
+    {
+        return $this->iCodigoLancamento;
+    }
 
-	/**
-	 * Define data de lancamento
-	 * @param string $dtLancamento
-	 */
-	protected  function setDataLancamento($dtLancamento) {
-		$this->dtLancamento = $dtLancamento;
-	}
+    /**
+     * Define o código do lancamento
+     * @param $integer $iCodigoLancamento
+     */
+    protected function setCodigoLancamento($iCodigoLancamento)
+    {
+        $this->iCodigoLancamento = $iCodigoLancamento;
+    }
 
-	/**
-	 * Seta o codigo do elemento
-	 * @param integer $iCodigoElemento
-	 */
-	public function setCodigoElemento($iCodigoElemento) {
-	  $this->iCodigoElemento = $iCodigoElemento;
-	}
+    /**
+     * Define data de lancamento
+     * @param string $dtLancamento
+     */
+    protected function setDataLancamento($dtLancamento)
+    {
+        $this->dtLancamento = $dtLancamento;
+    }
 
-	/**
-	 * Retorna o codigo do elemento
-	 * @return integer
-	 */
-	public function getCodigoElemento() {
-	  return $this->iCodigoElemento;
-	}
+    /**
+     * Seta o codigo do elemento
+     * @param integer $iCodigoElemento
+     */
+    public function setCodigoElemento($iCodigoElemento)
+    {
+        $this->iCodigoElemento = $iCodigoElemento;
+    }
 
-	/**
-	 * Complemento do Lancamento
-	 * @see ILancamentoAuxiliar::setObservacaoHistorico()
-	 */
-	public function setObservacaoHistorico($sObservacaoHistorico) {
-	  $this->sObservacao = $sObservacaoHistorico;
-	}
+    /**
+     * Retorna o codigo do elemento
+     * @return integer
+     */
+    public function getCodigoElemento()
+    {
+        return $this->iCodigoElemento;
+    }
 
-	/**
-	 * Complemento do Lancamento
-	 * @see ILancamentoAuxiliar::getObservacaoHistorico()
-	 */
-	public function getObservacaoHistorico() {
-	  return $this->sObservacao;
-	}
+    /**
+     * Complemento do Lancamento
+     * @see ILancamentoAuxiliar::setObservacaoHistorico()
+     */
+    public function setObservacaoHistorico($sObservacaoHistorico)
+    {
+        $this->sObservacao = $sObservacaoHistorico;
+    }
 
-	/**
-	 * Seta o favorecido CGM
-	 * @param integer $iFavorecido
-	 */
-	public function setFavorecido($iFavorecido) {
-	  $this->iFavorecido = $iFavorecido;
-	}
+    /**
+     * Complemento do Lancamento
+     * @see ILancamentoAuxiliar::getObservacaoHistorico()
+     */
+    public function getObservacaoHistorico()
+    {
+        return $this->sObservacao;
+    }
 
-	/**
-	 * Retorna o favorecido CGM
-	 * @return integer
-	 */
-	public function getFavorecido() {
-	  return $this->iFavorecido;
-	}
+    /**
+     * Seta o favorecido CGM
+     * @param integer $iFavorecido
+     */
+    public function setFavorecido($iFavorecido)
+    {
+        $this->iFavorecido = $iFavorecido;
+    }
 
-	/**
-	 * Seta o numero do empenho
-	 * @param integer $iNumeroEmpenho
-	 */
-	public function setNumeroEmpenho($iNumeroEmpenho) {
-	  $this->iNumeroEmpenho = $iNumeroEmpenho;
-	}
+    /**
+     * Retorna o favorecido CGM
+     * @return integer
+     */
+    public function getFavorecido()
+    {
+        return $this->iFavorecido;
+    }
 
-	/**
-	 * Retorna o numero do empenho
-	 * @return integer
-	 */
-	public function getNumeroEmpenho() {
-	  return $this->iNumeroEmpenho;
-	}
+    /**
+     * Seta o numero do empenho
+     * @param integer $iNumeroEmpenho
+     */
+    public function setNumeroEmpenho($iNumeroEmpenho)
+    {
+        $this->iNumeroEmpenho = $iNumeroEmpenho;
+    }
 
-	/**
-	 * Retorna um empenho
-	 * @return EmpenhoFinanceiro
-	 */
-	public function getEmpenho() {
-		return new EmpenhoFinanceiro($this->iNumeroEmpenho);
-	}
+    /**
+     * Retorna o numero do empenho
+     * @return integer
+     */
+    public function getNumeroEmpenho()
+    {
+        return $this->iNumeroEmpenho;
+    }
 
-	/**
-	 * Seta o codigo da dotacao
-	 * @param integer $iCodigoDotacao
-	 */
-	public function setCodigoDotacao($iCodigoDotacao) {
-	  $this->iCodigoDotacao = $iCodigoDotacao;
-	}
+    /**
+     * Retorna um empenho
+     * @return EmpenhoFinanceiro
+     */
+    public function getEmpenho()
+    {
+        return new EmpenhoFinanceiro($this->iNumeroEmpenho);
+    }
 
-	/**
-	 * Retorna o codigo da dotacao
-	 * @return integer
-	 */
-	public function getCodigoDotacao() {
-	  return $this->iCodigoDotacao;
-	}
+    /**
+     * Seta o codigo da dotacao
+     * @param integer $iCodigoDotacao
+     */
+    public function setCodigoDotacao($iCodigoDotacao)
+    {
+        $this->iCodigoDotacao = $iCodigoDotacao;
+    }
 
-	/**
-	 * Seta o codigo da nota de liquidacao
-	 * @param integer $iCodigoNotaLiquidacao
-	 */
-	public function setCodigoNotaLiquidacao($iCodigoNotaLiquidacao) {
-	  $this->iCodigoNotaLiquidacao = $iCodigoNotaLiquidacao;
-	}
+    /**
+     * Retorna o codigo da dotacao
+     * @return integer
+     */
+    public function getCodigoDotacao()
+    {
+        return $this->iCodigoDotacao;
+    }
 
-	/**
-	 * Retorna o codigo da nota de liquidacao
-	 * @return integer
-	 */
-	public function getCodigoNotaLiquidacao() {
-	  return $this->iCodigoNotaLiquidacao;
-	}
+    /**
+     * Seta o codigo da nota de liquidacao
+     * @param integer $iCodigoNotaLiquidacao
+     */
+    public function setCodigoNotaLiquidacao($iCodigoNotaLiquidacao)
+    {
+        $this->iCodigoNotaLiquidacao = $iCodigoNotaLiquidacao;
+    }
 
-
-	/**
-	 *  Inlcuindo vínculo do lançamento com o Elemento [comlancamele]
-	 */
-	protected function salvarVinculoElemento() {
-
-		$oDaoConLanCamEle = new cl_conlancamele();
-		$oDaoConLanCamEle->c67_codlan = $this->iCodigoLancamento;
-		$oDaoConLanCamEle->c67_codele = $this->iCodigoElemento;
-		$oDaoConLanCamEle->incluir($this->iCodigoLancamento);
-
-		if ($oDaoConLanCamEle->erro_status == 0) {
-
-			$sErroMsg  = "Não foi possível incluir o vinculo com o elemento do lançamento.\n\n";
-			$sErroMsg .= "Erro Técnico: {$oDaoConLanCamEle->erro_msg}";
-			throw new BusinessException($sErroMsg);
-		}
-
-		unset($oDaoConLanCamEle);
-	}
-
-	/**
-	 *  Incluindo vinculo do Lançamento com o Complemento [conlancamcompl]
-	 */
-	protected function salvarVinculoComplemento() {
-
-		$oDaoConLanCamCompl = new cl_conlancamcompl();
-		$oDaoConLanCamCompl->c72_codlan  = $this->iCodigoLancamento;
-		$oDaoConLanCamCompl->c72_complem = $this->getObservacaoHistorico();
-		$oDaoConLanCamCompl->incluir($this->iCodigoLancamento);
-
-		if ($oDaoConLanCamCompl->erro_status == 0) {
-
-			$sErroMsg  = "Não foi possível incluir o complemento do lançamento.\n\n";
-			$sErroMsg .= "Erro Técnico: {$oDaoConLanCamCompl->erro_msg}";
-			throw new BusinessException($sErroMsg);
-		}
-
-		unset($oDaoConLanCamCompl);
-	}
-
-	/**
-	 *  Incluindo vinculo do Lançamento com o CGM Favorecido [conlancamcgm]
-	 */
-	protected function salvarVinculoCgm() {
-
-	    if (empty($this->iFavorecido)) {
-	        return false;
-      }
-		$oDaoConLanCamCGM = new cl_conlancamcgm();
-		$oDaoConLanCamCGM->c76_codlan = $this->iCodigoLancamento;
-		$oDaoConLanCamCGM->c76_numcgm = $this->iFavorecido;
-		$oDaoConLanCamCGM->c76_data   = $this->dtLancamento;;
-		$oDaoConLanCamCGM->incluir($this->iCodigoLancamento);
-
-		if ($oDaoConLanCamCGM->erro_status == 0) {
-
-			$sErroMsg  = "Não foi possível incluir o CGM do lançamento.\n\n";
-			$sErroMsg .= "Erro Técnico : {$oDaoConLanCamCGM->erro_msg}";
-			throw new BusinessException($sErroMsg);
-		}
-
-		unset($oDaoConLanCamCGM);
-	}
-
-	/**
-	 *  Incluindo vinculo do Lançamento com Empenho [conlancamemp]
-	 */
-	protected function salvarVinculoEmpenho() {
-
-		$oDaoConLanCamEmp = new cl_conlancamemp();
-		$oDaoConLanCamEmp->c75_codlan = $this->iCodigoLancamento ;
-		$oDaoConLanCamEmp->c75_numemp = $this->iNumeroEmpenho;
-		$oDaoConLanCamEmp->c75_data   = $this->dtLancamento;;
-		$oDaoConLanCamEmp->incluir($this->iCodigoLancamento);
-
-		if ($oDaoConLanCamEmp->erro_status == 0) {
-
-			$sErroMsg  = "Não foi possível vincular Lançamento e Empenho.\n\n";
-			$sErroMsg .= "Erro Técnico : {$oDaoConLanCamEmp->erro_msg}";
-			throw new BusinessException($sErroMsg);
-		}
-		unset($oDaoConLanCamEmp);
-	}
-
-	/**
-	 *  Incluindo vinculo do Lançamento com Dotacao [conlancamdot]
-	 */
-	protected function salvarVinculoDotacao() {
-
-	  $oEmpenhoFinanceiro = new EmpenhoFinanceiro($this->getNumeroEmpenho());
-	  if ($oEmpenhoFinanceiro->getAno() == db_getsession('DB_anousu')) {
-
-  		$oDaoConLanCamDot = new cl_conlancamdot();
-  		$oDaoConLanCamDot->c73_codlan = $this->iCodigoLancamento ;
-  		$oDaoConLanCamDot->c73_data   = $this->dtLancamento;;
-  		$oDaoConLanCamDot->c73_anousu = db_getsession('DB_anousu');
-  		$oDaoConLanCamDot->c73_coddot = $this->iCodigoDotacao;
-  		$oDaoConLanCamDot->incluir($this->iCodigoLancamento);
-
-  		if ($oDaoConLanCamDot->erro_status == 0) {
-
-  			$sErroMsg  = "Não foi possível vincular Lançamento e Dotacao.\n\n";
-  			$sErroMsg .= "Erro Técnico : {$oDaoConLanCamDot->erro_msg}";
-  			throw new BusinessException($sErroMsg);
-  		}
-
-  		unset($oDaoConLanCamDot);
-	  }
-	  return true;
-	}
+    /**
+     * Retorna o codigo da nota de liquidacao
+     * @return integer
+     */
+    public function getCodigoNotaLiquidacao()
+    {
+        return $this->iCodigoNotaLiquidacao;
+    }
 
 
-	/**
-	 * Vincula uma nota de liquidação ao lançamento
-	 * @throws BusinessException
-	 * @return boolean
-	 */
-	protected function salvarVinculoNotaDeLiquidacao() {
+    /**
+     *  Inlcuindo vínculo do lançamento com o Elemento [comlancamele]
+     */
+    protected function salvarVinculoElemento()
+    {
 
-	  $oDaoConLancamNota = new cl_conlancamnota();
-	  $oDaoConLancamNota->c66_codlan  = $this->iCodigoLancamento;
-	  $oDaoConLancamNota->c66_codnota = $this->getCodigoNotaLiquidacao();
-	  $oDaoConLancamNota->incluir($this->iCodigoLancamento, $this->getCodigoNotaLiquidacao());
-	  if ($oDaoConLancamNota->erro_status == 0) {
+        $oDaoConLanCamEle = new cl_conlancamele();
+        $oDaoConLanCamEle->c67_codlan = $this->iCodigoLancamento;
+        $oDaoConLanCamEle->c67_codele = $this->iCodigoElemento;
+        $oDaoConLanCamEle->incluir($this->iCodigoLancamento);
 
-	    $sErroMsg  = "Não foi possível incluir o vínculo da nota de liquidacao com o lançamento.\n\n";
-	    $sErroMsg .= "Erro Técnico: {$oDaoConLancamNota->erro_msg}";
-	    throw new BusinessException($sErroMsg);
-	  }
-	  return true;
-	}
+        if ($oDaoConLanCamEle->erro_status == 0) {
 
-  /**
-   * @param ContaCorrenteDetalhe $oContaCorrenteDetalhe
-   */
-  public function setContaCorrenteDetalhe(ContaCorrenteDetalhe $oContaCorrenteDetalhe) {
-    $this->oContaCorrenteDetalhe = $oContaCorrenteDetalhe;
-  }
+            $sErroMsg = "Não foi possível incluir o vinculo com o elemento do lançamento.\n\n";
+            $sErroMsg .= "Erro Técnico: {$oDaoConLanCamEle->erro_msg}";
+            throw new BusinessException($sErroMsg);
+        }
 
-  /**
-   * @return ContaCorrenteDetalhe
-   */
-  public function getContaCorrenteDetalhe() {
-    return $this->oContaCorrenteDetalhe;
-  }
+        unset($oDaoConLanCamEle);
+    }
+
+    /**
+     *  Incluindo vinculo do Lançamento com o Complemento [conlancamcompl]
+     */
+    protected function salvarVinculoComplemento()
+    {
+
+        $oDaoConLanCamCompl = new cl_conlancamcompl();
+        $oDaoConLanCamCompl->c72_codlan = $this->iCodigoLancamento;
+        $oDaoConLanCamCompl->c72_complem = $this->getObservacaoHistorico();
+        $oDaoConLanCamCompl->incluir($this->iCodigoLancamento);
+
+        if ($oDaoConLanCamCompl->erro_status == 0) {
+
+            $sErroMsg = "Não foi possível incluir o complemento do lançamento.\n\n";
+            $sErroMsg .= "Erro Técnico: {$oDaoConLanCamCompl->erro_msg}";
+            throw new BusinessException($sErroMsg);
+        }
+
+        unset($oDaoConLanCamCompl);
+    }
+
+    /**
+     *  Incluindo vinculo do Lançamento com o CGM Favorecido [conlancamcgm]
+     */
+    protected function salvarVinculoCgm()
+    {
+
+        if (empty($this->iFavorecido)) {
+            return false;
+        }
+        $oDaoConLanCamCGM = new cl_conlancamcgm();
+        $oDaoConLanCamCGM->c76_codlan = $this->iCodigoLancamento;
+        $oDaoConLanCamCGM->c76_numcgm = $this->iFavorecido;
+        $oDaoConLanCamCGM->c76_data = $this->dtLancamento;;
+        $oDaoConLanCamCGM->incluir($this->iCodigoLancamento);
+
+        if ($oDaoConLanCamCGM->erro_status == 0) {
+
+            $sErroMsg = "Não foi possível incluir o CGM do lançamento.\n\n";
+            $sErroMsg .= "Erro Técnico : {$oDaoConLanCamCGM->erro_msg}";
+            throw new BusinessException($sErroMsg);
+        }
+
+        unset($oDaoConLanCamCGM);
+    }
+
+    /**
+     *  Incluindo vinculo do Lançamento com Empenho [conlancamemp]
+     */
+    protected function salvarVinculoEmpenho()
+    {
+
+        $oDaoConLanCamEmp = new cl_conlancamemp();
+        $oDaoConLanCamEmp->c75_codlan = $this->iCodigoLancamento;
+        $oDaoConLanCamEmp->c75_numemp = $this->iNumeroEmpenho;
+        $oDaoConLanCamEmp->c75_data = $this->dtLancamento;;
+        $oDaoConLanCamEmp->incluir($this->iCodigoLancamento);
+
+        if ($oDaoConLanCamEmp->erro_status == 0) {
+
+            $sErroMsg = "Não foi possível vincular Lançamento e Empenho.\n\n";
+            $sErroMsg .= "Erro Técnico : {$oDaoConLanCamEmp->erro_msg}";
+            throw new BusinessException($sErroMsg);
+        }
+        unset($oDaoConLanCamEmp);
+    }
+
+    /**
+     *  Incluindo vinculo do Lançamento com Dotacao [conlancamdot]
+     */
+    protected function salvarVinculoDotacao()
+    {
+
+        $oEmpenhoFinanceiro = new EmpenhoFinanceiro($this->getNumeroEmpenho());
+        if ($oEmpenhoFinanceiro->getAno() == db_getsession('DB_anousu')) {
+
+            $oDaoConLanCamDot = new cl_conlancamdot();
+            $oDaoConLanCamDot->c73_codlan = $this->iCodigoLancamento;
+            $oDaoConLanCamDot->c73_data = $this->dtLancamento;;
+            $oDaoConLanCamDot->c73_anousu = db_getsession('DB_anousu');
+            $oDaoConLanCamDot->c73_coddot = $this->iCodigoDotacao;
+            $oDaoConLanCamDot->incluir($this->iCodigoLancamento);
+
+            if ($oDaoConLanCamDot->erro_status == 0) {
+
+                $sErroMsg = "Não foi possível vincular Lançamento e Dotacao.\n\n";
+                $sErroMsg .= "Erro Técnico : {$oDaoConLanCamDot->erro_msg}";
+                throw new BusinessException($sErroMsg);
+            }
+
+            unset($oDaoConLanCamDot);
+        }
+        return true;
+    }
+
+
+    /**
+     * Vincula uma nota de liquidação ao lançamento
+     * @return boolean
+     * @throws BusinessException
+     */
+    protected function salvarVinculoNotaDeLiquidacao()
+    {
+
+        $oDaoConLancamNota = new cl_conlancamnota();
+        $oDaoConLancamNota->c66_codlan = $this->iCodigoLancamento;
+        $oDaoConLancamNota->c66_codnota = $this->getCodigoNotaLiquidacao();
+        $oDaoConLancamNota->incluir($this->iCodigoLancamento, $this->getCodigoNotaLiquidacao());
+        if ($oDaoConLancamNota->erro_status == 0) {
+
+            $sErroMsg = "Não foi possível incluir o vínculo da nota de liquidacao com o lançamento.\n\n";
+            $sErroMsg .= "Erro Técnico: {$oDaoConLancamNota->erro_msg}";
+            throw new BusinessException($sErroMsg);
+        }
+        return true;
+    }
+
+    /**
+     * @param ContaCorrenteDetalhe $oContaCorrenteDetalhe
+     */
+    public function setContaCorrenteDetalhe(ContaCorrenteDetalhe $oContaCorrenteDetalhe)
+    {
+        $this->oContaCorrenteDetalhe = $oContaCorrenteDetalhe;
+    }
+
+    /**
+     * @return ContaCorrenteDetalhe
+     */
+    public function getContaCorrenteDetalhe()
+    {
+        return $this->oContaCorrenteDetalhe;
+    }
 
     /**
      * Retorna a data do lancamento
      * @return string
      */
-  public function getDataLancamento() {
-      return $this->dtLancamento;
-  }
+    public function getDataLancamento()
+    {
+        return $this->dtLancamento;
+    }
 
     /**
      * @return bool
@@ -384,6 +416,4 @@ abstract class LancamentoAuxiliarBase {
     {
         $this->inversaoContas = $inversaoContas;
     }
-
-
 }

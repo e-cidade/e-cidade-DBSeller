@@ -161,6 +161,16 @@ $imprimirValorExercicioAnterior = $iAnoUsu - 1 >= $iAnoInicioPCASP;
                 <td nowrap><label for="imprimirValorExercicioAnterior"><b>Imprimir Valores do Exercício Anterior:</b></label></td>
                 <td><?php db_select('imprimirValorExercicioAnterior', array(true => 'Sim', false => 'Não'), true, 1); ?></td>
             </tr>
+            <tr >
+                <td class="bold">Apresentar :</td>
+                <td>
+                    <select id="apresentarRecurso" name="apresentarRecurso">
+                        <option selected value="fonteRecurso">Fonte Recurso</option>
+                        <option value="depara">Depara Subrecurso</option>
+                        <option value="siconfi">Código Siconfi</option>
+                    </select>
+                </td>
+            </tr>
         </table>
     </fieldset>
     <input name="emite" id="emite" type="button" value="Gerar" onclick="js_emite();">
@@ -251,6 +261,7 @@ $imprimirValorExercicioAnterior = $iAnoUsu - 1 >= $iAnoInicioPCASP;
     query += '&consolidado=' + (lConsolidado ? 'true' : 'false');
     query += '&codrel=' + iCodigoRelatorio;
     query += '&imprimirValorExercicioAnterior=' + (oComboboxExercicioAnterior.value == 1 ? 'true' : 'false');
+    query += '&apresentarRecurso='+ document.getElementById('apresentarRecurso').value;
 
     if (iCodigoRelatorio == 129) {
 
@@ -284,37 +295,15 @@ $imprimirValorExercicioAnterior = $iAnoUsu - 1 >= $iAnoInicioPCASP;
         jan.moveTo(0, 0);
 
       }).setMessage('Aguarde, validando configuração.').execute();
-    }
-    else {
+    } else {
       query += '&lQuadroPrincipal=' + lQuatroPrincipal;
       query += '&lQuadroAtivoPassado=' + lQuadroAtivoPassivo;
       query += '&lQuadroCompensacao=' + lQuadroContasCompensacao;
       query += '&lQuadroSuperavitDeficit=' + lQuadroSuperavitDeficit;
 
-      var confirmou = true;
-
-      var oParametros = {
-        exec: 'getSituacaoMatrizSaldoContabil',
-        periodo: iCodigoPeriodo,
-        exercicioAnterior: oComboboxExercicioAnterior.value == 1,
-      };
-
-      new AjaxRequest('con2_relatoriosdcasp.RPC.php', oParametros, function(oRetorno, lErro) {
-
-        var msg = oRetorno.mensagem.urlDecode();
-
-        if (msg && iAnoUsu >= 2018) {
-          if (!confirm(msg + '\n\nPara processar, acesse o menu DB:FINANCEIRO > Contabilidade > Procedimentos > Matriz de Saldos Contábeis > Emissão\n\nDeseja continuar?')) {
-            confirmou = false;
-          }
-        }
-
-        if (confirmou) {
-          var url = 'con2_balancopatrimonial.php' + query;
-          var features = 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0';
-          window.open(url, '', features).moveTo(0, 0);
-        }
-      }).setMessage('Aguarde, validando configuração.').execute();
+      var url = 'con2_balancopatrimonial.php' + query;
+      var features = 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0';
+      window.open(url, '', features).moveTo(0, 0);
     }
   }
 </script>

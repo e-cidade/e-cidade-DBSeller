@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ function js_verificaFormulario() {
   <tr> 
     
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-    <? 
+    <?php 
 	  if (!isset($HTTP_POST_VARS["procurar"])) {
 	    include(modification("forms/db_frmdepartamento002.php")); 
 	  } else { ?>
@@ -97,29 +97,29 @@ function js_verificaFormulario() {
             <td width="92%" nowrap bgcolor="#CDCDFF"  style="font-size:13px" align="center"><strong>Descri&ccedil;&atilde;o</strong></td>
           </tr>
           <tr> 
-		    <?
+		    <?php
 			  db_postmemory($HTTP_POST_VARS);
 			  $result = db_query("select * from db_depart where descrdepto like '".$descrdepto."%'");
 			  $num = pg_numrows($result);
 			  for ($i=0;$i<$num;$i++) {
 			?>
-			<tr  style="cursor:hand"  onClick="location.href='con1_departamento002.php?retornoCod=<? echo pg_result($result,$i,"coddepto") ?>&retornoDescr=<? echo pg_result($result,$i,"descrdepto")?>&retornonomeresponsavel= <? echo pg_result($result,$i,"nomeresponsavel") ?>&retornoemailresponsavel= <? echo pg_result($result,$i,"emailresponsavel")?>'" title="Clique aqui">
-              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<? echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><? echo pg_result($result,$i,"coddepto"); ?>
+			<tr  style="cursor:hand"  onClick="location.href='con1_departamento002.php?retornoCod=<?php echo pg_result($result,$i,"coddepto") ?>&retornoDescr=<?php echo pg_result($result,$i,"descrdepto")?>&retornonomeresponsavel= <?php echo pg_result($result,$i,"nomeresponsavel") ?>&retornoemailresponsavel= <?php echo pg_result($result,$i,"emailresponsavel")?>'" title="Clique aqui">
+              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php echo pg_result($result,$i,"coddepto"); ?>
 			  </td>
-              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<? echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><? echo pg_result($result,$i,"descrdepto"); ?></td>
+              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php echo pg_result($result,$i,"descrdepto"); ?></td>
 			</tr>
-			<?
+			<?php
 			  }
 			?>
           </tr>
          </table>	  
-	<?
+	<?php
 	 }
 	?>
 	</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_recibopagahist {
                  k00_historico = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_recibopagahist() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibopagahist"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_recibopagahist {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numnov = ($this->k00_numnov == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numnov"]:$this->k00_numnov);
        $this->k00_historico = ($this->k00_historico == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_historico"]:$this->k00_historico);
@@ -74,7 +74,7 @@ class cl_recibopagahist {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_numnov){ 
+   public function incluir ($k00_numnov){ 
       $this->atualizacampos();
        $this->k00_numnov = $k00_numnov; 
      if(($this->k00_numnov == null) || ($this->k00_numnov == "") ){ 
@@ -129,7 +129,7 @@ class cl_recibopagahist {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k00_numnov=null) { 
+   public function alterar ($k00_numnov=null) { 
       $this->atualizacampos();
      $sql = " update recibopagahist set ";
      $virgula = "";
@@ -200,7 +200,7 @@ class cl_recibopagahist {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k00_numnov=null,$dbwhere=null) { 
+   public function excluir ($k00_numnov=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_numnov));
      }else{ 
@@ -262,7 +262,7 @@ class cl_recibopagahist {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

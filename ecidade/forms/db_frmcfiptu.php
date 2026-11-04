@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -46,28 +46,28 @@ $clrotulo->label("db82_descricao");
 <form name="form1" method="post" action="">
     <fieldset>
       <legend>Parâmetros Gerais</legend>
-			<table border="0">
-			  <tr>
-			    <td nowrap title="<?=@$Tj18_anousu?>">
-			      <?=@$Lj18_anousu?>
-			    </td>
-			    <td>
-						<?
-						$j18_anousu = db_getsession('DB_anousu');
-						db_input('j18_anousu',4,$Ij18_anousu,true,'text',3,"")
-						?>
-			    </td>
-			  </tr>
+            <table border="0">
+              <tr>
+                <td nowrap title="<?=@$Tj18_anousu?>">
+                  <?=@$Lj18_anousu?>
+                </td>
+                <td>
+                        <?php
+                        $j18_anousu = db_getsession('DB_anousu');
+                        db_input('j18_anousu', 4, $Ij18_anousu, true, 'text', 3, "")
+                        ?>
+                </td>
+              </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_logradauto?>">
             <?=@$Lj18_logradauto?>
           </td>
           <td>
-            <?
+            <?php
             $x = array("f"=>"Não",
                        "t"=>"Sim"
                        );
-            db_select('j18_logradauto',$x,true,$db_opcao,"");
+            db_select('j18_logradauto', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -76,9 +76,9 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_utilizaloc?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('f'=>'Não','t'=>'Sim');
-            db_select('j18_utilizaloc',$x,true,$db_opcao,"");
+            db_select('j18_utilizaloc', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -87,9 +87,27 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_permitectmcgf?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('f'=>'Não','t'=>'Sim');
-            db_select('j18_permitectmcgf',$x,true,$db_opcao,"");
+            db_select('j18_permitectmcgf', $x, true, $db_opcao, "");
+            ?>
+          </td>
+        </tr>
+        <tr>
+          <td nowrap title="<?= $Tj18_mostraareairregular ?>">
+            <?= $Lj18_mostraareairregular ?>
+          </td>
+          <td>
+            <?= db_select('j18_mostraareairregular', ['t' => 'Sim', 'f' => 'Não'], true, $db_opcao, "") ?>
+          </td>
+        </tr>
+        <tr>
+          <td nowrap title="<?=@$Tj18_caracterirregular?>">
+             <?=@$Lj18_caracterirregular?>
+          </td>
+          <td>
+            <?php
+            db_input('j18_caracterirregular', 20, $Ij18_caracterirregular, true, 'text', $db_opcao, "")
             ?>
           </td>
         </tr>
@@ -98,9 +116,9 @@ $clrotulo->label("db82_descricao");
             <?=@$Lj18_segundavia?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('1'=>'Segunda Via','2'=>'Carne');
-            db_select('j18_segundavia',$x,true,$db_opcao,"");
+            db_select('j18_segundavia', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -109,11 +127,11 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_dadoscertisen?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('0'=>'Proprietario',
                        '1'=>'Promitente'
                        );
-            db_select('j18_dadoscertisen',$x,true,$db_opcao,"");
+            db_select('j18_dadoscertisen', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -122,11 +140,11 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_formatsetor?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('0'=>'Somente Números',
                        '1'=>'Letras e Números'
                        );
-            db_select('j18_formatsetor',$x,true,$db_opcao,"");
+            db_select('j18_formatsetor', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -135,11 +153,11 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_formatquadra?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('0'=>'Somente Números',
                        '1'=>'Letras e Números'
                        );
-            db_select('j18_formatquadra',$x,true,$db_opcao,"");
+            db_select('j18_formatquadra', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -148,10 +166,18 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_formatlote?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('0'=>'Somente Números','1'=>'Letras e Números');
-            db_select('j18_formatlote',$x,true,$db_opcao,"");
+            db_select('j18_formatlote', $x, true, $db_opcao, "");
             ?>
+          </td>
+        </tr>
+        <tr>
+          <td nowrap title="<?= (empty($Tj18_validarano)) ? '<strong>Permite construção sem ano</strong>' : @$Tj18_validarano ?>">
+            <?= (empty($Lj18_validarano)) ? '<strong>Permite construção sem ano</strong>' : @$Lj18_validarano ?>
+          </td>
+          <td>
+            <?= db_select('j18_validarano', ['t' => 'Sim', 'f' => 'Não'], true, $db_opcao, "") ?>
           </td>
         </tr>
         <tr>
@@ -159,8 +185,8 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_textoprom?>
           </td>
           <td>
-            <?
-            db_input('j18_textoprom',20,$Ij18_textoprom,true,'text',$db_opcao,"")
+            <?php
+            db_input('j18_textoprom', 20, $Ij18_textoprom, true, 'text', $db_opcao, "")
             ?>
           </td>
         </tr>
@@ -169,16 +195,17 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_ordendent?>
           </td>
           <td>
-            <?
+            <?php
             $x = array(
-                       '1' => 'imobiliaria, zona de entrega, endereco de entrega, endereco do cgm, endereco da construcao (predial)',
-                       '2' => 'imobiliaria, zona de entrega, endereco de entrega, endereco da construcao (predial), endereco do cgm',
-                       '3' => 'imobiliaria, zona de entrega, endereco de entrega, endereco da construcao (predial)',
-                       '4' => 'imobiliaria, zona de entrega, endereco do cgm, endereco da construcao (predial)',
-                       '5' => 'endereco de entrega, endereco da construcao (predial), endereco do cgm',
-                       '6' => 'endereco de entrega, endereco do cgm, endereco da construcao (predial)',
-                       '7' => 'Baldio = Endereço do Terreno, Predial = Endereço da Construção');
-            db_select('j18_ordendent',$x,true,$db_opcao,"");
+                       '1' => 'Imobiliária, zona de entrega, endereço de entrega, endereço do CGM, endereço da construção (predial)',
+                       '2' => 'Imobiliária, zona de entrega, endereço de entrega, endereço da construção (predial), endereço do CGM',
+                       '3' => 'Imobiliária, zona de entrega, endereço de entrega, endereço da construção (predial)',
+                       '4' => 'Imobiliária, zona de entrega, endereço do CGM, endereço da construção (predial)',
+                       '5' => 'Endereço de entrega, endereço da construção (predial), endereço do CGM',
+                       '6' => 'Endereço de entrega, endereço do CGM, endereço da construção (predial)',
+                       '7' => 'Baldio = Endereço do Terreno, Predial = Endereço da Construção ',
+                       '8' => 'Somente com endereço de entrega cadastrado');
+            db_select('j18_ordendent', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -192,25 +219,25 @@ $clrotulo->label("db82_descricao");
             <?=@$Lj18_dtoper?>
           </td>
           <td>
-            <?
-            db_inputdata('j18_dtoper',@$j18_dtoper_dia,@$j18_dtoper_mes,@$j18_dtoper_ano,true,'text',$db_opcao,"")
+            <?php
+            db_inputdata('j18_dtoper', @$j18_dtoper_dia, @$j18_dtoper_mes, @$j18_dtoper_ano, true, 'text', $db_opcao, "")
             ?>
           </td>
         </tr>
-			  <tr>
-			    <td nowrap title="<?=@$Tj18_vlrref?>">
-			      <?=@$Lj18_vlrref?>
-			    </td>
-			    <td>
-						<?
-						db_input('j18_vlrref',15,4,true,'text',$db_opcao,"")
-						?>
-			    </td>
-			  </tr>
-			  <tr>
+              <tr>
+                <td nowrap title="<?=@$Tj18_vlrref?>">
+                  <?=@$Lj18_vlrref?>
+                </td>
+                <td>
+                        <?php
+                        db_input('j18_vlrref', 15, 4, true, 'text', $db_opcao, "")
+                        ?>
+                </td>
+              </tr>
+              <tr>
           <td nowrap title="<?=@$Tj18_rterri?>">
             <?php
-              db_ancora(@$Lj18_rterri,"js_pesquisaReceitaTerritorial(true);",$db_opcao);
+              db_ancora(@$Lj18_rterri, "js_pesquisaReceitaTerritorial(true);", $db_opcao);
             ?>
           </td>
           <td>
@@ -220,11 +247,11 @@ $clrotulo->label("db82_descricao");
               db_input('k02_descrTerritorial', 45, $Ik02_descr, true, 'text', 3);
             ?>
           </td>
-			  </tr>
+              </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_rpredi?>">
             <?php
-              db_ancora(@$Lj18_rpredi,"js_pesquisaReceitaPredial(true);",$db_opcao);
+              db_ancora(@$Lj18_rpredi, "js_pesquisaReceitaPredial(true);", $db_opcao);
             ?>
           </td>
           <td>
@@ -240,28 +267,28 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_perccorrepadrao?>
           </td>
           <td>
-            <?
-              db_input('j18_perccorrepadrao',15,@$Ij18_perccorrepadrao,true,'text',$db_opcao,"");
+            <?php
+              db_input('j18_perccorrepadrao', 15, @$Ij18_perccorrepadrao, true, 'text', $db_opcao, "");
             ?>
           </td>
         </tr>
-			  <tr>
-			    <td nowrap title="<?=@$Tj18_vencim?>">
-			      <?=@$Lj18_vencim?>
-			    </td>
-			    <td>
-						<?
-						db_input('j18_vencim',1,$Ij18_vencim,true,'text',$db_opcao,"")
-						?>
-			    </td>
-			  </tr>
+              <tr>
+                <td nowrap title="<?=@$Tj18_vencim?>">
+                  <?=@$Lj18_vencim?>
+                </td>
+                <td>
+                        <?php
+                        db_input('j18_vencim', 1, $Ij18_vencim, true, 'text', $db_opcao, "")
+                        ?>
+                </td>
+              </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_calcvenc?>">
              <?=@$Lj18_calcvenc?>
           </td>
           <td>
-            <?
-            db_input('j18_calcvenc',1,$Ij18_calcvenc,true,'text',$db_opcao,"")
+            <?php
+            db_input('j18_calcvenc', 1, $Ij18_calcvenc, true, 'text', $db_opcao, "")
             ?>
           </td>
         </tr>
@@ -270,8 +297,8 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_permvenc?>
           </td>
           <td>
-            <?
-            db_input('j18_permvenc',1,$Ij18_permvenc,true,'text',$db_opcao,"")
+            <?php
+            db_input('j18_permvenc', 1, $Ij18_permvenc, true, 'text', $db_opcao, "")
             ?>
           </td>
         </tr>
@@ -280,9 +307,9 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_utilizasetfisc?>
           </td>
           <td>
-            <?
+            <?php
             $x = array("f"=>"Não","t"=>"Sim");
-            db_select('j18_utilizasetfisc',$x,true,$db_opcao,"");
+            db_select('j18_utilizasetfisc', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -291,9 +318,9 @@ $clrotulo->label("db82_descricao");
             <?=@$Lj18_utilizaareaprivativa?>
           </td>
           <td>
-            <?
+            <?php
             $x = array("f"=>"Não","t"=>"Sim");
-            db_select('j18_utilizaareaprivativa',$x,true,$db_opcao,"");
+            db_select('j18_utilizaareaprivativa', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -302,9 +329,9 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_testadanumero?>
           </td>
           <td>
-            <?
+            <?php
             $x = array("f"=>"Não","t"=>"Sim");
-            db_select('j18_testadanumero',$x,true,$db_opcao,"");
+            db_select('j18_testadanumero', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -313,9 +340,9 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_excconscalc?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('f'=>'Não','t'=>'Sim');
-            db_select('j18_excconscalc',$x,true,$db_opcao,"");
+            db_select('j18_excconscalc', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -324,9 +351,9 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_utidadosdiver?>
           </td>
           <td>
-            <?
+            <?php
             $x = array("f"=>"Não","t"=>"Sim");
-            db_select('j18_utidadosdiver',$x,true,$db_opcao,"");
+            db_select('j18_utidadosdiver', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -335,69 +362,69 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_utilpontos?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('0'=>'Não
             ','1'=>'Sim');
-            db_select('j18_utilpontos',$x,true,$db_opcao,"");
+            db_select('j18_utilpontos', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_infla?>">
-             <?
-             db_ancora(@$Lj18_infla,"js_pesquisaj18_infla(true);",$db_opcao);
-             ?>
+             <?php
+                db_ancora(@$Lj18_infla, "js_pesquisaj18_infla(true);", $db_opcao);
+                ?>
           </td>
           <td>
-            <?
-            db_input('j18_infla',10,$Ij18_infla,true,'text',$db_opcao," onchange='js_pesquisaj18_infla(false);'")
+            <?php
+            db_input('j18_infla', 10, $Ij18_infla, true, 'text', $db_opcao, " onchange='js_pesquisaj18_infla(false);'")
             ?>
-             <?
-               db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
-             ?>
+             <?php
+                db_input('i01_descr', 40, $Ii01_descr, true, 'text', 3, '')
+                ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_iptuhistisen?>">
-             <?
-              db_ancora("<strong>Código do Histórico de Isenção:</strong>","js_pesquisaj08_histiseni(true);",$db_opcao);
-             ?>
+             <?php
+                db_ancora("<strong>Código do Histórico de Isenção:</strong>", "js_pesquisaj08_histiseni(true);", $db_opcao);
+                ?>
           </td>
           <td>
-            <?
-             db_input('j18_iptuhistisen',10,$Ij18_iptuhistisen,true,'text',$db_opcao,"onchange='js_pesquisaj08_histiseni(false);'");
-             db_input('j17_descr2',40,$Ij17_descr,true,'text',3,'');
+            <?php
+             db_input('j18_iptuhistisen', 10, $Ij18_iptuhistisen, true, 'text', $db_opcao, "onchange='js_pesquisaj08_histiseni(false);'");
+             db_input('j17_descr2', 40, $Ij17_descr, true, 'text', 3, '');
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_db_sysfuncoes?>">
-             <?
-             db_ancora(@$Lj18_db_sysfuncoes,"js_pesquisaj18_db_sysfuncoes(true);",$db_opcao);
-             ?>
+             <?php
+                db_ancora(@$Lj18_db_sysfuncoes, "js_pesquisaj18_db_sysfuncoes(true);", $db_opcao);
+                ?>
           </td>
           <td>
-            <?
-            db_input('j18_db_sysfuncoes',10,$Ij18_db_sysfuncoes,true,'text',$db_opcao," onchange='js_pesquisaj18_db_sysfuncoes(false);'")
+            <?php
+            db_input('j18_db_sysfuncoes', 10, $Ij18_db_sysfuncoes, true, 'text', $db_opcao, " onchange='js_pesquisaj18_db_sysfuncoes(false);'")
             ?>
-            <?
-             db_input('nomefuncao',40,$Inomefuncao,true,'text',3,'')
+            <?php
+             db_input('nomefuncao', 40, $Inomefuncao, true, 'text', 3, '')
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj18_tipoisen?>">
-             <?
-             db_ancora(@$Lj18_tipoisen,"js_pesquisaj18_tipoisen(true);",$db_opcao);
-             ?>
+             <?php
+                db_ancora(@$Lj18_tipoisen, "js_pesquisaj18_tipoisen(true);", $db_opcao);
+                ?>
           </td>
           <td>
-            <?
-            db_input('j18_tipoisen',10,$Ij18_tipoisen,true,'text',$db_opcao," onchange='js_pesquisaj18_tipoisen(false);'")
+            <?php
+            db_input('j18_tipoisen', 10, $Ij18_tipoisen, true, 'text', $db_opcao, " onchange='js_pesquisaj18_tipoisen(false);'")
             ?>
-            <?
-            db_input('j45_descr',40,$Ij45_descr,true,'text',3,'')
-             ?>
+            <?php
+            db_input('j45_descr', 40, $Ij45_descr, true, 'text', 3, '')
+            ?>
           </td>
         </tr>
         <tr>
@@ -410,6 +437,50 @@ $clrotulo->label("db82_descricao");
               db_select('j18_taxaseparada', $array_opcoes, true, $db_opcao, "");
             ?>
           </td>
+        </tr>
+        <tr>
+          <td nowrap title="<?php echo $Tj18_simulacaocalculo; ?>">
+            <?php echo $Lj18_simulacaocalculo; ?>
+          </td>
+          <td>
+            <?php
+              $array_opcoes = array("f"=>"Não", "t"=>"Sim");
+              db_select('j18_simulacaocalculo', $array_opcoes, true, $db_opcao, "");
+            ?>
+          </td>
+        </tr>
+        <tr>
+            <td nowrap title="<?php echo $Tj18_fracionaidbql; ?>">
+                <?php echo $Lj18_fracionaidbql; ?>
+            </td>
+            <td>
+                <?php
+                $array_opcoes = array("f"=>"Não", "t"=>"Sim");
+                db_select('j18_fracionaidbql', $array_opcoes, true, $db_opcao, "");
+                ?>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap title="<?php echo $Tj18_validaproprietario; ?>">
+                <?php echo $Lj18_validaproprietario; ?>
+            </td>
+            <td>
+                <?php
+                $array_opcoes = array("t"=>"Sim", "f"=>"Não");
+                db_select('j18_validaproprietario', $array_opcoes, true, $db_opcao, "");
+                ?>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap title="<?php echo $Tj18_desvinculadebitosaverbacao; ?>">
+                <?php echo $Lj18_desvinculadebitosaverbacao; ?>
+            </td>
+            <td>
+                <?php
+                $array_opcoes = array("f"=>"Não", "t"=>"Sim");
+                db_select('j18_desvinculadebitosaverbacao', $array_opcoes, true, $db_opcao, "");
+                ?>
+            </td>
         </tr>
       </table>
 
@@ -426,7 +497,7 @@ $clrotulo->label("db82_descricao");
               <?php
                 db_input('j18_receitacreditorecalculo', 10, $Ij18_receitacreditorecalculo, true, 'text', $db_opcao, "data='k02_codigo'");
                 db_input('k02_descrReceitaCred', 50, 4, true, 'text', 3, "data='k02_descr'");
-              ?>
+                ?>
             </td>
           </tr>
           <tr>
@@ -439,7 +510,7 @@ $clrotulo->label("db82_descricao");
               <?php
                 db_input('j18_tipodebitorecalculo', 10, @$Ij18_tipodebitorecalculo, true, 'text', $db_opcao, "data='k00_tipo'");
                 db_input('descricao_tipo_debito_recalculo', 50, $Idb82_descricao, true, 'text', 3, "data='k00_descr'");
-              ?>
+                ?>
             </td>
           </tr>
         </table>
@@ -456,14 +527,14 @@ $clrotulo->label("db82_descricao");
       <table>
         <tr>
           <td nowrap="nowrap" title="<?=@$Tp90_db_documentotemplate?>">
-            <?
-              db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumento(true);",$db_opcao);
+            <?php
+              db_ancora("<strong>Documento Template:</strong>", "js_pesquisaDocumento(true);", $db_opcao);
             ?>
           </td>
           <td nowrap="nowrap">
-            <?
-              db_input('j18_templatecertidaoexitencia',10,@$Ij18_templatecertidaoexitencia,true,'text',$db_opcao,'onchange="js_pesquisaDocumento(false);"');
-              db_input('db82_descricao',50,$Idb82_descricao,true,'text',3,'','db82_descricao');
+            <?php
+              db_input('j18_templatecertidaoexitencia', 10, @$Ij18_templatecertidaoexitencia, true, 'text', $db_opcao, 'onchange="js_pesquisaDocumento(false);"');
+              db_input('db82_descricao', 50, $Idb82_descricao, true, 'text', 3, '', 'db82_descricao');
             ?>
           </td>
         </tr>
@@ -478,24 +549,24 @@ $clrotulo->label("db82_descricao");
          </td>
          <td align="left">
            <?php
-             $arr_opcoes = Array(
+             $arr_opcoes = array(
                                 "0" =>"Sim",
                                 "1" =>"Não"
                                 );
-             db_select("utilizadocpadrao",$arr_opcoes,true,$db_opcao, "onchange='js_template(this.value);'");
-           ?>
+             db_select("utilizadocpadrao", $arr_opcoes, true, $db_opcao, "onchange='js_template(this.value);'");
+                ?>
          <td>
         </tr>
         <tr id="linhaTemplate" style="display:none;">
           <td nowrap="nowrap" title="<?=@$Tp90_db_documentotemplate?>">
-            <?
-              db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumentoIsencao(true);",$db_opcao);
+            <?php
+              db_ancora("<strong>Documento Template:</strong>", "js_pesquisaDocumentoIsencao(true);", $db_opcao);
             ?>
           </td>
           <td nowrap="nowrap">
-            <?
-              db_input('j18_templatecertidaoisencao',10,@$Ij18_templatecertidaoisencao,true,'text',$db_opcao,'onchange="js_pesquisaDocumentoIsencao(false);"');
-              db_input('db82_descricaoisencao',50,$Idb82_descricao,true,'text',3,'','db82_descricaoisencao');
+            <?php
+              db_input('j18_templatecertidaoisencao', 10, @$Ij18_templatecertidaoisencao, true, 'text', $db_opcao, 'onchange="js_pesquisaDocumentoIsencao(false);"');
+              db_input('db82_descricaoisencao', 50, $Idb82_descricao, true, 'text', 3, '', 'db82_descricaoisencao');
             ?>
           </td>
         </tr>
@@ -510,16 +581,16 @@ $clrotulo->label("db82_descricao");
              <?=@$Lj18_bicmarcasigilo?>
           </td>
           <td>
-            <?
+            <?php
             $x = array('f'=>'Não','t'=>'Sim');
-            db_select('j18_bicmarcasigilo',$x,true,$db_opcao,"");
+            db_select('j18_bicmarcasigilo', $x, true, $db_opcao, "");
             ?>
           </td>
         </tr>
       </table>
     </fieldset>
 
-		</fieldset>
+        </fieldset>
       </td>
     </tr>
   </table>
@@ -527,12 +598,12 @@ $clrotulo->label("db82_descricao");
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-<?
-  if ($db_opcao == 1) {
-?>
+<?php
+if ($db_opcao == 1) {
+    ?>
 <input name="importar"  type="submit" id="importar" value="Importar Parâmetros do Exercício Anterior">
-<?
-  }
+    <?php
+}
 ?>
 </form>
 <script>
@@ -622,15 +693,15 @@ function js_pesquisaDocumento(lMostra) {
    * Abre a janela
    */
   js_OpenJanelaIframe('CurrentWindow.corpo',
-  	                  'db_iframe_db_documentotemplate',
-  	                  sArquivoPesquisa,
-  	                  'Pesquisa Documentos Template',
-  	                  lMostra);
+                      'db_iframe_db_documentotemplate',
+                      sArquivoPesquisa,
+                      'Pesquisa Documentos Template',
+                      lMostra);
 }
 
 function js_mostraDocumentoDigitacao(sRetorno, lErro){
 
-	$('db82_descricao').value = sRetorno;
+    $('db82_descricao').value = sRetorno;
 
   if (lErro) {
     $('db82_descricao').focus();
@@ -640,8 +711,8 @@ function js_mostraDocumentoDigitacao(sRetorno, lErro){
 
 function js_mostraDocumentoLookUp(iCodigo, sRetorno) {
 
-		$('j18_templatecertidaoexitencia').value = iCodigo;
-		$('db82_descricao').value   = sRetorno;
+        $('j18_templatecertidaoexitencia').value = iCodigo;
+        $('db82_descricao').value   = sRetorno;
     db_iframe_db_documentotemplate.hide();
 }
 
@@ -788,11 +859,11 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cfiptu.hide();
-  <?
-  if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  }
-  ?>
+  <?php
+    if ($db_opcao!=1) {
+        echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
+    }
+    ?>
 }
 
   function js_pesquisaReceitaTerritorial(mostra){
@@ -856,14 +927,14 @@ function js_preenchepesquisa(chave){
 
 <?php
 if (isset($j18_iptuhistisen)) {
-  echo "<script>js_pesquisaj08_histiseni(false)</script>";
+    echo "<script>js_pesquisaj08_histiseni(false)</script>";
 }
 
 if (isset($j18_templatecertidaoexitencia)) {
-  echo "<script>js_pesquisaDocumento(false)</script>";
+    echo "<script>js_pesquisaDocumento(false)</script>";
 }
 
 if (isset($utilizadocpadrao) && $utilizadocpadrao == "1") {
-	echo "<script>js_pesquisaDocumentoIsencao(false)</script>";
+    echo "<script>js_pesquisaDocumentoIsencao(false)</script>";
 }
 ?>

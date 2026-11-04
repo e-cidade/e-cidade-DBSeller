@@ -60,18 +60,18 @@ db_postmemory($HTTP_POST_VARS);
 <table border='0'>
 
 <tr> 
-    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
     <td align="left" nowrap>
-  <?
+  <?php
    db_input("e87_codgera",8,$Ie87_codgera,true,"text",4,"onchange='js_pesquisa_gera(false);'"); 
    db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);  
   ?>
     </td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Te83_codtipo?>"> <? db_ancora(@$Le83_codtipo,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Te83_codtipo?>"> <?php db_ancora(@$Le83_codtipo,"",3);?>  </td>
     <td align="left" nowrap>
-  <?
+  <?php
    //die($clempagetipo->sql_query_file(null,"distinct e83_codtipo,e83_descr"));
    $result_empagetipo = $clempagetipo->sql_record($clempagetipo->sql_query(null,"distinct e83_codtipo,e83_descr"));
    $db_passapar = "true";
@@ -104,7 +104,7 @@ db_postmemory($HTTP_POST_VARS);
 
 
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_abrecons(x){

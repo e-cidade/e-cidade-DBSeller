@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,13 +107,13 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
 				<tr> 
 					<td nowrap title="<?=$Tl20_codigo?>">
 						<b>
-						    <?
+						    <?php
 						      db_ancora('Licitação:',"js_pesquisa_liclicita(true);",1);
 						    ?>
 						    </b> 
 					</td>
 					<td nowrap>
-					    <? 
+					    <?php 
 					    	db_input("l20_codigo",10,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
 			        	?>
 					</td>
@@ -124,7 +124,7 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
 					    <b>Modelos:</b>
 					</td>
                		<td>
-                 		<?
+                 		<?php
 			              db_selectrecord('documentotemplateata',$rsModelos,true,1,'');
                  		?>
                		</td>					     
@@ -169,7 +169,7 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
                			?>
 					</td>
 				</tr>
-					  <? } ?>
+					  <?php } ?>
 			</table>
 	        <span id="mensagemposicao">*Posição inicial terá como modelo a opção escolhida na confirmação do julgamento.</span>
 	      </fieldset>
@@ -182,7 +182,7 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
 	  </tr>
 	</table>
 </form>
-<? 
+<?php 
   db_input("lInicialGerada", 10, null, true, "hidden", 3);
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
@@ -201,7 +201,7 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
       
 	    if ($('l39_posicaoinicial').value == 't') {
 	          
-		    var lGerarPosicaoInicial = '<? echo $lGerarPosicaoInicial; ?>';
+		    var lGerarPosicaoInicial = '<?php echo $lGerarPosicaoInicial; ?>';
 		    if (lGerarPosicaoInicial == 'false') {
 		      
 		      var sMsg  = "Licitação "+$('l20_codigo').value+" julgada sem vinculo com modelo de ata, ";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->Labelancora = "Depósito";
                  $aux->cabecalho = "<strong>Depósitos</strong>";
@@ -98,7 +98,7 @@ $aux = new cl_arquivo_auxiliar;
          <tr>
              <td align="right"  title="Quebra por depósito" >
                <strong>Quebra por depósito :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php 
 	       $tipo_que = array("N"=>"Não","S"=>"Sim");
 	       db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
             </td>
@@ -106,7 +106,7 @@ $aux = new cl_arquivo_auxiliar;
 	   <tr>
              <td align="right"  title="Ordem por  Codigo/Depósito/Medicamento" >
                <strong>Ordem :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php 
 	       $tipo_ordem = array("c"=>"Alfabética","a"=>"Codigo","b"=>"Depósito");
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
@@ -114,7 +114,7 @@ $aux = new cl_arquivo_auxiliar;
 	  <tr>
              <td align="right"  title="Estoque Zerado" >
                <strong>Listar estoque zerado :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php 
 	       $tipo_est = array("N"=>"Não", "S"=>"Sim");
 	       db_select("list_zera",$tipo_est,true,2); ?>
             </td>
@@ -122,7 +122,7 @@ $aux = new cl_arquivo_auxiliar;
 	  <tr>
              <td align="right"  title="Tipo" >
                <strong>Tipo:&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php 
 	       $tipo_rel = array("S"=>"Sintético","A"=>"Analítico","C"=>"Conferência");
 	       db_select("tipo",$tipo_rel,true,2); ?>
             </td>

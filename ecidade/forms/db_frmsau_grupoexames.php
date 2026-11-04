@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clsau_grupoexames->rotulo->label();
 		       <?=@$Ls130_i_codigo?>
 		    </td>
 		    <td> 
-		<?
+		<?php
 		db_input('s130_i_codigo',10,$Is130_i_codigo,true,'text',3,"")
 		?>
 		    </td>
@@ -51,7 +51,7 @@ $clsau_grupoexames->rotulo->label();
 		       <?=@$Ls130_c_descricao?>
 		    </td>
 		    <td> 
-		<?
+		<?php
 		db_input('s130_c_descricao',50,$Is130_c_descricao,true,'text',$db_opcao,"")
 		?>
 		    </td>
@@ -71,7 +71,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_grupoexames.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

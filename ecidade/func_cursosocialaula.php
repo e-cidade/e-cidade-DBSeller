@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcursosocialaula->rotulo->label("as21_sequencial");
               <?=$Las21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("as21_sequencial",10,$Ias21_sequencial,true,"text",4,"","chave_as21_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcursosocialaula->rotulo->label("as21_sequencial");
               <?=$Las21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("as21_sequencial",10,$Ias21_sequencial,true,"text",4,"","chave_as21_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcursosocialaula->rotulo->label("as21_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cursosocialaula.php")==true){
@@ -122,12 +122,12 @@ $clcursosocialaula->rotulo->label("as21_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

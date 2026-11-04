@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
@@ -124,15 +124,15 @@ function js_mostrae14_sequencial1(chave1,chave2){
   			<table  align="center">
   			 <tr>
           <td nowrap title="<?=@$Te14_sequencial?>">
-          <?
+          <?php
             db_ancora("<b>Arquivo:</b>","js_pesquisae14_sequencial(true);",1);
           ?>
           </td>
           <td colspan="3"> 
-          <?
+          <?php
             db_input('e14_sequencial',10,$Ie14_sequencial,true,'text',1," onchange='js_pesquisae14_sequencial(false);'");
           ?>
-          <?
+          <?php
             db_input('e14_nomearquivo',40,$Ie14_nomearquivo,true,'text',3,'');
           ?>
             </td>
@@ -141,7 +141,7 @@ function js_mostrae14_sequencial1(chave1,chave2){
         		<td align='left'><b>Data Inicial:</b>
         		</td>
         		<td nowrap>
-						<?
+						<?php
 							db_inputdata('dt_inicial',"","","",false,
              'text',1,"","",""); 
 						?>
@@ -150,7 +150,7 @@ function js_mostrae14_sequencial1(chave1,chave2){
          		<b>Data Final:</b>
         		</td>
         		<td nowrap>
-						<?
+						<?php
 							db_inputdata('dt_final',"","","",false,
              'text',1,"","",""); 
 						?>
@@ -159,7 +159,7 @@ function js_mostrae14_sequencial1(chave1,chave2){
       	<tr>
         <td align="left"><b>Tipo:</b></td>
         <td colsapn="3">
-  				<?
+  				<?php
           $x = array("1"=>"Analítico","2"=>"Sintético");
           db_select("tipo",$x,true,2);
   				?>
@@ -179,7 +179,7 @@ function js_mostrae14_sequencial1(chave1,chave2){
     </td>
   </tr>
 </table>
-  <?
+  <?php
   	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 	?>
 </body>

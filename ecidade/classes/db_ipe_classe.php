@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -78,13 +78,13 @@ class cl_ipe {
                  r36_contrato = int8 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_ipe() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ipe");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_ipe {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r36_instit = ($this->r36_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["r36_instit"]:$this->r36_instit);
        $this->r36_anousu = ($this->r36_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r36_anousu"]:$this->r36_anousu);
@@ -130,7 +130,7 @@ class cl_ipe {
      }
    }
    // funcao para inclusao
-   function incluir ($r36_anousu,$r36_mesusu,$r36_sequencia,$r36_instit){
+   public function incluir ($r36_anousu,$r36_mesusu,$r36_sequencia,$r36_instit){
       $this->atualizacampos();
      if($this->r36_numcgm == null ){
        $this->erro_sql = " Campo Numero CGM nao Informado.";
@@ -293,7 +293,7 @@ class cl_ipe {
      return true;
    }
    // funcao para alteracao
-   function alterar ($r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null) {
+   public function alterar ($r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null) {
       $this->atualizacampos();
      $sql = " update ipe set ";
      $virgula = "";
@@ -530,7 +530,7 @@ class cl_ipe {
      }
    }
    // funcao para exclusao
-   function excluir ($r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$dbwhere=null) {
+   public function excluir ($r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r36_anousu,$r36_mesusu,$r36_sequencia,$r36_instit));
      }else{
@@ -624,7 +624,7 @@ class cl_ipe {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -646,10 +646,10 @@ class cl_ipe {
       }
      return $result;
    }
-   function sql_query ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -697,7 +697,7 @@ class cl_ipe {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -706,10 +706,10 @@ class cl_ipe {
      }
      return $sql;
   }
-   function sql_query_arquivo ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_arquivo ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -756,7 +756,7 @@ class cl_ipe {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -766,7 +766,7 @@ class cl_ipe {
      return $sql;
   }
 
-  function sql_query_relatorio_ipergs($iAno, $iMes, $iInstituicao, $sTipo, $lUnificado, $sListaLotacoes) {
+  public function sql_query_relatorio_ipergs($iAno, $iMes, $iInstituicao, $sTipo, $lUnificado, $sListaLotacoes) {
 
     /*
      * Valor default das variaveis sCampo e sCampoValorOrcado
@@ -842,7 +842,7 @@ class cl_ipe {
     if($sListaLotacoes != ""){
       $sCampo            = " r36_matric, \n";
       $sCampoValorOrcado = " r36_valorc  \n";
-      $sWhere           .= " and r70_estrut::integer in ({$sListaLotacoes}) \n";
+      $sWhere           .= " and r70_estrut::bigint in ({$sListaLotacoes}) \n";
       $sOrder            = " order by r70_estrut,z01_nome \n";
     }
 
@@ -888,10 +888,10 @@ class cl_ipe {
 
   }
 
-   function sql_query_file ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $r36_anousu=null,$r36_mesusu=null,$r36_sequencia=null,$r36_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -936,7 +936,7 @@ class cl_ipe {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

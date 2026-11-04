@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,37 +57,37 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd17_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd17_i_codigo',10,$Isd17_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd17_i_procedimento?>">
-       <?
+       <?php
        db_ancora(@$Lsd17_i_procedimento,"js_pesquisasd17_i_procedimento(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd17_i_procedimento',10,$Isd17_i_procedimento,true,'text',3," onchange='js_pesquisasd17_i_procedimento(false);'")
 ?>
-       <?
+       <?php
 db_input('sd09_c_descr',100,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd17_i_grupoatend?>">
-       <?
+       <?php
        db_ancora(@$Lsd17_i_grupoatend,"js_pesquisasd17_i_grupoatend(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd17_i_grupoatend',10,$Isd17_i_grupoatend,true,'text',$db_opcao," onchange='js_pesquisasd17_i_grupoatend(false);'")
 ?>
-       <?
+       <?php
 db_input('sd15_c_descr',50,$Isd15_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('sd15_c_descr',50,$Isd15_c_descr,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("sd17_i_codigo"=>@$sd17_i_codigo,"sd17_i_procedimento"=>@$sd17_i_procedimento,"sd17_i_grupoatend"=>@$sd17_i_grupoatend,"sd15_c_descr"=>@$sd15_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprocgrupoatend->sql_query($sd17_i_codigo,"sd17_i_codigo,sd15_i_codigo,sd17_i_procedimento,sd15_c_descr,sd17_i_grupoatend","sd15_i_codigo","sd17_i_procedimento = $sd17_i_procedimento");
@@ -172,7 +172,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procgrupoatend.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

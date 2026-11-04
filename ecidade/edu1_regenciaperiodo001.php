@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -50,7 +50,7 @@ $campos .= "procedimento.*, ";
 $campos .= "turno.*, ";
 $campos .= "turmaserieregimemat.ed220_i_procedimento, ";
 $campos .= "case when ed57_i_tipoturma = 2  ";
-$campos .= "     then fc_nomeetapaturma(ed59_i_turma) "; 
+$campos .= "     then fc_nomeetapaturma(ed59_i_turma) ";
 $campos .= "     else serie.ed11_c_descr ";
 $campos .= " end as ed11_c_descr ";
 
@@ -79,8 +79,8 @@ $sql .= " WHERE ed95_i_regencia  = {$regencia} ";
 $sql .= "   AND ed95_c_encerrado = 'S' ";
 $sql .= "   AND ed60_c_situacao  = 'MATRICULADO' ";
 $sql .= "   AND exists ( select 1 ";
-$sql .= "                  from regencia reg "; 
-$sql .= "                 where reg.ed59_i_codigo    = ed95_i_regencia "; 
+$sql .= "                  from regencia reg ";
+$sql .= "                 where reg.ed59_i_codigo    = ed95_i_regencia ";
 $sql .= "                   AND reg.ed59_c_encerrada = 'S' ) ";
 
 $result1     = db_query( $sql );
@@ -115,7 +115,7 @@ $jaencerrado = pg_num_rows( $result1 );
   </style>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<?
+<?php
 if ( isset( $alterar ) ) {
 
   $sql  = "SELECT ed72_i_numfaltas as faltasreg ";
@@ -124,27 +124,27 @@ if ( isset( $alterar ) ) {
   $sql .= " WHERE ed95_i_regencia      = {$regencia} ";
   $sql .= "   AND ed72_i_procavaliacao = {$avaliacao} ";
   $sql .= "   AND ed72_i_numfaltas is not null ";
-  
+
   $result1 = db_query( $sql );
   $linhas1 = pg_num_rows( $result1 );
-  
+
   if ( $linhas1 > 0 && $aulasdadas == '' ) {
     db_msgbox( "Existem alunos com faltas neste período!" );
   } else {
 
     $erro = false;
-    
+
     for ( $y = 0; $y < $linhas1; $y++ ) {
 
       db_fieldsmemory( $result1, $y );
-      
+
       if ( $faltasreg > $aulasdadas ) {
 
         db_msgbox( "Existem alunos com n° de faltas superior ao n° de aulas dadas informado neste período!" );
         $erro = true;
       }
     }
-    
+
     if ( $erro == false ) {
 
       db_inicio_transacao();
@@ -156,7 +156,7 @@ if ( isset( $alterar ) ) {
       <script>
         parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>";
       </script>
-      <?
+      <?php
       if ( $qtdreg > 1 && $ed59_c_freqglob != "FA" && $ed59_c_freqglob != "F" ) {
         ?>
         <script>
@@ -171,7 +171,7 @@ if ( isset( $alterar ) ) {
                                true
                              );
         </script>
-        <?
+        <?php
       }
     }
   }
@@ -222,7 +222,7 @@ if ( isset( $alterar ) ) {
                     $sWhereRegenciaHorario  = "ed58_i_regencia = $regencia and ed58_ativo is true  ";
                     $sSqlRegenciaHorario = $clregenciahorario->sql_query( "", $sCamposRegenciaHorario , "", $sWhereRegenciaHorario );
                     $result_h            = $clregenciahorario->sql_record( $sSqlRegenciaHorario );
-                    
+
                     if ( $clregenciahorario->numrows > 0 ) {
                       db_fieldsmemory( $result_h, 0 );
                     } else {
@@ -247,7 +247,7 @@ if ( isset( $alterar ) ) {
                     Informe as aulas dadas desta discilpina em cada período de avaliação:
                 <?} else {?>
                     Informe os dias letivos em cada período de avaliação:
-                <?}?>
+                <?php }?>
                 <br>
                 <table border="0" cellspacing="0" cellpadding="2">
                   <tr align="center">
@@ -256,13 +256,13 @@ if ( isset( $alterar ) ) {
                     $sWhereProcAvaliacao = "ed41_i_procedimento = {$ed220_i_procedimento} AND ed78_i_regencia = {$regencia}";
                     $sSqlProcAvaliacao   = $clprocavaliacao->sql_query_regper( "", "*", "ed09_i_sequencia", $sWhereProcAvaliacao );
                     $result1             = $clprocavaliacao->sql_record( $sSqlProcAvaliacao );
-                    
+
                     for ( $y = 0; $y < $clprocavaliacao->numrows; $y++ ) {
 
                       db_fieldsmemory( $result1, $y );
                       ?>
                       <td width="70" class='titulo'><?=$ed09_c_abrev?></td>
-                      <?
+                      <?php
                     }
                   ?>
                   </tr>
@@ -274,31 +274,31 @@ if ( isset( $alterar ) ) {
                         if ( $jaencerrado > 0 ) {
                         ?>
                           <td>
-                            <input type="text" 
-                                   id="<?=$y?>" 
-                                   name="ed78_i_aulasdadas<?=$ed41_i_codigo?>" 
-                                   value="<?=@$ed78_i_aulasdadas?>" 
-                                   size="15" 
-                                   maxlength="3" 
-                                   style="text-align:center;" 
-                                   onclick="alert('Existem alunos com avaliações encerradas para esta disciplina!');" 
+                            <input type="text"
+                                   id="<?=$y?>"
+                                   name="ed78_i_aulasdadas<?=$ed41_i_codigo?>"
+                                   value="<?=@$ed78_i_aulasdadas?>"
+                                   size="15"
+                                   maxlength="3"
+                                   style="text-align:center;"
+                                   onclick="alert('Existem alunos com avaliações encerradas para esta disciplina!');"
                                    <?=trim( $ed59_c_freqglob ) == "A" ? "disabled" : "readonly"?> >
                           </td>
-                        <?
+                        <?php
                         } else {
                         ?>
                           <td>
-                            <input type="text" 
-                                   id="<?=$y?>" 
-                                   name="ed78_i_aulasdadas<?=$ed41_i_codigo?>" 
-                                   value="<?=@$ed78_i_aulasdadas?>" 
-                                   size="15" 
-                                   maxlength="3" 
-                                   style="text-align:center;" 
-                                   onchange="js_verifica(this,<?=$ed78_i_codigo?>,<?=$ed78_i_procavaliacao?>,<?=$clprocavaliacao->numrows?>)" 
+                            <input type="text"
+                                   id="<?=$y?>"
+                                   name="ed78_i_aulasdadas<?=$ed41_i_codigo?>"
+                                   value="<?=@$ed78_i_aulasdadas?>"
+                                   size="15"
+                                   maxlength="3"
+                                   style="text-align:center;"
+                                   onchange="js_verifica(this,<?=$ed78_i_codigo?>,<?=$ed78_i_procavaliacao?>,<?=$clprocavaliacao->numrows?>)"
                                    <?=$disabled?>>
                           </td>
-                        <?
+                        <?php
                         }
                       }?>
                   </tr>
@@ -326,25 +326,25 @@ if ( isset( $alterar ) ) {
 
     document.getElementById("0").select();
     document.getElementById("0").focus();
-<?}?>
+<?php }?>
 
 function js_verifica( campo, codigo, avaliacao, qtdlinha ) {
-  
+
   proximo = parseFloat(campo.id)+1;
   if ( proximo < qtdlinha ) {
     camposeguinte = proximo;
   } else {
     camposeguinte = 0;
   }
-  
+
   var expr = new RegExp("[^0-9]+");
   if ( campo.value.match( expr ) ) {
-    
+
     alert("Aulas dadas deve ser um número inteiro!");
     campo.value = "";
     campo.focus();
   } else {
-    
+
     document.getElementById("aguarde").style.visibility = "visible";
     location.href = "edu1_regenciaperiodo001.php?regencia=<?=$regencia?>"
                                               +"&nabas=<?=$nabas?>"

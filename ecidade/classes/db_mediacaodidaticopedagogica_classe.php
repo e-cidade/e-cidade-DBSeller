@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,13 +50,13 @@ class cl_mediacaodidaticopedagogica {
                  ed130_descricao = varchar(20) = Decrição
                  ";
    //funcao construtor da classe
-   function cl_mediacaodidaticopedagogica() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mediacaodidaticopedagogica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_mediacaodidaticopedagogica {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed130_codigo = ($this->ed130_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed130_codigo"]:$this->ed130_codigo);
        $this->ed130_descricao = ($this->ed130_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed130_descricao"]:$this->ed130_descricao);
@@ -74,7 +74,7 @@ class cl_mediacaodidaticopedagogica {
      }
    }
    // funcao para inclusao
-   function incluir ($ed130_codigo){
+   public function incluir ($ed130_codigo){
       $this->atualizacampos();
      if($this->ed130_descricao == null ){
        $this->erro_sql = " Campo Decrição não informado.";

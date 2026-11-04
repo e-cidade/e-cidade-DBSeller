@@ -1,77 +1,77 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE cancdebitosreg
-class cl_cancdebitosreg { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k21_sequencia = 0; 
-   var $k21_codigo = 0; 
-   var $k21_numpre = 0; 
-   var $k21_numpar = 0; 
-   var $k21_receit = 0; 
-   var $k21_data_dia = null; 
-   var $k21_data_mes = null; 
-   var $k21_data_ano = null; 
-   var $k21_data = null; 
-   var $k21_hora = null; 
-   var $k21_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cancdebitosreg {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k21_sequencia = 0;
+   var $k21_codigo = 0;
+   var $k21_numpre = 0;
+   var $k21_numpar = 0;
+   var $k21_receit = 0;
+   var $k21_data_dia = null;
+   var $k21_data_mes = null;
+   var $k21_data_ano = null;
+   var $k21_data = null;
+   var $k21_hora = null;
+   var $k21_obs = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k21_sequencia = int8 = Sequencia 
-                 k21_codigo = int8 = Código 
-                 k21_numpre = int4 = Numpre 
-                 k21_numpar = int4 = Parcela 
-                 k21_receit = int4 = Receita 
-                 k21_data = date = Data 
-                 k21_hora = varchar(5) = Hora 
-                 k21_obs = text = Observações 
+                 k21_sequencia = int8 = Sequencia
+                 k21_codigo = int8 = Código
+                 k21_numpre = int4 = Numpre
+                 k21_numpar = int4 = Parcela
+                 k21_receit = int4 = Receita
+                 k21_data = date = Data
+                 k21_hora = varchar(5) = Hora
+                 k21_obs = text = Observações
                  ";
-   //funcao construtor da classe 
-   function cl_cancdebitosreg() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cancdebitosreg"); 
+     $this->rotulo = new rotulo("cancdebitosreg");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_cancdebitosreg {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k21_sequencia = ($this->k21_sequencia == ""?@$GLOBALS["HTTP_POST_VARS"]["k21_sequencia"]:$this->k21_sequencia);
        $this->k21_codigo = ($this->k21_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["k21_codigo"]:$this->k21_codigo);
@@ -102,9 +102,9 @@ class cl_cancdebitosreg {
      }
    }
    // funcao para inclusao
-   function incluir ($k21_sequencia){ 
+   public function incluir ($k21_sequencia){
       $this->atualizacampos();
-     if($this->k21_codigo == null ){ 
+     if($this->k21_codigo == null ){
        $this->erro_sql = " Campo Código nao Informado.";
        $this->erro_campo = "k21_codigo";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_cancdebitosreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k21_numpre == null ){ 
+     if($this->k21_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
        $this->erro_campo = "k21_numpre";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_cancdebitosreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k21_numpar == null ){ 
+     if($this->k21_numpar == null ){
        $this->erro_sql = " Campo Parcela nao Informado.";
        $this->erro_campo = "k21_numpar";
        $this->erro_banco = "";
@@ -131,7 +131,7 @@ class cl_cancdebitosreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k21_receit == null ){ 
+     if($this->k21_receit == null ){
        $this->erro_sql = " Campo Receita nao Informado.";
        $this->erro_campo = "k21_receit";
        $this->erro_banco = "";
@@ -140,7 +140,7 @@ class cl_cancdebitosreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k21_data == null ){ 
+     if($this->k21_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "k21_data_dia";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_cancdebitosreg {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k21_hora == null ){ 
+     if($this->k21_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "k21_hora";
        $this->erro_banco = "";
@@ -159,16 +159,16 @@ class cl_cancdebitosreg {
        return false;
      }
      if($k21_sequencia == "" || $k21_sequencia == null ){
-       $result = db_query("select nextval('cancdebitosreg_k21_sequencia_seq')"); 
+       $result = db_query("select nextval('cancdebitosreg_k21_sequencia_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cancdebitosreg_k21_sequencia_seq do campo: k21_sequencia"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cancdebitosreg_k21_sequencia_seq do campo: k21_sequencia";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k21_sequencia = pg_result($result,0,0); 
+       $this->k21_sequencia = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cancdebitosreg_k21_sequencia_seq");
        if(($result != false) && (pg_result($result,0,0) < $k21_sequencia)){
@@ -179,10 +179,10 @@ class cl_cancdebitosreg {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k21_sequencia = $k21_sequencia; 
+         $this->k21_sequencia = $k21_sequencia;
        }
      }
-     if(($this->k21_sequencia == null) || ($this->k21_sequencia == "") ){ 
+     if(($this->k21_sequencia == null) || ($this->k21_sequencia == "") ){
        $this->erro_sql = " Campo k21_sequencia nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -191,27 +191,27 @@ class cl_cancdebitosreg {
        return false;
      }
      $sql = "insert into cancdebitosreg(
-                                       k21_sequencia 
-                                      ,k21_codigo 
-                                      ,k21_numpre 
-                                      ,k21_numpar 
-                                      ,k21_receit 
-                                      ,k21_data 
-                                      ,k21_hora 
-                                      ,k21_obs 
+                                       k21_sequencia
+                                      ,k21_codigo
+                                      ,k21_numpre
+                                      ,k21_numpar
+                                      ,k21_receit
+                                      ,k21_data
+                                      ,k21_hora
+                                      ,k21_obs
                        )
                 values (
-                                $this->k21_sequencia 
-                               ,$this->k21_codigo 
-                               ,$this->k21_numpre 
-                               ,$this->k21_numpar 
-                               ,$this->k21_receit 
-                               ,".($this->k21_data == "null" || $this->k21_data == ""?"null":"'".$this->k21_data."'")." 
-                               ,'$this->k21_hora' 
-                               ,'$this->k21_obs' 
+                                $this->k21_sequencia
+                               ,$this->k21_codigo
+                               ,$this->k21_numpre
+                               ,$this->k21_numpar
+                               ,$this->k21_receit
+                               ,".($this->k21_data == "null" || $this->k21_data == ""?"null":"'".$this->k21_data."'")."
+                               ,'$this->k21_hora'
+                               ,'$this->k21_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registros dos débitos a cancelar ($this->k21_sequencia) nao Incluído. Inclusao Abortada.";
@@ -250,16 +250,16 @@ class cl_cancdebitosreg {
        $resac = db_query("insert into db_acount values($acount,1218,7337,'','".AddSlashes(pg_result($resaco,0,'k21_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k21_sequencia=null) { 
+   public function alterar ($k21_sequencia=null) {
       $this->atualizacampos();
      $sql = " update cancdebitosreg set ";
      $virgula = "";
-     if(trim($this->k21_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_sequencia"])){ 
+     if(trim($this->k21_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_sequencia"])){
        $sql  .= $virgula." k21_sequencia = $this->k21_sequencia ";
        $virgula = ",";
-       if(trim($this->k21_sequencia) == null ){ 
+       if(trim($this->k21_sequencia) == null ){
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "k21_sequencia";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_codigo"])){ 
+     if(trim($this->k21_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_codigo"])){
        $sql  .= $virgula." k21_codigo = $this->k21_codigo ";
        $virgula = ",";
-       if(trim($this->k21_codigo) == null ){ 
+       if(trim($this->k21_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k21_codigo";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_numpre"])){ 
+     if(trim($this->k21_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_numpre"])){
        $sql  .= $virgula." k21_numpre = $this->k21_numpre ";
        $virgula = ",";
-       if(trim($this->k21_numpre) == null ){ 
+       if(trim($this->k21_numpre) == null ){
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "k21_numpre";
          $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_numpar"])){ 
+     if(trim($this->k21_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_numpar"])){
        $sql  .= $virgula." k21_numpar = $this->k21_numpar ";
        $virgula = ",";
-       if(trim($this->k21_numpar) == null ){ 
+       if(trim($this->k21_numpar) == null ){
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "k21_numpar";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_receit"])){ 
+     if(trim($this->k21_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_receit"])){
        $sql  .= $virgula." k21_receit = $this->k21_receit ";
        $virgula = ",";
-       if(trim($this->k21_receit) == null ){ 
+       if(trim($this->k21_receit) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "k21_receit";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"] !="") ){ 
+     if(trim($this->k21_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"] !="") ){
        $sql  .= $virgula." k21_data = '$this->k21_data' ";
        $virgula = ",";
-       if(trim($this->k21_data) == null ){ 
+       if(trim($this->k21_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k21_data_dia";
          $this->erro_banco = "";
@@ -333,11 +333,11 @@ class cl_cancdebitosreg {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["k21_data_dia"])){
          $sql  .= $virgula." k21_data = null ";
          $virgula = ",";
-         if(trim($this->k21_data) == null ){ 
+         if(trim($this->k21_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k21_data_dia";
            $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_cancdebitosreg {
          }
        }
      }
-     if(trim($this->k21_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_hora"])){ 
+     if(trim($this->k21_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_hora"])){
        $sql  .= $virgula." k21_hora = '$this->k21_hora' ";
        $virgula = ",";
-       if(trim($this->k21_hora) == null ){ 
+       if(trim($this->k21_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k21_hora";
          $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_cancdebitosreg {
          return false;
        }
      }
-     if(trim($this->k21_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_obs"])){ 
+     if(trim($this->k21_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k21_obs"])){
        $sql  .= $virgula." k21_obs = '$this->k21_obs' ";
        $virgula = ",";
      }
@@ -395,7 +395,7 @@ class cl_cancdebitosreg {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros dos débitos a cancelar nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k21_sequencia;
@@ -423,14 +423,14 @@ class cl_cancdebitosreg {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k21_sequencia=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k21_sequencia=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k21_sequencia));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -463,7 +463,7 @@ class cl_cancdebitosreg {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registros dos débitos a cancelar nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k21_sequencia;
@@ -491,11 +491,11 @@ class cl_cancdebitosreg {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -517,10 +517,10 @@ class cl_cancdebitosreg {
       }
      return $result;
    }
-   function sql_query ( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,15 +535,15 @@ class cl_cancdebitosreg {
      $sql2 = "";
      if($dbwhere==""){
        if($k21_sequencia!=null ){
-         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia "; 
-       } 
+         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,10 +552,10 @@ class cl_cancdebitosreg {
      }
      return $sql;
   }
-   function sql_query_file ( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -568,15 +568,15 @@ class cl_cancdebitosreg {
      $sql2 = "";
      if($dbwhere==""){
        if($k21_sequencia!=null ){
-         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia "; 
-       } 
+         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,11 +585,11 @@ class cl_cancdebitosreg {
      }
      return $sql;
   }
-  
-   function sql_query_susp( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+   public function sql_query_susp( $k21_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,19 +602,19 @@ class cl_cancdebitosreg {
      $sql .= "     inner join cancdebitossusp    on cancdebitossusp.ar21_cancdebitos 	  = cancdebitosreg.k21_codigo    ";
      $sql .= "     inner join suspensaofinaliza  on suspensaofinaliza.ar19_sequencial	  = cancdebitossusp.ar21_suspensaofinaliza";
      $sql .= "     inner join cancdebitosprocreg on cancdebitosprocreg.k24_cancdebitosreg = cancdebitosreg.k21_sequencia ";
-     
+
      $sql2 = "";
      if($dbwhere==""){
        if($k21_sequencia!=null ){
-         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia "; 
-       } 
+         $sql2 .= " where cancdebitosreg.k21_sequencia = $k21_sequencia ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -622,7 +622,7 @@ class cl_cancdebitosreg {
        }
      }
      return $sql;
-  }  
-  
+  }
+
 }
 ?>

@@ -1,71 +1,99 @@
 <?php
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
 
 class cl_far_parametros
 {
-   // cria variaveis de erro
-    public $rotulo = null;
-    public $query_sql = null;
-    public $numrows = 0;
-    public $numrows_incluir = 0;
-    public $numrows_alterar = 0;
-    public $numrows_excluir = 0;
-    public $erro_status = null;
-    public $erro_sql = null;
-    public $erro_banco = null;
-    public $erro_msg = null;
-    public $erro_campo = null;
-    public $pagina_retorno = null;
+   // cria variaveis de erro 
+    public $rotulo = null; 
+    public $query_sql = null; 
+    public $numrows = 0; 
+    public $numrows_incluir = 0; 
+    public $numrows_alterar = 0; 
+    public $numrows_excluir = 0; 
+    public $erro_status = null; 
+    public $erro_sql = null; 
+    public $erro_banco = null;  
+    public $erro_msg = null;  
+    public $erro_campo = null;  
+    public $pagina_retorno = null; 
     /* Variáveis do Arquivo */
-    public $fa02_i_codigo = 0;
-    public $fa02_i_dbestrutura = 0;
-    public $fa02_c_descr = null;
-    public $fa02_c_digitacao = null;
-    public $fa02_b_comprovante = 'f';
-    public $fa02_b_numestoque = 'f';
-    public $fa02_b_novaretirada = 'f';
-    public $fa02_i_tipoperiodocontinuado = 0;
-    public $fa02_i_acumularsaldocontinuado = 0;
-    public $fa02_i_origemreceita = 0;
-    public $fa02_i_avisoretirada = 0;
-    public $fa02_i_cursor = 0;
-    public $fa02_i_validalote = 0;
-    public $fa02_i_validavencimento = 0;
-    public $fa02_i_acaoprog = 0;
-    public $fa02_i_verificapacientehiperdia = 0;
-    public $fa02_i_numdiasmedcontinativo = 0;
-    public $fa02_utilizaimpressoratermica = 'f';
-    public $fa02_modelocomprovantetermica = 0;
-    public $fa02_informa_receita_medicamento = 'f';
-    public $fa02_alerta_nao_morador = 'f';
-    public $fa02_ibge_municipio = 0;
-   // cria propriedade com as variaveis do arquivo
+    public $fa02_i_codigo = 0; 
+    public $fa02_i_dbestrutura = 0; 
+    public $fa02_c_descr = null; 
+    public $fa02_c_digitacao = null; 
+    public $fa02_b_comprovante = 'f'; 
+    public $fa02_b_numestoque = 'f'; 
+    public $fa02_b_novaretirada = 'f'; 
+    public $fa02_i_tipoperiodocontinuado = 0; 
+    public $fa02_i_acumularsaldocontinuado = 0; 
+    public $fa02_i_origemreceita = 0; 
+    public $fa02_i_avisoretirada = 0; 
+    public $fa02_i_cursor = 0; 
+    public $fa02_i_validalote = 0; 
+    public $fa02_i_validavencimento = 0; 
+    public $fa02_i_acaoprog = 0; 
+    public $fa02_i_verificapacientehiperdia = 0; 
+    public $fa02_i_numdiasmedcontinativo = 0; 
+    public $fa02_utilizaimpressoratermica = 'f'; 
+    public $fa02_informa_receita_medicamento = 'f'; 
+    public $fa02_alerta_nao_morador = 'f'; 
+    public $fa02_ibge_municipio = 0; 
+    public $fa02_utiliza_bnafar = 'f'; 
+    public $fa02_altera_validade_medcontinuado = 'f'; 
+   // cria propriedade com as variaveis do arquivo 
     public $campos = "
-                 fa02_i_codigo = int4 = Código
-                 fa02_i_dbestrutura = int4 = Estrutura
-                 fa02_c_descr = char(60) = Descrição
-                 fa02_c_digitacao = char(2) = Digitação
-                 fa02_b_comprovante = bool = Comprovante Automatico
-                 fa02_b_numestoque = bool = Numeração do estoque
-                 fa02_b_novaretirada = bool = Nova retirada automática
-                 fa02_i_tipoperiodocontinuado = int4 = Tipo de periodo dos medicamentos continuados
-                 fa02_i_acumularsaldocontinuado = int4 = Acumular saldo medicamento continuado
-                 fa02_i_origemreceita = int4 = Origem da Receita
-                 fa02_i_avisoretirada = int4 = Aviso de Retirada
-                 fa02_i_cursor = int4 = Foco Entrega de Medicamento
-                 fa02_i_validalote = int4 = Validar Lote
-                 fa02_i_validavencimento = int4 = Validar Vencimento
-                 fa02_i_acaoprog = int4 = Ação programatica Padrão
-                 fa02_i_verificapacientehiperdia = int4 = Verificar pac. do hiperdia na retirada
-                 fa02_i_numdiasmedcontinativo = int4 = Nº dias encerramento med. continuado
-                 fa02_utilizaimpressoratermica = bool = Comprovante Impressora Térmica
-                 fa02_informa_receita_medicamento = bool = Informa tipo de receita do medicamento
-                 fa02_alerta_nao_morador = bool = Mostrar alerta não morador do munícipio
-                 fa02_ibge_municipio = int4 = Código IBGE
+                 fa02_i_codigo = int4 = Código 
+                 fa02_i_dbestrutura = int4 = Estrutura 
+                 fa02_c_descr = char(60) = Descrição 
+                 fa02_c_digitacao = char(2) = Digitação 
+                 fa02_b_comprovante = bool = Comprovante Automatico 
+                 fa02_b_numestoque = bool = Numeração do estoque 
+                 fa02_b_novaretirada = bool = Nova retirada automática 
+                 fa02_i_tipoperiodocontinuado = int4 = Tipo de periodo dos medicamentos continuados 
+                 fa02_i_acumularsaldocontinuado = int4 = Acumular saldo medicamento continuado 
+                 fa02_i_origemreceita = int4 = Origem da Receita 
+                 fa02_i_avisoretirada = int4 = Aviso de Retirada 
+                 fa02_i_cursor = int4 = Foco Entrega de Medicamento 
+                 fa02_i_validalote = int4 = Validar Lote 
+                 fa02_i_validavencimento = int4 = Validar Vencimento 
+                 fa02_i_acaoprog = int4 = Ação programatica Padrão 
+                 fa02_i_verificapacientehiperdia = int4 = Verificar pac. do hiperdia na retirada 
+                 fa02_i_numdiasmedcontinativo = int4 = Nº dias encerramento med. continuado 
+                 fa02_utilizaimpressoratermica = bool = Comprovante Impressora Térmica 
+                 fa02_informa_receita_medicamento = bool = Informa tipo de receita do medicamento 
+                 fa02_alerta_nao_morador = bool = Mostrar alerta não morador do munícipio 
+                 fa02_ibge_municipio = int4 = Código IBGE 
+                 fa02_utiliza_bnafar = bool = Utiliza Integração BNAFAR 
+                 fa02_altera_validade_medcontinuado = bool = Permite alterar a validade do med. continuado 
                  ";
 
     public function __construct()
     {
-        $this->rotulo = new rotulo("far_parametros");
+        $this->rotulo = new rotulo("far_parametros"); 
         $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
     }
 
@@ -103,6 +131,8 @@ class cl_far_parametros
        $this->fa02_informa_receita_medicamento = ($this->fa02_informa_receita_medicamento == "f"?@$GLOBALS["HTTP_POST_VARS"]["fa02_informa_receita_medicamento"]:$this->fa02_informa_receita_medicamento);
        $this->fa02_alerta_nao_morador = ($this->fa02_alerta_nao_morador == "f"?@$GLOBALS["HTTP_POST_VARS"]["fa02_alerta_nao_morador"]:$this->fa02_alerta_nao_morador);
        $this->fa02_ibge_municipio = ($this->fa02_ibge_municipio == ""?@$GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"]:$this->fa02_ibge_municipio);
+       $this->fa02_utiliza_bnafar = ($this->fa02_utiliza_bnafar == "f"?@$GLOBALS["HTTP_POST_VARS"]["fa02_utiliza_bnafar"]:$this->fa02_utiliza_bnafar);
+       $this->fa02_altera_validade_medcontinuado = ($this->fa02_altera_validade_medcontinuado == "f"?@$GLOBALS["HTTP_POST_VARS"]["fa02_altera_validade_medcontinuado"]:$this->fa02_altera_validade_medcontinuado);
      }else{
        $this->fa02_i_codigo = ($this->fa02_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["fa02_i_codigo"]:$this->fa02_i_codigo);
      }
@@ -111,7 +141,7 @@ class cl_far_parametros
     public function incluir($fa02_i_codigo)
     {
       $this->atualizacampos();
-     if($this->fa02_i_dbestrutura == null ){
+     if($this->fa02_i_dbestrutura == null ){ 
        $this->erro_sql = " Campo Estrutura não informado.";
        $this->erro_campo = "fa02_i_dbestrutura";
        $this->erro_banco = "";
@@ -120,7 +150,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_c_descr == null ){
+     if($this->fa02_c_descr == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";
        $this->erro_campo = "fa02_c_descr";
        $this->erro_banco = "";
@@ -129,7 +159,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_c_digitacao == null ){
+     if($this->fa02_c_digitacao == null ){ 
        $this->erro_sql = " Campo Digitação não informado.";
        $this->erro_campo = "fa02_c_digitacao";
        $this->erro_banco = "";
@@ -138,7 +168,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_b_comprovante == null ){
+     if($this->fa02_b_comprovante == null ){ 
        $this->erro_sql = " Campo Comprovante Automatico não informado.";
        $this->erro_campo = "fa02_b_comprovante";
        $this->erro_banco = "";
@@ -147,7 +177,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_b_numestoque == null ){
+     if($this->fa02_b_numestoque == null ){ 
        $this->erro_sql = " Campo Numeração do estoque não informado.";
        $this->erro_campo = "fa02_b_numestoque";
        $this->erro_banco = "";
@@ -156,7 +186,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_b_novaretirada == null ){
+     if($this->fa02_b_novaretirada == null ){ 
        $this->erro_sql = " Campo Nova retirada automática não informado.";
        $this->erro_campo = "fa02_b_novaretirada";
        $this->erro_banco = "";
@@ -165,7 +195,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_tipoperiodocontinuado == null ){
+     if($this->fa02_i_tipoperiodocontinuado == null ){ 
        $this->erro_sql = " Campo Tipo de periodo dos medicamentos continuados não informado.";
        $this->erro_campo = "fa02_i_tipoperiodocontinuado";
        $this->erro_banco = "";
@@ -174,7 +204,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_acumularsaldocontinuado == null ){
+     if($this->fa02_i_acumularsaldocontinuado == null ){ 
        $this->erro_sql = " Campo Acumular saldo medicamento continuado não informado.";
        $this->erro_campo = "fa02_i_acumularsaldocontinuado";
        $this->erro_banco = "";
@@ -183,7 +213,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_origemreceita == null ){
+     if($this->fa02_i_origemreceita == null ){ 
        $this->erro_sql = " Campo Origem da Receita não informado.";
        $this->erro_campo = "fa02_i_origemreceita";
        $this->erro_banco = "";
@@ -192,7 +222,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_avisoretirada == null ){
+     if($this->fa02_i_avisoretirada == null ){ 
        $this->erro_sql = " Campo Aviso de Retirada não informado.";
        $this->erro_campo = "fa02_i_avisoretirada";
        $this->erro_banco = "";
@@ -201,7 +231,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_cursor == null ){
+     if($this->fa02_i_cursor == null ){ 
        $this->erro_sql = " Campo Foco Entrega de Medicamento não informado.";
        $this->erro_campo = "fa02_i_cursor";
        $this->erro_banco = "";
@@ -210,7 +240,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_validalote == null ){
+     if($this->fa02_i_validalote == null ){ 
        $this->erro_sql = " Campo Validar Lote não informado.";
        $this->erro_campo = "fa02_i_validalote";
        $this->erro_banco = "";
@@ -219,7 +249,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_validavencimento == null ){
+     if($this->fa02_i_validavencimento == null ){ 
        $this->erro_sql = " Campo Validar Vencimento não informado.";
        $this->erro_campo = "fa02_i_validavencimento";
        $this->erro_banco = "";
@@ -228,10 +258,10 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_acaoprog == null ){
+     if($this->fa02_i_acaoprog == null ){ 
        $this->fa02_i_acaoprog = "null";
      }
-     if($this->fa02_i_verificapacientehiperdia == null ){
+     if($this->fa02_i_verificapacientehiperdia == null ){ 
        $this->erro_sql = " Campo Verificar pac. do hiperdia na retirada não informado.";
        $this->erro_campo = "fa02_i_verificapacientehiperdia";
        $this->erro_banco = "";
@@ -240,7 +270,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_i_numdiasmedcontinativo == null ){
+     if($this->fa02_i_numdiasmedcontinativo == null ){ 
        $this->erro_sql = " Campo Nº dias encerramento med. continuado não informado.";
        $this->erro_campo = "fa02_i_numdiasmedcontinativo";
        $this->erro_banco = "";
@@ -249,7 +279,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_utilizaimpressoratermica == null ){
+     if($this->fa02_utilizaimpressoratermica == null ){ 
        $this->erro_sql = " Campo Comprovante Impressora Térmica não informado.";
        $this->erro_campo = "fa02_utilizaimpressoratermica";
        $this->erro_banco = "";
@@ -258,7 +288,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_informa_receita_medicamento == null ){
+     if($this->fa02_informa_receita_medicamento == null ){ 
        $this->erro_sql = " Campo Informa tipo de receita do medicamento não informado.";
        $this->erro_campo = "fa02_informa_receita_medicamento";
        $this->erro_banco = "";
@@ -267,7 +297,7 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_alerta_nao_morador == null ){
+     if($this->fa02_alerta_nao_morador == null ){ 
        $this->erro_sql = " Campo Mostrar alerta não morador do munícipio não informado.";
        $this->erro_campo = "fa02_alerta_nao_morador";
        $this->erro_banco = "";
@@ -276,20 +306,38 @@ class cl_far_parametros
        $this->erro_status = "0";
        return false;
      }
-     if($this->fa02_ibge_municipio == null ){
+     if($this->fa02_ibge_municipio == null ){ 
        $this->fa02_ibge_municipio = "null";
      }
+     if($this->fa02_utiliza_bnafar == null ){ 
+       $this->erro_sql = " Campo Utiliza Integração BNAFAR não informado.";
+       $this->erro_campo = "fa02_utiliza_bnafar";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
+     if($this->fa02_altera_validade_medcontinuado == null ){ 
+       $this->erro_sql = " Campo Permite alterar a validade do med. continuado não informado.";
+       $this->erro_campo = "fa02_altera_validade_medcontinuado";
+       $this->erro_banco = "";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+       $this->erro_status = "0";
+       return false;
+     }
      if($fa02_i_codigo == "" || $fa02_i_codigo == null ){
-       $result = db_query("select nextval('farparametros_fa02_i_codigo_seq')");
+       $result = db_query("select nextval('farparametros_fa02_i_codigo_seq')"); 
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: farparametros_fa02_i_codigo_seq do campo: fa02_i_codigo";
+         $this->erro_sql   = "Verifique o cadastro da sequencia: farparametros_fa02_i_codigo_seq do campo: fa02_i_codigo"; 
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false;
+         return false; 
        }
-       $this->fa02_i_codigo = pg_result($result,0,0);
+       $this->fa02_i_codigo = pg_result($result,0,0); 
      }else{
        $result = db_query("select last_value from farparametros_fa02_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $fa02_i_codigo)){
@@ -300,10 +348,10 @@ class cl_far_parametros
          $this->erro_status = "0";
          return false;
        }else{
-         $this->fa02_i_codigo = $fa02_i_codigo;
+         $this->fa02_i_codigo = $fa02_i_codigo; 
        }
      }
-     if(($this->fa02_i_codigo == null) || ($this->fa02_i_codigo == "") ){
+     if(($this->fa02_i_codigo == null) || ($this->fa02_i_codigo == "") ){ 
        $this->erro_sql = " Campo fa02_i_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -312,53 +360,57 @@ class cl_far_parametros
        return false;
      }
      $sql = "insert into far_parametros(
-                                       fa02_i_codigo
-                                      ,fa02_i_dbestrutura
-                                      ,fa02_c_descr
-                                      ,fa02_c_digitacao
-                                      ,fa02_b_comprovante
-                                      ,fa02_b_numestoque
-                                      ,fa02_b_novaretirada
-                                      ,fa02_i_tipoperiodocontinuado
-                                      ,fa02_i_acumularsaldocontinuado
-                                      ,fa02_i_origemreceita
-                                      ,fa02_i_avisoretirada
-                                      ,fa02_i_cursor
-                                      ,fa02_i_validalote
-                                      ,fa02_i_validavencimento
-                                      ,fa02_i_acaoprog
-                                      ,fa02_i_verificapacientehiperdia
-                                      ,fa02_i_numdiasmedcontinativo
-                                      ,fa02_utilizaimpressoratermica
-                                      ,fa02_informa_receita_medicamento
-                                      ,fa02_alerta_nao_morador
-                                      ,fa02_ibge_municipio
+                                       fa02_i_codigo 
+                                      ,fa02_i_dbestrutura 
+                                      ,fa02_c_descr 
+                                      ,fa02_c_digitacao 
+                                      ,fa02_b_comprovante 
+                                      ,fa02_b_numestoque 
+                                      ,fa02_b_novaretirada 
+                                      ,fa02_i_tipoperiodocontinuado 
+                                      ,fa02_i_acumularsaldocontinuado 
+                                      ,fa02_i_origemreceita 
+                                      ,fa02_i_avisoretirada 
+                                      ,fa02_i_cursor 
+                                      ,fa02_i_validalote 
+                                      ,fa02_i_validavencimento 
+                                      ,fa02_i_acaoprog 
+                                      ,fa02_i_verificapacientehiperdia 
+                                      ,fa02_i_numdiasmedcontinativo 
+                                      ,fa02_utilizaimpressoratermica 
+                                      ,fa02_informa_receita_medicamento 
+                                      ,fa02_alerta_nao_morador 
+                                      ,fa02_ibge_municipio 
+                                      ,fa02_utiliza_bnafar 
+                                      ,fa02_altera_validade_medcontinuado 
                        )
                 values (
-                                $this->fa02_i_codigo
-                               ,$this->fa02_i_dbestrutura
-                               ,'$this->fa02_c_descr'
-                               ,'$this->fa02_c_digitacao'
-                               ,'$this->fa02_b_comprovante'
-                               ,'$this->fa02_b_numestoque'
-                               ,'$this->fa02_b_novaretirada'
-                               ,$this->fa02_i_tipoperiodocontinuado
-                               ,$this->fa02_i_acumularsaldocontinuado
-                               ,$this->fa02_i_origemreceita
-                               ,$this->fa02_i_avisoretirada
-                               ,$this->fa02_i_cursor
-                               ,$this->fa02_i_validalote
-                               ,$this->fa02_i_validavencimento
-                               ,$this->fa02_i_acaoprog
-                               ,$this->fa02_i_verificapacientehiperdia
-                               ,$this->fa02_i_numdiasmedcontinativo
-                               ,'$this->fa02_utilizaimpressoratermica'
-                               ,'$this->fa02_informa_receita_medicamento'
-                               ,'$this->fa02_alerta_nao_morador'
-                               ,$this->fa02_ibge_municipio
+                                $this->fa02_i_codigo 
+                               ,$this->fa02_i_dbestrutura 
+                               ,'$this->fa02_c_descr' 
+                               ,'$this->fa02_c_digitacao' 
+                               ,'$this->fa02_b_comprovante' 
+                               ,'$this->fa02_b_numestoque' 
+                               ,'$this->fa02_b_novaretirada' 
+                               ,$this->fa02_i_tipoperiodocontinuado 
+                               ,$this->fa02_i_acumularsaldocontinuado 
+                               ,$this->fa02_i_origemreceita 
+                               ,$this->fa02_i_avisoretirada 
+                               ,$this->fa02_i_cursor 
+                               ,$this->fa02_i_validalote 
+                               ,$this->fa02_i_validavencimento 
+                               ,$this->fa02_i_acaoprog 
+                               ,$this->fa02_i_verificapacientehiperdia 
+                               ,$this->fa02_i_numdiasmedcontinativo 
+                               ,'$this->fa02_utilizaimpressoratermica' 
+                               ,'$this->fa02_informa_receita_medicamento' 
+                               ,'$this->fa02_alerta_nao_morador' 
+                               ,$this->fa02_ibge_municipio 
+                               ,'$this->fa02_utiliza_bnafar' 
+                               ,'$this->fa02_altera_validade_medcontinuado' 
                       )";
-     $result = db_query($sql);
-     if($result==false){
+     $result = db_query($sql); 
+     if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "far_parametros ($this->fa02_i_codigo) não Incluído. Inclusão Abortada.";
@@ -413,20 +465,22 @@ class cl_far_parametros
          $resac = db_query("insert into db_acount values($acount,2103,1013491,'','".AddSlashes(pg_result($resaco,0,'fa02_informa_receita_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2103,1014215,'','".AddSlashes(pg_result($resaco,0,'fa02_alerta_nao_morador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,2103,1014216,'','".AddSlashes(pg_result($resaco,0,'fa02_ibge_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2103,1014053,'','".AddSlashes(pg_result($resaco,0,'fa02_utiliza_bnafar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2103,1015667,'','".AddSlashes(pg_result($resaco,0,'fa02_altera_validade_medcontinuado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
-   }
+   } 
 
     public function alterar($fa02_i_codigo=null)
     {
       $this->atualizacampos();
      $sql = " update far_parametros set ";
      $virgula = "";
-     if(trim($this->fa02_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_codigo"])){
+     if(trim($this->fa02_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_codigo"])){ 
        $sql  .= $virgula." fa02_i_codigo = $this->fa02_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa02_i_codigo) == null ){
+       if(trim($this->fa02_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "fa02_i_codigo";
          $this->erro_banco = "";
@@ -436,10 +490,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_dbestrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_dbestrutura"])){
+     if(trim($this->fa02_i_dbestrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_dbestrutura"])){ 
        $sql  .= $virgula." fa02_i_dbestrutura = $this->fa02_i_dbestrutura ";
        $virgula = ",";
-       if(trim($this->fa02_i_dbestrutura) == null ){
+       if(trim($this->fa02_i_dbestrutura) == null ){ 
          $this->erro_sql = " Campo Estrutura não informado.";
          $this->erro_campo = "fa02_i_dbestrutura";
          $this->erro_banco = "";
@@ -449,10 +503,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_c_descr"])){
+     if(trim($this->fa02_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_c_descr"])){ 
        $sql  .= $virgula." fa02_c_descr = '$this->fa02_c_descr' ";
        $virgula = ",";
-       if(trim($this->fa02_c_descr) == null ){
+       if(trim($this->fa02_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "fa02_c_descr";
          $this->erro_banco = "";
@@ -462,10 +516,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_c_digitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_c_digitacao"])){
+     if(trim($this->fa02_c_digitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_c_digitacao"])){ 
        $sql  .= $virgula." fa02_c_digitacao = '$this->fa02_c_digitacao' ";
        $virgula = ",";
-       if(trim($this->fa02_c_digitacao) == null ){
+       if(trim($this->fa02_c_digitacao) == null ){ 
          $this->erro_sql = " Campo Digitação não informado.";
          $this->erro_campo = "fa02_c_digitacao";
          $this->erro_banco = "";
@@ -475,10 +529,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_b_comprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_comprovante"])){
+     if(trim($this->fa02_b_comprovante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_comprovante"])){ 
        $sql  .= $virgula." fa02_b_comprovante = '$this->fa02_b_comprovante' ";
        $virgula = ",";
-       if(trim($this->fa02_b_comprovante) == null ){
+       if(trim($this->fa02_b_comprovante) == null ){ 
          $this->erro_sql = " Campo Comprovante Automatico não informado.";
          $this->erro_campo = "fa02_b_comprovante";
          $this->erro_banco = "";
@@ -488,10 +542,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_b_numestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_numestoque"])){
+     if(trim($this->fa02_b_numestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_numestoque"])){ 
        $sql  .= $virgula." fa02_b_numestoque = '$this->fa02_b_numestoque' ";
        $virgula = ",";
-       if(trim($this->fa02_b_numestoque) == null ){
+       if(trim($this->fa02_b_numestoque) == null ){ 
          $this->erro_sql = " Campo Numeração do estoque não informado.";
          $this->erro_campo = "fa02_b_numestoque";
          $this->erro_banco = "";
@@ -501,10 +555,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_b_novaretirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_novaretirada"])){
+     if(trim($this->fa02_b_novaretirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_b_novaretirada"])){ 
        $sql  .= $virgula." fa02_b_novaretirada = '$this->fa02_b_novaretirada' ";
        $virgula = ",";
-       if(trim($this->fa02_b_novaretirada) == null ){
+       if(trim($this->fa02_b_novaretirada) == null ){ 
          $this->erro_sql = " Campo Nova retirada automática não informado.";
          $this->erro_campo = "fa02_b_novaretirada";
          $this->erro_banco = "";
@@ -514,10 +568,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_tipoperiodocontinuado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_tipoperiodocontinuado"])){
+     if(trim($this->fa02_i_tipoperiodocontinuado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_tipoperiodocontinuado"])){ 
        $sql  .= $virgula." fa02_i_tipoperiodocontinuado = $this->fa02_i_tipoperiodocontinuado ";
        $virgula = ",";
-       if(trim($this->fa02_i_tipoperiodocontinuado) == null ){
+       if(trim($this->fa02_i_tipoperiodocontinuado) == null ){ 
          $this->erro_sql = " Campo Tipo de periodo dos medicamentos continuados não informado.";
          $this->erro_campo = "fa02_i_tipoperiodocontinuado";
          $this->erro_banco = "";
@@ -527,10 +581,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_acumularsaldocontinuado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acumularsaldocontinuado"])){
+     if(trim($this->fa02_i_acumularsaldocontinuado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acumularsaldocontinuado"])){ 
        $sql  .= $virgula." fa02_i_acumularsaldocontinuado = $this->fa02_i_acumularsaldocontinuado ";
        $virgula = ",";
-       if(trim($this->fa02_i_acumularsaldocontinuado) == null ){
+       if(trim($this->fa02_i_acumularsaldocontinuado) == null ){ 
          $this->erro_sql = " Campo Acumular saldo medicamento continuado não informado.";
          $this->erro_campo = "fa02_i_acumularsaldocontinuado";
          $this->erro_banco = "";
@@ -540,10 +594,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_origemreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_origemreceita"])){
+     if(trim($this->fa02_i_origemreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_origemreceita"])){ 
        $sql  .= $virgula." fa02_i_origemreceita = $this->fa02_i_origemreceita ";
        $virgula = ",";
-       if(trim($this->fa02_i_origemreceita) == null ){
+       if(trim($this->fa02_i_origemreceita) == null ){ 
          $this->erro_sql = " Campo Origem da Receita não informado.";
          $this->erro_campo = "fa02_i_origemreceita";
          $this->erro_banco = "";
@@ -553,10 +607,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_avisoretirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_avisoretirada"])){
+     if(trim($this->fa02_i_avisoretirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_avisoretirada"])){ 
        $sql  .= $virgula." fa02_i_avisoretirada = $this->fa02_i_avisoretirada ";
        $virgula = ",";
-       if(trim($this->fa02_i_avisoretirada) == null ){
+       if(trim($this->fa02_i_avisoretirada) == null ){ 
          $this->erro_sql = " Campo Aviso de Retirada não informado.";
          $this->erro_campo = "fa02_i_avisoretirada";
          $this->erro_banco = "";
@@ -566,10 +620,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_cursor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_cursor"])){
+     if(trim($this->fa02_i_cursor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_cursor"])){ 
        $sql  .= $virgula." fa02_i_cursor = $this->fa02_i_cursor ";
        $virgula = ",";
-       if(trim($this->fa02_i_cursor) == null ){
+       if(trim($this->fa02_i_cursor) == null ){ 
          $this->erro_sql = " Campo Foco Entrega de Medicamento não informado.";
          $this->erro_campo = "fa02_i_cursor";
          $this->erro_banco = "";
@@ -579,10 +633,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_validalote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_validalote"])){
+     if(trim($this->fa02_i_validalote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_validalote"])){ 
        $sql  .= $virgula." fa02_i_validalote = $this->fa02_i_validalote ";
        $virgula = ",";
-       if(trim($this->fa02_i_validalote) == null ){
+       if(trim($this->fa02_i_validalote) == null ){ 
          $this->erro_sql = " Campo Validar Lote não informado.";
          $this->erro_campo = "fa02_i_validalote";
          $this->erro_banco = "";
@@ -592,10 +646,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_validavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_validavencimento"])){
+     if(trim($this->fa02_i_validavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_validavencimento"])){ 
        $sql  .= $virgula." fa02_i_validavencimento = $this->fa02_i_validavencimento ";
        $virgula = ",";
-       if(trim($this->fa02_i_validavencimento) == null ){
+       if(trim($this->fa02_i_validavencimento) == null ){ 
          $this->erro_sql = " Campo Validar Vencimento não informado.";
          $this->erro_campo = "fa02_i_validavencimento";
          $this->erro_banco = "";
@@ -605,17 +659,17 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_acaoprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acaoprog"])){
-        if(trim($this->fa02_i_acaoprog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acaoprog"])){
-           $this->fa02_i_acaoprog = "0" ;
-        }
+     if(trim($this->fa02_i_acaoprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acaoprog"])){ 
+        if(trim($this->fa02_i_acaoprog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_acaoprog"])){ 
+           $this->fa02_i_acaoprog = "0" ; 
+        } 
        $sql  .= $virgula." fa02_i_acaoprog = $this->fa02_i_acaoprog ";
        $virgula = ",";
      }
-     if(trim($this->fa02_i_verificapacientehiperdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_verificapacientehiperdia"])){
+     if(trim($this->fa02_i_verificapacientehiperdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_verificapacientehiperdia"])){ 
        $sql  .= $virgula." fa02_i_verificapacientehiperdia = $this->fa02_i_verificapacientehiperdia ";
        $virgula = ",";
-       if(trim($this->fa02_i_verificapacientehiperdia) == null ){
+       if(trim($this->fa02_i_verificapacientehiperdia) == null ){ 
          $this->erro_sql = " Campo Verificar pac. do hiperdia na retirada não informado.";
          $this->erro_campo = "fa02_i_verificapacientehiperdia";
          $this->erro_banco = "";
@@ -625,10 +679,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_i_numdiasmedcontinativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_numdiasmedcontinativo"])){
+     if(trim($this->fa02_i_numdiasmedcontinativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_i_numdiasmedcontinativo"])){ 
        $sql  .= $virgula." fa02_i_numdiasmedcontinativo = $this->fa02_i_numdiasmedcontinativo ";
        $virgula = ",";
-       if(trim($this->fa02_i_numdiasmedcontinativo) == null ){
+       if(trim($this->fa02_i_numdiasmedcontinativo) == null ){ 
          $this->erro_sql = " Campo Nº dias encerramento med. continuado não informado.";
          $this->erro_campo = "fa02_i_numdiasmedcontinativo";
          $this->erro_banco = "";
@@ -638,10 +692,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_utilizaimpressoratermica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_utilizaimpressoratermica"])){
+     if(trim($this->fa02_utilizaimpressoratermica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_utilizaimpressoratermica"])){ 
        $sql  .= $virgula." fa02_utilizaimpressoratermica = '$this->fa02_utilizaimpressoratermica' ";
        $virgula = ",";
-       if(trim($this->fa02_utilizaimpressoratermica) == null ){
+       if(trim($this->fa02_utilizaimpressoratermica) == null ){ 
          $this->erro_sql = " Campo Comprovante Impressora Térmica não informado.";
          $this->erro_campo = "fa02_utilizaimpressoratermica";
          $this->erro_banco = "";
@@ -651,10 +705,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_informa_receita_medicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_informa_receita_medicamento"])){
+     if(trim($this->fa02_informa_receita_medicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_informa_receita_medicamento"])){ 
        $sql  .= $virgula." fa02_informa_receita_medicamento = '$this->fa02_informa_receita_medicamento' ";
        $virgula = ",";
-       if(trim($this->fa02_informa_receita_medicamento) == null ){
+       if(trim($this->fa02_informa_receita_medicamento) == null ){ 
          $this->erro_sql = " Campo Informa tipo de receita do medicamento não informado.";
          $this->erro_campo = "fa02_informa_receita_medicamento";
          $this->erro_banco = "";
@@ -664,10 +718,10 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_alerta_nao_morador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_alerta_nao_morador"])){
+     if(trim($this->fa02_alerta_nao_morador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_alerta_nao_morador"])){ 
        $sql  .= $virgula." fa02_alerta_nao_morador = '$this->fa02_alerta_nao_morador' ";
        $virgula = ",";
-       if(trim($this->fa02_alerta_nao_morador) == null ){
+       if(trim($this->fa02_alerta_nao_morador) == null ){ 
          $this->erro_sql = " Campo Mostrar alerta não morador do munícipio não informado.";
          $this->erro_campo = "fa02_alerta_nao_morador";
          $this->erro_banco = "";
@@ -677,12 +731,38 @@ class cl_far_parametros
          return false;
        }
      }
-     if(trim($this->fa02_ibge_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"])){
-        if(trim($this->fa02_ibge_municipio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"])){
-           $this->fa02_ibge_municipio = "null" ;
-        }
+     if(trim($this->fa02_ibge_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"])){ 
+        if(trim($this->fa02_ibge_municipio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"])){ 
+           $this->fa02_ibge_municipio = "null" ; 
+        } 
        $sql  .= $virgula." fa02_ibge_municipio = $this->fa02_ibge_municipio ";
        $virgula = ",";
+     }
+     if(trim($this->fa02_utiliza_bnafar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_utiliza_bnafar"])){ 
+       $sql  .= $virgula." fa02_utiliza_bnafar = '$this->fa02_utiliza_bnafar' ";
+       $virgula = ",";
+       if(trim($this->fa02_utiliza_bnafar) == null ){ 
+         $this->erro_sql = " Campo Utiliza Integração BNAFAR não informado.";
+         $this->erro_campo = "fa02_utiliza_bnafar";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
+     }
+     if(trim($this->fa02_altera_validade_medcontinuado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa02_altera_validade_medcontinuado"])){ 
+       $sql  .= $virgula." fa02_altera_validade_medcontinuado = '$this->fa02_altera_validade_medcontinuado' ";
+       $virgula = ",";
+       if(trim($this->fa02_altera_validade_medcontinuado) == null ){ 
+         $this->erro_sql = " Campo Permite alterar a validade do med. continuado não informado.";
+         $this->erro_campo = "fa02_altera_validade_medcontinuado";
+         $this->erro_banco = "";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+         $this->erro_status = "0";
+         return false;
+       }
      }
      $sql .= " where ";
      if($fa02_i_codigo!=null){
@@ -743,11 +823,15 @@ class cl_far_parametros
              $resac = db_query("insert into db_acount values($acount,2103,1014215,'".AddSlashes(pg_result($resaco,$conresaco,'fa02_alerta_nao_morador'))."','$this->fa02_alerta_nao_morador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa02_ibge_municipio"]) || $this->fa02_ibge_municipio != "")
              $resac = db_query("insert into db_acount values($acount,2103,1014216,'".AddSlashes(pg_result($resaco,$conresaco,'fa02_ibge_municipio'))."','$this->fa02_ibge_municipio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["fa02_utiliza_bnafar"]) || $this->fa02_utiliza_bnafar != "")
+             $resac = db_query("insert into db_acount values($acount,2103,1014053,'".AddSlashes(pg_result($resaco,$conresaco,'fa02_utiliza_bnafar'))."','$this->fa02_utiliza_bnafar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           if (isset($GLOBALS["HTTP_POST_VARS"]["fa02_altera_validade_medcontinuado"]) || $this->fa02_altera_validade_medcontinuado != "")
+             $resac = db_query("insert into db_acount values($acount,2103,1015667,'".AddSlashes(pg_result($resaco,$conresaco,'fa02_altera_validade_medcontinuado'))."','$this->fa02_altera_validade_medcontinuado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
      $result = db_query($sql);
-     if (!$result) {
+     if (!$result) { 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "far_parametros não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->fa02_i_codigo;
@@ -775,9 +859,9 @@ class cl_far_parametros
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
+       } 
+     } 
+   } 
 
     public function excluir($fa02_i_codigo=null, $dbwhere = null)
     {
@@ -788,11 +872,13 @@ class cl_far_parametros
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($fa02_i_codigo));
-       } else {
+       } else { 
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
+
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
+
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
            $acount = pg_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
@@ -818,6 +904,8 @@ class cl_far_parametros
            $resac  = db_query("insert into db_acount values($acount,2103,1013491,'','".AddSlashes(pg_result($resaco,$iresaco,'fa02_informa_receita_medicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2103,1014215,'','".AddSlashes(pg_result($resaco,$iresaco,'fa02_alerta_nao_morador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,2103,1014216,'','".AddSlashes(pg_result($resaco,$iresaco,'fa02_ibge_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2103,1014053,'','".AddSlashes(pg_result($resaco,$iresaco,'fa02_utiliza_bnafar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2103,1015667,'','".AddSlashes(pg_result($resaco,$iresaco,'fa02_altera_validade_medcontinuado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -835,7 +923,7 @@ class cl_far_parametros
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) {
+     if ($result == false) { 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "far_parametros não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$fa02_i_codigo;
@@ -863,9 +951,9 @@ class cl_far_parametros
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       }
-     }
-   }
+       } 
+     } 
+   } 
 
     public function sql_record($sql)
     {
@@ -891,18 +979,18 @@ class cl_far_parametros
      return $result;
    }
 
-    public function sql_query($fa02_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
+    public function sql_query($fa02_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") { 
 
      $sql  = "select {$campos}";
      $sql .= "  from far_parametros ";
      $sql .= "      inner join db_estrutura  on  db_estrutura.db77_codestrut = far_parametros.fa02_i_dbestrutura";
-     $sql .= "      left  join far_programa  on  far_programa.fa12_i_codigo = far_parametros.fa02_i_acaoprog";
-     $sql .= "      left join sau_tipoacaoprog  on  sau_tipoacaoprog.s148_i_codigo = far_programa.fa12_i_tipoacao";
+     $sql .= "       left join far_programa  on  far_programa.fa12_i_codigo = far_parametros.fa02_i_acaoprog";
+     $sql .= "       left join sau_tipoacaoprog  on  sau_tipoacaoprog.s148_i_codigo = far_programa.fa12_i_tipoacao";
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($fa02_i_codigo)) {
-         $sql2 .= " where far_parametros.fa02_i_codigo = $fa02_i_codigo ";
-       }
+         $sql2 .= " where far_parametros.fa02_i_codigo = $fa02_i_codigo "; 
+       } 
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -920,8 +1008,8 @@ class cl_far_parametros
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($fa02_i_codigo)){
-         $sql2 .= " where far_parametros.fa02_i_codigo = $fa02_i_codigo ";
-       }
+         $sql2 .= " where far_parametros.fa02_i_codigo = $fa02_i_codigo "; 
+       } 
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -932,10 +1020,10 @@ class cl_far_parametros
      return $sql;
   }
 
-   function sql_query2 ( $fa02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query2 ( $fa02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -952,14 +1040,14 @@ class cl_far_parametros
      if($dbwhere==""){
        if($fa02_i_codigo!=null ){
          $sql2 .= " where far_parametros.fa02_i_codigo = $fa02_i_codigo ";
-       }
+       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -39,8 +39,11 @@ require_once(modification("classes/db_orcelemento_classe.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
+
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
+$labelBotao = 'Excluir';
+
 $clorcdotacao = new cl_orcdotacao;
 $clorctiporec = new cl_orctiporec;
 $clorcdotacaocontr = new cl_orcdotacaocontr;
@@ -48,7 +51,7 @@ $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
 $db_opcao = 33;
 $db_botao = false;
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
     db_inicio_transacao();
     $erro_trans = false;
 
@@ -73,15 +76,9 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
 
     db_fim_transacao($erro_trans);
     $db_opcao = 3;
-} else if (isset($chavepesquisa)) {
+} elseif (isset($chavepesquisa)) {
     $db_opcao = 3;
-    $result = $clorcdotacaocontr->sql_record($clorcdotacaocontr->sql_query_file($chavepesquisa, $chavepesquisa1, 'o61_codigo'));
-    if ($clorcdotacaocontr->numrows > 0) {
-        db_fieldsmemory($result, 0);
-        $result = $clorctiporec->sql_record($clorctiporec->sql_query($o61_codigo, 'o15_descr as o15_contra_recurso '));
-        db_fieldsmemory($result, 0);
-    }
-    $result = $clorcdotacao->sql_record($clorcdotacao->sql_query($chavepesquisa, $chavepesquisa1));
+    $result = $clorcdotacao->sql_record($clorcdotacao->sql_query2($chavepesquisa, $chavepesquisa1));
     db_fieldsmemory($result, 0);
     $db_botao = true;
 }
@@ -126,7 +123,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
 </body>
 </html>
 <?php
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clorcdotacao->erro_status == "0") {
         $clorcdotacao->erro(true, false);
         $db_botao = true;

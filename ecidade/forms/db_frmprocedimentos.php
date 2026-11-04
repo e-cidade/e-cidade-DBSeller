@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("sd11_c_descr");
        <?=@$Lsd09_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd09_i_codigo',10,$Isd09_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd09_c_grupoproc?>">
-       <?
+       <?php
        db_ancora(@$Lsd09_c_grupoproc,"js_pesquisasd09_c_grupoproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd09_c_grupoproc',10,$Isd09_c_grupoproc,true,'text',$db_opcao," onchange='js_pesquisasd09_c_grupoproc(false);'")
 ?>
-       <?
+       <?php
 db_input('sd11_c_descr',60,$Isd11_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('sd11_c_descr',60,$Isd11_c_descr,true,'text',3,'')
        <?=@$Lsd09_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd09_c_descr',80,$Isd09_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('sd09_c_descr',80,$Isd09_c_descr,true,'text',$db_opcao,"")
        <?=@$Lsd09_f_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd09_f_valor',6,$Isd09_f_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('sd09_f_valor',6,$Isd09_f_valor,true,'text',$db_opcao,"")
        <?=@$Lsd09_b_pab?>
     </td>
     <td> 
-<?
+<?php
 $Isd09_b_pab = array('f'=>'Não','t'=>'Sim');
 db_select('sd09_b_pab',$Isd09_b_pab,true,$db_opcao,"");
 ?>
@@ -94,7 +94,7 @@ db_select('sd09_b_pab',$Isd09_b_pab,true,$db_opcao,"");
        <?=@$Lsd09_c_comp?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd09_c_comp',80,$Isd09_c_comp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('sd09_c_comp',80,$Isd09_c_comp,true,'text',$db_opcao,"")
        <?=@$Lsd09_d_validade?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd09_d_validade',@$sd09_d_validade_dia,@$sd09_d_validade_mes,@$sd09_d_validade_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procedimentos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

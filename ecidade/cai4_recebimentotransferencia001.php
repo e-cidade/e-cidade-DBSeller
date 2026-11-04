@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,7 @@ if($conparametro->c90_confirmadata == 't'){
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script type="text/javascript" src="scripts/components/AlertaConfirmaDataFinanceiro.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
-  <?php
+  <?php 
     db_app::load("scripts.js, strings.js, estilos.css, prototype.js, datagrid.widget.js, grid.style.css");
     db_app::load("classes/DBViewSlipRecebimento.classe.js, widgets/dbtextField.widget.js, widgets/dbcomboBox.widget.js");
   ?>
@@ -67,7 +67,7 @@ if($conparametro->c90_confirmadata == 't'){
     <div id="ctnSlipRecebimento" align="center">
     </div>
   </center>
-  <?
+  <?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>
@@ -75,7 +75,7 @@ if($conparametro->c90_confirmadata == 't'){
 <script>
     let c90_confirmadata = '<?php echo $conparametro->c90_confirmadata ?>'
     if (c90_confirmadata == 't') {
-        const msg = "Antes de realizar a operação confirme a data em que deseja incluir o movimento";
+        const msg = "Antes de realizar a operaÃ§Ã£o confirme a data em que deseja incluir o movimento";
         alert(msg)
     }
 

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,7 +57,7 @@ if (USE_PCASP) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("estilos.css, grid.style.css");
   db_app::load("scripts.js, prototype.js, strings.js, DBToogle.widget.js, dbmessageBoard.widget.js, widgets/messageboard.widget.js");
   db_app::load("classes/DBViewNotasPendentes.classe.js, widgets/windowAux.widget.js, datagrid.widget.js, AjaxRequest.js");
@@ -119,7 +119,7 @@ if (USE_PCASP) {
 <div style="margin-top: 25px;" ></div>
 <center>
   <div align="center" style="width: 720px; display: block;">
-    <?
+    <?php
       include(modification("forms/db_frm_bensglobalnovo.php"));
     ?>
   </div>
@@ -140,7 +140,7 @@ if (USE_PCASP) {
   if (lViewNotasPendentes) {
 
     /**
-     * Direciona o usuÃ¡rio para a inclusÃ£o de bens Individual ou Global, dependendo
+     * Direciona o usuário para a inclusão de bens Individual ou Global, dependendo
      * da quantidade do item.
      */
     function loadDadosBem(oDadosLinha) {
@@ -171,6 +171,6 @@ if (USE_PCASP) {
   }
 </script>
 </html>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clsau_convenio->rotulo->label("sd49_v_descricao");
               <?=$Lsd49_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd49_i_codigo",10,$Isd49_i_codigo,true,"text",4,"","chave_sd49_i_codigo");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_convenio->rotulo->label("sd49_v_descricao");
               <?=$Lsd49_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("sd49_v_descricao",60,$Isd49_v_descricao,true,"text",4,"","chave_sd49_v_descricao");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_convenio->rotulo->label("sd49_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_convenio.php")==true){
@@ -122,12 +122,12 @@ $clsau_convenio->rotulo->label("sd49_v_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -58,7 +58,7 @@ db_postmemory($HTTP_POST_VARS);
 if(isset($atualizar)){
   db_inicio_transacao();
   $sqlerro=false;
-  $arr =  split(",",$movs);
+  $arr = explode(",",$movs);
   for($mi=0;$mi<sizeof($arr);$mi++){
     $movimento = $arr[$mi];
     if($sqlerro==false){
@@ -131,13 +131,13 @@ function js_atualizar(){
 <br>
 <table width="100%" height="90%" border="0" cellspacing="0" cellpadding="0">
   <form name="form1" enctype="multipart/form-data" method="post">
-  <tr> 
+  <tr>
     <td height="90%"  width="100%" align="center" valign="top">
       <center>
-        <?
+        <?php
         if(isset($retornoarq) && trim($retornoarq)!=""){
         ?><br>
-          <?
+          <?php
 	      db_input("movs",10,'',true,'hidden',3);
 	      db_input("retornoarq",10,'',true,'hidden',3);
 	      $passaparametro = "";
@@ -154,16 +154,16 @@ function js_atualizar(){
           <iframe name="canc" src="emp4_empageretornocanc001_iframe.php?lCancelado=0&retornoarq=<?=(@$retornoarq)?><?=$passaparametro?>" width="100%"  height='500' marginwidth="0" marginheight="0" frameborder="0"></iframe><br>
           <small><span style="color:darkblue;">**Movimento processado ou agendado pelo banco</span></small><BR>
           <input name="atualizar" type="submit"  value="Cancelar selecionados" onclick='return js_atualizar();'>
-	    <?
+	    <?php
 	    }else{
 	    ?>
 	      <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
 	      <b>Arquivo retorno não encontrado.</b>
 	      <BR><BR><BR><BR><BR><BR><BR><BR><BR>
-	    <?
+	    <?php
 	    }
 	    ?>
-	<?
+	<?php
 	$voltacorreto = "emp4_selarquivo001.php?canc=true";
 	?>
           <input name="voltar" type="button"  value="Voltar" onclick="location.href='<?=$voltacorreto?>'">
@@ -172,12 +172,12 @@ function js_atualizar(){
   </tr>
   </form>
 </table>
-<? 
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($atualizar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

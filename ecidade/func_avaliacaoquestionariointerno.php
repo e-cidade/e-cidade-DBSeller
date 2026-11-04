@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clavaliacaoquestionariointerno->rotulo->label("db170_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ldb170_sequencial?></label></td>
-          <td><? db_input("db170_sequencial",10,$Idb170_sequencial,true,"text",4,"","chave_db170_sequencial"); ?></td>
+          <td><?php db_input("db170_sequencial",10,$Idb170_sequencial,true,"text",4,"","chave_db170_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ldb170_sequencial?></label></td>
-          <td><? db_input("db170_sequencial",10,$Idb170_sequencial,true,"text",4,"","chave_db170_sequencial");?></td>
+          <td><?php db_input("db170_sequencial",10,$Idb170_sequencial,true,"text",4,"","chave_db170_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clavaliacaoquestionariointerno->rotulo->label("db170_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_avaliacaoquestionariointerno.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_avaliacaoquestionariointerno.php")==true){
@@ -88,12 +88,12 @@ $clavaliacaoquestionariointerno->rotulo->label("db170_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

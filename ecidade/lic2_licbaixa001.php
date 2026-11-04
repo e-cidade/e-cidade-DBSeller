@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -45,17 +45,17 @@ $clrotulo->label("l03_descr");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
 function js_emite(){
-	
-	query = 'l20_codigo='+document.form1.l20_codigo.value+'&l20_numero='+document.form1.l20_numero.value;	
+
+	query = 'l20_codigo='+document.form1.l20_codigo.value+'&l20_numero='+document.form1.l20_numero.value;
 	query += '&l03_codigo='+document.form1.l03_codigo.value+'&l03_descr='+document.form1.l03_descr.value;
 	query += '&data='+document.form1.data1_ano.value+'-'+document.form1.data1_mes.value+'-'+document.form1.data1_dia.value;
 	query += '&data1='+document.form1.data2_ano.value+'-'+document.form1.data2_mes.value+'-'+document.form1.data2_dia.value;
   document.form1.l20_codigo.value='';
 	jan = window.open('lic2_licbaixa002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-    jan.moveTo(0,0);	
+    jan.moveTo(0,0);
 }
 
-</script>  
+</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
@@ -74,40 +74,40 @@ function js_emite(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-  <tr> 
+  <tr>
     <td  align="right" nowrap title="<?=$Tl20_codigo?>">
     <b>
-    <?db_ancora('Licitação :',"js_pesquisa_liclicita(true);",1);?>&nbsp;
-    </b> 
+    <?php db_ancora('Licitação :',"js_pesquisa_liclicita(true);",1);?>&nbsp;
+    </b>
     </td>
-    
+
     <td align="left" nowrap>
-      <?
+      <?php
        db_input("l20_codigo",8,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
       ?>
     </td>
   </tr>
-  <tr> 
+  <tr>
               <td  align="right" nowrap title="<?=$Tl20_numero?>">
               <?=$Ll20_numero?>
             </td>
-            <td  align="left" nowrap> 
-              <?
+            <td  align="left" nowrap>
+              <?php
 		       db_input("l20_numero",8,$Il20_numero,true,"text",4);
 		       ?>
             </td>
           </tr>
-          <tr> 
+          <tr>
           <td  align="right" nowrap title="<?=$Tl03_codigo?>">
-           
+
               <b>
-       <?
+       <?php
        db_ancora("Modalidade :","js_pesquisal03_codigo(true);",1);
        ?>
        </b>
             </td>
-            <td  align="left" nowrap> 
-              <?
+            <td  align="left" nowrap>
+              <?php
               db_input("l03_codigo",8,$Il03_codigo,true,"text",1,"onchange='js_pesquisal03_codigo(false);'");
 		       db_input("l03_descr",40,$Il03_descr,true,"text",3);
 		       ?>
@@ -118,29 +118,29 @@ function js_emite(){
                <b> Período de: </b>
                            </td>
             <td  align="left" nowrap>
-               <?      
+               <?php
 	          	 db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");
-	          	    		          
+
                   echo " <b>ate:</b> ";
                   db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
                ?>
           </td>
        </tr>
-       
-      
+
+
       <tr>
         <td >&nbsp;</td>
         <td >&nbsp;</td>
       </tr>
       <tr>
-        <td colspan="2" align = "center"> 
+        <td colspan="2" align = "center">
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
         </td>
       </tr>
 
   </form>
  </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -150,40 +150,40 @@ function js_pesquisa_liclicita(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_liclicita','func_liclicita.php?funcao_js=parent.js_mostraliclicita1|l20_codigo','Pesquisa',true);
   }else{
-     if(document.form1.l20_codigo.value != ''){ 
+     if(document.form1.l20_codigo.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_liclicita','func_liclicita.php?pesquisa_chave='+document.form1.l20_codigo.value+'&funcao_js=parent.js_mostraliclicita','Pesquisa',false);
      }else{
-       document.form1.l20_codigo.value = ''; 
+       document.form1.l20_codigo.value = '';
      }
   }
 }
 function js_mostraliclicita(chave,erro){
-  document.form1.l20_codigo.value = chave; 
-  if(erro==true){ 
-    document.form1.l20_codigo.value = ''; 
-    document.form1.l20_codigo.focus(); 
+  document.form1.l20_codigo.value = chave;
+  if(erro==true){
+    document.form1.l20_codigo.value = '';
+    document.form1.l20_codigo.focus();
   }
 }
 function js_mostraliclicita1(chave1){
-   document.form1.l20_codigo.value = chave1;  
+   document.form1.l20_codigo.value = chave1;
    db_iframe_liclicita.hide();
 }
 function js_pesquisal03_codigo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_cflicita','func_cflicita.php?funcao_js=parent.js_mostracflicita1|l03_codigo|l03_descr','Pesquisa',true);
   }else{
-     if(document.form1.l03_codigo.value != ''){ 
+     if(document.form1.l03_codigo.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_cflicita','func_cflicita.php?pesquisa_chave='+document.form1.l03_codigo.value+'&funcao_js=parent.js_mostracflicita','Pesquisa',false);
      }else{
-       document.form1.l03_descr.value = ''; 
+       document.form1.l03_descr.value = '';
      }
   }
 }
 function js_mostracflicita(chave,erro){
-  document.form1.l03_descr.value = chave; 
-  if(erro==true){ 
-    document.form1.l03_codigo.focus(); 
-    document.form1.l03_codigo.value = ''; 
+  document.form1.l03_descr.value = chave;
+  if(erro==true){
+    document.form1.l03_codigo.focus();
+    document.form1.l03_codigo.value = '';
   }
 }
 function js_mostracflicita1(chave1,chave2){

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ if(isset($confirma) && $confirma=="ok"){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados   = split("_",$chave); 
+      $dados   = explode("_",$chave); 
       $idbql   = $dados[1];
       $testada = $dados[2];
       $length  = strlen($idbql);
@@ -83,10 +83,10 @@ if(isset($confirma) && $confirma=="ok"){
       for($x=0; $x<$ta; $x++){
         $chave2=key($vt2);
         if(substr($chave2,0,(10+$length))=="j36testad_".$idbql){ 
-          $dados2=split("_",$chave2); 
+          $dados2=explode("_",$chave2); 
           $tipo=$dados2[2];
           $testad=$vt2[$chave2]."\n";
-          $valcal=split("XX",$vt2["quant_$tipo"]);
+          $valcal=explode("XX",$vt2["quant_$tipo"]);
           $quant=$valcal[0];
           $vlr=$valcal[1];
           $result06=$cleditalrua->sql_record($cleditalrua->sql_query_file($contri,"d02_profun"));
@@ -175,7 +175,7 @@ class cl_fate extends cl_testada {
             $d04_vlrval=$GLOBALS["d04_vlrval"];
             $d03_descr=$GLOBALS["d03_descr"];
             $x= "j36_testad_".$f;
-            GLOBAL $$x;
+            GLOBAL ${$x};
             $$x=$j36_testad;
             echo "<td style='cursor:help' onMouseOut='parent.js_label(false);' onMouseOver='parent.js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal,$d04_vlrval);'>";
             echo "<input type=\"text\" size=\"4\" id=\"j36testad_".$j34_idbql."\" value=\"$j36_testad\" name=\"j36testad_".$j34_idbql."_".$d03_tipos."\" title=\"Testadas\"onKeyUp=\"js_ValidaCampos(this,4,'Constribuicao','f','f',event);\"  onKeyDown=\"return js_controla_tecla_enter(this,event);\">";
@@ -273,14 +273,14 @@ function js_marca(obj){
 <input name="confirma" type="hidden">
 <table border="0">
 <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-<?
+<?php
 if(isset($face)){
   echo "<script>;
   parent.document.form1.confirma.style.visibility='visible';
   parent.document.form1.lotecontri.style.visibility='visible';
   </script> ";
   $clfate = new cl_fate;
-  $faces=split("XX",$face); 
+  $faces=explode("XX",$face); 
   for($i=0; $i<sizeof($faces); $i++){
     if($faces[$i]!=""){
       $sql = "select j01_matric,j34_setor,j34_quadra,j34_lote,j34_zona,j36_testad,j34_idbql 
@@ -381,7 +381,7 @@ if(isset($face)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($confirma) && $confirma=="ok"){
   if($clcontlot->erro_status=="0"||$clcontlotv->erro_status=="0"){
     $clcontlot->erro(true,false);

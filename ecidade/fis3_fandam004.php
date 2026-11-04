@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,12 +72,12 @@ function js_testacamp(){
    <br>
     <tr>
       <td nowrap title="<?=@$Ty70_codvist?>">
-         <?
+         <?php
          db_ancora(@$Ly70_codvist,"js_vistoria(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y70_codvist',10,$Iy70_codvist,true,'text',$db_opcao," onChange='js_vistoria(false)'");
         db_input('y70_id_usuario',30,0,true,'text',3);
         ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,7 +51,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lk80_codpla?>
     </td>
     <td> 
-<?
+<?php
 db_input('k80_codpla',6,$Ik80_codpla,true,'text',3,"")
 ?>
     </td>
@@ -61,7 +61,7 @@ db_input('k80_codpla',6,$Ik80_codpla,true,'text',3,"")
        <?=@$Lk80_data?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1){
   $k80_data_dia = date("d",db_getsession("DB_datausu"));
   $k80_data_mes = date("m",db_getsession("DB_datausu"));
@@ -73,12 +73,12 @@ db_inputdata('k80_data',@$k80_data_dia,@$k80_data_mes,@$k80_data_ano,true,'text'
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk80_instit?>">
-       <?
+       <?php
        //db_ancora(@$Lk80_instit,"js_pesquisak80_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 if($db_opcao==1){
   $k80_instit = db_getsession("DB_instit");
 }
@@ -91,7 +91,7 @@ db_input('k80_instit',2,$Ik80_instit,true,'hidden',3," onchange='js_pesquisak80_
        <?=@$Lk80_dtaut?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k80_dtaut',@$k80_dtaut_dia,@$k80_dtaut_mes,@$k80_dtaut_ano,true,'text',3,"")
 ?>
     </td>
@@ -100,14 +100,14 @@ db_inputdata('k80_dtaut',@$k80_dtaut_dia,@$k80_dtaut_mes,@$k80_dtaut_ano,true,'t
 
   <tr>
     <td nowrap>
-    <?
+    <?php
      if ($db_opcao == 3) {
       echo "<b>Total:</b>";
      }
       ?>
     </td>
     <td> 
-<?
+<?php
 if ($db_opcao == 3 and isset($k80_codpla)) {
   $result = db_query("select sum(k81_valor) from placaixarec where k81_codpla = $k80_codpla");
   db_fieldsmemory($result,0,true);
@@ -120,11 +120,11 @@ if ($db_opcao == 3 and isset($k80_codpla)) {
   
   </table>
   </center>
-<?
+<?php
 if(!isset($autenticar) && !isset($autenticar_estorno)){
 ?>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
 }else if(isset($autenticar_estorno)){
   echo "<input name='estorna' type='submit' id='db_opcao' value='Estornar' ".($db_botao==false?"disabled":"")." >";
 }else{
@@ -158,25 +158,25 @@ function js_mostradb_config1(chave1,chave2){
   db_iframe_db_config.hide();
 }
 function js_pesquisa(){
-  <?
+  <?php
   if(!isset($autenticar) && !isset($autenticar_estorno)){
     ?>
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_placaixa','db_iframe_placaixa','func_placaixaaut.php?funcao_js=parent.js_preenchepesquisa|k80_codpla','Pesquisa',true,'0','1');
-    <?
+    <?php
   }else if(isset($autenticar_estorno)){
     ?>
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_placaixa','db_iframe_placaixa','func_placaixaest.php?funcao_js=parent.js_preenchepesquisa|k80_codpla','Pesquisa',true,'0','1');
-    <?
+    <?php
   }else{
     ?>
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_placaixa','db_iframe_placaixa','func_placaixaaut.php?funcao_js=parent.js_preenchepesquisa|k80_codpla','Pesquisa',true,'0','1');
-    <?
+    <?php
   }
   ?>
 }
 function js_preenchepesquisa(chave){
   db_iframe_placaixa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

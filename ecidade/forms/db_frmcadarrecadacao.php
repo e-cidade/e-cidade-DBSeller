@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@
 	      <?=@$Lar16_instit?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_input('ar16_sequencial',10,$Iar16_sequencial,true,'hidden',$db_opcao,"");
 			db_input('ar16_instit',10,$Iar16_instit,true,'text',3," onchange='js_pesquisaar16_instit(false);'");
 			db_input('nomeinst'	  ,40,$Inomeinst   ,true,'text',3,'');
@@ -54,7 +54,7 @@
           <?=@$Lar16_convenio?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 			db_input('ar16_convenio',4,$Iar16_convenio,true,'text',$db_opcao,"");
 		  ?>
 	    </td>
@@ -64,7 +64,7 @@
 	      <?=@$Lar16_segmento?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    $aSegmento = array( "1"=>"1-Prefeituras",
 		    				    "2"=>"2-Saneamento",
 		    					"3"=>"3-Energia Elétrica e Gás",
@@ -83,7 +83,7 @@
 	     <?=@$Lar16_formatovenc?>
 	    </td>
 	    <td>
-		 <?
+		 <?php
  	       $aFormVenc = array("1"=>"1-aaaa/mm/dd","2"=>"2-dd/mm/aa");
  	       db_select("ar16_formatovenc",$aFormVenc,true,$db_opcao,"");
 		 ?>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadarrecadacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

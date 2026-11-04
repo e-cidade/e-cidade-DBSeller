@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -60,13 +60,13 @@ class cl_caractercaracter {
                  j138_anousu = int4 = Anousu
                  ";
    //funcao construtor da classe
-   function cl_caractercaracter() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caractercaracter");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_caractercaracter {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j138_sequencial = ($this->j138_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j138_sequencial"]:$this->j138_sequencial);
        $this->j138_caracterorigem = ($this->j138_caracterorigem == ""?@$GLOBALS["HTTP_POST_VARS"]["j138_caracterorigem"]:$this->j138_caracterorigem);
@@ -89,7 +89,7 @@ class cl_caractercaracter {
      }
    }
    // funcao para inclusao
-   function incluir ($j138_sequencial){
+   public function incluir ($j138_sequencial){
       $this->atualizacampos();
      if($this->j138_caracterorigem == null ){
        $this->erro_sql = " Campo Caracteristica de Origem não informado.";

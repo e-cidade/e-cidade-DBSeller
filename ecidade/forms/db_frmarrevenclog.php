@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nome");
        <?=@$Lk75_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k75_sequencial',10,$Ik75_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk75_instit?>">
-       <?
+       <?php
        db_ancora(@$Lk75_instit,"js_pesquisak75_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k75_instit',10,$Ik75_instit,true,'text',$db_opcao," onchange='js_pesquisak75_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk75_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lk75_usuario,"js_pesquisak75_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k75_usuario',10,$Ik75_usuario,true,'text',$db_opcao," onchange='js_pesquisak75_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lk75_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k75_data',@$k75_data_dia,@$k75_data_mes,@$k75_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('k75_data',@$k75_data_dia,@$k75_data_mes,@$k75_data_ano,true,'text'
        <?=@$Lk75_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k75_hora',10,$Ik75_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_arrevenclog.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

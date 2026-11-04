@@ -1,5 +1,29 @@
 <?php
-
+/*
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
+ */
 
 namespace ECidade\Educacao\Escola\Relatorios\GuiaTransferencia;
 
@@ -44,6 +68,7 @@ class GuiaTransferencia
         $this->tipoTransferencia = $tipoTransf;
         $this->notificar = $notificar;
         $this->orientation = strtoupper($orientation);
+        $this->modelo = $modelo;
         $this->pdf = new FpdfMultiCellBorder($orientation);
         $this->pdf->Open();
         $this->pdf->AliasNbPages();
@@ -61,7 +86,7 @@ class GuiaTransferencia
 
         $this->larguraLinha = $this->orientation == 'L' ? 279 : 192;
 
-        if (!is_null($modelo)) {
+        if (!is_null($this->modelo)) {
             if ($this->orientation == "P") {
                 $this->tamanhoFonte = 8;
                 $this->alturaLinha = 3;
@@ -71,13 +96,10 @@ class GuiaTransferencia
         }
     }
 
-
-
     public function setDados($dados)
     {
         $this->dados = $dados;
     }
-
 
     public function setAssinatura($diretor)
     {
@@ -93,6 +115,8 @@ class GuiaTransferencia
      */
     public function emitir()
     {
+        global $head1;
+        $head1 = $this->dados['isDeclaracao'] ? 'DECLARAÇÃO DE TRANSFERÊNCIA' : 'GUIA DE TRANSFERÊNCIA';
         $this->imprimeDados();
         $path = sprintf("tmp/guia-de-transferencia-%s.pdf", time());
         $this->pdf->output($path, false, true);
@@ -130,6 +154,7 @@ class GuiaTransferencia
     public function imprimeDados()
     {
         $folha = 1;
+        $head = $this->dados['isDeclaracao'] ? 'DECLARAÇÃO DE TRANSFERÊNCIA' : 'GUIA DE TRANSFERÊNCIA';
         $nome = !is_null($this->assinatura['nome']) ?
                             $this->assinatura['nome'] :
                             "------------------------------------------------------";
@@ -137,35 +162,42 @@ class GuiaTransferencia
         $funcao = !is_null($this->assinatura['funcao']) ? $this->assinatura['funcao'] : "";
 
         foreach ($this->dados['alunos'] as $aluno) {
-            $folha = 1;
             if (($this->vias == 1 && $this->orientation == "P") || ($this->vias == 1 && $this->orientation == "L")) {
                 $this->pdf->addPage();
             } elseif ($this->vias > 1 && $this->orientation == "P") {
                 global $head1;
-                $head1 = "GUIA DE TRANSFERÊNCIA - 1º VIA";
+                $head1 = "{$head} - 1º VIA";
                 $this->pdf->addPage();
             }
 
             for ($i = 1; $i <= $this->vias; $i++) {
-                if ($this->vias > 1) {
-                    if ($this->orientation == "L") {
+                if ($this->vias > 1 && $this->orientation == "L") {
                         global $head1;
-                        $head1 = "GUIA DE TRANSFERÊNCIA - {$i}º VIA";
+                        $head1 = "{$head} - {$i}º VIA";
                         $this->pdf->addPage();
-                    }
                 }
                 $matricula = new \Matricula($aluno->codigomatricula);
                 $espaco = "_______________________________________";
-                $titulo = "Guia de Transferência";
+                $titulo = $this->dados['isDeclaracao'] ? 'Declaração de Transferência' : "Guia de Transferência";
                 $this->pdf->setfont('arial', 'b', $this->tamanhoFonte);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, $titulo, "LRT", 1, "C", 0, 0);
                 $this->pdf->setfont('arial', '', $this->alturaLinha * 2);
                 $this->pdf->MultiCell($this->larguraLinha, 5, $aluno->atestado, 'LR', 'J', 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LRB", 1, "C", 0, 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha, $aluno->descricaoEnsino, "LRB", 1, "C", 1, 0);
+
                 $grade = new \RelatorioGradeAproveitamento($this->pdf, $matricula, $this->larguraLinha);
                 $grade->montarGrade();
-                $this->pdf->cell($this->larguraLinha, $this->alturaLinha, "", "LRB", 1, "C", 1, 0);
+
+                if ($this->tipoTransferencia == "TR") {
+                    $tipoTransferenciaNome = "TRANSFERÊNCIA REDE";
+                } else {
+                    $tipoTransferenciaNome = "TRANSFERÊNCIA FORA";
+                }
+                $tipoTransferenciaNome .= " (CURSANDO)";
+                $this->pdf->cell($this->larguraLinha, $this->alturaLinha / 2, "", "LRB", 1, "C", 0, 0);
+                $this->pdf->cell($this->larguraLinha, $this->alturaLinha, $tipoTransferenciaNome, "LR", 1, "L", 1, 0);
+
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LR", 1, "C", 0, 0);
                 $this->pdf->setfont('arial', '', $this->tamanhoFonte);
                 $this->pdf->MultiCell($this->larguraLinha, $this->alturaLinha, $aluno->obs, 'LR', 'J', 0);
@@ -179,23 +211,16 @@ class GuiaTransferencia
                 } else {
                     $this->pdf->cell($this->larguraLinha, $this->alturaLinha, $funcao, "LRB", 1, "C", 0, 0);
                 }
-                if ($this->vias > 1) {
-                    if ($this->orientation == "P") {
-                        global $head1;
-                        $head1 = "GUIA DE TRANSFERÊNCIA - 2º VIA";
-                        if ($this->pdf->GetY() > 145.9) {
-                            if ($folha <= 1) {
-                                $this->pdf->AddPage();
-                            }
-                        } else {
-                            if ($folha <= 1) {
-                                $this->pdf->headerMovel(145.9);
-                                $this->pdf->setY(180);
-                            }
-                        }
+                if ($this->vias > 1 && $this->orientation == "P") {
+                    global $head1;
+                    $head1 = "{$head} - 2º VIA";
+                    if ($this->modelo == 1 && $i <= 1) {
+                        $this->pdf->AddPage();
+                    } elseif ($this->modelo == 2) {
+                        $this->pdf->headerMovel(145.9);
+                        $this->pdf->setY(180);
                     }
                 }
-                $folha++;
             }
         }
     }

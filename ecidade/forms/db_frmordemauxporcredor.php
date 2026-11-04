@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -62,20 +62,20 @@ $db_opcao = 1;
         <table>
           <tr>
            <td nowrap title="<?=@$Te82_codord?>" align='left'>
-           <? db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
+           <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
            </td>
           <td nowrap colspan="1">
-           <? db_input('e82_codord',15,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
+           <?php db_input('e82_codord',15,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
           <td>
-           <? db_ancora("<b>até:</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
+           <?php db_ancora("<b>até:</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
           </td>
           <td>
-          <? db_input('e82_codord2',15,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
+          <?php db_input('e82_codord2',15,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
          </td>
        </tr>
        <tr>
          <td align="left" nowrap title="<?=$Te60_numemp?>">
-          <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+          <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
           </td>
          <td nowrap colspan="1">
           <input name="e60_codemp" id='e60_codemp' title='<?=$Te60_codemp?>' size="15" type='text'  onKeyPress="return js_mascara(event);" >
@@ -97,11 +97,11 @@ $db_opcao = 1;
         <tr>
           <td>
             <b>
-              <? db_ancora("<b>OP auxiliar:</b>","js_pesquisae42_sequencial(true);", 3);  ?>
+              <?php db_ancora("<b>OP auxiliar:</b>","js_pesquisae42_sequencial(true);", 3);  ?>
               </b>
              </td>
              <td colspan="5">
-             <?
+             <?php
               db_input("e42_sequencial", 10, $Ie42_sequencial, true,"text", 3);
              ?>
              </td>
@@ -111,7 +111,7 @@ $db_opcao = 1;
              <b>Data de Pagamento: </b>
            </td>
            <td colspan='2'>
-            <?
+            <?php
             db_inputdata("e42_dtpagamento",$e42_data[2], $e42_data[1], $e42_data[0],true,"text", 1);
             ?>
            </td>
@@ -121,7 +121,7 @@ $db_opcao = 1;
              <b>Histórico: </b>
            </td>
            <td colspan='2' width="80%">
-            <?
+            <?php
               db_textarea('historico',5,48,0,true,'text',1);
               //  db_input("z01_nome1",40,"",true,"text",3);
             ?>
@@ -147,21 +147,21 @@ $db_opcao = 1;
       <b>Data Inicial:</b>
     </td>
     <td nowrap colspan="1">
-      <?
+      <?php
        db_inputdata("dataordeminicial",null,null,null,true,"text", 1);
       ?>
       &nbsp;<b>Data Final:</b>
-      <?
+      <?php
        db_inputdata("dataordemfinal",null,null,null,true,"text", 1);
       ?>
     </td>
   </tr>
   <tr nowrap>
-    <td nowrap title="<?=@$To15_codigo?>"><? db_ancora(@$Lo15_codigo,"js_pesquisac62_codrec(true);",$db_opcao); ?>
+    <td nowrap title="<?=@$To15_codigo?>"><?php db_ancora(@$Lo15_codigo,"js_pesquisac62_codrec(true);",$db_opcao); ?>
     </td>
     <td colspan=7 nowrap>
-     <? db_input('o15_codigo',15,$Io15_codigo,true,'text',$db_opcao," onchange='js_pesquisac62_codrec(false);'") ?>
-     <? db_input('o15_descr',40,$Io15_descr,true,'text',3,'')   ?>
+     <?php db_input('o15_codigo',15,$Io15_codigo,true,'text',$db_opcao," onchange='js_pesquisac62_codrec(false);'") ?>
+     <?php db_input('o15_descr',40,$Io15_descr,true,'text',3,'')   ?>
     </td>
   </tr>
   </tr>
@@ -170,7 +170,7 @@ $db_opcao = 1;
        <b>Retornar:</b>
       </td>
       <td>
-       <?
+       <?php
          $retornar = 3;
          $aTipos = array(
                          1 => "Selecionados",

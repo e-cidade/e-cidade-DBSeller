@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: social
 //CLASSE DA ENTIDADE importacaocadastrounico
-class cl_importacaocadastrounico { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $as07_sequencial = 0; 
-   var $as07_usuario = 0; 
-   var $as07_dataarquivo_dia = null; 
-   var $as07_dataarquivo_mes = null; 
-   var $as07_dataarquivo_ano = null; 
-   var $as07_dataarquivo = null; 
-   var $as07_dataprocessamento_dia = null; 
-   var $as07_dataprocessamento_mes = null; 
-   var $as07_dataprocessamento_ano = null; 
-   var $as07_dataprocessamento = null; 
-   var $as07_hora = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_importacaocadastrounico {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $as07_sequencial = 0;
+   var $as07_usuario = 0;
+   var $as07_dataarquivo_dia = null;
+   var $as07_dataarquivo_mes = null;
+   var $as07_dataarquivo_ano = null;
+   var $as07_dataarquivo = null;
+   var $as07_dataprocessamento_dia = null;
+   var $as07_dataprocessamento_mes = null;
+   var $as07_dataprocessamento_ano = null;
+   var $as07_dataprocessamento = null;
+   var $as07_hora = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 as07_sequencial = int4 = Código 
-                 as07_usuario = int4 = Usuário 
-                 as07_dataarquivo = date = Data do Arquivo 
-                 as07_dataprocessamento = date = Data de Processamento 
-                 as07_hora = char(5) = Hora 
+                 as07_sequencial = int4 = Código
+                 as07_usuario = int4 = Usuário
+                 as07_dataarquivo = date = Data do Arquivo
+                 as07_dataprocessamento = date = Data de Processamento
+                 as07_hora = char(5) = Hora
                  ";
-   //funcao construtor da classe 
-   function cl_importacaocadastrounico() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("importacaocadastrounico"); 
+     $this->rotulo = new rotulo("importacaocadastrounico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_importacaocadastrounico {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->as07_sequencial = ($this->as07_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["as07_sequencial"]:$this->as07_sequencial);
        $this->as07_usuario = ($this->as07_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["as07_usuario"]:$this->as07_usuario);
@@ -103,9 +103,9 @@ class cl_importacaocadastrounico {
      }
    }
    // funcao para inclusao
-   function incluir ($as07_sequencial){ 
+   public function incluir ($as07_sequencial){
       $this->atualizacampos();
-     if($this->as07_usuario == null ){ 
+     if($this->as07_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "as07_usuario";
        $this->erro_banco = "";
@@ -114,7 +114,7 @@ class cl_importacaocadastrounico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as07_dataarquivo == null ){ 
+     if($this->as07_dataarquivo == null ){
        $this->erro_sql = " Campo Data do Arquivo nao Informado.";
        $this->erro_campo = "as07_dataarquivo_dia";
        $this->erro_banco = "";
@@ -123,7 +123,7 @@ class cl_importacaocadastrounico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as07_dataprocessamento == null ){ 
+     if($this->as07_dataprocessamento == null ){
        $this->erro_sql = " Campo Data de Processamento nao Informado.";
        $this->erro_campo = "as07_dataprocessamento_dia";
        $this->erro_banco = "";
@@ -132,7 +132,7 @@ class cl_importacaocadastrounico {
        $this->erro_status = "0";
        return false;
      }
-     if($this->as07_hora == null ){ 
+     if($this->as07_hora == null ){
        $this->erro_sql = " Campo Hora nao Informado.";
        $this->erro_campo = "as07_hora";
        $this->erro_banco = "";
@@ -142,16 +142,16 @@ class cl_importacaocadastrounico {
        return false;
      }
      if($as07_sequencial == "" || $as07_sequencial == null ){
-       $result = db_query("select nextval('importacaocadastrounico_as07_sequencial_seq')"); 
+       $result = db_query("select nextval('importacaocadastrounico_as07_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: importacaocadastrounico_as07_sequencial_seq do campo: as07_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: importacaocadastrounico_as07_sequencial_seq do campo: as07_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->as07_sequencial = pg_result($result,0,0); 
+       $this->as07_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from importacaocadastrounico_as07_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $as07_sequencial)){
@@ -162,10 +162,10 @@ class cl_importacaocadastrounico {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->as07_sequencial = $as07_sequencial; 
+         $this->as07_sequencial = $as07_sequencial;
        }
      }
-     if(($this->as07_sequencial == null) || ($this->as07_sequencial == "") ){ 
+     if(($this->as07_sequencial == null) || ($this->as07_sequencial == "") ){
        $this->erro_sql = " Campo as07_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,21 +174,21 @@ class cl_importacaocadastrounico {
        return false;
      }
      $sql = "insert into importacaocadastrounico(
-                                       as07_sequencial 
-                                      ,as07_usuario 
-                                      ,as07_dataarquivo 
-                                      ,as07_dataprocessamento 
-                                      ,as07_hora 
+                                       as07_sequencial
+                                      ,as07_usuario
+                                      ,as07_dataarquivo
+                                      ,as07_dataprocessamento
+                                      ,as07_hora
                        )
                 values (
-                                $this->as07_sequencial 
-                               ,$this->as07_usuario 
-                               ,".($this->as07_dataarquivo == "null" || $this->as07_dataarquivo == ""?"null":"'".$this->as07_dataarquivo."'")." 
-                               ,".($this->as07_dataprocessamento == "null" || $this->as07_dataprocessamento == ""?"null":"'".$this->as07_dataprocessamento."'")." 
-                               ,'$this->as07_hora' 
+                                $this->as07_sequencial
+                               ,$this->as07_usuario
+                               ,".($this->as07_dataarquivo == "null" || $this->as07_dataarquivo == ""?"null":"'".$this->as07_dataarquivo."'")."
+                               ,".($this->as07_dataprocessamento == "null" || $this->as07_dataprocessamento == ""?"null":"'".$this->as07_dataprocessamento."'")."
+                               ,'$this->as07_hora'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "importacaocadastrounico ($this->as07_sequencial) nao Incluído. Inclusao Abortada.";
@@ -224,16 +224,16 @@ class cl_importacaocadastrounico {
        $resac = db_query("insert into db_acount values($acount,3397,19094,'','".AddSlashes(pg_result($resaco,0,'as07_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($as07_sequencial=null) { 
+   public function alterar ($as07_sequencial=null) {
       $this->atualizacampos();
      $sql = " update importacaocadastrounico set ";
      $virgula = "";
-     if(trim($this->as07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_sequencial"])){ 
+     if(trim($this->as07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_sequencial"])){
        $sql  .= $virgula." as07_sequencial = $this->as07_sequencial ";
        $virgula = ",";
-       if(trim($this->as07_sequencial) == null ){ 
+       if(trim($this->as07_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as07_sequencial";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_importacaocadastrounico {
          return false;
        }
      }
-     if(trim($this->as07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_usuario"])){ 
+     if(trim($this->as07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_usuario"])){
        $sql  .= $virgula." as07_usuario = $this->as07_usuario ";
        $virgula = ",";
-       if(trim($this->as07_usuario) == null ){ 
+       if(trim($this->as07_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "as07_usuario";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_importacaocadastrounico {
          return false;
        }
      }
-     if(trim($this->as07_dataarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"] !="") ){ 
+     if(trim($this->as07_dataarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"] !="") ){
        $sql  .= $virgula." as07_dataarquivo = '$this->as07_dataarquivo' ";
        $virgula = ",";
-       if(trim($this->as07_dataarquivo) == null ){ 
+       if(trim($this->as07_dataarquivo) == null ){
          $this->erro_sql = " Campo Data do Arquivo nao Informado.";
          $this->erro_campo = "as07_dataarquivo_dia";
          $this->erro_banco = "";
@@ -268,11 +268,11 @@ class cl_importacaocadastrounico {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"])){
          $sql  .= $virgula." as07_dataarquivo = null ";
          $virgula = ",";
-         if(trim($this->as07_dataarquivo) == null ){ 
+         if(trim($this->as07_dataarquivo) == null ){
            $this->erro_sql = " Campo Data do Arquivo nao Informado.";
            $this->erro_campo = "as07_dataarquivo_dia";
            $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_importacaocadastrounico {
          }
        }
      }
-     if(trim($this->as07_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"] !="") ){ 
+     if(trim($this->as07_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"] !="") ){
        $sql  .= $virgula." as07_dataprocessamento = '$this->as07_dataprocessamento' ";
        $virgula = ",";
-       if(trim($this->as07_dataprocessamento) == null ){ 
+       if(trim($this->as07_dataprocessamento) == null ){
          $this->erro_sql = " Campo Data de Processamento nao Informado.";
          $this->erro_campo = "as07_dataprocessamento_dia";
          $this->erro_banco = "";
@@ -295,11 +295,11 @@ class cl_importacaocadastrounico {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"])){
          $sql  .= $virgula." as07_dataprocessamento = null ";
          $virgula = ",";
-         if(trim($this->as07_dataprocessamento) == null ){ 
+         if(trim($this->as07_dataprocessamento) == null ){
            $this->erro_sql = " Campo Data de Processamento nao Informado.";
            $this->erro_campo = "as07_dataprocessamento_dia";
            $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_importacaocadastrounico {
          }
        }
      }
-     if(trim($this->as07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_hora"])){ 
+     if(trim($this->as07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_hora"])){
        $sql  .= $virgula." as07_hora = '$this->as07_hora' ";
        $virgula = ",";
-       if(trim($this->as07_hora) == null ){ 
+       if(trim($this->as07_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "as07_hora";
          $this->erro_banco = "";
@@ -347,7 +347,7 @@ class cl_importacaocadastrounico {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "importacaocadastrounico nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->as07_sequencial;
@@ -375,14 +375,14 @@ class cl_importacaocadastrounico {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($as07_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($as07_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($as07_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -412,7 +412,7 @@ class cl_importacaocadastrounico {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "importacaocadastrounico nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$as07_sequencial;
@@ -440,11 +440,11 @@ class cl_importacaocadastrounico {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -466,11 +466,11 @@ class cl_importacaocadastrounico {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,15 +484,15 @@ class cl_importacaocadastrounico {
      $sql2 = "";
      if($dbwhere==""){
        if($as07_sequencial!=null ){
-         $sql2 .= " where importacaocadastrounico.as07_sequencial = $as07_sequencial "; 
-       } 
+         $sql2 .= " where importacaocadastrounico.as07_sequencial = $as07_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,11 +501,11 @@ class cl_importacaocadastrounico {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,15 +518,15 @@ class cl_importacaocadastrounico {
      $sql2 = "";
      if($dbwhere==""){
        if($as07_sequencial!=null ){
-         $sql2 .= " where importacaocadastrounico.as07_sequencial = $as07_sequencial "; 
-       } 
+         $sql2 .= " where importacaocadastrounico.as07_sequencial = $as07_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

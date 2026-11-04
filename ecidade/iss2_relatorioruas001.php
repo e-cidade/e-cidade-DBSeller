@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -33,11 +33,10 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-
 require_once(modification("classes/db_datadebitos_classe.php"));
 
 $clrotulo      = new rotulocampo;
-$cldatadebitos = new cl_datadebitos; 
+$cldatadebitos = new cl_datadebitos;
 
 $iInstit       = db_getsession('DB_instit');
 ?>
@@ -46,69 +45,72 @@ $iInstit       = db_getsession('DB_instit');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
-  db_app::load("scripts.js, strings.js, prototype.js");
-  db_app::load("estilos.css, grid.style.css");
-?>
+    <?php
+    db_app::load("scripts.js, strings.js, prototype.js");
+    db_app::load("estilos.css, grid.style.css");
+    ?>
 <script>
-function js_limpacampos() {
+    function js_limpacampos() {
 
-  $('j14_codigo').value = '';
-  $('j14_nome').value   = '';
-  $('q03_ativ').value   = '';
-  $('q03_descr').value  = '';
-  $('k00_tipo').value   = '';
-  $('k00_descr').value  = '';
-  $('inscricao').value  = 'T';
-  $('ordenar').value    = 'A';
-}
+        $('j14_codigo').value = '';
+        $('j14_nome').value   = '';
+        $('q03_ativ').value   = '';
+        $('q03_descr').value  = '';
+        $('k00_tipo').value   = '';
+        $('k00_descr').value  = '';
+        $('inscricao').value  = 'T';
+        $('ordenar').value    = 'A';
+    }
 
-function js_emite() {
+    function js_emite() {
 
-  var sOrdenar       = $('ordenar').value;
-  var sInscricao     = $('inscricao').value;
-  var sDataDebitos   = $('datadebitos').value;
-  var iItensRuas     = $('ruas').options.length;
-  var iItensAtivid   = $('ativid').options.length;
-  var iItensArretipo = $('arretipo').options.length;
-  var sQuery         = '';
- 
-  var sVirgula       = '';
-  var sItensRuas     = '';
-  for (i = 0; i < iItensRuas; i++) {
-  
-    sItensRuas = sItensRuas+sVirgula+$('ruas').options[i].value;
-    sVirgula   = ',';
-  }
+        var sOrdenar       = $('ordenar').value;
+        var sInscricao     = $('inscricao').value;
+        var sDataDebitos   = $('datadebitos').value;
+        var iItensRuas     = $('ruas').options.length;
+        var iItensAtivid   = $('ativid').options.length;
+        var iItensArretipo = $('arretipo').options.length;
+        var iInstit        = "<?php echo $iInstit?>";
 
-  var sVirgula       = '';
-  var sItensAtivid   = '';
-  for (i = 0; i < iItensAtivid; i++) {
-  
-    sItensAtivid = sItensAtivid+sVirgula+$('ativid').options[i].value;
-    sVirgula     = ',';
-  }
-  
-  var sVirgula       = '';
-  var sItensArretipo = '';
-  for (i = 0; i < iItensArretipo; i++) {
-  
-    sItensArretipo = sItensArretipo+sVirgula+$('arretipo').options[i].value;
-    sVirgula       = ',';
-  }
-  
-  sQuery += '?logradouro='+sItensRuas;
-  sQuery += '&tipoatividade='+sItensAtivid;
-  sQuery += '&tipodebito='+sItensArretipo;
-  sQuery += '&inscricao='+sInscricao;
-  sQuery += '&datadebitos='+sDataDebitos;
-  sQuery += '&ordenar='+sOrdenar;
+        var sQuery         = '';
+        var sVirgula       = '';
+        var sItensRuas     = '';
 
-  jan = window.open('iss2_relatorioruas002.php'+sQuery,'',
-                    'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
-  
-  jan.moveTo(0,0);  
-}
+        for (i = 0; i < iItensRuas; i++) {
+
+            sItensRuas = sItensRuas+sVirgula+$('ruas').options[i].value;
+            sVirgula   = ',';
+        }
+
+        var sVirgula       = '';
+        var sItensAtivid   = '';
+        for (i = 0; i < iItensAtivid; i++) {
+
+            sItensAtivid = sItensAtivid+sVirgula+$('ativid').options[i].value;
+            sVirgula     = ',';
+        }
+
+        var sVirgula       = '';
+        var sItensArretipo = '';
+        for (i = 0; i < iItensArretipo; i++) {
+
+            sItensArretipo = sItensArretipo+sVirgula+$('arretipo').options[i].value;
+            sVirgula       = ',';
+        }
+
+        sQuery += '?logradouro='+sItensRuas;
+        sQuery += '&tipoatividade='+sItensAtivid;
+        sQuery += '&tipodebito='+sItensArretipo;
+        sQuery += '&inscricao='+sInscricao;
+        sQuery += '&datadebitos='+sDataDebitos;
+        sQuery += '&instit='+iInstit;
+        sQuery += '&ordenar='+sOrdenar;
+
+        jan = window.open('iss2_relatorioruas002.php'+sQuery,'',
+            'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+
+        jan.moveTo(0,0);
+    }
 </script>
 <style>
   #q03_descr{
@@ -156,7 +158,7 @@ function js_emite() {
         <table align="left" border="0">
           <tr>
             <td align="left">
-              <?
+                <?php
                 $cl_ruas                          = new cl_arquivo_auxiliar;
                 $cl_ruas->nome_botao              = "db_lanca_j14_codigo";
                 $cl_ruas->cabecalho               = "<strong>Logradouros Selecionados</strong>";
@@ -177,12 +179,12 @@ function js_emite() {
                 $cl_ruas->vwidth                  = 550;
                 $cl_ruas->tamanho_campo_descricao = 40;
                 $cl_ruas->funcao_gera_formulario();
-              ?>
+                ?>
             </td>
           </tr>
           <tr>
             <td align="left">
-              <?
+                <?php
                 $cl_ativid                          = new cl_arquivo_auxiliar;
                 $cl_ativid->nome_botao              = "db_lanca_q03_ativ";
                 $cl_ativid->cabecalho               = "<strong>Atividades Selecionadas</strong>";
@@ -203,12 +205,12 @@ function js_emite() {
                 $cl_ativid->vwidth                  = 550;
                 $cl_ativid->tamanho_campo_descricao = 40;
                 $cl_ativid->funcao_gera_formulario();
-              ?>
+                ?>
             </td>
           </tr>
           <tr>
             <td align="left">
-              <?
+                <?php
                 $cl_arretipo                          = new cl_arquivo_auxiliar;
                 $cl_arretipo->nome_botao              = "db_lanca_k00_tipo";
                 $cl_arretipo->cabecalho               = "<strong>Tipo de Débito Selecionados</strong>";
@@ -229,54 +231,53 @@ function js_emite() {
                 $cl_arretipo->vwidth                  = 550;
                 $cl_arretipo->tamanho_campo_descricao = 40;
                 $cl_arretipo->funcao_gera_formulario();
-              ?>     
+                ?>     
             </td>
           </tr>
           <tr>
             <td align="center">
               <table align="center" cellpadding="0" cellspacing="0" border="0" width="100%">
-			          <tr>
-			            <td align="left"><b>Inscrições:</b></td>
-			            <td align="left">
-			              <? 
-			                $aInscricao = array("T"   => "Todas",
-			                                    "BA"  => "Baixadas",
-			                                    "NBA" => "Não Baixadas");
-			                db_select("inscricao", $aInscricao, true, 2); 
-			              ?>
-			            </td>
-			            
+                      <tr>
+                        <td align="left"><b>Inscrições:</b></td>
+                        <td align="left">
+                            <?php
+                            $aInscricao = array("T"   => "Todas",
+                                                "BA"  => "Baixadas",
+                                                "NBA" => "Não Baixadas");
+                            db_select("inscricao", $aInscricao, true, 2);
+                            ?>
+                        </td>
+                        
                   <td align="left"><b>Data:</b></td>
                   <td align="left">
-                    <? 
-                      $sWhere           = "k115_instit = {$iInstit}";
-                      $sCampos          = "distinct k115_data";
-                      $sOrderBy         = "k115_data desc";
-                      $sSqlDataDebitos  = $cldatadebitos->sql_query_file(null, $sCampos, $sOrderBy, $sWhere);
-                      $rsSqlDataDebitos = $cldatadebitos->sql_record($sSqlDataDebitos);
+                      <?php
+                        $sWhere           = "k115_instit = {$iInstit} and k115_completa is true";
+                        $sCampos          = "distinct k115_data";
+                        $sOrderBy         = "k115_data desc";
+                        $sSqlDataDebitos  = $cldatadebitos->sql_query_file(null, $sCampos, $sOrderBy, $sWhere);
+                        $rsSqlDataDebitos = $cldatadebitos->sql_record($sSqlDataDebitos);
                       
-                      $aDataDebitos     = array();
-				              for ( $i = 0; $i < $cldatadebitos->numrows; $i++ ) {
-				              	
-				                $oDataDebitos                           = db_utils::fieldsMemory($rsSqlDataDebitos, $i);
-				                $aDataDebitos[$oDataDebitos->k115_data] = db_formatar($oDataDebitos->k115_data,'d');
-				              }
+                        $aDataDebitos     = array();
+                        for ($i = 0; $i < $cldatadebitos->numrows; $i++) {
+                            $oDataDebitos                           = db_utils::fieldsMemory($rsSqlDataDebitos, $i);
+                            $aDataDebitos[$oDataDebitos->k115_data] = db_formatar($oDataDebitos->k115_data, 'd');
+                        }
 
-                      db_select("datadebitos", $aDataDebitos, true, 2);
-                    ?>
+                        db_select("datadebitos", $aDataDebitos, true, 2);
+                        ?>
                   </td>
-			            
-			            <td align="left"><b>Ordenar por:</b></td>
-			            <td align="left">
-			              <? 
-			                $aOrdenar = array("A" => "Atividades",
-			                                  "I" => "Inscrição",
-			                                  "L" => "Logradouro",
+                        
+                        <td align="left"><b>Ordenar por:</b></td>
+                        <td align="left">
+                            <?php
+                            $aOrdenar = array("A" => "Atividades",
+                                              "I" => "Inscrição",
+                                              "L" => "Logradouro",
                                         "N" => "Logradouro/Número");
-			                db_select("ordenar", $aOrdenar, true, 2); 
-			              ?>
-			            </td>
-			          </tr>
+                            db_select("ordenar", $aOrdenar, true, 2);
+                            ?>
+                        </td>
+                      </tr>
               </table>
             </td>
           </tr>
@@ -297,8 +298,8 @@ function js_emite() {
     </td>
   </tr>
 </table>
-<?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+  db_menu();
 ?>
 </body>
 </html>

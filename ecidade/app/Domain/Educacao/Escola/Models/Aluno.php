@@ -4,6 +4,7 @@ namespace App\Domain\Educacao\Escola\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Educacao\Escola\Models\AlunoNecessidade;
 
 /**
  * Class Aluno
@@ -82,6 +83,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $ed47_municipioestrangeiro
  * @property integer $ed47_paisresidencia
  * @property integer $ed47_localizacaodiferenciada
+ * @property string $ed47_rnm
+ * @property string $ed47_rnmresponsavel
+ * @property string $ed47_visto
+ * @property string $ed47_vistoresponsavel
  */
 class Aluno extends Model
 {
@@ -1300,5 +1305,94 @@ class Aluno extends Model
     public function setLocalizacaoDiferenciada($ed47_localizacaodiferenciada)
     {
         $this->ed47_localizacaodiferenciada = $ed47_localizacaodiferenciada;
+    }
+
+    public function matriculas()
+    {
+        return $this->hasMany(Matricula::class, 'ed60_i_aluno', 'ed47_i_codigo');
+    }
+
+    public function paisNascimento()
+    {
+        return $this->belongsTo(Pais::class, 'ed47_i_pais', 'ed228_i_codigo');
+    }
+
+    public function historicos()
+    {
+        return $this->hasMany(Historico::class, 'ed61_i_aluno', 'ed47_i_codigo');
+    }
+
+    public function alunoNecessidade()
+    {
+        return $this->hasMany(AlunoNecessidade::class, 'ed214_i_aluno', 'ed47_i_codigo');
+    }
+
+    public function necessidadeSubdivisaoAluno()
+    {
+        return $this->hasMany(NecessidadeSubdivisaoAluno::class, 'ed187_aluno', 'ed47_i_codigo');
+    }
+
+    /**
+     * @param $ed47_visto
+     */
+    public function setVisto($ed47_visto)
+    {
+        $this->ed47_visto = $ed47_visto;
+    }
+
+    /**
+     * @return string $ed47_visto
+     */
+    public function getVisto()
+    {
+        return $this->ed47_visto;
+    }
+
+    /**
+     * @return string $ed47_vistoresponsavel
+     */
+    public function getVistoResponsavel()
+    {
+        return $this->ed47_vistoresponsavel;
+    }
+
+    /**
+     * @param $ed47_vistoresponsavel
+     */
+    public function setVistoResponsavel($ed47_vistoresponsavel)
+    {
+        $this->ed47_vistoresponsavel = $ed47_vistoresponsavel;
+    }
+
+    /**
+     * @param $ed47_rnm
+     */
+    public function setRnm($ed47_rnm)
+    {
+        $this->ed47_rnm = $ed47_rnm;
+    }
+
+    /**
+     * @return string $ed47_rnm
+     */
+    public function getRnm()
+    {
+        return $this->ed47_rnm;
+    }
+
+    /**
+     * @param $ed47_rnmresponsavel
+     */
+    public function setRnmResponsavel($ed47_rnmresponsavel)
+    {
+        $this->ed47_rnmresponsavel = $ed47_rnmresponsavel;
+    }
+
+    /**
+     * @return string $ed47_rnmresponsavel
+     */
+    public function getRnmResponsavel()
+    {
+        return $this->ed47_rnmresponsavel;
     }
 }

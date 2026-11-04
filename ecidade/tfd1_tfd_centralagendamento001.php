@@ -58,7 +58,7 @@ if(isset($incluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <fieldset style='width: 75%;'> <legend><b>Central de Agendamento</b></legend>
-	      <?
+	      <?php
 	      require_once(modification("forms/db_frmtfd_centralagendamento.php"));
 	      ?>
       </fieldset>
@@ -72,7 +72,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","tf09_i_numcgm",true,1,"tf09_i_numcgm",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($cltfd_centralagendamento->erro_status=="0"){
     $cltfd_centralagendamento->erro(true,false);

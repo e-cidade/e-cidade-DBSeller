@@ -57,29 +57,7 @@ $sSqlCampos .= "  end as op_slip, 																";
 $sSqlCampos .= " e60_codemp  ||'/'||e60_anousu    as empenho,     ";
 $sSqlCampos .= " e92_coderro ||' - '||e92_descrerro as erro_banco ";
 
-/**
- * Configura as Datas caso alguma venha vazia
- */
-if (empty($oGet->sDataInicial) && empty($oGet->sDataFinal)) {
 
-  $sDataWhere   = "";
-  $sHeadPeriodo = "Período: Nenhum período selecionado";
-
-} else if (empty($oGet->sDataFinal)) {
-
-  $sDataWhere   = " and e76_dataefet >= '{$oDataInicial->getDate()}' ";
-  $sHeadPeriodo = "Período: {$oDataInicial->getDate(DBDate::DATA_PTBR)} à {$oDataFinal->getDate(DBDate::DATA_PTBR)}";
-
-} else if (empty($oGet->sDataInicial)) {
-
-  $sDataWhere   = " and e76_dataefet <= '{$oDataFinal->getDate()}' ";
-  $sHeadPeriodo = "Período: até {$oDataFinal->getDate(DBDate::DATA_PTBR)}";
-
-} else {
-
-  $sDataWhere   = " and e76_dataefet between '{$oDataInicial->getDate()}' and '{$oDataFinal->getDate()}' ";
-  $sHeadPeriodo = "Período: {$oDataInicial->getDate(DBDate::DATA_PTBR)} à {$oDataFinal->getDate(DBDate::DATA_PTBR)}";
-}
 
 $sSqlWhere         = "     e75_codret in ({$oGet->iArquivoRetorno}) ";
 $sSqlWhere        .= " and e92_processa is false {$sDataWhere}   ";
@@ -89,7 +67,9 @@ $sSqlDadosRetorno  = $oDaoEmpAgeDadosRet->sql_query_erro_processamento(null, $sS
 $rsDadosRetorno    = $oDaoEmpAgeDadosRet->sql_record($sSqlDadosRetorno);
 $iTotalLinhas      = $oDaoEmpAgeDadosRet->numrows;
 
+
 if ($iTotalLinhas == 0) {
+   // echo $sSqlDadosRetorno; die();
   db_redireciona("db_erros.php?fechar&db_erro=Nenhum registro encontrado.");
 }
 

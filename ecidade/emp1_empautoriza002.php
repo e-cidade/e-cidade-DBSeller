@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $db_opcao = 2;
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
        $clcriaabas->identifica = array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação"); 
        $clcriaabas->sizecampo =  array("anulacao"=>"20"); 
        $clcriaabas->title      =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação de autorização"); 
@@ -68,7 +68,7 @@ $db_opcao = 2;
 </table>
 <form name="form1">
 </form>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

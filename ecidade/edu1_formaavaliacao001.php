@@ -102,11 +102,11 @@ if (isset($incluir)) {
 <?php db_menu();
 
 if (isset($ed37_c_tipo) && $ed37_c_tipo == "NIVEL") {
-  ?><script>document.getElementById("conceito").style.visibility = "visible";</script><?
+  ?><script>document.getElementById("conceito").style.visibility = "visible";</script><?php
 } elseif (isset($ed37_c_tipo) && $ed37_c_tipo == "PARECER") {
-  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?
+  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?php
 } elseif (isset($ed37_c_tipo) && $ed37_c_tipo == "NOTA") {
-  ?><script>document.getElementById("nota").style.visibility = "visible";</script><?
+  ?><script>document.getElementById("nota").style.visibility = "visible";</script><?php
 }
 
 if (isset($incluir)) {
@@ -131,7 +131,7 @@ if (isset($incluir)) {
     <script>
      location.href = "edu1_formaavaliacao002.php?chavepesquisa=<?=$oDaoFormaAvaliacao->ed37_i_codigo?>";
     </script>
-   <?
+   <?php
 
   }
 

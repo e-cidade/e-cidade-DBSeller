@@ -48,6 +48,14 @@ $dtDia             = date("Y-m-d", db_getsession("DB_datausu"));
 
 try {
     switch ($oParam->exec) {
+        case 'getComissao':
+            if (empty($oParam->licitacao)) {
+                throw new Exception('Código da licitação não informado');
+            }
+
+            $licitacao = new licitacao($oParam->licitacao);
+            $oRetorno->comissao = $licitacao->getComissao();
+            break;
         case 'verificaModalidade':
             $oDaoModalidade = new cl_cflicita();
             $sSqlModalidade = $oDaoModalidade->sql_query_file($oParam->iModalidade);
@@ -210,8 +218,8 @@ try {
                     $oDadosItens->solicita       = $oItem->pc11_numero;
                     $oDadosItens->pontuacao      = $oItem->pc24_pontuacao;
 
-                    $oDadosItens->fornecedor     = $oItem->z01_numcgm    . " - " . $oItem->z01_nome;
-                    $oDadosItens->material       = $oItem->pc01_codmater . " - " . $oItem->pc01_descrmater;
+                    $oDadosItens->fornecedor     = $oItem->z01_numcgm    . " - " . urlencode($oItem->z01_nome);
+                    $oDadosItens->material       = $oItem->pc01_codmater . " - " . urlencode($oItem->pc01_descrmater);
                     $oDadosItens->quantidade     = $oItem->pc23_quant;
                     $oDadosItens->valorunitario  = trim(db_formatar($oItem->pc23_vlrun, "f"));
 
@@ -258,7 +266,7 @@ try {
                 $oItemRetono = new stdClass;
                 $oItemRetono->codigoitem     = $oItem->getCodigoMaterial();
                 $oItemRetono->codigoitemsol  = $oItem->getCodigoItemSolicitacao();
-                $oItemRetono->descricaoitem  = $oItem->getDescricaoMaterial();
+                $oItemRetono->descricaoitem  = urlencode($oItem->getDescricaoMaterial());
                 $oItemRetono->qtdemin        = $oItem->getQuantidadeMinima();
                 $oItemRetono->qtdemax        = $oItem->getQuantidadeMaxima();
                 $oItemRetono->codigoitemorca = $oItem->getCodigoItemOrcamento();
@@ -410,7 +418,7 @@ try {
                     $oCompilacao = new compilacaoRegistroPreco($oParam->iSolicitacao);
                     $oCompilacao->salvarDesistencia(
                         $_SESSION["RP_fornecedores"],
-                        $oParam->sJustificativa,
+                        addslashes($oParam->sJustificativa),
                         $oParam->iTipoDesistencia,
                         $oParam->dtDataInicial,
                         $oParam->dtDataFinal
@@ -502,24 +510,22 @@ try {
         case "getItensConsultaLicitacao":
             function getLote($iLicLicitem)
             {
-
-
                 $sLote = "";
                 $sSqlLote = " select * from liclicitemlote where l04_liclicitem = {$iLicLicitem} ";
                 $rsLote = db_query($sSqlLote);
-                if (pg_numrows($rsLote) > 0) {
+                if (pg_num_rows($rsLote) > 0) {
                     $sLote = urlencode(db_utils::fieldsMemory($rsLote, 0)->l04_descricao);
                 }
 
                 return $sLote;
             }
 
-            $oDaoLicLicitem = db_utils::getDao("liclicitem");
+            $oDaoLicLicitem = new cl_liclicitem();
             $oDaoItemLog    = new cl_liclicitaitemlog();
+            $oLicitacao     = new licitacao($oParam->iCodigoLicitacao);
+
             $sSqlBuscaLog   = $oDaoItemLog->sql_query_file($oParam->iCodigoLicitacao, "l14_liclicita");
             $rsBuscaLog     = $oDaoItemLog->sql_record($sSqlBuscaLog);
-
-            $oLicitacao     = new licitacao($oParam->iCodigoLicitacao);
 
             if ($oDaoItemLog->numrows > 0) {
                 $lLog       = true;
@@ -528,10 +534,11 @@ try {
             } else {
                 $lLog = false;
 
-                $sBuscaFornecedor = " z01_numcgm ||' - '||z01_nome as z01_nome";
+                $sBuscaFornecedor = " z01_numcgm ||' - '||z01_nome as z01_nome, z01_cgccpf, ";
+                $sBuscaFornecedor .= "l32_descricao tipo_empresa";
 
                 $sCampos  = " distinct l21_ordem, l21_codigo, pc81_codprocitem, pc11_seq, pc11_codigo, pc11_quant, pc11_vlrun, pc23_quant, pc23_vlrun,";
-                $sCampos .= " m61_descr, pc01_codmater, pc01_descrmater, pc11_resum, pc23_obs,  {$sBuscaFornecedor}";
+                $sCampos .= " pc23_valor, m61_descr, pc01_codmater, pc01_descrmater, pc11_resum, pc23_obs, {$sBuscaFornecedor}";
 
                 $sOrdem   = " l21_ordem ";
                 $sWhere   = " l21_codliclicita = {$oParam->iCodigoLicitacao} ";
@@ -565,16 +572,23 @@ try {
                     $aItensRetorno[]                  = $oStdDadoItem;
                 } else {
                     $oStdResultItem = db_utils::fieldsMemory($rsItensDaLicitacao, $iLinhaItem);
+                    $itemLicitacao = new ItemLicitacao($oStdResultItem->l21_codigo);
 
                     $oStdDadoItem                     = new stdClass();
                     $oStdDadoItem->iOrdem             = $oStdResultItem->l21_ordem;
+                    $oStdDadoItem->reservado          = $itemLicitacao->hasCota(true);
                     $oStdDadoItem->iCodigo            = $oStdResultItem->l21_codigo;
                     $oStdDadoItem->sDescricaoMaterial = urlencode("{$oStdResultItem->pc01_codmater} - {$oStdResultItem->pc01_descrmater}");
                     $oStdDadoItem->sLote              = getLote($oStdDadoItem->iCodigo);
                     $oStdDadoItem->iQuantidade        = $oStdResultItem->pc23_quant==null?$oStdResultItem->pc11_quant:$oStdResultItem->pc23_quant;
                     $oStdDadoItem->sUnidadeDeMedida   = urlencode($oStdResultItem->m61_descr);
                     $oStdDadoItem->sFornecedor        = urlencode($oStdResultItem->z01_nome);
-                    $oStdDadoItem->nValorUnitario     = trim(db_formatar($oStdResultItem->pc23_vlrun==null?$oStdResultItem->pc11_vlrun:$oStdResultItem->pc23_vlrun, "f"));
+                    $oStdDadoItem->nValorUnitario     = trim($oStdResultItem->pc23_vlrun==null?$oStdResultItem->pc11_vlrun:$oStdResultItem->pc23_vlrun);
+                    $valorTotal = $oStdResultItem->pc23_valor ?: $oStdDadoItem->iQuantidade * $oStdDadoItem->nValorUnitario;
+                    $oStdDadoItem->nValorUnitario     = db_formatar($oStdDadoItem->nValorUnitario, "f");
+                    $oStdDadoItem->tipoEmpresa        = urlencode($oStdResultItem->tipo_empresa);
+                    $oStdDadoItem->cgccpf             = urlencode($oStdResultItem->z01_cgccpf);
+                    $oStdDadoItem->nValorTotal = db_formatar($valorTotal, 'f');
                     if (isParaiba()) {
                         $oStdDadoItem->nValorUnitario     = trim(db_formatar(
                             $oStdResultItem->pc23_vlrun==null?$oStdResultItem->pc11_vlrun:$oStdResultItem->pc23_vlrun,

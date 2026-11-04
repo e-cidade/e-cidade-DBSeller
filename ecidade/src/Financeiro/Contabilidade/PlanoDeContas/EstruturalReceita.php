@@ -27,7 +27,7 @@
 
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas;
 
-class EstruturalReceita extends Estrutural
+class EstruturalReceita extends Estrutural implements EstruturalReceitaFormatter
 {
     /**
      * Retorna o estrutural com máscara aplicada.

@@ -60,7 +60,7 @@ $cldb_syscampo->rotulocl->label("nomecam");
               <?=$Lcodcam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("codcam",5,$Icodcam,true,"text",4,"","chave_codcam");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $cldb_syscampo->rotulocl->label("nomecam");
               <?=$Lnomecam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("nomecam",40,$Inomecam,true,"text",4,"","chave_nomecam");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $cldb_syscampo->rotulocl->label("nomecam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_syscampo.php")==true){
@@ -124,12 +124,12 @@ $cldb_syscampo->rotulocl->label("nomecam");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

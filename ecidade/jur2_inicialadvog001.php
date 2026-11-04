@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Opções:
         </td>
 				<td>
-           <? 
+           <?php 
 						$aVer= array("com"=>"Com os Advogados Selecionados","sem"=>"Sem os Advogados Selecionados");
 						db_select("ver",$aVer,true,1,"");
 					 ?>	
@@ -68,7 +68,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Quebra:
         </td>
 				<td>
-           <? 
+           <?php 
 						$aQuebra = array("a"=>"Advogado","s"=>"Situação");
 						db_select("selQuebra",$aQuebra,true,1,"");
 					 ?>	
@@ -79,7 +79,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Tipo:
         </td>
 				<td>
-           <? 
+           <?php 
 						$aTipo = array("todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro");
 						db_select("tipo",$aTipo,true,1,"");
 					 ?>	
@@ -90,7 +90,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Ativa/Anulada:
         </td>
 				<td>
-					<?
+					<?php
 						$aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
 						db_select("selSituacao",$aSituacao,true,1,"");
 					?>
@@ -101,7 +101,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
           Ordem:
         </td>
 				<td>
-					<?
+					<?php
 						$aOrdem = array("i"=>"Inicial","d"=>"Data","l"=>"Local","f"=>"Foro","s"=>"Situação");
 						db_select("selOrdem",$aOrdem,true,1,"");
 					?>
@@ -112,7 +112,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
             Período:
         </td>
 				<td>
-          <? 
+          <?php 
             $dia	="01";
             $mes	="01";
             $ano	= db_getsession("DB_anousu");
@@ -128,7 +128,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
       </tr>
       <tr>
 				<td colspan="2">
-          <?
+          <?php
             $aux->cabecalho = "<strong>Advogados</strong>";
             $aux->codigo = "v57_numcgm"; //chave de retorno da func
             $aux->descr  = "z01_nome";   //chave de retorno
@@ -154,7 +154,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 	<input type="button" value="relatorio" onClick="js_seleciona()">
 </form>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 <script>
 variavel = 1;

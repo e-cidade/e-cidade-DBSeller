@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $clrotulo = new rotulocampo;
        </tr>
        <tr>
           <td nowrap><table border="0">
-               <?
+               <?php
                  $cl_emphist                 = new cl_arquivo_auxiliar;
 		             $cl_emphist->nome_botao     = "db_lanca_hist";
                  $cl_emphist->cabecalho      = "<strong>Histórico</strong>";
@@ -101,7 +101,7 @@ $clrotulo = new rotulocampo;
               ?>    
           </table></td>
 	        <td nowrap><table border="0">
-               <?
+               <?php
                  $cl_empprestatip                 = new cl_arquivo_auxiliar;
 		             $cl_empprestatip->nome_botao     = "db_lanca_tipo";
                  $cl_empprestatip->cabecalho      = "<strong>Evento</strong>";

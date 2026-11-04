@@ -175,7 +175,7 @@ $oRotulo->label("z01_nome");
                             $sCamposDiretor .= "                  cgmrh.z01_nome ";
                             $sCamposDiretor .= "               else cgmcgm.z01_nome ";
                             $sCamposDiretor .= "            end as nome,";
-                            $sCamposDiretor .= " ed83_c_descr||' n°: '||ed05_c_numero::varchar as descricao,'D' as tipo";
+                            $sCamposDiretor .= " ed83_c_descr||' n.º: '||ed05_c_numero::varchar as descricao,'D' as tipo";
                             $sWhereDiretor = " ed254_i_escola = " . $escola . " AND ed254_c_tipo = 'A' AND ed01_i_funcaoadmin = 2 ";
                             $sSqlDiretor = $oDaoEscolaDiretor->sql_query_resultadofinal("", $sCamposDiretor, "", $sWhereDiretor);
 
@@ -185,17 +185,16 @@ $oRotulo->label("z01_nome");
                             ?>
                             <select name="diretor" id="diretor" style="width:330px;">
                                 <option value="">Selecione o Diretor(a)</option>
-                                <?
-                                for ($iCont = 0; $iCont < $iLinhasDiretor; $iCont++) {
+                                <?php
+                                    for ($iCont = 0; $iCont < $iLinhasDiretor; $iCont++) {
+                                        $oDadosDiretor = db_utils::fieldsmemory($rsDiretor, $iCont);
 
-                                    $oDadosDiretor = db_utils::fieldsmemory($rsDiretor, $iCont);
+                                        $sValor = $oDadosDiretor->funcao . "|" . $oDadosDiretor->nome . "|" . $oDadosDiretor->descricao;
+                                        $sTexto = $oDadosDiretor->funcao . " - " . $oDadosDiretor->nome;
+                                        $sTexto .= ($oDadosDiretor->descricao != "" ? " ($oDadosDiretor->descricao)" : "");
 
-                                    $sValor = $oDadosDiretor->funcao . "|" . $oDadosDiretor->nome . "|" . $oDadosDiretor->descricao;
-                                    $sTexto = $oDadosDiretor->funcao . " - " . $oDadosDiretor->nome;
-                                    $sTexto .= ($oDadosDiretor->descricao != "" ? " ($oDadosDiretor->descricao)" : "");
-                                    echo "<option value='$sValor'>$sTexto</option>";
-
-                                }
+                                        echo "<option value='$sValor'>$sTexto</option>";
+                                    }
                                 ?>
                             </select>
                         </td>
@@ -203,7 +202,7 @@ $oRotulo->label("z01_nome");
                     <tr>
                         <td style="width: 150px;"><label for="secretario">Secretário:</label></td>
                         <td>
-                            <?
+                            <?php
                             $oDaoRechumanoAtiv = db_utils::getdao('rechumanoativ');
 
                             $sCamposSec = " DISTINCT ed01_c_descr as funcao, ";
@@ -211,7 +210,7 @@ $oRotulo->label("z01_nome");
                             $sCamposSec .= "                  cgmrh.z01_nome ";
                             $sCamposSec .= "               else cgmcgm.z01_nome ";
                             $sCamposSec .= "            end as nome,";
-                            $sCamposSec .= " ed83_c_descr||' n°: '||ed05_c_numero::varchar as descricao,'O' as tipo";
+                            $sCamposSec .= " ed83_c_descr||' n.º: '||ed05_c_numero::varchar as descricao,'O' as tipo";
                             $sWhereSec = " ed75_i_escola = " . $escola . " AND ed01_i_funcaoadmin = 3 ";
                             $sSqlSec = $oDaoRechumanoAtiv->sql_query_resultadofinal("", $sCamposSec, "", $sWhereSec);
                             $rsSecretario = $oDaoRechumanoAtiv->sql_record($sSqlSec);
@@ -219,16 +218,15 @@ $oRotulo->label("z01_nome");
                             ?>
                             <select name="secretario" id="secretario" style="width:330px;">
                                 <option value="">Selecione o Secretário(a)</option>
-                                <?
+                                <?php
+
                                 for ($iCont = 0; $iCont < $iLinhasSecretario; $iCont++) {
-
                                     $oDadosSec = db_utils::fieldsmemory($rsSecretario, $iCont);
-
                                     $sValor = $oDadosSec->funcao . "|" . $oDadosSec->nome . "|" . $oDadosSec->descricao;
                                     $sTexto = $oDadosSec->funcao . " - " . $oDadosSec->nome;
                                     $sTexto .= ($oDadosSec->descricao != "" ? " ($oDadosSec->descricao)" : "");
-                                    echo "<option value='$sValor'>$sTexto</option>";
 
+                                    echo "<option value='$sValor'>$sTexto</option>";
                                 }
                                 ?>
                             </select>
@@ -282,7 +280,6 @@ $oRotulo->label("z01_nome");
                             </select>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <label><strong>Carga Horária: </strong></label>
@@ -293,7 +290,6 @@ $oRotulo->label("z01_nome");
                                 pelo Sistema.</label>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <label><strong>Dias Letivos: </strong></label>
@@ -304,7 +300,35 @@ $oRotulo->label("z01_nome");
                                 pelo Sistema.</label>
                         </td>
                     </tr>
-
+                    <!-- M28375 -->
+                    <tr>
+                        <td><b><label for="incluir_cpf">Incluir CPF do Aluno:</label></b></td>
+                        <td>
+                            <select id='incluir_cpf' name='incluir_cpf' style='width:100%'>
+                                <option value="1" selected="selected">Não</option>
+                                <option value="2">Sim</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b><label for="incluir_data_nascimento">Incluir Data Nascimento do Aluno:</label></b></td>
+                        <td>
+                            <select id='incluir_data_nascimento' name='incluir_data_nascimento' style='width:100%'>
+                                <option value="1" selected="selected">Não</option>
+                                <option value="2">Sim</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b><label for="incluir_id_inep">Incluir ID INEP do Aluno:</label></b></td>
+                        <td>
+                            <select id='incluir_id_inep' name='incluir_id_inep' style='width:100%'>
+                                <option value="1" selected="selected">Não</option>
+                                <option value="2">Sim</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <!-- M28375 -->
                     <tr>
                         <td><b>Data Relatório:</b></td>
                         <td>
@@ -341,7 +365,7 @@ $oRotulo->label("z01_nome");
                         <td>
                             <textarea id='sObservacao' name="sObservacao" value="" onkeyup="caracterObservacao()"
                                       style="width:100%; height:100px; resize: none;"></textarea><br>
-                            <span>Caractéres Restantes: </span><span id="iContagemCaracteres">450</span>
+                            <span>Caracteres Restantes: </span><span id="iContagemCaracteres">450</span>
                         </td>
                     </tr>
                     <tr>
@@ -362,18 +386,19 @@ $oRotulo->label("z01_nome");
     </form>
 </div>
 
-<? db_menu(db_getsession("DB_id_usuario"),
-    db_getsession("DB_modulo"),
-    db_getsession("DB_anousu"),
-    db_getsession("DB_instit")
-);
+<?php
+    db_menu(
+        db_getsession("DB_id_usuario"),
+        db_getsession("DB_modulo"),
+        db_getsession("DB_anousu"),
+        db_getsession("DB_instit")
+    );
 ?>
 </body>
 </html>
 <script type="text/javascript">
 
     sUrlRpc = "edu4_escola.RPC.php";
-
     var oDBFormCache = new DBFormCache('oDBFormCache', 'edu2_ataresultadofinal001.php');
     oDBFormCache.setElements(new Array($('modelo'),
         $('ordenacao'),
@@ -713,26 +738,32 @@ $oRotulo->label("z01_nome");
             sUrl = "edu2_ataresultadofinal003.php"
         }
 
-        console.log(sUrl);
-        jan = window.open(sUrl + '?transfer=' + transfer +
-            '&modelo=' + $F('modelo') +
-            '&formaAvaliacao=' + $F('formaAvaliacao') +
-            '&turmas=' + Object.toJSON(aTurmas) +
-            '&tipovar=' + document.form1.ed217_i_codigo.value +
-            '&brasao=' + document.form1.brasao.value +
-            '&diretor=' + encodeURIComponent(tagString(document.form1.diretor.value)) +
-            '&secretario=' + encodeURIComponent(tagString(document.form1.secretario.value)) +
-            '&ordenacao=' + document.form1.ordenacao.value +
-            '&frequencia=' + document.form1.frequencia.value +
-            '&imprimirNomeRegente=' + $F('imprimirNomeRegente') +
-            '&iRegente=' + $F('ed20_i_codigo') +
-            '&iAtividade=' + oCboAtividades.getValue() +
-            '&sObservacao='+document.form1.sObservacao.value+
-            '&sCargaHorariaOpcional='+document.form1.sCargaHorariaOpcional.value+
-            '&sDiasLetivosOpcional='+document.form1.sDiasLetivosOpcional.value+
-            '&dataRelatorio='+document.form1.dataRelatorio.value+
-            '&imprimirIdade=' + $F('imprimirIdade') +
-            '&trocaTurma=' + $F('trocaTurma'), '',
+        let params = new URLSearchParams();
+
+        params.append('transfer', transfer);
+        params.append('modelo', $F('modelo'));
+        params.append('formaAvaliacao', $F('formaAvaliacao'));
+        params.append('turmas', Object.toJSON(aTurmas));
+        params.append('tipovar', document.form1.ed217_i_codigo.value);
+        params.append('brasao', document.form1.brasao.value);
+        params.append('diretor', encodeURIComponent(tagString(document.form1.diretor.value)));
+        params.append('secretario', encodeURIComponent(tagString(document.form1.secretario.value)));
+        params.append('ordenacao', document.form1.ordenacao.value);
+        params.append('frequencia', document.form1.frequencia.value);
+        params.append('imprimirNomeRegente', $F('imprimirNomeRegente'));
+        params.append('iRegente', $F('ed20_i_codigo'));
+        params.append('iAtividade', oCboAtividades.getValue());
+        params.append('sObservacao', document.form1.sObservacao.value);
+        params.append('sCargaHorariaOpcional', document.form1.sCargaHorariaOpcional.value);
+        params.append('sDiasLetivosOpcional', document.form1.sDiasLetivosOpcional.value);
+        params.append('dataRelatorio', document.form1.dataRelatorio.value);
+        params.append('imprimirIdade', $F('imprimirIdade'));
+        params.append('trocaTurma', $F('trocaTurma'));
+        params.append('incluirCPF', document.form1.incluir_cpf.value);
+        params.append('incluirDataNascimento', document.form1.incluir_data_nascimento.value);
+        params.append('incluirIDINEP', document.form1.incluir_id_inep.value);
+
+        jan = window.open(sUrl + '?' + params.toString(), '',
             'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
         jan.moveTo(0, 0);
     }

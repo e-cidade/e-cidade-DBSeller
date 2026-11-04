@@ -96,7 +96,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
               <label for="tipolista"><strong>Opções de lista:</strong></label>
             </td>
             <td>
-              <?
+              <?php
                 $aTipoLista = array("lista"       => "Somente gerados na lista",
                                     "notificados" => "Somente notificados",
                                     "noticonf"    => "Somente notificados e confirmados");
@@ -110,7 +110,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
               <label for="opcoes"><strong>Opções:</strong></label>
             </td>
             <td>
-              <?
+              <?php
                 $aOpcoes = array("todos" => "Por CGM/Inscrição/Matricula",
                                  "cgm"   => "Por CGM");
                 db_select("opcoes", $aOpcoes, true, 1, "");
@@ -123,7 +123,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
               <label for="agrupa"><strong>Gerar CDA uma para cada ano:</strong></label>
             </td>
             <td>
-              <?
+              <?php
                 $aAgrupa = array("n" => "Não",
                                  "s" => "Sim");
                 db_select("agrupa", $aAgrupa, true, 1, "");

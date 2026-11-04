@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipovistorias->rotulo->label("y77_descricao");
               <?=$Ly77_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y77_codtipo",10,$Iy77_codtipo,true,"text",4,"","chave_y77_codtipo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipovistorias->rotulo->label("y77_descricao");
               <?=$Ly77_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y77_descricao",50,$Iy77_descricao,true,"text",4,"","chave_y77_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipovistorias->rotulo->label("y77_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipovistorias.php")==true){
@@ -118,12 +118,12 @@ $cltipovistorias->rotulo->label("y77_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

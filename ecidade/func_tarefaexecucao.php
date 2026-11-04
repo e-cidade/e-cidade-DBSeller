@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltarefaexecucao->rotulo->label("at09_tarefa");
               <?=$Lat09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at09_sequencial",8,$Iat09_sequencial,true,"text",4,"","chave_at09_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltarefaexecucao->rotulo->label("at09_tarefa");
               <?=$Lat09_tarefa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at09_tarefa",10,$Iat09_tarefa,true,"text",4,"","chave_at09_tarefa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltarefaexecucao->rotulo->label("at09_tarefa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefaexecucao.php")==true){
@@ -122,12 +122,12 @@ $cltarefaexecucao->rotulo->label("at09_tarefa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

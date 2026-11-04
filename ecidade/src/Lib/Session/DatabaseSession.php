@@ -1,6 +1,8 @@
 <?php
+
 namespace ECidade\Lib\Session;
 
+use App\Domain\Configuracao\Instituicao\Model\DBConfig;
 use ECidade\V3\Datasource\Database;
 use ECidade\V3\Window\Session;
 use Exception;
@@ -11,6 +13,8 @@ class DatabaseSession
      * @var DatabaseSession
      */
     public static $instance;
+
+    public static $sessionExecutar = [];
 
     /**
      * DatabaseSession constructor.
@@ -35,7 +39,7 @@ class DatabaseSession
      */
     private function start()
     {
-        Database::getInstance()->execute('SELECT fc_startsession()');
+        self::$sessionExecutar['start'] = 'fc_startsession()';
     }
 
     /**
@@ -46,7 +50,8 @@ class DatabaseSession
     private function add($key, $value)
     {
         $escapedValue = pg_escape_string($value);
-        Database::getInstance()->execute("SELECT fc_putsession('{$key}', '{$escapedValue}')");
+        $function = "fc_putsession('{$key}', '{$escapedValue}')";
+        self::$sessionExecutar[$key] = $function;
     }
 
     /**
@@ -86,6 +91,7 @@ class DatabaseSession
             throw new Exception('Não existe conexão com o banco de dados.');
         }
 
+        self::$sessionExecutar = [];
         $this->start();
 
         foreach ($_SESSION as $prop => $value) {
@@ -104,6 +110,15 @@ class DatabaseSession
             }
         }
 
+        $this->run();
         return true;
+    }
+
+    private function run()
+    {
+        $sql = sprintf(' %s', implode(', ', self::$sessionExecutar));
+
+        Database::getInstance()->execute("select $sql");
+        DBConfig::selectRaw($sql)->first(); // Laravel
     }
 }

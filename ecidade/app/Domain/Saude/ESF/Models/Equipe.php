@@ -26,8 +26,8 @@ class Equipe extends Model
     protected $primaryKey = 'psf_id';
 
     public $casts = [
-        'psf_data_ativacao' => 'DateTime',
-        'psf_data_desativacao' => 'DateTime'
+        'psf_data_ativacao' => 'datetime',
+        'psf_data_desativacao' => 'datetime'
     ];
 
     public function scopeProfissional(Builder $query, $cgmProfissional)

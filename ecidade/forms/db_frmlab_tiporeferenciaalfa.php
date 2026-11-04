@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("la28_i_codigo");
        <?=@$Lla29_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la29_i_codigo',10,$Ila29_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla29_i_valorref?>">
-       <?
+       <?php
        db_ancora(@$Lla29_i_valorref,"js_pesquisala29_i_valorref(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la29_i_valorref',10,$Ila29_i_valorref,true,'text',$db_opcao," onchange='js_pesquisala29_i_valorref(false);'")
 ?>
-       <?
+       <?php
 db_input('la27_i_codigo',10,$Ila27_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -64,22 +64,22 @@ db_input('la27_i_codigo',10,$Ila27_i_codigo,true,'text',3,'')
        <?=@$Lla29_c_fixo?>
     </td>
     <td> 
-<?
+<?php
 db_input('la29_c_fixo',100,$Ila29_c_fixo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla29_i_valorrefsel?>">
-       <?
+       <?php
        db_ancora(@$Lla29_i_valorrefsel,"js_pesquisala29_i_valorrefsel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('la29_i_valorrefsel',10,$Ila29_i_valorrefsel,true,'text',$db_opcao," onchange='js_pesquisala29_i_valorrefsel(false);'")
 ?>
-       <?
+       <?php
 db_input('la28_i_codigo',10,$Ila28_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -141,7 +141,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_tiporeferenciaalfa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

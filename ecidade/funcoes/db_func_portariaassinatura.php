@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Público para Gestão Municipal                
  *  Copyright (C) 2009  DBseller Serviços de Informática             

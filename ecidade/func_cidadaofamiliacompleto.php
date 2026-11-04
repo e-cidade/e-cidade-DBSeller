@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,12 +73,12 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
           <tr title="Pesquise um cidadão">  
             <td align="right" nowrap="nowrap" class="bold" >Cidadão:</td>
             <td nowrap="nowrap"> 
-              <?
+              <?php
 		            db_input("ov02_sequencial", 10, $Iov02_sequencial, true, "text", 4, "", "chave_ov02_sequencial");
 		          ?>
             </td>
             <td nowrap="nowrap"> 
-              <?
+              <?php
 		            db_input("ov02_nome", 30, $Iov02_nome, true, "text", 4, "", "chave_ov02_nome");
 		          ?>
             </td>
@@ -86,7 +86,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
           <tr title="Nis do Cidadão">  
             <td align="right" nowrap="nowrap" class="bold" >NIS:</td>
             <td align="left" nowrap="nowrap" colspan="2"> 
-              <?
+              <?php
 		            db_input("as02_nis", 10, $Ias02_nis, true, "text", 4, "", "chave_as02_nis");
 		          ?>
             </td>
@@ -94,7 +94,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
           <tr title="código do cadastro único">  
             <td align="right" nowrap="nowrap" class="bold" >Cadastro único:</td>
             <td align="left" nowrap="nowrap" colspan="2"> 
-              <?
+              <?php
 		            db_input("as02_codigounicocidadao", 10, $Ias02_codigounicocidadao, true, "text", 4, "", 
 		                     "chave_as02_codigounicocidadao");
 		          ?>
@@ -105,7 +105,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
               Família no Cadastro Único
             </td>
             <td align="left" nowrap="nowrap" colspan="2"> 
-              <?
+              <?php
 		            db_input("as15_codigofamiliarcadastrounico", 10, $Ias15_codigofamiliarcadastrounico, true, "text", 4,
 		                     "", "chave_as15_codigofamiliarcadastrounico");
 		          ?>
@@ -124,7 +124,7 @@ $oRotuloCampo->label("as15_codigofamiliarcadastrounico");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos  = "distinct cidadaofamilia.as04_sequencial, cidadaofamiliacadastrounico.as15_codigofamiliarcadastrounico, ";      
       $campos .= "cidadao.ov02_sequencial, cidadao.ov02_nome, ";
       $campos .= "cidadaocadastrounico.as02_sequencial, cidadaocadastrounico.as02_codigounicocidadao, ";

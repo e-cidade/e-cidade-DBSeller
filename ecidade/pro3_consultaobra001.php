@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   </fieldset> 
   <input type="button" onclick="js_pesquisa();" value="Pesquisar">
  </div>
- <?
+ <?php
    db_menu( db_getsession("DB_id_usuario"),
             db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $cliptubase->rotulo->label();
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
   db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js');
   db_app::load('estilos.css, grid.style.css');
 ?>
@@ -80,7 +80,7 @@ $cliptubase->rotulo->label();
             <td align="left" nowrap title="<?=$Tz01_nome?>"><b>Matricula:</b>
             </td>
             <td>
-              <?
+              <?php
                 db_input('j01_matric', 7, $Ij01_matric, true, 'text', 3, "onchange='js_matri(false)'");
                 db_input('z01_nome', 50, 0, true, 'text', 3, "", "z01_nomematri");
               ?>
@@ -90,7 +90,7 @@ $cliptubase->rotulo->label();
             <td align="left" nowrap title="<?=$Tk00_tipo?>"><b>Tipo de origem:</b>
             </td>
             <td align="left" nowrap>
-              <select name="tipo" id="tipo" onchange='js_passainfo(this.value, 0);' /> <?
+              <select name="tipo" id="tipo" onchange='js_passainfo(this.value, 0);' /> <?php
                 $sSql = "SELECT DISTINCT
                                 arretipo.k00_tipo,
                                 arretipo.k00_descr
@@ -145,7 +145,7 @@ $cliptubase->rotulo->label();
             </td>
             <td align="left" nowrap>
               <select name="receita" id="receita" onchange='js_passainfo(0, this.value);' />
-                <?
+                <?php
                   
                   $sSql = "SELECT DISTINCT
                                   tabrec.k02_codigo,
@@ -189,11 +189,11 @@ $cliptubase->rotulo->label();
               </select>
             </td>
           </tr>
-          <?
+          <?php
             db_input('iTipo'   , 10, '', true, 'hidden', 3);
             db_input('iReceita', 10, '', true, 'hidden', 3);
           ?>
-          <?
+          <?php
             if (isset($iTipo) && $iTipo != "" && $iTipo != '0') {
           ?>
           <tr>
@@ -213,7 +213,7 @@ $cliptubase->rotulo->label();
                 <tr>
                   <td align="right">Desconto Máximo:</td>
                     <td>
-                      <?
+                      <?php
                         $clrotulo->label("k00_valor");
                         @$k00_valor = @$tvlrhist;
                         db_input('k00_valor', 15, $Ik00_valor, true, 'text', 3);
@@ -223,7 +223,7 @@ $cliptubase->rotulo->label();
                 <tr>
                   <td align="right">Percentual:</td>
                   <td>
-                    <?
+                    <?php
                       $clrotulo->label("DBtxt8");
                       db_input('DBtxt8', 15, $IDBtxt8, true, 'text', 2, " onchange='js_calcula()'");
                     ?>
@@ -232,7 +232,7 @@ $cliptubase->rotulo->label();
                 <tr>
                   <td align="right">Valor:</td>
                   <td>
-                    <?
+                    <?php
                       $clrotulo->label("DBtxt9");
                       db_input('DBtxt9', 15, $IDBtxt9, true, 'text', 2, " onchange='js_calculavalor()'");
                     ?>
@@ -241,7 +241,7 @@ $cliptubase->rotulo->label();
                 <tr>
                   <td align="right">Observação:</td>
                   <td>
-                    <?
+                    <?php
                       $clrotulo->label("k00_histtxt");
                       db_textarea('k00_histtxt', 5, 70, $Ik00_histtxt, true, 'text', 2);
                     ?>
@@ -257,12 +257,12 @@ $cliptubase->rotulo->label();
               </table>
             </td>
           </tr>
-          <?
+          <?php
             }
           ?>
         </table>
         
-        <?
+        <?php
           db_input('z01_numcgm', 10, '', true, 'hidden', 3);
           db_input('j01_matric', 10, '', true, 'hidden', 3);
           db_input('q02_inscr' , 10, '', true, 'hidden', 3);
@@ -273,7 +273,7 @@ $cliptubase->rotulo->label();
     </form>
   </center>
   
-  <?
+  <?php
     db_menu(db_getsession("DB_id_usuario"),
     db_getsession("DB_modulo"),
     db_getsession("DB_anousu"),

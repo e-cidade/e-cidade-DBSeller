@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,7 +73,7 @@ function js_habilitacalculo(){
 <table border="0">
   <tr>   
     <td title="<?=$Ty80_codsani?>" >
-    <?
+    <?php
       if(isset($y80_codsani) &&$y80_codsani!=""){
          $result_nome=$clsaniatividade->sql_record($clsaniatividade->sql_query($y80_codsani,'',"z01_nome"));
          if ($clsaniatividade->numrows!=0){
@@ -84,7 +84,7 @@ function js_habilitacalculo(){
     ?>
     </td>    
     <td title="<?=$Ty80_codsani?>" colspan="4">
-    <?
+    <?php
      db_input('y80_codsani',5,$Iy80_codsani,true,'text',3,"");
      isset($y80_codsani)?$inscricao=$y80_codsani:"";
      db_input('inscricao',5,$Iy80_codsani,true,'hidden',1);
@@ -96,7 +96,7 @@ function js_habilitacalculo(){
 
 
 
-   <? 
+   <?php 
      if (isset($oParfiscal->y32_calcvistanosanteriores) && $oParfiscal->y32_calcvistanosanteriores == 't'){
         $sStyle = "";
      }else{
@@ -108,7 +108,7 @@ function js_habilitacalculo(){
          <b>Ano de calculo : </b>
        </td>
        <td height="25">
-       <?
+       <?php
           $rsAnosCalculo = $clcissqn->sql_record($clcissqn->sql_query_file(null,"q04_anousu","q04_anousu desc"," q04_anousu <= ".db_getsession('DB_anousu')));
           $aAnos = array();
           for ($i=0; $i < $clcissqn->numrows; $i++) {
@@ -135,7 +135,7 @@ function js_habilitacalculo(){
 <td>  
   <tr>   
     <td align="center" colspan="2"> 
-<?
+<?php
     if(isset($y80_codsani) &&$y80_codsani!=""){
         $sql = $clsaniatividade->sql_query($y80_codsani,null,"*","y80_codsani","y83_codsani=$y80_codsani and  y83_dtfim is  null");
         $res = db_query($sql);

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -42,15 +42,15 @@ $dDataFimMes = isset($_GET['dtFim'])    ? date('m',strtotime(str_replace("/","-"
 $dDataFimAno = isset($_GET['dtFim'])    ? date('Y',strtotime(str_replace("/","-",$_GET['dtFim'])))      :date('Y');
 
 if(!isset($_GET['calendario_selecionado'])) {
-    $bCalendario = "SELECT distinct(ed52_c_descr) as nomecal 
-                  FROM calendario 
+    $bCalendario = "SELECT distinct(ed52_c_descr) as nomecal
+                  FROM calendario
                  WHERE ed52_i_ano = " . db_getsession("DB_anousu") . "
               ORDER BY ed52_c_descr";
     $sCalendario = db_query($bCalendario);
     $nCalendario = pg_num_rows($sCalendario);
 }else {
-    $bCalendario = "SELECT distinct(ed52_c_descr) as nomecal 
-                  FROM calendario 
+    $bCalendario = "SELECT distinct(ed52_c_descr) as nomecal
+                  FROM calendario
                  WHERE ed52_i_ano = {$_GET['calendario_selecionado']}
               ORDER BY ed52_c_descr";
     $sCalendario = db_query($bCalendario);
@@ -84,9 +84,9 @@ if(!isset($_GET['calendario_selecionado'])) {
                 <b>Período:</b>
               </td>
               <td>
-                <?db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
+                <?php db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
                 <b>até</b>
-                <?db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
+                <?php db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
               </td>
                 <td>
                     <input type="button" name="btnFiltrar" id="btnFiltrar" value="filtrar"  style="cursor: pointer" />

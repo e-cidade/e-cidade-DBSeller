@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,15 +80,15 @@ function js_abre(botao){
     <legend>Consultas - Bens Baixados</legend>
     <table class="form-container">
       <tr> 
-        <td title="Bens baixados no intervalo de data"> <? db_ancora(@$Lt55_baixa,"js_pesquisa_bem(true);",3);?>  </td>
+        <td title="Bens baixados no intervalo de data"> <?php db_ancora(@$Lt55_baixa,"js_pesquisa_bem(true);",3);?>  </td>
         <td>
-          <?
+          <?php
             db_inputdata('t55_dataINI',@$t55_dataINI_dia,@$t55_dataINI_mes,@$t55_dataINI_ano,true,'text',1,"");
           ?>
         </td>
         <td> &nbsp;&nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;&nbsp;</td>
         <td>
-          <?
+          <?php
             db_inputdata('t55_dataFIM',@$t55_dataFIM_dia,@$t55_dataFIM_mes,@$t55_dataFIM_ano,true,'text',1,"");
           ?>
         </td>
@@ -101,7 +101,7 @@ function js_abre(botao){
  
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_bem(mostra){

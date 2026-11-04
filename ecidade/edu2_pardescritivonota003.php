@@ -128,7 +128,7 @@ $oFiltros->iLarguraRetangulo = 200;
  */
 $oFiltros->sProfessorConselheiro = "";
 if ($oFiltros->oTurma->getProfessorConselheiro() && $oFiltros->oTurma->getProfessorConselheiro()->getNome() != '') {
-  $oFiltros->sProfessorConselheiro = "Professor Conselheiro  ".$oFiltros->oTurma->getProfessorConselheiro()->getNome();
+    $oFiltros->sProfessorConselheiro = "Professor Conselheiro  ".$oFiltros->oTurma->getProfessorConselheiro()->getNome();
 }
 
 /**
@@ -138,25 +138,25 @@ $aAvaliacoes = array();
 
 if ($oFiltros->sAvaliacao == 'A') {
 
-  $oFiltros->oElementoAvaliacao = AvaliacaoPeriodicaRepository::getAvaliacaoPeriodicaByCodigo($oFiltros->iPeriodo);
-  $aAvaliacoes[] = $oFiltros->oElementoAvaliacao;
+    $oFiltros->oElementoAvaliacao = AvaliacaoPeriodicaRepository::getAvaliacaoPeriodicaByCodigo($oFiltros->iPeriodo);
+    $aAvaliacoes[] = $oFiltros->oElementoAvaliacao;
 } else {
 
-  $oProcedimentoAvalicao        = $oFiltros->oTurma->getProcedimentoDeAvaliacaoDaEtapa($oFiltros->oEtapa);
-  $oFiltros->oElementoAvaliacao = ResultadoAvaliacaoRepository::getResultadoAvaliacaoByCodigo($oFiltros->iPeriodo);
+    $oProcedimentoAvalicao        = $oFiltros->oTurma->getProcedimentoDeAvaliacaoDaEtapa($oFiltros->oEtapa);
+    $oFiltros->oElementoAvaliacao = ResultadoAvaliacaoRepository::getResultadoAvaliacaoByCodigo($oFiltros->iPeriodo);
 
-  /**
-   * Procurar todas as avaliacoes em que a ordem da avaliacao é menor que o resultado
-   */
-  $aAvaliacoesProcedimento = $oProcedimentoAvalicao->getAvaliacoes();
-  $iOrdemSequencia         = $oFiltros->oElementoAvaliacao->getOrdemSequencia();
+    /**
+     * Procurar todas as avaliacoes em que a ordem da avaliacao é menor que o resultado
+     */
+    $aAvaliacoesProcedimento = $oProcedimentoAvalicao->getAvaliacoes();
+    $iOrdemSequencia         = $oFiltros->oElementoAvaliacao->getOrdemSequencia();
 
-  foreach ($aAvaliacoesProcedimento as $oAvaliacao) {
+    foreach ($aAvaliacoesProcedimento as $oAvaliacao) {
 
-    if ($oAvaliacao->getOrdemSequencia() < $iOrdemSequencia) {
-      $aAvaliacoes[] = $oAvaliacao;
+        if ($oAvaliacao->getOrdemSequencia() < $iOrdemSequencia) {
+            $aAvaliacoes[] = $oAvaliacao;
+        }
     }
-  }
 }
 
 
@@ -180,99 +180,107 @@ $resultobs      = $clobsboletim->sql_record( $sSqlObsBoletim );
 
 if( $clobsboletim->numrows > 0 ) {
 
-	$oDadosObs = db_utils::fieldsMemory($resultobs, 0);
-	$oFiltros->sObservacao = $oDadosObs->ed252_t_mensagem;
+    $oDadosObs = db_utils::fieldsMemory($resultobs, 0);
+    $oFiltros->sObservacao = $oDadosObs->ed252_t_mensagem;
 }
 
 foreach ($aAlunos as $iMatricula) {
 
-  $oMatricula = MatriculaRepository::getMatriculaByCodigo($iMatricula);
+    $oMatricula = MatriculaRepository::getMatriculaByCodigo($iMatricula);
 
-  $oDadosAluno                  = new stdClass();
-  $oDadosAluno->iCodigo         = $oMatricula->getAluno()->getCodigoAluno();
-  $oDadosAluno->sNome           = $oMatricula->getAluno()->getNome();
-  $oDadosAluno->sNomeSocial     = $oMatricula->getAluno()->getNomeSocial();
-  $oDadosAluno->iMatricula      = $oMatricula->getCodigo();
-  $oDadosAluno->iOrdem          = $oMatricula->getNumeroOrdemAluno();
-  $oDadosAluno->sDataNasc       = $oMatricula->getAluno()->getDataNascimento();
-  $oDadosAluno->sSituacao       = $oMatricula->getSituacao();
-  $oDadosAluno->sResultadoFinal = "EM ANDAMENTO";
+    $oDadosAluno                  = new stdClass();
+    $oDadosAluno->iCodigo         = $oMatricula->getAluno()->getCodigoAluno();
+    $oDadosAluno->sNome           = $oMatricula->getAluno()->getNome();
+    $oDadosAluno->sNomeSocial     = $oMatricula->getAluno()->getNomeSocial();
+    $oDadosAluno->iMatricula      = $oMatricula->getCodigo();
+    $oDadosAluno->iOrdem          = $oMatricula->getNumeroOrdemAluno();
+    $oDadosAluno->sDataNasc       = $oMatricula->getAluno()->getDataNascimento();
+    $oDadosAluno->sSituacao       = $oMatricula->getSituacao();
+    $oDadosAluno->sResultadoFinal = "EM ANDAMENTO";
 
-  $oDadosAluno->aDisciplinas = array();
+    if ($oFiltros->lParecerUnico) {
+        $aDisciplinas = []; // Aqui eu limpo o array para evitar que ele duplique a disciplina que vem na requisição
+        $aRegencias = [];
+        $aRegencias =  RegenciaRepository::getCodigoRegenciaByTurmaAndEtapa($oFiltros->oTurma, $oFiltros->oEtapa);
 
-  foreach ($aDisciplinas as $iDisciplina) {
-
-    $oRegencia        = RegenciaRepository::getRegenciaByCodigo($iDisciplina);
-    $oDadosDisciplina = new stdClass();
-
-    $oDadosDisciplina->iRegencia    = $oRegencia->getCodigo();
-    $oDadosDisciplina->sAbreviatura = $oRegencia->getDisciplina()->getAbreviatura();
-    $oDadosDisciplina->sDisciplina  = $oRegencia->getDisciplina()->getNomeDisciplina();
-    $oDadosDisciplina->iTotalFaltas = 0;
-    $oDadosDisciplina->iTotalAulas  = 0;
-
-    db_inicio_transacao();
-    $oDiarioDeClasse   = $oMatricula->getDiarioDeClasse();
-    $oDiarioDisciplina = $oMatricula->getDiarioDeClasse()->getDisciplinasPorRegencia($oRegencia);
-    db_fim_transacao();
-
-    /**
-     * Percorremos a(s) avaliação(ões) de acordo com o período selecionado
-     */
-    foreach ($aAvaliacoes as $oAvaliacao) {
-
-      $oPeriodoAvaliacao = $oAvaliacao->getPeriodoAvaliacao();
-
-      /**
-       * Verificamos se trata-se de parecer unico, calculando o total de dias letivos e faltas. Caso contrario, o calculo
-       * sera de acordo com a regencia
-       */
-      if ($oFiltros->lParecerUnico) {
-
-        foreach ($oDiarioDeClasse->getDisciplinas() as $oDisciplinaDiario) {
-
-          $oDadosDisciplina->iTotalFaltas += $oDisciplinaDiario->getTotalFaltasPorPeriodo($oPeriodoAvaliacao);
-          $oDadosDisciplina->iTotalAulas  += $oDisciplinaDiario->getRegencia()->getTotalDeAulasNoPeriodo($oPeriodoAvaliacao);
+        foreach ($aRegencias as $regencia) {
+            $aDisciplinas[] = $regencia->ed59_i_codigo;
         }
-      } else {
-        $oDadosDisciplina->iTotalFaltas = $oDiarioDisciplina->getTotalFaltasPorPeriodo($oPeriodoAvaliacao);
-        $oDadosDisciplina->iTotalAulas  = $oRegencia->getTotalDeAulasNoPeriodo($oPeriodoAvaliacao);
-      }
     }
 
+    $oDadosAluno->aDisciplinas = array();
 
-    /**
-     * Caso a matricula do aluno esteja concluida, buscamos o resultado final de acordo com o termo configurado para o
-     * ensino no ano de execucao do calendario, imprimindo a descricao do Termo
-     * Ex.: Aprovado / Reprovado
-     *
-     * Caso nao esteja concluida, imprime como EM ANDAMENTO
-     * @todo Testar
-     */
-    if ($oMatricula->isConcluida()) {
+    foreach ($aDisciplinas as $iDisciplina) {
 
-      $sTermoResultadoFinal = $oDiarioDeClasse->getResultadoFinal();
-      $oTermoEnsino         = DBEducacaoTermo::getTermoEncerramento($oFiltros->oTurma->getBaseCurricular()->getCurso()->getEnsino(),
-                                                                    $sTermoResultadoFinal,
-                                                                    $oFiltros->oTurma->getCalendario()->getAnoExecucao()
-                                                                    );
-      $oDadosAluno->sResultadoFinal = $oTermoEnsino[0]->sDescricao;
+        $oRegencia        = RegenciaRepository::getRegenciaByCodigo($iDisciplina);
+        $oDadosDisciplina = new stdClass();
+
+        $oDadosDisciplina->iRegencia    = $oRegencia->getCodigo();
+        $oDadosDisciplina->sAbreviatura = $oRegencia->getDisciplina()->getAbreviatura();
+        $oDadosDisciplina->sDisciplina  = $oRegencia->getDisciplina()->getNomeDisciplina();
+        $oDadosDisciplina->iTotalFaltas = 0;
+        $oDadosDisciplina->iTotalAulas  = 0;
+
+        db_inicio_transacao();
+        $oDiarioDeClasse   = $oMatricula->getDiarioDeClasse();
+        $oDiarioDisciplina = $oMatricula->getDiarioDeClasse()->getDisciplinasPorRegencia($oRegencia);
+        db_fim_transacao();
+
+        /**
+         * Percorremos a(s) avaliação(ões) de acordo com o período selecionado
+         */
+        foreach ($aAvaliacoes as $oAvaliacao) {
+
+            $oPeriodoAvaliacao = $oAvaliacao->getPeriodoAvaliacao();
+
+            /**
+             * Verificamos se trata-se de parecer unico, calculando o total de dias letivos e faltas. Caso contrario, o calculo
+             * sera de acordo com a regencia
+             */
+            if ($oFiltros->lParecerUnico) {
+
+                foreach ($oDiarioDeClasse->getDisciplinas() as $oDisciplinaDiario) {
+
+                    $oDadosDisciplina->iTotalFaltas += $oDisciplinaDiario->getTotalFaltasPorPeriodo($oPeriodoAvaliacao);
+                    $oDadosDisciplina->iTotalAulas  += $oDisciplinaDiario->getRegencia()->getTotalDeAulasNoPeriodo($oPeriodoAvaliacao);
+                }
+            } else {
+                $oDadosDisciplina->iTotalFaltas = $oDiarioDisciplina->getTotalFaltasPorPeriodo($oPeriodoAvaliacao);
+                $oDadosDisciplina->iTotalAulas  = $oRegencia->getTotalDeAulasNoPeriodo($oPeriodoAvaliacao);
+            }
+        }
+
+        /**
+         * Caso a matricula do aluno esteja concluida, buscamos o resultado final de acordo com o termo configurado para o
+         * ensino no ano de execucao do calendario, imprimindo a descricao do Termo
+         * Ex.: Aprovado / Reprovado
+         *
+         * Caso nao esteja concluida, imprime como EM ANDAMENTO
+         * @todo Testar
+         */
+        if ($oMatricula->isConcluida()) {
+
+            $sTermoResultadoFinal = $oDiarioDeClasse->getResultadoFinal();
+            $oTermoEnsino         = DBEducacaoTermo::getTermoEncerramento($oFiltros->oTurma->getBaseCurricular()->getCurso()->getEnsino(),
+                $sTermoResultadoFinal,
+                $oFiltros->oTurma->getCalendario()->getAnoExecucao()
+            );
+            $oDadosAluno->sResultadoFinal = $oTermoEnsino[0]->sDescricao;
+        }
+
+        /**
+         * Buscamos os pareceres vinculados ao aluno para regência
+         */
+        $oDadosDisciplina->oParecer = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegencia,
+            $oFiltros->oElementoAvaliacao->getOrdemSequencia()
+        );
+
+        if (!$oFiltros->lParecerUnico || !empty($oDadosDisciplina->oParecer->sParecerPadronizado) || !empty($oDadosDisciplina->oParecer->sParecer)) {
+            $oDadosAluno->aDisciplinas[] = $oDadosDisciplina;
+        }
     }
-
-
-    /**
-     * Buscamos os pareceres vinculados ao aluno para regência
-     */
-    $oDadosDisciplina->oParecer = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegencia,
-                                                                       $oFiltros->oElementoAvaliacao->getOrdemSequencia()
-                                                                      );
-
-    $oDadosAluno->aDisciplinas[] = $oDadosDisciplina;
-
-  }
-  $aAlunosImpressao[] = $oDadosAluno;
+    $aAlunosImpressao[] = $oDadosAluno;
 }
-
 
 /** ***************************************************************************************************************** *
  ** ************************************** IMPRESSÃO DOS DADOS ****************************************************** *
@@ -282,105 +290,114 @@ $lImprimeMeioPagina = false;
 
 foreach ($aAlunosImpressao as $oAluno) {
 
-  $lImprimeCabecalho = true;
+    $lImprimeCabecalho = true;
 
-  if ($lAdicionaPagina || $pdf->GetY() > 150) {
-
-    $pdf->AddPage();
-    $lAdicionaPagina = false;
-  }
-  $iPaginaInicial = $pdf->PageNo();
-  cabecalhoRelatorio($pdf, $oFiltros, $oAluno, $lImprimeMeioPagina);
-  $iYInicialImpressaoAluno = $pdf->GetY();
-
-  $pdf->Line($pdf->GetX(), $iYInicialImpressaoAluno, $oFiltros->iLarguraRetangulo, $pdf->GetY());
-  $pdf->Line($pdf->GetX(), $iYInicialImpressaoAluno, $pdf->GetX(), $pdf->GetY() + $oFiltros->iAlturaLinhaPadrao);
-  $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicialImpressaoAluno, $oFiltros->iLarguraRetangulo, $pdf->GetY() + $oFiltros->iAlturaLinhaPadrao);
-  /**
-   * Imprime o valor do Resultado Final de acordo com a situacao da matricula
-   */
-  $pdf->SetX(20);
-  $sMensagemResultadoFinal = "Resultado Final em {$oFiltros->oEtapa->getNome()}: {$oAluno->sResultadoFinal} ";
-  $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, $sMensagemResultadoFinal, 0, 1, "L");
-
-  $iLarguraLinha = $oFiltros->iLarguraLinha - 8;
-  foreach ($oAluno->aDisciplinas as $oDisciplina) {
-
-    /**
-     * Calculo para saber se devemos quebrar página
-     */
-    $iLinhasParecerPadronizado = 0;
-    if (!empty($oDisciplina->oParecer->sParecerPadronizado)) {
-
-      if ($oFiltros->sPadrao == 'C') {
-        $iLinhasParecerPadronizado = $pdf->NbLines($iLarguraLinha, $oDisciplina->oParecer->sParecerPadronizado);
-      } else {
-        $iLinhasParecerPadronizado = count(explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado));
-      }
-      $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
+    if ($lAdicionaPagina || $pdf->GetY() > 150) {
+        $pdf->AddPage();
+        $lAdicionaPagina = false;
     }
-    $iLinhasParecer = 0;
-    if (!empty($oDisciplina->oParecer->sParecer)) {
-      $iLinhasParecer = $pdf->NbLines($iLarguraLinha, $oDisciplina->oParecer->sParecer);
+
+    $iPaginaInicial = $pdf->PageNo();
+    cabecalhoRelatorio($pdf, $oFiltros, $oAluno, $lImprimeMeioPagina);
+    $iYInicialImpressaoAluno = $pdf->GetY();
+
+    $pdf->Line($pdf->GetX(), $iYInicialImpressaoAluno, $oFiltros->iLarguraRetangulo, $pdf->GetY());
+    $pdf->Line($pdf->GetX(), $iYInicialImpressaoAluno, $pdf->GetX(), $pdf->GetY() + $oFiltros->iAlturaLinhaPadrao);
+    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicialImpressaoAluno, $oFiltros->iLarguraRetangulo, $pdf->GetY() + $oFiltros->iAlturaLinhaPadrao);
+    /**
+     * Imprime o valor do Resultado Final de acordo com a situacao da matricula
+     */
+    $pdf->SetX(20);
+    $sMensagemResultadoFinal = "Resultado Final em {$oFiltros->oEtapa->getNome()}: {$oAluno->sResultadoFinal} ";
+    $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, $sMensagemResultadoFinal, 0, 1, "L");
+
+    $iLarguraLinha = $oFiltros->iLarguraLinha - 8;
+
+    if (!$oFiltros->lParecerUnico) {
+        foreach ($oAluno->aDisciplinas as $oDisciplina) {
+            /**
+             * Calculo para saber se devemos quebrar página
+             */
+            $iLinhasParecerPadronizado = 0;
+            if (!empty($oDisciplina->oParecer->sParecerPadronizado)) {
+                if ($oFiltros->sPadrao == 'C') {
+                    $iLinhasParecerPadronizado = $pdf->NbLines($iLarguraLinha, $oDisciplina->oParecer->sParecerPadronizado);
+                } else {
+                    $iLinhasParecerPadronizado = count(explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado));
+                }
+                $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
+            }
+            $iLinhasParecer = !empty($oDisciplina->oParecer->sParecer) ? $pdf->NbLines($iLarguraLinha, $oDisciplina->oParecer->sParecer) : 5;
+
+            $iLinhasAproximado = $iLinhasParecer + $iLinhasParecerPadronizado;
+            $iAlturaAproximadaQuadro = $pdf->GetY() + 25 + ($iLinhasAproximado * $oFiltros->iAlturaLinhaPadrao);
+
+            $lPaginaNova = false;
+            if (!$oFiltros->lParecerUnico || (!empty($oDisciplina->oParecer->sParecerPadronizado) || !empty($oDisciplina->oParecer->sParecer))) {
+                if (($iAlturaAproximadaQuadro > $oFiltros->iAlturaDeQuebraPagina) || ($pdf->GetY() > 250)) {
+                    $pdf->Line($pdf->GetX(), $oFiltros->iAlturaDeQuebraPagina, $oFiltros->iLarguraRetangulo, $oFiltros->iAlturaDeQuebraPagina);
+                    $pdf->Line($pdf->GetX(), $pdf->GetY(), $pdf->GetX(), $oFiltros->iAlturaDeQuebraPagina);
+                    $pdf->Line($oFiltros->iLarguraRetangulo, $pdf->GetY(), $oFiltros->iLarguraRetangulo, $oFiltros->iAlturaDeQuebraPagina);
+                }
+                /**
+                 * Imprime Informações Disciplina e Parecer
+                 */
+                informacoesAlunoDisciplina($pdf, $oFiltros, $oDisciplina, $lPaginaNova);
+                imprimePareceres($pdf, $oFiltros, $oDisciplina);
+            }
+        }
+
+        /**
+         * Calculo para saber se as observações caberão na página atual
+         */
+        $iLinhasObservacao     = $pdf->NbLines($iLarguraLinha, $oFiltros->sObservacao);
+        $iAlturaAproximadaObs  = $pdf->GetY() + ($iLinhasObservacao * $oFiltros->iAlturaLinhaPadrao);
+        $iAlturaAproximadaObs += 20; //Altura da assinatura se houver
+
+        $lPaginaNova = false;
+        if ($iAlturaAproximadaObs > $oFiltros->iAlturaDeQuebraPagina) {
+            $lPaginaNova = true;
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 2 , $oFiltros->iLarguraRetangulo, $pdf->GetY() + 2);
+            $pdf->AddPage();
+        }
+
+        imprimeObservacoes($pdf, $oFiltros, $lPaginaNova, $oDadosAluno->iCodigo);
+
+        $iYAposImprimirDados = $pdf->GetY();
+        $iPaginaFinal = $pdf->PageNo();
+        if ($iPaginaFinal - $iPaginaInicial == 0) {
+            $pdf->Line($pdf->GetX(), $iYAposImprimirDados + 2 , $oFiltros->iLarguraRetangulo, $iYAposImprimirDados + 2);
+        }
+
+        $lAdicionaPagina    = true;
+        $lImprimeMeioPagina = false;
+
+        if ($iYAposImprimirDados < 150) {
+            $lAdicionaPagina    = false;
+            $lImprimeMeioPagina = true;
+        }
+
+        if ($iPaginaFinal - $iPaginaInicial > 0) {
+            $lAdicionaPagina    = true;
+            $lImprimeMeioPagina = false;
+            $pdf->Rect(10, 8, 190, $oFiltros->iAlturaDeQuebraPagina);
+        }
+
     } else {
-      $iLinhasParecer = 5;
+        imprimeParecerUnico($pdf, $oFiltros, $oAluno);
+
+        $iYAposImprimirDados = $pdf->GetY();
+        $iPaginaFinal = $pdf->PageNo();
+
+        $lAdicionaPagina    = true;
+        $lImprimeMeioPagina = false;
+
+        if ($iYAposImprimirDados < 150) {
+            $lAdicionaPagina    = false;
+            $lImprimeMeioPagina = true;
+        }
     }
-
-    $iLinhasAproximado       = $iLinhasParecer + $iLinhasParecerPadronizado;
-    $iAlturaAproximadaQuadro = $pdf->GetY() + 25 + ($iLinhasAproximado * $oFiltros->iAlturaLinhaPadrao);
-
-    $lPaginaNova = false;
-    if (($iAlturaAproximadaQuadro > $oFiltros->iAlturaDeQuebraPagina) || ($pdf->GetY() > 250)) {
-
-      $pdf->Line($pdf->GetX(), $oFiltros->iAlturaDeQuebraPagina ,  $oFiltros->iLarguraRetangulo, $oFiltros->iAlturaDeQuebraPagina);
-      $pdf->Line($pdf->GetX(), $pdf->GetY() , $pdf->GetX(), $oFiltros->iAlturaDeQuebraPagina);
-      $pdf->Line($oFiltros->iLarguraRetangulo, $pdf->GetY() , $oFiltros->iLarguraRetangulo, $oFiltros->iAlturaDeQuebraPagina);
-    }
-    /**
-     * Imprime Informações Disciplina e Parecer
-     */
-    informacoesAlunoDisciplina($pdf, $oFiltros, $oDisciplina, $lPaginaNova);
-    imprimePareceres($pdf, $oFiltros, $oDisciplina);
-  }
-
-  /**
-   * Calculo para saber se as observações caberão na página atual
-   */
-  $iLinhasObservacao     = $pdf->NbLines($iLarguraLinha, $oFiltros->sObservacao);
-  $iAlturaAproximadaObs  = $pdf->GetY() + ($iLinhasObservacao * $oFiltros->iAlturaLinhaPadrao);
-  $iAlturaAproximadaObs += 20; //Altura da assinatura se houver
-
-  $lPaginaNova = false;
-  if ($iAlturaAproximadaObs > $oFiltros->iAlturaDeQuebraPagina) {
-
-    $lPaginaNova = true;
-    $pdf->Line($pdf->GetX(), $pdf->GetY() + 2 , $oFiltros->iLarguraRetangulo, $pdf->GetY() + 2);
-    $pdf->AddPage();
-  }
-  imprimeObservacoes($pdf, $oFiltros, $lPaginaNova, $oDadosAluno->iCodigo);
-
-  $iYAposImprimirDados = $pdf->GetY();
-  $iPaginaFinal = $pdf->PageNo();
-  if ($iPaginaFinal - $iPaginaInicial == 0) {
-    $pdf->Line($pdf->GetX(), $iYAposImprimirDados + 2 , $oFiltros->iLarguraRetangulo, $iYAposImprimirDados + 2);
-  }
-
-
-  $lAdicionaPagina    = true;
-  $lImprimeMeioPagina = false;
-  if ($iYAposImprimirDados < 150) {
-
-    $lAdicionaPagina    = false;
-    $lImprimeMeioPagina = true;
-  }
-  if ($iPaginaFinal - $iPaginaInicial > 0) {
-
-    $lAdicionaPagina    = true;
-    $lImprimeMeioPagina = false;
-    $pdf->Rect(10, 8, 190, $oFiltros->iAlturaDeQuebraPagina);
-  }
 }
-
 
 
 /**
@@ -391,135 +408,179 @@ foreach ($aAlunosImpressao as $oAluno) {
 function cabecalhoRelatorio(FpdfMultiCellBorder $pdf, $oFiltros, $oAluno, $lImprimeMeioPagina) {
 
 
-  /**
-   * Variaveis de controle para impressão do cabecalho padrao, utilizado em libdocumento
-   */
-  $d   = 0;
-  $y1  = 9;
-  $y2  = 14;
-  $y3  = 18;
-  $y4  = 22;
-  $y5  = 26;
-  $y6  = 30;
-  $y7  = 6;
-  $y8  = 5;
-  $y9  = 35;
-  $y10 = 33;
-  $y11 = 63;
-  $y12 = 3;
-  $y13 = 12;
-  $y14 = 43;
-  $m0  = 9;  // altura que será escrito o nome do departamento
-  $m1  = 14; // altura que será escrito o nome da escola
-  $m2  = 18; // altura que será escrito o endereço
-  $m3  = 22; // altura que será escrito a cidade
-  $m4  = 26; // altura que será escrito o telefone da escola
-  $m5  = 30; // altura que será escrito o email + site da escola
-  $m6  = 35; // altura da linha do cabeçalho
-  $m7  = 3;  // altura da linha dentro do quadro das legendas
-  $m8  = 7;  // altura que começa a desenhar o quadro  das legendas
-  $a   = 5;
-  $f   = 190;
-  $r   = 32;
-  $margemesquerda  = $pdf->lMargin;
-
-  /**
-   * Verificamos se estamos imprimindo o se estamos imprimindo o 2º aluno da pagina e se neste caso
-   */
-  if ($lImprimeMeioPagina) {
-
-  	$m0  = 9  + 150; // altura que será escrito o nome do departamento
-    $m1  = 14 + 150; // altura que será escrito o nome da escola
-    $m2  = 18 + 150; // altura que será escrito o endereço
-    $m3  = 22 + 150; // altura que será escrito a cidade
-    $m4  = 26 + 150; // altura que será escrito o telefone da escola
-    $m5  = 30 + 150; // altura que será escrito o email + site da escola
-    $m6  = 35 + 150; // altura da linha do cabeçalho
+    /**
+     * Variaveis de controle para impressão do cabecalho padrao, utilizado em libdocumento
+     */
+    $d   = 0;
+    $y1  = 9;
+    $y2  = 14;
+    $y3  = 18;
+    $y4  = 22;
+    $y5  = 26;
+    $y6  = 30;
+    $y7  = 6;
+    $y8  = 5;
+    $y9  = 35;
+    $y10 = 33;
+    $y11 = 63;
+    $y12 = 3;
+    $y13 = 12;
+    $y14 = 43;
+    $m0  = 10;  // altura que será escrito o nome do departamento
+    $m1  = 14; // altura que será escrito o nome da escola
+    $m2  = 18; // altura que será escrito o endereço
+    $m3  = 22; // altura que será escrito a cidade
+    $m4  = 26; // altura que será escrito o telefone da escola
+    $m5  = 30; // altura que será escrito o email
+    $m6  = 34; // altura da linha do cabeçalho
     $m7  = 3;  // altura da linha dentro do quadro das legendas
-    $m8  = 7 + 150 ;  // altura que começa a desenhar o quadro  das legendas
+    $m8  = 7;  // altura que começa a desenhar o quadro  das legendas
+    $m9 = 35; // altura que será escrito o site da escola
+    $a   = 5;
+    $f   = 190;
+    $r   = 32;
+    $margemesquerda  = $pdf->lMargin;
 
-    $pdf->SetY(158);
-  }
+    /**
+     * Verificamos se estamos imprimindo o se estamos imprimindo o 2º aluno da pagina e se neste caso
+     */
+    if ($lImprimeMeioPagina) {
+
+        $m0  = 10  + 150; // altura que será escrito o nome do departamento
+        $m1  = 14 + 150; // altura que será escrito o nome da escola
+        $m2  = 18 + 150; // altura que será escrito o endereço
+        $m3  = 22 + 150; // altura que será escrito a cidade
+        $m4  = 26 + 150; // altura que será escrito o telefone da escola
+        $m5  = 30 + 150; // altura que será escrito o email
+        $m6  = 34 + 150; // altura que será escrito o site da escola
+        $m7  = 3;  // altura da linha dentro do quadro das legendas
+        $m8  = 7 + 150 ;  // altura que começa a desenhar o quadro  das legendas
+        $m9 = 35 + 150; // altura da linha do cabeçalho
+
+        $pdf->SetY(158);
+    }
 
 
 
-  /**
-   * *************************************
-   * DADOS A SEREM IMPRESSOS NO CABECALHO
-   * *************************************
-   */
-  $oCabecalho          = new stdClass();
-  $oCabecalho->sDDD    = "";
-  $oCabecalho->iNumero = "";
-  $sLogoInstit         = $oFiltros->oTurma->getEscola()->getLogo();
-  $sLogoEscola         = $oFiltros->oTurma->getEscola()->getLogoEscola();
-  $nome                = $oFiltros->oTurma->getEscola()->getDepartamento()->getNomeDepartamento()." - ".$oFiltros->oTurma->getEscola()->getUf();
-  $ed52_i_ano          = $oFiltros->oTurma->getCalendario()->getAnoExecucao();
-  $ed57_c_descr        = $oFiltros->oTurma->getDescricao();
-  $ed11_c_descr        = $oFiltros->oEtapa->getNome();
-  $ed15_c_nome         = $oFiltros->oTurma->getTurno()->getDescricao();
-  $ed10_c_abrev        = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getEnsino()->getAbreviatura();
-  $ed29_i_codigo       = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getCodigo();
-  $ed29_c_descr        = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getNome();
-  $ed52_c_descr        = $oFiltros->oTurma->getCalendario()->getDescricao();
-  $ruaescola           = $oFiltros->oTurma->getEscola()->getEndereco();
-  $numescola           = $oFiltros->oTurma->getEscola()->getNumeroEndereco();
-  $bairroescola        = $oFiltros->oTurma->getEscola()->getBairro();
-  $cidadeescola        = $oFiltros->oTurma->getEscola()->getMunicipio();
-  $estadoescola        = $oFiltros->oTurma->getEscola()->getUf();
-  $emailescola         = $oFiltros->oTurma->getEscola()->getEmail();
-  $sNomeEscola         = $oFiltros->oTurma->getEscola()->getNome();
-  $url                 = $oFiltros->oTurma->getEscola()->getUrl();
+    /**
+     * *************************************
+     * DADOS A SEREM IMPRESSOS NO CABECALHO
+     * *************************************
+     */
+    $oCabecalho          = new stdClass();
+    $oCabecalho->sDDD    = "";
+    $oCabecalho->iNumero = "";
+    $sLogoInstit         = $oFiltros->oTurma->getEscola()->getLogo();
+    $sLogoEscola         = $oFiltros->oTurma->getEscola()->getLogoEscola();
+    $nome                = $oFiltros->oTurma->getEscola()->getDepartamento()->getNomeDepartamento()." - ".$oFiltros->oTurma->getEscola()->getUf();
+    $ed52_i_ano          = $oFiltros->oTurma->getCalendario()->getAnoExecucao();
+    $ed57_c_descr        = $oFiltros->oTurma->getDescricao();
+    $ed11_c_descr        = $oFiltros->oEtapa->getNome();
+    $ed15_c_nome         = $oFiltros->oTurma->getTurno()->getDescricao();
+    $ed10_c_abrev        = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getEnsino()->getAbreviatura();
+    $ed29_i_codigo       = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getCodigo();
+    $ed29_c_descr        = $oFiltros->oTurma->getBaseCurricular()->getCurso()->getNome();
+    $ed52_c_descr        = $oFiltros->oTurma->getCalendario()->getDescricao();
+    $ruaescola           = $oFiltros->oTurma->getEscola()->getEndereco();
+    $numescola           = $oFiltros->oTurma->getEscola()->getNumeroEndereco();
+    $bairroescola        = $oFiltros->oTurma->getEscola()->getBairro();
+    $cidadeescola        = $oFiltros->oTurma->getEscola()->getMunicipio();
+    $estadoescola        = $oFiltros->oTurma->getEscola()->getUf();
+    $emailescola         = $oFiltros->oTurma->getEscola()->getEmail();
+    $sNomeEscola         = $oFiltros->oTurma->getEscola()->getNome();
+    $url                 = $oFiltros->oTurma->getEscola()->getUrl();
 
-  /**
-   * Buscamos o primeiro registro de telefone cadastrado para a escola, caso exista
-  */
-  $aTelefones = $oFiltros->oTurma->getEscola()->getTelefones();
-  if (count($aTelefones) > 0) {
+    /**
+     * Buscamos o primeiro registro de telefone cadastrado para a escola, caso exista
+     */
+    $aTelefones = $oFiltros->oTurma->getEscola()->getTelefones();
+    if (count($aTelefones) > 0) {
 
-    $oCabecalho->sDDD    = !empty($aTelefones[0]->iDDD) ? " ({$aTelefones[0]->iDDD}) " : "";
-    $oCabecalho->iNumero = !empty($aTelefones[0]->iNumero) ? "{$aTelefones[0]->iNumero}" : "";
-  }
-  $DadosCabecalho  = $oFiltros->oTurma->getEscola()->getNome().$oCabecalho->sDDD.$oCabecalho->iNumero;
-  $iTelefoneEscola = 1;
+        $oCabecalho->sDDD    = !empty($aTelefones[0]->iDDD) ? " ({$aTelefones[0]->iDDD}) " : "";
+        $oCabecalho->iNumero = !empty($aTelefones[0]->iNumero) ? "{$aTelefones[0]->iNumero}" : "";
+    }
+    $DadosCabecalho  = $oFiltros->oTurma->getEscola()->getNome().$oCabecalho->sDDD.$oCabecalho->iNumero;
+    $iTelefoneEscola = 1;
 
-  /**
-   * Setamos o periodo a ser apresentado no cabecalho, nome do aluno e condigo do mesmo
-  */
-  $periodoselecionado = $oFiltros->oElementoAvaliacao->getDescricao();
+    /**
+     * Setamos o periodo a ser apresentado no cabecalho, nome do aluno e condigo do mesmo
+     */
+    $periodoselecionado = $oFiltros->oElementoAvaliacao->getDescricao();
 
-  $ed47_v_nome = is_null($oAluno->sNomeSocial) || empty($oAluno->sNomeSocial) ? $oAluno->sNome :$oAluno->sNomeSocial;
-  $ed47_i_codigo      = $oAluno->iCodigo;
-  $ed47_i_dtnasc      = $oAluno->sDataNasc;
-  $ed60_i_numero      = $oAluno->iOrdem;
-  $ed60_c_situacao    = $oAluno->sSituacao;
+    $ed47_v_nome = is_null($oAluno->sNomeSocial) || empty($oAluno->sNomeSocial) ? $oAluno->sNome :$oAluno->sNomeSocial;
+    $ed47_i_codigo      = $oAluno->iCodigo;
+    $ed47_i_dtnasc      = $oAluno->sDataNasc;
+    $ed60_i_numero      = $oAluno->iOrdem;
+    $ed60_c_situacao    = $oAluno->sSituacao;
 
-  /**
-   * Dados do cabeçalho padrão, quando não houver cabeçalho configurado
-   */
-  $head1 = "BOLETIM POR PARECER DESCRITIVO $periodoselecionado";
-  $head2 = "Aluno: $ed47_v_nome - $oAluno->sResultadoFinal";
-  $head3 = "Curso: $ed29_i_codigo - $ed29_c_descr";
-  $head4 = "Calendário: $ed52_c_descr";
-  $head5 = "Etapa: $ed11_c_descr          " . "Turma: $ed57_c_descr"   ;
-  $head6 = "Matrícula: {$oAluno->iMatricula}";
+    /**
+     * Dados do cabeçalho padrão, quando não houver cabeçalho configurado
+     */
+    $head1 = "BOLETIM POR PARECER DESCRITIVO $periodoselecionado";
+    $head2 = "Aluno: $ed47_v_nome - $oAluno->sResultadoFinal";
+    $head3 = "Curso: $ed29_i_codigo - $ed29_c_descr";
+    $head4 = "Calendário: $ed52_c_descr";
+    $head5 = "Etapa: $ed11_c_descr          " . "Turma: $ed57_c_descr"   ;
+    $head6 = "Matrícula: {$oAluno->iMatricula}";
 
-  $pdf->setfillcolor(225);
-  $pdf->SetFont('arial','b',7);
+    $pdf->setfillcolor(225);
+    $pdf->SetFont('arial','b',7);
 
-  /**
-   * Cria a instancia do documento que imprimira os dados do cabecalho de acordo com as variaveis setadas
-   */
-  $oLibDocumento = new libdocumento(5001,null);
+    /**
+     * Cria a instancia do documento que imprimira os dados do cabecalho de acordo com as variaveis setadas
+     */
+    $oLibDocumento = new libdocumento(5001,null);
 
-  if ( $oLibDocumento->lErro ) {
-    db_redireciona("db_erros.php?fechar=true&db_erro={$oLibDocumento->sMsgErro}");
-  }
+    if ( $oLibDocumento->lErro ) {
+        db_redireciona("db_erros.php?fechar=true&db_erro={$oLibDocumento->sMsgErro}");
+    }
 
-  $aParagrafo = $oLibDocumento->getDocParagrafos();
-  foreach ($aParagrafo as $oParagrafo) {
-    eval($oParagrafo->oParag->db02_texto);
-  }
+    $sSqlTelefoneEscola = "select ed26_i_numero
+                           from telefoneescola
+                          where ed26_i_escola = ".db_getsession("DB_coddepto")."
+                          limit 1";
+
+    $rsTelefoneEscola   = db_query($sSqlTelefoneEscola);
+
+    if( pg_num_rows($rsTelefoneEscola) > 0 ){
+        $telefoneescola = db_utils::fieldsMemory($rsTelefoneEscola,0)->ed26_i_numero;
+    } else {
+        $telefoneescola = "";
+    }
+
+
+    $pdf->Image('imagens/files/'.$sLogoInstit,7,$pdf->GetY(),20);
+
+    if(trim($sLogoEscola)!=""){
+        $pdf->Image('imagens/'.$sLogoEscola,108,$pdf->GetY() - 2,20);
+    }
+
+    $pdf->Text(33,$m0,$nome);
+    $pdf->Text(33,$m1,$sNomeEscola);
+    $pdf->SetFont('Arial','I',8);
+    $pdf->Text(33,$m2,$ruaescola.", ".$numescola." - ".$bairroescola);
+    $pdf->Text(33,$m3,$cidadeescola." - ".$estadoescola);
+    $pdf->Text(33,$m4,$telefoneescola);
+    $comprim = ($pdf->w - $pdf->rMargin);
+    $pdf->Text(33,$m5,($emailescola!=""?$emailescola:""));
+    $pdf->Text(33,$m6,($url!=""?$url:""));
+    $Espaco = $pdf->w - 80 ;
+    $pdf->SetFont('Arial','',7);
+    $pdf->setleftmargin($Espaco);
+    $pdf->setfillcolor(235);
+    $pdf->roundedrect($Espaco - 3,$m8,75,28,2,'DF','123');
+    $pdf->line(10,$m9,$comprim,$m9);
+    $pdf->setfillcolor(255);
+    $pdf->multicell(0,$m7,@$head1,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head2,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head3,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head4,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head5,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head6,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head7,0,1,"J",0);
+    $pdf->multicell(0,$m7,@$head8,0,1,"J",0);
+    $pdf->setleftmargin($margemesquerda);
+    $pdf->Ln(5);
 }
 
 /**
@@ -527,52 +588,148 @@ function cabecalhoRelatorio(FpdfMultiCellBorder $pdf, $oFiltros, $oAluno, $lImpr
  * @param FpdfMultiCellBorder $pdf
  * @param stdClass $oFiltros
  */
-function informacoesAlunoDisciplina(FpdfMultiCellBorder $pdf, $oFiltros, $oDadosDisciplina, $lPaginaNova) {
+function informacoesAlunoDisciplina(FpdfMultiCellBorder $pdf, $oFiltros, $oDadosDisciplina, $lPaginaNova = null) {
 
-  $iYInicial = $pdf->GetY();
+    $iYInicial = $pdf->GetY();
 
-   if ($lPaginaNova) {
-     $pdf->Line($pdf->GetX(), $iYInicial, $oFiltros->iLarguraRetangulo, $iYInicial);
-   }
-  /**
-   * Imprime uma linha em branco com fundo cinza
-   */
-  $pdf->setfillcolor(225);
-  $pdf->SetFont('times','',8);
+    if ($lPaginaNova) {
+        $pdf->Line($pdf->GetX(), $iYInicial, $oFiltros->iLarguraRetangulo, $iYInicial);
+    }
+    /**
+     * Imprime uma linha em branco com fundo cinza
+     */
+    $pdf->setfillcolor(225);
+    $pdf->SetFont('times','',8);
 
-  /**
-   * Imprime o valor das aulas dadas. Valida a forma de calculo da carga horaria da Turma, podendo ser impresso:
-   * Quando 1: Aulas Dadas
-   * Quando 2: Dias Letivos
-  */
-  $pdf->SetXY(20, $pdf->GetY() + 2);
-  $pdf->SetFont('arial', 'b', 10);
-  $sMensagemAulas = "Aulas Dadas: {$oDadosDisciplina->iTotalAulas}";
-  if ($oFiltros->oTurma->getFormaCalculoCargaHoraria() == 2) {
-    $sMensagemAulas = "Dias Letivos: {$oDadosDisciplina->iTotalAulas}";
-  }
-  $pdf->cell($oFiltros->iLarguraLinha / 2, $oFiltros->iAlturaLinhaPadrao, $sMensagemAulas, 0, 0, "L");
+    /**
+     * Imprime o valor das aulas dadas. Valida a forma de calculo da carga horaria da Turma, podendo ser impresso:
+     * Quando 1: Aulas Dadas
+     * Quando 2: Dias Letivos
+     */
+    $pdf->SetXY(20, $pdf->GetY() + 2);
+    $pdf->SetFont('arial', 'b', 9);
+    $sMensagemAulas = "Aulas Dadas: {$oDadosDisciplina->iTotalAulas}";
+    if ($oFiltros->oTurma->getFormaCalculoCargaHoraria() == 2) {
+        $sMensagemAulas = "Dias Letivos: {$oDadosDisciplina->iTotalAulas}";
+    }
+    $pdf->cell($oFiltros->iLarguraLinha / 2, $oFiltros->iAlturaLinhaPadrao, $sMensagemAulas, 0, 0, "L");
 
-  /**
-   * Imprime a linha com o numero de faltas total
-  */
+    /**
+     * Imprime a linha com o numero de faltas total
+     */
 //   $pdf->SetX(20);
-  $sNumeroFaltas = "Nº de Faltas: {$oDadosDisciplina->iTotalFaltas}";
-  $pdf->cell($oFiltros->iLarguraLinha / 2, $oFiltros->iAlturaLinhaPadrao, $sNumeroFaltas, 0, 1, "L");
+    $sNumeroFaltas = "Nº de Faltas: {$oDadosDisciplina->iTotalFaltas}";
+    $pdf->cell($oFiltros->iLarguraLinha / 2, $oFiltros->iAlturaLinhaPadrao, $sNumeroFaltas, 0, 1, "L");
 
-  /**
-   * Imprime a linha com o nome da disciplina selecionada. Caso seja parecer unico ($oFiltros->lParecerUnico is true),
-   * mostra PARECER UNICO
-  */
-  $pdf->SetXY(14, $pdf->GetY() + 2);
-  $sDisciplina = $oFiltros->lParecerUnico ? 'PARECER ÚNICO' : $oDadosDisciplina->sDisciplina;
-  $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, $sDisciplina, 1, 1, "L", 1);
+    /**
+     * Imprime a linha com o nome da disciplina selecionada. Caso seja parecer unico ($oFiltros->lParecerUnico is true),
+     * mostra PARECER UNICO
+     */
+    $pdf->SetXY(14, $pdf->GetY() + 2);
+    $sDisciplina = $oFiltros->lParecerUnico ? 'PARECER ÚNICO' : $oDadosDisciplina->sDisciplina;
+    $pdf->SetFont('arial', 'B', 10);
+    $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao + 5, $sDisciplina, 1, 1, "C", 1);
 
-  $iYFinal = $pdf->GetY();
-  $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal);
-  $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal);
+    $iYFinal = $pdf->GetY();
+    $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal);
+    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal);
 }
 
+/**
+ *  Imprime parecer único conforme escolha do usuário
+ * @param FpdfMultiCellBorder $pdf
+ * @param $oFiltros
+ * @param $oAluno
+ * @return void
+ */
+function imprimeParecerUnico(FpdfMultiCellBorder $pdf, $oFiltros, $oAluno) {
+    $oDadosDisciplina = $oAluno->aDisciplinas;
+    $qtdDisciplinas = count($oDadosDisciplina);
+
+    informacoesAlunoDisciplina($pdf, $oFiltros, $oDadosDisciplina[0]);
+
+    if (count($oDadosDisciplina) != 0) {
+        foreach ($oDadosDisciplina as &$disciplina) {
+            $iYInicial = $pdf->GetY();
+
+            /**
+             *  Retira as quebras de linha que não antecedem uma letra maiúscula
+             */
+            $sParecerUnico = "";
+            if (!empty($disciplina->oParecer->sParecer)) {
+                $disciplina->oParecer->sParecer = preg_replace("/\n(?=[a-z])/", "", $disciplina->oParecer->sParecer);
+                $sParecerUnico = $disciplina->oParecer->sParecer;
+            }
+            if (!empty($disciplina->oParecer->sParecerPadronizado)) {
+                $disciplina->oParecer->sParecerPadronizado = preg_replace("/\n(?=[a-z])/", "", $disciplina->oParecer->sParecerPadronizado);
+                $sParecerUnico = $disciplina->oParecer->sParecerPadronizado;
+            }
+
+            /**
+             * Calculo para fechar os lados do parecer descritivos
+             */
+            $iLinhasParecer      = $pdf->NbLines($oFiltros->iLarguraLinha - 8, $sParecerUnico);
+            $iAlturaTotal        = $oFiltros->iAlturaLinhaPadrao * $iLinhasParecer;
+            $iAlturaQuebraPagina = $oFiltros->iAlturaDeQuebraPagina;
+            $lQuebrouPagina      = false;
+
+            if ($iAlturaTotal + $pdf->GetY() > $iAlturaQuebraPagina) {
+                $lQuebrouPagina = true;
+                $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $pdf->GetY() + 10);
+                $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $pdf->GetY() + 10);
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 10, $oFiltros->iLarguraRetangulo, $pdf->GetY() + 10);
+                $pdf->addPage();
+                $iYInicial = $pdf->GetY();
+                $iYFinal = 0;
+            }
+
+            if ($lQuebrouPagina) {
+                $lQuebrouPagina = false;
+                $pdf->Line($pdf->GetX(), $pdf->GetY(), $oFiltros->iLarguraRetangulo, $pdf->GetY());
+                $pdf->SetXY(14, $pdf->GetY() + 5);
+            }
+
+            $pdf->setX(14);
+            $pdf->SetFont('arial', 'B', 8);
+            if ($qtdDisciplinas > 1) {
+                $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, $disciplina->sDisciplina, "LTR", 1, "L", 1);
+                $pdf->setX(14);
+            }
+            $pdf->SetFont('arial', '', 8);
+            $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, trim($sParecerUnico), 1, "J");
+
+            $iYFinal = $pdf->GetY();
+            $pdf->Line(10, $iYInicial, 10, $iYFinal);
+            $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal);
+        }
+    } else {
+        $iYInicial = $pdf->GetY();
+
+        $pdf->SetXY(14, $pdf->GetY());
+        $pdf->SetFont('arial', 'B', 10);
+        $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao + 5, 'ALUNO NÃO POSSUI PARECER SALVO', 1, 1, "C", 0);
+
+        $iYFinal = $pdf->GetY();
+        $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal);
+        $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal);
+
+    }
+
+    /**
+     * Calculo para saber se as observações caberão na página atual
+     */
+    $lQuebrouPagina = false;
+    $iLinhasObservacao     = $pdf->NbLines($oFiltros->iLarguraLinha - 8, $oFiltros->sObservacao);
+    $iAlturaAproximadaObs  = $pdf->GetY() + ($iLinhasObservacao * $oFiltros->iAlturaLinhaPadrao);
+    $iAlturaAproximadaObs += 20; //Altura da assinatura se houver
+
+    if ($iAlturaAproximadaObs > $oFiltros->iAlturaDeQuebraPagina) {
+        $lQuebrouPagina = true;
+    }
+
+    imprimeObservacoes($pdf, $oFiltros, $lQuebrouPagina, $oAluno->iCodigo);
+    $pdf->Line($pdf->GetX(), $pdf->GetY() + 2, $oFiltros->iLarguraRetangulo, $pdf->GetY() + 2);
+}
 /**
  * Imprime os pareceres
  * @param FpdfMultiCellBorder $pdf
@@ -580,162 +737,163 @@ function informacoesAlunoDisciplina(FpdfMultiCellBorder $pdf, $oFiltros, $oDados
  */
 function imprimePareceres(FpdfMultiCellBorder $pdf, $oFiltros, $oDadosDisciplina) {
 
-  $iYInicial = $pdf->GetY();
-
-  /**
-   * Caso exista parecer padronizado setado, imprimimos cada parecer de acordo com a forma desejada ($sPadrao)
-   * Senao existir, nao apresenta as linhas nem titulo de parecer padronizado
-   */
-  if (!empty($oDadosDisciplina->oParecer->sParecerPadronizado)) {
-
-    $pdf->SetX(14);
-    $pdf->setfillcolor(245);
-    $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Parecer Padronizado:", 1, 1, "L", 1);
-    $pdf->SetX(14);
-    $pdf->SetFont('arial', '', 10);
-
-    if ($oFiltros->sPadrao == 'C') {
-      $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, $oDadosDisciplina->oParecer->sParecerPadronizado, 1, "L");
-    } else {
-
-      $pdf->SetFont('arial', 'b', 10);
-      $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Seq - Parecer => Legenda", 1, 1, "L");
-      $aPareceres = explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado);
-
-      $pdf->SetFont('arial', '', 10);
-        foreach ($aPareceres as $sParecer) {
-            $pdf->SetX(14);
-            $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao + 1, trim($sParecer), 1, 'L');
-        }
-    }
-  }
-
-  /**
-   * Fecha os lados do parecer padronizado
-   */
-  $iYFinal = $pdf->GetY();
-  $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
-  $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
-
-  $pdf->SetX(14);
-  $pdf->SetFont('arial', 'b', 10);
-  $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Parecer Descritivo:", 1, 1, "L", 1);
-
-  /**
-   * Calculo para fechar os lados do parecer descritivos
-   */
-  $iLinhasParecer      = $pdf->NbLines($oFiltros->iLarguraLinha - 8, $oDadosDisciplina->oParecer->sParecer);
-  $iAlturaTotal        = $oFiltros->iAlturaLinhaPadrao * $iLinhasParecer;
-  $iAlturaQuebraPagina = $oFiltros->iAlturaDeQuebraPagina;
-  $lQuebrouPagina      = false;
-  if ($iAlturaTotal > $iAlturaQuebraPagina) {
-
-    $lQuebrouPagina = true;
-    $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iAlturaQuebraPagina);
-    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iAlturaQuebraPagina);
-  }
-
-  /**
-   * Caso exista parecer descritivo setado, imprimimos o que foi informado. Caso contrario, imprimimos apenas linhas sem
-   * valores
-   */
-  if (!empty($oDadosDisciplina->oParecer->sParecer)) {
-
-    $pdf->SetX(14);
-    $pdf->SetFont('arial', '', 10);
-    $pdf->MultiCell($oFiltros->iLarguraLinha - 8,
-                    $oFiltros->iAlturaLinhaPadrao,
-                    "  ".$oDadosDisciplina->oParecer->sParecer,
-                    1,
-                    "L");
-
-  } else {
+    $iYInicial = $pdf->GetY();
 
     /**
-     * Quando nao houver um parecer descritivo, pegamos a posicao do Y para calcular a area do retangulo a ser impresso
+     * Caso exista parecer padronizado setado, imprimimos cada parecer de acordo com a forma desejada ($sPadrao)
+     * Senao existir, nao apresenta as linhas nem titulo de parecer padronizado
      */
-    $iYParecerVazio = $pdf->GetY();
-    for ($iContador = 0; $iContador < 4; $iContador++) {
+    if (!empty($oDadosDisciplina->oParecer->sParecerPadronizado)) {
 
-      $pdf->SetX(14);
-      $pdf->SetFont('arial', '', 10);
-      $sLinhas = "";
-      $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, str_pad($sLinhas, 90, "_"), 0, 1, "C");
+        $pdf->SetX(14);
+        $pdf->setfillcolor(245);
+        $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Parecer Padronizado:", 1, 1, "L", 1);
+        $pdf->SetX(14);
+        $pdf->SetFont('arial', '', 9);
+
+        if ($oFiltros->sPadrao == 'C') {
+            $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, $oDadosDisciplina->oParecer->sParecerPadronizado, 1, "J");
+        } else {
+
+            $pdf->SetFont('arial', 'b', 9);
+            $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Seq - Parecer => Legenda", 1, 1, "J");
+            $aPareceres = explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado);
+
+            $pdf->SetFont('arial', '', 9);
+            foreach ($aPareceres as $sParecer) {
+                $pdf->SetX(14);
+                $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao + 1, trim($sParecer), 1, 'J');
+            }
+        }
     }
-    $pdf->Rect(14, $iYParecerVazio, 182, 18);
-    $pdf->setY($pdf->GetY() + 2);
-  }
 
-  $iYFinal = $pdf->GetY();
-  if ($lQuebrouPagina) {
-    $iYInicial = 10;
-  }
-  $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
-  $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
+    /**
+     * Fecha os lados do parecer padronizado
+     */
+    $iYFinal = $pdf->GetY();
+    $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
+    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
+
+    $pdf->SetX(14);
+    $pdf->SetFont('arial', 'b', 9);
+    $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Parecer Descritivo:", 1, 1, "L", 1);
+
+    /**
+     * Calculo para fechar os lados do parecer descritivos
+     */
+    $iLinhasParecer      = $pdf->NbLines($oFiltros->iLarguraLinha - 8, $oDadosDisciplina->oParecer->sParecer);
+    $iAlturaTotal        = $oFiltros->iAlturaLinhaPadrao * $iLinhasParecer;
+    $iAlturaQuebraPagina = $oFiltros->iAlturaDeQuebraPagina;
+    $lQuebrouPagina      = false;
+    if ($iAlturaTotal > $iAlturaQuebraPagina) {
+
+        $lQuebrouPagina = true;
+        $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iAlturaQuebraPagina);
+        $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iAlturaQuebraPagina);
+    }
+
+    /**
+     * Caso exista parecer descritivo setado, imprimimos o que foi informado. Caso contrario, imprimimos apenas linhas sem
+     * valores
+     */
+    if (!empty($oDadosDisciplina->oParecer->sParecer)) {
+
+        $pdf->SetX(14);
+        $pdf->SetFont('arial', '', 9);
+        $pdf->MultiCell($oFiltros->iLarguraLinha - 8,
+            $oFiltros->iAlturaLinhaPadrao,
+            "  ".$oDadosDisciplina->oParecer->sParecer,
+            1,
+            "J");
+
+    } else {
+
+        /**
+         * Quando nao houver um parecer descritivo, pegamos a posicao do Y para calcular a area do retangulo a ser impresso
+         */
+        $iYParecerVazio = $pdf->GetY();
+        for ($iContador = 0; $iContador < 4; $iContador++) {
+
+            $pdf->SetX(14);
+            $pdf->SetFont('arial', '', 9);
+            $sLinhas = "";
+            $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, str_pad($sLinhas, 90, "_"), 0, 1, "C");
+        }
+        $pdf->Rect(14, $iYParecerVazio, 182, 18);
+        $pdf->setY($pdf->GetY() + 2);
+    }
+
+    $iYFinal = $pdf->GetY();
+    if ($lQuebrouPagina) {
+        $iYInicial = 10;
+    }
+    $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
+    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
 }
- 
- /**
-  * Imprime as observacoes
-  * @param FpdfMultiCellBorder $pdf
-  * @param stdClass $oFiltros
-  */
-  function imprimeObservacoes(FpdfMultiCellBorder $pdf, $oFiltros, $lPaginaNova, $iAluno) {
+
+/**
+ * Imprime as observacoes
+ * @param FpdfMultiCellBorder $pdf
+ * @param stdClass $oFiltros
+ */
+function imprimeObservacoes(FpdfMultiCellBorder $pdf, $oFiltros, $lPaginaNova, $iAluno) {
     $cldiarioavaliacao = new cl_diarioavaliacao();
 
     $sWhere              = " ed95_i_aluno = {$iAluno} AND ed59_i_turma = {$oFiltros->oTurma->getCodigo()} AND ed72_i_procavaliacao = {$oFiltros->iPeriodo}";
     $sSqlDiarioAvaliacao = $cldiarioavaliacao->sql_query( "", "ed232_c_descr, ed72_t_obs", "", $sWhere );
     $result_obs          = $cldiarioavaliacao->sql_record( $sSqlDiarioAvaliacao );
-    
+
     $aObservacoes = array();
-    
-    for( $iContador = 0; $iContador < pg_num_rows( $result_obs ); $iContador++ ) {  
-      $oDadosObservacao = db_utils::fieldsMemory( $result_obs, $iContador );
-      
-      if( !empty( $oDadosObservacao->ed72_t_obs ) ) {
-        $aObservacoes[] = "{$oDadosObservacao->ed72_t_obs}";
-      }
+
+    for( $iContador = 0; $iContador < pg_num_rows( $result_obs ); $iContador++ ) {
+        $oDadosObservacao = db_utils::fieldsMemory( $result_obs, $iContador );
+
+        if( !empty( $oDadosObservacao->ed72_t_obs ) ) {
+            $aObservacoes[] = "{$oDadosObservacao->ed72_t_obs}";
+        }
     }
     $ed72_t_obs = implode( "\n", $aObservacoes );
-    
+
     $iYInicial = $pdf->GetY();
-    
+
     if ($lPaginaNova) {
-      $pdf->Line($pdf->GetX(), $iYInicial, $oFiltros->iLarguraRetangulo, $iYInicial);
+        $pdf->Line($pdf->GetX(), $iYInicial, $oFiltros->iLarguraRetangulo, $iYInicial);
     }
-    
+
     /**
      * Imprimimos as observacoes de acordo com o que foi informado na tela de impressao
      */
     $pdf->setfillcolor(225);
-    $pdf->SetFont('arial', 'b', 10);
+    $pdf->SetFont('arial', 'b', 9);
     $pdf->SetXY(14, $pdf->GetY() + 4);
     $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Observações:", 1, 1, "L", 1);
-    
+
     $pdf->SetX(14);
     $pdf->SetFont('arial', '', 7);
     $pdf->MultiCell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, $oFiltros->sObservacao."\n".$ed72_t_obs, 1, "L");
-    
-  /**
-   * Caso tenha sido marcada a opcao de imprimir a assinatura do conselheiro, acrescentamos essa linha ao final do
+
+    /**
+     * Caso tenha sido marcada a opcao de imprimir a assinatura do conselheiro, acrescentamos essa linha ao final do
      * relatorio
-  */
-  if ($oFiltros->lAssinaturaConselheiro) {
+     */
+    if ($oFiltros->lAssinaturaConselheiro) {
 
-    $pdf->SetFont('arial', '', 7);
-    $pdf->SetY($pdf->GetY() + 4);
-    $sProfessorConselheiro = '';
+        $pdf->SetFont('arial', '', 7);
+        $pdf->SetY($pdf->GetY() + 4);
+        $sProfessorConselheiro = '';
 
-    if ($oFiltros->oTurma->getProfessorConselheiro() && $oFiltros->oTurma->getProfessorConselheiro()->getNome() != '') {
-      $sProfessorConselheiro = "Professor ".$oFiltros->oTurma->getProfessorConselheiro()->getNome();
+        if ($oFiltros->oTurma->getProfessorConselheiro() && $oFiltros->oTurma->getProfessorConselheiro()->getNome() != '') {
+            $sProfessorConselheiro = $oFiltros->oTurma->getProfessorConselheiro()->getNome();
+        }
+        $sLinhas = "";
+        $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, str_pad($sLinhas, 50, "_"), 0, 1, "C");
+        $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, $sProfessorConselheiro, 0, 1, "C");
+        $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, "Professor(a)", 0, 1, "C");
     }
-    $sLinhas = "";
-    $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, str_pad($sLinhas, 50, "_"), 0, 1, "C");
-    $pdf->cell($oFiltros->iLarguraLinha, $oFiltros->iAlturaLinhaPadrao, $sProfessorConselheiro, 0, 1, "C");
-  }
 
-  $iYFinal = $pdf->GetY();
-  $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
-  $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
+    $iYFinal = $pdf->GetY();
+    $pdf->Line($pdf->GetX(), $iYInicial, $pdf->GetX(), $iYFinal + 2);
+    $pdf->Line($oFiltros->iLarguraRetangulo, $iYInicial, $oFiltros->iLarguraRetangulo, $iYFinal + 2);
 }
 
 $pdf->Output();

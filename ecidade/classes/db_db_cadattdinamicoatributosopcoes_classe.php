@@ -51,13 +51,13 @@ class cl_db_cadattdinamicoatributosopcoes {
                  db18_valor = varchar(200) = Valor
                  ";
    //funcao construtor da classe
-   function cl_db_cadattdinamicoatributosopcoes() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cadattdinamicoatributosopcoes");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -66,7 +66,7 @@ class cl_db_cadattdinamicoatributosopcoes {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db18_sequencial = ($this->db18_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db18_sequencial"]:$this->db18_sequencial);
        $this->db18_cadattdinamicoatributos = ($this->db18_cadattdinamicoatributos == ""?@$GLOBALS["HTTP_POST_VARS"]["db18_cadattdinamicoatributos"]:$this->db18_cadattdinamicoatributos);
@@ -77,7 +77,7 @@ class cl_db_cadattdinamicoatributosopcoes {
      }
    }
    // funcao para Inclusão
-   function incluir ($db18_sequencial){
+   public function incluir ($db18_sequencial){
       $this->atualizacampos();
      if($this->db18_cadattdinamicoatributos == null ){
        $this->erro_sql = " Campo Atributo não informado.";

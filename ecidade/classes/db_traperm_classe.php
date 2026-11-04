@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,13 +67,13 @@ class cl_traperm {
                  tr20_prefixo = varchar(20) = Prefixo 
                  ";
    //funcao construtor da classe 
-   function cl_traperm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("traperm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_traperm {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tr20_id = ($this->tr20_id == ""?@$GLOBALS["HTTP_POST_VARS"]["tr20_id"]:$this->tr20_id);
        if($this->tr20_dtalvara == ""){
@@ -105,7 +105,7 @@ class cl_traperm {
      }
    }
    // funcao para inclusao
-   function incluir ($tr20_id){ 
+   public function incluir ($tr20_id){ 
       $this->atualizacampos();
      if($this->tr20_dtalvara == null ){ 
        $this->erro_sql = " Campo Data do Alvara nao Informado.";
@@ -226,7 +226,7 @@ class cl_traperm {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($tr20_id=null) { 
+   public function alterar ($tr20_id=null) { 
       $this->atualizacampos();
      $sql = " update traperm set ";
      $virgula = "";
@@ -398,7 +398,7 @@ class cl_traperm {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($tr20_id=null,$dbwhere=null) { 
+   public function excluir ($tr20_id=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($tr20_id));
      }else{ 
@@ -467,7 +467,7 @@ class cl_traperm {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

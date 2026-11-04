@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -37,8 +37,8 @@ include(modification("classes/db_clasativ_classe.php"));
 $clativid = new cl_ativid;
 $clclasativ = new cl_clasativ;
 
-$clativid->rotulo->label(); 
-$clclasativ->rotulo->label(); 
+$clativid->rotulo->label();
+$clclasativ->rotulo->label();
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('q12_classe');
@@ -54,7 +54,7 @@ if ((isset($q12_classe) && $q12_classe!="") && (isset($atualizar))){
   $numrows03=$clclasativ->numrows;
     for($y=0; $y<$numrows03; $y++){
       if ($sqlerro==false){
-	db_fieldsmemory($result03,$y);  
+	db_fieldsmemory($result03,$y);
 	$clclasativ->q82_classe=$q12_classe;
 	$clclasativ->q82_ativ=$q82_ativ;
 	$clclasativ->excluir($q82_ativ,$q12_classe);
@@ -64,15 +64,15 @@ if ((isset($q12_classe) && $q12_classe!="") && (isset($atualizar))){
 	}
       }
     }
-  }  
-  
+  }
+
   $vt=$HTTP_POST_VARS;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
     if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+      $dados= explode("_",$chave);
       $clclasativ->q82_ativ=$dados[1];
       $clclasativ->q82_classe=$q12_classe;
       $clclasativ->incluir($dados[1],$q12_classe);
@@ -82,7 +82,7 @@ if ((isset($q12_classe) && $q12_classe!="") && (isset($atualizar))){
       }
     }
     $proximo=next($vt);
-  }  
+  }
   db_fim_transacao($sqlerro);
 }
 ?>
@@ -103,29 +103,29 @@ function js_emite(){
 }
 
 function js_limpa(){
-   location.href='iss1_clasativ011.php'; 
+   location.href='iss1_clasativ011.php';
 }
-function js_marca(obj){ 
+function js_marca(obj){
    var OBJ = document.form1;
    for(i=0;i<OBJ.length;i++){
      if(OBJ.elements[i].type == 'checkbox'){
-       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
+       OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);
      }
    }
    return false;
 }
-</script>  
+</script>
 <style>
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc;       
+background-color:#aacccc;
 border-color: darkblue;
 }
 .corpo {
 text-align: center;
 color: black;
-background-color:#ccddcc;       
+background-color:#ccddcc;
 }
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -146,33 +146,33 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-  <?
+  <?php
   if ((isset($processar))&&(!isset($atualizar))){
     $db_opcao=3;
   }else $db_opcao=1;
   ?>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?php db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("q12_classe",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
-         db_input("q12_descr",40,"$Iq12_descr",true,"text",3);  
+      <?php db_input("q12_classe",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
+         db_input("q12_descr",40,"$Iq12_descr",true,"text",3);
         ?></td>
   </tr>
   <tr>
   <td colspan="2" align="center">
     <input name="processar" type="button"   value="Processar" onclick='js_emite();'>
     <input name="limpa" type="button" onclick='js_limpa();'  value="Limpar">
-  
-    
- 
+
+
+
   </td>
   </tr>
 
-  <?
+  <?php
     if (isset($q12_classe) && $q12_classe!=""){
        $result01=$clativid->sql_record($clativid->sql_query_file(null,"*","q03_ativ"));
        $numrows01=$clativid->numrows;
-       if($numrows01>0){ 
+       if($numrows01>0){
           echo "
 	  <table>
            <tr>
@@ -180,8 +180,8 @@ background-color:#ccddcc;
 	     <td class='cabec' align='center'  title='$Tq03_ativ'>".str_replace(":","",$Lq03_ativ)."</td>
 	     <td class='cabec' align='center'  title='$Tq03_descr'>".str_replace(":","",$Lq03_descr)."</td>
 	   </tr>
-          "; 	   
-       } 
+          ";
+       }
        $result02=$clclasativ->sql_record($clclasativ->sql_query_file(null,null,"*","","q82_classe=$q12_classe"));
        $numrows02=$clclasativ->numrows;
        for($i=0; $i<$numrows01; $i++){
@@ -191,13 +191,13 @@ background-color:#ccddcc;
            db_fieldsmemory($result02,$h);
 	   if($q82_ativ==$q03_ativ){
 	     $che="checked";
-	   } 
+	   }
 	 }
 	 $result_naumostra=$clclasativ->sql_record($clclasativ->sql_query_file(null,null,"*","","q82_ativ=$q03_ativ and  q82_classe<>$q12_classe"));
          $numrows_naumostra=$clclasativ->numrows;
-	 
-	 if ($numrows_naumostra!=0){ 	 
-	   
+
+	 if ($numrows_naumostra!=0){
+
 	 }else{
          echo"
            <tr>
@@ -208,8 +208,8 @@ background-color:#ccddcc;
 	 }
 	 }
 	 echo"
-	   </table>";	        
-       
+	   </table>";
+
 
   ?>
   <tr height="20px">
@@ -222,34 +222,34 @@ background-color:#ccddcc;
     <input name="limpa" type="button" onclick='js_limpa();'  value="Voltar">
   </td>
   </tr>
-  <?
+  <?php
   }
   ?>
- 
+
   </table>
   </form>
- 
+
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisaq12_classe(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_classe','func_classe.php?funcao_js=parent.js_mostraclasse1|q12_classe|q12_descr','Pesquisa',true);  
+    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_classe','func_classe.php?funcao_js=parent.js_mostraclasse1|q12_classe|q12_descr','Pesquisa',true);
     }else{
-     if(document.form1.q12_classe.value != ''){ 
+     if(document.form1.q12_classe.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_classe','func_classe.php?pesquisa_chave='+document.form1.q12_classe.value+'&funcao_js=parent.js_mostraclasse','Pesquisa',false);
      }else{
-       document.form1.q12_descr.value = ''; 
+       document.form1.q12_descr.value = '';
      }
   }
 }
 function js_mostraclasse(chave,erro){
   document.form1.q12_descr.value = chave;
-  if(erro==true){ 
-    document.form1.q12_classe.value = ''; 
-    document.form1.q12_classe.focus(); 
+  if(erro==true){
+    document.form1.q12_classe.value = '';
+    document.form1.q12_classe.focus();
   }
 }
 function js_mostraclasse1(chave1,chave2){
@@ -259,13 +259,13 @@ function js_mostraclasse1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?
+<?php
 if (isset($atualizar)){
     db_msgbox($erro_msg);
     if($clclasativ->erro_campo!=""){
       echo "<script> document.form1.".$clclasativ->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clclasativ->erro_campo.".focus();</script>";
-    }else{ 
+    }else{
       echo"<script>(window.CurrentWindow || parent.CurrentWindow).corpo.location.href='iss1_clasativ011.php';</script>";
     }
 }

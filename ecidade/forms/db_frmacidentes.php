@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -51,52 +51,52 @@ $clrotulo->label("tr01_descr");
        <?=@$Ltr07_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr07_id',5,$Itr07_id,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr07_tipoacid?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_tipoacid,"js_pesquisatr07_tipoacid(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr07_tipoacid',5,$Itr07_tipoacid,true,'text',$db_opcao," onchange='js_pesquisatr07_tipoacid(false);'")
 ?>
-       <?
+       <?php
 db_input('tr01_descr',35,$Itr01_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
    <tr>
     <td nowrap title="<?=@$Ttr07_idpista?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_idpista,"js_pesquisatr07_idpista(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr07_idpista',5,$Itr07_idpista,true,'text',$db_opcao," onchange='js_pesquisatr07_idpista(false);'")
 ?>
-       <?
+       <?php
 db_input('tr03_descr',35,$Itr03_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr07_idtempo?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_idtempo,"js_pesquisatr07_idtempo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr07_idtempo',5,$Itr07_idtempo,true,'text',$db_opcao," onchange='js_pesquisatr07_idtempo(false);'")
 ?>
-       <?
+       <?php
 db_input('tr04_descr',35,$Itr04_descr,true,'text',3,'')
        ?>
     </td>
@@ -106,7 +106,7 @@ db_input('tr04_descr',35,$Itr04_descr,true,'text',3,'')
        <?=@$Ltr07_hora?>
     </td>
     <td>
-<?
+<?php
 db_input('tr07_hora',10,$Itr07_hora,true,'text',$db_opcao,"onkeyPress=\" return vl_time(this,event)\"");
 ?>
     </td>
@@ -116,22 +116,22 @@ db_input('tr07_hora',10,$Itr07_hora,true,'text',$db_opcao,"onkeyPress=\" return 
        <?=@$Ltr07_data?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('tr07_data',@$tr07_data_dia,@$tr07_data_mes,@$tr07_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr07_local1?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_local1,"js_pesquisatr07_local1(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr07_local1',5,$Itr07_local1,true,'text',$db_opcao," onchange='js_pesquisatr07_local1(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
       <input type="checkbox" value="1" name="tr07_esquina" onclick="hab_local2()">Esquina
@@ -151,30 +151,30 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr07_idcausa?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_idcausa,"js_pesquisatr07_idcausa(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr07_idcausa',5,$Itr07_idcausa,true,'text',$db_opcao," onchange='js_pesquisatr07_idcausa(false);'")
 ?>
-       <?
+       <?php
 db_input('tr02_descr',35,$Itr02_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttr07_idbairro?>">
-       <?
+       <?php
        db_ancora(@$Ltr07_idbairro,"js_pesquisatr07_idbairro(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('tr07_idbairro',5,$Itr07_idbairro,true,'text',$db_opcao," onchange='js_pesquisatr07_idbairro(false);'")
 ?>
-       <?
+       <?php
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -327,7 +327,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acidentes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

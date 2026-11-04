@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@
 	}
 </script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
   if (isset($HTTP_POST_VARS["anexar"])) {
     db_postmemory($_FILES["arquivo"]);
 ?>
@@ -54,7 +54,7 @@
  // alert('Arquivo foi anexado com sucesso!');
 </script>
 
-<?
+<?php
 	  // Verifica o tamanho do arquivo a ser copiadoé menor que o permitido, caso nao seja exibe alerta  de erro, senao passa a linha de baixo
       system("cp ".$tmp_name." ".$tmp_name.".dbordem");
   } 
@@ -67,11 +67,11 @@
           <tr> 
             <td align="left" >
               <input name="arquivo" type="file"  id="arquivo6" size="50" > 
-	      <? if($db_opcao==1 || $db_opcao==2){  ?>
+	      <?php if($db_opcao==1 || $db_opcao==2){  ?>
                    <input name="anexar" type="submit" id="anexar5" onClick="return js_copiar()" value="Anexar" > 
-	      <?  }else{?>
+	      <?php  }else{?>
                    <input name="anexar" type="submit" id="anexar5" disabled value="Anexar" > 
-	      <?  }?>
+	      <?php  }?>
                    <input name="copiando" style="visibility:hidden" disabled type="text" id="copiando" value="Copiando Arquivo. Aguarde...">
 	    </td>
           </tr>

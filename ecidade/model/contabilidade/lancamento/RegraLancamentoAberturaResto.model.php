@@ -47,6 +47,34 @@ class RegraLancamentoAberturaResto implements IRegraLancamentoContabil
                                        ILancamentoAuxiliar $oLancamentoAuxiliar)
     {
 
+
+        if (in_array($iCodigoDocumento, $this->documentosTransferencia)) {
+
+
+            $oDaoTransacao = new cl_contranslr;
+            $sWhere        = "     c45_coddoc      = {$iCodigoDocumento}";
+            $sWhere       .= " and c45_anousu      = ".db_getsession("DB_anousu");
+            $sWhere       .= " and c46_seqtranslan = {$iCodigoLancamento}";
+            $sSqlTransacao = $oDaoTransacao->sql_queryRegraLancamento(null, "*", null, $sWhere);
+            $rsTransacao   = $oDaoTransacao->sql_record($sSqlTransacao);
+
+            if ($oDaoTransacao->numrows == 0) {
+              $sMsgErro = "Não há lançamentos configurados para o documento {$iCodigoDocumento}.";
+              throw new BusinessException($sMsgErro);
+            }
+            for ($iLinhaRegra = 0; $iLinhaRegra < $oDaoTransacao->numrows; $iLinhaRegra++){
+
+                $oDadosTransacao = db_utils::fieldsMemory($rsTransacao, $iLinhaRegra);
+
+                 $regra = new RegraLancamentoContabil($oDadosTransacao->c47_seqtranslr);
+                 return $regra;
+
+              }
+
+        }
+
+
+
         $oEventoContabil = EventoContabilRepository::getEventoContabilByCodigo($iCodigoDocumento, db_getsession("DB_anousu"));
         $oLancamentoEventoContabil = $oEventoContabil->getEventoContabilLancamentoPorCodigo($iCodigoLancamento);
 

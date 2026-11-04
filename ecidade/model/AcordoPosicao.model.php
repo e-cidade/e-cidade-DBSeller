@@ -178,6 +178,12 @@ class AcordoPosicao
     protected $iContratado;
 
     /**
+     * valor do acordo
+     * @var number
+     */
+    protected $nValorAcordo;
+
+    /**
      * Constante do caminho da mensagem do model
      * @var string
      */
@@ -220,6 +226,7 @@ class AcordoPosicao
             $this->setNumeroAditamento($oDadosPosicao->ac26_numeroaditamento);
             $this->setTipoOperacao($oDadosPosicao->ac26_tipooperacao);
             $this->iContratado = $oDadosPosicao->ac16_contratado;
+            $this->setValorAcordo($oDadosPosicao->ac16_valor);
         }
     }
 
@@ -496,6 +503,27 @@ class AcordoPosicao
     public function getObservacao()
     {
         return $this->sObservacao;
+    }
+
+    /**
+     * define o valor do acordo
+     * @param number $nValorAcordo
+     * @return $this
+     */
+    public function setValorAcordo($nValorAcordo)
+    {
+        $this->nValorAcordo = $nValorAcordo;
+
+        return $this;
+    }
+
+    /**
+     * retorna o valor do acordo
+     * @return number
+     */
+    public function getValorAcordo()
+    {
+        return $this->nValorAcordo;
     }
 
     /**

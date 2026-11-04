@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include_once(modification("libs/db_sql.php"));
@@ -67,8 +67,8 @@ if ($oDaoSauConfig->numrows > 0) {
 <!--
 .style12 {
   font-size: 12px;
-  font-weight: bold; 
-  font-family: "Monospace"; 
+  font-weight: bold;
+  font-family: "Monospace";
 }
 .style19 {font-size: 10px; font-family: "Monospace"; }
 .style37 {font-size: 9px;}
@@ -83,7 +83,7 @@ body {
 <body>
 <table width="100%"  border="0">
 
-<?
+<?php
 $aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
@@ -109,26 +109,26 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
                                         " sd29_i_prontuario = $aChaveProntuarios[$intAgenda] ");
   $resProntproced          = $clprontproced->sql_record ($sSql);
   $objRetorno->prontproced = db_utils::getCollectionByRecord($resProntproced, true, false);
-  
+
   $dia_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 0, 2 );
   $mes_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 3, 2 );
   $ano_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 6, 4 );
   $idade    = isset ( $agendamentofa ) ? calcage ( $dia_nasc, $mes_nasc, $ano_nasc, date ( "d" ), date ( "m" ), date ( "Y" ) ) : "";
-  $idade    = explode(",",$idade);   
-  $objRetorno->idade       = $idade[0]; 
+  $idade    = explode(",",$idade);
+  $objRetorno->idade       = $idade[0];
   /* DATA E HORA DA EMISSÃO */
   if ($oDadosConfig->s103_i_datahorafaa == 2) {
-    
+
     $objRetorno->prontuario[0]->sd24_d_cadastro = date('d/m/Y', db_getsession('DB_datausu'));
     $objRetorno->prontuario[0]->sd24_c_cadastro = date('H:i');
-    
+
   }
 
   $paciente = $objRetorno->prontuario[0]->z01_v_nome;
 ?>
   <tr>
     <td height="865px" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
-    
+
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
       <tr>
         <td width="100%" height="110" colspan="3"></td>
@@ -192,25 +192,25 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     </table>
     <br><br><br><br><br><br>
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
-      <?for($iY=0;$iY<10;$iY++){?>
+      <?php for($iY=0;$iY<10;$iY++){?>
       <tr>
         <td width="100%" height="20" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[$iY]->sd29_t_tratamento)){
-             echo $objRetorno->prontproced[$iY]->sd29_t_tratamento; 
+          <?php if(isset($objRetorno->prontproced[$iY]->sd29_t_tratamento)){
+             echo $objRetorno->prontproced[$iY]->sd29_t_tratamento;
             }?>
         </td>
       </tr>
-      <?}?>
+      <?php }?>
     </table>
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
       <tr>
         <td width="75%" height="30" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[0]->sd70_c_nome)){
+          <?php if(isset($objRetorno->prontproced[0]->sd70_c_nome)){
               echo $objRetorno->prontproced[0]->sd70_c_nome;
             }?>
         </td>
         <td width="25%" height="30" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[0]->sd70_c_cid)){
+          <?php if(isset($objRetorno->prontproced[0]->sd70_c_cid)){
               echo $objRetorno->prontproced[0]->sd70_c_cid;
             }?>
         </td>
@@ -219,12 +219,12 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
       <tr>
         <td width="70%" height="60" nowrap="nowrap">
-          <?if($objRetorno->prontproced[0]->sd63_c_nome){
+          <?php if($objRetorno->prontproced[0]->sd63_c_nome){
               echo $objRetorno->prontproced[0]->sd63_c_nome;
             }?>
         </td>
         <td width="30%" height="60" nowrap="nowrap">
-          <?if($objRetorno->prontproced[0]->sd63_c_procedimento){
+          <?php if($objRetorno->prontproced[0]->sd63_c_procedimento){
               echo $objRetorno->prontproced[0]->sd63_c_procedimento;
             }?>
         </td>
@@ -232,10 +232,10 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     </table>
   </td>
   </tr>
-<?} ?>  
+<?} ?>
 </table>
 <script language="JavaScript">
   self.print();
-</script>  
+</script>
 </body>
 </html>

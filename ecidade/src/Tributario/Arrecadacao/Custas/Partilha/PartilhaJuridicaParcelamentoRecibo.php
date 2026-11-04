@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Partilha;
 
+use db_utils;
 use ECidade\Tributario\Arrecadacao\Custas\Enum\Historico;
 use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
 use ECidade\Tributario\Juridico\Interfaces\Partilha as PartilhaInterface;
@@ -37,6 +38,8 @@ use \ECidade\Tributario\Arrecadacao\Custas\Partilha\PartilhaJuridicaParcelamento
 use Taxa;
 
 use ECidade\Tributario\Arrecadacao\Repository\CalculaParcelamentoHonorarioRepository;
+use ECidade\Tributario\Juridico\ProcessoForoPartilha\Repository\ProcessoForoPartilhaCusta
+as RepositoryProcessoForoPartilhaCusta;
 
 final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Interfaces\PartilhaRecibo
 {
@@ -54,81 +57,204 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
     }
 
     /**
+     * @param bool $comCalculoCustas
      * @return array|ProcessoForoPartilha|ReciboModel|Taxa[]|null
      * @throws \DBException
      */
-    public function processar()
+    public function processar($comCalculoCustas = true)
     {
-        $processoForoPartilha = parent::processar();
+        if (db_utils::ativaParcelamentoCustas()) {
+            $processoForoPartilha = (object) parent::processar();
 
-        $processoForoPartilhaCustas = $processoForoPartilha->getCustas();
+            $processoForoPartilhaCustas = $processoForoPartilha->getCustas();
 
-        if (!empty($processoForoPartilhaCustas)) {
-            $processoForoPartilha->resetCustas();
+            if (!empty($processoForoPartilhaCustas)) {
+                $processoForoPartilha->resetCustas();
 
-            $calculoParcelamentoHonorario = new CalculaParcelamentoHonorarioRepository(
-                $this->processoForo,
-                $this->processoForoPartilhaRepository,
-                $this->recibo
-            );
-
-            foreach ($processoForoPartilhaCustas as $processoForoPartilhaCusta) {
-                if (!$this->reciboTemParcelaTaxa($processoForoPartilhaCusta->getTaxa()->getCodigoTaxa())) {
-                    continue;
-                }
-
-                $processoForoPartilhaCusta->setNumnov($this->recibo->getNumpreRecibo());
-                $valorCusta = $calculoParcelamentoHonorario->calculaValorHonorario(
-                    $processoForoPartilhaCusta,
-                    $processoForoPartilha->getCodigoProcessoForo(),
-                    true
+                $calculoParcelamentoHonorario = new CalculaParcelamentoHonorarioRepository(
+                    $this->processoForo,
+                    $this->processoForoPartilhaRepository,
+                    $this->recibo
                 );
 
-                if (empty($valorCusta)) {
+                foreach ($processoForoPartilhaCustas as $processoForoPartilhaCusta) {
+                    if (!$this->reciboTemParcelaTaxa($processoForoPartilhaCusta->getTaxa()->getCodigoTaxa())) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCusta->setNumnov($this->recibo->getNumpreRecibo());
+                    $valorCusta = $calculoParcelamentoHonorario->calculaValorHonorario(
+                        $processoForoPartilhaCusta,
+                        $processoForoPartilha->getCodigoProcessoForo(),
+                        true
+                    );
+
+                    if (empty($valorCusta)) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCusta->setValor($valorCusta);
+                    $processoForoPartilha->addCustas($processoForoPartilhaCusta);
+                }
+
+                $this->processoForoPartilhaRepository->persist($processoForoPartilha, $comCalculoCustas);
+                $this->processarReciboPartilha($processoForoPartilha);
+            }
+
+            $processoForoPartilhasIsentas = $this->getPartilhasIsentas();
+
+            foreach ($processoForoPartilhasIsentas as $processoForoPartilhaIsenta) {
+                $valorTotalPartilha = 0;
+
+                $processoForoPartilhaCustasIsenta = $processoForoPartilhaIsenta->getCustas();
+                $processoForoPartilhaIsenta->resetCustas();
+
+                foreach ($processoForoPartilhaCustasIsenta as $processoForoPartilhaCustaIsenta) {
+                    $valorCusta = $this->getValorTaxa($processoForoPartilhaCustaIsenta->getTaxa());
+
+                    if ($valorCusta === null) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCustaIsenta->setNumnov($this->recibo->getNumpreRecibo());
+                    $processoForoPartilhaCustaIsenta->setValor($valorCusta);
+
+                    $processoForoPartilhaIsenta->addCustas($processoForoPartilhaCustaIsenta);
+
+                    $valorTotalPartilha += $valorCusta;
+                }
+
+                $processoForoPartilhaIsenta->setValorPartilha($valorTotalPartilha);
+
+                if (!$valorTotalPartilha || $valorTotalPartilha == 0) {
                     continue;
                 }
 
-                $processoForoPartilhaCusta->setValor($valorCusta);
-                $processoForoPartilha->addCustas($processoForoPartilhaCusta);
+                $this->processoForoPartilhaRepository->persist($processoForoPartilhaIsenta, $comCalculoCustas);
             }
 
-            $this->processoForoPartilhaRepository->persist($processoForoPartilha);
-            $this->processarReciboPartilha($processoForoPartilha);
-        }
+            $this->processarIsencaoPartilha($processoForoPartilhasIsentas);
+            /*
+                Ajuste para casos que as custas foram lançadas diretamente no arrecad:
+                Se existir custas lançadas no arrecad e ainda não existe o processoforopartilhacustas,
+                devemos usar os dados lançados no arrecad para criar a processoforopartilhacustas.
+            */
+            /*  Monta lista Numpre/Taxa  */
+            $sListaNumpreTaxa = "";
+            $sOr = "";
+            foreach ($this->recibo->getDebitosRecibo() as $oDebito) {
+                $sListaNumpreTaxa .= $sOr . " (k00_numpre ="
+                    . $oDebito->k00_numpre
+                    . " and k00_numpar ="
+                    . $oDebito->k00_numpar . ")";
+                $sOr = " OR ";
+            }
+            if (!empty($sListaNumpreTaxa)) {
+                $sSqlCustasArrecad = "select k00_numpre,
+                                         k00_receit,
+                                         sum(k00_valor) as valor_taxa,
+                                         k00_hist,
+                                         ar36_receita,
+                                         ar36_sequencial as codigo_taxa,
+                                         ar36_descricao
+                                    from arrecad inner join taxa on k00_receit = ar36_receita
+                                   where k00_hist in (11303, 11304) /* Fixo para debito no arrecad de custas */
+                                     and ({$sListaNumpreTaxa})
+                                group by k00_numpre, k00_receit, k00_hist, ar36_receita, ar36_sequencial, ar36_descricao
+                                order by k00_numpre, ar36_sequencial;";
+                $rsDebitosCustas = db_query($sSqlCustasArrecad);
 
-        $processoForoPartilhasIsentas = $this->getPartilhasIsentas();
+                $totRegCustas = pg_num_rows($rsDebitosCustas);
 
-        foreach ($processoForoPartilhasIsentas as $processoForoPartilhaIsenta) {
-            $valorTotalPartilha = 0;
+                if ($totRegCustas > 0) {
+                    for ($i = 0; $i < $totRegCustas; $i++) {
+                        $oDebitoCustas = (object) pg_fetch_assoc($rsDebitosCustas, $i);
 
-            $processoForoPartilhaCustasIsenta = $processoForoPartilhaIsenta->getCustas();
-            $processoForoPartilhaIsenta->resetCustas();
+                        $oCustas = new ProcessoForoPartilhaCusta;
+                        $oCustas->setCodigoTaxa($oDebitoCustas->codigo_taxa);
+                        $oCustas->setCodigoProcessoForoPartilha($processoForoPartilha->getCodigo());
+                        $oCustas->setValor($oDebitoCustas->valor_taxa);
+                        $oCustas->setNumnov($this->recibo->getNumpreRecibo());
+                        $oCustas->setDispensaLancamentoRecibo(false);
 
-            foreach ($processoForoPartilhaCustasIsenta as $processoForoPartilhaCustaIsenta) {
-                $valorCusta = $this->getValorTaxa($processoForoPartilhaCustaIsenta->getTaxa());
+                        $processoForoPartilhaCustaRepository = RepositoryProcessoForoPartilhaCusta::getInstance();
+                        $processoForoPartilhaCustaRepository->persist($oCustas);
+                    }
+                }
+            }
 
-                if ($valorCusta === null) {
-                    continue;
+            return $this->recibo;
+        } else {
+            $processoForoPartilha = (object)parent::processar();
+
+            $processoForoPartilhaCustas = $processoForoPartilha->getCustas();
+
+            if (!empty($processoForoPartilhaCustas)) {
+                $processoForoPartilha->resetCustas();
+
+                $calculoParcelamentoHonorario = new CalculaParcelamentoHonorarioRepository(
+                    $this->processoForo,
+                    $this->processoForoPartilhaRepository,
+                    $this->recibo
+                );
+
+                foreach ($processoForoPartilhaCustas as $processoForoPartilhaCusta) {
+                    if (!$this->reciboTemParcelaTaxa($processoForoPartilhaCusta->getTaxa()->getCodigoTaxa())) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCusta->setNumnov($this->recibo->getNumpreRecibo());
+                    $valorCusta = $calculoParcelamentoHonorario->calculaValorHonorario(
+                        $processoForoPartilhaCusta,
+                        $processoForoPartilha->getCodigoProcessoForo(),
+                        true
+                    );
+
+                    if (empty($valorCusta)) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCusta->setValor($valorCusta);
+                    $processoForoPartilha->addCustas($processoForoPartilhaCusta);
                 }
 
-                $processoForoPartilhaCustaIsenta->setNumnov($this->recibo->getNumpreRecibo());
-                $processoForoPartilhaCustaIsenta->setValor($valorCusta);
-
-                $processoForoPartilhaIsenta->addCustas($processoForoPartilhaCustaIsenta);
-
-                $valorTotalPartilha += $valorCusta;
+                $this->processoForoPartilhaRepository->persist($processoForoPartilha);
+                $this->processarReciboPartilha($processoForoPartilha);
             }
 
-            $processoForoPartilhaIsenta->setValorPartilha($valorTotalPartilha);
+            $processoForoPartilhasIsentas = $this->getPartilhasIsentas();
 
-            $this->processoForoPartilhaRepository->persist($processoForoPartilhaIsenta);
+            foreach ($processoForoPartilhasIsentas as $processoForoPartilhaIsenta) {
+                $valorTotalPartilha = 0;
+
+                $processoForoPartilhaCustasIsenta = $processoForoPartilhaIsenta->getCustas();
+                $processoForoPartilhaIsenta->resetCustas();
+
+                foreach ($processoForoPartilhaCustasIsenta as $processoForoPartilhaCustaIsenta) {
+                    $valorCusta = $this->getValorTaxa($processoForoPartilhaCustaIsenta->getTaxa());
+
+                    if ($valorCusta === null) {
+                        continue;
+                    }
+
+                    $processoForoPartilhaCustaIsenta->setNumnov($this->recibo->getNumpreRecibo());
+                    $processoForoPartilhaCustaIsenta->setValor($valorCusta);
+
+                    $processoForoPartilhaIsenta->addCustas($processoForoPartilhaCustaIsenta);
+
+                    $valorTotalPartilha += $valorCusta;
+                }
+
+                $processoForoPartilhaIsenta->setValorPartilha($valorTotalPartilha);
+
+                $this->processoForoPartilhaRepository->persist($processoForoPartilhaIsenta);
+            }
+
+            $this->processarIsencaoPartilha($processoForoPartilhasIsentas);
+
+            return $this->recibo;
         }
-
-        $this->processarIsencaoPartilha($processoForoPartilhasIsentas);
-
-        return $this->recibo;
     }
-
     /**
      * @param processoForoPartilha[] $processoForoPartilhasIsentas
      */
@@ -153,6 +279,10 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
                 $valorTotalPartilha += $processoForoPartilhaCustaIsenta->getValor();
             }
 
+            if (!$valorTotalPartilha) {
+                continue;
+            }
+
             $processoForoPartilhaIsenta->setValorPartilha($valorTotalPartilha);
 
             $this->processoForoPartilhaRepository->persist($processoForoPartilhaIsenta);
@@ -172,14 +302,16 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
             $numpar = $this->getParcelaTaxa($processoForoPartilhaCusta->getTaxa()->getCodigoTaxa());
 
             if ($processoForoPartilhaCusta->getTaxa()->isAplicaHonorario()
-                && $this->processoForo->getParcelasHonorarios() > 1) {
+                && $this->processoForo->getParcelasHonorarios() > 1
+            ) {
                 $numpar = array();
 
                 $debitos = $this->recibo->getDebitosRecibo();
 
                 foreach ($debitos as $debito) {
                     if ($debito->k00_numpre == $this->termo->getNumpre()
-                        && $debito->k00_numpar <= $this->processoForo->getParcelasHonorarios()) {
+                        && $debito->k00_numpar <= $this->processoForo->getParcelasHonorarios()
+                    ) {
                         $numpar[] = $debito->k00_numpar;
                     }
                 }
@@ -195,7 +327,8 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
 
             foreach ($numpar as $parcela) {
                 if ($processoForoPartilhaCusta->getTaxa()->isAplicaHonorario()
-                    && $this->processoForo->getParcelasHonorarios() > 1) {
+                    && $this->processoForo->getParcelasHonorarios() > 1
+                ) {
                     $valorCusta = $this->getValorTaxa($processoForoPartilhaCusta->getTaxa());
                     $valorTaxa = $calculoParcelamentoHonorario->calculaValorTaxaParcela(
                         $valorCusta,
@@ -237,7 +370,8 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
                 && ($debito->k00_numpar == $numpar
                     || ($taxa->isAplicaHonorario()
                         && !empty($parcelasHonorarios)
-                        && $debito->k00_numpar <= $parcelasHonorarios))) {
+                        && $debito->k00_numpar <= $parcelasHonorarios))
+            ) {
                 return true;
             }
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("ed18_c_nome");
        <?=@$Led218_i_codigo?>
     </td>
     <td> 
-        <?
+        <?php
         db_input('ed218_i_codigo',10,$Ied218_i_codigo,true,'text',3,"")
         ?>
     </td>
@@ -51,7 +51,7 @@ $clrotulo->label("ed18_c_nome");
        <?=@$Led218_d_datacad?>
     </td>
     <td> 
-        <?
+        <?php
         db_inputdata('ed218_d_datacad',@$ed218_d_datacad_dia,@$ed218_d_datacad_mes,@$ed218_d_datacad_ano,true,'text',$db_opcao,"")
         ?>
     </td>
@@ -61,37 +61,37 @@ $clrotulo->label("ed18_c_nome");
        <?=@$Led218_v_nome?>
     </td>
     <td> 
-        <?
+        <?php
         db_input('ed218_v_nome',50,$Ied218_v_nome,true,'text',$db_opcao,"")
         ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted218_i_linha?>">
-       <?
+       <?php
        db_ancora(@$Led218_i_linha,"js_pesquisaed218_i_linha(true);",$db_opcao);
        ?>
     </td>
     <td> 
-        <?
+        <?php
         db_input('ed218_i_linha',10,$Ied218_i_linha,true,'text',3," onchange='js_pesquisaed218_i_linha(false);'")
         ?>
-       <?
+       <?php
         db_input('ed217_c_origem',40,@$Ied217_c_origem,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted18_i_codigo?>">
-       <?
+       <?php
        db_ancora("<b>Escola:</b>","js_pesquisaed18_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-        <?
+        <?php
         db_input('ed18_i_codigo',10,@$Ied18_i_codigo,true,'text',3," onchange='js_pesquisaed18_i_codigo(false);'")
         ?>
-       <?
+       <?php
         db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'');
         db_input('tipoescola',10,@$Itipoescola,true,'hidden',$db_opcao,'');
         db_input('ed221_i_codigo',10,@$Ied221_i_codigo,true,'hidden',$db_opcao,'');
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itinerario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

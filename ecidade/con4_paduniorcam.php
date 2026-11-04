@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -31,35 +31,35 @@
 class uniorcam {
     var $arq=null;
 
-  function uniorcam($header){
+  public function __construct($header){
 
      umask(74);
      $this->arq = fopen("tmp/UNIORCAM.TXT",'w+');
-     
-     fputs($this->arq,$header);
-     fputs($this->arq,"\r\n");  
 
-  }  
-  function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
+     fputs($this->arq,$header);
+     fputs($this->arq,"\r\n");
+
+  }
+  public function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
     global $contador,$nomeinst;
-    
+
     ///// abre arquivo dos exercícios anteriores
     $exercicios = "";
     $virg = "";
 
     $clarqpad = new cl_conarquivospad;
-    
+
     $res =$clarqpad->sql_record(
                $clarqpad->sql_query(null,"*",null," c54_nomearq = 'UNIORCAM.TXT' and c54_anousu=".db_getsession("DB_anousu")."  and c54_codtrib = $tribinst "));
     if($clarqpad->numrows > 0){
-      $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+      $rubant =explode("\r\n",pg_result($res,0,"c54_arquivo"));
       for($yy=0;$yy<sizeof($rubant);$yy++){
          $contador++;
          $line = $rubant[$yy];
 
          $exercicios .= $virg.substr($rubant[$yy],0,4);
          $virg = ",";
- 
+
          fputs($this->arq,$line);
          fputs($this->arq,"\r\n");
       }
@@ -85,7 +85,7 @@ class uniorcam {
                    array_accum(distinct o58_instit) as instit_erro,
                    array_accum(distinct o58_coddot || '=' || o58_instit) as dotacoes_erro
             from orcunidade
-            inner join orcdotacao on o58_orgao  = o41_orgao and o58_unidade= o41_unidade and o58_anousu = o41_anousu 
+            inner join orcdotacao on o58_orgao  = o41_orgao and o58_unidade= o41_unidade and o58_anousu = o41_anousu
             inner join orcorgao   on o41_orgao  = o40_orgao and o41_anousu = o40_anousu and o41_instit in ($it)
             inner join db_config on codigo = o58_instit
             where $instit and o58_anousu <= $anousu $sql_not
@@ -116,7 +116,23 @@ class uniorcam {
      echo "<br>";
    }
 
+   $instit = " o41_instit in ( $it )";
    $sql = "select distinct 
+            o41_anousu  as anousu,
+            o41_orgao  as orgao,
+            o41_unidade as unidade,
+            o41_descr as nome,
+	          o41_ident as identificador,
+	          cgc  as cnpj
+       from orcunidade
+       inner join orcdotacao on o58_orgao  = o41_orgao and o58_unidade= o41_unidade and o58_anousu = o41_anousu
+	     inner join orcorgao   on o41_orgao  = o40_orgao and o41_anousu = o40_anousu and o40_instit in ($it)
+	     inner join db_config on codigo = o41_instit
+       where $instit and o41_anousu <= $anousu $sql_not
+       
+       union 
+       
+       select distinct 
             o41_anousu  as anousu,
             o41_orgao  as orgao,
             o41_unidade as unidade,
@@ -124,10 +140,18 @@ class uniorcam {
 	          o41_ident as identificador, 
 	          cgc  as cnpj 
        from orcunidade
-	     inner join orcdotacao on o58_orgao  = o41_orgao and o58_unidade= o41_unidade and o58_anousu = o41_anousu 
+       inner join orcreceita on o70_orcorgao = o41_orgao 
+                            and o70_orcunidade= o41_unidade 
+                            and o70_anousu = o41_anousu 
 	     inner join orcorgao   on o41_orgao  = o40_orgao and o41_anousu = o40_anousu and o40_instit in ($it)
-	     inner join db_config on codigo = o58_instit
-       where $instit and o58_anousu <= $anousu $sql_not";
+	     inner join db_config on codigo = o41_instit
+       where $instit and o41_anousu <= $anousu $sql_not
+       
+       
+       
+       ";
+
+
 
   // echo $sql;exit;
    $res=db_query($sql);
@@ -139,13 +163,13 @@ class uniorcam {
       $nome           = formatar(pg_result($res,$x,"nome"),80,'c');
       $identificador  = formatar(pg_result($res,$x,"identificador"),2,'n');
       $cnpj           = formatar(pg_result($res,$x,"cnpj"),14,'n');
-      
-   
-      //-- 
-      $line = $anousu.$orgao.$unidade.$nome.$identificador.$cnpj; 
+
+
+      //--
+      $line = $anousu.$orgao.$unidade.$nome.$identificador.$cnpj;
       fputs($this->arq,$line);
       fputs($this->arq,"\r\n");
-  
+
       $contador = $contador+1; // incrementa contador global
    }
 
@@ -162,6 +186,6 @@ class uniorcam {
    return $teste;
 
   }
-}  
+}
 
 ?>

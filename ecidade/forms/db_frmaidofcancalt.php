@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("nome");
           <?//=@$Ly03_codigo?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 		    db_input('y03_codigo',8,$Iy03_codigo,true,'hidden',$db_opcao,"")
 		  ?>
     	</td>
   	  </tr>
   	  <tr>
     	<td nowrap title="<?=@$Ty03_aidof?>">
-          <?
+          <?php
             db_ancora(@$Ly03_aidof,"js_pesquisay03_aidof(true);",$db_opcao);
           ?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 		    db_input('y03_aidof',6,$Iy03_aidof,true,'text',$db_opcao," onchange='js_pesquisay03_aidof(false);'")
 		  ?>
-          <?
+          <?php
 			db_input('z01_nome',60,$Iz01_nome,true,'text',3,'')
           ?>
     	</td>
@@ -66,22 +66,22 @@ $clrotulo->label("nome");
           <?=@$Ly03_data?>
         </td>
         <td> 
-		  <?
+		  <?php
 		    db_inputdata('y03_data',@$y03_data_dia,@$y03_data_mes,@$y03_data_ano,true,'text',$db_opcao,"")
 		  ?>
     	</td>
   	  </tr>
   	  <tr>
     	<td nowrap title="<?=@$Ty03_usuario?>">
-          <?
+          <?php
             db_ancora(@$Ly03_usuario,"js_pesquisay03_usuario(true);",$db_opcao);
           ?>
     	</td>
     	<td> 
-		  <?
+		  <?php
 		    db_input('y03_usuario',10,$Iy03_usuario,true,'text',$db_opcao," onchange='js_pesquisay03_usuario(false);'")
 		  ?>
-          <?
+          <?php
 			db_input('nome',40,$Inome,true,'text',3,'')
        	  ?>
     	</td>
@@ -91,7 +91,7 @@ $clrotulo->label("nome");
     	<td nowrap title="<?=@$Ty03_obs?>" colspan="2">
           <fieldset class="separator">
             <legend><?=@$Ly03_obs?></legend> 
-		  	<?
+		  	<?php
 		      db_textarea('y03_obs',0,66,$Iy03_obs,true,'text',$db_opcao,"")
 		  	?>
 		  </fieldset>
@@ -103,7 +103,7 @@ $clrotulo->label("nome");
 	      <?=@$Ly03_tipocanc?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    $x = array("f"=>"NAO","t"=>"SIM");
 		    db_select('y03_tipocanc',$x,true,$db_opcao,"");
 		  ?>
@@ -166,7 +166,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aidofcanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

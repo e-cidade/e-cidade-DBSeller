@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,7 +126,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Ordem da Emissão:</strong>
               </td>
               <td>
-                <?
+                <?php
                    $aOrdem = array ( "endereco"        => "Cidade / Logradouro",
                                      "bairroender"     => "Bairro / Logradouro",
                                      "alfabetica"      => "Alfabética / Nome",
@@ -161,7 +161,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Tipo de Imóvel:</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aEspecie = array ( "todos"       => "Todos",
                                       "predial"     => "Somente Predial",
                                       "territorial" => "Somente Territorial" );
@@ -212,7 +212,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               <td>
                 <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=(isset($vlrminunica)?$vlrminunica:0)?>><strong> à </strong>
                 <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=(isset($vlrmaxunica)?$vlrmaxunica:999999999)?>>
-                <?
+                <?php
                   $aIntervaloParcelamento = array ( "desconsiderar" => "Desconsiderar intervalo",
                                                     "gerar"         => "Gerar para os que estiverem no intervalo",
                                                     "naogerar"      => "Nao gerar para os que estiverem no intervalo" );
@@ -226,7 +226,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Filtro Principal:</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aFiltroPrincipal = array ( "normal"  => "Normal",
                                               "compgto" => "Somente sem parcelas em atraso",
                                               "sempgto" => "Somente os registros sem pagamentos" );
@@ -240,7 +240,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Vinculo com Imobiliária:</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aVinculoImobiliaria = array ( "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
                                                  "com"   => "Somente os que tenham vinculo com imobiliaria",
                                                  "sem"   => "Somente os que nao tenham vinculo com imobiliaria" );
@@ -253,7 +253,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
                 <strong>Vinculo com Loteamentos:</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aVinculoLoteamentos = array ( "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
                                                  "com"   => "Somente os que tenham vinculo com loteamento",
                                                  "sem"   => "Somente os que nao tenham vinculo com loteamento" );
@@ -289,7 +289,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
 
               <td>
-                <?
+                <?php
                   $aTercDigBarraUnicas = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
                   db_select('barrasunica', $aTercDigBarraUnicas, true, 1,"style='width:165px;'");
                 ?>
@@ -302,7 +302,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
               </td>
 
               <td>
-                <?
+                <?php
                   $aTercDigBarraParcelados = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
                   db_select('barrasparc', $aTercDigBarraParcelados, true, 1,"style='width:165px;'");
                 ?>
@@ -466,7 +466,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
             <strong>Tipo de Arquivo:</strong>
           </td>
           <td>
-            <?
+            <?php
               $aTipos = array ( "txt"    => "TXT",
                                 "txtbsj" => "TXT BSJ");
               db_select('tipo', $aTipos, true, 1,"onChange='js_mostracapa();js_mostraOpVenc();' style='width:165px;'");
@@ -488,7 +488,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
             <strong>Mensagem Débitos Anos Anteriores:</strong>
           </td>
           <td>
-            <?
+            <?php
               $aMsgDebitosAnt = array ("n" => "Não", "s" => "Sim");
               db_select('mensagemanosanteriores', $aMsgDebitosAnt, true, 1,"style='width:165px;'");
             ?>
@@ -500,7 +500,7 @@ foreach ($aEmissoes as $iIndice => $oEmissao) {
             <strong>Gera Opção de Vencimento:</strong>
           </td>
           <td>
-            <?
+            <?php
               $aOpVenc = array ("0" => "Não", "1" => "Sim");
               db_select('opVenc', $aOpVenc, true, 2,"style='width:165px;'");
             ?>

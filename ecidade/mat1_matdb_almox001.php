@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ if(isset($incluir)){
 <tr> 
 <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
 <center>
-<?
+<?php
 include(modification("forms/db_frmmatdb_almox.php"));
 ?>
 </center>
@@ -108,7 +108,7 @@ include(modification("forms/db_frmmatdb_almox.php"));
 </table>
 </body>
 </html>
-<?
+<?php
 
 if(isset($incluir)&&$existe==false){
   if($cldb_almox->erro_status=="0"){

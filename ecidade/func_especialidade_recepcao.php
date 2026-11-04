@@ -83,14 +83,19 @@ $oRotulo->label( "rh70_descr" );
   </div>
   <div class="container">
     <?php
-    $sCampos    = "distinct rh70_estrutural, rh70_descr, rh70_sequencial";
-    $sOrdenacao = "rh70_descr, rh70_estrutural";
+    $limitador = "15";
+    $sCampos    = "distinct rh70_estrutural, rh70_descr, rh70_sequencial,sd27_b_principal";
+    $sOrdenacao = "sd27_b_principal DESC,rh70_descr, rh70_estrutural";
     $aWhere     = array( "sd27_c_situacao = 'A'", "sd04_i_unidade = {$iUnidade}" );
 
     if( isset( $chave_sd04_i_medico )  && !empty( $chave_sd04_i_medico ) ) {
 
       $aWhere[] = "sd04_i_medico = {$chave_sd04_i_medico}";
-      $sCampos  = "distinct rh70_estrutural, rh70_descr, sd27_i_codigo, rh70_sequencial";
+      $sCampos  = "distinct rh70_estrutural, rh70_descr, sd27_i_codigo, rh70_sequencial,sd27_b_principal";
+    }
+
+    if(isset($limit) && !empty($limit)){
+      $limitador = $limit;
     }
 
     if( !isset( $pesquisa_chave ) ) {
@@ -106,13 +111,13 @@ $oRotulo->label( "rh70_descr" );
       $repassa = array();
 
       $sWhere = implode( ' AND ', $aWhere );
-      $sSql   = $oDaoEspecMedico->sql_query( "", $sCampos, $sOrdenacao, $sWhere );
-      db_lovrot( $sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );
+      $sSql = $oDaoEspecMedico->sql_query( "", $sCampos, $sOrdenacao, $sWhere );      
+      db_lovrot( $sSql, $limitador, "()", "", $funcao_js, "", "NoMe", $repassa );
     } else {
 
       if( $pesquisa_chave != null && $pesquisa_chave != "" ) {
 
-        $sCampos  = "sd27_i_codigo, rh70_estrutural, rh70_descr, sd27_i_rhcbo";
+        $sCampos  = "sd27_i_codigo, rh70_estrutural, rh70_descr, sd27_i_rhcbo,sd27_b_principal";
         $aWhere[] = "rh70_estrutural = '{$pesquisa_chave}'";
         $sWhere   = implode( ' AND ', $aWhere );
 

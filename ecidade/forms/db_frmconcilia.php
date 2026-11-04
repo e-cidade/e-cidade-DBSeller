@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("k95_descr");
        <?=@$Lk68_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k68_sequencial',10,$Ik68_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -49,22 +49,22 @@ db_input('k68_sequencial',10,$Ik68_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk68_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k68_data',@$k68_data_dia,@$k68_data_mes,@$k68_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk68_saltes?>">
-       <?
+       <?php
        db_ancora(@$Lk68_saltes,"js_pesquisak68_saltes(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k68_saltes',5,$Ik68_saltes,true,'text',$db_opcao," onchange='js_pesquisak68_saltes(false);'")
 ?>
-       <?
+       <?php
 db_input('k13_descr',40,$Ik13_descr,true,'text',3,'')
        ?>
     </td>
@@ -74,7 +74,7 @@ db_input('k13_descr',40,$Ik13_descr,true,'text',3,'')
        <?=@$Lk68_saldoextrato?>
     </td>
     <td> 
-<?
+<?php
 db_input('k68_saldoextrato',10,$Ik68_saldoextrato,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,22 +84,22 @@ db_input('k68_saldoextrato',10,$Ik68_saldoextrato,true,'text',$db_opcao,"")
        <?=@$Lk68_saldocorrente?>
     </td>
     <td> 
-<?
+<?php
 db_input('k68_saldocorrente',10,$Ik68_saldocorrente,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk68_conciliastatus?>">
-       <?
+       <?php
        db_ancora(@$Lk68_conciliastatus,"js_pesquisak68_conciliastatus(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k68_conciliastatus',10,$Ik68_conciliastatus,true,'text',$db_opcao," onchange='js_pesquisak68_conciliastatus(false);'")
 ?>
-       <?
+       <?php
 db_input('k95_descr',40,$Ik95_descr,true,'text',3,'')
        ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_concilia.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

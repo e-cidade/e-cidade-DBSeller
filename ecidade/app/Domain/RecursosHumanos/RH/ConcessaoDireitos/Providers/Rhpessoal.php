@@ -15,8 +15,8 @@ class Rhpessoal
             ->whereNull('rh05_seqpes');
 
         $where = [
-            ['rh02_anousu', date('Y', $DB_datausu)],
-            ['rh02_mesusu', date('m', $DB_datausu)],
+            ['rh02_anousu', date('Y', ($DB_datausu))],
+            ['rh02_mesusu', date('m', ($DB_datausu))],
             ['rh02_instit', $inst]
         ];
 
@@ -28,7 +28,7 @@ class Rhpessoal
 
         if ($selecao != null) {
             $rhpessoal->whereRaw($selecao);
-        }
+        };
         return  $rhpessoal->get();
     }
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,30 +54,30 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh24_rubric?>">
-       <?
+       <?php
        db_ancora(@$Lrh24_rubric,"js_pesquisarh24_rubric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh24_rubric',4,$Irh24_rubric,true,'text',3," onchange='js_pesquisarh24_rubric(false);'")
 ?>
-       <?
+       <?php
 db_input('rh27_descr',30,$Irh27_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh24_codele?>">
-       <?
+       <?php
        db_ancora(@$Lrh24_codele,"js_pesquisarh24_codele(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh24_codele',6,$Irh24_codele,true,'text',$db_opcao," onchange='js_pesquisarh24_codele(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("rh24_rubric"=>@$rh24_rubric,"rh24_codele"=>@$rh24_codele);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhrubelementoprinc->sql_query_file($rh24_rubric);

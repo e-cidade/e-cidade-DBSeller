@@ -56,7 +56,6 @@ $clcgm             = new cl_cgm();
 $rhimp = '';
 db_postmemory($_GET);
 db_postmemory($_POST);
-
 $db_opcao = 22;
 $db_botao = false;
 
@@ -81,7 +80,7 @@ if(isset($alterar)){
     } else {
       $dataAlteracaoESocial = $dataTrocaCargoFuncao;
     }
-  
+
     $nasc   = explode('/', $rh01_nasc);
     $dtmin  = strtotime('1890-01-01');
     $dtnasc = strtotime($nasc[2].'-'.$nasc[1].'-'.$nasc[0]);
@@ -90,7 +89,6 @@ if(isset($alterar)){
       $sqlerro = true;
       $erro_msg = "Data de nascimento inválida";
     }
-
     /* FINAL VALIDAÇÃO PARA E-SOCIAL */
 
     if($sqlerro == false){
@@ -182,7 +180,7 @@ if(isset($alterar)){
     }
 
     if (!$sqlerro) {
-    
+
       $oServidor = ServidorRepository::getInstanciaByCodigo($rh01_regist,  DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
         try{
 
@@ -227,7 +225,7 @@ if(isset($alterar)){
                     $clrhcontratoemergencialrenovacao->incluir(null);
               }
             }
-            
+
             if ($hasContratoEmergencial == 'f') {
               $clrhcontratoemergencialrenovacao->excluir(null, "rh164_sequencial = {$clrhcontratoemergencialrenovacao->rh164_sequencial}");
               $clrhcontratoemergencial->excluir(null, "rh163_matricula = {$rh01_regist}");
@@ -235,7 +233,7 @@ if(isset($alterar)){
                 throw new Exception("Ocorreu um erro ao excluir o contato emergencial.");
               }
             }
-          if($clrhcontratoemergencialrenovacao->rh164_sequencial !== 0) { 
+          if($clrhcontratoemergencialrenovacao->rh164_sequencial !== 0) {
             if ($clrhcontratoemergencialrenovacao->erro_status == 0) {
 
                 $erro_msg = $clrhcontratoemergencialrenovacao->erro_msg;
@@ -404,7 +402,7 @@ if(isset($alterar)){
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
     db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,dates.js,
                datagrid.widget.js, widgets/Input/DBInput.widget.js, widgets/Input/DBInputDate.widget.js,
@@ -423,7 +421,7 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-          <?
+          <?php
           include(modification("forms/db_frmrhpessoal.php"));
           ?>
       </center>
@@ -433,6 +431,7 @@ if(isset($alterar)){
 </body>
 </html>
 <script>
+
   // form - formulario onde estao os campos
   // foco - campo que recebera foco no inicio
   // tfoco- true se programador quer que campo informado receba o foco e false se nao quer
@@ -519,8 +518,9 @@ if(isset($alterar)){
   }else{
     js_tabulacao("form1","rh01_regist",true,0,"rh01_regist",true);
   }
+
 </script>
-<?
+<?php
 if(isset($alterar)){
     db_msgbox($erro_msg);
     if($sqlerro==true){
@@ -551,6 +551,9 @@ if(isset($chavepesquisa)){
 
          parent.document.formaba.rhcedencia.disabled=false;
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhcedencia.location.href='pes1_rhcedente001.php?rh261_regist=".@$rh01_regist."&z01_nome=$z01_nome';
+
+         parent.document.formaba.recadastramento.disabled=false;
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_recadastramento.location.href='pro4_processo_recadastramento_processados.php?matricula=".@$rh01_regist."';
 
          parent.document.formaba.rhsuspensaopag.disabled=false;
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhsuspensaopag.location.href='pes1_rhsuspensaopag001.php?iMatricula=".@$rh01_regist."';

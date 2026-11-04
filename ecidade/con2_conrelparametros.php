@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -160,7 +160,7 @@ function js_filtrarSeq(){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc" style="overflow:hidden">
 
 <form name="form1" method="post" action="" >
-<?
+<?php
 $dbwhere   = "o69_codparamrel = $c83_codrel"; 
 $lista_seq = "";
 $virgula   = "";
@@ -190,11 +190,11 @@ if ($filtrar_seq == "S" && strlen(trim(@$lista_seq)) > 0){
 <tr>
  <td>
     <table  align="center" border=0>
-     <tr><td align=left width=20%><? db_ancora(@$Lc83_codrel,"js_pesquisac60_codcla(true);",3);?></td>
-         <td><? db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
-             <? db_input('o42_descrrel',60,$Io42_descrrel,true,'text',3,"")?></td>
+     <tr><td align=left width=20%><?php db_ancora(@$Lc83_codrel,"js_pesquisac60_codcla(true);",3);?></td>
+         <td><?php db_input('c83_codrel',5,$Ic83_codrel,true,'text',3,"")?>
+             <?php db_input('o42_descrrel',60,$Io42_descrrel,true,'text',3,"")?></td>
          <td>&nbsp;&nbsp;
-           <?
+           <?php
               $matriz = array("C"=>"COM PARÂMETROS CONFIGURADOS","S"=>"SEM PARÂMETROS CONFIGURADOS","T"=>"TODAS AS SEQüÊNCIAS");
               db_select("filtrar_seq",$matriz,true,4,"onChange='js_filtrarSeq();'");
            ?>
@@ -227,10 +227,10 @@ if ($filtrar_seq == "S" && strlen(trim(@$lista_seq)) > 0){
 <tr>
  <td colspan=8 valign=top height=100%>
  <div style="width:100%">
- <table border=0 width=98% style='' cellspacing="0">
+ <table border=0 width="98%" cellspacing="0">
  <tbody style='height:500;overflow: scroll;overflow-x:hidden;background-color: white;border:2px inset white'>
 
- <? 
+ <?php 
 /*
 echo ($clorcparamseq->sql_query($c83_codrel, null, "o69_codparamrel,
                                                                                    o69_codseq,
@@ -271,10 +271,10 @@ if ($clorcparamseq->numrows > 0 )
      ?>
       <tr style='height:1em'>
         <td width=5%  class='linhagrid'style='text-align:right'><b><?=$o69_codseq?></b></td>
-        <td width=23% class='linhagrid'style='text-align:left'><b><? echo strtoupper($o69_descr) ?></b></td>
+        <td width=23% class='linhagrid'style='text-align:left'><b><?php echo strtoupper($o69_descr) ?></b></td>
         <td width=10% valign=top class='linhagrid' style='text-align:left'>
-           <div style="cellpadding:0px"><? db_ancora($lb_texto,"js_editar_elemento($c83_codrel,$o69_codseq,'$o69_grupo');",1); ?></div>
-           <?
+           <div style="cellpadding:0px"><?php db_ancora($lb_texto,"js_editar_elemento($c83_codrel,$o69_codseq,'$o69_grupo');",1); ?></div>
+           <?php
 	     $sql ="select * 
                     from orcparamelemento
 		        inner join conplano on c60_codcon = o44_codele and c60_anousu=o44_anousu
@@ -290,29 +290,29 @@ if ($clorcparamseq->numrows > 0 )
 	 	   if ($size > 5){
                        $size=5;
 	   	   }  
-	           ?><select multiple size=<?=$size ?> style="font-size: 6pt;"> <?			
+	           ?><select multiple size=<?=$size ?> style="font-size: 6pt;"> <?php 		
 			for ($i = 0; $i < $clorcparamelemento->numrows; $i ++) {
 			   db_fieldsmemory($result,$i);
-                           ?><option value=<?=$o44_codele?> title="<?=$c60_descr ?> "><?=$c60_estrut?></option><?  
+                           ?><option value=<?=$o44_codele?> title="<?=$c60_descr ?> "><?=$c60_estrut?></option><?php  
 		   
                         }
-		   ?></select><?
+		   ?></select><?php
 	     } 
            ?>                         
 	</td>
 	
 	<td width=10% class='linhagrid' style='text-align:left'>&nbsp;
-	   <? if (isset($o69_libnivel) && ($o69_libnivel=='t')) { ?>
+	   <?php if (isset($o69_libnivel) && ($o69_libnivel=='t')) { ?>
 	      	   <input type=text size =3  name=nivel  value="<?=$o69_nivel ?>" maxlength=2 onChange=js_updateNivel(<?=$c83_codrel ?>,<?=$o69_codseq?>,this.value); >             
-	   <? } ?>              
+	   <?php } ?>              
 	</td>
 
 <!--        <td  width=12% valign=top class='linhagrid'>&nbsp;
-	   <? 
+	   <?php 
 /*     
      if (isset($o69_grupoexclusao) && $o69_grupoexclusao!='' && $o69_grupoexclusao!='0'){ ?>
-	         <div><?  db_ancora($lb_texto,"js_editar_exclusao_elemento($c83_codrel,$o69_codseq,'$o69_grupoexclusao');",1); ?>  </div>
-                 <?
+	         <div><?php  db_ancora($lb_texto,"js_editar_exclusao_elemento($c83_codrel,$o69_codseq,'$o69_grupoexclusao');",1); ?>  </div>
+                 <?php
 	          $sql ="select * 
 	                 from orcparamelemento
 		            inner join conplano on c60_codcon = o44_codele and c60_anousu=o44_anousu
@@ -328,12 +328,12 @@ if ($clorcparamseq->numrows > 0 )
   	   	     if ($size > 5){
                          $size=5;
 		     }  
-	             ?> <select multiple size=<?=$size ?> style="font-size: 6pt;" > <?
+	             ?> <select multiple size=<?=$size ?> style="font-size: 6pt;" > <?php
 	             for ($i=0;$i < $clorcparamelemento->numrows;$i++){
 	  	        db_fieldsmemory($result,$i);
-                        ?><option value=<?=$o44_codele?> title="<?=$c60_descr ?> "><?=$c60_estrut?></option>  <?  
+                        ?><option value=<?=$o44_codele?> title="<?=$c60_descr ?> "><?=$c60_estrut?></option>  <?php  
 		     }
-		     ?></select><?
+		     ?></select><?php
 	          }              
 	      } // end if
 */        
@@ -341,39 +341,39 @@ if ($clorcparamseq->numrows > 0 )
 	</td>	-->
 	
 <!--	<td width=12% class='linhagrid'>&nbsp; -->
-	   <? 
+	   <?php 
 //        if (isset($o69_libnivel) && ($o69_libnivel=='t')) { ?>
 <!--   	   <input type=text size =3  name=nivelexclusao value="<?=$o69_nivelexclusao ?>" maxlength=2 onChange=js_updateNivelExclusao(<?=$c83_codrel ?>,<?=$o69_codseq?>,this.value); > -->
-	   <? 
+	   <?php 
 //        }
      ?>              
 <!--	</td> -->
 
 <!-- Funcao -->
         <td width=10% class='linhagrid' style='text-align:left'>&nbsp;
-        <?
+        <?php
            if (isset($o69_libfunc) && $o69_libfunc!="" && $o69_libfunc=="t"){
         ?>
             <div> 
-              <?
+              <?php
                  db_ancora($lb_texto,"js_editar_func($c83_codrel,$o69_codseq);",1);
               ?>
             </div>  
-        <?
+        <?php
             $res_func = $clorcparamfunc->sql_record($clorcparamfunc->sql_query($o69_codseq,db_getsession("DB_anousu"),$c83_codrel,null)); 
             if ($clorcparamfunc->numrows > 0){
         ?>
 	            <select multiple size=<?=$clorcparamfunc->numrows+1?> style="font-size: 6pt;">
-        <?
+        <?php
                  for($i=0; $i < $clorcparamfunc->numrows; $i++){
 		                  db_fieldsmemory($res_func,$i);
         ?>
                 <option value=<?=$o45_func?> title="<?=$o52_descr?>"><?=$o45_func?></option>   
-        <?
+        <?php
                  }
         ?>
               </select>
-        <? 
+        <?php 
             }
            }
         ?>
@@ -381,9 +381,9 @@ if ($clorcparamseq->numrows > 0 )
         
 <!-- SubFuncao -->
         <td width=10% class='linhagrid' style='text-align:left'>&nbsp;
-	   <? if (isset($o69_libsubfunc) && $o69_libsubfunc!='' && $o69_libsubfunc=='t'){ ?>
-                 <div><?  db_ancora($lb_texto,"js_editar_subfunc($c83_codrel,$o69_codseq);",1); ?>  </div>
-   	         <?
+	   <?php if (isset($o69_libsubfunc) && $o69_libsubfunc!='' && $o69_libsubfunc=='t'){ ?>
+                 <div><?php  db_ancora($lb_texto,"js_editar_subfunc($c83_codrel,$o69_codseq);",1); ?>  </div>
+   	         <?php
 	         $sql ="select * 
 	                from orcparamsubfunc
 		           inner join orcsubfuncao on o53_subfuncao = o44_subfunc
@@ -394,14 +394,14 @@ if ($clorcparamseq->numrows > 0 )
 	               ";
                  $result=$clorcparamsubfunc->sql_record($sql);
                  if ($clorcparamsubfunc->numrows >0) {
-	            ?><select multiple size=<?=$clorcparamsubfunc->numrows+1 ?> style="font-size: 6pt;" > <?
+	            ?><select multiple size=<?=$clorcparamsubfunc->numrows+1 ?> style="font-size: 6pt;" > <?php
 	              for ($i=0;$i < $clorcparamsubfunc->numrows;$i++){
 		         db_fieldsmemory($result,$i);
-                         ?><option value=<?=$o44_subfunc?>  title="<?=$o53_descr?>"><?=$o44_subfunc ?></option>  <?  
+                         ?><option value=<?=$o44_subfunc?>  title="<?=$o53_descr?>"><?=$o44_subfunc ?></option>  <?php  
 		   
                       }
 		      ?>
-		      </select><?
+		      </select><?php
 	         } 
 	      }	 
            ?>            
@@ -409,9 +409,9 @@ if ($clorcparamseq->numrows > 0 )
 
 <!-- Recursos -->
         <td width=10% class='linhagrid' style='text-align:left'>&nbsp;
-	   <? if (isset($o69_librec) && $o69_librec!='' && $o69_librec=='t'){ ?> 
-                <div><?  db_ancora($lb_texto,"js_editar_recurso($c83_codrel,$o69_codseq);",1); ?>  </div>
-	         <?
+	   <?php if (isset($o69_librec) && $o69_librec!='' && $o69_librec=='t'){ ?> 
+                <div><?php  db_ancora($lb_texto,"js_editar_recurso($c83_codrel,$o69_codseq);",1); ?>  </div>
+	         <?php
 	          $sql ="select o44_codrec,
 	                        o15_descr as title_descr,
 	                         substr(o15_descr,1,10) as o15_descr 
@@ -424,13 +424,13 @@ if ($clorcparamseq->numrows > 0 )
 	                ";
                   $result=$clorcparamrecurso->sql_record($sql);
                   if ($clorcparamrecurso->numrows >0) {
-	             ?> <select multiple size=<?=$clorcparamrecurso->numrows+1 ?> style="font-size: 6pt;" > <?
+	             ?> <select multiple size=<?=$clorcparamrecurso->numrows+1 ?> style="font-size: 6pt;" > <?php
 	               for ($i=0;$i < $clorcparamrecurso->numrows;$i++){
 		          db_fieldsmemory($result,$i);
-                          ?><option value=<?=$o44_codrec?> title="<?=$title_descr ?>"><?=$o44_codrec?></option>  <?  
+                          ?><option value=<?=$o44_codrec?> title="<?=$title_descr ?>"><?=$o44_codrec?></option>  <?php  
 		   
                        }
-		     ?> </select><?
+		     ?> </select><?php
 	          }            
 	     } 
 	   ?>	   
@@ -438,7 +438,7 @@ if ($clorcparamseq->numrows > 0 )
        <td width=10% class='linhagrid' style='text-align:left' valign="top">
         <div>
           
-	   <?
+	   <?php
 	   
   	     $oLinhaRelatorio = new linhaRelatorioContabil($c83_codrel, $o69_codseq);
   	     $aColunas        = $oLinhaRelatorio->getCols(null);
@@ -455,7 +455,7 @@ if ($clorcparamseq->numrows > 0 )
  	    ?> &nbsp;</div>
        </td>   
       </tr>      
-     <?
+     <?php
  }
 ?>
 <tr style="height: auto;"><td colspan="9">&nbsp;</td></tr>
@@ -494,7 +494,7 @@ function atualiza_hp(){
    document.form1.submit();
 }
 
-<? sajax_show_javascript();   /* imprime a função do sajax */ ?>
+<?php sajax_show_javascript();   /* imprime a função do sajax */ ?>
 function js_updateNivel(relatorio,linha,valor){	 
 	 x_atualiza_nivel(relatorio,linha,valor,mensagem);	 
 }

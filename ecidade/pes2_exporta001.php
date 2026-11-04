@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,12 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -50,7 +50,7 @@ if($tipofun == 'E'){
 
   if($exporta == 'B'){
 
-  $arq = '/tmp/folha.csv';
+  $arq = 'tmp/folha.csv';
 
 
   $arquivo = fopen($arq,'w');
@@ -87,13 +87,13 @@ if($tipofun == 'E'){
 
 
    if($tipofun == 'E'){
-     $arq = '/tmp/cef_estatutarios.csv';
+     $arq = 'tmp/cef_estatutarios.csv';
    }elseif($tipofun == 'C'){
-     $arq = '/tmp/cef_extraquadro.csv';
+     $arq = 'tmp/cef_extraquadro.csv';
    }elseif($tipofun == 'L'){
-     $arq = '/tmp/cef_clt.csv';
+     $arq = 'tmp/cef_clt.csv';
    }else{
-     $arq = '/tmp/cef.csv';
+     $arq = 'tmp/cef.csv';
    }
 
   $arquivo = fopen($arq,'w');
@@ -103,7 +103,7 @@ if($tipofun == 'E'){
        ||';'||  rpad(coalesce(z01_nome,''),32,' ')
        ||';'||  rpad(coalesce(z01_cgccpf,''),11,'0')
        ||';'||  rpad(coalesce(rh16_pis,''),11,'0')
-       ||';'||  lpad(trim(to_char(coalesce(rh16_ctps_n,0),'9999999')),'7','0')
+       ||';'||  lpad(trim(to_char(coalesce(rh16_ctps_n,'0'),'9999999')),'7','0')
             ||  lpad(trim(to_char(coalesce(rh16_ctps_s,0),'99999')),5,'0')
        ||';'||  rpad(coalesce(to_char(rh01_nasc,'DDMMYYYY'),''),8)
        ||';'||  rpad(coalesce(rh01_natura,''),25,' ')
@@ -185,7 +185,7 @@ order by z01_nome";
 
   }elseif($exporta == 'F'){
 
-  $arq = '/tmp/cadastro_ban.csv';
+  $arq = 'tmp/cadastro_ban.csv';
 
   $arquivo = fopen($arq,'w');
 
@@ -269,7 +269,7 @@ order by z01_nome";
 
   }elseif($exporta == 'R'){
 
-  $arq = '/tmp/cadastro_bradesco.csv';
+  $arq = 'tmp/cadastro_bradesco.csv';
 
   $arquivo = fopen($arq,'w');
 
@@ -401,7 +401,7 @@ order by z01_nome";
 
   }elseif($exporta == 'C'){
 
-  $arq = '/tmp/cadastro.csv';
+  $arq = 'tmp/cadastro.csv';
 
   $arquivo = fopen($arq,'w');
   $sql = "
@@ -417,6 +417,8 @@ order by z01_nome";
        r70_descr||';'||
        rh01_funcao||';'||
        trim(rh37_descr)||';'||
+       coalesce(rh04_codigo::text, '')||';'||
+       coalesce(rh04_descr, '')||';'||
        coalesce(z01_ender,'')||';'||
        coalesce(z01_numero,0)||';'||
        coalesce(z01_compl,'')||';'||
@@ -433,14 +435,14 @@ order by z01_nome";
        coalesce(rh16_secaoe,'0')||';'||
        coalesce(rh16_reserv,'0')||';'||
        coalesce(rh16_catres,'0')||';'||
-       coalesce(rh16_ctps_n,0)||';'||
+       coalesce(rh16_ctps_n,'0')||';'||
        coalesce(rh16_ctps_s,0)||';'||
        coalesce(rh16_ctps_d,0)||';'||
        coalesce(rh16_ctps_uf,'')||';'||
        coalesce(rh16_pis,'')||';'||
        coalesce(z01_cgccpf,'')||';'||
        coalesce(z01_ident,'')||';'||
-       coalesce(rh16_carth_n,0)||';'||
+       coalesce(rh16_carth_n,'0')||';'||
        coalesce(r16_carth_cat,'')||';'||
        coalesce(to_char(rh16_carth_val,'DD-MM-YYYY'),'')||';'||
        coalesce(rh03_padrao,'')||';'||
@@ -468,6 +470,9 @@ from rhpessoal
      left join  rhpesrescisao   on rh05_seqpes    = rh02_seqpes
      inner join rhlota          on r70_codigo     = rh02_lota and r70_instit = ".db_getsession("DB_instit")."
      inner join rhfuncao        on rh01_funcao    = rh37_funcao and rh37_instit = ".db_getsession("DB_instit")."
+     left  join pessoal.rhpescargo   on rh02_seqpes = rh20_seqpes   
+                                      and  rh02_instit = rh20_instit
+     left join pessoal.rhcargo       on rh04_codigo = rh20_cargo and  rh04_instit = rh02_instit
      inner join rhinstrucao     on rh01_instru    = rh21_instru
      inner join rhestcivil      on rh01_estciv    = rh08_estciv
      left join rhiperegist      on rh62_regist    = rh01_regist
@@ -485,7 +490,7 @@ order by z01_nome
 " ;
   }elseif($exporta == 'E'){
 
-  $arq = '/tmp/cadastro_banespa.txt';
+  $arq = 'tmp/cadastro_banespa.txt';
 
   $arquivo = fopen($arq,'w');
 
@@ -501,7 +506,7 @@ $sql= "select rpad(coalesce(z01_cgccpf,''),11,'0')||
             when 5 then '4'
        end,''),12)||
        rpad('1',14)||
-       lpad(trim(to_char(coalesce(rh16_ctps_n,0),'9999999')),16,'0')||
+       lpad(trim(to_char(coalesce(rh16_ctps_n,'0'),'9999999')),16,'0')||
        rpad('  /  /    ',25)||
        lpad(trim(to_char(coalesce(rh16_ctps_s,0),'99999')),15,'0')||
        rpad(coalesce(rh16_ctps_uf,''),12,' ')||
@@ -561,7 +566,7 @@ order by z01_nome";
 
   }elseif($exporta == 'G'){
 
-  $arq = '/tmp/cdc_banrisul.txt';
+  $arq = 'tmp/cdc_banrisul.txt';
 
   $arquivo = fopen($arq,'w');
 
@@ -611,7 +616,7 @@ order by z01_nome";
 
   }elseif($exporta == 'P'){
 
-    $arq = '/tmp/transparencia.csv';
+    $arq = 'tmp/transparencia.csv';
 
     $arquivo = fopen($arq,'w');
 
@@ -647,7 +652,7 @@ order by z01_nome";
   $result = db_query($sql);
 // db_criatabela($result);exit;
   if($exporta == 'C'){
-    fputs($arquivo,"ano;mes;matricula; nome; admissao;rescisao; sexo; nascimento; lotacao; descr_lotacao; funcao; descr_funcao; endereco; numero; complemento; bairro; municipio; uf; cep; telefone; instrucao; estado civil; matr_ipe; titulo; zona; secao; cert_reservista; cat_reserv; ctps_numero; ctps_serie; ctps_digito; ctps_uf; pis;cpf;rg; habilitacao; cat_habilit; validade_habilit; padrao; descr_tipo_vinculo; regime; vinculo; banco; agencia; dig_agencia; conta; dig_conta;estr_local;descr_local;trienio;progressao"."\r\n");
+    fputs($arquivo,"ano;mes;matricula; nome; admissao;rescisao; sexo; nascimento; lotacao; descr_lotacao; cargo; descr_cargo; funcao; descr_funcao; endereco; numero; complemento; bairro; municipio; uf; cep; telefone; instrucao; estado civil; matr_ipe; titulo; zona; secao; cert_reservista; cat_reserv; ctps_numero; ctps_serie; ctps_digito; ctps_uf; pis;cpf;rg; habilitacao; cat_habilit; validade_habilit; padrao; descr_tipo_vinculo; regime; vinculo; banco; agencia; dig_agencia; conta; dig_conta;estr_local;descr_local;trienio;progressao"."\r\n");
   }elseif($exporta == 'P'){
     fputs($arquivo,"matricula; nome; cod_regime; cod_cargo; descr_cargo; cod_funcao; descr_funcao"."\r\n");
   }elseif($exporta == 'B'){
@@ -703,37 +708,25 @@ order by z01_nome";
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-
-</script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-  <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr>
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-
-  <table  align="center">
-    <form name="form1" method="post" action="">
-      <tr>
-         <td >&nbsp;</td>
-         <td >&nbsp;</td>
-      </tr>
+<body>
+<div class="container">
+  <form name="form1" method="post" action="">
+  <fieldset>
+    <legend>Exporta Arquivos</legend>
+    <table class="form-container">
       <tr >
         <td align="right" nowrap title="Digite o Ano / Mes de competência" >
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -741,59 +734,55 @@ order by z01_nome";
       </tr>
       <tr>
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
-	<td align="left">
-	<?
-	  $arr = array('C'=>'Cadastro',
-                 'B'=>'Bancos',
-                 'D'=>'Cadastro CEF',
-                 'E'=>'Cadastro Banespa',
-                 'R'=>'Cadastro Bradesco',
-                 'F'=>'Cadastro Banrisul',
-                 'G'=>'CDC Banrisul',
-                 'P'=>'Portal Transparência'
-
-                 );
-	  db_select("exporta",$arr,true,1);
-	?>
+	    <td align="left">
+	      <?php
+	        $arr = array('C'=>'Cadastro',
+                       'B'=>'Bancos',
+                       'D'=>'Cadastro CEF',
+                       'E'=>'Cadastro Banespa',
+                       'R'=>'Cadastro Bradesco',
+                       'F'=>'Cadastro Banrisul',
+                       'G'=>'CDC Banrisul',
+                       'P'=>'Portal Transparência'
+          
+                       );
+	        db_select("exporta",$arr,true,1);
+	      ?>
         </td>
       </tr>
       <tr>
         <td align="right"><b>Tipo de Servidor :&nbsp;&nbsp;<b></td>
-	<td align="left">
-	<?
-	  $arr_f = array('T'=>'Todos',
-                   'E'=>'Estatutário',
-                   'C'=>'Comissionados',
-                   'L'=>'CLT'
-                 );
-	  db_select("tipofun",$arr_f,true,1);
-	?>
+	    <td align="left">
+	    <?php
+	      $arr_f = array('T'=>'Todos',
+                       'E'=>'Estatutário',
+                       'C'=>'Comissionados',
+                       'L'=>'CLT'
+                     );
+	      db_select("tipofun",$arr_f,true,1);
+	    ?>
         </td>
       </tr>
-    <tr>
-
-    <td colspan="2" align = "center">
-    <?php
-
-        db_ancora("<b>Agencia:</b>","js_pesquisaBancoAgencia(true)", '');
-        db_input('ar14_bancoagencia',7,'' ,true,'text','',"onChange='js_pesquisaBancoAgencia(false)'");
-    ?>
-    </td>
-    </tr>
       <tr>
-        <td >&nbsp;</td>
-        <td >&nbsp;</td>
-      </tr>
-      <tr>
-        <td colspan="2" align = "center">
-          <input  name="gera" id="gera" type="submit" value="Processar"  >
- <!--         <input name="verificar" type="submit" value="Download" > -->
+        <td>
+        <?php
+          db_ancora("<b>Agencia:</b>","js_pesquisaBancoAgencia(true)", '');
+        ?>
+        </td>
+        <td>
+        <?php 
+          db_input('ar14_bancoagencia',18,'' ,true,'text','',"onChange='js_pesquisaBancoAgencia(false)'");
+        ?>  
         </td>
       </tr>
-  </form>
     </table>
-<?
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+    </fieldset>
+    <input  name="gera" id="gera" type="submit" value="Processar"  >
+  </form>
+</div>
+    
+<?php
+  db_menu();
 ?>
 </body>
 <script>
@@ -809,8 +798,6 @@ order by z01_nome";
         }
     }
 
-
-
     function js_mostrabancoagencia(chave1,chave2){
         document.form1.ar14_bancoagencia.value = chave1;
 
@@ -820,7 +807,7 @@ order by z01_nome";
 </html>
 
 <script>
-  <?
+  <?php
   if(isset($gera)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

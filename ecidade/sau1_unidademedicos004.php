@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmunidademedicos2.php"));
         ?>
     </center>
@@ -77,7 +77,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","sd04_i_medico",true,1,"sd04_i_medico",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clunidademedicos->erro_status=="0"){
     $clunidademedicos->erro(true,false);

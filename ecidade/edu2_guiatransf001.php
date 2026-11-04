@@ -108,7 +108,7 @@ if (isset($incluirobs)) {
     </tr>
      <td>
       <b>Ano:</b><br>
-      <?
+      <?php
       $sql        = " SELECT DISTINCT extract(year from ed103_d_data) as anotransf ";
       $sql       .= "       FROM transfescolarede ";
       $sql       .= "       WHERE ed103_i_escolaorigem = $escola ";
@@ -121,13 +121,13 @@ if (isset($incluirobs)) {
       ?>
       <select name="ano" style="font-size:9px;width:200px;height:18px;" onchange="js_limpaalunos();">
        <option></option>
-       <?
+       <?php
        while ($row=pg_fetch_array($sql_result)) {
 
          $anotransf=$row["anotransf"];
         ?>
         <option value="<?=$anotransf?>" <?=$anotransf==@$ano?"selected":""?> ><?=$anotransf?></option>
-        <?
+        <?php
 
        }
        ?>
@@ -148,12 +148,12 @@ if (isset($incluirobs)) {
    </table>
   </td>
  </tr>
- <?if (isset($ano)) {
+ <?php if (isset($ano)) {
 
   ?>
   <tr>
   <td valign="top">
-   <?
+   <?php
      if ($tipo == "TR") {
        $campos = "ed103_i_codigo as codtransf,ed47_i_codigo,ed47_v_nome,ed103_d_data as datatransf";
        $where  = " ed103_i_escolaorigem = $escola AND extract(year from ed103_d_data) = '$ano'";
@@ -180,7 +180,7 @@ if (isset($incluirobs)) {
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()"
            style="font-size:9px;width:430px;height:120px" multiple>
-    <?
+    <?php
      for ($i=0; $i<$linhas; $i++) {
 
        db_fieldsmemory($result,$i);
@@ -261,7 +261,7 @@ if (isset($incluirobs)) {
    }
    ?>
   <td colspan="3">
-   <b>Auxílio Brasil:</b>
+   <b>Bolsa Família:</b>
    <?php
      $x = array("1"=>"NÃO","2"=>"SIM");
      db_select('ed283_c_bolsafamilia',$x,true,@$db_opcao,"");
@@ -296,7 +296,7 @@ if (isset($incluirobs)) {
 </fieldset>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -487,7 +487,7 @@ function js_pesquisa(tipo) {
 
   location.href = "edu2_guiatransf001.php?diretor="+document.form1.diretor.value+"&ed283_c_bolsafamilia="+document.form1.ed283_c_bolsafamilia.value+"&ed283_t_mensagem="+document.form1.ed283_t_mensagem.value+"&incluirobs";
 }
-<?if (pg_num_rows($sql_result)>0 && !isset($ano)) {?>
+<?php if (pg_num_rows($sql_result)>0 && !isset($ano)) {?>
     document.form1.ano[1].selected = true;
-<?}?>
+<?php }?>
 </script>

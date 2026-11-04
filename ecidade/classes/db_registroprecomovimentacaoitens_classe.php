@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE registroprecomovimentacaoitens
-class cl_registroprecomovimentacaoitens { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc66_sequencial = 0; 
-   var $pc66_registroprecomovimentacao = 0; 
-   var $pc66_orcamforne = 0; 
-   var $pc66_datainicial_dia = null; 
-   var $pc66_datainicial_mes = null; 
-   var $pc66_datainicial_ano = null; 
-   var $pc66_datainicial = null; 
-   var $pc66_datafinal_dia = null; 
-   var $pc66_datafinal_mes = null; 
-   var $pc66_datafinal_ano = null; 
-   var $pc66_datafinal = null; 
-   var $pc66_pcorcamitem = 0; 
-   var $pc66_justificativa = null; 
-   var $pc66_tipomovimentacao = 0; 
-   var $pc66_solicitem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_registroprecomovimentacaoitens {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc66_sequencial = 0;
+   var $pc66_registroprecomovimentacao = 0;
+   var $pc66_orcamforne = 0;
+   var $pc66_datainicial_dia = null;
+   var $pc66_datainicial_mes = null;
+   var $pc66_datainicial_ano = null;
+   var $pc66_datainicial = null;
+   var $pc66_datafinal_dia = null;
+   var $pc66_datafinal_mes = null;
+   var $pc66_datafinal_ano = null;
+   var $pc66_datafinal = null;
+   var $pc66_pcorcamitem = 0;
+   var $pc66_justificativa = null;
+   var $pc66_tipomovimentacao = 0;
+   var $pc66_solicitem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc66_sequencial = int4 = Sequencial 
-                 pc66_registroprecomovimentacao = int4 = Registro de Movimentação dos Preços 
-                 pc66_orcamforne = int8 = Orcamento Fornecedor 
-                 pc66_datainicial = date = Data Inicial 
-                 pc66_datafinal = date = Data Final 
-                 pc66_pcorcamitem = int4 = Licitação Item 
-                 pc66_justificativa = text = Justificava 
-                 pc66_tipomovimentacao = int4 = Código do Tipo de Movimentação 
-                 pc66_solicitem = int4 = Item da Compilação 
+                 pc66_sequencial = int4 = Sequencial
+                 pc66_registroprecomovimentacao = int4 = Registro de Movimentação dos Preços
+                 pc66_orcamforne = int8 = Orcamento Fornecedor
+                 pc66_datainicial = date = Data Inicial
+                 pc66_datafinal = date = Data Final
+                 pc66_pcorcamitem = int4 = Licitação Item
+                 pc66_justificativa = text = Justificava
+                 pc66_tipomovimentacao = int4 = Código do Tipo de Movimentação
+                 pc66_solicitem = int4 = Item da Compilação
                  ";
-   //funcao construtor da classe 
-   function cl_registroprecomovimentacaoitens() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("registroprecomovimentacaoitens"); 
+     $this->rotulo = new rotulo("registroprecomovimentacaoitens");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_registroprecomovimentacaoitens {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc66_sequencial = ($this->pc66_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["pc66_sequencial"]:$this->pc66_sequencial);
        $this->pc66_registroprecomovimentacao = ($this->pc66_registroprecomovimentacao == ""?@$GLOBALS["HTTP_POST_VARS"]["pc66_registroprecomovimentacao"]:$this->pc66_registroprecomovimentacao);
@@ -115,9 +115,9 @@ class cl_registroprecomovimentacaoitens {
      }
    }
    // funcao para inclusao
-   function incluir ($pc66_sequencial){ 
+   public function incluir ($pc66_sequencial){
       $this->atualizacampos();
-     if($this->pc66_registroprecomovimentacao == null ){ 
+     if($this->pc66_registroprecomovimentacao == null ){
        $this->erro_sql = " Campo Registro de Movimentação dos Preços nao Informado.";
        $this->erro_campo = "pc66_registroprecomovimentacao";
        $this->erro_banco = "";
@@ -126,10 +126,10 @@ class cl_registroprecomovimentacaoitens {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc66_orcamforne == null ){ 
+     if($this->pc66_orcamforne == null ){
        $this->pc66_orcamforne = "0";
      }
-     if($this->pc66_datainicial == null ){ 
+     if($this->pc66_datainicial == null ){
        $this->erro_sql = " Campo Data Inicial nao Informado.";
        $this->erro_campo = "pc66_datainicial_dia";
        $this->erro_banco = "";
@@ -138,7 +138,7 @@ class cl_registroprecomovimentacaoitens {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc66_datafinal == null ){ 
+     if($this->pc66_datafinal == null ){
        $this->erro_sql = " Campo Data Final nao Informado.";
        $this->erro_campo = "pc66_datafinal_dia";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_registroprecomovimentacaoitens {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc66_pcorcamitem == null ){ 
+     if($this->pc66_pcorcamitem == null ){
        $this->erro_sql = " Campo Licitação Item nao Informado.";
        $this->erro_campo = "pc66_pcorcamitem";
        $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_registroprecomovimentacaoitens {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc66_tipomovimentacao == null ){ 
+     if($this->pc66_tipomovimentacao == null ){
        $this->erro_sql = " Campo Código do Tipo de Movimentação nao Informado.";
        $this->erro_campo = "pc66_tipomovimentacao";
        $this->erro_banco = "";
@@ -165,7 +165,7 @@ class cl_registroprecomovimentacaoitens {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc66_solicitem == null ){ 
+     if($this->pc66_solicitem == null ){
        $this->erro_sql = " Campo Item da Compilação nao Informado.";
        $this->erro_campo = "pc66_solicitem";
        $this->erro_banco = "";
@@ -175,16 +175,16 @@ class cl_registroprecomovimentacaoitens {
        return false;
      }
      if($pc66_sequencial == "" || $pc66_sequencial == null ){
-       $result = db_query("select nextval('registroprecomovimentacaoitens_pc66_sequencial_seq')"); 
+       $result = db_query("select nextval('registroprecomovimentacaoitens_pc66_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: registroprecomovimentacaoitens_pc66_sequencial_seq do campo: pc66_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: registroprecomovimentacaoitens_pc66_sequencial_seq do campo: pc66_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->pc66_sequencial = pg_result($result,0,0); 
+       $this->pc66_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from registroprecomovimentacaoitens_pc66_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $pc66_sequencial)){
@@ -195,10 +195,10 @@ class cl_registroprecomovimentacaoitens {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->pc66_sequencial = $pc66_sequencial; 
+         $this->pc66_sequencial = $pc66_sequencial;
        }
      }
-     if(($this->pc66_sequencial == null) || ($this->pc66_sequencial == "") ){ 
+     if(($this->pc66_sequencial == null) || ($this->pc66_sequencial == "") ){
        $this->erro_sql = " Campo pc66_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -207,29 +207,29 @@ class cl_registroprecomovimentacaoitens {
        return false;
      }
      $sql = "insert into registroprecomovimentacaoitens(
-                                       pc66_sequencial 
-                                      ,pc66_registroprecomovimentacao 
-                                      ,pc66_orcamforne 
-                                      ,pc66_datainicial 
-                                      ,pc66_datafinal 
-                                      ,pc66_pcorcamitem 
-                                      ,pc66_justificativa 
-                                      ,pc66_tipomovimentacao 
-                                      ,pc66_solicitem 
+                                       pc66_sequencial
+                                      ,pc66_registroprecomovimentacao
+                                      ,pc66_orcamforne
+                                      ,pc66_datainicial
+                                      ,pc66_datafinal
+                                      ,pc66_pcorcamitem
+                                      ,pc66_justificativa
+                                      ,pc66_tipomovimentacao
+                                      ,pc66_solicitem
                        )
                 values (
-                                $this->pc66_sequencial 
-                               ,$this->pc66_registroprecomovimentacao 
-                               ,$this->pc66_orcamforne 
-                               ,".($this->pc66_datainicial == "null" || $this->pc66_datainicial == ""?"null":"'".$this->pc66_datainicial."'")." 
-                               ,".($this->pc66_datafinal == "null" || $this->pc66_datafinal == ""?"null":"'".$this->pc66_datafinal."'")." 
-                               ,$this->pc66_pcorcamitem 
-                               ,'$this->pc66_justificativa' 
-                               ,$this->pc66_tipomovimentacao 
-                               ,$this->pc66_solicitem 
+                                $this->pc66_sequencial
+                               ,$this->pc66_registroprecomovimentacao
+                               ,$this->pc66_orcamforne
+                               ,".($this->pc66_datainicial == "null" || $this->pc66_datainicial == ""?"null":"'".$this->pc66_datainicial."'")."
+                               ,".($this->pc66_datafinal == "null" || $this->pc66_datafinal == ""?"null":"'".$this->pc66_datafinal."'")."
+                               ,$this->pc66_pcorcamitem
+                               ,'$this->pc66_justificativa'
+                               ,$this->pc66_tipomovimentacao
+                               ,$this->pc66_solicitem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Registro de Movimentação dos Preços por Item  ($this->pc66_sequencial) nao Incluído. Inclusao Abortada.";
@@ -269,16 +269,16 @@ class cl_registroprecomovimentacaoitens {
        $resac = db_query("insert into db_acount values($acount,2694,18206,'','".AddSlashes(pg_result($resaco,0,'pc66_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc66_sequencial=null) { 
+   public function alterar ($pc66_sequencial=null) {
       $this->atualizacampos();
      $sql = " update registroprecomovimentacaoitens set ";
      $virgula = "";
-     if(trim($this->pc66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_sequencial"])){ 
+     if(trim($this->pc66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_sequencial"])){
        $sql  .= $virgula." pc66_sequencial = $this->pc66_sequencial ";
        $virgula = ",";
-       if(trim($this->pc66_sequencial) == null ){ 
+       if(trim($this->pc66_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "pc66_sequencial";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_registroprecomovimentacaoitens {
          return false;
        }
      }
-     if(trim($this->pc66_registroprecomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_registroprecomovimentacao"])){ 
+     if(trim($this->pc66_registroprecomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_registroprecomovimentacao"])){
        $sql  .= $virgula." pc66_registroprecomovimentacao = $this->pc66_registroprecomovimentacao ";
        $virgula = ",";
-       if(trim($this->pc66_registroprecomovimentacao) == null ){ 
+       if(trim($this->pc66_registroprecomovimentacao) == null ){
          $this->erro_sql = " Campo Registro de Movimentação dos Preços nao Informado.";
          $this->erro_campo = "pc66_registroprecomovimentacao";
          $this->erro_banco = "";
@@ -301,17 +301,17 @@ class cl_registroprecomovimentacaoitens {
          return false;
        }
      }
-     if(trim($this->pc66_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_orcamforne"])){ 
-        if(trim($this->pc66_orcamforne)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc66_orcamforne"])){ 
-           $this->pc66_orcamforne = "0" ; 
-        } 
+     if(trim($this->pc66_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_orcamforne"])){
+        if(trim($this->pc66_orcamforne)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc66_orcamforne"])){
+           $this->pc66_orcamforne = "0" ;
+        }
        $sql  .= $virgula." pc66_orcamforne = $this->pc66_orcamforne ";
        $virgula = ",";
      }
-     if(trim($this->pc66_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"] !="") ){ 
+     if(trim($this->pc66_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"] !="") ){
        $sql  .= $virgula." pc66_datainicial = '$this->pc66_datainicial' ";
        $virgula = ",";
-       if(trim($this->pc66_datainicial) == null ){ 
+       if(trim($this->pc66_datainicial) == null ){
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "pc66_datainicial_dia";
          $this->erro_banco = "";
@@ -320,11 +320,11 @@ class cl_registroprecomovimentacaoitens {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc66_datainicial_dia"])){
          $sql  .= $virgula." pc66_datainicial = null ";
          $virgula = ",";
-         if(trim($this->pc66_datainicial) == null ){ 
+         if(trim($this->pc66_datainicial) == null ){
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "pc66_datainicial_dia";
            $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_registroprecomovimentacaoitens {
          }
        }
      }
-     if(trim($this->pc66_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"] !="") ){ 
+     if(trim($this->pc66_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"] !="") ){
        $sql  .= $virgula." pc66_datafinal = '$this->pc66_datafinal' ";
        $virgula = ",";
-       if(trim($this->pc66_datafinal) == null ){ 
+       if(trim($this->pc66_datafinal) == null ){
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "pc66_datafinal_dia";
          $this->erro_banco = "";
@@ -347,11 +347,11 @@ class cl_registroprecomovimentacaoitens {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc66_datafinal_dia"])){
          $sql  .= $virgula." pc66_datafinal = null ";
          $virgula = ",";
-         if(trim($this->pc66_datafinal) == null ){ 
+         if(trim($this->pc66_datafinal) == null ){
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "pc66_datafinal_dia";
            $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_registroprecomovimentacaoitens {
          }
        }
      }
-     if(trim($this->pc66_pcorcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_pcorcamitem"])){ 
+     if(trim($this->pc66_pcorcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_pcorcamitem"])){
        $sql  .= $virgula." pc66_pcorcamitem = $this->pc66_pcorcamitem ";
        $virgula = ",";
-       if(trim($this->pc66_pcorcamitem) == null ){ 
+       if(trim($this->pc66_pcorcamitem) == null ){
          $this->erro_sql = " Campo Licitação Item nao Informado.";
          $this->erro_campo = "pc66_pcorcamitem";
          $this->erro_banco = "";
@@ -375,14 +375,14 @@ class cl_registroprecomovimentacaoitens {
          return false;
        }
      }
-     if(trim($this->pc66_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_justificativa"])){ 
+     if(trim($this->pc66_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_justificativa"])){
        $sql  .= $virgula." pc66_justificativa = '$this->pc66_justificativa' ";
        $virgula = ",";
      }
-     if(trim($this->pc66_tipomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_tipomovimentacao"])){ 
+     if(trim($this->pc66_tipomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_tipomovimentacao"])){
        $sql  .= $virgula." pc66_tipomovimentacao = $this->pc66_tipomovimentacao ";
        $virgula = ",";
-       if(trim($this->pc66_tipomovimentacao) == null ){ 
+       if(trim($this->pc66_tipomovimentacao) == null ){
          $this->erro_sql = " Campo Código do Tipo de Movimentação nao Informado.";
          $this->erro_campo = "pc66_tipomovimentacao";
          $this->erro_banco = "";
@@ -392,10 +392,10 @@ class cl_registroprecomovimentacaoitens {
          return false;
        }
      }
-     if(trim($this->pc66_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_solicitem"])){ 
+     if(trim($this->pc66_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc66_solicitem"])){
        $sql  .= $virgula." pc66_solicitem = $this->pc66_solicitem ";
        $virgula = ",";
-       if(trim($this->pc66_solicitem) == null ){ 
+       if(trim($this->pc66_solicitem) == null ){
          $this->erro_sql = " Campo Item da Compilação nao Informado.";
          $this->erro_campo = "pc66_solicitem";
          $this->erro_banco = "";
@@ -437,7 +437,7 @@ class cl_registroprecomovimentacaoitens {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de Movimentação dos Preços por Item  nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc66_sequencial;
@@ -465,14 +465,14 @@ class cl_registroprecomovimentacaoitens {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc66_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc66_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc66_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -506,7 +506,7 @@ class cl_registroprecomovimentacaoitens {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Registro de Movimentação dos Preços por Item  nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc66_sequencial;
@@ -534,11 +534,11 @@ class cl_registroprecomovimentacaoitens {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -560,11 +560,11 @@ class cl_registroprecomovimentacaoitens {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,15 +585,15 @@ class cl_registroprecomovimentacaoitens {
      $sql2 = "";
      if($dbwhere==""){
        if($pc66_sequencial!=null ){
-         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial "; 
-       } 
+         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,11 +602,11 @@ class cl_registroprecomovimentacaoitens {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,15 +619,15 @@ class cl_registroprecomovimentacaoitens {
      $sql2 = "";
      if($dbwhere==""){
        if($pc66_sequencial!=null ){
-         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial "; 
-       } 
+         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -636,10 +636,10 @@ class cl_registroprecomovimentacaoitens {
      }
      return $sql;
   }
-   function sql_query_orcamento ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_orcamento ( $pc66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -658,22 +658,22 @@ class cl_registroprecomovimentacaoitens {
      $sql .= "      inner join liclicitem       on pc26_liclicitem   = l21_codigo";
      $sql .= "      inner join pcprocitem      on l21_codpcprocitem = pc81_codprocitem";
      $sql .= "      inner join solicitem        on pc81_solicitem    = pc11_codigo";
-     $sql .= "      inner join solicitempcmater on pc11_codigo       = pc16_solicitem"; 
-     $sql .= "      inner join pcmater          on pc16_codmater     = pc01_codmater"; 
+     $sql .= "      inner join solicitempcmater on pc11_codigo       = pc16_solicitem";
+     $sql .= "      inner join pcmater          on pc16_codmater     = pc01_codmater";
      $sql .= "      inner join pcorcam          on  pcorcam.pc20_codorc = pcorcamitem.pc22_codorc";
      $sql .= "      inner join db_usuarios  on  pc58_usuario  = id_usuario";
      $sql2 = "";
      if($dbwhere==""){
        if($pc66_sequencial!=null ){
-         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial "; 
-       } 
+         $sql2 .= " where registroprecomovimentacaoitens.pc66_sequencial = $pc66_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
               <?=$Lve66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve66_sequencial",10,$Ive66_sequencial,true,"text",4,"","chave_ve66_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
               <?=$Lve66_veiculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ve66_veiculo",10,$Ive66_veiculo,true,"text",4,"","chave_ve66_veiculo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         
         $sWhereAtivo = " ve66_ativo is true ";
@@ -128,12 +128,12 @@ $clveicmanutencaomedida->rotulo->label("ve66_veiculo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,5 +1,4 @@
 <?php
-
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -37,7 +36,7 @@ $escola = db_getsession("DB_coddepto");
 $resultedu = eduparametros($escola);
 $permitenotaembranco = VerParametroNota($escola);
 $oGet = db_utils::postMemory($_GET);
-$sObs = urldecode(base64_decode($sObs));
+$sObs = utf8_decode($sObs);
 $oGet->secretario = base64_decode($oGet->secretario);
 
 $clmatricula = new cl_matricula;
@@ -132,7 +131,11 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
     $ed47_v_nome = is_null($ed47_v_nomesocial) || empty($ed47_v_nomesocial) ? $ed47_v_nome : $ed47_v_nomesocial;
     if (!empty($iDataEmissao)){
         $data_emiExp = explode("/",$iDataEmissao);
-        $dEmissao = strtotime($data_emiExp[2]."-".$data_emiExp[1]."-".$data_emiExp[0]);
+        if (strlen($data_emiExp[2]) == 4) {
+            $dEmissao = strtotime($data_emiExp[0]."-".$data_emiExp[1]."-".$data_emiExp[2]);
+        } else {
+            $dEmissao = strtotime($data_emiExp[2]."-".$data_emiExp[1]."-".$data_emiExp[0]);
+        }
     }
 
     $dataEmissao  = !empty($iDataEmissao) ? $dEmissao : DB_getsession("DB_datausu") ;
@@ -258,7 +261,7 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(45, 4, $ed47_i_filiacao == "1" ? "PAI E/OU MÃE" : "NÃO DECLARADO / IGNORADO", 0, 0, "L", 0);
-   
+
     $pdf->setfont('arial', '', 7);
     $pdf->cell((15 + $addWidth), 4, strip_tags($Led47_tiposanguineo), 0, 0, "R", 0);
 
@@ -352,9 +355,17 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
             $sitt = trim($ed60_c_situacao);
         } else {
             if ($ed60_c_concluida == "S") {
-                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA)";
+                if (trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA - CURSANDO)";
+                } else {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CONCLUÍDA)";
+                }
             } else {
-                $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+                if (trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo) . " (CURSANDO)";
+                } else {
+                    $sitt = Situacao($ed60_c_situacao, $ed60_i_codigo);
+                }
             }
         }
 
@@ -439,17 +450,22 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
         $pdf->setfont('arial', 'b', 7);
         $pdf->cell($iWidthCol2, 4, $sCargaHoraria, 0, 0, "L", 1);
 
-        $pdf->setfont('arial', '', 7);
-        $pdf->cell($iWidthCol3, 4, "Dias Letivos:", 0, 0, "L", 1);
+        if ($oGet->lExibeDiasLetivos == "true") {
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell($iWidthCol3, 4, "Dias Letivos:", 0, 0, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell($iWidthCol4, 4, $oTurma->getCalendario()->getDiasLetivos(), "R", 1, "L", 1);
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell($iWidthCol1s, 4, "Classificação:", "L", 0, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell($iWidthCol4 + $iWidthCol3 + $iWidthCol2, 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+        } else {
+            $pdf->setfont('arial', '', 7);
+            $pdf->cell($iWidthCol3, 4, "Nº no Diário::", 0, 0, "L", 1);
 
-        $pdf->setfont('arial', 'b', 7);
-        $pdf->cell($iWidthCol4, 4, $oTurma->getCalendario()->getDiasLetivos(), "R", 1, "L", 1);
-
-        $pdf->setfont('arial', '', 7);
-        $pdf->cell($iWidthCol1s, 4, "Nº no Diário:", "L", 0, "L", 1);
-
-        $pdf->setfont('arial', 'b', 7);
-        $pdf->cell(($iWidthTotal - $iWidthCol1s), 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+            $pdf->setfont('arial', 'b', 7);
+            $pdf->cell($iWidthCol4, 4, $oMatricula->getNumeroOrdemAluno(), "R", 1, "L", 1);
+        }
 
         $oGrade = new RelatorioGradeAproveitamento($pdf, MatriculaRepository::getMatriculaByCodigo($ed60_i_codigo), $iWidthTotal);
 
@@ -462,7 +478,6 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
         $oGrade->imprimirMinimoParaAprovacao();
         $oGrade->imprimirAndamentoDaMatricula();
 
-        $pdf->cell(190, 3, "", "T", 1, "C", 0);
     }
 
     $campos = " ed95_i_regencia,ed232_c_descr,ed72_t_obs,ed72_i_codigo as codaval,ed72_t_parecer as parecer,ed09_c_descr, ";
@@ -675,21 +690,21 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
 
     if ($sObs != "" || $sObservacaoConselho || $sObservacaoProporcionalidade != "") {
         $pdf->setfont('arial', 'b', 7);
-        $pdf->cell(191, 4, "", 0, 1, "L", 0);
-        $pdf->cell(191, 4, "Observações Gerais:", 1, 1, "L", 1);
+        $pdf->cell($iWidthTotal, 4, "", 0, 1, "L", 0);
+        $pdf->cell($iWidthTotal, 4, "Observações Gerais:", 1, 1, "L", 1);
 
         $pdf->setfont('arial', '', 6);
         $sObservacaoImprimir = $sObservacaoProporcionalidade;
         $sObservacaoImprimir .= "{$sObservacaoConselho} " . ($sObs);
 
-        $pdf->multicell(191, 3.5, $sObservacaoImprimir, 1, "L", 0, 0);
+        $pdf->multicell($iWidthTotal, 3.5, $sObservacaoImprimir, 1, "L", 0, 0);
     }
 
     $final = $pdf->getY();
     $pdf->setY($final + 3);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(25, 8, $data_extenso, 0, 1, "L", 0);
+    $pdf->cell($iWidthTotal, 4, $data_extenso, 0, 1, "L", 0);
 
     $fim = $pdf->getY();
     $pdf->setY($fim + 1);
@@ -754,12 +769,20 @@ function imprimirAssinaturas($pdf, $oGet, $oTurma)
 
     if ($oGet->lExibeAssinaturaProfessor == "true") {
         $regenteClasse = $oTurma->getProfessorConselheiro();
-        $regente = $regenteClasse->getCgm()->getNome();
-        $nome = $regente ? $regente : "";
+        if ($regenteClasse) {
+            $regente = $regenteClasse->getCgm()->getNome();
+            $nome = $regente ? $regente : "";
 
+            $assinaturas[] = (object)[
+                'nome' => $nome,
+                'cargo' => 'Professor'
+            ];
+        }
+    }
+
+    if ($oGet->lExibeAssinaturaResponsavel == "true") {
         $assinaturas[] = (object)[
-            'nome' => $nome,
-            'cargo' => 'Professor'
+            'cargo' => 'Responsável'
         ];
     }
 
@@ -771,28 +794,52 @@ function imprimirAssinaturas($pdf, $oGet, $oTurma)
     $xSegundaAssinatura = $oGet->iOrientacao == 0 ? 120 : 200;
     $yAntes = $pdf->GetY();
 
-    foreach ($assinaturas as $index => $dados) {
-        $eixoX = ((($index+1) % 2) == 0) ? $xSegundaAssinatura : 10;
+    if ( $oGet->iOrientacao == 1) {
+        foreach ($assinaturas as $index => $dados) {
+            $eixoX = ((($index+1) % 2) == 0) ? $xSegundaAssinatura : 10;
 
-        if ($eixoX == 10) {
-            $yAntes = $pdf->GetY();
+            if ($eixoX == 10) {
+                $yAntes = $pdf->GetY();
+            }
+
+            if ($index > 1) {
+                $pdf->SetY($pdf->GetY() + 10);
+            }
+
+            $pdf->setX($eixoX);
+            $pdf->cell(45, 2, str_repeat('_', 40), 0, 1, "L", 0);
+            $pdf->setX($eixoX);
+            $pdf->multicell(70, 4, $dados->nome, 0, "L", 0, 0);
+            $pdf->setX($eixoX);
+            $pdf->cell(45, 1, $dados->cargo, 0, 1, "L", 0);
+            $pdf->setY($yAntes + 1);
         }
+    } else {
+        foreach ($assinaturas as $index => $dados) {
+            $eixoX = ((($index+1) % 2) == 0) ? $xSegundaAssinatura : 10;
 
-        if ($index > 1) {
-            $pdf->SetY($pdf->GetY() + 10);
-        }
+            if ($eixoX == 10) {
+                $yAntes = $pdf->GetY();
+            }
 
-        $pdf->setX($eixoX);
-        $pdf->cell(45, 2, str_repeat('_', 40), 0, 1, "L", 0);
-        $pdf->setX($eixoX);
-        $pdf->multicell(70, 4, $dados->nome, 0, "L", 0, 0);
-        $pdf->setX($eixoX);
-        $pdf->cell(45, 1, $dados->cargo, 0, 1, "L", 0);
+            if ($index > 1) {
+                $pdf->SetY($pdf->GetY() + 10);
+            }
 
-        if ($eixoX == 10) {
-            $pdf->setY($yAntes);
+            $pdf->setX($eixoX);
+            $pdf->cell(45, 2, str_repeat('_', 40), 0, 1, "L", 0);
+            $pdf->setX($eixoX);
+            $pdf->multicell(70, 4, $dados->nome, 0, "L", 0, 0);
+            $pdf->setX($eixoX);
+            $pdf->cell(45, 1, $dados->cargo, 0, 1, "L", 0);
+
+            if ($eixoX == 10) {
+                $pdf->setY($yAntes);
+            }
         }
     }
+
+
 }
 
 function nomeDiretorEscola()

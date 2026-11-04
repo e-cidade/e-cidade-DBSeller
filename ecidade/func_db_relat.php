@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_relat->rotulo->label("db91_descr");
               <?=$Ldb91_codrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db91_codrel",10,$Idb91_codrel,true,"text",4,"","chave_db91_codrel");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_relat->rotulo->label("db91_descr");
               <?=$Ldb91_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db91_descr",40,$Idb91_descr,true,"text",4,"","chave_db91_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_relat->rotulo->label("db91_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_relat.php")==true){
@@ -118,12 +118,12 @@ $cldb_relat->rotulo->label("db91_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

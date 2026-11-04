@@ -109,6 +109,25 @@ class AlunoRepository {
     return $oAluno;
   }
 
+
+    public static function getAlunoByRNM($rnm) {
+
+        if (empty($rnm) || is_null($rnm)) {
+            return new Aluno();
+        }
+
+        $oAluno = null;
+        $oDaoAluno = new cl_aluno();
+        $sWhereAluno = "ed47_rnm = '{$rnm}'";
+        $sql = $oDaoAluno->sql_query_file( null, "ed47_i_codigo", null, $sWhereAluno );
+        $rsAluno = db_query($sql);
+        if ( pg_num_rows( $rsAluno ) > 0 ) {
+            $iCodigoAluno = pg_fetch_assoc($rsAluno);
+            $oAluno = AlunoRepository::getAlunoByCodigo($iCodigoAluno['ed47_i_codigo']);
+        }
+        return $oAluno;
+    }
+
     /**
      * @param Turma $turma
      * @param array $ordem

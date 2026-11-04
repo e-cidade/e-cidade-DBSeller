@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,7 +52,7 @@ $db_botao = true;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 95%;'> <legend><b>Exame Material</b></legend>
-	<?
+	<?php
 	include(modification("forms/db_frmlab_examematerial.php"));
 	?>
 	</fieldset>
@@ -66,7 +66,7 @@ $db_botao = true;
 <script>
 js_tabulacaoforms("form1","la19_i_materialcoleta",true,1,"la19_i_materialcoleta",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  db_inicio_transacao();
  $cllab_examematerial->incluir($la19_i_codigo);

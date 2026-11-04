@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $oFonte        = db_utils::fieldsMemory($rsFonte,0);
 <form name='frmReprocessa'>
   <table width="100%" height="100%"; cellspacing="0" cellpadding="0">
     <tr>
-      <td height="10%" align="center" valign='center' bgcolor="white" style=';border-bottom:2px groove white'>
+      <td height="10%" align="center" valign='center' bgcolor="white" style='border-bottom:2px groove white'>
       <b>  
      <?=$sTextoTipo?>
       </b> 
@@ -97,7 +97,7 @@ $oFonte        = db_utils::fieldsMemory($rsFonte,0);
              </tr>
              <tr>
               <td valign="top" style='padding:2px'> 
-              <?
+              <?php
               
              for ($iAno = $oPPaLei->o01_anoinicio; $iAno <= $oPPaLei->o01_anofinal;$iAno++) {
                echo " <input type='checkbox' value='{$iAno}' class='anos' id='ano{$iAno}'><label for='ano{$iAno}'>$iAno</label><br>";
@@ -107,7 +107,7 @@ $oFonte        = db_utils::fieldsMemory($rsFonte,0);
                </td>
                <td rowspan='5' valign="top" style='padding:2px; border-left:2px groove white;height:150px;overflow:scroll'>
                <table cellspacing="0" cellpadding="0" width='100%' >
-               <?
+               <?php
 
                 $oDaoCenarioConplano = db_utils::getDao("orccenarioeconomicoconplano");
                 $nValorparametro     = 0;

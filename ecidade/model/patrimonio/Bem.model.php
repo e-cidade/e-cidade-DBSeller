@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Configuracao\Helpers\StorageHelper;
+
 require_once(modification("model/patrimonio/BemTipoAquisicao.php"));
 require_once(modification("model/patrimonio/BemTipoDepreciacao.php"));
 require_once(modification("classes/materialestoque.model.php"));
@@ -207,9 +209,19 @@ class Bem
     private $iTipoAquisicao;
 
     /**
+     * @var string
+     */
+    private $sProcesso;
+
+    /**
      * @var int
      */
     private $foto;
+
+    /**
+     * @var boolean
+     */
+    private $estorage;
 
     /**
      * @param string $iCodigoBem
@@ -232,8 +244,11 @@ class Bem
         $sSqlCodigoPlaca .= "   from bensplaca ";
         $sSqlCodigoPlaca .= "  where t41_bem = t52_bem ";
         $sSqlCodigoPlaca .= "  order by t41_codigo desc limit 1) as codigoplaca";
-        $sSqlDadosBem = $oDaoBem->sql_query_dados_depreciacao($iCodigoBem, "*,{$sSqlSituacaoBem} {$sSqlCodigoPlaca}",
-          "t44_ultimaavaliacao desc");
+        $sSqlDadosBem = $oDaoBem->sql_query_dados_depreciacao(
+            $iCodigoBem,
+            "*,{$sSqlSituacaoBem} {$sSqlCodigoPlaca}",
+            "t44_ultimaavaliacao desc"
+        );
         $rsDadosBem = $oDaoBem->sql_record($sSqlDadosBem);
 
         if ($oDaoBem->numrows == 0) {
@@ -270,7 +285,8 @@ class Bem
         $this->setVidaUtil($oDadosBem->t44_vidautil);
         $this->setPlaca(new PlacaBem($oDadosBem->codigoplaca));
         $this->setFoto($oDadosBem->t52_foto);
-
+        $this->setProcesso($oDadosBem->t52_processo);
+        $this->setEstorage($oDadosBem->t52_estorage);
         $this->iCodigoCgm = $oDadosBem->t52_numcgm;
         $this->iCodigoBemDepreciacao = $oDadosBem->t44_sequencial;
         $this->nValorAtual = round($oDadosBem->t44_valoratual + $oDadosBem->t44_valorresidual, 2);
@@ -284,6 +300,7 @@ class Bem
             $oDadosBaixa->motivo = $oDadosBem->t55_motivo;
             $oDadosBaixa->observacao = $oDadosBem->t55_obs;
             $oDadosBaixa->documento = $oDadosBem->t55_documento;
+            $oDadosBaixa->estorage = $oDadosBem->t55_estorage;
             $this->oDadosBaixa = $oDadosBaixa;
         }
 
@@ -342,10 +359,12 @@ class Bem
             $sWhere .= " t58_bens                = {$this->getCodigoBem()} and ";
             $sWhere .= " t58_benstipodepreciacao = 6                           ";
 
-            $sSqlBensHistoricoCalculo = $oDaoBensHistoricoCalculo->sql_query_calculo(null,
-              "t58_bens, t57_datacalculo",
-              "t57_datacalculo desc",
-              $sWhere);
+            $sSqlBensHistoricoCalculo = $oDaoBensHistoricoCalculo->sql_query_calculo(
+                null,
+                "t58_bens, t57_datacalculo",
+                "t57_datacalculo desc",
+                $sWhere
+            );
             $rsBensHistoricoCalculo = $oDaoBensHistoricoCalculo->sql_record("{$sSqlBensHistoricoCalculo} limit 1");
 
             if ($oDaoBensHistoricoCalculo->numrows > 0) {
@@ -469,8 +488,7 @@ class Bem
     public function getTipoAquisicao()
     {
         if (empty($this->oTipoAquisicao) &&
-          (!empty($this->iTipoAquisicao) || is_numeric($this->iTipoAquisicao))) {
-
+            (!empty($this->iTipoAquisicao) || is_numeric($this->iTipoAquisicao))) {
             $this->oTipoAquisicao = BemTipoAquisicaoRepository::getPorCodigo($this->iTipoAquisicao);
         }
 
@@ -665,6 +683,42 @@ class Bem
     public function setObservacao($sObservacao)
     {
         $this->sObservacao = $sObservacao;
+    }
+
+    /**
+     * define o numero do processo do bem
+     * @param string $sProcesso
+     */
+    public function setProcesso($sProcesso)
+    {
+        $this->sProcesso = $sProcesso;
+    }
+
+    /**
+     * Retorna o numero do processo do bem
+     * @return string
+     */
+    public function getprocesso()
+    {
+        return $this->sProcesso;
+    }
+
+    /**
+     * defien se o arquivo está no estorage
+     * @param $estorage
+     * @return void
+     */
+    public function setEstorage($estorage)
+    {
+        $this->estorage = $estorage;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEstorage()
+    {
+        return $this->estorage;
     }
 
     /**
@@ -864,8 +918,10 @@ class Bem
         $oDaoBens->t52_instit = $this->getInstituicao();
         $oDaoBens->t52_numcgm = $this->getFornecedor()->getCodigo();
         $oDaoBens->t52_obs = $this->getObservacao();
+        $oDaoBens->t52_processo = $this->getProcesso();
         $oDaoBens->t52_valaqu = "{$this->getValorAquisicao()}";
         $oDaoBens->t52_foto = $this->foto;
+        $oDaoBens->t52_estorage = $this->getEstorage();
 
         /**
          * Inclusao - busca placa
@@ -878,7 +934,7 @@ class Bem
             $mensagemErroPlaca = '';
             if (!empty($infoPlaca['bem'])) {
                 $mensagemErroPlaca = "Não foi possível incluir pois a placa está sendo utilizada por outro bem. {$infoPlaca['bem']}";
-            } else if(!empty($infoPlaca['historico'])) {
+            } elseif (!empty($infoPlaca['historico'])) {
                 $mensagemErroPlaca = 'Não foi possível incluir pois a placa está vinculada ao histórico de um bem.';
             }
 
@@ -901,8 +957,10 @@ class Bem
         }
 
         if ($oDaoBens->erro_status == 0) {
-            throw new Exception(_M('patrimonial.patrimonio.Bem.erro_salvar',
-              (object)array("erro_msg" => $oDaoBens->erro_msg)));
+            throw new Exception(_M(
+                'patrimonial.patrimonio.Bem.erro_salvar',
+                (object)array("erro_msg" => $oDaoBens->erro_msg)
+            ));
         }
 
         $lRealizarEscrituracao = $this->criaVinculoBemNotas();
@@ -1069,10 +1127,11 @@ class Bem
                 $sWhereHistorico .= "t58_bens       = {$this->getCodigoBem()} ";
                 $sCamposHistorico = "t58_bens, t58_benstipodepreciacao";
                 $sSqlBensHistoricoCalculo = $oDaoBensHistoricoCalculo->sql_query_calculo(
-                  null,
-                  $sCamposHistorico,
-                  "t57_datacalculo, t57_sequencial",
-                  $sWhereHistorico);
+                    null,
+                    $sCamposHistorico,
+                    "t57_datacalculo, t57_sequencial",
+                    $sWhereHistorico
+                );
 
                 $rsBensHistoricoCalculo = $oDaoBensHistoricoCalculo->sql_record($sSqlBensHistoricoCalculo);
                 $iTotalMeses = 0;
@@ -1102,7 +1161,7 @@ class Bem
      * @param string|null $caminhoArquivo
      * @throws Exception
      */
-    public function baixar($iMotivoBaixa, $dtBaixa, $sObservacao = '', $caminhoArquivo = null)
+    public function baixar($iMotivoBaixa, $dtBaixa, $sObservacao = '', $caminhoArquivo = null, $nomeArquivo = '')
     {
         if (!db_utils::inTransaction()) {
             throw new Exception(_M('patrimonial.patrimonio.Bem.sem_transacao'));
@@ -1119,134 +1178,145 @@ class Bem
         if ($this->isBaixado()) {
             throw new Exception(_M('patrimonial.patrimonio.Bem.bem_ja_baixado'));
         }
+        $id = null;
 
-        $oid = null;
-        if (!empty($caminhoArquivo)) {
-            $mimeExtensions = array(
-                'application/msword' => 'doc',
-                'application/pdf' => 'pdf',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx'
-            );
+        try {
+            if (!empty($caminhoArquivo)) {
+                $mimeExtensions = array(
+                    'application/msword' => 'doc',
+                    'application/pdf' => 'pdf',
+                    'application/octet-stream' => 'docx',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx'
+                );
 
-            if (!array_key_exists(mime_content_type($caminhoArquivo), $mimeExtensions)) {
-                throw new Exception('Extensão do arquivo deve ser doc, docx ou pdf.');
+                if (!array_key_exists(mime_content_type($caminhoArquivo), $mimeExtensions)) {
+                    throw new Exception('Extensão do arquivo deve ser doc, docx ou pdf.');
+                }
+
+                $id = StorageHelper::uploadArquivo($caminhoArquivo, [], true, null, null, $nomeArquivo);
             }
 
-            $oid = DBLargeObject::criaOID(true);
-            $documento = DBLargeObject::escrita($caminhoArquivo, $oid);
-
-            if (!$documento) {
-                throw new Exception('Não foi possível salvar o documento.');
+            $oDaoBensBaixa = new cl_bensbaix();
+            $oDaoBensBaixa->t55_codbem = $this->getCodigoBem();
+            $oDaoBensBaixa->t55_baixa = implode("-", array_reverse(explode("/", $dtBaixa)));
+            $oDaoBensBaixa->t55_motivo = $iMotivoBaixa;
+            $oDaoBensBaixa->t55_obs = $sObservacao;
+            $oDaoBensBaixa->t55_documento = $id;
+            $oDaoBensBaixa->t55_estorage = $id === null ? 'f' : 't';
+            $oDaoBensBaixa->incluir($this->getCodigoBem());
+            if ($oDaoBensBaixa->erro_status == 0) {
+                if (!empty($caminhoArquivo)) {
+                    StorageHelper::deleteArquivo($id);
+                }
+                throw new Exception(_M('patrimonial.patrimonio.Bem.erro_baixar_bem'));
             }
-        }
 
-        $oDaoBensBaixa = new cl_bensbaix();
-        $oDaoBensBaixa->t55_codbem = $this->getCodigoBem();
-        $oDaoBensBaixa->t55_baixa = implode("-", array_reverse(explode("/", $dtBaixa)));
-        $oDaoBensBaixa->t55_motivo = $iMotivoBaixa;
-        $oDaoBensBaixa->t55_obs = $sObservacao;
-        $oDaoBensBaixa->t55_documento = $oid;
-        $oDaoBensBaixa->incluir($this->getCodigoBem());
-        if ($oDaoBensBaixa->erro_status == 0) {
-            throw new Exception(_M('patrimonial.patrimonio.Bem.erro_baixar_bem'));
-        }
+            $this->oDadosBaixa = (object) [
+                "databaixa" => db_formatar($oDaoBensBaixa->t55_baixa, "d"),
+                "motivo" => $oDaoBensBaixa->t55_motivo,
+                "observacao" => $oDaoBensBaixa->t55_obs,
+                "documento" => $oDaoBensBaixa->t55_documento,
+                "estorage" => $oDaoBensBaixa->t55_estorage,
+            ];
 
-        $oDaoBensBaixa->motivo = $iMotivoBaixa;
-        $this->oDadosBaixa = $oDaoBensBaixa;
 
-        /**
-         * Verificar situacao da nota em que o bem está vinculado.
-         */
-        $aNotas = $this->getNotasFiscais();
+            /**
+             * Verificar situacao da nota em que o bem está vinculado.
+             */
+            $aNotas = $this->getNotasFiscais();
 
-        $oDataAtual = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
-        $oInstit = new Instituicao(db_getsession("DB_instit"));
-        $lIntegracaoFinanceiro = ParametroIntegracaoPatrimonial::possuiIntegracaoPatrimonio($oDataAtual, $oInstit);
+            $oDataAtual = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
+            $oInstit = new Instituicao(db_getsession("DB_instit"));
+            $lIntegracaoFinanceiro = ParametroIntegracaoPatrimonial::possuiIntegracaoPatrimonio($oDataAtual, $oInstit);
 
-        /**
-         *  realiza lancamentos contabens do bem
-         *  caso o desdobramento da nota do bem esteja no grupo 9 (bem permante)
-         */
-        $lRealizouLancamento = false;
-        foreach ($aNotas as $oNota) {
-            if (!empty($oNota) && $this->verificaSituacaoNota() && $oNota->getValorLiquidado() == 0) {
-                $oGrupo = GrupoContaOrcamento::getGrupoConta($oNota->getDesdobramento(), db_getsession("DB_anousu"));
+            /**
+             *  realiza lancamentos contabens do bem
+             *  caso o desdobramento da nota do bem esteja no grupo 9 (bem permante)
+             */
+            $lRealizouLancamento = false;
+            foreach ($aNotas as $oNota) {
+                if (!empty($oNota) && $this->verificaSituacaoNota() && $oNota->getValorLiquidado() == 0) {
+                    $oGrupo = GrupoContaOrcamento::getGrupoConta($oNota->getDesdobramento(), db_getsession("DB_anousu"));
 
-                if (!empty($oGrupo) && $oGrupo->getCodigo() == 9) {
-                    $sBens = "do tombamento do bem {$this->getCodigoBem()}";
+                    if (!empty($oGrupo) && $oGrupo->getCodigo() == 9) {
+                        $sBens = "do tombamento do bem {$this->getCodigoBem()}";
 
-                    if ($lIntegracaoFinanceiro) {
-                        $nValor = $this->getValorAquisicao();
-                        if (count($aNotas) > 1) {
-                            $iNotaItem = $this->getNotaItem($oNota->getCodigoNota());
-                            if (!$this->isPrimeiroBemBaixadoNota($iNotaItem)) {
-                                continue;
-                            }
+                        if ($lIntegracaoFinanceiro) {
+                            $nValor = $this->getValorAquisicao();
+                            if (count($aNotas) > 1) {
+                                $iNotaItem = $this->getNotaItem($oNota->getCodigoNota());
+                                if (!$this->isPrimeiroBemBaixadoNota($iNotaItem)) {
+                                    continue;
+                                }
 
-                            foreach ($oNota->getItens() as $oItemNota) {
-                                if ($oItemNota->getCodigoNota() == $iNotaItem) {
-                                    $aCodigoBensVinculados = array();
-                                    foreach ($oItemNota->getBensVinculados() as $oBem) {
-                                        $aCodigoBensVinculados[] = $oBem->getCodigoBem();
-                                    }
-                                    if (count($aCodigoBensVinculados) > 1) {
-                                        $sBens = "dos tombamentos dos bens " . implode(",", $aCodigoBensVinculados);
+                                foreach ($oNota->getItens() as $oItemNota) {
+                                    if ($oItemNota->getCodigoNota() == $iNotaItem) {
+                                        $aCodigoBensVinculados = array();
+                                        foreach ($oItemNota->getBensVinculados() as $oBem) {
+                                            $aCodigoBensVinculados[] = $oBem->getCodigoBem();
+                                        }
+                                        if (count($aCodigoBensVinculados) > 1) {
+                                            $sBens = "dos tombamentos dos bens " . implode(",", $aCodigoBensVinculados);
+                                        }
                                     }
                                 }
+
+                                $nValor = $this->getValorItemNota($oNota->getCodigoNota());
                             }
+                            $sObs = "Estorno do Lançamento em liquidação {$sBens}.";
 
-                            $nValor = $this->getValorItemNota($oNota->getCodigoNota());
+                            $oProcessarLancamento = new stdClass();
+                            $oProcessarLancamento->iCodigoDotacao = $oNota->getEmpenho()->getDotacao()->getCodigo();
+                            $oProcessarLancamento->iCodigoElemento = $oNota->getDesdobramento();
+                            $oProcessarLancamento->iCodigoNotaLiquidacao = $oNota->getCodigoNota();
+                            $oProcessarLancamento->iFavorecido = $oNota->getEmpenho()->getCgm()->getCodigo();
+                            $oProcessarLancamento->iNumeroEmpenho = $oNota->getEmpenho()->getNumero();
+                            $oProcessarLancamento->sObservacaoHistorico = $sObs;
+                            $oProcessarLancamento->nValorTotal = $nValor;
+                            $oProcessarLancamento->oClassificacao = $this->getClassificacao();
+                            $oProcessarLancamento->oGrupo = $oGrupo;
+
+                            LancamentoEmpenhoEmLiquidacao::processar($oProcessarLancamento, true);
+                            $lRealizouLancamento = true;
                         }
-                        $sObs = "Estorno do Lançamento em liquidação {$sBens}.";
-
-                        $oProcessarLancamento = new stdClass();
-                        $oProcessarLancamento->iCodigoDotacao = $oNota->getEmpenho()->getDotacao()->getCodigo();
-                        $oProcessarLancamento->iCodigoElemento = $oNota->getDesdobramento();
-                        $oProcessarLancamento->iCodigoNotaLiquidacao = $oNota->getCodigoNota();
-                        $oProcessarLancamento->iFavorecido = $oNota->getEmpenho()->getCgm()->getCodigo();
-                        $oProcessarLancamento->iNumeroEmpenho = $oNota->getEmpenho()->getNumero();
-                        $oProcessarLancamento->sObservacaoHistorico = $sObs;
-                        $oProcessarLancamento->nValorTotal = $nValor;
-                        $oProcessarLancamento->oClassificacao = $this->getClassificacao();
-                        $oProcessarLancamento->oGrupo = $oGrupo;
-
-                        LancamentoEmpenhoEmLiquidacao::processar($oProcessarLancamento, true);
-                        $lRealizouLancamento = true;
                     }
+                    // caso nao tenha nota, verificamos o tipo de aquisição, se for doação, realizamos o lançamento
                 }
-                // caso nao tenha nota, verificamos o tipo de aquisição, se for doação, realizamos o lançamento
-            }
-        }
-
-        if (USE_PCASP && !$lRealizouLancamento && $lIntegracaoFinanceiro) {
-            /**
-             *  Realiza acerto nas contas de depreciação e classificação, caso seja necessário
-             */
-            $oBemAcertoContaClassificacao = new BemAcertoContaClassificacao();
-            $oDBData = new DBDate($dtBaixa);
-            $oBemAcertoContaClassificacao->acertaContasDepreciacaoClassificacao($this, $oDBData);
-
-            $oBemDepreciacao = BemDepreciacao::getInstance($this);
-            $nValorAtual = $this->nValorAquisicao;
-            if (!empty($oBemDepreciacao)) {
-                $nValorAtual = $oBemDepreciacao->getValorAtual();
             }
 
-            /**
-             * Somente executa o lançamento contábil quando o valor for diferente de zero
-             */
-            if (!empty($nValorAtual) && (float)$nValorAtual > 0) {
+            if (USE_PCASP && !$lRealizouLancamento && $lIntegracaoFinanceiro) {
+                /**
+                 *  Realiza acerto nas contas de depreciação e classificação, caso seja necessário
+                 */
+                $oBemAcertoContaClassificacao = new BemAcertoContaClassificacao();
+                $oDBData = new DBDate($dtBaixa);
+                $oBemAcertoContaClassificacao->acertaContasDepreciacaoClassificacao($this, $oDBData);
+                $oBemDepreciacao = BemDepreciacao::getInstance($this);
+                $nValorAtual = $this->nValorAquisicao;
+                if (!empty($oBemDepreciacao)) {
+                    $nValorAtual = $oBemDepreciacao->getValorAtual();
+                }
 
-                $oLancamentoauxiliarBem = new LancamentoAuxiliarBem();
-                $oLancamentoauxiliarBem->setValorTotal($nValorAtual);
-                $oLancamentoauxiliarBem->setBem($this);
-                $oLancamentoauxiliarBem->setObservacaoHistorico($sObservacao);
-                $oLancamentoauxiliarBem->setEstorno(true);
-                $oEventoContabil = new EventoContabil(701, db_getsession('DB_anousu'));
-                $aLancamentos = $oEventoContabil->getEventoContabilLancamento();
-                $oLancamentoauxiliarBem->setHistorico($aLancamentos[0]->getHistorico());
-                $oEventoContabil->executaLancamento($oLancamentoauxiliarBem);
+                /**
+                 * Somente executa o lançamento contábil quando o valor for diferente de zero
+                 */
+                if (!empty($nValorAtual) && (float)$nValorAtual > 0) {
+                    $oLancamentoauxiliarBem = new LancamentoAuxiliarBem();
+                    $oLancamentoauxiliarBem->setValorTotal($nValorAtual);
+                    $oLancamentoauxiliarBem->setBem($this);
+                    $oLancamentoauxiliarBem->setObservacaoHistorico($sObservacao);
+                    $oLancamentoauxiliarBem->setEstorno(true);
+                    $oEventoContabil = new EventoContabil(701, db_getsession('DB_anousu'));
+                    $aLancamentos = $oEventoContabil->getEventoContabilLancamento();
+                    $oLancamentoauxiliarBem->setHistorico($aLancamentos[0]->getHistorico());
+                    $oEventoContabil->executaLancamento($oLancamentoauxiliarBem);
+                }
             }
+        } catch (\Exception $e) {
+            if ($id) {
+                StorageHelper::deleteArquivo($id);
+            }
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -1270,6 +1340,7 @@ class Bem
 
     /**
      * Reativa o bem, quando estiver baixado
+     * @throws Exception
      */
     public function reativar($sObservacao = null)
     {
@@ -1289,8 +1360,10 @@ class Bem
         $oDaoBensBaixa->excluir($this->getCodigoBem());
 
         if ($oDaoBensBaixa->erro_status == 0) {
-            throw new Exception(_M('patrimonial.patrimonio.Bem.erro_reativar_bem',
-              (object)array("erro_msg" => $oDaoBensBaixa->erro_msg)));
+            throw new Exception(_M(
+                'patrimonial.patrimonio.Bem.erro_reativar_bem',
+                (object)array("erro_msg" => $oDaoBensBaixa->erro_msg)
+            ));
         }
 
         $oDataAtual = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
@@ -1361,6 +1434,10 @@ class Bem
                 $oLancamentoauxiliarBem->setHistorico($aLancamentos[0]->getHistorico());
                 $oEventoContabil->executaLancamento($oLancamentoauxiliarBem);
             }
+        }
+
+        if (!empty($this->oDadosBaixa->documento)) {
+            StorageHelper::deleteArquivo($this->oDadosBaixa->documento);
         }
     }
 
@@ -1490,27 +1567,27 @@ class Bem
              * de uma reavaliação e como não há registro de hora da reavaliação e da depreciação,
              * é necessário determinar se as depreciações foram realizadas antes ou depois da reavaliação do bem
              * pelo sequencial.
-             */
-            $sqlUltimoSequencial = $oDaoBemCalculoValorProcessado->sql_query_ultimo_sequencial_reavaliacao(
-              $this->getCodigoBem()
-            );
+
+            $sqlUltimoSequencial = $oDaoBemCalculoValorProcessado->sql_query_ultimo_sequencial_reavaliacao($this->getCodigoBem());
+
             $rsUltimoSequencial = db_query($sqlUltimoSequencial);
             if (pg_num_rows($rsUltimoSequencial)) {
                 $ultimoSequencial = pg_fetch_assoc($rsUltimoSequencial, 0)['t57_sequencial'];
                 $where .= " and t57_sequencial > {$ultimoSequencial}";
             }
+            */
 
             $sqlBemCalculoValorProcessado = $oDaoBemCalculoValorProcessado->sql_query_valor_depreciado(
-              $this->getCodigoBem(),
-              $campos,
-              $where
+                $this->getCodigoBem(),
+                $campos,
+                $where
             );
         } else {
             $sqlBemCalculoValorProcessado = $oDaoBemCalculoValorProcessado->sql_query_calculo(
-              null,
-              $campos,
-              null,
-              $where
+                null,
+                $campos,
+                null,
+                $where
             );
         }
 
@@ -1540,7 +1617,6 @@ class Bem
     public function bemFoiReavaliacao()
     {
         if ($this->lBemReavaliadao == null) {
-
             $this->lBemReavaliadao = false;
             if ($this->getTotalDeReavaliacoes() > 0) {
                 $this->lBemReavaliadao = true;
@@ -1564,11 +1640,11 @@ class Bem
             $sWhere .= "t75_situacao = 3  ";
             $sOrder = " t77_sequencial desc limit 1";
 
-            $sSqlReavaliacaoBem = $oDaoReavaliacaoBem->sql_query_inventario(null,
-              "(t77_valordepreciavel +
-                                                                           t77_valorresidual) as valor ",
-              $sOrder,
-              $sWhere
+            $sSqlReavaliacaoBem = $oDaoReavaliacaoBem->sql_query_inventario(
+                null,
+                "(t77_valordepreciavel + t77_valorresidual) as valor ",
+                $sOrder,
+                $sWhere
             );
 
             $rsReavaliacaoBem = $oDaoReavaliacaoBem->sql_record($sSqlReavaliacaoBem);
@@ -1599,7 +1675,6 @@ class Bem
         $nValorLiquidado = db_utils::fieldsMemory($rsBemNota, 0)->e72_vlrliq;
 
         if ($nValorLiquidado > 0) {
-
             return self::LIQUIDADO;
         }
 
@@ -1620,8 +1695,10 @@ class Bem
 
             if ($oDaoBemNotas->numrows > 0) {
                 for ($iIndiceNota = 0; $iIndiceNota < $oDaoBemNotas->numrows; $iIndiceNota++) {
-                    $this->aNotasFiscais[] = new NotaLiquidacao(db_utils::fieldsMemory($rsBemNotas,
-                      $iIndiceNota)->e69_codnota);
+                    $this->aNotasFiscais[] = new NotaLiquidacao(db_utils::fieldsMemory(
+                        $rsBemNotas,
+                        $iIndiceNota
+                    )->e69_codnota);
                 }
             }
         }
@@ -1654,8 +1731,10 @@ class Bem
         }
 
         if ($oDaoBensDepreciacao->erro_status == "0") {
-            $sMsg = _M('patrimonial.patrimonio.Bem.erro_salvar_calculo',
-              (object)array("erro_msg" => $oDaoBensDepreciacao->erro_msg));
+            $sMsg = _M(
+                'patrimonial.patrimonio.Bem.erro_salvar_calculo',
+                (object)array("erro_msg" => $oDaoBensDepreciacao->erro_msg)
+            );
             throw new Exception($sMsg);
         }
 
@@ -1703,15 +1782,21 @@ class Bem
             $oDaoBensEmpNotaItem->incluir(null);
 
             if ($oDaoBensEmpNotaItem->erro_status == 0) {
-                $sMensagemErro = _M('patrimonial.patrimonio.Bem.nao_possivel_criar_vinculo',
-                  (object)array("erro_msg" => $oDaoBensEmpNotaItem->erro_msg));
+                $sMensagemErro = _M(
+                    'patrimonial.patrimonio.Bem.nao_possivel_criar_vinculo',
+                    (object)array("erro_msg" => $oDaoBensEmpNotaItem->erro_msg)
+                );
                 throw new Exception($sMensagemErro);
             }
 
             if (UTILIZA_INCORPORACAO_BEM) {
                 $daoPendencia = new cl_empnotaitembenspendente();
-                $buscaEstoque = $daoPendencia->sql_query(null, "matestoque.*, m71_quant", null,
-                  "e137_empnotaitem = {$iCodigoNota}");
+                $buscaEstoque = $daoPendencia->sql_query(
+                    null,
+                    "matestoque.*, m71_quant, m71_codlanc",
+                    null,
+                    "e137_empnotaitem = {$iCodigoNota}"
+                );
                 $buscaEstoque = db_query($buscaEstoque);
 
                 if (!$buscaEstoque) {
@@ -1722,12 +1807,12 @@ class Bem
                 $material = new materialEstoque($stdEstoque->m70_codmatmater);
 
                 MaterialEstoque::bloqueioMovimentacaoItem(
-                  $stdEstoque->m70_codmatmater,
-                  $stdEstoque->m70_coddepto
+                    $stdEstoque->m70_codmatmater,
+                    $stdEstoque->m70_coddepto
                 );
                 $material->setCodDepto($stdEstoque->m70_coddepto);
                 $msg = "Baixa de estoque por tombamento de material no patrimônio: {$this->getPlaca()->getNumeroPlaca()} - {$this->getDescricao()}";
-                $material->saidaMaterial(1, $msg, false, null, false);
+                $material->saidaMaterial(1, $msg, false, null, false, null, $stdEstoque->m71_codlanc);
             }
         }
 
@@ -1877,29 +1962,17 @@ class Bem
      */
     public function getCaminhoFoto()
     {
-        $imagePath = '';
+        $documentPath = '';
 
         if (!empty($this->foto)) {
+            $documentPath = StorageHelper::downloadArquivo($this->foto);
 
-            global $conn;
-
-            $oid = $this->foto;
-            $imagePath = "tmp/bem{$this->iCodigoBem}";
-
-            db_query($conn, 'begin;');
-            $readImageFile = DBLargeObject::leitura($oid, $imagePath);
-            db_query($conn, 'commit;');
-
-            if (!$readImageFile){
-                throw new Exception('Não foi possível abrir imagem.');
-            }
-
-            if (!file_exists($imagePath) ){
+            if (!file_exists($documentPath)) {
                 throw new Exception('Arquivo buscado não existe.');
             }
         }
 
-        return $imagePath;
+        return str_replace(ECIDADE_PATH, '', $documentPath);
     }
 
     /**
@@ -1911,21 +1984,9 @@ class Bem
         $documentPath = '';
 
         if (!empty($this->oDadosBaixa) && !empty($this->oDadosBaixa->documento)) {
+            $documentPath = StorageHelper::downloadArquivo($this->oDadosBaixa->documento);
 
-            global $conn;
-
-            $oid = $this->oDadosBaixa->documento;
-            $documentPath = "tmp". DIRECTORY_SEPARATOR ."documentoBaixa{$this->iCodigoBem}";
-
-            db_query($conn, 'begin;');
-            $readDocumentFile = DBLargeObject::leitura($oid, $documentPath);
-            db_query($conn, 'commit;');
-
-            if (!$readDocumentFile){
-                throw new Exception('Não foi possível abrir imagem.');
-            }
-
-            if (!file_exists($documentPath) ){
+            if (!file_exists($documentPath)) {
                 throw new Exception('Arquivo buscado não existe.');
             }
         }

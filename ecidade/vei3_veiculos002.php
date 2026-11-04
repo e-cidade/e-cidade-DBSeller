@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -327,7 +327,7 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
     
     <table>
 
-      <? if ($oVeiculo->ve04_codigo) { ?>
+      <?php if ($oVeiculo->ve04_codigo) { ?>
         <tr>
         
           <td>
@@ -363,13 +363,13 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
           </td>
         
         </tr>
-      <? } else { ?>
+      <?php } else { ?>
         <tr>
           <td>
             <b>VEICULO NÃO BAIXADO</b>
           </td>
         </tr>
-      <? } ?>
+      <?php } ?>
     </table>
   </fieldset>
   <fieldset>
@@ -377,7 +377,7 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
       <strong>Detalhamento do veículo:</strong>
     </legend>
     
-    <?
+    <?php
       $oTabDetalhes = new verticalTab('detalhesVeiculo', 300);
       
       $sGetUrl = "?veiculo={$oVeiculo->ve01_codigo}";

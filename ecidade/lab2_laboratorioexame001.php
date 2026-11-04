@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,26 +47,68 @@ require_once(modification('libs/db_utils.php'));
           <center>
             <br><br><br>
             <fieldset style='width: 35%;'> <legend><b>Relatório de Laboratórios</b></legend>
-              <form name='form1'>
+              <form name='form1'>              
+                <table>        
+                  <tr>                    
+                    <td>                    
+                        <?php 
+                            $daoLaboratorio = new cl_lab_laboratorio;
+                            $campos = "la02_i_codigo,la02_c_descr";
+                            $orderBy = "la02_c_descr";
+                        		$sqlLaboratorio = $daoLaboratorio->sql_query_file(null,$campos,$orderBy);
+                            $resultLaboratorio=db_query($sqlLaboratorio);
+                            db_multiploselect(
+                              "la02_i_codigo", 
+                              "la02_c_descr", 
+                              "selectLabs",
+                              "selectedLabs", 
+                              $resultLaboratorio, 
+                              array(), 
+                              10, 
+                              250,
+                              "Selecione os laboratórios:",
+                              "Laboratórios selecionados"
+                            );
+                        ?>                                                     
+                    </td>                  
+                  </tr>                            
+                </table>                               
                 <table>
                   <br>
-                  <tr>  
+                  <tr>
                     <td align="right">
-                      <b>Imprimir Exames:</b>   
+                      <b>Listar exames vinculados:</b>
                     </td>
                     <td align="left">
-                      <input type="checkbox" name="imprimirexames" id="imprExames" value="imprimir" checked> 
+                      <input type="checkbox" 
+                             name="imprimirexames" 
+                             id="imprExames" 
+                             value="imprimir" 
+                             checked 
+                             onchange="js_checaVinculacaoExame()">
                     </td>
                   </tr>
-                  <tr>  
+                  <tr>
                     <td align="right">
-                      <b>Situação Exames:</b>
+                      <b>Situação exames:</b>
                     </td>
                     <td align="left">
-                      <?$aX = array(0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS');
+                        <?php $aX = array(0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS');
                       db_select('situacao',$aX,true,1,"");?>
                     </td>
                   </tr>
+                  <tr>
+                    <td align="right">
+                      <b>Ordem:</b>
+                    </td>
+                    <td align="left">
+                      <?php $ordens = [
+                        0=>'Nome Laboratório/Exame', 
+                        1=>'Código Laboratório / Exame'
+                      ];
+                      db_select('ordem',$ordens,true,1,"");?>
+                    </td>
+                  </tr>                  
                   <tr>
                     <td colspan="2" align='center' >
                       <br>
@@ -80,7 +122,7 @@ require_once(modification('libs/db_utils.php'));
         </td>
       </tr>
     </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),
@@ -94,6 +136,16 @@ require_once(modification('libs/db_utils.php'));
 
   function js_mandaDados() {
 
+    selecionados = [];
+    for(var i=0; i<document.form1.selectedLabs.length; i++){
+      selecionados.push(document.form1.selectedLabs.options[i].value);
+    } 
+
+    if(selecionados.length == 0){
+      alert('Selecione, pelo menos,um laboratório!');
+      return false;
+    } 
+
     imprimir = 'imprimirExames=';
     if (document.form1.imprExames.checked == true) {
       imprimir += "1";
@@ -101,12 +153,25 @@ require_once(modification('libs/db_utils.php'));
       imprimir += "0";
     }
     situacao = '&situacaoExames=' + document.form1.situacao.value;
-    jan = window.open('lab2_laboratorioexame002.php?'+ imprimir + situacao,
+    
+    let laboratorios='&laboratorios='+selecionados.join(',');  
+    let ordenador = '&ordem='+$('ordem').value;
+
+    jan = window.open('lab2_laboratorioexame002.php?'+ imprimir + situacao+laboratorios+ordenador,
                       '',
                       'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 '
                      );
     jan.moveTo(0,0);
- 
+  }
+
+  function js_checaVinculacaoExame(){
+
+    if(document.form1.imprimirexames.checked){
+      $('situacao').disabled = false;
+    } else {
+      $('situacao').disabled = true;
+    }
+    
   }
 
 </script>

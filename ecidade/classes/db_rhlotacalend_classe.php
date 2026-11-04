@@ -50,13 +50,13 @@ class cl_rhlotacalend {
                  rh64_calend = int8 = Código do calendário
                  ";
    //funcao construtor da classe
-   function cl_rhlotacalend() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotacalend");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhlotacalend {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh64_lota = ($this->rh64_lota == ""?@$GLOBALS["HTTP_POST_VARS"]["rh64_lota"]:$this->rh64_lota);
        $this->rh64_calend = ($this->rh64_calend == ""?@$GLOBALS["HTTP_POST_VARS"]["rh64_calend"]:$this->rh64_calend);
@@ -74,7 +74,7 @@ class cl_rhlotacalend {
      }
    }
    // funcao para inclusao
-   function incluir ($rh64_lota){
+   public function incluir ($rh64_lota){
       $this->atualizacampos();
      if($this->rh64_calend == null ){
        $this->erro_sql = " Campo Código do calendário nao Informado.";
@@ -138,7 +138,7 @@ class cl_rhlotacalend {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh64_lota=null) {
+   public function alterar ($rh64_lota=null) {
       $this->atualizacampos();
      $sql = " update rhlotacalend set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_rhlotacalend {
      }
    }
    // funcao para exclusao
-   function excluir ($rh64_lota=null,$dbwhere=null) {
+   public function excluir ($rh64_lota=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh64_lota));
      }else{
@@ -280,7 +280,7 @@ class cl_rhlotacalend {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,7 +302,7 @@ class cl_rhlotacalend {
       }
      return $result;
    }
-   function sql_query ( $rh64_lota=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh64_lota=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -336,7 +336,7 @@ class cl_rhlotacalend {
      }
      return $sql;
   }
-   function sql_query_file ( $rh64_lota=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh64_lota=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

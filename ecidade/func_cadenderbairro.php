@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadenderbairro->rotulo->label("db73_descricao");
               <?=$Ldb73_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("db73_sequencial",10,$Idb73_sequencial,true,"text",4,"","chave_db73_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadenderbairro->rotulo->label("db73_descricao");
               <?=$Ldb73_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("db73_descricao",40,$Idb73_descricao,true,"text",4,"","chave_db73_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadenderbairro->rotulo->label("db73_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
         
         $campos  = "db73_sequencial, db73_descricao, db73_sigla, db72_sequencial, db72_descricao";
@@ -136,12 +136,12 @@ $clcadenderbairro->rotulo->label("db73_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -61,7 +61,7 @@ class termoinscr
    *
    */
     public function __construct($iCodigo)
-    {  
+    {
 
         if (!empty($iCodigo)) {
             $sSqlDadosCertidao  = "select termoinscr.v92_termo,";
@@ -435,7 +435,7 @@ class termoinscr
                     $oImovel->lote        = $oProprietario->j34_lote;
                     $oImovel->matricula   = $oOrigens->matric;
                     $oImovel->matricula_ri  = $oOrigens->matric_ri;
-                    
+
                     $oImovel->refanterior = $oProprietario->j40_refant;
 
                     $oImovel->setorloc      = $oProprietario->pql_localizacao;
@@ -578,7 +578,7 @@ class termoinscr
             if (in_array($oOrigens->numcgm, $aCgm)) {
                 continue;
             } else {
-                if ($oOrigens->matric == 0  && $oOrigens->inscr == 0) {
+                if ($oOrigens->matric == 0  && $oOrigens->inscr == 0 && !empty($oOrigens->numcgm)) {
                     $sSqlCgm  = " select *                             ";
                     $sSqlCgm .= "   from cgm                           ";
                     $sSqlCgm .= "  where z01_numcgm = $oOrigens->numcgm";
@@ -628,10 +628,10 @@ class termoinscr
 
     function getDebitos($lRemissao)
     {
-        
+
         $aDebitos = array();
         $aDebitos = $this->getDebitosDivida($lRemissao);
-        
+
 
       /**
        * Verificamos se existem procedencias que devemos agrupar, e
@@ -662,7 +662,7 @@ class termoinscr
        */
         $i     = 0;
         $sHash = "";
-        
+
         foreach ($aDebitos as $oOrigem) {
             if ($oOrigem->procedenciaagrupar != "") {
                 $sHash = $oOrigem->exercicio.$oOrigem->numpar.$oOrigem->procedenciaagrupar;
@@ -718,7 +718,7 @@ class termoinscr
         unset($aDebitosParaAgrupar);
         return $aDebitosAgrupadores;
     }
- 
+
     protected function getDebitosDivida($lRemissao)
     {
         $sqlDadosDivida  = "select v01_coddiv, ";
@@ -761,7 +761,7 @@ class termoinscr
         $sqlDadosDivida .= " left join protprocesso on protprocesso.p58_codproc = dividaprotprocesso.v88_protprocesso ";
         $sqlDadosDivida .= " where v93_termo = {$this->getCodigo()}";
         $sqlDadosDivida .= " order by v03_tributaria,v01_exerc, v01_proced,v01_numpre,v01_numpar,v24_procedagrupa ";
-        
+
         $rsDadosDivida   = db_query($sqlDadosDivida);
         $aDebitos        = array();
 
@@ -774,10 +774,10 @@ class termoinscr
             }
                 $sqlDebitosOriginais = "select
                                             v93_coddiv,
-                                            v01_dtinsc, 
-                                            v01_dtvenc, 
-                                            v01_dtoper, 
-                                            v01_numpre, 
+                                            v01_dtinsc,
+                                            v01_dtvenc,
+                                            v01_dtoper,
+                                            v01_numpre,
                                             v01_numpar,
                                             v93_vlrhis,
                                             v93_vlrcor,
@@ -789,9 +789,9 @@ class termoinscr
                                         inner join divida on
                                             v01_coddiv = v93_coddiv
                                         inner join proced on
-                                            v03_codigo = v01_proced    
+                                            v03_codigo = v01_proced
                                         where
-                                        v93_termo = {$this->getCodigo()}";
+                                        v93_termo = {$this->getCodigo()} order by v01_numpre, v01_numpar";
 
                 $rsDebitos = db_query($sqlDebitosOriginais);
 
@@ -800,10 +800,10 @@ class termoinscr
                } else {
                            $iNumRowsArrecad = 0;
                }
-            
+
            /**
             * percorremos os debitos da arrecad
-            */  
+            */
                 for ($iArrecad = 0; $iArrecad < $iNumRowsArrecad; $iArrecad++) {
                           $oDadosDebitoOrigem = db_utils::fieldsmemory($rsDebitos, $iArrecad);
                           $oDividaTermo = new stdClass();
@@ -857,7 +857,7 @@ class termoinscr
                     $codDiv = $oDadosDebitoOrigem->v93_coddiv;
 
                     if ($lRemissao == true) {
-                        
+
                         $receita = $oDadosDebitoOrigem->v03_receit;
                         $dataVencimento = $oDadosDebitoOrigem->v01_dtvenc;
                         $data = new \DateTime(date('Y-m-d', db_getsession("DB_datausu")));
@@ -867,14 +867,14 @@ class termoinscr
                         $sqlDebitosAtualizados = "select
                                                     fc_corre($receita, '$dataVencimento', $oDadosDebitoOrigem->v93_vlrhis, '$dataProc', '$ano', '$dataVencimento') as valor_corrigido,
                                                     fc_multa($receita, '$dataVencimento', '$dataProc', '$dDataLancamento', '$ano') as multa,
-                                                    fc_juros($receita, '$dataVencimento', '$dataProc', '$dDataLancamento', false, '$ano') as juros  
+                                                    fc_juros($receita, '$dataVencimento', '$dataProc', '$dDataLancamento', false, '$ano') as juros
                                                 from
                                                     divida
                                                 inner join termoinscrreg on
                                                     v01_coddiv = v93_coddiv
                                                 where
                                                     v93_coddiv = $codDiv";
-                                                    
+
                         $rsDebitosAtualizados = db_query($sqlDebitosAtualizados);
 
                         if ($rsDebitosAtualizados) {
@@ -882,13 +882,13 @@ class termoinscr
                     } else {
                                 $iNumRowsTermo = 0;
                     }
-                    
+
                     for ($iTermo = 0; $iTermo< $iNumRowsTermo; $iTermo++) {
                         $oDadosDebitoAtualizado = db_utils::fieldsmemory($rsDebitosAtualizados, $iTermo);
 
                             $valorMulta = $oDadosDebitoAtualizado->valor_corrigido * $oDadosDebitoAtualizado->multa;
                             $valorJuros = $oDadosDebitoAtualizado->valor_corrigido * $oDadosDebitoAtualizado->juros;
-        
+
                             $oDividaTermo->datalancamento    = $dDataLancamento;
                             $oDividaTermo->codigodivida      = $codDiv;
                             $oDividaTermo->datainscricao     = $oDadosDebitoOrigem->v01_dtinsc;
@@ -905,7 +905,7 @@ class termoinscr
                                                                 $valorMulta +
                                                                 $oDadosDebitoAtualizado->valor_corrigido;
                             $aDebitos[]                      = $oDividaTermo;
-                        }    
+                        }
                     }
 
                     if ($lRemissao == false) {
@@ -925,11 +925,11 @@ class termoinscr
                                         $oDadosDebitoOrigem->v93_vlrmul +
                                         $oDadosDebitoOrigem->v93_vlrcor;
                     $aDebitos[]                    = $oDividaTermo;
-                                        
+
                 }
             }
-        }   
-  
+        }
+
         return $aDebitos;
     }
 

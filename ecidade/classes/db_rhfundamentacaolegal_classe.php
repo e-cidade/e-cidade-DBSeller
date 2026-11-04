@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhfundamentacaolegal
 class cl_rhfundamentacaolegal { 
@@ -40,13 +40,13 @@ class cl_rhfundamentacaolegal {
                  rh137_instituicao = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhfundamentacaolegal() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhfundamentacaolegal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -55,7 +55,7 @@ class cl_rhfundamentacaolegal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh137_sequencial = ($this->rh137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh137_sequencial"]:$this->rh137_sequencial);
        $this->rh137_tipodocumentacao = ($this->rh137_tipodocumentacao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh137_tipodocumentacao"]:$this->rh137_tipodocumentacao);
@@ -83,7 +83,7 @@ class cl_rhfundamentacaolegal {
      }
    }
    // funcao para inclusao
-   function incluir ($rh137_sequencial){ 
+   public function incluir ($rh137_sequencial){ 
       $this->atualizacampos();
      if($this->rh137_tipodocumentacao == null ){ 
        $this->erro_sql = " Campo Tipo de documentação não informado.";

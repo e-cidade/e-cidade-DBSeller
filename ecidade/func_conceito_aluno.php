@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clconceito_aluno->rotulo->label("ed06_d_data");
               <?=$Led06_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed06_i_codigo",5,$Ied06_i_codigo,true,"text",4,"","chave_ed06_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clconceito_aluno->rotulo->label("ed06_d_data");
               <?=$Led06_d_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed06_d_data",10,$Ied06_d_data,true,"text",4,"","chave_ed06_d_data");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clconceito_aluno->rotulo->label("ed06_d_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conceito_aluno.php")==true){
@@ -120,12 +120,12 @@ $clconceito_aluno->rotulo->label("ed06_d_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

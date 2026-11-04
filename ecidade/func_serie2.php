@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -56,7 +56,7 @@ $clserie->rotulo->label("ed11_c_descr");
       <?=$Led11_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed11_i_codigo",10,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
+      <?php db_input("ed11_i_codigo",10,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,15 +64,15 @@ $clserie->rotulo->label("ed11_c_descr");
       <?=$Led11_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
+      <?php db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
      </td>
     </tr>
     <tr>
      <td colspan="2" align="center">
       <input name="curso" type="hidden" value="<?=$curso?>">
-      <?if(isset($inicial)){?>
+      <?php if(isset($inicial)){?>
        <input name="inicial" type="hidden" value="<?=$inicial?>">
-      <?}?>
+      <?php }?>
       <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
       <input name="limpar" type="reset" id="limpar" value="Limpar" >
       <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_serie.hide();">
@@ -84,7 +84,7 @@ $clserie->rotulo->label("ed11_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    if(!isset($pesquisa_chave)){
     $campos = "serie.ed11_i_codigo,
                serie.ed11_c_descr,

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -189,7 +189,7 @@ input {
                   </td>
                   <td width="74%">
 	          			  <select name="dbh_modulo" size="1" onChange="this.form.submit();">
-                      <?
+                      <?php
 										  echo '<option value="0">Nenhum...</option>';
 										  $result = db_query("select codmod,nomemod from db_sysmodulo order by nomemod");
 										  for($i=0;$i<pg_numrows($result);$i++){
@@ -205,7 +205,7 @@ input {
                   </td>
                   <td>
                     <select name="dbh_tabela" size="1" style="width:180px" onChange="this.form.submit();">
-                      <?
+                      <?php
                         echo '<option value="0">Nenhum...</option>';
                         $sql = "select m.codarq,nomearq
                                 from db_sysarquivo a
@@ -238,7 +238,7 @@ input {
           <tr>
             <td> <strong> Campos sem tabela:</strong><Br>
               <select name="naoorganizados" size="17" ondblclick="js_naoorganizados()" style="width:250px">
-                <?
+                <?php
 		        $result = db_query("select db_syscampo.codcam,db_syscampo.nomecam
 			                   from db_syscampo
 					        left join db_sysarqcamp on db_sysarqcamp.codcam = db_syscampo.codcam
@@ -255,7 +255,7 @@ input {
               </select> </td>
             <td> <strong>Campos:</strong><br>
               <select name="campos[]" id="campos" size="17" style="width:250px" multiple>
-              <?
+              <?php
 		      if(isset($HTTP_POST_VARS["dbh_tabela"])) {
 		        $result = db_query("select c.codcam,c.nomecam from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam where ac.codarq = $dbh_tabela order by ac.seqarq");
                 $numrows = pg_numrows($result);
@@ -284,7 +284,7 @@ input {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

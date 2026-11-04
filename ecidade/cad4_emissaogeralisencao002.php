@@ -39,8 +39,6 @@ require_once(modification("dbagata/classes/core/AgataAPI.class"));
 require_once(modification("model/documentoTemplate.model.php"));
 require_once(modification("model/cadastro/CertidaoIsencaoPdf.php"));
 
-$dotenv = new \Dotenv\Dotenv('./');
-$dotenv->load();
 
 db_postmemory($_SERVER);
 

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -47,22 +47,22 @@ $cm29_i_propricemit = $cm28_i_codigo;
        <?=@$Lcm29_i_codigo?>
     </td>
     <td>
-     <?
+     <?php
      db_input('cm29_i_codigo',10,$Icm29_i_codigo,true,'text',3,"")
      ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm29_i_propricemit?>">
-       <?
+       <?php
        db_ancora(@$Lcm29_i_propricemit,"js_pesquisacm29_i_propricemit(true);",$db_opcao);
        ?>
     </td>
     <td>
-     <?
+     <?php
      db_input('cm29_i_propricemit',10,$Icm29_i_propricemit,true,'text',$db_opcao," onchange='js_pesquisacm29_i_propricemit(false);'")
      ?>
-     <?
+     <?php
      db_input('cm28_i_codigo',10,$Icm28_i_codigo,true,'text',3,'')
      ?>
     </td>
@@ -71,10 +71,10 @@ $cm29_i_propricemit = $cm28_i_codigo;
      <tr>
          <td colspan="2" title="<?=@$Tcm28_i_proprietario?>">
             <?=@$Lcm28_i_proprietario?>
-          <?
+          <?php
           db_input('cm28_i_proprietario',10,$Icm28_i_proprietario,true,'text',3,"")
           ?>
-          <?
+          <?php
            db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
           ?>
          </td>
@@ -89,7 +89,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
             <?=@$Lcm29_i_termo?>
          </td>
          <td>
-          <?
+          <?php
           db_input('cm29_i_termo',10,$Icm29_i_termo,true,'text',$db_opcao,"")
           ?>
          </td>
@@ -99,7 +99,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
             <?=@$Lcm29_d_termo?>
          </td>
          <td>
-          <?
+          <?php
           db_inputdata('cm29_d_termo',@$cm29_d_termo_dia,@$cm29_d_termo_mes,@$cm29_d_termo_ano,true,'text',$db_opcao,"")
           ?>
          </td>
@@ -110,7 +110,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
             <?=@$Lcm29_t_termo?>
          </td>
          <td>
-          <?
+          <?php
           db_textarea('cm29_t_termo',0,0,$Icm29_t_termo,true,'text',$db_opcao,"")
           ?>
          </td>
@@ -130,7 +130,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
                  <?=@$Lcm29_i_concessao?>
               </td>
               <td>
-               <?
+               <?php
                db_input('cm29_i_concessao',10,$Icm29_i_concessao,true,'text',$db_opcao,"")
                ?>
               </td>
@@ -140,7 +140,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
                  <?=@$Lcm29_d_concessao?>
               </td>
               <td>
-               <?
+               <?php
                db_inputdata('cm29_d_concessao',@$cm29_d_concessao_dia,@$cm29_d_concessao_mes,@$cm29_d_concessao_ano,true,'text',$db_opcao,"")
                ?>
               </td>
@@ -151,7 +151,7 @@ $cm29_i_propricemit = $cm28_i_codigo;
                  <?=@$Lcm29_t_concessao?>
               </td>
               <td>
-               <?
+               <?php
                db_textarea('cm29_t_concessao',0,0,$Icm29_t_concessao,true,'text',$db_opcao,"")
                ?>
               </td>
@@ -268,7 +268,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_proprijazigo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

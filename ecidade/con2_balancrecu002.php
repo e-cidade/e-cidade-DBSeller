@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,7 +48,7 @@ $classinatura = new cl_assinatura;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -109,7 +109,9 @@ $db_filtro = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
      $sql = db_receitasaldo(11,1,$opcao,true,$db_filtro,$anousu,$dataini,$datafin,true);
  }
 
-$sql1 = "select o70_codigo,
+$sql1 = "
+with ajustefonte as ( 
+select o70_codigo,
                 o15_descr,
 		sum(saldo_inicial)              as saldo_inicial,
 		sum(saldo_prevadic_acum)        as saldo_prevadic_acum,
@@ -121,8 +123,23 @@ $sql1 = "select o70_codigo,
 	 where o70_codigo > 0
 	 group by o70_codigo,
 	        o15_descr
-         order by o70_codigo";
+         order by o70_codigo)
+ select
+fonterecurso.gestao || ' - '|| lpad(o15_complemento, 4, '0') as gestao,
+fonterecurso.descricao as descr_fonte,
+        sum(saldo_inicial)              as saldo_inicial,
+		sum(saldo_prevadic_acum)        as saldo_prevadic_acum,
+		sum(saldo_anterior)             as saldo_anterior,
+		sum(saldo_arrecadado)           as saldo_arrecadado,
+		sum(saldo_a_arrecadar)          as saldo_a_arrecadar,
+		sum(saldo_arrecadado_acumulado) as saldo_arrecadado_acumulado
+from ajustefonte
+ join orctiporec on o15_codigo = o70_codigo
+ join fonterecurso on orctiporec_id = o15_codigo and exercicio = {$anousu}
+group by 1,2
+order by 1,2;        ";
 
+// die($sql1);
 $result = db_query($sql1);
 
 //db_criatabela($result);
@@ -160,21 +177,28 @@ for($i=0;$i<pg_numrows($result);$i++){
   }
   $pdf->setfont('arial','',6);
 
-  $recurso = RecursoRepository::getRecursoPorCodigo($o70_codigo);
-  $o70_codigo = $recurso->getFonteDeRecurso();
 
 
-  $pdf->cell(20,$alt,db_formatar($o70_codigo,'recurso'),0,0,"L",0);
-  $pdf->cell(75,$alt,$o15_descr,0,0,"L",0);
+    $nAlturaMulticell = $pdf->NbLines(75, $descr_fonte) * $alt;
+
+  $pdf->cell(20,$alt,$gestao,0,0,"L",0);
+
+    $iPosX = $pdf->GetX();
+    $iPosY = $pdf->GetY();
+
+    $pdf->MultiCell(75, $alt, $descr_fonte, 0, "L", 0);
+    $pdf->SetXY($iPosX + 75, $iPosY);
+
+//  $pdf->cell(75,$alt,$o15_descr,0,0,"L",0);
   if($origem == "O"){
-    $pdf->cell(17,$alt,db_formatar($saldo_inicial,'f'),0,0,"R",0);
-    $pdf->cell(17,$alt,db_formatar($saldo_prevadic_acum,'f'),0,1,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_inicial,'f'),0,0,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_prevadic_acum,'f'),0,1,"R",0);
   }else{
-    $pdf->cell(17,$alt,db_formatar($saldo_inicial,'f'),0,0,"R",0);
-    $pdf->cell(17,$alt,db_formatar($saldo_prevadic_acum,'f'),0,0,"R",0);
-    $pdf->cell(17,$alt,db_formatar($saldo_arrecadado,'f'),0,0,"R",0);
-    $pdf->cell(17,$alt,db_formatar($saldo_arrecadado_acumulado,'f'),0,0,"R",0);
-    $pdf->cell(17,$alt,db_formatar($saldo_a_arrecadar,'f'),0,1,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_inicial,'f'),0,0,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_prevadic_acum,'f'),0,0,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_arrecadado,'f'),0,0,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_arrecadado_acumulado,'f'),0,0,"R",0);
+    $pdf->cell(17,$nAlturaMulticell,db_formatar($saldo_a_arrecadar,'f'),0,1,"R",0);
   }
   $total_saldo_inicial              += $saldo_inicial             ;
   $total_saldo_prevadic_acum        += $saldo_prevadic_acum;

@@ -54,9 +54,9 @@ db_postmemory($HTTP_POST_VARS);
       <td >&nbsp;</td>
     </tr>
     <tr> 
-      <td align="left" nowrap title="<?=$Tpc10_numero?>"> <? db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?></td>
+      <td align="left" nowrap title="<?=$Tpc10_numero?>"> <?php db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?></td>
       <td align="left" nowrap>
-      <?
+      <?php
       db_input('pc10_numero',8,$Ipc10_numero,true,"text",1,"onchange='js_pesquisapc10_numero(false);'");
       ?>
       </td>
@@ -70,7 +70,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

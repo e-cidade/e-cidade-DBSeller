@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("j01_numcgm");
        <?=@$Lv15_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v15_sequencial',10,$Iv15_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv15_isencao?>">
-       <?
+       <?php
        db_ancora(@$Lv15_isencao,"js_pesquisav15_isencao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v15_isencao',10,$Iv15_isencao,true,'text',$db_opcao," onchange='js_pesquisav15_isencao(false);'")
 ?>
-       <?
+       <?php
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv15_matric?>">
-       <?
+       <?php
        db_ancora(@$Lv15_matric,"js_pesquisav15_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v15_matric',10,$Iv15_matric,true,'text',$db_opcao," onchange='js_pesquisav15_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',10,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencaomatric.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

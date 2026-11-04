@@ -25,25 +25,25 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_averbacao_classe.php"));
-include(modification("classes/db_averbacgm_classe.php"));
-include(modification("classes/db_averbacgmold_classe.php"));
-include(modification("classes/db_averbaregimovel_classe.php"));
-include(modification("classes/db_averbaprocesso_classe.php"));
-include(modification("classes/db_iptubase_classe.php"));
-include(modification("classes/db_propri_classe.php"));
-include(modification("classes/db_promitente_classe.php"));
-include(modification("classes/db_averbatipo_classe.php"));
-include(modification("classes/db_averbaformalpartilha_classe.php"));
-include(modification("classes/db_averbadecisaojudicial_classe.php"));
-include(modification("classes/db_averbaguia_classe.php"));
-include(modification("classes/db_cgm_classe.php"));
-include(modification("classes/db_averbaescritura_classe.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_averbacao_classe.php"));
+require_once(modification("classes/db_averbacgm_classe.php"));
+require_once(modification("classes/db_averbacgmold_classe.php"));
+require_once(modification("classes/db_averbaregimovel_classe.php"));
+require_once(modification("classes/db_averbaprocesso_classe.php"));
+require_once(modification("classes/db_iptubase_classe.php"));
+require_once(modification("classes/db_propri_classe.php"));
+require_once(modification("classes/db_promitente_classe.php"));
+require_once(modification("classes/db_averbatipo_classe.php"));
+require_once(modification("classes/db_averbaformalpartilha_classe.php"));
+require_once(modification("classes/db_averbadecisaojudicial_classe.php"));
+require_once(modification("classes/db_averbaguia_classe.php"));
+require_once(modification("classes/db_cgm_classe.php"));
+require_once(modification("classes/db_averbaescritura_classe.php"));
 
 $claverbaescritura           = new cl_averbaescritura;
 $claverbadecisaojudicial     = new cl_averbadecisaojudicial;
@@ -154,40 +154,18 @@ db_fieldsmemory(db_query($sql),0);
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <center>
-	<form name="form1" method="post" action="">
-<center>
+<form name="form1" method="post" action="" class="container">
 
-<table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td  align="left" valign="top" bgcolor="#CCCCCC">
-    <center>
-	<?
+	<?php
 	$cadastromunicipal = true;
 	include(modification("forms/db_frmaverbacao.php"));
 	?>
-    </center>
-	</td>
-  </tr>
-</table>
 
-  </center>
-  <table>
-  <tr>
-  	<td>
-  	<iframe name="itens" id="itens" src="cad3_averbacgm001.php?codigo=<?=@$codigo?>" width="720" height="300" marginwidth="0" marginheight="0" frameborder="0"></iframe>
-  	</td>
-  </tr>
-  </table>
+  	<iframe name="itens" id="itens" src="cad3_averbacgm001.php?codigo=<?=@$codigo?>" class="container" width="720" height="300" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+
 </form>
-    </center>
-	</td>
-  </tr>
-</table>
+
 </body>
 </html>

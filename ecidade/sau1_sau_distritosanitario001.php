@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_sau_distritosanitario_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoSauDistritoSanitario = new cl_sau_distritosanitario;
 $db_opcao                 = 1;
@@ -41,6 +41,11 @@ $db_botao                 = true;
 if (isset($incluir)) {
 
   db_inicio_transacao();
+  if(isset($s153_ativo)){
+    $oDaoSauDistritoSanitario->s153_ativo = 't';
+  } else {
+    $oDaoSauDistritoSanitario->s153_ativo = 'f';
+  }
   $oDaoSauDistritoSanitario->incluir($s153_i_codigo);
   db_fim_transacao($oDaoSauDistritoSanitario->erro_status == '0' ? true : false);
 
@@ -61,8 +66,8 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <fieldset style='width: 75%;'> <legend><b>Destino</b></legend>
-          <?
+        <fieldset style='width: 75%;'> <legend><b>Distrito Sanitário</b></legend>
+          <?php
           require_once(modification("forms/db_frmsau_distritosanitario.php"));
           ?>
         </fieldset>
@@ -71,7 +76,7 @@ if (isset($incluir)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );
@@ -81,7 +86,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
 <script>
 js_tabulacaoforms("form1","s153_c_codigo",true,1,"s153_c_codigo",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($oDaoSauDistritoSanitario->erro_status == '0') {

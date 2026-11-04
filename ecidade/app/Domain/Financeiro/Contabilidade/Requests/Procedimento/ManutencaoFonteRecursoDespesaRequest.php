@@ -27,8 +27,9 @@ class ManutencaoFonteRecursoDespesaRequest extends FormRequest
     public function rules()
     {
         return [
-            'recurso' => 'nullable|string|required_without:idEmpenho',
-            'idEmpenho' => 'nullable|integer|required_without:recurso',
+            'gestao' => 'nullable|string|required_without:idEmpenho',
+            'subrecurso' => 'nullable|string|required_without:idEmpenho',
+            'idEmpenho' => 'nullable|integer|required_without:gestao',
             'codigoReceita' => 'nullable|string',
             'dataInicio' => 'date|nullable|required_without:idEmpenho',
             'dataFinal' => 'date|nullable|required_without:idEmpenho',
@@ -52,8 +53,10 @@ class ManutencaoFonteRecursoDespesaRequest extends FormRequest
     public function messages()
     {
         return [
-            'recurso.string' => 'O recurso deve ser um código válido.',
-            'recurso.required_without' => 'O recurso é obrigatório quando não informado o empenho.',
+            'gestao.string' => 'A Fonte de Gestão deve ser um código válido.',
+            'gestao.required_without' => 'A Fonte de Gestão é obrigatório quando não informado o empenho.',
+            'subrecurso.string' => 'O subrecurso deve ser um código válido.',
+            'subrecurso.required_without' => 'O subrecurso é obrigatório quando não informado o empenho.',
             'idEmpenho.required_without' => 'O código do empenho deve ser preenchido se não informado o recurso.',
             'dataInicio.date' => "Data Inicial deve ser uma data válida e estar no formato Y-m-d.",
             'dataFinal.date' => "Data Final deve ser uma data válida e estar no formato Y-m-d.",

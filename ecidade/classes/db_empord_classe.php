@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,17 +46,17 @@ class cl_empord {
    var $e82_codord = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e82_codmov = int4 = Movimento 
-                 e82_codord = int4 = Ordem 
+                 e82_codmov = int4 = Movimento
+                 e82_codord = int4 = Ordem
                  ";
    //funcao construtor da classe
-   function cl_empord() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empord");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_empord {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e82_codmov = ($this->e82_codmov == ""?@$GLOBALS["HTTP_POST_VARS"]["e82_codmov"]:$this->e82_codmov);
        $this->e82_codord = ($this->e82_codord == ""?@$GLOBALS["HTTP_POST_VARS"]["e82_codord"]:$this->e82_codord);
@@ -75,7 +75,7 @@ class cl_empord {
      }
    }
    // funcao para inclusao
-   function incluir ($e82_codmov,$e82_codord){
+   public function incluir ($e82_codmov,$e82_codord){
       $this->atualizacampos();
        $this->e82_codmov = $e82_codmov;
        $this->e82_codord = $e82_codord;
@@ -96,12 +96,12 @@ class cl_empord {
        return false;
      }
      $sql = "insert into empord(
-                                       e82_codmov 
-                                      ,e82_codord 
+                                       e82_codmov
+                                      ,e82_codord
                        )
                 values (
-                                $this->e82_codmov 
-                               ,$this->e82_codord 
+                                $this->e82_codmov
+                               ,$this->e82_codord
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -140,7 +140,7 @@ class cl_empord {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e82_codmov=null,$e82_codord=null) {
+   public function alterar ($e82_codmov=null,$e82_codord=null) {
       $this->atualizacampos();
      $sql = " update empord set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_empord {
      }
    }
    // funcao para exclusao
-   function excluir ($e82_codmov=null,$e82_codord=null,$dbwhere=null) {
+   public function excluir ($e82_codmov=null,$e82_codord=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e82_codmov,$e82_codord));
      }else{
@@ -293,7 +293,7 @@ class cl_empord {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -315,10 +315,10 @@ class cl_empord {
       }
      return $result;
    }
-   function sql_query ( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -352,7 +352,7 @@ class cl_empord {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,10 +361,10 @@ class cl_empord {
      }
      return $sql;
   }
-   function sql_query_corempagemov( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_corempagemov( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_empord {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,10 +404,10 @@ class cl_empord {
      }
      return $sql;
   }
-   function sql_query_file ( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e82_codmov=null,$e82_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_empord {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

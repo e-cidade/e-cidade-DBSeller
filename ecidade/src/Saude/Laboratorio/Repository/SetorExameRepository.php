@@ -64,4 +64,19 @@ class SetorExameRepository
 
         return $dados;
     }
+
+    public function buscarSetorDepartamento($campos, $where)
+    {
+        $sql = $this->dao->sql_query_setorexame_departamento(null, $campos, null, $where);
+
+        $rs = db_query($sql);
+
+        $dados = [];
+
+        while ($linha = pg_fetch_array($rs)) {
+            $dados[] = $linha;
+        }
+
+        return $dados;
+    }
 }

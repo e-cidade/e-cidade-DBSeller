@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: diversos
 //CLASSE DA ENTIDADE diversoslancamentotaxa
 class cl_diversoslancamentotaxa { 
@@ -31,13 +31,13 @@ class cl_diversoslancamentotaxa {
                  dv14_data_calculo = date = Data do Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_diversoslancamentotaxa() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diversoslancamentotaxa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -46,7 +46,7 @@ class cl_diversoslancamentotaxa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->dv14_sequencial = ($this->dv14_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["dv14_sequencial"]:$this->dv14_sequencial);
        $this->dv14_diversos = ($this->dv14_diversos == ""?@$GLOBALS["HTTP_POST_VARS"]["dv14_diversos"]:$this->dv14_diversos);
@@ -64,7 +64,7 @@ class cl_diversoslancamentotaxa {
      }
    }
    // funcao para Inclusão
-   function incluir ($dv14_sequencial){ 
+   public function incluir ($dv14_sequencial){ 
       $this->atualizacampos();
      if($this->dv14_diversos == null ){ 
        $this->erro_sql = " Campo Código do Diverso não informado.";

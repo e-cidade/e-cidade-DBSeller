@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,22 +67,22 @@ $rotulo->label("z01_cgccpf");
           <td width="4%" align="right" nowrap title="<?=$Te60_numemp?>"><?=$Le60_codemp?> </td>
           <td width="21%" align="left" nowrap>              
             <!--<input name="chave_e60_codemp" id="chave_e60_codemp" size="12" type='text'   >-->
-            <? db_input("e60_codemp",14,$Ie60_codemp,true,"text",4,"onKeyPress='return js_mascara(event);'","chave_e60_codemp");?>
+            <?php db_input("e60_codemp",14,$Ie60_codemp,true,"text",4,"onKeyPress='return js_mascara(event);'","chave_e60_codemp");?>
           </td>
 
           <td width="4%" align="right" nowrap title="<?=$Te60_numemp?>"><?=$Le60_numemp?></td>
           <td width="21%" align="left" nowrap> 
-          <? db_input("e60_numemp",14,$Ie60_numemp,true,"text",4,"","chave_e60_numemp");?>
+          <?php db_input("e60_numemp",14,$Ie60_numemp,true,"text",4,"","chave_e60_numemp");?>
           </td>
         </tr>
         <tr> 
           <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
           <td width="21%" align="left" nowrap> 
-            <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+            <?php db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
           </td>
           <td width="4%" align="right" nowrap title="<?=$Tz01_cgccpf?>"><?=$Lz01_cgccpf?></td>
           <td width="21%" align="left" nowrap> 
-            <? db_input("z01_cgccpf",14,"",true,"text",4,"","chave_z01_cgccpf"); ?>
+            <?php db_input("z01_cgccpf",14,"",true,"text",4,"","chave_z01_cgccpf"); ?>
           </td>
         </tr> 
         <tr> 
@@ -98,7 +98,7 @@ $rotulo->label("z01_cgccpf");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos="e60_numemp,e60_codemp,z01_nome";
       if(!isset($pesquisa_chave) ){
         $campos = "empempenho.e60_numemp,

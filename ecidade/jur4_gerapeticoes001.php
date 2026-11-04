@@ -51,7 +51,7 @@ $oGet = db_utils::postMemory($_GET);
 <form name="form1" id="form1">
 <fieldset style="margin: 25px auto; width: 800px;">
 
-  <legend><strong><? echo $oGet->tp == 'parcelamento' ? 'Iniciais de Parcelamentos' : 'Iniciais Quitadas';?></strong></legend>
+  <legend><strong><?php echo $oGet->tp == 'parcelamento' ? 'Iniciais de Parcelamentos' : 'Iniciais Quitadas';?></strong></legend>
 
   <div id="gridResultados"></div>
 

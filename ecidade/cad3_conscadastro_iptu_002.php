@@ -89,7 +89,7 @@ function js_Impressao() {
 </script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if ($numMatriculaSelecionada == 0) {
    $db_erro = "Matrícula não cadastrada.";
 ?>
@@ -100,7 +100,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
   <tr>
     <td height="56" align="center"><font size="2" face="Arial, Helvetica, sans-serif"><br>
-    <?
+    <?php
 	echo @$db_erro;
 	?>
      </font></td>
@@ -111,7 +111,7 @@ if ($numMatriculaSelecionada == 0) {
   </tr>
 </table>
 </center>
-<?
+<?php
  /***********************************************************************************************/
  // Se encontrou a matrícula, exibe tabela com a descrição do imóvel.
 } else {
@@ -154,7 +154,7 @@ if ($linhasareaconst>0){
   <tr bgcolor="#CCCCCC">
     <td colspan="6" align="center"><font color="#333333"><strong>&nbsp;DADOS CADASTRAIS
       DO IM&Oacute;VEL (&nbsp;<?=$j01_tipoimp?> &nbsp;)&nbsp;</strong>
-	  <?
+	  <?php
 	  if(!empty($j01_baixa))
 	     echo "</font><font color=\"red\"><strong> Matrícula Baixada </strong></font>";
 	  ?>
@@ -173,7 +173,7 @@ if ($linhasareaconst>0){
   </tr>
   <tr>
     <td width="73" align="right" bgcolor="#CCCCCC" title='Clique aqui para outros dados do contribuinte'>
-      <?
+      <?php
       db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','$z01_cgmpri')",2);
       ?>
 
@@ -182,7 +182,7 @@ if ($linhasareaconst>0){
       <?=$z01_nome?>
       &nbsp; </strong></font></td>
     <td width="73" align="right" nowrap bgcolor="#CCCCCC" title='Clique aqui para outros dados do contribuinte'>
-    <?
+    <?php
       db_ancora('Proprietário',"js_JanelaAutomatica('cgm','$z01_numcgm')",2);
     ?>
     &nbsp;</td>
@@ -190,14 +190,14 @@ if ($linhasareaconst>0){
       <?=$proprietario?>
       &nbsp; </strong></font></td>
   </tr>
-  <?
+  <?php
   $sqlimo = "select * from imobil where j44_matric = $cod_matricula";
   $resultimo = db_query($sqlimo);
   $linhasimo = pg_numrows($resultimo);
   ?>
   <tr>
     <td width="73" align="right" bgcolor="#CCCCCC">
-    <?
+    <?php
       if ($linhasimo > 0){
       db_ancora('Imobiliária',"js_JanelaAutomatica('cgm','$z01_numimob')",2);
     ?>
@@ -205,20 +205,20 @@ if ($linhasareaconst>0){
     <td align="left" bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;
       <?=$imobiliaria?>
       &nbsp; </strong></font></td>
-      <?
+      <?php
       }else{
       ?>
       	Imobiliária &nbsp; </td>
     <td align="left" bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;
       Matricula sem Imobiliária vinculada.
       &nbsp; </strong></font></td>
-      <?
+      <?php
       }
       ?>
 
     <td align="right" bgcolor="#CCCCCC" width="35">Zona Fiscal:</td>
     <td align="left" bgcolor="#FFFFFF" width="35"><font color="#666666"><strong>&nbsp;<?=$j34_zona  . " - " . $j50_descr?></strong></font></td>
-    <?
+    <?php
     $rsSetfis = db_query("select * from lotesetorfiscal inner join cadastro.setorfiscal on j90_codigo = j91_codigo inner join iptubase on j01_idbql = j91_idbql where j01_matric = $cod_matricula");
     if (pg_numrows($rsSetfis)>0){
     	db_fieldsmemory($rsSetfis,0);
@@ -235,7 +235,7 @@ if ($linhasareaconst>0){
       <?=$j34_quadra?>
       / <font color="#666666">
       <?=$j34_lote?>
-      <?
+      <?php
        include(modification("classes/db_setor_classe.php"));
        $clsetor = new cl_setor;
 
@@ -260,7 +260,7 @@ if ($linhasareaconst>0){
       </font></strong></font></strong></font></td>
   </tr>
 
-<?
+<?php
 if (@$areatotal>0){
 	$areatotal1= db_formatar($areatotal,"f");
 }
@@ -284,7 +284,7 @@ if (@$areatotal>0){
       <font color="#666666"> &nbsp;
         <strong>
           <?=$codpri .'- '. $tipopri.', ' . $nomepri .', '. $j39_numero?>
-          <?
+          <?php
             if (isset($j39_compl) && $j39_compl != '') {
 
             	echo ", {$j39_compl}";
@@ -298,7 +298,7 @@ if (@$areatotal>0){
     <td bgcolor="#FFFFFF" colspan="4">
       <font color="#666666"> &nbsp;
         <strong>
-          <?
+          <?php
             //busca informações do loteloc se o campo j18_utilizaloc da tabela cfiptu estiver habilitado
             include(modification("classes/db_loteloc_classe.php"));
             include(modification("classes/db_cfiptu_classe.php"));
@@ -403,7 +403,7 @@ if (@$areatotal>0){
               <tr>
                 <td title="Ocorrências" align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="agu3_conscadastro_002_detalhes.php?solicitacao=Ocorrencia&parametro=<?=$cod_matricula?>" target="iframeDetalhes">Ocorrências</a></td>
               </tr>
-              <?
+              <?php
 					    $sqlreg = " select * from iptubaseregimovel where j04_matric = $j01_matric";
 					    $resultreg = db_query($sqlreg);
 					    $linhasreg = pg_num_rows($resultreg);
@@ -415,7 +415,7 @@ if (@$areatotal>0){
                 <a href="cad3_conscadastro_002_detalhes.php?solicitacao=RegistroImovel&parametro=<?=$j04_sequencial?>" target="iframeDetalhes">
                 Dados do Registro de Imóveis</a></td>
               </tr>
-							<?
+							<?php
 							}
 							if(!empty($j01_baixa)){?>
                 <tr>
@@ -423,7 +423,7 @@ if (@$areatotal>0){
 								    <a href="cad3_conscadastro_002_detalhes.php?solicitacao=dadosbaixa&parametro=<?=$cod_matricula?>" target="iframeDetalhes" >Dados da Baixa</a>
 								  </td>
                 </tr>
-							<?}?>
+							<?php }?>
             </table></td>
           <td width="84%" align="left"> <iframe align="middle" height="100%" frameborder="0" marginheight="0" marginwidth="0" name="iframeDetalhes" width="100%">
             </iframe> </td>
@@ -431,7 +431,7 @@ if (@$areatotal>0){
       </table></td>
   </tr>
 </table>
-  <?
+  <?php
 }  // fecha chave que mostra a descricao da propriedade
 ?>
 </body>

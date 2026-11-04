@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ db_postmemory($HTTP_POST_VARS);
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-  <?
+  <?php
   if(!isset($tipo)){
     $tipo = "l";
   }
@@ -96,12 +96,12 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Ano / Mês :</strong>
         </td>
         <td>
-          <?
+          <?php
            $ano1 = db_anofolha();
            db_input('ano1',4,$IDBtxt23,true,'text',3,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $mes1 = db_mesfolha();
            db_input('mes1',2,$IDBtxt25,true,'text',3,'')
           ?>
@@ -109,15 +109,15 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
     <tr>
       <td align="right" title="<?=$Trh27_rubric?>"> 
-        <?
+        <?php
         db_ancora($Lrh27_rubric,'js_pesquisarh27_rubric(true);',2)
         ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input("rh27_rubric",8,$Irh27_rubric,true,'text',4,"onchange='js_pesquisarh27_rubric(false);'")
         ?>
-        <?
+        <?php
         db_input("rh27_descr",40,$Irh27_descr,true,'text',3)
         ?>
       </td>
@@ -126,7 +126,7 @@ db_postmemory($HTTP_POST_VARS);
          <b>Data da Geração:</b>
     </td>
     <td  align="left" colspan="3">
-      <?
+      <?php
       if((!isset($datagera_dia) || (isset($datagera_dia) && trim($datagera_dia) == "")) && (!isset($datagera_mes) || (isset($datagera_mes) && trim($datagera_mes) == "")) && (!isset($datagera_ano) || (isset($datagera_ano) && trim($datagera_ano) == ""))){
 	    $datagera_dia=date('d',db_getsession('DB_datausu'));
 	    $datagera_mes=date('m',db_getsession('DB_datausu'));
@@ -141,7 +141,7 @@ db_postmemory($HTTP_POST_VARS);
       <b>Número do Convênio:<b>
     </td>
     <td align="left" colspan="3"> 
-      <?
+      <?php
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -151,7 +151,7 @@ db_postmemory($HTTP_POST_VARS);
       <b>Sequencial Arquivo:<b>
     </td>
     <td align="left" colspan="3"> 
-      <?
+      <?php
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -170,7 +170,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_menupref->rotulo->label("m_descricao");
               <?=$Lm_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m_codigo",0,$Im_codigo,true,"text",4,"","chave_m_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_menupref->rotulo->label("m_descricao");
               <?=$Lm_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m_descricao",0,$Im_descricao,true,"text",4,"","chave_m_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_menupref->rotulo->label("m_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_menupref.php")==true){
@@ -118,14 +118,14 @@ $cldb_menupref->rotulo->label("m_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_m_codigo.focus();
 document.form2.chave_m_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -27,56 +27,74 @@
 
 //MODULO: tributario
 $clisencaotipo->rotulo->label();
+
 ?>
 <form name="form1" method="post" action="">
-<center>
-<table border="0">
-  <tr>
-    <td nowrap title="<?=@$Tv11_sequencial?>">
-       <?=@$Lv11_sequencial?>
-    </td>
-    <td> 
-<?
-db_input('v11_sequencial',10,$Iv11_sequencial,true,'text',3,"")
-?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap title="<?=@$Tv11_descr?>">
-       <?=@$Lv11_descr?>
-    </td>
-    <td> 
-<?
-db_input('v11_descr',40,$Iv11_descr,true,'text',$db_opcao,"")
-?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap title="<?=@$Tv11_regra?>">
-       <?=@$Lv11_regra?>
-    </td>
-    <td> 
-<?
-$x = array('1'=>'ISENTO','2'=>'IMUNE');
-db_select('v11_regra',$x,true,$db_opcao,"");
-?>
-    </td>
-  </tr>
-  </table>
-  </center>
-<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
+  <fieldset style="width: fit-content; margin-bottom: 5px;" class="container">
+    <legend>Tipo de Isenção</legend>
+    <table border="0">
+      <tr>
+        <td nowrap title="<?= @$Tv11_sequencial ?>">
+          <?= @$Lv11_sequencial ?>
+        </td>
+        <td>
+          <?php
+          db_input('v11_sequencial', 10, $Iv11_sequencial, true, 'text', 3, "")
+          ?>
+        </td>
+      </tr>
+      <tr>
+        <td nowrap title="<?= @$Tv11_descr ?>">
+          <?= @$Lv11_descr ?>
+        </td>
+        <td>
+          <?php
+          db_input('v11_descr', 40, $Iv11_descr, true, 'text', $db_opcao, "")
+          ?>
+        </td>
+      </tr>
+      <tr>
+        <td nowrap title="<?= @$Tv11_regra ?>">
+          <?= @$Lv11_regra ?>
+        </td>
+        <td>
+          <?php
+          $x = array('1' => 'ISENTO', '2' => 'IMUNE');
+          db_select('v11_regra', $x, true, $db_opcao, "");
+          ?>
+        </td>
+      </tr>
+      <tr>
+        <td nowrap title="<?= @$Tv11_observacao ?>">
+          <?= @$Lv11_observacao ?>
+        </td>
+        <td>
+          <?php
+          db_textarea('v11_observacao', 10, 40, $Iv11_observacao, true, 'text', $db_opcao);
+          ?>
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+
+  <div class="container">
+    <input name="<?= ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>" type="submit" id="db_opcao" value="<?= ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?= ($db_botao == false ? "disabled" : "") ?>>
+    <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
+  </div>
+
 </form>
 <script>
-function js_pesquisa(){
-  js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_isencaotipo','func_isencaotipo.php?funcao_js=parent.js_preenchepesquisa|v11_sequencial','Pesquisa',true);
-}
-function js_preenchepesquisa(chave){
-  db_iframe_isencaotipo.hide();
-  <?
-  if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+
+  function js_pesquisa() {
+    js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_isencaotipo', 'func_isencaotipo.php?funcao_js=parent.js_preenchepesquisa|v11_sequencial', 'Pesquisa', true);
   }
-  ?>
-}
+
+  function js_preenchepesquisa(chave) {
+    db_iframe_isencaotipo.hide();
+    <?php
+    if ($db_opcao != 1) {
+      echo " location.href = '" . basename($_SERVER["PHP_SELF"]) . "?chavepesquisa='+chave";
+    }
+    ?>
+  }
 </script>

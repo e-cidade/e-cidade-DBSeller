@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_db_versaocpdtarefa {
                  db26_tarefa = int4 = Codigo da Tarefa 
                  ";
    //funcao construtor da classe 
-   function cl_db_versaocpdtarefa() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_versaocpdtarefa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_versaocpdtarefa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db26_sequen = ($this->db26_sequen == ""?@$GLOBALS["HTTP_POST_VARS"]["db26_sequen"]:$this->db26_sequen);
        $this->db26_codcpd = ($this->db26_codcpd == ""?@$GLOBALS["HTTP_POST_VARS"]["db26_codcpd"]:$this->db26_codcpd);
@@ -77,7 +77,7 @@ class cl_db_versaocpdtarefa {
      }
    }
    // funcao para inclusao
-   function incluir ($db26_sequen){ 
+   public function incluir ($db26_sequen){ 
       $this->atualizacampos();
      if($this->db26_codcpd == null ){ 
        $this->erro_sql = " Campo Código da Observação nao Informado.";
@@ -176,7 +176,7 @@ class cl_db_versaocpdtarefa {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db26_sequen=null) { 
+   public function alterar ($db26_sequen=null) { 
       $this->atualizacampos();
      $sql = " update db_versaocpdtarefa set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_db_versaocpdtarefa {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db26_sequen=null,$dbwhere=null) { 
+   public function excluir ($db26_sequen=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db26_sequen));
      }else{ 
@@ -334,7 +334,7 @@ class cl_db_versaocpdtarefa {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

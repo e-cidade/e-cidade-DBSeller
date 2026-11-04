@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -94,58 +94,58 @@ if(isset($salvarrelatorio)){
 		if($cldb_relat->erro_status == 0) {
 			$sqlerro = true;
 		}
-	
+
 	  if($sqlerro == false){
 		  $cldb_relattabelas->excluir(null,"db92_codrel = ".$db91_codrel);
 			if($cldb_relattabelas->erro_status == 0) {
 				$erro_msg = $cldb_relattabelas->erro_msg;
 				$sqlerro = true;
-				break;
+				return false;
 			}
 	  }
-	
+
 	  if($sqlerro == false){
 		  $cldb_relatselecionados->excluir(null,"db93_codrel = ".$db91_codrel);
 			if($cldb_relatselecionados->erro_status == 0) {
 				$erro_msg = $cldb_relatselecionados->erro_msg;
 				$sqlerro = true;
-				break;
+				return false;
 			}
 	  }
-	
+
 	  if($sqlerro == false){
 		  $cldb_relatfiltros->excluir(null,"db94_codrel = ".$db91_codrel);
 			if($cldb_relatfiltros->erro_status == 0) {
 				$erro_msg = $cldb_relatfiltros->erro_msg;
 				$sqlerro = true;
-				break;
+				return false;
 			}
 	  }
-	
+
 	  if($sqlerro == false){
 			  $cldb_relatcabec->excluir(null,"db95_codrel = ".$db91_codrel);
 				if($cldb_relatcabec->erro_status == 0) {
 					$erro_msg = $cldb_relatcabec->erro_msg;
 					$sqlerro = true;
-					break;
+					return false;
 				}
 	  }
-	
+
 	  if($sqlerro == false){
 		  $cldb_relatsoma->excluir(null,"db96_codrel = ".$db91_codrel);
 			if($cldb_relatsoma->erro_status == 0) {
 				$erro_msg = $cldb_relatsoma->erro_msg;
 				$sqlerro = true;
-				break;
+				return false;
 			}
 	  }
-	
+
 	  if($sqlerro == false){
 		  $cldb_relatquebra->excluir(null,"db97_codrel = ".$db91_codrel);
 			if($cldb_relatquebra->erro_status == 0) {
 				$erro_msg = $cldb_relatquebra->erro_msg;
 				$sqlerro = true;
-				break;
+				return false;
 			}
 	  }
   }else{
@@ -158,7 +158,7 @@ if(isset($salvarrelatorio)){
 	  	}
 			$campo_camporecb_cabecal = "Relatório configurável ".$db91_codrel;
 		}
-	
+
 	  $quebra = "false";
 	  if(isset($qbrapag)){
 	  	$quebra = "true";
@@ -174,7 +174,7 @@ if(isset($salvarrelatorio)){
 	  	}
 	  	$arqui = $campo_camporecb_nomearq;
 	  }
-	
+
 	  $cldb_relat->db91_descr  = $campo_camporecb_cabecal;
 	  $cldb_relat->db91_quebra = $quebra;
 	  $cldb_relat->db91_todos  = $todos;
@@ -188,7 +188,7 @@ if(isset($salvarrelatorio)){
   }
 
   if($sqlerro == false){
-  	$arr_tabelas_selecionadas = split(",",$campo_auxilio_tabelasel);
+  	$arr_tabelas_selecionadas =explode(",",$campo_auxilio_tabelasel);
   	for($i=0; $i<count($arr_tabelas_selecionadas); $i++){
 		  $cldb_relattabelas->db92_codrel = $db91_codrel;
 		  $cldb_relattabelas->db92_codarq = $arr_tabelas_selecionadas[$i];
@@ -202,7 +202,7 @@ if(isset($salvarrelatorio)){
   }
 
   if($sqlerro == false){
-  	$arr_camposs_selecionados = split(",",$campo_auxilio_sselecion);
+  	$arr_camposs_selecionados =explode(",",$campo_auxilio_sselecion);
   	for($i=0; $i<count($arr_camposs_selecionados); $i++){
 		  $cldb_relatselecionados->db93_codrel = $db91_codrel;
 		  $cldb_relatselecionados->db93_codcam = $arr_camposs_selecionados[$i];
@@ -219,7 +219,7 @@ if(isset($salvarrelatorio)){
 	  if($sqlerro == false){
 	  	$variavelteste = "campo_camporecb_filtro".$i;
 	  	if(trim($$variavelteste) != ""){
-		  	$arr_filtros_selecionados1 = split("#",$$variavelteste);
+		  	$arr_filtros_selecionados1 =explode("#",$$variavelteste);
 		  	$campofiltro01 = $arr_filtros_selecionados1[0];
 		  	$valorfiltro11 = $arr_filtros_selecionados1[1];
 		  	$valorfiltro12 = "";
@@ -259,7 +259,7 @@ if(isset($salvarrelatorio)){
   }
 
   if($sqlerro == false){
-  	$arr_camposs_somatoriocam = split(",",$campo_camporecb_somator);
+  	$arr_camposs_somatoriocam =explode(",",$campo_camporecb_somator);
   	for($i=0; $i<count($arr_camposs_somatoriocam); $i++){
 		  $cldb_relatsoma->db96_codrel = $db91_codrel;
 		  $cldb_relatsoma->db96_codcam = $arr_camposs_somatoriocam[$i];
@@ -273,8 +273,8 @@ if(isset($salvarrelatorio)){
   }
 
   if($sqlerro == false){
-  	$arr_camposs_quebrapagcam = split(",",$campo_camporecb_qbrapor);
-  	$arr_camposs_totalizacams = split(",",$campo_camporecb_totaliz);
+  	$arr_camposs_quebrapagcam =explode(",",$campo_camporecb_qbrapor);
+  	$arr_camposs_totalizacams =explode(",",$campo_camporecb_totaliz);
   	for($i=0; $i<count($arr_camposs_quebrapagcam); $i++){
   		$totaliza = "false";
   		if(in_array($arr_camposs_quebrapagcam[$i],$arr_camposs_totalizacams)){
@@ -293,7 +293,7 @@ if(isset($salvarrelatorio)){
   }
 	db_fim_transacao($sqlerro);
 }else if(isset($chavepesquisa)){
-  $result = $cldb_relat->sql_record($cldb_relat->sql_query($chavepesquisa)); 
+  $result = $cldb_relat->sql_record($cldb_relat->sql_query($chavepesquisa));
   db_fieldsmemory($result,0);
 	$campo_auxilio_codigorel = $db91_codrel;
   $campo_camporecb_cabecal = $db91_descr;
@@ -395,7 +395,7 @@ if(isset($salvarrelatorio)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-			<?
+			<?php
 			/*
 <center>
 <table width="60%" border="0" cellspacing="4" cellpadding="0">
@@ -441,7 +441,7 @@ if(isset($salvarrelatorio)){
 		  $g->urlproxarq = ""; // Arquivo que receberá URL
 		  $g->varcodigo = "codarq";  // Nome da variável que será o value do SELECT
 		  $g->vardescri = "rotulo";  // Nome da variável que será a descrição do SELECT
-		
+
 			$g->gera_arquivo();
 			?>
   <!--
@@ -457,7 +457,7 @@ if(isset($salvarrelatorio)){
 </table>
 </center>
   -->
-<? 
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -468,7 +468,7 @@ function js_trocaopcao(){
 js_trocacordeselect();
 </script>
 </html>
-<?
+<?php
 if(isset($salvarrelatorio)){
 	if($sqlerro == true){
 		db_msgbox($erro_msg);

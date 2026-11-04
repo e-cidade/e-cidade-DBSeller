@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,21 +25,22 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_arrecant_classe.php"));
-include(modification("classes/db_arrecad_classe.php"));
-include(modification("classes/db_arrehist_classe.php"));
-include(modification("classes/db_cancdebitos_classe.php"));
-include(modification("classes/db_cancdebitosprot_classe.php"));
-include(modification("classes/db_cancdebitosreg_classe.php"));
-include(modification("classes/db_cancdebitosproc_classe.php"));
-include(modification("classes/db_cancdebitosprocreg_classe.php"));
-include(modification("classes/db_cancdebitosprocconcarpeculiar_classe.php"));
-include(modification("libs/db_sql.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_arrecant_classe.php"));
+require_once(modification("classes/db_arrecad_classe.php"));
+require_once(modification("classes/db_arrehist_classe.php"));
+require_once(modification("classes/db_cancdebitos_classe.php"));
+require_once(modification("classes/db_cancdebitosprot_classe.php"));
+require_once(modification("classes/db_cancdebitosreg_classe.php"));
+require_once(modification("classes/db_cancdebitosproc_classe.php"));
+require_once(modification("classes/db_cancdebitosprocreg_classe.php"));
+require_once(modification("classes/db_cancdebitosprocconcarpeculiar_classe.php"));
+require_once(modification("libs/db_sql.php"));
+
 $clarrecad = new cl_arrecad;
 $clarrecant = new cl_arrecant;
 $clarrehist = new cl_arrehist;
@@ -51,26 +52,27 @@ $clcancdebitosprocreg = new cl_cancdebitosprocreg;
 $clcancdebitosprocconcarpeculiar = new cl_cancdebitosprocconcarpeculiar;
 $clrotulo = new rotulocampo;
 $clrotulo->label("c58_sequencial");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
+
 if (isset ($processa)) {
   $sqlerro = false;
   db_inicio_transacao();
-  //declaro a variavel $er pq aum sei o que faz da erro de variaval indefinida 
+
   $er = "";
-   //die($clcancdebitosreg->sql_query("","k21_sequencia,k21_codigo,k21_numpre,k21_numpar","k21_numpre,k21_numpar","k21_codigo=$k20_codigo"));
+
   $result = $clcancdebitosreg->sql_record($clcancdebitosreg->sql_query("", "k21_sequencia,k21_codigo,k21_numpre,k21_numpar,k21_receit", "k21_numpre,k21_numpar,k21_receit", "k21_codigo=$k20_codigo"));
   $numrows = $clcancdebitosreg->numrows;
-  //db_fieldsmemory($result, 0); //db_msgbox($k21_codigo);exit;
+
   $clcancdebitosproc->k23_data = date("Y-m-d", db_getsession("DB_datausu"));
   $clcancdebitosproc->k23_hora = date("H:i");
   $clcancdebitosproc->k23_usuario = db_getsession("DB_id_usuario");
   $clcancdebitosproc->k23_obs = "$k23_obs ";
   $clcancdebitosproc->k23_cancdebitostipo = $tipoDebito;
-  $clcancdebitosproc->incluir(null); //$k21_codigo);
+  $clcancdebitosproc->incluir(null);
+
   if ($clcancdebitosproc->erro_status == "0") {
-    //	die($clcancdebitosproc->erro_msg);
     $erro_msg = "5 Operação não Efetuada - $er".$clcancdebitosproc->erro_msg;
     $sqlerro = true;
   }else{
@@ -81,14 +83,13 @@ if (isset ($processa)) {
 	$clcancdebitosprocconcarpeculiar->k74_cancdebitosproc = $codigo_proc;
 	$clcancdebitosprocconcarpeculiar->k74_concarpeculiar  = $c58_sequencial;
 	$clcancdebitosprocconcarpeculiar->incluir(null);
+
     if ($clcancdebitosprocconcarpeculiar->erro_status == "0") {
-    //	die($clcancdebitosproc->erro_msg);
       $erro_msg = "Operação não Efetuada - $er".$clcancdebitosprocconcarpeculiar->erro_msg;
       $sqlerro = true;
     }
   }
   
-  //db_criatabela($result);//exit;
   if ($sqlerro == false) {
     for ($x = 0; $x < $numrows; $x ++) {
       db_fieldsmemory($result, $x);
@@ -96,13 +97,6 @@ if (isset ($processa)) {
       if ($clarrecad->numrows==0){
         continue;
       }
-//      $clarrehist->k00_numpre     = $k21_numpre;
-//      $clarrehist->k00_numpar     = $k21_numpar;
-//      $clarrehist->k00_hist       = 502;
-//      $clarrehist->k00_dtoper     = $clcancdebitosproc->k23_data;
-//      $clarrehist->k00_hora       = $clcancdebitosproc->k23_hora;
-//      $clarrehist->k00_id_usuario = $clcancdebitosproc->k23_usuario;
-//      $clarrehist->k00_histtxt    = "$k23_obs ";
       
       $data = db_getsession("DB_datausu");
       $result_deb = debitos_numpre($k21_numpre, 0, 0, $data, db_getsession("DB_anousu"), $k21_numpar);
@@ -118,15 +112,8 @@ if (isset ($processa)) {
           $erro_msg = "1 Operação não Efetuada - $er".$clarrecant->erro_msg;
         }
       }
-//      if ($sqlerro==false){
-//        $clarrehist->incluir(null);
-//        if ($clarrehist->erro_status == "0") {
-//         $sqlerro = true;
-//          $erro_msg = "2 Operação não Efetuada - $er".$clarrehist->erro_msg;
-//       }
-//     }
+
       if ($sqlerro==false){
-//        $vlrhis = 1;
         $clcancdebitosprocreg->k24_codigo         = @$codigo_proc;
         $clcancdebitosprocreg->k24_cancdebitosreg = $k21_sequencia;
         $clcancdebitosprocreg->k24_vlrhis         = $vlrhis;
@@ -142,7 +129,7 @@ if (isset ($processa)) {
       }
     }
   }
-  //exit;
+
   db_fim_transacao($sqlerro);
   if ($sqlerro == true) {
     $erro_msg = "4 Operação não Efetuada - ".@$erro_msg;
@@ -157,7 +144,9 @@ if (isset ($chavepesquisa)) {
   $db_botao = true;
   $campos = "cancdebitos.k20_cancdebitostipo,cancdebitos.k20_codigo, cancdebitos.k20_usuario, cancdebitos.k20_data, cancdebitos.k20_hora,
   cancdebitosreg.k21_sequencia, cancdebitosreg.k21_numpre, cancdebitosreg.k21_numpar, cancdebitosreg.k21_obs,
-  arrecad.k00_valor,nome,cancdebitos.k20_descr,cancdebitosprot.k25_codproc";
+  arrecad.k00_valor,nome,cancdebitos.k20_descr,cancdebitosprot.k25_codproc,
+  (select (p58_numero || '/' || p58_ano) as processo from protprocesso where p58_codproc = cancdebitosprot.k25_codproc) as numerodoprocesso
+  ";
   $result = $clcancdebitos->sql_record($clcancdebitos->sql_pendentes($campos, "", "k21_codigo =".$chavepesquisa." and k20_instit = ".db_getsession("DB_instit")));
   @db_fieldsmemory($result, 0);
   if($k20_cancdebitostipo==1){
@@ -195,19 +184,19 @@ if (isset ($chavepesquisa)) {
 <td align="left" valign="top" bgcolor="#CCCCCC">
 <br><br>
 <center>
-<?
+<?php
 include(modification("forms/db_frmcancdebitos.php"));
 ?>
 </center>
 </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (!isset ($chavepesquisa)) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }

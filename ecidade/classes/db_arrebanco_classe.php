@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE arrebanco
-class cl_arrebanco { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k00_numpre = 0; 
-   var $k00_numpar = 0; 
-   var $k00_codbco = 0; 
-   var $k00_codage = null; 
-   var $k00_numbco = null; 
-   var $k00_nbant = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_arrebanco {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k00_numpre = 0;
+   var $k00_numpar = 0;
+   var $k00_codbco = 0;
+   var $k00_codage = null;
+   var $k00_numbco = null;
+   var $k00_nbant = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k00_numpre = int4 = Numpre 
-                 k00_numpar = int4 = Parcela 
-                 k00_codbco = int4 = codigo do banco 
-                 k00_codage = char(5) = codigo da agencia 
-                 k00_numbco = varchar(15) = numero do banco 
-                 k00_nbant = varchar(30) = numero do banco antigo 
+                 k00_numpre = int4 = Numpre
+                 k00_numpar = int4 = Parcela
+                 k00_codbco = int4 = codigo do banco
+                 k00_codage = char(5) = codigo da agencia
+                 k00_numbco = varchar(15) = numero do banco
+                 k00_nbant = varchar(30) = numero do banco antigo
                  ";
-   //funcao construtor da classe 
-   function cl_arrebanco() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("arrebanco"); 
+     $this->rotulo = new rotulo("arrebanco");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_arrebanco {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -90,9 +90,9 @@ class cl_arrebanco {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_numpre,$k00_numpar,$k00_codbco,$k00_codage,$k00_numbco){ 
+   public function incluir ($k00_numpre,$k00_numpar,$k00_codbco,$k00_codage,$k00_numbco){
       $this->atualizacampos();
-     if($this->k00_nbant == null ){ 
+     if($this->k00_nbant == null ){
        $this->erro_sql = " Campo numero do banco antigo nao Informado.";
        $this->erro_campo = "k00_nbant";
        $this->erro_banco = "";
@@ -101,12 +101,12 @@ class cl_arrebanco {
        $this->erro_status = "0";
        return false;
      }
-       $this->k00_numpre = $k00_numpre; 
-       $this->k00_numpar = $k00_numpar; 
-       $this->k00_codbco = $k00_codbco; 
-       $this->k00_codage = $k00_codage; 
-       $this->k00_numbco = $k00_numbco; 
-     if(($this->k00_numpre == null) || ($this->k00_numpre == "") ){ 
+       $this->k00_numpre = $k00_numpre;
+       $this->k00_numpar = $k00_numpar;
+       $this->k00_codbco = $k00_codbco;
+       $this->k00_codage = $k00_codage;
+       $this->k00_numbco = $k00_numbco;
+     if(($this->k00_numpre == null) || ($this->k00_numpre == "") ){
        $this->erro_sql = " Campo k00_numpre nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -114,7 +114,7 @@ class cl_arrebanco {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k00_numpar == null) || ($this->k00_numpar == "") ){ 
+     if(($this->k00_numpar == null) || ($this->k00_numpar == "") ){
        $this->erro_sql = " Campo k00_numpar nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -122,7 +122,7 @@ class cl_arrebanco {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k00_codbco == null) || ($this->k00_codbco == "") ){ 
+     if(($this->k00_codbco == null) || ($this->k00_codbco == "") ){
        $this->erro_sql = " Campo k00_codbco nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_arrebanco {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k00_codage == null) || ($this->k00_codage == "") ){ 
+     if(($this->k00_codage == null) || ($this->k00_codage == "") ){
        $this->erro_sql = " Campo k00_codage nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -138,7 +138,7 @@ class cl_arrebanco {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->k00_numbco == null) || ($this->k00_numbco == "") ){ 
+     if(($this->k00_numbco == null) || ($this->k00_numbco == "") ){
        $this->erro_sql = " Campo k00_numbco nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -147,23 +147,23 @@ class cl_arrebanco {
        return false;
      }
      $sql = "insert into arrebanco(
-                                       k00_numpre 
-                                      ,k00_numpar 
-                                      ,k00_codbco 
-                                      ,k00_codage 
-                                      ,k00_numbco 
-                                      ,k00_nbant 
+                                       k00_numpre
+                                      ,k00_numpar
+                                      ,k00_codbco
+                                      ,k00_codage
+                                      ,k00_numbco
+                                      ,k00_nbant
                        )
                 values (
-                                $this->k00_numpre 
-                               ,$this->k00_numpar 
-                               ,$this->k00_codbco 
-                               ,'$this->k00_codage' 
-                               ,'$this->k00_numbco' 
-                               ,'$this->k00_nbant' 
+                                $this->k00_numpre
+                               ,$this->k00_numpar
+                               ,$this->k00_codbco
+                               ,'$this->k00_codage'
+                               ,'$this->k00_numbco'
+                               ,'$this->k00_nbant'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->k00_numpre."-".$this->k00_numpar."-".$this->k00_codbco."-".$this->k00_codage."-".$this->k00_numbco) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_arrebanco {
        $resac = db_query("insert into db_acount values($acount,71,366,'','".AddSlashes(pg_result($resaco,0,'k00_nbant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null) { 
+   public function alterar ($k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null) {
       $this->atualizacampos();
      $sql = " update arrebanco set ";
      $virgula = "";
-     if(trim($this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){ 
+     if(trim($this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){
        $sql  .= $virgula." k00_numpre = $this->k00_numpre ";
        $virgula = ",";
-       if(trim($this->k00_numpre) == null ){ 
+       if(trim($this->k00_numpre) == null ){
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "k00_numpre";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_arrebanco {
          return false;
        }
      }
-     if(trim($this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){ 
+     if(trim($this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){
        $sql  .= $virgula." k00_numpar = $this->k00_numpar ";
        $virgula = ",";
-       if(trim($this->k00_numpar) == null ){ 
+       if(trim($this->k00_numpar) == null ){
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "k00_numpar";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_arrebanco {
          return false;
        }
      }
-     if(trim($this->k00_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codbco"])){ 
+     if(trim($this->k00_codbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codbco"])){
        $sql  .= $virgula." k00_codbco = $this->k00_codbco ";
        $virgula = ",";
-       if(trim($this->k00_codbco) == null ){ 
+       if(trim($this->k00_codbco) == null ){
          $this->erro_sql = " Campo codigo do banco nao Informado.";
          $this->erro_campo = "k00_codbco";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_arrebanco {
          return false;
        }
      }
-     if(trim($this->k00_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codage"])){ 
+     if(trim($this->k00_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_codage"])){
        $sql  .= $virgula." k00_codage = '$this->k00_codage' ";
        $virgula = ",";
-       if(trim($this->k00_codage) == null ){ 
+       if(trim($this->k00_codage) == null ){
          $this->erro_sql = " Campo codigo da agencia nao Informado.";
          $this->erro_campo = "k00_codage";
          $this->erro_banco = "";
@@ -262,14 +262,14 @@ class cl_arrebanco {
          return false;
        }
      }
-     if(trim($this->k00_numbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numbco"])){ 
+     if(trim($this->k00_numbco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numbco"])){
        $sql  .= $virgula." k00_numbco = '$this->k00_numbco' ";
        $virgula = ",";
      }
-     if(trim($this->k00_nbant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_nbant"])){ 
+     if(trim($this->k00_nbant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_nbant"])){
        $sql  .= $virgula." k00_nbant = '$this->k00_nbant' ";
        $virgula = ",";
-       if(trim($this->k00_nbant) == null ){ 
+       if(trim($this->k00_nbant) == null ){
          $this->erro_sql = " Campo numero do banco antigo nao Informado.";
          $this->erro_campo = "k00_nbant";
          $this->erro_banco = "";
@@ -321,7 +321,7 @@ class cl_arrebanco {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k00_numpre."-".$this->k00_numpar."-".$this->k00_codbco."-".$this->k00_codage."-".$this->k00_numbco;
@@ -349,14 +349,14 @@ class cl_arrebanco {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_numpre,$k00_numpar,$k00_codbco,$k00_codage,$k00_numbco));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -415,7 +415,7 @@ class cl_arrebanco {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k00_numpre."-".$k00_numpar."-".$k00_codbco."-".$k00_codage."-".$k00_numbco;
@@ -443,11 +443,11 @@ class cl_arrebanco {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -469,11 +469,11 @@ class cl_arrebanco {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,47 +486,47 @@ class cl_arrebanco {
      $sql2 = "";
      if($dbwhere==""){
        if($k00_numpre!=null ){
-         $sql2 .= " where arrebanco.k00_numpre = $k00_numpre "; 
-       } 
+         $sql2 .= " where arrebanco.k00_numpre = $k00_numpre ";
+       }
        if($k00_numpar!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_numpar = $k00_numpar "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_numpar = $k00_numpar ";
+       }
        if($k00_codbco!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_codbco = $k00_codbco "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_codbco = $k00_codbco ";
+       }
        if($k00_codage!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_codage = '$k00_codage' "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_codage = '$k00_codage' ";
+       }
        if($k00_numbco!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_numbco = '$k00_numbco' "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_numbco = '$k00_numbco' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,11 +535,11 @@ class cl_arrebanco {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k00_numpre=null,$k00_numpar=null,$k00_codbco=null,$k00_codage=null,$k00_numbco=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,47 +552,47 @@ class cl_arrebanco {
      $sql2 = "";
      if($dbwhere==""){
        if($k00_numpre!=null ){
-         $sql2 .= " where arrebanco.k00_numpre = $k00_numpre "; 
-       } 
+         $sql2 .= " where arrebanco.k00_numpre = $k00_numpre ";
+       }
        if($k00_numpar!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_numpar = $k00_numpar "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_numpar = $k00_numpar ";
+       }
        if($k00_codbco!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_codbco = $k00_codbco "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_codbco = $k00_codbco ";
+       }
        if($k00_codage!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_codage = '$k00_codage' "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_codage = '$k00_codage' ";
+       }
        if($k00_numbco!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " arrebanco.k00_numbco = '$k00_numbco' "; 
-       } 
+         }
+         $sql2 .= " arrebanco.k00_numbco = '$k00_numbco' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,14 +601,14 @@ class cl_arrebanco {
      }
      return $sql;
   }
-  
+
   /**
    *
    * funcao para retornar o sql para integração do tj via webservice
    * @return string sql
    */
-  function sql_queryRecibo ($iNumpre = ""){
-  
+  public function sql_queryRecibo ($iNumpre = ""){
+
     $sSql  = "select distinct                                                             \n";
     $sSql .= "       recibo.k00_numcgm,                                                   \n";
     $sSql .= "       recibo.k00_dtoper,                                                   \n";
@@ -644,9 +644,9 @@ class cl_arrebanco {
     $sSql .= "       left join arrebanco on arrebanco.k00_numpre  = recibopaga.k00_numnov \n";
     $sSql .= " where recibopaga.k00_numnov = {$iNumpre}                                   \n";
     return $sSql;
-    
+
   }
-  
+
 }
 
 ?>

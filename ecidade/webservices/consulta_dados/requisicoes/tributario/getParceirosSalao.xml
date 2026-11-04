@@ -1,0 +1,25 @@
+<?xml version='1.0' ?>
+<consulta distinct="true">
+  <campos>
+    <campo campo="q203_sequencial"                 label="sequencial"        />
+    <campo campo="q203_inscrsalao"                 label="inscricao_salao"   />
+    <campo campo="q203_inscrparc"                  label="inscricao_parceiro" />
+    <campo campo="q203_numcgm"                     label="numero_cgm"       />
+    <campo campo="z01_nome"                        label="nome"             />
+    <campo campo="q203_dtinicial"                  label="dt_inicio"         />
+    <campo campo="q203_dtfinal"                    label="dt_fim"           />
+    <campo campo="q203_obs"                        label="obs"              />
+    <campo campo="q202_sequencial"                 label="sequencial_salao" />
+  </campos>
+  <from tabela="issbaseprofissionalparceiro"/>
+  <juncoes>
+    <join tipo="inner" tabela="protocolo.cgm"     condicao="q203_numcgm = z01_numcgm"/>
+  </juncoes>
+  <filtros>
+    <filtro   label="sequencial"      condicao = "q202_sequencial = '$sequencial'" obrigatorio="true"/>
+    <filtro   label="dataServico"      condicao = "'$dataServico' >= q203_dtinicial" obrigatorio="true"/>
+    <filtro   label="dataServico"    condicao = "(q203_dtfinal is null or q203_dtfinal >= '$dataServico')" obrigatorio="true"/>
+  </filtros>
+  <agrupamento campos=""         />
+  <ordenacao   campos="q203_sequencial desc"/>
+</consulta>

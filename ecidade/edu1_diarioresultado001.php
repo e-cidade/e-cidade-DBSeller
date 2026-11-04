@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification('libs/db_stdlibwebseller.php'));
@@ -428,7 +428,7 @@ if (isset($aprovminimo)) {
   <script>
    // parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>"+"&iTrocaTurma=<?=$iTrocaTurma?>";
   </script>
-<?
+<?php
   $valoralterado = $valor;
 
 }
@@ -479,7 +479,7 @@ if (isset($aprovminimo)) {
 <form name="form1" method="post" action="">
 <input name="ed43_i_codigo" type="hidden" value="<?=$ed43_i_codigo?>">
 <input name="regencia" type="hidden" value="<?=$regencia?>">
-<?
+<?php
 /* Busco informações dos alunos matriculados na turma para exibir no formulário */
 
 $sCampos  = 'diariofinal.*, matricula.ed60_c_situacao, matricula.ed60_c_concluida, matricula.ed60_i_codigo, matricula.ed60_matricula,';
@@ -569,7 +569,7 @@ if ($lCasasDecimais) {
 }
 
 ?>
-<table border='0' width="96%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0"> <!--Tabela dos títulos -->
+<table border='0' width="96%" bgcolor="#cccccc" cellspacing="0" cellpading="0"> <!--Tabela dos títulos -->
  <tr>
   <td class='titulo'>
     <?=$sTitulo1?>
@@ -578,7 +578,7 @@ if ($lCasasDecimais) {
     <?=$sTitulo2?>
   </td>
   <td class='titulo' width="25%" align="right">
-   <table border='0px' style="" cellspacing="0px" cellpading="0px">
+   <table border='0px' cellspacing="0px" cellpading="0px">
     <tr>
      <td class='titulo' align="center">
       Mínimo para Aprovação:
@@ -598,7 +598,7 @@ if ($lCasasDecimais) {
  </tr>
  <tr>
   <td colspan="3">
-   <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px"> <!-- Tabela com os cabeçalhos e informações dos alunos -->
+   <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px"> <!-- Tabela com os cabeçalhos e informações dos alunos -->
     <tr>
      <td colspan="6" width="55%" align="center" class='cabec1'>Alunos</td>
      <td align="center" class='cabec1'><?=$oDadosMat->ed42_c_descr?></td>
@@ -612,7 +612,7 @@ if ($lCasasDecimais) {
      <td class="cabec1">Código</td>
      <td class="cabec1"><?=$oDadosMat->ed37_c_tipo?></td>
     </tr>
-    <?
+    <?php
     if ($oDaoMatricula->numrows > 0) { // Matrículas encontrada
 
      for ($iCont = 0; $iCont < $oDaoMatricula->numrows; $iCont++) {
@@ -820,7 +820,7 @@ if ($lCasasDecimais) {
        <td align="center" class='aluno'><?=db_formatar($oDadosMat->ed60_d_datamatricula, 'd')?></td>
        <td align="center" class='aluno'><?=empty($datasaida) ? '&nbsp;': $datasaida?></td>
        <td align="right" class='aluno'><b><?=$oDadosMat->ed47_i_codigo?></b></td>
-       <?
+       <?php
        echo (empty($sTdAmparo) ? '<td class="aluno" align="center">' : $sTdAmparo);
 
        if (trim($oDadosMat->ed81_c_todoperiodo) != 'S') { // Não tem amparo completo (todo o período)
@@ -1433,7 +1433,7 @@ if ($lCasasDecimais) {
                  $oDaoDiarioResultado->alterar($oDadosMat->ed73_i_codigo);
                  $sResFinalOriginal = $sResFinal;
                  $sResFinal = $sResFinal == 'null' ? '' : ArredondamentoNota::arredondar($sResFinal, $iAno);
-                 
+
                  /* TD com o resultado final */
                  echo '<td class="aluno" align="center"> '.$sFormaObtencao.': <br>';
                  echo '<input name="ed73_i_valornota" value="'.$sResFinal.'" type="text" ';
@@ -1447,17 +1447,17 @@ if ($lCasasDecimais) {
 
              $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
              $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado = {$oDadosMat->ed73_i_codigo}");
-            
+
              if ($sMinimo == 'N') {
 
                $oResultado          = ResultadoAvaliacaoRepository::getResultadoAvaliacaoByCodigo($oDadosMat->ed73_i_procresultado);
                $oAvalicaoDependente = AvaliacaoPeriodicaRepository::getAvaliacaoDependente($oResultado);
-               
+
                if (!empty($oAvalicaoDependente)) {
 
                   $lGeraRecuparacao  = false;  // Se deve gerar recuperação validando configuração
                   $lJaFezRecuperacao = false; // se aluno tem nota no provão desta disciplina
-                  
+
                   /**
                    * Verificamos em quantas disciplinas aluno ficou em abaixo da média
                    */
@@ -1475,20 +1475,20 @@ if ($lCasasDecimais) {
                   if ( $rsDisciplinasAbaixoMedia ) {
                     $iDisciplinasAbaixoMedia = db_utils::fieldsMemory($rsDisciplinasAbaixoMedia, 0)->abaixo_media;
                   }
-                  // Busca como esta configurado                  
+                  // Busca como esta configurado
                   $iQuantidadeMaximaDisciplinasParaRecuperacao = $oAvalicaoDependente->quantidadeMaximaDisciplinasParaRecuperacao();
-                  
+
                   /**
-                   * Validamos se o aluno esta apto a cursar a recuperação. 
+                   * Validamos se o aluno esta apto a cursar a recuperação.
                    * - Quando $iQuantidadeMaximaDisciplinasParaRecuperacao == 0 significa que @todo complementar
-                   * - O número de disciplinas reprovadas não pode ser maior do que o configurado na Avaliação para o 
+                   * - O número de disciplinas reprovadas não pode ser maior do que o configurado na Avaliação para o
                    *   Aluno ter direito a cursar a recuperação.
                    */
                   if (!empty($iQuantidadeMaximaDisciplinasParaRecuperacao)
                        && $iQuantidadeMaximaDisciplinasParaRecuperacao >= $iDisciplinasAbaixoMedia) {
                   	$lGeraRecuparacao = true;
                   }
-                   
+
                   /**
                    * Veridicamos se aluno já tem resultado no provão.
                    * Não devemos incluir em diarioresultadorecuperacao se aluno já tivér realizado o provão
@@ -1499,7 +1499,7 @@ if ($lCasasDecimais) {
                   $sSqlAvaliacaoRecuperacao .= "   from diarioavaliacao             ";
                   $sSqlAvaliacaoRecuperacao .= "  where ed72_i_procavaliacao = {$oAvalicaoDependente->getCodigo()}";
                   $sSqlAvaliacaoRecuperacao .= "    and ed72_i_diario = {$oDadosMat->ed73_i_diario} ";
-                  
+
                   $rsAvaliacaoRecuperacao = db_query($sSqlAvaliacaoRecuperacao);
                   if ( $rsAvaliacaoRecuperacao ) {
 
@@ -1519,7 +1519,7 @@ if ($lCasasDecimais) {
                   }
 
                   /**
-                   * Só incluimos na recuperação se o aluno ainda não lançou a avaliação do provão e quando ele atende 
+                   * Só incluimos na recuperação se o aluno ainda não lançou a avaliação do provão e quando ele atende
                    * os requisitos configurados na Avaliação de recuperação.
                    */
                   if ( !$lJaFezRecuperacao && $lGeraRecuparacao && $iDisciplinasAbaixoMedia > 0 ) {
@@ -1559,13 +1559,13 @@ if ($lCasasDecimais) {
 </form>
 </body>
 </html>
-<?
+<?php
 if (isset($aprovminimo) && !isset($lNotaParecer)) {
  ?>
  <script>
   js_OpenJanelaIframe('','db_iframe_outrasdisc','func_outrasdisc.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$ed43_i_codigo?>&codigo=<?=$codigo?>&valor=<?=$valoralterado?>','Informar este resultado para outras disciplinas',true);
  </script>
- <?
+ <?php
 }
 
 ?>
@@ -1680,11 +1680,11 @@ function js_movimentos(matricula) {
 }
 function js_cent(amount) {
  //retorna o valor com 2 casas decimais
- <?if ($lCasasDecimais) {?>
+ <?php if ($lCasasDecimais) {?>
   return(amount == Math.floor(amount)) ? amount + '.00' : ( (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
  <?} else {?>
   return(amount == Math.floor(amount)) ? Math.floor(amount) : ( (amount*10 == Math.floor(amount*10)) ? Math.floor(amount) : Math.floor(amount));
- <?}?>
+ <?php }?>
 }
 function js_dec(cantidad, decimales) {
  //arredonda o valor

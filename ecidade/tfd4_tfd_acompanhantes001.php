@@ -66,7 +66,7 @@ if( isset( $incluir ) ) {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?
+<?php
 db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
 db_app::load(" grid.style.css");
 ?>

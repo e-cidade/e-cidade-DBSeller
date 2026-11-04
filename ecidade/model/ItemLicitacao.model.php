@@ -108,15 +108,15 @@ class ItemLicitacao {
    * @throws Exception
    */
   public function remover($iItemLicitacao) {
-    
+
     if (empty($iItemLicitacao)) {
       throw new Exception("Código do item da licitação não informado.");
     }
 
-    $oDaoPcOrcamItemLic = db_utils::getDao("pcorcamitemlic");
-    $oDaoLiclicitem     = db_utils::getDao("liclicitem");
-    $oDaoLiclicitemLote = db_utils::getDao("liclicitemlote");
-    $oDaoLiclicitemAnu  = db_utils::getDao("liclicitemanu");
+    $oDaoPcOrcamItemLic = new cl_pcorcamitemlic();
+    $oDaoLiclicitem     = new cl_liclicitem();
+    $oDaoLiclicitemLote = new cl_liclicitemlote();
+    $oDaoLiclicitemAnu  = new cl_liclicitemanu();
 
     $oDaoPcOrcamItemLic->excluir(null, "pc26_liclicitem = {$iItemLicitacao}");
     $oDaoLiclicitemLote->excluir(null, "l04_liclicitem = {$iItemLicitacao}");
@@ -246,17 +246,28 @@ class ItemLicitacao {
 
     return $this->oLoteLicitacao;
   }
-  
-  public function hasCota() {
+
+  public function hasCota($buscarPorItemReserva = false)
+  {
+    $condicoesBusca = [];
+    if (!$buscarPorItemReserva) {
+        $condicoesBusca[] = "l19_liclicitemorigem = {$this->iCodigo}";
+    }
+
+    $condicoesBusca[] = "l19_liclicitemreserva = {$this->iCodigo}";
+    $condicoesBuscaSql = implode(' OR ', $condicoesBusca);
 
     if (!empty($this->iCodigo)) {
       $cota = new cl_licitacaoreservacotas();
-      $sSqlCota = $cota->sql_query(null, "l19_liclicitemorigem, l19_liclicitemreserva", null, 
-                      "l19_liclicitemorigem = {$this->iCodigo} or l19_liclicitemreserva = {$this->iCodigo}");
-      $rsCota = $cota->sql_record($sSqlCota);
-      if($cota->numrows > 0 ) {
-        return true;   
-      }
+      $sSqlCota = $cota->sql_query(
+          null,
+          "l19_liclicitemorigem, l19_liclicitemreserva",
+          null,
+          $condicoesBuscaSql
+      );
+
+      $cota->sql_record($sSqlCota);
+      return $cota->numrows > 0;
     }
 
     return false;

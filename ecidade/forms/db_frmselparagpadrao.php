@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("db60_descr");
        <?=@$Ldb60_coddoc?>
     </td>
     <td> 
-<?
+<?php
 $result=$cldb_documentopadrao->sql_record($cldb_documentopadrao->sql_query($db60_coddoc));
 if ($cldb_documentopadrao->numrows>0){
   db_fieldsmemory($result,0);
@@ -49,12 +49,12 @@ if ($cldb_documentopadrao->numrows>0){
 
 db_input('db60_coddoc', 8, $Idb60_coddoc, true, 'text', 3)
 ?>
-       <?
+       <?php
 
  db_input('db60_descr', 40, $Idb60_descr, true, 'text', 3, '')
 ?>
 <b>Ordem:</b>
-      <?
+      <?php
         $tipo_ordem = array("b"=>"Numérica","a"=>"Alfabética");
 	    db_select("ordem",$tipo_ordem,true,2,"onchange='js_ordem(this.value);'"); ?>
     </td>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,37 +60,37 @@ if(isset($db_opcaoal)){
        <?//@$Lat74_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at74_sequencial',6,$Iat74_sequencial,true,'hidden',2,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat74_codcli?>">
-       <?
+       <?php
        db_ancora(@$Lat74_codcli,"js_pesquisaat74_codcli(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at74_codcli',4,$Iat74_codcli,true,'text',2," readonly ")
 ?>
-       <?
+       <?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'hidden',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat74_id_item?>">
-       <?
+       <?php
        db_ancora(@$Lat74_id_item,"js_pesquisaat74_id_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at74_id_item',7,$Iat74_id_item,true,'text',$db_opcao," onchange='js_pesquisaat74_id_item(false);'")
 ?>
-       <?
+       <?php
 db_input('nome_modulo',20,$Inome_modulo,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('nome_modulo',20,$Inome_modulo,true,'text',3,'')
        <?=@$Lat74_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at74_data',@$at74_data_dia,@$at74_data_mes,@$at74_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_inputdata('at74_data',@$at74_data_dia,@$at74_data_mes,@$at74_data_ano,true,'t
        <?=@$Lat74_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at74_obs',4,70,$Iat74_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ db_textarea('at74_obs',4,70,$Iat74_obs,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at74_sequencial"=>@$at74_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clclientesmodulos->sql_query(null,"*","nome_modulo"," at74_codcli = $at74_codcli ");

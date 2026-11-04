@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -133,7 +133,7 @@ fieldset.form {
 						<?php echo $Lh72_dtinicial; ?>
 					</td>
 					<td title="<?php echo $Th72_dtinicial; ?>">
-						<?	
+						<?php 
 							db_inputdata('h72_dtinicial', $h72_dtinicial_dia, $h72_dtinicial_mes, $h72_dtinicial_ano, true, 'text', 3);
 						?>
 					</td>
@@ -144,7 +144,7 @@ fieldset.form {
 						<?php echo $Lh72_dtfinal; ?>
 					</td>
 					<td title="<?php echo $Th72_dtfinal; ?>">
-						<?	
+						<?php 
 							db_inputdata('h72_dtfinal', $h72_dtfinal_dia, $h72_dtfinal_mes, $h72_dtfinal_ano, true, 'text', 1);
 						?>
 					</td>
@@ -218,7 +218,7 @@ fieldset.form {
 </center>
 
 </div>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

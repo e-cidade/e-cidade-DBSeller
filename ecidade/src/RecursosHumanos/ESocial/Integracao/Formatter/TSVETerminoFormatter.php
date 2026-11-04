@@ -117,6 +117,9 @@ class TSVETerminoFormatter extends Formatter
         if ($this->validaEnvioMatricula($this->servidorAtual->getMatricula(), $this->getEmpregador())) {
             $dadoServidor->ideTrabSemVinculo->matricula = $this->servidorAtual->getMatricula();
         }
+        if ($this->servidorAtual->getMatriculaAnterior() != "") {
+            $dadoServidor->ideTrabSemVinculo->matricula = $this->servidorAtual->getMatriculaAnterior();
+        }
         $dadoServidor->ideTrabSemVinculo->codCateg = (int) $this->servidorAtual->getVinculo()->getCodigoCategoria();
 
         if (isset($dadoServidor->ideTrabSemVinculo->matricula) && !empty($dadoServidor->ideTrabSemVinculo->matricula)) {
@@ -177,25 +180,25 @@ class TSVETerminoFormatter extends Formatter
         $this->inicializaRubricaPensaoAlimenticia();
 
         $this->inicializaEventosFinanceiros();
-
-        if ($this->servidorAtual->isCeletista()) {
+        if ($this->servidorAtual->isCeletista() ||
+            $this->servidorAtual->validarEnvioPensaoAlimenticia()) {
             if ($this->servidorPossuiPensaoAlimenticia()) {
-                $dadoServidor->infoTSVTermino['pensAlim'] = 2;
+                $dadoServidor->infoTSVTermino->pensAlim = 2;
                 foreach ($this->eventosRescisao as $evento) {
                     if (in_array($evento->getRubrica()->getCodigo(), $this->rubricaPensaoAlimenticia)) {
-                        $dadoServidor->infoTSVTermino['vrAlim'] = $this->truncar($evento->getValor());
+                        $dadoServidor->infoTSVTermino->vrAlim = $this->truncar($evento->getValor());
                         break;
                     }
                 }
             } else {
-                $dadoServidor->infoTSVTermino['pensAlim'] = 0;
+                $dadoServidor->infoTSVTermino->pensAlim = 0;
             }
 
             /**
              * Informação obrigatória e exclusiva se pensAlim = [1, 3]
              */
-            if ($dadoServidor->infoTSVTermino['pensAlim'] >= 1 && $dadoServidor->infoTSVTermino['pensAlim'] <= 3) {
-                $dadoServidor->infoTSVTermino['percAliment'] = '';
+            if ($dadoServidor->infoTSVTermino->pensAlim >= 1 && $dadoServidor->infoTSVTermino->pensAlim <= 3) {
+                $dadoServidor->infoTSVTermino->percAliment = '';
             }
         }
 
@@ -218,33 +221,22 @@ class TSVETerminoFormatter extends Formatter
     private function verbasRescisao()
     {
         $retorno = false;
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
-        // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
-        if (empty($dataObrigatoriedade)) {
+        if ($this->servidorAtual->validacaoEnvioRescisaoEsocialSemVinculo()) {
             return $retorno;
         }
-        $dataFase3 = new \DBDate("2022-08-22");
-        // Verificamos de a data da fase 3 do grupo 4 é inferior a data de obrigatoriedade, se for inferior
-        //  a instituicao pertence ao grupo 2
-        // Caso seja grupo 2, devemos enviar as verbas rescisorias nesse evento, caso contrario, sera validada pelo
-        // grupo 4 pelo codigo de categoria do servidor
-        if ($dataObrigatoriedade >= $dataFase3) {
-            return $retorno;
-        }
-        if ($this->servidorAtual->validaCategoriaRescisaoSemVinculo()) {
-            return $retorno;
-        }
+
         $verbasResc = new stdClass();
 
         $dmDev = new stdClass();
-        $dmDev->ideDmDev = $this->servidorAtual->getDadosRescisao()->rh05_codigorescisao; //OK
         $ideEstabLot = new stdClass();
-        $dmDev->ideEstabLot = [];
         $ideEstabLot->tpInsc = 1;
         $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj();
         $ideEstabLot->codLotacao = '01';
         $anoRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
         $mesRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
+        $dmDev->ideDmDev = $this->servidorAtual->getMatricula() . 'RESC' . $anoRescisao
+            . str_pad($mesRescisao, 2, 0, STR_PAD_LEFT);
+        $dmDev->ideEstabLot = [];
         $infoRubrica = [];
 
         foreach ($this->eventosRescisao as $eventoRescisao) {
@@ -339,18 +331,20 @@ class TSVETerminoFormatter extends Formatter
 
     private function regraVerbasResc(&$dadoServidor)
     {
-        if (empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->tpTrib) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->nrProcJud) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->codSusp)) {
-            unset($dadoServidor->infoTSVTermino->verbasResc->procJudTrab);
-        }
+        if (!isset($dadoServidor->infoTSVTermino->verbasResc) && !empty($dadoServidor->infoTSVTermino->verbasResc)) {
+            if (empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->tpTrib) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->nrProcJud) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->procJudTrab->codSusp)) {
+                unset($dadoServidor->infoTSVTermino->verbasResc->procJudTrab);
+            }
 
-        if (empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->indMV) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->tpInsc) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->nrInsc) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->codCateg) &&
-            empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->vlrRemunOE)) {
-            unset($dadoServidor->infoTSVTermino->verbasResc->infoMV);
+            if (empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->indMV) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->tpInsc) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->nrInsc) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->codCateg) &&
+                empty($dadoServidor->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr->vlrRemunOE)) {
+                unset($dadoServidor->infoTSVTermino->verbasResc->infoMV);
+            }
         }
     }
 

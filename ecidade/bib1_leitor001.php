@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -53,12 +53,12 @@ $sMsg      = '';
  * @param stdClass $oDadosCidadao
  */
 function salvarCidadao($oDadosCidadao, $iCodigoLeitor) {
-  
+
   $iNumero = null;
   if (is_numeric($oDadosCidadao->numero)) {
     $iNumero = $oDadosCidadao->numero;
   }
-  
+
   $oCidadao = new Cidadao();
   $oCidadao->setAtivo(true);
   $oCidadao->setBairro($oDadosCidadao->bairro);
@@ -73,73 +73,73 @@ function salvarCidadao($oDadosCidadao, $iCodigoLeitor) {
   $oCidadao->setUF($oDadosCidadao->uf);
   $oCidadao->setSituacaoCidadao(1);
   $oCidadao->salvar();
-  
+
   $iCidadaoSequencial = $oCidadao->getCodigo();
   $iCidadaoSeq        = $oCidadao->getSequencialInterno();
-  
+
   $oDaoLeitorCidadao                          = db_utils::getDao("leitorcidadao");
   $oDaoLeitorCidadao->bi28_leitor             = $iCodigoLeitor;
   $oDaoLeitorCidadao->bi28_cidadao_sequencial = $iCidadaoSequencial;
   $oDaoLeitorCidadao->bi28_cidadao_seq        = $iCidadaoSeq;
   $oDaoLeitorCidadao->incluir(null);
-  
+
   unset($oCidadao);
   unset($oDaoLeitorCidadao);
 }
 
 if (isset($incluir)) {
-  
+
   if ($codigo == "") {
-    
+
     db_msgbox("Informe o Leitor!");
     db_redireciona("bib1_leitor001.php");
     exit;
   } else {
-    
+
     db_inicio_transacao();
-    
+
     $clleitor->incluir($bi10_codigo);
     $iCodigoLeitor = $clleitor->bi10_codigo;
-    
+
     if ($tipo == 'CIDADAO') {
-      
+
       $oDaoLeitor    = db_utils::getDao("leitor");
       $sWhereLeitor  = "bi28_cidadao_sequencial = {$codigo} AND bi28_cidadao_seq = {$seq}";
-      $sCamposLeitor = "bi10_codigo as codleitor"; 
+      $sCamposLeitor = "bi10_codigo as codleitor";
       $sSqlLeitor    = $oDaoLeitor->sql_query_leitorcidadao("", $sCamposLeitor, "", $sWhereLeitor);
       $rsLeitor      = $oDaoLeitor->sql_record($sSqlLeitor);
       $iLinhasLeitor = $oDaoLeitor->numrows;
-      
+
       if ($iLinhasLeitor > 0) {
-        
+
         $iCodLeitorCadastrado = db_utils::fieldsMemory($rsLeitor, 0)->codleitor;
         $lErro                = true;
         $sMsg                 = '';
       } else {
-        
+
         $clleitorcidadao->bi28_leitor             = $iCodigoLeitor;
         $clleitorcidadao->bi28_cidadao_sequencial = $codigo;
         $clleitorcidadao->bi28_cidadao_seq        = $seq;
         $clleitorcidadao->incluir();
       }
     } else if ($tipo == 'ALUNO') {
-      
+
       /**
        * Caso nao exista registro na tabela leitoraluno, inserimos o aluno
        */
       $oDaoLeitorAluno   = db_utils::getDao("leitoraluno");
       $sWhereLeitorAluno = "bi11_aluno = {$codigo}";
       $sSqlLeitorAluno   = $oDaoLeitorAluno->sql_query_file(null, "bi11_leitor as codleitor", null, $sWhereLeitorAluno);
-      
+
       $rsLeitorAluno     = $oDaoLeitorAluno->sql_record($sSqlLeitorAluno);
-      
+
       if ($oDaoLeitorAluno->numrows == 0) {
-        
+
         $oDaoLeitorAlunoInclusao              = db_utils::getDao("leitoraluno");
         $oDaoLeitorAlunoInclusao->bi11_leitor = $iCodigoLeitor;
         $oDaoLeitorAlunoInclusao->bi11_aluno  = $codigo;
         $oDaoLeitorAlunoInclusao->incluir(null);
-        
+
         $oDaoAluno     = db_utils::getDao("aluno");
         $sCamposAluno  = "ed47_i_codigo as codigo, ed47_v_nome as nome, ed47_v_ender as endereco, ed47_c_numero as numero";
         $sCamposAluno .= ", ed47_v_compl as complemento, ed47_v_bairro as bairro, censomunicend.ed261_c_nome as municipio";
@@ -147,9 +147,9 @@ if (isset($incluir)) {
         $sWhereAluno   = "ed47_i_codigo = {$codigo}";
         $sSqlAluno     = $oDaoAluno->sql_query(null, $sCamposAluno, null, $sWhereAluno);
         $rsAluno       = $oDaoAluno->sql_record($sSqlAluno);
-        
+
         if ($oDaoAluno->numrows > 0) {
-          
+
           $oDadosAluno = db_utils::fieldsMemory($rsAluno, 0);
           salvarCidadao($oDadosAluno, $iCodigoLeitor);
           unset($oDadosAluno);
@@ -164,7 +164,7 @@ if (isset($incluir)) {
         $sMsg                 = '';
       }
     } else if ($tipo == 'PUBLICO') {
-      
+
       /**
        * Caso nao exista registro na tabela leitorpublico, inserimos o cgm publico
        */
@@ -174,12 +174,12 @@ if (isset($incluir)) {
       $rsLeitorPublico     = $oDaoLeitorPublico->sql_record($sSqlLeitorPublico);
 
       if ($oDaoLeitorPublico->numrows == 0) {
-        
+
         $oDaoLeitorPublicoInclusao              = db_utils::getDao("leitorpublico");
         $oDaoLeitorPublicoInclusao->bi13_leitor = $iCodigoLeitor;
         $oDaoLeitorPublicoInclusao->bi13_numcgm = $codigo;
         $oDaoLeitorPublicoInclusao->incluir(null);
-        
+
         $oDaoCgm     = db_utils::getDao("cgm");
         $sWhereCgm   = "z01_numcgm = {$codigo}";
         $sCamposCgm  = "z01_numcgm as codigo, z01_nome as nome, z01_ender as endereco, z01_numero as numero";
@@ -187,9 +187,9 @@ if (isset($incluir)) {
         $sCamposCgm .= ", z01_cep as cep, z01_ident as identidade, z01_cgccpf as cpf";
         $sSqlCgm     = $oDaoCgm->sql_query_file(null, $sCamposCgm, null, $sWhereCgm);
         $rsCgm       = $oDaoCgm->sql_record($sSqlCgm);
-        
+
         if ($oDaoCgm->numrows > 0) {
-          
+
           $oDadosCgm = db_utils::fieldsMemory($rsCgm, 0);
           salvarCidadao($oDadosCgm, $iCodigoLeitor);
           unset($oDadosCgm);
@@ -198,13 +198,13 @@ if (isset($incluir)) {
         unset($oDaoLeitorPublico);
         unset($oDaoLeitorPublicoInclusao);
       } else {
-        
+
         $iCodLeitorCadastrado = db_utils::fieldsMemory($rsLeitorPublico, 0)->codleitor;
         $lErro                = true;
         $sMsg                 = '';
       }
     } else if ($tipo == "FUNCIONARIO") {
-      
+
       /**
        * Caso nao exista registro na tabela leitorfunc, inserimos o funcionario
        */
@@ -212,14 +212,14 @@ if (isset($incluir)) {
       $sWhereLeitorFunc = "bi12_rechumano = {$codigo}";
       $sSqlLeitorFunc   = $oDaoLeitorFunc->sql_query_file(null, "bi12_leitor as codleitor", null, $sWhereLeitorFunc);
       $rsLeitorFunc     = $oDaoLeitorFunc->sql_record($sSqlLeitorFunc);
-      
+
       if ($oDaoLeitorFunc->numrows == 0) {
-        
+
         $oDaoLeitorFuncInclusao                 = db_utils::getDao("leitorfunc");
         $oDaoLeitorFuncInclusao->bi12_leitor    = $iCodigoLeitor;
         $oDaoLeitorFuncInclusao->bi12_rechumano = $codigo;
         $oDaoLeitorFuncInclusao->incluir(null);
-        
+
         $oDaoRecHumano      = db_utils::getDao("rechumano");
         $sCamposLeitorFunc  = "case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as codigo,";
         $sCamposLeitorFunc .= "case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as nome,";
@@ -235,9 +235,9 @@ if (isset($incluir)) {
         $sWhereRecHumano    = "ed20_i_codigo = {$codigo}";
         $sSqlRecHumano      = $oDaoRecHumano->sql_query(null, $sCamposLeitorFunc, null, $sWhereRecHumano);
         $rsRecHumano        = $oDaoRecHumano->sql_record($sSqlRecHumano);
-        
+
         if ($oDaoRecHumano->numrows > 0) {
-          
+
           $oDadosRecHumano = db_utils::fieldsMemory($rsRecHumano, 0);
           salvarCidadao($oDadosRecHumano, $iCodigoLeitor);
           unset($oDadosRecHumano);
@@ -246,18 +246,18 @@ if (isset($incluir)) {
         unset($oDaoLeitorFuncInclusao);
         unset($oDaoLeitorFunc);
       } else {
-        
+
         $iCodLeitorCadastrado = db_utils::fieldsMemory($rsLeitorFunc, 0)->codleitor;
         $lErro                = true;
         $sMsg                 = '';
       }
     }
-    
+
     db_fim_transacao(false);
   }
-  
+
   if ($lErro) {
-    
+
     db_msgbox("Leitor já cadastrado pelo código $iCodLeitorCadastrado.\\nRedirecionando para o cadastro deste leitor.");
     db_redireciona("bib1_leitor002.php?chavepesquisa=$iCodLeitorCadastrado");
     exit;
@@ -279,7 +279,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Leitor</b></legend>
-     <?
+     <?php
        require_once(modification("forms/db_frmleitor.php"));
      ?>
    </fieldset>
@@ -289,15 +289,15 @@ if (isset($incluir)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($incluir)) {
-  
+
   if ($clleitor->erro_status == "0") {
 
     $clleitor->erro(true,false);
     $db_botao = true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clleitor->erro_campo != "") {
 
       echo "<script> document.form1.".$clleitor->erro_campo.".style.backgroundColor='#99A9AE';</script>";
@@ -310,7 +310,7 @@ if (isset($incluir)) {
      <script>
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo1.location.href='bib1_leitor002.php?chavepesquisa=<?=$iCodigoLeitor?>';
      </script>
-    <?
+    <?php
   };
 };
 ?>

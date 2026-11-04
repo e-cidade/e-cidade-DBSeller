@@ -38,9 +38,9 @@
  * Alterado memória do PHP on the fly, para não estourar a carga dos dados do servidor
  */
 if(defined('ECIDADE_PATH')){
-  require_once(ECIDADE_PATH . "libs/db_autoload.php");
+    require_once(ECIDADE_PATH . "libs/db_autoload.php");
 } else {
-  die("Diretorio invalido\n");
+    die("Diretorio invalido\n");
 }
 
 ini_set("memory_limit", '-1');
@@ -58,9 +58,9 @@ $iAnoAtual = date('Y',time());
  * compatibilidade de versao entre 2 e 3 do ecidade.
  */
 if (!function_exists('modification')) {
-  function modification($path) {
-    return $path;
-  }
+    function modification($path) {
+        return $path;
+    }
 }
 
 /**
@@ -87,15 +87,15 @@ $iParamLog = 0;
  */
 $iExercicio = date('Y',time());
 if ( $iParamLog == 1 ) {
-  $sArquivoLog = null;
+    $sArquivoLog = null;
 } else {
 
-  $sCaminho = realpath(dirname(__FILE__));
-  if ( defined('ECIDADE_PATH') ) {
-    $sCaminho = ECIDADE_PATH . 'integracao_externa' . DS . 'portal_transparencia';
-  }
+    $sCaminho = realpath(dirname(__FILE__));
+    if ( defined('ECIDADE_PATH') ) {
+        $sCaminho = ECIDADE_PATH . 'integracao_externa' . DS . 'portal_transparencia';
+    }
 
-  $sArquivoLog  = $sCaminho.'/log/processamento_transparencia'.date("Ymd_His").'.log';
+    $sArquivoLog  = $sCaminho.'/log/processamento_transparencia'.date("Ymd_His").'.log';
 
 }
 
@@ -104,13 +104,13 @@ if ( $iParamLog == 1 ) {
  */
 register_shutdown_function(function() use ($sArquivoLog, $iParamLog) {
 
-  $error = error_get_last();
+    $error = error_get_last();
 
-  $e_fatal = (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR);
+    $e_fatal = (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR);
 
-  if (!empty($error) && ( $error['type'] & $e_fatal) )  {
-    db_logTitulo(" FIM PROCESSAMENTO COM ERRO ",$sArquivoLog,$iParamLog);
-  }
+    if (!empty($error) && ( $error['type'] & $e_fatal) )  {
+        db_logTitulo(" FIM PROCESSAMENTO COM ERRO ",$sArquivoLog,$iParamLog);
+    }
 
 });
 
@@ -141,7 +141,7 @@ chdir($sCaminhoScript);
 $iExercicioBase = EXERCICIO_BASE;
 $aIntegracoesRealizar = array();
 if (defined("INTEGRACOES_TRANSPARENCIA")) {
-  $aIntegracoesRealizar = explode(",", INTEGRACOES_TRANSPARENCIA);
+    $aIntegracoesRealizar = explode(",", INTEGRACOES_TRANSPARENCIA);
 }
 
 /**
@@ -158,39 +158,39 @@ $iAnoImplantacaoPCASP = 2013;
 
 if ($lParametroUsaPCASP == 't') {
 
-  $sSqlTipoInstituicao  = "select db21_tipoinstit ";
-  $sSqlTipoInstituicao .= "  from configuracoes.db_config ";
-  $sSqlTipoInstituicao .= " where codigo = (select db_config.codigo from configuracoes.db_config where db_config.prefeitura is true)";
-  $rsTipoInstituicao    = db_query($connOrigem, $sSqlTipoInstituicao);
-  if (pg_num_rows($rsTipoInstituicao) == 1 && isset($iAnoServidor)) {
+    $sSqlTipoInstituicao  = "select db21_tipoinstit ";
+    $sSqlTipoInstituicao .= "  from configuracoes.db_config ";
+    $sSqlTipoInstituicao .= " where codigo = (select db_config.codigo from configuracoes.db_config where db_config.prefeitura is true)";
+    $rsTipoInstituicao    = db_query($connOrigem, $sSqlTipoInstituicao);
+    if (pg_num_rows($rsTipoInstituicao) == 1 && isset($iAnoServidor)) {
 
-    $iTipoInstituicao = pg_result($rsTipoInstituicao, 0, "db21_tipoinstit");
-    if ($iTipoInstituicao == 101) {
+        $iTipoInstituicao = pg_result($rsTipoInstituicao, 0, "db21_tipoinstit");
+        if ($iTipoInstituicao == 101) {
 
-      if ($iAnoServidor >= 2012) {
-        $lUsarPcasp = true;
-      }
+            if ($iAnoServidor >= 2012) {
+                $lUsarPcasp = true;
+            }
 
-    } else {
+        } else {
 
-      /**
-       * Ano de implacantacao do PCASP
-       * - busca ano do arquivo config/pcasp.txt
-       * - caso arquivo nao exista sera 2013
-       */
-      if ( file_exists(DB_LIBS . 'config/pcasp.txt') ) {
-        $iAnoImplantacaoPCASP = trim(file_get_contents(DB_LIBS . 'config/pcasp.txt'));
-      }
+            /**
+             * Ano de implacantacao do PCASP
+             * - busca ano do arquivo config/pcasp.txt
+             * - caso arquivo nao exista sera 2013
+             */
+            if ( file_exists(DB_LIBS . 'config/pcasp.txt') ) {
+                $iAnoImplantacaoPCASP = trim(file_get_contents(DB_LIBS . 'config/pcasp.txt'));
+            }
 
-      /**
-       * Usar PCASP:
-       * - Ano do servidor e ano de implantação do PCASP tem que ser maior ou igual a 2013
-       */
-      if ($iAnoServidor >= $iAnoImplantacaoPCASP && $iAnoImplantacaoPCASP >= 2013) {
-        $lUsarPcasp = true;
-      }
+            /**
+             * Usar PCASP:
+             * - Ano do servidor e ano de implantação do PCASP tem que ser maior ou igual a 2013
+             */
+            if ($iAnoServidor >= $iAnoImplantacaoPCASP && $iAnoImplantacaoPCASP >= 2013) {
+                $lUsarPcasp = true;
+            }
+        }
     }
-  }
 }
 
 $iAnoAnteriorImplantacaoPCASP = $iAnoImplantacaoPCASP - 1;
@@ -225,60 +225,60 @@ db_query($connDestino,"BEGIN;");
 try {
 
 
-  // RENOMEIA DE SCHEMAS ANTIGOS ************************************************************************************//
+    // RENOMEIA DE SCHEMAS ANTIGOS ************************************************************************************//
 
-  $sSqlConsultaSchemasAtual = "select distinct schema_name
+    $sSqlConsultaSchemasAtual = "select distinct schema_name
                                    from information_schema.schemata
                                   where schema_name = '{$sSchema}' ";
-  $rsSchemasAtual      = db_query($connDestino,$sSqlConsultaSchemasAtual);
-  $iLinhasSchemasAtual = pg_num_rows($rsSchemasAtual);
+    $rsSchemasAtual      = db_query($connDestino,$sSqlConsultaSchemasAtual);
+    $iLinhasSchemasAtual = pg_num_rows($rsSchemasAtual);
 
-  if ( $iLinhasSchemasAtual > 0 ) {
+    if ( $iLinhasSchemasAtual > 0 ) {
 
-    $sSqlRenomeiaSchema = " ALTER SCHEMA {$sSchema} RENAME TO {$sBkpSchema} ";
+        $sSqlRenomeiaSchema = " ALTER SCHEMA {$sSchema} RENAME TO {$sBkpSchema} ";
 
-    if ( !db_query($connDestino,$sSqlRenomeiaSchema)) {
-      throw new Exception("ERRO-0: Erro ao renomear schema !".$sSqlRenomeiaSchema);
+        if ( !db_query($connDestino,$sSqlRenomeiaSchema)) {
+            throw new Exception("ERRO-0: Erro ao renomear schema !".$sSqlRenomeiaSchema);
+        }
     }
-  }
 
-  // CRIA NOVO SCHEMA ***********************************************************************************************//
-
-
-  $sSqlCriaSchema = "CREATE SCHEMA {$sSchema} ";
-
-  if ( !db_query($connDestino,$sSqlCriaSchema) ) {
-    throw new Exception("Falha ao criar schema {$sSchema} !");
-  }
+    // CRIA NOVO SCHEMA ***********************************************************************************************//
 
 
-  // ****************************************************************************************************************//
+    $sSqlCriaSchema = "CREATE SCHEMA {$sSchema} ";
 
-  $sSqlAlteraSchemaAtual = "ALTER DATABASE \"".$ConfigConexaoDestino["dbname"]."\" SET search_path TO {$sSchema} ";
-
-  if ( !db_query($connDestino,$sSqlAlteraSchemaAtual)) {
-    throw new Exception("Falha ao alterar schema atual para {$sSchema} !");
-  }
-
-  $sSqlDefineSchemaAtual = "SET search_path TO {$sSchema} ";
-
-  if ( !db_query($connDestino,$sSqlDefineSchemaAtual) ) {
-    throw new Exception("Falha ao definir schema atual para {$sSchema} !");
-  }
+    if ( !db_query($connDestino,$sSqlCriaSchema) ) {
+        throw new Exception("Falha ao criar schema {$sSchema} !");
+    }
 
 
-  $rsUpgradeDatabase = upgradeDatabase($connDestino,'.',$sSchema);
+    // ****************************************************************************************************************//
 
-  if (!$rsUpgradeDatabase) {
-    throw new Exception("Falha ao atualizar base de dados!");
-  }
+    $sSqlAlteraSchemaAtual = "ALTER DATABASE \"".$ConfigConexaoDestino["dbname"]."\" SET search_path TO {$sSchema} ";
+
+    if ( !db_query($connDestino,$sSqlAlteraSchemaAtual)) {
+        throw new Exception("Falha ao alterar schema atual para {$sSchema} !");
+    }
+
+    $sSqlDefineSchemaAtual = "SET search_path TO {$sSchema} ";
+
+    if ( !db_query($connDestino,$sSqlDefineSchemaAtual) ) {
+        throw new Exception("Falha ao definir schema atual para {$sSchema} !");
+    }
 
 
-  /**
-   *  O script abaixo corrige possíveis erros de base na tabela conplano, sendo elas podendo ser originárias
-   *  da tabela orcdotacao ou orcreceita
-   */
-  $sSqlCorrigeConplano = " select distinct
+    $rsUpgradeDatabase = upgradeDatabase($connDestino,'.',$sSchema);
+
+    if (!$rsUpgradeDatabase) {
+        throw new Exception("Falha ao atualizar base de dados!");
+    }
+
+
+    /**
+     *  O script abaixo corrige possíveis erros de base na tabela conplano, sendo elas podendo ser originárias
+     *  da tabela orcdotacao ou orcreceita
+     */
+    $sSqlCorrigeConplano = " select distinct
                                   o58_codele,
                                   o58_anousu
                              from orcdotacao
@@ -287,37 +287,37 @@ try {
                                                where c60_codcon = o58_codele
                                                  and c60_anousu = o58_anousu ) ";
 
-  $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
-  $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
+    $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
+    $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
 
 
-  for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
+    for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
 
-    $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
+        $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
 
-    $sSqlOrcElemento = " select *
+        $sSqlOrcElemento = " select *
                            from orcelemento
                           where o56_codele  = {$oConplano->o58_codele}
                             and o56_anousu >= {$oConplano->o58_anousu}
                        order by o56_anousu asc ";
 
-    $rsOrcElemento      = db_query($connOrigem,$sSqlOrcElemento);
-    $iLinhasOrcElemento = pg_num_rows($rsOrcElemento);
+        $rsOrcElemento      = db_query($connOrigem,$sSqlOrcElemento);
+        $iLinhasOrcElemento = pg_num_rows($rsOrcElemento);
 
 
-    /**
-     *  Caso exista registros na orcelemento, então será inserido um registro na conplano com base nesse registro
-     *  caso contrário será procurado na conplano algum registro da mesma conta em outro exercício.
-     */
-    if ( $iLinhasOrcElemento > 0 ) {
+        /**
+         *  Caso exista registros na orcelemento, então será inserido um registro na conplano com base nesse registro
+         *  caso contrário será procurado na conplano algum registro da mesma conta em outro exercício.
+         */
+        if ( $iLinhasOrcElemento > 0 ) {
 
-      $oOrcElemento = db_utils::fieldsMemory($rsOrcElemento,0);
+            $oOrcElemento = db_utils::fieldsMemory($rsOrcElemento,0);
 
-      $sTabelaPlano = "conplano";
-      if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
-        $sTabelaPlano = "conplanoorcamento";
-      }
-      $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
+            $sTabelaPlano = "conplano";
+            if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
+                $sTabelaPlano = "conplanoorcamento";
+            }
+            $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
                                                      c60_anousu,
                                                      c60_estrut,
                                                      c60_descr,
@@ -334,32 +334,32 @@ try {
                                                      1
                                                    )";
 
-      /**
-       * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
-       */
-      /*
-      if (!db_query($connOrigem,$sSqlInsereConplano)) {
-        throw new Exception("ERRO-0: 1 - Falha ao inserir na conplano $sSqlInsereConplano");
-      }
-      */
+            /**
+             * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
+             */
+            /*
+            if (!db_query($connOrigem,$sSqlInsereConplano)) {
+              throw new Exception("ERRO-0: 1 - Falha ao inserir na conplano $sSqlInsereConplano");
+            }
+            */
 
-    } else {
+        } else {
 
-      $sSqlConplano = "select *
+            $sSqlConplano = "select *
                          from conplano
                         where c60_codcon = {$oConplano->o58_codele}";
 
-      $rsConplano      = db_query($connOrigem,$sSqlConplano);
-      $iLinhasConplano = pg_num_rows($rsConplano);
+            $rsConplano      = db_query($connOrigem,$sSqlConplano);
+            $iLinhasConplano = pg_num_rows($rsConplano);
 
-      if ($iLinhasConplano > 0) {
+            if ($iLinhasConplano > 0) {
 
-        $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
-        $sTabelaPlano = "conplano";
-        if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
-          $sTabelaPlano = "conplanoorcamento";
-        }
-        $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
+                $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
+                $sTabelaPlano = "conplano";
+                if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
+                    $sTabelaPlano = "conplanoorcamento";
+                }
+                $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
                                                        c60_anousu,
                                                        c60_estrut,
                                                        c60_descr,
@@ -376,26 +376,26 @@ try {
                                                        {$oConplanoOrigem->c60_codcla}
                                                      )";
 
-        /**
-         * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
-         */
-        /*
-        if (!db_query($connOrigem,$sSqlInsereConplano)) {
-          throw new Exception("ERRO-0: 2 - Falha ao inserir na conplano $sSqlInsereConplano");
+                /**
+                 * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
+                 */
+                /*
+                if (!db_query($connOrigem,$sSqlInsereConplano)) {
+                  throw new Exception("ERRO-0: 2 - Falha ao inserir na conplano $sSqlInsereConplano");
+                }
+                */
+
+            } else {
+                throw new Exception("ERRO-0: Erro na correção da tabela conplano ");
+            }
         }
-        */
-
-      } else {
-        throw new Exception("ERRO-0: Erro na correção da tabela conplano ");
-      }
     }
-  }
 
 
-  /**
-   *  Consulta os registros da orcreceita com possíveis erros de base
-   */
-  $sSqlCorrigeConplano = " select distinct
+    /**
+     *  Consulta os registros da orcreceita com possíveis erros de base
+     */
+    $sSqlCorrigeConplano = " select distinct
                                   o70_anousu,
                                   o70_codfon
                              from orcreceita
@@ -404,39 +404,39 @@ try {
                                                where c60_codcon = o70_codfon
                                                  and c60_anousu = o70_anousu ) ";
 
-  $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
-  $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
+    $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
+    $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
 
 
-  for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
+    for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
 
-    $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
+        $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
 
 
 
-    $sSqlOrcFontes = " select *
+        $sSqlOrcFontes = " select *
                            from orcfontes
                           where o57_codfon  = {$oConplano->o70_codfon}
                             and o57_anousu >= {$oConplano->o70_anousu}
                        order by o57_anousu asc ";
 
-    $rsOrcFontes      = db_query($connOrigem,$sSqlOrcFontes);
-    $iLinhasOrcFontes = pg_num_rows($rsOrcFontes);
+        $rsOrcFontes      = db_query($connOrigem,$sSqlOrcFontes);
+        $iLinhasOrcFontes = pg_num_rows($rsOrcFontes);
 
 
-    /**
-     *  Caso exista registros na orcfontes, então será inserido um registro na conplano com base nesse registro
-     *  caso contrário será procurado na conplano algum registro da mesma conta em outro exercício.
-     */
+        /**
+         *  Caso exista registros na orcfontes, então será inserido um registro na conplano com base nesse registro
+         *  caso contrário será procurado na conplano algum registro da mesma conta em outro exercício.
+         */
 
-    if ( $iLinhasOrcFontes > 0 ) {
+        if ( $iLinhasOrcFontes > 0 ) {
 
-      $oOrcFontes = db_utils::fieldsMemory($rsOrcFontes,0);
-      $sTabelaPlano = "conplano";
-      if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
-        $sTabelaPlano = "conplanoorcamento";
-      }
-      $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
+            $oOrcFontes = db_utils::fieldsMemory($rsOrcFontes,0);
+            $sTabelaPlano = "conplano";
+            if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
+                $sTabelaPlano = "conplanoorcamento";
+            }
+            $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
                                                      c60_anousu,
                                                      c60_estrut,
                                                      c60_descr,
@@ -453,33 +453,33 @@ try {
                                                      1
                                                    )";
 
-      /**
-       * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
-       */
-      /*
-      if (!db_query($connOrigem,$sSqlInsereConplano)) {
-        throw new Exception("ERRO-0: 3 - Falha ao inserir na conplano $sSqlInsereConplano");
-      }
-      */
+            /**
+             * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
+             */
+            /*
+            if (!db_query($connOrigem,$sSqlInsereConplano)) {
+              throw new Exception("ERRO-0: 3 - Falha ao inserir na conplano $sSqlInsereConplano");
+            }
+            */
 
-    } else {
+        } else {
 
-      $sSqlConplano = "select *
+            $sSqlConplano = "select *
                          from conplano
                         where c60_codcon = {$oConplano->o70_codfon}";
 
-      $rsConplano      = db_query($connOrigem,$sSqlConplano);
-      $iLinhasConplano = pg_num_rows($rsConplano);
+            $rsConplano      = db_query($connOrigem,$sSqlConplano);
+            $iLinhasConplano = pg_num_rows($rsConplano);
 
-      if ($iLinhasConplano > 0 ) {
+            if ($iLinhasConplano > 0 ) {
 
-        $sTabelaPlano = "conplano";
-        if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
-          $sTabelaPlano = "conplanoorcamento";
-        }
-        $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
+                $sTabelaPlano = "conplano";
+                if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
+                    $sTabelaPlano = "conplanoorcamento";
+                }
+                $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
 
-        $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
+                $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
                                                        c60_anousu,
                                                        c60_estrut,
                                                        c60_descr,
@@ -496,622 +496,626 @@ try {
                                                        {$oConplanoOrigem->c60_codcla}
                                                      )";
 
-        /**
-         * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
-         */
-        /*
-        if (!db_query($connOrigem,$sSqlInsereConplano)) {
-          throw new Exception("ERRO-0: 4 - Falha ao inserir na conplano $sSqlInsereConplano");
+                /**
+                 * Condicao comentada pois caso a tabela de destino contenha os dados, a rotina eh abortada
+                 */
+                /*
+                if (!db_query($connOrigem,$sSqlInsereConplano)) {
+                  throw new Exception("ERRO-0: 4 - Falha ao inserir na conplano $sSqlInsereConplano");
+                }
+                */
+            } else {
+                throw new Exception("ERRO-0: 1 - Erro na correção da tabela conplano ");
+            }
         }
-        */
-      } else {
-        throw new Exception("ERRO-0: 1 - Erro na correção da tabela conplano ");
-      }
     }
-  }
 
 
-  $oTBInstituicoes                    = new tableDataManager($connDestino, 'instituicoes'                         , 'id', true, 500);
-  $oTBOrgaos                          = new tableDataManager($connDestino, 'orgaos'                               , 'id', true, 500);
-  $oTBUnidades                        = new tableDataManager($connDestino, 'unidades'                             , 'id', true, 500);
-  $oTBProjetos                        = new tableDataManager($connDestino, 'projetos'                             , 'id', true, 500);
-  $oTBFuncoes                         = new tableDataManager($connDestino, 'funcoes'                              , 'id', true, 500);
-  $oTBSubFuncoes                      = new tableDataManager($connDestino, 'subfuncoes'                           , 'id', true, 500);
-  $oTBProgramas                       = new tableDataManager($connDestino, 'programas'                            , 'id', true, 500);
-  $oTBRecursos                        = new tableDataManager($connDestino, 'recursos'                             , 'id', true, 500);
-  $oTBPlanoContas                     = new tableDataManager($connDestino, 'planocontas'                          , 'id', true, 500);
-  $oTBReceitas                        = new tableDataManager($connDestino, 'receitas'                             , 'id', true, 500);
-  $oTBReceitasMovimentacoes           = new tableDataManager($connDestino, 'receitas_movimentacoes'               , 'id', true, 500);
-  $oTBDotacoes                        = new tableDataManager($connDestino, 'dotacoes'                             , 'id', true, 500);
-  $oTBPessoas                         = new tableDataManager($connDestino, 'pessoas'                              , '', true, 500);
-  $oTBEmpenhos                        = new tableDataManager($connDestino, 'empenhos'                             , '', true, 500);
-  $oTBEmpenhosItens                   = new tableDataManager($connDestino, 'empenhos_itens'                       , 'id', true, 500);
-  $oTBEmpenhosProcessos               = new tableDataManager($connDestino, 'empenhos_processos'                   , 'id', true, 500);
-  $oTBEmpenhosMovimentacoes           = new tableDataManager($connDestino, 'empenhos_movimentacoes'               , 'id', true, 500);
-  $oTBEmpenhosMovimentacoesTipos      = new tableDataManager($connDestino, 'empenhos_movimentacoes_tipos'         , '', true, 500);
-  $oTBGlossarios                      = new tableDataManager($connDestino, 'glossarios'                           , 'id', true, 500);
-  $oTBGlossariosTipos                 = new tableDataManager($connDestino, 'glossarios_tipos'                     , 'id', true, 500);
-  $oTBCargos                          = new tableDataManager($connDestino, 'cargos'                               , '', true, 500);  
-  $oTBServidores                      = new tableDataManager($connDestino, 'servidores'                           , ''  , true, 500);
-  $oTBMovimentacoesServidores         = new tableDataManager($connDestino, 'servidor_movimentacoes'               , 'id', true, 500);
-  $oTBFolhaPagamento                  = new tableDataManager($connDestino, 'folha_pagamento'                      , 'id', true, 500);
-  $oTBAssentamentos                   = new tableDataManager($connDestino, 'assentamentos'                        , 'id', true, 500);
-  $oTBClassificacaoCredor             = new tableDataManager($connDestino, 'classificacao_credores'               , 'id', true, 500);
-  $oTBClassificacaoCredorMovimentacao = new tableDataManager($connDestino, 'classificacao_credores_movimentacoes' , 'id', true, 500);
-  $oTBBens                            = new tableDataManager($connDestino, 'bens'                                 , 'id', true, 500);
-  $oTBBemTipo                         = new tableDataManager($connDestino, 'bem_tipos'                            , 'id', true, 500);
-  $oTBBemAquisicaoTipo                = new tableDataManager($connDestino, 'bem_aquisicao_tipos'                  , 'id', true, 500);
-  $oTBDepartamento                    = new tableDataManager($connDestino, 'departamentos'                        , 'id', true, 500);
-  $oTBDivisaoDepartamento             = new tableDataManager($connDestino, 'departamento_divisoes'                , 'id', true, 500);
-  $oTBBemTipoDepreciacao              = new tableDataManager($connDestino, 'bem_tipo_depreciacoes'                , 'id', true, 500);
-  $oTBBemClassificacao                = new tableDataManager($connDestino, 'bem_classificacoes'                   , 'id', true, 500);
-  $oTBVeiculo                         = new tableDataManager($connDestino, 'veiculos'                             , 'id', true, 500);
-  $oTBMarca                           = new tableDataManager($connDestino, 'marcas'                               , 'id', true, 500);
-  $oTBModelo                          = new tableDataManager($connDestino, 'modelos'                              , 'id', true, 500);
-  $oTBVeiculoTipo                     = new tableDataManager($connDestino, 'veiculo_tipos'                        , 'id', true, 500);
-  $oTBVeiculoUtilizacao               = new tableDataManager($connDestino, 'veiculo_utilizacoes'                  , 'id', true, 500);
-  $oTBDetalheDiaria                   = new tableDataManager($connDestino, 'detalhe_diarias'                      , 'id', true, 500);
-  $oTBTransferenciasModalidades       = new tableDataManager($connDestino, 'elementos_transferencias'             , 'id', true, 500);
-  $oTBTransferenciasFinanceiras       = new tableDataManager($connDestino, 'transferencias_financeiras'           , 'id', true, 500);
+    $oTBInstituicoes                    = new tableDataManager($connDestino, 'instituicoes'                         , 'id', true, 500);
+    $oTBOrgaos                          = new tableDataManager($connDestino, 'orgaos'                               , 'id', true, 500);
+    $oTBUnidades                        = new tableDataManager($connDestino, 'unidades'                             , 'id', true, 500);
+    $oTBProjetos                        = new tableDataManager($connDestino, 'projetos'                             , 'id', true, 500);
+    $oTBFuncoes                         = new tableDataManager($connDestino, 'funcoes'                              , 'id', true, 500);
+    $oTBSubFuncoes                      = new tableDataManager($connDestino, 'subfuncoes'                           , 'id', true, 500);
+    $oTBProgramas                       = new tableDataManager($connDestino, 'programas'                            , 'id', true, 500);
+    $oTBRecursos                        = new tableDataManager($connDestino, 'recursos'                             , 'id', true, 500);
+    $oTBPlanoContas                     = new tableDataManager($connDestino, 'planocontas'                          , 'id', true, 500);
+    $oTBReceitas                        = new tableDataManager($connDestino, 'receitas'                             , 'id', true, 500);
+    $oTBReceitasMovimentacoes           = new tableDataManager($connDestino, 'receitas_movimentacoes'               , 'id', true, 500);
+    $oTBDotacoes                        = new tableDataManager($connDestino, 'dotacoes'                             , 'id', true, 500);
+    $oTBPessoas                         = new tableDataManager($connDestino, 'pessoas'                              , '', true, 500);
+    $oTBEmpenhos                        = new tableDataManager($connDestino, 'empenhos'                             , '', true, 500);
+    $oTBEmpenhosItens                   = new tableDataManager($connDestino, 'empenhos_itens'                       , 'id', true, 500);
+    $oTBEmpenhosProcessos               = new tableDataManager($connDestino, 'empenhos_processos'                   , 'id', true, 500);
+    $oTBEmpenhosMovimentacoes           = new tableDataManager($connDestino, 'empenhos_movimentacoes'               , 'id', true, 500);
+    $oTBEmpenhosMovimentacoesTipos      = new tableDataManager($connDestino, 'empenhos_movimentacoes_tipos'         , '', true, 500);
+    $oTBGlossarios                      = new tableDataManager($connDestino, 'glossarios'                           , 'id', true, 500);
+    $oTBGlossariosTipos                 = new tableDataManager($connDestino, 'glossarios_tipos'                     , 'id', true, 500);
+    $oTBCargos                          = new tableDataManager($connDestino, 'cargos'                               , '', true, 500);
+    $oTBServidores                      = new tableDataManager($connDestino, 'servidores'                           , ''  , true, 500);
+    $oTBMovimentacoesServidores         = new tableDataManager($connDestino, 'servidor_movimentacoes'               , 'id', true, 500);
+    $oTBFolhaPagamento                  = new tableDataManager($connDestino, 'folha_pagamento'                      , 'id', true, 500);
+    $oTBAssentamentos                   = new tableDataManager($connDestino, 'assentamentos'                        , 'id', true, 500);
+    $oTBClassificacaoCredor             = new tableDataManager($connDestino, 'classificacao_credores'               , 'id', true, 500);
+    $oTBClassificacaoCredorMovimentacao = new tableDataManager($connDestino, 'classificacao_credores_movimentacoes' , 'id', true, 500);
+    $oTBBens                            = new tableDataManager($connDestino, 'bens'                                 , 'id', true, 500);
+    $oTBBemTipo                         = new tableDataManager($connDestino, 'bem_tipos'                            , 'id', true, 500);
+    $oTBBemAquisicaoTipo                = new tableDataManager($connDestino, 'bem_aquisicao_tipos'                  , 'id', true, 500);
+    $oTBDepartamento                    = new tableDataManager($connDestino, 'departamentos'                        , 'id', true, 500);
+    $oTBDivisaoDepartamento             = new tableDataManager($connDestino, 'departamento_divisoes'                , 'id', true, 500);
+    $oTBBemTipoDepreciacao              = new tableDataManager($connDestino, 'bem_tipo_depreciacoes'                , 'id', true, 500);
+    $oTBBemClassificacao                = new tableDataManager($connDestino, 'bem_classificacoes'                   , 'id', true, 500);
+    $oTBVeiculo                         = new tableDataManager($connDestino, 'veiculos'                             , 'id', true, 500);
+    $oTBMarca                           = new tableDataManager($connDestino, 'marcas'                               , 'id', true, 500);
+    $oTBModelo                          = new tableDataManager($connDestino, 'modelos'                              , 'id', true, 500);
+    $oTBVeiculoTipo                     = new tableDataManager($connDestino, 'veiculo_tipos'                        , 'id', true, 500);
+    $oTBVeiculoUtilizacao               = new tableDataManager($connDestino, 'veiculo_utilizacoes'                  , 'id', true, 500);
+    $oTBDetalheDiaria                   = new tableDataManager($connDestino, 'detalhe_diarias'                      , 'id', true, 500);
+    $oTBTransferenciasModalidades       = new tableDataManager($connDestino, 'elementos_transferencias'             , 'id', true, 500);
+    $oTBTransferenciasFinanceiras       = new tableDataManager($connDestino, 'transferencias_financeiras'           , 'id', true, 500);
+    $oTBMedicamentos                    = new tableDataManager($connDestino, 'far_matersaude'                       , 'id', true, 500);
+    $oTBMatestoque                      = new tableDataManager($connDestino, 'matestoque'                           , 'id', true, 500);
+    $oTBDbAlmox                         = new tableDataManager($connDestino, 'db_almox'                             , 'id', true, 500);
+    $oTBMatmater                        = new tableDataManager($connDestino, 'matmater'                             , 'id', true, 500);
 
-  /**
-   *  Arrays utilizados  para  referenciar os respectivos códigos de origem aos IDs novos gerados.
-   */
-  $aListaInstit                  = array();
-  $aListaOrgao                   = array();
-  $aListaUnidade                 = array();
-  $aListaProjeto                 = array();
-  $aListaFuncao                  = array();
-  $aListaSubFuncao               = array();
-  $aListaPrograma                = array();
-  $aListaRecurso                 = array();
-  $aListaPlanoConta              = array();
-  $aListaReceita                 = array();
-  $aListaDotacao                 = array();
-  $aListaEmpenhoMovimentacaoTipo = array();
-  $aMatrizMovimentacaoServidor   = array();
-  $aListaEmpenho                 = array();
-  $aListaMovEmpenho              = array();
-  $aListaMovEmpenhoOp            = array();
-  $aListaMovEmpenhoCod           = array();
+    /**
+     *  Arrays utilizados  para  referenciar os respectivos códigos de origem aos IDs novos gerados.
+     */
+    $aListaInstit                  = array();
+    $aListaOrgao                   = array();
+    $aListaUnidade                 = array();
+    $aListaProjeto                 = array();
+    $aListaFuncao                  = array();
+    $aListaSubFuncao               = array();
+    $aListaPrograma                = array();
+    $aListaRecurso                 = array();
+    $aListaPlanoConta              = array();
+    $aListaReceita                 = array();
+    $aListaDotacao                 = array();
+    $aListaEmpenhoMovimentacaoTipo = array();
+    $aMatrizMovimentacaoServidor   = array();
+    $aListaEmpenho                 = array();
+    $aListaMovEmpenho              = array();
+    $aListaMovEmpenhoOp            = array();
+    $aListaMovEmpenhoCod           = array();
 
 
-  // TABELA DE IMPORTÇOES *******************************************************************************************//
+    // TABELA DE IMPORTÇOES *******************************************************************************************//
 
-  db_logTitulo(" CONFIGURA TABELA DE IMPORTAÇÃO ",$sArquivoLog,$iParamLog);
+    db_logTitulo(" CONFIGURA TABELA DE IMPORTAÇÃO ",$sArquivoLog,$iParamLog);
 
-  $sSqlInsereImportacoes = " INSERT INTO importacoes (data,hora)
+    $sSqlInsereImportacoes = " INSERT INTO importacoes (data,hora)
                                               VALUES ('{$dtDataHoje}',
                                                       '$sHoraHoje') ";
 
-  $rsInsereImportacoes   = db_query($connDestino,$sSqlInsereImportacoes);
+    $rsInsereImportacoes   = db_query($connDestino,$sSqlInsereImportacoes);
 
-  if ( !$rsInsereImportacoes ) {
-    throw new Exception("ERRO-0: Erro ao inserir tabela de importações!");
-  }
-
-  // FIM TABELA DE IMPORTÇOES ***************************************************************************************//
-
-  // INSTITUIÇÕES **************************************************************************************************//
-
-  db_logTitulo(" IMPORTA INSTITUIÇÕES ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Instituições na base de origem
-   */
-  $sSqlInstit  = " select db_config.codigo   as codinstit, ";
-  $sSqlInstit .= "        db_config.nomeinst as descricao  ";
-  $sSqlInstit .= "   from db_config                        ";
-
-  $rsInstit     = db_query($connOrigem,$sSqlInstit);
-  $iRowsInstit = pg_num_rows($rsInstit);
-
-  if ( $iRowsInstit ==  0 ) {
-    throw new Exception('Nenhuma instituição encontrada!');
-  }
-
-  db_logNumReg($iRowsInstit,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsInstit; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsInstit,$iParamLog);
-    $oInstit = db_utils::fieldsMemory($rsInstit,$iInd);
-    $oTBInstituicoes->setByLineOfDBUtils($oInstit);
-    try {
-      $oTBInstituicoes->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+    if ( !$rsInsereImportacoes ) {
+        throw new Exception("ERRO-0: Erro ao inserir tabela de importações!");
     }
 
-  }
+    // FIM TABELA DE IMPORTÇOES ***************************************************************************************//
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBInstituicoes->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    // INSTITUIÇÕES **************************************************************************************************//
 
+    db_logTitulo(" IMPORTA INSTITUIÇÕES ",$sArquivoLog,$iParamLog);
 
-  /**
-   *  É consultado as instituições cadastradas na base de destino para que seja populado o array $aListaInstit
-   *  com as instituições cadastradas sendo a variável indexada pelo código da instituição da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código da instituição de origem.
-   */
-  $sSqlListaInstitDestino  = " select *           ";
-  $sSqlListaInstitDestino .= "  from instituicoes ";
+    /**
+     * Consulta Instituições na base de origem
+     */
+    $sSqlInstit  = " select db_config.codigo   as codinstit, ";
+    $sSqlInstit .= "        db_config.nomeinst as descricao  ";
+    $sSqlInstit .= "   from db_config                        ";
 
-  $rsListaInstitDestino    = db_query($connDestino,$sSqlListaInstitDestino);
-  $iRowsListaInstitDestino = pg_num_rows($rsListaInstitDestino);
+    $rsInstit     = db_query($connOrigem,$sSqlInstit);
+    $iRowsInstit = pg_num_rows($rsInstit);
 
-  if ( $iRowsListaInstitDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-
-  for ( $iInd=0; $iInd < $iRowsListaInstitDestino; $iInd++ ) {
-
-    $oInstitDestino = db_utils::fieldsMemory($rsListaInstitDestino,$iInd);
-    $aListaInstit[$oInstitDestino->codinstit] = $oInstitDestino->id;
-
-  }
-
-  // FIM INSTITUIÇÕES ***********************************************************************************************//
-
-  // ORGÃOS *********************************************************************************************************//
-
-  db_logTitulo(" IMPORTA ORGÃOS ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Orgãos na base de origem
-   */
-  $sSqlOrgao  = " select o40_instit as codinstit,        ";
-  $sSqlOrgao .= "        o40_orgao  as codorgao,         ";
-  $sSqlOrgao .= "        o40_descr  as descricao,        ";
-  $sSqlOrgao .= "        o40_anousu as exercicio         ";
-  $sSqlOrgao .= "   from orcorgao                        ";
-
-  $rsOrgao    = db_query($connOrigem,$sSqlOrgao);
-  $iRowsOrgao = pg_num_rows($rsOrgao);
-
-  if ( $iRowsOrgao ==  0 ) {
-    throw new Exception('Nenhum orgão encontrado!');
-  }
-
-  db_logNumReg($iRowsOrgao,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsOrgao; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsOrgao,$iParamLog);
-    $oOrgao = db_utils::fieldsMemory($rsOrgao,$iInd);
-    $oOrgao->instituicao_id = $aListaInstit[$oOrgao->codinstit];
-    $oTBOrgaos->setByLineOfDBUtils($oOrgao);
-    try {
-      $oTBOrgaos->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+    if ( $iRowsInstit ==  0 ) {
+        throw new Exception('Nenhuma instituição encontrada!');
     }
 
-  }
+    db_logNumReg($iRowsInstit,$sArquivoLog,$iParamLog);
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBOrgaos->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsInstit; $iInd++ ) {
 
-  /**
-   *  É consultado os orgãos cadastrados na base de destino para que seja populado o array $aListaOrgao
-   *  com os orgãos cadastrados sendo a variável indexada pelo código do orgão da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código do orgão de origem.
-   */
-  $sSqlListaOrgaoDestino  = " select *      ";
-  $sSqlListaOrgaoDestino .= "   from orgaos ";
+        logProcessamento($iInd,$iRowsInstit,$iParamLog);
+        $oInstit = db_utils::fieldsMemory($rsInstit,$iInd);
+        $oTBInstituicoes->setByLineOfDBUtils($oInstit);
+        try {
+            $oTBInstituicoes->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
-  $rsListaOrgaoDestino    = db_query($connDestino,$sSqlListaOrgaoDestino);
-  $iRowsListaOrgaoDestino = pg_num_rows($rsListaOrgaoDestino);
-
-  if ( $iRowsListaOrgaoDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-  for ( $iInd=0; $iInd < $iRowsListaOrgaoDestino; $iInd++ ) {
-
-    $oOrgaoDestino = db_utils::fieldsMemory($rsListaOrgaoDestino,$iInd);
-    $aListaOrgao[$oOrgaoDestino->codorgao][$oOrgaoDestino->exercicio] = $oOrgaoDestino->id;
-
-  }
-
-  // FIM ORGÃOS *****************************************************************************************************//
-
-
-  // UNIDADES *******************************************************************************************************//
-
-  db_logTitulo(" IMPORTA UNIDADES ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Unidades na base de origem
-   */
-  $sSqlUnidade  = " select o41_instit  as codinstit,       ";
-  $sSqlUnidade .= "        o41_orgao   as codorgao,        ";
-  $sSqlUnidade .= "        o41_unidade as codunidade,      ";
-  $sSqlUnidade .= "        o41_descr   as descricao,       ";
-  $sSqlUnidade .= "        o41_anousu  as exercicio        ";
-  $sSqlUnidade .= "   from orcunidade                      ";
-
-  $rsUnidade    = db_query($connOrigem,$sSqlUnidade);
-  $iRowsUnidade = pg_num_rows($rsUnidade);
-
-  if ( $iRowsUnidade ==  0 ) {
-    throw new Exception('Nenhuma unidade encontrada!');
-  }
-
-  db_logNumReg($iRowsUnidade,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsUnidade; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsUnidade,$iParamLog);
-    $oUnidade = db_utils::fieldsMemory($rsUnidade,$iInd);
-    $oUnidade->instituicao_id = $aListaInstit[$oUnidade->codinstit];
-    $oUnidade->orgao_id       = $aListaOrgao[$oUnidade->codorgao][$oUnidade->exercicio];
-    $oTBUnidades->setByLineOfDBUtils($oUnidade);
-    try {
-      $oTBUnidades->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-  }
-
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBUnidades->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
-
-  /**
-   *  É consultado as unidades cadastradas na base de destino para que seja populado o array $aListaUnidade
-   *  com as unidades cadastradas sendo a variável indexada pelo código da unidade da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código da unidade de origem.
-   */
-  $sSqlListaUnidadeDestino  = " select *        ";
-  $sSqlListaUnidadeDestino .= "   from unidades ";
-
-  $rsListaUnidadeDestino    = db_query($connDestino,$sSqlListaUnidadeDestino);
-  $iRowsListaUnidadeDestino = pg_num_rows($rsListaUnidadeDestino);
-
-  if ( $iRowsListaUnidadeDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-  for ( $iInd=0; $iInd < $iRowsListaUnidadeDestino; $iInd++ ) {
-
-    $oUnidadeDestino = db_utils::fieldsMemory($rsListaUnidadeDestino,$iInd);
-    $aListaUnidade[$oUnidadeDestino->codunidade][$oUnidadeDestino->exercicio] = $oUnidadeDestino->id;
-
-  }
-
-  // FIM UNIDADES ***************************************************************************************************//
-
-  // PROJETOS *******************************************************************************************************//
-
-  db_logTitulo(" IMPORTA PROJETOS ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Projetos na base de origem
-   */
-  $sSqlProjeto  = " select o55_instit   as codinstit,      ";
-  $sSqlProjeto .= "        o55_tipo     as tipo,           ";
-  $sSqlProjeto .= "        o55_projativ as codprojeto,     ";
-  $sSqlProjeto .= "        o55_descr    as descricao,      ";
-  $sSqlProjeto .= "        o55_anousu   as exercicio       ";
-  $sSqlProjeto .= "   from orcprojativ                     ";
-
-  $rsProjeto    = db_query($connOrigem,$sSqlProjeto);
-  $iRowsProjeto = pg_num_rows($rsProjeto);
-
-  if ( $iRowsProjeto ==  0 ) {
-    throw new Exception('Nenhum projeto encontrado!');
-  }
-
-  db_logNumReg($iRowsProjeto,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsProjeto; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsProjeto,$iParamLog);
-    $oProjeto = db_utils::fieldsMemory($rsProjeto,$iInd);
-    $oProjeto->instituicao_id = $aListaInstit[$oProjeto->codinstit];
-    $oTBProjetos->setByLineOfDBUtils($oProjeto);
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
     try {
-      $oTBProjetos->insertValue();
+        $oTBInstituicoes->persist();
     } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-  }
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBProjetos->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    /**
+     *  É consultado as instituições cadastradas na base de destino para que seja populado o array $aListaInstit
+     *  com as instituições cadastradas sendo a variável indexada pelo código da instituição da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código da instituição de origem.
+     */
+    $sSqlListaInstitDestino  = " select *           ";
+    $sSqlListaInstitDestino .= "  from instituicoes ";
 
-  /**
-   *  É consultado os projetos cadastrados na base de destino para que seja populado o array $aListaProjeto
-   *  com os projetos cadastrados sendo a variável indexada pelo código do projeto da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código do projeto de origem.
-   */
-  $sSqlListaProjetoDestino  = " select *        ";
-  $sSqlListaProjetoDestino .= "   from projetos ";
+    $rsListaInstitDestino    = db_query($connDestino,$sSqlListaInstitDestino);
+    $iRowsListaInstitDestino = pg_num_rows($rsListaInstitDestino);
 
-  $rsListaProjetoDestino    = db_query($connDestino,$sSqlListaProjetoDestino);
-  $iRowsListaProjetoDestino = pg_num_rows($rsListaProjetoDestino);
-
-  if ( $iRowsListaProjetoDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-  for ( $iInd=0; $iInd < $iRowsListaProjetoDestino; $iInd++ ) {
-
-    $oProjetoDestino = db_utils::fieldsMemory($rsListaProjetoDestino,$iInd);
-    $aListaProjeto[$oProjetoDestino->codprojeto][$oProjetoDestino->exercicio] = $oProjetoDestino->id;
-
-  }
-
-  // FIM PROJETOS ***************************************************************************************************//
-
-  // FUNÇÕES ********************************************************************************************************//
-
-  db_logTitulo(" IMPORTA FUNÇÕES ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Funções na base de origem
-   */
-  $sSqlFuncao  = " select o52_funcao as codfuncao, ";
-  $sSqlFuncao .= "        o52_descr  as descricao  ";
-  $sSqlFuncao .= "   from orcfuncao                ";
-
-  $rsFuncao    = db_query($connOrigem,$sSqlFuncao);
-  $iRowsFuncao = pg_num_rows($rsFuncao);
-
-  if ( $iRowsFuncao ==  0 ) {
-    throw new Exception('Nenhuma função encontrada!');
-  }
-
-  db_logNumReg($iRowsFuncao,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsFuncao; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsFuncao,$iParamLog);
-    $oFuncao = db_utils::fieldsMemory($rsFuncao,$iInd);
-    $oTBFuncoes->setByLineOfDBUtils($oFuncao);
-    try {
-      $oTBFuncoes->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+    if ( $iRowsListaInstitDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
     }
 
-  }
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBFuncoes->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    for ( $iInd=0; $iInd < $iRowsListaInstitDestino; $iInd++ ) {
 
-  /**
-   *  É consultado as funções cadastradas na base de destino para que seja populado o array $aListaFuncao
-   *  com as funções cadastradas sendo a variável indexada pelo código da função da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código da função de origem.
-   */
-  $sSqlListaFuncaoDestino  = " select *        ";
-  $sSqlListaFuncaoDestino .= "   from funcoes  ";
+        $oInstitDestino = db_utils::fieldsMemory($rsListaInstitDestino,$iInd);
+        $aListaInstit[$oInstitDestino->codinstit] = $oInstitDestino->id;
 
-  $rsListaFuncaoDestino    = db_query($connDestino,$sSqlListaFuncaoDestino);
-  $iRowsListaFuncaoDestino = pg_num_rows($rsListaFuncaoDestino);
-
-  if ( $iRowsListaFuncaoDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-  for ( $iInd=0; $iInd < $iRowsListaFuncaoDestino; $iInd++ ) {
-
-    $oFuncaoDestino = db_utils::fieldsMemory($rsListaFuncaoDestino,$iInd);
-    $aListaFuncao[$oFuncaoDestino->codfuncao] = $oFuncaoDestino->id;
-
-  }
-
-  // FIM FUNÇÕES ****************************************************************************************************//
-
-  // SUBFUNÇÕES *****************************************************************************************************//
-
-  db_logTitulo(" IMPORTA SUBFUNÇÕES ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Funções na base de origem
-   */
-  $sSqlSubFuncao  = " select o53_subfuncao as codsubfuncao, ";
-  $sSqlSubFuncao .= "        o53_descr     as descricao     ";
-  $sSqlSubFuncao .= "   from orcsubfuncao                   ";
-
-  $rsSubFuncao    = db_query($connOrigem,$sSqlSubFuncao);
-  $iRowsSubFuncao = pg_num_rows($rsSubFuncao);
-
-  if ( $iRowsSubFuncao ==  0 ) {
-    throw new Exception('Nenhuma SubFunção encontrada!');
-  }
-
-  db_logNumReg($iRowsSubFuncao,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsSubFuncao; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsSubFuncao,$iParamLog);
-    $oSubFuncao = db_utils::fieldsMemory($rsSubFuncao,$iInd);
-    $oTBSubFuncoes->setByLineOfDBUtils($oSubFuncao);
-    try {
-      $oTBSubFuncoes->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-  }
+    // FIM INSTITUIÇÕES ***********************************************************************************************//
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBSubFuncoes->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    // ORGÃOS *********************************************************************************************************//
 
+    db_logTitulo(" IMPORTA ORGÃOS ",$sArquivoLog,$iParamLog);
 
-  /**
-   *  É consultado as subfunções cadastradas na base de destino para que seja populado o array $aListaSubFuncao
-   *  com as subfunções cadastradas sendo a variável indexada pelo código da subfunção da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código da subfunção de origem.
-   */
-  $sSqlListaSubFuncaoDestino  = " select *           ";
-  $sSqlListaSubFuncaoDestino .= "   from subfuncoes  ";
+    /**
+     * Consulta Orgãos na base de origem
+     */
+    $sSqlOrgao  = " select o40_instit as codinstit,        ";
+    $sSqlOrgao .= "        o40_orgao  as codorgao,         ";
+    $sSqlOrgao .= "        o40_descr  as descricao,        ";
+    $sSqlOrgao .= "        o40_anousu as exercicio         ";
+    $sSqlOrgao .= "   from orcorgao                        ";
 
-  $rsListaSubFuncaoDestino    = db_query($connDestino,$sSqlListaSubFuncaoDestino);
-  $iRowsListaSubFuncaoDestino = pg_num_rows($rsListaSubFuncaoDestino);
+    $rsOrgao    = db_query($connOrigem,$sSqlOrgao);
+    $iRowsOrgao = pg_num_rows($rsOrgao);
 
-  if ( $iRowsListaSubFuncaoDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
-
-  for ( $iInd=0; $iInd < $iRowsListaSubFuncaoDestino; $iInd++ ) {
-
-    $oSubFuncaoDestino = db_utils::fieldsMemory($rsListaSubFuncaoDestino,$iInd);
-    $aListaSubFuncao[$oSubFuncaoDestino->codsubfuncao] = $oSubFuncaoDestino->id;
-
-  }
-
-  // FIM SUBFUNÇÕES *************************************************************************************************//
-
-  // PROGRAMAS ******************************************************************************************************//
-
-  db_logTitulo(" IMPORTA PROGRAMAS ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Programas na base de origem
-   */
-  $sSqlPrograma  = " select o54_programa as codprograma,    ";
-  $sSqlPrograma .= "        o54_descr    as descricao,      ";
-  $sSqlPrograma .= "        o54_anousu    as exercicio      ";
-  $sSqlPrograma .= "   from orcprograma                     ";
-
-  $rsPrograma    = db_query($connOrigem,$sSqlPrograma);
-  $iRowsPrograma = pg_num_rows($rsPrograma);
-
-  if ( $iRowsPrograma ==  0 ) {
-    throw new Exception('Nenhum programa encontrado!');
-  }
-
-  db_logNumReg($iRowsPrograma,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsPrograma; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsPrograma,$iParamLog);
-    $oPrograma = db_utils::fieldsMemory($rsPrograma,$iInd);
-    $oTBProgramas->setByLineOfDBUtils($oPrograma);
-    try {
-      $oTBProgramas->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+    if ( $iRowsOrgao ==  0 ) {
+        throw new Exception('Nenhum orgão encontrado!');
     }
 
-  }
+    db_logNumReg($iRowsOrgao,$sArquivoLog,$iParamLog);
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBProgramas->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsOrgao; $iInd++ ) {
 
-  /**
-   *  É consultado os programas cadastrados na base de destino para que seja populado o array $aListaPrograma
-   *  com os programas cadastrados sendo a variável indexada pelo código do programa da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código do programa de origem.
-   */
-  $sSqlListaProgramaDestino  = " select *         ";
-  $sSqlListaProgramaDestino .= "   from programas ";
+        logProcessamento($iInd,$iRowsOrgao,$iParamLog);
+        $oOrgao = db_utils::fieldsMemory($rsOrgao,$iInd);
+        $oOrgao->instituicao_id = $aListaInstit[$oOrgao->codinstit];
+        $oTBOrgaos->setByLineOfDBUtils($oOrgao);
+        try {
+            $oTBOrgaos->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
-  $rsListaProgramaDestino    = db_query($connDestino,$sSqlListaProgramaDestino);
-  $iRowsListaProgramaDestino = pg_num_rows($rsListaProgramaDestino);
+    }
 
-  if ( $iRowsListaProgramaDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBOrgaos->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
 
-  for ( $iInd=0; $iInd < $iRowsListaProgramaDestino; $iInd++ ) {
+    /**
+     *  É consultado os orgãos cadastrados na base de destino para que seja populado o array $aListaOrgao
+     *  com os orgãos cadastrados sendo a variável indexada pelo código do orgão da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código do orgão de origem.
+     */
+    $sSqlListaOrgaoDestino  = " select *      ";
+    $sSqlListaOrgaoDestino .= "   from orgaos ";
 
-    $oProgramaDestino = db_utils::fieldsMemory($rsListaProgramaDestino,$iInd);
-    $aListaPrograma[$oProgramaDestino->codprograma][$oProgramaDestino->exercicio] = $oProgramaDestino->id;
+    $rsListaOrgaoDestino    = db_query($connDestino,$sSqlListaOrgaoDestino);
+    $iRowsListaOrgaoDestino = pg_num_rows($rsListaOrgaoDestino);
 
-  }
+    if ( $iRowsListaOrgaoDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
 
-  // FIM PROGRAMAS **************************************************************************************************//
+    for ( $iInd=0; $iInd < $iRowsListaOrgaoDestino; $iInd++ ) {
+
+        $oOrgaoDestino = db_utils::fieldsMemory($rsListaOrgaoDestino,$iInd);
+        $aListaOrgao[$oOrgaoDestino->codorgao][$oOrgaoDestino->exercicio] = $oOrgaoDestino->id;
+
+    }
+
+    // FIM ORGÃOS *****************************************************************************************************//
+
+
+    // UNIDADES *******************************************************************************************************//
+
+    db_logTitulo(" IMPORTA UNIDADES ",$sArquivoLog,$iParamLog);
+
+    /**
+     * Consulta Unidades na base de origem
+     */
+    $sSqlUnidade  = " select o41_instit  as codinstit,       ";
+    $sSqlUnidade .= "        o41_orgao   as codorgao,        ";
+    $sSqlUnidade .= "        o41_unidade as codunidade,      ";
+    $sSqlUnidade .= "        o41_descr   as descricao,       ";
+    $sSqlUnidade .= "        o41_anousu  as exercicio        ";
+    $sSqlUnidade .= "   from orcunidade                      ";
+
+    $rsUnidade    = db_query($connOrigem,$sSqlUnidade);
+    $iRowsUnidade = pg_num_rows($rsUnidade);
+
+    if ( $iRowsUnidade ==  0 ) {
+        throw new Exception('Nenhuma unidade encontrada!');
+    }
+
+    db_logNumReg($iRowsUnidade,$sArquivoLog,$iParamLog);
+
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsUnidade; $iInd++ ) {
+
+        logProcessamento($iInd,$iRowsUnidade,$iParamLog);
+        $oUnidade = db_utils::fieldsMemory($rsUnidade,$iInd);
+        $oUnidade->instituicao_id = $aListaInstit[$oUnidade->codinstit];
+        $oUnidade->orgao_id       = $aListaOrgao[$oUnidade->codorgao][$oUnidade->exercicio];
+        $oTBUnidades->setByLineOfDBUtils($oUnidade);
+        try {
+            $oTBUnidades->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBUnidades->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
+
+    /**
+     *  É consultado as unidades cadastradas na base de destino para que seja populado o array $aListaUnidade
+     *  com as unidades cadastradas sendo a variável indexada pelo código da unidade da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código da unidade de origem.
+     */
+    $sSqlListaUnidadeDestino  = " select *        ";
+    $sSqlListaUnidadeDestino .= "   from unidades ";
+
+    $rsListaUnidadeDestino    = db_query($connDestino,$sSqlListaUnidadeDestino);
+    $iRowsListaUnidadeDestino = pg_num_rows($rsListaUnidadeDestino);
+
+    if ( $iRowsListaUnidadeDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaUnidadeDestino; $iInd++ ) {
+
+        $oUnidadeDestino = db_utils::fieldsMemory($rsListaUnidadeDestino,$iInd);
+        $aListaUnidade[$oUnidadeDestino->codunidade][$oUnidadeDestino->exercicio] = $oUnidadeDestino->id;
+
+    }
+
+    // FIM UNIDADES ***************************************************************************************************//
+
+    // PROJETOS *******************************************************************************************************//
+
+    db_logTitulo(" IMPORTA PROJETOS ",$sArquivoLog,$iParamLog);
+
+    /**
+     * Consulta Projetos na base de origem
+     */
+    $sSqlProjeto  = " select o55_instit   as codinstit,      ";
+    $sSqlProjeto .= "        o55_tipo     as tipo,           ";
+    $sSqlProjeto .= "        o55_projativ as codprojeto,     ";
+    $sSqlProjeto .= "        o55_descr    as descricao,      ";
+    $sSqlProjeto .= "        o55_anousu   as exercicio       ";
+    $sSqlProjeto .= "   from orcprojativ                     ";
+
+    $rsProjeto    = db_query($connOrigem,$sSqlProjeto);
+    $iRowsProjeto = pg_num_rows($rsProjeto);
+
+    if ( $iRowsProjeto ==  0 ) {
+        throw new Exception('Nenhum projeto encontrado!');
+    }
+
+    db_logNumReg($iRowsProjeto,$sArquivoLog,$iParamLog);
+
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsProjeto; $iInd++ ) {
+
+        logProcessamento($iInd,$iRowsProjeto,$iParamLog);
+        $oProjeto = db_utils::fieldsMemory($rsProjeto,$iInd);
+        $oProjeto->instituicao_id = $aListaInstit[$oProjeto->codinstit];
+        $oTBProjetos->setByLineOfDBUtils($oProjeto);
+        try {
+            $oTBProjetos->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBProjetos->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
+
+    /**
+     *  É consultado os projetos cadastrados na base de destino para que seja populado o array $aListaProjeto
+     *  com os projetos cadastrados sendo a variável indexada pelo código do projeto da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código do projeto de origem.
+     */
+    $sSqlListaProjetoDestino  = " select *        ";
+    $sSqlListaProjetoDestino .= "   from projetos ";
+
+    $rsListaProjetoDestino    = db_query($connDestino,$sSqlListaProjetoDestino);
+    $iRowsListaProjetoDestino = pg_num_rows($rsListaProjetoDestino);
+
+    if ( $iRowsListaProjetoDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaProjetoDestino; $iInd++ ) {
+
+        $oProjetoDestino = db_utils::fieldsMemory($rsListaProjetoDestino,$iInd);
+        $aListaProjeto[$oProjetoDestino->codprojeto][$oProjetoDestino->exercicio] = $oProjetoDestino->id;
+
+    }
+
+    // FIM PROJETOS ***************************************************************************************************//
+
+    // FUNÇÕES ********************************************************************************************************//
+
+    db_logTitulo(" IMPORTA FUNÇÕES ",$sArquivoLog,$iParamLog);
+
+    /**
+     * Consulta Funções na base de origem
+     */
+    $sSqlFuncao  = " select o52_funcao as codfuncao, ";
+    $sSqlFuncao .= "        o52_descr  as descricao  ";
+    $sSqlFuncao .= "   from orcfuncao                ";
+
+    $rsFuncao    = db_query($connOrigem,$sSqlFuncao);
+    $iRowsFuncao = pg_num_rows($rsFuncao);
+
+    if ( $iRowsFuncao ==  0 ) {
+        throw new Exception('Nenhuma função encontrada!');
+    }
+
+    db_logNumReg($iRowsFuncao,$sArquivoLog,$iParamLog);
+
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsFuncao; $iInd++ ) {
+
+        logProcessamento($iInd,$iRowsFuncao,$iParamLog);
+        $oFuncao = db_utils::fieldsMemory($rsFuncao,$iInd);
+        $oTBFuncoes->setByLineOfDBUtils($oFuncao);
+        try {
+            $oTBFuncoes->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBFuncoes->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
+
+    /**
+     *  É consultado as funções cadastradas na base de destino para que seja populado o array $aListaFuncao
+     *  com as funções cadastradas sendo a variável indexada pelo código da função da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código da função de origem.
+     */
+    $sSqlListaFuncaoDestino  = " select *        ";
+    $sSqlListaFuncaoDestino .= "   from funcoes  ";
+
+    $rsListaFuncaoDestino    = db_query($connDestino,$sSqlListaFuncaoDestino);
+    $iRowsListaFuncaoDestino = pg_num_rows($rsListaFuncaoDestino);
+
+    if ( $iRowsListaFuncaoDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaFuncaoDestino; $iInd++ ) {
+
+        $oFuncaoDestino = db_utils::fieldsMemory($rsListaFuncaoDestino,$iInd);
+        $aListaFuncao[$oFuncaoDestino->codfuncao] = $oFuncaoDestino->id;
+
+    }
+
+    // FIM FUNÇÕES ****************************************************************************************************//
+
+    // SUBFUNÇÕES *****************************************************************************************************//
+
+    db_logTitulo(" IMPORTA SUBFUNÇÕES ",$sArquivoLog,$iParamLog);
+
+    /**
+     * Consulta Funções na base de origem
+     */
+    $sSqlSubFuncao  = " select o53_subfuncao as codsubfuncao, ";
+    $sSqlSubFuncao .= "        o53_descr     as descricao     ";
+    $sSqlSubFuncao .= "   from orcsubfuncao                   ";
+
+    $rsSubFuncao    = db_query($connOrigem,$sSqlSubFuncao);
+    $iRowsSubFuncao = pg_num_rows($rsSubFuncao);
+
+    if ( $iRowsSubFuncao ==  0 ) {
+        throw new Exception('Nenhuma SubFunção encontrada!');
+    }
+
+    db_logNumReg($iRowsSubFuncao,$sArquivoLog,$iParamLog);
+
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsSubFuncao; $iInd++ ) {
+
+        logProcessamento($iInd,$iRowsSubFuncao,$iParamLog);
+        $oSubFuncao = db_utils::fieldsMemory($rsSubFuncao,$iInd);
+        $oTBSubFuncoes->setByLineOfDBUtils($oSubFuncao);
+        try {
+            $oTBSubFuncoes->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBSubFuncoes->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
+
+
+    /**
+     *  É consultado as subfunções cadastradas na base de destino para que seja populado o array $aListaSubFuncao
+     *  com as subfunções cadastradas sendo a variável indexada pelo código da subfunção da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código da subfunção de origem.
+     */
+    $sSqlListaSubFuncaoDestino  = " select *           ";
+    $sSqlListaSubFuncaoDestino .= "   from subfuncoes  ";
+
+    $rsListaSubFuncaoDestino    = db_query($connDestino,$sSqlListaSubFuncaoDestino);
+    $iRowsListaSubFuncaoDestino = pg_num_rows($rsListaSubFuncaoDestino);
+
+    if ( $iRowsListaSubFuncaoDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaSubFuncaoDestino; $iInd++ ) {
+
+        $oSubFuncaoDestino = db_utils::fieldsMemory($rsListaSubFuncaoDestino,$iInd);
+        $aListaSubFuncao[$oSubFuncaoDestino->codsubfuncao] = $oSubFuncaoDestino->id;
+
+    }
+
+    // FIM SUBFUNÇÕES *************************************************************************************************//
+
+    // PROGRAMAS ******************************************************************************************************//
+
+    db_logTitulo(" IMPORTA PROGRAMAS ",$sArquivoLog,$iParamLog);
+
+    /**
+     * Consulta Programas na base de origem
+     */
+    $sSqlPrograma  = " select o54_programa as codprograma,    ";
+    $sSqlPrograma .= "        o54_descr    as descricao,      ";
+    $sSqlPrograma .= "        o54_anousu    as exercicio      ";
+    $sSqlPrograma .= "   from orcprograma                     ";
+
+    $rsPrograma    = db_query($connOrigem,$sSqlPrograma);
+    $iRowsPrograma = pg_num_rows($rsPrograma);
+
+    if ( $iRowsPrograma ==  0 ) {
+        throw new Exception('Nenhum programa encontrado!');
+    }
+
+    db_logNumReg($iRowsPrograma,$sArquivoLog,$iParamLog);
+
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsPrograma; $iInd++ ) {
+
+        logProcessamento($iInd,$iRowsPrograma,$iParamLog);
+        $oPrograma = db_utils::fieldsMemory($rsPrograma,$iInd);
+        $oTBProgramas->setByLineOfDBUtils($oPrograma);
+        try {
+            $oTBProgramas->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
+    try {
+        $oTBProgramas->persist();
+    } catch ( Exception $eException ) {
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
+    }
+
+    /**
+     *  É consultado os programas cadastrados na base de destino para que seja populado o array $aListaPrograma
+     *  com os programas cadastrados sendo a variável indexada pelo código do programa da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código do programa de origem.
+     */
+    $sSqlListaProgramaDestino  = " select *         ";
+    $sSqlListaProgramaDestino .= "   from programas ";
+
+    $rsListaProgramaDestino    = db_query($connDestino,$sSqlListaProgramaDestino);
+    $iRowsListaProgramaDestino = pg_num_rows($rsListaProgramaDestino);
+
+    if ( $iRowsListaProgramaDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaProgramaDestino; $iInd++ ) {
+
+        $oProgramaDestino = db_utils::fieldsMemory($rsListaProgramaDestino,$iInd);
+        $aListaPrograma[$oProgramaDestino->codprograma][$oProgramaDestino->exercicio] = $oProgramaDestino->id;
+
+    }
+
+    // FIM PROGRAMAS **************************************************************************************************//
 
 
 
@@ -1119,138 +1123,138 @@ try {
 
 
 
-  db_logTitulo(" IMPORTA TRANSFERENCIAS REPASSES (Modalidades) ",$sArquivoLog,$iParamLog);
+    db_logTitulo(" IMPORTA TRANSFERENCIAS REPASSES (Modalidades) ",$sArquivoLog,$iParamLog);
 
 
-  /*
-   *
-   * dados para modalidade
-   * das transferencias financeiras
-   *  
-   *  TIPO: 1 - modalidades  substr 4,2 no elemento
-   *        2 - subvencoes/ auxilios substr 6,2
-    
-   */
-  $sSqlModalidade = " 
+    /*
+     *
+     * dados para modalidade
+     * das transferencias financeiras
+     *
+     *  TIPO: 1 - modalidades  substr 4,2 no elemento
+     *        2 - subvencoes/ auxilios substr 6,2
 
-             select distinct on (substr(o56_elemento,4,2)) 
-                    substr(o56_elemento, 4,2) as codigo_transferencia, 
-                    o56_elemento elemento, 
+     */
+    $sSqlModalidade = "
+
+             select distinct on (substr(o56_elemento,4,2))
+                    substr(o56_elemento, 4,2) as codigo_transferencia,
+                    o56_elemento elemento,
                     o56_descr descricao_elemento ,
                     1 as tipo_transferencia
-                   
+
                from orcelemento
-              where substr(o56_elemento,4,2)::int in (20,22,30,31,35,36,40,41,45,46,50,60,70,71,73,74,75,76,80) 
+              where substr(o56_elemento,4,2)::int in (20,22,30,31,35,36,40,41,45,46,50,60,70,71,73,74,75,76,80)
                 and substr(o56_elemento,6,6)='000000'  order by 1 , o56_anousu desc
 ";
- $rsModalidades = db_query($connOrigem, $sSqlModalidade );
-if ( pg_numrows($rsModalidades) > 0 ) {
+    $rsModalidades = db_query($connOrigem, $sSqlModalidade );
+    if ( pg_numrows($rsModalidades) > 0 ) {
 
-  $iRowsModalidades =  pg_numrows($rsModalidades);  
-  for($iModalidade = 0; $iModalidade < $iRowsModalidades;$iModalidade++  ) {
+        $iRowsModalidades =  pg_numrows($rsModalidades);
+        for($iModalidade = 0; $iModalidade < $iRowsModalidades;$iModalidade++  ) {
 
-    logProcessamento($iModalidade,$iRowsModalidades,$iParamLog);  
-    $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
+            logProcessamento($iModalidade,$iRowsModalidades,$iParamLog);
+            $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
 
-    $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
-    try {
-      $oTBTransferenciasModalidades->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0 incluindo modalidades de transferencias: {$eException->getMessage()}");
-    }
-
-
-  }
-
-    try {
-      $oTBTransferenciasModalidades->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-1 Persistindo Modalidades de Transferencias : {$eException->getMessage()}");
-    }
-
-
-}
-
-  db_logTitulo(" IMPORTA TRANSFERENCIAS REPASSES (Subvencoes) ",$sArquivoLog,$iParamLog);
-
-  $sSqlModalidade = " 
-
-                   select distinct on (substr(o56_elemento,6,2)) 
-                          substr(o56_elemento, 6,2) as codigo_transferencia, 
-                          o56_elemento elemento, 
-                          o56_descr descricao_elemento ,
-                          2 as tipo_transferencia
-                     from orcelemento
-                    where substr(o56_elemento,6,2)::int in (18, 19, 20, 41, 42, 43, 45, 46, 48, 49 ) 
-                      and substr(o56_elemento,9,4)='0000'  order by 1 , o56_anousu desc
-";
- $rsModalidades = db_query($connOrigem, $sSqlModalidade );
-if ( pg_numrows($rsModalidades) > 0 ) {
-
-    $iRowsSubvencoes = pg_numrows($rsModalidades);
-    for($iModalidade = 0; $iModalidade < $iRowsSubvencoes;$iModalidade++  ) {
-
-        
-        logProcessamento($iModalidade,$iRowsSubvencoes,$iParamLog);
-        $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
-
-        $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
-        try {
-                  $oTBTransferenciasModalidades->insertValue();
+            $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
+            try {
+                $oTBTransferenciasModalidades->insertValue();
             } catch ( Exception $eException ) {
-                  throw new Exception("ERRO-0 incluindo modalidades de transferencias: {$eException->getMessage()}");
+                throw new Exception("ERRO-0 incluindo modalidades de transferencias: {$eException->getMessage()}");
             }
 
 
+        }
+
+        try {
+            $oTBTransferenciasModalidades->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-1 Persistindo Modalidades de Transferencias : {$eException->getMessage()}");
+        }
+
+
     }
 
-    try {
-      $oTBTransferenciasModalidades->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-1 Persistindo Modalidades de Transferencias : {$eException->getMessage()}");
+    db_logTitulo(" IMPORTA TRANSFERENCIAS REPASSES (Subvencoes) ",$sArquivoLog,$iParamLog);
+
+    $sSqlModalidade = "
+
+                   select distinct on (substr(o56_elemento,6,2))
+                          substr(o56_elemento, 6,2) as codigo_transferencia,
+                          o56_elemento elemento,
+                          o56_descr descricao_elemento ,
+                          2 as tipo_transferencia
+                     from orcelemento
+                    where substr(o56_elemento,6,2)::int in (18, 19, 20, 41, 42, 43, 45, 46, 48, 49 )
+                      and substr(o56_elemento,9,4)='0000'  order by 1 , o56_anousu desc
+";
+    $rsModalidades = db_query($connOrigem, $sSqlModalidade );
+    if ( pg_numrows($rsModalidades) > 0 ) {
+
+        $iRowsSubvencoes = pg_numrows($rsModalidades);
+        for($iModalidade = 0; $iModalidade < $iRowsSubvencoes;$iModalidade++  ) {
+
+
+            logProcessamento($iModalidade,$iRowsSubvencoes,$iParamLog);
+            $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
+
+            $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
+            try {
+                $oTBTransferenciasModalidades->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0 incluindo modalidades de transferencias: {$eException->getMessage()}");
+            }
+
+
+        }
+
+        try {
+            $oTBTransferenciasModalidades->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-1 Persistindo Modalidades de Transferencias : {$eException->getMessage()}");
+        }
+
     }
 
-}
 
+    /**
+     *  estrutura de transferencias e repasses financairos
+     *
+     *
+     */
 
-/**
- *  estrutura de transferencias e repasses financairos
- *  
- * 
- */
-
-  $sSqlTransferencias = "
+    $sSqlTransferencias = "
 
 select extract(year from c70_data)::integer as exercicio,
        k152_sequencial as tipo_transferencia,
-       upper(k152_descricao) as descricao_transferencia, 
-       slip.k17_codigo as slip, 
-       slip.k17_data as data_emissao_slip, 
+       upper(k152_descricao) as descricao_transferencia,
+       slip.k17_codigo as slip,
+       slip.k17_data as data_emissao_slip,
        /* slip.k17_debito, */
        /* slip.k17_credito, */
        /* slip.k17_hist, */
-       coalesce(c72_complem, '') as complemento_historico, 
+       coalesce(c72_complem, '') as complemento_historico,
        /* z01_numcgm , */
        /* z01_nome as nome, */
        /* c50_codhist as db_hist, */
-       c50_descr as descr_hist, 
+       c50_descr as descr_hist,
        /* k153_slipoperacaotipo as tipo_operacao, */
        /* coalesce(k18_codigo,0) as k18_codigo, */
-       reduz_debito.c61_codigo as recurso_debito, 
+       reduz_debito.c61_codigo as recurso_debito,
        reduz_credito.c61_codigo as recurso_credito,
        conta_debito.c60_estrut estrutural_debito,
-       
-       case when k153_slipoperacaotipo not in (1, 2, 9, 10, 13, 14) 
-            then case when k153_slipoperacaotipo in (5, 6) 
-                      then saltes_debito.k13_descr  
-                      else conta_debito.c60_descr  
-                 end 
-            else conta_debito.c60_descr  
-       end as descr_debito, 
-       conta_credito.c60_estrut estrutural_credito, 
-       case when k153_slipoperacaotipo in (1, 2, 5, 6, 9, 10, 13, 14) 
-            then saltes_credito.k13_descr  
-            else conta_credito.c60_descr  
+
+       case when k153_slipoperacaotipo not in (1, 2, 9, 10, 13, 14)
+            then case when k153_slipoperacaotipo in (5, 6)
+                      then saltes_debito.k13_descr
+                      else conta_debito.c60_descr
+                 end
+            else conta_debito.c60_descr
+       end as descr_debito,
+       conta_credito.c60_estrut estrutural_credito,
+       case when k153_slipoperacaotipo in (1, 2, 5, 6, 9, 10, 13, 14)
+            then saltes_credito.k13_descr
+            else conta_credito.c60_descr
        end as descr_credito,
        k17_instit                   as instituicao_origem,
        instituicao_origem.nomeinst  as nome_instituicao_origem,
@@ -1261,58 +1265,58 @@ select extract(year from c70_data)::integer as exercicio,
        c53_descr as evento_contabil,
        case when c71_coddoc = 120 then c70_valor else c70_valor*-1 end as valor_lancamento
   from slip
-       inner join conlancamslip on c84_slip = slip.k17_codigo 
+       inner join conlancamslip on c84_slip = slip.k17_codigo
        inner join conlancamcompl on c72_codlan = c84_conlancam
        inner join conlancam on c84_conlancam = c70_codlan
        inner join conlancamdoc on c84_conlancam = c71_codlan
        inner join conhistdoc on c71_coddoc = c53_coddoc
-       left join sliptipooperacaovinculo on sliptipooperacaovinculo.k153_slip = slip.k17_codigo 
-       left join sliptipooperacao on sliptipooperacaovinculo.k153_slipoperacaotipo = sliptipooperacao.k152_sequencial 
-       left join slipanul on slip.k17_codigo = slipanul.k18_codigo 
-       left join slipnum on slip.k17_codigo = slipnum.k17_codigo 
-       left join cgm on slipnum.k17_numcgm = cgm.z01_numcgm 
-       left join conhist on slip.k17_hist = conhist.c50_codhist 
-       left join conplanoreduz as reduz_debito on slip.k17_instit = reduz_debito.c61_instit and slip.k17_debito = reduz_debito.c61_reduz and conlancam.c70_anousu = reduz_debito.c61_anousu 
-       left join conplano as conta_debito on reduz_debito.c61_codcon = conta_debito.c60_codcon and reduz_debito.c61_anousu = conta_debito.c60_anousu 
-       left join saltes saltes_debito on slip.k17_debito = saltes_debito.k13_reduz 
-       left join conplanoreduz as reduz_credito on slip.k17_instit = reduz_credito.c61_instit and slip.k17_credito = reduz_credito.c61_reduz and conlancam.c70_anousu = reduz_credito.c61_anousu 
-       left join conplano as conta_credito on reduz_credito.c61_codcon = conta_credito.c60_codcon and reduz_credito.c61_anousu = conta_credito.c60_anousu 
-       left join saltes saltes_credito on slip.k17_credito = saltes_credito.k13_reduz 
-       left join transferenciafinanceira on k150_slip = slip.k17_codigo 
-       left join db_config instituicao_origem  on k17_instit       = instituicao_origem.codigo 
-       left join db_config instituicao_destino on k150_instituicao = instituicao_destino.codigo 
- where conlancamdoc.c71_coddoc in (120,121) 
-union 
+       left join sliptipooperacaovinculo on sliptipooperacaovinculo.k153_slip = slip.k17_codigo
+       left join sliptipooperacao on sliptipooperacaovinculo.k153_slipoperacaotipo = sliptipooperacao.k152_sequencial
+       left join slipanul on slip.k17_codigo = slipanul.k18_codigo
+       left join slipnum on slip.k17_codigo = slipnum.k17_codigo
+       left join cgm on slipnum.k17_numcgm = cgm.z01_numcgm
+       left join conhist on slip.k17_hist = conhist.c50_codhist
+       left join conplanoreduz as reduz_debito on slip.k17_instit = reduz_debito.c61_instit and slip.k17_debito = reduz_debito.c61_reduz and conlancam.c70_anousu = reduz_debito.c61_anousu
+       left join conplano as conta_debito on reduz_debito.c61_codcon = conta_debito.c60_codcon and reduz_debito.c61_anousu = conta_debito.c60_anousu
+       left join saltes saltes_debito on slip.k17_debito = saltes_debito.k13_reduz
+       left join conplanoreduz as reduz_credito on slip.k17_instit = reduz_credito.c61_instit and slip.k17_credito = reduz_credito.c61_reduz and conlancam.c70_anousu = reduz_credito.c61_anousu
+       left join conplano as conta_credito on reduz_credito.c61_codcon = conta_credito.c60_codcon and reduz_credito.c61_anousu = conta_credito.c60_anousu
+       left join saltes saltes_credito on slip.k17_credito = saltes_credito.k13_reduz
+       left join transferenciafinanceira on k150_slip = slip.k17_codigo
+       left join db_config instituicao_origem  on k17_instit       = instituicao_origem.codigo
+       left join db_config instituicao_destino on k150_instituicao = instituicao_destino.codigo
+ where conlancamdoc.c71_coddoc in (120,121)
+union
 select extract(year from c70_data)::integer as exercicio,
        k152_sequencial as tipo_transferencia,
-       upper(k152_descricao) as descricao_transferencia, 
-       slip.k17_codigo as slip, 
-       slip.k17_data as data_emissao_slip, 
+       upper(k152_descricao) as descricao_transferencia,
+       slip.k17_codigo as slip,
+       slip.k17_data as data_emissao_slip,
        /* slip.k17_debito, */
        /* slip.k17_credito, */
        /* slip.k17_hist, */
-       coalesce(c72_complem, '') as complemento_historico, 
+       coalesce(c72_complem, '') as complemento_historico,
        /* z01_numcgm , */
        /* z01_nome as nome, */
        /* c50_codhist as db_hist, */
-       c50_descr as descr_hist, 
+       c50_descr as descr_hist,
        /* k153_slipoperacaotipo as tipo_operacao, */
        /* coalesce(k18_codigo,0) as k18_codigo, */
-       reduz_debito.c61_codigo as recurso_debito, 
+       reduz_debito.c61_codigo as recurso_debito,
        reduz_credito.c61_codigo as recurso_credito,
        conta_debito.c60_estrut estrutural_debito,
-       
-       case when k153_slipoperacaotipo not in (1, 2, 9, 10, 13, 14) 
-            then case when k153_slipoperacaotipo in (5, 6) 
-                      then saltes_debito.k13_descr  
-                      else conta_debito.c60_descr  
-                 end 
-            else conta_debito.c60_descr  
-       end as descr_debito, 
-       conta_credito.c60_estrut estrutural_credito, 
-       case when k153_slipoperacaotipo in (1, 2, 5, 6, 9, 10, 13, 14) 
-            then saltes_credito.k13_descr  
-            else conta_credito.c60_descr  
+
+       case when k153_slipoperacaotipo not in (1, 2, 9, 10, 13, 14)
+            then case when k153_slipoperacaotipo in (5, 6)
+                      then saltes_debito.k13_descr
+                      else conta_debito.c60_descr
+                 end
+            else conta_debito.c60_descr
+       end as descr_debito,
+       conta_credito.c60_estrut estrutural_credito,
+       case when k153_slipoperacaotipo in (1, 2, 5, 6, 9, 10, 13, 14)
+            then saltes_credito.k13_descr
+            else conta_credito.c60_descr
        end as descr_credito,
        slip_origem.k17_instit       as instituicao_origem,
        instituicao_origem.nomeinst  as nome_instituicao_origem,
@@ -1323,290 +1327,115 @@ select extract(year from c70_data)::integer as exercicio,
        c53_descr as evento_contabil,
        case when c71_coddoc = 130 then c70_valor else c70_valor*-1 end as valor_lancamento
   from slip
-       inner join conlancamslip on c84_slip = slip.k17_codigo 
+       inner join conlancamslip on c84_slip = slip.k17_codigo
        inner join conlancamcompl on c72_codlan = c84_conlancam
        inner join conlancam on c84_conlancam = c70_codlan
        inner join conlancamdoc on c84_conlancam = c71_codlan
        inner join conhistdoc on c71_coddoc = c53_coddoc
-       left join sliptipooperacaovinculo on sliptipooperacaovinculo.k153_slip = slip.k17_codigo 
-       left join sliptipooperacao on sliptipooperacaovinculo.k153_slipoperacaotipo = sliptipooperacao.k152_sequencial 
-       left join slipanul on slip.k17_codigo = slipanul.k18_codigo 
-       left join slipnum on slip.k17_codigo = slipnum.k17_codigo 
-       left join cgm on slipnum.k17_numcgm = cgm.z01_numcgm 
-       left join conhist on slip.k17_hist = conhist.c50_codhist 
-       left join conplanoreduz as reduz_debito on slip.k17_instit = reduz_debito.c61_instit and slip.k17_debito = reduz_debito.c61_reduz and conlancam.c70_anousu = reduz_debito.c61_anousu 
-       left join conplano as conta_debito on reduz_debito.c61_codcon = conta_debito.c60_codcon and reduz_debito.c61_anousu = conta_debito.c60_anousu 
-       left join saltes saltes_debito on slip.k17_debito = saltes_debito.k13_reduz 
-       left join conplanoreduz as reduz_credito on slip.k17_instit = reduz_credito.c61_instit and slip.k17_credito = reduz_credito.c61_reduz and conlancam.c70_anousu = reduz_credito.c61_anousu 
-       left join conplano as conta_credito on reduz_credito.c61_codcon = conta_credito.c60_codcon and reduz_credito.c61_anousu = conta_credito.c60_anousu 
-       left join saltes saltes_credito on slip.k17_credito = saltes_credito.k13_reduz 
-       left join transferenciafinanceirarecebimento on k151_slip = slip.k17_codigo 
+       left join sliptipooperacaovinculo on sliptipooperacaovinculo.k153_slip = slip.k17_codigo
+       left join sliptipooperacao on sliptipooperacaovinculo.k153_slipoperacaotipo = sliptipooperacao.k152_sequencial
+       left join slipanul on slip.k17_codigo = slipanul.k18_codigo
+       left join slipnum on slip.k17_codigo = slipnum.k17_codigo
+       left join cgm on slipnum.k17_numcgm = cgm.z01_numcgm
+       left join conhist on slip.k17_hist = conhist.c50_codhist
+       left join conplanoreduz as reduz_debito on slip.k17_instit = reduz_debito.c61_instit and slip.k17_debito = reduz_debito.c61_reduz and conlancam.c70_anousu = reduz_debito.c61_anousu
+       left join conplano as conta_debito on reduz_debito.c61_codcon = conta_debito.c60_codcon and reduz_debito.c61_anousu = conta_debito.c60_anousu
+       left join saltes saltes_debito on slip.k17_debito = saltes_debito.k13_reduz
+       left join conplanoreduz as reduz_credito on slip.k17_instit = reduz_credito.c61_instit and slip.k17_credito = reduz_credito.c61_reduz and conlancam.c70_anousu = reduz_credito.c61_anousu
+       left join conplano as conta_credito on reduz_credito.c61_codcon = conta_credito.c60_codcon and reduz_credito.c61_anousu = conta_credito.c60_anousu
+       left join saltes saltes_credito on slip.k17_credito = saltes_credito.k13_reduz
+       left join transferenciafinanceirarecebimento on k151_slip = slip.k17_codigo
        left join transferenciafinanceira on transferenciafinanceirarecebimento.k151_transferenciafinanceira = transferenciafinanceira.k150_sequencial
        left join slip as slip_origem on transferenciafinanceira.k150_slip  = slip_origem.k17_codigo
        left join db_config instituicao_origem  on slip_origem.k17_instit   = instituicao_origem.codigo
        left join db_config instituicao_destino on k150_instituicao = instituicao_destino.codigo
 
- where conlancamdoc.c71_coddoc in (130,131) 
+ where conlancamdoc.c71_coddoc in (130,131)
 
   ";
 
-$rsTransferencias = db_query($connOrigem,  $sSqlTransferencias  );
+    $rsTransferencias = db_query($connOrigem,  $sSqlTransferencias  );
 
-if (pg_numrows($rsTransferencias ) > 0 ) {
-
-
-    $iRowsTransferencias = pg_numrows($rsTransferencias);
-
-    try {
-
-      for($iTransferencia = 0; $iTransferencia < $iRowsTransferencias; $iTransferencia++ ){
-
-        logProcessamento($iTransferencias,$iRowsTransferencias,$iParamLog); 
-        $oDadosTransferencia = db_utils::fieldsMemory($rsTransferencias, $iTransferencia);
-        $oTBTransferenciasFinanceiras->setByLineOfDBUtils( $oDadosTransferencia);
-        $oTBTransferenciasFinanceiras->insertValue();
-      }
-      $oTBTransferenciasFinanceiras->persist();
-
-    } catch(Exception $eException ) {
-      throw new Exception("ERRO-0 incluindo de transferencias: {$eException->getMessage()}");
-    }    
-
-}    
+    if (pg_numrows($rsTransferencias ) > 0 ) {
 
 
+        $iRowsTransferencias = pg_numrows($rsTransferencias);
 
+        try {
 
+            for($iTransferencia = 0; $iTransferencia < $iRowsTransferencias; $iTransferencia++ ){
 
+                logProcessamento($iTransferencia,$iRowsTransferencias,$iParamLog);
+                $oDadosTransferencia = db_utils::fieldsMemory($rsTransferencias, $iTransferencia);
+                $oTBTransferenciasFinanceiras->setByLineOfDBUtils( $oDadosTransferencia);
+                $oTBTransferenciasFinanceiras->insertValue();
+            }
+            $oTBTransferenciasFinanceiras->persist();
 
+        } catch(Exception $eException ) {
+            throw new Exception("ERRO-0 incluindo de transferencias: {$eException->getMessage()}");
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // RECURSOS *******************************************************************************************************//
-db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
-
-
-  /**
-   * Consulta Recursos na base de origem
-   */
-  $sSqlRecurso  = " select o15_codigo as codrecurso, ";
-  $sSqlRecurso .= "        o15_descr  as descricao   ";
-  $sSqlRecurso .= "   from orctiporec                ";
-
-  $rsRecurso    = db_query($connOrigem,$sSqlRecurso);
-  $iRowsRecurso = pg_num_rows($rsRecurso);
-
-  if ( $iRowsRecurso ==  0 ) {
-    throw new Exception('Nenhum recurso encontrado!');
-  }
-
-  db_logNumReg($iRowsRecurso,$sArquivoLog,$iParamLog);
-
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsRecurso; $iInd++ ) {
-
-    logProcessamento($iInd,$iRowsRecurso,$iParamLog);
-    $oRecurso = db_utils::fieldsMemory($rsRecurso,$iInd);
-    $oTBRecursos->setByLineOfDBUtils($oRecurso);
-    try {
-      $oTBRecursos->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-  }
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBRecursos->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
 
-  /**
-   *  É consultado os recursos cadastrados na base de destino para que seja populado o array $aListaRecurso
-   *  com os recursos cadastrados sendo a variável indexada pelo código do recurso da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código do recurso de origem.
-   */
-  $sSqlListaRecursoDestino  = " select *         ";
-  $sSqlListaRecursoDestino .= "   from recursos ";
 
-  $rsListaRecursoDestino    = db_query($connDestino,$sSqlListaRecursoDestino);
-  $iRowsListaRecursoDestino = pg_num_rows($rsListaRecursoDestino);
 
-  if ( $iRowsListaRecursoDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
 
-  for ( $iInd=0; $iInd < $iRowsListaRecursoDestino; $iInd++ ) {
 
-    $oRecursoDestino = db_utils::fieldsMemory($rsListaRecursoDestino,$iInd);
-    $aListaRecurso[$oRecursoDestino->codrecurso] = $oRecursoDestino->id;
-  }
 
-  // FIM RECURSOS ***************************************************************************************************//
 
-  // PLANOCONTAS ****************************************************************************************************//
 
-  db_logTitulo(" IMPORTA PLANOCONTAS ",$sArquivoLog,$iParamLog);
 
-  $sSqlPlanoConta  = " select conplano.c60_codcon as codcon,     ";
-  $sSqlPlanoConta .= "        conplano.c60_estrut as estrutural, ";
-  $sSqlPlanoConta .= "        conplano.c60_descr  as descricao,  ";
-  $sSqlPlanoConta .= "        conplano.c60_anousu as exercicio   ";
-  $sSqlPlanoConta .= "   from conplano                           ";
 
-  if (USE_PCASP || file_exists(DB_LIBS . 'config/pcasp.txt')) {
 
-    $sSqlPlanoConta  = "   select distinct codcon,                                                                ";
-    $sSqlPlanoConta .= "        estrutural,                                                                       ";
-    $sSqlPlanoConta .= "        descricao,                                                                        ";
-    $sSqlPlanoConta .= "        exercicio                                                                         ";
-    $sSqlPlanoConta .= "   from (                                                                                 ";
-    $sSqlPlanoConta .= "                                                                                          ";
-    $sSqlPlanoConta .= " select conplano.c60_codcon as codcon,                                                    ";
-    $sSqlPlanoConta .= "        conplano.c60_estrut as estrutural,                                                ";
-    $sSqlPlanoConta .= "        conplano.c60_descr  as descricao,                                                 ";
-    $sSqlPlanoConta .= "        conplano.c60_anousu as exercicio                                                  ";
-    $sSqlPlanoConta .= "   from conplano where c60_anousu <= " . ANO_ANTERIOR_IMPLANTACAO_PCASP . " union         ";
-    $sSqlPlanoConta .= " select conplanoorcamento.c60_codcon as codcon,                                           ";
-    $sSqlPlanoConta .= "        conplanoorcamento.c60_estrut as estrutural,                                       ";
-    $sSqlPlanoConta .= "        conplanoorcamento.c60_descr  as descricao,                                        ";
-    $sSqlPlanoConta .= "        conplanoorcamento.c60_anousu as exercicio                                         ";
-    $sSqlPlanoConta .= "   from conplanoorcamento where c60_anousu > " . ANO_ANTERIOR_IMPLANTACAO_PCASP . ") as x ";
 
-  }
 
-  $rsPlanoConta    = db_query($connOrigem,$sSqlPlanoConta);
-  $iRowsPlanoConta = pg_num_rows($rsPlanoConta);
 
-  if ( $iRowsPlanoConta ==  0 ) {
-    throw new Exception('Nenhum recurso encontrado!');
-  }
 
-  db_logNumReg($iRowsPlanoConta,$sArquivoLog,$iParamLog);
 
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsPlanoConta; $iInd++ ) {
 
-    logProcessamento($iInd,$iRowsPlanoConta,$iParamLog);
-    $oPlanoConta = db_utils::fieldsMemory($rsPlanoConta,$iInd);
-    $oTBPlanoContas->setByLineOfDBUtils($oPlanoConta);
-    try {
-      $oTBPlanoContas->insertValue();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
 
-  }
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBPlanoContas->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
 
-  /**
-   *  É consultado os planocontas cadastrados na base de destino para que seja populado o array $aListaPlanoConta
-   *  com os planocontas cadastrados sendo a variável indexada pelo código do planoconta da base de origem.
-   *  Essa variável será utilizada por todo o fonte para identificar o código do planoconta de origem.
-   */
-  $sSqlListaPlanoContaDestino  = " select *           ";
-  $sSqlListaPlanoContaDestino .= "   from planocontas ";
 
-  $rsListaPlanoContaDestino    = db_query($connDestino,$sSqlListaPlanoContaDestino);
-  $iRowsListaPlanoContaDestino = pg_num_rows($rsListaPlanoContaDestino);
 
-  if ( $iRowsListaPlanoContaDestino == 0 ) {
-    throw new Exception('Nenhum registro encontrado');
-  }
+    // RECURSOS *******************************************************************************************************//
+    db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
-  for ( $iInd=0; $iInd < $iRowsListaPlanoContaDestino; $iInd++ ) {
-
-    $oPlanoContaDestino = db_utils::fieldsMemory($rsListaPlanoContaDestino,$iInd);
-    $aListaPlanoConta[$oPlanoContaDestino->codcon][$oPlanoContaDestino->exercicio] = $oPlanoContaDestino->id;
-  }
-
-  // FIM PLANOCONTAS ************************************************************************************************//
-
-  // RECEITAS *******************************************************************************************************//
-
-  if (IMPORTAR_RECEITAS) {
-
-    db_logTitulo(" IMPORTA RECEITAS ",$sArquivoLog,$iParamLog);
 
     /**
-     * Consulta Receitas na base de origem
+     * Consulta Recursos na base de origem
      */
-    $sSqlReceita  = " select o70_codrec as codreceita,       ";
-    $sSqlReceita .= "        o70_codfon as codcon,           ";
-    $sSqlReceita .= "        o70_anousu as exercicio,        ";
-    $sSqlReceita .= "        o70_codigo as codrecurso,       ";
-    $sSqlReceita .= "        o70_instit as codinstit,        ";
-    $sSqlReceita .= "        o70_valor  as previsaoinicial   ";
-    $sSqlReceita .= "   from orcreceita                      ";
-    $sSqlReceita .= "   where o70_anousu >= {$iExercicioBase}";
+    $sSqlRecurso  = " select o15_codigo as codrecurso, ";
+    $sSqlRecurso .= "        o15_descr  as descricao   ";
+    $sSqlRecurso .= "   from orctiporec                ";
 
-    $rsReceita    = db_query($connOrigem,$sSqlReceita);
-    $iRowsReceita = pg_num_rows($rsReceita);
+    $rsRecurso    = db_query($connOrigem,$sSqlRecurso);
+    $iRowsRecurso = pg_num_rows($rsRecurso);
 
-    if ( $iRowsReceita ==  0 ) {
-      throw new Exception('Nenhum recurso encontrado!');
+    if ( $iRowsRecurso ==  0 ) {
+        throw new Exception('Nenhum recurso encontrado!');
     }
 
-    db_logNumReg($iRowsReceita,$sArquivoLog,$iParamLog);
+    db_logNumReg($iRowsRecurso,$sArquivoLog,$iParamLog);
 
     /**
      *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
      *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
      *  o método persist que insere fisicamente os registros na base de dados através do COPY.
      */
-    for ( $iInd=0; $iInd < $iRowsReceita; $iInd++ ) {
+    for ( $iInd=0; $iInd < $iRowsRecurso; $iInd++ ) {
 
-      logProcessamento($iInd,$iRowsReceita,$iParamLog);
-      $oReceita = db_utils::fieldsMemory($rsReceita,$iInd);
-      if ( !isset($aListaPlanoConta[$oReceita->codcon][$oReceita->exercicio]) ) {
-        throw new Exception("ERRO-0: Plano de Contas não encontrado CODCON: $oReceita->codcon  EXERCICIO: $oReceita->exercicio RECEITA: $oReceita->codreceita");
-      }
-      $oReceita->recurso_id     = $aListaRecurso[$oReceita->codrecurso];
-      $oReceita->planoconta_id  = $aListaPlanoConta[$oReceita->codcon][$oReceita->exercicio];
-      $oReceita->instituicao_id = $aListaInstit[$oReceita->codinstit];
-      $oTBReceitas->setByLineOfDBUtils($oReceita);
-      try {
-        $oTBReceitas->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+        logProcessamento($iInd,$iRowsRecurso,$iParamLog);
+        $oRecurso = db_utils::fieldsMemory($rsRecurso,$iInd);
+        $oTBRecursos->setByLineOfDBUtils($oRecurso);
+        try {
+            $oTBRecursos->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
     }
 
@@ -1615,134 +1444,89 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
      *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
      */
     try {
-      $oTBReceitas->persist();
+        $oTBRecursos->persist();
     } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
     /**
-     *  É consultado as receitas cadastradas na base de destino para que seja populado o array $aListaReceita
-     *  com as receitas cadastradas sendo a variável indexada pelo código do receita da base de origem.
-     *  Essa variável será utilizada por todo o fonte para identificar o código da receita de origem.
+     *  É consultado os recursos cadastrados na base de destino para que seja populado o array $aListaRecurso
+     *  com os recursos cadastrados sendo a variável indexada pelo código do recurso da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código do recurso de origem.
      */
-    $sSqlListaReceitaDestino  = " select *        ";
-    $sSqlListaReceitaDestino .= "   from receitas ";
+    $sSqlListaRecursoDestino  = " select *         ";
+    $sSqlListaRecursoDestino .= "   from recursos ";
 
-    $rsListaReceitaDestino    = db_query($connDestino,$sSqlListaReceitaDestino);
-    $iRowsListaReceitaDestino = pg_num_rows($rsListaReceitaDestino);
+    $rsListaRecursoDestino    = db_query($connDestino,$sSqlListaRecursoDestino);
+    $iRowsListaRecursoDestino = pg_num_rows($rsListaRecursoDestino);
 
-    if ( $iRowsListaReceitaDestino == 0 ) {
-      throw new Exception('Nenhum registro encontrado');
+    if ( $iRowsListaRecursoDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
     }
 
-    for ( $iInd=0; $iInd < $iRowsListaReceitaDestino; $iInd++ ) {
+    for ( $iInd=0; $iInd < $iRowsListaRecursoDestino; $iInd++ ) {
 
-      $oReceitaDestino = db_utils::fieldsMemory($rsListaReceitaDestino,$iInd);
-      $aListaReceita[$oReceitaDestino->codreceita][$oReceitaDestino->exercicio] = $oReceitaDestino->id;
+        $oRecursoDestino = db_utils::fieldsMemory($rsListaRecursoDestino,$iInd);
+        $aListaRecurso[$oRecursoDestino->codrecurso] = $oRecursoDestino->id;
+    }
+
+    // FIM RECURSOS ***************************************************************************************************//
+
+    // PLANOCONTAS ****************************************************************************************************//
+
+    db_logTitulo(" IMPORTA PLANOCONTAS ",$sArquivoLog,$iParamLog);
+
+    $sSqlPlanoConta  = " select conplano.c60_codcon as codcon,     ";
+    $sSqlPlanoConta .= "        conplano.c60_estrut as estrutural, ";
+    $sSqlPlanoConta .= "        conplano.c60_descr  as descricao,  ";
+    $sSqlPlanoConta .= "        conplano.c60_anousu as exercicio   ";
+    $sSqlPlanoConta .= "   from conplano                           ";
+
+    if (USE_PCASP || file_exists(DB_LIBS . 'config/pcasp.txt')) {
+
+        $sSqlPlanoConta  = "   select distinct codcon,                                                                ";
+        $sSqlPlanoConta .= "        estrutural,                                                                       ";
+        $sSqlPlanoConta .= "        descricao,                                                                        ";
+        $sSqlPlanoConta .= "        exercicio                                                                         ";
+        $sSqlPlanoConta .= "   from (                                                                                 ";
+        $sSqlPlanoConta .= "                                                                                          ";
+        $sSqlPlanoConta .= " select conplano.c60_codcon as codcon,                                                    ";
+        $sSqlPlanoConta .= "        conplano.c60_estrut as estrutural,                                                ";
+        $sSqlPlanoConta .= "        conplano.c60_descr  as descricao,                                                 ";
+        $sSqlPlanoConta .= "        conplano.c60_anousu as exercicio                                                  ";
+        $sSqlPlanoConta .= "   from conplano where c60_anousu <= " . ANO_ANTERIOR_IMPLANTACAO_PCASP . " union         ";
+        $sSqlPlanoConta .= " select conplanoorcamento.c60_codcon as codcon,                                           ";
+        $sSqlPlanoConta .= "        conplanoorcamento.c60_estrut as estrutural,                                       ";
+        $sSqlPlanoConta .= "        conplanoorcamento.c60_descr  as descricao,                                        ";
+        $sSqlPlanoConta .= "        conplanoorcamento.c60_anousu as exercicio                                         ";
+        $sSqlPlanoConta .= "   from conplanoorcamento where c60_anousu > " . ANO_ANTERIOR_IMPLANTACAO_PCASP . ") as x ";
 
     }
 
-    // FIM RECEITAS ***************************************************************************************************//
+    $rsPlanoConta    = db_query($connOrigem,$sSqlPlanoConta);
+    $iRowsPlanoConta = pg_num_rows($rsPlanoConta);
 
-    // MOVIMENTAÇÕES RECEITAS *****************************************************************************************//
-
-    db_logTitulo(" IMPORTA MOVIMENTAÇÕES DAS RECEITAS ",$sArquivoLog,$iParamLog);
-
-    /**
-     * Consulta Preparada para execução da função fc_receitasaldo na base de origem
-     */
-
-    $sSqlReceitaMovimentacao  = " prepare stmt_receitasaldo(integer, integer) as ";
-    $sSqlReceitaMovimentacao .= " select cast(                                                                            ";
-    $sSqlReceitaMovimentacao .= "           substr(                                                                          ";
-    $sSqlReceitaMovimentacao .= "           fc_receitasaldo($1,                                                              ";
-    $sSqlReceitaMovimentacao .= "                           $2,                                                              ";
-    $sSqlReceitaMovimentacao .= "                           3,                                                               ";
-    $sSqlReceitaMovimentacao .= "                           current_date,                                                    ";
-    $sSqlReceitaMovimentacao .= "                           current_date),41,13) as numeric(15,2));                          ";
-
-    /**
-     * Consulta ReceitasMovimentacoes na base de origem
-     */
-
-    $sRegraArrecadacaoReceita  = " (case when o70_anousu < 2013 or (substr(o57_fonte , 1, 1) = '4') ";
-    $sRegraArrecadacaoReceita .= "       then (case when c57_sequencial = 100 then c70_valor";
-    $sRegraArrecadacaoReceita .= "                  when c57_sequencial = 101 then c70_valor * -1";
-    $sRegraArrecadacaoReceita .= "                  else 0 end) ";
-    $sRegraArrecadacaoReceita .= "       when o70_anousu >= 2013 then ";
-    $sRegraArrecadacaoReceita .= "        (case when substr(o57_fonte, 1, 1) = '9' then  ";
-    $sRegraArrecadacaoReceita .= "            (case  when c57_sequencial = 100 then c70_valor * -1";
-    $sRegraArrecadacaoReceita .= "                   when c57_sequencial = 101 then c70_valor ";
-    $sRegraArrecadacaoReceita .= "              end)";
-    $sRegraArrecadacaoReceita .= "         end)";
-    $sRegraArrecadacaoReceita .= "    end) ";
-
-    $sSqlReceitaMovimentacao .= " select o70_codrec as codreceita,                                                           ";
-    $sSqlReceitaMovimentacao .= "        o70_anousu as exercicio,                                                            ";
-    $sSqlReceitaMovimentacao .= "        c70_data   as data,                                                                 ";
-    $sSqlReceitaMovimentacao .= "        coalesce(o201_complemento,0) as complemento_recurso,                                ";
-    $sSqlReceitaMovimentacao .= "        coalesce(sum( {$sRegraArrecadacaoReceita}), 0.0) as valor,                          ";
-
-    $sSqlReceitaMovimentacao .= "        coalesce(sum(case                                                                            ";
-    $sSqlReceitaMovimentacao .= "            when c57_sequencial = 110  then c70_valor                                       ";
-    $sSqlReceitaMovimentacao .= "            when c57_sequencial = 111 then (c70_valor * -1)                                 ";
-    $sSqlReceitaMovimentacao .= "            else 0                                                                          ";
-    $sSqlReceitaMovimentacao .= "            end ), 0.0) as previsaoadicional,                                                     ";
-
-    $sSqlReceitaMovimentacao .= "        coalesce(sum(case                                                                            ";
-    $sSqlReceitaMovimentacao .= "            when c57_sequencial = 58   then c70_valor                                       ";
-    $sSqlReceitaMovimentacao .= "            when c57_sequencial = 104 then (c70_valor * -1)                                 ";
-    $sSqlReceitaMovimentacao .= "            else 0                                                                          ";
-    $sSqlReceitaMovimentacao .= "            end ), 0.0) as previsao_atualizada                                                    ";
-
-    $sSqlReceitaMovimentacao .= "  from orcreceita                                                                           ";
-    $sSqlReceitaMovimentacao .= "       inner join conlancamrec   on conlancamrec.c74_codrec = orcreceita.o70_codrec         ";
-    $sSqlReceitaMovimentacao .= "                                and conlancamrec.c74_anousu = orcreceita.o70_anousu         ";
-    $sSqlReceitaMovimentacao .= "       inner join orcfontes      on orcreceita.o70_codfon   = orcfontes.o57_codfon          ";
-    $sSqlReceitaMovimentacao .= "                                and orcreceita.o70_anousu   = orcfontes.o57_anousu          ";
-    $sSqlReceitaMovimentacao .= "       inner join conlancam      on conlancam.c70_codlan    = conlancamrec.c74_codlan       ";
-    $sSqlReceitaMovimentacao .= "       inner join conlancamdoc   on conlancamdoc.c71_codlan = conlancam.c70_codlan          ";
-    $sSqlReceitaMovimentacao .= "       inner join conhistdoc     on conlancamdoc.c71_coddoc = conhistdoc.c53_coddoc         ";
-    $sSqlReceitaMovimentacao .= "       inner join conhistdoctipo on conhistdoc.c53_tipo     = conhistdoctipo.c57_sequencial ";
-    $sSqlReceitaMovimentacao .= "       left  join conlancamcomplementorecurso on conlancam.c70_codlan = conlancamcomplementorecurso.o201_codlan ";
-    $sSqlReceitaMovimentacao .= "   where o70_anousu >= {$iExercicioBase} ";
-    $sSqlReceitaMovimentacao .= " group by o70_codrec,o70_anousu,c70_data,o201_complemento                                             ";
-
-
-
-    $rsReceitaMovimentacao    = db_query($connOrigem,$sSqlReceitaMovimentacao);
-    $iRowsReceitaMovimentacao = pg_num_rows($rsReceitaMovimentacao);
-
-    if ( $iRowsReceitaMovimentacao ==  0 ) {
-      throw new Exception('Nenhum recurso encontrado!');
+    if ( $iRowsPlanoConta ==  0 ) {
+        throw new Exception('Nenhum recurso encontrado!');
     }
 
-    db_logNumReg($iRowsReceitaMovimentacao,$sArquivoLog,$iParamLog);
+    db_logNumReg($iRowsPlanoConta,$sArquivoLog,$iParamLog);
 
     /**
      *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
      *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
      *  o método persist que insere fisicamente os registros na base de dados através do COPY.
      */
-    for ( $iInd=0; $iInd < $iRowsReceitaMovimentacao; $iInd++ ) {
+    for ( $iInd=0; $iInd < $iRowsPlanoConta; $iInd++ ) {
 
-      logProcessamento($iInd,$iRowsReceitaMovimentacao,$iParamLog);
-      $oReceitaMovimentacao = db_utils::fieldsMemory($rsReceitaMovimentacao,$iInd);
-      $sSqlReceitaSaldo = "EXECUTE stmt_receitasaldo({$oReceitaMovimentacao->exercicio}, {$oReceitaMovimentacao->codreceita})";
-      $rsReceitaSaldo = db_query($connOrigem, $sSqlReceitaSaldo);
-      $iRowsReceitaSaldo = pg_num_rows($rsReceitaSaldo);
-      if ( $iRowsReceitaSaldo ==  0 ) {
-        $oReceitaMovimentacao->valor_previsao_atualizada = 0;
-      } else {
-        $oReceitaMovimentacao->valor_previsao_atualizada = pg_result($rsReceitaSaldo, 0, 0);
-      }
-      $oReceitaMovimentacao->receita_id = $aListaReceita[$oReceitaMovimentacao->codreceita][$oReceitaMovimentacao->exercicio];
-      $oTBReceitasMovimentacoes->setByLineOfDBUtils($oReceitaMovimentacao);
-      try {
-        $oTBReceitasMovimentacoes->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+        logProcessamento($iInd,$iRowsPlanoConta,$iParamLog);
+        $oPlanoConta = db_utils::fieldsMemory($rsPlanoConta,$iInd);
+        $oTBPlanoContas->setByLineOfDBUtils($oPlanoConta);
+        try {
+            $oTBPlanoContas->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
     }
 
@@ -1751,270 +1535,490 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
      *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
      */
     try {
-      $oTBReceitasMovimentacoes->persist();
+        $oTBPlanoContas->persist();
     } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-    // ACERTA TABELA receitas_movimentacoes ***************************************************************************//
+    /**
+     *  É consultado os planocontas cadastrados na base de destino para que seja populado o array $aListaPlanoConta
+     *  com os planocontas cadastrados sendo a variável indexada pelo código do planoconta da base de origem.
+     *  Essa variável será utilizada por todo o fonte para identificar o código do planoconta de origem.
+     */
+    $sSqlListaPlanoContaDestino  = " select *           ";
+    $sSqlListaPlanoContaDestino .= "   from planocontas ";
 
-    $sSqlAcertaRecMov = " UPDATE receitas_movimentacoes SET valor = ( valor * -1 )
+    $rsListaPlanoContaDestino    = db_query($connDestino,$sSqlListaPlanoContaDestino);
+    $iRowsListaPlanoContaDestino = pg_num_rows($rsListaPlanoContaDestino);
+
+    if ( $iRowsListaPlanoContaDestino == 0 ) {
+        throw new Exception('Nenhum registro encontrado');
+    }
+
+    for ( $iInd=0; $iInd < $iRowsListaPlanoContaDestino; $iInd++ ) {
+
+        $oPlanoContaDestino = db_utils::fieldsMemory($rsListaPlanoContaDestino,$iInd);
+        $aListaPlanoConta[$oPlanoContaDestino->codcon][$oPlanoContaDestino->exercicio] = $oPlanoContaDestino->id;
+    }
+
+    // FIM PLANOCONTAS ************************************************************************************************//
+
+    // RECEITAS *******************************************************************************************************//
+
+    if (IMPORTAR_RECEITAS) {
+
+        db_logTitulo(" IMPORTA RECEITAS ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta Receitas na base de origem
+         */
+        $sSqlReceita  = " select o70_codrec as codreceita,       ";
+        $sSqlReceita .= "        o70_codfon as codcon,           ";
+        $sSqlReceita .= "        o70_anousu as exercicio,        ";
+        $sSqlReceita .= "        o70_codigo as codrecurso,       ";
+        $sSqlReceita .= "        o70_instit as codinstit,        ";
+        $sSqlReceita .= "        o70_valor  as previsaoinicial   ";
+        $sSqlReceita .= "   from orcreceita                      ";
+        $sSqlReceita .= "   where o70_anousu >= {$iExercicioBase}";
+
+        $rsReceita    = db_query($connOrigem,$sSqlReceita);
+        $iRowsReceita = pg_num_rows($rsReceita);
+
+        if ( $iRowsReceita ==  0 ) {
+            throw new Exception('Nenhum recurso encontrado!');
+        }
+
+        db_logNumReg($iRowsReceita,$sArquivoLog,$iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $iRowsReceita; $iInd++ ) {
+
+            logProcessamento($iInd,$iRowsReceita,$iParamLog);
+            $oReceita = db_utils::fieldsMemory($rsReceita,$iInd);
+            if ( !isset($aListaPlanoConta[$oReceita->codcon][$oReceita->exercicio]) ) {
+                throw new Exception("ERRO-0: Plano de Contas não encontrado CODCON: $oReceita->codcon  EXERCICIO: $oReceita->exercicio RECEITA: $oReceita->codreceita");
+            }
+            $oReceita->recurso_id     = $aListaRecurso[$oReceita->codrecurso];
+            $oReceita->planoconta_id  = $aListaPlanoConta[$oReceita->codcon][$oReceita->exercicio];
+            $oReceita->instituicao_id = $aListaInstit[$oReceita->codinstit];
+            $oTBReceitas->setByLineOfDBUtils($oReceita);
+            try {
+                $oTBReceitas->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBReceitas->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        /**
+         *  É consultado as receitas cadastradas na base de destino para que seja populado o array $aListaReceita
+         *  com as receitas cadastradas sendo a variável indexada pelo código do receita da base de origem.
+         *  Essa variável será utilizada por todo o fonte para identificar o código da receita de origem.
+         */
+        $sSqlListaReceitaDestino  = " select *        ";
+        $sSqlListaReceitaDestino .= "   from receitas ";
+
+        $rsListaReceitaDestino    = db_query($connDestino,$sSqlListaReceitaDestino);
+        $iRowsListaReceitaDestino = pg_num_rows($rsListaReceitaDestino);
+
+        if ( $iRowsListaReceitaDestino == 0 ) {
+            throw new Exception('Nenhum registro encontrado');
+        }
+
+        for ( $iInd=0; $iInd < $iRowsListaReceitaDestino; $iInd++ ) {
+
+            $oReceitaDestino = db_utils::fieldsMemory($rsListaReceitaDestino,$iInd);
+            $aListaReceita[$oReceitaDestino->codreceita][$oReceitaDestino->exercicio] = $oReceitaDestino->id;
+
+        }
+
+        // FIM RECEITAS ***************************************************************************************************//
+
+        // MOVIMENTAÇÕES RECEITAS *****************************************************************************************//
+
+        db_logTitulo(" IMPORTA MOVIMENTAÇÕES DAS RECEITAS ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta Preparada para execução da função fc_receitasaldo na base de origem
+         */
+
+        $sSqlReceitaMovimentacao  = " prepare stmt_receitasaldo(integer, integer) as ";
+        $sSqlReceitaMovimentacao .= " select cast(                                                                            ";
+        $sSqlReceitaMovimentacao .= "           substr(                                                                          ";
+        $sSqlReceitaMovimentacao .= "           fc_receitasaldo($1,                                                              ";
+        $sSqlReceitaMovimentacao .= "                           $2,                                                              ";
+        $sSqlReceitaMovimentacao .= "                           3,                                                               ";
+        $sSqlReceitaMovimentacao .= "                           current_date,                                                    ";
+        $sSqlReceitaMovimentacao .= "                           current_date),41,13) as numeric(15,2));                          ";
+
+        /**
+         * Consulta ReceitasMovimentacoes na base de origem
+         */
+
+        $sRegraArrecadacaoReceita  = " (case when o70_anousu < 2013 or (substr(o57_fonte , 1, 1) = '4') ";
+        $sRegraArrecadacaoReceita .= "       then (case when c57_sequencial = 100 then c70_valor";
+        $sRegraArrecadacaoReceita .= "                  when c57_sequencial = 101 then c70_valor * -1";
+        $sRegraArrecadacaoReceita .= "                  else 0 end) ";
+        $sRegraArrecadacaoReceita .= "       when o70_anousu >= 2013 then ";
+        $sRegraArrecadacaoReceita .= "        (case when substr(o57_fonte, 1, 1) = '9' then  ";
+        $sRegraArrecadacaoReceita .= "            (case  when c57_sequencial = 100 then c70_valor * -1";
+        $sRegraArrecadacaoReceita .= "                   when c57_sequencial = 101 then c70_valor ";
+        $sRegraArrecadacaoReceita .= "              end)";
+        $sRegraArrecadacaoReceita .= "         end)";
+        $sRegraArrecadacaoReceita .= "    end) ";
+
+        $sSqlReceitaMovimentacao .= " select o70_codrec as codreceita,                                                           ";
+        $sSqlReceitaMovimentacao .= "        o70_anousu as exercicio,                                                            ";
+        $sSqlReceitaMovimentacao .= "        c70_data   as data,                                                                 ";
+        $sSqlReceitaMovimentacao .= "        coalesce(o201_complemento,0) as complemento_recurso,                                ";
+        $sSqlReceitaMovimentacao .= "        coalesce(sum( {$sRegraArrecadacaoReceita}), 0.0) as valor,                          ";
+
+        $sSqlReceitaMovimentacao .= "        coalesce(sum(case                                                                            ";
+        $sSqlReceitaMovimentacao .= "            when c57_sequencial = 110  then c70_valor                                       ";
+        $sSqlReceitaMovimentacao .= "            when c57_sequencial = 111 then (c70_valor * -1)                                 ";
+        $sSqlReceitaMovimentacao .= "            else 0                                                                          ";
+        $sSqlReceitaMovimentacao .= "            end ), 0.0) as previsaoadicional,                                                     ";
+
+        $sSqlReceitaMovimentacao .= "        coalesce(sum(case                                                                            ";
+        $sSqlReceitaMovimentacao .= "            when c57_sequencial = 58   then c70_valor                                       ";
+        $sSqlReceitaMovimentacao .= "            when c57_sequencial = 104 then (c70_valor * -1)                                 ";
+        $sSqlReceitaMovimentacao .= "            else 0                                                                          ";
+        $sSqlReceitaMovimentacao .= "            end ), 0.0) as previsao_atualizada                                                    ";
+
+        $sSqlReceitaMovimentacao .= "  from orcreceita                                                                           ";
+        $sSqlReceitaMovimentacao .= "       inner join conlancamrec   on conlancamrec.c74_codrec = orcreceita.o70_codrec         ";
+        $sSqlReceitaMovimentacao .= "                                and conlancamrec.c74_anousu = orcreceita.o70_anousu         ";
+        $sSqlReceitaMovimentacao .= "       inner join orcfontes      on orcreceita.o70_codfon   = orcfontes.o57_codfon          ";
+        $sSqlReceitaMovimentacao .= "                                and orcreceita.o70_anousu   = orcfontes.o57_anousu          ";
+        $sSqlReceitaMovimentacao .= "       inner join conlancam      on conlancam.c70_codlan    = conlancamrec.c74_codlan       ";
+        $sSqlReceitaMovimentacao .= "       inner join conlancamdoc   on conlancamdoc.c71_codlan = conlancam.c70_codlan          ";
+        $sSqlReceitaMovimentacao .= "       inner join conhistdoc     on conlancamdoc.c71_coddoc = conhistdoc.c53_coddoc         ";
+        $sSqlReceitaMovimentacao .= "       inner join conhistdoctipo on conhistdoc.c53_tipo     = conhistdoctipo.c57_sequencial ";
+        $sSqlReceitaMovimentacao .= "       left  join conlancamcomplementorecurso on conlancam.c70_codlan = conlancamcomplementorecurso.o201_codlan ";
+        $sSqlReceitaMovimentacao .= "   where o70_anousu >= {$iExercicioBase} ";
+        $sSqlReceitaMovimentacao .= " group by o70_codrec,o70_anousu,c70_data,o201_complemento                                             ";
+
+
+
+        $rsReceitaMovimentacao    = db_query($connOrigem,$sSqlReceitaMovimentacao);
+        $iRowsReceitaMovimentacao = pg_num_rows($rsReceitaMovimentacao);
+
+        if ( $iRowsReceitaMovimentacao ==  0 ) {
+            throw new Exception('Nenhum recurso encontrado!');
+        }
+
+        db_logNumReg($iRowsReceitaMovimentacao,$sArquivoLog,$iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $iRowsReceitaMovimentacao; $iInd++ ) {
+
+            logProcessamento($iInd,$iRowsReceitaMovimentacao,$iParamLog);
+            $oReceitaMovimentacao = db_utils::fieldsMemory($rsReceitaMovimentacao,$iInd);
+            $sSqlReceitaSaldo = "EXECUTE stmt_receitasaldo({$oReceitaMovimentacao->exercicio}, {$oReceitaMovimentacao->codreceita})";
+            $rsReceitaSaldo = db_query($connOrigem, $sSqlReceitaSaldo);
+            $iRowsReceitaSaldo = pg_num_rows($rsReceitaSaldo);
+            if ( $iRowsReceitaSaldo ==  0 ) {
+                $oReceitaMovimentacao->valor_previsao_atualizada = 0;
+            } else {
+                $oReceitaMovimentacao->valor_previsao_atualizada = pg_result($rsReceitaSaldo, 0, 0);
+            }
+            $oReceitaMovimentacao->receita_id = $aListaReceita[$oReceitaMovimentacao->codreceita][$oReceitaMovimentacao->exercicio];
+            $oTBReceitasMovimentacoes->setByLineOfDBUtils($oReceitaMovimentacao);
+            try {
+                $oTBReceitasMovimentacoes->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBReceitasMovimentacoes->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        // ACERTA TABELA receitas_movimentacoes ***************************************************************************//
+
+        $sSqlAcertaRecMov = " UPDATE receitas_movimentacoes SET valor = ( valor * -1 )
                            WHERE receita_id in ( select distinct receitas.id
                                                    from receitas
                                                         inner join planocontas on planocontas.id = receitas.planoconta_id
                                                   where planocontas.estrutural like '9%'
                                                        or planocontas.estrutural like '49%')";
 
-    $rsAcertaRecMov = db_query($connDestino,$sSqlAcertaRecMov);
+        $rsAcertaRecMov = db_query($connDestino,$sSqlAcertaRecMov);
 
-    if ( !$rsAcertaRecMov ) {
-      throw new Exception("ERRO-0: Erro ao acertar tabela receitas_movimentacoes !");
+        if ( !$rsAcertaRecMov ) {
+            throw new Exception("ERRO-0: Erro ao acertar tabela receitas_movimentacoes !");
+        }
+
+    } else {
+        db_logTitulo(" DESABILITADO - IMPORTA RECEITAS ",$sArquivoLog,$iParamLog);
     }
 
-  } else {
-    db_logTitulo(" DESABILITADO - IMPORTA RECEITAS ",$sArquivoLog,$iParamLog);
-  }
+    // FIM MOVIMENTAÇÕES RECEITAS *************************************************************************************//
 
-  // FIM MOVIMENTAÇÕES RECEITAS *************************************************************************************//
+    // DOTAÇÕES *******************************************************************************************************//
 
-  // DOTAÇÕES *******************************************************************************************************//
+    if (IMPORTAR_DOTACAO) {
 
-  if (IMPORTAR_DOTACAO) {
+        db_logTitulo(" IMPORTA DOTAÇÕES ",$sArquivoLog,$iParamLog);
 
-    db_logTitulo(" IMPORTA DOTAÇÕES ",$sArquivoLog,$iParamLog);
+        /**
+         * Consulta Dotacaos na base de origem
+         */
+        $sSqlDotacao = " select o58_coddot    as coddotacao,    ";
+        $sSqlDotacao .= "        o58_orgao     as codorgao,      ";
+        $sSqlDotacao .= "        o58_unidade   as codunidade,    ";
+        $sSqlDotacao .= "        o58_funcao    as codfuncao,     ";
+        $sSqlDotacao .= "        o58_subfuncao as codsubfuncao,  ";
+        $sSqlDotacao .= "        o58_programa  as codprograma,   ";
+        $sSqlDotacao .= "        o58_projativ  as codprojeto,    ";
+        $sSqlDotacao .= "        o58_codigo    as codrecurso,    ";
+        $sSqlDotacao .= "        o58_instit    as codinstit,     ";
+        $sSqlDotacao .= "        o58_anousu    as exercicio,     ";
+        $sSqlDotacao .= "        o58_codigo    as recurso,       ";
+        $sSqlDotacao .= "        o58_codele    as codcon         ";
+        $sSqlDotacao .= "   from orcdotacao   where  o58_anousu >= {$iExercicioBase} ";
+
+        $rsDotacao    = db_query($connOrigem, $sSqlDotacao);
+        $iRowsDotacao = pg_num_rows($rsDotacao);
+
+        if ($iRowsDotacao == 0) {
+            throw new Exception('Nenhum recurso encontrado!');
+        }
+
+        db_logNumReg($iRowsDotacao, $sArquivoLog, $iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ($iInd = 0; $iInd < $iRowsDotacao; $iInd++) {
+
+            logProcessamento($iInd, $iRowsDotacao, $iParamLog);
+            $oDotacao = db_utils::fieldsMemory($rsDotacao, $iInd);
+            if (!isset($aListaProjeto[$oDotacao->codprojeto][$oDotacao->exercicio])) {
+                $sMsg = "ERRO-0: Projeto não encontrado PROJETO: $oDotacao->codprojeto  EXERCICIO: $oDotacao->exercicio ";
+                $sMsg .= "DOTAÇÃO: $oDotacao->coddotacao ";
+                throw new Exception($sMsg);
+            }
+            if (!isset($aListaPlanoConta[$oDotacao->codcon][$oDotacao->exercicio])) {
+                $sMsg = "ERRO-0: Plano de Conta não encontrado CODCON: $oDotacao->codcon EXERCICIO: $oDotacao->exercicio ";
+                $sMsg .= "DOTAÇÃO: $oDotacao->coddotacao ";
+                throw new Exception($sMsg);
+            }
+            $oDotacao->orgao_id       = $aListaOrgao[$oDotacao->codorgao][$oDotacao->exercicio];
+            $oDotacao->unidade_id     = $aListaUnidade[$oDotacao->codunidade][$oDotacao->exercicio];
+            $oDotacao->funcao_id      = $aListaFuncao[$oDotacao->codfuncao];
+            $oDotacao->subfuncao_id   = $aListaSubFuncao[$oDotacao->codsubfuncao];
+            $oDotacao->programa_id    = $aListaPrograma[$oDotacao->codprograma][$oDotacao->exercicio];
+            $oDotacao->projeto_id     = $aListaProjeto[$oDotacao->codprojeto][$oDotacao->exercicio];
+            $oDotacao->planoconta_id  = $aListaPlanoConta[$oDotacao->codcon][$oDotacao->exercicio];
+            $oDotacao->recurso_id     = $aListaRecurso[$oDotacao->codrecurso];
+            $oDotacao->instituicao_id = $aListaInstit[$oDotacao->codinstit];
+            $oTBDotacoes->setByLineOfDBUtils($oDotacao);
+            try {
+                $oTBDotacoes->insertValue();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBDotacoes->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        /**
+         *  É consultado as dotacoes cadastradas na base de destino para que seja populado o array $aListaDotacao
+         *  com as dotacoes cadastradas sendo a variável indexada pelo código do receita da base de origem.
+         *  Essa variável será utilizada por todo o fonte para identificar o código da dotacao de origem.
+         */
+        $sSqlListaDotacaoDestino = " select *        ";
+        $sSqlListaDotacaoDestino .= "   from dotacoes ";
+
+        $rsListaDotacaoDestino    = db_query($connDestino, $sSqlListaDotacaoDestino);
+        $iRowsListaDotacaoDestino = pg_num_rows($rsListaDotacaoDestino);
+
+        if ($iRowsListaDotacaoDestino == 0) {
+            throw new Exception('Nenhum registro encontrado');
+        }
+
+        for ($iInd = 0; $iInd < $iRowsListaDotacaoDestino; $iInd++) {
+
+            $oDotacaoDestino                                                          = db_utils::fieldsMemory($rsListaDotacaoDestino, $iInd);
+            $aListaDotacao[$oDotacaoDestino->coddotacao][$oDotacaoDestino->exercicio] = $oDotacaoDestino->id;
+
+        }
+    } else {
+        db_logTitulo(" DESABILITADO - IMPORTA DOTAÇÕES ",$sArquivoLog,$iParamLog);
+    }
+
+    // FIM DOTAÇÕES ***************************************************************************************************//
+
+    unset($aListaOrgao);
+    unset($aListaUnidade);
+    unset($aListaProjeto);
+    unset($aListaFuncao);
+    unset($aListaSubFuncao);
+    unset($aListaPrograma);
+    unset($aListaRecurso);
+    unset($aListaReceita);
+
+    // CLASSIFICAÇÃO DE CREDORES***************************************************************************************//
+
+    db_logTitulo(" IMPORTA CLASSIFICAÇÃO CREDORES ",$sArquivoLog,$iParamLog);
 
     /**
-     * Consulta Dotacaos na base de origem
+     * Consulta Classificação de Credores na base de origem
      */
-    $sSqlDotacao = " select o58_coddot    as coddotacao,    ";
-    $sSqlDotacao .= "        o58_orgao     as codorgao,      ";
-    $sSqlDotacao .= "        o58_unidade   as codunidade,    ";
-    $sSqlDotacao .= "        o58_funcao    as codfuncao,     ";
-    $sSqlDotacao .= "        o58_subfuncao as codsubfuncao,  ";
-    $sSqlDotacao .= "        o58_programa  as codprograma,   ";
-    $sSqlDotacao .= "        o58_projativ  as codprojeto,    ";
-    $sSqlDotacao .= "        o58_codigo    as codrecurso,    ";
-    $sSqlDotacao .= "        o58_instit    as codinstit,     ";
-    $sSqlDotacao .= "        o58_anousu    as exercicio,     ";
-    $sSqlDotacao .= "        o58_codigo    as recurso,       ";
-    $sSqlDotacao .= "        o58_codele    as codcon         ";
-    $sSqlDotacao .= "   from orcdotacao   where  o58_anousu >= {$iExercicioBase} ";
+    $sSqlClassificacaoCredor  = " select distinct cc30_codigo as codigo, ";
+    $sSqlClassificacaoCredor .= "   cc30_descricao as descricao          ";
+    $sSqlClassificacaoCredor .= " from classificacaocredores  order by cc30_codigo ";
 
-    $rsDotacao    = db_query($connOrigem, $sSqlDotacao);
-    $iRowsDotacao = pg_num_rows($rsDotacao);
+    $rsClassificacaoCredor    = db_query($connOrigem,$sSqlClassificacaoCredor);
+    $iRowsClassificaocaoCredor = pg_num_rows($rsClassificacaoCredor);
 
-    if ($iRowsDotacao == 0) {
-      throw new Exception('Nenhum recurso encontrado!');
+    db_logNumReg($iRowsClassificaocaoCredor,$sArquivoLog,$iParamLog);
+
+    if ( $iRowsClassificaocaoCredor ==  0 ) {
+
+        throw new Exception('Nenhuma classificacao de credor encontrada!');
+
+    } else {
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $iRowsClassificaocaoCredor; $iInd++ ) {
+
+            logProcessamento($iInd,$iRowsClassificaocaoCredor,$iParamLog);
+            $oClassificacaoCredor = db_utils::fieldsMemory($rsClassificacaoCredor,$iInd);
+            $oTBClassificacaoCredor->setByLineOfDBUtils($oClassificacaoCredor);
+            try {
+                $oTBClassificacaoCredor->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBClassificacaoCredor->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
     }
+    // FIM CLASSIFICAÇÃO DE CREDORES***********************************************************************************//
 
-    db_logNumReg($iRowsDotacao, $sArquivoLog, $iParamLog);
+    // PESSOAS *******************************************************************************************************//
+
+    db_logTitulo(" IMPORTA PESSOAS ",$sArquivoLog,$iParamLog);
 
     /**
-     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     * Consulta todos os CGM na base de origem para realizar o cadastro
+     * de todas as pessoas na base de destino, é mais rápido do que filtrar
+     * somente os CGMs ligados a empenhos dentro do loop de empenhos, e tira
+     * proveito da inserção em blocos da classe do dataManager
      */
-    for ($iInd = 0; $iInd < $iRowsDotacao; $iInd++) {
-
-      logProcessamento($iInd, $iRowsDotacao, $iParamLog);
-      $oDotacao = db_utils::fieldsMemory($rsDotacao, $iInd);
-      if (!isset($aListaProjeto[$oDotacao->codprojeto][$oDotacao->exercicio])) {
-        $sMsg = "ERRO-0: Projeto não encontrado PROJETO: $oDotacao->codprojeto  EXERCICIO: $oDotacao->exercicio ";
-        $sMsg .= "DOTAÇÃO: $oDotacao->coddotacao ";
-        throw new Exception($sMsg);
-      }
-      if (!isset($aListaPlanoConta[$oDotacao->codcon][$oDotacao->exercicio])) {
-        $sMsg = "ERRO-0: Plano de Conta não encontrado CODCON: $oDotacao->codcon EXERCICIO: $oDotacao->exercicio ";
-        $sMsg .= "DOTAÇÃO: $oDotacao->coddotacao ";
-        throw new Exception($sMsg);
-      }
-      $oDotacao->orgao_id       = $aListaOrgao[$oDotacao->codorgao][$oDotacao->exercicio];
-      $oDotacao->unidade_id     = $aListaUnidade[$oDotacao->codunidade][$oDotacao->exercicio];
-      $oDotacao->funcao_id      = $aListaFuncao[$oDotacao->codfuncao];
-      $oDotacao->subfuncao_id   = $aListaSubFuncao[$oDotacao->codsubfuncao];
-      $oDotacao->programa_id    = $aListaPrograma[$oDotacao->codprograma][$oDotacao->exercicio];
-      $oDotacao->projeto_id     = $aListaProjeto[$oDotacao->codprojeto][$oDotacao->exercicio];
-      $oDotacao->planoconta_id  = $aListaPlanoConta[$oDotacao->codcon][$oDotacao->exercicio];
-      $oDotacao->recurso_id     = $aListaRecurso[$oDotacao->codrecurso];
-      $oDotacao->instituicao_id = $aListaInstit[$oDotacao->codinstit];
-      $oTBDotacoes->setByLineOfDBUtils($oDotacao);
-      try {
-        $oTBDotacoes->insertValue();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-    }
-
-    /**
-     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-     */
-    try {
-      $oTBDotacoes->persist();
-    } catch (Exception $eException) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    /**
-     *  É consultado as dotacoes cadastradas na base de destino para que seja populado o array $aListaDotacao
-     *  com as dotacoes cadastradas sendo a variável indexada pelo código do receita da base de origem.
-     *  Essa variável será utilizada por todo o fonte para identificar o código da dotacao de origem.
-     */
-    $sSqlListaDotacaoDestino = " select *        ";
-    $sSqlListaDotacaoDestino .= "   from dotacoes ";
-
-    $rsListaDotacaoDestino    = db_query($connDestino, $sSqlListaDotacaoDestino);
-    $iRowsListaDotacaoDestino = pg_num_rows($rsListaDotacaoDestino);
-
-    if ($iRowsListaDotacaoDestino == 0) {
-      throw new Exception('Nenhum registro encontrado');
-    }
-
-    for ($iInd = 0; $iInd < $iRowsListaDotacaoDestino; $iInd++) {
-
-      $oDotacaoDestino                                                          = db_utils::fieldsMemory($rsListaDotacaoDestino, $iInd);
-      $aListaDotacao[$oDotacaoDestino->coddotacao][$oDotacaoDestino->exercicio] = $oDotacaoDestino->id;
-
-    }
-  } else {
-    db_logTitulo(" DESABILITADO - IMPORTA DOTAÇÕES ",$sArquivoLog,$iParamLog);
-  }
-
-  // FIM DOTAÇÕES ***************************************************************************************************//
-
-  unset($aListaOrgao);
-  unset($aListaUnidade);
-  unset($aListaProjeto);
-  unset($aListaFuncao);
-  unset($aListaSubFuncao);
-  unset($aListaPrograma);
-  unset($aListaRecurso);
-  unset($aListaReceita);
-
-  // CLASSIFICAÇÃO DE CREDORES***************************************************************************************//
-
-  db_logTitulo(" IMPORTA CLASSIFICAÇÃO CREDORES ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta Classificação de Credores na base de origem
-   */
-  $sSqlClassificacaoCredor  = " select distinct cc30_codigo as codigo, ";
-  $sSqlClassificacaoCredor .= "   cc30_descricao as descricao          ";
-  $sSqlClassificacaoCredor .= " from classificacaocredores  order by cc30_codigo ";
-
-  $rsClassificacaoCredor    = db_query($connOrigem,$sSqlClassificacaoCredor);
-  $iRowsClassificaocaoCredor = pg_num_rows($rsClassificacaoCredor);
-
-  db_logNumReg($iRowsClassificaocaoCredor,$sArquivoLog,$iParamLog);
-
-  if ( $iRowsClassificaocaoCredor ==  0 ) {
-
-    throw new Exception('Nenhuma classificacao de credor encontrada!');
-
-  } else {
-
-    /**
-     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-     */
-    for ( $iInd=0; $iInd < $iRowsClassificaocaoCredor; $iInd++ ) {
-
-      logProcessamento($iInd,$iRowsClassificaocaoCredor,$iParamLog);
-      $oClassificacaoCredor = db_utils::fieldsMemory($rsClassificacaoCredor,$iInd);
-      $oTBClassificacaoCredor->setByLineOfDBUtils($oClassificacaoCredor);
-      try {
-        $oTBClassificacaoCredor->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    /**
-     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-     */
-    try {
-      $oTBClassificacaoCredor->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-  }
-  // FIM CLASSIFICAÇÃO DE CREDORES***********************************************************************************//
-
-  // PESSOAS *******************************************************************************************************//
-
-  db_logTitulo(" IMPORTA PESSOAS ",$sArquivoLog,$iParamLog);
-
-  /**
-   * Consulta todos os CGM na base de origem para realizar o cadastro
-   * de todas as pessoas na base de destino, é mais rápido do que filtrar
-   * somente os CGMs ligados a empenhos dentro do loop de empenhos, e tira
-   * proveito da inserção em blocos da classe do dataManager
-   */
-  $sSqlPessoas = "  SELECT                         ";
-  $sSqlPessoas .= "   cgm.z01_numcgm AS id,        ";
-  $sSqlPessoas .= "   cgm.z01_numcgm AS codpessoa, ";
-  $sSqlPessoas .= "   cgm.z01_nome   AS nome,      ";
-  $sSqlPessoas .= "   coalesce(nullif(trim(z01_cgccpf),''),'0') AS cpfcnpj ";
-  $sSqlPessoas .= " FROM                           ";
-  $sSqlPessoas .= "   cgm                          ";
-  $sSqlPessoas .= " WHERE                          ";
-  $sSqlPessoas .= "   cgm.z01_numcgm IN (          ";
-  $sSqlPessoas .= "   SELECT ";
-  $sSqlPessoas .= "     distinct z01_numcgm as numcgm ";
-  $sSqlPessoas .= "   FROM ";
-  $sSqlPessoas .= "     empempenho ";
-  $sSqlPessoas .= "     INNER JOIN cgm on cgm.z01_numcgm = empempenho.e60_numcgm ";
-  $sSqlPessoas .= "     INNER JOIN orcdotacao on orcdotacao.o58_coddot = empempenho.e60_coddot ";
-  $sSqlPessoas .= "     INNER JOIN pctipocompra on pctipocompra.pc50_codcom = empempenho.e60_codcom ";
-  $sSqlPessoas .= "     and orcdotacao.o58_anousu = empempenho.e60_anousu ";
-  $sSqlPessoas .= "     LEFT JOIN classificacaocredoresempenho on classificacaocredoresempenho.cc31_sequencial = ( ";
-  $sSqlPessoas .= "       SELECT ";
-  $sSqlPessoas .= "         classificacaocredoresempenho.cc31_sequencial ";
-  $sSqlPessoas .= "       FROM ";
-  $sSqlPessoas .= "         classificacaocredoresempenho ";
-  $sSqlPessoas .= "       WHERE ";
-  $sSqlPessoas .= "         classificacaocredoresempenho.cc31_empempenho = empempenho.e60_numemp ";
-  $sSqlPessoas .= "       LIMIT ";
-  $sSqlPessoas .= "         1 ";
-  $sSqlPessoas .= "     ) LEFT JOIN ( ";
-  $sSqlPessoas .= "       SELECT ";
-  $sSqlPessoas .= "         distinct on (e.e64_numemp) e.e64_numemp, ";
-  $sSqlPessoas .= "         e.e64_codele ";
-  $sSqlPessoas .= "       FROM ";
-  $sSqlPessoas .= "         empelemento e ";
-  $sSqlPessoas .= "       order by ";
-  $sSqlPessoas .= "         e.e64_numemp, ";
-  $sSqlPessoas .= "         e.e64_codele ";
-  $sSqlPessoas .= "     ) as x on x.e64_numemp = empempenho.e60_numemp ";
-  $sSqlPessoas .= "     LEFT JOIN conplano on conplano.c60_codcon = x.e64_codele ";
-  $sSqlPessoas .= "     and conplano.c60_anousu = empempenho.e60_anousu ";
-  $sSqlPessoas .= "     LEFT JOIN empempaut on empempaut.e61_numemp = empempenho.e60_numemp ";
-  $sSqlPessoas .= "   WHERE ";
-  $sSqlPessoas .= "     exists ( ";
-  $sSqlPessoas .= "       SELECT ";
-  $sSqlPessoas .= "         1 ";
-  $sSqlPessoas .= "       FROM ";
-  $sSqlPessoas .= "         conlancamemp ";
-  $sSqlPessoas .= "         INNER JOIN conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan ";
-  $sSqlPessoas .= "       WHERE ";
-  $sSqlPessoas .= "         c75_numemp = e60_numemp ";
-  $sSqlPessoas .= "         and c70_data >= '{$iExercicioBase}-01-01' :: date ";
-  $sSqlPessoas .= "     ) ";
-  $sSqlPessoas .= "     and e60_anousu >= {$iExercicioBase} ";
-  $sSqlPessoas .= "     and exists ( ";
-  $sSqlPessoas .= "       SELECT ";
-  $sSqlPessoas .= "         1 ";
-  $sSqlPessoas .= "       FROM ";
-  $sSqlPessoas .= "         empempitem ";
-  $sSqlPessoas .= "       WHERE ";
-  $sSqlPessoas .= "         empempitem.e62_numemp = empempenho.e60_numemp ";
-  $sSqlPessoas .= "     ) ";
-  $sSqlPessoas .= "                      )         ";
-  $sSqlPessoas .= "  OR cgm.z01_numcgm IN (
+    $sSqlPessoas = "  SELECT                         ";
+    $sSqlPessoas .= "   cgm.z01_numcgm AS id,        ";
+    $sSqlPessoas .= "   cgm.z01_numcgm AS codpessoa, ";
+    $sSqlPessoas .= "   cgm.z01_nome   AS nome,      ";
+    $sSqlPessoas .= "   coalesce(nullif(trim(z01_cgccpf),''),'0') AS cpfcnpj ";
+    $sSqlPessoas .= " FROM                           ";
+    $sSqlPessoas .= "   cgm                          ";
+    $sSqlPessoas .= " WHERE                          ";
+    $sSqlPessoas .= "   cgm.z01_numcgm IN (          ";
+    $sSqlPessoas .= "   SELECT ";
+    $sSqlPessoas .= "     distinct z01_numcgm as numcgm ";
+    $sSqlPessoas .= "   FROM ";
+    $sSqlPessoas .= "     empempenho ";
+    $sSqlPessoas .= "     INNER JOIN cgm on cgm.z01_numcgm = empempenho.e60_numcgm ";
+    $sSqlPessoas .= "     INNER JOIN orcdotacao on orcdotacao.o58_coddot = empempenho.e60_coddot ";
+    $sSqlPessoas .= "     INNER JOIN pctipocompra on pctipocompra.pc50_codcom = empempenho.e60_codcom ";
+    $sSqlPessoas .= "     and orcdotacao.o58_anousu = empempenho.e60_anousu ";
+    $sSqlPessoas .= "     LEFT JOIN classificacaocredoresempenho on classificacaocredoresempenho.cc31_sequencial = ( ";
+    $sSqlPessoas .= "       SELECT ";
+    $sSqlPessoas .= "         classificacaocredoresempenho.cc31_sequencial ";
+    $sSqlPessoas .= "       FROM ";
+    $sSqlPessoas .= "         classificacaocredoresempenho ";
+    $sSqlPessoas .= "       WHERE ";
+    $sSqlPessoas .= "         classificacaocredoresempenho.cc31_empempenho = empempenho.e60_numemp ";
+    $sSqlPessoas .= "       LIMIT ";
+    $sSqlPessoas .= "         1 ";
+    $sSqlPessoas .= "     ) LEFT JOIN ( ";
+    $sSqlPessoas .= "       SELECT ";
+    $sSqlPessoas .= "         distinct on (e.e64_numemp) e.e64_numemp, ";
+    $sSqlPessoas .= "         e.e64_codele ";
+    $sSqlPessoas .= "       FROM ";
+    $sSqlPessoas .= "         empelemento e ";
+    $sSqlPessoas .= "       order by ";
+    $sSqlPessoas .= "         e.e64_numemp, ";
+    $sSqlPessoas .= "         e.e64_codele ";
+    $sSqlPessoas .= "     ) as x on x.e64_numemp = empempenho.e60_numemp ";
+    $sSqlPessoas .= "     LEFT JOIN conplano on conplano.c60_codcon = x.e64_codele ";
+    $sSqlPessoas .= "     and conplano.c60_anousu = empempenho.e60_anousu ";
+    $sSqlPessoas .= "     LEFT JOIN empempaut on empempaut.e61_numemp = empempenho.e60_numemp ";
+    $sSqlPessoas .= "   WHERE ";
+    $sSqlPessoas .= "     exists ( ";
+    $sSqlPessoas .= "       SELECT ";
+    $sSqlPessoas .= "         1 ";
+    $sSqlPessoas .= "       FROM ";
+    $sSqlPessoas .= "         conlancamemp ";
+    $sSqlPessoas .= "         INNER JOIN conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan ";
+    $sSqlPessoas .= "       WHERE ";
+    $sSqlPessoas .= "         c75_numemp = e60_numemp ";
+    $sSqlPessoas .= "         and c70_data >= '{$iExercicioBase}-01-01' :: date ";
+    $sSqlPessoas .= "     ) ";
+    $sSqlPessoas .= "     and e60_anousu >= {$iExercicioBase} ";
+    $sSqlPessoas .= "     and exists ( ";
+    $sSqlPessoas .= "       SELECT ";
+    $sSqlPessoas .= "         1 ";
+    $sSqlPessoas .= "       FROM ";
+    $sSqlPessoas .= "         empempitem ";
+    $sSqlPessoas .= "       WHERE ";
+    $sSqlPessoas .= "         empempitem.e62_numemp = empempenho.e60_numemp ";
+    $sSqlPessoas .= "     ) ";
+    $sSqlPessoas .= "                      )         ";
+    $sSqlPessoas .= "  OR cgm.z01_numcgm IN (
   select distinct
         t52_numcgm as numcgm
       from bens
@@ -2037,122 +2041,122 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
            left  join bensbaix on bensbaix.t55_codbem = bens.t52_bem )
   ";
 
-  $rsPessoas    = db_query($connOrigem,$sSqlPessoas);
-  $iRowsPessoas = pg_num_rows($rsPessoas);
+    $rsPessoas    = db_query($connOrigem,$sSqlPessoas);
+    $iRowsPessoas = pg_num_rows($rsPessoas);
 
-  if ( $iRowsPessoas ==  0 ) {
-    throw new Exception('Nenhuma pessoa encontrada!');
-  }
+    if ( $iRowsPessoas ==  0 ) {
+        throw new Exception('Nenhuma pessoa encontrada!');
+    }
 
-  db_logNumReg($iRowsPessoas,$sArquivoLog,$iParamLog);
+    db_logNumReg($iRowsPessoas,$sArquivoLog,$iParamLog);
 
-  /**
-   *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-   *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
-   *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-   */
-  for ( $iInd=0; $iInd < $iRowsPessoas; $iInd++ ) {
+    /**
+     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
+     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+     */
+    for ( $iInd=0; $iInd < $iRowsPessoas; $iInd++ ) {
 
-    logProcessamento($iInd,$iRowsPessoas,$iParamLog);
-    $oPessoas = db_utils::fieldsMemory($rsPessoas,$iInd);
-    $oTBPessoas->setByLineOfDBUtils($oPessoas);
+        logProcessamento($iInd,$iRowsPessoas,$iParamLog);
+        $oPessoas = db_utils::fieldsMemory($rsPessoas,$iInd);
+        $oTBPessoas->setByLineOfDBUtils($oPessoas);
+        try {
+            $oTBPessoas->insertValue();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+    }
+
+    /**
+     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+     */
     try {
-      $oTBPessoas->insertValue();
+        $oTBPessoas->persist();
     } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
+        throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
 
-  }
+    // FIM PESSOAS *********************************************************************************************//
 
-  /**
-   *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-   *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-   */
-  try {
-    $oTBPessoas->persist();
-  } catch ( Exception $eException ) {
-    throw new Exception("ERRO-0: {$eException->getMessage()}");
-  }
+    // EMPENHOS ************************************************************************************************//
 
-  // FIM PESSOAS *********************************************************************************************//
+    if (IMPORTAR_EMPENHO) {
 
-  // EMPENHOS ************************************************************************************************//
+        db_logTitulo(" IMPORTA EMPENHOS ",$sArquivoLog,$iParamLog);
 
-  if (IMPORTAR_EMPENHO) {
+        /**
+         * Realiza a carga de todas as informações de licitações de empenhos
+         * que serão utilizadas para preenchimento das informações de cada empenho
+         */
+        $sSqlLic = "  SELECT                                                                                                 ";
+        $sSqlLic .= "   e55_autori,                                                                                           ";
+        $sSqlLic .= "   l20_dtpublic,                                                                                        ";
+        $sSqlLic .= "   l20_numero,                                                                                          ";
+        $sSqlLic .= "   l03_descr                                                                                            ";
+        $sSqlLic .= " FROM                                                                                                   ";
+        $sSqlLic .= "   empautitem                                                                                           ";
+        $sSqlLic .= "   INNER JOIN empautitempcprocitem ON empautitempcprocitem.e73_sequen = empautitem.e55_sequen           ";
+        $sSqlLic .= "   AND empautitempcprocitem.e73_autori = empautitem.e55_autori                                          ";
+        $sSqlLic .= "   INNER JOIN liclicitem           ON liclicitem.l21_codpcprocitem    = empautitempcprocitem.e73_sequen ";
+        $sSqlLic .= "   INNER JOIN liclicita            ON liclicitem.l21_codliclicita     = liclicita.l20_codigo            ";
+        $sSqlLic .= "   INNER JOIN cflicita             ON liclicita.l20_codtipocom        = cflicita.l03_codigo             ";
+        $sSqlLic .= "   INNER JOIN empautoriza          ON empautoriza.e54_autori          = empautitem.e55_autori           ";
 
-    db_logTitulo(" IMPORTA EMPENHOS ",$sArquivoLog,$iParamLog);
+        $rsLic    = db_query($connOrigem,$sSqlLic);
+        $iRowsLic = pg_num_rows($rsLic);
 
-    /**
-     * Realiza a carga de todas as informações de licitações de empenhos
-     * que serão utilizadas para preenchimento das informações de cada empenho
-     */
-    $sSqlLic = "  SELECT                                                                                                 ";
-    $sSqlLic .= "   e55_autori,                                                                                           ";
-    $sSqlLic .= "   l20_dtpublic,                                                                                        ";
-    $sSqlLic .= "   l20_numero,                                                                                          ";
-    $sSqlLic .= "   l03_descr                                                                                            ";
-    $sSqlLic .= " FROM                                                                                                   ";
-    $sSqlLic .= "   empautitem                                                                                           ";
-    $sSqlLic .= "   INNER JOIN empautitempcprocitem ON empautitempcprocitem.e73_sequen = empautitem.e55_sequen           ";
-    $sSqlLic .= "   AND empautitempcprocitem.e73_autori = empautitem.e55_autori                                          ";
-    $sSqlLic .= "   INNER JOIN liclicitem           ON liclicitem.l21_codpcprocitem    = empautitempcprocitem.e73_sequen ";
-    $sSqlLic .= "   INNER JOIN liclicita            ON liclicitem.l21_codliclicita     = liclicita.l20_codigo            ";
-    $sSqlLic .= "   INNER JOIN cflicita             ON liclicita.l20_codtipocom        = cflicita.l03_codigo             ";
-    $sSqlLic .= "   INNER JOIN empautoriza          ON empautoriza.e54_autori          = empautitem.e55_autori           ";
+        /**
+         * Se a consulta retornar dados preenche o array $aListaLic utilizando
+         * o número da autorização como indice do array
+         */
+        if ($iRowsLic > 0) {
+            $aListaLic = array();
+            for ( $iInd=0; $iInd < $iRowsLic; $iInd++ ) {
+                $oLic = db_utils::fieldsMemory($rsLic, $iInd);
+                $oDadosNovos = new stdClass();
+                $oDadosNovos->l20_dtpublic = $oLic->l20_dtpublic;
+                $oDadosNovos->l20_numero = $oLic->l20_numero;
+                $oDadosNovos->l03_descr = $oLic->l03_descr;
+                $aListaLic[$oLic->e55_autori] = $oDadosNovos;
+            }
+        }
 
-    $rsLic    = db_query($connOrigem,$sSqlLic);
-    $iRowsLic = pg_num_rows($rsLic);
-
-    /**
-     * Se a consulta retornar dados preenche o array $aListaLic utilizando
-     * o número da autorização como indice do array
-     */
-    if ($iRowsLic > 0) {
-      $aListaLic = array();
-      for ( $iInd=0; $iInd < $iRowsLic; $iInd++ ) {
-        $oLic = db_utils::fieldsMemory($rsLic, $iInd);
-        $oDadosNovos = new stdClass();
-        $oDadosNovos->l20_dtpublic = $oLic->l20_dtpublic;
-        $oDadosNovos->l20_numero = $oLic->l20_numero;
-        $oDadosNovos->l03_descr = $oLic->l03_descr;
-        $aListaLic[$oLic->e55_autori] = $oDadosNovos;
-      }
-    }
-
-    /**
-     * Consulta os empenhos na base de origem filtrando pelo exercicio base
-     * definido no arquivo de configuração da carga do transparencia
-     */
-    $sSqlEmpenho = " select distinct e60_numemp as codempenho,                                                       ";
-    $sSqlEmpenho .= "        e60_codemp as codigo,                                                                   ";
-    $sSqlEmpenho .= "        e60_anousu as exercicio,                                                                ";
-    $sSqlEmpenho .= "        e60_instit as codinstit,                                                                ";
-    $sSqlEmpenho .= "        e60_emiss  as dataemissao,                                                              ";
-    $sSqlEmpenho .= "        e60_vencim as datavencimento,                                                           ";
-    $sSqlEmpenho .= "        e60_coddot as coddotacao,                                                               ";
-    $sSqlEmpenho .= "        e60_vlremp as valor,                                                                    ";
-    $sSqlEmpenho .= "        e60_vlrpag as valor_pago,                                                               ";
-    $sSqlEmpenho .= "        e60_vlrliq as valor_liquidado,                                                          ";
-    $sSqlEmpenho .= "        e60_vlranu as valor_anulado,                                                            ";
-    $sSqlEmpenho .= "        e60_resumo as resumo,                                                                   ";
-    $sSqlEmpenho .= "        z01_numcgm as numcgm,                                                                   ";
-    $sSqlEmpenho .= "        coalesce(nullif(trim(z01_cgccpf),''),'0') as cgccpf,                                    ";
-    $sSqlEmpenho .= "        case                                                                                    ";
-    $sSqlEmpenho .= "           when c60_codcon is not null then c60_codcon                                          ";
-    $sSqlEmpenho .= "           else o58_codele                                                                      ";
-    $sSqlEmpenho .= "        end as codcon,                                                                          ";
-    $sSqlEmpenho .= "        z01_nome    as nome,                                                                    ";
-    $sSqlEmpenho .= "        e61_autori  as codautoriza,                                                             ";
-    $sSqlEmpenho .= "        e60_numerol as numero_licitacao,                                                        ";
-    $sSqlEmpenho .= "        cc31_justificativa as justificativa,                                                    ";
-    $sSqlEmpenho .= "        cc31_classificacaocredores as classificacaocredores_codigo,                             ";
-    $sSqlEmpenho .= "        pc50_descr  as descrtipocompra                                                          ";
-    $sSqlEmpenho .= "   from empempenho                                                                              ";
-    $sSqlEmpenho .= "        inner join cgm          on cgm.z01_numcgm           = empempenho.e60_numcgm             ";
-    $sSqlEmpenho .= "        inner join orcdotacao   on orcdotacao.o58_coddot    = empempenho.e60_coddot             ";
-    $sSqlEmpenho .= "        inner join pctipocompra on pctipocompra.pc50_codcom = empempenho.e60_codcom             ";
-    $sSqlEmpenho .= "                               and orcdotacao.o58_anousu    = empempenho.e60_anousu             ";
-    $sSqlEmpenho .= "        left join classificacaocredoresempenho on
+        /**
+         * Consulta os empenhos na base de origem filtrando pelo exercicio base
+         * definido no arquivo de configuração da carga do transparencia
+         */
+        $sSqlEmpenho = " select distinct e60_numemp as codempenho,                                                       ";
+        $sSqlEmpenho .= "        e60_codemp as codigo,                                                                   ";
+        $sSqlEmpenho .= "        e60_anousu as exercicio,                                                                ";
+        $sSqlEmpenho .= "        e60_instit as codinstit,                                                                ";
+        $sSqlEmpenho .= "        e60_emiss  as dataemissao,                                                              ";
+        $sSqlEmpenho .= "        e60_vencim as datavencimento,                                                           ";
+        $sSqlEmpenho .= "        e60_coddot as coddotacao,                                                               ";
+        $sSqlEmpenho .= "        e60_vlremp as valor,                                                                    ";
+        $sSqlEmpenho .= "        e60_vlrpag as valor_pago,                                                               ";
+        $sSqlEmpenho .= "        e60_vlrliq as valor_liquidado,                                                          ";
+        $sSqlEmpenho .= "        e60_vlranu as valor_anulado,                                                            ";
+        $sSqlEmpenho .= "        e60_resumo as resumo,                                                                   ";
+        $sSqlEmpenho .= "        z01_numcgm as numcgm,                                                                   ";
+        $sSqlEmpenho .= "        coalesce(nullif(trim(z01_cgccpf),''),'0') as cgccpf,                                    ";
+        $sSqlEmpenho .= "        case                                                                                    ";
+        $sSqlEmpenho .= "           when c60_codcon is not null then c60_codcon                                          ";
+        $sSqlEmpenho .= "           else o58_codele                                                                      ";
+        $sSqlEmpenho .= "        end as codcon,                                                                          ";
+        $sSqlEmpenho .= "        z01_nome    as nome,                                                                    ";
+        $sSqlEmpenho .= "        e61_autori  as codautoriza,                                                             ";
+        $sSqlEmpenho .= "        e60_numerol as numero_licitacao,                                                        ";
+        $sSqlEmpenho .= "        cc31_justificativa as justificativa,                                                    ";
+        $sSqlEmpenho .= "        cc31_classificacaocredores as classificacaocredores_codigo,                             ";
+        $sSqlEmpenho .= "        pc50_descr  as descrtipocompra                                                          ";
+        $sSqlEmpenho .= "   from empempenho                                                                              ";
+        $sSqlEmpenho .= "        inner join cgm          on cgm.z01_numcgm           = empempenho.e60_numcgm             ";
+        $sSqlEmpenho .= "        inner join orcdotacao   on orcdotacao.o58_coddot    = empempenho.e60_coddot             ";
+        $sSqlEmpenho .= "        inner join pctipocompra on pctipocompra.pc50_codcom = empempenho.e60_codcom             ";
+        $sSqlEmpenho .= "                               and orcdotacao.o58_anousu    = empempenho.e60_anousu             ";
+        $sSqlEmpenho .= "        left join classificacaocredoresempenho on
                                 classificacaocredoresempenho.cc31_sequencial = (
                                     select
                                   classificacaocredoresempenho.cc31_sequencial
@@ -2162,445 +2166,445 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
                                   classificacaocredoresempenho.cc31_empempenho = empempenho.e60_numemp
                                 LIMIT 1 )
                           ";
-    $sSqlEmpenho .= "        left join (  select distinct on (e.e64_numemp) e.e64_numemp, e.e64_codele               ";
-    $sSqlEmpenho .= "                       from empelemento e                                                       ";
-    $sSqlEmpenho .= "                   order by e.e64_numemp, e.e64_codele ) as x                                   ";
-    $sSqlEmpenho .= "                                on x.e64_numemp           = empempenho.e60_numemp               ";
-    $sSqlEmpenho .= "        left join conplano      on conplano.c60_codcon    = x.e64_codele                        ";
-    $sSqlEmpenho .= "                               and conplano.c60_anousu    = empempenho.e60_anousu               ";
-    $sSqlEmpenho .= "        left join empempaut     on empempaut.e61_numemp   = empempenho.e60_numemp               ";
-    $sSqlEmpenho .= "  where exists (  select 1                                                                      ";
-    $sSqlEmpenho .= "                    from conlancamemp                                                           ";
-    $sSqlEmpenho .= "                         inner join conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan ";
-    $sSqlEmpenho .= "                   where c75_numemp = e60_numemp                                                ";
-    $sSqlEmpenho .= "                     and c70_data >= '{$iExercicioBase}-01-01'::date )                          ";
-    $sSqlEmpenho .= "    and e60_anousu >= {$iExercicioBase}                                                         ";
-    $sSqlEmpenho .= "    and exists (  select 1                                                                      ";
-    $sSqlEmpenho .= "                    from empempitem                                                             ";
-    $sSqlEmpenho .= "                   where empempitem.e62_numemp = empempenho.e60_numemp )                        ";
+        $sSqlEmpenho .= "        left join (  select distinct on (e.e64_numemp) e.e64_numemp, e.e64_codele               ";
+        $sSqlEmpenho .= "                       from empelemento e                                                       ";
+        $sSqlEmpenho .= "                   order by e.e64_numemp, e.e64_codele ) as x                                   ";
+        $sSqlEmpenho .= "                                on x.e64_numemp           = empempenho.e60_numemp               ";
+        $sSqlEmpenho .= "        left join conplano      on conplano.c60_codcon    = x.e64_codele                        ";
+        $sSqlEmpenho .= "                               and conplano.c60_anousu    = empempenho.e60_anousu               ";
+        $sSqlEmpenho .= "        left join empempaut     on empempaut.e61_numemp   = empempenho.e60_numemp               ";
+        $sSqlEmpenho .= "  where exists (  select 1                                                                      ";
+        $sSqlEmpenho .= "                    from conlancamemp                                                           ";
+        $sSqlEmpenho .= "                         inner join conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan ";
+        $sSqlEmpenho .= "                   where c75_numemp = e60_numemp                                                ";
+        $sSqlEmpenho .= "                     and c70_data >= '{$iExercicioBase}-01-01'::date )                          ";
+        $sSqlEmpenho .= "    and e60_anousu >= {$iExercicioBase}                                                         ";
+        $sSqlEmpenho .= "    and exists (  select 1                                                                      ";
+        $sSqlEmpenho .= "                    from empempitem                                                             ";
+        $sSqlEmpenho .= "                   where empempitem.e62_numemp = empempenho.e60_numemp )                        ";
 
-    $rsEmpenho    = db_query($connOrigem, $sSqlEmpenho);
-    $iRowsEmpenho = pg_num_rows($rsEmpenho);
+        $rsEmpenho    = db_query($connOrigem, $sSqlEmpenho);
+        $iRowsEmpenho = pg_num_rows($rsEmpenho);
 
-    if ($iRowsEmpenho == 0) {
-      throw new Exception('Nenhum empenho encontrado!');
-    }
+        if ($iRowsEmpenho == 0) {
+            throw new Exception('Nenhum empenho encontrado!');
+        }
 
-    db_logNumReg($iRowsEmpenho, $sArquivoLog, $iParamLog);
+        db_logNumReg($iRowsEmpenho, $sArquivoLog, $iParamLog);
 
-    /**
-     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-     */
-    for ($iInd = 0; $iInd < $iRowsEmpenho; $iInd++) {
-
-      logProcessamento($iInd, $iRowsEmpenho, $iParamLog);
-      $oEmpenho = db_utils::fieldsMemory($rsEmpenho, $iInd);
-      /**
-       * Removido daqui o bloco de cadastro de pessoas/CGM para aumento da performance
-       */
-      /**
-       * Cria a lista com os códigos dos empenhos que estão sendo processados
-       * para a montagem posterior do filtro de códigos de empenhos
-       */
-      $aListaEmpenho[] = $oEmpenho->codempenho;
-      if (!isset($aListaDotacao[$oEmpenho->coddotacao][$oEmpenho->exercicio])) {
-        $sMsg = "ERRO-0: Dotação não encontrada DOTAÇÃO: $oEmpenho->coddotacao  EXERCICIO: $oEmpenho->exercicio ";
-        $sMsg .= "NUMEMP  $oEmpenho->codempenho ";
-        throw new Exception($sMsg);
-      }
-      if (!isset($aListaPlanoConta[$oEmpenho->codcon][$oEmpenho->exercicio])) {
-        $sMsg = "ERRO-0: Plano de Conta não encontrado CODCON: $oEmpenho->codcon EXERCICIO: $oEmpenho->exercicio ";
-        $sMsg .= "NUMEMP: $oEmpenho->codempenho ";
-        throw new Exception($sMsg);
-      }
-      $sTipoCompra = "";
-      if (trim($oEmpenho->codautoriza) != '') {
         /**
-         * Removido daqui o bloco de busca de licitações para aumento de performance
-         * substituido pela busca no array $aListaLic que já foi pré carregado
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
          */
-        if (isset($aListaLic)) {
-          if (array_key_exists($oEmpenho->codautoriza, $aListaLic)) {
-            $aData       = explode("-", $aListaLic[$oEmpenho->codautoriza]->l20Pdtpublic);
-            $iAnoLic     = $aData[0];
-            $sNumeroLic  = $aListaLic[$oEmpenho->codautoriza]->l20_numero . "/" . $iAnoLic;
-            $sTipoCompra = $aListaLic[$oEmpenho->codautoriza]->l03_descr . " Número Licitação : {$sNumeroLic}";
-          }
+        for ($iInd = 0; $iInd < $iRowsEmpenho; $iInd++) {
+
+            logProcessamento($iInd, $iRowsEmpenho, $iParamLog);
+            $oEmpenho = db_utils::fieldsMemory($rsEmpenho, $iInd);
+            /**
+             * Removido daqui o bloco de cadastro de pessoas/CGM para aumento da performance
+             */
+            /**
+             * Cria a lista com os códigos dos empenhos que estão sendo processados
+             * para a montagem posterior do filtro de códigos de empenhos
+             */
+            $aListaEmpenho[] = $oEmpenho->codempenho;
+            if (!isset($aListaDotacao[$oEmpenho->coddotacao][$oEmpenho->exercicio])) {
+                $sMsg = "ERRO-0: Dotação não encontrada DOTAÇÃO: $oEmpenho->coddotacao  EXERCICIO: $oEmpenho->exercicio ";
+                $sMsg .= "NUMEMP  $oEmpenho->codempenho ";
+                throw new Exception($sMsg);
+            }
+            if (!isset($aListaPlanoConta[$oEmpenho->codcon][$oEmpenho->exercicio])) {
+                $sMsg = "ERRO-0: Plano de Conta não encontrado CODCON: $oEmpenho->codcon EXERCICIO: $oEmpenho->exercicio ";
+                $sMsg .= "NUMEMP: $oEmpenho->codempenho ";
+                throw new Exception($sMsg);
+            }
+            $sTipoCompra = "";
+            if (trim($oEmpenho->codautoriza) != '') {
+                /**
+                 * Removido daqui o bloco de busca de licitações para aumento de performance
+                 * substituido pela busca no array $aListaLic que já foi pré carregado
+                 */
+                if (isset($aListaLic)) {
+                    if (array_key_exists($oEmpenho->codautoriza, $aListaLic)) {
+                        $aData       = explode("-", $aListaLic[$oEmpenho->codautoriza]->l20Pdtpublic);
+                        $iAnoLic     = $aData[0];
+                        $sNumeroLic  = $aListaLic[$oEmpenho->codautoriza]->l20_numero . "/" . $iAnoLic;
+                        $sTipoCompra = $aListaLic[$oEmpenho->codautoriza]->l03_descr . " Número Licitação : {$sNumeroLic}";
+                    }
+                }
+            }
+            if (trim($sTipoCompra) == '') {
+                $sTipoCompra = $oEmpenho->descrtipocompra;
+                if (trim($oEmpenho->numero_licitacao) != '') {
+                    $sTipoCompra .= " Número Licitação : {$oEmpenho->numero_licitacao}";
+                }
+            }
+            /**
+             * Adicionado o código do empenho como ID na tabela de destino para melhoria
+             * de performance dos próximos itens onde é necessário saber o ID para fazer
+             * a interligação dos dados, montar as PK
+             */
+            $oEmpenho->id             = $oEmpenho->codempenho;
+            $oEmpenho->pessoa_id      = $oEmpenho->numcgm;
+            $oEmpenho->planoconta_id  = $aListaPlanoConta[$oEmpenho->codcon][$oEmpenho->exercicio];
+            $oEmpenho->dotacao_id     = $aListaDotacao[$oEmpenho->coddotacao][$oEmpenho->exercicio];
+            $oEmpenho->instituicao_id = $aListaInstit[$oEmpenho->codinstit];
+            $oEmpenho->tipo_compra    = $sTipoCompra;
+            $oTBEmpenhos->setByLineOfDBUtils($oEmpenho);
+            try {
+                $oTBEmpenhos->insertValue();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
         }
-      }
-      if (trim($sTipoCompra) == '') {
-        $sTipoCompra = $oEmpenho->descrtipocompra;
-        if (trim($oEmpenho->numero_licitacao) != '') {
-          $sTipoCompra .= " Número Licitação : {$oEmpenho->numero_licitacao}";
-        }
-      }
-      /**
-       * Adicionado o código do empenho como ID na tabela de destino para melhoria
-       * de performance dos próximos itens onde é necessário saber o ID para fazer
-       * a interligação dos dados, montar as PK
-       */
-      $oEmpenho->id             = $oEmpenho->codempenho;
-      $oEmpenho->pessoa_id      = $oEmpenho->numcgm;
-      $oEmpenho->planoconta_id  = $aListaPlanoConta[$oEmpenho->codcon][$oEmpenho->exercicio];
-      $oEmpenho->dotacao_id     = $aListaDotacao[$oEmpenho->coddotacao][$oEmpenho->exercicio];
-      $oEmpenho->instituicao_id = $aListaInstit[$oEmpenho->codinstit];
-      $oEmpenho->tipo_compra    = $sTipoCompra;
-      $oTBEmpenhos->setByLineOfDBUtils($oEmpenho);
-      try {
-        $oTBEmpenhos->insertValue();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
 
-    }
-
-    /**
-     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-     */
-    try {
-      $oTBEmpenhos->persist();
-    } catch (Exception $eException) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    /**
-     *  Cria um array com os códigos de empenho separados por vírgula
-     *  para ser utilizado na filtragem das próximas consultas
-     */
-    $filtroCodigosEmpenhos = implode($aListaEmpenho, ',');
-
-    // FIM EMPENHOS ***************************************************************************************************//
-
-    // ITENS DE EMPENHO *************************************************************************************************//
-
-    db_logTitulo(" IMPORTA ITENS DE EMPENHO ", $sArquivoLog, $iParamLog);
-
-    /**
-     * Consulta os itens de empenhos na base de origem utilizando o array $filtroCodigosEmpenhos
-     * com os códigos de empenho como filtro
-     */
-    $sSqlItensEmpenho =  " SELECT                                                           ";
-    $sSqlItensEmpenho .= "   e62_numemp                                  AS empenho_id,     ";
-    $sSqlItensEmpenho .= "   trim(replace(pc01_descrmater, '\r\n', ' ')) AS descricao,      ";
-    $sSqlItensEmpenho .= "   e62_quant                                   AS quantidade,     ";
-    $sSqlItensEmpenho .= "   e62_vlrun                                   AS valor_unitario, ";
-    $sSqlItensEmpenho .= "   e62_vltot                                   AS valor_total     ";
-    $sSqlItensEmpenho .= " FROM                                                             ";
-    $sSqlItensEmpenho .= "   empempitem                                                     ";
-    $sSqlItensEmpenho .= "   INNER JOIN pcmater ON pc01_codmater = e62_item                 ";
-    $sSqlItensEmpenho .= " WHERE                                                            ";
-    $sSqlItensEmpenho .= "   e62_numemp IN ($filtroCodigosEmpenhos)                         ";
-
-    $rsItensEmpenho = db_query($connOrigem, $sSqlItensEmpenho);
-    $iLinhasItensEmpenho = pg_num_rows($rsItensEmpenho);
-
-    if ($iLinhasItensEmpenho == 0) {
-      throw new Exception('Nenhum item de empenho encontrado!');
-    }
-
-    db_logNumReg($iLinhasItensEmpenho, $sArquivoLog, $iParamLog);
-
-    for ($iInd = 0; $iInd < $iLinhasItensEmpenho; $iInd++) {
-
-      logProcessamento($iInd, $iLinhasItensEmpenho, $iParamLog);
-      $oItemEmpenho = db_utils::fieldsMemory($rsItensEmpenho, $iInd);
-      if ($oItemEmpenho->descricao == '') {
-        $oItemEmpenho->descricao = 'DESCRIÇÃO NÃO ESPECIFICADA';
-      }
-      $oTBEmpenhosItens->setByLineOfDBUtils($oItemEmpenho);
-      try {
-        $oTBEmpenhosItens->insertValue();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    try {
-      $oTBEmpenhosItens->persist();
-    } catch (Exception $eException) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    // FIM ITENS DE EMPENHO *************************************************************************************************//
-
-    // PROCESSOS DE EMPENHO *************************************************************************************************//
-
-    db_logTitulo(" IMPORTA PROCESSOS DE EMPENHO ", $sArquivoLog, $iParamLog);
-
-    /**
-     * Consulta os processos de empenhos na base de origem utilizando o array $filtroCodigosEmpenhos
-     * com os códigos de empenho como filtro
-     */
-    $sSqlProcessoEmpenho =  " SELECT                                                       ";
-    $sSqlProcessoEmpenho .= "   e61_numemp AS empenho_id,                                  ";
-    $sSqlProcessoEmpenho .= "   pc81_codproc AS processo                                   ";
-    $sSqlProcessoEmpenho .= " FROM                                                         ";
-    $sSqlProcessoEmpenho .= "   empempaut                                                  ";
-    $sSqlProcessoEmpenho .= "   INNER JOIN empautitem           ON e55_autori = e61_autori ";
-    $sSqlProcessoEmpenho .= "   INNER JOIN empautitempcprocitem ON e73_autori = e55_autori ";
-    $sSqlProcessoEmpenho .= "   AND e73_sequen = e55_sequen                                ";
-    $sSqlProcessoEmpenho .= "   INNER JOIN pcprocitem ON pc81_codprocitem = e73_pcprocitem ";
-    $sSqlProcessoEmpenho .= " WHERE                                                        ";
-    $sSqlProcessoEmpenho .= "   e61_numemp IN ($filtroCodigosEmpenhos)                     ";
-
-    $rsProcessosEmpenho = db_query($connOrigem, $sSqlProcessoEmpenho);
-    $iLinhasProcessosEmpenho = pg_num_rows($rsProcessosEmpenho);
-
-    if ($iLinhasProcessosEmpenho == 0) {
-      db_Log('Nenhum processo de empenho encontrado!', $sArquivoLog, $iParamLog);
-    } else {
-      db_logNumReg($iLinhasProcessosEmpenho, $sArquivoLog, $iParamLog);
-
-      for ($iInd = 0; $iInd < $iLinhasProcessosEmpenho; $iInd++) {
-
-        logProcessamento($iInd, $iLinhasProcessosEmpenho, $iParamLog);
-        $oProcessoEmpenho = db_utils::fieldsMemory($rsProcessosEmpenho, $iInd);
-        $oTBEmpenhosProcessos->setByLineOfDBUtils($oProcessoEmpenho);
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
         try {
-          $oTBEmpenhosProcessos->insertValue();
+            $oTBEmpenhos->persist();
         } catch (Exception $eException) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
         }
 
-      }
+        /**
+         *  Cria um array com os códigos de empenho separados por vírgula
+         *  para ser utilizado na filtragem das próximas consultas
+         */
+        $filtroCodigosEmpenhos = implode($aListaEmpenho, ',');
 
-      try {
-        $oTBEmpenhosProcessos->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-    }
+        // FIM EMPENHOS ***************************************************************************************************//
 
-    // FIM PROCESSOS DE EMPENHO *************************************************************************************************//
+        // ITENS DE EMPENHO *************************************************************************************************//
 
-    // TIPOS DE MOVIMENTACOES DE EMPENHO *****************************************************************************//
+        db_logTitulo(" IMPORTA ITENS DE EMPENHO ", $sArquivoLog, $iParamLog);
 
-    db_logTitulo(" TIPOS DE MOVIMENTACOES DE EMPENHO ",$sArquivoLog,$iParamLog);
+        /**
+         * Consulta os itens de empenhos na base de origem utilizando o array $filtroCodigosEmpenhos
+         * com os códigos de empenho como filtro
+         */
+        $sSqlItensEmpenho =  " SELECT                                                           ";
+        $sSqlItensEmpenho .= "   e62_numemp                                  AS empenho_id,     ";
+        $sSqlItensEmpenho .= "   trim(replace(pc01_descrmater, '\r\n', ' ')) AS descricao,      ";
+        $sSqlItensEmpenho .= "   e62_quant                                   AS quantidade,     ";
+        $sSqlItensEmpenho .= "   e62_vlrun                                   AS valor_unitario, ";
+        $sSqlItensEmpenho .= "   e62_vltot                                   AS valor_total     ";
+        $sSqlItensEmpenho .= " FROM                                                             ";
+        $sSqlItensEmpenho .= "   empempitem                                                     ";
+        $sSqlItensEmpenho .= "   INNER JOIN pcmater ON pc01_codmater = e62_item                 ";
+        $sSqlItensEmpenho .= " WHERE                                                            ";
+        $sSqlItensEmpenho .= "   e62_numemp IN ($filtroCodigosEmpenhos)                         ";
 
-    /**
-     * Consulta os tipos de movimentação de empenho na base de origem
-     */
-    $sSqlTiposMovEmp   = " select distinct CONCAT(conhistdoc.c53_coddoc, conhistdoc.c53_tipo) as id, ";
-    $sSqlTiposMovEmp  .= "        conhistdoc.c53_coddoc as codtipo, ";
-    $sSqlTiposMovEmp  .= "        conhistdoc.c53_tipo as codgrupo, ";
-    $sSqlTiposMovEmp  .= "            conhistdoc.c53_descr as descricao";
-    $sSqlTiposMovEmp  .= "       from conlancamemp ";
-    $sSqlTiposMovEmp  .= "            inner join conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan";
-    $sSqlTiposMovEmp  .= "            inner join conlancamdoc on conlancamdoc.c71_codlan = conlancamemp.c75_codlan";
-    $sSqlTiposMovEmp  .= "            inner join conhistdoc on conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc";
-    $sSqlTiposMovEmp  .= "            inner join empempenho on empempenho.e60_numemp = c75_numemp";
-    $sSqlTiposMovEmp  .= "            left  join conlancamcompl on conlancamcompl.c72_codlan = conlancamemp.c75_codlan  ";
-    $sSqlTiposMovEmp  .= "            left join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
-    $sSqlTiposMovEmp  .= "            left join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
-    $sSqlTiposMovEmp  .= "            left join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
-    $sSqlTiposMovEmp  .= "            left join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
-    $sSqlTiposMovEmp  .= "       where c70_data >= '{$iExercicioBase}-01-01'::date";
-    $sSqlTiposMovEmp  .= "        and exists ( select * from empempitem where empempitem.e62_numemp = conlancamemp.c75_numemp )";
-    $sSqlTiposMovEmp  .= "        and e60_anousu >= {$iExercicioBase} order by codtipo, codgrupo";
+        $rsItensEmpenho = db_query($connOrigem, $sSqlItensEmpenho);
+        $iLinhasItensEmpenho = pg_num_rows($rsItensEmpenho);
 
-    $rsTiposMovEmp    = db_query($connOrigem,$sSqlTiposMovEmp);
-    $iRowsTiposMovEmp = pg_num_rows($rsTiposMovEmp);
+        if ($iLinhasItensEmpenho == 0) {
+            throw new Exception('Nenhum item de empenho encontrado!');
+        }
 
-    if ( $iRowsTiposMovEmp ==  0 ) {
-      throw new Exception('Nenhuma tipo de movimentação de empenho encontrado!');
-    }
+        db_logNumReg($iLinhasItensEmpenho, $sArquivoLog, $iParamLog);
 
-    db_logNumReg($iRowsTiposMovEmp,$sArquivoLog,$iParamLog);
+        for ($iInd = 0; $iInd < $iLinhasItensEmpenho; $iInd++) {
 
-    /**
-     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
-     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-     */
-    for ( $iInd=0; $iInd < $iRowsTiposMovEmp; $iInd++ ) {
+            logProcessamento($iInd, $iLinhasItensEmpenho, $iParamLog);
+            $oItemEmpenho = db_utils::fieldsMemory($rsItensEmpenho, $iInd);
+            if ($oItemEmpenho->descricao == '') {
+                $oItemEmpenho->descricao = 'DESCRIÇÃO NÃO ESPECIFICADA';
+            }
+            $oTBEmpenhosItens->setByLineOfDBUtils($oItemEmpenho);
+            try {
+                $oTBEmpenhosItens->insertValue();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
 
-      logProcessamento($iInd,$iRowsTiposMovEmp,$iParamLog);
-      $oTiposMovEmp = db_utils::fieldsMemory($rsTiposMovEmp,$iInd);
-      $oTBEmpenhosMovimentacoesTipos->setByLineOfDBUtils($oTiposMovEmp);
-      $aListaEmpenhoMovimentacaoTipo[$oTiposMovEmp->codtipo] = $oTiposMovEmp->id;
-      try {
-        $oTBEmpenhosMovimentacoesTipos->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+        }
 
-    }
-
-    /**
-     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-     */
-    try {
-      $oTBEmpenhosMovimentacoesTipos->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    // FIM TIPOS DE MOVIMENTACOES DE EMPENHO *************************************************************************//
-
-    // MOVIMENTACOES EMPENHOS *****************************************************************************************//
-
-    db_logTitulo(" IMPORTA MOVIMENTACOES EMPENHOS ", $sArquivoLog, $iParamLog);
-
-    /**
-     * Consulta as movimentações de empenhos na base de origem
-     */
-    $sSqlEmpenhoMovimentacao = " select  conhistdoc.c53_coddoc   as codtipo,                                               ";
-    $sSqlEmpenhoMovimentacao .= "        conhistdoc.c53_tipo     as codgrupo,                                              ";
-    $sSqlEmpenhoMovimentacao .= "        conhistdoc.c53_descr    as descrtipo,                                             ";
-    $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_numemp as codempenho,                                            ";
-    $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_numemp as empenho_id,                                            ";
-    $sSqlEmpenhoMovimentacao .= "        c70_data                as data,                                                  ";
-    $sSqlEmpenhoMovimentacao .= "        c70_valor               as valor,                                                 ";
-    $sSqlEmpenhoMovimentacao .= "        e69_dtvencimento as datavencimento,                                               ";
-    // $sSqlEmpenhoMovimentacao .= "        trim(e09_justificativa) as justificativa,                                      ";
-    $sSqlEmpenhoMovimentacao .= "        trim(e69_localrecebimento) as localrecebimento,                                   ";
-    $sSqlEmpenhoMovimentacao .= "        e50_codord as op, ";
-    $sSqlEmpenhoMovimentacao .= "        e69_numero as nota, ";
-    $sSqlEmpenhoMovimentacao .= "        c72_complem             as historico,                                              ";
-    $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_codlan as codlan,                                                 ";
-    $sSqlEmpenhoMovimentacao .= "        coalesce(conlancamcomplementorecurso.o201_complemento,0) as complemento_recurso    ";
-    $sSqlEmpenhoMovimentacao .= "   from conlancamemp                                                                      ";
-    $sSqlEmpenhoMovimentacao .= "        inner join conlancam      on conlancam.c70_codlan      = conlancamemp.c75_codlan  ";
-    $sSqlEmpenhoMovimentacao .= "        inner join conlancamdoc   on conlancamdoc.c71_codlan   = conlancamemp.c75_codlan  ";
-    $sSqlEmpenhoMovimentacao .= "        inner join conhistdoc     on conhistdoc.c53_coddoc     = conlancamdoc.c71_coddoc  ";
-    $sSqlEmpenhoMovimentacao .= "        inner join empempenho     on empempenho.e60_numemp    = c75_numemp  ";
-    $sSqlEmpenhoMovimentacao .= "        left  join conlancamcompl on conlancamcompl.c72_codlan = conlancamemp.c75_codlan  ";
-    $sSqlEmpenhoMovimentacao .= "        left join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
-    $sSqlEmpenhoMovimentacao .= "        left join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
-    $sSqlEmpenhoMovimentacao .= "        left join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
-    $sSqlEmpenhoMovimentacao .= "        left join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
-    $sSqlEmpenhoMovimentacao .= "        left join conlancamcomplementorecurso on conlancam.c70_codlan            = conlancamcomplementorecurso.o201_codlan ";
-    $sSqlEmpenhoMovimentacao .= "   where c70_data >= '{$iExercicioBase}-01-01'::date                                       ";
-    $sSqlEmpenhoMovimentacao .= "    and exists ( select * from empempitem where empempitem.e62_numemp = conlancamemp.c75_numemp )";
-    $sSqlEmpenhoMovimentacao .= "    and e60_anousu >= {$iExercicioBase}";
-    $sSqlEmpenhoMovimentacao .= "    and conlancamemp.c75_numemp IN ($filtroCodigosEmpenhos)";
-
-    $rsEmpenhoMovimentacao    = db_query($connOrigem, $sSqlEmpenhoMovimentacao);
-    $iRowsEmpenhoMovimentacao = pg_num_rows($rsEmpenhoMovimentacao);
-
-    if ($iRowsEmpenhoMovimentacao == 0) {
-      throw new Exception('Nenhuma movimentação encontrada!');
-    }
-
-    db_logNumReg($iRowsEmpenhoMovimentacao, $sArquivoLog, $iParamLog);
-
-    /**
-     *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-     *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
-     *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-     */
-    for ($iInd = 0; $iInd < $iRowsEmpenhoMovimentacao; $iInd++) {
-
-      logProcessamento($iInd, $iRowsEmpenhoMovimentacao, $iParamLog);
-      $oEmpenhoMovimentacao = db_utils::fieldsMemory($rsEmpenhoMovimentacao, $iInd);
-      if ($oEmpenhoMovimentacao->op <> '') {
-        $aListaMovEmpenho[$oEmpenhoMovimentacao->codlan] = $iInd+1;
-        $aListaMovEmpenhoOp[] = $oEmpenhoMovimentacao->op;
-        $aListaMovEmpenhoCod[] = $oEmpenhoMovimentacao->codempenho;
-      }
-      $oEmpenhoMovimentacao->empenho_movimentacao_tipo_id = $aListaEmpenhoMovimentacaoTipo[$oEmpenhoMovimentacao->codtipo];
-      unset($oEmpenhoMovimentacao->codlan);
-      $oTBEmpenhosMovimentacoes->setByLineOfDBUtils($oEmpenhoMovimentacao);
-      try {
-        $oTBEmpenhosMovimentacoes->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    /**
-     *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-     *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-     */
-    try {
-      $oTBEmpenhosMovimentacoes->persist();
-    } catch (Exception $eException) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    $filtroMovEmpenhoOp = implode(',', $aListaMovEmpenhoOp);
-    $filtroMovEmpenhoCod = implode(',', $aListaMovEmpenhoCod);
-
-    // FIM MOVIMENTACOES EMPENHOS *****************************************************************************************//
-
-    // JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO **************************************//
-
-    db_logTitulo(" JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO ",$sArquivoLog,$iParamLog);
-
-    /**
-     * Consulta os justificativas de movimentações de empenho na base de origem
-     */
-    $sSqlEmpenhoMovimentacaoJustificativa = "select distinct trim(e09_justificativa) as justificativa, conlancamemp.c75_numemp as codempenho, pagordem.e50_codord as codop, conlancam.c70_codlan as codlan";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "  from conlancamemp ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancam              on conlancam.c70_codlan                 = conlancamemp.c75_codlan   ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join empagemovjustificativa on empagemovjustificativa.e09_codnota   = empnota.e69_codnota       ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "  where ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "    conlancamemp.c75_numemp IN ($filtroMovEmpenhoCod)                              ";
-    $sSqlEmpenhoMovimentacaoJustificativa .= "    and pagordem.e50_codord IN ($filtroMovEmpenhoOp)                              ";
-
-    $rsEmpenhoMovimentacaoJustificativa    = db_query($connOrigem, $sSqlEmpenhoMovimentacaoJustificativa);
-    $iRowsEmpenhoMovimentacaoJustificativa = pg_num_rows($rsEmpenhoMovimentacaoJustificativa);
-
-    if ( $iRowsEmpenhoMovimentacaoJustificativa ==  0 ) {
-
-      db_Log('Nenhuma justificativa de movimentação de empenhos encontrado!', $sArquivoLog, $iParamLog);
-
-    } else {
-
-      db_logNumReg($iRowsEmpenhoMovimentacaoJustificativa,$sArquivoLog,$iParamLog);
-
-      /**
-       *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-       *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
-       *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-       */
-      for ($iIndJustificativa = 0; $iIndJustificativa < $iRowsEmpenhoMovimentacaoJustificativa; $iIndJustificativa++) {
-
-        logProcessamento($iIndJustificativa, $iRowsEmpenhoMovimentacaoJustificativa, $iParamLog);
-        $oEmpenhoMovimentacaoJustificativa = db_utils::fieldsMemory($rsEmpenhoMovimentacaoJustificativa, $iIndJustificativa);
-        $oTBClassificacaoCredorMovimentacao->id                        = '';
-        $oTBClassificacaoCredorMovimentacao->justificativa             = $oEmpenhoMovimentacaoJustificativa->justificativa;
-        $oTBClassificacaoCredorMovimentacao->empenhos_movimentacoes_id = $aListaMovEmpenho[$oEmpenhoMovimentacaoJustificativa->codlan];
         try {
-          $oTBClassificacaoCredorMovimentacao->insertValue();
+            $oTBEmpenhosItens->persist();
         } catch (Exception $eException) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
         }
 
-      }
+        // FIM ITENS DE EMPENHO *************************************************************************************************//
 
-      /**
-       *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-       *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-       */
-      try {
-        $oTBClassificacaoCredorMovimentacao->persist();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+        // PROCESSOS DE EMPENHO *************************************************************************************************//
 
-    }
+        db_logTitulo(" IMPORTA PROCESSOS DE EMPENHO ", $sArquivoLog, $iParamLog);
 
-    // FIM JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO ****************************//
+        /**
+         * Consulta os processos de empenhos na base de origem utilizando o array $filtroCodigosEmpenhos
+         * com os códigos de empenho como filtro
+         */
+        $sSqlProcessoEmpenho =  " SELECT                                                       ";
+        $sSqlProcessoEmpenho .= "   e61_numemp AS empenho_id,                                  ";
+        $sSqlProcessoEmpenho .= "   pc81_codproc AS processo                                   ";
+        $sSqlProcessoEmpenho .= " FROM                                                         ";
+        $sSqlProcessoEmpenho .= "   empempaut                                                  ";
+        $sSqlProcessoEmpenho .= "   INNER JOIN empautitem           ON e55_autori = e61_autori ";
+        $sSqlProcessoEmpenho .= "   INNER JOIN empautitempcprocitem ON e73_autori = e55_autori ";
+        $sSqlProcessoEmpenho .= "   AND e73_sequen = e55_sequen                                ";
+        $sSqlProcessoEmpenho .= "   INNER JOIN pcprocitem ON pc81_codprocitem = e73_pcprocitem ";
+        $sSqlProcessoEmpenho .= " WHERE                                                        ";
+        $sSqlProcessoEmpenho .= "   e61_numemp IN ($filtroCodigosEmpenhos)                     ";
 
-    // INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO **************************************//
+        $rsProcessosEmpenho = db_query($connOrigem, $sSqlProcessoEmpenho);
+        $iLinhasProcessosEmpenho = pg_num_rows($rsProcessosEmpenho);
 
-    db_logTitulo(" INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO ",$sArquivoLog,$iParamLog);
+        if ($iLinhasProcessosEmpenho == 0) {
+            db_Log('Nenhum processo de empenho encontrado!', $sArquivoLog, $iParamLog);
+        } else {
+            db_logNumReg($iLinhasProcessosEmpenho, $sArquivoLog, $iParamLog);
 
-    /**
-     * Consulta as informacoes de diarias baseado nas movimentações de empenho na base de origem
-     */
-    $sSqlInformacaoDiaria = "
+            for ($iInd = 0; $iInd < $iLinhasProcessosEmpenho; $iInd++) {
+
+                logProcessamento($iInd, $iLinhasProcessosEmpenho, $iParamLog);
+                $oProcessoEmpenho = db_utils::fieldsMemory($rsProcessosEmpenho, $iInd);
+                $oTBEmpenhosProcessos->setByLineOfDBUtils($oProcessoEmpenho);
+                try {
+                    $oTBEmpenhosProcessos->insertValue();
+                } catch (Exception $eException) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+
+            }
+
+            try {
+                $oTBEmpenhosProcessos->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+        }
+
+        // FIM PROCESSOS DE EMPENHO *************************************************************************************************//
+
+        // TIPOS DE MOVIMENTACOES DE EMPENHO *****************************************************************************//
+
+        db_logTitulo(" TIPOS DE MOVIMENTACOES DE EMPENHO ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta os tipos de movimentação de empenho na base de origem
+         */
+        $sSqlTiposMovEmp   = " select distinct CONCAT(conhistdoc.c53_coddoc, conhistdoc.c53_tipo) as id, ";
+        $sSqlTiposMovEmp  .= "        conhistdoc.c53_coddoc as codtipo, ";
+        $sSqlTiposMovEmp  .= "        conhistdoc.c53_tipo as codgrupo, ";
+        $sSqlTiposMovEmp  .= "            conhistdoc.c53_descr as descricao";
+        $sSqlTiposMovEmp  .= "       from conlancamemp ";
+        $sSqlTiposMovEmp  .= "            inner join conlancam on conlancam.c70_codlan = conlancamemp.c75_codlan";
+        $sSqlTiposMovEmp  .= "            inner join conlancamdoc on conlancamdoc.c71_codlan = conlancamemp.c75_codlan";
+        $sSqlTiposMovEmp  .= "            inner join conhistdoc on conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc";
+        $sSqlTiposMovEmp  .= "            inner join empempenho on empempenho.e60_numemp = c75_numemp";
+        $sSqlTiposMovEmp  .= "            left  join conlancamcompl on conlancamcompl.c72_codlan = conlancamemp.c75_codlan  ";
+        $sSqlTiposMovEmp  .= "            left join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
+        $sSqlTiposMovEmp  .= "            left join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
+        $sSqlTiposMovEmp  .= "            left join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
+        $sSqlTiposMovEmp  .= "            left join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
+        $sSqlTiposMovEmp  .= "       where c70_data >= '{$iExercicioBase}-01-01'::date";
+        $sSqlTiposMovEmp  .= "        and exists ( select * from empempitem where empempitem.e62_numemp = conlancamemp.c75_numemp )";
+        $sSqlTiposMovEmp  .= "        and e60_anousu >= {$iExercicioBase} order by codtipo, codgrupo";
+
+        $rsTiposMovEmp    = db_query($connOrigem,$sSqlTiposMovEmp);
+        $iRowsTiposMovEmp = pg_num_rows($rsTiposMovEmp);
+
+        if ( $iRowsTiposMovEmp ==  0 ) {
+            throw new Exception('Nenhuma tipo de movimentação de empenho encontrado!');
+        }
+
+        db_logNumReg($iRowsTiposMovEmp,$sArquivoLog,$iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $iRowsTiposMovEmp; $iInd++ ) {
+
+            logProcessamento($iInd,$iRowsTiposMovEmp,$iParamLog);
+            $oTiposMovEmp = db_utils::fieldsMemory($rsTiposMovEmp,$iInd);
+            $oTBEmpenhosMovimentacoesTipos->setByLineOfDBUtils($oTiposMovEmp);
+            $aListaEmpenhoMovimentacaoTipo[$oTiposMovEmp->codtipo] = $oTiposMovEmp->id;
+            try {
+                $oTBEmpenhosMovimentacoesTipos->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBEmpenhosMovimentacoesTipos->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        // FIM TIPOS DE MOVIMENTACOES DE EMPENHO *************************************************************************//
+
+        // MOVIMENTACOES EMPENHOS *****************************************************************************************//
+
+        db_logTitulo(" IMPORTA MOVIMENTACOES EMPENHOS ", $sArquivoLog, $iParamLog);
+
+        /**
+         * Consulta as movimentações de empenhos na base de origem
+         */
+        $sSqlEmpenhoMovimentacao = " select  conhistdoc.c53_coddoc   as codtipo,                                               ";
+        $sSqlEmpenhoMovimentacao .= "        conhistdoc.c53_tipo     as codgrupo,                                              ";
+        $sSqlEmpenhoMovimentacao .= "        conhistdoc.c53_descr    as descrtipo,                                             ";
+        $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_numemp as codempenho,                                            ";
+        $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_numemp as empenho_id,                                            ";
+        $sSqlEmpenhoMovimentacao .= "        c70_data                as data,                                                  ";
+        $sSqlEmpenhoMovimentacao .= "        c70_valor               as valor,                                                 ";
+        $sSqlEmpenhoMovimentacao .= "        e69_dtvencimento as datavencimento,                                               ";
+        // $sSqlEmpenhoMovimentacao .= "        trim(e09_justificativa) as justificativa,                                      ";
+        $sSqlEmpenhoMovimentacao .= "        trim(e69_localrecebimento) as localrecebimento,                                   ";
+        $sSqlEmpenhoMovimentacao .= "        e50_codord as op, ";
+        $sSqlEmpenhoMovimentacao .= "        e69_numero as nota, ";
+        $sSqlEmpenhoMovimentacao .= "        c72_complem             as historico,                                              ";
+        $sSqlEmpenhoMovimentacao .= "        conlancamemp.c75_codlan as codlan,                                                 ";
+        $sSqlEmpenhoMovimentacao .= "        coalesce(conlancamcomplementorecurso.o201_complemento,0) as complemento_recurso    ";
+        $sSqlEmpenhoMovimentacao .= "   from conlancamemp                                                                      ";
+        $sSqlEmpenhoMovimentacao .= "        inner join conlancam      on conlancam.c70_codlan      = conlancamemp.c75_codlan  ";
+        $sSqlEmpenhoMovimentacao .= "        inner join conlancamdoc   on conlancamdoc.c71_codlan   = conlancamemp.c75_codlan  ";
+        $sSqlEmpenhoMovimentacao .= "        inner join conhistdoc     on conhistdoc.c53_coddoc     = conlancamdoc.c71_coddoc  ";
+        $sSqlEmpenhoMovimentacao .= "        inner join empempenho     on empempenho.e60_numemp    = c75_numemp  ";
+        $sSqlEmpenhoMovimentacao .= "        left  join conlancamcompl on conlancamcompl.c72_codlan = conlancamemp.c75_codlan  ";
+        $sSqlEmpenhoMovimentacao .= "        left join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
+        $sSqlEmpenhoMovimentacao .= "        left join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
+        $sSqlEmpenhoMovimentacao .= "        left join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
+        $sSqlEmpenhoMovimentacao .= "        left join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
+        $sSqlEmpenhoMovimentacao .= "        left join conlancamcomplementorecurso on conlancam.c70_codlan            = conlancamcomplementorecurso.o201_codlan ";
+        $sSqlEmpenhoMovimentacao .= "   where c70_data >= '{$iExercicioBase}-01-01'::date                                       ";
+        $sSqlEmpenhoMovimentacao .= "    and exists ( select * from empempitem where empempitem.e62_numemp = conlancamemp.c75_numemp )";
+        $sSqlEmpenhoMovimentacao .= "    and e60_anousu >= {$iExercicioBase}";
+        $sSqlEmpenhoMovimentacao .= "    and conlancamemp.c75_numemp IN ($filtroCodigosEmpenhos)";
+
+        $rsEmpenhoMovimentacao    = db_query($connOrigem, $sSqlEmpenhoMovimentacao);
+        $iRowsEmpenhoMovimentacao = pg_num_rows($rsEmpenhoMovimentacao);
+
+        if ($iRowsEmpenhoMovimentacao == 0) {
+            throw new Exception('Nenhuma movimentação encontrada!');
+        }
+
+        db_logNumReg($iRowsEmpenhoMovimentacao, $sArquivoLog, $iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ($iInd = 0; $iInd < $iRowsEmpenhoMovimentacao; $iInd++) {
+
+            logProcessamento($iInd, $iRowsEmpenhoMovimentacao, $iParamLog);
+            $oEmpenhoMovimentacao = db_utils::fieldsMemory($rsEmpenhoMovimentacao, $iInd);
+            if ($oEmpenhoMovimentacao->op <> '') {
+                $aListaMovEmpenho[$oEmpenhoMovimentacao->codlan] = $iInd+1;
+                $aListaMovEmpenhoOp[] = $oEmpenhoMovimentacao->op;
+                $aListaMovEmpenhoCod[] = $oEmpenhoMovimentacao->codempenho;
+            }
+            $oEmpenhoMovimentacao->empenho_movimentacao_tipo_id = $aListaEmpenhoMovimentacaoTipo[$oEmpenhoMovimentacao->codtipo];
+            unset($oEmpenhoMovimentacao->codlan);
+            $oTBEmpenhosMovimentacoes->setByLineOfDBUtils($oEmpenhoMovimentacao);
+            try {
+                $oTBEmpenhosMovimentacoes->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBEmpenhosMovimentacoes->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        $filtroMovEmpenhoOp = implode(',', $aListaMovEmpenhoOp);
+        $filtroMovEmpenhoCod = implode(',', $aListaMovEmpenhoCod);
+
+        // FIM MOVIMENTACOES EMPENHOS *****************************************************************************************//
+
+        // JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO **************************************//
+
+        db_logTitulo(" JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta os justificativas de movimentações de empenho na base de origem
+         */
+        $sSqlEmpenhoMovimentacaoJustificativa = "select distinct trim(e09_justificativa) as justificativa, conlancamemp.c75_numemp as codempenho, pagordem.e50_codord as codop, conlancam.c70_codlan as codlan";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "  from conlancamemp ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancam              on conlancam.c70_codlan                 = conlancamemp.c75_codlan   ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancamnota          on conlancamnota.c66_codlan             = conlancam.c70_codlan      ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join conlancamord           on conlancamord.c80_codlan              = conlancam.c70_codlan      ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join pagordem               on pagordem.e50_codord                  = conlancamord.c80_codord   ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join empnota                on empnota.e69_codnota                  = conlancamnota.c66_codnota ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "     inner join empagemovjustificativa on empagemovjustificativa.e09_codnota   = empnota.e69_codnota       ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "  where ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "    conlancamemp.c75_numemp IN ($filtroMovEmpenhoCod)                              ";
+        $sSqlEmpenhoMovimentacaoJustificativa .= "    and pagordem.e50_codord IN ($filtroMovEmpenhoOp)                              ";
+
+        $rsEmpenhoMovimentacaoJustificativa    = db_query($connOrigem, $sSqlEmpenhoMovimentacaoJustificativa);
+        $iRowsEmpenhoMovimentacaoJustificativa = pg_num_rows($rsEmpenhoMovimentacaoJustificativa);
+
+        if ( $iRowsEmpenhoMovimentacaoJustificativa ==  0 ) {
+
+            db_Log('Nenhuma justificativa de movimentação de empenhos encontrado!', $sArquivoLog, $iParamLog);
+
+        } else {
+
+            db_logNumReg($iRowsEmpenhoMovimentacaoJustificativa,$sArquivoLog,$iParamLog);
+
+            /**
+             *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+             *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
+             *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+             */
+            for ($iIndJustificativa = 0; $iIndJustificativa < $iRowsEmpenhoMovimentacaoJustificativa; $iIndJustificativa++) {
+
+                logProcessamento($iIndJustificativa, $iRowsEmpenhoMovimentacaoJustificativa, $iParamLog);
+                $oEmpenhoMovimentacaoJustificativa = db_utils::fieldsMemory($rsEmpenhoMovimentacaoJustificativa, $iIndJustificativa);
+                $oTBClassificacaoCredorMovimentacao->id                        = '';
+                $oTBClassificacaoCredorMovimentacao->justificativa             = $oEmpenhoMovimentacaoJustificativa->justificativa;
+                $oTBClassificacaoCredorMovimentacao->empenhos_movimentacoes_id = $aListaMovEmpenho[$oEmpenhoMovimentacaoJustificativa->codlan];
+                try {
+                    $oTBClassificacaoCredorMovimentacao->insertValue();
+                } catch (Exception $eException) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+
+            }
+
+            /**
+             *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+             *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+             */
+            try {
+                $oTBClassificacaoCredorMovimentacao->persist();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        // FIM JUSTIFICATIVAS DE MOVIMENTACOES DE EMPENHO ****************************//
+
+        // INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO **************************************//
+
+        db_logTitulo(" INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta as informacoes de diarias baseado nas movimentações de empenho na base de origem
+         */
+        $sSqlInformacaoDiaria = "
         SELECT distinct
         e446_empprestaitem as itemprestacao,
         e446_regist as servidor_matricula,
@@ -2629,629 +2633,673 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         ";
 
 
-    $rsInformacaoDiaria    = db_query($connOrigem, $sSqlInformacaoDiaria);
-    $iRowsInformacaoDiaria = pg_num_rows($rsInformacaoDiaria);
+        $rsInformacaoDiaria    = db_query($connOrigem, $sSqlInformacaoDiaria);
+        $iRowsInformacaoDiaria = pg_num_rows($rsInformacaoDiaria);
 
-    if ( $iRowsInformacaoDiaria ==  0 ) {
+        if ( $iRowsInformacaoDiaria ==  0 ) {
 
-      db_Log('Nenhuma informação de diária encontrada!', $sArquivoLog, $iParamLog);
+            db_Log('Nenhuma informação de diária encontrada!', $sArquivoLog, $iParamLog);
 
-    } else {
-
-      db_logNumReg($iRowsInformacaoDiaria,$sArquivoLog,$iParamLog);
-
-      /**
-       *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
-       *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
-       *  o método persist que insere fisicamente os registros na base de dados através do COPY.
-       */
-      for ($iIndInformacaoDiaria = 0; $iIndInformacaoDiaria < $iRowsInformacaoDiaria; $iIndInformacaoDiaria++) {
-
-        logProcessamento($iInd, $iRowsInformacaoDiaria, $iParamLog);
-        $oInformacaoDiaria = db_utils::fieldsMemory($rsInformacaoDiaria, $iIndInformacaoDiaria);
-        $oTBDetalheDiaria->id = '';
-        $oTBDetalheDiaria->empenho_movimentacao = $aListaMovEmpenho[$oInformacaoDiaria->codlan];
-        $oTBDetalheDiaria->servidor_matricula = $oInformacaoDiaria->servidor_matricula;
-        $oTBDetalheDiaria->cgm = $oInformacaoDiaria->cgm;
-        $oTBDetalheDiaria->inicio = $oInformacaoDiaria->inicio;
-        $oTBDetalheDiaria->fim = $oInformacaoDiaria->fim;
-        $oTBDetalheDiaria->quantidade = $oInformacaoDiaria->quantidade;
-        $oTBDetalheDiaria->itemprestacao = $oInformacaoDiaria->itemprestacao;
-        $oTBDetalheDiaria->valor = $oInformacaoDiaria->valor;
-        $oTBDetalheDiaria->tipodiaria = $oInformacaoDiaria->tipodiaria;
-        $oTBDetalheDiaria->destino = $oInformacaoDiaria->destino;
-        $oTBDetalheDiaria->motivo = $oInformacaoDiaria->motivo;
-        try {
-          $oTBDetalheDiaria->insertValue();
-        } catch (Exception $eException) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
-        }
-
-      }
-
-      /**
-       *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
-       *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
-       */
-      try {
-        $oTBDetalheDiaria->persist();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    // FIM INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO ****************************//
-
-    unset($aListaLic);
-    unset($aListaEmpenho);
-    unset($aListaEmpenhoMovimentacaoTipo);
-    unset($aListaMovEmpenho);
-    unset($aListaMovEmpenhoCod);
-    unset($aListaMovEmpenhoOp);
-    unset($filtroMovEmpenhoOp);
-    unset($filtroMovEmpenhoCod);
-
-  } else {
-    db_logTitulo(" DESABILITADO - IMPORTA EMPENHOS ",$sArquivoLog,$iParamLog);
-  }
-  // FIM EMPENHOS ********************************************************************************************//
-
-  unset($aListaPlanoConta);
-  unset($aListaDotacao);
-
-  // SERVIDORES **********************************************************************************************//
-
-  if (IMPORTAR_SERVIDORES) {
-    
-    db_logTitulo(" IMPORTA CARGOS ", $sArquivoLog, $iParamLog);
-    
-    $sSqlDadosCargos  = " select rh37_funcao            as id,                ";
-    $sSqlDadosCargos .= "        rh37_instit            as instituicao,       ";
-    $sSqlDadosCargos .= "        rh37_descr             as descricao,         ";
-    $sSqlDadosCargos .= "        rh37_descricaocompleta as descricaocompleta, ";
-    $sSqlDadosCargos .= "        rh37_vagas             as vagas,             ";
-    $sSqlDadosCargos .= "        rh21_descr             as instrucao          ";
-    $sSqlDadosCargos .= "   from rhfuncao                                     ";
-    $sSqlDadosCargos .= "   left join rhinstrucao                             ";
-    $sSqlDadosCargos .= "     on rh21_instru = rh37_rhinstrucao               ";
-    
-    $rsCargos    = db_query($connOrigem, $sSqlDadosCargos);
-
-    $iRowsCargos = pg_num_rows($rsCargos);
-
-    if ($iRowsCargos == 0) {
-
-      throw new Exception('Nenhum cadastro de cargo encontrado!');
-    }
-
-    db_logNumReg($iRowsCargos, $sArquivoLog, $iParamLog);
-
-    for ($iInd = 0; $iInd < $iRowsCargos; $iInd++ ) {
-
-      logProcessamento($iInd, $iRowsCargos, $iParamLog);
-      $oCargosRow                 = db_utils::fieldsMemory($rsCargos, $iInd);
-      $oCargosRow->instituicao_id = $aListaInstit[$oCargosRow->instituicao];
-      $oTBCargos->setByLineOfDBUtils($oCargosRow, true);
-
-    }
-
-    try {
-      $oTBCargos->persist();
-    } catch ( Exception $eException ) {
-
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    db_logTitulo(" IMPORTA SERVIDORES ", $sArquivoLog, $iParamLog);
-
-    $sSqlTmpServidores  = "  create temp table dados_servidor as                                                                          ";
-    $sSqlTmpServidores .= "  select rh02_anousu as ano,                                                                                   ";
-    $sSqlTmpServidores .= "       rh02_mesusu as mes,                                                                                     ";
-    $sSqlTmpServidores .= "       substr(db_fxxx(rh02_regist, rh02_anousu, rh02_mesusu , rh02_instit),111,11)::float as salario_base,     ";
-    $sSqlTmpServidores .= "       rh01_regist as matricula,                                                                               ";
-    $sSqlTmpServidores .= "       z01_nome    as nome,                                                                                    ";
-    $sSqlTmpServidores .= "       z01_cgccpf  as cpf,                                                                                     ";
-    $sSqlTmpServidores .= "       rh37_funcao as id_cargo,                                                                                ";
-    $sSqlTmpServidores .= "       rh37_descr  as cargo,                                                                                   ";
-    $sSqlTmpServidores .= "       r70_descr   as lotacao,                                                                                 ";
-    $sSqlTmpServidores .= "       rh30_descr  as vinculo,                                                                                 ";
-    $sSqlTmpServidores .= "       case when rh55_descr is null then 'SEM LOCAL CADASTRADO' else rh55_descr end as local_trabalho,         ";
-    $sSqlTmpServidores .= "       case rh02_cedencia                                                                                      ";
-    $sSqlTmpServidores .= "       when 'A' then 'ADIDO'                                                                                   ";
-    $sSqlTmpServidores .= "       when 'C' then 'CEDIDO'                                                                                  "; 
-    $sSqlTmpServidores .= "       else 'NORMAL'                                                                                           ";
-    $sSqlTmpServidores .= "       end as situacao_funcional,                                                                              ";
-    $sSqlTmpServidores .= "       (select r59_descr                                                                                       ";                  
-    $sSqlTmpServidores .= "          from rescisao                                                                                        ";
-    $sSqlTmpServidores .= "         where r59_anousu = rh02_anousu                                                                        ";
-    $sSqlTmpServidores .= "           and r59_mesusu = rh02_mesusu                                                                        ";
-    $sSqlTmpServidores .= "           and r59_causa  = rh05_causa limit 1) as causa_rescisao,                                             ";
-    $sSqlTmpServidores .= "       rh01_admiss as admissao,                                                                                ";
-    $sSqlTmpServidores .= "       (SELECT rh05_recis                                                                                      ";
-    $sSqlTmpServidores .= "          FROM rhpessoalmov a left JOIN rhpesrescisao ON rh05_seqpes = a.rh02_seqpes                           ";
-    $sSqlTmpServidores .= "         where a.rh02_seqpes = rhpessoalmov.rh02_seqpes                                                        ";
-    $sSqlTmpServidores .= "         order by a.rh02_anousu desc, a.rh02_mesusu desc limit 1)  as rescisao,                                ";
-    $sSqlTmpServidores .= "       codigo      as instituicao,                                                                             ";
-    $sSqlTmpServidores .= "       rh01_instit as instit_servidor                                                                          ";
-    $sSqlTmpServidores .= "  from rhpessoal                                                                                               ";
-    $sSqlTmpServidores .= "       inner join rhpessoalmov on rh02_regist = rh01_regist                                                    ";
-    $sSqlTmpServidores .= "       inner join rhfuncao     on rh37_funcao = rh02_funcao                                                    ";
-    $sSqlTmpServidores .= "                              and rh37_instit = rh02_instit                                                    ";
-    $sSqlTmpServidores .= "       inner join rhlota       on r70_codigo  = rh02_lota                                                      ";
-    $sSqlTmpServidores .= "                              and r70_instit  = rh02_instit                                                    ";
-    $sSqlTmpServidores .= "       inner join cgm          on z01_numcgm  = rh01_numcgm                                                    ";
-    $sSqlTmpServidores .= "       inner join rhregime     on rh02_codreg = rh30_codreg                                                    ";
-    $sSqlTmpServidores .= "                              and rh02_instit = rh30_instit                                                    ";
-    $sSqlTmpServidores .= "       inner join db_config    on codigo      = rh02_instit                                                    ";
-    $sSqlTmpServidores .= "       left join rhpesrescisao on rh05_seqpes = rh02_seqpes                                                    ";
-    $sSqlTmpServidores .= "       left join rhpeslocaltrab on rh56_seqpes = rh02_seqpes                                                   "; 
-    $sSqlTmpServidores .= "  and rh56_princ = true                                                                                         ";
-    $sSqlTmpServidores .= "  left join rhlocaltrab on rh55_codigo = rh56_localtrab                                                         ";
-    $sSqlTmpServidores .= "  and rh55_instit = rh02_instit                                                                                 ";
-    $sSqlTmpServidores .= " where rh02_anousu >= {$iExercicioBase} ";
-    $sSqlTmpServidores .= "   and rh02_anousu||trim(to_char(rh02_mesusu,'00')) not in ((SELECT r11_anousu||trim(to_char(r11_mesusu,'00')) ";
-    $sSqlTmpServidores .= "                                                              from cfpess                                      ";
-    //$sSqlTmpServidores .= "                                                             WHERE r11_instit = rh02_instit ORDER BY r11_anousu desc, r11_mesusu desc limit 1))";
-    $sSqlTmpServidores .= "                                                             WHERE r11_instit = rh01_instit ORDER BY r11_anousu desc, r11_mesusu desc limit 1))";
-    $sSqlTmpServidores .= "                                                              order by rh02_anousu, rh02_mesusu, rh01_regist   ";
-
-    $rsTmpServidores = db_query($connOrigem, $sSqlTmpServidores);
-
-    if ( !$rsTmpServidores ) {
-      throw new Exception("ERRO-1: Erro ao criar tabela temporaria dos servidores!");
-    }
-
-    $sSqlCreateIndexServidores = "CREATE INDEX dados_servidor_ano_mes_matricula_in ON dados_servidor (ano, mes, matricula)";
-    $rsCreateIndexServidores = db_query($connOrigem, $sSqlCreateIndexServidores);
-    if(!$rsCreateIndexServidores){
-      throw new Exception("ERRO-1: Erro ao criar indice dados_servidor_ano_mes_matricula_in!");
-    }
-
-    $sSqlAnalyzeServidores = "ANALYZE dados_servidor";
-    $rsAnalyzeServidores = db_query($connOrigem, $sSqlAnalyzeServidores);
-    if(!$rsAnalyzeServidores){
-      throw new Exception("ERRO-1: Erro ao executar analyze em dados_servidor!");
-    }
-
-    $sSqlDadosCadastraisServidor  = " select matricula as id,                         ";
-    $sSqlDadosCadastraisServidor .= "        nome,                                    ";
-    $sSqlDadosCadastraisServidor .= "        cpf,                                     ";
-    $sSqlDadosCadastraisServidor .= "        instit_servidor as instituicao,          ";
-    $sSqlDadosCadastraisServidor .= "        admissao,                                ";
-    $sSqlDadosCadastraisServidor .= "        max(rescisao) as rescisao                ";
-    //$sSqlDadosCadastraisServidor .= "        (select rh05_recis from rhpesrescisao inner join rhpessoalmov on rh05_seqpes = rh02_seqpes and rh02_mesusu = fc_mesfolha(instit_servidor) and rh02_anousu = fc_anofolha(instit_servidor)  and rh02_regist = matricula) as rescisao ";
-    $sSqlDadosCadastraisServidor .= "   from dados_servidor             ";
-    $sSqlDadosCadastraisServidor .= "  group by id, nome, cpf, instit_servidor, admissao ";
-    $rsServidores                 = db_query($connOrigem, $sSqlDadosCadastraisServidor);
-
-    $iRowsServidores = pg_num_rows($rsServidores);
-
-    if ($iRowsServidores == 0) {
-      throw new Exception('Nenhum cadastro de servidor encontrado!');
-    }
-
-    db_logNumReg($iRowsServidores, $sArquivoLog, $iParamLog);
-
-    for ($iInd = 0; $iInd < $iRowsServidores; $iInd++ ) {
-
-      logProcessamento($iInd, $iRowsServidores, $iParamLog);
-      $oServidorRow                 = db_utils::fieldsMemory($rsServidores, $iInd);
-      $oServidorRow->instituicao_id = $aListaInstit[$oServidorRow->instituicao];
-      $oTBServidores->setByLineOfDBUtils($oServidorRow, true);
-
-    }
-
-    try {
-      $oTBServidores->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    // FIM SERVIDORES ***************************** //
-
-    // IMPORTACAO MOVIMENTACOES SERVIDORES ******** //
-
-    db_logTitulo(" IMPORTA MOVIMENTACOES DOS SERVIDORES ", $sArquivoLog, $iParamLog);
-
-    $sSqlMovimentacaoServidor  = " select matricula as servidor_id,                                         ";
-    $sSqlMovimentacaoServidor .= "        ano,                                                              ";
-    $sSqlMovimentacaoServidor .= "        mes,                                                              ";
-    $sSqlMovimentacaoServidor .= "        cargo,                                                            ";
-    $sSqlMovimentacaoServidor .= "        lotacao,                                                          ";
-    $sSqlMovimentacaoServidor .= "        vinculo,                                                          ";
-    $sSqlMovimentacaoServidor .= "        id_cargo,                                                         ";
-    $sSqlMovimentacaoServidor .= "        salario_base,                                                     ";
-    $sSqlMovimentacaoServidor .= "        local_trabalho,                                                   "; 
-    $sSqlMovimentacaoServidor .= "        causa_rescisao,                                                   "; 
-    $sSqlMovimentacaoServidor .= "        situacao_funcional                                                ";
-    $sSqlMovimentacaoServidor .= "    from dados_servidor                                                   ";
-    $sSqlMovimentacaoServidor .= "    group by servidor_id, ano, mes, cargo, lotacao, vinculo, salario_base,";
-    $sSqlMovimentacaoServidor .= "             local_trabalho, causa_rescisao, situacao_funcional, id_cargo ";
-
-    $rsServidoresMovimentacao  = db_query($connOrigem, $sSqlMovimentacaoServidor);
-
-    if ( !$rsServidoresMovimentacao ) {
-      throw new Exception("ERRO-1: Erro ao buscar movimentacoes dos servidores.!".pg_last_error());
-    }
-
-    $iRowsServidores = pg_num_rows($rsServidoresMovimentacao);
-
-    db_logNumReg($iRowsServidores, $sArquivoLog, $iParamLog);
-
-    for ($iInd = 0; $iInd < $iRowsServidores; $iInd++) {
-
-      logProcessamento($iInd, $iRowsServidores, $iParamLog);
-      $oMovimentacaoServidorRow = db_utils::fieldsMemory($rsServidoresMovimentacao, $iInd);
-      $oTBMovimentacoesServidores->setByLineOfDBUtils($oMovimentacaoServidorRow);
-      try {
-          $oTBMovimentacoesServidores->insertValue();
-      } catch (Exception $eException) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    try {
-      $oTBMovimentacoesServidores->persist();
-    } catch (Exception $e) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    /**
-     * Pega todas as movimentacoes dos servidores e monta uma matriz para pegar a movimentação correspondente
-     * a competência. A matriz $aMatrizMovimentacaoServidor será usada ao inserir os dados financeiros.
-     */
-    $sSqlMatrizServidorMovimentacao  = " select id, servidor_id, mes, ano         ";
-    $sSqlMatrizServidorMovimentacao .= "   from {$sSchema}.servidor_movimentacoes ";
-
-    $rsListaServidorMovimentacao     = db_query($connDestino, $sSqlMatrizServidorMovimentacao);
-    $iRowsListaServidorMovimentacao  = pg_num_rows($rsListaServidorMovimentacao);
-
-    for ( $iInd=0; $iInd < $iRowsListaServidorMovimentacao; $iInd++ ) {
-
-      $oServidorMovimentacaoRow = db_utils::fieldsMemory($rsListaServidorMovimentacao, $iInd);
-      $aMatrizMovimentacaoServidor[$oServidorMovimentacaoRow->ano][$oServidorMovimentacaoRow->mes]
-      [$oServidorMovimentacaoRow->servidor_id] = $oServidorMovimentacaoRow->id;
-
-    }
-
-    // FIM IMPORTACAO MOVIMENTACOES SERVIDORES **** //
-
-    // IMPORTACAO DADOS FINANCEIROS SERVIDOR ****** //
-
-    db_logTitulo(" IMPORTA DADOS FINANCEIROS SERVIDOR ", $sArquivoLog, $iParamLog);
-
-    /**
-     * CRIA TABELA COM OS TOTALIZADORES
-     */
-    $sSqlTempTableSomatorio  = " create temp table somatorio as                                                                                                                ";
-    $sSqlTempTableSomatorio .= "      select r14_anousu as anousu,                                                                                                                ";
-    $sSqlTempTableSomatorio .= "              r14_mesusu as mesusu,                                                                                                               ";
-    $sSqlTempTableSomatorio .= "              r14_regist as regist,                                                                                                               ";
-    $sSqlTempTableSomatorio .= "              'Z888'::char(4) as rubrica,                                                                                                         ";
-    $sSqlTempTableSomatorio .= "              sum(r14_valor)  as valor,                                                                                                           ";
-    $sSqlTempTableSomatorio .= "              0               as quantidade,                                                                                                      ";
-    $sSqlTempTableSomatorio .= "              'base'          as tiporubrica,                                                                                                     ";
-    $sSqlTempTableSomatorio .= "              'salario'       as tipofolha,                                                                                                       ";
-    $sSqlTempTableSomatorio .= "              r14_instit      as instit                                                                                                           ";
-    $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r14_pd     = 2                                                                                                                      ";
-    $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r14_anousu, r14_mesusu, r14_regist, 'Z999'::char(4) as r14_rubric, sum(r14_valor) as r14_valor,0,'base', 'salario', r14_instit       ";
-    $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r14_pd = 1                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r14_anousu, r14_mesusu, r14_regist, 'Z777'::char(4) as r14_rubric, sum(r14_valor) as r14_valor,0,'base', 'salario', r14_instit       ";
-    $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r14_rubric between 'R901' and 'R915'                                                                                                ";
-    $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z888'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r48_pd = 2                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z999'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r48_pd = 1                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z777'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r48_rubric between 'R901' and 'R915'                                                                                                ";
-    $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z888'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
-    $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r35_pd = 2                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z999'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
-    $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r35_pd = 1                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z777'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
-    $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r35_rubric between 'R901' and 'R915'                                                                                                ";
-    $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z888'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
-    $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r20_pd = 2                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z999'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
-    $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r20_pd = 1                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z777'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
-    $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r20_rubric between 'R901' and 'R915'                                                                                                ";
-    $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "                                                                                                                                                  ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z888'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r22_pd = 2                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z999'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r22_pd = 1                                                                                                                          ";
-    $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
-    $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
-    $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z777'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
-    $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
-    $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
-    $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
-    $sSqlTempTableSomatorio .= "        where r22_rubric between 'R901' and 'R915'                                                                                                ";
-    $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
-
-    $rsTempSomatorio = db_query($sSqlTempTableSomatorio);
-
-    if(!$rsTempSomatorio){
-      throw new Exception("ERRO-1: Erro ao criar tabela somatorio!");
-    }
-
-    $sSqlIndiceSomatorio  = "create index somatorio_anousu_mesusu_regist_in on somatorio (anousu, mesusu, regist)";
-    $rsIndiceSomatorio    = db_query($sSqlIndiceSomatorio);
-
-    if(!$rsIndiceSomatorio){
-      throw new Exception("ERRO-1: Erro ao criar indice somatorio_anousu_mesusu_regist_in!");
-    }
-
-    $sSqlAnalizeSomatorio = "analyze somatorio";
-    $rsAnalizeSomatorio   = db_query($sSqlAnalizeSomatorio);
-
-    if(!$rsAnalizeSomatorio){
-      throw new Exception("ERRO-1: Erro ao executar analyze!");
-    }
-
-    $sSqlDadosServidores = "select distinct ano, mes from dados_servidor";
-    $rsDadosServidores   = db_query($connOrigem, $sSqlDadosServidores);
-    $iDadosServidores    = pg_num_rows($rsDadosServidores);
-
-    for ($iServidor = 0; $iServidor < $iDadosServidores; $iServidor++) {
-
-      $oDadosServidores = db_utils::fieldsMemory($rsDadosServidores, $iServidor);
-      $mes = $oDadosServidores->mes;
-      $ano = $oDadosServidores->ano;
-
-      $sSqlFolhaPagamento  = "   select ano,                                                                                                                                    ";
-      $sSqlFolhaPagamento .= "          mes,                                                                                                                                    ";
-      $sSqlFolhaPagamento .= "          matricula,                                                                                                                              ";
-      $sSqlFolhaPagamento .= "          rubrica,                                                                                                                                ";
-      $sSqlFolhaPagamento .= "          case when rh27_descr is not null then rh27_descr                                                                                        ";
-      $sSqlFolhaPagamento .= "               when rubrica = 'Z999' then 'Total Bruto'                                                                                           ";
-      $sSqlFolhaPagamento .= "               when rubrica = 'Z888' then 'Total Descontos'                                                                                       ";
-      $sSqlFolhaPagamento .= "               when rubrica = 'Z777' then 'Descontos Obrigatórios'                                                                                ";
-      $sSqlFolhaPagamento .= "          end as descr_rubrica,                                                                                                                   ";
-      $sSqlFolhaPagamento .= "          valor,                                                                                                                                  ";
-      $sSqlFolhaPagamento .= "          quantidade,                                                                                                                             ";
-      $sSqlFolhaPagamento .= "          tiporubrica,                                                                                                                            ";
-      $sSqlFolhaPagamento .= "          tipofolha,                                                                                                                              ";
-      $sSqlFolhaPagamento .= "          instit                                                                                                                                  ";
-      $sSqlFolhaPagamento .= "     from (                                                                                                                                       ";
-      $sSqlFolhaPagamento .= "      select r14_anousu as ano,r14_mesusu as mes,r14_regist as matricula,r14_rubric as rubrica, r14_valor as valor, r14_quant as quantidade,      ";
-      $sSqlFolhaPagamento .= "        case r14_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end as tiporubrica, 'salario' as tipofolha, r14_instit as instit    ";
-      $sSqlFolhaPagamento .= "        from gerfsal                                                                                                                              ";
-      $sSqlFolhaPagamento .= "             inner join dados_servidor on matricula = r14_regist                                                                                  ";
-      $sSqlFolhaPagamento .= "                                      and ano       = r14_anousu                                                                                  ";
-      $sSqlFolhaPagamento .= "                                      and mes       = r14_mesusu                                                                                  ";
-      $sSqlFolhaPagamento .= "      where r14_mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and r14_anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
-      $sSqlFolhaPagamento .= "       select r48_anousu,r48_mesusu,r48_regist,r48_rubric, r48_valor, r48_quant,                                                                  ";
-      $sSqlFolhaPagamento .= "         case r48_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'complementar', r48_instit                                    ";
-      $sSqlFolhaPagamento .= "         from gerfcom                                                                                                                             ";
-      $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and ano       = r48_anousu                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and mes       = r48_mesusu                                                                                 ";
-      $sSqlFolhaPagamento .= "      where r48_mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and r48_anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
-      $sSqlFolhaPagamento .= "       select r35_anousu,r35_mesusu,r35_regist,r35_rubric, r35_valor, r35_quant,                                                                  ";
-      $sSqlFolhaPagamento .= "         case r35_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, '13salario', r35_instit                                       ";
-      $sSqlFolhaPagamento .= "         from gerfs13                                                                                                                             ";
-      $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and ano       = r35_anousu                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and mes       = r35_mesusu                                                                                 ";
-      $sSqlFolhaPagamento .= "      where r35_mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and r35_anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
-      $sSqlFolhaPagamento .= "       select r20_anousu,r20_mesusu,r20_regist,r20_rubric, r20_valor, r20_quant,                                                                  ";
-      $sSqlFolhaPagamento .= "         case r20_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'rescisao', r20_instit                                        ";
-      $sSqlFolhaPagamento .= "         from gerfres                                                                                                                             ";
-      $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and ano       = r20_anousu                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and mes       = r20_mesusu                                                                                 ";
-      $sSqlFolhaPagamento .= "      where r20_mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and r20_anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        select r22_anousu,r22_mesusu,r22_regist,r22_rubric, r22_valor, r22_quant,                                                                 ";
-      $sSqlFolhaPagamento .= "         case r22_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'adiantamento', r22_instit                                    ";
-      $sSqlFolhaPagamento .= "         from gerfadi                                                                                                                             ";
-      $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and ano       = r22_anousu                                                                                 ";
-      $sSqlFolhaPagamento .= "                                       and mes       = r22_mesusu                                                                                 ";
-      $sSqlFolhaPagamento .= "      where r22_mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and r22_anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
-      $sSqlFolhaPagamento .= "       select anousu, mesusu, regist, rubrica, valor, quantidade, tiporubrica, tipofolha, instit                                                  ";
-      $sSqlFolhaPagamento .= "         from somatorio                                                                                                                           ";
-      $sSqlFolhaPagamento .= "      where mesusu = {$mes}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "        and anousu = {$ano}                                                                                                                   ";
-      $sSqlFolhaPagamento .= "     ) as x                                                                                                                                       ";
-      $sSqlFolhaPagamento .= "  left join rhrubricas on rubrica = rh27_rubric and instit = rh27_instit                                                                          ";
-      $sSqlFolhaPagamento .= "  order by ano,mes,matricula,tipofolha, tiporubrica desc, rubrica;                                                                                ";
-
-      $rsFolhaPagamento    = db_query($connOrigem, $sSqlFolhaPagamento);
-
-      if ( !$rsFolhaPagamento ) {
-        throw new Exception("ERRO-1: Erro ao buscar dados de rubricas!");
-      }
-
-      $iRowsFolhaPagamento = pg_num_rows($rsFolhaPagamento);
-
-      db_logNumReg($iRowsFolhaPagamento, $sArquivoLog, $iParamLog);
-
-      for ($iInd = 0; $iInd < $iRowsFolhaPagamento; $iInd++) {
-
-        logProcessamento($iInd, $iRowsFolhaPagamento, $iParamLog);
-        $oFolhaPagamentoRow = db_utils::fieldsMemory($rsFolhaPagamento, $iInd);
-        if ( !empty($aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano][$oFolhaPagamentoRow->mes][$oFolhaPagamentoRow->matricula]) ) {
-
-          $oFolhaPagamentoRow->servidor_movimentacao_id = $aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano]
-                                                          [$oFolhaPagamentoRow->mes]
-          [$oFolhaPagamentoRow->matricula];
-
-          $oTBFolhaPagamento->setByLineOfDBUtils($oFolhaPagamentoRow, true);
         } else {
 
-          $sMensagemSemMovimentacao = "Dados Financeiros: {$oFolhaPagamentoRow->matricula} - {$oFolhaPagamentoRow->ano}/{$oFolhaPagamentoRow->mes}  sem movimentações.";
-          db_log($sMensagemSemMovimentacao, $sArquivoLog, $iParamLog);
+            db_logNumReg($iRowsInformacaoDiaria,$sArquivoLog,$iParamLog);
+
+            /**
+             *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+             *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automaticamente
+             *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+             */
+            for ($iIndInformacaoDiaria = 0; $iIndInformacaoDiaria < $iRowsInformacaoDiaria; $iIndInformacaoDiaria++) {
+
+                logProcessamento($iInd, $iRowsInformacaoDiaria, $iParamLog);
+                $oInformacaoDiaria = db_utils::fieldsMemory($rsInformacaoDiaria, $iIndInformacaoDiaria);
+                $oTBDetalheDiaria->id = '';
+                $oTBDetalheDiaria->empenho_movimentacao = $aListaMovEmpenho[$oInformacaoDiaria->codlan];
+                $oTBDetalheDiaria->servidor_matricula = $oInformacaoDiaria->servidor_matricula;
+                $oTBDetalheDiaria->cgm = $oInformacaoDiaria->cgm;
+                $oTBDetalheDiaria->inicio = $oInformacaoDiaria->inicio;
+                $oTBDetalheDiaria->fim = $oInformacaoDiaria->fim;
+                $oTBDetalheDiaria->quantidade = $oInformacaoDiaria->quantidade;
+                $oTBDetalheDiaria->itemprestacao = $oInformacaoDiaria->itemprestacao;
+                $oTBDetalheDiaria->valor = $oInformacaoDiaria->valor;
+                $oTBDetalheDiaria->tipodiaria = $oInformacaoDiaria->tipodiaria;
+                $oTBDetalheDiaria->destino = $oInformacaoDiaria->destino;
+                $oTBDetalheDiaria->motivo = $oInformacaoDiaria->motivo;
+                try {
+                    $oTBDetalheDiaria->insertValue();
+                } catch (Exception $eException) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+
+            }
+
+            /**
+             *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+             *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+             */
+            try {
+                $oTBDetalheDiaria->persist();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
         }
 
-      }
+        // FIM INFORMACAO DE DIARIA DE MOVIMENTAÇÃO DE EMPENHO ****************************//
 
-      try {
-        $oTBFolhaPagamento->persist();
-      } catch (Exception $e) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+        unset($aListaLic);
+        unset($aListaEmpenho);
+        unset($aListaEmpenhoMovimentacaoTipo);
+        unset($aListaMovEmpenho);
+        unset($aListaMovEmpenhoCod);
+        unset($aListaMovEmpenhoOp);
+        unset($filtroMovEmpenhoOp);
+        unset($filtroMovEmpenhoCod);
 
-      // FIM IMPORTACAO DADOS FINANCEIROS SERVIDOR ** //
+    } else {
+        db_logTitulo(" DESABILITADO - IMPORTA EMPENHOS ",$sArquivoLog,$iParamLog);
+    }
+    // FIM EMPENHOS ********************************************************************************************//
 
+    unset($aListaPlanoConta);
+    unset($aListaDotacao);
+
+    // SERVIDORES **********************************************************************************************//
+
+    if (IMPORTAR_SERVIDORES) {
+
+        db_logTitulo(" IMPORTA CARGOS ", $sArquivoLog, $iParamLog);
+
+        $sSqlDadosCargos  = " select rh37_funcao            as id,                ";
+        $sSqlDadosCargos .= "        rh37_instit            as instituicao,       ";
+        $sSqlDadosCargos .= "        rh37_descr             as descricao,         ";
+        $sSqlDadosCargos .= "        rh37_descricaocompleta as descricaocompleta, ";
+        $sSqlDadosCargos .= "        rh37_vagas             as vagas,             ";
+        $sSqlDadosCargos .= "        rh21_descr             as instrucao          ";
+        $sSqlDadosCargos .= "   from rhfuncao                                     ";
+        $sSqlDadosCargos .= "   left join rhinstrucao                             ";
+        $sSqlDadosCargos .= "     on rh21_instru = rh37_rhinstrucao               ";
+
+        $rsCargos    = db_query($connOrigem, $sSqlDadosCargos);
+
+        $iRowsCargos = pg_num_rows($rsCargos);
+
+        if ($iRowsCargos == 0) {
+
+            throw new Exception('Nenhum cadastro de cargo encontrado!');
+        }
+
+        db_logNumReg($iRowsCargos, $sArquivoLog, $iParamLog);
+
+        for ($iInd = 0; $iInd < $iRowsCargos; $iInd++ ) {
+
+            logProcessamento($iInd, $iRowsCargos, $iParamLog);
+            $oCargosRow                 = db_utils::fieldsMemory($rsCargos, $iInd);
+            $oCargosRow->instituicao_id = $aListaInstit[$oCargosRow->instituicao];
+            $oTBCargos->setByLineOfDBUtils($oCargosRow, true);
+
+        }
+
+        try {
+            $oTBCargos->persist();
+        } catch ( Exception $eException ) {
+
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        db_logTitulo(" IMPORTA SERVIDORES ", $sArquivoLog, $iParamLog);
+
+        $sSqlTmpServidores  = "drop table if exists dados_servidor;                                                   ";
+        $sSqlTmpServidores .= "create temp table dados_servidor (                                                     ";
+        $sSqlTmpServidores .= "   ano int,                                                                            ";
+        $sSqlTmpServidores .= "   mes int,                                                                            ";
+        $sSqlTmpServidores .= "   rh02_seqpes int,                                                                    ";
+        $sSqlTmpServidores .= "   instit_servidor int,                                                                ";
+        $sSqlTmpServidores .= "   salario_base numeric,                                                               ";
+        $sSqlTmpServidores .= "   id_cargo int,                                                                       ";
+        $sSqlTmpServidores .= "   cargo varchar,                                                                      ";
+        $sSqlTmpServidores .= "   lotacao varchar,                                                                    ";
+        $sSqlTmpServidores .= "   situacao_funcional varchar,                                                         ";
+        $sSqlTmpServidores .= "   matricula int,                                                                      ";
+        $sSqlTmpServidores .= "   nome varchar,                                                                       ";
+        $sSqlTmpServidores .= "   admissao date,                                                                      ";
+        $sSqlTmpServidores .= "   cpf varchar,                                                                        ";
+        $sSqlTmpServidores .= "   vinculo varchar,                                                                    ";
+        $sSqlTmpServidores .= "   rescisao date,                                                                      ";
+        $sSqlTmpServidores .= "   causa_rescisao varchar,                                                             ";
+        $sSqlTmpServidores .= "   local_trabalho varchar                                                              ";
+        $sSqlTmpServidores .= "   );                                                                                  ";
+
+        $sSqlTmpServidores .= "with anomes as (                                                                       ";
+        $sql = <<<SQL
+            select 
+                to_char(MAX(rh301_mes),'FM00') AS mesfolha
+                ,to_char(anofolha, 'FM0000') as anofolha
+                ,instituicao
+            from 
+                pessoal.rhliberacontracheque 
+                inner join (
+                    select max(rh301_ano) as anofolha,
+                        rh301_instituicao as instituicao 
+                    from 
+                        pessoal.rhliberacontracheque 
+                    group by rh301_instituicao
+                ) as b on rh301_instituicao = instituicao
+            where 
+                anofolha is not null
+                and anofolha = rh301_ano 
+            group by anofolha, instituicao
+SQL;
+        $sSqlTmpServidores .= $sql;
+        $sSqlTmpServidores .= "     ),                                                                                ";
+        $sSqlTmpServidores .= "     dados_folha as (                                                                  ";
+        $sSqlTmpServidores .= "        select distinct rh02_anousu as ano,                                            ";
+        $sSqlTmpServidores .= "               rh02_mesusu as mes,                                                     ";
+        $sSqlTmpServidores .= "               rh02_seqpes,                                                            ";
+        $sSqlTmpServidores .= "               rh02_instit,                                                            ";
+        $sSqlTmpServidores .= "               fc_salariobase(rh02_regist, rh02_anousu, rh02_mesusu, rh02_instit)      ";
+        $sSqlTmpServidores .= "               as salario_base,                                                        ";
+        $sSqlTmpServidores .= "               rh02_funcao as id_cargo,                                                ";
+        $sSqlTmpServidores .= "               (select rh37_descr from rhfuncao where rh37_funcao = rh02_funcao        ";
+        $sSqlTmpServidores .= "                                   and rh37_instit = rh02_instit) as cargo,            ";
+        $sSqlTmpServidores .= "               r70_descr as lotacao,                                                   ";
+        $sSqlTmpServidores .= "               case rh02_cedencia                                                      ";
+        $sSqlTmpServidores .= "                   when 'A' then 'ADIDO'                                               ";
+        $sSqlTmpServidores .= "                   when 'C' then 'CEDIDO'                                              ";
+        $sSqlTmpServidores .= "                   else 'NORMAL'                                                       ";
+        $sSqlTmpServidores .= "               end as situacao_funcional,                                              ";
+        $sSqlTmpServidores .= "               rh01_regist as matricula,                                               ";
+        $sSqlTmpServidores .= "               z01_nome as nome,                                                       ";
+        $sSqlTmpServidores .= "               rh01_admiss as admissao,                                                ";
+        $sSqlTmpServidores .= "               z01_cgccpf as cpf,                                                      ";
+        $sSqlTmpServidores .= "               rh30_descr as vinculo                                                   ";
+        $sSqlTmpServidores .= "        from rhpessoalmov                                                              ";
+        $sSqlTmpServidores .= "             join anomes on instituicao = rh02_instit                                  ";
+        $sSqlTmpServidores .= "             join rhpessoal on rh01_regist = rh02_regist                               ";
+        $sSqlTmpServidores .= "             join rhlota on r70_codigo = rh02_lota                                     ";
+        $sSqlTmpServidores .= "                        and r70_instit = rh02_instit                                   ";
+        $sSqlTmpServidores .= "             join cgm on z01_numcgm = rh01_numcgm                                      ";
+        $sSqlTmpServidores .= "             join rhregime on rh02_codreg = rh30_codreg                                ";
+        $sSqlTmpServidores .= "                          and rh02_instit = rh30_instit                                ";
+        $sSqlTmpServidores .= "             join db_config on codigo = rh02_instit                                    ";
+        $sSqlTmpServidores .= <<<SQL
+            inner join pessoal.rhliberacontracheque on 
+                rh301_instituicao = rh02_instit
+                and rh301_ano = rh02_anousu
+                and rh301_mes = rh02_mesusu
+                and (
+                    rh301_salario = true or
+                    rh301_rescisao = true or
+                    rh301_complementar = true or
+                    rh301_decimo = true
+                )
+SQL;
+        $sSqlTmpServidores .= "        where rh02_anousu >= {$iExercicioBase}                                         ";
+        $sSqlTmpServidores .= "     ),                                                                                ";
+
+        $sSqlTmpServidores .= "     dados_final as (                                                                  ";
+        $sSqlTmpServidores .= "        select dados_folha.*,                                                          ";
+        $sSqlTmpServidores .= "               rh05_recis,                                                             ";
+        $sSqlTmpServidores .= "               (select r59_descr                                                       ";
+        $sSqlTmpServidores .= "                from rescisao                                                          ";
+        $sSqlTmpServidores .= "                where r59_anousu = ano                                                 ";
+        $sSqlTmpServidores .= "                  and r59_mesusu = mes                                                 ";
+        $sSqlTmpServidores .= "                  and r59_causa = rh05_causa                                           ";
+        $sSqlTmpServidores .= "                limit 1) as causa_rescisao,                                            ";
+        $sSqlTmpServidores .= "               coalesce((select rh55_descr                                             ";
+        $sSqlTmpServidores .= "                         from rhpeslocaltrab                                           ";
+        $sSqlTmpServidores .= "                              left join rhlocaltrab on rh55_codigo = rh56_localtrab    ";
+        $sSqlTmpServidores .= "                                                   and rh55_instit = rh02_instit       ";
+        $sSqlTmpServidores .= "                         where rh56_seqpes = rh02_seqpes                               ";
+        $sSqlTmpServidores .= "                           and rh56_princ = true limit 1                               ";
+        $sSqlTmpServidores .= "               ), 'SEM LOCAL CADASTRADO') as local_trabalho                            ";
+        $sSqlTmpServidores .= "        from dados_folha                                                               ";
+        $sSqlTmpServidores .= "             left join rhpesrescisao on rh05_seqpes = rh02_seqpes                      ";
+        $sSqlTmpServidores .= "     )                                                                                 ";
+        $sSqlTmpServidores .= "                                                                                       ";
+        $sSqlTmpServidores .= "   insert into dados_servidor select * from dados_final order by ano, mes, matricula ; ";
+
+        $rsTmpServidores = db_query($connOrigem, $sSqlTmpServidores);
+
+        if ( !$rsTmpServidores ) {
+            throw new Exception("ERRO-1: Erro ao criar tabela temporaria dos servidores!");
+        }
+
+        $sSqlCreateIndexServidores  = "drop index if exists dados_servidor_ano_mes_matricula_in; ";
+        $sSqlCreateIndexServidores .= "CREATE INDEX dados_servidor_ano_mes_matricula_in ON dados_servidor (ano, mes, matricula);";
+        $rsCreateIndexServidores = db_query($connOrigem, $sSqlCreateIndexServidores);
+
+        if(!$rsCreateIndexServidores){
+            throw new Exception("ERRO-1: Erro ao criar indice dados_servidor_ano_mes_matricula_in!");
+        }
+
+        $sSqlAnalyzeServidores = "ANALYZE dados_servidor";
+        $rsAnalyzeServidores = db_query($connOrigem, $sSqlAnalyzeServidores);
+
+        if(!$rsAnalyzeServidores){
+            throw new Exception("ERRO-1: Erro ao executar analyze em dados_servidor!");
+        }
+
+        $sSqlDadosCadastraisServidor  = " select matricula as id,                         ";
+        $sSqlDadosCadastraisServidor .= "        nome,                                    ";
+        $sSqlDadosCadastraisServidor .= "        cpf,                                     ";
+        $sSqlDadosCadastraisServidor .= "        instit_servidor as instituicao,          ";
+        $sSqlDadosCadastraisServidor .= "        admissao,                                ";
+        $sSqlDadosCadastraisServidor .= "        max(rescisao) as rescisao                ";
+        $sSqlDadosCadastraisServidor .= "   from dados_servidor                           ";
+        $sSqlDadosCadastraisServidor .= "  group by id, nome, cpf, instit_servidor, admissao ";
+        $rsServidores                 = db_query($connOrigem, $sSqlDadosCadastraisServidor);
+
+        $iRowsServidores = pg_num_rows($rsServidores);
+
+        if ($iRowsServidores == 0) {
+            throw new Exception('Nenhum cadastro de servidor encontrado!');
+        }
+
+        db_logNumReg($iRowsServidores, $sArquivoLog, $iParamLog);
+
+        for ($iInd = 0; $iInd < $iRowsServidores; $iInd++ ) {
+
+            logProcessamento($iInd, $iRowsServidores, $iParamLog);
+            $oServidorRow                 = db_utils::fieldsMemory($rsServidores, $iInd);
+            $oServidorRow->instituicao_id = $aListaInstit[$oServidorRow->instituicao];
+            $oTBServidores->setByLineOfDBUtils($oServidorRow, true);
+
+        }
+
+        try {
+            $oTBServidores->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        // FIM SERVIDORES ***************************** //
+
+        // IMPORTACAO MOVIMENTACOES SERVIDORES ******** //
+
+        db_logTitulo(" IMPORTA MOVIMENTACOES DOS SERVIDORES ", $sArquivoLog, $iParamLog);
+
+        $sSqlMovimentacaoServidor  = " select matricula as servidor_id,                                         ";
+        $sSqlMovimentacaoServidor .= "        ano,                                                              ";
+        $sSqlMovimentacaoServidor .= "        mes,                                                              ";
+        $sSqlMovimentacaoServidor .= "        cargo,                                                            ";
+        $sSqlMovimentacaoServidor .= "        lotacao,                                                          ";
+        $sSqlMovimentacaoServidor .= "        vinculo,                                                          ";
+        $sSqlMovimentacaoServidor .= "        id_cargo,                                                         ";
+        $sSqlMovimentacaoServidor .= "        salario_base,                                                     ";
+        $sSqlMovimentacaoServidor .= "        local_trabalho,                                                   ";
+        $sSqlMovimentacaoServidor .= "        causa_rescisao,                                                   ";
+        $sSqlMovimentacaoServidor .= "        situacao_funcional                                                ";
+        $sSqlMovimentacaoServidor .= "    from dados_servidor                                                   ";
+        $sSqlMovimentacaoServidor .= "    group by servidor_id, ano, mes, cargo, lotacao, vinculo, salario_base,";
+        $sSqlMovimentacaoServidor .= "             local_trabalho, causa_rescisao, situacao_funcional, id_cargo ";
+
+        $rsServidoresMovimentacao  = db_query($connOrigem, $sSqlMovimentacaoServidor);
+
+        if ( !$rsServidoresMovimentacao ) {
+            throw new Exception("ERRO-1: Erro ao buscar movimentacoes dos servidores.!".pg_last_error());
+        }
+
+        $iRowsServidores = pg_num_rows($rsServidoresMovimentacao);
+
+        db_logNumReg($iRowsServidores, $sArquivoLog, $iParamLog);
+
+        for ($iInd = 0; $iInd < $iRowsServidores; $iInd++) {
+
+            logProcessamento($iInd, $iRowsServidores, $iParamLog);
+            $oMovimentacaoServidorRow = db_utils::fieldsMemory($rsServidoresMovimentacao, $iInd);
+            $oTBMovimentacoesServidores->setByLineOfDBUtils($oMovimentacaoServidorRow);
+            try {
+                $oTBMovimentacoesServidores->insertValue();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        try {
+            $oTBMovimentacoesServidores->persist();
+        } catch (Exception $e) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        /**
+         * Pega todas as movimentacoes dos servidores e monta uma matriz para pegar a movimentação correspondente
+         * a competência. A matriz $aMatrizMovimentacaoServidor será usada ao inserir os dados financeiros.
+         */
+        $sSqlMatrizServidorMovimentacao  = " select id, servidor_id, mes, ano         ";
+        $sSqlMatrizServidorMovimentacao .= "   from {$sSchema}.servidor_movimentacoes ";
+
+        $rsListaServidorMovimentacao     = db_query($connDestino, $sSqlMatrizServidorMovimentacao);
+        $iRowsListaServidorMovimentacao  = pg_num_rows($rsListaServidorMovimentacao);
+
+        for ( $iInd=0; $iInd < $iRowsListaServidorMovimentacao; $iInd++ ) {
+
+            $oServidorMovimentacaoRow = db_utils::fieldsMemory($rsListaServidorMovimentacao, $iInd);
+            $aMatrizMovimentacaoServidor[$oServidorMovimentacaoRow->ano][$oServidorMovimentacaoRow->mes]
+            [$oServidorMovimentacaoRow->servidor_id] = $oServidorMovimentacaoRow->id;
+
+        }
+
+        // FIM IMPORTACAO MOVIMENTACOES SERVIDORES **** //
+
+        // IMPORTACAO DADOS FINANCEIROS SERVIDOR ****** //
+
+        db_logTitulo(" IMPORTA DADOS FINANCEIROS SERVIDOR ", $sArquivoLog, $iParamLog);
+
+        /**
+         * CRIA TABELA COM OS TOTALIZADORES
+         */
+        $sSqlTempTableSomatorio  = " create temp table somatorio as                                                                                                                ";
+        $sSqlTempTableSomatorio .= "      select r14_anousu as anousu,                                                                                                                ";
+        $sSqlTempTableSomatorio .= "              r14_mesusu as mesusu,                                                                                                               ";
+        $sSqlTempTableSomatorio .= "              r14_regist as regist,                                                                                                               ";
+        $sSqlTempTableSomatorio .= "              'Z888'::char(4) as rubrica,                                                                                                         ";
+        $sSqlTempTableSomatorio .= "              sum(r14_valor)  as valor,                                                                                                           ";
+        $sSqlTempTableSomatorio .= "              0               as quantidade,                                                                                                      ";
+        $sSqlTempTableSomatorio .= "              'base'          as tiporubrica,                                                                                                     ";
+        $sSqlTempTableSomatorio .= "              'salario'       as tipofolha,                                                                                                       ";
+        $sSqlTempTableSomatorio .= "              r14_instit      as instit                                                                                                           ";
+        $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r14_anousu", "r14_mesusu", "r14_instit", "salario");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r14_pd     = 2                                                                                                                      ";
+        $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r14_anousu, r14_mesusu, r14_regist, 'Z999'::char(4) as r14_rubric, sum(r14_valor) as r14_valor,0,'base', 'salario', r14_instit       ";
+        $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r14_anousu", "r14_mesusu", "r14_instit", "salario");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r14_pd = 1                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r14_anousu, r14_mesusu, r14_regist, 'Z777'::char(4) as r14_rubric, sum(r14_valor) as r14_valor,0,'base', 'salario', r14_instit       ";
+        $sSqlTempTableSomatorio .= "         from gerfsal                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r14_anousu", "r14_mesusu", "r14_instit", "salario");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r14_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r14_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r14_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r14_rubric between 'R901' and 'R915'                                                                                                ";
+        $sSqlTempTableSomatorio .= "        group by r14_anousu, r14_mesusu, r14_regist, r14_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z888'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r48_anousu", "r48_mesusu", "r48_instit", "complementar");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r48_pd = 2                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z999'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r48_anousu", "r48_mesusu", "r48_instit", "complementar");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r48_pd = 1                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r48_anousu, r48_mesusu, r48_regist, 'Z777'::char(4) as r48_rubric, sum(r48_valor) as r48_valor,0,'base', 'complementar', r48_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfcom                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r48_anousu", "r48_mesusu", "r48_instit", "complementar");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r48_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r48_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r48_rubric between 'R901' and 'R915'                                                                                                ";
+        $sSqlTempTableSomatorio .= "        group by r48_anousu, r48_mesusu, r48_regist, r48_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z888'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
+        $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r35_anousu", "r35_mesusu", "r35_instit", "decimo");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r35_pd = 2                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z999'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
+        $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r35_anousu", "r35_mesusu", "r35_instit", "decimo");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r35_pd = 1                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r35_anousu, r35_mesusu, r35_regist, 'Z777'::char(4) as r35_rubric, sum(r35_valor) as r35_valor,0,'base', '13salario', r35_instit     ";
+        $sSqlTempTableSomatorio .= "         from gerfs13                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r35_anousu", "r35_mesusu", "r35_instit", "decimo");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r35_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r35_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r35_rubric between 'R901' and 'R915'                                                                                                ";
+        $sSqlTempTableSomatorio .= "        group by r35_anousu, r35_mesusu, r35_regist, r35_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z888'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
+        $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r20_anousu", "r20_mesusu", "r20_instit", "rescisao");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r20_pd = 2                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z999'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
+        $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r20_anousu", "r20_mesusu", "r20_instit", "rescisao");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r20_pd = 1                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r20_anousu, r20_mesusu, r20_regist, 'Z777'::char(4) as r20_rubric, sum(r20_valor) as r20_valor,0,'base', 'rescisao', r20_instit      ";
+        $sSqlTempTableSomatorio .= "         from gerfres                                                                                                                             ";
+        $sSqlTempTableSomatorio .= adicionaJoinLiberacaoContracheque("r20_anousu", "r20_mesusu", "r20_instit", "rescisao");
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r20_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r20_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r20_rubric between 'R901' and 'R915'                                                                                                ";
+        $sSqlTempTableSomatorio .= "        group by r20_anousu, r20_mesusu, r20_regist, r20_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "                                                                                                                                                  ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z888'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r22_pd = 2                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z999'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r22_pd = 1                                                                                                                          ";
+        $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
+        $sSqlTempTableSomatorio .= "      union all                                                                                                                                   ";
+        $sSqlTempTableSomatorio .= "      select r22_anousu, r22_mesusu, r22_regist, 'Z777'::char(4) as r22_rubric, sum(r22_valor) as r22_valor,0,'base', 'adiantamento', r22_instit  ";
+        $sSqlTempTableSomatorio .= "         from gerfadi                                                                                                                             ";
+        $sSqlTempTableSomatorio .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and ano       = r22_anousu                                                                                 ";
+        $sSqlTempTableSomatorio .= "                                       and mes       = r22_mesusu                                                                                 ";
+        $sSqlTempTableSomatorio .= "        where r22_rubric between 'R901' and 'R915'                                                                                                ";
+        $sSqlTempTableSomatorio .= "        group by r22_anousu, r22_mesusu, r22_regist, r22_instit                                                                                   ";
+
+        $rsTempSomatorio = db_query($sSqlTempTableSomatorio);
+
+        if(!$rsTempSomatorio){
+            throw new Exception("ERRO-1: Erro ao criar tabela somatorio!");
+        }
+
+        $sSqlIndiceSomatorio  = "create index somatorio_anousu_mesusu_regist_in on somatorio (anousu, mesusu, regist)";
+        $rsIndiceSomatorio    = db_query($sSqlIndiceSomatorio);
+
+        if(!$rsIndiceSomatorio){
+            throw new Exception("ERRO-1: Erro ao criar indice somatorio_anousu_mesusu_regist_in!");
+        }
+
+        $sSqlAnalizeSomatorio = "analyze somatorio";
+        $rsAnalizeSomatorio   = db_query($sSqlAnalizeSomatorio);
+
+        if(!$rsAnalizeSomatorio){
+            throw new Exception("ERRO-1: Erro ao executar analyze!");
+        }
+
+        $sSqlDadosServidores = "select distinct ano, mes from dados_servidor";
+        $rsDadosServidores   = db_query($connOrigem, $sSqlDadosServidores);
+        $iDadosServidores    = pg_num_rows($rsDadosServidores);
+
+        for ($iServidor = 0; $iServidor < $iDadosServidores; $iServidor++) {
+
+            $oDadosServidores = db_utils::fieldsMemory($rsDadosServidores, $iServidor);
+            $mes = $oDadosServidores->mes;
+            $ano = $oDadosServidores->ano;
+
+            $sSqlFolhaPagamento  = "   select ano,                                                                                                                                    ";
+            $sSqlFolhaPagamento .= "          mes,                                                                                                                                    ";
+            $sSqlFolhaPagamento .= "          matricula,                                                                                                                              ";
+            $sSqlFolhaPagamento .= "          rubrica,                                                                                                                                ";
+            $sSqlFolhaPagamento .= "          case when rh27_descr is not null then rh27_descr                                                                                        ";
+            $sSqlFolhaPagamento .= "               when rubrica = 'Z999' then 'Total Bruto'                                                                                           ";
+            $sSqlFolhaPagamento .= "               when rubrica = 'Z888' then 'Total Descontos'                                                                                       ";
+            $sSqlFolhaPagamento .= "               when rubrica = 'Z777' then 'Descontos Obrigatórios'                                                                                ";
+            $sSqlFolhaPagamento .= "          end as descr_rubrica,                                                                                                                   ";
+            $sSqlFolhaPagamento .= "          valor,                                                                                                                                  ";
+            $sSqlFolhaPagamento .= "          quantidade,                                                                                                                             ";
+            $sSqlFolhaPagamento .= "          tiporubrica,                                                                                                                            ";
+            $sSqlFolhaPagamento .= "          tipofolha,                                                                                                                              ";
+            $sSqlFolhaPagamento .= "          instit                                                                                                                                  ";
+            $sSqlFolhaPagamento .= "     from (                                                                                                                                       ";
+            $sSqlFolhaPagamento .= "      select r14_anousu as ano,r14_mesusu as mes,r14_regist as matricula,r14_rubric as rubrica, r14_valor as valor, r14_quant as quantidade,      ";
+            $sSqlFolhaPagamento .= "        case r14_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end as tiporubrica, 'salario' as tipofolha, r14_instit as instit    ";
+            $sSqlFolhaPagamento .= "        from gerfsal                                                                                                                              ";
+            $sSqlFolhaPagamento .= adicionaJoinLiberacaoContracheque("r14_anousu", "r14_mesusu", "r14_instit", "salario");
+            $sSqlFolhaPagamento .= "             inner join dados_servidor on matricula = r14_regist                                                                                  ";
+            $sSqlFolhaPagamento .= "                                      and ano       = r14_anousu                                                                                  ";
+            $sSqlFolhaPagamento .= "                                      and mes       = r14_mesusu                                                                                  ";
+            $sSqlFolhaPagamento .= "      where r14_mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and r14_anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
+            $sSqlFolhaPagamento .= "       select r48_anousu,r48_mesusu,r48_regist,r48_rubric, r48_valor, r48_quant,                                                                  ";
+            $sSqlFolhaPagamento .= "         case r48_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'complementar', r48_instit                                    ";
+            $sSqlFolhaPagamento .= "         from gerfcom                                                                                                                             ";
+            $sSqlFolhaPagamento .= adicionaJoinLiberacaoContracheque("r48_anousu", "r48_mesusu", "r48_instit", "complementar");
+            $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r48_regist                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and ano       = r48_anousu                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and mes       = r48_mesusu                                                                                 ";
+            $sSqlFolhaPagamento .= "      where r48_mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and r48_anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
+            $sSqlFolhaPagamento .= "       select r35_anousu,r35_mesusu,r35_regist,r35_rubric, r35_valor, r35_quant,                                                                  ";
+            $sSqlFolhaPagamento .= "         case r35_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, '13salario', r35_instit                                       ";
+            $sSqlFolhaPagamento .= "         from gerfs13                                                                                                                             ";
+            $sSqlFolhaPagamento .= adicionaJoinLiberacaoContracheque("r35_anousu", "r35_mesusu", "r35_instit", "decimo");
+            $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r35_regist                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and ano       = r35_anousu                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and mes       = r35_mesusu                                                                                 ";
+            $sSqlFolhaPagamento .= "      where r35_mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and r35_anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
+            $sSqlFolhaPagamento .= "       select r20_anousu,r20_mesusu,r20_regist,r20_rubric, r20_valor, r20_quant,                                                                  ";
+            $sSqlFolhaPagamento .= "         case r20_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'rescisao', r20_instit                                        ";
+            $sSqlFolhaPagamento .= "         from gerfres                                                                                                                             ";
+            $sSqlFolhaPagamento .= adicionaJoinLiberacaoContracheque("r20_anousu", "r20_mesusu", "r20_instit", "rescisao");
+            $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r20_regist                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and ano       = r20_anousu                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and mes       = r20_mesusu                                                                                 ";
+            $sSqlFolhaPagamento .= "      where r20_mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and r20_anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        select r22_anousu,r22_mesusu,r22_regist,r22_rubric, r22_valor, r22_quant,                                                                 ";
+            $sSqlFolhaPagamento .= "         case r22_pd when 1 then 'provento' when 2 then 'desconto' else 'base' end, 'adiantamento', r22_instit                                    ";
+            $sSqlFolhaPagamento .= "         from gerfadi                                                                                                                             ";
+            $sSqlFolhaPagamento .= "              inner join dados_servidor on matricula = r22_regist                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and ano       = r22_anousu                                                                                 ";
+            $sSqlFolhaPagamento .= "                                       and mes       = r22_mesusu                                                                                 ";
+            $sSqlFolhaPagamento .= "      where r22_mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and r22_anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "      union all                                                                                                                                   ";
+            $sSqlFolhaPagamento .= "       select anousu, mesusu, regist, rubrica, valor, quantidade, tiporubrica, tipofolha, instit                                                  ";
+            $sSqlFolhaPagamento .= "         from somatorio                                                                                                                           ";
+            $sSqlFolhaPagamento .= "      where mesusu = {$mes}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "        and anousu = {$ano}                                                                                                                   ";
+            $sSqlFolhaPagamento .= "     ) as x                                                                                                                                       ";
+            $sSqlFolhaPagamento .= "  left join rhrubricas on rubrica = rh27_rubric and instit = rh27_instit                                                                          ";
+            $sSqlFolhaPagamento .= "  order by ano,mes,matricula,tipofolha, tiporubrica desc, rubrica;                                                                                ";
+
+            $rsFolhaPagamento    = db_query($connOrigem, $sSqlFolhaPagamento);
+
+            if ( !$rsFolhaPagamento ) {
+                throw new Exception("ERRO-1: Erro ao buscar dados de rubricas!");
+            }
+
+            $iRowsFolhaPagamento = pg_num_rows($rsFolhaPagamento);
+
+            db_logNumReg($iRowsFolhaPagamento, $sArquivoLog, $iParamLog);
+
+            for ($iInd = 0; $iInd < $iRowsFolhaPagamento; $iInd++) {
+
+                logProcessamento($iInd, $iRowsFolhaPagamento, $iParamLog);
+                $oFolhaPagamentoRow = db_utils::fieldsMemory($rsFolhaPagamento, $iInd);
+                if ( !empty($aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano][$oFolhaPagamentoRow->mes][$oFolhaPagamentoRow->matricula]) ) {
+
+                    $oFolhaPagamentoRow->servidor_movimentacao_id = $aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano]
+                    [$oFolhaPagamentoRow->mes]
+                    [$oFolhaPagamentoRow->matricula];
+
+                    $oTBFolhaPagamento->setByLineOfDBUtils($oFolhaPagamentoRow, true);
+                } else {
+
+                    $sMensagemSemMovimentacao = "Dados Financeiros: {$oFolhaPagamentoRow->matricula} - {$oFolhaPagamentoRow->ano}/{$oFolhaPagamentoRow->mes}  sem movimentações.";
+                    db_log($sMensagemSemMovimentacao, $sArquivoLog, $iParamLog);
+                }
+
+            }
+
+            try {
+                $oTBFolhaPagamento->persist();
+            } catch (Exception $e) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            // FIM IMPORTACAO DADOS FINANCEIROS SERVIDOR ** //
+        }
+        db_logTitulo(" INICIO - REMOVENDO SERVIDORES SEM FOLHA DE PAGAMENTOS NO PORTAL ", $sArquivoLog, $iParamLog);
+        $sqlMovimentacao = "begin; delete from servidor_movimentacoes where id in (select a.id from servidor_movimentacoes a left join folha_pagamento b on a.id = b.servidor_movimentacao_id where b.id is null)";
+        $rsAcerto   = pg_query($connDestino, $sqlMovimentacao);
+        if (!$rsAcerto) {
+            throw new Exception('Erro ao remover dados da folha de pagamentos!');
+        }
+        $sqlServidor = "delete from servidores where id in (select a.id from servidores a left join servidor_movimentacoes b on a.id = b.servidor_id where b.id is null)";
+        $rsAcerto   = pg_query($connDestino, $sqlServidor);
+        if (!$rsAcerto) {
+            throw new Exception('Erro ao remover servidores sem dados da folha de pagamentos!');
+        }
+        
+        db_logTitulo(" FIM - REMOVENDO SERVIDORES SEM FOLHA DE PAGAMENTOS NO PORTAL ", $sArquivoLog, $iParamLog);
+
+
+    } else {
+        db_logTitulo(" DESABILITADO - IMPORTA SERVIDORES ", $sArquivoLog, $iParamLog);
     }
 
-    // IMPORTACAO RECURSOS HUMANOS SERVIDOR ******* //
+    // FIM SERVIDORES ******************************************************************************************//
 
-    db_logTitulo(" IMPORTA DADOS RECURSOS HUMANOS SERVIDOR ", $sArquivoLog, $iParamLog);
+    // IMPORTACAO DE PATRIMONIOS ******************************************************************************//
 
-    $sSqlRecursosHumanos  = " select h16_regist as servidor_id,                         ";
-    $sSqlRecursosHumanos .= "        h12_assent,                                        ";
-    $sSqlRecursosHumanos .= "        h12_descr as descricao,                            ";
-    $sSqlRecursosHumanos .= "        h16_nrport as numero_portaria,                     ";
-    $sSqlRecursosHumanos .= "        h16_atofic as ato_oficial,                         ";
-    $sSqlRecursosHumanos .= "        h16_dtconc data_concessao,                         ";
-    $sSqlRecursosHumanos .= "        h16_dtterm as data_termino,                        ";
-    $sSqlRecursosHumanos .= "        coalesce(h16_quant, 0)   as quantidade_dias,       ";
-    $sSqlRecursosHumanos .= "        h16_histor as historico                            ";
-    $sSqlRecursosHumanos .= "   from assenta                                            ";
-    $sSqlRecursosHumanos .= "      inner join tipoasse       on h12_codigo = h16_assent ";
-    $sSqlRecursosHumanos .= "  where exists (select 1                                   ";
-    $sSqlRecursosHumanos .= "                  from dados_servidor                      ";
-    $sSqlRecursosHumanos .= "                 where matricula = h16_regist              ";
-    $sSqlRecursosHumanos .= "               )                                           ";
+    if (IMPORTAR_PATRIMONIO_VEICULOS) {
 
-    $rsRecursosHumanos    = db_query($connOrigem, $sSqlRecursosHumanos);
+        // IMPORTA CLASSIFICACOES DO PATRIMONIO *****************************************************************//
 
-    if ( !$rsRecursosHumanos ) {
-      throw new Exception("ERRO-1: Erro ao buscar dados recursos humanos.!");
-    }
+        db_logTitulo(" IMPORTA CLASSIFICACOES DO PATRIMONIO ", $sArquivoLog, $iParamLog);
 
-    $iRowsRecursosHumanos = pg_num_rows($rsRecursosHumanos);
-
-    db_logNumReg($iRowsRecursosHumanos, $sArquivoLog, $iParamLog);
-
-    for ($iInd = 0; $iInd < $iRowsRecursosHumanos; $iInd++) {
-
-      logProcessamento($iInd, $iRowsRecursosHumanos, $iParamLog);
-      $oRecursosHumanosRow = db_utils::fieldsMemory($rsRecursosHumanos, $iInd);
-      $oTBAssentamentos->setByLineOfDBUtils($oRecursosHumanosRow, true);
-
-    }
-
-    try {
-      $oTBAssentamentos->persist();
-    } catch (Exception $e) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-    // FIM IMPORTACAO RECURSOS HUMANOS ASSENTAMENTOS //
-
-  } else {
-    db_logTitulo(" DESABILITADO - IMPORTA SERVIDORES ", $sArquivoLog, $iParamLog);
-  }
-
-  // FIM SERVIDORES ******************************************************************************************//
-
-  // IMPORTACAO DE PATRIMONIOS ******************************************************************************//
-
-  if (IMPORTAR_PATRIMONIO_VEICULOS) {
-
-    // IMPORTA CLASSIFICACOES DO PATRIMONIO *****************************************************************//
-
-    db_logTitulo(" IMPORTA CLASSIFICACOES DO PATRIMONIO ", $sArquivoLog, $iParamLog);
-
-    $sSqlBemClassificacao = "
+        $sSqlBemClassificacao = "
       select
         t64_codcla as codigo,
         t64_descr as descricao
@@ -3259,38 +3307,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         clabens;
     ";
 
-    $rsBemClassificacao    = db_query($connOrigem, $sSqlBemClassificacao);
-    $iRowsBemClassificacao = pg_num_rows($rsBemClassificacao);
+        $rsBemClassificacao    = db_query($connOrigem, $sSqlBemClassificacao);
+        $iRowsBemClassificacao = pg_num_rows($rsBemClassificacao);
 
-    if ($iRowsBemClassificacao == 0) {
+        if ($iRowsBemClassificacao == 0) {
 
-      throw new Exception('Nenhuma classificacao encontrada!');
-    }
+            throw new Exception('Nenhuma classificacao encontrada!');
+        }
 
-    $aBemClassificacao = array();
-    db_logNumReg($iRowsBemClassificacao, $sArquivoLog, $iParamLog);
+        $aBemClassificacao = array();
+        db_logNumReg($iRowsBemClassificacao, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsBemClassificacao; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsBemClassificacao; $iInd++) {
 
-      logProcessamento($iInd, $iRowsBemClassificacao, $iParamLog);
-      $oBemClassificacao     = db_utils::fieldsMemory($rsBemClassificacao, $iInd);
-      $oBemClassificacao->id = '';
-      $oTBBemClassificacao->setByLineOfDBUtils($oBemClassificacao);
-      try {
-        $oTBBemClassificacao->insertValue();
-        $oTBBemClassificacao->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aBemClassificacao[$oBemClassificacao->codigo] = $oTBBemClassificacao->getLastPk();
+            logProcessamento($iInd, $iRowsBemClassificacao, $iParamLog);
+            $oBemClassificacao     = db_utils::fieldsMemory($rsBemClassificacao, $iInd);
+            $oBemClassificacao->id = '';
+            $oTBBemClassificacao->setByLineOfDBUtils($oBemClassificacao);
+            try {
+                $oTBBemClassificacao->insertValue();
+                $oTBBemClassificacao->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aBemClassificacao[$oBemClassificacao->codigo] = $oTBBemClassificacao->getLastPk();
 
-    }
-    // FIM IMPORTA CLASSIFICACOES DO PATRIMONIO
+        }
+        // FIM IMPORTA CLASSIFICACOES DO PATRIMONIO
 
-    // IMPORTA TIPOS DE PATRIMONIO
-    db_logTitulo(" IMPORTA TIPOS DE PATRIMONIO ", $sArquivoLog, $iParamLog);
+        // IMPORTA TIPOS DE PATRIMONIO
+        db_logTitulo(" IMPORTA TIPOS DE PATRIMONIO ", $sArquivoLog, $iParamLog);
 
-    $sSqlBemTipo = "
+        $sSqlBemTipo = "
       select
         t24_sequencial as codbemtipo,
         t24_descricao as descricao
@@ -3298,38 +3346,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         bemtipos;
     ";
 
-    $rsBemTipo    = db_query($connOrigem, $sSqlBemTipo);
-    $iRowsBemTipo = pg_num_rows($rsBemTipo);
+        $rsBemTipo    = db_query($connOrigem, $sSqlBemTipo);
+        $iRowsBemTipo = pg_num_rows($rsBemTipo);
 
-    if ($iRowsBemTipo == 0) {
+        if ($iRowsBemTipo == 0) {
 
-      throw new Exception('Nenhum tipo de bem encontrado!');
-    }
+            throw new Exception('Nenhum tipo de bem encontrado!');
+        }
 
-    $aBemTipo = array();
-    db_logNumReg($iRowsBemTipo, $sArquivoLog, $iParamLog);
+        $aBemTipo = array();
+        db_logNumReg($iRowsBemTipo, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsBemTipo; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsBemTipo; $iInd++) {
 
-      logProcessamento($iInd, $iRowsBemTipo, $iParamLog);
-      $oBemTipo     = db_utils::fieldsMemory($rsBemTipo, $iInd);
-      $oBemTipo->id = '';
-      $oTBBemTipo->setByLineOfDBUtils($oBemTipo);
-      try {
-        $oTBBemTipo->insertValue();
-        $oTBBemTipo->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aBemTipo[$oBemTipo->codbemtipo] = $oTBBemTipo->getLastPk();
+            logProcessamento($iInd, $iRowsBemTipo, $iParamLog);
+            $oBemTipo     = db_utils::fieldsMemory($rsBemTipo, $iInd);
+            $oBemTipo->id = '';
+            $oTBBemTipo->setByLineOfDBUtils($oBemTipo);
+            try {
+                $oTBBemTipo->insertValue();
+                $oTBBemTipo->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aBemTipo[$oBemTipo->codbemtipo] = $oTBBemTipo->getLastPk();
 
-    }
-    // FIM IMPORTA TIPOS DE PATRIMONIO
+        }
+        // FIM IMPORTA TIPOS DE PATRIMONIO
 
-    // IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
-    db_logTitulo(" IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO ", $sArquivoLog, $iParamLog);
+        // IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
+        db_logTitulo(" IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO ", $sArquivoLog, $iParamLog);
 
-    $sSqlBemAquisicaoTipo = "
+        $sSqlBemAquisicaoTipo = "
       select
         t45_sequencial as codbemaquisicaotipo,
         t45_descricao as descricao
@@ -3337,38 +3385,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         benstipoaquisicao;
     ";
 
-    $rsBemAquisicaoTipo    = db_query($connOrigem, $sSqlBemAquisicaoTipo);
-    $iRowsBemAquisicaoTipo = pg_num_rows($rsBemAquisicaoTipo);
+        $rsBemAquisicaoTipo    = db_query($connOrigem, $sSqlBemAquisicaoTipo);
+        $iRowsBemAquisicaoTipo = pg_num_rows($rsBemAquisicaoTipo);
 
-    if ($iRowsBemTipo == 0) {
+        if ($iRowsBemTipo == 0) {
 
-      throw new Exception('Nenhum tipo de aquisicao de bem encontrado!');
-    }
+            throw new Exception('Nenhum tipo de aquisicao de bem encontrado!');
+        }
 
-    $aBemAquisicaoTipo = array();
-    db_logNumReg($iRowsBemAquisicaoTipo, $sArquivoLog, $iParamLog);
+        $aBemAquisicaoTipo = array();
+        db_logNumReg($iRowsBemAquisicaoTipo, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsBemAquisicaoTipo; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsBemAquisicaoTipo; $iInd++) {
 
-      logProcessamento($iInd, $iRowsBemAquisicaoTipo, $iParamLog);
-      $oBemAquisicaoTipo     = db_utils::fieldsMemory($rsBemAquisicaoTipo, $iInd);
-      $oBemAquisicaoTipo->id = '';
-      $oTBBemAquisicaoTipo->setByLineOfDBUtils($oBemAquisicaoTipo);
-      try {
-        $oTBBemAquisicaoTipo->insertValue();
-        $oTBBemAquisicaoTipo->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aBemAquisicaoTipo[$oBemAquisicaoTipo->codbemaquisicaotipo] = $oTBBemAquisicaoTipo->getLastPk();
+            logProcessamento($iInd, $iRowsBemAquisicaoTipo, $iParamLog);
+            $oBemAquisicaoTipo     = db_utils::fieldsMemory($rsBemAquisicaoTipo, $iInd);
+            $oBemAquisicaoTipo->id = '';
+            $oTBBemAquisicaoTipo->setByLineOfDBUtils($oBemAquisicaoTipo);
+            try {
+                $oTBBemAquisicaoTipo->insertValue();
+                $oTBBemAquisicaoTipo->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aBemAquisicaoTipo[$oBemAquisicaoTipo->codbemaquisicaotipo] = $oTBBemAquisicaoTipo->getLastPk();
 
-    }
-    // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
+        }
+        // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
 
-    // IMPORTA DEPARTAMENTOS DO ORGAO
-    db_logTitulo(" IMPORTA DEPARTAMENTOS DO ORGAO ", $sArquivoLog, $iParamLog);
+        // IMPORTA DEPARTAMENTOS DO ORGAO
+        db_logTitulo(" IMPORTA DEPARTAMENTOS DO ORGAO ", $sArquivoLog, $iParamLog);
 
-    $sSqlDepartamento = "
+        $sSqlDepartamento = "
       select
         coddepto as codigo_departamento,
         descrdepto as descricao
@@ -3376,38 +3424,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         db_depart;
     ";
 
-    $rsDepartamento    = db_query($connOrigem, $sSqlDepartamento);
-    $iRowsDepartamento = pg_num_rows($rsDepartamento);
+        $rsDepartamento    = db_query($connOrigem, $sSqlDepartamento);
+        $iRowsDepartamento = pg_num_rows($rsDepartamento);
 
-    if ($iRowsDepartamento == 0) {
+        if ($iRowsDepartamento == 0) {
 
-      throw new Exception('Nenhum departamento encontrado!');
-    }
+            throw new Exception('Nenhum departamento encontrado!');
+        }
 
-    $aDepartamento = array();
-    db_logNumReg($iRowsDepartamento, $sArquivoLog, $iParamLog);
+        $aDepartamento = array();
+        db_logNumReg($iRowsDepartamento, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsDepartamento; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsDepartamento; $iInd++) {
 
-      logProcessamento($iInd, $iRowsDepartamento, $iParamLog);
-      $oDepartamento     = db_utils::fieldsMemory($rsDepartamento, $iInd);
-      $oDepartamento->id = '';
-      $oTBDepartamento->setByLineOfDBUtils($oDepartamento);
-      try {
-        $oTBDepartamento->insertValue();
-        $oTBDepartamento->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aDepartamento[$oDepartamento->codigo_departamento] = $oTBDepartamento->getLastPk();
+            logProcessamento($iInd, $iRowsDepartamento, $iParamLog);
+            $oDepartamento     = db_utils::fieldsMemory($rsDepartamento, $iInd);
+            $oDepartamento->id = '';
+            $oTBDepartamento->setByLineOfDBUtils($oDepartamento);
+            try {
+                $oTBDepartamento->insertValue();
+                $oTBDepartamento->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aDepartamento[$oDepartamento->codigo_departamento] = $oTBDepartamento->getLastPk();
 
-    }
-    // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
+        }
+        // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
 
-    // IMPORTA DIVISAO DEPARTAMENTOS DO ORGAO
-    db_logTitulo(" IMPORTA DIVISAO DE DEPARTAMENTOS DO ORGAO ", $sArquivoLog, $iParamLog);
+        // IMPORTA DIVISAO DEPARTAMENTOS DO ORGAO
+        db_logTitulo(" IMPORTA DIVISAO DE DEPARTAMENTOS DO ORGAO ", $sArquivoLog, $iParamLog);
 
-    $sSqlDivisaoDepartamento = "
+        $sSqlDivisaoDepartamento = "
       select
         t30_codigo as codigo_divisao,
         t30_descr as descricao
@@ -3415,38 +3463,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         departdiv;
     ";
 
-    $rsDivisaoDepartamento    = db_query($connOrigem, $sSqlDivisaoDepartamento);
-    $iRowsDivisaoDepartamento = pg_num_rows($rsDivisaoDepartamento);
+        $rsDivisaoDepartamento    = db_query($connOrigem, $sSqlDivisaoDepartamento);
+        $iRowsDivisaoDepartamento = pg_num_rows($rsDivisaoDepartamento);
 
-    if ($iRowsDivisaoDepartamento == 0) {
+        if ($iRowsDivisaoDepartamento == 0) {
 
-      throw new Exception('Nenhuma divisao encontrado!');
-    }
+            throw new Exception('Nenhuma divisao encontrado!');
+        }
 
-    $aDivisaoDepartamento = array();
-    db_logNumReg($iRowsDivisaoDepartamento, $sArquivoLog, $iParamLog);
+        $aDivisaoDepartamento = array();
+        db_logNumReg($iRowsDivisaoDepartamento, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsDivisaoDepartamento; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsDivisaoDepartamento; $iInd++) {
 
-      logProcessamento($iInd, $iRowsDivisaoDepartamento, $iParamLog);
-      $oDivisaoDepartamento     = db_utils::fieldsMemory($rsDivisaoDepartamento, $iInd);
-      $oDivisaoDepartamento->id = '';
-      $oTBDivisaoDepartamento->setByLineOfDBUtils($oDivisaoDepartamento);
-      try {
-        $oTBDivisaoDepartamento->insertValue();
-        $oTBDivisaoDepartamento->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aDivisaoDepartamento[$oDivisaoDepartamento->codigo_divisao] = $oTBDivisaoDepartamento->getLastPk();
+            logProcessamento($iInd, $iRowsDivisaoDepartamento, $iParamLog);
+            $oDivisaoDepartamento     = db_utils::fieldsMemory($rsDivisaoDepartamento, $iInd);
+            $oDivisaoDepartamento->id = '';
+            $oTBDivisaoDepartamento->setByLineOfDBUtils($oDivisaoDepartamento);
+            try {
+                $oTBDivisaoDepartamento->insertValue();
+                $oTBDivisaoDepartamento->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aDivisaoDepartamento[$oDivisaoDepartamento->codigo_divisao] = $oTBDivisaoDepartamento->getLastPk();
 
-    }
-    // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
+        }
+        // FIM IMPORTA TIPOS DE AQUISICAO DE PATRIMONIO
 
-    // IMPORTA TIPOS DE DEPRECIACAO DO PATRIMONIO
-    db_logTitulo(" IMPORTA TIPO DE DEPRECIACAO DO PATRIMONIO ", $sArquivoLog, $iParamLog);
+        // IMPORTA TIPOS DE DEPRECIACAO DO PATRIMONIO
+        db_logTitulo(" IMPORTA TIPO DE DEPRECIACAO DO PATRIMONIO ", $sArquivoLog, $iParamLog);
 
-    $sSqlBemTipoDepreciacao = "
+        $sSqlBemTipoDepreciacao = "
       select
         t46_sequencial as codigo_tipo_depreciacao,
         t46_descricao as descricao
@@ -3454,51 +3502,51 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         benstipodepreciacao;
     ";
 
-    $rsBemTipoDepreciacao    = db_query($connOrigem, $sSqlBemTipoDepreciacao);
-    $iRowsBemTipoDepreciacao = pg_num_rows($rsBemTipoDepreciacao);
+        $rsBemTipoDepreciacao    = db_query($connOrigem, $sSqlBemTipoDepreciacao);
+        $iRowsBemTipoDepreciacao = pg_num_rows($rsBemTipoDepreciacao);
 
-    if ($iRowsBemTipoDepreciacao == 0) {
+        if ($iRowsBemTipoDepreciacao == 0) {
 
-      throw new Exception('Nenhuma tipo de depreciacao encontrado!');
-    }
+            throw new Exception('Nenhuma tipo de depreciacao encontrado!');
+        }
 
-    $aBemTipoDepreciacao = array();
-    db_logNumReg($iRowsBemTipoDepreciacao, $sArquivoLog, $iParamLog);
+        $aBemTipoDepreciacao = array();
+        db_logNumReg($iRowsBemTipoDepreciacao, $sArquivoLog, $iParamLog);
 
-    for ($iInd = 0; $iInd < $iRowsBemTipoDepreciacao; $iInd++) {
+        for ($iInd = 0; $iInd < $iRowsBemTipoDepreciacao; $iInd++) {
 
-      logProcessamento($iInd, $iRowsBemTipoDepreciacao, $iParamLog);
-      $oBemTipoDepreciacao     = db_utils::fieldsMemory($rsBemTipoDepreciacao, $iInd);
-      $oBemTipoDepreciacao->id = '';
-      $oTBBemTipoDepreciacao->setByLineOfDBUtils($oBemTipoDepreciacao);
-      try {
-        $oTBBemTipoDepreciacao->insertValue();
-        $oTBBemTipoDepreciacao->persist();
-      } catch (Exception $eException) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-      $aBemTipoDepreciacao[$oBemTipoDepreciacao->codigo_tipo_depreciacao] = $oTBBemTipoDepreciacao->getLastPk();
+            logProcessamento($iInd, $iRowsBemTipoDepreciacao, $iParamLog);
+            $oBemTipoDepreciacao     = db_utils::fieldsMemory($rsBemTipoDepreciacao, $iInd);
+            $oBemTipoDepreciacao->id = '';
+            $oTBBemTipoDepreciacao->setByLineOfDBUtils($oBemTipoDepreciacao);
+            try {
+                $oTBBemTipoDepreciacao->insertValue();
+                $oTBBemTipoDepreciacao->persist();
+            } catch (Exception $eException) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+            $aBemTipoDepreciacao[$oBemTipoDepreciacao->codigo_tipo_depreciacao] = $oTBBemTipoDepreciacao->getLastPk();
 
-    }
-    // FIM IMPORTA TIPOS DE DEPRECIACAO DO PATRIMONIO
+        }
+        // FIM IMPORTA TIPOS DE DEPRECIACAO DO PATRIMONIO
 
-    db_logTitulo(" IMPORTA DADOS DO PATRIMONIO ", $sArquivoLog, $iParamLog);
+        db_logTitulo(" IMPORTA DADOS DO PATRIMONIO ", $sArquivoLog, $iParamLog);
 
-    $sSqlInstituicao = "select id, codinstit from instituicoes;";
+        $sSqlInstituicao = "select id, codinstit from instituicoes;";
 
-    $rsInstituicoes    = db_query($connDestino, $sSqlInstituicao);
-    $iRowsInstituicoes = pg_num_rows($rsInstituicoes);
-    if ($iRowsInstituicoes == 0) {
-      throw new Exception('Nenhuma instituicao encontrada!');
-    }
+        $rsInstituicoes    = db_query($connDestino, $sSqlInstituicao);
+        $iRowsInstituicoes = pg_num_rows($rsInstituicoes);
+        if ($iRowsInstituicoes == 0) {
+            throw new Exception('Nenhuma instituicao encontrada!');
+        }
 
-    $aInstituicoes = array();
-    for ($iInd = 0; $iInd < $iRowsInstituicoes; $iInd++) {
-      $oInstituicao                            = db_utils::fieldsMemory($rsInstituicoes, $iInd);
-      $aInstituicoes[$oInstituicao->codinstit] = $oInstituicao->id;
-    }
+        $aInstituicoes = array();
+        for ($iInd = 0; $iInd < $iRowsInstituicoes; $iInd++) {
+            $oInstituicao                            = db_utils::fieldsMemory($rsInstituicoes, $iInd);
+            $aInstituicoes[$oInstituicao->codinstit] = $oInstituicao->id;
+        }
 
-    $sSqlPatrimonio = "
+        $sSqlPatrimonio = "
     select distinct
       t52_bem    as codigo,
       t52_instit as instituicao,
@@ -3547,26 +3595,26 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
          left  join bensbaix on bensbaix.t55_codbem = bens.t52_bem
     order by t52_depart";
 
-    $rsPatrimonio    = db_query($connOrigem, $sSqlPatrimonio);
-    $iRowsPatrimonio = pg_num_rows($rsPatrimonio);
-    if ($iRowsPatrimonio > 0) {
+        $rsPatrimonio    = db_query($connOrigem, $sSqlPatrimonio);
+        $iRowsPatrimonio = pg_num_rows($rsPatrimonio);
+        if ($iRowsPatrimonio > 0) {
 
-      db_logNumReg($iRowsPatrimonio, $sArquivoLog, $iParamLog);
+            db_logNumReg($iRowsPatrimonio, $sArquivoLog, $iParamLog);
 
-      for ($iInd = 0; $iInd < $iRowsPatrimonio; $iInd++) {
+            for ($iInd = 0; $iInd < $iRowsPatrimonio; $iInd++) {
 
-        logProcessamento($iInd, $iRowsPatrimonio, $iParamLog);
-        $oPatrimonio = db_utils::fieldsMemory($rsPatrimonio, $iInd);
-        $oPatrimonio->bem_tipo_id             = $aBemTipo[$oPatrimonio->codbemtipo];
-        $oPatrimonio->departamento_id         = $aDepartamento[$oPatrimonio->codigo_departamento];
-        $oPatrimonio->bem_tipo_depreciacao_id = 0;
-        $oPatrimonio->departamento_divisao_id = 0;
-        if (!empty($oPatrimonio->codigo_divisao)) {
-          $oPatrimonio->departamento_divisao_id = $aDivisaoDepartamento[$oPatrimonio->codigo_divisao];
-        }
-        $oPatrimonio->pessoa_id = $oPatrimonio->numcgm;
+                logProcessamento($iInd, $iRowsPatrimonio, $iParamLog);
+                $oPatrimonio = db_utils::fieldsMemory($rsPatrimonio, $iInd);
+                $oPatrimonio->bem_tipo_id             = $aBemTipo[$oPatrimonio->codbemtipo];
+                $oPatrimonio->departamento_id         = $aDepartamento[$oPatrimonio->codigo_departamento];
+                $oPatrimonio->bem_tipo_depreciacao_id = 0;
+                $oPatrimonio->departamento_divisao_id = 0;
+                if (!empty($oPatrimonio->codigo_divisao)) {
+                    $oPatrimonio->departamento_divisao_id = $aDivisaoDepartamento[$oPatrimonio->codigo_divisao];
+                }
+                $oPatrimonio->pessoa_id = $oPatrimonio->numcgm;
 
-        $sSqlOrgao = "
+                $sSqlOrgao = "
       select orcorgao.o40_orgao as orgao,
              orcorgao.o40_descr as orgao_descricao,
              orcunidade.o41_unidade as unidade,
@@ -3580,12 +3628,12 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         and db_departorg.db01_coddepto = {$oPatrimonio->codigo_departamento}
       limit 1";
 
-        $rsOrgao = db_query($connOrigem, $sSqlOrgao);
-        if (!empty($rsOrgao) && pg_num_rows($rsOrgao) > 0) {
+                $rsOrgao = db_query($connOrigem, $sSqlOrgao);
+                if (!empty($rsOrgao) && pg_num_rows($rsOrgao) > 0) {
 
-          $oOrgao = db_utils::fieldsMemory($rsOrgao, 0);
+                    $oOrgao = db_utils::fieldsMemory($rsOrgao, 0);
 
-          $sSqlOrgaoDestino = "
+                    $sSqlOrgaoDestino = "
         select id
           from orgaos
          where codorgao = {$oOrgao->orgao}
@@ -3593,29 +3641,29 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
          limit 1
       ";
 
-          $rsOrgaoDestino = db_query($connDestino, $sSqlOrgaoDestino);
+                    $rsOrgaoDestino = db_query($connDestino, $sSqlOrgaoDestino);
 
-          if (!empty($rsOrgaoDestino) && pg_num_rows($rsOrgaoDestino) > 0) {
+                    if (!empty($rsOrgaoDestino) && pg_num_rows($rsOrgaoDestino) > 0) {
 
-            $oOrgaoDestino         = db_utils::fieldsMemory($rsOrgaoDestino, 0);
-            $oPatrimonio->orgao_id = $oOrgaoDestino->id;
+                        $oOrgaoDestino         = db_utils::fieldsMemory($rsOrgaoDestino, 0);
+                        $oPatrimonio->orgao_id = $oOrgaoDestino->id;
 
-            $sSqlOrgaoUnidade = "
+                        $sSqlOrgaoUnidade = "
           select id
             from unidades
            where orgao_id   = {$oOrgaoDestino->id}
              and codunidade = {$oOrgao->unidade} limit 1
         ";
 
-            $rsOrgaoUnidade = db_query($connDestino, $sSqlOrgaoUnidade);
-            if (!empty($rsOrgaoUnidade) && pg_num_rows($rsOrgaoUnidade) > 0) {
+                        $rsOrgaoUnidade = db_query($connDestino, $sSqlOrgaoUnidade);
+                        if (!empty($rsOrgaoUnidade) && pg_num_rows($rsOrgaoUnidade) > 0) {
 
-              $oOrgaoUnidade           = db_utils::fieldsMemory($rsOrgaoUnidade, 0);
-              $oPatrimonio->unidade_id = $oOrgaoUnidade->id;
-            }
-          }
+                            $oOrgaoUnidade           = db_utils::fieldsMemory($rsOrgaoUnidade, 0);
+                            $oPatrimonio->unidade_id = $oOrgaoUnidade->id;
+                        }
+                    }
 
-          $sSqlDepreciacao = "
+                    $sSqlDepreciacao = "
         select t44_benstipodepreciacao as tipo_depreciacao,
                t44_benstipoaquisicao as tipo_aquisicao,
                t44_vidautil as vidautil,
@@ -3628,83 +3676,83 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
          where bensdepreciacao.t44_bens = {$oPatrimonio->codigo};
       ";
 
-          $rsDepreciacao = db_query($connOrigem, $sSqlDepreciacao);
+                    $rsDepreciacao = db_query($connOrigem, $sSqlDepreciacao);
 
-          if (!empty($rsDepreciacao) && pg_num_rows($rsDepreciacao) > 0) {
+                    if (!empty($rsDepreciacao) && pg_num_rows($rsDepreciacao) > 0) {
 
-            $oDepreciacao                         = db_utils::fieldsMemory($rsDepreciacao, 0);
-            $oPatrimonio->bem_tipo_depreciacao_id = $aBemTipoDepreciacao[$oDepreciacao->codigo_tipo_depreciacao];
-            $oPatrimonio->tipo_depreciacao        = $oDepreciacao->tipo_depreciacao;
-            $oPatrimonio->valor_depreciavel       = $oDepreciacao->depreciacao;
-            $oPatrimonio->valor_atual             = $oDepreciacao->valor_atual;
-            $oPatrimonio->valor_residual          = $oDepreciacao->valor_residual;
-          } else {
+                        $oDepreciacao                         = db_utils::fieldsMemory($rsDepreciacao, 0);
+                        $oPatrimonio->bem_tipo_depreciacao_id = $aBemTipoDepreciacao[$oDepreciacao->codigo_tipo_depreciacao];
+                        $oPatrimonio->tipo_depreciacao        = $oDepreciacao->tipo_depreciacao;
+                        $oPatrimonio->valor_depreciavel       = $oDepreciacao->depreciacao;
+                        $oPatrimonio->valor_atual             = $oDepreciacao->valor_atual;
+                        $oPatrimonio->valor_residual          = $oDepreciacao->valor_residual;
+                    } else {
 
-            $oPatrimonio->bem_tipo_depreciacao_id = 0;
-            $oPatrimonio->tipo_depreciacao        = 0;
-            $oPatrimonio->valor_depreciavel       = 0;
-            $oPatrimonio->valor_atual             = 0;
-            $oPatrimonio->valor_residual          = 0;
-            $oPatrimonio->oDepreciacao            = 0;
-          }
+                        $oPatrimonio->bem_tipo_depreciacao_id = 0;
+                        $oPatrimonio->tipo_depreciacao        = 0;
+                        $oPatrimonio->valor_depreciavel       = 0;
+                        $oPatrimonio->valor_atual             = 0;
+                        $oPatrimonio->valor_residual          = 0;
+                        $oPatrimonio->oDepreciacao            = 0;
+                    }
 
-          $oPatrimonio->bem_aquisicao_tipo_id = 0;
-          if (!empty($aBemAquisicaoTipo[$oDepreciacao->tipo_aquisicao])) {
-            $oPatrimonio->bem_aquisicao_tipo_id = $aBemAquisicaoTipo[$oDepreciacao->tipo_aquisicao];
-          }
+                    $oPatrimonio->bem_aquisicao_tipo_id = 0;
+                    if (!empty($aBemAquisicaoTipo[$oDepreciacao->tipo_aquisicao])) {
+                        $oPatrimonio->bem_aquisicao_tipo_id = $aBemAquisicaoTipo[$oDepreciacao->tipo_aquisicao];
+                    }
 
-          $oPatrimonio->bem_classificacao_id = $aBemClassificacao[$oPatrimonio->classificacao_bem];
+                    $oPatrimonio->bem_classificacao_id = $aBemClassificacao[$oPatrimonio->classificacao_bem];
 
-          $oPatrimonio->baixa = "Em uso";
-          $sSqlBaixa          = "
+                    $oPatrimonio->baixa = "Em uso";
+                    $sSqlBaixa          = "
         select *
           from bensbaix
          where bensbaix.t55_codbem = {$oPatrimonio->codigo};
       ";
 
-          $rsBaixa = db_query($connOrigem, $sSqlBaixa);
+                    $rsBaixa = db_query($connOrigem, $sSqlBaixa);
 
-          if (!empty($rsBaixa) && pg_num_rows($rsBaixa) > 0) {
+                    if (!empty($rsBaixa) && pg_num_rows($rsBaixa) > 0) {
 
-            $oBaixa = db_utils::fieldsMemory($rsBaixa, 0);
+                        $oBaixa = db_utils::fieldsMemory($rsBaixa, 0);
 
-            if (pg_num_rows($rsBaixa) > 1) {
+                        if (pg_num_rows($rsBaixa) > 1) {
 
-              $oPatrimonio->baixa = "Baixado";
+                            $oPatrimonio->baixa = "Baixado";
+                        }
+                    }
+                    $oPatrimonio->situacao = $oPatrimonio->baixa;
+
+                    $oPatrimonio->id             = '';
+                    $oPatrimonio->instituicao_id = $aInstituicoes[$oPatrimonio->instituicao];
+
+                    $oTBBens->setByLineOfDBUtils($oPatrimonio);
+
+                    try {
+                        $oTBBens->insertValue();
+                    } catch (Exception $eException) {
+                        throw new Exception("ERRO-0: {$eException->getMessage()}");
+                    }
+                }
             }
-          }
-          $oPatrimonio->situacao = $oPatrimonio->baixa;
 
-          $oPatrimonio->id             = '';
-          $oPatrimonio->instituicao_id = $aInstituicoes[$oPatrimonio->instituicao];
-
-          $oTBBens->setByLineOfDBUtils($oPatrimonio);
-
-          try {
-            $oTBBens->insertValue();
-          } catch (Exception $eException) {
-            throw new Exception("ERRO-0: {$eException->getMessage()}");
-          }
-        }
-      }
-
-      try {
-        $oTBBens->persist();
-      } catch (Exception $eErro) {
-        throw new Exception("ERRO-0: {$eErro->getMessage()}");
-      }
-    } // fim condicao lPularImportacaoPatrimonio
+            try {
+                $oTBBens->persist();
+            } catch (Exception $eErro) {
+                throw new Exception("ERRO-0: {$eErro->getMessage()}");
+            }
+        } // fim condicao lPularImportacaoPatrimonio
 
 
-    $iExercicioBase = EXERCICIO_BASE;
-    // FIM IMPORTACAO DE PATRIMONIOS //
+        $iExercicioBase = EXERCICIO_BASE;
+        // FIM IMPORTACAO DE PATRIMONIOS //
 
-    // IMPORTACAO DE VEICULOS     //
+        // IMPORTACAO DE VEICULOS     //
 
-    // IMPORTA TIPOS DE UTILIZACAO DE VEICULOS
-    db_logTitulo(" IMPORTA TIPOS DE UTILIZACAO DE VEICULOS ", $sArquivoLog, $iParamLog);
+        // IMPORTA TIPOS DE UTILIZACAO DE VEICULOS
+        db_logTitulo(" IMPORTA TIPOS DE UTILIZACAO DE VEICULOS ", $sArquivoLog, $iParamLog);
 
-    $sSqlVeiculoUtilizacao = "
+        $sSqlVeiculoUtilizacao = "
         select
           ve14_sequencial as codigo,
           ve14_descr as descricao
@@ -3712,52 +3760,52 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
           veiccadutilizacao;
       ";
 
-    $rsVeiculoUtilizacao    = db_query($connOrigem, $sSqlVeiculoUtilizacao);
-    $iRowsVeiculoUtilizacao = pg_num_rows($rsVeiculoUtilizacao);
+        $rsVeiculoUtilizacao    = db_query($connOrigem, $sSqlVeiculoUtilizacao);
+        $iRowsVeiculoUtilizacao = pg_num_rows($rsVeiculoUtilizacao);
 
-    if ( $iRowsVeiculoUtilizacao ==  0 ) {
-      db_Log('Nenhuma tipo de utilizacao de veiculo encontrado!', $sArquivoLog, $iParamLog);
-    }
-
-    $sSqlTemVeiculos     = "select count(*) as resultado from veiculos";
-    $rsTemVeiculos       = db_query($sSqlTemVeiculos);
-    $iQuantidadeVeiculos = 0;
-    if ($rsTemVeiculos && pg_num_rows($rsTemVeiculos) === 1) {
-      $iQuantidadeVeiculos = (int) db_utils::fieldsMemory($rsTemVeiculos, 0)->resultado;
-    }
-
-    $lPularImportacaoVeiculos = false;
-    if ($iQuantidadeVeiculos === 0) {
-
-      db_Log('Nenhuma veiculo encontrado. Pulando importacao de veiculos.', $sArquivoLog, $iParamLog);
-      $lPularImportacaoVeiculos = true;
-    }
-
-    if (!$lPularImportacaoVeiculos) {
-      $aVeiculoUtilizacao = array();
-      db_logNumReg($iRowsVeiculoUtilizacao,$sArquivoLog,$iParamLog);
-
-      for ( $iInd=0; $iInd < $iRowsVeiculoUtilizacao; $iInd++ ) {
-
-        logProcessamento($iInd,$iRowsVeiculoUtilizacao,$iParamLog);
-        $oVeiculoUtilizacao = db_utils::fieldsMemory($rsVeiculoUtilizacao, $iInd);
-        $oTBVeiculoUtilizacao->setByLineOfDBUtils($oVeiculoUtilizacao);
-        try {
-          $oTBVeiculoUtilizacao->insertValue();
-          $oTBVeiculoUtilizacao->persist();
-        } catch ( Exception $eException ) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
+        if ( $iRowsVeiculoUtilizacao ==  0 ) {
+            db_Log('Nenhuma tipo de utilizacao de veiculo encontrado!', $sArquivoLog, $iParamLog);
         }
-        $aVeiculoUtilizacao[$oVeiculoUtilizacao->codigo] = $oTBVeiculoUtilizacao->getLastPk();
 
-      }
-      // FIM IMPORTA TIPOS DE UTILIZACAO DE VEICULOS
+        $sSqlTemVeiculos     = "select count(*) as resultado from veiculos";
+        $rsTemVeiculos       = db_query($sSqlTemVeiculos);
+        $iQuantidadeVeiculos = 0;
+        if ($rsTemVeiculos && pg_num_rows($rsTemVeiculos) === 1) {
+            $iQuantidadeVeiculos = (int) db_utils::fieldsMemory($rsTemVeiculos, 0)->resultado;
+        }
+
+        $lPularImportacaoVeiculos = false;
+        if ($iQuantidadeVeiculos === 0) {
+
+            db_Log('Nenhuma veiculo encontrado. Pulando importacao de veiculos.', $sArquivoLog, $iParamLog);
+            $lPularImportacaoVeiculos = true;
+        }
+
+        if (!$lPularImportacaoVeiculos) {
+            $aVeiculoUtilizacao = array();
+            db_logNumReg($iRowsVeiculoUtilizacao,$sArquivoLog,$iParamLog);
+
+            for ( $iInd=0; $iInd < $iRowsVeiculoUtilizacao; $iInd++ ) {
+
+                logProcessamento($iInd,$iRowsVeiculoUtilizacao,$iParamLog);
+                $oVeiculoUtilizacao = db_utils::fieldsMemory($rsVeiculoUtilizacao, $iInd);
+                $oTBVeiculoUtilizacao->setByLineOfDBUtils($oVeiculoUtilizacao);
+                try {
+                    $oTBVeiculoUtilizacao->insertValue();
+                    $oTBVeiculoUtilizacao->persist();
+                } catch ( Exception $eException ) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+                $aVeiculoUtilizacao[$oVeiculoUtilizacao->codigo] = $oTBVeiculoUtilizacao->getLastPk();
+
+            }
+            // FIM IMPORTA TIPOS DE UTILIZACAO DE VEICULOS
 
 
-      // IMPORTA TIPOS DE VEICULOS
-      db_logTitulo(" IMPORTA TIPOS DE VEICULOS ", $sArquivoLog, $iParamLog);
+            // IMPORTA TIPOS DE VEICULOS
+            db_logTitulo(" IMPORTA TIPOS DE VEICULOS ", $sArquivoLog, $iParamLog);
 
-      $sSqlVeiculoTipo = "
+            $sSqlVeiculoTipo = "
         select
           ve20_codigo as id,
           ve20_descr as descricao
@@ -3765,37 +3813,37 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
           veiccadtipo;
       ";
 
-      $rsVeiculoTipo    = db_query($connOrigem, $sSqlVeiculoTipo);
-      $iRowsVeiculoTipo = pg_num_rows($rsVeiculoTipo);
+            $rsVeiculoTipo    = db_query($connOrigem, $sSqlVeiculoTipo);
+            $iRowsVeiculoTipo = pg_num_rows($rsVeiculoTipo);
 
-      if ( $iRowsVeiculoTipo ==  0 ) {
+            if ( $iRowsVeiculoTipo ==  0 ) {
 
-        throw new Exception('Nenhuma tipo de veiculo encontrado!');
-      }
+                throw new Exception('Nenhuma tipo de veiculo encontrado!');
+            }
 
-      $aVeiculoTipo = array();
-      db_logNumReg($iRowsVeiculoTipo,$sArquivoLog,$iParamLog);
+            $aVeiculoTipo = array();
+            db_logNumReg($iRowsVeiculoTipo,$sArquivoLog,$iParamLog);
 
-      for ( $iInd=0; $iInd < $iRowsVeiculoTipo; $iInd++ ) {
+            for ( $iInd=0; $iInd < $iRowsVeiculoTipo; $iInd++ ) {
 
-        logProcessamento($iInd,$iRowsVeiculoTipo,$iParamLog);
-        $oVeiculoTipo = db_utils::fieldsMemory($rsVeiculoTipo, $iInd);
-        $oTBVeiculoTipo->setByLineOfDBUtils($oVeiculoTipo);
-        try {
-          $oTBVeiculoTipo->insertValue();
-          $oTBVeiculoTipo->persist();
-        } catch ( Exception $eException ) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
-        }
-        $aVeiculoTipo[$oVeiculoTipo->id] = $oTBVeiculoTipo->getLastPk();
+                logProcessamento($iInd,$iRowsVeiculoTipo,$iParamLog);
+                $oVeiculoTipo = db_utils::fieldsMemory($rsVeiculoTipo, $iInd);
+                $oTBVeiculoTipo->setByLineOfDBUtils($oVeiculoTipo);
+                try {
+                    $oTBVeiculoTipo->insertValue();
+                    $oTBVeiculoTipo->persist();
+                } catch ( Exception $eException ) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+                $aVeiculoTipo[$oVeiculoTipo->id] = $oTBVeiculoTipo->getLastPk();
 
-      }
-      // FIM IMPORTA TIPOS DE VEICULOS
+            }
+            // FIM IMPORTA TIPOS DE VEICULOS
 
-      // IMPORTA MARCAS DE VEICULOS
-      db_logTitulo(" IMPORTA MARCAS DOS VEICULOS ", $sArquivoLog, $iParamLog);
+            // IMPORTA MARCAS DE VEICULOS
+            db_logTitulo(" IMPORTA MARCAS DOS VEICULOS ", $sArquivoLog, $iParamLog);
 
-      $sSqlVeiculoMarca = "
+            $sSqlVeiculoMarca = "
         select
           ve21_codigo as codigo,
           ve21_descr as descricao
@@ -3803,38 +3851,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
           veiccadmarca;
       ";
 
-      $rsVeiculoMarca    = db_query($connOrigem, $sSqlVeiculoMarca);
-      $iRowsVeiculoMarca = pg_num_rows($rsVeiculoMarca);
+            $rsVeiculoMarca    = db_query($connOrigem, $sSqlVeiculoMarca);
+            $iRowsVeiculoMarca = pg_num_rows($rsVeiculoMarca);
 
-      if ( $iRowsVeiculoMarca ==  0 ) {
+            if ( $iRowsVeiculoMarca ==  0 ) {
 
-        throw new Exception('Nenhuma marca de veiculo encontrada!');
-      }
+                throw new Exception('Nenhuma marca de veiculo encontrada!');
+            }
 
-      $aVeiculoMarca = array();
-      db_logNumReg($iRowsVeiculoMarca,$sArquivoLog,$iParamLog);
+            $aVeiculoMarca = array();
+            db_logNumReg($iRowsVeiculoMarca,$sArquivoLog,$iParamLog);
 
-      for ( $iInd=0; $iInd < $iRowsVeiculoMarca; $iInd++ ) {
+            for ( $iInd=0; $iInd < $iRowsVeiculoMarca; $iInd++ ) {
 
-        logProcessamento($iInd,$iRowsVeiculoMarca,$iParamLog);
-        $oVeiculoMarca = db_utils::fieldsMemory($rsVeiculoMarca,$iInd);
-        $oVeiculoMarca->id = '';
-        $oTBMarca->setByLineOfDBUtils($oVeiculoMarca);
-        try {
-          $oTBMarca->insertValue();
-          $oTBMarca->persist();
-        } catch ( Exception $eException ) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
-        }
-        $aVeiculoMarca[$oVeiculoMarca->codigo] = $oTBMarca->getLastPk();
+                logProcessamento($iInd,$iRowsVeiculoMarca,$iParamLog);
+                $oVeiculoMarca = db_utils::fieldsMemory($rsVeiculoMarca,$iInd);
+                $oVeiculoMarca->id = '';
+                $oTBMarca->setByLineOfDBUtils($oVeiculoMarca);
+                try {
+                    $oTBMarca->insertValue();
+                    $oTBMarca->persist();
+                } catch ( Exception $eException ) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+                $aVeiculoMarca[$oVeiculoMarca->codigo] = $oTBMarca->getLastPk();
 
-      }
-      // FIM IMPORTA MARCAS DE VEICULOS
+            }
+            // FIM IMPORTA MARCAS DE VEICULOS
 
-      // IMPORTA MODELOS DE VEICULOS
-      db_logTitulo(" IMPORTA MODELO DOS VEICULOS ", $sArquivoLog, $iParamLog);
+            // IMPORTA MODELOS DE VEICULOS
+            db_logTitulo(" IMPORTA MODELO DOS VEICULOS ", $sArquivoLog, $iParamLog);
 
-      $sSqlVeiculoModelo = "
+            $sSqlVeiculoModelo = "
         select
           ve22_codigo as codigo,
           ve22_descr as descricao
@@ -3842,38 +3890,38 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
           veiccadmodelo;
       ";
 
-      $rsVeiculoModelo    = db_query($connOrigem, $sSqlVeiculoModelo);
-      $iRowsVeiculoModelo = pg_num_rows($rsVeiculoModelo);
+            $rsVeiculoModelo    = db_query($connOrigem, $sSqlVeiculoModelo);
+            $iRowsVeiculoModelo = pg_num_rows($rsVeiculoModelo);
 
-      if ( $iRowsVeiculoModelo ==  0 ) {
+            if ( $iRowsVeiculoModelo ==  0 ) {
 
-        throw new Exception('Nenhum modelo de veiculo encontrado!');
-      }
+                throw new Exception('Nenhum modelo de veiculo encontrado!');
+            }
 
-      $aVeiculoModelo = array();
-      db_logNumReg($iRowsVeiculoModelo,$sArquivoLog,$iParamLog);
+            $aVeiculoModelo = array();
+            db_logNumReg($iRowsVeiculoModelo,$sArquivoLog,$iParamLog);
 
-      for ( $iInd=0; $iInd < $iRowsVeiculoModelo; $iInd++ ) {
+            for ( $iInd=0; $iInd < $iRowsVeiculoModelo; $iInd++ ) {
 
-        logProcessamento($iInd,$iRowsVeiculoModelo,$iParamLog);
-        $oVeiculoModelo = db_utils::fieldsMemory($rsVeiculoModelo,$iInd);
-        $oVeiculoModelo->id = '';
-        $oTBModelo->setByLineOfDBUtils($oVeiculoModelo);
-        try {
-          $oTBModelo->insertValue();
-          $oTBModelo->persist();
-        } catch ( Exception $eException ) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
-        }
-        $aVeiculoModelo[$oVeiculoModelo->codigo] = $oTBModelo->getLastPk();
+                logProcessamento($iInd,$iRowsVeiculoModelo,$iParamLog);
+                $oVeiculoModelo = db_utils::fieldsMemory($rsVeiculoModelo,$iInd);
+                $oVeiculoModelo->id = '';
+                $oTBModelo->setByLineOfDBUtils($oVeiculoModelo);
+                try {
+                    $oTBModelo->insertValue();
+                    $oTBModelo->persist();
+                } catch ( Exception $eException ) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+                $aVeiculoModelo[$oVeiculoModelo->codigo] = $oTBModelo->getLastPk();
 
-      }
-      // FIM IMPORTA MODELOS DE VEICULOS
+            }
+            // FIM IMPORTA MODELOS DE VEICULOS
 
-      // INICIO IMPORTA VEICULOS
-      db_logTitulo(" IMPORTA VEICULOS ", $sArquivoLog, $iParamLog);
+            // INICIO IMPORTA VEICULOS
+            db_logTitulo(" IMPORTA VEICULOS ", $sArquivoLog, $iParamLog);
 
-      $sSqlVeiculo = "
+            $sSqlVeiculo = "
         select distinct
           ve01_codigo     as codigo,
           ve36_sequencial as codigo_central,
@@ -3922,274 +3970,471 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
           left join veiccadcomb on veiccadcomb.ve26_codigo = veicabast.ve70_veiculoscomb
       ";
 
-      $rsVeiculo    = db_query($connOrigem, $sSqlVeiculo);
-      $iRowsVeiculo = pg_num_rows($rsVeiculo);
+            $rsVeiculo    = db_query($connOrigem, $sSqlVeiculo);
+            $iRowsVeiculo = pg_num_rows($rsVeiculo);
 
-      if ( $iRowsVeiculo ==  0 ) {
-        db_logTitulo(" Nenhum veiculo encontrado! ", $sArquivoLog, $iParamLog);
-      }
+            if ( $iRowsVeiculo ==  0 ) {
+                db_logTitulo(" Nenhum veiculo encontrado! ", $sArquivoLog, $iParamLog);
+            }
 
-      $aVeiculo = array();
-      db_logNumReg($iRowsVeiculo,$sArquivoLog,$iParamLog);
+            $aVeiculo = array();
+            db_logNumReg($iRowsVeiculo,$sArquivoLog,$iParamLog);
 
-      for ( $iInd=0; $iInd < $iRowsVeiculo; $iInd++ ) {
+            for ( $iInd=0; $iInd < $iRowsVeiculo; $iInd++ ) {
 
-        logProcessamento($iInd,$iRowsVeiculo,$iParamLog);
-        $oVeiculo = db_utils::fieldsMemory($rsVeiculo, $iInd);
-        $oVeiculo->instituicao_id  = $aInstituicoes[$oVeiculo->instituicao];
-        $oVeiculo->departamento_id = $aDepartamento[$oVeiculo->departamento];
-        $oVeiculo->marca_id        = $aVeiculoMarca[$oVeiculo->marca];
-        $oVeiculo->modelo_id       = $aVeiculoModelo[$oVeiculo->modelo];
-        $oVeiculo->veiculo_tipo_id = $aVeiculoTipo[$oVeiculo->veiculo_tipo];
-        if(!empty($aVeiculoUtilizacao[$oVeiculo->utilizacao])){
-          $oVeiculo->veiculo_utilizacao_id = $aVeiculoUtilizacao[$oVeiculo->utilizacao];
-        } else {
-          $oVeiculo->veiculo_utilizacao_id = 0;
+                logProcessamento($iInd,$iRowsVeiculo,$iParamLog);
+                $oVeiculo = db_utils::fieldsMemory($rsVeiculo, $iInd);
+                $oVeiculo->instituicao_id  = $aInstituicoes[$oVeiculo->instituicao];
+                $oVeiculo->departamento_id = $aDepartamento[$oVeiculo->departamento];
+                $oVeiculo->marca_id        = $aVeiculoMarca[$oVeiculo->marca];
+                $oVeiculo->modelo_id       = $aVeiculoModelo[$oVeiculo->modelo];
+                $oVeiculo->veiculo_tipo_id = $aVeiculoTipo[$oVeiculo->veiculo_tipo];
+                if(!empty($aVeiculoUtilizacao[$oVeiculo->utilizacao])){
+                    $oVeiculo->veiculo_utilizacao_id = $aVeiculoUtilizacao[$oVeiculo->utilizacao];
+                } else {
+                    $oVeiculo->veiculo_utilizacao_id = 0;
+                }
+                $oTBVeiculo->setByLineOfDBUtils($oVeiculo);
+                try {
+                    $oTBVeiculo->insertValue();
+                    $oTBVeiculo->persist();
+                } catch ( Exception $eException ) {
+                    throw new Exception("ERRO-0: {$eException->getMessage()}");
+                }
+
+            }
+
+            // FIM IMPORTA VEICULOS
+
+        } // fim condicao $lPularImportacaoVeiculos
+
+        // FIM IMPORTACAO VEICULOS
+
+    } else {
+        db_logTitulo(" DESABILITADO - IMPORTA PATRIMONIO VEICULOS ", $sArquivoLog, $iParamLog);
+    }
+
+    // MEDICAMENTOS *******************************************************************************************************//
+
+    if (IMPORTAR_MEDICAMENTOS) {
+
+        db_logTitulo(" IMPORTA MATERIAIS ",$sArquivoLog,$iParamLog);
+        /**
+         * Consulta matmater na base de origem
+         */
+        $sqlMatmater  = "
+                    select m60_codmater AS codigo, m60_descr AS descricao, m60_ativo AS ativo from matmater;
+        ";
+
+        $rsMatmater     = db_query($connOrigem,$sqlMatmater);
+        $rowsMatmater = pg_num_rows($rsMatmater);
+
+        if ( $rowsMatmater ==  0 ) {
+            throw new Exception('Nenhum remédio encontrado!');
         }
-        $oTBVeiculo->setByLineOfDBUtils($oVeiculo);
+
+        db_logNumReg($rowsMatmater,$sArquivoLog,$iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $rowsMatmater; $iInd++ ) {
+
+            logProcessamento($iInd,$rowsMatmater,$iParamLog);
+            $oMatmater = db_utils::fieldsMemory($rsMatmater,$iInd);
+            $oTBMatmater->setByLineOfDBUtils($oMatmater);
+            try {
+                $oTBMatmater->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
         try {
-          $oTBVeiculo->insertValue();
-          $oTBVeiculo->persist();
-        } catch ( Exception $eException ) {
-          throw new Exception("ERRO-0: {$eException->getMessage()}");
+            $oTBMatmater->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
         }
 
-      }
+        db_logTitulo(" IMPORTA MEDICAMENTOS ",$sArquivoLog,$iParamLog);
 
-      // FIM IMPORTA VEICULOS
+        /**
+         * Consulta medicamentos na base de origem
+         */
+        $sqlMedicamentos  = "
+        select fa01_i_codigo AS codigo, fa01_i_codmater AS cod_material, fa01_c_nomegenerico AS nome_generico
+        from far_matersaude
+        INNER JOIN matmater ON matmater.m60_codmater = far_matersaude.fa01_i_codmater
+        INNER JOIN matunid ON matunid.m61_codmatunid = matmater.m60_codmatunid
+        INNER JOIN far_medicamentohiperdia ON far_medicamentohiperdia.fa43_i_codigo = far_matersaude.fa01_i_medhiperdia
+        WHERE m60_ativo='t';
+        ";
 
-    } // fim condicao $lPularImportacaoVeiculos
+        $rsRemedios     = db_query($connOrigem,$sqlMedicamentos);
+        $rowsRemedios = pg_num_rows($rsRemedios);
 
-    // FIM IMPORTACAO VEICULOS
+        if ( $rowsRemedios ==  0 ) {
+            throw new Exception('Nenhum remédio encontrado!');
+        }
 
-  } else {
-    db_logTitulo(" DESABILITADO - IMPORTA PATRIMONIO VEICULOS ", $sArquivoLog, $iParamLog);
-  }
+        db_logNumReg($rowsRemedios,$sArquivoLog,$iParamLog);
 
-  /**
-   * Importacao das Licitacoes
-   */
-  $oIntegracaoPortalTransparencia = new IntegracaoPortalTransparencia();
-  $oIntegracaoPortalTransparencia->setConexaoDestino($connDestino);
-  $oIntegracaoPortalTransparencia->setConexaoOrigem($connOrigem);
-  $oIntegracaoPortalTransparencia->setAnoInicioIntegracao($iExercicioBase);
-  $oIntegracaoPortalTransparencia->setArquivoLog($sArquivoLog);
-  $oIntegracaoPortalTransparencia->setParamLog($iParamLog);
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $rowsRemedios; $iInd++ ) {
 
-  foreach ($aIntegracoesRealizar as $sIntegracao) {
+            logProcessamento($iInd,$rowsRemedios,$iParamLog);
+            $oRemedio = db_utils::fieldsMemory($rsRemedios,$iInd);
+            $oTBMedicamentos->setByLineOfDBUtils($oRemedio);
+            try {
+                $oTBMedicamentos->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
 
-    if (trim($sIntegracao) == ''){continue;}
-    $oIntegracaoPortalTransparencia->adicionarIntegracao(new $sIntegracao);
-  }
+        }
 
-  db_query($connOrigem, "begin");
-  $oIntegracaoPortalTransparencia->executar();
-  db_query($connOrigem, "commit");
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBMedicamentos->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
-  /**
-   * Exclui os large objects vinculados ao schema de backup
-   */
+        db_logTitulo(" IMPORTA ESTOQUE ",$sArquivoLog,$iParamLog);
 
-  $aLargeObjectsToRemove = array( 'licitacoes_documentos' => 'documento',
-                                  'acordo_documentos' => 'arquivo' );
+        /**
+         * Consulta matestoque na base de origem
+         */
+        $sqlMatestoque  = "
+                    select m70_codigo AS codigo, m70_codmatmater AS cod_material, m70_coddepto AS cod_departamento,
+                    m70_quant AS quantidade
+                    from matestoque;
+        ";
 
-  if ( $iLinhasSchemasAtual > 0 ) {
+        $rsMatestoque     = db_query($connOrigem,$sqlMatestoque);
+        $rowsMatestoque = pg_num_rows($rsMatestoque);
 
-    foreach ($aLargeObjectsToRemove as $sTabela => $sNomeCampoOid) {
+        if ( $rowsMatestoque ==  0 ) {
+            throw new Exception('Nenhum remédio encontrado!');
+        }
 
-      $rsFilesToRemove = db_query($connDestino, "select {$sNomeCampoOid} from {$sBkpSchema}.{$sTabela}");
+        db_logNumReg($rowsMatestoque,$sArquivoLog,$iParamLog);
 
-      if (!pg_num_rows($rsFilesToRemove)) {
-        continue;
-      }
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $rowsMatestoque; $iInd++ ) {
 
-      for ($iIndice = 0; $iIndice < pg_num_rows($rsFilesToRemove); $iIndice++) {
+            logProcessamento($iInd,$rowsMatestoque,$iParamLog);
+            $oMatestoque = db_utils::fieldsMemory($rsMatestoque,$iInd);
+            $oTBMatestoque->setByLineOfDBUtils($oMatestoque);
+            try {
+                $oTBMatestoque->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
 
-        $oRow            = db_utils::fieldsMemory($rsFilesToRemove, $iIndice);
-        $sSqlBuscaObjeto = "select pg_largeobject.loid
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBMatestoque->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        db_logTitulo(" IMPORTA DEPOSITOS ",$sArquivoLog,$iParamLog);
+
+        /**
+         * Consulta db_almox na base de origem
+         */
+        $sqlDbAlmox  = "
+                    select m91_codigo AS codigo, m91_depto AS cod_departamento from db_almox;
+        ";
+
+        $rsDbAlmox     = db_query($connOrigem,$sqlDbAlmox);
+        $rowsDbAlmox = pg_num_rows($rsDbAlmox);
+
+        if ( $rowsDbAlmox ==  0 ) {
+            throw new Exception('Nenhum remédio encontrado!');
+        }
+
+        db_logNumReg($rowsDbAlmox,$sArquivoLog,$iParamLog);
+
+        /**
+         *  Insere os registros na base de destino através do método insertValue da classe TableDataManager que quando
+         *  atinge o número determinado de registros ( informado na assinatura da classe ) é executado automáticamente
+         *  o método persist que insere fisicamente os registros na base de dados através do COPY.
+         */
+        for ( $iInd=0; $iInd < $rowsDbAlmox; $iInd++ ) {
+
+            logProcessamento($iInd,$rowsDbAlmox,$iParamLog);
+            $oDbAlmox = db_utils::fieldsMemory($rsDbAlmox,$iInd);
+            $oTBDbAlmox->setByLineOfDBUtils($oDbAlmox);
+            try {
+                $oTBDbAlmox->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        /**
+         *  Após o loop é executado manualmente o método persist para que sejam inserido os registros restantes
+         *  ( mesmo que não tenha atingido o número máximo do bloco de registros )
+         */
+        try {
+            $oTBDbAlmox->persist();
+        } catch (Exception $eException) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+    }
+    // FIM MEDICAMENTOS ******************************************************************************************//
+
+
+    /**
+     * Importacao das Licitacoes
+     */
+    $oIntegracaoPortalTransparencia = new IntegracaoPortalTransparencia();
+    $oIntegracaoPortalTransparencia->setConexaoDestino($connDestino);
+    $oIntegracaoPortalTransparencia->setConexaoOrigem($connOrigem);
+    $oIntegracaoPortalTransparencia->setAnoInicioIntegracao($iExercicioBase);
+    $oIntegracaoPortalTransparencia->setArquivoLog($sArquivoLog);
+    $oIntegracaoPortalTransparencia->setParamLog($iParamLog);
+
+    foreach ($aIntegracoesRealizar as $sIntegracao) {
+
+        if (trim($sIntegracao) == ''){continue;}
+        $oIntegracaoPortalTransparencia->adicionarIntegracao(new $sIntegracao);
+    }
+
+    db_query($connOrigem, "begin");
+    $oIntegracaoPortalTransparencia->executar();
+    db_query($connOrigem, "commit");
+
+    /**
+     * Exclui os large objects vinculados ao schema de backup
+     */
+
+    $aLargeObjectsToRemove = array( 'licitacoes_documentos' => 'documento',
+        'acordo_documentos' => 'arquivo' );
+
+    if ( $iLinhasSchemasAtual > 0 ) {
+
+        foreach ($aLargeObjectsToRemove as $sTabela => $sNomeCampoOid) {
+
+            $rsFilesToRemove = db_query($connDestino, "select {$sNomeCampoOid} from {$sBkpSchema}.{$sTabela}");
+
+            if (!pg_num_rows($rsFilesToRemove)) {
+                continue;
+            }
+
+            for ($iIndice = 0; $iIndice < pg_num_rows($rsFilesToRemove); $iIndice++) {
+
+                $oRow            = db_utils::fieldsMemory($rsFilesToRemove, $iIndice);
+                $sSqlBuscaObjeto = "select pg_largeobject.loid
                               from pg_largeobject
                              where pg_largeobject.loid = {$oRow->{$sNomeCampoOid}} ";
-        $rsBuscaObjeto   = pg_query($connDestino, $sSqlBuscaObjeto);
+                $rsBuscaObjeto   = pg_query($connDestino, $sSqlBuscaObjeto);
 
-        if (pg_num_rows($rsBuscaObjeto) > 0) {
+                if (pg_num_rows($rsBuscaObjeto) > 0) {
 
-          $lUnlink = pg_lo_unlink($connDestino, $oRow->{$sNomeCampoOid});
-          if (!$lUnlink) {
-            continue;
-          }
+                    $lUnlink = pg_lo_unlink($connDestino, $oRow->{$sNomeCampoOid});
+                    if (!$lUnlink) {
+                        continue;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 
-  // EXCLUSÃO DE SCHEMAS ANTIGOS ************************************************************************************//
+    // EXCLUSÃO DE SCHEMAS ANTIGOS ************************************************************************************//
 
-  $sSqlConsultaSchemasAntigos = "select distinct schema_name
+    $sSqlConsultaSchemasAntigos = "select distinct schema_name
                                    from information_schema.schemata
                                   where schema_name like 'bkp_transparencia_%'
                                   order by schema_name desc
                                  offset {$iNroBasesAntigas} ";
 
-  $rsSchemasAntigos      = db_query($connDestino,$sSqlConsultaSchemasAntigos);
-  $iLinhasSchemasAntigos = pg_num_rows($rsSchemasAntigos);
+    $rsSchemasAntigos      = db_query($connDestino,$sSqlConsultaSchemasAntigos);
+    $iLinhasSchemasAntigos = pg_num_rows($rsSchemasAntigos);
 
-  for ($iInd=0; $iInd < $iLinhasSchemasAntigos; $iInd++ ) {
+    for ($iInd=0; $iInd < $iLinhasSchemasAntigos; $iInd++ ) {
 
-    $oSchemaAntigo = db_utils::fieldsMemory($rsSchemasAntigos,$iInd);
+        $oSchemaAntigo = db_utils::fieldsMemory($rsSchemasAntigos,$iInd);
 
-    $sSqlExcluiSchemaAntigo = " DROP SCHEMA {$oSchemaAntigo->schema_name} CASCADE ";
+        $sSqlExcluiSchemaAntigo = " DROP SCHEMA {$oSchemaAntigo->schema_name} CASCADE ";
 
-    if ( !db_query($connDestino,$sSqlExcluiSchemaAntigo) ) {
-      throw new Exception("ERRO-0: Erro ao excluir schema {$oSchemaAntigo->schema_name} !");
+        if ( !db_query($connDestino,$sSqlExcluiSchemaAntigo) ) {
+            throw new Exception("ERRO-0: Erro ao excluir schema {$oSchemaAntigo->schema_name} !");
+        }
+
     }
 
-  }
-
-  // FIM DA EXCLUSÃO DE SCHEMAS ANTIGOS *****************************************************************************//
+    // FIM DA EXCLUSÃO DE SCHEMAS ANTIGOS *****************************************************************************//
 
 
-  if ( $iLinhasSchemasAtual > 0 ) {
+    if ( $iLinhasSchemasAtual > 0 ) {
 
-    // ACERTA TABELA empenhos_movimentacoes_exercicios ****************************************************************//
+        // ACERTA TABELA empenhos_movimentacoes_exercicios ****************************************************************//
 
 
-    $sSqlAcertaEmpMovExerc = " INSERT INTO empenhos_movimentacoes_exercicios (empenho_id,exercicio)
+        $sSqlAcertaEmpMovExerc = " INSERT INTO empenhos_movimentacoes_exercicios (empenho_id,exercicio)
                                 select distinct empenho_id,
                                        extract( year from data) as exercicio
                                   from empenhos_movimentacoes ";
 
-    $rsAcertaEmpMovExerc = db_query($connDestino,$sSqlAcertaEmpMovExerc);
+        $rsAcertaEmpMovExerc = db_query($connDestino,$sSqlAcertaEmpMovExerc);
 
-    if ( !$rsAcertaEmpMovExerc ) {
-      throw new Exception("ERRO-0: Erro ao acertar tabela empenhos_movimentacoes_exercicios !");
-    }
+        if ( !$rsAcertaEmpMovExerc ) {
+            throw new Exception("ERRO-0: Erro ao acertar tabela empenhos_movimentacoes_exercicios !");
+        }
 
-    // ****************************************************************************************************************//
-
-
-    // ACERTA GLOSSARIOS TIPOS ****************************************************************************************//
+        // ****************************************************************************************************************//
 
 
-    $sSqlGlossariosTipos    = " select *
+        // ACERTA GLOSSARIOS TIPOS ****************************************************************************************//
+
+
+        $sSqlGlossariosTipos    = " select *
                                   from {$sBkpSchema}.glossarios_tipos ";
 
-    $rsDadosGlossariosTipos = db_query($connDestino,$sSqlGlossariosTipos);
+        $rsDadosGlossariosTipos = db_query($connDestino,$sSqlGlossariosTipos);
 
-    if ( !$rsDadosGlossariosTipos ) {
-      throw new Exception("ERRO-0: Erro ao consultar tabela glossarios_tipos !");
-    }
+        if ( !$rsDadosGlossariosTipos ) {
+            throw new Exception("ERRO-0: Erro ao consultar tabela glossarios_tipos !");
+        }
 
-    $iLinhasGlossariosTipos = pg_num_rows($rsDadosGlossariosTipos);
+        $iLinhasGlossariosTipos = pg_num_rows($rsDadosGlossariosTipos);
 
-    for ( $iInd=0; $iInd < $iLinhasGlossariosTipos; $iInd++ ) {
+        for ( $iInd=0; $iInd < $iLinhasGlossariosTipos; $iInd++ ) {
 
-      $oGloassariosTipos = db_utils::fieldsMemory($rsDadosGlossariosTipos,$iInd);
+            $oGloassariosTipos = db_utils::fieldsMemory($rsDadosGlossariosTipos,$iInd);
 
-      $oTBGlossariosTipos->setByLineOfDBUtils($oGloassariosTipos);
+            $oTBGlossariosTipos->setByLineOfDBUtils($oGloassariosTipos);
 
-      try {
-        $oTBGlossariosTipos->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
+            try {
+                $oTBGlossariosTipos->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
 
-    }
+        }
 
-    try {
-      $oTBGlossariosTipos->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
+        try {
+            $oTBGlossariosTipos->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
 
-    // ****************************************************************************************************************//
+        // ****************************************************************************************************************//
 
-    // ACERTA GLOSSARIOS **********************************************************************************************//
+        // ACERTA GLOSSARIOS **********************************************************************************************//
 
-    $sSqlGlossarios    = " select *
+        $sSqlGlossarios    = " select *
                                   from {$sBkpSchema}.glossarios ";
 
-    $rsDadosGlossarios = db_query($connDestino,$sSqlGlossarios);
+        $rsDadosGlossarios = db_query($connDestino,$sSqlGlossarios);
 
-    if ( !$rsDadosGlossarios ) {
-      throw new Exception("ERRO-0: Erro ao consultar tabela glossarios !");
+        if ( !$rsDadosGlossarios ) {
+            throw new Exception("ERRO-0: Erro ao consultar tabela glossarios !");
+        }
+
+        $iLinhasGlossarios = pg_num_rows($rsDadosGlossarios);
+
+        for ( $iInd=0; $iInd < $iLinhasGlossarios; $iInd++ ) {
+
+            $oGloassarios = db_utils::fieldsMemory($rsDadosGlossarios,$iInd);
+
+            $oTBGlossarios->setByLineOfDBUtils($oGloassarios);
+
+            try {
+                $oTBGlossarios->insertValue();
+            } catch ( Exception $eException ) {
+                throw new Exception("ERRO-0: {$eException->getMessage()}");
+            }
+
+        }
+
+        try {
+            $oTBGlossarios->persist();
+        } catch ( Exception $eException ) {
+            throw new Exception("ERRO-0: {$eException->getMessage()}");
+        }
+
+        // ****************************************************************************************************************//
+
     }
-
-    $iLinhasGlossarios = pg_num_rows($rsDadosGlossarios);
-
-    for ( $iInd=0; $iInd < $iLinhasGlossarios; $iInd++ ) {
-
-      $oGloassarios = db_utils::fieldsMemory($rsDadosGlossarios,$iInd);
-
-      $oTBGlossarios->setByLineOfDBUtils($oGloassarios);
-
-      try {
-        $oTBGlossarios->insertValue();
-      } catch ( Exception $eException ) {
-        throw new Exception("ERRO-0: {$eException->getMessage()}");
-      }
-
-    }
-
-    try {
-      $oTBGlossarios->persist();
-    } catch ( Exception $eException ) {
-      throw new Exception("ERRO-0: {$eException->getMessage()}");
-    }
-
-    // ****************************************************************************************************************//
-
-  }
 
 } catch (Exception $eException) {
 
-  $lErro = true;
-  db_log($eException->getMessage(),$sArquivoLog,$iParamLog);
+    $lErro = true;
+    db_log($eException->getMessage(),$sArquivoLog,$iParamLog);
 
 }
 
 if ( $lErro ) {
 
-  db_query($connDestino,"ROLLBACK;");
+    db_query($connDestino,"ROLLBACK;");
 
 
-  db_logTitulo(" FIM PROCESSAMENTO COM ERRO ",$sArquivoLog,$iParamLog);
+    db_logTitulo(" FIM PROCESSAMENTO COM ERRO ",$sArquivoLog,$iParamLog);
 } else {
 
-  db_query($connDestino,"COMMIT;");
+    db_query($connDestino,"COMMIT;");
 
 
-  db_logTitulo(" FIM PROCESSAMENTO ",$sArquivoLog,$iParamLog);
+    db_logTitulo(" FIM PROCESSAMENTO ",$sArquivoLog,$iParamLog);
 }
 
 
 function db_log($sLog = "", $sArquivo = "", $iTipo = 0, $lLogDataHora = true, $lQuebraAntes = true) {
 
-  $aDataHora    = getdate();
-  $sQuebraAntes = $lQuebraAntes ? "\n" : "";
+    $aDataHora    = getdate();
+    $sQuebraAntes = $lQuebraAntes ? "\n" : "";
 
-  if ($lLogDataHora) {
-    $sOutputLog = sprintf("%s[%02d/%02d/%04d %02d:%02d:%02d] %s", $sQuebraAntes, $aDataHora ["mday"], $aDataHora ["mon"], $aDataHora ["year"], $aDataHora ["hours"], $aDataHora ["minutes"], $aDataHora ["seconds"], $sLog);
-  } else {
-    $sOutputLog = sprintf("%s%s", $sQuebraAntes, $sLog);
-  }
-
-  // Se habilitado saida na tela...
-  if ($iTipo == 0 or $iTipo == 1) {
-    echo $sOutputLog;
-  }
-
-  // Se habilitado saida para arquivo...
-  if ($iTipo == 0 or $iTipo == 2) {
-    if (! empty($sArquivo)) {
-      $fd = fopen($sArquivo, "a+");
-      if ($fd) {
-        fwrite($fd, $sOutputLog);
-        fclose($fd);
-      }
+    if ($lLogDataHora) {
+        $sOutputLog = sprintf("%s[%02d/%02d/%04d %02d:%02d:%02d] %s", $sQuebraAntes, $aDataHora ["mday"], $aDataHora ["mon"], $aDataHora ["year"], $aDataHora ["hours"], $aDataHora ["minutes"], $aDataHora ["seconds"], $sLog);
+    } else {
+        $sOutputLog = sprintf("%s%s", $sQuebraAntes, $sLog);
     }
-  }
 
-  return $aDataHora;
+    // Se habilitado saida na tela...
+    if ($iTipo == 0 or $iTipo == 1) {
+        echo $sOutputLog;
+    }
+
+    // Se habilitado saida para arquivo...
+    if ($iTipo == 0 or $iTipo == 2) {
+        if (! empty($sArquivo)) {
+            $fd = fopen($sArquivo, "a+");
+            if ($fd) {
+                fwrite($fd, $sOutputLog);
+                fclose($fd);
+            }
+        }
+    }
+
+    return $aDataHora;
 }
 
 
@@ -4203,12 +4448,12 @@ function db_log($sLog = "", $sArquivo = "", $iTipo = 0, $lLogDataHora = true, $l
  */
 function logProcessamento($iInd,$iTotalLinhas,$iParamLog) {
 
-  $nPercentual = round((($iInd + 1) / $iTotalLinhas) * 100, 2);
-  $nMemScript  = (float)round( (memory_get_usage()/1024 ) / 1024,2);
-  $sMemScript  = $nMemScript ." Mb";
-  $sMsg        = "".($iInd+1)." de {$iTotalLinhas} Processando ".str_pad($nPercentual,5,' ',STR_PAD_LEFT)." %"." Total de memoria utilizada : {$sMemScript} ";
-  $sMsg        = str_pad($sMsg,100," ",STR_PAD_RIGHT);
-  db_log($sMsg."\r",null,$iParamLog,true,false);
+    $nPercentual = round((($iInd + 1) / $iTotalLinhas) * 100, 2);
+    $nMemScript  = (float)round( (memory_get_usage()/1024 ) / 1024,2);
+    $sMemScript  = $nMemScript ." Mb";
+    $sMsg        = "".($iInd+1)." de {$iTotalLinhas} Processando ".str_pad($nPercentual,5,' ',STR_PAD_LEFT)." %"." Total de memoria utilizada : {$sMemScript} ";
+    $sMsg        = str_pad($sMsg,100," ",STR_PAD_RIGHT);
+    db_log($sMsg."\r",null,$iParamLog,true,false);
 
 }
 
@@ -4221,14 +4466,26 @@ function logProcessamento($iInd,$iTotalLinhas,$iParamLog) {
  */
 function db_logTitulo($sTitulo="",$sArquivoLog="",$iParamLog=0) {
 
-  db_log("",$sArquivoLog,$iParamLog);
-  db_log("//".str_pad($sTitulo,85,"-",STR_PAD_BOTH)."//",$sArquivoLog,$iParamLog);
-  db_log("",$sArquivoLog,$iParamLog);
-  db_log("",$sArquivoLog,$iParamLog);
+    db_log("",$sArquivoLog,$iParamLog);
+    db_log("//".str_pad($sTitulo,85,"-",STR_PAD_BOTH)."//",$sArquivoLog,$iParamLog);
+    db_log("",$sArquivoLog,$iParamLog);
+    db_log("",$sArquivoLog,$iParamLog);
 }
 
 function db_logNumReg($iLinhas,$sArquivoLog,$iParamLog) {
 
-  db_log("Total de Registros Encontrados : {$iLinhas}",$sArquivoLog,$iParamLog);
-  db_log("\n",$sArquivoLog,1);
+    db_log("Total de Registros Encontrados : {$iLinhas}",$sArquivoLog,$iParamLog);
+    db_log("\n",$sArquivoLog,1);
+}
+
+function adicionaJoinLiberacaoContracheque($ano, $mes, $instituicao, $folha)
+{
+    $sql = <<<SQL
+        inner join pessoal.rhliberacontracheque on
+            rh301_ano = $ano
+            and rh301_mes = $mes
+            and rh301_instituicao = $instituicao
+            and rh301_$folha = true
+SQL;
+    return $sql;
 }

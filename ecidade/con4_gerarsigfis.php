@@ -67,7 +67,6 @@ $periodo = array("1"  => " 1 - Janeiro          ",
     }
     #sigfis {
       width: 800px;
-      height: 500px;
     }
     #arquivo-gerar {
       width: 548px;
@@ -107,7 +106,7 @@ $periodo = array("1"  => " 1 - Janeiro          ",
             <tr>
               <td><span style="font-weight: bold; width: 75px;">Arquivos do :</span></td>
               <td>
-                <?
+                <?php
                   $periodopad = date("m",db_getsession("DB_datausu"))-1;
                   if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){
                     $periodopad = 12;
@@ -281,10 +280,10 @@ $periodo = array("1"  => " 1 - Janeiro          ",
                 <label for="Retencao">Retenções</label>
               </td>
               <td class="alinha-td-check">
-                <input type="checkbox" id='NotaFiscal' value='NotaFiscal' name="NotaFiscal" />
+                <input type="checkbox" id='ComplementoDePagamentos' value='ComplementoDePagamentos' name="ComplementoDePagamentos" />
               </td>
               <td class="alinha-td-label">
-                <label for="NotaFiscal">Nota Fiscal</label>
+                <label for="ComplementoDePagamentos">Complemento de pagamentos  (retenções)</label>
               </td>
             </tr>
             <tr>
@@ -324,8 +323,21 @@ $periodo = array("1"  => " 1 - Janeiro          ",
               <td class="alinha-td-label">
                 <label for="Diaria">Diárias</label>
               </td>
+              <td class="alinha-td-check">
+                <input type="checkbox" id='NotaFiscal' value='NotaFiscal' name="NotaFiscal" />
+              </td>
+              <td class="alinha-td-label">
+                <label for="NotaFiscal">Nota Fiscal</label>
+              </td>
             </tr>
-
+            <tr>
+              <td class="alinha-td-check">
+                <input type="checkbox" id='Folha' value='Folha' name="Folha" />
+              </td>
+              <td class="alinha-td-label">
+                <label for="Folha">Folha</label>
+              </td>
+            </tr>
           </table>
         </fieldset>
         <fieldset id='field-financeiro' style="display: none;">
@@ -443,5 +455,5 @@ $periodo = array("1"  => " 1 - Janeiro          ",
   </script>
   </body>
 </html>
-<? db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
            db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>

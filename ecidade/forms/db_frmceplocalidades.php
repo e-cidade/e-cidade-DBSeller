@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("cp03_estado");
        <?=@$Lcp05_codlocalidades?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_codlocalidades',10,$Icp05_codlocalidades,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcp05_sigla?>">
-       <?
+       <?php
        db_ancora(@$Lcp05_sigla,"js_pesquisacp05_sigla(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_sigla',2,$Icp05_sigla,true,'text',$db_opcao," onchange='js_pesquisacp05_sigla(false);'")
 ?>
-       <?
+       <?php
 db_input('cp03_estado',70,$Icp03_estado,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('cp03_estado',70,$Icp03_estado,true,'text',3,'')
        <?=@$Lcp05_localidades?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_localidades',72,$Icp05_localidades,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('cp05_localidades',72,$Icp05_localidades,true,'text',$db_opcao,"")
        <?=@$Lcp05_cepinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_cepinicial',8,$Icp05_cepinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('cp05_cepinicial',8,$Icp05_cepinicial,true,'text',$db_opcao,"")
        <?=@$Lcp05_cepfinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_cepfinal',8,$Icp05_cepfinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('cp05_cepfinal',8,$Icp05_cepfinal,true,'text',$db_opcao,"")
        <?=@$Lcp05_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_tipo',1,$Icp05_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('cp05_tipo',1,$Icp05_tipo,true,'text',$db_opcao,"")
        <?=@$Lcp05_situacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_situacao',1,$Icp05_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('cp05_situacao',1,$Icp05_situacao,true,'text',$db_opcao,"")
        <?=@$Lcp05_codsubordinacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('cp05_codsubordinacao',10,$Icp05_codsubordinacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -153,7 +153,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ceplocalidades.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

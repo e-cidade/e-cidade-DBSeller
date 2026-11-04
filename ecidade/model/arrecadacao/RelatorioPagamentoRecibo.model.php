@@ -64,8 +64,8 @@ class RelatorioPagamentoRecibo {
                                "Receita",
                                "Descrição",
                                "Vencimento",
-                               "Pagamento",
                                "Efetivação",
+                               "Pagamento",
                                "Valor" )
   );
 

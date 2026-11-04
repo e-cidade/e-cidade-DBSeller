@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -1021,7 +1021,7 @@ class cl_importaDadosColetor {
                                               "and x22_mes    = {$this->iMesExportacao} " .
                                               "and x22_matric = {$this->getCodMatricula($this->iLinhaArquivo)}");
     
-    $rsAguaCalc   = $this->clAguaCalc->sql_record();
+    $rsAguaCalc   = $this->clAguaCalc->sql_record($sSql);
      
     if ($this->clAguaCalc->numrows > 0) {
        

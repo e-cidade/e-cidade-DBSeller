@@ -103,7 +103,7 @@ if( !isset( $larg_obj ) ) {
     largura   = document.body.clientWidth;
     var sUrl  = "edu3_rechumanohoradisp001.php?<?=$destino?>&larg_obj="+largura;
   </script>
-  <?
+  <?php
   if( isset( $oGet->iHorarioDisponivel ) && !empty( $oGet->iHorarioDisponivel ) ) {
   ?>
     <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,7 +77,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('strings.js');
   db_app::load('scripts.js');
   db_app::load('datagrid.widget.js');
@@ -103,7 +103,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 		              <b>Processo:</b>
 			          </td>
 			          <td colspan="3">
-			            <?
+			            <?php
 	                  db_input('p58_codproc',10,'',true,'text',3,'');
 			            ?>
 			          </td>
@@ -113,7 +113,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Data do Processo:</b>
 	              </td>
 	              <td>
-	                <?
+	                <?php
 
 	                  if ( trim($p58_dtproc) != '' ) {
 		                  $aDataProc = explode('-',$p58_dtproc);
@@ -129,7 +129,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Hora Inclusão:</b>
 	              </td>
 	              <td align="left">
-	                <?
+	                <?php
 	                  db_input('p58_hora',10,'',true,'text',3,'');
 	                ?>
 	              </td>
@@ -139,7 +139,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Departamento Inicial:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_input('p58_coddepto'  ,10,'',true,'text',3,'');
 	                  db_input('descrdepto',50,'',true,'text',3,'');
 	                ?>
@@ -150,7 +150,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Tipo de Processo:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_input('p58_codigo',10,'',true,'text',3,'');
 	                  db_input('p51_descr' ,50,'',true,'text',3,'');
 	                ?>
@@ -161,7 +161,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Titular de Processo:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_input('p58_numcgm',10,'',true,'text',3,'');
 	                  db_input('z01_nome'  ,50,'',true,'text',3,'');
 	                ?>
@@ -172,7 +172,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Requerente:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_input('p58_requer',63,'',true,'text',3,'');
 	                ?>
 	              </td>
@@ -182,7 +182,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
                   <b>Local:</b>
                 </td>
                 <td colspan="3">
-                  <?
+                  <?php
                     db_input('ov25_sequencial',10,'',true,'text',3,'');
                     db_input('ov25_descricao',50,'',true,'text',3,'');
                   ?>
@@ -193,7 +193,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	                <b>Solicitação:</b>
 	              </td>
 	              <td colspan="3">
-	                <?
+	                <?php
 	                  db_textarea('p58_obs',5,61,'',true,'text',3);
 	                ?>
 	              </td>
@@ -214,7 +214,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
                   <b>Despacho:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_textarea('despacho',5,61,'',true,'text',1);
                   ?>
                 </td>
@@ -224,7 +224,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
                   <b>Despacho Público:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     $aPublico = array("s"=>"Sim","n"=>"Não");
                     db_select('publico',$aPublico,true,1,'');
                   ?>
@@ -253,13 +253,13 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
               <tr>
                 <td>
                   <b>
-                  <?
+                  <?php
                     db_ancora('Departamento:','js_mostraDepartamento(true);',1,'');
                   ?>
                   </b>
                 </td>
                 <td>
-                  <?
+                  <?php
                     db_input('ordem'        ,10,'',true,'hidden',1,"");
                     db_input('deptorec'     ,10,'',true,'text',1,"onChange='js_mostraDepartamento(false);'");
                     db_input('descrdeptorec',50,'',true,'text',3,'');
@@ -638,7 +638,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
   }
 
 
-  <?
+  <?php
 	  if ( $oGet->lDeptoSessao == 'true') {
       echo " js_desabilitaTransf(false);";
 	  } else {

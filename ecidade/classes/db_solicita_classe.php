@@ -76,7 +76,7 @@ class cl_solicita
                  ";
 
     //funcao construtor da classe
-    function cl_solicita()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("solicita");
@@ -84,7 +84,7 @@ class cl_solicita
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -95,7 +95,7 @@ class cl_solicita
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->pc10_numero = ($this->pc10_numero == "" ? @$GLOBALS["HTTP_POST_VARS"]["pc10_numero"] : $this->pc10_numero);
@@ -120,7 +120,7 @@ class cl_solicita
     }
 
     // funcao para inclusao
-    function incluir($pc10_numero)
+    public function incluir($pc10_numero = null)
     {
         $this->atualizacampos();
         if ($this->pc10_data == null) {
@@ -278,7 +278,7 @@ class cl_solicita
     }
 
     // funcao para alteracao
-    function alterar($pc10_numero = null)
+    public function alterar($pc10_numero = null)
     {
         $this->atualizacampos();
         $sql = " update solicita set ";
@@ -464,7 +464,7 @@ class cl_solicita
     }
 
     // funcao para exclusao
-    function excluir($pc10_numero = null, $dbwhere = null)
+    public function excluir($pc10_numero = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($pc10_numero));
@@ -535,7 +535,7 @@ class cl_solicita
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -560,7 +560,7 @@ class cl_solicita
     }
 
     // funcao do sql
-    function sql_query($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -608,7 +608,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_estregistro($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_estregistro($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -654,7 +654,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_andsol($campos = "*", $dbwhere = "")
+    public function sql_query_andsol($campos = "*", $dbwhere = "")
     {
 
         $sql = "select $campos
@@ -735,7 +735,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_file($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -770,7 +770,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_func($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_func($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -817,7 +817,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_numero_solicita($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_numero_solicita($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -856,7 +856,7 @@ class cl_solicita
     }
 
 
-    function sql_query_estregistrosemquantidade($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_estregistrosemquantidade($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -902,7 +902,7 @@ class cl_solicita
     }
 
 
-    function sql_query_prot($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_prot($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -952,7 +952,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_rel($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_rel($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1002,7 +1002,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_reserv($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_reserv($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1051,7 +1051,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_solicita($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solicita($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1094,7 +1094,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_tipo($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_tipo($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1135,7 +1135,7 @@ class cl_solicita
     }
 
 
-    function sql_query_solprot($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solprot($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1183,7 +1183,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_estimativa($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_estimativa($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";
@@ -1224,7 +1224,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_solicitaanulada($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solicitaanulada($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1271,7 +1271,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_compilacao($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "", $lVerificaVinculos = false)
+    public function sql_query_compilacao($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "", $lVerificaVinculos = false)
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1390,7 +1390,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_licitacao_dotacao($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_licitacao_dotacao($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1441,7 +1441,7 @@ class cl_solicita
      * @param string $sWhere
      * @return string
      */
-    function sql_query_processo_orcamento($sCampos = "*", $sOrdem = null, $sWhere = null)
+    public function sql_query_processo_orcamento($sCampos = "*", $sOrdem = null, $sWhere = null)
     {
 
         $sSql = " select {$sCampos} ";
@@ -1464,7 +1464,7 @@ class cl_solicita
         return $sSql;
     }
 
-    function sql_query_consulta($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_consulta($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1514,7 +1514,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_liberadas($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_liberadas($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1551,7 +1551,7 @@ class cl_solicita
         return $sql;
     }
 
-    function sql_query_tipocompra($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_tipocompra($pc10_numero = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

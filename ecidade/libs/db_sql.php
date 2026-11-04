@@ -27,6 +27,8 @@
 
 function debitos_tipos_matricula($matricula,$instit=null) {
 
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -46,6 +48,14 @@ function debitos_tipos_matricula($matricula,$instit=null) {
   $sql.= " where arretipo.k00_instit = {$instit}                                                         \n";
   $sql.= "   and exists (select arrematric.*                                                             \n";
   $sql.= "                 from arrematric                                                               \n";
+
+  if($y50_codauto!=null){
+    $sql .= " inner join arreauto on arrematric.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+  }
+  if($nl01_codlanc!=null){
+    $sql .= " inner join arrelanc on arrematric.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+  }
+
   $sql.= "                      inner join arreinstit  on arreinstit.k00_numpre = arrematric.k00_numpre  \n";
   $sql.= "                                            and arreinstit.k00_instit = {$instit}              \n";
   $sql.= "                where arrematric.k00_matric = {$matricula}                                     \n";
@@ -57,10 +67,12 @@ function debitos_tipos_matricula($matricula,$instit=null) {
 
 //  echo "debitos_tipos_matricula : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
-function debitos_tipos_inscricao($inscricao,$instit=null){
+function debitos_tipos_inscricao($inscricao,$instit=null,$y50_codauto=null){
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -68,25 +80,45 @@ function debitos_tipos_inscricao($inscricao,$instit=null){
           from arreinscr a
                inner join arrecad i  on a.k00_numpre = i.k00_numpre
                inner join arreinstit on arreinstit.k00_numpre = i.k00_numpre
-                                    and arreinstit.k00_instit = $instit
-               inner join issbase b  on b.q02_inscr = a.k00_inscr
+                                    and arreinstit.k00_instit = $instit";
+  if($y50_codauto!=''){
+    $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+  }
+
+  if($nl01_codlanc!=null){
+    $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+  }
+
+    $sql .=" inner join issbase b  on b.q02_inscr = a.k00_inscr
                inner join arretipo t on t.k00_tipo = i.k00_tipo
           where a.k00_inscr = $inscricao ";
 
 //  echo "debitos_tipos_inscricao : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 
 
 }
 function debitos_tipos_numcgm($numcgm,$instit=null ){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
   $sql = "select distinct t.k00_tipo,t.k00_descr,t.k00_marcado,b.k00_numcgm,t.k00_emrec,t.k00_agnum,t.k00_agpar
-          from arrenumcgm b
-    inner join arrecad a  on b.k00_numpre = a.k00_numpre
+          from arrenumcgm b";
+  if($y50_codauto!=''){
+    $sql .= " inner join arreauto on b.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+  }
+
+  if($nl01_codlanc!=null){
+    $sql .= " inner join arrelanc on b.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+  }
+
+
+  $sql .= "  inner join arrecad a  on b.k00_numpre = a.k00_numpre
     inner join arreinstit on arreinstit.k00_numpre = a.k00_numpre
                          and arreinstit.k00_instit = $instit
     inner join arretipo t on t.k00_tipo = a.k00_tipo
@@ -95,7 +127,7 @@ function debitos_tipos_numcgm($numcgm,$instit=null ){
 //  echo "debitos_tipos_matricula : $sql <br>";
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
 function debitos_tipos_numpre($numpre,$instit=null ){
@@ -114,10 +146,13 @@ function debitos_tipos_numpre($numpre,$instit=null ){
 //  echo "debitos_tipos_numpre : $sql <br>";
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
 function debitos_matricula($matricula,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null ){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -144,6 +179,8 @@ $sql = "select   y.k00_inscr,
                     $sql .=" datajust,";
                  }
                     $sql .="
+                (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
                  min(k01_descr)::varchar(40) as k01_descr
        from ( select distinct *,
                  substr(fc_calcula,2,13)::float8 as vlrhis,
@@ -176,6 +213,14 @@ $sql = "select   y.k00_inscr,
           inner join arrecad i on a.k00_numpre = i.k00_numpre
           inner join arreinstit on arreinstit.k00_numpre = i.k00_numpre
                                and arreinstit.k00_instit = $instit ";
+      if($y50_codauto!=''){
+        $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+      }
+
+      if($nl01_codlanc!=null){
+        $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+      }
+
 
        if($justific==true){
           $sql .="
@@ -222,6 +267,8 @@ $sql = "select   y.k00_inscr,
     }
         $sql .= "
    group by  y.k00_inscr,
+             auto,
+             codlanc,
              y.k00_matric,
              y.k00_numcgm ,
              y.k00_tipo,
@@ -260,19 +307,19 @@ $sql = "select   y.k00_inscr,
     if($totalizaordem!=""){
       $sql .= " order by $totalizaordem";
     }else{
-      $sql .= " order by k00_numpre,k00_numpar, k00_receit";
+      $sql .= " order by k00_numpre,auto,codlanc,k00_numpar, k00_receit";
     }
   }
 
   //echo "debitos_matricula : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if($limite == 0 ) {
-     if(pg_numrows($result) == 0 ) {
+     if(pg_num_rows($result) == 0 ) {
         return false;
      }
    return $result;
   }else{
-    if(pg_numrows($result) == 0 ) {
+    if(pg_num_rows($result) == 0 ) {
       return false;
   } else {
     return 1;
@@ -280,7 +327,10 @@ $sql = "select   y.k00_inscr,
   }
 }
 
-function debitos_inscricao($inscricao,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null){
+function debitos_inscricao($inscricao,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null,$sauto=false,$y50_codauto=null){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -307,7 +357,9 @@ if($justific==true){
   $sql .=" datajust, ";
 }
         $sql .="
-                 min(k01_descr) as k01_descr
+                 min(k01_descr) as k01_descr,
+                 (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc
        from ( select distinct *,
                  substr(fc_calcula,2,13)::float8 as vlrhis,
                  substr(fc_calcula,15,13)::float8 as vlrcor,
@@ -336,8 +388,13 @@ if($justific==true){
           from arreinscr a
     inner join arrecad i on a.k00_numpre = i.k00_numpre
     inner join arreinstit on arreinstit.k00_numpre = i.k00_numpre
-                         and arreinstit.k00_instit = $instit
-    ";
+                         and arreinstit.k00_instit = $instit ";
+     if($y50_codauto!=''){
+       $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+     }
+     if($nl01_codlanc!=''){
+       $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+     }
 if($justific==true){
         $sql .= "  left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data, (k27_data+k27_dias) as datajust
                                   from ( select max(k28_sequencia) as k28_sequencia,
@@ -379,7 +436,10 @@ if($justific==true){
       $sql .= $db_where;
     }
         $sql .= "
-   group by y.k00_inscr,
+   group by
+    auto,
+    codlanc,
+    y.k00_inscr,
     y.k00_matric,
     y.k00_numcgm ,
     y.k00_tipo ,
@@ -420,19 +480,19 @@ if($justific==true){
     if($totalizaordem!=""){
       $sql .= " order by $totalizaordem";
     }else{
-      $sql .= " order by k00_numpre,k00_numpar,k00_receit";
+      $sql .= " order by auto,codlanc,k00_numpre,k00_numpar,k00_receit";
     }
   }
-  //echo "$sql";
+
   //echo "debitos_inscricao : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -441,6 +501,9 @@ if($justific==true){
 }
 
 function debitos_inscricao_retido($inscricao,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -467,6 +530,8 @@ if($justific==true){
   $sql .=" datajust, ";
 }
         $sql .="
+                (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
                  min(k01_descr) as k01_descr
        from ( select distinct *,
                  substr(fc_calcula,2,13)::float8 as vlrhis,
@@ -499,6 +564,12 @@ if($justific==true){
                          and arreinstit.k00_instit = $instit
     left  join issplan on q20_numpre = a.k00_numpre and q20_situacao <> 5
     left  join issplanit on q20_planilha = q21_planilha and q21_status = 1  ";
+    if($y50_codauto!=null){
+      $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+    }
+    if($nl01_codlanc!=''){
+      $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+    }
 if($justific==true){
         $sql .= "  left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data, (k27_data+k27_dias) as datajust
                                   from ( select max(k28_sequencia) as k28_sequencia,
@@ -541,6 +612,8 @@ if($justific==true){
     }
         $sql .= "
    group by y.k00_inscr,
+    auto,
+    codlanc,
     y.k00_matric,
     y.k00_numcgm ,
     y.k00_tipo ,
@@ -581,18 +654,18 @@ if($justific==true){
     if($totalizaordem!=""){
       $sql .= " order by $totalizaordem";
     }else{
-      $sql .= " order by k00_numpre,k00_numpar,k00_receit";
+      $sql .= " order by k00_numpre,auto,codlanc,k00_numpar,k00_receit";
     }
   }
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -626,6 +699,8 @@ $sql = "select distinct on (y.k00_numpre, y.k00_numpar, y.k00_receit)  y.k00_ins
      min(k00_dtoper) as k00_dtoper,
      0 as k00_valor,
      min(k01_descr) as k01_descr,
+    (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
      max(k02_drecei) as k02_drecei
        from (
              select distinct *,
@@ -719,12 +794,12 @@ $sql = "select distinct on (y.k00_numpre, y.k00_numpar, y.k00_receit)  y.k00_ins
 //  echo "debitos_numpre_old : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -762,6 +837,8 @@ function debitos_numpre($numpre,$limite,$tipo,$datausu,$anousu,$numpar=0,$totali
         $sql .=" datajust, ";
         }
         $sql .="
+                 (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
                  max(k02_drecei) as k02_drecei
        from (
              select distinct *,
@@ -840,6 +917,8 @@ if($justific==true){
     }
         $sql .= "
    group by  y.k00_numcgm ,
+             auto,
+             codlanc,
              y.k00_receit ,
              y.k00_tipo,
              y.k00_tipojm,
@@ -878,18 +957,18 @@ if($justific==true){
     if($totalizaordem!=""){
      $sql .= " order by $totalizaordem";
     }else{
-     $sql .= " order by k00_numpre,k00_numpar,k00_receit";
+     $sql .= " order by k00_numpre,auto,codlanc,k00_numpar,k00_receit";
     }
   }
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -902,7 +981,7 @@ function retornaRegraDescontoParcelamento($sNumpre) {
   $sSql = "select k38_cadtipoparc from arredesconto where k38_numpre = $sNumpre";
   $rRes = db_query($sSql) or die("Erro(28) não encontrado no arredesconto: ".pg_errormessage());
 
-  if (pg_numrows($rRes) > 0) {
+  if (pg_num_rows($rRes) > 0) {
 
     // se existe regra cadastrada gera a variavel
     return $regra_desconto = pg_result($rRes, 0, 0);
@@ -922,7 +1001,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
   $sql = "select k38_cadtipoparc from arredesconto where k38_numpre = $numpre";
   $res = db_query($sql) or die("Erro(28) não encontrado no arredesconto: ".pg_errormessage());
 
-  if (pg_numrows($res) > 0) {
+  if (pg_num_rows($res) > 0) {
 
     // se existe regra cadastrada gera a variavel
     $regra_desconto = pg_result($res,0,0);
@@ -1012,7 +1091,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
             where k00_numnov = $k03_numpre";
 
     $res = db_query($sql);
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Erro ao gerar recibo. Contate suporte (erro:9998)";
       exit;
     }
@@ -1025,7 +1104,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                           inner join tabrecjm on tabrec.k02_codjm = tabrecjm.k02_codjm
                      where k02_codigo = $receita";
     $res = db_query($sql_inflator);
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Inflator não cadastrado para receita ($receita). Contate suporte (erro:9999)";
       exit;
     }
@@ -1033,7 +1112,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
     $inflator = pg_result($res,0,0);
     // pesquisa a quantidade de inflator a ser gerado
     $res = db_query(" select fc_vlinf('".$inflator."','$minvenc')");
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Não encontrado valor para o Inflator ($inflator) na data ($minvenc). Contate suporte (erro:9997)";
       exit;
     }
@@ -1054,6 +1133,8 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                    0 as vlrdesconto,
                    sum(k00_valor) as total,
                    $vlrinflator as qinfla ,
+                    (select k00_auto from arreauto where arreauto.k00_numpre = recibopaga.k00_numpre) as auto,
+                    (select k00_codlanc from arrelanc where arrelanc.k00_numpre = recibopaga.k00_numpre) as codlanc,
                    '$inflator' as ninfla
          from recibopaga
          where k00_numnov = $k03_numpre
@@ -1067,27 +1148,27 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
 
       /*
         condicao que vai tratar se considera inflatores para o proximo ano ou nao
-        isso vem da opcao da tela Parcelas de outros exercicios : 
+        isso vem da opcao da tela Parcelas de outros exercicios :
       */
-      $sCaseCorrecaoInflatores =  " case 
-                                      when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}' else k00_dtvenc 
+      $sCaseCorrecaoInflatores =  " case
+                                      when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}' else k00_dtvenc
                                     end,
-                                    case 
-                                      when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}' else k00_dtvenc 
+                                    case
+                                      when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}' else k00_dtvenc
                                     end,
                                     {$anousu} ";
 
 
       if ( isset($oGet->emisscarne) && $oGet->emisscarne == "n" ) {
 
-        $sCaseCorrecaoInflatores =  " 
-                                      case 
-                                        when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}' 
-                                          else k00_dtvenc 
+        $sCaseCorrecaoInflatores =  "
+                                      case
+                                        when '{$dataVencimento}' > k00_dtvenc then '{$dataVencimento}'
+                                          else k00_dtvenc
                                       end,
                                      '{$dataVencimento}',
                                      {$anousu} ";
-      }                                    
+      }
 
       $sql = "
         SELECT k00_numpre,
@@ -1099,6 +1180,8 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                sum(y.vlrdesconto) AS vlrdesconto,
                sum(y.total)       AS total,
                sum(y.qinfla)      AS qinfla,
+               (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+               (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
                min(y.ninfla)      AS ninfla
         FROM (SELECT DISTINCT k00_numpre,
                               k00_numpar,
@@ -1109,9 +1192,9 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                               substr(fc_calcula, 41, 13)::float8    AS vlrmulta,
                               substr(fc_calcula, 54, 13)::float8    AS vlrdesconto,
                               (
-                                  substr(fc_calcula, 15, 13)::float8 + 
+                                  substr(fc_calcula, 15, 13)::float8 +
                                   substr(fc_calcula, 28, 13)::float8 +
-                                  substr(fc_calcula, 41, 13)::float8 - 
+                                  substr(fc_calcula, 41, 13)::float8 -
                                   substr(fc_calcula, 54, 13)::float8
                               )                                     AS total,
                               substr(fc_calcula, 77, 17)::float8    AS qinfla,
@@ -1130,12 +1213,12 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                                         ON arreinstit.k00_numpre = arrecad.k00_numpre AND arreinstit.k00_instit = {$instit}
                     WHERE arrecad.k00_numpre = {$numpre}
                       AND k00_numpar = {$numpar}) AS x) AS y
-        GROUP BY k00_numpre, k00_numpar
+        GROUP BY k00_numpre, k00_numpar, auto, codlanc
       ";
   }
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  if (pg_numrows($result) == 0 ){
+  if (pg_num_rows($result) == 0 ){
      return false;
   }
   return $result;
@@ -1144,6 +1227,9 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
 
 
 function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null ){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -1170,6 +1256,8 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
             $sql .= " y.datajust,";
           }
           $sql .= "
+                 (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
                  y.k00_origem
 
             from (
@@ -1208,6 +1296,12 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
                       inner join histcalc   on histcalc.k01_codigo   = a.k00_hist
                       inner join tabrec     on tabrec.k02_codigo     = a.k00_receit
                       inner join tabrecjm   on tabrecjm.k02_codjm    = tabrec.k02_codjm";
+                      if($y50_codauto!=null){
+                        $sql .= " inner join arreauto on b.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+                      }
+                      if($nl01_codlanc!=''){
+                       $sql .= " inner join arrelanc on b.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+                      }
                       if($justific==true){
                           $sql .= "
                                    left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data,(k27_data+k27_dias) as datajust
@@ -1249,6 +1343,8 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
     }
         $sql .= "
              group by y.k00_numcgm ,
+                      auto,
+                      codlanc,
                       y.k00_tipo,
                       y.k00_receit ,
                       y.k00_numpre ,
@@ -1287,18 +1383,18 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
     if($totalizaordem!=""){
       $sql .= " order by $totalizaordem";
     }else{
-      $sql .= " order by k00_numpre,k00_numpar,k00_receit";
+      $sql .= " order by k00_numpre,auto,codlanc,k00_numpar,k00_receit";
     }
   }
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if($limite == 0 ) {
-     if(pg_numrows($result) == 0 ){
+     if(pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   } else {
-    if(pg_numrows($result) == 0 ){
+    if(pg_num_rows($result) == 0 ){
       return false;
   } else {
     return 1;
@@ -1306,11 +1402,20 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
   }
 }
 
-function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$justific=false,$instit=null ){
+function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$justific=false,$instit=null,$totalizaordem="" ){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
-  $sql = "select *,
+  $sql = "select
+                  case
+                  when (k00_matric) != '' then 'M-'||(k00_matric)
+                  when (k00_inscr) is not null then 'I-'||(k00_inscr)
+                  else 'C-'||k00_numcgm
+                end as k00_origem,
+                 *,
                  substr(fc_calcula,2,13)::float8 as vlrhis,
                  substr(fc_calcula,15,13)::float8 as vlrcor,
                  substr(fc_calcula,28,13)::float8 as vlrjuros,
@@ -1332,6 +1437,12 @@ function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",
     left outer join arreinscr a on a.k00_numpre = i.k00_numpre
     left outer join issvar v on v.q05_numpre = i.k00_numpre
                             and v.q05_numpar = i.k00_numpar";
+    if($y50_codauto!=null){
+      $sql .= " inner join arreauto on b.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+    }
+    if($nl01_codlanc!=null){
+       $sql .= " inner join arrelanc on b.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+    }
     if($justific==true){
        $sql .="
     left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data,(k27_data+k27_dias) as datajust
@@ -1358,7 +1469,12 @@ function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",
   if($tipo != 0){
   $sql .= " and k00_tipo   = ".$tipo;
   }
-  $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+
+  if($totalizaordem!=""){
+    $sql .= " order by $totalizaordem";
+  }else{
+    $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+  }
   if ($limite != 0 ) {
      $sql .= " limit ".$limite;
   }
@@ -1376,12 +1492,12 @@ function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
-     return $result;
+   return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
        return false;
     }else{
        return 1;
@@ -1390,6 +1506,9 @@ function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",
 }
 
 function debitos_numcgm_var_cometado($numcgm,$limite,$tipo,$datausu,$anousu,$instit=null){
+
+  global $y50_codauto,$nl01_codlanc;
+
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -1413,35 +1532,42 @@ function debitos_numcgm_var_cometado($numcgm,$limite,$tipo,$datausu,$anousu,$ins
          left outer join arreinscr  i on a.k00_numpre = i.k00_numpre
          left outer join arrematric m on a.k00_numpre = m.k00_numpre
          left outer join issvar v on v.k00_numpre = a.k00_numpre and v.k00_numpar = a.k00_numpar
-   ,histcalc,tabrec  inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
-          where k00_hist   = k01_codigo and
+   ,histcalc,tabrec  inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm";
+
+  if($y50_codauto!=null){
+    $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+  }
+ if($nl01_codlanc!=null){
+     $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+  }
+  $sql = "     where k00_hist   = k01_codigo and
             a.k00_numcgm = $numcgm and
         k00_receit = k02_codigo";
-  if ($tipo != 0){
-     $sql .= " and k00_tipo   = ".$tipo;
+
+  if($tipo != 0){
+  $sql .= " and k00_tipo   = ".$tipo;
   }
 
   if ($limite != 0 ) {
      $sql .= " limit ".$limite;
   }
-
   $sql .= ") as x";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
-     return $result;
+   return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
-    }else{
-      return 1;
-    }
+  }else{
+    return 1;
+  }
   }
 }
-function debitos_numpre_var($numpre,$limite,$tipo,$datausu,$anousu,$justific=false,$instit=null ){
+function debitos_numpre_var($numpre,$limite,$tipo,$datausu,$anousu,$justific=false,$instit=null,$totalizaordem=""){
   if($instit==null){
     $instit=db_getsession('DB_instit');
   }
@@ -1492,19 +1618,23 @@ function debitos_numpre_var($numpre,$limite,$tipo,$datausu,$anousu,$justific=fal
   if($tipo != 0){
   $sql .= " and k00_tipo   = ".$tipo;
   }
-  $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+  if($totalizaordem!=""){
+    $sql .= " order by $totalizaordem";
+  }else{
+    $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+  }
   if ($limite != 0 ) {
      $sql .= " limit ".$limite;
   }
   $sql .= ") as x";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1550,12 +1680,12 @@ function debitos_numpre_var_comentado($numpre,$limite,$tipo,$datausu,$anousu,$in
   $sql .= ") as x";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1564,7 +1694,9 @@ function debitos_numpre_var_comentado($numpre,$limite,$tipo,$datausu,$anousu,$in
 }
 
 
-function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justific=false,$instit=null){
+function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justific=false,$instit=null,$totalizaordem=''){
+
+  global $y50_codauto,$nl01_codlanc;
 
   if($instit==null){
     $instit=db_getsession('DB_instit');
@@ -1592,7 +1724,12 @@ function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justif
             inner join arreinstit on arreinstit.k00_numpre = i.k00_numpre
                                  and arreinstit.k00_instit = $instit
             left outer join issvar v on v.q05_numpre = i.k00_numpre and v.q05_numpar = i.k00_numpar";
-
+        if($y50_codauto!=null){
+          $sql .= " inner join arreauto on a.k00_numpre = arreauto.k00_numpre and arreauto.k00_auto =".$y50_codauto;
+        }
+        if($nl01_codlanc!=null){
+           $sql .= " inner join arrelanc on a.k00_numpre = arrelanc.k00_numpre and arrelanc.k00_codlanc =".$nl01_codlanc;
+        }
         $sql .= "
             left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data, (k27_data+k27_dias) as datajust
                                   from ( select max(k28_sequencia) as k28_sequencia,
@@ -1617,7 +1754,12 @@ function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justif
   if($tipo != 0){
   $sql .= " and k00_tipo   = ".$tipo;
   }
-  $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+
+  if($totalizaordem!=""){
+    $sql .= " order by $totalizaordem";
+  }else{
+    $sql .= " order by k00_numpre,k00_numpar,k00_dtvenc";
+  }
   if ($limite != 0 ) {
      $sql .= " limit ".$limite;
   }
@@ -1626,12 +1768,12 @@ function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justif
 //  echo "debitos_inscricao_var : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1778,7 +1920,11 @@ class cl_gera_sql_folha {
       $arquivo = ' ajusteir';
     }
 
-    $iInstit = db_getsession('DB_instit');
+    if($instit != "" && $instit != null){
+      $iInstit = $instit;
+    }else{
+      $iInstit = db_getsession('DB_instit');
+    }
 
     if(trim($campos) != ""){
       $campos = str_replace("#s#",$sigla,$campos);
@@ -2287,7 +2433,7 @@ class cl_gera_sql_folha {
   function sql_record($sql){
     $result = @db_query($sql);
     if($result !== false){
-      $this->numrows_exec = pg_numrows($result);
+      $this->numrows_exec = pg_num_rows($result);
     }
 
     return $result;
@@ -2688,11 +2834,176 @@ function debitos_numpre_carne_recibopaga($numpre,$numpar,$datausu,$anousu,$insti
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
-  if (pg_numrows($result) == 0 ){
+  if (pg_num_rows($result) == 0 ){
     die("<br><br> $sql");
      return false;
   }
   return $result;
 
 }
+
+
+
+function sql_debitos_numpre($numpre,$limite,$tipo,$datausu,$anousu,$numpar=0,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null ){
+  if($instit==null){
+    $instit=db_getsession('DB_instit');
+  }
+ $sql = "select
+                 y.k00_numcgm ,
+                 y.k00_receit ,
+                 min(y.k00_hist) as k00_hist,
+                 y.k00_tipo,
+                 coalesce( y.k00_tipojm, 0) as k00_tipojm,
+                 y.k00_numpre ,
+                 y.k00_numpar ,
+                 y.k00_numtot ,
+                 y.k00_numdig ,
+                 y.k02_descr,
+                 y.vlrhis,
+                 y.vlrcor,
+                 y.vlrjuros,
+                 y.vlrmulta,
+                 y.vlrdesconto,
+                 y.total,
+                 min(k00_dtvenc) as k00_dtvenc,
+                 min(k00_dtoper) as k00_dtoper,
+                 0 as k00_valor,
+                 max(k01_descr) as k01_descr, ";
+        if($justific==true){
+        $sql .=" datajust, ";
+        }
+        $sql .="
+                 (select array_to_string(array_accum(k00_auto),', ') from arreauto where arreauto.k00_numpre = y.k00_numpre) as auto,
+                 (select array_to_string(array_accum(k00_codlanc),', ') from arrelanc where arrelanc.k00_numpre = y.k00_numpre) as codlanc,
+                 max(k02_drecei) as k02_drecei
+       from (
+             select distinct *,
+                 substr(fc_calcula,2,13)::float8 as vlrhis,
+                 substr(fc_calcula,15,13)::float8 as vlrcor,
+                 substr(fc_calcula,28,13)::float8 as vlrjuros,
+                 substr(fc_calcula,41,13)::float8 as vlrmulta,
+                 substr(fc_calcula,54,13)::float8 as vlrdesconto,
+                 (substr(fc_calcula,15,13)::float8+
+                 substr(fc_calcula,28,13)::float8+
+                 substr(fc_calcula,41,13)::float8-
+                 substr(fc_calcula,54,13)::float8) as total
+          from (
+          select   a.k00_numcgm ,
+                   a.k00_receit ,
+                   a.k00_hist,
+                   a.k00_tipo,
+                   coalesce( a.k00_tipojm, 0) as k00_tipojm,
+                   a.k00_numpre ,
+                   a.k00_numpar ,
+                   a.k00_numtot ,
+                   a.k00_numdig , ";
+        if($justific==true){
+          $sql .=" datajust, ";
+        }
+          $sql .="
+                   tabrec.k02_descr,tabrec.k02_drecei,fc_calcula(a.k00_numpre,a.k00_numpar,a.k00_receit,'".date('Y-m-d',$datausu)."','".db_vencimento($datausu)."',".$anousu.")
+          from arrecad a
+          inner join arreinstit on arreinstit.k00_numpre = a.k00_numpre
+                               and arreinstit.k00_instit = $instit
+
+
+          ";
+          // die($sql);
+if($justific==true){
+ $sql .="
+          left join ( select k28_sequencia,k28_arrejust,k28_numpre,k28_numpar,k27_dias,k27_data, (k27_data+k27_dias) as datajust
+                                  from ( select max(k28_sequencia) as k28_sequencia,
+                                                max(k28_arrejust) as k28_arrejust,
+                                                k28_numpar,
+                                                k28_numpre
+                                           from arrejustreg
+                                          where arrejustreg.k28_numpre = $numpre
+                                           group by k28_numpre,
+                                                    k28_numpar
+                                       ) as subarrejust
+                                       inner join arrejust on arrejust.k27_sequencia = subarrejust.k28_arrejust
+                              ) as arrejustreg on arrejustreg.k28_numpre = a.k00_numpre
+                                              and arrejustreg.k28_numpar = a.k00_numpar";
+}
+ $sql .="
+               ,histcalc,tabrec
+               inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
+          where   k00_hist   = k01_codigo and
+                a.k00_numpre = $numpre and
+                  k00_receit = k02_codigo";
+  if($numpar!=0){
+    $sql .= " and k00_numpar = $numpar ";
+  }
+
+  if($tipo != 0){
+  $sql .= " and k00_tipo   = ".$tipo;
+  }
+  $sql = $sql . " order by k00_numpre,k00_numpar,k00_receit";
+  if ($limite != 0 ) {
+     $sql .= " limit ".$limite;
+  }
+  $sql .= ") as x
+   ) as y,arrecad,histcalc
+   where y.k00_numpre = arrecad.k00_numpre and
+         y.k00_numpar = arrecad.k00_numpar and
+     y.k00_receit = arrecad.k00_receit and
+     arrecad.k00_hist = histcalc.k01_codigo
+" ;
+    if ($db_where!=""){
+      $sql .= $db_where;
+    }
+        $sql .= "
+   group by  y.k00_numcgm ,
+             auto,
+             codlanc,
+             y.k00_receit ,
+             y.k00_tipo,
+             y.k00_tipojm,
+             y.k00_numpre ,
+             y.k00_numpar ,
+             y.k00_numtot ,
+             y.k00_numdig ,
+             y.k02_descr,
+             y.vlrhis,
+             y.vlrcor,
+             y.vlrjuros,
+             y.vlrmulta,
+             y.vlrdesconto,";
+        if($justific==true){
+          $sql .=" datajust, ";
+        }
+          $sql .="
+             y.total
+   ";
+  if($totaliza!=""){
+    $sql = "select $totaliza,sum(y.vlrhis) as vlrhis,
+                             sum(y.vlrcor) as vlrcor,
+                             sum(y.vlrjuros) as vlrjuros,
+                             sum(y.vlrmulta) as vlrmulta,
+                             sum(y.vlrdesconto) as vlrdesconto,
+                             sum(y.total) as total
+                        from ( ".$sql." ) y
+                        group by $totaliza";
+
+    if($totalizaordem!=""){
+      $sql .= " order by $totalizaordem";
+    }else{
+      $sql .= " order by $totaliza";
+    }
+  }else {
+    if($totalizaordem!=""){
+     $sql .= " order by $totalizaordem";
+    }else{
+     $sql .= " order by k00_numpre,auto,codlanc,k00_numpar,k00_receit";
+    }
+  }
+
+
+
+  return $sql; //) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
+
+}
+
+
+
 ?>

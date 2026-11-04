@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
 //CLASSE DA ENTIDADE histmpsadap
-class cl_histmpsadap { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed66_i_codigo = 0; 
-   var $ed66_i_historicomps = 0; 
-   var $ed66_i_disciplina = 0; 
-   var $ed66_i_anoadap = 0; 
-   var $ed66_i_periodoadap = 0; 
-   var $ed66_c_tiporesultado = null; 
-   var $ed66_i_qtdch = 0; 
-   var $ed66_t_resultobtido = null; 
-   var $ed66_c_resultadofinal = null; 
-   var $ed66_c_tipoadap = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_histmpsadap {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed66_i_codigo = 0;
+   var $ed66_i_historicomps = 0;
+   var $ed66_i_disciplina = 0;
+   var $ed66_i_anoadap = 0;
+   var $ed66_i_periodoadap = 0;
+   var $ed66_c_tiporesultado = null;
+   var $ed66_i_qtdch = 0;
+   var $ed66_t_resultobtido = null;
+   var $ed66_c_resultadofinal = null;
+   var $ed66_c_tipoadap = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed66_i_codigo = int8 = Código 
-                 ed66_i_historicomps = int8 = Historico MPS 
-                 ed66_i_disciplina = int8 = Disciplina 
-                 ed66_i_anoadap = int4 = Ano de Adaptação 
-                 ed66_i_periodoadap = int4 = Período de Adaptação 
-                 ed66_c_tiporesultado = char(1) = Tipo de Resultado 
-                 ed66_i_qtdch = int4 = Carga Horária 
-                 ed66_t_resultobtido = text = Resultado Obtido 
-                 ed66_c_resultadofinal = char(1) = Resultado Final 
-                 ed66_c_tipoadap = char(1) = Tipo de Adaptação 
+                 ed66_i_codigo = int8 = Código
+                 ed66_i_historicomps = int8 = Historico MPS
+                 ed66_i_disciplina = int8 = Disciplina
+                 ed66_i_anoadap = int4 = Ano de Adaptação
+                 ed66_i_periodoadap = int4 = Período de Adaptação
+                 ed66_c_tiporesultado = char(1) = Tipo de Resultado
+                 ed66_i_qtdch = int4 = Carga Horária
+                 ed66_t_resultobtido = text = Resultado Obtido
+                 ed66_c_resultadofinal = char(1) = Resultado Final
+                 ed66_c_tipoadap = char(1) = Tipo de Adaptação
                  ";
-   //funcao construtor da classe 
-   function cl_histmpsadap() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("histmpsadap"); 
+     $this->rotulo = new rotulo("histmpsadap");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_histmpsadap {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed66_i_codigo = ($this->ed66_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed66_i_codigo"]:$this->ed66_i_codigo);
        $this->ed66_i_historicomps = ($this->ed66_i_historicomps == ""?@$GLOBALS["HTTP_POST_VARS"]["ed66_i_historicomps"]:$this->ed66_i_historicomps);
@@ -98,9 +98,9 @@ class cl_histmpsadap {
      }
    }
    // funcao para inclusao
-   function incluir ($ed66_i_codigo){ 
+   public function incluir ($ed66_i_codigo){
       $this->atualizacampos();
-     if($this->ed66_i_historicomps == null ){ 
+     if($this->ed66_i_historicomps == null ){
        $this->erro_sql = " Campo Historico MPS nao Informado.";
        $this->erro_campo = "ed66_i_historicomps";
        $this->erro_banco = "";
@@ -109,7 +109,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_i_disciplina == null ){ 
+     if($this->ed66_i_disciplina == null ){
        $this->erro_sql = " Campo Disciplina nao Informado.";
        $this->erro_campo = "ed66_i_disciplina";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_i_anoadap == null ){ 
+     if($this->ed66_i_anoadap == null ){
        $this->erro_sql = " Campo Ano de Adaptação nao Informado.";
        $this->erro_campo = "ed66_i_anoadap";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_i_periodoadap == null ){ 
+     if($this->ed66_i_periodoadap == null ){
        $this->erro_sql = " Campo Período de Adaptação nao Informado.";
        $this->erro_campo = "ed66_i_periodoadap";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_c_tiporesultado == null ){ 
+     if($this->ed66_c_tiporesultado == null ){
        $this->erro_sql = " Campo Tipo de Resultado nao Informado.";
        $this->erro_campo = "ed66_c_tiporesultado";
        $this->erro_banco = "";
@@ -145,10 +145,10 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_i_qtdch == null ){ 
+     if($this->ed66_i_qtdch == null ){
        $this->ed66_i_qtdch = "null";
      }
-     if($this->ed66_t_resultobtido == null ){ 
+     if($this->ed66_t_resultobtido == null ){
        $this->erro_sql = " Campo Resultado Obtido nao Informado.";
        $this->erro_campo = "ed66_t_resultobtido";
        $this->erro_banco = "";
@@ -157,7 +157,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_c_resultadofinal == null ){ 
+     if($this->ed66_c_resultadofinal == null ){
        $this->erro_sql = " Campo Resultado Final nao Informado.";
        $this->erro_campo = "ed66_c_resultadofinal";
        $this->erro_banco = "";
@@ -166,7 +166,7 @@ class cl_histmpsadap {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed66_c_tipoadap == null ){ 
+     if($this->ed66_c_tipoadap == null ){
        $this->erro_sql = " Campo Tipo de Adaptação nao Informado.";
        $this->erro_campo = "ed66_c_tipoadap";
        $this->erro_banco = "";
@@ -176,16 +176,16 @@ class cl_histmpsadap {
        return false;
      }
      if($ed66_i_codigo == "" || $ed66_i_codigo == null ){
-       $result = db_query("select nextval('histmpsadap_ed66_i_codigo_seq')"); 
+       $result = db_query("select nextval('histmpsadap_ed66_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: histmpsadap_ed66_i_codigo_seq do campo: ed66_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: histmpsadap_ed66_i_codigo_seq do campo: ed66_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed66_i_codigo = pg_result($result,0,0); 
+       $this->ed66_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from histmpsadap_ed66_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed66_i_codigo)){
@@ -196,10 +196,10 @@ class cl_histmpsadap {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed66_i_codigo = $ed66_i_codigo; 
+         $this->ed66_i_codigo = $ed66_i_codigo;
        }
      }
-     if(($this->ed66_i_codigo == null) || ($this->ed66_i_codigo == "") ){ 
+     if(($this->ed66_i_codigo == null) || ($this->ed66_i_codigo == "") ){
        $this->erro_sql = " Campo ed66_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,31 +208,31 @@ class cl_histmpsadap {
        return false;
      }
      $sql = "insert into histmpsadap(
-                                       ed66_i_codigo 
-                                      ,ed66_i_historicomps 
-                                      ,ed66_i_disciplina 
-                                      ,ed66_i_anoadap 
-                                      ,ed66_i_periodoadap 
-                                      ,ed66_c_tiporesultado 
-                                      ,ed66_i_qtdch 
-                                      ,ed66_t_resultobtido 
-                                      ,ed66_c_resultadofinal 
-                                      ,ed66_c_tipoadap 
+                                       ed66_i_codigo
+                                      ,ed66_i_historicomps
+                                      ,ed66_i_disciplina
+                                      ,ed66_i_anoadap
+                                      ,ed66_i_periodoadap
+                                      ,ed66_c_tiporesultado
+                                      ,ed66_i_qtdch
+                                      ,ed66_t_resultobtido
+                                      ,ed66_c_resultadofinal
+                                      ,ed66_c_tipoadap
                        )
                 values (
-                                $this->ed66_i_codigo 
-                               ,$this->ed66_i_historicomps 
-                               ,$this->ed66_i_disciplina 
-                               ,$this->ed66_i_anoadap 
-                               ,$this->ed66_i_periodoadap 
-                               ,'$this->ed66_c_tiporesultado' 
-                               ,$this->ed66_i_qtdch 
-                               ,'$this->ed66_t_resultobtido' 
-                               ,'$this->ed66_c_resultadofinal' 
-                               ,'$this->ed66_c_tipoadap' 
+                                $this->ed66_i_codigo
+                               ,$this->ed66_i_historicomps
+                               ,$this->ed66_i_disciplina
+                               ,$this->ed66_i_anoadap
+                               ,$this->ed66_i_periodoadap
+                               ,'$this->ed66_c_tiporesultado'
+                               ,$this->ed66_i_qtdch
+                               ,'$this->ed66_t_resultobtido'
+                               ,'$this->ed66_c_resultadofinal'
+                               ,'$this->ed66_c_tipoadap'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Histórico MPS Disciplina com Adaptação ($this->ed66_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -273,16 +273,16 @@ class cl_histmpsadap {
        $resac = db_query("insert into db_acount values($acount,1010136,1008800,'','".AddSlashes(pg_result($resaco,0,'ed66_c_tipoadap'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed66_i_codigo=null) { 
+   public function alterar ($ed66_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update histmpsadap set ";
      $virgula = "";
-     if(trim($this->ed66_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_codigo"])){ 
+     if(trim($this->ed66_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_codigo"])){
        $sql  .= $virgula." ed66_i_codigo = $this->ed66_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed66_i_codigo) == null ){ 
+       if(trim($this->ed66_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed66_i_codigo";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_i_historicomps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_historicomps"])){ 
+     if(trim($this->ed66_i_historicomps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_historicomps"])){
        $sql  .= $virgula." ed66_i_historicomps = $this->ed66_i_historicomps ";
        $virgula = ",";
-       if(trim($this->ed66_i_historicomps) == null ){ 
+       if(trim($this->ed66_i_historicomps) == null ){
          $this->erro_sql = " Campo Historico MPS nao Informado.";
          $this->erro_campo = "ed66_i_historicomps";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_i_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_disciplina"])){ 
+     if(trim($this->ed66_i_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_disciplina"])){
        $sql  .= $virgula." ed66_i_disciplina = $this->ed66_i_disciplina ";
        $virgula = ",";
-       if(trim($this->ed66_i_disciplina) == null ){ 
+       if(trim($this->ed66_i_disciplina) == null ){
          $this->erro_sql = " Campo Disciplina nao Informado.";
          $this->erro_campo = "ed66_i_disciplina";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_i_anoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_anoadap"])){ 
+     if(trim($this->ed66_i_anoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_anoadap"])){
        $sql  .= $virgula." ed66_i_anoadap = $this->ed66_i_anoadap ";
        $virgula = ",";
-       if(trim($this->ed66_i_anoadap) == null ){ 
+       if(trim($this->ed66_i_anoadap) == null ){
          $this->erro_sql = " Campo Ano de Adaptação nao Informado.";
          $this->erro_campo = "ed66_i_anoadap";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_i_periodoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_periodoadap"])){ 
+     if(trim($this->ed66_i_periodoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_periodoadap"])){
        $sql  .= $virgula." ed66_i_periodoadap = $this->ed66_i_periodoadap ";
        $virgula = ",";
-       if(trim($this->ed66_i_periodoadap) == null ){ 
+       if(trim($this->ed66_i_periodoadap) == null ){
          $this->erro_sql = " Campo Período de Adaptação nao Informado.";
          $this->erro_campo = "ed66_i_periodoadap";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_c_tiporesultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_tiporesultado"])){ 
+     if(trim($this->ed66_c_tiporesultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_tiporesultado"])){
        $sql  .= $virgula." ed66_c_tiporesultado = '$this->ed66_c_tiporesultado' ";
        $virgula = ",";
-       if(trim($this->ed66_c_tiporesultado) == null ){ 
+       if(trim($this->ed66_c_tiporesultado) == null ){
          $this->erro_sql = " Campo Tipo de Resultado nao Informado.";
          $this->erro_campo = "ed66_c_tiporesultado";
          $this->erro_banco = "";
@@ -357,17 +357,17 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_i_qtdch)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_qtdch"])){ 
-        if(trim($this->ed66_i_qtdch)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_qtdch"])){ 
-           $this->ed66_i_qtdch = "0" ; 
-        } 
+     if(trim($this->ed66_i_qtdch)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_qtdch"])){
+        if(trim($this->ed66_i_qtdch)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed66_i_qtdch"])){
+           $this->ed66_i_qtdch = "0" ;
+        }
        $sql  .= $virgula." ed66_i_qtdch = $this->ed66_i_qtdch ";
        $virgula = ",";
      }
-     if(trim($this->ed66_t_resultobtido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_t_resultobtido"])){ 
+     if(trim($this->ed66_t_resultobtido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_t_resultobtido"])){
        $sql  .= $virgula." ed66_t_resultobtido = '$this->ed66_t_resultobtido' ";
        $virgula = ",";
-       if(trim($this->ed66_t_resultobtido) == null ){ 
+       if(trim($this->ed66_t_resultobtido) == null ){
          $this->erro_sql = " Campo Resultado Obtido nao Informado.";
          $this->erro_campo = "ed66_t_resultobtido";
          $this->erro_banco = "";
@@ -377,10 +377,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_c_resultadofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_resultadofinal"])){ 
+     if(trim($this->ed66_c_resultadofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_resultadofinal"])){
        $sql  .= $virgula." ed66_c_resultadofinal = '$this->ed66_c_resultadofinal' ";
        $virgula = ",";
-       if(trim($this->ed66_c_resultadofinal) == null ){ 
+       if(trim($this->ed66_c_resultadofinal) == null ){
          $this->erro_sql = " Campo Resultado Final nao Informado.";
          $this->erro_campo = "ed66_c_resultadofinal";
          $this->erro_banco = "";
@@ -390,10 +390,10 @@ class cl_histmpsadap {
          return false;
        }
      }
-     if(trim($this->ed66_c_tipoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_tipoadap"])){ 
+     if(trim($this->ed66_c_tipoadap)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed66_c_tipoadap"])){
        $sql  .= $virgula." ed66_c_tipoadap = '$this->ed66_c_tipoadap' ";
        $virgula = ",";
-       if(trim($this->ed66_c_tipoadap) == null ){ 
+       if(trim($this->ed66_c_tipoadap) == null ){
          $this->erro_sql = " Campo Tipo de Adaptação nao Informado.";
          $this->erro_campo = "ed66_c_tipoadap";
          $this->erro_banco = "";
@@ -437,7 +437,7 @@ class cl_histmpsadap {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Histórico MPS Disciplina com Adaptação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed66_i_codigo;
@@ -465,14 +465,14 @@ class cl_histmpsadap {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed66_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed66_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed66_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -507,7 +507,7 @@ class cl_histmpsadap {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Histórico MPS Disciplina com Adaptação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed66_i_codigo;
@@ -535,11 +535,11 @@ class cl_histmpsadap {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -561,10 +561,10 @@ class cl_histmpsadap {
       }
      return $result;
    }
-   function sql_query ( $ed66_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed66_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,15 +586,15 @@ class cl_histmpsadap {
      $sql2 = "";
      if($dbwhere==""){
        if($ed66_i_codigo!=null ){
-         $sql2 .= " where histmpsadap.ed66_i_codigo = $ed66_i_codigo "; 
-       } 
+         $sql2 .= " where histmpsadap.ed66_i_codigo = $ed66_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -603,10 +603,10 @@ class cl_histmpsadap {
      }
      return $sql;
   }
-   function sql_query_file ( $ed66_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed66_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,15 +619,15 @@ class cl_histmpsadap {
      $sql2 = "";
      if($dbwhere==""){
        if($ed66_i_codigo!=null ){
-         $sql2 .= " where histmpsadap.ed66_i_codigo = $ed66_i_codigo "; 
-       } 
+         $sql2 .= " where histmpsadap.ed66_i_codigo = $ed66_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

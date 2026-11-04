@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -80,7 +80,7 @@ if(isset($HTTP_POST_VARS["numpre"]) && empty($reautenticar)){
 	  parent.alert('Erro ao gerar autenticacao.');
 	  location.href = 'cai4_difarrec001.php?acao=<?=$acao?>';
 	  </script>
-	  <?
+	  <?php
 	  exit;
     }										 
 }
@@ -109,7 +109,7 @@ if(isset($HTTP_POST_VARS["numpre"]) && empty($reautenticar)){
 </body>
 </html>
 
-<?
+<?php
   if(isset($reautenticar)){
     $str_aut1= base64_decode($reautenticar);
   }else{  

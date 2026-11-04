@@ -421,6 +421,7 @@ try {
                 function ($oDados) use ($oParam, $iAnoAtual) {
 
                     db_inicio_transacao();
+                    db_query("select fc_putsession('DB_Gerafinanc','0')");
                     //Busca dados atualizados da matricula
                     $sSqlCalculo = "select fc_calculoiptu({$oDados->j144_matricula}::integer,{$iAnoAtual}::integer,true::boolean,false::boolean,false::boolean,false::boolean,false::boolean,array['0','0','0'])";
                     $rsCalculo = db_query($sSqlCalculo);

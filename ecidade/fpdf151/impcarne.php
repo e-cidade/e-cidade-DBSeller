@@ -685,6 +685,8 @@ var $numero_emissoes = 1;
 var $transmitente = "";
 var $fracaoIdeal = 0;
 
+public $historicoSemHistParcerlas = "";
+
 
 // VARIAVEIS DA CAPA DE PROCESSO
 var $result_vars;
@@ -1351,15 +1353,13 @@ var $lUtilizaModeloDefault = true;
  	 * Valida se existe modelo especifico
  	 */
  	if (file_exists("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCodCliente}{$sInstit}.php") ) {
-    // Verifica código de cliente, se for Bagé, utiliza apenas mod_imprime_especifico
-    if ($sCodCliente == '000015') {
       $this->lUtilizaModeloDefault = false;
-    }
- 		include(modification(Modification::getFile("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCodCliente}{$sInstit}.php")));
-     }
-    if (file_exists("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCgcCliente}{$sInstit}.php") ) {
-        include(modification(Modification::getFile("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCgcCliente}{$sInstit}.php")));
-    }
+      include(modification(Modification::getFile("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCodCliente}{$sInstit}.php")));
+  }
+  if (file_exists("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCgcCliente}{$sInstit}.php") ) {
+      $this->lUtilizaModeloDefault = false;
+      include(modification(Modification::getFile("fpdf151/impmodelos/especificos/mod_imprime_especifico_{$this->impmodelo}_{$sCgcCliente}{$sInstit}.php")));
+  }
 
  	/**
  	 * Valida se utiliza modelo default junto com especifico

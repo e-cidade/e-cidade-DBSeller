@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clfandam->rotulo->label("y39_data");
               <?=$Ly39_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y39_codandam",20,$Iy39_codandam,true,"text",4,"","chave_y39_codandam");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clfandam->rotulo->label("y39_data");
               <?=$Ly39_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y39_data",10,$Iy39_data,true,"text",4,"","chave_y39_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clfandam->rotulo->label("y39_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fandam.php")==true){
@@ -118,12 +118,12 @@ $clfandam->rotulo->label("y39_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

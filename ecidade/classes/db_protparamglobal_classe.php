@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE protparamglobal
-class cl_protparamglobal { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $p06_sequencial = 0; 
+class cl_protparamglobal {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $p06_sequencial = 0;
    var $p06_tipo = 0;
-   var $p06_instituicao = 0; 
-   // cria propriedade com as variaveis do arquivo 
+   var $p06_instituicao = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 p06_sequencial = int4 = Sequencial 
-                 p06_tipo = int4 = TIpo de Controle 
-                 p06_instituicao = int4 = Instituição 
+                 p06_sequencial = int4 = Sequencial
+                 p06_tipo = int4 = TIpo de Controle
+                 p06_instituicao = int4 = Instituição
                  ";
-   //funcao construtor da classe 
-   function cl_protparamglobal() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("protparamglobal"); 
+     $this->rotulo = new rotulo("protparamglobal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_protparamglobal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p06_sequencial = ($this->p06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["p06_sequencial"]:$this->p06_sequencial);
        $this->p06_tipo = ($this->p06_tipo == ""?@$GLOBALS["HTTP_POST_VARS"]["p06_tipo"]:$this->p06_tipo);
@@ -77,9 +77,9 @@ class cl_protparamglobal {
      }
    }
    // funcao para inclusao
-   function incluir ($p06_sequencial){ 
+   public function incluir ($p06_sequencial){
       $this->atualizacampos();
-     if($this->p06_tipo == null ){ 
+     if($this->p06_tipo == null ){
        $this->erro_sql = " Campo TIpo de Controle nao Informado.";
        $this->erro_campo = "p06_tipo";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_protparamglobal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->p06_instituicao == null ){ 
+     if($this->p06_instituicao == null ){
       $this->erro_sql = " Campo Instituição nao Informado.";
       $this->erro_campo = "p06_instituicao";
       $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_protparamglobal {
       return false;
     }
      if($p06_sequencial == "" || $p06_sequencial == null ){
-       $result = db_query("select nextval('protparamglobal_p06_sequencial_seq')"); 
+       $result = db_query("select nextval('protparamglobal_p06_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: protparamglobal_p06_sequencial_seq do campo: p06_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: protparamglobal_p06_sequencial_seq do campo: p06_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->p06_sequencial = pg_result($result,0,0); 
+       $this->p06_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from protparamglobal_p06_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $p06_sequencial)){
@@ -118,10 +118,10 @@ class cl_protparamglobal {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->p06_sequencial = $p06_sequencial; 
+         $this->p06_sequencial = $p06_sequencial;
        }
      }
-     if(($this->p06_sequencial == null) || ($this->p06_sequencial == "") ){ 
+     if(($this->p06_sequencial == null) || ($this->p06_sequencial == "") ){
        $this->erro_sql = " Campo p06_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_protparamglobal {
        return false;
      }
      $sql = "insert into protparamglobal(
-                                       p06_sequencial 
+                                       p06_sequencial
                                       ,p06_tipo
                                       ,p06_instituicao
                        )
                 values (
-                                $this->p06_sequencial 
-                               ,$this->p06_tipo 
+                                $this->p06_sequencial
+                               ,$this->p06_tipo
                                ,$this->p06_instituicao
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Parâmetros globais de Processos ($this->p06_sequencial) nao Incluído. Inclusao Abortada.";
@@ -173,16 +173,16 @@ class cl_protparamglobal {
        $resac = db_query("insert into db_acount values($acount,3217,18213,'','".AddSlashes(pg_result($resaco,0,'p06_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($p06_sequencial=null) { 
+   public function alterar ($p06_sequencial=null) {
       $this->atualizacampos();
      $sql = " update protparamglobal set ";
      $virgula = "";
-     if(trim($this->p06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_sequencial"])){ 
+     if(trim($this->p06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_sequencial"])){
        $sql  .= $virgula." p06_sequencial = $this->p06_sequencial ";
        $virgula = ",";
-       if(trim($this->p06_sequencial) == null ){ 
+       if(trim($this->p06_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "p06_sequencial";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_protparamglobal {
          return false;
        }
      }
-     if(trim($this->p06_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_tipo"])){ 
+     if(trim($this->p06_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_tipo"])){
        $sql  .= $virgula." p06_tipo = $this->p06_tipo ";
        $virgula = ",";
-       if(trim($this->p06_tipo) == null ){ 
+       if(trim($this->p06_tipo) == null ){
          $this->erro_sql = " Campo TIpo de Controle nao Informado.";
          $this->erro_campo = "p06_tipo";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_protparamglobal {
          return false;
        }
      }
-     if(trim($this->p06_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_instituicao"])){ 
+     if(trim($this->p06_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p06_instituicao"])){
       $sql  .= $virgula." p06_instituicao = $this->p06_instituicao ";
       $virgula = ",";
-      if(trim($this->p06_instituicao) == null ){ 
+      if(trim($this->p06_instituicao) == null ){
         $this->erro_sql = " Campo Instituição nao Informado.";
         $this->erro_campo = "p06_instituicao";
         $this->erro_banco = "";
@@ -238,7 +238,7 @@ class cl_protparamglobal {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Parâmetros globais de Processos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->p06_sequencial;
@@ -266,14 +266,14 @@ class cl_protparamglobal {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($p06_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($p06_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($p06_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -301,7 +301,7 @@ class cl_protparamglobal {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Parâmetros globais de Processos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$p06_sequencial;
@@ -329,11 +329,11 @@ class cl_protparamglobal {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -355,11 +355,11 @@ class cl_protparamglobal {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $p06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $p06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_protparamglobal {
      $sql2 = "";
      if($dbwhere==""){
        if($p06_sequencial!=null ){
-         $sql2 .= " where protparamglobal.p06_sequencial = $p06_sequencial "; 
-       } 
+         $sql2 .= " where protparamglobal.p06_sequencial = $p06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,11 +389,11 @@ class cl_protparamglobal {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $p06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $p06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,15 +406,15 @@ class cl_protparamglobal {
      $sql2 = "";
      if($dbwhere==""){
        if($p06_sequencial!=null ){
-         $sql2 .= " where protparamglobal.p06_sequencial = $p06_sequencial "; 
-       } 
+         $sql2 .= " where protparamglobal.p06_sequencial = $p06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,10 +424,10 @@ class cl_protparamglobal {
      return $sql;
   }
 
-  function get_parametro_numeracao()
+  public function get_parametro_numeracao()
   {
     $sql = '
-      SELECT 
+      SELECT
         p06_tipo
       FROM
         protparamglobal

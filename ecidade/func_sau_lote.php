@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
               <?=$Lsd58_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd58_i_codigo",10,$Isd58_i_codigo,true,"text",4,"","chave_sd58_i_codigo");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_lote.php")==true){
@@ -113,12 +113,12 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

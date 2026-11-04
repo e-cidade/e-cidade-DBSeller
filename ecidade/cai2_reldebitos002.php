@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,11 +112,11 @@ function js_relatorio() {
 	    <b>Data de operação de </b>
 	  </td>
 	  <td>
-			<?
+			<?php
 			  db_inputdata('dtini',"","","",true,'text',$db_opcao,"")
 			?>
 	  <b> À </b>
-			<?
+			<?php
 			  db_inputdata('dtfim',"","","",true,'text',$db_opcao,"")
 			?>
 
@@ -127,11 +127,11 @@ function js_relatorio() {
 	    <b>Vencimento de </b>
 	  </td>
 	  <td>
-			<?
+			<?php
 			  db_inputdata('dataini',"","","",true,'text',$db_opcao,"")
 			?>
 	  <b> À </b>
-			<?
+			<?php
 			  db_inputdata('datafim',"","","",true,'text',$db_opcao,"")
 			?>
 
@@ -142,7 +142,7 @@ function js_relatorio() {
 	     <b>Registros:</b>
 	  </td>
 	  <td>
-			<?
+			<?php
 			  db_input('registros',6,0,true,'text',$db_opcao)
 			?>	  
     </td>
@@ -152,7 +152,7 @@ function js_relatorio() {
 	    <b>Modelo:</b>
 	  </td>
 	  <td>
-			<? 
+			<?php 
 			  $result=array("resumido"=>"Resumido","completo"=>"Completo");
 			  db_select("modelo",$result,true,$db_opcao);
 			?>
@@ -163,7 +163,7 @@ function js_relatorio() {
 	    <b>Origem:</b>
 	  </td>
 	  <td>
-			<? 
+			<?php 
 			  $result=array("cgm"=>"Numcgm","matricula"=>"Matrícula","inscricao"=>"Inscricao");
 			  db_select("origem",$result,true,$db_opcao);
 			?>	 
@@ -174,7 +174,7 @@ function js_relatorio() {
 	    <b>Ordenar por:</b>
 	  </td>
 	  <td>
-			<? 
+			<?php 
 			  $result=array("z01_nome"=>"Nome","vlrcor"=>"Valor corrigido","k22_data"=>"Vencimento","total"=>"Valor total");
 			  db_select("order",$result,true,$db_opcao);
 			

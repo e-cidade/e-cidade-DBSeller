@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -266,12 +266,12 @@ class db_impcarne extends cl_assinatura {
   var $cnpj             = null;         // cpf ou cnpj do credor
 
 /// variaveis para a nota de empenho
-  function db_impcarne($objpdf){
+  public function __construct($objpdf){
     $this->objpdf = $objpdf;
 
 
   }
-  function muda_pag($pagina,$xlin,$xcol){
+  public function muda_pag($pagina,$xlin,$xcol){
     $x = false;
     if(($this->objpdf->gety() > $this->objpdf->h - 78 && $pagina == 1 ) || ( $this->objpdf->gety() > $this->objpdf->h-30 && $pagina != 1)){
       if($this->objpdf->PageNo() == 1){
@@ -359,7 +359,7 @@ class db_impcarne extends cl_assinatura {
     return $x;
   }
 
-  function imprime() {
+  public function imprime() {
     if($this->modelo == 1){
       if ( ($this->qtdcarne % 4 ) == 0 ){
         $this->objpdf->AddPage();

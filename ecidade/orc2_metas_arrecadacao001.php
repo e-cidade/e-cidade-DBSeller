@@ -52,36 +52,46 @@ require_once modification("dbforms/db_funcoes.php");
 <div id='ctnAbaEmissao' class='subcontainer'>
     <fieldset>
         <legend>Metas de Arrecadação da Receita</legend>
-        <form id="formulario" >
-        <fieldset class="separator">
-            <legend>Filtros para impressão</legend>
-            <table class="form-container">
-                <tr>
-                    <td class="field-size3"><label for="agruparPor">Agrupar:</label></td>
-                    <td>
-                        <select id="agruparPor" name="agruparPor">
-                            <option value="receita" selected>Por Receita</option>
-                            <option value="recurso">Por Recurso e Complemento</option>
-                            <option value="fonte_recurso">Por Recurso</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="field-size3"><label for="periodicidade">Periodicidade:</label></td>
-                    <td>
-                        <select id="periodicidade" name="periodicidade">
-                            <option value="mensal" selected>Mensal</option>
-                            <option value="bimestral">Bimestral</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="ctnInstituicao" colspan="2" style="font-weight: normal">
-                        <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
+        <form id="formulario">
+            <fieldset class="separator">
+                <legend>Filtros para impressão</legend>
+                <table class="form-container">
+                    <tr>
+                        <td class="field-size3"><label for="agruparPor">Agrupar:</label></td>
+                        <td>
+                            <select id="agruparPor" name="agruparPor">
+                                <option value="receita" selected>Por Receita</option>
+                                <option value="recurso">Por Recurso e Complemento</option>
+                                <option value="fonte_recurso">Por Recurso</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="linhaTipoPlano">
+                        <td><label for="ementario">Selecione o plano que deseja agrupar os dados:</label></td>
+                        <td>
+                            <select name="ementario" id="ementario">
+                                <option value="ecidade" checked>Plano e-Cidade</option>
+                                <option value="uniao">Plano União/Federação</option>
+                                <option value="estadual">Plano Estadual/Regional</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="field-size3"><label for="periodicidade">Periodicidade:</label></td>
+                        <td>
+                            <select id="periodicidade" name="periodicidade">
+                                <option value="mensal" selected>Mensal</option>
+                                <option value="bimestral">Bimestral</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="ctnInstituicao" colspan="2" style="font-weight: normal">
+                            <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
         </form>
     </fieldset>
 
@@ -101,7 +111,7 @@ require_once modification("dbforms/db_funcoes.php");
 </div>
 
 <div id="cntAbaNotasExplicativas" style="display: none">
-    <iframe name="iframe_processapad" src="con2_conrelnotas.php?c83_codrel=76" width="100%" height="750px"  >
+    <iframe name="iframe_processapad" src="con2_conrelnotas.php?c83_codrel=76" width="100%" height="750px">
     </iframe>
 </div>
 <div class="subcontainer">
@@ -142,6 +152,9 @@ require_once modification("dbforms/db_funcoes.php");
         cntAbaNotasExplicativas.style.display = 'block';
 
         const recursosSelecionados = [];
+        const linhaTipoPlano = document.getElementById('linhaTipoPlano');
+        const cboAgrupar = document.getElementById('agruparPor');
+        const cboEmentario = document.getElementById('ementario');
         const btnEmitir = document.getElementById('emitir');
 
         viewInstituicao = new DBViewInstituicao('viewInstituicao', document.getElementById('ctnInstituicao'));
@@ -154,11 +167,38 @@ require_once modification("dbforms/db_funcoes.php");
 
         const montaColunas = () => {
             return [{
-                field: 'check',
-                checkbox: true,
-                align: 'center',
-                valign: 'middle',
-            },
+                    field: 'check',
+                    checkbox: true,
+                    align: 'center',
+                    valign: 'middle',
+                },
+                {
+                    title: 'Recurso',
+                    field: 'o15_recurso',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
+                {
+                    title: 'Siconfi',
+                    field: 'codigo_siconfi',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
+                {
+                    title: 'Gestão',
+                    field: 'gestao',
+                    halign: 'center',
+                    valign: 'middle',
+                    align: 'left',
+                    width: '100',
+                    sortable: true
+                },
                 {
                     title: 'Recurso',
                     field: 'descricao_recurso',
@@ -179,14 +219,14 @@ require_once modification("dbforms/db_funcoes.php");
         };
 
         const adicionaRecurso = (recurso) => {
-            let index = recursosSelecionados.findIndex(obj => obj.o15_codigo == recurso.o15_codigo);
+            let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
             if (index < 0) {
                 recursosSelecionados.push(recurso);
             }
         };
 
         const removeRecurso = (recurso) => {
-            let index = recursosSelecionados.findIndex(obj => obj.o15_codigo == recurso.o15_codigo);
+            let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
             if (index >= 0) {
                 recursosSelecionados.splice(index, 1)
             }
@@ -229,16 +269,13 @@ require_once modification("dbforms/db_funcoes.php");
             }
         })
 
-        const buscarRecursos = () => {
+        const buscarRecursos = (exercicio, dataFinal) => {
 
-            let data = new Date();
-            let month = data.getUTCMonth() + 1;
-            let dataFinal = `${data.getUTCFullYear()}-${month}-${data.getUTCDate()}`;
-            HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${dataFinal}`).then(response => {
+            HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${exercicio}/${dataFinal}`).then(response => {
 
                 let dados = response.data.map((recurso) => {
-                    recurso.descricao_recurso = `${recurso.o15_recurso} - ${recurso.o15_descr}`;
-                    recurso.descricao_complemento = `${recurso.complemento.codigo} - ${recurso.complemento.descricao}`;
+                    recurso.descricao_recurso = recurso.descricao;
+                    recurso.descricao_complemento = `${recurso.o15_complemento} - ${recurso.o200_descricao}`;
                     recurso.check = false
                     return recurso;
                 });
@@ -247,7 +284,17 @@ require_once modification("dbforms/db_funcoes.php");
             });
         };
 
-        buscarRecursos();
+        PHPSession.loadData().then(() => {
+            buscarRecursos(PHPSession.getValueSession('DB_anousu'), PHPSession.getValueSession('data_usuario'));
+        });
+
+        cboAgrupar.addEventListener('change', function () {
+            linhaTipoPlano.style.display = '';
+            if (cboAgrupar.value !== 'receita') {
+                linhaTipoPlano.style.display = 'none';
+                cboEmentario.value = 'ecidade';
+            }
+        })
 
         const valida = () => {
             try {

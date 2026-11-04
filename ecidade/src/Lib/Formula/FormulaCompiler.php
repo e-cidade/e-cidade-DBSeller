@@ -82,6 +82,10 @@ abstract class FormulaCompiler
             throw new Exception('Fórmula não informada.');
         }
 
+        if ($this->formula[0] == '(' && $this->formula[strlen($this->formula) -1] === ')') {
+            $this->formula = substr($this->formula, 1, -1);
+        }
+
         $executavel = $this->compiler->compile($this->formula);
 
         return $executavel->run($this->variaveis);

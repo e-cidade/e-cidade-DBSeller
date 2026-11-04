@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -113,19 +113,19 @@ function js_inverte(){
    </tr>
    <tr>
          <td align="center" colspan="2">
-         <?
+         <?php
            db_selinstit('',300,150);
          ?>
          </td>
          <td rowspan=7 valign="top"> 
 	   <fieldset>
 	    <a href="#" onclick="js_inverte();">Inverte Marcação</a><br>
-	   <?
+	   <?php
 	    $res = $clorcsuplemtipo->sql_record($clorcsuplemtipo->sql_query_file(null,"o48_tiposup,o48_descr","o48_tiposup"));
 	    if ($clorcsuplemtipo->numrows > 0 ){
 	        for($x=0;$x< $clorcsuplemtipo->numrows;$x++){
 		        db_fieldsmemory($res,$x); 
-		        ?><input type=checkbox name=<?=$o48_tiposup?> checked><?=$o48_tiposup?>  <?=$o48_descr?><br><?
+		        ?><input type=checkbox name=<?=$o48_tiposup?> checked><?=$o48_tiposup?>  <?=$o48_descr?><br><?php
      	    }		
 	    }
 	   ?>
@@ -135,7 +135,7 @@ function js_inverte(){
   <tr>
     <td nowrap><b>  Período inicial  </b></td>
       <td colspan="1">
-         <?
+         <?php
 	   $data_ini_dia = '01';
 	   $data_ini_mes = '01';
            $data_ini_ano = db_getsession("DB_anousu"); 	 
@@ -147,7 +147,7 @@ function js_inverte(){
   <tr>
   <td nowrap><b>  Período final </b></td>
       <td colspan="1">
-	  <?
+	  <?php
 	   $data_fim_dia = date('d',db_getsession("DB_datausu"));
 	   $data_fim_mes = date('m',db_getsession("DB_datausu"));
 	   $data_fim_ano = db_getsession("DB_anousu");
@@ -160,7 +160,7 @@ function js_inverte(){
  <tr>
       <td><b>Tipo: </b></td>
       <td>
-        <?
+        <?php
           $matriz['todos'] ='Todos'; 
           $matriz['decreto'] ='Decreto';          
           $matriz['lei'] ='Lei';
@@ -184,7 +184,7 @@ function js_inverte(){
   <tr>
       <td><b>Imprime Filtro: </b></td>
       <td>
-        <?
+        <?php
           $matriz = array();
           $matriz['n'] ='Não'; 
           $matriz['s'] ='Sim';          

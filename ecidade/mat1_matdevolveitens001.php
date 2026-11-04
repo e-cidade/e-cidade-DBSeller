@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -94,7 +94,7 @@ $clrotulo->label("m60_descr");
     <form name='form1'>
     <center>
  <table border='0' cellspacing="0" style="border: 2px inset white;background-color: white">
- <?
+ <?php
 
  if (isset($m42_codigo) && $m42_codigo!= "") {
 

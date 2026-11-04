@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -143,7 +143,7 @@ fieldset table td:first-child {
 		        <td colspan="2">
 		          <fieldset  class="fieldsetinterno">
 		            <legend>Mensagem</legend>
-		              <?
+		              <?php
 		                db_textarea('am14_mensagem',5,75,$Iam14_mensagem,true,'text',1,"");
 		              ?>
 		          </fieldset>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -194,7 +194,7 @@ function js_incluir() {
       </tr>
     </table>
   <table border="0" cellspacing="0" cellpadding="0">
-  <?
+  <?php
   $result = db_query("SELECT m_codigo as codigo,m_descricao as descricao,m_arquivo as arquivo,m_imgs as imgs,m_ativo as ativo,m_publico as publico FROM db_menupref ORDER BY m_codigo");
   $numrows = pg_numrows($result);
   $cor = "#33CCFF";
@@ -216,7 +216,7 @@ function js_incluir() {
   </form>
 </center>
 	
-	<?
+	<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 	</td>

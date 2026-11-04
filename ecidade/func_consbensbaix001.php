@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,7 +90,7 @@ if($numrows == 0){
 		  <td colspan='9' align='center' nowrap ><b> <?=isset($relbaix)?"Período $msg":"$msg"?> </b></td>
 		</tr>
 		<tr>
-      <?
+      <?php
       $result_bens = $clbensbaix->sql_query(null,"bens.t52_bem,
 						  bens.t52_descr,
 						  bens.t52_ident,

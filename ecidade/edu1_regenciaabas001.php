@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ if ($clturmaserieregimemat->numrows == 1) {
   <tr>
    <td align="center" valign="top" bgcolor="#CCCCCC">
     <fieldset style="width:95%"><legend><b>Etapas da Turma <?=@$ed57_c_descr?></b></legend>
-    <?
+    <?php
     $clcriaabas->identifica    = $ident;
     $clcriaabas->sizecampo     = $tamcampo;
     $clcriaabas->src           = $pagina;
@@ -86,6 +86,6 @@ if ($clturmaserieregimemat->numrows == 1) {
  </form>
  </body>
  </html>
- <?
+ <?php
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,7 +54,7 @@ $oRotulo->label("z01_nome");
                  <b>CGS:</b>
               </td>
                 <td colspan='1'>
-                <?
+                <?php
                  db_input('z01_i_cgsund',10,$Is113_i_numcgs,true,'text',3," onchange='js_pesquisasd32_i_numcgs(false);'");
                  echo "</td><td colspan=6>";
                  db_input('z01_v_nome',60,$Iz01_v_nome,true,'text',3,'');
@@ -66,7 +66,7 @@ $oRotulo->label("z01_nome");
                 <b>Data do Exame:</b>
               </td>
               <td>
-                <?
+                <?php
                  db_inputdata('s113_d_exame',null,null,null,true,3);
                 ?>
               </td>
@@ -74,7 +74,7 @@ $oRotulo->label("z01_nome");
                 <b>Nasc.:</b>
               </td>
               <td>
-              <?
+              <?php
                db_inputdata('z01_d_nasc',null,null,null,true,3);
               ?>
               </td>
@@ -82,7 +82,7 @@ $oRotulo->label("z01_nome");
                 <b>CPF:</b>
               </td>
               <td align="left">
-              <?
+              <?php
                db_input('z01_v_cgccpf',20,null,true,3);
               ?>
               </td>
@@ -101,7 +101,7 @@ $oRotulo->label("z01_nome");
                           <b>Exame:</b>
                        </td>
                        <td colspan="5">
-                          <?
+                          <?php
                            db_input('s113_i_codigo',10,$Is113_i_codigo,true,3);
                            db_input('s108_c_exame',45,'',true,3);
                           ?>
@@ -112,7 +112,7 @@ $oRotulo->label("z01_nome");
                           <b>Prestadora:</b>
                        </td>
                        <td colspan="5">
-                          <?
+                          <?php
                            db_input('s110_i_codigo',10,$Is113_i_codigo,true,3);
                            db_input('z01_nome',45,$Iz01_nome,true,3);
                           ?>
@@ -123,7 +123,7 @@ $oRotulo->label("z01_nome");
                           <b>Encaminhamento:</b>
                        </td>
                        <td>
-                          <?
+                          <?php
                           db_input("s113_c_encaminhamento",10,$Is113_c_encaminhamento,true,$db_opcao);
                           ?>
                        </td>
@@ -131,7 +131,7 @@ $oRotulo->label("z01_nome");
                           <b>Dia:</b>
                        </td>
                        <td>
-                         <?
+                         <?php
                           db_inputdata('s113_d_exame',null,null,null,true,3);
                          ?>
                        </td>
@@ -139,7 +139,7 @@ $oRotulo->label("z01_nome");
                           <b>Hora:</b>
                        </td>
                        <td>
-                        <?
+                        <?php
                          db_input("s113_c_hora",10,$Is113_c_hora,true,3);
                         ?>
                        </td>
@@ -149,7 +149,7 @@ $oRotulo->label("z01_nome");
                          <b>Protocolo Nro.:</b>
                        </td>
                        <td>
-                        <?
+                        <?php
                          db_input("s133_c_protocolo",10,$Is133_c_protocolo,true,"text",1);
                          db_input("s133_i_codigo",10,$Is133_c_protocolo,true,"hidden",3);
                         ?>
@@ -157,22 +157,10 @@ $oRotulo->label("z01_nome");
                      </tr>
                      <tr>
                        <td>
-                         <?
-                          db_ancora("<b>Resultados do Exame</b>","js_lancaAtributos()",1,null, "preencheexame");
-                         ?>
-                       </td>
-                       <td colspan="6">
-                         <?
-                          db_input("valoresatributos",50,null,true,"text",3);
-                         ?>
-                       </td>
-                     </tr>
-                     <tr>
-                       <td>
                          <b>Observações:</b>
                        </td>
                        <td colspan='6'>
-                         <?
+                         <?php
                           db_textarea("s133_c_observacoes", 4, 56, $Is133_c_observacoes,true,"text", 1);
                          ?>
                        </td>
@@ -180,7 +168,6 @@ $oRotulo->label("z01_nome");
                      <tr>
                        <td colspan=7 style='text-align: center'>
                          <input type='button' value='Confirma'  id='confirmar' onclick="js_salvarExame()">
-                         <input type='button' value='Emitir Resultado'   id='EmitirResultado' onclick="js_emiteResultado()">
                          <input type='button' value='Pesquisar' id='Cancelar' onclick='js_pesquisa()'>
                        </td>
                      </tr>
@@ -321,23 +308,6 @@ function js_retornoConsultaExamesUnico(oAjax) {
   }
 }
 
-
-function js_lancaAtributos() {
-
-  js_OpenJanelaIframe('',
-                      'lkp_atributosexames',
-                      'sau4_lancavaloresatributos.php?iCodigoExame='+$F('s113_i_codigo')+
-                      '&funcao_js=parent.js_consultaexames|z01_i_cgsund&iCodigoConfirmaExame='+$F('s133_i_codigo'),
-                      'Resultados Exames',
-                      true,
-                      100,
-                      100,
-                      600,
-                      500
-                     );
-
-}
-
 function js_salvarExame() {
 
   if ($F('s133_c_protocolo') == "") {
@@ -353,7 +323,6 @@ function js_salvarExame() {
   oParam.iExame          = $F('s113_i_codigo');
   oParam.sObservacao     = $F('s133_c_observacoes');
   oParam.iProtocolo      = $F('s133_c_protocolo');
-  oParam.sResultadoExame = $F('valoresatributos');
   var oAjax = new Ajax.Request(
                          sURL,
                          {
@@ -421,21 +390,5 @@ function js_retornoExcluir(oAjax) {
   } else {
     alert(oRetorno.message.urlDecode());
   }
-}
-
-function js_emiteResultado() {
-
-  if ($F('s133_i_codigo') == "" ) {
-
-     alert('Selecione um exame que ja foi confirmado.');
-     return false;
-
-  }
-
-  var query = 'iCodigoExame='+$F('s133_i_codigo');
-  var jan   = window.open('sau2_resultadoexames002.php?'+query,'',
-                         'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-   jan.moveTo(0,0);
-
 }
 </script>

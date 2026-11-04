@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -96,7 +96,7 @@ if(isset($interromper)){
    parent.document.form1.ed113_d_data_ano.value = "";
    alert("Interrupção efetuada com sucesso!");
   </script>
- <?
+ <?php
  exit;
 }
 ?>
@@ -114,7 +114,7 @@ if(isset($interromper)){
  <tr>
   <td align="center">
    <br>
-   <?
+   <?php
    $erro = false;
    $motivo = "";
    $result1 = $clprogfalta->sql_record($clprogfalta->sql_query("","count(*) as qtdfalta",""," ed118_i_progmatricula = $matricula AND extract(year from ed118_d_data) = '$ano' AND ed118_c_abonada = 'N'"));
@@ -140,11 +140,11 @@ if(isset($interromper)){
     ?>
     <input type="button" name="interromper" value="Interromper Contagem de Tempo" onclick="js_interrupcao(<?=$matricula?>,<?=$ano?>,'<?=$motivo?>')">
     <script>parent.document.form1.db_opcao.disabled = true;</script>
-    <?
+    <?php
    }else{
     ?>
     <script>parent.document.form1.db_opcao.disabled = false;</script>
-    <?
+    <?php
    }
    ?>
   </td>

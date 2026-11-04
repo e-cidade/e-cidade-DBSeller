@@ -61,7 +61,7 @@ if (isset($incluir)) {
 <script>
   js_tabulacaoforms("form1","sd02_v_cnes",true,1,"sd02_v_cnes",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clunidades->erro_status=="0") {
@@ -75,7 +75,7 @@ if (isset($incluir)) {
       echo "<script> document.form1.".$clunidades->erro_campo.".focus();</script>";
     }
     if($sd02_i_numcgm!=""){
-      ?><script>iframe_dados.location.href = "sau1_unidades004.php?chavepesquisa=<?=$sd02_i_numcgm?>";</script><?
+      ?><script>iframe_dados.location.href = "sau1_unidades004.php?chavepesquisa=<?=$sd02_i_numcgm?>";</script><?php
     }
   } else {
     $clunidades->erro(true,false);

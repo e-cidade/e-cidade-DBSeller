@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,7 +30,6 @@ require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
-
 require_once(modification("classes/db_iptubase_classe.php"));
 require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("classes/db_arreprescr_classe.php"));
@@ -40,20 +39,15 @@ require_once(modification("classes/db_termoanu_classe.php"));
 require_once(modification("classes/db_fiscal_classe.php"));
 require_once(modification("classes/db_levanta_classe.php"));
 require_once(modification("classes/db_db_config_classe.php"));
-
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
-
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-require_once(modification("fpdf151/pdf.php"));
-
 use ECidade\File\Excel;
-
 use ECidade\Library\SpreadSheet\Template\Parser;
 
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING']);
 db_postmemory($_GET);
 
 $clrotulo = new rotulocampo;
@@ -73,12 +67,17 @@ define("LABEL_ISSBASE_REFANT" , $LSq02_inscmu);
 
 $wherePendente = "";
 $wherePago = "";
+$wherePagoParcial = "";
 $whereCancelado = "";
 $wherePrescrito = "";
 $whereSuspenso = "";
 $whereInscritoCobAdm = "";
 $whereInscritoDivida = "";
 $whereParcelado = "";
+$colunaOrigem = "";
+$colunaOrigem1 = "";
+$colunaOrigem2 = "";
+$groupOrigem = "";
 
 // Querys
 //$sqlPendente = "";
@@ -105,18 +104,42 @@ $innerJoinMatricProprietario = " INNER JOIN (select distinct on (j01_matric)
 // Wheres individuais de cada filtro
 if ($selectFiltroBusca == 'cgm' && !empty($numcgm)) {
 
-    $innerJoinOrigemPago = "INNER JOIN cgm ON cgm.z01_numcgm = arrecant.k00_numcgm";
+    $innerJoinCGM                  = "INNER JOIN cgm ON cgm.z01_numcgm =";
+    $innerJoinOrigemPago           = "left JOIN cgm ON cgm.z01_numcgm = arrecant.k00_numcgm";
+    $innerJoinOrigemPendente       = "$innerJoinCGM k00_numcgm";
+    $innerJoinOrigemCancelado      = "$innerJoinCGM arrecant.k00_numcgm";
+    $innerJoinOrigemPrescrito      = "$innerJoinCGM arrecant.k00_numcgm";
+    $innerJoinOrigemParcelado      = "$innerJoinCGM arreold.k00_numcgm";
+    $innerJoinOrigemSuspenso       = "$innerJoinCGM arresusp.k00_numcgm";
+    $innerJoinOrigemInscritoCobAdm = "$innerJoinCGM arreold.k00_numcgm";
+    $innerJoinOrigemInscritoDivida = "$innerJoinCGM arreold.k00_numcgm";
 
     $wherePendente = " k00_numcgm = $numcgm
                     AND EXTRACT(year FROM k00_dtoper) BETWEEN $exercicio_inicial
                     AND $exercicio_final
                     AND arreinstit.k00_instit = ".db_getsession('DB_instit');
 
-    $wherePago = " arrepaga.k00_hist NOT IN (918, 400, 401)
-                    AND arrecant.k00_numcgm = $numcgm
-                    AND EXTRACT(year FROM arrecant.k00_dtoper) BETWEEN $exercicio_inicial
-                    AND $exercicio_final
+    
+    $wherePago = " (arrepaga.k00_hist NOT IN (17, 27, 61, 161, 117, 127, 400, 401, 500) or arrepaga.k00_valor < 0)
+                    AND arrepaga.k00_numcgm = $numcgm
+                    AND (
+                        EXTRACT(
+                            year
+                            FROM
+                                arrecant.k00_dtoper
+                        ) BETWEEN $exercicio_inicial
+                        AND $exercicio_final
+                        OR EXTRACT(
+                            year
+                            FROM
+                                arrepaga.k00_dtpaga
+                        ) BETWEEN $exercicio_inicial
+                        AND $exercicio_final
+                    )
+                    AND arrecant.k00_numpre is not null
                     AND arreinstit.k00_instit = ".db_getsession('DB_instit');
+    
+    $wherePagoParcial = "and arrenumcgm.k00_numcgm = $numcgm";
 
     $whereCancelado = " arrecant.k00_numcgm = $numcgm
                     AND EXTRACT(year FROM arrecant.k00_dtoper) BETWEEN $exercicio_inicial
@@ -166,7 +189,7 @@ if ($selectFiltroBusca == 'cgm' && !empty($numcgm)) {
     $innerJoinOrigemPago  = " INNER JOIN arrematric ON arrematric.k00_numpre = arrepaga.k00_numpre ";
     $innerJoinOrigemPago .= $innerJoinMatricProprietario;
 
-    $wherePago = " arrepaga.k00_hist NOT IN (918, 400, 401)
+    $wherePago = " (arrepaga.k00_hist NOT IN (17, 27, 61, 161, 117, 127, 400, 401, 500) or arrepaga.k00_valor < 0)
                     AND exists (
                         SELECT 1 FROM arrematric where arrematric.k00_numpre = arrecant.k00_numpre
                         AND arrematric.k00_matric = $matric
@@ -280,7 +303,8 @@ if ($selectFiltroBusca == 'cgm' && !empty($numcgm)) {
                              INNER JOIN issbase ON arreinscr.k00_inscr = issbase.q02_inscr
                              INNER JOIN cgm on issbase.q02_numcgm = cgm.z01_numcgm";
 
-    $wherePago = " arrepaga.k00_hist NOT IN (918, 400, 401)
+    $wherePago = " (arrepaga.k00_hist NOT IN (17, 27, 61, 161, 117, 127, 400, 401, 500) or arrepaga.k00_valor < 0)
+        AND arreinscr.k00_inscr = $inscr
         AND exists (
             SELECT 1 FROM arreinscr where arreinscr.k00_numpre = arrecant.k00_numpre
             AND arreinscr.k00_inscr = $inscr
@@ -289,6 +313,7 @@ if ($selectFiltroBusca == 'cgm' && !empty($numcgm)) {
         AND $exercicio_final
         AND arreinstit.k00_instit = ".db_getsession('DB_instit');
 
+    $wherePagoParcial = " AND arreinscr.k00_inscr = $inscr ";
     // Cancelado
     $innerJoinOrigemCancelado = " INNER JOIN arreinscr ON arreinscr.k00_numpre = arrecant.k00_numpre 
                                   INNER JOIN issbase ON arreinscr.k00_inscr = issbase.q02_inscr
@@ -455,7 +480,6 @@ $sqlPendente = "SELECT
                     k00_dtoper AS data_operacao
                 FROM
                     arrecad
-                    /* INNER JOIN cgm ON z01_numcgm = k00_numcgm */
                     INNER JOIN arretipo ON arrecad.k00_tipo = arretipo.k00_tipo
                     INNER JOIN arreinstit ON arrecad.k00_numpre = arreinstit.k00_numpre
                     {$innerJoinOrigemPendente}
@@ -559,12 +583,14 @@ $sqlPago = "SELECT
                         WHERE arrepaga.k00_numpre = pago.numpre AND arrepaga.k00_numpar = pago.numpar AND arrepaga.k00_hist = 401 ), 0)  AS multa,
             coalesce((SELECT sum(k00_valor)
                         FROM arrepaga
-                        WHERE arrepaga.k00_numpre = pago.numpre AND arrepaga.k00_numpar = pago.numpar AND arrepaga.k00_hist = 918 ), 0)  AS desconto,
-            (SELECT sum(k00_valor) FROM arrepaga WHERE arrepaga.k00_numpre = pago.numpre AND arrepaga.k00_numpar = pago.numpar) AS total,
+                        WHERE arrepaga.k00_numpre = pago.numpre AND arrepaga.k00_numpar = pago.numpar AND (arrepaga.k00_hist = 918 or arrepaga.k00_valor < 0) ), 0)  AS desconto,
+            pago.corrigido AS total,
             pago.data_movimento
         FROM
             (
                 SELECT
+                    distinct arrepaga.oid,
+                    arrepaga.k00_hist,
                     cgm.z01_nome AS nome,
                     cgm.z01_numcgm AS numcgm,
                     {$colunaOrigem}
@@ -575,61 +601,105 @@ $sqlPago = "SELECT
                     cgm.z01_munic AS municipio,
                     cgm.z01_uf AS uf,
                     arrecant.k00_numpre AS numpre,
+                    arrepaga.k00_numpre AS numpre_arrepaga,
                     arrecant.k00_numpar AS numpar,
                     arrecant.k00_numtot AS numtot,
-                    arretipo.k00_descr AS descricao,
+                    k01_descr AS descricao,
                     arrecant.k00_dtvenc AS data_vencimento,
                     arrecant.k00_valor AS valor,
-                    sum(arrepaga.k00_valor) AS corrigido,
+                    case
+                        WHEN round(arrecant.k00_valor,2)::numeric = 0.00 THEN sum(arrepaga.k00_valor)
+                        ELSE arrecant.k00_valor
+                    end AS corrigido,
                     '' AS calculo,
                     'Pago' AS situacao,
                     '0' AS processo,
                     arrecant.k00_dtoper AS data_operacao,
                     max(arrepaga.k00_dtpaga) AS data_movimento
                 FROM
-                    arrepaga
-                    INNER JOIN (select k00_numpre,
-                                       k00_numpar,
-                                       k00_numtot,
-                                       k00_dtoper,
-                                       k00_tipo,
-                                       k00_numcgm,
-                                       k00_dtvenc,
-                                       sum(k00_valor) as k00_valor
-                                  from arrecant
-                              group by k00_numpre,
-                                       k00_numpar,
-                                       k00_numtot,
-                                       k00_dtoper,
-                                       k00_numcgm,
-                                       k00_tipo,
-                                       k00_dtvenc) as arrecant
-                           ON arrepaga.k00_numpre = arrecant.k00_numpre
-                          AND arrepaga.k00_numpar = arrecant.k00_numpar
-                                      
-                    /*INNER JOIN cgm ON z01_numcgm = arrecant.k00_numcgm*/
-                    INNER JOIN arretipo ON arrecant.k00_tipo = arretipo.k00_tipo
-                    INNER JOIN arreinstit ON arrecant.k00_numpre = arreinstit.k00_numpre
+                arrepaga
+                    inner join arrenumcgm on arrenumcgm.k00_numpre = arrepaga.k00_numpre
+                    left join arrecant on arrecant.k00_numpre = arrepaga.k00_numpre
+                    and arrecant.k00_numpar = arrepaga.k00_numpar
+                    and arrecant.k00_receit = arrepaga.k00_receit
+                    and arrecant.k00_hist <> 918
+                    inner join arreinstit on arreinstit.k00_numpre = arrepaga.k00_numpre
+                    and arreinstit.k00_instit = 1
+                    inner join tabrec on tabrec.k02_codigo = arrepaga.k00_receit
+                    inner join tabrecjm on tabrecjm.k02_codjm = tabrec.k02_codjm
+                    inner join histcalc on histcalc.k01_codigo = arrepaga.k00_hist
+                    left join arreidret on arreidret.k00_numpre = arrepaga.k00_numpre
+                    and arreidret.k00_numpar = arrepaga.k00_numpar
+                    left join disbanco on disbanco.idret = arreidret.idret
                     {$innerJoinOrigemPago}
                             WHERE
-                                {$wherePago}
-                    GROUP BY cgm.z01_nome,
-                             cgm.z01_numcgm,
-                             cgm.z01_cgccpf,
-                             cgm.z01_ender,
-                             cgm.z01_compl,
-                             cgm.z01_numero,
-                             cgm.z01_munic,
-                             cgm.z01_uf,
-                             $groupOrigem
-                             arrecant.k00_numpre,
-                             arrecant.k00_numpar,
-                             arrecant.k00_numtot,
-                             arretipo.k00_descr,
-                             arrecant.k00_dtvenc,
-                             arrecant.k00_valor,
-                             arrecant.k00_dtoper
-                             
+                            not exists (
+                                select
+                                    1
+                                from
+                                    abatimentorecibo
+                                    inner join abatimento on abatimento.k125_sequencial = abatimentorecibo.k127_abatimento
+                                where
+                                    abatimentorecibo.k127_numprerecibo = arrepaga.k00_numpre
+                                    and abatimento.k125_tipoabatimento in (1, 4)
+                                limit
+                                    1
+                            )
+                            and not exists(
+                                select
+                                    1
+                                from
+                                    abatimentoutilizacaodestino
+                                    inner join abatimentoutilizacao on k157_sequencial = k170_utilizacao
+                                    inner join abatimento on abatimento.k125_sequencial = k157_abatimento
+                                    inner join abatimentorecibo on k127_abatimento = k125_sequencial
+                                    inner join arrepaga ap on ap.k00_numpre = k170_numpre
+                                    and ap.k00_numpar = k170_numpar
+                                where
+                                    k170_numpre = arrepaga.k00_numpre
+                                    and k170_numpar = arrepaga.k00_numpar
+                                    and k157_tipoutilizacao = '2'
+                                    and k125_tipoabatimento = 3
+                                    and ap.k00_conta = 0
+                                limit
+                                    1
+                            )
+                            and not exists(
+                                select
+                                    1
+                                from
+                                    abatimentorecibo
+                                    inner join abatimento on abatimento.k125_sequencial = k127_abatimento
+                                    left join termo on termo.v07_numpre = abatimentorecibo.k127_numpreoriginal
+                                    and termo.v07_situacao = 2
+                                where
+                                    abatimentorecibo.k127_numpreoriginal = arrepaga.k00_numpre
+                                    and k125_tipoabatimento = 4
+                                    and termo is null
+                                limit
+                                    1
+                            )
+                            and {$wherePago}
+                    GROUP BY
+                        arrepaga.oid,
+                        arrepaga.k00_hist,
+                        cgm.z01_nome,
+                        cgm.z01_numcgm,
+                        cgm.z01_cgccpf,
+                        cgm.z01_ender,
+                        cgm.z01_compl,
+                        cgm.z01_numero,
+                        cgm.z01_munic,
+                        cgm.z01_uf,
+                        {$groupOrigem}
+                        arrecant.k00_numpre,
+                        arrepaga.k00_numpre,
+                        arrecant.k00_numpar,
+                        arrecant.k00_numtot,
+                        k01_descr,
+                        arrecant.k00_dtvenc,
+                        arrecant.k00_valor,
+                        arrecant.k00_dtoper
         ) AS pago
     ) AS pago_2
     GROUP BY
@@ -651,6 +721,190 @@ $sqlPago = "SELECT
         pago_2.processo,
         pago_2.data_operacao,
         pago_2.data_movimento
+";
+
+// SQL PagoParcial
+if (!empty($selectFiltroBusca) && $selectFiltroBusca != 'cgm') {
+    if ($selectFiltroBusca == 'matric') {
+        $colunaOrigem = "cgm.j01_matric AS matric,";
+        $groupOrigem = "cgm.j01_matric,";
+    } else if ($selectFiltroBusca == 'inscr') {
+        $colunaOrigem = "arreinscr.k00_inscr AS inscr,";
+        $groupOrigem = "arreinscr.k00_inscr,";
+    } 
+    if ($selectFiltroBusca == 'numpre') {
+        $colunaOrigem = "";
+        $colunaOrigem1 = "";
+        $colunaOrigem2 = "";
+    }
+    else {
+        $colunaOrigem1 = "pagoParcial.{$selectFiltroBusca},";
+        $colunaOrigem2 = "pagoParcial_2.{$selectFiltroBusca},"; 
+    }
+}
+
+$sqlPagoParcial = "SELECT
+        pagoParcial_2.nome,
+        pagoParcial_2.numcgm,
+        {$colunaOrigem2}
+        pagoParcial_2.cpf,
+        pagoParcial_2.endereco,
+        pagoParcial_2.complemento,
+        pagoParcial_2.numero,
+        pagoParcial_2.municipio,
+        pagoParcial_2.uf,
+        pagoParcial_2.numpre,
+        pagoParcial_2.numpar,
+        pagoParcial_2.numtot,
+        pagoParcial_2.descricao,
+        pagoParcial_2.data_vencimento,
+        pagoParcial_2.situacao,
+        pagoParcial_2.processo,
+        pagoParcial_2.data_operacao,
+        sum(pagoParcial_2.valor) AS valor,
+        sum(pagoParcial_2.corrigido) AS corrigido,
+        sum(pagoParcial_2.juros) AS juros,
+        sum(pagoParcial_2.multa) AS multa,
+        sum(pagoParcial_2.desconto) AS desconto,
+        sum(pagoParcial_2.total) AS total,
+        pagoParcial_2.data_movimento::text 
+    FROM (
+        SELECT
+            pagoParcial.nome,
+            pagoParcial.numcgm,
+            {$colunaOrigem1}
+            pagoParcial.cpf,
+            pagoParcial.endereco,
+            pagoParcial.complemento,
+            pagoParcial.numero,
+            pagoParcial.municipio,
+            pagoParcial.uf,
+            pagoParcial.numpre,
+            pagoParcial.numpar,
+            pagoParcial.numtot,
+            pagoParcial.descricao,
+            pagoParcial.data_vencimento,
+            pagoParcial.calculo,
+            pagoParcial.situacao,
+            pagoParcial.processo,
+            pagoParcial.data_operacao,
+            pagoParcial.valor,
+            pagoParcial.corrigido,
+            coalesce((SELECT sum(k00_valor)
+                        FROM arrepaga
+                        WHERE arrepaga.k00_numpre = pagoParcial.numpre AND arrepaga.k00_numpar = pagoParcial.numpar AND arrepaga.k00_hist = 400 ), 0)  AS juros,
+            coalesce((SELECT sum(k00_valor)
+                        FROM arrepaga
+                        WHERE arrepaga.k00_numpre = pagoParcial.numpre AND arrepaga.k00_numpar = pagoParcial.numpar AND arrepaga.k00_hist = 401 ), 0)  AS multa,
+            coalesce((SELECT sum(k00_valor)
+                        FROM arrepaga
+                        WHERE arrepaga.k00_numpre = pagoParcial.numpre AND arrepaga.k00_numpar = pagoParcial.numpar AND (arrepaga.k00_hist = 918 or arrepaga.k00_valor < 0) ), 0)  AS desconto,
+                        pagoParcial.corrigido AS total,
+            pagoParcial.data_movimento
+        FROM
+            (
+                SELECT
+                    distinct arreckey.oid,
+                    cgm.z01_nome AS nome,
+                    cgm.z01_numcgm AS numcgm,
+                    {$colunaOrigem}
+                    cgm.z01_cgccpf AS cpf,
+                    cgm.z01_ender AS endereco,
+                    cgm.z01_compl AS complemento,
+                    cgm.z01_numero AS numero,
+                    cgm.z01_munic AS municipio,
+                    cgm.z01_uf AS uf,
+                    '' AS calculo,
+                    'Pago' AS situacao,
+                    '0' AS processo,
+
+                    arreckey.k00_numpre as numpre,
+                    arreckey.k00_numpar as numpar,
+                    case
+                        when arrecad.k00_numtot is not null then arrecad.k00_numtot
+                        when arrecant.k00_numtot is not null then arrecant.k00_numtot
+                        else arrepaga.k00_numtot
+                    end as numtot,
+                    case
+                        when arrecad.k00_dtvenc is not null then arrecad.k00_dtvenc
+                        when arrecant.k00_dtvenc is not null then arrecant.k00_dtvenc
+                        else arrepaga.k00_dtvenc
+                    end as data_vencimento,
+                    case
+                        when arrecad.k00_dtoper is not null then arrecad.k00_dtoper
+                        when arrecant.k00_dtoper is not null then arrecant.k00_dtoper
+                        else arrepaga.k00_dtoper
+                    end as data_movimento,
+                    case
+                        when arrecad.k00_dtoper is not null then arrecad.k00_dtoper
+                        when arrecant.k00_dtoper is not null then arrecant.k00_dtoper
+                        else arrepaga.k00_dtoper
+                    end as data_operacao,
+                    arreckey.k00_receit,
+                    tabrec.k02_drecei as descricao,
+                    arreckey.k00_hist,
+                    histcalc.k01_descr,
+                    (
+                        abatimentoarreckey.k128_valorabatido + abatimentoarreckey.k128_correcao + abatimentoarreckey.k128_juros + abatimentoarreckey.k128_multa
+                    ) as valor,
+                    (
+                        abatimentoarreckey.k128_valorabatido + abatimentoarreckey.k128_correcao + abatimentoarreckey.k128_juros + abatimentoarreckey.k128_multa
+                    ) as corrigido,
+                    arrepaga.k00_conta,
+                    arrepaga.k00_dtpaga,
+                    case
+                        when arrecad.k00_tipo is not null then arrecad.k00_tipo
+                        else arrecant.k00_tipo
+                    end as k00_tipo,
+                    coalesce(disbanco.dtpago, k00_dtpaga) as efetpagto,
+                    'PARCIAL' as tipopagamento,
+                    abatimento.k125_sequencial as abatimento,
+                    arrepaga.k00_numpre as numpreabatimento,
+                    0 as boleto
+                from
+                    abatimentorecibo
+                    inner join abatimento on abatimento.k125_sequencial = abatimentorecibo.k127_abatimento
+                    left join abatimentodisbanco on abatimentodisbanco.k132_abatimento = abatimento.k125_sequencial
+                    left join disbanco on disbanco.idret = abatimentodisbanco.k132_idret
+                    inner join abatimentoarreckey on abatimentoarreckey.k128_abatimento = abatimento.k125_sequencial
+                    inner join arreckey on arreckey.k00_sequencial = abatimentoarreckey.k128_arreckey
+                    inner join tabrec on tabrec.k02_codigo = arreckey.k00_receit
+                    inner join histcalc on histcalc.k01_codigo = arreckey.k00_hist
+                    left join arrepaga on arrepaga.k00_numpre = abatimentorecibo.k127_numprerecibo
+                    inner join arreinstit on arreinstit.k00_numpre = arrepaga.k00_numpre
+                    and arreinstit.k00_instit = 1
+                    left join arrecant on arrecant.k00_numpre = arreckey.k00_numpre
+                    and arrecant.k00_numpar = arreckey.k00_numpar
+                    and arrecant.k00_receit = arreckey.k00_receit
+                    left join arrecad on arrecad.k00_numpre = arreckey.k00_numpre
+                    and arrecad.k00_numpar = arreckey.k00_numpar
+                    and arrecad.k00_receit = arreckey.k00_receit
+                    inner join arrenumcgm on arrenumcgm.k00_numpre = arrepaga.k00_numpre
+                    {$innerJoinOrigemPago}
+                where
+                    abatimento.k125_tipoabatimento in (1, 4)  
+                    {$wherePagoParcial}
+        ) AS pagoParcial
+    ) AS pagoParcial_2
+    GROUP BY
+        pagoParcial_2.numpre,
+        pagoParcial_2.numpar,
+        pagoParcial_2.nome,
+        pagoParcial_2.numcgm,
+        {$colunaOrigem2}
+        pagoParcial_2.cpf,
+        pagoParcial_2.endereco,
+        pagoParcial_2.complemento,
+        pagoParcial_2.numero,
+        pagoParcial_2.municipio,
+        pagoParcial_2.uf,
+        pagoParcial_2.numtot,
+        pagoParcial_2.descricao,
+        pagoParcial_2.data_vencimento,
+        pagoParcial_2.situacao,
+        pagoParcial_2.processo,
+        pagoParcial_2.data_operacao,
+        pagoParcial_2.data_movimento
 ";
 
 
@@ -725,7 +979,7 @@ FROM (
             cancdebitosprocreg.k24_juros AS juros,
             cancdebitosprocreg.k24_multa AS multa,
             cancdebitosprocreg.k24_desconto AS desconto,
-            cancdebitosprocreg.k24_vlrcor + cancdebitosprocreg.k24_juros + cancdebitosprocreg.k24_multa + cancdebitosprocreg.k24_desconto AS total,
+            cancdebitosprocreg.k24_vlrhis AS total,
             cancdebitosproc.k23_data AS data_movimento
         FROM
             arrecant
@@ -733,7 +987,6 @@ FROM (
             AND arrecant.k00_numpar = cancdebitosreg.k21_numpar
             AND arrecant.k00_receit = cancdebitosreg.k21_receit
             INNER JOIN cancdebitosprocreg ON cancdebitosprocreg.k24_cancdebitosreg = cancdebitosreg.k21_sequencia
-            /* INNER JOIN cgm ON z01_numcgm = arrecant.k00_numcgm */
             INNER JOIN arretipo ON arrecant.k00_tipo = arretipo.k00_tipo
             INNER JOIN cancdebitosproc ON cancdebitosproc.k23_codigo = cancdebitosprocreg.k24_codigo
             INNER JOIN cancdebitos ON cancdebitos.k20_codigo = cancdebitosreg.k21_codigo
@@ -842,7 +1095,6 @@ FROM (
             INNER JOIN arreprescr ON arrecant.k00_numpre = arreprescr.k30_numpre
             AND arrecant.k00_numpar = arreprescr.k30_numpar
             AND arrecant.k00_receit = arreprescr.k30_receit
-            /*INNER JOIN cgm ON z01_numcgm = arrecant.k00_numcgm*/
             INNER JOIN arretipo ON arrecant.k00_tipo = arretipo.k00_tipo
             INNER JOIN prescricao ON arreprescr.k30_prescricao = prescricao.k31_codigo
             INNER JOIN arreinstit ON arrecant.k00_numpre = arreinstit.k00_numpre
@@ -945,7 +1197,6 @@ FROM (
             suspensao.ar18_data AS data_movimento
         FROM
             arresusp
-            /* INNER JOIN cgm ON z01_numcgm = arresusp.k00_numcgm */
             INNER JOIN arretipo ON arresusp.k00_tipo = arretipo.k00_tipo
             INNER JOIN suspensao ON suspensao.ar18_sequencial = arresusp.k00_suspensao
             INNER JOIN arreinstit ON arresusp.k00_numpre = arreinstit.k00_numpre
@@ -1071,13 +1322,8 @@ $sqlInscritoCobAdm = "SELECT
             FROM
                 diverimportaold
                 INNER JOIN diversos ON dv13_diversos = dv05_coddiver
-                /*
-                INNER JOIN diverimportareg ON dv12_diversos = dv13_diversos
-                INNER JOIN diverimporta ON dv12_diverimporta = dv11_sequencial
-                */
                 INNER JOIN arreold ON arreold.k00_numpre = dv13_numpre
                 AND k00_numpar = dv13_numpar
-                /* INNER JOIN cgm ON z01_numcgm = arreold.k00_numcgm */
                 INNER JOIN arretipo ON arreold.k00_tipo = arretipo.k00_tipo
                 INNER JOIN arreinstit ON arreold.k00_numpre = arreinstit.k00_numpre
                 {$innerJoinOrigemInscritoCobAdm}
@@ -1204,7 +1450,6 @@ $sqlInscritoDivida = "SELECT
                     INNER JOIN divold ON arreold.k00_numpre = divold.k10_numpre
                     AND arreold.k00_numpar = divold.k10_numpar
                     AND arreold.k00_receit = divold.k10_receita
-                    /* INNER JOIN cgm ON z01_numcgm = arreold.k00_numcgm */
                     INNER JOIN arretipo ON arreold.k00_tipo = arretipo.k00_tipo
                     INNER JOIN divida ON divida.v01_coddiv = divold.k10_coddiv
                     INNER JOIN arreinstit ON arreold.k00_numpre = arreinstit.k00_numpre
@@ -1317,7 +1562,6 @@ FROM (
             LEFT JOIN termoini ON v07_parcel = termoini.parcel
             LEFT JOIN termocontrib ON v07_parcel = termocontrib.parcel
             LEFT JOIN termodiver ON v07_parcel = dv10_parcel
-            /* INNER JOIN cgm ON z01_numcgm = arreold.k00_numcgm */
             INNER JOIN arretipo ON arreold.k00_tipo = arretipo.k00_tipo
             INNER JOIN arreinstit ON arreold.k00_numpre = arreinstit.k00_numpre
             {$innerJoinOrigemParcelado}
@@ -1353,7 +1597,7 @@ switch ($selectSituacaoDebito) {
         break;
 
     case 'pago':
-        $sql = $sqlPago;
+        $sql = "{$sqlPago} UNION ALL {$sqlPagoParcial}";
         break;
 
     case 'cancelado':
@@ -1383,6 +1627,7 @@ switch ($selectSituacaoDebito) {
     default:
         $sql = "{$sqlPendente}
         UNION ALL {$sqlPago}
+        UNION ALL {$sqlPagoParcial}
         UNION ALL {$sqlCancelado}
         UNION ALL {$sqlPrescrito}
         UNION ALL {$sqlSuspenso}
@@ -1476,9 +1721,7 @@ $sql  = " SELECT *,
 
             FROM ({$sql}) AS x";
 
-$sql .= " ORDER BY data_operacao, numpre, numpar, situacao"; 
-
-//echo $sql;die;
+$sql .= " ORDER BY data_movimento, data_operacao"; 
 
 $result = db_query($sql) or die($sql);
 
@@ -1699,28 +1942,30 @@ if ($tipoArquivo == "2") {
 }
 
 // Cria PDF
-$oPdf = new PDF('L');
-$oPdf->Open();
+$oPdf = new ECidade\Pdf\Pdf('L');
+$oPdf->init(false);
 $oPdf->AliasNbPages();
 $oPdf->SetAutoPageBreak(false);
 $oPdf->SetFillColor(235);
 
 $head2 = "Extrato do Contribuinte";
-$head4 = "Situação do Débito - ".strtoupper($selectSituacaoDebito);
-$head5 = "Filtro de Busca - ".strtoupper($selectFiltroBusca);
+$oPdf->addTitulo("Extrato do Contribuinte");
+$oPdf->addTitulo("");
+$oPdf->addTitulo("Situação do Débito - ".strtoupper($selectSituacaoDebito));
+$oPdf->addTitulo("Filtro de Busca - ".strtoupper($selectFiltroBusca));
 
 if ($selectFiltroBusca == "cgm") {
-    $head6 = "CGM: ".$numcgm;
+    $oPdf->addTitulo("CGM: ".$numcgm);
 } else if ($selectFiltroBusca == "matric") {
-    $head6 = "Matrícula: ".$matric;
+    $oPdf->addTitulo("Matrícula: ".$matric);
 } else if ($selectFiltroBusca == "inscr") {
-    $head6 = "Inscrição: ".$inscr;
+    $oPdf->addTitulo("Inscrição: ".$inscr);
 }
 
 if ($exercicio_inicial != $exercicio_final) {
-    $head7 = "Intervalo de Exercício: De " . $exercicio_inicial . " até " . $exercicio_final;
+    $oPdf->addTitulo("Intervalo de Exercício: De " . $exercicio_inicial . " até " . $exercicio_final);
 } else {
-    $head7 = "Exercício: " . $exercicio_inicial;
+    $oPdf->addTitulo("Exercício: " . $exercicio_inicial);
 }
 
 $oDadosCgm = db_utils::getCollectionByRecord($result);
@@ -1793,9 +2038,9 @@ foreach (array_unique($arrayDescricaoSituacaoDebito) as $descricao) {
     $totalSituacaoDebito = 0;
 }
 
-$oPdf->Output();
+$oPdf->Output('I');
 
-function fc_dadosContribuinte(FPDF $oPdf, $contribuinte)
+function fc_dadosContribuinte($oPdf, $contribuinte)
 {
     $oPdf->SetFont('Arial', 'B', 8);
     $oPdf->Cell(strlen(LABEL_CGM)+10, 5, trim(LABEL_CGM).": ", 0, 0, "L", 0);
@@ -1923,7 +2168,7 @@ function fc_imprimedadoscontribuinte($oPdf, $debito, $selectFiltroBusca) {
 
 function fc_quebraPagina($oPdf, $contribuinte)
 {
-    if ($oPdf->GetY() > ($oPdf->h - 30)) {
+    if ($oPdf->GetY() > ($oPdf->getH() - 30)) {
         $oPdf->AddPage();
         fc_dadosContribuinte($oPdf, $contribuinte);
         fc_cabecalhoDebitos($oPdf);

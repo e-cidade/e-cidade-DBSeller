@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@ $clrotulo->label("rh27_descr");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-  <?
+  <?php
   $r11_anousu = db_anofolha();
   $r11_mesusu = db_mesfolha();
   db_input('r11_anousu',4,$Ir11_anousu,true,'hidden',$db_opcao,"");
@@ -47,12 +47,12 @@ $clrotulo->label("rh27_descr");
         <table width="100%" >
           <tr>
             <td nowrap align="right" title="<?=@$Tr11_vtprop?>" width="80%">
-              <?
+              <?php
               db_ancora(@$Lr11_vtprop,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_select('r11_vtprop',$arr_SorN,true,$db_opcao,"");
               ?>
             </td>
@@ -68,12 +68,12 @@ $clrotulo->label("rh27_descr");
         <table width="100%" >
           <tr>
             <td nowrap align="right" title="<?=@$Tr11_vtmpro?>" width="80%">
-              <?
+              <?php
               db_ancora(@$Lr11_vtmpro,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_select('r11_vtmpro',$arr_SorN,true,$db_opcao,"");
               ?>
             </td>
@@ -89,12 +89,12 @@ $clrotulo->label("rh27_descr");
         <table width="100%" >
           <tr>
             <td nowrap align="right" title="<?=@$Tr11_vtfer?>" width="80%">
-              <?
+              <?php
               db_ancora(@$Lr11_vtfer,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_select('r11_vtfer',$arr_SorN,true,$db_opcao,"");
               ?>
             </td>
@@ -110,12 +110,12 @@ $clrotulo->label("rh27_descr");
         <table width="100%" >
           <tr>
             <td nowrap align="right" title="<?=@$Tr11_vtcons?>" width="80%">
-              <?
+              <?php
               db_ancora(@$Lr11_vtcons,"",3);
               ?>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_select('r11_vtcons',$arr_SorN,true,$db_opcao,"");
               ?>
             </td>

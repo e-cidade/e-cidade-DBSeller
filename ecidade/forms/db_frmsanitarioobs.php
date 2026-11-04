@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("y80_texto");
 			   		<?=@$Ly80_codsani?>
 			   	</td>
 			   	<td>
-			   	<?
+			   	<?php
 			   		db_input('y80_codsani',10,$Iy80_codsani,true,'text',3);
 			   	?>
 			   	<br>
@@ -53,10 +53,10 @@ $clrotulo->label("y80_texto");
 			   		<?=@$Ly80_numcgm ?>
 			   	</td>
 			   	<td>
-			   		<?
+			   		<?php
 			   		db_input('y80_numcgm',10,$Iy80_numcgm,true,'text',3);
 			   		?>
-			   		<?
+			   		<?php
 			   		db_input('z01_nome',50,$Iz01_nome,true,'text',3);
 			   		?>
 			   	</td>
@@ -66,7 +66,7 @@ $clrotulo->label("y80_texto");
 						<?=@$Ly80_obs?>
 		      </td>
 		      <td > 
-					  <?
+					  <?php
 					  db_textarea('y80_obs',10,60,$Iy80_obs,true,'text',$db_opcao,"")
 					  ?>
 					</td>
@@ -76,7 +76,7 @@ $clrotulo->label("y80_texto");
 		    	<?=$Ly80_texto?>
 		     </td>
 		     <td >
-		     	<?
+		     	<?php
 		      	db_textarea('y80_texto',10,60,$Iy80_texto,true,'text',$db_opcao,"")
 		    	?>
 		     </td>

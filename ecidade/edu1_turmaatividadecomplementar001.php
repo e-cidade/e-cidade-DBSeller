@@ -61,7 +61,7 @@ $db_botao = true;
 
   <div class="container">
     <form id="form1">
-        <?include(modification('forms/db_frmturmaatividadecomplementar.php'))?>
+        <?php include(modification('forms/db_frmturmaatividadecomplementar.php'))?>
     </form>
   </div>
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_fiscalnumpre {
                  y43_numpre = int4 = Código da Arrecadação 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalnumpre() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalnumpre"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_fiscalnumpre {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y43_codnoti = ($this->y43_codnoti == ""?@$GLOBALS["HTTP_POST_VARS"]["y43_codnoti"]:$this->y43_codnoti);
        $this->y43_numpre = ($this->y43_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["y43_numpre"]:$this->y43_numpre);
@@ -74,7 +74,7 @@ class cl_fiscalnumpre {
      }
    }
    // funcao para inclusao
-   function incluir ($y43_codnoti){ 
+   public function incluir ($y43_codnoti){ 
       $this->atualizacampos();
      if($this->y43_numpre == null ){ 
        $this->erro_sql = " Campo Código da Arrecadação nao Informado.";
@@ -138,7 +138,7 @@ class cl_fiscalnumpre {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y43_codnoti=null) { 
+   public function alterar ($y43_codnoti=null) { 
       $this->atualizacampos();
      $sql = " update fiscalnumpre set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_fiscalnumpre {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y43_codnoti=null,$dbwhere=null) { 
+   public function excluir ($y43_codnoti=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y43_codnoti));
      }else{ 
@@ -280,7 +280,7 @@ class cl_fiscalnumpre {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

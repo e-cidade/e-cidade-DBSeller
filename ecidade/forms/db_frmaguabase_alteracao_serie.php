@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@ $clrotulo->label("x01_codrua");
 $clrotulo->label("j14_nome");
 ?>
 <form name="form1" method="post" action="">
- <?
+ <?php
    if(isset($processa)){
 	 
 	   db_criatermometro('termo_alteracao_serie','Concluido...','blue',0); 
@@ -47,15 +47,15 @@ $clrotulo->label("j14_nome");
 
   <tr>
     <td nowrap title="<?=@$Tx01_codrua?>">
-       <?
+       <?php
        db_ancora(@$Lx01_codrua,"js_pesquisax01_codrua(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x01_codrua',7,$Ix01_codrua,true,'text',$db_opcao," onchange='js_pesquisax01_codrua(false);'")
 ?>
-       <?
+       <?php
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -66,7 +66,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
 	   <strong>Numero Inicial:</strong>
     </td>
     <td> 
-<?
+<?php
 db_input('x99_numero_inicial',5,0,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('x99_numero_inicial',5,0,true,'text',$db_opcao,"")
 	   <strong>Numero Final:</strong>
     </td>
     <td> 
-<?
+<?php
 db_input('x99_numero_final',5,0,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('x99_numero_final',5,0,true,'text',$db_opcao,"")
 	   <strong>Agua:</strong>
     </td>
     <td> 
-<?
+<?php
 
 $sql = $clcaracter->sql_query(null, "j31_codigo, j31_descr", null, "j32_grupo=83");
 $result = $clcaracter->sql_record($sql);
@@ -103,7 +103,7 @@ db_selectrecord("x99_caragua",$result,true,$db_opcao,"","","","");
 	   <strong>Esgoto:</strong>
     </td>
     <td> 
-<?
+<?php
 
 $sql = $clcaracter->sql_query(null, "j31_codigo, j31_descr", null, "j32_grupo=82");
 $result = $clcaracter->sql_record($sql);

@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Habitacao
 //CLASSE DA ENTIDADE avaliacaoresposta
-class cl_avaliacaoresposta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db106_sequencial = 0; 
-   var $db106_avaliacaoperguntaopcao = 0; 
-   var $db106_resposta = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_avaliacaoresposta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db106_sequencial = 0;
+   var $db106_avaliacaoperguntaopcao = 0;
+   var $db106_resposta = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db106_sequencial = int4 = Sequencial 
-                 db106_avaliacaoperguntaopcao = int4 = Avaliação Pergunta Opção 
-                 db106_resposta = text = Resposta 
+                 db106_sequencial = int4 = Sequencial
+                 db106_avaliacaoperguntaopcao = int4 = Avaliação Pergunta Opção
+                 db106_resposta = text = Resposta
                  ";
-   //funcao construtor da classe 
-   function cl_avaliacaoresposta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("avaliacaoresposta"); 
+     $this->rotulo = new rotulo("avaliacaoresposta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_avaliacaoresposta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db106_sequencial = ($this->db106_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db106_sequencial"]:$this->db106_sequencial);
        $this->db106_avaliacaoperguntaopcao = ($this->db106_avaliacaoperguntaopcao == ""?@$GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"]:$this->db106_avaliacaoperguntaopcao);
@@ -77,9 +77,9 @@ class cl_avaliacaoresposta {
      }
    }
    // funcao para inclusao
-   function incluir ($db106_sequencial){ 
+   public function incluir ($db106_sequencial){
       $this->atualizacampos();
-     if($this->db106_avaliacaoperguntaopcao == null ){ 
+     if($this->db106_avaliacaoperguntaopcao == null ){
        $this->erro_sql = " Campo Avaliação Pergunta Opção nao Informado.";
        $this->erro_campo = "db106_avaliacaoperguntaopcao";
        $this->erro_banco = "";
@@ -89,16 +89,16 @@ class cl_avaliacaoresposta {
        return false;
      }
      if($db106_sequencial == "" || $db106_sequencial == null ){
-       $result = db_query("select nextval('avaliacaoresposta_db106_sequencial_seq')"); 
+       $result = db_query("select nextval('avaliacaoresposta_db106_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: avaliacaoresposta_db106_sequencial_seq do campo: db106_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: avaliacaoresposta_db106_sequencial_seq do campo: db106_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db106_sequencial = pg_result($result,0,0); 
+       $this->db106_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from avaliacaoresposta_db106_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $db106_sequencial)){
@@ -109,10 +109,10 @@ class cl_avaliacaoresposta {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db106_sequencial = $db106_sequencial; 
+         $this->db106_sequencial = $db106_sequencial;
        }
      }
-     if(($this->db106_sequencial == null) || ($this->db106_sequencial == "") ){ 
+     if(($this->db106_sequencial == null) || ($this->db106_sequencial == "") ){
        $this->erro_sql = " Campo db106_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,17 +121,17 @@ class cl_avaliacaoresposta {
        return false;
      }
      $sql = "insert into avaliacaoresposta(
-                                       db106_sequencial 
-                                      ,db106_avaliacaoperguntaopcao 
-                                      ,db106_resposta 
+                                       db106_sequencial
+                                      ,db106_avaliacaoperguntaopcao
+                                      ,db106_resposta
                        )
                 values (
-                                $this->db106_sequencial 
-                               ,$this->db106_avaliacaoperguntaopcao 
-                               ,'$this->db106_resposta' 
+                                $this->db106_sequencial
+                               ,$this->db106_avaliacaoperguntaopcao
+                               ,'$this->db106_resposta'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Avaliação Resposta ($this->db106_sequencial) nao Incluído. Inclusao Abortada.";
@@ -155,7 +155,7 @@ class cl_avaliacaoresposta {
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
      if (!isset($_SESSION["DB_usaAccount"])) {
-       
+
        $resaco = $this->sql_record($this->sql_query_file($this->db106_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
@@ -168,16 +168,16 @@ class cl_avaliacaoresposta {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db106_sequencial=null) { 
+   public function alterar ($db106_sequencial=null) {
       $this->atualizacampos();
      $sql = " update avaliacaoresposta set ";
      $virgula = "";
-     if(trim($this->db106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_sequencial"])){ 
+     if(trim($this->db106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_sequencial"])){
        $sql  .= $virgula." db106_sequencial = $this->db106_sequencial ";
        $virgula = ",";
-       if(trim($this->db106_sequencial) == null ){ 
+       if(trim($this->db106_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db106_sequencial";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_avaliacaoresposta {
          return false;
        }
      }
-     if(trim($this->db106_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"])){ 
+     if(trim($this->db106_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"])){
        $sql  .= $virgula." db106_avaliacaoperguntaopcao = $this->db106_avaliacaoperguntaopcao ";
        $virgula = ",";
-       if(trim($this->db106_avaliacaoperguntaopcao) == null ){ 
+       if(trim($this->db106_avaliacaoperguntaopcao) == null ){
          $this->erro_sql = " Campo Avaliação Pergunta Opção nao Informado.";
          $this->erro_campo = "db106_avaliacaoperguntaopcao";
          $this->erro_banco = "";
@@ -200,7 +200,7 @@ class cl_avaliacaoresposta {
          return false;
        }
      }
-     if(trim($this->db106_resposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_resposta"])){ 
+     if(trim($this->db106_resposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_resposta"])){
          if (trim($this->db106_resposta) === "null") {
              $sql  .= $virgula." db106_resposta = null ";
          } else {
@@ -232,7 +232,7 @@ class cl_avaliacaoresposta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Avaliação Resposta nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db106_sequencial;
@@ -260,17 +260,17 @@ class cl_avaliacaoresposta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db106_sequencial=null,$dbwhere=null) { 
-     
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db106_sequencial=null,$dbwhere=null) {
+
      if (!isset($_SESSION["DB_usaAccount"])) {
-       
+
        if($dbwhere==null || $dbwhere==""){
          $resaco = $this->sql_record($this->sql_query_file($db106_sequencial));
-       }else{ 
+       }else{
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if(($resaco!=false)||($this->numrows!=0)){
@@ -299,7 +299,7 @@ class cl_avaliacaoresposta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Avaliação Resposta nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db106_sequencial;
@@ -327,11 +327,11 @@ class cl_avaliacaoresposta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -353,11 +353,11 @@ class cl_avaliacaoresposta {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_avaliacaoresposta {
      $sql2 = "";
      if($dbwhere==""){
        if($db106_sequencial!=null ){
-         $sql2 .= " where avaliacaoresposta.db106_sequencial = $db106_sequencial "; 
-       } 
+         $sql2 .= " where avaliacaoresposta.db106_sequencial = $db106_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,11 +389,11 @@ class cl_avaliacaoresposta {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,15 +406,15 @@ class cl_avaliacaoresposta {
      $sql2 = "";
      if($dbwhere==""){
        if($db106_sequencial!=null ){
-         $sql2 .= " where avaliacaoresposta.db106_sequencial = $db106_sequencial "; 
-       } 
+         $sql2 .= " where avaliacaoresposta.db106_sequencial = $db106_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

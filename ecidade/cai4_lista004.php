@@ -77,13 +77,13 @@ fieldset select {
       <legend><strong>Situa&ccedil;&otilde;es de Corte</strong></legend>
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
-      <?  
+      <?php  
         $aSelSituacao = array('c' => 'Com as situa&ccedil;&otilde;es de corte selecionadas',
                               's' => 'Sem as situa&ccedil;&otilde;es de corte selecionadas');
         db_select('situacaocorte', $aSelSituacao, true, 1);
       ?>
       </div>
-      <?
+      <?php
         db_montaComboAux('x43_codsituacao', 'x43_descr', 'db_situacaocorte', 'js_situacaocorte', 'js_situacaocorte_hide', 'func_aguacortesituacao.php', 'db_iframe_situacao', 'db_lanca_situacao');
       ?>
     </fieldset>
@@ -94,13 +94,13 @@ fieldset select {
       <legend><strong>Zona de Entrega</strong></legend>
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
-      <?  
+      <?php  
         $aSelSituacao = array('c' => 'Com as zonas de entrega selecionadas',
                               's' => 'Sem as zonas de entrega selecionadas');
         db_select('zonaentrega', $aSelSituacao, true, 1);
       ?>
       </div>
-      <?
+      <?php
         db_montaComboAux('j85_codigo', 'j85_descr', 'db_zonaentrega', 'js_zonaentrega', 'js_zonaentrega_hide', 'func_iptucadzonaentrega.php', 'db_iframe_zonaentrega', 'db_lanca_zonaentrega'); 
       ?>
     </fieldset>
@@ -113,13 +113,13 @@ fieldset select {
       <legend><strong>Caracter&iacute;sticas da Constru&ccedil;&atilde;o</strong></legend>
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
-      <?  
+      <?php  
         $aSelSituacao = array('c'=>'Com as carater&iacute;sticas selecionadas',
                               's'=>'Sem as carater&iacute;sticas selecionadas');
         db_select('caracteristica', $aSelSituacao, true, 1);
       ?>
       </div>     
-      <? 
+      <?php 
         db_montaComboAux('j31_codigo', 'j31_descr', 'db_caracteristica', 'js_caracteristica', 'js_caracteristica_hide', 'func_caracter.php', 'db_iframe_caracteristica', 'db_lanca_caracteristica', '&iGrupo=80');
       ?> 
     </fieldset>  
@@ -130,13 +130,13 @@ fieldset select {
       <legend><strong>Logradouros</strong></legend>
       <div id="form_select">
       <span class="label_select">Op&ccedil;&otilde;es: </span>
-      <?  
+      <?php  
         $aSelSituacao = array('c' => 'Com os logradouros selecionados',
                               's' => 'Sem os logradouros selecionados');
         db_select('logradouro', $aSelSituacao, true, 1);
       ?>
       </div>  
-      <?
+      <?php
         db_montaComboAux('j14_codigo', 'j14_nome', 'db_ruas', 'js_ruas', 'js_ruas_hide', 'func_ruas.php', 'db_iframe_ruas', 'db_lanca_ruas');
       ?>    
     </fieldset>  
@@ -146,7 +146,7 @@ fieldset select {
 <tr>
   <td colspan="2" align="center">
    <strong>Gerar notifica&ccedil;&otilde;es para matr&iacute;culas baixadas</strong>
-   <?
+   <?php
      db_select('matriculasbaixadas', array('S'=>'Sim', 'N'=>'N&atilde;o'), true, 1);   
    ?>
   </td>
@@ -155,7 +155,7 @@ fieldset select {
 <tr>
   <td colspan="2" align="center">
    <strong>Gerar notifica&ccedil;&otilde;es para terrenos</strong>
-   <?
+   <?php
      db_select('terrenos', array('S'=>'Sim', 'N'=>'N&atilde;o'), true, 1);
    ?>
   </td>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,14 +29,14 @@
 class pagament {
   var $arq=null;
 
-  function pagament($header){
+  public function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/PAGAMENT.TXT",'w+');
     fputs($this->arq,$header);
     fputs($this->arq,"\r\n");
   }
 
-  function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
+  public function processa($instit=1,$data_ini="",$data_fim="",$tribinst="",$subelemento="") {
 
     global $contador,$nomeinst;
     $contador = 0;

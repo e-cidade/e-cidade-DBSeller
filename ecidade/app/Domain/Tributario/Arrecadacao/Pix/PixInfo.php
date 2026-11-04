@@ -39,7 +39,7 @@ abstract class PixInfo extends Banco
     /**
      * @var string
      */
-    private $cnpj;
+    protected $cnpj;
 
     /**
      * @var boolean
@@ -158,7 +158,7 @@ abstract class PixInfo extends Banco
      * @param string $cnpj
      * @return void
      */
-    private function setCnpj($cnpj)
+    public function setCnpj($cnpj)
     {
         $this->cnpj = $cnpj;
     }
@@ -315,11 +315,11 @@ abstract class PixInfo extends Banco
         if ($this->isCountyCnpj() === false && empty($this->cgm->z01_cgccpf)) {
             return false;
         }
-        
+
         if (!DBString::isCNPJ($this->cgm->z01_cgccpf) && !DBString::isCPF($this->cgm->z01_cgccpf)) {
             return false;
         }
-        
+
         return true;
     }
 }

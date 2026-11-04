@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,14 +83,14 @@ function js_emite(){
 <td ><b>Exercicio:</b></td>
 <td >
 <select name="anousu" >
-<?
+<?php
 $sqlano = "select x22_exerc as anoini from aguacalc order by x22_exerc desc limit 1;";
 $resultano = db_query($sqlano) or die($sqlano);
-db_fieldsmemory($resultano);
+db_fieldsmemory($resultano,0);
 
 $sqlano = "select x22_exerc as anofim from aguacalc order by x22_exerc limit 1;";
 $resultano = db_query($sqlano) or die($sqlano);
-db_fieldsmemory($resultano);
+db_fieldsmemory($resultano,0);
 
 for($i=$anoini;$i >= $anofim;$i--){
   echo "<option value=$i>$i</option>\n";
@@ -102,7 +102,7 @@ for($i=$anoini;$i >= $anofim;$i--){
 <td><b>Mês final:</b></td>
 <td>
 <select name="mesfinal" >
-<?
+<?php
 $mesfinal=3;
 for($i=1;$i<=12;$i++){
   echo "<option value=$i " . ($i == date("m",db_getsession("DB_datausu"))?" selected":"") . " >$i</option>\n";
@@ -117,7 +117,7 @@ for($i=1;$i<=12;$i++){
      <strong>Tipo:&nbsp;&nbsp;</strong>
   </td>
   <td>
-     <?
+     <?php
        $tipolista = array("a"=>"Analitico","s"=>"Sintetico");
        db_select("tipo",$tipolista,true,2);
      ?>
@@ -128,7 +128,7 @@ for($i=1;$i<=12;$i++){
      <strong>Inadimplência baseada no valor:&nbsp;&nbsp;</strong>
   </td>
   <td>
-     <?
+     <?php
        $inadimbaseada = array("c"=>"Calculado","a"=>"Arrecadado");
        db_select("inadimbaseada",$inadimbaseada,true,2);
      ?>
@@ -147,7 +147,7 @@ for($i=1;$i<=12;$i++){
 
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

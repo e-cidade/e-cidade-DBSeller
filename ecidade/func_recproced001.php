@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -47,8 +47,8 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
 //die($clarrecad->sql_query_file(null,"*",null," k00_tipo=1 limit 100"));
   $result_pesq_divida = $clarrecad->sql_record($clarrecad->sql_query_file(null,"*",null," k00_tipo=1 limit 100"));
   $numrows = $clarrecad->numrows;
-  $codigo_k02 = split(",",$cod_k02_codigo);
-  $codigo_v03 = split(",",$cod_v03_codigo);
+  $codigo_k02 =explode(",",$cod_k02_codigo);
+  $codigo_v03 =explode(",",$cod_v03_codigo);
   $sqlerro=false;
   db_inicio_transacao();
   for($i=0;$i<$numrows;$i++){
@@ -56,9 +56,9 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
     for($ii=0;$ii<sizeof($codigo_k02);$ii++){
       $cod_k02_codigo = $codigo_k02[$ii];
       $cod_v03_codigo = $codigo_v03[$ii];
-      if($k00_receit==$cod_k02_codigo){	
+      if($k00_receit==$cod_k02_codigo){
 	$nextval_numpre=db_query("select nextval('numpref_k03_numpre_seq') as numpre_novo");
-	db_fieldsmemory($nextval_numpre,0); 
+	db_fieldsmemory($nextval_numpre,0);
 	$cldivida->v01_numcgm  =  $k00_numcgm;
 	$cldivida->v01_dtinsc  =  date("Y-m-d");
 	$cldivida->v01_exerc   =  db_getsession("DB_anousu");
@@ -72,10 +72,10 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
 	$cldivida->v01_obs     =  "";
 	$cldivida->v01_livro   =  "";
 	$cldivida->v01_folha   =  "";
-	$dt_venc=split("/",$k00_dtvenc);
+	$dt_venc= explode("/",$k00_dtvenc);
 	$dt_venc_data = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
 	$cldivida->v01_dtvenc  = $dt_venc_data;
-	$dt_oper=split("/",$k00_dtoper);
+	$dt_oper= explode("/",$k00_dtoper);
 	$dt_oper_data = $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
 	$cldivida->v01_dtoper  = $dt_oper_data;
 	$cldivida->v01_valor   = $k00_valor;
@@ -105,7 +105,7 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
 	  $k00_tipojm = (int) $k00_tipojm;
 	  $clarreold->k00_tipojm = "$k00_tipojm";
 	  $clarreold->incluir();
-	  if($clarreold->erro_status==0){	    
+	  if($clarreold->erro_status==0){
 	    $sqlerro=true;
 	    $erro_msg = $clarreold->erro_msg."--- Inclusão ArreOld";
 	    break;
@@ -133,7 +133,7 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
 	  }
 	  if($sqlerro==false){
 	    $clarrecad->excluir(null," k00_numpre=$k00_numpre_exc and k00_numpar=$k00_numpar_exc and k00_receit=$k00_receit_exc");
-	    if($clarrecad->erro_status==0){	      
+	    if($clarrecad->erro_status==0){
 	      $sqlerro=true;
 	      $erro_msg = $clarrecad->erro_msg."--- Exclusão ArreCad";
 	      break;
@@ -159,12 +159,12 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <table width="100%" height="100%"  border="0" cellspacing="0" cellpadding="0">
-  <tr> 
+  <tr>
     <td height="100%" align="center" valign="top" bgcolor="#CCCCCC">
       <center>
       <form name="form1" method="post" action="">
       <table height="100%"  border="0" cellspacing="0" cellpadding="0">
-<?
+<?php
 //select 1 que traz k02_codigo e k02_drecei da tabela tabrec
 $sql0 = "select tabrec.k02_codigo,tabrec.k02_drecei from (select distinct k00_receit from arrecad where k00_tipo = 1) as x inner join tabrec on k02_codigo = x.k00_receit";
 $result0 = $cltabrec->sql_record($sql0);
@@ -191,7 +191,7 @@ for($i=0;$i<$numrows0;$i++){
   db_input("$k02_drecei",40,"",true,"text",3,"","k02_drecei");
   echo "
       <select name=\"v03_descr\" onchange=\"js_troca();\" id=\"v03_descr\">
-        <option value=\"0\" >Escolha uma procedência</option>      
+        <option value=\"0\" >Escolha uma procedência</option>
       ";
   //for para colocar os selects
   for($ii=0;$ii<$numrows1;$ii++){
@@ -225,7 +225,7 @@ function js_troca(){
   codigo="";
   for(i=0;i<document.form1.length;i++){
     if(document.form1.elements[i].type=="select-one"){
-      if(document.form1.elements[i].value!=0){	
+      if(document.form1.elements[i].value!=0){
         codigo += vir + document.form1.elements[i].value;
         vir=",";
       }
@@ -234,7 +234,7 @@ function js_troca(){
   document.form1.cod_v03_codigo.value=codigo;
 }
 </script>
-<?
+<?php
 if($teste==true){
   db_msgbox($erro_msg);
 }

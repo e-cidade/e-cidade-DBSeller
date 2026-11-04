@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clclasse->rotulo->label();
        <?=@$Lq12_classe?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('q12_classe',10,$Iq12_classe,true,'text',3,"")
     ?>
     </td>
@@ -48,7 +48,7 @@ $clclasse->rotulo->label();
        <?=@$Lq12_descr?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('q12_descr',40,$Iq12_descr,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -58,7 +58,7 @@ $clclasse->rotulo->label();
        <?=@$Lq12_fisica?>
     </td>
     <td> 
-      <?
+      <?php
         $x = array('f'=>'Física','t'=>'Juridica');
         db_select('q12_fisica',$x,true,$db_opcao,"");
       ?>
@@ -69,7 +69,7 @@ $clclasse->rotulo->label();
        <?=@$Lq12_calciss?>
     </td>
     <td> 
-      <?
+      <?php
         $x = array("f"=>"NAO","t"=>"SIM");
         db_select('q12_calciss',$x,true,$db_opcao,"");
       ?>
@@ -80,7 +80,7 @@ $clclasse->rotulo->label();
        <?=@$Lq12_integrasani?>
     </td>
     <td> 
-      <?
+      <?php
         $x = array("f"=>"NAO","t"=>"SIM");
         db_select('q12_integrasani',$x,true,$db_opcao,"");
       ?>
@@ -91,7 +91,7 @@ $clclasse->rotulo->label();
        <b>Gera Alvará de Localização Automático: </b>
     </td>
     <td> 
-      <?
+      <?php
         $x = array("t"=>"SIM","f"=>"NAO");
         db_select('q12_alvaraautomatico',$x,true,$db_opcao,"");
       ?>
@@ -109,7 +109,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_classe.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

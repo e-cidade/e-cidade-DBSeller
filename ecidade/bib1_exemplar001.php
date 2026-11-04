@@ -45,15 +45,17 @@ $oDaoBaixa = new cl_baixabib;
 $db_opcao = 1;
 $db_botao = true;
 if (isset($incluir)) {
-
     $oDaoExemplar->pagina_retorno = "bib1_exemplar001.php?bi23_acervo=$bi23_acervo&bi06_titulo=$bi06_titulo";
     db_inicio_transacao();
 
     for ($i = 0; $i < $oPost->quantidade; $i++) {
-
         $oDaoExemplar->bi23_situacao = 'S';
         $oDaoExemplar->bi23_exemplar = $oPost->bi23_exemplar;
         $oDaoExemplar->bi23_codbarras = $oPost->bi23_codbarras;
+        $oDaoExemplar->bi23_isbn = $oPost->bi23_isbn;
+        $oDaoExemplar->bi23_paginacao = $oPost->bi23_paginacao;
+        $oDaoExemplar->bi23_volume = $oPost->bi23_volume;
+        $oDaoExemplar->bi23_tomo = $oPost->bi23_tomo;
         $oDaoExemplar->incluir(null);
 
         $oPost->bi23_codbarras++;
@@ -62,7 +64,6 @@ if (isset($incluir)) {
     db_fim_transacao();
 }
 if (isset($alterar)) {
-
     $db_opcao = 2;
     $oDaoExemplar->pagina_retorno = "bib1_exemplar001.php?bi23_acervo=$bi23_acervo&bi06_titulo=$bi06_titulo";
     db_inicio_transacao();
@@ -70,21 +71,17 @@ if (isset($alterar)) {
     db_fim_transacao();
 }
 if (isset($excluir)) {
-
     $db_opcao = 3;
     $oDaoExemplar->pagina_retorno = "bib1_exemplar001.php?bi23_acervo=$bi23_acervo&bi06_titulo=$bi06_titulo";
     $result = $oDaoBaixa->sql_record($oDaoBaixa->sql_query_file("", "*", "", " bi08_exemplar = $bi23_codigo"));
     $result1 = $oDaoEmprestimoAcervo->sql_record($oDaoEmprestimoAcervo->sql_query_file("", "*", "", " bi19_exemplar = $bi23_codigo"));
     if ($oDaoBaixa->numrows > 0) {
-
         $oDaoExemplar->erro_status = "0";
         $oDaoExemplar->erro_msg = "Exemplar $bi23_codbarras não pode ser excluído, pois contém registro de baixa.";
     } elseif ($oDaoEmprestimoAcervo->numrows > 0) {
-
         $oDaoExemplar->erro_status = "0";
         $oDaoExemplar->erro_msg = "Exemplar $bi23_codbarras não pode ser excluído, pois contém registro de empréstimo.";
     } else {
-
         db_inicio_transacao();
 
         $lErro = false;
@@ -96,7 +93,6 @@ if (isset($excluir)) {
         }
 
         if (!$lErro) {
-
             $oDaoEmprestimoAcervo->excluir("", "bi19_exemplar = $bi23_codigo");
             if ($oDaoEmprestimoAcervo->erro_status == 0) {
                 $lErro = true;
@@ -104,14 +100,12 @@ if (isset($excluir)) {
         }
 
         if (!$lErro) {
-
             $oDaoItemExemplar->excluir("", "bi25_exemplar = $bi23_codigo");
             if ($oDaoItemExemplar->erro_status == 0) {
                 $lErro = true;
             }
         }
         if (!$lErro) {
-
             $oDaoLocalExemplar->excluir("", "bi27_exemplar = $bi23_codigo");
             if ($oDaoLocalExemplar->erro_status == 0) {
                 $lErro = true;
@@ -119,7 +113,6 @@ if (isset($excluir)) {
         }
 
         if (!$lErro) {
-
             $oDaoExemplar->excluir($bi23_codigo);
             if ($oDaoExemplar->erro_status == 0) {
                 $lErro = true;
@@ -156,19 +149,15 @@ if (empty($oPost->bi23_exemplar)) {
 </script>
 <?php
 if (isset($incluir)) {
-
     if ($oDaoExemplar->erro_status == "0") {
-
         $oDaoExemplar->erro(true, false);
         $db_botao = true;
         echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
         if ($oDaoExemplar->erro_campo != "") {
-
             echo "<script> document.form1." . $oDaoExemplar->erro_campo . ".style.backgroundColor='#99A9AE';</script>";
             echo "<script> document.form1." . $oDaoExemplar->erro_campo . ".focus();</script>";
         }
     } else {
-
         ?>
         <script>
             (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo5.location.href = 'bib1_localacervo001.php?bi20_acervo=<?=$bi23_acervo?>&bi06_titulo=<?=$bi06_titulo?>';
@@ -178,9 +167,7 @@ if (isset($incluir)) {
     }
 }
 if (isset($alterar)) {
-
     if ($oDaoExemplar->erro_status == "0") {
-
         $oDaoExemplar->erro(true, false);
         $db_botao = true;
         echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
@@ -193,12 +180,11 @@ if (isset($alterar)) {
         <script>
             (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo5.location.href = 'bib1_localacervo001.php?bi20_acervo=<?=$bi23_acervo?>&bi06_titulo=<?=$bi06_titulo?>';
         </script>
-        <?
+        <?php
         $oDaoExemplar->erro(true, true);
     }
 }
 if (isset($excluir)) {
-
     if ($oDaoExemplar->erro_status == "0") {
         $oDaoExemplar->erro(true, false);
     } else {
@@ -211,7 +197,6 @@ if (isset($excluir)) {
     }
 }
 if (isset($cancelar)) {
-
     $oDaoExemplar->pagina_retorno = "bib1_exemplar001.php?bi23_acervo=$bi23_acervo&bi06_titulo=$bi06_titulo";
     echo "<script>location.href='" . $oDaoExemplar->pagina_retorno . "'</script>";
 }

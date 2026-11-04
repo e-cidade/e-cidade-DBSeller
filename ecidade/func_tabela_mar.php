@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltabela_mar->rotulo->label("m89_codigo");
               <?=$Lm89_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m89_codigo",5,$Im89_codigo,true,"text",4,"","chave_m89_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltabela_mar->rotulo->label("m89_codigo");
               <?=$Lm89_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m89_codigo",5,$Im89_codigo,true,"text",4,"","chave_m89_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltabela_mar->rotulo->label("m89_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabela_mar.php")==true){
@@ -118,12 +118,12 @@ $cltabela_mar->rotulo->label("m89_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

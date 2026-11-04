@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -198,16 +198,26 @@ function gera_13_salario($datafim,$sigla="r19" )
   $meses_afastado = calcula_afastamentos();
   //echo "<BR> meses_afastado --> $meses_afastado";
   $meses_admissao = 0;
-  if (db_year($pessoal[0]["r01_admiss"] ) == db_val(db_substr($subpes,1,4))) {
-    $meses_admissao = db_month($pessoal[0]["r01_admiss"]) - 1;
-    $mesano = db_substr(db_dtoc($pessoal[0]["r01_admiss"]),4,7);
-    if (( ndias($mesano ) - db_day($pessoal[0]["r01_admiss"])) < 15 ) {
-      $meses_admissao += 1 ;
+
+    if (db_year($pessoal[0]["r01_admiss"]) == db_val(db_substr($subpes, 1, 4))) {
+        if (db_month($pessoal[0]["r01_admiss"] ) == db_val(db_substr($subpes, 6, 2))) {
+            if ((db_day($datafim) - db_day($pessoal[0]["r01_admiss"])) >= 15) {
+                $meses_admissao += 1;
+            }
+            $nm13 = $meses_admissao;
+        } else {
+            $meses_admissao = db_month($pessoal[0]["r01_admiss"]) - 1;
+            $mesano = db_substr(db_dtoc($pessoal[0]["r01_admiss"]), 4, 7);
+            if ((ndias($mesano ) - db_day($pessoal[0]["r01_admiss"])) < 15) {
+                $meses_admissao += 1 ;
+            }
+            $nm13 = db_month($datafim);
+            $nm13 -= $meses_admissao;
+        }
+    } else {
+        $nm13 = db_month($datafim);
+        $nm13 -= $meses_admissao;
     }
-  }
-  $nm13 = db_month($datafim);
-  //echo bcdiv(ndias(db_str(db_month($datafim),2,0,"0")."/".db_str(db_year($datafim),4,0,"0")),2,0);
-  //echo "<BR><BR>".ndias(db_str(db_month($datafim),2,0,"0")."/".db_str(db_year($datafim),4,0,"0")).'  --- ndias(db_str(db_month('.$datafim.'),2,0,"0")."/".db_str(db_year('.$datafim.'),4,0,"0")) ';exit;
 
   if (db_day($datafim ) < bcdiv(ndias(db_str(db_month($datafim),2,0,"0")."/".db_str(db_year($datafim),4,0,"0")),2,0)) {
     $nm13-=1;
@@ -215,11 +225,12 @@ function gera_13_salario($datafim,$sigla="r19" )
       $mn13 = 0;
     }
   }
+//  echo "<BR> meses_admissa --> $meses_admissao";
   $ultimo_mes = $nm13;
-  $nm13 -= $meses_admissao;
-  //echo "<BR> ultimo_mes --> $ultimo_mes";
-  //echo "<BR> nm13 --> $nm13";
-
+ // $nm13 -= $meses_admissao;
+//  echo "<BR> ultimo_mes --> $ultimo_mes";
+//  echo "<BR> nm13 --> $nm13";
+// exit;
   /**
    * Avos de 13 salario do exercicio da rescisao
    */   

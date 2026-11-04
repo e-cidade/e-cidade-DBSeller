@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ function js_processa(){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -61,11 +61,11 @@ function js_processa(){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
       <form method="post" name="form1" action="">
-      <table>	
+      <table>
 	<tr>
 	  <td></td>
 	  <td></td>
@@ -73,12 +73,12 @@ function js_processa(){
 	</tr>
 	<tr>
 	  <td title="<?=$Tpc10_numero?>">
-	     <? db_ancora(@$Lpc10_numero,"js_pesquisa(true);",1); ?>
+	     <?php db_ancora(@$Lpc10_numero,"js_pesquisa(true);",1); ?>
 	  </td>
 	  <td>
-	     <?db_input("pc10_numero",15,$Ipc10_numero,true,"text",2,"onchange='js_pesquisa(false);'");?>
+	     <?php db_input("pc10_numero",15,$Ipc10_numero,true,"text",2,"onchange='js_pesquisa(false);'");?>
 	  </td>
-	   <td>	     
+	   <td>
 	   </td>
 	   <tr>
 	   <td colspan=3 align='center'>
@@ -89,7 +89,7 @@ function js_processa(){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>
@@ -100,22 +100,22 @@ function js_pesquisa(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_solicita','func_solicita.php?funcao_js=parent.js_mostra1|pc10_numero','Pesquisa',true);
   }else{
-     if(document.form1.pc10_numero.value != ''){ 
+     if(document.form1.pc10_numero.value != ''){
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_solicita','func_solicita.php?pesquisa_chave='+document.form1.pc10_numero.value+'&funcao_js=parent.js_mostra','Pesquisa',false);
      }else{
      }
   }
 }
 function js_mostra(chave,erro){
-  if(erro==true){    
-    document.form1.pc10_numero.focus(); 
-    document.form1.pc10_numero.value = ''; 
+  if(erro==true){
+    document.form1.pc10_numero.focus();
+    document.form1.pc10_numero.value = '';
   }else{
-    
+
   }
 }
 function js_mostra1(chave1){
-  document.form1.pc10_numero.value = chave1;  
+  document.form1.pc10_numero.value = chave1;
   db_iframe_solicita.hide();
 }
 </script>

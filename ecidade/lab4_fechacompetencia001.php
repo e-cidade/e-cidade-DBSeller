@@ -44,7 +44,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+    <?php
     db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
     db_app::load("estilos.css, grid.style.css");
   ?>
@@ -108,7 +108,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
       </table>
       <input type="button" name="salvar" id="salvar" value="Salvar" onclick="js_salvar();"/>
       <input type="button" name="cancelar" id="cancelar" disabled="disabled" value="Cancelar" onclick="js_limpar();"/>
-      
+
     </fieldset>
   </form>
 </div>
@@ -120,7 +120,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
   </fieldset>
 </div>
 </body>
-<?
+<?php
 db_menu (db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
   db_getsession("DB_instit" ));
 ?>

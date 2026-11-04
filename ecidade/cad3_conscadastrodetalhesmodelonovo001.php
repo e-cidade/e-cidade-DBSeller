@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -119,7 +119,7 @@ function js_emite() {
             <strong>Informações padrões:&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php
 $aOpcao = array("1" => "Completo",
     "2" => "Resumido");
 db_select("opcaoimpressao", $aOpcao, true, 2, " onchange='js_marcaropcao();'");
@@ -263,6 +263,10 @@ db_select("opcaoimpressao", $aOpcao, true, 2, " onchange='js_marcaropcao();'");
                     <input type="checkbox" name="outrosdados" id="outrosdados" checked="checked">
                     <label>Outros Dados</label>
                   </td>
+                  <td>
+                    <input type="checkbox" name="ocorrencias" id="ocorrencias" checked="checked">
+                    <label>Ocorrências</label>
+                  </td>
                 </tr>
 			        </table>
 			      </fieldset>
@@ -302,6 +306,7 @@ function js_marcaropcao() {
     $('calculosanteriores').checked         = false;
     $('calculosanteriores').disabled        = true;
     $('outrosdados').checked                = false;
+    $('ocorrencias').checked                = false;
   } else {
 
     $('dadosimovel').checked                = true;
@@ -324,6 +329,7 @@ function js_marcaropcao() {
     $('calculosanteriores').checked         = true;
     $('calculosanteriores').disabled        = false;
     $('outrosdados').checked                = true;
+    $('ocorrencias').checked                = true;
   }
 }
 
@@ -387,6 +393,7 @@ var marcar = $('marcardesmarcar').checked;
     $('calculos').checked                   = true;
     $('calculosanteriores').checked         = true;
     $('outrosdados').checked                = true;
+    $('ocorrencias').checked                = true;
 
   } else {
 
@@ -409,6 +416,7 @@ var marcar = $('marcardesmarcar').checked;
     $('calculos').checked                   = false;
     $('calculosanteriores').checked         = false;
     $('outrosdados').checked                = false;
+    $('ocorrencias').checked                = false;
   }
 }
 

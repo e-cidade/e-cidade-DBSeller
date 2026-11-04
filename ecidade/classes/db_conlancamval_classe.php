@@ -891,7 +891,6 @@ class cl_conlancamval
 
     public function sql_query_lancamentos_documento($reduzido, $lista_lancamentos)
     {
-
         $sqlLancamentos = <<<SQL
             select c69_codlan as codigo_lancamento,
                    c71_coddoc as documento,
@@ -942,6 +941,52 @@ SQL;
         $sql .= "                                                        and c69_anousu = reduzcredito.c61_anousu";
         $sql .= "      inner join contabilidade.conplano planocredito    on reduzcredito.c61_codcon = planocredito.c60_codcon";
         $sql .= "                                                        and reduzcredito.c61_anousu = planocredito.c60_anousu";
+        $sql .= " where {$where}";
+        if (!empty($order)) {
+            $sql .= " order by {$order}";
+        }
+
+        return $sql;
+    }
+
+        /**
+     * @param $campos
+     * @param $where
+     * @param string $order
+     * @return string
+     */
+    function sql_query_lancamentos_novo($campos, $where, $order = '')
+    {
+
+        $sql = "
+        select 
+            distinct {$campos} 
+        from 
+            contabilidade.conlancamval
+            inner join contabilidade.conlancam on c70_codlan = c69_codlan
+            inner join contabilidade.conlancamdoc on c70_codlan = c71_codlan
+            inner join contabilidade.conlancaminstit on c70_codlan = c02_codlan
+            inner join contabilidade.conplanoreduz reduzdebito on c69_debito = reduzdebito.c61_reduz
+                and c69_anousu = reduzdebito.c61_anousu
+            inner join contabilidade.conplano planodebito on reduzdebito.c61_codcon = planodebito.c60_codcon
+                and reduzdebito.c61_anousu = planodebito.c60_anousu
+            inner join contabilidade.conplanoreduz reduzcredito on c69_credito = reduzcredito.c61_reduz
+                and c69_anousu = reduzcredito.c61_anousu
+            inner join contabilidade.conplano planocredito on reduzcredito.c61_codcon = planocredito.c60_codcon
+                and reduzcredito.c61_anousu = planocredito.c60_anousu
+            left join contabilidade.conlancamemp on c75_codlan = conlancam.c70_codlan
+            left join contabilidade.conlancamrec on c74_codlan = conlancam.c70_codlan
+            LEFT JOIN orcamento.orcreceita ON orcreceita.o70_codrec = c74_codrec
+            LEFT JOIN contabilidade.conlancamele ON c67_codlan = conlancam.c70_codlan
+            LEFT JOIN orcamento.orcelemento conele ON conele.o56_codele = c67_codele
+                AND conele.o56_anousu = reduzdebito.c61_anousu
+            left join conlancamdot on c73_codlan = c70_codlan
+            left join orcdotacao on c73_anousu = o58_anousu
+                and c73_coddot = o58_coddot
+            left join orcelemento orcele ON orcele.o56_codele = orcdotacao.o58_codele
+                    AND orcele.o56_anousu = orcdotacao.o58_anousu
+";     
+        
         $sql .= " where {$where}";
         if (!empty($order)) {
             $sql .= " order by {$order}";

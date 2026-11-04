@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -80,12 +80,12 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
   if ($sqlerro == false) {
     $d02_contri = $cleditalrua->d02_contri;
-    $matriz= split("XX",$dados);
+    $matriz=explode("XX",$dados);
     $tam=sizeof($matriz);
     //
     // For inserindo os servicos
 	//
-	
+
 	$aDados = explode("-", $oPost->dados);
 	$d04_forma = $aDados[6];
 
@@ -94,7 +94,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
       if($matriz[$i]!=""){
 
-	$dad = split("-",$matriz[$i]);
+	$dad =explode("-",$matriz[$i]);
 
 	$cleditalserv->d04_contri  = $d02_contri;
 	$cleditalserv->d04_tipos   = $dad[0];
@@ -116,9 +116,9 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
       }
 
-	} 
+	}
 
-	
+
 
 	//echo "<br><br><br>FORMA: $d04_forma ";
 
@@ -136,7 +136,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 															  j14_nome,
 															  d40_profun",
 															  "",
-															  "d40_codigo not in (select d11_codproj from editalruaproj)  
+															  "d40_codigo not in (select d11_codproj from editalruaproj)
 															  and d10_codedi = {$oPost->d02_codedi} ");
 		$rsEdital   = $cleditalproj->sql_record( $sSqlEdital );
 
@@ -147,22 +147,22 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
 		   $oDados = db_utils::fieldsMemory($rsEdital  , $iLista);
            $a40Codigo[] = $oDados->d40_codigo;
-		}	
+		}
 		$sD40_codigo = implode(", " , $a40Codigo);
 
-		
+
 		$d40_codigo = $sD40_codigo;
-		
-		//echo $d40_codigo; 
+
+		//echo $d40_codigo;
 
 		//die();
 
 
-		
+
 		if (  $cleditalproj->numrows > 0 ) {
 
 
-			
+
 		//	for (  $iLista = 0; $iLista < $cleditalproj->numrows;  $iLista++ )   {
 
 
@@ -171,7 +171,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
 				//$d40_codigo = $oDados->d40_codigo;
 
-	
+
 
 
 
@@ -180,13 +180,13 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
 
 	  echo $sSqlprojmelhoriasmatric;
-	  //sql_query_file ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+	  //sql_query_file ( $d41_codigo=null,$d41_matric=null,$campos="*",$ordem=null,$dbwhere=""){
 
 	  //echo $sSqlprojmelhoriasmatric; die();
-	  
+
 
 	  $result_total=$clprojmelhoriasmatric->sql_record($sSqlprojmelhoriasmatric);
-	  
+
 //db_criatabela($result_total);
 
 
@@ -196,11 +196,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	    $total_testada = 0;
       }
 
-	  
+
       $sSQlMatricula = $clprojmelhoriasmatric->sql_query(null,null," j01_idbql,
-                                                               sum(d41_testada) as d41_testada, 
-                                                               sum(d41_eixo) as d41_eixo, 
-                                                               d41_pgtopref ", "", 
+                                                               sum(d41_testada) as d41_testada,
+                                                               sum(d41_eixo) as d41_eixo,
+                                                               d41_pgtopref ", "",
                                                                " d41_codigo in( $d40_codigo ) group by j01_idbql, d41_pgtopref " );
 
 
@@ -245,7 +245,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	  $redital = $cleditalserv->sql_record($cleditalserv->sql_query_file($d02_contri));
 	  $numrows = $cleditalserv->numrows;
 	  if($numrows==0){
-	    db_msgbox("Não foi cadastrado editaserv");  
+	    db_msgbox("Não foi cadastrado editaserv");
 	    $sqlerro=true;
 	    $erro_msg = $cleditalserv->erro_msg;
 	    break;
@@ -270,8 +270,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	  for($j=0; $j<$numrows; $j++){
 
 
-		db_fieldsmemory($redital,$j); 
-		
+		db_fieldsmemory($redital,$j);
+
 
 
 
@@ -283,8 +283,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
 	      $valor_normal = $d04_vlrcal - (($d04_vlrcal * $d01_perc) / 100) ;
 		  $valor_contri = ($valor_normal * ($d41_testada + $d41_eixo) * $d02_profun);
-		  
-            
+
+
 
 
 
@@ -323,11 +323,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	      //die("<br>quant: $d04_quant - prof: $d02_profun - nAreaRealTotal: $nAreaRealTotal");
 
 	      // area total
-	      (float)$nAreaTotal     = ( $total_testada * $d02_profun ); 
+	      (float)$nAreaTotal     = ( $total_testada * $d02_profun );
 	      //die("<br>total_testada: $total_testada - nAreaTotal: $nAreaTotal");
 
-	      // valor do m2 
-	      (float)$nValorM2       = ( $d04_vlrobra / $nAreaRealTotal ); 
+	      // valor do m2
+	      (float)$nValorM2       = ( $d04_vlrobra / $nAreaRealTotal );
 	      //die("<br>nValorM2: $nValorM2 - d04_vlrobra: $d04_vlrobra - nAreaRealTotal: $nAreaRealTotal");
 //	      die("d04_vlrobra: $d04_vlrobra");
 
@@ -336,8 +336,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 //	      die("d02_valorizacao: $d02_valorizacao");
 //              die("nValorizacao: $nValorizacao");
 
-	      // area parcial  
-	      (float)$nAreaParcial   = ( ($d41_testada + $d41_eixo ) * $d02_profun ); 
+	      // area parcial
+	      (float)$nAreaParcial   = ( ($d41_testada + $d41_eixo ) * $d02_profun );
 	      //die("<br>Testada: $d41_testada - eixo: $d41_eixo - nAreaParcial: $nAreaParcial");
 
 	      // area corrigida
@@ -345,7 +345,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	      //die("<br>nAreaCorrigida: $nAreaCorrigida");
 
 	      // valor venal
-	      (float)$nValorFinal    = ( $nValorVenal + $nValorizacao ); 
+	      (float)$nValorFinal    = ( $nValorVenal + $nValorizacao );
 //	      die("nValorFinal: $nValorFinal");
 
 	      // Custo
@@ -353,14 +353,14 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 //	      die("d01_perc: $d01_perc - nCusto: $nCusto");
 
 	      //
-	      // Se Custo maior que a valorizacao entao custo fica a valorizacao 
+	      // Se Custo maior que a valorizacao entao custo fica a valorizacao
 		  //
-		  
+
           $nValorCalculoReal = $nCusto;
 
 	      if ( $nCusto > $nValorizacao ) {
 
-		       (float)$nCusto = $nValorizacao; 
+		       (float)$nCusto = $nValorizacao;
 	      }
 
 	      $valor_contri         = $nCusto;
@@ -374,10 +374,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	    $clcontlotv->d06_tipos  = $d04_tipos;
 	    $clcontlotv->d06_fracao = $d41_testada + $d41_eixo;
 		$clcontlotv->d06_valor  = $valor_contri;
-		
 
 
-		
+
+
 		$oDadosIncluir = new stdClass();
 		$oDadosIncluir->d06_contri         = $clcontlotv->d06_contri;
         $oDadosIncluir->d06_idbql          = $clcontlotv->d06_idbql;
@@ -421,7 +421,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       if ($sqlerro == false) {
 
 		   $results=$cleditalruaproj->sql_record($cleditalruaproj->sql_query($d02_contri,"","d11_codproj"));
-		   
+
 		   /*
 	       if($cleditalruaproj->numrows>0){
 	         $cleditalruaproj->d11_contri=$d02_contri;
@@ -431,17 +431,17 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 	           $sqlerro = true;
 	           $erro_msg = $cleditalruaproj->erro_msg;
 	         }
-	       } 
+	       }
 	   */
-		   
+
 	           if(isset($d40_codigo)){
 
 
 
-				
+
 		         foreach($a40Codigo as $d40_codigo) {
 
-					 
+
 					 $cleditalruaproj->d11_contri = $d02_contri;
 					 $cleditalruaproj->d11_codproj= $d40_codigo;
 					 $cleditalruaproj->incluir($d02_contri,$d40_codigo);
@@ -449,12 +449,12 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 						 $sqlerro = true;
 						 $erro_msg = $cleditalruaproj->erro_msg;
 						}
-						
+
 				}
 
 	           }
 	  }
-	  
+
 
 
 
@@ -477,7 +477,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
 
 	}
-	
+
   }
 
 /*
@@ -511,7 +511,7 @@ echo "</pre>";
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-<tr> 
+<tr>
 <td width="360" height="18">&nbsp;</td>
 <td width="263">&nbsp;</td>
 <td width="25">&nbsp;</td>
@@ -519,22 +519,22 @@ echo "</pre>";
 </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+<tr>
+<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?
+<?php
 include(modification("forms/db_frmeditalruaalt.php"));
 ?>
 </center>
 </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($HTTP_POST_VARS["db_opcao"])){
   if($sqlerro == true){
     $cleditalrua->erro_msg = "Ocorreu algum problema durante processamento da inclusao! Contate suporte! Mensagem: $erro_msg";
@@ -543,7 +543,7 @@ if(isset($HTTP_POST_VARS["db_opcao"])){
   }else{
     $cleditalrua->erro(true,true);
     $result=$cleditalproj->sql_record($cleditalproj->sql_query($d02_codedi,"","d40_codigo,d40_trecho,d40_codlog,j14_nome","","d40_codigo not in (select d11_codproj from editalruaproj)  and d10_codedi=$d02_codedi"));
-    if($cleditalproj->numrows>0){ 
+    if($cleditalproj->numrows>0){
       db_redireciona("con1_editalrua001.php?numedital=$d02_codedi&d02_codedi=$d02_codedi");
     }else{
       db_redireciona("con1_editalrua001.php");

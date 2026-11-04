@@ -59,7 +59,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbViewCadEndereco.classe.js,dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                    datagrid.widget.js");
@@ -82,7 +82,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
                      <?=$Lz16_arquivofoto?>
                   </td>
                   <td valign='top'>
-                    <?
+                    <?php
                      db_input("uploadfile",30,0,true,"file",1);
                      db_input("namefile",30,0,true,"hidden",1);
                     ?>
@@ -93,7 +93,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
                    <?=$Lz16_fotoativa ?>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_select("z16_fotoativa", array("t" => "Sim", "f"=> "Não"), true, 1);
                     ?>
                   </td>
@@ -103,7 +103,7 @@ if (isset($oPost->cpf) && trim($oPost->cpf) != "") {
                    <?=$Lz16_principal ?>
                   </td>
                   <td>
-                    <?
+                    <?php
                       db_select("z16_principal", array("t" => "Sim", "f"=> "Não"), true, 1);
                     ?>
                   </td>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("j95_pda");
        <?=@$Lj97_sequen?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_sequen',8,$Ij97_sequen,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj97_codimporta?>">
-       <?
+       <?php
        db_ancora(@$Lj97_codimporta,"js_pesquisaj97_codimporta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_codimporta',8,$Ij97_codimporta,true,'text',$db_opcao," onchange='js_pesquisaj97_codimporta(false);'")
 ?>
-       <?
+       <?php
 db_input('j95_pda',3,$Ij95_pda,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('j95_pda',3,$Ij95_pda,true,'text',3,'')
        <?=@$Lj97_matric?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_matric',8,$Ij97_matric,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('j97_matric',8,$Ij97_matric,true,'text',$db_opcao,"")
        <?=@$Lj97_endcor?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_endcor',50,$Ij97_endcor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('j97_endcor',50,$Ij97_endcor,true,'text',$db_opcao,"")
        <?=@$Lj97_cidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_cidade',50,$Ij97_cidade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('j97_cidade',50,$Ij97_cidade,true,'text',$db_opcao,"")
        <?=@$Lj97_profun?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_profun',15,$Ij97_profun,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('j97_profun',15,$Ij97_profun,true,'text',$db_opcao,"")
        <?=@$Lj97_sitterreno?>
     </td>
     <td> 
-<?
+<?php
 $x = array('4'=>'Esquina','5'=>'Meio de Quadra','6'=>'Vila/Servidão/Encravado');
 db_select('j97_sitterreno',$x,true,$db_opcao,"");
 ?>
@@ -114,7 +114,7 @@ db_select('j97_sitterreno',$x,true,$db_opcao,"");
        <?=@$Lj97_pedol?>
     </td>
     <td> 
-<?
+<?php
 $x = array('7'=>'Alagado','8'=>'Inundável','9'=>'Normal');
 db_select('j97_pedol',$x,true,$db_opcao,"");
 ?>
@@ -125,7 +125,7 @@ db_select('j97_pedol',$x,true,$db_opcao,"");
        <?=@$Lj97_topog?>
     </td>
     <td> 
-<?
+<?php
 $x = array('10'=>'Em Nível','11'=>'Acima do Nível','12'=>'Abaixo do Nível','13'=>'Topografia Irregular');
 db_select('j97_topog',$x,true,$db_opcao,"");
 ?>
@@ -136,7 +136,7 @@ db_select('j97_topog',$x,true,$db_opcao,"");
        <?=@$Lj97_vistoria?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Vistoriado','2'=>'Não Autorizado','3'=>'Fechado');
 db_select('j97_vistoria',$x,true,$db_opcao,"");
 ?>
@@ -147,7 +147,7 @@ db_select('j97_vistoria',$x,true,$db_opcao,"");
        <?=@$Lj97_muro?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_muro',3,$Ij97_muro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ db_input('j97_muro',3,$Ij97_muro,true,'text',$db_opcao,"")
        <?=@$Lj97_calcada?>
     </td>
     <td> 
-<?
+<?php
 db_input('j97_calcada',3,$Ij97_calcada,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -196,7 +196,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_moblevantamento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

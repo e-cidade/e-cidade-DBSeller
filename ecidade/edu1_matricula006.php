@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -110,7 +110,7 @@ db_fieldsmemory($result,0);
    <tr>
     <td valign="top" >
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php
       $array_mov = array();
       $sCamposResult  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome, ed60_matricula";
@@ -124,22 +124,22 @@ db_fieldsmemory($result,0);
                                                                                $sWhereResult
                                                                               )
                                                    );
-      
+
       if ($clmatriculamov->numrows > 0) {
-      	
+
         for ($f = 0; $f < $clmatriculamov->numrows; $f++) {
-        	
+
           db_fieldsmemory($result,$f);
           $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-          $iContador = count($array_mov)-1; 
+          $iContador = count($array_mov)-1;
           $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
           $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
           $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-          $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;   
-             
+          $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
+
         }
       }
-      
+
       $sCamposResult1  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult1 .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome, ed60_matricula";
       $sOrderResult1   = "ed229_d_dataevento DESC,ed229_i_codigo DESC LIMIT 1";
@@ -147,21 +147,21 @@ db_fieldsmemory($result,0);
       $result1         = $clmatriculamov->sql_record($clmatriculamov->sql_query("",
                                                                                 $sCamposResult1,
                                                                                 $sOrderResult1,
-                                                                                $sWhereResult1 
+                                                                                $sWhereResult1
                                                                                )
                                                     );
       if ($clmatriculamov->numrows > 0) {
-      	
+
         db_fieldsmemory($result1,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-        $iContador = count($array_mov)-1; 
+        $iContador = count($array_mov)-1;
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
         $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-        $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;      
-        
+        $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
+
       }
-      
+
       $sCamposResult2  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult2 .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome, ed60_matricula";
       $sOrderResult2   = " ed229_d_dataevento DESC,ed229_i_codigo DESC LIMIT 1";
@@ -173,15 +173,15 @@ db_fieldsmemory($result,0);
                                                                                )
                                                     );
       if ($clmatriculamov->numrows > 0) {
-      	
+
         db_fieldsmemory($result2,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
-        $iContador = count($array_mov)-1; 
+        $iContador = count($array_mov)-1;
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
         $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-        $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;  
-            
+        $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
+
       }
       array_multisort($array_mov,SORT_ASC);
       if (count($array_mov) > 0) {
@@ -195,21 +195,21 @@ db_fieldsmemory($result,0);
          <td>Etapa</td>
          <td>Procedimento</td>
         </tr>
-        <?
+        <?php
         for ($f = 0; $f < count($array_mov); $f++) {
-        	
+
           $array_mov1 = explode("|",$array_mov[$f]);
           $array_mov2 = explode("#",$array_mov1[1]);
           if ($f > 0) {
-          	
+
           ?>
-	        <tr> 
+	        <tr>
 	         <td height="1" bgcolor="black" colspan="7">
 	         </td>
 	        </tr>
-          <?
-         
-          } 
+          <?php
+
+          }
          ?>
          <tr bgcolor="#dbdbdb">
           <td class="aluno2" align="center"><?=$array_mov2[0]?></td>
@@ -235,7 +235,7 @@ db_fieldsmemory($result,0);
            </table>
           </td>
          </tr>
-        <?
+        <?php
         }
       } else {
         ?>
@@ -244,10 +244,10 @@ db_fieldsmemory($result,0);
           Nenhum registro.
          </td>
         </tr>
-        <?
+        <?php
       }
       ?>
-      </table><?
+      </table><?php
        $result_log = $cllogmatricula->sql_record($cllogmatricula->sql_query("","*","ed248_d_data,ed248_c_hora"," ed248_i_aluno = $ed47_i_codigo"));
        if($cllogmatricula->numrows>0){
         ?>
@@ -259,12 +259,12 @@ db_fieldsmemory($result,0);
           </td>
          </tr>
          <tr><td colspan="2" height="1" bgcolor="#999999"></td></tr>
-         <?for ($q= 0; $q < $cllogmatricula->numrows; $q++) {
+         <?php for ($q= 0; $q < $cllogmatricula->numrows; $q++) {
              db_fieldsmemory($result_log,$q);
              ?>
              <tr>
               <td colspan="2">
-              <?
+              <?php
                if ($ed248_c_tipo == "E") {
                  $descrlog = "Matrícula Excluída";
                } else if ($ed248_c_tipo == "R") {
@@ -287,11 +287,11 @@ db_fieldsmemory($result,0);
                <?=trim($ed248_t_obs)!=""?"Observações: $ed248_t_obs":""?>
               </td>
              </tr>
-          <?
+          <?php
            }
         ?>
         </table>
-        <?
+        <?php
        }
      ?>
     </td>

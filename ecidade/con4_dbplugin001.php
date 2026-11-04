@@ -33,10 +33,11 @@ require_once modification("dbforms/db_funcoes.php");
 
 ?>
 <html>
-  <head>
+<head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
+    <link href="estilos.css" rel="stylesheet" type="text/css">
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
@@ -46,465 +47,507 @@ require_once modification("dbforms/db_funcoes.php");
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBHint.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBAbas.widget.js"></script>
-    <link href="estilos.css" rel="stylesheet" type="text/css">
+
     <style rel="stylesheet" type="text/css">
-      .log-modification-container { position: relative; }
-      .log-badge { padding: 1px 5px; border: 1px solid #000; margin-left:3px; border-radius: 2px }
-      .log-badge-error { background: #da5d5d;  color: #fff; }
-      .log-badge-warning { background: #ecec6e; color: #333;}
-
-      .log-info { color: white; }
-      .log-debug { color: lightgrey; }
-      .log-warning { color: #ffbe03; }
-      .log-error { color: red; }
-
-      #windowLog { cursor: default !important; background: #222 !important; color: #f0f0f0 !important;}
-      #windowLogTitleBar {cursor: pointer !important; }
-      #windowwindowLog_content {
-        outline: none !important;
-        border: 0 !important;
-        padding:0 !important;
-        height: calc(100% - 22px) !important;
-      }
-
-      #windowLog .aba {
-        background: #444;
-        color: #ccc;
-        border:1px solid #666 !important;
-        border-bottom: 0 !important;
-      }
-
-      #windowLog .abaAtiva {
-        background: #222 !important;
-        color: #f0f0f0 !important;
-      }
-
-      /* selecionar um plugin
-      *  especifico
-      */
-      .normal:hover {
-          background: rgb(225, 222, 222);
-      }
-      .normal .selectRow:hover,.normal .logRow:hover,
-       .normal .configRow:hover{
-          background-color:#326094;
-          color:white;
-      }
-    </style>
-  </head>
-  <body class="body-default">
-    <div class="container">
-      <form name="form1" method="post" action="" enctype="multipart/form-data">
-        <fieldset style="width: 700px;">
-          <legend>Arquivo do Plugin</legend>
-          <table>
-            <tr>
-              <td>
-                <input type="file" name="file" id="file"/>
-              </td>
-            </tr>
-          </table>
-        </fieldset>
-        <input name="incluir" id="incluir" type="button" value="Importar" />
-      </form>
-
-      <div id="gridPlugins"></div>
-    </div>
-
-    <div id="containerLog" style="display: none;">
-      <div id="containerLogPlugin"></div>
-      <div id="containerLogModification"></div>
-    </div>
-
-    <div id="containerConfig" class="container" style="display: hidden;">
-      <form name="formConfig" method="post" action="">
-        <fieldset style="width: 600px;">
-          <legend>Configurações</legend>
-
-          <table id="tableInput">
-          </table>
-        </fieldset>
-        <input name="salvar" type="submit" value="Salvar" />
-      </form>
-    </div>
-
-    <?php db_menu(); ?>
-  </body>
-  <script>
-
-    (function() {
-
-      const RPC = "con4_dbplugin.RPC.php";
-      var idPlugin = null;
-
-      var windowPadding = 50;
-      var windowWidth = window.innerWidth - windowPadding > 800 ? 800 : window.innerWidth - windowPadding;
-      var windowHeight = window.innerHeight - windowPadding > 600 ? 600 : window.innerHeight - windowPadding;
-      var windowLog = new windowAux('windowLog', 'Log do plugin', windowWidth, windowHeight);
-      var oContainerLog = $('containerLog');
-      var oContainerLogPlugin = $('containerLogPlugin');
-      var oContainerLogModification = $('containerLogModification');
-
-      var oAbas = new DBAbas($('containerLog'));
-      var oAbaPlugins = oAbas.adicionarAba('Plugin', $('containerLogPlugin'));
-      var oAbaModificacoes = oAbas.adicionarAba('Modificações', $('containerLogModification'));
-
-      windowLog.setContent(oContainerLog);
-
-      var oContainerWindowContent = document.querySelector('#windowwindowLog_content');
-
-      var windowConfig = new windowAux('windowConfig', 'Configuração do Plugin', 700, 400),
-          oGridPlugins = new DBGrid("gridPlugins"),
-          oContainerConfig = $('containerConfig'),
-          oTableInput      = $('tableInput');
-
-      windowConfig.setContent(oContainerConfig);
-
-      oGridPlugins.nameInstance = "oGridPlugins";
-      oGridPlugins.setCellWidth(["30%", "8%", "10%", "15%", "25%", "25%"]);
-      oGridPlugins.setCellAlign(["left", "center", "center", "center", "center"]);
-      oGridPlugins.setHeader(["Nome", "Versão", "Situação","Avisos / Erros", "&nbsp;", "&nbsp;"]);
-      oGridPlugins.setHeight(300);
-      oGridPlugins.show($('gridPlugins'));
-
-      /**
-       * Instala o plugin já validado
-       */
-      function instalarPlugin(sPlugin) {
-
-        var oParametros = {
-            sExecucao : "instalarPlugin",
-            sArquivo  : sPlugin
-          };
-
-        new AjaxRequest(RPC, oParametros, function(oRetorno, lErro) {
-
-            if (lErro) {
-              alert(oRetorno.sMessage.urlDecode());
-              return false;
-            }
-
-            alert("Plugin instalado com sucesso.");
-
-            js_recarregaGrid();
-
-          }).setMessage("Aguarde, instalando o plugin.").execute();
-      }
-
-      /**
-       * Importa o plugin e valida
-       */
-      $('incluir').observe('click', function() {
-
-        if (empty($('file').value)) {
-          return alert("Nenhum arquivo selecionado.");
+        .log-modification-container {
+            position: relative;
         }
 
-        var oParametros = { sExecucao : "validarPlugin" },
-            oRequest    = new AjaxRequest( RPC, oParametros, function(oRetorno, lErro) {
+        .log-badge {
+            padding: 1px 5px;
+            border: 1px solid #000;
+            margin-left: 3px;
+            border-radius: 2px
+        }
 
-              if (lErro) {
+        .log-badge-error {
+            background: #da5d5d;
+            color: #fff;
+        }
 
-                alert(oRetorno.sMessage.urlDecode())
-                return false;
-              }
+        .log-badge-warning {
+            background: #ecec6e;
+            color: #333;
+        }
 
-              if (oRetorno.lAtualizacao) {
+        .log-info {
+            color: white;
+        }
 
-                if (confirm("O Plugin já esta instalado, deseja atualizar?")) {
-                  return instalarPlugin(oRetorno.sArquivo);
-                }
+        .log-debug {
+            color: lightgrey;
+        }
 
-                return false;
-              }
+        .log-warning {
+            color: #ffbe03;
+        }
 
-              instalarPlugin(oRetorno.sArquivo);
-            });
+        .log-error {
+            color: red;
+        }
 
-        oRequest.addFileInput($('file'));
-        oRequest.setMessage("Aguarde, importando o plugin.");
-        oRequest.execute();
-      });
+        #windowLog {
+            cursor: default !important;
+            background: #222 !important;
+            color: #f0f0f0 !important;
+        }
 
-      function js_recarregaGrid() {
+        #windowLogTitleBar {
+            cursor: pointer !important;
+        }
 
-        new AjaxRequest(RPC, { sExecucao: "getPlugins" }, function(oRetorno, lErro) {
+        #windowwindowLog_content {
+            outline: none !important;
+            border: 0 !important;
+            padding: 0 !important;
+            height: calc(100% - 22px) !important;
+        }
 
-            if (lErro) {
+        #windowLog .aba {
+            background: #444;
+            color: #ccc;
+            border: 1px solid #666 !important;
+            border-bottom: 0 !important;
+        }
 
-              alert(oRetorno.sMessage.urlDecode())
-              return false;
-            }
+        #windowLog .abaAtiva {
+            background: #222 !important;
+            color: #f0f0f0 !important;
+        }
 
-            oGridPlugins.clearAll(true);
+        /* selecionar um plugin
+        *  especifico
+        */
+        .normal:hover {
+            background: rgb(225, 222, 222);
+        }
 
-            oRetorno.aPlugins.forEach(function(oPlugin) {
+        .normal .selectRow:hover, .normal .logRow:hover,
+        .normal .configRow:hover {
+            background-color: #326094;
+            color: white;
+        }
+    </style>
+</head>
+<body class="body-default">
+<div class="container">
+        <form name="form1" method="post" action="" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Arquivo do Plugin</legend>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="file" name="file" id="file"/>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <input name="incluir" id="incluir" type="button" value="Importar"/>
+        </form>
+</div>
 
-              var sButton = '<input type="button" value="' + (oPlugin.lSituacao ? "Desativar" : "Ativar") + '" class="selectRow" data-method="alterarSituacao" data-id="'+oPlugin.iCodigo+'" />';
-              var sButtonDesinstalar = '<input type="button" value="Desinstalar" class="selectRow" data-method="desinstalar" data-id="' + oPlugin.iCodigo + '" />';
-              var sBtnDown           =  '<input type="button" value="Baixar" class="selectRow" data-method="downloadPlugin" data-id="'+ oPlugin.iCodigo +'" />';
+<div class="subcontainer">
+    <fieldset>
+        <legend>Plugins instalados</legend>
+        <div style="width: 900px;" id="gridPlugins"></div>
+    </fieldset>
+</div>
 
-              var sButtonConfig = '', sButtonLogModificacoes = '';
+<div id="containerLog" style="display: none;">
+    <div id="containerLogPlugin"></div>
+    <div id="containerLogModification"></div>
+</div>
 
+<div id="containerConfig" class="container" style="display: hidden;">
+    <form name="formConfig" method="post" action="">
+        <fieldset style="width: 600px;">
+            <legend>Configurações</legend>
 
-              if (oPlugin.lConfiguracao) {
-                sButtonConfig = '<input type="button" value="Config" class="configRow" data-id="' + oPlugin.iCodigo + '">';
-              }
+            <table id="tableInput">
+            </table>
+        </fieldset>
+        <input name="salvar" type="submit" value="Salvar"/>
+    </form>
+</div>
 
+<?php db_menu(); ?>
+</body>
+<script>
 
-              sButtonLogModificacoes = '<span class="log-modification-container">';
-              sButtonLogModificacoes += '<input type="button" class="logRow" value="Log" data-id="'+ oPlugin.iCodigo +'" />';
+    (function () {
 
-              if (oPlugin.oErrosModificacoes.warning) {
-                sButtonLogModificacoes += '<span title="Avisos '+ oPlugin.oErrosModificacoes.warning +' warnings." class="log-badge log-badge-warning">'
-                 + oPlugin.oErrosModificacoes.warning +'</span>';
-              }
+        const RPC = "con4_dbplugin.RPC.php";
+        var idPlugin = null;
 
-              if (oPlugin.oErrosModificacoes.error) {
-                sButtonLogModificacoes += '<span title="Erros" class="log-badge log-badge-error">'
-                  + oPlugin.oErrosModificacoes.error + '</span>';
-              }
+        var windowPadding = 50;
+        var windowWidth = window.innerWidth - windowPadding > 800 ? 800 : window.innerWidth - windowPadding;
+        var windowHeight = window.innerHeight - windowPadding > 600 ? 600 : window.innerHeight - windowPadding;
+        var windowLog = new windowAux('windowLog', 'Log do plugin', windowWidth, windowHeight);
+        var oContainerLog = $('containerLog');
+        var oContainerLogPlugin = $('containerLogPlugin');
+        var oContainerLogModification = $('containerLogModification');
 
-              sButtonLogModificacoes += '</span>';
+        var oAbas = new DBAbas($('containerLog'));
+        var oAbaPlugins = oAbas.adicionarAba('Plugin', $('containerLogPlugin'));
+        var oAbaModificacoes = oAbas.adicionarAba('Modificações', $('containerLogModification'));
 
-              var sSituacao = oPlugin.lSituacao ? "Ativo" : "Inativo";
+        windowLog.setContent(oContainerLog);
 
-              var aRow = [
-                oPlugin.sLabel,
-                oPlugin.nVersao,
-                sSituacao,
-                sButtonLogModificacoes,
-                sButton + "&nbsp;" + sButtonConfig,
-                "&nbsp;" + "&nbsp;" + sButtonDesinstalar + "&nbsp;" + sBtnDown
-              ]
+        var oContainerWindowContent = document.querySelector('#windowwindowLog_content');
 
-              oGridPlugins.addRow(aRow);
-            });
+        var windowConfig = new windowAux('windowConfig', 'Configuração do Plugin', 700, 400),
+            oGridPlugins = new DBGrid("gridPlugins"),
+            oContainerConfig = $('containerConfig'),
+            oTableInput = $('tableInput');
 
-            oGridPlugins.renderRows();
+        windowConfig.setContent(oContainerConfig);
 
-            oRetorno.aPlugins.forEach(function(oPlugin, iLinha) {
+        oGridPlugins.nameInstance = "oGridPlugins";
+        oGridPlugins.setCellWidth(["40%", "15%", "6%", "7%", "11%", "15%", "17%"]);
+        oGridPlugins.setCellAlign(["left", "center", "center", "center", "center", "center"]);
+        oGridPlugins.setHeader(["Nome", "Módulo", "Versão", "Situação", "Avisos / Erros", "&nbsp;", "&nbsp;"]);
+        oGridPlugins.setHeight(300);
+        oGridPlugins.show($('gridPlugins'));
 
-              var oHintNome = window["oDBHint_"+iLinha+"_1"] = new DBHint("oDBHint_"+iLinha+"_1");
-              var sDescricao = "<strong>Label: </strong>" + oPlugin.sLabel
-                             + "<br/><strong>Nome: </strong>" + oPlugin.sNome;
+        /**
+         * Instala o plugin já validado
+         */
+        function instalarPlugin(sPlugin) {
 
-              oHintNome.setWidth(300);
-              oHintNome.setText(sDescricao);
-              oHintNome.setShowEvents(["onmouseover"]);
-              oHintNome.setHideEvents(["onmouseout"]);
-              oHintNome.setScrollElement($('body-container-gridPlugins'));
-              oHintNome.setPosition('B', 'L');
+            var oParametros = {
+                sExecucao: "instalarPlugin",
+                sArquivo: sPlugin
+            };
 
-              oHintNome.make($(oGridPlugins.aRows[iLinha].aCells[0].sId));
-            });
+            new AjaxRequest(RPC, oParametros, function (oRetorno, lErro) {
 
-            $$(".logRow").each(function(oButton) {
-
-              oButton.observe('click', function() {
-
-                var iCodigo = this.getAttribute("data-id")
-                loadLogPlugin(iCodigo);
-                loadLogModifications(iCodigo);
-
-                oContainerLog.style.display = '';
-                windowLog.show();
-
-                oAbaModificacoes.setVisibilidade(false);
-                oAbaPlugins.setVisibilidade(true);
-
-                oContainerWindowContent.scrollTop = 0;
-              });
-
-            });
-
-            /**
-             * Seta a ação dos botões
-             */
-            $$(".selectRow").each(function(oButton) {
-
-              oButton.observe("click", function() {
-
-                var oParametros = {
-                  sExecucao : this.getAttribute("data-method"),
-                  iCodigo   : this.getAttribute("data-id")
-                };
-
-                if (oParametros.sExecucao == "desinstalar" && !confirm("Confirma a desinstalação do plugin, todos os seus dados serão removidos?")) {
-                  return false;
-                }
-
-                if ( oParametros.sExecucao == "alterarSituacao" && this.value == "Desativar"
-                     && !confirm("O Plugin será desativado, deseja continuar?")) {
-                  return false;
-                }
-
-                new AjaxRequest(RPC, oParametros, function(oRetorno, lErro) {
-
+                if (lErro) {
                     alert(oRetorno.sMessage.urlDecode());
+                    return false;
+                }
 
-                    if (lErro) {
-                      return false;
-                    }
+                alert("Plugin instalado com sucesso.");
 
-                    /**
-                    * Download Plugin
-                    */
-                 if (oParametros.sExecucao == "downloadPlugin") {
-                    var oDownload = new DBDownload();
-                        oDownload.setHelpMessage('Clique no link abaixo para fazer download do plugin.');
-                        oDownload.addFile(oRetorno.sFile, oRetorno.sNomePlugin);
-                        oDownload.show();
-                 }
+                js_recarregaGrid();
 
-                  js_recarregaGrid();
+            }).setMessage("Aguarde, instalando o plugin.").execute();
+        }
 
-                  }).setMessage("Aguarde...").execute();
-              })
+        /**
+         * Importa o plugin e valida
+         */
+        $('incluir').observe('click', function () {
 
-            });
-
-
-            $$(".configRow").each(function(oButton) {
-
-              oButton.observe("click", function() {
-
-                idPlugin = this.getAttribute("data-id");
-                var oParametros = {
-                  sExecucao : "getConfig",
-                  iCodigo : this.getAttribute("data-id")
-                };
-
-                new AjaxRequest(RPC, oParametros, function(oRetorno, lErro) {
-
-                    if (lErro) {
-                      alert(oRetorno.sMessage.urlDecode());
-                      return false;
-                    }
-
-                    var sInputs = '';
-
-                    if (oRetorno.aConfiguracoes) {
-
-                      for (var sLabel in oRetorno.aConfiguracoes) {
-                        sInputs += '<tr>'
-                                 +   '<td>'
-                                 +     '<label class="bold" for="' + sLabel + '" id="' + oRetorno.aConfiguracoes[sLabel] + '">'
-                                 +       sLabel
-                                 +     ':</label>'
-                                 +   '</td>'
-                                 +   '<td>'
-                                 +     '<input size="35" type="text" id="' + sLabel + '" name="'
-                                 + sLabel + '" value="' + oRetorno.aConfiguracoes[sLabel] + '" autocomplete="off">'
-                                 +   '</td>'
-                                 + '</tr>';
-                      }
-                    }
-
-                    oContainerConfig.style.display = '';
-                    oTableInput.innerHTML          = sInputs;
-
-                    windowConfig.show();
-
-                  }).setMessage("Aguarde, carregando configuração.").execute();
-
-              })
-            });
-
-          }).setMessage("Aguarde, carregando plugins.").execute();
-      };
-
-      $$("form[name=formConfig]")[0].observe("submit", function(event) {
-
-        event.preventDefault();
-
-        var oParametros = {
-          iCodigo : idPlugin,
-          aConfig : {},
-          sExecucao : 'saveConfig'
-        };
-
-        $$("form[name=formConfig] input:not([type=submit])").each(function(oInput) {
-          oParametros.aConfig[oInput.name] = oInput.value;
-        });
-
-        new AjaxRequest(RPC, oParametros, function(oRetorno, lErro) {
-          alert(oRetorno.sMessage.urlDecode());
-        }).setMessage("Aguarde, salvando configuração.").execute();
-      });
-
-      function loadLogPlugin(iCodigo) {
-
-        var oParametros = {
-          sExecucao : 'getLog',
-          iCodigo : iCodigo
-        };
-
-        var oAjax = new AjaxRequest(RPC, oParametros);
-
-        oAjax.setCallBack(function(oRetorno, lErro) {
-
-          // clear log container
-          oContainerLogPlugin.innerHTML = '';
-
-          if (lErro) {
-            return alert(oRetorno.sMessage.urlDecode());
-          }
-
-          oContainerLogPlugin.innerHTML = '<pre>'+oRetorno.sConteudo.urlDecode()+'</pre>';
-
-        });
-        oAjax.setMessage("Buscando log");
-        oAjax.execute();
-      }
-
-      function loadLogModifications(iCodigo) {
-
-        var oParametros = {
-          sExecucao : 'getLogModificacoes',
-          iCodigo : iCodigo
-        };
-
-        var oAjax = new AjaxRequest(RPC, oParametros);
-
-        oAjax.setCallBack(function(oRetorno, lErro) {
-
-          // clear log container
-          oContainerLogModification.innerHTML = '';
-
-          if (lErro) {
-            return alert(oRetorno.sMessage.urlDecode());
-          }
-
-          if (!oRetorno.lPossuiModificacoes) {
-            oContainerLogModification.innerHTML = "<p>Plugin não possui modificações</p>";
-            return;
-          }
-
-          if (oRetorno.aLogModificacoes.length == 0 || !oRetorno.lSituacao) {
-            oContainerLogModification.innerHTML = "<p>Modificações não instaladas.</p>";
-            return;
-          }
-
-          var header = '';
-          for (var idModificacao in  oRetorno.aLogModificacoes) {
-
-            if (typeof(oRetorno.aLogModificacoes[idModificacao]) != 'string') {
-              continue;
+            if (empty($('file').value)) {
+                return alert("Nenhum arquivo selecionado.");
             }
 
-            var sConteudoLog = oRetorno.aLogModificacoes[idModificacao];
-            oContainerLogModification.innerHTML += header + idModificacao + '<pre>' + sConteudoLog + '</pre>';
-            header = '<hr />';
-          }
+            var oParametros = {sExecucao: "validarPlugin"},
+                oRequest = new AjaxRequest(RPC, oParametros, function (oRetorno, lErro) {
 
+                    if (lErro) {
+
+                        alert(oRetorno.sMessage.urlDecode())
+                        return false;
+                    }
+
+                    if (oRetorno.lAtualizacao) {
+
+                        if (confirm("O Plugin já esta instalado, deseja atualizar?")) {
+                            return instalarPlugin(oRetorno.sArquivo);
+                        }
+
+                        return false;
+                    }
+
+                    instalarPlugin(oRetorno.sArquivo);
+                });
+
+            oRequest.addFileInput($('file'));
+            oRequest.setMessage("Aguarde, importando o plugin.");
+            oRequest.execute();
         });
-        oAjax.setMessage("Buscando log");
-        oAjax.execute();
-      }
 
-      js_recarregaGrid();
+        function js_recarregaGrid() {
+
+            new AjaxRequest(RPC, {sExecucao: "getPlugins"}, function (oRetorno, lErro) {
+
+                if (lErro) {
+
+                    alert(oRetorno.sMessage.urlDecode())
+                    return false;
+                }
+
+                oGridPlugins.clearAll(true);
+
+                oRetorno.aPlugins.forEach(function (oPlugin) {
+
+                    var sButton = '<input type="button" value="' + (oPlugin.lSituacao ? "Desativar" : "Ativar") + '" class="selectRow" data-method="alterarSituacao" data-id="' + oPlugin.iCodigo + '" />';
+                    var sButtonDesinstalar = '<input type="button" value="Desinstalar" class="selectRow" data-method="desinstalar" data-id="' + oPlugin.iCodigo + '" />';
+                    var sBtnDown = '<input type="button" value="Baixar" class="selectRow" data-method="downloadPlugin" data-id="' + oPlugin.iCodigo + '" />';
+
+                    var sButtonConfig = '', sButtonLogModificacoes = '';
+
+
+                    if (oPlugin.lConfiguracao) {
+                        sButtonConfig = '<input type="button" value="Config" class="configRow" data-id="' + oPlugin.iCodigo + '">';
+                    }
+
+
+                    sButtonLogModificacoes = '<span class="log-modification-container">';
+                    sButtonLogModificacoes += '<input type="button" class="logRow" value="Log" data-id="' + oPlugin.iCodigo + '" />';
+
+                    if (oPlugin.oErrosModificacoes.warning) {
+                        sButtonLogModificacoes += '<span title="Avisos ' + oPlugin.oErrosModificacoes.warning + ' warnings." class="log-badge log-badge-warning">'
+                            + oPlugin.oErrosModificacoes.warning + '</span>';
+                    }
+
+                    if (oPlugin.oErrosModificacoes.error) {
+                        sButtonLogModificacoes += '<span title="Erros" class="log-badge log-badge-error">'
+                            + oPlugin.oErrosModificacoes.error + '</span>';
+                    }
+
+                    sButtonLogModificacoes += '</span>';
+
+                    var sSituacao = oPlugin.lSituacao ? "Ativo" : "Inativo";
+
+                    var aRow = [
+                        oPlugin.sLabel,
+                        oPlugin.sModulo,
+                        oPlugin.nVersao,
+                        sSituacao,
+                        sButtonLogModificacoes,
+                        sButton + "&nbsp;" + sButtonConfig,
+                        "&nbsp;" + "&nbsp;" + sButtonDesinstalar + "&nbsp;" + sBtnDown
+                    ]
+
+                    oGridPlugins.addRow(aRow);
+                });
+
+                oGridPlugins.renderRows();
+
+                oRetorno.aPlugins.forEach(function (oPlugin, iLinha) {
+
+                    var oHintNome = window["oDBHint_" + iLinha + "_1"] = new DBHint("oDBHint_" + iLinha + "_1");
+                    var sDescricao = "<strong>Label: </strong>" + oPlugin.sLabel
+                        + "<br/><strong>Nome: </strong>" + oPlugin.sNome;
+
+                    oHintNome.setWidth(300);
+                    oHintNome.setText(sDescricao);
+                    oHintNome.setShowEvents(["onmouseover"]);
+                    oHintNome.setHideEvents(["onmouseout"]);
+                    oHintNome.setScrollElement($('body-container-gridPlugins'));
+                    oHintNome.setPosition('B', 'L');
+
+                    oHintNome.make($(oGridPlugins.aRows[iLinha].aCells[0].sId));
+                });
+
+                $$(".logRow").each(function (oButton) {
+
+                    oButton.observe('click', function () {
+
+                        var iCodigo = this.getAttribute("data-id")
+                        loadLogPlugin(iCodigo);
+                        loadLogModifications(iCodigo);
+
+                        oContainerLog.style.display = '';
+                        windowLog.show();
+
+                        oAbaModificacoes.setVisibilidade(false);
+                        oAbaPlugins.setVisibilidade(true);
+
+                        oContainerWindowContent.scrollTop = 0;
+                    });
+
+                });
+
+                /**
+                 * Seta a ação dos botões
+                 */
+                $$(".selectRow").each(function (oButton) {
+
+                    oButton.observe("click", function () {
+
+                        var oParametros = {
+                            sExecucao: this.getAttribute("data-method"),
+                            iCodigo: this.getAttribute("data-id")
+                        };
+
+                        if (oParametros.sExecucao == "desinstalar" && !confirm("Confirma a desinstalação do plugin, todos os seus dados serão removidos?")) {
+                            return false;
+                        }
+
+                        if (oParametros.sExecucao == "alterarSituacao" && this.value == "Desativar"
+                            && !confirm("O Plugin será desativado, deseja continuar?")) {
+                            return false;
+                        }
+
+                        new AjaxRequest(RPC, oParametros, function (oRetorno, lErro) {
+
+                            alert(oRetorno.sMessage.urlDecode());
+
+                            if (lErro) {
+                                return false;
+                            }
+
+                            /**
+                             * Download Plugin
+                             */
+                            if (oParametros.sExecucao == "downloadPlugin") {
+                                var oDownload = new DBDownload();
+                                oDownload.setHelpMessage('Clique no link abaixo para fazer download do plugin.');
+                                oDownload.addFile(oRetorno.sFile, oRetorno.sNomePlugin);
+                                oDownload.show();
+                            }
+
+                            js_recarregaGrid();
+
+                        }).setMessage("Aguarde...").execute();
+                    })
+
+                });
+
+
+                $$(".configRow").each(function (oButton) {
+
+                    oButton.observe("click", function () {
+
+                        idPlugin = this.getAttribute("data-id");
+                        var oParametros = {
+                            sExecucao: "getConfig",
+                            iCodigo: this.getAttribute("data-id")
+                        };
+
+                        new AjaxRequest(RPC, oParametros, function (oRetorno, lErro) {
+
+                            if (lErro) {
+                                alert(oRetorno.sMessage.urlDecode());
+                                return false;
+                            }
+
+                            var sInputs = '';
+
+                            if (oRetorno.aConfiguracoes) {
+
+                                for (var sLabel in oRetorno.aConfiguracoes) {
+                                    sInputs += '<tr>'
+                                        + '<td>'
+                                        + '<label class="bold" for="' + sLabel + '" id="' + oRetorno.aConfiguracoes[sLabel] + '">'
+                                        + sLabel
+                                        + ':</label>'
+                                        + '</td>'
+                                        + '<td>'
+                                        + '<input size="35" type="text" id="' + sLabel + '" name="'
+                                        + sLabel + '" value="' + oRetorno.aConfiguracoes[sLabel] + '" autocomplete="off">'
+                                        + '</td>'
+                                        + '</tr>';
+                                }
+                            }
+
+                            oContainerConfig.style.display = '';
+                            oTableInput.innerHTML = sInputs;
+
+                            windowConfig.show();
+
+                        }).setMessage("Aguarde, carregando configuração.").execute();
+
+                    })
+                });
+
+            }).setMessage("Aguarde, carregando plugins.").execute();
+        };
+
+        $$("form[name=formConfig]")[0].observe("submit", function (event) {
+
+            event.preventDefault();
+
+            var oParametros = {
+                iCodigo: idPlugin,
+                aConfig: {},
+                sExecucao: 'saveConfig'
+            };
+
+            $$("form[name=formConfig] input:not([type=submit])").each(function (oInput) {
+                oParametros.aConfig[oInput.name] = oInput.value;
+            });
+
+            new AjaxRequest(RPC, oParametros, function (oRetorno, lErro) {
+                alert(oRetorno.sMessage.urlDecode());
+            }).setMessage("Aguarde, salvando configuração.").execute();
+        });
+
+        function loadLogPlugin(iCodigo) {
+
+            var oParametros = {
+                sExecucao: 'getLog',
+                iCodigo: iCodigo
+            };
+
+            var oAjax = new AjaxRequest(RPC, oParametros);
+
+            oAjax.setCallBack(function (oRetorno, lErro) {
+
+                // clear log container
+                oContainerLogPlugin.innerHTML = '';
+
+                if (lErro) {
+                    return alert(oRetorno.sMessage.urlDecode());
+                }
+
+                oContainerLogPlugin.innerHTML = '<pre>' + oRetorno.sConteudo.urlDecode() + '</pre>';
+
+            });
+            oAjax.setMessage("Buscando log");
+            oAjax.execute();
+        }
+
+        function loadLogModifications(iCodigo) {
+
+            var oParametros = {
+                sExecucao: 'getLogModificacoes',
+                iCodigo: iCodigo
+            };
+
+            var oAjax = new AjaxRequest(RPC, oParametros);
+
+            oAjax.setCallBack(function (oRetorno, lErro) {
+
+                // clear log container
+                oContainerLogModification.innerHTML = '';
+
+                if (lErro) {
+                    return alert(oRetorno.sMessage.urlDecode());
+                }
+
+                if (!oRetorno.lPossuiModificacoes) {
+                    oContainerLogModification.innerHTML = "<p>Plugin não possui modificações</p>";
+                    return;
+                }
+
+                if (oRetorno.aLogModificacoes.length == 0 || !oRetorno.lSituacao) {
+                    oContainerLogModification.innerHTML = "<p>Modificações não instaladas.</p>";
+                    return;
+                }
+
+                var header = '';
+                for (var idModificacao in oRetorno.aLogModificacoes) {
+
+                    if (typeof (oRetorno.aLogModificacoes[idModificacao]) != 'string') {
+                        continue;
+                    }
+
+                    var sConteudoLog = oRetorno.aLogModificacoes[idModificacao];
+                    oContainerLogModification.innerHTML += header + idModificacao + '<pre>' + sConteudoLog + '</pre>';
+                    header = '<hr />';
+                }
+
+            });
+            oAjax.setMessage("Buscando log");
+            oAjax.execute();
+        }
+
+        js_recarregaGrid();
     })();
 
-  </script>
+</script>
 </html>

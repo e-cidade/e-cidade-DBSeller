@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_matestoqueini {
                  m80_coddepto = int4 = Depart.
                  ";
    //funcao construtor da classe
-   function cl_matestoqueini() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueini");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_matestoqueini {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m80_codigo = ($this->m80_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["m80_codigo"]:$this->m80_codigo);
        $this->m80_login = ($this->m80_login == ""?@$GLOBALS["HTTP_POST_VARS"]["m80_login"]:$this->m80_login);
@@ -99,7 +99,7 @@ class cl_matestoqueini {
      }
    }
    // funcao para inclusao
-   function incluir ($m80_codigo){
+   public function incluir ($m80_codigo){
       $this->atualizacampos();
      if($this->m80_login == null ){
        $this->erro_sql = " Campo Cod. Usuário nao Informado.";
@@ -249,7 +249,7 @@ class cl_matestoqueini {
    }
 
    // funcao para alteracao
-   function alterar ($m80_codigo=null) {
+   public function alterar ($m80_codigo=null) {
       $this->atualizacampos();
      $sql = " update matestoqueini set ";
      $virgula = "";
@@ -420,7 +420,7 @@ class cl_matestoqueini {
      }
    }
    // funcao para exclusao
-   function excluir ($m80_codigo=null,$dbwhere=null) {
+   public function excluir ($m80_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m80_codigo));
      }else{
@@ -487,7 +487,7 @@ class cl_matestoqueini {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -509,10 +509,10 @@ class cl_matestoqueini {
       }
      return $result;
    }
-   function sql_query ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,10 +545,10 @@ class cl_matestoqueini {
      }
      return $sql;
   }
-   function sql_query_file ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,10 +578,10 @@ class cl_matestoqueini {
      }
      return $sql;
   }
-   function sql_query_mater ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_mater ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -625,10 +625,10 @@ class cl_matestoqueini {
      }
      return $sql;
   }
-   function sql_query_qua ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_qua ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -659,7 +659,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -668,10 +668,10 @@ class cl_matestoqueini {
      }
      return $sql;
   }
-   function sql_query_transf ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_transf ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -709,12 +709,12 @@ class cl_matestoqueini {
      return $sql;
   }
 
-  function sql_query_movimentacoes ( $m80_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_movimentacoes ( $m80_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -744,7 +744,7 @@ class cl_matestoqueini {
     if ($ordem != null) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -755,12 +755,12 @@ class cl_matestoqueini {
     return $sql;
   }
 
-  function sql_query_movimentacoes_gerais ( $m80_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_movimentacoes_gerais ( $m80_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -794,7 +794,7 @@ class cl_matestoqueini {
     if ($ordem != null) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -814,12 +814,12 @@ class cl_matestoqueini {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_movimentacoes_por_tipo_grupo($m80_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_movimentacoes_por_tipo_grupo($m80_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
    $sql = "select ";
    if ($campos != "*" ) {
 
-     $campos_sql = split("#",$campos);
+     $campos_sql = explode("#",$campos);
      $virgula    = "";
 
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -858,7 +858,7 @@ class cl_matestoqueini {
    if ($ordem != null) {
 
      $sql        .= " order by ";
-     $campos_sql  = split("#",$ordem);
+     $campos_sql  = explode("#",$ordem);
      $virgula     = "";
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

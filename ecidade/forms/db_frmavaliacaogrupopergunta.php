@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,13 +83,13 @@ if (isset($oPost->db_opcaoal)) {
       <b>Código da Avaliação:</b>
     </td>
     <td width="10">
-			<?
+			<?php
 			  db_input('db102_sequencial',10,$Idb102_sequencial,true,'hidden',3,"");
 			  db_input('db102_avaliacao',10,$Idb102_avaliacao,true,'text',3," onchange='js_pesquisadb102_avaliacao(false);'");
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db101_descricao',50,$Idb101_descricao,true,'text',3,'');
       ?>
     </td>
@@ -99,7 +99,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb102_descricao?>
     </td>
     <td colspan="2">
-			<?
+			<?php
 			  db_input('db102_descricao',50,$Idb102_descricao,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -109,7 +109,7 @@ if (isset($oPost->db_opcaoal)) {
       <?=@$Ldb102_identificador?>
     </td>
     <td colspan="2">
-			<?
+			<?php
 			  db_input('db102_identificador',65,$Idb102_identificador,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -150,7 +150,7 @@ if (isset($oPost->db_opcaoal)) {
 <table>
   <tr>
     <td valign="top"  align="center">
-	    <?
+	    <?php
 	      $sWhere   = "db102_avaliacao = {$db102_avaliacao}";
 			  $chavepri = array("db102_sequencial"=>@$db102_sequencial);
 			  $cliframe_alterar_excluir->chavepri=$chavepri;

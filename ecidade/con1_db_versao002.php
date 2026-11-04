@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
      $clcriaabas->identifica = array("db_versao"=>"Versão/Release","db_versaocpd"=>"Alterações Efetuadas","db_versaousu"=>"Observações Para Usuário","db_versaotarefa"=>"Tarefas","db_versaoclientes"=>"Clientes");
 	 $clcriaabas->src = array("db_versao"=>"con1_db_versao005.php");
 	 $clcriaabas->disabled   =  array("db_versaocpd"=>"true","db_versaousu"=>"true","db_versaotarefa"=>"true","db_versaoclientes"=>"true"); 
@@ -65,12 +65,12 @@ $db_opcao = 1;
   </table>
   <form name="form1">
   </form>
-      <? 
+      <?php 
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
   </body>
   </html>
-<?
+<?php
   echo "
   <script>
     document.formaba.db_versao.size = 25;

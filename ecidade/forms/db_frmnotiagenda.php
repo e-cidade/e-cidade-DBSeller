@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("nome");
        <?=@$Lk58_codage?>
     </td>
     <td> 
-<?
+<?php
 db_input('k58_codage',8,$Ik58_codage,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk58_notifica?>">
-       <?
+       <?php
        db_ancora(@$Lk58_notifica,"js_pesquisak58_notifica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k58_notifica',8,$Ik58_notifica,true,'text',$db_opcao," onchange='js_pesquisak58_notifica(false);'")
 ?>
-       <?
+       <?php
 db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        <?=@$Lk58_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k58_data',@$k58_data_dia,@$k58_data_mes,@$k58_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,22 +74,22 @@ db_inputdata('k58_data',@$k58_data_dia,@$k58_data_mes,@$k58_data_ano,true,'text'
        <?=@$Lk58_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('k58_hora',5,$Ik58_hora,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk58_id_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lk58_id_usuario,"js_pesquisak58_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k58_id_usuario',5,$Ik58_id_usuario,true,'text',$db_opcao," onchange='js_pesquisak58_id_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -155,7 +155,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

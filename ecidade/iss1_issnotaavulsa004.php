@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -54,7 +54,7 @@ if (isset($post->incluir)){
    $rsIssBase    = $clissbase->sql_record($clissbase->sql_query($post->q51_inscr));
    $oIssBase     = db_utils::fieldsMemory($rsIssBase,0);
    if ($oParametros->q60_notaavulsapesjur == 't' and strlen(trim($oIssBase->z01_cgccpf)) == 14){
-     
+
         $rsTotalNotas = $clissnotaavulsa->sql_record($clissnotaavulsa->sql_query_baixa(null,"count(*) as numnotas",
                                                      null,"q51_inscr=".$post->q51_inscr
                                                     ." and q63_sequencial is null"));
@@ -63,13 +63,13 @@ if (isset($post->incluir)){
 
           $lSqlErro = true;
           $erro_msg = "Contribuinte já atingiu o limite máximo \\nde notas permitidas para pessoa juridíca";
-          
+
 
         }
 
    }else if ($oParametros->q60_notaavulsapesjur == 'f' and strlen(trim($oIssBase->z01_cgccpf)) == 14){
 
-      
+
       $lSqlErro = true;
       $erro_msg = "Não é permitido liberar notas avulsas para pessoas jurídicas.";
 
@@ -85,7 +85,7 @@ if (isset($post->incluir)){
      $clissnotaavulsa->q51_inscr       = $post->q51_inscr;
      $clissnotaavulsa->q51_obs         = $post->q51_obs;
      if (isset($post->q51_dtemiss)){
-        $dtparte                          = split("/",$post->q51_dtemiss);
+        $dtparte                          =explode("/",$post->q51_dtemiss);
         $clissnotaavulsa->q51_dtemiss_dia = $dtparte[0];
         $clissnotaavulsa->q51_dtemiss_mes = $dtparte[1];
         $clissnotaavulsa->q51_dtemiss_ano = $dtparte[2];
@@ -98,9 +98,9 @@ if (isset($post->incluir)){
         $clissnotaavulsa->q51_pdfnota     = '0';
      }
      $clissnotaavulsa->incluir(null);
-     
+
      if ($clissnotaavulsa->erro_status == 0){
-         
+
          $lSqlErro = true;
          $erro_msg = $clissnotaavulsa->erro_msg;
 
@@ -117,8 +117,8 @@ if (isset($post->incluir)){
    }
 }
 $q51_dtemiss_dia = date("d",db_getsession("DB_datausu"));
-$q51_dtemiss_mes = date("m",db_getsession("DB_datausu")); 
-$q51_dtemiss_ano = date("Y",db_getsession("DB_datausu")); 
+$q51_dtemiss_mes = date("m",db_getsession("DB_datausu"));
+$q51_dtemiss_ano = date("Y",db_getsession("DB_datausu"));
 
 ?>
 
@@ -132,13 +132,13 @@ $q51_dtemiss_ano = date("Y",db_getsession("DB_datausu"));
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmissnotaavulsaalt.php"));
 	?>
     </center>
 </body>
 </html>
-<?
+<?php
 if(isset($post->incluir)){
   if($lSqlErro==true){
     db_msgbox($erro_msg);
@@ -147,8 +147,8 @@ if(isset($post->incluir)){
       echo "<script> document.form1.".$clissnotaavulsa->erro_campo.".focus();</script>";
     };
   }else{
-   if ($erro_msg != ''){ 
-      db_msgbox($erro_msg); 
+   if ($erro_msg != ''){
+      db_msgbox($erro_msg);
    }
    db_redireciona("iss1_issnotaavulsa005.php?liberaaba=true&chavepesquisa=$q51_sequencial");
   }

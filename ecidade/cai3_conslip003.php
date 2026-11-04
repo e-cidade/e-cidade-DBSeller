@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -88,8 +88,10 @@ $sql = "select slip.k17_codigo,
                (select distinct pc63_banco||' / '||pc63_agencia||'-'||pc63_agencia_dig||' / '||pc63_conta||'-'||pc63_conta_dig 
                   from empageslip 
                        inner join empagemovconta on e98_codmov = e89_codmov 
-                       inner join pcfornecon on pc63_contabanco = e98_contabanco  
-                 where e89_codigo = slip.k17_codigo ) as inf_conta
+                       inner join pcfornecon on pc63_contabanco = e98_contabanco
+                       inner join empagemov on e81_codmov = e89_codmov  
+                 where e89_codigo = slip.k17_codigo
+                   and e81_cancelado is null ) as inf_conta
           from slip
                left join conplanoreduz r1 on r1.c61_reduz       = k17_debito
                                          and r1.c61_anousu      = extract(year from k17_data)
@@ -110,6 +112,9 @@ $sql = "select slip.k17_codigo,
          order by slip.k17_codigo";
 
 $rsSlip = $clslip->sql_record($sql);
+if ($clslip->numrows == 0) {
+    die(str_replace("\\n", "<br>", $clslip->erro_msg));
+}
 
 $oSlip = db_utils::fieldsMemory($rsSlip, 0);
 
@@ -124,7 +129,7 @@ $sqlslipage = "select e81_codage,
 $result = $clslip->sql_record($sqlslipage);
 
 if ($clslip->numrows > 0) {
-  $aSlip = db_utils::fieldsMemory($result, 0);
+    $aSlip = db_utils::fieldsMemory($result, 0);
 }
 
 $oSlipCPCA = new cl_slipconcarpeculiar;
@@ -140,13 +145,10 @@ $sCodigoCPCredito = "";
 $sDescricaoCPCredito = "";
 
 if ($oSlipCPCA->numrows > 0) {
-
     for ($iRowCP = 0; $iRowCP < $oSlipCPCA->numrows; $iRowCP++) {
-
         $oStdDadoCP = db_utils::fieldsMemory($rsSqlBuscaCP, $iRowCP);
 
         switch ($oStdDadoCP->k131_tipo) {
-
             case 1:
                 $sCodigoCPDebito = $oStdDadoCP->c58_sequencial;
                 $sDescricaoCPDebito = $oStdDadoCP->c58_descr;
@@ -166,7 +168,6 @@ $oFinalidadePagamento = $oTransferencia->getFinalidadePagamentoFundebCredito();
 $sCodigoFinalidadeFundeb = "";
 $sDescricaoFinalidadeFundeb = "";
 if (!empty($oFinalidadePagamento)) {
-
     $sCodigoFinalidadeFundeb = $oFinalidadePagamento->getCodigo();
     $sDescricaoFinalidadeFundeb = $oFinalidadePagamento->getDescricao();
 }
@@ -189,7 +190,6 @@ $campos = implode(',', array(
 $buscaRecursos = $oSlipRecursosContas->sql_query(null, $campos, null, "k181_slip = {$oSlip->k17_codigo}");
 $buscaRecursos = db_query($buscaRecursos);
 if (pg_num_rows($buscaRecursos) > 0) {
-
     $stdDados = db_utils::fieldsMemory($buscaRecursos, 0);
     $codigoRecursoDebito = $stdDados->codigo_recurso_debito;
     $descricaoRecursoDebito = $stdDados->descricao_recurso_debito;
@@ -206,7 +206,7 @@ $campos .= "     ELSE 'NAO' ";
 $campos .= "END AS e90_cancelado, ";
 $campos .= "e76_codret,e75_arquivoret,e75_ativo,e76_lote,";
 $campos .= "e76_dataefet,e02_errobanco,e92_coderro,e92_descrerro ";
-$sql_movimentacaoslip_errobanco = $oEmpageSlip->sql_query_movimentacaoslip_errobanco($oSlip->k17_codigo,$campos);
+$sql_movimentacaoslip_errobanco = $oEmpageSlip->sql_query_movimentacaoslip_errobanco($oSlip->k17_codigo, $campos);
 $rsMovimentacaoSlip_ErroBanco = db_query($sql_movimentacaoslip_errobanco);
 $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSlip_ErroBanco);
 ?>
@@ -249,14 +249,8 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
 
     </style>
 </head>
-<body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-    <tr>
-        <td valign="top" bgcolor="#CCCCCC">
-        </td>
-    </tr>
-</table>
-<center>
+<body>
+  <div class="container">  
   <table>
     <tr>
       <td><fieldset><legend><b>SLIP <?php echo $get->slip; ?></b></legend>
@@ -376,9 +370,9 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
               </td>
             </tr>
 
-           <?php 
-             if (isset($oSlip->k18_codigo) && $oSlip->k18_codigo != null) { 
-           ?>
+           <?php
+            if (isset($oSlip->k18_codigo) && $oSlip->k18_codigo != null) {
+                ?>
               <tr>
                 <td valign="top" colspan=4>
                   <fieldset>
@@ -387,11 +381,11 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
                   </fieldset>
                 </td>
               </tr>
-           <?php 
-             }
+                <?php
+            }
             
-             if (isset($oSlip->k17_tiposituacao) && $oSlip->k17_tiposituacao != null && $oSlip->k17_tiposituacao == 3) {
-           ?>
+            if (isset($oSlip->k17_tiposituacao) && $oSlip->k17_tiposituacao != null && $oSlip->k17_tiposituacao == 3) {
+                ?>
               <tr>
                 <td><b><?php echo $Lk17_dtestorno; ?></b></td>
                 <td colspan="3">
@@ -406,9 +400,9 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
                   </fieldset>
                 </td>
               </tr>
-           <?php 
-             } 
-           ?>
+                <?php
+            }
+            ?>
 
               <tr>
                 <td colspan="4">
@@ -426,8 +420,8 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
                                <th>Código Ocorrência</th>
                                <th>Descrição Ocorrência</th>
                              </tr>
-                             <?php if(sizeOf($aMovimentacaoSlip_ErroBanco) > 0): ?>
-                                <?php foreach($aMovimentacaoSlip_ErroBanco as $movimentacao): ?>
+                             <?php if (sizeOf($aMovimentacaoSlip_ErroBanco) > 0) : ?>
+                                    <?php foreach ($aMovimentacaoSlip_ErroBanco as $movimentacao) : ?>
                                    <tr>
                                      <td><?php echo $movimentacao->e89_codmov ?></td>
                                      <td><?php echo $movimentacao->e90_codgera ?></td>
@@ -438,8 +432,8 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
                                      <td><?php echo $movimentacao->e92_coderro ?></td>
                                      <td><?php echo $movimentacao->e92_descrerro ?></td>
                                    </tr>
-                                <?php endforeach; ?>
-                             <?php else: ?>
+                                    <?php endforeach; ?>
+                             <?php else : ?>
                                <tr>
                                  <td colspan="8" align="center">Não há registros.</td>
                                </tr>
@@ -464,11 +458,10 @@ $aMovimentacaoSlip_ErroBanco = db_utils::getCollectionByRecord($rsMovimentacaoSl
     </tr>
   </table>
   
-  <p align="center">
-      <input type='button' value='Retornar' onclick='parent.db_iframe_slip2.hide()'/>
-      <input type='button' value='Imprimir Slip' onclick='js_emite(<?php echo $oSlip->k17_codigo; ?>)'/>
-  </p>
+    <input type='button' value='Retornar' onclick='parent.db_iframe_slip2.hide()'/>
+    <input type='button' value='Imprimir Slip' onclick='js_emite(<?php echo $oSlip->k17_codigo; ?>)'/>
 
+  </div>
 </body>
 </html>
 <script>

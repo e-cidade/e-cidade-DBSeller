@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,7 +39,7 @@ $clmer_desper_und = new cl_mer_desper_und;
 $db_opcao         = 1;
 $db_botao         = true;
 if (isset($opcao)) {
-	
+
   $result1 = $clmer_desper_und->sql_record($clmer_desper_und->sql_query("","*","","me23_i_codigo=".$me23_i_codigo));
   if ($clmer_desper_und->numrows>0) {
     db_fieldsmemory($result1,0);
@@ -47,11 +47,11 @@ if (isset($opcao)) {
   if ( $opcao == "alterar") {
     $db_opcao = 2;
   } else {
-  	
+
     if ($opcao=="excluir" || isset($db_opcao) && $db_opcao==3) {
       $db_opcao = 3;
     } else {
-    	
+
       if (isset($alterar)) {
         $db_opcao = 2;
       }
@@ -60,29 +60,29 @@ if (isset($opcao)) {
 }
 
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $clmer_desper_und->incluir($me23_i_codigo);
   db_fim_transacao();
-  
+
 }
 
 if (isset($alterar)) {
-	
+
   $db_opcao = 2;
   db_inicio_transacao();
   $clmer_desper_und->alterar($me23_i_codigo);
   db_fim_transacao();
-  
+
 }
 
 if (isset($excluir)) {
-	
+
   $db_opcao = 3;
   db_inicio_transacao();
   $clmer_desper_und->excluir($me23_i_codigo);
   db_fim_transacao();
-  
+
 }
 ?>
 <html>
@@ -100,7 +100,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Unidades de Desperdício</b></legend>
-    <?include(modification("forms/db_frmmer_desper_und.php"));?>
+    <?php include(modification("forms/db_frmmer_desper_und.php"));?>
    </fieldset>
    </center>
   </td>
@@ -111,28 +111,28 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me23_f_quant",true,1,"me23_f_quant",true);
 </script>
-<?
+<?php
 if (isset($incluir)||isset($alterar)||isset($excluir)){
-	
+
   if ($clmer_desper_und->erro_status=="0"){
-  	
+
     $clmer_desper_und->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
     if ($clmer_desper_und->erro_campo!="") {
-  	
+
       echo "<script> document.form1.".$clmer_desper_und->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_desper_und->erro_campo.".focus();</script>";
-   
+
     }
   } else {
- 	
+
     $clmer_desper_und->erro(true,false);
     $me12_d_data = substr($me12_d_data,6,4)."-".substr($me12_d_data,3,2)."-".substr($me12_d_data,0,2);
     db_redireciona("mer1_mer_desper_und001.php?me23_i_desperdicio=$me23_i_desperdicio&
                    me01_c_nome=$me01_c_nome&me12_d_data=$me12_d_data&me03_c_tipo=$me03_c_tipo"
                   );
-                 
+
   }
 }
 ?>

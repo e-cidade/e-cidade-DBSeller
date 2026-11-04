@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,11 +58,11 @@ db_postmemory($HTTP_POST_VARS);
               <tr>
                 <td align="left" style="padding-bottom: 2px;" nowrap> 
                   <b>Período:</b>
-                  <?
+                  <?php
                   db_inputdata('dataini', @$dataini_dia, @$dataini_mes, @$dataini_ano, true, 'text', 1, '');
                   ?>
                   <b>a</b>
-                  <?
+                  <?php
                   db_inputdata('datafim', @$datafim_dia, @$datafim_mes, @$datafim_ano, true, 'text', 1, '');
                   ?>
                 </td>
@@ -81,7 +81,7 @@ db_postmemory($HTTP_POST_VARS);
 
   </form>
 </center>
-<?
+<?php
 db_menu(db_getsession('DB_id_usuario'), db_getsession('DB_modulo'), 
         db_getsession('DB_anousu'), db_getsession('DB_instit')
        );

@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE averba
-class cl_averba { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j55_codave = 0; 
-   var $j55_matric = 0; 
-   var $j55_data_dia = null; 
-   var $j55_data_mes = null; 
-   var $j55_data_ano = null; 
-   var $j55_data = null; 
-   var $j55_regimo = null; 
-   var $j55_cidade = null; 
-   var $j55_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_averba {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j55_codave = 0;
+   var $j55_matric = 0;
+   var $j55_data_dia = null;
+   var $j55_data_mes = null;
+   var $j55_data_ano = null;
+   var $j55_data = null;
+   var $j55_regimo = null;
+   var $j55_cidade = null;
+   var $j55_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j55_codave = int4 = Codigo Averbacao 
-                 j55_matric = int4 = Matricula 
-                 j55_data = date = Data 
-                 j55_regimo = varchar(20) = Registro Imovel 
-                 j55_cidade = varchar(20) = Cidade 
-                 j55_numcgm = int4 = Número Cgm 
+                 j55_codave = int4 = Codigo Averbacao
+                 j55_matric = int4 = Matricula
+                 j55_data = date = Data
+                 j55_regimo = varchar(20) = Registro Imovel
+                 j55_cidade = varchar(20) = Cidade
+                 j55_numcgm = int4 = Número Cgm
                  ";
-   //funcao construtor da classe 
-   function cl_averba() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("averba"); 
+     $this->rotulo = new rotulo("averba");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_averba {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j55_codave = ($this->j55_codave == ""?@$GLOBALS["HTTP_POST_VARS"]["j55_codave"]:$this->j55_codave);
        $this->j55_matric = ($this->j55_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j55_matric"]:$this->j55_matric);
@@ -96,9 +96,9 @@ class cl_averba {
      }
    }
    // funcao para inclusao
-   function incluir ($j55_codave){ 
+   public function incluir ($j55_codave){
       $this->atualizacampos();
-     if($this->j55_matric == null ){ 
+     if($this->j55_matric == null ){
        $this->erro_sql = " Campo Matricula nao Informado.";
        $this->erro_campo = "j55_matric";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_averba {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j55_data == null ){ 
+     if($this->j55_data == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "j55_data_dia";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_averba {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j55_regimo == null ){ 
+     if($this->j55_regimo == null ){
        $this->erro_sql = " Campo Registro Imovel nao Informado.";
        $this->erro_campo = "j55_regimo";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_averba {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j55_cidade == null ){ 
+     if($this->j55_cidade == null ){
        $this->erro_sql = " Campo Cidade nao Informado.";
        $this->erro_campo = "j55_cidade";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_averba {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j55_numcgm == null ){ 
+     if($this->j55_numcgm == null ){
        $this->erro_sql = " Campo Número Cgm nao Informado.";
        $this->erro_campo = "j55_numcgm";
        $this->erro_banco = "";
@@ -144,16 +144,16 @@ class cl_averba {
        return false;
      }
      if($j55_codave == "" || $j55_codave == null ){
-       $result = db_query("select nextval('averba_j55_codave_seq')"); 
+       $result = db_query("select nextval('averba_j55_codave_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: averba_j55_codave_seq do campo: j55_codave"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: averba_j55_codave_seq do campo: j55_codave";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j55_codave = pg_result($result,0,0); 
+       $this->j55_codave = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from averba_j55_codave_seq");
        if(($result != false) && (pg_result($result,0,0) < $j55_codave)){
@@ -164,10 +164,10 @@ class cl_averba {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j55_codave = $j55_codave; 
+         $this->j55_codave = $j55_codave;
        }
      }
-     if(($this->j55_codave == null) || ($this->j55_codave == "") ){ 
+     if(($this->j55_codave == null) || ($this->j55_codave == "") ){
        $this->erro_sql = " Campo j55_codave nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,23 +176,23 @@ class cl_averba {
        return false;
      }
      $sql = "insert into averba(
-                                       j55_codave 
-                                      ,j55_matric 
-                                      ,j55_data 
-                                      ,j55_regimo 
-                                      ,j55_cidade 
-                                      ,j55_numcgm 
+                                       j55_codave
+                                      ,j55_matric
+                                      ,j55_data
+                                      ,j55_regimo
+                                      ,j55_cidade
+                                      ,j55_numcgm
                        )
                 values (
-                                $this->j55_codave 
-                               ,$this->j55_matric 
-                               ,".($this->j55_data == "null" || $this->j55_data == ""?"null":"'".$this->j55_data."'")." 
-                               ,'$this->j55_regimo' 
-                               ,'$this->j55_cidade' 
-                               ,$this->j55_numcgm 
+                                $this->j55_codave
+                               ,$this->j55_matric
+                               ,".($this->j55_data == "null" || $this->j55_data == ""?"null":"'".$this->j55_data."'")."
+                               ,'$this->j55_regimo'
+                               ,'$this->j55_cidade'
+                               ,$this->j55_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Averbações ($this->j55_codave) nao Incluído. Inclusao Abortada.";
@@ -229,16 +229,16 @@ class cl_averba {
        $resac = db_query("insert into db_acount values($acount,40,2484,'','".AddSlashes(pg_result($resaco,0,'j55_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($j55_codave=null) { 
+   public function alterar ($j55_codave=null) {
       $this->atualizacampos();
      $sql = " update averba set ";
      $virgula = "";
-     if(trim($this->j55_codave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_codave"])){ 
+     if(trim($this->j55_codave)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_codave"])){
        $sql  .= $virgula." j55_codave = $this->j55_codave ";
        $virgula = ",";
-       if(trim($this->j55_codave) == null ){ 
+       if(trim($this->j55_codave) == null ){
          $this->erro_sql = " Campo Codigo Averbacao nao Informado.";
          $this->erro_campo = "j55_codave";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_averba {
          return false;
        }
      }
-     if(trim($this->j55_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_matric"])){ 
+     if(trim($this->j55_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_matric"])){
        $sql  .= $virgula." j55_matric = $this->j55_matric ";
        $virgula = ",";
-       if(trim($this->j55_matric) == null ){ 
+       if(trim($this->j55_matric) == null ){
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j55_matric";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_averba {
          return false;
        }
      }
-     if(trim($this->j55_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"] !="") ){ 
+     if(trim($this->j55_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"] !="") ){
        $sql  .= $virgula." j55_data = '$this->j55_data' ";
        $virgula = ",";
-       if(trim($this->j55_data) == null ){ 
+       if(trim($this->j55_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j55_data_dia";
          $this->erro_banco = "";
@@ -273,11 +273,11 @@ class cl_averba {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["j55_data_dia"])){
          $sql  .= $virgula." j55_data = null ";
          $virgula = ",";
-         if(trim($this->j55_data) == null ){ 
+         if(trim($this->j55_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j55_data_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_averba {
          }
        }
      }
-     if(trim($this->j55_regimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_regimo"])){ 
+     if(trim($this->j55_regimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_regimo"])){
        $sql  .= $virgula." j55_regimo = '$this->j55_regimo' ";
        $virgula = ",";
-       if(trim($this->j55_regimo) == null ){ 
+       if(trim($this->j55_regimo) == null ){
          $this->erro_sql = " Campo Registro Imovel nao Informado.";
          $this->erro_campo = "j55_regimo";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_averba {
          return false;
        }
      }
-     if(trim($this->j55_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_cidade"])){ 
+     if(trim($this->j55_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_cidade"])){
        $sql  .= $virgula." j55_cidade = '$this->j55_cidade' ";
        $virgula = ",";
-       if(trim($this->j55_cidade) == null ){ 
+       if(trim($this->j55_cidade) == null ){
          $this->erro_sql = " Campo Cidade nao Informado.";
          $this->erro_campo = "j55_cidade";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_averba {
          return false;
        }
      }
-     if(trim($this->j55_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_numcgm"])){ 
+     if(trim($this->j55_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j55_numcgm"])){
        $sql  .= $virgula." j55_numcgm = $this->j55_numcgm ";
        $virgula = ",";
-       if(trim($this->j55_numcgm) == null ){ 
+       if(trim($this->j55_numcgm) == null ){
          $this->erro_sql = " Campo Número Cgm nao Informado.";
          $this->erro_campo = "j55_numcgm";
          $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_averba {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Averbações nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j55_codave;
@@ -381,14 +381,14 @@ class cl_averba {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j55_codave=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j55_codave=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j55_codave));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -419,7 +419,7 @@ class cl_averba {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Averbações nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j55_codave;
@@ -447,11 +447,11 @@ class cl_averba {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -473,10 +473,10 @@ class cl_averba {
       }
      return $result;
    }
-   function sql_query ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,15 +493,15 @@ class cl_averba {
      $sql2 = "";
      if($dbwhere==""){
        if($j55_codave!=null ){
-         $sql2 .= " where averba.j55_codave = $j55_codave "; 
-       } 
+         $sql2 .= " where averba.j55_codave = $j55_codave ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,10 +510,10 @@ class cl_averba {
      }
      return $sql;
   }
-   function sql_query_file ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,15 +526,15 @@ class cl_averba {
      $sql2 = "";
      if($dbwhere==""){
        if($j55_codave!=null ){
-         $sql2 .= " where averba.j55_codave = $j55_codave "; 
-       } 
+         $sql2 .= " where averba.j55_codave = $j55_codave ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,10 +543,10 @@ class cl_averba {
      }
      return $sql;
   }
-   function sql_query_nomeant ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_nomeant ( $j55_codave=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,15 +560,15 @@ class cl_averba {
      $sql2 = "";
      if($dbwhere==""){
        if($j55_codave!=null ){
-         $sql2 .= " where averba.j55_codave = $j55_codave "; 
-       } 
+         $sql2 .= " where averba.j55_codave = $j55_codave ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

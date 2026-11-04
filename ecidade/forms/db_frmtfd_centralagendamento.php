@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,19 +38,19 @@ $clrotulo->label("z01_nome");
        <?=@$Ltf09_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf09_i_codigo',10,$Itf09_i_codigo,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf09_i_numcgm?>">
-      <?
+      <?php
       db_ancora(@$Ltf09_i_numcgm,"js_pesquisatf09_i_numcgm(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf09_i_numcgm',10,$Itf09_i_numcgm,true,'text',$db_opcao," onchange='js_pesquisatf09_i_numcgm(false);'");
       db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
       ?>
@@ -90,7 +90,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_centralagendamento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

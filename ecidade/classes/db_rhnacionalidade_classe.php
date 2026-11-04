@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_rhnacionalidade {
                  rh06_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhnacionalidade() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhnacionalidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhnacionalidade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh06_nacionalidade = ($this->rh06_nacionalidade == ""?@$GLOBALS["HTTP_POST_VARS"]["rh06_nacionalidade"]:$this->rh06_nacionalidade);
        $this->rh06_descr = ($this->rh06_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["rh06_descr"]:$this->rh06_descr);
@@ -74,7 +74,7 @@ class cl_rhnacionalidade {
      }
    }
    // funcao para inclusao
-   function incluir ($rh06_nacionalidade){ 
+   public function incluir ($rh06_nacionalidade){ 
       $this->atualizacampos();
      if($this->rh06_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -138,7 +138,7 @@ class cl_rhnacionalidade {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($rh06_nacionalidade=null) { 
+   public function alterar ($rh06_nacionalidade=null) { 
       $this->atualizacampos();
      $sql = " update rhnacionalidade set ";
      $virgula = "";
@@ -218,7 +218,7 @@ class cl_rhnacionalidade {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($rh06_nacionalidade=null,$dbwhere=null) { 
+   public function excluir ($rh06_nacionalidade=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh06_nacionalidade));
      }else{ 
@@ -280,7 +280,7 @@ class cl_rhnacionalidade {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,7 +302,7 @@ class cl_rhnacionalidade {
       }
      return $result;
    }
-   function sql_query ( $rh06_nacionalidade=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh06_nacionalidade=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -335,7 +335,7 @@ class cl_rhnacionalidade {
      }
      return $sql;
   }
-   function sql_query_file ( $rh06_nacionalidade=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh06_nacionalidade=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

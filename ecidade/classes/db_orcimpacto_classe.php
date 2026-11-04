@@ -1,84 +1,84 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: orcamento
 //CLASSE DA ENTIDADE orcimpacto
-class cl_orcimpacto { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $o90_codimp = 0; 
-   var $o90_codperiodo = 0; 
-   var $o90_anoexe = 0; 
-   var $o90_orgao = 0; 
-   var $o90_unidade = 0; 
-   var $o90_funcao = 0; 
-   var $o90_subfuncao = 0; 
-   var $o90_programa = 0; 
-   var $o90_programatxt = null; 
-   var $o90_acao = 0; 
-   var $o90_acaotxt = null; 
-   var $o90_unimed = null; 
-   var $o90_produto = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_orcimpacto {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $o90_codimp = 0;
+   var $o90_codperiodo = 0;
+   var $o90_anoexe = 0;
+   var $o90_orgao = 0;
+   var $o90_unidade = 0;
+   var $o90_funcao = 0;
+   var $o90_subfuncao = 0;
+   var $o90_programa = 0;
+   var $o90_programatxt = null;
+   var $o90_acao = 0;
+   var $o90_acaotxt = null;
+   var $o90_unimed = null;
+   var $o90_produto = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 o90_codimp = int4 = Código 
-                 o90_codperiodo = int8 = Período 
-                 o90_anoexe = int4 = Exercício 
-                 o90_orgao = int4 = Órgão 
-                 o90_unidade = int4 = Unidade 
-                 o90_funcao = int4 = Função 
-                 o90_subfuncao = int4 = Sub Função 
-                 o90_programa = int4 = Programa 
-                 o90_programatxt = text = Descrição Programa 
-                 o90_acao = int4 = Projetos / Atividades 
-                 o90_acaotxt = text = Descrição Ação 
-                 o90_unimed = varchar(15) = Unidade Medida 
-                 o90_produto = int4 = Produto 
+                 o90_codimp = int4 = Código
+                 o90_codperiodo = int8 = Período
+                 o90_anoexe = int4 = Exercício
+                 o90_orgao = int4 = Órgão
+                 o90_unidade = int4 = Unidade
+                 o90_funcao = int4 = Função
+                 o90_subfuncao = int4 = Sub Função
+                 o90_programa = int4 = Programa
+                 o90_programatxt = text = Descrição Programa
+                 o90_acao = int4 = Projetos / Atividades
+                 o90_acaotxt = text = Descrição Ação
+                 o90_unimed = varchar(15) = Unidade Medida
+                 o90_produto = int4 = Produto
                  ";
-   //funcao construtor da classe 
-   function cl_orcimpacto() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("orcimpacto"); 
+     $this->rotulo = new rotulo("orcimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_orcimpacto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->o90_codimp = ($this->o90_codimp == ""?@$GLOBALS["HTTP_POST_VARS"]["o90_codimp"]:$this->o90_codimp);
        $this->o90_codperiodo = ($this->o90_codperiodo == ""?@$GLOBALS["HTTP_POST_VARS"]["o90_codperiodo"]:$this->o90_codperiodo);
@@ -107,9 +107,9 @@ class cl_orcimpacto {
      }
    }
    // funcao para inclusao
-   function incluir ($o90_codimp){ 
+   public function incluir ($o90_codimp){
       $this->atualizacampos();
-     if($this->o90_codperiodo == null ){ 
+     if($this->o90_codperiodo == null ){
        $this->erro_sql = " Campo Período nao Informado.";
        $this->erro_campo = "o90_codperiodo";
        $this->erro_banco = "";
@@ -118,7 +118,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_anoexe == null ){ 
+     if($this->o90_anoexe == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "o90_anoexe";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_orgao == null ){ 
+     if($this->o90_orgao == null ){
        $this->erro_sql = " Campo Órgão nao Informado.";
        $this->erro_campo = "o90_orgao";
        $this->erro_banco = "";
@@ -136,7 +136,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_unidade == null ){ 
+     if($this->o90_unidade == null ){
        $this->erro_sql = " Campo Unidade nao Informado.";
        $this->erro_campo = "o90_unidade";
        $this->erro_banco = "";
@@ -145,7 +145,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_funcao == null ){ 
+     if($this->o90_funcao == null ){
        $this->erro_sql = " Campo Função nao Informado.";
        $this->erro_campo = "o90_funcao";
        $this->erro_banco = "";
@@ -154,7 +154,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_subfuncao == null ){ 
+     if($this->o90_subfuncao == null ){
        $this->erro_sql = " Campo Sub Função nao Informado.";
        $this->erro_campo = "o90_subfuncao";
        $this->erro_banco = "";
@@ -163,7 +163,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_programa == null ){ 
+     if($this->o90_programa == null ){
        $this->erro_sql = " Campo Programa nao Informado.";
        $this->erro_campo = "o90_programa";
        $this->erro_banco = "";
@@ -172,7 +172,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_programatxt == null ){ 
+     if($this->o90_programatxt == null ){
        $this->erro_sql = " Campo Descrição Programa nao Informado.";
        $this->erro_campo = "o90_programatxt";
        $this->erro_banco = "";
@@ -181,7 +181,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_acao == null ){ 
+     if($this->o90_acao == null ){
        $this->erro_sql = " Campo Projetos / Atividades nao Informado.";
        $this->erro_campo = "o90_acao";
        $this->erro_banco = "";
@@ -190,7 +190,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_acaotxt == null ){ 
+     if($this->o90_acaotxt == null ){
        $this->erro_sql = " Campo Descrição Ação nao Informado.";
        $this->erro_campo = "o90_acaotxt";
        $this->erro_banco = "";
@@ -199,7 +199,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_unimed == null ){ 
+     if($this->o90_unimed == null ){
        $this->erro_sql = " Campo Unidade Medida nao Informado.";
        $this->erro_campo = "o90_unimed";
        $this->erro_banco = "";
@@ -208,7 +208,7 @@ class cl_orcimpacto {
        $this->erro_status = "0";
        return false;
      }
-     if($this->o90_produto == null ){ 
+     if($this->o90_produto == null ){
        $this->erro_sql = " Campo Produto nao Informado.";
        $this->erro_campo = "o90_produto";
        $this->erro_banco = "";
@@ -218,16 +218,16 @@ class cl_orcimpacto {
        return false;
      }
      if($o90_codimp == "" || $o90_codimp == null ){
-       $result = db_query("select nextval('orcimpacto_o90_codimp_seq')"); 
+       $result = db_query("select nextval('orcimpacto_o90_codimp_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: orcimpacto_o90_codimp_seq do campo: o90_codimp"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: orcimpacto_o90_codimp_seq do campo: o90_codimp";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->o90_codimp = pg_result($result,0,0); 
+       $this->o90_codimp = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from orcimpacto_o90_codimp_seq");
        if(($result != false) && (pg_result($result,0,0) < $o90_codimp)){
@@ -238,10 +238,10 @@ class cl_orcimpacto {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->o90_codimp = $o90_codimp; 
+         $this->o90_codimp = $o90_codimp;
        }
      }
-     if(($this->o90_codimp == null) || ($this->o90_codimp == "") ){ 
+     if(($this->o90_codimp == null) || ($this->o90_codimp == "") ){
        $this->erro_sql = " Campo o90_codimp nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -250,37 +250,37 @@ class cl_orcimpacto {
        return false;
      }
      $sql = "insert into orcimpacto(
-                                       o90_codimp 
-                                      ,o90_codperiodo 
-                                      ,o90_anoexe 
-                                      ,o90_orgao 
-                                      ,o90_unidade 
-                                      ,o90_funcao 
-                                      ,o90_subfuncao 
-                                      ,o90_programa 
-                                      ,o90_programatxt 
-                                      ,o90_acao 
-                                      ,o90_acaotxt 
-                                      ,o90_unimed 
-                                      ,o90_produto 
+                                       o90_codimp
+                                      ,o90_codperiodo
+                                      ,o90_anoexe
+                                      ,o90_orgao
+                                      ,o90_unidade
+                                      ,o90_funcao
+                                      ,o90_subfuncao
+                                      ,o90_programa
+                                      ,o90_programatxt
+                                      ,o90_acao
+                                      ,o90_acaotxt
+                                      ,o90_unimed
+                                      ,o90_produto
                        )
                 values (
-                                $this->o90_codimp 
-                               ,$this->o90_codperiodo 
-                               ,$this->o90_anoexe 
-                               ,$this->o90_orgao 
-                               ,$this->o90_unidade 
-                               ,$this->o90_funcao 
-                               ,$this->o90_subfuncao 
-                               ,$this->o90_programa 
-                               ,'$this->o90_programatxt' 
-                               ,$this->o90_acao 
-                               ,'$this->o90_acaotxt' 
-                               ,'$this->o90_unimed' 
-                               ,$this->o90_produto 
+                                $this->o90_codimp
+                               ,$this->o90_codperiodo
+                               ,$this->o90_anoexe
+                               ,$this->o90_orgao
+                               ,$this->o90_unidade
+                               ,$this->o90_funcao
+                               ,$this->o90_subfuncao
+                               ,$this->o90_programa
+                               ,'$this->o90_programatxt'
+                               ,$this->o90_acao
+                               ,'$this->o90_acaotxt'
+                               ,'$this->o90_unimed'
+                               ,$this->o90_produto
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Impacto Orçamentário ($this->o90_codimp) nao Incluído. Inclusao Abortada.";
@@ -324,16 +324,16 @@ class cl_orcimpacto {
        $resac = db_query("insert into db_acount values($acount,1088,6639,'','".AddSlashes(pg_result($resaco,0,'o90_produto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($o90_codimp=null) { 
+   public function alterar ($o90_codimp=null) {
       $this->atualizacampos();
      $sql = " update orcimpacto set ";
      $virgula = "";
-     if(trim($this->o90_codimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_codimp"])){ 
+     if(trim($this->o90_codimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_codimp"])){
        $sql  .= $virgula." o90_codimp = $this->o90_codimp ";
        $virgula = ",";
-       if(trim($this->o90_codimp) == null ){ 
+       if(trim($this->o90_codimp) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o90_codimp";
          $this->erro_banco = "";
@@ -343,10 +343,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_codperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_codperiodo"])){ 
+     if(trim($this->o90_codperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_codperiodo"])){
        $sql  .= $virgula." o90_codperiodo = $this->o90_codperiodo ";
        $virgula = ",";
-       if(trim($this->o90_codperiodo) == null ){ 
+       if(trim($this->o90_codperiodo) == null ){
          $this->erro_sql = " Campo Período nao Informado.";
          $this->erro_campo = "o90_codperiodo";
          $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_anoexe"])){ 
+     if(trim($this->o90_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_anoexe"])){
        $sql  .= $virgula." o90_anoexe = $this->o90_anoexe ";
        $virgula = ",";
-       if(trim($this->o90_anoexe) == null ){ 
+       if(trim($this->o90_anoexe) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o90_anoexe";
          $this->erro_banco = "";
@@ -369,10 +369,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_orgao"])){ 
+     if(trim($this->o90_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_orgao"])){
        $sql  .= $virgula." o90_orgao = $this->o90_orgao ";
        $virgula = ",";
-       if(trim($this->o90_orgao) == null ){ 
+       if(trim($this->o90_orgao) == null ){
          $this->erro_sql = " Campo Órgão nao Informado.";
          $this->erro_campo = "o90_orgao";
          $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_unidade"])){ 
+     if(trim($this->o90_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_unidade"])){
        $sql  .= $virgula." o90_unidade = $this->o90_unidade ";
        $virgula = ",";
-       if(trim($this->o90_unidade) == null ){ 
+       if(trim($this->o90_unidade) == null ){
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "o90_unidade";
          $this->erro_banco = "";
@@ -395,10 +395,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_funcao"])){ 
+     if(trim($this->o90_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_funcao"])){
        $sql  .= $virgula." o90_funcao = $this->o90_funcao ";
        $virgula = ",";
-       if(trim($this->o90_funcao) == null ){ 
+       if(trim($this->o90_funcao) == null ){
          $this->erro_sql = " Campo Função nao Informado.";
          $this->erro_campo = "o90_funcao";
          $this->erro_banco = "";
@@ -408,10 +408,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_subfuncao"])){ 
+     if(trim($this->o90_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_subfuncao"])){
        $sql  .= $virgula." o90_subfuncao = $this->o90_subfuncao ";
        $virgula = ",";
-       if(trim($this->o90_subfuncao) == null ){ 
+       if(trim($this->o90_subfuncao) == null ){
          $this->erro_sql = " Campo Sub Função nao Informado.";
          $this->erro_campo = "o90_subfuncao";
          $this->erro_banco = "";
@@ -421,10 +421,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_programa"])){ 
+     if(trim($this->o90_programa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_programa"])){
        $sql  .= $virgula." o90_programa = $this->o90_programa ";
        $virgula = ",";
-       if(trim($this->o90_programa) == null ){ 
+       if(trim($this->o90_programa) == null ){
          $this->erro_sql = " Campo Programa nao Informado.";
          $this->erro_campo = "o90_programa";
          $this->erro_banco = "";
@@ -434,10 +434,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_programatxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_programatxt"])){ 
+     if(trim($this->o90_programatxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_programatxt"])){
        $sql  .= $virgula." o90_programatxt = '$this->o90_programatxt' ";
        $virgula = ",";
-       if(trim($this->o90_programatxt) == null ){ 
+       if(trim($this->o90_programatxt) == null ){
          $this->erro_sql = " Campo Descrição Programa nao Informado.";
          $this->erro_campo = "o90_programatxt";
          $this->erro_banco = "";
@@ -447,10 +447,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_acao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_acao"])){ 
+     if(trim($this->o90_acao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_acao"])){
        $sql  .= $virgula." o90_acao = $this->o90_acao ";
        $virgula = ",";
-       if(trim($this->o90_acao) == null ){ 
+       if(trim($this->o90_acao) == null ){
          $this->erro_sql = " Campo Projetos / Atividades nao Informado.";
          $this->erro_campo = "o90_acao";
          $this->erro_banco = "";
@@ -460,10 +460,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_acaotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_acaotxt"])){ 
+     if(trim($this->o90_acaotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_acaotxt"])){
        $sql  .= $virgula." o90_acaotxt = '$this->o90_acaotxt' ";
        $virgula = ",";
-       if(trim($this->o90_acaotxt) == null ){ 
+       if(trim($this->o90_acaotxt) == null ){
          $this->erro_sql = " Campo Descrição Ação nao Informado.";
          $this->erro_campo = "o90_acaotxt";
          $this->erro_banco = "";
@@ -473,10 +473,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_unimed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_unimed"])){ 
+     if(trim($this->o90_unimed)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_unimed"])){
        $sql  .= $virgula." o90_unimed = '$this->o90_unimed' ";
        $virgula = ",";
-       if(trim($this->o90_unimed) == null ){ 
+       if(trim($this->o90_unimed) == null ){
          $this->erro_sql = " Campo Unidade Medida nao Informado.";
          $this->erro_campo = "o90_unimed";
          $this->erro_banco = "";
@@ -486,10 +486,10 @@ class cl_orcimpacto {
          return false;
        }
      }
-     if(trim($this->o90_produto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_produto"])){ 
+     if(trim($this->o90_produto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o90_produto"])){
        $sql  .= $virgula." o90_produto = $this->o90_produto ";
        $virgula = ",";
-       if(trim($this->o90_produto) == null ){ 
+       if(trim($this->o90_produto) == null ){
          $this->erro_sql = " Campo Produto nao Informado.";
          $this->erro_campo = "o90_produto";
          $this->erro_banco = "";
@@ -539,7 +539,7 @@ class cl_orcimpacto {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Impacto Orçamentário nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->o90_codimp;
@@ -567,14 +567,14 @@ class cl_orcimpacto {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($o90_codimp=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($o90_codimp=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($o90_codimp));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -612,7 +612,7 @@ class cl_orcimpacto {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Impacto Orçamentário nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$o90_codimp;
@@ -640,11 +640,11 @@ class cl_orcimpacto {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -667,10 +667,10 @@ class cl_orcimpacto {
      return $result;
    }
 
-   function sql_query ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -698,15 +698,15 @@ class cl_orcimpacto {
      $sql2 = "";
      if($dbwhere==""){
        if($o90_codimp!=null ){
-         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp "; 
-       } 
+         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -716,10 +716,10 @@ class cl_orcimpacto {
      return $sql;
   }
 
-   function sql_query_file ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -732,15 +732,15 @@ class cl_orcimpacto {
      $sql2 = "";
      if($dbwhere==""){
        if($o90_codimp!=null ){
-         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp "; 
-       } 
+         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -749,11 +749,11 @@ class cl_orcimpacto {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_compl ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_compl ( $o90_codimp=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -774,15 +774,15 @@ class cl_orcimpacto {
      $sql2 = "";
      if($dbwhere==""){
        if($o90_codimp!=null ){
-         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp "; 
-       } 
+         $sql2 .= " where orcimpacto.o90_codimp = $o90_codimp ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

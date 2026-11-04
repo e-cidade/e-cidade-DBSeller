@@ -161,7 +161,7 @@ if (!isset($pesquisa_chave)) {
     $result = db_query($sql);
     if (pg_num_rows($result) != 0) {
         db_fieldsmemory($result, 0);
-        echo "<script>" . $funcao_js . "('$k02_drecei',false,'$dl_recurso','$dl_tipo_debito','$k00_descr','$k02_descr');</script>";
+        echo "<script>" . $funcao_js . "('$k02_drecei',false,'$db_id_recurso','$dl_tipo_debito','$k00_descr','$k02_descr');</script>";
     } else {
         echo "<script>" . $funcao_js . "('Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
     }

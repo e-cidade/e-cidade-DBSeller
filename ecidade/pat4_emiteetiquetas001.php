@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clrotulo->label("t30_descr");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, prototype.js");
   db_app::load("estilos.css");
 ?>
@@ -57,32 +57,32 @@ $clrotulo->label("t30_descr");
     <legend>Imprimir Etiquetas</legend>
     <table class="form-container">
       <tr> 
-        <td title="<?=$Tt52_depart?>"> <? db_ancora(@$Lt52_depart,"js_pesquisa_depart(true);",1);?>  </td>
+        <td title="<?=$Tt52_depart?>"> <?php db_ancora(@$Lt52_depart,"js_pesquisa_depart(true);",1);?>  </td>
         <td>
-          <?
+          <?php
             db_input("t52_depart",8,$It52_depart,true,"text",4,"onchange='js_pesquisa_depart(false);'"); 
             db_input("descrdepto",40,$Idescrdepto,true,"text",3);  
           ?>
         </td>
       </tr>
       <tr> 
-        <td title="<?=$Tt30_codigo?>"> <? db_ancora(@$Lt30_codigo,"js_pesquisa_divisao(true);",1);?>  </td>
+        <td title="<?=$Tt30_codigo?>"> <?php db_ancora(@$Lt30_codigo,"js_pesquisa_divisao(true);",1);?>  </td>
         <td>
-          <?
+          <?php
             db_input("t30_codigo",8,$It30_codigo,true,"text",4,"onchange='js_pesquisa_divisao(false);'"); 
             db_input("t30_descr",40,$It30_descr,true,"text",3);  
           ?>
         </td>
       </tr>
       <tr> 
-	      <td title="<?=$Tt52_bem?>"> <? db_ancora('<b>Bem Inicial:</b>',"js_pesquisa_bem(true);",1);?>  </td>
+	      <td title="<?=$Tt52_bem?>"> <?php db_ancora('<b>Bem Inicial:</b>',"js_pesquisa_bem(true);",1);?>  </td>
 	      <td>
-	        <?
+	        <?php
 	          db_input("t52_bem",8,$It52_bem,true,"text",4,"onchange='js_pesquisa_bem(false);'"); 
 	        ?>
 	        <b>à</b>
-	        <? db_ancora('<b>Bem Fim:</b>',"js_pesquisa_bemFinal(true);",1);?>
-	        <?
+	        <?php db_ancora('<b>Bem Fim:</b>',"js_pesquisa_bemFinal(true);",1);?>
+	        <?php
             db_input("t52_bemfinal",8,$It52_bem,true,"text",4,"onchange='js_pesquisa_bemFinal(false);'"); 
           ?>
 	      </td>
@@ -91,7 +91,7 @@ $clrotulo->label("t30_descr");
   </fieldset>
   <input value='Pesquisar' type='button' id='pesquisar' onclick='js_imprimeEtiquetas();'>
 </form>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

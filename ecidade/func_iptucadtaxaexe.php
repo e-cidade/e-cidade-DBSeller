@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
               <?=$Lj08_iptucadtaxaexe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j08_iptucadtaxaexe",10,$Ij08_iptucadtaxaexe,true,"text",4,"","chave_j08_iptucadtaxaexe");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
               <?=$Lj08_iptucadtaxa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j08_iptucadtaxa",10,$Ij08_iptucadtaxa,true,"text",4,"","chave_j08_iptucadtaxa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucadtaxaexe.php")==true){
@@ -122,12 +122,12 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

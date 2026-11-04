@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("fa04_i_codigo");
        <?=@$Lfa08_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa08_i_codigo',5,$Ifa08_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa08_i_cgsund?>">
-       <?
+       <?php
        db_ancora(@$Lfa08_i_cgsund,"js_pesquisafa08_i_cgsund(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa08_i_cgsund',5,$Ifa08_i_cgsund,true,'text',$db_opcao," onchange='js_pesquisafa08_i_cgsund(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa08_i_retirada?>">
-       <?
+       <?php
        db_ancora(@$Lfa08_i_retirada,"js_pesquisafa08_i_retirada(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa08_i_retirada',5,$Ifa08_i_retirada,true,'text',$db_opcao," onchange='js_pesquisafa08_i_retirada(false);'")
 ?>
-       <?
+       <?php
 db_input('fa04_i_codigo',5,$Ifa04_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_retiradarequisitante.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

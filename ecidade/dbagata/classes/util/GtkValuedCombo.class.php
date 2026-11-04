@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -27,21 +27,21 @@
 
 class GtkValuedCombo extends GtkCombo
 {
-    function GtkValuedCombo()
+    public function GtkValuedCombo()
     {
         GtkCombo::GtkCombo();
         $entry = $this->entry;
         $entry->set_editable(FALSE);
     }
 
-    function set_popdown_strings($strings) {
+    public function set_popdown_strings($strings) {
         return $this->set_popdown_items($strings); // Ok, o set_popdown_items pode cuidar disso
     }
 
     // Essa função tem que refazer o trabalho da função set_popdown_strings do GTK+.
     // Como essa função não é implementada no PHP-GTK, ja que isso é apenas um bind,
     // o código dessa função está baseado no código C do GTK+
-    function set_popdown_items($items)
+    public function set_popdown_items($items)
     {
         if(is_array($items))
         {
@@ -54,7 +54,7 @@ class GtkValuedCombo extends GtkCombo
         }
     }
 
-    function add($item)
+    public function add($item)
     {
         if(is_array($item)) // if it is a key -> value
         {
@@ -74,7 +74,7 @@ class GtkValuedCombo extends GtkCombo
         $list->add($list_item);
     }
 
-    function get_value() {
+    public function get_value() {
         $list = $this->list;
         $selection = $list->selection;
         if ($selection)
@@ -83,14 +83,14 @@ class GtkValuedCombo extends GtkCombo
         }
     }
     
-    function get_text()
+    public function get_text()
     {
         //var_dump($this->get_value());
         return $this->get_value();
     }
     
     // BC reasons
-    function set_text($value)
+    public function set_text($value)
     {
         $list = $this->list;
         if (isset($this->items_list[$value]))
@@ -100,7 +100,7 @@ class GtkValuedCombo extends GtkCombo
     }
     
     // BC reasons
-    function set_editable($bool)
+    public function set_editable($bool)
     {
         $entry = $this->entry;
         $entry->set_editable($bool);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $oRotulo->label('z01_v_nome');
       <?=$Lvc16_i_cgs?>
     </td>
     <td nowrap width="30%">
-      <?
+      <?php
       db_input('iCgs', 10, $Ivc16_i_cgs, true, 'text', 3, '');
       db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
       ?>
@@ -69,7 +69,7 @@ $oRotulo->label('z01_v_nome');
     </td>
     <td nowrap width="64%">
       &nbsp;&nbsp;
-      <?
+      <?php
       db_input('idade', 23, '', true, 'text', 3, '');
       ?>
     </td>
@@ -79,7 +79,7 @@ $oRotulo->label('z01_v_nome');
 <table marginwidth="0" width="100%" border="1" cellspacing="0" cellpadding="0">
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php
    
    $sSql      = $clvac_calendario->sql_query("","*","vc05_i_idadeini","");
    $rsResult  = $clvac_calendario->sql_record($sSql);

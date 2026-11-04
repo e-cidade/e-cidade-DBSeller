@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,12 +92,12 @@ function js_testacamp(){
    <table class="form-container">
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lz01_nome,' js_cgm(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'","z_numcgm");
             db_input('z01_nome',60,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -105,12 +105,12 @@ function js_testacamp(){
       </tr>
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',60,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -118,12 +118,12 @@ function js_testacamp(){
       </tr>     
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('q02_inscr',10,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',60,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -136,7 +136,7 @@ function js_testacamp(){
 
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -208,7 +208,7 @@ function js_mostracgm1(erro,chave){
 }
 
 </script>
-<?
+<?php
 if(isset($dado) && $dado=="inscr"){
   db_msgbox("Inscrição inválida.");
 }  

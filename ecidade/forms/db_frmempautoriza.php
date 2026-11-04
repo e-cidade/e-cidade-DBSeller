@@ -145,7 +145,7 @@ if ($db_opcao == 1) {
                             return ($tipocompra == $dado->e54_codcom && $dado->l44_obrigalicitacao == 't');
                         }));
 
-                        $result = $clcflicita->sql_record($clcflicita->sql_query_file(null, "l03_tipo,l03_descr", '', "l03_codcom=$tipocompra and l03_instit = " . db_getsession('DB_instit')));
+                        $result = $clcflicita->sql_record($clcflicita->sql_query_file(null, "l03_tipo,l03_descr", '', "l03_codcom=$tipocompra and l03_instit = " . db_getsession('DB_instit') . " and l03_modalidadeativa = 't'"));
                         if ($clcflicita->numrows > 0) {
                             /*
                              * alterado para liberar o campo tipo licitacao para alteracao
@@ -237,6 +237,7 @@ if ($db_opcao == 1) {
                                $sql
                         ";
                     }
+                     $sql .= " order by 1";
                      $result = $clemphist->sql_record($sql);
                     db_selectrecord("e57_codhist", $result, true, isset($emprocesso) && $emprocesso == true ? "3" : "1", "", "", "");
                     ?>
@@ -820,7 +821,7 @@ if ($db_opcao == 1) {
 
     function js_preenchepesquisa(chave) {
         db_iframe_<?=$iframe?>.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

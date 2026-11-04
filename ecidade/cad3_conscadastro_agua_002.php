@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,7 +74,7 @@ function js_Impressao() {
 </head>
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if ($matriculaSelecionada == 0) {
    $db_erro = "Matricula nao cadastrada";
 ?>
@@ -85,7 +85,7 @@ if ($matriculaSelecionada == 0) {
   </tr>
   <tr>
     <td height="56" align="center"><font size="2" face="Arial, Helvetica, sans-serif"><br>
-    <?
+    <?php
   echo @$db_erro;
   ?>
      </font></td>
@@ -96,7 +96,7 @@ if ($matriculaSelecionada == 0) {
   </tr>
 </table>
 </center>
-<?
+<?php
  /***********************************************************************************************/
  // Se encontrou a matrícula, exibe tabela com a descrição do imóvel.
 } else {
@@ -107,11 +107,11 @@ if ($matriculaSelecionada == 0) {
  $sSql .= "        inner join aguarota on x06_codrota = x07_codrota ";
  $sSql .= "  WHERE x07_codrua = {$x01_codrua}                       ";
  $sSql .= "    AND {$x01_numero} between x07_nroini and x07_nrofim  ";
- 
+
  $rsResultado = db_query($sSql);
  db_fieldsmemory($rsResultado, 0);
- 
- 
+
+
  if($x01_entrega != '') {
   $rsZonaEntrega = db_query("select * from iptucadzonaentrega where j85_codigo = {$x01_entrega}");
    db_fieldsmemory($rsZonaEntrega, 0);
@@ -124,7 +124,7 @@ if ($matriculaSelecionada == 0) {
       DO IM&Oacute;VEL (&nbsp;
       <?=$x01_tipoimovel?>
       &nbsp;)&nbsp;</strong>
-    <?
+    <?php
     //if(!empty($j01_baixa))
     //   echo "</font><font color=\"red\"><strong> Baixada :".$j01_baixa."</strong></font>";
     ?>
@@ -145,7 +145,7 @@ if ($matriculaSelecionada == 0) {
   </td>
 
    <td width=10% align="right" nowrap bgcolor="#CCCCCC" title='Clique aqui para outros dados do contribuinte'>
-      <?db_ancora($Lx01_numcgm,"js_JanelaAutomatica('cgm','$x01_numcgm')",2);?>
+      <?php db_ancora($Lx01_numcgm,"js_JanelaAutomatica('cgm','$x01_numcgm')",2);?>
   </td>
 
     <td align="left" nowrap bgcolor="#FFFFFF">
@@ -404,7 +404,7 @@ if ($matriculaSelecionada == 0) {
 
 
 </table>
-  <?
+  <?php
 }  // fecha chave que mostra a descricao da propriedade
 ?>
 </body>

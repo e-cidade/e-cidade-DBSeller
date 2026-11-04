@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -124,7 +124,7 @@ function js_volta(){
           <?=@$Lj43_matric?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_matric',4,$Ij43_matric,true,'text',3," onchange='js_pesquisaj43_matric(false);'")
 ?>
         </td>
@@ -134,7 +134,7 @@ function js_volta(){
        <?=@$Lj43_ender?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_ender',40,$Ij43_ender,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -144,7 +144,7 @@ function js_volta(){
        <?=@$Lj43_numimo?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_numimo',10,$Ij43_numimo,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -154,7 +154,7 @@ function js_volta(){
        <?=@$Lj43_comple?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_comple',20,$Ij43_comple,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -164,7 +164,7 @@ function js_volta(){
        <?=@$Lj43_cxpost?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_cxpost',10,$Ij43_cxpost,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -174,7 +174,7 @@ function js_volta(){
        <?=@$Lj43_bairro?>
     </td>
     <td> 
-<?
+<?php
 db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -184,7 +184,7 @@ db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
           <?=@$Lj43_munic?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_munic',20,$Ij43_munic,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -194,7 +194,7 @@ db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
        <?=@$Lj43_uf?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_uf',2,$Ij43_uf,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -204,7 +204,7 @@ db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
        <?=@$Lj43_cep?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_cep',8,$Ij43_cep,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -214,7 +214,7 @@ db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
        <?=@$Lj43_dest?>
         </td>
         <td> 
-<?
+<?php
   db_input('j43_dest',40,$Ij43_dest,true,'text',$db_opcao,"")
 ?>
         </td>
@@ -228,12 +228,12 @@ db_input('j43_bairro',40,$Ij43_bairro,true,'text',$db_opcao,"")
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

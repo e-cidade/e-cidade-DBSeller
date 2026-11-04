@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ll45_sequencial?></label></td>
-          <td><? db_input("l45_sequencial",10,$Il45_sequencial,true,"text",4,"","chave_l45_sequencial"); ?></td>
+          <td><?php db_input("l45_sequencial",10,$Il45_sequencial,true,"text",4,"","chave_l45_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ll45_descricao?></label></td>
-          <td><? db_input("l45_descricao",10,$Il45_descricao,true,"text",4,"","chave_l45_descricao");?></td>
+          <td><?php db_input("l45_descricao",10,$Il45_descricao,true,"text",4,"","chave_l45_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_liclicitatipoevento.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclicitatipoevento.php")==true){
@@ -78,12 +78,12 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

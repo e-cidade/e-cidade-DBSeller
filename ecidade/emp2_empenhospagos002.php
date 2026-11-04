@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("fpdf151/pdf.php"));
@@ -73,19 +73,19 @@ if (!empty($oGet->iContaPagadora)) {
  * Validar Datas
  */
 if ( !empty($oGet->dtDataInicial) && !empty($oGet->dtDataFinal) ) {
-  
+
   $aWhere[] = "coremp.k12_data between '{$dtDataInicialBanco}' and '{$dtDataFinalBanco}'";
   $head5    = "Ordem de {$oGet->dtDataInicial} até {$oGet->dtDataFinal}";
 } else if (!empty($oGet->dtDataInicial)) {
-  
+
   $aWhere[] = "coremp.k12_data >= '{$dtDataInicialBanco}'";
   $head5    = "Ordem a partir de: {$oGet->dtDataInicial}";
 } else if (!empty($oGet->dtDataFinal)) {
-  
+
   $aWhere[] = "coremp.k12_data <= '{$dtDataFinalBanco}'";
   $head5    = "Ordem até: {$oGet->dtDataInicial}";
 } else {
-  
+
   $sSqlBuscaDataEmp   = "  select max(coremp.k12_data) as maior,                                    ";
   $sSqlBuscaDataEmp  .= "         min(coremp.k12_data) as menor                                     ";
   $sSqlBuscaDataEmp  .= "    from coremp                                                            ";
@@ -111,7 +111,7 @@ $sWhereEmpenho = "";
 if ($oGet->iListaEmpenho == 0) {
   $sWhereEmpenho = '1 = 1';
 } else {
-  
+
   if ($oGet->iListaEmpenho == 1) {
     $sWhereEmpenho = "tipo = 'Emp'";
   } else {
@@ -125,11 +125,26 @@ if (!empty($oGet->iTipoBaixa) && $oGet->iTipoBaixa == 2) {
   $aWhere[] = "k106_sequencial in (2, 5)";
 }
 
-$sImplodeWhere     = implode(" and ", $aWhere);                                                                    
-$sImplodeOrderBy   = implode(", ", $aOrderBy);                                                                     
+$sImplodeWhere     = implode(" and ", $aWhere);
+$sImplodeOrderBy   = implode(", ", $aOrderBy);
+
+if (isValenca()) {
+    $campo_processo = 'e150_numeroprocesso,';
+    $joins_valenca = "
+        inner join empempaut on e61_numemp = empempenho.e60_numemp
+        inner join empautoriza on e61_autori = empautoriza.e54_autori
+        inner join empautorizaprocesso on e54_autori = empautorizaprocesso.e150_empautoriza";
+
+} else {
+    $campo_processo = '';
+    $joins_valenca = '';
+
+}
+
 $sSqlBuscaEmpenhos  = "  select *                                                                                  ";
 $sSqlBuscaEmpenhos .= "   from ( select coremp.k12_empen,                                                          ";
 $sSqlBuscaEmpenhos .= "                e60_numemp,                                                                 ";
+$sSqlBuscaEmpenhos .= "               {$campo_processo}                                                            ";
 $sSqlBuscaEmpenhos .= "                e60_codemp,                                                                 ";
 $sSqlBuscaEmpenhos .= "                case when e49_numcgm is null                                                ";
 $sSqlBuscaEmpenhos .= "                  then e60_numcgm                                                           ";
@@ -151,6 +166,7 @@ $sSqlBuscaEmpenhos .= "                case when e60_anousu < {$iAnoUsoSessao} t
 $sSqlBuscaEmpenhos .= "                k106_sequencial                                                             ";
 $sSqlBuscaEmpenhos .= "           from coremp                                                                      ";
 $sSqlBuscaEmpenhos .= "                inner join empempenho        on e60_numemp          = k12_empen             ";
+$sSqlBuscaEmpenhos .= "                 {$joins_valenca}                                                           ";
 $sSqlBuscaEmpenhos .= "                                            and e60_instit          = {$iInstituicaoSessao} ";
 $sSqlBuscaEmpenhos .= "                inner join orcdotacao        on e60_coddot = o58_coddot and e60_anousu = o58_anousu ";
 $sSqlBuscaEmpenhos .= "                inner join pagordem          on e50_codord          = k12_codord            ";
@@ -169,6 +185,7 @@ $sSqlBuscaEmpenhos .= "          where {$sImplodeWhere}                         
 $sSqlBuscaEmpenhos .= "          order by {$sImplodeOrderBy}) as xxx                                               ";
 $sSqlBuscaEmpenhos .= " where {$sWhereEmpenho}                                                                     ";
 $rsExecutaBuscaEmpenho = db_query($sSqlBuscaEmpenhos);
+
 $iLinhasRetornadasBuscaEmpenho = pg_num_rows($rsExecutaBuscaEmpenho);
 if ($iLinhasRetornadasBuscaEmpenho == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Não existem empenhos para o filtro selecionado.");
@@ -178,7 +195,7 @@ $total = 0;
 
 $aDadosImprimir = array();
 for ($iRowBusca = 0; $iRowBusca < $iLinhasRetornadasBuscaEmpenho; $iRowBusca++) {
-  
+
   $oDadoEmpenho = db_utils::fieldsMemory($rsExecutaBuscaEmpenho, $iRowBusca);
 
   if ( $oDadoEmpenho->tipo == "Emp" ) {
@@ -227,12 +244,12 @@ $iCodigoBanco = $aDadosImprimir[0]->k13_conta;
 $iQuantBanco  = 0;
 
 foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
-  
+
   if ( $oPdf->gety() > $oPdf->h - 30 || $lTroca) {
     imprimeCabecalho($oPdf, $iAltura);
     $lTroca = false;
   }
-  
+
   if ( $iCodigoBanco != $oDadoEmpenho->k13_conta && $oGet->lQuebraConta ) {
   	$oPdf->setfont('arial','B',9);
   	$oPdf->cell(280, $iAltura, "TOTAL DO BANCO ($iQuantBanco registros):  R$ ".db_formatar($nValorTotalBanco,"f"), "T", 1, "L", 1);
@@ -252,7 +269,7 @@ foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
   	$sTipoEmpenho    = $oDadoEmpenho->tipo;
   }
   if ( $iCodigoBanco != $oDadoEmpenho->k13_conta && $oGet->lQuebraConta ) {
-    
+
   	$oPdf->setfont('arial','B',9);
   	$oPdf->cell(280, $iAltura, "TOTAL DO BANCO  :  R$ ".db_formatar($nValorTotalBanco,"f"), "T", 1, "L", 1);
   	$oPdf->ln(5);
@@ -261,7 +278,7 @@ foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
   	$iCodigoBanco     = $oDadoEmpenho->k13_conta;
   	$sTipoEmpenho     = $oDadoEmpenho->tipo;
   }
- 
+
   $notas    = "";
   $sepnotas = "";
   $oPdf->setfont('arial','',7);
@@ -269,7 +286,7 @@ foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->k12_autent,0,0,"C",0);
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->k13_conta,0,0,"C",0);
   $oPdf->cell(40,$iAltura,substr($oDadoEmpenho->k13_descr,0,25),0,0,"L",0);
-  $oPdf->cell(18,$iAltura,$oDadoEmpenho->k12_empen,0,0,"C",0);
+  $oPdf->cell(18,$iAltura,isValenca() ? $oDadoEmpenho->e150_numeroprocesso : $oDadoEmpenho->k12_empen,0,0,"C",0);
   $oPdf->cell(15,$iAltura,trim($oDadoEmpenho->e60_codemp).'/'.$oDadoEmpenho->e60_anousu,0,0,"C",0);
   $oPdf->cell(15,$iAltura,$oDadoEmpenho->e50_codord,0,0,"C",0);
 
@@ -287,7 +304,7 @@ foreach ($aDadosImprimir as $iIndice => $oDadoEmpenho) {
   $oPdf->cell(20, $iAltura, $oDadoEmpenho->k12_cheque, 0, 0, "R", 0);
   $oPdf->cell(15, $iAltura, $oDadoEmpenho->tipo,       0, 1, "C", 0);
   $oPdf->sety($iYlinha+1);
-  
+
   $nValorSoma           += $oDadoEmpenho->k12_valor+0;
   $nValorTotalBanco     += $oDadoEmpenho->k12_valor+0;
   $nValorTotalRelatorio += $oDadoEmpenho->k12_valor+0;
@@ -312,15 +329,15 @@ $oPdf->cell(280,$iAltura*2,'TOTAL DE GERAL      :  '.$iTotalRegistroGeral."   VA
 $oPdf->Output();
 
 function imprimeCabecalho($oPdf, $iAltura) {
-  
+
   $oPdf->addpage("L");
   $oPdf->SetFont('arial','b',8);
   $oPdf->cell(20, $iAltura, "Data Autent",     1, 0, "C", 1);
   $oPdf->cell(15, $iAltura, "Cod.Aut.",        1, 0, "C", 1);
   $oPdf->cell(15, $iAltura, "Cod.Con.",        1, 0, "C", 1);
   $oPdf->cell(40, $iAltura, "Descrição Conta", 1, 0, "C", 1);
-  $oPdf->cell(18, $iAltura, "Empenho",         1, 0, "C", 1);
-  $oPdf->cell(15, $iAltura, "Cód. Emp",        1, 0, "C", 1);
+  $oPdf->cell(18, $iAltura, isValenca() ? "PA" : "Empenho",         1, 0, "C", 1);
+  $oPdf->cell(15, $iAltura, isValenca() ? "Empenho" : "Cód. Emp",        1, 0, "C", 1);
   $oPdf->cell(15, $iAltura, "Ordem",           1, 0, "C", 1);
   $oPdf->cell(28, $iAltura, "Notas Fiscais",   1, 0, "C", 1);
   $oPdf->cell(60, $iAltura, "Credor",          1, 0, "C", 1);

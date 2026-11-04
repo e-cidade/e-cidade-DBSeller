@@ -58,9 +58,9 @@ $rsParametro   = $oDaoEduParametros->sql_record($sSqlParametro);
 if ($oDaoEduParametros->numrows > 0) {
   $lVerificaEtapaAnterior = db_utils::fieldsMemory($rsParametro, 0)->ed233_reclassificaetapaanterior == 't';
 }
-$sFiltroEtapa  = " ed11_i_sequencia = ". ($oEtapa->getOrdem()+1);
+$sFiltroEtapa  = " ed11_i_sequencia >= ". ($oEtapa->getOrdem()+1);
 if ($lVerificaEtapaAnterior) {
-  $sFiltroEtapa = " (ed11_i_sequencia = ". ($oEtapa->getOrdem()+1) ." or ed11_i_sequencia = ". ($oEtapa->getOrdem()-1) .")";
+  $sFiltroEtapa = " (ed11_i_sequencia >= ". ($oEtapa->getOrdem()+1) ." or ed11_i_sequencia >= ". ($oEtapa->getOrdem()-1) .")";
 }
 
 $sTurma      = $oMatricula->getTurma()->getDescricao();

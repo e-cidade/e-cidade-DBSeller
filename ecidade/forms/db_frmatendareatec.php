@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nome");
        <?=@$Lat27_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at27_sequencial',10,$Iat27_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat27_atendcadarea?>">
-       <?
+       <?php
        db_ancora(@$Lat27_atendcadarea,"js_pesquisaat27_atendcadarea(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at27_atendcadarea',10,$Iat27_atendcadarea,true,'text',$db_opcao," onchange='js_pesquisaat27_atendcadarea(false);'")
 ?>
-       <?
+       <?php
 db_input('at25_descr',30,$Iat25_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat27_usuarios?>">
-       <?
+       <?php
        db_ancora(@$Lat27_usuarios,"js_pesquisaat27_usuarios(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at27_usuarios',10,$Iat27_usuarios,true,'text',$db_opcao," onchange='js_pesquisaat27_usuarios(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_atendareatec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

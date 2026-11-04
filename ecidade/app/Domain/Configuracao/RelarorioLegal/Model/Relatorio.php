@@ -29,6 +29,7 @@ namespace App\Domain\Configuracao\RelarorioLegal\Model;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use \App\Domain\Financeiro\Contabilidade\Models\Periodo;
 
 /**
  * Class Relatorio
@@ -63,7 +64,7 @@ class Relatorio extends Model
     public function periodos()
     {
         return $this->belongsToMany(
-            Relatorio::class,
+            Periodo::class,
             'configuracoes.orcparamrelperiodos',
             'o113_orcparamrel',
             'o113_periodo'

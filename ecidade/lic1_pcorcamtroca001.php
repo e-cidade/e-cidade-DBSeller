@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -115,7 +115,7 @@ if (isset($l20_codigo) && $l20_codigo) {
 if (isset($confirmar) && trim($confirmar) != "") {
 
 
-  $vitens       = split(":",$itens);
+  $vitens       =explode(":",$itens);
   $vpcorcamjulg = array(array());
   $linha        = 0;
 
@@ -124,7 +124,7 @@ if (isset($confirmar) && trim($confirmar) != "") {
   for ($i = 0; $i < count($vitens); $i++) {
 
     $str   = $vitens[$i];
-    $vetor = split(",",$str);
+    $vetor =explode(",",$str);
     $item = trim($vetor[0]);
     $fornecedor = trim($vetor[1]);
 
@@ -173,12 +173,12 @@ if (isset($confirmar) && trim($confirmar) != "") {
     if ($sqlerro == false) {
 
         try {
-          $oDocumentoTemplate = new documentoTemplate(5, $documentotemplateata,'',false,'docx'); 
+          $oDocumentoTemplate = new documentoTemplate(5, $documentotemplateata,'',false,'docx');
         } catch (Exception $eException){
           $erro_msg = str_replace("\\n", "\n", $eException->getMessage());
           $sqlerro  = true;
         }
-      
+
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor($oDocumentoTemplate->getArquivoTemplate());
         $sNomeArquivo      = "ata_licitacao_{$l20_codigo}.docx";
         $sCaminhoSalvoArq  = "tmp/{$sNomeArquivo}";

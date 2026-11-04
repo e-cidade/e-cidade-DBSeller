@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -122,7 +122,7 @@ if(isset($ano_opcao)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR <?=$titulofieldset?></b></legend>
-    <?
+    <?php
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
     $codigoinep_banco = pg_result($result,0,0);
     ?>
@@ -134,7 +134,7 @@ if(isset($ano_opcao)){
         <option value="2011" <?=@$ano_opcao=="2011"?"selected":""?>>2011</option>
         <option value="2010" <?=@$ano_opcao=="2010"?"selected":""?>>2010</option>
         <option value="2009" <?=@$ano_opcao=="2009"?"selected":""?>>2009</option>
-       </select><br>       
+       </select><br>
        <b>Código INEP da Escola:</b> <input type="text" name="codigoinep_banco" value="<?=$codigoinep_banco?>" size="8" readonly style="background:#deb887">
       </td>
      </tr>
@@ -143,16 +143,16 @@ if(isset($ano_opcao)){
        <b>Tipo de arquivo:</b>
        <select name="tipo_opcao" onchange="js_tipoopcao(this.value);">
         <option value="0" <?=@$tipo_opcao=="0"?"selected":""?> selected >>> Selecione <<</option>
-        <option value="1" <?=@$tipo_opcao=="1"?"selected":""?>>Arquivos de Abertura</option>        
-        <option value="2" <?=@$tipo_opcao=="2"?"selected":""?>>Arquivos Situação do Aluno</option>                
-       </select><br>       
+        <option value="1" <?=@$tipo_opcao=="1"?"selected":""?>>Arquivos de Abertura</option>
+        <option value="2" <?=@$tipo_opcao=="2"?"selected":""?>>Arquivos Situação do Aluno</option>
+       </select><br>
       </td>
      </tr>
      <tr>
       <td>
        <b>Arquivo de importação do Censo:</b>
-       <?db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
-       <?db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
+       <?php db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
+       <?php db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
       </td>
      </tr>
      <tr>
@@ -160,7 +160,7 @@ if(isset($ano_opcao)){
        <table id="table_termo" style="visibility:hidden;">
         <tr>
          <td align="center">
-          <?if(isset($processar)){?>
+          <?php if(isset($processar)){?>
           <script>
            var sHors  = "00";
            var sMins  = "00";
@@ -190,7 +190,7 @@ if(isset($ano_opcao)){
            Tempo de execução:<br>
            <span id="clock1">00:00:00</span><script>varTempo = setTimeout('getSecs()',1000);</script>
           </b>
-          <?}?>
+          <?php }?>
          </td>
          <td>
           <?=db_criatermometro_edu('termometro', 'Concluido...', 'blue', 1);?>
@@ -206,7 +206,7 @@ if(isset($ano_opcao)){
  </tr>
  <tr>
   <td align="center">
-   <?
+   <?php
    if(trim($codigoinep_banco)==""){
     echo "<font color=red><b>* Código INEP desta escola não informado no sistema. Operação Não Permitida.</b></font>
           &nbsp;&nbsp;<a href='edu1_escolaabas002.php'>Informar Código INEP</a>
@@ -219,7 +219,7 @@ if(isset($ano_opcao)){
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_valida(){
  if(document.form1.tipo_opcao.value=="0"){
@@ -232,7 +232,7 @@ function js_valida(){
  }
  document.form1.caminho_arquivo.value = document.form1.arquivo_censo.value;
  document.getElementById("processar").style.visibility = "hidden";
- document.getElementById("recomecar").style.visibility = "hidden";  
+ document.getElementById("recomecar").style.visibility = "hidden";
  return true;
 }
 function js_tipoopcao(valor){
@@ -243,30 +243,30 @@ function js_tipoopcao(valor){
    location.href = "edu4_importarcodigoinep_2009_001.php?ano_opcao="+document.form1.ano_opcao.value+"&tipo_opcao="+valor;
   }
  }else if (valor==2){
-  if(document.form1.ano_opcao.value=="2011" || document.form1.ano_opcao.value=="2010"){  
+  if(document.form1.ano_opcao.value=="2011" || document.form1.ano_opcao.value=="2010"){
    location.href = "edu4_importarmatriculainep001.php?ano_opcao="+document.form1.ano_opcao.value+"&tipo_opcao="+valor;
   }else{
    location.href = "edu4_importarmatriculainep_2009_001.php?ano_opcao="+document.form1.ano_opcao.value+"&tipo_opcao="+valor;
-  }     
+  }
  }
 }
 function js_anoopcao(valor){
  if(document.form1.tipo_opcao.value=="1"){
   if(valor=="2011" || valor=="2010"){
-   location.href = "edu4_importarcodigoinep001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;  
+   location.href = "edu4_importarcodigoinep001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;
   }else{
-   location.href = "edu4_importarcodigoinep_2009_001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;  
+   location.href = "edu4_importarcodigoinep_2009_001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;
   }
  }else if(document.form1.tipo_opcao.value=="2"){
-  if(valor=="2011" || valor=="2010"){  
+  if(valor=="2011" || valor=="2010"){
    location.href = "edu4_importarmatriculainep001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;
   }else{
    location.href = "edu4_importarmatriculainep_2009_001.php?ano_opcao="+valor+"&tipo_opcao="+document.form1.tipo_opcao.value;
-  }     
+  }
  }
 }
 </script>
-<?
+<?php
 $sql_nomes = "SELECT ed47_i_codigo as cod1,trim(ed47_v_nome) as nome1 FROM aluno WHERE trim(ed47_v_nome) like '%  %'";
 $result_nomes = db_query($sql_nomes);
 $linhas_nomes = pg_num_rows($result_nomes);
@@ -298,8 +298,8 @@ if(isset($processar)){
   $ponteiro3 = fopen($caminho_arquivo,"r");
   $valida_arquivo1 = false;
   $valida_arquivo2 = false;
-  $valida_arquivo3 = false;  
-  $cont_aluno_while = 0;  
+  $valida_arquivo3 = false;
+  $cont_aluno_while = 0;
   $contador_geral = 0;
   while(!feof($ponteiro3)){
    $linhaponteiro = fgets($ponteiro3,500);
@@ -323,21 +323,21 @@ if(isset($processar)){
   fclose($ponteiro3);
   if($valida_arquivo2==true){
    db_msgbox("[2] Arquivo informado não pertence a esta escola !");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
+   ?><script>document.form1.processar.disabled = false;</script><?php
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php
   }elseif($valida_arquivo3==true){
    db_msgbox("[3] Arquivo informado não pertence ao ano de $ano_opcao!");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
-  }elseif($valida_arquivo1==true){      
+   ?><script>document.form1.processar.disabled = false;</script><?php
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php
+  }elseif($valida_arquivo1==true){
    db_msgbox("[1] Arquivo informado não é um arquivo de exportação de Situação do Aluno gerado pelo Educacenso!");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
+   ?><script>document.form1.processar.disabled = false;</script><?php
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php
   }else{
    ?>
    <script>document.getElementById("termo").style.visibility = "visible";</script>
    <script>document.getElementById("table_termo").style.visibility = "visible";</script>
-   <?
+   <?php
    set_time_limit(0);
    $arquivo_logerro = "tmp/censo_impMatInep_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_log.txt";
    $ponteiro_log = fopen($arquivo_logerro,"w");
@@ -376,18 +376,18 @@ if(isset($processar)){
     }else{
       $codigoaluno = pg_result($result11,0,'ed47_i_codigo');
       $sql21 = "UPDATE aluno SET
-                 ed47_c_codigoinep = '$codigoinepaluno' 
-                WHERE ed47_i_codigo = $codigoaluno 
+                 ed47_c_codigoinep = '$codigoinepaluno'
+                WHERE ed47_i_codigo = $codigoaluno
                ";
       $result21 = db_query($sql21);
       if($matcenso!=""){
        $linhas21 = pg_num_rows($result21);
-        
+
        $sql22 = "SELECT ed280_i_codigo
                  FROM alunomatcenso
                  WHERE ed280_i_matcenso = $matcenso
                  AND ed280_i_ano = $anocenso
-                 AND ed280_i_aluno = $codigoaluno 
+                 AND ed280_i_aluno = $codigoaluno
                 ";
        $result22 = db_query($sql22);
        $linhas22 = pg_num_rows($result22);
@@ -408,12 +408,12 @@ if(isset($processar)){
         $result4 = db_query($sql4);
         if(!$result4){
          die("ERRO ALUNOMATCENSO[1]: ".$sql4."<br><br>");
-        }           
-       }    
-        
+        }
+       }
+
       }
      }
-   }   
+   }
    fclose($ponteiro4);
    if($erro_naoencontrado==true){
     ?>
@@ -421,14 +421,14 @@ if(isset($processar)){
      jan = window.open('edu4_importarmatriculainep_2009_002.php?arquivo_erro=<?=$arquivo_logerro?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
      jan.moveTo(0,0);
     </script>
-    <?
+    <?php
    }
    db_atutermometro_edu(99, 100, 'termometro',1,'...Processo Concluído');
    ?>
    <script>
     clearTimeout(varTempo);
     document.form1.recomecar.style.visibility = "visible";
-   </script><?
+   </script><?php
    db_query("commit");
    unlink($caminho_arquivo);
    db_msgbox("Importação realizada com sucesso!");

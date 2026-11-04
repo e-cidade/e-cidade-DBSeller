@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -40,28 +40,33 @@ use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 ini_set('error_reporting', E_ALL);
+
 $daoSalarioEsocial = new \cl_rhreajustesalarialesocial;
-$clpadroes = new cl_padroes;
-$clrhpessoal = new cl_rhpessoal;
-$clrhpessoalmov = new cl_rhpessoalmov;
-$clprogress = new cl_progress;
-$clpesdiver = new cl_pesdiver;
-$aux = new cl_arquivo_auxiliar;
-$clrotulo = new rotulocampo;
+$clpadroes         = new cl_padroes;
+$clrhpessoal       = new cl_rhpessoal;
+$clrhpessoalmov    = new cl_rhpessoalmov;
+$clprogress        = new cl_progress;
+$clpesdiver        = new cl_pesdiver;
+$aux               = new cl_arquivo_auxiliar;
+$clrotulo          = new rotulocampo;
+
 db_postmemory($HTTP_POST_VARS);
-if(isset($incluir)){
+
+if (isset($incluir)) {
     db_inicio_transacao();
+
     $sqlerro = false;
-    $dbwhere = " r24_anousu = ".$anofolha." and r24_mesusu = ".$mesfolha." and r24_instit = ".db_getsession("DB_instit")." " ;
+    $dbwhere = " r24_anousu = " . $anofolha . " and r24_mesusu = " . $mesfolha . " and r24_instit = " . db_getsession("DB_instit") . " ";
 
     $contador = 0;
-    $result_progressao = $clprogress->sql_record($clprogress->sql_query_padrao(null,null,null,null,null," distinct r24_padrao as pad, r24_regime as reg, r24_meses as ms, r24_valor","",$dbwhere));
+    $result_progressao = $clprogress->sql_record($clprogress->sql_query_padrao(null, null, null, null, null, " distinct r24_padrao as pad, r24_regime as reg, r24_meses as ms, r24_valor", "", $dbwhere));
     $numrows_progressao = $clprogress->numrows;
-    if($numrows_progressao == 0){
+
+    if ($numrows_progressao == 0) {
         $erro_msg = "Nenhum registro encontrado.";
         $sqlerro = true;
-    }else{
-        for($i=0;$i<$numrows_progressao;$i++){
+    } else {
+        for ($i = 0; $i < $numrows_progressao; $i++) {
             db_fieldsmemory($result_progressao, $i);
 
             $r24_valor += ($r24_valor * ($rh02_salari / 100));
@@ -75,40 +80,48 @@ if(isset($incluir)){
             $clprogress->r24_valor  = $valorprogressao;
             $clprogress->r24_instit = db_getsession('DB_instit');
             $clprogress->alterar($anofolha, $mesfolha, $reg, $pad, $ms, db_getsession('DB_instit'));
+
             $erro_msg = $clprogress->erro_msg;
-            if($clprogress->erro_status == "0"){
+
+            if ($clprogress->erro_status == "0") {
                 $sqlerro = true;
             }
-            $sqlListaMatriculas = $clpadroes->sqlReajustePadraoByCompetencia($pad, $anofolha, $mesfolha);
-            $resultadoListaMatriculas = $clpadroes->sql_record($sqlListaMatriculas);
-            if ($clpadroes->numrows > 0 ) {
-              for($z = 0; $z < $clpadroes->numrows; $z++){
-                db_fieldsmemory($resultadoListaMatriculas, $z);
-                /**
-                * Inclui dados do reajuste salarial padrão para o eSocial.
-                */
-                $camposReajuste = ['eso39_sequencial',
-                                   'eso39_matricula',
-                                   'eso39_dataefeito',
-                                   'eso39_tipo',
-                                   'eso39_descricao'
-              ];
-                $sqlVerificaReajuste = $daoSalarioEsocial->sql_query_file(null, 
-                  implode(', ', $camposReajuste), 
-                  null,
-                  "eso39_matricula = {$rh02_regist} and eso39_dataefeito = '{$eso39_dataefeito}' and eso39_tipo = '{$eso39_tipo}' ");
-                $rsVerificaReajuste = $daoSalarioEsocial->sql_record($sqlVerificaReajuste);
-  
-                if ($daoSalarioEsocial->numrows == 0) {
-                  $daoSalarioEsocial->eso39_matricula = $rh02_regist;
-                  $daoSalarioEsocial->eso39_dataefeito = $eso39_dataefeito;
-                  $daoSalarioEsocial->eso39_tipo = $eso39_tipo;
-                  $daoSalarioEsocial->eso39_descricao = $eso39_descricao;
-                  $daoSalarioEsocial->incluir(null);
 
-                  $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh02_regist, Tipo::S2206);
-                  $servidorAlteracao->setDataS2206(new DBDate($eso39_dataefeito));
-                  $servidorAlteracao->save();
+            $sqlListaMatriculas = $clpadroes->sqlReajustePadraoByCompetencia($pad, $anofolha, $mesfolha, db_getsession('DB_instit'));
+            $resultadoListaMatriculas = $clpadroes->sql_record($sqlListaMatriculas);
+            
+            if ($clpadroes->numrows > 0) {
+                for ($z = 0; $z < $clpadroes->numrows; $z++) {
+                    db_fieldsmemory($resultadoListaMatriculas, $z);
+                    /**
+                     * Inclui dados do reajuste salarial padrão para o eSocial.
+                     */
+                    $camposReajuste = [
+                        'eso39_sequencial',
+                        'eso39_matricula',
+                        'eso39_dataefeito',
+                        'eso39_tipo',
+                        'eso39_descricao'
+                    ];
+                    $sqlVerificaReajuste = $daoSalarioEsocial->sql_query_file(
+                        null,
+                        implode(', ', $camposReajuste),
+                        null,
+                        "eso39_matricula = {$rh02_regist} and eso39_dataefeito = '{$eso39_dataefeito}' and eso39_tipo = '{$eso39_tipo}' "
+                    );
+                    $rsVerificaReajuste = $daoSalarioEsocial->sql_record($sqlVerificaReajuste);
+
+                    if ($daoSalarioEsocial->numrows == 0) {
+                        $daoSalarioEsocial->eso39_matricula = $rh02_regist;
+                        $daoSalarioEsocial->eso39_dataefeito = $eso39_dataefeito;
+                        $daoSalarioEsocial->eso39_tipo = $eso39_tipo;
+                        $daoSalarioEsocial->eso39_descricao = $eso39_descricao;
+                        $daoSalarioEsocial->incluir(null);
+
+                        $servidorAlteracao = ServidorAlteracao::findMatriculaByLayout($rh02_regist, Tipo::S2206);
+                        $servidorAlteracao->setDataS2206(new DBDate($eso39_dataefeito));
+                        $servidorAlteracao->save();
+                    }
                 }
               }
             }
@@ -118,15 +131,17 @@ if(isset($incluir)){
     db_fim_transacao($sqlerro);
 }
 ?>
-    <html>
-    <head>
-        <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <meta http-equiv="Expires" CONTENT="0">
-        <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-        <link href="estilos.css" rel="stylesheet" type="text/css">
-    </head>
-    <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
+<html>
+
+<head>
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
         <tr>
             <td width="360" height="18">&nbsp;</td>
@@ -143,16 +158,17 @@ if(isset($incluir)){
         </td>
     </tr>
     </table>
-    <?
-    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+    <?php
+    db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
     ?>
-    </body>
-    </html>
-    <script>
-        js_setfocus(true);
-    </script>
+</body>
+
+</html>
+<script>
+    js_setfocus(true);
+</script>
 <?php
-if(isset($incluir)){
+if (isset($incluir)) {
     db_msgbox($erro_msg);
 }
 ?>

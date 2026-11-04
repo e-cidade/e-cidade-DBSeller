@@ -50,13 +50,13 @@ class cl_diarioresultadorecuperacao {
                  ed116_diarioresultado = int8 = Código
                  ";
    //funcao construtor da classe
-   function cl_diarioresultadorecuperacao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diarioresultadorecuperacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_diarioresultadorecuperacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed116_sequencial = ($this->ed116_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed116_sequencial"]:$this->ed116_sequencial);
        $this->ed116_diarioresultado = ($this->ed116_diarioresultado == ""?@$GLOBALS["HTTP_POST_VARS"]["ed116_diarioresultado"]:$this->ed116_diarioresultado);
@@ -74,7 +74,7 @@ class cl_diarioresultadorecuperacao {
      }
    }
    // funcao para inclusao
-   function incluir ($ed116_sequencial){
+   public function incluir ($ed116_sequencial){
       $this->atualizacampos();
      if($this->ed116_diarioresultado == null ){
        $this->erro_sql = " Campo Código não informado.";
@@ -167,7 +167,7 @@ class cl_diarioresultadorecuperacao {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed116_sequencial=null) {
+   public function alterar ($ed116_sequencial=null) {
       $this->atualizacampos();
      $sql = " update diarioresultadorecuperacao set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_diarioresultadorecuperacao {
      }
    }
    // funcao para exclusao
-   function excluir ($ed116_sequencial=null,$dbwhere=null) {
+   public function excluir ($ed116_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -325,7 +325,7 @@ class cl_diarioresultadorecuperacao {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -348,7 +348,7 @@ class cl_diarioresultadorecuperacao {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed116_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed116_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -385,7 +385,7 @@ class cl_diarioresultadorecuperacao {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed116_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed116_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

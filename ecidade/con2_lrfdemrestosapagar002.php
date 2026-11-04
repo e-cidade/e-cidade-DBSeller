@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -543,14 +543,14 @@ $iNroLinhaNota = $clorcparamrelnota->numrows;
 
 if ($iNroLinhaNota > 0) {
   $oNota = db_utils::fieldsMemory($rsNotas,0);
-  notasExplicativas(&$pdf,58,$oNota->o42_periodo,190);
+  notasExplicativas($pdf,58,$oNota->o42_periodo,190);
 } else {
-  notasExplicativas(&$pdf,58,'1B',190);	 
+  notasExplicativas($pdf,58,'1B',190);	 
 }
 
 $pdf->Ln($iAlt*2);
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 $pdf->Output();
 

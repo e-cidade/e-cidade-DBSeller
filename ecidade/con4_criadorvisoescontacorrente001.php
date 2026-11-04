@@ -49,7 +49,7 @@ for ($i = 0; $i < $totalLinhas; $i++) {
 ?>
 <style>
     table#atributosColunas td {
-        white-space: nowrap
+        white-space: nowrap;
         border: 1px solid black;
     }
 

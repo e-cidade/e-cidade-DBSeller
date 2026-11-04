@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -109,7 +109,7 @@ function js_marca(obj){
     <td>
     <fieldset><legend><b>Itens</b></legend>
  <table border='0' cellspacing="0" style='border:2px inset white'>
-<?
+<?php
 
 if (isset($m40_codigo) && $m40_codigo!= "") {
 

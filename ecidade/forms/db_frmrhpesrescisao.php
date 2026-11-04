@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrhpesrescisao->rotulo->label();
        <?=@$Lrh05_regist?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh05_regist',6,$Irh05_regist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh05_regist',6,$Irh05_regist,true,'text',$db_opcao,"")
        <?=@$Lrh05_recis?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh05_recis',@$rh05_recis_dia,@$rh05_recis_mes,@$rh05_recis_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_inputdata('rh05_recis',@$rh05_recis_dia,@$rh05_recis_mes,@$rh05_recis_ano,tru
        <?=@$Lrh05_causa?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh05_causa',2,$Irh05_causa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('rh05_causa',2,$Irh05_causa,true,'text',$db_opcao,"")
        <?=@$Lrh05_caub?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh05_caub',2,$Irh05_caub,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,7 +76,7 @@ db_input('rh05_caub',2,$Irh05_caub,true,'text',$db_opcao,"")
        <?=@$Lrh05_aviso?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('rh05_aviso',@$rh05_aviso_dia,@$rh05_aviso_mes,@$rh05_aviso_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -86,7 +86,7 @@ db_inputdata('rh05_aviso',@$rh05_aviso_dia,@$rh05_aviso_mes,@$rh05_aviso_ano,tru
        <?=@$Lrh05_taviso?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh05_taviso',1,$Irh05_taviso,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('rh05_taviso',1,$Irh05_taviso,true,'text',$db_opcao,"")
        <?=@$Lrh05_mremun?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh05_mremun',15,$Irh05_mremun,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpesrescisao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

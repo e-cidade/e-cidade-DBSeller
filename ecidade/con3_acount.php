@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ db_postmemory($HTTP_POST_VARS);
          <td width="15%">
            <select name="dbh_modulo" size="1" onChange="this.form.submit();">
              <option value="0">Nenhum...</option>
-             <?
+             <?php
 			         $result = db_query("select codmod,nomemod from db_sysmodulo order by nomemod");
 			         for($i=0;$i<pg_numrows($result);$i++){
 			           echo '<option value="'.pg_result($result,$i,"codmod").'" '.(isset($HTTP_POST_VARS["dbh_modulo"]) && $HTTP_POST_VARS["dbh_modulo"] == pg_result($result,$i,"codmod")?"selected":"").'>'.pg_result($result,$i,"nomemod").'</option>';
@@ -72,7 +72,7 @@ db_postmemory($HTTP_POST_VARS);
          <td width="38%">
            <select name="dbh_tabela" size="1" onChange="this.form.submit();">
              <option value="0">Nenhum...</option>
-             <?
+             <?php
 			        $sql  = "select m.codarq,nomearq "; 
 			        $sql .= "  from db_sysarquivo a  ";
   						$sql .= "       inner join db_sysarqmod m on a.codarq = m.codarq ";
@@ -91,7 +91,7 @@ db_postmemory($HTTP_POST_VARS);
          <td>
            <select name="dbh_campo" size="1">
              <option value="0">Nenhum...</option>
-             <?
+             <?php
    			      $sql = "select c.codcam,nomecam "; 
   			      $sql .= "  from db_syscampo c   ";
   						$sql .= "       inner join db_sysarqcamp m on c.codcam = m.codcam "; 
@@ -108,7 +108,7 @@ db_postmemory($HTTP_POST_VARS);
          <td>
            <select name="dbh_usuario" size="1" >
              <option value="0">Nenhum...</option>
-             <?
+             <?php
 			         $sql = "select id_usuario,login 
 			                   from db_usuarios
 			                  order by nome";
@@ -132,7 +132,7 @@ db_postmemory($HTTP_POST_VARS);
              <tr align="center"> 
                <td colspan="2"><strong>Chaves de Acesso:</strong></td>
              </tr>
-             <?
+             <?php
                if (isset($HTTP_POST_VARS["dbh_tabela"]) && $HTTP_POST_VARS["dbh_tabela"] != '0') {
 				  
                  $result = db_query("select c.codcam,nomecam,tamanho
@@ -168,14 +168,14 @@ db_postmemory($HTTP_POST_VARS);
              <tr align="center"> 
                <td colspan="2"><input name="pesquisar" type="submit" id="pesquisar" value="Pesquisar"></td>
              </tr>
-            <?
+            <?php
 				       }
 				    ?>
            </table>
          </td>
        </tr>
      </table>
-     <?	  
+     <?php   
        if(isset($HTTP_POST_VARS["pesquisar"])) {
 		 ?>
           
@@ -189,14 +189,14 @@ db_postmemory($HTTP_POST_VARS);
             <td width="28%" bgcolor="#FFCC00">Conte&uacute;do Atual</td>
             <td width="45%" bgcolor="#FFCC00">Conte&uacute;do Anterior</td>
           </tr>
-          <?
+          <?php
               $sqlkey = "";
               $sqlor = "";
               $contador = 0;
 		          for ($c=0;$c<sizeof($vcampos);$c++) {
-		            if (trim($$vcampos[$c])!="") {
+		            if (trim(${$vcampos[$c]})!="") {
                   $contador += 1 ;
- 		              $sqlkey .= $sqlor."( id_codcam = ".$qcampos[$c]." and campotext = '".$$vcampos[$c]."' ) ";
+ 		              $sqlkey .= $sqlor."( id_codcam = ".$qcampos[$c]." and campotext = '".${$vcampos[$c]}."' ) ";
                   $sqlor = " or ";
 		            }
 		          }
@@ -285,7 +285,7 @@ db_postmemory($HTTP_POST_VARS);
 		      ?>
         
         </table>
-     <?
+     <?php
 		   }
 		 ?>
     </td>
@@ -293,7 +293,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>
 </table>
 
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

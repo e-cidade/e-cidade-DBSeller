@@ -279,7 +279,7 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 	
 	$nTotContaCaixa = 0;
 	
-	$sSqlReduz  = " select distinct c61_reduz ";
+	$sSqlReduz  = " select distinct c61_reduz, c61_instit ";
 	$sSqlReduz .= "   from contabancaria ";
 	$sSqlReduz .= "        inner join conplanocontabancaria on conplanocontabancaria.c56_contabancaria = contabancaria.db83_sequencial
                                                            and conplanocontabancaria.c56_anousu = $iAnoUsu";
@@ -298,7 +298,7 @@ for ( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ) {
 	        
 	        $oDadosReduz = db_utils::fieldsmemory($rsReduz,$i);
 	        
-	        $sqlSaldoContaCaixa = "select substr(fc_saltessaldo({$oDadosReduz->c61_reduz},'{$oDadosConcilia->k68_data}','{$oDadosConcilia->k68_data}',null,{$instituicao}),41,13)::float as saldocontacaixa";
+	        $sqlSaldoContaCaixa = "select substr(fc_saltessaldo({$oDadosReduz->c61_reduz},'{$oDadosConcilia->k68_data}','{$oDadosConcilia->k68_data}',null,{$oDadosReduz->c61_instit}),41,13)::float as saldocontacaixa";
 	        $rsSaldoContaCaixa  = $clsaltes->sql_record($sqlSaldoContaCaixa);
 	        
 	        if ($clsaltes->numrows > 0) {

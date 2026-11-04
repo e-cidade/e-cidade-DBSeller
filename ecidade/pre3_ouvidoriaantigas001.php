@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -52,17 +52,17 @@ function js_limpaCampos() {
 function js_submeter() {
   var F = document.form1;
   var verf = 0;
-  
+
   if(F.data_dia.value != '' || F.data_mes.value != '' || F.data_ano.value != '') {
     if(F.data_dia.value == '' || F.data_mes.value == '' || F.data_ano.value == '') {
 	  alert("Esta data é inválida");
 	  js_limpaCampos();
 	  F.data_dia.focus();
 	} else
-	  verf = 1;	
+	  verf = 1;
   } else
     verf = 2;
-	
+
   if(verf > 0)
     F.submit();
 }
@@ -98,24 +98,24 @@ input {
   <center>
     <table border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="40" colspan="2"><u><em><strong>Consulta de Solicita&ccedil;&atilde;o 
+        <td height="40" colspan="2"><u><em><strong>Consulta de Solicita&ccedil;&atilde;o
           j&aacute; Revisadas da Ouvidoria</strong></em></u></td>
       </tr>
-      <tr> 
+      <tr>
         <td width="23%" height="20" nowrap><strong>Por Email:</strong></td>
         <td width="77%"><input name="email" type="text" id="email" value="<?=@$email?>" size="50" maxlength="50"></td>
       </tr>
       <tr>
         <td height="20" nowrap><strong>Por Categoria:</strong></td>
-        <td> 
+        <td>
             <select name="po01_tipo" id="po01_tipo">
               <option value="">-</option>
-            <?
+            <?php
               $results = pg_fetch_all($cldb_tipo->sql_record($cldb_tipo->sql_query("","*","","")));
               foreach ($results as $result) {
             ?>
               <option value="<?=@$result['w03_codtipo']?>" <?=@($result['w03_codtipo']==$po01_tipo?"selected='selected'":"")?>><?=@$result['w03_tipo']?></option>
-            <?}?>
+            <?php }?>
             </select>
           </td>
       </tr>
@@ -127,24 +127,24 @@ input {
         <td height="20" nowrap><strong>Por Resposta:</strong></td>
         <td><input name="texto" type="text" id="texto" value="<?=@$texto?>" size="50"></td>
       </tr>
-      <tr> 
+      <tr>
         <td height="20" nowrap><strong>Por Matr&iacute;cula:</strong></td>
         <td><input name="usr_login" type="text" id="usr_login" value="<?=@$usr_login?>" size="20" maxlength="20"></td>
       </tr>
-      <tr> 
+      <tr>
         <td height="20" nowrap><strong>Por Data da Resposta:</strong></td>
         <td nowrap> <input name="data_dia" type="text" id="Idata_dia" value="<?=@$data_dia?>" size="2" maxlength="2">
-          <strong>/ 
+          <strong>/
           <input name="data_mes" type="text" id="Idata_mes" value="<?=@$data_mes?>" size="2" maxlength="2">
-          / 
+          /
           <input name="data_ano" type="text" id="Idata_ano" value="<?=@$data_ano?>" size="4" maxlength="4">
           </strong>
         </td>
       </tr>
-      <tr> 
+      <tr>
         <td height="20" nowrap>&nbsp;</td>
-        <td height="30"> 
-          <input type="button" name="Submit" value="Consultar" onClick="js_submeter()"> 
+        <td height="30">
+          <input type="button" name="Submit" value="Consultar" onClick="js_submeter()">
 		<input type="button" name="Submit2" value="Limpa Campos" onClick="js_limpaCampos()">
         </td>
       </tr>
@@ -152,14 +152,14 @@ input {
   </center>
 </form>
 </center>
-<?
+<?php
 if(isset($Submit) || count($HTTP_POST_VARS)>0){
-	$query = "SELECT po01_sequencial as sequencial, po01_email as email, 
-									 w03_tipo as dl_categoria, 
-									 to_char(po01_data,'DD-MM-YYYY')::varchar as dl_data_da_Solicitação, 
+	$query = "SELECT po01_sequencial as sequencial, po01_email as email,
+									 w03_tipo as dl_categoria,
+									 to_char(po01_data,'DD-MM-YYYY')::varchar as dl_data_da_Solicitação,
                    to_char(po01_revisado,'DD-MM-YYYY')::varchar as dl_data_da_Resposta,
                    po01_id_usuario::varchar as dl_Respondido_por
-            FROM db_ouvidoria 
+            FROM db_ouvidoria
             	INNER JOIN db_tipo ON db_tipo.w03_codtipo = db_ouvidoria.po01_tipo
             WHERE po01_revisado IS NOT NULL";
 
@@ -185,7 +185,7 @@ if(isset($Submit) || count($HTTP_POST_VARS)>0){
 ?>
 
 <center>
-<? db_lovrot($query,10,"()","","js_emite|sequencial",null,"NoMe");?>
+<?php db_lovrot($query,10,"()","","js_emite|sequencial",null,"NoMe");?>
 </center>
 
 </body>

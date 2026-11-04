@@ -24,16 +24,28 @@ try {
             
             break;
         case "buscaMatricula":
-
-            if(empty($parametros->iCgm)){
-                throw new Exception("É necessário informar o código do CGM a ser consultado.");
-            }
-            
+           
             $clrhpessoal = new cl_rhpessoal();
 
-            $sSqlRhPessoal = $clrhpessoal->sql_query_file(null,"rh01_regist",null,"rh01_numcgm  ='$parametros->iCgm'");
-            $rsRHPessoal = db_query($sSqlRhPessoal);
-            $iQtdLinhas = pg_num_rows($rsRHPessoal);
+            $sSqlRhPessoal = '';
+            if (isset($parametros->matricula)) {
+                if (empty($parametros->matricula)){
+                    throw new Exception("É necessário informar o código da Matrícula a ser consultada.");
+                }
+                $sSqlRhPessoal = $clrhpessoal->sql_query_file(null,"rh01_regist",null,"rh01_regist  ='$parametros->matricula'");
+            }
+            if (isset($parametros->iCgm)) {
+                if (empty($parametros->iCgm)){
+                    throw new Exception("É necessário informar o código do CGM a ser consultado.");
+                }
+                $sSqlRhPessoal = $clrhpessoal->sql_query_file(null,"rh01_regist",null,"rh01_numcgm  ='$parametros->iCgm'");
+            }
+            $iQtdLinhas = 0;
+
+            if (!empty($sSqlRhPessoal)) {
+                $rsRHPessoal = db_query($sSqlRhPessoal);
+                $iQtdLinhas = pg_num_rows($rsRHPessoal);    
+            }
 
             $aMatriculas = array();
             for($i = 0; $i < $iQtdLinhas; $i++){

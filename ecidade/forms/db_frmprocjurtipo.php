@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $clrotulo->label("v61_descricao");
       <?=@$Lv66_procjurtiporegra?>
     </td>
     <td> 
-      <?
+      <?php
 		db_input('v66_sequencial',10,$Iv66_sequencial,true,'hidden',$db_opcao,"");
       	$rsTipoRegra = $clprocjurtiporegra->sql_record($clprocjurtiporegra->sql_query_file());
       	db_selectrecord("v66_procjurtiporegra",$rsTipoRegra,true,$db_opcao,"style='width:260px;'","","","","",1);
@@ -54,7 +54,7 @@ $clrotulo->label("v61_descricao");
       <?=@$Lv66_descr?>
     </td>
     <td> 
-	  <?
+	  <?php
 		db_input('v66_descr',40,$Iv66_descr,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procjurtipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

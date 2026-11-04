@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clbenstransfconf->rotulo->label("t96_id_usuario");
               <?=$Lt96_codtran?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t96_codtran",10,$It96_codtran,true,"text",4,"","chave_t96_codtran");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbenstransfconf->rotulo->label("t96_id_usuario");
               <?=$Lt96_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t96_id_usuario",5,$It96_id_usuario,true,"text",4,"","chave_t96_id_usuario");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbenstransfconf->rotulo->label("t96_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benstransfconf.php")==true){
@@ -119,12 +119,12 @@ $clbenstransfconf->rotulo->label("t96_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

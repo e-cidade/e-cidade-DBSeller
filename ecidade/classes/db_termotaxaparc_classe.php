@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE termotaxaparc
 class cl_termotaxaparc { 
@@ -28,13 +28,13 @@ class cl_termotaxaparc {
                  ar29_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_termotaxaparc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termotaxaparc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -43,7 +43,7 @@ class cl_termotaxaparc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar29_sequencial = ($this->ar29_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar29_sequencial"]:$this->ar29_sequencial);
        $this->ar29_numpar = ($this->ar29_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["ar29_numpar"]:$this->ar29_numpar);
@@ -54,7 +54,7 @@ class cl_termotaxaparc {
      }
    }
    // funcao para Inclusão
-   function incluir ($ar29_sequencial){ 
+   public function incluir ($ar29_sequencial){ 
       $this->atualizacampos();
      if($this->ar29_numpar == null ){ 
        $this->erro_sql = " Campo Parcela não informado.";

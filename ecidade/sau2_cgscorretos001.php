@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,10 +25,10 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
 ?>
 <html>
 <head>
@@ -47,65 +47,47 @@ function js_relatorio(){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
-    <td width="360">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
-</table>
-<table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <center>
-        <form name="form1" method="post" action="sau2_cgscorretos002.php" target="rel">
-          <table width="41%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td colspan=2><hr><b>Relatório de CGS's corretos</b></td>
-            </tr>
-            <tr> 
-              <td height="30">
-	        <b>Ordem:</b>
-	      </td>
-	      <td>
-	        <select name="ordem" >
-		  <option value="z01_v_nome">Nome</option>
-		  <option value="z01_i_numcgs">Numcgm</option>
-	        </select>
-	      </td>
+<center> 
+<form name="form1" method="post" action="sau2_cgscorretos002.php" target="rel">
+	<table>
+	    <tr height="25px">
+	    	<td></td>
+	    	<td></td>
 	    </tr>
-	    <tr>
-	      <td>
-	        <label for='p'><b>Somente os processados:</b></label>
-	      </td>
-	      <td>
-	        <select name="processados" >
-		  <option value="x">Todos</option>
-		  <option value="proc">Somente processados</option>
-		  <option value="nproc">Não processados</option>
-	        </select>
-	      </td>
+		<tr>
+		    <td width="400px">
+		        <fieldset><Legend><strong>CGSs Unificados</strong></legend>	    			
+		        <table align="center">             
+                    <tr>  
+					  <td>
+						 <label for="ordem"><b>Ordenar por:</b></label>
+					  </td>   
+                	  <td>
+                	    <select name="ordem" >
+                	        <option value="z01_v_nome">Nome</option>
+                	        <option value="s127_i_numcgs">CGS</option>
+							<option value="s127_i_codigo">Código</option>
+                	    </select>
+                	  </td>
+                	</tr>
+                	<tr>
+                	  <td>
+                	    <label for='l'><b>Mostrar Log's:</b></label>
+                	  </td>
+                	  <td>
+                	    <input type="checkbox" id='l' name="log">
+                	  </td>
+                	</tr>                 
+                </table>
+	            </fieldset>
+	        </td>
 	    </tr>
-	    <tr>
-	      <td>
-	        <label for='l'><b>Mostrar Log's:</b></label>
-	      </td>
-	      <td>
-	        <input type="checkbox" id='l' name="log">
-	      </td>
-	    </tr>
-	    <tr>
-              <td height="30" align="center"><input name="emite" onClick="return js_relatorio()" type="submit" id="emite" value="Emite Relatório"> 
-              </td>
-            </tr>
-          </table>
-        </form>
-      </center>
-	</td>
-  </tr>
-</table>
-<?
+	</table>
+	<br>
+	<button onClick="return js_relatorio()" type="submit" id="imprimir">Imprimir</button>
+</form>
+</center>
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

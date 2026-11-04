@@ -24,6 +24,9 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $xlin = 20;
     $xcol = 4;
 
+    $ops = $this->e50_codord;
+    
+
     //Inserindo usuario e data no rodape
     $this->objpdf->Setfont('Arial', 'I', 6);
     $this->objpdf->text($xcol + 3, $xlin + 276, "Emissor: " . db_getsession("DB_login") . "  Data: " . date("d/m/Y", db_getsession("DB_datausu")) . "");
@@ -106,19 +109,21 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $this->objpdf->setxy($xcol + 18, $xlin + 27);
     $this->objpdf->multicell(90, 3, $this->descr_sintetico, 0, "L");
 
+    $codigoRecurso = $this->recurso;
     $origem = \ECidade\Financeiro\Orcamento\Recurso\Origem::getEmpenho($this->numemp, db_getsession('DB_anousu'));
-    $complemento = '';
-    if (!empty($origem)) {
-        $complemento = " | {$origem->o200_sequencial} - {$origem->o200_descricao}";
+    if ($origem) {
+        $codigoRecurso = $origem->o206_recurso;
     }
 
-    $sDescricaoRecurso = $this->descr_recurso . $complemento;
+    $sDescricaoRecurso = descricaoCompletaRecurso($codigoRecurso, db_getsession('DB_anousu'));
+
+
     $sDescricaoRecurso2 = null;
     $iTamanhoLinha = 44;
     /**
      * Se o tamanho da descrição é maior que $iTamanhoLinha, quebra em duas linhas (sem cortar as palavras ao meio)
      */
-    if (strlen($this->descr_recurso) > $iTamanhoLinha) {
+    if (strlen($sDescricaoRecurso) > $iTamanhoLinha) {
 
         $aDescricaoRecurso = explode("\n", wordwrap($sDescricaoRecurso, $iTamanhoLinha));
         $sDescricaoRecurso = current($aDescricaoRecurso);
@@ -442,10 +447,13 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
                     $this->objpdf->text($xcol + 30, $xlin + 187, $this->destino, 0, 1, 'L', 0);
                 }
 
+
+                $this->objpdf->SetFont('Arial', '', 7);
                 $this->objpdf->setxy($xcol + 1, $xlin + 165);
                 $this->objpdf->text($xcol + 2, $xlin + 164, 'RESUMO : ', 0, 1, 'L', 0);
                 $this->objpdf->setxy($xcol + 1, $xlin + 161.5);
                 $this->objpdf->multicell(147, 3.5, $this->resumo, 0, 'J', 0, 14);
+
 
                 $this->objpdf->text($xcol + 159, $xlin + 187, 'T O T A L', 0, 1, 'L', 0);
                 $this->objpdf->setxy($xcol + 185, $xlin + 180);
@@ -559,13 +567,14 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
             $this->objpdf->text($xcol + 2, $xlin + 187, 'DESTINO : ', 0, 1, 'L', 0);
             $this->objpdf->text($xcol + 30, $xlin + 187, $this->destino, 0, 1, 'L', 0);
         }
-
+        
+        $this->objpdf->SetFont('Arial', '', 7);
         $this->objpdf->setxy($xcol + 1, $xlin + 165);
         $this->objpdf->text($xcol + 2, $xlin + 164, 'RESUMO : ', 0, 1, 'L', 0);
         $this->objpdf->setxy($xcol + 1, $xlin + 161.5);
 
         if ($possuiFinalidadePagto = strlen($this->finalidade_pagto) > 0) {
-            $this->objpdf->text(6, $xlin + 175, 'FINALIDADE PAGAMENTO : ', 0, 1, 'L', 0);
+            $this->objpdf->text(30, $xlin + 175, 'FINALIDADE PAGAMENTO : ', 0, 1, 'L', 0);
         }
 
         // trata o resumo para que caiba no espaço correto
@@ -590,6 +599,11 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
         }
 
         $this->objpdf->multicell(147, 3.5, substr($this->resumo, 0, $qtd_string), 0, 'J', 0, 14);
+        
+        if ($this->e50_codord != "") {
+            
+            $this->objpdf->text($xcol + 2, $xlin + 170, "ORDEM DE PAGAMENTO: {$ops}", 0, 1, 'L', 0);
+        }
 
         if ($possuiFinalidadePagto) {
             $this->objpdf->setxy($xcol + 1, $xlin + 176);
@@ -598,7 +612,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 
         $this->objpdf->text($xcol + 159, $xlin + 187, 'T O T A L', 0, 1, 'L', 0);
         $this->objpdf->setxy($xcol + 177, $xlin + 183);
-        $this->objpdf->cell(25, 6, str_pad(db_formatar($this->empenhado, 'f'), (count(db_formatar($this->empenhado, 'f')) + 23), ' ', 0), 0, "R", 'f');
+        $this->objpdf->cell(25, 6, str_pad(db_formatar($this->empenhado, 'f'), (  strlen(db_formatar($this->empenhado, 'f')) ), ' ', 0), 0, "R", 'f');
 
         if (isParaiba()) {
             $sSqlOrdenador = "	select z01_nome as ordenador

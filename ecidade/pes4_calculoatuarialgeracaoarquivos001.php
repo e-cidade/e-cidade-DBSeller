@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -118,12 +118,12 @@ $clinssirf = new cl_inssirf;
                             </tr>
                             <tr>
                                 <td align="left">
-                                    <?
+                                    <?php
                                     db_ancora("<b>Seleção de Professores:</b>","js_pesquisaprof(true)",1);
                                     ?>
                                 </td>
                                 <td align="left">
-                                    <?
+                                    <?php
                                     db_input('r44_selec',10,null ,true,'text',2,'onchange="js_pesquisaprof(false)"');
                                     db_input('r44_descr',40,null ,true,'text',3,'');
                                     ?>

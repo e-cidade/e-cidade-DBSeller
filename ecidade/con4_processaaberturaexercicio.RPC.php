@@ -24,7 +24,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 use ECidade\Configuracao\Consistencia\Repository\Consistencia as ConsistenciaEncerramento;
 use ECidade\Financeiro\Contabilidade\Encerramento\Exercicio\Encerramento;
 use ECidade\Financeiro\Contabilidade\ExercicioContabil\Abertura;
@@ -48,24 +47,26 @@ $oData = new DBDate($oParam->data);
 $data = $oParam->data;
 
 try {
-
     db_inicio_transacao();
 
     switch ($oParam->exec) {
-
         case "processarAbertura":
-
             $abertura = new Abertura(
                 db_getsession("DB_anousu"),
                 new DBDate($data),
                 InstituicaoRepository::getInstituicaoSessao()
             );
-            if ($abertura->possuiAberturaExercicioNoAnoInstituicao()) {
-                throw new Exception("Processamento já executado para instituição e ano.");
-            }
-            $abertura->processar();
-            $oRetorno->mensagem = "A abertura foi processada com sucesso.";
 
+            $documentosJaProcessados = $abertura->validaDocumentosProcessados($oParam->documentos);
+            if (!empty($documentosJaProcessados)) {
+                throw new Exception(
+                    'O(s) documento(s) já foram processados. '. implode(', ', $documentosJaProcessados)
+                );
+            }
+
+            $abertura->processar($oParam->documentos);
+            $oRetorno->mensagem = "A abertura foi processada com sucesso.";
+            $oRetorno->documentosEncerrados = $oParam->documentos;
             break;
 
         case "cancelarAbertura":
@@ -74,15 +75,29 @@ try {
                 new DBDate($data),
                 InstituicaoRepository::getInstituicaoSessao()
             );
-            $abertura->cancelar();
-
+            $abertura->cancelar($oParam->documentos);
             $oRetorno->mensagem = "A abertura foi cancelada com sucesso.";
             break;
+        case 'validaSituacaoDocumentos':
+            $where = " c149_anousu = ".  db_getsession("DB_anousu");
+            $where .= " and  c149_instit = " .db_getsession("DB_instit");
+            $dao = new cl_aberturaexerciciodocumento();
+            $sql = $dao->sql_query_file(null, 'c149_documento', null, $where);
+
+            $rs = db_query($sql);
+
+            $oRetorno->documentosEncerrados = [];
+            if ($rs && pg_num_rows($rs) > 0) {
+                $oRetorno->documentosEncerrados = db_utils::makeCollectionFromRecord($rs, function ($dado) {
+                   return $dado->c149_documento;
+                });
+            }
+
+            break;
     }
+
     db_fim_transacao(false);
-
 } catch (Exception $eErro) {
-
     db_fim_transacao(true);
 
     $oRetorno->erro = true;

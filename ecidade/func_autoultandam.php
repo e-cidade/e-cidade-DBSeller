@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clautoultandam->rotulo->label("y16_codandam");
               <?=$Ly16_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y16_codauto",10,$Iy16_codauto,true,"text",4,"","chave_y16_codauto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clautoultandam->rotulo->label("y16_codandam");
               <?=$Ly16_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y16_codandam",20,$Iy16_codandam,true,"text",4,"","chave_y16_codandam");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clautoultandam->rotulo->label("y16_codandam");
               <?=$Ly16_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y16_codandam",20,$Iy16_codandam,true,"text",4,"","chave_y16_codandam");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clautoultandam->rotulo->label("y16_codandam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autoultandam.php")==true){
@@ -129,12 +129,12 @@ $clautoultandam->rotulo->label("y16_codandam");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

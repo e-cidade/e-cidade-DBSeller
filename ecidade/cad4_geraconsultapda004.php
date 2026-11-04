@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 <center>
 <br><br>
-<?
+<?php
 $sql = "select * from moblevantamentoedi
         where j96_codimporta = $codimp 
           and j96_matric = $matric

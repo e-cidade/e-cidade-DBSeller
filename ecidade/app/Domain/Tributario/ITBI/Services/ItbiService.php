@@ -10,6 +10,7 @@ use App\Domain\Tributario\Cadastro\Repositories\IptubaseRepository;
 use App\Domain\Tributario\Cadastro\Repositories\IptucalcRepository;
 use App\Domain\Tributario\Cadastro\Repositories\IptucaleRepository;
 use App\Domain\Tributario\Cadastro\Repositories\IptuconstrRepository;
+use App\Domain\Tributario\ITBI\Repositories\AnexoArquivoItbiRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbisituacaoRepository;
 use App\Domain\Tributario\ITBI\Repositories\ItbitransacaoRepository;
 use App\Domain\Tributario\ITBI\Repositories\ParitbiRepository;
@@ -362,5 +363,50 @@ final class ItbiService
         }
 
         return $aBenfeitorias;
+    }
+
+
+    public function processarArquivo($itbi, $desc, $obs, $user, $file)
+    {
+        $anexoRepository = new AnexoArquivoItbiRepository();
+
+        $arqPath = $file->getRealPath();
+        $arqName = $file->getClientOriginalName();
+        $upload = null;
+        $saveInfo = null;
+
+        if ($arqPath != null && $arqName != null) {
+            $upload = $anexoRepository->uploadArquivo($arqPath, $arqName, $itbi);
+            if (isset($upload["sucesso"]) && $upload["sucesso"] != null) {
+                $saveInfo = $anexoRepository->saveDadosUpload($itbi, $desc, $obs, $user, $arqName, $upload["sucesso"]);
+            }
+        }
+
+        return ['upload' => $upload, 'saveInfo' => $saveInfo];
+    }
+
+
+    public function getArquivosItbi($itbi)
+    {
+        $anexoRepository = new AnexoArquivoItbiRepository();
+        return $anexoRepository->getArquivosItbi($itbi);
+    }
+
+    public function deleteArquivo($sequencial, $idArq, $idUser, $itbi)
+    {
+        $anexoRepository = new AnexoArquivoItbiRepository();
+        return $anexoRepository->deleteArquivo($sequencial, $idArq, $idUser, $itbi);
+    }
+
+    public function updateDadosArquivo($sequencial, $itbi, $desc, $obs)
+    {
+        $anexoRepository = new AnexoArquivoItbiRepository();
+        return $anexoRepository->updateDadosArquivo($sequencial, $itbi, $desc, $obs);
+    }
+
+    public function downloadArquivo($idArq)
+    {
+        $anexoRepository = new AnexoArquivoItbiRepository();
+        return $anexoRepository->downloadArquivo($idArq);
     }
 }

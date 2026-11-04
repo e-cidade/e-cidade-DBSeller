@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -284,20 +284,20 @@ if(isset($coddepto) && $coddepto!=''){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-<?
+<?php
 /* rotina quando já tiver sido selecionado o usuario ou o departamento       */
   if(isset($coddepto) || isset($id_usuario)){
 ?>
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmdb_permempusu.php"));
 	?>
     </center>
     </td>
   </tr>
-<?
+<?php
 /*****************fim*********************/
 /* para pegar o id_usario ou o codigo do departamento       */
  }else{
@@ -318,12 +318,12 @@ $db_opcao = 1;
 <table> 
   <tr>
     <td nowrap title="<?=@$Tid_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lnome,"js_usu(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_usuario',7,$Iid_usuario,true,'text',$db_opcao," onchange='js_usu(false);'");
 db_input('nome',40,$Inome,true,'text',3,'');
 ?>
@@ -331,12 +331,12 @@ db_input('nome',40,$Inome,true,'text',3,'');
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcoddepto?>">
-       <?
+       <?php
        db_ancora(@$Lcoddepto,"js_coddepto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('coddepto',7,$Icoddepto,true,'text',$db_opcao," onchange='js_coddepto(false);'");
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
 ?>
@@ -411,17 +411,17 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
   }
   document.form1.id_usuario.focus();
 </script>
-<?
+<?php
  }
 /**********************fim**************************/
 ?>  
 </table>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir_todos) ||isset($incluir) || isset($alterar) || isset($excluir)){
     db_msgbox($erro_msg);
   if($cldb_permemp->erro_status=="1"){

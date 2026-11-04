@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmatestoqueitem->rotulo->label("m71_codmatestoque");
               <?=$Lm71_codlanc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m71_codlanc",10,$Im71_codlanc,true,"text",4,"","chave_m71_codlanc");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatestoqueitem->rotulo->label("m71_codmatestoque");
               <?=$Lm71_codmatestoque?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m71_codmatestoque",10,$Im71_codmatestoque,true,"text",4,"","chave_m71_codmatestoque");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatestoqueitem->rotulo->label("m71_codmatestoque");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoqueitem.php")==true){
@@ -118,12 +118,12 @@ $clmatestoqueitem->rotulo->label("m71_codmatestoque");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

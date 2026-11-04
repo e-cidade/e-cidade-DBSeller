@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,45 +38,45 @@ $clrotulo->label("ed09_c_situacao");
 <table border="0">
   <tr>
     <td nowrap title="Disciplina">
-       <?
+       <?php
        db_ancora("<b>Disciplina:</b>","js_pesquisaed27_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed27_i_codigo',5,$ed27_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed27_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed27_c_nome',40,$ed27_c_nome,true,'text',3,'')
        ?>
     </td>
   <tr>
   <tr>
     <td nowrap title="Período">
-       <?
+       <?php
        db_ancora("<b>Período:</b>","js_pesquisaed23_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed23_i_codigo',5,$ed23_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed23_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed23_c_nome',40,$ed23_c_nome,true,'text',3,'')
        ?>
     </td>
   <tr>
   <tr>
     <td nowrap title="Turma">
-       <?
+       <?php
        db_ancora("<b>Turma:</b>","js_pesquisaed05_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('ed05_i_codigo',5,$ed05_i_codigo,true,'text',$db_opcao," onchange='js_pesquisaed05_i_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed05_c_nome',40,$ed05_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -222,7 +222,7 @@ function js_mostraturmas1(chave1,chave2){
 
 function js_preenchepesquisa(chave){
   db_iframe_chamadas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

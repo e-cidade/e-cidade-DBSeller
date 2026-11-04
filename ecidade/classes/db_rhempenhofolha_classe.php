@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -61,32 +61,32 @@ class cl_rhempenhofolha {
    var $rh72_programa = 0;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh72_sequencial = int4 = Sequencial 
-                 rh72_coddot = int4 = Dotação 
-                 rh72_codele = int4 = Elemento 
-                 rh72_unidade = int4 = Unidade 
-                 rh72_orgao = int4 = Órgão 
-                 rh72_projativ = int4 = Projetos / Atividades 
-                 rh72_anousu = int4 = Exercício 
-                 rh72_recurso = int4 = Recurso 
-                 rh72_mesusu = int4 = Mês 
-                 rh72_siglaarq = char(3) = Sigla 
-                 rh72_tipoempenho = int4 = Tipo Empenho 
-                 rh72_tabprev = int4 = Tabela de Previdência 
-                 rh72_seqcompl = int4 = Sequencia de Folha Complementar 
-                 rh72_concarpeculiar = varchar(100) = Caracteristica Peculiar 
-                 rh72_funcao = int4 = Função 
-                 rh72_subfuncao = int4 = Subfunção 
-                 rh72_programa = int4 = Programa 
+                 rh72_sequencial = int4 = Sequencial
+                 rh72_coddot = int4 = Dotação
+                 rh72_codele = int4 = Elemento
+                 rh72_unidade = int4 = Unidade
+                 rh72_orgao = int4 = Órgão
+                 rh72_projativ = int4 = Projetos / Atividades
+                 rh72_anousu = int4 = Exercício
+                 rh72_recurso = int4 = Recurso
+                 rh72_mesusu = int4 = Mês
+                 rh72_siglaarq = char(3) = Sigla
+                 rh72_tipoempenho = int4 = Tipo Empenho
+                 rh72_tabprev = int4 = Tabela de Previdência
+                 rh72_seqcompl = int4 = Sequencia de Folha Complementar
+                 rh72_concarpeculiar = varchar(100) = Caracteristica Peculiar
+                 rh72_funcao = int4 = Função
+                 rh72_subfuncao = int4 = Subfunção
+                 rh72_programa = int4 = Programa
                  ";
    //funcao construtor da classe
-   function cl_rhempenhofolha() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhempenhofolha");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_rhempenhofolha {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh72_sequencial = ($this->rh72_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh72_sequencial"]:$this->rh72_sequencial);
        $this->rh72_coddot = ($this->rh72_coddot == ""?@$GLOBALS["HTTP_POST_VARS"]["rh72_coddot"]:$this->rh72_coddot);
@@ -119,7 +119,7 @@ class cl_rhempenhofolha {
      }
    }
    // funcao para inclusao
-   function incluir ($rh72_sequencial){
+   public function incluir ($rh72_sequencial){
       $this->atualizacampos();
      if($this->rh72_coddot == null ){
        $this->rh72_coddot = "0";
@@ -274,42 +274,42 @@ class cl_rhempenhofolha {
        return false;
      }
      $sql = "insert into rhempenhofolha(
-                                       rh72_sequencial 
-                                      ,rh72_coddot 
-                                      ,rh72_codele 
-                                      ,rh72_unidade 
-                                      ,rh72_orgao 
-                                      ,rh72_projativ 
-                                      ,rh72_anousu 
-                                      ,rh72_recurso 
-                                      ,rh72_mesusu 
-                                      ,rh72_siglaarq 
-                                      ,rh72_tipoempenho 
-                                      ,rh72_tabprev 
-                                      ,rh72_seqcompl 
-                                      ,rh72_concarpeculiar 
-                                      ,rh72_funcao 
-                                      ,rh72_subfuncao 
-                                      ,rh72_programa 
+                                       rh72_sequencial
+                                      ,rh72_coddot
+                                      ,rh72_codele
+                                      ,rh72_unidade
+                                      ,rh72_orgao
+                                      ,rh72_projativ
+                                      ,rh72_anousu
+                                      ,rh72_recurso
+                                      ,rh72_mesusu
+                                      ,rh72_siglaarq
+                                      ,rh72_tipoempenho
+                                      ,rh72_tabprev
+                                      ,rh72_seqcompl
+                                      ,rh72_concarpeculiar
+                                      ,rh72_funcao
+                                      ,rh72_subfuncao
+                                      ,rh72_programa
                        )
                 values (
-                                $this->rh72_sequencial 
-                               ,$this->rh72_coddot 
-                               ,$this->rh72_codele 
-                               ,$this->rh72_unidade 
-                               ,$this->rh72_orgao 
-                               ,$this->rh72_projativ 
-                               ,$this->rh72_anousu 
-                               ,$this->rh72_recurso 
-                               ,$this->rh72_mesusu 
-                               ,'$this->rh72_siglaarq' 
-                               ,$this->rh72_tipoempenho 
-                               ,$this->rh72_tabprev 
-                               ,$this->rh72_seqcompl 
-                               ,'$this->rh72_concarpeculiar' 
-                               ,$this->rh72_funcao 
-                               ,$this->rh72_subfuncao 
-                               ,$this->rh72_programa 
+                                $this->rh72_sequencial
+                               ,$this->rh72_coddot
+                               ,$this->rh72_codele
+                               ,$this->rh72_unidade
+                               ,$this->rh72_orgao
+                               ,$this->rh72_projativ
+                               ,$this->rh72_anousu
+                               ,$this->rh72_recurso
+                               ,$this->rh72_mesusu
+                               ,'$this->rh72_siglaarq'
+                               ,$this->rh72_tipoempenho
+                               ,$this->rh72_tabprev
+                               ,$this->rh72_seqcompl
+                               ,'$this->rh72_concarpeculiar'
+                               ,$this->rh72_funcao
+                               ,$this->rh72_subfuncao
+                               ,$this->rh72_programa
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -362,7 +362,7 @@ class cl_rhempenhofolha {
      return true;
    }
    // funcao para alteracao
-   function alterar ($rh72_sequencial=null) {
+   public function alterar ($rh72_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhempenhofolha set ";
      $virgula = "";
@@ -643,7 +643,7 @@ class cl_rhempenhofolha {
      }
    }
    // funcao para exclusao
-   function excluir ($rh72_sequencial=null,$dbwhere=null) {
+   public function excluir ($rh72_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh72_sequencial));
      }else{
@@ -720,7 +720,7 @@ class cl_rhempenhofolha {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -743,10 +743,10 @@ class cl_rhempenhofolha {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -794,7 +794,7 @@ class cl_rhempenhofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -804,10 +804,10 @@ class cl_rhempenhofolha {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -828,7 +828,7 @@ class cl_rhempenhofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -837,10 +837,10 @@ class cl_rhempenhofolha {
      }
      return $sql;
   }
-   function sql_query_rubricas( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_rubricas( $rh72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -864,7 +864,7 @@ class cl_rhempenhofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -884,7 +884,7 @@ class cl_rhempenhofolha {
    * @param  String   $seqCompl
    * @return String   $sSql
    */
-  function sql_query_empenhado($iAnoUsu, $iMesUsu, $sSiglaArquivo = "*", $sCampos, $seqCompl = false){
+  public function sql_query_empenhado($iAnoUsu, $iMesUsu, $sSiglaArquivo = "*", $sCampos, $seqCompl = false){
 
     $iInstit = db_getsession('DB_instit');
 

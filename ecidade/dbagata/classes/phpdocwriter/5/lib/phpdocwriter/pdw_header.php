@@ -59,7 +59,7 @@ function pdw_header(&$obj, $tempname)
 
 }
 
-function Insert()
+public function Insert()
 {
 	$this->office->addXMLBranch($this->cursor);
 	$headlines = $this->parent->masterstyles->getBranches('office:master-styles', 'style:master-page', 'style:name', $this->tempname);

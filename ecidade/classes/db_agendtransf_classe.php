@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE agendtransf
-class cl_agendtransf { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd31_i_codigo = 0; 
-   var $sd31_d_dataorigem_dia = null; 
-   var $sd31_d_dataorigem_mes = null; 
-   var $sd31_d_dataorigem_ano = null; 
-   var $sd31_d_dataorigem = null; 
-   var $sd31_i_agendamento = 0; 
-   var $sd31_i_usuario = 0; 
-   var $sd31_i_undmedorigem = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_agendtransf {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd31_i_codigo = 0;
+   var $sd31_d_dataorigem_dia = null;
+   var $sd31_d_dataorigem_mes = null;
+   var $sd31_d_dataorigem_ano = null;
+   var $sd31_d_dataorigem = null;
+   var $sd31_i_agendamento = 0;
+   var $sd31_i_usuario = 0;
+   var $sd31_i_undmedorigem = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd31_i_codigo = int4 = Código 
-                 sd31_d_dataorigem = date = Origem 
-                 sd31_i_agendamento = int4 = Agendamento 
-                 sd31_i_usuario = int4 = Usuário 
-                 sd31_i_undmedorigem = int4 = Unidade / Médico 
+                 sd31_i_codigo = int4 = Código
+                 sd31_d_dataorigem = date = Origem
+                 sd31_i_agendamento = int4 = Agendamento
+                 sd31_i_usuario = int4 = Usuário
+                 sd31_i_undmedorigem = int4 = Unidade / Médico
                  ";
-   //funcao construtor da classe 
-   function cl_agendtransf() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("agendtransf"); 
+     $this->rotulo = new rotulo("agendtransf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_agendtransf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd31_i_codigo = ($this->sd31_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd31_i_codigo"]:$this->sd31_i_codigo);
        if($this->sd31_d_dataorigem == ""){
@@ -93,9 +93,9 @@ class cl_agendtransf {
      }
    }
    // funcao para inclusao
-   function incluir ($sd31_i_codigo){ 
+   public function incluir ($sd31_i_codigo){
       $this->atualizacampos();
-     if($this->sd31_d_dataorigem == null ){ 
+     if($this->sd31_d_dataorigem == null ){
        $this->erro_sql = " Campo Origem nao Informado.";
        $this->erro_campo = "sd31_d_dataorigem_dia";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_agendtransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd31_i_agendamento == null ){ 
+     if($this->sd31_i_agendamento == null ){
        $this->erro_sql = " Campo Agendamento nao Informado.";
        $this->erro_campo = "sd31_i_agendamento";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_agendtransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd31_i_usuario == null ){ 
+     if($this->sd31_i_usuario == null ){
        $this->erro_sql = " Campo Usuário nao Informado.";
        $this->erro_campo = "sd31_i_usuario";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_agendtransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd31_i_undmedorigem == null ){ 
+     if($this->sd31_i_undmedorigem == null ){
        $this->erro_sql = " Campo Unidade / Médico nao Informado.";
        $this->erro_campo = "sd31_i_undmedorigem";
        $this->erro_banco = "";
@@ -132,16 +132,16 @@ class cl_agendtransf {
        return false;
      }
      if($sd31_i_codigo == "" || $sd31_i_codigo == null ){
-       $result = db_query("select nextval('agendtransf_sd31_i_codigo_seq')"); 
+       $result = db_query("select nextval('agendtransf_sd31_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: agendtransf_sd31_i_codigo_seq do campo: sd31_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: agendtransf_sd31_i_codigo_seq do campo: sd31_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd31_i_codigo = pg_result($result,0,0); 
+       $this->sd31_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from agendtransf_sd31_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd31_i_codigo)){
@@ -152,10 +152,10 @@ class cl_agendtransf {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd31_i_codigo = $sd31_i_codigo; 
+         $this->sd31_i_codigo = $sd31_i_codigo;
        }
      }
-     if(($this->sd31_i_codigo == null) || ($this->sd31_i_codigo == "") ){ 
+     if(($this->sd31_i_codigo == null) || ($this->sd31_i_codigo == "") ){
        $this->erro_sql = " Campo sd31_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,21 +164,21 @@ class cl_agendtransf {
        return false;
      }
      $sql = "insert into agendtransf(
-                                       sd31_i_codigo 
-                                      ,sd31_d_dataorigem 
-                                      ,sd31_i_agendamento 
-                                      ,sd31_i_usuario 
-                                      ,sd31_i_undmedorigem 
+                                       sd31_i_codigo
+                                      ,sd31_d_dataorigem
+                                      ,sd31_i_agendamento
+                                      ,sd31_i_usuario
+                                      ,sd31_i_undmedorigem
                        )
                 values (
-                                $this->sd31_i_codigo 
-                               ,".($this->sd31_d_dataorigem == "null" || $this->sd31_d_dataorigem == ""?"null":"'".$this->sd31_d_dataorigem."'")." 
-                               ,$this->sd31_i_agendamento 
-                               ,$this->sd31_i_usuario 
-                               ,$this->sd31_i_undmedorigem 
+                                $this->sd31_i_codigo
+                               ,".($this->sd31_d_dataorigem == "null" || $this->sd31_d_dataorigem == ""?"null":"'".$this->sd31_d_dataorigem."'")."
+                               ,$this->sd31_i_agendamento
+                               ,$this->sd31_i_usuario
+                               ,$this->sd31_i_undmedorigem
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Transferências ($this->sd31_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -214,16 +214,16 @@ class cl_agendtransf {
        $resac = db_query("insert into db_acount values($acount,1010141,1008838,'','".AddSlashes(pg_result($resaco,0,'sd31_i_undmedorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd31_i_codigo=null) { 
+   public function alterar ($sd31_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update agendtransf set ";
      $virgula = "";
-     if(trim($this->sd31_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_codigo"])){ 
+     if(trim($this->sd31_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_codigo"])){
        $sql  .= $virgula." sd31_i_codigo = $this->sd31_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd31_i_codigo) == null ){ 
+       if(trim($this->sd31_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd31_i_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_agendtransf {
          return false;
        }
      }
-     if(trim($this->sd31_d_dataorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"] !="") ){ 
+     if(trim($this->sd31_d_dataorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"] !="") ){
        $sql  .= $virgula." sd31_d_dataorigem = '$this->sd31_d_dataorigem' ";
        $virgula = ",";
-       if(trim($this->sd31_d_dataorigem) == null ){ 
+       if(trim($this->sd31_d_dataorigem) == null ){
          $this->erro_sql = " Campo Origem nao Informado.";
          $this->erro_campo = "sd31_d_dataorigem_dia";
          $this->erro_banco = "";
@@ -245,11 +245,11 @@ class cl_agendtransf {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd31_d_dataorigem_dia"])){
          $sql  .= $virgula." sd31_d_dataorigem = null ";
          $virgula = ",";
-         if(trim($this->sd31_d_dataorigem) == null ){ 
+         if(trim($this->sd31_d_dataorigem) == null ){
            $this->erro_sql = " Campo Origem nao Informado.";
            $this->erro_campo = "sd31_d_dataorigem_dia";
            $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_agendtransf {
          }
        }
      }
-     if(trim($this->sd31_i_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_agendamento"])){ 
+     if(trim($this->sd31_i_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_agendamento"])){
        $sql  .= $virgula." sd31_i_agendamento = $this->sd31_i_agendamento ";
        $virgula = ",";
-       if(trim($this->sd31_i_agendamento) == null ){ 
+       if(trim($this->sd31_i_agendamento) == null ){
          $this->erro_sql = " Campo Agendamento nao Informado.";
          $this->erro_campo = "sd31_i_agendamento";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_agendtransf {
          return false;
        }
      }
-     if(trim($this->sd31_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_usuario"])){ 
+     if(trim($this->sd31_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_usuario"])){
        $sql  .= $virgula." sd31_i_usuario = $this->sd31_i_usuario ";
        $virgula = ",";
-       if(trim($this->sd31_i_usuario) == null ){ 
+       if(trim($this->sd31_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "sd31_i_usuario";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_agendtransf {
          return false;
        }
      }
-     if(trim($this->sd31_i_undmedorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_undmedorigem"])){ 
+     if(trim($this->sd31_i_undmedorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd31_i_undmedorigem"])){
        $sql  .= $virgula." sd31_i_undmedorigem = $this->sd31_i_undmedorigem ";
        $virgula = ",";
-       if(trim($this->sd31_i_undmedorigem) == null ){ 
+       if(trim($this->sd31_i_undmedorigem) == null ){
          $this->erro_sql = " Campo Unidade / Médico nao Informado.";
          $this->erro_campo = "sd31_i_undmedorigem";
          $this->erro_banco = "";
@@ -323,7 +323,7 @@ class cl_agendtransf {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Transferências nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd31_i_codigo;
@@ -351,14 +351,14 @@ class cl_agendtransf {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd31_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd31_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd31_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -388,7 +388,7 @@ class cl_agendtransf {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Transferências nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd31_i_codigo;
@@ -416,11 +416,11 @@ class cl_agendtransf {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -442,10 +442,10 @@ class cl_agendtransf {
       }
      return $result;
    }
-   function sql_query ( $sd31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,15 +466,15 @@ class cl_agendtransf {
      $sql2 = "";
      if($dbwhere==""){
        if($sd31_i_codigo!=null ){
-         $sql2 .= " where agendtransf.sd31_i_codigo = $sd31_i_codigo "; 
-       } 
+         $sql2 .= " where agendtransf.sd31_i_codigo = $sd31_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,10 +483,10 @@ class cl_agendtransf {
      }
      return $sql;
   }
-   function sql_query_file ( $sd31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,15 +499,15 @@ class cl_agendtransf {
      $sql2 = "";
      if($dbwhere==""){
        if($sd31_i_codigo!=null ){
-         $sql2 .= " where agendtransf.sd31_i_codigo = $sd31_i_codigo "; 
-       } 
+         $sql2 .= " where agendtransf.sd31_i_codigo = $sd31_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

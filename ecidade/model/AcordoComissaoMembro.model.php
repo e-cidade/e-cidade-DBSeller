@@ -151,48 +151,49 @@ class AcordoComissaoMembro
         $oDaoComissaoMembro->ac07_nomearquivo = $this->getNomeArquivo();
         $oDaoComissaoMembro->ac07_arquivo = $this->getArquivo() === null ? 'null' : $this->getArquivo();
         $sPathArquivo = null;
+
         if($this->getNomeArquivo() != null && $this->getNomeArquivo() != "") {
-        
+
           $sPathArquivo = "tmp/".$this->getNomeArquivo();
-          pg_lo_export($this->getArquivo(), $sPathArquivo);        
+          pg_lo_export($this->getArquivo(), $sPathArquivo);
           $iTamanhoArquivo = file_exists($sPathArquivo)?filesize($sPathArquivo):0;
           $oDaoLicitaparam = new cl_licitaparam;
           $sSqlParametro   = $oDaoLicitaparam->sql_query(null, 'l12_limitetamanhoarquivo', '', "l12_instit=".db_getsession('DB_instit'));
           $rsParametro     = $oDaoLicitaparam->sql_record($sSqlParametro);
-          if (!$rsParametro || ($rsParametro && $oDaoLicitaparam->numrows == 0)) { 
-       
+          if (!$rsParametro || ($rsParametro && $oDaoLicitaparam->numrows == 0)) {
+
             throw new ParameterException('Não foi encontrado parâmetro do módulo Licitação. Configure para utilizar rotina');
           }
 
           $oParametro      = db_utils::fieldsMemory($rsParametro, 0);
           $iTamanhoMaximo  = $oParametro->l12_limitetamanhoarquivo;
           if ( $iTamanhoArquivo > $iTamanhoMaximo ) {
-      
-            throw new FileException("Tamanho do Arquivo Excede o Limite Permitido. Tamanho do arquivo({$sPathArquivo}): {$iTamanhoArquivo}. 
+
+            throw new FileException("Tamanho do Arquivo Excede o Limite Permitido. Tamanho do arquivo({$sPathArquivo}): {$iTamanhoArquivo}.
             Limite do tamanho configurado {$iTamanhoMaximo}");
           }
-  
-          if ($this->getCodigo()) { 
-  
-            $sSqlValidaExistencia = "select * 
+
+          if ($this->getCodigo()) {
+
+            $sSqlValidaExistencia = "select *
                                        from acordos.acordocomissaomembro
                                       where ac07_sequencial  <> {$this->getCodigo()}
                                         and upper(ac07_nomearquivo) = upper('{$this->getNomeArquivo()}')";
           } else {
-             
-              $sSqlValidaExistencia = "select * 
+
+              $sSqlValidaExistencia = "select *
                                          from acordos.acordocomissaomembro
                                         where upper(ac07_nomearquivo) = upper('{$this->getNomeArquivo()}')";
           }
-          
+
           $rsValidaExistencia = db_query($sSqlValidaExistencia);
 
           if(pg_numrows($rsValidaExistencia) > 0) {
 
-            throw new FileException("O arquivo já Existe no Cadastro. Renomeie o Arquivo. {$this->getNomeArquivo()}");           
+            throw new FileException("O arquivo já Existe no Cadastro. Renomeie o Arquivo. {$this->getNomeArquivo()}");
           }
         }
-     
+
         $oDataInicio = $this->getDataInicio();
         if ($oDataInicio) {
             $oDaoComissaoMembro->ac07_datainicio = $this->getDataInicio()->getDate();
@@ -282,6 +283,7 @@ class AcordoComissaoMembro
     public function setCodigo($iCodigo)
     {
         $this->iCodigo = $iCodigo;
+        return $this;
     }
 
     /**
@@ -290,6 +292,7 @@ class AcordoComissaoMembro
     public function setCodigoCgm($iCodigoCgm)
     {
         $this->iCodigoCgm = $iCodigoCgm;
+        return $this;
     }
 
     /**
@@ -298,6 +301,7 @@ class AcordoComissaoMembro
     public function setCodigoComissao($iCodigoComissao)
     {
         $this->iCodigoComissao = $iCodigoComissao;
+        return $this;
     }
 
     /**
@@ -306,6 +310,7 @@ class AcordoComissaoMembro
     public function setNome($sNome)
     {
         $this->sNome = $sNome;
+        return $this;
     }
 
     /**
@@ -314,6 +319,7 @@ class AcordoComissaoMembro
     public function setResponsabilidade($iResponsabilidade)
     {
         $this->iResponsabilidade = $iResponsabilidade;
+        return $this;
     }
 
     /**
@@ -330,6 +336,7 @@ class AcordoComissaoMembro
     public function setDescricaoResponsabilidade($sDescricaoResponsabilidade)
     {
         $this->sDescricaoResponsabilidade = $sDescricaoResponsabilidade;
+        return $this;
     }
 
     /**
@@ -346,6 +353,7 @@ class AcordoComissaoMembro
     public function setDataInicio(DBDate $oDataInicio)
     {
         $this->oDataInicio = $oDataInicio;
+        return $this;
     }
 
     /**
@@ -362,6 +370,7 @@ class AcordoComissaoMembro
     public function setDataTermino(DBDate $oDataTermino)
     {
         $this->oDataTermino = $oDataTermino;
+        return $this;
     }
 
     /**
@@ -378,6 +387,7 @@ class AcordoComissaoMembro
     public function setNumeroAtoDesignacao($numeroAtoDesignacao)
     {
         $this->numeroAtoDesignacao = $numeroAtoDesignacao;
+        return $this;
     }
 
     /**
@@ -394,6 +404,7 @@ class AcordoComissaoMembro
     public function setAnoAtoDesignacao($anoAtoDesignacao)
     {
         $this->anoAtoDesignacao = $anoAtoDesignacao;
+        return $this;
     }
 
     /**
@@ -418,6 +429,7 @@ class AcordoComissaoMembro
 
             $this->nomeArquivo = trim($titulo, $separador);
         }
+        return $this;
     }
 
     /**
@@ -434,6 +446,7 @@ class AcordoComissaoMembro
     public function setArquivo($arquivo)
     {
         $this->arquivo = pg_lo_import($arquivo->tmp_name);
+        return $this;
     }
 
 }

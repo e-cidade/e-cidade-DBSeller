@@ -24,7 +24,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 $DB_COR_FUNDO = "#00CCFF";
 $DB_FILES     = "/dbportal2/imagens/files";
 $DB_DIRPCB    = "/home/sistema";
@@ -32,14 +31,14 @@ $DB_EXEC      = "/usr/bin/dbs";
 $DB_NETSTAT   = "netstat";
 
 // Variaveis de Configuracao
-$DB_USUARIO   = "";
-$DB_SENHA     = "";
-$DB_SERVIDOR  = "";
-$DB_PORTA     = "";
-$DB_PORTA_ALT = "";
-$DB_BASE      = "";
-$DB_SELLER    = "";
-$DB_VALIDA_REQUISITOS = false;
-$lUtilizaCaptcha = false;
-$lVeriricaIpPrivado = false;
+$DB_USUARIO   = env('DB_USERNAME'); // Usuário do PostgreSQL
+$DB_SENHA     = env('DB_PASSWORD'); // Senha do usuário do PostgreSQL
+$DB_SERVIDOR  = env('DB_HOST'); // Ip do servidor para a conexão com a base de dados
+$DB_PORTA     = env('DB_PORT'); // Porta para conexao com o banco de dados (porta do Pool de Conexoes quando utilizado)
+$DB_PORTA_ALT = env('DB_PORT_ALT'); // Porta para conexao direta com PostgreSQL quando tivermos um pool de conexao
+$DB_BASE      = env('DB_DATABASE'); // Nome da base de dados
+$DB_SELLER    = env('DB_SELLER');
+$DB_VALIDA_REQUISITOS = env('VALIDA_REQUISITOS') === 'true'; // Variável para validar configurações de instalação do sistema.
+$lUtilizaCaptcha = env('UTILIZA_CAPTCHA') === 'true'; // Variável para habilitar a utilização de captcha
+$lVeriricaIpPrivado = env('VERIFICA_IP_PRIVADO') === 'true'; // Variável para habilitar utilização de captcha somente para IPs públicos (externos)
 ?>

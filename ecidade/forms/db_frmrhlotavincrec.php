@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("o15_descr");
        <?=@$Lrh43_codlotavinc?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh43_codlotavinc',6,$Irh43_codlotavinc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh43_codelenov?>">
-       <?
+       <?php
        db_ancora(@$Lrh43_codelenov,"js_pesquisarh43_codelenov(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh43_codelenov',6,$Irh43_codelenov,true,'text',$db_opcao," onchange='js_pesquisarh43_codelenov(false);'")
 ?>
-       <?
+       <?php
 db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh43_recurso?>">
-       <?
+       <?php
        db_ancora(@$Lrh43_recurso,"js_pesquisarh43_recurso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh43_recurso',4,$Irh43_recurso,true,'text',$db_opcao," onchange='js_pesquisarh43_recurso(false);'")
 ?>
-       <?
+       <?php
 db_input('o15_descr',30,$Io15_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_rhlotavincrec.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -68,7 +68,7 @@ $pago_n_proc = 0;
 $pago_proc = 0;
 $aliquidadonp = 0;
 
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -108,7 +108,7 @@ elseif ($opcao == "3") { // anulados
 
 if ($exercicio!=0){
         $sql_where_externo.=' and e60_anousu = '.$exercicio;
-}  
+}
 
 
 
@@ -149,7 +149,7 @@ if ($tipo == 'a') {
 	                from ($sqlperiodo) as x
 	                group by e91_codtipo,e90_descr,e60_anousu
 			order by e91_codtipo,e60_anousu
-			
+
 			";
 } elseif ($tipo == 'r') {
 	$head2 = "Emissão: Total por Recurso e Exercício";
@@ -176,7 +176,7 @@ if ($tipo == 'a') {
                         from ($sqlperiodo) as x
                         group by o58_orgao, o40_descr,e60_anousu
 			order by o58_orgao,e60_anousu
-			
+
 			";
 
 }
@@ -219,7 +219,7 @@ $repete = "";
 $xtipo = '';
 $troca = 1;
 
-// zera totalizadores  
+// zera totalizadores
 $aliquidar = 0;
 $aliquidado = 0;
 $aanulado_p = 0; //usa-se dois "aa" pra dar uma diferença na palavra
@@ -258,7 +258,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 	$anoo = $e60_anousu;
 	for ($x = 0; $x < $rows; $x ++) {
 		db_fieldsmemory($res, $x);
-		// testa novapagina 
+		// testa novapagina
 		if ($commov == "2") {
 			if (((round(round($e91_vlremp, 2) - (round($e91_vlranu, 2) + round($vlranu, 2)), 2)) - (round($e91_vlrpag, 2) + round($vlrpag, 2))) <= 0) {
 				continue;
@@ -281,7 +281,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(20, $tam, db_formatar($apago_n_proc, 'f'), 1, 0, "R", 1);
 			$pdf->Cell(20, $tam, db_formatar($apago_proc, 'f'), 1, 1, "R", 1);
-			// zera totalizadores  
+			// zera totalizadores
 			$aliquidar = 0;
 			$aliquidado = 0;
 			$aanulado_p = 0; // usa-se dois "aa" pra dar uma diferença na palavra
@@ -346,7 +346,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 				$pago_proc = 0;
 			}
 		}
-		
+
 		if ($pdf->gety() > $pdf->h - 40 || $troca == 1) {
 			$troca = 0;
 			$pdf->addpage("L");
@@ -354,11 +354,11 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->SetFont('Arial', 'B', 10);
 			if ($tipo=='u'){
 			   $pdf->cell(0, 5, ($tipo == "t" ? @ $e91_codtipo : @ ("Orgao".":".$o58_orgao." - "." Unidade: ".$o58_unidade)).' - '. ($tipo == "t" ? @ $e90_descr : @ $o41_descr), 0, 1, "L", 0);
-		    }	else { 
+		    }	else {
         if ( $tipo == 't' || $tipo == 'o' ){
 		  	     $pdf->cell(0, 5, ($tipo == "t" ? @ $e91_codtipo :  @ $e91_recurso ).' - '. ($tipo == "t" ? @ $e90_descr : @ $o15_descr), 0, 1, "L", 0);
         }
-		    }  
+		    }
 			$pdf->SetFont('Arial', 'B', 7);
 
 			$pdf->Cell(100, $tam, "Dados do empenho", 1, 0, "C", 1);
@@ -410,18 +410,18 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 		$pdf->Cell(20, $tam, db_formatar($vlrnp, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($vlrp, 'f'), 1, 1, "R", 0);
 
-		// totalizador local     			
+		// totalizador local
 		$aliquidar += $e91_vlremp - $e91_vlranu - $e91_vlrliq;
 		$aliquidado += $e91_vlrliq - $e91_vlrpag;
 		$aanulado_p += $vlranu;
 		$aliquidado_p += $vlrliq;
-		$aaliquidado_p += $e91_vlremp - (($e91_vlranu + $vlranu) + ($vlrliq + $e91_vlrliq - $vlranuliq)); // A liquidar geral		
+		$aaliquidado_p += $e91_vlremp - (($e91_vlranu + $vlranu) + ($vlrliq + $e91_vlrliq - $vlranuliq)); // A liquidar geral
 		$apago_p += $vlrpag;
 		$apago_n_proc += $vlrnp;
 		$apago_proc += $vlrp;
 		// $aliquidadonp += $e91_vlremp - (($e91_vlranu + $vlranu) + ($vlrliq + $e91_vlrliq)); //nao sei onde usa esta variavel !
 
-		// somador  
+		// somador
 		$liquidar += $e91_vlremp - $e91_vlranu - $e91_vlrliq;
 		$liquidado += $e91_vlrliq - $e91_vlrpag;
 		$anulado_p += $vlranu;
@@ -447,7 +447,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 	}  else {
             $pago_proc   = $pago_p;
 	    $pago_n_proc = 0;
-	}  
+	}
 	$pdf->Cell(20, $tam, db_formatar($pago_n_proc, 'f'), 1, 0, "R", 0);
 	$pdf->Cell(20, $tam, db_formatar($pago_proc, 'f'), 1, 1, "R", 0);
 
@@ -477,7 +477,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			}
 		}
 
-		// testa novapagina 
+		// testa novapagina
 		if ($xtipo !=  $o56_elemento) {
 			//$troca 	   = 1;
 			if ($x != 0) {
@@ -589,7 +589,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 } elseif ($tipo=='subfunc'){
         //@
         //@ lista rps quebrando por orgao/subfunção
-        //@ 
+        //@
 
 	// totais por orgão.subfuncao
 	$liquidar    = 0;
@@ -618,7 +618,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 				continue;
 			}
 		}
-		// testa novapagina 
+		// testa novapagina
 		if ($xtipo !=  $o58_orgao.$o40_descr.$o58_subfuncao.$o53_descr) {
                         // imprime totalizador do orgão
 			$pdf->Cell(100, $tam, "TOTAL:", 0, "R", 0);
@@ -647,7 +647,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pago_p      = 0;
 			$pago_n_proc = 0;
 			$pago_proc   = 0;
-		
+
 		}
 		if ($pdf->gety() > $pdf->h - 40 || $troca == 1) {
 			$troca = 0;
@@ -681,7 +681,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 
 			$pdf->Cell(20, $tam, "Pg Proc ", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Pg N Proc ", 1, 1, "C", 1);
-		
+
 		}
 		$pdf->SetFont('Arial', '', 7);
 
@@ -718,7 +718,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 		$pago_p      += $vlrpag;
 		$pago_n_proc += $vlrnp;
 		$pago_proc   += $vlrp;
-                
+
 		// totalizador geral
      	        $t_liquidar  += $e91_vlremp - $e91_vlranu - $e91_vlrliq;
 		$t_liquidado += $e91_vlrliq - $e91_vlrpag;
@@ -760,7 +760,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 	}  else {
             $t_pago_proc   = $t_pago_p;
 	    $t_pago_n_proc = 0;
-	}  
+	}
 	$pdf->Cell(20, $tam, db_formatar($t_pago_n_proc, 'f'), 1, 0, "R", 0);
 	$pdf->Cell(20, $tam, db_formatar($t_pago_proc, 'f'), 1, 1, "R", 0);
 
@@ -768,7 +768,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 } elseif ($tipo=='u'){
         //@
         //@ lista rps quebrando por orgão/unidade
-        //@ 
+        //@
 
 	// totais por orgão.unidade
 	$liquidar    = 0;
@@ -797,7 +797,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 				continue;
 			}
 		}
-		// testa novapagina 
+		// testa novapagina
 		if ($xtipo !=  $o58_orgao.$o40_descr.$o58_unidade.$o41_descr) {
                         // imprime totalizador do orgão
 			$pdf->Cell(100, $tam, "TOTAL:", 0, "R", 0);
@@ -826,7 +826,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pago_p      = 0;
 			$pago_n_proc = 0;
 			$pago_proc   = 0;
-		
+
 		}
 		if ($pdf->gety() > $pdf->h - 40 || $troca == 1) {
 			$troca = 0;
@@ -860,7 +860,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 
 			$pdf->Cell(20, $tam, "Pg Proc ", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Pg N Proc ", 1, 1, "C", 1);
-		
+
 		}
 		$pdf->SetFont('Arial', '', 7);
 
@@ -897,7 +897,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 		$pago_p      += $vlrpag;
 		$pago_n_proc += $vlrnp;
 		$pago_proc   += $vlrp;
-                
+
 		// totalizador geral
      	        $t_liquidar  += $e91_vlremp - $e91_vlranu - $e91_vlrliq;
 		$t_liquidado += $e91_vlrliq - $e91_vlrpag;
@@ -939,7 +939,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 	}  else {
             $t_pago_proc   = $t_pago_p;
 	    $t_pago_n_proc = 0;
-	}  
+	}
 	$pdf->Cell(20, $tam, db_formatar($t_pago_n_proc, 'f'), 1, 0, "R", 0);
 	$pdf->Cell(20, $tam, db_formatar($t_pago_proc, 'f'), 1, 1, "R", 0);
 
@@ -948,7 +948,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 } elseif ($tipo=='a_o'){
         //@
         //@ agrupa por orgao
-        //@ 
+        //@
 	$taliq = 0;
 	$tliq = 0;
 	$tvlranu = 0;
@@ -968,7 +968,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			}
 		}
 
-		// testa novapagina 
+		// testa novapagina
 		if ($xtipo !=  $o58_orgao) {
 			//$troca 	   = 1;
 			if ($x != 0) {
@@ -1104,7 +1104,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			}
 		}
 
-		// testa novapagina 
+		// testa novapagina
 		if ($xtipo != ($tipo == "a" ? @ $e91_codtipo : @ $e91_recurso)) {
 			//$troca 	   = 1;
 			if ($x != 0) {

@@ -1,30 +1,30 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
- 
+
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -49,7 +49,7 @@ if (isset($alterar)) {
     $clvac_vacina->vc06_i_codigo = $aLista[$iX];
     $clvac_vacina->vc06_i_orden  = $iX+1;
     $clvac_vacina->alterar($aLista[$iX]);
-  
+
   }
   db_fim_transacao();
 
@@ -69,7 +69,7 @@ $clvac_vacina->rotulo->label();
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br>
 <center>
-<?
+<?php
 $sSql=$clvac_vacina->sql_query("","vc06_i_codigo,vc06_c_descr","vc06_i_orden");
 $rsResult=$clvac_vacina->sql_record($sSql);
 ?>
@@ -87,7 +87,7 @@ $rsResult=$clvac_vacina->sql_record($sSql);
               <tr>
                 <td rowspan="3">
                   <select name="vc06_i_orden" size="5" style="width: 200px">
-                    <?
+                    <?php
                     for ($iX=0; $iX < $clvac_vacina->numrows; $iX++) {
 
                       $oVacina = db_utils::fieldsmemory($rsResult,$iX);
@@ -107,7 +107,7 @@ $rsResult=$clvac_vacina->sql_record($sSql);
                 </td>
               </tr>
             </table>
-            <?db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
+            <?php db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
           </td>
         </tr>
       </table>
@@ -171,7 +171,7 @@ function js_listar() {
 </center>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($clvac_vacina->erro_status=="0") {

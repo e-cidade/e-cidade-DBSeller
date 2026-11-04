@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -172,16 +172,16 @@ $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
 $result_bal= db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
 for($i=0;$i<pg_numrows($result_bal);$i++){
-  db_fieldsmemory($result_bal,$i);  
+  db_fieldsmemory($result_bal,$i);
   if (in_array($estrutural,$m_saldo_anterior['estrut'])){
       $m_saldo_anterior['valor'] += $saldo_final ;
-  }   
+  }
 }
 
 
 
 ///////////////////////////////  ///////////////
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -209,18 +209,18 @@ $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head4 = "BALANÇO ORÇAMENTÁRIO";
 $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  =explode("-",$dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head6 = "$txt";
 ////////////////////////// ///////////////////
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->addpage();
@@ -293,7 +293,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Impostos",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -333,7 +333,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Taxas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -371,7 +371,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Cotribuição de Melhorias",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -406,7 +406,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 // --------------------------------
@@ -438,7 +438,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Cotribuição de Sociais",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -477,7 +477,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Contribuições Economicas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -511,7 +511,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 // --------------------------------
   // pega altura e guarda
@@ -542,7 +542,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas Imobiliárias",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -574,14 +574,14 @@ $tot_realizar  = 0;
 for($i=0;$i<pg_numrows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
-  if (in_array($estrutural,$m_valmobiliarias)){ 
+  if (in_array($estrutural,$m_valmobiliarias)){
       $tot_inicial    += $saldo_inicial ;
       $tot_atualizada += $saldo_inicial_prevadic;
       $tot_nobim      += $saldo_arrecadado;
       $tot_atebim    += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receita de Valores Mobiliários",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -620,7 +620,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas de Concessões e Permissões",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -660,7 +660,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Outras Receitas Patrimoniais",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -695,7 +695,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 // --------------------------------
@@ -727,7 +727,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receita da Produção Vegetal",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -766,7 +766,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receita da Produção Animal e Derivados",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -805,7 +805,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Outras Receitas Agropecuárias",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -840,7 +840,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -873,7 +873,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas da Industria Extrativa Mineral",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -912,7 +912,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas da Indústria de Transformação",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -951,7 +951,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas da Indústria de Construção",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -987,7 +987,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1020,7 +1020,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas de Serviços",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1054,7 +1054,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1087,7 +1087,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências Intergovernamentais",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1125,7 +1125,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Instituições Privadas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1163,7 +1163,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências do Exterior",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1201,7 +1201,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Pessoas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1239,7 +1239,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Convenios",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1273,7 +1273,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1306,7 +1306,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Multas e Juros de Mora",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1344,7 +1344,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Indenizações e Restituições",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1382,7 +1382,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receita da Dívida Ativa",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1421,7 +1421,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas Correntes Diversas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1455,7 +1455,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 //-------------------------------- * --------------------------------------------------
@@ -1477,7 +1477,7 @@ $pdf->setY($pos_atu); // desce novamente até aki
  $pdf->cell(25,$alt,db_formatar($rec_cor_I_atebim ,'f'),'0',0,"R",0);
  @$pdf->cell(10,$alt,db_formatar(($rec_cor_I_atebim *100)/$rec_cor_I_atualizada,'f'),'0',0,"R",0);
  $pdf->cell(20,$alt,db_formatar($rec_cor_I_realizar,'f'),'0',0,"R",0);
- $pdf->setY($pos_atu); // desce novamente até aki 
+ $pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1527,7 +1527,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Operações de Crédito Internas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1566,7 +1566,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Operações de Crédito Externas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1600,7 +1600,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1633,7 +1633,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Alienação de Bens Móveis",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1671,7 +1671,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Alienação de Bens Imóveis",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1704,7 +1704,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1737,7 +1737,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Amortização de Empréstimos",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1772,7 +1772,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -1806,7 +1806,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências Intragovernamentais",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1844,7 +1844,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Instituições Privadas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1882,7 +1882,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências do Exterior",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1920,7 +1920,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Pessoas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1958,7 +1958,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Transferências de Convenios",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -1993,7 +1993,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2027,7 +2027,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Integralização do Capital Social",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2065,7 +2065,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Remuneração das Disponibilidades",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2103,7 +2103,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Receitas de Capital Diversas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2138,7 +2138,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2161,7 +2161,7 @@ $pdf->setY($pos_atu); // desce novamente até aki
  $pdf->cell(25,$alt,db_formatar($rec_cor_I_atebim ,'f'),'0',0,"R",0);
  @$pdf->cell(10,$alt,db_formatar(($rec_cor_I_atebim *100)/$rec_cor_I_atualizada,'f'),'0',0,"R",0);
  $pdf->cell(20,$alt,db_formatar($rec_cor_I_realizar,'f'),'0',0,"R",0);
- $pdf->setY($pos_atu); // desce novamente até aki 
+ $pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2239,7 +2239,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Para Refinanciamento da Dívida Mobiliária",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2277,7 +2277,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Para Refinanciamento de Outras Dívidas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2312,7 +2312,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2345,7 +2345,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Para Refinanciamento da Dívida Mobiliária",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2384,7 +2384,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
       $tot_atebim   += $saldo_arrecadado_acumulado;
       $tot_realizar  += $saldo_a_arrecadar;
   }
-}  
+}
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,espaco($n2)."Para Refinanciamento de Outras Dívidas",'R',0,"L",0);
 $pdf->cell(20,$alt,db_formatar($tot_inicial,'f'),'R',0,"R",0);
@@ -2420,7 +2420,7 @@ $pdf->cell(25,$alt,db_formatar($v_nobim,'f'),'0',0,"R",0);
 $pdf->cell(25,$alt,db_formatar($v_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($v_atebim*100)/$v_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($v_realizar,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
  // sobe, escreve e desce
@@ -2436,7 +2436,7 @@ $pdf->cell(25,$alt,db_formatar($somador_II_atebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($somador_II_atebim*100)/$somador_II_atualizada,'f'),'0',0,"R",0);
 $pdf->cell(20,$alt,db_formatar($somador_II_realizar,'f'),'0',0,"R",0);
 
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2472,7 +2472,7 @@ $pdf->cell(25,$alt,'','TBR',0,"R",0);
 $pdf->cell(10,$alt,'','TBR',0,"R",0);  // % (b/a)
 $pdf->cell(20,$alt,'','TB',1,"R",0);
 //--------------------------------
- $pos_total_rec = $pdf->getY(); 
+ $pos_total_rec = $pdf->getY();
 $pdf->setfont('arial','B',6);
 $pdf->cell(60,$alt,"TOTAL (V) = (III+IV)",'TBR',0,"L",0);
 $pdf->cell(20,$alt,'-','TBR',0,"R",0);
@@ -2498,7 +2498,7 @@ $pdf->cell(20,$alt,'','TB',1,"R",0);
 
 
 
-// quebra a pagina,  
+// quebra a pagina,
 
 
 $pdf->Ln(7);
@@ -2508,8 +2508,8 @@ $pdf->cell(55,($alt*2),"DESPESAS",'TBR',0,"C",0);
 $pdf->cell(20,$alt,"DOTAÇÂO",'TR',0,"C",0);
 $pdf->cell(20,$alt,"CREDITOS",'TR',0,"C",0);
 $pdf->cell(20,$alt,"DOTAÇÂO",'TR',0,"C",0);
-$pdf->cell(28,$alt,"DESPESAS EMPENHADA",'TBR',0,"C",0); 
-$pdf->cell(38,$alt,"DESPESAS LIQUIDADAS",'TBR',0,"C",0); 
+$pdf->cell(28,$alt,"DESPESAS EMPENHADA",'TBR',0,"C",0);
+$pdf->cell(38,$alt,"DESPESAS LIQUIDADAS",'TBR',0,"C",0);
 $pdf->cell(14,$alt,"SALDO A",'T',1,"C",0); //BR
 $pdf->setX(65);
 $pdf->cell(20,$alt,"INICIAL (d)",'BR',0,"C",0);
@@ -2557,7 +2557,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."PESSOAL E ENCARGOS SOCIAIS",'R',0,"L",0);
@@ -2598,7 +2598,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."JUROS E ENCARGOS DA DÍVIDA",'R',0,"L",0);
@@ -2640,7 +2640,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."OUTRAS DESPESAS CORRENTES",'R',0,"L",0);
@@ -2676,7 +2676,7 @@ $pdf->cell(14,$alt,db_formatar($somador_VI_liqatebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar(($somador_VI_liqatebim*100)/($somador_VI_inicial+$somador_VI_adicional),'f'),'0',0,"R",0);
 $pdf->cell(14,$alt,db_formatar(($somador_VI_inicial+$somador_VI_adicional)-$somador_VI_liqatebim,'f'),'0',0,"R",0);
 
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -2715,7 +2715,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."INVESTIMENTOS",'R',0,"L",0);
@@ -2764,7 +2764,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."INVERSÕES FINANCEIRAS",'R',0,"L",0);
@@ -2812,7 +2812,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."AMORTIZAÇÃO DA DÍVIDA",'R',0,"L",0);
@@ -2856,7 +2856,7 @@ $pdf->cell(14,$alt,db_formatar($v_VI_liqatebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar($v_VI_liqatebim*100/($v_VI_inicial+$v_VI_adicional),'f'),'0',0,"R",0);
 $pdf->cell(14,$alt,db_formatar(($v_VI_inicial+$v_VI_adicional)-$v_VI_liqatebim,'f'),'0',0,"R",0);
 
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 //--------------------------------
 $tot_inicial    = 0;
@@ -2876,7 +2876,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','b',5);
 $pdf->cell(55,$alt,"RESERVA DE CONTINGÊNCIA",'R',0,"L",0);
@@ -2915,7 +2915,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','b',5);
 $pdf->cell(55,$alt,"RESERVA DE RPPS",'R',0,"L",0);
@@ -2997,7 +2997,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."Dívida Mobiliária",'R',0,"L",0);
@@ -3043,7 +3043,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."Outras Dívidas",'R',0,"L",0);
@@ -3083,7 +3083,7 @@ $pdf->cell(14,$alt,db_formatar($v_liq_nobim,'f'),'0',0,"R",0);
 $pdf->cell(14,$alt,db_formatar($v_liqatebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar($tot_liq_atebim*100 /($tot_atualizada*100),'f'),'R',0,"R",0); // % (j/f)
 $pdf->cell(14,$alt,db_formatar(($v_inicial+$v_adicional)-$v_liqatebim,'f'),'0',0,"R",0);
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 
@@ -3121,7 +3121,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."Dívida Mobiliária",'R',0,"L",0);
@@ -3166,7 +3166,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
       $tot_liq_nobim  += $liquidado;
       $tot_liq_atebim += $liquidado_acumulado;
   }
-}  
+}
 $tot_atualizada = $tot_inicial + $tot_adicional;
 $pdf->setfont('arial','',5);
 $pdf->cell(55,$alt,espaco($n2)."Outras Dívidas",'R',0,"L",0);
@@ -3222,12 +3222,12 @@ $pdf->cell(14,$alt,db_formatar($somador_VII_liqatebim,'f'),'0',0,"R",0);
 @$pdf->cell(10,$alt,db_formatar($somador_VII_liqatebim*100/($somador_VII_inicial+$somador_VII_adicional),'f'),'R',0,"R",0); // % (j/f)
 $pdf->cell(14,$alt,db_formatar(($somador_VII_inicial+$somador_VII_adicional)-$somador_VII_liqatebim,'f'),'0',0,"R",0);
 
-$pdf->setY($pos_atu); // desce novamente até aki 
+$pdf->setY($pos_atu); // desce novamente até aki
 
 
 //--------------------------------
 
-// // // // // // //  subtotal com refinamento 
+// // // // // // //  subtotal com refinamento
    $somador_VIII_inicial    =  $somador_VI_inicial   + $somador_VII_inicial;
    $somador_VIII_adicional  =  $somador_VI_adicional + $somador_VII_adicional ; // ;
    $somador_VIII_emp_nobim  =  $somador_VI_emp_nobim + $somador_VII_emp_nobim ;
@@ -3250,7 +3250,7 @@ $pdf->cell(14,$alt,db_formatar($somador_VIII_liqatebim,'f'),'TBR',0,"R",0);
 $pdf->cell(14,$alt,db_formatar((($somador_VIII_inicial+$somador_VIII_adicional) - $somador_VIII_liqatebim),'f'),'TB',1,"R",0); // (f-j)
 //--------------------------------
 
-// // // // // // //  subtotal com refinamento 
+// // // // // // //  subtotal com refinamento
 $pos_superavit = $pdf->getY();
 $pdf->setfont('arial','b',5);
 $pdf->cell(55,$alt,"SUPERÁVIT (IX)",'TBR',0,"L",0);
@@ -3278,7 +3278,7 @@ $pdf->cell(14,$alt,'','TBR',0,"R",0);
 @$pdf->cell(10,$alt,'','TBR',0,"R",0); // % (j/f)
 $pdf->cell(14,$alt,'','TB',1,"R",0); // (f-j)
 //--------------------------------
-// calculo do superávit ou déficit 
+// calculo do superávit ou déficit
 // verifica se tem superávit
 $TEM_SUPERAVIT = false;
 if ($somador_III_atebim > $somador_VIII_liqatebim) { // receita realizada maior que despesa liquidada:superávit
@@ -3330,7 +3330,7 @@ if ($TEM_SUPERAVIT ==true)
   $pdf->cell(14,$alt,db_formatar($somador_VIII_liqatebim+$somador_IX_liqatebim,'f'),'TBR',0,"R",0);
 else
   $pdf->cell(14,$alt,db_formatar($somador_VIII_liqatebim,'f'),'TBR',0,"R",0);
- 
+
 @$pdf->cell(10,$alt,db_formatar($somador_VIII_liqatebim*100/($somador_VIII_inicial+$somador_VIII_adicional),'f'),'TBR',0,"R",0); // % (j/f)
 $pdf->cell(14,$alt,db_formatar((($somador_VIII_inicial+$somador_VIII_adicional) - $somador_VIII_liqatebim),'f'),'TB',1,"R",0); // (f-j)
 
@@ -3347,7 +3347,7 @@ $pdf->ln(25);
 // assinaturas
 
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 
 

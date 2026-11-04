@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $mesusu = date('m');
 				<td width="4%" align="right" nowrap title="<?=$Tx49_sequencial?>"><?=$Lx49_sequencial?>
 				</td>
 				<td width="96%" align="left" nowrap>
-				<?
+				<?php
 				db_input("x49_sequencial",10,$Ix49_sequencial,true,"text",4,"","chave_x49_sequencial");
 				?>
 				</td>
@@ -75,7 +75,7 @@ $mesusu = date('m');
 				<td nowrap title="<?=@$Tx21_exerc?>" align="right"><b><?=@$RLx21_exerc?>:</b>
 				</td>
 				<td colspan="2">
-				<?
+				<?php
 				
 				$vAno = array(""=>"", db_getsession("DB_anousu") => db_getsession("DB_anousu"), db_getsession("DB_anousu") + 1 => db_getsession("DB_anousu") + 1);
 				
@@ -87,7 +87,7 @@ $mesusu = date('m');
 				<td nowrap title="<?=@$Tx21_mes?>" align="right"><b><?=@$RLx21_mes?>:</b>
 				</td>
 				<td colspan="2">
-				<?
+				<?php
 				$result=array(""=>"", "1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
 				db_select("x21_mes",$result,true,1,"style=\"width: 90px\"","chave_x21_mes");
 					
@@ -101,7 +101,7 @@ $mesusu = date('m');
 				<td width="4%" align="right" nowrap title="<?=$Tx49_sequencial?>"><?=$Lx49_sequencial?>
 				</td>
 				<td width="96%" align="left" nowrap>
-				<?
+				<?php
 				db_input("x49_sequencial",10,$Ix49_sequencial,true,"text",4,"","chave_x49_sequencial");
 				?>
 				</td>
@@ -110,17 +110,17 @@ $mesusu = date('m');
 			
 		    <tr>
     			<td nowrap title="<?=@$Tx46_sequencial?>" align="right">
-    	  		<?
+    	  		<?php
     	  		db_ancora(@$Lx46_sequencial, "js_pesquisa();", 1);
     	  		?>
     			</td>
     			<td>
-    			<?
+    			<?php
     			db_input('x46_sequencial', 10, $Ix46_sequencial, true, 'text', 1, "", "");
     			?>
     			</td>
     			<td>
-    			<?
+    			<?php
     			db_input('x46_descricao', 30, $Ix46_descricao, true, 'text', 3, "")
     			?>
     			</td>
@@ -137,7 +137,7 @@ $mesusu = date('m');
 		</td>
 	</tr>
 	<tr>
-		<td align="center" valign="top"><?
+		<td align="center" valign="top"><?php
 		if(!isset($pesquisa_chave)){
 			if(isset($campos)==false){
 				if(file_exists("funcoes/db_func_aguacoletorexporta.php")==true){
@@ -189,11 +189,11 @@ $mesusu = date('m');
 </table>
 </body>
 </html>
-		<?
+		<?php
 		if(!isset($pesquisa_chave)){
 			?>
 			
-			<?
+			<?php
 		}
 		?>
 		

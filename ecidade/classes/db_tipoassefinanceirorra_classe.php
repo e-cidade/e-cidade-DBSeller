@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE tipoassefinanceirorra
 class cl_tipoassefinanceirorra { 
@@ -38,13 +38,13 @@ class cl_tipoassefinanceirorra {
                  rh172_rubricamolestia = char(4) = Isenção por Moléstia 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassefinanceirorra() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassefinanceirorra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -53,7 +53,7 @@ class cl_tipoassefinanceirorra {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh172_sequencial = ($this->rh172_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh172_sequencial"]:$this->rh172_sequencial);
        $this->rh172_tipoasse = ($this->rh172_tipoasse == ""?@$GLOBALS["HTTP_POST_VARS"]["rh172_tipoasse"]:$this->rh172_tipoasse);
@@ -69,7 +69,7 @@ class cl_tipoassefinanceirorra {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh172_sequencial){ 
+   public function incluir ($rh172_sequencial){ 
       $this->atualizacampos();
      if($this->rh172_tipoasse == null ){ 
        $this->erro_sql = " Campo Tipo de Assentamento não informado.";

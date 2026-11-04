@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@ $clrotulo->label("db71_descricao");
 $clrotulo->label("db72_descricao");
 ?>
 <form name="form1" method="post" action="">
-  <?
+  <?php
   db_input('db99_sequencial',10,$Idb99_sequencial,true,'hidden',3,"")
   ?>
 <center>
@@ -44,45 +44,45 @@ $clrotulo->label("db72_descricao");
 		<table border="0">
 		  <tr>
 		    <td nowrap title="<?=@$Tdb99_cadenderpais?>">
-		       <?
+		       <?php
 		       db_ancora(@$Ldb99_cadenderpais,"js_pesquisadb99_cadenderpais(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('db99_cadenderpais',10,$Idb99_cadenderpais,true,'text',$db_opcao," onchange='js_pesquisadb99_cadenderpais(false);'")
 					?>
-		      <?
+		      <?php
 		      db_input('db70_descricao',40,$Idb70_descricao,true,'text',3,'')
 		      ?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tdb99_cadenderestado?>">
-		       <?
+		       <?php
 		       db_ancora(@$Ldb99_cadenderestado,"js_pesquisadb99_cadenderestado(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('db99_cadenderestado',10,$Idb99_cadenderestado,true,'text',$db_opcao," onchange='js_pesquisadb99_cadenderestado(false);'")
 					?>
-		      <?
+		      <?php
 		      db_input('db71_descricao',40,$Idb71_descricao,true,'text',3,'')
 		      ?>
 		    </td>
 		  </tr>
 		  <tr>
 		    <td nowrap title="<?=@$Tdb99_cadendermunicipio?>">
-		       <?
+		       <?php
 		       db_ancora(@$Ldb99_cadendermunicipio,"js_pesquisadb99_cadendermunicipio(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					db_input('db99_cadendermunicipio',10,$Idb99_cadendermunicipio,true,'text',$db_opcao," onchange='js_pesquisadb99_cadendermunicipio(false);'")
 		      ?>
-		      <?
+		      <?php
 		       db_input('db72_descricao',40,$Idb72_descricao,true,'text',3,'')
 		      ?>
 		    </td>
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderparam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

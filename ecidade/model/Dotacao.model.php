@@ -186,6 +186,10 @@ class Dotacao
     {
         if (!empty($iCodDot) && !empty($iAnoUsu)) {
             $oDaoOrcdotacao = new cl_orcdotacao();
+            $sCampos = "o58_coddot, o58_anousu, o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa, ";
+            $sCampos .= "o58_projativ, o56_elemento, o56_codele, o58_codigo, o58_localizadorgastos, o58_instit, ";
+            $sCampos .= "o58_concarpeculiar, o40_descr, o41_descr, o52_descr, o53_descr, o54_descr, o55_descr, ";
+            $sCampos .= "o15_descr, o56_descr, o58_valor";
             $sSqlDotacao = $oDaoOrcdotacao->sql_query(
                 null,
                 null,

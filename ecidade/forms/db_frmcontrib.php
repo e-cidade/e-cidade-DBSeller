@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("j01_numcgm");
        <?=@$Ld07_contri?>
     </td>
     <td> 
-<?
+<?php
 db_input('d07_contri',4,$Id07_contri,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td07_matric?>">
-       <?
+       <?php
        db_ancora(@$Ld07_matric,"js_pesquisad07_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d07_matric',4,$Id07_matric,true,'text',$db_opcao," onchange='js_pesquisad07_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('j01_numcgm',6,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('j01_numcgm',6,$Ij01_numcgm,true,'text',3,'')
        <?=@$Ld07_idbql?>
     </td>
     <td> 
-<?
+<?php
 db_input('d07_idbql',4,$Id07_idbql,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('d07_idbql',4,$Id07_idbql,true,'text',$db_opcao,"")
        <?=@$Ld07_vlrdes?>
     </td>
     <td> 
-<?
+<?php
 db_input('d07_vlrdes',4,$Id07_vlrdes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('d07_vlrdes',4,$Id07_vlrdes,true,'text',$db_opcao,"")
        <?=@$Ld07_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('d07_valor',15,$Id07_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('d07_valor',15,$Id07_valor,true,'text',$db_opcao,"")
        <?=@$Ld07_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('d07_data',@$d07_data_dia,@$d07_data_mes,@$d07_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ function js_preenchepesquisa(chave,chave1){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

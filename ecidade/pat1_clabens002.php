@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -25,7 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -39,6 +38,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("model/contabilidade/planoconta/ContaCorrente.model.php"));
 require_once(modification("classes/db_clabens_classe.php"));
 require_once(modification("classes/db_clabensconplano_classe.php"));
+require_once(modification("classes/db_bens_classe.php"));
 
 $oPost = db_utils::postMemory($HTTP_POST_VARS);
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
@@ -58,48 +58,43 @@ if (isset($t64_codcla)) {
     $db_opcao = 22;
     $db_botao = false;
 }
-if(isset($alterar)){
+if (isset($alterar)) {
+    if ($oPost->t64_bemtipos == "0") {
+        $erro_msg = _M("patrimonial.patrimonio.db_frmclabens.informe_tipo_bem");
+    } else {
+        try {
+            db_inicio_transacao();
 
+            $GLOBALS["HTTP_POST_VARS"]['t64_ativa'] = $oPost->situacao;
 
-  if ($oPost->t64_bemtipos == "0") {
-    $erro_msg = _M("patrimonial.patrimonio.db_frmclabens.informe_tipo_bem");
-  } else {
-
-    try {
-
-      db_inicio_transacao();
-
-      $oClassificacao = new BemClassificacao($oPost->t64_codcla);
-      $oClassificacao->setClassificacao($oPost->t64_class);
-      $oClassificacao->setDescricao($oPost->t64_descr);
-      $oClassificacao->setObservacao($oPost->t64_obs);
-      $oClassificacao->setPlanoConta($oPost->t86_conplano);
-      $oClassificacao->setCodigoContaDepreciacao($oPost->t86_conplanodepreciacao);
-      $oClassificacao->setAnalitica($oPost->t64_analitica);
-      $oClassificacao->setTipoBem($oPost->t64_bemtipos);
-      $oClassificacao->setTipoDepreciacao($oPost->t64_benstipodepreciacao);
-      $oClassificacao->setVidaUtil($oPost->t64_vidautil);
-      $oClassificacao->setValorResidual($oPost->t64_valorresidual);
-      $oClassificacao->setInstituicao(db_getsession("DB_instit"));
-
-      $oClassificacao->salvar();
-      $erro_msg = _M("patrimonial.patrimonio.db_frmclabens.classificacao_salva");
-      db_fim_transacao(false);
-
+            $oClassificacao = new BemClassificacao($oPost->t64_codcla);
+            $oClassificacao->setClassificacao($oPost->t64_class);
+            $oClassificacao->setDescricao($oPost->t64_descr);
+            $oClassificacao->setObservacao($oPost->t64_obs);
+            $oClassificacao->setPlanoConta($oPost->t86_conplano);
+            $oClassificacao->setCodigoContaDepreciacao($oPost->t86_conplanodepreciacao);
+            $oClassificacao->setAnalitica($oPost->t64_analitica);
+            $oClassificacao->setTipoBem($oPost->t64_bemtipos);
+            $oClassificacao->setTipoDepreciacao($oPost->t64_benstipodepreciacao);
+            $oClassificacao->setVidaUtil($oPost->t64_vidautil);
+            $oClassificacao->setValorResidual($oPost->t64_valorresidual);
+            $oClassificacao->setInstituicao(db_getsession("DB_instit"));
+            $oClassificacao->setStatus($oPost->situacao);
+            $oClassificacao->salvar();
+            $erro_msg = _M("patrimonial.patrimonio.db_frmclabens.classificacao_salva");
+            db_fim_transacao(false);
         } catch (Exception $eErro) {
-
             db_fim_transacao(true);
             $erro_msg = $eErro->getMessage();
         }
     }
-
-} else if (isset($chavepesquisa)) {
+} elseif (isset($chavepesquisa)) {
     $db_opcao = 2;
     $db_botao = true;
 
     $sCampos  = " t64_codcla, t64_class, t64_descr, t64_obs, t64_analitica,";
     $sCampos .= " t64_bemtipos, t64_benstipodepreciacao, t64_vidautil, t64_valorresidual,";
-    $sCampos .= " t46_descricao,";
+    $sCampos .= " t46_descricao, t64_ativa,";
     $sCampos .= " t86_conplano, t86_conplanodepreciacao,";
     $sCampos .= " contadepreciacao.c60_descr as descricaocontadepreciacao, conta.c60_descr as descricaoconta,";
     $sCampos .= " contadepreciacao.c60_estrut as c60_estrut_depreciacao, conta.c60_estrut as c60_estrut";
@@ -139,7 +134,7 @@ if(isset($alterar)){
 
     if ($mostraMensagem) {
         $msg = count($msgContas);
-        if($msg == 1 ){
+        if ($msg == 1) {
             $msgContas = implode(' ', $msgContas);
             db_msgbox("Não existe código reduzido para a(s) conta(s): {$msgContas} nesta instituição \nSolicite manutenção ao setor de contabilidade.");
         } else {
@@ -147,7 +142,6 @@ if(isset($alterar)){
             db_msgbox("Não existe reduzido para as contas: {$msgContas} nesta instituição. \nSolicite manutenção ao setor de contabilidade.");
         }
     }
-
 }
 ?>
 <html>
@@ -160,15 +154,15 @@ if(isset($alterar)){
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-<?
+<?php
 include(modification("forms/db_frmclabens.php"));
 ?>
-<?
-db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
     db_msgbox($erro_msg);
     db_redireciona("pat1_clabens002.php");

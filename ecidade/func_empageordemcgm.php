@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clempageordemcgm->rotulo->label("e94_empageordem");
               <?=$Le94_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e94_sequencial",10,$Ie94_sequencial,true,"text",4,"","chave_e94_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clempageordemcgm->rotulo->label("e94_empageordem");
               <?=$Le94_empageordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("e94_empageordem",10,$Ie94_empageordem,true,"text",4,"","chave_e94_empageordem");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clempageordemcgm->rotulo->label("e94_empageordem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empageordemcgm.php")==true){
@@ -122,12 +122,12 @@ $clempageordemcgm->rotulo->label("e94_empageordem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

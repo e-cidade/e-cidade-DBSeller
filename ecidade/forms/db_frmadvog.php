@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -36,15 +36,15 @@ $clrotulo->label("z01_nome");
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tv57_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lv57_numcgm,"js_pesquisav57_numcgm(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v57_numcgm',6,$Iv57_numcgm,true,'text',$db_opcao," onchange='js_pesquisav57_numcgm(false);'")
           ?>
-          <?
+          <?php
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
           ?>
         </td>
@@ -54,7 +54,7 @@ $clrotulo->label("z01_nome");
           <?=@$Lv57_oab?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v57_oab',20,$Iv57_oab,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
                 <?= @$Lv57_matriculaadvogado ?>
             </td>
             <td>
-                <?
+                <?php
                 db_input('v57_matriculaadvogado', 20, $Iv57_matriculaadvogado, true, 'text', $db_opcao, "")
                 ?>
             </td>
@@ -108,7 +108,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

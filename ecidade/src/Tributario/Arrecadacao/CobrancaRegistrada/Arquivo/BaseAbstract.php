@@ -180,7 +180,7 @@ abstract class BaseAbstract
                 $this->aRecibosInvalidos[] = $oRegistro->getNumeroDocumento();
             }
 
-            foreach ($aSegmentos as &$oSegmento) {
+            foreach ($aSegmentos as $oSegmento) {
                 $oLayoutTXT->addLine($oSegmento, 3, $oSegmento->segmento);
                 $this->iSequencialRegistro++;
             }

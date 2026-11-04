@@ -28,7 +28,7 @@ class ProblemasPacienteResource
     public static function toObject(ProblemaPaciente $model)
     {
         $prontuarioProblema = $model->prontuarios()->withPivot('*')->orderByDesc('s171_prontuario')->get();
-        
+
         return (object)[
             'id' => $model->s170_id,
             'idProblema' => $model->s170_problema,
@@ -48,7 +48,7 @@ class ProblemasPacienteResource
     public static function toArray(Collection $collection)
     {
         $dados = [];
-        
+
         foreach ($collection as $model) {
             $dados[] = static::toObject($model);
         }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clfiscal = new cl_fiscal;
   <table width="100%">
     <tr> 
       <td align="center">&nbsp;
-	  <?
+	  <?php
 	  $where=" y30_instit = ".db_getsession('DB_instit') ;
 	   
 	   if ($tipo=='CGM'){

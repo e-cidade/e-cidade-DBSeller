@@ -29,7 +29,6 @@ require_once modification("libs/db_stdlib.php");
 require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
-require_once modification("fpdf151/PDFDocument.php");
 require_once modification("std/DBNumber.php");
 
 /**
@@ -93,11 +92,11 @@ foreach ($aDiversosIptu as $oDiversosIptu){
 
 $nTotalGeral = 0;
 
-$oPdf = new PDFDocument('L');
-$oPdf->addHeaderDescription("Relatório de Lançamentos Tributários");
-$oPdf->addHeaderDescription("Exercício dos Lançamentos: $oGet->iAnoCalculo");
-$oPdf->addHeaderDescription("Data de Geração: " . date('d/m/Y', db_getsession('DB_datausu')));
-$oPdf->Open();
+$oPdf = new ECidade\Pdf\Pdf('L');
+$oPdf->init(false);
+$oPdf->addTitulo("Relatório de Lançamentos Tributários");
+$oPdf->addTitulo("Exercício dos Lançamentos: $oGet->iAnoCalculo");
+$oPdf->addTitulo("Data de Geração: " . date('d/m/Y', db_getsession('DB_datausu')));
 $oPdf->AliasNbPages();
 
 $oPdf->AddPage();
@@ -314,7 +313,7 @@ inserirLinha($oPdf, array('TipoDebito'            => '',
 /**
  * Manda para o browser o pdf
  */
-$oPdf->showPDF("lancamentos_tributarios_" . time());
+$oPdf->output("I");
 
 
 /**

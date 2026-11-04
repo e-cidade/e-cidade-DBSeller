@@ -30,9 +30,10 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_itenserv_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $cltaxaserv        = new cl_taxaserv();
 $clitenserv        = new cl_itenserv();
@@ -73,17 +74,8 @@ if(isset($excluir)){
   }
   db_fim_transacao($sqlerro);
 
-}else if(isset($chavepesquisa)){
-   $db_opcao = 3;
-   $db_botao = true;
-   $result = $clitenserv->sql_record($clitenserv->sql_query($chavepesquisa));
-   db_fieldsmemory($result,0);
+  echo "<script>location.href = 'cem1_itenserv003.php?sepultamento=" . $cm31_i_sepultamento . "';</script>";
 
-   $result10=$clarrepaga->sql_record($clarrepaga->sql_query_file("","*","","k00_numpre=$cm10_i_numpre"));
-   if($clarrepaga->numrows>0){
-     $foipago="ok";
-     $db_botao = false;
-   }
 }
 ?>
 <html>
@@ -92,12 +84,13 @@ if(isset($excluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default">
   <div class="container">
      <?php
-      require_once(modification("forms/db_frmitenserv.php"));
+      require_once(modification("forms/db_frmitenserv1.php"));
      ?>
   </div>
 <?php
@@ -116,9 +109,5 @@ if(isset($excluir)){
   }else{
     $clitenserv->erro(true,true);
   }
-}
-
-if($db_opcao==33){
-  echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>

@@ -43,6 +43,16 @@ class Parametros
      */
     private $pastaResultados;
 
+    /**
+     * @var string
+     */
+    private $pastaPedidosInfinity;
+
+    /**
+     * @var string
+     */
+    private $pastaResultadosInfinity;
+
     public function __construct()
     {
     }
@@ -77,5 +87,37 @@ class Parametros
     public function setPastaResultados($pastaResultados)
     {
         $this->pastaResultados = $pastaResultados;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPastaPedidosInfinity()
+    {
+        return trim($this->pastaPedidosInfinity);
+    }
+
+    /**
+     * @param string $pastaPedidosInfinity
+     */
+    public function setPastaPedidosInfinity($pastaPedidosInfinity)
+    {
+        $this->pastaPedidosInfinity = $pastaPedidosInfinity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPastaResultadosInfinity()
+    {
+        return trim($this->pastaResultadosInfinity);
+    }
+
+    /**
+     * @param string $pastaResultadosInfinity
+     */
+    public function setPastaResultadosInfinity($pastaResultadosInfinity)
+    {
+        $this->pastaResultadosInfinity = $pastaResultadosInfinity;
     }
 }

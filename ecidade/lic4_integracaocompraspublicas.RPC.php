@@ -26,10 +26,10 @@ try {
 
     case "buscaModalidades":
 
-      $sqlModalidade = "select l03_codigo 
-                          from pctipocompratribunal 
-                         inner join cflicita on l03_pctipocompratribunal = l44_sequencial 
-                         where l44_sigla in ('PRE', 'PRP')
+      $sqlModalidade = "select l03_codigo
+                          from pctipocompratribunal
+                         inner join cflicita on l03_pctipocompratribunal = l44_sequencial
+                         where l44_sigla in ('PRE', 'PRP', 'PCE', 'PCP', 'CCE')
                            and l03_instit=" . db_getsession("DB_instit");
 
       $rsModalidade = db_query($sqlModalidade);
@@ -45,15 +45,15 @@ try {
 
     case "salvarConfiguracao":
 
-      
+
       $configuracao->setUrl($parametros->url);
       $configuracao->setToken($parametros->token);
-      $configuracao->salvar();      
+      $configuracao->salvar();
       $retorno->mensagem = "Configuração salva com sucesso";
     break;
 
     case "buscaConfiguracao":
-      
+
       $configuracao->ler();
       $dados = new stdClass();
       $dados->url        = $configuracao->getUrl();
@@ -61,17 +61,22 @@ try {
       $retorno->dados    = $dados;
       $retorno->mensagem = "Configuração salva com sucesso";
     break;
-    
+
     case "verificaConfiguracao":
 
       if(empty($parametros->codigolicitacao)) {
-        
+
         throw new Exception("Código da licitação não encontrado");
       }
 
       $retorno->habilitaConfiguracao = false;
       $oLicitacao                    = new licitacao($parametros->codigolicitacao);
-      $atributosLicitacao            = new LicitacaoAtributosDinamicos(); 
+      $clliclicita                   = new cl_liclicita;
+      $result = $clliclicita->sql_record($clliclicita->sql_query_pco($parametros->codigolicitacao));
+      if ($result != false && $clliclicita->numrows > 0) {
+          throw new Exception("A licitação selecionada possui fornecedores cadastrados, verifique.");
+      }
+      $atributosLicitacao            = new LicitacaoAtributosDinamicos();
       $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());
       if($atributosLicitacao->getAtributo('tipobeneficiomicroepp') == "T" && $oLicitacao->getTipoJulgamento() != 2) {
         $retorno->habilitaConfiguracao = true;
@@ -80,10 +85,10 @@ try {
 
     case "buscaItens":
 
-      $retorno->dadositens   = [];      
+      $retorno->dadositens   = [];
       $oLicitacao            = new licitacao($parametros->licitacao);
       $atributosLicitacao    = new LicitacaoAtributosDinamicos();
-      $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());     
+      $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());
       $itensLicitacao        = $oLicitacao->getItens();
       $configuracaoLicitacao = $atributosLicitacao->getAtributo('tipobeneficiomicroepp') == "T"?true:false;
       foreach ($itensLicitacao as $item) {
@@ -93,18 +98,18 @@ try {
         $itensLicitacao->pc04_descr    = $item->getItemSolicitacao()->getDescricaoMaterial();
         $itensLicitacao->l04_descricao = $item->getLoteLicitacao()->getDescricao();
         $itensLicitacao->selecione     = !$item->hasCota();
-        $itensLicitacao->exclusivo     = $configuracaoLicitacao;      
-        $retorno->dadositens[]         = $itensLicitacao;  
+        $itensLicitacao->exclusivo     = $configuracaoLicitacao;
+        $retorno->dadositens[]         = $itensLicitacao;
       }
-      
+
     break;
-    
+
     case "buscaItensLote":
 
-      $retorno->dadositens   = [];      
+      $retorno->dadositens   = [];
       $oLicitacao            = new licitacao($parametros->licitacao);
       $atributosLicitacao    = new LicitacaoAtributosDinamicos();
-      $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());     
+      $atributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());
       $itensLicitacao        = $oLicitacao->getItens();
       $configuracaoLicitacao = $atributosLicitacao->getAtributo('tipobeneficiomicroepp') == "T"?true:false;
       foreach ($itensLicitacao as $item) {
@@ -113,13 +118,13 @@ try {
         $itensLicitacao->l21_codigo    = $item->getCodigo();
         $itensLicitacao->pc04_descr    = $item->getItemSolicitacao()->getDescricaoMaterial();
         $itensLicitacao->l04_descricao = $item->getLoteLicitacao()->getDescricao();
-        $retorno->dadositenslote[]     = $itensLicitacao;  
+        $retorno->dadositenslote[]     = $itensLicitacao;
       }
-      
+
     break;
-      
+
     case "buscaDocumentos":
-      
+
       $integracaoComprasPublicas = new ComprasPublicas();
       $resposta = $integracaoComprasPublicas->getDocumentos();
 
@@ -127,7 +132,7 @@ try {
 
         $response = json_decode($resposta);
       }
-      
+
       if ($response->success == false) {
 
         throw new Exception($response->message);
@@ -138,16 +143,16 @@ try {
     break;
 
     case "deparaSituacao":
-      
+
       $deparaSituacao    = [];
       $deparaSituacao[3] = [5];
       $deparaSituacao[4] = [3,4];
       $deparaSituacao[5] = [2];
       if(!array_key_exists($parametros->codigoSituacao, $deparaSituacao)) {
-        
-        throw new Exception("Não foi identificado situação para o código {$parametros->codigoSituacao}");         
-      } 
-      
+
+        throw new Exception("Não foi identificado situação para o código {$parametros->codigoSituacao}");
+      }
+
       $codigo            = implode(",", $deparaSituacao[$parametros->codigoSituacao]);
       $licsituacao       = new cl_licsituacao();
       $sSqlBuscaSituacao = $licsituacao->sql_query_file(null, "l08_sequencial as codigo, l08_descr as descricao", null, "l08_sequencial in ({$codigo})");
@@ -156,18 +161,18 @@ try {
 
         throw new Exception("Não foi possível verificar as situações");
       }
-      
+
       $retorno->situacao = [];
-      for ($i=0; $i < pg_numrows($rsBuscaSituacao); $i++) { 
+      for ($i=0; $i < pg_numrows($rsBuscaSituacao); $i++) {
 
         $oStdSituacao      = db_utils::fieldsMemory($rsBuscaSituacao, $i);
         $retorno->situacao[] = $oStdSituacao;
       }
-      
+
     break;
 
     case "enviarDados":
-      
+
       $integracaoComprasPublicas = new ComprasPublicas();
       $listaDocumentos  = JSON::create()->parse($parametros->documentos);
       $configuracaoLote = JSON::create()->parse($parametros->configuracao);
@@ -196,7 +201,7 @@ try {
         $ano                     = $oLicitacao->getAno();
         $numero                  = $oLicitacao->getEdital();
       }
-      
+
       $pagina                    = 1;
       $resposta                  = $integracaoComprasPublicas->getProcessos($ano, $numero, $pagina);
       if ($resposta) {
@@ -212,21 +217,21 @@ try {
       $dado = [];
       $dadosauxiliar = $response->dadosLicitacoes;
       while (count($dadosauxiliar) < $response->quantidadeTotal) {
-        
+
         $pagina ++;
         $resposta                  = $integracaoComprasPublicas->getProcessos($ano, $numero, $pagina);
         if ($resposta) {
-  
+
           $response = json_decode($resposta);
         }
 
         if (isset($response->success) && $response->success == false) {
-  
+
           throw new Exception($response->mensagem);
-        } 
+        }
 
         $dadosauxiliar = array_merge($dadosauxiliar, $response->dadosLicitacoes);
-      }       
+      }
 
       foreach ($dadosauxiliar as $dados) {
 
@@ -247,15 +252,15 @@ try {
             $dados->habilitaConsulta = true;
             if($licitacao->getModalidade()->getSiglaTipoCompraTribunal() == "PRP" && $licitacao->getTipoJulgamento() != 1 ) {
               $dados->editaImportacao  = true;
-            } 
+            }
           }
 
           if($licitacao->getSituacao()->getCodigo() == 1) {
-            
+
             $dados->importado = true;
           }
         }
-        
+
         $dado[] = $dados;
       }
 
@@ -263,7 +268,7 @@ try {
 
         throw new Exception("Não existem processos para a unidade compradora");
       }
-      
+
       $retorno->processos        = $dado;
       $retorno->mensagem         = $response->mensagem;
       break;
@@ -286,9 +291,9 @@ try {
       //   $retorno->unidades         = $response;
       //   $retorno->mensagem         = $response->mensagem;
       //   break;
-    
 
-      
+
+
     case "buscarDadosProcessoEditar":
 
       $integracaoComprasPublicas = new ComprasPublicas();
@@ -308,34 +313,34 @@ try {
 
         throw new Exception($response->message);
       }
-      
+
       $dadosRetorno               = new stdClass();
       $dadosRetorno->fornecedores = $response->Participantes;
       $dadosRetorno->codlicitacao = $response->_id;
       $dadosRetorno->itens        = [];
-      
+
       foreach ($response->lotes as $lote) {
-          
+
           foreach ($lote->Vencedores as $vencedor) {
-          
+
                 // $itemRetorno->Cancelado         = $vencedor->Cancelado;
                 // $itemRetorno->IdItem            = $vencedor->IdItem;
-                // $itemRetorno->RazaoSocial       = $vencedor->RazaoSocial; 
-                $fornecedor                        = $vencedor->IdFornecedor; 
-                $valorUnitarioJulgado              = $vencedor->ValorUnitario;  
+                // $itemRetorno->RazaoSocial       = $vencedor->RazaoSocial;
+                $fornecedor                        = $vencedor->IdFornecedor;
+                $valorUnitarioJulgado              = $vencedor->ValorUnitario;
                 // $itemRetorno->ValorTotal        = $vencedor->ValorTotal;
                 $valorJulgado                      = $vencedor->ValorTotal;
-                // array_push($itemRetorno->itensLote, $itemLote);                
+                // array_push($itemRetorno->itensLote, $itemLote);
           }
-          
+
           foreach ($lote->itens as $item) {
-          
+
             $licitacao                      = new licitacao($item->_id);
             $loteLicitacao                  = new ComprasPublicasLote($licitacao);
             $itensLote                      = $loteLicitacao->getItensLote($licitacao->getCodigo(), $item->DS_ITEM);
-            
+
             foreach ($itensLote as $itemLicitacao) {
-              
+
               $itemRetorno = new stdClass();
               $itemRetorno->readequarvalor       = count($itensLote)==1?false:true;
               $itemRetorno->codigo               = $itemLicitacao->getCodigo();
@@ -357,11 +362,11 @@ try {
 
           // $itemRetorno->Cancelado           = $vencedor->Cancelado;
           // $itemRetorno->IdItem              = $vencedor->IdItem;
-          // $itemRetorno->RazaoSocial         = $vencedor->RazaoSocial; 
-          // $itemRetorno->IdFornecedor        = $vencedor->IdFornecedor; 
-          // $itemRetorno->ValorUnitario       = $vencedor->ValorUnitario;  
-          // $itemRetorno->ValorTotal          = $vencedor->ValorTotal;          
-        }        
+          // $itemRetorno->RazaoSocial         = $vencedor->RazaoSocial;
+          // $itemRetorno->IdFornecedor        = $vencedor->IdFornecedor;
+          // $itemRetorno->ValorUnitario       = $vencedor->ValorUnitario;
+          // $itemRetorno->ValorTotal          = $vencedor->ValorTotal;
+        }
       }
       // dd($dadosRetorno);
       $retorno->dados = $dadosRetorno;
@@ -386,23 +391,23 @@ try {
 
         throw new Exception($response->message);
       }
-         
+
       $retorno->dados   = $response;
     break;
-    
+
     case "buscaItensLote":
 
       if (empty($parametros->codlicitacao)) {
-         
+
       }
-      
+
       if (empty($parametros->descricaoLote)) {
-        
+
       }
     break;
 
     case "importarDados":
-       
+
       $dados           = JSON::create()->parse($parametros->dados);
       $dadosFornecedor = JSON::create()->parse($parametros->dadosFornecedor);
       $importacao      = new ComprasPublicasImportacao($parametros->codlicitacao, $dados, $dadosFornecedor);
@@ -413,13 +418,13 @@ try {
     break;
 
     case "importarDadosEditado":
-       
+
       $dados           = JSON::create()->parse($parametros->dados);
       $dadosFornecedor = JSON::create()->parse($parametros->dadosFornecedor);
-      if(empty($parametros->codlicitacao) || !is_array($dados) || count($dados) == 0 
+      if(empty($parametros->codlicitacao) || !is_array($dados) || count($dados) == 0
         || !is_array($dadosFornecedor) || count($dadosFornecedor) == 0) {
 
-        throw new Exception("Dados inconsistentes para importação");        
+        throw new Exception("Dados inconsistentes para importação");
       }
 
       $importacao      = new ComprasPublicasImportacao($parametros->codlicitacao, $dados, $dadosFornecedor);
@@ -430,26 +435,26 @@ try {
     break;
 
     case "atualizaSituacao":
-      
-      
-      $licitacao = new licitacao($parametros->licitacao);      
+
+
+      $licitacao = new licitacao($parametros->licitacao);
       if(count($licitacao->getItens()) == 0 ) {
 
-        throw new Exception("Licitação {$parametros->licitacao}: dados não encontrados");         
+        throw new Exception("Licitação {$parametros->licitacao}: dados não encontrados");
       }
 
       if($licitacao->getSituacao()->getCodigo() == $parametros->codigoSituacao) {
 
-        throw new Exception("Situação já atualizada");        
+        throw new Exception("Situação já atualizada");
       }
-      
+
       $licitacao->alterarSituacao($parametros->codigoSituacao, "Retorno do Compras Públicas");
       $retorno->mensagem = "Atualizado situação da licitação";
-      
+
     break;
 
     case "cancelaImportacao":
-      
+
       if (empty($parametros->codigoLicitacao)) {
 
         throw new Exception("Licitação não encontrada");
@@ -458,9 +463,9 @@ try {
       $oLicitacao        = new licitacao($parametros->codigoLicitacao);
       if($oLicitacao->getSituacao()->getCodigo() != 1) {
 
-        throw new Exception("Não é possível cancelar a importação. Verifique a situação da licitação {$parametros->codigoLicitacao}"); 
+        throw new Exception("Não é possível cancelar a importação. Verifique a situação da licitação {$parametros->codigoLicitacao}");
       }
-      
+
       $cancelaImportacao = new ComprasPublicasCancelaImportacao($oLicitacao);
       $cancelaImportacao->cancelar();
       $retorno->mensagem = "Cancelado a importação da licitação {$parametros->codigoLicitacao}";

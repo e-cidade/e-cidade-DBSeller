@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,12 +70,12 @@ $db_opcao=1;
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj01_matric?>">
-       <?
+       <?php
        db_ancora(@$Lj01_matric,"js_matric(true);",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j01_matric',10,$Ij01_matric,true,'text',1," onChange='js_matric(false)'");
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
 ?>
@@ -86,26 +86,26 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
        <?=$Lj34_setor?>
     </td>
     <td> 
-<?
+<?php
 db_input('j34_setor',10,$Ij34_setor,true,'text',$db_opcao);
 ?>
      <?=$Lj34_quadra?>
-<?
+<?php
 db_input('j34_quadra',10,$Ij34_quadra,true,'text',$db_opcao);
 ?>
     </td>
   </tr>
   <tr> 
     <td nowrap title="<?=@$Tj14_nome?>"> 
-       <?
+       <?php
        db_ancora(@$Lj14_nome,"js_ruas(true);",$db_opcao);
        ?>
     </td>
     <td nowrap> 
-      <?
+      <?php
 	db_input('j14_codigo',5,$Ij14_codigo,true,'text',$db_opcao," onChange='js_ruas(false)'");
       ?>
-      <?
+      <?php
 	db_input('j14_nome',40,$Ij14_nome,true,'text',3);
       ?>
     </td>
@@ -129,7 +129,7 @@ onLoad = js_limpacampos();
   </table>
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -194,7 +194,7 @@ function js_preenchepesquisa1(chave,erro){
   db_iframe_ruas.hide();
 }
 </script>
-<?
+<?php
 if(isset($j01_matric) && $j01_matric != ""){
   echo "<script>js_OpenJanelaIframe('','db_iframe_itbi','cad3_consultaitbi003.php?j01_matric=$j01_matric','Pesquisa',true,30);</script>";
 }elseif(isset($j34_setor) && $j34_setor != ""){

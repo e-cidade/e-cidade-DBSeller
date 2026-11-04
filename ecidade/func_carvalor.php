@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -56,7 +56,7 @@ $clcarvalor->rotulo->label("j71_anousu");
               <?=$Lj71_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("j71_codigo",10,$Ij71_codigo,true,"text",4,"","chave_j71_codigo");
 		          ?>
             </td>
@@ -66,7 +66,7 @@ $clcarvalor->rotulo->label("j71_anousu");
               <?=$Lj71_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("j71_anousu",4,$Ij71_anousu,true,"text",4,"","chave_j71_anousu");
 		          ?>
             </td>
@@ -84,7 +84,7 @@ $clcarvalor->rotulo->label("j71_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -133,12 +133,12 @@ $clcarvalor->rotulo->label("j71_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

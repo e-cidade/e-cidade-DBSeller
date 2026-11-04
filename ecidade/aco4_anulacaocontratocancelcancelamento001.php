@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label("ac10_obs");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?   
+<?php   
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -85,7 +85,7 @@ fieldset table td:first-child {
               <b>Código:</b>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_input('ac10_sequencial',10,$Iac10_sequencial,true,'text',3,"");
               ?>
             </td>
@@ -93,18 +93,18 @@ fieldset table td:first-child {
           </tr>
           <tr>
             <td title="<?=@$Tac16_sequencial?>" align="left">
-              <?
+              <?php
                 db_ancora($Lac16_sequencial, "js_pesquisaac16_sequencial(true);",$db_opcao);
               ?>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_input('ac16_sequencial',10,$Iac16_sequencial,true,'text',
                          $db_opcao," onchange='js_pesquisaac16_sequencial(false);'");
               ?>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_input('ac16_resumoobjeto',40,$Iac16_resumoobjeto,true,'text',3);
               ?>
             </td>
@@ -114,7 +114,7 @@ fieldset table td:first-child {
               <b>Data:</b>
             </td>
             <td align="left">
-              <?
+              <?php
                 db_inputdata('ac10_datamovimento',@$ac10_datamovimento_dia, 
                                                   @$ac10_datamovimento_mes, 
                                                   @$ac10_datamovimento_ano, true, 'text', $db_opcao, "");
@@ -128,7 +128,7 @@ fieldset table td:first-child {
                 <legend>
                   <b>Observação</b>
                 </legend>
-                  <?
+                  <?php
                     db_textarea('ac10_obs',5,64,$Iac10_obs,true,'text',1,"");
                   ?>
               </fieldset>
@@ -149,7 +149,7 @@ fieldset table td:first-child {
     </td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

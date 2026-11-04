@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ $cllevanta = new cl_levanta;
   <table width="100%">
     <tr> 
       <td align="center">&nbsp;
-	  <?
+	  <?php
 	  $where="";
 	   
    if ($tipo=="CGM"){

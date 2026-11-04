@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -89,7 +89,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
  if($clprocrecomendacao->erro_status=="0"){
   $clprocrecomendacao->erro(true,false);

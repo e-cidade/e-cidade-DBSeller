@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,12 +53,12 @@ $clconlancamcgm->rotulo->label("c76_numcgm");
 	  <!---
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc76_codlan?>"><?=$Lc76_codlan?></td>
- 	     <td width="96%" align="left" nowrap><? db_input("c76_codlan",8,$Ic76_codlan,true,"text",4,"","chave_c76_codlan"); ?></td>
+ 	     <td width="96%" align="left" nowrap><?php db_input("c76_codlan",8,$Ic76_codlan,true,"text",4,"","chave_c76_codlan"); ?></td>
           </tr>
 	  --->
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc76_numcgm?>"><?=$Lc76_numcgm?></td>
-             <td width="96%" align="left" nowrap><? db_input("c76_numcgm",8,$Ic76_numcgm,true,"text",4,"","chave_c76_numcgm"); ?> </td>
+             <td width="96%" align="left" nowrap><?php db_input("c76_numcgm",8,$Ic76_numcgm,true,"text",4,"","chave_c76_numcgm"); ?> </td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -73,7 +73,7 @@ $clconlancamcgm->rotulo->label("c76_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $campos="distinct(z01_numcgm),z01_nome,z01_cgccpf";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -110,12 +110,12 @@ $clconlancamcgm->rotulo->label("c76_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

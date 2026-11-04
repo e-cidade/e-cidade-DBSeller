@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -34,7 +34,7 @@ db_postmemory($HTTP_SERVER_VARS);
 //phpinfo();
 //echo $_SERVER['PHP_SELF'];
 $exercicio = db_getsession("DB_anousu");
-$borda = 1; 
+$borda = 1;
 $bordat = 1;
 $preenc = 0;
 $TPagina = 57;
@@ -51,9 +51,9 @@ if (isset($xmodulo)) {
    $xmod = " where a.codmod = $xmodulo ";
 }
 
-  $sql=" 
+  $sql="
 	select trim(nomemod) as modulo,
-               c.codarq, 
+               c.codarq,
                trim(c.nomearq) as arquivo,
                trim(c.descricao) as descricao,
                d.seqarq,
@@ -68,8 +68,8 @@ if (isset($xmodulo)) {
                g.sequen as seq_forkey,
                trim(h.nomearq) as nome_arqreferen,
                trim(j.nomecam) as campopai
-	from db_sysmodulo a 
-	     inner join db_sysarqmod           b on a.codmod=b.codmod 
+	from db_sysmodulo a
+	     inner join db_sysarqmod           b on a.codmod=b.codmod
 	     inner join db_sysarquivo          c on c.codarq=b.codarq
 	     inner join db_sysarqcamp          d on d.codarq=c.codarq
 	     inner join db_syscampo   	       e on e.codcam=d.codcam
@@ -131,7 +131,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
 	$pdf->multicell(0,4,"Módulo  : ".strtoupper($modulo),0,"L",$preenc);
         $pdf->ln(3);
    }
-        
+
    if ($xarq != $arquivo){
         $sqlind = "select a.*,b.*,c.nomecam
 		from db_sysindices a
@@ -144,7 +144,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
         if ( pg_numrows($resindice) != 0 ) {
            $prinome = '';
            $espaco = '';
-           $xnome = ''; 
+           $xnome = '';
            for ($iind = 0;$iind < pg_numrows($resindice);$iind++){
                db_fieldsmemory($resindice,$iind);
                if ($prinome != $nomeind){
@@ -153,10 +153,10 @@ for($i = 0;$i < pg_numrows($result);$i++){
                    $virgula = '';
  	       }
                $xnome .= $virgula.$nomecam;
-               $virgula = ', '; 
+               $virgula = ', ';
                $prinome = $nomeind;
            }
-           $matrizind = split('#',$xnome);
+           $matrizind =explode('#',$xnome);
            $pdf->multicell(0,4,'Índices do arquivo : ',0,"L",$preenc);
 
            for( $xind = 0 ;$xind < sizeof($matrizind); $xind++ ){

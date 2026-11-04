@@ -230,7 +230,7 @@
     } else {
       trParcelas.style.display = 'none';
       $('trTiposDebito').style.display = 'none';
-      $('dataEmissao').style.display = 'none';
+      $('dataEmissao').style.display = 'table-row';
     }
   });
  
@@ -410,4 +410,5 @@
     });
   }
 
+  $('dataEmissao').style.display = 'table-row';
 </script>

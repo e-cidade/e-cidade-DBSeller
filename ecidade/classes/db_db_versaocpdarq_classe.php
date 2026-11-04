@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_versaocpdarq
-class cl_db_versaocpdarq { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $db34_codarq = 0; 
-   var $db34_codcpd = 0; 
-   var $db34_descr = null; 
-   var $db34_obs = null; 
-   var $db34_arq = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_versaocpdarq {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $db34_codarq = 0;
+   var $db34_codcpd = 0;
+   var $db34_descr = null;
+   var $db34_obs = null;
+   var $db34_arq = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 db34_codarq = int4 = Código do Arquivo 
-                 db34_codcpd = int4 = Código da Observação 
-                 db34_descr = varchar(15) = Descrição 
-                 db34_obs = text = Observações para o CPD 
-                 db34_arq = text = Arquivos anexos a versão 
+                 db34_codarq = int4 = Código do Arquivo
+                 db34_codcpd = int4 = Código da Observação
+                 db34_descr = varchar(15) = Descrição
+                 db34_obs = text = Observações para o CPD
+                 db34_arq = text = Arquivos anexos a versão
                  ";
-   //funcao construtor da classe 
-   function cl_db_versaocpdarq() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_versaocpdarq"); 
+     $this->rotulo = new rotulo("db_versaocpdarq");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_db_versaocpdarq {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db34_codarq = ($this->db34_codarq == ""?@$GLOBALS["HTTP_POST_VARS"]["db34_codarq"]:$this->db34_codarq);
        $this->db34_codcpd = ($this->db34_codcpd == ""?@$GLOBALS["HTTP_POST_VARS"]["db34_codcpd"]:$this->db34_codcpd);
@@ -83,9 +83,9 @@ class cl_db_versaocpdarq {
      }
    }
    // funcao para inclusao
-   function incluir ($db34_codarq){ 
+   public function incluir ($db34_codarq){
       $this->atualizacampos();
-     if($this->db34_codcpd == null ){ 
+     if($this->db34_codcpd == null ){
        $this->erro_sql = " Campo Código da Observação nao Informado.";
        $this->erro_campo = "db34_codcpd";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_db_versaocpdarq {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db34_descr == null ){ 
+     if($this->db34_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "db34_descr";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_db_versaocpdarq {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db34_obs == null ){ 
+     if($this->db34_obs == null ){
        $this->erro_sql = " Campo Observações para o CPD nao Informado.";
        $this->erro_campo = "db34_obs";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_db_versaocpdarq {
        $this->erro_status = "0";
        return false;
      }
-     if($this->db34_arq == null ){ 
+     if($this->db34_arq == null ){
        $this->erro_sql = " Campo Arquivos anexos a versão nao Informado.";
        $this->erro_campo = "db34_arq";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_db_versaocpdarq {
        return false;
      }
      if($db34_codarq == "" || $db34_codarq == null ){
-       $result = db_query("select nextval('db_versaocpdarq_db34_codarq_seq')"); 
+       $result = db_query("select nextval('db_versaocpdarq_db34_codarq_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: db_versaocpdarq_db34_codarq_seq do campo: db34_codarq"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: db_versaocpdarq_db34_codarq_seq do campo: db34_codarq";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->db34_codarq = pg_result($result,0,0); 
+       $this->db34_codarq = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_versaocpdarq_db34_codarq_seq");
        if(($result != false) && (pg_result($result,0,0) < $db34_codarq)){
@@ -142,10 +142,10 @@ class cl_db_versaocpdarq {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->db34_codarq = $db34_codarq; 
+         $this->db34_codarq = $db34_codarq;
        }
      }
-     if(($this->db34_codarq == null) || ($this->db34_codarq == "") ){ 
+     if(($this->db34_codarq == null) || ($this->db34_codarq == "") ){
        $this->erro_sql = " Campo db34_codarq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_db_versaocpdarq {
        return false;
      }
      $sql = "insert into db_versaocpdarq(
-                                       db34_codarq 
-                                      ,db34_codcpd 
-                                      ,db34_descr 
-                                      ,db34_obs 
-                                      ,db34_arq 
+                                       db34_codarq
+                                      ,db34_codcpd
+                                      ,db34_descr
+                                      ,db34_obs
+                                      ,db34_arq
                        )
                 values (
-                                $this->db34_codarq 
-                               ,$this->db34_codcpd 
-                               ,'$this->db34_descr' 
-                               ,'$this->db34_obs' 
-                               ,'$this->db34_arq' 
+                                $this->db34_codarq
+                               ,$this->db34_codcpd
+                               ,'$this->db34_descr'
+                               ,'$this->db34_obs'
+                               ,'$this->db34_arq'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Arquivos anexos a versão ($this->db34_codarq) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_db_versaocpdarq {
        $resac = db_query("insert into db_acount values($acount,942,5885,'','".AddSlashes(pg_result($resaco,0,'db34_arq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($db34_codarq=null) { 
+   public function alterar ($db34_codarq=null) {
       $this->atualizacampos();
      $sql = " update db_versaocpdarq set ";
      $virgula = "";
-     if(trim($this->db34_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_codarq"])){ 
+     if(trim($this->db34_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_codarq"])){
        $sql  .= $virgula." db34_codarq = $this->db34_codarq ";
        $virgula = ",";
-       if(trim($this->db34_codarq) == null ){ 
+       if(trim($this->db34_codarq) == null ){
          $this->erro_sql = " Campo Código do Arquivo nao Informado.";
          $this->erro_campo = "db34_codarq";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_db_versaocpdarq {
          return false;
        }
      }
-     if(trim($this->db34_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_codcpd"])){ 
+     if(trim($this->db34_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_codcpd"])){
        $sql  .= $virgula." db34_codcpd = $this->db34_codcpd ";
        $virgula = ",";
-       if(trim($this->db34_codcpd) == null ){ 
+       if(trim($this->db34_codcpd) == null ){
          $this->erro_sql = " Campo Código da Observação nao Informado.";
          $this->erro_campo = "db34_codcpd";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_db_versaocpdarq {
          return false;
        }
      }
-     if(trim($this->db34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_descr"])){ 
+     if(trim($this->db34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_descr"])){
        $sql  .= $virgula." db34_descr = '$this->db34_descr' ";
        $virgula = ",";
-       if(trim($this->db34_descr) == null ){ 
+       if(trim($this->db34_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db34_descr";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_db_versaocpdarq {
          return false;
        }
      }
-     if(trim($this->db34_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_obs"])){ 
+     if(trim($this->db34_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_obs"])){
        $sql  .= $virgula." db34_obs = '$this->db34_obs' ";
        $virgula = ",";
-       if(trim($this->db34_obs) == null ){ 
+       if(trim($this->db34_obs) == null ){
          $this->erro_sql = " Campo Observações para o CPD nao Informado.";
          $this->erro_campo = "db34_obs";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_db_versaocpdarq {
          return false;
        }
      }
-     if(trim($this->db34_arq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_arq"])){ 
+     if(trim($this->db34_arq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db34_arq"])){
        $sql  .= $virgula." db34_arq = '$this->db34_arq' ";
        $virgula = ",";
-       if(trim($this->db34_arq) == null ){ 
+       if(trim($this->db34_arq) == null ){
          $this->erro_sql = " Campo Arquivos anexos a versão nao Informado.";
          $this->erro_campo = "db34_arq";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_db_versaocpdarq {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos anexos a versão nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db34_codarq;
@@ -327,14 +327,14 @@ class cl_db_versaocpdarq {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($db34_codarq=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($db34_codarq=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db34_codarq));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_db_versaocpdarq {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Arquivos anexos a versão nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db34_codarq;
@@ -392,11 +392,11 @@ class cl_db_versaocpdarq {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,10 +418,10 @@ class cl_db_versaocpdarq {
       }
      return $result;
    }
-   function sql_query ( $db34_codarq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $db34_codarq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,15 +434,15 @@ class cl_db_versaocpdarq {
      $sql2 = "";
      if($dbwhere==""){
        if($db34_codarq!=null ){
-         $sql2 .= " where db_versaocpdarq.db34_codarq = $db34_codarq "; 
-       } 
+         $sql2 .= " where db_versaocpdarq.db34_codarq = $db34_codarq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,10 +451,10 @@ class cl_db_versaocpdarq {
      }
      return $sql;
   }
-   function sql_query_file ( $db34_codarq=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $db34_codarq=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,15 +467,15 @@ class cl_db_versaocpdarq {
      $sql2 = "";
      if($dbwhere==""){
        if($db34_codarq!=null ){
-         $sql2 .= " where db_versaocpdarq.db34_codarq = $db34_codarq "; 
-       } 
+         $sql2 .= " where db_versaocpdarq.db34_codarq = $db34_codarq ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ db_postmemory($HTTP_POST_VARS);
    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -98,10 +98,10 @@ db_postmemory($HTTP_POST_VARS);
             <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="35%" align="left" >
-                  <?db_ancora("Código da Geração :", "js_pesquisalista(true);", 4);?>
+                  <?php db_ancora("Código da Geração :", "js_pesquisalista(true);", 4);?>
                 </td>
                 <td align="left">
-                  <?
+                  <?php
                     db_input("ar40_sequencial",  10, "", true, "text", 4, "onchange='js_pesquisalista(false);'");
                   ?>
                 </td>
@@ -133,23 +133,23 @@ db_postmemory($HTTP_POST_VARS);
 
             <tr>
               <td width="50%" >Tipo de Geração :</td>
-              <td ><?db_input("sTipoGeracao", 10, "", true, "text",3); ?></td>
+              <td ><?php db_input("sTipoGeracao", 10, "", true, "text",3); ?></td>
             </tr>
             <tr>
               <td >Data Vencimento :</td>
-              <td ><?db_inputdata("dtVencimento", "", "", "", true, "", 1); ?></td>
+              <td ><?php db_inputdata("dtVencimento", "", "", "", true, "", 1); ?></td>
             </tr>
             <tr>
               <td >Data do Lançamento :</td>
-              <td ><?db_inputdata("dtLancamento", "", "", "", true, "", 1); ?></td>
+              <td ><?php db_inputdata("dtLancamento", "", "", "", true, "", 1); ?></td>
             </tr>
             <tr>
               <td >Percentual de Desconto :</td>
-              <td ><?db_input("desconto",  10, "", true, "text", 1 ); ?></td>
+              <td ><?php db_input("desconto",  10, "", true, "text", 1 ); ?></td>
             </tr>
             <tr>
               <td >Observações :</td>
-              <td ><? db_textarea("obs",3, 35, "", true, "", 1); ?></td>
+              <td ><?php db_textarea("obs",3, 35, "", true, "", 1); ?></td>
             </tr>
 
           </table>
@@ -169,7 +169,7 @@ db_postmemory($HTTP_POST_VARS);
    </table>
  </form>
 
-  <? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
+  <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
  </body>
 </html>
 <script>

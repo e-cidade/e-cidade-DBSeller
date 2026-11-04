@@ -1,7 +1,7 @@
 <?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -93,11 +93,11 @@ db_app::load("widgets/DBAncora.widget.js");
           <tr>
             <td nowrap title="Código do Reduzido">
               <strong>
-                <? db_ancora("Reduzido:","js_pesquisaReduzido(true);", 1); ?>
+                <?php db_ancora("Reduzido:","js_pesquisaReduzido(true);", 1); ?>
               </strong>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_input('iReduzido',10,"",true,'text',1,"onchange='js_pesquisaReduzido(false);' onkeyup='js_ValidaCampos(this,1,\"\",\"\",\"\",event);' ");
               db_input('sDescricao',75,"",true,'text',3,'');
               ?>
@@ -110,7 +110,7 @@ db_app::load("widgets/DBAncora.widget.js");
               </strong>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_input('iCodigoDescricao',10,"",true,'text',3);
               db_input('sDescricaoConta',75,"",true,'text',3,'');
               ?>
@@ -123,7 +123,7 @@ db_app::load("widgets/DBAncora.widget.js");
               </strong>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_input('saldoCredito',10,"",true,'text',3);
               ?>
             </td>
@@ -135,7 +135,7 @@ db_app::load("widgets/DBAncora.widget.js");
               </strong>
             </td>
             <td nowrap>
-              <?
+              <?php
               db_input('saldoDebito',10,"",true,'text',3);
               ?>
             </td>
@@ -162,7 +162,7 @@ db_app::load("widgets/DBAncora.widget.js");
   </form>
 </div>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

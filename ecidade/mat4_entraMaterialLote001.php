@@ -34,7 +34,6 @@ require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_empempenho_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-
 $clempempenho = new cl_empempenho;
 $clcgm = new cl_cgm;
 
@@ -81,11 +80,11 @@ $oGet = db_utils::postMemory($_GET);
         </fieldset>
         <input name="processar" type="submit" value="Processar">
         <input name="limpa" type="button" onclick='js_limpa();' value="Limpar">
-        <?
+      <?php
         db_input("m51_depto", 100, 0, true, "hidden", 3);
         ?>
     </div>
-</form>
+  </form>
 <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
 <script>

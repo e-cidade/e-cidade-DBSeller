@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,13 +58,13 @@ $clrotulo->label("ar47_valordefault");
                 <table class="form-container">
                     <tr>
                         <td nowrap title="<?=@$Tar47_codcam?>">
-                            <?db_ancora(@$Lar47_codcam,"js_pesquisaCampo(true);",$db_opcao);?>
+                            <?php db_ancora(@$Lar47_codcam,"js_pesquisaCampo(true);",$db_opcao);?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_input('ar47_codcam',5,$Iar47_codcam,true,'text',$db_opcao," onchange='js_pesquisaCampo(false);'")
                             ?>
-                            <?
+                            <?php
                             db_input('nomecam',40,$Inomecam,true,'text',3,'')
                             ?>
                         </td>
@@ -101,7 +101,7 @@ $clrotulo->label("ar47_valordefault");
                             <?= $Lar47_valordefault ?>
                         </td>
                         <td>
-                            <?
+                            <?php
                             db_textarea('ar47_valordefault', 1, 1, $Iar47_valordefault, true, 'text', 1, '')
                             ?>
                             <p style="margin: 0px;" id="mensagem"></p>
@@ -116,7 +116,7 @@ $clrotulo->label("ar47_valordefault");
     <center>
         <div id="ctnGridCampos" style="width: 650px;"></div>
     </center>
-    <? db_menu(); ?>
+    <?php db_menu(); ?>
 </body>
 
 </html>
@@ -224,12 +224,12 @@ $clrotulo->label("ar47_valordefault");
                                 } else {
                                     if (oCampo.ar47_tipocampo == 7) {
                                         tipoCampo = "Combo"
-                                    }                   
-                                }   
-                            }   
-                        }   
+                                    }
+                                }
+                            }
+                        }
                     }
-                }   
+                }
             }
 
 
@@ -288,7 +288,7 @@ $clrotulo->label("ar47_valordefault");
         const campo = document.getElementById("ar47_tipocampo").value;
 
         const trValorDefault = document.getElementById("trValorDefault");
-        trValorDefault.show(); 
+        trValorDefault.show();
 
         const ar47_valordefault = document.getElementById("ar47_valordefault");
         ar47_valordefault.removeAttribute("isMandatory");

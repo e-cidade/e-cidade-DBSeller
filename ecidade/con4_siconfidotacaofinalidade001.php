@@ -44,7 +44,7 @@ if (isset($oGet->usuario)) {
 ?>
 <html>
 <head>
-    <?
+    <?php
     db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js, strings.js");
     db_app::load("widgets/dbtextField.widget.js, datagrid.widget.js, widgets/dbcomboBox.widget.js, AjaxRequest.js");
     db_app::load("estilos.css, grid.style.css");

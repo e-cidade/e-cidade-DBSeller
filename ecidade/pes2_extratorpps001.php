@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ function js_emite(){
         <strong>Ano :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $ano = db_anofolha();
            db_input('ano',4,$ano,true,'text',2,'')
           ?>
@@ -85,7 +85,7 @@ function js_emite(){
         <strong>Matrícula :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            db_input('registro',6,'',true,'text',2,'')
           ?>
         </td>
@@ -95,7 +95,7 @@ function js_emite(){
         <?=$LDBtxt27?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt27',4,$IDBtxt27,true,'text',2,'')
           ?>
 	</td>
@@ -105,7 +105,7 @@ function js_emite(){
         <?=$LDBtxt28?>
         </td>
         <td>
-          <?
+          <?php
             db_input('DBtxt28',4,$IDBtxt28,true,'text',2,'')
           ?>
 	</td>
@@ -122,7 +122,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -153,7 +153,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

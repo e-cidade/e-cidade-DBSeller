@@ -96,28 +96,36 @@ $cllab_labsetor->rotulo->label("la24_i_setor");
         <td>
           <?php
           $sQuery = "sql_query";
+          $sWhere = "";
+          $sep    = "";
+          $distinct = "";
+          if( isset( $campos ) == false ) {
+            $campos = " la24_i_codigo, la24_i_setor, la23_c_descr, la24_i_laboratorio, la02_c_descr";
+          }
+
+          if( isset( $la24_i_laboratorio )  && !empty($la24_i_laboratorio)) {
+
+            $sWhere .= " la24_i_laboratorio = {$la24_i_laboratorio} ";
+            $sep     = " and";
+          }
+
+          if ( isset( $la22_i_codigo ) && !empty($la22_i_codigo) ) {
+
+            $sWhere .= " {$sep} la21_i_requisicao = {$la22_i_codigo} ";
+            $sep     = " and";
+            $sQuery  = "sql_query_requisicao";
+            $distinct  = " distinct ";
+          }
+
+          if ( isset( $exames ) && !empty($exames) ) {
+
+            $sWhere .= " {$sep} la09_i_exame in ($exames) ";
+            $sep     = " and";
+            $sQuery  = "sql_query_requisicao";
+            $distinct  = " distinct ";
+          }
+
           if( !isset( $pesquisa_chave ) ) {
-
-            if( isset( $campos ) == false ) {
-              $campos = " la24_i_codigo, la24_i_setor, la23_c_descr, la24_i_laboratorio, la02_c_descr";
-            }
-
-            $sWhere = "";
-            $sep    = "";
-
-            if( isset( $la24_i_laboratorio ) ) {
-
-              $sWhere .= " la24_i_laboratorio = {$la24_i_laboratorio} ";
-              $sep     = " and";
-            }
-
-            if ( isset( $la22_i_codigo ) ) {
-
-              $sWhere .= " {$sep} la21_i_requisicao = {$la22_i_codigo} ";
-              $sep     = " and";
-              $sQuery  = "sql_query_requisicao";
-              $campos  = " distinct {$campos}";
-            }
 
             if( isset( $chave_la24_i_codigo ) && ( trim( $chave_la24_i_codigo ) != "" ) ) {
 
@@ -142,31 +150,14 @@ $cllab_labsetor->rotulo->label("la24_i_setor");
               $repassa = array( "chave_la24_i_codigo" => $chave_la24_i_codigo, "chave_la23_c_descr" => $chave_la23_c_descr );
             }
 
-            $sql = $cllab_labsetor->$sQuery( "", $campos, "la24_i_codigo", $sWhere );
-
+            $sql = $cllab_labsetor->$sQuery( "", "{$distinct} {$campos}", "la24_i_codigo", $sWhere );
             db_lovrot( $sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );
           } else {
 
             if( $pesquisa_chave != null && $pesquisa_chave != "" ) {
 
-              $where = "";
-              $sep   = "";
-
-              if( isset( $la24_i_laboratorio ) ) {
-
-                $where = " la24_i_laboratorio = {$la24_i_laboratorio} ";
-                $sep   = " and";
-              }
-
-              if ( isset( $la22_i_codigo ) ) {
-
-                $sWhere .= " la22_i_codigo = {$la22_i_codigo} ";
-                $sep     = " and";
-                $sQuery  = "sql_query_requisicao";
-              }
-
-              $sWhereLabSetor = "la23_i_codigo = {$pesquisa_chave} {$sep} {$where}";
-              $sSqlLabSetor   = $cllab_labsetor->$sQuery( null, '*', null, $sWhereLabSetor );
+              $sWhere .= " {$sep} la23_i_codigo = {$pesquisa_chave} ";
+              $sSqlLabSetor   = $cllab_labsetor->$sQuery( "", "{$distinct} {$campos}", "la24_i_codigo", $sWhere );
               $result         = $cllab_labsetor->sql_record( $sSqlLabSetor );
 
               if( $cllab_labsetor->numrows != 0 ) {

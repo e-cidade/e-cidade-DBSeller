@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,22 +48,22 @@ if (isset($db81_nomearquivo)) {
 			       <?=@$Ldb81_sequencial?>
 			    </td>
 			    <td> 
-					<?
+					<?php
 					db_input('db81_sequencial',10,$Idb81_sequencial,true,'text',3,"")
 					?>
 			    </td>
 			  </tr>
 			  <tr>
 			    <td nowrap title="<?=@$Tdb81_templatetipo?>">
-			       <?
+			       <?php
 			       db_ancora(@$Ldb81_templatetipo,"js_pesquisadb81_templatetipo(true);",$db_opcao);
 			       ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('db81_templatetipo',10,$Idb81_templatetipo,true,'text',$db_opcao," onchange='js_pesquisadb81_templatetipo(false);'")
 						?>
-			       <?
+			       <?php
 							db_input('db82_descricao',50,$Idb81_descricao,true,'text',3,'')
 			       ?>
 			    </td>
@@ -71,15 +71,15 @@ if (isset($db81_nomearquivo)) {
 			  <?/* 
 			  <tr>
 			    <td nowrap title="<?=@$Tdb81_instit?>">
-			       <?
+			       <?php
 			       db_ancora(@$Ldb81_instit,"js_pesquisadb81_instit(true);",$db_opcao);
 			       ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('db81_instit',10,$Idb81_instit,true,'text',$db_opcao," onchange='js_pesquisadb81_instit(false);'")
 						?>
-			       <?
+			       <?php
 							db_input('nomeinst',50,$Inomeinst,true,'text',3,'')
 			       ?>
 			    </td>
@@ -90,7 +90,7 @@ if (isset($db81_nomearquivo)) {
 			       <?=@$Ldb81_descricao?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('db81_descricao',64,$Idb81_descricao,true,'text',$db_opcao,"")
 						?>
 			    </td>
@@ -100,7 +100,7 @@ if (isset($db81_nomearquivo)) {
 			       <?=@$Ldb81_nomearquivo?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('db81_nomearquivo',64,$Idb81_nomearquivo,true,'text',$db_opcao,"")
 						?>
 			    </td>
@@ -113,7 +113,7 @@ if (isset($db81_nomearquivo)) {
 </table>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
   if ($db_opcao == 2) {
    echo "<input name=\"download\" type=\"button\" id=\"download\" value=\"Download\" onclick=\"js_download('$sUrlArquivo');\">";
   }
@@ -176,7 +176,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_documentotemplatepadrao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

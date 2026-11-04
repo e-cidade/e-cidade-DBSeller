@@ -56,9 +56,13 @@ class PlanoOrcamentarioReceitaController extends Controller
 
     public function vincular(Request $request)
     {
+        $idsContasEcidade = [];
+        if ($request->has('contas_ecidade')) {
+            $idsContasEcidade = $request->get('contas_ecidade');
+        }
         $service = new VincularPlanoOrcamentarioReceitaService();
         $planoOrcamentario = $service->getPlanoOrcamentario($request->get('planoorcamentario_id'));
-        $service->vincular($planoOrcamentario, $request->get('contas_ecidade'));
+        $service->vincular($planoOrcamentario, $idsContasEcidade);
         return new DBJsonResponse([], 'Contas vinculadas com sucesso.');
     }
 
@@ -79,12 +83,23 @@ class PlanoOrcamentarioReceitaController extends Controller
 
     /**
      * @param Request $request
-     * @return void
+     * @return DBJsonResponse
      */
     public function mapeamento(Request $request)
     {
         $service = new MapeamentoPlanoReceitaService();
         $service->filtros($request->all());
-        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vículadas.');
+        return new DBJsonResponse($service->emitir(), 'Mapeamento das contas vinculadas.');
+    }
+
+    /**
+     * @param Request $request
+     * @return DBJsonResponse
+     */
+    public function importarVinculo(Request $request)
+    {
+        $service = new VincularPlanoOrcamentarioReceitaService();
+        $service->importarVinculo($request->all());
+        return new DBJsonResponse([], 'Mapeamento executado com base no exercício anterior');
     }
 }

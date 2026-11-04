@@ -59,13 +59,13 @@ $oRotulo->label('ob16_codobrasenvio');
           <table class="form-container">
             <tr> 
               <td>     
-                <?
+                <?php
                   db_ancora($Lob16_codobrasenvio,' js_pesquisa(true); ',1);
                 ?>
               </td>
                 
               <td> 
-                <?
+                <?php
                   db_input('ob16_codobrasenvio',  6, $Iob16_codobrasenvio, true, 'text', 1, "onchange='js_pesquisa(false)'");
                   db_input('ob16_nomearq'      , 40, 0                   , true, 'text', 3, "");
                 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,7 +98,7 @@ if($clatendusucliproced->numrows > 0){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
   db_msgbox($erro_msg);
   if($sqlerro == true){

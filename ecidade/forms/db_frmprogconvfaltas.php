@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("ed127_i_codigo");
        <?=@$Led128_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed128_i_codigo',10,$Ied128_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted128_i_progconvres?>">
-       <?
+       <?php
        db_ancora(@$Led128_i_progconvres,"js_pesquisaed128_i_progconvres(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed128_i_progconvres',10,$Ied128_i_progconvres,true,'text',$db_opcao," onchange='js_pesquisaed128_i_progconvres(false);'")
 ?>
-       <?
+       <?php
 db_input('ed127_i_codigo',10,$Ied127_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('ed127_i_codigo',10,$Ied127_i_codigo,true,'text',3,'')
        <?=@$Led128_c_abonada?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed128_c_abonada',1,$Ied128_c_abonada,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('ed128_c_abonada',1,$Ied128_c_abonada,true,'text',$db_opcao,"")
        <?=@$Led128_t_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('ed128_t_obs',0,0,$Ied128_t_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_textarea('ed128_t_obs',0,0,$Ied128_t_obs,true,'text',$db_opcao,"")
        <?=@$Led128_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed128_d_data',@$ed128_d_data_dia,@$ed128_d_data_mes,@$ed128_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('ed128_d_data',@$ed128_d_data_dia,@$ed128_d_data_mes,@$ed128_d_data
        <?=@$Led128_c_numfono?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed128_c_numfono',20,$Ied128_c_numfono,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_progconvfaltas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

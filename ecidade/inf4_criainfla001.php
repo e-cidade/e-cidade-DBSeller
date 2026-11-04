@@ -174,7 +174,7 @@ function js_verifica() {
             <tr>
               <td height="25" nowrap title="<?=$Ti01_codigo?>"><?=$Li01_codigo?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 		$result = $clinflan->sql_record($clinflan->sql_query("","i01_codigo#i01_descr","i01_codigo"));
 		db_selectrecord("i01_codigo",$result,true,2,"","","");
 		?>
@@ -183,7 +183,7 @@ function js_verifica() {
             <tr>
               <td height="25" nowrap title="<?=$TDBtxt6?>"><?=$LDBtxt6?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-              <?
+              <?php
                 db_input('DBtxt6',4,$IDBtxt6,true,'text',2);
               ?>
 
@@ -200,12 +200,12 @@ function js_verifica() {
 	</td>
   </tr>
 </table>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>
 </html>
-<?
+<?php
 if($confirme_reprocesso == true){
       echo "<script>
             resultado = confirm('O inflator $i01_codigo já processado para o exercício $DBtxt6.\\n Deseja reprocessar?');

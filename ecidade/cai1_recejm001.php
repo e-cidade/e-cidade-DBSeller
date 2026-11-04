@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ if ( isset($incluir) ) {
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" style="margin-top:18px;!important;" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;">
+<body bgcolor=#CCCCCC leftmargin="0" style="margin-top:18px !important;" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;">
 
   <?php
     $clcriaabas->identifica = array("detalhes" => "Detalhes", "multas" => "Multas"); 

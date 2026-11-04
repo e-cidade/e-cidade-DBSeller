@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,11 +70,11 @@
 	   document.location.href = 'sau1_cgm001.php?mostradadoscgm=sim&z01_numcgm=$z01_numcgm';
 	 else ";
            if(isset($testanome)){
-	     $camp = split("\|",$valores);
+	     $camp = explode("|",$valores);
 	     $vals = "";
 	     $vir = "";
 	     for($f=1;$f<count($camp);$f++){
-	       $vals .= $vir.$$camp[$f];
+	       $vals .= $vir.${$camp[$f]};
 	       $vir = ",";
 	     }
 	     if($z01_cgc == "" && $z01_cpf == ""){
@@ -118,11 +118,11 @@
      }
      $z01_numcgm = $clcgm->z01_numcgm;
      if(isset($testanome)){
-       $camp = split("\|",$valores);
+       $camp = explode("|",$valores);
        $vals = "";
        $vir = "";
        for($f=1;$f<count($camp);$f++){
-	 $vals .= $vir.$$camp[$f];
+	 $vals .= $vir.${$camp[$f]};
 	 $vir = ",";
        }
        db_msgbox($cl_cgm->erro_msg);
@@ -159,7 +159,7 @@
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 if(!isset($testanome)){
 ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
@@ -170,27 +170,27 @@ if(!isset($testanome)){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 }
 ?>
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
 	include(modification("forms/db_frmcgm.php"));
 
 	?>
 	</td>
   </tr>
 </table>
-<?
+<?php
 if(!isset($testanome)){
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
 ?>
 </body>
 </html>
-<?
+<?php
 //$cldb_cgmruas->erro(true,false);
 //$cldb_cgmbairro->erro(true,false);
 if($clcgm->erro_status=="0"){

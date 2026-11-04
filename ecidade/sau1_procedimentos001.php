@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?
+        <?php
         include(modification("forms/db_frmprocedimentos.php"));
         ?>
     </center>
@@ -66,7 +66,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","sd09_c_grupoproc",true,1,"sd09_c_grupoproc",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clprocedimentos->erro_status=="0"){
     $clprocedimentos->erro(true,false);

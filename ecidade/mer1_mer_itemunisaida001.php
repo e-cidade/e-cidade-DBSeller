@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if (isset($incluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Inclusão Unidade de Saída</b></legend>
-	<? 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
+	<?php 	include(modification("forms/db_frmmer_itemunisaida.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -68,7 +68,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me20_i_unidade",true,1,"me20_i_unidade",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 	
   if ($clmer_itemunisaida->erro_status=="0") {

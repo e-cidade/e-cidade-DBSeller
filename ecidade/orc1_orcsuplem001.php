@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -170,14 +170,14 @@ function js_alterar(projeto,codsup){
 } 
 function js_excluir(projeto,codsup){ 
   if (confirm('Deseja Excluir a Suplementação '+codsup)==true){
-    <?  echo " location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+projeto+'&excluir=true&projeto='+projeto+'&codsup='+codsup";  ?>
+    <?php  echo " location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+projeto+'&excluir=true&projeto='+projeto+'&codsup='+codsup";  ?>
   }
 }  
 
 function js_fechar(){
   db_iframe_suplementacao.hide();
   chave = document.form1.o39_codproj.value;
-  <?
+  <?php
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }  
@@ -188,7 +188,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_orcprojeto.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
@@ -216,30 +216,30 @@ function js_preenchepesquisa(chave){
     <table border=0>
     <tr>
       <td><b> Projeto </b></td>
-      <td><? db_input('o39_codproj',4,$Io39_codproj,true,'text',3) ?></td>
+      <td><?php db_input('o39_codproj',4,$Io39_codproj,true,'text',3) ?></td>
     </tr>
     <tr>
       <td><b>Descrição</b></td>
-      <td><? db_input('o39_descr',40,'',true,'text',3) ?></td>
+      <td><?php db_input('o39_descr',40,'',true,'text',3) ?></td>
     </tr>
     <tr>
       <td><b>Data Fechamento </b></td>
-      <td><? db_inputdata('o51_data',@$o51_data_dia,@$o51_data_mes,@$o51_data_ano,true,'text',3) ?></td>
+      <td><?php db_inputdata('o51_data',@$o51_data_dia,@$o51_data_mes,@$o51_data_ano,true,'text',3) ?></td>
     </tr>
-    <?
+    <?php
     if ($o39_usalimite == 't') {
     ?>
       <tr>
       <td><b>Limite LOA: </b></td>
-      <td><? db_input('limiteloa',20,'',true,'text',3);
+      <td><?php db_input('limiteloa',20,'',true,'text',3);
       ?></td>
     </tr>
     <tr>
       <td><b>Valor Utilizado: </b></td>
-      <td><? db_input('valorutilizado',20,'',true,'text',3);
+      <td><?php db_input('valorutilizado',20,'',true,'text',3);
       ?></td>
     </tr>
-    <?  
+    <?php  
     }
      ?>
     </table>    
@@ -250,7 +250,7 @@ function js_preenchepesquisa(chave){
    <table border=0>
    <tr>
      <td><b>Tipo </b></td>
-     <td> <? 
+     <td> <?php 
       if ($db_opcao == 1) {
 
         $sSqlTipoSuplem = $clorcsuplemtipo->sql_query("","o48_tiposup as o46_tiposup,o48_descr","o48_tiposup");
@@ -301,7 +301,7 @@ function js_preenchepesquisa(chave){
    <td>EXCLUIR </td>
 
   </tr>
-  <?
+  <?php
    // se projeto processado, botoes alterar e excluir são bloqueados
    // se o51_codproj = processado
    //$sWhere =
@@ -336,7 +336,7 @@ function js_preenchepesquisa(chave){
           <td><?=$o46_data ?></td>
           <td><?=$o49_data ?></td>
           <td><?=$nome ?></td>
-          <?
+          <?php
 	    if ($o49_data !='') {
 	       $op='disabled';
 	    }  
@@ -344,7 +344,7 @@ function js_preenchepesquisa(chave){
           <td><input type=button value=Alterar onClick="js_alterar(<?=$o39_codproj?>,<?=$o46_codsup ?>); " <?=$op?> ></td>
           <td><input type=button value=Excluir onClick="js_excluir(<?=$o39_codproj?>,<?=$o46_codsup ?>); " <?=$op?> ></td>
 	 </tr>
-	 <?
+	 <?php
       }	
    }    
   ?>
@@ -359,18 +359,18 @@ function js_preenchepesquisa(chave){
 
 
 
- <?
+ <?php
   // include(modification("forms/db_frmorcsuplem.php"));
   ?>
 </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (!isset($chavepesquisa)){
   echo "<script> js_pesquisa(); </script>";
 }  

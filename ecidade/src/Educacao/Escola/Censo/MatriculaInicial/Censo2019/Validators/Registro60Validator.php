@@ -992,9 +992,9 @@ class Registro60Validator
             return;
         }
 
-        if (count($areas) > 4) {
+        if (count($areas) > 1) {
             $log = '"Área do itinerário formativo" não foi preenchido corretamente. ';
-            $log .= 'Não podem ser informadas mais de quatro opções com valor igual a 1 (Sim).';
+            $log .= 'Não podem ser informadas mais de uma opções com valor igual a 1 (Sim).';
             $this->log($log);
             return;
         }
@@ -1031,7 +1031,7 @@ class Registro60Validator
                 $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             }
 
-            if (!in_array($etapaRegistro20, [25, 26, 27, 28, 30, 31, 32, 33, 35, 36, 37,  38]) && $isItinerario) {
+            if (!in_array($etapaRegistro20, [25, 26, 27, 28, 30, 31, 32, 33, 35, 36, 37,  38, 71]) && $isItinerario) {
                 $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
             }
 

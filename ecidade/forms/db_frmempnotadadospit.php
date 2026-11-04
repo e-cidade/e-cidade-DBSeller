@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("e10_descricao");
        <?=@$Le11_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_sequencial',10,$Ie11_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te11_tipodocumentosfiscal?>">
-       <?
+       <?php
        db_ancora(@$Le11_tipodocumentosfiscal,"js_pesquisae11_tipodocumentosfiscal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_tipodocumentosfiscal',10,$Ie11_tipodocumentosfiscal,true,'text',$db_opcao," onchange='js_pesquisae11_tipodocumentosfiscal(false);'")
 ?>
-       <?
+       <?php
 db_input('e12_descricao',50,$Ie12_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te11_cfop?>">
-       <?
+       <?php
        db_ancora(@$Le11_cfop,"js_pesquisae11_cfop(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_cfop',10,$Ie11_cfop,true,'text',$db_opcao," onchange='js_pesquisae11_cfop(false);'")
 ?>
-       <?
+       <?php
 db_input('e10_descricao',50,$Ie10_descricao,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('e10_descricao',50,$Ie10_descricao,true,'text',3,'')
        <?=@$Le11_seriefiscal?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_seriefiscal',50,$Ie11_seriefiscal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('e11_seriefiscal',50,$Ie11_seriefiscal,true,'text',$db_opcao,"")
        <?=@$Le11_inscricaosubstitutofiscal?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_inscricaosubstitutofiscal',10,$Ie11_inscricaosubstitutofiscal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('e11_inscricaosubstitutofiscal',10,$Ie11_inscricaosubstitutofiscal,true
        <?=@$Le11_valoricms?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_valoricms',10,$Ie11_valoricms,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('e11_valoricms',10,$Ie11_valoricms,true,'text',$db_opcao,"")
        <?=@$Le11_basecalculosubstitutotrib?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_basecalculosubstitutotrib',10,$Ie11_basecalculosubstitutotrib,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('e11_basecalculosubstitutotrib',10,$Ie11_basecalculosubstitutotrib,true
        <?=@$Le11_valoicmssubstitutotrib?>
     </td>
     <td> 
-<?
+<?php
 db_input('e11_valoicmssubstitutotrib',10,$Ie11_valoicmssubstitutotrib,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empnotadadospit.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

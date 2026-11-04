@@ -1,76 +1,76 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE rhpromocao
-class cl_rhpromocao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $h72_sequencial = 0; 
-   var $h72_regist = 0; 
-   var $h72_dtinicial_dia = null; 
-   var $h72_dtinicial_mes = null; 
-   var $h72_dtinicial_ano = null; 
-   var $h72_dtinicial = null; 
-   var $h72_dtfinal_dia = null; 
-   var $h72_dtfinal_mes = null; 
-   var $h72_dtfinal_ano = null; 
-   var $h72_dtfinal = null; 
-   var $h72_ativo = 'f'; 
-   var $h72_observacao = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhpromocao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $h72_sequencial = 0;
+   var $h72_regist = 0;
+   var $h72_dtinicial_dia = null;
+   var $h72_dtinicial_mes = null;
+   var $h72_dtinicial_ano = null;
+   var $h72_dtinicial = null;
+   var $h72_dtfinal_dia = null;
+   var $h72_dtfinal_mes = null;
+   var $h72_dtfinal_ano = null;
+   var $h72_dtfinal = null;
+   var $h72_ativo = 'f';
+   var $h72_observacao = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 h72_sequencial = int4 = sequencial 
-                 h72_regist = int4 = Matricula do servidor 
-                 h72_dtinicial = date = Data inicial 
-                 h72_dtfinal = date = Data final 
-                 h72_ativo = bool = Ativo 
-                 h72_observacao = text = Observação 
+                 h72_sequencial = int4 = sequencial
+                 h72_regist = int4 = Matricula do servidor
+                 h72_dtinicial = date = Data inicial
+                 h72_dtfinal = date = Data final
+                 h72_ativo = bool = Ativo
+                 h72_observacao = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_rhpromocao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhpromocao"); 
+     $this->rotulo = new rotulo("rhpromocao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -79,7 +79,7 @@ class cl_rhpromocao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h72_sequencial = ($this->h72_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["h72_sequencial"]:$this->h72_sequencial);
        $this->h72_regist = ($this->h72_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["h72_regist"]:$this->h72_regist);
@@ -106,9 +106,9 @@ class cl_rhpromocao {
      }
    }
    // funcao para inclusao
-   function incluir ($h72_sequencial){ 
+   public function incluir ($h72_sequencial){
       $this->atualizacampos();
-     if($this->h72_regist == null ){ 
+     if($this->h72_regist == null ){
        $this->erro_sql = " Campo Matricula do servidor nao Informado.";
        $this->erro_campo = "h72_regist";
        $this->erro_banco = "";
@@ -117,7 +117,7 @@ class cl_rhpromocao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->h72_dtinicial == null ){ 
+     if($this->h72_dtinicial == null ){
        $this->erro_sql = " Campo Data inicial nao Informado.";
        $this->erro_campo = "h72_dtinicial_dia";
        $this->erro_banco = "";
@@ -127,7 +127,7 @@ class cl_rhpromocao {
        return false;
      }
 
-     if($this->h72_ativo == null ){ 
+     if($this->h72_ativo == null ){
        $this->erro_sql = " Campo Ativo nao Informado.";
        $this->erro_campo = "h72_ativo";
        $this->erro_banco = "";
@@ -137,16 +137,16 @@ class cl_rhpromocao {
        return false;
      }
      if($h72_sequencial == "" || $h72_sequencial == null ){
-       $result = db_query("select nextval('rhpromocao_h72_sequencial_seq')"); 
+       $result = db_query("select nextval('rhpromocao_h72_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: rhpromocao_h72_sequencial_seq do campo: h72_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: rhpromocao_h72_sequencial_seq do campo: h72_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->h72_sequencial = pg_result($result,0,0); 
+       $this->h72_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from rhpromocao_h72_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $h72_sequencial)){
@@ -157,10 +157,10 @@ class cl_rhpromocao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->h72_sequencial = $h72_sequencial; 
+         $this->h72_sequencial = $h72_sequencial;
        }
      }
-     if(($this->h72_sequencial == null) || ($this->h72_sequencial == "") ){ 
+     if(($this->h72_sequencial == null) || ($this->h72_sequencial == "") ){
        $this->erro_sql = " Campo h72_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,23 +169,23 @@ class cl_rhpromocao {
        return false;
      }
      $sql = "insert into rhpromocao(
-                                       h72_sequencial 
-                                      ,h72_regist 
-                                      ,h72_dtinicial 
-                                      ,h72_dtfinal 
-                                      ,h72_ativo 
-                                      ,h72_observacao 
+                                       h72_sequencial
+                                      ,h72_regist
+                                      ,h72_dtinicial
+                                      ,h72_dtfinal
+                                      ,h72_ativo
+                                      ,h72_observacao
                        )
                 values (
-                                $this->h72_sequencial 
-                               ,$this->h72_regist 
-                               ,".($this->h72_dtinicial == "null" || $this->h72_dtinicial == ""?"null":"'".$this->h72_dtinicial."'")." 
-                               ,".($this->h72_dtfinal == "null" || $this->h72_dtfinal == ""?"null":"'".$this->h72_dtfinal."'")." 
-                               ,'$this->h72_ativo' 
-                               ,'$this->h72_observacao' 
+                                $this->h72_sequencial
+                               ,$this->h72_regist
+                               ,".($this->h72_dtinicial == "null" || $this->h72_dtinicial == ""?"null":"'".$this->h72_dtinicial."'")."
+                               ,".($this->h72_dtfinal == "null" || $this->h72_dtfinal == ""?"null":"'".$this->h72_dtfinal."'")."
+                               ,'$this->h72_ativo'
+                               ,'$this->h72_observacao'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Promoção ($this->h72_sequencial) nao Incluído. Inclusao Abortada.";
@@ -222,16 +222,16 @@ class cl_rhpromocao {
        $resac = db_query("insert into db_acount values($acount,3315,18714,'','".AddSlashes(pg_result($resaco,0,'h72_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($h72_sequencial=null) { 
+   public function alterar ($h72_sequencial=null) {
       $this->atualizacampos();
      $sql = " update rhpromocao set ";
      $virgula = "";
-     if(trim($this->h72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_sequencial"])){ 
+     if(trim($this->h72_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_sequencial"])){
        $sql  .= $virgula." h72_sequencial = $this->h72_sequencial ";
        $virgula = ",";
-       if(trim($this->h72_sequencial) == null ){ 
+       if(trim($this->h72_sequencial) == null ){
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "h72_sequencial";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_rhpromocao {
          return false;
        }
      }
-     if(trim($this->h72_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_regist"])){ 
+     if(trim($this->h72_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_regist"])){
        $sql  .= $virgula." h72_regist = $this->h72_regist ";
        $virgula = ",";
-       if(trim($this->h72_regist) == null ){ 
+       if(trim($this->h72_regist) == null ){
          $this->erro_sql = " Campo Matricula do servidor nao Informado.";
          $this->erro_campo = "h72_regist";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_rhpromocao {
          return false;
        }
      }
-     if(trim($this->h72_dtinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"] !="") ){ 
+     if(trim($this->h72_dtinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"] !="") ){
        $sql  .= $virgula." h72_dtinicial = '$this->h72_dtinicial' ";
        $virgula = ",";
-       if(trim($this->h72_dtinicial) == null ){ 
+       if(trim($this->h72_dtinicial) == null ){
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "h72_dtinicial_dia";
          $this->erro_banco = "";
@@ -266,11 +266,11 @@ class cl_rhpromocao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h72_dtinicial_dia"])){
          $sql  .= $virgula." h72_dtinicial = null ";
          $virgula = ",";
-         if(trim($this->h72_dtinicial) == null ){ 
+         if(trim($this->h72_dtinicial) == null ){
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "h72_dtinicial_dia";
            $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_rhpromocao {
          }
        }
      }
-     if(trim($this->h72_dtfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"] !="") ){ 
+     if(trim($this->h72_dtfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"] !="") ){
        $sql  .= $virgula." h72_dtfinal = '$this->h72_dtfinal' ";
        $virgula = ",";
-       if(trim($this->h72_dtfinal) == null ){ 
+       if(trim($this->h72_dtfinal) == null ){
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "h72_dtfinal_dia";
          $this->erro_banco = "";
@@ -293,11 +293,11 @@ class cl_rhpromocao {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["h72_dtfinal_dia"])){
          $sql  .= $virgula." h72_dtfinal = null ";
          $virgula = ",";
-         if(trim($this->h72_dtfinal) == null ){ 
+         if(trim($this->h72_dtfinal) == null ){
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "h72_dtfinal_dia";
            $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_rhpromocao {
          }
        }
      }
-     if(trim($this->h72_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_ativo"])){ 
+     if(trim($this->h72_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_ativo"])){
        $sql  .= $virgula." h72_ativo = '$this->h72_ativo' ";
        $virgula = ",";
-       if(trim($this->h72_ativo) == null ){ 
+       if(trim($this->h72_ativo) == null ){
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "h72_ativo";
          $this->erro_banco = "";
@@ -321,7 +321,7 @@ class cl_rhpromocao {
          return false;
        }
      }
-     if(trim($this->h72_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_observacao"])){ 
+     if(trim($this->h72_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h72_observacao"])){
        $sql  .= $virgula." h72_observacao = '$this->h72_observacao' ";
        $virgula = ",";
      }
@@ -352,7 +352,7 @@ class cl_rhpromocao {
      }
     // echo $sql; die();
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Promoção nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->h72_sequencial;
@@ -380,14 +380,14 @@ class cl_rhpromocao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($h72_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($h72_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h72_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -418,7 +418,7 @@ class cl_rhpromocao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Promoção nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$h72_sequencial;
@@ -446,11 +446,11 @@ class cl_rhpromocao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -472,11 +472,11 @@ class cl_rhpromocao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $h72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $h72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,15 +496,15 @@ class cl_rhpromocao {
      $sql2 = "";
      if($dbwhere==""){
        if($h72_sequencial!=null ){
-         $sql2 .= " where rhpromocao.h72_sequencial = $h72_sequencial "; 
-       } 
+         $sql2 .= " where rhpromocao.h72_sequencial = $h72_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,11 +513,11 @@ class cl_rhpromocao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $h72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $h72_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,15 +530,15 @@ class cl_rhpromocao {
      $sql2 = "";
      if($dbwhere==""){
        if($h72_sequencial!=null ){
-         $sql2 .= " where rhpromocao.h72_sequencial = $h72_sequencial "; 
-       } 
+         $sql2 .= " where rhpromocao.h72_sequencial = $h72_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,28 +547,28 @@ class cl_rhpromocao {
      }
      return $sql;
   }
-  
-  
+
+
 	/**
 	 * Pesquiza promoção pela matricula
 	 */
-	function sql_query_matricula ( $matricula = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
-	
+	public function sql_query_matricula ( $matricula = null, $campos = "*", $ordem = null, $dbwhere = "" ) {
+
 	  $sql = "select ";
 	  if($campos != "*" ){
-	
-	    $campos_sql = split("#",$campos);
+
+	    $campos_sql = explode("#",$campos);
 	    $virgula = "";
-	
+
 	    for($i=0;$i<sizeof($campos_sql);$i++){
-	
+
 	      $sql .= $virgula.$campos_sql[$i];
 	      $virgula = ",";
 	    }
 	  }else{
 	    $sql .= $campos;
 	  }
-	
+
 	  $sql .= " from rhpromocao ";
 	  $sql .= "      inner join rhpessoal  on  rhpessoal.rh01_regist = rhpromocao.h72_regist";
 	  $sql .= "      inner join cgm  on  cgm.z01_numcgm = rhpessoal.rh01_numcgm";
@@ -578,7 +578,7 @@ class cl_rhpromocao {
 	  $sql .= "      inner join rhinstrucao  on  rhinstrucao.rh21_instru = rhpessoal.rh01_instru";
 	  $sql .= "      inner join rhnacionalidade  on  rhnacionalidade.rh06_nacionalidade = rhpessoal.rh01_nacion";
 	  $sql2 = "";
-	
+
 	  if ($dbwhere == ""){
 	    if ($matricula != null ){
 	      $sql2 .= " where rhpromocao.h72_regist = $matricula ";
@@ -586,24 +586,24 @@ class cl_rhpromocao {
 	  } elseif ($dbwhere != "") {
 	    $sql2 = " where $dbwhere";
 	  }
-	
-	
+
+
 	   $sql .= $sql2;
-	
+
 	   if($ordem != null ){
-	
+
 	     $sql .= " order by ";
-	     $campos_sql = split("#",$ordem);
+	     $campos_sql = explode("#",$ordem);
 	     $virgula = "";
 	     for($i=0;$i<sizeof($campos_sql);$i++){
 	       $sql .= $virgula.$campos_sql[$i];
 	       $virgula = ",";
 	     }
 	   }
-	
+
 	   return $sql;
 	}
-  
-  
+
+
 }
 ?>

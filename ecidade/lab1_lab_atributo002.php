@@ -53,19 +53,24 @@ $db_botao = false;
 if (isset($alterar)) {
     db_inicio_transacao();
     $db_opcao = 2;
+    $cllab_atributo->la25_unidademedida = $la13_i_codigo;
     $cllab_atributo->alterar($la25_i_codigo);
     db_fim_transacao();
 } else {
     if (isset($chavepesquisa)) {
         $db_opcao = 2;
-        $result = $cllab_atributo->sql_record($cllab_atributo->sql_query($chavepesquisa));
+        $result = $cllab_atributo->sql_record($cllab_atributo->sql_query_unidademedida($chavepesquisa));
         db_fieldsmemory($result, 0);
+                  
         $sCampos = " la26_i_exameatributopai,
                la25_c_estrutural as la25_c_estrutural_pai,
                la25_c_descr as la25_c_descr_pai,
-               la25_i_nivel as la25_i_nivel_pai ";
+               la25_i_nivel as la25_i_nivel_pai,
+               la25_unidademedida as la13_i_codigo ";
+
         $sSql = $cllab_exameatributoligacao->sql_query_pai("", $sCampos, "",
           " la26_i_exameatributofilho=$chavepesquisa");
+        
         $result = $cllab_exameatributoligacao->sql_record($sSql);
         if ($cllab_exameatributoligacao->numrows > 0) {
             db_fieldsmemory($result, 0);

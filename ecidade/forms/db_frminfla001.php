@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,22 +37,22 @@ $clrotulo->label("i01_dm");
     <table border="0">
       <tr> 
         <td nowrap title="<?=@$Ti02_codigo?>"> 
-          <?
+          <?php
          db_ancora(@$Li01_codigo,'js_pesquisainflan(true);',2);
          ?>
         </td>
         <td> 
-          <?
+          <?php
           db_input('i02_codigo',5,$Ii02_codigo,true,'text',2," onchange='js_pesquisainflan(false);'")
           ?>
-          <?
+          <?php
           db_input('i01_descr',40,$Ii01_descr,true,'text',3)
           ?>
         </td>
       </tr>
       <tr> 
         <td nowrap >
-          <?
+          <?php
           db_input('i01_dm',4,$Ii01_dm,true,'hidden',3)
           ?>
         </td>
@@ -83,7 +83,7 @@ function js_manutencao1(chave,chave1){
   document.form1.i01_dm.value = chave1;
 }
 </script>
-<?
+<?php
 $inflan = new janela("func_inflan","");
 $inflan ->posX=1;
 $inflan ->posY=20;

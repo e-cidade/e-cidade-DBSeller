@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ if($chave!=""){
   <table border='1' cellpadding="0" cellspacing='0' width="100%" >
     <tr><td colspan="3" align="center"><strong>Registros</strong></td></tr>
     <tr><td align='center'><b>Numpre</b></td><td align='center'><b>Numpar</b></td><td align='center'><b>Valor</b></td></tr>
-     <?
+     <?php
       $total = 0;
       for($x = 0; $x < $clcancdebitos->numrows; $x++) {
           db_fieldsmemory($result,$x);

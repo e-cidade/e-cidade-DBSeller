@@ -54,13 +54,13 @@ class cl_setor {
                  j30_aliter = float8 = Aliquota Territorial 
                  ";
    //funcao construtor da classe 
-   function cl_setor() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_setor {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j30_codi = ($this->j30_codi == ""?@$GLOBALS["HTTP_POST_VARS"]["j30_codi"]:$this->j30_codi);
        $this->j30_descr = ($this->j30_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j30_descr"]:$this->j30_descr);
@@ -80,7 +80,7 @@ class cl_setor {
      }
    }
    // funcao para Inclusão
-   function incluir ($j30_codi){ 
+   public function incluir ($j30_codi){ 
       $this->atualizacampos();
      if($this->j30_descr == null ){ 
        $this->erro_sql = " Campo Descricao não informado.";

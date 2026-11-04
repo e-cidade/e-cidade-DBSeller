@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,13 +55,13 @@ class cl_autolancam {
                  y88_data = date = Data do auto de lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_autolancam() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolancam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_autolancam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y88_codtermo = ($this->y88_codtermo == ""?@$GLOBALS["HTTP_POST_VARS"]["y88_codtermo"]:$this->y88_codtermo);
        $this->y88_codlev = ($this->y88_codlev == ""?@$GLOBALS["HTTP_POST_VARS"]["y88_codlev"]:$this->y88_codlev);
@@ -87,7 +87,7 @@ class cl_autolancam {
      }
    }
    // funcao para inclusao
-   function incluir ($y88_codtermo){ 
+   public function incluir ($y88_codtermo){ 
       $this->atualizacampos();
      if($this->y88_codlev == null ){ 
        $this->erro_sql = " Campo Levantamento nao Informado.";
@@ -186,7 +186,7 @@ class cl_autolancam {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($y88_codtermo=null) { 
+   public function alterar ($y88_codtermo=null) { 
       $this->atualizacampos();
      $sql = " update autolancam set ";
      $virgula = "";
@@ -295,7 +295,7 @@ class cl_autolancam {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($y88_codtermo=null,$dbwhere=null) { 
+   public function excluir ($y88_codtermo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y88_codtermo));
      }else{ 
@@ -358,7 +358,7 @@ class cl_autolancam {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

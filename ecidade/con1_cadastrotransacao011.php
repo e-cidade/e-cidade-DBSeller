@@ -84,13 +84,13 @@ $oRotuloConhist->label();
           <b><?=$Lc45_seqtrans;?></b>
         </td>
         <td width="30">
-          <? db_input('c45_seqtrans', 10, $Ic45_seqtrans, true, 'text', 3);?>
+          <?php db_input('c45_seqtrans', 10, $Ic45_seqtrans, true, 'text', 3);?>
         </td>
         <td nowrap="nowrap" width="80">
           <b><?=$Lc46_seqtranslan;?></b>
         </td>
         <td>
-          <? db_input('c46_seqtranslan', 10, $Ic46_seqtranslan, true,'text',3);?>
+          <?php db_input('c46_seqtranslan', 10, $Ic46_seqtranslan, true,'text',3);?>
         </td>
       </tr>
 
@@ -100,23 +100,23 @@ $oRotuloConhist->label();
           <b><?=$Lc46_ordem;?></b>
         </td>
         <td colspan="4">
-          <? db_input('c46_ordem',10,$Ic46_ordem,true,'text', 3);?>
+          <?php db_input('c46_ordem',10,$Ic46_ordem,true,'text', 3);?>
         </td>
       </tr>
 
       <!-- Descrição //constranlan -->
       <tr>
         <td><b><?=$Lc46_descricao;?></b></td>
-        <td colspan="4"><? db_input('c46_descricao',69,'', true,'text',$db_opcao);?></td>
+        <td colspan="4"><?php db_input('c46_descricao',69,'', true,'text',$db_opcao);?></td>
       </tr>
 
       <!-- Documento //conhistdoc -->
       <tr>
         <td width="100" id="tdDocumento">
-          <b><? db_ancora($Lc45_coddoc, "js_pesquisaDocumento(true);", $db_opcao);?></b>
+          <b><?php db_ancora($Lc45_coddoc, "js_pesquisaDocumento(true);", $db_opcao);?></b>
         </td>
         <td width="100" colspan="4">
-          <?
+          <?php
             db_input('c45_coddoc',10,$Ic45_coddoc,true,'text',$db_opcao, "onchange='js_pesquisaDocumento(false);'");
             db_input('c53_descr',55,$Ic53_descr,true,'text',3);
           ?>
@@ -126,10 +126,10 @@ $oRotuloConhist->label();
      <!-- Histórico //conhist -->
       <tr>
         <td>
-          <b><? db_ancora($Lc50_codhist, "js_pesquisaHistorico(true);", $db_opcao, "onchange='js_pesquisaDocumento(true);'");?></b>
+          <b><?php db_ancora($Lc50_codhist, "js_pesquisaHistorico(true);", $db_opcao, "onchange='js_pesquisaDocumento(true);'");?></b>
         </td>
         <td colspan="4">
-          <?
+          <?php
             db_input('c50_codhist', 10, $Ic50_codhist, true, 'text', $db_opcao, "onchange='js_pesquisaHistorico(false);'", '', '', '', 5);
             db_input('c50_descr', 55, $Ic50_descr, true, 'text', 3);
           ?>
@@ -140,7 +140,7 @@ $oRotuloConhist->label();
       <tr>
         <td><b><?=$Lc46_obrigatorio;?></b></td>
         <td colspan="4">
-          <?
+          <?php
             $aObrigatorio = array("f" => "Não", "t" => "Sim");
             db_select('c46_obrigatorio', $aObrigatorio, true, $db_opcao);
           ?>
@@ -152,7 +152,7 @@ $oRotuloConhist->label();
         <td colspan="5">
           <fieldset>
           <legend><b><?=$Lc46_obs ;?></b></legend>
-          <? db_textarea('c46_obs',"5","80", null, true, 'text', $db_opcao);?>
+          <?php db_textarea('c46_obs',"5","80", null, true, 'text', $db_opcao);?>
           </fieldset>
         </td>
       </tr>

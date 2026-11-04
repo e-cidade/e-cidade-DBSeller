@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_cadattdinamicoatributos
 class cl_db_cadattdinamicoatributos { 
@@ -42,13 +42,13 @@ class cl_db_cadattdinamicoatributos {
                  db109_fixo = bool = Fixo 
                  ";
    //funcao construtor da classe 
-   function cl_db_cadattdinamicoatributos() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cadattdinamicoatributos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -57,7 +57,7 @@ class cl_db_cadattdinamicoatributos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db109_sequencial = ($this->db109_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db109_sequencial"]:$this->db109_sequencial);
        $this->db109_db_cadattdinamico = ($this->db109_db_cadattdinamico == ""?@$GLOBALS["HTTP_POST_VARS"]["db109_db_cadattdinamico"]:$this->db109_db_cadattdinamico);
@@ -75,7 +75,7 @@ class cl_db_cadattdinamicoatributos {
      }
    }
    // funcao para Inclusão
-   function incluir ($db109_sequencial){ 
+   public function incluir ($db109_sequencial){ 
       $this->atualizacampos();
      if($this->db109_db_cadattdinamico == null ){ 
        $this->erro_sql = " Campo Código Atributo Dinâmico não informado.";

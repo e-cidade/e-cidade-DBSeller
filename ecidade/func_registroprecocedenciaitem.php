@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
               <?=$Lpc36_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc36_sequencial",10,$Ipc36_sequencial,true,"text",4,"","chave_pc36_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
               <?=$Lpc36_registroprecocedencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("pc36_registroprecocedencia",10,$Ipc36_registroprecocedencia,true,"text",4,"","chave_pc36_registroprecocedencia");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_registroprecocedenciaitem.php")==true){
@@ -122,12 +122,12 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

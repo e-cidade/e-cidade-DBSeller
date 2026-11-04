@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("dv09_descr");
        <?=@$Ldv05_coddiver?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_coddiver',10,$Idv05_coddiver,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdv05_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Ldv05_numcgm,"js_pesquisadv05_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_numcgm',6,$Idv05_numcgm,true,'text',$db_opcao," onchange='js_pesquisadv05_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Ldv05_dtinsc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dv05_dtinsc',@$dv05_dtinsc_dia,@$dv05_dtinsc_mes,@$dv05_dtinsc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_inputdata('dv05_dtinsc',@$dv05_dtinsc_dia,@$dv05_dtinsc_mes,@$dv05_dtinsc_ano
        <?=@$Ldv05_exerc?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_exerc',4,$Idv05_exerc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('dv05_exerc',4,$Idv05_exerc,true,'text',$db_opcao,"")
        <?=@$Ldv05_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_numpre',8,$Idv05_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,22 +94,22 @@ db_input('dv05_numpre',8,$Idv05_numpre,true,'text',$db_opcao,"")
        <?=@$Ldv05_vlrhis?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_vlrhis',15,$Idv05_vlrhis,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdv05_procdiver?>">
-       <?
+       <?php
        db_ancora(@$Ldv05_procdiver,"js_pesquisadv05_procdiver(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_procdiver',5,$Idv05_procdiver,true,'text',$db_opcao," onchange='js_pesquisadv05_procdiver(false);'")
 ?>
-       <?
+       <?php
 db_input('dv09_descr',40,$Idv09_descr,true,'text',3,'')
        ?>
     </td>
@@ -119,7 +119,7 @@ db_input('dv09_descr',40,$Idv09_descr,true,'text',3,'')
        <?=@$Ldv05_numtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_numtot',4,$Idv05_numtot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('dv05_numtot',4,$Idv05_numtot,true,'text',$db_opcao,"")
        <?=@$Ldv05_privenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dv05_privenc',@$dv05_privenc_dia,@$dv05_privenc_mes,@$dv05_privenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_inputdata('dv05_privenc',@$dv05_privenc_dia,@$dv05_privenc_mes,@$dv05_privenc
        <?=@$Ldv05_provenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dv05_provenc',@$dv05_provenc_dia,@$dv05_provenc_mes,@$dv05_provenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_inputdata('dv05_provenc',@$dv05_provenc_dia,@$dv05_provenc_mes,@$dv05_provenc
        <?=@$Ldv05_diaprox?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_diaprox',4,$Idv05_diaprox,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,7 +159,7 @@ db_input('dv05_diaprox',4,$Idv05_diaprox,true,'text',$db_opcao,"")
        <?=@$Ldv05_oper?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('dv05_oper',@$dv05_oper_dia,@$dv05_oper_mes,@$dv05_oper_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -169,7 +169,7 @@ db_inputdata('dv05_oper',@$dv05_oper_dia,@$dv05_oper_mes,@$dv05_oper_ano,true,'t
        <?=@$Ldv05_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_valor',15,$Idv05_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -179,7 +179,7 @@ db_input('dv05_valor',15,$Idv05_valor,true,'text',$db_opcao,"")
        <?=@$Ldv05_infla?>
     </td>
     <td> 
-<?
+<?php
 db_input('dv05_infla',5,$Idv05_infla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -189,7 +189,7 @@ db_input('dv05_infla',5,$Idv05_infla,true,'text',$db_opcao,"")
        <?=@$Ldv05_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('dv05_obs',0,0,$Idv05_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -255,7 +255,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

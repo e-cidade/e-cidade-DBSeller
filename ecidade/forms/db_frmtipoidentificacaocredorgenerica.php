@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("c24_descricao");
        <?=@$Lc25_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('c25_sequencial',4,$Ic25_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc25_tipoidentificacaocredor?>">
-       <?
+       <?php
        db_ancora(@$Lc25_tipoidentificacaocredor,"js_pesquisac25_tipoidentificacaocredor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c25_tipoidentificacaocredor',4,$Ic25_tipoidentificacaocredor,true,'text',$db_opcao," onchange='js_pesquisac25_tipoidentificacaocredor(false);'")
 ?>
-       <?
+       <?php
 db_input('c24_descricao',60,$Ic24_descricao,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('c24_descricao',60,$Ic24_descricao,true,'text',3,'')
        <?=@$Lc25_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('c25_descricao',68,$Ic25_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipoidentificacaocredorgenerica.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

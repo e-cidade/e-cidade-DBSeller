@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clfar_formafarmaceutica->rotulo->label();
        <?=@$Lfa29_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa29_i_codigo',10,$Ifa29_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('fa29_i_codigo',10,$Ifa29_i_codigo,true,'text',3,"")
        <?=@$Lfa29_c_forma?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa29_c_forma',50,$Ifa29_c_forma,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_formafarmaceutica.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

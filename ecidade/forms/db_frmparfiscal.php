@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -139,7 +139,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
         <td>
        </tr>
        <tr id="linhaTemplate" style="display:none;">
-         <td nowrap="nowrap" title="<? echo $Tp90_db_documentotemplate; ?>">
+         <td nowrap="nowrap" title="<?php echo $Tp90_db_documentotemplate; ?>">
            <?php
              db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumentoAutodeInfracao(true);",$db_opcao);
            ?>
@@ -381,6 +381,19 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
             ?>
           </td>
         </tr>
+
+        <tr>
+          <td>
+            <label><strong>Calcula Vistoria de Alvará sanitário provisório:</strong></label>
+          </td>
+          <td>
+            <?php
+              $aOpcoes = array('f'=>'Não', 't'=>'Sim');
+              db_select('y32_calcprovisorio',$aOpcoes,true,$db_opcao,"");
+            ?>
+          </td>
+        </tr>
+        
       </table>
     </fieldset>
 

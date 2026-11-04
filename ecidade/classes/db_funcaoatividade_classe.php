@@ -1,38 +1,38 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE funcaoatividade
-class cl_funcaoatividade { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed119_sequencial = 0; 
-   var $ed119_descricao = null; 
-   var $ed119_docente = 'f'; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_funcaoatividade {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed119_sequencial = 0;
+   var $ed119_descricao = null;
+   var $ed119_docente = 'f';
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed119_sequencial = int4 = Código 
-                 ed119_descricao = varchar(100) = Descrição 
-                 ed119_docente = bool = Docente 
+                 ed119_sequencial = int4 = Código
+                 ed119_descricao = varchar(100) = Descrição
+                 ed119_docente = bool = Docente
                  ";
-   //funcao construtor da classe 
-   function cl_funcaoatividade() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("funcaoatividade"); 
+     $this->rotulo = new rotulo("funcaoatividade");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_funcaoatividade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed119_sequencial = ($this->ed119_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed119_sequencial"]:$this->ed119_sequencial);
        $this->ed119_descricao = ($this->ed119_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["ed119_descricao"]:$this->ed119_descricao);
@@ -51,9 +51,9 @@ class cl_funcaoatividade {
      }
    }
    // funcao para inclusao
-   function incluir ($ed119_sequencial){ 
+   public function incluir ($ed119_sequencial){
       $this->atualizacampos();
-     if($this->ed119_descricao == null ){ 
+     if($this->ed119_descricao == null ){
        $this->erro_sql = " Campo Descrição não informado.";
        $this->erro_campo = "ed119_descricao";
        $this->erro_banco = "";
@@ -62,7 +62,7 @@ class cl_funcaoatividade {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed119_docente == null ){ 
+     if($this->ed119_docente == null ){
        $this->erro_sql = " Campo Docente não informado.";
        $this->erro_campo = "ed119_docente";
        $this->erro_banco = "";
@@ -71,8 +71,8 @@ class cl_funcaoatividade {
        $this->erro_status = "0";
        return false;
      }
-       $this->ed119_sequencial = $ed119_sequencial; 
-     if(($this->ed119_sequencial == null) || ($this->ed119_sequencial == "") ){ 
+       $this->ed119_sequencial = $ed119_sequencial;
+     if(($this->ed119_sequencial == null) || ($this->ed119_sequencial == "") ){
        $this->erro_sql = " Campo ed119_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -81,17 +81,17 @@ class cl_funcaoatividade {
        return false;
      }
      $sql = "insert into funcaoatividade(
-                                       ed119_sequencial 
-                                      ,ed119_descricao 
-                                      ,ed119_docente 
+                                       ed119_sequencial
+                                      ,ed119_descricao
+                                      ,ed119_docente
                        )
                 values (
-                                $this->ed119_sequencial 
-                               ,'$this->ed119_descricao' 
-                               ,'$this->ed119_docente' 
+                                $this->ed119_sequencial
+                               ,'$this->ed119_descricao'
+                               ,'$this->ed119_docente'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "funcaoatividade ($this->ed119_sequencial) nao Incluído. Inclusao Abortada.";
@@ -131,16 +131,16 @@ class cl_funcaoatividade {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed119_sequencial=null) { 
+   public function alterar ($ed119_sequencial=null) {
       $this->atualizacampos();
      $sql = " update funcaoatividade set ";
      $virgula = "";
-     if(trim($this->ed119_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_sequencial"])){ 
+     if(trim($this->ed119_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_sequencial"])){
        $sql  .= $virgula." ed119_sequencial = $this->ed119_sequencial ";
        $virgula = ",";
-       if(trim($this->ed119_sequencial) == null ){ 
+       if(trim($this->ed119_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed119_sequencial";
          $this->erro_banco = "";
@@ -150,10 +150,10 @@ class cl_funcaoatividade {
          return false;
        }
      }
-     if(trim($this->ed119_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_descricao"])){ 
+     if(trim($this->ed119_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_descricao"])){
        $sql  .= $virgula." ed119_descricao = '$this->ed119_descricao' ";
        $virgula = ",";
-       if(trim($this->ed119_descricao) == null ){ 
+       if(trim($this->ed119_descricao) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "ed119_descricao";
          $this->erro_banco = "";
@@ -163,10 +163,10 @@ class cl_funcaoatividade {
          return false;
        }
      }
-     if(trim($this->ed119_docente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_docente"])){ 
+     if(trim($this->ed119_docente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed119_docente"])){
        $sql  .= $virgula." ed119_docente = '$this->ed119_docente' ";
        $virgula = ",";
-       if(trim($this->ed119_docente) == null ){ 
+       if(trim($this->ed119_docente) == null ){
          $this->erro_sql = " Campo Docente não informado.";
          $this->erro_campo = "ed119_docente";
          $this->erro_banco = "";
@@ -203,7 +203,7 @@ class cl_funcaoatividade {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "funcaoatividade nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed119_sequencial;
@@ -231,11 +231,11 @@ class cl_funcaoatividade {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed119_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed119_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -244,7 +244,7 @@ class cl_funcaoatividade {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($ed119_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -275,7 +275,7 @@ class cl_funcaoatividade {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "funcaoatividade nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed119_sequencial;
@@ -303,11 +303,11 @@ class cl_funcaoatividade {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -329,11 +329,11 @@ class cl_funcaoatividade {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -346,15 +346,15 @@ class cl_funcaoatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($ed119_sequencial!=null ){
-         $sql2 .= " where funcaoatividade.ed119_sequencial = $ed119_sequencial "; 
-       } 
+         $sql2 .= " where funcaoatividade.ed119_sequencial = $ed119_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,11 +363,11 @@ class cl_funcaoatividade {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed119_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,15 +380,15 @@ class cl_funcaoatividade {
      $sql2 = "";
      if($dbwhere==""){
        if($ed119_sequencial!=null ){
-         $sql2 .= " where funcaoatividade.ed119_sequencial = $ed119_sequencial "; 
-       } 
+         $sql2 .= " where funcaoatividade.ed119_sequencial = $ed119_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -58,7 +58,7 @@ $db_opcao            = 33 ;
 $me01_i_escola       = db_getsession("DB_coddepto");
 $ed18_c_nome         = db_getsession("DB_nomedepto");
 if (isset($excluir)) {
-	
+
   db_inicio_transacao();
   $db_opcao = 3;
   $clmer_caractpreparo->excluir(""," me06_i_cardapio = $me01_i_codigo");
@@ -70,13 +70,13 @@ if (isset($excluir)) {
   $clmer_subitem->excluir(""," me29_i_refeicao       = $me01_i_codigo");
   $clmer_cardapio->excluir($me01_i_codigo);
   db_fim_transacao();
-  
+
 } else if (isset($chavepesquisa)) {
-	
+
   $db_opcao  = 3;
   $result    = $clmer_cardapio->sql_record($clmer_cardapio->sql_query($chavepesquisa));
   db_fieldsmemory($result,0);
-  $db_botao  = true; 
+  $db_botao  = true;
   $dataatual = date("Y-m-d",db_getsession("DB_datausu"));
   $horaatual = date("H:i");
   $result_verif1 = $clmer_cardapiodata->sql_record($clmer_cardapiodata->sql_query("",
@@ -84,11 +84,11 @@ if (isset($excluir)) {
                                                                                   "",
                                                                                   "me12_i_cardapio = $chavepesquisa"
                                                                                  ));
-                                                                                 
-  $sWhere        =  " me12_i_cardapio = $chavepesquisa AND (me12_d_data < '$dataatual' OR (me12_d_data = '$dataatual' "; 
+
+  $sWhere        =  " me12_i_cardapio = $chavepesquisa AND (me12_d_data < '$dataatual' OR (me12_d_data = '$dataatual' ";
   $sWhere       .=  "                                  AND me03_c_fim < '$horaatual')) ";
   $sWhere       .=  "                                  AND not exists(select * from mer_cardapiodata inner join mer_cardapiodiaescola on me37_i_codigo = me13_i_cardapiodiaescola";
-  $sWhere       .=  "                                      where me12_i_codigo = me37_i_cardapiodia)";                                                                               
+  $sWhere       .=  "                                      where me12_i_codigo = me37_i_cardapiodia)";
   $result_verif2 = $clmer_cardapiodia->sql_record($clmer_cardapiodia->sql_query("",
                                                                                 "*",
                                                                                 "",
@@ -97,18 +97,18 @@ if (isset($excluir)) {
   $msg_error  = " $me01_i_codigo - $me01_c_nome - Versão: $me01_f_versao ";
   $msg_error .= " <br><br>Exclusão não permitida para esta refeição.<br><br>";
   if ($clmer_cardapiodata->numrows>0) {
-  	
+
     $msg_error .= "<font color=red>-> Refeição já contem registro de baixa no estoque;</font><br>";
     $db_botao = false;
     $naopode = true;
-    
+
   }
   if ($clmer_cardapiodia->numrows>0) {
-  	
+
     $msg_error .= "<font color=red>-> Refeição já foi consumida em uma data inferior a data corrente;</font><br><br>";
     $db_botao = false;
     $naopode = true;
-    
+
   }
 }
 ?>
@@ -127,7 +127,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:97%"><legend><b>Exclusão de Refeição </b></legend>
-    <?include(modification("forms/db_frmmer_cardapio.php"));?>
+    <?php include(modification("forms/db_frmmer_cardapio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -135,9 +135,9 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
-	
+
   if ($clmer_cardapio->erro_status=="0") {
     $clmer_cardapio->erro(true,false);
   } else{
@@ -151,7 +151,7 @@ if ($db_opcao==33) {
 <script>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
 function js_msg_nao_altera(mensagem,id) {
-	
+
   var expReg = /\\n\\n/gm;
   mensagem = mensagem.replace(expReg,'<br>');
   var camada = document.createElement("DIV");
@@ -176,17 +176,17 @@ function js_msg_nao_altera(mensagem,id) {
                      +'    </tr> '
                      +' </table> ';
   document.body.appendChild(camada);
-  
+
 }
 
 function js_removeMsg(idObj) {
-	
+
   obj = document.getElementById("MsgBox");
   document.body.removeChild(obj);
- 
+
 }
 
-<?if ($naopode==true) {?>
+<?php if ($naopode==true) {?>
     js_msg_nao_altera("<?=$msg_error?>","MsgBox");
-<?}?>
+<?php } ?>
 </script>

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use App\Domain\RecursosHumanos\Pessoal\Services\Rubrica\ObservacaoRubricaService;
+
 try {
 
   $oRequest     = db_utils::postMemory($_REQUEST);
@@ -55,6 +57,30 @@ try {
       exit;
   }
 
+  $observacao = null;
+
+  if ($oRequest->rh143_rubrica && $oRequest->rh01_regist) {
+    try {
+
+      $dados = (object) [
+        'matricula'  => $oRequest->rh01_regist,
+        'rubrica'    => $oRequest->rh143_rubrica,
+        'anousu'     => $ano_folha,
+        'mesusu'     => $mes_folha,
+        'instit'     => db_getsession('DB_instit'),
+        'ponto'      => $gerf
+      ];
+  
+      $service = new ObservacaoRubricaService();
+      $dadosObservacao = $service->getObservacaoRubricaServidor($dados);
+      if ($dadosObservacao->observacao) {
+          $observacao = $dadosObservacao->observacao;
+      }
+    } catch (Exception $erro) {
+    }
+  }
+
+
   /**
    * Não pode exibir esta mensagem ao acessar a rotina.
    */
@@ -75,7 +101,7 @@ try {
 
     db_inicio_transacao();
     $oFolha = FolhaPagamentoFactory::construirPeloCodigo($oRequest->rh143_folhapagamento);
-
+    
     switch ($oRequest->processar) {
       case "Alterar";
 
@@ -87,6 +113,21 @@ try {
         $oRegistroHistorico->setRubrica( RubricaRepository::getInstanciaByCodigo($oRequest->rh143_rubrica) );
         $oRegistroHistorico->setFolhaPagamento($oFolha);
         $oRegistroHistorico->salvar();
+    
+        $dados = (object) [
+          'matricula'  => $_POST['rh01_regist'],
+          'rubrica'    => $_POST['rh143_rubrica'],
+          'anousu'     => $_POST['ano_folha'],
+          'mesusu'     => $_POST['mes_folha'],
+          'observacao' => $_POST['observacao'],
+          'instit'     => db_getsession('DB_instit'),
+          'ponto'      => $gerf
+        ];
+  
+        $service = new ObservacaoRubricaService();
+        $service->saveFromLegacy($dados);
+        $observacao = null;
+
         break;
       case "Incluir";
 
@@ -98,11 +139,39 @@ try {
         $oRegistroHistorico->setRubrica( RubricaRepository::getInstanciaByCodigo($oRequest->rh143_rubrica) );
         $oRegistroHistorico->setFolhaPagamento($oFolha);
         $oRegistroHistorico->salvar();
+
+        $dados = (object) [
+          'matricula'  => $_POST['rh01_regist'],
+          'rubrica'    => $_POST['rh143_rubrica'],
+          'anousu'     => $_POST['ano_folha'],
+          'mesusu'     => $_POST['mes_folha'],
+          'observacao' => $_POST['observacao'],
+          'instit'     => db_getsession('DB_instit'),
+          'ponto'      => $gerf
+        ];
+  
+        $service = new ObservacaoRubricaService();
+        $service->saveFromLegacy($dados);
+        $observacao = null;
         break;
       case "Excluir";
 
         $oRegistroHistorico = new RegistroHistoricoCalculo( $oRequest->rh143_sequencial );
         $oRegistroHistorico->excluir();
+
+        $dados = (object) [
+          'matricula'  => $_POST['rh01_regist'],
+          'rubrica'    => $_POST['rh143_rubrica'],
+          'anousu'     => $_POST['ano_folha'],
+          'mesusu'     => $_POST['mes_folha'],
+          'observacao' => $_POST['observacao'],
+          'instit'     => db_getsession('DB_instit'),
+          'ponto'      => $gerf
+        ];
+  
+        $service = new ObservacaoRubricaService();
+        $service->deleteFromLegacy($dados);
+        $observacao = null;
         break;
     }
 
@@ -139,6 +208,7 @@ if ( !isset($oRequest->opcao) ) {
   $rh143_valor      = $oRequest->rh143_valor      = null;
   $rh143_tipoevento = $oRequest->rh143_tipoevento = null;
   $rh27_descr       = $oRequest->rh27_descr       = null;
+  $observacao       = $oRequest->observacao       = null;
 }
 
 include(modification("forms/db_frmimplantacaoponto.php"));

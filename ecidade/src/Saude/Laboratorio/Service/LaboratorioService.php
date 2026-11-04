@@ -82,4 +82,14 @@ class LaboratorioService
         
         return $this->repositorio->verificaLaboratorioInterfaceadoRequisicao($codigo);
     }
+
+    /**
+     * @param $campos
+     * @param $where
+     * @return array
+     */
+    public function verificaLaboratorioInterfaceadoPorDepartamento($campos = '*', $where = '')
+    {
+        return $this->repositorio->verificaLaboratorioInterfaceadoPorDepartamento($campos, $where);
+    }
 }

@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Financeiro\Orcamento\Models\FonteRecurso;
+
 /**
  * Class ListaClassificacaoCredor
  */
@@ -87,25 +89,30 @@ class ListaClassificacaoCredor {
   /**
    * @var ClassificacaoCredorConta[]
    */
-  private $aContas = array();
+  private $aContas = [];
 
   /**
    * Coleção de Recurso do Orçamento
    * @var Recurso[]
    */
-  private $aRecurso = array();
+  private $aRecurso = [];
+
+    /**
+     * @var FonteRecurso[]
+     */
+  private $fontesRecurso = [];
 
   /**
    * Tipos de compras do empenho
    * @var TipoCompra[]
    */
-  private $aTipoCompra = array();
+  private $aTipoCompra = [];
 
   /**
    * Tipos de Eventos do empenho
    * @var TipoPrestacaoConta[]
    */
-  private $aEvento = array();
+  private $aEvento = [];
 
   /**
    * @return int
@@ -245,6 +252,28 @@ class ListaClassificacaoCredor {
     }
     return $this->aRecurso;
   }
+
+    public function getFontesRecursos($exercicio)
+    {
+        $dao = new cl_classificacaocredoresrecurso();
+        $where = "cc33_classificacaocredores = {$this->iCodigo}";
+        $sql = $dao->sql_query_file(null, "cc33_orctiporec", null, $where);
+        $rs = db_query($sql);
+
+        if ($rs) {
+            $codigos = db_utils::makeCollectionFromRecord($rs, function ($dado) {
+                return $dado->cc33_orctiporec;
+            });
+
+            $this->fontesRecurso = FonteRecurso::query()
+                ->with('recurso')
+                ->whereIn('orctiporec_id', $codigos)
+                ->where('exercicio', $exercicio)
+                ->get();
+        }
+
+        return $this->fontesRecurso;
+    }
 
   /**
    * @param Recurso $oRecurso
@@ -539,28 +568,28 @@ class ListaClassificacaoCredor {
    * Limpa a propriedade aEvento
    */
   public function limparEvento() {
-    $this->aEvento = array();
+    $this->aEvento = [];
   }
 
   /**
    * Limpa a propriedade aTipoCompra
    */
   public function limparTipoCompra() {
-    $this->aTipoCompra = array();
+    $this->aTipoCompra = [];
   }
 
   /**
    * Limpa a propriedade aConta
    */
   public function limparElemento() {
-    $this->aContas = array();
+    $this->aContas = [];
   }
 
   /**
    * Limpa a propriedade aRecurso
    */
   public function limparRecurso() {
-    $this->aRecurso = array();
+    $this->aRecurso = [];
   }
 
   /**
@@ -612,7 +641,7 @@ class ListaClassificacaoCredor {
     $lDataInvalida = $lTemDatas ? $oDataVencimento->getTimeStamp() > $oDataLimite->getTimeStamp() : false;
     if ($lTemDatas && $lDataInvalida) {
 
-      $sContagemDias = $this->iContagemDias == 1 ? 'úteis' : 'corridos'; 
+      $sContagemDias = $this->iContagemDias == 1 ? 'úteis' : 'corridos';
       $aParametrosMensagem = array(
         'sClassificacao'  => $this->sDescricao,
         'iQuantidadeDias' => $this->iDiasVencimento,

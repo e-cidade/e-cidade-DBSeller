@@ -83,7 +83,6 @@ if ( isset($oPost->gerar) ) {
   try {
 
     db_inicio_transacao();
-
     if ( $oPost->r70_numcgm == 0 ) {
 
       $rsDBConfig   = $cldb_config->sql_record($cldb_config->sql_query_file($iInstit));
@@ -201,7 +200,18 @@ if ( isset($oPost->gerar) ) {
       $sWhereRescisao .= "  and rh02_instit = {$iInstit}  ";
       $sWhereRescisao .= "  and rh05_recis is not null    ";
 
-      $sWhereMatriculasSelecionadas = '';
+      $whereSelecao = '';
+      if (isset($r44_selec) && !empty($r44_selec)) {
+          $servidores = \ServidorRepository::getServidoresBySelecao($iAnoUsu, $iMesUsu, $r44_selec);
+          $matriculas = array_map(function($servidor) {
+              return $servidor->getMatricula();
+          },$servidores);
+          $selecao = implode(", ", $matriculas);
+          $whereSelecao = " and rh01_regist in ({$selecao})" ;
+
+      }
+
+        $sWhereMatriculasSelecionadas = '';
       if (isset($matriculasselecionadas) && !empty($matriculasselecionadas)) {
         $sWhereMatriculasSelecionadas = "and rh01_regist in({$matriculasselecionadas})";
       }
@@ -210,7 +220,7 @@ if ( isset($oPost->gerar) ) {
           $oLotacoesUsuario = DBPessoal::buscaLotacoesPorUsuario();
           $sWhereMatriculasSelecionadas .= " and rh02_lota in (".implode(",",$oLotacoesUsuario->aLotacoes).")";
       }
-        
+
       $sSubSqlRescisao = $clrhpessoalmov->sql_query_rescisao(null,"rh02_regist",null,$sWhereRescisao);
       $sCampos   = "rh01_regist,
       h13_tpcont,
@@ -242,7 +252,7 @@ if ( isset($oPost->gerar) ) {
       cast(0 as varchar) as codigoautonomo,
       rh02_seqpes,
       coalesce(rh216_numcgm, 0) as cgmTomador
-    
+
       ";
 
       $sCamposAutonomos = " z01_numcgm as rh01_regist,
@@ -307,6 +317,7 @@ if ( isset($oPost->gerar) ) {
       )
       {$sWhereRHLota}
       {$sWhereMatriculasSelecionadas}
+      {$whereSelecao}
       ", $iInstit);
 
       $sSqlAutonomos  = "select {$sCamposAutonomos}                             ";
@@ -319,7 +330,6 @@ if ( isset($oPost->gerar) ) {
       $sSqlAutonomos .= " order by cgmTomador, rh16_pis asc, rh01_admiss asc                ";
 
       $sSql  = $sSqlDados." union $sSqlAutonomos";
-
       $rsDados = $clrhpessoal->sql_record($sSql);
 
 
@@ -1408,7 +1418,7 @@ if (isset($oGet->iTipoProcessamento) && $oGet->iTipoProcessamento == 2) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js,arrays.js, prototype.js,datagrid.widget.js");
 db_app::load("widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js");
 db_app::load("estilos.css, grid.style.css");
@@ -1416,7 +1426,7 @@ db_app::load("estilos.css, grid.style.css");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_alteraCnae();">
   <form name="form1" method="post" action="pes1_gerasefip004.php">
-    <?
+    <?php
     db_input('matriculasselecionadas', 10, 1, true, 'hidden', 3);
     ?>
     <table align="center" style="padding-top: 25px;">
@@ -1430,17 +1440,17 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Código do recolhimento"><b>Código:</b>
                 </td>
-                <td><?
+                <td><?php
                 $aCodrec = array("115" => "115", "150" => "150");
                 db_select('codrec',$aCodrec,true,1);
                 ?>
                 </td>
                 <td nowrap align="right" title="Ano / Mês de competência"><b>Ano / Mês:</b>
                 </td>
-                <td nowrap><?
+                <td nowrap><?php
                 $anousu = $iAnoUsu;
                 db_input('r66_anousu',4,$Ir66_anousu,true,'text',3,"onchange='js_controla_anomes(\"a\");'","anousu");
-                ?> <b>/</b> <?
+                ?> <b>/</b> <?php
                 $mesusu = $iMesUsu;
                 db_input('r66_mesusu',2,$Ir66_mesusu,true,'text',3,"onchange='js_controla_anomes(\"m\");'","mesusu");
                 ?>
@@ -1449,7 +1459,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento FGTS"><b>Índice FGTS:</b>
                 </td>
-                <td><?
+                <td><?php
                 $indrecfgts  = 1;
                 $aIndRecFGTS = array("0"=>"Nenhum",
                     "1"=>"GFIP no prazo",
@@ -1460,7 +1470,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Data recolhimento FGTS"><b>Data FGTS:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_inputdata("dtrecfgts", @$dtrecfgts_dia, @$dtrecfgts_mes, @$dtrecfgts_ano, true, 'text',1);
                 ?>
                 </td>
@@ -1468,7 +1478,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento INSS"><b>Índice INSS:</b>
                 </td>
-                <td><?
+                <td><?php
                 $indrecinss  = 1;
                 $aIndRecINSS = array("0"=>"Não gera GPS",
                     "1"=>"GPS no prazo",
@@ -1479,7 +1489,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Data recolhimento INSS"><b>Data INSS:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_inputdata("dtrecinss", @$dtrecinss_dia, @$dtrecinss_mes, @$dtrecinss_ano, true, 'text',1);
                 ?>
                 </td>
@@ -1487,7 +1497,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento atraso INSS"><b>Atraso INSS:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('indatrasoinss',10,1,true,'text',1,"","")
                 ?>
                 </td>
@@ -1506,13 +1516,13 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Nome do contato"><b>Nome:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('z01_nome',40,$Iz01_nome,true,'text',1,"","contato")
                 ?>
                 </td>
                 <td nowrap align="right" title="Fone"><b>Fone:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('fone',10,1,true,'text',1,"","")
                 ?>
                 </td>
@@ -1531,7 +1541,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Alteração de endereço"><b>Alteração de endereço:</b>
                 </td>
-                <td><?
+                <td><?php
                 $alteraender = "N";
                 $arr_alteraender = array("S"=>"Sim","N"=>"Não");
                 db_select('alteraender',$arr_alteraender,true,1,"");
@@ -1539,7 +1549,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Alteração de CNAE"><b>Alteração de CNAE:</b>
                 </td>
-                <td><?
+                <td><?php
                 $alteracnae = "P";
                 $arr_alteracnae = array("S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante");
                 db_select('alteracnae',$arr_alteracnae,true,1,"");
@@ -1549,14 +1559,14 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Código de terceiros"><b>Código de terceiros:</b>
                 </td>
-                <td><?
+                <td><?php
                 $codterceiro = "0000";
                 db_input('codterceiro',10,1,true,'text',1,"","")
                 ?>
                 </td>
                 <td nowrap align="right" title="Código CNAE fiscal"><b>Código CNAE fiscal:</b>
                 </td>
-                <td><?
+                <td><?php
                 $cnae = "8411600";
                 db_input('cnae',10,1,true,'text',1,"","")
                 ?>
@@ -1565,13 +1575,13 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Aliquota SAT"><b>Aliquota SAT:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('aliqsat',2,1,true,'text',1,"","")
                 ?>
                 </td>
                 <td nowrap align="right" title="Código GPS"><b>Código GPS:</b>
                 </td>
-                <td><?
+                <td><?php
                 $codgps = "2402";
                 db_input('codgps',10,1,true,'text',1,"","")
                 ?>
@@ -1581,7 +1591,7 @@ db_app::load("estilos.css, grid.style.css");
                 <td nowrap align="right" title="FPAS"><b>FPAS:</b>
                 </td>
                 <td>
-                <?
+                <?php
                 $sSqlCfPessPrev = $clcfpess->sql_query_file($anousu,$mesusu,db_getsession("DB_instit"), "r11_cdfpas" );
                 $rsCfPessPrev   = $clcfpess->sql_record($sSqlCfPessPrev);
                 $fpas = db_utils::fieldsMemory($rsCfPessPrev, 0)->r11_cdfpas;
@@ -1602,7 +1612,7 @@ db_app::load("estilos.css, grid.style.css");
               <b>TABELAS DE PREVIDÊNCIA</b>
             </legend>
             <table width="100%">
-              <?
+              <?php
               db_sel_cfpess(db_anofolha(), db_mesfolha(), "r11_tbprev , r11_mes13 ");
 
               $iMesAnt = $iMesUsu;
@@ -1643,6 +1653,24 @@ db_app::load("estilos.css, grid.style.css");
           </fieldset>
         </td>
       </tr>
+        <tr>
+            <td>
+                <fieldset>
+                    <legend>
+                        <b>Filtros</b>
+                    </legend>
+                    <table>
+                    <td>
+                        <a href="#"><label for="r44_selec" id="lblSelecao">Sele&ccedil;&atilde;o:</label></a>
+                    </td>
+            <td>
+                <?php db_input('r44_selec', null, 1, true, 'text', 2); ?>
+                <?php db_input('r44_descr', null, 0, true, 'text', 3); ?>
+            </td>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
       <tr>
         <td>
           <fieldset>
@@ -1653,14 +1681,14 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td><b>Gerar Compensação:</b>
                 </td>
-                <td><?
+                <td><?php
                 $gerarcompensacao = 2;
                 db_select("gerarcompensacao", array(1 => "Sim", 2 => "Não"), true, 1, "onchange='js_liberarCompensacao()'");
                 ?>
                 </td>
                 <td><b>Valor da Compensação:</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('valorcompensacao',4,4,true,'text',1,"","")
                 ?>
                 </td>
@@ -1668,17 +1696,17 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td><b>Competência Inicial ( Mês / Ano ) :</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('mescompeinicial',2,1,true,'text',1,"","");
-                ?> / <?
+                ?> / <?php
                 db_input('anocompeinicial',4,1,true,'text',1,"","");
                 ?>
                 </td>
                 <td><b>Competência Final ( Mês / Ano ) :</b>
                 </td>
-                <td><?
+                <td><?php
                 db_input('mescompefinal',2,1,true,'text',1,"","");
-                ?> / <?
+                ?> / <?php
                 db_input('anocompefinal',4,1,true,'text',1,"","");
                 ?>
                 </td>
@@ -1697,7 +1725,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="CNPJ"><b>CNPJ:</b>
                 </td>
-                <td><?
+                <td><?php
                 $sql = "select distinct z01_numcgm,
                 z01_cgccpf||'-'||z01_nome as z01_nome
                 from rhlota
@@ -1723,7 +1751,7 @@ db_app::load("estilos.css, grid.style.css");
     </table>
   </form>
 </body>
-<?
+<?php
 if( isset($oPost->gerar) ){
 
   if ($lErro) {
@@ -1760,7 +1788,13 @@ if (isset($oGet->iTipoProcessamento) && $oGet->iTipoProcessamento == 2) {
   echo "</script>\n";
 }
 ?>
+<script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
 <script>
+new DBLookUp($('lblSelecao'), $('r44_selec'), $('r44_descr'), {
+        sArquivo: 'func_selecao.php',
+        sObjetoLookUp: 'func_selecao',
+        sLabel: 'Seleção',
+});
 function js_verificacampos() {
 
   var retorno = true;
@@ -1874,8 +1908,8 @@ function js_verindices(campo,valor,indatrasoinss){
 function js_controla_anomes(opcao){
   anodig = new Number(document.form1.anousu.value);
   mesdig = new Number(document.form1.mesusu.value);
-  anofol = new Number("<?=db_anofolha()?>");
-  mesfol = new Number("<?=db_mesfolha()?>");
+  anofol = new Number("<?php echo db_anofolha()?>");
+  mesfol = new Number("<?php echo db_mesfolha()?>");
   erro = 0;
   if(mesdig > 13){
     alert("Usuário:\n\nMês inválido. Verifique.");
@@ -1902,7 +1936,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }
@@ -1975,5 +2009,6 @@ function js_atualizaMatriculas() {
 function js_voltar() {
   (window.CurrentWindow || parent.CurrentWindow).corpo.location.href = 'pes1_gerasefip001.php';
 }
+
 </script>
 </html>

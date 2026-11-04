@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("db03_descr");
        <?=@$Ldb03_docum?>
     </td>
     <td> 
-<?
+<?php
 $result=$cldb_documento->sql_record($cldb_documento->sql_query($db03_docum));
 if ($cldb_documento->numrows>0){
   db_fieldsmemory($result,0);
@@ -49,12 +49,12 @@ if ($cldb_documento->numrows>0){
 
 db_input('db03_docum', 8, $Idb03_docum, true, 'text', 3)
 ?>
-       <?
+       <?php
 
  db_input('db03_descr', 40, $Idb03_descr, true, 'text', 3, '')
 ?>
 <b>Ordem:</b>
-      <?
+      <?php
         $tipo_ordem = array("b"=>"Numérica","a"=>"Alfabética");
 	    db_select("ordem",$tipo_ordem,true,2,"onchange='js_ordem(this.value);'"); ?>
     </td>

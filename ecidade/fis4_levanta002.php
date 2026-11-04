@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -125,7 +125,7 @@ return true;
    <table border="0" cellspacing="0" cellpadding="0">
    <br>
    <br>
-<?
+<?php
 if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições para um cgm
 ?>
   <tr>
@@ -133,7 +133,7 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
       <?=$Lz01_numcgm?>
     </td>
     <td>
-    <?
+    <?php
     if(empty($z01_numcgmx)){
       $z01_numcgmx=$z01_numcgm;
     }  
@@ -147,14 +147,14 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
       <?=$Lz01_nome?>
     </td>
     <td>
-    <?
+    <?php
   db_input('z01_nome',40,$Iz01_nome,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td colspan='2'>
-<?
+<?php
    if(empty($sql01)){
      $sql01="";
    }
@@ -178,17 +178,17 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
     location.href="<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
   }
 </script>     
-<?
+<?php
 }else{
 ?>   
      <tr>   
        <td title="<?=$Tq02_inscr?>">
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',40,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -196,12 +196,12 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
      </tr>
      <tr>   
       <td title="<?=$Tz01_numcgm?>">
-      <?
+      <?php
        db_ancora($Lz01_nome,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -209,15 +209,15 @@ if(isset($varias_inscr) || isset($filtroquery)){//quando tiver várias inscrições
      </tr>
   <tr>
     <td nowrap title="<?=@$Ty60_codlev?>">
-       <?
+       <?php
        db_ancora(@$Ly60_codlev,"js_pesquisay60_codlev(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y60_codlev',5,$Iy60_codlev,true,'text',$db_opcao," onchange='js_pesquisay60_codlev(false);'")
 ?>
-       <?
+       <?php
 db_input('y60_contato',40,$Iy60_contato,true,'text',3,'')
        ?>
     </td>
@@ -228,7 +228,7 @@ db_input('y60_contato',40,$Iy60_contato,true,'text',3,'')
 	   <input type="submit" name="entrar" value="Entrar" onclick="return js_testacamp()" >
        </td>   	 
      </tr>	 
-<?
+<?php
 }
 ?>   
     </table> 	 
@@ -236,7 +236,7 @@ db_input('y60_contato',40,$Iy60_contato,true,'text',3,'')
   </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -317,7 +317,7 @@ function js_mostracgm1(erro,chave){
   }
 }
 </script>
-<?
+<?php
 if(isset($msgerro)){
   db_msgbox($msgerro);
 }

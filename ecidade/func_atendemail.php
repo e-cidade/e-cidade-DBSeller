@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clatendemail->rotulo->label("at12_email");
               <?=$Lat12_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at12_codcli",4,$Iat12_codcli,true,"text",4,"","chave_at12_codcli");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clatendemail->rotulo->label("at12_email");
               <?=$Lat12_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at12_seq",10,$Iat12_seq,true,"text",4,"","chave_at12_seq");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clatendemail->rotulo->label("at12_email");
               <?=$Lat12_email?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at12_email",40,$Iat12_email,true,"text",4,"","chave_at12_email");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clatendemail->rotulo->label("at12_email");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendemail.php")==true){
@@ -129,12 +129,12 @@ $clatendemail->rotulo->label("at12_email");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

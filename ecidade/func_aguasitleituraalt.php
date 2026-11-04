@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $claguasitleitura->rotulo->label("x17_descr");
               <?=$Lx17_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x17_codigo",5,$Ix17_codigo,true,"text",4,"","chave_x17_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguasitleitura->rotulo->label("x17_descr");
               <?=$Lx17_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x17_descr",40,$Ix17_descr,true,"text",4,"","chave_x17_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguasitleitura->rotulo->label("x17_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguasitleitura.php")==true){
@@ -118,12 +118,12 @@ $claguasitleitura->rotulo->label("x17_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

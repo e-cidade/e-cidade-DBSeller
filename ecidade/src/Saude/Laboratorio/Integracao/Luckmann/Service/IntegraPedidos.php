@@ -27,6 +27,7 @@
 
 namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Service;
 
+use DBLog;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Model\Parametros as ParametrosModel;
 use Exception;
 
@@ -57,7 +58,36 @@ class IntegraPedidos extends Integra
         $retorno = $this->executarComando("cp -f --no-preserve=timestamp {$arquivo} {$this->getPastaDestino()} ");
 
         if (!$retorno) {
+            $arquivoLog = "tmp/envio_arquivo_pedido_" . time();
+            $mensagemErro = "Erro ao mover o arquivo {$arquivo} de pedidos para a ";
+            $mensagemErro .= "pasta de pedidos: {$this->getPastaDestino()}";
+
+            $oLog = new DBLog("TXT", $arquivoLog);
+            $oLog->escreverLog($mensagemErro, DBLog::LOG_ERROR);
+
             throw new Exception('Erro ao mover o arquivo de pedidos para a pasta de destino.');
+        }
+    }
+
+    /**
+     * @param $arquivo
+     * @throws Exception
+     */
+    public function salvarBackupPedidoInfinity($arquivo, $caminhoBackup)
+    {
+
+        if (!file_exists($caminhoBackup)) {
+            mkdir($caminhoBackup, 0777, false);
+        }
+
+        $retorno = $this->executarComando("cp -f --no-preserve=timestamp {$arquivo} {$caminhoBackup} ");
+
+        if (!$retorno) {
+            $arquivoLog = "tmp/envio_arquivo_pedido_backup" . time();
+            $mensagemErro = "Erro ao mover o arquivo {$arquivo} de pedidos para a pasta {$caminhoBackup} - Backup";
+
+            $oLog = new DBLog("TXT", $arquivoLog);
+            $oLog->escreverLog($mensagemErro, DBLog::LOG_ERROR);
         }
     }
 }

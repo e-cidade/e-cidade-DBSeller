@@ -220,7 +220,7 @@ switch ($oParam->exec) {
       	$oDaoBensDepreciacaoLancamento->incluir(null);     
 
       	if ( $oDaoBensDepreciacaoLancamento->erro_status == 0 ) {      		
-      		throw Exception(_M('patrimonial.patrimonio.pat4_implantacaobensdepreciacao.erro_tecnico'));
+      		throw new Exception(_M('patrimonial.patrimonio.pat4_implantacaobensdepreciacao.erro_tecnico'));
       	}
       }      
 

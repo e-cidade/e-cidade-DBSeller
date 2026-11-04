@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
               <?=$Lc13_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c13_sequencial",10,$Ic13_sequencial,true,"text",4,"","chave_c13_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
               <?=$Lc13_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("c13_numcgm",10,$Ic13_numcgm,true,"text",4,"","chave_c13_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivorespcgm.php")==true){
@@ -122,12 +122,12 @@ $clcontcearquivorespcgm->rotulo->label("c13_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

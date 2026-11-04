@@ -59,7 +59,7 @@ class ControleRubricasCalculoServiceTest extends TestCase
      */
     private $repositoryParametros;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->instituicao = new Instituicao();
         $this->instituicao->setSequencial(1);

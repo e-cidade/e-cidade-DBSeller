@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -91,7 +91,7 @@ function js_submit(){
 <table border="0">
      <tr>   
        <td>
-      <?
+      <?php
 			 if($db21_usasisagua) {
          db_ancora($Lx01_matric," js_matri(true, '$j18_nomefunc'); ",1);
 			 } else {
@@ -100,7 +100,7 @@ function js_submit(){
       ?>
        </td>
        <td> 
-      <?
+      <?php
 			 if($db21_usasisagua) {
          db_input('x01_matric',5,$Ix01_matric,true,'text',1,"onchange=\"js_matri(false, '$j18_nomefunc')\"");
 			 }else{
@@ -118,7 +118,7 @@ function js_submit(){
 <input name="Processar" type="button" value="Processar" onClick="js_submit();" >
   </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

@@ -26,593 +26,487 @@
  */
 
 /**
- * Refactor da consulta de processo do protocolo
+ * Refatoração da consulta de processo do protocolo
  *
  * @package protocolo
- * @author Jeferson Belmiro <jeferson.belmiro@dbseller.com.br>
+ * @author Vinicius Leivas <vinicius.leivas@dbseller.com.br>
  */
 class RefactorConsultaProcessoProtocolo
 {
 
     private $iCodigoProcesso;
-    private $iUsuarioLogado;
+    private $usuarioLogado;
     private $aMovimentacoes;
+    private $ordem;
 
-    public function __construct($iCodigoProcesso)
+    /**
+     * @throws Exception
+     */
+    public function __construct($parametros)
     {
-
-        $this->iCodigoProcesso = $iCodigoProcesso;
-        $this->iUsuarioLogado = db_getsession("DB_id_usuario");
+        $this->ordem = !empty($parametros->ordem) ? strtoupper($parametros->ordem) : 'ASC';
+        $this->iCodigoProcesso = $parametros->iCodigoProcesso;
+        $this->usuarioLogado = db_getsession("DB_id_usuario");
         $this->processarMovimentacoes();
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function processarMovimentacoes()
     {
+        $codigoProcesso = $this->iCodigoProcesso;
+        $transferencias = $this->buscarTransferencias($codigoProcesso);
 
-        $codproc = $this->iCodigoProcesso;
-
-
-        $aTiposTextoDespachos   = array(
-                                    1 => "Interno",
-                                    2 => ""
-                                  );
-        $clprotprocesso          = db_utils::getDao('protprocesso');
-        $clprotprocessodoc       = db_utils::getDao('procprocessodoc');
-        $clprotprocessoapensados = db_utils::getDao('processosapensados');
-        $clprocandam             = db_utils::getDao('procandam');
-        $clproctransfer          = db_utils::getDao('proctransfer');
-        $clproctransferproc      = db_utils::getDao('proctransferproc');
-        $clproctransand          = db_utils::getDao('proctransand');
-        $clproctransferintand    = db_utils::getDao('proctransferintand');
-        $clproctransferint       = db_utils::getDao('proctransferint');
-        $clprocandamint          = db_utils::getDao('procandamint');
-        $clprocandamintand       = db_utils::getDao('procandamintand');
-        $clarqproc               = db_utils::getDao('arqproc');
-        $clarqandam              = db_utils::getDao('arqandam');
-        $clprotparam             = db_utils::getDao('protparam');
-        $clprotprocessodocumento = db_utils::getDao('protprocessodocumento');
-
-        $cod_procandamint = 0;
-        $lProcessoArquivado = false;
-
-        $result_param = $clprotparam->sql_record($clprotparam->sql_query(null, "*", null, "p90_instit=".db_getsession("DB_instit")));
-
-        if ($clprotparam->numrows > 0) {
-            extract((array) db_utils::fieldsMemory($result_param, 0));
+        if (empty($transferencias)) {
+            return;
         }
 
-        $result_protprocesso = $clprotprocesso->sql_record($clprotprocesso->sql_query($codproc));
+        $movimentacoes = [];
+        $indexTramiteInicial = $this->buscarIndexTramiteInicial($transferencias);
+        foreach ($transferencias as $key => $transferencia) {
+            $isTramiteInicial = $key === $indexTramiteInicial;
 
-      /**
-       * Não encontrou processo
-       */
-        if ($clprotprocesso->numrows == 0) {
-            throw new Exception("Processo não encontrado: {$this->iCodigoProcesso}");
+            $movimentacoes[$key] = $this->montarDadosMovimentacao($transferencia, $isTramiteInicial);
         }
 
-        extract((array) db_utils::fieldsMemory($result_protprocesso, 0));
-
-        $sSqlTransferencias      = $clproctransferproc->sql_query_transferencia(null, null, "*", "p62_dttran, p62_hora, p63_codtran, o40_orgao, o40_descr", "p63_codproc = $codproc");
-
-        $result_proctransferproc = $clproctransferproc->sql_record($sSqlTransferencias);
-
-      /**
-       * Processo com transferencias
-       */
-        if ($clproctransferproc->numrows > 0) {
-            $rsTransferencia  = pg_fetch_assoc($result_proctransferproc, 0);
-            $orgao = $rsTransferencia['o40_orgao'] . ' - ' . $rsTransferencia['o40_descr'];
-          /**
-           * Processo criado
-           */
-            $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-            $oDadosMovimentacao->sData = db_formatar($p58_dtproc, 'd');
-            $oDadosMovimentacao->sHora = $p58_hora;
-            $oDadosMovimentacao->iDepartamento = $p58_coddepto;
-            $oDadosMovimentacao->sDepartamento = $descrdepto;
-            $oDadosMovimentacao->iInstituicao = $rsTransferencia["instit"];
-            $oDadosMovimentacao->sInstituicao = $rsTransferencia["nomeinstabrev"];
-            $oDadosMovimentacao->sLogin = $nome;
-            $oDadosMovimentacao->sObservacoes = 'Processo Criado';
-            $oDadosMovimentacao->sDespacho = "";
-            $oDadosMovimentacao->sOrgao = $orgao;
-
-            $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-            $lTramiteInicial = true;
-
-            for ($y = 0; $y < $clproctransferproc->numrows; $y ++) {
-                extract((array) db_utils::fieldsMemory($result_proctransferproc, $y));
-
-                $sCamposProcessoTransf  = " atual.instit, ";
-                $sCamposProcessoTransf .= " instiatual.nomeinstabrev, ";
-                $sCamposProcessoTransf .= " p62_codtran, ";
-                $sCamposProcessoTransf .= " p62_dttran, ";
-                $sCamposProcessoTransf .= " p62_hora, ";
-                $sCamposProcessoTransf .= " p62_coddepto, ";
-                $sCamposProcessoTransf .= " p62_coddeptorec, ";
-                $sCamposProcessoTransf .= " atual.descrdepto as deptoatual, ";
-                $sCamposProcessoTransf .= " destino.descrdepto as deptodestino, ";
-                $sCamposProcessoTransf .= " destino.coddepto as coddeptodestino, ";
-                $sCamposProcessoTransf .= " usu_atual.nome as nome, ";
-                $sCamposProcessoTransf .= " proctransfer.p62_id_usorec as idusuariodestino, ";
-                $sCamposProcessoTransf .= " usu_destino.login as loginusuariodestino, ";
-                $sCamposProcessoTransf .= " o40_orgao as codigoorgao, ";
-                $sCamposProcessoTransf .= " o40_descr as orgao ";
-                $sWhereProcessoTranf    = "p62_codtran = $p63_codtran";
-
-                $sSqlProcessoTransf  = $clproctransfer->sql_query_deps(null, $sCamposProcessoTransf, null, $sWhereProcessoTranf);
-                $result_proctransfer = $clproctransfer->sql_record($sSqlProcessoTransf);
-
-              /**
-               * Transferencias do processo
-               */
-                if ($clproctransfer->numrows > 0) {
-                    extract((array) db_utils::fieldsMemory($result_proctransfer, 0));
-
-                    /**
-                     * Tramiite inicial
-                     */
-                    if ($lTramiteInicial) {
-                        $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                        $oDadosMovimentacao->sData = db_formatar($p62_dttran, 'd');
-                        $oDadosMovimentacao->sHora = $p62_hora;
-                        $oDadosMovimentacao->iDepartamento = $p62_coddepto;
-                        $oDadosMovimentacao->sDepartamento = $deptoatual;
-                        $oDadosMovimentacao->iInstituicao = $instit;
-                        $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                        $oDadosMovimentacao->sLogin = $nome;
-                        $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-                        $oDadosMovimentacao->sObservacoes = "Tramite Inicial $p62_codtran p/ Departamento: $coddeptodestino - $deptodestino ";
-
-                        if ((int) $idusuariodestino > 0) {
-                              $oDadosMovimentacao->sObservacoes .= " - usuário especificado: $idusuariodestino - $loginusuariodestino";
-                        } else {
-                            $oDadosMovimentacao->sObservacoes .= " (sem usuário especificado)";
-                        }
-
-                        $oDadosMovimentacao->sDespacho = "";
-
-                        $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                        $lTramiteInicial = false;
-                    } else {
-                        $sWhereProcessoTransand = " p64_codtran = $p62_codtran and p61_codproc = $codproc ";
-                        $sSqlProcessoTransand   = $clproctransand->sql_query_consandam("", "p64_codandam", null, $sWhereProcessoTransand);
-                        $result_proctransand    = $clproctransand->sql_record($sSqlProcessoTransand);
-
-                        if ($clproctransand->numrows > 0) {
-                            extract((array) db_utils::fieldsMemory($result_proctransand, 0));
-
-                            $result_procandam = $clprocandam->sql_record($clprocandam->sql_query_com(null, "procandam.*", null, "p61_codandam = $p64_codandam"));
-
-                            if ($clprocandam->numrows > 0) {
-                                extract((array) db_utils::fieldsMemory($result_procandam, 0));
-                            }
-                        }
-
-                        $result_arqandam = $clarqandam->sql_record($clarqandam->sql_query_file(null, "*", null, "p69_codandam = ".@$p61_codandam));
-
-                        if ($p62_coddepto == $p62_coddeptorec && $clarqandam->numrows > 0) {
-                            $lProcessoArquivado = true;
-                        } else {
-                            $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                            $oDadosMovimentacao->sData = db_formatar($p62_dttran, 'd');
-                            $oDadosMovimentacao->sHora = $p62_hora;
-                            $oDadosMovimentacao->iDepartamento = $p62_coddepto;
-                            $oDadosMovimentacao->sDepartamento = $deptoatual;
-                            $oDadosMovimentacao->iInstituicao = $instit;
-                            $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                            $oDadosMovimentacao->sLogin = $nome;
-                            $oDadosMovimentacao->sObservacoes = "Transferência $p62_codtran p/ o Departamento: $coddeptodestino - $deptodestino";
-                            $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                            if ((int) $idusuariodestino > 0) {
-                                    $oDadosMovimentacao->sObservacoes .= " - usuário especificado: $idusuariodestino - $loginusuariodestino";
-                            } else {
-                                  $oDadosMovimentacao->sObservacoes .= " (sem usuário especificado)";
-                            }
-
-                            $oDadosMovimentacao->sDespacho = "";
-
-                            $this->aMovimentacoes[] = $oDadosMovimentacao;
-                        }
-                    }
-
-                    $result_proctransand = $clproctransand->sql_record($clproctransand->sql_query_consandam("", "*", null, "p64_codtran = $p62_codtran and p61_codproc = $codproc  "));
-
-                    if ($clproctransand->numrows > 0) {
-                          extract((array) db_utils::fieldsMemory($result_proctransand, 0));
-
-                          $result_procandam = $clprocandam->sql_record($clprocandam->sql_query_com(null, "*", null, "p61_codandam = $p64_codandam"));
-
-                        if ($clprocandam->numrows > 0) {
-                            extract((array) db_utils::fieldsMemory($result_procandam, 0));
-
-                            $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                            $oDadosMovimentacao->sData = db_formatar($p61_dtandam, 'd');
-                            $oDadosMovimentacao->sHora = $p61_hora;
-                            $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                            $oDadosMovimentacao->sDepartamento = $descrdepto;
-                            $oDadosMovimentacao->iInstituicao = $instit;
-                            $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                            $oDadosMovimentacao->sLogin = $nome;
-                            $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                  /**
-                   * Processo arquivado
-                   */
-                            if ($lProcessoArquivado == true) {
-                                $result_arqandam = $clarqandam->sql_record($clarqandam->sql_query_file(null, "*", null, "p69_codandam = $p61_codandam"));
-
-                                if ($clarqandam->numrows > 0) {
-                                    extract((array) db_utils::fieldsMemory($result_arqandam, 0));
-
-                                    if ($p69_arquivado == 't') {
-                                        $oDadosMovimentacao->sObservacoes = "Processo Arquivado";
-                                    } else {
-                                        $oDadosMovimentacao->sObservacoes = "Desarquivamento";
-                                    }
-                                }
-
-                                /**
-                                 * Processo recebeu transferencia
-                                 */
-                            } else {
-                                $oDadosMovimentacao->sObservacoes = "Recebeu Transferência - $p62_codtran";
-                            }
-
-                            $oDadosMovimentacao->sDespacho = "$p61_despacho";
-
-                            $this->aMovimentacoes[]  = $oDadosMovimentacao;
-                            $sQueryDespacho          = $clprocandamint->sql_query_sim(
-                                null,
-                                "*,
-                                                                        coalesce(p100_descricao,'Despacho') as tipo_despacho,
-                                                                        coalesce(p100_sequencial, 1) as codigo_tipo_despacho, p78_publico",
-                                "p78_sequencial",
-                                "p78_codandam = $p61_codandam  "
-                            );
-                            $result_procandamint_des = $clprocandamint->sql_record($sQueryDespacho);
-
-                  /**
-                   * Despacho interno
-                   */
-                            if ($clprocandamint->numrows > 0) {
-                                for ($x = 0; $x < $clprocandamint->numrows; $x ++) {
-                                    extract((array) db_utils::fieldsMemory($result_procandamint_des, $x));
-
-                          /**
-                           * Despacho interno transferido
-                           */
-                                    if ($p78_transint == 't') {
-                                            break;
-                                    }
-
-                                    $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                                    $oDadosMovimentacao->sData = db_formatar($p78_data, 'd');
-                                    $oDadosMovimentacao->sHora = $p78_hora;
-                                    $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                                    $oDadosMovimentacao->sDepartamento = $descrdepto;
-                                    $oDadosMovimentacao->iInstituicao = $instit;
-                                    $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                                    $oDadosMovimentacao->sLogin = $nome;
-                                    $oDadosMovimentacao->sObservacoes = "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}";
-                                    $oDadosMovimentacao->sDespacho = "$p78_despacho";
-                                    $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-                                    $oDadosMovimentacao->iAndamentoInterno = $p78_sequencial;
-
-
-
-                                    if ($p78_usuario == $this->iUsuarioLogado || $p78_publico == 't') {
-                                        $oDadosMovimentacao->lImprimir = true;
-                                    }
-
-                                    $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                                    $cod_procandamint = $p78_sequencial;
-
-                          /**
-                           * Verifica se há documentos anexados.
-                           */
-                                    $sQueryDocumentosDespacho = $clprotprocessodocumento->sql_query_file(null, '*', 'p01_sequencial', "p01_procandamint = $p78_sequencial");
-                                    $rsProcessoDocumento      = $clprotprocessodocumento->sql_record($sQueryDocumentosDespacho);
-
-                                    if ($clprotprocessodocumento->numrows > 0) {
-                                        $oDadosMovimentacao->lAnexos = true;
-                                    }
-                                }
-                            }
-
-                            $result_proctransferintand = $clproctransferintand->sql_record($clproctransferintand->sql_query_file(null, "*", "p87_codtransferint", "p87_codandam = $p61_codandam"));
-
-                  /**
-                   * Transferncia interna
-                   */
-                            if ($clproctransferintand->numrows > 0) {
-                                for ($yy = 0; $yy < $clproctransferintand->numrows; $yy ++) {
-                                    extract((array) db_utils::fieldsMemory($result_proctransferintand, $yy));
-
-                                    $sCamposTransfInt  = "p88_codigo, p88_data, p88_hora, p88_despacho, p88_publico, atual.nome as usuatual, ";
-                                    $sCamposTransfInt .= "destino.nome as usudestino, destino.id_usuario as idusudestino";
-
-                                    $sSqlProcTransfInt      = $clproctransferint->sql_query_andusu(null, $sCamposTransfInt, null, "p88_codigo=$p87_codtransferint");
-                                    $result_proctransferint = $clproctransferint->sql_record($sSqlProcTransfInt);
-
-                              /**
-                               * Transferencia interna
-                               */
-                                    if ($clproctransferint->numrows > 0) {
-                                        extract((array) db_utils::fieldsMemory($result_proctransferint, 0));
-
-                                        $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                                        $oDadosMovimentacao->sData = db_formatar($p88_data, 'd');
-                                        $oDadosMovimentacao->sHora = $p88_hora;
-                                        $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                                        $oDadosMovimentacao->sDepartamento = $descrdepto;
-                                        $oDadosMovimentacao->iInstituicao = $instit;
-                                        $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                                        $oDadosMovimentacao->sLogin = $usuatual;
-                                        $oDadosMovimentacao->sObservacoes = "Transferência Interna - $p87_codtransferint para: $idusudestino - $usudestino";
-                                        $oDadosMovimentacao->sDespacho = "$p88_despacho";
-                                        $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                                        $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                                        $sSqlProcandamintand    = $clprocandamintand->sql_query_file(null, "*", "p86_codtrans", "p86_codtrans=$p88_codigo and p86_codandam = $p87_codandam ");
-                                        $result_procandamintand = $clprocandamintand->sql_record($sSqlProcandamintand);
-
-                                      /**
-                                       * Recebeu transferencia interna
-                                       */
-                                        if ($clprocandamintand->numrows > 0) {
-                                            extract((array) db_utils::fieldsMemory($result_procandamintand, 0));
-
-                                            $sWhereProcandamint_trans  = "p78_sequencial > $cod_procandamint  and p78_codandam = $p86_codandam ";
-                                            $sSqlProcandamint_trans    = $clprocandamint->sql_query_sim(
-                                                null,
-                                                "*,
-                                                                                  coalesce(p100_descricao,'Despacho') as tipo_despacho,
-                                                                                  coalesce(p100_sequencial, 1) as codigo_tipo_despacho",
-                                                "p78_sequencial",
-                                                $sWhereProcandamint_trans
-                                            );
-                                            $result_procandamint_trans = $clprocandamint->sql_record($sSqlProcandamint_trans);
-
-                                            if ($clprocandamint->numrows > 0) {
-                                                for ($xx = 0; $xx < $clprocandamint->numrows; $xx ++) {
-                                                    extract((array) db_utils::fieldsMemory($result_procandamint_trans, $xx));
-
-                                                    if ($xx > 0) {
-                                                        if ($cod_usu != $p78_usuario) {
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                                                    $oDadosMovimentacao->sData = db_formatar($p78_data, 'd');
-                                                    $oDadosMovimentacao->sHora = $p78_hora;
-                                                    $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                                                    $oDadosMovimentacao->sDepartamento = $descrdepto;
-                                                    $oDadosMovimentacao->iInstituicao = $instit;
-                                                    $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                                                    $oDadosMovimentacao->sLogin = $nome;
-                                                    $oDadosMovimentacao->sDespacho = "$p78_despacho";
-                                                    $oDadosMovimentacao->iAndamentoInterno = $p78_sequencial;
-                                                    $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                                        /**
-                                         * Recebeu transferencia interna
-                                         */
-                                                    if ($p78_transint == 't') {
-                                                        $oDadosMovimentacao->sObservacoes = "Recebeu Transferência Interna";
-
-                                                        /**
-                                                         * Despacho interno
-                                                         */
-                                                    } else {
-                                                        $oDadosMovimentacao->sObservacoes = "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}";
-
-                                                        if ($p78_usuario == $this->iUsuarioLogado || $p78_publico == 't') {
-                                                            $oDadosMovimentacao->lImprimir = true;
-                                                        }
-                                                    }
-
-                                                    $this->aMovimentacoes[] = $oDadosMovimentacao;
-                                                    $cod_usu = $p78_usuario;
-                                                    $cod_procandamint = $p78_sequencial;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                $lProcessoArquivado = false;
-
-                if (isset($oDadosParametros->p90_andatual) && $oDadosParametros->p90_andatual == "t") {
-
-                  /**
-                   * Andamento anual
-                   */
-                    if ($y == $clproctransferproc->numrows - 1) {
-                        $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                        $oDadosMovimentacao->sData = db_formatar($p61_dtandam, 'd');
-                        $oDadosMovimentacao->sHora = $p61_hora;
-                        $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                        $oDadosMovimentacao->sDepartamento = $descrdepto;
-                        $oDadosMovimentacao->iInstituicao = $instit;
-                        $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                        $oDadosMovimentacao->sLogin = $nome;
-                        $oDadosMovimentacao->sObservacoes = "Andamento atual";
-                        $oDadosMovimentacao->sDespacho = "$p58_despacho";
-                        $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                        $this->aMovimentacoes[] = $oDadosMovimentacao;
-                    }
-                }
-            } // for transferencias
-
-        /**
-         * Recebeu processo
-         */
+        $this->adicionarMovimentacoes($movimentacoes);
+    }
+
+    /**
+     * @param $codigoProcesso
+     * @return array|false
+     */
+    public function buscarTransferencias($codigoProcesso)
+    {
+        $camposTransferencia = "
+            *,
+            atual.descrdepto AS departamento_atual,
+            atual.instit AS instituicao_atual,
+            instiatual.nomeinstabrev AS instituicao_atual_descricao,
+            usu_atual.nome AS nome_usuario_atual,
+            usu_destino.login as usuario_destino_login,
+            destino.coddepto as departamento_destino,
+            destino.descrdepto as departamento_destino_descricao,
+            depto_andam.descrdepto as departamento_andamento_descricao,
+            instit_andam.nomeinstabrev as instituicao_andamento_descricao,
+            instit_andam.codigo as instituicao_andamento,
+            usu_andam.nome AS usuario_andamento_descricao
+        ";
+
+        $ordem = $this->ordem;
+        $clproctransfer = new cl_proctransfer();
+        $sqlTransferencias = $clproctransfer->sql_query_movimentacoes(
+            null,
+            $camposTransferencia,
+            "
+                p62_dttran $ordem,
+                p62_hora $ordem,
+                p62_codtran $ordem,
+                p61_dtandam $ordem,
+                p61_hora $ordem,
+                p61_codandam $ordem
+            ",
+            "
+                p63_codproc = $codigoProcesso
+                AND
+                    CASE
+                        WHEN p61_codandam IS NOT NULL
+                        THEN p61_codproc = $codigoProcesso
+                        ELSE TRUE
+                    END
+            "
+        );
+
+        $transferencias = $clproctransfer->sql_record($sqlTransferencias);
+        return pg_fetch_all($transferencias) ?: [];
+    }
+
+    /**
+     * @param $transferencias
+     * @return int|string|null
+     */
+    private function buscarIndexTramiteInicial($transferencias)
+    {
+        reset($transferencias);
+        if ($this->ordem === 'ASC') {
+            return key($transferencias);
+        }
+
+        end($transferencias);
+        return key($transferencias);
+    }
+
+    /**
+     * @param $transferencia
+     * @param $isTramiteInicial
+     * @return void
+     */
+    private function montarDadosMovimentacao($transferencia, $isTramiteInicial)
+    {
+        $dadosMovimentacao = [];
+        $dadosMovimentacao['transferencia'] = $this->montarDadosTransferencia($transferencia, $isTramiteInicial);
+        $dadosMovimentacao['andamento'] = $this->montarDadosAndamento($transferencia);
+        $dadosMovimentacao['despachos'] = $this->montarDadosDespacho($transferencia);
+        $dadosMovimentacao['transferenciasInternas'] = $this->montarDadosMovimentacoesInternas($transferencia);
+
+        if ($this->ordem === 'DESC') {
+            $dadosMovimentacao = array_reverse($dadosMovimentacao);
+        }
+
+        return $dadosMovimentacao;
+    }
+
+    /**
+     * @param array $transferencia
+     * @return RefactorDadosMovimentacaoProcessoProtocolo|bool
+     */
+    private function montarDadosTransferencia($transferencia, $isTramiteInicial = false)
+    {
+        // Omite transferência quando arquivado/desarquivado
+        if (!empty($transferencia['p69_arquivado'])) {
+            return false;
+        }
+
+        $dadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
+        $dadosMovimentacao->sData = db_formatar($transferencia['p62_dttran'], 'd');
+        $dadosMovimentacao->sHora = $transferencia['p62_hora'];
+        $dadosMovimentacao->iDepartamento = $transferencia['p62_coddepto'];
+        $dadosMovimentacao->sDepartamento = $transferencia['departamento_atual'];
+        $dadosMovimentacao->iInstituicao = $transferencia['instituicao_atual'];
+        $dadosMovimentacao->sInstituicao = $transferencia['instituicao_atual_descricao'];
+        $dadosMovimentacao->sLogin = $transferencia['nome_usuario_atual'];
+        $dadosMovimentacao->sOrgao = $transferencia['o40_orgao'] . ' - ' . $transferencia['o40_descr'];
+        $dadosMovimentacao->sDespacho = '';
+        $dadosMovimentacao->sObservacoes = $this->montarObservacaoTransferencia(
+            $transferencia,
+            $isTramiteInicial
+        );
+
+        return $dadosMovimentacao;
+    }
+
+    /**
+     * @param array $transferencia
+     * @return string
+     */
+    private function montarObservacaoTransferencia($transferencia, $isTramiteInicial)
+    {
+        $usuarioDestino = $transferencia['p62_id_usorec'];
+        $observacao = 'Transferência ' . $transferencia['p62_codtran'];
+        $observacao .= ' p/ o Departamento: ' . $transferencia['departamento_destino'];
+        $observacao .= ' - ' . $transferencia['departamento_destino_descricao'];
+
+        if ($isTramiteInicial) {
+            $observacao = "Tramite Inicial " . $transferencia['p62_codtran'] . ' p/ Departamento: ';
+            $observacao .= $transferencia['departamento_destino'] . " - ";
+            $observacao .= $transferencia['departamento_destino_descricao'];
+        }
+
+        if (!empty($usuarioDestino)) {
+            $observacao .= " - usuário especificado: $usuarioDestino - " . $transferencia['usuario_destino_login'];
         } else {
-            $result_procandam = $clprocandam->sql_record($clprocandam->sql_query_com(null, "*", "p61_codandam", "p61_codproc = $codproc"));
+            $observacao .= ' (sem usuário especificado)';
+        }
 
-            if ($clprocandam->numrows > 0) {
-                for ($xy = 0; $xy < $clprocandam->numrows; $xy ++) {
-                    extract((array) db_utils::fieldsMemory($result_procandam, $xy));
+        return $observacao;
+    }
 
-                    $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                    $oDadosMovimentacao->sData = db_formatar($p61_dtandam, 'd');
-                    $oDadosMovimentacao->sHora = $p61_hora;
-                    $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                    $oDadosMovimentacao->sDepartamento = $descrdepto;
-                    $oDadosMovimentacao->iInstituicao = $instit;
-                    $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                    $oDadosMovimentacao->sLogin = $nome;
-                    $oDadosMovimentacao->sObservacoes = "Recebeu Processo";
-                    $oDadosMovimentacao->sDespacho = "$p61_despacho";
-                    $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
+    /**
+     * @param $transferencia
+     * @return false|RefactorDadosMovimentacaoProcessoProtocolo
+     */
+    private function montarDadosAndamento($transferencia)
+    {
+        if (empty($transferencia['p61_codandam'])) {
+            return false;
+        }
 
-                    $this->aMovimentacoes[] = $oDadosMovimentacao;
+        $dadosAndamento = new RefactorDadosMovimentacaoProcessoProtocolo();
+        $dadosAndamento->sData = db_formatar($transferencia['p61_dtandam'], 'd');
+        $dadosAndamento->sHora = $transferencia['p61_hora'];
+        $dadosAndamento->iDepartamento = $transferencia['p61_coddepto'];
+        $dadosAndamento->sDepartamento = $transferencia['departamento_andamento_descricao'];
+        $dadosAndamento->iInstituicao = $transferencia['instituicao_andamento'];
+        $dadosAndamento->sInstituicao = $transferencia['instituicao_andamento_descricao'];
+        $dadosAndamento->sLogin = $transferencia['usuario_andamento_descricao'];
+        $dadosAndamento->sOrgao = $transferencia['o40_orgao'] . ' - ' . $transferencia['o40_descr'];
+        $dadosAndamento->sDespacho = $transferencia['p61_despacho'];
+        $dadosAndamento->sObservacoes = $this->montarObservacaoAndamento($transferencia);
 
-                    $sSqlProcandamint_des = $clprocandamint->sql_query_sim(
-                        null,
-                        "*,
-                                                                 coalesce(p100_descricao,'Despacho') as tipo_despacho,
-                                                                 coalesce(p100_sequencial, 1) as codigo_tipo_despacho",
-                        "p78_sequencial",
-                        "p78_codandam = $p61_codandam  "
-                    );
-                      $result_procandamint_des = $clprocandamint->sql_record($sSqlProcandamint_des);
+        return $dadosAndamento;
+    }
 
-                      /**
-                       *  Dispacho interno
-                       */
-                    if ($clprocandamint->numrows > 0) {
-                        for ($x = 0; $x < $clprocandamint->numrows; $x ++) {
-                            extract((array) db_utils::fieldsMemory($result_procandamint_des, $x));
+    /**
+     * @param $transferencia
+     * @return string
+     */
+    private function montarObservacaoAndamento($transferencia)
+    {
+        $observacao = "Recebeu Transferência - " . $transferencia['p62_codtran'];
+        if (!empty($transferencia['p69_codarquiv'])) {
+            $observacao = $transferencia['p69_arquivado'] === 't' ? 'Processo Arquivado' : 'Desarquivamento';
+        }
 
-                      /**
-                       * Despacho interno transferido
-                       */
-                            if ($p78_transint == 't') {
-                                  break;
-                            }
+        return $observacao;
+    }
 
-                            $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                            $oDadosMovimentacao->sData = db_formatar($p78_data, 'd');
-                            $oDadosMovimentacao->sHora = $p78_hora;
-                            $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                            $oDadosMovimentacao->sDepartamento = $descrdepto;
-                            $oDadosMovimentacao->iInstituicao = $instit;
-                            $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                            $oDadosMovimentacao->sLogin = $nome;
-                            $oDadosMovimentacao->sObservacoes = "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}";
-                            $oDadosMovimentacao->sDespacho = "$p78_despacho";
-                            $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-                            $oDadosMovimentacao->iAndamentoInterno = $p78_sequencial;
+    /**
+     * @param $transferencia
+     * @return array|false
+     */
+    private function montarDadosDespacho($transferencia)
+    {
+        if (empty($transferencia['p61_codandam'])) {
+            return false;
+        }
 
-                            if ($p78_usuario == $this->iUsuarioLogado || $p78_publico == 't') {
-                                  $oDadosMovimentacao->lImprimir = true;
-                            }
+        $despachos = $this->buscarDespachos($transferencia['p61_codandam']);
+        $tiposDespacho = [1 => 'Interno', 2 => ''];
 
-                            $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                            $cod_procandamint = $p78_sequencial;
-                        }
-                    }
-
-                      $result_proctransferintand = $clproctransferintand->sql_record($clproctransferintand->sql_query_file(null, "*", "p87_codtransferint", "p87_codandam = $p61_codandam"));
-
-                    if ($clproctransferintand->numrows > 0) {
-                        for ($yy = 0; $yy < $clproctransferintand->numrows; $yy ++) {
-                              extract((array) db_utils::fieldsMemory($result_proctransferintand, $yy));
-
-                              $result_proctransferint = $clproctransferint->sql_record($clproctransferint->sql_query_andusu(null, "p88_codigo,p88_data,p88_hora,p88_despacho,p88_publico,atual.nome as usuatual,destino.nome as usudestino", null, "p88_codigo=$p87_codtransferint"));
-
-                            if ($clproctransferint->numrows > 0) {
-                                extract((array) db_utils::fieldsMemory($result_proctransferint, 0));
-
-                                $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                                $oDadosMovimentacao->sData = db_formatar($p88_data, 'd');
-                                $oDadosMovimentacao->sHora = $p88_hora;
-                                $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                                $oDadosMovimentacao->sDepartamento = $descrdepto;
-                                $oDadosMovimentacao->iInstituicao = $instit;
-                                $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                                $oDadosMovimentacao->sLogin = $usuatual;
-                                $oDadosMovimentacao->sObservacoes = "Transferência Interna para $usudestino";
-                                $oDadosMovimentacao->sDespacho = "$p88_despacho";
-                                $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                                $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                                $result_procandamintand = $clprocandamintand->sql_record($clprocandamintand->sql_query_file(null, "*", "p86_codtrans", "p86_codtrans=$p88_codigo and p86_codandam = $p87_codandam "));
-
-                                if ($clprocandamintand->numrows > 0) {
-                                        extract((array) db_utils::fieldsMemory($result_procandamintand, 0));
-                                        $sSqlDadosDespacho         =  $clprocandamint->sql_query_sim(
-                                            null,
-                                            "*,  coalesce(p100_descricao,'Despacho') as tipo_despacho,
-                                                                               coalesce(p100_sequencial, 1) as codigo_tipo_despacho",
-                                            "p78_sequencial",
-                                            "p78_sequencial > {$cod_procandamint}
-                                                                               and p78_codandam = {$p86_codandam}"
-                                        );
-                                        $result_procandamint_trans = $clprocandamint->sql_record($sSqlDadosDespacho);
-
-                                    if ($clprocandamint->numrows > 0) {
-                                        for ($xx = 0; $xx < $clprocandamint->numrows; $xx ++) {
-                                            extract((array) db_utils::fieldsMemory($result_procandamint_trans, $xx));
-
-                                            if ($xx > 0) {
-                                                if ($cod_usu != $p78_usuario) {
-                                                    break;
-                                                }
-                                            }
-
-                                            $oDadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
-                                            $oDadosMovimentacao->sData = db_formatar($p78_data, 'd');
-                                            $oDadosMovimentacao->sHora = $p78_hora;
-                                            $oDadosMovimentacao->iDepartamento = $p61_coddepto;
-                                            $oDadosMovimentacao->sDepartamento = $descrdepto;
-                                            $oDadosMovimentacao->iInstituicao = $instit;
-                                            $oDadosMovimentacao->sInstituicao = $nomeinstabrev;
-                                            $oDadosMovimentacao->sLogin = $nome;
-                                            $oDadosMovimentacao->sDespacho = "$p78_despacho";
-                                            $oDadosMovimentacao->iAndamentoInterno = $p78_sequencial;
-                                            $oDadosMovimentacao->sOrgao = "{$codigoorgao} - {$orgao}";
-
-                                            if ($p78_transint == 't') {
-                                                              $oDadosMovimentacao->sObservacoes = "Recebeu Transferência Interna";
-                                            } else {
-                                                            $oDadosMovimentacao->sObservacoes = "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}";
-
-                                                if ($p78_usuario == $this->iUsuarioLogado || $p78_publico == 't') {
-                                                    $oDadosMovimentacao->lImprimir = true;
-                                                }
-                                            }
-
-                                            $this->aMovimentacoes[] = $oDadosMovimentacao;
-
-                                            $cod_usu = $p78_usuario;
-                                            $cod_procandamint = $p78_sequencial;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        $dadosDespacho = [];
+        foreach ($despachos as $key => $despacho) {
+            if ($despacho['p78_transint'] === 't') {
+                continue;
             }
-        } // else
-    } // processarMovimentacoes
 
+            $dadosDespacho[$key] = new RefactorDadosMovimentacaoProcessoProtocolo();
+            $dadosDespacho[$key]->sData = db_formatar($despacho['p78_data'], 'd');
+            $dadosDespacho[$key]->sHora = $despacho['p78_hora'];
+            $dadosDespacho[$key]->iDepartamento = $despacho['departamento_andamento'];
+            $dadosDespacho[$key]->sDepartamento = $despacho['departamento_andamento_descricao'];
+            $dadosDespacho[$key]->iAndamentoInterno = $despacho['p78_sequencial'];
+            $dadosDespacho[$key]->iInstituicao = $despacho['instituicao_andamento'];
+            $dadosDespacho[$key]->sInstituicao = $despacho['instituicao_andamento_descricao'];
+            $dadosDespacho[$key]->sLogin = $despacho['usuario_andamento_descricao'];
+            $dadosDespacho[$key]->sOrgao = $transferencia['o40_orgao'] . ' - ' . $transferencia['o40_descr'];
+            $dadosDespacho[$key]->sDespacho = $despacho['p78_despacho'];
+            $dadosDespacho[$key]->sObservacoes = $despacho['tipo_despacho_descricao'] . " ";
+            $dadosDespacho[$key]->sObservacoes .= $tiposDespacho[$despacho['tipo_despacho']];
+
+            if ($despacho['p78_publico'] === 't' || $despacho['p78_usuario'] == $this->usuarioLogado) {
+                $dadosDespacho[$key]->lImprimir = true;
+            }
+
+            if ($despacho['possui_documento'] === 't') {
+                $dadosDespacho[$key]->lAnexos = true;
+            }
+        }
+
+
+        return $dadosDespacho;
+    }
+
+    /**
+     * @param int $codigoAndamento
+     * @return array
+     */
+    public function buscarDespachos($codigoAndamento)
+    {
+        $ordem = $this->ordem;
+        $camposDespacho = "
+            procandamint.*,
+            db_usuarios.id_usuario AS usuario_andamento,
+            db_usuarios.nome AS usuario_andamento_descricao,
+            db_depart.coddepto AS departamento_andamento,
+            db_depart.descrdepto AS departamento_andamento_descricao,
+            db_config.codigo AS instituicao_andamento,
+            db_config.nomeinstabrev AS instituicao_andamento_descricao,
+            coalesce(p100_descricao,'Despacho') as tipo_despacho_descricao,
+            coalesce(p100_sequencial, 1) as tipo_despacho,
+            EXISTS (
+                SELECT 1
+                FROM protprocessodocumento
+                WHERE p01_procandamint = p78_sequencial
+            ) AS possui_documento
+        ";
+
+
+        $clproctransfer = new cl_proctransfer();
+        $sqlDespachos = $clproctransfer->sql_query_despachos(
+            $codigoAndamento,
+            $camposDespacho,
+            "
+                p78_data $ordem,
+                p78_hora $ordem,
+                p78_sequencial $ordem
+            "
+        );
+        $despachos = $clproctransfer->sql_record($sqlDespachos);
+
+        return pg_fetch_all($despachos) ?: [];
+    }
+
+    /**
+     * @param $transferencia
+     * @return array
+     */
+    private function montarDadosMovimentacoesInternas($transferencia)
+    {
+        $transferenciasInternas = $this->buscarTransferenciasInternas($transferencia['p61_codandam']);
+        $andamentosInternos = $this->buscarAndamentosInternos($transferencia['p61_codandam']);
+        $andamentosCriados = false;
+
+        $movimentacoes = [];
+        foreach ($transferenciasInternas as $key => $transferenciaInterna) {
+            $movimentacoes[$key]['transferencias'] = $this->montarDadosTransferenciaInterna($transferenciaInterna);
+
+            if ($andamentosCriados) {
+                continue;
+            }
+
+            $andamentosCriados = true;
+            $movimentacoes[$key]['andamentos'] = $this->montarDadosAndamentosInternos(
+                $transferenciaInterna,
+                $andamentosInternos
+            );
+        }
+
+        return $movimentacoes;
+    }
+
+    /**
+     * @param $codigoAndamento
+     * @return array|false
+     */
+    public function buscarTransferenciasInternas($codigoAndamento)
+    {
+        if (empty($codigoAndamento)) {
+            return [];
+        }
+
+        $ordem = $this->ordem;
+        $campos = "
+            proctransferint.*,
+            procandam.p61_coddepto,
+            db_usuarios.id_usuario AS codigo_usuario_andamento,
+            db_usuarios.nome AS nome_usuario_andamento,
+            db_depart.coddepto AS departamento_andamento,
+            db_depart.descrdepto AS departamento_andamento_descricao,
+            db_config.codigo AS instituicao_andamento,
+            db_config.nomeinstabrev AS instituicao_andamento_descricao,
+            usuario_destino.nome AS nome_usuario_destino,
+            usuario_destino.id_usuario AS codigo_usuario_destino
+        ";
+
+        $clproctransfer = new cl_proctransfer();
+        $sqlTransferenciasInternas = $clproctransfer->sql_query_transferencias_internas(
+            $codigoAndamento,
+            $campos,
+            "p88_codigo $ordem"
+        );
+        $transferenciasInternas = $clproctransfer->sql_record($sqlTransferenciasInternas);
+
+        return pg_fetch_all($transferenciasInternas) ?: [];
+    }
+
+    /**
+     * @param $codigoAndamento
+     * @return array|false
+     */
+    public function buscarAndamentosInternos($codigoAndamento)
+    {
+        if (empty($codigoAndamento)) {
+            return [];
+        }
+
+        $ordem = $this->ordem;
+        $clproctransfer = new cl_proctransfer();
+        $sqlQueryAndamentosInternos = $clproctransfer->sql_query_andamentos_internos(
+            $codigoAndamento,
+            "
+                procandamint.*,
+                db_usuarios.nome AS nome_usuario_recebimento
+            ",
+            "p78_sequencial $ordem"
+        );
+        $andamentosInternos = $clproctransfer->sql_record($sqlQueryAndamentosInternos);
+
+        return pg_fetch_all($andamentosInternos) ?: [];
+    }
+
+    /**
+     * @param $transferencia
+     * @return false|RefactorDadosMovimentacaoProcessoProtocolo
+     */
+    private function montarDadosTransferenciaInterna($transferencia)
+    {
+        if (empty($transferencia['p88_codigo'])) {
+            return false;
+        }
+
+        $dadosMovimentacao = new RefactorDadosMovimentacaoProcessoProtocolo();
+        $dadosMovimentacao->sData = db_formatar($transferencia['p88_data'], 'd');
+        $dadosMovimentacao->sHora = $transferencia['p88_hora'];
+        $dadosMovimentacao->iInstituicao = $transferencia['instituicao_andamento'];
+        $dadosMovimentacao->sInstituicao = $transferencia['instituicao_andamento_descricao'];
+        $dadosMovimentacao->iDepartamento = $transferencia['p61_coddepto'];
+        $dadosMovimentacao->sDepartamento = $transferencia['departamento_andamento_descricao'];
+        $dadosMovimentacao->sLogin = $transferencia['nome_usuario_andamento'];
+        $dadosMovimentacao->sOrgao = $transferencia['o40_orgao'] . ' - ' . $transferencia['o40_descr'];
+        $dadosMovimentacao->sDespacho = $transferencia['p88_despacho'];
+        $dadosMovimentacao->sObservacoes = 'Transferência Interna - ' . $transferencia['p88_codigo'];
+        $dadosMovimentacao->sObservacoes .= ' para: ' . $transferencia['codigo_usuario_destino'] . ' ';
+        $dadosMovimentacao->sObservacoes .= ' - ' . $transferencia['nome_usuario_destino'];
+
+        return $dadosMovimentacao;
+    }
+
+    /**
+     * @param $transferencia
+     * @return false|RefactorDadosMovimentacaoProcessoProtocolo
+     */
+    private function montarDadosAndamentosInternos($transferencia, $andamentos)
+    {
+        $dadosAndamentosInternos = [];
+        foreach ($andamentos as $key => $andamento) {
+            if (empty($andamento['p78_sequencial'])) {
+                continue;
+            }
+
+            if ($andamento['p78_transint'] === 'f') {
+                continue;
+            }
+
+            $dadosAndamentosInternos[$key] = new RefactorDadosMovimentacaoProcessoProtocolo();
+            $dadosAndamentosInternos[$key]->sData = db_formatar($andamento['p78_data'], 'd');
+            $dadosAndamentosInternos[$key]->sHora = $andamento['p78_hora'];
+            $dadosAndamentosInternos[$key]->sDepartamento = $transferencia['departamento_andamento_descricao'];
+            $dadosAndamentosInternos[$key]->iDepartamento = $transferencia['p61_coddepto'];
+            $dadosAndamentosInternos[$key]->iInstituicao = $transferencia['instituicao_andamento'];
+            $dadosAndamentosInternos[$key]->sInstituicao = $transferencia['instituicao_andamento_descricao'];
+            $dadosAndamentosInternos[$key]->sLogin = $andamento['nome_usuario_recebimento'];
+            $dadosAndamentosInternos[$key]->sOrgao = $transferencia['o40_orgao'] . ' - ' . $transferencia['o40_descr'];
+            $dadosAndamentosInternos[$key]->sDespacho = $andamento['p78_despacho'];
+            $dadosAndamentosInternos[$key]->sObservacoes = "Recebeu Transferência Interna";
+            $dadosAndamentosInternos[$key]->iAndamentoInterno = $andamento['p78_sequencial'];
+        }
+
+        return $dadosAndamentosInternos;
+    }
+
+    /**
+     * @param $movimentacoes
+     * @return void
+     */
+    public function adicionarMovimentacoes($movimentacoes)
+    {
+        foreach ($movimentacoes as $movimentacao) {
+            if (is_array($movimentacao)) {
+                $this->adicionarMovimentacoes($movimentacao);
+                continue;
+            }
+
+            if (!empty($movimentacao)) {
+                $this->aMovimentacoes[] = $movimentacao;
+            }
+        }
+    }
+
+    /**
+     * @return mixed
+     */
     public function getMovimentacoes()
     {
         return $this->aMovimentacoes;
@@ -640,18 +534,18 @@ class RefactorDadosMovimentacaoProcessoProtocolo
     public $sDespacho;
     public $iAndamentoInterno;
     public $lImprimir = false;
-    public $lAnexos   = false;
+    public $lAnexos = false;
 
-  /**
-   * Valida antes de declarar propriedades do refactor
-   * - nao permite usar propriedades nao declaradas
-   *
-   * @param string $sVariavel
-   * @param mixed $mValor
-   * @access public
-   * @exception - variavel nao declarada
-   * @return void
-   */
+    /**
+     * Valida antes de declarar propriedades do refactor
+     * - nao permite usar propriedades nao declaradas
+     *
+     * @param string $sVariavel
+     * @param mixed $mValor
+     * @access public
+     * @exception - variavel nao declarada
+     * @return void
+     */
     public function __set($sVariavel, $mValor)
     {
 

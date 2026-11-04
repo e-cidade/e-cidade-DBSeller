@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("descrdepto");
        <?=@$Lsm01_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('sm01_sequencial',10,$Ism01_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsm01_departamento?>">
-       <?
+       <?php
        db_ancora(@$Lsm01_departamento,"js_pesquisasm01_departamento(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sm01_departamento',10,$Ism01_departamento,true,'text',$db_opcao," onchange='js_pesquisasm01_departamento(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        <?=@$Lsm01_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('sm01_descr',40,$Ism01_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -118,7 +118,7 @@ function js_pesquisa() {
 
 function js_preenchepesquisa(chave) {
   db_iframe_sam_base.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

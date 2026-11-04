@@ -57,38 +57,9 @@ if (isset($atualiza)) {
         $oPreferenciaUsuario->setSkin($_POST['skin']);
 
         $oPreferenciaUsuario->salvar();
-        if (isset($_POST['versao3']) && $_POST['versao3'] == 1) {
-            if (isset($db_base)) {
-                db_putsession("DB_NBASE", $db_base);
-            }
 
-            ini_set('memory_limit', '-1');
-
-            $extensionData = \ECidade\V3\Extension\Data::restore('Desktop');
-
-          // extensao não descompactada, comando: bin/v3/extension/unpack desktop-package.tar.gz
-            if (!$extensionData->exists()) {
-                throw new \Exception("Desktop não configurado.");
-            }
-
-            /**
-             * Instalando V3 para usuario
-             * que realiza a troca de versao
-             */
-            if ($extensionData->exists()) {
-                $extensionManager = new \ECidade\V3\Extension\Manager();
-                $success = $extensionManager->install('Desktop', $_SESSION['DB_login']);
-                db_msgbox('V3 instalado com sucesso.\\nFavor realizar login novamente.');
-            }
-            if ($success) {
-                echo "<script type='text/javascript'>
-          top.document.body.onunload = '';
-          top.document.location.href = 'extension/desktop';
-        </script>";
-                exit;
-            }
-
-            throw new \Exception('Não foi possível alterar para a versão 3.\\nTente novamente mais tarde.');
+        if (isset($db_base)) {
+            db_putsession("DB_NBASE", $db_base);
         }
 
         $sMensagem = _M('configuracao.configuracao.preferenciaUsuario.sucesso');
@@ -249,15 +220,10 @@ if (!isset($trocaip) && !isset($atualiza)) {
             <td><strong>Tema:</strong></td>
             <td><?php db_select('skin', $aSkins, true, 1); ?></td>
            </tr>
-
-          <tr>
-            <td><strong>Usar versão 3.0:</strong></td>
-            <td><?php db_select('versao3', array('0' => 'Não', '1' => 'Sim'), true, 1); ?></td>
+           <tr>
+             <td><strong>Visualizar documentos em janela separada:</strong></td>
+             <td><?php db_select('visualizarEmOutraJanela', array('false' => 'Não', 'true' => 'Sim'), true, 1); ?></td>
            </tr>
-             <tr>
-                 <td><strong>Visualizar documentos em janela separada:</strong></td>
-                 <td><?php db_select('visualizarEmOutraJanela', array('false' => 'Não', 'true' => 'Sim'), true, 1); ?></td>
-             </tr>
 
          </table>
        </fieldset>

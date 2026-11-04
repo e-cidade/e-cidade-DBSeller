@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -135,7 +135,7 @@ function js_trocacontri(obj){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',6,$Id02_contri,true,'text',3);
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
   ?>
@@ -146,7 +146,7 @@ function js_trocacontri(obj){
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',6,0,true,'text',3,"");
   db_input('z01_nome',40,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -164,7 +164,7 @@ function js_trocacontri(obj){
       <br>
       <b>Contribuições da matricula</b>
       <select name="contribs" size="2" onchange="js_trocacontri(this)">
-       <?
+       <?php
          for($i=0; $i<$numrows; $i++){
 	   db_fieldsmemory($result,$i);
            $resu=$clcontricalc->sql_record($clcontricalc->sql_query_file(null,"d09_contri",null,"d09_contri = $d07_contri and d09_matric = $j01_matric"));
@@ -191,14 +191,14 @@ function js_trocacontri(obj){
  </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php
 if(isset($confirmar)){
    db_msgbox($erro); 
     if(!isset($termi)){

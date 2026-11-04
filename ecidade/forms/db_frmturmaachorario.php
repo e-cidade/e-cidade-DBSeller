@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -38,17 +38,17 @@ $db_botao1 = false;
     <?=@$Led270_i_codigo?>
    </td>
    <td>
-    <?db_input('ed270_i_codigo',15,"",true,'text',3,"")?>
+    <?php db_input('ed270_i_codigo',15,"",true,'text',3,"")?>
    </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Ted270_i_rechumano?>">
-    <?db_ancora(@$Led270_i_rechumano,"js_pesquisaed270_i_rechumano(true);",$db_opcao);?>
+    <?php db_ancora(@$Led270_i_rechumano,"js_pesquisaed270_i_rechumano(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('ed270_i_rechumano',15,"",true,'hidden',3,"");?>
-    <?db_input('identificacao',15,"",true,'text',3,"");?>    
-    <?db_input('z01_nome',40,"",true,'text',3,'');?>
+    <?php db_input('ed270_i_rechumano',15,"",true,'hidden',3,"");?>
+    <?php db_input('identificacao',15,"",true,'text',3,"");?>
+    <?php db_input('z01_nome',40,"",true,'text',3,'');?>
    </td>
   </tr>
  </table>
@@ -56,8 +56,8 @@ $db_botao1 = false;
   <tr>
    <td>
     <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000">
-     <?     
-     $turno   = "";     
+     <?php
+     $turno   = "";
      $sql     = $clperiodoescola->sql_query("",
                                             "*",
                                             "ed15_i_sequencia,ed08_i_sequencia",
@@ -68,7 +68,7 @@ $db_botao1 = false;
      $contd   = 0;
      $contqd  = 0;
      for ($z = 0; $z < $clperiodoescola->numrows; $z++) {
-     	
+
        db_fieldsmemory($result1,$z);
        $contp++;
        $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("",
@@ -77,27 +77,27 @@ $db_botao1 = false;
                                                                      " ed04_c_letivo = 'S' AND ed04_i_escola = $escola"
                                                                     )
                                          );
-                                         
+
        if ($turno != $ed15_c_nome) {
          ?>
-         <tr><td colspan="<?=$cldiasemana->numrows+1?>" 
+         <tr><td colspan="<?=$cldiasemana->numrows+1?>"
                  bgcolor=""><b><?=$ed15_i_codigo==$ed17_i_turno?"TURNO PRINCIPAL":"TURNO ADICIONAL"?></b></td></tr>
          <tr bgcolor="#444444">
          <td align="center" width="30" style="font-weight: bold; color: #DEB887;"><?=pg_result($result1,$z,"ed15_c_nome");?>
          </td>
-         <?
+         <?php
          if ($cldiasemana->numrows == 0) {
            ?><tr>
               <td>
-               <a href="javascript:parent.location.href='edu1_diasemanaabas001.php'"> 
+               <a href="javascript:parent.location.href='edu1_diasemanaabas001.php'">
                <b>Informe os dias lelivos desta escola</b>
                </a>
               </td>
              </tr>
-          <?
+          <?php
          }
          for ($x = 0; $x < $cldiasemana->numrows; $x++) {
-         	
+
            $contd++;
            db_fieldsmemory($result,$x);?>
            <td>
@@ -109,69 +109,69 @@ $db_botao1 = false;
               </tr>
              </table>
             </td>
-            
-       <?}?>
+
+       <?php }?>
          </tr>
      <?}
        $turno = $ed15_c_nome?>
        <td align="center" width="120" style="font-weight: bold; background-color: #f3f3f3;">
         <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?>
-       </td><?
+       </td><?php
        for ($x = 0; $x < $cldiasemana->numrows; $x++) {
-       	
+
          $quadro = "Q".$z.$x;
          $contqd++;
-         db_fieldsmemory($result,$x);  
+         db_fieldsmemory($result,$x);
          $sCampos  = " case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome, ";
          $sCampos .= " case when ed20_i_tiposervidor = 1 then rechumanopessoal.ed284_i_rhpessoal else ";
          $sCampos .= " rechumanocgm.ed285_i_cgm end as identificacao,ed270_i_codigo,ed270_i_periodo, ";
          $sCampos .= " ed270_i_diasemana,ed270_i_rechumano ";
          $sWhere   = " ed270_i_diasemana = $ed32_i_codigo AND ed270_i_periodo = $ed17_i_codigo AND";
-         $sWhere  .= " ed270_i_turmaac = $ed270_i_turmaac  AND ed17_i_escola = $escola";    
+         $sWhere  .= " ed270_i_turmaac = $ed270_i_turmaac  AND ed17_i_escola = $escola";
          $result2  = $clturmaachorario->sql_record($clturmaachorario->sql_query("",
                                                                                 $sCampos,
                                                                                 "",
                                                                                 $sWhere
                                                                                )
                                                   );
-                
+
          if ($clturmaachorario->numrows > 0) {
-         	
+
            db_fieldsmemory($result2,0);
            $marcar       = $identificacao;
-           $regente      = $z01_nome;        
+           $regente      = $z01_nome;
            $temregistro  = $ed270_i_codigo;
            $valormarcado = $ed270_i_diasemana."|".$ed270_i_periodo."|".$ed270_i_rechumano;
            $temcodrh     = $ed270_i_rechumano;
-           
+
          } else {
-         	
+
            $marcar       = "";
            $regente      = '';
            $disci        = '';
            $temregistro  = '';
            $valormarcado = '';
            $temcodrh     = '';
-           
+
          }
        ?>
          <td>
           <table cellspacing="0" cellpading="0" marginwidth="0">
            <tr>
             <td>
-             <table class="texto" bgcolor="#cccccc" id="<?=$quadro?>" cellspacing="0" cellpading="0" 
+             <table class="texto" bgcolor="#cccccc" id="<?=$quadro?>" cellspacing="0" cellpading="0"
                     style="border: 2px outset #f3f3f3; border-bottom-color:#999999; border-right-color:#999999;">
               <tr>
-                <td align="center" 
-                    onclick="IncluirHorario(<?=$ed17_i_codigo?>,<?=$ed32_i_codigo?>,'<?=$quadro?>','<?=@$ed270_i_rechumano?>')" 
+                <td align="center"
+                    onclick="IncluirHorario(<?=$ed17_i_codigo?>,<?=$ed32_i_codigo?>,'<?=$quadro?>','<?=@$ed270_i_rechumano?>')"
                     width="50" height="15" onmouseover="InSet('<?=$quadro?>')" onmouseout="OutSet('<?=$quadro?>')">
-                 <input type="text" id="text<?=$quadro?>" name="text<?=$quadro?>" value="<?=$marcar?>" size="7" 
+                 <input type="text" id="text<?=$quadro?>" name="text<?=$quadro?>" value="<?=$marcar?>" size="7"
                         style="border:0px;background:#cccccc;text-align:center;font-weight:bold;" readonly>
-                 <input type="hidden" id="valor<?=$quadro?>" name="valor<?=$quadro?>" 
+                 <input type="hidden" id="valor<?=$quadro?>" name="valor<?=$quadro?>"
                         value="<?=$valormarcado?>" size="20" readonly>
-                 <input type="hidden" id="marcado<?=$quadro?>" name="marcado<?=$quadro?>" 
+                 <input type="hidden" id="marcado<?=$quadro?>" name="marcado<?=$quadro?>"
                         value="<?=$temregistro?>" size="20" readonly>
-                 <span style="visibility:hidden;position:absolute;" 
+                 <span style="visibility:hidden;position:absolute;"
                        id="codrh<?=$quadro?>"><?=$temcodrh?></span>
                </td>
               </tr>
@@ -187,7 +187,7 @@ $db_botao1 = false;
                <tr>
                 <td style="font-size: 9px;">
                  TURNO: <?=$ed15_c_nome?><br>
-                 Período: <?=$ed08_c_descr?><br>               
+                 Período: <?=$ed08_c_descr?><br>
                  Regente: <font color="#FF0000"><span id="rh<?=$quadro?>"><?=$regente?></span></font>
                 </td>
                </tr>
@@ -197,19 +197,19 @@ $db_botao1 = false;
            </tr>
           </table>
          </td>
-      <?
+      <?php
         $marcar            = "";
         $ed270_i_rechumano = "";
       }
       ?>
       <tr>
-   <?}?>
+   <?php }?>
      </tr>
     </table>
    </td>
    <td height="15">&nbsp;&nbsp;</td>
   <td valign="top" align="center">
-    <table align="center" id="legenda" cellspacing="2" cellpadding="3" 
+    <table align="center" id="legenda" cellspacing="2" cellpadding="3"
            style="visibility:hidden;border:1px solid #888888;background:#f3f3f3">
      <tr>
       <td colspan="2" align="center" style="font-size:9px;"><b><span id="nome_selec"></span></b></td>
@@ -281,7 +281,7 @@ $db_botao1 = false;
  </table>
  <input name="incluir" type="submit" value="Salvar">
  <input name="restaurar" type="button" value="Restaurar" onclick="return js_restaurar();">
- <input name="limpar" type="submit" value="Limpar Tudo" 
+ <input name="limpar" type="submit" value="Limpar Tudo"
         onclick="return confirm('Esta ação apagará todos os horários já marcados. Confirmar?')">
  <input id="contp" name="contp" value="<?=$contp?>" size="5" type="hidden">
  <input id="contd" name="contd" value="<?=$cldiasemana->numrows?>" size="5" type="hidden">
@@ -291,7 +291,7 @@ $db_botao1 = false;
  <input name="ed11_c_descr" value="<?=@$ed11_c_descr?>" size="20" type="hidden">
  <input name="ed57_i_turno" value="<?=@$ed268_i_turno?>" size="20" type="hidden">
  <input name="codcalendario" value="<?=@$codcalendario?>" size="20" type="hidden">
- <input name="ed268_c_descr" value="<?=@$ed268_c_descr?>" size="100" type="hidden"> 
+ <input name="ed268_c_descr" value="<?=@$ed268_c_descr?>" size="100" type="hidden">
 </form>
 <fieldset>
 Primeiro selecione a disciplina e o regente e depois clique nos quadros para marcar os horários.<br>
@@ -303,18 +303,18 @@ Para desmarcar todos, clique em "Limpar Tudo".<br>
 <script>
 function js_pesquisaed270_i_rechumano(mostra) {
 
-	
+
   alert("01");
   if (mostra == true) {
-	  
+
    js_OpenJanelaIframe('','db_iframe_rechumano','func_rechumano.php?turma=<?=@$ed270_i_rechumano?>',
 		               'Pesquisa de Disciplinas da Turma',true);
-   
+
   }
 }
 
 function js_mostrarechumano1(chave1,erro) {
-	
+
   document.form1.ed270_i_rechumano.value              = '';
   document.form1.z01_nome.value                       = '';
   document.getElementById("nome_selec").innerHTML     = "";
@@ -322,41 +322,41 @@ function js_mostrarechumano1(chave1,erro) {
   Verifica.location.href = "edu1_turmaachorario002.php?disponibilidade&codcalendario=<?=$codcalendario?>"+
                            "&ed17_i_turno=<?=$ed268_i_turno?>&rechumano=0&maisturmas=<?=$maisturmas?>";
   db_iframe_regencia.hide();
-  
+
 }
 
 function js_pesquisaed270_i_rechumano(mostra) {
-	
+
   js_OpenJanelaIframe('','db_iframe_rechumano','func_rechumano.php?rechumano='+document.form1.ed270_i_rechumano.value+
 		              '&funcao_js=parent.js_mostrarechumano1|ed20_i_codigo|z01_nome|dl_identificacao',
 		              'Pesquisa de Recursos Humanos',true);
-  
+
 }
 
 function js_mostrarechumano1(chave1,chave2,chave3) {
-	
+
   document.form1.ed270_i_rechumano.value              = chave1;
   document.form1.z01_nome.value                       = chave2;
-  document.form1.identificacao.value                  = chave3; 
+  document.form1.identificacao.value                  = chave3;
   document.getElementById("nome_selec").innerHTML     = chave2;
   document.getElementById("legenda").style.visibility = "visible";
   Verifica.location.href = "edu1_turmaachorario002.php?disponibilidade&codcalendario=<?=$codcalendario?>"+
                            "&ed17_i_turno=<?=$ed268_i_turno?>&rechumano="+chave1+"&maisturmas=<?=$maisturmas?>";
   db_iframe_rechumano.hide();
-  
+
 }
 
 function InSet(id) {
-	
+
    T = document.getElementById(id);
    D = document.getElementById("dados"+id);
    T.style.border = "2px inset #f3f3f3";
    D.style.visibility = "visible";
-   
+
 }
 
 function OutSet(id) {
-	
+
   T = document.getElementById(id);
   D = document.getElementById("dados"+id);
   T.style.border = "2px outset #f3f3f3";
@@ -364,48 +364,48 @@ function OutSet(id) {
   T.style.borderRightColor = "#999999";
   T.style.fontSize = "11px;";
   D.style.visibility = "hidden";
-  
+
 }
 
 function IncluirHorario(periodo,diasemana,id,codrechumano) {
-	
+
   if (document.getElementById("text"+id).value != "") {
-	  
+
     if (confirm("Deseja excluir este horário?!")) {
-        
+
       qdr_atual                                     = document.getElementById("codrh"+id).innerHTML;
       document.getElementById("text"+id).value      = "";
-      document.getElementById("valor"+id).value     = "";   
+      document.getElementById("valor"+id).value     = "";
       document.getElementById("rh"+id).innerHTML    = "<font color='#FF0000'>HORÁRIO LIVRE</font>";
       document.getElementById("codrh"+id).innerHTML = "";
       aindatem                                      = false;
-      
+
       for (z = 0; z < <?=$clperiodoescola->numrows?>; z++) {
-          
+
         for (x = 0; x < <?=$cldiasemana->numrows?>; x++) {
-            
+
           qdr = "codrhQ"+z+x;
           if (document.getElementById(qdr).innerHTML == qdr_atual) {
             aindatem = true;
           }
         }
-      }  
-      
+      }
+
       if (document.getElementById("marcado"+id).value != "") {
-          
+
         if (document.form1.ed270_i_rechumano.value != "") {
           codrechumano = document.form1.ed270_i_rechumano.value;
         } else {
           codrechumano = 0;
         }
-        
+
         Verifica.location.href = "edu1_turmaachorario002.php?excluir="+document.getElementById("marcado"+id).value+
                                  "&disponibilidade&codcalendario=<?=$codcalendario?>&ed17_i_turno=<?=$ed268_i_turno?>"+
                                  "&rechumano="+codrechumano+"&maisturmas=<?=$maisturmas?>";
         document.getElementById("marcado"+id).value = "";
-        
+
       } else {
-          
+
         if (document.form1.ed270_i_rechumano.value != "") {
           codrechumano = document.form1.ed270_i_rechumano.value;
         } else {
@@ -417,7 +417,7 @@ function IncluirHorario(periodo,diasemana,id,codrechumano) {
       }
     }
   } else {
-	  
+
     if (document.form1.ed270_i_rechumano.value == "") {
       alert("Informe o Regente!");
     } else {
@@ -431,45 +431,45 @@ function IncluirHorario(periodo,diasemana,id,codrechumano) {
 }
 
 function ordenarLista(select) {
-	
+
   arrTextos       = new Array(); // text de cada option
   arrValues       = new Array(); // value de cada option
   arrGuardaTextos = new Array(); // text de cada option de novo
   arrTextos[0]    = arrValues[0] = arrGuardaTextos[0] = "";
   var total       = select.length;
-  
+
   for (i = 1; i < total; i++) {
-	  
+
     arrTextos[i]       = select.options[i].text;
     arrValues[i]       = select.options[i].value;
     arrGuardaTextos[i] = select.options[i].text;
-    
+
   }
-  
+
   arrTextos.sort();
   for (i = 1; i < total; i++) {
-	  
+
     select.options[i].text = arrTextos[i];
     for (j = 1; j < total; j++) {
-        
+
       if (arrTextos[i] == arrGuardaTextos[j]) {
-          
+
         select.options[i].value = arrValues[j];
         j = select.length;
-        
+
       }
     }
   }
 }
 
 function js_restaurar() {
-	
+
   if (confirm('Esta ação retornará os últimos horários salvos. Confirmar restauração?')) {
-	  
+
     location.href = "edu1_turmaachorario001.php?ed270_i_turmaac=<?=$ed270_i_turmaac?>"+
                     "&ed268_i_turno=<?=$ed268_i_turno?>&ed268_c_descr=<?=$ed268_c_descr?>"+
                     "&codcalendario=<?=$codcalendario?>";
-      
+
   }
 }
 </script>

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -152,7 +152,7 @@ $imprime_selecao  = "";
 $union = "";
 $virg  = "";
 
-$arr_selecionados = split(",",$selecionados);
+$arr_selecionados =explode(",",$selecionados);
 for($i=0; $i<count($arr_selecionados); $i++){
   $indice_siglas = $arr_selecionados[$i];
   $clgeradorsql->inicio_rh= false;
@@ -312,21 +312,21 @@ if(isset($sototais)){
 
 if($tipoarq == 'pdf') {
 
-	$pdf = new PDF(); 
-	$pdf->Open(); 
-	$pdf->AliasNbPages(); 
+	$pdf = new PDF();
+	$pdf->Open();
+	$pdf->AliasNbPages();
 	$pdf->setfillcolor(235);
 	$pdf->setfont('arial','b',8);
-	
+
 	$total = 0;
 	$troca = 1;
 	$alt   = 4;
 	$cor 	 = 1;
 	$antes = "";
 	$registroantigo = "";
-	
+
 	$totalreg 	= 0;
-	
+
 	$totalrub1   = 0;
 	$totalrub2   = 0;
 	$totalrub3   = 0;
@@ -338,9 +338,9 @@ if($tipoarq == 'pdf') {
 	$totalrub9   = 0;
 	$totalrub10  = 0;
 	$totalform 	 = 0;
-	
+
 	$totalgreg 	 = 0;
-	
+
 	$totalgrub1  = 0;
 	$totalgrub2  = 0;
 	$totalgrub3  = 0;
@@ -352,13 +352,13 @@ if($tipoarq == 'pdf') {
 	$totalgrub9  = 0;
 	$totalgrub10 = 0;
 	$totalgform  = 0;
-	
+
 	if(count($arr_rubricas) > 6) {
 	  $pdf->addpage("L");
 	}else{
 	  $pdf->addpage();
 	}
-	
+
 	$pdf->setfont('arial','b',8);
 	$pdf->cell(100,$alt,"LEGENDA",1,1,"C",1);
 	$pdf->cell(20,$alt,$RLrh27_rubric,1,0,"C",1);
@@ -366,7 +366,7 @@ if($tipoarq == 'pdf') {
 	$pdf->cell(20,$alt,"Prov / Desc",1,1,"C",1);
 	$pdf->setfont('arial','',7);
 	$cor = 1;
-	
+
 	for($i=0; $i<$clrhrubricas->numrows; $i++){
 	  db_fieldsmemory($result_rubricas, $i);
 	  if($cor == 1){
@@ -378,9 +378,9 @@ if($tipoarq == 'pdf') {
 	  $pdf->cell(60,$alt,$rh27_descr,0,0,"L",$cor);
 	  $pdf->cell(20,$alt,$rh27_pd,0,1,"L",$cor);
 	}
-	
+
 	$pdf->ln(2);
-	
+
 	for($i = 0; $i < $numrows_dados;$i++){
 	   db_fieldsmemory($result_dados,$i);
 	   $mudapag = false;
@@ -413,7 +413,7 @@ if($tipoarq == 'pdf') {
 	       }
 	     }
 	   }
-	
+
 	   if($pdf->gety() > $pdf->h - 30 || $troca != 0 || $mudapag == true){
 	     $pdf->setfont('arial','b',8);
 	     $pass = false;
@@ -438,7 +438,7 @@ if($tipoarq == 'pdf') {
 	       reset($arr_rubricas);
 	       for($ii=0; $ii<count($arr_rubricas); $ii++){
 	         $index = key($arr_rubricas);
-	         $rubrica = $arr_rubricas[$index]." ".$arr_quantval[$index];      	
+	         $rubrica = $arr_rubricas[$index]." ".$arr_quantval[$index];
 	         $pdf->cell(18,$alt,$rubrica,1,0,"C",1);
 	         next($arr_rubricas);
 	       }
@@ -452,13 +452,13 @@ if($tipoarq == 'pdf') {
 	       }
 	     }
 	     $cor = 1;
-	
+
 	     if($mudapag == true){
 	       $pdf->ln(2);
 	       $pdf->cell((93+(18 * count($arr_rubricas))),$alt,$teste." - ".$descr,1,1,"L",1);
 	     }
 	   }
-	
+
 	   if($cor == 1){
 	     $cor = 0;
 	   }else{
@@ -490,11 +490,11 @@ if($tipoarq == 'pdf') {
 	   if(!isset($sototais)){
 	     $pdf->cell(18,$alt,db_formatar($formulado,"f"),0,1,"R",$cor);
 	   }
-	
+
 	}
-	
+
 	$pdf->setfont('arial','b',7);
-	
+
 	$corT = 1;
 	if(!isset($sototais)){
 	  $pdf->cell(60,$alt,"TOTAL DE REGISTROS ","LTB",0,"R",1);
@@ -508,7 +508,7 @@ if($tipoarq == 'pdf') {
 	  $pdf->cell(18,$alt,db_formatar($$qualtot,"f"),"TB",0,"R",$corT);
 	}
 	$pdf->cell(18,$alt,db_formatar($totalform,"f"),"RTB",1,"R",$corT);
-	
+
 	$pdf->ln(4);
 	$pdf->cell(93+(18*count($arr_rubricas)),$alt,"TOTAL GERAL",1,1,"L",1);
 	$pdf->cell(60,$alt,"TOTAL DE REGISTROS ","LTB",0,"R",1);
@@ -518,26 +518,26 @@ if($tipoarq == 'pdf') {
 	  $pdf->cell(18,$alt,db_formatar($$qualtotg,"f"),"TB",0,"R",1);
 	}
 	$pdf->cell(18,$alt,db_formatar($totalgform,"f"),"RTB",1,"R",1);
-	
+
 	$pdf->Output();
-	
-} else if($tipoarq == 'csv') { 
-	
+
+} else if($tipoarq == 'csv') {
+
   ?>
   <html>
   <head>
-  
+
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
   </head>
 
   <body bgcolor="#CCCCCC" marginheight="0" >
   <form name="form1" id="form1"></form>
-	
-  <?
-	
+
+  <?php
+
 	$troca = 1;
-	
+
 	$total          = 0;
 	$alt            = 4;
 	$antes          = "";
@@ -556,9 +556,9 @@ if($tipoarq == 'pdf') {
 	$totalrub9      = 0;
 	$totalrub10     = 0;
 	$totalform 	    = 0;
-	
+
 	$totalgreg 	    = 0;
-	
+
 	$totalgrub1     = 0;
 	$totalgrub2     = 0;
 	$totalgrub3     = 0;
@@ -573,9 +573,9 @@ if($tipoarq == 'pdf') {
 
 	$sNomeArq = 'tmp/emissao_'.date('YmdHis').'.csv';
 	$rFile    = fopen($sNomeArq, 'w+');
-	
+
 	fputs($rFile, "{$RLrh27_rubric};{$RLrh27_descr};Prov/Desc\n");
-	
+
 	for ($i = 0; $i < $clrhrubricas->numrows; $i++) {
 		$oRubricas = db_utils::fieldsMemory($result_rubricas, $i);
 		fputs($rFile, $oRubricas->rh27_rubric);
@@ -585,59 +585,59 @@ if($tipoarq == 'pdf') {
 		fputs($rFile, $oRubricas->rh27_pd);
 		fputs($rFile, "\n");
 	}
-	
+
 	fputs($rFile, "\n");
-	
+
 	if($numrows_dados == 0) {
 		db_msgbox('Nenhum registro encontrado.');
 		exit;
 	}
-	
+
 	for($i = 0; $i < $numrows_dados;$i++) {
 		db_fieldsmemory($result_dados,$i);
-		
+
 		$iInstit = db_getsession('DB_instit');
-		
+
 		$sSql = "select r70_estrut, r70_descr,  rh01_admiss, rh30_descr, rh37_descr
 							 from rhpessoal
-							inner join rhfuncao     on rhfuncao.rh37_funcao  = rhpessoal.rh01_funcao 
-							inner join rhpessoalmov on rhpessoal.rh01_regist = rhpessoalmov.rh02_regist 
-							inner join rhlota       on rhlota.r70_codigo     = rhpessoalmov.rh02_lota 
+							inner join rhfuncao     on rhfuncao.rh37_funcao  = rhpessoal.rh01_funcao
+							inner join rhpessoalmov on rhpessoal.rh01_regist = rhpessoalmov.rh02_regist
+							inner join rhlota       on rhlota.r70_codigo     = rhpessoalmov.rh02_lota
 							                       and rhlota.r70_instit     = rhpessoalmov.rh02_instit
-							inner join rhregime     on rhregime.rh30_codreg  = rhpessoalmov.rh02_codreg 
-							                       and rhregime.rh30_instit  = rhpessoalmov.rh02_instit                       
-							 
+							inner join rhregime     on rhregime.rh30_codreg  = rhpessoalmov.rh02_codreg
+							                       and rhregime.rh30_instit  = rhpessoalmov.rh02_instit
+
 							 where rh01_regist = {$regist}
-							   and rh37_instit = {$iInstit} 
+							   and rh37_instit = {$iInstit}
 							   and rh02_anousu = {$ano}
 							   and rh02_mesusu = {$mes}";
-		
+
 		$rsSql = db_query($sSql);
-		
+
 		$oSql = db_utils::fieldsMemory($rsSql, 0, true);
-		
+
 	  $mudapag = false;
   	if(isset($teste2)){
     	$teste .= $teste2;
   	}
-  	
+
 		if(isset($testar)) {
-			
+
 			if($teste != $registroantigo){
 
 				$registroantigo = $teste;
 				$mudapag        = true;
-	      
+
 				if($i != 0){
 					if(!isset($sototais)){
 	       		fputs($rFile, " TOTAL DE REGISTROS ");
-						
+
 	        }else{
 	          fputs($rFile, "");
-	          
+
 	        }
 	        fputs($rFile, $totalreg);
-	        
+
 	        /*for($ii=0; $ii<count($arr_rubricas); $ii++){
 	          $qualtot = 'totalrub'.($ii+1);
 	          fputs($rFile, db_formatar($$qualtot,"f"));
@@ -650,25 +650,25 @@ if($tipoarq == 'pdf') {
 	      }
 	    }
 		}
-		
+
 		if($troca != 0 || $mudapag == true) {
-			
+
     	$pass = false;
-    	
+
     	if($i == 0 || ($mudapag == true && $quebra == "s" && !isset($sototais))){
-      
+
     		if($troca != 1){
 	        fputs($rFile, "\n");
     	  }
 				$troca = 0;
-				
+
       	if(!isset($sototais)){
-      		
+
 	        fputs($rFile, $RLrh01_regist);
 	        fputs($rFile, ";");
 	        fputs($rFile, $RLz01_nome);
 	        fputs($rFile, ";");
-	        
+
 	        fputs($rFile, $RLr70_estrut);
 	        fputs($rFile, ";");
 	        fputs($rFile, $RLr70_descr);
@@ -679,38 +679,38 @@ if($tipoarq == 'pdf') {
 	        fputs($rFile, ";");
 	        fputs($rFile, $RLrh37_descr);
 	        fputs($rFile, ";");
-	        
-	        
-	        
+
+
+
       	}else if(isset($testar)){
 
 	        fputs($rFile, $$testar);
 	        fputs($rFile, "\n");
 	        fputs($rFile, "TOTAL DE REGISTROS");
-	        
+
       	}else{
-      		
+
         	fputs($rFile, "TOTAL DE REGISTROS");
-        	
+
       	}
-      	
+
       	reset($arr_rubricas);
-      		
+
       	for($ii=0; $ii < count($arr_rubricas); $ii++){
-      		
+
 	        $index   = key($arr_rubricas);
 	        $rubrica = $arr_rubricas[$index]." ".$arr_quantval[$index] . ";";
-	              	
+
 	        fputs($rFile, $rubrica);
-	        
+
 	        next($arr_rubricas);
       	}
-      	
+
      	 	fputs($rFile, "TOTAL\n");
-     	 	
-     	 	
+
+
       	$troca = 0;
-      	
+
      	 	if(isset($testar)){
         	$mudapag = true;
       	}
@@ -724,12 +724,12 @@ if($tipoarq == 'pdf') {
 
     	if($mudapag == true){
 	      fputs($rFile, "\n");
-	      
+
   	    fputs($rFile, $teste." - ".$descr);
   	    fputs($rFile, "\n");
     	}
   	}
-  	
+
 		if(!isset($sototais)){
     	fputs($rFile, $regist);
     	fputs($rFile, ";");
@@ -744,11 +744,11 @@ if($tipoarq == 'pdf') {
 			fputs($rFile, $oSql->rh30_descr);
 			fputs($rFile, ";");
 			fputs($rFile, $oSql->rh37_descr);
-			fputs($rFile, ";");    	
-    	
+			fputs($rFile, ";");
+
 		}
   	reset($arr_rubricas);
-  
+
  	 	for($ii=0; $ii<count($arr_rubricas); $ii++) {
 			$index     = key($arr_rubricas);
 			$rubrica   = $arr_rubricas[$index]." ".$arr_quantval[$index];
@@ -762,7 +762,7 @@ if($tipoarq == 'pdf') {
 				fputs($rFile, ";");
 			}
 			next($arr_rubricas);
-			
+
 		}
 		$totalreg++;
 		$totalgreg++;
@@ -772,17 +772,17 @@ if($tipoarq == 'pdf') {
 			fputs($rFile, trim(db_formatar($formulado,"f")));
 		}
 		fputs($rFile,"\n");
-  	
+
 	}
 	fclose($rFile);
-	
-	
+
+
   echo "<script>";
   echo "  listagem = '$sNomeArq#Download arquivo TXT (dados dos carnes)|';";
   echo "  parent.js_fechaiframe();";
   echo "  js_montarlista(listagem,'form1');";
   echo "</script>";
-	
+
   echo "</body>";
   echo "</html>";
 }

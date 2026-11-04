@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,25 +50,25 @@ if(isset($receita) && $receita != "" && isset($valor) && $valor != ""){
        <?=@$Ly42_codnoti?>
     </td>
     <td> 
-<?
+<?php
 db_input('y42_codnoti',20,$Iy42_codnoti,true,'text',3,"")
 ?>
-       <?
+       <?php
 db_input('y30_data',10,$Iy30_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty42_receit?>">
-       <?
+       <?php
        db_ancora(@$Ly42_receit,"js_pesquisay42_receit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y42_receit',4,$Iy42_receit,true,'text',$db_opcao," onchange='js_pesquisay42_receit(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -78,7 +78,7 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Ly42_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('y42_descr',50,$Iy42_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -88,7 +88,7 @@ db_input('y42_descr',50,$Iy42_descr,true,'text',$db_opcao,"")
        <?=@$Ly42_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('y42_valor',10,$Iy42_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_input('y42_valor',10,$Iy42_valor,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td colspan="2" align="center">
-    <?
+    <?php
     if(isset($chavepesquisa1) && $chavepesquisa1 != ""){
       $where = " y42_receit <> $chavepesquisa1";
     }else{

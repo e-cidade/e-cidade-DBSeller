@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -51,10 +51,10 @@ $sMsgTitle = "Para selecionar mais de uma turma, mantenha pressionada a tecla CT
 
 <body bgcolor="#CCCCCC">
 <div class='container'>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <form action="" ></form>
   <fieldset>
-    <legend>Relatório de Conselho de Classe</legend>
+    <legend>Relatório de Nota Necessária Para Aprovação</legend>
     <table class='form-container'>
       <tr>
         <td class='bold field-size4' nowrap="nowrap">Calendário:</td>
@@ -78,7 +78,7 @@ $sMsgTitle = "Para selecionar mais de uma turma, mantenha pressionada a tecla CT
       <select id='cntTurmas' title="<?php echo $sMsgTitle;?>" multiple="multiple" >
       </select>
     </fieldset>
-    <table class='form-container'>   
+    <table class='form-container'>
       <tr>
         <td class='bold field-size4' nowrap="nowrap">Exibir Troca de Turma:</td>
         <td nowrap="nowrap">
@@ -139,13 +139,12 @@ oDBFormCache.setElements(new Array($('comLegenda')));
 
 oDBFormCache.load();
 
-
 (function () {
 
-  $('cntTurmas').style.height    = '180px'; 
+  $('cntTurmas').style.height    = '180px';
   $('cntTurmas').style.width     = '300px';
   $('cntTurmas').options.length  = 0;
-  
+
   var oParametro = {};
   oParametro.exec = 'pesquisaCalendario';
 
@@ -157,11 +156,11 @@ oDBFormCache.load();
                        };
   js_divCarregando("Aguarde, buscando calendários.", "msgBox");
   new Ajax.Request('edu_educacaobase.RPC.php', oObjeto);
-  
+
 })();
 
 function js_retornoCalendarios(oAjax) {
-  
+
   js_removeObj('msgBox');
   var oRetorno = eval('('+oAjax.responseText+')');
 
@@ -184,7 +183,7 @@ function js_buscaPeriodos() {
     return false;
   }
   $('cntPeriodo').add(new Option("Selecione", ""));
-  
+
   var oParametro                 = {};
   oParametro.exec                = 'buscaPeriodosAvaliacaoEscola';
   oParametro.lFiltraEscolaLogada = true;
@@ -227,7 +226,7 @@ function js_buscaTurmas() {
   oParametro.exec                   = 'pesquisaTurmaEtapa';
   oParametro.lComAlunosMatriculados = true;
   oParametro.iCalendario            = $F('cntCalendario');
-  
+
   var oObjeto        = new Object();
   oObjeto.method     = 'post';
   oObjeto.parameters = 'json='+Object.toJSON(oParametro);
@@ -255,7 +254,6 @@ function js_retornoTurmas(oAjax) {
     $('cntTurmas').add(oOption);
   });
 }
-
 
 $('imprimir').observe('click', function () {
 
@@ -294,12 +292,11 @@ $('imprimir').observe('click', function () {
   sUrl += '&oTurmas='+Object.toJSON(aTurmas);
   sUrl += '&tamanhoFonte='+$F('tamanhoFonte');
   sUrl += '&comLegenda='+$F('comLegenda');
-  
+
   jan = window.open(sUrl,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
   oDBFormCache.save();
-  
-});
 
+});
 </script>
 </html>

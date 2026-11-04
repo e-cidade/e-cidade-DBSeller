@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ $cldb_dae->rotulo->label("w04_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where = "";
       if(isset($z01_numcgm) && $z01_numcgm != "" ){
         $where = " z01_numcgm = $z01_numcgm";

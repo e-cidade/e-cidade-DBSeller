@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("o80_descr");
     <td nowrap title="<?=@$To84_codres?>"> Orgão : 
     </td>
     <td> 
-     <?  $res= $clorcorgao->sql_record($clorcorgao->sql_query_file(db_getsession('DB_anousu'),"","o40_orgao,o40_descr")); 
+     <?php  $res= $clorcorgao->sql_record($clorcorgao->sql_query_file(db_getsession('DB_anousu'),"","o40_orgao,o40_descr")); 
          db_selectrecord("orgao",$res,"",1,"","","","0","js_atualiza();");	
 	
       ?>    
@@ -54,7 +54,7 @@ $clrotulo->label("o80_descr");
   <tr>
     <td nowrap title="<?=@$To84_codres?>"> Unidade :   </td>
     <td> 
-     <? if (isset($orgao)) 
+     <?php if (isset($orgao)) 
         {
              $res= $clorcunidade->sql_record($clorcunidade->sql_query_file(db_getsession('DB_anousu'),
 	                                      "$orgao","","o41_unidade,o41_descr")); 
@@ -69,7 +69,7 @@ $clrotulo->label("o80_descr");
   <tr>
     <td nowrap title="<?=@$To84_codres?>"> Elemento :   </td>
     <td> 
-     <? 
+     <?php 
          if (isset($orgao) and $orgao=="0"){
               $res= $clorcelemento->sql_record($clorcelemento->sql_query_file("",db_getsession("DB_anousu"),"o56_codele,o56_descr","o56_descr","")); 
 	      db_selectrecord("elemento",$res,"",1,"","","","0" );	  
@@ -87,11 +87,11 @@ $clrotulo->label("o80_descr");
       ?>
     </td>
   </tr>
-  <? if ($db_opcao == "1") {   ?>
+  <?php if ($db_opcao == "1") {   ?>
       <tr>
          <td nowrap title="<?=@$To84_codres?>"> Tipo  :   </td>
          <td> 
-           <?
+           <?php
               $matr["M"]="Mensal ";
               $matr["B"]="Bimestral ";
               $matr["T"]="Trimestral";
@@ -101,7 +101,7 @@ $clrotulo->label("o80_descr");
             ?>
          </td>
       </tr>
-  <?   }   ?>  
+  <?php   }   ?>  
 
   </table>
   </center>

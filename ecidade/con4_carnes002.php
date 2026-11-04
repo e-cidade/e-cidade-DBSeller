@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ tr {
         <td width="21%" nowrap> 
 		<select name="dados" size="1" onChange="js_inserircampo(this.form,this)">
             <option value="0">&nbsp;</option>
-            <?
+            <?php
 		  $result = db_query("select distinct c.nomecam ,c.tamanho
 		                     from db_syscampo c 
 							   inner join db_sysarqcamp a on a.codcam = c.codcam
@@ -112,7 +112,7 @@ tr {
         <td width="21%" nowrap><strong> Nome Formul&aacute;rio:&nbsp;&nbsp;</strong></td>
         <td width="20%"> <select name="formulario" id="formulario" onChange="js_abririmagem(this)">
             <option>&nbsp;</option>
-            <?
+            <?php
 			    $result = db_query("select codmodelo,nomemodelo from db_carnesimg");
 				$numrows = pg_numrows($result);
 				for($i = 0;$i < $numrows;$i++) {
@@ -141,7 +141,7 @@ tr {
 		  
 		  <select name="texto" size="1" onChange="js_inserircampoa(this.form,this)">
             <option value="0">&nbsp;</option>
-            <?
+            <?php
 		  $result = db_query("select idtx,txcampo
 		                     from db_carnesdados 
 							 order by txcampo");

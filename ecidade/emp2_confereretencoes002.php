@@ -58,7 +58,8 @@ if ($oParametros->datainicial != "" && $oParametros->datafinal == "") {
     $dataFinal = implode("-", array_reverse(explode("/", $oParametros->datafinal)));
     if ($oParametros->iPagamento == 'l') {
         $sWhere .= "and retencao.e23_dtcalculo between '{$dataInicial}' and '{$dataFinal}'";
-    } if ($oParametros->iPagamento == 'p') {
+    }
+    if ($oParametros->iPagamento == 'p') {
         $sWhere .= " and corrente.k12_data between '{$dataInicial}' and '{$dataFinal}'";
     } else if ($oParametros->iPagamento == 'n') {
         $sWhere .= " and empnota.e69_dtnota between '{$dataInicial}' and '{$dataFinal}'";
@@ -74,7 +75,7 @@ if ($oParametros->iOrdemIni != "" && $oParametros->iOrdemFim == "") {
 }
 
 if (count($oParametros->recursos)) {
-    $sWhere .= " and o15_recurso in ('" . implode("', '", $oParametros->recursos) . "')";
+    $sWhere .= " and o15_codigo in (" . implode(', ', $oParametros->recursos) . ")";
 }
 
 if (count($oParametros->credores)) {
@@ -103,12 +104,12 @@ if ($oParametros->sOps == "p") {
 }
 
 $sHeaderOrgaoUnidade = "";
-if ($oParametros->orgao != "" ) {
+if ($oParametros->orgao != "") {
     $sHeaderOrgaoUnidade = "Orgão: {$oParametros->orgao}";
     $sWhere .= " and o58_orgao = {$oParametros->orgao}";
 }
 
-if ($oParametros->unidade != "" ) {
+if ($oParametros->unidade != "") {
     $sHeaderOrgaoUnidade = " Orgão/Unidade: {$oParametros->orgao}/{$oParametros->unidade}";
     $sWhere .= " and o58_unidade = {$oParametros->unidade}";
 }
@@ -117,17 +118,13 @@ $sValorCompararQuebra = "";
 $sCampoQuebrar = "";
 $sNomeQuebra = "";
 $sHeaderQuebra = "Nenhum";
-if ($oParametros->order == 1) {
-    $sCampoQuebrarSql ="e50_codord";
-    $sCampoOrdenar = "e50_codord";
-    $sHeaderOrdem = "Númerico";
-} else {
-    $sCampoOrdenar = "e20_descricao";
-    $sHeaderOrdem = "Descrição";
-}
+$sCampoQuebrarSql = "e50_codord";
+$sCampoOrdenar = "e50_codord";
+$sHeaderOrdem = "Númerico";
+
 
 if ($oParametros->group == 2) {
-    $sCampoQuebrarSql ="k12_conta";
+    $sCampoQuebrarSql = "k12_conta";
     $sCampoQuebrar = "k12_conta";
     $sNomeQuebra = "c60_descr";
     $sHeaderQuebra = "Conta";
@@ -150,15 +147,15 @@ if ($oParametros->group == 2) {
 } else if ($oParametros->group == 4) {
     //Quebra por recurso
     $sCampoQuebrarSql = "o58_codigo";
-    $sCampoQuebrar = "o58_codigo";
-    $sNomeQuebra = "o15_descr";
+    $sCampoQuebrar = "gestao";
+    $sNomeQuebra = "descricao";
     $sHeaderQuebra = "Recurso";
     if ($oParametros->order == 1) {
         $sCampoOrdenar = "o58_codigo";
     } else {
-        $sCampoOrdenar = "o15_descr";
+        $sCampoOrdenar = "descricao";
     }
-}  else if ($oParametros->group == 5) {
+} else if ($oParametros->group == 5) {
     //Quebra por unidade orcamentaria
     $sCampoQuebrarSql = "o41_orgao||'-'||o41_unidade as quebra";
     $sCampoQuebrar = "quebra";
@@ -169,7 +166,7 @@ if ($oParametros->group == 2) {
     } else {
         $sCampoOrdenar = "o41_descr";
     }
-}  else if ($oParametros->group == 6) {
+} else if ($oParametros->group == 6) {
     //Quebra por unidade orcamentaria e credor
     $sCampoQuebrarSql = "o41_orgao||'-'||o41_unidade||'-'||z01_numcgm as quebra";
     $sCampoQuebrar = "quebra";
@@ -192,8 +189,9 @@ $sSqlRetencoes .= "       e60_codemp,         ";
 $sSqlRetencoes .= "       e60_anousu,         ";
 $sSqlRetencoes .= "       c61_reduz,          ";
 $sSqlRetencoes .= "       o58_codigo,         ";
+$sSqlRetencoes .= "       gestao,        ";
 $sSqlRetencoes .= "       o15_recurso,        ";
-$sSqlRetencoes .= "       o15_descr,          ";
+$sSqlRetencoes .= "       descricao,          ";
 $sSqlRetencoes .= "       o41_orgao,          ";
 $sSqlRetencoes .= "       o41_unidade,        ";
 $sSqlRetencoes .= "       o41_descr,          ";
@@ -236,6 +234,7 @@ $sSqlRetencoes .= "                                  and o41_orgao      = o58_or
 $sSqlRetencoes .= "                                  and o41_instit     = o58_instit           ";
 $sSqlRetencoes .= "                                  and o41_anousu     = o58_anousu           ";
 $sSqlRetencoes .= "       inner join orctiporec       on o15_codigo     = o58_codigo           ";
+$sSqlRetencoes .= "       inner join fonterecurso     on orctiporec_id  = o15_codigo and exercicio = o58_anousu ";
 $sSqlRetencoes .= "       inner join cgm              on e60_numcgm     = cgm.z01_numcgm       ";
 $sSqlRetencoes .= "       left join cgm  cgmordem     on e49_numcgm     = cgmordem.z01_numcgm  ";
 $sSqlRetencoes .= "       inner join pagordemnota     on e71_codord     = e50_codord           ";
@@ -257,9 +256,6 @@ $sSqlRetencoes .= "                                         and c60_anousu      
 $sSqlRetencoes .= " where e23_ativo is true ";
 $sSqlRetencoes .= "   and {$sWhere}              ";
 
-$sSqlRetencoes = "select {$sCampoQuebrarSql}, dados.*
-                                 from ({$sSqlRetencoes}) as dados
-                                order by {$sCampoOrdenar}";
 $rsRetencoes = db_query($sSqlRetencoes);
 $iTotalRetencoes = pg_num_rows($rsRetencoes);
 if ($iTotalRetencoes == 0 || !$rsRetencoes) {
@@ -284,19 +280,20 @@ for ($i = 0; $i < $iTotalRetencoes; $i++) {
     $cCbo = $oRetencao->z01_cbo;
 
     if ($oParametros->group != 1) {
+
         if ($sValorCompararQuebra == $oRetencao->$sCampoQuebrar) {
             $aRetencoes[$oRetencao->$sCampoQuebrar]->total += $oRetencao->e23_valorretencao;
             $aRetencoes[$oRetencao->$sCampoQuebrar]->total_op += $oRetencao->e53_valor;
             $aRetencoes[$oRetencao->$sCampoQuebrar]->itens[] = $oRetencao;
         } else {
             if ($oParametros->group == 3) {
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $oRetencao->$sCampoQuebrar . " - " . $oRetencao->$sNomeQuebra;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->$sCampoQuebrar . " - " . $oRetencao->$sNomeQuebra;
                 $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim($cCbo)) == 0 ? "" : " - CBO: $cCbo");
             } else if ($oParametros->group == 5) {
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->o41_orgao . "/" . str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT) . " - " . $oRetencao->o41_descr;
             } else if ($oParametros->group == 6) {
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto  = $oRetencao->o41_orgao."/".str_pad($oRetencao->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oRetencao->o41_descr;
-                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " Credor: ".$oRetencao->z01_numcgm." - ".$oRetencao->z01_nome;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto = $oRetencao->o41_orgao . "/" . str_pad($oRetencao->o41_unidade, 3, "0", STR_PAD_LEFT) . " - " . $oRetencao->o41_descr;
+                $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " Credor: " . $oRetencao->z01_numcgm . " - " . $oRetencao->z01_nome;
                 $aRetencoes[$oRetencao->$sCampoQuebrar]->texto .= " - CPF/CNPJ: $cCnpjCpf - PIS: $cPis " . (strlen(trim($cCbo)) == 0 ? "" : " - CBO: $cCbo");
             } else {
                 if (empty($aRetencoes[$oRetencao->$sCampoQuebrar])) {
@@ -329,6 +326,9 @@ for ($i = 0; $i < $iTotalRetencoes; $i++) {
         $aRetencoes[0]->itens[] = $oRetencao;
     }
 }
+
+
+
 
 $oPdf = new PDF("L", "mm", "A4");
 $oPdf->Open();
@@ -363,10 +363,18 @@ if ($oParametros->group == 2) {
     $iTamFonte = 6;
 }
 
+
+//if ($oParametros->group != 4) {
+
+
+
 foreach ($aRetencoes as $oQuebra) {
+
     $oPdf->SetFont($sFonte, "b", $iTamFonte + 2);
     $lEscreverHeader = true;
 
+    $totalRetencao = 0;
+    $totalOP = 0;
     foreach ($oQuebra->itens as $oRetencaoAtiva) {
         if ($oPdf->Gety() > $oPdf->h - 27 || $lEscreverHeader) {
             if ($oPdf->Gety() > $oPdf->h - 27) {
@@ -412,7 +420,7 @@ foreach ($aRetencoes as $oQuebra) {
 
         $oPdf->cell(10 + $iTamCell, 5, $oRetencaoAtiva->e50_codord, "TBR", 0, "R");
         $oPdf->cell(15 + $iTamCell, 5, "{$oRetencaoAtiva->e60_codemp}/{$oRetencaoAtiva->e60_anousu}", "TBR", 0, "R");
-        $oPdf->cell(12, 5, getFonteReduzidaRecurso($oRetencaoAtiva->o58_codigo), "TBR", 0, "R");
+        $oPdf->cell(12, 5, $oRetencaoAtiva->gestao, "TBR", 0, "R");
         $oPdf->cell(23 + $iTamCell, 5, substr("{$oRetencaoAtiva->k02_codigo} - {$oRetencaoAtiva->k02_descr}", 0, 20), "TBR", 0, "L");
         $oPdf->cell(15 + $iTamCell, 5, db_formatar($oRetencaoAtiva->e53_valor, "f"), "TBR", 0, "R");
         $oPdf->cell(18, 5, substr($oRetencaoAtiva->e69_numero, 0, 14), "TBR", 0, "R");
@@ -423,25 +431,31 @@ foreach ($aRetencoes as $oQuebra) {
             $oPdf->cell(56, 5, substr("{$oRetencaoAtiva->z01_numcgm} - {$oRetencaoAtiva->z01_nome}", 0, 40), "TBR", 0, "L");
         }
 
-	    if(isParaiba()){
-       	    $oPdf->cell(17, 5, $oRetencaoAtiva->k206_slip, "TBR", 0, "R");
-        }else{
-		    $oPdf->cell(17, 5, $oRetencaoAtiva->k17_codigo, "TBR", 0, "R");
-	    }
-	$oPdf->cell(25, 5, db_formatar($oRetencaoAtiva->e23_valorretencao, "f"), "TBL", 1, "R");
+        if (isParaiba()) {
+            $oPdf->cell(17, 5, $oRetencaoAtiva->k206_slip, "TBR", 0, "R");
+        } else {
+            $oPdf->cell(17, 5, $oRetencaoAtiva->k17_codigo, "TBR", 0, "R");
+        }
+        $oPdf->cell(25, 5, db_formatar($oRetencaoAtiva->e23_valorretencao, "f"), "TBL", 1, "R");
+
+        $totalRetencao += $oRetencaoAtiva->e23_valorretencao;
+        $totalOP +=  $oRetencaoAtiva->e53_valor;
     }
 
     $oPdf->SetFont($sFonte, "b", $iTamFonte);
     $oPdf->cell(109, 5, 'Total da OP:', "TBR", 0, "R");
-    $oPdf->cell(15, 5, db_formatar($oQuebra->total_op, "f"), "TBR", 0, "R");
+    $oPdf->cell(15, 5, db_formatar($totalOP, "f"), "TBR", 0, "R");
     $oPdf->cell(131, 5, "Total da Retenção:", "TBR", 0, "R");
-    $oPdf->cell(25, 5, db_formatar($oQuebra->total, "f"), "TBL", 1, "R");
-    $nTotalRetencoes += $oQuebra->total;
-    $nTotalOrdemPagamento += $oQuebra->total_op;
+    $oPdf->cell(25, 5, db_formatar($totalRetencao, "f"), "TBL", 1, "R");
+    $nTotalRetencoes += $totalRetencao;//$oQuebra->total;
+    $nTotalOrdemPagamento += $totalOP;//$oQuebra->total_op;
 }
 $oPdf->SetFont($sFonte, "b", $iTamFonte);
 $oPdf->cell(109, 5, 'Total Geral OP:', "TBR", 0, "R");
 $oPdf->cell(15, 5, db_formatar($nTotalOrdemPagamento, "f"), "TBR", 0, "R");
 $oPdf->cell(131, 5, "Total Geral:", "TBR", 0, "R");
 $oPdf->cell(25, 5, db_formatar($nTotalRetencoes, "f"), "TBL", 1, "R");
+
+
 $oPdf->Output();
+

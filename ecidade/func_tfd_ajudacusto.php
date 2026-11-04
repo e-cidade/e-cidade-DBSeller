@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -59,7 +59,7 @@ $oRotulo->label('sd63_c_procedimento');
               <?=$Ltf12_i_codigo?>
             </td>
             <td align="left" nowrap colspan="3">
-              <?
+              <?php
   	          db_input("tf12_i_codigo",10,$Itf12_i_codigo,true,"text",4,"","chave_tf12_i_codigo");
 		          ?>
             </td>
@@ -69,7 +69,7 @@ $oRotulo->label('sd63_c_procedimento');
               <?=$Lsd63_c_procedimento?>
             </td>
             <td align="left" nowrap>
-              <?
+              <?php
 		          db_input("sd63_c_procedimento",10,$Isd63_c_procedimento,true,"text",4,"","chave_sd63_c_procedimento");
 		          ?>
             </td>
@@ -77,7 +77,7 @@ $oRotulo->label('sd63_c_procedimento');
               <?=$Lsd63_c_nome?>
             </td>
             <td align="left" nowrap>
-              <?
+              <?php
 		          db_input("sd63_c_nome",50,$Isd63_c_nome,true,"text",4,"","chave_sd63_c_nome");
 		          ?>
             </td>
@@ -95,7 +95,7 @@ $oRotulo->label('sd63_c_procedimento');
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $sValidade = '';
       $sSepVal = '';
       if(isset($chave_validade)) {
@@ -202,12 +202,12 @@ $oRotulo->label('sd63_c_procedimento');
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

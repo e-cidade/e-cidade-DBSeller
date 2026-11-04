@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -159,7 +159,7 @@ if(isset($v13_certid) && $v13_certid!="" && $veinclu==false){
   				<?=$Lv50_inicial?>
   			</td>
   			<td> 
-  				<?
+  				<?php
   					db_input('v50_inicial',10,$Iv50_inicial,true,'text',1);
   				?>
   			</td>

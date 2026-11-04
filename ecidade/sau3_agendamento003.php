@@ -181,7 +181,7 @@ if(isset($pesquisar)) {
             'pesquisar' => 'Pesquisar',
             'z01_i_cgsund' => isset($z01_i_cgsund) ? $z01_i_cgsund : '',
             'sd23_d_consulta' => isset($sd23_d_consulta) ? $sd23_d_consulta : '',
-            'sd23_d_consulta2' => isset($sd23_d_consulta2) ? $sd23_d_consulta2 : '', 
+            'sd23_d_consulta2' => isset($sd23_d_consulta2) ? $sd23_d_consulta2 : '',
           ];
           db_lovrot($sql, 15, "()", "", "", "", "NoMe", $repassa, false);
         }

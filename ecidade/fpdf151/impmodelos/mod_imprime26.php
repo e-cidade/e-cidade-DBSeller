@@ -1,4 +1,4 @@
-<?
+<?php
 //$this->objpdf->SetRightMargin(152);
 //$this->objpdf->SetTopMargin(95);
 //$this->objpdf->Image('imagens/files/alvarapreimp.jpg','','',152,95);
@@ -27,7 +27,9 @@ $this->objpdf->Cell(15,5,"",0,0,"D",0); ////
 $this->objpdf->Cell(100,5,$this->ender.", ".$this->numero.(isset($this->compl)&&$this->compl!=""?"/".$this->compl:""),0,1,"D",0);
 
 //$this->objpdf->Cell(100,5,$this->ender,0,1,"D",0);
-$pdf1->numero      = $this->numero;
+if (isset($pdf1)) {
+    $pdf1->numero = $this->numero;
+}
 $linha = $linha+8;
 
 $this->objpdf->setxy($coluna,$linha);

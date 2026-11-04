@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -538,7 +538,7 @@ function js_valida() {
     return false;
   }
 
-  Vemail = "<?=@$GLOBALS[Sed254_c_email]?>";
+  Vemail = "<?=@$GLOBALS['Sed254_c_email']?>";
   if( jsValidaEmail( document.form1.ed254_c_email.value, Vemail ) == false ) {
     return false;
   }

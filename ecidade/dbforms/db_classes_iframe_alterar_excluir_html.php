@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -126,8 +126,8 @@ function js_alterar(nota,valor){
 <form name="form1" method="post" action="">
   <table  border="1" cellpadding="3" cellspacing="0" id="tab">
     <tr bgcolor="#BDC6BD">
-    <?
-      $colunas= split("#",$quais_colunas);
+    <?php
+      $colunas=explode("#",$quais_colunas);
       for($i=0; $i<sizeof($colunas); $i++){
         $coluna="x_".$colunas[$i];
         echo "<th class='cabec' width=\"\" id='w' align=\"\" nowrap ><small>".str_replace(":","",$$coluna)."</small></th>";
@@ -136,11 +136,11 @@ function js_alterar(nota,valor){
 
     ?>
     </tr>
-    <?
+    <?php
      if(isset($sql) && $sql!=""){
        $coluna="";
        $virgula="";
-       $colunas= split("#",$quais_colunas);
+       $colunas=explode("#",$quais_colunas);
        $totcol=sizeof($colunas);
        for($i=0; $i<$totcol; $i++){
          $coluna.=$virgula.$colunas[$i];
@@ -185,7 +185,7 @@ function js_alterar(nota,valor){
 </center>
 </body>
 </html>
-<?
+<?php
  $retorno = @unlink(base64_decode($arquivo));
   if($retorno==false){
        echo "<blink>Carregando...</blink>";

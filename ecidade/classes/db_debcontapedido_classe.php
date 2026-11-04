@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -67,13 +67,13 @@ class cl_debcontapedido {
                  d63_idempresa = varchar(25) = Id Empresa
                  ";
    //funcao construtor da classe
-   function cl_debcontapedido() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedido");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -82,7 +82,7 @@ class cl_debcontapedido {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d63_codigo = ($this->d63_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["d63_codigo"]:$this->d63_codigo);
        $this->d63_instit = ($this->d63_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["d63_instit"]:$this->d63_instit);
@@ -105,7 +105,7 @@ class cl_debcontapedido {
      }
    }
    // funcao para inclusao
-   function incluir ($d63_codigo){
+   public function incluir ($d63_codigo){
       $this->atualizacampos();
      if($this->d63_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao nao Informado.";
@@ -267,7 +267,7 @@ class cl_debcontapedido {
      return true;
    }
    // funcao para alteracao
-   function alterar ($d63_codigo=null) {
+   public function alterar ($d63_codigo=null) {
       $this->atualizacampos();
      $sql = " update debcontapedido set ";
      $virgula = "";
@@ -457,7 +457,7 @@ class cl_debcontapedido {
      }
    }
    // funcao para exclusao
-   function excluir ($d63_codigo=null,$dbwhere=null) {
+   public function excluir ($d63_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d63_codigo));
      }else{
@@ -526,7 +526,7 @@ class cl_debcontapedido {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -549,10 +549,10 @@ class cl_debcontapedido {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,10 +586,10 @@ class cl_debcontapedido {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,7 +610,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,10 +619,10 @@ class cl_debcontapedido {
      }
      return $sql;
   }
-   function sql_query_info ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_info ( $d63_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -651,7 +651,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -661,10 +661,10 @@ class cl_debcontapedido {
      return $sql;
   }
 
-  function sql_query_deb_conta($d63_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_deb_conta($d63_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -687,7 +687,7 @@ class cl_debcontapedido {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

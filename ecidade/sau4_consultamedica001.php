@@ -109,8 +109,8 @@ try {
 
   if( isset( $incluir ) ) {
 
-    if ( $sd24_i_codigo == "" ) {     
-      throw new Exception("Pesquise um paciente para incluir uma consulta médica.");            
+    if ( $sd24_i_codigo == "" ) {
+      throw new Exception("Pesquise um paciente para incluir uma consulta médica.");
     } else {
 
       $clprontprocedcid->erro_status = "1";
@@ -123,7 +123,7 @@ try {
       $clprontproced->sd29_sigilosa               = isset($sd29_sigilosa) ? 'true' : 'false';
       $clprontproced->incluir(null);
       if ($clprontproced->erro_status == 0) {
-        throw new Exception($clprontproced->erro_msg);      
+        throw new Exception($clprontproced->erro_msg);
       }
 
       if ((int)$sd70_i_codigo > 0 && $clprontproced->erro_status != '0') {
@@ -133,7 +133,7 @@ try {
         $clprontprocedcid->incluir(null);
 
         if ($clprontprocedcid->erro_status == 0) {
-          throw new Exception($clprontprocedcid->erro_msg);        
+          throw new Exception($clprontprocedcid->erro_msg);
         }
       }
 
@@ -257,7 +257,7 @@ try {
 
 } catch (Exception $oErro) {
 
- db_fim_transacao(true); 
+ db_fim_transacao(true);
  $clprontproced->erro_msg    = $oErro->getMessage();
  $clprontproced->erro_status = 0;
 }
@@ -276,6 +276,7 @@ $sJoins .= " left  join rhcbo          on rhcbo.rh70_sequencial        = especme
 
 $sWhere  = " sd02_i_codigo = ".db_getsession("DB_coddepto");
 $sWhere .= " and db_usuacgm.id_usuario = ".db_getsession("DB_id_usuario");
+$sWhere .= " and sd27_c_situacao = 'A'";
 
 if ( isset($iRhCbo) && !empty($iRhCbo ) ) {
   $sWhere .= " and rh70_sequencial = {$iRhCbo} ";
@@ -283,6 +284,8 @@ if ( isset($iRhCbo) && !empty($iRhCbo ) ) {
 
 $sSql               = $oDaoCgm->sql_query_file(null,$sCampos);
 $sSql              .= $sJoins.' where '.$sWhere;
+
+$sSql .= " order by sd27_b_principal DESC limit 1 ";
 $rs                 = $oDaoCgm->sql_record($sSql);
 $lDepartamentoSaude = false;
 
@@ -339,6 +342,7 @@ if ($oDaoCgm->numrows > 0) {
   <script rel="script" type="text/javascript" src="scripts/widgets/Input/DBInputDate.widget.js"></script>
   <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
   <script rel="script" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+  <script rel="script" type="text/javascript" src="scripts/saude.js"></script>
   <script>
     lHabilitaSigilosa = true;
   </script>
@@ -476,11 +480,11 @@ function jsAlterar(oProcedimento) {
   $('sd70_i_codigo').value       = oProcedimento.iCid;
   $('sd70_c_cid').value          = oProcedimento.sCid.urlDecode();
   $('sd70_c_nome').value         = oProcedimento.sNomeCid.urlDecode();
-  
-  if ($('sd29_t_tratamento')) { 
+
+  if ($('sd29_t_tratamento')) {
     $('sd29_t_tratamento').value = oProcedimento.sTratamento.urlDecode();
   }
-  
+
   if ($('sd29_t_achado')) {
     $('sd29_t_achado').value = oProcedimento.sAchado.urlDecode();
   }

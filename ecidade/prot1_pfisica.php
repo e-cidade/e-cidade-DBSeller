@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -38,7 +38,7 @@
 
  <tr>
    <input type="hidden" name="municipio" value="<?=($municipio == "t"?'f':'t')?>">
-   <?
+   <?php
 
 		 if(isset($z01_cgccpf) && $z01_cgccpf != ""){
 
@@ -59,7 +59,7 @@
     <td nowrap title="<?=@$Tz01_cpf?>">
       <?=@$Lz01_cpf?>
       &nbsp;&nbsp;
-			<?
+			<?php
 	      db_input('z01_cpf',15,@$Iz01_cpf,true,'text',$db_opcao,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");
 			?>
       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -68,7 +68,7 @@
 			<strong>
 				<?=$LDBtxt29?>
 			</strong>
-			<?
+			<?php
 				$x = array("t"=>"SIM","f"=>"NÃO");
 				//db_select('municipio',$x,true,$db_opcao,'onChange="document.form1.submit()"');
 				db_select('municipio',$x,true,$db_opcao,'onChange="js_zerac();"');
@@ -83,7 +83,7 @@
             <?=@$Lz01_ident?>
           </td>
           <td nowrap title="<?=@$Tz01_ident?>">
-            <?
+            <?php
 							db_input('z01_ident',20,$Iz01_ident,true,'text',$db_opcao);
             ?>
           </td>
@@ -93,7 +93,7 @@
             <?=$Lz01_numcgm?>
           </td>
           <td width="73%" nowrap>
-			      <?
+			      <?php
 							db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',3);
 						?>
           </td>
@@ -103,7 +103,7 @@
             <?=@$Lz01_nome?>
           </td>
           <td nowrap title="<?=@$Tz01_nome?>">
-            <?
+            <?php
 							db_input('z01_nome',40,$Iz01_nome,true,'text',$db_opcao,"onBlur='js_testanome(this.value,\"\",\"\");");
             ?>
           </td>
@@ -114,7 +114,7 @@
             <?=@$Lz01_nomecomple?>
           </td>
           <td nowrap title="<?=@$Tz01_nomecomple?>">
-            <?
+            <?php
               db_input('z01_nomecomple',40,$Iz01_nomecomple,true,'text',$db_opcao,"onBlur='js_testanome(this.value,\"\",\"\");");
             ?>
           </td>
@@ -125,7 +125,7 @@
             <?=@$Lz01_pai?>
           </td>
 					<td nowrap title="<?=@$Tz01_pai?>">
-            <?
+            <?php
 						  db_input('z01_pai',40,$Iz01_pai,true,'text',$db_opcao,"");
 						?>
           </td>
@@ -135,7 +135,7 @@
             <?=@$Lz01_mae?>
           </td>
           <td nowrap title="<?=@$Tz01_mae?>">
-            <?
+            <?php
 							db_input('z01_mae',40,$Iz01_mae,true,'text',$db_opcao,"");
 						?>
           </td>
@@ -145,7 +145,7 @@
             <?=$Lz01_nasc?>
           </td>
           <td nowrap title="<?=$Tz01_nasc?>">
-						<?
+						<?php
 							db_inputdata('z01_nasc',@$z01_nasc_dia,@$z01_nasc_mes,@$z01_nasc_ano,true,'text',$db_opcao);
 						?>
           </td>
@@ -155,7 +155,7 @@
             <?=$Lz01_dtfalecimento?>
           </td>
           <td nowrap title="<?=$Tz01_dtfalecimento?>">
-            <?
+            <?php
               db_inputdata('z01_dtfalecimento',@$z01_dtfalecimento_dia,@$z01_dtfalecimento_mes,@$z01_dtfalecimento_ano,true,'text',$db_opcao);
             ?>
           </td>
@@ -165,12 +165,12 @@
             <?=$Lz01_estciv?>
           </td>
           <td nowrap title="<?=$Tz01_estciv?>">
-            <?
+            <?php
 							$x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
 							db_select('z01_estciv',$x,true,$db_opcao);
 						?>
             <?=$Lz01_sexo?>
-            <?
+            <?php
 							$sex = array("M"=>"Masculino","F"=>"Feminino");
 							db_select('z01_sexo',$sex,true,$db_opcao);
 						?>
@@ -188,7 +188,7 @@
             <?=@$Lz01_identorgao?>
           </td>
           <td nowrap>
-           <?
+           <?php
              db_input('z01_identorgao',20,$Iz01_identorgao,true,'text',$db_opcao);
 					   echo $Lz01_identdtexp;
 						 db_inputdata('z01_identdtexp',@$z01_identdtexp_dia,@$z01_identdtexp_mes,@$z01_identdtexp_ano,true,'text',$db_opcao);
@@ -200,7 +200,7 @@
 						<?=$Lz01_profis?>
 					</td>
 					<td nowrap>
-					  <?
+					  <?php
 							db_input('z01_profis',40,$Iz01_profis,true,'text',$db_opcao);
 						?>
           </td>
@@ -210,7 +210,7 @@
               <?=@$Lz01_incest?>
             </td>
             <td nowrap>
-           <?
+           <?php
              db_input('z01_incest',15,$Iz01_incest,true,'text',$db_opcao);
 					   echo $Lz01_pis;
 						 db_input('z01_pis',10,$Iz01_pis,true,'text',$db_opcao,"onblur = js_validaPis(this.value);");
@@ -221,7 +221,7 @@
 						<?=$Lz01_nacion?>
 					</td>
 					<td nowrap title="<?=$Tz01_estciv?>">
-					  <?
+					  <?php
 						  $x = array("1"=>"Brasileira","2"=>"Estrangeira");
 						  db_select('z01_nacion',$x,true,$db_opcao);
 					  ?>
@@ -247,11 +247,11 @@
 						<?=@$Lz01_cnh?>
 					</td>
 					<td nowrap title="<?=@$Tz01_cnh?>">
-					  <?
+					  <?php
 						  db_input('z01_cnh',15,$Iz01_cnh,true,'text',$db_opcao,"");
 					  ?>
 						<?=@$Lz01_categoria?>
-					  <?
+					  <?php
 						  $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE");
 						  db_select('z01_categoria',$y,true,$db_opcao);
 					  ?>
@@ -262,7 +262,7 @@
 						<?=@$Lz01_dtemissao?>
 					</td>
 					<td nowrap title="<?=@$Tz01_dtemissao?>">
-					  <?
+					  <?php
 							db_inputdata('z01_dtemissao',@$z01_dtemissao_dia,@$z01_dtemissao_mes,@$z01_dtemissao_ano,true,'text',$db_opcao);
 						?>
 					</td>
@@ -272,7 +272,7 @@
 						<?=@$Lz01_dthabilitacao?>
 					</td>
 					<td nowrap title="<?=@$Tz01_dthabilitacao?>">
-					  <?
+					  <?php
 							db_inputdata('z01_dthabilitacao',@$z01_dthabilitacao_dia,@$z01_dthabilitacao_mes,@$z01_dthabilitacao_ano,true,'text',$db_opcao);
 						?>
 					</td>
@@ -282,7 +282,7 @@
 						<?=@$Lz01_dtvencimento?>
 					</td>
 					<td nowrap title="<?=@$Tz01_dtvencimento?>">
-					  <?
+					  <?php
 							db_inputdata('z01_dtvencimento',@$z01_dtvencimento_dia,@$z01_dtvencimento_mes,@$z01_dtvencimento_ano,true,'text',$db_opcao);
 						?>
 					</td>
@@ -290,10 +290,10 @@
 			</table>
 		</td>
 	</tr>
-	<?
+	<?php
 		db_input('z01_cgc',20,@$Iz01_cgc,true,'hidden',$db_opcao,'');
 	?>
-	<?
+	<?php
 	if($cpf != ""){
 		echo "<script>document.form1.z01_cpf.value = '$cpf'</script>";
 	}

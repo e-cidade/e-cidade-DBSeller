@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -50,56 +50,56 @@ $clrotulo->label("z01_nome");
            <?=@$Lcm28_i_codigo?>
         </td>
         <td>
-            <?
+            <?php
             db_input('cm28_i_codigo',10,$Icm28_i_codigo,true,'text',3,"readonly")
             ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tcm28_i_processo?>">
-           <?
+           <?php
            db_ancora(@$Lcm28_i_processo,"js_pesquisacm28_i_processo(true);",$db_opcao);
            ?>
         </td>
         <td>
-            <?db_input('cm28_i_processo',10,$Icm28_i_processo,true,'text',3,"onchange='js_pesquisacm28_i_processo(false);'")?>
-            <?db_input('p51_descr',40,$Ip51_descr,true,'text',3,'');?>
+            <?php db_input('cm28_i_processo',10,$Icm28_i_processo,true,'text',3,"onchange='js_pesquisacm28_i_processo(false);'")?>
+            <?php db_input('p51_descr',40,$Ip51_descr,true,'text',3,'');?>
         </td>
       </tr>
       <tr>
          <td nowrap title="<?=@$Tp58_requer?>"><?=@$Lp58_requer?></td>
          <td>
-             <?db_input('p58_requer',40,$Ip58_requer,true,'text',3,'');?>
+             <?php db_input('p58_requer',40,$Ip58_requer,true,'text',3,'');?>
          </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tcm28_i_proprietario?>">
-           <?
+           <?php
            db_ancora(@$Lcm28_i_proprietario,"js_pesquisacm28_i_proprietario(true);",$db_opcao);
            ?>
         </td>
         <td>
-    <?
+    <?php
     db_input('cm28_i_proprietario',10,$Icm28_i_proprietario,true,'text',$db_opcao," onchange='js_pesquisacm28_i_proprietario(false);'")
     ?>
-           <?
+           <?php
     db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
            ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tcm28_i_ossoariojazigo?>">
-           <?
+           <?php
            db_ancora(@$Lcm28_i_ossoariojazigo,"js_pesquisacm28_i_ossoariojazigo(true);",$db_opcao);
            ?>
         </td>
         <td>
-    <?
+    <?php
     db_input('cm28_i_ossoariojazigo',10,$Icm28_i_ossoariojazigo,true,'hidden',3);
     db_input('cm25_c_numero',10,@$cm25_c_numero,true,'text',3);
     ?>
 
-           <?
+           <?php
     db_input('cm25_c_tipo',10,@$cm25_c_tipo,true,'text',3,'')
            ?>
         </td>
@@ -109,10 +109,10 @@ $clrotulo->label("z01_nome");
            <?=@$Lcm25_i_lotecemit?>
         </td>
         <td>
-           <?
+           <?php
             db_input('cm25_i_lotecemit',10,$Icm25_i_lotecemit,true,'hidden',3," onchange='js_pesquisacm25_i_lotecemit(false);'")
            ?>
-           <?
+           <?php
             db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',3,'');
             db_input('cm23_c_situacao',10,$Icm23_c_situacao,true,'hidden',3,'');
            ?>
@@ -123,7 +123,7 @@ $clrotulo->label("z01_nome");
            <?=@$Lcm23_i_quadracemit?>
         </td>
         <td>
-           <?
+           <?php
              db_input('cm23_i_quadracemit',10,$Icm23_i_quadracemit,true,'hidden',3,"");
              db_input('cm22_c_quadra',10,$Icm22_c_quadra,true,'text',3,"");
            ?>
@@ -134,7 +134,7 @@ $clrotulo->label("z01_nome");
            <?=@$Lcm22_i_cemiterio?>
         </td>
         <td>
-           <?
+           <?php
              db_input('cm22_i_cemiterio',10,$Icm22_i_cemiterio,true,'text',3,"");
              db_input('cm22_c_cemiterio',40,@$cm22_c_cemiterio,true,'text',3,"");
            ?>
@@ -146,7 +146,7 @@ $clrotulo->label("z01_nome");
            <?=@$Lcm28_d_aquisicao?>
         </td>
         <td>
-    <?
+    <?php
     if(!isset($cm28_d_aquisicao) && $db_opcao==1){
       $cm28_d_aquisicao_dia = date('d',db_getsession("DB_datausu"));
       $cm28_d_aquisicao_mes = date('m',db_getsession("DB_datausu"));
@@ -260,7 +260,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_propricemit.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

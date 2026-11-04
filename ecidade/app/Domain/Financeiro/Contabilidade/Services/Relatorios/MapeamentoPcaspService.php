@@ -51,7 +51,7 @@ class MapeamentoPcaspService
             }
             if ($contasVinculadas->count() === 0) {
                 $temMovimentacao = $conta->getReduzidos()->filter(function (ConplanoReduzido $reduzido) {
-                    return $reduzido->possueMovimentacao($reduzido->c61_reduz, $reduzido->c61_anousu);
+                        return $reduzido->possueMovimentacao($reduzido->c61_reduz, $reduzido->c61_anousu);
                 })->count() > 0;
 
                 if ($temMovimentacao) {
@@ -81,5 +81,19 @@ class MapeamentoPcaspService
             'estrutural_governo' => $pcasp->conta,
             'nome_governo' => $pcasp->nome,
         ];
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getContasSemVinculoComMovimentacao()
+    {
+        if (empty($this->contasSemVinculoComMovimentacao)
+            && empty($this->contasSemVinculo)
+            && empty($this->contasComVinculo)) {
+            $this->processar();
+        }
+
+        return $this->contasSemVinculoComMovimentacao;
     }
 }

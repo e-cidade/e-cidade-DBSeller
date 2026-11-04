@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-<?
+<?php
 if(!isset($menu)){
 ?>
 <table width="790" height="18"  border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
@@ -57,13 +57,13 @@ if(!isset($menu)){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php
 }
 ?>
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php
 	 $clcriaabas->identifica = array("tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefaclientes"=>"Clientes","tarefausu"=>"Usuários Iniciais","tarefaenvol"=>"Usuários Envolvidos","tarefalog"=>"Registros","agenda"=>"Agendamento","tarefaanexos"=>"Anexos"); 
 
      if(isset($menu))
@@ -79,7 +79,7 @@ if(!isset($menu)){
   </table>
   <form name="form1">
   </form>
-      <? 
+      <?php 
       if(!isset($menu))
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>

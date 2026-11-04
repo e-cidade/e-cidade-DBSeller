@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,14 +52,14 @@ $db_opcao = 1;
   <td align="right"> <strong>Opção de Seleção :<strong>
   </td>
   <td align="left">&nbsp;&nbsp;&nbsp;
-    <?
+    <?php
    $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
     db_select('selerec',$xxx,true,2);
     ?>
 
   </td>
 </tr>
-<?
+<?php
 $aux = new cl_arquivo_auxiliar;
 $aux->cabecalho = "<strong>TIPOS DE RECEITAS</strong>";
 $aux->codigo = "k02_codigo";

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -179,7 +179,7 @@ if (isset($geracarnes)) {
              <strong>Tipo de Arquivo:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aTipos = array (
                  "txt"    => "TXT",
                  "pdf"    => "PDF",
@@ -195,7 +195,7 @@ if (isset($geracarnes)) {
              <strong>Ordem da Emissão:</strong>
            </td>
            <td>
-             <?
+             <?php
                 $aOrdem = array ("endereco"        => "Cidade / Logradouro",
                                  "bairroender"     => "Bairro / Logradouro",
                                  "alfabetica"      => "Alfabética / Nome",
@@ -215,7 +215,7 @@ if (isset($geracarnes)) {
              <strong>Gera Opção de Vencimento:</strong>
            </td>
            <td>
-             <?
+             <?php
                 $aOpVenc = array ("0" => "Não", "1" => "Sim");
                 db_select('opVenc', $aOpVenc, true, 2,"style='width:165px;'");
              ?>
@@ -243,7 +243,7 @@ if (isset($geracarnes)) {
              <strong>Tipo de Imóvel:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aEspecie = array ("todos"       => "Todos",
                                   "predial"     => "Somente Predial",
                                   "territorial" => "Somente Territorial"
@@ -260,7 +260,7 @@ if (isset($geracarnes)) {
                ?>
             </td>
             <td>
-              <?
+              <?php
                db_input('j34_setor',10,$Ij34_setor,true,'text',1,"onchange='js_pesquisaj34_setor(false);'");
                db_input('j30_descr',51,$Ij30_descr,true,'text',3,'');
               ?>
@@ -285,7 +285,7 @@ if (isset($geracarnes)) {
            <td>
              <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=(isset($vlrminunica)?$vlrminunica:0)?>><strong> à </strong>
              <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=(isset($vlrmaxunica)?$vlrmaxunica:999999999)?>>
-             <?
+             <?php
                $aIntervaloParcelamento = array ("desconsiderar" => "Desconsiderar intervalo",
                                                 "gerar"         => "Gerar para os que estiverem no intervalo",
                                                 "naogerar"      => "Nao gerar para os que estiverem no intervalo"
@@ -300,7 +300,7 @@ if (isset($geracarnes)) {
              <strong>Filtro Principal:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aFiltroPrincipal = array ("normal"  => "Normal",
                                           "compgto" => "Somente sem parcelas em atraso",
                                           "sempgto" => "Somente os registros sem pagamentos"
@@ -315,7 +315,7 @@ if (isset($geracarnes)) {
              <strong>Vinculo com Imobiliária:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aVinculoImobiliaria = array ( "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
                                               "com"   => "Somente os que tenham vinculo com imobiliaria",
                                               "sem"   => "Somente os que nao tenham vinculo com imobiliaria"
@@ -329,7 +329,7 @@ if (isset($geracarnes)) {
              <strong>Vinculo com Loteamentos:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aVinculoLoteamentos = array ( "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
                                               "com"   => "Somente os que tenham vinculo com loteamento",
                                               "sem"   => "Somente os que nao tenham vinculo com loteamento"
@@ -353,7 +353,7 @@ if (isset($geracarnes)) {
            </td>
 
            <td>
-             <?
+             <?php
                $aTercDigBarraUnicas = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
                db_select('barrasunica', $aTercDigBarraUnicas, true, 1,"style='width:165px;'");
              ?>
@@ -366,7 +366,7 @@ if (isset($geracarnes)) {
            </td>
 
            <td>
-             <?
+             <?php
                $aTercDigBarraParcelados = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
                db_select('barrasparc', $aTercDigBarraParcelados, true, 1,"style='width:165px;'");
              ?>
@@ -378,7 +378,7 @@ if (isset($geracarnes)) {
              <strong>Imprimir Capa:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aImpCapa = array ("n" => "Não", "s" => "Sim");
                db_select('imprimecapa', $aImpCapa, true, 1,"style='width:165px;'");
              ?>
@@ -390,7 +390,7 @@ if (isset($geracarnes)) {
              <strong>Mensagem Débitos Anos Anteriores:</strong>
            </td>
            <td>
-             <?
+             <?php
                $aMsgDebitosAnt = array ("n" => "Não", "s" => "Sim");
                db_select('mensagemanosanteriores', $aMsgDebitosAnt, true, 1,"style='width:165px;'");
              ?>
@@ -474,7 +474,7 @@ if (isset($geracarnes)) {
              <strong>Ano:</strong>
            </td>
            <td>
-             <?
+             <?php
               $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
 
               if (pg_numrows($result) > 0) {
@@ -554,7 +554,7 @@ if (isset($geracarnes)) {
      <input type="hidden" value="" name="listaUnicas" id="listaUnicas" />
    </form>
  </div>
-  <? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
+  <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
  </body>
 </html>
 <script type="text/javascript">
@@ -1124,11 +1124,11 @@ if (isset($geracarnes)) {
       // demais modelo 1
         $dtVencUnica = "";
         $vir         = "";
-        $dtudica     = split("U",$unica);
+        $dtudica     =explode("U",$unica);
         $tam         = (count($dtudica));
 
         for($t=0; $t < $tam; $t++){
-            $dtvenc = split("=",$dtudica[$t]);
+            $dtvenc =explode("=",$dtudica[$t]);
             if(trim($dtvenc[0])!=""){
               $dtVencUnica .= $vir.$dtvenc[0];
               $vir      =",";

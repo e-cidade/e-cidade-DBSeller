@@ -123,7 +123,6 @@ $parametros = JSON::requestParameters();
             if (response.erro) {
                 throw response.mensagem;
             }
-
             const data = new FormData();
             data.append('acao', 'gerar');
             data.append('integracao', integracao);
@@ -131,6 +130,7 @@ $parametros = JSON::requestParameters();
             data.append('data', JSON.stringify(response.data.eventos));
             data.append('layout', comboRetorno.getValue());
             data.append('evento', item.evento);
+            data.append('dt', response.data.data);
 
             if (integracao === EFD_REINF) {
                 data.append('cgmResponsavel', selectContribuinte.value);
@@ -223,14 +223,19 @@ $parametros = JSON::requestParameters();
     };
 
     buscaRetornos.addEventListener('click', () => {
-        if (anoCompetencia.value === '' || mesCompetencia.value === '') {
+        if (anoCompetencia.value === '') {
             return alert('É necessário preencher a competência para buscar os retornos.');
         }
 
+        var competencia = `${anoCompetencia.value}`;
+        // Caso o processamento seja mensal
+        if (mesCompetencia.value != '') {
+            competencia += `-${mesCompetencia.value}`;
+        }
         const data = new FormData();
         data.append('acao', 'consulta');
         data.append('rota', '/evento/arquivo_retorno');
-        data.append('competencia', `${anoCompetencia.value}-${mesCompetencia.value}`);
+        data.append('competencia', competencia);
         data.append('competenciaRetorno', `${anoCompetencia.value}-${mesCompetencia.value}`);
 
         if (integracao === EFD_REINF) {

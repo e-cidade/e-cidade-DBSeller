@@ -52,7 +52,7 @@ class cl_veiccadcentral
                  ";
 
     //funcao construtor da classe
-    function cl_veiccadcentral()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veiccadcentral");
@@ -60,7 +60,7 @@ class cl_veiccadcentral
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -71,7 +71,7 @@ class cl_veiccadcentral
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve36_sequencial = ($this->ve36_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve36_sequencial"] : $this->ve36_sequencial);
@@ -82,7 +82,7 @@ class cl_veiccadcentral
     }
 
     // funcao para inclusao
-    function incluir($ve36_sequencial)
+    public function incluir($ve36_sequencial)
     {
         $this->atualizacampos();
         if ($this->ve36_coddepto == null) {
@@ -186,7 +186,7 @@ class cl_veiccadcentral
     }
 
     // funcao para alteracao
-    function alterar($ve36_sequencial = null)
+    public function alterar($ve36_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update veiccadcentral set ";
@@ -284,7 +284,7 @@ class cl_veiccadcentral
     }
 
     // funcao para exclusao
-    function excluir($ve36_sequencial = null, $dbwhere = null)
+    public function excluir($ve36_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ve36_sequencial));
@@ -358,7 +358,7 @@ class cl_veiccadcentral
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -387,7 +387,7 @@ class cl_veiccadcentral
         return $result;
     }
 
-    function sql_query($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -432,7 +432,7 @@ class cl_veiccadcentral
         return $sql;
     }
 
-    function sql_query_central($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_central($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -474,7 +474,7 @@ class cl_veiccadcentral
         return $sql;
     }
 
-    function sql_query_file($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -512,7 +512,7 @@ class cl_veiccadcentral
         return $sql;
     }
 
-    function sql_query_central_depart($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_central_depart($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -552,7 +552,7 @@ class cl_veiccadcentral
     }
 
 
-    function sql_query_veiculoscentral($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_veiculoscentral($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -596,7 +596,7 @@ class cl_veiccadcentral
         return $sql;
     }
 
-    function sql_query_veiculosmotoristas($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_veiculosmotoristas($ve36_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

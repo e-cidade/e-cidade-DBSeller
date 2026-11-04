@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,110 +50,104 @@ $oRetorno->aItensDptosSel = array();
 $dtDataUsu                = date('Y-m-d',db_getsession("DB_datausu"));
 $iEscola                  = db_getsession("DB_coddepto");
 $nutricionista            = VerNutricionista(db_getsession("DB_id_usuario"));
+
 switch ($oParam->exec) {
 
   case "listarEscola":
-    
-    $sCampos                  = " escola.ed18_i_codigo,escola.ed18_c_nome       ";
-    $sWhere                   = " (limite is null or limite >= '{$dtDataUsu}')  "; 
+
+    $sCampos                  = " distinct escola.ed18_i_codigo,escola.ed18_c_nome       ";
+    $sWhere                   = " (limite is null or limite >= '{$dtDataUsu}')  ";
     $sSqlEscola               = $clescola->sql_query_cardapioescola(null,
                                                                     $sCampos,
                                                                     "ed18_c_nome",
                                                                     $sWhere,
-                                                                    $nutricionista    
+                                                                    $nutricionista
                                                                    ); 
- 
+
     $rsEscola                 = $clescola->sql_record($sSqlEscola);
 
     $sCampos                  = "distinct escola.ed18_i_codigo, escola.ed18_c_nome,me32_i_codigo,me32_i_ordem, ";
-    $sCampos                 .= " case when (select count(*) from mer_tpcardapioturma "; 
+    $sCampos                 .= " case when (select count(*) from mer_tpcardapioturma ";
     $sCampos                 .= " where me28_i_cardapioescola=me32_i_codigo)>0 then 1 else 0 end as cardapioturma";
     $sWhere                   = "  mer_cardapioescola.me32_i_tipocardapio = {$oParam->codcardapio}  ";
-    $sSqlDeptoSel             =  $clmer_cardapioescola->sql_query(null,$sCampos,"ed18_c_nome",$sWhere); 
-    $rsSqlDeptoSel            = $clmer_cardapioescola->sql_record($sSqlDeptoSel);      
-    
+    $sSqlDeptoSel             =  $clmer_cardapioescola->sql_query(null,$sCampos,"ed18_c_nome",$sWhere);
+    $rsSqlDeptoSel            = $clmer_cardapioescola->sql_record($sSqlDeptoSel);
+
     $oRetorno->aItensDptos    = db_utils::getCollectionByRecord($rsEscola,false,false,true);
-    $oRetorno->aItensDptosSel = db_utils::getCollectionByRecord($rsSqlDeptoSel,false,false,true);    
-    
-  break; 
-  
+    $oRetorno->aItensDptosSel = db_utils::getCollectionByRecord($rsSqlDeptoSel,false,false,true);
+
+  break;
+
   case "atualizarEscola":
 
     $sqlerro = false;
     db_inicio_transacao();
     if ($sqlerro == false) {
-    
+
       $sCampos            = " distinct escola.ed18_i_codigo,escola.ed18_c_nome, ";
       $sCampos           .= " mer_cardapioescola.me32_i_ordem,me32_i_codigo ";
       $sWhere             = " mer_cardapioescola.me32_i_tipocardapio = {$oParam->codcardapio}     ";
       $sSqlDeptoInstitUsu =  $clmer_cardapioescola->sql_query(null,$sCampos,"me32_i_ordem",$sWhere);
       $rsDeptoInstitUsu   = $clmer_cardapioescola->sql_record($sSqlDeptoInstitUsu);
-      if ($clmer_cardapioescola->numrows > 0) {                                         
-          
+      if ($clmer_cardapioescola->numrows > 0) {
+
         $iNumRowsDepto = $clmer_cardapioescola->numrows;
         for ($i = 0; $i < $iNumRowsDepto; $i++) {
-          	
-          $oCardapioDeptoInstit                      = db_utils::fieldsMemory($rsDeptoInstitUsu, $i);  
+
+          $oCardapioDeptoInstit                      = db_utils::fieldsMemory($rsDeptoInstitUsu, $i);
           $sSqlCardapioTurma =  $clmer_tpcardapioturma->sql_query(null,"*","","me28_i_cardapioescola = ".$oCardapioDeptoInstit ->me32_i_codigo);
           $rsCardapioTurma   = $clmer_tpcardapioturma->sql_record($sSqlCardapioTurma);
           $iNumRowsCardapioTurma = $clmer_tpcardapioturma->numrows;
           if ($iNumRowsCardapioTurma == 0) {
-            
+
             $clmer_cardapioescola->me32_i_escola       = $oCardapioDeptoInstit->ed18_i_codigo;
             $clmer_cardapioescola->me32_i_tipocardapio = $oParam->codcardapio;
-            $clmer_cardapioescola->me32_i_codigo       = $oCardapioDeptoInstit ->me32_i_codigo;                         
-            $clmer_cardapioescola->excluir($oCardapioDeptoInstit ->me32_i_codigo);    
-            $erro_msg = $clmer_cardapioescola->erro_msg;    
+            $clmer_cardapioescola->me32_i_codigo       = $oCardapioDeptoInstit ->me32_i_codigo;
+            $clmer_cardapioescola->excluir($oCardapioDeptoInstit ->me32_i_codigo);
+            $erro_msg = $clmer_cardapioescola->erro_msg;
             if ( $clmer_cardapioescola->erro_status == 0 ) {
-                
+
               $sqlerro        = true;
               $oRetorno->erro = 1;
-              
+
             }
-            
-          }else{
-          	$oRetorno->erroexclusao .= $oCardapioDeptoInstit->ed18_i_codigo .",";  
+
+          } else {
+          	$oRetorno->erroexclusao .= $oCardapioDeptoInstit->ed18_i_codigo .",";
           }
-          
         }
-        
       }
-      
     }
     foreach ($oParam->aDptoSel as $oDptoSel) {
-    	
-      if ($sqlerro == false) {      	      	
-        
+
+      if ($sqlerro == false) {
+
         $sSqlCardapioTurma =  $clmer_tpcardapioturma->sql_query(null,
                                                                  "*",
                                                                  "",
-                                                                 "me32_i_escola = ".$oDptoSel->iDptoSel. " and me32_i_tipocardapio =".$oParam->codcardapio  
+                                                                 "me32_i_escola = ".$oDptoSel->iDptoSel. " and me32_i_tipocardapio =".$oParam->codcardapio
                                                                );
         $rsCardapioTurma   = $clmer_tpcardapioturma->sql_record($sSqlCardapioTurma);
         $iNumRowsCardapioTurma = $clmer_tpcardapioturma->numrows;
         if ($iNumRowsCardapioTurma ==0) {
-        	
+
           $clmer_cardapioescola->me32_i_escola       = $oDptoSel->iDptoSel;
           $clmer_cardapioescola->me32_i_tipocardapio = $oParam->codcardapio;
-          $clmer_cardapioescola->me32_i_ordem        = $oDptoSel->iOrdem;               
+          $clmer_cardapioescola->me32_i_ordem        = $oDptoSel->iOrdem;
           $clmer_cardapioescola->incluir(null);
           if ( $clmer_cardapioescola->erro_status == 0 ) {
-   
+
             $sqlerro        = true;
             $oRetorno->erro = 1;
             break;
-            
-          } 
-            
+
+          }
         }
-        
-      } 
-          
-    } 
+      }
+    }
     db_fim_transacao($sqlerro);
 
   break;
-        
 }
 echo $oJson->encode($oRetorno);
 ?>

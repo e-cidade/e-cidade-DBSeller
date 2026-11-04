@@ -217,7 +217,14 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td class="valores">
                     <?php
-                    echo ($oCgmModel->getSexo() == "M") ? "Masculino" : "Feminino";
+                        $sexo = "";
+                        if ($oCgmModel->getSexo() === "M") {
+                            $sexo = "Masculino";
+                        }
+                        if ($oCgmModel->getSexo() === "F") {
+                            $sexo = "Feminino";
+                        }
+                        echo $sexo;
                     ?>
                 </td>
                 <td>

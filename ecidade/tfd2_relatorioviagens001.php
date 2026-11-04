@@ -87,12 +87,12 @@ $aAssets = array(
           </tr>
           <tr>
             <td nowrap title="Especialidade">
-              <?
+              <?php
                 db_ancora("Especialidade: ", "js_pesquisatf01_i_rhcbo(true);", $db_opcao);
               ?>
             </td>
             <td colspan="2">
-              <?
+              <?php
                 db_input('rh70_estrutural', 10, $Irh70_estrutural, true, 'text', $db_opcao,
                          " onchange='js_pesquisatf01_i_rhcbo(false);'"
                         );

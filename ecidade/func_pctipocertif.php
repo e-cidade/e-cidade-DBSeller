@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpctipocertif->rotulo->label("pc70_codigo");
               <?=$Lpc70_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		            db_input("pc70_codigo", 10, $Ipc70_codigo, true, "text", 4, "", "pc70_codigo");
 		          ?>
             </td>
@@ -73,7 +73,7 @@ $clpctipocertif->rotulo->label("pc70_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
 	      $DB_coddepto = db_getsession("DB_coddepto"); 
 	      $sWhere      = "";
 	      $sAnd        = "";
@@ -150,12 +150,12 @@ $clpctipocertif->rotulo->label("pc70_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

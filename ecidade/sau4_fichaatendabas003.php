@@ -116,7 +116,7 @@ if( isset( $incluir ) ) {
         parent.iframe_a1.document.form1.rh70_estrutural.value = '<?=$rh70_estrutural ?>';
         parent.iframe_a1.document.form1.rh70_descr.value = '<?=$rh70_descr ?>';
         </script>
-        <?
+        <?php
       }
     }
 
@@ -164,7 +164,7 @@ if( isset( $incluir ) ) {
       parent.iframe_a1.document.form1.rh70_estrutural.value = '<?=$rh70_estrutural ?>';
       parent.iframe_a1.document.form1.rh70_descr.value      = '<?=$rh70_descr ?>';
       </script>
-      <?
+      <?php
     }
   }
 

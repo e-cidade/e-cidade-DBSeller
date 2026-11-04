@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE empageconfgera
 class cl_empageconfgera {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $e90_codmov = 0;
-   var $e90_codgera = 0;
-   var $e90_correto = 'f';
-   var $e90_cancelado = 'f';
+   public $e90_codmov = 0;
+   public $e90_codgera = 0;
+   public $e90_correto = 'f';
+   public $e90_cancelado = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  e90_codmov = int4 = Movimento
                  e90_codgera = int4 = Código
                  e90_correto = bool = Correto
                  e90_cancelado = bool = Cancelado
                  ";
    //funcao construtor da classe
-   function cl_empageconfgera() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empageconfgera");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_empageconfgera {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e90_codmov = ($this->e90_codmov == ""?@$GLOBALS["HTTP_POST_VARS"]["e90_codmov"]:$this->e90_codmov);
        $this->e90_codgera = ($this->e90_codgera == ""?@$GLOBALS["HTTP_POST_VARS"]["e90_codgera"]:$this->e90_codgera);
@@ -81,7 +81,7 @@ class cl_empageconfgera {
      }
    }
    // funcao para inclusao
-   function incluir ($e90_codmov,$e90_codgera){
+   public function incluir ($e90_codmov,$e90_codgera){
       $this->atualizacampos();
      if($this->e90_correto == null ){
        $this->erro_sql = " Campo Correto nao Informado.";
@@ -170,7 +170,7 @@ class cl_empageconfgera {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e90_codmov=null,$e90_codgera=null) {
+   public function alterar ($e90_codmov=null,$e90_codgera=null) {
       $this->atualizacampos();
      $sql = " update empageconfgera set ";
      $virgula = "";
@@ -284,7 +284,7 @@ class cl_empageconfgera {
      }
    }
    // funcao para exclusao
-   function excluir ($e90_codmov=null,$e90_codgera=null,$dbwhere=null) {
+   public function excluir ($e90_codmov=null,$e90_codgera=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e90_codmov,$e90_codgera));
      }else{
@@ -355,7 +355,7 @@ class cl_empageconfgera {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -378,10 +378,10 @@ class cl_empageconfgera {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_empageconfgera {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,10 +424,10 @@ class cl_empageconfgera {
      return $sql;
   }
 
-  function sql_query_arq ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_arq ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_empageconfgera {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,10 +472,10 @@ class cl_empageconfgera {
   }
 
 
-   function sql_query_arqcanc ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_arqcanc ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_empageconfgera {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,10 +533,10 @@ class cl_empageconfgera {
      }
      return $sql;
   }
-   function sql_query_file ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,7 +565,7 @@ class cl_empageconfgera {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,10 +574,10 @@ class cl_empageconfgera {
      }
      return $sql;
   }
-   function sql_query_inf ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_inf ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,7 +619,7 @@ class cl_empageconfgera {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -629,10 +629,10 @@ class cl_empageconfgera {
      return $sql;
   }
 
-  function sql_query_buscacodretempagedadosretmov ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_buscacodretempagedadosretmov ( $e90_codmov=null,$e90_codgera=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -662,7 +662,7 @@ class cl_empageconfgera {
         $sql .= $sql2;
         if($ordem != null ){
         $sql .= " order by ";
-        $campos_sql = split("#",$ordem);
+        $campos_sql = explode("#",$ordem);
         $virgula = "";
         for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -672,13 +672,13 @@ class cl_empageconfgera {
         return $sql;
   }
 
-  function sql_query_movimentacoes_banco ( $e90_codmov = null, $e90_codgera = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_movimentacoes_banco ( $e90_codmov = null, $e90_codgera = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
 
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -719,7 +719,7 @@ class cl_empageconfgera {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = explode("#",$ordem);
       $virgula = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

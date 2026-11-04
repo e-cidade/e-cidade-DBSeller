@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -59,7 +59,7 @@ $escola             = db_getsession("DB_coddepto");
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td height="430" align="left" valign="top" bgcolor="#CCCCCC">   
+  <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Relatório de Cardápios</b></legend>
@@ -67,33 +67,33 @@ $escola             = db_getsession("DB_coddepto");
     <tr>
      <td align="center">
       <table>
-       <tr> 
+       <tr>
         <td>
          <b>Cardápio:</b>
         </td>
-        <td> 
-         <?          
+        <td>
+         <?php
          $hoje = date("Y-m-d",db_getsession("DB_datausu"));
          $result_tipocardapio = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query("",
                                                                                           "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
                                                                                           "me27_i_id,me27_f_versao desc",
-                                                                                          "((me27_d_inicio is not null 
+                                                                                          "((me27_d_inicio is not null
                                                                                              and me27_d_fim is null
-                                                                                             and me27_d_inicio <= '$hoje') 
+                                                                                             and me27_d_inicio <= '$hoje')
                                                                                             or (me27_d_fim is not null and '$hoje'
                                                                                                 between me27_d_inicio and me27_d_fim))"
                                                                                          ));
                                                                                          ?>
-         <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);" 
+         <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
-        
+           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+
                db_fieldsmemory($result_tipocardapio,$t);
                ?>
                <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
-      
-           <?}?>
+
+           <?php } ?>
           </select>
         </td>
       </tr>
@@ -102,7 +102,7 @@ $escola             = db_getsession("DB_coddepto");
         <b>Escola:</b>
        </td>
        <td>
-        <select name="select_escola" id="select_escola" onchange="js_escola(this.value)" 
+        <select name="select_escola" id="select_escola" onchange="js_escola(this.value)"
                 style="width:450px;height:18px;font-size:10px;;" disabled>
         </select>
        </td>
@@ -127,7 +127,7 @@ $escola             = db_getsession("DB_coddepto");
          </select>
         </td>
        </tr>
-       <tr> 
+       <tr>
         <td><b>Semana:</b><br></td>
         <td>
          <div name="div_semana">
@@ -149,7 +149,7 @@ $escola             = db_getsession("DB_coddepto");
  </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
@@ -174,10 +174,10 @@ function js_cardapio(cardapio) {
                                  onComplete: js_retornoPesquisaEscola
                                }
                               );
-    
+
 }
 function js_retornoPesquisaEscola(oAjax) {
-    
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   sHtml = '';
@@ -190,22 +190,22 @@ function js_retornoPesquisaEscola(oAjax) {
      sHtml += '<option value="">TODAS</option>';
     }
     for (var i = 0;i < oRetorno.length; i++) {
-            
+
       with (oRetorno[i]) {
         sHtml += '<option value="'+me32_i_codigo+'">'+ed18_c_nome.urlDecode()+'</option>';
       }
-      
+
     }
     $('select_escola').innerHTML = sHtml;
-       
-  }  
+
+  }
   $('select_escola').disabled  = false;
-  
+
 }
 
 
 function js_carrega() {
-    
+
   new Ajax.Request('mer4_mer_cardapiodia_combo003.php?mes='+document.form1.mes.value+
                    '&cardapio='+document.form1.cardapio.value,
                     {
@@ -213,29 +213,29 @@ function js_carrega() {
                      onComplete : function(transport) {
                        document.form1.semana.innerHTML = transport.responseText;
                      }
-                    } 
+                    }
                   );
 }
 
 function js_processa() {
-    
+
   cardapio   = document.form1.cardapio.value;
   mes        = document.form1.mes.value;
   semana     = document.form1.semana.value;
   if ((cardapio!='0') && (semana!='') && (mes!='0')) {
-      
+
     page ='mer2_mer_relathorario002.php?semana='+semana+'&mes='+mes+'&cardapio='+cardapio+'&codescola='+document.form1.select_escola.value;
     jan  = window.open(page,'',
                        'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
                       );
     jan.moveTo(0,0);
-    
-  }  
+
+  }
 }
-<?//if ($clmer_cardapio->numrows>0) {?>
+<?php //if ($clmer_cardapio->numrows>0) {?>
 
     //document.form1.cardapio.options[1].selected = true;
     //js_cardapio(document.form1.cardapio.value);
-    
-<?//}?>
+
+<?php //} ?>
 </script>

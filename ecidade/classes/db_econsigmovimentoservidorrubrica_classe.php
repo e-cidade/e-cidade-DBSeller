@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_econsigmovimentoservidorrubrica {
                  rh135_valor = float4 = Valor Rubrica 
                  ";
    //funcao construtor da classe 
-   function cl_econsigmovimentoservidorrubrica() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("econsigmovimentoservidorrubrica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_econsigmovimentoservidorrubrica {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh135_sequencial = ($this->rh135_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh135_sequencial"]:$this->rh135_sequencial);
        $this->rh135_econsigmovimentoservidor = ($this->rh135_econsigmovimentoservidor == ""?@$GLOBALS["HTTP_POST_VARS"]["rh135_econsigmovimentoservidor"]:$this->rh135_econsigmovimentoservidor);
@@ -83,7 +83,7 @@ class cl_econsigmovimentoservidorrubrica {
      }
    }
    // funcao para inclusao
-   function incluir ($rh135_sequencial){ 
+   public function incluir ($rh135_sequencial){ 
       $this->atualizacampos();
      if($this->rh135_econsigmovimentoservidor == null ){ 
        $this->erro_sql = " Campo E-CONSIG Movimento Servidor não informado.";

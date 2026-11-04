@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,7 +62,7 @@ if(!isset($chave_r16_mesusu) || (isset($chave_r16_mesusu) && trim($chave_r16_mes
               <?=$Lr16_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r16_codigo",4,$Ir16_codigo,true,"text",4,"","chave_r16_codigo");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ if(!isset($chave_r16_mesusu) || (isset($chave_r16_mesusu) && trim($chave_r16_mes
               <?=$Lr16_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r16_descr",30,$Ir16_descr,true,"text",4,"","chave_r16_descr");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ if(!isset($chave_r16_mesusu) || (isset($chave_r16_mesusu) && trim($chave_r16_mes
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where = " r16_instit =".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -127,12 +127,12 @@ if(!isset($chave_r16_mesusu) || (isset($chave_r16_mesusu) && trim($chave_r16_mes
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

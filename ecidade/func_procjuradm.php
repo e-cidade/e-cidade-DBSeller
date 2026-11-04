@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocjuradm->rotulo->label("v64_protprocesso");
               <?=$Lv64_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v64_sequencial",10,$Iv64_sequencial,true,"text",4,"","chave_v64_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocjuradm->rotulo->label("v64_protprocesso");
               <?=$Lv64_protprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v64_protprocesso",10,$Iv64_protprocesso,true,"text",4,"","chave_v64_protprocesso");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocjuradm->rotulo->label("v64_protprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procjuradm.php")==true){
@@ -122,12 +122,12 @@ $clprocjuradm->rotulo->label("v64_protprocesso");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

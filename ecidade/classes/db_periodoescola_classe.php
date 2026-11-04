@@ -30,28 +30,28 @@
 class cl_periodoescola
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $ed17_i_codigo = 0;
-    var $ed17_i_escola = 0;
-    var $ed17_i_turno = 0;
-    var $ed17_i_periodoaula = 0;
-    var $ed17_h_inicio = null;
-    var $ed17_h_fim = null;
-    var $ed17_duracao = null;
+    public $ed17_i_codigo = 0;
+    public $ed17_i_escola = 0;
+    public $ed17_i_turno = 0;
+    public $ed17_i_periodoaula = 0;
+    public $ed17_h_inicio = null;
+    public $ed17_h_fim = null;
+    public $ed17_duracao = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  ed17_i_codigo = int8 = Código do Período
                  ed17_i_escola = int8 = Escola
                  ed17_i_turno = int8 = Turno
@@ -62,7 +62,7 @@ class cl_periodoescola
                  ";
 
     //funcao construtor da classe
-    function cl_periodoescola()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("periodoescola");
@@ -70,7 +70,7 @@ class cl_periodoescola
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -81,7 +81,7 @@ class cl_periodoescola
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ed17_i_codigo = ($this->ed17_i_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ed17_i_codigo"] : $this->ed17_i_codigo);
@@ -97,7 +97,7 @@ class cl_periodoescola
     }
 
     // funcao para inclusao
-    function incluir($ed17_i_codigo)
+    public function incluir($ed17_i_codigo)
     {
         $this->atualizacampos();
         if ($this->ed17_i_escola == null) {
@@ -250,7 +250,7 @@ class cl_periodoescola
     }
 
     // funcao para alteracao
-    function alterar($ed17_i_codigo = null)
+    public function alterar($ed17_i_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update periodoescola set ";
@@ -418,7 +418,7 @@ class cl_periodoescola
     }
 
     // funcao para exclusao
-    function excluir($ed17_i_codigo = null, $dbwhere = null)
+    public function excluir($ed17_i_codigo = null, $dbwhere = null)
     {
 
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -492,7 +492,7 @@ class cl_periodoescola
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -516,7 +516,7 @@ class cl_periodoescola
         return $result;
     }
 
-    function sql_query($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -547,7 +547,7 @@ class cl_periodoescola
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_periodoescola
         return $sql;
     }
 
-    function sql_query_file($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -600,11 +600,11 @@ class cl_periodoescola
      * @param string $dbwhere
      * @return string
      */
-    function sql_query_vinculos($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_vinculos($ed17_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -630,7 +630,7 @@ class cl_periodoescola
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -672,7 +672,7 @@ class cl_periodoescola
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

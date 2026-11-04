@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-$sDataInicial = date("d/m/Y");
+
 ?>
 <html>
 	<head>
@@ -57,16 +57,6 @@ $sDataInicial = date("d/m/Y");
 			    	  	<?php db_input("iArquivoRetorno", 10, '', true, "text", 3); ?>
 			    	  </td>
 			    	</tr>
-			    	<tr>
-			    	  <td>
-			    	  	<label class="bold" for="sDataInicial">Data:</label>
-		    	  	</td>
-			    	  <td>
-			    	    <?php db_inputdata("sDataInicial", "", "", "", true, "text", 1); ?>
-			    	    <label class="bold" for="sDataFinal">a</label>
-			    	    <?php db_inputdata("sDataFinal", "", "", "", true, "text", 1); ?>
-			    	  </td>
-			    	</tr>
 			    </table>
 			  </fieldset>
 			  <input type="button" name="btnImprimeRelatorio" id="btnImprimeRelatorio" value="Imprimir" />
@@ -77,8 +67,7 @@ $sDataInicial = date("d/m/Y");
 		  /**
 		   * Configura as variáveis padrões do sistema.
 		   */
-		  $("sDataInicial").value           = '<?=$sDataInicial;?>';
-		  $("sDataFinal").value             = '<?=$sDataInicial;?>';
+
 			$("btnImprimeRelatorio").disabled = true;
 			$("iArquivoRetorno").value        = '';
 
@@ -109,8 +98,6 @@ $sDataInicial = date("d/m/Y");
 
 				var sDireciona  = "emp4_inconsistenciaarquivoretorno002.php?";
 				    sDireciona += "iArquivoRetorno="+$("iArquivoRetorno").value;
-				    sDireciona += "&sDataInicial="+$("sDataInicial").value;
-				    sDireciona += "&sDataFinal="+$("sDataFinal").value;
 
 		    var oWinOpen = window.open(sDireciona,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
 			});

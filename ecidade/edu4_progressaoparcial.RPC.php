@@ -135,6 +135,72 @@ try {
 
   	  break;
 
+    /**
+     * Retorna as progressões de um aluno a partir da Matrícula
+     *
+     * @param integer $oParam->iAluno - Matrícula do aluno
+     *
+     * * - Parâmetros Opcionais
+     * @param boolean $oParam->lEscolaSessao - Retorna somente progressões da escola da sessão
+     * @param boolean $oParam->lInativos     - Retorna progressões inativas
+     */
+    case 'buscaDadosProgressaoAlunoPorMatricula':
+
+      if ( !isset( $oParam->iAluno ) || empty( $oParam->iAluno ) ) {
+  	    throw new ParameterException( _M( CAMINHO_MENSAGENS."aluno_nao_informado" ) );
+  	  }
+
+  	  $oRetorno->aProgressoes = array();
+  	  $oAluno                 = AlunoRepository::getAlunoByMatricula( $oParam->iAluno );
+
+  	  if (count( $oAluno->getProgressaoParcial(true) ) > 0 ) {
+
+  	    /**
+  	     * Percorre as progressoes do aluno para armazenar em um stdClass e incrementando o array
+  	     */
+  	    foreach ( $oAluno->getProgressaoParcial(true) as $oProgressaoParcial ) {
+
+  	      if ( $oProgressaoParcial->isConcluida() && !isset($oParam->lBuscaTodas)) {
+  	        continue;
+  	      }
+
+  	      if (    !$oProgressaoParcial->getSituacaoProgressao()->isAtivo()
+  	           && ( !isset( $oParam->lInativos ) || !$oParam->lInativos ) ) {
+  	        continue;
+  	      }
+
+  	      /**
+  	       * Caso tenha sido setado parâmetro para validar a escola da sessão e a progressão seja de uma escola
+  	       * diferente, não retorna a progressão
+  	       */
+  	      if (    isset( $oParam->lEscolaSessao )
+  	           && $oParam->lEscolaSessao
+  	           && $oProgressaoParcial->getEscola()->getCodigo() != $iEscola ) {
+  	        continue;
+  	      }
+
+  	      $oDadosProgressao                = new stdClass();
+  	      $oDadosProgressao->iCodigo       = $oProgressaoParcial->getCodigoProgressaoParcial();
+  	      $oDadosProgressao->iEtapa        = $oProgressaoParcial->getEtapa()->getCodigo();
+  	      $oDadosProgressao->sEtapa        = urlencode( $oProgressaoParcial->getEtapa()->getNome() );
+  	      $oDadosProgressao->iDisciplina   = $oProgressaoParcial->getDisciplina()->getCodigoDisciplina();
+  	      $oDadosProgressao->sDisciplina   = urlencode( $oProgressaoParcial->getDisciplina()->getNomeDisciplina() );
+  	      $oDadosProgressao->iAno          = $oProgressaoParcial->getAno();
+  	      $oDadosProgressao->iEscola       = $oProgressaoParcial->getEscola()->getCodigo();
+  	      $oDadosProgressao->sEscola       = urlencode( $oProgressaoParcial->getEscola()->getNome() );
+  	      $oDadosProgressao->iEnsino       = $oProgressaoParcial->getEtapa()->getEnsino()->getCodigo();
+  	      $oDadosProgressao->sEnsino       = urlencode( $oProgressaoParcial->getEtapa()->getEnsino()->getNome() );
+  	      $oDadosProgressao->sSituacao     = urlencode( $oProgressaoParcial->getSituacaoProgressao()->getDescricao());
+          $oDadosProgressao->lAtiva        = $oProgressaoParcial->getSituacaoProgressao()->isAtivo();
+          $oDadosProgressao->lManual       = is_null($oProgressaoParcial->getCodigoDiarioFinal());
+          $oDadosProgressao->lTemMatricula = $oProgressaoParcial->verificaProgressaoTeveMatricula();
+
+  	      $oRetorno->aProgressoes[] = $oDadosProgressao;
+  	    }
+  	  }
+
+  	  break;
+
   	case 'atualizarSituacaoProgressao':
 
   	  if ( !isset( $oParam->aProgressoes ) || empty( $oParam->aProgressoes ) ) {

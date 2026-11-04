@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,12 +78,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -94,7 +94,7 @@ function js_emite(){
         <strong>Valor Base :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            db_input('valor',10,'',true,'text',2,'')
           ?>
         </td>
@@ -102,13 +102,13 @@ function js_emite(){
       </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora('Proventos ',"js_pesquisabase01(true)",2);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               $base01="B";
               db_input('base01',4,$base01,true,'text',2,"onchange='js_pesquisabase01(false)'");
               db_input("descr_base01",30,"",true,"text",3,"","descr_base01");
@@ -117,13 +117,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora('Descontos ',"js_pesquisabase02(true)",2);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               $base02="B";
               db_input('base02',4,$base02,true,'text',2,"onchange='js_pesquisabase02(false)'");
               db_input("descr_base02",30,"",true,"text",3,"","descr_base02");
@@ -142,7 +142,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -222,7 +222,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php
 if(isset($ordem)){
   echo "<script>
        js_emite();

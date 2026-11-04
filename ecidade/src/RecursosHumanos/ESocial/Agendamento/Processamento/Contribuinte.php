@@ -53,7 +53,7 @@ class Contribuinte extends ProcessamentoAbstract implements ProcessamentoInterfa
         return $alteracaoDados;
     }
 
-    public function tratamentoPreProcessamento(Array $dados)
+    public function tratamentoPreProcessamento(array $dados)
     {
         foreach ($dados as $item) {
             $item->softhouse = new stdClass;
@@ -61,18 +61,14 @@ class Contribuinte extends ProcessamentoAbstract implements ProcessamentoInterfa
             // Ente Federativo Responsável - EFR
             $instituicao = DBConfig::where('numcgm', '=', $this->cgm)->orderBy('codigo')->first();
 
-            if (empty($instituicao)) {
-                $instPrincipal = DBConfig::find(1);
-                $item->infoefr->ideefr = 'N';
-                $item->infoefr->cnpjefr = $instPrincipal->getCgc();
-            }
-
-            if (!empty($instituicao) && !$instituicao->getEnteFederativoResp()) {
-                $item->infoefr->ideefr = 'N';
-                $item->infoefr->cnpjefr = $instituicao->db21_cnpj_efr;
-            } elseif ($instituicao->getTipoInstituicao() == 101) {
-                $item->infoefr->ideefr  = 'S';
-                $item->infoefr->cnpjefr = null;
+            if (in_array($instituicao->getTipoInstituicao(), [101, 2])) {
+                if (!$instituicao->getEnteFederativoResp()) {
+                    $item->infoefr->ideefr = 'N';
+                    $item->infoefr->cnpjefr = $instituicao->db21_cnpj_efr;
+                } else {
+                    $item->infoefr->ideefr = 'S';
+                    $item->infoefr->cnpjefr = null;
+                }
             }
 
             // Informações da empresa desenvolvedora

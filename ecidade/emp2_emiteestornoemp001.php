@@ -73,7 +73,7 @@ $clrotulo->label("e50_codord");
             <table>
                 <tr>
                     <td  align="right" nowrap title="<?=$Te60_numemp?>">
-                        <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+                        <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
                     </td>
                     <td  nowrap>
                         <input name="e60_codemp" title='<?=$Te60_codemp?>' size="12" type='text'  onKeyPress="return js_mascara(event);" >
@@ -81,10 +81,10 @@ $clrotulo->label("e50_codord");
                 </tr>
                 <tr>
                     <td nowrap title="<?=@$Te60_numemp?>" align='right'>
-                        <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+                        <?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
                     </td>
                     <td>
-                        <? db_input('e60_numemp',13,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+                        <?php db_input('e60_numemp',13,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
                     </td>
                 </tr>
 
@@ -164,7 +164,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
         db_iframe_pagordem.hide();
     }
 </script>
-<?
+<?php
 
 if(isset($erro_msg)){
     db_msgbox($erro_msg);

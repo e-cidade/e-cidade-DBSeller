@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("j95_pda");
        <?=@$Lj98_sequen?>
     </td>
     <td> 
-<?
+<?php
 db_input('j98_sequen',8,$Ij98_sequen,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj98_codimporta?>">
-       <?
+       <?php
        db_ancora(@$Lj98_codimporta,"js_pesquisaj98_codimporta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('j98_codimporta',8,$Ij98_codimporta,true,'text',$db_opcao," onchange='js_pesquisaj98_codimporta(false);'")
 ?>
-       <?
+       <?php
 db_input('j95_pda',3,$Ij95_pda,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('j95_pda',3,$Ij95_pda,true,'text',3,'')
        <?=@$Lj98_matric?>
     </td>
     <td> 
-<?
+<?php
 db_input('j98_matric',8,$Ij98_matric,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('j98_matric',8,$Ij98_matric,true,'text',$db_opcao,"")
        <?=@$Lj98_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('j98_codigo',8,$Ij98_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('j98_codigo',8,$Ij98_codigo,true,'text',$db_opcao,"")
        <?=@$Lj98_testada?>
     </td>
     <td> 
-<?
+<?php
 db_input('j98_testada',15,$Ij98_testada,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('j98_testada',15,$Ij98_testada,true,'text',$db_opcao,"")
        <?=@$Lj98_pavim?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Com Asfalto','2'=>'Calçamento','3'=>'Sem Pavimento','4'=>'Pedra Irregular');
 db_select('j98_pavim',$x,true,$db_opcao,"");
 ?>
@@ -104,7 +104,7 @@ db_select('j98_pavim',$x,true,$db_opcao,"");
        <?=@$Lj98_agua?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_agua',$x,true,$db_opcao,"");
 ?>
@@ -115,7 +115,7 @@ db_select('j98_agua',$x,true,$db_opcao,"");
        <?=@$Lj98_esgoto?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_esgoto',$x,true,$db_opcao,"");
 ?>
@@ -126,7 +126,7 @@ db_select('j98_esgoto',$x,true,$db_opcao,"");
        <?=@$Lj98_eletrica?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_eletrica',$x,true,$db_opcao,"");
 ?>
@@ -137,7 +137,7 @@ db_select('j98_eletrica',$x,true,$db_opcao,"");
        <?=@$Lj98_meiofio?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_meiofio',$x,true,$db_opcao,"");
 ?>
@@ -148,7 +148,7 @@ db_select('j98_meiofio',$x,true,$db_opcao,"");
        <?=@$Lj98_iluminacao?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_iluminacao',$x,true,$db_opcao,"");
 ?>
@@ -159,7 +159,7 @@ db_select('j98_iluminacao',$x,true,$db_opcao,"");
        <?=@$Lj98_telefonia?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_telefonia',$x,true,$db_opcao,"");
 ?>
@@ -170,7 +170,7 @@ db_select('j98_telefonia',$x,true,$db_opcao,"");
        <?=@$Lj98_lixo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'SIM','N'=>'NÃO');
 db_select('j98_lixo',$x,true,$db_opcao,"");
 ?>
@@ -210,7 +210,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_moblevantamentolog.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

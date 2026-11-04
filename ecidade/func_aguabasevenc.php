@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguabasevenc->rotulo->label("x27_dtvenc");
               <?=$Lx27_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x27_matric",10,$Ix27_matric,true,"text",4,"","chave_x27_matric");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguabasevenc->rotulo->label("x27_dtvenc");
               <?=$Lx27_parcela?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x27_parcela",5,$Ix27_parcela,true,"text",4,"","chave_x27_parcela");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $claguabasevenc->rotulo->label("x27_dtvenc");
               <?=$Lx27_dtvenc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x27_dtvenc",10,$Ix27_dtvenc,true,"text",4,"","chave_x27_dtvenc");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $claguabasevenc->rotulo->label("x27_dtvenc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguabasevenc.php")==true){
@@ -129,12 +129,12 @@ $claguabasevenc->rotulo->label("x27_dtvenc");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

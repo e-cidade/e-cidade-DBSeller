@@ -94,6 +94,8 @@ class RelatorioProfessorEscolaAnalitico extends RelatorioProfessorEscola {
       $this->oPdf->AddPage();
       foreach ( $oEscola->aProfessores as $oProfessor ) {
 
+        $nomeSocial = explode("/", $oProfessor->sNome);
+
         $this->validaQuebraPagina(2);
         $this->oPdf->setfont('arial', 'B', 7);
         $this->oPdf->cell((160 - $larguraDataSaida), 4, "Matrícula/CGM - Professor", "B", 0, 'L');
@@ -104,7 +106,7 @@ class RelatorioProfessorEscolaAnalitico extends RelatorioProfessorEscola {
               $this->oPdf->cell( 31, 4, "Data Ingresso ",            "B", 1, 'L');
         }
         $this->oPdf->setfont('arial', '', 7);
-        $this->oPdf->cell((160 - $larguraDataSaida), 4, $oProfessor->sNome, 0, 0, 'L');
+        $this->oPdf->cell((160 - $larguraDataSaida), 4, mb_strimwidth($nomeSocial[0], 0 ,112), 0, 0, 'L');
           if (!$this->somenteServidoresAtivos) {
               $this->oPdf->cell( 31, 4, $oProfessor->dtIngresso->convertTo(DBDate::DATA_PTBR), 0, 0, 'L');
               if (isset($oProfessor->dtSaida)) {
@@ -115,7 +117,9 @@ class RelatorioProfessorEscolaAnalitico extends RelatorioProfessorEscola {
           } else {
               $this->oPdf->cell( 31, 4, $oProfessor->dtIngresso->convertTo(DBDate::DATA_PTBR), 0, 1, 'L');
           }
-
+          $this->oPdf->cell((160 - $larguraDataSaida), 4, mb_strimwidth($nomeSocial[1], 0 ,112), 0, 0, 'L');
+          $this->oPdf->Ln();
+        
         foreach ($oProfessor->aAreaTrabalho as $oAreaTrabalho) {
 
           $this->validaQuebraPagina(2);

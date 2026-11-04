@@ -52,13 +52,13 @@ class cl_progressaoparcialalunodiariofinalorigem {
                  ed107_diariofinal = int4 = Diário Final 
                  ";
    //funcao construtor da classe
-   function cl_progressaoparcialalunodiariofinalorigem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialalunodiariofinalorigem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed107_sequencial = ($this->ed107_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed107_sequencial"]:$this->ed107_sequencial);
        $this->ed107_progressaoparcialaluno = ($this->ed107_progressaoparcialaluno == ""?@$GLOBALS["HTTP_POST_VARS"]["ed107_progressaoparcialaluno"]:$this->ed107_progressaoparcialaluno);
@@ -77,7 +77,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      }
    }
    // funcao para inclusao
-   function incluir ($ed107_sequencial){
+   public function incluir ($ed107_sequencial){
       $this->atualizacampos();
      if($this->ed107_progressaoparcialaluno == null ){
        $this->erro_sql = " Campo Progressão Parcial não informado.";
@@ -182,7 +182,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed107_sequencial=null) {
+   public function alterar ($ed107_sequencial=null) {
       $this->atualizacampos();
      $sql = " update progressaoparcialalunodiariofinalorigem set ";
      $virgula = "";
@@ -284,7 +284,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      }
    }
    // funcao para exclusao
-   function excluir ($ed107_sequencial=null,$dbwhere=null) {
+   public function excluir ($ed107_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -356,7 +356,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -379,7 +379,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ed107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ed107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -420,7 +420,7 @@ class cl_progressaoparcialalunodiariofinalorigem {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

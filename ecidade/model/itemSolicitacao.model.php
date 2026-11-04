@@ -207,6 +207,7 @@ class itemSolicitacao {
    */
   protected $lLiberado = true;
 
+  protected $sUnidadeDescr;
 
   /**
    * Item para a uma solicitação de compras
@@ -229,7 +230,7 @@ class itemSolicitacao {
         $oItem = db_utils::fieldsMemory($rsItens, 0, false, false, true);
         $this->iCodigoItemSolicitacao = $oItem->pc11_codigo;
         $this->iCodigoMaterial        = $oItem->pc16_codmater;
-        $this->sDescricaoMaterial     = $oItem->pc01_descrmater;
+        $this->sDescricaoMaterial     = urldecode($oItem->pc01_descrmater);
         $this->sJustificativa         = $oItem->pc11_just;
         $this->sResumo                = $oItem->pc11_resum;
         $this->sPagamento             = $oItem->pc11_pgto;
@@ -238,6 +239,7 @@ class itemSolicitacao {
         $this->setLiberado($oItem->pc11_liberado == 't');
         $this->setOrdem($oItem->pc11_seq);
         $this->setUnidade($oItem->pc17_unid);
+        $this->sUnidadeDescr          = $oItem->m61_descr;
         $this->setQuantidadeUnidade($oItem->pc17_quant);
         $this->setPrazos($oItem->pc11_prazo);
         $this->nQuantidade   = $oItem->pc11_quant;
@@ -322,7 +324,10 @@ class itemSolicitacao {
     return $this->iCodigoItemSolicitacao;
   }
 
-
+  public function getUnidadeDescr()
+  {
+      return $this->sUnidadeDescr;
+  }
     public function getFornecedorItem($codCompilacao, $codMaterial)
     {
         $sSqlVencedores  = "SELECT pc23_vlrun as valorunitario, ";
@@ -1038,28 +1043,40 @@ class itemSolicitacao {
    * @param integer $iCodigoDotacao
    * @return array
    */
-  public function getReservasSaldoDotacao($iCodigoDotacao) {
+    public function getReservasSaldoDotacao($iCodigoDotacao, $solicitem = 0)
+    {
+        $condicoes = [];
+        $condicoes[] = "o82_pcdotac = {$iCodigoDotacao}";
 
-    $aReservas          = array();
-    $oDaoOrcReservaSol  = db_utils::getDao('orcreservasol');
-    $sSqlReservaDotacao = $oDaoOrcReservaSol->sql_query_orcreserva(
-                                                                   null,
-                                                                   null,
-                                                                   "o80_codres as codigoreserva,
-                                                                   o80_valor as valor,
-                                                                   o80_coddot as dotacao",
-                                                                   "",
-                                                                   "o82_pcdotac = {$iCodigoDotacao}");
-    $rsReservaDotacao   = $oDaoOrcReservaSol->sql_record($sSqlReservaDotacao);
+        if (!empty($solicitem)) {
+            $condicoes[] = "o82_solicitem = {$solicitem}";
+        }
 
-    for ($iRow = 0; $iRow < $oDaoOrcReservaSol->numrows; $iRow++) {
+        $condicoesSql = implode($condicoes, ' AND ');
 
-      $oDadosReserva = db_utils::fieldsMemory($rsReservaDotacao, $iRow);
-      $aReservas[]   = $oDadosReserva;
+        $aReservas = array();
+        $oDaoOrcReservaSol = new cl_orcreservasol;
+        $sSqlReservaDotacao = $oDaoOrcReservaSol->sql_query_orcreserva(
+            null,
+            null,
+            "
+                o80_codres AS codigoreserva,
+                o82_solicitem AS solicitem,
+                o80_valor AS valor,
+                o80_coddot AS dotacao
+            ",
+            "",
+            $condicoesSql
+        );
+        $rsReservaDotacao = $oDaoOrcReservaSol->sql_record($sSqlReservaDotacao);
+
+        for ($iRow = 0; $iRow < $oDaoOrcReservaSol->numrows; $iRow++) {
+            $oDadosReserva = db_utils::fieldsMemory($rsReservaDotacao, $iRow);
+            $aReservas[] = $oDadosReserva;
+        }
+
+        return $aReservas;
     }
-
-    return $aReservas;
-  }
 
   /**
    * Exclui reserva de saldo pelo codigo da reserva

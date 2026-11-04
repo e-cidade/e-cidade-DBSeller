@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("fpdf151/scpdf.php"));
@@ -35,7 +35,7 @@ include(modification("classes/db_pcsugforn_classe.php"));
 include(modification("classes/db_empparametro_classe.php"));
 include(modification("classes/db_solicitaregistropreco_classe.php"));
 include(modification("classes/db_db_departorg_classe.php"));
-include(modification("classes/db_solicita_classe.php"));
+include_once(modification("classes/db_solicita_classe.php"));
 
 $clsolicita							 = new cl_solicita;
 $clsolicitem 						 = new cl_solicitem;
@@ -112,7 +112,7 @@ for($contador=0;$contador<$numrows_solicita;$contador++){
   $pdf1->logo			  = $logo;
   $pdf1->enderpref  = $ender;
   $pdf1->municpref  = $munic;
-  $pdf1->telefpref  = $telef; 
+  $pdf1->telefpref  = $telef;
   $pdf1->emailpref  = $email;
   $pdf1->emissao    = date("Y-m-d",db_getsession("DB_datausu"));
   $pdf1->cgcpref    = $cgc;
@@ -121,21 +121,21 @@ for($contador=0;$contador<$numrows_solicita;$contador++){
 
   $pdf1->secfaz           = $classinatura->assinatura(1002);
   $pdf1->nompre           = $classinatura->assinatura(1000);
-    
+
   $pdf1->Snumero          = $pc10_numero;
   $pdf1->Sdata            = $pc10_data;
   $pdf1->Svalor           = 0; //$pc12_vlrap;
   $pdf1->Sresumo          = $pc10_resumo;
-  $pdf1->Stipcom          = ''; //$pc50_descr;  
+  $pdf1->Stipcom          = ''; //$pc50_descr;
   $pdf1->Sdepart          = $descrdepto;
   $pdf1->Srespdepart      = $nomeresponsavel;
   $pdf1->Susuarioger      = $nome;
 	$pdf1->StipoSolicitacao = $pc52_sequencial.$pc52_descricao;
 	$pdf1->Stiposolicitacaopai   = $tiposolicitacaopai;
 	$pdf1->Scodigosolicitacaopai = $codigosolicitacaopai;
-	  
+
   $result_orgunid   = $cldb_departorg->sql_record($cldb_departorg->sql_query_orgunid($coddepto,db_getsession('DB_anousu'),"o40_descr,o41_descr"));
-  db_fieldsmemory($result_orgunid,0);  
+  db_fieldsmemory($result_orgunid,0);
   $pdf1->Sorgao     = $o40_descr;
   $pdf1->Sunidade   = $o41_descr;
 
@@ -163,7 +163,10 @@ for($contador=0;$contador<$numrows_solicita;$contador++){
   																								pc11_resum,
   																								pc11_just,
   																								'' as m61_abrev,
-  																								m61_descr,
+  																								CASE
+                                                                                                    WHEN pc17_quant IS NOT NULL THEN m61_descr || '(' || pc17_quant || ')'
+                                                                                                    ELSE m61_descr
+                                                                                                END m61_descr,
   																								'' as pc17_quant,
   																								pc01_codmater,
   																								pc01_descrmater,
@@ -176,7 +179,7 @@ for($contador=0;$contador<$numrows_solicita;$contador++){
   																								'pc11_seq,
   																								pc13_codigo',
   																								"pc11_numero=$pc10_numero"));
-  
+
   $numrows_pcdotac = $clsolicitem->numrows;
   $pdf1->recorddasdotac  = $result_pesq_pcdotac;
   $pdf1->linhasdasdotac  = $numrows_pcdotac;

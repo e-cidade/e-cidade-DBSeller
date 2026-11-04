@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_tabcontr {
                  h20_rubr = varchar(250) = Rúbricas 
                  ";
    //funcao construtor da classe 
-   function cl_tabcontr() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabcontr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_tabcontr {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h20_descr = ($this->h20_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["h20_descr"]:$this->h20_descr);
        $this->h20_coluna = ($this->h20_coluna == ""?@$GLOBALS["HTTP_POST_VARS"]["h20_coluna"]:$this->h20_coluna);
@@ -76,7 +76,7 @@ class cl_tabcontr {
      }
    }
    // funcao para inclusao
-   function incluir (){ 
+   public function incluir (){ 
       $this->atualizacampos();
      if($this->h20_descr == null ){ 
        $this->erro_sql = " Campo Descrição do Tipo nao Informado.";
@@ -141,7 +141,7 @@ class cl_tabcontr {
      return true;
    } 
    // funcao para alteracao
-   function alterar ( $oid=null ) { 
+   public function alterar ( $oid=null ) { 
       $this->atualizacampos();
      $sql = " update tabcontr set ";
      $virgula = "";
@@ -215,7 +215,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao para exclusao 
-   function excluir ( $oid=null ,$dbwhere=null) { 
+   public function excluir ( $oid=null ,$dbwhere=null) { 
      $sql = " delete from tabcontr
                     where ";
      $sql2 = "";
@@ -254,7 +254,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clorcdotacaocontr->rotulo->label("o61_codigo");
               <?=$Lo61_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o61_coddot",6,$Io61_coddot,true,"text",4,"","chave_o61_coddot");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcdotacaocontr->rotulo->label("o61_codigo");
               <?=$Lo61_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o61_codigo",4,$Io61_codigo,true,"text",4,"","chave_o61_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcdotacaocontr->rotulo->label("o61_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcdotacaocontr.php")==true){
@@ -119,12 +119,12 @@ $clorcdotacaocontr->rotulo->label("o61_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

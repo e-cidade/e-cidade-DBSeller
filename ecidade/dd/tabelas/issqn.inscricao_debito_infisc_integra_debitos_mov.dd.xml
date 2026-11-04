@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="yes" ?>
+<table codigo='1011159' name='issqn.inscricao_debito_infisc_integra_debitos_mov' description="Tabela que salva débito que foram inscritos em cobrança para serem integrados com a INFISC" prefix="q197" label="inscricao_debito_infisc_integra_debitos_mov" type="0">
+  <fields>
+    <field codigo="1015527" 
+           campo_api='' 
+           name="q197_sequencial" 
+           conteudo="int8" 
+           description="Sequencial da tabela inscricao_debito_infisc_integra_debitos_mov" 
+           inivalue="0" 
+           label="Sequencial" 
+           size="11" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Sequencial" 
+           reference="" 
+           ispk="t" 
+           hassequence="t" > 
+           
+      <sequence name='issqn.inscricao_debito_infisc_integra_debitos_mov_q197_sequencial_seq' />
+     
+    </field> 
+    <field codigo="1015528" 
+           campo_api='' 
+           name="q197_diversos" 
+           conteudo="int8" 
+           description="Código da tabela diversos." 
+           inivalue="0" 
+           label="Diversos" 
+           size="11" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="1" 
+           tipoobj="text" 
+           labelrel="Diversos" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+    <field codigo="1015529" 
+           campo_api='' 
+           name="q197_status" 
+           conteudo="varchar(255)" 
+           description="Status que define se foi processado ou não." 
+           inivalue="" 
+           label="Status" 
+           size="255" 
+           null="f" 
+           uppercase="f" 
+           autocompl="f" 
+           aceitatipo="0" 
+           tipoobj="text" 
+           labelrel="Status" 
+           reference="" 
+           ispk="f" 
+           hassequence="f" > 
+            
+    </field> 
+  </fields>
+  <primarykey>
+    <fieldpk name="q197_sequencial"></fieldpk> 
+  </primarykey>
+  <foreignkeys>
+  </foreignkeys>
+</table>

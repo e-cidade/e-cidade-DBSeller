@@ -110,6 +110,9 @@
                 </td>
             </tr>
         </table>
+        <br>
+        <div id="msgDataCertificado" >
+        </div>
     </fieldset>
     <button type="button" id="consultar"><i class="fas fa-search"></i> Consultar</button>
     <button type="button" onclick="imprimeRelatorio('pdf')" id="imprimir"><i class="fas fa-print"></i> Imprimir</button>
@@ -131,6 +134,9 @@
     const selectRecibo = document.querySelector("select[name=statusRecibo]");
     const selectOcorrencia = document.querySelector("select[name=statusOcorrencia]");
     const selectAdvertencia = document.querySelector("select[name=statusAdvertencia]");
+    const selectEmpregador = document.getElementById('empregador');
+    const selectContribuinte = document.getElementById('contribuinte');
+
     const EFD_REINF = '1';
     const ESOCIAL = '2';
     const urlParams = new URLSearchParams(window.location.search);
@@ -162,6 +168,8 @@
             });
             document.getElementById('trEmpregador').style.display = '';
         }
+        buscarCertificado();
+
     }).catch(mensagem => alert(mensagem));
 
     selectRecibo.addEventListener("change", function () {
@@ -184,6 +192,10 @@
         selectRecibo.value = false;
         selectAdvertencia.value = false;
     });
+    selectEmpregador.addEventListener("change", function () {
+        buscarCertificado();
+    })
+
 
     function buscarArquivos() {
 
@@ -193,8 +205,10 @@
         };
 
         new AjaxRequest('eso4_esocialapi.RPC.php', parametros, function (retorno) {
-
+            let boxAlerta = document.getElementById("msgDataCertificado");
             if (retorno.erro) {
+                boxAlerta.innerHTML = retorno.msgCertificado;
+                boxAlerta.className = "alert alert-danger";
                 return false;
             }
 
@@ -202,5 +216,42 @@
                 $('evento').add(new Option(evento.titulo, evento.layout));
             });
         }).setMessage('Buscando Arquivos.').execute();
+    }
+
+    function buscarCertificado() {
+        var cgmEmpregador = selectEmpregador.value;
+        if (integracao === EFD_REINF){
+            cgmEmpregador = selectContribuinte.value;
+        }
+        const parametros = {
+            'exec': 'getCertificado',
+            'cgmEmpregador': cgmEmpregador,
+            'integracao' : integracao
+        };
+
+        new AjaxRequest('eso4_esocialapi.RPC.php', parametros, function (retorno) {
+            let boxAlerta = document.getElementById("msgDataCertificado");
+            if (retorno.erro) {
+                boxAlerta.innerHTML = retorno.msgCertificado;
+                boxAlerta.className = "alert alert-danger";
+                if (retorno.msgCertificado == '404 Not Found') {
+                    boxAlerta.className = "alert alert-danger";
+                    boxAlerta.innerHTML = '<strong>Atenção!</strong> A API não esta configurada corretamente. Favor entrar em contato com o suporte.';
+                }
+                return false;
+            }
+            if (retorno.tipoAlerta === "Verde") {
+                boxAlerta.className = "alert alert-success";
+                boxAlerta.innerHTML = retorno.msgCertificado;
+            }
+            if (retorno.tipoAlerta === "Laranja") {
+                boxAlerta.className = "alert alert-warning";
+                boxAlerta.innerHTML = retorno.msgCertificado;
+            }
+            if (retorno.tipoAlerta === "Vermelho") {
+                boxAlerta.className = "alert alert-danger";
+                boxAlerta.innerHTML = retorno.msgCertificado;
+            }
+        }).setMessage('Pesquisando certificado.').execute();
     }
 </script>

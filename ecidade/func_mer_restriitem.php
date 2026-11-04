@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmer_restriitem->rotulo->label("me25_i_codigo");
               <?=$Lme25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("me25_i_codigo",4,$Ime25_i_codigo,true,"text",4,"","chave_me25_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmer_restriitem->rotulo->label("me25_i_codigo");
               <?=$Lme25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("me25_i_codigo",4,$Ime25_i_codigo,true,"text",4,"","chave_me25_i_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmer_restriitem->rotulo->label("me25_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -130,13 +130,13 @@ $clmer_restriitem->rotulo->label("me25_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php
   
 }
 ?>

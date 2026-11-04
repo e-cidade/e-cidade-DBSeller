@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -109,6 +109,7 @@ function js_emite(opcao,origem) {
             sUrl += 'impressao=' + obj.impressao.value;
             sUrl += '&estrut_inicial=' + obj.estrut_inicial.value;
             sUrl += '&previsao=' + obj.previsao.value;
+            sUrl += '&apresentar=' + obj.apresentarRecurso.value;
             sUrl += '&recursos_selecionados=' + recursos;
             sUrl += '&perfin=' + perfin + '&perini=' + perini + '&opcao=' + opcao;
             sUrl += '&origem=' + origem + '&db_selinstit=' + document.form1.db_selinstit.value;
@@ -178,6 +179,16 @@ function js_emite(opcao,origem) {
                         <option value="2">Deduções no Mesmo Grupo</option>
                     </select>
             </tr>
+
+            <tr>
+                <td colspan="1" align="right"><strong>Apresentar:&nbsp;</strong></td>
+                <td colspan="2">
+                    <select id="apresentarRecurso" name="apresentarRecurso">
+                        <option selected value="3">Fonte Recurso</option>
+                        <option value="9">Subrecurso</option>
+                        <option value="7">Código Siconfi</option>
+                    </select>
+            </td>
 
             <?php if (FONTE_RECURSO_UNIAO) { ?>
                 <tr>

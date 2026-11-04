@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ if(isset($db_opcao) && $db_opcao == "Alterar") {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmfiscalrec.php"));
 	?>
     </center>
@@ -94,7 +94,7 @@ if(isset($db_opcao) && $db_opcao == "Alterar") {
 <script>
 js_setatabulacao();
 </script>
-<?
+<?php
 if(isset($db_opcao) && $db_opcao == "Alterar"){
   if($clfiscalrec->erro_status=="0"){
     $clfiscalrec->erro(true,false);

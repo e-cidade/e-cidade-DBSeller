@@ -122,7 +122,7 @@ $oGet = db_utils::postMemory($_GET);
                     alert(oRetorno.sMensagem.urlDecode());
                 }
                 var sCaminhoDownloadArquivo = oRetorno.sCaminhoDownloadArquivo.urlDecode();
-                window.open("db_download.php?arquivo="+sCaminhoDownloadArquivo, "_self");
+                window.open("db_download.php?arquivo="+sCaminhoDownloadArquivo);
             }
         ).execute();
     }

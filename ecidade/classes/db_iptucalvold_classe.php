@@ -49,6 +49,7 @@ class cl_iptucalvold
     public $j157_quant = 0; 
     public $j157_codhis = 0; 
     public $j157_iptucalclog = 0; 
+    public $j157_gerafinanc =  't';
    // cria propriedade com as variaveis do arquivo 
     public $campos = "
                  j157_sequencial = int4 = Sequencial itpucalvold 
@@ -88,6 +89,7 @@ class cl_iptucalvold
        $this->j157_quant = ($this->j157_quant == ""?@$GLOBALS["HTTP_POST_VARS"]["j157_quant"]:$this->j157_quant);
        $this->j157_codhis = ($this->j157_codhis == ""?@$GLOBALS["HTTP_POST_VARS"]["j157_codhis"]:$this->j157_codhis);
        $this->j157_iptucalclog = ($this->j157_iptucalclog == ""?@$GLOBALS["HTTP_POST_VARS"]["j157_iptucalclog"]:$this->j157_iptucalclog);
+       $this->j157_gerafinanc = ($this->j157_gerafinanc == ""?@$GLOBALS["HTTP_POST_VARS"]["j157_gerafinanc"]:$this->j157_gerafinanc);
      }else{
        $this->j157_sequencial = ($this->j157_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j157_sequencial"]:$this->j157_sequencial);
      }
@@ -169,10 +171,10 @@ class cl_iptucalvold
          $this->erro_status = "0";
          return false; 
        }
-       $this->j157_sequencial = pg_result($result,0,0); 
+       $this->j157_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucalvold_j157_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j157_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j157_sequencial)){
          $this->erro_sql = " Campo j157_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +201,8 @@ class cl_iptucalvold
                                       ,j157_valor 
                                       ,j157_quant 
                                       ,j157_codhis 
-                                      ,j157_iptucalclog 
+                                      ,j157_iptucalclog
+                                      ,j157_gerafinanc
                        )
                 values (
                                 $this->j157_sequencial 
@@ -210,6 +213,7 @@ class cl_iptucalvold
                                ,$this->j157_quant 
                                ,$this->j157_codhis 
                                ,$this->j157_iptucalclog 
+                               ,'$this->j157_gerafinanc'
                       )";
      $result = db_query($sql); 
      if($result==false){ 
@@ -243,17 +247,17 @@ class cl_iptucalvold
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014377,'$this->j157_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010500,1014377,'','".AddSlashes(pg_result($resaco,0,'j157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010897,'','".AddSlashes(pg_result($resaco,0,'j157_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010898,'','".AddSlashes(pg_result($resaco,0,'j157_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010899,'','".AddSlashes(pg_result($resaco,0,'j157_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010900,'','".AddSlashes(pg_result($resaco,0,'j157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010901,'','".AddSlashes(pg_result($resaco,0,'j157_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010902,'','".AddSlashes(pg_result($resaco,0,'j157_codhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010500,1010903,'','".AddSlashes(pg_result($resaco,0,'j157_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1014377,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010897,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010898,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010899,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010900,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010901,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010902,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_codhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010500,1010903,'','".AddSlashes(pg_fetch_result($resaco,0,'j157_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -382,25 +386,25 @@ class cl_iptucalvold
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014377,'$this->j157_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_sequencial"]) || $this->j157_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1014377,'".AddSlashes(pg_result($resaco,$conresaco,'j157_sequencial'))."','$this->j157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1014377,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_sequencial'))."','$this->j157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_anousu"]) || $this->j157_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010897,'".AddSlashes(pg_result($resaco,$conresaco,'j157_anousu'))."','$this->j157_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010897,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_anousu'))."','$this->j157_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_matric"]) || $this->j157_matric != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010898,'".AddSlashes(pg_result($resaco,$conresaco,'j157_matric'))."','$this->j157_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010898,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_matric'))."','$this->j157_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_receit"]) || $this->j157_receit != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010899,'".AddSlashes(pg_result($resaco,$conresaco,'j157_receit'))."','$this->j157_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010899,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_receit'))."','$this->j157_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_valor"]) || $this->j157_valor != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010900,'".AddSlashes(pg_result($resaco,$conresaco,'j157_valor'))."','$this->j157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010900,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_valor'))."','$this->j157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_quant"]) || $this->j157_quant != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010901,'".AddSlashes(pg_result($resaco,$conresaco,'j157_quant'))."','$this->j157_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010901,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_quant'))."','$this->j157_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_codhis"]) || $this->j157_codhis != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010902,'".AddSlashes(pg_result($resaco,$conresaco,'j157_codhis'))."','$this->j157_codhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010902,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_codhis'))."','$this->j157_codhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j157_iptucalclog"]) || $this->j157_iptucalclog != "")
-             $resac = db_query("insert into db_acount values($acount,1010500,1010903,'".AddSlashes(pg_result($resaco,$conresaco,'j157_iptucalclog'))."','$this->j157_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010500,1010903,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j157_iptucalclog'))."','$this->j157_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -454,17 +458,17 @@ class cl_iptucalvold
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014377,'$j157_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1014377,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010897,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010898,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010899,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010900,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010901,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010902,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_codhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010500,1010903,'','".AddSlashes(pg_result($resaco,$iresaco,'j157_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1014377,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010897,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010898,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010899,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010900,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010901,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010902,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_codhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010500,1010903,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j157_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -620,14 +624,15 @@ class cl_iptucalvold
                               coalesce(j21_receit, 0) as j21_receit, 
                               coalesce(j21_valor, 0)  as j21_valor, 
                               coalesce(j21_quant, 0)  as j21_quant, 
-                              coalesce(j21_codhis, 0) as j21_codhis  
+                              coalesce(j21_codhis, 0) as j21_codhis,
+                              j21_gerafinanc 
                          from iptucalv where j21_anousu = {$iAnousu} and j21_matric = {$iMatric};";
       $rsIptucalv = db_query($sSqlIptucalv) or die($sSqlIptucalv);
 
       if (!$rsIptucalv) {
           throw new DBException("Não foi possivel buscar dados do cálculo (valores) (".pg_last_error().")");
       }
-      for ($i = 0; $i < pg_numrows($rsIptucalv); $i++) {
+      for ($i = 0; $i < pg_num_rows($rsIptucalv); $i++) {
 
           global $j21_anousu;
           global $j21_matric;
@@ -635,6 +640,7 @@ class cl_iptucalvold
           global $j21_valor;
           global $j21_quant;
           global $j21_codhis;
+          global $j21_gerafinanc;
 
           db_fieldsmemory($rsIptucalv,$i);
 
@@ -645,6 +651,7 @@ class cl_iptucalvold
           $this->j157_quant          = $j21_quant;
           $this->j157_codhis         = $j21_codhis;
           $this->j157_iptucalclog    = $iCalclog;
+          $this->j157_gerafinanc     = $j21_gerafinanc;
           $this->incluir(null);
 
           if ($this->erro_status == 0) {

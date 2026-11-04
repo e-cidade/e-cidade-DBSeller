@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ $clbairro->rotulo->label();
         <?=$Lj13_codi?>
       </td>
       <td width="85%"> 
-          <?
+          <?php
 		db_input('j13_codi',5,$Ij13_codi,true,'text',3);
 		  ?>
       </td>
@@ -57,7 +57,7 @@ $clbairro->rotulo->label();
         <?=$Lj13_descr?>
       </td>
       <td>
-        <?
+        <?php
 		  db_input('j13_descr',41,$Ij13_descr,true,'text',$db_opcao);
 		  ?>
       </td>
@@ -67,7 +67,7 @@ $clbairro->rotulo->label();
         <?=$Lj13_codant?>
       </td>
       <td>
-        <?
+        <?php
 		  db_input('j13_codant',16,$Ij13_codant,true,'text',$db_opcao);
 		  ?>
       </td>
@@ -94,7 +94,7 @@ function js_func_bairros(){
   func_bairros.focus();
 }
 </script>
-<?
+<?php
   $func_bairros = new janela("func_bairros","");
   $func_bairros ->posX=1;
   $func_bairros ->posY=20;

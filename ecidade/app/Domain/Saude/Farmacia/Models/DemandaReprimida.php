@@ -29,7 +29,7 @@ class DemandaReprimida extends Model
     public $timestamps = false;
 
     public $casts = [
-        'fa67_data_hora' => 'DateTime'
+        'fa67_data_hora' => 'datetime'
     ];
 
     public function paciente()

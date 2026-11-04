@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -220,6 +220,17 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
           ?>
         </td>
       </tr>
+      <tr>
+		  	<td nowrap title="Processar descontos recibo">
+	        	<label for="procdescontorecibo">Processar descontos recibo:</label>
+        </td>
+  			<td>
+	          <?php
+	          	$optionsprocdescontorecibo= array("n"=>"Não","s"=>'Sim');
+	          	db_select('procdescontorecibo',$optionsprocdescontorecibo,false,4,"style='width:83;'");
+	          ?>
+	        </td>
+		  </tr>
 	</table>
 
     <fieldset class="separator">
@@ -541,6 +552,7 @@ function js_emite(tiporel){
       sQuery += '&datavenc='              + $F('datavenc_ano') + '-' + $F('datavenc_mes') + '-' + $F('datavenc_dia');
       sQuery += '&imprimirtimbre='        + $F('imprimirtimbre');
       sQuery += '&rotateremetente='       + $F('selRotateRemetente');
+      sQuery += '&procdescontorecibo='    + $F('procdescontorecibo');
       sQuery += '&tiporel='               + tiporel;
       sQuery += '&'                       + campo;
 

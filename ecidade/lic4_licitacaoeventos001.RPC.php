@@ -176,7 +176,7 @@ try {
     case "salvarEvento":
 
       $oStdEvento    = $oParam->evento;
-    
+
       $iCodigoEvento = isset($oStdEvento->codigo_evento) ? $oStdEvento->codigo_evento : null;
       $oData         = new DBDate(urldecode($oStdEvento->data));
       $oDataSessao   = new DBDate(date('Y-m-d', db_getsession('DB_datausu')));
@@ -275,6 +275,27 @@ try {
       $oRetorno->message = "Documento salvo com sucesso.";
 
       break;
+
+    case "baixarDocumento":
+        $codigoDocumento = $oParam->codigoDocumento;
+        if (empty($codigoDocumento)) {
+            throw new ParameterException('Código do documento não informado.');
+        }
+
+        $eventoDocumento = new DocumentoEventoLicitacao($codigoDocumento);
+        $caminhoDocumento = "tmp/{$eventoDocumento->getNomeArquivo()}";
+
+        if (!file_exists($caminhoDocumento)) {
+            $arquivoCriado = pg_lo_export($eventoDocumento->getArquivo(), $caminhoDocumento);
+
+            if ($arquivoCriado === false) {
+                $oRetorno->message = "Não foi possível baixar o documento.";
+                $oRetorno->error = true;
+            }
+        }
+
+        $oRetorno->caminhoDocumento = urlencode($caminhoDocumento);
+        break;
 
     default:
       throw new Exception("Opção é inválida.");

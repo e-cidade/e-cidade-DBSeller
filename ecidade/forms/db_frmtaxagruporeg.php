@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,44 +36,44 @@ $clrotulo->label("k07_descr");
 <table border="0">
   <tr>
     <td> 
-    	<?
+    	<?php
 		db_input('k08_taxagruporeg',5,'',true,'hidden','',"")
 		?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk08_taxagrupo?>">
-       <?
+       <?php
        db_ancora(@$Lk08_taxagrupo,"js_pesquisak08_taxagrupo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-    	<?
+    	<?php
 		db_input('k08_taxagrupo',5,$Ik08_taxagrupo,true,'text',$db_opcao," onchange='js_pesquisak08_taxagrupo(false);'")
 		?>
-    	<?
+    	<?php
 		db_input('k06_descr',50,$Ik06_descr,true,'text',3,'')
         ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk08_codsubrec?>">
-       <?
+       <?php
        db_ancora(@$Lk08_codsubrec,"js_pesquisak08_codsubrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k08_codsubrec',5,$Ik08_codsubrec,true,'text',$db_opcao," onchange='js_pesquisak08_codsubrec(false);'")
 ?>
-       <?
+       <?php
 db_input('k07_descr',50,$Ik07_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td valign="top"  align="center" colspan=2>  
-    <?
+    <?php
 	 //"k08_taxagrupo"=>@$k08_taxagrupo,
 	 $sql = " select * 
 	             from taxagruporeg
@@ -175,7 +175,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_taxagruporeg.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

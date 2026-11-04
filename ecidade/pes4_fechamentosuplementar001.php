@@ -35,7 +35,7 @@ try {
    
 } catch (Exception $eException) {
    
-   db_msgbox($eException->getMessage()); 
+   throw new \ECidade\V3\Extension\Exceptions\ResponseException($eException->getMessage()); 
    db_redireciona('corpo.php');
 }
 
@@ -90,7 +90,7 @@ try {
   db_fim_transacao();
 } catch (Exception $eException) {
   db_fim_transacao(true);
-  db_msgbox($eException->getMessage());
+  throw new \ECidade\V3\Extension\Exceptions\ResponseException($eException->getMessage());
 }
  
 ?>

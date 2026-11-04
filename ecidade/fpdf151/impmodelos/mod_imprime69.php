@@ -1,4 +1,4 @@
-<?
+<?php
 $altura = 3.5;
 $this->objpdf->AddPage();
 

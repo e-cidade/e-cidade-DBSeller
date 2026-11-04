@@ -123,7 +123,7 @@ class DocumentoContabilRegra {
     $oDaoRegra->incluir(null);
     $this->iCodigo = $oDaoRegra->c92_sequencial;
     if ($oDaoRegra->erro_status == 0) {
-      throw new Exception("Não foi possível salvar a regra.\n\nErro Técnico: {$oDaoRegra->erro_msg}");
+      throw new Exception("Não foi possível salvar a regra. Documento: {$this->iCodigoDocumento}\n\nErro Técnico: {$oDaoRegra->erro_msg}");
     }
     return true;
   }

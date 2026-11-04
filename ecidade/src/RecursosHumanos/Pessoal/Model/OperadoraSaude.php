@@ -29,6 +29,10 @@ class OperadoraSaude
      * @var boolean
      */
     private $ativo;
+    /**
+     * @var int
+     */
+    private $codigoInstituicao;
 
     /**
      * OperadoraSaude constructor.
@@ -44,6 +48,7 @@ class OperadoraSaude
             $this->cgm = $operadoraSaude->getCgm();
             $this->ans = $operadoraSaude->getAns();
             $this->ativo = $operadoraSaude->isAtivo();
+            $this->codigoInstituicao = $operadoraSaude->getCodigoInstituicao();
         }
     }
 
@@ -84,6 +89,9 @@ class OperadoraSaude
      */
     public function getAns()
     {
+        if ($this->ans == 0) {
+            $this->ans = '';
+        }
         return $this->ans;
     }
 
@@ -136,6 +144,10 @@ class OperadoraSaude
             $operadoraSaude->setAtivo($state['rh221_ativo'] === 't');
         }
 
+        if (array_key_exists('rh221_instituicao', $state)) {
+            $operadoraSaude->setCodigoInstituicao((int)$state['rh221_instituicao']);
+        }
+
         return $operadoraSaude;
     }
 
@@ -148,7 +160,24 @@ class OperadoraSaude
             'sequencial' => $this->getSequencial(),
             'cgm' => $this->getCgm()->toArray(),
             'ans' => $this->getAns(),
-            'ativo' => $this->isAtivo()
+            'ativo' => $this->isAtivo(),
+            'codigoInstituicao' => $this->getCodigoInstituicao()
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function getCodigoInstituicao()
+    {
+        return $this->codigoInstituicao;
+    }
+
+    /**
+     * @param int $codigoInstituicao
+     */
+    public function setCodigoInstituicao($codigoInstituicao)
+    {
+        $this->codigoInstituicao = $codigoInstituicao;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,7 +43,7 @@ if ($oProtParamGlobal->p06_tipo == ProcessoProtocoloNumeracao::TIPOORGAO) {
           <?=@$Lp07_ano?>
           </td>
         <td class='info'>
-          <?
+          <?php
             db_input('p07_ano',15,$Ip07_ano,true,'text',$db_opcao,"");
             db_input('p07_sequencial',15,$Ip07_sequencial,true,'hidden',3,"");
             db_input('p07_instit',15,$Ip07_instit,true,'hidden',3,"");
@@ -55,7 +55,7 @@ if ($oProtParamGlobal->p06_tipo == ProcessoProtocoloNumeracao::TIPOORGAO) {
           <?=@$Lp07_proximonumero?>
         </td>
         <td class='info'>
-          <?
+          <?php
             db_input('p07_proximonumero',15,$Ip07_proximonumero,true,'text',$db_opcao,'', '', '', '', $proximoNumeroMaxLength);
           ?>
         </td>
@@ -108,7 +108,7 @@ if ($oProtParamGlobal->p06_tipo == ProcessoProtocoloNumeracao::TIPOORGAO) {
   </div>
   <br />
   <div align="center" style="display:table;">
-    <?
+    <?php
       $sAnoUso = db_getsession("DB_anousu");
       $sWhere = "p07_ano = " . $sAnoUso;
       $iOpcoes = 4;

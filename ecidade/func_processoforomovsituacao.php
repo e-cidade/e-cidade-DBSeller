@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocessoforomovsituacao->rotulo->label("v74_sequencial");
               <?=$Lv74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v74_sequencial",10,$Iv74_sequencial,true,"text",4,"","chave_v74_sequencial");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $clprocessoforomovsituacao->rotulo->label("v74_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_processoforomovsituacao.php")==true){
@@ -131,12 +131,12 @@ $clprocessoforomovsituacao->rotulo->label("v74_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

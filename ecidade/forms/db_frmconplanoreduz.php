@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,15 +38,15 @@ $clrotulo->label("o15_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tc61_codcon?>">
-       <?
+       <?php
        db_ancora(@$Lc61_codcon,"js_pesquisac61_codcon(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c61_codcon',6,$Ic61_codcon,true,'text',$db_opcao," onchange='js_pesquisac61_codcon(false);'")
 ?>
-       <?
+       <?php
 db_input('c60_descr',50,$Ic60_descr,true,'text',3,'')
        ?>
     </td>
@@ -56,52 +56,52 @@ db_input('c60_descr',50,$Ic60_descr,true,'text',3,'')
        <?=@$Lc61_reduz?>
     </td>
     <td> 
-<?
+<?php
 db_input('c61_reduz',6,$Ic61_reduz,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc61_instit?>">
-       <?
+       <?php
        db_ancora(@$Lc61_instit,"js_pesquisac61_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c61_instit',2,$Ic61_instit,true,'text',$db_opcao," onchange='js_pesquisac61_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc61_codpla?>">
-       <?
+       <?php
        db_ancora(@$Lc61_codpla,"js_pesquisac61_codpla(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c61_codpla',6,$Ic61_codpla,true,'text',$db_opcao," onchange='js_pesquisac61_codpla(false);'")
 ?>
-       <?
+       <?php
 db_input('c64_descr',60,$Ic64_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc61_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lc61_codigo,"js_pesquisac61_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c61_codigo',4,$Ic61_codigo,true,'text',$db_opcao," onchange='js_pesquisac61_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('o15_descr',30,$Io15_descr,true,'text',3,'')
        ?>
     </td>
@@ -209,7 +209,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conplanoreduz.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

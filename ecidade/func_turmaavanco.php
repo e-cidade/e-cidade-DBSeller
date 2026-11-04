@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ if (!empty($oProximaEtapa) && $ed10_i_codigo != $oProximaEtapa->getEnsino()->get
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    /**
     * Na Classificacao, os Alunos pode ser matriculados qualquer etapa posterior a da matrícula atual.
     * no avanço, os alunos apenas podem ser colocados na próxima Etapa do ensino.

@@ -24,8 +24,7 @@
  *                                licenca/licenca_pt.txt
  */
 var AndamentoProcesso = /** @class */ (function () {
-    function AndamentoProcesso()
-    {
+    function AndamentoProcesso() {
         var _this = this;
         this.utilizaTelaAndamento = true;
         this.timerAtualizacao = 60;
@@ -33,6 +32,7 @@ var AndamentoProcesso = /** @class */ (function () {
         this.apiUrl = '';
         this.codigoInstituicao = null;
         this.codigoDepartamento = null;
+        this.anoProcesso = null;
         this.ultimoSequencialOuvidoria = null;
         this.collectionProcessos = [];
         this.windowAux = Object;
@@ -44,6 +44,7 @@ var AndamentoProcesso = /** @class */ (function () {
         this.documentos = [];
         this.despachosAnteriores = [];
         this.filtroStatus = [];
+        this.filtroProcesso = [];
         this.filtroTipoProcesso = [];
         this.filtroResponsavel = []
         this.visualizarEmOutraJanela = false;
@@ -69,11 +70,20 @@ var AndamentoProcesso = /** @class */ (function () {
                                         <button type="button"  style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="visualizarDocumentos">
                                         Visualizar Documentos <i class="fas fa-images"></i>
                                         </button>
+                                        <button type="button"  style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="executarAcao">
+                                            Executar Ação <i class="fas fa-list-ul"></i>
+                                        </button>
+                                        <button type="button"  style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="visualizarDados">
+                                            Visualizar Dados <i class="fas fa-list-ul"></i>
+                                        </button>
+                                        <button type="button"  style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="enviarRespostaRedesim">
+                                            Enviar Resposta REDESIM <i class="fas fa-envelope"></i>
+                                        </button>
                                         <button type="button" style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="mensagem_processo_eletronico">
                                         Mensagens <i class="fas fa-envelope"></i>
                                         </button>
                                         <button type="button" style="cursor:pointer; margin: 5px 5px 0 5px;display: none;" id="btnTransferencia">
-                                        Trasferir <i class="fas fa-exchange-alt"></i>
+                                        Transferir <i class="fas fa-exchange-alt"></i>
                                         </button>
                                         <button type="button" style="cursor:pointer; margin: 5px 5px 0 5px" id="cancelar">
                                            Voltar <i class="fas fa-backspace"></i>
@@ -245,6 +255,12 @@ var AndamentoProcesso = /** @class */ (function () {
             }, true, 'fas fa-file-signature', '', {
                 width: '90px'
             });
+
+            _this.gridDespachosAnteriores.addAction('solicitarAssinatura', 'Solicitar Assinatura', function (event, registro) {
+                _this.solicitarAssinaturaDocumentos(event, _this.processo, registro.codigo);
+            }, true, 'fas fa-user-edit', '', {
+                width: '90px'
+            });
         };
         this.setRpc = function (rpc) {
             _this.rpc = rpc;
@@ -316,8 +332,10 @@ var AndamentoProcesso = /** @class */ (function () {
             let apiDocumentos;
             if (procandamint) {
                 data.append('procandamint', procandamint);
+                data.append('codigoProcesso', processo.codigo);
                 apiDocumentos = 'patrimonial/protocolo/processo/processodocumento/documentosPorProcAndamInt';
             } else {
+                data.append('procandamint', procandamint);
                 data.append('codigoProcesso', processo.codigo);
                 apiDocumentos = 'patrimonial/protocolo/processo/processodocumento/documentosPorProcesso';
             }
@@ -346,35 +364,48 @@ var AndamentoProcesso = /** @class */ (function () {
                 });
 
 
-            if (codigosEStorage.length == 0) {
-                alert("Nenhum documento encontrado para o processo.");
-                return false;
-            }
+                if (codigosEStorage.length == 0) {
+                    alert("Nenhum documento encontrado para o processo.");
+                    return false;
+                }
 
-            if (_this.visualizarEmOutraJanela) {
-                window.open(`db_visualizador_documentos.php?ids=${codigosEStorage}&viewIndex=${index}`);
-            } else {
-                js_OpenJanelaIframe(
-                    'CurrentWindow.corpo',
-                    'db_visualizador_imagens',
-                    `db_visualizador_documentos.php?ids=${codigosEStorage}&viewIndex=${index}`,
-                    'Visualizador de documentos',
-                    true
-                );
-            }
+                if (_this.visualizarEmOutraJanela) {
+                    window.open(`db_visualizador_documentos.php?ids=${codigosEStorage}&viewIndex=${index}`);
+                } else {
+                    js_OpenJanelaIframe(
+                        'CurrentWindow.corpo',
+                        'db_visualizador_imagens',
+                        `db_visualizador_documentos.php?ids=${codigosEStorage}&viewIndex=${index}`,
+                        'Visualizador de documentos',
+                        true
+                    );
+                }
 
                 $('Jandb_visualizador_imagens').style.zIndex = 501;
 
             });
         };
 
-        this.assinarDocumentos = function (evento, processo, procandamint) {
+        this.executarAcao = function (evento, processo) {
+            new ExecutarAcaoRedesim().init(processo, _this.apiUrl)
+        }
 
+        this.assinarDocumentos = function (evento, processo, procandamint) {
             js_OpenJanelaIframe(
                 'CurrentWindow.corpo',
                 'db_assinador_documentos',
                 `db_assinar_documentos.php?codigoProcesso=${processo.codigo}&procandamint=${procandamint}`,
                 'Visualizador de documentos',
+                true
+            );
+        };
+
+        this.solicitarAssinaturaDocumentos = function (evento, processo, procandamint) {
+            js_OpenJanelaIframe(
+                'CurrentWindow.corpo',
+                'db_solicitacao_assinatura',
+                `web/patrimonial/protocolo/solicitacao-assinatura/processo/${processo.codigo}/despacho/${procandamint}`,
+                'Solicitação de assinatura',
                 true
             );
         };
@@ -397,6 +428,7 @@ var AndamentoProcesso = /** @class */ (function () {
                         var data = new FormData();
                         data.append('acao', 'apenasReceber');
                         data.append('codigoTransferencia', processo.transferencia);
+                        data.append('filtraDepartamentosPorDataLimite', 1);
                         data.append('filtros', JSON.stringify(['p58_codproc = ' + _this.processo.codigo]));
                         data.append('hash', _this.processo.hash);
                         HttpClient.post(_this.rpc, {
@@ -408,10 +440,11 @@ var AndamentoProcesso = /** @class */ (function () {
                                 alert(response.mensagem);
                                 return;
                             }
-                            if (response.processo) {
+                            if (response.processo && _this.utilizaTelaAndamento) {
                                 var processoAtualizado = response.processo.first();
                                 _this.setProcessoAtualizado(processoAtualizado);
                             }
+
                             if (_this.utilizaTelaAndamento) {
                                 _this.marcaProcessosComoRecebido();
                             } else {
@@ -423,8 +456,8 @@ var AndamentoProcesso = /** @class */ (function () {
                         alert(response.mensagem);
                     }
                 })["catch"](function (mensagem) {
-                    return alert(mensagem);
-                });
+                return alert(mensagem);
+            });
         };
         this.abreAndamentoProcesso = function (processo) {
             js_divCarregando("Carregando...", 'loading_message');
@@ -447,7 +480,7 @@ var AndamentoProcesso = /** @class */ (function () {
                         _this.setUsuariosDepartamento(_this.processo.usuariosDepartamento);
                         _this.setData({
                             'dados_processo': _this.processo.processo,
-                          //  'dados_observacao': _this.processo.observacao,
+                            //  'dados_observacao': _this.processo.observacao,
                             'dados_requerente': _this.processo.requerente,
                             'dados_data': _this.processo.data,
                             'dados_tipo': _this.processo.descricao,
@@ -472,15 +505,15 @@ var AndamentoProcesso = /** @class */ (function () {
                     }
                     js_removeObj('loading_message');
                 })["catch"](function (mensagem) {
-                    js_removeObj('loading_message');
-                    return alert(mensagem);
-                });
+                js_removeObj('loading_message');
+                return alert(mensagem);
+            });
         };
         this.abreMensagens = function (processo) {
-
-            var numeroAnoProcesso = processo.processo.split('/');
-            var url = `pro4_processo_mensagem.php?processo=${processo.codigo}`;
-            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_processo_mensagem', url, 'Processo Mensagens', true, 0, 0);
+            //var numeroAnoProcesso = processo.processo.split('/');
+            //var url = `pro4_processo_mensagem.php?processo=${processo.codigo}`;
+            //js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_processo_mensagem', url, 'Processo Mensagens', true, 0, 0);
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'visualizar_mensagens', `web/patrimonial/protocolo/mensageria-protocolo/${processo.codigo}`, 'Visualizador de Mensagens', true);
         };
         this.setProcesso = function (processo) {
             _this.processo = processo;
@@ -494,9 +527,12 @@ var AndamentoProcesso = /** @class */ (function () {
         this.setUsuariosDepartamento = function (usuariosDepartamento) {
             this.usuariosDepartamento = usuariosDepartamento;
         };
-
         this.setBotaoAtualizar = function (btnAtualizar) {
             _this.btnAtualizar = btnAtualizar;
+            return _this;
+        };
+        this.setBotaoAtualizarAno = function (btnAtualizarAno) {
+            _this.btnAtualizarAno = btnAtualizarAno;
             return _this;
         };
         this.utilizaTelaAndamentoProcesso = function (utilizaTelaAndamento) {
@@ -511,6 +547,10 @@ var AndamentoProcesso = /** @class */ (function () {
         this.setDocumentos = function (documentos) {
             _this.documentos = documentos;
         };
+        this.setDataAno = (value) => {
+            _this.anoProcesso = value;
+            return _this;
+        }
         this.setGridLinhaSelecionada = function (linhaGridSelecionada) {
             _this.linhaGridSelecionada = linhaGridSelecionada;
         };
@@ -534,6 +574,7 @@ var AndamentoProcesso = /** @class */ (function () {
             _this.filtroData = value;
             return _this;
         };
+
         this.addFiltroStatus = function (value) {
             _this.filtroStatus.push(value);
             return _this;
@@ -654,8 +695,11 @@ var AndamentoProcesso = /** @class */ (function () {
                 'width': '220px'
             }).transform(function (valor, collection) {
                 var span = document.createElement('span');
-                span.textContent = valor;
-                span.title = valor;
+                const tempElement = document.createElement('div');
+                tempElement.innerHTML = valor;
+                const plainText = tempElement.textContent || tempElement.innerText;
+                span.textContent = plainText;
+                span.title = plainText;
                 return span.outerHTML;
             });
             _this.gridProcessos.addColumn('status', {
@@ -690,9 +734,12 @@ var AndamentoProcesso = /** @class */ (function () {
 
                 if (button.getAttribute('action_id') == 'action_mensagens') {
                     let qtdMensagens = 0;
-                    if (itemCollection.mensagens_nao_lidas) {
-                        qtdMensagens = itemCollection.mensagens_nao_lidas
+                    if (itemCollection.mensagens_novas) {
+                        qtdMensagens = itemCollection.mensagens_novas;
                     }
+                    // if (itemCollection.mensagens_nao_lidas) {
+                    //     qtdMensagens = itemCollection.mensagens_nao_lidas
+                    // }
                     button.firstElementChild.innerText = ` ${qtdMensagens}`;
                     if (itemCollection.codigostatus == 4) {
                         button.hide();
@@ -788,6 +835,7 @@ var AndamentoProcesso = /** @class */ (function () {
             var data = new FormData();
             data.append('acao', 'buscarProcessos');
             data.append('filtraDepartamentosPorDataLimite', 1);
+            data.append('filtros', JSON.stringify(['p51_prottipodocumentoprocesso NOT IN (6, 7)']));
 
             HttpClient.post(_this.rpc, {body: data}).then(function (response) {
 
@@ -801,6 +849,22 @@ var AndamentoProcesso = /** @class */ (function () {
                 }
             });
         };
+
+        this.buscaProcessosAno = (anoProcesso) => {
+            var data = new FormData();
+            data.append('acao', 'buscarProcessos');
+            data.append('filtraDepartamentosPorDataLimite', 1);
+            data.append('anoProcesso', anoProcesso);
+            data.append('filtros', JSON.stringify(['p51_prottipodocumentoprocesso NOT IN (6, 7)']));
+
+            HttpClient.post(_this.rpc, {body: data}).then(function (response) {
+                _this.gridProcessos.getCollection().add(response.processos);
+                _this.gridProcessos.getCollection().sort('desc', ['transferencia']);
+                _this.gridProcessos.reload();
+                _this.verificaStatus();
+                _this.aplicarFiltros();
+            })
+        }
 
         this.buscaOuvidoria = function (ultimoSequencial) {
 
@@ -918,12 +982,12 @@ var AndamentoProcesso = /** @class */ (function () {
                         resposta.resposta
                     )
 
-                if (resposta.codigo) {
-                    data.append(
-                        'sequencial_campo_' + codcam,
-                        resposta.codigo
-                    )
-                }
+                    if (resposta.codigo) {
+                        data.append(
+                            'sequencial_campo_' + codcam,
+                            resposta.codigo
+                        )
+                    }
                 })
 
                 data.append('campos', camposPreenchidos);
@@ -934,7 +998,7 @@ var AndamentoProcesso = /** @class */ (function () {
             data.append('codigoProcesso', _this.processo.codigo);
             data.append('codigoTransferencia', _this.processo.transferencia);
             data.append('isMensagemProcessoEletronico', $('mensagem_processo_eletronico').checked);
-
+            data.append('filtraDepartamentosPorDataLimite', 1);
             data.append('hash', _this.processo.hash);
             data.append('filtros', JSON.stringify(['p58_codproc = ' + _this.processo.codigo]));
 
@@ -998,6 +1062,7 @@ var AndamentoProcesso = /** @class */ (function () {
             data.append('recebimentoDestino', recebimentoDestino.value);
             data.append('codigoProcesso', _this.processo.codigo);
             data.append('codigoTransferencia', _this.processo.transferencia);
+            data.append('filtraDepartamentosPorDataLimite', 1);
             data.append('hash', _this.processo.hash);
             data.append('filtros', JSON.stringify(['p58_codproc = ' + _this.processo.codigo]));
 
@@ -1024,6 +1089,7 @@ var AndamentoProcesso = /** @class */ (function () {
                     if (response.processamento.recebido) {
                         _this.marcaProcessosComoRecebido();
                     }
+
                     if (response.processamento.transferido) {
                         _this.marcaProcessoComoTransferido();
                     } else if (response.processamento.despachado) {
@@ -1070,7 +1136,11 @@ var AndamentoProcesso = /** @class */ (function () {
                 'titular': processo.titular,
                 'transferencia': processo.transferencia,
                 'mensagens_nao_lidas': processo.mensagens_nao_lidas,
+                'mensagens_novas': processo.mensagens_novas,
                 'flag_processo_eletronico': processo.flag_processo_eletronico,
+                'isProcessoRedesim': processo.isProcessoRedesim,
+                'isProcessoRedesimInclusaoInscricao': processo.isProcessoRedesimInclusaoInscricao,
+                'numcgm': processo.numcgm,
                 'hash': processo.hash
             };
         };
@@ -1078,6 +1148,7 @@ var AndamentoProcesso = /** @class */ (function () {
             var data = new FormData();
             data.append('acao', 'buscaNovosProcessos');
             data.append('ultimaTransferencia', ultimaTransferencia);
+            data.append('filtraDepartamentosPorDataLimite', 1);
             HttpClient.post(_this.rpc, {body: data}).then(function (response) {
                 if (response.erro) {
                     alert(response.mensagem);
@@ -1103,6 +1174,9 @@ var AndamentoProcesso = /** @class */ (function () {
             const btnCancelar = document.getElementById('cancelar');
             const btnSalvar = document.getElementById('salvar');
             const btnVisualizarDocumentos = document.getElementById('visualizarDocumentos');
+            const btnExecutarAcao = document.getElementById('executarAcao');
+            const btnVisualizarDados = document.getElementById('visualizarDados');
+            const btnEnviarRespostaRedesim = document.getElementById('enviarRespostaRedesim');
             const btnMensagem = document.getElementById('mensagem_processo_eletronico');
             const btnTransferencia = document.getElementById('btnTransferencia');
             const fieldsetCamposDinamicos = document.getElementById('fieldset_campos_dinamicos');
@@ -1124,6 +1198,26 @@ var AndamentoProcesso = /** @class */ (function () {
             ) {
                 btnTransferencia.show();
                 btnTransferencia.enable();
+            }
+
+            if (_this.processo.isProcessoRedesim) {
+                btnExecutarAcao.show();
+
+                btnExecutarAcao.addEventListener('click', function (event) {
+                    _this.executarAcao(event, _this.processo);
+                });
+
+                btnEnviarRespostaRedesim.show();
+
+                btnEnviarRespostaRedesim.addEventListener('click', function (event) {
+                    new EnviaRespostaRedesim().init(_this.processo, _this.apiUrl);
+                });
+
+                btnVisualizarDados.show();
+
+                btnVisualizarDados.addEventListener('click', function (event) {
+                    new VisualizarDadosRedesim().init(_this.processo, _this.apiUrl);
+                });
             }
 
             btnVisualizarDocumentos.addEventListener('click', function (event) {
@@ -1363,27 +1457,27 @@ var AndamentoProcesso = /** @class */ (function () {
                     field: _this.filtroData,
                     value: _this.filtroData.value.trim().replace('/  /', '') ? _this.filtroData.value : '',
                     id: 'data'
-            },
+                },
                 {
                     field: _this.filtroDescricao,
                     value: _this.filtroDescricao.value,
                     id: 'descricao'
-            },
+                },
                 {
                     field: _this.filtroRequerente,
                     value: _this.filtroRequerente.value,
                     id: 'requerente'
-            },
+                },
                 {
                     field: _this.filtroProcesso,
                     value: _this.filtroProcesso.value,
                     id: 'processo'
-            },
+                },
                 {
                     field: _this.filtroMensagem,
                     value: _this.filtroMensagem.checked,
                     id: 'mensagem'
-            }
+                }
             ];
             _this.filtroStatus.map(function (filtro) {
                 filtros.push({
@@ -1510,6 +1604,19 @@ var AndamentoProcesso = /** @class */ (function () {
             _this.organizaDados();
             _this.organizaDocumentos();
             _this.organizaDespachosAnteriores();
+
+            _this.despachosAnteriores.map(function (despacho) {
+                _this.processo.documentosSolicitadosAssinatura.map(function (documento) {
+                    if (despacho.codigo === documento[0]['codigo']) {
+                        if (documento[0]['id_usuario'] == localStorage.getItem("idUsuario") && documento[0]['data_assinatura'] === null) {
+                            var idBtn = "action_assinar_" + despacho.codigo;
+                            var botaoAssinatura = document.getElementById(idBtn);
+                            botaoAssinatura.classList.add("pulsacao");
+                            botaoAssinatura.style.color = 'rgb(44, 122, 254)';
+                        }
+                    }
+                });
+            });
             _this.isMensagemProcessoEletronico();
         };
 
@@ -1591,6 +1698,32 @@ var AndamentoProcesso = /** @class */ (function () {
         };
         this.criaGridAnexos();
         this.criaGridDespachosAnteriores();
+
+        function attTelaDespacho() {
+            _this.windowAux.hide();
+            _this.abreAndamentoProcesso(_this.processo);
+        }
+
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    var elemento = document.getElementById('fechardb_assinador_documentos');
+                    if (elemento) {
+                        elemento.addEventListener('click', attTelaDespacho);
+                        observer.disconnect();
+                    }
+                }
+            });
+        });
+
+        var observerConfig = {
+            childList: true,
+            subtree: true
+        };
+
+        var targetNode = document.body;
+
+        observer.observe(targetNode, observerConfig);
     }
 
     AndamentoProcesso.prototype.adicionarAcaoAtualizar = function () {
@@ -1599,6 +1732,16 @@ var AndamentoProcesso = /** @class */ (function () {
             _this.buscaOuvidoria(null);
             _this.buscaProcessos();
         });
+        this.btnAtualizarAno.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (_this.anoProcesso.value === '') {
+                alert('Insira o ano do processo!');
+                return;
+            }
+            _this.buscaOuvidoria(null);
+            _this.gridProcessos.clear();
+            _this.buscaProcessosAno(_this.anoProcesso.value);
+        })
     };
     AndamentoProcesso.STATUS_A_RECEBER = 1;
     AndamentoProcesso.STATUS_RECEBIDO = 2;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ if(isset($k00_numpre)){
 		     <?=$Lk00_numcgm?>
 		  </td>
 		  <td> 
-		     <? db_input('k00_numcgm',8,$Ik00_numcgm,true,'text',$db_opcao)     ?>
+		     <?php db_input('k00_numcgm',8,$Ik00_numcgm,true,'text',$db_opcao)     ?>
 		  </td>
 		</tr>
 		<tr>
@@ -160,7 +160,7 @@ if(isset($k00_numpre)){
 		     <?=$Lk00_receit?>
 		  </td>
 		  <td> 
-		     <? db_input('k00_receit',8,$Ik00_receit,true,'text',$db_opcao)     ?>
+		     <?php db_input('k00_receit',8,$Ik00_receit,true,'text',$db_opcao)     ?>
 		  </td>
 		</tr>
 		<tr>
@@ -168,7 +168,7 @@ if(isset($k00_numpre)){
 		     <?=$Lk00_numpre?>
 		  </td>
 		  <td> 
-		     <? db_input('k00_numpre',8,$Ik00_numpre,true,'text',$db_opcao)     ?>
+		     <?php db_input('k00_numpre',8,$Ik00_numpre,true,'text',$db_opcao)     ?>
 		  </td>
 		</tr>
 		<tr>
@@ -176,7 +176,7 @@ if(isset($k00_numpre)){
 		     <?=$Lk00_valor?>
 		  </td>
 		  <td> 
-		     <? db_input('k00_valor',8,$Ik00_valor,true,'text',$db_opcao)     ?>
+		     <?php db_input('k00_valor',8,$Ik00_valor,true,'text',$db_opcao)     ?>
 		  </td>
 		</tr>
 		<tr>
@@ -191,7 +191,7 @@ if(isset($k00_numpre)){
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 if(isset($erro_msg02)){
   db_msgbox($erro_msg);
@@ -214,13 +214,13 @@ function js_vai(c1,c2,c3,c4){
   document.form1.submit();
   db_iframe_recibo.hide();
 }
-<?
+<?php
 if(empty($k00_numpre)){
   echo 'js_pes();';
 }
 ?>
 </script>
-<?
+<?php
 if(isset($excluir)){
   if($sqlerro==false){
     db_msgbox('Exclusão efetuada com sucesso!');

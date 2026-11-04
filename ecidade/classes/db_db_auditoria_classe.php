@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -72,13 +72,13 @@ class cl_db_auditoria {
                  instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_db_auditoria() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_auditoria");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -87,7 +87,7 @@ class cl_db_auditoria {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sequencial = ($this->sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["sequencial"]:$this->sequencial);
        $this->esquema = ($this->esquema == ""?@$GLOBALS["HTTP_POST_VARS"]["esquema"]:$this->esquema);
@@ -107,7 +107,7 @@ class cl_db_auditoria {
      }
    }
    // funcao para inclusao
-   function incluir ($sequencial){
+   public function incluir ($sequencial){
       $this->atualizacampos();
      if($this->esquema == null ){
        $this->erro_sql = " Campo Esquema nao Informado.";
@@ -302,7 +302,7 @@ class cl_db_auditoria {
      return true;
    }
    // funcao para alteracao
-   function alterar ($sequencial=null) {
+   public function alterar ($sequencial=null) {
       $this->atualizacampos();
      $sql = " update db_auditoria set ";
      $virgula = "";
@@ -523,7 +523,7 @@ class cl_db_auditoria {
      }
    }
    // funcao para exclusao
-   function excluir ($sequencial=null,$dbwhere=null) {
+   public function excluir ($sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sequencial));
      }else{
@@ -596,7 +596,7 @@ class cl_db_auditoria {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -619,10 +619,10 @@ class cl_db_auditoria {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -648,7 +648,7 @@ class cl_db_auditoria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -658,10 +658,10 @@ class cl_db_auditoria {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -682,7 +682,7 @@ class cl_db_auditoria {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -714,7 +714,7 @@ class cl_db_auditoria {
    *
    * @return string
    */
-  function sql_query_acessos( $sCampos = null, $iCodigoAcesso = null, $aParametros ) {
+  public function sql_query_acessos( $sCampos = null, $iCodigoAcesso = null, $aParametros ) {
 
     $iInstituicao = db_getsession("DB_instit");
     if ( empty($sCampos) ) {
@@ -845,7 +845,7 @@ class cl_db_auditoria {
     return $sSql;
   }
 
-  function sql_query_modificacoes(Array $aParametros) {
+  public function sql_query_modificacoes(Array $aParametros) {
 
     $sDataHoraInicial = 'null';
     $sDataHoraFim     = 'null';

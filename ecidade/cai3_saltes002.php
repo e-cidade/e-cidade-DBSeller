@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use ECidade\Financeiro\Tesouraria\SaldoTesourariaHelper;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -33,506 +35,364 @@ require_once(modification("libs/db_libcontabilidade.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 parse_str($_SERVER["QUERY_STRING"]);
 ?>
-<html>
-<head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
-</head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-<table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="300" align="left" valign="top" bgcolor="#CCCCCC">
-	    <?php
+    <html>
+    <head>
+        <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta http-equiv="Expires" CONTENT="0">
+        <script type="text/javascript" src="scripts/scripts.js"></script>
+        <link href="estilos.css" rel="stylesheet" type="text/css">
 
-
-$cor = "";
-if ($tipo == "conta") {
-	echo "<table bordercolor=\"#000000\" style=\"font-size:12px\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n";
-	echo "<tr bgcolor=\"#FFCC66\">\n";
-	echo "<th>Código</th>\n";
-	echo "<th>Descrição</th>\n";
-	echo "<th>Rec</th>\n";
-	echo "<th>Saldo Ant.</th>\n";
-	echo "<th>Vlr. Debit.</th>\n";
-	echo "<th>Vlr. Cred.</th>\n";
-	echo "<th>Saldo Atual</th>\n";
-	echo "</tr>\n";
-} else {
-	echo "<table bordercolor=\"#000000\" style=\"font-size:12px\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n";
-	echo "<tr bgcolor=\"#FFCC66\">\n";
-	echo "<th>R.</th>\n";
-	echo "<th>Descrição</th>\n";
-	echo "<th>Saldo Ant.</th>\n";
-	echo "<th>Vlr. Debit.</th>\n";
-	echo "<th>Vlr. Cred.</th>\n";
-	echo "<th>Saldo Atual</th>\n";
-	echo "</tr>\n";
-}
-
-$totval1 = 0;
-$totval2 = 0;
-$totval3 = 0;
-$totval4 = 0;
-
-$tval1 = 0;
-$tval2 = 0;
-$tval3 = 0;
-$tval4 = 0;
-
-if ($tipo == "conta") {
-
-	$sql = "select k13_conta, k13_descr, c60_estrut, o15_recurso, o15_descr
-		          from saltes
-					     inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")." and c62_reduz = k13_conta
-					     inner join conplanoreduz on c61_anousu = ".db_getsession("DB_anousu")." and
-											  c61_reduz = c62_reduz and
-										      c61_instit = ".db_getsession("DB_instit")."
-					     inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-					     inner join orctiporec on o15_codigo = c61_codigo
-			     where c60_codsis in (5,6)
-             and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-		         order by k13_descr";
-
-} else if ($tipo == "instituicao") {
-
-	$sql = "select db90_codban,db90_descr
-		    from saltes
-					   inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")." and c62_reduz = k13_conta
-					   inner join conplanoreduz on c61_anousu = ".db_getsession("DB_anousu")." and
-		                                                            c61_reduz = c62_reduz and
-		                                                            c61_instit = ".db_getsession("DB_instit")."
-					   inner join conplano on c61_anousu = c60_anousu  and c61_codcon=c60_codcon
-					   inner join orctiporec on o15_codigo = c61_codigo
-		               inner join conplanoconta on c63_anousu=c60_anousu and c63_reduz = c61_reduz
-		               inner join db_bancos on db90_codban = conplanoconta.c63_banco
-			where c60_codsis in (5,6)
-             and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-            group by db90_codban, db90_descr
-		    order by db90_codban";
-
-} else if ($tipo == "domicilio_bancario") {
-
-
-
-    $instit = db_getsession("DB_instit");
-    $data = "$datai_ano-$datai_mes-$datai_dia";
-
-	$sql = "
-
-         select  substr(saltessaldo,2,13)::float8 as anterior,
-                 substr(saltessaldo,15,13)::float8 as debitado ,
-                 substr(saltessaldo,28,13)::float8 as creditado,
-                 substr(saltessaldo,41,13)::float8 as atual,
-                 *
-           from (
-
-               select
-                      k13_conta,
-                      k13_descr,
-                      db89_db_bancos || ' / ' || db89_codagencia || ' / ' ||  db83_conta || ' - ' || db83_dvconta as bancoagencia,
-                      o15_recurso,
-                      o15_descr,
-                      db83_conta  ,
-                      db83_dvconta,
-                      db89_db_bancos,
-                      o15_complemento,
-                      c61_reduz,
-                      fc_saltessaldo(k13_conta,'$data','$data',null, $instit) as saltessaldo
-		        from saltes
-					     inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")." and c62_reduz = k13_conta
-					     inner join conplanoreduz on c61_anousu =".db_getsession("DB_anousu")." and
-		                                                              c61_reduz = c62_reduz and
-		                                                              c61_instit = ".db_getsession("DB_instit")."
-					     inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-					     inner join orctiporec on o15_codigo = c61_codigo
-                         join conplanocontabancaria on c56_codcon = c61_codcon
-                                                   and c56_anousu = c61_anousu
-                                                   and c56_reduz = c61_reduz
-                         join contabancaria on (c56_contabancaria) = (db83_sequencial)
-                         join bancoagencia on (db83_bancoagencia) = (db89_sequencial)
-
-			     where c60_codsis in (5,6)
-             and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-	        group by
-                    o15_recurso,
-                    k13_conta,
-                    k13_descr,
-                     o15_descr,
-                     db89_db_bancos,
-                     db89_codagencia,
-                     db83_conta,
-                     db83_dvconta,
-                     o15_complemento,
-                     c61_reduz
-             ) as xx
-			order by o15_recurso ";
-
-            $rsDomicilio = db_query($sql);
-            if (pg_numrows($rsDomicilio) > 0) {
-
-                $aContas = array();
-                for ($i = 0; $i < pg_numrows($rsDomicilio); $i++) {
-
-                    $oDados = db_utils::fieldsMemory($rsDomicilio, $i);
-                    $oDadosContas = new stdClass();
-                    $oDadosContas->k13_conta = $oDados->k13_conta;
-                    $oDadosContas->k13_descr = $oDados->k13_descr;
-                    $oDadosContas->bancoagencia = $oDados->bancoagencia;
-                    $oDadosContas->o15_recurso = $oDados->o15_recurso;
-                    $oDadosContas->o15_descr = $oDados->o15_descr;
-                    $oDadosContas->db83_conta = $oDados->db83_conta;
-                    $oDadosContas->db83_dvconta = $oDados->db83_dvconta;
-                    $oDadosContas->db89_db_bancos = $oDados->db89_db_bancos;
-                    $oDadosContas->o15_complemento = $oDados->o15_complemento;
-                    $oDadosContas->vlr_anterior = $oDados->anterior;
-                    $oDadosContas->vlr_debito = $oDados->debitado;
-                    $oDadosContas->vlr_credito = $oDados->creditado;
-                    $oDadosContas->vlr_atual = $oDados->atual;
-                    $aContas[$oDados->bancoagencia][] = $oDadosContas;
-                }
-
-                $aRegistros = array();
-                $oConta = null;
-                foreach ($aContas as $conta => $aConta) {
-
-                    $oTotais = new stdClass();
-                    $totalAnterior = 0;
-                    $totalDebito = 0;
-                    $totalCredito = 0;
-                    $totalAtual = 0;
-
-                    foreach($aConta as $oConta){
-
-                       if ($oConta->tipo != "2" || $oConta->tipo != "3") {
-
-                            $totalAnterior += $oConta->vlr_anterior;
-                            $totalDebito +=   $oConta->vlr_debito;
-                            $totalCredito +=  $oConta->vlr_credito;
-                            $totalAtual +=   $oConta->vlr_atual;
-                        }
-
-                        $aRegistros[$conta]['dados'][] = $oConta;
-                    }
-
-                    $oTotais->totalAnterior = $totalAnterior;
-                    $oTotais->totalDebito = $totalDebito;
-                    $oTotais->totalCredito = $totalCredito;
-                    $oTotais->totalAtual = $totalAtual;
-                    $aRegistros[$conta]['totais'] =$oTotais;
-
-                }
-
-
+        <style>
+            .tabela-consulta {
+                border-collapse: collapse;
+                width: 100%;
+                white-space: normal;
+                border: 1px solid;
             }
 
-} else {
+            .tabela-consulta > thead > tr > th {
+                background-color: #1e60b0;
+                color: #F7F5F1;
+                border: 1px solid;
+                padding: 1px 4px;
+                white-space: nowrap;
+            }
 
-	$sql = "select o15_recurso,
-                   o15_descr
-		     from saltes
-			inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")." and c62_reduz = k13_conta
-			inner join conplanoreduz on c61_anousu =".db_getsession("DB_anousu")." and
-		                                c61_reduz = c62_reduz and
-		                                c61_instit = ".db_getsession("DB_instit")."
-					     inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-					     inner join orctiporec on o15_codigo = c61_codigo
-			     where c60_codsis in (5,6)
-             and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-	                group by o15_recurso, o15_descr
-			order by o15_recurso ";
+            .tabela-consulta > tbody > tr:nth-child(even) {
+                background-color: #b0c4de;
+            }
 
+            .tabela-consulta > tbody > tr:nth-child(odd) {
+                background-color: #bdd1bf;
+            }
+
+            .tabela-consulta > tbody > tr > td {
+                border: 1px solid;
+                white-space: normal;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+
+        <?php
+        $cor = "";
+
+        $exercicio = db_getsession("DB_anousu");
+        $instituicao = db_getsession("DB_instit");
+        $dataSessao = date('Y-m-d', db_getsession("DB_datausu"));
+        $dataFiltroSaldo = $dataSessao;
+
+        if (!empty($_GET['datai_dia'])) {
+            $dataFiltroSaldo = sprintf('%s-%s-%s', $_GET['datai_ano'], $_GET['datai_mes'], $_GET['datai_dia']);
+        }
+        switch ($tipo) {
+            case 'conta':
+                $totais = imprimeTabelaConta($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo);
+                break;
+            case 'recurso':
+                $totais = imprimeTabelaRecurso($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo);
+                break;
+            case 'recurso_conta':
+                $totais = imprimeTabelaRecursoConta($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo);
+                break;
+            case 'instituicao':
+                $totais = imprimeTabelaBancos($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo);
+                break;
+            case 'domicilio_bancario':
+                $totais = imprimeTabelaDomicilioBancario($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo);
+                break;
+        }
+
+        // imprime totais
+        $totval1 = number_format($totais->saldo_anterior, 2, ",", ".");
+        $totval2 = number_format($totais->debitado, 2, ",", ".");
+        $totval3 = number_format($totais->creditado, 2, ",", ".");
+        $totval4 = number_format($totais->saldo_atual, 2, ",", ".");
+
+        ?>
+    </div>
+    </body>
+    <?php
+    echo "<script>
+ parent.document.form1.tot_ant.value = '$totval1';
+ parent.document.form1.tot_deb.value = '$totval2';
+ parent.document.form1.tot_cred.value ='$totval3';
+ parent.document.form1.tot_atual.value = '$totval4';
+</script>
+";
+    ?>
+    </html>
+
+<?php
+function imprimeTabelaConta($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo)
+{
+    $helper = new SaldoTesourariaHelper($instituicao, $exercicio, $dataSessao, $dataFiltroSaldo);
+    $porConta = $helper->totalizaPorConta('k13_descr');
+    $totais = (object)[
+        "saldo_anterior" => 0,
+        "debitado" => 0,
+        "creditado" => 0,
+        "saldo_atual" => 0,
+    ];
+
+    echo "<table class='tabela-consulta'>\n";
+    echo "<thead>";
+    echo "<tr >\n";
+    echo "<th style='width:80px'>Código</th>\n";
+    echo "<th style='width:400px'>Descrição</th>\n";
+    echo "<th style='width:100px'>Fonte Recurso</th>\n";
+    echo "<th style='width:100px'>Subrecurso</th>\n";
+    echo "<th style='width:100px'>Complemento</th>\n";
+    echo "<th style='width:120px'>Saldo Ant.</th>\n";
+    echo "<th style='width:120px'>Vlr. Debit.</th>\n";
+    echo "<th style='width:120px'>Vlr. Cred.</th>\n";
+    echo "<th style='width:120px'>Saldo Atual</th>\n";
+    echo "</tr>\n";
+    echo "</thead>";
+    echo "<tbody>";
+
+    foreach ($porConta as $conta) {
+        echo "<tr>";
+        echo "<td class='text-center' title='{$conta->c60_estrut}'>{$conta->k13_conta}</td>\n";
+        echo "<td> {$conta->k13_descr} </td>\n";
+        echo "<td class='text-center' title='$conta->descricao'>{$conta->gestao}</td>\n";
+        echo "<td class='text-center' title='$conta->descricao'>{$conta->o15_recurso}</td>\n";
+        echo "<td class='text-center' >{$conta->o15_complemento}</td>\n";
+        if ($conta->tipo == "2") {
+            echo "<td  colspan=\"4\">Nada no Corrente</td>\n";
+        } elseif ($conta->tipo == "3") {
+            echo "<td  colspan=\"4\">Não encontrado no cfautent</td>\n";
+        } else {
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_anterior, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->debitado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->creditado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_atual, 'f') . "</td>\n";
+            $totais->saldo_anterior += $conta->saldo_anterior;
+            $totais->debitado += $conta->debitado;
+            $totais->creditado += $conta->creditado;
+            $totais->saldo_atual += $conta->saldo_atual;
+        }
+        echo "</tr>";
+    }
+    echo "</tbody>";
+    echo "</table>";
+    return $totais;
 }
-$result = db_query($sql);
-if (empty ($datai_dia)) {
-	$datai_dia = date('d', db_getsession("DB_datausu"));
-	$datai_mes = date('m', db_getsession("DB_datausu"));
-	$datai_ano = date('Y', db_getsession("DB_datausu"));
+
+function imprimeTabelaRecurso($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo)
+{
+    $helper = new SaldoTesourariaHelper($instituicao, $exercicio, $dataSessao, $dataFiltroSaldo);
+    $porRecurso = $helper->totalizaContasPorRecurso();
+
+    echo "<table class='tabela-consulta'>";
+    echo "  <thead>";
+    echo "    <tr >";
+    echo "      <th style='width:100px'>Fonte Recurso</th>";
+    echo "      <th style='width:100px'>Subrecurso</th>";
+    echo "      <th style='width:100px'>Complemento</th>";
+    echo "      <th style='width: 400px !important; '>Descricao</th>";
+    echo "      <th style='width:120px'>Saldo Ant.</th>";
+    echo "      <th style='width:120px'>Vlr. Debit.</th>";
+    echo "      <th style='width:120px'>Vlr. Cred.</th>";
+    echo "      <th style='width:120px'>Saldo Atual</th>";
+    echo "    </tr>";
+    echo "  </thead>";
+
+    $totais = (object)[
+        "saldo_anterior" => 0,
+        "debitado" => 0,
+        "creditado" => 0,
+        "saldo_atual" => 0,
+    ];
+
+    echo "<tbody>";
+    foreach ($porRecurso as $dado) {
+        echo "<tr>";
+        echo "  <td class='text-center'>$dado->gestao</td>";
+        echo "  <td class='text-center'>$dado->o15_recurso</td>";
+        echo "  <td class='text-center'>$dado->o15_complemento</td>";
+        echo "  <td >$dado->descricao</td>";
+        echo "  <td class='text-right'>" . db_formatar($dado->saldo_anterior, 'f') . "</td>";
+        echo "  <td class='text-right'>" . db_formatar($dado->debitado, 'f') . "</td>";
+        echo "  <td class='text-right'>" . db_formatar($dado->creditado, 'f') . "</td>";
+        echo "  <td class='text-right'>" . db_formatar($dado->saldo_atual, 'f') . "</td>";
+        echo "</tr>";
+        $totais->saldo_anterior += $dado->saldo_anterior;
+        $totais->debitado += $dado->debitado;
+        $totais->creditado += $dado->creditado;
+        $totais->saldo_atual += $dado->saldo_atual;
+    }
+    echo "</tbody>";
+    echo "</table>";
+
+    return $totais;
 }
-for ($i = 0; $i < pg_numrows($result); $i ++) {
-	db_fieldsmemory($result, $i);
 
-	if ($tipo == "conta") {
-		$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-		$valor = pg_result($result1, 0, 0);
-		$valor = preg_split("/\s+/", $valor);
+function imprimeTabelaRecursoConta($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo)
+{
+    $helper = new SaldoTesourariaHelper($instituicao, $exercicio, $dataSessao, $dataFiltroSaldo);
+    $porRecurso = $helper->totalizaContasPorRecurso();
 
-		echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-		echo "<td align='center' title='$c60_estrut'>".$k13_conta."</td>\n";
-		echo "<td><font size='1'>".$k13_descr."</font></td>\n";
-		echo "<td title='$o15_descr'><font size='1'> {$o15_recurso}</font></td>\n";
-		if ($valor[0] == "2")
-			echo "<td  colspan=\"4\">Nada no Corrente</td>\n";
-		else
-			if ($valor[0] == "3")
-				echo "<td  colspan=\"4\">Não encontrado no cfautent</td>\n";
-			else {
-				echo "<td align=\"right\">".db_formatar($valor[1], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[2], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[3], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[4], 'f')."</td>\n";
-				$totval1 += (float) str_replace(",", "", $valor[1]);
-				$totval2 += (float) str_replace(",", "", $valor[2]);
-				$totval3 += (float) str_replace(",", "", $valor[3]);
-				$totval4 += (float) str_replace(",", "", $valor[4]);
-			}
-		echo "</tr>";
-	} else
-		if ($tipo == "recurso") { // tipo = recurso
-			// imprime recurso e totaliza contas
+    echo "<table class='tabela-consulta'>\n";
+    echo "  <thead>";
+    echo "    <tr >\n";
+    echo "      <th class='field-size3'>Fonte Recurso</th>\n";
+    echo "      <th class='field-size2'>Subrecurso</th>\n";
+    echo "      <th class='field-size2'>Complemento</th>\n";
+    echo "      <th class='field-size8'>Descricao</th>\n";
+    echo "      <th class='field-size3'>Saldo Ant.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Debit.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Cred.</th>\n";
+    echo "      <th class='field-size3'>Saldo Atual</th>\n";
+    echo "    </tr>\n";
+    echo "  </thead>";
 
-			echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-			echo "<td align='center'>$o15_recurso</td>\n";
-			echo "<td><font size='1'>".$o15_descr."</font></td>\n";
+    $totais = (object)[
+        "saldo_anterior" => 0,
+        "debitado" => 0,
+        "creditado" => 0,
+        "saldo_atual" => 0,
+    ];
+    echo "<tbody>";
+    foreach ($porRecurso as $recurso) {
+        echo "<tr class='bold'>";
+        echo "<td class='text-center'>$recurso->gestao</td>";
+        echo "<td class='text-center'>$recurso->o15_recurso</td>";
+        echo "<td class='text-center'>$recurso->o15_complemento</td>";
+        echo "<td>$recurso->descricao</td>";
 
-			$sql = "select k13_conta
-					     from saltes
-						            inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")."
-							                          and c62_reduz = k13_conta
-						            inner join conplanoreduz on c61_anousu = ".db_getsession("DB_anousu")." and
-                                                                                 c61_reduz = c62_reduz and
-                                                                                 c61_instit = ".db_getsession("DB_instit")."
-						            inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-						            inner join orctiporec on o15_codigo = c61_codigo
-					     where orctiporec.o15_recurso = '{$o15_recurso}'
-                   and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-						     	 and c60_codsis in (5,6)
-						 order by k13_conta";
-			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
-			for ($h = 0; $h < $nrows; $h ++) {
-				db_fieldsmemory($result_contas, $h);
-				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
-				$valor = preg_split("/\s+/", $valor);
-				if ($valor[0] != "2" || $valor[0] != "3") {
-					$tval1 += (float) str_replace(",", "", $valor[1]);
-					$tval2 += (float) str_replace(",", "", $valor[2]);
-					$tval3 += (float) str_replace(",", "", $valor[3]);
-					$tval4 += (float) str_replace(",", "", $valor[4]);
-				}
-			}
-			echo "<td align=\"right\">".db_formatar($tval1, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval2, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval3, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval4, 'f')."</td>\n";
-			echo "</tr>";
-			$totval1 += $tval1;
-			$totval2 += $tval2;
-			$totval3 += $tval3;
-			$totval4 += $tval4;
-			$tval1 = 0;
-			$tval2 = 0;
-			$tval3 = 0;
-			$tval4 = 0;
-		} else if ($tipo == "instituicao") {
+        echo "<td class='text-right'>" . db_formatar($recurso->saldo_anterior, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($recurso->debitado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($recurso->creditado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($recurso->saldo_atual, 'f') . "</td>\n";
+        echo "</tr>";
 
+        foreach ($recurso->contas as $conta) {
+            echo "<tr>";
+            echo "<td colspan='3'></td>";
+            echo "<td title='{$conta->c60_estrut}'>($conta->k13_conta) - $conta->k13_descr</td>";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_anterior, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->debitado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->creditado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_atual, 'f') . "</td>\n";
+            echo "</tr>";
+        }
 
-			// quebra por bancos e lista as contas abaixo
-	        echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-			echo "<td align='center'><b>".$db90_codban."</b></td>\n";
-			echo "<td><font size='1'><b>".$db90_descr."</b></font></td>\n";
-			$sql = "select k13_conta, k13_descr, c60_estrut
-					from saltes
-						inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")."
-							                          and c62_reduz = k13_conta
-						inner join conplanoreduz on c61_anousu=".db_getsession("DB_anousu")."  and
-                                                                     c61_reduz = c62_reduz and
-                                                                     c61_instit = ".db_getsession("DB_instit")."
-						inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-						inner join orctiporec on o15_codigo = c61_codigo
-                        inner join conplanoconta on c63_codcon = conplano.c60_codcon and c63_anousu=c60_anousu and c63_reduz = c61_reduz
-                        inner join db_bancos on trim(db90_codban) = conplanoconta.c63_banco::varchar(10)
-					where trim(db_bancos.db90_codban)::integer = $db90_codban
-             and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-							 and c60_codsis in (5,6)
-
-					order by k13_descr";
-			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
-			for ($h = 0; $h < $nrows; $h ++) {
-
-				db_fieldsmemory($result_contas, $h);
-				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
-				$valor = preg_split("/\s+/", $valor);
-				if ($valor[0] != "2" || $valor[0] != "3") {
-					$tval1 += (float) str_replace(",", "", $valor[1]);
-					$tval2 += (float) str_replace(",", "", $valor[2]);
-					$tval3 += (float) str_replace(",", "", $valor[3]);
-					$tval4 += (float) str_replace(",", "", $valor[4]);
-				}
-			}
-			echo "<td align=\"right\">".db_formatar($tval1, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval2, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval3, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval4, 'f')."</td>\n";
-			echo "</tr>";
-			$totval1 += $tval1;
-			$totval2 += $tval2;
-			$totval3 += $tval3;
-			$totval4 += $tval4;
-			$tval1 = 0;
-			$tval2 = 0;
-			$tval3 = 0;
-			$tval4 = 0;
-			/////// lista contas
-			for ($h = 0; $h < $nrows; $h ++) {
-
-				db_fieldsmemory($result_contas, $h);
-				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
-				$valor = preg_split("/\s+/", $valor);
-
-				echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-				// echo "<td align='center' title='$c60_estrut'>".$k13_conta."</td>\n";
-				echo "<td align='center' title='$c60_estrut'>&nbsp; </td>\n";
-				echo "<td><font size='1'> ($k13_conta) ".$k13_descr."</font></td>\n";
-
-				echo "<td align=\"right\">".db_formatar($valor[1], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[2], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[3], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[4], 'f')."</td>\n";
-				echo "</tr>";
-			}
-
-        } else if ($tipo == "domicilio_bancario") {
-
-           $totval1 = 0;
-           $totval2 = 0;
-           $totval3 = 0;
-           $totval4 = 0;
-
-           foreach( $aRegistros as $conta => $registros ){
-
-             $oTatal = $registros['totais'];
-             echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-             echo "<td align='center'><b>$conta</b></td>\n";
-             echo "<td><font size='1'><b> </b></font></td>\n";
-             echo "<td align=\"right\">".db_formatar($oTatal->totalAnterior, 'f')."</td>\n";
-             echo "<td align=\"right\">".db_formatar($oTatal->totalDebito, 'f')."</td>\n";
-             echo "<td align=\"right\">".db_formatar($oTatal->totalCredito, 'f')."</td>\n";
-             echo "<td align=\"right\">".db_formatar($oTatal->totalAtual, 'f')."</td>\n";
-             echo "</tr>";
-
-             $totval1 += $oTatal->totalAnterior;
-             $totval2 += $oTatal->totalDebito;
-             $totval3 += $oTatal->totalCredito;
-             $totval4 += $oTatal->totalAtual;
-
-             foreach ($registros['dados'] as $oConta) {
-
-				echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-				echo "<td align='center' title='$c60_estrut'>&nbsp; </td>\n";
-				echo "<td><font size='1'> ($oConta->k13_conta) ".$oConta->k13_descr." - {$oConta->o15_recurso} - {$oConta->o15_complemento}  </font></td>\n";
-				echo "<td align=\"right\">".db_formatar($oConta->vlr_anterior, 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($oConta->vlr_debito, 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($oConta->vlr_credito, 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($oConta->vlr_atual, 'f')."</td>\n";
-				echo "</tr>";
-
-             }
-
-           }
-
-           break;
-
-
-
-		} else {
-
-
-
-			echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-			echo "<td align='center'><b>$o15_recurso</b></td>\n";
-			echo "<td><font size='1'><b>".$o15_descr."</b></font></td>\n";
-			$sql = "select k13_conta, k13_descr, c60_estrut
-					from saltes
-						            inner join conplanoexe on c62_anousu = ".db_getsession("DB_anousu")."
-							                          and c62_reduz = k13_conta
-						            inner join conplanoreduz on c61_anousu=".db_getsession("DB_anousu")." and
-											 c61_reduz = c62_reduz and
-                                                                                 c61_instit = ".db_getsession("DB_instit")."
-						            inner join conplano on c61_codcon = c60_codcon and c61_anousu=c60_anousu
-						            inner join orctiporec on o15_codigo = c61_codigo
-					                 where orctiporec.o15_recurso = '{$o15_recurso}'
-                   and (k13_limite is null or k13_limite >= '".date("Y-m-d",db_getsession("DB_datausu"))."')
-							 and c60_codsis in (5,6)
-							 order by k13_descr";
-			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
-			for ($h = 0; $h < $nrows; $h ++) {
-				db_fieldsmemory($result_contas, $h);
-				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
-				$valor = preg_split("/\s+/", $valor);
-				if ($valor[0] != "2" || $valor[0] != "3") {
-					$tval1 += (float) str_replace(",", "", $valor[1]);
-					$tval2 += (float) str_replace(",", "", $valor[2]);
-					$tval3 += (float) str_replace(",", "", $valor[3]);
-					$tval4 += (float) str_replace(",", "", $valor[4]);
-				}
-			}
-			echo "<td align=\"right\">".db_formatar($tval1, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval2, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval3, 'f')."</td>\n";
-			echo "<td align=\"right\">".db_formatar($tval4, 'f')."</td>\n";
-			echo "</tr>";
-			$totval1 += $tval1;
-			$totval2 += $tval2;
-			$totval3 += $tval3;
-			$totval4 += $tval4;
-			$tval1 = 0;
-			$tval2 = 0;
-			$tval3 = 0;
-			$tval4 = 0;
-			/////// lista contas
-			for ($h = 0; $h < $nrows; $h ++) {
-				db_fieldsmemory($result_contas, $h);
-				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
-				$valor = preg_split("/\s+/", $valor);
-
-				echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
-				// echo "<td align='center' title='$c60_estrut'>".$k13_conta."</td>\n";
-				echo "<td align='center' title='$c60_estrut'>&nbsp; </td>\n";
-				echo "<td><font size='1'> ($k13_conta) ".$k13_descr."</font></td>\n";
-
-				echo "<td align=\"right\">".db_formatar($valor[1], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[2], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[3], 'f')."</td>\n";
-				echo "<td align=\"right\">".db_formatar($valor[4], 'f')."</td>\n";
-				echo "</tr>";
-			}
-
-		}
-
+        $totais->saldo_anterior += $recurso->saldo_anterior;
+        $totais->debitado += $recurso->debitado;
+        $totais->creditado += $recurso->creditado;
+        $totais->saldo_atual += $recurso->saldo_atual;
+    }
+    echo "</tbody>";
+    echo "</table>";
+    return $totais;
 }
-// imprime totais
-$totval1 = number_format($totval1, 2, ",", ".");
-$totval2 = number_format($totval2, 2, ",", ".");
-$totval3 = number_format($totval3, 2, ",", ".");
-$totval4 = number_format($totval4, 2, ",", ".");
-echo "<script>
-			     parent.document.form1.tot_ant.value = '$totval1' ;
-			     parent.document.form1.tot_deb.value = '$totval2' ;
-			     parent.document.form1.tot_cred.value ='$totval3' ;
-			     parent.document.form1.tot_atual.value = '$totval4' ;
-		        </script>
-		       ";
-/*
-echo "<td colspan=\"3\">&nbsp;<strong>Total Geral</strong></td>\n";
-echo "<td align=\"right\">".number_format($totval1,2,",",".")."</td>\n";
-echo "<td align=\"right\">".number_format($totval2,2,",",".")."</td>\n";
-echo "<td align=\"right\">".number_format($totval3,2,",",".")."</td>\n";
-echo "<td align=\"right\">".number_format($totval4,2,",",".")."</td>\n";
-echo "<table>\n";
-*/
-?>
-	</td>
-  </tr>
-</table>
-</body>
-</html>
+
+function imprimeTabelaBancos($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo)
+{
+    $helper = new SaldoTesourariaHelper($instituicao, $exercicio, $dataSessao, $dataFiltroSaldo);
+    $porBanco = $helper->totalizaPorBanco();
+    $totais = (object)[
+        "saldo_anterior" => 0,
+        "debitado" => 0,
+        "creditado" => 0,
+        "saldo_atual" => 0,
+    ];
+    echo "<table class='tabela-consulta'>\n";
+    echo "  <thead>";
+    echo "    <tr >\n";
+    echo "      <th class='field-size3'>Banco</th>\n";
+    echo "      <th class='field-size8'>Descricao</th>\n";
+    echo "      <th class='field-size3'>Saldo Ant.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Debit.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Cred.</th>\n";
+    echo "      <th class='field-size3'>Saldo Atual</th>\n";
+    echo "    </tr>\n";
+    echo "  </thead>";
+    echo "  <tbody>";
+    foreach ($porBanco as $banco) {
+        echo "<tr class='bold'>";
+        echo "<td class='text-center'>{$banco->db90_codban}</td>";
+        echo "<td>$banco->db90_descr</td>";
+        echo "<td class='text-right'>" . db_formatar($banco->saldo_anterior, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($banco->debitado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($banco->creditado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($banco->saldo_atual, 'f') . "</td>\n";
+        echo "</tr>";
+
+        foreach ($banco->contas as $conta) {
+            echo "<tr>";
+            echo "<td></td>";
+            echo "<td>($conta->k13_conta) - $conta->k13_descr</td>";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_anterior, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->debitado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->creditado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_atual, 'f') . "</td>\n";
+            echo "</tr>";
+        }
+        $totais->saldo_anterior += $banco->saldo_anterior;
+        $totais->debitado += $banco->debitado;
+        $totais->creditado += $banco->creditado;
+        $totais->saldo_atual += $banco->saldo_atual;
+    }
+    echo "</tbody>";
+    echo "</table>";
+
+    return $totais;
+}
+
+function imprimeTabelaDomicilioBancario($exercicio, $instituicao, $dataSessao, $dataFiltroSaldo)
+{
+    $helper = new SaldoTesourariaHelper($instituicao, $exercicio, $dataSessao, $dataFiltroSaldo);
+    $porDomicilio = $helper->totalizaPorDomiciolioBancario();
+    $totais = (object)[
+        "saldo_anterior" => 0,
+        "debitado" => 0,
+        "creditado" => 0,
+        "saldo_atual" => 0,
+    ];
+    echo "<table class='tabela-consulta'>\n";
+    echo "  <thead>";
+    echo "    <tr >\n";
+    echo "      <th class='field-size3'>Domicilio Bancário</th>\n";
+    echo "      <th class='field-size8'>Descricao</th>\n";
+    echo "      <th class='field-size3'>Saldo Ant.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Debit.</th>\n";
+    echo "      <th class='field-size3'>Vlr. Cred.</th>\n";
+    echo "      <th class='field-size3'>Saldo Atual</th>\n";
+    echo "    </tr>\n";
+    echo "  </thead>";
+    echo "  <tbody>";
+    foreach ($porDomicilio as $domicilio) {
+        echo "<tr class='bold'>";
+        echo "<td class='text-center'>{$domicilio->bancoagencia}</td>";
+        echo "<td></td>";
+        echo "<td class='text-right'>" . db_formatar($domicilio->saldo_anterior, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($domicilio->debitado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($domicilio->creditado, 'f') . "</td>\n";
+        echo "<td class='text-right'>" . db_formatar($domicilio->saldo_atual, 'f') . "</td>\n";
+        echo "</tr>";
+
+        foreach ($domicilio->contas as $conta) {
+            echo "<tr>";
+            echo "<td></td>";
+            echo "<td>($conta->k13_conta) - $conta->k13_descr - $conta->gestao - $conta->o15_recurso - $conta->o15_complemento</td>";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_anterior, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->debitado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->creditado, 'f') . "</td>\n";
+            echo "<td class='text-right'>" . db_formatar($conta->saldo_atual, 'f') . "</td>\n";
+            echo "</tr>";
+        }
+        $totais->saldo_anterior += $domicilio->saldo_anterior;
+        $totais->debitado += $domicilio->debitado;
+        $totais->creditado += $domicilio->creditado;
+        $totais->saldo_atual += $domicilio->saldo_atual;
+    }
+    echo "</tbody>";
+    echo "</table>";
+
+    return $totais;
+}

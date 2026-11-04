@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,65 +73,65 @@ if(isset($pesquisa) && ($pesquisa == "true")){
 <table border="1"  align="center" cellspacing="0" bgcolor="#CCCCCC">
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_codcla?>"> <? db_ancora(@$Lt52_codcla,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_codcla?>"> <?php db_ancora(@$Lt52_codcla,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_codcla",8,$It52_codcla,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
             </tr>
             <tr> 
-              <td  align="left" nowrap title="<?=$Tt52_codmat?>"> <? db_ancora(@$Lt52_codmat,"",3);?>  </td>
+              <td  align="left" nowrap title="<?=$Tt52_codmat?>"> <?php db_ancora(@$Lt52_codmat,"",3);?>  </td>
               <td align="left" nowrap>
-       <?
+       <?php
          db_input("t52_codmat",8,$It52_codmat,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_numcgm?>"> <? db_ancora(@$Lt52_numcgm,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_numcgm?>"> <?php db_ancora(@$Lt52_numcgm,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_numcgm",8,$It52_numcgm,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_valaqu?>"> <? db_ancora(@$Lt52_valaqu,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_valaqu?>"> <?php db_ancora(@$Lt52_valaqu,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_valaqu",8,$It52_valaqu,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr>
    <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_dtaqu?>"> <? db_ancora(@$Lt52_dtaqu,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_dtaqu?>"> <?php db_ancora(@$Lt52_dtaqu,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_dtaqu",8,$It52_dtaqu,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr> 
   <tr>   
-    <td  align="left" nowrap title="<?=$Tt52_ident?>"> <? db_ancora(@$Lt52_ident,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_ident?>"> <?php db_ancora(@$Lt52_ident,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_ident",8,$It52_ident,true,"text",4,""); 
 //         db_input("t52_descr",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_obs?>"> <? db_ancora(@$Lt52_obs,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_obs?>"> <?php db_ancora(@$Lt52_obs,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_obs",8,$It52_obs,true,"text",4,""); 
 //         db_input("t52_obs",40,"$It52_descr",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_depart?>"> <? db_ancora(@$Lt52_depart,"",3);?>  </td>
+    <td  align="left" nowrap title="<?=$Tt52_depart?>"> <?php db_ancora(@$Lt52_depart,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("t52_depart",8,$It52_depart,true,"text",4,""); 
 //         db_input("t52_depart",40,"$It52_depart",true,"text",3);  
         ?></td>

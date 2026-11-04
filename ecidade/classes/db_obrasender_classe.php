@@ -10,10 +10,10 @@ class cl_obrasender
     public $numrows_excluir = 0;
     public $erro_status = null;
     public $erro_sql = null;
-    public $erro_banco = null; 
-    public $erro_msg = null; 
-    public $erro_campo = null; 
-    public $pagina_retorno = null; 
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     /**
      * @var int
      */
@@ -257,7 +257,7 @@ class cl_obrasender
             )
         ";
      $result = db_query($sql);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n", "", @pg_last_error());
        if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
          $this->erro_sql = "endereço da obra () não Incluído. Inclusão Abortada.";
@@ -443,7 +443,7 @@ class cl_obrasender
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "endereço da obra não Alterado. Alteração Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -468,9 +468,9 @@ class cl_obrasender
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function excluir($ob07_codconstr=null, $dbwhere = null)
     {
@@ -481,7 +481,7 @@ class cl_obrasender
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($ob07_codconstr));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -522,7 +522,7 @@ class cl_obrasender
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "endereço da obra não Excluído. Exclusão Abortada.\\n";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -547,9 +547,9 @@ class cl_obrasender
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
+       }
+     }
+   }
 
     public function sql_record($sql)
     {
@@ -575,7 +575,7 @@ class cl_obrasender
      return $result;
    }
 
-    public function sql_query($ob07_codconstr = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+    public function sql_query($ob07_codconstr = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from obrasender ";
@@ -587,8 +587,8 @@ class cl_obrasender
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($ob07_codconstr)) {
-         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr "; 
-       } 
+         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -606,8 +606,8 @@ class cl_obrasender
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($ob07_codconstr)){
-         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr "; 
-       } 
+         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -618,10 +618,10 @@ class cl_obrasender
      return $sql;
   }
 
-   function sql_query_constr( $ob07_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   function sql_query_constr( $ob07_codconstr=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,15 +639,15 @@ class cl_obrasender
      $sql2 = "";
      if($dbwhere==""){
        if($ob07_codconstr!=null ){
-         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr "; 
-       } 
+         $sql2 .= " where obrasender.ob07_codconstr = $ob07_codconstr ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE avaliacaoquestionariointerno
 class cl_avaliacaoquestionariointerno { 
@@ -30,13 +30,13 @@ class cl_avaliacaoquestionariointerno {
                  db170_codigo = int4 = Codigo do Questionario Externo 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoquestionariointerno() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoquestionariointerno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_avaliacaoquestionariointerno {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db170_sequencial = ($this->db170_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["db170_sequencial"]:$this->db170_sequencial);
        $this->db170_avaliacao = ($this->db170_avaliacao == ""?@$GLOBALS["HTTP_POST_VARS"]["db170_avaliacao"]:$this->db170_avaliacao);
@@ -57,7 +57,7 @@ class cl_avaliacaoquestionariointerno {
      }
    }
    // funcao para Inclusão
-   function incluir ($db170_sequencial){ 
+   public function incluir ($db170_sequencial){ 
       $this->atualizacampos();
      if($this->db170_avaliacao == null ){ 
        $this->erro_sql = " Campo Código da Avaliação não informado.";

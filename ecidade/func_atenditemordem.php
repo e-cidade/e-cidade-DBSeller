@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clatenditem->rotulo->label("at05_solicitado");
               <?=$Lat05_codatend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at05_codatend",6,$Iat05_codatend,true,"text",4,"","chave_at05_codatend");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clatenditem->rotulo->label("at05_solicitado");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         $campos = "at01_nomecli,at02_dataini,at02_horaini,at02_horafim,atenditem.*";
 	$result = $cldb_ordematend->sql_record($cldb_ordematend->sql_query_file("","","","*"));

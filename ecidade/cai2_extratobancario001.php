@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -136,7 +136,7 @@ $sEstiloComboBox = "style=width:100px;";
 							</tr>
 							<tr>
 								<td colspan=2 >
-									<?
+									<?php
 									// $aux = new cl_arquivo_auxiliar;
 									$aux_conta->cabecalho = "<strong>Contas</strong>";
 									$aux_conta->codigo = "k13_conta"; //chave de retorno da func
@@ -162,28 +162,28 @@ $sEstiloComboBox = "style=width:100px;";
 							</tr>
 							<tr>
 								<td align="right" nowrap title="<?="Agrupamentos das receitas"?>"><b>Agrupamento das receitas:</b></td>
-								<td align="left" nowrap><?
+								<td align="left" nowrap><?php
 									$x = array(1=>"Analítico",2=>"Pela conta de receita",3=>"Pelos códigos de empenho e receita");
 									db_select("agrupapor",$x,true,1);
 									?></td>
 							</tr>
 							<tr>
 								<td align="right" nowrap title="<?="Receitas por baixa bancária"?>"><b>Receitas por baixa bancária:</b></td>
-								<td align="left" nowrap><?
+								<td align="left" nowrap><?php
 									$x = array(1=>"Não agrupar pela classificação",2=>"Agrupar pela classificação");
 									db_select("receitaspor",$x,true,1);
 									?></td>
 							</tr>
 							<tr>
 								<td align="right" nowrap title="<?="Pagamentos de empenhos"?>"><b>Pagamentos de empenhos:</b></td>
-								<td align="left" nowrap><?
+								<td align="left" nowrap><?php
 									$x = array(1=>"Detalhar",2=>"Agrupar");
 									db_select("pagempenhos",$x,true,1, $sEstiloComboBox);
 									?></td>
 							</tr>
 							<tr>
 								<td nowrap align=right><b>Somente contas com movimento:</b></td>
-								<td><? $matriz = array("n"=>"Não","s"=>"Sim");
+								<td><?php $matriz = array("n"=>"Não","s"=>"Sim");
 									$somente_contas_com_movimento = "s";
 									db_select("somente_contas_com_movimento", $matriz,true,1, $sEstiloComboBox);
 									?></td>
@@ -191,19 +191,19 @@ $sEstiloComboBox = "style=width:100px;";
 
 							<tr>
 								<td nowrap align=right><b>Totalizador diário:</b></td>
-								<td><? $matriz = array("s"=>"Sim","n"=>"Não");
+								<td><?php $matriz = array("s"=>"Sim","n"=>"Não");
 									db_select("totalizador_diario", $matriz,true,1, $sEstiloComboBox);
 									?></td>
 							</tr>
 							<tr>
 								<td nowrap align=right><b>Imprime histórico:</b></td>
-								<td><? $matriz = array("s"=>"Sim","n"=>"Não");
+								<td><?php $matriz = array("s"=>"Sim","n"=>"Não");
 									db_select("imprime_historico", $matriz,true,1, $sEstiloComboBox);
 									?></td>
 							</tr>
 							<tr>
 								<td nowrap align=right><b>Tipo Impressão:</b></td>
-								<td><? $matriz = array("a"=>"Analítico","s"=>"Sintético");
+								<td><?php $matriz = array("a"=>"Analítico","s"=>"Sintético");
 									db_select("imprime_analitico", $matriz,true,1, $sEstiloComboBox);
 									?>
 								</td>
@@ -212,14 +212,14 @@ $sEstiloComboBox = "style=width:100px;";
 							</tr>
 							<tr>
 								<td nowrap align="right"><b>Somente contas bancárias:</b></td>
-								<td><?
+								<td><?php
 									$matriz = array("s"=>"Sim","n"=>"Não");
 									db_select("somente_contas_bancarias",$matriz,true,1, $sEstiloComboBox);
 									?></td>
 							</tr>
 							<tr>
 								<td nowrap align="right"><b>Formato do relatório:</b></td>
-								<td><?
+								<td><?php
 									$matriz = array("p"=>"PDF","t"=>"CSV");
 									db_select("imprime_pdf",$matriz,true,1, $sEstiloComboBox);
 									?></td>
@@ -236,7 +236,7 @@ $sEstiloComboBox = "style=width:100px;";
 	</tr>
 </table>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

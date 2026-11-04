@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -122,7 +122,7 @@ function js_emite(){
                            </b></td>
                            <td>
                             <select name="ano" onchange="js_criames(this)">
-                            <?
+                            <?php
                               $sano = date("Y");
                               if(date("m")==12)
                                $sano ++;
@@ -166,7 +166,7 @@ function js_emite(){
                         <b>Ordernar:</b>
                       </td>
                       <td>
-                       <?
+                       <?php
                          $aOrdem = array('1' => "Competencia", 
                                          '2' => "Nome",
                                          '3' => 'Planilha'  
@@ -187,7 +187,7 @@ function js_emite(){
       <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
       </center>
     </form>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
 ?>

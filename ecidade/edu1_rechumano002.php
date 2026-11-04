@@ -110,10 +110,11 @@ if (isset($alterar)) {
    <?php
    $sComplementoUrl  = $ed20_i_tiposervidor == 1 ? "&identificacao={$ed284_i_rhpessoal}" : "&identificacao={$z01_numcgm}";
    $sComplementoUrl .= "&z01_nomecomple=" . addslashes( $z01_nomecomple );
+   $sComplementoUrl .= "&z04_nomesocial=" . $z04_nomesocial ;
    $sComplementoUrl .= "&ed20_i_tiposervidor=$ed20_i_tiposervidor";
 
-   $sNome = base64_encode($z01_nomecomple);
-
+   $sNome       = base64_encode($z01_nomecomple);
+   $sNomeSocial = $z04_nomesocial;
 
    if( isset( $ed75_i_codigo ) && !empty( $ed75_i_codigo ) ) {
 
@@ -155,7 +156,7 @@ if (isset($alterar)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <br><br>
           <fieldset align="left" style="width:95%"><legend><b>Alteração de Recurso Humano</b></legend>
-            <?include(modification("forms/db_frmrechumano.php"));?>
+            <?php include(modification("forms/db_frmrechumano.php"));?>
           </fieldset>
         </td>
       </tr>

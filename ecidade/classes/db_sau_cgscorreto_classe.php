@@ -63,13 +63,13 @@ class cl_sau_cgscorreto {
                  s127_i_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cgscorreto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cgscorreto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_sau_cgscorreto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->s127_i_codigo = ($this->s127_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["s127_i_codigo"]:$this->s127_i_codigo);
        $this->s127_i_numcgs = ($this->s127_i_numcgs == ""?@$GLOBALS["HTTP_POST_VARS"]["s127_i_numcgs"]:$this->s127_i_numcgs);
@@ -99,7 +99,7 @@ class cl_sau_cgscorreto {
      }
    }
    // funcao para inclusao
-   function incluir ($s127_i_codigo){ 
+   public function incluir ($s127_i_codigo){ 
       $this->atualizacampos();
      if($this->s127_i_numcgs == null ){ 
        $this->erro_sql = " Campo CGS nao Informado.";
@@ -246,7 +246,7 @@ class cl_sau_cgscorreto {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($s127_i_codigo=null) { 
+   public function alterar ($s127_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update sau_cgscorreto set ";
      $virgula = "";
@@ -415,7 +415,7 @@ class cl_sau_cgscorreto {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($s127_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($s127_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($s127_i_codigo));
      }else{ 
@@ -483,7 +483,7 @@ class cl_sau_cgscorreto {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -506,7 +506,7 @@ class cl_sau_cgscorreto {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $s127_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $s127_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -545,7 +545,7 @@ class cl_sau_cgscorreto {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $s127_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $s127_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clprocessoforomovsituacao->rotulo->label();
           <?=@$Lv73_sequencial?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v73_sequencial', 10, $Iv73_sequencial, true, 'text', 3);
             //  jur1_consultaprocessoforo002.php?v70_sequencial=8
           ?>
@@ -48,12 +48,12 @@ $clprocessoforomovsituacao->rotulo->label();
       </tr>
       <tr>
         <td nowrap title="<?=@$Tv70_sequencial?>">
-          <?
+          <?php
             db_ancora("Processo:", "js_pesquisav70_sequencial(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v70_sequencial', 10, $Iv70_sequencial, true, 
                      'text', 3, " onchange='js_pesquisav70_sequencial(false);'");
           ?>
@@ -62,12 +62,12 @@ $clprocessoforomovsituacao->rotulo->label();
       </tr>
       <tr>
         <td nowrap title="<?=@$Tv74_sequencial?>">
-          <?
+          <?php
             db_ancora("Situação:", "js_pesquisav74_sequencial(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('v74_sequencial', 10, $Iv74_sequencial, true, 
                      'text', $db_opcao, " onchange='js_pesquisav74_sequencial(false);'");
             db_input('v74_descricao', 60, $Iv74_descricao, true, 'text', 3);
@@ -79,7 +79,7 @@ $clprocessoforomovsituacao->rotulo->label();
           <?=@$Lv73_data?>
         </td>
         <td>
-          <?
+          <?php
             if( $db_opcao == 1){
               $v73_data_dia = date("d");
               $v73_data_mes = date("m");
@@ -89,7 +89,7 @@ $clprocessoforomovsituacao->rotulo->label();
             db_inputdata('v73_data',@$v73_data_dia, @$v73_data_mes, @$v73_data_ano, true, 'text', $db_opcao)
           ?>
           <?=@$Lv73_hora?>
-          <?
+          <?php
             db_input('v73_hora', 10, $Iv73_hora, true, 'text', 3);
           ?>
         </td>
@@ -99,7 +99,7 @@ $clprocessoforomovsituacao->rotulo->label();
           Contribuinte:
         </td>
         <td> 
-          <?
+          <?php
             db_input('dl_nome', 40, $Inome, true, 'text', 3);
           ?>
         </td>
@@ -108,7 +108,7 @@ $clprocessoforomovsituacao->rotulo->label();
         <td colspan="2">
           <fieldset class="separator">
             <legend><?=@$Lv73_obs?></legend>
-                <?
+                <?php
                   db_textarea('v73_obs', 8, 60, $Iv73_obs, true, 'text', $db_opcao);
                 ?>
           </fieldset>
@@ -225,7 +225,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_processoforomov.hide();
-  <?
+  <?php
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
@@ -242,11 +242,11 @@ function js_consulta_processo(codigo){
   }
 }
 
-<?
+<?php
 if( $db_opcao == 1 ){
   ?>
   js_pesquisav70_sequencial(true);
-  <?
+  <?php
 }
 ?>
 </script>

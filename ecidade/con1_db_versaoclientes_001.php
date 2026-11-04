@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ function js_mostratarefa(codigo){
 <td>Data Atualização</td>
 <td>Observação</td>
 </tr>
-   <?
+   <?php
 
 $sql = " select clientes.*,db30_codver , '2.'||db30_codversao ||'.'|| db30_codrelease as versao 
                from clientes 
@@ -182,7 +182,7 @@ $result = db_query($sql);
           $data_mes = substr($db19_data,5,2);
           $data_dia = substr($db19_data,8,2);
           $obs = "db19_obs".$at01_codcli;
-          global $$obs;
+          global ${$obs};
         }else{
           $data_ano = "";
           $data_mes = "";

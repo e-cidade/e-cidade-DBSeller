@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@
               <img src="imagens/consultor_o.gif" width="199" height="104">
             </td> 
           </tr> 
-					<?
+					<?php
 					  if (isset($DB_CONEXAO)){
 			    ?>
              <input id="user"     name="user"      type="hidden" value="<?=@$user?>"     size="40">  
@@ -74,13 +74,13 @@
             <td>Servidor:<br>
               <select name='serv' id="serv">
                 <option name='condicaoservidor' value=''>Selecione um servidor</option>");
-                <?
+                <?php
                   for( $iInd = 0; $iInd < count( $DB_CONEXAO ); $iInd++){
                 ?>
                     <option name='condicaoservidor' value='<?=@$iInd?>'>
                       <?=$DB_CONEXAO[$iInd]["SERVIDOR"].":".$DB_CONEXAO[$iInd]["PORTA"] ?>
                     </option>");
-                <?
+                <?php
                   }
                 ?>
               </select>
@@ -91,7 +91,7 @@
               <select name='base' id="base">
                 <option name='condicaobase' value=''>Selecione uma base</option>
                    
-                <?
+                <?php
                   if ( isset($servidor) && $servidor != "" ) {
                     
                   	echo "<script>document.form1.serv.value = '{$serv}';</script>";
@@ -99,14 +99,14 @@
                       $datname = pg_result($result_bases,$xInd,"datname");
                 ?>
                 <option name='condicaobase' value='<?=@$datname?>'><?=@$datname?> </option>");
-                <?
+                <?php
                     }   
                   }
                  ?>
               </select>
             </td>
           </tr> 
-          <?
+          <?php
             }
           ?>
           <tr>  

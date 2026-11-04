@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
               <?=$Lj10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j10_sequencial",10,$Ij10_sequencial,true,"text",4,"","chave_j10_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
               <?=$Lj10_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j10_anousu",10,$Ij10_anousu,true,"text",4,"","chave_j10_anousu");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucalcpadrao.php")==true){
@@ -122,12 +122,12 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

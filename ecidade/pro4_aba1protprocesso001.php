@@ -50,8 +50,6 @@ $oGet  = db_utils::postMemory($_GET,0);
 
 $clprotprocesso = new cl_protprocesso;
 $clprotparam = new cl_protparam;
-$clprotprocesso = new cl_protprocesso;
-$clprotprocesso = new cl_protprocesso;
 $clprocprocessodoc = new cl_procprocessodoc;
 $clproctipovar = new cl_proctipovar;
 $clandpadrao = new cl_andpadrao;
@@ -91,6 +89,11 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
             $sMsgErro = $eErro->getMessage();
         }
 
+        if (!$iNumeroProcesso) {
+            $lSqlErro = true;
+            $sMsgErro = "Controle de numeração não configurado para a instituição, verifique.";
+        }
+
         if ($lSqlErro == false) {
             $clprotprocesso->p58_hora = db_hora();
             $clprotprocesso->p58_id_usuario = db_getsession("DB_id_usuario");
@@ -120,7 +123,7 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
 
         if (isset($oPost->docs) && $oPost->docs != "") {
             if ($lSqlErro == false) {
-                $chaves = split("#",$oPost->docs);
+                $chaves =explode("#",$oPost->docs);
                 $chave  = count($chaves);
                 for($x = 0; $x < $chave-1; $x++){
                     $clprocprocessodoc->p81_codproc = $p58_codproc;
@@ -137,7 +140,7 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
 
         if (isset($oPost->ndocs) && $oPost->ndocs != "") {
             if ($lSqlErro == false) {
-                $chaves = split("#",$oPost->ndocs);
+                $chaves =explode("#",$oPost->ndocs);
                 $chave  = count($chaves);
 
                 for( $i = 0; $i < $chave-1; $i++){

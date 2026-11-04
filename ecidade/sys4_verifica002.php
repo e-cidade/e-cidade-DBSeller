@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </head>
 <body bgcolor=#CCCCCC  marginwidth="0" marginheight="0" bgcolor="#cccccc" onload="js_trocacordeselect()">
 
-<?
+<?php
 
 function conteudo($tipo,$tam)
 {
@@ -95,11 +95,11 @@ if (isset($qual_modulo)) {
 <center>
 <table>
 <tr>
-<?
+<?php
 if ($tipo == 1) {
   ?>
   <td>Módulo:<?=$nomemod?></td>
-  <?
+  <?php
 } else {
   
   $sqlmodulo = "select codmod, nomemod from db_sysmodulo where ativo is true";
@@ -111,7 +111,7 @@ if ($tipo == 1) {
     
     ?>
     <td>Módulo:<?=$nomemod?></td>
-    <?
+    <?php
     
     $sql = "
       select nomemod,nomearq
@@ -131,7 +131,7 @@ if ($tipo == 1) {
 </td>
 </tr>
 
-<?
+<?php
 
 $arquivo = "/tmp/atualizacao_modulo_".$nomemod."_".date("Ymd").".sql";
 
@@ -157,7 +157,7 @@ for ($i=0; $i<sizeof($arqs); $i++) {
     <td>Arquivo <?=trim($arqs[$i])?> não encontrado na base de dados...
     </td>
     </tr>
-    <?
+    <?php
   } else {
     /*
     $sql = "
@@ -232,14 +232,14 @@ $campoc = db_query($sql);
           <hr>
           </td>
           </tr>
-          <?
+          <?php
         }
         ?>
         <tr>
         <td>Campo <?=$nomecam?> não existe na documentação.
         </td>
         </tr>
-        <?
+        <?php
       } else {
         $type = str_replace(" ","",pg_result($result,0,'conteudo'));
         $tam = pg_result($campo,$x,'atttypmod');
@@ -253,15 +253,15 @@ $campoc = db_query($sql);
               <td><hr>Arquivo <?=trim($arqs[$i])?> <hr>
               </td>
               </tr>
-              <?
+              <?php
             }
             ?>
             <tr>
-            <?
+            <?php
             if ($tipodif == "true") {
               ?>
               <td>Tipo diferente: <?=$nomecam?> banco: <?=$typen?> documentação:<?=$type?>.</td>
-              <?
+              <?php
               
               fwrite($handle, "-- TABELA: ".trim($arqs[$i])." CAMPO: $nomecam  ERRO: Tipo diferente banco: $typen  documentacao: $type\n");
               fwrite($handle, "ALTER TABLE ".trim($arqs[$i])." ALTER $nomecam TYPE $type;\n\n");
@@ -270,7 +270,7 @@ $campoc = db_query($sql);
             }
             ?>
             </tr>
-            <?
+            <?php
           }
         }
       }
@@ -300,7 +300,7 @@ order by ac.seqarq";
           <td><hr>Arquivo <?=trim($arqs[$i])?> <hr>
           </td>
           </tr>
-          <?
+          <?php
         }
         
         $nomecam  = trim(pg_result($campo1, $x, 'nomecam'));
@@ -312,7 +312,7 @@ order by ac.seqarq";
         <td> Campo <?=$nomecam . " - " . $conteudo . " - " . $tamanho?> não existe na base de dados.
         </td>
         </tr>
-        <?
+        <?php
         fwrite($handle, "-- TABELA: ".trim($arqs[$i])." CAMPO: $nomecam $conteudo  ERRO: Nao existe na base de dados\n");
         fwrite($handle, "ALTER TABLE ".trim($arqs[$i])." ADD $nomecam $conteudo;\n\n");
         $apaga=false;
@@ -343,7 +343,7 @@ where relname = '".pg_result($res,0,0)."'";
           <hr>Sequencias:</hr>
           </td>
           </tr>
-          <?
+          <?php
         }
         
         $nomeseq = trim(pg_result($res,0,0));
@@ -352,7 +352,7 @@ where relname = '".pg_result($res,0,0)."'";
         <td>Sequencia:<?=$nomeseq?> NAO cadastrada no banco!
         </td>
         </tr>
-        <?
+        <?php
         
         fwrite($handle, "-- SEQUENCIA: $nomeseq  ERRO: Nao existe na base de dados\n");
         fwrite($handle, "CREATE SEQUENCE $nomeseq;\n\n");
@@ -385,7 +385,7 @@ if($apaga==true) {
 	       </td>
 	     </tr>
 
-  <?
+  <?php
 } else {
 ?>
 	     <tr>
@@ -393,7 +393,7 @@ if($apaga==true) {
 	       <hr>ARQUIVO COM ATUALIZACOES GERADO: <?=$arquivo?></hr>
 	       </td>
 	     </tr>
-<?
+<?php
 }
 ?>
 	

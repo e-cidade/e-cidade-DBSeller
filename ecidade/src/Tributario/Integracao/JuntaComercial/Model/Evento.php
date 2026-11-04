@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 
+use DBString;
 
 class Evento
 {
@@ -35,49 +36,50 @@ class Evento
    * Código do evento
    * @var integer $iCódigo
    */
-  private $iCodigo;
+    private $iCodigo;
 
   /**
    * Descrição do evento
    * @var string $sEvento
    */
-  private $sEvento;
+    private $sEvento;
 
   /**
    * @return int
    */
-  public function getCodigo()
-  {
-    return $this->iCodigo;
-  }
+    public function getCodigo()
+    {
+        return $this->iCodigo;
+    }
 
   /**
    * @param int $iCodigo
    */
-  public function setCodigo($iCodigo)
-  {
-    $this->iCodigo = $iCodigo;
-  }
+    public function setCodigo($iCodigo)
+    {
+        $this->iCodigo = $iCodigo;
+    }
 
   /**
    * @return string
    */
-  public function getEvento()
-  {
-    return $this->sEvento;
-  }
+    public function getEvento()
+    {
+        return $this->sEvento;
+    }
 
   /**
    * @param string $sEvento
    */
-  public function setEvento($sEvento)
-  {
-    $this->sEvento = $sEvento;
-  }
+    public function setEvento($sEvento)
+    {
+        $this->sEvento = $sEvento;
+    }
 
-  public function __construct($iCodigo, $sEvento){
+    public function __construct($iCodigo, $sEvento)
+    {
 
-    $this->iCodigo = $iCodigo;
-    $this->sEvento = utf8_decode($sEvento);
-  }
+        $this->iCodigo = $iCodigo;
+        $this->sEvento = DBString::utf8_decode_all($sEvento);
+    }
 }

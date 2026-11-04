@@ -14,7 +14,7 @@ class ServidorTest extends TestCase
      */
     private $servidor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->servidor = new Servidor(null,2019, 10, 1);
     }

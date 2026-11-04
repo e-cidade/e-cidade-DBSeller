@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("ed226_c_descr");
        <?=@$Led217_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed217_i_codigo',10,$Ied217_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted217_i_tipolinha?>">
-       <?
+       <?php
        db_ancora(@$Led217_i_tipolinha,"js_pesquisaed217_i_tipolinha(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed217_i_tipolinha',10,$Ied217_i_tipolinha,true,'text',3," onchange='js_pesquisaed217_i_tipolinha(false);'")
 ?>
-       <?
+       <?php
 db_input('ed226_c_descr',40,@$Ied226_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('ed226_c_descr',40,@$Ied226_c_descr,true,'text',3,'')
        <?=@$Led217_d_datacad?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('ed217_d_datacad',@$ed217_d_datacad_dia,@$ed217_d_datacad_mes,@$ed217_d_datacad_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,7 +75,7 @@ db_inputdata('ed217_d_datacad',@$ed217_d_datacad_dia,@$ed217_d_datacad_mes,@$ed2
        <?=@$Led217_c_origem?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed217_c_origem',30,$Ied217_c_origem,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -85,7 +85,7 @@ db_input('ed217_c_origem',30,$Ied217_c_origem,true,'text',$db_opcao,"")
        <?=@$Led217_c_destino?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed217_c_destino',30,$Ied217_c_destino,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed217_c_destino',30,$Ied217_c_destino,true,'text',$db_opcao,"")
        <?=@$Led217_c_gratuita?>
     </td>
     <td> 
-<?
+<?php
 $x = array('N'=>'NÃO','S'=>'SIM');
 db_select('ed217_c_gratuita',$x,true,$db_opcao,"");
 ?>
@@ -106,7 +106,7 @@ db_select('ed217_c_gratuita',$x,true,$db_opcao,"");
        <?=@$Led217_f_kmdia?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed217_f_kmdia',10,$Ied217_f_kmdia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -146,7 +146,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_linha.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

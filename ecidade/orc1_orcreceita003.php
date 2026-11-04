@@ -24,6 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
 use ECidade\Financeiro\Orcamento\Service\AcompanhamentoDesembolsoReceitaService;
 
 require_once(modification("libs/db_stdlib.php"));
@@ -35,6 +36,9 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("classes/db_orcfontes_classe.php"));
+$nameBotao = 'excluir';
+$labelBotao = 'Excluir';
+
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
 $clorcreceita = new cl_orcreceita;
@@ -81,7 +85,7 @@ if (isset($excluir)) {
 } else {
     if (isset($chavepesquisa)) {
         $db_opcao = 3;
-        $result = $clorcreceita->sql_record($clorcreceita->sql_query($chavepesquisa, $chavepesquisa1));
+        $result = $clorcreceita->sql_record($clorcreceita->sql_query2($chavepesquisa, $chavepesquisa1));
         db_fieldsmemory($result, 0);
         if (!empty($o70_orcorgao)) {
 

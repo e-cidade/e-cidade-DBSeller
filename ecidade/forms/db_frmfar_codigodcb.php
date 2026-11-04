@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("fa14_i_codigo");
        <?=@$Lfa28_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa28_i_codigo',10,$Ifa28_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -49,37 +49,37 @@ db_input('fa28_i_codigo',10,$Ifa28_i_codigo,true,'text',3,"")
        <?=@$Lfa28_c_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa28_c_numero',10,$Ifa28_c_numero,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa28_i_tipodcb?>">
-       <?
+       <?php
        db_ancora(@$Lfa28_i_tipodcb,"js_pesquisafa28_i_tipodcb(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa28_i_tipodcb',10,$Ifa28_i_tipodcb,true,'text',$db_opcao," onchange='js_pesquisafa28_i_tipodcb(false);'")
 ?>
-       <?
+       <?php
 db_input('fa27_c_denominacao',30,@$Ifa27_c_denominacao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa28_i_medanvisa?>">
-       <?
+       <?php
        db_ancora(@$Lfa28_i_medanvisa,"js_pesquisafa28_i_medanvisa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa28_i_medanvisa',10,$Ifa28_i_medanvisa,true,'text',$db_opcao," onchange='js_pesquisafa28_i_medanvisa(false);'")
 ?>
-       <?
+       <?php
 db_input('fa14_c_medanvisa',30,@$Ifa14_c_medanvisa,true,'text',3,'')
        ?>
     </td>
@@ -142,7 +142,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_codigodcb.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -22,7 +22,7 @@ class ImgData {
     var $maxidx = 0 ;		// Max color index
     var $anchor_x=0.5, $anchor_y=0.5 ;    // Where is the center of the image
     // Create a GD image from the data and return a GD handle
-    function GetImg($aMark,$aIdx) {
+    public function GetImg($aMark,$aIdx) {
 	$n = $this->an[$aMark];
 	if( is_string($aIdx) ) {
 	    if( !in_array($aIdx,$this->colors) ) {
@@ -39,7 +39,7 @@ class ImgData {
 	    $idx = $aIdx ;
 	return Image::CreateFromString(base64_decode($this->{$n}[$idx][1]));   
     }
-    function GetAnchor() {
+    public function GetAnchor() {
 	return array($this->anchor_x,$this->anchor_y);
     }
 }
@@ -54,11 +54,12 @@ $_gFlagCache=array(
 );
 // Only supposed to b called as statics
 class FlagCache {
-    function GetFlagImgByName($aSize,$aName) {
+    public function GetFlagImgByName($aSize,$aName) {
 	global $_gFlagCache;
 	require_once('jpgraph_flags.php');
 	if( $_gFlagCache[$aSize] === null ) {
-	    $_gFlagCache[$aSize] =& new FlagImages($aSize);
+	    $cl_FlagImages = new FlagImages($aSize);
+		$_gFlagCache[$aSize] =& $cl_FlagImages;
 	}
 	$f =& $_gFlagCache[$aSize];
 	$idx = $f->GetIdxByName($aName,$aFullName);
@@ -88,7 +89,7 @@ class PlotMark {
 
 //--------------
 // CONSTRUCTOR
-    function PlotMark() {
+    public function __construct() {
 	$this->title = new Text();
 	$this->title->Hide();
 	$this->csimareas = '';
@@ -105,40 +106,40 @@ class PlotMark {
 	$this->iScale = $aScale;
     }
 	
-    function SetCallback($aFunc) {
+    public function SetCallback($aFunc) {
 	$this->iFormatCallback = $aFunc;
     }
 
-    function SetCallbackYX($aFunc) {
+    public function SetCallbackYX($aFunc) {
 	$this->iFormatCallback2 = $aFunc;
     }
     
-    function GetType() {
+    public function GetType() {
 	return $this->type;
     }
 	
-    function SetColor($aColor) {
+    public function SetColor($aColor) {
 	$this->color=$aColor;
     }
 	
-    function SetFillColor($aFillColor) {
+    public function SetFillColor($aFillColor) {
 	$this->fill_color = $aFillColor;
     }
 
-    function SetWeight($aWeight) {
+    public function SetWeight($aWeight) {
 	$this->weight = $aWeight;
     }
 
     // Synonym for SetWidth()
-    function SetSize($aWidth) {
+    public function SetSize($aWidth) {
 	$this->width=$aWidth;
     }
 	
-    function SetWidth($aWidth) {
+    public function SetWidth($aWidth) {
 	$this->width=$aWidth;
     }
 
-    function SetDefaultWidth() {
+    public function SetDefaultWidth() {
 	switch( $this->type ) {
 	    case MARK_CIRCLE: 
 	    case MARK_FILLEDCIRCLE: 
@@ -149,15 +150,15 @@ class PlotMark {
 	}
     }
 	
-    function GetWidth() {
+    public function GetWidth() {
 	return $this->width;
     }
 	
-    function Hide($aHide=true) {
+    public function Hide($aHide=true) {
 	$this->show = !$aHide;
     }
 	
-    function Show($aShow=true) {
+    public function Show($aShow=true) {
 	$this->show = $aShow;
     }
 
@@ -171,15 +172,15 @@ class PlotMark {
         $this->csimwintarget=$aWinTarget;
     }
     
-    function SetCSIMAlt($aAlt) {
+    public function SetCSIMAlt($aAlt) {
         $this->csimalt=$aAlt;
     }
     
-    function GetCSIMAreas(){
+    public function GetCSIMAreas(){
         return $this->csimareas;
     }
         
-    function AddCSIMPoly($aPts) {
+    public function AddCSIMPoly($aPts) {
         $coords = round($aPts[0]).", ".round($aPts[1]);
         $n = count($aPts)/2;
         for( $i=1; $i < $n; ++$i){
@@ -201,7 +202,7 @@ class PlotMark {
 	}
     }
     
-    function AddCSIMCircle($x,$y,$r) {
+    public function AddCSIMCircle($x,$y,$r) {
     	$x = round($x); $y=round($y); $r=round($r);
         $this->csimareas="";    
         if( !empty($this->csimtarget) ) {

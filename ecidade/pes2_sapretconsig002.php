@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -50,7 +50,7 @@ if(trim($rubrs) != ""){
   $dbwhererubs = " and #s#_rubric in ('".str_replace(",","','",$rubrs)."')";
 }
 
-$arr_pontos = split(",",$ponts);
+$arr_pontos =explode(",",$ponts);
 $varSQL = "";
 
 $headPontos = "";
@@ -66,7 +66,7 @@ for($i=0; $i<6; $i++){
     case "0" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Salário";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r14", $ano, $mes, null, null, 
+                                                                                                   "r14", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
@@ -76,7 +76,7 @@ for($i=0; $i<6; $i++){
     case "1" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Adiantamento";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r22", $ano, $mes, null, null, 
+                                                                                                   "r22", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
@@ -86,7 +86,7 @@ for($i=0; $i<6; $i++){
     case "2" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Férias";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r31", $ano, $mes, null, null, 
+                                                                                                   "r31", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
@@ -96,7 +96,7 @@ for($i=0; $i<6; $i++){
     case "3" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Rescisão";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r20", $ano, $mes, null, null, 
+                                                                                                   "r20", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
@@ -106,7 +106,7 @@ for($i=0; $i<6; $i++){
     case "4" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Saldo do 13o.";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r35", $ano, $mes, null, null, 
+                                                                                                   "r35", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs
@@ -116,7 +116,7 @@ for($i=0; $i<6; $i++){
     case "5" :
                $headPontos .= (trim($varSQL) != "" ? ", " : "") . "Complementar";
                $varSQL .= (trim($varSQL) != "" ? " union " : "") . " ( " . $clgerasql->gerador_sql(
-                                                                                                   "r48", $ano, $mes, null, null, 
+                                                                                                   "r48", $ano, $mes, null, null,
                                                                                                    "#s#_rubric, #s#_valor, #s#_regist, #s#_pd, #s#_anousu, #s#_mesusu",
                                                                                                    "#s#_rubric",
                                                                                                    "#s#_pd != 3 " . $dbwhererubs . (isset($semest) && $semest != "T" ? " and r48_semest = " . $semest : "")
@@ -174,9 +174,9 @@ $head3 = "Retenções e Consignações da Folha";
 $head5 = "Período : " . $mes . " / " . $ano;
 $head7 = "Pontos: " . $headPontos;
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
@@ -190,7 +190,7 @@ $proxpag = true;
 
 for($x = 0; $x < pg_numrows($result);$x++){
   db_fieldsmemory($result,$x);
-   
+
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
     $pdf->addpage();
     $pdf->setfont('arial','b',8);

@@ -24,15 +24,19 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+use ECidade\Pdf\Pdf;
 
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\Helpers\Pessoa as PessoaHelper;
 use ECidade\Educacao\Escola\Censo\Identificacao\DadosExportacao as DadosExportacaoIdentificacao;
 use ECidade\Educacao\Escola\Censo\Identificacao\Model\Pessoa;
 use ECidade\Educacao\Escola\Registry\CensoMunicipioRegistry;
+use DBDate;
 
-require_once(modification("fpdf151/pdf.php"));
-require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+
 
 try {
     if (!isset($_GET['filtros'])) {
@@ -47,13 +51,24 @@ try {
 
     $dadosExportacao = new DadosExportacaoIdentificacao();
     $dadosExportacao->setCenso($censo);
+    $possuiDataPersonalizada = (!is_null($filtros->data_censo)
+                                && $censo->getDataCenso()->getDate(DBDate::DATA_PTBR) != $filtros->data_censo);
+    
+    if ($possuiDataPersonalizada) {
+        $dadosExportacao->setDataCensoPersonalizada(new DBDate($filtros->data_censo));
+    }
+
     $dadosExportacao->setEscolas($escolas);
     $dadosExportacao->processar();
+    $serviceExportacao = $dadosExportacao->getService();
+    if ($possuiDataPersonalizada) {
+        $serviceExportacao->setDataCensoPersonalizada(new DBDate($filtros->data_censo));
+    }
 
     $profissionais = [];
     $alunos = [];
 
-    $pessoas = $dadosExportacao->getService()->getPessoas();
+    $pessoas = $serviceExportacao->getPessoas();
     foreach ($pessoas as $pessoa) {
         if (PessoaHelper::isAluno($pessoa->getCodigoPessoa())) {
             $alunos[] = $pessoa;
@@ -62,10 +77,12 @@ try {
         }
     }
 
+    $pdf = new Pdf();
+    $pdf->init(false);
+    $pdf->exibeHeader(true, \Fpdf\Pdf::HEADER_DEFAULT);
+    $pdf->setExibeBrasao(true);
+    $pdf->addTitulo("Listagem de Pessoas sem Código INEP", 1);
 
-    $pdf = new Pdf("L");
-    $pdf->Open();
-    $pdf->AliasNbPages();
     $pdf->SetAutoPageBreak(false, 15);
     $pdf->SetFillColor('240');
 
@@ -79,14 +96,18 @@ try {
 }
 
 /**
- * @param FPDF $pdf
+ * @param $pdf
  * @param string $label1
  * @param string $label2
  */
-function imprimeHeader(FPDF $pdf, $label1 = 'Código', $label2 = "Aluno")
+function imprimeHeader($pdf, $labelTitulo, $label1 = 'Código', $label2 = "Aluno")
 {
-    $pdf->AddPage();
+    $larguraUtil = ($pdf->getW() - $pdf->getRightMargin() - $pdf->getLeftMargin());
+
+    $pdf->AddPage("L");
     $pdf->setfont('arial', 'b', 8);
+    $pdf->cell($larguraUtil, 4, $labelTitulo.":", 0, 1, "L", 0);
+
     $pdf->cell(20, 4, $label1, "TBR", 0, "C", 1);
     $pdf->cell(90, 4, $label2, 1, 0, "C", 1);
     $pdf->cell(20, 4, 'Nascimento', 1, 0, "C", 1);
@@ -97,11 +118,11 @@ function imprimeHeader(FPDF $pdf, $label1 = 'Código', $label2 = "Aluno")
 }
 
 /**
- * @param FPDF $pdf
+ * @param $pdf
  * @param Pessoa $pessoa
  * @throws Exception
  */
-function imprimePessoa(FPDF $pdf, Pessoa $pessoa)
+function imprimePessoa($pdf, Pessoa $pessoa)
 {
     $codigoMunicipioNascimento = $pessoa->getCodigoMunicipioNascimento();
     $codigoComMascara = $pessoa->getCodigoPessoa();
@@ -129,11 +150,11 @@ function imprimePessoa(FPDF $pdf, Pessoa $pessoa)
 }
 
 /**
- * @param FPDF $pdf
+ * @param $pdf
  * @param string $label
  * @param integer $total
  */
-function imprimeTotalizador(FPDF $pdf, $label, $total)
+function imprimeTotalizador($pdf, $label, $total)
 {
     $pdf->setfont('arial', 'B', 8);
     $pdf->cell(230, 4, "Total de {$label}", "TBR", 0, "R");
@@ -142,18 +163,16 @@ function imprimeTotalizador(FPDF $pdf, $label, $total)
 }
 
 /**
- * @param FPDF $pdf
+ * @param $pdf
  * @param Pessoa[] $alunos
  * @throws Exception
  */
-function imprimirAlunos(FPDF $pdf, array $alunos)
+function imprimirAlunos($pdf, array $alunos)
 {
-    global $head2;
-    $head2 = 'Listagem de Alunos sem Código INEP';
-    imprimeHeader($pdf);
+    imprimeHeader($pdf, "Alunos");
     foreach ($alunos as $aluno) {
-        if ($pdf->getY() >= ($pdf->h - 18)) {
-            imprimeHeader($pdf);
+        if ($pdf->getY() >= ($pdf->getH() - 18)) {
+            imprimeHeader($pdf, "Alunos");
         }
         imprimePessoa($pdf, $aluno);
     }
@@ -162,19 +181,17 @@ function imprimirAlunos(FPDF $pdf, array $alunos)
 }
 
 /**
- * @param FPDF $pdf
+ * @param $pdf
  * @param Pessoa[] $profissionais
  * @throws Exception
  */
-function imprimirProfissionais(FPDF $pdf, array $profissionais)
+function imprimirProfissionais($pdf, array $profissionais)
 {
-    global $head2;
-    $head2 = 'Listagem de Docentes sem Código INEP';
-    imprimeHeader($pdf, 'CPF', 'Docente');
+    imprimeHeader($pdf, "Docentes", 'CPF', 'Docente');
 
     foreach ($profissionais as $profissional) {
-        if ($pdf->getY() >= ($pdf->h - 18)) {
-            imprimeHeader($pdf, 'CGM', 'Docente');
+        if ($pdf->getY() >= ($pdf->getH() - 18)) {
+            imprimeHeader($pdf, "Docentes", 'CGM', 'Docente');
         }
 
         imprimePessoa($pdf, $profissional);

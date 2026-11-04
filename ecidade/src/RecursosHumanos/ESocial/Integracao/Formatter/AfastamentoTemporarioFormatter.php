@@ -1,6 +1,7 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use DBDate;
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 use ECidade\RecursosHumanos\ESocial\Factory\Mapeador;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
@@ -13,6 +14,19 @@ use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
  */
 class AfastamentoTemporarioFormatter extends Formatter
 {
+    /**
+     * Array que faz o dePara entre os códigos do e-cidade e do eSocial para Regime de Trabalho
+     * Chave: código e-cidade
+     * Valor: código eSocial
+     *
+     * @var array
+     */
+    private $deParaRegimeTrabalho = [
+        1 => 2,
+        2 => 1,
+        3 => 2
+    ];
+
     /**
      * @ Pega a instância do servidor
      */
@@ -56,7 +70,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 0,
                 STR_PAD_LEFT
             );
-           
+
             if (isset($dadoFormatado->infoAfastamento->iniAfastamento->tpAcidTransito)) {
                 $dadoFormatado->infoAfastamento->iniAfastamento->tpAcidTransito =
                     (int)$dadoFormatado->infoAfastamento->iniAfastamento->tpAcidTransito;
@@ -68,17 +82,38 @@ class AfastamentoTemporarioFormatter extends Formatter
                     $estagiario = true;
                 }
 
+                if ($this->servidor->getMatriculaAnterior() != "") {
+                    $dadoFormatado->ideVinculo->matricula = $this->servidor->getMatriculaAnterior();
+                }
+
                 //Codigo afastamento igual a 15
                 //Código Categoria validar Array 1XX, 301, 302, 303, 304, 306, 307, 309, 310, 312, 410
                 $codigoCategoria = $this->servidor->getVinculo()->getCodigoCategoria();
                 $substrOne = substr($codigoCategoria, 0, 1);
-                if (($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast == '15'
-                     && $this->servidor->validaCategoriaRescisao() || $substrOne == '1' &&
-                    $this->servidor->getTipoRegime() == '1' || $codigoCategoria == '401')) {
+                if ($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast != '15') {
+                    $grupoPerAquis = false;
+                } else {
+                    $tpRegTrab = $this->deParaRegimeTrabalho[$this->servidor->getTipoRegime()];
+                    /**
+                     * Foi adicionado o else e alterada a logica, seguindo exatamente o manual, para evitar bugs
+                     * Antes a logica era sem o else para economia de linhas de codigo, porem estava frequente os bugs
+                     * e o entendimento da logica era mais complexo por ser logica invertida (complementar)
+                     */
+                    $validaTipoRegimeOrigem = false;
+
+                    if ($this->servidor->getTipoRegimeOrigem() == '1') {
+                        $validaTipoRegimeOrigem = true;
+                    }
+
+                    if (((($this->servidor->validaCategoriaPeriodoAquisitivo() || $substrOne == '1') &&
+                        $tpRegTrab == '1') || ($codigoCategoria == '401' &&
+                        $tpRegTrab == '1')) || ($validaTipoRegimeOrigem)) {
+                        $grupoPerAquis = true;
+                    } else {
                         $grupoPerAquis = false;
+                    }
                 }
             }
-            
             if (!$grupoPerAquis) {
                 unset($dadoFormatado->infoAfastamento->iniAfastamento->perAquis);
             }
@@ -198,6 +233,15 @@ class AfastamentoTemporarioFormatter extends Formatter
                     $cnpjCess
                 );
                 $dadoFormatado->infoAfastamento->iniAfastamento->infoCessao->cnpjCess = $cnpjCess;
+            }
+            /**
+             *  Validamos se o inicio do afastamento é anterior ao inicio de obrigatoriedade, nesse caso nao enviamos
+             *   o periodo inicial do afastamento pois ele ja foi enviado no evendo S-2200/S2300
+             */
+            $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+            $dataInicioAfastamento = new DBDate($dadoFormatado->infoAfastamento->iniAfastamento->dtIniAfast);
+            if ($dataInicioAfastamento < $dataObrigatoriedade) {
+                unset($dadoFormatado->infoAfastamento->iniAfastamento);
             }
         }
 

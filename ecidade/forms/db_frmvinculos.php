@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,7 +35,7 @@ $clrotulo->label("h08_dtlanc");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 db_input('h11_codigo',6,$Ih11_codigo,true,'hidden',$db_opcao,"")
 ?>
   <tr>
@@ -43,7 +43,7 @@ db_input('h11_codigo',6,$Ih11_codigo,true,'hidden',$db_opcao,"")
        <?=@$Lh11_regime?>
     </td>
     <td> 
-<?
+<?php
 $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file());
 db_selectrecord("h11_regime", $result_regime, true, $db_opcao);
 ?>
@@ -54,7 +54,7 @@ db_selectrecord("h11_regime", $result_regime, true, $db_opcao);
        <?=@$Lh11_tipo?>
     </td>
     <td> 
-<?
+<?php
 $arr_tipo = array("A"=>"Avanço","G"=>"Gratificação");
 db_select("h11_tipo", $arr_tipo, true, $db_opcao,"onchange='js_limpaleis();'");
 ?>
@@ -62,105 +62,105 @@ db_select("h11_tipo", $arr_tipo, true, $db_opcao,"onchange='js_limpaleis();'");
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_funcao?>">
-       <?
+       <?php
        db_ancora(@$Lh11_funcao,"js_pesquisah11_funcao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_funcao',6,$Ih11_funcao,true,'text',$db_opcao," onchange='js_pesquisah11_funcao(false);'")
 ?>
-       <?
+       <?php
 db_input('rh04_descr',30,$Irh04_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_lei1?>">
-       <?
+       <?php
        db_ancora(@$Lh11_lei1,"js_pesquisah11_lei1(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_lei1',6,$Ih11_lei1,true,'hidden',3,"")
 ?>
-       <?
+       <?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"onchange='js_pesquisah11_lei1(false)'")
        ?>
-       <?
+       <?php
 db_inputdata("h08_dtlanc", @$h08_dtlanc_dia, @$h08_dtlanc_mes, @$h08_dtlanc_ano, true, 'text', 3);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_lei2?>">
-       <?
+       <?php
        db_ancora(@$Lh11_lei2,"js_pesquisah11_lei2(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_lei2',6,$Ih11_lei2,true,'hidden',3)
 ?>
-       <?
+       <?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"onchange='js_pesquisah11_lei2(false)'","h08_numero2")
        ?>
-       <?
+       <?php
 db_inputdata("h08_dtlanc", @$h08_dtlanc2_dia, @$h08_dtlanc2_mes, @$h08_dtlanc2_ano, true, 'text', 3,"","h08_dtlanc2");
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_lei3?>">
-       <?
+       <?php
        db_ancora(@$Lh11_lei3,"js_pesquisah11_lei3(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_lei3',6,$Ih11_lei3,true,'hidden',3)
 ?>
-       <?
+       <?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"onchange='js_pesquisah11_lei3(false)'","h08_numero3")
        ?>
-       <?
+       <?php
 db_inputdata("h08_dtlanc", @$h08_dtlanc3_dia, @$h08_dtlanc3_mes, @$h08_dtlanc3_ano, true, 'text', 3,"","h08_dtlanc3");
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_lei4?>">
-       <?
+       <?php
        db_ancora(@$Lh11_lei4,"js_pesquisah11_lei4(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_lei4',6,$Ih11_lei4,true,'hidden',3)
 ?>
-       <?
+       <?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"onchange='js_pesquisah11_lei4(false)'","h08_numero4")
        ?>
-       <?
+       <?php
 db_inputdata("h08_dtlanc", @$h08_dtlanc4_dia, @$h08_dtlanc4_mes, @$h08_dtlanc4_ano, true, 'text', 3,"","h08_dtlanc4");
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th11_lei5?>">
-       <?
+       <?php
        db_ancora(@$Lh11_lei5,"js_pesquisah11_lei5(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('h11_lei5',6,$Ih11_lei5,true,'hidden',3)
 ?>
-       <?
+       <?php
 db_input('h08_numero',6,$Ih08_numero,true,'text',$db_opcao,"onchange='js_pesquisah11_lei5(false)'","h08_numero5")
        ?>
-       <?
+       <?php
 db_inputdata("h08_dtlanc", @$h08_dtlanc5_dia, @$h08_dtlanc5_mes, @$h08_dtlanc5_ano, true, 'text', 3,"","h08_dtlanc5");
        ?>
     </td>
@@ -170,7 +170,7 @@ db_inputdata("h08_dtlanc", @$h08_dtlanc5_dia, @$h08_dtlanc5_mes, @$h08_dtlanc5_a
        <?=@$Lh11_cert01?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h11_cert01',5,38,$Ih11_cert01,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -431,7 +431,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vinculos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

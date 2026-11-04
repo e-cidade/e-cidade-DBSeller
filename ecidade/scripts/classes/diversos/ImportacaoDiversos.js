@@ -165,7 +165,8 @@ ImportacaoDiversos.prototype = {
    */
   _renderResultados: function (oRetorno) {
 
-    this.oGridReceitas.clear();
+    this.oGridReceitas.clear();    
+    aVinculoReceitaProced = oRetorno.aVinculoReceitaProced;
     for (var oReceita of oRetorno.aReceitas) {
 
       /**
@@ -178,7 +179,10 @@ ImportacaoDiversos.prototype = {
       var elementoSelecione = document.createElement('option');
       elementoSelecione.innerHTML = "Selecione...";
       elementoSelecione.value = "0";
-      oSelectProcedencia.appendChild(elementoSelecione);
+          if(aVinculoReceitaProced[oReceita.k00_receit] == null) {
+        
+        oSelectProcedencia.appendChild(elementoSelecione);
+      }
       for (var oProcedencia of oRetorno.aProcedencias) {
 
         var oElemento = document.createElement('option');
@@ -188,7 +192,13 @@ ImportacaoDiversos.prototype = {
 
         var oDescricao = document.createTextNode(sDescricao);
 
-        oElemento.setAttribute('value', oProcedencia.codigo);
+        oElemento.setAttribute('value', oProcedencia.codigo);     
+        if(oProcedencia.codigo == aVinculoReceitaProced[oReceita.k00_receit]) {
+
+          oElemento.setAttribute('selected', true);
+          oSelectProcedencia.setAttribute('disabled', true);
+        }
+        
         oElemento.appendChild(oDescricao);
         oSelectProcedencia.appendChild(oElemento);
       }

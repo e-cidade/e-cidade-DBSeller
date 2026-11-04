@@ -252,7 +252,7 @@ class ImportacaoDiversosDiversos {
             throw new DBException($oDaoDiverImportaReg->erro_msg);
         }
 
-        $oDebito                 = new stdClass();
+        $oDiverso                 = new stdClass();
         $oDiverso->iCodDiverso   = $oDaoDiversos->dv05_coddiver;
         $oDiverso->iNumpreGerado = $iNumpreAdd;
 

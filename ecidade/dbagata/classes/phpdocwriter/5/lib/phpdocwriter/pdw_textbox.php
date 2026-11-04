@@ -97,7 +97,7 @@ function pdw_textbox(&$obj,$params)
 // 	else $this->_error('Not an document object');
 }
 
-function Insert()
+public function Insert()
 {
 	/////<style:style> <- <style:propieties>
 	$this->style->addXMLBranch($this->styleprop);

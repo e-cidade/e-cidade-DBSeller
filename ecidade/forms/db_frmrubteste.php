@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clrubteste->rotulo->label();
        <?=@$Lrubant?>
     </td>
     <td> 
-<?
+<?php
 db_input('rubant',3,$Irubant,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rubant',3,$Irubant,true,'text',3,"")
        <?=@$Ldescrrub?>
     </td>
     <td> 
-<?
+<?php
 db_input('descrrub',40,$Idescrrub,true,'text',3,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('descrrub',40,$Idescrrub,true,'text',3,"")
        <?=@$Lrubnova?>
     </td>
     <td> 
-<?
+<?php
 db_input('rubnova',4,$Irubnova,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('rubnova',4,$Irubnova,true,'text',$db_opcao,"")
        <?=@$Lanomes?>
     </td>
     <td> 
-<?
+<?php
 db_input('anomes',6,$Ianomes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_rubteste.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

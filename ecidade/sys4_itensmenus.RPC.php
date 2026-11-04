@@ -99,6 +99,7 @@ try {
       $oMenuSistema->setFuncao( db_stdClass::normalizeStringJsonEscapeString( $oParam->sFuncao ) );
       $oMenuSistema->setDescricaoTecnica( db_stdClass::normalizeStringJsonEscapeString( $oParam->sDescricaoTecnica ) );
       $oMenuSistema->setLiberadoCliente( db_stdClass::normalizeStringJsonEscapeString( $oParam->sLiberadoCliente ) );
+      $oMenuSistema->setApi( db_stdClass::normalizeStringJsonEscapeString( $oParam->sApi ) );
       $oMenuSistema->setManutencao( $oParam->sManutencao );
       $oMenuSistema->setItemAtivo( $oParam->iItemAtivo );
       $oMenuSistema->salvar();
@@ -221,6 +222,7 @@ try {
       $oRetorno->sFuncao           = urlencode( $oMenuSistema->getFuncao() );
       $oRetorno->mDescricaoTecnica = urlencode( $oMenuSistema->getDescricaoTecnica() );
       $oRetorno->sLiberadoCliente  = urlencode( $oMenuSistema->liberadoCliente() ? 't' : 'f' );
+      $oRetorno->sApi              = urlencode( $oMenuSistema->getApi() ? 't' : 'f' );
       $oRetorno->iItemAtivo        = $oMenuSistema->getItemAtivo();
       $oRetorno->sManutencao       = urlencode( $oMenuSistema->getManutencao() );
       $oRetorno->aMenusVinculados  = $oMenuSistema->menusVinculados();

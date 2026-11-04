@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmatordem->rotulo->label("m51_data");
               <?=$Lm51_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"","chave_m51_codordem");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatordem->rotulo->label("m51_data");
               <?=$Lm51_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m51_data",10,$Im51_data,true,"text",4,"","chave_m51_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatordem->rotulo->label("m51_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordem.php")==true){
@@ -118,12 +118,12 @@ $clmatordem->rotulo->label("m51_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

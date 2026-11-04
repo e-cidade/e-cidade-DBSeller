@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,13 +57,13 @@ class cl_debcontapedidoexc {
                  d77_debcontapedido = int4 = Codigo sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidoexc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidoexc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -72,7 +72,7 @@ class cl_debcontapedidoexc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->d77_sequencial = ($this->d77_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["d77_sequencial"]:$this->d77_sequencial);
        if($this->d77_dtexc == ""){
@@ -90,7 +90,7 @@ class cl_debcontapedidoexc {
      }
    }
    // funcao para inclusao
-   function incluir ($d77_sequencial){ 
+   public function incluir ($d77_sequencial){ 
       $this->atualizacampos();
      if($this->d77_dtexc == null ){ 
        $this->erro_sql = " Campo Data da exclusao nao Informado.";
@@ -201,7 +201,7 @@ class cl_debcontapedidoexc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($d77_sequencial=null) { 
+   public function alterar ($d77_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update debcontapedidoexc set ";
      $virgula = "";
@@ -325,7 +325,7 @@ class cl_debcontapedidoexc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($d77_sequencial=null,$dbwhere=null) { 
+   public function excluir ($d77_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($d77_sequencial));
      }else{ 
@@ -389,7 +389,7 @@ class cl_debcontapedidoexc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

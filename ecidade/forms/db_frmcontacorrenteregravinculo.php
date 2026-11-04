@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,19 +54,19 @@ db_app::load("windowAux.widget.js");
        <?=@$Lc27_sequencial?>
     </td>
     <td> 
-        <?
+        <?php
           db_input('c27_sequencial',10,$Ic27_sequencial,true,'text',3,"")
         ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc27_contacorrente?>">
-       <?
+       <?php
        db_ancora(@$Lc27_contacorrente,"js_pesquisac27_contacorrente(true);",$db_opcao);
        ?>
     </td>
     <td> 
-        <?
+        <?php
           db_input('c27_contacorrente',10,$Ic27_contacorrente,true,'text',$db_opcao," onchange='js_pesquisac27_contacorrente(false);'");
           db_input('c17_descricao',40,$Ic17_descricao,true,'text',3,'');
        ?>
@@ -78,7 +78,7 @@ db_app::load("windowAux.widget.js");
   	       <b>Estrutural Contabilidade:</b>
   	    </td>
   	    <td>
-           <?
+           <?php
            $mascara = '0.0.0.0.0.00.00.00.00.00';
            db_input('mascara', 54, $Ic27_estrutural, true, 'text', 3, "", "","", "");
            ?>
@@ -90,7 +90,7 @@ db_app::load("windowAux.widget.js");
        <?=@$Lc27_estrutural?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('c27_estrutural',54,$Ic27_estrutural,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -135,7 +135,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_contacorrenteregravinculo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

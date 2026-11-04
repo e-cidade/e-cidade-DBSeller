@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltipoproced->rotulo->label("v07_sequencial");
               <?=$Lv07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v07_sequencial",10,$Iv07_sequencial,true,"text",4,"","chave_v07_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipoproced->rotulo->label("v07_sequencial");
               <?=$Lv07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v07_sequencial",10,$Iv07_sequencial,true,"text",4,"","chave_v07_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipoproced->rotulo->label("v07_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoproced.php")==true){
@@ -122,12 +122,12 @@ $cltipoproced->rotulo->label("v07_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

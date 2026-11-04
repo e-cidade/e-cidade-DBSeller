@@ -26,6 +26,7 @@
  */
 
 use ECidade\RecursosHumanos\ESocial\Repository\Assentamento as AssentamentoESocial;
+use App\Domain\RecursosHumanos\RH\ConcessaoDireitos\Models\ConcessaoCalculoLog;
 
 /**
  * Class AssentamentoRepository
@@ -208,8 +209,11 @@ class AssentamentoRepository
                 $aAssentamentos = db_utils::getCollectionByRecord($rsAssentamentoSubstituicao);
 
                 foreach ($aAssentamentos as $oStdAssentamento) {
-                    $oServidor = ServidorRepository::getInstanciaByCodigo($oStdAssentamento->servidor,
-                        DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
+                    $oServidor = ServidorRepository::getInstanciaByCodigo(
+                        $oStdAssentamento->servidor,
+                        DBPessoal::getAnoFolha(),
+                        DBPessoal::getMesFolha()
+                    );
                     $aListaServidores[] = $oServidor;
                 }
             }
@@ -530,8 +534,12 @@ class AssentamentoRepository
         }
 
         $whereAssenta = implode(' and ', $aWhereAssenta);
-        $rsAssenta = db_query($sqlAssenta = $daoAssenta->sql_query_join_somente_assentamentofuncional_tipoasse(null,
-            "*", "h16_dtconc, h16_codigo", $whereAssenta));
+        $rsAssenta = db_query($sqlAssenta = $daoAssenta->sql_query_join_somente_assentamentofuncional_tipoasse(
+            null,
+            "*",
+            "h16_dtconc, h16_codigo",
+            $whereAssenta
+        ));
 
         if (!$rsAssenta) {
             throw new DBException("Ocorreu um erro ao consultar os assentamentos de afastamento no módulo RH.\nContate o suporte.\n\n" . pg_last_error());
@@ -582,14 +590,13 @@ class AssentamentoRepository
             $aWhereAssenta[] = "h16_codigo != {$codigoAssentamento}";
         }
 
-        if ($lFuncional !== null) {
+        if (!is_null($lFuncional)) {
+            $sNot = '';
             if ($lFuncional) {
-                $aWhereAssenta [] = " rh193_assentamento_funcional is not null ";
+                $sNot = 'not';
             }
 
-            if ($lFuncional === false) {
-                $aWhereAssenta [] = " rh193_assentamento_funcional is null ";
-            }
+            $aWhereAssenta [] = " rh193_assentamento_funcional is {$sNot} null ";
         }
 
         if (!empty($natureza)) {
@@ -601,11 +608,19 @@ class AssentamentoRepository
         }
 
         $whereAssenta = implode(' and ', $aWhereAssenta);
-        $rsAssenta = db_query($sqlAssenta = $daoAssenta->sql_query_join_somente_assentamentofuncional_tipoasse(null,
-            "*", "h16_dtconc, h16_codigo", $whereAssenta));
+        $sqlAssenta = $daoAssenta->sql_query_join_somente_assentamentofuncional_tipoasse(
+            null,
+            "h16_codigo",
+            "h16_dtconc, h16_codigo",
+            $whereAssenta
+        );
+
+        $rsAssenta = db_query($sqlAssenta);
 
         if (!$rsAssenta) {
-            throw new DBException("Ocorreu um erro ao consultar os assentamentos de afastamento no módulo RH.\nContate o suporte.\n\n" . pg_last_error());
+            $sMsg = "Ocorreu um erro ao consultar os assentamentos de afastamento no módulo RH.\n";
+            $sMsg .= "Contate o suporte.\n\n";
+            throw new DBException($sMsg . $daoAssenta->erro_msg);
         }
 
         if (pg_num_rows($rsAssenta) > 0) {
@@ -640,19 +655,18 @@ class AssentamentoRepository
             $sWhere .= " AND h12_assent in(" . implode(', ', $aTipoAssentamento) . ")";
         }
 
-        if ($lFuncional !== null) {
+        if (!is_null($lFuncional)) {
+            $sNot = '';
             if ($lFuncional) {
-                $aWhereAssenta [] = " rh193_assentamento_funcional is not null ";
+                $sNot = 'not';
             }
 
-            if ($lFuncional === false) {
-                $aWhereAssenta [] = " rh193_assentamento_funcional is null ";
-            }
+            $sWhere .= " and rh193_assentamento_funcional is {$sNot} null ";
         }
 
         $oDaoAssenta = new cl_assenta();
         $sSqlAssenta = $oDaoAssenta->sql_query_tipo(null, 'h16_codigo', null, $sWhere);
-        $rsAssenta = db_query($sSqlAssenta);
+        $rsAssenta = $oDaoAssenta->sql_record($sSqlAssenta);
 
         if (!$rsAssenta) {
             throw new DBException('Erro ao buscar os assentamentos lançados para o servidor.');
@@ -704,8 +718,12 @@ class AssentamentoRepository
              * se estiver, não permite a exclusão.
              */
             $daoAssentaLoteRegistroPonto = new cl_assentaloteregistroponto();
-            $sqlAssentaLoteRegistroPonto = $daoAssentaLoteRegistroPonto->sql_query_file(null, "rh160_sequencial", null,
-                "rh160_assentamento = {$assentamento->getCodigo()}");
+            $sqlAssentaLoteRegistroPonto = $daoAssentaLoteRegistroPonto->sql_query_file(
+                null,
+                "rh160_sequencial",
+                null,
+                "rh160_assentamento = {$assentamento->getCodigo()}"
+            );
 
             $rsAssentaLoteRegistroPonto = db_query($sqlAssentaLoteRegistroPonto);
 
@@ -793,8 +811,12 @@ class AssentamentoRepository
          * Tratamento para exclusão de assentamentos de RRA
          */
         $daoAssentamentoRRA = new cl_assentamentorra();
-        $rsAssentamentoRRA = $daoAssentamentoRRA->sql_record($daoAssentamentoRRA->sql_query_file(null, "*", null,
-            " h83_assenta=" . $assentamento->getCodigo()));
+        $rsAssentamentoRRA = $daoAssentamentoRRA->sql_record($daoAssentamentoRRA->sql_query_file(
+            null,
+            "*",
+            null,
+            " h83_assenta=" . $assentamento->getCodigo()
+        ));
 
         if ($rsAssentamentoRRA && $daoAssentamentoRRA->numrows > 0) {
             RRARepository::excluirLancamentosPorCodigoAssentamento($assentamento->getCodigo());
@@ -817,8 +839,12 @@ class AssentamentoRepository
          */
         $daoRhFeriasPeriodosAssentamento = new cl_rhferiasperiodoassentamento();
         $whereRhFeriasPeriodosAssentamento = "rh169_assenta = {$assentamento->getCodigo()} and rh110_situacao <> 0";
-        $sqlRhFeriasPeriodosAssentamento = $daoRhFeriasPeriodosAssentamento->sql_query(null, "*", null,
-            $whereRhFeriasPeriodosAssentamento);
+        $sqlRhFeriasPeriodosAssentamento = $daoRhFeriasPeriodosAssentamento->sql_query(
+            null,
+            "*",
+            null,
+            $whereRhFeriasPeriodosAssentamento
+        );
         $rsRhFeriasPeriodosAssentamento = db_query($sqlRhFeriasPeriodosAssentamento);
 
         if (!$rsRhFeriasPeriodosAssentamento) {
@@ -831,8 +857,12 @@ class AssentamentoRepository
          * Alteramos as datas em que o ponto é utilizado.
          */
         $daoPontoEletronicoData = new cl_pontoeletronicoarquivodata();
-        $SqlDadosPonto = $daoPontoEletronicoData->sql_query_file(null, "*", null,
-            "rh197_afastamento = {$assentamento->getCodigo()}");
+        $SqlDadosPonto = $daoPontoEletronicoData->sql_query_file(
+            null,
+            "*",
+            null,
+            "rh197_afastamento = {$assentamento->getCodigo()}"
+        );
         $rsDadosPonto = db_query($SqlDadosPonto);
         if (!$rsDadosPonto) {
             throw new BusinessException("Erro ao pesquiser batidas do ponto eletrônico.");
@@ -898,8 +928,10 @@ class AssentamentoRepository
 
         if (pg_num_rows($rsConfiguracoesDatasEfetividade) > 0) {
             $dadosEfetividade = db_utils::fieldsMemory($rsConfiguracoesDatasEfetividade, 0);
-            $periodo = trim(db_formatar($dadosEfetividade->rh186_datainicioefetividade,
-                    'd')) . " a " . trim(db_formatar($dadosEfetividade->rh186_datafechamentoefetividade, 'd'));
+            $periodo = trim(db_formatar(
+                $dadosEfetividade->rh186_datainicioefetividade,
+                'd'
+            )) . " a " . trim(db_formatar($dadosEfetividade->rh186_datafechamentoefetividade, 'd'));
             $mensagem = "O período de efetividade {$periodo} já foi processado.\\nPara realizar manutenções em assentamentos nesse período, ";
             $mensagem .= "reabra o período de efetividade em Procedimentos > Efetividade > Reabrir Período.";
             $daoAssentamento->erro_msg = $mensagem;
@@ -907,6 +939,14 @@ class AssentamentoRepository
 
             throw new BusinessException($mensagem);
         }
+
+        /**
+         * Exclui da tabela concessaocalculolog
+         */
+        ConcessaoCalculoLog::where(
+            'rh507_assent',
+            $assentamento->getCodigo()
+        )->delete();
 
         /**
          * Exclui da tabela assenta.
@@ -936,11 +976,13 @@ class AssentamentoRepository
     public static function servidorValidaData($servidor, $dataObrigatoriedade)
     {
         $assenta = new \cl_assenta;
-        $sqlAssenta = $assenta->sql_dados_afastamento_esocial($servidor->getMatricula(),
+        $sqlAssenta = $assenta->sql_dados_afastamento_esocial(
+            $servidor->getMatricula(),
         'a.h16_dtconc, db110_valor',
-        "(a.h16_dtterm is null or a.h16_dtterm >= '".$dataObrigatoriedade->getDate()."')" . 
+        "(a.h16_dtterm is null or a.h16_dtterm >= '".$dataObrigatoriedade->getDate()."')" .
         " and a.h16_dtconc <= '".$dataObrigatoriedade->getDate()."'",
-        'a.h16_dtconc');
+            'a.h16_dtconc'
+        );
         $resultado = $assenta->sql_record($sqlAssenta);
         if($resultado) {
             return \db_utils::fieldsMemory($resultado, 0);

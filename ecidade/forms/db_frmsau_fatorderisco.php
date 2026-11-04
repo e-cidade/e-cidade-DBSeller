@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clsau_fatorderisco->rotulo->label();
        <?=@$Ls105_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('s105_i_codigo',10,$Is105_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -50,7 +50,7 @@ db_input('s105_i_codigo',10,$Is105_i_codigo,true,'text',3,"")
        <?=@$Ls105_v_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('s105_v_descricao',80,$Is105_v_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_fatorderisco.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -87,7 +87,7 @@ function js_enviar() {
           <b>Usuário:</b>&nbsp;&nbsp;          
           </td>
           <td align="left" nowrap>
-		    <?      
+		    <?php      
 		    if (!isset($at40_tecnico)) {
 		      global $at40_tecnico;
 		      $at40_tecnico = db_getsession("DB_id_usuario");
@@ -103,7 +103,7 @@ function js_enviar() {
               <?=$Lat02_codatend?>
             </td>
             <td align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at02_codatend",4,$Iat02_codatend,true,"text",4,"","chave_at02_codatend");
 		       ?>
             </td>
@@ -113,7 +113,7 @@ function js_enviar() {
               <?=$Lat02_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at02_codcli",0,$Iat02_codcli,true,"text",4,"","chave_at02_codcli");
 		       ?>
             </td>
@@ -126,7 +126,7 @@ function js_enviar() {
               <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe.hide();">
-              <?
+              <?php
               $result_atend = $clatendtecnicoocupado->sql_record($clatendtecnicoocupado->sql_query(null,"at72_codtipo as at71_codigo",null," at72_id_usuario = ".db_getsession("DB_id_usuario")));          
               if($clatendtecnicoocupado->numrows>0){
                  db_fieldsmemory($result_atend,0,0);
@@ -148,7 +148,7 @@ function js_consulta_atend(){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){ 
         if(isset($campos)==false){
             $campos = "distinct on (at02_codatend) at02_codatend,at06_datalanc as dl_data,at06_horalanc as dl_hora,at01_nomecli as dl_cliente,substr(at10_nome, 1, 20) as dl_solicitante,at04_descr as dl_Contato_por,login as dl_Tecnico, at25_descr as area, at02_observacao as dl_Obs,at01_obs";
@@ -225,14 +225,14 @@ function js_consulta_atend(){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form1.chave_at02_codatend.focus();
 document.form1.chave_at02_codatend.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

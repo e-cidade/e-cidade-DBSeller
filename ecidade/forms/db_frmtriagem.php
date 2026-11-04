@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -50,7 +50,7 @@ $clrotulo->label("z01_v_nome");
        <?=@$Lsd24_i_codigo?>
     </td>
     <td colspan="4">
-      <?
+      <?php
         db_input('sd24_i_codigo',10,$Isd24_i_codigo,true,'text',3);
         db_input('sd24_i_unidade',10,$Isd24_i_unidade,true,'hidden',3);
       ?>
@@ -62,7 +62,7 @@ $clrotulo->label("z01_v_nome");
        <?=@$Lz01_i_cgsund?>
     </td>
     <td colspan="3">
-      <?
+      <?php
         db_input('z01_i_cgsund',10,@$Iz01_i_cgsund,true,'text',3,''); echo"&nbsp;$Lz01_v_nome &nbsp;";db_input('z01_v_nome',40,@$Iz01_v_nome,true,'text',3,'');
       ?>
     </td>
@@ -73,7 +73,7 @@ $clrotulo->label("z01_v_nome");
        <?=@$Lsd24_v_motivo?>
     </td>
     <td colspan="3">
-      <?
+      <?php
         db_input('sd24_v_motivo',77,$Isd24_v_motivo,true,'text',$db_opcao,'')
       ?>
     </td>
@@ -83,27 +83,27 @@ $clrotulo->label("z01_v_nome");
        <?=@$Lsd24_v_pressao?>
     </td>
     <td>
-      <?db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
+      <?php db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
     </td>
     <td align="right" >
        <?=@$Lsd24_f_peso?>
-      <?db_input('sd24_f_peso',9,$Isd24_f_peso,true,'text',$db_opcao)?>
+      <?php db_input('sd24_f_peso',9,$Isd24_f_peso,true,'text',$db_opcao)?>
     </td>
   </tr>
-  
+
   <tr>
     <td nowrap title="<?=@$Tsd24_f_temperatura?>">
        <?=@$Lsd24_f_temperatura?>
     </td>
     <td colspan="4">
-      <?db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
+      <?php db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
     </td>
   </tr>
   <tr>
       <td><b>Procedimentos <br> nao Faturaveis:</b></td>
       <td colspan="2"><select name="procedimentos" id="procedimentos" value="0">
                              <option Value="0">Selecione:::</option>
-                             <?
+                             <?php
                              $sql="select * from sau_procsemfatura";
                              $result=db_query($sql);
                              $linhas=pg_num_rows($result);
@@ -113,24 +113,24 @@ $clrotulo->label("z01_v_nome");
                              }?>
                       </select><input type="button" name="lanc" id="lanc" value="Lancar" onclick="js_lanc();"><br>
                       <select name="boxproc" id="boxproc" size="5" value="" ondblclick="js_delete();" style="width: 300">
-                         <option value="0"><?for($x=1;$x<51;$x++){echo"&nbsp;";}?></option>
+                         <option value="0"><?php for($x=1;$x<51;$x++){echo"&nbsp;";}?></option>
                       </select><br><font size="1.px">*Click duas vezes para deletar</font>
       <td>
   </tr>
   <!-- PROFISSIONAL -->
   <tr>
     <td nowrap title="<?=@$Tsd03_i_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-       <?
+       <?php
           db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")
        ?>
     </td>
     <td>
-       <?
+       <?php
           db_input('profissional',63,@$profissional,true,'text',3,'')
        ?>
     </td>
@@ -138,19 +138,19 @@ $clrotulo->label("z01_v_nome");
   <!-- CBO -->
        <tr>
          <td nowrap title="<?=@$Tsd04_i_cbo?>">
-            <?
+            <?php
             db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);
             ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('sd24_i_profissional',10,$Isd24_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
           db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
           db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
           ?>
          </td>
          <td>
-          <?
+          <?php
           db_input('rh70_descr',63,$Irh70_descr,true,'text',3,'');
           ?>
          </td>
@@ -165,9 +165,9 @@ $clrotulo->label("z01_v_nome");
 </form>
 <script>
 //carregar campos
-<?
+<?php
   if (isset($proc)) {
-     
+
      $quant=count($proc);
      if($quant>0){
         echo"document.form1.boxproc.remove(0);";
@@ -207,7 +207,7 @@ function js_pesquisasd24_i_siasih(mostra){
 
 function js_mostrasd24_i_siasih(chave, erro){
   document.form1.sd92_c_nome.value = chave;
-  if(erro==true){ 
+  if(erro==true){
     document.form1.sd24_i_siasih.focus();
   }
 }
@@ -255,7 +255,7 @@ function js_pesquisasd70_c_cid(mostra){
         document.form1.sd24_i_cid.value = '';
         document.form1.sd70_c_nome.value = '';
         js_OpenJanelaIframe('','db_iframe_sau_cid','func_sau_cid.php?chave_sd70_c_cid='+document.form1.sd70_c_cid.value+'&funcao_js=parent.js_mostrasd70_c_cid1|sd70_i_codigo|sd70_c_cid|sd70_c_nome','Pesquisa',false);
-        
+
      }else{
        document.form1.sd24_i_cid.value = '';
        document.form1.sd70_c_cid.value = '';
@@ -286,7 +286,7 @@ function js_pesquisasd04_i_cbo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|rh70_sequencial&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,'Pesquisa',true);
   }else{
-     if(document.form1.rh70_estrutural.value != ''){ 
+     if(document.form1.rh70_estrutural.value != ''){
         js_OpenJanelaIframe('','db_iframe_especmedico','func_especmedico.php?chave_rh70_estrutural='+document.form1.rh70_estrutural.value+'&funcao_js=parent.js_mostrarhcbo1|sd27_i_codigo|rh70_estrutural|rh70_descr|rh70_estrutural&chave_sd04_i_unidade='+document.form1.sd24_i_unidade.value+'&chave_sd04_i_medico='+document.form1.sd03_i_codigo.value,'Pesquisa',false);
         document.form1.rh70_estrutural.value = '';
         document.form1.rh70_descr.value = '';
@@ -301,8 +301,8 @@ function js_mostrarhcbo(erro,chave1, chave2, chave3,chave4){
   document.form1.sd24_i_profissional.value = chave3;
   document.form1.rh70_sequencial.value = chave4;
   if(erro==true){
-    document.form1.rh70_estrutural.focus(); 
-    document.form1.rh70_estrutural.value = ''; 
+    document.form1.rh70_estrutural.focus();
+    document.form1.rh70_estrutural.value = '';
   }
 }
 function js_mostrarhcbo1(chave1,chave2,chave3,chave4){
@@ -313,9 +313,9 @@ function js_mostrarhcbo1(chave1,chave2,chave3,chave4){
   db_iframe_especmedico.hide();
 
   if(chave2=''){
-    document.form1.rh70_estrutural.focus(); 
-    document.form1.rh70_estrutural.value = ''; 
-  }  
+    document.form1.rh70_estrutural.focus();
+    document.form1.rh70_estrutural.value = '';
+  }
 }
 
 function js_pesquisa02(){
@@ -324,7 +324,7 @@ function js_pesquisa02(){
 
 function js_preenchepesquisa(chave){
   db_iframe_triagem.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisaprontuario='+chave";
   ?>
 }
@@ -359,7 +359,7 @@ function js_delete(){
        return false;
     }
     if(confirm('Excluir prcedimento:'+F.boxproc.options[F.boxproc.selectedIndex].text+'?')){
-       F.boxproc.remove(F.boxproc.selectedIndex);   
+       F.boxproc.remove(F.boxproc.selectedIndex);
        var Tam1=F.boxproc.length;
        if(Tam1==0){
           F.boxproc.add(new Option('','0'),null);

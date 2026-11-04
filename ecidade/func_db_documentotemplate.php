@@ -100,7 +100,7 @@ $cldb_documentotemplate->rotulo->label("db82_descricao");
 
         $sWhere = "1=1";
         if (isset($tipo) && trim($tipo) != '') {
-            $sWhere .= "and db82_templatetipo = {$tipo}";
+            $sWhere .= "and db82_templatetipo in ({$tipo})";
         }
 
         if (!isset($pesquisa_chave)) {

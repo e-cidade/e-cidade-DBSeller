@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,22 +39,22 @@ $clrotulo->label("nome");
        <?=@$Ly87_baixaproc?>
     </td>
     <td> 
-<?
+<?php
 db_input('y87_baixaproc',8,$Iy87_baixaproc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty87_processo?>">
-       <?
+       <?php
        db_ancora(@$Ly87_processo,"js_pesquisay87_processo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y87_processo',10,$Iy87_processo,true,'text',$db_opcao," onchange='js_pesquisay87_processo(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -64,22 +64,22 @@ db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        <?=@$Ly87_dtbaixa?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y87_dtbaixa',@$y87_dtbaixa_dia,@$y87_dtbaixa_mes,@$y87_dtbaixa_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty87_usuario?>">
-       <?
+       <?php
        db_ancora(@$Ly87_usuario,"js_pesquisay87_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y87_usuario',8,$Iy87_usuario,true,'text',$db_opcao," onchange='js_pesquisay87_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Ly87_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('y87_data',@$y87_data_dia,@$y87_data_mes,@$y87_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_inputdata('y87_data',@$y87_data_dia,@$y87_data_mes,@$y87_data_ano,true,'text'
        <?=@$Ly87_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('y87_hora',5,$Iy87_hora,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_autotipobaixaproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

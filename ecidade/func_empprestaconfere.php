@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -71,13 +71,13 @@ $rotulo->label("e60_numemp");
 
                 <input name="chave_e60_codemp" size="12" type='text'  onKeyPress="return js_mascara(event);" >
                 <?=$Le60_numemp?>
-                <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
+                <?php db_input("e60_numemp", 10, $Ie60_numemp, true, "text", 4, "", "chave_e60_numemp"); ?>
               </td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
               <td width="96%" align="left" nowrap>
-                <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+                <?php db_input("z01_nome", 45, "", true, "text", 4, "", "chave_z01_nome"); ?>
               </td>
             </tr>
             <tr>
@@ -93,56 +93,91 @@ $rotulo->label("e60_numemp");
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
-        if(!isset($pesquisa_chave)){
-          if(isset($campos)==false){
-            if(file_exists("funcoes/db_func_emppresta.php")==true){
-              include(modification("funcoes/db_func_emppresta.php"));
-            }else{
-              $campos = "emppresta.*";
+        <?php
+        if (!isset($pesquisa_chave)) {
+            if (isset($campos)==false) {
+                if (file_exists("funcoes/db_func_emppresta.php")==true) {
+                    include(modification("funcoes/db_func_emppresta.php"));
+                } else {
+                    $campos = "emppresta.*";
+                }
             }
-          }
 
-          if (isset($exibeMovimento)) {
-            $campos = " e45_codmov, {$campos}, e45_sequencial ";
-          }
+            if (isset($exibeMovimento)) {
+                $campos = " e45_codmov, {$campos}, e45_sequencial ";
+            }
 
-          $dbwhere =  "  e45_conferido is null  and e45_acerta is not null";
+            $instit = db_getsession("DB_instit");
+            $dbwhere =  " e60_instit = {$instit} and e45_conferido is null  and e45_acerta is not null";
 
           /* [Extensão] - Filtro da Despesa */
 
-          if(isset($chave_e60_numemp) && (trim($chave_e60_numemp)!="") ){
-            $sql = $clemppresta->sql_query_depto(null,$campos,"e45_numemp","$dbwhere and e45_numemp = $chave_e60_numemp");
-          } else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
-            $arr = split("/",$chave_e60_codemp);
-            if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
-              $dbwhere_ano = " and e60_anousu = ".$arr[1];
-            }else{
-              $dbwhere_ano = " and e60_anousu = ".db_getsession("DB_anousu");
+            if (isset($chave_e60_numemp) && (trim($chave_e60_numemp)!="")) {
+                $sql = $clemppresta->sql_query_depto(null, $campos, "e45_numemp", "$dbwhere and e45_numemp = $chave_e60_numemp");
+            } elseif (isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="")) {
+                $arr = split("/", $chave_e60_codemp);
+                if (count($arr) == 2  && isset($arr[1]) && $arr[1] != '') {
+                    $dbwhere_ano = " and e60_anousu = ".$arr[1];
+                } else {
+                    $dbwhere_ano = " and e60_anousu = ".db_getsession("DB_anousu");
+                }
+
+                $sql = $clemppresta->sql_query_depto(null, $campos, "e45_numemp", "$dbwhere and  e60_codemp='".$arr[0]."' $dbwhere_ano");
+            } elseif (isset($chave_z01_nome) && (trim($chave_z01_nome)!="")) {
+                $sql = $clemppresta->sql_query_depto(null, $campos, "e45_numemp", "$dbwhere and z01_nome like '$chave_z01_nome%'");
+            } else {
+                $sql = $clemppresta->sql_query_depto("", $campos, "e45_numemp", "$dbwhere");
             }
 
-            $sql = $clemppresta->sql_query_depto(null,$campos,"e45_numemp","$dbwhere and  e60_codemp='".$arr[0]."' $dbwhere_ano");
+            $sql = "
+          
+select 
+min(e45_codmov ) as e45_codmov,
+e60_codemp  ,
+e60_anousu  ,
+e60_numemp  ,
+e60_emiss   ,
+e60_vlremp  ,
+e60_vlrpag  ,
+z01_nome    ,
+e44_descr   ,
+codigo      ,
+nomeinst    ,
+e82_codord
+ from (
 
-          } else if(isset($chave_z01_nome) && (trim($chave_z01_nome)!="") ){
-            $sql = $clemppresta->sql_query_depto(null,$campos,"e45_numemp","$dbwhere and z01_nome like '$chave_z01_nome%'");
-          } else {
-            $sql = $clemppresta->sql_query_depto("",$campos,"e45_numemp","$dbwhere");
-          }
+  $sql
+ ) as x
+join empord on e45_codmov = e82_codmov
+join empagemov on e81_codmov = e82_codmov 
+where e81_cancelado is null
+group by 
+e60_codemp  ,
+e60_anousu  ,
+e60_numemp  ,
+e60_emiss   ,
+e60_vlremp  ,
+e60_vlrpag  ,
+z01_nome    ,
+e44_descr   ,
+codigo      ,
+nomeinst    ,
+e82_codord
+          ";
 
-          db_lovrot($sql,15,"()","",$funcao_js);
-        }else{
-          if($pesquisa_chave!=null && $pesquisa_chave!=""){
-
-            $sql = $clemppresta->sql_query_depto("",$campos,"e45_numemp","$dbwhere and e45_numemp = $pesquisa_chave");
-            if($clemppresta->numrows!=0){
-              db_fieldsmemory($result,0);
-              echo "<script>".$funcao_js."('$e45_tipo',false);</script>";
-            }else{
-              echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+            db_lovrot($sql, 15, "()", "", $funcao_js);
+        } else {
+            if ($pesquisa_chave!=null && $pesquisa_chave!="") {
+                $sql = $clemppresta->sql_query_depto("", $campos, "e45_numemp", "$dbwhere and e45_numemp = $pesquisa_chave");
+                if ($clemppresta->numrows!=0) {
+                    db_fieldsmemory($result, 0);
+                    echo "<script>".$funcao_js."('$e45_tipo',false);</script>";
+                } else {
+                    echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";
+                }
+            } else {
+                echo "<script>".$funcao_js."('',false);</script>";
             }
-          }else{
-            echo "<script>".$funcao_js."('',false);</script>";
-          }
         }
         ?>
       </td>
@@ -150,12 +185,12 @@ $rotulo->label("e60_numemp");
   </table>
   </body>
   </html>
-<?
-if(!isset($pesquisa_chave)){
-  ?>
+<?php
+if (!isset($pesquisa_chave)) {
+    ?>
   <script>
   </script>
-<?
+    <?php
 }
 ?>
 <script type="text/javascript">

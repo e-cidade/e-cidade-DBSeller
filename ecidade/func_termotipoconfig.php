@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltermotipoconfig->rotulo->label("k42_cadtipo");
               <?=$Lk42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k42_sequencial",10,$Ik42_sequencial,true,"text",4,"","chave_k42_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltermotipoconfig->rotulo->label("k42_cadtipo");
               <?=$Lk42_cadtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k42_cadtipo",3,$Ik42_cadtipo,true,"text",4,"","chave_k42_cadtipo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltermotipoconfig->rotulo->label("k42_cadtipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_termotipoconfig.php")==true){
@@ -122,12 +122,12 @@ $cltermotipoconfig->rotulo->label("k42_cadtipo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

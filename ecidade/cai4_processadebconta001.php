@@ -209,7 +209,7 @@ function geraTaxaBancaria( $oParametros ){
    */
   if($iLinhasTaxaBancaria > 1){
     $erro_msg = _M( MENSAGENS . "taxa_especifica_duplicada" );
-    break;
+    return false;
   }
 
   if ($iLinhasTaxaBancaria > 0) {
@@ -335,7 +335,7 @@ function geraTaxaBancaria( $oParametros ){
       $oDisBanco->incluir(null);
       if ($oDisBanco->erro_status == "0") {
         $erro_msg = $oDisBanco->erro_msg;
-        break;
+        return false;
       }
 
     }
@@ -549,7 +549,7 @@ if (isset($geradebcta)) {
 
               if(pg_numrows($rsDebContaPedidoData) > 0){
 
-                db_fieldsmemory($rsDebContaPedidoData);
+                db_fieldsmemory($rsDebContaPedidoData,0);
                 $cldebcontapedido->d63_codigo   = $ud63_codigo;
                 $cldebcontapedido->d63_datalanc = $dtlanca;
                 $cldebcontapedido->alterar($ud63_codigo);

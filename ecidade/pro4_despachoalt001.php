@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -62,7 +62,7 @@ function js_mudapagina(iCodigoProcesso, iNumCgm, sNome, lErro){
 
   let numeroProc = document.form1.p58_numero;
   /**
-   * Erro na consulta 
+   * Erro na consulta
    */
   if (lErro || numeroProc.value == "" ) {
     numeroProc.value = "";
@@ -79,29 +79,29 @@ function js_mudapagina(iCodigoProcesso, iNumCgm, sNome, lErro){
 
 <center>
   <form method="post" name="form1" action="pro4_despachoalt002.php">
-  
+
     <fieldset style="margin-top: 30px; width: 600px;">
     <legend>Alteração de Despacho</legend>
       <table>
 	      <tr>
 	        <td title="<?=$Tp58_codproc?>">
-	           <? db_ancora("Processo:","js_pesquisa(true);",1); ?>
+	           <?php db_ancora("Processo:","js_pesquisa(true);",1); ?>
 	        </td>
 	        <td>
 	           <?php db_input("p58_numero", 15, $Ip58_numero, true, "text", 3, "onchange='js_pesquisa(false);'"); ?>
              <?php db_input("p58_codproc", 30, 0, true, "hidden", 1); ?>
 	        </td>
-	        <td> 
-	           <?db_input("p58_requer",40,$Ip58_codproc,true,"text",3);?>
+	        <td>
+	           <?php db_input("p58_requer",40,$Ip58_codproc,true,"text",3);?>
 	        </td>
         </tr>
       </table>
-    </fieldset>  
-    
+    </fieldset>
+
     <div style="margin-top: 10px;">
       <input type="button" value="Processar" onclick="js_mudapagina(document.form1.p58_codproc.value);">
-    </div>    
-    
+    </div>
+
   </form>
 </center>
 
@@ -119,7 +119,7 @@ function js_pesquisa(mostra) {
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_despint','func_procdespint.php?grupo=1&funcao_js=parent.js_mostra1|dl_cod_processo|dl_processo|dl_nome_ou_Razão_social','Pesquisa',true);
   } else {
 
-     if (document.form1.p58_numero.value != '') { 
+     if (document.form1.p58_numero.value != '') {
 
         js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_despint',
           'func_procdespint.php?grupo=1&pesquisa_chave='+document.form1.p58_numero.value+'&funcao_js=parent.js_mostra&sCampoRetorno=p58_codproc',
@@ -127,19 +127,19 @@ function js_pesquisa(mostra) {
      }
   }
 }
- 
+
 function js_mostra(iCodigoProcesso, iNumCgm, sNome, lErro) {
- 
+
   document.form1.p58_requer.value = sNome;
 
-  if ( lErro ) { 
+  if ( lErro ) {
 
-    document.form1.p58_numero.focus(); 
-    document.form1.p58_numero.value = '';     
+    document.form1.p58_numero.focus();
+    document.form1.p58_numero.value = '';
     document.form1.p58_requer.value = iNumCgm;
     return false;
   }
-  
+
   document.form1.p58_codproc.value = iCodigoProcesso;
   document.form1.p58_requer.value  = sNome;
 

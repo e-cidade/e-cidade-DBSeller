@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,12 +63,12 @@ if(isset($o50_estrutreceita)){
               <?=$Lo60_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o60_codfon",6,$Io60_codfon,true,"text",4,"","chave_o60_codfon");
 		       ?>
             </td>
           </tr>
-<?
+<?php
          $clestrutura->mascara =false;
          $clestrutura->input   =false;
          $clestrutura->nomeform="form2";//o nome do campo é DB_txtdotacao
@@ -79,7 +79,7 @@ if(isset($o50_estrutreceita)){
               <?=$Lo60_perc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o60_perc",15,$Io60_perc,true,"text",4,"","chave_o60_perc");
 		       ?>
             </td>
@@ -97,7 +97,7 @@ if(isset($o50_estrutreceita)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcfontesdes.php")==true){
@@ -135,12 +135,12 @@ if(isset($o50_estrutreceita)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

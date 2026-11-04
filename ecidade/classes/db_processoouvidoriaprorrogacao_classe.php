@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,13 +66,13 @@ class cl_processoouvidoriaprorrogacao {
                  ov15_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe
-   function cl_processoouvidoriaprorrogacao() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoouvidoriaprorrogacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_processoouvidoriaprorrogacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ov15_sequencial = ($this->ov15_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ov15_sequencial"]:$this->ov15_sequencial);
        $this->ov15_protprocesso = ($this->ov15_protprocesso == ""?@$GLOBALS["HTTP_POST_VARS"]["ov15_protprocesso"]:$this->ov15_protprocesso);
@@ -109,7 +109,7 @@ class cl_processoouvidoriaprorrogacao {
      }
    }
    // funcao para inclusao
-   function incluir ($ov15_sequencial){
+   public function incluir ($ov15_sequencial){
       $this->atualizacampos();
      if($this->ov15_protprocesso == null ){
        $this->erro_sql = " Campo Processo nao Informado.";
@@ -247,7 +247,7 @@ class cl_processoouvidoriaprorrogacao {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ov15_sequencial=null) {
+   public function alterar ($ov15_sequencial=null) {
       $this->atualizacampos();
      $sql = " update processoouvidoriaprorrogacao set ";
      $virgula = "";
@@ -421,7 +421,7 @@ class cl_processoouvidoriaprorrogacao {
      }
    }
    // funcao para exclusao
-   function excluir ($ov15_sequencial=null,$dbwhere=null) {
+   public function excluir ($ov15_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ov15_sequencial));
      }else{
@@ -488,7 +488,7 @@ class cl_processoouvidoriaprorrogacao {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -511,7 +511,7 @@ class cl_processoouvidoriaprorrogacao {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -552,7 +552,7 @@ class cl_processoouvidoriaprorrogacao {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -585,7 +585,7 @@ class cl_processoouvidoriaprorrogacao {
      }
      return $sql;
   }
-	function sql_query_ouvidoria ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+	public function sql_query_ouvidoria ( $ov15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

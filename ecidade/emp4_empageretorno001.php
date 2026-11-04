@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -72,30 +72,32 @@ db_postmemory($HTTP_POST_VARS);
       marginheight="0"
       onLoad="if(document.form1) document.form1.elements[0].focus()" >
 <div style="margin-top:50px;"></div>
-	<form name="form1" id='form1' enctype="multipart/form-data" method="post">
+    <form name="form1" id='form1' enctype="multipart/form-data" method="post">
     <center>
       <fieldset style="width: 530px; padding: 20px;">
         <legend><b>Processar Retorno</b></legend>
         <table border="0" cellspacing="0" cellpadding="0" style="width: 400px;">
-      	  <tr>
+          <tr>
             <td nowrap  align='left'><b>Selecione o Arquivo:</b></td>
-      	    <td nowrap align='left'>
+            <td nowrap align='left'>
               <input name="flArquivo" id='flArquivo' type="file" size='50'>
               <input name="nomearquivoservidor" id='nomearquivoservidor' type="hidden" size='10'>
-      	    </td>
-      	  </tr>
+            </td>
+          </tr>
         </table>
       </fieldset>
       <br>
       <input name="processa" id='btnProcessar' value='Processar' type="button">
     </center>
   </form>
-<?
-  db_menu(db_getsession("DB_id_usuario"),
-          db_getsession("DB_modulo"),
-          db_getsession("DB_anousu"),
-          db_getsession("DB_instit"));
-?>
+<?php
+  db_menu(
+      db_getsession("DB_id_usuario"),
+      db_getsession("DB_modulo"),
+      db_getsession("DB_anousu"),
+      db_getsession("DB_instit")
+  );
+    ?>
 <div id='uploadIframeBox' style='display:none'></div>
 </body>
 </html>
@@ -127,7 +129,7 @@ function js_endloading() {
 
 function js_processarArquivo() {
 
-	js_divCarregando('Aguarde... processando...', 'msgbox');
+    js_divCarregando('Aguarde... processando...', 'msgbox');
   var oParametro         = new Object();
   oParametro.exec        = 'processarArquivo';
   oParametro.nomearquivo = $F('nomearquivoservidor');
@@ -143,7 +145,7 @@ function js_processarArquivo() {
 
 function js_retornoProcessamentoArquivo(oAjax) {
 
-	js_removeObj("msgbox");
+    js_removeObj("msgbox");
   var oRetorno = JSON.parse(oAjax.responseText);
 
   /**
@@ -209,7 +211,7 @@ function js_redirecionaUsuario(aCodigoRetorno) {
   var sPaginaRedirecionada            = "emp4_empageretornoconf001.php?";
   var sCodificacaoArrayCodigoRetorno  = encodeURI(escape(aCodigoRetorno)); //aCodigoRetorno[(aCodigoRetorno.length-1)];
   sParametroGetArrayCodigoRetorno     = "retornoarq="+sCodificacaoArrayCodigoRetorno;
-	location.href = sPaginaRedirecionada+sParametroGetArrayCodigoRetorno;
+    location.href = sPaginaRedirecionada+sParametroGetArrayCodigoRetorno;
 }
 
 function js_impressaoRelatorioInconsistencia(iArquivoRetorno) {

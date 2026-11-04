@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,12 @@ if (isset($alterar)) {
     // Se sim, o agendamento com a prestadora não pode ser modificado
     $sSql = $oDaotfd_agendasaida->sql_query2(null, '*', null, " tf17_i_pedidotfd = $tf16_i_pedidotfd");
     $rs = $oDaotfd_agendasaida->sql_record($sSql);
-    if ($oDaotfd_agendasaida->numrows > 0) {
+
+    $sqlAgendamentoPrestadora = $oDaotfd_agendamentoprestadora->sql_query($tf16_i_codigo);
+    $rsAgendamentoPrestadora = $oDaotfd_agendamentoprestadora->sql_record($sqlAgendamentoPrestadora);
+    $agendamentoPrestadora = \db_utils::fieldsMemory($rsAgendamentoPrestadora, 0);
+
+    if ($oDaotfd_agendasaida->numrows > 0 && $agendamentoPrestadora->tf16_observacoes == $tf16_observacoes) {
         $sMsg = 'Este pedido de TFD já possui saída agendada. Para alterar o agendamento' .
             ' da prestadora você deve primeiro excluir o agendamento da saída.';
 

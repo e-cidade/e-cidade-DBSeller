@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -72,7 +72,7 @@ if(isset($db_opcaoal)){
        <?=@$Lat13_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at13_tarefa',10,$Iat13_tarefa,true,'text',3,"");
 db_input('at13_sequencial',10,$Iat13_sequencial,true,'hidden',3,"");
 ?>
@@ -84,7 +84,7 @@ db_input('at13_sequencial',10,$Iat13_sequencial,true,'hidden',3,"");
        <?=@$Lat13_dia?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at13_dia', @$at13_dia_dia, @$at13_dia_mes, @$at13_dia_ano, true, 'text', $db_opcao, "")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_inputdata('at13_dia', @$at13_dia_dia, @$at13_dia_mes, @$at13_dia_ano, true, '
        <?=@$Lat13_horaini?>
     </td>
     <td> 
-<?
+<?php
 db_input('at13_horaini',5,   @$at13_horaini, true, 'text', $db_opcao,"onchange='js_verifica_hora(this.value,this.name)';")
 ?>
     </td>
@@ -106,7 +106,7 @@ db_input('at13_horaini',5,   @$at13_horaini, true, 'text', $db_opcao,"onchange='
        <?=@$Lat13_horafim?>
     </td>
     <td> 
-<?
+<?php
 db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js_verifica_hora(this.value,this.name)';")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
   <tr>
     <td valign="top"  align="center">  
     
-    <?
+    <?php
 	 $chavepri= array("at13_sequencial"=>@$at13_sequencial,"at13_tarefa"=>@$at13_tarefa);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefa_agenda->sql_query(null,"*"," at13_dia, at13_horaini, at13_horafim","at13_tarefa= {$at13_tarefa}");
@@ -143,7 +143,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
    </tr>
  </table>
   
-  <?
+  <?php
   $sql = "select distinct at77_id_usuario, at77_dataagenda,at77_hora, at77_observacao, at77_datavalidade , nome
           from tarefaagenda 
                inner join db_usuarios on at77_id_usuario = id_usuario
@@ -164,7 +164,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
     <td ><strong> Observacao </strong></td>
     <td ><strong> Validade  </strong></td>
     </tr>
-    <?
+    <?php
     for($i=0;$i< pg_numrows($result);$i++){
       echo "<tr><td>".pg_result($result,$i,'at77_id_usuario')."</td>";
       echo "<td>".pg_result($result,$i,'nome')."</td>";
@@ -176,7 +176,7 @@ db_input('at13_horafim',5, @$at13_horafim, true, 'text', $db_opcao,"onchange='js
     ?>
     </table>
 
-    <?
+    <?php
   }
   ?>
 

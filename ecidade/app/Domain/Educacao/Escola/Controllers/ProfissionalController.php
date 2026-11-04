@@ -9,14 +9,22 @@ use App\Domain\Educacao\Escola\Models\Profissional;
 use App\Domain\Educacao\Escola\Models\ProfissionalFormacaoSuperior;
 use App\Domain\Educacao\Escola\Models\ProfissionalVacinacao;
 use App\Domain\Educacao\Escola\Models\Vacina;
+use App\Domain\Educacao\Escola\Repositories\ProfissionalEscolaRepository;
+use App\Domain\Educacao\Escola\Resources\ProfissionaisEscolaResource;
 use App\Http\Controllers\Controller;
+use db_utils;
 use DBDate;
 use Exception;
 use Illuminate\Http\Request;
-use db_utils;
 
 class ProfissionalController extends Controller
 {
+    private $repository;
+    public function __construct()
+    {
+        $this->repository = new ProfissionalEscolaRepository();
+    }
+
     public function vacinas(Profissional $profissional)
     {
         $vacinasProfissional = $profissional->vacinacao()->get()->each(function ($vacinacao) {
@@ -91,6 +99,16 @@ class ProfissionalController extends Controller
         return new DBJsonResponse([], "Vacinação excluida com sucesso!");
     }
 
+    public function getProfissional(Request $request)
+    {
+        $filtros = (object) [];
+        $filtros->cgm = $request->user()->usuarioCgm->cgm->z01_numcgm;
+        $filtros->escola = $request->get('DB_coddepto');
+        $profissionalEscola = $this->repository->getProfissionaisEscola($filtros);
+
+        return new DBJsonResponse($profissionalEscola);
+    }
+
     public function getProfissionaisComSuperior($escola, $ativos)
     {
         $sql   = "with profissionais_com_superior as (
@@ -132,7 +150,7 @@ class ProfissionalController extends Controller
                 return new DBJsonResponse($profissional->ed183_id, 'Formação alterada com sucesso!');
             }
         } catch (Exception $exception) {
-            throw new Exception("Falha aso salvar formação do profisiional!");
+            throw new Exception("Falha ao salvar formação do profissional!");
         }
     }
 
@@ -174,10 +192,9 @@ class ProfissionalController extends Controller
 
         return new DBJsonResponse((object)['arquivo' => $arquivo, 'arquivoPosgraduacao' => $arquivoPosgraduacao]);
     }
-    
+
     public function salvarDocumentoPosGraduacao(Request $request)
     {
-
         $arquivo = "";
         $arquivoPosgraduacao = "";
 
@@ -186,7 +203,7 @@ class ProfissionalController extends Controller
             $sqlPosgraduacao = "select ed183_docpos_estorage from escola.rhformacaosuperior where ed183_id=
                                 {$request->get('ed183_id')}";
             $rsPosgraduacao = db_query($sqlPosgraduacao);
-            
+
             if (!$rsPosgraduacao) {
                 db_msgbox('Não foi possível buscar a formação.');
                 return;
@@ -195,9 +212,10 @@ class ProfissionalController extends Controller
             $idPosgraduacao = db_utils::fieldsMemory($rsPosgraduacao, 0)->ed183_docpos_estorage;
             $arquivoPosgraduacao = !empty($idPosgraduacao) ? StorageHelper::downloadArquivo($idPosgraduacao) : "";
             $namePosgraduacao = $request->get('arquivo_id');
+
             if ($namePosgraduacao != "" && $arquivoPosgraduacao != $namePosgraduacao) {
                 $idFilePosgraduacao = StorageHelper::uploadArquivo($namePosgraduacao, null, true);
-                $sqlIncluirPosgraduacao   = "UPDATE escola.rhformacaosuperior set ed183_docpos_estorage = 
+                $sqlIncluirPosgraduacao   = "UPDATE escola.rhformacaosuperior set ed183_docpos_estorage =
                                             {$idFilePosgraduacao} ";
                 $sqlIncluirPosgraduacao  .= "where ed183_id = {$request->get('ed183_id')}";
                 $rsPosgraduacao = db_query($sqlIncluirPosgraduacao);
@@ -210,9 +228,9 @@ class ProfissionalController extends Controller
             db_query("end");
         } catch (Exception $exception) {
             db_query("rollback");
-            throw new Exception("Falha ao salvar Pós Graduação do profisional!");
+            throw new Exception("Falha ao salvar o documento de Pós Graduação do profisional!");
         }
-        return new DBJsonResponse([], 'Pós Graduação do profisional salva com sucesso!');
+        return new DBJsonResponse([], 'Documento de Pós Graduação do profisional salva com sucesso!');
     }
 
     public function excluirDocumentoPosGraduacao(Request $request)
@@ -229,5 +247,16 @@ class ProfissionalController extends Controller
             db_query("rollback");
             throw new Exception("Falha ao exluir Pós Graduação do profisiional!");
         }
+    }
+
+    public function get(Request $request, $escola)
+    {
+        $filtros = $request->all();
+        $filtros['escola'] = $escola;
+
+        $retorno = $this->repository->getProfissionaisEscola($filtros)->map(function ($registro) {
+            return ProfissionaisEscolaResource::toResponse($registro);
+        });
+        return new DBJsonResponse($retorno);
     }
 }

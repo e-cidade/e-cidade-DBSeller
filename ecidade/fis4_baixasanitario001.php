@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,15 +81,15 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty80_codsani?>">
-       <?
+       <?php
        db_ancora(@$Ly80_codsani,"js_pesquisay80_codsani(true);",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('y80_codsani',10,$Iy80_codsani,true,'text',1," onchange='js_pesquisay80_codsani(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',35,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('z01_nome',35,$Iz01_nome,true,'text',3,'')
        <?@$Ly83_dtfim?>
     </td>
     <td> 
-<?
+<?php
 /*if(empty($q07_datafim_dia)){
   $y83_dtfim_dia = date("d",db_getsession("DB_datausu"));
   $y83_dtfim_mes = date("m",db_getsession("DB_datausu"));
@@ -144,7 +144,7 @@ function js_mostrasanitario1(chave1,chave2){
 	</td>
   </tr>
 </table>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ if(isset($db_opcaoal)){
 <table border="0">
   <tr>
     <td> 
-      <?
+      <?php
       //db_input($nome,$dbsize,$dbvalidatipo,$dbcadastro,$dbhidden='text',$db_opcao=3,$js_script="",$nomevar="",$bgcolor="");
         db_input('m92_codalmox',6,$Im92_codalmox,true,'hidden',$db_opcao," onchange='js_pesquisam92_codalmox(false);'");
         db_input('m91_codigo',6,$Im91_codigo,true,'hidden',3,'');
@@ -64,12 +64,12 @@ if(isset($db_opcaoal)){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm92_depto?>">
-      <?
+      <?php
         db_ancora(@$Lm92_depto,"js_pesquisam92_depto(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('m92_depto', 5, $Im92_depto,true,'text', $db_opcao, " onchange='js_pesquisam92_depto(false);'");
         db_input('descrdepto', 40, $Idescrdepto,true, 'text', 3 ,'');
       ?>
@@ -89,7 +89,7 @@ if(isset($db_opcaoal)){
  <table>
   <tr>
     <td valign="top" style="padding-top:10px" align="center">  
-    <?
+    <?php
 	  $chavepri= array("m92_codalmox"=>@$m92_codalmox,"m92_depto"=>@$m92_depto);
 	  $cliframe_alterar_excluir->chavepri      = $chavepri;
 	  $cliframe_alterar_excluir->sql           = $cldb_almoxdepto->sql_query($m92_codalmox,null,"db_almoxdepto.m92_codalmox,db_almoxdepto.m92_depto, db_depart.descrdepto");

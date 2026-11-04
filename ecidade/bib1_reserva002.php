@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ if ($clbiblioteca->numrows != 0) {
 }
 
 if (isset($cancelar)) {
-  
+
   $sSqlReserva  = "update reserva set bi14_situacao = 'C', bi14_retirada = '".date("Y-m-d")."'";
   $sSqlReserva .= ", bi14_usuario = ".db_getsession("DB_id_usuario")." where bi14_codigo = $bi14_codigo";
   $clreserva->sql_record($sSqlReserva);
@@ -59,7 +59,7 @@ if (isset($cancelar)) {
 }
 
 if (isset($reativar)) {
-  
+
   $sSqlReserva  = "update reserva set bi14_situacao = 'A',bi14_retirada = null";
   $sSqlReserva .= ", bi14_usuario = ".db_getsession("DB_id_usuario")." where bi14_codigo = $bi14_codigo";
   $clreserva->sql_record($sSqlReserva);
@@ -68,28 +68,28 @@ if (isset($reativar)) {
 }
 
 if (isset($alterar)) {
-  
+
   $datadigitada = $bi14_datareserva_ano.$bi14_datareserva_mes.$bi14_datareserva_dia;
   $horadigitada = str_replace(":","",$bi14_hora);
   $horaatual    = date("Hi");
-  
+
   $sCamposCarteira = "bi16_leitor as codleitor,bi16_validade";
   $sWhereCarteira  = " bi16_codigo = ".@$bi14_leitor." AND bi17_coddepto = $depto";
   $sSqlCarteira    = $clcarteira->sql_query("", $sCamposCarteira,"bi16_validade desc", $sWhereCarteira);
   $resultY         = $clcarteira->sql_record($sSqlCarteira);
-  
+
   if (@$bi14_leitor != "" && $clcarteira->numrows == 0) {
-    
+
     ?>
     <script>
       if (confirm("Leitor NÃO possui Carteira cadastrada. Deseja cadastrar carteira para o leitor?")) {
         location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi14_leitor?>";
       }
     </script>
-    <?
+    <?php
     $erro = true;
-  } else if(    @$bi14_leitor != "" 
-             && $clcarteira->numrows > 0 
+  } else if(    @$bi14_leitor != ""
+             && $clcarteira->numrows > 0
              && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
 
     db_fieldsmemory($resultY, 0);
@@ -99,7 +99,7 @@ if (isset($alterar)) {
         location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$codleitor?>";
       }
     </script>
-    <?
+    <?php
     $erro = true;
   } else if ($datadigitada - date("Ymd") < 0) {
 
@@ -153,7 +153,7 @@ if (isset($alterar)) {
     <table border="0" cellspacing="0" cellpadding="0">
      <tr>
       <td>
-       <?require_once(modification("forms/db_frmreserva.php"));?>
+       <?php require_once(modification("forms/db_frmreserva.php"));?>
       </td>
      </tr>
     </table>
@@ -165,7 +165,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:92%"><legend><b>Reservas em aberto:</b></legend>
-    <?
+    <?php
     $campos = "ov02_nome as ov02_nome2,
                bi14_codigo as bi14_codigo2,
                bi14_data as bi14_data2,
@@ -189,15 +189,15 @@ if (isset($alterar)) {
           <td><b>Hora</b></td>
           <td><b>Situação</b></td>
         </tr>
-      <?
+      <?php
       for ($y = 0; $y < $clreserva->numrows; $y++) {
 
         db_fieldsmemory($result, $y);
         ?>
-        <tr bgcolor="#f3f3f3" 
-            onclick="location.href='bib1_reserva002.php?chavepesquisa=<?=$bi14_codigo2?>'" 
-            onmouseover="bgColor='#DEB887';" 
-            onmouseout="bgColor='#f3f3f3';" 
+        <tr bgcolor="#f3f3f3"
+            onclick="location.href='bib1_reserva002.php?chavepesquisa=<?=$bi14_codigo2?>'"
+            onmouseover="bgColor='#DEB887';"
+            onmouseout="bgColor='#f3f3f3';"
             style="Cursor:hand;">
           <td align="center" >
             <?=$bi14_codigo2?>
@@ -217,10 +217,10 @@ if (isset($alterar)) {
           <td align="center" >
             <?=$bi14_horareserva2?>
           </td>
-          <?
+          <?php
           $difdata = str_replace("-","",$bi14_datareserva2)-date("Ymd");
           $difhora = str_replace(":","",$bi14_horareserva2)-date("Hi");
-          
+
           if ($difdata < 0 || ($difdata == 0 && $difhora < 0) ) {
 
             $situacao = "VENCIDA";
@@ -235,11 +235,11 @@ if (isset($alterar)) {
             <?=$situacao?>
           </td>
         </tr>
-        <?
+        <?php
       }
      ?>
      </table>
-     <?
+     <?php
     } else {
       echo "Nenhuma reserva em aberto.";
     }
@@ -249,10 +249,10 @@ if (isset($alterar)) {
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php
 if (isset($alterar)) {
 
   if ($clreserva->erro_status == "0") {
@@ -286,17 +286,17 @@ if (isset($emprestimo)) {
               AND bi06_biblioteca = $bi17_codigo
               AND bi06_seq = $bi14_acervo
             LIMIT 1";
-  
+
   $result1 = db_query($sql1);
   $linhas  = pg_num_rows($result1);
-  
+
   if ($linhas == 0) {
     db_msgbox("Nenhum exemplar disponível no momento!");
   } else {
 
     $vir   = "";
     $lista = "";
-    
+
     for ($x = 0; $x < $linhas; $x++) {
 
       db_fieldsmemory($result1,$x);
@@ -316,7 +316,7 @@ if (isset($emprestimo)) {
                                            +'&lista=<?=$lista?>&dev='+devolucao
                                            +'&reserva='+codreserva;
     </script>
-    <?
+    <?php
     exit;
   }
 }

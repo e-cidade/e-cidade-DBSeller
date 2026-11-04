@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -203,12 +203,12 @@ function js_verifica(opcao){
 <form name="form1" method="post" action="" onSubmit="return js_verifica('<?=$opcao?>');">
 <center>
  <table align="center" border=0>
-<? 
+<?php 
    db_input('c83_codrel',5,$Ic83_codrel,true,'hidden',3,"")
 ?>
  <tr>
     <td colspan=2 align=center title="<?=$To42_periodo?>"><?=$Lo42_periodo?>
-		<?
+		<?php
       $result1=array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
       db_select("o42_periodo",$result1,true,$db_opcao,"");
       if ($db_opcao == 3){
@@ -248,11 +248,11 @@ function js_verifica(opcao){
  <tr><td colspan=2>&nbsp;</td></tr>
  <tr>
    <td colspan=2 align="center"><input type=submit name="<?=$opcao?>" value=<?=ucfirst($opcao)?>>
-   <?
+   <?php
       if ($db_opcao != 1) {
    ?>
    &nbsp;&nbsp;<input type=button name="novo" value=Novo onClick="js_limpar();">
-   <?
+   <?php
       }
    ?>
    </td>
@@ -263,7 +263,7 @@ function js_verifica(opcao){
      <table border=0 width=790>
        <tr>
          <td>
-					 <?
+					 <?php
 						 $chavepri= array("o42_codparrel"=>$c83_codrel,"o42_anousu"=>$anousu,"o42_instit"=>$instit,"o42_periodo"=>@$o42_periodo);
 						 $cliframe_alterar_excluir->chavepri= $chavepri;
 						 $cliframe_alterar_excluir->sql     = $clorcparamrelnota->sql_query_file($c83_codrel,$anousu,$instit); 
@@ -287,7 +287,7 @@ function js_verifica(opcao){
 </table>
 </center>
 </form>
-<?
+<?php
    if (trim($erro_msg)){
      db_msgbox($erro_msg);
    }

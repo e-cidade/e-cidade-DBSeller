@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ if(isset($db_opcaoal)){
 		<input name="bt_voltar" type="button" value="Voltar" title="Voltar" onClick="js_voltar();">
   	</td>
   </tr>	
-<?
+<?php
 db_input('at70_sequencial',10,$Iat70_sequencial,true,'hidden',$db_opcao,"")
 ?>
   <tr>
@@ -66,22 +66,22 @@ db_input('at70_sequencial',10,$Iat70_sequencial,true,'hidden',$db_opcao,"")
     <?=@$Lat70_tarefa?>
     </td>
     <td> 
-<?
+<?php
 db_input('at70_tarefa',10,$Iat70_tarefa,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat70_cliente?>">
-       <?
+       <?php
        db_ancora("<b>Cliente:</b>","js_pesquisaat70_cliente(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at70_cliente',4,$Iat70_cliente,true,'text',$db_opcao," onchange='js_pesquisaat70_cliente(false);'")
 ?>
-       <?
+       <?php
 db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
        ?>
     </td>
@@ -96,7 +96,7 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at70_sequencial"=>@$at70_sequencial,"at70_tarefa"=>@$at70_tarefa);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefaclientes->sql_query(null,"at70_sequencial,at70_tarefa,at01_nomecli",null,"at70_tarefa=$at70_tarefa");

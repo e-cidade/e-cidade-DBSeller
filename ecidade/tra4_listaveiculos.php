@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ function envia(id){
 <body>
 <center>
 <form method="post" name="form1">
-<?
+<?php
   $sql = "select tr05_descr,
                  tr08_id,
                  db10_munic,
@@ -75,7 +75,7 @@ function envia(id){
            <td style="text-align:center"><b>Idade</b></td>
            <td style="text-align:center" colspan="2"><b>X</b></td>
         </tr>
-  <?
+  <?php
   $i = 0;
   while ($ln = pg_fetch_array($rs)){
        if ($i % 2 == 0){

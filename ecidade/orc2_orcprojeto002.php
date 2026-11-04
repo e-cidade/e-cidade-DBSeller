@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -68,7 +68,7 @@ $sQuery = "select db_paragrafo.*
              from db_documento
                   inner join db_docparag on db03_docum = db04_docum
                   inner join db_paragrafo on db04_idparag = db02_idparag
-            where db03_tipodoc = 1000 
+            where db03_tipodoc = 1000
               and db03_instit  = " . db_getsession('DB_instit') . "
             order by db02_descr";
 $rsPrefeito = db_query($sQuery);
@@ -263,8 +263,9 @@ db_fieldsmemory($res, 0);
 if ($projeto_tipo == "1") { // decreto
 
     $pdf->setX(20);
-    $pref = ucfirst($pref);
-    
+    preg_match('/^(.*?),/', $sPrefeitoDeTal, $pref);
+    $pref = $pref[1];
+
     if ($db21_codcli == 34) {
         $txt = "$pref, PRESIDENTE DA CAMARA MUNICIPAL DE VEREADORES DE $munic, $uf, no uso de suas atribuições legais e de conformidade com a Lei Municipal n" . chr(186) . " $o45_numlei";
     } else {
@@ -330,24 +331,24 @@ $sql = "select o46_tiposup,
                o15_codigo,
                o15_recurso,
                o15_descr,
-               o58_localizadorgastos as localizadorgastos, 
+               o58_localizadorgastos as localizadorgastos,
                o11_descricao,
                sum(o47_valor) as o47_valor
           from orcprojeto
                inner join orcsuplem     on o46_codlei = orcprojeto.o39_codproj
                inner join orcsuplemval  on o47_codsup = orcsuplem.o46_codsup
                                        and orcsuplemval.o47_valor > 0
-               inner join orcdotacao    on o58_coddot = o47_coddot 
+               inner join orcdotacao    on o58_coddot = o47_coddot
                                        and o58_anousu = {$anousu}
-               inner join orcelemento   on o58_codele = o56_codele 
+               inner join orcelemento   on o58_codele = o56_codele
                                        and o56_anousu = o58_anousu
-               inner join orcorgao      on o58_orgao = o40_orgao  
+               inner join orcorgao      on o58_orgao = o40_orgao
                                        and o40_anousu = o58_anousu
-               inner join orcunidade    on o58_unidade = o41_unidade 
+               inner join orcunidade    on o58_unidade = o41_unidade
                                        and o41_anousu = o58_anousu
                                        and o41_orgao = o58_orgao
                inner join orctiporec    on o15_codigo = o58_codigo
-               inner join orcprojativ   on o58_projativ = o55_projativ  
+               inner join orcprojativ   on o58_projativ = o55_projativ
                                        and o55_anousu = o58_anousu
                inner join orcsuplemtipo on o48_tiposup = orcsuplem.o46_tiposup
                                        and orcsuplemtipo.o48_coddocsup >  0
@@ -368,7 +369,7 @@ $sql = "select o46_tiposup,
            o15_codigo,
            o15_recurso,
            o15_descr,
-           o58_localizadorgastos, 
+           o58_localizadorgastos,
            o11_descricao ";
 
 $sSqlDotacaoPPA = "select o46_tiposup,
@@ -386,7 +387,7 @@ $sSqlDotacaoPPA = "select o46_tiposup,
                           o15_codigo,
                           o15_recurso,
                           o15_descr,
-                          o08_localizadorgastos as localizadorgastos,  
+                          o08_localizadorgastos as localizadorgastos,
                           o11_descricao,
                           sum(o136_valor) as o47_valor
                      from orcprojeto
@@ -419,7 +420,7 @@ $sSqlDotacaoPPA = "select o46_tiposup,
                              o15_codigo,
                              o15_recurso,
                              o15_descr,
-                             o08_localizadorgastos,  
+                             o08_localizadorgastos,
                              o11_descricao
                    order by o58_orgao,o58_unidade,o58_projativ,o56_elemento ";
 
@@ -430,7 +431,7 @@ if ($auxiliar->numrows > 0) {
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
 
         db_fieldsmemory($res, $x);
-        
+
         validaEspacoTimbre($pdf,$timbre,40);
 
         $sEspecificacaoLoa = Recurso::getFonteRecusoByCodigo($o15_codigo);
@@ -465,7 +466,7 @@ if ($auxiliar->numrows > 0) {
 /// entram como reduções as reduções, receitas e o texto do projeto quando superávit
 ///
 //-- texto do artigo 2
-$sql = "select o39_texto, 
+$sql = "select o39_texto,
                o46_tiposup
           from orcprojeto
                join orcsuplem on o39_codproj = o46_codlei
@@ -532,18 +533,18 @@ if ($auxiliar->numrows > 0) {
     $tem_reduz = 1;
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
         db_fieldsmemory($res, $x);
-        
+
         db_query("BEGIN");
         $r_dot = db_dotacaosaldo(8, 2, 2, true, " o58_coddot = $o47_coddot and o58_anousu =$o47_anousu ");
         db_query("ROLLBACK");
-        
+
         if (pg_num_rows($r_dot) > 0) {
 
             db_fieldsmemory($r_dot, 0, true);
 
             validaEspacoTimbre($pdf,$timbre,40);
 
-            $sEspecificacaoLoa = Recurso::getFonteRecusoByCodigo($o58_codigo);            
+            $sEspecificacaoLoa = Recurso::getFonteRecusoByCodigo($o58_codigo);
             $o47_valor = $o47_valor * -1;
 
             $pdf->setX(20);
@@ -561,9 +562,9 @@ if ($auxiliar->numrows > 0) {
                 $pdf->setX(20);
                 $pdf->Cell(150, 4, $localizadorgastos . " - " . $o11_descricao, 0, 1, "L", '0');
             }
-          
+
             $total += $o47_valor;
-            
+
             $pdf->Ln();
         }
     }
@@ -582,7 +583,7 @@ $sql = "select o39_codproj,
                inner join orcsuplemrec  on o85_codsup  = orcsuplem.o46_codsup
                inner join orcreceita    on o70_codrec  = orcsuplemrec.o85_codrec
                                        and o70_anousu  = orcsuplemrec.o85_anousu
-               inner join orcfontes     on o57_codfon  = orcreceita.o70_codfon 
+               inner join orcfontes     on o57_codfon  = orcreceita.o70_codfon
                                        and o57_anousu  = orcsuplemrec.o85_anousu
                inner join orcsuplemtipo on o48_tiposup = orcsuplem.o46_tiposup
                                        and orcsuplemtipo.o48_arrecadmaior >  0
@@ -655,8 +656,8 @@ $pdf->ln();
 validaEspacoTimbre($pdf,$timbre,70);
 
 /*
- * 
- * Assinaturas 
+ *
+ * Assinaturas
  */
 if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
 
@@ -688,7 +689,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->multicell(0, 3, "\n\n\n" . strtoupper($ass_sec), '0', 'L', '0');
     $pdf->Ln(10);
     $pdf->multicell(0, 4, "Registre-se e cumpra-se", '0', 'L', '0');
-    
+
 } elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ARROIO DO SAL") {
 
     $sec = "";
@@ -733,9 +734,9 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->sety($linha);
     $pdf->setx(100);
     $pdf->multicell(100, 4, "\n\n" . ucfirst($ass_faz), '0', 'C', '0');
-    
+
 } elseif ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper(trim($munic)) != "CANELA")) {
-    
+
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
     if ($db21_codcli == 26 && $anousu == 2012) {
@@ -753,9 +754,9 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->multicell(180, 4, $txt, '0', 'C', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
-    
+
 } elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ITAQUI") {
-    
+
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
 
@@ -764,9 +765,9 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->multicell(180, 4, $txt, '0', 'C', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
-    
+
 } elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "BAGE") {
-    
+
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
@@ -781,7 +782,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->multicell(0, 4, "Registre-se e cumpra-se", '0', 'L', '0');
 
 } elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "CANELA") {
-    
+
     if ($pdf->Gety() > 230) {
         $pdf->AddPage("P");
     }
@@ -798,7 +799,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->multicell(0, 4, "\n\n\nRegistre-se e publique-se", '0', 'L', '0');
     $pdf->multicell(0, 3, "\n\n\n\n\n\n" . strtoupper($ass_sec), '0', 'L', '0');
     $pdf->Ln(10);
-    
+
 }
 
 $pdf->Output();
@@ -807,11 +808,11 @@ $pdf->Output();
 /**
  * Valida o espaco superior do relatorio. Se tratar de um relatorio nao timbrado
  * e o espaco superior estiver insuficiente, acrescenta espaco para caber o timbre
- * do papel. Geralmente usa- se nesses casos, na pratica, papeis timbrados. Por isso, 
+ * do papel. Geralmente usa- se nesses casos, na pratica, papeis timbrados. Por isso,
  * o espaco se mostra necessario.
  */
 function validaEspacoTimbre($pdf,$timbre,$espaco) {
-    if($timbre != "s" && $pdf->getY() > $pdf->geth() - $espaco){ 
+    if($timbre != "s" && $pdf->getY() > $pdf->geth() - $espaco){
         $pdf->addPage();
         $pdf->ln(20);
     }

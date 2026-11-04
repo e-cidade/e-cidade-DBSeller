@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -157,7 +157,7 @@ try{
 
   if ($codproc != "") {
   	if (strpos($codproc, "/") > 0) {
-  		$codproc = split("\/", $codproc);
+  		$codproc =explode("/", $codproc);
   		$exercicio = $codproc[1];
   		$codproc = $codproc[0];
   	} else {
@@ -217,15 +217,16 @@ try{
   if (isset($inscr)) {
 
   $sSqlInscr  = "select empresa.*,
-                        cgm.z01_numcgm as z01_cgmpri,
-                        cgm.z01_nome   as z01_nomecompleto,
-                        cgm.z01_ender  as cgmender,
-                        cgm.z01_numero as cgmnumero,
-                        cgm.z01_compl  as cgmcompl,
-                        cgm.z01_bairro as cgmbairro,
-                        cgm.z01_munic  as cgmmunic,
-                        cgm.z01_uf     as cgmuf,
-                        cgm.z01_cep    as cgmcep
+                        cgm.z01_numcgm       as z01_cgmpri,
+                        cgm.z01_nome         as z01_nomecompleto,
+                        cgm.z01_ender        as cgmender,
+                        cgm.z01_numero       as cgmnumero,
+                        cgm.z01_compl        as cgmcompl,
+                        cgm.z01_bairro       as cgmbairro,
+                        cgm.z01_munic        as cgmmunic,
+                        cgm.z01_uf           as cgmuf,
+                        cgm.z01_cep          as cgmcep,
+                        cgm.z01_nomecomple   as z01_nomecomple
                    from empresa
                   inner join cgm on cgm.z01_numcgm = empresa.q02_numcgm
                   where q02_inscr = $inscr";
@@ -255,7 +256,7 @@ try{
   }
   else {
 
-  $sSqlCgm    = "select trim(z01_nome) as z01_nome,
+  $sSqlCgm    = "select trim(z01_nome) as z01_nome, trim(z01_nomecomple) as z01_nomecomple,
                         *
                    from cgm
                   where z01_numcgm = $numcgm";
@@ -297,7 +298,7 @@ try{
         $situinscr           = "Situação da matrícula : MATRÍCULA ATIVA ";
       }
 
-  	} 
+  	}
   	else if (isset ($numcgm)) {
 
   		$codtipodoc = $k03_tipocertidao == '1' ?  1030 : 2030 ;
@@ -336,7 +337,7 @@ try{
       }
 
   	}
-  } 
+  }
   else if ($tipo == 2) {
   	// certidao negativa
   	$tipocer = "CERTIDÃO NEGATIVA";
@@ -376,7 +377,7 @@ try{
         db_fieldsmemory($rsBuscaRG, 0);
       }
 
-  	} 
+  	}
   	else if (isset ($numcgm)) {
 
   		$codtipodoc = $k03_tipocertidao == '1' ?  1024 : 2024 ;
@@ -384,7 +385,7 @@ try{
   		$result     = db_query($sSqlCgm);
   		db_fieldsmemory($result, 0);
 
-  	} 
+  	}
   	else if (isset ($inscr)) {
 
   		$codtipodoc = $k03_tipocertidao == '1' ?  1023 : 2023 ;
@@ -535,33 +536,33 @@ try{
 
     // Incluida verificação para replicar o dia da validade do documento de acordo com seu tipo
     if ($tipo == 1) {
-        if ($titulo == "CGM") {    
+        if ($titulo == "CGM") {
             $campo = "k03_diascertidpositiva_cgm";
         } else {
-            if ($titulo == "MATRICULA") {        
+            if ($titulo == "MATRICULA") {
                 $campo = "k03_diascertidpositiva_matric";
-            } else {        
+            } else {
                 $campo = "k03_diascertidpositiva_inscr";
             }
         }
     } else {
         if ($tipo == 0) {
-            if ($titulo == "CGM") {        
+            if ($titulo == "CGM") {
                 $campo = "k03_diascertidregular_cgm";
             } else {
-                if ($titulo == "MATRICULA") {            
+                if ($titulo == "MATRICULA") {
                     $campo = "k03_diascertidregular_matric";
-                } else {            
+                } else {
                     $campo = "k03_diascertidregular_inscr";
                 }
             }
         } else {
-            if ($titulo == "CGM") {        
+            if ($titulo == "CGM") {
                 $campo = "k03_diascertidnegativa_cgm";
             } else {
-                if ($titulo == "MATRICULA") {            
+                if ($titulo == "MATRICULA") {
                     $campo = "k03_diascertidnegativa_matric";
-                } else {            
+                } else {
                     $campo = "k03_diascertidnegativa_inscr";
                 }
             }
@@ -613,7 +614,7 @@ try{
   	db_fieldsmemory($result_usu,0);
   }
     $data= date("Y-m-d",db_getsession("DB_datausu"));
-    $data=split('-',$data);
+    $data= explode('-',$data);
     $dia=$data[2];
     $mes=$data[1];
     $ano=$data[0];
@@ -642,7 +643,7 @@ try{
        /**
         * Separamos o texto pela quebra de linha, para tratá-la por fora, pois o PDF não se comporta bem com '\n'
         */
-       $aTexto = explode("\\n", $texto);
+       $aTexto = explode("\n", $texto);
     	 $pdf->cell(15,6,"",0,0,"R",0);
        $iPontoX = $pdf->GetX();
 
@@ -904,24 +905,24 @@ try{
 
     if ($tipo == 1) {
         $clcertidao->p50_tipo = "p";
-        if ($titulo == "CGM") {    
+        if ($titulo == "CGM") {
             $campo = "k03_diascertidpositiva_cgm";
         } else {
-            if ($titulo == "MATRICULA") {        
+            if ($titulo == "MATRICULA") {
                 $campo = "k03_diascertidpositiva_matric";
-            } else {        
+            } else {
                 $campo = "k03_diascertidpositiva_inscr";
             }
         }
     } else {
         if ($tipo == 0) {
             $clcertidao->p50_tipo = "r";
-            if ($titulo == "CGM") {        
+            if ($titulo == "CGM") {
                 $campo = "k03_diascertidregular_cgm";
             } else {
-                if ($titulo == "MATRICULA") {            
+                if ($titulo == "MATRICULA") {
                     $campo = "k03_diascertidregular_matric";
-                } else {            
+                } else {
                     $campo = "k03_diascertidregular_inscr";
                 }
             }
@@ -929,12 +930,12 @@ try{
             $tipo = 2;
 
             $clcertidao->p50_tipo = "n";
-            if ($titulo == "CGM") {        
+            if ($titulo == "CGM") {
                 $campo = "k03_diascertidnegativa_cgm";
             } else {
-                if ($titulo == "MATRICULA") {            
+                if ($titulo == "MATRICULA") {
                     $campo = "k03_diascertidnegativa_matric";
-                } else {            
+                } else {
                     $campo = "k03_diascertidnegativa_inscr";
                 }
             }

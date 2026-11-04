@@ -1,28 +1,28 @@
 <?PHP
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -52,7 +52,7 @@ $ano  = db_getsession("DB_anousu");
 $dia2 = "31";
 $mes2 = "12";
 $ano2 = db_getsession("DB_anousu");
-list($mes,$dia) = split("-",date("m-d"));
+list($mes,$dia) =explode("-",date("m-d"));
 
 $matriz = array("1" => "Processos iniciados no departamento",
                 "2" => "Processos que estao no departamento(Ultimo andamento)",
@@ -69,7 +69,7 @@ $matriz = array("1" => "Processos iniciados no departamento",
 <style type="text/css">
 
   .combos {
-  
+
     width: 418px;
   }
 
@@ -94,50 +94,50 @@ $matriz = array("1" => "Processos iniciados no departamento",
   	    <?php db_select('tipo',$matriz,"",1);?>
       </td>
     </tr>
-    
+
     <tr>
       <td nowrap >
         <strong> Ordem: </strong>
       </td>
-      <td>    
+      <td>
         <select name="ordem" id='ordem' class="combos">
           <option name="ordem" value="p58_codproc">PROCESSO </option>
           <option name="ordem" value="p58_numcgm">CGM </option>
         </select>
-      </td>     
-    </tr> 
-    
-    <tr> 
+      </td>
+    </tr>
+
+    <tr>
       <td align="left">
         <strong>Opções:</strong>
       </td>
-      <td>     
+      <td>
         <select name="ver" id='ver' class='combos'>
           <option name="condicao" value="com">Com os Departamentos selecionados</option>
           <option name="condicao" value="sem">Sem os Departamentos selecionadas</option>
         </select>
       </td>
-    </tr>    
-    
+    </tr>
+
     <tr>
       <td>
         <strong>Período:</strong>
       </td>
-      <td>     
+      <td>
         <?PHP
-  	       db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");   		          
+  	       db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");
            echo " <strong> à </strong> ";
            db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
         ?>
       </td>
-    </tr>  
-    
+    </tr>
+
     <tr>
       <td colspan="2">
         <div style="margin-top: 10px;" id="divLancadorDepartamentos"></div>
       </td>
-    </tr>      
-        
+    </tr>
+
   </table>
 
 </fieldset>
@@ -150,7 +150,7 @@ $matriz = array("1" => "Processos iniciados no departamento",
 </center>
 
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>
@@ -171,7 +171,7 @@ function js_seleciona(){
 
   var aDepartamentosSelecionados = oLancadorDepartamentos.getRegistros();
   var aListaDepartamentos        = new Array();
-  
+
   aDepartamentosSelecionados.each(function (oDepartamento, iIndice) {
 
     aListaDepartamentos.push(oDepartamento.sCodigo);
@@ -179,9 +179,9 @@ function js_seleciona(){
 
    dt1 = new Date(document.form1.data1_ano.value,document.form1.data1_mes.value,document.form1.data1_dia.value,0,0,0);
    dt2 = new Date(document.form1.data2_ano.value,document.form1.data2_mes.value,document.form1.data2_dia.value,0,0,0);
-   
+
    if (dt1 > dt2 ){
-     
+
       alert('Data inicial não pode ser maior que a Data final.');
       return false;
    }
@@ -199,22 +199,22 @@ function js_seleciona(){
 
    var sFonte                             = "pro2_procdepart002.php";
    var sQuery                             = '';
-   
+
    sQuery  = "?lista="  + lista;
    sQuery += "&ver="    + ver;
    sQuery += "&ordem="  + ordem;
    sQuery += "&tipo="   + tipo;
    sQuery += "&data1="  + data1;
    sQuery += "&data2="  + data2;
-   
+
    sQuery += "&txtCodigooLancadorDepartamentos="    + txtCodigooLancadorDepartamentos;
    sQuery += "&txtDescricaooLancadorDepartamentos=" + txtDescricaooLancadorDepartamentos;
    sQuery += "&coddepto="                           + coddepto;
    sQuery += "&descrdepto="                         + descrdepto;
-   
+
    jan = window.open(sFonte + sQuery,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-   jan.moveTo(0,0); 
-   
+   jan.moveTo(0,0);
+
 }
 </script>
 

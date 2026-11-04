@@ -110,7 +110,7 @@ function js_marca(obj){
       <form name="form1" method="post" action="">
       <center>
       <table align="center" border='7' height="100%" width="100%">
-<?
+<?php
   $totalmovs = 0;
   $valormovs = 0;
   $valordebs = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $claverbatipo->rotulo->label("j93_descr");
               <?=$Lj93_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	              db_input("j93_codigo",6,$Ij93_codigo,true,"text",4,"","chave_j93_codigo");
 	            ?>
             </td>
@@ -64,7 +64,7 @@ $claverbatipo->rotulo->label("j93_descr");
               <?=$Lj93_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	              db_input("j93_descr",20,$Ij93_descr,true,"text",4,"","chave_j93_descr");
 	            ?>
             </td>
@@ -82,7 +82,7 @@ $claverbatipo->rotulo->label("j93_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_averbatipo.php")==true){
@@ -122,12 +122,12 @@ $claverbatipo->rotulo->label("j93_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

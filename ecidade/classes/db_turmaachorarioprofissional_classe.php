@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE turmaachorarioprofissional
 class cl_turmaachorarioprofissional
@@ -498,7 +498,7 @@ class cl_turmaachorarioprofissional
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_turmaachorarioprofissional
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -549,7 +549,7 @@ class cl_turmaachorarioprofissional
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = explode("#", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -570,7 +570,7 @@ class cl_turmaachorarioprofissional
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = explode("#", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -582,11 +582,10 @@ class cl_turmaachorarioprofissional
 
     public function sql_query_vinculo_profissional($ed346_sequencial = null, $sCampos = "*", $sOrdem = null, $sWhere = "")
     {
-
         $sSql = "select ";
         if ($sCampos != "*") {
 
-            $campos_sql = split("#", $sCampos);
+            $campos_sql = explode("#", $sCampos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -611,6 +610,7 @@ class cl_turmaachorarioprofissional
         $sSql .= "       left join cgm as cgmrh     on cgmrh.z01_numcgm                   = rhpessoal.rh01_numcgm              ";
         $sSql .= "       left join rechumanocgm     on rechumanocgm.ed285_i_rechumano     = rechumano.ed20_i_codigo            ";
         $sSql .= "       left join cgm as cgmcgm    on cgmcgm.z01_numcgm                  = rechumanocgm.ed285_i_cgm           ";
+        $sSql .= "       left join cgmfisico on cgmfisico.z04_numcgm = cgmcgm.z01_numcgm or cgmfisico.z04_numcgm = cgmrh.z01_numcgm";
         $sSql2 = "";
 
         if ($sWhere == "") {
@@ -624,7 +624,7 @@ class cl_turmaachorarioprofissional
         if ($sOrdem != null) {
 
             $sSql .= " order by ";
-            $campos_sql = split("#", $sOrdem);
+            $campos_sql = explode("#", $sOrdem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sSql .= $virgula . $campos_sql[$i];
@@ -716,7 +716,7 @@ class cl_turmaachorarioprofissional
         if ($sOrdemUnion != null) {
 
             $sSql .= " order by ";
-            $campos_sql = split("#", $sOrdemUnion);
+            $campos_sql = explode("#", $sOrdemUnion);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sSql .= $virgula . $campos_sql[$i];

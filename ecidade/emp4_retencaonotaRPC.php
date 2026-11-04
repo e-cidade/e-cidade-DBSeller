@@ -162,7 +162,6 @@ if ($oParam->exec == "addRetencao") {
 
         $oRetencaoNota->salvar($oParam->params[0]->iCodOrd, $oParam->params[0]->aMovimentos);
         $oRetencaoNota->unsetSession();
-
         db_fim_transacao(false);
 
         $lMesAnterior = $oRetencaoNota->hasRetencoesMesAnterior();
@@ -210,18 +209,41 @@ if ($oParam->exec == "addRetencao") {
         }
       }
     }
+    
     $oCalculoretencao->setDeducao($oParam->params[0]->nValorDeducao);
     $oCalculoretencao->setBaseCalculo($oParam->params[0]->nValorBase);
     $nValorRetencao = $oCalculoretencao->calcularRetencao();
     $nAliquota      = $oCalculoretencao->getAliquota();
     $nValorBase     = $oCalculoretencao->getValorBaseCalculo();
-    echo $oJson->encode(["status" => 1,
-        "erro" => false,
-        "message" => "",
-        "nValorRetencao" => $nValorRetencao,
-        "nAliquota" => $nAliquota,
-        "nValorBase" => $nValorBase
-    ]);
+
+    /**
+     * aqui sistema reatribuiu o valorbase para o calculo realizado na linha aqui 215
+     * quando vai calcular novamente para o nValorGilrat e nValorSenar ele recalcula com base no valor do saldo
+     * para teste vamos setar o valor base inicial da requisicao
+     */
+        $oCalculoretencao->setBaseCalculo($oParam->params[0]->nValorBase);
+        $nValorGilrat = $nValorBase * 0.001;
+        $nValorSenar =  $nValorBase * 0.002;
+        $nValorCP =     $nValorBase * 0.012;
+
+        if ($oParam->params[0]->iTipoCalc == 3) {
+            $nValorGilratTruncado = floor(($nValorGilrat * 100)) / 100;
+            $nValorSenarTruncado = floor(($nValorSenar * 100)) / 100;
+            $nValorCPTruncado = floor(($nValorCP * 100)) / 100;
+
+            $nValorRetencao =  $nValorGilratTruncado + $nValorSenarTruncado + $nValorCPTruncado;
+        }
+        echo $oJson->encode([
+            "status" => 1,
+            "erro" => false,
+            "message" => "",
+            "nValorRetencao" => $nValorRetencao,
+            "nAliquota" => $nAliquota,
+            "nValorBase" => $nValorBase,
+            "nValorGilrat" => $nValorGilrat,
+            "nValorSenar" => $nValorSenar,
+            "nValorCP" => $nValorCP
+        ]);
   }
   catch (Exception $eErro) {
 
@@ -355,7 +377,6 @@ if ($oParam->exec == "addRetencao") {
     db_inicio_transacao();
 
     $oEmpenho = new EmpenhoFinanceiro($oParam->params[0]->iNumemp);
-    $lEmpenhoFolha = $oEmpenho->isFolhaPagamento();
 
     $oRetencaoNota = new retencaoNota($oParam->params[0]->iCodNota);
     $oRetencaoNota->setINotaLiquidacao($oParam->params[0]->iCodOrd);
@@ -375,7 +396,7 @@ if ($oParam->exec == "addRetencao") {
     $mensagemRetorno =  "Retenções Configuradas com sucesso.";
     $lApropriaRetencao = APROPRIACAO_RETENCAO;
 
-    if ($lApropriaRetencao && !$lEmpenhoFolha) {
+    if ($lApropriaRetencao) {
         $mensagemRetorno =  "As retenções foram apropriadas com sucesso.";
     }
 

@@ -1,0 +1,391 @@
+<?php
+/*
+ * E-cidade Software Publico para Gestao Municipal
+ * Copyright (C) 2013 DBselller Servicos de Informatica
+ * www.dbseller.com.br
+ * e-cidade@dbseller.com.br
+ *
+ * Este programa e software livre; voce pode redistribui-lo e/ou
+ * modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ * publicada pela Free Software Foundation; tanto a versao 2 da
+ * Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ * Este programa e distribuido na expectativa de ser util, mas SEM
+ * QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ * COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ * PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ * detalhes.
+ *
+ * Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ * junto com este programa; se nao, escreva para a Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+
+ * Copia da licenca no diretorio licenca/licenca_en.txt
+ * licenca/licenca_pt.txt
+ */
+require_once(modification("model/contabilidade/arquivos/siai/SiaiArquivoBase.model.php"));
+require_once(modification("libs/db_liborcamento.php"));
+
+class SiaiDespesa extends SiaiArquivoBase
+{
+    
+    /**
+     * Busca os dados para gerar o Arquivo da Despesa
+     */
+    public function gerarDados()
+    {
+        $oDaoOrcPrograma = new cl_orcprograma();
+        $oDaoOrcProjAtiv = new cl_orcprojativ();
+
+        $this->setNomeArquivo("A1D_".$this->sBimReferencia.".TXT");
+        
+        $iNumLinha = 1;
+        
+        $sMsgLogErro = "";
+    
+        $nValordotinicial    = 0;
+        $nValordotacumulada  = 0;
+        $nValorempbimestre   = 0;
+        $nValorempexercicio  = 0;
+        $nValorliqbimestre   = 0;
+        $nValorliqexercicio  = 0;
+        $nValorpagoexercicio = 0;
+        $nValorrpnp          = 0;
+    
+        $aCodigoDespesasDePara = array();
+        $aCodigoDespesasDePara["31900900"] = "31909900";
+        $aCodigoDespesasDePara["31701100"] = "31999900";
+        $aCodigoDespesasDePara["31999901"] = "31999900";
+        $aCodigoDespesasDePara["33209901"] = "33209900";
+        $aCodigoDespesasDePara["33203900"] = "33209900";
+        $aCodigoDespesasDePara["99999901"] = "99999999";
+        $aCodigoDespesasDePara["99999901"] = "99999999";
+    
+        $sHashPrograma = "";
+        $sHashProgramaProjetoAtividade = "";
+        $sHashUnidade = "";
+        
+        $sListaInstit = db_getsession("DB_instit");
+        
+        $sWhereOrgaoUnidade = "";
+        if ($this->codigoOrgaoTCE != "P088") {
+            $sWhereOrgaoUnidade = " o58_orgao = {$this->getCodigoOrgao()} and o58_unidade = {$this->getCodigoUnidade()}";
+        }
+
+        if ($this->codigoOrgao == "29" && $this->codigoUnidade == "1") {
+            $sWhereOrgaoUnidade = "((o58_orgao = 29 and o58_unidade = 1) 
+			                     or (o58_orgao = 29 and o58_unidade = 46) 
+			                     or (o58_orgao = 29 and o58_unidade = 47))";
+        }
+
+        if ($this->codigoOrgao == "20" && $this->codigoUnidade == "1") {
+            $sWhereOrgaoUnidade = "((o58_orgao = 20 and o58_unidade = 1) 
+			                     or (o58_orgao = 20 and o58_unidade = 49))";
+        }
+
+        if ($this->codigoOrgao == "34" && $this->codigoUnidade == "1") {
+            $sWhereOrgaoUnidade = "((o58_orgao = 34 and o58_unidade = 1) 
+			                     or (o58_orgao = 34 and o58_unidade = 49))";
+        }
+
+        if ($this->codigoOrgao == "18" && $this->codigoUnidade == "1") {
+            $sWhereOrgaoUnidade = "((o58_orgao = 18 and o58_unidade = 45) 
+			                     or (o58_orgao = 18 and o58_unidade = 46) 
+			                     or (o58_orgao = 18 and o58_unidade = 47) 
+			                     or (o58_orgao = 18 and o58_unidade = 48) 
+			                     or (o58_orgao = 18 and o58_unidade = 49) 
+			                     or (o58_orgao = 18 and o58_unidade = 1))";
+        }
+        
+        db_query("begin");
+        $rsDotacaoSaldo = db_dotacaosaldo(8, 1, 4, true, $sWhereOrgaoUnidade, $this->iAno, $this->dtDataInicial, $this->dtDataFinal);
+        db_query("rollback");
+
+        $nValorDotacaoInicial = 0;
+        
+        /*
+         * DADOS DO HEADER
+         */
+        $oDadosHeader = new stdClass();
+        $oDadosHeader->tipregistro    = "0";
+        $oDadosHeader->nomearquivo    = str_pad("A1D_".$this->sBimReferencia, 10, " ", STR_PAD_RIGHT);
+        $oDadosHeader->bimreferencia  = $this->sBimReferencia;
+        $oDadosHeader->tipoarquivo    = "O";
+        $oDadosHeader->datageracaoarq = $this->dtDataGeracao;
+        $oDadosHeader->horageracaoarq = $this->dtHoraGeracao;
+        $oDadosHeader->codigoorgao    = $this->codigoOrgaoTCE;
+        $oDadosHeader->nomeorgao      = str_pad($this->nomeUnidade, 100, " ", STR_PAD_RIGHT);
+        $oDadosHeader->brancos        = str_repeat(" ", 269);
+        $oDadosHeader->numRegistro    = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+        $this->aDados [] = $oDadosHeader;
+        
+        $aDadosDespesas = array();
+        $iLinhasDotacaoSaldo = pg_num_rows($rsDotacaoSaldo);
+        if ($iLinhasDotacaoSaldo > 0) {
+            
+            /**
+             * **********************************************************************************************
+             * DETALHE 1
+             * Programas do PPA
+             */
+            for ($iInd = 0; $iInd < $iLinhasDotacaoSaldo; $iInd ++) {
+                $oDespesa = db_utils::fieldsMemory($rsDotacaoSaldo, $iInd);
+                
+                /*
+                 * Apenas serao mostradas as despesas ligadas a dotacao
+                 */
+                if ($oDespesa->o58_codigo == 0) {
+                    continue;
+                }
+
+                $sSqlFonte = "select distinct
+                              rpad(case
+                                     when length(fonterecurso.codigo_siconfi) > 4
+                                       then substr(fonterecurso.codigo_siconfi,1,4) ||
+                                            (case
+                                               when substr(fonterecurso.codigo_siconfi,5) not in ('3120','3110')
+                                                 then '0000'
+                                               else substr(fonterecurso.codigo_siconfi,5)
+                                             end)
+                                     else rpad(fonterecurso.codigo_siconfi||o15_complemento,8,'0')
+                                   end,8,'0') as fonte
+                         from fonterecurso
+                                   inner join orctiporec on orctiporec.o15_codigo = fonterecurso.orctiporec_id
+                        where fonterecurso.orctiporec_id = {$oDespesa->o58_codigo} 
+                             and fonterecurso.exercicio = {$this->iAno}
+                        order by fonte";
+                $sFonte    = db_utils::fieldsMemory(db_query($sSqlFonte), 0)->fonte;
+
+                $sIdPrograma = $oDespesa->o58_programa;
+                if ($sHashPrograma != $sIdPrograma) {
+                    $iNumLinha++;
+                    $oDadosDetalhe1 = new stdClass();
+                    $oDadosDetalhe1->tipregistro = "1";
+                    $oDadosDetalhe1->numerodoprograma  = str_pad(substr($oDespesa->o58_programa, 0, 5), 5, "0", STR_PAD_LEFT);
+                    $oDadosDetalhe1->descricaoprograma = str_pad(substr(DBString::removerCaracteresEspeciais($oDespesa->o54_descr), 0, 255), 255, " ");
+                    $oDadosDetalhe1->brancos     = str_repeat(" ", 148);
+                    $oDadosDetalhe1->numRegistro = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+                    $this->aDados [] = $oDadosDetalhe1;
+                }
+                $sHashPrograma = $sIdPrograma;
+                
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "33913999" ? "333903900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "33303900" ? "333903900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "31919700" ? "331919900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "33313900" ? "333903900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "33503900" ? "333903900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "33603900" ? "333903900" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "44104100" ? "344204100" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "44505100" ? "344805100" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "31903400" ? "331900400" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "31904600" ? "331901600" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "44209900" ? "344903500" : $oDespesa->o58_elemento;
+                $oDespesa->o58_elemento = substr($oDespesa->o58_elemento, 1, 8) == "99999900" ? "399999901" : $oDespesa->o58_elemento;
+
+                /*
+                 * Montamos o Objeto de Vetor com os dados das dotacoes
+                 */
+                $iIdDespesa  = str_pad(substr($oDespesa->o58_elemento, 1, 8), 8, "0", STR_PAD_LEFT);
+                $iIdDespesa .= ".".str_pad(substr($sFonte, 0, 10), 10, "0", STR_PAD_LEFT);
+                $iIdDespesa .= ".".str_pad($oDespesa->o58_orgao, 2, "0", STR_PAD_LEFT) . str_pad($oDespesa->o58_unidade, 2, "0", STR_PAD_LEFT);
+                $iIdDespesa .= ".".str_pad(substr(str_pad($oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT) . str_pad($oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT), 0, 5), 5, "0", STR_PAD_LEFT);
+                $iIdDespesa .= ".".str_pad(substr($oDespesa->o58_programa, 0, 4), 4, "0", STR_PAD_LEFT);
+                $iIdDespesa .= ".".str_pad(substr($oDespesa->o58_projativ, 0, 4), 4, "0", STR_PAD_LEFT);
+                
+                $nValorRPNP = 0;
+                $nValorRPNP = $oDespesa->empenhado_acumulado-$oDespesa->anulado_acumulado-$oDespesa->liquidado_acumulado;
+                if (array_key_exists($iIdDespesa, $aDadosDespesas)) {
+                    $aDadosDespesas[$iIdDespesa]["valordotinicial"]   += $oDespesa->dot_ini;
+                    $aDadosDespesas[$iIdDespesa]["valordotacumulada"] += $oDespesa->dot_ini + $oDespesa->suplementado_acumulado - $oDespesa->reduzido_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorempbimestre"]  += $oDespesa->empenhado - $oDespesa->anulado;
+                    $aDadosDespesas[$iIdDespesa]["valorempexercicio"] += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorliqbimestre"]  += $oDespesa->liquidado;
+                    $aDadosDespesas[$iIdDespesa]["valorliqexercicio"] += $oDespesa->liquidado_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorpagoexercicio"]+= $oDespesa->pago_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorrpnp"]         += $nValorRPNP;
+                    $aDadosDespesas[$iIdDespesa]["dotacoes"]           = $aDadosDespesas[$iIdDespesa]["dotacoes"]."|".$oDespesa->o58_coddot;
+                } else {
+                    $sCodigoDespesa = str_pad(substr($oDespesa->o58_elemento, 1, 8), 8, "0", STR_PAD_LEFT);
+                    if (array_key_exists(substr($oDespesa->o58_elemento, 1, 8), $aCodigoDespesasDePara)) {
+                        $sCodigoDespesa = $aCodigoDespesasDePara[substr($oDespesa->o58_elemento, 1, 8)];
+                    }
+                    
+                    $aDadosDespesas[$iIdDespesa]["codigodespesa"]      = $sCodigoDespesa;
+                    $aDadosDespesas[$iIdDespesa]["fonterecurso"]       = str_pad(substr($sFonte, 0, 10), 10, "0", STR_PAD_LEFT);
+                    $aDadosDespesas[$iIdDespesa]["classinstitucional"] = str_pad($oDespesa->o58_orgao, 2, "0", STR_PAD_LEFT);
+                    $aDadosDespesas[$iIdDespesa]["classinstitucional"] .= str_pad($oDespesa->o58_unidade, 2, "0", STR_PAD_LEFT);
+                    $aDadosDespesas[$iIdDespesa]["classfuncional"]     = str_pad(substr(str_pad($oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT) . str_pad($oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT), 0, 5), 5, "0", STR_PAD_LEFT);
+                    $aDadosDespesas[$iIdDespesa]["classprograma"]      = str_pad(substr($oDespesa->o58_programa, 0, 4), 4, "0", STR_PAD_LEFT);
+                    $aDadosDespesas[$iIdDespesa]["classprojeto"]       = str_pad(substr($oDespesa->o58_projativ, 0, 4), 4, "0", STR_PAD_LEFT);
+                  
+                    $aDadosDespesas[$iIdDespesa]["valordotinicial"]    = $oDespesa->dot_ini;
+                    $aDadosDespesas[$iIdDespesa]["valordotacumulada"]  = $oDespesa->dot_ini + $oDespesa->suplementado_acumulado - $oDespesa->reduzido_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorempbimestre"]   = $oDespesa->empenhado - $oDespesa->anulado;
+                    $aDadosDespesas[$iIdDespesa]["valorempexercicio"]  = $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorliqbimestre"]   = $oDespesa->liquidado;
+                    $aDadosDespesas[$iIdDespesa]["valorliqexercicio"]  = $oDespesa->liquidado_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorpagoexercicio"] = $oDespesa->pago_acumulado;
+                    $aDadosDespesas[$iIdDespesa]["valorrpnp"]          = $nValorRPNP;
+                    $aDadosDespesas[$iIdDespesa]["dotacoes"]           = "|".$oDespesa->o58_coddot;
+                }
+            }
+            
+            /**
+             * **********************************************************************************************
+             * DETALHE 2
+             * Programa/ProjetoAtividade
+             */
+            for ($iInd = 0; $iInd < $iLinhasDotacaoSaldo; $iInd ++) {
+                $oDespesa = db_utils::fieldsMemory($rsDotacaoSaldo, $iInd);
+                
+                /*
+                 * Apenas serao mostradas as despesas ligadas a dotacao
+                 */
+                if ($oDespesa->o58_codigo == 0) {
+                    continue;
+                }
+                $sIdProgramaProjetoAtividade = "$oDespesa->o58_programa|$oDespesa->o58_projativ";
+                if ($sHashProgramaProjetoAtividade != $sIdProgramaProjetoAtividade) {
+                    $iNumLinha++;
+                    $oDadosDetalhe2 = new stdClass();
+                    $oDadosDetalhe2->tipregistro               = "2";
+                    $oDadosDetalhe2->numerodoprograma          = str_pad(substr($oDespesa->o58_programa, 0, 5), 5, "0", STR_PAD_LEFT);
+                    $oDadosDetalhe2->numeroprojetoatividade    = str_pad(substr($oDespesa->o58_projativ, 0, 5), 5, "0", STR_PAD_LEFT);
+                    $oDadosDetalhe2->descricaoprojetoatividade = str_pad(substr(DBString::removerCaracteresEspeciais($oDespesa->o55_descr), 0, 255), 255, " ", STR_PAD_RIGHT);
+                    $oDadosDetalhe2->tipo                      = substr($oDespesa->o58_projativ, 0, 1);
+                    $oDadosDetalhe2->brancos                   = str_repeat(" ", 142);
+                    $oDadosDetalhe2->numRegistro               = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+                    $this->aDados [] = $oDadosDetalhe2;
+                }
+                $sHashProgramaProjetoAtividade = $sIdProgramaProjetoAtividade;
+            }
+            
+            /**
+             * **********************************************************************************************
+             * DETALHE 3
+             * Instituicoes
+             */
+            for ($iInd = 0; $iInd < $iLinhasDotacaoSaldo; $iInd ++) {
+                $oDespesa = db_utils::fieldsMemory($rsDotacaoSaldo, $iInd);
+                
+                /*
+                 * Apenas serao mostradas as despesas ligadas a dotacao
+                 */
+                if ($oDespesa->o58_codigo == 0) {
+                    continue;
+                }
+                
+                $iIdUnidade = str_pad($oDespesa->o58_orgao, 2, "0", STR_PAD_LEFT);
+                $iIdUnidade .= str_pad($oDespesa->o58_unidade, 2, "0", STR_PAD_LEFT);
+                if ($sHashUnidade != $iIdUnidade) {
+                    $iNumLinha++;
+                    $oDadosDetalhe3 = new stdClass();
+                    $oDadosDetalhe3->tipregistro = "3";
+                    $oDadosDetalhe3->numeroinstitucional = str_pad($iIdUnidade, 11, " ");
+                    $oDadosDetalhe3->descricaounidade = str_pad(substr(DBString::removerCaracteresEspeciais($oDespesa->o41_descr), 0, 255), 255, " ", STR_PAD_RIGHT);
+                    $oDadosDetalhe3->brancos     = str_repeat(" ", 142);
+                    $oDadosDetalhe3->numRegistro = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+                    $this->aDados [] = $oDadosDetalhe3;
+                }
+                $sHashUnidade = $iIdUnidade;
+            }
+            
+            /**
+             * **********************************************************************************************
+             * DETALHE 4
+             * Dados das Dotacoes
+             */
+            asort($aDadosDespesas);
+            foreach ($aDadosDespesas as $iIdDespesa => $aDespesa) {
+                $oDespesa = (object) $aDespesa;
+
+                $iNumLinha++;
+                $oDadosDetalhe4 = new stdClass();
+                $oDadosDetalhe4->tipregistro        = "4";
+                $oDadosDetalhe4->brancos1           = " ";
+                $oDadosDetalhe4->codigodespesa      = str_pad(substr($oDespesa->codigodespesa, 0, 8), 8, "0", STR_PAD_LEFT);
+
+                $oDadosDetalhe4->Brancos_2                 = "  ";
+                $oDadosDetalhe4->CodigoGrupoExercicioFonte = substr($oDespesa->fonterecurso, 2, 1);
+                $oDadosDetalhe4->CodigoClassificacaoFonte  = substr($oDespesa->fonterecurso, 3, 3);
+                $oDadosDetalhe4->CodigoDetalhamentoFonte   = substr($oDespesa->fonterecurso, 6, 4);
+                $oDadosDetalhe4->Brancos_3                 = " ";
+
+                $oDadosDetalhe4->classinstitucional = str_pad($oDespesa->classinstitucional, 11, " ");
+                $oDadosDetalhe4->classfuncional     = str_pad(substr($oDespesa->classfuncional, 0, 5), 5, "0", STR_PAD_LEFT);
+                $oDadosDetalhe4->classprograma      = str_pad(substr($oDespesa->classprograma, 0, 5), 5, "0", STR_PAD_LEFT);
+                $oDadosDetalhe4->classprojeto       = str_pad(substr($oDespesa->classprojeto, 0, 5), 5, "0", STR_PAD_LEFT);
+                
+                if ($this->codigoOrgaoTCE != "P088") {
+                    $oDadosDetalhe4->valordotinicial   = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valordotacumulada = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorempbimestre  = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorempexercicio = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorliqbimestre  = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorliqexercicio = $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorpagoexercicio= $this->formataValor(0, 14, "0");
+                    $oDadosDetalhe4->valorrpnp         = $this->formataValor(0, 14, "0");
+                } else {
+                    $oDadosDetalhe4->valordotinicial   = $this->formataValor($oDespesa->valordotinicial, 14, "0");
+                    $oDadosDetalhe4->valordotacumulada = $this->formataValor($oDespesa->valordotacumulada, 14, "0");
+                    $oDadosDetalhe4->valorempbimestre  = $this->formataValor($oDespesa->valorempbimestre, 14, "0");
+                    $oDadosDetalhe4->valorempexercicio = $this->formataValor($oDespesa->valorempexercicio, 14, "0");
+                    $oDadosDetalhe4->valorliqbimestre  = $this->formataValor($oDespesa->valorliqbimestre, 14, "0");
+                    $oDadosDetalhe4->valorliqexercicio = $this->formataValor($oDespesa->valorliqexercicio, 14, "0");
+                    $oDadosDetalhe4->valorpagoexercicio= $this->formataValor($oDespesa->valorpagoexercicio, 14, "0");
+                    if ($this->sBimReferencia == 6) {
+                        $oDadosDetalhe4->valorrpnp = $this->formataValor($oDespesa->valorrpnp, 14, "0");
+                    } else {
+                        $oDadosDetalhe4->valorrpnp = $this->formataValor(0, 14, "0");
+                    }
+                }
+                $oDadosDetalhe4->brancos           = str_repeat(" ", 250);
+                $oDadosDetalhe4->numRegistro       = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+                $this->aDados [] = $oDadosDetalhe4;
+                
+                $nValordotinicial    += $oDadosDetalhe4->valordotinicial   ;
+                $nValordotacumulada  += $oDadosDetalhe4->valordotacumulada ;
+                $nValorempbimestre   += $oDadosDetalhe4->valorempbimestre  ;
+                $nValorempexercicio  += $oDadosDetalhe4->valorempexercicio ;
+                $nValorliqbimestre   += $oDadosDetalhe4->valorliqbimestre  ;
+                $nValorliqexercicio  += $oDadosDetalhe4->valorliqexercicio ;
+                $nValorpagoexercicio += $oDadosDetalhe4->valorpagoexercicio;
+                $nValorrpnp          += $oDadosDetalhe4->valorrpnp         ;
+                
+            }
+            
+            /**
+             * **********************************************************************************************
+             * DETALHE 5
+             * Dados das Dotacoes
+             */
+             $iNumLinha++;
+             $oDadosDetalhe5 = new stdClass();
+             $oDadosDetalhe5->tipregistro = "5";
+             $oDadosDetalhe5->brancos1 = " ";
+             $oDadosDetalhe5->ValorDotacaoInicial = $this->formataValor($nValordotinicial, 14, "0");
+             $oDadosDetalhe5->ValorDotacaoAtualizada = $this->formataValor($nValordotacumulada, 14, "0");
+             $oDadosDetalhe5->ValorSaldoDespesasEmpenhadas = $this->formataValor($nValorempexercicio, 14, "0");
+             $oDadosDetalhe5->ValorSaldoDespesasLiquidadas = $this->formataValor($nValorliqexercicio, 14, "0");
+             $oDadosDetalhe5->brancos2 = str_repeat(" ", 351) ;
+             $oDadosDetalhe5->numRegistro       = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+             
+             $this->aDados [] = $oDadosDetalhe5;
+        }
+        
+        /*
+         * TRAILLER
+         */
+        $iNumLinha++;
+        $oDadosTrailler = new stdClass();
+        $oDadosTrailler->tipregistro = "9";
+        $oDadosTrailler->brancos     = str_repeat(" ", 408);
+        $oDadosTrailler->numRegistro = str_pad($iNumLinha, 10, "0", STR_PAD_LEFT);
+        $this->aDados [] = $oDadosTrailler;
+        
+        $this->escreveArquivo();
+        
+    }
+}

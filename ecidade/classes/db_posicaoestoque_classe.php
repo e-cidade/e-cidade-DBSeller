@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: material
 //CLASSE DA ENTIDADE posicaoestoque
-class cl_posicaoestoque { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $m06_sequencial = 0; 
-   var $m06_posicaoestoqueprocessamento = 0; 
-   var $m06_matestoque = 0; 
-   var $m06_quantidade = 0; 
-   var $m06_valor = 0; 
-   var $m06_precomedio = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_posicaoestoque {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $m06_sequencial = 0;
+   var $m06_posicaoestoqueprocessamento = 0;
+   var $m06_matestoque = 0;
+   var $m06_quantidade = 0;
+   var $m06_valor = 0;
+   var $m06_precomedio = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 m06_sequencial = int4 = Código Sequencial 
-                 m06_posicaoestoqueprocessamento = int4 = Código do Processamento 
-                 m06_matestoque = int4 = Código do Estoque 
-                 m06_quantidade = numeric(10) = Quantidade 
-                 m06_valor = numeric(10) = Valor Total 
-                 m06_precomedio = numeric(10) = Preço Médio 
+                 m06_sequencial = int4 = Código Sequencial
+                 m06_posicaoestoqueprocessamento = int4 = Código do Processamento
+                 m06_matestoque = int4 = Código do Estoque
+                 m06_quantidade = numeric(10) = Quantidade
+                 m06_valor = numeric(10) = Valor Total
+                 m06_precomedio = numeric(10) = Preço Médio
                  ";
-   //funcao construtor da classe 
-   function cl_posicaoestoque() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("posicaoestoque"); 
+     $this->rotulo = new rotulo("posicaoestoque");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_posicaoestoque {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m06_sequencial = ($this->m06_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["m06_sequencial"]:$this->m06_sequencial);
        $this->m06_posicaoestoqueprocessamento = ($this->m06_posicaoestoqueprocessamento == ""?@$GLOBALS["HTTP_POST_VARS"]["m06_posicaoestoqueprocessamento"]:$this->m06_posicaoestoqueprocessamento);
@@ -86,9 +86,9 @@ class cl_posicaoestoque {
      }
    }
    // funcao para inclusao
-   function incluir ($m06_sequencial){ 
+   public function incluir ($m06_sequencial){
       $this->atualizacampos();
-     if($this->m06_posicaoestoqueprocessamento == null ){ 
+     if($this->m06_posicaoestoqueprocessamento == null ){
        $this->erro_sql = " Campo Código do Processamento não informado.";
        $this->erro_campo = "m06_posicaoestoqueprocessamento";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_posicaoestoque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m06_matestoque == null ){ 
+     if($this->m06_matestoque == null ){
        $this->erro_sql = " Campo Código do Estoque não informado.";
        $this->erro_campo = "m06_matestoque";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_posicaoestoque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m06_quantidade == null ){ 
+     if($this->m06_quantidade == null ){
        $this->erro_sql = " Campo Quantidade não informado.";
        $this->erro_campo = "m06_quantidade";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_posicaoestoque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m06_valor == null ){ 
+     if($this->m06_valor == null ){
        $this->erro_sql = " Campo Valor Total não informado.";
        $this->erro_campo = "m06_valor";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_posicaoestoque {
        $this->erro_status = "0";
        return false;
      }
-     if($this->m06_precomedio == null ){ 
+     if($this->m06_precomedio == null ){
        $this->erro_sql = " Campo Preço Médio não informado.";
        $this->erro_campo = "m06_precomedio";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_posicaoestoque {
        return false;
      }
      if($m06_sequencial == "" || $m06_sequencial == null ){
-       $result = db_query("select nextval('posicaoestoque_m06_sequencial_seq')"); 
+       $result = db_query("select nextval('posicaoestoque_m06_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: posicaoestoque_m06_sequencial_seq do campo: m06_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: posicaoestoque_m06_sequencial_seq do campo: m06_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->m06_sequencial = pg_result($result,0,0); 
+       $this->m06_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from posicaoestoque_m06_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $m06_sequencial)){
@@ -154,10 +154,10 @@ class cl_posicaoestoque {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->m06_sequencial = $m06_sequencial; 
+         $this->m06_sequencial = $m06_sequencial;
        }
      }
-     if(($this->m06_sequencial == null) || ($this->m06_sequencial == "") ){ 
+     if(($this->m06_sequencial == null) || ($this->m06_sequencial == "") ){
        $this->erro_sql = " Campo m06_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,24 +166,24 @@ class cl_posicaoestoque {
        return false;
      }
      $sql = "insert into posicaoestoque(
-                                       m06_sequencial 
-                                      ,m06_posicaoestoqueprocessamento 
-                                      ,m06_matestoque 
-                                      ,m06_quantidade 
-                                      ,m06_valor 
-                                      ,m06_precomedio 
+                                       m06_sequencial
+                                      ,m06_posicaoestoqueprocessamento
+                                      ,m06_matestoque
+                                      ,m06_quantidade
+                                      ,m06_valor
+                                      ,m06_precomedio
                        )
                 values (
-                                $this->m06_sequencial 
-                               ,$this->m06_posicaoestoqueprocessamento 
-                               ,$this->m06_matestoque 
-                               ,$this->m06_quantidade 
-                               ,$this->m06_valor 
-                               ,$this->m06_precomedio 
+                                $this->m06_sequencial
+                               ,$this->m06_posicaoestoqueprocessamento
+                               ,$this->m06_matestoque
+                               ,$this->m06_quantidade
+                               ,$this->m06_valor
+                               ,$this->m06_precomedio
                       )";
 
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "posicaoestoque ($this->m06_sequencial) nao Incluído. Inclusao Abortada.";
@@ -226,16 +226,16 @@ class cl_posicaoestoque {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($m06_sequencial=null) { 
+   public function alterar ($m06_sequencial=null) {
       $this->atualizacampos();
      $sql = " update posicaoestoque set ";
      $virgula = "";
-     if(trim($this->m06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_sequencial"])){ 
+     if(trim($this->m06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_sequencial"])){
        $sql  .= $virgula." m06_sequencial = $this->m06_sequencial ";
        $virgula = ",";
-       if(trim($this->m06_sequencial) == null ){ 
+       if(trim($this->m06_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "m06_sequencial";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_posicaoestoque {
          return false;
        }
      }
-     if(trim($this->m06_posicaoestoqueprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_posicaoestoqueprocessamento"])){ 
+     if(trim($this->m06_posicaoestoqueprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_posicaoestoqueprocessamento"])){
        $sql  .= $virgula." m06_posicaoestoqueprocessamento = $this->m06_posicaoestoqueprocessamento ";
        $virgula = ",";
-       if(trim($this->m06_posicaoestoqueprocessamento) == null ){ 
+       if(trim($this->m06_posicaoestoqueprocessamento) == null ){
          $this->erro_sql = " Campo Código do Processamento não informado.";
          $this->erro_campo = "m06_posicaoestoqueprocessamento";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_posicaoestoque {
          return false;
        }
      }
-     if(trim($this->m06_matestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_matestoque"])){ 
+     if(trim($this->m06_matestoque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_matestoque"])){
        $sql  .= $virgula." m06_matestoque = $this->m06_matestoque ";
        $virgula = ",";
-       if(trim($this->m06_matestoque) == null ){ 
+       if(trim($this->m06_matestoque) == null ){
          $this->erro_sql = " Campo Código do Estoque não informado.";
          $this->erro_campo = "m06_matestoque";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_posicaoestoque {
          return false;
        }
      }
-     if(trim($this->m06_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_quantidade"])){ 
+     if(trim($this->m06_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_quantidade"])){
        $sql  .= $virgula." m06_quantidade = $this->m06_quantidade ";
        $virgula = ",";
-       if(trim($this->m06_quantidade) == null ){ 
+       if(trim($this->m06_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "m06_quantidade";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_posicaoestoque {
          return false;
        }
      }
-     if(trim($this->m06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_valor"])){ 
+     if(trim($this->m06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_valor"])){
        $sql  .= $virgula." m06_valor = $this->m06_valor ";
        $virgula = ",";
-       if(trim($this->m06_valor) == null ){ 
+       if(trim($this->m06_valor) == null ){
          $this->erro_sql = " Campo Valor Total não informado.";
          $this->erro_campo = "m06_valor";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_posicaoestoque {
          return false;
        }
      }
-     if(trim($this->m06_precomedio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_precomedio"])){ 
+     if(trim($this->m06_precomedio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m06_precomedio"])){
        $sql  .= $virgula." m06_precomedio = $this->m06_precomedio ";
        $virgula = ",";
-       if(trim($this->m06_precomedio) == null ){ 
+       if(trim($this->m06_precomedio) == null ){
          $this->erro_sql = " Campo Preço Médio não informado.";
          $this->erro_campo = "m06_precomedio";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_posicaoestoque {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "posicaoestoque nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->m06_sequencial;
@@ -371,11 +371,11 @@ class cl_posicaoestoque {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($m06_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($m06_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -384,7 +384,7 @@ class cl_posicaoestoque {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($m06_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -418,7 +418,7 @@ class cl_posicaoestoque {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "posicaoestoque nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$m06_sequencial;
@@ -446,11 +446,11 @@ class cl_posicaoestoque {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -472,11 +472,11 @@ class cl_posicaoestoque {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -494,15 +494,15 @@ class cl_posicaoestoque {
      $sql2 = "";
      if($dbwhere==""){
        if($m06_sequencial!=null ){
-         $sql2 .= " where posicaoestoque.m06_sequencial = $m06_sequencial "; 
-       } 
+         $sql2 .= " where posicaoestoque.m06_sequencial = $m06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,11 +511,11 @@ class cl_posicaoestoque {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -528,15 +528,15 @@ class cl_posicaoestoque {
      $sql2 = "";
      if($dbwhere==""){
        if($m06_sequencial!=null ){
-         $sql2 .= " where posicaoestoque.m06_sequencial = $m06_sequencial "; 
-       } 
+         $sql2 .= " where posicaoestoque.m06_sequencial = $m06_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ class cl_posicaoestoque {
      return $sql;
   }
 
-  function sql_query_estoque ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_estoque ( $m06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
 
     $sql = "select ";
     if($campos != "*" ){

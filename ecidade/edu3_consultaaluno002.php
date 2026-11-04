@@ -156,7 +156,7 @@ db_fim_transacao();
   <div class='subcontainer'  style="width: 99%;">
 
     <div id='foto' style="display:block; float:left ">
-      <fieldset style='  '>
+      <fieldset>
         <legend>Foto</legend>
         <img src="<?=$mFotoAluno?>" width="120" height="150" >
       </fieldset>

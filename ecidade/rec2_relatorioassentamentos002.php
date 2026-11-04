@@ -1,32 +1,29 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
- 
-set_time_limit(0);
-session_cache_limiter('none');
 
 define('FPDF_FONTPATH','fpdf151/font/');
 
@@ -82,7 +79,7 @@ $oDaoCurric    = db_utils::getDao('curric');
 $aDadosAssentamentos = array();
 
 /**
- * Array com os assentamentos 
+ * Array com os assentamentos
  */
 $aFaltas      = array();
 $aAusencias   = array();
@@ -90,23 +87,23 @@ $aPenalidades = array();
 $aSuspensoes  = array();
 
 /**
- * Array dos treinamentos 
+ * Array dos treinamentos
  */
 $aTreinamentos = array();
 
 /**
- * Array com cgms dos servidores, usado para buscar treinamentos  
+ * Array com cgms dos servidores, usado para buscar treinamentos
  */
 $aCgmTreinamentos = array();
 
 /**
- * Páginas dos servidores, um página por matricula 
+ * Páginas dos servidores, um página por matricula
  */
 $aPaginas = array();
 $iPagina  = 0;
 
 /**
- * Filtros vindo do formulario 
+ * Filtros vindo do formulario
  */
 $dInicial   = null;
 $dFinal     = null;
@@ -125,11 +122,11 @@ if ( !empty($oGet->dDataInicial) ) {
 if ( !empty($oGet->dDataFinal) ) {
 
   $oDataFinal = new DBDate($oGet->dDataFinal);
-  $dFinal = $oDataFinal->getDate(); 
+  $dFinal = $oDataFinal->getDate();
 }
 
 /**
- * Filtros de pesquisa para assentamento 
+ * Filtros de pesquisa para assentamento
  */
 $sOrderAssenta = 'h16_regist, h16_dtconc, h16_dtterm';
 $aWhereAssenta = array();
@@ -161,7 +158,7 @@ $sSqlAssenta     = $oDaoAssenta->sql_query_assentamentos('*', $sOrderAssenta, $s
 $rsAssenta       = $oDaoAssenta->sql_record($sSqlAssenta);
 
 /**
- * Nao encontrou nenhum assentamento para os filtros informados 
+ * Nao encontrou nenhum assentamento para os filtros informados
  */
 if ( $oDaoAssenta->numrows == 0 ) {
 
@@ -170,7 +167,7 @@ if ( $oDaoAssenta->numrows == 0 ) {
 }
 
 /**
- * Percorre os assentamentos informados para montar dados do formulario 
+ * Percorre os assentamentos informados para montar dados do formulario
  */
 for ( $iIndice = 0; $iIndice < $oDaoAssenta->numrows; $iIndice++ ) {
 
@@ -193,44 +190,44 @@ for ( $iIndice = 0; $iIndice < $oDaoAssenta->numrows; $iIndice++ ) {
   }
 
   /**
-   * Array com informacoes das faltas 
+   * Array com informacoes das faltas
    */
   if ( in_array($oStdAssentamento->sCodigo, $aCodigosFaltas) ) {
     $aFaltas[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento;
   }
 
   /**
-   * Array com informacoes das ausencias 
+   * Array com informacoes das ausencias
    */
   if ( in_array($oStdAssentamento->sCodigo, $aCodigosAusencias) ) {
-    $aAusencias[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento; 
+    $aAusencias[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento;
   }
 
   /**
-   * Array com informacoes das penalidades 
+   * Array com informacoes das penalidades
    */
   if ( in_array($oStdAssentamento->sCodigo, $aCodigosPenalidades) ) {
-    $aPenalidades[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento; 
+    $aPenalidades[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento;
   }
 
   /**
-   * Array com informacoes das suspensoes 
+   * Array com informacoes das suspensoes
    */
   if ( in_array($oStdAssentamento->sCodigo, $aCodigosSuspensoes) ) {
-    $aSuspensoes[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento; 
+    $aSuspensoes[$oAssentamento->h16_regist][$iAnoAssentamento][$iMesAssentamento][$oStdAssentamento->sCodigo] = $oStdAssentamento;
   }
 
   /**
-   * Array com cgm dos servidores 
+   * Array com cgm dos servidores
    * usado para pesquisar treinamentos
    */
-  $aCgmTreinamentos[$oAssentamento->h16_regist] = $oAssentamento->rh01_numcgm; 
+  $aCgmTreinamentos[$oAssentamento->h16_regist] = $oAssentamento->rh01_numcgm;
 
   /**
-   * Informacoes dos servidores 
+   * Informacoes dos servidores
    */
   $oDadosServidor = new StdClass;
-  $oDadosServidor->iMatricula = $oAssentamento->h16_regist; 
+  $oDadosServidor->iMatricula = $oAssentamento->h16_regist;
   $oDadosServidor->sNome      = $oAssentamento->z01_nome;
   $oDadosServidor->dNomeacao  = db_formatar($oAssentamento->rh01_admiss, 'd');
   $oDadosServidor->sCargo     = $oAssentamento->rh37_descr;
@@ -243,7 +240,7 @@ for ( $iIndice = 0; $iIndice < $oDaoAssenta->numrows; $iIndice++ ) {
 
 /**
  * Pesquisa treinamentos dos servidores
- */   
+ */
 foreach ( $aCgmTreinamentos as $iMatricula => $iNumCgm ) {
 
   $aWhereTreinamentos = array();
@@ -257,8 +254,8 @@ foreach ( $aCgmTreinamentos as $iMatricula => $iNumCgm ) {
   }
 
   $sWhereTreinamentos = implode(' and ', $aWhereTreinamentos);
-  $sOrderTreinamentos = 'h03_data'; 
-  $sSqlTreinamentos   = $oDaoCurric->sql_query_curric(null, '*', $sOrderTreinamentos, $sWhereTreinamentos);  
+  $sOrderTreinamentos = 'h03_data';
+  $sSqlTreinamentos   = $oDaoCurric->sql_query_curric(null, '*', $sOrderTreinamentos, $sWhereTreinamentos);
   $rsTreinamentos     = $oDaoCurric->sql_record($sSqlTreinamentos);
 
   if ( $oDaoCurric->numrows > 0 ) {
@@ -271,7 +268,7 @@ foreach ( $aCgmTreinamentos as $iMatricula => $iNumCgm ) {
 }
 
 /**
- * Percorre dados de assentamentos e monta as paginas do relatorio 
+ * Percorre dados de assentamentos e monta as paginas do relatorio
  */
 foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
 
@@ -287,13 +284,13 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
 
   /**
    * Matricula
-   * Dados de matricula 
+   * Dados de matricula
    */
   foreach ( $aDadosMatricula as $iAno => $aDadosAno ) {
-  
+
     /**
      * Ano
-     * Assentamentos separados por ano  
+     * Assentamentos separados por ano
      */
     foreach ( $aDadosAno as $iMes => $aDadosMes ) {
 
@@ -302,48 +299,48 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
        * Assentamentos separados por mes
        */
       foreach ( $aDadosMes as $sCodigo => $oAssentamento ) {
-        
+
         /**
-         * Linhas de faltas 
+         * Linhas de faltas
          */
         if ( !empty( $aFaltas[$iMatricula][$iAno][$iMes][$sCodigo] ) ) {
 
           $aLinhasFaltas[$iLinhaFaltas] = $oAssentamento;
           $iLinhaFaltas++;
-        } 
+        }
 
         /**
-         * Linhas de ausencias 
+         * Linhas de ausencias
          */
         if ( !empty( $aAusencias[$iMatricula][$iAno][$iMes][$sCodigo] ) ) {
 
-          $aLinhasAusencias[$iLinhaAusencias] = $oAssentamento; 
+          $aLinhasAusencias[$iLinhaAusencias] = $oAssentamento;
           $iLinhaAusencias++;
-        } 
+        }
 
         /**
-         * Linhas de penalidades 
+         * Linhas de penalidades
          */
         if ( !empty( $aPenalidades[$iMatricula][$iAno][$iMes][$sCodigo] ) ) {
 
-          $aLinhasPenalidades[$iLinhaPenalidades] = $oAssentamento;  
+          $aLinhasPenalidades[$iLinhaPenalidades] = $oAssentamento;
           $iLinhaPenalidades++;
-        } 
-        
+        }
+
         /**
-         * Linhas de suspensoes 
+         * Linhas de suspensoes
          */
         if ( !empty( $aSuspensoes[$iMatricula][$iAno][$iMes][$sCodigo] ) ) {
 
           $aLinhasSuspensoes[$iLinhaSuspensoes] = $oAssentamento;
           $iLinhaSuspensoes++;
-        } 
+        }
 
       }
 
     }
 
-  }  
+  }
 
   $oDadosPagina = new StdClass;
 
@@ -356,12 +353,12 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
 
   /**
    * Total de linhas
-   * - Pega a maior das linhas 
+   * - Pega a maior das linhas
    */
   $oDadosPagina->iTotalLinhas = max(array($iLinhaFaltas, $iLinhaAusencias, $iLinhaPenalidades, $iLinhaSuspensoes));
 
   /**
-   * Treinamentos  
+   * Treinamentos
    * - se matricula possui treinamento passa variabel para objeto das paginas
    */
   if ( !empty($aTreinamentos[$iMatricula]) ) {
@@ -375,11 +372,11 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
 
 /**
  * StdClass com todas as informacoes da instituicao
- */   
-$oInstituicao = $oDaoDBConfig->getParametrosInstituicao($iInstituicao); 
+ */
+$oInstituicao = $oDaoDBConfig->getParametrosInstituicao($iInstituicao);
 
 /**
- * StdClass com informacoes da instituicao  
+ * StdClass com informacoes da instituicao
  */
 $oDadosInstituicao             = new StdClass;
 $oDadosInstituicao->sNome      = $oInstituicao->nomeinst;
@@ -399,17 +396,17 @@ define('PDF_BRANCO', 245);
 define('PDF_CINZA',  200);
 
 /**
- * Classe para montar relatorio 
- * 
+ * Classe para montar relatorio
+ *
  * @uses fpdf
  */
 class PDFHelper extends fpdf {
 
   public static $aPaginasInternas     = array();
   public $iAlturaMaxima = 0;
-  public $oHelper; 
+  public $oHelper;
   public $lHeaderAssentamentos = true;
-  
+
   public function __construct($sOrientation = 'P', $sUnit = 'mm', $sFormat = 'A4') {
     parent::__construct($sOrientation, $sUnit, $sFormat);
   }
@@ -418,9 +415,9 @@ class PDFHelper extends fpdf {
 
     $this->SetXY(PDF_LARGURA, 10 );
     $this->SetFont('Arial','I',8);
-    
+
     $this->Cell(0,10,'Página '.self::getPaginaInterna($this->oDadosServidor->iMatricula),0,0,'C');
-    
+
     $this->setXY(10,10);
 
     $this->Image('imagens/files/'. $this->oDadosInstituicao->sLogo,140,8,15);
@@ -484,7 +481,7 @@ class PDFHelper extends fpdf {
 
     /**
      * Titulos
-     */   
+     */
     $this->setfillcolor(PDF_CINZA);
     $this->Setfont('Arial', 'b', PDF_FONTE_TITULO);
 
@@ -494,7 +491,7 @@ class PDFHelper extends fpdf {
     $this->cell( $this->largura(25), PDF_ALTURA_TITULO, 'Suspensões do Periodo de Estágio', 1, 0, 'C', 1);
 
     /**
-     * Subtitulos  
+     * Subtitulos
      */
     $this->ln();
     $this->Setfont('Arial', 'b', PDF_FONTE_SUBTITULO);
@@ -512,9 +509,9 @@ class PDFHelper extends fpdf {
   }
 
   /**
-   * Retorna a largura em porcertagem da largura total  
-   * 
-   * @param float $nPorcentagem - porcentagem da largura total  
+   * Retorna a largura em porcertagem da largura total
+   *
+   * @param float $nPorcentagem - porcentagem da largura total
    * @access public
    * @return float
    */
@@ -534,38 +531,38 @@ class PDFHelper extends fpdf {
   }
 
   /**
-   * Escreve colunas, compentecia, quantidade e codigo 
-   * 
+   * Escreve colunas, compentecia, quantidade e codigo
+   *
    * @param string $sCompetencia - competencia, mes e ano
-   * @param intger $iQuantidade  - quantidade 
+   * @param intger $iQuantidade  - quantidade
    * @param string $sCodigo      - codigo do assentamento
    * @access public
    * @return void
    */
   public function escreveColunas($sCompetencia = '', $iQuantidade = '', $sCodigo = '') {
-  
+
     $this->cell( $this->largura(12.33), PDF_ALTURA_SUBTITULO, $sCompetencia, 1, 0, 'C');
     $this->cell( $this->largura(5.33), PDF_ALTURA_SUBTITULO, $sCodigo,      1, 0, 'C');
     $this->cell( $this->largura(7.33), PDF_ALTURA_SUBTITULO, $iQuantidade,  1, 0, 'C');
   }
 
   /**
-   * Escreve coluna de totais 
-   * 
-   * @param integer $iTotalFaltas 
-   * @param integer $iTotalAusencias 
-   * @param integer $iTotalPenalidades 
-   * @param integer $iTotalSuspensoes 
+   * Escreve coluna de totais
+   *
+   * @param integer $iTotalFaltas
+   * @param integer $iTotalAusencias
+   * @param integer $iTotalPenalidades
+   * @param integer $iTotalSuspensoes
    * @access public
    * @return void
    */
   public function escreveTotais($iTotalFaltas, $iTotalAusencias, $iTotalPenalidades, $iTotalSuspensoes) {
-  
+
     $this->Setfont('Arial', 'b');
     $this->cell( $this->largura(17.66), PDF_ALTURA_SUBTITULO, 'Total', 1, 0, 'C');
     $this->Setfont('Arial', '');
     $this->cell( $this->largura(7.33), PDF_ALTURA_SUBTITULO, $iTotalFaltas,  1, 0, 'C');
-  
+
     $this->Setfont('Arial', 'b');
     $this->cell( $this->largura(17.66), PDF_ALTURA_SUBTITULO, 'Total', 1, 0, 'C');
     $this->Setfont('Arial', '');
@@ -585,9 +582,9 @@ class PDFHelper extends fpdf {
   }
 
   /**
-   * Escreve treinamentos do servidor 
-   * 
-   * @param array $aTreinamentos - array com os treinamentos do servidor 
+   * Escreve treinamentos do servidor
+   *
+   * @param array $aTreinamentos - array com os treinamentos do servidor
    * @access public
    * @return void
    */
@@ -601,11 +598,11 @@ class PDFHelper extends fpdf {
 
     $this->ln(5);
     $this->setfillcolor(PDF_CINZA);
-    
+
     $this->Setfont('Arial', 'b', PDF_FONTE_TITULO);
     $this->cell( $this->largura(), PDF_ALTURA_SUBTITULO, 'Treinamentos',  1, 0, 'C', 1);
     $this->ln();
-    
+
     $this->Setfont('Arial', 'b', PDF_FONTE_SUBTITULO);
 
     $this->cell( $this->largura(15), PDF_ALTURA_SUBTITULO, 'Tipo',       1, 0, 'C');
@@ -624,15 +621,15 @@ class PDFHelper extends fpdf {
   }
 
   /**
-   * Adicionar pagina interna 
-   * 
-   * @param string $sNome 
+   * Adicionar pagina interna
+   *
+   * @param string $sNome
    * @static
    * @access public
    * @return void
    */
   public static function adicionarPaginaInterna( $sNome ) {
-  
+
     if ( !isset( self::$aPaginasInternas[$sNome] ) ) {
       self::$aPaginasInternas[$sNome] = 1;
     } else {
@@ -641,15 +638,15 @@ class PDFHelper extends fpdf {
   }
 
   /**
-   * Retorna numero da pagina atual 
-   * 
-   * @param string $sNome 
+   * Retorna numero da pagina atual
+   *
+   * @param string $sNome
    * @static
    * @access public
    * @return integer
    */
   public static function getPaginaInterna ( $sNome ) {
-    
+
     self::adicionarPaginaInterna($sNome);
     return self::$aPaginasInternas[$sNome];
   }
@@ -664,7 +661,7 @@ $oHelper->SetMargins(10, 10, 10);
 $oHelper->oDadosInstituicao = $oDadosInstituicao;
 
 /**
- * Escreve uma pagina por matricula 
+ * Escreve uma pagina por matricula
  */
 foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
 
@@ -673,10 +670,10 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
   $iTotalPenalidades = 0;
   $iTotalSuspensoes  = 0;
 
-  $aLinhasFaltas      = $oDadosPagina->aLinhasFaltas;      
-  $aLinhasAusencias   = $oDadosPagina->aLinhasAusencias;   
-  $aLinhasPenalidades = $oDadosPagina->aLinhasPenalidades; 
-  $aLinhasSuspensoes  = $oDadosPagina->aLinhasSuspensoes;  
+  $aLinhasFaltas      = $oDadosPagina->aLinhasFaltas;
+  $aLinhasAusencias   = $oDadosPagina->aLinhasAusencias;
+  $aLinhasPenalidades = $oDadosPagina->aLinhasPenalidades;
+  $aLinhasSuspensoes  = $oDadosPagina->aLinhasSuspensoes;
 
   $iTotalLinhas = $oDadosPagina->iTotalLinhas;
 
@@ -686,14 +683,14 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
   $oHelper->AddPage();
 
   /**
-   * Escreve as linhas 
+   * Escreve as linhas
    * Se as alguma coluna nao tiver valor, imprime celulas vazias
-   * Se todas as colunas de uma linha forem vazias entao nao escreve ela 
+   * Se todas as colunas de uma linha forem vazias entao nao escreve ela
    */
   for ( $iIndice = 0; $iIndice < $iTotalLinhas; $iIndice++ ) {
 
     /**
-     * Verifica se todas as colunas estao vazias e vai para o proximo indice 
+     * Verifica se todas as colunas estao vazias e vai para o proximo indice
      */
     if ( empty($aLinhasFaltas[$iIndice]) && empty($aLinhasAusencias[$iIndice]) && empty($aLinhasPenalidades[$iIndice]) && empty( $aLinhasSuspensoes[$iIndice]) ) {
       continue;
@@ -710,7 +707,7 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
       $iTotalFaltas += $aLinhasFaltas[$iIndice]->iQuantidade;
     } else {
       $oHelper->escreveColunas();
-    } 
+    }
 
     /**
      * Ausencias
@@ -720,10 +717,10 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
     if ( !empty( $aLinhasAusencias[$iIndice] ) ) {
 
       $oHelper->escreveColunas( $aLinhasAusencias[$iIndice]->sCompetencia, $aLinhasAusencias[$iIndice]->iQuantidade, $aLinhasAusencias[$iIndice]->sCodigo );
-      $iTotalAusencias += $aLinhasAusencias[$iIndice]->iQuantidade; 
+      $iTotalAusencias += $aLinhasAusencias[$iIndice]->iQuantidade;
     } else {
       $oHelper->escreveColunas();
-    } 
+    }
 
     /**
      * Penalidades
@@ -736,7 +733,7 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
       $iTotalPenalidades += $aLinhasPenalidades[$iIndice]->iQuantidade;
     } else {
       $oHelper->escreveColunas();
-    } 
+    }
 
     /**
      * Suspensoes
@@ -749,18 +746,18 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
       $iTotalSuspensoes += $aLinhasSuspensoes[$iIndice]->iQuantidade;
     } else {
       $oHelper->escreveColunas();
-    } 
+    }
 
     $oHelper->ln();
   }
 
   /**
-   * Totais  
+   * Totais
    */
   $oHelper->escreveTotais($iTotalFaltas, $iTotalAusencias, $iTotalPenalidades, $iTotalSuspensoes);
 
   /**
-   * Treinamentos 
+   * Treinamentos
    * verifica se tem treinamentos para o servidor e escreve
    */
   if ( !empty($oDadosPagina->aTreinamentos) ) {
@@ -770,6 +767,6 @@ foreach ( $aPaginas as $iPagina => $oDadosPagina ) {
 }
 
 /**
- * Output  
+ * Output
  */
 $oHelper->Output();

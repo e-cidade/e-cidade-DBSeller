@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clparecerturma->rotulo->label("ed105_i_codigo");
               <?=$Led105_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed105_i_codigo",10,$Ied105_i_codigo,true,"text",4,"","chave_ed105_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clparecerturma->rotulo->label("ed105_i_codigo");
               <?=$Led105_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("ed105_i_codigo",10,$Ied105_i_codigo,true,"text",4,"","chave_ed105_i_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clparecerturma->rotulo->label("ed105_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parecerturma.php")==true){
@@ -122,12 +122,12 @@ $clparecerturma->rotulo->label("ed105_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

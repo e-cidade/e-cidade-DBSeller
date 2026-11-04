@@ -26,6 +26,8 @@
  */
 
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
+use ECidade\RecursosHumanos\ESocial\Service\ProcessamentoExternoService;
+use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 require_once modification('libs/db_stdlib.php');
 require_once modification('libs/db_conecta.php');
@@ -49,60 +51,41 @@ try {
             $rubrica = new Rubrica($parametros->codigoRubrica);
 
             $retorno->rubrica = $repository->getByRubricaAndInstituicao($rubrica, $instituicao);
-            $retorno->opcoesCodIncCP = array();
-            $retorno->opcoesCodIncIRRF = array();
-            $retorno->opcoesCodIncFGTS = array();
-            $retorno->opcoesCodTetoRemun = [];
-            $retorno->opcoesCodIncCPRP = [];
 
-            $pergunta = new AvaliacaoPergunta(3000947);
-            $opcoes = $pergunta->getOpcoes();
+            /**
+             * Tabelas Json, que guardam as perguntas do S1010
+             */
+            $retorno->opcoesIncCP   = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaIncCP.json'));
+            $retorno->opcoesIncIRRF = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabela21.json'));
+            $retorno->opcoesIncFGTS = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaIncFGTS.json'));
+            $retorno->opcoesIncCPRP = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaIncCPRP.json'));
+            $retorno->opcoesIncPisPasep = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaIncPISPASEP.json'));
+            $retorno->opcoesCodSuspProcessoCp = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaCodSuspProcessoCp.json'));
+            $retorno->opcoesCodSuspIrrf = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaCodSuspIrrf.json'));
+            $retorno->opcoesCodSuspPisPasep = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabelaCodSuspPisPasep.json'));
+            /**
+             * Empregadores para envio do S1010
+             */
+            $where = ' r70_ativo is true ';
+            $codigoInstituicao = empty($parametros->instituicao)
+                ? db_getsession('DB_instit') : $parametros->instituicao;
+            $where .= " and r70_instit = {$codigoInstituicao}";
+            $campos = ' distinct z01_numcgm as cgm, z01_cgccpf as documento, z01_nome as nome,'
+                . ' r70_instit as instituicao';
+            $dao = new cl_rhlota();
+            $sql = $dao->sql_query_lota_cgm(null, $campos, 'z01_numcgm', $where);
+            $rs = db_query($sql);
 
-            foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncCP[] = array(
-                    'value' => $opcao->getCodigo(),
-                    'label' => $opcao->getDescricao()
-                );
+            if (!$rs) {
+                $mensagem = "Ocorreu um erro ao consultar os CGM vinculados as lotações.\nContate o suporte.";
+                throw new DBException($mensagem);
             }
 
-            $pergunta = new AvaliacaoPergunta(3000948);
-            $opcoes = $pergunta->getOpcoes();
-
-            foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncIRRF[] = array(
-                    'value' => $opcao->getCodigo(),
-                    'label' => $opcao->getDescricao()
-                );
+            if (pg_num_rows($rs) == 0) {
+                throw new Exception("Não existe empregadores cadastrados na base.");
             }
 
-            $pergunta = new AvaliacaoPergunta(3000949);
-            $opcoes = $pergunta->getOpcoes();
-
-            foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncFGTS[] = array(
-                    'value' => $opcao->getCodigo(),
-                    'label' => $opcao->getDescricao()
-                );
-            }
-
-            $pergunta = new AvaliacaoPergunta(4000297);
-            $opcoes = $pergunta->getOpcoes();
-
-            foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncCPRP[] = array(
-                    'value' => $opcao->getCodigo(),
-                    'label' => $opcao->getDescricao()
-                );
-            }
-
-            $pergunta = new AvaliacaoPergunta(4000298);
-            $opcoes = $pergunta->getOpcoes();
-            foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodTetoRemun[] = array(
-                    'value' => $opcao->getCodigo(),
-                    'label' => $opcao->getDescricao()
-                );
-            }
+            $retorno->empregadores = db_utils::getCollectionByRecord($rs);
 
             $sql = "select * from esocial.rubricasubgrupotce order by rh263_grupo asc, rh263_subgrupo asc";
             $rs = db_query($sql);
@@ -130,13 +113,15 @@ try {
                 $retorno->subgruposrubricas[] = $dado;
             }
 
-
             $retorno->opcoesNatureza = JSON::create()->parse(file_get_contents('arquivos/esocial/tabelas/tabela03.json'));
             break;
         case 'salvar':
             $rubrica = JSON::create()->parse($parametros->rubrica);
             $retorno->rubrica = $repository->persist($rubrica);
             $retorno->mensagem = 'Informações salvas com sucesso!';
+            if ($parametros->enviaEsocial == "true") {
+                $classe = ProcessamentoExternoService::processamentoExterno(Tipo::S1010, $rubrica);
+            }
             break;
         case 'excluir':
             $rubrica = new Rubrica($parametros->codigoRubrica);

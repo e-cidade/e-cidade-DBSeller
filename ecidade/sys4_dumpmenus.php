@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,11 +51,11 @@ include(modification("libs/db_usuariosonline.php"));
   <tr> 
     <td>
     <center>
-    <?
+    <?php
     $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
     $arquivo = $root."/"."tmp/atualiza_menus.txt";
     $fd = fopen($arquivo,"w");
-    fputs($fd,"<? \n");
+    fputs($fd,"<?php \n");
     fputs($fd,"//data : ".date("d/m/Y",db_getsession("DB_datausu"))."\n");
 	// itens dos menus 
 	$sql = "select * from db_itensmenu";
@@ -144,7 +144,7 @@ include(modification("libs/db_usuariosonline.php"));
 </table-->
 
 
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

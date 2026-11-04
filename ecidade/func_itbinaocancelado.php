@@ -68,7 +68,7 @@ $clrotulo->label("it18_nomelograd");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
 	db_app::load('estilos.css');
 	db_app::load('scripts.js, prototype.js, strings.js, DBViewPesquisaSetorQuadraLote.js, dbcomboBox.widget.js');
 ?>
@@ -81,7 +81,7 @@ $clrotulo->label("it18_nomelograd");
 			<?=$Lit01_guia?>
 		</td>
 		<td>
-    <?
+    <?php
     	db_input("it01_guia",10,$Iit01_guia,true,"text",4,"","chave_it16_guia");
 		?>
 		</td>
@@ -89,12 +89,12 @@ $clrotulo->label("it18_nomelograd");
 
 	<tr>
 		<td>
-		<?
+		<?php
     	db_ancora("<b>Matrícula :</b>",' js_matri(true); ',1);
 		?>
 		</td>
 		<td>
-		<?
+		<?php
 			db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
 			db_input('z01_nome',35,0,true,'text',3,"","z01_nomematri");
 		?>
@@ -106,15 +106,15 @@ $clrotulo->label("it18_nomelograd");
 			<?=$Lj34_setor?>
 		</td>
 		<td>
-		<?
+		<?php
 			db_input('j34_setor',10,$Ij34_setor,true,'text',1);
 		?>
 		<?=$Lj34_quadra?>
-		<?
+		<?php
 			db_input('j34_quadra',10,$Ij34_quadra,true,'text',1);
 		?>
 		<?=$Lj34_lote?>
-		<?
+		<?php
 			db_input('j34_lote',10,$Ij34_lote,true,'text',1);
 		?>
 		</td>
@@ -125,7 +125,7 @@ $clrotulo->label("it18_nomelograd");
       <b>Logradouro :</b>
     </td>
     <td>
-      <?
+      <?php
         db_input('logradouroid',40,'',true,'hidden',3);
         db_input('it18_nomelograd',40,$Iit18_nomelograd,true,'text',1);
       ?>
@@ -137,7 +137,7 @@ $clrotulo->label("it18_nomelograd");
       <b>Tipo :</b>
     </td>
     <td>
-      <?
+      <?php
         $aTipo = array( 't'=>'Todos',
                         'u'=>'Urbano',
                         'r'=>'Rural' );
@@ -152,13 +152,13 @@ $clrotulo->label("it18_nomelograd");
       <b>Periodo de :</b>
     </td>
     <td>
-      <?
+      <?php
         db_inputdata('dtIni', '', '', '', true, 'text', 1, '');
       ?>
       &nbsp;
       <b> a </b>
       &nbsp;
-      <?
+      <?php
         db_inputdata('dtFim', '', '', '', true, 'text', 1, '');
       ?>
     </td>
@@ -170,7 +170,7 @@ $clrotulo->label("it18_nomelograd");
 			<b>Situaçao:</b>
 		</td>
 		<td>
-		<?
+		<?php
 			$aSituacao = array( '1'=>'Todos',
 													'2'=>'Aberto',
 													'3'=>'Pago',
@@ -208,7 +208,7 @@ $clrotulo->label("it18_nomelograd");
 <table align="center">
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
         if( empty($situacao) && isset($lcancelaitbi) && $lcancelaitbi = 'cancela'){
           $situacao = 2;
@@ -374,7 +374,7 @@ function js_mostramatri1(chave,erro){
 var oPesquisa = new DBViewPesquisaSetorQuadraLote('pesquisa', 'oPesquisa');
     oPesquisa.show();
     oPesquisa.appendForm();
-<?
+<?php
 	echo "oPesquisa.setValues('{$setorCodigo}','{$quadra}','{$lote}');";
 ?>
 </script>

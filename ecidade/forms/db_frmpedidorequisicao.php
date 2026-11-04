@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,7 +45,7 @@ $clrotulo->label("descrdepto");
     <b>Código da Requisição: </b>
     </td>
     <td> 
-<?
+<?php
 db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"")
 ?>
     </td>
@@ -55,7 +55,7 @@ db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"")
        <?=@$Lm40_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('m40_data',@$m40_data_dia,@$m40_data_mes,@$m40_data_ano,true,'text',3,"")
 ?>
     </td>
@@ -65,7 +65,7 @@ db_inputdata('m40_data',@$m40_data_dia,@$m40_data_mes,@$m40_data_ano,true,'text'
        <?=@$Lm40_hora?>
     </td>
     <td> 
-<?
+<?php
 db_input('m40_hora',5,$Im40_hora,true,'text',3,"")
 ?>
     </td>
@@ -75,10 +75,10 @@ db_input('m40_hora',5,$Im40_hora,true,'text',3,"")
        <?=@$Lm40_login?>
     </td>
     <td> 
-<?
+<?php
 db_input('m40_login',10,$Im40_login,true,'text',3," ")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -88,11 +88,11 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lm42_depto?>
     </td>
     <td> 
-<?
+<?php
 db_input('m40_depto',5,$Im40_depto,true,'text',3,"");
 db_input('m91_depto',5,$Im40_depto,true,'text',3,"");
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
@@ -120,7 +120,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
             <th class='table_header'>Qtde Pendente</th>
             <th class='table_header'>Lote</th>
             <th class='table_header'>Qtde a Entregar</th>
-            <?
+            <?php
             if ($iTipoControleCustos > 0) {
              echo "<th class='table_header'>Centro De Custo</th>";
             }
@@ -146,7 +146,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
   -->
       <input name="incluir" type="button"  value="Efetuar Atendimento" onclick="return js_atendeRequisicao();" >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php
 db_input('atendimento',10,'',true,'hidden',3);
 db_input('m80_codigo',10,'',true,'hidden',3);
 db_input("valores",100,0,true,"hidden",3);
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_atendrequi.hide();
-  <?
+  <?php
 //  if($db_opcao!=1){
    // echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 //  }

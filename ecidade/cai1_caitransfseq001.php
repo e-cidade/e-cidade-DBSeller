@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -88,17 +88,17 @@ if(isset($incluir)){
  </tr>
  <tr> 
  <td height="90%" valign=top>
-   <?
+   <?php
     $tipo='';
     if (isset($notif)){
        $tipo='notif';
     } elseif (isset($efetuada)){
        $tipo='efetuada';
-       ?><iframe name=iframe_transf src="cai1_caitransf_iframe.php?consulta=<?=$tipo?>" width="100%" height="400" border=2 ></iframe><?
+       ?><iframe name=iframe_transf src="cai1_caitransf_iframe.php?consulta=<?=$tipo?>" width="100%" height="400" border=2 ></iframe><?php
     } elseif (isset($liberada)){
        $tipo='liberada';
     }  elseif (isset($novo)){
-       ?><iframe name=iframe_transf src="cai1_caitransfseq004.php" width="100%" height="400" border=2 ></iframe><?
+       ?><iframe name=iframe_transf src="cai1_caitransfseq004.php" width="100%" height="400" border=2 ></iframe><?php
 
     }  
    ?>
@@ -109,7 +109,7 @@ if(isset($incluir)){
 
 
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -121,7 +121,7 @@ function js_lanca_transf(){
 
 </script>
 </html>
-<?
+<?php
 if(isset($incluir)){
   if($clcaitransfseq->erro_status=="0"){
     $clcaitransfseq->erro(true,false);

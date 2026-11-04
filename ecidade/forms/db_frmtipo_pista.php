@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltipo_pista->rotulo->label();
        <?=@$Ltr03_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr03_id',5,$Itr03_id,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('tr03_id',5,$Itr03_id,true,'text',3,"")
        <?=@$Ltr03_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr03_sigla',5,$Itr03_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('tr03_sigla',5,$Itr03_sigla,true,'text',$db_opcao,"")
        <?=@$Ltr03_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr03_descr',35,$Itr03_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipo_pista.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

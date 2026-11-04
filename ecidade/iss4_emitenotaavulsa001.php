@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -155,12 +155,12 @@ if (isset($post->reemitenota)){
          <table>
            <tr>
              <td>
-              <?
+              <?php
               db_ancora(@$Lq51_numnota,"js_pesquisaq63_issnotaavulsa(true);",$db_opcao);
               ?>
               </td>
               <td> 
-              <?
+              <?php
               db_input('q63_issnotaavulsa',10,$Iq63_issnotaavulsa,true,'hidden',$db_opcao,"onchange='js_pesquisaq63_issnotaavulsa(false);'");
               db_input('q51_numnota',10,$Iq51_numnota,true,'text',3,"onchange='js_pesquisaq63_issnotaavulsa(false);'");
               db_input('z01_nome',40,'',true,'text',3,'')
@@ -179,7 +179,7 @@ if (isset($post->reemitenota)){
   </center>
   </body>
 </html>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

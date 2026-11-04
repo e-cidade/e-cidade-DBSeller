@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -38,8 +38,9 @@ $oGet  = db_utils::postMemory($_GET,0);
 db_postmemory($HTTP_POST_VARS);
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $clsolicitaregistropreco = new cl_solicitaregistropreco;
-$clsolicitaregistropreco->rotulo->label("pc54_sequencial");
-$clsolicitaregistropreco->rotulo->label("pc54_sequencial");
+$clsolicita = new cl_solicita;
+$clsolicitaregistropreco->rotulo->label("pc54_solicita");
+$clsolicita->rotulo->label("pc10_data");
 ?>
 <html>
 <head>
@@ -54,29 +55,33 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
         <table width="35%" border="0" align="center" cellspacing="0">
 	     <form name="form2" method="post" action="" >
           <tr>
-            <td width="4%" align="right" nowrap title="<?=$Tpc54_sequencial?>">
-              <?=$Lpc54_sequencial?>
+            <td width="4%" align="right" nowrap title="<?=$Tpc54_solicita?>">
+                <?= $Lpc54_solicita ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
-		       db_input("pc54_sequencial",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_sequencial");
+              <?php
+		       db_input("pc54_solicita",10,$Ipc54_solicita,true,"text",4,"","chave_pc54_solicita");
 		       ?>
             </td>
           </tr>
+            <tr>
+             <td width="4%" align="right" nowrap title="<?= $Tpc10_data ?>">
+                 <?= $Lpc10_data ?>
+             </td>
+             <td width="96%" align="left" nowrap>
+                 <?php
+                 if (!empty($chave_pc10_data)) {
+                     list($dia, $mes, $ano) = explode('/', $chave_pc10_data);
+                 }
+
+                 db_inputdata("pc10_data",@$dia, @$mes, @$ano, true, "text", 4, "", "chave_pc10_data");
+                 ?>
+             </td>
+            </tr>
           <tr>
-            <td width="4%" align="right" nowrap title="<?=$Tpc54_sequencial?>">
-             <b>Solicitação:</b>
-            </td>
-            <td width="96%" align="left" nowrap>
-              <?
-		       db_input("pc54_solicita",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_solicita");
-		       ?>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" align="center">
+            <td colspan="2" style="min-width:200px">
               <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
-              <input name="limpar" type="reset" id="limpar" value="Limpar" >
+              <input name="limpar" type="button" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_solicitaregistropreco.hide();">
              </td>
           </tr>
@@ -86,7 +91,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $sWhereInstituicao = "";
 
       if (!empty($oGet->lFiltraInstituicao) && $oGet->lFiltraInstituicao == true) {
@@ -183,30 +188,39 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
         $sWhere  = $sWhere.$sWhereInstituicao;
 
 
-        if(isset($chave_pc54_sequencial) && (trim($chave_pc54_sequencial)!="") ){
-	         $sql = $clsolicitaregistropreco->sql_query_solicitaanulada(null,$campos,
-	                                                   "pc54_sequencial",
-	                                                   "pc54_sequencial= {$chave_pc54_sequencial} and {$sWhere}"
-	                                                   );
-        }else if(isset($chave_pc54_solicita) && (trim($chave_pc54_solicita)!="") ){
-
-            if(!empty($sWhere)) {
-              $and= " and ";
-            }
-
-	         $sql = $clsolicitaregistropreco->sql_query_solicitaanulada("",$campos,
-	                                                    "pc54_solicita",
-	                                                    "pc54_solicita = {$chave_pc54_solicita}
-	                                                   {$and} {$sWhere}"
-	                                                   );
-        }else{
-           $sql = $clsolicitaregistropreco->sql_query_solicitaanulada("",$campos,"pc54_sequencial","{$sWhere}");
+        $condicoes = [];
+        if (!empty($chave_pc54_solicita)) {
+            $condicoes[] = "pc54_solicita = {$chave_pc54_solicita}";
         }
+
+        if (!empty($chave_pc10_data)) {
+            $condicoes[] = "pc10_data = '{$chave_pc10_data}'";
+        }
+
+        if (!empty($departamento)) {
+            $condicoes[] = 'pc10_depto = ' . db_getsession('DB_coddepto');
+        }
+
+        if (!empty($trazcomitens)) {
+            $condicoes[] = "
+                EXISTS (
+                    SELECT 1 FROM solicitem
+                    WHERE pc11_numero = pc10_numero
+                )";
+        }
+
+        if (!empty($condicoes)) {
+            $condicoes = implode(' AND ', $condicoes);
+            $sWhere .= "AND {$condicoes}" ;
+        }
+
+        $sql = $clsolicitaregistropreco->sql_query_solicitaanulada(
+             "",
+             $campos,
+             "pc54_solicita DESC",
+             $sWhere
+         );
         $repassa = array();
-
-        if(isset($chave_pc54_sequencial)){
-          $repassa = array("chave_pc54_sequencial"=>$chave_pc54_sequencial,"chave_pc54_solicita"=>$chave_pc54_solicita);
-        }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {
@@ -228,17 +242,6 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
 </table>
 </body>
 </html>
-<?
-if(!isset($pesquisa_chave)){
-  ?>
-  <script>
-  </script>
-  <?
-}
-?>
-<script>
-js_tabulacaoforms("form2","chave_pc54_sequencial",true,1,"chave_pc54_sequencial",true);
-</script>
 <script type="text/javascript">
 (function() {
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');

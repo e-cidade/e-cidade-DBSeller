@@ -52,7 +52,7 @@ $aMesCompetencia = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 1
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, prototype.js, strings.js, dates.js");
 db_app::load("estilos.css");
 ?>
@@ -67,7 +67,7 @@ db_app::load("estilos.css");
         	<tr>
         		<td nowrap="nowrap"><b>Benefício:</b></td>
             <td nowrap="nowrap" colspan="2">
-            <?
+            <?php
              db_selectrecord('as08_tipobeneficio', $rsBeneficio, true, 1);
             ?>
             </td>

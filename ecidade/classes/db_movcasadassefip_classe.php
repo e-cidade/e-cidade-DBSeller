@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,19 +48,19 @@ class cl_movcasadassefip {
    var $r67_reto = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r67_anousu = float4 = Ano do Exercício 
-                 r67_mesusu = float4 = Mês do Exercício 
-                 r67_afast = varchar(2) = Código do Afastamento. 
-                 r67_reto = varchar(2) = Código do Retorno 
+                 r67_anousu = float4 = Ano do Exercício
+                 r67_mesusu = float4 = Mês do Exercício
+                 r67_afast = varchar(2) = Código do Afastamento.
+                 r67_reto = varchar(2) = Código do Retorno
                  ";
    //funcao construtor da classe
-   function cl_movcasadassefip() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("movcasadassefip");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_movcasadassefip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r67_anousu = ($this->r67_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r67_anousu"]:$this->r67_anousu);
        $this->r67_mesusu = ($this->r67_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r67_mesusu"]:$this->r67_mesusu);
@@ -83,7 +83,7 @@ class cl_movcasadassefip {
      }
    }
    // funcao para inclusao
-   function incluir ($r67_anousu,$r67_mesusu,$r67_afast,$r67_reto){
+   public function incluir ($r67_anousu,$r67_mesusu,$r67_afast,$r67_reto){
       $this->atualizacampos();
        $this->r67_anousu = $r67_anousu;
        $this->r67_mesusu = $r67_mesusu;
@@ -122,16 +122,16 @@ class cl_movcasadassefip {
        return false;
      }
      $sql = "insert into movcasadassefip(
-                                       r67_anousu 
-                                      ,r67_mesusu 
-                                      ,r67_afast 
-                                      ,r67_reto 
+                                       r67_anousu
+                                      ,r67_mesusu
+                                      ,r67_afast
+                                      ,r67_reto
                        )
                 values (
-                                $this->r67_anousu 
-                               ,$this->r67_mesusu 
-                               ,'$this->r67_afast' 
-                               ,'$this->r67_reto' 
+                                $this->r67_anousu
+                               ,$this->r67_mesusu
+                               ,'$this->r67_afast'
+                               ,'$this->r67_reto'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -174,7 +174,7 @@ class cl_movcasadassefip {
      return true;
    }
    // funcao para alteracao
-   function alterar ($r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null) {
+   public function alterar ($r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null) {
       $this->atualizacampos();
      $sql = " update movcasadassefip set ";
      $virgula = "";
@@ -296,7 +296,7 @@ class cl_movcasadassefip {
      }
    }
    // funcao para exclusao
-   function excluir ($r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$dbwhere=null) {
+   public function excluir ($r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r67_anousu,$r67_mesusu,$r67_afast,$r67_reto));
      }else{
@@ -381,7 +381,7 @@ class cl_movcasadassefip {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -403,10 +403,10 @@ class cl_movcasadassefip {
       }
      return $result;
    }
-   function atualiza_incluir (){
+   public function atualiza_incluir (){
   	 $this->incluir($this->r67_anousu,$this->r67_mesusu,$this->r67_afast,$this->r67_reto);
    }
-   function sql_query ( $r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -454,7 +454,7 @@ class cl_movcasadassefip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,10 +463,10 @@ class cl_movcasadassefip {
      }
      return $sql;
   }
-   function sql_query_file ( $r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $r67_anousu=null,$r67_mesusu=null,$r67_afast=null,$r67_reto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_movcasadassefip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

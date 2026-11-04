@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("cc04_custoplano");
        <?=@$Lcc07_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc07_sequencial',10,$Icc07_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc07_custocriteriorateio?>">
-       <?
+       <?php
        db_ancora(@$Lcc07_custocriteriorateio,"js_pesquisacc07_custocriteriorateio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc07_custocriteriorateio',10,$Icc07_custocriteriorateio,true,'text',$db_opcao," onchange='js_pesquisacc07_custocriteriorateio(false);'")
 ?>
-       <?
+       <?php
 db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc07_custoplanoanalitica?>">
-       <?
+       <?php
        db_ancora(@$Lcc07_custoplanoanalitica,"js_pesquisacc07_custoplanoanalitica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc07_custoplanoanalitica',10,$Icc07_custoplanoanalitica,true,'text',$db_opcao," onchange='js_pesquisacc07_custoplanoanalitica(false);'")
 ?>
-       <?
+       <?php
 db_input('cc04_custoplano',10,$Icc04_custoplano,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('cc04_custoplano',10,$Icc04_custoplano,true,'text',3,'')
        <?=@$Lcc07_quantidade?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc07_quantidade',10,$Icc07_quantidade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('cc07_quantidade',10,$Icc07_quantidade,true,'text',$db_opcao,"")
        <?=@$Lcc07_percentual?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc07_percentual',10,$Icc07_percentual,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoplanocriterio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ if(isset($alterar)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Situa��o do Pedido de TFD</b></legend>
-	      <?
+	      <?php
          require_once(modification("forms/db_frmtfd_situacaopedidotfd.php"));
         ?>
       </fieldset>
@@ -108,7 +108,7 @@ if(isset($alterar)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -116,7 +116,7 @@ if(isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","tf28_i_situacao",true,1,"tf28_i_situacao",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar)) {
 
   if($oDaotfd_situacaopedidotfd->erro_status == '0') {

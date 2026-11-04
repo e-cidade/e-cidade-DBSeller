@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(isset($alterar)){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <fieldset style="width:95%"><legend><b>Vínculo com o SUS</b></legend>
-     <?
+     <?php
      include(modification("forms/db_frmsau_vinculosus.php"));
      ?>
     </fieldset>
@@ -72,7 +72,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($clsau_vinculosus->erro_status=="0"){
     $clsau_vinculosus->erro(true,false);

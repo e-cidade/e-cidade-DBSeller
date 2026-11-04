@@ -80,7 +80,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		              <b>Nome Variável :</b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
       					    db_input("nomeVar",20,"",true,"text",1,"");
 		              ?>
 		            </td>
@@ -90,7 +90,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		              <b>Descrição :</b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 		              	db_input("descrVar",20,"",true,"text",1,"");
 		              ?>
 		            </td>
@@ -100,7 +100,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		              <b>Tipo de Dado :</b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 
                   $aTipos = array("0"       => "Selecione o tipo",
                                   "varchar" => "Texto Livre",
@@ -120,7 +120,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		              <b>Valor Padrão :</b>
 		            </td>
 		            <td>
-		              <?
+		              <?php
 		                db_input("valorVar",20,"",true,"text",1,"");
 		              ?>
 		            </td>
@@ -131,7 +131,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 		              <b>Sql :</b>
 		            </td>
 		            <td>
-                             <?
+                             <?php
                               db_textarea('sql',5, 30,'',true,'text',2,"")
 		              ?>
 		            </td>

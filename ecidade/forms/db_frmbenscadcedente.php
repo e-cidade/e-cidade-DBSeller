@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,22 +43,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lt04_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('t04_sequencial',4,$It04_sequencial,true,'text',3,"")
 			?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt04_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lt04_numcgm,"js_pesquisat04_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 			db_input('t04_numcgm',4,$It04_numcgm,true,'text',$db_opcao," onchange='js_pesquisat04_numcgm(false);'")
 			?>
-	    <?
+	    <?php
 			db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 	    ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benscadcedente.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

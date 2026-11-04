@@ -51,7 +51,7 @@ $estiloPadrao = !empty($_GET['codigo_visao']) ? ' display: none;': "";
 ?>
 <style>
     table#atributosColunas  td {
-        white-space: nowrap
+        white-space: nowrap;
         border:1px solid black;
     }
 </style>

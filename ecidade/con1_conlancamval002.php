@@ -1,7 +1,7 @@
 <?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -86,8 +86,6 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                         $db_opcao = 2;
                         $db_botao = true;
                     } else {
-
-
                         db_inicio_transacao();
 
                         /*
@@ -98,7 +96,6 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                          */
 
                         try {
-
                             $options = array('ignorar_conta_corrente' => true);
                             /* estorno lançamento original */
                             $campos = 'conlancamval.*, c72_complem, c53_coddoc';
@@ -139,9 +136,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                             $stdDadosInclusao->c69_credito = $lancamentoAuxiliarEstorno->getContaDebito();
                             $atributosInclusao = DBContaCorrenteAtributos::getAtributosLancamento($post->c70_codlan, $anousu);
                             foreach ($atributosInclusao as $indice => $atributo) {
-
                                 if (!empty($atributo)) {
-
                                     $sinalSalvar = $atributo->sinal === 'D' ? 'C' : 'D';
                                     $atributoDebito = $atributo->sinal === 'D';
                                     $recurso = null;
@@ -156,14 +151,24 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                                                 $recurso = $dadosAtributos->valor;
                                             }
                                         }
-                                        DBContaCorrenteAtributos::salvarAtributos($stdDadosInclusao,
-                                            $dadosContaCorrente->codigo, $atributosIndexados, $atributoDebito, $sinalSalvar);
+
+                                        DBContaCorrenteAtributos::salvarAtributos(
+                                            $stdDadosInclusao,
+                                            $dadosContaCorrente->codigo,
+                                            $atributosIndexados,
+                                            $atributoDebito,
+                                            $sinalSalvar
+                                        );
                                     }
-                                    DBContaCorrenteAtributos::salvarRecursoLancamento($stdDadosInclusao, $recurso,
-                                        $atributoDebito, $sinalSalvar);
+
+                                    DBContaCorrenteAtributos::salvarRecursoLancamento(
+                                        $stdDadosInclusao,
+                                        $recurso,
+                                        $atributoDebito,
+                                        $sinalSalvar
+                                    );
                                 }
                             }
-
 
                             /* novo lancamento */
                             $lancamentoAuxiliar = new LancamentoAuxiliarRetificacao();
@@ -189,18 +194,18 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                             }
                             $stdDadosConlancamVal = db_utils::fieldsMemory($resBuscaConlancamval, 0);
 
-
                             $atributosDebito = JSON::create()->parse(
-                                str_replace("\\", "", $_POST['atributosDebito']));
+                                str_replace("\\", "", $_POST['atributosDebito'])
+                            );
                             $atributosCredito = JSON::create()->parse(
-                                str_replace("\\", "",$_POST['atributosCredito']));
+                                str_replace("\\", "",$_POST['atributosCredito'])
+                            );
 
                             $atributos = array($atributosDebito, $atributosCredito);
                             foreach ($atributos as $indice => $atributo) {
+                                $atributoDebito = $atributo[0]->sinal === 'D';
 
-                                $atributoDebito = $indice === 0;
                                 if (!empty($atributo)) {
-
                                     $recurso = null;
                                     foreach ($atributo as $stdDadosAtributo) {
                                         foreach ($stdDadosAtributo->conta_corrente as $dadosContaCorrente) {
@@ -210,16 +215,25 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                                             $atributosIndexados = array();
                                             foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                                 $atributosIndexados[$dadosAtributos->sigla] = $dadosAtributos->valor;
-                                                if ($dadosAtributos->sigla === "FR") {
+                                                if ($dadosAtributos->sigla === "DDR") {
                                                     $recurso = $dadosAtributos->valor;
                                                 }
                                             }
-                                            DBContaCorrenteAtributos::salvarAtributos($stdDadosConlancamVal,
-                                                $dadosContaCorrente->codigo, $atributosIndexados, $atributoDebito);
+
+                                            DBContaCorrenteAtributos::salvarAtributos(
+                                                $stdDadosConlancamVal,
+                                                $dadosContaCorrente->codigo,
+                                                $atributosIndexados,
+                                                $atributoDebito
+                                            );
                                         }
                                     }
-                                    DBContaCorrenteAtributos::salvarRecursoLancamento($stdDadosConlancamVal, $recurso,
-                                        $atributoDebito);
+
+                                    DBContaCorrenteAtributos::salvarRecursoLancamento(
+                                        $stdDadosConlancamVal,
+                                        $recurso,
+                                        $atributoDebito
+                                    );
                                 }
                             }
 
@@ -254,12 +268,6 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
                             }
 
                             $erro = false;
-//                            $erro = true;
-
-
-
-
-
                             $erro_msg = 'Lançamento executado com sucesso.';
                         } catch (Exception $e) {
                             $erro_msg = $e->getMessage();
@@ -297,17 +305,18 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script type="text/javascript" src="scripts/classes/AtributosLancamento.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
+<body >
 
 
-<center>
+<div class="container">
     <?PHP
     if (USE_PCASP) {
         require_once(modification("forms/db_frmconlancamval.php"));
@@ -315,7 +324,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
         require_once(modification("forms/db_frmconlancamval_old.php"));
     }
     ?>
-</center>
+</div>
 <?PHP
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
     db_getsession("DB_instit"));

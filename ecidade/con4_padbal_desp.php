@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,22 +25,19 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
+use App\Domain\Financeiro\Orcamento\Models\Recurso as RecursoAlias;
 use ECidade\Financeiro\Orcamento\Registry\ComplementoRegistry;
 
 class bal_desp
 {
-
-    var $arq = null;
+    protected $arq = null;
+    protected $header;
 
     protected $tipoRaterio = 0;
 
     function __construct($header)
     {
-        umask(74);
-        $this->arq = fopen("tmp/BAL_DESP.TXT", 'w+');
-        fputs($this->arq, $header);
-        fputs($this->arq, "\r\n");
+        $this->header = $header;
     }
 
     /**
@@ -61,6 +58,52 @@ class bal_desp
 
     function processa($instit = 1, $data_ini = "", $data_fim = "", $orgaotrib = null, $subelemento = "")
     {
+        $anoSessao = db_getsession("DB_anousu");
+        $sql = "
+        select count(*),
+                array_to_string(array_agg(o58_coddot), ', ') as dotacoes,
+                o58_orgao,
+                o58_unidade,
+                o58_subfuncao,
+                o58_projativ,
+                o58_codigo,
+                o58_funcao,
+                o58_programa,
+                o58_codele,
+                o58_instit,
+                o58_localizadorgastos,
+                o58_concarpeculiar,
+                o58_esferaorcamentaria
+           from orcdotacao
+          where o58_anousu = {$anoSessao}
+         group by o58_orgao,
+                o58_unidade,
+                o58_subfuncao,
+                o58_projativ,
+                o58_codigo,
+                o58_funcao,
+                o58_programa,
+                o58_codele,
+                o58_instit,
+                o58_localizadorgastos,
+                o58_concarpeculiar,
+                o58_esferaorcamentaria
+         having count(*) > 1
+        ";
+        $result = pg_query($sql);
+
+        if (pg_num_rows($result) > 0) {
+            echo "<div style='color:red'><br><b>DOTACOES DUPLICADAS:</b><br>";
+            while ($row = pg_fetch_object($result)) {
+                echo "<p>$row->dotacoes</p>";
+            }
+            echo '</div>';
+        }
+        // emissão antiga
+        umask(74);
+        $this->arq = fopen("tmp/BAL_DESP.TXT", 'w+');
+        fputs($this->arq, $this->header);
+        fputs($this->arq, "\r\n");
         global $o58_codigo, $o58_orgao, $o58_unidade, $o58_funcao, $o58_subfuncao, $o58_programa, $o58_projativ, $o58_elemento, $o58_codele;
         global $dot_ini, $suplementado_acumulado, $reduzido_acumulado, $empenhado, $anulado, $liquidado, $pago, $o58_especificacao;
         global $contador, $o58_coddot, $conn, $valor_suplementado_recurso, $valor_reduzido_recurso, $o58_complemento;
@@ -78,87 +121,7 @@ class bal_desp
         $origem = "B";
         $opcao = 3;
 
-        $anoSessao = db_getsession("DB_anousu");
-        $sql_teste = "
-         select orcdotacao.o58_coddot,
-                (select count(*)
-                   from conlancamdot
-                  where conlancamdot.c73_data between '$data_ini' and '$data_fim'
-                    and conlancamdot.c73_coddot = orcdotacao.o58_coddot) as quant,
-                orcdotacao.o58_orgao,
-                orcdotacao.o58_unidade,
-                orcdotacao.o58_funcao,
-                orcdotacao.o58_subfuncao,
-                orcdotacao.o58_programa,
-                orcdotacao.o58_projativ,
-                orcdotacao.o58_codele,
-                orcdotacao.o58_codigo,
-                orcdotacao.o58_valor
-         from ( select o58_orgao,
-                       o58_unidade,
-                       o58_funcao,
-                       o58_subfuncao,
-                       o58_programa,
-                       o58_projativ,
-                       o58_codele,
-                       o58_codigo,
-                       count(*)
-                  from orcdotacao
-                  where o58_anousu = " . $anoSessao . "
-                  group by o58_orgao,
-                           o58_unidade,
-                           o58_funcao,
-                           o58_subfuncao,
-                           o58_programa,
-                           o58_projativ,
-                           o58_codele,
-                           o58_codigo
-                    having count(*) > 1
-                ) as x
-           inner join orcdotacao on orcdotacao.o58_orgao = x.o58_orgao
-                          and orcdotacao.o58_unidade = x.o58_unidade
-                          and orcdotacao.o58_funcao = x.o58_funcao
-                          and orcdotacao.o58_subfuncao = x.o58_subfuncao
-                          and orcdotacao.o58_programa = x.o58_programa
-                          and orcdotacao.o58_projativ = x.o58_projativ
-                          and orcdotacao.o58_codele = x.o58_codele
-                          and orcdotacao.o58_codigo = x.o58_codigo
-           where orcdotacao.o58_anousu = " . $anoSessao . "
-           order by orcdotacao.o58_orgao, orcdotacao.o58_unidade, orcdotacao.o58_funcao, orcdotacao.o58_subfuncao,
-           orcdotacao.o58_programa, orcdotacao.o58_projativ, orcdotacao.o58_codele, orcdotacao.o58_codigo
-        ";
-        $result_teste = db_query($sql_teste) or die($sql_teste);
-        //db_criatabela($result_teste);exit;
-        if (pg_numrows($result_teste) > 0) {
-            $dotacoes = "";
-
-            db_fieldsmemory($result_teste, 0);
-            $ult_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
-
-            for ($x = 0; $x < pg_numrows($result_teste); $x++) {
-                db_fieldsmemory($result_teste, $x);
-
-                $atu_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
-
-                if ($ult_estrut === $atu_estrut) {
-                    //	  echo "igual - ultimo: $ult_estrut - atu: $atu_estrut <br><br><br><br><br>";
-                } else {
-                    //	  echo "dif - ultimo: $ult_estrut - atu: $atu_estrut <br><br><br><br><br>";
-                    //          $dotacoes .= "<br> === <br>";
-                    $dotacoes .= "<br>";
-                }
-
-                $dotacoes .= $o58_coddot . " - ";
-
-                $ult_estrut = formatar($o58_orgao, 2, 'n') . formatar($o58_unidade, 2, 'n') . formatar($o58_funcao, 2, 'n') . formatar($o58_subfuncao, 3, 'n') . formatar($o58_programa, 4, 'n') . formatar($o58_projativ, 5, 'n') . formatar($o58_codele, 10, 'n') . formatar($o58_codigo, 4, 'n');
-
-            }
-            echo "<font color='red'><br><b>DOTACOES DUPLICADAS:</b><br>$dotacoes<br></font>";
-
-        }
-
         $sele_work = ' w.o58_instit in (' . str_replace('-', ', ', $instit) . ') ';
-
         $anousu = db_getsession("DB_anousu");
         db_query("begin");
         db_query("create temp table t as select * from orcdotacao where o58_anousu = {$anousu}");
@@ -187,6 +150,7 @@ class bal_desp
               o58_elemento varchar,
               o58_codigo integer,
               recurso varchar,
+              codigo_siconfi varchar,
               o58_complemento integer,
               dot_ini numeric(15,2)default 0,
               reduzido_acumulado numeric(15,2)default 0,
@@ -196,9 +160,12 @@ class bal_desp
               pago numeric(15,2)default 0,
               valor_suplementado_recurso numeric(15,2) default 0,
               valor_reduzido_recurso numeric(15,2) default 0,
-              transferencia numeric(15,2)default 0,
-              transposicao numeric(15,2)default 0,
-              remanejamento numeric(15,2)default 0
+              transferencia numeric(15,2) default 0,
+              transposicao numeric(15,2) default 0,
+              remanejamento numeric(15,2) default 0,
+              sup numeric(15,2) default 0,
+              cre numeric(15,2) default 0,
+              esp numeric(15,2) default 0
         )";
 
         $sqlDadosComplemento = <<<SQL
@@ -212,16 +179,17 @@ select o58_orgao,
        o58_coddot,
        o15_codigo as o58_codigo,
        o15_recurso as recurso,
+       codigo_siconfi,
        o200_sequencial as complemento,
        sum(0)                                                                                 as dot_ini,
-       sum(case when c53_tipo = 10 then c70_valor end)                                        as empenhado,
-       sum(case when c53_tipo = 11 then c70_valor end)                                        as anulado,
-       sum(case when c53_tipo = 20 then c70_valor when c53_tipo = 21 then c70_valor * -1 end) as liquidado,
-       sum(case when c53_tipo = 30 then c70_valor when c53_tipo = 31 then c70_valor * -1 end) as pago,
-       sum(case when c53_tipo = 10 then c70_valor end)                                        as empenhado_acumulado,
-       sum(case when c53_tipo = 11 then c70_valor end)                                        as anulado_acumulado,
-       sum(case when c53_tipo = 20 then c70_valor when c53_tipo = 21 then c70_valor * -1 end) as liquidado_acumulado,
-       sum(case when c53_tipo = 30 then c70_valor when c53_tipo = 31 then c70_valor * -1 end) as pago_acumulado,
+       coalesce(sum(case when c53_tipo = 10 then c70_valor end), 0)                                        as empenhado,
+       coalesce(sum(case when c53_tipo = 11 then c70_valor end), 0)                                        as anulado,
+       coalesce(sum(case when c53_tipo = 20 then c70_valor when c53_tipo = 21 then c70_valor * -1 end), 0) as liquidado,
+       coalesce(sum(case when c53_tipo = 30 then c70_valor when c53_tipo = 31 then c70_valor * -1 end), 0) as pago,
+       coalesce(sum(case when c53_tipo = 10 then c70_valor end), 0)                                        as empenhado_acumulado,
+       coalesce(sum(case when c53_tipo = 11 then c70_valor end), 0)                                        as anulado_acumulado,
+       coalesce(sum(case when c53_tipo = 20 then c70_valor when c53_tipo = 21 then c70_valor * -1 end), 0) as liquidado_acumulado,
+       coalesce(sum(case when c53_tipo = 30 then c70_valor when c53_tipo = 31 then c70_valor * -1 end), 0) as pago_acumulado,
        sum(0)                                                                                 as suplementado_acumulado,
        sum(0)                                                                                 as reduzido_acumulado
       from origemcomplementorecurso
@@ -240,6 +208,7 @@ select o58_orgao,
          inner join orcelemento oe on oe.o56_codele = o58_codele
                                   and oe.o56_anousu = o58_anousu
          inner join orctiporec otr on o15_codigo = o206_recurso
+         inner join fonterecurso on fonterecurso.orctiporec_id = o15_codigo and fonterecurso.exercicio = e60_anousu
          left join orcamento.complementofonterecurso on o200_sequencial = o15_complemento
          inner join conlancamdoc on c71_codlan = c75_codlan
          inner join conlancam on c70_codlan = c75_codlan
@@ -259,52 +228,52 @@ group by o58_orgao,
          o58_coddot,
          o15_codigo,
          o15_recurso,
+         codigo_siconfi,
          o200_sequencial
 SQL;
-
-
-//echo "<br><br>$sqlDadosComplemento<br><br>"; die();
-
 
         db_query($sqlCriarTabela);
         $consultaBalver = db_query($sql);
         $totalRegistros = pg_num_rows($consultaBalver);
 
         $sqlSuplementacao = "
-                              select o58_orgao,
-                                     o58_unidade,
-                                     o58_funcao,
-                                     o58_subfuncao,
-                                     o58_programa,
-                                     o58_projativ,
-                                     o58_codele as o58_elemento,
-                                     o58_coddot,
-                                     o58_codigo,
-                                     sum(case when c79_codlan is not null and o46_tiposup = 1014 and c71_coddoc = o48_coddocsup
-                                                   then c70_valor
-                                              else 0
-                                         end) as transferencia,
-                                     sum(case when c79_codlan is not null and o46_tiposup = 1016 and c71_coddoc = o48_coddocsup
-                                                   then c70_valor
-                                              else 0
-                                         end) as transposicao,
-                                     sum(case when c79_codlan is not null and o46_tiposup = 1015 and c71_coddoc = o48_coddocsup
-                                                   then c70_valor
-                                              else 0
-                                         end) as remanejamento
-                              from orcdotacao
-                                   inner join conlancamdot  on conlancamdot.c73_anousu = orcdotacao.o58_anousu
-                                                           and conlancamdot.c73_coddot = orcdotacao.o58_coddot
-                                   inner join conlancam     on conlancam.c70_codlan = conlancamdot.c73_codlan
-                                   inner join conlancamsup  on conlancamsup.c79_codlan = conlancam.c70_codlan
-                                   inner join conlancamdoc  on conlancamdoc.c71_codlan = conlancam.c70_codlan
-                                   inner join orcsuplem     on orcsuplem.o46_codsup = conlancamsup.c79_codsup
-                                   inner join orcsuplemtipo on orcsuplemtipo.o48_tiposup = orcsuplem.o46_tiposup
-                              where o58_coddot = #dotacao#
-                                and o58_anousu = {$anousu}
-                                and c70_data between '{$data_ini}' and '{$data_fim}'
-                              group by o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa,
-                                       o58_projativ, o58_elemento, o58_coddot, o58_codigo ;
+          select o58_orgao,
+                 o58_unidade,
+                 o58_funcao,
+                 o58_subfuncao,
+                 o58_programa,
+                 o58_projativ,
+                 o58_codele as o58_elemento,
+                 o58_coddot,
+                 o58_codigo,
+                 coalesce(sum(
+                     case when c79_codlan is not null and o46_tiposup = 1014 and c71_coddoc = o48_coddocsup
+                               then c70_valor
+                          else 0
+                 end), 0) as transferencia,
+                 coalesce(sum(
+                     case when c79_codlan is not null and o46_tiposup = 1016 and c71_coddoc = o48_coddocsup
+                           then c70_valor
+                      else 0
+                 end), 0) as transposicao,
+                 coalesce(sum(
+                     case when c79_codlan is not null and o46_tiposup = 1015 and c71_coddoc = o48_coddocsup
+                               then c70_valor
+                          else 0
+                 end), 0) as remanejamento
+          from orcdotacao
+               inner join conlancamdot  on conlancamdot.c73_anousu = orcdotacao.o58_anousu
+                                       and conlancamdot.c73_coddot = orcdotacao.o58_coddot
+               inner join conlancam     on conlancam.c70_codlan = conlancamdot.c73_codlan
+               inner join conlancamsup  on conlancamsup.c79_codlan = conlancam.c70_codlan
+               inner join conlancamdoc  on conlancamdoc.c71_codlan = conlancam.c70_codlan
+               inner join orcsuplem     on orcsuplem.o46_codsup = conlancamsup.c79_codsup
+               inner join orcsuplemtipo on orcsuplemtipo.o48_tiposup = orcsuplem.o46_tiposup
+          where o58_coddot = #dotacao#
+            and o58_anousu = {$anousu}
+            and c70_data between '{$data_ini}' and '{$data_fim}'
+          group by o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa,
+                   o58_projativ, o58_elemento, o58_coddot, o58_codigo ;
         ";
 
         for ($i = 0; $i < $totalRegistros; $i++) {
@@ -314,10 +283,11 @@ SQL;
                 continue;
             }
 
-            $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($linha->o58_codigo);
-            $fonteRecurso = $recurso->getRecurso();
+            $recurso = RecursoAlias::where('o15_codigo', $linha->o58_codigo)->first();
+            $codigoSiconfi = $recurso->fonteRecurso($anousu)->codigo_siconfi;
+            $fonteRecurso = $recurso->o15_recurso;
 
-            $complemento = ComplementoRegistry::get($recurso->getComplemento());
+            $complemento = ComplementoRegistry::get($recurso->o15_complemento);
             $idComplemento = $complemento->isTribunal() ? $complemento->getCodigo() : 0;
 
             if (empty($idComplemento)) {
@@ -360,6 +330,7 @@ SQL;
                         "o58_elemento" => $dadosEmpenho->o58_elemento,
                         "o58_codigo" => $dadosEmpenho->o58_codigo,
                         "recurso" => $dadosEmpenho->recurso,
+                        "codigo_siconfi" => $dadosEmpenho->codigo_siconfi,
                         "o58_complemento" => $dadosEmpenho->complemento,
                         "dot_ini" => $dotacaoInicial,
                         "reduzido_acumulado" => $dadosEmpenho->reduzido_acumulado,
@@ -413,6 +384,7 @@ SQL;
                 "o58_elemento" => $linha->o58_elemento,
                 "o58_codigo" => $linha->o58_codigo,
                 "recurso" => $fonteRecurso,
+                "codigo_siconfi" => $codigoSiconfi,
                 "o58_complemento" => $idComplemento,
                 "dot_ini" => $dotacaoInicial,
                 "reduzido_acumulado" => $linha->reduzido_acumulado,
@@ -428,67 +400,11 @@ SQL;
             ];
 
             pg_insert($conn, 'w_baldesp', $insert);
-        }
 
-        $sqlBalDesp = "
-            select *
-              from w_baldesp
-             order by o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa, o58_projativ, o58_elemento,
-                      recurso, o58_complemento
-        ";
-
-        $result = db_query($sqlBalDesp);
-
-       // db_criatabela($result); die();
-
-        db_query("rollback");
-        $dotacoes = "";
-        for ($i = 0; $i < pg_numrows($result); $i++) {
-            db_fieldsmemory($result, $i);
-
-            if ($o58_coddot > 0 and $o58_codigo <= 0) {
-                $dotacoes .= $o58_coddot . " - <br>";
-            }
-
-        }
-        if ($dotacoes != "") {
-            echo "<font color='red'><br><b>DOTACOES COM RECURSO ZERADO:</b><br>$dotacoes<br></font>";
-        }
-
-        $totalzao = 0;
-        $totalsup = 0;
-        $totalcre = 0;
-        $totalesp = 0;
-        for ($i = 0; $i < pg_numrows($result); $i++) {
-            db_fieldsmemory($result, $i);
-
-            $dados = db_utils::fieldsMemory($result, $i);
-
-            if ($o58_codigo > 0) {
-                $o58_codigo = $o58_especificacao;
-                $line = formatar($o58_orgao, 2, 'n');
-                $line .= formatar($o58_unidade, 2, 'n');
-                $line .= formatar($o58_funcao, 2, 'n');
-                $line .= formatar($o58_subfuncao, 3, 'n');
-                $line .= formatar($o58_programa, 4, 'n');
-                $line .= formatar(0, 3, 'n'); // subprograma
-                $line .= formatar($o58_projativ, 5, 'n');
-                $line .= substr($o58_elemento, 1, 6);
-                $line .= $dados->recurso;
-                $line .= formatar($dot_ini, 13, 'v'); // dotacao inicial
-                $line .= formatar(0, 13, 'v'); // atualizacao monetaria
-                $sup = 0;
-                $cre = 0;
-                $esp = 0;
-
-                // leandro contador pediu para passar teste do coddoc 71 de cre (credito especial) para sup (credito suplementar)
-                // pois estava dando problema em sapiranga
-                // 2007-03-27_15:30
-
-                if (!empty($o58_coddot)) {
-                    $sql = "
-                      select sum(case when c71_coddoc in (7,52,53,54,55,65,71) then c70_valor else 0 end ) as sup,
-                             sum(case when c71_coddoc in (56,58,59,60,61,62,64) then c70_valor else 0 end ) -
+            if (!empty($linha->o58_coddot)) {
+                $sql = "
+                      select sum(case when c71_coddoc in (7,52,53,54,55,71) then c70_valor else 0 end ) as sup,
+                             sum(case when c71_coddoc in (56,58,59,60,61,62,64,65) then c70_valor else 0 end ) -
                              sum(case when c71_coddoc in (10) then c70_valor else 0 end ) as cre,
                              sum(case when c71_coddoc in (63,74,75,76,77) then c70_valor else 0 end ) -
                              sum(case when c71_coddoc in (14) then c70_valor else 0 end ) as esp
@@ -500,11 +416,10 @@ SQL;
                            where c71_coddoc in (7,10,14,52,53,54,55,56,58,59,60,61,62,63,64,65,71,74,75,76,77)
                              and o46_tiposup not between 1014 and 1016
                              and c71_data between '$data_ini' and '$data_fim'
-                             and c73_coddot = $o58_coddot
+                             and c73_coddot = $linha->o58_coddot
                              and c73_anousu = {$anousu}";
 
-
-                    $sql_desdobramento = "
+                $sql_desdobramento = "
                        select sum(case when c71_coddoc in (7,52,53,54,55,65) then c70_valor else 0 end ) as sup ,
                               sum(case when c71_coddoc in (56,58,59,60,61,64) then c70_valor else 0 end ) as cre,
                               sum(case when c71_coddoc in (62,63) then c70_valor else 0 end ) as esp
@@ -515,13 +430,13 @@ SQL;
                         inner join orcsuplem on orcsuplem.o46_codsup = conlancamsup.c79_codsup
                         inner join orcdotacao  on c73_coddot = o58_coddot
                               and o58_anousu = {$anousu}
-                              and o58_orgao = $o58_orgao
-                              and o58_unidade = $o58_unidade
-                              and o58_funcao = $o58_funcao
-                              and o58_subfuncao = $o58_subfuncao
-                              and o58_programa = $o58_programa
-                              and o58_projativ = $o58_projativ
-                              and o58_codigo = $o58_codigo
+                              and o58_orgao = $linha->o58_orgao
+                              and o58_unidade = $linha->o58_unidade
+                              and o58_funcao = $linha->o58_funcao
+                              and o58_subfuncao = $linha->o58_subfuncao
+                              and o58_programa = $linha->o58_programa
+                              and o58_projativ = $linha->o58_projativ
+                              and o58_codigo = $linha->o58_codigo
                         inner join orcelemento on o56_codele = o58_codele and o56_anousu = o58_anousu
                         where c71_coddoc in (7,52,53,54,55,56,58,59,60,61,62,63,64,65)
                           and o46_tiposup not between 1014 and 1016
@@ -529,77 +444,148 @@ SQL;
                           and substr(o56_elemento,1,7)='" . substr($o58_elemento, 0, 7) . "'
                           and c73_anousu = {$anousu}";
 
-                    if ($subelemento == "sim") {
-                        $resultsup = db_query($sql_desdobramento);
-                    } else {
-                        $resultsup = db_query($sql);
-                    }
-
-                    if (pg_numrows($resultsup) > 0) {
-                        $sup = pg_result($resultsup, 0, 0) + 0;
-                        $cre = pg_result($resultsup, 0, 1) + 0;
-                        $esp = pg_result($resultsup, 0, 2) + 0;
-                    }
+                if ($subelemento == "sim") {
+                    $resultsup = db_query($sql_desdobramento);
+                } else {
+                    $resultsup = db_query($sql);
                 }
 
-                $totalzao += $sup + $cre + $esp;
-                $totalsup += $sup;
-                $totalcre += $cre;
-                $totalesp += $esp;
+                if (pg_num_rows($resultsup) > 0) {
+                    $dados = db_utils::fieldsMemory($resultsup, 0);
 
-                $line .= formatar(round($sup, 2), 13, 'v'); // creditos suple
-                $line .= formatar(round($cre, 2), 13, 'v'); // creditos especial
-                $line .= formatar(round($esp, 2), 13, 'v'); // creditos extraordinarios
+                    $sup = !empty($dados->sup) ? $dados->sup : 0;
+                    $cre = !empty($dados->cre) ? $dados->cre : 0;
+                    $esp = !empty($dados->esp) ? $dados->esp : 0;
 
-                $line .= formatar(abs(round($reduzido_acumulado, 2)), 13, 'v'); // reducoes
-                $line .= formatar($valor_suplementado_recurso, 13, 'v'); // suple recurso vinculado
-                $line .= formatar($valor_reduzido_recurso, 13, 'v'); // reducao recurso vinculado
-                $line .= formatar(abs(round($empenhado - $anulado, 2)), 13, 'v');
-                $line .= formatar(abs(round($liquidado, 2)), 13, 'v'); // liquidado
-                $line .= formatar(abs(round($pago, 2)), 13, 'v'); // pago
-                $line .= formatar(0, 13, 'v'); // limitado
-                $line .= formatar(0, 13, 'v'); // recomposicao
-                $line .= formatar(0, 13, 'v'); // previsao
-
-                if ($anousu >= 2020) {
-                    $complementoFonteRecurso = $o58_complemento;
-                    $line .= str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                    $sql = "
+                        update w_baldesp set sup = sup + {$sup}, cre = cre + {$cre}, esp = esp + {$esp}
+                        where o58_coddot = {$linha->o58_coddot}
+                    ";
+                    db_query($sql);
                 }
-
-                if ($anousu >= 2021) {
-
-                    $transferencia = dbround_php_52($dados->transferencia, 2);
-                    $transposicao = dbround_php_52($dados->transposicao, 2);
-                    $remanejamento = dbround_php_52($dados->remanejamento, 2);
-
-                    if ($transferencia < 0){
-                        $line .= '-'.formatar(($transferencia*-1), 12, 'v');
-                    }else{
-                       $line .= formatar($transferencia, 13, 'v');
-                    }
-
-                    if ($transposicao < 0){
-                        $line .= '-'.formatar(($transposicao*-1), 12, 'v');
-                    }else{
-                       $line .= formatar($transposicao, 13, 'v');
-                    }
-
-                    if ($remanejamento < 0){
-                        $line .= '-'.formatar(($remanejamento*-1), 12, 'v');
-                    }else{
-                       $line .= formatar($remanejamento, 13, 'v');
-                    }
-
-                }
-
-                $contador++;
-
-                if (db_getsession("DB_anousu") >= 2022) {
-                    $line .= "00000000";
-                }
-                fputs($this->arq, $line);
-                fputs($this->arq, "\r\n");
             }
+        }
+
+        $sqlBalDesp = "
+            select
+                    o58_orgao,
+                    o58_unidade,
+                    o58_funcao,
+                    o58_subfuncao,
+                    o58_programa,
+                    o58_projativ,
+                    o58_elemento,
+                    siconfi as codigo_siconfi,
+                    sum(dot_ini) as dot_ini,
+                    sum(reduzido_acumulado) as reduzido_acumulado,
+                    sum(empenhado) as empenhado,
+                    sum(anulado) as anulado,
+                    sum(liquidado) as liquidado,
+                    sum(pago) as pago,
+                    sum(valor_suplementado_recurso) as valor_suplementado_recurso,
+                    sum(valor_reduzido_recurso) as valor_reduzido_recurso,
+                    sum(transferencia) as transferencia,
+                    sum(transposicao) as transposicao,
+                    sum(remanejamento) as remanejamento,
+                    sum(sup) as sup,
+                    sum(cre) as cre,
+                    sum(esp) as esp
+            from (select w_baldesp.*, substring(codigo_siconfi, 2) as siconfi from w_baldesp ) as xyz
+            group by o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa, o58_projativ, o58_elemento,
+                          siconfi
+            order by o58_orgao, o58_unidade, o58_funcao, o58_subfuncao, o58_programa, o58_projativ, o58_elemento,
+                          siconfi
+        ";
+
+        $result = db_query($sqlBalDesp);
+
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
+            db_fieldsmemory($result, $i);
+
+            $dados = db_utils::fieldsMemory($result, $i);
+            $recurso = '0000';
+            $line = formatar($o58_orgao, 2, 'n');
+            $line .= formatar($o58_unidade, 2, 'n');
+            $line .= formatar($o58_funcao, 2, 'n');
+            $line .= formatar($o58_subfuncao, 3, 'n');
+            $line .= formatar($o58_programa, 4, 'n');
+            $line .= formatar(0, 3, 'n'); // subprograma
+            $line .= formatar($o58_projativ, 5, 'n');
+            $line .= substr($o58_elemento, 1, 6);
+            $line .= $recurso; // 28 a 31 Código do Recurso Vinculado, o campo se tornou obsoleto em 2023
+            $line .= formatar($dot_ini, 13, 'v'); // dotacao inicial
+            $line .= formatar(0, 13, 'v'); // atualizacao monetaria
+
+            $line .= formatar(round($dados->sup, 2), 13, 'v'); // creditos suple
+            $line .= formatar(round($dados->cre, 2), 13, 'v'); // creditos especial
+            $line .= formatar(round($dados->esp, 2), 13, 'v'); // creditos extraordinarios
+
+            $line .= formatar(abs(round($reduzido_acumulado, 2)), 13, 'v'); // reducoes
+
+            $valorSuplementadoRecurso = formatar($valor_suplementado_recurso, 13, 'v');
+            $valorReduzidoRecurso = formatar($valor_reduzido_recurso, 13, 'v');
+            if ($anousu >= 2023) {
+                $valorSuplementadoRecurso = str_repeat('0', 13);
+                $valorReduzidoRecurso = str_repeat('0', 13);
+            }
+            // 110 a 122 Antigo campo Suplementação por Recurso Vinculado, o campo se tornou obsoleto;
+            $line .= $valorSuplementadoRecurso;
+            // 123 a 135 Antigo campo Redução por Recurso Vinculado, o campo se tornou obsoleto;
+            $line .= $valorReduzidoRecurso;
+
+            $line .= formatar(abs(round($empenhado - $anulado, 2)), 13, 'v');
+            $line .= formatar(abs(round($liquidado, 2)), 13, 'v'); // liquidado
+            $line .= formatar(abs(round($pago, 2)), 13, 'v'); // pago
+            $line .= formatar(0, 13, 'v'); // limitado
+            $line .= formatar(0, 13, 'v'); // recomposicao
+            $line .= formatar(0, 13, 'v'); // previsao
+
+            //Antigo campo Complemento do Recurso Vinculado, o campo se tornou obsoleto em 2023;
+            if ($anousu >= 2023) {
+                $complementoFonteRecurso = '0000';
+                $line .= $complementoFonteRecurso;
+            }
+
+            if ($anousu >= 2021) {
+                $transferencia = dbround_php_52($dados->transferencia, 2);
+                $transposicao = dbround_php_52($dados->transposicao, 2);
+                $remanejamento = dbround_php_52($dados->remanejamento, 2);
+
+                $valorTransferencia = formatar($transferencia, 13, 'v');
+                $valorTransposicao = formatar($transposicao, 13, 'v');
+                $valorRemanejamento = formatar($remanejamento, 13, 'v');
+                if ($transferencia < 0) {
+                    $valorTransferencia = '-' . formatar(($transferencia * -1), 12, 'v');
+                }
+
+                if ($transposicao < 0) {
+                    $valorTransposicao = '-' . formatar(($transposicao * -1), 12, 'v');
+                }
+
+                if ($remanejamento < 0) {
+                    $valorRemanejamento = '-' . formatar(($remanejamento * -1), 12, 'v');
+                }
+
+                $line .= $valorTransferencia; // 218 a 230 Transferência
+                $line .= $valorTransposicao; // 231 a 243 Transposição
+                $line .= $valorRemanejamento; // 244 a 256 Remanejamento
+            }
+
+            $contador++;
+
+            if (db_getsession("DB_anousu") >= 2022) {
+                $siconfi = '0000';
+                $complemento = '0000';
+                if (db_getsession("DB_anousu") >= 2023) {
+                    $siconfi = str_pad($dados->codigo_siconfi, 4, '0', STR_PAD_LEFT);
+                }
+
+                $line .= $siconfi; // 257 a 260 Código da Fonte de Recurso
+                $line .= $complemento;
+            }
+            fputs($this->arq, $line);
+            fputs($this->arq, "\r\n");
+
         }
         //  trailer
         $contador = espaco(10 - (strlen($contador)), '0') . $contador;

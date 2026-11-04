@@ -17,31 +17,44 @@ try {
     switch ($parametros->acao) {
         case 'infoRecurso':
             $recurso = Repository::getByCodigo($parametros->idRecurso);
+            $fonte = $recurso->getFonteRecurso(db_getsession('DB_anousu'));
             $retorno->codigo = $recurso->getCodigo();
             $retorno->recurso = $recurso->getRecurso();
             $retorno->descricao = $recurso->getDescricao();
             $retorno->complemento = $recurso->getComplemento();
+            $retorno->fonte = $fonte->toArray();
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
 
-            $retorno->complementos =  Repository::getComplementos($recurso->getRecurso());
+            $retorno->complementos =  Repository::getComplementosByGestao(
+                $fonte->gestao,
+                $recurso->getRecurso(),
+                $fonte->exercicio,
+                $dataLimite
+            );
             break;
 
         case 'buscarComplementos':
-            $fonteRecurso = '';
+            $subRecurso = '';
 
             if (!empty($parametros->idRecurso)) {
                 $recurso = Repository::getByCodigo($parametros->idRecurso);
-                $fonteRecurso = $recurso->getRecurso();
+                $subRecurso = $recurso->getRecurso();
             }
 
-            if (!empty($parametros->fonteRecurso)) {
-                $fonteRecurso = $parametros->fonteRecurso;
+            if (!empty($parametros->subrecurso)) {
+                $subRecurso = $parametros->subrecurso;
             }
 
-            if (empty($fonteRecurso)) {
+            if (empty($subRecurso)) {
                 throw new Exception("Fonte de recurso não informada");
             }
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
 
-            $retorno->complementos =  Repository::getComplementos($fonteRecurso);
+            $retorno->complementos = Repository::getComplementosByGestao(
+                $parametros->fonteRecurso,
+                $subRecurso,
+                db_getsession('DB_anousu')
+            );
             break;
     }
 } catch (Exception $erro) {

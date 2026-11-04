@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,7 +81,7 @@ $db_botao = true;
       <table border="0">
         <tr>
           <td nowrap colspan="2" align="center">
-          <?
+          <?php
           db_input("folhaselecion", 3, 0, true, 'hidden', 3);
           $arr_pontosgerfs_inicial = Array();
           $arr_pontosgerfs_final   = Array();
@@ -109,7 +109,7 @@ $db_botao = true;
           ?>
           </td>
         </tr>
-        <?
+        <?php
         if(isset($objeto2) && count($objeto2) > 0 && isset($arr_pontosgerfs_final[5])){
           $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($anofolha,$mesfolha,null,null,"distinct r48_semest"));
           if($clgerfcom->numrows > 0){
@@ -151,7 +151,7 @@ $db_botao = true;
         <tr>
           <td nowrap align="left">
             <table>
-              <?
+              <?php
               $aux = new cl_arquivo_auxiliar;
               $aux->cabecalho = "<strong>RUBRICAS SELECIONADOS</strong>";
               $aux->codigo = "rh27_rubric";
@@ -178,7 +178,7 @@ $db_botao = true;
           </td>
           <td nowrap align="left">
             <table>
-              <?
+              <?php
               $aux = new cl_arquivo_auxiliar;
               $aux->cabecalho = "<strong>RECURSOS SELECIONADOS</strong>";
               $aux->codigo = "o15_codigo";
@@ -211,7 +211,7 @@ $db_botao = true;
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ $clrotulo->label("j01_matric");
               <?=$Lv07_parcel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v07_parcel",6,$Iv07_parcel,true,"text",4,"","chave_v07_parcel");
 		       ?>
             </td>
@@ -66,19 +66,19 @@ $clrotulo->label("j01_matric");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tz01_numcgm?>"><?=$Lz01_numcgm?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
+              <?php db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm"); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tj01_matric?>"><?=$Lj01_matric?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("j01_matric",10,$Ij01_matric,true,"text",4,"","chave_j01_matric"); ?>
+              <?php db_input("j01_matric",10,$Ij01_matric,true,"text",4,"","chave_j01_matric"); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tq02_inscr?>"><?=$Lq02_inscr?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr"); ?>
+              <?php db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr"); ?>
             </td>
           </tr>
           <tr> 
@@ -94,7 +94,7 @@ $clrotulo->label("j01_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "*";
@@ -126,14 +126,14 @@ $clrotulo->label("j01_matric");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v07_parcel.focus();
 document.form2.chave_v07_parcel.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

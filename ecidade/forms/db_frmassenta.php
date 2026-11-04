@@ -27,6 +27,7 @@
 use ECidade\RecursosHumanos\RH\Assentamento\Model\ControleMedico;
 use ECidade\RecursosHumanos\RH\Assentamento\Model\ControleMedicoExame;
 use ECidade\Enum\Common\EstadosEnum;
+
 db_app::load("scripts.js");
 db_app::load("strings.js");
 db_app::load("prototype.js");
@@ -277,7 +278,7 @@ if (isset($lAssentamentoFuncional)) {
                 </td>
                 <td colspan="3">
                     <?php
-                    db_input('h12_codigo', 6, "", true, 'hidden', $db_opcao, "");
+                    db_input('h12_codigo', 6, "", true, 'text', $db_opcao, "");
                     db_input('h16_assent', 6, "", true, 'hidden', $db_opcao, "");
                     db_input('h12_natureza', 6, "", true, 'hidden', $db_opcao, "");
                     db_input('h12_natureza_novo_tipo', 6, "", true, 'hidden', $db_opcao, "");
@@ -516,8 +517,8 @@ if (isset($lAssentamentoFuncional)) {
                                 </td>
                                 <td>
                                     <?php
-                                    db_input("codigo_procedimento",  10, "", true, "hidden", 3, "");
-                                    db_input("descricao_procedimento",  50, "",  true, "text", 3, "");
+                                    db_input("codigo_procedimento", 10, "", true, "hidden", 3, "");
+                                    db_input("descricao_procedimento", 50, "", true, "text", 3, "");
                                     ?>
                                 </td>
                             </tr>
@@ -582,7 +583,7 @@ if (isset($lAssentamentoFuncional)) {
                                 <td title="<?php echo $Th26_crmmedico;?>">
                                     <?php
                                     echo $Lh26_crmmedico;
-                                    db_input('h26_crmmedico', 8, $Ih26_crmmedico, true, 'text', $db_opcao,"", "",  "#FFF");
+                                    db_input('h26_crmmedico', 10, $Ih26_crmmedico, true, 'text', $db_opcao, "", "", "#FFF", "", 10);
                                     echo $Lh26_ufcrm;
                                     $opcoesEstados = EstadosEnum::getSiglas();
                                     db_select("h26_ufcrm", $opcoesEstados, true, $db_opcao, "");
@@ -602,7 +603,7 @@ if (isset($lAssentamentoFuncional)) {
                                 <td nowrap title="<?php echo $Th26_nomeresponsavel;?>" colspan="1">
                                     <?php
                                     echo $Lh26_nomeresponsavel;
-                                    db_input('h26_nomeresponsavel', 70, $Ih26_nomeresponsavel, true, 'text', $db_opcao,"", "",  "#FFF");
+                                    db_input('h26_nomeresponsavel', 70, $Ih26_nomeresponsavel, true, 'text', $db_opcao, "", "", "#FFF");
                                     ?>
                                 </td>
                             </tr>
@@ -618,7 +619,7 @@ if (isset($lAssentamentoFuncional)) {
                                 <td nowrap title="<?php echo $Th26_cpfresponsavel;?>" colspan="2">
                                     <?php
                                     echo $Lh26_crmresponsavel;
-                                    db_input('h26_crmresponsavel', 8, $Ih26_crmresponsavel, true, 'text', $db_opcao, "", "", "#FFF");
+                                    db_input('h26_crmresponsavel', 10, $Ih26_crmresponsavel, true, 'text', $db_opcao, "", "", "#FFF", "", 10);
                                     echo $Lh26_ufcrmresponsavel;
                                     $opcoesEstadosResponsavel = EstadosEnum::getSiglas(false);
                                     db_select("h26_ufcrmresponsavel", $opcoesEstadosResponsavel, true, $db_opcao, "");
@@ -941,6 +942,14 @@ if (isset($lAssentamentoFuncional)) {
     <button class="button button--sm button--light" id="salvarDuplicata" name="salvarDuplicata"
         style="margin-top: 15px;">Duplicar</button>
 </div>
+
+<div class="container" id="tabelaAssentamentos" style="display: none;">
+    <fieldset>
+        <legend><strong>Últimos assentamentos lançados</strong></legend>
+        <div class="container" id="gridAssentamentos"> </div>
+    </fieldset>
+</div>
+
 <?php
 if (isset($lAssentamentoFuncional)) {
     unset($z01_nome);
@@ -964,9 +973,68 @@ if (isset($lAssentamentoFuncional)) {
 ?>
 <script language="javascript" type="text/javascript" src="scripts/arrays.js"></script>
 <script>
+
+
+    function js_montaGrid() {
+        gridUltimosAssentamentos = new DBGrid("dataGridRegistros");
+        gridUltimosAssentamentos.sName = "dataGridRegistros";
+        gridUltimosAssentamentos.nameInstance = "gridUltimosAssentamentos";
+        gridUltimosAssentamentos.hasTotalizador = false;
+        gridUltimosAssentamentos.setHeader(["Código", "Descrição", "Data Inicial", "Data Final", "Quantidade"]);
+        gridUltimosAssentamentos.setCellWidth(["50px", "200px", "150px", "150px", "150px"]);
+        gridUltimosAssentamentos.setCellAlign(["center", "center", "center", "center", "center"]);
+        gridUltimosAssentamentos.show($('gridAssentamentos'));
+
+        js_carregarRegistros();
+    }
+
+    document.getElementById('h16_regist').addEventListener("change", (event) => {
+        gridUltimosAssentamentos.clearAll(true);
+        js_carregarRegistros();
+    });
+
+    window.onload = function(){
+        js_montaGrid();
+        js_carregarRegistros();
+    }
+
+    function js_carregarRegistros() {
+
+        const oParametros = {
+            sExec: 'buscarAssentamentosCompetencia',
+            matricula: document.form1.h16_regist.value
+        };
+
+        if (oParametros.matricula == '') {
+            document.getElementById('tabelaAssentamentos').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('tabelaAssentamentos').style.display = '';
+
+        const oAjaxRequest = new AjaxRequest('rec1_assenta.RPC.php', oParametros, function (oAjax) {
+                gridUltimosAssentamentos.clearAll(true);
+                for (const assentamento of oAjax.assentamentos) {
+                    gridUltimosAssentamentos.addRow([
+                        assentamento.h12_assent,
+                        assentamento.h12_descr.urlDecode(),
+                        js_formatar(assentamento.h16_dtconc,'d'),
+                        !assentamento.h16_dtterm ? '' : js_formatar(assentamento.h16_dtterm,'d'),
+                        assentamento.h16_quant
+                    ]);
+                }
+                gridUltimosAssentamentos.renderRows();
+            }
+        );
+
+        oAjaxRequest.setMessage('Carregando assentamentos...');
+        oAjaxRequest.execute();
+    }
+
     const lancamento = document.getElementById('lancamento');
     lancamento.onchange = () => {
         if (lancamento.value == 2) {
+            document.getElementById('tabelaAssentamentos').style.display = 'none';
             linhaMatricula.style = 'display: none';
             trTipoPesquisa.style = "display: ' '";
             if (tipoPesquisa.value == 1) {
@@ -981,11 +1049,13 @@ if (isset($lAssentamentoFuncional)) {
             linhaMatriculas.style = 'display: none';
             linhaSelecao.style = 'display: none';
             linhaMatricula.style = "display:''";
+            if (document.form1.h16_regist.value != '') {
+                document.getElementById('tabelaAssentamentos').style.display = '';
+            }
         }
     };
 
-    var opcao = "<?php echo $db_opcao;?>";
-
+    var opcaoLancamento = "<?php echo $db_opcao;?>";
     const botaoAcao = document.getElementById('botao-acao');
 
     //Apresenta o lançador quando efetuado o evento de change no campo FILTRAR POR.
@@ -1015,7 +1085,7 @@ if (isset($lAssentamentoFuncional)) {
     };
 
     //Caso não seja incluir, nao exibe nada
-    if (opcao != 1) {
+    if (opcaoLancamento != 1) {
         trTipoPesquisa.style = 'display: none';
         linhaMatriculas.style = 'display: none';
         linhaSelecao.style = 'display: none';
@@ -1348,6 +1418,38 @@ if (isset($lAssentamentoFuncional)) {
             }
         }
 
+        /*
+         * Validação se existe o mesmo tipo de assentamento dentro do período informado 
+         */
+        var oParametrosValidacaoExistenciaAssentamentoPeriodo = new Object();
+        oParametrosValidacaoExistenciaAssentamentoPeriodo.codigoServidor = $F('h16_regist');
+        oParametrosValidacaoExistenciaAssentamentoPeriodo.dataInicioAfastamento = $F('h16_dtconc');
+        oParametrosValidacaoExistenciaAssentamentoPeriodo.tipoAssentamento = $F('h12_codigo');
+        oParametrosValidacaoExistenciaAssentamentoPeriodo.sExec = 'verificarExistenciaAssentamentoPeriodo';
+        
+        var oRetornoValidacaoExistenciaAssentamentoPeriodo = {};
+
+        var ajax = new Ajax.Request(
+            sUrlRPC,
+            {
+                method : 'post',
+                asynchronous : false,
+                parameters: 'json=' + Object.toJSON(oParametrosValidacaoExistenciaAssentamentoPeriodo),
+                onComplete: function (oAjax) {
+                    js_removeObj("oCarregando");
+                    oRetornoValidacaoExistenciaAssentamentoPeriodo = JSON.parse(oAjax.responseText);
+                }
+            }
+        );
+
+        if (oRetornoValidacaoExistenciaAssentamentoPeriodo.existeAssentamento) {
+            msgConfirmacao  = "Já existe lançamento com a data informada para este tipo de assentamento!\n";
+            msgConfirmacao += "Deseja prosseguir com a operação?";
+            if (!confirm(msgConfirmacao)) {
+               return false;
+            }
+        }
+        
         if ($('h12_vinculaperiodoaquisitivo').value == 't' && $('db_opcao').value != '3') {
             if ($F('h16_dtterm') == '') {
                 alert(_M(MENSAGENS + 'data_final_obrigatorio'));
@@ -1684,6 +1786,70 @@ if (isset($lAssentamentoFuncional)) {
         js_limpaPeriodoAquisitivo();
     }
 
+    function js_pesquisah12_codigo(carregamentoInicial)
+    {
+        if(possuiProcessoEsocial && carregamentoInicial == undefined) {
+            if (document.form1.h16_codigo.value !== '' && !validarDadosAssentamento()) {
+                return false;
+            }
+        }
+
+        var iframeParent = 'parent.';
+        if (CurrentWindow.corpo === frameElement.ownerDocument.defaultView) {
+            iframeParent = 'parent.frames.IFassentamentofuncional.';
+        }
+
+        if (document.form1.h12_codigo.value != '') {
+           js_OpenJanelaIframe(
+                'CurrentWindow.corpo',
+                'db_iframe_tipoasse',
+                <?php
+                if (isset($iTipoFuncionamento) && $iTipoFuncionamento == 1) {
+                    echo "'func_tipoasse.php?filtro_departamento=true&'";
+                } else {
+                    echo "'func_tipoasse.php?'";
+                }
+                ?>
+                + 'lPesquisaNatureza=true&pesquisa_chave='+document.form1.h12_codigo.value
+                + '&funcao_js=' + iframeParent
+                + 'js_mostratipoasse_codigo',
+                'Pesquisa',
+                false
+           );
+        } else {
+                document.form1.h12_assent.value = '';
+                document.form1.h12_codigo.value = '';
+                document.form1.submit();
+                return;
+        }
+    }
+
+    function js_mostratipoasse_codigo(assent, erro, descr, natureza, lVinculaPeriodoAquisitivo)
+    {
+        if (erro) {
+            document.form1.h12_codigo.value = '';
+            document.form1.h12_assent.value = '';
+            document.form1.h12_assentdescr.value = '';
+            return false;
+        }
+        document.form1.h16_assent.value = assent;
+        document.form1.h12_assent.value = assent;
+        document.form1.h12_natureza_novo_tipo.value = natureza;
+
+        var sel1 = document.form1.elements["h12_assent"];
+        var sel2 = document.form1.elements["h12_assentdescr"];
+
+        for (var i = 0; i < sel1.options.length; i++) {
+            if (sel1.options[i].value == assent) {
+                sel1.options[i].selected = true;
+                sel2.options[i].selected = true;
+                break;
+            }
+        }
+
+        posRetornoTipoAssentamento(lVinculaPeriodoAquisitivo);
+    }
+        
     function js_pesquisah12_assent(lMostra, carregamentoInicial)
     {
         if(possuiProcessoEsocial && carregamentoInicial == undefined) {
@@ -1755,19 +1921,7 @@ if (isset($lAssentamentoFuncional)) {
             document.form1.h12_natureza_novo_tipo.value = chave4;
         }
 
-        buscaJornada();
-        js_verificaVinculoPeriodoAquisitivo((lVinculaPeriodoAquisitivo == 't'));
-        js_ocultaControleMedico();
-        js_exibeControleMedico();
-        renderizarFormulario();
-
-        if (document.form1.h16_assent.value.trim() != ""
-            && document.form1.h12_natureza_novo_tipo.value == document.form1.h12_natureza.value)
-        {
-            js_criarCamposAdicionais($F("h16_codigo"));
-        } else {
-            js_criarCamposAdicionais();
-        }
+        posRetornoTipoAssentamento(lVinculaPeriodoAquisitivo);
     }
 
     function js_mostratipoasse1(chave1, chave2, chave3, chave4, lVinculaPeriodoAquisitivo)
@@ -1789,12 +1943,23 @@ if (isset($lAssentamentoFuncional)) {
             }
         }
 
+        posRetornoTipoAssentamento(lVinculaPeriodoAquisitivo);
+
+    }
+
+    function posRetornoTipoAssentamento(lVinculaPeriodoAquisitivo)
+    {
+
         buscaJornada();
-        db_iframe_tipoasse.hide();
+        if (db_iframe_tipoasse) {
+           db_iframe_tipoasse.hide();
+        }
+        
         js_verificaVinculoPeriodoAquisitivo((lVinculaPeriodoAquisitivo == 't'));
         js_ocultaControleMedico();
         js_exibeControleMedico();
         renderizarFormulario();
+        js_carregarRegistros();
 
         if (document.form1.h16_assent.value.trim() != ""
             && document.form1.h12_natureza_novo_tipo.value == document.form1.h12_natureza.value)
@@ -1839,7 +2004,7 @@ if (isset($lAssentamentoFuncional)) {
                 'CurrentWindow.corpo',
                 'db_iframe_assmeio',
                 'func_assmeio.php?funcao_js=parent.js_preenchepesquisa'
-                    + '|h22_codigo<?php echo ($db_opcao == 33 || $db_opcao == 3? "" : "&bloqueia_assenta=true"); ?>'
+                    + '|h22_codigo<?php echo ($db_opcao == 33 || $db_opcao == 3? "" : "&bloqueia_assenta=true"); ?>',
                 'Pesquisa',
                 true
             );
@@ -1892,7 +2057,7 @@ if (isset($lAssentamentoFuncional)) {
     {
         <?php if ($meiodia == true) { ?>
             db_iframe_assmeio.hide();
-        } else { ?>
+        <?php } else { ?>
             db_iframe_assenta.hide();
         <?php }?>
         <?php
@@ -2198,6 +2363,7 @@ if (isset($lAssentamentoFuncional)) {
     }
 
     $('h12_codigo').observe("change", renderizarFormulario);
+    $('h12_codigo').observe("change", js_pesquisah12_codigo);
     $('h12_assentdescr').observe("change", renderizarFormulario);
 
     var fjs_verificacampos = js_verificacampos2;
@@ -2673,7 +2839,7 @@ if (isset($lAssentamentoFuncional)) {
         }
 
         data.append('acao', 'incluiAssentamento');
-        
+
         //Caso inclusao individual
         if (lancamento.value == 2) {
             data.append('lote', true);
@@ -2694,9 +2860,10 @@ if (isset($lAssentamentoFuncional)) {
         }
 
         HttpClient.post('rec1_assentamentos.RPC.php', {body : data}).then(response => {
-
-            if (opcao == 2) {
-                titulo = "alterado"
+            
+            var titulo = "incluido"
+            if (opcaoLancamento == 2) {
+                var titulo = "alterado"
             }
 
             if (response.erro && !response.lTemInconsistencias) {
@@ -2723,11 +2890,11 @@ if (isset($lAssentamentoFuncional)) {
             if (!response.erro) {
                 alert("Assentamento " + titulo + " com sucesso.");
             }
-            if (opcao == 1) {
+            if (opcaoLancamento == 1) {
                 location.href = `rec1_assenta001.php?`
                     + `iTipoFuncionamento=${tipoFuncionamento}`
             }
-            if (opcao == 2){
+            if (opcaoLancamento == 2){
                 location.href = `rec1_assenta002.php?chavepesquisa=${assentamentoCodigo}&`
                     + `iTipoFuncionamento=${tipoFuncionamento}`
             }
@@ -2975,12 +3142,15 @@ if (isset($lAssentamentoFuncional)) {
             });
         }
     }
+
+
+
 </script>
 <script>
     <?php
-        if (!empty($aExames) && sizeof($aExames) > 0) {
-            $exames = json_encode($aExames);
-            echo "
+    if (!empty($aExames) && sizeof($aExames) > 0) {
+        $exames = json_encode($aExames);
+        echo "
             document.addEventListener(\"DOMContentLoaded\", function(e) {
                 var exames = {$exames};
                 exames.each(exame => {
@@ -2989,7 +3159,7 @@ if (isset($lAssentamentoFuncional)) {
                 gridExames.reload();
             });
             ";
-        }
+    }
     ?>
     const adicionaExameCollection = (exame) => {
         var descricaoOrdem = codigoOrdem.options[exame.codigoOrdem].text;

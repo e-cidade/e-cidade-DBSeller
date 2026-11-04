@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ $clrotulo->label("o0i_descricao");
 			<tr>
     		<td colspan=2  class='table_header'>
       		 DEMONSTRATIVO II - AVALIAÇÃO DO CUMPRIMENTO DAS METAS FISCAIS DO EXERCÍCIO ANTERIOR
-      		<? 
+      		<?php 
             db_input('codrel',40,'',true,'hidden',3,'');
             $o116_periodo = 1;
             db_input('o116_periodo',40,'',true,'hidden',3,'');
@@ -69,12 +69,12 @@ $clrotulo->label("o0i_descricao");
   		</tr>
       <tr>
         <td align="center" colspan="2">
-           <? db_selinstit('',300,100); ?>
+           <?php db_selinstit('',300,100); ?>
         </td>
       </tr> 
        <tr>
         <td align="left" colspan="2">
-          <b>Modelo :</b> <? 
+          <b>Modelo :</b> <?php 
                     $sList = array("ldo"=>"LDO",
                                    "loa"=>"LOA"
                                   );

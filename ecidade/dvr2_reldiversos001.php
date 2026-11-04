@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,12 +115,12 @@ function js_erro(tipo,valor){
      <table class="form-container">
       <tr>   
         <td>
-          <?
+          <?php
             db_ancora($Ldv05_coddiver,'js_diver(true); ',1);
           ?>
         </td>
         <td nowrap> 
-          <?
+          <?php
              db_input('dv05_coddiver',10,$Idv05_coddiver,true,'text',1,"onchange='js_diver(false)'");
              db_input('z01_nome',50,0,true,'text',3,"","z01_nomediver");
           ?>
@@ -128,12 +128,12 @@ function js_erro(tipo,valor){
       </tr>
       <tr>   
         <td nowrap>
-          <?
+          <?php
             db_ancora($Ldv05_numcgm,' js_cgm(true); ',1);
           ?>
         </td>
         <td nowrap> 
-          <?
+          <?php
             db_input('dv05_numcgm',10,$Idv05_numcgm,true,'text',1,"onchange='js_cgm(false)'","dv05_numcgm");
             db_input('z01_nome',50,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -141,12 +141,12 @@ function js_erro(tipo,valor){
       </tr>
       <tr>   
         <td nowrap>
-          <?
+          <?php
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td nowrap> 
-          <?
+          <?php
             db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',50,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -154,12 +154,12 @@ function js_erro(tipo,valor){
       </tr>
       <tr>   
         <td nowrap>
-          <?
+          <?php
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td nowrap>  
-          <?
+          <?php
             db_input('q02_inscr',10,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',50,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -167,12 +167,12 @@ function js_erro(tipo,valor){
       </tr>
       <tr>   
         <td nowrap>
-          <?
+          <?php
             db_ancora($Ldv09_procdiver,'js_proc(true); ',1);
           ?>
         </td>
         <td nowrap> 
-          <?
+          <?php
            db_input('dv09_procdiver',10,$Idv09_procdiver,true,'text',1,"onchange='js_proc(false)'");
            db_input('z01_nome',50,0,true,'text',3,"","z01_nomeproc");
           ?>
@@ -183,11 +183,11 @@ function js_erro(tipo,valor){
           Data inicial:
         </td>
         <td nowrap> 
-          <?
+          <?php
             db_inputdata('dataini',"","","",true,'text',1)
           ?> 
           <b>até</b> 
-          <?
+          <?php
             db_inputdata('datafim',"","","",true,'text',1)
           ?> 
         </td>
@@ -236,7 +236,7 @@ function js_erro(tipo,valor){
   <input type="button" name="gerar" value="Gerar Relatório" onclick="js_relatorio();">
 </form>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -372,7 +372,7 @@ function js_mostracgm1(erro,chave){
 }
 
 </script>
-<?
+<?php
 if(isset($dado) && $dado=="inscr"){
   db_msgbox(_M("tributario.diversos.dvr2_reldiversos001.inscricao_invalida"));
 }  

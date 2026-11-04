@@ -18,6 +18,9 @@
 
     // Menu Events
     var $menu = $('#menu');
+    var insituicao = null;
+    var modulo = null;
+    var area = null;
 
     // Busca
     $('#menu-search').menuSearch({
@@ -345,9 +348,10 @@
     }).trigger('load.instituicao');
 
     $menu.on('load.area', function(event, iInstitId) {
-
       $('#areas').empty().append(getDivLoading());
       $('#modulos').empty();
+
+      insituicao = iInstitId;
 
       $.getJSON('Menu/getAreas/?iInstitId=' + iInstitId, function(data) {
 
@@ -420,6 +424,9 @@
 
       oListLoading.find('.menu-list').append(getDivLoading())
 
+      modulo = iModuloId;
+      area = iAreaId;
+
       var oParams = {
         iInstitId: iInstitId,
         iAreaId: iAreaId,
@@ -470,6 +477,76 @@
           oSpan.append($('<i />', {
             'class': 'arrow'
           }))
+        } else {
+            var classIcone = 'estrela far fa-regular fa-star';
+
+            if (oMenu.favoritado === 't') {
+               classIcone = 'estrela icone-estrela-preenchida fas fa-regular fa-star';
+            }
+
+            oSpan.append($('<i />', {
+                'class': classIcone,
+                click: async function (event) {
+                    event.stopPropagation();
+
+                    try {
+                        var resp = null;
+                        var incluindoFavorito = false;
+
+                        if (oMenu.favoritado === 't') {
+                            $(this).removeClass('fas');
+                            $(this).removeClass('icone-estrela-preenchida');
+                        } else {
+                            $(this).removeClass('far');
+                        }
+
+                        $(this).removeClass('estrela');
+                        $(this).removeClass('fa-regular');
+                        $(this).removeClass('fa-star');
+
+                        $(this).addClass('fas');
+                        $(this).addClass('fa-solid');
+                        $(this).addClass('fa-spinner');
+                        $(this).addClass('rotating-icon');
+
+                        if (oMenu.favoritado === 't') {
+                            resp = await window.axios.delete(
+                                `${window.urlApi}/configuracao/menu/deletar-favorito?idMenu=${oMenu.id}&idInsituicao=${insituicao}`
+                            );
+                        } else {
+                            incluindoFavorito = true;
+                            resp = await window.axios.post(
+                                `${window.urlApi}/configuracao/menu/salvar-favorito?idMenu=${oMenu.id}&idInsituicao=${insituicao}&idModulo=${modulo}&idArea=${area}`
+                            );
+                        }
+
+                        await getFavoritos();
+
+                        $(this).removeClass('fas');
+                        $(this).removeClass('fa-solid');
+                        $(this).removeClass('fa-spinner');
+                        $(this).removeClass('rotating-icon');
+
+                        if (resp.status === 201 && incluindoFavorito === true) {
+                            $(this).addClass('estrela');
+                            $(this).addClass('icone-estrela-preenchida');
+                            $(this).addClass('fas');
+                            $(this).addClass('fa-regular');
+                            $(this).addClass('fa-star');
+                            oMenu.favoritado = 't';
+                        } else if (resp.status === 201 && incluindoFavorito === false) {
+                            $(this).addClass('estrela');
+                            $(this).addClass('far');
+                            $(this).addClass('fa-regular');
+                            $(this).addClass('fa-star');
+                            oMenu.favoritado = 'f';
+                        }
+                    } catch (e) {
+                        console.error('erro: ' + e);
+                        alert('Erro ao favoritar item de menu');
+                    }
+                }
+            }))
         }
 
         oMenuList.append(oSpan);

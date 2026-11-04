@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE previsaodespesa
 class cl_previsaodespesa
@@ -58,7 +58,7 @@ class cl_previsaodespesa
                  ";
 
     //funcao construtor da classe
-    function cl_previsaodespesa()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("previsaodespesa");
@@ -66,7 +66,7 @@ class cl_previsaodespesa
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -77,7 +77,7 @@ class cl_previsaodespesa
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c333_sequencial = ($this->c333_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["c333_sequencial"] : $this->c333_sequencial);
@@ -104,7 +104,7 @@ class cl_previsaodespesa
     }
 
     // funcao para Inclusão
-    function incluir($c333_sequencial)
+    public function incluir($c333_sequencial)
     {
         $this->atualizacampos();
         if ($this->c333_ano == null) {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
               <?=$Ll33_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l33_sequencial",10,$Il33_sequencial,true,"text",4,"","chave_l33_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
               <?=$Ll33_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("l33_descricao",50,$Il33_descricao,true,"text",4,"","chave_l33_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipomovimentacaoregistropreco.php")==true){
@@ -122,12 +122,12 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

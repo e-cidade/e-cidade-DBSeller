@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -63,7 +63,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
       <b>Selecione o Calendário:</b><br>
       <select name="grupo"  style="font-size:9px;width:250px;height:18px;">
        <option></option>
-       <?
+       <?php
        #Seleciona todos os grupos para setar os valores no combo
        $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
        $sql       .= "       FROM calendario ";
@@ -73,13 +73,13 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
        $sql       .= "       ORDER BY ed52_i_ano DESC";
        $sql_result = db_query($sql);
        while ($row = pg_fetch_array($sql_result)) {
-       	
+
          $calendario  = $row["ed52_i_codigo"];
          $desc_curso = $row["ed52_c_descr"];
          ?>
          <option value="<?=$calendario;?>" <?=$calendario==@$curso?"selected":""?>><?=$desc_curso;?></option>
-         <?
-         
+         <?php
+
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -91,9 +91,9 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
      <tr>
      <td>
       <b>Data da Votação:</b>
-      <?db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>      
+      <?php db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>
      </td>
-    </tr>  
+    </tr>
      <tr>
      <td>
       <input name="pesquisar" type="button" id="pesquisar" value="Processar" Onclick="js_pesquisa();"></td>
@@ -104,7 +104,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -116,30 +116,30 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
 function js_pesquisa(curso) {
 
   if (document.form1.grupo.value == "") {
-		  
+
 	alert("Informe o Calendário!");
 	return false;
-			    
+
   }
-	  
+
   if (document.form1.datavotacao.value == "") {
-		  
+
 	alert("Informe a data para votação!");
 	return false;
-		    
+
   }
   sCalendario = document.form1.grupo.value;
   sDataVotacao = document.form1.datavotacao.value;
     jan = window.open('edu2_listaauxvotacao002.php?calendario='+sCalendario+'&iData='+sDataVotacao,
                       '','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 '
                      );
-    jan.moveTo(0,0);  
+    jan.moveTo(0,0);
 
 }
 
 
 function js_botao(valor) {
-	
+
   if (valor != "") {
     document.form1.pesquisar.disabled = false;
   } else {

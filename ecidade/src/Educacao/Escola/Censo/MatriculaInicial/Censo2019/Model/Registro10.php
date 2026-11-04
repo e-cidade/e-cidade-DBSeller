@@ -32,6 +32,7 @@ class Registro10
     const TIPO_REGISTRO = '10';
     private $tipoRegistro = self::TIPO_REGISTRO;
     private $codigoInep;
+    private $materialEducacaoBilingue;
 
     /**
      * Local de funcionamento da escola
@@ -66,6 +67,7 @@ class Registro10
     private $cacimbaCisternaPoco;
     private $fonteRio;
     private $semAgua;
+    private $carroPipa;
 
     /**
      * Fonte de energia elétrica
@@ -104,7 +106,7 @@ class Registro10
      * Dependências físicas existentes e utilizadas na escola
      */
     private $almoxarifado;
-    private $areaVerde;
+    private $areaVegetacaoGramado;
     private $auditorio;
     private $banheiro;
     private $banheiroAcessivelPessoasDeficiencia;
@@ -139,6 +141,8 @@ class Registro10
     private $salaRecursosMultifuncionaisAEE;
     private $salaSecretaria;
     private $salaEducacaoProfissional = 0;
+    private $salaGravacaoEdicao = 0;
+    private $areaHortaPlantioProducaoAgricola;
     private $nenhumaDependencias;
 
     /**
@@ -159,6 +163,7 @@ class Registro10
     private $numeroSalasForaPredioEscolar;
     private $numeroSalasClimatizada;
     private $numeroSalasComAcessibilidade;
+    private $sinalizacaoAlarmeLuminoso;
 
     /**
      * Equipamentos existentes na escola para uso técnico e administrativo
@@ -169,7 +174,7 @@ class Registro10
     private $impressora;
     private $impressoraMultifuncional;
     private $scanner;
-    
+
     private $nenhumEquipamentosListados = 0;
 
     /**
@@ -230,6 +235,9 @@ class Registro10
     private $tecnicosMonitores;
     private $gestoresEscola;
     private $orientadorComunitario;
+    private $tradutorInterpreteLibras;
+    private $agronomosTecnicosResponsaveisProducaoAgricola;
+    private $revisorTextoBrailleAssistenteVidente;
 
     private $naoHaFuncionarios = null;
 
@@ -251,10 +259,13 @@ class Registro10
     private $materialEducacaoIndigena;
     private $materialEducacaoEtnicoRacial;
     private $materialEducacaoCampo;
+    private $materialEducacaoQuilombola;
+    private $materialEducacaoEspecial;
 
     private $nenhumInstrumentoListado = 0;
 
     private $educacaoEscolarIndigena = 0;
+    private $equipamentosAtividadesHortaProducaoAgricola;
 
     /**
      * Língua em que o ensino é ministrado
@@ -292,6 +303,33 @@ class Registro10
     private $orgaosColegiadosNenhum;
 
     private $projetoPedagogicoAtualizado = 0;
+
+    private $desenvolveAcoesEducacaoAmbiental;
+
+    private $comoConteudoComponentesCamposExperiencias;
+    private $comoComponenteCurricularEspecialEspecifico;
+    private $comoEixoEstruturanteCurriculo;
+    private $emEventos;
+    private $emProjetosTransversaisInterdisciplinares;
+    private $nenhumaDasOpcoesListadas;
+
+    /**
+     * @return mixed
+     */
+    public function getMaterialEducacaoBilingue()
+    {
+        return $this->materialEducacaoBilingue;
+    }
+
+    /**
+     * @param mixed $materialEducacaoBilingue
+     * @return Registro10
+     */
+    public function setMaterialEducacaoBilingue($materialEducacaoBilingue)
+    {
+        $this->materialEducacaoBilingue = $materialEducacaoBilingue;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -682,6 +720,24 @@ class Registro10
     /**
      * @return mixed
      */
+    public function getCarroPipa()
+    {
+        return $this->carroPipa;
+    }
+
+    /**
+     * @param mixed $carroPipa
+     * @return Registro10
+     */
+    public function setCarroPipa($carroPipa)
+    {
+        $this->carroPipa = $carroPipa;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLuzRedePublica()
     {
         return $this->luzRedePublica;
@@ -1006,18 +1062,18 @@ class Registro10
     /**
      * @return mixed
      */
-    public function getAreaVerde()
+    public function getAreaVegetacaoGramado()
     {
-        return $this->areaVerde;
+        return $this->areaVegetacaoGramado;
     }
 
     /**
-     * @param mixed $areaVerde
+     * @param mixed $areaVegetacaoGramado
      * @return Registro10
      */
-    public function setAreaVerde($areaVerde)
+    public function setAreaVegetacaoGramado($areaVegetacaoGramado)
     {
-        $this->areaVerde = $areaVerde;
+        $this->areaVegetacaoGramado = $areaVegetacaoGramado;
         return $this;
     }
 
@@ -1622,6 +1678,10 @@ class Registro10
     {
         return $this->salaEducacaoProfissional;
     }
+    public function getSalaGravacaoEdicao()
+    {
+        return $this->salaGravacaoEdicao;
+    }
 
     /**
      * @param mixed $salaEducacaoProfissional
@@ -1630,6 +1690,12 @@ class Registro10
     public function setSalaEducacaoProfissional($salaEducacaoProfissional)
     {
         $this->salaEducacaoProfissional = $salaEducacaoProfissional;
+        return $this;
+    }
+
+    public function setSalaGravacaoEdicao($salaGravacaoEdicao)
+    {
+        $this->salaGravacaoEdicao = $salaGravacaoEdicao;
         return $this;
     }
 
@@ -1888,6 +1954,24 @@ class Registro10
     /**
      * @return mixed
      */
+    public function getSinalizacaoAlarmeLuminoso()
+    {
+        return $this->sinalizacaoAlarmeLuminoso;
+    }
+
+    /**
+     * @param mixed $sinalizacaoAlarmeLuminoso
+     * @return Registro10
+     */
+    public function setSinalizacaoAlarmeLuminoso($sinalizacaoAlarmeLuminoso)
+    {
+        $this->sinalizacaoAlarmeLuminoso = $sinalizacaoAlarmeLuminoso;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getAntenaParabolica()
     {
         return $this->antenaParabolica;
@@ -1992,7 +2076,7 @@ class Registro10
         $this->scanner = $scanner;
         return $this;
     }
-    
+
     /**
      * @return mixed
      */
@@ -2819,6 +2903,43 @@ class Registro10
         $this->materialEducacaoCampo = $materialEducacaoCampo;
         return $this;
     }
+    
+    /**
+     * @return mixed
+     */
+    public function getMaterialEducacaoQuilombola()
+    {
+        return $this->materialEducacaoQuilombola;
+    }
+
+    /**
+     * @param mixed $materialEducacaoQuilombola
+     * @return Registro10
+     */
+    public function setMaterialEducacaoQuilombola($materialEducacaoQuilombola)
+    {
+        $this->materialEducacaoQuilombola = $materialEducacaoQuilombola;
+        return $this;
+    }
+
+     /**
+     * @return mixed
+     */
+    public function getMaterialEducacaoEspecial()
+    {
+        return $this->materialEducacaoEspecial;
+    }
+
+    /**
+     * @param mixed $materialEducacaoEspecial
+     * @return Registro10
+     */
+    public function setMaterialEducacaoEspecial($materialEducacaoEspecial)
+    {
+        $this->materialEducacaoEspecial = $materialEducacaoEspecial;
+        return $this;
+    }
+
 
     /**
      * @return mixed
@@ -2853,6 +2974,24 @@ class Registro10
     public function setEducacaoEscolarIndigena($educacaoEscolarIndigena)
     {
         $this->educacaoEscolarIndigena = $educacaoEscolarIndigena;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEquipamentosAtividadesHortaProducaoAgricola()
+    {
+        return $this->equipamentosAtividadesHortaProducaoAgricola;
+    }
+
+    /**
+     * @param mixed $equipamentosAtividadesHortaProducaoAgricola
+     * @return Registro10
+     */
+    public function setEquipamentosAtividadesHortaProducaoAgricola($equipamentosAtividadesHortaProducaoAgricola)
+    {
+        $this->equipamentosAtividadesHortaProducaoAgricola = $equipamentosAtividadesHortaProducaoAgricola;
         return $this;
     }
 
@@ -3251,6 +3390,24 @@ class Registro10
         $this->projetoPedagogicoAtualizado = $projetoPedagogicoAtualizado;
         return $this;
     }
+    
+    /**
+     * @return mixed
+     */
+    public function getDesenvolveAcoesEducacaoAmbiental()
+    {
+        return $this->desenvolveAcoesEducacaoAmbiental;
+    }
+
+    /**
+     * @param mixed $desenvolveAcoesEducacaoAmbiental
+     * @return Registro10
+     */
+    public function setDesenvolveAcoesEducacaoAmbiental($desenvolveAcoesEducacaoAmbiental)
+    {
+        $this->desenvolveAcoesEducacaoAmbiental = $desenvolveAcoesEducacaoAmbiental;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -3278,6 +3435,11 @@ class Registro10
         return $this->orientadorComunitario;
     }
 
+    public function getTradutorInterpreteLibras()
+    {
+        return $this->tradutorInterpreteLibras;
+    }
+
     /**
      * @param mixed $orientadorComunitario
      * @return Registro10
@@ -3287,7 +3449,43 @@ class Registro10
         $this->orientadorComunitario = $orientadorComunitario;
         return $this;
     }
-    
+
+    public function setTradutorInterpreteLibras($tradutor)
+    {
+        $this->tradutorInterpreteLibras = $tradutor;
+        return $this;
+    }
+
+    /**
+     * @param mixed $agronomosTecnicosResponsaveisProducaoAgricola
+     * @return Registro10
+     */
+    public function setAgronomosTecnicosResponsaveisProducaoAgricola($agronomosTecnicosResponsaveisProducaoAgricola)
+    {
+        $this->agronomosTecnicosResponsaveisProducaoAgricola = $agronomosTecnicosResponsaveisProducaoAgricola;
+        return $this;
+    }
+
+    public function getAgronomosTecnicosResponsaveisProducaoAgricola()
+    {
+        return $this->agronomosTecnicosResponsaveisProducaoAgricola;
+    }
+
+    /**
+     * @param mixed $revisorTextoBrailleAssistenteVidente
+     * @return Registro10
+     */
+    public function setRevisorTextoBrailleAssistenteVidente($revisorTextoBrailleAssistenteVidente)
+    {
+        $this->revisorTextoBrailleAssistenteVidente = $revisorTextoBrailleAssistenteVidente;
+        return $this;
+    }
+
+    public function getRevisorTextoBrailleAssistenteVidente()
+    {
+        return $this->revisorTextoBrailleAssistenteVidente;
+    }
+
     /**
      * @return mixed
      */
@@ -3305,6 +3503,133 @@ class Registro10
         $this->naoHaFuncionarios = $naoHaFuncionarios;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAreaHortaPlantioProducaoAgricola()
+    {
+        return $this->areaHortaPlantioProducaoAgricola;
+    }
+
+    /**
+     * @param mixed $areaHortaPlantioProducaoAgricola
+     * @return Registro10
+     */
+    public function setAreaHortaPlantioProducaoAgricola($areaHortaPlantioProducaoAgricola)
+    {
+        $this->areaHortaPlantioProducaoAgricola = $areaHortaPlantioProducaoAgricola;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComoConteudoComponentesCamposExperiencias()
+    {
+        return $this->comoConteudoComponentesCamposExperiencias;
+    }
+
+    /**
+     * @param mixed $comoConteudoComponentesCamposExperiencias
+     * @return Registro10
+     */
+    public function setComoConteudoComponentesCamposExperiencias($comoConteudoComponentesCamposExperiencias)
+    {
+        $this->comoConteudoComponentesCamposExperiencias = $comoConteudoComponentesCamposExperiencias;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComoComponenteCurricularEspecialEspecifico()
+    {
+        return $this->comoComponenteCurricularEspecialEspecifico;
+    }
+
+    /**
+     * @param mixed $comoComponenteCurricularEspecialEspecifico
+     * @return Registro10
+     */
+    public function setComoComponenteCurricularEspecialEspecifico($comoComponenteCurricularEspecialEspecifico)
+    {
+        $this->comoComponenteCurricularEspecialEspecifico = $comoComponenteCurricularEspecialEspecifico;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComoEixoEstruturanteCurriculo()
+    {
+        return $this->comoEixoEstruturanteCurriculo;
+    }
+
+    /**
+     * @param mixed $comoEixoEstruturanteCurriculo
+     * @return Registro10
+     */
+    public function setComoEixoEstruturanteCurriculo($comoEixoEstruturanteCurriculo)
+    {
+        $this->comoEixoEstruturanteCurriculo = $comoEixoEstruturanteCurriculo;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmEventos()
+    {
+        return $this->emEventos;
+    }
+
+    /**
+     * @param mixed $emEventos
+     * @return Registro10
+     */
+    public function setEmEventos($emEventos)
+    {
+        $this->emEventos = $emEventos;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmProjetosTransversaisInterdisciplinares()
+    {
+        return $this->emProjetosTransversaisInterdisciplinares;
+    }
+
+    /**
+     * @param mixed $emProjetosTransversaisInterdisciplinares
+     * @return Registro10
+     */
+    public function setEmProjetosTransversaisInterdisciplinares($emProjetosTransversaisInterdisciplinares)
+    {
+        $this->emProjetosTransversaisInterdisciplinares = $emProjetosTransversaisInterdisciplinares;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNenhumaDasOpcoesListadas()
+    {
+        return $this->nenhumaDasOpcoesListadas;
+    }
+
+    /**
+     * @param mixed $nenhumaDasOpcoesListadas
+     * @return Registro10
+     */
+    public function setNenhumaDasOpcoesListadas($nenhumaDasOpcoesListadas)
+    {
+        $this->nenhumaDasOpcoesListadas = $nenhumaDasOpcoesListadas;
+        return $this;
+    }
+
 
     public function toArray()
     {
@@ -3330,6 +3655,7 @@ class Registro10
             "pocoArtesiano" => $this->getPocoArtesiano(),
             "cacimbaCisternaPoco" => $this->getCacimbaCisternaPoco(),
             "fonteRio" => $this->getFonteRio(),
+            "carroPipa" => $this->getCarroPipa(),
             "semAgua" => $this->getSemAgua(),
             "luzRedePublica" => $this->getLuzRedePublica(),
             "geradorCombustivelFossil" => $this->getGeradorCombustivelFossil(),
@@ -3349,7 +3675,7 @@ class Registro10
             "reciclagemLixo" => $this->getReciclagemLixo(),
             "naoTrataLixo" => $this->getNaoTrataLixo(),
             "almoxarifado" => $this->getAlmoxarifado(),
-            "areaVerde" => $this->getAreaVerde(),
+            "areaVegetacaoGramado" => $this->getAreaVegetacaoGramado(),
             "auditorio" => $this->getAuditorio(),
             "banheiro" => $this->getBanheiro(),
             "banheiroAcessivelPessoasDeficiencia" => $this->getBanheiroAcessivelPessoasDeficiencia(),
@@ -3384,12 +3710,15 @@ class Registro10
             "salaRecursosMultifuncionaisAEE" => $this->getSalaRecursosMultifuncionaisAEE(),
             "salaSecretaria" => $this->getSalaSecretaria(),
             "salaEducacaoProfissional" => $this->getSalaEducacaoProfissional(),
+            "salasGravacaoEdicao" => $this->getSalaGravacaoEdicao(),
+            "areaHortaPlantioProducaoAgricola" => $this->getAreaHortaPlantioProducaoAgricola(),
             "nenhumaDependencias" => $this->getNenhumaDependencias(),
             "corrimao" => $this->getCorrimao(),
             "elevador" => $this->getElevador(),
             "pisoTatil" => $this->getPisoTatil(),
             "portasComVao80Cm" => $this->getPortasComVao80Cm(),
             "rampas" => $this->getRampas(),
+            "sinalizacaoAlarmeLuminoso" => $this->getSinalizacaoAlarmeLuminoso(),
             "sinalizacaoSonora" => $this->getSinalizacaoSonora(),
             "sinalizacaoTatil" => $this->getSinalizacaoTatil(),
             "sinalizacaoVisual" => $this->getSinalizacaoVisual(),
@@ -3424,6 +3753,8 @@ class Registro10
             "redeCabo" => $this->getRedeCabo(),
             "redeWireless" => $this->getRedeWireless(),
             "naoExisteRede" => $this->getNaoExisteRede(),
+            "agronomosTecnicosResponsaveisProducaoAgricola"
+                => $this->getAgronomosTecnicosResponsaveisProducaoAgricola(),
             "auxiliarSecretariaAdministrativos" => $this->getAuxiliarSecretariaAdministrativos(),
             "auxiliarServicosGerais" => $this->getAuxiliarServicosGerais(),
             "bibliotecario" => $this->getBibliotecario(),
@@ -3437,19 +3768,28 @@ class Registro10
             "secretario" => $this->getSecretario(),
             "seguranca" => $this->getSeguranca(),
             "tecnicosMonitores" => $this->getTecnicosMonitores(),
+            "gestoresEscola" => $this->getGestoresEscola(),
+            "orientadorComunitario" => $this->getOrientadorComunitario(),
+            "tradutorInterpreteLibras" => $this->getTradutorInterpreteLibras(),
+            "revisorTextoBrailleAssistenteVidente" => $this->getRevisorTextoBrailleAssistenteVidente(),
+            "naoHaFuncionarios" => $this->getNaoHaFuncionarios(),
             "alimentacaoEscolar" => $this->getAlimentacaoEscolar(),
             "acervoMultimidia" => $this->getAcervoMultimidia(),
             "brinquedosEducacaoInfantil" => $this->getBrinquedosEducacaoInfantil(),
             "materiaisCientificos" => $this->getMateriaisCientificos(),
             "EquipamentoAmplificacaoOuDifusaoAudio" => $this->getEquipamentoAmplificacaoOuDifusaoAudio(),
+            "equipamentosAtividadesHortaProducaoAgricola" => $this->getEquipamentosAtividadesHortaProducaoAgricola(),
             "instrumentosMusicais" => $this->getInstrumentosMusicais(),
             "jogosEducativos" => $this->getJogosEducativos(),
             "materialAtividadeCultural" => $this->getMaterialAtividadeCultural(),
             "materialEducacaoProfissional" => $this->getmaterialEducacaoProfissional(),
             "materialDesportivRecreacao" => $this->getMaterialDesportivRecreacao(),
+            "materialEducacaoBilingue" => $this->getMaterialEducacaoBilingue(),
             "materialEducacaoIndigena" => $this->getMaterialEducacaoIndigena(),
             "materialEducacaoEtnicoRacial" => $this->getMaterialEducacaoEtnicoRacial(),
             "materialEducacaoCampo" => $this->getMaterialEducacaoCampo(),
+            "materialEducacaoQuilombola" => $this->getMaterialEducacaoQuilombola(),
+            "materialEducacaoEspecial" => $this->getMaterialEducacaoEspecial(),
             "nenhumInstrumentoListado" => $this->getNenhumInstrumentoListado(),
             "educacaoEscolarIndigena" => $this->getEducacaoEscolarIndigena(),
             "linguaIndigena" => $this->getLinguaIndigena(),
@@ -3474,9 +3814,13 @@ class Registro10
             "orgaosColegiadosOutros" => $this->getOrgaosColegiadosOutros(),
             "orgaosColegiadosNenhum" => $this->getOrgaosColegiadosNenhum(),
             "projetoPedagogicoAtualizado" => $this->getProjetoPedagogicoAtualizado(),
-            "gestoresEscola" => $this->getGestoresEscola(),
-            "orientadorComunitario" => $this->getOrientadorComunitario(),
-            "naoHaFuncionarios" => $this->getNaoHaFuncionarios(),
+            "desenvolveAcoesEducacaoAmbiental" => $this->getDesenvolveAcoesEducacaoAmbiental(),
+            "comoConteudoComponentesCamposExperiencias" => $this->getComoConteudoComponentesCamposExperiencias(),
+            "comoComponenteCurricularEspecialEspecifico" => $this->getComoComponenteCurricularEspecialEspecifico(),
+            "comoEixoEstruturanteCurriculo" => $this->getComoEixoEstruturanteCurriculo(),
+            "emEventos" => $this->getEmEventos(),
+            "emProjetosTransversaisInterdisciplinares" => $this->getEmProjetosTransversaisInterdisciplinares(),
+            "nenhumaDasOpcoesListadas" => $this->getNenhumaDasOpcoesListadas()
         );
     }
 }

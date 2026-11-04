@@ -3,22 +3,27 @@
 class ArquivoDirf2018 extends ArquivoDirf2015
 {
     /**
+     * @var bool
+     */
+    private $lPossuiPensionistas;
+
+    /**
      *  Escreve a subsecao "BPFDEC"(Beneficiario Pessoa Fisica do Declarante) e seus "RTRT"(rendimentos tributaveis)
      *  @param  array $aDadosPessoaFisica
      *  @return void
      */
-    public function escreverLinhasPessoaFisica(array $aDadosPessoaFisica) {
+    public function escreverLinhasPessoaFisica(array $aDadosPessoaFisica)
+    {
 
         foreach ($aDadosPessoaFisica as $oPessoaFisica) {
-
             $this->oLayout->setCampoTipoLinha(3);
             $this->oLayout->setCampoIdentLinha("BPFDEC");
             $this->oLayout->setCampo("identificador_registro", 'BPFDEC');
             $this->oLayout->setCampo("nome", $oPessoaFisica->nome);
-            $this->oLayout->setCampo("cpf",  $oPessoaFisica->cpf);
-            $this->oLayout->setCampo("data_laudo",  $oPessoaFisica->datalaudo);
-            $this->oLayout->setCampo("indicador_identificacao_alimentando",  $oPessoaFisica->indicador_identificacao_alimentando);
-            $this->oLayout->setCampo("indicador_identificacao_previdencia_complementar",  $oPessoaFisica->indicador_identificacao_previdencia_complementar);
+            $this->oLayout->setCampo("cpf", $oPessoaFisica->cpf);
+            $this->oLayout->setCampo("data_laudo", $oPessoaFisica->datalaudo);
+            $this->oLayout->setCampo("indicador_identificacao_alimentando", $oPessoaFisica->indicador_identificacao_alimentando);
+            $this->oLayout->setCampo("indicador_identificacao_previdencia_complementar", $oPessoaFisica->indicador_identificacao_previdencia_complementar);
             $this->oLayout->geraDadosLinha();
 
 
@@ -45,21 +50,18 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                  * escreve os meses com cada valor
                  */
                 for ($iMes = 1; $iMes <= 13; $iMes++) {
-
                     $aMes[$iMes] = '';
 
                     foreach ($oPagamento as $oMes) {
-
                         if ($oMes->rh98_mes == $iMes) {
-
                             $nValorDeducao65 = 0;
 
                             if ($oMes->rh98_rhdirftipovalor == 1) {
-                                $nValorDeducao65 = $this->oGerador->getDirf()->getValorDeducaoRIP65($iMes,$oPessoaFisica->pagamentos);
+                                $nValorDeducao65 = $this->oGerador->getDirf()->getValorDeducaoRIP65($iMes, $oPessoaFisica->pagamentos);
                             }
 
                             $nValorLancar = $oMes->valor > 0 ? $oMes->valor : 0;
-                            $aMes[$iMes] = db_formatar(str_replace(',','',str_replace('.','',trim(db_formatar($nValorLancar,'f')))),'s','0',8,'e',2);
+                            $aMes[$iMes] = db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($nValorLancar, 'f')))), 's', '0', 8, 'e', 2);
                         }
                     }
                     $this->oLayout->setCampo($this->aMeses[$iMes], $aMes[$iMes]);
@@ -68,22 +70,19 @@ class ArquivoDirf2018 extends ArquivoDirf2015
             }
 
             if ($oPessoaFisica->previdencia_privada) {
-
                 foreach ($oPessoaFisica->previdencia_privada as $iCgm => $aMeses) {
-
                     $oEmpresa = CgmRepository::getByCodigo($iCgm);
                     $this->oLayout->setCampoTipoLinha(3);
                     $this->oLayout->setCampoIdentLinha("INFPC");
                     $this->oLayout->setCampo("identificador_registro", "INFPC");
                     $this->oLayout->setCampo("cnpj", $oEmpresa->getCnpj());
-                    $this->oLayout->setCampo("nome_empresarial",  $oEmpresa->getNome());
+                    $this->oLayout->setCampo("nome_empresarial", $oEmpresa->getNome());
                     $this->oLayout->geraDadosLinha();
 
                     $this->oLayout->setCampoTipoLinha(3);
                     $this->oLayout->setCampoIdentLinha("RTRT");
                     $this->oLayout->setCampo("idetificador_registro", "RTPP");
                     for ($iMes = 1; $iMes <= 13; $iMes++) {
-
                         $mes = '';
                         if (isset($aMeses[$iMes])) {
                             $mes = $aMeses[$iMes];
@@ -92,17 +91,15 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                     }
                     $this->oLayout->geraDadosLinha();
                 }
-
             }
 
             /**
              * escrevemos os dados dos pensionistas
              */
-            uasort($oPessoaFisica->pensionistas, function($primeiro, $proximo) {
+            uasort($oPessoaFisica->pensionistas, function ($primeiro, $proximo) {
                 return strcasecmp($primeiro->cpf, $proximo->cpf);
             });
             foreach ($oPessoaFisica->pensionistas as $oPensionista) {
-
                 $this->oLayout->setCampoTipoLinha(3);
                 $relacao_depedencia = str_pad($oPensionista->relacao_dependencia, 2, "0", STR_PAD_LEFT);
 
@@ -122,7 +119,6 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                 $this->oLayout->setCampoIdentLinha("RTRT");
                 $this->oLayout->setCampo("idetificador_registro", "RTPA");
                 for ($iMes = 1; $iMes <= 13; $iMes++) {
-
                     $mes = '';
                     if (isset($oPensionista->valores[$iMes])) {
                         $mes = $oPensionista->valores[$iMes];
@@ -135,7 +131,7 @@ class ArquivoDirf2018 extends ArquivoDirf2015
             /**
              * Outros dados.
              */
-            if($oPessoaFisica->totaloutros > 0){
+            if ($oPessoaFisica->totaloutros > 0) {
                 $this->escreverOutrosDados(self::converterValor($oPessoaFisica->totaloutros, 13));
             }
         }
@@ -147,7 +143,8 @@ class ArquivoDirf2018 extends ArquivoDirf2015
      *  @param  String $sNomeInstituicao
      *  @return void
      */
-    public function escreverSecaoDeclarantePessoaJuridica($sNomeInstituicao) {
+    public function escreverSecaoDeclarantePessoaJuridica($sNomeInstituicao)
+    {
 
         $this->oLayout->setCampoTipoLinha(3);
         $this->oLayout->setCampoIdentLinha("DECPJ");
@@ -164,7 +161,6 @@ class ArquivoDirf2018 extends ArquivoDirf2015
         $aLinhasDirf = $this->oGerador->getRegistros();
 
         foreach ($aLinhasDirf as $oLinhaDirf) {
-
             if ($oLinhaDirf->receita == "1889") { //Receita do RRA
                 continue;
             }
@@ -175,31 +171,33 @@ class ArquivoDirf2018 extends ArquivoDirf2015
         }
     }
 
-
     /**
      *  Escreve a linha do beneficiario do RRA ("BPFRRA")
      *
-     *  @return void
+     * @param $sNome
+     * @param $sCpf
+     * @return void
      */
-    public function escreverLinhaBeneficiarioRRA($sNome, $sCpf, $lPossuiPensionistas) {
+    public function escreverLinhaBeneficiarioRRA($sNome, $sCpf)
+    {
 
         $aBeneficiario['identificador']  = "BPFRRA";
         $aBeneficiario['cpf']            = $sCpf;
         $aBeneficiario['nome']           = $sNome;
         $aBeneficiario['natureza']       = "";
         $aBeneficiario['data_molestia']  = "";
-        $aBeneficiario['indicador_identificacao_alimentando_rra']  = $lPossuiPensionistas ? "S" : "N";
+        $aBeneficiario['indicador_identificacao_alimentando_rra']  = $this->lPossuiPensionistas ? "S" : "N";
         $aBeneficiario['pipe']           = "";
         $this->oLayout->setByLineOfDBUtils((object)$aBeneficiario, 3, 'BPFRRA');
     }
-
 
     /**
      *  Escreve seção do RRA
      *
      *  return void
      */
-    public function escreverSecaoRRA() {
+    public function escreverSecaoRRA()
+    {
 
         /**
          * Após geração a estrutura ficará dessa forma
@@ -230,20 +228,19 @@ class ArquivoDirf2018 extends ArquivoDirf2015
          *  Percorre as receitas encontradas na geração da DIRF
          */
         foreach ($aReceitas as $iCodigoReceita => $aBeneficiarios) {
-
             $this->escreverLinhaReceita($iCodigoReceita);
 
             /**
              *  Percorre os beneficiarios da Receita
              */
             foreach ($aBeneficiarios as $oBeneficiario) {
-
                 $possuiPensionistas = false;
                 if (count($oBeneficiario->RTPA) > 0) {
                     $possuiPensionistas = true;
                 }
 
-                $this->escreverLinhaBeneficiarioRRA($oBeneficiario->nome, $oBeneficiario->cpf, $possuiPensionistas);
+                $this->lPossuiPensionistas = $possuiPensionistas;
+                $this->escreverLinhaBeneficiarioRRA($oBeneficiario->nome, $oBeneficiario->cpf);
                 /**
                  *  Remove nome e cpf para que possa percorrer as propriedades
                  */
@@ -253,15 +250,13 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                  *  Percorre as propriedades do objeto com as registros mensais
                  */
                 foreach ($oBeneficiario as $sTipoRegistro => $aCompetencias) {
-
                     if (empty($aCompetencias)) {
                         continue;
                     }
 
-                    switch($sTipoRegistro) {
+                    switch ($sTipoRegistro) {
                         case 'RTPA':
                             foreach ($aCompetencias as $oPensionista) {
-
                                 $relacao_depedencia = $oPensionista->relacao_dependencia;
 
                                 if ($oPensionista->relacao_dependencia == 0) {
@@ -279,8 +274,7 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                                 $this->oLayout->setCampoTipoLinha(3);
                                 $this->oLayout->setCampoIdentLinha("RTRT");
                                 $this->oLayout->setCampo("idetificador_registro", "RTPA");
-                                for ($iMes = 1;$iMes <= 13;$iMes++) {
-
+                                for ($iMes = 1; $iMes <= 13; $iMes++) {
                                     $mes = '';
                                     if (isset($oPensionista->valores[$iMes])) {
                                         $mes = $oPensionista->valores[$iMes];
@@ -289,25 +283,26 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                                 }
                                 $this->oLayout->geraDadosLinha();
                             }
-                        break;
+                            break;
 
                         case 'RTPO':
-
                             $this->oLayout->setCampo("idetificador_registro", $sTipoRegistro);
 
-                            for($i=1; $i<=12; $i++) {
-
+                            for ($i=1; $i<=12; $i++) {
                                 $label = $this->aMeses[$i];
-                                $valor = !empty($aCompetencias[$i]) ? self::converterValor($aCompetencias[$i], 8) : null;
+                                $valor = null;
+                                if (!empty($aCompetencias[$i])) {
+                                    $valor = self::converterValor($aCompetencias[$i], 8);
+                                }
 
                                 $this->oLayout->setCampo($label, $valor);
                             }
 
                             $this->oLayout->geraDadosLinha();
-                        break;
+                            break;
                     }
 
-                    if(in_array($sTipoRegistro, array('RTPA', 'RTPO'))) {
+                    if (in_array($sTipoRegistro, array('RTPA', 'RTPO'))) {
                         continue;
                     }
                     $aValores = array_replace($this->aBaseValoresMensais, $aCompetencias);
@@ -315,7 +310,6 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                 }
             }
         }
-
     }
 
     /**
@@ -323,20 +317,19 @@ class ArquivoDirf2018 extends ArquivoDirf2015
      * @throws \BusinessException
      * @throws \DBException
      */
-    public function escreverSecaoANS() {
+    public function escreverSecaoANS()
+    {
 
         /**
          * geramos as linhas do plano de saude
          */
         if (trim($this->oGerador->getNumeroANS()) != "" || trim($this->oGerador->getNumeroANS2()) != "") {
-
             $this->oLayout->setCampoTipoLinha(3);
             $this->oLayout->setCampoIdentLinha("PSE");
             $this->oLayout->setCampo("identificador_registro", 'PSE');
             $this->oLayout->geraDadosLinha();
 
             if (trim($this->oGerador->getNumeroANS()) != "") {
-
                 $oDaoCgm   = db_utils::getDao("cgm");
                 $sSqlNome  = $oDaoCgm->sql_query_file($this->oGerador->getCcgmSaude(), "z01_nome, z01_cgccpf");
                 $rsNome    = db_query($sSqlNome);
@@ -365,13 +358,13 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                 $aLinhasDirf = $this->oGerador->getRegistros();
 
                 foreach ($aLinhasDirf as $oLinhaDirf) {
-
                     foreach ($oLinhaDirf->fisica as $oPessoaFisica) {
-
                         if ($oPessoaFisica->totalsaude1 > 0) {
-
-                            $nValorAno = db_formatar(str_replace(',','',str_replace('.','',
-                                trim(db_formatar($oPessoaFisica->totalsaude1,'f')))),'s','0',9,'e',2);
+                            $nValorAno = db_formatar(str_replace(',', '', str_replace(
+                                '.',
+                                '',
+                                trim(db_formatar($oPessoaFisica->totalsaude1, 'f'))
+                            )), 's', '0', 9, 'e', 2);
                             $this->oLayout->setCampoTipoLinha(3);
                             $this->oLayout->setCampoIdentLinha("TPSE");
                             $this->oLayout->setCampo("identificador_registro", 'TPSE');
@@ -385,7 +378,6 @@ class ArquivoDirf2018 extends ArquivoDirf2015
             }
 
             if (trim($this->oGerador->getNumeroANS2()) != "") {
-
                 $oDaoCgm   = db_utils::getDao("cgm");
                 $sSqlNome  = $oDaoCgm->sql_query_file($this->oGerador->getCcgmSaude2(), "z01_nome, z01_cgccpf");
                 $rsNome    = db_query($sSqlNome);
@@ -412,13 +404,13 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                  * geramos todas as pessoas que possuem valor do plano de saude maior que zero.
                  */
                 foreach ($aLinhasDirf as $oLinhaDirf) {
-
                     foreach ($oLinhaDirf->fisica as $oPessoaFisica) {
-
                         if ($oPessoaFisica->totalsaude2 > 0) {
-
-                            $nValorAno = db_formatar(str_replace(',','',str_replace('.','',
-                                trim(db_formatar($oPessoaFisica->totalsaude2,'f')))),'s','0',9,'e',2);
+                            $nValorAno = db_formatar(str_replace(',', '', str_replace(
+                                '.',
+                                '',
+                                trim(db_formatar($oPessoaFisica->totalsaude2, 'f'))
+                            )), 's', '0', 9, 'e', 2);
                             $this->oLayout->setCampoTipoLinha(3);
                             $this->oLayout->setCampoIdentLinha("TPSE");
                             $this->oLayout->setCampo("identificador_registro", 'TPSE');
@@ -431,20 +423,19 @@ class ArquivoDirf2018 extends ArquivoDirf2015
                 }
             }
         }
-
     }
 
     /**
      *  Escreve linha "INF" informações complementares para o comprovante de rendimentos
      *  @return void
      */
-    public function escreverInformacoesComplementares() {
+    public function escreverInformacoesComplementares()
+    {
 
         $aLinhasDirf = $this->oGerador->getRegistros();
         $aInformacoesComplementares = array();
 
         foreach ($aLinhasDirf as $oLinhaDirf) {
-
             foreach ($oLinhaDirf->fisica as $oPessoaFisica) {
                 if ($oPessoaFisica->informacao_complementar != '') {
                     $aInformacoesComplementares[$oPessoaFisica->cpf] = substr($oPessoaFisica->informacao_complementar, 0, 500);
@@ -454,14 +445,12 @@ class ArquivoDirf2018 extends ArquivoDirf2015
         ksort($aInformacoesComplementares);
         $aInformacoesJaImpressas = array();
 
-        foreach ($aInformacoesComplementares as $cpf  => $informacao ) {
-
+        foreach ($aInformacoesComplementares as $cpf => $informacao) {
             $oPessoaFisica->identificador_registro  = 'INF';
             $oPessoaFisica->cpf                     = $cpf;
             $oPessoaFisica->Pipe                    = '';
             $oPessoaFisica->informacao_complementar = substr($informacao, 0, 500);
             $this->oLayout->setByLineOfDBUtils($oPessoaFisica, 3, 'INF');
         }
-
     }
 }

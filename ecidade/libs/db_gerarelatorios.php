@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@
 //  location.href = self;
   //location.href='mostrarelatorio.php?arquivo=<?=$arquivo?>';
 </script>
-<?
+<?php
   } else {
     echo "<script>alert('$aux')</script>\n";
   }

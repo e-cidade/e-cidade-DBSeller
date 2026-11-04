@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ $anousu = db_getsession("DB_anousu");
     <center>
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_conlancam003.hide();">
  
-	<?
+	<?php
 	if (isset($sql)) {
 	    $js_funcao="";
             db_lovrot($sql,15,"()","","$js_funcao");

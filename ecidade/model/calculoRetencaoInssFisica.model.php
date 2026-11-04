@@ -93,7 +93,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
   /** metodo construtor da classe
    * @param integer $iTipo tipo do calculo 1 - pessoa fisica
    */
-  function __construct($iCgcCpf, $iTipo = 3) {
+  public function __construct($iCgcCpf, $iTipo = 3) {
 
     $this->iTipo   = $iTipo;
     $this->iCgcCpf = (string)$iCgcCpf;
@@ -105,7 +105,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @see iCalculoRetencao::calculaBasedeCalculo()
    */
-  function calculaBasedeCalculo() {
+  public function calculaBasedeCalculo() {
 
     /*
      * calculo da base calculo;
@@ -153,6 +153,66 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
       $nValorBaseCalculo = $oNotas->total - $this->nValorDeducao;
 
     }
+
+    /*
+    * Adiciona o valor selecionado para composicao da base de calculo
+    */
+   if (  isset($this->aCodigoMovimentos) && !empty($this->aCodigoMovimentos) && count($this->aCodigoMovimentos) > 0) {
+      $sWhereIn         = implode(",",$this->aCodigoMovimentos);
+      $sSqlComposicao = " select ";
+      $sSqlComposicao .= "       sum(round(";
+      $sSqlComposicao .= "           e81_valor + (";
+      $sSqlComposicao .= "               select";
+      $sSqlComposicao .= "                   coalesce(sum(e34_valordesconto), 0)";
+      $sSqlComposicao .= "               from";
+      $sSqlComposicao .= "                   pagordemdesconto";
+      $sSqlComposicao .= "               where";
+      $sSqlComposicao .= "                   e34_codord = e50_codord";
+      $sSqlComposicao .= "           ),";
+      $sSqlComposicao .= "           2";
+      $sSqlComposicao .= "       )) as e81_valor";
+      $sSqlComposicao .= "   from";
+      $sSqlComposicao .= "       empage";
+      $sSqlComposicao .= "       inner join empagemov on empagemov.e81_codage = empage.e80_codage";
+      $sSqlComposicao .= "       inner join empord on empord.e82_codmov = empagemov.e81_codmov";
+      $sSqlComposicao .= "       inner join pagordem on pagordem.e50_codord = empord.e82_codord";
+      $sSqlComposicao .= "       inner join pagordemele on pagordemele.e53_codord = pagordem.e50_codord";
+      $sSqlComposicao .= "       inner join empempenho on empempenho.e60_numemp = pagordem.e50_numemp";
+      $sSqlComposicao .= "       inner join cgm on cgm.z01_numcgm = empempenho.e60_numcgm";
+      $sSqlComposicao .= "       left join empageconcarpeculiar on empageconcarpeculiar.e79_empagemov = empagemov.e81_codmov";
+      $sSqlComposicao .= "       left join corempagemov on corempagemov.k12_codmov = empagemov.e81_codmov";
+      $sSqlComposicao .= "       left join empagemovconta on empagemov.e81_codmov = e98_codmov";
+      $sSqlComposicao .= "       left join empageconf on empageconf.e86_codmov = empord.e82_codmov";
+      $sSqlComposicao .= "       left join empageconfche on empageconf.e86_codmov = e91_codmov";
+      $sSqlComposicao .= "       and e91_ativo is true";
+      $sSqlComposicao .= "       left join empagepag on e85_codmov = e81_codmov";
+      $sSqlComposicao .= "       left join empagetipo on e85_codtipo = e83_codtipo";
+      $sSqlComposicao .= "       left join pagordemnota on e71_codord = e50_codord";
+      $sSqlComposicao .= "       left join empnota on e69_codnota = e71_codnota";
+      $sSqlComposicao .= "       left join corgrupocorrente on k105_data = corempagemov.k12_data";
+      $sSqlComposicao .= "       and k105_autent = corempagemov.k12_autent";
+      $sSqlComposicao .= "       and k105_id = corempagemov.k12_id";
+      $sSqlComposicao .= "   where";
+      $sSqlComposicao .= "       e81_codmov in ($sWhereIn)";
+      $sSqlComposicao .= "       and e71_anulado is false";
+      $sSqlComposicao .= "       and ";
+      $sSqlComposicao .= "           k12_data is null";
+      $sSqlComposicao .= "           ";
+      $sSqlComposicao .= "       and (";
+      $sSqlComposicao .= "           e81_cancelado is null";
+      $sSqlComposicao .= "           and case";
+      $sSqlComposicao .= "               when k12_data is not null then k105_corgrupotipo = 1";
+      $sSqlComposicao .= "               else true";
+      $sSqlComposicao .= "           end";
+      $sSqlComposicao .= "       )";
+      $rsComposicao    = $oDaoNota->sql_record($sSqlComposicao);
+    
+      if ($oDaoNota->numrows > 0) {
+        $oComposicao            = db_utils::fieldsMemory($rsComposicao, 0);
+        $nValorBaseCalculo += $oComposicao->e81_valor;
+
+      }
+    }
     if ($nValorBaseCalculo < 0) {
       $nValorBaseCalculo = 0;
     }
@@ -166,7 +226,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @see iCalculoRetencao::calcularRetencao()
    */
-  function calcularRetencao() {
+  public function calcularRetencao() {
 
     $this->nValorBaseCalculo = $this->calculaBasedeCalculo();
     $this->getTabelaInss();
@@ -188,12 +248,18 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
      * e o valor base será o valor da nota
      */
     $oFornecedor = new fornecedor($this->cgm->getCodigo());
+    $produtorRural = false;
+    if ( isset($oFornecedor->getCgm()->getTipoEmpresa()[0]->z03_tipoempresa) && !empty($oFornecedor->getCgm()->getTipoEmpresa()[0]->z03_tipoempresa) ) {
 
-    if ( in_array($oFornecedor->getCgm()->getTipoEmpresa()[0]->z03_tipoempresa, $produtoresRurais) ) {
+        $produtorRural = in_array($oFornecedor->getCgm()->getTipoEmpresa()[0]->z03_tipoempresa, $produtoresRurais);
 
-        $this->nAliquota = $this->nValorAliquota;
-        $this->nValorBaseCalculo = $this->nValorNota;
+        if ($produtorRural) {
+
+            $this->nAliquota = $this->nValorAliquota;
+            $this->nValorBaseCalculo = $this->nValorNota;
+        }
     }
+
     //$nValorRetido = $this->nValorBaseCalculo * ($this->oTabelaInss->r33_perc/100);
     $nValorRetido = $this->nValorBaseCalculo * ($this->nAliquota / 100);
     $n2 = $nValorRetido;
@@ -222,7 +288,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
     $sSqlValorRetido .= "   and e21_retencaotipocalc = {$this->iTipo}                               ";
     $rsValorRetido    = $oDaoNota->sql_record($sSqlValorRetido);
 
-    if ($oDaoNota->numrows > 0) {
+    if ($oDaoNota->numrows > 0 and !$produtorRural ) {
 
       $nValorJaRetido = (float)db_utils::fieldsMemory($rsValorRetido, 0)->valorretido;
       $nValorRetido  -= $nValorJaRetido;
@@ -233,7 +299,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
      * calculamos o valor ja retido desses calculos
      * Buscamos o valor já retido no mes e deduzimos do valor retido.
      */
-    if (count($this->aCodigoMovimentos) > 0) {
+    if ( isset($this->aCodigoMovimentos) && !empty($this->aCodigoMovimentos) &&  count($this->aCodigoMovimentos) > 0) {
 
       $sWhereIn         = implode(",",$this->aCodigoMovimentos);
       $sSqlValorRetido  = "select sum(e23_valorretencao) as valorRetido                               ";
@@ -255,7 +321,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
       $sSqlValorRetido .= "   and e21_retencaotipocalc = {$this->iTipo}                               ";
       $sSqlValorRetido .= "   and e27_empagemov in({$sWhereIn})                                        ";
       $rsValorRetido    = $oDaoNota->sql_record($sSqlValorRetido);
-      if ($oDaoNota->numrows > 0) {
+      if ($oDaoNota->numrows > 0 and !$produtorRural) {
 
         $nValorJaRetido = db_utils::fieldsMemory($rsValorRetido, 0)->valorretido;
         $nValorRetido  -= $nValorJaRetido;
@@ -273,7 +339,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @see iCalculoRetencao::getAliquota()
    */
-  function getAliquota() {
+  public function getAliquota() {
     return $this->nAliquota;
   }
 
@@ -281,7 +347,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @see iCalculoRetencao::getValorBaseCalculo()
    */
-  function getValorBaseCalculo() {
+  public function getValorBaseCalculo() {
     return $this->nValorBaseCalculo;
   }
 
@@ -290,7 +356,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    * @param float $nValorAliquota
    * @see iCalculoRetencao::setAliquota()
    */
-  function setAliquota($nValorAliquota) {
+  public function setAliquota($nValorAliquota) {
     $this->nValorAliquota = $nValorAliquota;
   }
 
@@ -299,14 +365,14 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    * @param $nValorDeducao
    * @see iCalculoRetencao::setDeducao()
    */
-  function setDeducao($nValorDeducao) {
+  public function setDeducao($nValorDeducao) {
     $this->nValorDeducao = $nValorDeducao;
   }
 
   /** Retorna a tabela de Inss conforme base de calculo
    * @return boolean;
    */
-  function getTabelaInss() {
+  public function getTabelaInss() {
 
     /*
      * Buscamos o codigo da tabela a ser Deduzida
@@ -334,21 +400,19 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
     /*
      * Retorna a tabela do imposto de renda que devemos usar.
      */
-    $nBaseCalculo     = $this->nValorBaseCalculo;
-    if ($nBaseCalculo > 3038.99) {
-      $nBaseCalculo = 3038.99;
+    $nBaseCalculo = $this->nValorBaseCalculo;
+    $nValorTeto   = $this->getTetoInss($iCodigoTabelaInss);
+    
+    if ($nBaseCalculo > $nValorTeto) {
+      $nBaseCalculo =  $nValorTeto;
     }
+    
     $oDaoInssIrf     = new cl_inssirf;
     $sSqlTabelaINSS  = "select r33_inic,                                               ";
     $sSqlTabelaINSS .= "       r33_fim,                                                ";
     $sSqlTabelaINSS .= "       r33_deduzi,                                             ";
     $sSqlTabelaINSS .= "       r33_perc,                                               ";
-    $sSqlTabelaINSS .= "       (select max(r33_fim)                                    ";
-    $sSqlTabelaINSS .= "          from inssirf  a                                      ";
-    $sSqlTabelaINSS .= "         where a.r33_anousu = inssirf.r33_anousu               ";
-    $sSqlTabelaINSS .= "           and a.r33_mesusu = inssirf.r33_mesusu               ";
-    $sSqlTabelaINSS .= "           and a.r33_instit = inssirf.r33_instit               ";
-    $sSqlTabelaINSS .= "           and a.r33_codtab = {$iCodigoTabelaInss}) as teto    ";
+    $sSqlTabelaINSS .= "       {$nValorTeto} as teto                                   ";
     $sSqlTabelaINSS .= "  from inssirf                                                 ";
     $sSqlTabelaINSS .= " where {$nBaseCalculo} between r33_inic and r33_fim ";
     $sSqlTabelaINSS .= "   and r33_codtab = {$iCodigoTabelaInss}                       ";
@@ -357,9 +421,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
     $sSqlTabelaINSS .= "          r33_mesusu desc  limit 1                             ";
     $rsTabelaInss    = $oDaoInssIrf->sql_record($sSqlTabelaINSS);
     if ($oDaoInssIrf->numrows == 1) {
-
       $this->oTabelaInss = db_utils::fieldsMemory($rsTabelaInss, 0);
-
     } else {
 
       $this->oTabelaInss = new stdClass();
@@ -374,7 +436,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @param float8 $nValorBaseCalculo valor da base de calculo
    */
-  function setBaseCalculo($nValorBaseCalculo) {
+  public function setBaseCalculo($nValorBaseCalculo) {
     $this->nValorBaseCalculo = $nValorBaseCalculo;
   }
 
@@ -383,7 +445,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @param float $nValorNota valor da nota a ser contabilizado na retencao.
    */
-  function setValorNota($nValorNota) {
+  public function setValorNota($nValorNota) {
 
     $this->nValorNota = $nValorNota;
   }
@@ -393,7 +455,7 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @param string $dtDataBase data base para caculo formato dd/mm/YYY
    */
-  function setDataBase($dtDataBase) {
+  public function setDataBase($dtDataBase) {
 
     $dtDataBase = implode("-", array_reverse(explode("/", $dtDataBase)));
     $this->dtBaseCalculo = $dtDataBase;
@@ -404,9 +466,26 @@ class calculoRetencaoInssFisica implements iCalculoRetencao {
    *
    * @param unknown_type $aCodigosMovimentos
    */
-  function setCodigoMovimentos($aCodigosMovimentos) {
+  public function setCodigoMovimentos($aCodigosMovimentos) {
      $this->aCodigoMovimentos = $aCodigosMovimentos;
   }
+  
+  /**
+   * Busca o valor limite do teto
+   * @param integer $tabelaInss
+   * @return numeric
+   */
+  private function getTetoInss($tabelaInss)
+  {
+      $sSqlTeto  = "select max(r33_fim) as teto                       ";
+      $sSqlTeto .= "  from inssirf                                    ";
+      $sSqlTeto .= "  where r33_codtab = {$tabelaInss}                ";
+      $sSqlTeto .= "   and r33_instit = ".db_getsession("DB_instit");
+      $sSqlTeto .= " group by r33_anousu, r33_mesusu                  ";
+      $sSqlTeto .= " order by r33_anousu desc,                        ";
+      $sSqlTeto .= "          r33_mesusu desc  limit 1                ";
+      $rsTeto    = db_query($sSqlTeto);
+      
+      return db_utils::fieldsMemory($rsTeto,0)->teto;
+  }
 }
-
-?>

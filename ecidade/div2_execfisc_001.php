@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,12 +79,12 @@
                       </tr>
                       <tr align="center"> 
                         <td nowrap title="<?=@$Tparcel?>" >&nbsp;
-			 <?
+			 <?php
 			   db_ancora(@$Lv07_parcel,"js_pesquisaparcel(true);",4)
 			 ?>
 			</td>
 			<td>		     
-			<?
+			<?php
 			 db_input('v07_parcel',4,$Iv07_parcel,true,'text',4,"onchange='js_pesquisaparcel(false);'")
 			?>
                         </td>
@@ -111,7 +111,7 @@
       </table></td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -139,7 +139,7 @@ function js_mostratermo1(chave1){
      db_iframe.hide();
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

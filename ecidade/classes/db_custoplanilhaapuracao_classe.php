@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Custos
 //CLASSE DA ENTIDADE custoplanilhaapuracao
-class cl_custoplanilhaapuracao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cc17_sequencial = 0; 
-   var $cc17_custoplanilhaorigem = 0; 
-   var $cc17_custoplanilha = 0; 
-   var $cc17_custoplanoanalitica = 0; 
-   var $cc17_quantidade = 0; 
-   var $cc17_valor = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_custoplanilhaapuracao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $cc17_sequencial = 0;
+   var $cc17_custoplanilhaorigem = 0;
+   var $cc17_custoplanilha = 0;
+   var $cc17_custoplanoanalitica = 0;
+   var $cc17_quantidade = 0;
+   var $cc17_valor = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 cc17_sequencial = int4 = Sequencial 
-                 cc17_custoplanilhaorigem = int4 = Custo Planilha Origem 
-                 cc17_custoplanilha = int4 = Custo Planilha 
-                 cc17_custoplanoanalitica = int4 = Custo Plano Analítica 
-                 cc17_quantidade = float4 = Quantidade 
-                 cc17_valor = float4 = Valor 
+                 cc17_sequencial = int4 = Sequencial
+                 cc17_custoplanilhaorigem = int4 = Custo Planilha Origem
+                 cc17_custoplanilha = int4 = Custo Planilha
+                 cc17_custoplanoanalitica = int4 = Custo Plano Analítica
+                 cc17_quantidade = float4 = Quantidade
+                 cc17_valor = float4 = Valor
                  ";
-   //funcao construtor da classe 
-   function cl_custoplanilhaapuracao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("custoplanilhaapuracao"); 
+     $this->rotulo = new rotulo("custoplanilhaapuracao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_custoplanilhaapuracao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cc17_sequencial = ($this->cc17_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cc17_sequencial"]:$this->cc17_sequencial);
        $this->cc17_custoplanilhaorigem = ($this->cc17_custoplanilhaorigem == ""?@$GLOBALS["HTTP_POST_VARS"]["cc17_custoplanilhaorigem"]:$this->cc17_custoplanilhaorigem);
@@ -86,9 +86,9 @@ class cl_custoplanilhaapuracao {
      }
    }
    // funcao para inclusao
-   function incluir ($cc17_sequencial){ 
+   public function incluir ($cc17_sequencial){
       $this->atualizacampos();
-     if($this->cc17_custoplanilhaorigem == null ){ 
+     if($this->cc17_custoplanilhaorigem == null ){
        $this->erro_sql = " Campo Custo Planilha Origem nao Informado.";
        $this->erro_campo = "cc17_custoplanilhaorigem";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_custoplanilhaapuracao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cc17_custoplanilha == null ){ 
+     if($this->cc17_custoplanilha == null ){
        $this->erro_sql = " Campo Custo Planilha nao Informado.";
        $this->erro_campo = "cc17_custoplanilha";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_custoplanilhaapuracao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cc17_custoplanoanalitica == null ){ 
+     if($this->cc17_custoplanoanalitica == null ){
        $this->erro_sql = " Campo Custo Plano Analítica nao Informado.";
        $this->erro_campo = "cc17_custoplanoanalitica";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_custoplanilhaapuracao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cc17_quantidade == null ){ 
+     if($this->cc17_quantidade == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "cc17_quantidade";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_custoplanilhaapuracao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cc17_valor == null ){ 
+     if($this->cc17_valor == null ){
        $this->erro_sql = " Campo Valor nao Informado.";
        $this->erro_campo = "cc17_valor";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_custoplanilhaapuracao {
        return false;
      }
      if($cc17_sequencial == "" || $cc17_sequencial == null ){
-       $result = db_query("select nextval('custoplanilhaapuracao_cc17_sequencial_seq')"); 
+       $result = db_query("select nextval('custoplanilhaapuracao_cc17_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: custoplanilhaapuracao_cc17_sequencial_seq do campo: cc17_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: custoplanilhaapuracao_cc17_sequencial_seq do campo: cc17_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->cc17_sequencial = pg_result($result,0,0); 
+       $this->cc17_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from custoplanilhaapuracao_cc17_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $cc17_sequencial)){
@@ -154,10 +154,10 @@ class cl_custoplanilhaapuracao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->cc17_sequencial = $cc17_sequencial; 
+         $this->cc17_sequencial = $cc17_sequencial;
        }
      }
-     if(($this->cc17_sequencial == null) || ($this->cc17_sequencial == "") ){ 
+     if(($this->cc17_sequencial == null) || ($this->cc17_sequencial == "") ){
        $this->erro_sql = " Campo cc17_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_custoplanilhaapuracao {
        return false;
      }
      $sql = "insert into custoplanilhaapuracao(
-                                       cc17_sequencial 
-                                      ,cc17_custoplanilhaorigem 
-                                      ,cc17_custoplanilha 
-                                      ,cc17_custoplanoanalitica 
-                                      ,cc17_quantidade 
-                                      ,cc17_valor 
+                                       cc17_sequencial
+                                      ,cc17_custoplanilhaorigem
+                                      ,cc17_custoplanilha
+                                      ,cc17_custoplanoanalitica
+                                      ,cc17_quantidade
+                                      ,cc17_valor
                        )
                 values (
-                                $this->cc17_sequencial 
-                               ,$this->cc17_custoplanilhaorigem 
-                               ,$this->cc17_custoplanilha 
-                               ,$this->cc17_custoplanoanalitica 
-                               ,$this->cc17_quantidade 
-                               ,$this->cc17_valor 
+                                $this->cc17_sequencial
+                               ,$this->cc17_custoplanilhaorigem
+                               ,$this->cc17_custoplanilha
+                               ,$this->cc17_custoplanoanalitica
+                               ,$this->cc17_quantidade
+                               ,$this->cc17_valor
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Custo Planilha Apuração ($this->cc17_sequencial) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_custoplanilhaapuracao {
        $resac = db_query("insert into db_acount values($acount,2662,15131,'','".AddSlashes(pg_result($resaco,0,'cc17_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cc17_sequencial=null) { 
+   public function alterar ($cc17_sequencial=null) {
       $this->atualizacampos();
      $sql = " update custoplanilhaapuracao set ";
      $virgula = "";
-     if(trim($this->cc17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_sequencial"])){ 
+     if(trim($this->cc17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_sequencial"])){
        $sql  .= $virgula." cc17_sequencial = $this->cc17_sequencial ";
        $virgula = ",";
-       if(trim($this->cc17_sequencial) == null ){ 
+       if(trim($this->cc17_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cc17_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_custoplanilhaapuracao {
          return false;
        }
      }
-     if(trim($this->cc17_custoplanilhaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanilhaorigem"])){ 
+     if(trim($this->cc17_custoplanilhaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanilhaorigem"])){
        $sql  .= $virgula." cc17_custoplanilhaorigem = $this->cc17_custoplanilhaorigem ";
        $virgula = ",";
-       if(trim($this->cc17_custoplanilhaorigem) == null ){ 
+       if(trim($this->cc17_custoplanilhaorigem) == null ){
          $this->erro_sql = " Campo Custo Planilha Origem nao Informado.";
          $this->erro_campo = "cc17_custoplanilhaorigem";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_custoplanilhaapuracao {
          return false;
        }
      }
-     if(trim($this->cc17_custoplanilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanilha"])){ 
+     if(trim($this->cc17_custoplanilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanilha"])){
        $sql  .= $virgula." cc17_custoplanilha = $this->cc17_custoplanilha ";
        $virgula = ",";
-       if(trim($this->cc17_custoplanilha) == null ){ 
+       if(trim($this->cc17_custoplanilha) == null ){
          $this->erro_sql = " Campo Custo Planilha nao Informado.";
          $this->erro_campo = "cc17_custoplanilha";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_custoplanilhaapuracao {
          return false;
        }
      }
-     if(trim($this->cc17_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanoanalitica"])){ 
+     if(trim($this->cc17_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_custoplanoanalitica"])){
        $sql  .= $virgula." cc17_custoplanoanalitica = $this->cc17_custoplanoanalitica ";
        $virgula = ",";
-       if(trim($this->cc17_custoplanoanalitica) == null ){ 
+       if(trim($this->cc17_custoplanoanalitica) == null ){
          $this->erro_sql = " Campo Custo Plano Analítica nao Informado.";
          $this->erro_campo = "cc17_custoplanoanalitica";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_custoplanilhaapuracao {
          return false;
        }
      }
-     if(trim($this->cc17_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_quantidade"])){ 
+     if(trim($this->cc17_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_quantidade"])){
        $sql  .= $virgula." cc17_quantidade = $this->cc17_quantidade ";
        $virgula = ",";
-       if(trim($this->cc17_quantidade) == null ){ 
+       if(trim($this->cc17_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "cc17_quantidade";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_custoplanilhaapuracao {
          return false;
        }
      }
-     if(trim($this->cc17_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_valor"])){ 
+     if(trim($this->cc17_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc17_valor"])){
        $sql  .= $virgula." cc17_valor = $this->cc17_valor ";
        $virgula = ",";
-       if(trim($this->cc17_valor) == null ){ 
+       if(trim($this->cc17_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "cc17_valor";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_custoplanilhaapuracao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Custo Planilha Apuração nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cc17_sequencial;
@@ -357,14 +357,14 @@ class cl_custoplanilhaapuracao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cc17_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cc17_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cc17_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_custoplanilhaapuracao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Custo Planilha Apuração nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cc17_sequencial;
@@ -423,11 +423,11 @@ class cl_custoplanilhaapuracao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,11 +449,11 @@ class cl_custoplanilhaapuracao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $cc17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $cc17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,15 +471,15 @@ class cl_custoplanilhaapuracao {
      $sql2 = "";
      if($dbwhere==""){
        if($cc17_sequencial!=null ){
-         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc17_sequencial "; 
-       } 
+         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc17_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,11 +488,11 @@ class cl_custoplanilhaapuracao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $cc17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $cc17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,15 +505,15 @@ class cl_custoplanilhaapuracao {
      $sql2 = "";
      if($dbwhere==""){
        if($cc17_sequencial!=null ){
-         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc17_sequencial "; 
-       } 
+         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc17_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,11 +522,11 @@ class cl_custoplanilhaapuracao {
      }
      return $sql;
   }
-  
- function sql_query_custo ( $cc19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+ public function sql_query_custo ( $cc19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,15 +547,15 @@ class cl_custoplanilhaapuracao {
      $sql2 = "";
      if($dbwhere==""){
        if($cc19_sequencial!=null ){
-         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc19_sequencial "; 
-       } 
+         $sql2 .= " where custoplanilhaapuracao.cc17_sequencial = $cc19_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,12 +43,12 @@ if($db_opcao==2 or $db_opcao==22) {
 
     <tr>   
       <td>
-      <?
+      <?php
        db_ancora($Ld62_banco,' js_bancos(true); ',$db_opcaobco);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('d62_banco',5,$Id62_banco,true,'text',$db_opcaobco,"onchange='js_bancos(false)'");
        db_input('nomebco',40,"",true,'text',3);
        
@@ -61,7 +61,7 @@ if($db_opcao==2 or $db_opcao==22) {
        <?=@$Ld62_convenio?>
     </td>
     <td> 
-<?
+<?php
 db_input('d62_convenio',20,$Id62_convenio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -71,7 +71,7 @@ db_input('d62_convenio',20,$Id62_convenio,true,'text',$db_opcao,"")
        <?=@$Ld62_ultimonsa?>
     </td>
     <td> 
-<?
+<?php
 db_input('d62_ultimonsa',10,$Id62_ultimonsa,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -81,7 +81,7 @@ db_input('d62_ultimonsa',10,$Id62_ultimonsa,true,'text',$db_opcao,"")
        <?=@$Ld62_mascara?>
     </td>
     <td> 
-<?
+<?php
 db_input('d62_mascara',25,$Id62_mascara,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_debcontaparam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

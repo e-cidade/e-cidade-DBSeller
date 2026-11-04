@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -62,8 +62,8 @@ $clrotulo->label("k17_valor");
 	    <table width="35%" border="0" align="center" cellspacing="0">
 		
 		<tr>
-		  <td align="left" nowrap title="<?=$Tk17_codigo?>"> <? db_ancora(@$Lk17_codigo,"",3);?>  </td>
-		  <td align="left" nowrap><?    db_input("k17_codigo",8,$Ik17_codigo,true,"text",4,"","chave_k17_codigo");	 ?></td>
+		  <td align="left" nowrap title="<?=$Tk17_codigo?>"> <?php db_ancora(@$Lk17_codigo,"",3);?>  </td>
+		  <td align="left" nowrap><?php    db_input("k17_codigo",8,$Ik17_codigo,true,"text",4,"","chave_k17_codigo");	 ?></td>
 		</tr>
 				
 		<tr>
@@ -71,20 +71,20 @@ $clrotulo->label("k17_valor");
 		<fieldset>
 		<table border=0>
 		 <tr>
-		  <td align="left" nowrap title="<?=$Tk17_data?>"> <? db_ancora(@$Lk17_data,"",3);?>  </td>
-		  <td align="left" nowrap><? db_inputdata("k17_data",@$k17_data_dia,@$k17_data_mes,db_getsession("DB_anousu"),true,'text',1);    ?></td>
+		  <td align="left" nowrap title="<?=$Tk17_data?>"> <?php db_ancora(@$Lk17_data,"",3);?>  </td>
+		  <td align="left" nowrap><?php db_inputdata("k17_data",@$k17_data_dia,@$k17_data_mes,db_getsession("DB_anousu"),true,'text',1);    ?></td>
 		</tr>		
 		<tr>
-		  <td align="left" nowrap title="<?=$Tk17_debito?>"> <? db_ancora(@$Lk17_debito,"",3);?>  </td>
-		  <td align="left" nowrap><?    db_input("k17_debito",8,$Ik17_debito,true,"text",4,"","chave_k17_debito");	 ?></td>
+		  <td align="left" nowrap title="<?=$Tk17_debito?>"> <?php db_ancora(@$Lk17_debito,"",3);?>  </td>
+		  <td align="left" nowrap><?php    db_input("k17_debito",8,$Ik17_debito,true,"text",4,"","chave_k17_debito");	 ?></td>
 		</tr>		
 		<tr>
-		  <td align="left" nowrap title="<?=$Tk17_credito ?>"> <? db_ancora(@$Lk17_credito,"",3);?>  </td>
-		  <td align="left" nowrap><?    db_input("k17_credito",8,$Ik17_credito,true,"text",4,"","chave_k17_credito");	 ?></td>
+		  <td align="left" nowrap title="<?=$Tk17_credito ?>"> <?php db_ancora(@$Lk17_credito,"",3);?>  </td>
+		  <td align="left" nowrap><?php    db_input("k17_credito",8,$Ik17_credito,true,"text",4,"","chave_k17_credito");	 ?></td>
 		</tr>
         <tr>
-		  <td align="left" nowrap title="<?=$Tk17_valor ?>"> <? db_ancora(@$Lk17_valor,"",3);?>  </td>
-		  <td align="left" nowrap><?    db_input("k17_valor",8,$Ik17_credito,true,"text",4,"onKeyDown=this.value=this.value.replace(',','.')","chave_k17_valor");	 ?></td>
+		  <td align="left" nowrap title="<?=$Tk17_valor ?>"> <?php db_ancora(@$Lk17_valor,"",3);?>  </td>
+		  <td align="left" nowrap><?php    db_input("k17_valor",8,$Ik17_credito,true,"text",4,"onKeyDown=this.value=this.value.replace(',','.')","chave_k17_valor");	 ?></td>
 		</tr>
 		</table>
 		</fieldset>
@@ -106,7 +106,7 @@ $clrotulo->label("k17_valor");
   </form>
 	<tr> 
 	  <td align="center" valign="top"> 
-	    <?
+	    <?php
 
 
 
@@ -194,7 +194,7 @@ if (!isset ($pesquisa_chave)) {
 </table>
 </body>
 </html>
-<?
+<?php
 
 
 
@@ -202,7 +202,7 @@ if (!isset ($pesquisa_chave)) {
 ?>
   <script>
   </script>
-  <?
+  <?php
 
 
 

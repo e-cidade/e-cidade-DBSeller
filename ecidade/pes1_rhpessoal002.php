@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009 DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -35,7 +35,6 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas = new cl_criaabas;
 $db_opcao   = 1;
-
 $oGet = db_utils::postMemory($_GET);
 ?>
 <html>
@@ -47,8 +46,8 @@ $oGet = db_utils::postMemory($_GET);
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-<table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
+    <tr>
     <td width="360">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -56,15 +55,15 @@ $oGet = db_utils::postMemory($_GET);
   </tr>
 </table>
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
-    
+  <tr>
+    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
+
      <?php
-			$sConsultaFinanceira = null;
-			if ( !empty($oGet->iServidor) ) {
-				$sConsultaFinanceira = '?chavepesquisa='.$oGet->iServidor;
-			}
-			
+            $sConsultaFinanceira = null;
+     if (!empty($oGet->iServidor)) {
+         $sConsultaFinanceira = '?chavepesquisa='.$oGet->iServidor;
+     }
+
        $clcriaabas->identifica = array(
                                         "rhpessoal"      => "Dados Pessoais",
                                         "rhadmissional"  => "Dados admissionais",
@@ -76,7 +75,7 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhpontosalario" => "Ponto de Salário",
                                         "rhcedencia"     => "Cedidos / Disposição"
                                       );
-                                       
+
        $clcriaabas->sizecampo  = array(
                                         "rhpessoal"      => "20",
                                         "rhadmissional"  => "20",
@@ -88,9 +87,9 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhpontosalario" => "15",
                                         "rhcedencia"     => "20"
                                       );
-                                      
+
        $clcriaabas->src        = array("rhpessoal" => "pes1_rhpessoal005.php".$sConsultaFinanceira);
-       
+
        $clcriaabas->disabled   = array(
                                         "rhadmissional"  => "true",
                                         "rhpesdoc"       => "true",
@@ -98,31 +97,36 @@ $oGet = db_utils::postMemory($_GET);
                                         "rhdepend"       => "true",
                                         "rhpeslocaltrab" => "true",
                                         "rhpontofixo"    => "true",
-                                        "rhpontosalario" => "true",  
-                                        "rhcedencia"     => "true"  
-                                      ); 
+                                        "rhpontosalario" => "true",
+                                        "rhcedencia"     => "true"
+                                      );
 
-       $verifica_permissao = db_permissaomenu(db_getsession('DB_anousu'), 952, 8820);    
+       $verifica_permissao = db_permissaomenu(db_getsession('DB_anousu'), 952, 8820);
 
-       if($verifica_permissao == "true") {
-       	
-       	 $clcriaabas->identifica["rhsuspensaopag"] ="Suspensão de Pagamentos";
-         $clcriaabas->sizecampo["rhsuspensaopag"]  = "20";  
-         $clcriaabas->src["rhsuspensaopag"]        = "pes1_rhsuspensaopag001.php";                 
+       if ($verifica_permissao == "true") {
+           $clcriaabas->identifica["rhsuspensaopag"] ="Suspensão de Pagamentos";
+           $clcriaabas->sizecampo["rhsuspensaopag"]  = "20";
+           $clcriaabas->src["rhsuspensaopag"]        = "pes1_rhsuspensaopag001.php";
        }
+
+
+       $clcriaabas->identifica["recadastramento"] = "Recadastramento";
+       $clcriaabas->sizecampo["recadastramento"]  = "15";
+       $clcriaabas->src["recadastramento"]        = "";
+
        $clcriaabas->cria_abas();
-       
-       ?> 
+
+        ?>
     </td>
   </tr>
 </table>
 <form name="form1">
 </form>
 <script type="text/javascript">
-	location.href
+    location.href
 </script>
-<?php 
-	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+    db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>

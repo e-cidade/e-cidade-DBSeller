@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,7 +110,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed82_c_nome",true,1,"ed82_c_nome",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
  if($clescolaproc->erro_status=="0"){
   $clescolaproc->erro(true,false);

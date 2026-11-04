@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -26,25 +26,37 @@
  */
 
 set_time_limit(0);
-include(modification("libs/db_sql.php"));
-include(modification("fpdf151/pdf.php"));
-include(modification("classes/db_tabativ_classe.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_sql.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once(modification("classes/db_tabativ_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 $cltabativ = new cl_tabativ;
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('q02_inscr');
 $clrotulo->label('j01_matric');
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $instit = db_getsession("DB_instit");
-//die("filtro = $filtro");
+
 if ($lista == '') {
   
   $sMsg = _M('tributario.notificacoes.cai2_emitelista002.lista_nao_encontrada');
 	db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
 	exit;
+}
+
+if(($filtro == 's') && ($tipo == 'p')){
+	$sqlfiltro = "select k60_codigo,login,nome,k60_filtros from lista inner join db_usuarios on id_usuario = k60_usuario where k60_codigo = $lista and k60_instit = $instit";
+	$resultfiltro = db_query($sqlfiltro);
+	$linhasfiltro = pg_num_rows($resultfiltro);
+
+	if ($linhasfiltro > 0){
+		db_fieldsmemory($resultfiltro, 0);
+	}
 }
 
 $sqlinst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -102,11 +114,27 @@ elseif ($ordem == 'v') {
 	$xxordem = ' order by xvalor desc';
 }
 
+$sqlFiltroExtra = '';
+$filtraCgccpfConsistente = str_contains($k60_filtros, 'Consistência de CPF/CNPJ: Apenas válidos');
+$filtraCgccpfInconsistente = str_contains($k60_filtros, 'Consistência de CPF/CNPJ: Inválidos');
+
+if ($filtraCgccpfConsistente || $filtraCgccpfInconsistente) {
+	$sNot = $filtraCgccpfConsistente ? '' : 'not';
+	$sqlFiltroExtra .= " and {$sNot} (
+		                   fn_cnpj_cpf(replace(trim(z01_cgccpf), ' ', '')) is true
+                           and z01_cgccpf <> '00000000000'
+                           and z01_cgccpf <> '00000000000000'
+                           and TRIM(z01_cgccpf) <> ''
+                           and z01_cgccpf is not null
+                         ) ";
+}
+
 if ($agrupar == "s") {
 	$sql = "select * 
 	          from ( select debitos.k22_numcgm as numcgm,
 									        cgm.z01_nome,
-                          cgm.z01_cgccpf,
+											cgm.z01_ender,
+                          					cgm.z01_cgccpf,
 									        sum(coalesce(k22_vlrcor, 0) + coalesce(k22_juros,0) + coalesce(k22_multa,0) - coalesce(k22_desconto,0)) as xvalor,
 								   	      k63_notifica
 		                 from lista 
@@ -120,9 +148,11 @@ if ($agrupar == "s") {
 												  left join listanotifica on k63_numpre =  listadeb.k61_numpre 
 												                         and k63_codigo = $lista
 	                  where k60_codigo = $lista 
-	                    and k60_instit = $instit 
+	                    and k60_instit = $instit
+						$sqlFiltroExtra
                     group by debitos.k22_numcgm, 
-                             cgm.z01_cgccpf, 
+                             cgm.z01_cgccpf,
+							 cgm.z01_ender,
                              cgm.z01_nome,
                              k63_notifica
                  ) as x $xxordem";
@@ -136,7 +166,8 @@ if ($agrupar == "s") {
 	          from ( select debitos.k22_numcgm as numcgm,
 		                      $xcodigo,
 		                      cgm.z01_nome,
-                          cgm.z01_cgccpf,
+							  cgm.z01_ender,
+                              cgm.z01_cgccpf,
 									        sum(coalesce(k22_vlrcor, 0) + coalesce(k22_juros,0) + coalesce(k22_multa,0) - coalesce(k22_desconto,0)) as xvalor,
 	                        k63_notifica
 		                 from lista 
@@ -149,11 +180,13 @@ if ($agrupar == "s") {
 												  left join cgm on debitos.k22_numcgm = cgm.z01_numcgm
 												  left join listanotifica on k63_numpre =  listadeb.k61_numpre and k63_codigo = $lista
                 	  where k60_codigo = $lista 
-                	    and k60_instit = $instit 
+                	    and k60_instit = $instit
+						$sqlFiltroExtra
                     group by debitos.k22_numcgm,
                              debitos.k22_numpre, 
                              $xcodigo1, 
                              cgm.z01_nome,
+							 cgm.z01_ender,
                              cgm.z01_cgccpf,
                              k63_notifica
                 ) as x 
@@ -165,18 +198,16 @@ if ($agrupar == "s") {
                 $xxordem ";
 }
 
-//die($sql);
-
 $result = db_query($sql);
+$pdf = new ECidade\Pdf\Pdf();
 
 if ($tipo == 'p') {
 
-	$head1 = 'LISTAS PARA NOTIFICAÇÕES';
-	$head3 = 'LISTA N'.chr(176).' : '.$k60_codigo.' - '.$k60_descr;
-	$head5 = 'TIPO : '.@$xrel;
-	$head7 = 'DATA DO CÁLCULO : '.db_formatar($k60_datadeb, 'd');
-	$pdf = new PDF();
-	$pdf->Open();
+	$pdf->addTitulo('LISTAS PARA NOTIFICAÇÕES');
+	$pdf->addTitulo('LISTA N'.chr(176).' : '.$k60_codigo.' - '.$k60_descr);
+	$pdf->addTitulo('TIPO : '.@$xrel);
+	$pdf->addTitulo('DATA DO CÁLCULO : '.db_formatar($k60_datadeb, 'd'));
+	$pdf->init(false);	
 	$pdf->AliasNbPages();
 	$pdf->addpage();
 	if (isset ($k60_tipo) && $k60_tipo == 'I') {
@@ -213,9 +244,6 @@ if ($tipo == 'p') {
 	for ($x = 0; $x < pg_numrows($result); $x ++) {
 		db_fieldsmemory($result, $x);
 		$cgm = $numcgm;
-		// if($x == 0)
-		// $xnumcgm = $cgm;
-
 		$xnumcgm = $numcgm;
 		$xcod = $$xcodigo1;
 		$xnome = $z01_nome;
@@ -226,7 +254,7 @@ if ($tipo == 'p') {
       $z01_cgccpf = db_formatar($z01_cgccpf,'cpf');
     }
 
-		if ($pdf->gety() > $pdf->h - 35) {
+		if ($pdf->gety() > $pdf->getH() - 35) {
 			$pdf->addpage();
 			$pdf->setfont('arial', 'b', 8);
 			if (isset ($k60_tipo) && $k60_tipo == 'I') {
@@ -253,7 +281,6 @@ if ($tipo == 'p') {
 			}
 			$pdf->setfont('arial', '', 8);
 		}
-		//  if($cgm != $xnumcgm){
 		if (isset ($k60_tipo) && $k60_tipo == 'I') {
 			$q03_descr = "";
 			$result_princ = $cltabativ->sql_record($cltabativ->sql_query_princ($xcod));
@@ -290,12 +317,7 @@ if ($tipo == 'p') {
 		}
 		$total += 1;
 		$valor = 0;
-		//  }
 		$totalval += $xvalor;
-		//  $valor += $xvalor; 
-		//  $xnumcgm = $numcgm;
-		//  $xcod = $$xcodigo;
-		//  $xnome = $z01_nome;
 	}
 	if (isset ($comvalor) && $comvalor == 's') {
 		if (isset ($k60_tipo) && $k60_tipo == 'I') {
@@ -309,34 +331,22 @@ if ($tipo == 'p') {
 		$pdf->cell(25, 05, '', 0, 1, "R", 0);
 	}
 
-	//include(modification("fpdf151/geraarquivo.php"));
-	if(($filtro=='s')&&($tipo=='p')){
-		$sqlfiltro = "select k60_codigo,login,nome,k60_filtros from lista inner join db_usuarios on id_usuario = k60_usuario where k60_codigo = $lista and k60_instit = $instit";
-		$resultfiltro = db_query($sqlfiltro);
-		$linhasfiltro = pg_num_rows($resultfiltro);
-		if ($linhasfiltro>0){
-			db_fieldsmemory($resultfiltro, 0);
-			if ($k60_filtros!=""){
-				$pdf->addpage();
-				$pdf->setfillcolor(235);
-				$pdf->setfont('arial', 'b', 10);
-				$pdf->cell(190, 05, 'FILTROS DA LISTA '. $lista, 0, 1, "C", 1);
-				$pdf->ln(5);
-				$pdf->cell(190, 05, 'Login do Usuário: '. $login, 0, 1, "L", 0);
-				$pdf->cell(190, 05, 'Nome do Usuário: '. $nome, 0, 1, "L", 0);
-				$pdf->ln(5);
-				$pdf->cell(190, 05, 'Filtro da lista', 1, 1, "C", 0);
-				$pdf->setfont('arial', '', 10);
-				$filtro2 = str_replace ( "#", "\n",$k60_filtros );
-				$pdf->Multicell(190, 05, $filtro2, 1, 1, "L", 0);
-				//Codigo, Login e Nome do Usuário
-				
-			}
-		}
-
+	if ($k60_filtros != "") {
+		$pdf->addpage();
+		$pdf->setfillcolor(235);
+		$pdf->setfont('arial', 'b', 10);
+		$pdf->cell(190, 05, 'FILTROS DA LISTA '. $lista, 0, 1, "C", 1);
+		$pdf->ln(5);
+		$pdf->cell(190, 05, 'Login do Usuário: '. $login, 0, 1, "L", 0);
+		$pdf->cell(190, 05, 'Nome do Usuário: '. $nome, 0, 1, "L", 0);
+		$pdf->ln(5);
+		$pdf->cell(190, 05, 'Filtro da lista', 1, 1, "C", 0);
+		$pdf->setfont('arial', '', 10);
+		$filtro2 = str_replace ( "#", "\n",$k60_filtros );
+		$pdf->Multicell(190, 05, $filtro2, 1, 1, "L", 0);
 	}
 			
-	$pdf->Output();
+	$pdf->output('I');
 
 } else {
 

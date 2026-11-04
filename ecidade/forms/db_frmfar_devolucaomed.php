@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Farmacia
@@ -37,17 +37,16 @@ $oRotulo->label('m60_descr');
 <table border="0">
   <tr>
     <td>
-      <?
-    
+        <?php
       db_ancora(@$Lfa22_i_cgsund, "js_pesquisafa22_i_cgsund(true);", $db_opcao);
       ?>
     </td>
     <td>
-      <?
-      db_input('fa22_i_cgsund', 10, @$Ifa22_i_cgsund, true, 'text', $db_opcao, 
+        <?php
+      db_input('fa22_i_cgsund', 10, @$Ifa22_i_cgsund, true, 'text', $db_opcao,
                " onchange='js_pesquisafa22_i_cgsund(false);'"
               );
-      db_input('z01_v_nome', 40, @$z01_v_nome, true, 'text', 3, '');           
+      db_input('z01_v_nome', 40, @$z01_v_nome, true, 'text', 3, '');
       ?>
     </td>
   </tr>
@@ -58,30 +57,30 @@ $oRotulo->label('m60_descr');
         <table>
           <tr>
             <td>
-              <? 
+              <?php
               db_ancora('<b>Medicamento:</b>', "js_pesquisafa23_i_matersaude(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <? 
+              <?php
               db_input('fa23_i_matersaude', 10, @$Ifa23_i_matersaude, true, 'text', $db_opcao,
                        " onchange='js_pesquisafa23_i_matersaude(false);'"
                       );
               db_input('m60_descr', 40, @$m60_descr, true, 'text', 3, '');
               db_input('fa22_i_codigo', 40, '', true, 'hidden', 3, '');
-              ?> 
+              ?>
             </td>
           </tr>
           <tr>
             <td colspan="3">
               <br>
               <fieldset style="width:75%"><legend><b>Medicamentos</b></legend>
-                <iframe name="iframe_itens" id="iframe_itens" src="<?//far1_far_devovlistamed001.php?>"
+                <iframe name="iframe_itens" id="iframe_itens" src="<?php //far1_far_devovlistamed001.php?>"
                   width="600" height="150" marginwidth="0" marginheight="0" frameborder="0">
                 </iframe>
-              </fieldset> 
+              </fieldset>
             </td>
-          </tr>              
+          </tr>
         </table>
         <br>
         <center>
@@ -94,9 +93,9 @@ $oRotulo->label('m60_descr');
   </tr>
 </table>
 </center>
-<?
+    <?php
 db_input('valores', 100, '', true, 'hidden', 3);
-db_input('motivos', 100, '', true, 'hidden', 3);                    
+db_input('motivos', 100, '', true, 'hidden', 3);
 ?>
 </form>
 <script>
@@ -106,18 +105,18 @@ db_input('motivos', 100, '', true, 'hidden', 3);
   //com a devolucao de medicamento, era inclusa novamente                                                         //
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  if (document.form1.fa22_i_cgsund.value != "" && document.form1.fa23_i_matersaude.value != "" || 
+  if (document.form1.fa22_i_cgsund.value != "" && document.form1.fa23_i_matersaude.value != "" ||
       document.form1.fa22_i_cgsund.value != undefined && document.form1.fa23_i_matersaude.value != undefined) {
 
    fa22_i_cgsund     = document.form1.fa22_i_cgsund.value;
    fa23_i_matersaude = document.form1.fa23_i_matersaude.value;
    page = 'far1_far_devovlistamed001.php?fa22_i_cgsund='+fa22_i_cgsund+'&fa23_i_matersaude='+fa23_i_matersaude;
-   document.getElementById('iframe_itens').src = page;  
+   document.getElementById('iframe_itens').src = page;
 
  }
-<?if (isset($confirmar)) {
+  <?php if (isset($confirmar)) {
 
- echo "js_lancar();";	
+ echo "js_lancar();";
  echo "document.form1.comprovante.disabled = false;";
  echo "document.form1.novo.disabled = false;";
 
@@ -155,7 +154,7 @@ function js_pesquisafa22_i_cgsund(mostra) {
 }
 function js_mostracgs_und(chave,erro) {
 
-  document.form1.z01_v_nome.value = chave; 
+  document.form1.z01_v_nome.value = chave;
   if (erro == true) {
 
     document.form1.fa22_i_cgsund.focus();
@@ -185,7 +184,7 @@ function js_pesquisafa23_i_matersaude(mostra) {
 
 
   cgs = document.form1.fa22_i_cgsund.value;
-  
+
   if (mostra == true) {
 
     if (cgs != '') {
@@ -201,8 +200,8 @@ function js_pesquisafa23_i_matersaude(mostra) {
     }
   } else {
 
-    if (document.form1.fa23_i_matersaude.value != '') { 
-      
+    if (document.form1.fa23_i_matersaude.value != '') {
+
       if (cgs!='') {
 
         js_OpenJanelaIframe('', 'db_iframe_far_matersaude', 'func_far_matersaude_cgs.php?cgs='+cgs+
@@ -217,7 +216,7 @@ function js_pesquisafa23_i_matersaude(mostra) {
     } else {
 
        document.getElementById('iframe_itens').src = '';
-	     document.form1.m60_descr.value              = ''; 
+	     document.form1.m60_descr.value              = '';
 
      }
 
@@ -227,11 +226,11 @@ function js_pesquisafa23_i_matersaude(mostra) {
 
 function js_mostramatersaude(chave, erro) {
 
-  document.form1.m60_descr.value = chave; 
-  
+  document.form1.m60_descr.value = chave;
+
   if (erro == true) {
 
-    document.form1.fa23_i_matersaude.focus(); 
+    document.form1.fa23_i_matersaude.focus();
     document.form1.fa23_i_matersaude.value = '';
     document.getElementById('iframe_itens').src = '';
 
@@ -254,7 +253,7 @@ function js_lancar() {
 
    fa22_i_cgsund     = document.form1.fa22_i_cgsund.value;
    fa23_i_matersaude = document.form1.fa23_i_matersaude.value;
-   
+
    if (fa22_i_cgsund == '') {
 
      alert('Informe um número de CGS!');
@@ -277,14 +276,14 @@ function js_buscavalores() {
 
     if (obj.elements[i].name.substr(0,6) == 'quant_') {
 
-      var objvalor = new Number(obj.elements[i].value);      
+      var objvalor = new Number(obj.elements[i].value);
       if (objvalor != 0) {
 
         valor+=obj.elements[i].name+"_"+obj.elements[i].value;
 
         if (obj.elements[i+1].name.substr(0,7) == "motivo_") {
 
-          if (obj.elements[i+1].value != '') {     
+          if (obj.elements[i+1].value != '') {
             motivo += obj.elements[i+1].name+"_"+obj.elements[i+1].value;
           } else {
 
@@ -303,7 +302,7 @@ function js_buscavalores() {
     }
 
   }
-  
+
   document.form1.valores.value = valor;
   document.form1.motivos.value = motivo;
   return true;
@@ -327,6 +326,6 @@ function js_comprovante() {
 }
 
 function js_novaconsulta() {
-	location.href = 'far1_far_devolucaomed001.php';	   
+	location.href = 'far1_far_devolucaomed001.php';
 }
 </script>

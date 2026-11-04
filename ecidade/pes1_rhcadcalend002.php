@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -46,7 +46,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
   if(isset($alterar)){
     if (empty($r62_data) || $r62_data == '--') {
       $sqlerro = true;
-      $erro_msg = "Erro ao alterar, verifique os dados informados."; 
+      $erro_msg = "Erro ao alterar, verifique os dados informados.";
     } else {
       $clrhcadcalend->alterar($rh53_calend);
       $sqlerro = true;
@@ -54,14 +54,14 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
      }
 
     if($clrhcadcalend->erro_status == "0"){
-      
+
     }
   }
   if ($sqlerro == false){
     $r62_data = $r62_data_ano."-".$r62_data_mes."-".$r62_data_dia;
     if (isset($incluir)) {
       if (empty($r62_data) || $r62_data == '--') {
-        $erro_msg = "Erro ao incluir, verifique os dados informados."; 
+        $erro_msg = "Erro ao incluir, verifique os dados informados.";
       } else {
         $clcalendf->incluir($rh53_calend,$r62_data);
         $erro_msg = $clcalendf->erro_msg;
@@ -72,7 +72,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
        $erro_msg = $clcalendf->erro_msg;
     }
 
-    
+
     if ($clcalendf->erro_status == "0"){
       $sqlerro = true;
     }
@@ -80,7 +80,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
   db_fim_transacao($sqlerro);
 }else if(isset($chavepesquisa) || isset($opcao)){
   if(isset($opcao)){
-    $r62_data = split("/",$r62_data);
+    $r62_data =explode("/",$r62_data);
     $r62_data = $r62_data[2]."-".$r62_data[1]."-".$r62_data[0];
     $chavepesquisa = $r62_calend;
     $result_data = $clcalendf->sql_record($clcalendf->sql_query_file($chavepesquisa, $r62_data));
@@ -89,7 +89,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
     }
   }
   $db_opcao = 2;
-  $result = $clrhcadcalend->sql_record($clrhcadcalend->sql_query(null,"*",null,"rh53_calend = $chavepesquisa and rh53_instit = ".db_getsession("DB_instit"))); 
+  $result = $clrhcadcalend->sql_record($clrhcadcalend->sql_query(null,"*",null,"rh53_calend = $chavepesquisa and rh53_instit = ".db_getsession("DB_instit")));
   db_fieldsmemory($result,0);
   $db_botao = true;
 }
@@ -104,7 +104,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="25%" height="18">&nbsp;</td>
     <td width="25%">&nbsp;</td>
     <td width="25%">&nbsp;</td>
@@ -112,22 +112,22 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?
+      <?php
       include(modification("forms/db_frmrhcadcalend.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar) || isset($incluir) || isset($excluir)){
   db_msgbox($erro_msg);
   if($sqlerro == true){

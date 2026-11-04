@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -62,7 +62,7 @@ $escola = db_getsession("DB_nomedepto");
 <table width="100%" align="left" valign="top" marginwidth="0" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left">
-   <?
+   <?php
    if(isset($ed52_i_codigo)){
     $sql = "SELECT DISTINCT ed29_i_codigo,ed29_c_descr,ed10_c_descr,ed10_c_abrev
             FROM cursoedu
@@ -163,19 +163,19 @@ $escola = db_getsession("DB_nomedepto");
    $linhas = pg_num_rows($result);
    $ncampos = pg_num_fields($result);
    ?>
-   <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+   <table border='1px' width="100%" bgcolor="#cccccc"  cellspacing="0px">
     <tr>
      <td class='titulo' align="center" colspan="<?=$ncampos?>"><b><?=$titulo?></b></td>
     </tr>
     <tr>
-     <?
+     <?php
      $labels = explode("|",$labels);
      for($c=0;$c<$ncampos;$c++){
       ?>
       <td class='cabec' align="center"><b><?=$labels[$c]?></b></td>
-     <?}?>
+     <?php }?>
     </tr>
-    <?
+    <?php
     if($linhas>0){
      $cor1 = "#f3f3f3";
      $cor2 = "#DBDBDB";
@@ -201,9 +201,9 @@ $escola = db_getsession("DB_nomedepto");
         }
         ?>
          <td class='aluno' align="<?=$align?>"><?=pg_result($result,$c,$b)?></td>
-       <?}?>
+       <?php }?>
       </tr>
-      <?
+      <?php
      }
     }?>
    </table>

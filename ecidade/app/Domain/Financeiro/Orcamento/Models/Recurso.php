@@ -240,6 +240,26 @@ class Recurso extends Model
     }
 
     /**
+     * @param $query
+     * @param Recurso $recurso
+     * @return mixed
+     */
+    public function scopeRecursoJaFoiUsado($query, $codigo)
+    {
+        $query = $query->where('o15_codigo', '=', $codigo)
+            ->whereRaw('
+             (exists(select 1 from orcreceita where o70_codigo = o15_codigo) or
+              exists(select 1 from orcdotacao where o58_codigo = o15_codigo) or
+              exists(select 1 from conplanoreduz where c61_codigo = o15_codigo) or
+              exists(select 1 from conplanoorcamentoanalitica where c61_codigo = o15_codigo) or
+              exists(select 1 from estimativareceita where recurso_id = o15_codigo) or
+              exists(select 1 from conlancamrecurso where c130_orctiporec = o15_codigo) or
+              exists(select 1 from detalhamentoiniciativa where pl20_recurso = o15_codigo))
+            ');
+        return $query ;
+    }
+
+    /**
      * Fontes de recurso a partir de 2022
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

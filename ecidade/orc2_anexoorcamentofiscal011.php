@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -106,7 +106,7 @@ function js_emite() {
         <table  align="center" border=0>
           <tr>
              <td align="center" colspan="2">
-             <?
+             <?php
                db_selinstit('', 300, 140);
              ?>
              </td>
@@ -114,7 +114,7 @@ function js_emite() {
           <tr>
             <td><b>Origem/Fase:</b></td>
             <td>
-              <?
+              <?php
                 $aOrigemFase = array(0 => "Selecione", 
                                      1 => "Orçamento", 
                                      2 => "Empenhado", 
@@ -127,7 +127,7 @@ function js_emite() {
           <tr id='periodos' style="display: none;">
                 <td width="80"><b>Período:</b></td>
                 <td colspan="2">
-                  <?
+                  <?php
                     $aPeriodos         = $oRelatorioContabil->getPeriodos();                  
                     $aListaPeriodos    = array();
                     $aListaPeriodos[0] = "Selecione";

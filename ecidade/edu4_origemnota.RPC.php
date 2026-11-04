@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -71,7 +71,6 @@ try {
         $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
 
         $aAlunosMatriculados = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
-
         db_inicio_transacao();
         foreach ( $aAlunosMatriculados as $oMatricula ) {
 
@@ -99,11 +98,10 @@ try {
                     $oPeriodoFinal   = $oPeriodoCalendario->getDataTermino();
                   }
                 }
+
                 $oAvaliacao = $oDiarioAvaliacao->getAproveitamentosDoPeriodo($oAvaliacaoAproveitamento->getElementoAvaliacao()->getCodigo());
 
-                if ( $oAvaliacao->getValorAproveitamento()->getAproveitamento() != '' &&
-                     !$oAvaliacaoAproveitamento->getAproveitamentoOrigem() != null
-                   ) {
+                if ($oAvaliacaoAproveitamento->getAproveitamentoOrigem() != null ) {
 
                   $oDadosAlunos                        = new stdClass();
                   $oDadosAlunos->iMatricula            = $oMatricula->getCodigo();
@@ -114,10 +112,11 @@ try {
                   $oDadosAlunos->dtFinalPeriodo        = $dtFinalPeriodo;
                   $oDadosAlunos->lAnteriorFinalPeriodo = false;
 
-                  $iIntervalo = DBDate::calculaIntervaloEntreDatas($oMatricula->getDataMatricula(), $oPeriodoFinal, 'd');
-
-                  if ( $iIntervalo < 0 ) {
-                    $oDadosAlunos->lAnteriorFinalPeriodo = true;
+                  if (!is_null($oPeriodoFinal) && !$oAvaliacaoAproveitamento->getElementoAvaliacao()->isRecuperacao()) {
+                    $iIntervalo = DBDate::calculaIntervaloEntreDatas($oMatricula->getDataMatricula(), $oPeriodoFinal, 'd');
+                    if ( $iIntervalo < 0 ) {
+                      $oDadosAlunos->lAnteriorFinalPeriodo = true;
+                    }
                   }
 
                   $oDadosAlunos->iEscolaDestino     = '';

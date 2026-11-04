@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -107,10 +107,10 @@ if (isset($confirma)) {
     }
     $codigo_atenditem=$clatendrequiitem->m43_codigo;
   }
-  $dados=split("quant_","$quantis");
+  $dados= explode("quant_","$quantis");
   for ($y=1; $y<count($dados); $y++) {
     if ($sqlerro==false) {
-      $info=split("_",$dados[$y]);
+      $info= explode("_",$dados[$y]);
       $codestoque=$info[0];
       $quantidade=$info[2];
       $quant_resta=$quantidade;
@@ -140,7 +140,7 @@ if (isset($confirma)) {
           $clmatestoqueitem->m71_quant = $quantatual;
           $clmatestoqueitem->m71_codlanc = $m71_codlanc;
           $clmatestoqueitem->alterar($m71_codlanc);
-          
+
           if ($clmatestoqueitem->erro_status==0) {
             $sqlerro=true;
             $erro_msg=$clmatestoqueitem->erro_msg;
@@ -232,7 +232,7 @@ exit;*/
          border-right-color: <?=$cor?>;
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
-*/	 
+*/
 }
 <?//$cor="999999"?>
 .bordas_corp{
@@ -249,7 +249,7 @@ exit;*/
        }
 </style>
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"> 
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table  border="0" cellspacing="0" cellpadding="0" width='100%'>
   <form name='form1' onsubmit='js_buscavalores();' >
   <center>
@@ -257,14 +257,14 @@ exit;*/
   <br><br>
     <td><b>Material: <b></td>
     <td>
-    <?
+    <?php
     db_input('codmater',6,'',true,'text',3);
     db_input('descrmater',30,'',true,'text',3);
     ?>
     </td>
     <td>
     <b>Quant. Atendida: </b>
-    <?
+    <?php
     db_input('quantatend',6,'',true,'text',3);
     ?>
     </td>
@@ -274,17 +274,17 @@ exit;*/
     <b>Observação:</b>
     </td>
     <td colspan=2>
-    <?
+    <?php
      db_textarea('obs',0,50,'',true,'text',3,"")
     ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="center" valign="top"  colspan=3 > 
+  <tr>
+    <td  align="center" valign="top"  colspan=3 >
     <br><br>
-      <table border='0' >   
-      
-        <?
+      <table border='0' >
+
+        <?php
 	$result=$clmatestoque->sql_record($clmatestoque->sql_query_almox(null,"*",null,"m70_codmatmater=$codmater"));
 //	$result=$clmatestoque->sql_record($clmatestoque->sql_query(null,"*","","m70_codmatmater=$codmater"));
 	$numrows = $clmatestoque->numrows;
@@ -299,7 +299,7 @@ exit;*/
 	$quantresta="$quantatend";
 	for($i=0; $i<$numrows; $i++){
 	  db_fieldsmemory($result,$i);
-	  echo "<tr>	    
+	  echo "<tr>
 		  <td	 class='bordas_corp' align='center'><small>$m70_coddepto </small></td>
 		  <td	 class='bordas_corp' align='center'><small>$descrdepto</small></td>
 		  <td	 class='bordas_corp' align='center'><small>$m70_quant</small></td>
@@ -321,7 +321,7 @@ exit;*/
 	  echo "  </small></td>
 		</tr>";
 	}
-        ?>     
+        ?>
       </table>
     </td>
   </tr>
@@ -333,7 +333,7 @@ exit;*/
        <input name="voltar" type="button" value="Voltar" onclick="parent.db_iframe_lanca.hide();" >
     </td>
   </tr>
-  <?
+  <?php
   db_input('quantis',100,'',true,'hidden',3);
   db_input('atendimento_control',10,'',true,'hidden',3);
   db_input('codreqitem',10,'',true,'hidden',3);
@@ -355,19 +355,19 @@ function js_buscavalores(){
         tot_quant+=objvalor;
       }
     }
-  }  
+  }
   document.form1.quantis.value = quants;
   document.form1.tot_quant.value = tot_quant;
 }
 document.form1.atendimento_control.value=parent.document.form1.atendimento.value;
 document.form1.m80_codigo.value=parent.document.form1.m80_codigo.value;
 </script>
-<?
+<?php
   if ($numrows==1&&$sqlerro==false&&$passou==false){
     echo "<script>document.form1.confirma.click();</script>";
   }
 ?>
-  </form> 
+  </form>
   </center>
 </table>
 <script>
@@ -379,7 +379,7 @@ function js_verifica(max,quan,nome){
       var objvalor= new Number(obj.elements[i].value);
       quanttotal+=objvalor;
     }
-  }  
+  }
   if (max<quanttotal){
      alert("Informe uma quantidade valida!!");
      eval("document.form1."+nome+".value='';");
@@ -388,15 +388,15 @@ function js_verifica(max,quan,nome){
 }
 
 </script>
-<?
+<?php
 if (isset($confirma)){
-  if($sqlerro == true){ 
+  if($sqlerro == true){
   db_msgbox(@$erro_msg);
     if($clatendrequi->erro_campo!=""){
       echo "<script> document.form1.".$clatendrequi->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clatendrequi->erro_campo.".focus();</script>";
-    } 
-  }else{ 
+    }
+  }else{
   if ($erro_msg==""){
     $erro_msg="Atendimento Efetuado com Sucesso!";
   }

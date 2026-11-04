@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -215,7 +215,7 @@ if(isset($processar)){
        <td><strong>Recurso a retirar:</strong>
        </td>
        <td>
-       <?
+       <?php
          $clorctiporec = new cl_orctiporec;
          $dbwhere = " o15_datalimite is null or o15_datalimite > '".date('Y-m-d',db_getsession('DB_datausu'))."'";
          $result = $clorctiporec->sql_record($clorctiporec->sql_query_file(null,"*","o15_codigo",$dbwhere));
@@ -227,7 +227,7 @@ if(isset($processar)){
        <td><strong>Recurso a Incluir:</strong>
        </td>
        <td>
-       <?
+       <?php
        db_selectrecord('o15_codigo',$result,true,2,'','recurso');
        ?>
        </td>
@@ -240,12 +240,12 @@ if(isset($processar)){
    </td>
   </tr>
 </table>    
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($erro)){
  if( $erro == true ){ 
    echo "<script>alert('$erro_msg')</script>";

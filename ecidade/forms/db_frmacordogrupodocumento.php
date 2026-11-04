@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,31 +70,31 @@ if (isset($db_opcaoal)) {
        <b>Grupo:</b>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('ac06_sequencial',10,$Iac06_sequencial,true,'hidden',3,"");
 			  db_input('ac02_sequencial',10,$Iac02_sequencial,true,'text',3,"");
 			?>
     </td>
     <td>
-      <?
+      <?php
         db_input('ac02_descricao',40,@$Iac02_descricao,true,'text',3,"");
       ?> 
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tac06_documentotemplate?>">
-      <?
+      <?php
         db_ancora("<b>Template:</b>","js_pesquisaac06_documentotemplate(true);",$db_opcao);
       ?>
     </td>
     <td>
-			<?
+			<?php
 			  db_input('ac06_documentotemplate',10,$Iac06_documentotemplate,true,'text',$db_opcao,
 			           "  onchange='js_pesquisaac06_documentotemplate(false);'");
 			?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db82_descricao',40,$Idb82_descricao,true,'text',3,"");
       ?>  
     </td>
@@ -104,7 +104,7 @@ if (isset($db_opcaoal)) {
        <?=@$Lac06_tipodocumento?>
     </td>
     <td colspan="2"> 
-      <?        
+      <?php        
         $aTipoDocumento = array("0"=>"Selecione ...",
                                 "1"=>"Acordo",
                                 "2"=>"Minuta",
@@ -140,7 +140,7 @@ if (isset($db_opcaoal)) {
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
        $sCampos             = "acordogrupodocumento.ac06_sequencial,                       ";
        $sCampos            .= "case acordogrupodocumento.ac06_tipodocumento                ";
        $sCampos            .= "  when 1 then 'Acordo'                                      ";

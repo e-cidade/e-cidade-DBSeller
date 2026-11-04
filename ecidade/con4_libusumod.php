@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -107,7 +107,7 @@ input {
 <table height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> <center>
-        <?
+        <?php
 	    if(isset($selecionar)) {
 		?>
         <table border="1" cellspacing="0" cellpadding="5">
@@ -131,7 +131,7 @@ input {
           </tr>
           <Tr> 
             <td valign="top"> <select name="instit" size="10">
-                <?
+                <?php
 		   if(isset($retorno)) {
 			 $result = db_query("select distinct c.codigo,c.nomeinst,u.id_instit
                                from db_config c
@@ -151,7 +151,7 @@ input {
 	      ?>
               </select> </td>
             <td valign="top"> <select name="modulos" size="10">
-                <?
+                <?php
 			if(isset($retorno)) {
 			  $result = db_query("select m.id_item,m.nome_modulo,m.descr_modulo,u.id_modulo
 			                     from db_modulos m
@@ -178,12 +178,12 @@ input {
               <input type="hidden" name="usuario" value="<?=$HTTP_POST_VARS["usuario"]?>">
             </td>
             <td valign="top" nowrap>
-              <input name="inserir" onClick="if(document.form1.instit.selectedIndex == -1 || document.form1.modulos.selectedIndex == -1) { alert('Voce precisa selecionar um modulo e uma instituição!'); return false; }" type="submit" value="Inserir" <? echo !isset($retorno)?"":"disabled" ?>> 
-              <input type="submit" name="excluir" onClick="return confirm('Excluir permissão de módulo?')" value="Excluir" <? echo isset($retorno)?"":"disabled" ?>> 
+              <input name="inserir" onClick="if(document.form1.instit.selectedIndex == -1 || document.form1.modulos.selectedIndex == -1) { alert('Voce precisa selecionar um modulo e uma instituição!'); return false; }" type="submit" value="Inserir" <?php echo !isset($retorno)?"":"disabled" ?>> 
+              <input type="submit" name="excluir" onClick="return confirm('Excluir permissão de módulo?')" value="Excluir" <?php echo isset($retorno)?"":"disabled" ?>> 
             </td>
           </Tr>
         </table>
-        <?
+        <?php
 		} else {
 	    ?>
         <form name="form1" method="post">
@@ -196,7 +196,7 @@ input {
             <tr> 
               <td valign="top"> <strong>Usuário:</strong><br> 
 			  <select onDblClick="document.form1.selecionar.click()" name="usuario" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
-                  <?
+                  <?php
 			  $result = db_query("select id_usuario,nome,login from db_usuarios where usuext = 0 and usuarioativo = 1 order by lower(login)");
 			  $numrows = pg_numrows($result);
 			  for($i = 0;$i < $numrows;$i++) {
@@ -209,7 +209,7 @@ input {
               <td><input onClick="if(document.form1.usuario.selectedIndex == -1) { alert('Primeiro voce deve selecionar um usuário!'); return false; }" name="selecionar" type="submit" id="selecionar" value="Selecionar"></td>
             </tr>
           </table>
-          <?
+          <?php
 		}
 		?>
         </form>
@@ -218,7 +218,7 @@ input {
   </tr>
 </table>
 </center>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

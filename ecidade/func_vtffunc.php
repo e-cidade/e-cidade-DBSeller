@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -31,15 +31,18 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vtffunc_classe.php"));
+
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+
+parse_str($_SERVER['QUERY_STRING'], $query);
+
 $clvtffunc = new cl_vtffunc;
 $clvtffunc->rotulo->label("r17_anousu");
 $clvtffunc->rotulo->label("r17_mesusu");
 $clvtffunc->rotulo->label("r17_regist");
 $clvtffunc->rotulo->label("r17_codigo");
 $clvtffunc->rotulo->label("r17_difere");
-$clvtffunc->rotulo->label("r17_regist");
+
 ?>
 <html>
 <head>
@@ -58,7 +61,7 @@ $clvtffunc->rotulo->label("r17_regist");
               <?=$Lr17_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r17_mesusu",2,$Ir17_mesusu,true,"text",4,"","chave_r17_mesusu");
 		       ?>
             </td>
@@ -68,7 +71,7 @@ $clvtffunc->rotulo->label("r17_regist");
               <?=$Lr17_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r17_regist",6,$Ir17_regist,true,"text",4,"","chave_r17_regist");
 		       ?>
             </td>
@@ -78,7 +81,7 @@ $clvtffunc->rotulo->label("r17_regist");
               <?=$Lr17_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r17_codigo",4,$Ir17_codigo,true,"text",4,"","chave_r17_codigo");
 		       ?>
             </td>
@@ -88,7 +91,7 @@ $clvtffunc->rotulo->label("r17_regist");
               <?=$Lr17_difere?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r17_difere",1,$Ir17_difere,true,"text",4,"","chave_r17_difere");
 		       ?>
             </td>
@@ -98,7 +101,7 @@ $clvtffunc->rotulo->label("r17_regist");
               <?=$Lr17_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r17_regist",6,$Ir17_regist,true,"text",4,"","chave_r17_regist");
 		       ?>
             </td>
@@ -116,7 +119,7 @@ $clvtffunc->rotulo->label("r17_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vtffunc.php")==true){
@@ -156,12 +159,12 @@ $clvtffunc->rotulo->label("r17_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

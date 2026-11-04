@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,17 +48,17 @@ require_once(modification("dbforms/db_funcoes.php"));
   if(isset($GLOBALS["_FILES"]["oid_arquivoPosgraduacao"])) {
 
     db_postmemory($GLOBALS["_FILES"]["oid_arquivoPosgraduacao"]);
-    
+
     if ( $error == 0 ) {
 
       $aTipos = array('image/jpeg', 'image/pjpeg', 'image/png');
       if (!in_array($type, $aTipos)) {
 
-        db_msgbox("Imagem no  um formato vlido!\\n\\nUtilize somente imagens no formato JPG!");
+        db_msgbox("Imagem em um formato inválido!\\n\\nUtilize somente imagens no formato JPG!");
         ?><script>parent.frame_posgraduacao.document.formPosgraduacao.oid_arquivoPosgraduacao.value = "";</script><?php
       } elseif ($size > 1048576) {
 
-        db_msgbox("Tamanho da imagem  maior que o permitido!\\n\\nUtilize imagens at 1 MB!");
+        db_msgbox("Tamanho da imagem  maior que o permitido!\\n\\nUtilize imagens até 1 MB!");
         ?><script>parent.frame_posgraduacao.document.formPosgraduacao.oid_arquivoPosgraduacao.value = "";</script><?php
       } else {
 
@@ -72,7 +72,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
         $imagem_gerada = "tmp/posgraduacao".time()."$sExtencao";
         $caminhoCorreto = $imagem_gerada;
-        
+
         // Se a imagem no est no tmp/ ela  criada
         if (!file_exists($imagem_gerada)) {
           // Se a imagem  maior que o permitido(200x200), encolhe ela
@@ -110,15 +110,15 @@ require_once(modification("dbforms/db_funcoes.php"));
         ?>
         <img style="width:100%; height:100%;" src="<?php echo $imagem_gerada?>">
         <?php
-        
+
         if( empty( $scale ) ){
 
-          echo "<p>Visualizao no disponvel";
+          echo "<p>Visualização não disponível";
           $parentname = "";
         }
         echo $parentname;
         ?>
-         <script> 
+         <script>
           parent.document.formFormacao.oid_arquivoPosgraduacao.value = "<?php echo $caminhoCorreto?>";
          </script>
         <?php
@@ -127,7 +127,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     } else {
       ?>
         <script>
-          alert("Erro na importao da imagem");
+          alert("Erro na importação da imagem");
         </script>
       <?php
     }

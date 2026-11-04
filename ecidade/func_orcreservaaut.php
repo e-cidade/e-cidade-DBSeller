@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,19 +57,19 @@ $clrotulo->label("e54_autori");
 	     <form name="form2" method="post" action="" >
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tz01_numcgm?>"><?=$Lz01_numcgm?></td>
-            <td width="96%" align="left" nowrap><? db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");?>&nbsp;&nbsp;</td>
+            <td width="96%" align="left" nowrap><?php db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");?>&nbsp;&nbsp;</td>
             <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
-            <td width="96%" align="left" nowrap><? db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?></td>
+            <td width="96%" align="left" nowrap><?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?></td>
          </tr>
          <tr> 
            <td width="4%" align="right" nowrap title="<?=$Te54_autori?>"><?=$Le54_autori?></td>
-           <td width="96%" align="left" nowrap><? db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori"); ?></td>
+           <td width="96%" align="left" nowrap><?php db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori"); ?></td>
          </tr>
          <tr> 
            <td width="4%" align="right" nowrap title="<?=$Tpc11_numero?>"><?=$Lpc11_numero?></td>
-           <td width="96%" align="left" nowrap><? db_input("pc11_numero",8,$Ipc11_numero,true,"text",4,"","chave_pc11_numero"); ?></td>
+           <td width="96%" align="left" nowrap><?php db_input("pc11_numero",8,$Ipc11_numero,true,"text",4,"","chave_pc11_numero"); ?></td>
            <td width="4%" align="right" nowrap title="<?=$To58_coddot?>"><?=$Lo58_coddot?></td>
-           <td width="96%" align="left" nowrap><? db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?></td>
+           <td width="96%" align="left" nowrap><?php db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?></td>
          </tr>
           <tr> 
             <td colspan="4" align="center"> 
@@ -84,7 +84,7 @@ $clrotulo->label("e54_autori");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcreservaaut.php")==true){
@@ -130,12 +130,12 @@ $clrotulo->label("e54_autori");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

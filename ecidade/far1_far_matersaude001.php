@@ -117,7 +117,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","fa01_t_obs",true,1,"fa01_t_obs",true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clfar_matersaude->erro_status=="0") {

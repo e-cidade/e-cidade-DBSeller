@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -108,7 +108,7 @@ function js_confirma(){
 }
 
 </script>
-<?
+<?php
 if($db_opcao == 2 || $db_opcao == 3){
   include(modification("prot1_cadastrocgm.php"));
   exit;
@@ -198,7 +198,7 @@ exit;
 							<strong><?=$LDBtxt29?></strong>
 						</td>
 						<td align="left">
-										<?
+										<?php
 										$x = array("t"=>"SIM","f"=>"NÃO");
 										db_select('municipio',$x,true,$db_opcao);
 										?>
@@ -209,13 +209,13 @@ exit;
 							<input type="button" name="enviar" value="Confirma" onClick="js_confirma()">
 							
 							<!-- Aqui tem que validar a permissão de menu -->
-							<? 
+							<?php 
 								$lPermissaoImportaCidadao = db_permissaomenu(db_getsession("DB_anousu"),604,7900);
 								if($lPermissaoImportaCidadao){
 								?>
 									<input type="button" name="enviar" value="Importar Cadastro do Cidadão" onClick="js_importaCadastroCidadao();">
 																
-								<? 
+								<?php 
 								db_input('ov02_sequencial',10,'',1,'hidden',1);
 								}
 							?>
@@ -229,7 +229,7 @@ exit;
 <script>
 onLoad = document.form1.cpf.focus();
 </script>
-<?
+<?php
 if(isset($mostradadoscgm)){
 echo "
       <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,7 +63,7 @@ function js_recalcula(){
 	  }
     }
     if(aux!=""){
-	   <?
+	   <?php
 	   if(isset($numcgm))     
 	     echo "document.location.href='cai3_gerfinanc002.php?nucmgm=".$numcgm."&calculavalor='+aux;";
 	   if(isset($inscr))     
@@ -183,7 +183,7 @@ MM_reloadPage(true);
 
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php
 //verifica se clicou no link da matricula
 
 

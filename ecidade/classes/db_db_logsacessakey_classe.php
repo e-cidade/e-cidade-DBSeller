@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_db_logsacessakey {
                  conteudocam = int4 = Conteúdo do Campo 
                  ";
    //funcao construtor da classe 
-   function cl_db_logsacessakey() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_logsacessakey"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_logsacessakey {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codsequen = ($this->codsequen == ""?@$GLOBALS["HTTP_POST_VARS"]["codsequen"]:$this->codsequen);
        $this->codcam = ($this->codcam == ""?@$GLOBALS["HTTP_POST_VARS"]["codcam"]:$this->codcam);
@@ -78,7 +78,7 @@ class cl_db_logsacessakey {
      }
    }
    // funcao para inclusao
-   function incluir ($codsequen,$codcam){ 
+   public function incluir ($codsequen,$codcam){ 
       $this->atualizacampos();
      if($this->conteudocam == null ){ 
        $this->erro_sql = " Campo Conteúdo do Campo nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_logsacessakey {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($codsequen=null,$codcam=null) { 
+   public function alterar ($codsequen=null,$codcam=null) { 
       $this->atualizacampos();
      $sql = " update db_logsacessakey set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_db_logsacessakey {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($codsequen=null,$codcam=null,$dbwhere=null) { 
+   public function excluir ($codsequen=null,$codcam=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codsequen,$codcam));
      }else{ 
@@ -324,7 +324,7 @@ class cl_db_logsacessakey {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

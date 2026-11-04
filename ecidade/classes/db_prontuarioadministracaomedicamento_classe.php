@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuarioadministracaomedicamento
 class cl_prontuarioadministracaomedicamento { 
@@ -26,13 +26,13 @@ class cl_prontuarioadministracaomedicamento {
                  sd106_administracaomedicamento = int4 = Administração de Medicamento 
                  ";
    //funcao construtor da classe 
-   function cl_prontuarioadministracaomedicamento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuarioadministracaomedicamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_prontuarioadministracaomedicamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd106_codigo = ($this->sd106_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd106_codigo"]:$this->sd106_codigo);
        $this->sd106_prontuario = ($this->sd106_prontuario == ""?@$GLOBALS["HTTP_POST_VARS"]["sd106_prontuario"]:$this->sd106_prontuario);
@@ -51,7 +51,7 @@ class cl_prontuarioadministracaomedicamento {
      }
    }
    // funcao para Inclusão
-   function incluir ($sd106_codigo){ 
+   public function incluir ($sd106_codigo){ 
       $this->atualizacampos();
      if($this->sd106_prontuario == null ){ 
        $this->erro_sql = " Campo Prontuario não informado.";

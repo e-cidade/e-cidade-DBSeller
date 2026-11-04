@@ -24,7 +24,10 @@ use Illuminate\Support\Facades\DB;
  * @property $c60_funcao
  * @property $c60_saldocontinuo
  * @property $c60_codigo
+ * @property $nome
+ * @property $conta
  *
+ * @method Conplano apenasSintetica()
  * @method Conplano apenasAnaliticas()
  * @method Conplano contaVinculada(integer $id)
  * @method Conplano outrasContas($idMicroarea = null)
@@ -34,6 +37,7 @@ use Illuminate\Support\Facades\DB;
  * @method Conplano excetoContasBancarias()
  * @method Conplano contasExtrasOrcamentarias()
  * @method Conplano excetoContasExtrasOrcamentarias()
+ * @method Conplano reduzidos()
  */
 class Conplano extends Model
 {
@@ -57,6 +61,22 @@ class Conplano extends Model
         'c60_funcao',
         'c60_saldocontinuo',
     ];
+
+    /**
+     * @return string
+     */
+    public function getNomeAttribute()
+    {
+        return $this->c60_descr;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContaAttribute()
+    {
+        return $this->c60_estrut;
+    }
 
     /**
      * Retorna os reduzidos da conta
@@ -126,6 +146,20 @@ class Conplano extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Retorna as contas não
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeApenasSintetica(Builder $query)
+    {
+        return $query->whereRaw('
+            not exists(
+                select 1 from contabilidade.conplanoreduz where c61_codcon = c60_codcon and c61_anousu = c60_anousu
+            )
+        ');
     }
 
     /**
@@ -303,6 +337,19 @@ class Conplano extends Model
                           )
                      )
         )");
+    }
+
+    /**
+     * Adiciona join na conplanoreduz
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeReduzidos(Builder $query)
+    {
+        $query->join('contabilidade.conplanoreduz', function ($join) {
+            $join->on('c61_codcon', 'c60_codcon')
+                ->on('c61_anousu', 'c60_anousu');
+        });
     }
 
     /**

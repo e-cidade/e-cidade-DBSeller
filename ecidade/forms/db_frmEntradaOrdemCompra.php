@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,6 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
 
 require_once(modification("classes/db_db_depusu_classe.php"));
 require_once(modification("classes/db_db_almoxdepto_classe.php"));
@@ -127,19 +129,39 @@ try {
     $rsGrupoConta = db_query($sGrupoConta);
 
     if (pg_num_rows($rsIntegracaoPatrimonial) > 0 && pg_num_rows($rsGrupoConta) == 0) {
-        throw new Exception("Você está efetuando a entrada da nota de um empenho cuja despesa não está vinculada a nenhum grupo. É necessário que o desdobramento deste empenho esteja vinculado ao Grupo do Plano Orçamentário na Contabilidade, pois a Instituição possui Integração Patrimonial. <br/ >
-                            Não foi configurado o grupo do plano orçamentário <br/>
-                  Acesse para configurar: DB:FINANCEIRO > Contabilidade > Cadastros > Rotinas administrativas > Grupo do Plano Orçamentário (novo)");
+        throw new Exception("Você está a efetuar a entrada da nota de um empenho cuja despesa não está vinculada a nenhum grupo. É necessário que o desdobramento deste empenho esteja vinculado ao Grupo do Plano orçamentário na Contabilidade, pois a Instituição possui Integração Patrimonial. <br/ >
+                            não foi configurado o grupo do plano orçamentário <br/>
+                  Acesse para configurar: DB:FINANCEIRO > Contabilidade > Cadastros > Rotinas administrativas > Grupo do Plano orçamentário (novo)");
     }
 
     if (pg_num_rows($rsGrupoConta) > 0 && pg_num_rows($rsIntegracaoPatrimonial) == 0) {
-        throw new Exception("Não foi configurado a integração do patrimonial <br/> Acesse para configurar: DB:FINANCEIRO > Contabilidade > Procedimentos > Parâmetros > Integração Patrimonial");
+        throw new Exception("Não foi configurado a Integração do patrimonial <br/> Acesse para configurar: DB:FINANCEIRO > Contabilidade > Procedimentos > Parâmetros > Integração Patrimonial");
     }
 } catch (Exception $oErro) {
     db_msgbox($oErro->getMessage());
 }
 ?>
+<script type="text/javascript" src="scripts/scripts.js"></script>
+<script type="text/javascript" src="scripts/prototype.js"></script>
+<script type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script rel="script" type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
+<style>
+    div.files {
+        display: inline-block;
+        background: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        border: solid #0a0a0a 1px;
+    }
 
+    div#arquivos-selecionados {
+        width: 400px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+</style>
 <form name="form1" method="post">
     <fieldset style='text-align: left'>
         <Legend><b>Dados da Ordem de Compra</b></legend>
@@ -307,8 +329,18 @@ try {
                                     ?>
                                 </td>
                             </tr>
-
+                            <tr id="componente-arquivos">
+                                <td nowrap>
+                                    <label class="bold" for="arquivo_notafsical">Arquivo Nota Fiscal:</label>
+                                </td>
+                                <td colspan="3">
+                                    <input type="file" name="arquivo" id="arquivo" multiple>
+                                </td>
+                            </tr>
                         </table>
+                    </fieldset>
+                    <fieldset id="field-arquivos">
+                        <div id="arquivos-selecionados"></div>
                     </fieldset>
                 </td>
             </tr>
@@ -323,8 +355,54 @@ try {
                 </td>
             </tr>
         </table>
+
+        <!-- SIGFIS-RJ -->
+        <fieldset id="infoSigfis" class="separator d-none" style="margin-top: 0.5rem;">
+            <legend>Informações SIGFIS - TCE/RJ</legend>
+            <!-- tipo documento  -->
+            <div id="infoTipodocliquidacao" class="d-none">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="tipodocliquidacao">
+                                <b>Tipo de documento: </b>
+                            </label>
+                            <select id="tipodocliquidacao">
+                                <option value="" selected>Selecione</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- danfe -->
+            <div id="infoDanfe" class="d-none">
+                <fieldset>
+                    <legend>Danfe</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <label for=""><b>Número: </b></label>
+                                <input id="danfeNumero" type="text"/>
+                            </td>
+                            <td>
+                                <label for=""><b>Chave: </b></label>
+                                <input id="danfeChave" type="text" pattern=""/>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+
+            <!-- atestadores -->
+            <div id="infoAtestadores" class="d-none"></div>
+        </fieldset>
+
     </fieldset>
     <table width="100%" border='0' cellspacing="0" cellpadding="0">
+        <div id="alertaMaterial" class="alert alert-primary text-left" role="alert" hidden>
+            não foi possível definir um material de entrada, verifique os dados do lançamento para os itens destacados.
+        </div>
         <tr>
             <td width="50%" valign="top">
                 <fieldset style='text-align: left'>
@@ -338,7 +416,7 @@ try {
                                     <a onclick='js_marca()' style='cursor: pointer'>M</a></b>
                             </th>
                             <th class='table_header' align='center'><b>Emp.</b></th>
-                            <th class='table_header' width="30%" align='center'><b>Material</b></th>
+                            <th class='table_header' width="30%" align='center'><b>Material Compra</b></th>
                             <th class='table_header' width="30%" align='center'><b>Obs</b></th>
                             <th class='table_header' align='center'><b>Vl. Unit.</b></th>
                             <th class='table_header' align='center'><b>Qtde</b></th>
@@ -353,7 +431,7 @@ try {
             </td>
             <td width="50%" valign="top">
                 <fieldset style='text-align: left'>
-                    <legend>Dados do Lançamento</legend>
+                    <legend>Dados do lançamento</legend>
                     <table>
                         <tr>
                             <td><b>Quant. Recebida:</b></td>
@@ -601,7 +679,7 @@ try {
             </tr>
             <tr>
                 <td colspan="4" style='text-align: center'>
-                    <input type='button' value='Salvar Informações' onclick='windowAuxiliarNota.hide()'>
+                    <input type='button' value='Salvar informações' onclick='windowAuxiliarNota.hide()'>
                 </td>
             </tr>
         </table>
@@ -623,6 +701,7 @@ try {
             display:none;' id='ajudaItem'>
 
 </div>
+
 <script type="text/javascript">
     var mapItemGrupo = {};
 
@@ -633,6 +712,7 @@ try {
 
     var UF = '<?=getEstadoInstituicao()?>';
     var isPB = UF === 'PB'
+    var isRJ = UF === 'RJ';
 
     const linhaTipoNota = document.getElementById('linhaTipoNota');
     const inputTipoNota = document.getElementById('tipoNota');
@@ -702,11 +782,11 @@ try {
         }
 
         if (tipo.numero == 1 && (inputNumeroNota.value == '' || inputNumeroNota.value == 'S/N')) {
-            alert(`O número da Nota é obrigatória para o tipo "${label}"`);
+            alert(`O Número da Nota é obrigatória para o tipo "${label}"`);
             return false;
         }
         if (tipo.serie == 1 && inputNumeroSerie.value == '') {
-            alert(`O número de Série é obrigatória para o tipo "${label}"`);
+            alert(`O Número de Série é obrigatória para o tipo "${label}"`);
             return false;
         }
         if (tipo.data == 1 && inputDataNota.value == '') {
@@ -718,11 +798,11 @@ try {
             return false;
         }
         if (tipo.numero == 0 && (inputNumeroNota.value != '' || inputNumeroNota.value != 'S/N')) {
-            alert(`O número da Nota não pode ser informada para o tipo "${label}"`);
+            alert(`O Número da Nota não pode ser informada para o tipo "${label}"`);
             return false;
         }
         if (tipo.serie == 0 && inputNumeroSerie.value != '') {
-            alert(`O número de Série não pode ser informado para o tipo "${label}"`);
+            alert(`O Número de Série não pode ser informado para o tipo "${label}"`);
             return false;
         }
         if (tipo.data == 0 && inputDataNota.value != '') {
@@ -814,7 +894,7 @@ try {
     }
 
     /*
-     * Retorno da Requisição da consulta dos itens da ordem.
+     * Retorno da requisição da consulta dos itens da ordem.
      */
     function js_retornoGetDados(oAjax) {
         $('codigo_lista_credor').value = "";
@@ -824,6 +904,13 @@ try {
         js_removeObj("msgBox");
         js_bloqueiaLiberaBotao(false);
         var oJson = JSON.parse(oAjax.responseText);
+        if(oJson.eletronico === false){
+            var elemento = document.getElementById("componente-arquivos");
+            elemento.style.display = "none";
+            var elemento2 = document.getElementById("field-arquivos");
+            elemento2.style.display = "none";
+        }
+
         if (oJson.status == 2) {
             alert(oJson.mensagem.urlDecode());
             return false;
@@ -914,10 +1001,17 @@ try {
             //percorremos itens da ordem de Compra. e populamos a grid.;
             for (var iItens = 0; iItens < oJson.itens.length; iItens++) {
                 with (oJson.itens[iItens]) {
+                    console.log(oJson.itens[iItens]);
                     iCodLinha = m52_codlanc + '_' + iIndiceEntrada;
                     sClassName = " normal";
                     if (m63_codmatmater == '') {
                         sClassName = 'semMatmater';
+                    }
+                    if (pc01_servico === 't' || m52_valor === "0") {
+                        sClassName = "normal";
+                    }
+                    if (sClassName === "semMatmater") {
+                        document.getElementById('alertaMaterial').hidden = false;
                     }
                     sDisabled = "";
                     sReturn = "";
@@ -1014,8 +1108,8 @@ try {
             );
         } else {
             /*
-             * atualiza o item na seçao, e marca ele como desabilitado
-             * somente itens pai(o que nao é fracionado);
+             * atualiza o item na seção, e marca ele como desabilitado
+             * somente itens pai(o que não é fracionado);
              */
             var strJson = '{"method":"desmarcarItem","m51_codordem":"' + $F('m51_codordem') + '",';
             strJson += '"iCodLanc":' + iCodLanc + ',"iIndice":' + iIndice + '}';
@@ -1073,7 +1167,7 @@ try {
                 lModificado = true;
             }
             if (lModificado) {
-                if (!confirm('Há Modificações no item Anterior que nao foram salvas.\nContinuar?')) {
+                if (!confirm('Há modificações no item Anterior que nao foram salvas.\nContinuar?')) {
                     setSelecionado(oItemAnt.m52_codlanc + "_" + oItemAnt.iIndiceEntrada);
                     return false;
                 }
@@ -1123,7 +1217,7 @@ try {
                 oOptions = new Option(oItemAtivo.aMateriaisEstoque[iInd].m63_codmatmater,
                     oItemAtivo.aMateriaisEstoque[iInd].m63_codmatmater);
                 oOptions.controlaEstoque = oItemAtivo.aMateriaisEstoque[iInd].m60_controlavalidade;
-                oOptions.descr = oItemAtivo.aMateriaisEstoque[iInd].m60_descr; //Propriedade Original da Requisiçaio com URLENCODE
+                oOptions.descr = oItemAtivo.aMateriaisEstoque[iInd].m60_descr; //Propriedade Original da Requisição com URLENCODE
 
                 $('matmater').add(oOptions, null);
 
@@ -1179,7 +1273,7 @@ try {
         var oItemAtivo = eval("(" + oObject + ")");
 
         if (lAcerta) {
-            if (!confirm('Este é uma lançamento de acerto, deseja confirmar a entrada?')) {
+            if (!confirm('Este é um lançamento de acerto, deseja confirmar a entrada?')) {
                 return false;
             }
 
@@ -1317,7 +1411,7 @@ try {
     }
 
     /**
-     * Retorno da Requisição da pra salvar os itens .
+     * Retorno da requisição da pra salvar os itens .
      */
 
     function js_retornoSaveMaterial(oAjax) {
@@ -1363,7 +1457,7 @@ try {
     }
 
     /**
-     * Retorno da Requisição da consulta dos itens da ordem.
+     * Retorno da requisição da consulta dos itens da ordem.
      */
     function js_retornoGetDadosEntrada(oAjax) {
 
@@ -1375,15 +1469,22 @@ try {
 
             var sRow = '';
             var nTotalLancado = new Number(0);
+            let verificaClasse = [];
+
             for (var iItens = 0; iItens < oJson.aItens.length; iItens++) {
-
                 with (oJson.aItens[iItens]) {
-
                     iCodLinha = m52_codlanc + '_' + iIndiceEntrada;
                     sClassName = " normal";
                     if (m63_codmatmater == '') {
                         sClassName = 'semMatmater';
                     }
+                    if (pc01_servico === 't') {
+                        sClassName = "normal";
+                    }
+                    if (sClassName === 'semMatmater') {
+                        verificaClasse.push(sClassName)
+                    }
+
                     sShowCheckbox = '';
                     sShowTree = "none";
                     sClassTD = "linhagrid";
@@ -1460,6 +1561,9 @@ try {
                     }
                 }
             }
+            if (verificaClasse.length === 0 ) {
+                document.getElementById('alertaMaterial').hidden = true;
+            }
             sRow += "<tr style='height:auto'><td>&nbsp;</td></tr>";
             $('lancado').value = new Number(nTotalLancado).toFixed(2);
             if ($F('e70_valor') != '') {
@@ -1519,7 +1623,7 @@ try {
     }
 
     /**
-     * Retorno da Requisição do cancelamendo do fracionamento dos itens.
+     * Retorno da requisição do cancelamendo do fracionamento dos itens.
      */
     function js_retornoCancelarFracionamento(oAjax) {
 
@@ -1668,7 +1772,7 @@ try {
             if (grupoContaEmpenho === 7 && inputProcessoEntrada.value != 1) {
 
                 mostrarValidacao = true;
-                labelGrupo = 'DESPESAS COM SERVIÇO';
+                labelGrupo = 'DESPESAS COM serviço';
             }
 
             if (grupoContaEmpenho === 8 && inputProcessoEntrada.value != 2) {
@@ -1684,7 +1788,7 @@ try {
             }
 
             var optionSelecionado = inputProcessoEntrada.options[inputProcessoEntrada.value].innerHTML;
-            var mensagem = "O desdobramento do empenho constitui " + labelGrupo + " e você selecionou " + optionSelecionado;
+            var mensagem = "O desdobramento do empenho constitui " + labelGrupo + " e Você selecionou " + optionSelecionado;
             mensagem += " como Processo de Entrada da Nota.\n\nConfirma a entrada dos itens selecionados no estoque?";
             if (mostrarValidacao && !confirm(mensagem)) {
                 return false;
@@ -1765,7 +1869,7 @@ try {
             });
         }
         if (iSemPai) {
-            var sMsg = "Há Itens que foram fracionados que  nao estão selecionados.\n";
+            var sMsg = "Há Itens que foram fracionados que  nao estáo selecionados.\n";
             sMsg += "Para esses Itens, não sera Efetuada  a entrada no estoque.\nContinuar?";
             if (!confirm(sMsg)) {
                 return false;
@@ -1814,6 +1918,18 @@ try {
             return false;
         }
 
+        if (isRJ) {
+            // Atestadores (sigfis tce/rj)
+            if (!js_validaAtestadores()) {
+                return false;
+            }
+
+            // Tipo doc liquidacao (sigfis)
+            if (!js_validaTidocliquidacao()) {
+                return false;
+            }
+        }
+
         js_bloqueiaLiberaBotao(true);
         $('confirmar').disabled = true;
         $('pesquisar').disabled = true;
@@ -1846,7 +1962,8 @@ try {
             'sObs': sObservacao,
             'nValorNota': $F('e70_valor'),
             'aItens': aItensSelecionados,
-            'processoEntradaNota': null
+            'processoEntradaNota': null,
+            'uploadNota': fileList
         };
 
         if (isPB) {
@@ -1858,6 +1975,28 @@ try {
             });
         }
 
+        // sigfis
+        if (isRJ) {
+            // atestadores
+            if (oDBLancadorAtestadores.getRegistros().length) {
+                oParametro.atestadores = oDBLancadorAtestadores.getRegistros();
+            }
+
+            // tipo documento
+            if ($F('tipodocliquidacao')) {
+                oParametro.tipodocliquidacao = $F('tipodocliquidacao');
+            }
+
+            // danfe
+            if ($F('danfeNumero') || $F('danfeChave')) {
+                oParametro.outrosDadosNota = JSON.stringify({
+                    "danfe": {
+                        "numero": $F('danfeNumero'),
+                        "chave": $F('danfeChave')
+                    }
+                });
+            }
+        }
 
         if ($('processo_entrada_nota')) {
             oParametro.processoEntradaNota = $F('processo_entrada_nota');
@@ -1867,7 +2006,7 @@ try {
     }
 
     /**
-     * Função de retorno da requisicção da confirmação da entrada da ordem de compra
+     * Função de retorno da requisição da confirmação da entrada da ordem de compra
      * no estoque
      */
     function js_retorndoConfirmaEntrada(oRetorno) {
@@ -1968,7 +2107,7 @@ try {
     window.document.onkeypress = testar2;
 
     /**
-     * função para marcar os itens ao clicar no "M" do header da grid
+     * Função para marcar os itens ao clicar no "M" do header da grid
      */
     function js_marca() {
 
@@ -2077,7 +2216,6 @@ try {
         $('matmaterdescr').options.length = 0;
         $('m76_nome').value = '';
         $('m78_matfabricante').value = '';
-        ;
         $('m77_lote').value = '';
         $('m77_dtvalidade').value = '';
         $('doFracionar').disabled = true;
@@ -2276,6 +2414,181 @@ try {
             alert("A nota fiscal selecionada, já possui o(s) empenho(s): " + oRetorno.sEmpenho + " vinculado(s).");
         }
     }
+
+    const FILE_RPC = 'pro4_andamento_processo.RPC.php';
+    const fileInput = document.getElementById("arquivo");
+    const divArquivosSelecionados = document.getElementById("arquivos-selecionados");
+    var fileList = [];
+
+    fileInput.addEventListener('change', function (e) {
+        let i = 0;
+        var data = new FormData();
+        for (i; i < fileInput.files.length; i++) {
+            data.append('anexos[]', fileInput.files[i]);
+        }
+
+        data.append('acao', 'prepararDocumentos');
+        data.append('getExtArq', 0);
+        HttpClient.post(FILE_RPC, {body: data}).then(function (response) {
+            if (response.erro) {
+                alert(response.mensagem);
+                return;
+            }
+            response.documentos.map(function (documento) {
+                fileList.push(Object.assign({}, documento));
+                renderNamesFiles();
+            });
+        });
+        fileInput.value = "";
+    });
+
+    function removeFile(indexFile) {
+        fileList = fileList.filter(function (file, index) {
+            console.log(index, indexFile, (index != indexFile))
+            return index != indexFile;
+        });
+        renderNamesFiles();
+    }
+
+    function renderNamesFiles() {
+        let html = [];
+
+        fileList.forEach(function (file, index) {
+            html.push(`
+                  <div class='files'>${file.descricao} <a onclick="removeFile(${index})">X<a></div>
+               `);
+        });
+        divArquivosSelecionados.innerHTML = html.join("");
+    }
+
+    /**
+     * Sessao destinada ao SIGFIS TCE/RJ
+     **/
+    if (isRJ) {
+
+    // Elementos
+    const infoSigfisEl          = document.querySelector('#infoSigfis');
+    const infoAtestadoresEl     = document.querySelector('#infoAtestadores');
+    const infoTipodocliquidacao = document.querySelector('#infoTipodocliquidacao');
+    const tipodocliquidacao     = document.querySelector('#tipodocliquidacao');
+    const infoDanfe             = document.querySelector('#infoDanfe');
+
+    infoSigfisEl.classList.remove('d-none');
+
+    // Preeche tipo de documento liquidacao
+    const getTipodocliquidacao = async () => {
+        const url = 'v4/api/financeiro/empenho/sigfis/tipodocliquidacao';
+        const request = await CurrentWindow.axios(url);
+        const {data: response} = request;
+        const {data: responseData} = response;
+
+        if (responseData.message == true) {
+            alert('Erro ao buscar tipos de documento de liquidacao.');
+            return false;
+        }
+
+        infoTipodocliquidacao.classList.remove('d-none');
+
+        const tipos = responseData.tipos;
+        tipos.forEach(item => {
+            const option = document.createElement('option');
+
+            option.innerHTML = item.e177_descr;
+            option.value = item.e177_sequencial;
+            option.dataset.codigo = item.e177_codigo;
+            option.dataset.decimo = item.e177_decimo;
+            option.dataset.tipodiverso = item.e177_tipodiverso;
+
+            tipodocliquidacao.appendChild(option);
+        });
+    }
+
+    getTipodocliquidacao();
+
+    // Lancador Atestadores
+    var oDBLancadorAtestadores = new DBLancador('oDBLancadorAtestadores');
+        oDBLancadorAtestadores.setNomeInstancia('oDBLancadorAtestadores');
+        oDBLancadorAtestadores.setTextoFieldset("Atestadores");
+        oDBLancadorAtestadores.setLabelAncora('cgm:');
+        oDBLancadorAtestadores.setGridHeight(100);
+        oDBLancadorAtestadores.setParametrosPesquisa('func_cgm.php', ['z01_numcgm','z01_nome']);
+        oDBLancadorAtestadores.show(infoAtestadoresEl);
+
+    // Atestadores
+    const showFieldAtestadores = (option) => {
+        const tipo = Number(option.dataset.codigo);
+        const tipodocaccept = [1, 3];
+
+        if (tipodocaccept.includes(tipo)) {
+            infoAtestadoresEl.classList.remove('d-none');
+        } else {
+            infoAtestadoresEl.classList.add('d-none');
+        }
+    }
+
+    function js_validaAtestadores() {
+        const optionEl = tipodocliquidacao.options[tipodocliquidacao.selectedIndex];
+        const tipo = Number(optionEl.dataset.codigo);
+        const tipodocaccept = [1, 3];
+
+        if (tipodocaccept.includes(tipo)) {
+            if (!oDBLancadorAtestadores.getRegistros().length) {
+                alert('[Atestador] Atestadores devem ser informados.');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function js_validaTidocliquidacao() {
+        if (!tipodocliquidacao.value) {
+            alert('Tipo documento deve ser informado.');
+            return false;
+        }
+
+        return true
+    }
+
+    // danfe
+    const showFieldDanfe = (option) => {
+        const tipo = Number(option.dataset.codigo);
+        const tipodocaccept = [1];
+
+        if (tipodocaccept.includes(tipo)) {
+            infoDanfe.classList.remove('d-none');
+        } else {
+            infoDanfe.classList.add('d-none');
+        }
+    }
+
+    // listeners
+    const handleTipodocChange = (e) => {
+        const selectEl = e.target;
+        const optionEl = selectEl.options[selectEl.selectedIndex];
+
+        showFieldAtestadores(optionEl);
+        showFieldDanfe(optionEl);
+    }
+
+    tipodocliquidacao.addEventListener('change', handleTipodocChange);
+
+    // Reseta os campos destinado ao sigfis
+    function clearSigfis() {
+
+        // Limpa tipo documento
+        tipodocliquidacao.value = '';
+
+        // Limpa Atestadores
+        infoAtestadoresEl.classList.add('d-none');
+        oDBLancadorAtestadores.clearAll();
+
+        // Limpa danfe
+        infoDanfe.classList.add('d-none');
+        infoDanfe.querySelectorAll('input').forEach(e => e.value = '');
+    }
+}
+
 </script>
 <?php
 echo "<script>js_consultaOrdem({$m51_codordem});

@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Repository;
 
+use App\Domain\Tributario\Arrecadacao\Repositories\TaxaGrupoTaxasRepository;
 use db_utils;
 use ECidade\Tributario\Arrecadacao\Model\TaxasLancadas;
 use ECidade\V3\Extension\Registry;
@@ -26,6 +27,7 @@ class TaxasLancadasRepository extends \BaseClassRepository
         $dao->ar44_emissaoweb = $entity->isEmissaoweb();
         $dao->ar44_recursoadm = $entity->isRecursoadm();
         $dao->ar44_origem = $entity->getOrigem();
+        $dao->ar44_permitesubtaxas = $entity->isPermiteSubtaxas();
 
         if (!empty($dao->ar44_sequencial)) {
             $dao->alterar($dao->ar44_sequencial);
@@ -97,6 +99,10 @@ class TaxasLancadasRepository extends \BaseClassRepository
             $taxasLancadas->setRecursoadm($oObject->ar44_recursoadm);
         }
 
+        if (!empty($oObject->ar44_permitesubtaxas)) {
+            $taxasLancadas->setPermiteSubtaxas($oObject->ar44_permitesubtaxas);
+        }
+
         if ($oInflator && $oInflator->getValor() != "") {
             $taxasLancadas->setValor($oInflator->getValor());
         }
@@ -129,6 +135,7 @@ class TaxasLancadasRepository extends \BaseClassRepository
         $oDados->geraDebito = $oTaxa->isGeraDebito();
         $oDados->valorTaxaExpediente = round(($oTaxa->getValortaxaexpediente() * $oTaxa->getValor()), 2);
         $oDados->ar44_origem = $oTaxa->getOrigem();
+        $oDados->ar44_permitesubtaxas = $oTaxa->isPermiteSubtaxas();
 
         return $oDados;
     }
@@ -165,6 +172,8 @@ class TaxasLancadasRepository extends \BaseClassRepository
             $oTaxa = $this->make($item);
 
             $oDados = $this->workData($oTaxa);
+
+            $oDados->grupos = $this->getGruposTaxa($oDados->ar44_sequencial);
 
             $aDados[] = $oDados;
         }
@@ -210,5 +219,15 @@ class TaxasLancadasRepository extends \BaseClassRepository
         $dao = new \cl_taxaslancadas();
 
         return $dao->getTaxasUgGrm($codigoUg, $codigoTaxa, $isTaxa);
+    }
+
+    private function getGruposTaxa($sequencialTaxa)
+    {
+        $taxaGrupoTaxasRepository = new TaxaGrupoTaxasRepository();
+        $resultados = $taxaGrupoTaxasRepository->buscar(null, $sequencialTaxa);
+
+        return array_map(function ($item) {
+            return $item['ar57_grupotaxas'];
+        }, $resultados);
     }
 }

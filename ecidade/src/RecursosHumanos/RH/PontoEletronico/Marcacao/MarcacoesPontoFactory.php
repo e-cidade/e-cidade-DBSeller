@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -30,38 +30,36 @@ namespace ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPontoSaida;
 
-
 /**
  * Classe responsável por montar uma coleção de marcações
  * Class MarcacoesPontoFactory
  * @package ECidade\RecursosHumanos\RH\PontoEletronico\Collection
  * @author Renan Silva <renan.silva@dbseller.com.br>
  */
-class MarcacoesPontoFactory {
+class MarcacoesPontoFactory
+{
 
-  public static function create($oMarcacao, $iTipo, $iCodigo) {
+    public static function create($oMarcacao, $iTipo, $iCodigo)
+    {
 
-    $oInstaciaMarcacao = null;
+        $oInstaciaMarcacao = null;
 
-    switch ($iTipo) {
-
-      case MarcacaoPonto::ENTRADA_1:
-      case MarcacaoPonto::ENTRADA_2:
-      case MarcacaoPonto::ENTRADA_3:
-
-        $oInstaciaMarcacao = new MarcacaoPonto($oMarcacao, $iTipo);
-        $oInstaciaMarcacao->setCodigo($iCodigo);
-        break;
+        switch ($iTipo) {
+            case MarcacaoPonto::ENTRADA_1:
+            case MarcacaoPonto::ENTRADA_2:
+            case MarcacaoPonto::ENTRADA_3:
+                $oInstaciaMarcacao = new MarcacaoPonto($oMarcacao, $iTipo);
+                $oInstaciaMarcacao->setCodigo($iCodigo);
+                break;
       
-      case MarcacaoPonto::SAIDA_1:
-      case MarcacaoPonto::SAIDA_2:
-      case MarcacaoPonto::SAIDA_3:
+            case MarcacaoPonto::SAIDA_1:
+            case MarcacaoPonto::SAIDA_2:
+            case MarcacaoPonto::SAIDA_3:
+                $oInstaciaMarcacao = new MarcacaoPontoSaida($oMarcacao, $iTipo);
+                $oInstaciaMarcacao->setCodigo($iCodigo);
+                break;
+        }
 
-        $oInstaciaMarcacao = new MarcacaoPontoSaida($oMarcacao, $iTipo);
-        $oInstaciaMarcacao->setCodigo($iCodigo);
-        break;
+        return $oInstaciaMarcacao;
     }
-
-    return $oInstaciaMarcacao;
-  }
 }

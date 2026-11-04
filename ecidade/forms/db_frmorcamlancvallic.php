@@ -184,7 +184,7 @@ $clrotulo = new rotulocampo;
                                                         </select>
                                                     </td>
                                                 </tr>
-                                                <?
+                                                <?php
                                             }
                                         }
                                     }
@@ -324,14 +324,14 @@ $clrotulo = new rotulocampo;
 
   function js_buscarcod() {
 
-    retorno = "";
-    erro0   = 0;
-    erro1   = 0;
-    obj     = elementos.document.form1;
+    let retorno = "";
+    let erro0   = 0;
+    let erro1   = 0;
+    let obj     = elementos.document.form1;
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
-      if(obj.elements[i].name.substr(0,6) == "valor_") {
+      if(obj.elements[i].name.substr(0,6) === "valor_") {
 
         valor    = obj.elements[i].value;
         retorno += obj.elements[i].name+"_"+valor;
@@ -342,9 +342,9 @@ $clrotulo = new rotulocampo;
     document.form1.valores.value = retorno;
     retorno                      = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
-      if(obj.elements[i].name.substr(0,6) == "vlrun_") {
+      if(obj.elements[i].name.substr(0,6) === "vlrun_") {
 
         valor    = obj.elements[i].value;
         retorno += obj.elements[i].name+"_"+valor;
@@ -355,11 +355,11 @@ $clrotulo = new rotulocampo;
     document.form1.valoresun.value = retorno;
     retorno                        = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
-      var sFieldName = "bdi_";
+      let sFieldName = "bdi_";
 
-      if(obj.elements[i].name.substr(0, sFieldName.length) == sFieldName) {
+      if(obj.elements[i].name.substr(0, sFieldName.length) === sFieldName) {
 
         valor    = obj.elements[i].value;
         retorno += obj.elements[i].name + "_" + valor;
@@ -370,9 +370,9 @@ $clrotulo = new rotulocampo;
     document.form1.bdi.value = retorno;
     retorno                  = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
-      var sFieldName = "notatecnica_";
+      let sFieldName = "notatecnica_";
 
       if(obj.elements[i].name.substr(0, sFieldName.length) == sFieldName) {
 
@@ -385,9 +385,9 @@ $clrotulo = new rotulocampo;
     document.form1.notatecnica.value = retorno;
     retorno                          = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
-      var sFieldName = "encargossociais_";
+      let sFieldName = "encargossociais_";
 
       if(obj.elements[i].name.substr(0, sFieldName.length) == sFieldName) {
 
@@ -403,7 +403,7 @@ $clrotulo = new rotulocampo;
     document.form1.encargossociais.value = retorno;
     retorno                              = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
       if(obj.elements[i].name.substr(0,5) == "qtde_") {
 
@@ -418,7 +418,7 @@ $clrotulo = new rotulocampo;
     retorno                      = "";
 
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
       var sFieldName = 'txhomologada_';
       if(obj.elements[i].name.substr(0, sFieldName.length) === sFieldName) {
@@ -434,7 +434,7 @@ $clrotulo = new rotulocampo;
     retorno                      = "";
 
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
       if(obj.elements[i].name.substr(0,11) == "qtdeOrcada_") {
 
@@ -450,7 +450,7 @@ $clrotulo = new rotulocampo;
     ifen                                = "";
     div                                 = "#";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
       if(obj.elements[i].name.substr(0,14) == "pc23_validmin_") {
 
@@ -478,7 +478,7 @@ $clrotulo = new rotulocampo;
     document.form1.dataval.value = retorno;
     retorno                      = "";
 
-    for(i = 0; i < obj.elements.length; i++) {
+    for(let i = 0; i < obj.elements.length; i++) {
 
       if(obj.elements[i].name.substr(0,4) == "obs_") {
 
@@ -486,7 +486,7 @@ $clrotulo = new rotulocampo;
 
         if(valor != "") {
 
-          for(ii = 0; ii < valor.length; ii++) {
+          for(let ii = 0; ii < valor.length; ii++) {
 
             if(valor.substr(ii,1) == " ") {
               valor = valor.replace(" ","yw00000wy");
@@ -503,7 +503,6 @@ $clrotulo = new rotulocampo;
     }
 
     document.form1.obss.value = retorno;
-
     return true;
   }
 

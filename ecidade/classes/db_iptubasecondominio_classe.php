@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,14 +51,14 @@ class cl_iptubasecondominio {
                  j108_matric = int4 = Matrícula 
                  j108_condominio = int4 = Cód. Condomínio 
                  ";
-   //funcao construtor da classe 
-   function cl_iptubasecondominio() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("iptubasecondominio"); 
+     $this->rotulo = new rotulo("iptubasecondominio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_iptubasecondominio {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j108_sequencial = ($this->j108_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["j108_sequencial"]:$this->j108_sequencial);
        $this->j108_matric = ($this->j108_matric == ""?@$GLOBALS["HTTP_POST_VARS"]["j108_matric"]:$this->j108_matric);
@@ -77,7 +77,7 @@ class cl_iptubasecondominio {
      }
    }
    // funcao para inclusao
-   function incluir ($j108_sequencial){ 
+   public function incluir ($j108_sequencial){
       $this->atualizacampos();
      if($this->j108_matric == null ){ 
        $this->erro_sql = " Campo Matrícula nao Informado.";
@@ -176,7 +176,7 @@ class cl_iptubasecondominio {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j108_sequencial=null) { 
+   public function alterar ($j108_sequencial=null) {
       $this->atualizacampos();
      $sql = " update iptubasecondominio set ";
      $virgula = "";
@@ -267,11 +267,11 @@ class cl_iptubasecondominio {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j108_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j108_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j108_sequencial));
      }else{ 
@@ -330,11 +330,11 @@ class cl_iptubasecondominio {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,8 +356,8 @@ class cl_iptubasecondominio {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $j108_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   // funcao do sql
+   public function sql_query ( $j108_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -394,8 +394,8 @@ class cl_iptubasecondominio {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $j108_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $j108_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -430,7 +430,7 @@ class cl_iptubasecondominio {
   }
 
   // funcao do sql 
-  function sql_query_condominio($j108_sequencial=null,$campos="*",$ordem=null,$dbwhere="")
+  public function sql_query_condominio($j108_sequencial=null,$campos="*",$ordem=null,$dbwhere="")
   {
     $sql = "select {$campos}";
     $sql .= "from iptubasecondominio ";

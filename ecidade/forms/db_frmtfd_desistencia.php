@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,12 +38,12 @@ $clrotulo->label("z01_v_nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ttf28_i_pedidotfd?>">
-      <?
+      <?php
       db_ancora(@$Ltf28_i_pedidotfd,"js_pesquisatf28_i_pedidotfd(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf28_i_pedidotfd',10,$Itf28_i_pedidotfd,true,'text',$db_opcao,
                ' onchange=js_pesquisatf28_i_pedidotfd(false);');
       db_input('operacao',1,'',true,'hidden',3,'');
@@ -52,12 +52,12 @@ $clrotulo->label("z01_v_nome");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf01_i_cgsund?>">
-      <?
+      <?php
       echo $Ltf01_i_cgsund;
       ?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf01_i_cgsund',10,$Itf01_i_cgsund,true,'text',3,'');
       db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
       ?>
@@ -68,7 +68,7 @@ $clrotulo->label("z01_v_nome");
       <?=@$Ltf28_i_situacao?>
     </td>
     <td> 
-      <?
+      <?php
       $aX = array();
       $sSql = $oDaotfd_situacaotfd->sql_query_file(null, ' * ', ' tf26_i_codigo ');
       $rs = $oDaotfd_situacaotfd->sql_record($sSql);
@@ -93,7 +93,7 @@ $clrotulo->label("z01_v_nome");
        <?=@$Ltf28_c_obs?>
     </td>
     <td> 
-      <?
+      <?php
       db_input('tf28_c_obs',64,$Itf28_c_obs,true,'text',$db_opcao,"")
       ?>
     </td>

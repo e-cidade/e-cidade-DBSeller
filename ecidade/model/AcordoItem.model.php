@@ -215,6 +215,12 @@ class AcordoItem
     protected $aPrevisaoExecucao;
 
     /**
+     * Numero da Posição do Acordo
+     * @var integer
+     */
+    protected $iNumeroPosicao;
+
+    /**
      * Divisão Mensal das Quantidades
      * @var integer
      */
@@ -906,7 +912,7 @@ class AcordoItem
         /**
          * Excluimos todas as dotaçoes vinculadas com o item e incluimos novamente
          */
-        // $oDaoAcordoItemDotacaoReserva = new cl_orcreservaacordoitemdotacao();
+        $oDaoAcordoItemDotacaoReserva = new cl_orcreservaacordoitemdotacao();
         $oDaoReserva = new cl_orcreserva();
         $oDaoAcordoItemDotacao = new cl_acordoitemdotacao();
         $sSqlDotacoes = $oDaoAcordoItemDotacao->sql_query_file(null, "*",
@@ -918,18 +924,18 @@ class AcordoItem
         $iNumRowsDotacao = $oDaoAcordoItemDotacao->numrows;
         $aDotacoesCadastradas = db_utils::getCollectionByRecord($rsDotacoes);
         foreach ($aDotacoesCadastradas as $oDotacaoCadastrada) {
-            // $sSqlReserva = $oDaoAcordoItemDotacaoReserva->sql_query_file(null,
-            //   "*",
-            //   null,
-            //   "o84_acordoitemdotacao =
-            //                                                        {$oDotacaoCadastrada->ac22_sequencial}"
-            // );
-            // $rsReservaItem = $oDaoAcordoItemDotacaoReserva->sql_record($sSqlReserva);
-            // if ($oDaoAcordoItemDotacaoReserva->numrows > 0) {
-            //     $oDadosReserva = db_utils::fieldsMemory($rsReservaItem, 0);
-            //     $oDaoAcordoItemDotacaoReserva->excluir($oDadosReserva->o84_sequencial);
-            //     $oDaoReserva->excluir($oDadosReserva->o84_orcreserva);
-            // }
+             $sSqlReserva = $oDaoAcordoItemDotacaoReserva->sql_query_file(null,
+               "*",
+               null,
+               "o84_acordoitemdotacao =
+                                                                    {$oDotacaoCadastrada->ac22_sequencial}"
+             );
+             $rsReservaItem = $oDaoAcordoItemDotacaoReserva->sql_record($sSqlReserva);
+             if ($oDaoAcordoItemDotacaoReserva->numrows > 0) {
+                 $oDadosReserva = db_utils::fieldsMemory($rsReservaItem, 0);
+                 $oDaoAcordoItemDotacaoReserva->excluir($oDadosReserva->o84_sequencial);
+                 $oDaoReserva->excluir($oDadosReserva->o84_orcreserva);
+             }
 
             $oDaoAcordoItemDotacao->excluir($oDotacaoCadastrada->ac22_sequencial);
         }
@@ -955,39 +961,39 @@ class AcordoItem
              * verificamos se existe saldo na dotacao, e
              * incluimos a reserva
              */
-            // $oDotacaoSaldo = new Dotacao($oDotacao->dotacao, $oDotacao->ano);
-            // $nSaldoReservar = $oDotacao->valor;
+             $oDotacaoSaldo = new Dotacao($oDotacao->dotacao, $oDotacao->ano);
+             $nSaldoReservar = $oDotacao->valor;
 
-            // if (round($oDotacaoSaldo->getSaldoFinal(), 2) <= $oDotacao->valor) {
-            //     $nSaldoReservar = $oDotacaoSaldo->getSaldoFinal();
-            // }
+             if (round($oDotacaoSaldo->getSaldoFinal(), 2) <= $oDotacao->valor) {
+                 $nSaldoReservar = $oDotacaoSaldo->getSaldoFinal();
+             }
 
-            // if ($nSaldoReservar > 0 && $lReservarSaldo) {
-            //     $oAcordo = new Acordo($this->getPosicao()->getAcordo());
-            //     $iNumeroAcordo = $oAcordo->getNumero();
+             if ($nSaldoReservar > 0 && $lReservarSaldo) {
+                 $oAcordo = new Acordo($this->getPosicao()->getAcordo());
+                 $iNumeroAcordo = $oAcordo->getNumero();
 
-            //     $oDaoReserva->o80_anousu = $oDotacao->ano;
-            //     $oDaoReserva->o80_coddot = $oDotacao->dotacao;
-            //     $oDaoReserva->o80_dtini = date("Y-m-d", db_getsession("DB_datausu"));
-            //     $oDaoReserva->o80_dtfim = "{$oDotacao->ano}-12-31";
-            //     $oDaoReserva->o80_dtlanc = date("Y-m-d", db_getsession("DB_datausu"));
-            //     $oDaoReserva->o80_valor = $nSaldoReservar;
-            //     $oDaoReserva->o80_descr = "reserva acordo {$iNumeroAcordo}, item {$this->getCodigo()}";
-            //     $oDaoReserva->incluir(null);
+                 $oDaoReserva->o80_anousu = $oDotacao->ano;
+                 $oDaoReserva->o80_coddot = $oDotacao->dotacao;
+                 $oDaoReserva->o80_dtini = date("Y-m-d", db_getsession("DB_datausu"));
+                 $oDaoReserva->o80_dtfim = "{$oDotacao->ano}-12-31";
+                 $oDaoReserva->o80_dtlanc = date("Y-m-d", db_getsession("DB_datausu"));
+                 $oDaoReserva->o80_valor = $nSaldoReservar;
+                 $oDaoReserva->o80_descr = "reserva acordo {$iNumeroAcordo}, item {$this->getCodigo()}";
+                 $oDaoReserva->incluir(null);
 
-            //     if ($oDaoReserva->erro_status == 0) {
-            //         $sMessage = "Erro ao reservar saldo!\n{$oDaoReserva->erro_msg}";
-            //         throw new Exception($sMessage);
-            //     }
+                 if ($oDaoReserva->erro_status == 0) {
+                     $sMessage = "Erro ao reservar saldo!\n{$oDaoReserva->erro_msg}";
+                     throw new Exception($sMessage);
+                 }
 
-            //     $oDaoAcordoItemDotacaoReserva->o84_orcreserva = $oDaoReserva->o80_codres;
-            //     $oDaoAcordoItemDotacaoReserva->o84_acordoitemdotacao = $oDaoAcordoItemDotacao->ac22_sequencial;
-            //     $oDaoAcordoItemDotacaoReserva->incluir(null);
-            //     if ($oDaoAcordoItemDotacaoReserva->erro_status == 0) {
-            //         $sMessage = "Erro ao reservar saldo!\n{$oDaoAcordoItemDotacaoReserva->erro_msg}";
-            //         throw new Exception($sMessage);
-            //     }
-            // }
+                 $oDaoAcordoItemDotacaoReserva->o84_orcreserva = $oDaoReserva->o80_codres;
+                 $oDaoAcordoItemDotacaoReserva->o84_acordoitemdotacao = $oDaoAcordoItemDotacao->ac22_sequencial;
+                 $oDaoAcordoItemDotacaoReserva->incluir(null);
+                 if ($oDaoAcordoItemDotacaoReserva->erro_status == 0) {
+                     $sMessage = "Erro ao reservar saldo!\n{$oDaoAcordoItemDotacaoReserva->erro_msg}";
+                     throw new Exception($sMessage);
+                 }
+             }
         }
 
         /**
@@ -1283,27 +1289,35 @@ class AcordoItem
         $sSqlItemDotacao = $oDaoAcordoItemDotacao->sql_query_file(null, "*", null,
           "ac22_acordoitem = {$this->getCodigo()}");
         $rsItemDotacao = $oDaoAcordoItemDotacao->sql_record($sSqlItemDotacao);
+
         if ($oDaoAcordoItemDotacao->numrows > 0) {
-            $iItemDotacao = db_utils::fieldsMemory($rsItemDotacao, 0)->ac22_sequencial;
+            $aItemDotacao = [];
+            for ($i = 0; $i < $oDaoAcordoItemDotacao->numrows; $i++) {
+                $aItemDotacao[] = db_utils::fieldsMemory($rsItemDotacao, $i)->ac22_sequencial;
+            }   
 
-            $oDaoOrcreservaAcordoItemDotacao = new cl_orcreservaacordoitemdotacao();
-            $sSqlBuscaReserva = $oDaoOrcreservaAcordoItemDotacao->sql_query_file(null, "distinct o84_orcreserva", null,
-              "o84_acordoitemdotacao = {$iItemDotacao}");
-            $rsBuscaReserva = db_query($sSqlBuscaReserva);
-            if (!$rsBuscaReserva) {
-                throw new Exception("Ocorreu um erro ao consultar a reserva de saldo.");
-            }
+            foreach ($aItemDotacao as $iItemDotacao) {               
+                $oDaoOrcreservaAcordoItemDotacao = new cl_orcreservaacordoitemdotacao();
+                
+                $sSqlBuscaReserva = $oDaoOrcreservaAcordoItemDotacao->sql_query_file(null, "distinct o84_orcreserva", null,
+                "o84_acordoitemdotacao = {$iItemDotacao}");
+                
+                $rsBuscaReserva = db_query($sSqlBuscaReserva);
+                if (!$rsBuscaReserva) {
+                    throw new Exception("Ocorreu um erro ao consultar a reserva de saldo.");
+                }
 
-            $oDaoOrcreservaAcordoItemDotacao->excluir(null, "o84_acordoitemdotacao = {$iItemDotacao}");
-            if ($oDaoOrcreservaAcordoItemDotacao->erro_status == 0) {
-                throw new Exception("Erro ao remover dotações item {$this->getMaterial()->getDescricao()}\n{$oDaoOrcreservaAcordoItemDotacao->erro_msg}");
-            }
+                $oDaoOrcreservaAcordoItemDotacao->excluir(null, "o84_acordoitemdotacao = {$iItemDotacao}");
+                if ($oDaoOrcreservaAcordoItemDotacao->erro_status == 0) {
+                    throw new Exception("Erro ao remover dotações item {$this->getMaterial()->getDescricao()}\n{$oDaoOrcreservaAcordoItemDotacao->erro_msg}");
+                }
 
-            if (pg_num_rows($rsBuscaReserva)) {
-                $oDaoOrcReserva = new cl_orcreserva();
-                $oDaoOrcReserva->excluir(db_utils::fieldsMemory($rsBuscaReserva, 0)->o84_orcreserva);
-                if ($oDaoOrcReserva->erro_status == "0") {
-                    throw new Exception("Ocorreu um erro ao excluir a reserva de saldo.");
+                if (pg_num_rows($rsBuscaReserva)) {
+                    $oDaoOrcReserva = new cl_orcreserva();
+                    $oDaoOrcReserva->excluir(db_utils::fieldsMemory($rsBuscaReserva, 0)->o84_orcreserva);
+                    if ($oDaoOrcReserva->erro_status == "0") {
+                        throw new Exception("Ocorreu um erro ao excluir a reserva de saldo.");
+                    }
                 }
             }
         }
@@ -2230,7 +2244,7 @@ class AcordoItem
         $nQuantidadePeriodo = 0;
         $nQuantidadePrevista = 0;
 
-        foreach ($aPeriodos as &$oPeriodo) {
+        foreach ($aPeriodos as $oPeriodo) {
             if ($oPeriodo->codigo != $iPeriodo) {
                 $nQuantidadePrevista += $oPeriodo->quantidadeprevista;
             }
@@ -2634,6 +2648,8 @@ class AcordoItem
             $oExecucao->setDataInicial(new DBDate($oDadosExecucao->ac29_datainicial));
             $oExecucao->setDataFinal(new DBDate($oDadosExecucao->ac29_datafinal));
             $oExecucao->setNotaFiscal($oDadosExecucao->ac29_notafiscal);
+            $oExecucao->setObservacao($oDadosExecucao->ac29_observacao);
+
             $this->aExecucoes[] = $oExecucao;
         }
 
@@ -2696,12 +2712,13 @@ class AcordoItem
             $iNumeroAditamento = db_utils::fieldsMemory($rsItem, 0)->numero_aditamento;
         }
 
-        $sCampos = "coalesce(sum(case when ac26_acordoposicaotipo <> " . AcordoPosicao::TIPO_REEQUILIBRIO . " then ac20_quantidade else 0 end ), 0) as quantidade,";
+        $sCampos = "coalesce(sum(ac20_quantidade), 0) as quantidade,";
         $sCampos .= "coalesce(sum(ac20_valortotal),0) as valortotal,";
-        $sCampos .= "coalesce(sum(case when ac26_acordoposicaotipo <> " . AcordoPosicao::TIPO_REEQUILIBRIO . " and ac26_numero >= {$iNumeroAditamento} then ac20_quantidade else 0 end),0) as quantidadetotalrenovacao,";
+        $sCampos .= "coalesce(sum(case when ac26_numero >= {$iNumeroAditamento} then ac20_quantidade else 0 end),0) as quantidadetotalrenovacao,";
         $sCampos .= "coalesce(sum(case when ac26_numero >= {$iNumeroAditamento} then ac20_valortotal else 0 end),0) as valortotalrenovacao";
-        $sWhere = "ac16_sequencial = {$this->getPosicao()->getAcordo()} and ac20_ordem = {$this->getOrdem()}";
-        $sSqlItens = $oDaoAcordoitem->sql_query_transparencia($sCampos, null, $sWhere);
+        $sWhere = "ac16_sequencial = {$this->getPosicao()->getAcordo()} and ac20_ordem = {$this->getOrdem()} and ac20_valortotal <> 0 group by ac20_sequencial";
+        $sOrdem = "ac20_sequencial desc limit 1";
+        $sSqlItens = $oDaoAcordoitem->sql_query_transparencia($sCampos, $sOrdem, $sWhere);
         $rsItem = $oDaoAcordoitem->sql_record($sSqlItens);
 
         if ($oDaoAcordoitem->numrows > 0) {

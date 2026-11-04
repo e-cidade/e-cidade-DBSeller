@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -132,38 +132,38 @@ if(isset($pesquisar)){
 		           						<!-- PROFISSIONAL -->
 						        		<tr>
 								          	<td nowrap title="<?=@$Tsd03_i_codigo?>" >
-							        			<? db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,1);",$db_opcao); ?>
+							        			<?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true,1);",$db_opcao); ?>
 						          			</td>
 							          		<td valing="top" align="top">
-							          			<?
+							          			<?php
 								           			db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'hidden',$db_opcao,"");
 									          		db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false,1);' onFocus=\"nextfield='rh70_estrutural'\"");
 								           		?>
 							          		</td>
 							          		<td colspan="2">
-						          				<? db_input('z01_nome',49,$Iz01_nome,true,'text',3,''); ?>
+						          				<?php db_input('z01_nome',49,$Iz01_nome,true,'text',3,''); ?>
 						          			</td>
 				            				</tr>
 			                     					<!-- CBO -->
 				             				<tr>
 						              			<td nowrap title="<?=@$Tsd04_i_cbo?>">
-				              						<? db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,1);",$db_opcao); ?>
+				              						<?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true,1);",$db_opcao); ?>
 					          				</td>
 						          			<td>
-							            			<?
+							            			<?php
 								            			db_input('sd27_i_codigo',10,$Isd27_i_codigo,true,'hidden',$db_opcao,"");
 								            			db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
 								            			db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false,1);' onFocus=\"nextfield='sd23_d_consulta'\"");
 							            			?>
 						          			</td>
 						          			<td colspan="2">
-					             					<? db_input('rh70_descr',49,$Irh70_descr,true,'text',3,''); ?>
+					             					<?php db_input('rh70_descr',49,$Irh70_descr,true,'text',3,''); ?>
 						          			</td>
                         </tr>
                         <tr>
                            <td><b>Situação</b></td>
                            <td>
-                               <?
+                               <?php
                                  $situacao= array('0'=>'Todos','1'=>'Cancelado','2'=>'Faltou','3'=>'Outros');
                                  db_select('s114_i_situacao',$situacao,true,$db_opcao,"");
                                ?>
@@ -171,8 +171,8 @@ if(isset($pesquisar)){
                         </tr>
           							<tr>
   				          		   <td><b>Período</b></td>
-                           <td><? db_inputdata("sd23_d_consulta","","","",true,'text',"","","","","none","","","") ?></td>
-                           <td><? db_inputdata("sd23_d_consulta2","","","",true,'text',"","","","","none","","","") ?></td>
+                           <td><?php db_inputdata("sd23_d_consulta","","","",true,'text',"","","","","none","","","") ?></td>
+                           <td><?php db_inputdata("sd23_d_consulta2","","","",true,'text',"","","","","none","","","") ?></td>
                       	</tr>
 					          		</table>
 						    	  </fieldset>

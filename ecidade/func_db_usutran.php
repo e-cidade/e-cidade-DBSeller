@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cldb_usuarios->rotulo->label("nome");
               <?=$Lid_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("id_usuario",5,$Iid_usuario,true,"text",4,"","chave_id_usuario");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_usuarios->rotulo->label("nome");
               <?=$Lnome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("nome",20,$Inome,true,"text",4,"","chave_nome");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_usuarios->rotulo->label("nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "db_usuarios.*";
@@ -114,14 +114,14 @@ $cldb_usuarios->rotulo->label("nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_id_usuario.focus();
 document.form2.chave_id_usuario.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

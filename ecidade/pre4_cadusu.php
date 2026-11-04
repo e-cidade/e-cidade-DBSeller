@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
-        <?
+        <?php
       if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
 
 	     $sql = "SELECT id_usuario as código,nome,login,CASE WHEN usuarioativo = '1' THEN 'Ativo'::text ELSE 'Inativo'::text END as \"Usuário Ativo\"
@@ -86,7 +86,7 @@ input {
           <table width="452" border="0" cellspacing="0" cellpadding="0">
             <tr>
 	      <td height="25" nowrap><strong>
-              <?
+              <?php
 	        db_ancora('Login',"js_cgmlogin();",'1');
 	      ?>
               </strong></td>
@@ -114,7 +114,7 @@ input {
             </tr>
             <tr>
               <td height="25" nowrap><strong>Usu&aacute;rio Ativo:</strong></td>
-              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <? echo (!isset($HTTP_POST_VARS["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
+              <td height="25" nowrap><input checked name="usuarioativo" type="checkbox" id="usuarioativo2" value="1" <?php echo (!isset($HTTP_POST_VARS["usuarioativo"])?(@$usuarioativo=="1"?"checked":""):"checked") ?>></td>
             </tr>
             <tr>
               <td height="25" nowrap>&nbsp;</td>
@@ -130,7 +130,7 @@ input {
 	  </script>
           <iframe name="pesqemail" src="pre4_email.php" width="0" height="0" style="visibility:hidden"></iframe>
         </form>
-        <?
+        <?php
 		}
 		?>
       </center>
@@ -156,12 +156,12 @@ function js_preenchecgm(cgm,nomecgm,email,cgccpf){
   }
 }
 </script>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('frame','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -171,7 +171,7 @@ $func_iframe->titulo='Pesquisa';
 $func_iframe->iniciarVisivel = false;
 $func_iframe->mostrar();
 ?>
-<?
+<?php
 $func_iframe = new janela('frame1','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

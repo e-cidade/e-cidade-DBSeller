@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("nomeinst");
        <?=@$Le29_anousu?>
     </td>
     <td> 
-<?
+<?php
 $e29_anousu = db_getsession('DB_anousu');
 db_input('e29_anousu',4,$Ie29_anousu,true,'text',3,"")
 ?>
@@ -46,15 +46,15 @@ db_input('e29_anousu',4,$Ie29_anousu,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Te29_instit?>">
-       <?
+       <?php
        db_ancora(@$Le29_instit,"js_pesquisae29_instit(true);",1);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('e29_instit',2,$Ie29_instit,true,'text',3," onchange='js_pesquisae29_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        <?=@$Le60_codemp?>
     </td>
     <td> 
-<?
+<?php
 db_input('e29_codemp',15,$Ie29_codemp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_empparamnum.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

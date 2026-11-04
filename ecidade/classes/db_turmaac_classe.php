@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,6 +56,7 @@ class cl_turmaac {
    var $ed268_i_ativqtd = 0;
    var $ed268_c_aee = null;
    var $ed268_programamaiseducacao = null;
+   var $ed268_is_bilingue = null;
    // cria propriedade com as variaveis do arquivo
    var $campos = "
                  ed268_i_codigo = int8 = Código
@@ -74,13 +75,13 @@ class cl_turmaac {
                  ed268_programamaiseducacao = int4 = Programa mais Educação
                  ";
    //funcao construtor da classe
-   function cl_turmaac() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmaac");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -89,7 +90,7 @@ class cl_turmaac {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed268_i_codigo = ($this->ed268_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_i_codigo"]:$this->ed268_i_codigo);
        $this->ed268_i_codigoinep = ($this->ed268_i_codigoinep == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_i_codigoinep"]:$this->ed268_i_codigoinep);
@@ -104,12 +105,13 @@ class cl_turmaac {
        $this->ed268_i_tipoatend = ($this->ed268_i_tipoatend == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_i_tipoatend"]:$this->ed268_i_tipoatend);
        $this->ed268_i_ativqtd = ($this->ed268_i_ativqtd == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_i_ativqtd"]:$this->ed268_i_ativqtd);
        $this->ed268_c_aee = ($this->ed268_c_aee == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_c_aee"]:$this->ed268_c_aee);
+       $this->ed268_is_bilingue = ($this->ed268_is_bilingue == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_is_bilingue"]:$this->ed268_is_bilingue);
      }else{
        $this->ed268_i_codigo = ($this->ed268_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed268_i_codigo"]:$this->ed268_i_codigo);
      }
    }
    // funcao para inclusao
-   function incluir ($ed268_i_codigo){
+   public function incluir ($ed268_i_codigo){
       $this->atualizacampos();
      if($this->ed268_i_codigoinep == null ){
        $this->ed268_i_codigoinep = "null";
@@ -189,6 +191,9 @@ class cl_turmaac {
      if($this->ed268_programamaiseducacao == null ){
        $this->ed268_programamaiseducacao = "null";
      }
+    if($this->ed268_is_bilingue == null ){
+        $this->ed268_is_bilingue = 'f';
+    }
      if($ed268_i_codigo == "" || $ed268_i_codigo == null ){
        $result = db_query("select nextval('turma_ed57_i_codigo_seq')");
        if($result==false){
@@ -236,6 +241,7 @@ class cl_turmaac {
                                       ,ed268_i_ativqtd
                                       ,ed268_c_aee
                                       ,ed268_programamaiseducacao
+                                      ,ed268_is_bilingue
                        )
                 values (
                                 $this->ed268_i_codigo
@@ -252,7 +258,9 @@ class cl_turmaac {
                                ,$this->ed268_i_ativqtd
                                ,'$this->ed268_c_aee'
                                ,$this->ed268_programamaiseducacao
+                               ,'$this->ed268_is_bilingue'
                       )";
+
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
@@ -303,7 +311,7 @@ class cl_turmaac {
      return true;
    }
    // funcao para alteracao
-   function alterar ($ed268_i_codigo=null) {
+   public function alterar ($ed268_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update turmaac set ";
      $virgula = "";
@@ -447,6 +455,9 @@ class cl_turmaac {
        $sql  .= $virgula." ed268_programamaiseducacao = $this->ed268_programamaiseducacao ";
        $virgula = ",";
      }
+    if($this->ed268_programamaiseducacao != null) {
+           $sql  .= $virgula." ed268_is_bilingue = '$this->ed268_is_bilingue' ";
+       }
      $sql .= " where ";
      if($ed268_i_codigo!=null){
        $sql .= " ed268_i_codigo = $this->ed268_i_codigo";
@@ -523,7 +534,7 @@ class cl_turmaac {
      }
    }
    // funcao para exclusao
-   function excluir ($ed268_i_codigo=null,$dbwhere=null) {
+   public function excluir ($ed268_i_codigo=null,$dbwhere=null) {
 
       if ($dbwhere==null || $dbwhere=="") {
 
@@ -601,7 +612,7 @@ class cl_turmaac {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -624,10 +635,10 @@ class cl_turmaac {
      return $result;
    }
    // funcao do sql
- function sql_query ( $ed268_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+ public function sql_query ( $ed268_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -654,7 +665,7 @@ class cl_turmaac {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,10 +675,10 @@ class cl_turmaac {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $ed268_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $ed268_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -688,7 +699,7 @@ class cl_turmaac {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -702,7 +713,7 @@ class cl_turmaac {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -733,7 +744,7 @@ class cl_turmaac {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

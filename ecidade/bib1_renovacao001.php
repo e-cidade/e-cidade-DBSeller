@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -52,11 +52,11 @@ $result             = db_query($sql);;
 $linhas             = pg_num_rows($result);
 
 if ($linhas != 0) {
-	
+
   db_fieldsmemory($result,0);
   $sSqlBibParametros = $clbib_parametros->sql_query("", "bi26_leitorbarra", "", " bi26_biblioteca = $bi17_codigo");
   $result1           = $clbib_parametros->sql_record($sSqlBibParametros);
-  
+
   if ($clbib_parametros->numrows > 0) {
     db_fieldsmemory($result1,0);
   } else {
@@ -65,12 +65,12 @@ if ($linhas != 0) {
 }
 
 if (isset($submitrenovar)) {
-	
+
   db_inicio_transacao();
   //fecha emprestimo anterior
   $array_devolve = explode("|",$renovaemprestimo);
   for ($x = 0; $x < count($array_devolve); $x++) {
-  	 
+
     $array_x = explode(";",$array_devolve[$x]);
     $cldevolucaoacervo->bi21_emprestimoacervo = $array_x[0];
     $cldevolucaoacervo->bi21_entrega          = date("Y-m-d",db_getsession("DB_datausu"));
@@ -80,7 +80,7 @@ if (isset($submitrenovar)) {
       $cldevolucaoacervo->erro_msg;
     }
   }
-  
+
   //grava novo emprestimo
   $clemprestimo->bi18_retirada  = $bi18_retirada_ano."-".$bi18_retirada_mes."-".$bi18_retirada_dia;
   $clemprestimo->bi18_devolucao = $bi18_devolucao_ano."-".$bi18_devolucao_mes."-".$bi18_devolucao_dia;
@@ -88,14 +88,14 @@ if (isset($submitrenovar)) {
   $clemprestimo->bi18_usuario   = db_getsession("DB_id_usuario");
   $clemprestimo->incluir(null);
   $bi19_emprestimo = $clemprestimo->bi18_codigo;
-  
+
   //grava novo emprestimoacervo
   $array_emprestimo = explode("|", $renovaemprestimo);
-  
+
   for ($i = 0; $i < count($array_emprestimo); $i++) {
-  	
+
     $cod_exemplar = explode(";",$array_emprestimo[$i]);
-    
+
     $clemprestimoacervo->emite           = "false";
     $clemprestimoacervo->bi19_emprestimo = $bi19_emprestimo;
     $clemprestimoacervo->bi19_exemplar   = $cod_exemplar[1];
@@ -104,7 +104,7 @@ if (isset($submitrenovar)) {
       $clemprestimoacervo->erro_msg;
     }
   }
-  
+
   db_fim_transacao();
   ?>
   <script>
@@ -112,7 +112,7 @@ if (isset($submitrenovar)) {
    parent.db_iframe_renovacao.hide();
    parent.location.href = "bib1_devolucao001.php?bi18_carteira=<?=$leitor?>&ov02_nome=<?=$nome?>";
   </script>
-  <?
+  <?php
   exit;
 }
 ?>
@@ -132,20 +132,20 @@ if (isset($submitrenovar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Renovação de Empréstimo</b></legend>
-   <?
+   <?php
    $cod_emprest = explode("|",trim($renovaemprestimo));
    $cod_exemp   = "";
    $sep_exemp   = "";
    $codacervos  = '';
    for ($x = 0; $x < count($cod_emprest); $x++) {
-   	
+
      $linha       = explode(";",$cod_emprest[$x]);
-     $cod_exemp  .= $sep_exemp.$linha[0];    
+     $cod_exemp  .= $sep_exemp.$linha[0];
      $codacervos .= $sep_exemp.$linha[3];
      $sep_exemp   = ",";
-         
+
    }
-   
+
    $campos  = " ov02_nome as nome, ";
    $campos .= " bi23_codigo, ";
    $campos .= " bi23_codbarras, ";
@@ -154,51 +154,51 @@ if (isset($submitrenovar)) {
    $campos .= " bi18_devolucao, ";
    $campos .= " bi07_tempo as tempo, ";
    $campos .= " bi18_carteira as leitor ";
-   
-   $sSqlDevolucaoAcervo = "select $campos 
+
+   $sSqlDevolucaoAcervo = "select $campos
                              from emprestimoacervo
                                   inner join emprestimo       on bi18_codigo               = bi19_emprestimo
                                   inner join carteira         on bi16_codigo               = bi18_carteira
                                   inner join leitorcategoria  on bi07_codigo               = bi16_leitorcategoria
                                   inner join leitor           on bi10_codigo               = bi16_leitor
-                                  left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo                   
+                                  left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo
                                   left  join cidadao          on cidadao.ov02_sequencial   = leitorcidadao.bi28_cidadao_sequencial
                                                              and cidadao.ov02_seq          = leitorcidadao.bi28_cidadao_seq
                                   inner join exemplar         on bi23_codigo               = bi19_exemplar
                                   inner join acervo           on bi06_seq                  = bi23_acervo
                             where bi19_codigo in ($cod_exemp)
-                              and bi07_biblioteca = $bi17_codigo 
+                              and bi07_biblioteca = $bi17_codigo
                               and not exists(select *
                                                from reserva
                                               where bi14_acervo in ($codacervos) AND bi14_retirada is null
                                             )";
    $result = $cldevolucaoacervo->sql_record($sSqlDevolucaoAcervo);
    echo pg_errormessage();
-   
-   $sSqlReserva = $clreserva->sql_query("", 
-                                        "bi14_acervo,bi06_titulo", 
-                                        "", 
+
+   $sSqlReserva = $clreserva->sql_query("",
+                                        "bi14_acervo,bi06_titulo",
+                                        "",
                                         " bi14_acervo in ($codacervos) AND bi14_retirada is null"
                                        );
    $result1 = $clreserva->sql_record($sSqlReserva);
    if ($clreserva->numrows > 0) {
-   
+
      $codacervos = "";
      $cod        = "";
      $sep        = "";
      $sep1       = "";
      $sTitulos   = '';
      for ($x = 0; $x < $clreserva->numrows; $x++) {
-   
+
        db_fieldsmemory($result1,$x);
        $sTitulos   .= $sep1.'"'.$bi06_titulo.'"';
        $sep1        = ', ';
-       
+
      }
-   
+
      die("<center><b>O(s) exemplar(es) $sTitulos possui(em) reserva. Não é possível efetuar a renovação.</b></center>");
-   
-   } 
+
+   }
    ?>
    <table border="0" width="90%" align="center">
     <tr>
@@ -213,7 +213,7 @@ if (isset($submitrenovar)) {
          <td><b>Emprestado</b></td>
          <td><b>Devolver até</b></td>
         </tr>
-        <?
+        <?php
         for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
 
           db_fieldsmemory($result, $x);
@@ -226,11 +226,11 @@ if (isset($submitrenovar)) {
            <td><?=db_formatar($bi18_retirada,'d')?></td>
            <td><?=db_formatar($bi18_devolucao,'d')?></td>
           </tr>
-          <?
+          <?php
         }
         ?>
        </table>
-       <?
+       <?php
        $bi18_retirada_dia  = date("d",db_getsession("DB_datausu"));
        $bi18_retirada_mes  = date("m",db_getsession("DB_datausu"));
        $bi18_retirada_ano  = date("Y",db_getsession("DB_datausu"));
@@ -246,7 +246,7 @@ if (isset($submitrenovar)) {
           <b>Tempo de Empréstimo (dias):</b>
          </td>
          <td>
-          <?db_input('tempo', 10, "", true, 'text', 3, "")?>
+          <?php db_input('tempo', 10, "", true, 'text', 3, "")?>
          </td>
         </tr>
         <tr>
@@ -254,7 +254,7 @@ if (isset($submitrenovar)) {
           <b>Data de Retirada:</b>
          </td>
          <td>
-          <?db_inputdata('bi18_retirada', @$bi18_retirada_dia, @$bi18_retirada_mes, @$bi18_retirada_ano, true, 'text', 3, "")?>
+          <?php db_inputdata('bi18_retirada', @$bi18_retirada_dia, @$bi18_retirada_mes, @$bi18_retirada_ano, true, 'text', 3, "")?>
          </td>
         </tr>
         <tr>
@@ -262,15 +262,15 @@ if (isset($submitrenovar)) {
           <b>Data de Devolução:</b>
          </td>
          <td>
-          <?db_inputdata('bi18_devolucao', 
-                         @$bi18_devolucao_dia, 
-                         @$bi18_devolucao_mes, 
+          <?php db_inputdata('bi18_devolucao',
+                         @$bi18_devolucao_dia,
+                         @$bi18_devolucao_mes,
                          @$bi18_devolucao_ano,
                          true,
                          'text',
                          1,
                          " onchange=\"js_diasemana();\"","",""," parent.js_diasemana();")?>
-          <?db_input('diasemana', 10, "", true, 'text', 3, "")?>
+          <?php db_input('diasemana', 10, "", true, 'text', 3, "")?>
          </td>
         </tr>
        </table>
@@ -292,52 +292,52 @@ if (isset($submitrenovar)) {
 <script>
 js_tabulacaoforms("form1", "bi18_devolucao", true, 1, "bi18_devolucao", true);
 function somadata(dias) {
-  
+
   var dia = "<?=date('d')?>";
   var mes = "<?=date('m')?>";
   var ano = "<?=date('Y')?>";
   var i   = dias;
-  
+
   for(i = 0; i < dias; i++) {
-    
+
     if (mes == "01" || mes == "03" || mes == "05" || mes == "07" || mes == "08" || mes == "10" || mes == "12") {
-      
+
       if (mes == "12" && dia == "31") {
-        
+
         mes = "01";
         ano++;
         dia = "00";
       }
-      
+
       if (dia == "31" && mes != "12") {
-        
+
         mes++;
         dia = "00";
       }
     }
-    
+
     if (mes == "04" || mes == "06" || mes == "09" || mes == "11") {
-      
-      if (dia == "30") { 
-        
+
+      if (dia == "30") {
+
         dia =  "00";
         mes++;
       }
     }
-    
+
     if (mes == "02") {
-      
+
       if (ano % 4 == 0) {
-        
+
         if (dia == "29") {
-          
+
           dia = "00";
           mes++;
         }
       } else {
-        
+
         if (dia == "28") {
-          
+
           dia = "00";
           mes++;
         }
@@ -355,10 +355,10 @@ function somadata(dias) {
 	  dia = "03";
   }
   if (dia == 4) {
-	  dia = "04"; 
+	  dia = "04";
   }
-  if (dia == 5) { 
-	  dia = "05"; 
+  if (dia == 5) {
+	  dia = "05";
   }
   if (dia == 6) {
 	  dia = "06";
@@ -403,20 +403,20 @@ function somadata(dias) {
 }
 
 function js_diasemana() {
-  
+
   if (document.form1.bi18_devolucao_ano.value != "") {
-    
+
     d1 = document.form1.bi18_devolucao_dia.value;
     m1 = document.form1.bi18_devolucao_mes.value;
     a1 = document.form1.bi18_devolucao_ano.value;
     if (d1 == "" || m1 == "" || a1 == "") {
       alert("Preencha todos os campos da data!");
     } else {
-      
+
       dev = parseInt(a1+m1+d1);
       ret = parseInt(document.form1.bi18_retirada_ano.value+document.form1.bi18_retirada_mes.value+document.form1.bi18_retirada_dia.value);
       if (dev < ret) {
-        
+
         alert("Data de Devolução deve ser maior ou igual a Data de Retirada!");
         document.form1.diasemana.value          = "";
         document.form1.bi18_devolucao.value     = "";
@@ -433,9 +433,9 @@ function js_diasemana() {
 }
 
 function js_valida() {
-  
+
   if (document.form1.bi18_devolucao.value == "") {
-    
+
     alert("Informe a data de devolução!");
     document.form1.bi18_devolucao.focus();
     return false;

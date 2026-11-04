@@ -26,11 +26,11 @@ $climportacaoplanoconta->rotulo->label("c96_data");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lc96_sequencial?></label></td>
-          <td><? db_input("c96_sequencial",10,$Ic96_sequencial,true,"text",4,"","chave_c96_sequencial"); ?></td>
+          <td><?php db_input("c96_sequencial",10,$Ic96_sequencial,true,"text",4,"","chave_c96_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lc96_data?></label></td>
-          <td><? db_input("c96_data",10,$Ic96_data,true,"text",4,"","chave_c96_data");?></td>
+          <td><?php db_input("c96_data",10,$Ic96_data,true,"text",4,"","chave_c96_data");?></td>
         </tr>
       </table>
     </fieldset>
@@ -38,7 +38,7 @@ $climportacaoplanoconta->rotulo->label("c96_data");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_importacaoplanoconta.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 
         $aCampos = array(
@@ -83,12 +83,12 @@ $climportacaoplanoconta->rotulo->label("c96_data");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($oGet->pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

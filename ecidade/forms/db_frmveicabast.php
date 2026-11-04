@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ db_app::load("prototype.js");
 db_app::load("strings.js");
 
 ?>
-<?
+<?php
   db_app::load("prototype.js, scripts.js, strings.js, prototype.maskedinput.js");
   db_app::load("estilos.css");
 ?>
@@ -136,12 +136,12 @@ db_app::load("strings.js");
 
             <tr>
               <td nowrap title="<?=@$Tve70_veiculoscomb?>">
-                 <?
+                 <?php
                  db_ancora(@$Lve70_veiculoscomb,"js_pesquisave70_veiculoscomb(true);",$db_opcao);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                 db_input('ve70_veiculoscomb',10,$Ive70_veiculoscomb,true,'text',$db_opcao,
                          " onchange='js_pesquisave70_veiculoscomb(false);'");
                 db_input('ve26_descr',40,$Ive26_descr,true,'text',3,'')
@@ -153,7 +153,7 @@ db_app::load("strings.js");
                  <?=@$Lve70_dtabast?>
               </td>
               <td>
-                <?
+                <?php
                   db_inputdata('ve70_dtabast',@$ve70_dtabast_dia,@$ve70_dtabast_mes,@$ve70_dtabast_ano,true,'text',$db_opcao,
                     "onchange='js_pesquisa_ultimamedida();'","","","none","","", "js_pesquisa_ultimamedida();")
                 ?>
@@ -166,7 +166,7 @@ db_app::load("strings.js");
                  <strong>Hora do abastecimento:</strong>
               </td>
               <td>
-                <?
+                <?php
                   db_input('ve70_hora', 10, $Ive70_hora, true, 'text', $db_opcao, "onchange='js_verifica_hora(this.value,this.name)';onkeypress='return js_mask(event, \"0-9|:|0-9\"); '");
                 ?>
 
@@ -181,15 +181,15 @@ db_app::load("strings.js");
                  <?=@$Lve70_litros?>
               </td>
               <td>
-          <?
-          db_input('ve70_litros',10,$Ive70_litros,true,'text',$db_opcao,"")
+          <?php
+          db_input('ve70_litros',10,$Ive70_litros,true,'text',$db_opcao,"onchange='js_calculaValorAbastecido();'")
           ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="Última Medida"><b>Última Medida:</b></td>
               <td>
-                <?
+                <?php
                 $dData = '';
                 if (!empty($ve70_dtabast)) {
                     $data = new DBDate($ve70_dtabast);
@@ -216,7 +216,7 @@ db_app::load("strings.js");
                 <?=@$Lve70_medida?>
               </td>
               <td>
-                <?
+                <?php
                   db_input('ve70_medida',10,$Ive70_medida,true,'text',$db_opcao,"");
                   db_input("ve07_sigla", 10,0,true,"text",3);
                 ?>
@@ -225,7 +225,7 @@ db_app::load("strings.js");
             <tr id='tr_proximamedida' style="display:none">
               <td nowrap title="Próxima Medida"><b>Próxima Medida:</b></td>
               <td>
-                <?
+                <?php
                 	if (isset($ve70_veiculos)) {
 	                  $Queryproximamedida = $clveiculos->sql_record($clveiculos->sql_query_proximamedida(@$ve70_veiculos,@$dData,$sHora));
 	                  if($clveiculos->numrows > 0){
@@ -242,7 +242,7 @@ db_app::load("strings.js");
               </td>
             </tr>
 
-            <?
+            <?php
               if (isset($ve50_postoproprio) && $ve50_postoproprio == 3){
                 db_input('posto_proprio',1,"",true,'hidden',3,'');
             ?>
@@ -250,13 +250,13 @@ db_app::load("strings.js");
               <td nowrap title="Tipo de Posto"><b>Tipo de Posto:</b></td>
               <td>
                   <select name="sel_proprio" onChange="js_mostravalores(this,<?=$db_opcao?>);" style="width: 100px;">
-                    <option value="0" <? if (isset($sel_proprio) && $sel_proprio == 0){ echo "SELECTED"; } ?>>Nenhum</option>
-                    <option value="1" <? if (isset($sel_proprio) && $sel_proprio == 1){ echo "SELECTED"; } ?>>Interno</option>
-                    <option value="2" <? if (isset($sel_proprio) && $sel_proprio == 2){ echo "SELECTED"; } ?>>Externo</option>
+                    <option value="0" <?php if (isset($sel_proprio) && $sel_proprio == 0){ echo "SELECTED"; } ?>>Nenhum</option>
+                    <option value="1" <?php if (isset($sel_proprio) && $sel_proprio == 1){ echo "SELECTED"; } ?>>Interno</option>
+                    <option value="2" <?php if (isset($sel_proprio) && $sel_proprio == 2){ echo "SELECTED"; } ?>>Externo</option>
                   </select>
               </td>
            </tr>
-        <?
+        <?php
         }
 
         $mostrar = true;
@@ -273,20 +273,20 @@ db_app::load("strings.js");
       ?>
         <tr>
           <td nowrap title="<?=@$Tve71_veiccadposto?>">
-             <?
+             <?php
              db_ancora(@$Lve71_veiccadposto,"js_pesquisave71_veiccadposto(true);",$db_opcao);
              ?>
           </td>
           <td>
-      <?
+      <?php
       db_input('ve71_veiccadposto',10,$Ive71_veiccadposto,true,'text',$db_opcao," onchange='js_pesquisave71_veiccadposto(false);'")
       ?>
-             <?
+             <?php
       db_input('posto',40,"",true,'text',3,'');
              ?>
           </td>
         </tr>
-      <?
+      <?php
         }
 
         if (isset($ve50_postoproprio) && $ve50_postoproprio == 0 ||
@@ -295,22 +295,22 @@ db_app::load("strings.js");
           if (isset($sel_proprio) && $sel_proprio == 2 || !isset($sel_proprio)){
       ?>
         <tr>
+          <td nowrap title="<?=@$Tve70_vlrun?>">
+              <?=@$Lve70_vlrun?>
+          </td>
+          <td>
+              <?php
+              db_input('ve70_vlrun',10,$Ive70_vlrun,true,'text',$db_opcao,"onchange='js_calculaValorAbastecido();'")
+              ?>
+          </td>
+        </tr>
+        <tr>
           <td nowrap title="<?=@$Tve70_valor?>">
              <?=@$Lve70_valor?>
           </td>
           <td>
-      <?
-      db_input('ve70_valor',10,$Ive70_valor,true,'text',$db_opcao,"")
-      ?>
-          </td>
-        </tr>
-        <tr>
-          <td nowrap title="<?=@$Tve70_vlrun?>">
-             <?=@$Lve70_vlrun?>
-          </td>
-          <td>
-      <?
-      db_input('ve70_vlrun',10,$Ive70_vlrun,true,'text',$db_opcao,"")
+      <?php
+      db_input('ve70_valor',10,$Ive70_valor,true,'text',3,"")
       ?>
           </td>
         </tr>
@@ -319,22 +319,22 @@ db_app::load("strings.js");
              <?=@$Lve71_nota?>
           </td>
           <td>
-      		<?
+      		<?php
       		db_input('ve71_nota',10,$Ive71_nota,true,'text',$db_opcao,"onBlur='js_ve71_nota(false);'");
       		?>
           </td>
         </tr>
         <tr id="empnota">
           <td   nowrap title="<?=$Tve72_empnota?>">
-          <?db_ancora(@$Lve72_empnota,"js_pesquisa_empnota(true);",$db_opcao);?></td>
+          <?php db_ancora(@$Lve72_empnota,"js_pesquisa_empnota(true);",$db_opcao);?></td>
           <td >
-          <?
+          <?php
 
           db_input("e69_codnota",10,$Ive72_empnota,true,"text",$db_opcao,"onchange='js_pesquisa_empnota(false);'");
           db_input("empnota",10,$Ive72_empnota,true,"text",3,"onchange='js_pesquisa_empnota(false);'");
           ?></td>
         </tr>
-        <?
+        <?php
           }
         }
       ?>
@@ -561,7 +561,7 @@ function js_mostraveiculoscomb1(chave1,chave2,chave3){
   db_iframe_veiculoscomb.hide();
 }
 function js_pesquisave71_veiccadposto(mostra){
-<?
+<?php
   $param_tipo = $ve50_postoproprio;
   if (isset($sel_proprio) && $sel_proprio > 0){
     if ($sel_proprio == 2){
@@ -648,7 +648,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veicabast.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -835,4 +835,9 @@ $('ve70_hora').onblur = function() {
 
 
 js_formataHora();
+
+function js_calculaValorAbastecido() {
+    let valorAbastecido = $('ve70_litros').value * $('ve70_vlrun').value;
+    $('ve70_valor').value = valorAbastecido.toFixed(2);
+}
 </script>

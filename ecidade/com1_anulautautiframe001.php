@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -330,7 +330,7 @@ if (isset($e54_autori) && trim($e54_autori)!="") {
       <tr>
         <td align="left" valign="top" bgcolor="#CCCCCC">
           <center>
-            <?
+            <?php
             db_input('valores',8,0,true,'hidden',3);
             $locationh = false;
             $simnaod = "  ";
@@ -479,7 +479,7 @@ if (isset($e54_autori) && trim($e54_autori)!="") {
       }
     }
   </script>
-<?
+<?php
 if (isset($incluir)) {
   if ($sqlerro==false && $locationh==true) {
     if (strlen($erro_msg) > 0){

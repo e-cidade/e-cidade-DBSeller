@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhpescargo->rotulo->label("rh20_cargo");
               <?=$Lrh20_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh20_seqpes",6,$Irh20_seqpes,true,"text",4,"","chave_rh20_seqpes");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhpescargo->rotulo->label("rh20_cargo");
               <?=$Lrh20_cargo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh20_cargo",5,$Irh20_cargo,true,"text",4,"","chave_rh20_cargo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhpescargo->rotulo->label("rh20_cargo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpescargo.php")==true){
@@ -118,12 +118,12 @@ $clrhpescargo->rotulo->label("rh20_cargo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

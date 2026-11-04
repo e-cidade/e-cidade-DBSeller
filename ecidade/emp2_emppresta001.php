@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,7 +117,7 @@ function js_limpa(){
 
           <tr> 
             <td  align="left" nowrap title="<?=$Te60_numemp?>">
-                 <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
+                 <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
             </td>
 	    
             <td  nowrap> 
@@ -126,9 +126,9 @@ function js_limpa(){
             </td>
           </tr> 
   <tr> 
-    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <? db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <?php db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("e60_numemp",13,$Ie60_numemp,true,"text",4); 
          //  db_input("z01_nome1",40,"",true,"text",3);  
         ?></td>
@@ -149,7 +149,7 @@ function js_limpa(){
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisae60_codemp(mostra){

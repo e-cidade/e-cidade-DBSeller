@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -263,7 +263,7 @@ if ($clvac_calendario->numrows > 0) {
 
 ?>
 <fieldset style='width: 75%;'> <legend><b><?=$oCalendario->vc05_c_descr?></b></legend>
-   <?
+   <?php
    if ($clvac_vacinadose->numrows == 0) {
 
      echo"<br><br><center><b>Calendario($iCalendario) sem Vacinas!</b></center>";
@@ -273,7 +273,7 @@ if ($clvac_calendario->numrows > 0) {
    ?>
    <table border='1px' bgcolor="#cccccc" style="" cellspacing="0px">
      <tr class='cabec' >
-       <?
+       <?php
        echo"<td align=\"center\" class='cabec' > ".$oCalendario->vc05_i_idadeini." ano(s) até ".
             $oCalendario->vc05_i_idadefim." anos </td>";
        for ($iX = 0; $iX < $iNumDoses; $iX++) {
@@ -284,7 +284,7 @@ if ($clvac_calendario->numrows > 0) {
        }
        ?>
      </tr>
-       <?
+       <?php
        for ($iY = 0; $iY < $iNumVacinas; $iY++) {
 
          $oVacina = db_utils::fieldsmemory($rsVacina,$iY);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -67,7 +67,7 @@ if (isset($calc)&&$calc!="false"){
               <strong>Tipo:</strong>
               </td>
             <td width="">
-              <?
+              <?php
           		  $x   = array("2"=>"Fixo","3"=>"Variavel");
           		  db_select("tipo",$x,true,1,"onchange='js_mostradata();'");
           		  db_input("calc",10,"",true,"hidden");
@@ -79,14 +79,14 @@ if (isset($calc)&&$calc!="false"){
               <strong>Ano:</strong>
               </td>
               <td >
-              <?
+              <?php
                 $result = $clcissqn->sql_record($clcissqn->sql_query_file(null,"distinct q04_anousu,q04_anousu", " q04_anousu desc"));
                 db_selectrecord("anousu", $result,true,0);
               ?>
               </td>
             </tr>
           </table>
-          <? if ( !isset($tipo) || ( isset($tipo) && $tipo==2 ) ) { ?>
+          <?php if ( !isset($tipo) || ( isset($tipo) && $tipo==2 ) ) { ?>
             <fieldset>
               <legend><strong>Dados Para Únicas: </strong></legend>
               <table>
@@ -97,26 +97,26 @@ if (isset($calc)&&$calc!="false"){
                   </td>
                 </tr>
                 <tr>
-                  <td><?db_inputdata("data1","","","",true,"text",1);?>
+                  <td><?php db_inputdata("data1","","","",true,"text",1);?>
                   </td>
-                  <td><?db_input("perc1",10,"",true,"text",1);?>
-                  </td>
-                </tr>
-                <tr>
-                  <td><?db_inputdata("data2","","","",true,"text",1);?>
-                  </td>
-                  <td><?db_input("perc2",10,"",true,"text",1);?>
+                  <td><?php db_input("perc1",10,"",true,"text",1);?>
                   </td>
                 </tr>
                 <tr>
-                  <td><?db_inputdata("data3","","","",true,"text",1);?>
+                  <td><?php db_inputdata("data2","","","",true,"text",1);?>
                   </td>
-                  <td><?db_input("perc3",10,"",true,"text",1);?>
+                  <td><?php db_input("perc2",10,"",true,"text",1);?>
+                  </td>
+                </tr>
+                <tr>
+                  <td><?php db_inputdata("data3","","","",true,"text",1);?>
+                  </td>
+                  <td><?php db_input("perc3",10,"",true,"text",1);?>
                   </td>
                 </tr>
               </table>
             </fieldset>
-            <?
+            <?php
       	 	  }
       	 	?>
         </fieldset>
@@ -125,7 +125,7 @@ if (isset($calc)&&$calc!="false"){
       </form>
 
 </center>
-    <?
+    <?php
 		  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 		?>
   </body>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clareas->rotulo->label();
        <?=@$Lh05_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('h05_codigo',5,$Ih05_codigo,true,'text',($db_opcao == 1 ? 1 : 3),"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h05_codigo',5,$Ih05_codigo,true,'text',($db_opcao == 1 ? 1 : 3),"")
        <?=@$Lh05_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('h05_descr',25,$Ih05_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_areas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

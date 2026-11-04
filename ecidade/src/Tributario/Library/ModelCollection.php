@@ -10,7 +10,7 @@ abstract class ModelCollection extends Collection
 
     public function __construct($resource)
     {
-        parent::__construct();        
+        parent::__construct();
 
         $this->size = pg_num_rows($resource);
         $this->resource = $resource;
@@ -18,6 +18,10 @@ abstract class ModelCollection extends Collection
 
     protected function fetchRow($resource, $index)
     {
+        if (pg_num_rows($resource) == 0) {
+            return false;
+        }
+
         return pg_fetch_object($resource, $index);
     }
 }

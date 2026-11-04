@@ -157,7 +157,7 @@ if (isset($listaimpressao)) {
                   <label for="modeloselect">Modelo:</label>
                 </td>
                 <td>
-                  <?
+                  <?php
                     if (isset($modeloselect)) {
                       $on_change = "onChange='document.form1.alunospossib.length=0;document.form1.alunos.length=0;'";
                     } else {
@@ -442,7 +442,7 @@ if (isset($listaimpressao)) {
                   </select>
                 </td>
               </tr>
-              <?
+              <?php
                 db_input('listaimpressao', 10, null, true, 'hidden', 1);
                 if ($chek == 1) {
                   echo("<script>$('processar').removeAttribute('disabled');</script>");
@@ -456,7 +456,7 @@ if (isset($listaimpressao)) {
           <input name="limpar" id="limpar" type="button" value="Limpar" onclick="js_limpar();">
         </form>
     </div>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
               db_getsession("DB_anousu"), db_getsession("DB_instit")
              );

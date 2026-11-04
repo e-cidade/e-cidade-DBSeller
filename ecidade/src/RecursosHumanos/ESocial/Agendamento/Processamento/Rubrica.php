@@ -27,16 +27,17 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Agendamento\Processamento;
 
-use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
-use ECidade\RecursosHumanos\ESocial\DadosESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
+use CgmRepository;
+use RubricaRepository;
 use Exception;
-use Instituicao;
 
 // phpcs:disable
 require_once(modification('libs/db_stdlib.php'));
 // phpcs:enable
+
 /**
  * Class Rubrica
  * @package ECidade\RecursosHumanos\ESocial\Agendamento\Processamento
@@ -63,19 +64,26 @@ class Rubrica extends ProcessamentoAbstract implements ProcessamentoInterface
      */
     public function processar()
     {
-        $bAlteracao = false;
-        $oDadosESocial = new DadosESocial();
 
-        $oDadosESocial->setInstituicao(new Instituicao(db_getsession('DB_instit')));
-        $oDadosESocial->setCgmEmpregador($this->cgm);
-        $oDadosESocial->setListaRubricas($this->listaRubricas);
-        $oDadosPreenchimento = $oDadosESocial->getPorTipo(Tipo::RUBRICA);
+        if (empty($this->listaRubricas)) {
+            $this->listaRubricas = RubricaRepository::buscarRubricasAtivasPorInstituicao();
+        }
+
+        if (sizeof($this->listaRubricas) == 0) {
+            throw new \BusinessException("Nenhuma rubrica informada.");
+        }
+
+        $bAlteracao = false;
         $oFormatter = FormatterFactory::get(Tipo::S1010);
-        $aDadosPreenchimentoEmpregador = $oFormatter->formatar($oDadosPreenchimento);
+        $oFormatter->setEmpregador(CgmRepository::getByCodigo($this->cgm));
+
+        $aDadosPreenchimentoEmpregador = $oFormatter->formatar($this->listaRubricas);
+
         $validaMd5 = true;
         if ($this->envioForcado) {
             $validaMd5 = false;
         }
+
         foreach ($aDadosPreenchimentoEmpregador as $iIndice => $oDados) {
             $oEvento = new Evento(TIPO::S1010, $this->cgm, $oDados->referencia, $oDados);
             $oEvento->iContador = $iIndice;

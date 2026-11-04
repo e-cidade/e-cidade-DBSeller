@@ -56,7 +56,7 @@ $clrotulo->label("e81_codmov");
 			<tr>
 				<td><?php db_ancora("<b>Nota de Liquidação</b>","js_pesquisaOrdem(true);",1) ?></td>
 				<td style="font-weight: bold;">
-					<? db_input('e50_codord', 23, $Ie50_codord, 
+					<?php db_input('e50_codord', 23, $Ie50_codord, 
 					            true, 'text', $db_opcao, " onchange='js_pesquisaOrdem(false);' ") ?>
 				</td>
 			</tr>

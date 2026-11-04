@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -224,10 +224,10 @@ function js_mostraveiccadcomb1(chave1,chave2){
       <tr>
          <td nowrap align="right" title="Periodo"><b>Periodo:</b></td>
          <td> 
-         <?
+         <?php
             db_inputdata("ve70_dataini",@$ve70_dataini_dia,@$ve70_dataini_mes,@$ve70_dataini_ano,true,"text",4)
          ?>
-         <b>&nbsp;a&nbsp;</b><?
+         <b>&nbsp;a&nbsp;</b><?php
             db_inputdata("ve70_datafin",@$ve70_datafin_dia,@$ve70_datafin_mes,@$ve70_datafin_ano,true,"text",4)
          ?>
          </td>
@@ -250,7 +250,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       	</td>
       </tr>
       <tr>
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  $aux->cabecalho      = "<strong>Veiculos</strong>";
                  $aux->codigo         = "ve01_codigo";  //chave de retorno da func
                  $aux->descr          = "ve01_placa";   //chave de retorno
@@ -273,45 +273,45 @@ function js_mostraveiccadcomb1(chave1,chave2){
        </td>
       </tr>  
       <tr>
-         <td nowrap align="right" title="<?=@$Tve01_veiccadtipo?>"><? db_ancora(@$Lve01_veiccadtipo,"js_pesquisave01_veiccadtipo(true);",4) ?></td>
+         <td nowrap align="right" title="<?=@$Tve01_veiccadtipo?>"><?php db_ancora(@$Lve01_veiccadtipo,"js_pesquisave01_veiccadtipo(true);",4) ?></td>
          <td>
-         <? 
+         <?php 
             db_input("ve01_veiccadtipo",10,@$Ive01_veiccadtipo,true,"text",4,"onChange='js_pesquisave01_veiccadtipo(false);'");
          ?>
-         <?
+         <?php
             db_input("ve20_descr",40,"",true,"text",3);
          ?>
          </td>
       </tr>
       <tr>
-         <td nowrap align="right" title="<?=@$Tve01_veiccadmarca?>"><? db_ancora(@$Lve01_veiccadmarca,"js_pesquisave01_veiccadmarca(true);",4) ?></td>
+         <td nowrap align="right" title="<?=@$Tve01_veiccadmarca?>"><?php db_ancora(@$Lve01_veiccadmarca,"js_pesquisave01_veiccadmarca(true);",4) ?></td>
          <td>
-         <? 
+         <?php 
             db_input("ve01_veiccadmarca",10,@$Ive01_veiccadmarca,true,"text",4,"onChange='js_pesquisave01_veiccadmarca(false);'");
          ?>
-         <?
+         <?php
             db_input("ve21_descr",40,"",true,"text",3);
          ?>
          </td>
       </tr>
       <tr>
-         <td nowrap align="right" title="<?=@$Tve01_veiccadmodelo?>"><? db_ancora(@$Lve01_veiccadmodelo,"js_pesquisave01_veiccadmodelo(true);",4) ?></td>
+         <td nowrap align="right" title="<?=@$Tve01_veiccadmodelo?>"><?php db_ancora(@$Lve01_veiccadmodelo,"js_pesquisave01_veiccadmodelo(true);",4) ?></td>
          <td>
-         <? 
+         <?php 
             db_input("ve01_veiccadmodelo",10,@$Ive01_veiccadmodelo,true,"text",4,"onChange='js_pesquisave01_veiccadmodelo(false);'");
          ?>
-         <?
+         <?php
             db_input("ve22_descr",40,"",true,"text",3);
          ?>
          </td>
       </tr>
       <tr>
-         <td nowrap align="right" title="<?=@$Tve06_veiccadcomb?>"><? db_ancora(@$Lve06_veiccadcomb,"js_pesquisave06_veiccadcomb(true);",4) ?></td>
+         <td nowrap align="right" title="<?=@$Tve06_veiccadcomb?>"><?php db_ancora(@$Lve06_veiccadcomb,"js_pesquisave06_veiccadcomb(true);",4) ?></td>
          <td>
-         <? 
+         <?php 
             db_input("ve06_veiccadcomb",10,@$Ive06_veiccadcomb,true,"text",4,"onChange='js_pesquisave06_veiccadcomb(false);'");
          ?>
-         <?
+         <?php
             db_input("ve26_descr",40,"",true,"text",3);
          ?>
          </td>
@@ -319,7 +319,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       <tr>
          <td nowrap align="right" title="Quebrar página"><b>Quebrar página por:</b></td>
          <td>
-         <?
+         <?php
             $x = array("0"=>"Nenhum","V"=>"Veiculo","T"=>"Tipo","M"=>"Marca","O"=>"Modelo","C"=>"Central de Veículo");
             db_select("quebrar_por",$x,true,4);
          ?>
@@ -328,7 +328,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       <tr>
          <td nowrap align="right" title="Situação"><b>Situação do Abastecimento:</b></td>
          <td>
-         <?
+         <?php
             $y = array("0"=>"Todos os abastecimentos","1"=>"Somente Ativos", "2"=>"Somente Anulados");
             db_select("situacao",$y,true,4);
          ?>
@@ -337,7 +337,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       <tr>
          <td nowrap align="right" title="Quebrar página"><b>Listar:</b></td>
          <td>
-         <?
+         <?php
             $z = array("0"=>"Todos os abastecimentos","1"=>"Somente totalizadores");
             db_select("listar_por",$z,true,4);
          ?>
@@ -350,7 +350,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

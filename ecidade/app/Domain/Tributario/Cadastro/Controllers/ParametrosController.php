@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domain\Tributario\Cadastro\Models\ParametrosNumeroCadastral;
 use App\Domain\Core\Base\Http\Response\DBJsonResponse;
-use Symfony\Component\Validator\Constraints\Length;
 
 class ParametrosController extends Controller
 {

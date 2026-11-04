@@ -81,6 +81,7 @@ abstract class DocumentoAndamentoService
     }
 
     abstract public function gerar($arquivo, $uuid);
+
     abstract public function montarObjetoTela();
 
     /**
@@ -180,6 +181,13 @@ abstract class DocumentoAndamentoService
         $processoDocumento->setAndamento($andamentoInterno->getId());
         $processoDocumento->setUsuario(db_getsession('DB_id_usuario'));
         $processoDocumento->setOrdem(2);
+        if (isset($arquivo->lancContabilID)) {
+            $processoDocumento->setC70codlan($arquivo->lancContabilID);
+        }
+        if (isset($arquivo->nomeUpload)) {
+            $nomeSemAspas = str_replace("'", "", $arquivo->nomeUpload);
+            $processoDocumento->setNomeUpload($nomeSemAspas);
+        }
 
         $processoDocumentoRepository = new ProcessoDocumentoRepository();
         $processoDocumento = $processoDocumentoRepository->persist($processoDocumento);
@@ -191,9 +199,9 @@ abstract class DocumentoAndamentoService
      * @return void
      * @throws Exception
      */
-    protected function criarFluxoAtividadesExecucao($processo)
+    protected function criarFluxoAtividadesExecucao(Processo $processo)
     {
-        $atividadesTipoProcesso = $this->tipoProcesso->atividades()->get();
+        $atividadesTipoProcesso =  TipoProcesso::find($processo->getCodigo())->atividades()->get();
         $processoAtividadeExecucaoRepository = new ProcessoAtividadeExecucaoRepository();
         foreach ($atividadesTipoProcesso as $atividadeTipoProcesso) {
             $processoAtividadeExecucao = new ProcessoAtividadeExecucao();
@@ -468,8 +476,8 @@ abstract class DocumentoAndamentoService
     }
 
     /**
-     * @throws Exception
      * @return ProcessoAtividadeExecucao[]
+     * @throws Exception
      */
     public function buscarAtividadesExecutadas()
     {

@@ -58,7 +58,7 @@ $oDaoTurno->rotulo->label("ed15_c_nome");
                 <label for="chave_ed15_i_codigo"><?=$Led15_i_codigo?></label>
               </td>
               <td>
-                <?db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
+                <?php db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
               </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@ $oDaoTurno->rotulo->label("ed15_c_nome");
                 <label for="chave_ed15_c_nome"><?=$Led15_c_nome?></label>
               </td>
               <td>
-                <?db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
+                <?php db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
               </td>
             </tr>
           </table>
@@ -78,7 +78,7 @@ $oDaoTurno->rotulo->label("ed15_c_nome");
   </div>
 
   <div class="container">
-    <?
+    <?php
       $iEscola = db_getsession("DB_coddepto");
       $aWhere  = array();
 

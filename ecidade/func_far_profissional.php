@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lfa25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("fa25_i_codigo",10,$Ifa25_i_codigo,true,"text",4,"","chave_fa25_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",20,@$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcgm->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_profissional.php")==true){
@@ -124,12 +124,12 @@ $clcgm->rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

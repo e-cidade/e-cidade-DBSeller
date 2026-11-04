@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -178,7 +178,7 @@ if(isset($oPost->botao)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load('scripts.js');
   db_app::load('estilos.css');
 ?>
@@ -194,7 +194,7 @@ if(isset($oPost->botao)) {
     <?=$Lq28_sequencia?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q28_sequencia', 10, $Iq28_sequencia, true, 'text', 3);
     ?>
     </td>
@@ -205,7 +205,7 @@ if(isset($oPost->botao)) {
     <?=$Lq28_quantini?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q28_quantini', 10, $Iq28_quantini, true, 'text', 1);
     ?>
     </td>
@@ -216,7 +216,7 @@ if(isset($oPost->botao)) {
     <?=$Lq28_quantfim?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q28_quantfim', 10, $Iq28_quantfim, true, 'text', 1);
     ?>
     </td>
@@ -227,7 +227,7 @@ if(isset($oPost->botao)) {
     <?=$Lq28_pontuacao ?>
     </td>
     <td>
-    <?
+    <?php
       db_input('q28_pontuacao', 10, $Iq28_pontuacao, true, 'text', 1);
     ?>
     </td>
@@ -235,7 +235,7 @@ if(isset($oPost->botao)) {
   
   </table>
   
-  <?
+  <?php
     if($db_opcao == 1) {
       echo "<input type='submit' name='botao' id='botao' value='Incluir'>";
     } else {
@@ -251,7 +251,7 @@ if(isset($oPost->botao)) {
   
 </fieldset>
 
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>
@@ -281,7 +281,7 @@ function js_novoRegistro() {
 </script>
 </body>
 </html>
-<?
+<?php
 if(isset($oPost->botao)) {
   db_msgbox($clAreapont->erro_msg);
   

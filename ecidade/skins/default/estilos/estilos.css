@@ -199,12 +199,21 @@ input[type=submit][disabled]:not([rel="DBInputData"]) {
 }
 
 /**
+ * Componente Select Multiplo
+ */
+.DBSelectMultiplo option:checked {
+    background-color: #a1a0a0;
+}
+
+/**
  * DB Âncora
  */
 .DBAncora {
     color: blue;
     text-decoration: underline;
     font-weight: bold;
+
+  cursor: pointer;
 }
 
 legend {
@@ -216,14 +225,18 @@ legend {
  * Estilos padrões do sistema
  */
 body.body-default {
-    margin: 0;
-    margin-top: 30px;
-    background: #e1dede;
+  margin: 0;
+  margin-top: 0px !important;
+  background: #e1dede;
 }
 
 body.abas {
-    margin-top: 20px;
+  margin-top: 0px !important;
 }
+body.no-menu, body.body-default {
+  margin-top: 0px !important;
+}
+  
 
 table.table-default {
     width: 100%;
@@ -1272,3 +1285,6 @@ input[type="button"].button--block {
     text-shadow: 0 1px 0 #fff;
     margin: auto 0;
  }
+a {
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   if(isset($contribs)){
     $d02_contri=$contribs;
     $j01_matric="";
@@ -115,7 +115,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',8,$Ij01_matric,true,'text',3);
   db_input('z01_nome',50,$Iz01_nome,true,'text',3);
 ?>
@@ -123,11 +123,11 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
         </tr>
     <tr>
       <td colspan="2" align="left" valign="top" >
-      <?
+      <?php
        db_input("d40_codigo",6,$Id40_codigo,true,'hidden',$db_opcao)
       ?>
       <br>
-       <?
+       <?php
        $legenda="Lista  $d40_codigo";
        include(modification("con3_conscontri008.php"));
        ?> 
@@ -136,7 +136,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
     <tr>
       <tr>
         <td colspan="2"   height="25" align="center">
-  <?
+  <?php
   $consultar="Consultar";
   db_input("consultar",6,0,true,'button',$db_opcao,"onClick='js_consultar();'");
   $voltar="Voltar";
@@ -150,7 +150,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
     </td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

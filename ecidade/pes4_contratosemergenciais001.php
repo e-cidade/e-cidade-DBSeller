@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,12 +58,12 @@ $clrotulo->label("z01_nome");
               <a id="procurarMatricula"><?php echo $Lrh01_regist; ?></a>
             </td>
             <td>
-              <?
+              <?php
                 db_input('rh01_regist', 10, '', true, 'text', 1, "");
               ?>
             </td>
             <td title="<?php echo $Tz01_nome?>">
-              <?
+              <?php
                 db_input('z01_nome', 50, '', true, 'text', 3, "");
               ?>
             </td>

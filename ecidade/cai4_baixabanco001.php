@@ -395,7 +395,7 @@ if (isset ($processar)) {
             
             
             // Regra do Bradesco para ignorar registro que não seja pagamento
-            if($k15_codbco == "237") {
+            if($k15_codbco == "237" && $k15_codage == "639" ) {
 
                $ocorrenciapagamento = "06";
                if(substr($arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
@@ -694,7 +694,7 @@ if ($situacao == 2) {
         for ($i = $priregistro; $i <= $totalproc - ($priregistro == 0 ? 1 : 0); $i++) {
             
             // Regra do Bradesco para ignorar registro que não seja pagamento
-           if($k15_codbco == "237") {
+           if($k15_codbco == "237" && $k15_codage == "639") {
    
                $ocorrenciapagamento = "06";
                if(substr($arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
@@ -786,7 +786,7 @@ if ($situacao == 2) {
             }
             
             // Regra do Bradesco para ignorar registro que não seja pagamento
-            if($k15_codbco == "237") {
+            if($k15_codbco == "237" && $k15_codage == "639" ) {
 
                 $ocorrenciapagamento = "06";
                 if(substr($arq_array[$i], 108, 2) !== $ocorrenciapagamento) {
@@ -1163,7 +1163,7 @@ if ($situacao == 2) {
                 $sSqlBuscaArrebanco .= "   and arreinstit.k00_instit = $iInstitSessao                                ";
                 $rsArrebanco = db_query($sSqlBuscaArrebanco);
 
-                if (pg_numrows($rsArrebanco) != 0) {
+                if (pg_num_rows($rsArrebanco) != 0) {
                     db_fieldsmemory($rsArrebanco, 0);
                 }
 
@@ -1229,7 +1229,7 @@ if ($situacao == 2) {
                 $sqlbanco .= "   and arreinstit.k00_instit = $iInstitSessao ";
                 $resultbanco = db_query($sqlbanco) or die($sqlbanco);
 
-                if (pg_numrows($resultbanco) == 0) {
+                if (pg_num_rows($resultbanco) == 0) {
 
                     $oParametrosMsg = new stdClass();
                     $oParametrosMsg->iNumBanco = substr($arq_array[$i], 6, 13);
@@ -1254,7 +1254,7 @@ if ($situacao == 2) {
                     $sqlbanco .= "   and arreinstit.k00_instit = $iInstitSessao ";
                     $resultbanco = db_query($sqlbanco) or die($sqlbanco);
 
-                    if (pg_numrows($resultbanco) == 0) {
+                    if (pg_num_rows($resultbanco) == 0) {
 
                         $oParametrosMsg = new stdClass();
                         $oParametrosMsg->iNumBanco = $numbco;
@@ -1286,7 +1286,7 @@ if ($situacao == 2) {
                     $sSqlArrebanco .= "   and arreinstit.k00_instit = $iInstitSessao                                ";
                     $rsArrebanco = db_query($sSqlArrebanco);
 
-                    if (pg_numrows($rsArrebanco) == 0) {
+                    if (pg_num_rows($rsArrebanco) == 0) {
 
                         $oParametrosMsg = new stdClass();
                         $oParametrosMsg->iNumBanco = $numbco;
@@ -1399,8 +1399,8 @@ if ($situacao == 2) {
                     $sql_recibo = "select k00_numpre from recibopaga where k00_numnov = $numpre_procura limit 1";
                     $result_recibo = db_query($sql_recibo);
 
-                    if (pg_numrows($result_recibo) > 0) {
-                        $numpre_procura = pg_result($result_recibo, 0);
+                    if (pg_num_rows($result_recibo) > 0) {
+                        $numpre_procura = pg_fetch_result($result_recibo, 0);
                     }
 
                     $sql_arretipo = " (select k00_tipo from arrecad    where k00_numpre = $numpre_procura limit 1) ";
@@ -1416,8 +1416,8 @@ if ($situacao == 2) {
                     $sql_arretipo .= " (select k00_tipo from recibo     where k00_numpre = $numpre_procura limit 1) ";
                     $result_arretipo = db_query($sql_arretipo);
 
-                    if (pg_numrows($result_arretipo) > 0) {
-                        $k00_tipo = pg_result($result_arretipo, 0);
+                    if (pg_num_rows($result_arretipo) > 0) {
+                        $k00_tipo = pg_fetch_result($result_arretipo, 0);
                     } else {
 
                         /**
@@ -1442,7 +1442,7 @@ if ($situacao == 2) {
                         $iAnoPagamento = $oData->getAno();
                         $rsTxParItbi = db_query($oDaoParITBI->sql_query($iAnoPagamento, 'it24_taxabancaria'));
 
-                        if (pg_numrows($rsTxParItbi) > 0) {
+                        if (pg_num_rows($rsTxParItbi) > 0) {
                             $k00_txban = db_utils::fieldsMemory($rsTxParItbi, 0)->it24_taxabancaria;
                         } else {
                             $k00_txban = 0;
@@ -1453,8 +1453,8 @@ if ($situacao == 2) {
                         $sql_arretipo = "select k00_txban from arretipo where k00_tipo = $k00_tipo and k00_instit = $iInstitSessao";
                         $result_arretipo = db_query($sql_arretipo);
 
-                        if (pg_numrows($result_arretipo) > 0) {
-                            $k00_txban = pg_result($result_arretipo, 0);
+                        if (pg_num_rows($result_arretipo) > 0) {
+                            $k00_txban = pg_fetch_result($result_arretipo, 0);
                         } else {
                             $k00_txban = 0;
                         }
@@ -1636,7 +1636,7 @@ if ($situacao == 2) {
 
         $total = 0;
 
-        for ($x = 0; $x < pg_numrows($result); $x++) {
+        for ($x = 0; $x < pg_num_rows($result); $x++) {
 
             db_fieldsmemory($result, $x, true);
             echo "Data: $dtarq - Valor: " . db_formatar($sum, "f") . "<br/>";

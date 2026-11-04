@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: transito
 //CLASSE DA ENTIDADE condutores
-class cl_condutores { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $tr11_id = 0; 
-   var $tr11_idveiculo = 0; 
-   var $tr11_dtnasc_dia = null; 
-   var $tr11_dtnasc_mes = null; 
-   var $tr11_dtnasc_ano = null; 
-   var $tr11_dtnasc = null; 
-   var $tr11_idhabilitacao = 0; 
-   var $tr11_sexo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_condutores {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $tr11_id = 0;
+   var $tr11_idveiculo = 0;
+   var $tr11_dtnasc_dia = null;
+   var $tr11_dtnasc_mes = null;
+   var $tr11_dtnasc_ano = null;
+   var $tr11_dtnasc = null;
+   var $tr11_idhabilitacao = 0;
+   var $tr11_sexo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 tr11_id = int8 = código do condutor 
-                 tr11_idveiculo = int8 = Veiculo 
-                 tr11_dtnasc = date = Data de Nascimento 
-                 tr11_idhabilitacao = int8 = Tipo de Habilitição 
-                 tr11_sexo = varchar(15) = Sexo 
+                 tr11_id = int8 = código do condutor
+                 tr11_idveiculo = int8 = Veiculo
+                 tr11_dtnasc = date = Data de Nascimento
+                 tr11_idhabilitacao = int8 = Tipo de Habilitição
+                 tr11_sexo = varchar(15) = Sexo
                  ";
-   //funcao construtor da classe 
-   function cl_condutores() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("condutores"); 
+     $this->rotulo = new rotulo("condutores");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_condutores {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tr11_id = ($this->tr11_id == ""?@$GLOBALS["HTTP_POST_VARS"]["tr11_id"]:$this->tr11_id);
        $this->tr11_idveiculo = ($this->tr11_idveiculo == ""?@$GLOBALS["HTTP_POST_VARS"]["tr11_idveiculo"]:$this->tr11_idveiculo);
@@ -93,9 +93,9 @@ class cl_condutores {
      }
    }
    // funcao para inclusao
-   function incluir ($tr11_id){ 
+   public function incluir ($tr11_id){
       $this->atualizacampos();
-     if($this->tr11_idveiculo == null ){ 
+     if($this->tr11_idveiculo == null ){
        $this->erro_sql = " Campo Veiculo nao Informado.";
        $this->erro_campo = "tr11_idveiculo";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_condutores {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tr11_dtnasc == null ){ 
+     if($this->tr11_dtnasc == null ){
        $this->erro_sql = " Campo Data de Nascimento nao Informado.";
        $this->erro_campo = "tr11_dtnasc_dia";
        $this->erro_banco = "";
@@ -113,7 +113,7 @@ class cl_condutores {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tr11_idhabilitacao == null ){ 
+     if($this->tr11_idhabilitacao == null ){
        $this->erro_sql = " Campo Tipo de Habilitição nao Informado.";
        $this->erro_campo = "tr11_idhabilitacao";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_condutores {
        $this->erro_status = "0";
        return false;
      }
-     if($this->tr11_sexo == null ){ 
+     if($this->tr11_sexo == null ){
        $this->erro_sql = " Campo Sexo nao Informado.";
        $this->erro_campo = "tr11_sexo";
        $this->erro_banco = "";
@@ -132,16 +132,16 @@ class cl_condutores {
        return false;
      }
      if($tr11_id == "" || $tr11_id == null ){
-       $result = db_query("select nextval('condutores_tr11_id_seq')"); 
+       $result = db_query("select nextval('condutores_tr11_id_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: condutores_tr11_id_seq do campo: tr11_id"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: condutores_tr11_id_seq do campo: tr11_id";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->tr11_id = pg_result($result,0,0); 
+       $this->tr11_id = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from condutores_tr11_id_seq");
        if(($result != false) && (pg_result($result,0,0) < $tr11_id)){
@@ -152,10 +152,10 @@ class cl_condutores {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->tr11_id = $tr11_id; 
+         $this->tr11_id = $tr11_id;
        }
      }
-     if(($this->tr11_id == null) || ($this->tr11_id == "") ){ 
+     if(($this->tr11_id == null) || ($this->tr11_id == "") ){
        $this->erro_sql = " Campo tr11_id nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,21 +164,21 @@ class cl_condutores {
        return false;
      }
      $sql = "insert into condutores(
-                                       tr11_id 
-                                      ,tr11_idveiculo 
-                                      ,tr11_dtnasc 
-                                      ,tr11_idhabilitacao 
-                                      ,tr11_sexo 
+                                       tr11_id
+                                      ,tr11_idveiculo
+                                      ,tr11_dtnasc
+                                      ,tr11_idhabilitacao
+                                      ,tr11_sexo
                        )
                 values (
-                                $this->tr11_id 
-                               ,$this->tr11_idveiculo 
-                               ,".($this->tr11_dtnasc == "null" || $this->tr11_dtnasc == ""?"null":"'".$this->tr11_dtnasc."'")." 
-                               ,$this->tr11_idhabilitacao 
-                               ,'$this->tr11_sexo' 
+                                $this->tr11_id
+                               ,$this->tr11_idveiculo
+                               ,".($this->tr11_dtnasc == "null" || $this->tr11_dtnasc == ""?"null":"'".$this->tr11_dtnasc."'")."
+                               ,$this->tr11_idhabilitacao
+                               ,'$this->tr11_sexo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Condutores dos veiculos ($this->tr11_id) nao Incluído. Inclusao Abortada.";
@@ -214,16 +214,16 @@ class cl_condutores {
        $resac = db_query("insert into db_acount values($acount,878,5655,'','".AddSlashes(pg_result($resaco,0,'tr11_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($tr11_id=null) { 
+   public function alterar ($tr11_id=null) {
       $this->atualizacampos();
      $sql = " update condutores set ";
      $virgula = "";
-     if(trim($this->tr11_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_id"])){ 
+     if(trim($this->tr11_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_id"])){
        $sql  .= $virgula." tr11_id = $this->tr11_id ";
        $virgula = ",";
-       if(trim($this->tr11_id) == null ){ 
+       if(trim($this->tr11_id) == null ){
          $this->erro_sql = " Campo código do condutor nao Informado.";
          $this->erro_campo = "tr11_id";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_condutores {
          return false;
        }
      }
-     if(trim($this->tr11_idveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_idveiculo"])){ 
+     if(trim($this->tr11_idveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_idveiculo"])){
        $sql  .= $virgula." tr11_idveiculo = $this->tr11_idveiculo ";
        $virgula = ",";
-       if(trim($this->tr11_idveiculo) == null ){ 
+       if(trim($this->tr11_idveiculo) == null ){
          $this->erro_sql = " Campo Veiculo nao Informado.";
          $this->erro_campo = "tr11_idveiculo";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_condutores {
          return false;
        }
      }
-     if(trim($this->tr11_dtnasc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"] !="") ){ 
+     if(trim($this->tr11_dtnasc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"] !="") ){
        $sql  .= $virgula." tr11_dtnasc = '$this->tr11_dtnasc' ";
        $virgula = ",";
-       if(trim($this->tr11_dtnasc) == null ){ 
+       if(trim($this->tr11_dtnasc) == null ){
          $this->erro_sql = " Campo Data de Nascimento nao Informado.";
          $this->erro_campo = "tr11_dtnasc_dia";
          $this->erro_banco = "";
@@ -258,11 +258,11 @@ class cl_condutores {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["tr11_dtnasc_dia"])){
          $sql  .= $virgula." tr11_dtnasc = null ";
          $virgula = ",";
-         if(trim($this->tr11_dtnasc) == null ){ 
+         if(trim($this->tr11_dtnasc) == null ){
            $this->erro_sql = " Campo Data de Nascimento nao Informado.";
            $this->erro_campo = "tr11_dtnasc_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_condutores {
          }
        }
      }
-     if(trim($this->tr11_idhabilitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_idhabilitacao"])){ 
+     if(trim($this->tr11_idhabilitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_idhabilitacao"])){
        $sql  .= $virgula." tr11_idhabilitacao = $this->tr11_idhabilitacao ";
        $virgula = ",";
-       if(trim($this->tr11_idhabilitacao) == null ){ 
+       if(trim($this->tr11_idhabilitacao) == null ){
          $this->erro_sql = " Campo Tipo de Habilitição nao Informado.";
          $this->erro_campo = "tr11_idhabilitacao";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_condutores {
          return false;
        }
      }
-     if(trim($this->tr11_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_sexo"])){ 
+     if(trim($this->tr11_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr11_sexo"])){
        $sql  .= $virgula." tr11_sexo = '$this->tr11_sexo' ";
        $virgula = ",";
-       if(trim($this->tr11_sexo) == null ){ 
+       if(trim($this->tr11_sexo) == null ){
          $this->erro_sql = " Campo Sexo nao Informado.";
          $this->erro_campo = "tr11_sexo";
          $this->erro_banco = "";
@@ -323,7 +323,7 @@ class cl_condutores {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Condutores dos veiculos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->tr11_id;
@@ -351,14 +351,14 @@ class cl_condutores {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($tr11_id=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($tr11_id=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($tr11_id));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -388,7 +388,7 @@ class cl_condutores {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Condutores dos veiculos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$tr11_id;
@@ -416,11 +416,11 @@ class cl_condutores {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -442,10 +442,10 @@ class cl_condutores {
       }
      return $result;
    }
-   function sql_query ( $tr11_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $tr11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,15 +464,15 @@ class cl_condutores {
      $sql2 = "";
      if($dbwhere==""){
        if($tr11_id!=null ){
-         $sql2 .= " where condutores.tr11_id = $tr11_id "; 
-       } 
+         $sql2 .= " where condutores.tr11_id = $tr11_id ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,10 +481,10 @@ class cl_condutores {
      }
      return $sql;
   }
-   function sql_query_file ( $tr11_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $tr11_id=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -497,15 +497,15 @@ class cl_condutores {
      $sql2 = "";
      if($dbwhere==""){
        if($tr11_id!=null ){
-         $sql2 .= " where condutores.tr11_id = $tr11_id "; 
-       } 
+         $sql2 .= " where condutores.tr11_id = $tr11_id ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

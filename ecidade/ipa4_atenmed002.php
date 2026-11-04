@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,7 +91,7 @@ input {
           </td>
       </tr>
     </table><Br>
-<?
+<?php
 
 ?>  <center><iframe src="ipa4_atenmed003.php?codage=<?=$codage?>&dataini=<?=$dataini?>" width="700" height="300"></iframe>
    <input name="atualiza" type="button" onclick="location.href='ipa4_atenmed002.php?<?=$HTTP_SERVER_VARS['QUERY_STRING']?>'" value="Atualiza Agenda">
@@ -99,12 +99,12 @@ input {
 	</td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($DB_MSG)) {
   db_msgbox($DB_MSG);
 }

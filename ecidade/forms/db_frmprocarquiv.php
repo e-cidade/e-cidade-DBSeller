@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once('model/protocolo/ProcessoProtocoloNumeracao.model.php');
@@ -53,7 +53,7 @@ if (!$lMesmoUsuario) {
 					<tr>
         		<td><b>Processo:</b></td>
         		<td>
-        			<?php 
+        			<?php
         				db_input('p58_codproc', 25, false, true, 'hidden', 3);
         				db_input('p58_numero', 25, false, true, 'text', 3);
         			?>
@@ -62,17 +62,17 @@ if (!$lMesmoUsuario) {
 					<tr>
         		<td><b>Requerente:</b></td>
         		<td>
-        			<?php 
+        			<?php
         				db_input('p58_requer', 50, false, true, 'text', 3);
         			?>
         		</td>
         	</tr>
           <tr>
             <td nowrap title="Usuário">
-              <b>Usuário:</b> 
+              <b>Usuário:</b>
             </td>
-            <td> 
-             <?
+            <td>
+             <?php
              $iUsuario = db_getsession("DB_id_usuario");
              if ($db_opcao == 2 && isset($p67_id_usuario)) {
                $iUsuario = $p67_id_usuario;
@@ -87,10 +87,10 @@ if (!$lMesmoUsuario) {
           </tr>
           <tr>
             <td nowrap title="Departamento">
-              <b>Departamento:</b> 
+              <b>Departamento:</b>
             </td>
-            <td> 
-             <?
+            <td>
+             <?php
              $iDepartamento = db_getsession("DB_coddepto");
              if ($db_opcao == 2 && isset($te)) {
                $iDepartamento = $p67_coddepto;
@@ -107,8 +107,8 @@ if (!$lMesmoUsuario) {
             <td nowrap title="<?=@$Tp67_codarquiv?>">
                <?=@$Lp67_codarquiv?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               db_input('p67_codarquiv',10,$Ip67_codarquiv,true,'text',3,"")
               ?>
             </td>
@@ -117,19 +117,19 @@ if (!$lMesmoUsuario) {
             <td nowrap title="<?=@$Tp67_dtarq?>">
                <?=@$Lp67_dtarq?>
             </td>
-            <td> 
-              <?
+            <td>
+              <?php
               if (empty($y30_data_dia)) {
-                
+
                 $p67_dtarq_dia = date("d",db_getsession("DB_datausu"));
                 $p67_dtarq_mes = date("m",db_getsession("DB_datausu"));
                 $p67_dtarq_ano = date("Y",db_getsession("DB_datausu"));
-              } 
+              }
               db_inputdata('p67_dtarq', @$p67_dtarq_dia, @$p67_dtarq_mes, @$p67_dtarq_ano, true, 'text', $db_opcaoHistorico, "");
               ?>
             </td>
           </tr>
-          <?php 
+          <?php
             if (ProcessoProtocoloNumeracao::getTipoConfiguracao() == ProcessoProtocoloNumeracao::TIPOORGAO && $db_opcao != 2) { ?>
               <tr>
                 <td>
@@ -153,9 +153,9 @@ if (!$lMesmoUsuario) {
             </tr>
         </table>
       </fieldset>
-    </td>      
+    </td>
   </tr>
-  <?php 
+  <?php
     if (ProcessoProtocoloNumeracao::getTipoConfiguracao() == ProcessoProtocoloNumeracao::TIPOORGAO && $db_opcao != 2) { ?>
       <tr id="tr_volumes">
         <td>
@@ -165,23 +165,25 @@ if (!$lMesmoUsuario) {
               <tr>
                 <td>
                   <div id="grid_volumes"></div>
-                </td>		
+                </td>
               </tr>
             </table>
           </fieldset>
         </td>
       </tr>
-  <?php 
+  <?php
     }?>
 </table>
 <br/>
+<div id="divButtons">
 <input type="hidden" id="grupo" name="grupo" value="<?=$grupo?>">
-<input name="db_opcao" type="submit" id="db_opcao" 
+<input name="db_opcao" type="submit" id="db_opcao"
        value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<input name="btnPesquisaProcessoOuvidoria" type="button" id="btnPesquisaProcessoOuvidoria" 
+<input name="btnPesquisaProcessoOuvidoria" type="button" id="btnPesquisaProcessoOuvidoria"
        value="Pesquisar" onclick="js_pesquisaProcessoOuvidoria(true);" >
-<input name="pesquisar" type="button" id="pesquisar" 
+<input name="pesquisar" type="button" id="pesquisar"
        value="Pesquisar Arquivamento" onclick="js_pesquisa();" >
+</div>
 </center>
 </form>
 <script>
@@ -256,23 +258,36 @@ if (!$lMesmoUsuario) {
             alert(retorno.message);
             return;
           }
-          
+
           retorno.volumes.map(
             volume => adicionaVolumeCollection(volume)
           );
           gridVolumes.reload();
-            
+
         }
       ).execute();
     }
-<?php 
+<?php
   }?>
+
+const url = new URLSearchParams(window.location.search);
+const referrer = url.get('referrer');
+if (referrer === "pro3_consultaprocesso002.php") {
+    const data = document.getElementById("p67_dtarq");
+    const historico = document.getElementById("p67_historico");
+    data.setAttribute("readonly", true);
+    data.style.backgroundColor = "#DEB887";
+    document.getElementById("dtjs_p67_dtarq").hidden = true;
+    historico.setAttribute("readonly", true);
+    historico.style.backgroundColor = "#DEB887";
+    document.getElementById("divButtons").hidden = true;
+}
 
 function js_pesquisaProcessoOuvidoria(lMostra) {
   var iGrupo = $('grupo').value;
   var sUrlOpenProcessoOuvidoria = '';
   var sCamposRetorno = '|p58_codproc|p58_requer';
-  
+
   if(iGrupo == 1) {
 
     sUrlOpenProcessoOuvidoria = "func_protprocessoarquiv.php?";
@@ -280,7 +295,7 @@ function js_pesquisaProcessoOuvidoria(lMostra) {
 
   } else {
     sUrlOpenProcessoOuvidoria = "func_protprocessoarquivouvidoria.php?";
-  }  
+  }
 
 	if (lMostra) {
 	  sUrlOpenProcessoOuvidoria = sUrlOpenProcessoOuvidoria+"funcao_js=parent.js_preenchePesquisa" + sCamposRetorno;

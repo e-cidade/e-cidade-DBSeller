@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -92,11 +92,11 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
    if(isset($disciplinas) && $disciplinas!=""){
     $where[] = " ed12_i_codigo not in ($disciplinas)";
    }
-   
+
    if (db_getsession("DB_itemmenu_acessado") != 8123) {
        $where[] = " ed12_matrizcurricular is true";
    }
-   
+
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_disciplina.php")==true){
@@ -108,14 +108,14 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
     if(isset($chave_ed12_i_codigo) && (trim($chave_ed12_i_codigo)!="") ){
       $where[] = "ed12_i_codigo = $chave_ed12_i_codigo";
     }else if(isset($chave_ed232_c_descr) && (trim($chave_ed232_c_descr)!="") ){
-      $where[] = "ed232_c_descr like '$chave_ed232_c_descr%'";    
+      $where[] = "ed232_c_descr like '$chave_ed232_c_descr%'";
     }
     $sql = $cldisciplina->sql_query(""," DISTINCT ".$campos,"ed12_i_ensino,ed232_c_descr", implode(' and ', $where));
     db_lovrot($sql,15,"()","",$funcao_js);
    }else{
     if($pesquisa_chave!=null && $pesquisa_chave!=""){
      $sql = $cldisciplina->sql_query("","*","ed232_c_descr",$where." AND ed12_i_codigo = $pesquisa_chave");
-     
+
      $result = $cldisciplina->sql_record($sql);
      if($cldisciplina->numrows!=0){
       db_fieldsmemory($result,0);

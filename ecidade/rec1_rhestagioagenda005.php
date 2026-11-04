@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,6 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagioagenda_classe.php"));
 include(modification("classes/db_rhestagioagendadata_classe.php"));
+
 $clrhestagioagenda     = new cl_rhestagioagenda;
 $clrhestagioagendadata = new cl_rhestagioagendadata;
 
@@ -69,7 +70,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmrhestagioagenda.php"));
 	?>
     </center>
@@ -78,7 +79,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

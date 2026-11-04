@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,11 +52,11 @@ $clatividadeimpacto->rotulo->label("am03_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam03_sequencial?></label></td>
-          <td><? db_input("am03_sequencial",10,$Iam03_sequencial,true,"text",4,"","chave_am03_sequencial"); ?></td>
+          <td><?php db_input("am03_sequencial",10,$Iam03_sequencial,true,"text",4,"","chave_am03_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam03_descricao?></label></td>
-          <td><? db_input("am03_descricao",40,$Iam03_descricao,true,"text",4,"","chave_am03_descricao");?></td>
+          <td><?php db_input("am03_descricao",40,$Iam03_descricao,true,"text",4,"","chave_am03_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -112,12 +112,12 @@ $clatividadeimpacto->rotulo->label("am03_descricao");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

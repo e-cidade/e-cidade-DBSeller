@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -46,7 +46,7 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -56,8 +56,8 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 <center>
 <form name="form1" method="post" action="">
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <br><br>
     <center>
     <fieldset style="width:55%"><legend><b>Relatório de Desperdício</b></legend>
@@ -68,24 +68,24 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	       <table border="0">
 	          <tr>
 	            <td>Inicio</td>
-	            <td><?db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
+	            <td><?php db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
 	          </tr>
 	          <tr>
-	            <td>Fim</td>   
-	            <td><?db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
+	            <td>Fim</td>
+	            <td><?php db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
               </tr>
-              <tr>  
-                <td colspan="2"><input name="Processar" type="button" value="Processar" onclick="js_consulta()"></td>	      
+              <tr>
+                <td colspan="2"><input name="Processar" type="button" value="Processar" onclick="js_consulta()"></td>
               </tr>
-           </table>   
+           </table>
 	    </td>
-	  </tr>    
+	  </tr>
     </table>
     </center>
 	</fieldset>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -94,28 +94,28 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<script>  
+<script>
 function js_consulta() {
-	
+
   dat    = document.form1.dataini.value;
   inicio = dat.substr(6,4)+'-'+dat.substr(3,2)+'-'+dat.substr(0,2);
   dat    = document.form1.datafim.value;
   fim    = dat.substr(6,4)+'-'+dat.substr(3,2)+'-'+dat.substr(0,2);
-  
+
   if (inicio == ''){
     alert('Entre com a data inicial!');
   } else {
-	       
+
     if (fim == '') {
       alert('Entre com a data final!');
     } else {
-        
+
       jan = window.open('mer1_mer_relatdesperdicio002.php?inicio='+inicio+'&fim='+fim,'',
     	                'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 '
     	               );
       jan.moveTo(0,0);
-            
+
     }
-  }  
+  }
 }
 </script>

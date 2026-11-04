@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@ $clrotulo->label("z01_nome");
               <b>Código:</b>
             </td>
             <td> 
-              <?
+              <?php
               $codrec = "115";
               db_input('codrec',10,1,true,'text',3,"")
               ?>
@@ -53,14 +53,14 @@ $clrotulo->label("z01_nome");
               <b>Ano / Mês:</b>
             </td>
             <td nowrap>
-              <?
+              <?php
               if(!isset($anousu)){
                 $anousu = db_anofolha();
               }
               db_input('r66_anousu',4,$Ir66_anousu,true,'text',1,"onchange='js_controla_anomes(\"a\");'","anousu");
               ?>
               <b>/</b>
-              <?
+              <?php
               if(!isset($mesusu)){
                 $mesusu = db_mesfolha();
               }
@@ -73,7 +73,7 @@ $clrotulo->label("z01_nome");
               <b>Índice FGTS:</b>
             </td>
             <td> 
-              <?
+              <?php
               $indrecfgts = 1;
               $arr_indrecfgts = array("0"=>"Nenhum","1"=>"GFIP no prazo","2"=>"GFIP em atraso");
               db_select('indrecfgts',$arr_indrecfgts,true,1,"onchange='js_verindices(\"dtrecfgts\",this.value, false);'");
@@ -83,7 +83,7 @@ $clrotulo->label("z01_nome");
               <b>Data FGTS:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_inputdata("dtrecfgts", @$dtrecfgts_dia, @$dtrecfgts_mes, @$dtrecfgts_ano, true, 'text',1); 
               ?>
             </td>
@@ -93,7 +93,7 @@ $clrotulo->label("z01_nome");
               <b>Índice INSS:</b>
             </td>
             <td> 
-              <?
+              <?php
               $indrecinss = 1;
               $arr_indrecinss = array("0"=>"Não gera GPS","1"=>"GPS no prazo","2"=>"GPS em atraso");
               db_select('indrecinss',$arr_indrecinss,true,1,"onchange='js_verindices(\"dtrecinss\",this.value, true);'");
@@ -103,7 +103,7 @@ $clrotulo->label("z01_nome");
               <b>Data INSS:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_inputdata("dtrecinss", @$dtrecinss_dia, @$dtrecinss_mes, @$dtrecinss_ano, true, 'text',1); 
               ?>
             </td>
@@ -113,7 +113,7 @@ $clrotulo->label("z01_nome");
               <b>Atraso INSS:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('indatrasoinss',10,1,true,'text',1,"","")
               ?>
             </td>
@@ -132,7 +132,7 @@ $clrotulo->label("z01_nome");
               <b>Nome:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('z01_nome',40,$Iz01_nome,true,'text',1,"","contato")
               ?>
             </td>
@@ -140,7 +140,7 @@ $clrotulo->label("z01_nome");
               <b>Fone:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('fone',10,1,true,'text',1,"","")
               ?>
             </td>
@@ -159,7 +159,7 @@ $clrotulo->label("z01_nome");
               <b>Alteração de endereço:</b>
             </td>
             <td> 
-              <?
+              <?php
               $alteraender = "N";
               $arr_alteraender = array("S"=>"Sim","N"=>"Não");
               db_select('alteraender',$arr_alteraender,true,1,"");
@@ -169,7 +169,7 @@ $clrotulo->label("z01_nome");
               <b>Alteração de CNAE:</b>
             </td>
             <td> 
-              <?
+              <?php
               $alteracnae = "P";
               $arr_alteracnae = array("S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante");
               db_select('alteracnae',$arr_alteracnae,true,1,"");
@@ -181,7 +181,7 @@ $clrotulo->label("z01_nome");
               <b>Código de terceiros:</b>
             </td>
             <td> 
-              <?
+              <?php
               $codterceiro = "0000";
               db_input('codterceiro',10,1,true,'text',1,"","")
               ?>
@@ -190,7 +190,7 @@ $clrotulo->label("z01_nome");
               <b>Código CNAE fiscal:</b>
             </td>
             <td> 
-              <?
+              <?php
               $cnae = "8411600";
               db_input('cnae',10,1,true,'text',1,"","")
               ?>
@@ -201,7 +201,7 @@ $clrotulo->label("z01_nome");
               <b>Aliquota SAT:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('aliqsat',2,1,true,'text',1,"","")
               ?>
             </td>
@@ -209,7 +209,7 @@ $clrotulo->label("z01_nome");
               <b>Código GPS:</b>
             </td>
             <td> 
-              <?
+              <?php
               $codgps = "2402";
               db_input('codgps',10,1,true,'text',1,"","")
               ?>
@@ -224,7 +224,7 @@ $clrotulo->label("z01_nome");
       <fieldset>
         <legend><b>TABELAS DE PREVIDÊNCIA</b></legend>
         <table width="100%">
-          <?
+          <?php
 	  db_sel_cfpess(db_anofolha(), db_mesfolha(), "r11_tbprev , r11_mes13 ");
 	  $mesant = $mesusu;
 	  if($mesusu > 12){
@@ -269,7 +269,7 @@ $clrotulo->label("z01_nome");
               <b>CNPJ:</b>
             </td>
             <td>
-              <?
+              <?php
 $instit=db_getsession("DB_instit");
 $sql = "select distinct z01_numcgm,z01_cgccpf||'-'||z01_nome as z01_nome from rhlota inner join cgm on rhlota.r70_numcgm=cgm.z01_numcgm  where r70_instit=$instit;";
 $result= db_query($sql);
@@ -383,7 +383,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

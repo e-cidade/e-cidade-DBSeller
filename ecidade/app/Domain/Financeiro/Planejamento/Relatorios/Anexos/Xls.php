@@ -40,6 +40,8 @@ abstract class Xls implements XlsAnexo
      */
     protected $parser;
 
+    protected $nomeSalvar;
+
     public function __construct($driveKey, $driveGit, $findSectionsAutomatically = true)
     {
         $this->parser = new Parser();
@@ -87,9 +89,19 @@ abstract class Xls implements XlsAnexo
     public function gerar()
     {
         $this->parser->parse();
-        $this->parser->save($this->saveAs);
+        $this->parser->save($this->nomeSalvar());
 
-        return $this->saveAs;
+        return $this->nomeSalvar();
+    }
+
+    public function nomeSalvar()
+    {
+        if (!$this->nomeSalvar) {
+            $nome = str_replace('.xlsx', '_', $this->saveAs);
+            $this->nomeSalvar = sprintf('%s_%s.xlsx', $nome, time());
+        }
+
+        return $this->nomeSalvar;
     }
 
     /**
@@ -146,8 +158,8 @@ abstract class Xls implements XlsAnexo
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function gerarPdf()
+    public function gerarPdf($filePdf)
     {
-        return $this->parser->saveAsPdf($this->saveAsPdf);
+        return $this->parser->save($filePdf);
     }
 }

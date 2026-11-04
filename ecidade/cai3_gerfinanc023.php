@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ function js_imprime(){
 <input name="datafinal"   type="hidden" value="<?=$datafinal?>"  >
 
 <center>
-<?
+<?php
   $where ="";
 	if ($datainicial != "--" and $datafinal != "--"){
        
@@ -186,7 +186,7 @@ function js_imprime(){
             <?=$obs?>
           </div> 
         </td>
-        <?
+        <?php
         echo "   <td  nowrap align='center'>  ".$origem."                    </td> ";
         echo " </tr> ";
       
@@ -238,7 +238,7 @@ function js_mostradiv(hist,mostra) {
   }
 }
 </script>
-<?
+<?php
  //fim do isset($tipo_cert) acima
 if(isset($DB_ERRO)) {
   ?>
@@ -247,6 +247,6 @@ if(isset($DB_ERRO)) {
     parent.document.getElementById('processando').style.visibility = 'visible';
    	history.back();
   </script>
-  <?
+  <?php
 }
 ?>

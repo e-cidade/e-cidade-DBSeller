@@ -229,10 +229,10 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
    */
   public function save() {
 
-    $oDaoSolicitacao = db_utils::getDao("solicita");
+    $oDaoSolicitacao = new cl_solicita;
     $oDaoSolicitacao->pc10_correto         = "true";
     $oDaoSolicitacao->pc10_data            = date("Y-m-d", db_getsession("DB_datausu"));
-    $oDaoSolicitacao->pc10_resumo          = $this->getResumo();
+    $oDaoSolicitacao->pc10_resumo          = addslashes($this->getResumo());
     $oDaoSolicitacao->pc10_solicitacaotipo = $this->iTipoSolicitacao;
     if ($this->getCodigoSolicitacao() == null) {
 
@@ -538,7 +538,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
 
     $iNumeroProcesso = $this->getProcessodeCompras();
     if ($iNumeroProcesso != null) {
-      throw new Exception("Compilação já processada!\nProcesso de Compras da Cmpilacao({$iNumeroProcesso}).");
+      throw new Exception("Compilação já processada!\nProcesso de Compras da Compilação({$iNumeroProcesso}).");
     }
     $this->setLiberado(true);
     $this->save();
@@ -546,7 +546,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
     $oDaoPcProc->pc80_data     = date("Y-m-d", db_getsession("DB_datausu"));
     $oDaoPcProc->pc80_depto    = db_getsession("DB_coddepto");
     $oDaoPcProc->pc80_usuario  = db_getsession("DB_id_usuario");
-    $oDaoPcProc->pc80_resumo   = urldecode($this->getResumo());
+    $oDaoPcProc->pc80_resumo   = db_stdClass::normalizeStringJsonEscapeString(urldecode($this->getResumo()));
     $oDaoPcProc->pc80_situacao = 2;
     $oDaoPcProc->incluir(null);
     if ($oDaoPcProc->erro_status == 0) {
@@ -620,6 +620,10 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
      * Excluimos os itens do processo de compras;
      */
     $iNumeroProcesso = $this->getProcessodeCompras();
+    if (empty($iNumeroProcesso)) {
+        throw new Exception("Processamento da compilação já cancelado!");
+    }
+
     $oDaopcProcItem  = db_utils::getDao('pcprocitem');
     $oDaopcProcItem->excluir(null, "pc81_codproc = {$iNumeroProcesso}");
     if ($oDaopcProcItem->erro_status == 0) {
@@ -1251,9 +1255,37 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
   * @return float codigo do item
   */
   public function getValorEmpenhadoItem($iCodigoItem, $departamento = null) {
-
     $sSqlValorItem  = "SELECT coalesce(sum(" . ($this->iFormaControle == aberturaRegistroPreco::CONTROLA_QUANTIDADE ? "e62_quant" : "e62_vltot") . "), 0) as valor";
     $sSqlValorItem .= "  from solicitem ";
+    $sSqlValorItem .= "        inner join solicita on pc11_numero                   = pc10_numero";
+    $sSqlValorItem .= "        inner join solicitemvinculo      on pc11_codigo      = pc55_solicitemfilho";
+    $sSqlValorItem .= "        inner join pcprocitem            on pc11_codigo      = pc81_solicitem ";
+    $sSqlValorItem .= "        inner join empautitempcprocitem  on pc81_codprocitem = e73_pcprocitem";
+    $sSqlValorItem .= "        inner join empautitem            on e73_sequen       = e55_sequen";
+    $sSqlValorItem .= "                                        and e73_autori       = e55_autori";
+    $sSqlValorItem .= "        inner join empautoriza           on e55_autori       = e54_autori";
+    $sSqlValorItem .= "        inner join empempaut             on e61_autori       = e54_autori";
+    $sSqlValorItem .= "        inner join empempenho            on e61_numemp       = e60_numemp";
+    $sSqlValorItem .= "        inner join empempitem            on e60_numemp       = e62_numemp";
+    $sSqlValorItem .= "                                         and e62_sequen      = e55_sequen";
+    $sSqlValorItem .= "        left join solicitaanulada        on pc67_solicita    = pc10_numero";
+    $sSqlValorItem .= "  where pc55_solicitempai = {$iCodigoItem}";
+    $sSqlValorItem .= " and pc67_solicita is null ";
+    if (!empty($departamento)) {
+        $sSqlValorItem .= " and pc10_depto = " . $departamento;
+    }
+
+    $rsValorItem    = db_query($sSqlValorItem);
+    return db_utils::fieldsMemory($rsValorItem, 0)->valor;
+  }
+
+  public function getValorEmpenhadoAnuladoItem($iCodigoItem, $departamento = null)
+  {
+    $sSqlValorItem  = "SELECT coalesce(";
+    $sSqlValorItem .= $this->iFormaControle == aberturaRegistroPreco::CONTROLA_QUANTIDADE ? "floor(sum(e37_vlranu/e55_vlrun))" : "sum(e37_vlranu)";
+    $sSqlValorItem .= ", 0) as total";
+    $sSqlValorItem .= "  from solicitem ";
+    $sSqlValorItem .= "        inner join solicita on pc11_numero                   = pc10_numero";
     $sSqlValorItem .= "        inner join solicitemvinculo      on pc11_codigo      = pc55_solicitemfilho";
     $sSqlValorItem .= "        inner join pcprocitem            on pc11_codigo      = pc81_solicitem ";
     $sSqlValorItem .= "        inner join empautitempcprocitem  on pc81_codprocitem = e73_pcprocitem";
@@ -1264,21 +1296,23 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
     $sSqlValorItem .= "        inner join empempenho            on e61_numemp       = e60_numemp";
     $sSqlValorItem .= "        inner join empempitem            on e60_numemp       = e62_numemp";
     $sSqlValorItem .= "                                        and e62_sequen  = e55_sequen";
-    $sSqlValorItem .= "  where pc55_solicitempai = {$iCodigoItem}";
-    $sSqlValorItem .= "    and e54_anulad is null ";
+    $sSqlValorItem .= "        join empanuladoitem              on empanuladoitem.e37_empempitem  = empempitem.e62_sequencial";
+    $sSqlValorItem .= "        left join solicitaanulada        on pc67_solicita    = pc10_numero";
+    $sSqlValorItem .= "  where pc55_solicitempai = {$iCodigoItem} ";
+    $sSqlValorItem .= " and pc67_solicita is null ";
     if (!empty($departamento)) {
-        $sSqlValorItem .= " and e54_depto = " . $departamento;
+        $sSqlValorItem .= " and pc10_depto = " . $departamento;
     }
-    $rsValorItem    = db_query($sSqlValorItem);
-    return db_utils::fieldsMemory($rsValorItem, 0)->valor;
 
+    $rsValorItem    = db_query($sSqlValorItem);
+    return db_utils::fieldsMemory($rsValorItem, 0)->total;
   }
+
   /**
    * Verifica se a abertura está anulada
    *
    * @return boolean
    */
-
   public function isAnulada() {
 
     $oDaoSolicitaAnulada = db_utils::getDao("solicitaanulada");

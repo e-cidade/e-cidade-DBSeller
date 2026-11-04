@@ -1,44 +1,46 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
 /**
-* Classe singleton para controle de numeração dos processos de procotolo
-* @package protocolo
-* @static
-*/
-class  ProcessoProtocoloNumeracao {
+ * Classe singleton para controle de numeração dos processos de procotolo
+ * @package protocolo
+ * @static
+ */
+class ProcessoProtocoloNumeracao
+{
 
-    CONST TIPOSEQUENCIAL = 1;
-    CONST TIPOANO = 2;
-    CONST TIPOORGAO = 3;
-    CONST MAXNUMEROORGAO = 999999999999999999;
+    const TIPOSEQUENCIAL = 1;
+    const TIPOANO = 2;
+    const TIPOORGAO = 3;
+    const TIPOANO_COM_SIGLA = 4;
+    const MAXNUMEROORGAO = 999999999999999999;
 
-    static private $oInstance = null;
+    private static $oInstance = null;
 
     private $iTipoControle = null;
     private $proximoNumero = null;
@@ -57,14 +59,14 @@ class  ProcessoProtocoloNumeracao {
          *                              a numeracao é reiniciada a cada ano.
          */
         $oDaoParametrosGlobais = db_utils::getDao("protparamglobal");
-        $where = ' p06_instituicao = '. db_getsession('DB_instit');
+        $where = ' p06_instituicao = ' . db_getsession('DB_instit');
         $sSqlDadosParametros = $oDaoParametrosGlobais->sql_query_file(null, '*', null, $where);
         $rsDadosParametros = $oDaoParametrosGlobais->sql_record($sSqlDadosParametros);
 
         if ($oDaoParametrosGlobais->numrows == 0) {
             throw new Exception('Parametros Globais do módulo protocolo não configurados.');
         }
-        $this->iTipoControle = (int) (db_utils::fieldsMemory($rsDadosParametros, 0)->p06_tipo);
+        $this->iTipoControle = (int)(db_utils::fieldsMemory($rsDadosParametros, 0)->p06_tipo);
     }
 
     /**
@@ -94,9 +96,13 @@ class  ProcessoProtocoloNumeracao {
     /**
      * retorna o proximo número de protocolo
      * @return integer
+     * @throws Exception
      */
-    public static function getProximoNumero($orgao = 0, $tipoDocumentoProcesso = 0, $volume = 0)
-    {
+    public static function getProximoNumero(
+        $orgao = 0,
+        $tipoDocumentoProcesso = 0,
+        $siglaDoDocumentoNaNumeracao = false
+    ) {
         if (!db_utils::inTransaction()) {
             throw new Exception('Para utilização desse método é necessário uma transação com o Banco de Dados.');
         }
@@ -113,16 +119,20 @@ class  ProcessoProtocoloNumeracao {
             );
         }
 
-        if (empty($volume)) {
-            $oInstancia->updateNumeracao();
-        }
+        $oInstancia->updateNumeracao();
 
-        return self::formataNumeracaoOrgao($oInstancia->proximoNumero, $orgao, $tipoDocumentoProcesso, $volume);
+        return self::formataNumeracaoOrgao(
+            $oInstancia->proximoNumero,
+            $orgao,
+            $tipoDocumentoProcesso,
+            $siglaDoDocumentoNaNumeracao
+        );
     }
 
     /**
      * Retorna o número que deve ser Utilizado
      *
+     * @throws Exception
      */
     private function getNumeroUtilizar()
     {
@@ -163,7 +173,7 @@ class  ProcessoProtocoloNumeracao {
         /**
          * Atualizamos a numeração  conforme regra
          */
-        $sSqlNumeracao  = $oDaoProtocoloNumeracao->sql_query_file(
+        $sSqlNumeracao = $oDaoProtocoloNumeracao->sql_query_file(
             null,
             "p07_sequencial",
             null,
@@ -173,7 +183,7 @@ class  ProcessoProtocoloNumeracao {
         $aNumeracoes = db_utils::getCollectionByRecord($rsNumeracao);
         foreach ($aNumeracoes as $oNumeracao) {
             $oDaoProtocoloNumeracao->p07_sequencial = $oNumeracao->p07_sequencial;
-            $oDaoProtocoloNumeracao->p07_proximonumero = self::getInstance()->proximoNumero+1;
+            $oDaoProtocoloNumeracao->p07_proximonumero = self::getInstance()->proximoNumero + 1;
             $oDaoProtocoloNumeracao->alterar($oNumeracao->p07_sequencial);
             if ($oDaoProtocoloNumeracao->erro_status == 0) {
                 throw new Exception('Erro ao atualizar numeração do Protocolo!');
@@ -182,14 +192,18 @@ class  ProcessoProtocoloNumeracao {
     }
 
     /**
-    * Cria um Lock nas numerações conforme a Regra do controle
-    *
-    */
-    private function bloqueiaControleNumeracao() {
+     * Cria um Lock nas numerações conforme a Regra do controle
+     *
+     */
+    private function bloqueiaControleNumeracao()
+    {
         $sWhere = self::getInstance()->getRegraNumeracao();
         $oDaoProtocoloNumeracao = db_utils::getDao("protprocessonumeracao");
         $sSqlNumeracao = $oDaoProtocoloNumeracao->sql_query_file(
-            null, "p07_proximonumero", null, $sWhere
+            null,
+            "p07_proximonumero",
+            null,
+            $sWhere
         );
         $sSqlNumeracao .= " for update";
         $oDaoProtocoloNumeracao->sql_record($sSqlNumeracao);
@@ -202,14 +216,15 @@ class  ProcessoProtocoloNumeracao {
      */
     private function getRegraNumeracao()
     {
-        $sWhere = " p07_ano = ".db_getsession("DB_anousu");
+        $sWhere = " p07_ano = " . db_getsession("DB_anousu");
         $oInstancia = self::getInstance();
 
         switch ($oInstancia->iTipoControle) {
             case self::TIPOSEQUENCIAL:
                 break;
             case self::TIPOANO:
-                $sWhere .= " and p07_instit = ".db_getsession("DB_instit");
+            case self::TIPOANO_COM_SIGLA:
+                $sWhere .= " and p07_instit = " . db_getsession("DB_instit");
                 break;
             case self::TIPOORGAO:
                 $sWhere .= " and p07_orgao = {$oInstancia->orgao} ";
@@ -230,38 +245,56 @@ class  ProcessoProtocoloNumeracao {
 
     /**
      * @return string
+     * @throws Exception
      */
     public static function formataNumeracaoOrgao(
         $numeroProcesso,
-        $idOrgao = 0 ,
+        $idOrgao = 0,
         $idTipoDocumentoProcesso = 0,
-        $volume = 0
+        $siglaDoDocumentoNaNumeracao = false
     ) {
         $oInstancia = self::getInstance();
         switch ($oInstancia->iTipoControle) {
             case self::TIPOORGAO:
-                $dao = new cl_prottipodocumentoprocesso;
-                $sql = $dao->sql_query_file($idTipoDocumentoProcesso, 'p91_sigla');
-                $pgTipodocumento = db_query($sql);
-
-                if (pg_num_rows($pgTipodocumento) > 0) {
-                    $rsSigla = pg_fetch_assoc($pgTipodocumento);
-                } else {
-                    throw new Exception("Erro ao incluir processo.\nPor favor, contante o suporte.");
-                }
-
                 $numeroProcesso = str_pad($numeroProcesso, 5, '0', STR_PAD_LEFT);
                 $orgao = str_pad($idOrgao, 2, '0', STR_PAD_LEFT);
-                $volume = str_pad($volume, 3, '0', STR_PAD_LEFT);
-                $sigla = $rsSigla['p91_sigla'];
-
-                $numeroProcesso = "{$sigla}{$orgao}{$numeroProcesso}{$volume}";
+                $sigla = ProcessoProtocoloNumeracao::getSigla($idTipoDocumentoProcesso);
+                $numeroProcesso = "{$sigla}{$orgao}{$numeroProcesso}";
+                break;
+            case self::TIPOANO_COM_SIGLA:
+                $numeroProcesso = str_pad($numeroProcesso, 5, '0', STR_PAD_LEFT);
+                $sigla = ProcessoProtocoloNumeracao::getSigla($idTipoDocumentoProcesso);
+                $numeroProcesso = "{$sigla}{$numeroProcesso}";
                 break;
             default:
+                if ($siglaDoDocumentoNaNumeracao) {
+                    $numeroProcesso = str_pad($numeroProcesso, 5, '0', STR_PAD_LEFT);
+                    $sigla = ProcessoProtocoloNumeracao::getSigla($idTipoDocumentoProcesso);
+                    $numeroProcesso = "{$sigla}{$numeroProcesso}";
+                }
                 break;
         }
-        
+
         return $numeroProcesso;
+    }
+
+
+    public static function getSigla($idTipoDocumentoProcesso)
+    {
+        if (empty($idTipoDocumentoProcesso)) {
+            return null;
+        }
+        $dao = new cl_prottipodocumentoprocesso;
+        $sql = $dao->sql_query_file($idTipoDocumentoProcesso, 'p91_sigla');
+        $pgTipodocumento = db_query($sql);
+
+        if (pg_num_rows($pgTipodocumento) > 0) {
+            $rsSigla = pg_fetch_assoc($pgTipodocumento);
+        } else {
+            throw new \Exception("Erro ao incluir processo.\nPor favor, contante o suporte.");
+        }
+
+        return $rsSigla['p91_sigla'];
     }
 
     /**
@@ -276,4 +309,3 @@ class  ProcessoProtocoloNumeracao {
         return self::$oInstance->iTipoControle;
     }
 }
-?>

@@ -37,44 +37,52 @@ $oGet = db_utils::postMemory($_GET);
 
 try {
 
-  if (empty($oGet->periodo_inicial)) {
-    throw new Exception("A Data Inicial do período não foi informada.");
-  }
+    if (empty($oGet->periodo_inicial)) {
+        throw new Exception("A Data Inicial do período não foi informada.");
+    }
 
-  if (empty($oGet->periodo_final)) {
-    throw new Exception("A Data Final do período não foi informada.");
-  }
+    if (empty($oGet->periodo_final)) {
+        throw new Exception("A Data Final do período não foi informada.");
+    }
 
-  if (empty($oGet->combustiveis)) {
-    throw new Exception("Informe ao menos um Combustível.");
-  }
+    //   if (empty($oGet->combustiveis)) {
+//     throw new Exception("Informe ao menos um Combustível.");
+//   }
 
-  $oDataInicial = new DBDate($oGet->periodo_inicial);
-  $oDataFinal   = new DBDate($oGet->periodo_final);
+    $oDataInicial = new DBDate($oGet->periodo_inicial);
+    $oDataFinal = new DBDate($oGet->periodo_final);
 
-  if ($oDataInicial->getAno() != $oDataFinal->getAno()) {
-    throw new Exception("O período para emissão do relatório deve ser dentro do mesmo exercício.");
-  }
+    if ($oDataInicial->getAno() != $oDataFinal->getAno()) {
+        throw new Exception("O período para emissão do relatório deve ser dentro do mesmo exercício.");
+    }
 
-  $aVeiculo = array();
-  if (!empty($oGet->veiculos)) {
-    $aVeiculo = explode(",", $oGet->veiculos);
-  }
-  $aCombustivel = explode(",", $oGet->combustiveis);
+    $aVeiculo = array();
+    if (!empty($oGet->veiculos)) {
+        $aVeiculo = explode(",", $oGet->veiculos);
+    }
+    //   $aCombustivel = explode(",", $oGet->combustiveis);
 
-  $oInstituicao  = new Instituicao(db_getsession('DB_instit'));
-  $oDepartamento = new DBDepartamento(db_getsession('DB_coddepto'));
+    $oDepartamento = null;
+    if (!empty($oGet->departamento)) {
+        $oDepartamento = new DBDepartamento($oGet->departamento);
+    }
 
-  $oRelatorioManutencao = new RelatorioVeiculoManutencao($oInstituicao, $oDepartamento);
+    $oInstituicao = new Instituicao(db_getsession('DB_instit'));
+    $oRelatorioManutencao = new RelatorioVeiculoManutencao($oInstituicao, $oDepartamento);
 
-  if (!empty($oGet->situacao)) {
-    $oRelatorioManutencao->setSituacao($oGet->situacao);
-  }
-  $oRelatorioManutencao->setDataInicial($oDataInicial);
-  $oRelatorioManutencao->setDataFinal($oDataFinal);
-  $oRelatorioManutencao->setVeiculos($aVeiculo);
-  $oRelatorioManutencao->setCombustiveis($aCombustivel);
-  $oRelatorioManutencao->emitir();
+    if (!empty($oGet->situacao)) {
+        $oRelatorioManutencao->setSituacao($oGet->situacao);
+    }
+
+    if (!empty($oGet->categoria)) {
+        $oRelatorioManutencao->setCategoria($oGet->situacao);
+    }
+
+    $oRelatorioManutencao->setDataInicial($oDataInicial);
+    $oRelatorioManutencao->setDataFinal($oDataFinal);
+    $oRelatorioManutencao->setVeiculos($aVeiculo);
+    //   $oRelatorioManutencao->setCombustiveis($aCombustivel);
+    $oRelatorioManutencao->emitir();
 } catch (Exception $e) {
-  db_redireciona('db_erros.php?fechar=true&db_erro=' . urlencode($e->getMessage()));
+    db_redireciona('db_erros.php?fechar=true&db_erro=' . urlencode($e->getMessage()));
 }

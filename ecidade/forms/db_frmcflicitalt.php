@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,13 +50,13 @@ if(isset($opcao) && $opcao=="alterar"){
 	     <b>Código:</b> 
 	  </td>
 	  <td nowrap title="<?=@$Tl03_codigo?>">
-         <?
+         <?php
          db_input('l03_codigo',10,$Il03_codigo,true,'text',3,"");
 	     ?>
 	  
 	     <b>Tipo:</b> 
 	  
-         <?
+         <?php
          db_input('l03_tipo',4,$Il03_tipo,true,'text',$db_opcao,"");
 	     ?>
 	  </td>
@@ -66,7 +66,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	     <b>Descrição:</b> 
 	  </td>
 	  <td nowrap title="<?=@$Tl03_descr?>">
-         <?
+         <?php
          db_input('l03_descr',50,$Il03_descr,true,'text',$db_opcao,"");
 	     ?>
 	  </td>
@@ -77,7 +77,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	  <b>Tipo de Compra:</b>
 	  </td>
 	  <td nowrap title="<?=@$Tl03_codcom?>">
-	  <?
+	  <?php
 	  $result_tipo=$clpctipocompra->sql_record($clpctipocompra->sql_query_file());
       if (isset($l03_codcom)&&$l03_codcom!=""){
         	echo "<script>document.form1.l03_codcom.selected=$l03_codcom;</script>";
@@ -92,7 +92,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	  <b>Instituição:</b>
 	  </td>
 	  <td nowrap title="<?=@$Tl03_instit?>">
-	  <?
+	  <?php
 	  $l03_instit=db_getsession("DB_instit");
 	  $result_instit=$cldb_config->sql_record($cldb_config->sql_query_file());
       if (isset($l03_instit)&&$l03_instit!=""){
@@ -112,7 +112,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php
      $chavepri= array("l03_codigo"=>@$l03_codigo,"l03_descr"=>@$l03_descr,"l03_tipo"=>@$l03_tipo,"l03_codcom"=>@$l03_codcom,"l03_instit"=>@$l03_instit);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql = $clcflicita->sql_query(null,'*',null,"");

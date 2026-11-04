@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,16 +25,16 @@
  *                                licenca/licenca_pt.txt
  */
 
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
-include(modification("classes/db_benstransf_classe.php"));
-include(modification("classes/db_benstransfdes_classe.php"));
-include(modification("classes/db_benstransfconf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+require_once(modification("classes/db_benstransf_classe.php"));
+require_once(modification("classes/db_benstransfdes_classe.php"));
+require_once(modification("classes/db_benstransfconf_classe.php"));
+db_postmemory($_SERVER);
+parse_str($_SERVER["QUERY_STRING"]);
 $clbenstransf = new cl_benstransf;
 $clbenstransfdes = new cl_benstransfdes;
 $clbenstransfconf = new cl_benstransfconf;
@@ -58,7 +58,7 @@ $clbenstransf->rotulo->label("t93_data");
               <?=$Lt93_codtran?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("t93_codtran",10,$It93_codtran,true,"text",4,"","chave_t93_codtran");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clbenstransf->rotulo->label("t93_data");
               <?=$Lt93_data?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
              	      db_inputdata('t93_data',@$t93_data_dia,@$t93_data_mes,@$t93_data_ano,true,'text',1,"");
 		       ?>
             </td>
@@ -86,22 +86,28 @@ $clbenstransf->rotulo->label("t93_data");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $id_depart    = db_getsession("DB_coddepto");
       $where_instit = " and t93_instit = ".db_getsession("DB_instit");
+      $id_depart = db_getsession("DB_coddepto");
 
       if((isset($t93)) && $t93 == 'true'){
-	$campo_where = 't93_depart';
+	    $campo_where = empty($ignorar_departamento) ? ' t93_depart ' : '';
       }else{
-	$campo_where = ' t95_codtran is not null and t95_codbem is not null and t94_depart';
+	    $campo_where = ' t95_codtran is not null and t95_codbem is not null ';
+	    $campo_where .= empty($ignorar_departamento) ? 'and t94_depart' : '';
       }
-      $where_db_param = " $campo_where=$id_depart and ";
+
+      $where_db_param = " $campo_where and ";
+      if (empty($ignorar_departamento)) {
+        $where_db_param = " $campo_where = $id_depart and ";
+      }
 
       if(isset($campos)==false){
          if(file_exists("funcoes/db_func_benstransf.php")==true){
-           include(modification("funcoes/db_func_benstransf.php"));
+           require_once(modification("funcoes/db_func_benstransf.php"));
          }else{
-         $campos = "benstransf.*";
+            $campos = "benstransf.*";
          }
       }
       if((isset($t93_data_ano) && trim($t93_data_ano) != "") && (isset($t93_data_mes) && trim($t93_data_mes) != "") && (isset($t93_data_dia) && trim($t93_data_dia) != "")){
@@ -109,27 +115,34 @@ $clbenstransf->rotulo->label("t93_data");
       }else if(isset($t93_data_ano) && trim($t93_data_ano) != ""){
 	$chave_t93_data = $t93_data_ano."%";
       }
-      if(isset($rel) && $rel == 'true'){
+      if (isset($rel) && $rel == 'true'){
         $param = " in ";
-      }else{
+      } else if (isset($rel) and $rel == 'ignorar_confirmacao') {
+        $param = false;
+      } else{
         $param = " not in ";
       }
+
+      $verificaConfirmacaoTransfer = '1 = 1';
+      if ($param !== false) {
+        $verificaConfirmacaoTransfer = " t93_codtran $param (select t96_codtran from benstransfconf) ";
+      }
+
       $campos = "distinct $campos";
 
       if(!isset($pesquisa_chave)){
         if(isset($chave_t93_codtran) && (trim($chave_t93_codtran)!="") ){
-          $sql = $clbenstransf->sql_query_departamento_destino(null,$campos,"t93_codtran"," $where_db_param t93_codtran $param (select t96_codtran from benstransfconf) and t93_codtran = $chave_t93_codtran $where_instit ");
+          $sql = $clbenstransf->sql_query_departamento_destino(null,$campos,"t93_codtran"," $where_db_param $verificaConfirmacaoTransfer and t93_codtran = $chave_t93_codtran $where_instit ");
         }else if(isset($chave_t93_data) && (trim($chave_t93_data)!="") ){
-	  $sql = $clbenstransf->sql_query_departamento_destino("",$campos,"t93_data"," $where_db_param t93_codtran $param (select t96_codtran from benstransfconf) and t93_data like '$chave_t93_data' $where_instit ");
+	  $sql = $clbenstransf->sql_query_departamento_destino("",$campos,"t93_data"," $where_db_param $verificaConfirmacaoTransfer and t93_data like '$chave_t93_data' $where_instit ");
         }else{
-          $sql = $clbenstransf->sql_query_departamento_destino("",$campos,"t93_codtran"," $where_db_param t93_codtran $param (select t96_codtran from benstransfconf) $where_instit ");
+          $sql = $clbenstransf->sql_query_departamento_destino("",$campos,"t93_codtran"," $where_db_param $verificaConfirmacaoTransfer $where_instit ");
         }
 
-	//die($sql);
         db_lovrot($sql,15,"()","",$funcao_js);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
-          $result = $clbenstransf->sql_record($clbenstransf->sql_query_departamento_destino(null,$campos,""," $where_db_param t93_codtran $param (select t96_codtran from benstransfconf) and t93_codtran = $pesquisa_chave and t93_instit = ".db_getsession("DB_instit")));
+          $result = $clbenstransf->sql_record($clbenstransf->sql_query_departamento_destino(null,$campos,""," $where_db_param $verificaConfirmacaoTransfer and t93_codtran = $pesquisa_chave and t93_instit = ".db_getsession("DB_instit")));
           if($clbenstransf->numrows!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$nome',false);</script>";
@@ -140,20 +153,18 @@ $clbenstransf->rotulo->label("t93_data");
 	       echo "<script>".$funcao_js."('',false);</script>";
         }
       }
-     //select * from benstransf where t93_depart=1 and benstransf.t93_codtran
-     // not in (select t96_codtran from benstransfconf);
       ?>
      </td>
    </tr>
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 

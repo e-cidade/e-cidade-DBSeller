@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $claguarota->rotulo->label("x06_descr");
               <label for="chave_x06_codrota" class="bold">Rota:</label>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x06_codrota",5,$Ix06_codrota,true,"text",4,"","chave_x06_codrota");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $claguarota->rotulo->label("x06_descr");
               <?=$Lx06_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("x06_descr",40,$Ix06_descr,true,"text",4,"","chave_x06_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $claguarota->rotulo->label("x06_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguarota.php")==true){
@@ -122,12 +122,12 @@ $claguarota->rotulo->label("x06_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

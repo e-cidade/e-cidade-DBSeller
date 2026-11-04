@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,29 +38,29 @@ $clrotulo->label("v53_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tv50_inicial?>">
-       <?
+       <?php
        db_ancora(@$Lv50_inicial,"js_pesquisav50_inicial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_inicial',6,$Iv50_inicial,true,'text',$db_opcao," onchange='js_pesquisav50_inicial(false);'")
 ?>
-       <?
+       <?php
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv50_advog?>">
-       <?
+       <?php
        db_ancora(@$Lv50_advog,"js_pesquisav50_advog(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_advog',6,$Iv50_advog,true,'text',$db_opcao," onchange='js_pesquisav50_advog(false);'")
 ?>
-       <?
+       <?php
 db_input('v57_oab',20,$Iv57_oab,true,'text',3,'')
        ?>
     </td>
@@ -70,52 +70,52 @@ db_input('v57_oab',20,$Iv57_oab,true,'text',3,'')
        <?=@$Lv50_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v50_data',@$v50_data_dia,@$v50_data_mes,@$v50_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv50_id_login?>">
-       <?
+       <?php
        db_ancora(@$Lv50_id_login,"js_pesquisav50_id_login(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_id_login',6,$Iv50_id_login,true,'text',$db_opcao," onchange='js_pesquisav50_id_login(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv50_codlocal?>">
-       <?
+       <?php
        db_ancora(@$Lv50_codlocal,"js_pesquisav50_codlocal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_codlocal',8,$Iv50_codlocal,true,'text',$db_opcao," onchange='js_pesquisav50_codlocal(false);'")
 ?>
-       <?
+       <?php
 db_input('v54_descr',30,$Iv54_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv50_codvara?>">
-       <?
+       <?php
        db_ancora(@$Lv50_codvara,"js_pesquisav50_codvara(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_codvara',6,$Iv50_codvara,true,'text',$db_opcao," onchange='js_pesquisav50_codvara(false);'")
 ?>
-       <?
+       <?php
 db_input('v53_descr',40,$Iv53_descr,true,'text',3,'')
        ?>
     </td>
@@ -125,7 +125,7 @@ db_input('v53_descr',40,$Iv53_descr,true,'text',3,'')
        <?=@$Lv50_codmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('v50_codmov',6,$Iv50_codmov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -235,7 +235,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

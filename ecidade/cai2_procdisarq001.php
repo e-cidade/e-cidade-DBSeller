@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -102,7 +102,7 @@ function js_processarelatorio(){
       <tr>
         <td align='left' ><b> Procedência Diversos:</b></td>
         <td>
-          <?
+          <?php
             if(!isset($parcela)) {
               $parcela = date("m", db_getsession("DB_datausu"));
             }
@@ -115,16 +115,16 @@ function js_processarelatorio(){
      
       <tr>
         <td nowrap title="<?=@$Tx01_numcgm?>"><b>
-           <?
+           <?php
            db_ancora("Arquivo retorno:","js_pesquisacodret(true);",$db_opcao);
            ?>
            </b>
         </td>
         <td> 
-           <?
+           <?php
              db_input('codret',10,"",true,'text',$db_opcao," onchange='js_pesquisacodret(false);'")
            ?>
-           <?
+           <?php
              db_input('arqret',40,"",true,'text',3,'')
            ?>
         </td>
@@ -134,7 +134,7 @@ function js_processarelatorio(){
       <tr>
         <td align='left' ><b> Parcela/Vencimento:</b></td>
         <td>
-          <? 
+          <?php 
             $sSql = "select x33_parcela, to_char(x33_dtvenc, 'dd/mm/yyyy') as datavenc from aguaconfvenc where x33_exerc = ".db_getsession("DB_anousu")." order by x33_dtvenc";
             $result = db_query($sSql);
             db_selectrecord('parcela', $result, true, 1, "", "", "", "", "");
@@ -145,7 +145,7 @@ function js_processarelatorio(){
       <tr>
         <td align='left'><b>Histórico</b></td>
         <td>
-          <?
+          <?php
             db_textarea('historico',5, 60,'',true,'text',1,"")
           ?>
         </td>
@@ -163,7 +163,7 @@ function js_processarelatorio(){
       </tr>
     </form>
   </table>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

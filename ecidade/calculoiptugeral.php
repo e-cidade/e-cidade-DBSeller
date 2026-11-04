@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -169,7 +169,7 @@ if ($cliptubase->numrows==0) {
 				if ($j18_permvenc == 0) {
 					$j18_permvenc = 1;
 				}
-				
+				db_query("select fc_putsession('DB_Gerafinanc','0')");
 				if ($j18_permvenc == 1) {
 					$sql = "select fc_calculoiptu($j01_matric,$anousu,true,false,false,false,false,0,0,0)";
 				} elseif ($j18_permvenc == 2) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if (isset($incluir)) {
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -81,7 +81,7 @@ db_menu(db_getsession("DB_id_usuario"),
 <script>
 js_tabulacaoforms("form1", "vc16_i_dosevacina", true, 1, "vc16_i_dosevacina", true);
 </script>
-<?
+<?php
 if (isset($incluir)) {
 
   if ($clvac_aplica->erro_status == "0") {

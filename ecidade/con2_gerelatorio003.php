@@ -1,37 +1,37 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
   //
   include(modification("fpdf151/pdf.php"));
   // variaveis de cabeçalho
-  
+
   parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  $sql=base64_decode($sql); 
-  
+  $sql=base64_decode($sql);
+
   $pega = @db_query("select * from db_gerador where codger=$codigo");
   $tsql= @pg_result($pega,0,"sqlger");
   if(@$libera==true&&$tsql==$sql){
@@ -44,16 +44,16 @@
     $pcorpaltura= pg_result($busca,0,10);
   }else{
     $sele="selected";
-    $sele1="checked";  
+    $sele1="checked";
     $limite=0;
   }
-  
+
   $resultsql = db_query(str_replace('\\','',$sql." limit 1" ));
-  
+
   $rotulocampo = new rotulocampo;
   $clrotulolov = new rotulolov;
   $fm_numfields = pg_numfields($resultsql);
-?>                                           
+?>
 <script>
 function gera(){
  document.form1.action = "con2_gerelatorio004.php";
@@ -70,18 +70,18 @@ function armazena(){
 
 function js_cabecaltura(){
  valor=document.form1.pcabecaltura.value;
- <?  
+ <?php
    for ($i = 0;$i < $fm_numfields;$i++){
      echo "document.form1.cabecaltura_".$i.".value=valor;";
-   }  
+   }
 ?>
 }
 function js_corpaltura(){
  valor=document.form1.pcorpaltura.value;
- <?  
+ <?php
    for ($i = 0;$i < $fm_numfields;$i++){
      echo "document.form1.corpaltura_".$i.".value=valor;";
-   }  
+   }
 ?>
 }
 function nova(){
@@ -111,7 +111,7 @@ color: blue;
 .cabec {
 text-align: center;
 color: darkblue;
-background-color:#aacccc ;       
+background-color:#aacccc ;
 border-color: darkblue;
 }
 .corpo {
@@ -143,63 +143,63 @@ border: 2px outset #999999;
         <tr>
 	  <td valign="top" width="100%" >
 	    <br>
-           <?
-             if(@$libera==true){    
+           <?php
+             if(@$libera==true){
 	       echo "<input type=\"button\" size=\"10\" name=\"armazenar\" value=\"Confirmar Alteração\" onclick=\"armazena()\" >";
-             }else{    
+             }else{
 	       echo "<input type=\"button\" name=\"gerar\" value=\"Gerar relatório\" onclick=\"gera()\">";
 	       echo "<input type=\"button\" size=\"10\" name=\"armazenar\" value=\"Gerar e armazenar relatório\" onclick=\"armazena()\" >";
              }
             ?>
 	     <input type="button" size="10" name="novo" value="Novo relatório" onclick="nova()">
 	  </td>
-        </tr> 		    
-        <tr><td>&nbsp;</td></tr> 		    
+        </tr>
+        <tr><td>&nbsp;</td></tr>
         <tr  >
-	  <td align="right" width="100%" >  
+	  <td align="right" width="100%" >
             <table width="100%"cellspacing="0" cellpadding="0" border="1" class='pref' >
-	      <tr width="100%"> 
+	      <tr width="100%">
 	        <td colspan="1" width="20%" align="center">Página
 		   <select  name="visualizacao" value="<?=@$visualizacao?>">
                      <option <?echo(@$tvisualizacao=="P"? "selected":"selected")?> value="P">Retrato</option>
                      <option <?echo(@$tvisualizacao=="L"? "selected":"")?> value="L">Paisagem</option>
                 </td>
 	        <td width="28%" nowrap align="center">
-		   Altura padrão cabeçalhos 
-		  <select name="pcabecaltura" onchange="js_cabecaltura()" > 
-		    <?
+		   Altura padrão cabeçalhos
+		  <select name="pcabecaltura" onchange="js_cabecaltura()" >
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($pcabecaltura)){	
+       		       if(isset($pcabecaltura)){
                          echo "<option ".($t==@$pcabecaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==4?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 
-	        <td  nowrap  width="25%" align="center"> 
+	        <td  nowrap  width="25%" align="center">
 		  Altura padrão corpo
-		  <select name="pcorpaltura" onchange="js_corpaltura()" > 
-		    <?
+		  <select name="pcorpaltura" onchange="js_corpaltura()" >
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($pcorpaltura)){	
+       		       if(isset($pcorpaltura)){
                          echo "<option ".($t==@$pcorpaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==4?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 		<td width="35%" nowrap align="center">
-		  Limite de linhas 
+		  Limite de linhas
 		  <input type="text" maxlength="6" size="4" name="limite" value="<?=@$limite?>">
 		</td>
              </tr>
 	     <tr>
                 <td  colspan="2" nowrap width="15%">
 		  Intercalar cores de fundo
-	          <select name="intercalar1"> 
+	          <select name="intercalar1">
 		    <option <?echo(@$intercalar1=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
 		    <option <?echo(@$intercalar1=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
 		    <option <?echo(@$intercalar1=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
@@ -208,9 +208,9 @@ border: 2px outset #999999;
 		    <option <?echo(@$intercalar1=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
 		    <option <?echo(@$intercalar1=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
 		    <option <?echo(@$intercalar1=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
-		  </select>  
+		  </select>
                      com
-		  <select name="intercalar2"> 
+		  <select name="intercalar2">
 		    <option <?echo(@$intercalar2=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
 		    <option <?echo(@$intercalar2=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
 		    <option <?echo(@$intercalar2=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
@@ -219,15 +219,15 @@ border: 2px outset #999999;
 		    <option <?echo(@$intercalar2=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
 		    <option <?echo(@$intercalar2=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
 		    <option <?echo(@$intercalar2=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
-		  </select>  
+		  </select>
 		</td>
-	      </tr>  	 		    
-	    </table>  	    
+	      </tr>
+	    </table>
 	 </td>
 	</tr>
-      </table>  
+      </table>
   </tr>
-        <tr><td>&nbsp;</td></tr> 		    
+        <tr><td>&nbsp;</td></tr>
   <tr>
     <td valign="top">
       <table border="0" cellspacing="0" cellpadding="0" width="100%" style="border: 2px outset #999999">
@@ -250,13 +250,13 @@ border: 2px outset #999999;
 	        <td align="center"width="10%"  style="border: 2px outset #999999"nowrap bordercolor="#cccccc">Altura</td>
                 <td align="center"width="10%"  style="border: 2px outset #999999"nowrap bordercolor="#cccccc">Largura</td>
 	      </tr>
-	      <?
+	      <?php
                  for ($i = 0;$i < $fm_numfields;$i++){
 	          $qualcampo = pg_fieldname($resultsql,$i);
                   $tcampo = "T".$qualcampo;
                   $lcampo = "L".$qualcampo;
                   $mcampo = "M".$qualcampo;
-                
+
 		  $clrotulolov->label(pg_fieldname($resultsql,$i));
                   $largura =(($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2;
 
@@ -275,16 +275,16 @@ border: 2px outset #999999;
                   }
 	      ?>
 	      <tr height="28" width="100%"  class='corpo'>
-	        <?
+	        <?php
 		$qualcampo = pg_fieldname($resultsql,$i);
                 $rotulocampo->label($qualcampo);
                 $tcampo = "T".$qualcampo;
                 $lcampo = "L".$qualcampo;
                 $mcampo = "M".$qualcampo;
-		
+
 		?>
 	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
-                  <?
+                  <?php
 		   echo $$lcampo;
 	           ?>
 		</td>
@@ -296,15 +296,15 @@ border: 2px outset #999999;
 		</td>
 		<td align="center" width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabectamanho_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($tcabectamanho)){	
+       		       if(isset($tcabectamanho)){
                          echo "<option ".($t==@$tcabectamanho?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==9?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabeccortexto_<?=@$i?>">
@@ -345,35 +345,35 @@ border: 2px outset #999999;
 		</td>
 	        <td align="center" bordercolor="#ffffff" width="12%" nowrap >
 		  <select name="cabecaltura_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($tcabecaltura)){	
+       		       if(isset($tcabecaltura)){
                          echo "<option ".($t==$tcabecaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==4?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabeclargura_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 250; $t++){
-       		       if(isset($tcabeclargura)){	
+       		       if(isset($tcabeclargura)){
                          echo "<option ".($t==@$tcabeclargura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==$largura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	      <tr>
-	      <?}?>
+	      <?php }?>
 	    </table>
 	  </td>
 	</tr>
       </table>
-    
+
   </tr>
   <tr>
     <td valign="top">
@@ -395,7 +395,7 @@ border: 2px outset #999999;
 	  <td align="center"width="10%" nowrap bordercolor="#cccccc">Altura</td>
 	  <td align="center"width="10%" nowrap bordercolor="#cccccc">Largura</td>
 	</tr>
-	 <? for ($i = 0;$i < $fm_numfields;$i++){
+	 <?php for ($i = 0;$i < $fm_numfields;$i++){
 	      $qualcampo = pg_fieldname($resultsql,$i);
               $tcampo = "T".$qualcampo;
               $lcampo = "L".$qualcampo;
@@ -415,12 +415,12 @@ border: 2px outset #999999;
                 $tcorpcorborda= @pg_result($consult,$i,19);
                 $tcorpcorfundo= @pg_result($consult,$i,20);
                 $tcorpaltura= @pg_result($consult,$i,21);
-                $tcorplargura= @pg_result($consult,$i,22); 
- 	      }    	
-          ?> 
+                $tcorplargura= @pg_result($consult,$i,22);
+ 	      }
+          ?>
 	      <tr height="25"  class='corpo'>
 	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
-                  <?
+                  <?php
 	           echo $$lcampo;
 		   ?>
 		</td>
@@ -439,15 +439,15 @@ border: 2px outset #999999;
 		</td>
 		<td align="center" bordercolor="#ffffff"width="12%" nowrap >
 		  <select name="corptamanho_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($tcorptamanho)){	
+       		       if(isset($tcorptamanho)){
                          echo "<option ".($t==@$tcorptamanho?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==9?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corpcortexto_<?=@$i?>">
@@ -489,36 +489,36 @@ border: 2px outset #999999;
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corpaltura_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 20; $t++){
-       		       if(isset($tcorpaltura)){	
+       		       if(isset($tcorpaltura)){
                          echo "<option ".($t==@$tcorpaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==4?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corplargura_<?=@$i?>">
-		    <?
+		    <?php
 		     for($t=0; $t<= 250; $t++){
-       		       if(isset($tcorplargura)){	
+       		       if(isset($tcorplargura)){
                          echo "<option ".($t==$tcorplargura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
 		       }else{
                          echo "<option ".($t==$largura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
-                       } 
+                       }
  		     }
-		    ?> 
+		    ?>
 		</td>
 	      <tr>
-	      <?}?>
+	      <?php }?>
 	    </table>
-	  
+
 	</tr>
       </table>
     </table>
-	 <?
+	 <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
      ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ function js_carregaFrame(url,idusu) {
           <td align='right'><b>CGM:</b>                    </td>
           <td class='texto'><?=$cgmlogin?>&nbsp;&nbsp;     </td>
           <td>&nbsp;&nbsp;<b>Ano:</b>  
-          <?
+          <?php
          // $sqlano = "select distinct anousu , anousu as ano from db_permissao where id_usuario = $id_usuario";
           $ano    = db_getsession("DB_anousu");
   				$sqlano = "select distinct s.anousu , s.anousu as ano

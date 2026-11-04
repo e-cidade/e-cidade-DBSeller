@@ -47,13 +47,14 @@ $oRetorno          = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
-$lProfessorLogado = true;
+$lProfessorLogado = false;
 $iCodigoUsuario   = db_getsession("DB_id_usuario");
 $oDaoDBUsusario   = new cl_db_usuacgm;
 $sSqlDadosDocente = $oDaoDBUsusario->sql_query($iCodigoUsuario, "z01_numcgm");
 $rsDadosDocente   = $oDaoDBUsusario->sql_record($sSqlDadosDocente);
 $iCodigoCgm  = db_utils::fieldsMemory($rsDadosDocente, 0)->z01_numcgm;
 $oDaoRecHumano = new cl_rechumano();
+$oUsuarioSistema  = new UsuarioSistema(db_getsession("DB_id_usuario"));
 
 $sWhere      = " (rh01_numcgm = {$iCodigoCgm} or ed285_i_cgm = {$iCodigoCgm})";
 $sWhere     .= " AND ed75_i_escola = {$iEscola} ";
@@ -66,28 +67,33 @@ $temVinculoRH = false;
 $cadastrosDoProfissional = db_utils::getCollectionByRecord(db_query($sqlRecHumano));
 $docentesEncontrados = [];
 
-foreach($cadastrosDoProfissional as $cadastro){
+if ($oUsuarioSistema->isAdministrador() || $cadastrosDoProfissional == []) {
+  $maiorPermissao = 1;
+}
+
+foreach ($cadastrosDoProfissional as $cadastro) {
   $temVinculoRH = true;
   $profissional = new ProfissionalEscola($cadastro->codigo);
 
-  if ($profissional->getMaiorPermissaoDiario() > $maiorPermissao) {
+  if (isset($profissional) && $profissional->getMaiorPermissaoDiario() > $maiorPermissao) {
     $maiorPermissao = $profissional->getMaiorPermissaoDiario();
   }
 
+  if (isset($profissional) && db_permissaomenu(db_getsession('DB_anousu'), 1100747, 9645) == true && $profissional->getMaiorPermissaoDiario() != 0) {
+    $maiorPermissao = 1;
+  }
+
   if(!$lProfessorLogado){
-    $oDocente = DocenteRepository::getDocenteByCodigoRecursosHumano($cadastro->codigo);
+    $oDocente = DocenteRepository::getDocenteByCodigoRecursosHumano($profissional->getCodigoProfissional());
     $docentesEncontrados[] = $oDocente;
-    if ($oDocente == null || empty($oDocente) || count($oDocente->getTurmas()) == 0) {
-      $lProfessorLogado = false;
+    if (!$oDocente == null && !empty($oDocente) && count($oDocente->getTurmas()) > 0) {
+      $lProfessorLogado = true;
     }
   }
 }
 
 $oRetorno->lProfessorLogado = $lProfessorLogado;
 
-if ($maiorPermissao == 0 && db_permissaomenu(db_getsession('DB_anousu'), 1100747, 9645) == true) {
-  $maiorPermissao = 1;
-}
 
 try {
 
@@ -118,12 +124,22 @@ try {
 
       if (isset($oParam->iTurma) && isset($oParam->iEtapa) && !empty($oParam->iTurma) && !empty($oParam->iEtapa)) {
 
+          /**
+           * Verificamos para que modulo esta configurado o parâmetro
+           * Correção de Fluxo
+           */
+          $oDaoSecParam = new cl_sec_parametros();
+          $sSqlSecParam = $oDaoSecParam->sql_query_file(null, "ed290_correcao_de_fluxo_manual");
+          $rsSecParam   = $oDaoSecParam->sql_record($sSqlSecParam);
+
         $oEtapa                 = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
         $oTurma                 = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
         $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa);
+        $fluxoManual   = db_utils::fieldsMemory($rsSecParam, 0)->ed290_correcao_de_fluxo_manual;
 
         $oRetorno->iTurma                       = $oParam->iTurma;
         $oRetorno->iEtapa                       = $oParam->iEtapa;
+        $oRetorno->iTipoTurma                   = $oTurma->getTipoDaTurma();
         $oRetorno->sEscola                      = urlencode($oTurma->getEscola()->getNome());
         $oRetorno->sCalendario                  = urlencode($oTurma->getCalendario()->getDescricao());
         $oRetorno->sCurso                       = urlencode($oTurma->getBaseCurricular()->getCurso()->getNome());
@@ -141,10 +157,11 @@ try {
         $oRetorno->lTurmaEncerradaParcial       = $oTurma->encerradaParcial($oEtapa);
         $oRetorno->lBloqueiaEncerramento        = $lProfessorLogado;
         $oRetorno->iMaiorPermissao              = $maiorPermissao;
+        $oRetorno->iFluxoManual                 = $fluxoManual;
 
         // Verifica se a avaliacao alternativa esta configurada para a escola
         $oDaoEduParametros   = new cl_edu_parametros;
-        $sqlParametrosEscola = $oDaoEduParametros->sql_query(null, "ed233_c_avalalternativa", null, "ed233_i_escola = {$iEscola}");
+        $sqlParametrosEscola = $oDaoEduParametros->sql_query(null, "ed233_c_avalalternativa, ed233_campo_aulas_dadas_lanc_turma", null, "ed233_i_escola = {$iEscola}");
         $rsParametrosEscola  = db_query($sqlParametrosEscola);
 
         if ( !$rsParametrosEscola ) {
@@ -153,6 +170,7 @@ try {
 
         $oDadosParametroEscola = db_utils::fieldsMemory($rsParametrosEscola, 0);
         $oRetorno->lEscolaUtilizaAvaliacaoAlternativa = $oDadosParametroEscola->ed233_c_avalalternativa == 'N' ? false : true;
+        $oRetorno->habilitaAulasDadas =  $oDadosParametroEscola->ed233_campo_aulas_dadas_lanc_turma == 'f' ? false : true;
 
         foreach( $oProcedimentoAvaliacao->getResultados() as $oResultadoAvaliacao ) {
 
@@ -164,7 +182,7 @@ try {
           }
 
           /**
-           * So e valido para Resultados onde a forma de obtenção for SOMA
+           * Só é valido para Resultados onde a forma de obtenção for SOMA
            */
           $aAvaliacaoAlternativa = $oResultadoAvaliacao->getAvaliacoesAlternativas();
           if (count($aAvaliacaoAlternativa) > 0) {
@@ -183,10 +201,9 @@ try {
          * avaliacao desta
          */
         foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oDisciplina) {
-
             foreach($docentesEncontrados as $docente){
               if ($lProfessorLogado && !$oDocente->lecionaRegencia($oDisciplina) && $maiorPermissao == 0){
-                continue;
+                continue 2;
               } else if ($maiorPermissao == 0){
                 continue;
               }

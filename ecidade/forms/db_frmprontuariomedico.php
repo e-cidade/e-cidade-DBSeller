@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -41,7 +41,7 @@ $clrotulo->label("sd35_i_familia");
 ?>
    <SCRIPT LANGUAGE="JavaScript">
     team = new Array(
-    <?
+    <?php
     # Seleciona todos os calendï¿½rios
     $sql1 = "SELECT sd34_i_codigo,sd34_v_descricao
              FROM microarea
@@ -109,18 +109,18 @@ $clrotulo->label("sd35_i_familia");
       if (itemArray[i][1] != null){
        selectCtrl.options[j].value = itemArray[i][1];
       }
-      <?if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
+      <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
        if(<?=trim($z01_i_familiamicroarea)?>==itemArray[i][1]){
         indice = i;
        }
-      <?}?>
+      <?php }?>
       j++;
      }
-     <?if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
+     <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
       selectCtrl.options[indice].selected = true;
-     <?}else{?>
+     <?php }else{?>
       selectCtrl.options[0].selected = true;
-     <?}?>
+     <?php }?>
     }
    }
    </script>
@@ -134,18 +134,19 @@ $clrotulo->label("sd35_i_familia");
     <td nowrap title="<?=@$Tsd32_i_codigo?>">
        <?=@$Lsd32_i_codigo?>
     </td>
-    <td> 
-<?
+    <td style="display:flex; gap:38%">
+<?php
 db_input('sd32_i_codigo',10,$Isd32_i_codigo,true,'text',3,"")
 ?>
+    <div style="display: flex; align-items: center;height: 18px;" id="linhaDaIdadeCompleta"></div>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd32_i_unidade?>">
-       <?db_ancora(@$Lsd32_i_unidade,"js_pesquisasd32_i_unidade(true);",$db_opcao);?>
+       <?php db_ancora(@$Lsd32_i_unidade,"js_pesquisasd32_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-<?
+<?php
 //     $sd32_i_unidade = db_getsession("DB_coddepto");
 //     db_input('sd32_i_unidade',10,$Isd32_i_unidade,true,'text',3,"");
 //     $descrdepto=db_getsession("DB_nomedepto");
@@ -157,15 +158,15 @@ db_input('sd32_i_codigo',10,$Isd32_i_codigo,true,'text',3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd32_i_numcgs?>">
-       <?
+       <?php
        db_ancora(@$Lsd32_i_numcgs,"js_pesquisasd32_i_numcgs(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd32_i_numcgs',10,$Isd32_i_numcgs,true,'text',3," onchange='js_pesquisasd32_i_numcgs(false);'")
 ?>
-      <?
+      <?php
         db_input('z01_v_nome',60,$Iz01_v_nome,true,'text',3,'')
       ?>
       <!--input name="novo_cgs" type="button" id="novo_cgs" value="Novo CGS" <?=($db_botao1==true?"disabled":"")?> onclick="js_novo_cgs();" -->
@@ -173,13 +174,13 @@ db_input('sd32_i_numcgs',10,$Isd32_i_numcgs,true,'text',3," onchange='js_pesquis
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd35_i_microarea?>">
-     <?//db_ancora(@$Lz01_i_familiamicroarea,"js_pesquisasd35_i_familiamicroarea(true);",$db_opcao);?>
+     <?php //db_ancora(@$Lz01_i_familiamicroarea,"js_pesquisasd35_i_familiamicroarea(true);",$db_opcao);?>
      <?=@$Lsd35_i_microarea?>
     </td>
     <td>
       <select id="z01_v_micro" name="z01_v_micro" onChange="fillSelectFromArray(this.form.z01_i_familiamicroarea, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:200px;height:18px;" disabled="" class="readonly">
        <option></option>
-       <?
+       <?php
        $sql1 = "SELECT sd34_i_codigo,sd34_v_descricao
                FROM microarea
                ORDER BY sd34_v_descricao";
@@ -189,7 +190,7 @@ db_input('sd32_i_numcgs',10,$Isd32_i_numcgs,true,'text',3," onchange='js_pesquis
         $desc_micro=$row["sd34_v_descricao"];
         ?>
         <option value="<?=$cod_micro;?>" <?=$cod_micro==@$sd34_i_codigo?"selected":""?>><?=$desc_micro;?></option>
-        <?
+        <?php
        }
        ?>
       </select>
@@ -204,24 +205,24 @@ db_input('sd32_i_numcgs',10,$Isd32_i_numcgs,true,'text',3," onchange='js_pesquis
       <select id="z01_i_familiamicroarea" name="z01_i_familiamicroarea" style="font-size:9px;width:200px;height:18px;" onchange="if(this.value=='')document.form1.z01_v_micro.value='';" disabled="" class="readonly">
        <option value=""></option>
       </select>
-      <?if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
+      <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
        <script>fillSelectFromArray(document.form1.z01_i_familiamicroarea, team[document.form1.z01_v_micro.selectedIndex-1]);</script>
-      <?}?>
+      <?php }?>
     </td>
   </tr>
 
 
   <tr>
     <td nowrap title="<?=@$Tsd32_i_medico?>">
-       <?
+       <?php
        db_ancora(@$Lsd32_i_medico,"js_pesquisasd32_i_medico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd32_i_medico',10,$Isd32_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd32_i_medico(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',60,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -235,7 +236,7 @@ db_input('z01_nome',60,$Iz01_nome,true,'text',3,'')
        <?=@$Lsd32_d_atendimento?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('sd32_d_atendimento',@$sd32_d_atendimento_dia,@$sd32_d_atendimento_mes,@$sd32_d_atendimento_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -245,7 +246,7 @@ db_inputdata('sd32_d_atendimento',@$sd32_d_atendimento_dia,@$sd32_d_atendimento_
        <?=@$Lsd32_c_horaatend?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd32_c_horaatend',5,$Isd32_c_horaatend,true,'text',$db_opcao,"OnKeyUp=mascara_hora(this.value,'sd32_c_horaatend')")
 ?>
     </td>
@@ -255,7 +256,7 @@ db_input('sd32_c_horaatend',5,$Isd32_c_horaatend,true,'text',$db_opcao,"OnKeyUp=
        <?=@$Lsd32_t_descricao?>
     </td>
     <td> 
-       <?
+       <?php
          $sd32_t_descricao=!isset($sd32_t_descricao)?' ':$sd32_t_descricao;
          db_textarea('sd32_t_descricao',3,75,@$sd32_t_descricao,true,'text',$db_opcao," style='text-transform:uppercase;'
           onKeyDown='textCounter(document.form1.sd32_t_descricao,document.form1.remLen1,3000)'
@@ -270,7 +271,7 @@ db_input('sd32_c_horaatend',5,$Isd32_c_horaatend,true,'text',$db_opcao,"OnKeyUp=
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="cancelar" type="button" value="Cancelar" <?=($db_botao1==false?"disabled":"")?> onclick="location.href='sau1_prontuariomedico001.php?chavepesquisaprontuario=<?=$sd32_i_numcgs?>&z01_v_nome=<?=$z01_v_nome?>&z01_i_familiamicroarea=<?=$z01_i_familiamicroarea?>'">
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" <?=($db_botao1==true?"disabled":"")?> onclick="js_pesquisa();//js_pesquisasd32_i_numcgs(true);" >
-<input name="relatorio" type="button" id="relatorio" value="Prontuário Médico" <?=($db_botao1==true?"disabled":"")?> onclick="js_relatorio();" >
+<input name="relatorio" type="button" id="relatorio" value="Prontuário Paciente" <?=($db_botao1==true?"disabled":"")?> onclick="js_relatorio();" >
 </form>
 <script rel="script" type="text/javascript" src="scripts/classes/saude/ValidaCgs.js"></script>
 <script>
@@ -307,6 +308,7 @@ window.onload = function(){
 
       z01_i_familiamicroarea.value = retorno.cgs_und.z01_i_familiamicroarea;
     }).execute();
+    pesquisaIdadeCompletaDoPaciente(sd32_i_numcgs.value,'linhaDaIdadeCompleta');
   }
 }
 
@@ -476,11 +478,13 @@ function js_preenchepesquisa(chave1, chave2, chave3){
   db_iframe_prontuariomedico.hide();
   location.href='sau1_prontuariomedico001.php?chavepesquisaprontuario='+chave1+'&z01_v_nome='+chave2+'&z01_i_familiamicroarea='+chave3;
 
-  <?
+  <?php
   //if($db_opcao!=1){
   //  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   //}
   ?>
 
 }
+
+
 </script>

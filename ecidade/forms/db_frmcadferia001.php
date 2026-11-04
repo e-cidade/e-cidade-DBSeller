@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -107,7 +107,7 @@ try {
                <?=$Lr30_tipoapuracaomedia?>
             </td>
             <td>
-               <?
+               <?php
                if ((isset($enviar_selecao) && $enviar_selecao != "") ||
                     isset($campomatriculas) && $campomatriculas != "") {
                  $r30_tipoapuracaomedia     = @$_POST["r30_tipoapuracaomedia"]!=""?$_POST["r30_tipoapuracaomedia"]:$_GET["r30_tipoapuracaomedia"];
@@ -126,7 +126,7 @@ try {
           </tr>
     <tr>
       <td nowrap title="<?=@$Tr30_perai?>" align="right">
-        <?
+        <?php
         db_input('r30_regist', 7, 0, true, 'hidden', 3);
         db_input('campomatriculas', 4, 0, true, 'hidden', 3);
 
@@ -152,11 +152,11 @@ try {
         ?>
       </td>
       <td colspan="3">
-        <?
+        <?php
         db_inputdata('r30_perai', @$r30_perai_dia, @$r30_perai_mes, @$r30_perai_ano, true, 'text', ($dbopcao?3:1)==1?$db_opcao:3, "onChange='js_verificaaquiini();'", "", "", "parent.js_verificaaquiini();");
         ?>
         &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-        <?
+        <?php
         db_inputdata('r30_peraf', @$r30_peraf_dia, @$r30_peraf_mes, @$r30_peraf_ano, true, 'text', ($dbopcao?3:1)==1?$db_opcao:3, "onChange='js_verificaaquifim();'", "", "", "parent.js_verificaaquifim();");
         db_input('r30_regist', 10, $Ir30_regist, true, 'hidden', 3);
         ?>
@@ -169,7 +169,7 @@ try {
         </b>
       </td>
       <td colspan="3">
-        <?
+        <?php
         db_inputdata('r30_periodolivreinicial',
                      @$r30_periodolivreinicial_dia,
                      @$r30_periodolivreinicial_mes,
@@ -180,7 +180,7 @@ try {
                      );
         ?>
         &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-        <?
+        <?php
         db_inputdata('r30_periodolivrefinal',
                      @$r30_periodolivrefinal_dia,
                      @$r30_periodolivrefinal_mes,
@@ -193,22 +193,22 @@ try {
     </tr>
     <tr>
       <td nowrap title="<?=@$Tr30_faltas?>" align="right">
-        <?
+        <?php
         db_ancora(@$Lr30_faltas, "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('r30_faltas', 7, $Ir30_faltas, true, 'text', ($dbopcao?3:1)==1?$db_opcao:3,"onchange=\"js_faltas('vfalta','','','',this.value,document.form1.navos.value!=''?document.form1.navos.value:0);\"");
         ?>
       </td>
       <td nowrap title="<?=@$Tr30_ndias?>" align="right">
-        <?
+        <?php
         db_ancora(@$Lr30_ndias, "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         if(!isset($r30_ndias) || (isset($r30_ndias) && trim($r30_ndias) == "")){
 
           $r30_ndias = $nDiasServidor;
@@ -220,17 +220,17 @@ try {
         <input type='hidden' id='gozar_old' size="5" />
       </td>
     </tr>
-    <?
+    <?php
     if($dbopcao == false){
     ?>
     <tr>
       <td nowrap title="Forma de pgto" align="right">
-        <?
+        <?php
         db_ancora("<b>Forma de pgto:</b>", "", 3);
         ?>
       </td>
       <td colspan="3">
-<?
+<?php
 
 
         $mtipo = ($nDiasServidor == 30) ? '01' : '12';
@@ -250,68 +250,68 @@ try {
         ?>
       </td>
     </tr>
-    <?
+    <?php
     }else{
       db_input('mtipo', 7, $Ir30_ndias, true, 'hidden', 3);
     }
     ?>
     <tr>
       <td nowrap title="<?=@$Tr30_abono?>" align="right">
-        <?
+        <?php
         db_ancora(@$Lr30_abono, "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('r30_abono', 7, $Ir30_abono, true, 'text', 3);
         ?>
       </td>
       <td nowrap title="<?=@$Tr30_proc1?>" align="right">
-        <?
+        <?php
         db_ancora("<b>Pago em:</b>", "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('r30_proc1', 7, $Ir30_proc1, true, 'text', 3);
         ?>
       </td>
     </tr>
     <tr>
       <td nowrap title="Dias a gozar" align="right">
-        <?
+        <?php
         db_ancora("<b>Dias a gozar:</b>", "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('nsaldo', 7, $Ir30_ndias, true, 'text', $db_opcao, 'onchange="js_verificadataini(1)"');
         ?>
       </td>
       <td nowrap title="Dias a abonar" align="right">
-        <?
+        <?php
         db_ancora("<b>Dias a abonar:</b>", "", 3);
         ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('nabono', 7, $Ir30_ndias, true, 'text', 3);
         db_input('navos', 7, $Ir30_ndias, true, 'hidden', 3);
         db_input('antes', 7, 0, true, 'hidden', 3);
         ?>
       </td>
     </tr>
-    <?
+    <?php
     if($dbopcao == false){
     ?>
     <tr>
       <td nowrap title="Período a gozar" align="right">
-        <?
+        <?php
         db_ancora("<b>Período a gozar:</b>", "", 3);
         ?>
       </td>
       <td colspan="3">
-        <?
+        <?php
         if(!isset($r30_per1i)){
           $r30_per1i = "";
           $r30_per1i_dia = "";
@@ -328,15 +328,15 @@ try {
         db_inputdata('r30_per1i', @$r30_per1i_dia, @$r30_per1i_mes, @$r30_per1i_ano, true, 'text', $db_opcao, "onchange='js_verificadataini(1);'","","","parent.js_verificadataini(1);");
         ?>
         &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-        <?
+        <?php
         db_inputdata('r30_per1f', @$r30_per1f_dia, @$r30_per1f_mes, @$r30_per1f_ano, true, 'text', $db_opcao, "onchange='js_verificadatafim(1);'","","","parent.js_verificadatafim(1);");
         ?>
       </td>
     </tr>
-    <?
+    <?php
     }
     ?>
-  <?
+  <?php
   if($dbopcao == true && !isset($mtipo)){
   ?>
         </table>
@@ -352,28 +352,28 @@ try {
         <table>
           <tr>
             <td nowrap title="Período a gozar" align="right">
-              <?
+              <?php
               db_ancora("<b>Primeiro período:</b>", "", 3);
               ?>
             </td>
             <td colspan="3">
-              <?
+              <?php
               db_inputdata('r30_per1i', @$r30_per1i_dia, @$r30_per1i_mes, @$r30_per1i_ano, true, 'text', 3, "");
               ?>
               &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-              <?
+              <?php
               db_inputdata('r30_per1f', @$r30_per1f_dia, @$r30_per1f_mes, @$r30_per1f_ano, true, 'text', 3, "");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="Saldo" align="right">
-              <?
+              <?php
               db_ancora("<b>Saldo:</b>", "", 3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               if(!isset($saldo)){
                 $saldo = "10";
               }
@@ -384,21 +384,21 @@ try {
           </tr>
           <tr>
             <td nowrap title="Período a gozar" align="right">
-              <?
+              <?php
               db_ancora("<b>Segundo período:</b>", "", 3);
               ?>
             </td>
             <td colspan="3">
-              <?
+              <?php
               db_inputdata('r30_per2i', @$r30_per2i_dia, @$r30_per2i_mes, @$r30_per2i_ano, true, 'text', $db_opcao, "onchange='js_verificadataini(2);'","","","parent.js_verificadataini(2);");
               ?>
               &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-              <?
+              <?php
               db_inputdata('r30_per2f', @$r30_per2f_dia, @$r30_per2f_mes, @$r30_per2f_ano, true, 'text', $db_opcao, "onchange='js_verificadatafim(2);'","","","parent.js_verificadatafim(2);");
               ?>
             </td>
           </tr>
-  <?
+  <?php
   }else{
     if($dbopcao == true){
   ?>
@@ -412,34 +412,34 @@ try {
         <table>
           <tr>
             <td nowrap title="Período a gozar" align="right">
-              <?
+              <?php
               db_ancora("<b>Período a gozar:</b>", "", 3);
               ?>
             </td>
             <td colspan="3">
-              <?
+              <?php
               db_inputdata('r30_per2i', @$r30_per2i_dia, @$r30_per2i_mes, @$r30_per2i_ano, true, 'text', $db_opcao, "onchange='js_verificadataini(2);'","","","parent.js_verificadataini(2);");
               ?>
               &nbsp;&nbsp;<b>a</b>&nbsp;&nbsp;
-              <?
+              <?php
               db_inputdata('r30_per2f', @$r30_per2f_dia, @$r30_per2f_mes, @$r30_per2f_ano, true, 'text', $db_opcao, "onchange='js_verificadatafim(2);'","","","parent.js_verificadatafim(2);");
               ?>
             </td>
           </tr>
-    <?
+    <?php
     }
     ?>
-  <?
+  <?php
   }
   ?>
           <tr>
             <td nowrap title="Digite o Ano / Mês de competência" align="right">
-              <?
+              <?php
               db_ancora("<b>Ano / Mês pagamento:</b>", "", 3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               if(!isset($anopagto)){
                 $anopagto = db_anofolha();
               }
@@ -449,19 +449,19 @@ try {
               db_input("DBtxt23", 4, $IDBtxt23, true, "text", $db_opcao,"","anopagto");
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php
               db_input("DBtxt25", 2, $IDBtxt25, true, "text", $db_opcao,"","mespagto");
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="Pagar férias" align="right">
-              <?
+              <?php
               db_ancora("<b>Pagar férias: </b>", "", 3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               if(!isset($ponto)){
                 $ponto = "S";
               }
@@ -481,12 +481,12 @@ try {
           </tr>
           <tr>
             <td nowrap title="Pagar somente 1/3 férias" align="right">
-              <?
+              <?php
               db_ancora("<b>Pagar somente 1/3 férias:</b>", "", 3);
               ?>
             </td>
             <td>
-              <?
+              <?php
               if(!isset($paga_13)){
                 $paga_13 = "f";
               }
@@ -519,7 +519,7 @@ try {
               <b>Observações:</b>
             </td>
             <td>
-              <?
+              <?php
                 db_textarea("r30_obs",5, 45,  "", true,null, $db_opcao)
               ?>
             </td>
@@ -610,7 +610,7 @@ function js_verificadados(debug){
       return false;
   }
 <?php
-if(isset($dbopcao) && $dbopcao == true) {
+if(isset($dbopcao) && $dbopcao == true){
 ?>
   if(document.form1.mtipo.value == "09"){
     somatest = new Number(x.r30_peraf_dia.value);
@@ -1096,11 +1096,11 @@ function js_verificadataini(campo){
       evaldiaf.value = per2f.getDate()<10?"0"+per2f.getDate():per2f.getDate();
       evalmesf.value = (per2f.getMonth() + 1)<10?"0"+(per2f.getMonth() + 1):(per2f.getMonth() + 1);
       evalanof.value = per2f.getFullYear();
-      <?
+      <?php
      if(isset($dbopcao) && $dbopcao == false){
      ?>
      js_faltas('vafast','','','','','');
-     <?
+     <?php
      }
      ?>
     }else{
@@ -1178,11 +1178,11 @@ function js_verificadatafim(campo){
         evaldiaf.focus();
       }
     }else{
-      <?
+      <?php
       if(isset($dbopcao) && $dbopcao == false){
       ?>
       js_faltas('vafast','','','','','');
-      <?
+      <?php
       }
       ?>
     }
@@ -1488,7 +1488,7 @@ function js_validamtipo(recalcularDias) {
 
 }
 
-<?
+<?php
 if (isset($dbopcao) && $dbopcao == true && !isset($mtipo)) {
 
   echo "js_habilitaperiodo(2);";

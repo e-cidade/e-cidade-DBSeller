@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ if(isset($alterar)) {
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='tfd1_tfd_tipotratamentodoc001.php?tf06_i_tipotratamento=<?=$chavepesquisa?>&tf04_c_descr=<?=@$tf04_c_descr?>';
            
      </script>
-<?
+<?php
 }
 ?>
 <html>
@@ -80,7 +80,7 @@ if(isset($alterar)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
       <fieldset style='width: 75%;'> <legend><b>Tratamento</b></legend>
-	      <?
+	      <?php
       	require_once(modification("forms/db_frmtfd_tipotratamento.php"));
         ?>
       </fieldset>
@@ -91,7 +91,7 @@ if(isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if($cltfd_tipotratamento->erro_status=="0"){
     $cltfd_tipotratamento->erro(true,false);

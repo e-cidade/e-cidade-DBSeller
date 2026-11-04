@@ -1,62 +1,62 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pcsugforn
-class cl_pcsugforn { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc40_solic = 0; 
-   var $pc40_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pcsugforn {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc40_solic = 0;
+   var $pc40_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc40_solic = int4 = numero da solicitacao 
-                 pc40_numcgm = int4 = numero do cgm do fornecedor 
+                 pc40_solic = int4 = numero da solicitacao
+                 pc40_numcgm = int4 = numero do cgm do fornecedor
                  ";
-   //funcao construtor da classe 
-   function cl_pcsugforn() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcsugforn"); 
+     $this->rotulo = new rotulo("pcsugforn");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pcsugforn {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc40_solic = ($this->pc40_solic == ""?@$GLOBALS["HTTP_POST_VARS"]["pc40_solic"]:$this->pc40_solic);
        $this->pc40_numcgm = ($this->pc40_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["pc40_numcgm"]:$this->pc40_numcgm);
@@ -75,11 +75,11 @@ class cl_pcsugforn {
      }
    }
    // funcao para inclusao
-   function incluir ($pc40_solic,$pc40_numcgm){ 
+   public function incluir ($pc40_solic,$pc40_numcgm){
       $this->atualizacampos();
-       $this->pc40_solic = $pc40_solic; 
-       $this->pc40_numcgm = $pc40_numcgm; 
-     if(($this->pc40_solic == null) || ($this->pc40_solic == "") ){ 
+       $this->pc40_solic = $pc40_solic;
+       $this->pc40_numcgm = $pc40_numcgm;
+     if(($this->pc40_solic == null) || ($this->pc40_solic == "") ){
        $this->erro_sql = " Campo pc40_solic nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -87,7 +87,7 @@ class cl_pcsugforn {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->pc40_numcgm == null) || ($this->pc40_numcgm == "") ){ 
+     if(($this->pc40_numcgm == null) || ($this->pc40_numcgm == "") ){
        $this->erro_sql = " Campo pc40_numcgm nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -96,15 +96,15 @@ class cl_pcsugforn {
        return false;
      }
      $sql = "insert into pcsugforn(
-                                       pc40_solic 
-                                      ,pc40_numcgm 
+                                       pc40_solic
+                                      ,pc40_numcgm
                        )
                 values (
-                                $this->pc40_solic 
-                               ,$this->pc40_numcgm 
+                                $this->pc40_solic
+                               ,$this->pc40_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "fornecedores sugeridos ($this->pc40_solic."-".$this->pc40_numcgm) nao Incluído. Inclusao Abortada.";
@@ -138,16 +138,16 @@ class cl_pcsugforn {
        $resac = db_query("insert into db_acount values($acount,343,2123,'','".AddSlashes(pg_result($resaco,0,'pc40_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($pc40_solic=null,$pc40_numcgm=null) { 
+   public function alterar ($pc40_solic=null,$pc40_numcgm=null) {
       $this->atualizacampos();
      $sql = " update pcsugforn set ";
      $virgula = "";
-     if(trim($this->pc40_solic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc40_solic"])){ 
+     if(trim($this->pc40_solic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc40_solic"])){
        $sql  .= $virgula." pc40_solic = $this->pc40_solic ";
        $virgula = ",";
-       if(trim($this->pc40_solic) == null ){ 
+       if(trim($this->pc40_solic) == null ){
          $this->erro_sql = " Campo numero da solicitacao nao Informado.";
          $this->erro_campo = "pc40_solic";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_pcsugforn {
          return false;
        }
      }
-     if(trim($this->pc40_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc40_numcgm"])){ 
-        if(trim($this->pc40_numcgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc40_numcgm"])){ 
-           $this->pc40_numcgm = "0" ; 
-        } 
+     if(trim($this->pc40_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc40_numcgm"])){
+        if(trim($this->pc40_numcgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc40_numcgm"])){
+           $this->pc40_numcgm = "0" ;
+        }
        $sql  .= $virgula." pc40_numcgm = $this->pc40_numcgm ";
        $virgula = ",";
      }
@@ -186,7 +186,7 @@ class cl_pcsugforn {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "fornecedores sugeridos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc40_solic."-".$this->pc40_numcgm;
@@ -214,14 +214,14 @@ class cl_pcsugforn {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($pc40_solic=null,$pc40_numcgm=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc40_solic=null,$pc40_numcgm=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($pc40_solic,$pc40_numcgm));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -255,7 +255,7 @@ class cl_pcsugforn {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "fornecedores sugeridos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc40_solic."-".$pc40_numcgm;
@@ -283,11 +283,11 @@ class cl_pcsugforn {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -309,7 +309,7 @@ class cl_pcsugforn {
       }
      return $result;
    }
-   function sql_query ( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -332,23 +332,23 @@ class cl_pcsugforn {
      $sql2 = "";
      if($dbwhere==""){
        if($pc40_solic!=null ){
-         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic "; 
-       } 
+         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic ";
+       }
        if($pc40_numcgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm "; 
-       } 
+         }
+         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,10 +357,10 @@ class cl_pcsugforn {
      }
      return $sql;
   }
-   function sql_query_file ( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -373,23 +373,23 @@ class cl_pcsugforn {
      $sql2 = "";
      if($dbwhere==""){
        if($pc40_solic!=null ){
-         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic "; 
-       } 
+         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic ";
+       }
        if($pc40_numcgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm "; 
-       } 
+         }
+         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,11 +398,11 @@ class cl_pcsugforn {
      }
      return $sql;
   }
-  
-  public function sql_query_dados_fornecedor( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
+
+  public function sql_query_dados_fornecedor( $pc40_solic=null,$pc40_numcgm=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,23 +417,23 @@ class cl_pcsugforn {
      $sql2 = "";
      if($dbwhere==""){
        if($pc40_solic!=null ){
-         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic "; 
-       } 
+         $sql2 .= " where pcsugforn.pc40_solic = $pc40_solic ";
+       }
        if($pc40_numcgm!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm "; 
-       } 
+         }
+         $sql2 .= " pcsugforn.pc40_numcgm = $pc40_numcgm ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

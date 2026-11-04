@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -95,6 +95,7 @@ $lPermMenu = db_permissaomenu($iAnoUsu, 2544, 2571);
 
 if (isset($oGet->chavepesquisa) && !empty($oGet->chavepesquisa)) {
 	$it01_guia = $oGet->chavepesquisa;
+  $_SESSION['itbi_guiachavepesquisa'] = $it01_guia;
 }
 
 if (isset($it01_guia) && !empty($it01_guia)) {
@@ -239,7 +240,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
 	     foreach ( $aListaCaracImovel as $aChave){
 
-	       $aListaDadosCaracImovel = split("X",$aChave);
+	       $aListaDadosCaracImovel =explode("X",$aChave);
 	       if ($aListaDadosCaracImovel[0]=="") {
            continue;
          }
@@ -278,7 +279,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
 	     foreach ( $aListaCaracUtil as $aChave){
 
-	       $aListaDadosCaracUtil = split("X",$aChave);
+	       $aListaDadosCaracUtil =explode("X",$aChave);
 	       if ($aListaDadosCaracUtil[0]=="") {
            continue;
          }
@@ -342,7 +343,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
     foreach ( $aListaFormaPag as $aChave){
 
-  	  $aListaValorFormaPag = split("X",$aChave);
+  	  $aListaValorFormaPag =explode("X",$aChave);
 
   	  // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
   	  // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -498,10 +499,12 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
               parent.document.formaba.transm.disabled   = false;
               parent.document.formaba.compnome.disabled = false;
               parent.document.formaba.constr.disabled   = false;
+              parent.document.formaba.anexo.disabled   = false;
 
               parent.iframe_transm.location.href   = 'itb1_itbinome001.php?tiponome=t&it03_guia=".$oGet->chavepesquisa."';
               parent.iframe_compnome.location.href = 'itb1_itbinomecomp001.php?tiponome=c&it03_guia=".$oGet->chavepesquisa."';
               parent.iframe_constr.location.href   = 'itb1_itbiconstr001.php?it08_guia=".$oGet->chavepesquisa."&tipo=".$oGet->tipo."';
+              parent.iframe_anexo.location.href 	 = 'itb1_itbianexo001.php?itbi_guia=" . $oGet->chavepesquisa . "';
 
             </script>";
 
@@ -551,7 +554,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
   if ($lSqlErro) {

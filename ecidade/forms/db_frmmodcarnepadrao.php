@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
           <?=@$Lk48_sequencial?>
         </td>
     	<td> 
-		  <?
+		  <?php
 			db_input('k48_sequencial',10,$Ik48_sequencial,true,'text',3,"");
 		  ?>
         </td>
@@ -70,7 +70,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	       <?=$Lk48_instit?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_input('k48_instit',10,$Ik48_instit,true,'text',3,"");
 			db_input('nomeinst',50,$Inomeinst,true,'text',3,'');
 	      ?>
@@ -78,12 +78,12 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tk48_cadconvenio?>">
-	      <?
+	      <?php
 	        db_ancora(@$Lk48_cadconvenio,"js_pesquisak48_cadconvenio(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 			db_input('k48_cadconvenio',10,$Ik48_cadconvenio,true,'text',$db_opcao," onchange='js_pesquisak48_cadconvenio(false);'");
 			db_input('ar11_nome',50,$Ik47_descr,true,'text',3,'');
 	      ?>
@@ -91,12 +91,12 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tk48_cadtipomod?>">
-	      <?
+	      <?php
 	        db_ancora(@$Lk48_cadtipomod,"js_pesquisak48_cadtipomod(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		    db_input('k48_cadtipomod',10,$Ik48_cadtipomod,true,'text',$db_opcao," onchange='js_pesquisak48_cadtipomod(false);'");
 			db_input('k46_descr',50,$Ik46_descr,true,'text',3,'');
 	      ?>
@@ -107,7 +107,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	      <b>Tipo Modelo</b>
 	    </td>
 	    <td>
-	      <?
+	      <?php
 			$aPdfTxt = array("pdf"=>"PDF","txt"=>"TXT");
 	        db_select("selPdfTxt",$aPdfTxt,true,$db_opcao,"style='width:80px;' onChange='js_alteraTelaModelo(this.value)'");
   		  ?> 
@@ -115,12 +115,12 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	  </tr>
 	  <tr id="formPdf">
 	    <td>
-	      <?
+	      <?php
 	        db_ancora(@$Lm01_cadmodcarne,"js_pesquisam01_cadmodcarne(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 			db_input('m01_cadmodcarne',10,$Im01_cadmodcarne,true,'text',$db_opcao," onchange='js_pesquisam01_cadmodcarne(false);'");
 			db_input('k47_descr',50,$Ik47_descr,true,'text',3,'');
 	      ?>
@@ -128,12 +128,12 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	  </tr>
 	  <tr id="formTxt" style="display:none">
 	    <td>
-	      <?
+	      <?php
 	        db_ancora(@$Lm02_db_layouttxt,"js_pesquisam02_db_layouttxt(true);",$db_opcao);
 	      ?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 			db_input('m02_db_layouttxt',10,$Im02_db_layouttxt,true,'text',$db_opcao," onchange='js_pesquisam02_db_layouttxt(false);'");
 			db_input('db50_descr',50,$Idb50_descr,true,'text',3,'');
 	      ?>
@@ -144,7 +144,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	      <?=@$Lk48_dataini?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 	 	  
 	 	    if ( !isset($k48_dataini) || trim($k48_dataini) == ""  ) {
 	 	      $k48_dataini_dia = "01";
@@ -162,7 +162,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	      <?=@$Lk48_datafim?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 		  
 	 	    if ( !isset($k48_datafim) || trim($k48_datafim) == "" ) {
 	 	      $k48_datafim_dia = "31";
@@ -181,7 +181,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
          <b>Parcela Inicial</b>
        </td>
        <td> 
-         <?
+         <?php
            db_input('k48_parcini',10,'' ,true,'text',$db_opcao," ");
          ?>
        </td>  
@@ -192,7 +192,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
          <b>Parcela Final</b>
        </td>
        <td> 
-         <?
+         <?php
            db_input('k48_parcfim',10, '' ,true,'text',$db_opcao," ");
          ?>
        </td>  
@@ -347,7 +347,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_modcarnepadrao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

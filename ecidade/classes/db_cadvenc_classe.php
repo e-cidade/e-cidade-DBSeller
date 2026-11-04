@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,13 +63,13 @@ class cl_cadvenc {
                  q82_calculaparcvenc = bool = Calcula Parcela Vencida
                  ";
    //funcao construtor da classe
-   function cl_cadvenc() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadvenc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -78,7 +78,7 @@ class cl_cadvenc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q82_codigo = ($this->q82_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["q82_codigo"]:$this->q82_codigo);
        $this->q82_parc = ($this->q82_parc == ""?@$GLOBALS["HTTP_POST_VARS"]["q82_parc"]:$this->q82_parc);
@@ -100,7 +100,7 @@ class cl_cadvenc {
      }
    }
    // funcao para inclusao
-   function incluir ($q82_codigo,$q82_parc){
+   public function incluir ($q82_codigo,$q82_parc){
       $this->atualizacampos();
      if($this->q82_venc == null ){
        $this->erro_sql = " Campo data do vencimento da parcela nao Informado.";
@@ -225,7 +225,7 @@ class cl_cadvenc {
      return true;
    }
    // funcao para alteracao
-   function alterar ($q82_codigo=null,$q82_parc=null) {
+   public function alterar ($q82_codigo=null,$q82_parc=null) {
       $this->atualizacampos();
      $sql = " update cadvenc set ";
      $virgula = "";
@@ -398,7 +398,7 @@ class cl_cadvenc {
      }
    }
    // funcao para exclusao
-   function excluir ($q82_codigo=null,$q82_parc=null,$dbwhere=null) {
+   public function excluir ($q82_codigo=null,$q82_parc=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q82_codigo,$q82_parc));
      }else{
@@ -472,7 +472,7 @@ class cl_cadvenc {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -495,10 +495,10 @@ class cl_cadvenc {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $q82_codigo=null,$q82_parc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $q82_codigo=null,$q82_parc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_cadvenc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,10 +541,10 @@ class cl_cadvenc {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $q82_codigo=null,$q82_parc=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $q82_codigo=null,$q82_parc=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,7 +573,7 @@ class cl_cadvenc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -582,7 +582,7 @@ class cl_cadvenc {
      }
      return $sql;
   }
-   function alterar_alt ($q82_codigo=null,$q82_parc=null,$dbwhere="") {
+   public function alterar_alt ($q82_codigo=null,$q82_parc=null,$dbwhere="") {
       $this->atualizacampos();
      $sql = " update cadvenc set ";
      $virgula = "";
@@ -666,7 +666,7 @@ class cl_cadvenc {
      }
    }
 
-   function sql_query_file_exercicio_cissqn($sWhere = ""){
+   public function sql_query_file_exercicio_cissqn($sWhere = ""){
 
      $sql = "select *       ";
      $sql .= " from cadvenc ";

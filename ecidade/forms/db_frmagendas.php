@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("ed16_c_computador");
        <?=@$Led17_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed17_i_codigo',10,$Ied17_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted17_i_matricula?>">
-       <?
+       <?php
        db_ancora(@$Led17_i_matricula,"js_pesquisaed17_i_matricula(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed17_i_matricula',10,$Ied17_i_matricula,true,'text',$db_opcao," onchange='js_pesquisaed17_i_matricula(false);'")
 ?>
-       <?
+       <?php
 db_input('ed09_c_situacao',20,$Ied09_c_situacao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted17_i_laboratorio?>">
-       <?
+       <?php
        db_ancora(@$Led17_i_laboratorio,"js_pesquisaed17_i_laboratorio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed17_i_laboratorio',10,$Ied17_i_laboratorio,true,'text',$db_opcao," onchange='js_pesquisaed17_i_laboratorio(false);'")
 ?>
-       <?
+       <?php
 db_input('ed16_c_computador',10,$Ied16_c_computador,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed16_c_computador',10,$Ied16_c_computador,true,'text',3,'')
        <?=@$Led17_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed17_d_data',@$ed17_d_data_dia,@$ed17_d_data_mes,@$ed17_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_inputdata('ed17_d_data',@$ed17_d_data_dia,@$ed17_d_data_mes,@$ed17_d_data_ano
        <?=@$Led17_c_inicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed17_c_inicial',5,$Ied17_c_inicial,true,'text',$db_opcao,"OnKeyUp=\"mascara_hora(this.value,9)\"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('ed17_c_inicial',5,$Ied17_c_inicial,true,'text',$db_opcao,"OnKeyUp=\"ma
        <?=@$Led17_c_final?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed17_c_final',5,$Ied17_c_final,true,'text',$db_opcao,"OnKeyUp=\"mascara_hora(this.value,10)\"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('ed17_c_final',5,$Ied17_c_final,true,'text',$db_opcao,"OnKeyUp=\"mascar
        <?=@$Led17_c_status?>
     </td>
     <td> 
-<?
+<?php
 $x = array('COMPARECEU'=>'Compareceu','NÃO COMPARECEU'=>'Não Compareceu','TRANFERIDO'=>'Transferido para outra data','CANCELADO'=>'Cancelado','AGENDADO'=>'Agendado');
 db_select('ed17_c_status',$x,true,$db_opcao,"");
 ?>
@@ -202,7 +202,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agendas.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

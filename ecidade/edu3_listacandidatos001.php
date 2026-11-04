@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -66,7 +66,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession
 </style>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?
+ <?php
  # Seleciona todos os calendários
  $sql        = " SELECT ed29_i_codigo,ed29_c_descr ";
  $sql       .= "   FROM cursoedu ";
@@ -196,20 +196,20 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null){
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?if (isset($serieescolhida)) {?>
+    <?php if (isset($serieescolhida)) {?>
         if (<?=trim($serieescolhida)?> == itemArray[i][1]) {
           indice = i;
         }
-    <?}?>
+    <?php }?>
       j++;
     }
-  <?if (isset($serieescolhida)) {?>
+  <?php if (isset($serieescolhida)) {?>
 
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled    = false;
   <?} else {?>
       selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
     document.form1.subgrupo.disabled = false;
   }
 }
@@ -248,7 +248,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <b>Calendário:</b><br>
        <select name="calenda" style="font-size:9px;width:150px;height:18px;">
        <option value="0">TODOS</option>
-        <?
+        <?php
         $sql          = " SELECT ed52_i_codigo,ed52_c_descr ";
         $sql         .= "   FROM calendario ";
         $sql         .= "        inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
@@ -258,31 +258,31 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         $rsCalendario = db_query( $sql );
 
         while ( $row = pg_fetch_array( $rsCalendario ) ) {
-                  	
+
          $cod_cal  = $row["ed52_i_codigo"];
          $desc_cal = $row["ed52_c_descr"];
          ?>
-         
+
          <option value="<?=$cod_cal?>" <?=$cod_cal==@$calendario?"selected":""?>><?=$desc_cal;?></option>
-         <?
+         <?php
         }
         ?>
        </select>
       </td>
       <td align="left">
        <b>Selecione o Curso:</b><br>
-       <select name="grupo" 
-               onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
+       <select name="grupo"
+               onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));"
                style="font-size:9px;width:250px;height:18px;">
         <option></option>
-        <?
+        <?php
         #Seleciona todos os grupos para setar os valores no combo
         $sql        = " SELECT ed29_i_codigo,ed29_c_descr ";
         $sql       .= "   FROM cursoedu ";
         $sql       .= "        inner join cursoescola on ed71_i_curso = ed29_i_codigo ";
         $sql       .= "  WHERE ed71_i_escola   = {$escola} ";
         $sql       .= "    AND ed71_c_situacao = 'S' ";
-        $sql       .= "  ORDER BY ed29_c_descr ASC ";     
+        $sql       .= "  ORDER BY ed29_c_descr ASC ";
         $sql_result = db_query( $sql );
 
         while( $row = pg_fetch_array( $sql_result ) ) {
@@ -291,7 +291,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
           $desc_curso = $row["ed29_c_descr"];
          ?>
          <option value="<?=$cod_curso;?>" <?=$cod_curso==@$curso?"selected":""?>><?=$desc_curso;?></option>
-         <?
+         <?php
         }
         #Popula o segundo combo de acordo com a escolha no primeiro
         ?>
@@ -304,8 +304,8 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        </select>
       </td>
       <td valign='bottom'>
-       <input type="button" name="procurar" value="Procurar" 
-              onclick="js_procurar(document.form1.calenda.value,document.form1.grupo.value,document.form1.subgrupo.value)" 
+       <input type="button" name="procurar" value="Procurar"
+              onclick="js_procurar(document.form1.calenda.value,document.form1.grupo.value,document.form1.subgrupo.value)"
               disabled>
       </td>
      </tr>
@@ -313,14 +313,14 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    </fieldset>
   </td>
  </tr>
- <?if (isset($curso)) {?>
+ <?php if (isset($curso)) {?>
  <tr>
   <td align="center">
    <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
    <table border="0" cellspacing="2px" width="98%" cellpadding="1px" bgcolor="#cccccc">
     <tr>
      <td align="center" valign="top">
-      <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+      <table border='1px' width="100%" bgcolor="#cccccc" cellspacing="0px">
       <tr class='cabec'>
        <td>Código Aluno</td>
        <td>Nome</td>
@@ -330,7 +330,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <td>Etapa</td>
        <td>Calendário</td>
       </tr>
-      <?
+      <?php
 
        if ( $calendario != 0 ) {
 
@@ -341,7 +341,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        } else {
        	$ed52_i_calendant ="";
        }
-       
+
        if ( $serieescolhida != 0 ) {
 
          $where  = " AND alunopossib.ed79_i_serie = {$serieescolhida}";
@@ -410,7 +410,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
           <td class="aluno"><?=$ed11_c_descr?></td>
           <td class="aluno"><?=$ed52_c_descr?></td>
          </tr>
-        <?
+        <?php
         }
 
         $sCamposCalendario       = "ed52_i_codigo as codigocalendario, ed52_i_ano";
@@ -514,13 +514,13 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
          </td>
          <td></td>
         </tr>
-        <?
+        <?php
        }else{
         ?>
         <tr bgcolor="#EAEAEA">
          <td align="center" class='aluno' colspan="7">Nenhum candidato para as opções escolhidas.</td>
         </tr>
-        <?
+        <?php
        }
       }
       ?>
@@ -543,7 +543,7 @@ function js_procurar( calendario, curso, turma ) {
 }
 
 function js_imprimir( calendario, grupo, subgrupo ) {
-	
+
   jan = window.open("edu2_listacandidatos002.php?calendario="+document.form1.calenda.value
                                               +"&curso="+document.form1.grupo.value
                                               +"&serieescolhida="+document.form1.subgrupo.value
@@ -555,7 +555,7 @@ function js_imprimir( calendario, grupo, subgrupo ) {
 }
 
 function js_matriculas( turma, descrturma, calendario ) {
-	
+
   js_OpenJanelaIframe(
                        'CurrentWindow.corpo',
                        'db_iframe_matriculas',
@@ -575,10 +575,10 @@ function js_botao( valor ) {
   }
 }
 
-<?if ( !isset( $serieescolhida ) && pg_num_rows( $sql_result ) > 0 ){?>
+<?php if ( !isset( $serieescolhida ) && pg_num_rows( $sql_result ) > 0 ){?>
 
  fillSelectFromArray2(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?}?>
+<?php }?>
 
 </script>

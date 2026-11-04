@@ -43,7 +43,7 @@ include(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("estilos.css");
@@ -56,7 +56,7 @@ db_app::load("datagrid.widget.js")
 <table align="center" style="padding-top:28px;">
   <tr>
     <td>
-      <?
+      <?php
       $clrotulo  = new rotulocampo;
       $clrotulo->label('DBtxt23');
       $clrotulo->label('DBtxt25');
@@ -73,12 +73,12 @@ db_app::load("datagrid.widget.js")
       			      <b>Ano / Mês :</b>
       			    </td>
       			    <td nowrap>
-      			      <?
+      			      <?php
       			        $anofolha = db_anofolha();
       			        db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto()'");
       			      ?>
       			      &nbsp;/&nbsp;
-      			      <?
+      			      <?php
       			        $mesfolha = db_mesfolha();
       			        db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto()'");
       			      ?>
@@ -89,7 +89,7 @@ db_app::load("datagrid.widget.js")
       			      <b>Ponto:</b>
       			    </td>
       			    <td>
-      			     <?
+      			     <?php
 
       			       $aSigla = array( "r14"=>"Salário",
       					                    "r48"=>"Complementar",
@@ -106,7 +106,7 @@ db_app::load("datagrid.widget.js")
                   <b>Tipo:</b>
                 </td>
                 <td>
-                 <?
+                 <?php
 
                    $aTipos = array(
                                    "1" => "Salário        ",
@@ -122,7 +122,7 @@ db_app::load("datagrid.widget.js")
       		    </tr>
               <tr id='tabelasPrevidencia' style='display:none'>
 	              <td align="center" colspan="2" >
-	               <?
+	               <?php
 		               $sql  = "select distinct (cast(r33_codtab as integer) - 2) as r33_codtab,              ";
 		               $sql .= "                r33_nome                 ";
 		               $sql .= "           from inssirf                  ";
@@ -139,7 +139,7 @@ db_app::load("datagrid.widget.js")
 	            <tr>
 	              <td> <b> Mostrar Retenções: </b></td>
 	              <td>
-                  <?
+                  <?php
                     $sql = "select r11_geraretencaoempenho
                               from cfpess
                              where r11_anousu = {$anofolha}
@@ -204,7 +204,7 @@ db_app::load("datagrid.widget.js")
     </table>
   </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

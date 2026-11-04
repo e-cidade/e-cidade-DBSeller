@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,7 +77,7 @@ function db_data($nome,$dia="",$mes="",$ano="") {
 	  }
 	}
   </script>
-  <?
+  <?php
 }
 /*************************************/
 function db_label($tab,$label,$campo="") {
@@ -90,21 +90,21 @@ $campo = ($campo=="")?$label:$campo;
   </a>
   </label>
   </strong>
-<?
+<?php
 }
 /************************************/
 function db_text($campo,$tamanho,$max,$db_nome="",$dbh_nome="") {
 ?>
   <input name="db_<?=$campo?>" id="db_<?=$campo?>" value="<?=$db_nome?>" type="text" size="<?=$tamanho?>" maxlength="<?=$max?>" autocomplete="off">
   <input name="dbh_<?=$campo?>" type="hidden" value="<?=$dbh_nome?>">
-<?
+<?php
 }
 /************************************/
 function db_file($campo,$tamanho,$max,$dbh_nome="",$db_nome="") {
 ?>
   <input onChange="js_preencheCampo(this.value,this.form.dbh_<?=$campo?>.name)" name="db_<?=$campo?>" id="db_<?=$campo?>" value="<?=$db_nome?>" type="file" size="<?=$tamanho?>" maxlength="<?=$max?>" autocomplete="off"><br>
   <input name="dbh_<?=$campo?>" type="text" value="<?=$dbh_nome?>" size="<?=$tamanho?>" maxlength="<?=$max?>" autocomplete="off">
-<?
+<?php
 }
 /************************************/
 function db_getfile($arq,$text,$funcao="0") {

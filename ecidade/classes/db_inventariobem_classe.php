@@ -66,7 +66,7 @@ class cl_inventariobem
                  ";
 
     //funcao construtor da classe
-    function cl_inventariobem()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inventariobem");
@@ -74,7 +74,7 @@ class cl_inventariobem
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -85,7 +85,7 @@ class cl_inventariobem
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->t77_sequencial = ($this->t77_sequencial == "" ? @$GLOBALS["HTTP_POST_VARS"]["t77_sequencial"] : $this->t77_sequencial);
@@ -103,7 +103,7 @@ class cl_inventariobem
     }
 
     // funcao para inclusao
-    function incluir($t77_sequencial)
+    public function incluir($t77_sequencial)
     {
         $this->atualizacampos();
         if ($this->t77_inventario == null) {
@@ -264,7 +264,7 @@ class cl_inventariobem
     }
 
     // funcao para alteracao
-    function alterar($t77_sequencial = null)
+    public function alterar($t77_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update inventariobem set ";
@@ -448,7 +448,7 @@ class cl_inventariobem
     }
 
     // funcao para exclusao
-    function excluir($t77_sequencial = null, $dbwhere = null)
+    public function excluir($t77_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($t77_sequencial));
@@ -543,7 +543,7 @@ class cl_inventariobem
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -573,7 +573,7 @@ class cl_inventariobem
     }
 
     // funcao do sql
-    function sql_query($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -631,7 +631,7 @@ class cl_inventariobem
     }
 
     // funcao do sql
-    function sql_query_file($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -670,7 +670,7 @@ class cl_inventariobem
     }
 
     // funcao do sql
-    function sql_query_inventario($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_inventario($t77_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -74,15 +74,15 @@ if(isset($db_opcaoal)){
 <table border="0">
 <tr>
     <td nowrap title="<?=@$Tcadtipoparc?>">
-       <?
+       <?php
        db_ancora(@$Lcadtipoparc,"js_pesquisacadtipoparc(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('cadtipoparc',10,$Icadtipoparc,true,'text',3," onchange='js_pesquisacadtipoparc(false);'")
 ?>
-       <?
+       <?php
        if (isset($cadtipoparc)&&$cadtipoparc!=""){
         $Result_Descr=$clcadtipoparc->sql_record($clcadtipoparc->sql_query_file($cadtipoparc,"k40_descr"));
        	if ($clcadtipoparc->numrows>0){
@@ -98,7 +98,7 @@ db_input('k40_descr',40,$Ik40_descr,true,'text',3,'')
        <?=@$Ltipoparc?>
     </td>
     <td>
-<?
+<?php
 db_input('tipoparc',10,$Itipoparc,true,'text',3,"")
 ?>
     </td>
@@ -108,7 +108,7 @@ db_input('tipoparc',10,$Itipoparc,true,'text',3,"")
        <?=@$Ldescr?>
     </td>
     <td>
-<?
+<?php
 db_input('descr',40,$Idescr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -118,7 +118,7 @@ db_input('descr',40,$Idescr,true,'text',$db_opcao,"")
        <?=@$Ldtini?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_inputdata('dtini',@$dtini_dia,@$dtini_mes,@$dtini_ano,true,'text',$db_opcao,"
        <?=@$Ldtfim?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -138,7 +138,7 @@ db_inputdata('dtfim',@$dtfim_dia,@$dtfim_mes,@$dtfim_ano,true,'text',$db_opcao,"
        <?=@$Lmaxparc?>
     </td>
     <td>
-<?
+<?php
 db_input('maxparc',10,$Imaxparc,true,'text',$db_opcao,"onchange='js_validaparcela()'")
 ?>
     </td>
@@ -148,7 +148,7 @@ db_input('maxparc',10,$Imaxparc,true,'text',$db_opcao,"onchange='js_validaparcel
        <?=@$Lminparc?>
     </td>
     <td>
-<?
+<?php
 db_input('minparc',10,$Iminparc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -158,7 +158,7 @@ db_input('minparc',10,$Iminparc,true,'text',$db_opcao,"")
        <?=@$Lvlrmin?>
     </td>
     <td>
-<?
+<?php
 db_input('vlrmin',10,$Ivlrmin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -168,7 +168,7 @@ db_input('vlrmin',10,$Ivlrmin,true,'text',$db_opcao,"")
        <?=@$Lvlrmax?>
     </td>
     <td>
-<?
+<?php
 db_input('vlrmax',10,$Ivlrmax,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -178,7 +178,7 @@ db_input('vlrmax',10,$Ivlrmax,true,'text',$db_opcao,"")
        <?=@$Ldtvlr?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('dtvlr',@$dtvlr_dia,@$dtvlr_mes,@$dtvlr_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -188,7 +188,7 @@ db_inputdata('dtvlr',@$dtvlr_dia,@$dtvlr_mes,@$dtvlr_ano,true,'text',$db_opcao,"
        <?=@$Lvlrmindeb?>
     </td>
     <td>
-<?
+<?php
 db_input('vlrmindeb',10,$Ivlrmindeb,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -198,22 +198,22 @@ db_input('vlrmindeb',10,$Ivlrmindeb,true,'text',$db_opcao,"")
        <?=@$Lvlrmaxdeb?>
     </td>
     <td>
-<?
+<?php
 db_input('vlrmaxdeb',10,$Ivlrmaxdeb,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tinflat?>">
-       <?
+       <?php
        db_ancora(@$Linflat,"js_pesquisainflat(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('inflat',10,$Iinflat,true,'text',$db_opcao," onchange='js_pesquisainflat(false);'")
 ?>
-       <?
+       <?php
 db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        ?>
     </td>
@@ -223,7 +223,7 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        <?=@$Ldescvlr?>
     </td>
     <td>
-<?
+<?php
 db_input('descvlr',10,$Idescvlr,true,'text',$db_opcao,"onChange='js_validaPerc(this);'")
 ?>
     </td>
@@ -234,7 +234,7 @@ db_input('descvlr',10,$Idescvlr,true,'text',$db_opcao,"onChange='js_validaPerc(t
        <?=@$Ltipovlr?>
     </td>
     <td>
-		<?
+		<?php
 		$x = getValoresPadroesCampo('tipovlr');
 		$x = array_reverse($x,true);
 		db_select('tipovlr',$x,true,$db_opcao,"");
@@ -247,7 +247,7 @@ db_input('descvlr',10,$Idescvlr,true,'text',$db_opcao,"onChange='js_validaPerc(t
        <?=@$Ldescmul?>
     </td>
     <td>
-<?
+<?php
 db_input('descmul',10,$Idescmul,true,'text',$db_opcao,"onChange='js_validaPerc(this);'")
 ?>
     </td>
@@ -257,7 +257,7 @@ db_input('descmul',10,$Idescmul,true,'text',$db_opcao,"onChange='js_validaPerc(t
        <?=@$Ldescjur?>
     </td>
     <td>
-<?
+<?php
 db_input('descjur',10,$Idescjur,true,'text',$db_opcao,"onChange='js_validaPerc(this);'")
 ?>
     </td>
@@ -268,7 +268,7 @@ db_input('descjur',10,$Idescjur,true,'text',$db_opcao,"onChange='js_validaPerc(t
        <?=@$Lk42_minentrada?>
     </td>
     <td>
-<?
+<?php
 db_input('k42_minentrada',10,$Ik42_minentrada,true,'text',$db_opcao,"onChange='js_validaPerc(this);'")
 ?>
     </td>
@@ -278,7 +278,7 @@ db_input('k42_minentrada',10,$Ik42_minentrada,true,'text',$db_opcao,"onChange='j
        <?=@$Ltipopessoa?>
     </td>
     <td>
-    <?
+    <?php
     $x = array(0 => 'Todos', 1 => 'Física', 2 => 'Jurídica');
     db_select('tipopessoa',$x,true,$db_opcao,"");
     ?>
@@ -294,7 +294,7 @@ db_input('k42_minentrada',10,$Ik42_minentrada,true,'text',$db_opcao,"onChange='j
  <table>
   <tr>
     <td valign="top"  align="center">
-    <?
+    <?php
    $campos = 'tipoparc,descr,dtini,dtfim,maxparc,minparc,vlrmin,vlrmax,dtvlr,vlrmindeb,vlrmaxdeb,inflat,descvlr,descmul,descjur,k42_minentrada,cadtipoparc,k40_descr';
    $sqlCaseTipoPessoa = ",case when tipopessoa = 0 then 'Todos' when tipopessoa = 1 then 'Física' when tipopessoa = 2 then 'Jurídica' ELSE '' END as tipopessoa";
 	 $chavepri= array("cadtipoparc"=>@$cadtipoparc,"tipoparc"=>@$tipoparc);

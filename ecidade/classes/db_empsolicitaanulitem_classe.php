@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE empsolicitaanulitem
-class cl_empsolicitaanulitem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e36_sequencial = 0; 
-   var $e36_empempitem = 0; 
-   var $e36_empsolicitaanul = 0; 
-   var $e36_vrlanu = 0; 
-   var $e36_qtdanu = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_empsolicitaanulitem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e36_sequencial = 0;
+   var $e36_empempitem = 0;
+   var $e36_empsolicitaanul = 0;
+   var $e36_vrlanu = 0;
+   var $e36_qtdanu = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e36_sequencial = int4 = Código Sequencial 
-                 e36_empempitem = int4 = Item do Empenho 
-                 e36_empsolicitaanul = int4 = Código da Solicitação 
-                 e36_vrlanu = float4 = Valor Anulado 
-                 e36_qtdanu = float4 = Quantidade Anulada 
+                 e36_sequencial = int4 = Código Sequencial
+                 e36_empempitem = int4 = Item do Empenho
+                 e36_empsolicitaanul = int4 = Código da Solicitação
+                 e36_vrlanu = float4 = Valor Anulado
+                 e36_qtdanu = float4 = Quantidade Anulada
                  ";
-   //funcao construtor da classe 
-   function cl_empsolicitaanulitem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("empsolicitaanulitem"); 
+     $this->rotulo = new rotulo("empsolicitaanulitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_empsolicitaanulitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e36_sequencial = ($this->e36_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e36_sequencial"]:$this->e36_sequencial);
        $this->e36_empempitem = ($this->e36_empempitem == ""?@$GLOBALS["HTTP_POST_VARS"]["e36_empempitem"]:$this->e36_empempitem);
@@ -83,9 +83,9 @@ class cl_empsolicitaanulitem {
      }
    }
    // funcao para inclusao
-   function incluir ($e36_sequencial){ 
+   public function incluir ($e36_sequencial){
       $this->atualizacampos();
-     if($this->e36_empempitem == null ){ 
+     if($this->e36_empempitem == null ){
        $this->erro_sql = " Campo Item do Empenho nao Informado.";
        $this->erro_campo = "e36_empempitem";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_empsolicitaanulitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e36_empsolicitaanul == null ){ 
+     if($this->e36_empsolicitaanul == null ){
        $this->erro_sql = " Campo Código da Solicitação nao Informado.";
        $this->erro_campo = "e36_empsolicitaanul";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_empsolicitaanulitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e36_vrlanu == null ){ 
+     if($this->e36_vrlanu == null ){
        $this->erro_sql = " Campo Valor Anulado nao Informado.";
        $this->erro_campo = "e36_vrlanu";
        $this->erro_banco = "";
@@ -112,20 +112,20 @@ class cl_empsolicitaanulitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->e36_qtdanu == null ){ 
+     if($this->e36_qtdanu == null ){
        $this->e36_qtdanu = "0";
      }
      if($e36_sequencial == "" || $e36_sequencial == null ){
-       $result = db_query("select nextval('empsolicitaanulitem_e36_sequencial_seq')"); 
+       $result = db_query("select nextval('empsolicitaanulitem_e36_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: empsolicitaanulitem_e36_sequencial_seq do campo: e36_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: empsolicitaanulitem_e36_sequencial_seq do campo: e36_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->e36_sequencial = pg_result($result,0,0); 
+       $this->e36_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from empsolicitaanulitem_e36_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $e36_sequencial)){
@@ -136,10 +136,10 @@ class cl_empsolicitaanulitem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->e36_sequencial = $e36_sequencial; 
+         $this->e36_sequencial = $e36_sequencial;
        }
      }
-     if(($this->e36_sequencial == null) || ($this->e36_sequencial == "") ){ 
+     if(($this->e36_sequencial == null) || ($this->e36_sequencial == "") ){
        $this->erro_sql = " Campo e36_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,21 +148,21 @@ class cl_empsolicitaanulitem {
        return false;
      }
      $sql = "insert into empsolicitaanulitem(
-                                       e36_sequencial 
-                                      ,e36_empempitem 
-                                      ,e36_empsolicitaanul 
-                                      ,e36_vrlanu 
-                                      ,e36_qtdanu 
+                                       e36_sequencial
+                                      ,e36_empempitem
+                                      ,e36_empsolicitaanul
+                                      ,e36_vrlanu
+                                      ,e36_qtdanu
                        )
                 values (
-                                $this->e36_sequencial 
-                               ,$this->e36_empempitem 
-                               ,$this->e36_empsolicitaanul 
-                               ,$this->e36_vrlanu 
-                               ,$this->e36_qtdanu 
+                                $this->e36_sequencial
+                               ,$this->e36_empempitem
+                               ,$this->e36_empsolicitaanul
+                               ,$this->e36_vrlanu
+                               ,$this->e36_qtdanu
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Itens da solicitação ($this->e36_sequencial) nao Incluído. Inclusao Abortada.";
@@ -198,16 +198,16 @@ class cl_empsolicitaanulitem {
        $resac = db_query("insert into db_acount values($acount,1883,10969,'','".AddSlashes(pg_result($resaco,0,'e36_qtdanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e36_sequencial=null) { 
+   public function alterar ($e36_sequencial=null) {
       $this->atualizacampos();
      $sql = " update empsolicitaanulitem set ";
      $virgula = "";
-     if(trim($this->e36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_sequencial"])){ 
+     if(trim($this->e36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_sequencial"])){
        $sql  .= $virgula." e36_sequencial = $this->e36_sequencial ";
        $virgula = ",";
-       if(trim($this->e36_sequencial) == null ){ 
+       if(trim($this->e36_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "e36_sequencial";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_empsolicitaanulitem {
          return false;
        }
      }
-     if(trim($this->e36_empempitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_empempitem"])){ 
+     if(trim($this->e36_empempitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_empempitem"])){
        $sql  .= $virgula." e36_empempitem = $this->e36_empempitem ";
        $virgula = ",";
-       if(trim($this->e36_empempitem) == null ){ 
+       if(trim($this->e36_empempitem) == null ){
          $this->erro_sql = " Campo Item do Empenho nao Informado.";
          $this->erro_campo = "e36_empempitem";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_empsolicitaanulitem {
          return false;
        }
      }
-     if(trim($this->e36_empsolicitaanul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_empsolicitaanul"])){ 
+     if(trim($this->e36_empsolicitaanul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_empsolicitaanul"])){
        $sql  .= $virgula." e36_empsolicitaanul = $this->e36_empsolicitaanul ";
        $virgula = ",";
-       if(trim($this->e36_empsolicitaanul) == null ){ 
+       if(trim($this->e36_empsolicitaanul) == null ){
          $this->erro_sql = " Campo Código da Solicitação nao Informado.";
          $this->erro_campo = "e36_empsolicitaanul";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_empsolicitaanulitem {
          return false;
        }
      }
-     if(trim($this->e36_vrlanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_vrlanu"])){ 
+     if(trim($this->e36_vrlanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_vrlanu"])){
        $sql  .= $virgula." e36_vrlanu = $this->e36_vrlanu ";
        $virgula = ",";
-       if(trim($this->e36_vrlanu) == null ){ 
+       if(trim($this->e36_vrlanu) == null ){
          $this->erro_sql = " Campo Valor Anulado nao Informado.";
          $this->erro_campo = "e36_vrlanu";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_empsolicitaanulitem {
          return false;
        }
      }
-     if(trim($this->e36_qtdanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_qtdanu"])){ 
-        if(trim($this->e36_qtdanu)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e36_qtdanu"])){ 
-           $this->e36_qtdanu = "0" ; 
-        } 
+     if(trim($this->e36_qtdanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e36_qtdanu"])){
+        if(trim($this->e36_qtdanu)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e36_qtdanu"])){
+           $this->e36_qtdanu = "0" ;
+        }
        $sql  .= $virgula." e36_qtdanu = $this->e36_qtdanu ";
        $virgula = ",";
      }
@@ -287,7 +287,7 @@ class cl_empsolicitaanulitem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens da solicitação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e36_sequencial;
@@ -315,14 +315,14 @@ class cl_empsolicitaanulitem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e36_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e36_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e36_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -352,7 +352,7 @@ class cl_empsolicitaanulitem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Itens da solicitação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e36_sequencial;
@@ -380,11 +380,11 @@ class cl_empsolicitaanulitem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -406,10 +406,10 @@ class cl_empsolicitaanulitem {
       }
      return $result;
    }
-   function sql_query ( $e36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,15 +425,15 @@ class cl_empsolicitaanulitem {
      $sql2 = "";
      if($dbwhere==""){
        if($e36_sequencial!=null ){
-         $sql2 .= " where empsolicitaanulitem.e36_sequencial = $e36_sequencial "; 
-       } 
+         $sql2 .= " where empsolicitaanulitem.e36_sequencial = $e36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,10 +442,10 @@ class cl_empsolicitaanulitem {
      }
      return $sql;
   }
-   function sql_query_file ( $e36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,15 +458,15 @@ class cl_empsolicitaanulitem {
      $sql2 = "";
      if($dbwhere==""){
        if($e36_sequencial!=null ){
-         $sql2 .= " where empsolicitaanulitem.e36_sequencial = $e36_sequencial "; 
-       } 
+         $sql2 .= " where empsolicitaanulitem.e36_sequencial = $e36_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

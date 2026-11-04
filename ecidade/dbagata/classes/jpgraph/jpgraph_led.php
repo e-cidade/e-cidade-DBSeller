@@ -222,16 +222,16 @@ class DigitalLED74
 
 	$iSuperSampling = 3, $iMarg = 1, $iRad = 4;
 	 
-    function DigitalLED74($aRadius = 2, $aMargin= 0.6) {
+    public function __construct($aRadius = 2, $aMargin= 0.6) {
 	$this->iRad = $aRadius;
 	$this->iMarg = $aMargin;
     }
     
-    function SetSupersampling($aSuperSampling = 2)	{
+    public function SetSupersampling($aSuperSampling = 2)	{
 	$this->iSuperSampling = $aSuperSampling;
     }
 
-    function _GetLED($aLedIdx, $aColor = 0)	{
+    public function _GetLED($aLedIdx, $aColor = 0)	{
 	$width=  $this->iLED_X*$this->iRad*2 +  ($this->iLED_X+1)*$this->iMarg + $this->iRad ;
 	$height= $this->iLED_Y*$this->iRad*2 +  ($this->iLED_Y)*$this->iMarg + $this->iRad * 2;
 
@@ -280,7 +280,7 @@ class DigitalLED74
 	return $img;
     }
 
-    function StrokeNumber($aValStr, $aColor = 0) {
+    public function StrokeNumber($aValStr, $aColor = 0) {
 	if($aColor < 0 || $aColor >= sizeof($this->iColorSchema))
 	    $aColor = 0;
 

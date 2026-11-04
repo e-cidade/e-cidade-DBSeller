@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE tipoassecontrolediasmes
 class cl_tipoassecontrolediasmes { 
@@ -24,13 +24,13 @@ class cl_tipoassecontrolediasmes {
                  rh170_tipoasse = int4 = Tipo do Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassecontrolediasmes() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassecontrolediasmes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -39,7 +39,7 @@ class cl_tipoassecontrolediasmes {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh170_sequencial = ($this->rh170_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh170_sequencial"]:$this->rh170_sequencial);
        $this->rh170_tipoasse = ($this->rh170_tipoasse == ""?@$GLOBALS["HTTP_POST_VARS"]["rh170_tipoasse"]:$this->rh170_tipoasse);
@@ -48,7 +48,7 @@ class cl_tipoassecontrolediasmes {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh170_sequencial){ 
+   public function incluir ($rh170_sequencial){ 
       $this->atualizacampos();
      if($this->rh170_tipoasse == null ){ 
        $this->erro_sql = " Campo Tipo do Assentamento não informado.";

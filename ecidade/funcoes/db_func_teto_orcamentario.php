@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "teto_orcamentario.c40_sequencial,teto_orcamentario.c40_ano,teto_orcamentario.c40_orgao,teto_orcamentario.c40_unidade,teto_orcamentario.c40_grupo_natureza_despesa,teto_orcamentario.c40_identificador_uso,teto_orcamentario.c40_tipo_detalhamento,teto_orcamentario.c40_grupo_fonte_recursos,teto_orcamentario.c40_especificacao_fonte,teto_orcamentario.c40_valor_teto,teto_orcamentario.c40_valor_disponivel";
 ?>

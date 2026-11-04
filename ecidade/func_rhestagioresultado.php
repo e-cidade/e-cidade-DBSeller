@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhestagioresultado->rotulo->label("h65_data");
               <?=$Lh65_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h65_sequencial",10,$Ih65_sequencial,true,"text",4,"","chave_h65_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhestagioresultado->rotulo->label("h65_data");
               <?=$Lh65_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("h65_data",10,$Ih65_data,true,"text",4,"","chave_h65_data");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhestagioresultado->rotulo->label("h65_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 
         $campos  = " h57_sequencial, h57_regist, z01_nome, rh01_admiss,h55_nroaval, ";
@@ -132,12 +132,12 @@ $clrhestagioresultado->rotulo->label("h65_data");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

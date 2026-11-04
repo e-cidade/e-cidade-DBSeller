@@ -35,8 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libdicionario.php"));
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"]);
+db_postmemory($_POST);
 
 $clnumpref = new cl_numpref;
 $db_opcao = 22;
@@ -48,6 +48,7 @@ if (isset($alterar)) {
     db_inicio_transacao();
     $db_opcao = 2;
     $clnumpref->k03_instit = $instit;
+    $clnumpref->k03_separajurmulparc = 0;
     $clnumpref->alterar($k03_anousu, $instit);
     db_fim_transacao();
 } elseif (isset($chavepesquisa)) {

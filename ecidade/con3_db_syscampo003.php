@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -54,7 +54,7 @@ if(isset($atualizar)){
 
   $arr_dados = $HTTP_POST_VARS;
   reset($arr_dados);
-  
+
   while($dad = key($arr_dados)){
    if(substr($dad,0,3)=="ver"){
      $campo = substr($dad,4);
@@ -63,14 +63,14 @@ if(isset($atualizar)){
        $$val="false";
      }else if($$val=="f"){
        $$val="true";
-     }  
+     }
      $cldb_syscampo->$campo = $$val;
    }
    next($arr_dados);
   }
-  
-  
-  $arr_chaves = split("#",$chaves);
+
+
+  $arr_chaves =explode("#",$chaves);
   $num_chaves = sizeof($arr_chaves);
   for($i=0; $i<$num_chaves; $i++ ){
     $cldb_syscampo->codcam = $arr_chaves[$i];
@@ -95,13 +95,13 @@ db_fim_transacao($sqlerro);
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name='form1' method='POST'>
 <table width="750" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="380" align="left" valign="top" bgcolor="#CCCCCC"> 
-<?
+  <tr>
+    <td height="380" align="left" valign="top" bgcolor="#CCCCCC">
+<?php
     $result = $cldb_syscampo->sql_record($cldb_syscampo->sql_query_file($principal));
-    db_fieldsmemory($result,0); 
+    db_fieldsmemory($result,0);
    $an_codcam      = $codcam        ;
-   $an_nomecam     = $nomecam       ; 
+   $an_nomecam     = $nomecam       ;
    $an_conteudo    = $conteudo    ;
    $an_descricao   = $descricao   ;
    $an_valorinicial= $valorinicial;
@@ -114,131 +114,131 @@ db_fim_transacao($sqlerro);
    $an_tipoobj     = $tipoobj     ;
    $an_rotulorel   = $rotulorel   ;
 
-//   echo $an_autocompl; 
-?>    
+//   echo $an_autocompl;
+?>
       <table border='1' cellspacing="0" cellpadding="0">
         <tr>
           <td nowrap title="<?=@$Tcodcam?>" colspan='6' align='center'>
            <?=@$Lcodcam?>
-            <?
+            <?php
                  db_input('an_codcam',7,$Icodcam,true,'text',3)
             ?>
            <?=@$Lnomecam?>
-            <?
+            <?php
                  db_input('an_nomecam',20,$Inomecam,true,'text',3)
             ?>
           </td>
         </tr>
-	
+
         <tr>
           <td nowrap title="<?=@$Trotulo?>">
-            <?
+            <?php
                  db_input('ver_rotulo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                  db_input('an_rotulo',30,$Irotulo,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tconteudo?>">
-            <?
+            <?php
                  db_input('ver_conteudo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lconteudo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                $x = array("varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data");
                db_select('an_conteudo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tautocompl?>">
-            <?
+            <?php
                  db_input('ver_autocompl',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lautocompl?>
           </td>
-          <td align='left' width='13%'> 
-            <?
+          <td align='left' width='13%'>
+            <?php
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_autocompl',$x,true,$db_opcao);
             ?>
           </td>
         </tr>
-	  
-	
+
+
         <tr>
           <td nowrap title="<?=@$Trotulorel?>">
-            <?
+            <?php
                  db_input('ver_rotulorel',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulorel?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                  db_input('an_rotulorel',30,$Irotulorel,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tvalorinicial?>">
-            <?
+            <?php
                  db_input('ver_valorinicial',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lvalorinicial?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                  db_input('an_valorinicial',7,$Ivalorinicial,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tnulo?>">
-            <?
+            <?php
                  db_input('ver_nulo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lnulo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_nulo',$x,true,$db_opcao);
             ?>
           </td>
         </tr>
-	
-        
+
+
 	<tr>
           <td nowrap title="<?=@$Taceitatipo?>">
-            <?
+            <?php
                  db_input('ver_aceitatipo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Laceitatipo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                $x = array("0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso");
                db_select('an_aceitatipo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Ttamanho?>">
-            <?
+            <?php
                  db_input('ver_tamanho',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltamanho?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                  db_input('an_tamanho',7,$Itamanho,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tmaiusculo?>">
-            <?
+            <?php
                  db_input('ver_maiusculo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lmaiusculo?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_maiusculo',$x,true,$db_opcao);
             ?>
@@ -246,25 +246,25 @@ db_fim_transacao($sqlerro);
         </tr>
         <tr>
           <td nowrap title="<?=@$Ttipoobj?>" valign='top' >
-            <?
+            <?php
                  db_input('ver_tipoobj',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltipoobj?>
           </td>
-          <td valign='top'> 
-            <?
+          <td valign='top'>
+            <?php
                $x = array("text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple");
                db_select('an_tipoobj',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tdescricao?>" valign='top'>
-            <?
+            <?php
                  db_input('ver_descricao',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ldescricao?>
           </td>
-          <td colspan='5' valign='top'> 
-            <?
+          <td colspan='5' valign='top'>
+            <?php
                  db_textarea('an_descricao',0,40,$Idescricao,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -276,7 +276,7 @@ db_fim_transacao($sqlerro);
 	</tr>
 	<tr>
 	  <td colspan='6'>
-<?	  
+<?php
       $cliframe_seleciona->legenda="CAMPOS";
       $cliframe_seleciona->sql= $cldb_syscampo->sql_query_file(null,"*","codcam","codcam in ($cods)");
       $cliframe_seleciona->campos  = "codcam,nomecam,conteudo,descricao,valorinicial,rotulo,rotulorel,tamanho,nulo,maiusculo,autocompl,aceitatipo,tipoobj";
@@ -285,7 +285,7 @@ db_fim_transacao($sqlerro);
       $cliframe_seleciona->iframe_nome ="camp";
       $cliframe_seleciona->chaves ="codcam";
       $cliframe_seleciona->checked  =true;
-      $cliframe_seleciona->iframe_seleciona(1);    
+      $cliframe_seleciona->iframe_seleciona(1);
 ?>
 	  </td>
 	</tr>
@@ -311,7 +311,7 @@ db_fim_transacao($sqlerro);
 	}
       }
     }
-    
+
     if(marcado==true){
       obj=document.getElementsByTagName("INPUT")
       var marcado=false;
@@ -324,16 +324,16 @@ db_fim_transacao($sqlerro);
 	  }
 	}
       }
-    } 
+    }
     if(marcado==true){
       return true;
     }else{
       alert(erro_msg);
       return false;
-    }  
+    }
   }
 </script>
-<?
+<?php
 if(isset($atualizar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);
@@ -344,6 +344,6 @@ if(isset($atualizar)){
 	      parent.location.href='con3_db_syscampo001.php?codcam=$an_codcam&pesquisar=true';
             </script>
     ";
-  }  
+  }
 }
 ?>

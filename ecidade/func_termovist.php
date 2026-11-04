@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $cltermovist->rotulo->label("y91_datatermo");
               <?=$Ly91_termovist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y91_termovist",10,$Iy91_termovist,true,"text",4,"","chave_y91_termovist");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltermovist->rotulo->label("y91_datatermo");
               <?=$Ly91_datatermo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y91_datatermo",8,$Iy91_datatermo,true,"text",4,"","chave_y91_datatermo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltermovist->rotulo->label("y91_datatermo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_termovist.php")==true){
@@ -118,12 +118,12 @@ $cltermovist->rotulo->label("y91_datatermo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

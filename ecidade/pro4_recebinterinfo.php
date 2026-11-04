@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -96,7 +96,7 @@ background-color:#ccddcc;
     <input name="fechar" type="button" value="Fechar" onclick='js_fecha();' >
   </td>
 </tr>
-<? $sql = "select * 
+<?php $sql = "select * 
            from proctransferintand  
 	          inner join procandam on p61_codandam = p87_codandam 
 		  inner join protprocesso on p61_codproc = p58_codproc 

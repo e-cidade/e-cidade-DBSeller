@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,13 +66,13 @@ class cl_empempitem {
                  e62_servicoquantidade = bool = Serviço Controlado por Quantidade
                  ";
    //funcao construtor da classe
-   function cl_empempitem() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empempitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_empempitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e62_sequencial = ($this->e62_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["e62_sequencial"]:$this->e62_sequencial);
        $this->e62_numemp = ($this->e62_numemp == ""?@$GLOBALS["HTTP_POST_VARS"]["e62_numemp"]:$this->e62_numemp);
@@ -99,7 +99,7 @@ class cl_empempitem {
      }
    }
    // funcao para inclusao
-   function incluir ($e62_numemp,$e62_sequen){
+   public function incluir ($e62_numemp,$e62_sequen){
       $this->atualizacampos();
      if($this->e62_numemp == null ){
        $this->erro_sql = " Campo Número nao Informado.";
@@ -262,7 +262,7 @@ class cl_empempitem {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e62_numemp=null,$e62_sequen=null) {
+   public function alterar ($e62_numemp=null,$e62_sequen=null) {
       $this->atualizacampos();
      $sql = " update empempitem set ";
      $virgula = "";
@@ -447,7 +447,7 @@ class cl_empempitem {
      }
    }
    // funcao para exclusao
-   function excluir ($e62_numemp=null,$e62_sequen=null,$dbwhere=null) {
+   public function excluir ($e62_numemp=null,$e62_sequen=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e62_numemp,$e62_sequen));
      }else{
@@ -523,7 +523,7 @@ class cl_empempitem {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -546,10 +546,10 @@ class cl_empempitem {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_empempitem {
    $sql .= $sql2;
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = explode("#",$ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_empempitem {
          }
          return $sql;
    }
-         function sql_query_elemento ( $e55_autori=null,$e55_sequen=null,$ordem=null,$dbwhere=""){
+         public function sql_query_elemento ( $e55_autori=null,$e55_sequen=null,$ordem=null,$dbwhere=""){
          $sql = "select ";
 
          $campos = "e55_codele,sum(e55_vltot) as e55_vltot";
@@ -624,7 +624,7 @@ class cl_empempitem {
          $sql .="group by e55_codele";
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = explode("#",$ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,10 +633,10 @@ class cl_empempitem {
          }
            return $sql;
          }
-           function sql_query_file ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
+           public function sql_query_file ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
            $sql = "select ";
            if($campos != "*" ){
-           $campos_sql = split("#",$campos);
+           $campos_sql = explode("#",$campos);
            $virgula = "";
              for($i=0;$i<sizeof($campos_sql);$i++){
              $sql .= $virgula.$campos_sql[$i];
@@ -665,7 +665,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
      $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = explode("#",$ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];
@@ -674,10 +674,10 @@ class cl_empempitem {
    }
    return $sql;
    }
-   function sql_query_imprimerel ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_imprimerel ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -712,7 +712,7 @@ class cl_empempitem {
    $sql .= $sql2;
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = explode("#",$ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -722,11 +722,11 @@ class cl_empempitem {
          return $sql;
    }
 
-         function sql_query_item_pacto ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere="") {
+         public function sql_query_item_pacto ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere="") {
 
          $sql = "select ";
          if($campos != "*" ){
-         $campos_sql = split("#",$campos);
+         $campos_sql = explode("#",$campos);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -759,7 +759,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = explode("#",$ordem);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -769,11 +769,11 @@ class cl_empempitem {
    return $sql;
    }
 
-   function sql_query_left_item_pacto ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere="") {
+   public function sql_query_left_item_pacto ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere="") {
 
    $sql = "select ";
    if($campos != "*" ){
-   $campos_sql = split("#",$campos);
+   $campos_sql = explode("#",$campos);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -806,7 +806,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = explode("#",$ordem);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];

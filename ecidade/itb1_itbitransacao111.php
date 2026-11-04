@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -151,7 +151,7 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 
 if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 	
@@ -182,19 +182,19 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 			      <?=$Lit25_itbitransacao?>
 			    </td>
 	        <td>
-	          <?
+	          <?php
 			        db_input('it25_itbitransacao',10,"",true,'text',3,'');
 			      ?>
 	        </td>
 	      </tr>
 	  		<tr>
 			    <td nowrap title="<?=@$Tit25_itbiformapagamento?>">
-			      <?
+			      <?php
 				      db_ancora($Lit25_itbiformapagamento,"js_consultaFormaPgto(true)",$db_opcao);		    
 			      ?>
 			    </td>
 			    <td> 
-			      <?
+			      <?php
 			        db_input('it25_sequencial',10,"",true,'hidden',3,'');
 			        db_input('it25_itbiformapagamento',10,$Iit25_itbiformapagamento,true,'text',$db_opcao," onchange='js_consultaFormaPgto(false)'");
 			        db_input('it27_descricao',40,"",true,'text',3,'');
@@ -206,7 +206,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		        <?=@$Lit25_ativo?>
 		      </td>
 		      <td>
-	          <?
+	          <?php
 	            $aAtivo = array("t"=>"Sim",
 	                            "f"=>"Não");
 	            db_select('it25_ativo',$aAtivo,true,1,' style="width: 91"');
@@ -230,7 +230,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
       <table>
         <tr>
           <td valign="top"  align="center">  
-            <?
+            <?php
               $aChavePri = array( "it25_sequencial"         => @$it25_sequencial,
                                   "it25_itbitransacao"      => @$it25_itbitransacao,
                                   "it25_itbiformapagamento" => @$it25_itbiformapagamento,
@@ -253,7 +253,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 </body>
 </html>
 </form>
-<?
+<?php
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
     db_msgbox($sErroMsg);
     if($clitbitransacaoformapag->erro_campo!=""){

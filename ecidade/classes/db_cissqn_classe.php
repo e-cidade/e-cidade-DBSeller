@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,13 +65,13 @@ class cl_cissqn {
                  q04_perccorrepadrao = float4 = Percentual Correção Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_cissqn() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cissqn"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -80,7 +80,7 @@ class cl_cissqn {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->q04_anousu = ($this->q04_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["q04_anousu"]:$this->q04_anousu);
        $this->q04_inflat = ($this->q04_inflat == ""?@$GLOBALS["HTTP_POST_VARS"]["q04_inflat"]:$this->q04_inflat);
@@ -102,7 +102,7 @@ class cl_cissqn {
      }
    }
    // funcao para inclusao
-   function incluir ($q04_anousu){ 
+   public function incluir ($q04_anousu){ 
       $this->atualizacampos();
      if($this->q04_inflat == null ){ 
        $this->erro_sql = " Campo inflator nao Informado.";
@@ -238,7 +238,7 @@ class cl_cissqn {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($q04_anousu=null) { 
+   public function alterar ($q04_anousu=null) { 
       $this->atualizacampos();
      $sql = " update cissqn set ";
      $virgula = "";
@@ -422,7 +422,7 @@ class cl_cissqn {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($q04_anousu=null,$dbwhere=null) { 
+   public function excluir ($q04_anousu=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($q04_anousu));
      }else{ 
@@ -490,7 +490,7 @@ class cl_cissqn {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -513,7 +513,7 @@ class cl_cissqn {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $q04_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $q04_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -552,7 +552,7 @@ class cl_cissqn {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $q04_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $q04_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

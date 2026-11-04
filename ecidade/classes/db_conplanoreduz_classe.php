@@ -60,7 +60,7 @@ class cl_conplanoreduz
                  ";
 
     //funcao construtor da classe
-    function cl_conplanoreduz()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conplanoreduz");
@@ -68,7 +68,7 @@ class cl_conplanoreduz
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -79,7 +79,7 @@ class cl_conplanoreduz
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c61_codcon = ($this->c61_codcon == "" ? @$GLOBALS["HTTP_POST_VARS"]["c61_codcon"] : $this->c61_codcon);
@@ -95,7 +95,7 @@ class cl_conplanoreduz
     }
 
     // funcao para inclusao
-    function incluir($c61_reduz, $c61_anousu)
+    public function incluir($c61_reduz, $c61_anousu)
     {
         $this->atualizacampos();
         if ($this->c61_codcon == null) {
@@ -232,7 +232,7 @@ class cl_conplanoreduz
     }
 
     // funcao para alteracao
-    function alterar($c61_reduz = null, $c61_anousu = null)
+    public function alterar($c61_reduz = null, $c61_anousu = null)
     {
         $this->atualizacampos();
         $sql = " update conplanoreduz set ";
@@ -367,7 +367,7 @@ class cl_conplanoreduz
     }
 
     // funcao para exclusao
-    function excluir($c61_reduz = null, $c61_anousu = null, $dbwhere = null)
+    public function excluir($c61_reduz = null, $c61_anousu = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($c61_reduz, $c61_anousu));
@@ -434,7 +434,7 @@ class cl_conplanoreduz
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -463,7 +463,7 @@ class cl_conplanoreduz
         return $result;
     }
 
-    function sql_query($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -517,7 +517,7 @@ class cl_conplanoreduz
         return $sql;
     }
 
-    function sql_query_file($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -625,7 +625,7 @@ class cl_conplanoreduz
         return $sql;
     }
 
-    function sql_query_razao($c61_codcon = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_razao($c61_codcon = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -690,8 +690,10 @@ class cl_conplanoreduz
             $sql .= $campos;
         }
         $sql .= " from conplanoreduz ";
-        $sql .= "      inner join db_config  on  db_config.codigo = conplanoreduz.c61_instit";
-        $sql .= "      inner join orctiporec  on  orctiporec.o15_codigo = conplanoreduz.c61_codigo";
+        $sql .= "      join db_config  on  db_config.codigo = conplanoreduz.c61_instit";
+        $sql .= "      join orctiporec on orctiporec.o15_codigo = conplanoreduz.c61_codigo";
+        $sql .= "      join fonterecurso on fonterecurso.orctiporec_id = orctiporec.o15_codigo
+                            and fonterecurso.exercicio = conplanoreduz.c61_anousu";
         $sql .= "      join complementofonterecurso on complementofonterecurso.o200_sequencial = orctiporec.o15_complemento";
         $sql .= "      inner join conplano  on  conplano.c60_codcon = conplanoreduz.c61_codcon ";
         $sql .= "       									 and  conplano.c60_anousu = conplanoreduz.c61_anousu ";
@@ -744,7 +746,7 @@ class cl_conplanoreduz
         return $sql;
     }
 
-    function sql_query_analitica($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_analitica($c61_reduz = null, $c61_anousu = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
         $sql = "select ";

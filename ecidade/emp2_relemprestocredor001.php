@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ db_postmemory($HTTP_POST_VARS);
        <table border="0" >
        <tr>
        <td align="center" colspan="3">
-       <?
+       <?php
        db_selinstit('parent.js_limpa',300,100);
        ?>
        </td>
@@ -75,7 +75,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr> 
        <td ><strong>Posição até:</strong></td>
        <td>
-       <?
+       <?php
        db_inputdata("dtfim",date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,"text",2);
        ?>
        </td>
@@ -83,7 +83,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr> 
        <td ><strong>Acumular por:</strong></td>
        <td>
-       <?
+       <?php
        $acumu = array("e"=>"Empenho (Ordem Número)",
 		      "d"=>"Empenho (Ordem Data de Emissão)", 
 		      "c"=>"Empenho (Ordem Credor)",
@@ -102,7 +102,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr> 
        <td ><strong>Restos a Pagar:</strong></td>
        <td>
-       <?
+       <?php
        $acumu = array("0"=>"Geral","1"=>"Com Movimento até a Data","2"=>"Com saldo a pagar");
        db_select("commov",$acumu,true,"text",2);
        ?>
@@ -112,7 +112,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr>
        <td><?=$Lo15_codigo?></td>
        <td>
-       <?
+       <?php
        $result = $clrecurso->sql_record($clrecurso->sql_query_file(null,"o15_codigo,o15_descr","o15_codigo"));
        db_selectrecord("o15_codigo",$result,true,2,"","","","0");
        ?>
@@ -122,7 +122,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr> 
        <td><strong>Opção:</strong></td>
        <td>
-       <?
+       <?php
        $opcao = array("0"=>"Todos","1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados");
        db_select("opcao",$opcao,true,"text",2);
        ?>
@@ -132,7 +132,7 @@ db_postmemory($HTTP_POST_VARS);
        <tr> 
        <td><strong>Exercicio:</strong></td>
        <td>
-       <?
+       <?php
        $result = $clempresto->sql_record($clempresto->sql_query_empenho(db_getsession("DB_anousu"),null,' distinct e60_anousu ','e60_anousu'));
        $opcao = array("0"=>"Todos");// "1"=>"Liquidados","2"=>"Não liquidados","3"=>"Anulados");
        

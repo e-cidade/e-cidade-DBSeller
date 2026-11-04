@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,12 +60,12 @@ if (isset($excluir)) {
 <?php
 include(modification("forms/db_frmcfpesscodmovsefip.php"));
 ?>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
     if ($clcodmovsefip->erro_status == "0") {
         $clcodmovsefip->erro(true, false);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -123,12 +124,12 @@ class Cgs
      * @var array
      */
     protected $aEstadosCivis = array(
-      1 => "SOLTEIRO",
-      2 => "CASADO",
-      3 => "VIÚVO",
-      4 => "SEPARADO",
-      5 => "UNIÃO C.",
-      9 => "IGNORADO"
+        1 => "SOLTEIRO",
+        2 => "CASADO",
+        3 => "VIÚVO",
+        4 => "SEPARADO",
+        5 => "UNIÃO C.",
+        9 => "IGNORADO"
     );
 
     /**
@@ -898,7 +899,7 @@ class Cgs
     /**
      * Salva o vinculo de um documento com o CGS
      *
-     * @param  int $iDocumento
+     * @param int $iDocumento
      * @throws DBException
      */
     public function salvarCgsDocumento($iDocumento)
@@ -1096,6 +1097,34 @@ class Cgs
     }
 
     /**
+     * Salva os dados da tabela cgs_undunidadesorigem
+     * @param $oDadosCgs
+     * @throws DBException
+     */
+    public function salvarCgsUnidadesOrigem($oDadosCgs)
+    {
+        $oDaoCgsUnidadesOrigem = new cl_cgs_undunidadesorigem();
+
+        if (!empty($this->iCodigo)) {
+            $oDaoCgsUnidadesOrigem->excluir(null, "sd114_cgs_und = {$this->iCodigo}");
+
+            if ($oDaoCgsUnidadesOrigem->erro_status == "0") {
+                throw new DBException("Não foi possível excluir a unidade de origem do CGS");
+            }        
+
+            $oDaoCgsUnidadesOrigem->sd114_cgs_und = $this->iCodigo;
+            $oDaoCgsUnidadesOrigem->sd114_unidadesorigem = $oDadosCgs->dados_pessoais->unidadeOrigem;
+            $oDaoCgsUnidadesOrigem->incluir(null);
+    
+            if ($oDaoCgsUnidadesOrigem->erro_status == "0") {  
+                throw new DBException($oDaoCgsUnidadesOrigem->erro_msg);
+            }             
+        }        
+    }    
+
+
+
+    /**
      * Responsável por salvar todas as informações referentes ao cgs.
      * Aplicado com base no novo cadastro do CGS, onde os dados estão separados conforme grupos de informações( abas )
      *
@@ -1114,7 +1143,7 @@ class Cgs
         }
 
         if ($oDadosCgs->dados_pessoais->cns == "" && $lCgsExistente) {
-            if ($this->getCartaoSus()[0]->sCartaoSus != "") {
+            if (count($this->getCartaoSus()) > 0 && $this->getCartaoSus()[0]->sCartaoSus != "") {
                 $this->excluirCgsCartaoSus();
             }
         }
@@ -1125,15 +1154,18 @@ class Cgs
         $cpf = str_replace('-', '', str_replace('.', '', str_replace('_', '', $oDadosCgs->dados_pessoais->cpf)));
 
         $oDaoCgsUnd->z01_i_cgsund = $this->iCodigo;
-        $oDaoCgsUnd->z01_v_cgccpf = $cpf;
+        $oDaoCgsUnd->z01_v_cgccpf = (!empty($cpf) ? $cpf : 'null');
         $oDaoCgsUnd->z01_d_falecimento = 'null';
-        $oDaoCgsUnd->z01_b_faleceu = 'false';
+        $oDaoCgsUnd->z01_b_faleceu = "";
         $oDaoCgsUnd->z01_b_inativo = $oDadosCgs->dados_pessoais->cadastroInativo === true ? 'true' : 'false';
 
         if (!empty($oDadosCgs->dados_pessoais->dataObito)) {
             $oDataObito = new DBDate($oDadosCgs->dados_pessoais->dataObito);
             $oDaoCgsUnd->z01_d_falecimento = $oDataObito->getDate();
-            $oDaoCgsUnd->z01_b_faleceu = $oDadosCgs->dados_pessoais->dataObito != '' ? 'true' : 'false';
+        } 
+
+        if(!empty($oDadosCgs->dados_pessoais->informacaoObito)){
+            $oDaoCgsUnd->z01_b_faleceu = $oDadosCgs->dados_pessoais->informacaoObito === 'sim'  ? 'true' : 'false';
         }
 
         /**
@@ -1198,7 +1230,7 @@ class Cgs
         }
 
         if (!empty($this->iOid)
-          && (empty($oDadosCgs->biometria->foto_atual_caminho) || !empty($oDadosCgs->biometria->foto_nova_caminho))
+            && (empty($oDadosCgs->biometria->foto_atual_caminho) || !empty($oDadosCgs->biometria->foto_nova_caminho))
         ) {
             DBLargeObject::exclusao($this->iOid);
 
@@ -1247,6 +1279,12 @@ class Cgs
             $oDaoCgsUnd = $this->setDocumentos($oDaoCgsUnd, $oDocumentoBase);
         }
 
+        $oDaoCgsUnd->z01_v_ident = (!empty($oDadosCgs->dados_pessoais->rg) ? $oDadosCgs->dados_pessoais->rg : 'null');
+
+        $oDaoCgsUnd->z01_distritosanitario = (!empty($oDadosCgs->dados_pessoais->distritoSanitario) ?
+            $oDadosCgs->dados_pessoais->distritoSanitario :
+            'null');
+
         if ($lCgsExistente) {
             $oDaoCgsUnd->z01_d_ultalt = date('Y-m-d');
             $oDaoCgsUnd->alterar($this->iCodigo);
@@ -1262,9 +1300,14 @@ class Cgs
             throw new DBException(_M(ARQUIVO_MENSAGEM_CGS . 'erro_salvar_cgs', $oMensagem));
         }
 
-        $this->salvarCgsCartaoSus($oDadosCgs);
+        try {
+            $this->salvarCgsCartaoSus($oDadosCgs);
+        } catch (\Exception $e) {
+            throw new \Exception("Não foi permitido salvar o CGS. {$e->getMessage()}");
+        }
         $this->salvarCgsEndereco($oDadosCgs);
         $this->salvarCgsEtnia($oDadosCgs);
+        $this->salvarCgsUnidadesOrigem($oDadosCgs);
 
         //plugin ESF operation#1 - invocando a função salvarCgsEsf()
         return $oDaoCgsUnd;
@@ -1451,21 +1494,21 @@ class Cgs
     public static function validar(\Cgs $cgs)
     {
         return !!$cgs->getNome() &&
-          !!$cgs->getNomeMae() &&
-          !!$cgs->getDataNascimento() &&
-          !!$cgs->getTelefone() &&
-          !!$cgs->getEndereco() &&
-          (
-              /**
-               * Se a naturalidade for brasileiro,
-               * Valida municipio nascimento, uf nascimento e codigo do Ibge de nascimento
-               */
-            $cgs->getNaturalidade() <> 10 || (
-              !!$cgs->getMunicipioNascimento() && //
-              !!$cgs->getIbgeNascimento() && // Se for brasileiro Valida esses dados aqui =)
-              !!$cgs->getUfNascimento()           //
-            )
-          );
+            !!$cgs->getNomeMae() &&
+            !!$cgs->getDataNascimento() &&
+            !!$cgs->getTelefone() &&
+            !!$cgs->getEndereco() &&
+            (
+                /**
+                 * Se a naturalidade for brasileiro,
+                 * Valida municipio nascimento, uf nascimento e codigo do Ibge de nascimento
+                 */
+                $cgs->getNaturalidade() <> 10 || (
+                    !!$cgs->getMunicipioNascimento() && //
+                    !!$cgs->getIbgeNascimento() && // Se for brasileiro Valida esses dados aqui =)
+                    !!$cgs->getUfNascimento()           //
+                )
+            );
     }
 
     /**
@@ -1501,5 +1544,17 @@ class Cgs
         return $dataAtual->diff($dataNascimento)->y;
     }
     //plugin ESF operation#0 - adicionando método salvarCgsEsf()
+
+
+    /**
+     * @return string
+     * @throws ParameterException
+     */
+    public function getIdadeCompleta()
+    {
+        $dataAtual = new DBDate(date("Y-m-d"));
+        $quantidadeDeDias = DBDate::calculaIntervaloEntreDatas($dataAtual, $this->getDataNascimento(), 'd');
+        return DBDate::getIdadeCompleta($quantidadeDeDias);
+    }
 
 }

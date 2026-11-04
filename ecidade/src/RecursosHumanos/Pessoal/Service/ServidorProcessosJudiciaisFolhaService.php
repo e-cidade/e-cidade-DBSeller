@@ -80,7 +80,8 @@ class ServidorProcessosJudiciaisFolhaService
 
         $servidor = ServidorRepository::getInstanciaByCodigo($parametros->matricula);
 
-        return $this->repositorio->scopeAno($this->anoCompetencia)->scopeMes($this->mesCompetencia)->scopeServidor($servidor)->get();
+        return $this->repositorio->scopeAno($this->anoCompetencia)
+        ->scopeMes($this->mesCompetencia)->scopeServidor($servidor)->get();
     }
 
     /**
@@ -89,9 +90,13 @@ class ServidorProcessosJudiciaisFolhaService
      * @param Instituicao $instituicao
      * @throws Exception
      */
-    public function virarCompetencia(DBCompetencia $competenciaAtual, DBCompetencia $competenciaNova, Instituicao $instituicao)
-    {
-        $servidorProcessosJudiciaisFolha = $this->repositorio->scopeAno($competenciaAtual->getAno())->scopeMes($competenciaAtual->getMes())->scopeInstituicao($instituicao)->get();
+    public function virarCompetencia(
+        DBCompetencia $competenciaAtual,
+        DBCompetencia $competenciaNova,
+        Instituicao $instituicao
+    ) {
+        $servidorProcessosJudiciaisFolha = $this->repositorio->scopeAno($competenciaAtual->getAno())
+        ->scopeMes($competenciaAtual->getMes())->scopeInstituicao($instituicao)->get();
 
         foreach ($servidorProcessosJudiciaisFolha as $processoJudicial) {
             $parametros = new stdClass();
@@ -126,7 +131,8 @@ class ServidorProcessosJudiciaisFolhaService
         $sequencial = !empty($parametros->sequencial) ? $parametros->sequencial : null;
         $anoCompetencia = !empty($parametros->ano) ? $parametros->ano : DBPessoal::getAnoFolha();
         $mesCompetencia = !empty($parametros->mes) ? $parametros->mes : DBPessoal::getMesFolha();
-        $codigoIndicativoSuspensao = !empty($parametros->codigoIndicativoSuspensao) ? $parametros->codigoIndicativoSuspensao : null;
+        $codigoIndicativoSuspensao = !empty($parametros->codigoIndicativoSuspensao)
+        ? $parametros->codigoIndicativoSuspensao : null;
 
         $servidorProcessosJudiciaisFolha = new ServidorProcessosJudiciaisFolha();
         $servidorProcessosJudiciaisFolha->setSequencial($sequencial);
@@ -145,9 +151,13 @@ class ServidorProcessosJudiciaisFolhaService
      * @param DBCompetencia $competenciaAtual
      * @throws Exception
      */
-    public function voltarCompetencia(DBCompetencia $competenciaAtual)
+    public function voltarCompetencia(DBCompetencia $competenciaAtual, Instituicao $instituicao)
     {
-        $servidorProcessosJudiciaisFolha = $this->repositorio->scopeMes($competenciaAtual->getMes())->scopeAno($competenciaAtual->getAno())->get();
+        $servidorProcessosJudiciaisFolha = $this->repositorio
+        ->scopeMes($competenciaAtual->getMes())
+        ->scopeAno($competenciaAtual->getAno())
+        ->scopeInstituicao($instituicao)
+        ->get();
         $this->repositorio->resetScopes();
 
         foreach ($servidorProcessosJudiciaisFolha as $processoJudicial) {

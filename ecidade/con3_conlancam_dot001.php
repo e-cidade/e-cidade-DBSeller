@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ $anousu = db_getsession("DB_anousu");
   }
  function js_preenchepesquisa(chave){
      db_iframe_conlancamdot.hide();
-    <?  
+    <?php  
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codigo='+chave";
     ?>
  }
@@ -87,21 +87,21 @@ $anousu = db_getsession("DB_anousu");
     <form name="form1" method="post" action="">
     <table border="0">
     <tr>
-      <td nowrap><? db_ancora("Reduzido da Dotação",'js_pesquisa();',1); ?> </td>
-      <td><?  db_input('codigo',12,"",true,'text',1);   ?> </td>
+      <td nowrap><?php db_ancora("Reduzido da Dotação",'js_pesquisa();',1); ?> </td>
+      <td><?php  db_input('codigo',12,"",true,'text',1);   ?> </td>
     </tr>
     <tr>
     <td nowrap>  Período   </td>
-       <td><? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+       <td><?php db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
           à
-	  <? db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
+	  <?php db_inputdata('data_fim',@$data_fim_dia,@$data_fim_mes,@$data_fim_ano,true,'text',1);  ?>
 
       </td>
     </tr>
     </table>
     <input name="db_opcao" type="submit" id="db_opcao" value="Consultar">
     </form>
-    <?
+    <?php
         //-- apresenta resultados
         $data1="";  $data2="";
         @$data1="$data_ini_ano-$data_ini_mes-$data_ini_dia"; 
@@ -149,7 +149,7 @@ $anousu = db_getsession("DB_anousu");
   </td>
 </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

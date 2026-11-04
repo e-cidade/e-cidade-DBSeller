@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,13 +98,13 @@ class cl_cfrelrub {
                  r43_qv10 = varchar(1) = Quant./Valor 
                  ";
    //funcao construtor da classe 
-   function cl_cfrelrub() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfrelrub"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -113,7 +113,7 @@ class cl_cfrelrub {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r43_codigo = ($this->r43_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["r43_codigo"]:$this->r43_codigo);
        $this->r43_tit1 = ($this->r43_tit1 == ""?@$GLOBALS["HTTP_POST_VARS"]["r43_tit1"]:$this->r43_tit1);
@@ -146,7 +146,7 @@ class cl_cfrelrub {
      }
    }
    // funcao para inclusao
-   function incluir ($r43_codigo){ 
+   public function incluir ($r43_codigo){ 
       $this->atualizacampos();
      if($this->r43_tit1 == null ){ 
        $this->erro_sql = " Campo Título 1 nao Informado.";
@@ -498,7 +498,7 @@ class cl_cfrelrub {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r43_codigo=null) { 
+   public function alterar ($r43_codigo=null) { 
       $this->atualizacampos();
      $sql = " update cfrelrub set ";
      $virgula = "";
@@ -938,7 +938,7 @@ class cl_cfrelrub {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r43_codigo=null,$dbwhere=null) { 
+   public function excluir ($r43_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r43_codigo));
      }else{ 
@@ -1024,7 +1024,7 @@ class cl_cfrelrub {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

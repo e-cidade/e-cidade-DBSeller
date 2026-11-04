@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,7 +111,7 @@ function js_MudaLink(nome) {
 }
 
 function js_relatorio(){
-  <?
+  <?php
   if(!empty($lotacao)) {
     echo "jan = window.open('pes2_consrhlotacao003.php?lotacao='+document.form1.r70_codigo.value+'&ano=$ano','sdjklsdklsdf','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');\n";
   }else{
@@ -146,7 +146,7 @@ function js_location(){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?      	
+<?php      	
 if(isset($lotacao) && trim($lotacao)!=""){
   $porlotacao = true;
   $result_lotacao = $clrhlota->sql_record($clrhlota->sql_query_leftorgao(null,"r70_codigo, r70_estrut, r70_descr, o40_orgao, o40_descr ", "r70_codigo", "r70_estrut = '$lotacao' and r70_instit=".db_getsession("DB_instit")));
@@ -178,21 +178,21 @@ if(isset($lotacao) && trim($lotacao)!=""){
           <td colspan="3"></td>
         </tr>
         <tr> 
-          <? 
+          <?php 
           if($porlotacao == true){
           ?>
           <td nowrap class="tabcols" width="10%" align="right">
             <strong style=\"color:blue\">
-              <?
+              <?php
               db_ancora("$Lr70_codigo","","3");
               ?>
             </strong>
           </td>
           <td class="tabcols" nowrap width="30%"> 
-            <?
+            <?php
             db_input('r70_codigo', 8, $Ir70_codigo, true, 'text', 3);
             ?>
-            <?
+            <?php
             db_input('r70_descr', 30, $Ir70_descr, true, 'text', 3);
             ?>
           </td>
@@ -207,7 +207,7 @@ if(isset($lotacao) && trim($lotacao)!=""){
               <tr>
                 <td class="tabcols" nowrap align="right" colspan="2">
                   <strong  class="links2">
-                    <?
+                    <?php
                     db_ancora("VER LOTAÇÕES","js_location();","1");
                     ?>
                   </strong>
@@ -219,40 +219,40 @@ if(isset($lotacao) && trim($lotacao)!=""){
         <tr>
           <td nowrap class="tabcols" width="10%" align="right">
             <strong style=\"color:blue\">
-              <?
+              <?php
               db_ancora("$Lo40_orgao","","3");
               ?>
             </strong>
           </td>
           <td class="tabcols" nowrap width="30%"> 
-            <?
+            <?php
             db_input('o40_orgao', 8, $Io40_orgao, true, 'text', 3);
             ?>
-            <?
+            <?php
             db_input('o40_descr', 30, $Io40_descr, true, 'text', 3);
             ?>
           </td>
         <tr>
           <td nowrap class="tabcols" width="10%" align="right">
             <strong style=\"color:blue\">
-              <?
+              <?php
               db_ancora("$Lr70_estrut","","3");
               ?>
             </strong>
           </td>
           <td class="tabcols" nowrap width="30%"> 
-            <?
+            <?php
             db_input('r70_estrut', 20, $Ir70_estrut, true, 'text', 3);
             ?>
           </td>
-          <?
+          <?php
           }else{
           ?>
           <td nowrap class="tabcols">
             <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <b>TODAS AS LOTAÇÕES</b>
           </td>
-          <?
+          <?php
           }
           ?>
         </tr>
@@ -264,7 +264,7 @@ if(isset($lotacao) && trim($lotacao)!=""){
       <table width="100%" height="90%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td align="center">
-            <?
+            <?php
             $qry = "";
             $rog = "?";
             if(isset($lotacao) && trim($lotacao)!=""){
@@ -282,11 +282,11 @@ if(isset($lotacao) && trim($lotacao)!=""){
             //echo $qry;
             ?> 
             <iframe id="registros" height="95%" width="95%" name="registros" src="pes3_consrhlotacao021.php<?=$qry?>"></iframe> 
-            <?      	
+            <?php      	
             if(isset($lotacao) && trim($lotacao)!=""){
             ?>
             <input type="hidden" name="lotacao"  value="<?=$lotacao?>">
-            <?
+            <?php
             }      	
             ?>
           </td>
@@ -306,11 +306,11 @@ if(isset($lotacao) && trim($lotacao)!=""){
         Período:
       </strong>
       &nbsp;&nbsp;
-      <?
+      <?php
       db_input("ano",4,'',true,'text',4)
       ?>
       &nbsp;/&nbsp;
-      <?
+      <?php
       db_input("mes",2,'',true,'text',4)
       ?>
     </td>   
@@ -318,7 +318,7 @@ if(isset($lotacao) && trim($lotacao)!=""){
 </table>
 </form>
 </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

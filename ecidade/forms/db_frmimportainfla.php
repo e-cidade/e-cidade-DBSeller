@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@
       <b>Indique o caminho do arquivo:</b>
     </td>
     <td nowrap align='left'>
-      <?
+      <?php
       db_input('arquivo',40,0,true,'file',1)
       ?>
     </td>
@@ -43,7 +43,7 @@
       <strong>Separador:</strong>
     </td>
     <td> 
-      <?
+      <?php
       if(!isset($separador) || (isset($separador) && ($separador) == "")){
 	$separador = ";";
       }

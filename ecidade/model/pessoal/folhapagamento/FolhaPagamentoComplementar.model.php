@@ -80,11 +80,10 @@ class FolhaPagamentoComplementar extends FolhaPagamento
     ) {
         $tipoFolhaPagamento = $tipoFolha;
         $competencia = $oCompetencia;
-        $parametros = func_get_args();
 
-        if (isset($parametros[0]) && $parametros[0] instanceof DBCompetencia) {
+        if ($tipoFolha instanceof DBCompetencia) {
             $tipoFolhaPagamento = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR;
-            $competencia = $parametros[0];
+            $competencia = $tipoFolha;
         }
 
         return FolhaPagamento::hasFolhaAberta($tipoFolhaPagamento, $competencia);

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/scpdf.php"));
@@ -38,8 +38,8 @@ include(modification("libs/db_libdocumento.php"));
 
 // ################################################## //
 //               VARIAVES DISPONIVEIS                 //
-//     livro                  = $livro  
-//     exercicio              = $exercicio 
+//     livro                  = $livro
+//     exercicio              = $exercicio
 //     procedencia            = $descr
 //     nº primeira folha      = $folhaini
 //     nº ultima folha        = $ultimafolha
@@ -98,32 +98,32 @@ $result = $cldivida->sql_record($cldivida->sql_query_divida(null, "divida.v01_co
                                                                    v01_vlrhis,
                                                                    v01_numpre,
                                                                    z01_ender,
-                                                                   (select k00_numpre 
-                                                                      from arrecad 
-                                                                     where arrecad.k00_numpre = divida.v01_numpre 
+                                                                   (select k00_numpre
+                                                                      from arrecad
+                                                                     where arrecad.k00_numpre = divida.v01_numpre
                                                                        and arrecad.k00_numpar = divida.v01_numpar
-                                                                     limit 1) as k00_numprearrecad, 
-                                                                   (select k00_numpre 
-                                                                      from arrecant 
-                                                                     where divida.v01_numpre = arrecant.k00_numpre 
+                                                                     limit 1) as k00_numprearrecad,
+                                                                   (select k00_numpre
+                                                                      from arrecant
+                                                                     where divida.v01_numpre = arrecant.k00_numpre
                                                                        and divida.v01_numpar = arrecant.k00_numpar
                                                                      limit 1) as k00_numprearrecant,
-                                                                   (select numpreant 
-                                                                      from termodiv 
+                                                                   (select numpreant
+                                                                      from termodiv
                                                                      where divida.v01_coddiv = termodiv.coddiv
-                                                                    union  
-                                                                   select d.v01_numpre 
-                                                                     from termoini 
-                                                                    inner join inicialcert on termoini.inicial         = inicialcert.v51_inicial 
-                                                                    inner join certdiv     on inicialcert.v51_certidao = certdiv.v14_certid 
-                                                                    inner join divida as d on certdiv.v14_coddiv       = d.v01_coddiv  
-                                                                    where divida.v01_coddiv = d.v01_coddiv 
-                                                                    limit 1) as numpreant, 
-                                                                   divida.v01_folha", 
+                                                                    union
+                                                                   select d.v01_numpre
+                                                                     from termoini
+                                                                    inner join inicialcert on termoini.inicial         = inicialcert.v51_inicial
+                                                                    inner join certdiv     on inicialcert.v51_certidao = certdiv.v14_certid
+                                                                    inner join divida as d on certdiv.v14_coddiv       = d.v01_coddiv
+                                                                    where divida.v01_coddiv = d.v01_coddiv
+                                                                    limit 1) as numpreant,
+                                                                   divida.v01_folha",
                                                                    'v01_folha, v01_coddiv,v01_numpar',
-                                                                   "v01_livro = {$livro} 
+                                                                   "v01_livro = {$livro}
                                                                     and v01_instit = {$instit}"));
-                                                                    
+
 $numrows = $cldivida->numrows;
 
 if ( $numrows == 0 ) {
@@ -133,7 +133,7 @@ if ( $numrows == 0 ) {
 db_fieldsmemory($result, 0);
 $pdf->AddPage("L");
 $dados = @ db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = " . db_getsession("DB_instit"));
-if (pg_numrows($dados) > 0) {
+if (pg_num_rows($dados) > 0) {
   db_fieldsmemory($dados, 0);
 }
 $pdf->SetXY(150, 1);
@@ -151,17 +151,23 @@ $pdf->Text($dist, 10, $ender);
 $pdf->Text($dist, 14, $munic . " - " . $uf . " - " . $telef);
 $pdf->Text($dist, 18, $email);
 $pdf->Text($dist, 22, $url);
-//$pdf->Text(230,18,"Data de Correção: ".db_formatar($datacorr,'d')."");	
+//$pdf->Text(230,18,"Data de Correção: ".db_formatar($datacorr,'d')."");
 $pdf->SetY(25);
 
 $pdf->setfillcolor(255);
 $pdf->SetFont('Arial', 'B', 12);
 
 // exercicio
-$sqlexerc = "select count(*),v01_exerc from divida where v01_livro = $livro and v01_instit = $instit group by v01_exerc order by count(*) desc limit 1 ";
+$sqlexerc = "select exercicio_livro 
+               from (select extract(year from v01_dtinsc) as exercicio_livro 
+                       from divida 
+                      where v01_livro = $livro 
+                        and v01_instit = $instit
+                    ) as sq_livro order by exercicio_livro desc limit 1";
+
 $resultexec = db_query($sqlexerc);
 db_fieldsmemory($resultexec, 0);
-$exercicio = $v01_exerc;
+$exercicio = $exercicio_livro;
 
 // data da abertura
 $sqldata = "select count(*),v01_dtinsc from divida where v01_livro = $livro and v01_instit = $instit group by v01_dtinsc order by count(*) desc limit 1";
@@ -169,18 +175,18 @@ $resultexec = db_query($sqldata);
 db_fieldsmemory($resultexec, 0);
 $datainscr = $v01_dtinsc;
 
-list ( $ano, $mes, $dia ) = split('-', $datainscr);
+list ( $ano, $mes, $dia ) =explode('-', $datainscr);
 $mes1 = db_mes($mes, 2);
 $datacompleta = "$munic, $dia de $mes1 de $ano";
 
 //informações de livro e folha
 $sqlfolha = "select v01_livro,
-                    lpad(min(v01_folha),3,0) as folhaini, 
-                    lpad(max(v01_folha),3,0) as ultimafolha, 
+                    lpad(min(v01_folha),3,0) as folhaini,
+                    lpad(max(v01_folha),3,0) as ultimafolha,
                     array_accum( distinct v01_folha ) as folhas,
-                    count( distinct v01_folha ) as qtdfolha 
-               from divida 
-              where v01_livro  = $livro 
+                    count( distinct v01_folha ) as qtdfolha
+               from divida
+              where v01_livro  = $livro
                 and v01_instit = $instit
                 and v01_folha <> 0
               group by v01_livro  ";
@@ -191,18 +197,18 @@ $folhas = str_replace('{','',$folhas);
 $folhas = str_replace('}','',$folhas);
 
 //// procedencias
-$sSql = " select distinct v03_descr, v03_tributaria  
+$sSql = " select distinct v03_descr, v03_tributaria
             from (select distinct v01_proced,
-                                  sum(v01_vlrhis) as valor 
-                             from divida 
-                            where v01_livro = {$livro} 
-                              and v01_instit = " . db_getsession('DB_instit') . " 
-                         group by v01_proced) as x 
-                  inner join proced     on v01_proced = v03_codigo  
+                                  sum(v01_vlrhis) as valor
+                             from divida
+                            where v01_livro = {$livro}
+                              and v01_instit = " . db_getsession('DB_instit') . "
+                         group by v01_proced) as x
+                  inner join proced     on v01_proced = v03_codigo
                   inner join tipoproced on v07_sequencial = v03_tributaria";
-                             
+
 $resultproc = db_query($sSql);
-$numr       = pg_numrows($resultproc);
+$numr       = pg_num_rows($resultproc);
 
 $tra = "";
 $descr = "";
@@ -211,9 +217,9 @@ $natureza = "";
 if ($numr > 0) {
   for($x = 0; $x < $numr; $x ++) {
     db_fieldsmemory($resultproc, $x);
-    
+
     $descr .= $tra . $v03_descr;
-    
+
     if ($v03_tributaria == "1") {
       $v03_tributaria = "Tributária";
     } else if ($v03_tributaria == "2") {
@@ -225,15 +231,15 @@ if ($numr > 0) {
       $natureza .= $tra . $v03_tributaria;
     }
     $tra = " , ";
-  
+
   }
 
 }
 
- 
+
 /*
-echo "<br> livro        = $livro  
-      <br> exerc        = $exercicio 
+echo "<br> livro        = $livro
+      <br> exerc        = $exercicio
       <br> descr        = $descr
       <br> ultima folha = $ultimafolha
       <br> natureza     = $natureza
@@ -251,16 +257,16 @@ $pdf->ln(7);
 $x = $pdf->getX();
 $par = $clpardiv->sql_record($clpardiv->sql_query_file());
 
-if (pg_numrows($par) > 0) {
+if (pg_num_rows($par) > 0) {
   db_fieldsmemory($par, 0);
   if (@$v04_docum != "") {
-    
+
     $xx = db_query($cldb_docparag->sql_query(null, null, "*", null, "db03_tipodoc = 30"));
     if (pg_num_rows($xx) == 0) {
       db_redireciona("db_erros.php?fechar=true&db_erro=Verifique configuração do documento. [TIPODOC-30].");
       exit();
     }
-    
+
     $objteste = new libdocumento(30);
     if ($objteste->lErro) {
       db_redireciona("db_erros.php?fechar=true&db_erro={$objtest->sMsgErro}.");
@@ -287,11 +293,11 @@ if (pg_numrows($par) > 0) {
       } else {
         $alinhamento = "J";
       }
-      
+
       $pdf->MultiCell(280, 6, "        " . $objteste->geratexto($chave->db02_texto), 0, $alinhamento);
       $pdf->cell(280, $alt, "", 0, 1, "C", 1);
     }
-  
+
   }
 }
 
@@ -318,7 +324,7 @@ if ($tipo == "c") {
   $pdf->Text(230, 22, "Data de Correção: " . db_formatar($datacorr, 'd') . "");
   $pdf->SetY(25);
   $bord = 0;
-  
+
   $pdf->setfont('arial', 'I', 7);
   $pdf->cell(13, $alt, "Cod", $bord, 0, "C", 1);
   $pdf->cell(60, $alt, $RLz01_nome, $bord, 0, "L", 1);
@@ -422,23 +428,23 @@ for($i = 0; $i < $numrows; $i ++) {
   }
 
   $result3 = $clproced->sql_record($clproced->sql_query_file(null, "v03_receit", '', " v03_codigo = $v01_proced and v03_instit = " . db_getsession('DB_instit')));
-  if (pg_numrows($result3) > 0) {
+  if (pg_num_rows($result3) > 0) {
     db_fieldsmemory($result3, 0);
   }
   $sql2 = "select fc_corre($v03_receit,'$v01_dtvenc',$v01_vlrhis,'$datacorr'," . db_getsession("DB_anousu") . ",'$v01_dtvenc') as vlrcor from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $sql2 = "select fc_juros($v03_receit,'$v01_dtvenc','$datacorr','$v01_dtoper',false," . db_getsession("DB_anousu") . ") as vlrjur from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $vlrjur = $vlrcor * $vlrjur;
   $sql2 = "select fc_multa($v03_receit,'$v01_dtvenc','$datacorr','$v01_dtoper'," . db_getsession("DB_anousu") . ") as vlrmul from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $vlrmul = $vlrcor * $vlrmul;
@@ -463,9 +469,9 @@ for($i = 0; $i < $numrows; $i ++) {
     $pdf->cell(12, $alt, db_formatar($vlrmul, 'f'), $bord, 0, "R", 0);
     $pdf->cell(12, $alt, '0', 0, 0, "R", 0);
     $pdf->cell(20, $alt, db_formatar($total, 'f'), $bord, 1, "R", 0);
-  
+
   }
-  
+
   if (! isset($total_proc [$v03_descr . " ($v01_proced)"])) {
     $total_proc [$v03_descr . " ($v01_proced)"] [0] = 0;
     $total_proc [$v03_descr . " ($v01_proced)"] [1] = 0;
@@ -473,13 +479,13 @@ for($i = 0; $i < $numrows; $i ++) {
     $total_proc [$v03_descr . " ($v01_proced)"] [3] = 0;
     $total_proc [$v03_descr . " ($v01_proced)"] [4] = 0;
   }
-  
+
   $total_proc [$v03_descr . " ($v01_proced)"] [0] += $v01_vlrhis;
   $total_proc [$v03_descr . " ($v01_proced)"] [1] += $vlrcor;
   $total_proc [$v03_descr . " ($v01_proced)"] [2] += $vlrjur;
   $total_proc [$v03_descr . " ($v01_proced)"] [3] += $vlrmul;
   $total_proc [$v03_descr . " ($v01_proced)"] [4] += 0;
-  
+
   $hist_total += $v01_vlrhis;
   $corr_total += $vlrcor;
   $juro_total += $vlrjur;
@@ -527,7 +533,7 @@ $pdf->cell(30, $alt, $inscrs, 0, 1, "R", 0);
 $pdf->cell(90, $alt, "Total de CGM's:", 0, 0, "L", 0);
 $pdf->cell(30, $alt, $cgms, 0, 1, "R", 0);
 //$result = db_query("select valor,v03_descr from (select distinct v01_proced,sum(v01_vlrhis) as valor from divida where v01_livro = $v01_livro group by v01_proced) as x inner join proced on v01_proced = v03_codigo");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $matproc = array ();
 if ($numrows > 0) {
   for($x = 0; $x < $numrows; $x ++) {
@@ -571,9 +577,9 @@ $total_desconto = 0;
 
 
 foreach ( $total_proc as $a => $b [] ) {
-  
+
   $pdf->Cell(80, $alt, $a, 0, 0, "L", 0);
-  
+
   $pdf->cell(32, $alt, db_formatar($total_proc [$a] [0], 'f'), 0, 0, "R", 0);
   $pdf->cell(32, $alt, db_formatar($total_proc [$a] [1], 'f'), 0, 0, "R", 0);
   $pdf->cell(32, $alt, db_formatar($total_proc [$a] [2], 'f'), 0, 0, "R", 0);
@@ -581,7 +587,7 @@ foreach ( $total_proc as $a => $b [] ) {
   $pdf->cell(32, $alt, db_formatar($total_proc [$a] [4], 'f'), 0, 0, "R", 0);
   $pdf->cell(32, $alt, db_formatar($total_proc [$a] [1] + $total_proc [$a] [2] + $total_proc [$a] [3] - $total_proc [$a] [4], 'f'), 0, 0, "R", 0);
   $pdf->ln();
-  
+
   $total_historico += $total_proc [$a] [0];
   $total_corrigido += $total_proc [$a] [1];
   $total_juros += $total_proc [$a] [2];
@@ -622,7 +628,7 @@ $pdf->Text($dist, 10, $ender);
 $pdf->Text($dist, 14, $munic . " - " . $uf . " - " . $telef);
 $pdf->Text($dist, 18, $email);
 $pdf->Text($dist, 22, $url);
-//$pdf->Text(230,18,"Data de Correção: ".db_formatar($datacorr,'d')."");	
+//$pdf->Text(230,18,"Data de Correção: ".db_formatar($datacorr,'d')."");
 $pdf->SetY(25);
 $pdf->setleftmargin(10);
 $pdf->setfillcolor(255);
@@ -660,7 +666,7 @@ foreach ( $parag as $chave ) {
   } else {
     $alinhamento = "J";
   }
-  
+
   $pdf->MultiCell(280, 6, "        " . $objteste->geratexto($chave->db02_texto), 0, $alinhamento);
   $pdf->cell(280, $alt, "", 0, 1, "C", 1);
 }

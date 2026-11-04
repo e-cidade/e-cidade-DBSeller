@@ -70,6 +70,7 @@ require_once modification('dbforms/db_funcoes.php');
             type="text/javascript"></script>
             <script src="scripts/classes/DBViewFormularioFolha/CaixaFolha.js" rel="script"
             type="text/javascript"></script>
+        <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
         <style>
             #competenciaTr input[type="text"] {
                 width: inherit;
@@ -108,7 +109,17 @@ require_once modification('dbforms/db_funcoes.php');
                             </select>
                         </td>
                     </tr>
-                    <tr class="filtrosPeriodoApuracao" style="display:none;">
+                    <tr id="tr_filtros" class="d-none">
+                        <td>
+                            <label for="filtroOpcao">Filtrar por:</label>
+                        </td>
+                        <td>
+                            <select id="filtroOpcao" name="filtroOpcao" class="field-size-max">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="filtrosPeriodoApuracao"  class="d-none">
                         <td>
                             <label for="indicativoPeriodoApuracao">Indicativo de Período de Apuração:</label>
                         </td>
@@ -120,13 +131,41 @@ require_once modification('dbforms/db_funcoes.php');
                             </select>
                         </td>
                     </tr>
-                    <tr id="competenciaTr" style="display:none;">
+                    <tr id="indicativoPeriodoApuracaoTrMensagem"  class="d-none">
+                        <td id="indicativoPeriodoApuracaoMensagem" colspan="2">
+                        </td>
+                    </tr>
+                    <tr id="competenciaTr" class="d-none">
                         <td id="labelCompetencia"></td>
                         <td id="formularioCompetencia"></td>
+                    </tr>
+                    <tr id="competenciaTrMensagem" class="d-none">
+                        <td id="competenciaMensagem" colspan="2">
+                        </td>
                     </tr>
                     <tr id="caixaTr" style="display:none;">
                         <td id="labelCaixa"></td>
                         <td id="formularioCaixa"></td>
+                    </tr>
+                    <tr id="tr_matricula" class="d-none">
+                        <td colspan="2" id="td_matricula" style="padding-top: 15px"></td>
+                    </tr>
+                    <tr id="matriculaTrMensagem"  class="d-none">
+                        <td id="matriculaMensagem" colspan="2">
+                        </td>
+                    </tr>
+                    <tr id="selecaoTr" class="d-none">
+                        <td>
+                            <a href="#"><label for="r44_selec" id="lblSelecao">Sele&ccedil;&aacute;o:</label></a>
+                        </td>
+                        <td>
+                            <?php db_input('r44_selec', null, 1, true, 'text', 2); ?>
+                            <?php db_input('r44_descr', null, 0, true, 'text', 3); ?>
+                        </td>
+                    </tr>
+                    <tr id="selecaoTrMensagem"  class="d-none">
+                        <td id="selecaoMensagem" colspan="2">
+                        </td>
                     </tr>
                 </table>
             </fieldset>
@@ -151,6 +190,7 @@ require_once modification('dbforms/db_funcoes.php');
             </div>
             <script rel="script" type="text/javascript">
                 var text = '';
+                var dbLancadorMatricula = new DBLancador('dbLancadorMatricula');
 
                 (() => {
                     const EFD_REINF = '1';
@@ -170,6 +210,20 @@ require_once modification('dbforms/db_funcoes.php');
                     const formularioCompetencia = document.getElementById('formularioCompetencia');
                     const labelCaixa = document.getElementById('labelCaixa');
                     const formularioCaixa = document.getElementById('formularioCaixa');
+                    const trSelecao = document.getElementById('selecaoTr');
+                    const selecaoMensagem = document.getElementById('selecaoMensagem');
+                    const selecaoTrMensagem = document.getElementById('selecaoTrMensagem');
+                    const trFiltros = document.getElementById('tr_filtros');
+                    const selectFiltros = document.getElementById('filtroOpcao');
+                    const trMatricula = document.getElementById('tr_matricula');
+                    const competenciaTrMensagem = document.getElementById('competenciaTrMensagem');
+                    const indicativoPeriodoApuracaoTr = document.getElementById('filtrosPeriodoApuracao');
+                    const indicativoPeriodoApuracaoTrMensagem = document.getElementById('indicativoPeriodoApuracaoTrMensagem');
+                    var dadosSelecao;
+                    var dadosCompetencia;
+                    var dadosMatricula;
+                    var dadosIndicativoPeriodoApuracao;
+
                     const validar = () => {
                         return new Promise((resolve, reject) => {
                         if (integracao === EFD_REINF && inputContribuinte.value === '') {
@@ -199,21 +253,30 @@ require_once modification('dbforms/db_funcoes.php');
                                 mesCaixa: null
                             };
 
-                            if (selectArquivos.value != '2230') {
-                                parametros.indicativoPeriodoApuracao = $F('indicativoPeriodoApuracao');
-                                parametros.ano = formularioCompetencia.querySelector("#ano").value;
-                                parametros.mes = formularioCompetencia.querySelector("#mes").value;
-                                parametros.anoCaixa = formularioCaixa.querySelector("#anoCaixa").value;
-                                parametros.mesCaixa = formularioCaixa.querySelector("#mesCaixa").value;
-                            }
-
+                            parametros.indicativoPeriodoApuracao = $F('indicativoPeriodoApuracao');
+                            parametros.ano = formularioCompetencia.querySelector("#ano").value;
+                            parametros.mes = formularioCompetencia.querySelector("#mes").value;
+                            parametros.anoCaixa = formularioCaixa.querySelector("#anoCaixa").value;
+                            parametros.mesCaixa = formularioCaixa.querySelector("#mesCaixa").value;
+                        
                             if (integracao === EFD_REINF) {
                                 parametros.cgm = inputContribuinte.value;
                             }
 
                             if (integracao === ESOCIAL) {
                                 parametros.cgm = selectEmpregador.value;
+
+                                const registros = dbLancadorMatricula.getRegistros();
+
+                                if (registros.length > 0) {
+                                    parametros.matriculas = [];
+
+                                    registros.each(registro => {
+                                        parametros.matriculas.push(registro.sCodigo);
+                                    });
+                                }
                             }
+                            parametros.selecao = $F("r44_selec");
 
                             formData.append('json', JSON.stringify(parametros));
 
@@ -258,22 +321,11 @@ require_once modification('dbforms/db_funcoes.php');
                     var dbViewFormularioFolhaCaixa = new DBViewFormularioFolha.CaixaFolha(false);
                     dbViewFormularioFolhaCaixa.renderizaLabel(labelCaixa);
                     dbViewFormularioFolhaCaixa.renderizaFormulario(formularioCaixa);
-                    selectArquivos.addEventListener('change', () => {
-                        exibeClasse();
-                    });
-                    const inicializarFiltroCompetencia = exibeCompetencia => {
-                        selectArquivos.addEventListener('change', () => {
-                            if(exibeCompetencia.includes(parseInt(selectArquivos.value))) {
-                                competenciaTr.style.display = "table-row";
-                                $('indicativoPeriodoApuracao').value = "";
-                                $('ano').value = '';
-                                $('mes').value = '';
 
-                                $('ano').removeAttribute('disabled');
-                                $('mes').removeAttribute('disabled');
-                            } else {
-                                competenciaTr.style.display = "none";
-                            }
+                    const inicializarFiltroCompetencia = exibeCompetencia => {
+                        dadosCompetencia = exibeCompetencia;
+                        selectArquivos.addEventListener('change', () => {
+                            changeCompetencia();
                         });
                     };
                     const inicializarFiltroCaixa = exibeCaixa => {
@@ -293,21 +345,234 @@ require_once modification('dbforms/db_funcoes.php');
                     };
 
                     const inicializarIndicativoPeriodoApuracao = (exibeIndicativoPeriodoApuracao) => {
-                        selectArquivos.addEventListener("change", (event) => {
-                            var filtrosPeriodoApuracao = document.getElementsByClassName('filtrosPeriodoApuracao');
-                            const indexSelecionado = event.target.selectedIndex;
-                            const valor = parseFloat(event.target.options[indexSelecionado].value);
+                        dadosIndicativoPeriodoApuracao = exibeIndicativoPeriodoApuracao;
+                        selectArquivos.addEventListener('change', () => {
+                            changeIndicativoPeriodoApuracao();
 
-                            if(exibeIndicativoPeriodoApuracao.indexOf(valor) > -1) {
-                                filtrosPeriodoApuracao[0].style.display = "table-row";
-                                $('ano').setAttribute('disabled', 'disabled');
-                                $('mes').setAttribute('disabled', 'disabled');
+                        });
+                    };
+
+                    const inicializarFiltroMatriculas = exibeMatricula => {
+                        dadosMatricula = exibeMatricula;
+                        selectArquivos.addEventListener('change', () => {
+                            changeMatricula();
+                        });
+                    };
+
+                    const inicializarFiltroOpcao = exibeFiltro => {
+                        filtros = exibeFiltro;
+                        selectArquivos.addEventListener('change', () => {
+                            trFiltros.classList.remove('d-none');
+                            const arquivo = parseInt(selectArquivos.value);
+                            selectFiltros.innerHTML = '';
+                            if (exibeFiltro.hasOwnProperty(arquivo)) {
+                                exibeFiltro[arquivo].opcoes.map(tipo => {
+                                    selectFiltros.add(new Option(tipo.titulo, tipo.tipo));
+                                });
+                                inicializaFiltro();
                             } else {
-                                filtrosPeriodoApuracao[0].style.display = "none";
-                                $('indicativoPeriodoApuracao').value = '';
+                                trFiltros.classList.add('d-none');
                             }
                         });
                     };
+
+                    const exibeFiltros = (opcao) => {
+                        //inicializando os grupos de forma forcada
+                        trMatricula.classList.remove('d-none');
+                        trMatricula.classList.add('d-none');
+                        matriculaTrMensagem.classList.remove('d-none');
+                        matriculaTrMensagem.classList.add('d-none');
+
+                        competenciaTr.classList.remove('d-none');
+                        competenciaTr.classList.add('d-none');
+                        competenciaTrMensagem.classList.remove('d-none');
+                        competenciaTrMensagem.classList.add('d-none');
+
+                        var forcar_competencia = false;
+
+                        if (dadosCompetencia.some(dadosCompetencia => dadosCompetencia.layout == selectArquivos.value && dadosCompetencia.forcar == true)) {
+                            forcar_competencia = true;
+                            competenciaTr.classList.remove('d-none');
+                            competenciaTrMensagem.classList.remove('d-none');
+                        }
+                        trSelecao.classList.remove('d-none');
+                        trSelecao.classList.add('d-none');
+                        resetaCampos();
+
+                        switch (opcao) {
+                            case 'matricula':
+                                changeMatricula();
+                                break;
+                            case 'competencia':
+                                if(forcar_competencia == false){
+                                    changeCompetencia();
+                                }
+                                break;
+                            case 'selecao':
+                                changeSelecao();
+                                break;
+                        }
+                    }
+
+                    const validaMensagemCampo = () => {
+                        if (mensagemValidar != "" && mensagemValidar != undefined) {
+                            switch (tipoValidacaoValidar) {
+                                case "competencia":
+                                    if (!competenciaTr.classList.contains('d-none')) {
+                                        if ($('ano').value == '' || $('mes').value == '') {
+                                            return confirm(mensagemValidar);
+                                        }
+                                    }
+                                    break;
+                                case "selecao":
+                                    if (!trSelecao.classList.contains('d-none')) {
+                                        if ($('r44_selec').value == '') {
+                                            alert(mensagemValidar);
+                                            return false;
+                                        }
+                                    }
+                                    break;
+                                case "matricula":
+                                    if (!trMatricula.classList.contains('d-none')) {
+                                        const registros = dbLancadorMatricula.getRegistros();
+                                        if (registros.length == 0) {
+                                            alert(mensagemValidar);
+                                            return false;
+                                            return confirm(mensagemValidar);
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                        return true;
+                    }
+
+
+                    const resetaCampos = () => {
+                        // matriculas
+                        dbLancadorMatricula.clearAll();
+                        // competencia
+                        $('ano').value = '';
+                        $('mes').value = '';
+                        // selecao
+                        $('r44_selec').value = '';
+                        $('r44_descr').value = '';
+                        mensagemValidar = '';
+                    }
+
+
+                    const changeCompetencia = () => {
+                        if (dadosCompetencia.some(dadosCompetencia => dadosCompetencia.layout == selectArquivos.value)) {
+                            const elemento = dadosCompetencia.find(dadosCompetencia => dadosCompetencia.layout == selectArquivos.value);
+                            if (elemento.mensagem != undefined) {
+                                competenciaMensagem.innerText = elemento.mensagem;
+                            } else {
+                                competenciaMensagem.innerText = '';
+                            }
+                            if (elemento.validar != undefined) {
+                                tipoValidacaoValidar = 'competencia';
+                                mensagemValidar = elemento.validar;
+                            }
+
+                            competenciaTr.classList.remove('d-none');
+                            competenciaTrMensagem.classList.remove('d-none');
+
+                            $('ano').value = '';
+                            $('mes').value = '';
+
+                            $('ano').removeAttribute('disabled');
+                            $('mes').removeAttribute('disabled');
+                        } else {
+                            competenciaTr.classList.add('d-none');
+                            competenciaTrMensagem.classList.add('d-none');
+                        }
+                    }
+
+                    const changeMatricula = () => {
+                        trMatricula.classList.remove('d-none');
+                        matriculaTrMensagem.classList.remove('d-none');
+                        dbLancadorMatricula.clearAll();
+
+                        const arquivo = parseInt(selectArquivos.value);
+
+                        if (dadosMatricula.some(dadosMatricula => dadosMatricula.layout === parseInt(arquivo))) {
+                            const urlSearchParams = new URLSearchParams();
+                            const searchParams = dadosMatricula.find(dadosMatricula => dadosMatricula.layout === parseInt(arquivo));;
+                            if (searchParams.mensagem != undefined) {
+                                matriculaMensagem.innerText = searchParams.mensagem;
+                            } else {
+                                matriculaMensagem.innerText = '';
+                            }
+                            if (searchParams.validar != undefined) {
+                                tipoValidacaoValidar = 'matricula';
+                                mensagemValidar = searchParams.validar;
+                            }
+
+                            for (var key in searchParams.parametros) {
+                                if (searchParams.parametros.hasOwnProperty(key)) {
+                                    urlSearchParams.set(key, searchParams.parametros[key]);
+                                }
+                            }
+
+                            dbLancadorMatricula.setParametrosPesquisa(searchParams.funcao, [
+                                'rh01_regist',
+                                'z01_nome'
+                            ], urlSearchParams.toString());
+                        } else {
+                            trMatricula.classList.add('d-none');
+                            matriculaTrMensagem.classList.add('d-none');
+                        }
+                    }
+                    const changeSelecao = () => {
+                        trSelecao.classList.remove('d-none');
+                        selecaoTrMensagem.classList.remove('d-none');
+                        if (dadosSelecao.some(dadosSelecao => dadosSelecao.layout === parseInt(selectArquivos.value))) {
+                            const elemento = dadosSelecao.find(dadosSelecao => dadosSelecao.layout === parseInt(selectArquivos.value));
+                            if (elemento.mensagem != undefined) {
+                                selecaoMensagemMensagem.innerText = elemento.mensagem;
+                            } else {
+                                selecaoMensagem.innerText = '';
+                            }
+                            if (elemento.validar != undefined) {
+                                tipoValidacaoValidar = 'selecao';
+                                mensagemValidar = elemento.validar;
+                            }
+                        } else {
+                            trSelecao.classList.add('d-none');
+                            selecaoTrMensagem.classList.add('d-none');
+                        }
+                    }
+                    
+                    const inicializaFiltro = () => {
+                        exibeFiltros(selectFiltros.value);
+
+                        selectFiltros.addEventListener('change', () => {
+                            exibeFiltros(selectFiltros.value);
+                        });
+                    }
+
+                    const inicializarSelecao = (exibeSelecao) => {
+                        dadosSelecao = exibeSelecao;
+                        selectArquivos.addEventListener('change', () => {
+                            changeSelecao();
+                        });
+                    };
+
+                    const changeIndicativoPeriodoApuracao = () => {
+                        if (dadosIndicativoPeriodoApuracao.some(dadosIndicativoPeriodoApuracao => dadosIndicativoPeriodoApuracao.layout === parseInt(selectArquivos.value))) {
+                            const elemento = dadosIndicativoPeriodoApuracao.find(dadosIndicativoPeriodoApuracao => dadosIndicativoPeriodoApuracao.layout === parseInt(selectArquivos.value));
+
+                            indicativoPeriodoApuracaoTr.classList.remove('d-none');
+                            if (indicativoPeriodoApuracao.value == "") {
+                                $('ano').setAttribute('disabled', 'disabled');
+                                $('mes').setAttribute('disabled', 'disabled');
+                            }
+
+                        } else {
+                            indicativoPeriodoApuracaoTr.classList.add('d-none');
+                            indicativoPeriodoApuracaoTrMensagem.classList.add('d-none');
+                        }
+                    }
 
                     $('indicativoPeriodoApuracao').addEventListener("change", (event) => {
                         $('ano').setAttribute('disabled', 'disabled');
@@ -324,7 +589,6 @@ require_once modification('dbforms/db_funcoes.php');
 
                         $('ano').removeAttribute('disabled');
                         $('mes').removeAttribute('disabled');
-                        //Periodo de apuração.
                         $('anoCaixa').removeAttribute('disabled');
                         $('mesCaixa').removeAttribute('disabled');
                     });
@@ -345,6 +609,14 @@ require_once modification('dbforms/db_funcoes.php');
                         formData.append('integracao', integracao);
                         formData.append('exclusaoLote', true);
 
+                        dbLancadorMatricula.setLabelAncora('Matrícula:');
+                        dbLancadorMatricula.setNomeInstancia('dbLancadorMatricula');
+                        dbLancadorMatricula.setTituloJanela('Pesquisa de Matrícula');
+                        dbLancadorMatricula.setTextoFieldset('Matrículas');
+                        dbLancadorMatricula.setGridHeight(150);
+                        dbLancadorMatricula.adicionarItensPrimeiraPosicao(true);
+                        dbLancadorMatricula.show(document.getElementById('td_matricula'));
+
                         HttpClient.post('sped02_preenchimento.RPC.php', {
                             body: formData
                         }).then(response => {
@@ -354,6 +626,11 @@ require_once modification('dbforms/db_funcoes.php');
                             inicializarFiltroCompetencia(response.exibeCompetencia);
                             inicializarFiltroCaixa(response.exibeCaixa);
                             inicializarIndicativoPeriodoApuracao(response.exibeIndicativoPeriodoApuracao);
+                            inicializarSelecao(response.exibeSelecao);
+                            inicializarFiltroMatriculas(response.exibeMatricula);
+
+                            // sempre o ultimo a ser chamado
+                            inicializarFiltroOpcao(response.exibeFiltro);
 
                             if (integracao === EFD_REINF) {
                                 inputDescricao.defaultValue = response.contribuinte.descricao;
@@ -373,29 +650,18 @@ require_once modification('dbforms/db_funcoes.php');
                                 });
                                 trEmpregador.classList.remove('d-none');
                             }
-                            exibeClasse();
                         }).then(buscarArquivos).then(adicionarListeners).catch(mensagem => alert(mensagem));
                     };
-
-                    function resetaClasses() {
-                        var elementos = document.getElementsByClassName('esocial-text');
-                        for(i = 0; i < elementos.length; i++) {
-                            elementos[i].classList.remove('esocial-exibe');
-                        }
-                    }
-
-                    function exibeClasse() {
-                        var layout = selectArquivos.value;
-                        resetaClasses();
-                        if (layout) {
-                            var elemento = document.getElementById('s' + layout);
-                            elemento.classList.add('esocial-exibe');
-                        }
-                    }
 
                     inicializar();
 
                 })();
+
+              new DBLookUp($('lblSelecao'), $('r44_selec'), $('r44_descr'), {
+                    sArquivo: 'func_selecao.php',
+                    sObjetoLookUp: 'func_selecao',
+                    sLabel: 'Seleção',
+                });
             </script>
         </form>
         <style>

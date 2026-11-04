@@ -41,7 +41,7 @@ class RelatorioProjecaoDespesaConferenciaRecrusoService extends RelatorioProjeca
         ", $this->planejamento->pl2_ano_inicial));
 
         foreach ($fontesRecursos as $dadoFR) {
-            $fonte = "{$dadoFR->o15_recurso}#{$dadoFR->o15_complemento}";
+            $fonte = "{$dadoFR->codigo_siconfi}#{$dadoFR->o15_recurso}#{$dadoFR->o15_complemento}";
             $recursos[$fonte] = (object)[
                 'codigo_original' => "{$dadoFR->o15_recurso}-{$dadoFR->o15_complemento}",
                 'codigo_exercicio' => "{$dadoFR->codigo_siconfi}-{$dadoFR->o15_complemento}",

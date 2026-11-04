@@ -211,6 +211,22 @@ if( $clregencia->numrows > 0 ) {
 
         $sWhere = " ed54_i_calendario = {$ed54_i_calendario} AND ed54_c_dialetivo = 'N'";
 
+        $sqlFeriados =  $clferiado->sql_query( "", "*", "ed54_i_codigo, ed54_d_data", $sWhere );
+        $rsFeriados = db_query( $sqlFeriados );
+
+        if ( !$rsFeriados ) {
+          throw new DBException("Não foi possivel buscar os feriados e eventos não letivos para este calendário");
+        }
+
+        $feriadosNaoLetivos = array();
+
+        for ($i = 0; $i <= pg_num_rows($rsFeriados); $i++) {
+          $feriadosNaoLetivos [db_utils::fieldsMemory($rsFeriados, $i)->ed54_i_codigo] = 
+                              db_utils::fieldsMemory($rsFeriados, $i)->ed54_d_data;
+        }
+
+        $feriadosNaoLetivos = json_encode($feriadosNaoLetivos);
+
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         $cliframe_alterar_excluir->sql           = $clferiado->sql_query( "", "*", "ed54_d_data", $sWhere );
         $cliframe_alterar_excluir->campos        = "ed96_c_descr, ed54_c_descr, ed54_d_data, ed54_c_diasemana";
@@ -243,7 +259,20 @@ if( $clregencia->numrows > 0 ) {
                            "ed96_c_descr"     => @$ed96_c_descr
                          );
 
-        $sWhereFeriado = " ed54_i_calendario = {$ed54_i_calendario} AND ed54_c_dialetivo = 'S'";
+        $sWhereFeriado  = " ed54_i_calendario = {$ed54_i_calendario} AND ed54_c_dialetivo = 'S'";
+        $sqlFeriado     =  $clferiado->sql_query( "", "*", "ed54_i_codigo, ed54_d_data", $sWhereFeriado );
+        $rsFeriado      = db_query($sqlFeriado);
+        if ( !$rsFeriado ) {
+          throw new DBException("Não foi possivel buscar os feriados e eventos letivos para este calendário");
+        }
+      
+        $feriadosLetivos      = array();
+        for ($i = 0; $i <= pg_num_rows($rsFeriado); $i++) {
+          $feriadosLetivos [db_utils::fieldsMemory($rsFeriado, $i)->ed54_i_codigo] = 
+                            db_utils::fieldsMemory($rsFeriado, $i)->ed54_d_data;
+        }
+
+        $feriadosLetivos = json_encode($feriadosLetivos);
 
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         $cliframe_alterar_excluir->sql           = $clferiado->sql_query( "", "*", "ed54_d_data", $sWhereFeriado );
@@ -268,6 +297,8 @@ if( $clregencia->numrows > 0 ) {
   <table>
     <tr>
       <td>
+        <input id="js_array_nao_letivos" type="hidden" value='<?=$feriadosNaoLetivos?>'>
+        <input id="js_array_letivos" type="hidden" value='<?=$feriadosLetivos?>'>
         <iframe src=""
                 name="iframe_sabado2"
                 id="iframe_sabado2"
@@ -424,6 +455,52 @@ function js_validaPersistencia() {
     return false;    
   }
 
-  return confirm('O Sistema irá recalcular os dias e semanas letivos. Confirma?');
+  var dataFeriado = $F('ed54_d_data')
+  dataFeriado = dataFeriado.split('/').reverse().join('-');
+  var codigo = $F('ed54_i_codigo');
+  var retorno = false
+
+  var feriadosNaoLetivos = document.getElementById('js_array_nao_letivos').value;
+  var feriadosLetivos = document.getElementById('js_array_letivos').value;
+  
+  feriadosLetivos = JSON.parse(feriadosLetivos)
+  feriadosNaoLetivos = JSON.parse(feriadosNaoLetivos)
+
+  if ($('db_opcao').value == "Incluir" || $('db_opcao').value == "Alterar") {
+
+    Object.keys(feriadosLetivos).forEach((key) => {
+
+      if (key != codigo && feriadosLetivos[key] == dataFeriado) {
+        alert('Já existe feriado letivo para essa data.');
+        retorno = true
+        return false;
+      }
+      
+    });
+
+    Object.keys(feriadosNaoLetivos).forEach((key) => {
+
+      if (key != codigo && feriadosNaoLetivos[key] == dataFeriado) {
+        alert('Já existe feriado não letivo para essa data.');
+        retorno = true
+        return false;
+      }
+      
+    });
+
+    if(retorno) {
+      return false;
+    } 
+    
+    return confirm('O Sistema irá recalcular os dias e semanas letivos. Confirma?')
+  }
+  else if ($F('ed54_c_diasemana') == "SABADO" && $F('ed54_c_dialetivo') == 'S') {
+    return confirm(`Ao confirmar a exclusão do evento ( ${$('ed54_c_descr').value} - ${$F('ed54_d_data')}), 
+a agenda de Sábado letivo de todas as turmas que obterem o evento na data ${$F('ed54_d_data')}` + 
+` também serão excluídas. Deseja seguir com a ação?`);
+  }
+  else {
+    return confirm( 'O Sistema irá recalcular os dias e semanas letivos. Confirma?')
+  }
 }
 </script>

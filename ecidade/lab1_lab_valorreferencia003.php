@@ -163,7 +163,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($excluir)){
   if($cllab_valorreferencia->erro_status=="0"){
     $cllab_valorreferencia->erro(true,false);

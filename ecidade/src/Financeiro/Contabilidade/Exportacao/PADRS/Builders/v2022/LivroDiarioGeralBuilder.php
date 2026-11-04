@@ -10,6 +10,10 @@ class LivroDiarioGeralBuilder extends PadBuilder
 {
 
     protected $numerosLotesGerados = [];
+    /**
+     * @var LivroDiarioGeral
+     */
+    protected $layout;
 
     protected function create()
     {
@@ -39,7 +43,7 @@ class LivroDiarioGeralBuilder extends PadBuilder
         $this->layout->setComplemento($this->formataNumerico($this->dados['complemento_recurso'], 4));
     }
 
-    private function getTipoDocumento()
+    protected function getTipoDocumento()
     {
         if (empty($this->dados['c53_tipo'])) {
             return 0;
@@ -62,6 +66,7 @@ class LivroDiarioGeralBuilder extends PadBuilder
     /**
      * Valida se o número do lote é um inteiro, caso não seja, é gerado um novo valor para o mesmo
      * Lógica extraída do programa antigo que gera o arquivo do livro diário geral
+     * @deprecated no redmine M23661
      */
     private function getNumeroLote()
     {

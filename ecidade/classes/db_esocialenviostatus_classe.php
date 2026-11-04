@@ -30,13 +30,13 @@ class cl_esocialenviostatus {
                  rh214_situacao = bool = Situação 
                  ";
    //funcao construtor da classe
-   function cl_esocialenviostatus() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("esocialenviostatus");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -45,7 +45,7 @@ class cl_esocialenviostatus {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh214_sequencial = ($this->rh214_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh214_sequencial"]:$this->rh214_sequencial);
        $this->rh214_esocialenvio = ($this->rh214_esocialenvio == ""?@$GLOBALS["HTTP_POST_VARS"]["rh214_esocialenvio"]:$this->rh214_esocialenvio);
@@ -57,7 +57,7 @@ class cl_esocialenviostatus {
      }
    }
    // funcao para Inclusão
-   function incluir ($rh214_sequencial){
+   public function incluir ($rh214_sequencial){
       $this->atualizacampos();
      if($this->rh214_esocialenvio == null ){
        $this->erro_sql = " Campo Envio eSocial não informado.";

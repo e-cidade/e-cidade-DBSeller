@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -383,7 +383,7 @@ if (isset($proximo)) {
 
       db_fim_transacao(false);
     }
- 
+
     $sWhere  = "     ed221_i_serie    = $codserieregencia ";
     $sWhere .= " and ed60_i_turma     = $turma ";
     $sWhere .= " and ed60_c_concluida = 'S' ";
@@ -394,7 +394,7 @@ if (isset($proximo)) {
     if ($rsMatriculasTransferidas && pg_num_rows($rsMatriculasTransferidas) > 0) {
 
       $iLinhas = pg_num_rows($rsMatriculasTransferidas);
-      for ($i=0; $i < $iLinhas; $i++) { 
+      for ($i=0; $i < $iLinhas; $i++) {
 
         $iCodigoMatricula    = db_utils::fieldsMemory($rsMatriculasTransferidas, $i)->ed60_i_codigo;
         $oDaoAlteraMatricula = new cl_matricula();
@@ -437,7 +437,7 @@ if (isset($proximo)) {
                                 "&ed52_c_descr=<?=$ed52_c_descr?>&codserieregencia=<?=$codserieregencia?>";
    parent.db_iframe_cancelar<?=$turma?>.hide();
   </script>
-  <?
+  <?php
   exit;
 
 }//fecha o if (isset($proximo ))
@@ -485,7 +485,7 @@ if (isset($proximo)) {
   </style>
  </head>
  <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
- <?
+ <?php
   $sCamposMat = " DISTINCT ed60_i_aluno, ed47_v_nome, ed60_i_numaluno, ed60_c_situacao, ed52_i_ano, ed52_d_inicio,ed52_d_fim,ed52_i_codigo";
   $sWhereMat  = " ed60_i_turma = $ed59_i_turma AND ed221_i_serie = $codserieregencia AND ed60_c_concluida = 'S' ";
   $sWhereMat .= " AND ed95_c_encerrado = 'S' AND ed60_c_ativa = 'S' AND ed221_c_origem = 'S'";
@@ -499,7 +499,7 @@ if (isset($proximo)) {
   if ($iLinhasMat == 0) {
 
   ?>
-    <table border='1' width="100%" bgcolor="#cccccc" style="" cellspacing="0" cellpading="0">
+    <table border='1' width="100%" bgcolor="#cccccc" cellspacing="0" cellpading="0">
      <tr>
       <td class='titulo'>
        Não existem alunos com avaliações encerradas.
@@ -510,7 +510,7 @@ if (isset($proximo)) {
        <input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe_cancelar<?=$turma?>.hide();">
       </td>
      </tr>
- <?
+ <?php
 
   } else {
 
@@ -523,7 +523,7 @@ if (isset($proximo)) {
         <b>Alunos:</b><br>
         <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()"
                 style="font-size:9px;width:320px;height:180px" multiple>
-        <?
+        <?php
          if ($iLinhasMat > 0) {
 
            $alunos_nao = 0;
@@ -613,7 +613,7 @@ if (isset($proximo)) {
       </td>
      </tr>
 
-   <?if ($alunos_nao > 0) {?>
+   <?php if ($alunos_nao > 0) {?>
 
        <tr>
         <td colspan="3">
@@ -624,7 +624,7 @@ if (isset($proximo)) {
         </td>
        </tr>
 
-   <?}?>
+   <?php }?>
 
      </table>
      <input name="proximo" type="submit" value="Confirmar" disabled onClick="js_selecionar();">
@@ -634,7 +634,7 @@ if (isset($proximo)) {
    </form>
   </center>
 
-<?}?>
+<?php }?>
  </body>
 </html>
 <script>

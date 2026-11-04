@@ -9,6 +9,12 @@ class MovimentacaoEstoqueItem extends Model
     protected $table = 'material.matestoqueinimei';
     protected $primaryKey = 'm82_codigo';
     public $timestamps = false;
+    protected $fillable = [
+        'm82_codigo',
+        'm82_matestoqueitem',
+        'm82_matestoqueini',
+        'm82_quant'
+    ];
 
     public function lancamento()
     {

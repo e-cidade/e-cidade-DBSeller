@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,13 +62,13 @@ class cl_db_sysparam {
                  db23_funcpesquisa = varchar(100) = Função Pesquisa 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysparam() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysparam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_db_sysparam {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->db23_codigo = ($this->db23_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["db23_codigo"]:$this->db23_codigo);
        $this->db23_modulo = ($this->db23_modulo == ""?@$GLOBALS["HTTP_POST_VARS"]["db23_modulo"]:$this->db23_modulo);
@@ -92,7 +92,7 @@ class cl_db_sysparam {
      }
    }
    // funcao para inclusao
-   function incluir ($db23_codigo){ 
+   public function incluir ($db23_codigo){ 
       $this->atualizacampos();
      if($this->db23_modulo == null ){ 
        $this->erro_sql = " Campo Módulo nao Informado.";
@@ -242,7 +242,7 @@ class cl_db_sysparam {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($db23_codigo=null) { 
+   public function alterar ($db23_codigo=null) { 
       $this->atualizacampos();
      $sql = " update db_sysparam set ";
      $virgula = "";
@@ -403,7 +403,7 @@ class cl_db_sysparam {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($db23_codigo=null,$dbwhere=null) { 
+   public function excluir ($db23_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($db23_codigo));
      }else{ 
@@ -471,7 +471,7 @@ class cl_db_sysparam {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -91,17 +91,17 @@ function js_submit(codigo){
    <br>
    <br>
    
-   <?
+   <?php
    db_input('q05_codigo',30,"",true,'hidden',3);
    ?>
      <tr>   
        <td title="<?=$Tq02_inscr?>">
-      <?
+      <?php
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
       db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -109,12 +109,12 @@ function js_submit(codigo){
      </tr>
      <tr>   
       <td title="<?=$Tz01_numcgm?>">
-      <?
+      <?php
        db_ancora($Lz01_nome,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -133,7 +133,7 @@ function js_submit(codigo){
   </tr>
 </table>
 <center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -182,7 +182,7 @@ function js_mostracgm1(erro,chave){
   }
 }
 </script>
-<?
+<?php
 if(isset($registro) && $registro=="pago"){
   db_msgbox("Já foram pagos ISSVAR para esta inscrição.");
 }

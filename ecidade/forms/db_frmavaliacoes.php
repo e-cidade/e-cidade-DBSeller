@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,52 +40,52 @@ $clrotulo->label("ed05_c_nome");
        <?=@$Led13_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_i_codigo',10,$Ied13_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted13_i_disciplinas?>">
-       <?
+       <?php
        db_ancora(@$Led13_i_disciplinas,"js_pesquisaed13_i_disciplinas(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_i_disciplinas',5,$Ied13_i_disciplinas,true,'text',$db_opcao," onchange='js_pesquisaed13_i_disciplinas(false);'")
 ?>
-       <?
+       <?php
 db_input('ed27_c_nome',50,$Ied27_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted13_i_periodo?>">
-       <?
+       <?php
        db_ancora(@$Led13_i_periodo,"js_pesquisaed13_i_periodo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_i_periodo',5,$Ied13_i_periodo,true,'text',$db_opcao," onchange='js_pesquisaed13_i_periodo(false);'")
 ?>
-       <?
+       <?php
 db_input('ed23_c_nome',30,$Ied23_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted13_i_turma?>">
-       <?
+       <?php
        db_ancora(@$Led13_i_turma,"js_pesquisaed13_i_turma(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_i_turma',10,$Ied13_i_turma,true,'text',$db_opcao," onchange='js_pesquisaed13_i_turma(false);'")
 ?>
-       <?
+       <?php
 db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',3,'')
        ?>
     </td>
@@ -95,7 +95,7 @@ db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',3,'')
        <?=@$Led13_d_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed13_d_data',@$ed13_d_data_dia,@$ed13_d_data_mes,@$ed13_d_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_inputdata('ed13_d_data',@$ed13_d_data_dia,@$ed13_d_data_mes,@$ed13_d_data_ano
        <?=@$Led13_f_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_f_valor',5,$Ied13_f_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_input('ed13_f_valor',5,$Ied13_f_valor,true,'text',$db_opcao,"")
        <?=@$Led13_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed13_c_descr',50,$Ied13_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -200,7 +200,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_avaliacoes.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

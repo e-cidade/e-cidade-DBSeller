@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -31,7 +31,7 @@ $get = db_utils::postMemory($_GET);
 
 $filtroRecurso = "";
 if (!empty($get->recurso)) {
-    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorFonteRecurso($get->recurso);
+    $ids = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getIdsRecursoPorSubrecurso($get->recurso);
     $ids = implode(', ', $ids);
     $filtroRecurso = " ( rdeb.o15_codigo in ({$ids}) or rcred.o15_codigo in ({$ids})) ";
 }

@@ -33,8 +33,8 @@ class ProfissionalUnidade extends Model
     protected $primaryKey = 'sd04_i_codigo';
 
     public $casts = [
-        'sd04_d_folgaini' => 'DateTime',
-        'sd04_d_folgafim' => 'DateTime'
+        'sd04_d_folgaini' => 'datetime',
+        'sd04_d_folgafim' => 'datetime'
     ];
 
     public function profissional()

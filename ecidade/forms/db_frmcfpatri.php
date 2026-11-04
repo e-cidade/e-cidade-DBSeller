@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,15 +39,15 @@ $clrotulo->label("t71_descr");
   	<table class="form-container">
   	  <tr>
   	    <td title="<?=@$Tt06_codcla?>">
-  	      <?
+  	      <?php
   	        db_ancora(@$Lt06_codcla,"js_pesquisat06_codcla(true);",$db_opcao);
   	      ?>
   	    </td>
   	    <td> 
-  				<?
+  				<?php
   				  db_input('t06_codcla',8,$It06_codcla,true,'text',$db_opcao," onchange='js_pesquisat06_codcla(false);'")
   				?>
-  	      <?
+  	      <?php
   				  db_input('db77_descr',40,$Idb77_descr,true,'text',3,'')
   	      ?>
   	    </td>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cfpatri.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -32,6 +32,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/JSON.php"));
+require_once(modification("classes/db_arretipo_classe.php"));
 
 use App\Domain\Tributario\Arrecadacao\Repositories\ConfiguracoesteftipodebitoRepository;
 use ECidade\Tributario\Arrecadacao\Custas\Service;
@@ -213,6 +214,23 @@ try {
                 $oRetorno->contaAutenticadora = $oResult->k16_conta;
                 $oRetorno->liberaTef = true;
             }
+            break;
+        case "verificaLiberaDebito":
+            if (!isset($oParametros->tipoDebito)) {
+                throw new \Exception("Tipo de débito não informado!");
+            }
+            
+            $clarretipo = new cl_arretipo;
+
+            $result   = $clarretipo->sql_record($clarretipo->sql_query($oParametros->tipoDebito,'k00_emrec'));
+
+            if (!$result) {
+                throw new \Exception("Erro ao buscar os dados do Tipo de débito . ".pg_last_error());
+            }
+
+            $oResult = \db_utils::fieldsMemory($result, 0);
+
+            $oRetorno->k00_emrec = $oResult->k00_emrec;
             break;
     }
 } catch (Exception $oErro) {

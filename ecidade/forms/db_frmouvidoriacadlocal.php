@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,7 +44,7 @@
 				        <?=@$Lov25_sequencial?>
 				      </td>
 				      <td> 
-								<?
+								<?php
 								  db_input('ov25_sequencial',10,$Iov25_sequencial,true,'text',3,"");
 								?>
 				      </td>
@@ -54,7 +54,7 @@
 					       <?=@$Lov25_descricao?>
 					    </td>
 					    <td> 
-								<?
+								<?php
 								  db_input('ov25_descricao',63,$Iov25_descricao,true,'text',$db_opcao,"");
 								?>
 					    </td>
@@ -64,7 +64,7 @@
                  <?=@$Lov25_validade?>
               </td>
               <td> 
-                <?
+                <?php
                   db_inputdata('ov25_validade',@$ov25_validade_dia,@$ov25_validade_mes,@$ov25_validade_ano,true,'text',$db_opcao);
                 ?>
               </td>
@@ -74,7 +74,7 @@
 			          <b>Tipo de Local:</b>
 			        </td>
 			        <td> 
-			          <?
+			          <?php
 			            $aTipoLocal = array("g"=>"Geral",
 			                                "e"=>"Endereço",
 			                                "d"=>"Departamento");
@@ -99,7 +99,7 @@
 			           <?=@$Lov28_descricao?>
 			        </td>
 			        <td> 
-			          <?
+			          <?php
 			            db_input('ov28_descricao',63,$Iov28_descricao,true,'text',$db_opcao,"");
 			          ?>
 			        </td>
@@ -117,12 +117,12 @@
 			    <table>
 			      <tr>
 			        <td nowrap title="<?=@$Tov26_ruas?>" width="85px;">
-			           <?
+			           <?php
 			             db_ancora($Lov26_ruas,'js_pesquisaRuas(true);',$db_opcao,'');
 			           ?>
 			        </td>
 			        <td colspan="3">  
-			          <?
+			          <?php
 			            db_input('ov26_ruas',10,$Iov26_ruas,true,'text',$db_opcao,"onChange='js_pesquisaRuas(false);'");
 			            db_input('j14_nome',50,'',true,'text',3,"");
 			          ?>
@@ -133,7 +133,7 @@
 			           <?=@$Lov26_numero?>
 			        </td>
 			        <td> 
-			          <?
+			          <?php
 			            db_input('ov26_numero',10,$Iov26_numero,true,'text',$db_opcao,"");
 			          ?>
 			        </td>
@@ -141,7 +141,7 @@
 			           <?=@$Lov26_complemento?>
 			        </td>
 			        <td  align="right"> 
-			          <?
+			          <?php
 			            db_input('ov26_complemento',30,$Iov26_complemento,true,'text',$db_opcao,"");
 			          ?>
 			        </td>        
@@ -149,7 +149,7 @@
             <tr>
               <td><b>Bairro:</b></td>
               <td colspan='3'>
-                <?
+                <?php
                   db_input('sBairro', 63, '', 3, 'text', 3);
                 ?>
               </td>
@@ -158,7 +158,7 @@
 			        <td colspan='4'>
 			          <fieldset>
 			          <legend><b>Observações</b></legend>
-			          <?
+			          <?php
                   db_textarea("ov26_observacao", 4, 70, '', true, 'text', $db_opcao);
 			          ?>
 			          </fieldset>
@@ -177,12 +177,12 @@
           <table>
             <tr>
               <td nowrap title="<?=@$Tov27_depart?>" width="85px;">
-                 <?
+                 <?php
                    db_ancora($Lov27_depart,'js_pesquisaDepart(true);',$db_opcao,'');
                  ?>
               </td>
               <td>  
-                <?
+                <?php
                   db_input('ov27_depart',10,$Iov27_depart,true,'text',$db_opcao,"onChange='js_pesquisaDepart(false);'");
                   db_input('descrdepto',50,'',true,'text',3,"");
                 ?>
@@ -194,12 +194,12 @@
     </tr>    
   </table> 
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="button" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onClick="js_acaoLocal(this.name);">
-<? if ( $db_opcao != 1 ) { ?>
+<?php if ( $db_opcao != 1 ) { ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<? }
+<?php }
    if ( isset($lAtendimento) ) { ?>
 <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_local.hide();" >
-<? } ?>
+<?php } ?>
 
 </form>
 <script>
@@ -371,7 +371,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ouvidoriacadlocal.hide();
-  <?
+  <?php
 	  if($db_opcao!=1){
 	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }
@@ -379,7 +379,7 @@ function js_preenchepesquisa(chave){
 }
 
 function js_recarregaTela(){
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009 DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ include(modification("libs/db_usuariosonline.php"));
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-<?
+<?php
       // Cria a janela para visualizacao de todas as inscricoes cadastradas
     $frameListaInscricoes = new janela("frameListaInscricoes","");
 	  $frameListaInscricoes->posX=1;
@@ -145,7 +145,7 @@ include(modification("libs/db_usuariosonline.php"));
   </tr>
 </table>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

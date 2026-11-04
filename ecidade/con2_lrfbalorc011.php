@@ -146,7 +146,7 @@ function js_emite(){
 			          <b>Bimestre :</b>
 			        </td>
 			        <td>
-			          <?
+			          <?php
 			           if ($iAnoUsu < 2010 ) {
 
                    $aListaPeriodos = array(

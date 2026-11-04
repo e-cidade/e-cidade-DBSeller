@@ -28,7 +28,7 @@ class RegraLicitaconPermiteSubContratacao extends RegraLicitacon {
 
   protected $sMensagem = "O campo Permite Subcontratação é de preenchimento obrigatório para a modalidade da Licitação.";
 
-  protected $aModalidadesRegra = array('CHP', 'CNC', 'CNV', 'CPC', 'PRE', 'PRP', 'RDC', 'RIN', 'TMP', 'CPP');
+  protected $aModalidadesRegra = array('CHP', 'CNC', 'CPC', 'CPP', 'ESE', 'EST', 'CCP', 'CCE', 'PCE', 'PCP', 'PDE', 'PRE', 'PRP', 'RDC', 'RDE', 'RIN', 'TMP');
 
   /**
    * @return array

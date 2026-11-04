@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,30 +60,30 @@ if(isset($opcao) && $opcao=="alterar"){
 <table border="0">
 <tr>
     <td nowrap title="<?=@$Tsd25_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd25_i_unidade,"js_pesquisasd25_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd25_i_unidade',10,$Isd25_i_unidade,true,'text',$db_opcao," onchange='js_pesquisasd25_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('sd02_c_nome',40,$Isd02_c_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd25_i_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd25_i_usuario,"js_pesquisasd25_i_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd25_i_usuario',10,$Isd25_i_usuario,true,'text',$db_opcao," onchange='js_pesquisasd25_i_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -93,7 +93,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lsd25_b_ativo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('sd25_b_ativo',$x,true,$db_opcao,"");
 ?>
@@ -107,7 +107,7 @@ db_select('sd25_b_ativo',$x,true,$db_opcao,"");
 <table>
  <tr>
   <td>
-   <?
+   <?php
      if(isset($sd25_i_unidade)){
       $sql_item = $clusuariosunidade->sql_query($sd25_i_unidade,$sd25_i_usuario,"*","sd25_i_usuario","sd25_i_unidade = $sd25_i_unidade");
       $chavepri= array("sd25_i_unidade"=>$sd25_i_unidade,"sd25_i_usuario"=>$sd25_i_usuario);
@@ -177,7 +177,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_usuariosunidade.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

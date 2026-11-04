@@ -51,7 +51,9 @@ class Session {
     }
 
     getToken(){
-        return window.localStorage.getItem('access_token');
+        const token = JSON.parse(window.localStorage.getItem('ecidade@user_token'));
+
+        return token?.access_token;
     }
 
     getConfigRequest(){
@@ -68,6 +70,8 @@ class Session {
 
 var PHPSession = new Session();
 
-PHPSession.loadData().catch(error => {
-    alert(error);
-});
+if (document.body) {
+    PHPSession.loadData().catch(error => {
+        alert(error);
+    });
+}

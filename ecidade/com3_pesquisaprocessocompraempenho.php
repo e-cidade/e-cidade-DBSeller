@@ -64,7 +64,7 @@ $sSqlProcessoCompras = $oDaoPcProc->sql_query_empenho($oGet->iProcesso,
         <div style="display: table;">
           <fieldset>
             <legend><b>Empenhos do Processo de Compras</b></legend>
-          <?
+          <?php
            db_lovrot($sSqlProcessoCompras, 15, "()", "", "js_mostraempenho|e60_numemp");
           ?>
           </fieldset>

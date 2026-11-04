@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -101,10 +101,21 @@ $iAnoUsu  = db_getsession("DB_anousu");
 $result02 = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"),"cep,munic"));
 db_fieldsmemory($result02,0);
 
+//************************************************************************************************//
+//Busca o parametro na tabela parissqn para gerar risco automaticamente apartir do CNAE
+$selectRiscoAutomatico = db_query("select q60_riscoautomatico from issqn.parissqn;");
+$riscoAutomatico = pg_result($selectRiscoAutomatico,0,0);
+//************************************************************************************************//
+
 if (isset($alterar)) {
 
   if ($j14_codigo=="") {
     $cep=$z01_cep;
+  }else{
+    $issruas = $clissruas->sql_record($clissruas->sql_query($q02_inscr,"z01_cep"));
+    if(pg_num_rows($issruas) != 0){
+      $cep = pg_fetch_result($issruas,0);
+    }
   }
 
   $sqlerro = false;
@@ -167,7 +178,30 @@ if (isset($alterar)) {
     $clissquant->q30_mult   = $q30_mult;
     $clissquant->q30_area   = $q30_area;
     $clissquant->q30_areapublicidade = $q30_areapublicidade;
-    $clissquant->q30_graurisco = $q30_graurisco;
+    //Verificado se o risco automatico foi selecionado, se sim, pegar risco do CNAE da atividade
+    if($riscoAutomatico != 't'){
+      $clissquant->q30_graurisco = $q30_graurisco;
+    }else{
+      $risco = db_query("select c2.q71_classificacaorisco from issqn.ativprinc ap
+                         inner join issqn.tabativ t 
+                         on ap.q88_seq = t.q07_seq
+                         and ap.q88_inscr = t.q07_inscr 
+                         inner join issqn.atividcnae a 
+                         on a.q74_ativid = t.q07_ativ 
+                         inner join issqn.cnaeanalitica c 
+                         on c.q72_sequencial = a.q74_cnaeanalitica 
+                         inner join issqn.cnae c2 
+                         on c2.q71_sequencial = c.q72_cnae 
+                         where ap.q88_inscr = {$q02_inscr};"
+                        );
+      switch(pg_fetch_result($risco,0,0)) {
+        case false:
+          $clissquant->q30_graurisco = null;
+          break;
+        default:
+          $clissquant->q30_graurisco = strtoupper(pg_fetch_result($risco,0,0));
+      }
+    }
     $clissquant->q30_tempofuncionamento = $q30_tempofuncionamento;
     if ($clissquant->numrows > 0) {
 
@@ -176,11 +210,18 @@ if (isset($alterar)) {
 
       if (!$sqlerro) {
       $clissquant->alterar($q30_anousu, $q02_inscr);
+      $salvarHistoricoRisco = db_query("insert into issqn.histriscoinscr (q201_inscr, q201_risco, q201_dtrisco) 
+                                      values ($q02_inscr, '{$clissquant->q30_graurisco}', now())");
+     
     }
     } else {
 
       if (!$sqlerro) {
         $clissquant->incluir($q30_anousu, $q02_inscr);
+        if($riscoAutomatico != 't'){
+          $salvarHistoricoRisco = db_query("insert into issqn.histriscoinscr (q201_inscr, q201_risco, q201_dtrisco) 
+                                          values ($q02_inscr, '{$clissquant->q30_graurisco}', now())");
+        }
       }
     }
 

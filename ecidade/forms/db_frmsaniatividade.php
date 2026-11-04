@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao == "excluir"){
        ?>
     </td>
     <td>
-<?
+<?php
 if (isset($y83_codsani)&&$y83_codsani!=""){
 
 	$result_nome = $clsanitario->sql_record($clsanitario->sql_query($y83_codsani,"z01_nome"));
@@ -65,7 +65,7 @@ if (isset($y83_codsani)&&$y83_codsani!=""){
 
 db_input('y83_codsani',10,$Iy83_codsani,true,'text',3," onchange='js_pesquisay83_codsani(false);'");
 ?>
-       <?
+       <?php
 
 db_input('z01_nome',35,$Iz01_nome,true,'text',3,'');
        ?>
@@ -76,7 +76,7 @@ db_input('z01_nome',35,$Iz01_nome,true,'text',3,'');
        <?=@$Ly83_seq?>
     </td>
     <td>
-<?
+<?php
 if($db_opcao == 1){
   $result = $clsaniatividade->sql_record($clsaniatividade->sql_query_max("y83_seq",$y83_codsani));
   if($clsaniatividade->numrows > 0){
@@ -93,15 +93,15 @@ db_input('y83_seq',10,$Iy83_seq,true,'text',3,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty83_ativ?>">
-       <?
+       <?php
        db_ancora(@$Ly83_ativ,"js_pesquisay83_ativ(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y83_ativ',8,$Iy83_ativ,true,'text',$db_opcao," onchange='js_pesquisay83_ativ(false);'");
 ?>
-       <?
+       <?php
 db_input('q03_descr',40,$Iq03_descr,true,'text',3,'');
        ?>
     </td>
@@ -111,7 +111,7 @@ db_input('q03_descr',40,$Iq03_descr,true,'text',3,'');
        <?=@$Ly83_ativprinc?>
     </td>
     <td>
-<?
+<?php
 $arr = array("t"=>"SIM","f"=>"NÃO");
 if($db_opcao == 1){
   $clsaniatividade2 = new cl_saniatividade;
@@ -135,7 +135,7 @@ if($db_opcao == 1){
     <td><b>Permanente ou provisório: </b>
     </td>
     <td>
-<?
+<?php
 $xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
 db_select('y83_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
 
@@ -147,7 +147,7 @@ db_select('y83_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'"
        <?=@$Ly83_dtini?>
     </td>
     <td>
-<?
+<?php
 if(empty($y83_dtini_dia)){
   $y83_dtini_dia = date("d",db_getsession("DB_datausu"));
   $y83_dtini_mes = date("m",db_getsession("DB_datausu"));
@@ -162,7 +162,7 @@ db_inputdata('y83_dtini',@$y83_dtini_dia,@$y83_dtini_mes,@$y83_dtini_ano,true,'t
        <?=@$Ly83_dtfim?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('y83_dtfim',@$y83_dtfim_dia,@$y83_dtfim_mes,@$y83_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -172,7 +172,7 @@ db_inputdata('y83_dtfim',@$y83_dtfim_dia,@$y83_dtfim_mes,@$y83_dtfim_ano,true,'t
        <?=@$Ly83_area?>
     </td>
     <td>
-<?
+<?php
 db_input('y83_area',10,$Iy83_area,true,'text',$db_opcao);
 ?>
 <input type="hidden" name="area" value="<?=@$y83_arean?>">
@@ -206,7 +206,7 @@ function  js_submet(opcao){
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
 //die($clsaniatividade->sql_query("","","  y83_codsani,y83_seq,case when y83_ativprinc is true then 'SIM' else 'NÃO' end as y83_ativprinc,y83_dtini,y83_dtfim,y83_area,y83_ativ,ativid.q03_descr",""," y83_codsani = $y83_codsani"));
 
 
@@ -319,7 +319,7 @@ function js_testadata(valor){
 js_testadata(document.form1.y83_perman.value);
 
 </script>
-<?
+<?php
 if(isset($y83_codsani)){
   echo "<script>
           document.form1.y83_codsani.value = '$y83_codsani';

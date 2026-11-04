@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -74,22 +74,22 @@ if($clobraslote->numrows > 0){
        <?=@$Lob08_codconstr?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob08_codconstr',10,$Iob08_codconstr,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tob08_codobra?>">
-       <?
+       <?php
        db_ancora(@$Lob08_codobra,"js_pesquisaob08_codobra(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob08_codobra',10,$Iob08_codobra,true,'text',3," onchange='js_pesquisaob08_codobra(false);'")
 ?>
-       <?
+       <?php
 db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,'')
        ?>
     </td>
@@ -99,7 +99,7 @@ db_input('ob01_nomeobra',55,$Iob01_nomeobra,true,'text',3,'')
        <?=@$Lob08_area?>
     </td>
     <td> 
-<?
+<?php
 db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
 	       <?=@$Lob08_ocupacao?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	$result = $clparobrasocup->sql_record($clparobrasocup->sql_query("","*"));
 	if($clparobrasocup->numrows > 0){
 	  db_fieldsmemory($result,0);
@@ -123,7 +123,7 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
 	       <?=@$Lob08_tipoconstr?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	$result = $clparobrastipocons->sql_record($clparobrastipocons->sql_query("","*"));
 	if($clparobrastipocons->numrows > 0){
 	  db_fieldsmemory($result,0);
@@ -137,7 +137,7 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
 	       <?=@$Lob08_tipolanc?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	$result = $clparobrastipolanc->sql_record($clparobrastipolanc->sql_query("","*"));
 	if($clparobrastipolanc->numrows > 0){
 	  db_fieldsmemory($result,0);
@@ -148,15 +148,15 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
     </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tob07_lograd?>">
-	       <?
+	       <?php
 	       db_ancora(@$Lob07_lograd,"js_pesquisaob07_lograd(true);",$db_opcao);
 	       ?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	db_input('ob07_lograd',7,$Iob07_lograd,true,'text',(@$ob01_regular == "f"?$db_opcao:3)," onchange='js_pesquisaob07_lograd(false);'")
 	?>
-	       <?
+	       <?php
 	db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
 	       ?>
 	    </td>
@@ -166,27 +166,27 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
 	       <?=@$Lob07_numero?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	db_input('ob07_numero',10,$Iob07_numero,true,'text',$db_opcao,"")
 	?>
 	       <?=@$Lob07_compl?>
-	<?
+	<?php
 	db_input('ob07_compl',20,$Iob07_compl,true,'text',$db_opcao,"")
 	?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tob07_bairro?>">
-	       <?
+	       <?php
 	       db_ancora(@$Lob07_bairro,"js_pesquisaob07_bairro(true);",(@$ob01_regular == "f"?$db_opcao:3));
 	       ?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	//db_input('ob07_bairro',4,$Iob07_bairro,true,'text',(@$ob01_regular == "f"?$db_opcao:3)," onchange='js_pesquisaob07_bairro(false);'")
 	db_input('ob07_bairro',4,$Iob07_bairro,true,'text',2," onchange='js_pesquisaob07_bairro(false);'")
 	?>
-	       <?
+	       <?php
 	db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
 	       ?>
 	    </td>
@@ -196,15 +196,15 @@ db_input('ob08_area',10,$Iob08_area,true,'text',$db_opcao,"")
        <?=@$Lob07_areaatual?>
     </td>
     <td>
-<?
+<?php
 db_input('ob07_areaatual',10,$Iob07_areaatual,true,'text',$db_opcao,"")
 ?>
        <?=@$Lob07_unidades?>
-<?
+<?php
 db_input('ob07_unidades',10,$Iob07_unidades,true,'text',$db_opcao,"")
 ?>
        <?=@$Lob07_pavimentos?>
-<?
+<?php
 db_input('ob07_pavimentos',10,$Iob07_pavimentos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -214,11 +214,11 @@ db_input('ob07_pavimentos',10,$Iob07_pavimentos,true,'text',$db_opcao,"")
        <?=@$Lob07_inicio?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ob07_inicio',@$ob07_inicio_dia,@$ob07_inicio_mes,@$ob07_inicio_ano,true,'text',$db_opcao,"")
 ?>
        <?=@$Lob07_fim?>
-<?
+<?php
 db_inputdata('ob07_fim',@$ob07_fim_dia,@$ob07_fim_mes,@$ob07_fim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -230,7 +230,7 @@ db_inputdata('ob07_fim',@$ob07_fim_dia,@$ob07_fim_mes,@$ob07_fim_ano,true,'text'
   </tr>
   <tr>
     <td align="top" colspan="2">
-   <?
+   <?php
     $chavepri= array("ob08_codconstr"=>@$ob08_codconstr,"ob08_codobra"=>@$ob08_codobra);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="ob08_codconstr,ob08_codobra,ob01_nomeobra";
@@ -252,15 +252,15 @@ db_inputdata('ob07_fim',@$ob07_fim_dia,@$ob07_fim_mes,@$ob07_fim_ano,true,'text'
 <script>
 function js_pesquisaob07_lograd(mostra){
   if(mostra==true){
-    <?
+    <?php
     if(@$ob01_regular == "t"){
     ?>
     js_OpenJanelaIframe('','db_iframe_ruas','func_ruasobras.php?pesquisa_chave=<?=@$ob05_idbql?>&funcao_js=parent.js_mostraruas2|j36_codigo|j14_nome|j13_codi|j13_descr','Pesquisa',true);
-    <?
+    <?php
     }else{
     ?>
     js_OpenJanelaIframe('','db_iframe_ruas','func_ruas.php?funcao_js=parent.js_mostraruas1|j14_codigo|j14_nome','Pesquisa',true);
-    <?
+    <?php
     }
     ?>
   }else{
@@ -368,17 +368,17 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_obrasconstr.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if(isset($ob08_codobra) && $ob08_codobra != ""){
 ?>
 js_OpenJanelaIframe('','db_iframe_obras','func_obras.php?pesquisa_chave=<?=@$ob08_codobra?>&funcao_js=parent.js_mostraobras','Pesquisa',false);
-<?
+<?php
 }
 ?>
 if(document.form1.ob08_codconstr.value == 0){

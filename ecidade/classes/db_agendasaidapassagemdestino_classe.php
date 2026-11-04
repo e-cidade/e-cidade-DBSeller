@@ -55,13 +55,13 @@ class cl_agendasaidapassagemdestino {
                  tf38_fica = bool = Fica 
                  ";
    //funcao construtor da classe 
-   function cl_agendasaidapassagemdestino() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendasaidapassagemdestino"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_agendasaidapassagemdestino {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->tf38_sequencial = ($this->tf38_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["tf38_sequencial"]:$this->tf38_sequencial);
        $this->tf38_agendasaida = ($this->tf38_agendasaida == ""?@$GLOBALS["HTTP_POST_VARS"]["tf38_agendasaida"]:$this->tf38_agendasaida);
@@ -82,7 +82,7 @@ class cl_agendasaidapassagemdestino {
      }
    }
    // funcao para Inclusão
-   function incluir ($tf38_sequencial){ 
+   public function incluir ($tf38_sequencial){ 
       $this->atualizacampos();
      if($this->tf38_agendasaida == null ){ 
        $this->erro_sql = " Campo Agenda de Saída não informado.";

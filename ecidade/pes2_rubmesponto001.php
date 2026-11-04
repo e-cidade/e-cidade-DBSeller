@@ -24,11 +24,11 @@
  * Copia da licenca no diretorio licenca/licenca_en.txt
  * licenca/licenca_pt.txt
  */
-require_once (modification("libs/db_stdlib.php"));
-require_once (modification("libs/db_conecta.php"));
-require_once (modification("libs/db_sessoes.php"));
-require_once (modification("libs/db_usuariosonline.php"));
-require_once (modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 
 $clrotulo = new rotulocampo();
 $clrotulo->label('DBtxt23');
@@ -50,28 +50,7 @@ db_postmemory($_POST);
 <meta http-equiv="Expires" CONTENT="0">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<script>
-function js_emite() {
-
-  if (document.form1.rh27_rubric.value == "") {
-  	  alert("Informe uma rubrica");
-  	  return false;
-  }
-  	
-  jan = window.open('pes2_rubmesponto002.php?xtotal='+document.form1.total.value+
-                    '&tipoordem='+document.form1.tipoordem.value+
- 				    '&ordem='+document.form1.ordem.value+
- 					'&ponto='+document.form1.ponto.value+
-					'&rubrica='+document.form1.rh27_rubric.value+
-					'&recurso='+document.form1.recurso.value+
-					'&localtrab='+document.form1.localtrab.value+
-					'&ano='+document.form1.DBtxt23.value+
-					'&mes='+document.form1.DBtxt25.value,
-					'',
-					'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
-  jan.moveTo(0,0);
-}
-</script>
+<script language="JavaScript" type="text/javascript" src="scripts/widgets/DBDownload.widget.js"></script>
 </head>
 <body>
 <div class="container">
@@ -80,108 +59,132 @@ function js_emite() {
  <legend>Relatório por código - pelo Ponto</legend>
  <table class="form-container">
    <tr>
-     <td align="left" nowrap title="Digite o Ano / Mes de competência"><strong>Ano / Mês :&nbsp;&nbsp;</strong></td>
+     <td title="Digite o Ano / Mes de competência">Ano / Mês :</td>
      <td>
         <?php
-          $DBtxt23 = db_anofolha();
+          $DBtxt23 = DBPessoal::getAnoFolha();
           db_input('DBtxt23', 4, $IDBtxt23, true, 'text', 2, '')
         ?>
         &nbsp;/&nbsp;
         <?php
-          $DBtxt25 = db_mesfolha();
+          $DBtxt25 = DBPessoal::getMesFolha();
           db_input('DBtxt25', 2, $IDBtxt25, true, 'text', 2, '')?>
      </td>
    </tr>
    <tr> 
      <td title="<?=$Trh27_rubric?>"> 
        <?php
-       db_ancora(@$Lrh27_rubric, "js_pesquisarrubric(true);", 1);
-       ?>
+        db_ancora(@$Lrh27_rubric, "js_pesquisarrubric(true);", 1);
+        ?>
      </td>
      <td> 
        <?php
-       db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 1, " onchange='js_pesquisarrubric(false);'");
-       db_input('rh27_descr', 30, $Irh27_descr,  true, 'text', 3, '');
-       ?>
+        db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 1, " onchange='js_pesquisarrubric(false);'");
+        db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3, '');
+        ?>
      </td>
    </tr>
    <tr>
      <td>Ponto</td>
      <td>
         <?php
-          $x = array(
+          $x = [
               "f" => "Fixo",
               "s" => "Salário",
               "c" => "Complementar",
               "a" => "Adiantamento",
               "d" => "13o. Salário",
               "r" => "Rescisão"
-          );
-          db_select('ponto', $x, true, 4, "");
-        ?>
+          ];
+          db_select('ponto', $x, true, 1, "onchange='mostraOpcaoRegistros()'");
+            ?>
+     </td>
+   </tr>
+   <tr id='tr_apenas_sem_ponto' style="display: none">
+     <td>Apenas registros sem ponto:</td>
+     <td>
+     <?php
+          $x = [
+              "f" => "NÃO",
+              "t" => "SIM"
+          ];
+          db_select('apenas_sem_ponto', $x, true, 1);
+            ?>
      </td>
    </tr>
    <tr>
      <td>Ordem</td>
      <td> 
         <?php
-            $x = array(
+            $x = [
                 "a" => "Alfabética",
                 "n" => "Numérica",
                 "l" => "Lotação",
                 "v" => "Valor",
                 "q" => "Quantidade",
                 "d" => "Digitação"
-            );
+            ];
             db_select('ordem', $x, true, 4, "");
-        ?>
+            ?>
      </td>
    </tr>
    <tr>
      <td>Tipo de Ordem</td>
      <td>
        <?php
-         $x = array(
+         $x = [
              "asc" => "Ascendente",
              "desc" => "Descendente"
-         );
+         ];
          db_select('tipoordem', $x, true, 4, "");
-      ?>
+            ?>
      </td>
    </tr>
    <tr>
      <td>Totalização</td>
      <td>
        <?php
-         $x = array(
+         $x = [
              "a" => "Analítico",
              "s" => "Sintético"
-         );
+         ];
          db_select('total', $x, true, 4, "");
-       ?>
+            ?>
      </td>
    </tr>
    <tr>
      <td>Quebrar por Recurso</td>
      <td>
        <?php
-         $xy = array(
+         $xy = [
              "n" => "Não",
              "s" => "Sim"
-         );
+         ];
          db_select('recurso', $xy, true, 4, "");
-       ?>
+            ?>
      </td>
    </tr>
    <tr title="Mostra Local de Trabalho - Este filtro somente é aplicado quando Tipo de Relatório for 'Relatório'">
      <td>Local de Trabalho:</td>
      <td >
       <?php
-        $opcoes = array("N"=>"Não","S"=>"Sim");
-        db_select('localtrab',$opcoes,true,4,"");
-      ?>
+        $opcoes = ["N"=>"Não","S"=>"Sim"];
+        db_select('localtrab', $opcoes, true, 4, "");
+        ?>
      </td>
-   </tr>   
+   </tr>
+   <tr>
+     <td>Formato</td>
+     <td>
+       <?php
+         $opcoes = [
+             "pdf" => "PDF",
+             "csv" => "CSV"
+         ];
+         db_select('formato', $opcoes, true, 4, "");
+            ?>
+     </td>
+   </tr>      
   </table>
 </fieldset>
 <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();">
@@ -193,7 +196,17 @@ db_menu();
 </body>
 </html>
 <script>
-function js_pesquisatabdesc(mostra){
+function mostraOpcaoRegistros() 
+{
+    $('tr_apenas_sem_ponto').style.display = 'none'; 
+    if ($F('ponto') == 'f' || $F('ponto') == 's') {
+        $('tr_apenas_sem_ponto').style.display = '';
+    } 
+}   
+mostraOpcaoRegistros();
+
+function js_pesquisatabdesc(mostra)
+{
      if(mostra==true){
        db_iframe.jan.location.href = 'func_tabdesc.php?funcao_js=parent.js_mostratabdesc1|0|2';
        db_iframe.mostraMsg();
@@ -203,14 +216,17 @@ function js_pesquisatabdesc(mostra){
        db_iframe.jan.location.href = 'func_tabdesc.php?pesquisa_chave='+document.form1.codsubrec.value+'&funcao_js=parent.js_mostratabdesc';
      }
 }
-function js_mostratabdesc(chave,erro){
+function js_mostratabdesc(chave,erro)
+{
   document.form1.k07_descr.value = chave;
   if(erro==true){
      document.form1.codsubrec.focus();
      document.form1.codsubrec.value = '';
   }
 }
-function js_mostratabdesc1(chave1,chave2){
+
+function js_mostratabdesc1(chave1,chave2)
+{
      document.form1.codsubrec.value = chave1;
      document.form1.k07_descr.value = chave2;
      db_iframe.hide();
@@ -219,10 +235,16 @@ function js_mostratabdesc1(chave1,chave2){
 /**
  * Realiza a busca de rubricas, retornando o código e descrição da rubrica escolhida
  */
- function js_pesquisarrubric(lMostra) {
-     
+ function js_pesquisarrubric(lMostra) 
+ {
    if ( lMostra) {
-     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhrubricas','func_rhrubricas.php?funcao_js=parent.js_mostrarubricas1|rh27_rubric|rh27_descr','Pesquisa',true);
+    js_OpenJanelaIframe(
+        'CurrentWindow.corpo',
+        'db_iframe_rhrubricas',
+        'func_rhrubricas.php?funcao_js=parent.js_mostrarubricas1|rh27_rubric|rh27_descr',
+        'Pesquisa',
+        true
+    );
    } else {
        
       if ( $F(rh27_rubric) != '' ) {
@@ -233,7 +255,13 @@ function js_mostratabdesc1(chave1,chave2){
           $(rh27_rubric).setValue("0"+$F(rh27_rubric));
         }
         
-        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_rhrubricas','func_rhrubricas.php?pesquisa_chave='+$F(rh27_rubric)+'&funcao_js=parent.js_mostrarubricas','Pesquisa',false);
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_rhrubricas',
+            'func_rhrubricas.php?pesquisa_chave='+$F(rh27_rubric)+'&funcao_js=parent.js_mostrarubricas',
+            'Pesquisa',
+            false
+        );
       } else { 
         $(rh27_descr).setValue(''); 
       }
@@ -243,8 +271,8 @@ function js_mostratabdesc1(chave1,chave2){
  /**
  * Trata o retorno da função js_pesquisarrubric()
  */
- function js_mostrarubricas(sChave, lErro) {
-     
+ function js_mostrarubricas(sChave, lErro) 
+ {
    $(rh27_descr).setValue(sChave);
    if ( lErro ) {
        
@@ -256,8 +284,8 @@ function js_mostratabdesc1(chave1,chave2){
  /**
  * Trata o retorno da função js_pesquisarrubric()
  */
- function js_mostrarubricas1(sChave1,sChave2){
-     
+ function js_mostrarubricas1(sChave1,sChave2)
+ {
    $(rh27_rubric).setValue(sChave1);
    $(rh27_descr).setValue(sChave2);
    $(db_iframe_rhrubricas).hide();
@@ -266,38 +294,50 @@ function js_mostratabdesc1(chave1,chave2){
  /**
   * Realiza a busca de seleções retornando o código e descrição da rubrica escolhida;
   */
-  function js_pesquisaSelecao(lMostra) {
-      	  
-  	if ( lMostra ) {
-  	  js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_selecao','func_selecao.php?funcao_js=parent.js_geraform_mostraselecao1|r44_selec|r44_descr&instit=<?=db_getsession("DB_instit")?>','Pesquisa',true);
-  	} else {
-  	  if ( $F(r44_selec) != "" ) {
-  	    js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_selecao','func_selecao.php?pesquisa_chave=' + $F(r44_selec) + '&funcao_js=parent.js_geraform_mostraselecao&instit=<?=db_getsession("DB_instit")?>','Pesquisa',false);
-  	  } else {
-  	    $(r44_des).setValue(""); 
-  	  }
-  	}
+  function js_pesquisaSelecao(lMostra) 
+  {
+    if ( lMostra ) {
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_selecao',
+            'func_selecao.php?funcao_js=parent.js_geraform_mostraselecao1|r44_selec|r44_descr&instit=<?=db_getsession("DB_instit")?>',
+            'Pesquisa',
+            true
+        );
+    } else {
+      if ( $F(r44_selec) != "" ) {
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_selecao',
+            'func_selecao.php?pesquisa_chave=' + $F(r44_selec) + '&funcao_js=parent.js_geraform_mostraselecao&instit=<?=db_getsession("DB_instit")?>',
+            'Pesquisa',
+            false
+        );
+      } else {
+        $(r44_des).setValue(""); 
+      }
+    }
   }
 
   /**
   * Trata o retorno da função js_pesquisaSelecao().
   */
-  function js_geraform_mostraselecao(sDescricao, lErro) {
-    
-  	if ( lErro ) { 
+  function js_geraform_mostraselecao(sDescricao, lErro) 
+  {
+    if ( lErro ) { 
 
-  	  $(r44_selec).setValue('');
-  	  $(r44_selec).focus(); 
-  	}
-  	
-  	$(r44_des).setValue(sDescricao); 
+      $(r44_selec).setValue('');
+      $(r44_selec).focus(); 
+    }
+    
+    $(r44_des).setValue(sDescricao); 
   }
 
   /**
   * Trata o retorno da função js_pesquisaSelecao();
   */
-  function js_geraform_mostraselecao1(sChave1, sChave2) {
-  	  
+  function js_geraform_mostraselecao1(sChave1, sChave2) 
+  {
     $(r44_selec).setValue(sChave1);
     
     if( $(r44_des) ) {
@@ -305,6 +345,36 @@ function js_mostratabdesc1(chave1,chave2){
     }
     
     db_iframe_selecao.hide();
+  } 
+
+  function js_emite() 
+  {
+    if ($F('rh27_rubric') == "" && $F("apenas_sem_ponto") == 'f') {
+        alert("Informe uma rubrica");
+        return false;
+    }
+      
+    jan = window.open('pes2_rubmesponto002.php?xtotal='+$F('total')+
+                      '&tipoordem='+$F('tipoordem')+
+                      '&ordem='+$F('ordem')+
+                      '&ponto='+$F('ponto')+
+                      '&rubrica='+$F('rh27_rubric')+
+                      '&recurso='+$F('recurso')+
+                      '&localtrab='+$F('localtrab')+
+                      '&ano='+$F('DBtxt23')+
+                      '&mes='+$F('DBtxt25')+
+                      '&formato='+$F('formato')+
+                      '&apenas_sem_ponto='+$F('apenas_sem_ponto'),
+                      '',
+                      'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
+    jan.moveTo(0,0);
+  }
+
+  function abrirDownload(sArquivo) 
+  {
+    var oDownload = new DBDownload();
+    oDownload.addFile(sArquivo, 'Download CSV.');
+    oDownload.show();
   } 
 </script>
 

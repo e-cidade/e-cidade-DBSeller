@@ -58,7 +58,7 @@ db_postmemory($_GET);
               <?=$Lk80_codpla?>
               </td>
               <td align="left" nowrap>
-               <?
+               <?php
                db_input("k80_codpla", 10,$Ik80_codpla,true,"text",1);
                ?>
                </td>
@@ -69,7 +69,7 @@ db_postmemory($_GET);
                 <strong>Processo Administrativo:</strong>
               </td>
               <td align="left" nowrap>
-               <?
+               <?php
                db_input("k144_numeroprocesso", 10,null,true,"text",1, null,null,null,null,15);
                ?>
                </td>
@@ -80,7 +80,7 @@ db_postmemory($_GET);
                 <b>Data Inicial:</b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_inputdata("dataini",null,null,null,true,'text',1);
                  ?>
               </td>
@@ -88,7 +88,7 @@ db_postmemory($_GET);
                 <b>Data Final</b>
               </td>
               <td>
-                 <?
+                 <?php
                   db_inputdata("datafim",null,null,null,true,'text',1);
                  ?>
               </td>
@@ -99,7 +99,7 @@ db_postmemory($_GET);
                 <b>Filtrar Por:</b>
               </td>
               <td colspan='3'>
-                <?
+                <?php
                    $aFiltro = array(
                                     "k80_data"  => "Data de Lancamento",
                                     "k80_dtaut" => "Data de Autenticação"

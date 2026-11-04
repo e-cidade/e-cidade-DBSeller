@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,13 +48,13 @@ class cl_empageslip {
                  e89_codigo = int4 = Código Slip
                  ";
    //funcao construtor da classe
-   function cl_empageslip() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empageslip");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -63,7 +63,7 @@ class cl_empageslip {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e89_codmov = ($this->e89_codmov == ""?@$GLOBALS["HTTP_POST_VARS"]["e89_codmov"]:$this->e89_codmov);
        $this->e89_codigo = ($this->e89_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["e89_codigo"]:$this->e89_codigo);
@@ -73,7 +73,7 @@ class cl_empageslip {
      }
    }
    // funcao para inclusao
-   function incluir ($e89_codmov,$e89_codigo){
+   public function incluir ($e89_codmov,$e89_codigo){
       $this->atualizacampos();
        $this->e89_codmov = $e89_codmov;
        $this->e89_codigo = $e89_codigo;
@@ -138,7 +138,7 @@ class cl_empageslip {
      return true;
    }
    // funcao para alteracao
-   function alterar ($e89_codmov=null,$e89_codigo=null) {
+   public function alterar ($e89_codmov=null,$e89_codigo=null) {
       $this->atualizacampos();
      $sql = " update empageslip set ";
      $virgula = "";
@@ -222,7 +222,7 @@ class cl_empageslip {
      }
    }
    // funcao para exclusao
-   function excluir ($e89_codmov=null,$e89_codigo=null,$dbwhere=null) {
+   public function excluir ($e89_codmov=null,$e89_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e89_codmov,$e89_codigo));
      }else{
@@ -291,7 +291,7 @@ class cl_empageslip {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -313,10 +313,10 @@ class cl_empageslip {
       }
      return $result;
    }
-   function sql_query_conf ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_conf ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -355,7 +355,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,10 +364,10 @@ class cl_empageslip {
      }
      return $sql;
   }
-   function sql_query_credito ( $conta=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_credito ( $conta=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_empageslip {
      $sql .= " and k17_instit = " . db_getsession("DB_instit");
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,10 +394,10 @@ class cl_empageslip {
      return $sql;
 
   }
-   function sql_query_descr ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_descr ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,11 +448,11 @@ class cl_empageslip {
      return $sql;
   }
 
-   function sql_query_configura ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_configura ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -521,11 +521,11 @@ class cl_empageslip {
      return $sql;
   }
 
-  function sql_query_txtbanco ( $e89_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_txtbanco ( $e89_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -583,7 +583,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -593,11 +593,11 @@ class cl_empageslip {
      return $sql;
   }
 
-    function sql_query_txtbanco_pagamento ( $e89_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
+    public function sql_query_txtbanco_pagamento ( $e89_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
 
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = explode("#",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -655,7 +655,7 @@ class cl_empageslip {
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = explode("#",$ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -664,10 +664,10 @@ class cl_empageslip {
         }
         return $sql;
     }
-   function sql_query_file ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -696,7 +696,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -705,10 +705,10 @@ class cl_empageslip {
      }
      return $sql;
   }
-   function sql_query_slip ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_slip ( $e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -740,7 +740,7 @@ class cl_empageslip {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -750,13 +750,13 @@ class cl_empageslip {
      return $sql;
   }
 
-  function sql_query_agenda_pagamento($e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
+  public function sql_query_agenda_pagamento($e89_codmov=null,$e89_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
 
     if($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
 
       for($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -796,7 +796,7 @@ class cl_empageslip {
   $sql .= $sql2;
   if($ordem != null ){
   $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
       $sql .= $virgula.$campos_sql[$i];

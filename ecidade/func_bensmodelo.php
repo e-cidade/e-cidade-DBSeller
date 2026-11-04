@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clbensmodelo->rotulo->label("t66_descricao");
               <?=$Lt66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t66_sequencial",10,$It66_sequencial,true,"text",4,"","chave_t66_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clbensmodelo->rotulo->label("t66_descricao");
               <?=$Lt66_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t66_descricao",50,$It66_descricao,true,"text",4,"","chave_t66_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clbensmodelo->rotulo->label("t66_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensmodelo.php")==true){
@@ -122,12 +122,12 @@ $clbensmodelo->rotulo->label("t66_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

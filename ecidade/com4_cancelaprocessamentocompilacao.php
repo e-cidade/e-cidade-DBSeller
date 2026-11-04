@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,7 +50,7 @@ $iBloqueia = 3;
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -65,7 +65,7 @@ db_app::load("widgets/windowAux.widget.js");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
   <table width="790" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -85,8 +85,8 @@ db_app::load("widgets/windowAux.widget.js");
               <td nowrap title="Código da Abertura">
                  <b>Código:</b>
               </td>
-              <td  colspan="2"> 
-                <?
+              <td  colspan="2">
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -96,13 +96,13 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Data Vigência:</b>
               </td>
               <td colspan="2">
-                <?
+                <?php
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
                   $recebedata = $pc10_data;
                 }
-                $arr_data = split("-",$recebedata);
+                $arr_data =explode("-",$recebedata);
                 @$pc10_datadia = $arr_data[2];
                 @$pc10_datames = $arr_data[1];
                 @$pc10_dataano = $arr_data[0];
@@ -110,33 +110,33 @@ db_app::load("widgets/windowAux.widget.js");
                 echo "&nbsp;<b>a</b>&nbsp;";
                 db_inputdata('pc54_datatermino',null,null,null,true,'text', $db_opcao);
                 ?>
-              </td> 
+              </td>
             <tr>
               <td nowrap title="<?=@$Tpc10_resumo?>">
                 <b>Resumo:</b>
               </td>
-              <td colspan='3'> 
-              <?
+              <td colspan='3'>
+              <?php
                @$pc10_resumo = stripslashes($pc10_resumo);
-               db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735); 
+               db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
               </td>
-            </tr> 
+            </tr>
             <tr>
               <td>
-                 <?
+                 <?php
                  db_ancora("<b>Abertura de Preço:</b>", "js_pesquisaaberturaprecos(true);", $iBloqueia);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                  db_input('pc54_solicita', 8, $Ipc54_solicita, true, 'text', 3, "");
                 ?>
               </td>
               <td>
                 <input type="button" value='visualizar Itens' id='btnVisualizarItens'>
               </td>
-            </tr> 
+            </tr>
           </table>
           </fieldset>
         </td>
@@ -151,7 +151,7 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -186,7 +186,7 @@ function js_retornoCompletaPesquisa(oAjax) {
 
   var oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno.status == 1) {
-  
+
     $('pc54_datainicio').value  = oRetorno.datainicio;
     $('pc54_datatermino').value = oRetorno.datatermino;
     $('pc10_resumo').value      = oRetorno.resumo.urlDecode();
@@ -198,7 +198,7 @@ function js_retornoCompletaPesquisa(oAjax) {
   } else {
     alert(oRetorno.message.urlDecode());
   }
-  
+
 }
 
 function js_init() {
@@ -239,7 +239,7 @@ function js_preencheGrid(aItens) {
       aLinha[0]  = i+1;
       aLinha[1]  = codigoitem;
       aLinha[2]  = descricaoitem.urlDecode();
-      aLinha[3]  = "<span id='unidade"+indice+"'>"+unidade+"</span>";
+      aLinha[3]  = "<span id='unidade"+indice+"'>"+unidade_descr+"</span>";
       aLinha[3] += "<span id='quantunid"+indice+"' style='display:none'>"+quantidadeunid+"</span>("+quantidadeunid+")";
       aLinha[4]  = "<span id='justificativa"+indice+"' style='display:none'>"+justificativa.urlDecode()+"</span>";
       aLinha[4] += "<span id='resumo"+indice+"'        style='display:none'>"+resumo.urlDecode()+"</span>";
@@ -282,9 +282,9 @@ function js_showItens() {
 function js_processarCompilacao() {
 
   if ($F('pc10_numero') != "") {
-  
+
     var sMsg  = "Confirmar o cancelamento do processamento da compilação do registro de preço?\n";
-        sMsg += "Esso processo ira cancelar o processo de compras gerado para essa compilação."; 
+        sMsg += "Esso processo ira cancelar o processo de compras gerado para essa compilação.";
     if (!confirm(sMsg)) {
       return false;
     }
@@ -300,9 +300,9 @@ function js_processarCompilacao() {
                                           parameters:'json='+Object.toJSON(oParam),
                                           onComplete: js_retornoProcessarCompilacao
                                          });
-    
+
   }
-  
+
 }
 
 function js_retornoProcessarCompilacao(oAjax) {
@@ -310,14 +310,14 @@ function js_retornoProcessarCompilacao(oAjax) {
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno.status == 1) {
-  
-   alert('Cancelamento do processamento da compilacao realizada com sucesso!');    
+
+   alert('Cancelamento do processamento da compilacao realizada com sucesso!');
   } else {
     alert(oRetorno.message.urlDecode());
   }
 }
 function js_limpar() {
-  
+
   $('btnProcessar').disabled = true;
   $('pc10_numero').value = '';
   $('pc10_resumo').value = '';

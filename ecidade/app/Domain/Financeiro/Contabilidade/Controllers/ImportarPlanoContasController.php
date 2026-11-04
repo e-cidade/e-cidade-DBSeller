@@ -19,12 +19,28 @@ class ImportarPlanoContasController extends Controller
         return new DBJsonResponse([], "Planilha do PCASP importada com sucesso.");
     }
 
+    public function atualizarPcasp(ImportarPcaspRequest $request)
+    {
+        $service = new ImportarPcaspService();
+        $service->setFiltrosFromRequest($request->all());
+        $service->atualizar();
+        return new DBJsonResponse([], "Planilha do PCASP atualizada com sucesso.");
+    }
+
     public function despesa(ImportarPcaspRequest $request)
     {
         $service = new ImportarPlanoDespesaService();
         $service->setFiltrosFromRequest($request->all());
         $service->processar();
         return new DBJsonResponse([], "Planilha do Orçamentário da Despesa importado com sucesso.");
+    }
+
+    public function atualizarDespesa(ImportarPcaspRequest $request)
+    {
+        $service = new ImportarPlanoDespesaService();
+        $service->setFiltrosFromRequest($request->all());
+        $service->atualizar();
+        return new DBJsonResponse([], "Planilha do Orçamentário da Despesa atualizada com sucesso.");
     }
 
     public function receita(ImportarPcaspRequest $request)
@@ -34,5 +50,14 @@ class ImportarPlanoContasController extends Controller
         $service->processar();
 
         return new DBJsonResponse([], "Planilha do Orçamentário da Receita importado com sucesso.");
+    }
+
+    public function atualizarReceita(ImportarPcaspRequest $request)
+    {
+        $service = new ImportarPlanoReceitaService();
+        $service->setFiltrosFromRequest($request->all());
+        $service->atualizar();
+
+        return new DBJsonResponse([], "Planilha do Orçamentário da Receita atualizada com sucesso.");
     }
 }

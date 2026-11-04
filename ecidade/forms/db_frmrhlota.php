@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -64,13 +64,13 @@ $r70_instit = db_getsession("DB_instit");
               <?=@$Lr70_codigo?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r70_codigo',4,$Ir70_codigo,true,'text',3);
               db_input('r70_instit',4,$Ir70_instit,true,'hidden',3);
               ?>
             </td>
           </tr>
-          <?  
+          <?php  
           if(isset($estrutura_altera) ||   isset($chavepesquisa)&&isset($r70_estrut)){
             if(empty($estrutura_altera)){
               $estrutura_altera=$r70_estrut;
@@ -112,19 +112,19 @@ $r70_instit = db_getsession("DB_instit");
               <?=@$Lr70_descr?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('r70_descr',59,$Ir70_descr,true,'text',$db_opcao,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh64_calend?>">
-              <?
+              <?php
               db_ancora(@$Lrh64_calend,"js_pesquisarh64_calend(true);",$db_opcao);
               ?>
             </td>
             <td> 
-              <?
+              <?php
               db_input('rh64_calend',10,$Irh64_calend,true,'text',$db_opcao,"onchange='js_pesquisarh64_calend(false);'");
               db_input('rh53_descr',45,$Irh53_descr,true,'text',3,"");
               ?>
@@ -132,12 +132,12 @@ $r70_instit = db_getsession("DB_instit");
           </tr>
 					<tr>
 					    <td nowrap title="<?=$Tz01_numcgm?>">
-					      <?
+					      <?php
 					         db_ancora($Lz01_numcgm,"js_pesquisaz01_numcgm(true);",1);
 					      ?>
 					    </td>
 					    <td align="left" nowrap>
-					      <?
+					      <?php
 					   db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",1,"onchange='js_pesquisaz01_numcgm(false);'");
 					   db_input("z01_nome",45,$Iz01_nome,true,"text",3);
 					      ?>
@@ -145,12 +145,12 @@ $r70_instit = db_getsession("DB_instit");
 					</tr>
           <tr>
             <td nowrap title="<?=@$Tr70_concarpeculiar?>">
-              <?
+              <?php
                 db_ancora(@$Lr70_concarpeculiar,"js_pesquisar70_concarpeculiar(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php
                 db_input("r70_concarpeculiar",10,$Ir70_concarpeculiar,true,"text",$db_opcao,"onChange='js_pesquisar70_concarpeculiar(false);'");
                 db_input("c58_descr",45,0,true,"text",3);
               ?>
@@ -161,7 +161,7 @@ $r70_instit = db_getsession("DB_instit");
 					      <?=@$Lz01_cgc?>
 					    </td>
 					    <td>
-					       <?
+					       <?php
 					        db_input('z01_cgc',16,$Iz01_cgc,true,'text',3);
 					       ?>
 					    </td>
@@ -171,7 +171,7 @@ $r70_instit = db_getsession("DB_instit");
               <?=@$Lr70_analitica?>
             </td>
             <td> 
-              <?
+              <?php
               $opcao_nao_troca_analitica = $db_opcao;
               if(isset($sem_parametro_configurado)){
                 $opcao_nao_troca_analitica = 3;
@@ -186,7 +186,7 @@ $r70_instit = db_getsession("DB_instit");
               <?=@$Lr70_ativo?>
             </td>
             <td> 
-              <?
+              <?php
               $x = array("t"=>"Ativo","f"=>"Inativo");
               db_select('r70_ativo',$x,true,$db_opcao);
               ?>
@@ -196,7 +196,7 @@ $r70_instit = db_getsession("DB_instit");
       </fieldset>
     </td>
   <tr>
-    <?
+    <?php
     if(isset($r70_analitica) && $r70_analitica=="t"){
     ?>
   <tr>
@@ -206,12 +206,12 @@ $r70_instit = db_getsession("DB_instit");
       <table border='0' cellpadding='0' cellspacing='0'>
         <tr>
           <td nowrap title="<?=@$To40_orgao?>">
-            <?
+            <?php
             db_ancora(@$Lo40_orgao,"js_pesquisaorgunid(true);",$db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             if(isset($o40_orgao) && trim($o40_orgao)!=""){
               $result_orgao = $clorcorgao->sql_record($clorcorgao->sql_query_file(db_getsession("DB_anousu"),$o40_orgao,"o40_descr"));
               if($clorcorgao->numrows>0){
@@ -225,12 +225,12 @@ $r70_instit = db_getsession("DB_instit");
         </tr>
         <tr>
           <td nowrap title="<?=@$To41_unidade?>">
-            <?
+            <?php
             db_ancora(@$Lo41_unidade,"js_pesquisaorgunid(true);",$db_opcao);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             if(isset($o41_unidade) && trim($o41_unidade)!=""){
               $result_unidade = $clorcunidade->sql_record($clorcunidade->sql_query_file(db_getsession("DB_anousu"),$o40_orgao,$o41_unidade,"o41_descr"));
               if($clorcunidade->numrows>0){
@@ -247,7 +247,7 @@ $r70_instit = db_getsession("DB_instit");
       </fieldset> 
     </td>
   </tr>
-    <?
+    <?php
     } 
     ?>
   <tr>
@@ -259,7 +259,7 @@ $r70_instit = db_getsession("DB_instit");
              
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
       
-      <?
+      <?php
       if($db_opcao == 1 && !isset($sem_parametro_configurado)){
         echo '<input name="importar" type="button" id="importar" value="Importar" onclick="js_pesquisa_importacao();" >';
       }
@@ -439,19 +439,19 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframerhlota.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php
 if(isset($r70_estrut) && trim($r70_estrut)!=""){
   echo "\njs_mascara03_r70_estrut(document.form1.r70_estrut.value);\n";
 }
 ?>
 </script>
-<?
+<?php
 if(isset($focar)){
   echo "
         <script>

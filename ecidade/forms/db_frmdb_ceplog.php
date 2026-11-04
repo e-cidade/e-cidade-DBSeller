@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,22 +38,22 @@ $clrotulo->label("db10_munic");
        <?=@$Ldb11_codlog?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_codlog',10,$Idb11_codlog,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb11_codigo?>">
-       <?
+       <?php
        db_ancora(@$Ldb11_codigo,"js_pesquisadb11_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_codigo',10,$Idb11_codigo,true,'text',$db_opcao," onchange='js_pesquisadb11_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('db10_munic',40,$Idb10_munic,true,'text',3,'')
        ?>
     </td>
@@ -63,7 +63,7 @@ db_input('db10_munic',40,$Idb10_munic,true,'text',3,'')
        <?=@$Ldb11_tipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_tipo',12,$Idb11_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -73,7 +73,7 @@ db_input('db11_tipo',12,$Idb11_tipo,true,'text',$db_opcao,"")
        <?=@$Ldb11_logradouro?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_logradouro',60,$Idb11_logradouro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -83,7 +83,7 @@ db_input('db11_logradouro',60,$Idb11_logradouro,true,'text',$db_opcao,"")
        <?=@$Ldb11_logsemacento?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_logsemacento',60,$Idb11_logsemacento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ db_input('db11_logsemacento',60,$Idb11_logsemacento,true,'text',$db_opcao,"")
        <?=@$Ldb11_bairro?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_bairro',40,$Idb11_bairro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -103,7 +103,7 @@ db_input('db11_bairro',40,$Idb11_bairro,true,'text',$db_opcao,"")
        <?=@$Ldb11_cep?>
     </td>
     <td> 
-<?
+<?php
 db_input('db11_cep',8,$Idb11_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -138,7 +138,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_ceplog.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

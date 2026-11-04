@@ -83,6 +83,9 @@ $clorcelemento = new cl_orcelemento;
 $clempautitem = new cl_empautitem;
 $clempelemento = new cl_empelemento;
 $clempempitem = new cl_empempitem;
+$clemptipoatojuridico = new cl_emptipoatojuridico;
+$clempjustificativaatojuridico = new cl_empjustificativaatojuridico;
+$clempjustificativainstrumentoprevio = new cl_empjustificativainstrumentoprevio;
 
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
@@ -174,6 +177,100 @@ if (isset($alterar)) {
 
             if ($clempemphist->erro_status == 0) {
                 $sqlerro = true;
+            }
+        }
+    }
+
+    if (isRioDeJaneiro() && !$sqlerro) {
+        $whereTipoAtoJuridico = "e166_empempenho = {$e60_numemp}";
+        $sqlTipoAtoJuridico = $clemptipoatojuridico->sql_query_file(null,'e166_sequencial',null,$whereTipoAtoJuridico);
+        $rsTipoAtoJuridico = db_query($sqlTipoAtoJuridico);
+
+        if (pg_num_rows($rsTipoAtoJuridico) > 0 && $tipoatojuridico !== null ) {
+            $sequencialTipoJuridico = db_utils::fieldsMemory($rsTipoAtoJuridico, 0)->e166_sequencial;
+            $clemptipoatojuridico->e166_sequencial = $sequencialTipoJuridico;
+            $clemptipoatojuridico->e166_empempenho = $e60_numemp;
+            $clemptipoatojuridico->e166_tipoatojuridico = $tipoatojuridico;
+            $clemptipoatojuridico->alterar($sequencialTipoJuridico);
+            $erro_msg = $clemptipoatojuridico->erro_msg;
+            if ($clemptipoatojuridico->erro_status == 0) {
+                $sqlerro = true;
+            }
+        } elseif(!empty($tipoatojuridico)){
+            $clemptipoatojuridico->e166_empempenho = $e60_numemp;
+            $clemptipoatojuridico->e166_tipoatojuridico = $tipoatojuridico;
+            $clemptipoatojuridico->incluir(null);
+            $erro_msg = $clemptipoatojuridico->erro_msg;
+            if ($clemptipoatojuridico->erro_status == 0) {
+                $sqlerro = true;
+            }
+        }
+
+        if(!$sqlerro){
+            $whereJustificativa = "e175_empempenho = {$e60_numemp}";
+            $sqlJustificativa = $clempjustificativaatojuridico->sql_query_file(null,'e175_sequencial',
+                null,$whereJustificativa);
+            $rsJustificativa = db_query($sqlJustificativa);
+
+            if(pg_num_rows($rsJustificativa) > 0){
+                $sequencialJustificativa= db_utils::fieldsMemory($rsJustificativa,0)->e175_sequencial;
+                $clempjustificativaatojuridico->e175_sequencial = $sequencialJustificativa;
+                $clempjustificativaatojuridico->e175_empempenho = $e60_numemp;
+                if($tipoatojuridico == "0" && !empty($justificativaatojuridico)){
+                    $clempjustificativaatojuridico->e175_justificativaatojuridico = $justificativaatojuridico;
+                    $clempjustificativaatojuridico->alterar($sequencialJustificativa);
+                } else {
+                    $clempjustificativaatojuridico->excluir($sequencialJustificativa);
+                }
+
+                $erro_msg = $clempjustificativaatojuridico->erro_msg;
+                if ($clempjustificativaatojuridico->erro_status == 0) {
+                    $sqlerro = true;
+                }
+
+            } else if($tipoatojuridico == "0" && !empty($justificativaatojuridico)) {
+                $clempjustificativaatojuridico->e175_empempenho = $e60_numemp;
+                $clempjustificativaatojuridico->e175_justificativaatojuridico = $justificativaatojuridico;
+                $clempjustificativaatojuridico->incluir(null);
+                $erro_msg = $clempjustificativaatojuridico->erro_msg;
+                if ($clempjustificativaatojuridico->erro_status == 0) {
+                    $sqlerro = true;
+                }
+            }
+        }
+
+        if(!$sqlerro){
+
+            $whereJustificativa = "e176_empempenho = {$e60_numemp}";
+            $sqlJustificativa = $clempjustificativainstrumentoprevio->sql_query_file(null,'e176_sequencial',
+                null,$whereJustificativa);
+            $rsJustificativa = db_query($sqlJustificativa);
+
+            if(pg_num_rows($rsJustificativa) > 0){
+
+                $sequencialJustificativa= db_utils::fieldsMemory($rsJustificativa,0)->e176_sequencial;
+                $clempjustificativainstrumentoprevio->e176_sequencial = $sequencialJustificativa;
+                $clempjustificativainstrumentoprevio->e176_empempenho = $e60_numemp;
+                if(($e60_codcom == "7" || $e60_codcom == "8") && !empty($justificativainstrumentoprevio)){
+                    $clempjustificativainstrumentoprevio->e176_justificativainstrumentoprevio = $justificativainstrumentoprevio;
+                    $clempjustificativainstrumentoprevio->alterar($sequencialJustificativa);
+                } else {
+                    $clempjustificativainstrumentoprevio->excluir($sequencialJustificativa);
+                }
+
+                $erro_msg = $clempjustificativainstrumentoprevio->erro_msg;
+                if ($clempjustificativainstrumentoprevio->erro_status == 0) {
+                    $sqlerro = true;
+                }
+
+            } else if(($e60_codcom == "7" || $e60_codcom == "8" || $e60_codcom == "13" || $e60_codcom == "14") && !empty($justificativainstrumentoprevio)){
+                $clempjustificativainstrumentoprevio->e176_empempenho = $e60_numemp;
+                $clempjustificativainstrumentoprevio->e176_justificativainstrumentoprevio = $justificativainstrumentoprevio;
+                $clempjustificativainstrumentoprevio->incluir(null);
+                $erro_msg = $clempjustificativainstrumentoprevio->erro_msg;
+                if ($clempjustificativainstrumentoprevio->erro_status == 0) {
+                    $sqlerro = true;
+                }
             }
         }
     }
@@ -314,8 +411,6 @@ if (isset($alterar)) {
         $documentoAndamento = $documentosAndamentoRepository->scopeCodigoOrigem($e60_numemp)->first();
         if (!is_null($documentoAndamento)) {
             $uuid = $documentoAndamento->p116_qrcode;
-            $dotenv = new \Dotenv\Dotenv('./');
-            $dotenv->load();
             $gerar_arquivo = "tmp/empenho_" . time() . ".pdf";
             require_once("emp2_emitenotaemp002.php");
             if (!file_exists($gerar_arquivo)) {
@@ -376,6 +471,36 @@ if (isset($alterar)) {
     if ($clemppresta->numrows > 0) {
         db_fieldsmemory($result, 0);
     }
+
+    $tipoatojuridico = null;
+    $justificativaatojuridico = null;
+    $justificativainstrumentoprevio = null;
+
+    if(isRioDeJaneiro()){
+        $whereTipoAtoJuridico = "e166_empempenho = {$e60_numemp}";
+        $sqlTipoAtoJuridico = $clemptipoatojuridico->sql_query_file(null,'e166_tipoatojuridico',null,$whereTipoAtoJuridico);
+        $rsTipoAtoJuridico = db_query($sqlTipoAtoJuridico);
+        if(pg_num_rows($rsTipoAtoJuridico) > 0){
+            $tipoatojuridico = db_utils::fieldsMemory($rsTipoAtoJuridico,0)->e166_tipoatojuridico;
+        }
+
+        $whereJustificativaAtoJuridico = "e175_empempenho = {$e60_numemp}";
+        $sqlJustificativaAtoJuridico = $clempjustificativaatojuridico->sql_query_file(null,
+            'e175_justificativaatojuridico',null,$whereJustificativaAtoJuridico);
+        $rsJustificativa= db_query($sqlJustificativaAtoJuridico);
+        if(pg_num_rows($rsJustificativa) > 0){
+            $justificativaatojuridico = db_utils::fieldsMemory($rsJustificativa,0)->e175_justificativaatojuridico;
+        }
+
+        $whereJustificativaInstrumentoPrevio = "e176_empempenho = {$e60_numemp}";
+        $sqlJustificativaInstrumentoPrevio = $clempjustificativainstrumentoprevio->sql_query_file(null,
+            'e176_justificativainstrumentoprevio',null,$whereJustificativaInstrumentoPrevio);
+        $rsJustificativa= db_query($sqlJustificativaInstrumentoPrevio);
+        if(pg_num_rows($rsJustificativa) > 0){
+            $justificativainstrumentoprevio = db_utils::fieldsMemory($rsJustificativa,0)->e176_justificativainstrumentoprevio;
+        }
+    }
+
     $db_botao = true;
 }
 ?>

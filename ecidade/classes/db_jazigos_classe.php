@@ -1,95 +1,95 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Cemiterio
 //CLASSE DA ENTIDADE jazigos
-class cl_jazigos { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cm03_i_codigo = 0; 
-   var $cm03_i_proprietario = 0; 
-   var $cm03_c_termo = null; 
-   var $cm03_d_datatermo_dia = null; 
-   var $cm03_d_datatermo_mes = null; 
-   var $cm03_d_datatermo_ano = null; 
-   var $cm03_d_datatermo = null; 
-   var $cm03_c_carta = null; 
-   var $cm03_d_datacarta_dia = null; 
-   var $cm03_d_datacarta_mes = null; 
-   var $cm03_d_datacarta_ano = null; 
-   var $cm03_d_datacarta = null; 
-   var $cm03_d_aquisicao_dia = null; 
-   var $cm03_d_aquisicao_mes = null; 
-   var $cm03_d_aquisicao_ano = null; 
-   var $cm03_d_aquisicao = null; 
-   var $cm03_c_base = null; 
-   var $cm03_c_estrutura = null; 
-   var $cm03_c_pronto = null; 
-   var $cm03_c_quadra = null; 
-   var $cm03_i_lote = 0; 
-   var $cm03_f_metragem1 = 0; 
-   var $cm03_f_metragem2 = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_jazigos {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $cm03_i_codigo = 0;
+   var $cm03_i_proprietario = 0;
+   var $cm03_c_termo = null;
+   var $cm03_d_datatermo_dia = null;
+   var $cm03_d_datatermo_mes = null;
+   var $cm03_d_datatermo_ano = null;
+   var $cm03_d_datatermo = null;
+   var $cm03_c_carta = null;
+   var $cm03_d_datacarta_dia = null;
+   var $cm03_d_datacarta_mes = null;
+   var $cm03_d_datacarta_ano = null;
+   var $cm03_d_datacarta = null;
+   var $cm03_d_aquisicao_dia = null;
+   var $cm03_d_aquisicao_mes = null;
+   var $cm03_d_aquisicao_ano = null;
+   var $cm03_d_aquisicao = null;
+   var $cm03_c_base = null;
+   var $cm03_c_estrutura = null;
+   var $cm03_c_pronto = null;
+   var $cm03_c_quadra = null;
+   var $cm03_i_lote = 0;
+   var $cm03_f_metragem1 = 0;
+   var $cm03_f_metragem2 = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 cm03_i_codigo = int4 = Código 
-                 cm03_i_proprietario = int4 = Proprietário 
-                 cm03_c_termo = char(10) = Termo 
-                 cm03_d_datatermo = date = Data 
-                 cm03_c_carta = char(10) = Carta 
-                 cm03_d_datacarta = date = Data Carta 
-                 cm03_d_aquisicao = date = Aquisição 
-                 cm03_c_base = char(10) = Base 
-                 cm03_c_estrutura = char(10) = Estrutura 
-                 cm03_c_pronto = char(10) = Pronto 
-                 cm03_c_quadra = char(3) = Quadra 
-                 cm03_i_lote = int4 = Lote 
-                 cm03_f_metragem1 = float8 = Metragem 
-                 cm03_f_metragem2 = float8 = Metragem 2 
+                 cm03_i_codigo = int4 = Código
+                 cm03_i_proprietario = int4 = Proprietário
+                 cm03_c_termo = char(10) = Termo
+                 cm03_d_datatermo = date = Data
+                 cm03_c_carta = char(10) = Carta
+                 cm03_d_datacarta = date = Data Carta
+                 cm03_d_aquisicao = date = Aquisição
+                 cm03_c_base = char(10) = Base
+                 cm03_c_estrutura = char(10) = Estrutura
+                 cm03_c_pronto = char(10) = Pronto
+                 cm03_c_quadra = char(3) = Quadra
+                 cm03_i_lote = int4 = Lote
+                 cm03_f_metragem1 = float8 = Metragem
+                 cm03_f_metragem2 = float8 = Metragem 2
                  ";
-   //funcao construtor da classe 
-   function cl_jazigos() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("jazigos"); 
+     $this->rotulo = new rotulo("jazigos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -98,7 +98,7 @@ class cl_jazigos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm03_i_codigo = ($this->cm03_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"]:$this->cm03_i_codigo);
        $this->cm03_i_proprietario = ($this->cm03_i_proprietario == ""?@$GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"]:$this->cm03_i_proprietario);
@@ -140,9 +140,9 @@ class cl_jazigos {
      }
    }
    // funcao para inclusao
-   function incluir ($cm03_i_codigo){ 
+   public function incluir ($cm03_i_codigo){
       $this->atualizacampos();
-     if($this->cm03_i_proprietario == null ){ 
+     if($this->cm03_i_proprietario == null ){
        $this->erro_sql = " Campo Proprietário nao Informado.";
        $this->erro_campo = "cm03_i_proprietario";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_termo == null ){ 
+     if($this->cm03_c_termo == null ){
        $this->erro_sql = " Campo Termo nao Informado.";
        $this->erro_campo = "cm03_c_termo";
        $this->erro_banco = "";
@@ -160,7 +160,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_d_datatermo == null ){ 
+     if($this->cm03_d_datatermo == null ){
        $this->erro_sql = " Campo Data nao Informado.";
        $this->erro_campo = "cm03_d_datatermo_dia";
        $this->erro_banco = "";
@@ -169,7 +169,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_carta == null ){ 
+     if($this->cm03_c_carta == null ){
        $this->erro_sql = " Campo Carta nao Informado.";
        $this->erro_campo = "cm03_c_carta";
        $this->erro_banco = "";
@@ -178,7 +178,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_d_datacarta == null ){ 
+     if($this->cm03_d_datacarta == null ){
        $this->erro_sql = " Campo Data Carta nao Informado.";
        $this->erro_campo = "cm03_d_datacarta_dia";
        $this->erro_banco = "";
@@ -187,7 +187,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_d_aquisicao == null ){ 
+     if($this->cm03_d_aquisicao == null ){
        $this->erro_sql = " Campo Aquisição nao Informado.";
        $this->erro_campo = "cm03_d_aquisicao_dia";
        $this->erro_banco = "";
@@ -196,7 +196,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_base == null ){ 
+     if($this->cm03_c_base == null ){
        $this->erro_sql = " Campo Base nao Informado.";
        $this->erro_campo = "cm03_c_base";
        $this->erro_banco = "";
@@ -205,7 +205,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_estrutura == null ){ 
+     if($this->cm03_c_estrutura == null ){
        $this->erro_sql = " Campo Estrutura nao Informado.";
        $this->erro_campo = "cm03_c_estrutura";
        $this->erro_banco = "";
@@ -214,7 +214,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_pronto == null ){ 
+     if($this->cm03_c_pronto == null ){
        $this->erro_sql = " Campo Pronto nao Informado.";
        $this->erro_campo = "cm03_c_pronto";
        $this->erro_banco = "";
@@ -223,7 +223,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_c_quadra == null ){ 
+     if($this->cm03_c_quadra == null ){
        $this->erro_sql = " Campo Quadra nao Informado.";
        $this->erro_campo = "cm03_c_quadra";
        $this->erro_banco = "";
@@ -232,7 +232,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_i_lote == null ){ 
+     if($this->cm03_i_lote == null ){
        $this->erro_sql = " Campo Lote nao Informado.";
        $this->erro_campo = "cm03_i_lote";
        $this->erro_banco = "";
@@ -241,7 +241,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_f_metragem1 == null ){ 
+     if($this->cm03_f_metragem1 == null ){
        $this->erro_sql = " Campo Metragem nao Informado.";
        $this->erro_campo = "cm03_f_metragem1";
        $this->erro_banco = "";
@@ -250,7 +250,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm03_f_metragem2 == null ){ 
+     if($this->cm03_f_metragem2 == null ){
        $this->erro_sql = " Campo Metragem 2 nao Informado.";
        $this->erro_campo = "cm03_f_metragem2";
        $this->erro_banco = "";
@@ -260,16 +260,16 @@ class cl_jazigos {
        return false;
      }
      if($cm03_i_codigo == "" || $cm03_i_codigo == null ){
-       $result = db_query("select nextval('jazigos_cm03_i_codigo_seq')"); 
+       $result = db_query("select nextval('jazigos_cm03_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: jazigos_cm03_i_codigo_seq do campo: cm03_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: jazigos_cm03_i_codigo_seq do campo: cm03_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->cm03_i_codigo = pg_result($result,0,0); 
+       $this->cm03_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from jazigos_cm03_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $cm03_i_codigo)){
@@ -280,10 +280,10 @@ class cl_jazigos {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->cm03_i_codigo = $cm03_i_codigo; 
+         $this->cm03_i_codigo = $cm03_i_codigo;
        }
      }
-     if(($this->cm03_i_codigo == null) || ($this->cm03_i_codigo == "") ){ 
+     if(($this->cm03_i_codigo == null) || ($this->cm03_i_codigo == "") ){
        $this->erro_sql = " Campo cm03_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -292,39 +292,39 @@ class cl_jazigos {
        return false;
      }
      $sql = "insert into jazigos(
-                                       cm03_i_codigo 
-                                      ,cm03_i_proprietario 
-                                      ,cm03_c_termo 
-                                      ,cm03_d_datatermo 
-                                      ,cm03_c_carta 
-                                      ,cm03_d_datacarta 
-                                      ,cm03_d_aquisicao 
-                                      ,cm03_c_base 
-                                      ,cm03_c_estrutura 
-                                      ,cm03_c_pronto 
-                                      ,cm03_c_quadra 
-                                      ,cm03_i_lote 
-                                      ,cm03_f_metragem1 
-                                      ,cm03_f_metragem2 
+                                       cm03_i_codigo
+                                      ,cm03_i_proprietario
+                                      ,cm03_c_termo
+                                      ,cm03_d_datatermo
+                                      ,cm03_c_carta
+                                      ,cm03_d_datacarta
+                                      ,cm03_d_aquisicao
+                                      ,cm03_c_base
+                                      ,cm03_c_estrutura
+                                      ,cm03_c_pronto
+                                      ,cm03_c_quadra
+                                      ,cm03_i_lote
+                                      ,cm03_f_metragem1
+                                      ,cm03_f_metragem2
                        )
                 values (
-                                $this->cm03_i_codigo 
-                               ,$this->cm03_i_proprietario 
-                               ,'$this->cm03_c_termo' 
-                               ,".($this->cm03_d_datatermo == "null" || $this->cm03_d_datatermo == ""?"null":"'".$this->cm03_d_datatermo."'")." 
-                               ,'$this->cm03_c_carta' 
-                               ,".($this->cm03_d_datacarta == "null" || $this->cm03_d_datacarta == ""?"null":"'".$this->cm03_d_datacarta."'")." 
-                               ,".($this->cm03_d_aquisicao == "null" || $this->cm03_d_aquisicao == ""?"null":"'".$this->cm03_d_aquisicao."'")." 
-                               ,'$this->cm03_c_base' 
-                               ,'$this->cm03_c_estrutura' 
-                               ,'$this->cm03_c_pronto' 
-                               ,'$this->cm03_c_quadra' 
-                               ,$this->cm03_i_lote 
-                               ,$this->cm03_f_metragem1 
-                               ,$this->cm03_f_metragem2 
+                                $this->cm03_i_codigo
+                               ,$this->cm03_i_proprietario
+                               ,'$this->cm03_c_termo'
+                               ,".($this->cm03_d_datatermo == "null" || $this->cm03_d_datatermo == ""?"null":"'".$this->cm03_d_datatermo."'")."
+                               ,'$this->cm03_c_carta'
+                               ,".($this->cm03_d_datacarta == "null" || $this->cm03_d_datacarta == ""?"null":"'".$this->cm03_d_datacarta."'")."
+                               ,".($this->cm03_d_aquisicao == "null" || $this->cm03_d_aquisicao == ""?"null":"'".$this->cm03_d_aquisicao."'")."
+                               ,'$this->cm03_c_base'
+                               ,'$this->cm03_c_estrutura'
+                               ,'$this->cm03_c_pronto'
+                               ,'$this->cm03_c_quadra'
+                               ,$this->cm03_i_lote
+                               ,$this->cm03_f_metragem1
+                               ,$this->cm03_f_metragem2
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Jazigos ($this->cm03_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -369,16 +369,16 @@ class cl_jazigos {
        $resac = db_query("insert into db_acount values($acount,1789,10343,'','".AddSlashes(pg_result($resaco,0,'cm03_f_metragem2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cm03_i_codigo=null) { 
+   public function alterar ($cm03_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update jazigos set ";
      $virgula = "";
-     if(trim($this->cm03_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"])){ 
+     if(trim($this->cm03_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"])){
        $sql  .= $virgula." cm03_i_codigo = $this->cm03_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm03_i_codigo) == null ){ 
+       if(trim($this->cm03_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm03_i_codigo";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"])){ 
+     if(trim($this->cm03_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"])){
        $sql  .= $virgula." cm03_i_proprietario = $this->cm03_i_proprietario ";
        $virgula = ",";
-       if(trim($this->cm03_i_proprietario) == null ){ 
+       if(trim($this->cm03_i_proprietario) == null ){
          $this->erro_sql = " Campo Proprietário nao Informado.";
          $this->erro_campo = "cm03_i_proprietario";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_termo"])){ 
+     if(trim($this->cm03_c_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_termo"])){
        $sql  .= $virgula." cm03_c_termo = '$this->cm03_c_termo' ";
        $virgula = ",";
-       if(trim($this->cm03_c_termo) == null ){ 
+       if(trim($this->cm03_c_termo) == null ){
          $this->erro_sql = " Campo Termo nao Informado.";
          $this->erro_campo = "cm03_c_termo";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_d_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"] !="") ){ 
+     if(trim($this->cm03_d_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"] !="") ){
        $sql  .= $virgula." cm03_d_datatermo = '$this->cm03_d_datatermo' ";
        $virgula = ",";
-       if(trim($this->cm03_d_datatermo) == null ){ 
+       if(trim($this->cm03_d_datatermo) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "cm03_d_datatermo_dia";
          $this->erro_banco = "";
@@ -426,11 +426,11 @@ class cl_jazigos {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"])){
          $sql  .= $virgula." cm03_d_datatermo = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_datatermo) == null ){ 
+         if(trim($this->cm03_d_datatermo) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "cm03_d_datatermo_dia";
            $this->erro_banco = "";
@@ -441,10 +441,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_c_carta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_carta"])){ 
+     if(trim($this->cm03_c_carta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_carta"])){
        $sql  .= $virgula." cm03_c_carta = '$this->cm03_c_carta' ";
        $virgula = ",";
-       if(trim($this->cm03_c_carta) == null ){ 
+       if(trim($this->cm03_c_carta) == null ){
          $this->erro_sql = " Campo Carta nao Informado.";
          $this->erro_campo = "cm03_c_carta";
          $this->erro_banco = "";
@@ -454,10 +454,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_d_datacarta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"] !="") ){ 
+     if(trim($this->cm03_d_datacarta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"] !="") ){
        $sql  .= $virgula." cm03_d_datacarta = '$this->cm03_d_datacarta' ";
        $virgula = ",";
-       if(trim($this->cm03_d_datacarta) == null ){ 
+       if(trim($this->cm03_d_datacarta) == null ){
          $this->erro_sql = " Campo Data Carta nao Informado.";
          $this->erro_campo = "cm03_d_datacarta_dia";
          $this->erro_banco = "";
@@ -466,11 +466,11 @@ class cl_jazigos {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"])){
          $sql  .= $virgula." cm03_d_datacarta = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_datacarta) == null ){ 
+         if(trim($this->cm03_d_datacarta) == null ){
            $this->erro_sql = " Campo Data Carta nao Informado.";
            $this->erro_campo = "cm03_d_datacarta_dia";
            $this->erro_banco = "";
@@ -481,10 +481,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"] !="") ){ 
+     if(trim($this->cm03_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"] !="") ){
        $sql  .= $virgula." cm03_d_aquisicao = '$this->cm03_d_aquisicao' ";
        $virgula = ",";
-       if(trim($this->cm03_d_aquisicao) == null ){ 
+       if(trim($this->cm03_d_aquisicao) == null ){
          $this->erro_sql = " Campo Aquisição nao Informado.";
          $this->erro_campo = "cm03_d_aquisicao_dia";
          $this->erro_banco = "";
@@ -493,11 +493,11 @@ class cl_jazigos {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"])){
          $sql  .= $virgula." cm03_d_aquisicao = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_aquisicao) == null ){ 
+         if(trim($this->cm03_d_aquisicao) == null ){
            $this->erro_sql = " Campo Aquisição nao Informado.";
            $this->erro_campo = "cm03_d_aquisicao_dia";
            $this->erro_banco = "";
@@ -508,10 +508,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_c_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_base"])){ 
+     if(trim($this->cm03_c_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_base"])){
        $sql  .= $virgula." cm03_c_base = '$this->cm03_c_base' ";
        $virgula = ",";
-       if(trim($this->cm03_c_base) == null ){ 
+       if(trim($this->cm03_c_base) == null ){
          $this->erro_sql = " Campo Base nao Informado.";
          $this->erro_campo = "cm03_c_base";
          $this->erro_banco = "";
@@ -521,10 +521,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_estrutura"])){ 
+     if(trim($this->cm03_c_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_estrutura"])){
        $sql  .= $virgula." cm03_c_estrutura = '$this->cm03_c_estrutura' ";
        $virgula = ",";
-       if(trim($this->cm03_c_estrutura) == null ){ 
+       if(trim($this->cm03_c_estrutura) == null ){
          $this->erro_sql = " Campo Estrutura nao Informado.";
          $this->erro_campo = "cm03_c_estrutura";
          $this->erro_banco = "";
@@ -534,10 +534,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_pronto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_pronto"])){ 
+     if(trim($this->cm03_c_pronto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_pronto"])){
        $sql  .= $virgula." cm03_c_pronto = '$this->cm03_c_pronto' ";
        $virgula = ",";
-       if(trim($this->cm03_c_pronto) == null ){ 
+       if(trim($this->cm03_c_pronto) == null ){
          $this->erro_sql = " Campo Pronto nao Informado.";
          $this->erro_campo = "cm03_c_pronto";
          $this->erro_banco = "";
@@ -547,10 +547,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_quadra"])){ 
+     if(trim($this->cm03_c_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_quadra"])){
        $sql  .= $virgula." cm03_c_quadra = '$this->cm03_c_quadra' ";
        $virgula = ",";
-       if(trim($this->cm03_c_quadra) == null ){ 
+       if(trim($this->cm03_c_quadra) == null ){
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "cm03_c_quadra";
          $this->erro_banco = "";
@@ -560,10 +560,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_i_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_lote"])){ 
+     if(trim($this->cm03_i_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_lote"])){
        $sql  .= $virgula." cm03_i_lote = $this->cm03_i_lote ";
        $virgula = ",";
-       if(trim($this->cm03_i_lote) == null ){ 
+       if(trim($this->cm03_i_lote) == null ){
          $this->erro_sql = " Campo Lote nao Informado.";
          $this->erro_campo = "cm03_i_lote";
          $this->erro_banco = "";
@@ -573,10 +573,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_f_metragem1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem1"])){ 
+     if(trim($this->cm03_f_metragem1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem1"])){
        $sql  .= $virgula." cm03_f_metragem1 = $this->cm03_f_metragem1 ";
        $virgula = ",";
-       if(trim($this->cm03_f_metragem1) == null ){ 
+       if(trim($this->cm03_f_metragem1) == null ){
          $this->erro_sql = " Campo Metragem nao Informado.";
          $this->erro_campo = "cm03_f_metragem1";
          $this->erro_banco = "";
@@ -586,10 +586,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_f_metragem2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem2"])){ 
+     if(trim($this->cm03_f_metragem2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem2"])){
        $sql  .= $virgula." cm03_f_metragem2 = $this->cm03_f_metragem2 ";
        $virgula = ",";
-       if(trim($this->cm03_f_metragem2) == null ){ 
+       if(trim($this->cm03_f_metragem2) == null ){
          $this->erro_sql = " Campo Metragem 2 nao Informado.";
          $this->erro_campo = "cm03_f_metragem2";
          $this->erro_banco = "";
@@ -641,7 +641,7 @@ class cl_jazigos {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Jazigos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cm03_i_codigo;
@@ -669,14 +669,14 @@ class cl_jazigos {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cm03_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cm03_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm03_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -715,7 +715,7 @@ class cl_jazigos {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Jazigos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cm03_i_codigo;
@@ -743,11 +743,11 @@ class cl_jazigos {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -769,10 +769,10 @@ class cl_jazigos {
       }
      return $result;
    }
-   function sql_query ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -786,15 +786,15 @@ class cl_jazigos {
      $sql2 = "";
      if($dbwhere==""){
        if($cm03_i_codigo!=null ){
-         $sql2 .= " where jazigos.cm03_i_codigo = $cm03_i_codigo "; 
-       } 
+         $sql2 .= " where jazigos.cm03_i_codigo = $cm03_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -803,10 +803,10 @@ class cl_jazigos {
      }
      return $sql;
   }
-   function sql_query_file ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -819,15 +819,15 @@ class cl_jazigos {
      $sql2 = "";
      if($dbwhere==""){
        if($cm03_i_codigo!=null ){
-         $sql2 .= " where jazigos.cm03_i_codigo = $cm03_i_codigo "; 
-       } 
+         $sql2 .= " where jazigos.cm03_i_codigo = $cm03_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

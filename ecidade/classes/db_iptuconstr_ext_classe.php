@@ -27,14 +27,31 @@
 
 // Extensão da classe cl_iptuconstr
 require_once(modification('classes/db_iptuconstr_classe.php'));
-class cl_iptuconstr_extends extends cl_iptuconstr {
+class cl_iptuconstr_extends extends cl_iptuconstr
+{
+  function __construct()
+  {
+    parent::__construct();
+  }
 
-   // funcao para inclusao
-   function incluir ($j39_matric,$j39_idcons,$valida_data = true){
-      $this->atualizacampos();
-     if($this->j39_ano == null ){
-       $this->j39_ano = "0";
-     }
+  // funcao para inclusao
+  function incluir ($j39_matric,$j39_idcons,$valida_data = true)
+  {
+    $this->atualizacampos();
+
+    if ($this->validar_j39_ano and (empty($this->j39_ano) || strlen($this->j39_ano) != 4)) {
+      $this->erro_sql    = "Campo Ano da Construção não Informado.";
+      $this->erro_campo  = "j39_ano";
+      $this->erro_banco  = "";
+      $this->erro_msg    = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+      $this->erro_status = "0";
+  
+      return false;
+    } elseif ($this->j39_ano == null) {
+      $this->j39_ano = 0;
+    }
+
      if($this->j39_area == null || $this->j39_area == 0){
        $this->erro_sql = " Campo Área da Construção M2 nao Informado.";
        $this->erro_campo = "j39_area";
@@ -202,6 +219,7 @@ class cl_iptuconstr_extends extends cl_iptuconstr {
    // funcao para alteracao
    function alterar ($j39_matric=null,$j39_idcons=null,$valida_data = true) {
       $this->atualizacampos();
+
      $sql = " update iptuconstr set ";
      $virgula = "";
      if(trim($this->j39_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_matric"])){
@@ -230,13 +248,28 @@ class cl_iptuconstr_extends extends cl_iptuconstr {
          return false;
        }
      }
-     if(trim($this->j39_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
-        if(trim($this->j39_ano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
-           $this->j39_ano = "0" ;
-        }
+
+     if (trim($this->j39_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["j39_ano"])){
+      if (empty($this->j39_ano)) {
+        $this->j39_ano = $GLOBALS["HTTP_POST_VARS"]["j39_ano"];
+      }
+
+      if ($this->validar_j39_ano and (empty($this->j39_ano) || strlen($this->j39_ano) != 4)) {
+        $this->erro_sql    = "Campo Ano da Construção não Informado.";
+        $this->erro_campo  = "j39_ano";
+        $this->erro_banco  = "";
+        $this->erro_msg    = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+  
+        return false;
+      } elseif ($this->j39_ano == null) {
+        $this->j39_ano = 0;
+      }
        $sql  .= $virgula." j39_ano = $this->j39_ano ";
        $virgula = ",";
      }
+
      if(trim($this->j39_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j39_area"])){
        $sql  .= $virgula." j39_area = $this->j39_area ";
        $virgula = ",";

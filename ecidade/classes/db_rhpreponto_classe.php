@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhpreponto
 class cl_rhpreponto { 
@@ -36,13 +36,13 @@ class cl_rhpreponto {
                  rh149_competencia = varchar(7) = Competência 
                  ";
    //funcao construtor da classe 
-   function cl_rhpreponto() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpreponto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -51,7 +51,7 @@ class cl_rhpreponto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh149_sequencial = ($this->rh149_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["rh149_sequencial"]:$this->rh149_sequencial);
        $this->rh149_instit = ($this->rh149_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["rh149_instit"]:$this->rh149_instit);
@@ -66,7 +66,7 @@ class cl_rhpreponto {
      }
    }
    // funcao para inclusao
-   function incluir ($rh149_sequencial){ 
+   public function incluir ($rh149_sequencial){ 
       $this->atualizacampos();
      if($this->rh149_instit == null ){ 
        $this->erro_sql = " Campo Instituição não informado.";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $oRotulo->label('tf03_c_descr');
               <?=$Ltf18_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 	            db_input("tf18_i_codigo",10,$Itf18_i_codigo,true,"text",4,"","chave_tf18_i_codigo");
 		          ?>
             </td>
@@ -69,7 +69,7 @@ $oRotulo->label('tf03_c_descr');
               <?=$Ltf18_i_destino?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		          db_input("tf18_i_destino",10,$Itf18_i_destino,true,"text",4,"","chave_tf18_i_destino");
 		          db_input("tf03_c_descr",50,$Itf03_c_descr,true,"text",4,"","chave_tf03_c_descr");
 		          ?>
@@ -88,7 +88,7 @@ $oRotulo->label('tf03_c_descr');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos) == false) {
@@ -159,12 +159,12 @@ $oRotulo->label('tf03_c_descr');
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

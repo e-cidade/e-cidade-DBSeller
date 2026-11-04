@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ function js_filtra(){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?if(!isset($emite2)){?>
+<?php if(!isset($emite2)){?>
 <table align="center">
   <form name="form1" method="post" action="">
   <tr>
@@ -79,14 +79,14 @@ function js_filtra(){
             <strong>Ano / Mês :&nbsp;&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php
             if(!isset($ano) || (isset($ano) && (trim($ano) == "" || $ano == 0))){
               $ano = db_anofolha();
             }
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'onchange="js_anomes();"', "ano")
             ?>
             &nbsp;/&nbsp;
-            <?
+            <?php
             if(!isset($mes) || (isset($mes) && trim($mes) == "" || $mes == 0)){
               $mes = db_mesfolha();
             }
@@ -106,7 +106,7 @@ function js_filtra(){
               <option value = 'adiantamento'  <?=((isset($folha)&&$folha=="adiantamento")?"selected":"")?>>Adiantamento
           </td>
         </tr>
-        <?
+        <?php
         if(isset($folha) && $folha == "complementar"){
           $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($ano,$mes,null,null,"distinct r48_semest"));
           if($clgerfcom->numrows > 0){
@@ -130,44 +130,44 @@ function js_filtra(){
         <tr>
           <td colspan="2" align="center">
             <font color="red">Sem complementar para este período.</font>
-            <?
+            <?php
             $r48_semest = 0;
             db_input("r48_semest", 2,0, true, 'hidden', 3);
             ?>
           </td>
         </tr>
-        <?
+        <?php
           }
         }
         ?>
 	<tr>
 	  <td><strong>Filtro:</strong></td>
 	  <td>
-	  <?
+	  <?php
 	  $arr=array("N"=>"Nenhum","M"=>"Matrícula","L"=>"Lotação","T"=>"Locais de trabalho");
 	  db_select("filtro",$arr,true,2,"onchange='js_filtra();'"); 
 	  ?>
 	  </td>
 	</tr>
-	<?
+	<?php
 	if (isset($filtro)&&$filtro!=""&&$filtro!="N"){
 	?>
 	<tr>
 	  <td><strong>Filtrar por:</strong></td>
 	  <td>
-	  <?
+	  <?php
 	  $arr1=array("."=>"------------","I"=>"Intervalo","S"=>"Selecionados");
 	  db_select("filtrar",$arr1,true,2,"onchange='js_filtra();'"); 
 	  ?>
 	  </td>
 	</tr>
-	<?
+	<?php
 	}
 	?>
       </table>
     </td>
   </tr>
-  <?
+  <?php
   if(isset($filtrar)&&isset($filtro)&&$filtro!="N"){
     if($filtro=='M'){
       $func='func_rhpessoal.php';
@@ -195,20 +195,20 @@ function js_filtra(){
             <strong><?=@$info?> de</strong>
           </td>
           <td> 
-            <? db_input('cod_ini',8,'',true,'text',1," onchange='js_copiacampo();'","")  ?>
+            <?php db_input('cod_ini',8,'',true,'text',1," onchange='js_copiacampo();'","")  ?>
             <strong> à </strong> 
-            <? db_input('cod_fim',8,'',true,'text',1,"","")  ?>
+            <?php db_input('cod_fim',8,'',true,'text',1,"","")  ?>
           </td>
         </tr>
       </table>
     </td>
   </tr>
-  <?
+  <?php
     }else if ($filtrar=='S'){
   ?>
   <tr>
     <td colspan=2 >
-    <?
+    <?php
     $aux->cabecalho = "<strong>$info</strong>";
     $aux->codigo = "$cod"; //chave de retorno da func
     $aux->descr  = "$descr";   //chave de retorno
@@ -229,7 +229,7 @@ function js_filtra(){
     ?>
     </td>
   </tr>
-  <?
+  <?php
   }
   }
   ?>
@@ -238,7 +238,7 @@ function js_filtra(){
     <td><strong>Tipo de emissão:</strong>
     </td>
     <td>
-    <?
+    <?php
     $arr1=array("1"=>"Laser","2"=>"Matricial");
     db_select("tipoimpress",$arr1,true,2); 
     ?>
@@ -255,7 +255,7 @@ function js_filtra(){
 	      <b>Linha 1:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem1',105,0,true,'text',1,"")
               ?>
             </td>
@@ -265,7 +265,7 @@ function js_filtra(){
 	      <b>Linha 2:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem2',105,0,true,'text',1,"")
               ?>
             </td>
@@ -275,7 +275,7 @@ function js_filtra(){
 	      <b>Linha 3:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem3',105,0,true,'text',1,"")
               ?>
             </td>
@@ -285,7 +285,7 @@ function js_filtra(){
 	      <b>Linha 4:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem4',105,0,true,'text',1,"")
               ?>
             </td>
@@ -295,7 +295,7 @@ function js_filtra(){
 	      <b>Linha 5:</b>
             </td>
             <td> 
-              <?
+              <?php
               db_input('mensagem5',105,0,true,'text',1,"")
               ?>
             </td>
@@ -316,14 +316,14 @@ function js_filtra(){
   <form name="form1">
   <tr>
     <td>
-    <?
+    <?php
     db_criatermometro("termometro");
     ?>
     </td>
   </tr>
   </form>
 </table>
-<?
+<?php
 }
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
@@ -400,7 +400,7 @@ function js_controlarodape(mostra){
   }
 }
 </script>
-<?
+<?php
 if(isset($emite2)){
   $sql = "select * from db_config where codigo = ".db_getsession("DB_instit");
   $result = db_query($sql);

@@ -41,10 +41,12 @@ require_once(modification("dbforms/db_funcoes.php"));
     <meta http-equiv="Expires" CONTENT="0">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="ECIDADE_REQUEST_PATH" content="<?= ECIDADE_REQUEST_PATH ?>">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
+    <script src="public/js/app.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <link type="text/css" href="assets/bootstrap-table/css/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" href="assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -103,7 +105,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     <tbody>
                         <tr>
                             <td>
-                                <label for="e158_vlrsenar"><b>Senar: </b></label>
+                                <label for="e158_vlrsenar"><b>Senar 0,2%: </b></label>
                             </td>
                             <td>
                                 <input type="text" name="e158_vlrsenar" id="e158_vlrsenar" data-mask="money">
@@ -111,7 +113,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                         </tr>
                         <tr>
                             <td>
-                                <label for="e158_vlrrat"><b>Gilrat: </b></label>
+                                <label for="e158_vlrrat"><b>Gilrat 0,1%: </b></label>
                             </td>
                             <td>
                                 <input type="text" name="e158_vlrrat" id="e158_vlrrat" data-mask="money">
@@ -119,7 +121,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                         </tr>
                         <tr style="display: none;" class="pessoa_fisica">
                             <td>
-                                <label for="e158_vlrgilrat"><b>Valor CP: (contribuição previdenciária)
+                                <label for="e158_vlrgilrat"><b>Valor CP 1,2%: (contribuição previdenciária)
                                     </b></label>
                             </td>
                             <td>
@@ -199,9 +201,9 @@ require_once(modification("dbforms/db_funcoes.php"));
     $.noConflict();
 
     /**
-     * RPC (controller) das retencoes
+     * API (controller) das retencoes
      * */
-    const rpc = 'emp4_manutencaoretencoes.RPC.php';
+    const API = 'v4/api/integracoes/efd-reinf/retencao';
 
     /** Variavel de armazenamento dos dados da rentencao */
     let retencao = {};
@@ -288,6 +290,7 @@ require_once(modification("dbforms/db_funcoes.php"));
      */
     function js_setRetencaoFromSessionStorage() {
         let json = sessionStorage.getItem('retencao');
+        console.log(json);
         retencao = JSON.parse(json);
     }
 
@@ -331,49 +334,40 @@ require_once(modification("dbforms/db_funcoes.php"));
     /**
      * Envia formulario
      */
-    function js_sendForm() {
+    async function js_sendForm() {
         if (!js_validateForm()) {
             return false;
         }
 
         js_divCarregando("Aguarde, Salvando dados da retenção", "msgRetencao");
 
-        let params = js_mapForm();
-        params.evento = 'r2055';
+        try {
+            const action = `${API}/save-retencao`;
 
-        params.processos = (processos.length) ?  processos.map((i) => { i.json = ''; return i; }) : [];
-        params.processosToRemove = (processosToRemove.length) ? processosToRemove.map((i) => { i.json = ''; return i; }) : [];
+            let params = js_mapForm();
+            params.evento = 'r2055';
 
-        let body = JSON.stringify({
-            exec: 'saveRetencao',
-            fields: params
-        });
+            params.processos = (processos.length) ?  processos.map((i) => { i.json = ''; return i; }) : [];
+            params.processosToRemove = (processosToRemove.length) ? processosToRemove.map((i) => { i.json = ''; return i; }) : [];
 
-        let options = {
-            method: 'post',
-            parameters: 'json=' + body,
-            onComplete: js_retornoForm
+            const response = await axios.post(action, params);
+            const responseData = response.data;
+
+            if (responseData.error) {
+                alert(responseData.message);
+                return false;
+            }
+
+            parent.js_getRetencoes();
+            js_getProcessos();
+            alert('Os dados da retenção foram salvos com sucesso');
+
+        } catch (error) {
+            alert(`Erro ao salvar Retenção`);
+            console.error('An error occurred:', error.message);
+        } finally {
+            js_removeObj("msgRetencao");
         }
-
-        let request = new Ajax.Request(rpc, options);
-    }
-
-    /**
-     * Retorno da request do formulario
-     */
-    function js_retornoForm(ajax) {
-        js_removeObj("msgRetencao");
-
-        let response = JSON.parse(ajax.responseText);
-
-        if (response.lErro == true) {
-            alert(response.sMessage);
-            return;
-        }
-
-        parent.js_getRetencoes();
-        js_getProcessos();
-        alert('Os dados da retenção foram salvos com sucesso');
     }
 
     /** Habilitar campos pesso física */

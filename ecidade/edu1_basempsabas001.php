@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ for($x=0;$x<$clserie->numrows;$x++){
  <tr>
   <td align="center" valign="top" bgcolor="#CCCCCC">
    <fieldset style="width:95%"><legend><b>Disciplinas da Base Curricular <?=@$ed31_c_descr?></b></legend>
-   <?
+   <?php
    $clcriaabas->identifica    = $ident;
    $clcriaabas->sizecampo     = $tamcampo;
    $clcriaabas->src           = $pagina;

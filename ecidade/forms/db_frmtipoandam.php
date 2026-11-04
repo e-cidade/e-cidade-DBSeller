@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cltipoandam->rotulo->label();
        <?=@$Ly41_codtipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('y41_codtipo',10,$Iy41_codtipo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('y41_codtipo',10,$Iy41_codtipo,true,'text',3,"")
        <?=@$Ly41_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('y41_descr',50,$Iy41_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('y41_descr',50,$Iy41_descr,true,'text',$db_opcao,"")
        <?=@$Ly41_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('y41_obs',0,48,$Iy41_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_textarea('y41_obs',0,48,$Iy41_obs,true,'text',$db_opcao,"")
        <?=@$Ly41_permcalc?>
     </td>
     <td> 
-<?
+<?php
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('y41_permcalc',$x,true,$db_opcao,"");
 ?>
@@ -83,7 +83,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipoandam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

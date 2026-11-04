@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ $sInstitRPPS           = '';
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($HTTP_SERVER_VARS);
 $orcparamrel = new cl_orcparamrel;
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,
     nomeinstabrev,
     db21_tipoinstit,
@@ -140,8 +140,8 @@ if ($temcamara == true && $temprefa == false && $temadmind == false){
 //******************************************************************
 $dataini = $anousu.'-01-01';
 $datafin = $anousu.'-12-31';
-$dt1 = split('-',$dataini);
-$dt2 = split('-',$datafin);
+$dt1 =explode('-',$dataini);
+$dt2 =explode('-',$datafin);
 $tipo_emissao='periodo';
 if ($tipo_emissao=='periodo'){
     //$textodt = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";

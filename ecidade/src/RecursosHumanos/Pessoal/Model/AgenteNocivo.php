@@ -81,6 +81,11 @@ class AgenteNocivo
      */
     private $equipamento;
 
+    /**
+     * @var string
+     */
+    private $processo;
+
 
     public function __construct($codigo = null)
     {
@@ -106,7 +111,6 @@ class AgenteNocivo
             }
 
             $agente = \db_utils::fieldsMemory($rs, 0);
-
             $this->setCodigo($agente->rh256_sequencial);
             $this->setCodigoLocalTrabalho($agente->rh256_rhlocaltrab);
             $this->setCodigoInstituicao($agente->rh256_instituicao);
@@ -116,6 +120,7 @@ class AgenteNocivo
             $this->setToleranciaLimite($agente->rh256_tolerancialimite);
             $this->setMedida($agente->rh256_medida);
             $this->setTecnicaMedicao($agente->rh256_tecnicamedicao);
+            $this->setProcesso($agente->rh256_processo);
 
             $this->setEquipamento(EquipamentoProtecao::getByAgenteNocivo($this->getCodigo()));
         }
@@ -324,5 +329,21 @@ class AgenteNocivo
     public function setEquipamento($equipamento)
     {
         $this->equipamento = $equipamento;
+    }
+
+    /**
+     * @param String $processo
+     */
+    public function setProcesso($processo)
+    {
+        $this->processo = $processo;
+    }
+
+    /**
+     * @return String
+     */
+    public function getProcesso()
+    {
+        return $this->processo;
     }
 }

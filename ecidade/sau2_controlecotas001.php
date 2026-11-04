@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,7 +60,7 @@ $oRotulo->label('s163_i_anocomp');
                 <b>Mês:</b>
               </td>
               <td>
-                <?
+                <?php
                 $aX = array('1' => 'JANEIRO', '2' => 'FEVEREIRO', '3' => 'MARÇO', '4' => 'ABRIL',
                             '5' => 'MAIO', '6' => 'JUNHO', '7' => 'JULHO', '8' => 'AGOSTO',
                             '9' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO'
@@ -72,7 +72,7 @@ $oRotulo->label('s163_i_anocomp');
                 <b>Ano:</b>
               </td>
               <td>
-                <?
+                <?php
                 $iAno = date('Y', db_getsession('DB_datausu'));
                 db_input('iAno', 4, $Is163_i_anocomp, true, 'text', 1, '', '', '', '', 4);
                 ?>
@@ -90,7 +90,7 @@ $oRotulo->label('s163_i_anocomp');
 </table>
 </form>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

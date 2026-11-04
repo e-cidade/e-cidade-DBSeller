@@ -22,6 +22,7 @@ use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\EFDProcessos;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\EFDServicosTomadosFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\EmpregadorFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\EstabelecimentoFormatter;
+use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\ExameToxicologicoMotoristaProfissionalEmpregadoFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\ExclusaoEventosFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\ExposicaoRiscoFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\FuncaoFormatter;
@@ -150,6 +151,9 @@ class FormatterFactory
                 break;
             case Tipo::S2220:
                 $formatter = new MonitoramentoSaudeFormatter();
+                break;
+            case Tipo::S2221:
+                $formatter = new ExameToxicologicoMotoristaProfissionalEmpregadoFormatter();
                 break;
             case Tipo::S2260:
                 $formatter = new TrabalhoIntermitenteFormatter();

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clorcimpactoger->rotulo->label();
        <?=@$Lo62_codimpger?>
     </td>
     <td> 
-<?
+<?php
 db_input('o62_codimpger',5,$Io62_codimpger,true,'text',3);
 db_input('tipo',5,'',true,'hidden',3);
 ?>
@@ -47,7 +47,7 @@ db_input('tipo',5,'',true,'hidden',3);
        <?=@$Lo62_ativo?>
     </td>
     <td> 
-<?
+<?php
 db_input('o62_ativo',12,$Io62_ativo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('o62_ativo',12,$Io62_ativo,true,'text',$db_opcao,"")
        <?=@$Lo62_passivo?>
     </td>
     <td> 
-<?
+<?php
 db_input('o62_passivo',12,$Io62_passivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('o62_passivo',12,$Io62_passivo,true,'text',$db_opcao,"")
        <?=@$Lo62_data?>
     </td>
     <td> 
-<?
+<?php
 $o62_data_dia =  date("d",db_getsession("DB_datausu"));
 $o62_data_mes =  date("m",db_getsession("DB_datausu"));
 $o62_data_ano =  date("Y",db_getsession("DB_datausu"));
@@ -80,7 +80,7 @@ db_inputdata('o62_data',@$o62_data_dia,@$o62_data_mes,@$o62_data_ano,true,'text'
        <?=@$Lo62_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o62_obs',5,70,$Io62_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -96,7 +96,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcimpactoger.hide();
-  <?
+  <?php
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipo=$tipo&chavepesquisa='+chave";
   ?>
 }

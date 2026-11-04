@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -57,18 +57,18 @@ class cl_ativid {
   var $q03_tributacao_municipio = 'f';
   // cria propriedade com as variaveis do arquivo
   var $campos = "
-                 q03_ativ = int4 = Codigo da atividade 
-                 q03_descr = varchar(200) = Descricao 
-                 q03_atmemo = text = observacoes 
-                 q03_limite = date = Data Limite 
-                 q03_horaini = char(5) = Hora Inicial 
-                 q03_horafim = char(5) = Hora Final 
+                 q03_ativ = int4 = Codigo da atividade
+                 q03_descr = varchar(200) = Descricao
+                 q03_atmemo = text = observacoes
+                 q03_limite = date = Data Limite
+                 q03_horaini = char(5) = Hora Inicial
+                 q03_horafim = char(5) = Hora Final
                  q03_deducao = bool = Deduz Valor Nota
                  q03_tributacao_municipio = bool = Retenção p/ Prestação Fora do Município
                  ";
 
   //funcao construtor da classe
-  function cl_ativid() {
+  public function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo         = new rotulo("ativid");
@@ -76,7 +76,7 @@ class cl_ativid {
   }
 
   //funcao erro
-  function erro($mostra, $retorna) {
+  public function erro($mostra, $retorna) {
 
     if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
       echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -87,7 +87,7 @@ class cl_ativid {
   }
 
   // funcao para atualizar campos
-  function atualizacampos($exclusao = false) {
+  public function atualizacampos($exclusao = false) {
 
     if ($exclusao == false) {
       $this->q03_ativ   = ($this->q03_ativ == "" ? @$GLOBALS["HTTP_POST_VARS"]["q03_ativ"] : $this->q03_ativ);
@@ -111,7 +111,7 @@ class cl_ativid {
   }
 
   // funcao para inclusao
-  function incluir($q03_ativ) {
+  public function incluir($q03_ativ) {
 
     $this->atualizacampos();
     if ($this->q03_descr == null) {
@@ -143,22 +143,22 @@ class cl_ativid {
       return false;
     }
     $sql    = "insert into ativid(
-                                       q03_ativ 
-                                      ,q03_descr 
-                                      ,q03_atmemo 
-                                      ,q03_limite 
-                                      ,q03_horaini 
-                                      ,q03_horafim 
+                                       q03_ativ
+                                      ,q03_descr
+                                      ,q03_atmemo
+                                      ,q03_limite
+                                      ,q03_horaini
+                                      ,q03_horafim
                                       ,q03_deducao
                                       ,q03_tributacao_municipio
                        )
                 values (
-                                $this->q03_ativ 
-                               ,'$this->q03_descr' 
-                               ,'$this->q03_atmemo' 
+                                $this->q03_ativ
+                               ,'$this->q03_descr'
+                               ,'$this->q03_atmemo'
                                ," . ($this->q03_limite == "null" || $this->q03_limite == "" ? "null" : "'" . $this->q03_limite . "'") . "
-                               ,'$this->q03_horaini' 
-                               ,'$this->q03_horafim' 
+                               ,'$this->q03_horaini'
+                               ,'$this->q03_horafim'
                                ,'$this->q03_deducao'
                                ,'$this->q03_tributacao_municipio'
                       )";
@@ -225,7 +225,7 @@ class cl_ativid {
   }
 
   // funcao para alteracao
-  function alterar($q03_ativ = null) {
+  public function alterar($q03_ativ = null) {
 
     $this->atualizacampos();
     $sql     = " update ativid set ";
@@ -390,7 +390,7 @@ class cl_ativid {
   }
 
   // funcao para exclusao
-  function excluir($q03_ativ = null, $dbwhere = null) {
+  public function excluir($q03_ativ = null, $dbwhere = null) {
 
     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -491,7 +491,7 @@ class cl_ativid {
   }
 
   // funcao do recordset
-  function sql_record($sql) {
+  public function sql_record($sql) {
 
     $result = db_query($sql);
     if ($result == false) {
@@ -521,11 +521,11 @@ class cl_ativid {
   }
 
   // funcao do sql
-  function sql_query($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -546,7 +546,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -558,11 +558,11 @@ class cl_ativid {
   }
 
   // funcao do sql
-  function sql_query_file($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_file($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -583,7 +583,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -595,11 +595,11 @@ class cl_ativid {
   }
 
   // funcao do sql modificado para acrecentar campos
-  function sql_query_dados($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_dados($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -627,7 +627,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -638,11 +638,11 @@ class cl_ativid {
     return $sql;
   }
 
-  function sql_query_cbo($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_cbo($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -665,7 +665,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -676,11 +676,11 @@ class cl_ativid {
     return $sql;
   }
 
-  function sql_query_clas($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_clas($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -703,7 +703,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -714,11 +714,11 @@ class cl_ativid {
     return $sql;
   }
 
-  function sql_query_cnae($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_cnae($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -742,7 +742,7 @@ class cl_ativid {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -763,13 +763,13 @@ class cl_ativid {
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_cboSimulacao($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_cboSimulacao($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sSql = "select ";
 
     if ($campos != "*") {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -799,7 +799,7 @@ class cl_ativid {
     if ($ordem != null) {
 
       $sSql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -815,7 +815,7 @@ class cl_ativid {
   /**
    * Foi preciso alterar o modo como o método alterava a data e horaini e horafim
    */
-  function alterar_alterado($q03_ativ = null) {
+  public function alterar_alterado($q03_ativ = null) {
 
     $this->atualizacampos();
     $sql     = ' update ativid set ';
@@ -1003,13 +1003,13 @@ class cl_ativid {
    * @param string $ordem
    * @param string $dbwhere
    */
-  function sql_query_cnaeSimulacao($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_cnaeSimulacao($q03_ativ = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
     $sSql = "select ";
 
     if ($campos != "*") {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = explode("#", $campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -1040,7 +1040,7 @@ class cl_ativid {
     if ($ordem != null) {
 
       $sSql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = explode("#", $ordem);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

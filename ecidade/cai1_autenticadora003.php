@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,10 +100,10 @@ if(isset($exclusao) && trim($exclusao) == "S") {
 	    <tr><td height="30">&nbsp;</td></tr>
 	    <tr>
 		  <td><?=$Lk11_id?> 
-		  <?
+		  <?php
 		    db_input("k11_id",10,"","text",$db_opcao)
 		  ?>
-		    <?
+		    <?php
 		      db_input("k11_local",40,"","text",$db_opcao);
 		    ?>
 		  </td>
@@ -111,7 +111,7 @@ if(isset($exclusao) && trim($exclusao) == "S") {
 	    <tr>
 		  <td>
 		    <?=$Lk11_ipterm?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		    <?
+		    <?php
 		      db_input("k11_ipterm",20,"","text",$db_opcao);
 		    ?>
 		  </td>
@@ -125,11 +125,11 @@ if(isset($exclusao) && trim($exclusao) == "S") {
 	</form>
 	</center>
 	<script>
-<?	
+<?php 
 	  if ($db_opcao == 33){
 ?>
                js_pesquisa();
-<?
+<?php
 	  }
 ?>	    
           function js_pesquisa(){
@@ -138,7 +138,7 @@ if(isset($exclusao) && trim($exclusao) == "S") {
 
           function js_preenchepesquisa(chave){
              db_iframe_cfautent.hide();
-          <?
+          <?php
 	     if ($db_opcao != 3){
                   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
              }
@@ -170,7 +170,7 @@ if(isset($exclusao) && trim($exclusao) == "S") {
 	</td>
   </tr>
 </table>
-<? 	
+<?php 	
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

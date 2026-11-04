@@ -61,13 +61,13 @@ class cl_pcorcamfornelic {
                  pc31_tipocondicao = int4 = Tipo de Condição
                  ";
    //funcao construtor da classe
-   function cl_pcorcamfornelic() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamfornelic");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_pcorcamfornelic {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc31_orcamforne = ($this->pc31_orcamforne == ""?@$GLOBALS["HTTP_POST_VARS"]["pc31_orcamforne"]:$this->pc31_orcamforne);
        $this->pc31_nomeretira = ($this->pc31_nomeretira == ""?@$GLOBALS["HTTP_POST_VARS"]["pc31_nomeretira"]:$this->pc31_nomeretira);
@@ -96,7 +96,7 @@ class cl_pcorcamfornelic {
      }
    }
    // funcao para Inclusão
-   function incluir ($pc31_orcamforne){
+   public function incluir ($pc31_orcamforne){
       $this->atualizacampos();
      if($this->pc31_dtretira == null ){
        $this->erro_sql = " Campo Data da Retirada do Edital não informado.";

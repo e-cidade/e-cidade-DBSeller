@@ -1,82 +1,82 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: dividaativa
 //CLASSE DA ENTIDADE termodiver
-class cl_termodiver { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $dv10_parcel = 0; 
-   var $dv10_coddiver = 0; 
-   var $dv10_valor = 0; 
-   var $dv10_juros = 0; 
-   var $dv10_multa = 0; 
-   var $dv10_desconto = 0; 
-   var $dv10_total = 0; 
-   var $dv10_numpreant = 0; 
-   var $dv10_perc = 0; 
-   var $dv10_vlrcor = 0; 
-   var $dv10_vlrdescjur = 0; 
-   var $dv10_vlrdescmul = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_termodiver {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $dv10_parcel = 0;
+   var $dv10_coddiver = 0;
+   var $dv10_valor = 0;
+   var $dv10_juros = 0;
+   var $dv10_multa = 0;
+   var $dv10_desconto = 0;
+   var $dv10_total = 0;
+   var $dv10_numpreant = 0;
+   var $dv10_perc = 0;
+   var $dv10_vlrcor = 0;
+   var $dv10_vlrdescjur = 0;
+   var $dv10_vlrdescmul = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 dv10_parcel = int4 = Código do Parcelamento 
-                 dv10_coddiver = int4 = Código do diversos 
-                 dv10_valor = float8 = Valor 
-                 dv10_juros = float8 = Juros 
-                 dv10_multa = float8 = Multa 
-                 dv10_desconto = float8 = Desconto 
-                 dv10_total = float8 = Total 
-                 dv10_numpreant = int4 = Numpre anterior 
-                 dv10_perc = float8 = Percentual 
-                 dv10_vlrcor = float8 = Valor corrigido 
-                 dv10_vlrdescjur = float8 = Valor Desconto Juros 
-                 dv10_vlrdescmul = float8 = Valor Desconto Multa 
+                 dv10_parcel = int4 = Código do Parcelamento
+                 dv10_coddiver = int4 = Código do diversos
+                 dv10_valor = float8 = Valor
+                 dv10_juros = float8 = Juros
+                 dv10_multa = float8 = Multa
+                 dv10_desconto = float8 = Desconto
+                 dv10_total = float8 = Total
+                 dv10_numpreant = int4 = Numpre anterior
+                 dv10_perc = float8 = Percentual
+                 dv10_vlrcor = float8 = Valor corrigido
+                 dv10_vlrdescjur = float8 = Valor Desconto Juros
+                 dv10_vlrdescmul = float8 = Valor Desconto Multa
                  ";
-   //funcao construtor da classe 
-   function cl_termodiver() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("termodiver"); 
+     $this->rotulo = new rotulo("termodiver");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_termodiver {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->dv10_parcel = ($this->dv10_parcel == ""?@$GLOBALS["HTTP_POST_VARS"]["dv10_parcel"]:$this->dv10_parcel);
        $this->dv10_coddiver = ($this->dv10_coddiver == ""?@$GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"]:$this->dv10_coddiver);
@@ -105,9 +105,9 @@ class cl_termodiver {
      }
    }
    // funcao para inclusao
-   function incluir ($dv10_parcel,$dv10_coddiver){ 
+   public function incluir ($dv10_parcel,$dv10_coddiver){
       $this->atualizacampos();
-     if($this->dv10_valor == null ){ 
+     if($this->dv10_valor == null ){
        $this->erro_sql = " Campo Valor não informado.";
        $this->erro_campo = "dv10_valor";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_juros == null ){ 
+     if($this->dv10_juros == null ){
        $this->erro_sql = " Campo Juros não informado.";
        $this->erro_campo = "dv10_juros";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_multa == null ){ 
+     if($this->dv10_multa == null ){
        $this->erro_sql = " Campo Multa não informado.";
        $this->erro_campo = "dv10_multa";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_desconto == null ){ 
+     if($this->dv10_desconto == null ){
        $this->erro_sql = " Campo Desconto não informado.";
        $this->erro_campo = "dv10_desconto";
        $this->erro_banco = "";
@@ -143,7 +143,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_total == null ){ 
+     if($this->dv10_total == null ){
        $this->erro_sql = " Campo Total não informado.";
        $this->erro_campo = "dv10_total";
        $this->erro_banco = "";
@@ -152,7 +152,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_numpreant == null ){ 
+     if($this->dv10_numpreant == null ){
        $this->erro_sql = " Campo Numpre anterior não informado.";
        $this->erro_campo = "dv10_numpreant";
        $this->erro_banco = "";
@@ -161,7 +161,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_perc == null ){ 
+     if($this->dv10_perc == null ){
        $this->erro_sql = " Campo Percentual não informado.";
        $this->erro_campo = "dv10_perc";
        $this->erro_banco = "";
@@ -170,7 +170,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_vlrcor == null ){ 
+     if($this->dv10_vlrcor == null ){
        $this->erro_sql = " Campo Valor corrigido não informado.";
        $this->erro_campo = "dv10_vlrcor";
        $this->erro_banco = "";
@@ -179,7 +179,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_vlrdescjur == null ){ 
+     if($this->dv10_vlrdescjur == null ){
        $this->erro_sql = " Campo Valor Desconto Juros não informado.";
        $this->erro_campo = "dv10_vlrdescjur";
        $this->erro_banco = "";
@@ -188,7 +188,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv10_vlrdescmul == null ){ 
+     if($this->dv10_vlrdescmul == null ){
        $this->erro_sql = " Campo Valor Desconto Multa não informado.";
        $this->erro_campo = "dv10_vlrdescmul";
        $this->erro_banco = "";
@@ -197,9 +197,9 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-       $this->dv10_parcel = $dv10_parcel; 
-       $this->dv10_coddiver = $dv10_coddiver; 
-     if(($this->dv10_parcel == null) || ($this->dv10_parcel == "") ){ 
+       $this->dv10_parcel = $dv10_parcel;
+       $this->dv10_coddiver = $dv10_coddiver;
+     if(($this->dv10_parcel == null) || ($this->dv10_parcel == "") ){
        $this->erro_sql = " Campo dv10_parcel nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -207,7 +207,7 @@ class cl_termodiver {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->dv10_coddiver == null) || ($this->dv10_coddiver == "") ){ 
+     if(($this->dv10_coddiver == null) || ($this->dv10_coddiver == "") ){
        $this->erro_sql = " Campo dv10_coddiver nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -216,35 +216,35 @@ class cl_termodiver {
        return false;
      }
      $sql = "insert into termodiver(
-                                       dv10_parcel 
-                                      ,dv10_coddiver 
-                                      ,dv10_valor 
-                                      ,dv10_juros 
-                                      ,dv10_multa 
-                                      ,dv10_desconto 
-                                      ,dv10_total 
-                                      ,dv10_numpreant 
-                                      ,dv10_perc 
-                                      ,dv10_vlrcor 
-                                      ,dv10_vlrdescjur 
-                                      ,dv10_vlrdescmul 
+                                       dv10_parcel
+                                      ,dv10_coddiver
+                                      ,dv10_valor
+                                      ,dv10_juros
+                                      ,dv10_multa
+                                      ,dv10_desconto
+                                      ,dv10_total
+                                      ,dv10_numpreant
+                                      ,dv10_perc
+                                      ,dv10_vlrcor
+                                      ,dv10_vlrdescjur
+                                      ,dv10_vlrdescmul
                        )
                 values (
-                                $this->dv10_parcel 
-                               ,$this->dv10_coddiver 
-                               ,$this->dv10_valor 
-                               ,$this->dv10_juros 
-                               ,$this->dv10_multa 
-                               ,$this->dv10_desconto 
-                               ,$this->dv10_total 
-                               ,$this->dv10_numpreant 
-                               ,$this->dv10_perc 
-                               ,$this->dv10_vlrcor 
-                               ,$this->dv10_vlrdescjur 
-                               ,$this->dv10_vlrdescmul 
+                                $this->dv10_parcel
+                               ,$this->dv10_coddiver
+                               ,$this->dv10_valor
+                               ,$this->dv10_juros
+                               ,$this->dv10_multa
+                               ,$this->dv10_desconto
+                               ,$this->dv10_total
+                               ,$this->dv10_numpreant
+                               ,$this->dv10_perc
+                               ,$this->dv10_vlrcor
+                               ,$this->dv10_vlrdescjur
+                               ,$this->dv10_vlrdescmul
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Diversos do parcelamento ($this->dv10_parcel."-".$this->dv10_coddiver) nao Incluído. Inclusao Abortada.";
@@ -294,16 +294,16 @@ class cl_termodiver {
      }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($dv10_parcel=null,$dv10_coddiver=null) { 
+   public function alterar ($dv10_parcel=null,$dv10_coddiver=null) {
       $this->atualizacampos();
      $sql = " update termodiver set ";
      $virgula = "";
-     if(trim($this->dv10_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_parcel"])){ 
+     if(trim($this->dv10_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_parcel"])){
        $sql  .= $virgula." dv10_parcel = $this->dv10_parcel ";
        $virgula = ",";
-       if(trim($this->dv10_parcel) == null ){ 
+       if(trim($this->dv10_parcel) == null ){
          $this->erro_sql = " Campo Código do Parcelamento não informado.";
          $this->erro_campo = "dv10_parcel";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_coddiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"])){ 
+     if(trim($this->dv10_coddiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_coddiver"])){
        $sql  .= $virgula." dv10_coddiver = $this->dv10_coddiver ";
        $virgula = ",";
-       if(trim($this->dv10_coddiver) == null ){ 
+       if(trim($this->dv10_coddiver) == null ){
          $this->erro_sql = " Campo Código do diversos não informado.";
          $this->erro_campo = "dv10_coddiver";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_valor"])){ 
+     if(trim($this->dv10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_valor"])){
        $sql  .= $virgula." dv10_valor = $this->dv10_valor ";
        $virgula = ",";
-       if(trim($this->dv10_valor) == null ){ 
+       if(trim($this->dv10_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "dv10_valor";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_juros"])){ 
+     if(trim($this->dv10_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_juros"])){
        $sql  .= $virgula." dv10_juros = $this->dv10_juros ";
        $virgula = ",";
-       if(trim($this->dv10_juros) == null ){ 
+       if(trim($this->dv10_juros) == null ){
          $this->erro_sql = " Campo Juros não informado.";
          $this->erro_campo = "dv10_juros";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_multa"])){ 
+     if(trim($this->dv10_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_multa"])){
        $sql  .= $virgula." dv10_multa = $this->dv10_multa ";
        $virgula = ",";
-       if(trim($this->dv10_multa) == null ){ 
+       if(trim($this->dv10_multa) == null ){
          $this->erro_sql = " Campo Multa não informado.";
          $this->erro_campo = "dv10_multa";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_desconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_desconto"])){ 
+     if(trim($this->dv10_desconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_desconto"])){
        $sql  .= $virgula." dv10_desconto = $this->dv10_desconto ";
        $virgula = ",";
-       if(trim($this->dv10_desconto) == null ){ 
+       if(trim($this->dv10_desconto) == null ){
          $this->erro_sql = " Campo Desconto não informado.";
          $this->erro_campo = "dv10_desconto";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_total"])){ 
+     if(trim($this->dv10_total)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_total"])){
        $sql  .= $virgula." dv10_total = $this->dv10_total ";
        $virgula = ",";
-       if(trim($this->dv10_total) == null ){ 
+       if(trim($this->dv10_total) == null ){
          $this->erro_sql = " Campo Total não informado.";
          $this->erro_campo = "dv10_total";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_numpreant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_numpreant"])){ 
+     if(trim($this->dv10_numpreant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_numpreant"])){
        $sql  .= $virgula." dv10_numpreant = $this->dv10_numpreant ";
        $virgula = ",";
-       if(trim($this->dv10_numpreant) == null ){ 
+       if(trim($this->dv10_numpreant) == null ){
          $this->erro_sql = " Campo Numpre anterior não informado.";
          $this->erro_campo = "dv10_numpreant";
          $this->erro_banco = "";
@@ -404,10 +404,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_perc"])){ 
+     if(trim($this->dv10_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_perc"])){
        $sql  .= $virgula." dv10_perc = $this->dv10_perc ";
        $virgula = ",";
-       if(trim($this->dv10_perc) == null ){ 
+       if(trim($this->dv10_perc) == null ){
          $this->erro_sql = " Campo Percentual não informado.";
          $this->erro_campo = "dv10_perc";
          $this->erro_banco = "";
@@ -417,10 +417,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrcor"])){ 
+     if(trim($this->dv10_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrcor"])){
        $sql  .= $virgula." dv10_vlrcor = $this->dv10_vlrcor ";
        $virgula = ",";
-       if(trim($this->dv10_vlrcor) == null ){ 
+       if(trim($this->dv10_vlrcor) == null ){
          $this->erro_sql = " Campo Valor corrigido não informado.";
          $this->erro_campo = "dv10_vlrcor";
          $this->erro_banco = "";
@@ -430,10 +430,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrdescjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescjur"])){ 
+     if(trim($this->dv10_vlrdescjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescjur"])){
        $sql  .= $virgula." dv10_vlrdescjur = $this->dv10_vlrdescjur ";
        $virgula = ",";
-       if(trim($this->dv10_vlrdescjur) == null ){ 
+       if(trim($this->dv10_vlrdescjur) == null ){
          $this->erro_sql = " Campo Valor Desconto Juros não informado.";
          $this->erro_campo = "dv10_vlrdescjur";
          $this->erro_banco = "";
@@ -443,10 +443,10 @@ class cl_termodiver {
          return false;
        }
      }
-     if(trim($this->dv10_vlrdescmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescmul"])){ 
+     if(trim($this->dv10_vlrdescmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv10_vlrdescmul"])){
        $sql  .= $virgula." dv10_vlrdescmul = $this->dv10_vlrdescmul ";
        $virgula = ",";
-       if(trim($this->dv10_vlrdescmul) == null ){ 
+       if(trim($this->dv10_vlrdescmul) == null ){
          $this->erro_sql = " Campo Valor Desconto Multa não informado.";
          $this->erro_campo = "dv10_vlrdescmul";
          $this->erro_banco = "";
@@ -505,7 +505,7 @@ class cl_termodiver {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Diversos do parcelamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->dv10_parcel."-".$this->dv10_coddiver;
@@ -533,11 +533,11 @@ class cl_termodiver {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($dv10_parcel=null,$dv10_coddiver=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($dv10_parcel=null,$dv10_coddiver=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -546,7 +546,7 @@ class cl_termodiver {
      if($dbwhere==null || $dbwhere==""){
 
        $resaco = $this->sql_record($this->sql_query_file($dv10_parcel,$dv10_coddiver));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -593,7 +593,7 @@ class cl_termodiver {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Diversos do parcelamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$dv10_parcel."-".$dv10_coddiver;
@@ -621,11 +621,11 @@ class cl_termodiver {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -647,11 +647,11 @@ class cl_termodiver {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,23 +673,23 @@ class cl_termodiver {
      $sql2 = "";
      if($dbwhere==""){
        if($dv10_parcel!=null ){
-         $sql2 .= " where termodiver.dv10_parcel = $dv10_parcel "; 
-       } 
+         $sql2 .= " where termodiver.dv10_parcel = $dv10_parcel ";
+       }
        if($dv10_coddiver!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " termodiver.dv10_coddiver = $dv10_coddiver "; 
-       } 
+         }
+         $sql2 .= " termodiver.dv10_coddiver = $dv10_coddiver ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -698,11 +698,11 @@ class cl_termodiver {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $dv10_parcel=null,$dv10_coddiver=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -715,23 +715,23 @@ class cl_termodiver {
      $sql2 = "";
      if($dbwhere==""){
        if($dv10_parcel!=null ){
-         $sql2 .= " where termodiver.dv10_parcel = $dv10_parcel "; 
-       } 
+         $sql2 .= " where termodiver.dv10_parcel = $dv10_parcel ";
+       }
        if($dv10_coddiver!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " termodiver.dv10_coddiver = $dv10_coddiver "; 
-       } 
+         }
+         $sql2 .= " termodiver.dv10_coddiver = $dv10_coddiver ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

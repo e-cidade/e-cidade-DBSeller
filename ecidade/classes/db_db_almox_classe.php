@@ -50,13 +50,13 @@ class cl_db_almox {
                  m91_depto = int4 = Depart.
                  ";
    //funcao construtor da classe
-   function cl_db_almox() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_almox");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_db_almox {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m91_codigo = ($this->m91_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["m91_codigo"]:$this->m91_codigo);
        $this->m91_depto = ($this->m91_depto == ""?@$GLOBALS["HTTP_POST_VARS"]["m91_depto"]:$this->m91_depto);
@@ -74,7 +74,7 @@ class cl_db_almox {
      }
    }
    // funcao para inclusao
-   function incluir ($m91_codigo){
+   public function incluir ($m91_codigo){
       $this->atualizacampos();
      if($this->m91_depto == null ){
        $this->erro_sql = " Campo Depart. nao Informado.";
@@ -161,7 +161,7 @@ class cl_db_almox {
      return true;
    }
    // funcao para alteracao
-   function alterar ($m91_codigo=null) {
+   public function alterar ($m91_codigo=null) {
       $this->atualizacampos();
      $sql = " update db_almox set ";
      $virgula = "";
@@ -241,7 +241,7 @@ class cl_db_almox {
      }
    }
    // funcao para exclusao
-   function excluir ($m91_codigo=null,$dbwhere=null) {
+   public function excluir ($m91_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($m91_codigo));
      }else{
@@ -303,7 +303,7 @@ class cl_db_almox {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -326,7 +326,7 @@ class cl_db_almox {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $m91_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $m91_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -362,7 +362,7 @@ class cl_db_almox {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $m91_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $m91_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -396,4 +396,3 @@ class cl_db_almox {
      return $sql;
   }
 }
-?>

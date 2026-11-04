@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@
           <?=@$Lx01_matric?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_matric', 10, $Ix01_matric, true, 'text',
                      ($db_opcao == 2 || $db_opcao == 22) ? 3 : $db_opcao, "");
           ?>
@@ -62,12 +62,12 @@
         </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_numcgm?>">
-          <?
+          <?php
             db_ancora(@$Lx01_numcgm, "js_pesquisax01_numcgm(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_numcgm', 10, $Ix01_numcgm, true, 'text',
                      $db_opcao, " onchange='js_pesquisax01_numcgm(false);'");
                      
@@ -77,12 +77,12 @@
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_promit?>">
-          <?
+          <?php
             db_ancora(@$Lx01_promit, "js_pesquisax01_promit(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_promit', 10, $Ix01_promit, true, 'text',
                      $db_opcao, " onchange='js_pesquisax01_promit(false);'");
                      
@@ -92,12 +92,12 @@
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_codrua?>">
-          <?
+          <?php
             db_ancora(@$Lx01_codrua, "js_pesquisax01_codrua(true);", $db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('x01_codrua', 10, $Ix01_codrua, true, 'text',
                      $db_opcao, " onchange='js_pesquisax01_codrua(false);js_pesquisa_rota();'  ");
                      
@@ -107,12 +107,12 @@
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_codbairro?>" >
-          <?
+          <?php
             db_ancora(@$Lx01_codbairro, "js_pesquisax01_codbairro(true);", $db_opcao);
           ?>
         </td>
         <td> 
-		      <?
+		      <?php
 			      db_input('x01_codbairro', 10, $Ix01_codbairro, true, 'text',
 			               $db_opcao, " onchange='js_pesquisax01_codbairro(false);'");
 			               
@@ -125,7 +125,7 @@
           <?=@$Lx01_numero?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_numero', 10, $Ix01_numero, true, 'text', $db_opcao, "onchange='js_pesquisa_rota()'");
           ?>
         </td>
@@ -135,7 +135,7 @@
           <?=@$Lx01_rota ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_rota', 10, $Ix01_rota, true, 'text', 3, '');
             db_input('x06_descr', 50, '', true, 'text', 3, '');
           ?>
@@ -146,7 +146,7 @@
           <?=@$Lx01_letra?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_letra', 10, $Ix01_letra, true, 'text', $db_opcao, "");
           ?>
         </td>
@@ -156,7 +156,7 @@
           <?=@$Lx01_quadra?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_quadra', 10, $Ix01_quadra, true, 'text', $db_opcao, "");
           ?>
         </td>
@@ -166,19 +166,19 @@
           <?=@$Lx01_distrito?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_distrito', 10, $Ix01_distrito, true, 'text', $db_opcao, "");
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_zona?>">
-          <?
+          <?php
             db_ancora(@$Lx01_zona, "js_pesquisax01_zona(true);", $db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_zona', 10, $Ix01_zona, true, 'text', $db_opcao, " onchange='js_pesquisax01_zona(false);'");
             db_input('j50_descr', 50, $Ij50_descr, true, 'text', 3, '');
           ?>
@@ -186,12 +186,12 @@
       </tr>
       <tr>
         <td nowrap title="<?=@$Tx01_entrega?>">
-          <?
+          <?php
             db_ancora(@$Lx01_entrega, "js_pesquisax01_entrega(true);", $db_opcao);
           ?>
         </td>
         <td> 
-	        <?
+	        <?php
 	          db_input('x01_entrega', 10, $Ix01_entrega, true, 'text',
 	                   $db_opcao, " onchange='js_pesquisax01_entrega(false);'");
 	                   
@@ -203,7 +203,7 @@
         <td>
         </td>
         <td> 
-          <?
+          <?php
             db_input('j85_ender', 50, $Ij85_ender, true, 'text', 3, '');
           ?>
         </td>
@@ -213,7 +213,7 @@
           <?=@$Lx01_orientacao?>
         </td>
         <td> 
-          <?
+          <?php
             $oRetornoPesquisa = array("-"=>"---------",
                                       "D"=>"DIREITA",
                                       "E"=>"ESQUERDA",
@@ -228,7 +228,7 @@
           <?=@$Lx01_qtdeconomia?>
         </td>
         <td> 
-	        <?
+	        <?php
 	          db_input('x01_qtdeconomia', 10, $Ix01_qtdeconomia, true, 'text', $db_opcao, "");
 	        ?>
         </td>
@@ -238,7 +238,7 @@
           <?=@$Lx01_multiplicador?>
         </td>
         <td>
-          <?
+          <?php
             $x = array("f"=>"NAO","t"=>"SIM");
             db_select('x01_multiplicador', $x, true, $db_opcao, "");
           ?>
@@ -249,7 +249,7 @@
           <?=@$Lx01_dtcadastro?>
         </td>
         <td> 
-          <?
+          <?php
             db_inputdata('x01_dtcadastro', @$x01_dtcadastro_dia, @$x01_dtcadastro_mes,
                          @$x01_dtcadastro_ano, true, 'text', 3, "");
           ?>
@@ -260,7 +260,7 @@
           <?=@$Lx01_qtdponto?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('x01_qtdponto', 10, $Ix01_qtdponto, true, 'text', $db_opcao, "");
           ?>
         </td>
@@ -268,13 +268,13 @@
       <tr>
         <td>
           <b>
-            <?
+            <?php
               db_ancora("Caracteristicas", "js_mostracaracteristica();", 1);
             ?>
           </b>
         </td>
         <td>
-          <?
+          <?php
             db_input('caracteristica', 15, 1, true, 'hidden', 1, "");
           ?>
         </td>
@@ -284,7 +284,7 @@
           <?=@$Lx01_obs?>
         </td>
         <td> 
-          <?
+          <?php
             if (db_getsession('DB_administrador') == 1) {
               $db_opcao_obs = $db_opcao;
             } else {
@@ -639,7 +639,7 @@
     
   function js_preenchepesquisa(chave){
     db_iframe_aguabase.hide();
-    <?
+    <?php
       if ($db_opcao != 1) {
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }

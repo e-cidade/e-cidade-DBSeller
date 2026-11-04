@@ -464,7 +464,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form2">
-<?
+<?php
   db_input("orcamento", 10,"",true,"hidden",3);
   db_input("orcamforne",10,"",true,"hidden",3);
 ?>
@@ -472,7 +472,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr>
     <td align="center" valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php
     if ($numrows_pcorcamitem == 0) {
 
       echo "<strong>Não existem itens para julgamento.</strong>\n";

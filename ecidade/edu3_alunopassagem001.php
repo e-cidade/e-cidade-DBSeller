@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -83,7 +83,7 @@ function js_redireciona(chave){
       <?=$Led47_i_codigo?>
      </td>
      <td>
-      <?db_input("ed60_i_codigo",10,@$Ied47_i_codigo,true,"text",4,"","chave_ed60_i_codigo");?>
+      <?php db_input("ed60_i_codigo",10,@$Ied47_i_codigo,true,"text",4,"","chave_ed60_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -91,7 +91,7 @@ function js_redireciona(chave){
       <b>Nome:</b>
      </td>
      <td>
-      <?db_input("ed47_v_nome",50,@$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?php db_input("ed47_v_nome",50,@$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ function js_redireciona(chave){
       <b>Escola:</b>
      </td>
      <td>
-      <?
+      <?php
       $sql= "select ed18_i_codigo,ed18_c_nome,ed47_i_codigo,ed47_v_nome,'M' as tipoescola
        From aluno
        inner join alunopassagem on alunopassagem.ed215_i_aluno = aluno.ed47_i_codigo
@@ -116,7 +116,7 @@ function js_redireciona(chave){
       ?>
       <select name="chave_ed226_i_escola" style="font-size:10px;width:300px">
        <option value=''></option>
-       <?
+       <?php
         for($x=0;$x<$linhas1;$x++){
          db_fieldsmemory($result1,$x);
          echo "<option value='$ed18_i_codigo' ".(@$ed226_i_escola==$ed18_i_codigo?"selected":"").">$ed18_c_nome</option>";
@@ -140,10 +140,10 @@ function js_redireciona(chave){
 <table width="100%">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php
    $escola = db_getsession("DB_coddepto");
    if(isset($pesquisar)){
-    ?><fieldset style="width:95%"><legend><b>Registros</b></legend><?
+    ?><fieldset style="width:95%"><legend><b>Registros</b></legend><?php
     $campos = "ed47_i_codigo,
                ed47_v_nome,
                ed215_i_codigo,
@@ -176,7 +176,7 @@ function js_redireciona(chave){
     if(isset($pesquisar)){
      db_lovrot(@$sql,15,"()","","js_redireciona|ed215_i_codigo","","NoMe",$repassa);
     }
-    ?></fieldset><?
+    ?></fieldset><?php
    }
    ?>
    </td>
@@ -185,4 +185,4 @@ function js_redireciona(chave){
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>

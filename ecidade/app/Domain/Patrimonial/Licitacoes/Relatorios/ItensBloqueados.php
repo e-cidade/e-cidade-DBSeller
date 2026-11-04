@@ -96,7 +96,7 @@ class ItensBloqueados extends Pdf
                 $this->SetFont('Arial', 'B', 8);
                 $this->setY($this->GetY() + 5);
                 $this->MultiCell(195, 5, 'MOVIMENTAÇÃO: ' . $this->movimentacao, 'L T R', 'L', 1);
-                $this->MultiCell(195, 5, 'JUSTIFICATIVA: '.$itens[0]['justificativa'], 'L B R', 'L', 1);
+                $this->MultiCell(195, 5, 'JUSTIFICATIVA: '. utf8_decode($itens[0]['justificativa']), 'L B R', 'L', 1);
 
                 $this->Cell(20, 5, 'CODIGO', 1, 0, 'C', 1);
                 $this->Cell(65, 5, 'ITEM', 1, 0, 'C', 1);
@@ -119,7 +119,7 @@ class ItensBloqueados extends Pdf
                     $periodo = $dataI . ' à ' . $dataF;
                     $resumo = !empty($item['resumomaterial']) ? $item['resumomaterial'] : '';
 
-                    $alturaLinha =  5;
+                    $alturaLinha = 5;
                     $this->Cell(20, $alturaLinha, $codigo, 'L', 0, 'C', $fill);
                     $this->Cell(65, $alturaLinha, $mateiral, '', 0, 'C', $fill);
                     $this->Cell(20, $alturaLinha, $quantidade, '', 0, 'C', $fill);

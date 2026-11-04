@@ -63,7 +63,7 @@ try {
             break;
         case 'buscarHorariosRegentes':
             if (empty($parametros->turma)) {
-                throw new Exception("Informe a turmna");
+                throw new Exception("Informe a turma");
             }
 
             if (empty($parametros->etapa)) {

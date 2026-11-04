@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clnotitipo->rotulo->label("k51_descr");
               <?=$Lk51_procede?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k51_procede",8,$Ik51_procede,true,"text",4,"","chave_k51_procede");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clnotitipo->rotulo->label("k51_descr");
               <?=$Lk51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k51_descr",40,$Ik51_descr,true,"text",4,"","chave_k51_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clnotitipo->rotulo->label("k51_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_notitipo.php")==true){
@@ -118,12 +118,12 @@ $clnotitipo->rotulo->label("k51_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

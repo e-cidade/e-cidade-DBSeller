@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,8 +42,8 @@ $clrotulo->label("descrdepto");
       <b>Unidade:</b>
     </td>
     <td nowrap="nowrap">
-      <? db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
-      <? db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
+      <?php db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
+      <?php db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
     </td>
   </tr>
   <tr>
@@ -51,11 +51,11 @@ $clrotulo->label("descrdepto");
       <b>Período:</b>
     </td>
     <td nowrap >
-      <? db_inputdata('vc20_d_dataini',@$vc20_d_dataini_dia,@$vc20_d_dataini_mes,@$vc20_d_dataini_ano,true,'text',
+      <?php db_inputdata('vc20_d_dataini',@$vc20_d_dataini_dia,@$vc20_d_dataini_mes,@$vc20_d_dataini_ano,true,'text',
                       $db_opcao,""
                      );?>
       Á
-      <? db_inputdata('vc20_d_datafim',@$vc20_d_datafim_dia,@$vc20_d_datafim_mes,@$vc20_d_datafim_ano,true,'text',
+      <?php db_inputdata('vc20_d_datafim',@$vc20_d_datafim_dia,@$vc20_d_datafim_mes,@$vc20_d_datafim_ano,true,'text',
                       $db_opcao,""
                      );?>
     </td>

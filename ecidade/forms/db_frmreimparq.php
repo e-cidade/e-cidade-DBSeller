@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -36,9 +36,9 @@ $clempagetipo->rotulo->label();
 	<legend><strong>Reimpressão de Arquivo Txt</strong></legend>
 		<table border='0'>
 		  <tr>
-		    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+		    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
 		    <td align="left" nowrap>
-				  <?
+				  <?php
 				     db_input("e87_codgera",10,$Ie87_codgera,true,"text",1,"onchange='js_pesquisa_gera(false);'");
 				     db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);
 				  ?>
@@ -49,7 +49,7 @@ $clempagetipo->rotulo->label();
 		      <b>Data geração:</b>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		      if(!isset($dtin_dia)){
 		        $dtin_dia = date('d',db_getsession('DB_datausu'));
 		      }
@@ -68,7 +68,7 @@ $clempagetipo->rotulo->label();
 		      <b>Autoriza pgto.:</b>
 		    </td>
 		    <td>
-		      <?
+		      <?php
 		        db_inputdata('deposito',@$deposito_dia,@$deposito_mes,@$deposito_ano,true,'text',1);
 		      ?>
 		    </td>

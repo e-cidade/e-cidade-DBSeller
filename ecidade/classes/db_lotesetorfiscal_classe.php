@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,14 +49,14 @@ class cl_lotesetorfiscal {
                  j91_idbql = int4 = Codigo Lote 
                  j91_codigo = int4 = Codigo do setor fiscal 
                  ";
-   //funcao construtor da classe 
-   function cl_lotesetorfiscal() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lotesetorfiscal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_lotesetorfiscal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j91_idbql = ($this->j91_idbql == ""?@$GLOBALS["HTTP_POST_VARS"]["j91_idbql"]:$this->j91_idbql);
        $this->j91_codigo = ($this->j91_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j91_codigo"]:$this->j91_codigo);
@@ -74,7 +74,7 @@ class cl_lotesetorfiscal {
      }
    }
    // funcao para inclusao
-   function incluir ($j91_idbql){ 
+   public function incluir ($j91_idbql = null){
       $this->atualizacampos();
      if($this->j91_codigo == null ){ 
        $this->erro_sql = " Campo Codigo do setor fiscal nao Informado.";
@@ -138,7 +138,7 @@ class cl_lotesetorfiscal {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j91_idbql=null) { 
+   public function alterar ($j91_idbql=null) {
       $this->atualizacampos();
      $sql = " update lotesetorfiscal set ";
      $virgula = "";
@@ -214,11 +214,11 @@ class cl_lotesetorfiscal {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j91_idbql=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j91_idbql=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j91_idbql));
      }else{ 
@@ -276,27 +276,16 @@ class cl_lotesetorfiscal {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
+       }
      }
    }
-
-   // funcao do recordset 
-   function sql_record($sql)
-   { 
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
-     if ($result == false) {
-        $this->numrows    = 0;
-        $this->erro_banco = str_replace("\n","",@pg_last_error());
-        $this->erro_sql   = "Erro ao selecionar os registros.";
-        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-        $this->erro_status = "0";
-        return false;
-     }
-     $this->numrows = pg_numrows($result);
-     if($this->numrows == 0) {
-       $this->erro_banco = "";
-       $this->erro_sql   = "Record Vazio na Tabela:lotesetorfiscal";
+     if($result==false){
+       $this->numrows    = 0;
+       $this->erro_banco = str_replace("\n","",@pg_last_error());
+       $this->erro_sql   = "Erro ao selecionar os registros.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
@@ -305,7 +294,7 @@ class cl_lotesetorfiscal {
      return $result;
    }
 
-   function sql_query ($idbql=null,$campos="*",$ordem=null,$dbwhere="")
+   public function sql_query ($idbql=null,$campos="*",$ordem=null,$dbwhere="")
    {
      $sql = "select ";
      $sql .= $campos;
@@ -332,7 +321,7 @@ class cl_lotesetorfiscal {
      return $sql;
   }
 
-  function sql_query_file ($idbql=null,$campos="*",$ordem=null,$dbwhere="")
+  public function sql_query_file ($idbql=null,$campos="*",$ordem=null,$dbwhere="")
   {
      $sql = "select ";
      $sql .= $campos;

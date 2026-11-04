@@ -49,7 +49,9 @@ $utilizaGradeHorario = isset($oParametros->tf11_i_utilizagradehorario) && $oPara
             <legend>Vincule o Passageiro ao Veículo de Saída</legend>
             <?php
             db_input('tf18_i_codigo', 10, $Itf18_i_codigo, true, 'hidden', $db_opcao, "");
+            db_input('situacaoAgendamento', 10, '', true, 'hidden', $db_opcao, "");
             ?>
+            <input id="codigoViagem" type="hidden">
             <table class="form-container" style="border: 0; width: 100%;">
                 <tr>
                     <td nowrap title="<?= $Ttf18_i_veiculo ?>">
@@ -216,6 +218,7 @@ $utilizaGradeHorario = isset($oParametros->tf11_i_utilizagradehorario) && $oPara
                             id="retorno"
                             onclick="js_retorno();"
                             <?= (isset($tf18_i_codigo) && !empty($tf18_i_codigo) ? '' : 'disabled') ?>
+                            style="color: <?= (empty($tf18_i_codigo) ? 'gray' : '') ?>"
                         >
                             <i class="fas fa-reply"></i>
                             Retorno
@@ -343,10 +346,78 @@ $utilizaGradeHorario = isset($oParametros->tf11_i_utilizagradehorario) && $oPara
             id="lista"
             onclick="js_listaDaer();"
             <?= (isset($tf18_i_codigo) && !empty($tf18_i_codigo) ? '' : 'disabled') ?>
+            style="color: <?= (empty($tf18_i_codigo) ? 'gray' : '') ?>"
         >
             <i class="fas fa-print"></i>
             Lista DAER
         </button>
+
+        <button
+            name="lista"
+            type="button"
+            id="botaoCancelar"
+            onclick="abreJanelaCancelamentoVeiculo()"
+        >
+            <i class="fas fa-ban"></i>
+            <?= ((!empty($situacaoAgendamento) && mb_strpos($situacaoAgendamento, 'CANCELADO')) ? 'Visualizar Cancelamento' : 'Cancelar Veículo') ?>
+        </button>
+    </div>
+
+    <div id="janelaCancelamento" style="padding: 15px 40px; display: none">
+        <fieldset style="margin-bottom: 10px">
+            <legend>Cancelar Veículo</legend>
+            <div style="font-weight: bold">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                    <div>
+                        <label>Data Saída:</label>
+                        <input type="text" id="dataSaida">
+                    </div>
+
+                    <div>
+                        <label>Login:</label>
+                        <input type="text" class="readonly" value="<?= $_SESSION['DB_login'] ?>" readonly id="loginUsuario">
+                    </div>
+
+                    <div style="margin-right: 25px;">
+                        <label>Data/Hora:</label>
+                        <input type="text" id="dataHoraCancelamento">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px">
+                    <label>Código do Agendamento:</label>
+                    <input type="text" id="codigoAgendamento">
+                </div>
+
+                <div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label>Motivo Cancelamento:</label>
+                        <textarea id="motivoCancelamento" rows="3" cols="65" maxlength="120" style="font-weight:normal">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+       <div style="display: flex; justify-content: center; column-gap: 5px">
+           <button
+               name="confirmarCancelamento"
+               id="confirmarCancelamento"
+               onclick="confirmaCancelamento()"
+           >
+               <i class="fas fa-check-double"></i>
+               Confirmar
+           </button>
+
+           <button
+               onclick="fechaJanelaCancelamentoVeiculo()"
+           >
+               <i class="fas fa-window-close"></i>
+               Fechar
+           </button>
+
+
+       </div>
     </div>
 
 </form>
@@ -388,6 +459,7 @@ wndVeiculosVinculados.setContent(document.getElementById('modalVeiculosVinculado
 wndVeiculosVinculados.setShutDownFunction(fecharWindowAux);
 
 const tableVeiculosVinculados = jQuery('#table-veiculos-vinculados');
+const janelaCancelamento = new windowAux('cancelamentoVeiculo', 'Cancelamento de Veículo', 950, 300);
 
 <?php
 if ((isset($tf18_i_codigo)) && ($tf18_i_codigo != '')) {
@@ -400,6 +472,7 @@ window.onload = () => {
     if (utilizaGradeHorario) {
         $('tf18_c_horasaida').style.width = '100px';
     }
+    cancelarAtivo();
 }
 
 async function getParametros() {
@@ -786,6 +859,11 @@ async function js_loadGridCgs() {
     iCodigo = $F('tf18_i_codigo');
     js_limparInformacoes();
 
+    if (verificaAgendamentoCancelado()) {
+        await buscaDadosViagemCancelada(iCodigo)
+        return;
+    }
+
     if ($F('tf18_i_veiculo') == '') {
         return false;
     }
@@ -819,9 +897,11 @@ async function js_loadGridCgs() {
 
 }
 
-function js_retornoGridCgs(oRetorno) {
+function js_retornoGridCgs(oRetorno, cancelado = false) {
 
-    oRetorno = JSON.parse(oRetorno.responseText);
+    if (!cancelado) {
+        oRetorno = JSON.parse(oRetorno.responseText);
+    }
     if (oRetorno.iStatus == 1) {
         divAlert.hidden = 'hidden';
         for (iCont = 0; iCont < oRetorno.aListaCgs.length; iCont++) {
@@ -897,10 +977,14 @@ function js_retornoGridCgs(oRetorno) {
         alert('Nenhum CGS encontrado.');
 
     }
-
+    verificaAgendamento();
 }
 
-function js_getLotacaoDataHora() {
+async function js_getLotacaoDataHora() {
+    if (verificaAgendamentoCancelado()) {
+        await lotacaoViagemCancelada()
+        return;
+    }
     if ($F('tf18_i_veiculo') == '') {
         return false;
     }
@@ -926,8 +1010,10 @@ function js_getLotacaoDataHora() {
     js_ajax(oParam, 'js_retornogetLotacaoDataHora');
 }
 
-function js_retornogetLotacaoDataHora(oRetorno) {
-    oRetorno = JSON.parse(oRetorno.responseText);
+function js_retornogetLotacaoDataHora(oRetorno, cancelado = false) {
+    if (!cancelado) {
+        oRetorno = JSON.parse(oRetorno.responseText);
+    }
     if (oRetorno.iStatus == 1) {
         document.form1.numAcomp.value = oRetorno.iAcomp;
         document.form1.numPac.value = oRetorno.iPac;
@@ -1121,14 +1207,14 @@ function js_limpar() {
 
 function js_pesquisa() {
     js_OpenJanelaIframe('', 'db_iframe_tfd_veiculodestino', 'func_tfd_veiculodestino.php?funcao_js=' +
-        'parent.js_preenchepesquisa|tf18_i_codigo', 'Pesquisa', true
+        'parent.js_preenchepesquisa|tf18_i_codigo|Situacao', 'Pesquisa', true
     );
 }
 
-function js_preenchepesquisa(chave) {
+function js_preenchepesquisa(chave, situacao) {
     db_iframe_tfd_veiculodestino.hide();
     <?php
-    echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tf18_i_codigo='+chave";
+    echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?tf18_i_codigo='+chave+'&situacaoAgendamento='+situacao";
     ?>
 }
 
@@ -1232,4 +1318,188 @@ async function getVeiculosVinculados() {
     wndVeiculosVinculados.show(0, 0, true);
     montaTabelaVeiculosVinculados(veiculosVinculados);
 }
+
+async function abreJanelaCancelamentoVeiculo() {
+    await verificaPacientesRetorno();
+    const containerCancelamento = $('janelaCancelamento');
+    const dataSaida = document.getElementById('dataSaida');
+    const codigoAgendamento = document.getElementById('codigoAgendamento');
+    const motivoCancelamento = document.getElementById('motivoCancelamento');
+    containerCancelamento.style.display = '';
+
+    dataSaida.value = value = $('tf18_d_datasaida').value
+    codigoAgendamento.value = $('codigoViagem').value
+
+    await dadosCancelamento();
+
+    readonlyCancelamento();
+
+    janelaCancelamento.setContent(containerCancelamento);
+    janelaCancelamento.show();
+    motivoCancelamento.focus();
+}
+
+function fechaJanelaCancelamentoVeiculo() {
+    janelaCancelamento.hide();
+    $('motivoCancelamento').value = '';
+}
+
+function readonlyCancelamento() {
+    const dataSaida = document.getElementById('dataSaida');
+    const loginUsuario = document.getElementById('loginUsuario');
+    const dataHoraCancelamento = document.getElementById('dataHoraCancelamento');
+    const codigoAgendamento = document.getElementById('codigoAgendamento');
+    const motivoCancelamento = document.getElementById('motivoCancelamento');
+
+    dataSaida.readOnly = true;
+    dataSaida.style.cssText = 'background: #DEB887; width: 85px; text-align: center; font-weight: normal; margin-left: 94px;';
+
+    loginUsuario.readOnly = true;
+    loginUsuario.style.cssText = 'background: #DEB887; font-weight: normal;';
+
+    dataHoraCancelamento.readOnly = true;
+    dataHoraCancelamento.style.cssText = 'background: #DEB887; font-weight: normal; width: 135px;';
+
+    codigoAgendamento.readOnly = true;
+    codigoAgendamento.style.cssText = 'background: #DEB887; font-weight: normal; width: 65px; text-align: center;';
+
+    if (verificaAgendamentoCancelado()) {
+        motivoCancelamento.readOnly = true;
+        motivoCancelamento.style.cssText = 'background: #DEB887; font-weight:normal;';
+    }
+}
+
+async function confirmaCancelamento() {
+    if ($('motivoCancelamento').value.trim() === '') {
+        alert('Campo "Motivo Cancelamento" obrigatório. Favor preencher.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('dataSaida', $('dataSaida').value);
+    formData.append('codigoAgendamento', $('codigoAgendamento').value);
+    formData.append('motivoCancelamento', $('motivoCancelamento').value);
+    PHPSession.appendFormData(formData);
+
+    let response = await HttpClient.post(`${PHPSession.requestApi}/saude/tfd/procedimento/viagem/cancelamento`, {body: formData});
+
+    if (response.error === true) {
+        alert('Falha ao cancelar registro!');
+        return;
+    }
+    janelaCancelamento.hide();
+    alert('Registro cancelado com sucesso.');
+    location.href = 'tfd4_indveiculo001.php';
+}
+
+function verificaAgendamento() {
+    if (verificaAgendamentoCancelado()) {
+        let inputs = document.getElementsByTagName('input');
+
+        for (const input of inputs) {
+            input.disabled = true;
+        }
+
+        $('limpar').disabled = true;
+        $('limpar').style.cssText = 'color: gray;';
+
+        $('confirmar').disabled = true;
+        $('confirmar').style.cssText = 'color: gray;';
+
+        $('lista').disabled = true;
+        $('lista').style.cssText = 'color: gray;';
+
+        $('retorno').disabled = true;
+        $('retorno').style.cssText = 'color: gray;';
+
+        $('confirmarCancelamento').disabled = true;
+        $('confirmarCancelamento').style.cssText = 'color: gray;';
+    }
+}
+
+async function dadosCancelamento() {
+    let cancelamento = $('codigoViagem').value;
+
+    if (verificaAgendamentoCancelado()) {
+       let response = await HttpClient.get(`${PHPSession.requestApi}/saude/tfd/consulta/viagem/cancelamento/${cancelamento}`);
+       let dadosCancelamento = response.data[0];
+       $('motivoCancelamento').value = dadosCancelamento.motivoCancelamento;
+       $('dataHoraCancelamento').value = dadosCancelamento.dataHora;
+       $('loginUsuario').value = dadosCancelamento.login;
+    }
+}
+
+async function verificaPacientesRetorno() {
+    let viagem = $('codigoViagem').value;
+
+    if (!verificaAgendamentoCancelado()) {
+        let response = await HttpClient.get(`${PHPSession.requestApi}/saude/tfd/consulta/viagem/${viagem}/passageiros-retorno`);
+
+        let passageirosRetorno = response.data;
+
+        if (passageirosRetorno.length > 0) {
+            let listaPassageirosRetorno = '';
+            for (const passageirosRetornoElement of passageirosRetorno) {
+                listaPassageirosRetorno += `<br> ${passageirosRetornoElement.cgs} - ${passageirosRetornoElement.nome}`;
+            }
+            listaPassageirosRetorno += `<br><br> Caso necessário, coloque-os em outro veículo.`;
+            alert(`Atenção! Há passageiros listados para retornar neste veículo: <br>${listaPassageirosRetorno}`);
+        }
+    }
+}
+
+function verificaAgendamentoCancelado() {
+    let situacaoAgendamento = $('situacaoAgendamento').value;
+
+    if (situacaoAgendamento.include('CANCELADO')) {
+        return true;
+    }
+    return false;
+}
+
+async function buscaDadosViagemCancelada(viagem) {
+    const response = await HttpClient.get(`${PHPSession.requestApi}/saude/tfd/consulta/viagem/${viagem}/passageiros-cancelados`);
+
+    if (response.error){
+        alert(response.message);
+        return;
+    }
+    const passageiros = {
+        aListaCgs: response.data.passageiros,
+        dDataRetorno: response.data.dataRetorno,
+        iStatus: 1,
+        iVeiculoDestino: viagem,
+        sHoraRetorno: response.data.horaRetorno,
+    };
+
+    js_retornoGridCgs(passageiros, true);
+}
+
+async function lotacaoViagemCancelada() {
+    viagem = $F('codigoViagem');
+    const response = await HttpClient.get(`${PHPSession.requestApi}/saude/tfd/consulta/viagem/${viagem}/lotacao-cancelados`);
+
+    if (response.error){
+        alert(response.message);
+        return;
+    }
+
+    const lotacao = {
+        iAcomp: response.data.totalAcompanhantes,
+        iColo: response.data.totalColo,
+        iPac: response.data.totalPacientes,
+        iStatus: 1,
+    }
+    js_retornogetLotacaoDataHora(lotacao, true);
+}
+
+function cancelarAtivo() {
+    $('codigoViagem').value = $('tf18_i_codigo').value
+
+    if ($('codigoViagem').value === '') {
+        $('botaoCancelar').disabled = true;
+        $('botaoCancelar').style.cssText='color:gray;';
+    }
+}
+
 </script>

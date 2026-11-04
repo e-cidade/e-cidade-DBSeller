@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -45,22 +45,22 @@ $clrotulo->label("db71_descricao");
        <?=@$Ldb72_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_sequencial',10,$Idb72_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb72_cadenderestado?>">
-       <?
+       <?php
        db_ancora(@$Ldb72_cadenderestado,"js_pesquisadb72_cadenderestado(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_cadenderestado',10,$Idb72_cadenderestado,true,'text',$db_opcao," onchange='js_pesquisadb72_cadenderestado(false);'")
 ?>
-       <?
+       <?php
 db_input('db71_descricao',26,$Idb71_descricao,true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('db71_descricao',26,$Idb71_descricao,true,'text',3,'')
        <?=@$Ldb72_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_descricao',40,$Idb72_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_input('db72_descricao',40,$Idb72_descricao,true,'text',$db_opcao,"")
        <?=@$Ldb72_sigla?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_sigla',2,$Idb72_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('db72_sigla',2,$Idb72_sigla,true,'text',$db_opcao,"")
        <?=@$Ldb72_cepinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_cepinicial',8,$Idb72_cepinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_input('db72_cepinicial',8,$Idb72_cepinicial,true,'text',$db_opcao,"")
        <?=@$Ldb72_cepfinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('db72_cepfinal',8,$Idb72_cepfinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -145,7 +145,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadendermunicipio.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

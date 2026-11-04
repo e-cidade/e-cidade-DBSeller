@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE transferencialote
 class cl_transferencialote {
@@ -32,13 +32,13 @@ class cl_transferencialote {
                  ed137_data = varchar(20) = Data
                  ";
    //funcao construtor da classe
-   function cl_transferencialote() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transferencialote");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -47,7 +47,7 @@ class cl_transferencialote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed137_sequencial = ($this->ed137_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed137_sequencial"]:$this->ed137_sequencial);
        $this->ed137_escolaorigem = ($this->ed137_escolaorigem == ""?@$GLOBALS["HTTP_POST_VARS"]["ed137_escolaorigem"]:$this->ed137_escolaorigem);
@@ -60,7 +60,7 @@ class cl_transferencialote {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed137_sequencial){
+   public function incluir ($ed137_sequencial){
 
       $this->atualizacampos();
      if($this->ed137_escolaorigem == null ){

@@ -102,7 +102,7 @@ if( isset( $chavepesquisa ) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
     db_app::load("scripts.js, prototype.js, strings.js");
     db_app::load("estilos.css");
   ?>
@@ -306,7 +306,7 @@ if( isset( $chavepesquisa ) ) {
                             <a style="color:#DEB887;font-weight:bold;"
                                href="edu3_alunos002.php?chavepesquisa=<?=$chavepesquisa?>&evento=5"
                                target="iframe_dados">
-                              Necessidades Especiais
+                              PcD / Altas Habilidades
                             </a>
                           </td>
                           <td id="menu3"
@@ -426,9 +426,9 @@ function js_fechajanela() {
   } else {
 
 	  parent.document.getElementById('ed47_i_codigo').value   ='';
-	  parent.document.getElementById('ed47_v_nome').value     ='';
-	  parent.document.getElementById('ed47_v_pai').value      ='';
-	  parent.document.getElementById('ed47_v_mae').value      ='';
+	  parent.document.getElementById('inputNovoNome').value     ='';
+	  parent.document.getElementById('inputNovoNomePai').value      ='';
+	  parent.document.getElementById('inputNovoNomePai').value      ='';
 	  parent.document.getElementById('ed56_i_escola').value   ='';
 	  parent.document.getElementById('ed56_c_situacao').value ='';
 	  parent.document.getElementById('ed31_i_curso').value    ='';

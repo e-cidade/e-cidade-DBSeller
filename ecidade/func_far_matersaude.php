@@ -52,7 +52,7 @@ $clmatmater->rotulo->label("m60_descr");
       <table width="45%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lfa01_i_codigo?></label></td>
-          <td><? db_input("fa01_i_codigo",5,$Ifa01_i_codigo,true,"text",4,"","chave_fa01_i_codigo"); ?></td>
+          <td><?php db_input("fa01_i_codigo",5,$Ifa01_i_codigo,true,"text",4,"","chave_fa01_i_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lm60_descr?></label></td>
@@ -64,7 +64,7 @@ $clmatmater->rotulo->label("m60_descr");
         </tr>
         <tr>
           <td><label><?=$Lfa01_codigobarras?></label></td>
-          <td><? db_input("fa01_codigobarras",20,$Ifa01_codigobarras,true,"text",4,"","chave_fa01_codigobarras");?></td>
+          <td><?php db_input("fa01_codigobarras",20,$Ifa01_codigobarras,true,"text",4,"","chave_fa01_codigobarras");?></td>
         </tr>
       </table>
     </fieldset>
@@ -168,12 +168,12 @@ $clmatmater->rotulo->label("m60_descr");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

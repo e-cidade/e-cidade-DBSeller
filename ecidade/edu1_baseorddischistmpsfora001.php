@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
 $ed100_i_historicompsfora=$ed100_i_historicompsfora;
 ?>
-<?
+<?php
 if (isset ( $ordenacao ) ) {
 
   $tam = sizeof($ordenar);
@@ -54,7 +54,7 @@ if (isset ( $ordenacao ) ) {
   (window.CurrentWindow || parent.CurrentWindow).corpo.disciplina.document.body.hidden = true;
   (window.CurrentWindow || parent.CurrentWindow).corpo.dados.document.body.hidden      = true;
  </script>
-<?}?>
+<?php }?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -71,7 +71,7 @@ if (isset ( $ordenacao ) ) {
    <table border="0" cellspacing="0" cellpading="0" width="100%">
     <tr>
      <td align="center">
-      <?  $sql = "SELECT ed100_i_codigo,
+      <?php  $sql = "SELECT ed100_i_codigo,
                 ed100_i_ordenacao,ed232_c_descr
                FROM histmpsdiscfora
            left join justificativa  on  justificativa.ed06_i_codigo = histmpsdiscfora.ed100_i_justificativa
@@ -96,7 +96,7 @@ if (isset ( $ordenacao ) ) {
    <tr>
    <td rowspan="0">
     <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:150px"  onclick="js_selectum('ordenar')" <?=@$disabled!=""?"$disabled":""?>>
-     <?
+     <?php
         if(@$linhabranco=="yes"){
           echo "<option value=''></option>";
         }

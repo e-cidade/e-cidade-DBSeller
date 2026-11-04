@@ -43,7 +43,7 @@ class FechamentoEventosPeriodicos extends Formatter
 
     private function posProcessamento(array $dadosFormatado, array $dados)
     {
-        foreach ($dadosFormatado as &$dadoFormatado) {
+        foreach ($dadosFormatado as $dadoFormatado) {
             $this->unsetEmpty($dadoFormatado);
             foreach ($dados as $dado) {
                 if ($dadoFormatado->referencia == $dado->responsavel) {

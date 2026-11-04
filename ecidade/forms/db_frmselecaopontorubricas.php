@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -65,7 +65,7 @@ if (isset($oGet->db_opcaoal)){
       <?=@$Lr73_sequencial?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('r73_sequencial',10,$Ir73_sequencial,true,'text',3,"");
 			  db_input('r73_selecaoponto',10,'',true,'hidden',3,"");
 			?>
@@ -73,12 +73,12 @@ if (isset($oGet->db_opcaoal)){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr73_rubric?>">
-      <?
+      <?php
         db_ancora(@$Lr73_rubric,"js_pesquisar73_rubric(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php
 				db_input('r73_rubric',10,$Ir73_rubric,true,'text',$db_opcao," onchange='js_pesquisar73_rubric(false);'");
 				db_input('rh27_descr',50,$Irh27_descr,true,'text',3,'');
       ?>
@@ -89,7 +89,7 @@ if (isset($oGet->db_opcaoal)){
       <?=@$Lr73_tipo?>
     </td>
     <td> 
-			<?
+			<?php
 			  $sSqlTipoValor = $clselecaopontorubricastipo->sql_query_file();
 			  $rsTipoValor   = $clselecaopontorubricastipo->sql_record($sSqlTipoValor);
 
@@ -102,7 +102,7 @@ if (isset($oGet->db_opcaoal)){
       <?=@$Lr73_valor?>
     </td>
     <td> 
-			<?
+			<?php
 			  db_input('r73_valor',10,$Ir73_valor,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -117,7 +117,7 @@ if (isset($oGet->db_opcaoal)){
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 			 $chavepri= array("r73_sequencial"=>@$r73_sequencial);
 			 $cliframe_alterar_excluir->chavepri      = $chavepri;
 			 $cliframe_alterar_excluir->sql           = $clselecaopontorubricas->sql_query(null,"*",null,"r73_selecaoponto = ".@$r73_selecaoponto);

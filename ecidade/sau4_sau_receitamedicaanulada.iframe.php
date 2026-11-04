@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <?
+        <?php
         $oRotulo = new rotulocampo;
         $oRotulo->label('s161_i_receita');
         $oRotulo->label('s161_i_login');
@@ -75,7 +75,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls161_i_receita?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       db_input('s161_i_receita', 10, $Is161_i_receita, true, 'text', 3, '');
                       ?>
                     </td>
@@ -93,7 +93,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls161_d_data?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       $s161_d_data_dia = date('d', db_getsession('DB_datausu'));
                       $s161_d_data_mes = date('m', db_getsession('DB_datausu'));
                       $s161_d_data_ano = date('Y', db_getsession('DB_datausu'));
@@ -108,7 +108,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls161_c_hora?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       $s161_c_hora = date('H:i');
                       db_input('s161_c_hora', 5, $Is161_c_hora, true, 'text', 3, '');
                       ?>
@@ -119,7 +119,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls161_i_login?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       $s161_i_login = db_getsession('DB_id_usuario');
                       $login        = db_getsession('DB_login');
                       db_input('s161_i_login', 10, $Is161_i_login, true, 'hidden', 3, '');
@@ -132,7 +132,7 @@ db_postmemory($HTTP_POST_VARS);
                       <?=$Ls161_c_motivo?>
                     </td>
                     <td> 
-                      <?
+                      <?php
                       db_input('s161_c_motivo', 30, $Is161_c_motivo, true, 'text', 1, '');
                       ?>
                     </td>

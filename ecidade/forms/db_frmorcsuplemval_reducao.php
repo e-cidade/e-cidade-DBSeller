@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -49,8 +49,8 @@
                     <fieldset><legend><b>Dotação</b></legend>
                         <table>
                             <tr>
-                                <td nowrap title="<?=@$To47_coddot?>"> <? db_ancora(@$Lo47_coddot,"js_pesquisao47_coddot(true);",$op); ?> </td>
-                                <td><? db_input('o47_coddot',10,$Io47_coddot,true,'text',$op,"onchange='js_pesquisao47_coddot(false);'"); ?> </td>
+                                <td nowrap title="<?=@$To47_coddot?>"> <?php db_ancora(@$Lo47_coddot,"js_pesquisao47_coddot(true);",$op); ?> </td>
+                                <td><?php db_input('o47_coddot',10,$Io47_coddot,true,'text',$op,"onchange='js_pesquisao47_coddot(false);'"); ?> </td>
                                 <td><input type="submit" name="pesquisa_dot"  value="pesquisar"> </td>
                             </tr>
 
@@ -93,39 +93,39 @@
                             </tr>
                             <tr>
                                 <td nowrap title="<?=@$To58_orgao ?>"><strong>Orgão : </strong></td>
-                                <td><? db_input('o58_orgao',10,"$Io58_orgao",true,'text',3,"");  ?> </td>
-                                <td colspan=3><? db_input('o40_descr',40,"",true,'text',3,"");  ?> </td>
+                                <td><?php db_input('o58_orgao',10,"$Io58_orgao",true,'text',3,"");  ?> </td>
+                                <td colspan=3><?php db_input('o40_descr',40,"",true,'text',3,"");  ?> </td>
                             </tr>
                             <tr>
                                 <td nowrap title="<?=@$To58_elemento ?>" ><strong>Elemento  : </strong></td>
-                                <td> <? db_input('o56_elemento',10,"",true,'text',3,"");  ?>  </td>
-                                <td> <? db_input('o56_descr',40,"",true,'text',3,"");  ?>       </td>
+                                <td> <?php db_input('o56_elemento',10,"",true,'text',3,"");  ?>  </td>
+                                <td> <?php db_input('o56_descr',40,"",true,'text',3,"");  ?>       </td>
                             </tr>
                             <tr>
                                 <td nowrap title="<?=@$To58_codigo ?>" ><strong>Recurso  :</strong> </td>
-                                <td> <?
+                                <td> <?php
                                         db_input('o58_codigo',10,"",true,'hidden',3,"");
-                                        db_input('o15_recurso',10,"",true,'text',3,"");
+                                        db_input('gestao',10,"",true,'text',3,"");
                                      ?>
                                 </td>
-                                <td> <? db_input('o15_descr',40,"",true,'text',3,"");  ?> </td>
+                                <td> <?php db_input('descricao',40,"",true,'text',3,"");  ?> </td>
                             </tr>
                             <tr>
                                 <td nowrap title="<?=@$To58_concarpeculiar?>">
-                                    <?
+                                    <?php
                                     db_ancora(@$Lo58_concarpeculiar,"js_pesquisao58_concarpeculiar(true);",$db_opcao,"","o58_concarpeculiarancora");
                                     ?>
                                 </td>
-                                <td><? db_input('o58_concarpeculiar',10,$Io58_concarpeculiar,true,'text',$db_opcao,"onchange='js_pesquisao58_concarpeculiar(false);'");  ?></td>
-                                <td><? db_input('c58_descr',40,$Ic58_descr,true,'text',3,''); ?></td>
+                                <td><?php db_input('o58_concarpeculiar',10,$Io58_concarpeculiar,true,'text',$db_opcao,"onchange='js_pesquisao58_concarpeculiar(false);'");  ?></td>
+                                <td><?php db_input('c58_descr',40,$Ic58_descr,true,'text',3,''); ?></td>
                             </tr>
                             <tr>
                                 <td><strong>Saldo :</strong> </td>
-                                <td><? db_input('atual_menos_reservado',10,'',true,'text',3,'','','','text-align:right');  ?> </td>
+                                <td><?php db_input('atual_menos_reservado',10,'',true,'text',3,'','','','text-align:right');  ?> </td>
                             </tr>
                             <tr>
                                 <td><b>Valor a Reduzir:</b></td>
-                                <td><? db_input('o47_valor',10,$Io47_valor,true,'text',1,'','','','text-align:right');  ?> </td>
+                                <td><?php db_input('o47_valor',10,$Io47_valor,true,'text',1,'','','','text-align:right');  ?> </td>
                                 <td><input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
                                            type="button" id="db_opcao"
                                            value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
@@ -141,14 +141,14 @@
                 <td valign=top>
                     <fieldset><legend><b>Projeto</b></legend>
                         <table width=200px>
-                            <tr><td><b>Projeto</b></td><td><? db_input("o39_codproj",6,'',true,'text',3); ?></td></tr>
-                            <tr><td><b>Suplementação</b> </td><td><? db_input("o46_codsup",6,'',true,'text',3); ?></td></tr>
+                            <tr><td><b>Projeto</b></td><td><?php db_input("o39_codproj",6,'',true,'text',3); ?></td></tr>
+                            <tr><td><b>Suplementação</b> </td><td><?php db_input("o46_codsup",6,'',true,'text',3); ?></td></tr>
                         </table>
                     </fieldset>
 
                     <fieldset><legend><b>Saldos</b></legend>
                         <table width=200px>
-                            <tr><td><b>Total Reduzido</b></td><td><? db_input("soma_reduz",10,'',true,'text',3,'','','','text-align:right'); ?></td></tr>
+                            <tr><td><b>Total Reduzido</b></td><td><?php db_input("soma_reduz",10,'',true,'text',3,'','','','text-align:right'); ?></td></tr>
                         </table>
                     </fieldset>
 
@@ -157,7 +157,7 @@
         </table>
 
         <center>
-            <?  ///////// total reduzido
+            <?php ///////// total reduzido
             /*
              $soma_reduz = $clorcsuplemval->sql_record ($clorcsuplemval->sql_query_file("","" ,"" ,"sum(o47_valor) as soma_red ","" ,"o47_codsup=$o47_codsup and o47_valor < 0"));
              if ($soma_reduz){

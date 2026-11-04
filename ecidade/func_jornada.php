@@ -51,11 +51,11 @@ $cljornada->rotulo->label("rh188_descricao");
         <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
             <tr>
                 <td><label>Código</label></td>
-                <td><? db_input("rh188_sequencial", 10, 1, true, "text", 4, "", "chave_sequencial"); ?></td>
+                <td><?php db_input("rh188_sequencial", 10, 1, true, "text", 4, "", "chave_sequencial"); ?></td>
             </tr>
             <tr>
                 <td><label>Descrição</label></td>
-                <td><? db_input("rh188_descricao", 40, 3, true, "text", 4, "", "chave_descricao"); ?></td>
+                <td><?php db_input("rh188_descricao", 40, 3, true, "text", 4, "", "chave_descricao"); ?></td>
             </tr>
         </table>
     </fieldset>

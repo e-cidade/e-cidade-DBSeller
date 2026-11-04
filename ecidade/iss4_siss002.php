@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,7 +146,7 @@ db_putsession("DB_acessado",$codsequen);
 if(isset($mostrahtml) and $mostrahtml== true){
   ?>
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <?
+    <?php
     echo "<br><center><b>PROCESSAMENTO GERAL</b></center><br>";
   db_criatermometro('termometro2', 'Concluido...', 'blue', 1);
   echo "<br><br><br>";
@@ -937,7 +937,7 @@ function dbValidaNumero($string){
   $tamanho = strlen($string);
   $string2 = "";
   for($tm=0;$tm<$tamanho;$tm++){
-    $letra = $string{$tm};
+    $letra = $string[$tm];
     // echo "<br>letra = $letra";
     if($letra=='0' or $letra=='1' or $letra=='2' or $letra=='3' or $letra=='4' or
     $letra=='5' or $letra=='6' or $letra=='7' or $letra=='8' or $letra=='9' ){

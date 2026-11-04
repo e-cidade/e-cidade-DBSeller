@@ -43,41 +43,69 @@ require_once modification("dbforms/db_funcoes.php");
           rel="stylesheet"/>
     <link type="text/css" href="extension/package/Desktop/assets/vendors/alertify/themes/alertify.bootstrap.css"
           rel="stylesheet"/>
+    <link type="text/css" href="assets/bootstrap-table/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
     <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
     <script rel="script" type="text/javascript" src="scripts/prototype.js"></script>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
-    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/datagrid.widget.js"></script>
 </head>
 <body>
 <div id='ctnAbas'></div>
 <div id='ctnAbaEmissao' class='subcontainer'>
     <fieldset>
-        <legend>Balancete da receita pro complemento</legend>
+        <legend>Balancete da receita por complemento</legend>
         <form name="formulario" id="formulario">
             <table class="form-container">
                 <tr class="text-left">
                     <td><label class="bold" for="natureza">Natureza da Receita:</label></td>
                     <td colspan="3">
-                        <input type="text" name="natureza" id="natureza" class="field-size4" >
+                        <input type="text" name="natureza" id="natureza" class="field-size4">
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="bold" for="nivel_agrupar">Tipo de Agrupamento das Deduções: </label></td>
+                    <td><label class="bold" for="nivelAgrupar">Tipo de Agrupamento das Deduções: </label></td>
                     <td>
-                        <select id="nivel_agrupar" name="nivel_agrupar">
+                        <select id="nivelAgrupar" name="nivelAgrupar">
                             <option value="0">Lista Deduções Grupo 9</option>
                             <option value="2">Deduções no Mesmo Grupo</option>
                         </select>
                     </td>
                 </tr>
-                <td><label for="apenasComMovimentacao">Mostrar apenas receitas com movimentação:</label></td>
-                <td>
-                    <select name="apenasComMovimentacao" id="apenasComMovimentacao">
-                        <option value="1" checked>Sim</option>
-                        <option value="0">Não</option>
-                    </select>
-                </td>
+                <tr>
+                    <td><label for="apenasComMovimentacao">Mostrar apenas receitas com movimentação:</label></td>
+                    <td>
+                        <select name="apenasComMovimentacao" id="apenasComMovimentacao">
+                            <option value="1" checked>Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label for="ementario">Selecione o plano que deseja agrupar os dados:</label></td>
+                    <td>
+                        <select name="ementario" id="ementario">
+                            <option value="ecidade" checked>Plano e-Cidade</option>
+                            <option value="uniao">Plano União/Federação</option>
+                            <option value="estadual">Plano Estadual/Regional</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label for="apresentar">Apresentar:</label></td>
+                    <td>
+                        <select name="apresentar" id="apresentar">
+                            <option selected value="3">Fonte Recurso</option>
+                            <option value="9">Subrecurso</option>
+                            <option value="7">Código Siconfi</option>
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td id="ctnInstituicao" colspan="4" style="font-weight: normal">
                         <input type="hidden" name="db_selinstit" id="db_selinstit" value="">
@@ -104,8 +132,17 @@ require_once modification("dbforms/db_funcoes.php");
 </div>
 <div id='ctnAbaRecursos' class='container' style="display: none">
     <fieldset>
-        <legend>Selecione os recursos na grid abaixo se quiser filtrar um ou mais recurso</legend>
-        <div id="cntGridRecursos" style="width: 800px"></div>
+        <fieldset class="subcontainer" style="width: 1000px">
+            <legend>Selecione os recursos na grid abaixo se quiser filtrar um ou mais recurso</legend>
+            <table id="data-table"
+                   class="table table-sm"
+                   data-locale="pt-BR"
+                   data-cache="false"
+                   data-height="600"
+                   data-search="true"
+                   style="width: 100%;">
+            </table>
+        </fieldset>
     </fieldset>
 </div>
 
@@ -122,9 +159,19 @@ require_once modification("dbforms/db_funcoes.php");
 <script type="text/javascript" src="scripts/widgets/DatagridCollection.widget.js"></script>
 <script type="text/javascript" src="scripts/widgets/DBAbasItem.widget.js"></script>
 <script type="text/javascript" src="scripts/widgets/DBAbas.widget.js"></script>
-<script>
+<script type="text/javascript" src="scripts/dates.js"></script>
 
+
+<script type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="assets/bootstrap-4.5.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/bootstrap-table/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
+<script>
+    jQuery.noConflict();
+
+    const recursosSelecionados = [];
     const inputNatureza = document.getElementById('natureza');
+    const inputEmentario = document.getElementById('ementario')
     const inputDataInicio = new DBInputDate(document.getElementById('dataInicio'));
     const inputDataFinal = new DBInputDate(document.getElementById('dataFinal'));
     const dataHoje = new Date();
@@ -141,6 +188,7 @@ require_once modification("dbforms/db_funcoes.php");
     const routs = {
         recursos: 'financeiro/orcamento/recursos',
         relatorio: 'financeiro/contabilidade/relatorio/balancete-receita-por-complemento',
+        plano_padrao: 'financeiro/contabilidade/relatorio/balancete-receita-plano-padrao',
     };
 
     inputNatureza.addEventListener('input', (e) => {
@@ -159,75 +207,143 @@ require_once modification("dbforms/db_funcoes.php");
 
     // Objetos para controle das Abas
     const dBAba = new DBAbas($('ctnAbas'));
-    const abaRelatorio = dBAba.adicionarAba("Relatório", document.getElementById('ctnAbaEmissao'));
-    const abaRecursos = dBAba.adicionarAba("Recursos", ctnAbaRecursos);
-
-    const cntGridRecursos = document.getElementById('cntGridRecursos');
-    const cntGridUnidade = document.getElementById('cntGridUnidade');
+    dBAba.adicionarAba("Relatório", document.getElementById('ctnAbaEmissao'));
+    dBAba.adicionarAba("Recursos", ctnAbaRecursos);
 
     var viewInstituicao = new DBViewInstituicao('viewInstituicao', document.getElementById('ctnInstituicao'));
     viewInstituicao.iHeight = 150;
     viewInstituicao.show();
 
-
-    var collectionRecursos = new Collection().setId("o15_codigo");
-    var gridRecursos = new DatagridCollection(collectionRecursos).configure({
-        order: false,
-        height: 400
-    });
-
-    gridRecursos.getGrid().setCheckbox(0);
-    gridRecursos.addColumn("descricao_recurso", {
-        label: "Recurso",
-        align: "left",
-        width: "47%"
-    });
-    gridRecursos.addColumn("descricao_complemento", {
-        label: "Complemento",
-        align: "left",
-        width: "47%"
-    });
-
-    gridRecursos.show(cntGridRecursos);
-
-    const buscarRecursos = () => {
-
-        let dataFinal = js_formatar(inputDataInicio.inputElement.value, 'd');
-        HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${dataFinal}`).then(response => {
-
-            let dados = response.data.map((recurso) => {
-                recurso.descricao_recurso = `${recurso.o15_recurso} - ${recurso.o15_descr}`;
-                recurso.descricao_complemento = `${recurso.complemento.codigo} - ${recurso.complemento.descricao}`;
-                return recurso;
-            });
-            collectionRecursos.add(dados);
-            gridRecursos.reload();
-        });
+    const montaColunas = () => {
+        return [{
+            field: 'check',
+            checkbox: true,
+            align: 'center',
+            valign: 'middle',
+        },
+            {
+                title: 'Recurso',
+                field: 'o15_recurso',
+                halign: 'center',
+                valign: 'middle',
+                align: 'left',
+                width: '100',
+                sortable: true
+            },
+            {
+                title: 'Siconfi',
+                field: 'codigo_siconfi',
+                halign: 'center',
+                valign: 'middle',
+                align: 'left',
+                width: '100',
+                sortable: true
+            },
+            {
+                title: 'Gestão',
+                field: 'gestao',
+                halign: 'center',
+                valign: 'middle',
+                align: 'left',
+                width: '100',
+                sortable: true
+            },
+            {
+                title: 'Recurso',
+                field: 'descricao_recurso',
+                halign: 'center',
+                valign: 'middle',
+                align: 'left',
+                sortable: true
+            },
+            {
+                title: 'Complemento',
+                field: 'descricao_complemento',
+                halign: 'center',
+                valign: 'middle',
+                align: 'left',
+                sortable: true
+            }
+        ];
     };
 
-    const buscarUnidades = () => {
-        const formData = new FormData();
-        PHPSession.appendFormData(formData);
+    const adicionaRecurso = (recurso) => {
+        let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
+        if (index < 0) {
+            recursosSelecionados.push(recurso);
+        }
+    };
 
-        collectionRecursos.clear();
+    const removeRecurso = (recurso) => {
+        let index = recursosSelecionados.findIndex(obj => obj.id == recurso.id);
+        if (index >= 0) {
+            recursosSelecionados.splice(index, 1)
+        }
+    };
 
-        HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}`).then(response => {
+    var table = jQuery('#data-table');
+    table.bootstrapTable({
+        columns: montaColunas(),
+        data: [],
+        onPostBody: (data) => {
+            data.map((recurso, index) => {
+                if (recurso.selecionado) {
+                    table.bootstrapTable('check', index);
+                    adicionaRecurso(recurso);
+                } else {
+                    removeRecurso(recurso)
+                }
+            });
+        },
+        onCheckAll: (rowsAfter) => {
+            rowsAfter.map(recurso => {
+                recurso.selecionado = true;
+                adicionaRecurso(recurso);
+            });
+        },
+        onUncheckAll: (rowsAfter, rowsBefore) => {
+            rowsBefore.map(recurso => {
+                recurso.selecionado = false;
 
+                removeRecurso(recurso);
+            });
+        },
+        onCheck: (row) => {
+            row.selecionado = true;
+            adicionaRecurso(row);
+        },
+        onUncheck: (row) => {
+            row.selecionado = false;
+            removeRecurso(row);
+        }
+    })
+
+    const buscarRecursos = (exercicio, dataFinal) => {
+        HttpClient.get(`${PHPSession.requestApi}/${routs.recursos}/${exercicio}`).then(response => {
             let dados = response.data.map((recurso) => {
-                recurso.descricao_recurso = `${recurso.o15_recurso} - ${recurso.o15_descr}`;
-                recurso.descricao_complemento = `${recurso.complemento.codigo} - ${recurso.complemento.descricao}`;
+
+                var situacaoRecurso = '';
+                if (recurso.o15_datalimite !== null) {
+                    dataLimite = new Date(recurso.o15_datalimite);
+                    if (dataLimite.compararData(dataHoje, '<')) {
+                        situacaoRecurso = ' <font color=\'red\'>(INATIVO)</font> ';
+                    }
+                }
+
+                recurso.descricao_recurso = recurso.descricao + situacaoRecurso;
+                recurso.descricao_complemento = `${recurso.o15_complemento} - ${recurso.o200_descricao} `;
+                recurso.check = false
                 return recurso;
             });
-            collectionRecursos.add(dados);
-            gridRecursos.reload();
+
+            table.bootstrapTable('load', dados);
         });
     };
 
     PHPSession.loadData().then(() => {
         ctnAbaRecursos.style.display = '';
-        buscarRecursos();
+        buscarRecursos(PHPSession.getValueSession('DB_anousu'), js_formatar(inputDataInicio.inputElement.value, 'd'));
     });
-
 
     const validarInputs = () => {
         try {
@@ -262,23 +378,25 @@ require_once modification("dbforms/db_funcoes.php");
         const formData = new FormData(document.getElementById('formulario'));
 
         formData.append('instituicoes', JSON.stringify(viewInstituicao.getInstituicoesSelecionadas()));
+        for (let recurso of recursosSelecionados) {
+            formData.append('recursos[]', recurso.o15_codigo);
+        }
 
-        gridRecursos.getGrid().aRows.each((linha) => {
-            if (linha.isSelected) {
-                formData.append('recursos[]', linha.itemCollection.o15_codigo);
-            }
-        });
+        let rota = routs.relatorio;
+        if (inputEmentario.value !== 'ecidade') {
+            rota = routs.plano_padrao
+        }
 
         PHPSession.appendFormData(formData);
-
-        HttpClient.post(`${PHPSession.requestApi}/${routs.relatorio}`, {body: formData}).then((response) => {
+        HttpClient.post(`${PHPSession.requestApi}/${rota}`, {body: formData}).then((response) => {
             if (response.error) {
                 alert(response.message);
                 return;
             }
 
             const download = new DBDownload();
-            download.addFile(response.data.pdf, "Balancete da Receita");
+            download.addFile(response.data.pdf, "Balancete da Receita - PDF");
+            download.addFile(response.data.csv, "Balancete da Receita - CSV");
             download.show();
         });
     });

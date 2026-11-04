@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -35,8 +35,8 @@ $cliptuconstr1 = new cl_iptuconstr;
 $cliptubase = new cl_iptubase;
 $cliptucalh = new cl_iptucalh;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -59,7 +59,7 @@ $total = 0;
 $valores = 0;
 if(isset($relatorio1)){
   if(isset($chaves) && $chaves != ""){
-    $chaves = split("#",$chaves);
+    $chaves =explode("#",$chaves);
     for($i=0;$i<sizeof($chaves);$i++){
       if($codigo == ""){
 	      $codigo .= substr($chaves[$i],0,(strpos($chaves[$i],"-")));
@@ -166,8 +166,8 @@ if(isset($setor) && $setor != ""){
     $setor1  = $setor;
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  =explode(",",$setor);
+      $chaves1 =explode(",",$quadra);
       $or      = "";
       $setor   = "";
       for($i=0;$i<sizeof($chaves);$i++){
@@ -180,9 +180,9 @@ if(isset($setor) && $setor != ""){
   $and = " and ";
 }else{
 	if(isset($sosetor) && $sosetor != ""){
-    $chaves  = split(",",$sosetor);
+    $chaves  =explode(",",$sosetor);
     $virgula = "";
-    $setor   = "and j34_setor in ( ";	
+    $setor   = "and j34_setor in ( ";
     for($i=0;$i<sizeof($chaves);$i++){
     	$setor .= $virgula."'".$chaves[$i]."'";
       $virgula = ",";
@@ -201,7 +201,7 @@ if(isset($setor) && $setor != ""){
       exit;
   }
   $totalvars = 0;
-  $vir=","; 
+  $vir=",";
   for($x=0;$x<$numrows2;$x++){
      db_fieldsmemory($rsResult,$x);
      $nomevar = "check".$x;
@@ -210,7 +210,7 @@ if(isset($setor) && $setor != ""){
         $cod = $$nomevar;
     		$codcase .= $cod.",";
     		$colunas.=$j17_descr." - ";
-     }    
+     }
   }
   if ($totalvars > '1' && $totalvars != '0'){
      $colunax = "VALORES";
@@ -219,8 +219,8 @@ if(isset($setor) && $setor != ""){
      db_fieldsmemory($res,0);
      $colunax = $j17_descr;
   }
-  $codcase[strlen($codcase)-1] = "";
-  $colunas[strlen($colunas)-2] = "";
+  $codcase[strlen($codcase)-1] = " ";
+  $colunas[strlen($colunas)-2] = " ";
   if (isset($codcase) && $codcase != ""){
     $codcase = trim($codcase);
     $valores = ", sum(case when j21_codhis in ($codcase) then j21_valor else 0 end) as valores";
@@ -230,11 +230,11 @@ if(isset($setor) && $setor != ""){
 
 //================================================================================================
 if($comlotes == 'todos'){
-   $andBaixadas = "";	
+   $andBaixadas = "";
 }else if($comlotes == 'so'){
-   $andBaixadas = " and j01_baixa is not null";	
+   $andBaixadas = " and j01_baixa is not null";
 }else if($comlotes == 'sem'){
-   $andBaixadas = " and j01_baixa is null";	
+   $andBaixadas = " and j01_baixa is null";
 }
 $sql  = "select j34_idbql, ";
 $sql .= "       case ";
@@ -266,14 +266,14 @@ $sql .= "       left  join testadanumero     on testpri.j49_idbql       = j15_id
 $sql .= "                                   and testpri.j49_face        = j15_face ";
 $sql .= "       inner join testada           on j36_idbql               = j49_idbql ";
 $sql .= "                                   and j49_face                = j36_face ";
-//================================================================================================	
+//================================================================================================
 $testruas = "";
 if($ruas != ""){
   $and = " and ";
   if($temruas == "t"){
-    $testruas = "and j14_codigo in ($ruas)"; 
+    $testruas = "and j14_codigo in ($ruas)";
   }else{
-    $testruas = "and j14_codigo not in ($ruas)"; 
+    $testruas = "and j14_codigo not in ($ruas)";
   }
 }
 
@@ -282,10 +282,10 @@ $sql .= " inner join ruas on j49_codigo = j14_codigo ";
 $where = " where 1=1 $comcar $semcar $testruas $setor $arealote $testada $areacons $groupby";
 $sql .= $where;
 if(isset($j32_grupo) && $j32_grupo != ""){
-  $sql = "select c.*,caracter.j31_descr 
-          from ($sql) as c 
-               left join carlote on carlote.j35_idbql = c.j34_idbql 
-               left join caracter on caracter.j31_codigo = carlote.j35_caract 
+  $sql = "select c.*,caracter.j31_descr
+          from ($sql) as c
+               left join carlote on carlote.j35_idbql = c.j34_idbql
+               left join caracter on caracter.j31_codigo = carlote.j35_caract
                where caracter.j31_grupo = $j32_grupo";
 }
 $pontuacao = "";
@@ -307,19 +307,19 @@ if($resumido == 'f'){
   $sCampoProprietario = ", proprietario_nome.proprietario";
   $InnerProprietario = " inner join proprietario_nome on proprietario_nome.j01_matric = tudo.j01_matric ";
 }
-$sql = "select distinct * 
-        from (select * 
+$sql = "select distinct *
+        from (select *
               from (select * $sCampoProprietario
                     from ($sql) as tudo $InnerProprietario
                                 inner join (select j35_idbql, sum(j31_pontos) as j31_pontos
-                                            from carlote 
+                                            from carlote
                                                  inner join lote on j34_idbql = j35_idbql
                                                  inner join caracter on j35_caract = j31_codigo
                                             group by j35_idbql
                                            ) as pontos on tudo.j34_idbql = pontos.j35_idbql $pontuacao
                    ) as ordem $ordem $order
              ) as distincao $ordem $order";
- 
+
 $result = db_query($sql) or die($sql);
 $numrows = pg_numrows($result);
 $matric = "";
@@ -343,15 +343,15 @@ if($resumido == 'f'){
   $pdf->Cell(55,$tam,"RUA",1,0,"C",1);
   $pdf->Cell(15,$tam,"NUMERO",1,0,"C",1);
   $pdf->Cell(30,$tam,"BAIRRO",1,0,"C",1);
-	
+
   ////////////////////////////////////////
   if (isset($colunax) && $colunax != ""){
      $pdf->Cell(20,$tam,$colunax,1,0,"C",1);
-  }      
+  }
   /////////////////////////////////////
   if(isset($j32_descr) && $j32_descr != ""){
     $pdf->Cell(30,$tam,"GRUPO",1,0,"C",1);
-  } 
+  }
 	$pdf->Cell(20,$tam,"TESTADA",1,1,"C",1);
 
   $pdf->SetFillColor(255);
@@ -367,7 +367,7 @@ if($resumido == 'f'){
     }
     $pdf->Cell(15,$tam,$j01_matric,1,0,"C",0);
     $pdf->Cell(50,$tam,(strlen($proprietario)>30?substr($proprietario,0,30)."...":$proprietario),1,0,"C",0);
-    
+
 		//celula com nome
 
     $pdf->Cell(10,$tam,$j34_setor,1,0,"C",0);
@@ -393,7 +393,7 @@ if($resumido == 'f'){
     if (isset($colunax) && $colunax != ""){
        $pdf->Cell(20,$tam,db_formatar($valores, 'f'),1,0,"R",1);
        $total += $valores;
-    }      
+    }
     ////////////////////////////////////////
     if(isset($j32_descr) && $j32_descr != ""){
       $pdf->Cell(30,$tam,$j32_descr,1,0,"C",1);
@@ -417,7 +417,7 @@ if($resumido == 'f'){
       ////////////////////////////////////////
       if (isset($colunax) && $colunax != ""){
          $pdf->Cell(20,$tam,"$colunax",1,0,"C",1);
-      }      
+      }
       ////////////////////////////////////////
       if(isset($j32_descr) && $j32_descr != ""){
          $pdf->Cell(30,$tam,"GRUPO",1,0,"C",1);
@@ -427,16 +427,16 @@ if($resumido == 'f'){
     }
   }
   $pdf->SetFont('Arial','B',7);
-  $pdf->Cell(230,$tam," VALORES SELECIONADOS : ".$colunas,1,1,"R",1);
+  $pdf->Cell(230,$tam," VALORES SELECIONADOS : ".trim($colunas),1,1,"R",1);
   $pdf->Cell(230,$tam," TOTAL GERAL : ".db_formatar($total,'v'),1,1,"R",1);
   $pdf->SetFont('Arial','',7);
 
-  
+
 }else{///////////////////////////////RELATORIO RESUMIDO//////////////////////////////////////////////
   for($s=0;$s<$numrows;$s++){
     db_fieldsmemory($result,$s);
     if ($matricula <> @$j39_matric) {
-      $matric += 1; 
+      $matric += 1;
     }
     $area += @$j39_area;
     if(@$j39_area > $areama){
@@ -512,8 +512,8 @@ if(isset($chaves_caract) && $chaves_caract != ""){
 $pdf->MultiCell(280,05,"CARACTERÍSTICAS NÃO LISTADAS ->  ".@$cod,1,"L");
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves =explode(",",$setores);
+    $chaves1 =explode(",",$quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){

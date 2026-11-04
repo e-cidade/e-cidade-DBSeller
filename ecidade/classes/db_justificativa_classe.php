@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ class cl_justificativa {
                  ed06_abreviatura = varchar(3) = Abreviatura 
                  ";
    //funcao construtor da classe 
-   function cl_justificativa() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("justificativa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_justificativa {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed06_i_codigo = ($this->ed06_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed06_i_codigo"]:$this->ed06_i_codigo);
        $this->ed06_c_descr = ($this->ed06_c_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["ed06_c_descr"]:$this->ed06_c_descr);
@@ -83,7 +83,7 @@ class cl_justificativa {
      }
    }
    // funcao para Inclusão
-   function incluir ($ed06_i_codigo){ 
+   public function incluir ($ed06_i_codigo){ 
       $this->atualizacampos();
      if($this->ed06_c_descr == null ){ 
        $this->erro_sql = " Campo Descrição não informado.";

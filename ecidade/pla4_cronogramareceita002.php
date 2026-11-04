@@ -45,6 +45,7 @@ require_once modification("dbforms/db_funcoes.php");
           rel="stylesheet"/>
     <script rel="script" type="text/javascript" src="scripts/classes/http/http.js"></script>
     <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
 </head>
 <body class="body-default">
 <div class="alert alert-primary text-left" role="alert">
@@ -412,6 +413,7 @@ require_once modification("dbforms/db_funcoes.php");
             colunas.push(createColumn('Natureza', 'fonte_mascara', 'left', 150));
             colunas.push(descricao);
             colunas.push(createColumn('Recurso', 'fonte_recurso', 'center', 90));
+            colunas.push(createColumn('CO', 'codigo_complemento', 'center', 50));
             colunas.push(createColumn('CP', 'concarpeculiar_id', 'center', 40));
             colunas.push(createColumnValor('Meta Anual', 'valor_base'));
             colunas.push(recalcular);

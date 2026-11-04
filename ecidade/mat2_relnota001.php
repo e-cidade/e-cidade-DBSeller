@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Fornecedores</strong>";
                  $aux->codigo = "e60_numcgm"; //chave de retorno da func
@@ -94,7 +94,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
+               <?php 
 	          db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");
@@ -104,7 +104,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
         <td align='center'  colspan=2 >
                <b> Período do recebimento: </b>
-               <? 
+               <?php 
 	          db_inputdata('data3','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data4','','','',true,'text',1,"");
@@ -114,7 +114,7 @@ $aux = new cl_arquivo_auxiliar;
       <tr>
                <td colspan=2  align="left"  title="Opções  Todas/Liquidadas/Não liquidadas" >
                <strong>Opção de impressão :&nbsp;&nbsp;</strong>
-	       <? 
+	       <?php 
 	       $tipo_opcao = array("a"=>"Todas","b"=>"LIquidadas","c"=>"Não liquidadas");
 	       db_select("opcao",$tipo_opcao,true,2); ?>
             </td>

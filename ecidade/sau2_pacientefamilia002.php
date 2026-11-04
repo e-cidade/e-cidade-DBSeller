@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ $cl_cgs_und = new cl_cgs_und_ext;
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
 <br>
-<?
+<?php
 if(isset($Processar)){
 
    $campos=" z01_i_cgsund,z01_v_nome,sd24_i_codigo ";

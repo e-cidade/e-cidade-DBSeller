@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,6 +43,10 @@ $sqlExtrato  = "";
 $retornoJSON = '';
 db_postmemory($_POST);
 
+$lCarregarPendente = false;
+if (!empty($_POST['lCarregarPendente'])) {
+  $lCarregarPendente = $_POST['lCarregarPendente'] == "true";
+}
 $sqlMenorDataCaixa  = " select min(menordatacaixa) as menordatacaixa ";
 $sqlMenorDataCaixa .= "   from (  select min(k68_data) as menordatacaixa from concilia ";
 $sqlMenorDataCaixa .= "        union ";
@@ -54,8 +58,8 @@ if ($clconcilia->numrows > 0) {
   $menordatacaixa = '2006-01-01';
 }
 
-$sqlExtrato  = " select distinct                                                                    ";
-$sqlExtrato .= "       k86_sequencial,                                                         ";
+$sqlExtrato = " select distinct                                                                     ";
+$sqlExtrato .= "       k86_sequencial,                                                              ";
 $sqlExtrato .= "       k66_bancoshistmovcategoria,                                                  ";
 $sqlExtrato .= "       detalhe,                                                                     ";
 $sqlExtrato .= "       documento,                                                                   ";
@@ -70,7 +74,11 @@ $sqlExtrato .= "         when ( ridata is not null and richeque is not null ) th
 $sqlExtrato .= "         else xx.classe                                                             ";
 $sqlExtrato .= "       end as classe,                                                               ";
 $sqlExtrato .= "       justificativa                                                                ";
+
 $sqlExtrato .= "   from (                                                                           ";
+
+if ($lCarregarPendente) {
+// select trazendo os pendentes
 $sqlExtrato .= "   select distinct                                                                  ";
 $sqlExtrato .= "          k86_sequencial,                                                           ";
 $sqlExtrato .= "          0 as k66_bancoshistmovcategoria,                                          ";
@@ -86,15 +94,20 @@ $sqlExtrato .= "            then k86_valor                                      
 $sqlExtrato .= "            else 0                                                                  ";
 $sqlExtrato .= "          end as valor_debito,                                                      ";
 $sqlExtrato .= "          'pendente' as classe,                                                     ";
-$sqlExtrato .= "          case when k86_bancohistmov = 1 then 'Extrato Banco' else 'Tesouraria' end::varchar as historico,       ";
+$sqlExtrato .= "          k66_descricao as historico,                                               ";
 $sqlExtrato .= "          0 as itemconciliacao,                                                     ";
 $sqlExtrato .= "          k88_justificativa as justificativa                                        ";
 $sqlExtrato .= "     from conciliapendextrato                                                       ";
 $sqlExtrato .= "          inner join concilia      on k68_sequencial   = k88_concilia               ";
 $sqlExtrato .= "          inner join extratolinha  on k88_extratolinha = k86_sequencial             ";
 $sqlExtrato .= "          inner join bancoshistmov on k66_sequencial   = k86_bancohistmov           ";
-$sqlExtrato .= "    where k68_sequencial = ".$concilia;
-$sqlExtrato .= " union all                                                                          ";
+$sqlExtrato .= "where k86_data between '".$datainicio."' and '".$data."' and k68_sequencial = ".$concilia                 ;
+  $sqlExtrato .= " union all                                                                          ";
+
+//$sqlExtrato .= "    where k68_sequencial = ".$concilia                                      ;
+//$sqlExtrato .= " union all                                                                          "; // registros conciliados
+}
+
 $sqlExtrato .= "   select distinct                                                                  ";
 $sqlExtrato .= "          k86_sequencial,                                                           ";
 $sqlExtrato .= "          0 as k66_bancoshistmovcategoria,                                          ";
@@ -110,15 +123,18 @@ $sqlExtrato .= "            then k86_valor                                      
 $sqlExtrato .= "            else 0                                                                  ";
 $sqlExtrato .= "          end as valor_debito,                                                      ";
 $sqlExtrato .= "          'conciliado' as classe,                                                   ";
-$sqlExtrato .= "          case when k86_bancohistmov = 1 then 'Extrato Banco' else 'Tesouraria' end::varchar as historico,       ";
+$sqlExtrato .= "          k66_descricao as historico,                                               ";
 $sqlExtrato .= "          k83_sequencial as itemconciliacao,                                        ";
 $sqlExtrato .= "          '' as justificativa                                                       ";
 $sqlExtrato .= "     from conciliaextrato                                                           ";
-$sqlExtrato .= "          inner join conciliaitem        on k83_sequencial   = k87_conciliaitem     ";
-$sqlExtrato .= "          inner join extratolinha        on k87_extratolinha = k86_sequencial       ";
-$sqlExtrato .= "          inner join bancoshistmov       on k66_sequencial   = k86_bancohistmov     ";
-$sqlExtrato .= "   where k83_concilia = ".$concilia;
-$sqlExtrato .= " union all                                                                          "; 
+$sqlExtrato .= "          inner join conciliaitem        on k83_sequencial    = k87_conciliaitem    ";
+$sqlExtrato .= "          inner join extratolinha        on k87_extratolinha  = k86_sequencial      ";
+$sqlExtrato .= "          inner join contabancaria       on k86_contabancaria = db83_sequencial     ";
+$sqlExtrato .= "          inner join bancoshistmov       on k66_sequencial    = k86_bancohistmov    ";
+$sqlExtrato .= "   where k83_concilia = ".$concilia                                                  ;
+$sqlExtrato .= "     and db83_instit = ".db_getsession('DB_instit')."                               ";
+
+$sqlExtrato .= " union all                                                                          "; //registros normais
 $sqlExtrato .= "   select distinct                                                                  ";
 $sqlExtrato .= "          k86_sequencial,                                                           ";
 $sqlExtrato .= "          k66_bancoshistmovcategoria,                                               ";
@@ -134,18 +150,21 @@ $sqlExtrato .= "            then k86_valor                                      
 $sqlExtrato .= "            else 0                                                                  ";
 $sqlExtrato .= "          end as valor_debito,                                                      ";
 $sqlExtrato .= "          'normal' as classe,                                                       ";
-$sqlExtrato .= "          case when k86_bancohistmov = 1 then 'Extrato Banco' else 'Tesouraria' end::varchar as historico,       ";
+$sqlExtrato .= "          k66_descricao as historico,                                               ";
 $sqlExtrato .= "          0 as itemconciliacao,                                                     ";
 $sqlExtrato .= "          '' as justificativa                                                       ";
 $sqlExtrato .= "     from extratolinha                                                              ";
-$sqlExtrato .= "          inner join bancoshistmov       on k66_sequencial   = k86_bancohistmov     ";
-$sqlExtrato .= "          left  join conciliaextrato     on k87_extratolinha = k86_sequencial       ";
-$sqlExtrato .= "          left  join conciliapendextrato on k88_extratolinha = k86_sequencial       ";
+$sqlExtrato .= "          inner join bancoshistmov       on k66_sequencial    = k86_bancohistmov    ";
+$sqlExtrato .= "          inner join contabancaria       on k86_contabancaria = db83_sequencial     ";
+$sqlExtrato .= "          left  join conciliaextrato     on k87_extratolinha  = k86_sequencial      ";
+$sqlExtrato .= "          left  join conciliapendextrato on k88_extratolinha  = k86_sequencial      ";
 $sqlExtrato .= "   where k88_extratolinha is null                                                   ";
 $sqlExtrato .= "     and k87_extratolinha is null                                                   ";
-$sqlExtrato .= "     and k86_data = '$data'";
-$sqlExtrato .= "     and k86_contabancaria = $conta";
+$sqlExtrato .= "     and k86_data = '{$data}'                                                       ";
+$sqlExtrato .= "     and k86_contabancaria = {$conta}                                               ";
+$sqlExtrato .= "     and db83_instit = ".db_getsession('DB_instit')."                               ";
 $sqlExtrato .= "  ) as xx                                                                           ";
+
 $sqlExtrato .= "          left  join ( select * from fc_extratocaixa(".db_getsession('DB_instit').",$conta,'".$menordatacaixa."','".$data."',false ) ) as x ";
 $sqlExtrato .= "                                         on lpad(trim(richeque::varchar),20,'0') = lpad(trim(xx.documento),20,'0') ";
 $sqlExtrato .= "                                        and (ridata = xx.data or ridata <= '".$data."') ";
@@ -158,26 +177,24 @@ $rsExtrato   = $clextratolinha->sql_record($sqlExtrato);
 $intNumrows  = $clextratolinha->numrows;
 
 if ($intNumrows > 0 ) {
-global $k86_sequencial;
-
+  $arrayObj = array();
   for($i = 0; $i < $intNumrows; $i++ ) {
 
- //   db_fieldsmemory($rsExtrato,$i);
-   $varp =  db_utils::fieldsMemory($rsExtrato,$i);
-
-    $arrayObj[$i] = new ExtratoLinha($varp->k86_sequencial                            ,
+    db_fieldsmemory($rsExtrato,$i);
+    $arrayObj[$i] = new ExtratoLinha($k86_sequencial                            ,
                                      $i                                         ,
                                      urlencode('Concolidado')                   ,
-                                     urlencode($varp->documento)                      ,
-                                     urlencode($varp->detalhe)                        ,
-                                     urlencode(db_formatar($varp->data,'d'))  ,
-                                     urlencode(db_formatar($varp->valor_debito,'f'))  ,
-                                     urlencode(db_formatar($varp->valor_credito,'f')) ,
-                                     urlencode($varp->historico)                      ,
-                                     urlencode($varp->classe)                         ,
-                                     $varp->itemconciliacao                           ,
-                                     urlencode($varp->justificativa));
+                                     urlencode($documento)                      ,
+                                     urlencode($detalhe)                        ,
+                                     urlencode(db_formatar($data,'d'))  ,
+                                     urlencode(db_formatar($valor_debito,'f'))  ,
+                                     urlencode(db_formatar($valor_credito,'f')) ,
+                                     urlencode($historico)                      ,
+                                     urlencode($classe)                         ,
+                                     $itemconciliacao                           ,
+                                     urlencode($justificativa));
   }
+
   echo '1|||'.json_encode($arrayObj);
 } else {
 

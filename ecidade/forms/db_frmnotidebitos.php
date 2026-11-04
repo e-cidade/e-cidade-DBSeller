@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("k50_procede");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tk53_notifica?>">
-       <?
+       <?php
        db_ancora(@$Lk53_notifica,"js_pesquisak53_notifica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k53_notifica',8,$Ik53_notifica,true,'text',$db_opcao," onchange='js_pesquisak53_notifica(false);'")
 ?>
-       <?
+       <?php
 db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('k50_procede',8,$Ik50_procede,true,'text',3,'')
        <?=@$Lk53_numpre?>
     </td>
     <td> 
-<?
+<?php
 db_input('k53_numpre',8,$Ik53_numpre,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ db_input('k53_numpre',8,$Ik53_numpre,true,'text',$db_opcao,"")
        <?=@$Lk53_numpar?>
     </td>
     <td> 
-<?
+<?php
 db_input('k53_numpar',4,$Ik53_numpar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ function js_preenchepesquisa(chave,chave1,chave2){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1+"&chavepesquisa2="+chave2;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

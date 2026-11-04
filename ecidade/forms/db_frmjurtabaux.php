@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -30,7 +30,7 @@
   <table width="34%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td width="27%" height="30"><strong>C&oacute;digo:</strong></td>
-      <td width="73%" height="30"><input name="codigo" type="text" id="codigo" value="<?=@$codigo?>" size="10" <? echo isset($readonly)?"readonly":"" ?> autocomplete="off"></td>
+      <td width="73%" height="30"><input name="codigo" type="text" id="codigo" value="<?=@$codigo?>" size="10" <?php echo isset($readonly)?"readonly":"" ?> autocomplete="off"></td>
     </tr>
     <tr>
       <td height="30" nowrap><strong>Descri&ccedil;&atilde;o:&nbsp;&nbsp;&nbsp;</strong></td>

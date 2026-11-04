@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -49,7 +49,7 @@ $tipo_impressao = 1;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -87,9 +87,9 @@ if ($flag_abrev == false){
 $head4 = "INSTITUIÇÕES : ".$descr_inst;
 $head6 = "PREVISÃO DA RECEITA : ".strtoupper($previsaoreceita);
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -125,20 +125,20 @@ for($i=0;$i < pg_numrows($result);$i++){
   $saldo_relatorio = $previsaoreceita=="atualizada"?$saldo_inicial_prevadic:$saldo_inicial;
   $elemento = $o57_fonte;
   $descr    = $o57_descr;
- 
- 
-      
+
+
+
 //  if($o57_fonte == '400000000000000' || $o57_fonte == '900000000000000'){
   if(db_conplano_grupo($anousu,$o57_fonte,9004) == true){
   	 // pega o total que já vem calculado na função
      $total_saldo_inicial    += $saldo_relatorio;
-     $total_saldo_arrecadado += $saldo_arrecadado;         
+     $total_saldo_arrecadado += $saldo_arrecadado;
      if ($saldo_arrecadado > $saldo_relatorio ){
   	    $total_para_mais += $saldo_relatorio - $saldo_arrecadado;
-     } 	
+     }
      if ($saldo_arrecadado < $saldo_relatorio){
   	    $total_para_menos += $saldo_relatorio - $saldo_arrecadado;
-     } 
+     }
 
      continue;
   }
@@ -154,7 +154,7 @@ for($i=0;$i < pg_numrows($result);$i++){
     $pdf->cell(20,$alt,"PARA MAIS","B",0,"R",0);
     $pdf->cell(20,$alt,"PARA MENOS","B",1,"R",0);
     $pdf->ln(3);
-  
+
   }
   $pdf->setfont('arial','',6);
   $pdf->cell(24,$alt,db_formatar($elemento,'receita'),0,0,"L",0);
@@ -165,12 +165,12 @@ for($i=0;$i < pg_numrows($result);$i++){
   $para_menos= 0;
   if ($saldo_arrecadado > $saldo_relatorio ){
   	  $para_mais = $saldo_relatorio - $saldo_arrecadado;
-  } 	
+  }
   if ($saldo_arrecadado < $saldo_relatorio){
   	  $para_menos = $saldo_relatorio - $saldo_arrecadado;
-  }	
+  }
   $pdf->cell(20,$alt,db_formatar($para_mais,'f'),0,0,"R",0);
-  $pdf->cell(20,$alt,db_formatar($para_menos,'f'),0,1,"R",0); 
+  $pdf->cell(20,$alt,db_formatar($para_menos,'f'),0,1,"R",0);
 
 }
 $pdf->setfont('arial','B',6);

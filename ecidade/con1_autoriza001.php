@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ if(isset($confirmar)){
    $cleditalrua->alterar($d02_contri);
    if($cleditalrua->erro_status=='0'){
        $sqlerro = true;
-       break;
+       return false;
    }
   db_fim_transacao($sqlerro);
 }
@@ -95,7 +95,7 @@ function js_confirmar(){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',7,$Id02_contri,true,'text',3);
   db_input('j14_nome',40,$Ij14_nome,true,'text',3);
   ?>
@@ -106,7 +106,7 @@ function js_confirmar(){
          <?=@$Ld02_autori?>
       </td>
       <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('d02_autori',$x,true,$db_opcao,"");
 ?>
@@ -137,7 +137,7 @@ function js_preenchepesquisa(chave,autori,rua){
   document.form1.d02_autori.options[d].selected=true;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -154,12 +154,12 @@ $func_iframe->mostrar();
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($cleditalrua->erro_status=="0"){
   $cleditalrua->erro(true,false);
   $db_botao=true;

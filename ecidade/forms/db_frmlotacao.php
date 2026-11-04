@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $cllotacao->rotulo->label();
        <?=@$Lr13_anousu?>
     </td>
     <td> 
-<?
+<?php
 $r13_anousu = db_getsession('DB_anousu');
 db_input('r13_anousu',4,$Ir13_anousu,true,'text',$db_opcao,"")
 ?>
@@ -47,7 +47,7 @@ db_input('r13_anousu',4,$Ir13_anousu,true,'text',$db_opcao,"")
        <?=@$Lr13_mesusu?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_mesusu',2,$Ir13_mesusu,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('r13_mesusu',2,$Ir13_mesusu,true,'text',$db_opcao,"")
        <?=@$Lr13_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_codigo',4,$Ir13_codigo,true,'text',3,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('r13_codigo',4,$Ir13_codigo,true,'text',3,"")
        <?=@$Lr13_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_descr',40,$Ir13_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('r13_descr',40,$Ir13_descr,true,'text',$db_opcao,"")
        <?=@$Lr13_reduz?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_reduz',5,$Ir13_reduz,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('r13_reduz',5,$Ir13_reduz,true,'text',$db_opcao,"")
        <?=@$Lr13_proati?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_proati',4,$Ir13_proati,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('r13_proati',4,$Ir13_proati,true,'text',$db_opcao,"")
        <?=@$Lr13_painat?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_painat',4,$Ir13_painat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('r13_painat',4,$Ir13_painat,true,'text',$db_opcao,"")
        <?=@$Lr13_descro?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_descro',40,$Ir13_descro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -117,7 +117,7 @@ db_input('r13_descro',40,$Ir13_descro,true,'text',$db_opcao,"")
        <?=@$Lr13_descru?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_descru',40,$Ir13_descru,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -127,7 +127,7 @@ db_input('r13_descru',40,$Ir13_descru,true,'text',$db_opcao,"")
        <?=@$Lr13_subele?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_subele',6,$Ir13_subele,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ db_input('r13_subele',6,$Ir13_subele,true,'text',$db_opcao,"")
        <?=@$Lr13_calend?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_calend',2,$Ir13_calend,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -147,7 +147,7 @@ db_input('r13_calend',2,$Ir13_calend,true,'text',$db_opcao,"")
        <?=@$Lr13_rproat?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_rproat',4,$Ir13_rproat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ db_input('r13_rproat',4,$Ir13_rproat,true,'text',$db_opcao,"")
        <?=@$Lr13_rpaina?>
     </td>
     <td> 
-<?
+<?php
 db_input('r13_rpaina',4,$Ir13_rpaina,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_lotacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

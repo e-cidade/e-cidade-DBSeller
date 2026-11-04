@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,11 +48,11 @@ db_postmemory($HTTP_POST_VARS);
 <table border='0'>
   <tr>
      <td colspan=2>
-      <?  db_selinstit();    ?> 
+      <?php  db_selinstit();    ?> 
 
     </td>
  </tr>
-    <?
+    <?php
         echo "	      <tr>\n";
         echo "	      <td><fieldset><table width='100%'>\n";
         echo "           <td  ><strong>Posição Até :</strong> </td>\n";

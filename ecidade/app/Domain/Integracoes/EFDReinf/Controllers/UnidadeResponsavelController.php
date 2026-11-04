@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class UnidadeResponsavelController extends Controller
 {
+    private $unidadeResponsavel;
+
     public function __construct(UnidadeResponsavelRepository $unidadeRespRepository)
     {
         $this->unidadeResponsavel = $unidadeRespRepository;

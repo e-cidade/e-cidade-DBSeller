@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
+/**
+ *
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -13,9 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-    ];
+    protected $policies = [];
 
     /**
      * Register any authentication / authorization services.
@@ -29,5 +31,9 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(null, [
             'prefix' => 'v4/oauth',
         ]);
+
+        Passport::tokensExpireIn(Carbon::now()->addDay());
+
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(2));
     }
 }

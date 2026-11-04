@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	  <?
+	  <?php
 	  include(modification("forms/db_frmlevusu.php"));
 	  ?>
       </center>
@@ -108,7 +108,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cllevusu->erro_status=="0"){
     $cllevusu->erro(true,false);

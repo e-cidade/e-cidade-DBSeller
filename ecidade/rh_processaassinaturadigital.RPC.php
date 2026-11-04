@@ -20,6 +20,7 @@ require_once(modification("model/configuracao/DocumentConverter.model.php"));
 require_once(modification("std/DBLargeObject.php"));
 require_once(modification('src/RecursosHumanos/RH/Assinatura/AssentamentoPortaria/AssinaturaPortaria.php'));
 
+use App\Domain\Patrimonial\Protocolo\Services\PortariaDocumentoService;
 use ECidade\RecursosHumanos\RH\Assinatura\AssetamentoPortaria\AssinaturaPortaria;
 use ECidade\Lib\File\FileEstorage;
 use ECidade\Lib\Request\Storage\Curl\Autenticacao;
@@ -45,39 +46,39 @@ try {
 
         case 'getInformacoesUsuario':
 
-          $idUsuario  = db_getsession("DB_id_usuario");
-          $usuario    = UsuarioSistemaRepository::getPorCodigo($idUsuario);
-          $cgmUsuario = $usuario->getCGM();
+            $idUsuario  = db_getsession("DB_id_usuario");
+            $usuario    = UsuarioSistemaRepository::getPorCodigo($idUsuario);
+            $cgmUsuario = $usuario->getCGM();
 
-          if($cgmUsuario === false) {
-            throw new Exception('NÃ£o foi possÃ­vel obter os dados do usuÃ¡rio');
-          }
-            
-          if($cgmUsuario instanceof CgmJuridico) {
-            throw new Exception('UsuÃ¡rio logado deve ser pessoa fÃ­sica');
-          }
+            if($cgmUsuario === false) {
+                throw new Exception('Não foi possível obter os dados do usuário');
+            }
 
-          $retorno->usuario = (object) array(
-            'id'    => $idUsuario,
-            'nome'  => $cgmUsuario->getNomeCompleto(),
-            'cpf'   => $cgmUsuario->getCpf()
-          );
+            if($cgmUsuario instanceof CgmJuridico) {
+                throw new Exception('Usuário logado deve ser pessoa física');
+            }
 
-          break;
+            $retorno->usuario = (object) array(
+                'id'    => $idUsuario,
+                'nome'  => $cgmUsuario->getNomeCompleto(),
+                'cpf'   => $cgmUsuario->getCpf()
+            );
+
+            break;
 
         case 'gerarArquivo':
             /**
-             * Verificar se o arquivo jÃ¡ foi gerado
+             * Verificar se o arquivo já foi gerado
              */
             $clDocumentoPortaria = new \cl_documentoportaria();
             $sSqlDocumentoPortaria = $clDocumentoPortaria->sql_query_file(
                 null, "rh235_portaria", null, "rh235_portaria = {$parametros->iCodigoPortaria}"
             );
-            
+
             $rsDocumentoPortaria = pg_fetch_assoc(db_query($sSqlDocumentoPortaria));
-            
+
             if (!empty($rsDocumentoPortaria) && empty($parametros->flagAlteracao)) {
-                throw new Exception('Documento para esta portaria jÃ¡ existe.');
+                throw new Exception('Documento para esta portaria já existe.');
             }
 
             try {
@@ -89,7 +90,7 @@ try {
             break;
 
         case 'getArquivoEstorage':
-            
+
             if(empty($parametros->idestorage)) {
                 throw new ParameterException('Informe o ID do arquivo que deseja visualizar');
             }
@@ -111,7 +112,7 @@ try {
 
             if (!empty($parametros->filter)) {
                 $filter = json_decode($parametros->filter);
-                
+
                 if (!empty($filter->cSituacao) && $filter->cSituacao == 'A') {
 
                     // Busca o que tem no estorage para o CPF/CNPJ
@@ -128,11 +129,11 @@ try {
                             $storageResponse = new Get(Autenticacao::getInstance()->execute());
                             $storageResponse->setRoute("/files/sign?cpf_cnpj={$cpf_cnpj}");
                             $storageResponse->execute();
-                            
+
                             $infoRequest = $storageResponse->getInfo();
                             $response = $storageResponse->getResponse();
 
-                        
+
                             if ($infoRequest['http_code'] == 200) {
                                 $dados = json_decode($response);
                                 foreach($dados->data as $documento) {
@@ -165,11 +166,11 @@ try {
 
 
             if (!empty($filter->sPortariafinal) && !empty($filter->sPortariainicial)) {
-                
+
                 if ($filter->sPortariafinal == $filter->sPortariainicial) {
                     $aWhere[] = " h31_numero = '$filter->sPortariainicial' ";
                 } else {
-                    
+
                     if ($filter->sPortariafinal < $filter->sPortariainicial) {
                         $numeroAuxiliar = $filter->sPortariafinal;
                         $filter->sPortariafinal   = $filter->sPortariainicial;
@@ -183,7 +184,7 @@ try {
             if (!empty($filter->sPortariainicial) && empty($filter->sPortariafinal)) {
                 $aWhere[] = " h31_numero = '$filter->sPortariainicial' ";
             }
-            
+
             if (!empty($filter->cSituacao)) {
 
                 $aWhereSituacao[] = "  situacao = '{$filter->cSituacao}'";
@@ -200,14 +201,14 @@ try {
                 SELECT
                   *
                 FROM (
-                    SELECT 
-                        h31_sequencial as codigo, 
-                        h31_dtportaria as dataportaria, 
-                        h31_numero as portaria, 
-                        h16_regist as matricula, 
-                        h16_histor as informacoes, 
-                        z01_nome as nomeservidor, 
-                        h31_anousu as anoportaria, 
+                    SELECT
+                        h31_sequencial as codigo,
+                        h31_dtportaria as dataportaria,
+                        h31_numero as portaria,
+                        h16_regist as matricula,
+                        h16_histor as informacoes,
+                        z01_nome as nomeservidor,
+                        h31_anousu as anoportaria,
                         h12_descr as tipoportaria
                         ,coalesce((      SELECT rh236_situacao
                                           FROM portariaassentasituacao
@@ -220,7 +221,7 @@ try {
                         ,documentosassinaturas.assinaturas
                         ,documentosassinaturas.idestorage
                         ,documentosassinaturas.url
-                        ,coalesce((SELECT 
+                        ,coalesce((SELECT
                                       count(distinct ad.db59_usuario)
                                     FROM
                                       portariatipodocindividual as ptdi
@@ -228,28 +229,28 @@ try {
                                     INNER JOIN tipoasse as tp ON tp.h12_codigo = pt.h30_tipoasse
                                     INNER JOIN db_relatorio as dbr ON dbr.db63_sequencial = ptdi.h37_modportariaindividual
                                     INNER JOIN assinaturadocumentodesignacao as ad ON ad.db59_relatorio = dbr.db63_sequencial
-                                    WHERE 
+                                    WHERE
                                       pt.h30_sequencial = portaria.h31_portariatipo
                         ), 0) as total_assinaturas
-                    FROM 
-                        portaria 
-                    INNER JOIN portariatipo on h31_portariatipo = h30_sequencial 
-                    INNER JOIN tipoasse ON tipoasse.h12_codigo = portariatipo.h30_tipoasse 
-                    INNER JOIN portariaassenta on h31_sequencial = h33_portaria 
-                    INNER JOIN assenta on h16_codigo = h33_assenta 
-                    INNER JOIN rhpessoal on rh01_regist = h16_regist 
-                    INNER JOIN cgm on z01_numcgm = rh01_numcgm 
+                    FROM
+                        portaria
+                    INNER JOIN portariatipo on h31_portariatipo = h30_sequencial
+                    INNER JOIN tipoasse ON tipoasse.h12_codigo = portariatipo.h30_tipoasse
+                    INNER JOIN portariaassenta on h31_sequencial = h33_portaria
+                    INNER JOIN assenta on h16_codigo = h33_assenta
+                    INNER JOIN rhpessoal on rh01_regist = h16_regist
+                    INNER JOIN cgm on z01_numcgm = rh01_numcgm
                     LEFT  JOIN (
-                              SELECT 
-                                  portaria, 
+                              SELECT
+                                  portaria,
                                   case when count(DISTINCT idestorage) > 0
-                                       then (  SELECT array_agg(xx.db177_idestorage) 
+                                       then (  SELECT array_agg(xx.db177_idestorage)
                                                  FROM (    SELECT DISTINCT
                                                                arquivoestorage.db177_idestorage
                                                               ,arquivoestorage.db177_datadocumento
-                                                             FROM arquivoestorage 
+                                                             FROM arquivoestorage
                                                             WHERE arquivoestorage.db177_idestorage = any(array_agg(x.idestorage))
-                                                         ORDER BY 
+                                                         ORDER BY
                                                              arquivoestorage.db177_datadocumento DESC
                                                             ,arquivoestorage.db177_idestorage DESC
                                                  ) as xx
@@ -257,14 +258,14 @@ try {
                                        else null
                                    end as idestorage,
                                   case when count(DISTINCT db177_url) > 0
-                                       then (  SELECT array_agg(xx.db177_url) 
+                                       then (  SELECT array_agg(xx.db177_url)
                                                  FROM (    SELECT DISTINCT
                                                                arquivoestorage.db177_url
                                                               ,arquivoestorage.db177_idestorage
                                                               ,arquivoestorage.db177_datadocumento
-                                                             FROM arquivoestorage 
+                                                             FROM arquivoestorage
                                                             WHERE arquivoestorage.db177_idestorage = any(array_agg(x.idestorage))
-                                                         ORDER BY 
+                                                         ORDER BY
                                                              arquivoestorage.db177_datadocumento DESC
                                                             ,arquivoestorage.db177_idestorage DESC
                                                  ) as xx
@@ -275,40 +276,40 @@ try {
                                        then true
                                        else false
                                    end AS status,
-                                  case when count(DISTINCT cpf) > 0 
-                                       then array_agg(DISTINCT nome||':'||cpf) 
+                                  case when count(DISTINCT cpf) > 0
+                                       then array_agg(DISTINCT nome||':'||cpf)
                                        else null
                                   end as assinaturas
-                              FROM 
+                              FROM
                                   (
-                                  SELECT 
-                                      dp.rh235_portaria as portaria, 
-                                      a.db177_idestorage as idestorage, 
-                                      a.db177_descricao, 
-                                      a.db177_datadocumento, 
-                                      a.db177_url, 
-                                      a.db177_idestorage_arquivoanterior AS db177_idestorage_arquivoanterior, 
-                                      ass.db178_cpf as cpf, 
-                                      ass.db178_nome as nome 
-                                  FROM 
-                                      arquivoestorage AS a 
-                                      INNER JOIN documentoportaria as dp ON dp.rh235_documento = a.db177_idestorage 
-                                      LEFT JOIN arquivoestorage AS af ON af.db177_idestorage = a.db177_idestorage_arquivoanterior 
-                                      LEFT JOIN arquivoestorageassinaturas AS aa ON aa.db179_arquivo = a.db177_idestorage 
-                                      LEFT JOIN assinaturasdocumento AS ass ON ass.db178_sequencial = aa.db179_assinatura 
-                                  ORDER BY 
-                                      db177_datadocumento DESC, 
+                                  SELECT
+                                      dp.rh235_portaria as portaria,
+                                      a.db177_idestorage as idestorage,
+                                      a.db177_descricao,
+                                      a.db177_datadocumento,
+                                      a.db177_url,
+                                      a.db177_idestorage_arquivoanterior AS db177_idestorage_arquivoanterior,
+                                      ass.db178_cpf as cpf,
+                                      ass.db178_nome as nome
+                                  FROM
+                                      arquivoestorage AS a
+                                      INNER JOIN documentoportaria as dp ON dp.rh235_documento = a.db177_idestorage
+                                      LEFT JOIN arquivoestorage AS af ON af.db177_idestorage = a.db177_idestorage_arquivoanterior
+                                      LEFT JOIN arquivoestorageassinaturas AS aa ON aa.db179_arquivo = a.db177_idestorage
+                                      LEFT JOIN assinaturasdocumento AS ass ON ass.db178_sequencial = aa.db179_assinatura
+                                  ORDER BY
+                                      db177_datadocumento DESC,
                                       db177_idestorage_arquivoanterior DESC,
                                       idestorage DESC
                                   ) as x
-                              GROUP BY 
+                              GROUP BY
                                   portaria
                               ) as documentosassinaturas ON documentosassinaturas.portaria = portaria.h31_sequencial
                     LEFT JOIN portariatipodocindividual ON h37_portariatipo = h31_portariatipo
-                    LEFT JOIN db_relatorio ON db63_sequencial = h37_modportariaindividual 
-                    LEFT JOIN assinaturadocumentodesignacao ON db59_relatorio = db63_sequencial 
+                    LEFT JOIN db_relatorio ON db63_sequencial = h37_modportariaindividual
+                    LEFT JOIN assinaturadocumentodesignacao ON db59_relatorio = db63_sequencial
                     WHERE  {$sfilter}
-                    GROUP BY 
+                    GROUP BY
                          codigo
                         ,dataportaria
                         ,portaria
@@ -324,7 +325,7 @@ try {
                         ,url
                         ,total_assinaturas
                 ) as x
-                WHERE  
+                WHERE
                     {$sfilterSituacao}
                 ORDER BY
                   anoportaria DESC,
@@ -372,7 +373,7 @@ try {
 
                             }
                         }
-                        
+
                     }
                 }
 
@@ -395,9 +396,9 @@ try {
 
                 $oServidor   = ServidorRepository::getInstanciaByCodigo($item->matricula);
                 $dadosCargo  = $oServidor->getDadosCargo();
-                
+
                 $item->cargoservidor = trim($dadosCargo->rh37_descr);
-                
+
 
                 if (!empty($item->assinaturas)) {
 
@@ -419,22 +420,22 @@ try {
                         $item->assinaturas = $assinaturasDocumento;
                     }
                 }
-                
+
                 if (!empty($item->url)) {
 
                     $item->url = str_replace(array('{"', '"}', '{', '}'), '', $item->url);
                     $item->url = explode(',', $item->url);
 
                     $configApi = (object)Registry::get('app.config')->get('app.api');
-        
+
                     if (empty($configApi) || empty($configApi->estorage)) {
                         $msg  = "Erro ao buscar as credencias do e-Storage";
-                        $msg .= "\nVerifique o arquivo de configuraÃ§Ã£o (application).";
+                        $msg .= "\nVerifique o arquivo de configuração (application).";
                         throw new ParameterException($msg);
                     }
-                    
+
                     $configStorage = (object)$configApi->estorage;
-                  
+
                     do {
                         $url  = current($item->url);
                         $url  = $configStorage->url . DS . $url;
@@ -446,7 +447,7 @@ try {
 
                 return $item;
             });
-            
+
             break;
 
         case 'salvarDocumentoAssinado':
@@ -465,12 +466,12 @@ try {
                 $filename = uniqid() . time() . ".pdf";
                 $mountPath = ECIDADE_PATH . "tmp" . DS . $filename;
                 file_put_contents($mountPath, $data);
-                $path         = $mountPath;                
+                $path         = $mountPath;
                 $father_id = $json->oldIdEstorage;
                 $signers_need_obj = $json->signers_need;
                 $signers_need = [];
                 $assinante = $usuarioInstancia->getNome() . ":" . $usuarioInstancia->getCGM()->getCpf();
-                
+
                 foreach($signers_need_obj as $value) {
                     $tmp = [
                         'name' => $value->nome,
@@ -484,7 +485,7 @@ try {
                 $assinante = $json->assinante;
             }
 
-            
+
 
             $nroPortaria  = $json->portaria->sPortaria;
             $nroPortaria .= '/';
@@ -498,7 +499,7 @@ try {
 
             db_fim_transacao();
 
-            $retorno->mensagem = "Documento assinado e gravado com sucetmpsso.";
+            $retorno->mensagem = "Documento assinado e gravado com sucesso.";
             break;
 
         case 'emitirPortariaAssinada':
@@ -518,16 +519,16 @@ try {
             break;
 
         case 'alterarSituacoesPortarias':
-            
+
             $portarias = json_decode($parametros->portarias);
 
             db_inicio_transacao();
 
             alterarSituacoesPortarias($portarias, $parametros->alterarParaSituacao);
-            
+
             db_fim_transacao();
 
-            $retorno->mensagem = 'SituaÃ§Ã£o alterada com sucesso.';
+            $retorno->mensagem = 'Situação alterada com sucesso.';
             $retorno->data = $portarias;
 
             break;
@@ -554,7 +555,7 @@ try {
                     if (empty($documento->signers)) {
                         $arquivoComTodasAssinaturas[$file_id] = $file_id;
                     }
-                    
+
                     $novaVersaoArquivoAssinado[$file_id] = (object) array(
                         'id' => $documento->file_id,
                         'url' => !empty($documento->url) ? $documento->url : null
@@ -567,8 +568,8 @@ try {
                     $documentos = implode(", ", $arquivoComTodasAssinaturas);
 
                     $rs = db_query("
-                        SELECT * 
-                        FROM documentoportaria 
+                        SELECT *
+                        FROM documentoportaria
                         WHERE rh235_documento IN ({$documentos})
                     ");
 
@@ -587,13 +588,13 @@ try {
                 foreach ($novaVersaoArquivoAssinado as $arquivoPai => $arquivoAssinado) {
 
                     $rsVerificaExisteArquivo = db_query("
-                        SELECT 1 
+                        SELECT 1
                         FROM arquivoestorage
                         WHERE db177_idestorage = {$arquivoAssinado->id}
                     ");
 
                     if (!$rsVerificaExisteArquivo) {
-                      throw new Exception('Ocorreu um erro ao verificar a existencia do arquivo ({$arquivoAssinado->id).');
+                        throw new Exception('Ocorreu um erro ao verificar a existencia do arquivo ({$arquivoAssinado->id).');
                     }
 
                     if (pg_num_rows($rsVerificaExisteArquivo) > 0) {
@@ -613,7 +614,7 @@ try {
                         ");
 
                         if (!$rsDocumentoPortaria) {
-                            throw new Exception('Erro o incluir vÃ­nculo de novas versÃµes dos arquivos de portarias.');
+                            throw new Exception('Erro o incluir vnculo de novas versões dos arquivos de portarias.');
                         }
 
                         $documentoAnterior = db_utils::makeFromRecord($rsDocumentoPortaria, function ($item) {
@@ -634,7 +635,7 @@ try {
                         $documentoportaria = new cl_documentoportaria();
                         $documentoportaria->rh235_portaria   = $documentoAnterior->rh235_portaria;
                         $documentoportaria->rh235_documento  = $arquivoAssinado->id;
-                        
+
                         if(!$documentoportaria->incluir()) {
                             throw new DBException($documentoportaria->erro_msg);
                         }
@@ -647,15 +648,15 @@ try {
             break;
 
         case 'salvarSituacao':
-        
+
             db_inicio_transacao();
 
             if (empty($parametros->sCodigoPortaria)) {
-                throw new ParameterException('Informe o cÃ³digo da portaria');
+                throw new ParameterException('Informe o código da portaria');
             }
-            
+
             if (empty($parametros->cSituacao)) {
-                throw new ParameterException('Informe a situaÃ§Ã£o Ã  qual deseja alterar');
+                throw new ParameterException('Informe a situação qual deseja alterar');
             }
 
             $portariaassentasituacao = new cl_portariaassentasituacao();
@@ -663,14 +664,14 @@ try {
             $portariaassentasituacao->rh236_portariaassenta = "(SELECT h33_sequencial FROM portariaassenta WHERE h33_portaria = {$parametros->sCodigoPortaria})";
             $portariaassentasituacao->rh236_situacao        = $parametros->cSituacao;
             $portariaassentasituacao->rh236_momento         = time();
-            
+
             if(!$portariaassentasituacao->incluir()) {
                 throw new DBException($portariaassentasituacao->erro_msg);
             }
 
             $configStorage = StorageHelper::getStorageConfig();
-            
-            // Troca de situaÃ§Ã£o, de conferido para aguardando assinatura e salva no estorage quem deve assinar
+
+            // Troca de situaçãõ, de conferido para aguardando assinatura e salva no estorage quem deve assinar
             if ($parametros->cSituacao === 'A' && $configStorage->url) {
                 // Busca id do estorage
                 $clArquivoEstorage = new \cl_arquivoestorage();
@@ -689,8 +690,8 @@ try {
                 $codigoTipoPortaria = 0;
                 if (!empty($rsTipoPortaria)) {
                     $codigoTipoPortaria = $rsTipoPortaria['h31_portariatipo'];
-                } 
-                
+                }
+
                 // Busca usuários que devem assinar
                 $clAssinaturaDocumentoDesignacao = new \cl_assinaturadocumentodesignacao();
                 $postgresObjectAssinantes = db_query(
@@ -705,7 +706,7 @@ try {
                     $aux = pg_fetch_assoc($rsDescricaoTipo);
                     $decricaoTipo = $aux ? $aux['h12_descr'] : null;
 
-                    throw new Exception("Por favor cadastre quem deve assinar os documentos para o tipo de portaria {$decricaoTipo} (cÃ³digo {$codigoTipoPortaria})");
+                    throw new Exception("Por favor cadastre quem deve assinar os documentos para o tipo de portaria {$decricaoTipo} (código {$codigoTipoPortaria})");
                 }
 
                 $signers = [];
@@ -715,26 +716,26 @@ try {
                     $oAssinante->name = $row->nome;
                     $oAssinante->cpf_cnpj = $row->cpf_cnpj;
 
-                    // Isso Ã© necessÃ¡rio porque o Post faz encode pra json e o Put nÃ£o
+                    // Isso  necessrio porque o Post faz encode pra json e o Put no
                     $signers[] = !$idEstorage ? $oAssinante : json_encode($oAssinante);
                 }
-                
+
                 $atualizarAtributos = [
                     'sign_required' => true,
                     'signers' => $signers
                 ];
-                
-                // Gera arquivo caso ainda nÃ£o tenha sido gerado
+
+                // Gera arquivo caso ainda não tenha sido gerado
                 if (empty($idEstorage)) {
-     
+
                     $parametrosGeraArquivo = new stdClass();
 
-                    $parametrosGeraArquivo->aParametros = 
+                    $parametrosGeraArquivo->aParametros =
                         '[{"sNome":"$portaria","sValor":"'. $rsTipoPortaria['h31_numero'] .'"},{"sNome":"$ano","sValor":"'. $rsTipoPortaria['h31_anousu'] .'"}]'
                     ;
                     $parametrosGeraArquivo->iCodRelatorio = "1000058";
                     $parametrosGeraArquivo->iCodigoPortaria = $sCodigoPortaria;
-                    
+
                     try {
                         $responseGeraArquivo = gerarArquivo($parametrosGeraArquivo, $signers);
                     } catch (Exception $e) {
@@ -746,9 +747,9 @@ try {
                     if (empty($idEstorage)) {
                         throw new Exception('Erro ao gerar arquivo.');
                     }
-                    
+
                 } else {
- 
+
                     $put = new Put(Autenticacao::getInstance());
                     $put->setFileId($idEstorage);
 
@@ -758,11 +759,11 @@ try {
                         throw new Exception($e->getMessage());
                     }
                 }
-            }   
-           
+            }
+
             db_fim_transacao();
 
-            $retorno->mensagem = 'SituaÃ§Ã£o alterada com sucesso';
+            $retorno->mensagem = 'Situação alterada com sucesso';
 
             break;
 
@@ -789,27 +790,32 @@ function gerarArquivo($parametros, $signers = null)
     require 'sys4_processarelatorioRPC.php';
     $processamentoRelatorio = ob_get_clean();
     $_POST = null;
-    
+
     $processamentoRelatorio = JSON::create()->parse(urldecode($processamentoRelatorio));
-    
-    if($processamentoRelatorio->erro) {
+
+    if ($processamentoRelatorio->erro) {
         throw new BusinessException($processamentoRelatorio->sMsg);
     }
-    
+
     db_inicio_transacao();
 
-    $path     = $processamentoRelatorio->sMsg;
+    $path = $processamentoRelatorio->sMsg;
 
     $parametros->aParametros = JSON::create()->parse(urldecode($parametros->aParametros));
     $parametrosPortaria = current($parametros->aParametros);
     $nroPortaria = $parametrosPortaria->sValor;
     $parametrosPortaria = next($parametros->aParametros);
-    $nroPortaria .= '/'. $parametrosPortaria->sValor;
+    $nroPortaria .= '/' . $parametrosPortaria->sValor;
     $idEstorage = $parametros->idEstorage;
-    
+
     try {
         $response = salvarDocumentoEstorage(
-            $path, $nroPortaria, $parametros->iCodigoPortaria, null, $signers, $idEstorage
+            $path,
+            $nroPortaria,
+            $parametros->iCodigoPortaria,
+            null,
+            $signers,
+            $idEstorage
         );
     } catch (Exception $e) {
         throw new Exception($e->getMessage());
@@ -820,18 +826,19 @@ function gerarArquivo($parametros, $signers = null)
     $configStorage = StorageHelper::getStorageConfig();
 
     $retorno->idestorage = $response->data->id;
-    $retorno->url        = $configStorage->url;
-    $retorno->url       .= '/'. $response->data->url;
-    $retorno->path       = preg_replace('/.*?(tmp\/.*...*)$/', "$1", $path);
+    $retorno->url = $configStorage->url;
+    $retorno->url .= '/' . $response->data->url;
+    $retorno->path = preg_replace('/.*?(tmp\/.*...*)$/', "$1", $path);
 
     return $retorno;
 }
 
 /**
- * O parÃ¢metro $assinante Ã© para efetuar a assinatura.
- * O paramÃªtro $signers indica quem deve assinar o documento (informaÃ§Ã£o gravada no estorage)
- * ParÃ¢metro $idEstorage Ã© passado na alteraÃ§Ã£o de uma portaria.
+ * O parmetro $assinante  para efetuar a assinatura.
+ * O paramtro $signers indica quem deve assinar o documento (informao gravada no estorage)
+ * Parmetro $idEstorage  passado na alterao de uma portaria.
  */
+
 function salvarDocumentoEstorage(
     $path,
     $nroPortaria,
@@ -873,7 +880,7 @@ function salvarDocumentoEstorage(
 
     // if( !empty($signer) ) {
     //     $file->signersSigned($signer);
-    // } 
+    // }
 
     $post = new Post(Autenticacao::getInstance());
 
@@ -885,7 +892,7 @@ function salvarDocumentoEstorage(
 
     $arquivoestorage = new cl_arquivoestorage();
     $arquivoestorage->db177_idestorage                 = $response->data->id;
-    $arquivoestorage->db177_descricao                  = "Portaria nÃºmero: {$nroPortaria}";
+    $arquivoestorage->db177_descricao                  = "Portaria número: {$nroPortaria}";
     $arquivoestorage->db177_datadocumento              = date('Y-m-d');
     $arquivoestorage->db177_url                        = $response->data->url;
     $arquivoestorage->db177_idestorage_arquivoanterior = null;
@@ -893,16 +900,16 @@ function salvarDocumentoEstorage(
     if(!$arquivoestorage->incluir()) {
         throw new DBException($arquivoestorage->erro_msg);
     }
-    
+
     $documentoportaria = new cl_documentoportaria();
     $documentoportaria->rh235_portaria   = $iCodigoPortaria;
     $documentoportaria->rh235_documento  = $response->data->id;
-    
+
     if(!$documentoportaria->incluir()) {
         throw new DBException($documentoportaria->erro_msg);
     }
 
-    // Deleta versÃ£o antiga do arquivo
+    // Deleta versão antiga do arquivo
     if ($idEstorage) {
         $rsDocumentoPortaria = pg_fetch_assoc(db_query("SELECT rh235_sequencial FROM documentoportaria WHERE rh235_documento = {$idEstorage}"));
 
@@ -922,27 +929,25 @@ function salvarDocumentoEstorage(
 
         /**
          * Em caso de erro ao desvincular arquivo antigo com portaria.
-         * Se faz necessÃ¡rio remover o arquivo novo que estÃ¡ de acordo com a alteraÃ§Ã£o da portaria.
+         * Se faz necessrio remover o arquivo novo que est de acordo com a alterao da portaria.
          *  */
         if (!$excluiuArquivoEstorage || !$excluiuDocumentoPortaria) {
             try {
                 $delete = new Delete(Autenticacao::getInstance());
-    
-                $delete->setCodigoArquivo($response->data->id);
-                $delete->execute();
-            } catch(Exception $e) {
+
+                $delete->delete($response->data->id);
+            } catch (Exception $e) {
                 throw new Exception($e->getMessage());
             }
 
-            throw new Exception('Erro ao remover vÃ­nculo entre portaria e arquivo do estorage antigo.');
+            throw new Exception('Erro ao remover vinculo entre portaria e arquivo do estorage antigo.');
         }
 
         try {
             $delete = new Delete(Autenticacao::getInstance());
 
-            $delete->setCodigoArquivo($idEstorage);
-            $delete->execute();
-        } catch(Exception $e) {
+            $delete->execute($idEstorage);
+        } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
@@ -951,9 +956,9 @@ function salvarDocumentoEstorage(
 
         $nomeAssinante = preg_replace('/^(.*?):.*/', "$1", $assinante);
         $cpfAssinante  = preg_replace(array(
-                '/.*?:(.*)$/',
-                '/\D/'
-            ), 
+            '/.*?:(.*)$/',
+            '/\D/'
+        ),
             array(
                 "$1",
                 ""
@@ -988,9 +993,9 @@ function salvarDocumentoEstorage(
             if(!empty($cpfAssinante)) {
 
                 $servidor = ServidorRepository::getByCPF($cpfAssinante);
-              
+
                 if(!empty($servidor)) {
-                
+
                     $metadadosAssinante = (object)array(
                         'matricula' => $servidor->getMatricula(),
                         'cgm'       => $servidor->getCgm()->getCodigo()
@@ -998,11 +1003,11 @@ function salvarDocumentoEstorage(
                     $assinaturasdocumento->db178_metadados = JSON::create()->stringify($metadadosAssinante);
                 }
             }
-            
+
             if(!$assinaturasdocumento->incluir()) {
                 throw new DBException($assinaturasdocumento->erro_msg);
             }
-            
+
             $idAssinante = $assinaturasdocumento->db178_sequencial;
         }
 
@@ -1011,7 +1016,7 @@ function salvarDocumentoEstorage(
         $arquivoestorageassinaturas->db179_arquivo         = $response->data->id;
         $arquivoestorageassinaturas->db179_assinatura      = $idAssinante;
         $arquivoestorageassinaturas->db179_dataassinatura  = date('Y-m-d');
-        
+
         if(!$arquivoestorageassinaturas->incluir()) {
             throw new DBException($arquivoestorageassinaturas->erro_msg);
         }
@@ -1021,11 +1026,11 @@ function salvarDocumentoEstorage(
         $sqlAssinaturasarquivo    = $assinaturasarquivo->sql_query_limite_assinaturas(
             null
             ,array(
-                 "portaria.h31_sequencial"
-                ,"portaria.h31_numero"
-                ,"portaria.h31_anousu"
-                ,"count(distinct arquivoestorageassinaturas.db179_assinatura) as totalAssinaturas"
-                ,"count(distinct assinaturadocumentodesignacao.db59_usuario) as limiteAssinaturasDocumento"
+                "portaria.h31_sequencial"
+            ,"portaria.h31_numero"
+            ,"portaria.h31_anousu"
+            ,"count(distinct arquivoestorageassinaturas.db179_assinatura) as totalAssinaturas"
+            ,"count(distinct assinaturadocumentodesignacao.db59_usuario) as limiteAssinaturasDocumento"
             )
             ,null
             ,$aWhereAssinaturasarquivo
@@ -1042,17 +1047,17 @@ function salvarDocumentoEstorage(
 
             $totalAssinaturas           = $assinaturasdocumentoportaria->totalassinaturas;
             $limiteAssinaturasDocumento = $assinaturasdocumentoportaria->limiteassinaturasdocumento;
-            
+
             if($totalAssinaturas == $limiteAssinaturasDocumento) {
 
                 $portariaassentasituacao = new cl_portariaassentasituacao();
 
                 $portariaassentasituacao->rh236_portariaassenta = "(SELECT h33_sequencial
-                                                                      FROM portariaassenta 
+                                                                      FROM portariaassenta
                                                                      WHERE h33_portaria = {$iCodigoPortaria})";
                 $portariaassentasituacao->rh236_situacao        = 'S';
                 $portariaassentasituacao->rh236_momento         = time();
-                
+
                 if(!$portariaassentasituacao->incluir()) {
                     throw new DBException($portariaassentasituacao->erro_msg);
                 }
@@ -1072,7 +1077,7 @@ function alterarSituacoesPortarias($portarias, $sSituacaoAlterar)
         FROM
             portaria
         WHERE
-            CONCAT(h31_numero, '/', h31_anousu) IN ('{$sNumerosPortarias}')  
+            CONCAT(h31_numero, '/', h31_anousu) IN ('{$sNumerosPortarias}')
     ";
 
     $rsPortarias = db_query($sSql);
@@ -1126,4 +1131,3 @@ function buscaAssinante()
 
     return null;
 }
-

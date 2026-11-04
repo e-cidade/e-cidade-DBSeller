@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconciliaitem->rotulo->label("k83_hora");
               <?=$Lk83_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k83_sequencial",10,$Ik83_sequencial,true,"text",4,"","chave_k83_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconciliaitem->rotulo->label("k83_hora");
               <?=$Lk83_hora?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k83_hora",5,$Ik83_hora,true,"text",4,"","chave_k83_hora");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconciliaitem->rotulo->label("k83_hora");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliaitem.php")==true){
@@ -122,12 +122,12 @@ $clconciliaitem->rotulo->label("k83_hora");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

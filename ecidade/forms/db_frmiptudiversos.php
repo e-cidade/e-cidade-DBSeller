@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,15 +37,15 @@ $clrotulo->label("z01_nome");
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tj80_matric?>">
-             <?
+             <?php
               db_ancora(@$Lj80_matric,"js_pesquisaj80_matric(true);",$db_opcao);
              ?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('j80_matric',10,$Ij80_matric,true,'text',$db_opcao," onchange='js_pesquisaj80_matric(false);'")
             ?>
-            <?
+            <?php
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
             ?>
           </td>
@@ -55,7 +55,7 @@ $clrotulo->label("z01_nome");
              <?=@$Lj80_areatrib?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('j80_areatrib',15,$Ij80_areatrib,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -65,7 +65,7 @@ $clrotulo->label("z01_nome");
              <?=@$Lj80_profund?>
           </td>
           <td> 
-            <?
+            <?php
               db_input('j80_profund',15,$Ij80_profund,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -106,7 +106,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave,nome){
   document.form1.z01_nome.value = nome;
   db_iframe_iptudiversos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

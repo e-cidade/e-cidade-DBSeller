@@ -67,22 +67,22 @@ $db_botao = false;
               <table>
                <tr>
                 <td nowrap title="<?=@$Tcm25_i_codigo?>">
-                 <?db_ancora(@$Lcm25_i_codigo,"js_pesquisacm25_i_codigo(true);",1);?>
+                 <?php db_ancora(@$Lcm25_i_codigo,"js_pesquisacm25_i_codigo(true);",1);?>
                 </td>
                 <td>
-                   <?
+                   <?php
                     db_input('cm25_i_codigo',10,$Icm25_i_codigo,true,'text',1," onchange='js_pesquisacm25_i_codigo(false);'");
                    ?>
                 </td>
                </tr>
                <tr>
                  <td nowrap title="<?=@$Tcm28_i_proprietario?>">
-                         <?
+                         <?php
                     db_ancora(@$Lcm28_i_proprietario,"js_pesquisacm28_i_proprietario(true);",1);
                     ?>
                  </td>
                  <td>
-                    <?
+                    <?php
                       db_input('cm28_i_proprietario',10,$Icm28_i_proprietario,true,'text',1," onchange='js_pesquisacm28_i_proprietario(false);'");
                       db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
                     ?>

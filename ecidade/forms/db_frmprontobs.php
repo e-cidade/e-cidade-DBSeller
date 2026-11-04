@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,15 +35,15 @@ $clrotulo->label("sd24_c_atendimento");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tsd30_i_prontuario?>">
-       <?
+       <?php
        db_ancora(@$Lsd30_i_prontuario,"js_pesquisasd30_i_prontuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('sd30_i_prontuario',10,$Isd30_i_prontuario,true,'text',$db_opcao," onchange='js_pesquisasd30_i_prontuario(false);'")
 ?>
-       <?
+       <?php
 db_input('sd24_c_atendimento',11,$Isd24_c_atendimento,true,'text',3,'')
        ?>
     </td>
@@ -53,7 +53,7 @@ db_input('sd24_c_atendimento',11,$Isd24_c_atendimento,true,'text',3,'')
        <?=@$Lsd30_t_tratamento?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('sd30_t_tratamento',0,0,$Isd30_t_tratamento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -92,7 +92,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_prontobs.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

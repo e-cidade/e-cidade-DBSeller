@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ function js_relatorio1() {
 	<b>Exercício</b>
         </td>	
 	<td>
-<?
+<?php
  $ano  = db_getsession("DB_anousu");
 $result =  $clcontrans->sql_record($clcontrans->sql_query_file(null,'distinct c45_anousu'));
 $numrows = $clcontrans->numrows;
@@ -103,15 +103,15 @@ $numrows = $clcontrans->numrows;
       </tr>
   <tr>
     <td nowrap title="<?=@$Tc45_coddoc?>">
-       <?
+       <?php
        db_ancora(@$Lc45_coddoc,"js_pesquisac45_coddoc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('c45_coddoc',4,$Ic45_coddoc,true,'text',$db_opcao," onchange='js_pesquisac45_coddoc(false);'")
 ?>
-       <?
+       <?php
 db_input('c53_descr',35,$Ic53_descr,true,'text',3,'')
        ?>
     </td>
@@ -127,7 +127,7 @@ db_input('c53_descr',35,$Ic53_descr,true,'text',3,'')
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

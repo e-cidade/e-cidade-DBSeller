@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -91,37 +91,37 @@ if (isset($incluir)) {
   $erro_msg = "";
   $campos_nao_informados = "";
 
-  if($t56_situac == null ){ 
+  if($t56_situac == null ){
     $campos_nao_informados .= "Situacao - ";
     $clbens->erro_campo = "t56_situac";
     $sqlerro            = true;
   }
-  if($t52_depart == null ){ 
+  if($t52_depart == null ){
     $campos_nao_informados .= "Departamento - ";
     $clbens->erro_campo = "t52_depart";
     $sqlerro            = true;
   }
-  if($t52_dtaqu == null ){ 
+  if($t52_dtaqu == null ){
     $campos_nao_informados .= "Data da aquisicao - ";
     $clbens->erro_campo = "t52_dtaqu";
     $sqlerro            = true;
   }
-  if($t52_valaqu == null ){ 
+  if($t52_valaqu == null ){
     $campos_nao_informados .= "Valor da aquisicao - ";
     $clbens->erro_campo = "t52_valaqu";
     $sqlerro            = true;
   }
-  if($t52_numcgm == null ){ 
+  if($t52_numcgm == null ){
     $campos_nao_informados .= "Fornecedor - ";
     $clbens->erro_campo = "t52_numcgm";
     $sqlerro            = true;
   }
-  if($t64_class == null ){ 
+  if($t64_class == null ){
     $campos_nao_informados .= "Classificacao - ";
     $clbens->erro_campo = "t52_codcla";
     $sqlerro            = true;
   }
-  if($t52_descr == null ){ 
+  if($t52_descr == null ){
     $campos_nao_informados .= "Descricao do bem - ";
     $clbens->erro_campo = "t52_descr";
     $sqlerro            = true;
@@ -137,7 +137,7 @@ if (isset($incluir)) {
   if ($sqlerro == false) {
 
     $result = $clcfpatriplaca->sql_record($clcfpatriplaca->sql_query_file(db_getsession("DB_instit")));
-    
+
     if ($clcfpatriplaca->numrows > 0) {
       db_fieldsmemory($result,0);
     }
@@ -162,18 +162,18 @@ if (isset($incluir)) {
 
     // Se campo t07_obrigplaca == true, obriga digitacao da placa
     if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0) && $sqlerro == false) {
-    	
+
       if ($t07_obrigplaca == "t" && strlen(trim(@$t52_ident)) == 0 && !isset($tipo_inclui)){
         $clbens->erro_campo = "t52_ident";
         $sqlerro            = true;
         $erro_msg           = "Bem não incluido. Inclusão Abortada.\\n\\nUsuário: Placa de identificação não informada.\\n\\n Administrador.";
       } else {
-      	
+
         if ($sqlerro == false){
           $ident = $t52_ident.@$t52_ident_seq;
           if (strlen(trim(@$ident)) > 0){
           	if ($t07_confplaca==4) {
-          		
+
           		$ident = str_pad($ident,$t07_digseqplaca,'0',STR_PAD_LEFT);
           	}
           	//die($clbens->sql_query_file(null,"t52_ident",null,"t52_ident = '".str_replace(".","",$ident)."' and t52_instit = $t52_instit"));
@@ -193,10 +193,10 @@ if (isset($incluir)) {
     if ($sqlerro == false) {
       //rotina q retira os pontos do estrutural da classe e busca o código do estrutural na tabela clabens
       if ($sqlerro == false && !empty($t64_class)) {
-        
+
         $t64_class = str_replace(".","",$t64_class);
         $result_t64_codcla = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_codcla as t52_codcla",null,"t64_class = '$t64_class' and t64_instit = ".db_getsession("DB_instit")));
-        
+
         if ($clclabens->numrows>0) {
           db_fieldsmemory($result_t64_codcla,0);
         } else {
@@ -266,7 +266,7 @@ if (isset($incluir)) {
           } else if ($t07_confplaca==4) {
             if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0)) {
               $placa=$t52_ident;
-                          
+
               $placa    = str_pad($placa,$t07_digseqplaca,'0',STR_PAD_LEFT);
 
               if ($sqlerro == false && strlen(trim(@$placa)) > 0) {
@@ -274,7 +274,7 @@ if (isset($incluir)) {
 		        $res_t52_ident = $clbensplaca->sql_record($sqlbensplaca);
 
         if ($clbensplaca->numrows > 0) {
-                  
+
                   $clbens->erro_campo = "t52_ident";
                   $sqlerro=true;
                   $erro_msg = "Usuário: \\n\\n Inclusão não concluída, placa de identificação já cadastrada para outro bem\\n\\n Administrador.";
@@ -292,10 +292,10 @@ if (isset($incluir)) {
           $clbens->t52_descr  			= $t52_descr;
           $clbens->t52_obs    			= $t52_obs;
           $clbens->t52_depart 			= $t52_depart;
-					$clbens->t52_bensmarca		=	$t65_sequencial;      
+					$clbens->t52_bensmarca		=	$t65_sequencial;
           $clbens->t52_bensmedida	  =	$t67_sequencial;
           $clbens->t52_bensmodelo		=	$t66_sequencial;
-					
+
           $clbens->incluir($t52_bem);
 
           $t52_instit = $clbens->t52_instit;
@@ -303,7 +303,7 @@ if (isset($incluir)) {
           $erro_msg   = $clbens->erro_msg;
           if ($clbens->erro_status==0) {
             $sqlerro=true;
-            //db_msgbox("4 -> ".$erro_msg); 
+            //db_msgbox("4 -> ".$erro_msg);
             break;
           }
 
@@ -368,7 +368,7 @@ if (isset($incluir)) {
               $placaseq = 0;
               $t41_obs  = "PLACA NÃO INFORMADA";
             }
- 
+
             $clbensplaca->t41_bem=$t52_bem;
             $clbensplaca->t41_placa=$placa;
             $clbensplaca->t41_placaseq=str_replace(".","",$placaseq);
@@ -449,7 +449,7 @@ if (isset($incluir)) {
             }
           }
         }
-		
+
        if ($sqlerro == false && $t04_sequencial != "") {
           $clbenscedente->t09_bem = $t52_bem;
           $clbenscedente->t09_benscadcedente  = $t04_sequencial;
@@ -461,8 +461,8 @@ if (isset($incluir)) {
             break;
           }
         }
-        
-        
+
+
         if (isset($dadimovlot) && trim($dadimovlot)!="" || isset($dadmat) && trim($dadmat)!="" ) {
           if (isset($dadimovlot) && trim($dadimovlot)!="") {
             //					db_msgbox($dadimovlot." --- ".$dadimovobs);
@@ -477,7 +477,7 @@ if (isset($incluir)) {
               break;
             }
           } else if (isset($dadmat) && trim($dadmat)!="") {
-            $dados_mat = split(",",$dadmat);
+            $dados_mat =explode(",",$dadmat);
             $clbensmater->t53_codbem = $t52_bem;
             //				  					db_msgbox($dados_mat[0]." --- ".$dados_mat[1]." --- ".$dados_mat[2]." --- ".$dados_mat[3]);
             $clbensmater->t53_ntfisc = $dados_mat[0];
@@ -535,10 +535,10 @@ if (isset($incluir)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br>
 <table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	if (isset($importar)&&trim($importar)!=""){
 	     $parametros  = "importar=true&codbem=$codbem&";
 	     $parametros2 = "&importar=true&codbem=$codbem";
@@ -561,7 +561,7 @@ if (isset($incluir)) {
 		  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_bensmater.location.href='pat1_bensmater001.php?$parametros"."&tipo_inclui=true&db_opcaoal=22&t53_codbem=';
                 </script>";
 	}
-	
+
 	include(modification("forms/db_frmbens.php"));
 	?>
     </center>
@@ -570,7 +570,7 @@ if (isset($incluir)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($incluir)){
 
   if (trim(@$erro_msg)!=""){

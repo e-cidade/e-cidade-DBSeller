@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -75,15 +75,15 @@ function js_pesquisa() {
 	  </tr>
 	  <tr> 
 	    <td nowrap title="<?=@$Trh01_regist?>">
-	      <?
+	      <?php
 	      db_ancora(@$Lrh01_regist,"js_pesquisarh01_regist(true);",1);
 	      ?>
 	    </td>
 	    <td nowrap>
-	      <?
+	      <?php
 	      db_input('rh01_regist',6,$Irh01_regist,true,'text',1,"onchange='js_pesquisarh01_regist(false);'")
 	      ?>
-	      <?
+	      <?php
 	      db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
 	      ?>
 	    </td>
@@ -101,7 +101,7 @@ function js_pesquisa() {
 </form>
 
 
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

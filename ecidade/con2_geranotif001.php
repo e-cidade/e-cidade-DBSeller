@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -320,11 +320,11 @@ function js_emite(){
 
 <tr>
 <td colspan="2" align="left" nowrap title="<?=@$Td02_contri?>">
-<?
+<?php
 db_ancora(@$Ld02_contri,"js_contri(true);",$db_opcao);
 ?>
 &nbsp;&nbsp;&nbsp;
-<?
+<?php
 db_input('d02_contri',6,$Id02_contri,true,'text',$db_opcao," onchange='js_contri(false);'");
 ?>
 </td>
@@ -332,12 +332,12 @@ db_input('d02_contri',6,$Id02_contri,true,'text',$db_opcao," onchange='js_contri
 
 <tr >
 <td align="right" nowrap title="<?=@$Tk51_procede?>" >
-<?
+<?php
 db_ancora(@$Lk51_procede,"js_pesquisanotitipo(true);",4)
 ?>
 </td>
 <td align="left">&nbsp;&nbsp;&nbsp;
-<?
+<?php
 if(empty($k51_procede)){
   $result01 = $clparcontrib->sql_record($clparcontrib->sql_query("","d12_notitipo as k51_procede,k51_descr"));
   $linhascontrib = $clparcontrib->numrows;
@@ -348,7 +348,7 @@ if(empty($k51_procede)){
 }
 db_input('k51_procede',4,$Ik51_procede,true,'text',4,"onchange='js_pesquisanotitipo(false);'")
 ?>
-<?
+<?php
 db_input('k51_descr',40,$Ik51_descr,true,'text',3,'')
 ?>
 </td>
@@ -358,7 +358,7 @@ db_input('k51_descr',40,$Ik51_descr,true,'text',3,'')
 <td align="right"> <strong>Seleção :<strong>
 </td>
 <td align="left">&nbsp;&nbsp;&nbsp;
-<?
+<?php
 $x = array("1"=>"Não Notificados","2"=>"Todos");
 db_select('tipo',$x,true,2);
 ?>
@@ -376,13 +376,13 @@ db_select('tipo',$x,true,2);
 
 <tr>
 <td nowrap title="<?=@$Td07_matric?>" colspan="2">
-<?
+<?php
 db_ancora($Ld07_matric,"js_contrib(true);",2);
 ?>
-<?
+<?php
 db_input('d07_matric',8,'',true,'text',2," onchange='js_contrib(false);'")
 ?>
-<?
+<?php
 db_input('z01_nome',25,'',true,'text',3,'')
 ?>
 <input name="lanca" type="button" value="Lançar" >
@@ -392,7 +392,7 @@ db_input('z01_nome',25,'',true,'text',3,'')
 <td align="right" colspan="" width="80%">
 
 <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-<?
+<?php
 /*              if(isset($chavepesquisa)){
   $sql = "select matric as codigo,
   numcgm,
@@ -446,7 +446,7 @@ db_input('z01_nome',25,'',true,'text',3,'')
 
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -553,7 +553,7 @@ function js_preenchepesquisa(chave){
 </script>
 
 
-<?
+<?php
 if(isset($db_opcao)){
   echo "<script>  js_emite();  </script>";
 }

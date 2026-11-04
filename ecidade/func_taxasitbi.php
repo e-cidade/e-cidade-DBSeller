@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBselller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clrotulo->label("it36_descricao");
                                 <?= @$Lit36_sequencial ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("it36_sequencial", 5, @$Iit36_sequencial, "it36_sequencial", "text", 4, "", "chave_it36_sequencial");
                                 ?>
                             </td>
@@ -67,7 +67,7 @@ $clrotulo->label("it36_descricao");
                                 <?= @$Lit36_descricao ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("it36_descricao", 40, @$Iit36_descricao, "it36_descricao", "text", 4, "", "chave_it36_descricao");
                                 ?>
                             </td>

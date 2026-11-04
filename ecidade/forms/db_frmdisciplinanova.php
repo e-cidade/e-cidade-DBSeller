@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -56,15 +56,15 @@ if(isset($opcao) && $opcao=="alterar"){
    <?$query = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));?>
    <select name="ensino" onchange="js_escolheensino();">
     <option value="">Selecione</option>
-    <?for($x=0;$x<$clensino->numrows;$x++){
+    <?php for($x=0;$x<$clensino->numrows;$x++){
      db_fieldsmemory($query,$x);?>
      <option value="<?=$ed10_i_codigo?>" <?=@$ensino==$ed10_i_codigo?"selected":""?>><?=$ed10_c_descr?></option>
-    <?}?>
+    <?php }?>
    </select>
   </td>
  </tr>
 </table>
-<?if(@$ensino!=""){
+<?php if(@$ensino!=""){
  $query1 = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo as ed12_i_ensino,ed10_c_descr","ed10_c_descr"," ed10_i_codigo = $ensino"));
  db_fieldsmemory($query1,0);
  ?>
@@ -75,11 +75,11 @@ if(isset($opcao) && $opcao=="alterar"){
      <table border="0">
       <tr>
        <td nowrap title="<?=@$Ted12_i_ensino?>">
-        <?db_ancora(@$Led12_i_ensino,"",3);?>
+        <?php db_ancora(@$Led12_i_ensino,"",3);?>
        </td>
        <td>
-        <?db_input('ed12_i_ensino',10,$Ied12_i_ensino,true,'text',3,'')?>
-        <?db_input('ed10_c_descr',30,@$Ied10_c_descr,true,'text',3,'')?>
+        <?php db_input('ed12_i_ensino',10,$Ied12_i_ensino,true,'text',3,'')?>
+        <?php db_input('ed10_c_descr',30,@$Ied10_c_descr,true,'text',3,'')?>
        </td>
       </tr>
       <tr>
@@ -87,7 +87,7 @@ if(isset($opcao) && $opcao=="alterar"){
         <?=@$Led232_c_descr?>
        </td>
        <td>
-        <?db_input('ed232_c_descr',30,$Ied232_c_descr,true,'text',$db_opcao,"")?>
+        <?php db_input('ed232_c_descr',30,$Ied232_c_descr,true,'text',$db_opcao,"")?>
        </td>
       </tr>
       <tr>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
         <?=@$Led232_c_abrev?>
        </td>
        <td>
-        <?db_input('ed232_c_abrev',10,$Ied232_c_abrev,true,'text',$db_opcao,"")?>
+        <?php db_input('ed232_c_abrev',10,$Ied232_c_abrev,true,'text',$db_opcao,"")?>
        </td>
       </tr>
      </table>
@@ -110,7 +110,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <table>
   <tr>
    <td valign="top">
-   <?
+   <?php
     $chavepri= array("ed12_i_codigo"=>@$ed12_i_codigo,"ed232_c_descr"=>@$ed232_c_descr,"ed232_c_abrev"=>@$ed232_c_abrev);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     @$cliframe_alterar_excluir->sql = $cldisciplina->sql_query_file("","*","ed59_i_ordenacao"," ed12_i_ensino = $ensino");
@@ -132,16 +132,16 @@ if(isset($opcao) && $opcao=="alterar"){
    </td>
   </tr>
  </table>
-<?}?>
+<?php }?>
 </form>
 <script>
 function js_escolheensino(){
  if(document.form1.ensino.value!=""){
- <?if(isset($nova)){?>
+ <?php if(isset($nova)){?>
   location.href = "edu1_disciplinanova001.php?ensino="+document.form1.ensino.value+"&nova";
  <?}else{?>
   location.href = "edu1_disciplinanova001.php?ensino="+document.form1.ensino.value;
- <?}?>
+ <?php }?>
  }
 }
 </script>

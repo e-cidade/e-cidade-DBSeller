@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,15 +39,15 @@ $clrotulo->label("k51_descr");
   <tr>
     <td nowrap title="<?=@$Td12_receita?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php
        db_ancora(@$Ld12_receita,"js_pesquisad12_receita(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_receita',4,$Id12_receita,true,'text',$db_opcao," onchange='js_pesquisad12_receita(false);'")
 ?>
-       <?
+       <?php
 db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        ?>
     </td>
@@ -57,7 +57,7 @@ db_input('k02_descr',15,$Ik02_descr,true,'text',3,'')
        <?=@$Ld12_numtot?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_numtot',4,$Id12_numtot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('d12_numtot',4,$Id12_numtot,true,'text',$db_opcao,"")
        <?=@$Ld12_perunica?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_perunica',15,$Id12_perunica,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,52 +77,52 @@ db_input('d12_perunica',15,$Id12_perunica,true,'text',$db_opcao,"")
        <?=@$Ld12_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_perc',15,$Id12_perc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td12_hist?>">
-       <?
+       <?php
        db_ancora(@$Ld12_hist,"js_pesquisad12_hist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_hist',4,$Id12_hist,true,'text',$db_opcao," onchange='js_pesquisad12_hist(false);'")
 ?>
-       <?
+       <?php
 db_input('k01_descr',20,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td12_notitipo?>">
-       <?
+       <?php
        db_ancora(@$Ld12_notitipo,"js_pesquisad12_notitipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_notitipo',8,$Id12_notitipo,true,'text',$db_opcao," onchange='js_pesquisad12_notitipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k51_descr',40,$Ik51_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Td12_tipo?>">
-       <?
+       <?php
        db_ancora(@$Ld12_tipo,"js_pesquisad12_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('d12_tipo',4,$Id12_tipo,true,'text',$db_opcao," onchange='js_pesquisad12_tipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
@@ -214,7 +214,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_parcontrib.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

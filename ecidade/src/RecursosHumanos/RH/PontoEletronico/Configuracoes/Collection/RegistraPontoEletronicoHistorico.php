@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -39,7 +39,7 @@ class RegistraPontoEletronicoHistorico
     private $historicoRegistraPonto;
 
     /**
-     * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracoes\Model\RegistraPontoEletronicoHistorico[]
+     * @return RegistraPontoEletronicoHistorico[]
      */
     public function getHistoricoRegistraPonto()
     {
@@ -47,7 +47,7 @@ class RegistraPontoEletronicoHistorico
     }
 
     /**
-     * @param \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracoes\Model\RegistraPontoEletronicoHistorico $historicoRegistraPonto
+     * @param RegistraPontoEletronicoHistorico $historicoRegistraPonto
      *
      * @return self
      */
@@ -60,7 +60,7 @@ class RegistraPontoEletronicoHistorico
 
     /**
      * @param string $data
-     * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracoes\Model\RegistraPontoEletronicoHistorico|null
+     * @return RegistraPontoEletronicoHistorico|null
      */
     public function getPosicaoHistoricoPorData($data)
     {
@@ -70,13 +70,15 @@ class RegistraPontoEletronicoHistorico
         reset($this->historicoRegistraPonto);
 
         do {
-
             $registraPonto = current($this->historicoRegistraPonto);
 
-            if ((int)str_replace('-', '', $data) >= (int)str_replace('-', '', $registraPonto->getData()->getDate())) {
+            if ((int)str_replace('-', '', $data) >= (int)str_replace(
+                '-',
+                '',
+                $registraPonto->getData()->getDate()
+            )) {
                 break;
             }
-
         } while (next($this->historicoRegistraPonto));
 
         return $registraPonto;

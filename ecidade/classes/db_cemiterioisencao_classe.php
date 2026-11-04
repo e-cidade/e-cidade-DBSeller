@@ -1,71 +1,71 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Cemiterio
 //CLASSE DA ENTIDADE cemiterioisencao
-class cl_cemiterioisencao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cm34_sequencial = 0; 
-   var $cm34_descricao = null; 
-   var $cm34_tipo = 0; 
-   var $cm34_datalimite_dia = null; 
-   var $cm34_datalimite_mes = null; 
-   var $cm34_datalimite_ano = null; 
-   var $cm34_datalimite = null; 
-   var $cm34_obs = null; 
-   // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 cm34_sequencial = int4 = Sequencial 
-                 cm34_descricao = varchar(40) = Descrição 
-                 cm34_tipo = int4 = Tipo de Isenção 
-                 cm34_datalimite = date = Data Limite 
-                 cm34_obs = text = Observação 
+class cl_cemiterioisencao {
+   // cria variaveis de erro
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria variaveis do arquivo
+   public $cm34_sequencial = 0;
+   public $cm34_descricao = null;
+   public $cm34_tipo = 0;
+   public $cm34_datalimite_dia = null;
+   public $cm34_datalimite_mes = null;
+   public $cm34_datalimite_ano = null;
+   public $cm34_datalimite = null;
+   public $cm34_obs = null;
+   // cria propriedade com as variaveis do arquivo
+   public $campos = "
+                 cm34_sequencial = int4 = Sequencial
+                 cm34_descricao = varchar(40) = Descrição
+                 cm34_tipo = int4 = Tipo de Isenção
+                 cm34_datalimite = date = Data Limite
+                 cm34_obs = text = Observação
                  ";
-   //funcao construtor da classe 
-   function cl_cemiterioisencao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cemiterioisencao"); 
+     $this->rotulo = new rotulo("cemiterioisencao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_cemiterioisencao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm34_sequencial = ($this->cm34_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["cm34_sequencial"]:$this->cm34_sequencial);
        $this->cm34_descricao = ($this->cm34_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["cm34_descricao"]:$this->cm34_descricao);
@@ -93,9 +93,9 @@ class cl_cemiterioisencao {
      }
    }
    // funcao para inclusao
-   function incluir ($cm34_sequencial){ 
+   public function incluir ($cm34_sequencial){
       $this->atualizacampos();
-     if($this->cm34_descricao == null ){ 
+     if($this->cm34_descricao == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "cm34_descricao";
        $this->erro_banco = "";
@@ -104,7 +104,7 @@ class cl_cemiterioisencao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm34_tipo == null ){ 
+     if($this->cm34_tipo == null ){
        $this->erro_sql = " Campo Tipo de Isenção nao Informado.";
        $this->erro_campo = "cm34_tipo";
        $this->erro_banco = "";
@@ -113,29 +113,20 @@ class cl_cemiterioisencao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->cm34_datalimite == null ){ 
-       $this->erro_sql = " Campo Data Limite nao Informado.";
-       $this->erro_campo = "cm34_datalimite_dia";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
      if($cm34_sequencial == "" || $cm34_sequencial == null ){
-       $result = db_query("select nextval('cemiterioisencao_cm34_sequencial_seq')"); 
+       $result = db_query("select nextval('cemiterioisencao_cm34_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cemiterioisencao_cm34_sequencial_seq do campo: cm34_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cemiterioisencao_cm34_sequencial_seq do campo: cm34_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->cm34_sequencial = pg_result($result,0,0); 
+       $this->cm34_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from cemiterioisencao_cm34_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm34_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm34_sequencial)){
          $this->erro_sql = " Campo cm34_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -143,10 +134,10 @@ class cl_cemiterioisencao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->cm34_sequencial = $cm34_sequencial; 
+         $this->cm34_sequencial = $cm34_sequencial;
        }
      }
-     if(($this->cm34_sequencial == null) || ($this->cm34_sequencial == "") ){ 
+     if(($this->cm34_sequencial == null) || ($this->cm34_sequencial == "") ){
        $this->erro_sql = " Campo cm34_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -155,21 +146,21 @@ class cl_cemiterioisencao {
        return false;
      }
      $sql = "insert into cemiterioisencao(
-                                       cm34_sequencial 
-                                      ,cm34_descricao 
-                                      ,cm34_tipo 
-                                      ,cm34_datalimite 
-                                      ,cm34_obs 
+                                       cm34_sequencial
+                                      ,cm34_descricao
+                                      ,cm34_tipo
+                                      ,cm34_datalimite
+                                      ,cm34_obs
                        )
                 values (
-                                $this->cm34_sequencial 
-                               ,'$this->cm34_descricao' 
-                               ,$this->cm34_tipo 
-                               ,".($this->cm34_datalimite == "null" || $this->cm34_datalimite == ""?"null":"'".$this->cm34_datalimite."'")." 
-                               ,'$this->cm34_obs' 
+                                $this->cm34_sequencial
+                               ,'$this->cm34_descricao'
+                               ,$this->cm34_tipo
+                               ,".($this->cm34_datalimite == "null" || $this->cm34_datalimite == ""?"null":"'".$this->cm34_datalimite."'")."
+                               ,'$this->cm34_obs'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Isenções do Módulo Cemitério ($this->cm34_sequencial) nao Incluído. Inclusao Abortada.";
@@ -195,26 +186,26 @@ class cl_cemiterioisencao {
      $resaco = $this->sql_record($this->sql_query_file($this->cm34_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14596,'$this->cm34_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2566,14596,'','".AddSlashes(pg_result($resaco,0,'cm34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2566,14597,'','".AddSlashes(pg_result($resaco,0,'cm34_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2566,14598,'','".AddSlashes(pg_result($resaco,0,'cm34_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2566,14599,'','".AddSlashes(pg_result($resaco,0,'cm34_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2566,14600,'','".AddSlashes(pg_result($resaco,0,'cm34_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2566,14596,'','".AddSlashes(pg_fetch_result($resaco,0,'cm34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2566,14597,'','".AddSlashes(pg_fetch_result($resaco,0,'cm34_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2566,14598,'','".AddSlashes(pg_fetch_result($resaco,0,'cm34_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2566,14599,'','".AddSlashes(pg_fetch_result($resaco,0,'cm34_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2566,14600,'','".AddSlashes(pg_fetch_result($resaco,0,'cm34_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cm34_sequencial=null) { 
+   public function alterar ($cm34_sequencial=null) {
       $this->atualizacampos();
      $sql = " update cemiterioisencao set ";
      $virgula = "";
-     if(trim($this->cm34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_sequencial"])){ 
+     if(trim($this->cm34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_sequencial"])){
        $sql  .= $virgula." cm34_sequencial = $this->cm34_sequencial ";
        $virgula = ",";
-       if(trim($this->cm34_sequencial) == null ){ 
+       if(trim($this->cm34_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cm34_sequencial";
          $this->erro_banco = "";
@@ -224,10 +215,10 @@ class cl_cemiterioisencao {
          return false;
        }
      }
-     if(trim($this->cm34_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_descricao"])){ 
+     if(trim($this->cm34_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_descricao"])){
        $sql  .= $virgula." cm34_descricao = '$this->cm34_descricao' ";
        $virgula = ",";
-       if(trim($this->cm34_descricao) == null ){ 
+       if(trim($this->cm34_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "cm34_descricao";
          $this->erro_banco = "";
@@ -237,10 +228,10 @@ class cl_cemiterioisencao {
          return false;
        }
      }
-     if(trim($this->cm34_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_tipo"])){ 
+     if(trim($this->cm34_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_tipo"])){
        $sql  .= $virgula." cm34_tipo = $this->cm34_tipo ";
        $virgula = ",";
-       if(trim($this->cm34_tipo) == null ){ 
+       if(trim($this->cm34_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Isenção nao Informado.";
          $this->erro_campo = "cm34_tipo";
          $this->erro_banco = "";
@@ -250,34 +241,16 @@ class cl_cemiterioisencao {
          return false;
        }
      }
-     if(trim($this->cm34_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"] !="") ){ 
+     if(trim($this->cm34_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"] !="") ){
        $sql  .= $virgula." cm34_datalimite = '$this->cm34_datalimite' ";
        $virgula = ",";
-       if(trim($this->cm34_datalimite) == null ){ 
-         $this->erro_sql = " Campo Data Limite nao Informado.";
-         $this->erro_campo = "cm34_datalimite_dia";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite_dia"])){
          $sql  .= $virgula." cm34_datalimite = null ";
          $virgula = ",";
-         if(trim($this->cm34_datalimite) == null ){ 
-           $this->erro_sql = " Campo Data Limite nao Informado.";
-           $this->erro_campo = "cm34_datalimite_dia";
-           $this->erro_banco = "";
-           $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-           $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-           $this->erro_status = "0";
-           return false;
-         }
        }
      }
-     if(trim($this->cm34_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_obs"])){ 
+     if(trim($this->cm34_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm34_obs"])){
        $sql  .= $virgula." cm34_obs = '$this->cm34_obs' ";
        $virgula = ",";
      }
@@ -289,23 +262,23 @@ class cl_cemiterioisencao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14596,'$this->cm34_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_sequencial"]) || $this->cm34_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2566,14596,'".AddSlashes(pg_result($resaco,$conresaco,'cm34_sequencial'))."','$this->cm34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2566,14596,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm34_sequencial'))."','$this->cm34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_descricao"]) || $this->cm34_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2566,14597,'".AddSlashes(pg_result($resaco,$conresaco,'cm34_descricao'))."','$this->cm34_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2566,14597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm34_descricao'))."','$this->cm34_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_tipo"]) || $this->cm34_tipo != "")
-           $resac = db_query("insert into db_acount values($acount,2566,14598,'".AddSlashes(pg_result($resaco,$conresaco,'cm34_tipo'))."','$this->cm34_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2566,14598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm34_tipo'))."','$this->cm34_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_datalimite"]) || $this->cm34_datalimite != "")
-           $resac = db_query("insert into db_acount values($acount,2566,14599,'".AddSlashes(pg_result($resaco,$conresaco,'cm34_datalimite'))."','$this->cm34_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2566,14599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm34_datalimite'))."','$this->cm34_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm34_obs"]) || $this->cm34_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2566,14600,'".AddSlashes(pg_result($resaco,$conresaco,'cm34_obs'))."','$this->cm34_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2566,14600,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm34_obs'))."','$this->cm34_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Isenções do Módulo Cemitério nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cm34_sequencial;
@@ -333,27 +306,27 @@ class cl_cemiterioisencao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cm34_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cm34_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm34_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14596,'$cm34_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2566,14596,'','".AddSlashes(pg_result($resaco,$iresaco,'cm34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2566,14597,'','".AddSlashes(pg_result($resaco,$iresaco,'cm34_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2566,14598,'','".AddSlashes(pg_result($resaco,$iresaco,'cm34_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2566,14599,'','".AddSlashes(pg_result($resaco,$iresaco,'cm34_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2566,14600,'','".AddSlashes(pg_result($resaco,$iresaco,'cm34_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2566,14596,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2566,14597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm34_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2566,14598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm34_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2566,14599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm34_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2566,14600,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm34_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cemiterioisencao
@@ -370,7 +343,7 @@ class cl_cemiterioisencao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Isenções do Módulo Cemitério nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cm34_sequencial;
@@ -398,11 +371,11 @@ class cl_cemiterioisencao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -413,7 +386,7 @@ class cl_cemiterioisencao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cemiterioisencao";
@@ -424,11 +397,11 @@ class cl_cemiterioisencao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $cm34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $cm34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,15 +414,15 @@ class cl_cemiterioisencao {
      $sql2 = "";
      if($dbwhere==""){
        if($cm34_sequencial!=null ){
-         $sql2 .= " where cemiterioisencao.cm34_sequencial = $cm34_sequencial "; 
-       } 
+         $sql2 .= " where cemiterioisencao.cm34_sequencial = $cm34_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,11 +431,11 @@ class cl_cemiterioisencao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $cm34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $cm34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -475,15 +448,15 @@ class cl_cemiterioisencao {
      $sql2 = "";
      if($dbwhere==""){
        if($cm34_sequencial!=null ){
-         $sql2 .= " where cemiterioisencao.cm34_sequencial = $cm34_sequencial "; 
-       } 
+         $sql2 .= " where cemiterioisencao.cm34_sequencial = $cm34_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

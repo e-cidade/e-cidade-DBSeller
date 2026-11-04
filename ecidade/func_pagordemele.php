@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -55,7 +55,7 @@ $clpagordemele->rotulo->label("e53_valor");
               <?=$Le53_codord?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e53_codord",6,$Ie53_codord,true,"text",4,"","chave_e53_codord");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpagordemele->rotulo->label("e53_valor");
               <?=$Le53_codele?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e53_codele",6,$Ie53_codele,true,"text",4,"","chave_e53_codele");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clpagordemele->rotulo->label("e53_valor");
               <?=$Le53_valor?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("e53_valor",15,$Ie53_valor,true,"text",4,"","chave_e53_valor");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clpagordemele->rotulo->label("e53_valor");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $where_instit = " e60_instit = ".db_getsession("DB_instit");
 
       /* [Extensão] Filtro da Despesa - Parte 1 */
@@ -138,12 +138,12 @@ $clpagordemele->rotulo->label("e53_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("q42_descr");
        <?=@$Lq39_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q39_sequencial',10,$Iq39_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq39_isscadsimples?>">
-       <?
+       <?php
        db_ancora(@$Lq39_isscadsimples,"js_pesquisaq39_isscadsimples(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q39_isscadsimples',10,$Iq39_isscadsimples,true,'text',$db_opcaoinscr," onchange='js_pesquisaq39_isscadsimples(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        <?=@$Lq39_dtbaixa?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q39_dtbaixa',@$q39_dtbaixa_dia,@$q39_dtbaixa_mes,@$q39_dtbaixa_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,7 +75,7 @@ db_inputdata('q39_dtbaixa',@$q39_dtbaixa_dia,@$q39_dtbaixa_mes,@$q39_dtbaixa_ano
        <?=@$Lq39_issmotivobaixa?>
     </td>
     <td> 
-       <?
+       <?php
        include(modification("classes/db_issmotivobaixa_classe.php"));
        $clissmotivobaixa = new cl_issmotivobaixa;
        $result = $clissmotivobaixa->sql_record($clissmotivobaixa->sql_query("","*"));
@@ -88,7 +88,7 @@ db_inputdata('q39_dtbaixa',@$q39_dtbaixa_dia,@$q39_dtbaixa_mes,@$q39_dtbaixa_ano
        <?=@$Lq39_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q39_obs',8,60,$Iq39_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isscadsimplesbaixa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

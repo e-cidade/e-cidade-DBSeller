@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ if(isset($incluir)){
   db_inicio_transacao();
   $clissnotaavulsacanc->q63_usuario    = db_getsession("DB_id_usuario");
   db_msgbox($clissnotaavulsacanc->q63_usuario);
-  $clissnotaavulsacanc->q63_data       = date("d/m/Y",db_getsesion("DB_datausu"));
+  $clissnotaavulsacanc->q63_data       = date("d/m/Y",db_getsession("DB_datausu"));
   $clissnotaavulsacanc->q63_hora       = date("h:i"); 
   $clissnotaavulsacanc->incluir(null);
   db_fim_transacao();
@@ -63,18 +63,18 @@ if(isset($incluir)){
   </tr>
 </table>
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmissnotaavulsacanc.php"));
 	?>
     </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clissnotaavulsacanc->erro_status=="0"){
     $clissnotaavulsacanc->erro(true,false);

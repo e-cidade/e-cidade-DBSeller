@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,12 +72,12 @@ function js_testacamp(){
    <br>
     <tr>
       <td nowrap title="<?=@$Ty30_codnoti?>">
-         <?
+         <?php
          db_ancora(@$Ly30_codnoti,"js_fiscal(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y30_codnoti',10,$Iy30_codnoti,true,'text',$db_opcao," onChange='js_fiscal(false)'");
         db_input('y30_id_usuario',30,0,true,'text',3);
         ?>

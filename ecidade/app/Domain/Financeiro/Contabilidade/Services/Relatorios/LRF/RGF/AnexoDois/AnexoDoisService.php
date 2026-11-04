@@ -8,6 +8,8 @@ use App\Domain\Financeiro\Contabilidade\Factories\TemplateFactory;
 use App\Domain\Financeiro\Contabilidade\Relatorios\LRF\RGF\XlsAnexoDois;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\AnexosService;
 use App\Domain\Financeiro\Contabilidade\Services\Relatorios\LRF\RREO\AnexoTres\AnexoTresService;
+use PhpOffice\PhpWord\Settings;
+use NcJoes\OfficeConverter\OfficeConverter;
 use DBDate;
 use Exception;
 use Periodo;
@@ -53,10 +55,11 @@ class AnexoDoisService extends AnexosService
     protected $linhasNaoProcessar = [1, 3, 4, 8, 11, 20, 21, 26, 27, 28, 29, 30, 31, 32, 33];
 
     protected $totalizarSoma = [
-        3 => [5, 6, 7],
         4 => [5, 6],
         8 => [9, 10],
         11 => [12, 13, 14, 15, 16],
+        3 => [4, 7, 8, 11, 17],
+        1 => [2, 3, 18, 19]
     ];
 
     protected $totalizarSubtracao = [
@@ -124,9 +127,20 @@ class AnexoDoisService extends AnexosService
 
         $filename = $this->parser->gerar();
 
+        Settings::setTempDir('tmp/');
+        $filePdf = basename($filename, ".xlsx").".pdf";
+        $converter = new OfficeConverter($filename);
+        $converter->convertTo($filePdf);
+
         return [
             'xls' => $filename,
-            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename
+            'xlsLinkExterno' => ECIDADE_REQUEST_PATH . $filename,
+            'outros' => [
+                [
+                    'documento' => Settings::getTempDir().$filePdf,
+                    'nome' => 'Anexo II - Demonstrativo da Dívida Consolidada Líquida (PDF)'
+                ]
+            ]
         ];
     }
 
@@ -140,14 +154,7 @@ class AnexoDoisService extends AnexosService
     {
         $this->processarPeriodos();
         $this->criaProriedadesValor();
-
-        // subtrai da linha 23 os valores de RP intra orçamentário
-        $this->linhas[23]->saldo_anterior_acumulado -= $this->linhas[41]->inscricao_rp_processado;
-        $periodosProcessar = $this->periodosProcessar[$this->periodo->getCodigo()];
-        foreach ($periodosProcessar as $codigoPeriodo) {
-            $coluna = $this->colunaSaldoFinalPeriodo[$codigoPeriodo];
-            $this->linhas[23]->$coluna -= $this->linhas[41]->$coluna;
-        }
+        $this->calculaLinha23();
 
         $this->processarRCL();
         $this->totalizar();
@@ -246,13 +253,13 @@ class AnexoDoisService extends AnexosService
     private function getServiceRCL($codigoPeriodo, $exercicio)
     {
         $filtros = [
-            'codigo_relatorio' => AnexoTresFactory::getCodigoRelatorio($this->exercicio),
+            'codigo_relatorio' => AnexoTresFactory::getCodigoRelatorio($exercicio),
             'periodo' => AnexoTresFactory::transformPeriodo($codigoPeriodo),
             'DB_anousu' => $exercicio,
             'DB_instit' => $this->instituicaoSessao
         ];
 
-        return AnexoTresFactory::getService($this->exercicio, $filtros);
+        return AnexoTresFactory::getService($exercicio, $filtros);
     }
 
     /**
@@ -276,7 +283,7 @@ class AnexoDoisService extends AnexosService
         $this->validarDisponibilidadeDeCaixaNegativa();
 
         $this->somarLinha(20, [21, 25]);
-        $this->somarLinha(1, [2, 3, 18, 19]);
+        $this->subtraiLinha(26, [1, 20]);
 
         // calcula percentual da RCL
         $this->calcularPercentualLinha($this->linhas[30], $this->linhas[1], $this->linhas[27]);
@@ -352,7 +359,11 @@ class AnexoDoisService extends AnexosService
     {
         $coluna = $this->colunaSaldoFinalPeriodo[$this->periodo->getCodigo()];
         $valor = $this->linhas[26]->{$coluna};
-        $percentual = $this->linhas[31]->{$coluna};
+        $this->linhas[29]->{$coluna} = $this->linhas[27]->{$coluna} - $this->linhas[28]->{$coluna};
+        $percentual = 0;
+        if ($this->linhas[26]->{$coluna} != 0) {
+            $percentual = ($this->linhas[26]->{$coluna} / $this->linhas[29]->{$coluna}) * 100;
+        }
 
         $valorLimite = $this->linhas[32]->{$coluna};
 
@@ -404,6 +415,26 @@ class AnexoDoisService extends AnexosService
 //                echo "processando coluna: {$coluna->coluna} - $colunaDespena <br>";
                 $coluna->valor += $resto->{$colunaDespena};
             }
+        }
+    }
+
+    public function getLinhasProcessadas()
+    {
+        $this->processar();
+        return $this->linhas;
+    }
+
+    /**
+     * @return void
+     */
+    protected function calculaLinha23()
+    {
+        // subtrai da linha 23 os valores de RP intra orçamentário
+        $this->linhas[23]->saldo_anterior_acumulado -= $this->linhas[41]->inscricao_rp_processado;
+        $periodosProcessar = $this->periodosProcessar[$this->periodo->getCodigo()];
+        foreach ($periodosProcessar as $codigoPeriodo) {
+            $coluna = $this->colunaSaldoFinalPeriodo[$codigoPeriodo];
+            $this->linhas[23]->$coluna -= $this->linhas[41]->$coluna;
         }
     }
 }

@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemconta
-class cl_pagordemconta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $e49_codord = 0; 
-   var $e49_numcgm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pagordemconta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $e49_codord = 0;
+   var $e49_numcgm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 e49_codord = int4 = Ordem 
-                 e49_numcgm = int4 = Numcgm 
+                 e49_codord = int4 = Ordem
+                 e49_numcgm = int4 = Numcgm
                  ";
-   //funcao construtor da classe 
-   function cl_pagordemconta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pagordemconta"); 
+     $this->rotulo = new rotulo("pagordemconta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_pagordemconta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->e49_codord = ($this->e49_codord == ""?@$GLOBALS["HTTP_POST_VARS"]["e49_codord"]:$this->e49_codord);
        $this->e49_numcgm = ($this->e49_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["e49_numcgm"]:$this->e49_numcgm);
@@ -74,9 +74,9 @@ class cl_pagordemconta {
      }
    }
    // funcao para inclusao
-   function incluir ($e49_codord){ 
+   public function incluir ($e49_codord){
       $this->atualizacampos();
-     if($this->e49_numcgm == null ){ 
+     if($this->e49_numcgm == null ){
        $this->erro_sql = " Campo Numcgm nao Informado.";
        $this->erro_campo = "e49_numcgm";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_pagordemconta {
        $this->erro_status = "0";
        return false;
      }
-       $this->e49_codord = $e49_codord; 
-     if(($this->e49_codord == null) || ($this->e49_codord == "") ){ 
+       $this->e49_codord = $e49_codord;
+     if(($this->e49_codord == null) || ($this->e49_codord == "") ){
        $this->erro_sql = " Campo e49_codord nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_pagordemconta {
        return false;
      }
      $sql = "insert into pagordemconta(
-                                       e49_codord 
-                                      ,e49_numcgm 
+                                       e49_codord
+                                      ,e49_numcgm
                        )
                 values (
-                                $this->e49_codord 
-                               ,$this->e49_numcgm 
+                                $this->e49_codord
+                               ,$this->e49_numcgm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Conta pagadora da ordem ($this->e49_codord) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_pagordemconta {
        $resac = db_query("insert into db_acount values($acount,1081,6576,'','".AddSlashes(pg_result($resaco,0,'e49_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($e49_codord=null) { 
+   public function alterar ($e49_codord=null) {
       $this->atualizacampos();
      $sql = " update pagordemconta set ";
      $virgula = "";
-     if(trim($this->e49_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e49_codord"])){ 
+     if(trim($this->e49_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e49_codord"])){
        $sql  .= $virgula." e49_codord = $this->e49_codord ";
        $virgula = ",";
-       if(trim($this->e49_codord) == null ){ 
+       if(trim($this->e49_codord) == null ){
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "e49_codord";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_pagordemconta {
          return false;
        }
      }
-     if(trim($this->e49_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e49_numcgm"])){ 
+     if(trim($this->e49_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e49_numcgm"])){
        $sql  .= $virgula." e49_numcgm = $this->e49_numcgm ";
        $virgula = ",";
-       if(trim($this->e49_numcgm) == null ){ 
+       if(trim($this->e49_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "e49_numcgm";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_pagordemconta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Conta pagadora da ordem nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->e49_codord;
@@ -214,14 +214,14 @@ class cl_pagordemconta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($e49_codord=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($e49_codord=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($e49_codord));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_pagordemconta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Conta pagadora da ordem nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$e49_codord;
@@ -276,11 +276,11 @@ class cl_pagordemconta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_pagordemconta {
       }
      return $result;
    }
-   function sql_query ( $e49_codord=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $e49_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -321,15 +321,15 @@ class cl_pagordemconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e49_codord!=null ){
-         $sql2 .= " where pagordemconta.e49_codord = $e49_codord "; 
-       } 
+         $sql2 .= " where pagordemconta.e49_codord = $e49_codord ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -338,10 +338,10 @@ class cl_pagordemconta {
      }
      return $sql;
   }
-   function sql_query_file ( $e49_codord=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $e49_codord=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -354,15 +354,15 @@ class cl_pagordemconta {
      $sql2 = "";
      if($dbwhere==""){
        if($e49_codord!=null ){
-         $sql2 .= " where pagordemconta.e49_codord = $e49_codord "; 
-       } 
+         $sql2 .= " where pagordemconta.e49_codord = $e49_codord ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -29,6 +29,7 @@
 $clcontabancaria->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("db89_codagencia");
+$clrotulo->label("db83_instit");
 ?>
 <script>
     function js_functionVerificaIdentificador() {
@@ -45,12 +46,11 @@ $clrotulo->label("db89_codagencia");
         }
         return true;
     }
-
 </script>
-<form name="form1" method="post" action="" onsubmit="return js_functionVerificaIdentificador();">
-    <div class="container">
-        <fieldset>
-            <legend>Cadastro de Conta Bancária</legend>
+<div class="container">
+    <fieldset>
+        <legend>Cadastro de Conta Bancária</legend>
+        <form name="form1" method="post" action="" onsubmit="return js_functionVerificaIdentificador();">
             <table class="form-container">
                 <tr>
                     <td nowrap title="<?= @$Tdb83_descricao ?>">
@@ -119,56 +119,87 @@ $clrotulo->label("db89_codagencia");
                         ?>
                     </td>
                 </tr>
+                <?php if (isRioDeJaneiro()) : ?>
+                    <tr>
+                        <td nowrap title="<?php echo $Tdb83_contaplano ?>">
+                            <?php echo $Ldb83_contaplano ?>
+                        </td>
+                        <td>
+                            <?php
+                            $aContaPlano = array('t' => 'SIM', 'f' => 'NÃO');
+                            db_select('db83_contaplano', $aContaPlano, true, $db_opcao, "style='width: 150px;'");
+                            ?>
+                        </td>
+                        <?php
+                        $db83_contaunica = 'f';
+                        db_input('db83_contaunica', 1, 0, true, 'hidden', 1);
+                        ?>
+                    </tr>
+                <?php else : ?>
+                    <tr>
+                        <td nowrap title="<?= @$Tdb83_contaunica ?>">
+                            <?= @$Ldb83_contaunica ?>
+                        </td>
+                        <td>
+                            <?php
+                            $x = array('f' => 'NÃO', 't' => 'SIM');
+                            db_select('db83_contaunica', $x, true, $db_opcao, "style='width: 150px;'");
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap title="<?php echo $Tdb83_contaplano ?>">
+                            <?php echo $Ldb83_contaplano ?>
+                        </td>
+                        <td>
+                            <?php
+                            $funcaoOnchange = $db_opcao == 1 ? "onchange='mostrarVinculoConta()';" : '';
+                            $aContaPlano = array('t' => 'Sim', 'f' => 'Não');
+                            db_select('db83_contaplano', $aContaPlano, true, $db_opcao, "style='width: 150px;' {$funcaoOnchange}");
+                            ?>
+                        </td>
+                    </tr>
+                    <tr id="vincularConta" style="display: <?= $db_opcao == 1 ? "" : "none" ?>">
+                        <td>
+                            <label for="tipo_de_vinculo"><b>Vínculo:</b></label>
+                        </td>
+                        <td>
+                            <?php
+                            $tipos = ["0" => "selecione"];
+                            $daoBancosTipo = new cl_bancovinculocontatipo();
+                            $tipoVinculos = $daoBancosTipo->getAll();
+                            foreach ($tipoVinculos as $tipoVinculo) {
+                                $tipos[$tipoVinculo->db501_sequencial] = $tipoVinculo->db501_descricao;
+                            }
+                            db_select("tipo_de_vinculo", $tipos, true, 1, "style='width: 150px;'");
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                endif;
+                ?>
                 <tr>
-                    <td nowrap title="<?= @$Tdb83_contaunica ?>">
-                        <?= @$Ldb83_contaunica ?>
+                    <td nowrap title="<?php echo $Tdb83_instit ?>">
+                        <?php echo $Ldb83_instit ?>
                     </td>
                     <td>
                         <?php
-                        $x = array('f' => 'NÃO', 't' => 'SIM');
-                        db_select('db83_contaunica', $x, true, $db_opcao, "style='width: 150px;'");
+                        $rsInstituicoes = db_query("select codigo, nomeinst from db_config order by nomeinst");
+                        $aInstituticoes = array("" => "Selecione a instituição");
+                        db_utils::makeCollectionFromRecord($rsInstituicoes, function ($oInstituicao) use (&$aInstituticoes) {
+                            $aInstituticoes[$oInstituicao->codigo] = $oInstituicao->nomeinst;
+                        });
+                        db_select('db83_instit', $aInstituticoes, true, $db_opcao, "style='width: 100%	;'");
                         ?>
                     </td>
-                </tr>
-                <tr>
-                    <td nowrap title="<?php echo $Tdb83_contaplano ?>">
-                        <?php echo $Ldb83_contaplano ?>
-                    </td>
-                    <td>
-                        <?php
-                        $funcaoOnchange = $db_opcao == 1 ? "onchange='mostrarVinculoConta()';" : '';
-                        $aContaPlano = array('t' => 'Sim', 'f' => 'Não');
-                        db_select('db83_contaplano', $aContaPlano, true, $db_opcao, "style='width: 150px;' {$funcaoOnchange}");
-                        ?>
-                    </td>
-                </tr>
-                <tr id="vincularConta" style="display: <?= $db_opcao == 1 ? "" : "none" ?>">
-                    <td>
-                        <label for="tipo_de_vinculo"><b>Vínculo:</b></label>
-                    </td>
-                    <td>
-                        <?php
-                        $tipos = ["0" => "selecione"];
-                        $daoBancosTipo = new cl_bancovinculocontatipo();
-                        $tipoVinculos = $daoBancosTipo->getAll();
-                        foreach ($tipoVinculos as $tipoVinculo) {
-                            $tipos[$tipoVinculo->db501_sequencial] = $tipoVinculo->db501_descricao;
-                        }
-                        db_select("tipo_de_vinculo", $tipos, true, 1 ,"style='width: 150px;'");
-                        ?>
-                    </td>
-                </tr>
+                </tr>                
             </table>
-        </fieldset>
-    </div>
+    </fieldset>
 
-    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
-           type="submit"
-           id="db_opcao"
-           value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
-           <?=($db_botao==false?"disabled":"")?> />
+    <input name="<?= ($db_opcao == 1 ? "incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir")) ?>" type="submit" id="db_opcao" value="<?= ($db_opcao == 1 ? "Incluir" : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir")) ?>" <?= ($db_botao == false ? "disabled" : "") ?> />
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
-</form>
+    </form>
+</div>
 <script>
     function js_pesquisadb83_bancoagencia(mostra) {
         if (mostra == true) {

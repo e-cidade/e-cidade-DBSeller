@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -38,25 +38,27 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("e60_emiss");
 $clrotulo->label("k17_codigo");
 $clrotulo->label("e87_codgera");
-$clrotulo->label("o15_descr");
+$clrotulo->label("gestao");
 $clrotulo->label("o15_codigo");
 $clrotulo->label("o15_recurso");
 
 $dbwhere = '';
 /* [Extensão] Filtro da Despesa */
 
+$campos = "e83_conta, e83_codtipo as codtipo, e83_descr, gestao";
+$sSqlContaTesouraria = $clempagetipo->sql_query_reduz(null, $campos,"e83_conta", $dbwhere);
 
-$sSqlContaTesouraria = $clempagetipo->sql_query_reduz(null,"e83_conta, e83_codtipo as codtipo, e83_descr, c61_codigo","e83_conta", $dbwhere);
 $result05  = $clempagetipo->sql_record($sSqlContaTesouraria);
+
 $numrows05 = $clempagetipo->numrows;
 
 
 $arr = array();
 $arr['0']="Nenhum";
 
-for($r=0; $r<$numrows05; $r++){
-  db_fieldsmemory($result05,$r);
-  $arr[$codtipo] = $e83_conta." - ".$e83_descr . " - " . str_pad($c61_codigo, 4, "0", STR_PAD_LEFT);
+for($r=0; $r<$numrows05; $r++) {
+    $dados = db_utils::fieldsMemory($result05, $r);
+    $arr[$dados->codtipo] = "{$dados->e83_conta} - {$dados->e83_descr} - {$dados->gestao}";
 }
 
 $lUsaData    = false;
@@ -136,9 +138,6 @@ if (count($aParametrosCaixa) > 0) {
       if (form.dtchequefim.value != '') {
           query += '&dtDataChequeFinal=' + form.dtchequefim.value;
       }
-      //if(form.e83_codtipo.value!=0){
-      //  query += "&e83_codtipo="+form.e83_codtipo.value;
-      // }
 
       if (form.cheque.value != '') {
           query += "&cheque=" + form.cheque.value;
@@ -287,8 +286,8 @@ if (count($aParametrosCaixa) > 0) {
   }
 </script>
 <form name="form1" method="post" action="">
-  <? db_input('chaves',8,0,true,'hidden',1)?>
-  <? db_input('tipo',8,0,true,'hidden',1)?>
+    <?php db_input('chaves',8,0,true,'hidden',1)?>
+    <?php db_input('tipo',8,0,true,'hidden',1)?>
   <center>
     <br>
     <fieldset>
@@ -299,61 +298,61 @@ if (count($aParametrosCaixa) > 0) {
             <table border='0' style='border-right:2px groove white'>
               <tr>
                 <td nowrap title="<?=@$Te50_codord?>" align='left'>
-                  <? db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
+                    <?php db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
                 </td>
                 <td nowrap>
-                  <? db_input('e50_codord',10,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
+                    <?php db_input('e50_codord',10,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
                 </td>
                 <td>
-                  <? db_ancora("<b>Até:</b>","js_pesquisae50_codord02(true);",$db_opcao);  ?>
+                    <?php db_ancora("<b>Até:</b>","js_pesquisae50_codord02(true);",$db_opcao);  ?>
                 </td>
                 <td align="left">
-                  <? db_input('e50_codord',10,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord02(false);'","e50_codord02")?>
+                    <?php db_input('e50_codord',10,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord02(false);'","e50_codord02")?>
                 </td>
               </tr>
               <tr>
                 <td nowrap><b>Data Ordem:</b>
                 </td>
                 <td nowrap>
-                  <?
+                    <?php
                   db_inputdata('dataordemini',null,null,null,true,'text',1);
                   ?>
                 </td>
                 <td nowrap style='text-align:center'><b>A</b>
                 </td>
                 <td nowrap style='text-align:left;padding:0px'>
-                  <?
+                    <?php
                   db_inputdata('dataordemfim',null,null,null,true,'text',1);
                   ?>
                 </td>
               </tr>
               <tr >
                 <td nowrap title="<?=@$Tz01_numcgm?>" align='left'>
-                  <?
+                    <?php
                   db_ancora("<b>Nome:</b>","js_pesquisaz01_numcgm(true);",$db_opcao);
                   ?>
                 </td>
                 <td nowrap colspan=3>
-                  <?
+                    <?php
                   db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
                   ?>
-                  <?
+                    <?php
                   db_input('z01_nome',25,$Iz01_nome,true,'text',3,'')
                   ?>
                 </td>
               </tr>
               <tr>
                 <td  align="left" nowrap title="<?=$Te60_numemp?>">
-                  <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+                    <?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
                 </td>
                 <td  nowrap>
                   <input name="e60_codempx" id='e60_codemp' title='<?=$Te60_codemp?>' size="10" type='text'  onKeyPress="return js_mascara(event);" >
                 </td>
                 <td>
-                  <?db_ancora("<b>Até:</b>","js_pesquisae60_codemp2(true);",$db_opcao);  ?>
+                    <?php db_ancora("<b>Até:</b>","js_pesquisae60_codemp2(true);",$db_opcao);  ?>
                 </td>
                 <td align='left'>
-                  <? db_input('e60_codemp2',10,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesquisae60_codemp2(false);'")  ?>
+                    <?php db_input('e60_codemp2',10,$Ie60_codemp,true,'text',$db_opcao," onchange='js_pesquisae60_codemp2(false);'")  ?>
                 </td>
               </tr>
               <tr>
@@ -363,8 +362,8 @@ if (count($aParametrosCaixa) > 0) {
                   <?php
                   $arr['0']="Nenhum";
                   for($r=0; $r<$numrows05; $r++){
-                    db_fieldsmemory($result05,$r);
-                    $arr[$codtipo] = "{$e83_conta} - {$e83_descr} - {$c61_codigo}";
+                      $dados = db_utils::fieldsMemory($result05, $r);
+                      $arr[$dados->codtipo] = "{$dados->e83_conta} - {$dados->e83_descr} - {$dados->gestao}";
                   }
                   $e83_codtipo ='0';
                   db_select("e83_codtipo",$arr,true,1,"onchange='js_setContaPadrao(this.value);' style='width:100%'");
@@ -376,7 +375,7 @@ if (count($aParametrosCaixa) > 0) {
                   <b>Data de Pagamento: </b>
                 </td>
                 <td colspan='1'>
-                  <?
+                    <?php
                   db_inputdata("e42_dtpagamento",@$dtfi_dia,@$dtfi_mes,@$dtfi_ano,true,"text", 1);
                   ?>
                 </td>
@@ -384,15 +383,16 @@ if (count($aParametrosCaixa) > 0) {
             </table>
           </td>
           <td valign='top' width="20%" height="100%" style='border-right:2px groove white'>
-            <table  border='0'>
+            <table  class="form-container">
               <tr>
                 <td align='left'>
-                  <b> <? db_ancora("SLIP","js_slip(true);",1);  ?>:</b>
+                  <b> <?php db_ancora("SLIP","js_slip(true);",1);  ?>:</b>
                 </td>
                 <td nowrap>
                   <?=db_input('k17_codigo',10,'',true,'text',1,"onchange='js_slip(false);'", '', '', '', 7)?>
-                </td><td>
-                  <b> <? db_ancora("Até:","js_slip2(true);",1);  ?></b>
+                </td>
+                  <td>
+                  <b> <?php db_ancora("Até:","js_slip2(true);",1);  ?></b>
                 </td><td>
                   <?=db_input('k17_codigo',10,'',true,'text',1,"onchange='js_slip2(false);'","k17_codigo2", '', '', 7)?>
 
@@ -402,16 +402,14 @@ if (count($aParametrosCaixa) > 0) {
                 <td nowrap><b>Data Slip:</b>
                 </td>
                 <td nowrap>
-                  <?
-
+                    <?php
                   db_inputdata('dataslipini',@$dtslipini_dia,@$dtslipini_mes,@$dtslipini_ano,true,'text',1);
                   ?>
                 </td>
                 <td nowrap><b>A</b>
                 </td>
                 <td nowrap >
-                  <?
-
+                    <?php
                   db_inputdata('dataslipfim',@$dtslipfi_dia,@$dtslipfi_mes,@$dtslipfi_ano,true,'text',1);
                   ?>
                 </td>
@@ -421,7 +419,7 @@ if (count($aParametrosCaixa) > 0) {
                   &nbsp;<b>Cheque:</b></b>
                 </td>
                 <td nowrap="nowrap">
-                  <?
+                    <?php
                   db_input('cheque',10,'',true,'text',1);
                   ?>
 
@@ -431,7 +429,7 @@ if (count($aParametrosCaixa) > 0) {
                 <td nowrap><b>Data cheques:</b>
                 </td>
                 <td nowrap>
-                  <?
+                    <?php
                   if (empty($dtfi_dia)  && $lUsaData) {
 
                     $dtfi_dia = date("d",db_getsession("DB_datausu"));
@@ -445,7 +443,7 @@ if (count($aParametrosCaixa) > 0) {
                 <td nowrap><b>A</b>
                 </td>
                 <td nowrap >
-                  <?
+                    <?php
                   if (empty($dtfi_dia) && $lUsaData){
 
                     $dtfi_dia = date("d",db_getsession("DB_datausu"));
@@ -458,24 +456,24 @@ if (count($aParametrosCaixa) > 0) {
                 </td>
               </tr>
                 <tr nowrap>
-                    <td nowrap title="<?=@$To15_recurso?>">
-                        <label for="o15_recurso">
-                            <?php db_ancora("Fonte de Recurso","js_pesquisac62_codrec(true);",1); ?>
-                        </label>
-                    </td>
-                    <td colspan=3 nowrap>
+                    <td>
                         <?php
-                        db_input('o15_codigo',10 ,$Io15_codigo,true,'hidden',1);
-                        db_input('o15_recurso',10,$Io15_recurso,true,'text',1," onchange='js_pesquisac62_codrec(false);'");
-                        db_input('o15_descr',40,$Io15_descr,true,'text',3,'');
+                        db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
+                        ?>
+                    </td>
+                    <td colspan="3">
+                        <?php
+                        db_input("o15_codigo", 8, null, false, "hidden", 3);
+                        db_input("gestao", 10, null, true, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                        db_input("o15_recurso", 8, null, true, "text", 3);
+                        db_input("descricao", 40, null, true, "text", 3);
                         ?>
                     </td>
                 </tr>
-
               <tr>
                 <td>
                   <b>
-                    <? db_ancora("<b>OP auxiliar</b>","js_pesquisae42_sequencial(true);",$db_opcao);  ?>
+                      <?php db_ancora("<b>OP auxiliar</b>","js_pesquisae42_sequencial(true);",$db_opcao);  ?>
                   </b>
                 </td>
                 <td>
@@ -516,12 +514,12 @@ if (count($aParametrosCaixa) > 0) {
         <tr>
           <td colspan='2' align='left'>
             <b>Total:</b>
-            <?
+              <?php
             $tot = '0.00';
             db_input('tot',14,'',true,'text',3);
             ?>
             &nbsp;&nbsp;&nbsp;&nbsp;<b>Registros:</b>
-            <?
+              <?php
             $registros = '0';
             db_input('registros',4,'',true,'text',3);
             ?>
@@ -761,54 +759,6 @@ if (count($aParametrosCaixa) > 0) {
     db_iframe_conplanoreduz.hide();
   }
 
-  function js_pesquisac62_codrec(mostra){
-    if(mostra==true){
-      js_OpenJanelaIframe(
-          'CurrentWindow.corpo',
-          'db_iframe_orctiporec',
-          'func_fonterecurso.php?funcao_js=parent.js_mostraorctiporec1|o15_recurso|o15_descr|db_ids_recursos',
-          'Pesquisa Recursos',
-          true
-      );
-    }else{
-      if(document.form1.o15_recurso.value != ''){
-        js_OpenJanelaIframe(
-            'CurrentWindow.corpo',
-            'db_iframe_orctiporec',
-            'func_fonterecurso.php?pesquisa_chave='+document.form1.o15_recurso.value+'&funcao_js=parent.js_mostraorctiporec',
-            'Pesquisa',
-            false
-        );
-      }else{
-        document.form1.o15_codigo.value = '';
-        document.form1.o15_descr.value = '';
-      }
-    }
-  }
-
-  function js_mostraorctiporec(descricao, erro, fonteRecurso, ids) {
-      document.form1.o15_descr.value = descricao;
-      if (erro) {
-          document.form1.o15_codigo.focus();
-          document.form1.o15_codigo.value = '';
-          return;
-      }
-
-      document.form1.o15_codigo.value = ids;
-  }
-
-  function js_mostraorctiporec1(fonteRecurso, descricao, ids){
-      document.form1.o15_codigo.value = ids;
-      document.form1.o15_recurso.value = fonteRecurso;
-      document.form1.o15_descr.value = descricao;
-      db_iframe_orctiporec.hide();
-  }
-  function js_mostraslip022(chave,erro){
-    if(erro==true){
-      document.form1.k17_codigo2.focus();
-      document.form1.k17_codigo2.value = '';
-    }
-  }
   function js_pesquisae42_sequencial(mostra){
     if(mostra==true){
       js_OpenJanelaIframe('','func_nome','func_empageordem.php?funcao_js=parent.js_mostraordem1|e42_sequencial|e42_dtpagamento','Pesquisa',true);
@@ -842,4 +792,33 @@ if (count($aParametrosCaixa) > 0) {
     }
   }
 
+  $('gestao').classList.add('field-size2')
+  $('descricao').classList.add('field-size6')
+  function js_pesquisaRecurso(lMostraWindow) {
+      if (!lMostraWindow && $('gestao').value == '') {
+          $("o15_codigo").value = '';
+          $("o15_recurso").value = '';
+          $('descricao').value = '';
+          return
+      }
+
+      let param = 'gestao='+ $('gestao').value;
+      pesquisaRecurso(param);
+  }
+
+  const pesquisaRecurso = (parametroAdicional) => {
+      let sUrl = 'func_fontesubrecurso.php?funcao_js=parent.js_preencheRecurso|gestao|o15_recurso|descricao|db_ids_recursos';
+      if (parametroAdicional) {
+          sUrl += `&${parametroAdicional}`;
+      }
+      js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+  };
+
+  function js_preencheRecurso(gestao, recurso, descricao, db_ids_recursos) {
+      $('gestao').value = gestao;
+      $('o15_recurso').value = recurso;
+      $('descricao').value = descricao;
+      $('o15_codigo').value = db_ids_recursos;
+      db_iframe_recurso.hide();
+  }
 </script>

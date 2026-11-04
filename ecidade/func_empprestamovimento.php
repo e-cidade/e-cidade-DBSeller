@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -84,18 +84,18 @@ function js_mascara(evt){
         <form name="form2" method="post" action="" >
 
           <tr>
-            <td width="4%" align="right" nowrap title="<?=$Te60_numemp?>"><?=$Le60_codemp?> </td>
+            <td width="4%" align="right" nowrap title="<?php echo $Te60_numemp?>"><?php echo $Le60_codemp?> </td>
             <td width="96%" align="left" nowrap>
 
            <input name="chave_e60_codemp" size="12" type='text'  onKeyPress="return js_mascara(event);" >
-            <?=$Le60_numemp?>
-            <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
+            <?php echo $Le60_numemp?>
+            <?php db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
             </td>
           </tr>
          <tr>
-            <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
+            <td width="4%" align="right" nowrap title="<?php echo $Tz01_nome?>"><?php echo $Lz01_nome?></td>
             <td width="96%" align="left" nowrap>
-            <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+            <?php db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
             </td>
           </tr>
           <tr>
@@ -111,16 +111,20 @@ function js_mascara(evt){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
-        $sCampos  = "e81_codmov, e60_codemp, e60_anousu, e60_numemp, e60_emiss, e60_vlremp-e60_vlranu as e60_vlremp,";
-        $sCampos .= "e60_vlrpag, z01_nome, e44_descr, codigo, nomeinst, e45_acerta";
 
-        $sGroupBy  = "e81_codmov, e60_codemp, e60_anousu, e60_numemp, e60_emiss, e60_vlremp,";
-        $sGroupBy .= "e60_vlrpag, z01_nome, e44_descr, codigo, nomeinst, e45_acerta";
+        $sCampos  = "e53_codord as Ordem, e60_codemp, e60_anousu, e60_numemp, e60_emiss, e60_vlremp - e60_vlranu as e60_vlremp,";
+        $sCampos .= "e53_vlrpag, z01_nome, e44_descr, codigo as dl_Instituição, nomeinst as dl_Nome, e45_acerta, e81_codmov";
 
-        $dbwhere  = " e60_instit = ".db_getsession("DB_instit") . " and (e60_vlremp-e60_vlranu) > 0";
+        $sGroupBy  = "";
+        $dbwhere  = " e60_instit = ".db_getsession("DB_instit") . " and (e60_vlremp-e60_vlranu) > 0 ";
 
+        // tratamos o valor pago la da pagordemele, para cada liquidação e não o empenho 
+        // em si isso mudou o valor pago apresentado na tela para e53_vlrpag
+        // em resumo, se liquidarmos um empenho 2 vz cria dois movimentos na agenda
+        // eles so podem ir para a prestacao quando ele for pago.
+        $dbwhere .= " and ( ( e53_valor - e53_vlranu ) > 0) and e53_vlrpag > 0";
         /* [Extensão] - Filtro da Despesa */
 
         if (!isset($fechamento)) {
@@ -135,7 +139,7 @@ function js_mascara(evt){
                                                           "$dbwhere and e45_numemp = {$chave_e60_numemp} {$sWhereComplementar}" );
         } else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ) {
 
-          $arr = split("/",$chave_e60_codemp);
+          $arr =explode("/",$chave_e60_codemp);
           if (count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
             $dbwhere_ano = " and e60_anousu = ".$arr[1];
           } else {
@@ -163,6 +167,45 @@ function js_mascara(evt){
         }
         $coddepto =  db_getsession("DB_coddepto");
 
+
+
+        $sql = "
+        
+select ordem,     
+       e60_codemp, 
+       e60_anousu,   
+       e60_numemp,   
+       e60_emiss,   
+       e60_vlremp,   
+       e53_vlrpag,    
+       z01_nome,     
+       e44_descr,    
+       dl_instituição,
+       dl_nome,       
+       e45_acerta,   
+       min(e81_codmov ) as e81_codmov
+
+from (
+      {$sql}
+) as dd 
+
+group by ordem,     
+         e60_codemp, 
+         e60_anousu,   
+         e60_numemp,   
+         e60_emiss,   
+         e60_vlremp,   
+         e53_vlrpag,    
+         z01_nome,     
+         e44_descr,    
+         dl_instituição,
+         dl_nome,       
+         e45_acerta  
+ORDER BY e60_codemp
+        
+        ";
+
+        //echo $sql;
         db_lovrot($sql,15,"()","",$funcao_js);
       } else {
 
@@ -191,12 +234,12 @@ function js_mascara(evt){
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

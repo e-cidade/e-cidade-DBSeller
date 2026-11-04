@@ -1,60 +1,60 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Cemiterio
 //CLASSE DA ENTIDADE hospitais
-class cl_hospitais { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $cm18_i_hospital = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_hospitais {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $cm18_i_hospital = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 cm18_i_hospital = int4 = Numcgm 
+                 cm18_i_hospital = int4 = Numcgm
                  ";
-   //funcao construtor da classe 
-   function cl_hospitais() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("hospitais"); 
+     $this->rotulo = new rotulo("hospitais");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -63,7 +63,7 @@ class cl_hospitais {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->cm18_i_hospital = ($this->cm18_i_hospital == ""?@$GLOBALS["HTTP_POST_VARS"]["cm18_i_hospital"]:$this->cm18_i_hospital);
      }else{
@@ -71,10 +71,10 @@ class cl_hospitais {
      }
    }
    // funcao para inclusao
-   function incluir ($cm18_i_hospital){ 
+   public function incluir ($cm18_i_hospital){
       $this->atualizacampos();
-       $this->cm18_i_hospital = $cm18_i_hospital; 
-     if(($this->cm18_i_hospital == null) || ($this->cm18_i_hospital == "") ){ 
+       $this->cm18_i_hospital = $cm18_i_hospital;
+     if(($this->cm18_i_hospital == null) || ($this->cm18_i_hospital == "") ){
        $this->erro_sql = " Campo cm18_i_hospital nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -83,13 +83,13 @@ class cl_hospitais {
        return false;
      }
      $sql = "insert into hospitais(
-                                       cm18_i_hospital 
+                                       cm18_i_hospital
                        )
                 values (
-                                $this->cm18_i_hospital 
+                                $this->cm18_i_hospital
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Hospitais ($this->cm18_i_hospital) nao Incluído. Inclusao Abortada.";
@@ -121,16 +121,16 @@ class cl_hospitais {
        $resac = db_query("insert into db_acount values($acount,1787,10318,'','".AddSlashes(pg_result($resaco,0,'cm18_i_hospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($cm18_i_hospital=null) { 
+   public function alterar ($cm18_i_hospital=null) {
       $this->atualizacampos();
      $sql = " update hospitais set ";
      $virgula = "";
-     if(trim($this->cm18_i_hospital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm18_i_hospital"])){ 
+     if(trim($this->cm18_i_hospital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm18_i_hospital"])){
        $sql  .= $virgula." cm18_i_hospital = $this->cm18_i_hospital ";
        $virgula = ",";
-       if(trim($this->cm18_i_hospital) == null ){ 
+       if(trim($this->cm18_i_hospital) == null ){
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "cm18_i_hospital";
          $this->erro_banco = "";
@@ -156,7 +156,7 @@ class cl_hospitais {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Hospitais nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->cm18_i_hospital;
@@ -184,14 +184,14 @@ class cl_hospitais {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($cm18_i_hospital=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($cm18_i_hospital=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($cm18_i_hospital));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -217,7 +217,7 @@ class cl_hospitais {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Hospitais nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$cm18_i_hospital;
@@ -245,11 +245,11 @@ class cl_hospitais {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -271,10 +271,10 @@ class cl_hospitais {
       }
      return $result;
    }
-   function sql_query ( $cm18_i_hospital=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $cm18_i_hospital=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -288,15 +288,15 @@ class cl_hospitais {
      $sql2 = "";
      if($dbwhere==""){
        if($cm18_i_hospital!=null ){
-         $sql2 .= " where hospitais.cm18_i_hospital = $cm18_i_hospital "; 
-       } 
+         $sql2 .= " where hospitais.cm18_i_hospital = $cm18_i_hospital ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -305,10 +305,10 @@ class cl_hospitais {
      }
      return $sql;
   }
-   function sql_query_file ( $cm18_i_hospital=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $cm18_i_hospital=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -321,15 +321,15 @@ class cl_hospitais {
      $sql2 = "";
      if($dbwhere==""){
        if($cm18_i_hospital!=null ){
-         $sql2 .= " where hospitais.cm18_i_hospital = $cm18_i_hospital "; 
-       } 
+         $sql2 .= " where hospitais.cm18_i_hospital = $cm18_i_hospital ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

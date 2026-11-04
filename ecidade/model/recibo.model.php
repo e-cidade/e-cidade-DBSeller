@@ -1,4 +1,5 @@
 <?php
+
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Arrecadacao\Repository\TaxaEspecifica as TaxaEspecificaRepository;
 use ECidade\Tributario\Arrecadacao\Service\TaxaEspecifica as TaxaEspecificaService;
@@ -317,8 +318,12 @@ class Recibo
                 $this->setExercicioRecibo(date("Y", strtotime($oRecibo->k00_dtoper)));
                 $this->setConta($oRecibo->k00_conta);
                 $this->setTipoEmissao($oRecibo->tipo_emissao);
-                $sSqlDebitosRecibo = $oDaoReciboPaga->sql_query_file(null, " distinct k00_numpre, k00_numpar ",
-                    null, " k00_numnov = {$iNumnov} ");
+                $sSqlDebitosRecibo = $oDaoReciboPaga->sql_query_file(
+                    null,
+                    " distinct k00_numpre, k00_numpar ",
+                    null,
+                    " k00_numnov = {$iNumnov} "
+                );
                 $rsDebitosRecibo = $oDaoReciboPaga->sql_record($sSqlDebitosRecibo);
             }
         } else {
@@ -740,7 +745,7 @@ class Recibo
                     $oDadosConvenio->ar12_sequencial == convenio::TIPO_CONVENIO_COBRANCA_REGISTRADA &&
                     date('Ymd', strtotime($this->dtVencRecibo)) == date('Ymd', strtotime($this->dtRecibo))
                 ) {
-                    $this->dtVencRecibo = date('Y-m-d', strtotime("+1 day",strtotime($this->dtVencRecibo)));
+                    $this->dtVencRecibo = date('Y-m-d', strtotime("+1 day", strtotime($this->dtVencRecibo)));
                 }
             }
 
@@ -979,13 +984,13 @@ class Recibo
             $aDebitosPorTipo = array();
             $aDadosBanco = array();
 
-            foreach($this->aNumpres as $oDebito) {
+            foreach ($this->aNumpres as $oDebito) {
                 $aDebitosPorTipo[$oDebito->k00_tipo] = $oDebito->k00_tipo;
             };
 
 
-            foreach ( $aDebitosPorTipo as $sTipo => $oDebito) {
-                $sSqlBanco = "select k00_codbco,k00_codage,k00_descr,k00_hist1, ";
+            foreach ($aDebitosPorTipo as $sTipo => $oDebito) {
+                $sSqlBanco = "select k00_taxaadm,k00_codbco,k00_codage,k00_descr,k00_hist1, ";
                 $sSqlBanco .= "       k00_hist2,k00_hist3,k00_hist4,k00_hist5,k00_hist6, ";
                 $sSqlBanco .= "       k00_hist7,k00_hist8,k03_tipo,k00_tipoagrup, ";
                 $sSqlBanco .= "       '' as fc_numbco, k00_taxaespecifica ";
@@ -1001,9 +1006,9 @@ class Recibo
             /**
              * Percorremos os debitos adicionados, e cr
              */
-
+            $numpar = [];
             foreach ($this->aNumpres as $oDebito) {
-                $oBanco =$aDadosBanco[$oDebito->k00_tipo];
+                $oBanco = $aDadosBanco[$oDebito->k00_tipo];
                 $nDescontoReciboWeb = $this->getDescontoReciboWeb($oDebito->k00_numpre, $oDebito->k00_numpar);
 
                 $sSqlReciboWeb = "insert into db_reciboweb ";
@@ -1029,7 +1034,7 @@ class Recibo
                 } else {
                     $sSqlReciboWeb .= "             '{$oBanco->fc_numbco}', ";
                 }
-
+                $numpar[] = $oDebito->k00_numpar;
                 $sSqlReciboWeb .= "             {$nDescontoReciboWeb},{$this->iTipoDBreciboWeb},1)";
                 $rsReciboWeb = db_query($sSqlReciboWeb);
 
@@ -1055,6 +1060,21 @@ class Recibo
 
             $dadosDebitoAtual = current($aDadosBanco);
 
+
+            /**
+             * Verifica se algum dos tipos de debitos estão configurados para ccobrar taxa adm
+             */
+            $gerarTaxaADM = false;
+            foreach ($aDadosBanco as $dadoDebitoAtual) {
+               if($dadoDebitoAtual->k00_taxaadm == 't'){
+                    $gerarTaxaADM = true;
+               }
+            }
+
+            if (($sTipo == 13 or $sTipo == 14) && $gerarTaxaADM) {
+                $this->gerarTaxaADM($this->iNumpre, $sTipo, $numpar, $oDebito->k00_numpre);
+            }
+
             $this->gerarTaxaExpediente($this->iNumpre, $dadosDebitoAtual->k00_taxaespecifica);
 
             /**
@@ -1071,7 +1091,6 @@ class Recibo
             if ((int)$oDaoReciboPagaBoleto->erro_status == 0) {
                 throw new Exception("Gravar dados recibopagaboleto: \n" . $oDaoReciboPagaBoleto->erro_msg);
             }
-
         }
         return true;
     }
@@ -1091,6 +1110,7 @@ class Recibo
             $oReceita = $this->aReceitaCusta[$iReceita];
             $nValorReceita = $oReceita->nValorReceita + $nValorReceita;
         }
+
 
         $oReceita = new stdClass();
         $oReceita->iReceita = $iReceita;
@@ -1161,6 +1181,23 @@ class Recibo
             $iNumparRecibo = pg_fetch_result($rsCgm, 0, 'k00_numpar');
 
             foreach ($this->aReceitaCusta as $oReceita) {
+
+                $sSqlCustasArrecad  = " select round(coalesce(a.k00_valor,0), 2) as vlr_honorarios         ";
+                $sSqlCustasArrecad .= " from recibopaga                                                    ";
+                $sSqlCustasArrecad .= "  inner join arrecad a on a.k00_numpre     = recibopaga.k00_numpre  ";
+                $sSqlCustasArrecad .= "                      and a.k00_numpar     = recibopaga.k00_numpar  ";
+                $sSqlCustasArrecad .= "                      and a.k00_receit     = recibopaga.k00_receit  ";
+                $sSqlCustasArrecad .= " where recibopaga.k00_numnov = {$this->iNumpre}                     ";
+                $sSqlCustasArrecad .= "   and recibopaga.k00_receit = {$oReceita->iReceita}                ";
+                $rsCustasArrecad = db_query($sSqlCustasArrecad);
+                if (!$rsCustasArrecad) {
+                    throw new Exception("Erro ao verificar receita de custas");
+                }
+
+                if (pg_num_rows($rsCustasArrecad) > 0) {
+                    continue;
+                }
+
                 $sSqlReciboPaga = "insert into recibopaga (k00_numcgm,
                                                            k00_dtoper,
                                                            k00_receit,
@@ -1203,7 +1240,8 @@ class Recibo
      */
     private function processaReceitaCustaParcelamento()
     {
-        if (count($this->aReceitaCustaParcelamento) > 0) {
+
+        if (count((array)$this->aReceitaCustaParcelamento) > 0) {
             $rsCgm = db_query("select k00_numcgm from recibopaga where k00_numnov = {$this->iNumpre} order by k00_numpre asc, k00_numpar asc limit 1");
 
             if (!$rsCgm) {
@@ -1223,6 +1261,23 @@ class Recibo
 
                 foreach ($aNumpre as $iNumpar => $aNumpar) {
                     foreach ($aNumpar as $iReceit => $oReceita) {
+
+                        $sSqlCustasArrecad  = " select round(coalesce(a.k00_valor,0), 2) as vlr_honorarios         ";
+                        $sSqlCustasArrecad .= " from recibopaga                                                    ";
+                        $sSqlCustasArrecad .= "  inner join arrecad a on a.k00_numpre     = recibopaga.k00_numpre  ";
+                        $sSqlCustasArrecad .= "                      and a.k00_numpar     = recibopaga.k00_numpar  ";
+                        $sSqlCustasArrecad .= "                      and a.k00_receit     = recibopaga.k00_receit  ";
+                        $sSqlCustasArrecad .= " where recibopaga.k00_numnov = {$this->iNumpre}                     ";
+                        $sSqlCustasArrecad .= "   and recibopaga.k00_receit = {$oReceita->iReceita}                ";
+                        $rsCustasArrecad = db_query($sSqlCustasArrecad);
+                        if (!$rsCustasArrecad) {
+                            throw new Exception("Erro ao verificar receita de custas");
+                        }
+
+                        if (pg_num_rows($rsCustasArrecad) > 0) {
+                            continue;
+                        }
+
                         $sSqlReciboPaga = "insert into recibopaga (k00_numcgm,
                                                                    k00_dtoper,
                                                                    k00_receit,
@@ -1252,7 +1307,7 @@ class Recibo
                         $rsInsertReciboPaga = db_query($sSqlReciboPaga);
 
                         if (!$rsInsertReciboPaga) {
-                            throw new Exception("Não foi possível vincular receitas ao recibo.");
+                            throw new Exception("Não foi possível vincular receitas ao recibo." . pg_last_error());
                         }
                     }
                 }
@@ -1275,13 +1330,14 @@ class Recibo
             throw new Exception("Erro [0] - Não existe Transação Ativa.");
         }
         if ($this->iNumpre == null) {
-            throw new Exception("Erro [1] -  Código da Arrecadação não informado.");
+            throw new Exception("Erro [1] - Código da Arrecadação não informado.");
         }
         if ($this->getConta() == null) {
-            throw new Exception("Erro [2] -  Conta pagadora não informada.");
+            throw new Exception("Erro [2] - Conta pagadora ou conta extra não cadastrada.");
         }
 
-        $oAutenticacaoArrecadacao = new AutenticacaoArrecadacao($this->iNumpre,
+        $oAutenticacaoArrecadacao = new AutenticacaoArrecadacao(
+            $this->iNumpre,
             "0",
             $this->getConta(),
             $this->getGrupoArrecadacao(),
@@ -1316,10 +1372,10 @@ class Recibo
             throw new Exception("Erro [0] - Não existe Transação Ativa.");
         }
         if ($iNumpre == null) {
-            throw new Exception("Erro [1] -  Código da Arrecadação não informado.");
+            throw new Exception("Erro [1] - Código da Arrecadação não informado.");
         }
         if ($this->getConta() == null) {
-            throw new Exception("Erro [2] -  Conta pagadora não informada.");
+            throw new Exception("Erro [2] - Conta pagadora ou conta extra não cadastrada.");
         }
 
         $oAutenticacaoArrecadacao = new AutenticacaoArrecadacao($iNumpre, "0", $this->getConta(), $this->getGrupoArrecadacao(), null, $sCaracteristicaPeculiar, $iSequencialEmpenho);
@@ -1452,12 +1508,12 @@ class Recibo
      * Buscamos o total do recibo conforme o tipo do mesmo
      * Caso o tipo seja 1, buscamos as informações na tabela 'recibo'
      * Caso o tipo seja 2, buscamos as informações na tabela 'recibopaga'
-     * @return number
+     * @return numeric
      */
     function getTotalRecibo()
     {
         switch ($this->iTipoEmissao) {
-            /**
+                /**
              * Se o recibo for do tipo 1 buscamos o valor do mesmo na tabela 'recibo'
              */
             case 1:
@@ -1465,9 +1521,9 @@ class Recibo
                 $sWhereRecibo = "k00_numpre = {$this->getNumpreRecibo()}";
                 break;
 
-            /**
-             * Seo recibo for do tipo 2 buscamos o valor do mesmo na tabela 'recibopaga'
-             */
+                /**
+                 * Seo recibo for do tipo 2 buscamos o valor do mesmo na tabela 'recibopaga'
+                 */
             case 2:
                 $sNomeTabela = "recibopaga";
                 $sWhereRecibo = "k00_numnov = {$this->getNumpreRecibo()}";
@@ -1706,7 +1762,7 @@ class Recibo
     public function getValorOrigem()
     {
         $valorOrigem = 0;
-        foreach($this->getDebitosRecibo() as $debito) {
+        foreach ($this->getDebitosRecibo() as $debito) {
             $valorOrigem += $debito->k00_valor;
         }
         return $valorOrigem;
@@ -1857,6 +1913,107 @@ class Recibo
         $repository->save($reciboPaga);
 
         return true;
+    }
+
+    /**
+     * @param $numnov
+     * @param $codigoTaxaADM
+     * @return bool
+     * @throws Exception
+     */
+    protected function gerarTaxaADM($numnov, $sTipo, $numpar, $numpre)
+    {
+        if ($sTipo == 14) {
+            $sql = "select v07_valor,v07_totpar from termo where v07_numpre = " . $numpre;
+            $rc = db_query($sql);
+            $total = pg_fetch_all($rc)[0]['v07_valor'];
+            $totpar = pg_fetch_all($rc)[0]['v07_totpar'];
+
+            $sql = "select * from taxa where ar36_debitossemprocesso = true";
+            $rTaxas = pg_fetch_all(db_query($sql));
+            //loop taxas
+            foreach ($rTaxas as $key => $taxa) {
+                $pctm = $taxa['ar36_perc'];
+                $sql = "select * from termotaxaparc where ar29_taxa = " . $taxa['ar36_sequencial'];
+                $Rtermotaxaparc = db_query($sql);
+                //verifica se taxa esta configurada em 1 parcela
+                if (pg_num_rows($Rtermotaxaparc) > 0) {
+                    $Rtermotaxaparc = pg_fetch_all(db_query($sql))[0];
+                    $parcela = $Rtermotaxaparc['ar29_numpar'];
+                    //verifica se a parcela configurada foi selecionada
+                    foreach ($numpar as $key => $value) {
+                        if ($value == $parcela && $pctm > 0) {
+                            $valor_taxa = round(($total / 100 * $pctm), 2);
+                            if ($valor_taxa < $taxa['ar36_valormin']) {
+                                $valor_taxa = $taxa['ar36_valormin'];
+                            }
+                            if ($valor_taxa > $taxa['ar36_valormax']) {
+                                $valor_taxa = $taxa['ar36_valormax'];
+                            }
+                        }
+                    }
+                } else {
+                    $valor_taxa = round(($total / 100 * $pctm)/$totpar, 2);
+                    if ($valor_taxa < $taxa['ar36_valormin']) {
+                        $valor_taxa = $taxa['ar36_valormin'];
+                    }
+                    if ($valor_taxa > $taxa['ar36_valormax']) {
+                        $valor_taxa = $taxa['ar36_valormax'];
+                    }
+                }
+                if($valor_taxa != 0){
+                    $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
+                    $reciboPaga = $repository->findAllByNumnov($numnov)->get(0);
+                    $reciboPaga->setHist(TaxaEspecificaModel::CODIGO_HISTORICO);
+                    $reciboPaga->setReceit($taxa['ar36_receita']);
+                    $reciboPaga->setValor($valor_taxa);
+                    $repository->save($reciboPaga);
+                }
+            }
+        } else {
+
+            $oDaoRecibopaga = db_utils::getDao("recibopaga");
+            $sqlRecibopaga = $oDaoRecibopaga->sql_query(null, 'sum(k00_valor)', null, "k00_numnov = $numnov");
+            $rc = db_query($sqlRecibopaga);
+            $total = pg_fetch_all($rc)[0]['sum'];
+
+            $oDaotaxa = db_utils::getDao("taxa");
+            $sqltaxa = $oDaotaxa->sql_query_file(
+                null,
+                "ar36_valor,ar36_valormin,ar36_valormax,ar36_perc,ar36_receita,ar36_descricao,ar36_receita",
+                null,
+                "ar36_debitossemprocesso is true"
+            );
+            $taxa = $oDaotaxa->sql_record($sqltaxa);
+
+            if (pg_num_rows($taxa) == 0) {
+                return false;
+            }
+
+            foreach (pg_fetch_all($taxa) as $key => $value) {
+                $pctm = $value['ar36_perc'];
+                if ($pctm > 0) {
+                    $valor_taxa = round(($total / 100 * $pctm), 2);
+
+                    if ($valor_taxa < $value['ar36_valormin']) {
+                        $valor_taxa = $value['ar36_valormin'];
+                    }
+
+                    if ($valor_taxa > $value['ar36_valormax']) {
+                        $valor_taxa = $value['ar36_valormax'];
+                    }
+                } else if ($value['ar36_valor'] > 0) {
+                    $valor_taxa = $value['ar36_valor'];
+                }
+                $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
+                $reciboPaga = $repository->findAllByNumnov($numnov)->get(0);
+                $reciboPaga->setHist(TaxaEspecificaModel::CODIGO_HISTORICO);
+                $reciboPaga->setReceit($value['ar36_receita']);
+                $reciboPaga->setValor($valor_taxa);
+                $repository->save($reciboPaga);
+            }
+            return true;
+        }
     }
 
     /**

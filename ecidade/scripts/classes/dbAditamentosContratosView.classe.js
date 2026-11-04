@@ -1,4 +1,5 @@
-
+require_once("scripts/widgets/datagrid/plugins/DBHint.plugin.js");
+require_once("scripts/strings.js");
 function dbViewAditamentoContrato(iTipoAditamento, sNomeInstance, oNode) {
 
   const TIPO_ADITAMENTO_REEQUILIBRIO = 2;
@@ -1293,6 +1294,8 @@ function dbViewAditamentoContrato(iTipoAditamento, sNomeInstance, oNode) {
       var nQuantidade = oItem.novaquantidade || oItem.quantidade,
           nUnitario = oItem.novounitario || oItem.valorunitario;
 
+      nQuantidade < 0 ? nQuantidade = 0 : nQuantidade;
+
       var lReadOnlyQuantidade = iTipoAditamento == TIPO_ADITAMENTO_PRAZO || (iTipoAditamento == TIPO_ADITAMENTO_SUPRESSAO && oItem.servico);
 
       oInputQuantidade = new DBTextField('quantidade' + iSeq, 'quantidade' + iSeq, js_formatar(nQuantidade, 'f', nQuantidade.toString().getDecimalsLength()));
@@ -1391,6 +1394,33 @@ function dbViewAditamentoContrato(iTipoAditamento, sNomeInstance, oNode) {
     });
 
     me.oGridItens.renderRows();
+    /**
+    * Hints para mostrar o resumo e dotação dos itens ao passar mouse na coluna Item.
+    */
+    oParametros = {iWidth:'auto'};
+    aItens.each(function (oItem, iIndice) {
+        let message = `<b>Dotações:</b> `;
+
+        const dotacoes = oItem.dotacoes.reduce((obj, {orgao, dotacao}) => {
+            if (!obj[orgao]) {
+                obj[orgao] = [];
+            }
+            obj[orgao].push(dotacao);
+            return obj;
+        }, {});
+
+        if (Object.keys(dotacoes).length > 0) {
+            for (const orgao in dotacoes) {
+                const dotacao = dotacoes[orgao].join(', ');
+                message += `${orgao}: ${dotacao}<br>`;
+            }
+        } else {
+            message += `Sem Observação<br>`;
+        }
+
+        message += oItem.resumo ? `<b>Resumo:</b> ${oItem.resumo.urlDecode()}` : `<b>Resumo:</b> Sem Observação`;
+        me.oGridItens.setHint(iIndice, 2, message, oParametros);
+    });
   };
 
   /**
@@ -1475,3 +1505,4 @@ function dbViewAditamentoContrato(iTipoAditamento, sNomeInstance, oNode) {
 }
 
 require_once("scripts/arrays.js");
+

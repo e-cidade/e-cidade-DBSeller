@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -73,7 +73,7 @@ if($cldb_depart->numrows){
           <?=@$Lt93_codtran?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t93_instit',10,$It93_instit,true,"hidden",3,"");
             db_input('t93_codtran',8,$It93_codtran,true,'text',3,"");
           ?>
@@ -81,12 +81,12 @@ if($cldb_depart->numrows){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt93_id_usuario?>">
-          <?
+          <?php
             db_ancora(@$Lt93_id_usuario,"",3);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t93_id_usuario',8,$It93_id_usuario,true,'text',3,"");
             db_input('nome',40,$Inome,true,'text',3,'');
           ?>
@@ -94,12 +94,12 @@ if($cldb_depart->numrows){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt93_depart?>">
-          <?
+          <?php
             db_ancora(@$Lt93_depart,"",3);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t93_depart',8,@$It93_depart,true,'text',3,"");
             db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
           ?>
@@ -107,12 +107,12 @@ if($cldb_depart->numrows){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt94_depart?>">
-          <?
+          <?php
             db_ancora(@$Lt94_depart,"js_pesquisat94_depart(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php
             db_input('t94_depart',8,$It94_depart,true,'text',$db_opcao," onchange='js_pesquisat94_depart(false);'");
             db_input('descrdepto',40,$Idescrdepto,true,'text',3,'',"depto_destino");
           ?>
@@ -123,7 +123,7 @@ if($cldb_depart->numrows){
           <?=@$Lt93_data?>
         </td>
         <td> 
-          <?
+          <?php
             if (!isset($t93_data)){
             	$t93_data_ano = date('Y',db_getsession("DB_datausu"));
             	$t93_data_mes = date('m',db_getsession("DB_datausu"));
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benstransf.hide();
-  <?
+  <?php
     if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&db_param=$db_param'";
   }

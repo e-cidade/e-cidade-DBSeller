@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("v29_descricao");
        <?=@$Lv28_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v28_sequencial',10,$Iv28_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -50,7 +50,7 @@ db_input('v28_sequencial',10,$Iv28_sequencial,true,'text',3,"")
        <?=@$Lv28_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('v28_descricao',50,$Iv28_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -60,7 +60,7 @@ db_input('v28_descricao',50,$Iv28_descricao,true,'text',$db_opcao,"")
        <?=@$Lv28_grupo?>
     </td>
     <td> 
-       <?
+       <?php
        include(modification("classes/db_procedtipogrupo_classe.php"));
        $clprocedtipogrupo = new cl_procedtipogrupo;
        $result = $clprocedtipogrupo->sql_record($clprocedtipogrupo->sql_query("","*","", ""));
@@ -103,7 +103,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procedtipo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

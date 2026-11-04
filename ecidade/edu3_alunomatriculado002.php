@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,7 +103,7 @@ $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
         <td><b>RF Anterior</b></td>
         <td><b>Destino Saída</b></td>
        </tr>
-       <?
+       <?php
        for ($iCont = 0; $iCont < $oDaoMatricula->numrows; $iCont++) {
          	
          db_fieldsmemory($rsMatricula, $iCont);
@@ -152,7 +152,7 @@ $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
           <td class='aluno' align='center'><?=$rfant==""?"&nbsp;":$rfant?></td>
           <td class="aluno" align="center"><?=$destinosaida==""?"&nbsp;":$destinosaida?></td>
          </tr>
-       <?
+       <?php
        }
       ?>
      </table>

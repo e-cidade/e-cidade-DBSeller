@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -226,7 +226,7 @@ class Database {
     $oObject = pg_fetch_object($resource, $index);
 
     // Tratamento feito para não dar erro nos campos texto vazios que são not null
-    foreach ($oObject as $sKey => &$mValue) {
+    foreach ($oObject as $sKey => $mValue) {
       $mValue = trim($mValue);
     }
 

@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<consulta distinct="true">
+    <campos>
+        <campo campo="k13_data" label="data" />
+    </campos>
+    <from tabela="calend" />
+    <juncoes></juncoes>
+    <filtros>
+        <filtro label="datainicial" condicao="(k13_data >= '$datainicial')" obrigatorio="true"/>
+        <filtro label="datafinal" condicao="('$datafinal' >= k13_data)" obrigatorio="true"/>
+    </filtros>
+    <agrupamento campos="" />
+    <ordenacao campos="k13_data" />
+</consulta>

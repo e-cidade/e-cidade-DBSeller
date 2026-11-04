@@ -3,6 +3,8 @@
 namespace ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies;
 
 use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2022\LivroDiarioGeralBuilder;
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2023\LivroDiarioGeral2023Builder;
+use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Builders\v2024\LivroDiarioGeral2024Builder;
 
 class LivroDiarioGeralService extends PadService
 {
@@ -28,15 +30,23 @@ class LivroDiarioGeralService extends PadService
 
     protected function getBuilder()
     {
-        return new LivroDiarioGeralBuilder();
+        switch ($this->ano) {
+            case 2022:
+                return new LivroDiarioGeralBuilder();
+            case 2023:
+                return new LivroDiarioGeral2023Builder();
+            case 2024:
+            default:
+                return new LivroDiarioGeral2024Builder();
+        }
     }
 
-    private function sqlDiarioGeral()
+    protected function sqlDiarioGeral()
     {
         $codigosInstituicoes = implode(',', $this->instituicoes);
-        $sWhere = "where lan.c69_data between '{$this->dataInicial}' and '{$this->dataFinal}' ";
+        $sWhere = "where lan.c69_data between '{$this->dataInicial}' and '{$this->dataFinal}'";
         /**
-         * Sub-select que descobre a origem da arrecadação da receita: planilha de receita ou arrecadação
+         * Subselect que descobre a origem da arrecadação da receita: planilha de receita ou arrecadação
          */
         $sSqlDadosTesouraria = "
          select lpad(
@@ -61,12 +71,14 @@ class LivroDiarioGeralService extends PadService
          where c77_codlan = c69_codlan limit 1
          ";
 
-        $sSqlLancamentos = "select c69_sequen   as sequencial_lancamento,
+        $sSqlLancamentos = "
+        select c69_sequen   as sequencial_lancamento,
                c60_estrut   as estrutural,
                codtrib      as orgaounidade,
                c78_chave    as numerolote,
-               (select o15_recurso from orctiporec where o15_codigo = codigo_recurso) as recurso,
-               complemento as complemento_recurso,
+               o15_recurso as recurso,
+               codigo_siconfi,
+               case when o200_tribunal is true then o15_complemento else 0 end as complemento_recurso,
                c60_identificadorfinanceiro as indicadorsuperavitfinanceiro,
                (SELECT c65_sigla FROM consistemaconta WHERE c65_sequencial = c60_consistemaconta) AS naturezainformacao,
                case
@@ -105,7 +117,9 @@ class LivroDiarioGeralService extends PadService
                      when c53_tipo in (20,21) then 3
                      when c53_tipo in (30,11) then 2
                      when c53_tipo is null  then 0
-                     else 9 end ) as tipodocumento
+                     else 9 end
+               ) as tipodocumento,
+               case when c62_vlrcre > 0 or c62_vlrdeb > 0 then true else false end as tem_encerramento
           from (select c69_sequen,
                        c69_codlan,
                        c69_data,
@@ -119,35 +133,24 @@ class LivroDiarioGeralService extends PadService
                        pcr.c60_estrut,
                        pcr.c60_identificadorfinanceiro,
                        pcr.c60_consistemaconta,
-                       case
-                           when o201_orctiporec is not null
-                               then o201_orctiporec
-                           else cre.c61_codigo
-                       end  codigo_recurso,
-                       case
-                           when o200_sequencial is not null and o200_tribunal is true
-                               then o200_sequencial
-                           else 0
-                        end as complemento,
+                       fc_recurso_conta_lancamento(c69_codlan, c69_credito, 'C') as codigo_recurso,
                        c53_tipo
                   from conlancamval lan
-                       inner join conplanoreduz cre  on cre.c61_anousu            = c69_anousu
-                                                    and cre.c61_anousu            = {$this->ano}
-                                                    and cre.c61_instit            in ({$codigosInstituicoes})
-                                                    and cre.c61_reduz             = c69_credito
-                       inner join conplano pcr       on pcr.c60_anousu            = cre.c61_anousu
-                                                    and pcr.c60_codcon            = cre.c61_codcon
-                       inner join db_config          on db_config.codigo          = cre.c61_instit
-                        left join conlancamcomplementorecurso  on o201_codlan   = lan.c69_codlan
-                        left join complementofonterecurso on o200_sequencial = o201_complemento
-                        left join conlancamdig       on conlancamdig.c78_codlan   = lan.c69_codlan
-                        left join conlancamdoc       on conlancamdoc.c71_codlan   = lan.c69_codlan
-                        left join conhistdoc         on conhistdoc.c53_coddoc     = conlancamdoc.c71_coddoc
-                        left join conlancamcompl     on conlancamcompl.c72_codlan = lan.c69_codlan
-                        left join conlancamsup       on conlancamsup.c79_codlan   = lan.c69_codlan
-                        left join orcsuplem          on orcsuplem.o46_codsup      = conlancamsup.c79_codsup
-                        left join orcprojeto          on orcprojeto.o39_codproj   = orcsuplem.o46_codlei
-             {$sWhere}
+                  join conplanoreduz cre on cre.c61_anousu = c69_anousu
+                       and cre.c61_anousu = {$this->ano}
+                       and cre.c61_instit in ({$codigosInstituicoes})
+                       and cre.c61_reduz = c69_credito
+                  join db_config on db_config.codigo = cre.c61_instit
+                  join conplano pcr on pcr.c60_anousu = cre.c61_anousu
+                       and pcr.c60_codcon = cre.c61_codcon
+                  join conlancamdoc on conlancamdoc.c71_codlan = lan.c69_codlan
+                  join conhistdoc on conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc
+                  left join conlancamdig   on conlancamdig.c78_codlan = lan.c69_codlan
+                  left join conlancamcompl on conlancamcompl.c72_codlan = lan.c69_codlan
+                  left join conlancamsup   on conlancamsup.c79_codlan = lan.c69_codlan
+                  left join orcsuplem      on orcsuplem.o46_codsup = conlancamsup.c79_codsup
+                  left join orcprojeto     on orcprojeto.o39_codproj = orcsuplem.o46_codlei
+                   {$sWhere}
                 union all
                 select c69_sequen,
                        c69_codlan,
@@ -162,36 +165,32 @@ class LivroDiarioGeralService extends PadService
                        pdb.c60_estrut,
                        pdb.c60_identificadorfinanceiro,
                        pdb.c60_consistemaconta,
-                       case
-                           when o201_orctiporec is not null
-                               then o201_orctiporec
-                           else deb.c61_codigo
-                       end codigo_recurso,
-                       case
-                                               when o200_sequencial is not null and o200_tribunal is true
-                                                   then o200_sequencial
-                                               else 0
-                                            end as complemento,
+                       fc_recurso_conta_lancamento(c69_codlan, c69_debito, 'D') as codigo_recurso,
                        c53_tipo
                   from conlancamval lan
-                       inner join conplanoreduz deb  on deb.c61_anousu            = c69_anousu
-                                                    and deb.c61_anousu            = {$this->ano}
-                                                    and deb.c61_instit            in ({$codigosInstituicoes})
-                                                    and deb.c61_reduz             = c69_debito
-                       inner join conplano pdb       on pdb.c60_anousu            = deb.c61_anousu
-                                                    and pdb.c60_codcon            = deb.c61_codcon
-                       inner join db_config          on db_config.codigo          = deb.c61_instit
-                        left join conlancamdig       on conlancamdig.c78_codlan   = lan.c69_codlan
-                        left join conlancamcomplementorecurso  on o201_codlan   = lan.c69_codlan
-                        left join complementofonterecurso on o200_sequencial = o201_complemento
-                        left join conlancamdoc       on conlancamdoc.c71_codlan   = lan.c69_codlan
-                        left join conhistdoc         on conhistdoc.c53_coddoc     = conlancamdoc.c71_coddoc
-                        left join conlancamcompl     on conlancamcompl.c72_codlan = lan.c69_codlan
-                        left join conlancamsup       on conlancamsup.c79_codlan   = lan.c69_codlan
-                        left join orcsuplem          on orcsuplem.o46_codsup      = conlancamsup.c79_codsup
-                        left join orcprojeto          on orcprojeto.o39_codproj   = orcsuplem.o46_codlei
-             {$sWhere}
+                  join conplanoreduz deb on deb.c61_anousu = c69_anousu
+                       and deb.c61_anousu = {$this->ano}
+                       and deb.c61_instit in ({$codigosInstituicoes})
+                       and deb.c61_reduz  = c69_debito
+                  join db_config on db_config.codigo = deb.c61_instit
+                  join conplano pdb on pdb.c60_anousu = deb.c61_anousu
+                       and pdb.c60_codcon = deb.c61_codcon
+                  join conlancamdoc on conlancamdoc.c71_codlan = lan.c69_codlan
+                  join conhistdoc on conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc
+                  left join conlancamdig   on conlancamdig.c78_codlan = lan.c69_codlan
+                  left join conlancamcompl on conlancamcompl.c72_codlan = lan.c69_codlan
+                  left join conlancamsup   on conlancamsup.c79_codlan = lan.c69_codlan
+                  left join orcsuplem      on orcsuplem.o46_codsup = conlancamsup.c79_codsup
+                  left join orcprojeto     on orcprojeto.o39_codproj = orcsuplem.o46_codlei
+                   {$sWhere}
              ) as x
+          join orctiporec on o15_codigo = codigo_recurso
+          join fonterecurso on fonterecurso.orctiporec_id = o15_codigo
+               and fonterecurso.exercicio = {$this->ano}
+          join complementofonterecurso on o200_sequencial = o15_complemento
+          left join contabilidade.conplanoexe on c62_anousu = {$this->ano}
+                and c62_reduz = reduz
+                and c62_codrec = codigo_recurso
          order by c69_sequen ";
 
         return $sSqlLancamentos;

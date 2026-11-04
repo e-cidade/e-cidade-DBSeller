@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $clrotulo = new rotulocampo;
       </tr>
       <tr>
         <td colspan="2">
-          <?
+          <?php
             // $aux = new cl_arquivo_auxiliar;
             $aux->cabecalho = "<strong>Responsável</strong>";
 	          $aux->codigo = "ob10_numcgm"; //chave de retorno da func

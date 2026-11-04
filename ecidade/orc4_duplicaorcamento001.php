@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -73,13 +73,13 @@ $erro = false;
 // orgaos
 if (isset ($processa_orgao) && ($processa_orgao == 'Processar')) {
 	// obtem uma matriz de chaves
-	$chaves = split('#', $chaves);
+	$chaves =explode('#', $chaves);
 	if (count($chaves) > 0) {
 		db_inicio_transacao();
 		for ($i = 0; $i < count($chaves); $i ++) {
 			if ($chaves[$i] == "")
 				continue;
-			// seleciona orgaos e insere no exercicio alvo	
+			// seleciona orgaos e insere no exercicio alvo
 			$res = $clorcorgao->sql_record($clorcorgao->sql_query_file($anousu_ant,$chaves[$i]));
 			if  (($clorcorgao->numrows) > 0) {
 				db_fieldsmemory($res, 0);
@@ -102,13 +102,13 @@ if (isset ($processa_orgao) && ($processa_orgao == 'Processar')) {
 }
 // unidades
 if (isset ($processa_unidade) && ($processa_unidade == 'Processar')) {
-	$chaves = split('#', $chaves);
+	$chaves =explode('#', $chaves);
 	if (count($chaves) > 0) {
 		db_inicio_transacao();
 		$ct = count($chaves);
 		for ($i = 0; $i < $ct; $i ++) {
 		   if ($chaves[$i] == "") continue;
-                   $pesquisa = split('-',$chaves[$i]);
+                   $pesquisa =explode('-',$chaves[$i]);
 		   $res = $clorcunidade->sql_record($clorcunidade->sql_query_file($anousu_ant,$pesquisa[0],$pesquisa[1]));
 		   if  (($clorcunidade->numrows) > 0) {
 		  	db_fieldsmemory($res, 0);
@@ -116,7 +116,7 @@ if (isset ($processa_unidade) && ($processa_unidade == 'Processar')) {
 			$clorcunidade->o41_orgao  = $o41_orgao;
                        	$clorcunidade->o41_unidade= $o41_unidade;
      	                $clorcunidade->o41_codtri = $o41_codtri;
-                       	$clorcunidade->o41_descr  = "$o41_descr";			
+                       	$clorcunidade->o41_descr  = "$o41_descr";
                        	$clorcunidade->o41_ident  = $o41_ident;
                        	$clorcunidade->o41_cnpj   = $o41_cnpj;
 			$clorcunidade->incluir($anousu,$o41_orgao,$o41_unidade);
@@ -126,13 +126,13 @@ if (isset ($processa_unidade) && ($processa_unidade == 'Processar')) {
 				break;
 			}
 		   }
-		} // 
+		} //
 		db_fim_transacao($erro);
 	} //
 }//
 // programa
 if (isset ($processa_programa) && ($processa_programa == 'Processar')) {
-	$chaves = split('#', $chaves);
+	$chaves =explode('#', $chaves);
 	if (count($chaves) > 0) {
 		db_inicio_transacao();
 		for ($i = 0; $i < count($chaves); $i ++) {
@@ -144,7 +144,7 @@ if (isset ($processa_programa) && ($processa_programa == 'Processar')) {
 			$clorcprograma->o54_programa = $o54_programa;
                        	$clorcprograma->o54_descr    = $o54_descr;
      	                $clorcprograma->o54_codtri   = $o54_codtri;
-                       	$clorcprograma->o54_finali   = "$o54_finali";			
+                       	$clorcprograma->o54_finali   = "$o54_finali";
                        	$clorcprograma->o54_instit   = $o54_instit;
 			$clorcprograma->incluir($anousu,$o54_programa);
 			if ($clorcprograma->erro_status == '0') {
@@ -153,13 +153,13 @@ if (isset ($processa_programa) && ($processa_programa == 'Processar')) {
 				break;
 			}
 		   }
-		} // 
+		} //
 		db_fim_transacao($erro);
 	} //
 }//
 // projativ
 if (isset ($processa_projativ) && ($processa_projativ == 'Processar')) {
-	$chaves = split('#', $chaves);
+	$chaves =explode('#', $chaves);
 	if (count($chaves) > 0) {
 		db_inicio_transacao();
 		for ($i = 0; $i < count($chaves); $i ++) {
@@ -171,7 +171,7 @@ if (isset ($processa_projativ) && ($processa_projativ == 'Processar')) {
 			$clorcprojativ->o55_tipo     = $o55_tipo;
                        	$clorcprojativ->o55_projativ = $o55_projativ;
      	                $clorcprojativ->o55_descr    = $o55_descr;
-                       	$clorcprojativ->o55_finali   = "$o55_finali";			
+                       	$clorcprojativ->o55_finali   = "$o55_finali";
                        	$clorcprojativ->o55_instit   = $o55_instit;
 			$clorcprojativ->incluir($anousu,$o55_projativ);
 			if ($clorcprojativ->erro_status == '0') {
@@ -180,13 +180,13 @@ if (isset ($processa_projativ) && ($processa_projativ == 'Processar')) {
 				break;
 			}
 		   }
-		} // 
+		} //
 		db_fim_transacao($erro);
 	} //
 }//
 // orcelemento
 if (isset ($processa_elemento) && ($processa_elemento == 'Processar')) {
-	$chaves = split('#', $chaves);
+	$chaves =explode('#', $chaves);
 	if (count($chaves) > 0) {
 		db_inicio_transacao();
 		for ($i = 0; $i < count($chaves); $i ++) {
@@ -198,8 +198,8 @@ if (isset ($processa_elemento) && ($processa_elemento == 'Processar')) {
 			$clorcelemento->o56_codele   = $o56_codele;
                        	$clorcelemento->o56_elemento = $o56_elemento;
      	                $clorcelemento->o56_descr    = $o56_descr;
-                       	$clorcelemento->o56_finali   = $o56_finali;			
-                       	$clorcelemento->o56_orcado   = $o56_orcado;		
+                       	$clorcelemento->o56_finali   = $o56_finali;
+                       	$clorcelemento->o56_orcado   = $o56_orcado;
 			$clorcelemento->incluir($o56_codele,$anousu);
 			if ($clorcelemento->erro_status == '0') {
 				db_msgbox($clorcelemento->erro_msg);
@@ -207,7 +207,7 @@ if (isset ($processa_elemento) && ($processa_elemento == 'Processar')) {
 				break;
 			}
 		   }
-		} // 
+		} //
 		db_fim_transacao($erro);
 	} //
 }//
@@ -223,33 +223,33 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
     // $percentual = '3';
     $datafinal = $dataf_ano.'-'.$dataf_mes.'-'.$dataf_dia;
     // echo $datafinal;
-    // seleciona todas as dotações do exercicio anterior 
+    // seleciona todas as dotações do exercicio anterior
     $res= $clorcdotacao->sql_record($clorcdotacao->sql_query($anousu_ant));
     //db_criatabela($res);
     $rows = $clorcdotacao->numrows;
-    
-    for ($x=0;$x<$rows;$x++){         
+
+    for ($x=0;$x<$rows;$x++){
          db_fieldsmemory($res,$x);
-         $dot= db_dotacaosaldo(8,2,3,true,"o58_coddot=$o58_coddot",$anousu_ant,$anousu_ant.'-01-01',$datafinal);  
-         
+         $dot= db_dotacaosaldo(8,2,3,true,"o58_coddot=$o58_coddot",$anousu_ant,$anousu_ant.'-01-01',$datafinal);
+
          if (pg_numrows($dot) > 0 ){
 	         db_fieldsmemory($dot,0);
 
-                 $valor ='0.00'; 
+                 $valor ='0.00';
                  if ($dotacao=='inicial'){
 		     $valor = $dot_ini;
 		 }
 		 if ($dotacao=='atualizada'){
                      $valor = $dot_ini + $suplementado - $reduzido;
-		 }  
+		 }
 		 if (isset($percent) && $percent=='on' && ($percentual > 0) && $dotacao!='zerada'){
 		     // quando não for dotação zerada, e tiver percentual
 		     if ($valor > 0 ){
                         $adicional = round(($valor * $percentual) / 100,2);
 		        $valor     = $valor + $adicional;
 		     }
-		 }  
-		 // insere no database 
+		 }
+		 // insere no database
 	         $clorcdotacao->o58_anousu  = $anousu;
         	 $clorcdotacao->o58_coddot  = $o58_coddot;
 	         $clorcdotacao->o58_orgao   = $o58_orgao;
@@ -268,10 +268,10 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 			$erro = true;
 			break;
 		 }
-	 }  // 
+	 }  //
 
     }  // endfor
-    
+
 }
 
 ?>
@@ -285,7 +285,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -304,7 +304,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
      <table border=0 align=center>
      <tr>
        <td colspan=3><h3>Duplicação de Orçamento ( do exerício <?=(db_getsession("DB_anousu")-1)?> para <?=db_getsession("DB_anousu")?> ) </h3></td>
-     </tr>    
+     </tr>
      <tr>
        <td colspan=3><b>Cadastros </b> </td>
      </tr>
@@ -356,23 +356,23 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
        <td width=40px> &nbsp; </td>
        <td>Duplicação de dotações  </td>
        <td><input type=submit name=processa_dotacao value=Selecionar ></td>
-     </tr>   
+     </tr>
     </table>
    </td>
   </tr>
-  </table>    
+  </table>
 </td>
 <td height=100% width=50% valign=top align=center >
-<?
+<?php
   $size_iframe=400;
-  if (isset ($processa_orgao) && $processa_orgao == "Selecionar") {   
+  if (isset ($processa_orgao) && $processa_orgao == "Selecionar") {
 	   $sql = "select o40_orgao,o40_descr
         	   from orcorgao
-	           where o40_anousu=".(db_getsession("DB_anousu")-1)."                       
+	           where o40_anousu=".(db_getsession("DB_anousu")-1)."
 	           EXCEPT
 	           select o40_orgao,o40_descr
 	           from orcorgao
-	           where o40_anousu=".db_getsession("DB_anousu")."                       
+	           where o40_anousu=".db_getsession("DB_anousu")."
 	           order by o40_orgao
           ";
 	  $sql_marca = "";
@@ -385,20 +385,20 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	  $cliframe_seleciona->iframe_nome = "cta_orgao";
 	  $cliframe_seleciona->chaves = "o40_orgao";
 	  $cliframe_seleciona->iframe_seleciona(1);
-		
+
     ?><table border=0 width=100%>
       <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('orgao');"></td></tr>
-      </table>               
-    <?        
+      </table>
+    <?php
   }
-  if (isset ($processa_unidade) && $processa_unidade == "Selecionar") {   
+  if (isset ($processa_unidade) && $processa_unidade == "Selecionar") {
        	   $sql = "select o41_orgao,o41_unidade,o41_descr
                    from orcunidade
-	           where o41_anousu=".(db_getsession("DB_anousu")-1)."                       
+	           where o41_anousu=".(db_getsession("DB_anousu")-1)."
 	           EXCEPT
 	           select o41_orgao,o41_unidade,o41_descr
 	           from orcunidade
-	           where o41_anousu=".db_getsession("DB_anousu")."                       
+	           where o41_anousu=".db_getsession("DB_anousu")."
 	           order by o41_unidade
           ";
 	   $sql_marca = "";
@@ -411,20 +411,20 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   $cliframe_seleciona->iframe_nome = "cta_unidade";
 	   $cliframe_seleciona->chaves = "o41_orgao,o41_unidade";
 	   $cliframe_seleciona->iframe_seleciona(1);
-		
+
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('unidade');"></td></tr>
-          </table>               
-       <?        
+          </table>
+       <?php
   }
-  if (isset ($processa_programa) && $processa_programa == "Selecionar") {   
+  if (isset ($processa_programa) && $processa_programa == "Selecionar") {
        	   $sql = "select o54_programa,o54_descr
                    from orcprograma
-	           where o54_anousu=".(db_getsession("DB_anousu")-1)."                       
+	           where o54_anousu=".(db_getsession("DB_anousu")-1)."
 	           EXCEPT
 	           select o54_programa,o54_descr
 	           from orcprograma
-	           where o54_anousu=".db_getsession("DB_anousu")."                       
+	           where o54_anousu=".db_getsession("DB_anousu")."
 	           order by o54_programa
           ";
 	   $sql_marca = "";
@@ -437,20 +437,20 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   $cliframe_seleciona->iframe_nome = "cta_programa";
 	   $cliframe_seleciona->chaves = "o54_programa";
 	   $cliframe_seleciona->iframe_seleciona(1);
-		
+
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('programa');"></td></tr>
-          </table>               
-       <?        
+          </table>
+       <?php
   }
-  if (isset ($processa_projativ) && $processa_projativ == "Selecionar") {   
+  if (isset ($processa_projativ) && $processa_projativ == "Selecionar") {
        	   $sql = "select o55_projativ,o55_descr
                    from orcprojativ
-	           where o55_anousu=".(db_getsession("DB_anousu")-1)."                       
+	           where o55_anousu=".(db_getsession("DB_anousu")-1)."
 	           EXCEPT
 	           select o55_projativ,o55_descr
 	           from orcprojativ
-	           where o55_anousu=".db_getsession("DB_anousu")."                       
+	           where o55_anousu=".db_getsession("DB_anousu")."
 	           order by o55_projativ
           ";
 	   $sql_marca = "";
@@ -463,20 +463,20 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   $cliframe_seleciona->iframe_nome = "cta_projativ";
 	   $cliframe_seleciona->chaves = "o55_projativ";
 	   $cliframe_seleciona->iframe_seleciona(1);
-		
+
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('projativ');"></td></tr>
-          </table>               
-       <?        
+          </table>
+       <?php
   }
-  if (isset ($processa_elemento) && $processa_elemento == "Selecionar") {   
+  if (isset ($processa_elemento) && $processa_elemento == "Selecionar") {
        	   $sql = "select o56_codele,o56_elemento,o56_descr
-                   from orcelemento		      
-	           where o56_anousu=".(db_getsession("DB_anousu")-1)."                       
+                   from orcelemento
+	           where o56_anousu=".(db_getsession("DB_anousu")-1)."
 	           EXCEPT
 	           select o56_codele,o56_elemento,o56_descr
 	           from orcelemento
-	           where o56_anousu=".db_getsession("DB_anousu")."                       
+	           where o56_anousu=".db_getsession("DB_anousu")."
 	           order by o56_elemento
           ";
 	   $sql_marca = "";
@@ -489,13 +489,13 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   $cliframe_seleciona->iframe_nome = "cta_elemento";
 	   $cliframe_seleciona->chaves = "o56_codele";
 	   $cliframe_seleciona->iframe_seleciona(1);
-		
+
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('elemento');"></td></tr>
-          </table>               
-       <?        
+          </table>
+       <?php
   }
-  if (isset ($processa_dotacao) && $processa_dotacao == "Selecionar") {   
+  if (isset ($processa_dotacao) && $processa_dotacao == "Selecionar") {
        ?><table border=0 width=100%>
          <tr><td height=50px> &nbsp; </td></tr>
 
@@ -504,15 +504,15 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   </tr>
 	   <tr><td><input type=radio name=dotacao value=zerada  ><b>Zerado </b>   </td></tr>
 	   <tr><td><input type=radio name=dotacao value=inicial ><b>Dotação inicial   </td></tr>
-           <tr><td><input type=radio name=dotacao value=atualizada><b>Dotação Atualizada ate  <? $dataf_dia = '31';$dataf_mes = '12';	$dataf_ano = $anousu_ant; db_inputdata("dataf",@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1) ?> </td></tr>
+           <tr><td><input type=radio name=dotacao value=atualizada><b>Dotação Atualizada ate  <?php $dataf_dia = '31';$dataf_mes = '12';	$dataf_ano = $anousu_ant; db_inputdata("dataf",@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1) ?> </td></tr>
            <tr><td><input type=checkbox name=percent><b> Percentual adicional de <input type=text name=percentual value='0' size=3 maxlength=3>% </b></td></tr>
-	   <tr><td height=50px> &nbsp; </td></tr> 
+	   <tr><td height=50px> &nbsp; </td></tr>
 	 </table>
-       <?
+       <?php
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=submit name=processa_dotacao value=Processar ></td></tr>
-         </table>               
-       <?        
+         </table>
+       <?php
   }
 
 
@@ -524,7 +524,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 
 
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script>
@@ -533,7 +533,7 @@ function js_processa(tipo){
   js_gera_chaves();
   // cria um objeto que indica o tipo de processamento
   obj=document.createElement('input');
-  obj.setAttribute('name','processa_'+tipo);  
+  obj.setAttribute('name','processa_'+tipo);
   obj.setAttribute('type','hidden');
   obj.setAttribute('value','Processar');
   document.form1.appendChild(obj);

@@ -28,6 +28,8 @@
 
 // Débito tipo 7 - DIVERSOS
 
+use ECidade\Tributario\Arrecadacao\Repository\DiversosTaxaRepository;
+
 $iInstituicao = db_getsession('DB_instit');
 
 $sSqlDiversos  = " select diversos.dv05_coddiver ,                                                  ";
@@ -37,6 +39,8 @@ $sSqlDiversos .= "        diversos.dv05_vlrhis   ,                              
 $sSqlDiversos .= "        diversos.dv05_procdiver,                                                  ";
 $sSqlDiversos .= "        diversos.dv05_numpre   ,                                                  ";
 $sSqlDiversos .= "        diversos.dv05_obs      ,                                                  ";
+$sSqlDiversos .= "        (select descrdepto from db_depart where db_depart.coddepto = diversos.dv05_depto) as nome_departamento, ";
+$sSqlDiversos .= "        (select nome from db_usuarios where db_usuarios.id_usuario = diversos.dv05_login) as nome_usuario,      ";
 $sSqlDiversos .= "        cgm.z01_nome           ,                                                  ";
 $sSqlDiversos .= "        arreinscr.k00_inscr    ,                                                  ";
 $sSqlDiversos .= "        arrematric.k00_matric  ,                                                  ";
@@ -73,6 +77,8 @@ if (pg_numrows($rsDiversos) == 0) {
   $z01_nome        = $oDiversos->z01_nome      ;
   $k00_matric      = $oDiversos->k00_matric    ;
   $k00_inscr       = $oDiversos->k00_inscr     ;
+  $nome_departamento = $oDiversos->nome_departamento;
+  $nome_usuario     = $oDiversos->nome_usuario    ;
   
 }
 
@@ -96,6 +102,30 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
 });
 
 ?>
+
+<style>
+  #tabelaTaxas{
+    border: 1px solid black !important;
+    margin: 3px;
+  }
+
+  .tabelaTaxasHead {
+    border: 1px solid black !important;
+    background-color: #E1E1E1 !important;
+    width: fit-content;
+    min-width: 100px;
+    font-weight: bold;
+    padding: 2px;
+    margin: 0;
+  }
+
+  .tabelaTaxasCorpo {
+    border: 1px solid black !important;
+    padding: 2px;
+    margin: 0;
+    font-weight: normal;
+  }
+</style>
 
 <fieldset>
   <legend>Módulo Diversos</legend>
@@ -137,7 +167,7 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
     <tr> 
       <td>Matr&iacute;cula Im&oacute;vel:</td>
       <td>
-        <?
+        <?php
           if ($k00_matric != "") {
           	echo $k00_matric;
           }
@@ -147,7 +177,7 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
     <tr> 
       <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
       <td> 
-        <?
+        <?php
           if ($k00_inscr != "") {
           	echo $k00_inscr;
           }
@@ -157,13 +187,58 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
       <tr>
           <td>Compet&ecirc;ncia:</td>
           <td>
-              <?
+              <?php
               if (!empty($competencias)) {
                   echo implode(", ", $competencias);
               }
               ?>
       </td>
     </tr>
+
+    <tr> 
+      <td>Departamento:</td>
+      <td><?php echo $nome_departamento; ?></td>
+    </tr>
+    <tr> 
+      <td>Usuário:</td>
+      <td><?php echo $nome_usuario; ?></td>
+    </tr>
+
+    <tr>
+      <td>Taxas:</td>
+      <td>
+        <table id="tabelaTaxas" cellspacing="0" cellpadding="0">
+          <?php
+            $diversosTaxaRepository = new DiversosTaxaRepository();
+            $taxasVinculadas = $diversosTaxaRepository->getTaxasByCodigoDiversos($dv05_coddiver);
+
+            if (count($taxasVinculadas) > 0) {
+          ?>
+            <tbody>
+            <tr>
+              <td class="DBLovrotTdCabecalho tabelaTaxasHead" >Sequencial</td>
+              <td class="DBLovrotTdCabecalho tabelaTaxasHead" >Descrição</td>
+              <td class="DBLovrotTdCabecalho tabelaTaxasHead" >Valor</td>
+            </tr>
+            <?php
+              foreach($taxasVinculadas as $taxaVinculada) {
+            ?>
+              <tr>
+                <td class="DBLovrotRegistrosRetornados tabelaTaxasCorpo" ><?= $taxaVinculada->ar44_sequencial ?></td>
+                <td class="DBLovrotRegistrosRetornados tabelaTaxasCorpo" ><?= $taxaVinculada->ar44_descricao ?></td>
+                <td class="DBLovrotRegistrosRetornados tabelaTaxasCorpo" >R$<?= number_format($taxaVinculada->dv15_valor, 2, ',', '') ?></td>
+              </tr>
+            <?php
+              }
+            ?>
+            </tbody>
+          <?php
+            }
+          ?>
+        </table>
+      </td>
+    </tr>
+  
   </table>
 
 </fieldset>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("z01_i_cgs_und");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("prototype.js");
 db_app::load("scripts.js");
 db_app::load("datagrid.widget.js");
@@ -85,27 +85,27 @@ db_app::load("webseller.js");
       <table border="0">
 	        <tr>
 	           <td nowrap title="$Tjs_pesquisaz01_i_cgsund">
-                 <b><? db_ancora("$Lz01_i_cgsund","js_pesquisaz01_i_cgsund(true);",$db_opcao);?></b></td>
-		         <td><? db_input('z01_i_cgsund',10,$Iz01_i_cgsund,true,'text',$db_opcao,"onchange='js_pesquisaz01_i_cgsund(false);'")?> </td>
-		         <td><? db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,$db_opcao,"")?></td>
+                 <b><?php db_ancora("$Lz01_i_cgsund","js_pesquisaz01_i_cgsund(true);",$db_opcao);?></b></td>
+		         <td><?php db_input('z01_i_cgsund',10,$Iz01_i_cgsund,true,'text',$db_opcao,"onchange='js_pesquisaz01_i_cgsund(false);'")?> </td>
+		         <td><?php db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,$db_opcao,"")?></td>
 	       </tr>
          <tr>
              <td><b>Micro:</b></td>
              <td>
-                <? db_input("sd34_i_codigo",10,$Isd33_i_codigo ,true,"text",3,"");?>
+                <?php db_input("sd34_i_codigo",10,$Isd33_i_codigo ,true,"text",3,"");?>
              </td>
              <td>
-                 <? db_input('sd34_v_descricao',40,$Isd33_v_descricao,true,'text',3,"")?>
-                 <? db_input('z01_i_familiamicroarea',10,$Iz01_i_familiamicroarea,true,'hidden',1,"")?>
+                 <?php db_input('sd34_v_descricao',40,$Isd33_v_descricao,true,'text',3,"")?>
+                 <?php db_input('z01_i_familiamicroarea',10,$Iz01_i_familiamicroarea,true,'hidden',1,"")?>
              </td>
          </tr>
          <tr>
              <td><b>Familia:</b></td>
              <td>
-                 <? db_input("sd33_i_codigo",10,$Isd33_i_codigo ,true,"text",3,"");?>
+                 <?php db_input("sd33_i_codigo",10,$Isd33_i_codigo ,true,"text",3,"");?>
              </td>
              <td>
-                 <? db_input('sd33_v_descricao',40,$Isd33_v_descricao,true,'text',3,"")?>
+                 <?php db_input('sd33_v_descricao',40,$Isd33_v_descricao,true,'text',3,"")?>
              </td>
          </tr>
          <tr>
@@ -122,7 +122,7 @@ db_app::load("webseller.js");
   </td>
  </tr>
 </table>
-<?
+<?php
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ class cl_liclicitemlote {
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_liclicitemlote {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->l04_codigo = ($this->l04_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["l04_codigo"]:$this->l04_codigo);
        $this->l04_liclicitem = ($this->l04_liclicitem == ""?@$GLOBALS["HTTP_POST_VARS"]["l04_liclicitem"]:$this->l04_liclicitem);
@@ -77,7 +77,7 @@ class cl_liclicitemlote {
      }
    }
    // funcao para inclusao
-   function incluir ($l04_codigo){
+   public function incluir ($l04_codigo){
       $this->atualizacampos();
      if($this->l04_liclicitem == null ){
        $this->erro_sql = " Campo Item nao Informado.";
@@ -176,7 +176,7 @@ class cl_liclicitemlote {
      return true;
    }
    // funcao para alteracao
-   function alterar ($l04_codigo=null) {
+   public function alterar ($l04_codigo=null) {
       $this->atualizacampos();
      $sql = " update liclicitemlote set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_liclicitemlote {
      }
    }
    // funcao para exclusao
-   function excluir ($l04_codigo=null,$dbwhere=null) {
+   public function excluir ($l04_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($l04_codigo));
      }else{
@@ -334,7 +334,7 @@ class cl_liclicitemlote {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,7 +356,7 @@ class cl_liclicitemlote {
       }
      return $result;
    }
-   function sql_query ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -392,7 +392,7 @@ class cl_liclicitemlote {
      }
      return $sql;
   }
-   function sql_query_file ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -425,7 +425,7 @@ class cl_liclicitemlote {
      }
      return $sql;
   }
-   function sql_query_julgamento ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_julgamento ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -473,7 +473,7 @@ class cl_liclicitemlote {
      }
      return $sql;
   }
-   function sql_query_licitacao ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_licitacao ( $l04_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

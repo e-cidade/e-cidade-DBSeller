@@ -98,7 +98,7 @@ if ( ! empty($oGet->pc11_codigo) ) {
       <td nowrap title="<?=@$Tpc11_prazo?>">
         <fieldset>
           <legend class="bold"><?=@$Lpc11_prazo?></legend>
-          <?
+          <?php
           db_textarea('pc11_prazo',3,30,$Ipc11_prazo,true,'text',$db_opcao)
           ?>
         </fieldset>
@@ -108,7 +108,7 @@ if ( ! empty($oGet->pc11_codigo) ) {
       <td nowrap title="<?=@$Tpc11_pgto?>">
         <fieldset>
           <legend class="bold"><?=@$Lpc11_pgto?></legend>
-          <?
+          <?php
           db_textarea('pc11_pgto',3,30,$Ipc11_pgto,true,'text',$db_opcao)
           ?>
         </fieldset>
@@ -119,7 +119,7 @@ if ( ! empty($oGet->pc11_codigo) ) {
       <td nowrap title="<?=@$Tpc11_resum?>">
         <fieldset>
           <legend class="bold"><?=@$Lpc11_resum?></legend>
-          <?
+          <?php
           db_textarea('pc11_resum',10,80,$Ipc11_resum,true,'text',$db_opcao_resum);
           ?>
         </fieldset>
@@ -129,7 +129,7 @@ if ( ! empty($oGet->pc11_codigo) ) {
       <td nowrap title="<?=@$Tpc11_just?>">
         <fieldset>
           <legend class="bold"><?=@$Lpc11_just?></legend>
-          <?
+          <?php
           db_textarea('pc11_just',3,30,$Ipc11_just,true,'text',$db_opcao)
           ?>
         </fieldset>

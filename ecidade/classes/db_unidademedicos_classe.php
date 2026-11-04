@@ -27,70 +27,70 @@
 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE unidademedicos
-class cl_unidademedicos { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd04_i_codigo = 0; 
-   var $sd04_i_unidade = 0; 
-   var $sd04_i_medico = 0; 
-   var $sd04_i_vinculo = 0; 
-   var $sd04_i_tipovinc = 0; 
-   var $sd04_i_subtipovinc = 0; 
-   var $sd04_i_horaamb = null; 
-   var $sd04_i_horahosp = null; 
-   var $sd04_i_horaoutros = null; 
-   var $sd04_i_orgaoemissor = 0; 
-   var $sd04_c_situacao = null; 
-   var $sd04_v_registroconselho = null; 
-   var $sd04_c_sus = null; 
-   var $sd04_i_numerodias = 0; 
-   var $sd04_d_folgaini_dia = null; 
-   var $sd04_d_folgaini_mes = null; 
-   var $sd04_d_folgaini_ano = null; 
-   var $sd04_d_folgaini = null; 
-   var $sd04_d_folgafim_dia = null; 
-   var $sd04_d_folgafim_mes = null; 
-   var $sd04_d_folgafim_ano = null; 
-   var $sd04_d_folgafim = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_unidademedicos {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd04_i_codigo = 0;
+   var $sd04_i_unidade = 0;
+   var $sd04_i_medico = 0;
+   var $sd04_i_vinculo = 0;
+   var $sd04_i_tipovinc = 0;
+   var $sd04_i_subtipovinc = 0;
+   var $sd04_i_horaamb = null;
+   var $sd04_i_horahosp = null;
+   var $sd04_i_horaoutros = null;
+   var $sd04_i_orgaoemissor = 0;
+   var $sd04_c_situacao = null;
+   var $sd04_v_registroconselho = null;
+   var $sd04_c_sus = null;
+   var $sd04_i_numerodias = 0;
+   var $sd04_d_folgaini_dia = null;
+   var $sd04_d_folgaini_mes = null;
+   var $sd04_d_folgaini_ano = null;
+   var $sd04_d_folgaini = null;
+   var $sd04_d_folgafim_dia = null;
+   var $sd04_d_folgafim_mes = null;
+   var $sd04_d_folgafim_ano = null;
+   var $sd04_d_folgafim = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd04_i_codigo = int4 = Código 
-                 sd04_i_unidade = int4 = Unidade 
-                 sd04_i_medico = int4 = Profissional 
-                 sd04_i_vinculo = int4 = Vinculação 
-                 sd04_i_tipovinc = int4 = Tipo Vinculo 
-                 sd04_i_subtipovinc = int4 = Sub Tipo 
-                 sd04_i_horaamb = char(5) = Hora Ambulatorial 
-                 sd04_i_horahosp = char(5) = Hora Hospitalar 
-                 sd04_i_horaoutros = char(5) = Outras Horas 
-                 sd04_i_orgaoemissor = int4 = Órgão Emissor 
-                 sd04_c_situacao = char(1) = Situação 
-                 sd04_v_registroconselho = varchar(13) = Registro 
-                 sd04_c_sus = char(1) = SUS 
-                 sd04_i_numerodias = int4 = Dias para Agendar 
-                 sd04_d_folgaini = date = Início da Folga 
-                 sd04_d_folgafim = date = Fim da Folga 
+                 sd04_i_codigo = int4 = Código
+                 sd04_i_unidade = int4 = Unidade
+                 sd04_i_medico = int4 = Profissional
+                 sd04_i_vinculo = int4 = Vinculação
+                 sd04_i_tipovinc = int4 = Tipo Vinculo
+                 sd04_i_subtipovinc = int4 = Sub Tipo
+                 sd04_i_horaamb = char(5) = Hora Ambulatorial
+                 sd04_i_horahosp = char(5) = Hora Hospitalar
+                 sd04_i_horaoutros = char(5) = Outras Horas
+                 sd04_i_orgaoemissor = int4 = Órgão Emissor
+                 sd04_c_situacao = char(1) = Situação
+                 sd04_v_registroconselho = varchar(13) = Registro
+                 sd04_c_sus = char(1) = SUS
+                 sd04_i_numerodias = int4 = Dias para Agendar
+                 sd04_d_folgaini = date = Início da Folga
+                 sd04_d_folgafim = date = Fim da Folga
                  ";
-   //funcao construtor da classe 
-   function cl_unidademedicos() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("unidademedicos"); 
+     $this->rotulo = new rotulo("unidademedicos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -99,7 +99,7 @@ class cl_unidademedicos {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd04_i_codigo = ($this->sd04_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd04_i_codigo"]:$this->sd04_i_codigo);
        $this->sd04_i_unidade = ($this->sd04_i_unidade == ""?@$GLOBALS["HTTP_POST_VARS"]["sd04_i_unidade"]:$this->sd04_i_unidade);
@@ -136,9 +136,9 @@ class cl_unidademedicos {
      }
    }
    // funcao para Inclusão
-   function incluir ($sd04_i_codigo){ 
+   public function incluir ($sd04_i_codigo){
       $this->atualizacampos();
-     if($this->sd04_i_unidade == null ){ 
+     if($this->sd04_i_unidade == null ){
        $this->erro_sql = " Campo Unidade não informado.";
        $this->erro_campo = "sd04_i_unidade";
        $this->erro_banco = "";
@@ -147,7 +147,7 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_medico == null ){ 
+     if($this->sd04_i_medico == null ){
        $this->erro_sql = " Campo Profissional não informado.";
        $this->erro_campo = "sd04_i_medico";
        $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_vinculo == null ){ 
+     if($this->sd04_i_vinculo == null ){
        $this->sd04_i_vinculo = "null";
      }
-     if($this->sd04_i_tipovinc == null ){ 
+     if($this->sd04_i_tipovinc == null ){
        $this->sd04_i_tipovinc = "null";
      }
-     if($this->sd04_i_subtipovinc == null ){ 
+     if($this->sd04_i_subtipovinc == null ){
        $this->sd04_i_subtipovinc = "null";
      }
-     if($this->sd04_i_horaamb == null ){ 
+     if($this->sd04_i_horaamb == null ){
        $this->erro_sql = " Campo Hora Ambulatorial não informado.";
        $this->erro_campo = "sd04_i_horaamb";
        $this->erro_banco = "";
@@ -174,7 +174,7 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_horahosp == null ){ 
+     if($this->sd04_i_horahosp == null ){
        $this->erro_sql = " Campo Hora Hospitalar não informado.";
        $this->erro_campo = "sd04_i_horahosp";
        $this->erro_banco = "";
@@ -183,7 +183,7 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_horaoutros == null ){ 
+     if($this->sd04_i_horaoutros == null ){
        $this->erro_sql = " Campo Outras Horas não informado.";
        $this->erro_campo = "sd04_i_horaoutros";
        $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_orgaoemissor == null ){ 
+     if($this->sd04_i_orgaoemissor == null ){
        $this->sd04_i_orgaoemissor = "0";
      }
-     if($this->sd04_c_situacao == null ){ 
+     if($this->sd04_c_situacao == null ){
        $this->erro_sql = " Campo Situação não informado.";
        $this->erro_campo = "sd04_c_situacao";
        $this->erro_banco = "";
@@ -204,7 +204,7 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_c_sus == null ){ 
+     if($this->sd04_c_sus == null ){
        $this->erro_sql = " Campo SUS não informado.";
        $this->erro_campo = "sd04_c_sus";
        $this->erro_banco = "";
@@ -213,26 +213,26 @@ class cl_unidademedicos {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd04_i_numerodias == null ){ 
+     if($this->sd04_i_numerodias == null ){
        $this->sd04_i_numerodias = "0";
      }
-     if($this->sd04_d_folgaini == null ){ 
+     if($this->sd04_d_folgaini == null ){
        $this->sd04_d_folgaini = "null";
      }
-     if($this->sd04_d_folgafim == null ){ 
+     if($this->sd04_d_folgafim == null ){
        $this->sd04_d_folgafim = "null";
      }
      if($sd04_i_codigo == "" || $sd04_i_codigo == null ){
-       $result = db_query("select nextval('unidademedicos_codigo_seq')"); 
+       $result = db_query("select nextval('unidademedicos_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: unidademedicos_codigo_seq do campo: sd04_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: unidademedicos_codigo_seq do campo: sd04_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->sd04_i_codigo = pg_result($result,0,0); 
+       $this->sd04_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from unidademedicos_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $sd04_i_codigo)){
@@ -243,10 +243,10 @@ class cl_unidademedicos {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->sd04_i_codigo = $sd04_i_codigo; 
+         $this->sd04_i_codigo = $sd04_i_codigo;
        }
      }
-     if(($this->sd04_i_codigo == null) || ($this->sd04_i_codigo == "") ){ 
+     if(($this->sd04_i_codigo == null) || ($this->sd04_i_codigo == "") ){
        $this->erro_sql = " Campo sd04_i_codigo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -255,43 +255,43 @@ class cl_unidademedicos {
        return false;
      }
      $sql = "insert into unidademedicos(
-                                       sd04_i_codigo 
-                                      ,sd04_i_unidade 
-                                      ,sd04_i_medico 
-                                      ,sd04_i_vinculo 
-                                      ,sd04_i_tipovinc 
-                                      ,sd04_i_subtipovinc 
-                                      ,sd04_i_horaamb 
-                                      ,sd04_i_horahosp 
-                                      ,sd04_i_horaoutros 
-                                      ,sd04_i_orgaoemissor 
-                                      ,sd04_c_situacao 
-                                      ,sd04_v_registroconselho 
-                                      ,sd04_c_sus 
-                                      ,sd04_i_numerodias 
-                                      ,sd04_d_folgaini 
-                                      ,sd04_d_folgafim 
+                                       sd04_i_codigo
+                                      ,sd04_i_unidade
+                                      ,sd04_i_medico
+                                      ,sd04_i_vinculo
+                                      ,sd04_i_tipovinc
+                                      ,sd04_i_subtipovinc
+                                      ,sd04_i_horaamb
+                                      ,sd04_i_horahosp
+                                      ,sd04_i_horaoutros
+                                      ,sd04_i_orgaoemissor
+                                      ,sd04_c_situacao
+                                      ,sd04_v_registroconselho
+                                      ,sd04_c_sus
+                                      ,sd04_i_numerodias
+                                      ,sd04_d_folgaini
+                                      ,sd04_d_folgafim
                        )
                 values (
-                                $this->sd04_i_codigo 
-                               ,$this->sd04_i_unidade 
-                               ,$this->sd04_i_medico 
-                               ,$this->sd04_i_vinculo 
-                               ,$this->sd04_i_tipovinc 
-                               ,$this->sd04_i_subtipovinc 
-                               ,'$this->sd04_i_horaamb' 
-                               ,'$this->sd04_i_horahosp' 
-                               ,'$this->sd04_i_horaoutros' 
-                               ,$this->sd04_i_orgaoemissor 
-                               ,'$this->sd04_c_situacao' 
-                               ,'$this->sd04_v_registroconselho' 
-                               ,'$this->sd04_c_sus' 
-                               ,$this->sd04_i_numerodias 
-                               ,".($this->sd04_d_folgaini == "null" || $this->sd04_d_folgaini == ""?"null":"'".$this->sd04_d_folgaini."'")." 
-                               ,".($this->sd04_d_folgafim == "null" || $this->sd04_d_folgafim == ""?"null":"'".$this->sd04_d_folgafim."'")." 
+                                $this->sd04_i_codigo
+                               ,$this->sd04_i_unidade
+                               ,$this->sd04_i_medico
+                               ,$this->sd04_i_vinculo
+                               ,$this->sd04_i_tipovinc
+                               ,$this->sd04_i_subtipovinc
+                               ,'$this->sd04_i_horaamb'
+                               ,'$this->sd04_i_horahosp'
+                               ,'$this->sd04_i_horaoutros'
+                               ,$this->sd04_i_orgaoemissor
+                               ,'$this->sd04_c_situacao'
+                               ,'$this->sd04_v_registroconselho'
+                               ,'$this->sd04_c_sus'
+                               ,$this->sd04_i_numerodias
+                               ,".($this->sd04_d_folgaini == "null" || $this->sd04_d_folgaini == ""?"null":"'".$this->sd04_d_folgaini."'")."
+                               ,".($this->sd04_d_folgafim == "null" || $this->sd04_d_folgafim == ""?"null":"'".$this->sd04_d_folgafim."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Médicos para Unidade ($this->sd04_i_codigo) não Incluído. Inclusão Abortada.";
@@ -344,16 +344,16 @@ class cl_unidademedicos {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($sd04_i_codigo=null) { 
+   public function alterar ($sd04_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update unidademedicos set ";
      $virgula = "";
-     if(trim($this->sd04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_codigo"])){ 
+     if(trim($this->sd04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_codigo"])){
        $sql  .= $virgula." sd04_i_codigo = $this->sd04_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd04_i_codigo) == null ){ 
+       if(trim($this->sd04_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "sd04_i_codigo";
          $this->erro_banco = "";
@@ -363,10 +363,10 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_unidade"])){ 
+     if(trim($this->sd04_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_unidade"])){
        $sql  .= $virgula." sd04_i_unidade = $this->sd04_i_unidade ";
        $virgula = ",";
-       if(trim($this->sd04_i_unidade) == null ){ 
+       if(trim($this->sd04_i_unidade) == null ){
          $this->erro_sql = " Campo Unidade não informado.";
          $this->erro_campo = "sd04_i_unidade";
          $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_medico"])){ 
+     if(trim($this->sd04_i_medico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_medico"])){
        $sql  .= $virgula." sd04_i_medico = $this->sd04_i_medico ";
        $virgula = ",";
-       if(trim($this->sd04_i_medico) == null ){ 
+       if(trim($this->sd04_i_medico) == null ){
          $this->erro_sql = " Campo Profissional não informado.";
          $this->erro_campo = "sd04_i_medico";
          $this->erro_banco = "";
@@ -389,31 +389,31 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_vinculo"])){ 
-        if(trim($this->sd04_i_vinculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_vinculo"])){ 
+     if(trim($this->sd04_i_vinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_vinculo"])){
+        if(trim($this->sd04_i_vinculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_vinculo"])){
            $this->sd04_i_vinculo = "null" ;
-        } 
+        }
        $sql  .= $virgula." sd04_i_vinculo = $this->sd04_i_vinculo ";
        $virgula = ",";
      }
-     if(trim($this->sd04_i_tipovinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_tipovinc"])){ 
-        if(trim($this->sd04_i_tipovinc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_tipovinc"])){ 
+     if(trim($this->sd04_i_tipovinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_tipovinc"])){
+        if(trim($this->sd04_i_tipovinc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_tipovinc"])){
            $this->sd04_i_tipovinc = "null" ;
-        } 
+        }
        $sql  .= $virgula." sd04_i_tipovinc = $this->sd04_i_tipovinc ";
        $virgula = ",";
      }
-     if(trim($this->sd04_i_subtipovinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_subtipovinc"])){ 
-        if(trim($this->sd04_i_subtipovinc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_subtipovinc"])){ 
+     if(trim($this->sd04_i_subtipovinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_subtipovinc"])){
+        if(trim($this->sd04_i_subtipovinc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_subtipovinc"])){
            $this->sd04_i_subtipovinc = "null" ;
-        } 
+        }
        $sql  .= $virgula." sd04_i_subtipovinc = $this->sd04_i_subtipovinc ";
        $virgula = ",";
      }
-     if(trim($this->sd04_i_horaamb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horaamb"])){ 
+     if(trim($this->sd04_i_horaamb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horaamb"])){
        $sql  .= $virgula." sd04_i_horaamb = '$this->sd04_i_horaamb' ";
        $virgula = ",";
-       if(trim($this->sd04_i_horaamb) == null ){ 
+       if(trim($this->sd04_i_horaamb) == null ){
          $this->erro_sql = " Campo Hora Ambulatorial não informado.";
          $this->erro_campo = "sd04_i_horaamb";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_horahosp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horahosp"])){ 
+     if(trim($this->sd04_i_horahosp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horahosp"])){
        $sql  .= $virgula." sd04_i_horahosp = '$this->sd04_i_horahosp' ";
        $virgula = ",";
-       if(trim($this->sd04_i_horahosp) == null ){ 
+       if(trim($this->sd04_i_horahosp) == null ){
          $this->erro_sql = " Campo Hora Hospitalar não informado.";
          $this->erro_campo = "sd04_i_horahosp";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_horaoutros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horaoutros"])){ 
+     if(trim($this->sd04_i_horaoutros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_horaoutros"])){
        $sql  .= $virgula." sd04_i_horaoutros = '$this->sd04_i_horaoutros' ";
        $virgula = ",";
-       if(trim($this->sd04_i_horaoutros) == null ){ 
+       if(trim($this->sd04_i_horaoutros) == null ){
          $this->erro_sql = " Campo Outras Horas não informado.";
          $this->erro_campo = "sd04_i_horaoutros";
          $this->erro_banco = "";
@@ -449,17 +449,17 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_orgaoemissor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_orgaoemissor"])){ 
-        if(trim($this->sd04_i_orgaoemissor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_orgaoemissor"])){ 
-           $this->sd04_i_orgaoemissor = "0" ; 
-        } 
+     if(trim($this->sd04_i_orgaoemissor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_orgaoemissor"])){
+        if(trim($this->sd04_i_orgaoemissor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_orgaoemissor"])){
+           $this->sd04_i_orgaoemissor = "0" ;
+        }
        $sql  .= $virgula." sd04_i_orgaoemissor = $this->sd04_i_orgaoemissor ";
        $virgula = ",";
      }
-     if(trim($this->sd04_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_c_situacao"])){ 
+     if(trim($this->sd04_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_c_situacao"])){
        $sql  .= $virgula." sd04_c_situacao = '$this->sd04_c_situacao' ";
        $virgula = ",";
-       if(trim($this->sd04_c_situacao) == null ){ 
+       if(trim($this->sd04_c_situacao) == null ){
          $this->erro_sql = " Campo Situação não informado.";
          $this->erro_campo = "sd04_c_situacao";
          $this->erro_banco = "";
@@ -469,14 +469,14 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_v_registroconselho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_v_registroconselho"])){ 
+     if(trim($this->sd04_v_registroconselho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_v_registroconselho"])){
        $sql  .= $virgula." sd04_v_registroconselho = '$this->sd04_v_registroconselho' ";
        $virgula = ",";
      }
-     if(trim($this->sd04_c_sus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_c_sus"])){ 
+     if(trim($this->sd04_c_sus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_c_sus"])){
        $sql  .= $virgula." sd04_c_sus = '$this->sd04_c_sus' ";
        $virgula = ",";
-       if(trim($this->sd04_c_sus) == null ){ 
+       if(trim($this->sd04_c_sus) == null ){
          $this->erro_sql = " Campo SUS não informado.";
          $this->erro_campo = "sd04_c_sus";
          $this->erro_banco = "";
@@ -486,27 +486,27 @@ class cl_unidademedicos {
          return false;
        }
      }
-     if(trim($this->sd04_i_numerodias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_numerodias"])){ 
-        if(trim($this->sd04_i_numerodias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_numerodias"])){ 
-           $this->sd04_i_numerodias = "0" ; 
-        } 
+     if(trim($this->sd04_i_numerodias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_numerodias"])){
+        if(trim($this->sd04_i_numerodias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["sd04_i_numerodias"])){
+           $this->sd04_i_numerodias = "0" ;
+        }
        $sql  .= $virgula." sd04_i_numerodias = $this->sd04_i_numerodias ";
        $virgula = ",";
      }
-     if(trim($this->sd04_d_folgaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"] !="") ){ 
+     if(trim($this->sd04_d_folgaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"] !="") ){
        $sql  .= $virgula." sd04_d_folgaini = '$this->sd04_d_folgaini' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgaini_dia"])){
          $sql  .= $virgula." sd04_d_folgaini = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->sd04_d_folgafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"] !="") ){ 
+     if(trim($this->sd04_d_folgafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"] !="") ){
        $sql  .= $virgula." sd04_d_folgafim = '$this->sd04_d_folgafim' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["sd04_d_folgafim_dia"])){
          $sql  .= $virgula." sd04_d_folgafim = null ";
          $virgula = ",";
        }
@@ -564,7 +564,7 @@ class cl_unidademedicos {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Médicos para Unidade não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd04_i_codigo;
@@ -592,11 +592,11 @@ class cl_unidademedicos {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($sd04_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd04_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -605,7 +605,7 @@ class cl_unidademedicos {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($sd04_i_codigo));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -649,7 +649,7 @@ class cl_unidademedicos {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Médicos para Unidade não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd04_i_codigo;
@@ -677,11 +677,11 @@ class cl_unidademedicos {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -703,8 +703,8 @@ class cl_unidademedicos {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($sd04_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($sd04_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= " from unidademedicos ";
@@ -733,8 +733,8 @@ class cl_unidademedicos {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($sd04_i_codigo)) {
-         $sql2 .= " where unidademedicos.sd04_i_codigo = $sd04_i_codigo "; 
-       } 
+         $sql2 .= " where unidademedicos.sd04_i_codigo = $sd04_i_codigo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -744,7 +744,7 @@ class cl_unidademedicos {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($sd04_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -752,8 +752,8 @@ class cl_unidademedicos {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($sd04_i_codigo)){
-         $sql2 .= " where unidademedicos.sd04_i_codigo = $sd04_i_codigo "; 
-       } 
+         $sql2 .= " where unidademedicos.sd04_i_codigo = $sd04_i_codigo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -767,10 +767,10 @@ class cl_unidademedicos {
   /**
    * Query para buscar código do médico vinculado a unidademedicos através do CBO Profissionao da triagem avulsa
    */
-  function sql_query_medico ( $sd04_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_medico ( $sd04_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -793,7 +793,7 @@ class cl_unidademedicos {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -806,10 +806,10 @@ class cl_unidademedicos {
   /**
    * Query para buscar o CBOS dos Médicos
    */
-  function sql_query_cbos ( $sd04_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_cbos ( $sd04_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = explode("#",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -834,7 +834,7 @@ class cl_unidademedicos {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

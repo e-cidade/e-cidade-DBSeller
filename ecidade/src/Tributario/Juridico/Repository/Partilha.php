@@ -44,7 +44,8 @@ class Partilha
     public function getCustasParcelamentoForo($numnov)
     {
         $oDaoArrecad = new \cl_arrecad();
-        $sqlDebitoInicialForo = $oDaoArrecad->sql_query_file(null, "*", null, "k00_numpre in (select k00_numpre from recibopaga where k00_numnov = {$numnov}) and k00_tipo = 30");
+        $sWhere = "k00_numpre in (select k00_numpre from recibopaga where k00_numnov = {$numnov}) and k00_tipo = 30";
+        $sqlDebitoInicialForo = $oDaoArrecad->sql_query_file(null, "*", null, $sWhere);
         $result = db_query($sqlDebitoInicialForo);
 
         if (!$result || pg_num_rows($result) == 0) {
@@ -55,25 +56,25 @@ class Partilha
                           false as dispensalancamentorecibo,
                           taxa.ar36_receita as receita,
                           taxa.ar36_descricao as descricao,
-                          (select v76_tipolancamento 
-                             from processoforopartilha 
-                            where v76_sequencial = (select v77_processoforopartilha 
+                          (select v76_tipolancamento
+                             from processoforopartilha
+                            where v76_sequencial = (select v77_processoforopartilha
                                                       from processoforopartilhacusta
-                                                     where v77_numnov = {$numnov} 
+                                                     where v77_numnov = {$numnov}
                                                        and v77_taxa = taxa.ar36_sequencial limit 1)
                           union all
                           select v35_tipolancamento
                             from inicialpartilha
                            where v35_sequencial = (select v36_inicialpartilha
                                                      from inicialpartilhacustas
-                                                    where v36_numnov = {$numnov} 
+                                                    where v36_numnov = {$numnov}
                                                       and v36_taxa = taxa.ar36_sequencial limit 1)
 
                          ) as tipolancamento,
                           sum(recibopaga.k00_valor) as valor
                      from taxa inner join recibopaga on ar36_receita = k00_receit
                     where k00_numnov = {$numnov}
-                      and k00_hist = 11403
+                      and k00_hist in (11403, 11404)
                  group by taxa.ar36_sequencial,
                           taxa.ar36_receita,
                           taxa.ar36_descricao";

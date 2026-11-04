@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -43,22 +43,22 @@ $clrotulo->label("o02_descricao");
        <?=@$Lo03_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o03_sequencial',10,$Io03_sequencial,true,'text', 3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To03_orccenarioeconomico?>">
-       <?
+       <?php
        db_ancora("<b>Indicador Macroeconômico:</b>","js_pesquisao03_orccenarioeconomico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o03_orccenarioeconomico',10,$Io03_orccenarioeconomico,true,'text',$db_opcao," onchange='js_pesquisao03_orccenarioeconomico(false);'")
 ?>
-       <?
+       <?php
 db_input('o02_descricao',40,$Io02_descricao,true,'text',3,'')
        ?>
     </td>
@@ -68,7 +68,7 @@ db_input('o02_descricao',40,$Io02_descricao,true,'text',3,'')
        <?=@$Lo03_anoorcamento?>
     </td>
     <td> 
-<?
+<?php
 if (!isset($o03_anoorcamento)) {
   $o03_anoorcamento = db_getsession("DB_anousu") + 1;
 }
@@ -78,7 +78,7 @@ db_input('o03_anoorcamento',4,$Io03_anoorcamento,true,'text', 3,"")
   </tr>
   <tr>
     <td nowrap title="<?=@$To03_anoreferencia?>">
-     <?
+     <?php
      if ($db_opcao == 1) { 
       echo "<b>Ano Final:</b>";
      } else {
@@ -87,7 +87,7 @@ db_input('o03_anoorcamento',4,$Io03_anoorcamento,true,'text', 3,"")
      ?>  
     </td>
     <td> 
-<?
+<?php
 db_input('o03_anoreferencia',4,$Io03_anoreferencia,true,'text',$db_opcao,"");
 if ($db_opcao == 1) {
   echo "<b>*</b>Será Incluindo os parâmetros ate o ano final informado";
@@ -100,7 +100,7 @@ if ($db_opcao == 1) {
        <?=@$Lo03_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('o03_descricao',40,$Io03_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -110,7 +110,7 @@ db_input('o03_descricao',40,$Io03_descricao,true,'text',$db_opcao,"")
        <?=@$Lo03_tipovalor?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Percentual','2'=>'Quantidade');
 db_select('o03_tipovalor',$x,true,$db_opcao,"");
 ?>
@@ -121,7 +121,7 @@ db_select('o03_tipovalor',$x,true,$db_opcao,"");
        <?=@$Lo03_valorparam?>
     </td>
     <td> 
-<?
+<?php
 db_input('o03_valorparam',10,$Io03_valorparam,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,7 +131,7 @@ db_input('o03_valorparam',10,$Io03_valorparam,true,'text',$db_opcao,"")
        <?=@$Lo03_fonte?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('o03_fonte', 5, 40, $Io03_fonte,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -175,7 +175,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orccenarioeconomicoparam.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,12 +67,12 @@ $clrotulo->label ( "s108_c_exame" );
 				<table>
 					<tr>
 						<td nowrap title="<?=@$Ts124_i_numcgs?>">
-								<?
+								<?php
 								db_ancora ( @$Ls124_i_numcgs, "", 3 );
 								?>
 							</td>
 						<td colspan="3">
-								<?
+								<?php
 								db_input ( 's124_i_codigo', 10, $Is124_i_codigo, true, 'hidden', 1);
 								db_input ( 's124_i_numcgs', 10, $Is124_i_numcgs, true, 'text', 3 );
 								db_input ( 'z01_v_nome', 48, $Iz01_v_nome, true, 'text', 3 );
@@ -92,7 +92,7 @@ $clrotulo->label ( "s108_c_exame" );
 							<?=@$Ls124_d_saida?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_inputdata ( 's124_d_saida', @$s124_d_saida_dia, @$s124_d_saida_mes, @$s124_d_saida_ano, true, 'text', $db_opcao, "" );
 							?>
 						</td>
@@ -100,7 +100,7 @@ $clrotulo->label ( "s108_c_exame" );
 							<?=@$Ls124_c_hora?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_input ( 's124_c_hora', 10, $Is124_c_hora, true, 'text', $db_opcao );
 							?>
 						</td>
@@ -113,21 +113,21 @@ $clrotulo->label ( "s108_c_exame" );
 							<?=@$Ls124_c_veiculo?>
 						</td>
 						<td>
-							<?
+							<?php
 							$x = array ('P' => 'Prefeitura', 'R' => 'Próprio', 'O' => 'Ônibus' );
 							db_select ( 's124_c_veiculo', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 							?>
 						</td>
 						<td id="tipo_veiculo1"  nowrap title="<?=@$Ts121_i_veiculo?>">
-							<?
+							<?php
 							db_ancora(@$Ls121_i_veiculo,"js_pesquisas121_i_veiculo(true);",$db_opcao);
 							?>
 						</td>
 						<td id="tipo_veiculo2">
-							<?
+							<?php
 							db_input('s121_i_veiculo',10,@$Is121_i_veiculo,true,'text',$db_opcao," onchange='js_pesquisas121_i_veiculo(false);'")
 							?>
-							<?
+							<?php
 							db_input('ve22_descr',30,@$Ive22_descr,true,'text',3,'')
 							?>
 						</td>
@@ -140,7 +140,7 @@ $clrotulo->label ( "s108_c_exame" );
 							<?=@$Ls124_c_passagem?>
 						</td>
 						<td>
-							<?
+							<?php
 							db_input ( 's124_c_passagem', 10, $Is124_c_passagem, true, 'text', $db_opcao );
 							?>						
 						</td>
@@ -173,7 +173,7 @@ $clrotulo->label ( "s108_c_exame" );
 			</tr>
 			<tr>
 				<td colspan="2">
-						<?
+						<?php
 							
 						$chavepri = array ("s124_i_codigo" => @$s124_i_codigo );
 						

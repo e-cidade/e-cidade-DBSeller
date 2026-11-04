@@ -30,10 +30,35 @@ class Regencia extends Model
     protected $primaryKey = 'ed59_i_codigo';
     public $timestamps = false;
     public $incrementing = false;
+    public $appends = ['temGradeHorario'];
 
     public function disciplinaEnsino()
     {
         return $this->belongsTo(DisciplinaEnsino::class, 'ed59_i_disciplina', 'ed12_i_codigo')
             ->with('disciplina');
+    }
+
+    public function etapa()
+    {
+        return $this->belongsTo(Etapa::class, 'ed59_i_serie', 'ed11_i_codigo');
+    }
+
+    public function turma()
+    {
+        return $this->belongsTo(Turma::class, 'ed59_i_turma', 'ed57_i_codigo');
+    }
+
+    public function regenciasHorario()
+    {
+        return $this->hasMany(RegenciaHorario::class, 'ed58_i_regencia', 'ed59_i_codigo');
+    }
+    public function getTemGradeHorarioAttribute()
+    {
+        return $this->regenciasHorario->count() > 0;
+    }
+
+    public function procedimentoAvaliacao()
+    {
+        return $this->belongsTo(Procedimento::class, 'ed59_procedimento', 'ed40_i_codigo');
     }
 }

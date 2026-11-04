@@ -25,8 +25,10 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("libs/db_utils.php"));
-require_once(modification("fpdf151/pdfwebseller.php"));
+require_once modification("libs/db_utils.php");
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -48,6 +50,7 @@ $oCalendario = new stdClass;
 $oCalendario->periodos_letivos = array();
 $oCalendario->data_inicio = $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_EN);
 $oCalendario->data_fim = $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_EN);
+$oCalendario->observacoes = $oCalendarioTurma->getObs();
 
 $aIntervalosMeses = DBDate::getDatasNoIntervalo(
     $oCalendarioTurma->getDataInicio(),
@@ -203,16 +206,19 @@ foreach ($oCalendario->meses as $oMes) {
 }
 $aEventos[] = $oUltimoEvento;
 
-$oPdf = new PDF();
-$oPdf->Open();
+$oPdf = new ECidade\Pdf\Pdf();
+$oPdf->init(false);
 $oPdf->AliasNbPages();
 $oPdf->SetAutoPageBreak(true, 15);
 $oPdf->setfillcolor(255);
 
-$head1 = "CALENDÁRIO LETIVO";
-$head2 = "Calendário: " . $oCalendarioTurma->getDescricao();
-$head3 = "Período: " . $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_PTBR);
-$head3 .= " até " . $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_PTBR);
+$oPdf->addTitulo('CALENDÁRIO LETIVO', 1);
+$title2 = "Calendário: " . $oCalendarioTurma->getDescricao();
+$title3 = "Período: " . $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_PTBR);
+$title3 .= " até " . $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_PTBR);
+
+$oPdf->addTitulo($title2, 2);
+$oPdf->addTitulo($title3, 3);
 
 $oPdf->addpage('P');
 $oPdf->setfont('arial', 'B', 9);
@@ -241,13 +247,13 @@ foreach ($oCalendario->meses as $iInd => $oMes) {
 
 /**
  * Função que monta as miniaturas de cada mês.
- * @param FPDF $oPdf
+ * @param ECidade\Pdf\Pdf $oPdf
  * @param stdClass $oMes Objeto com os dados do mês
  * @param integer $iPosicaoEixoY Posição que devemos escrever no eixo Y
  * @param integer $iPosicaoEixoX Posição que devemos escrever no eixo X
  * @param array $aCoresPeriodo Array com as cores de preenchimento do período
  */
-function montaMiniatura(FPDF $oPdf, $oMes, $iPosicaoEixoY, $iPosicaoEixoX, $aCoresPeriodo)
+function montaMiniatura(ECidade\Pdf\Pdf $oPdf, $oMes, $iPosicaoEixoY, $iPosicaoEixoX, $aCoresPeriodo)
 {
     $oPdf->SetY($iPosicaoEixoY);
     $oPdf->SetX($iPosicaoEixoX);
@@ -372,6 +378,9 @@ $oPdf->SetFont("arial", "", 6.5);
 /**
  * Imprime os eventos
  */
+
+$oPdfHeight = 0;
+
 foreach ($aEventos as $oEvento) {
     $oDtInicio = new DBDate($oEvento->data_inicial);
     $dtInicio = $oDtInicio->convertTo(DBDate::DATA_PTBR);
@@ -387,7 +396,7 @@ foreach ($aEventos as $oEvento) {
 
     $oPdf->SetX($iXEvento);
     $oPdf->Cell(190, 4, $sEvento, 0, 1);
-    if ($oPdf->GetY() >= $oPdf->h - 20) {
+    if ($oPdf->GetY() >= $oPdf->getH() - 20) {
         $oPdf->SetY($iYOriginalEventos);
         $iXEvento += 64; // Largura de cada miniatura + espaço entre elas
         if ($iXEvento >= 200) {
@@ -398,6 +407,27 @@ foreach ($aEventos as $oEvento) {
             $oPdf->SetFont("arial", "", 6.5);
         }
     }
+
+    if ($oPdf->GetY() > $oPdfHeight) {
+        $oPdfHeight = $oPdf->GetY();
+    }
+}
+
+if ($oPdfHeight > $oPdf->GetPageHeight() - 50) {
+    $oPdf->AddPage();
+}
+
+$contadorObservacao = strlen($oCalendario->observacoes);
+
+if ($contadorObservacao <= 1100) {
+    $oPdf->Ln(6);
+    $oPdf->Cell(190,1,"","B", 1, "C");
+    $oPdf->SetFont("arial", "B", 6.5);
+    $oPdf->Multicell(190, 4, substr('OBSERVAÇÕES: ', 0, 12), "LR", "", 0, 0);
+    $oPdf->SetFont("arial", "", 6.5);
+    $oPdf->Multicell(190, 4, substr($oCalendario->observacoes, 0, 1100), "LRB", "J", 0, 0);
+} else {
+    $oPdf->Cell(276,0,"",'B',0,0);
 }
 
 /**
@@ -438,4 +468,4 @@ function hasDiaLetivo($aEventos)
     return false;
 }
 
-$oPdf->Output();
+$oPdf->Output('I');

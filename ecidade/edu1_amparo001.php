@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 *     E-cidade Software Publico para Gestao Municipal
 *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -214,13 +214,13 @@ if (isset( $incluir ) || isset( $alterar ) || isset( $excluir )) {
     <script>
       parent.iframe_R<?=$frame?>.location.href = "edu1_diarioresultado001.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$frame?>";
     </script>
-  <?
+  <?php
   }
   ?>
   <script>
     parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>";
   </script>
-  <?
+  <?php
   db_redireciona ("edu1_amparo001.php?regencia=$regencia");
   exit;
 }
@@ -244,25 +244,25 @@ if (isset( $incluir ) || isset( $alterar ) || isset( $excluir )) {
         Alterar
         <input type="radio" name="opcao" value="E" onclick="location.href='edu1_amparo001.php?regencia=<?= $regencia ?>&opcao=E'" <?= @$opcao == "E" ? "checked" : "" ?>>
         Excluir
-        <?
+        <?php
         if (isset( $opcao ) && $opcao == "I") {
           ?>
           <fieldset style="width:95%">
-          <legend><b>Inclusão de Amparo</b></legend><?
+          <legend><b>Inclusão de Amparo</b></legend><?php
           include(modification( "forms/db_frmamparo001.php" ));
-          ?></fieldset><?
+          ?></fieldset><?php
         } elseif (isset( $opcao ) && $opcao == "A") {
           ?>
           <fieldset style="width:95%">
-          <legend><b>Alteração de Amparo</b></legend><?
+          <legend><b>Alteração de Amparo</b></legend><?php
           include(modification( "forms/db_frmamparo002.php" ));
-          ?></fieldset><?
+          ?></fieldset><?php
         } elseif (isset( $opcao ) && $opcao == "E") {
           ?>
           <fieldset style="width:95%">
-          <legend><b>Exclusão de Amparo</b></legend><?
+          <legend><b>Exclusão de Amparo</b></legend><?php
           include(modification( "forms/db_frmamparo003.php" ));
-          ?></fieldset><?
+          ?></fieldset><?php
         }
         ?>
       </center>

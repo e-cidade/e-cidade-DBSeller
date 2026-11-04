@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Habitacao
 //CLASSE DA ENTIDADE habitprogramalistacompraitem
-class cl_habitprogramalistacompraitem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ht18_sequencial = 0; 
-   var $ht18_habitprogramalistacompra = 0; 
-   var $ht18_matunid = 0; 
-   var $ht18_pcmater = 0; 
-   var $ht18_quantidade = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_habitprogramalistacompraitem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ht18_sequencial = 0;
+   var $ht18_habitprogramalistacompra = 0;
+   var $ht18_matunid = 0;
+   var $ht18_pcmater = 0;
+   var $ht18_quantidade = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ht18_sequencial = int4 = Sequencial 
-                 ht18_habitprogramalistacompra = int4 = Lista de Compras 
-                 ht18_matunid = int4 = Unidade de Material 
-                 ht18_pcmater = int4 = Material 
-                 ht18_quantidade = float4 = Quantidade 
+                 ht18_sequencial = int4 = Sequencial
+                 ht18_habitprogramalistacompra = int4 = Lista de Compras
+                 ht18_matunid = int4 = Unidade de Material
+                 ht18_pcmater = int4 = Material
+                 ht18_quantidade = float4 = Quantidade
                  ";
-   //funcao construtor da classe 
-   function cl_habitprogramalistacompraitem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("habitprogramalistacompraitem"); 
+     $this->rotulo = new rotulo("habitprogramalistacompraitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_habitprogramalistacompraitem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ht18_sequencial = ($this->ht18_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"]:$this->ht18_sequencial);
        $this->ht18_habitprogramalistacompra = ($this->ht18_habitprogramalistacompra == ""?@$GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"]:$this->ht18_habitprogramalistacompra);
@@ -83,9 +83,9 @@ class cl_habitprogramalistacompraitem {
      }
    }
    // funcao para inclusao
-   function incluir ($ht18_sequencial){ 
+   public function incluir ($ht18_sequencial){
       $this->atualizacampos();
-     if($this->ht18_habitprogramalistacompra == null ){ 
+     if($this->ht18_habitprogramalistacompra == null ){
        $this->erro_sql = " Campo Lista de Compras nao Informado.";
        $this->erro_campo = "ht18_habitprogramalistacompra";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_habitprogramalistacompraitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ht18_matunid == null ){ 
+     if($this->ht18_matunid == null ){
        $this->erro_sql = " Campo Unidade de Material nao Informado.";
        $this->erro_campo = "ht18_matunid";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_habitprogramalistacompraitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ht18_pcmater == null ){ 
+     if($this->ht18_pcmater == null ){
        $this->erro_sql = " Campo Material nao Informado.";
        $this->erro_campo = "ht18_pcmater";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_habitprogramalistacompraitem {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ht18_quantidade == null ){ 
+     if($this->ht18_quantidade == null ){
        $this->erro_sql = " Campo Quantidade nao Informado.";
        $this->erro_campo = "ht18_quantidade";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_habitprogramalistacompraitem {
        return false;
      }
      if($ht18_sequencial == "" || $ht18_sequencial == null ){
-       $result = db_query("select nextval('habitprogramalistacompraitem_ht18_sequencial_seq')"); 
+       $result = db_query("select nextval('habitprogramalistacompraitem_ht18_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: habitprogramalistacompraitem_ht18_sequencial_seq do campo: ht18_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: habitprogramalistacompraitem_ht18_sequencial_seq do campo: ht18_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ht18_sequencial = pg_result($result,0,0); 
+       $this->ht18_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from habitprogramalistacompraitem_ht18_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ht18_sequencial)){
@@ -142,10 +142,10 @@ class cl_habitprogramalistacompraitem {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ht18_sequencial = $ht18_sequencial; 
+         $this->ht18_sequencial = $ht18_sequencial;
        }
      }
-     if(($this->ht18_sequencial == null) || ($this->ht18_sequencial == "") ){ 
+     if(($this->ht18_sequencial == null) || ($this->ht18_sequencial == "") ){
        $this->erro_sql = " Campo ht18_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_habitprogramalistacompraitem {
        return false;
      }
      $sql = "insert into habitprogramalistacompraitem(
-                                       ht18_sequencial 
-                                      ,ht18_habitprogramalistacompra 
-                                      ,ht18_matunid 
-                                      ,ht18_pcmater 
-                                      ,ht18_quantidade 
+                                       ht18_sequencial
+                                      ,ht18_habitprogramalistacompra
+                                      ,ht18_matunid
+                                      ,ht18_pcmater
+                                      ,ht18_quantidade
                        )
                 values (
-                                $this->ht18_sequencial 
-                               ,$this->ht18_habitprogramalistacompra 
-                               ,$this->ht18_matunid 
-                               ,$this->ht18_pcmater 
-                               ,$this->ht18_quantidade 
+                                $this->ht18_sequencial
+                               ,$this->ht18_habitprogramalistacompra
+                               ,$this->ht18_matunid
+                               ,$this->ht18_pcmater
+                               ,$this->ht18_quantidade
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Item da Lista de Compras do Programa da Habitação ($this->ht18_sequencial) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_habitprogramalistacompraitem {
        $resac = db_query("insert into db_acount values($acount,3006,17029,'','".AddSlashes(pg_result($resaco,0,'ht18_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ht18_sequencial=null) { 
+   public function alterar ($ht18_sequencial=null) {
       $this->atualizacampos();
      $sql = " update habitprogramalistacompraitem set ";
      $virgula = "";
-     if(trim($this->ht18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"])){ 
+     if(trim($this->ht18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"])){
        $sql  .= $virgula." ht18_sequencial = $this->ht18_sequencial ";
        $virgula = ",";
-       if(trim($this->ht18_sequencial) == null ){ 
+       if(trim($this->ht18_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ht18_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_habitprogramalistacompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"])){ 
+     if(trim($this->ht18_habitprogramalistacompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"])){
        $sql  .= $virgula." ht18_habitprogramalistacompra = $this->ht18_habitprogramalistacompra ";
        $virgula = ",";
-       if(trim($this->ht18_habitprogramalistacompra) == null ){ 
+       if(trim($this->ht18_habitprogramalistacompra) == null ){
          $this->erro_sql = " Campo Lista de Compras nao Informado.";
          $this->erro_campo = "ht18_habitprogramalistacompra";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_matunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_matunid"])){ 
+     if(trim($this->ht18_matunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_matunid"])){
        $sql  .= $virgula." ht18_matunid = $this->ht18_matunid ";
        $virgula = ",";
-       if(trim($this->ht18_matunid) == null ){ 
+       if(trim($this->ht18_matunid) == null ){
          $this->erro_sql = " Campo Unidade de Material nao Informado.";
          $this->erro_campo = "ht18_matunid";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_pcmater"])){ 
+     if(trim($this->ht18_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_pcmater"])){
        $sql  .= $virgula." ht18_pcmater = $this->ht18_pcmater ";
        $virgula = ",";
-       if(trim($this->ht18_pcmater) == null ){ 
+       if(trim($this->ht18_pcmater) == null ){
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "ht18_pcmater";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_quantidade"])){ 
+     if(trim($this->ht18_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_quantidade"])){
        $sql  .= $virgula." ht18_quantidade = $this->ht18_quantidade ";
        $virgula = ",";
-       if(trim($this->ht18_quantidade) == null ){ 
+       if(trim($this->ht18_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "ht18_quantidade";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_habitprogramalistacompraitem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Item da Lista de Compras do Programa da Habitação nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ht18_sequencial;
@@ -327,14 +327,14 @@ class cl_habitprogramalistacompraitem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ht18_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ht18_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ht18_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_habitprogramalistacompraitem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Item da Lista de Compras do Programa da Habitação nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ht18_sequencial;
@@ -392,11 +392,11 @@ class cl_habitprogramalistacompraitem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,11 +418,11 @@ class cl_habitprogramalistacompraitem {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,15 +438,15 @@ class cl_habitprogramalistacompraitem {
      $sql2 = "";
      if($dbwhere==""){
        if($ht18_sequencial!=null ){
-         $sql2 .= " where habitprogramalistacompraitem.ht18_sequencial = $ht18_sequencial "; 
-       } 
+         $sql2 .= " where habitprogramalistacompraitem.ht18_sequencial = $ht18_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,11 +455,11 @@ class cl_habitprogramalistacompraitem {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,15 +472,15 @@ class cl_habitprogramalistacompraitem {
      $sql2 = "";
      if($dbwhere==""){
        if($ht18_sequencial!=null ){
-         $sql2 .= " where habitprogramalistacompraitem.ht18_sequencial = $ht18_sequencial "; 
-       } 
+         $sql2 .= " where habitprogramalistacompraitem.ht18_sequencial = $ht18_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

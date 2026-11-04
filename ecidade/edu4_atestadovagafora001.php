@@ -78,7 +78,7 @@ $iAno       = $dDataAtual[0];
 
  <body class="body-default">
 
-    <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+    <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
 
     <div class="container">
       <fieldset>

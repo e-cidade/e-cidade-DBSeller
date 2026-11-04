@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC" onLoad="js_iniciar()">
-<? if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
+<?php if(!isset($HTTP_POST_VARS["consultar"]) && !isset($HTTP_POST_VARS["priNoMe"]) && !isset($HTTP_POST_VARS["antNoMe"]) && !isset($HTTP_POST_VARS["proxNoMe"]) && !isset($HTTP_POST_VARS["ultNoMe"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360" height="18">&nbsp;</td>
@@ -155,7 +155,7 @@ input {
         <td width="22%" nowrap><strong>Data Inicial:</strong></td>
         <td width="78%" nowrap>
 		<input type="hidden" value="<?=@$codigo?>" name="codigo">
-		<?
+		<?php
 	    include(modification("dbforms/db_funcoes.php"));
 		db_data("datainicio",@$datainicio_dia,@$datainicio_mes,@$datainicio_ano);
 		?>
@@ -178,7 +178,7 @@ input {
       <tr> 
         <td nowrap><strong>Data Final:</strong></td>
         <td nowrap>
-		  <?
+		  <?php
 			db_data("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano);
 		  ?>
 		  <!--input name="datafim_dia" type="text" value="<?=@$datafim_dia?>" size="2" maxlength="2" onkeyUp="js_digitadata(this.name)">
@@ -189,7 +189,7 @@ input {
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <select name="secretaria">
 		  <option value="0">Evento</option>
-		  <?
+		  <?php
 		  $result = db_query($conn,"select cs_odigo,s_descricao from db_secretaria order by s_codigo");
 		  $numrows = pg_numrows($result);
 		  for($i = 0;$i < $numrows;$i++) {
@@ -226,9 +226,9 @@ input {
       </tr>
       <tr> 
         <td nowrap>&nbsp;</td>
-        <td nowrap><input name="incluir" type="submit" id="incluir" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>>
-          <input name="alterar" type="submit" id="alterar" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>>
-          <input name="excluir" type="submit" id="excluir" value="Excluir" onClick="return js_excluir()" <? echo !isset($retorno)?"disabled":"" ?>>
+        <td nowrap><input name="incluir" type="submit" id="incluir" value="Incluir" <?php echo isset($retorno)?"disabled":"" ?>>
+          <input name="alterar" type="submit" id="alterar" value="Alterar" <?php echo !isset($retorno)?"disabled":"" ?>>
+          <input name="excluir" type="submit" id="excluir" value="Excluir" onClick="return js_excluir()" <?php echo !isset($retorno)?"disabled":"" ?>>
           <input name="consultar" type="submit" id="consultar" onClick="this.form.target = 'consulta'" value="Procurar"></td>
       </tr>
     </table>
@@ -241,8 +241,8 @@ input {
 	</td>
   </tr>
 </table>
-<? } else { ?>
-<?
+<?php } else { ?>
+<?php
   db_postmemory($HTTP_POST_VARS);
   if(checkdate($datainicio_mes,$datainicio_dia,$datainicio_ano)) {
     $datainicio = $datainicio_ano."-".$datainicio_mes."-".$datainicio_dia;
@@ -266,8 +266,8 @@ input {
   //db_lov($query,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe") { 
   echo "</center>\n";
 ?>
-<? } ?>
-	<?
+<?php } ?>
+	<?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

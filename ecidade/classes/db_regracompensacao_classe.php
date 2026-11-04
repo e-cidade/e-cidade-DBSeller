@@ -1,83 +1,83 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE regracompensacao
-class cl_regracompensacao { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k155_sequencial = 0; 
-   var $k155_tiporegracompensacao = 0; 
-   var $k155_descricao = null; 
-   var $k155_arretipoorigem = 0; 
-   var $k155_arretipodestino = null; 
-   var $k155_percmaxuso = 0; 
-   var $k155_tempovalidade = null; 
-   var $k155_automatica = 'f'; 
-   var $k155_permitetransferencia = 'f'; 
-   var $k155_instit = 0; 
+class cl_regracompensacao {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k155_sequencial = 0;
+   var $k155_tiporegracompensacao = 0;
+   var $k155_descricao = null;
+   var $k155_arretipoorigem = 0;
+   var $k155_arretipodestino = null;
+   var $k155_percmaxuso = 0;
+   var $k155_tempovalidade = null;
+   var $k155_automatica = 'f';
+   var $k155_permitetransferencia = 'f';
+   var $k155_instit = 0;
    var $k155_database_dia = null;
    var $k155_database_mes = null;
    var $k155_database_ano = null;
    var $k155_database = null;
-   // cria propriedade com as variaveis do arquivo 
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k155_sequencial = int4 = Código 
-                 k155_tiporegracompensacao = int4 = Código Tipo Regra 
-                 k155_descricao = varchar(50) = Descrição 
-                 k155_arretipoorigem = int4 = Tipo de Débito Origem 
-                 k155_arretipodestino = varchar(10) = Tipo de Débito Destino 
-                 k155_percmaxuso = float4 = Percentual Máximo de Uso 
-                 k155_tempovalidade = varchar(10) = Tempo Validade Crédito (dias) 
-                 k155_automatica = bool = Crédito Automático 
-                 k155_permitetransferencia = bool = Permite Transferência 
-                 k155_instit = int4 = Código Instituição 
-                 k155_database = date = Data base 
+                 k155_sequencial = int4 = Código
+                 k155_tiporegracompensacao = int4 = Código Tipo Regra
+                 k155_descricao = varchar(50) = Descrição
+                 k155_arretipoorigem = int4 = Tipo de Débito Origem
+                 k155_arretipodestino = varchar(10) = Tipo de Débito Destino
+                 k155_percmaxuso = float4 = Percentual Máximo de Uso
+                 k155_tempovalidade = varchar(10) = Tempo Validade Crédito (dias)
+                 k155_automatica = bool = Crédito Automático
+                 k155_permitetransferencia = bool = Permite Transferência
+                 k155_instit = int4 = Código Instituição
+                 k155_database = date = Data base
                  ";
-   //funcao construtor da classe 
-   function cl_regracompensacao() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("regracompensacao"); 
+     $this->rotulo = new rotulo("regracompensacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,7 +86,7 @@ class cl_regracompensacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k155_sequencial = ($this->k155_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k155_sequencial"]:$this->k155_sequencial);
        $this->k155_tiporegracompensacao = ($this->k155_tiporegracompensacao == ""?@$GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"]:$this->k155_tiporegracompensacao);
@@ -111,9 +111,9 @@ class cl_regracompensacao {
      }
    }
    // funcao para inclusao
-   function incluir ($k155_sequencial){ 
+   public function incluir ($k155_sequencial){
       $this->atualizacampos();
-     if($this->k155_tiporegracompensacao == null ){ 
+     if($this->k155_tiporegracompensacao == null ){
        $this->erro_sql = " Campo Código Tipo Regra nao Informado.";
        $this->erro_campo = "k155_tiporegracompensacao";
        $this->erro_banco = "";
@@ -122,7 +122,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_descricao == null ){ 
+     if($this->k155_descricao == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "k155_descricao";
        $this->erro_banco = "";
@@ -131,7 +131,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_arretipoorigem == null ){ 
+     if($this->k155_arretipoorigem == null ){
        $this->erro_sql = " Campo Tipo de Débito Origem nao Informado.";
        $this->erro_campo = "k155_arretipoorigem";
        $this->erro_banco = "";
@@ -140,7 +140,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_percmaxuso == null ){ 
+     if($this->k155_percmaxuso == null ){
        $this->erro_sql = " Campo Percentual Máximo de Uso nao Informado.";
        $this->erro_campo = "k155_percmaxuso";
        $this->erro_banco = "";
@@ -149,7 +149,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_automatica == null ){ 
+     if($this->k155_automatica == null ){
        $this->erro_sql = " Campo Crédito Automático nao Informado.";
        $this->erro_campo = "k155_automatica";
        $this->erro_banco = "";
@@ -158,7 +158,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_permitetransferencia == null ){ 
+     if($this->k155_permitetransferencia == null ){
        $this->erro_sql = " Campo Permite Transferência nao Informado.";
        $this->erro_campo = "k155_permitetransferencia";
        $this->erro_banco = "";
@@ -167,7 +167,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k155_instit == null ){ 
+     if($this->k155_instit == null ){
        $this->erro_sql = " Campo Código Instituição nao Informado.";
        $this->erro_campo = "k155_instit";
        $this->erro_banco = "";
@@ -180,16 +180,16 @@ class cl_regracompensacao {
        $this->k155_database = "null";
      }
      if($k155_sequencial == "" || $k155_sequencial == null ){
-       $result = db_query("select nextval('regracompensacao_k155_sequencial_seq')"); 
+       $result = db_query("select nextval('regracompensacao_k155_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: regracompensacao_k155_sequencial_seq do campo: k155_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: regracompensacao_k155_sequencial_seq do campo: k155_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k155_sequencial = pg_result($result,0,0); 
+       $this->k155_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from regracompensacao_k155_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $k155_sequencial)){
@@ -200,10 +200,10 @@ class cl_regracompensacao {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k155_sequencial = $k155_sequencial; 
+         $this->k155_sequencial = $k155_sequencial;
        }
      }
-     if(($this->k155_sequencial == null) || ($this->k155_sequencial == "") ){ 
+     if(($this->k155_sequencial == null) || ($this->k155_sequencial == "") ){
        $this->erro_sql = " Campo k155_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,33 +212,33 @@ class cl_regracompensacao {
        return false;
      }
      $sql = "insert into regracompensacao(
-                                       k155_sequencial 
-                                      ,k155_tiporegracompensacao 
-                                      ,k155_descricao 
-                                      ,k155_arretipoorigem 
-                                      ,k155_arretipodestino 
-                                      ,k155_percmaxuso 
-                                      ,k155_tempovalidade 
-                                      ,k155_automatica 
-                                      ,k155_permitetransferencia 
-                                      ,k155_instit 
-                                      ,k155_database 
+                                       k155_sequencial
+                                      ,k155_tiporegracompensacao
+                                      ,k155_descricao
+                                      ,k155_arretipoorigem
+                                      ,k155_arretipodestino
+                                      ,k155_percmaxuso
+                                      ,k155_tempovalidade
+                                      ,k155_automatica
+                                      ,k155_permitetransferencia
+                                      ,k155_instit
+                                      ,k155_database
                        )
                 values (
-                                $this->k155_sequencial 
-                               ,$this->k155_tiporegracompensacao 
-                               ,'$this->k155_descricao' 
-                               ,$this->k155_arretipoorigem 
-                               ,'$this->k155_arretipodestino' 
-                               ,$this->k155_percmaxuso 
-                               ,'$this->k155_tempovalidade' 
-                               ,'$this->k155_automatica' 
-                               ,'$this->k155_permitetransferencia' 
-                               ,$this->k155_instit 
-                               ,".($this->k155_database == "null" || $this->k155_database == ""?"null":"'".$this->k155_database."'")." 
+                                $this->k155_sequencial
+                               ,$this->k155_tiporegracompensacao
+                               ,'$this->k155_descricao'
+                               ,$this->k155_arretipoorigem
+                               ,'$this->k155_arretipodestino'
+                               ,$this->k155_percmaxuso
+                               ,'$this->k155_tempovalidade'
+                               ,'$this->k155_automatica'
+                               ,'$this->k155_permitetransferencia'
+                               ,$this->k155_instit
+                               ,".($this->k155_database == "null" || $this->k155_database == ""?"null":"'".$this->k155_database."'")."
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "regracompensacao ($this->k155_sequencial) nao Incluído. Inclusao Abortada.";
@@ -280,16 +280,16 @@ class cl_regracompensacao {
        $resac = db_query("insert into db_acount values($acount,3476,1010005,'','".AddSlashes(pg_result($resaco,0,'k155_database'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k155_sequencial=null) { 
+   public function alterar ($k155_sequencial=null) {
       $this->atualizacampos();
      $sql = " update regracompensacao set ";
      $virgula = "";
-     if(trim($this->k155_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_sequencial"])){ 
+     if(trim($this->k155_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_sequencial"])){
        $sql  .= $virgula." k155_sequencial = $this->k155_sequencial ";
        $virgula = ",";
-       if(trim($this->k155_sequencial) == null ){ 
+       if(trim($this->k155_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k155_sequencial";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_tiporegracompensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"])){ 
+     if(trim($this->k155_tiporegracompensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"])){
        $sql  .= $virgula." k155_tiporegracompensacao = $this->k155_tiporegracompensacao ";
        $virgula = ",";
-       if(trim($this->k155_tiporegracompensacao) == null ){ 
+       if(trim($this->k155_tiporegracompensacao) == null ){
          $this->erro_sql = " Campo Código Tipo Regra nao Informado.";
          $this->erro_campo = "k155_tiporegracompensacao";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_descricao"])){ 
+     if(trim($this->k155_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_descricao"])){
        $sql  .= $virgula." k155_descricao = '$this->k155_descricao' ";
        $virgula = ",";
-       if(trim($this->k155_descricao) == null ){ 
+       if(trim($this->k155_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k155_descricao";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_arretipoorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipoorigem"])){ 
+     if(trim($this->k155_arretipoorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipoorigem"])){
        $sql  .= $virgula." k155_arretipoorigem = $this->k155_arretipoorigem ";
        $virgula = ",";
-       if(trim($this->k155_arretipoorigem) == null ){ 
+       if(trim($this->k155_arretipoorigem) == null ){
          $this->erro_sql = " Campo Tipo de Débito Origem nao Informado.";
          $this->erro_campo = "k155_arretipoorigem";
          $this->erro_banco = "";
@@ -338,14 +338,14 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_arretipodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipodestino"])){ 
+     if(trim($this->k155_arretipodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipodestino"])){
        $sql  .= $virgula." k155_arretipodestino = '$this->k155_arretipodestino' ";
        $virgula = ",";
      }
-     if(trim($this->k155_percmaxuso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_percmaxuso"])){ 
+     if(trim($this->k155_percmaxuso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_percmaxuso"])){
        $sql  .= $virgula." k155_percmaxuso = $this->k155_percmaxuso ";
        $virgula = ",";
-       if(trim($this->k155_percmaxuso) == null ){ 
+       if(trim($this->k155_percmaxuso) == null ){
          $this->erro_sql = " Campo Percentual Máximo de Uso nao Informado.";
          $this->erro_campo = "k155_percmaxuso";
          $this->erro_banco = "";
@@ -355,14 +355,14 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_tempovalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tempovalidade"])){ 
+     if(trim($this->k155_tempovalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tempovalidade"])){
        $sql  .= $virgula." k155_tempovalidade = '$this->k155_tempovalidade' ";
        $virgula = ",";
      }
-     if(trim($this->k155_automatica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_automatica"])){ 
+     if(trim($this->k155_automatica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_automatica"])){
        $sql  .= $virgula." k155_automatica = '$this->k155_automatica' ";
        $virgula = ",";
-       if(trim($this->k155_automatica) == null ){ 
+       if(trim($this->k155_automatica) == null ){
          $this->erro_sql = " Campo Crédito Automático nao Informado.";
          $this->erro_campo = "k155_automatica";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_permitetransferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_permitetransferencia"])){ 
+     if(trim($this->k155_permitetransferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_permitetransferencia"])){
        $sql  .= $virgula." k155_permitetransferencia = '$this->k155_permitetransferencia' ";
        $virgula = ",";
-       if(trim($this->k155_permitetransferencia) == null ){ 
+       if(trim($this->k155_permitetransferencia) == null ){
          $this->erro_sql = " Campo Permite Transferência nao Informado.";
          $this->erro_campo = "k155_permitetransferencia";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_instit"])){ 
+     if(trim($this->k155_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_instit"])){
        $sql  .= $virgula." k155_instit = $this->k155_instit ";
        $virgula = ",";
-       if(trim($this->k155_instit) == null ){ 
+       if(trim($this->k155_instit) == null ){
          $this->erro_sql = " Campo Código Instituição nao Informado.";
          $this->erro_campo = "k155_instit";
          $this->erro_banco = "";
@@ -443,7 +443,7 @@ class cl_regracompensacao {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "regracompensacao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k155_sequencial;
@@ -471,14 +471,14 @@ class cl_regracompensacao {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k155_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k155_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k155_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -514,7 +514,7 @@ class cl_regracompensacao {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "regracompensacao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k155_sequencial;
@@ -542,11 +542,11 @@ class cl_regracompensacao {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -568,11 +568,11 @@ class cl_regracompensacao {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -587,23 +587,23 @@ class cl_regracompensacao {
      $sql .= "      inner join db_config                     on  db_config.codigo                     = regracompensacao.k155_instit              ";
      $sql .= "      inner join tiporegracompensacao          on  tiporegracompensacao.k154_sequencial = regracompensacao.k155_tiporegracompensacao";
      $sql .= "      inner join db_config as db_configorigem  on  db_configorigem.codigo               = arretipoorigem.k00_instit                 ";
-     $sql .= "      inner join cadtipo as cadtipoorigem      on  cadtipoorigem.k03_tipo               = arretipoorigem.k03_tipo                   ";     
+     $sql .= "      inner join cadtipo as cadtipoorigem      on  cadtipoorigem.k03_tipo               = arretipoorigem.k03_tipo                   ";
      $sql .= "       left join db_config as db_configdestino on  db_configdestino.codigo              = arretipodestino.k00_instit                ";
-     $sql .= "       left join cadtipo as cadtipodestino     on  cadtipodestino.k03_tipo              = arretipodestino.k03_tipo                  ";     
+     $sql .= "       left join cadtipo as cadtipodestino     on  cadtipodestino.k03_tipo              = arretipodestino.k03_tipo                  ";
      $sql .= "      inner join cgm                           on  cgm.z01_numcgm                       = db_config.numcgm                          ";
      $sql .= "      inner join db_tipoinstit                 on  db_tipoinstit.db21_codtipo           = db_config.db21_tipoinstit                 ";
      $sql2 = "";
      if($dbwhere==""){
        if($k155_sequencial!=null ){
-         $sql2 .= " where regracompensacao.k155_sequencial = $k155_sequencial "; 
-       } 
+         $sql2 .= " where regracompensacao.k155_sequencial = $k155_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -612,11 +612,11 @@ class cl_regracompensacao {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -629,15 +629,15 @@ class cl_regracompensacao {
      $sql2 = "";
      if($dbwhere==""){
        if($k155_sequencial!=null ){
-         $sql2 .= " where regracompensacao.k155_sequencial = $k155_sequencial "; 
-       } 
+         $sql2 .= " where regracompensacao.k155_sequencial = $k155_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

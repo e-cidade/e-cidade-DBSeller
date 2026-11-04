@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ $cltipoempresa->rotulo->label();
        <?=@$Ldb98_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db98_sequencial',10,$Idb98_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('db98_sequencial',10,$Idb98_sequencial,true,'text',3,"")
        <?=@$Ldb98_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db98_descricao',40,$Idb98_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('db98_descricao',40,$Idb98_descricao,true,'text',$db_opcao,"")
     <td nowrap>       
     </td>
     <td>
-     <?
+     <?php
         $cldb_estrut->autocompletar = true;
         $cldb_estrut->mascara  = true;
         $cldb_estrut->reload   = false;
@@ -84,7 +84,7 @@ db_input('db98_descricao',40,$Idb98_descricao,true,'text',$db_opcao,"")
        <?=@$Ldb98_dataini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('db98_dataini',@$db98_dataini_dia,@$db98_dataini_mes,@$db98_dataini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_inputdata('db98_dataini',@$db98_dataini_dia,@$db98_dataini_mes,@$db98_dataini
        <?=@$Ldb98_datafin?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('db98_datafin',@$db98_datafin_dia,@$db98_datafin_mes,@$db98_datafin_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,10 +109,10 @@ db_inputdata('db98_datafin',@$db98_datafin_dia,@$db98_datafin_mes,@$db98_datafin
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-<? if($db_opcao != 1 && $db_opcao != 11) {  ?>
+<?php if($db_opcao != 1 && $db_opcao != 11) {  ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" type="button" id="novo" value="Novo" onclick="window.location.href='con1_tipoempresa001.php'">
-<? } ?>
+<?php } ?>
 </form>
 <script>
 function js_pesquisa(){
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipoempresa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

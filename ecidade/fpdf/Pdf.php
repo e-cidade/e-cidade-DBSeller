@@ -56,6 +56,11 @@ class Pdf extends Fpdf
     protected $I = 0;
     protected $U = 0;
     protected $HREF = '';
+    /**
+     * altura que o header acabou a escrita
+     * @var int
+     */
+    protected $yFimHeader;
 
     /**
      * Inicializa as dependências para uso da classe FPDF
@@ -101,6 +106,12 @@ class Pdf extends Fpdf
                 $this->titulos[$key] = $novoTexto;
             }
         }
+    }
+
+    /* Buscando um título pela chave */
+    public function getTitleByKey($key)
+    {
+        return $this->titulos[$key];
     }
 
     /**
@@ -210,20 +221,27 @@ class Pdf extends Fpdf
         $fill = false,
         $link = ''
     ) {
-        // Adiciona uma "margin" com espaos
         $content = "${content}  ";
-        $tamanhoString = $this->GetStringWidth($content);
-
-        $content = trim($content);
-        if ($tamanhoString > $w) {
-            // Deixa a fonte EXATAMENTE no tamanho para caber na célula
-            $tamanhoFonte = $fonteOriginal * $w / $tamanhoString;
-
-            $this->SetFontSize($tamanhoFonte);
-        }
-
+        $this->SetFontSize($this->getFonteSizeByWidthCell($w, $fonteOriginal, $content));
         $this->Cell($w, $h, $content, $border, $ln, $align, $fill, $link);
         $this->SetFontSize($fonteOriginal);
+    }
+
+    /**
+     * @param $width
+     * @param $fontSize
+     * @param $content
+     * @return float|int
+     */
+    public function getFonteSizeByWidthCell($width, $fontSize, $content)
+    {
+        $tamanhoString = $this->GetStringWidth($content);
+        $content = trim($content);
+        if ($tamanhoString > $width) {
+            // Deixa a fonte EXATAMENTE no tamanho para caber na célula
+            return $fontSize * $width / $tamanhoString;
+        }
+        return $fontSize;
     }
 
     /**
@@ -730,6 +748,7 @@ class Pdf extends Fpdf
         $cidadeEscola = $escola->getMunicipio();
         $estadoEscola = $escola->getUf();
         $emailEscola = $escola->getEmail();
+        $emailExist = !empty($emailEscola);
 
         $telefones = $escola->getTelefones();
 
@@ -740,17 +759,19 @@ class Pdf extends Fpdf
 
         $this->SetFont('Arial', 'BI', $TamFonteNome);
         $this->Text(33, 9, $nomeInstituicao);
-        $this->Text(33, 14, $nomeEscola);
+        $this->SetXY(32, 10);
+        $this->cellAdapt($TamFonteNome, 90, 3, $nomeEscola);
         $this->SetFont('Arial', 'I', 8);
-        $this->Text(33, 18, $ruaEscola . ", " . $numeroEscola . " - " . $bairroEscola);
-        $this->Text(33, 22, $cidadeEscola . " - " . $estadoEscola);
-        $this->Text(33, 26, $telefone);
-
-        $this->Text(33, 30, ($emailEscola != "" ? $emailEscola . " - " : "") . $site);
+        $this->Text(33, 16, $ruaEscola . ", " . $numeroEscola . " - " . $bairroEscola);
+        $this->Text(33, 20, $cidadeEscola . " - " . $estadoEscola);
+        $this->Text(33, 24, $telefone);
+        $this->Text(33, 28, ($emailExist ? $emailEscola : ""));
+        $this->Text(33, ($emailExist ? 32 : 28), $site);
 
         $this->imprimeTitulo();
 
         $this->SetY(35);
+        $this->yFimHeader = 35;
     }
 
     /**
@@ -760,7 +781,6 @@ class Pdf extends Fpdf
      */
     private function headerEstadoPrefeitura()
     {
-
         $instituicao = $this->buscaDadosInstituicao();
         $logo = $instituicao->getImagemLogo();
 
@@ -781,6 +801,7 @@ class Pdf extends Fpdf
         $this->Ln(10);
         $this->SetLeftMargin($this->lMargin);
         $this->SetY(40);
+        $this->yFimHeader = 40;
     }
 
     private function headerInstituicao()
@@ -822,6 +843,7 @@ class Pdf extends Fpdf
 
         $this->imprimeTitulo();
         $this->SetY(35);
+        $this->yFimHeader = 35;
     }
 
     /**
@@ -902,6 +924,59 @@ class Pdf extends Fpdf
         $yc = $y + $r;
         $this->_out(sprintf('%.2F %.2F l', ($x) * $k, ($hp - $yc) * $k));
         $this->_Arc($xc - $r, $yc - $r * $MyArc, $xc - $r * $MyArc, $yc - $r, $xc, $yc - $r);
+        $this->_out($op);
+    }
+
+    public function RectBorderRadius($x, $y, $w, $h, $rtopleft, $rtopright, $rbottomleft, $rbottomright, $style = '')
+    {
+        $k = $this->k;
+        $hp = $this->h;
+        $xc = $x + $w;
+        if ($style == 'F')
+            $op = 'f';
+        elseif ($style == 'FD' || $style == 'DF')
+            $op = 'B';
+        else
+            $op = 'S';
+        $MyArc = 4 / 3 * (sqrt(2) - 1);
+
+        if ($rtopleft !== 0 && $rtopright === 0) {
+            $this->_out(sprintf('%.2F %.2F m', ($x + $rtopleft) * $k, ($hp - $y) * $k));
+            $xc = $x + $w;
+        }
+        else if ($rtopright !== 0 && $rtopleft === 0) {
+            $this->_out(sprintf('%.2F %.2F m', ($x) * $k, ($hp - $y) * $k));
+            $xc = $x + $w - $rtopright;
+        }
+        else if ($rtopleft !== 0 && $rtopright !== 0) {
+            $this->_out(sprintf('%.2F %.2F m', ($x + $rtopleft) * $k, ($hp - $y) * $k));
+            $xc = $x + $w - $rtopright;
+        } else {
+            $this->_out(sprintf('%.2F %.2F m', ($x) * $k, ($hp - $y) * $k));
+        }
+
+        // Border Radius Top Right
+        $yc = $y + $rtopright;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - $y) * $k));
+        $this->_Arc($xc + $rtopright * $MyArc, $yc - $rtopright, $xc + $rtopright, $yc - $rtopright * $MyArc, $xc + $rtopright, $yc);
+
+        // Border Radius Bottom Right
+        $xc = $x + $w - $rbottomright;
+        $yc = $y + $h - $rbottomright;
+        $this->_out(sprintf('%.2F %.2F l', ($x + $w) * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc + $rbottomright, $yc + $rbottomright * $MyArc, $xc + $rbottomright * $MyArc, $yc + $rbottomright, $xc, $yc + $rbottomright);
+
+        // Border Radius Bottom Left
+        $xc = $x + $rbottomleft;
+        $yc = $y + $h - $rbottomleft;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - ($y + $h)) * $k));
+        $this->_Arc($xc - $rbottomleft * $MyArc, $yc + $rbottomleft, $xc - $rbottomleft, $yc + $rbottomleft * $MyArc, $xc - $rbottomleft, $yc);
+
+        // Border Radius Top Left
+        $xc = $x + $rtopleft;
+        $yc = $y + $rtopleft;
+        $this->_out(sprintf('%.2F %.2F l', ($x) * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc - $rtopleft, $yc - $rtopleft * $MyArc, $xc - $rtopleft * $MyArc, $yc - $rtopleft, $xc, $yc - $rtopleft);
         $this->_out($op);
     }
 
@@ -1371,7 +1446,7 @@ class Pdf extends Fpdf
             $c = $string[$i];
             if ($c == "\n") {
                 $i++;
-                $tamanho = $i-$j;
+                $tamanho = $i - $j;
                 $linhas[$nl] = substr($string, $j, $tamanho);
                 $sep = -1;
                 $j = $i;
@@ -1390,7 +1465,7 @@ class Pdf extends Fpdf
                     }
                 } else {
                     $i = $sep + 1;
-                    $tamanho = $i-$j;
+                    $tamanho = $i - $j;
                     $linhas[$nl] = substr($string, $j, $tamanho);
                     $sep = -1;
                     $j = $i;
@@ -1401,8 +1476,17 @@ class Pdf extends Fpdf
                 $i++;
             }
         }
-        $tamanho = $i-$j;
+        $tamanho = $i - $j;
         $linhas[$nl] = substr($string, $j, $tamanho);
         return $linhas;
+    }
+
+    /**
+     * retorna a altura que o header acabou a escrita
+     * @return int
+     */
+    public function yFimHeader()
+    {
+        return $this->yFimHeader;
     }
 }

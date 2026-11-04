@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,12 +72,12 @@ function js_testacamp(){
    <br>
     <tr>
       <td nowrap title="<?=@$Ty50_codauto?>">
-         <?
+         <?php
          db_ancora(@$Ly50_codauto,"js_auto(true);",1);
          ?>
       </td>
       <td> 
-        <?
+        <?php
         db_input('y50_codauto',10,$Iy50_codauto,true,'text',$db_opcao," onChange='js_auto(false)'");
         db_input('y56_id_usuario',30,0,true,'text',3);
         ?>

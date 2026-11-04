@@ -25,6 +25,8 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Patrimonial\Protocolo\Model\Processo\Processo;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -41,38 +43,55 @@ $oGet = db_utils::postMemory($_GET);
 
 $oDaoProcesso = new cl_protprocesso();
 
+if (!empty($oGet->p58_codproc)) {
+    $telaDocumento = true;
+}
+
 $sWhere = " 1 = 1";//p58_instit = ".db_getsession("DB_instit");
 if (isset($oGet->codproc) && !empty($oGet->codproc) && !isset($oGet->numero)) {
-    $sWhere .= " and p58_codproc = {$oGet->codproc}";
+    $sWhere .= " and protprocesso.p58_codproc = {$oGet->codproc}";
 }
 
 if (isset($oGet->numero) && !empty($oGet->numero)) {
-
     $aNumeroProcesso = explode("/", $oGet->numero);
     $iAno = db_getsession("DB_anousu");
     $iNumeroProcesso = $aNumeroProcesso[0];
 
     if (count($aNumeroProcesso) > 1) {
-
         $iAno = $aNumeroProcesso[1];
     }
 
-    $sWhere .= " and p58_numero = '{$iNumeroProcesso}' and p58_ano = {$iAno} ";
+    $sWhere .= " and protprocesso.p58_numero = '{$iNumeroProcesso}' and protprocesso.p58_ano = {$iAno} ";
 }
 
-$sSqlProcessoApensado = "(select p30_procprincipal ";
-$sSqlProcessoApensado .= "          from processosapensados";
-$sSqlProcessoApensado .= "         where p30_procapensado = p58_codproc limit 1) as processo_principal";
-$sSqlBuscaCodigoProcesso = $oDaoProcesso->sql_query(null, "*, {$sSqlProcessoApensado}, a.codigo as codigo_instit_origem,
-                                                           a.nomeinst as nome_instit_origem", " 1 desc", $sWhere);
+$sSqlBuscaCodigoProcesso = $oDaoProcesso->sql_query(
+    null,
+    "*,
+                processo_principal.p58_numero || '/' || processo_principal.p58_ano as numero_ano_processo_principal,
+                processo_principal.p58_codproc as codigo_processo_principal,
+                a.codigo as codigo_instit_origem,
+                a.nomeinst as nome_instit_origem,
+                la.descrdepto as descrdepto_localizacao_atual",
+    " 1 desc",
+    $sWhere,
+    "
+        LEFT JOIN processosapensados ON processosapensados.p30_procapensado = protprocesso.p58_codproc
+        LEFT JOIN protprocesso AS processo_principal
+            ON processo_principal.p58_codproc = processosapensados.p30_procprincipal
+    "
+);
 
 $rsBuscaCodigoProcesso = $oDaoProcesso->sql_record($sSqlBuscaCodigoProcesso);
 
 $sProcessoPrincipal = '';
 $oProcesso = db_utils::fieldsMemory($rsBuscaCodigoProcesso, 0);
-if ($oProcesso->processo_principal != '') {
+if ($oProcesso->codigo_processo_principal != '') {
 
-    $sProcessoPrincipal = " - <b>(Apensado ao processo {$oProcesso->processo_principal}) </b>";
+    $sProcessoPrincipal = " <b>(Apensado ao processo -
+    <a
+        class='dbancora'
+        onclick='js_consultaProcesso({$oProcesso->codigo_processo_principal})'>
+        {$oProcesso->numero_ano_processo_principal}</a>)</b>";
 }
 
 $oProcessoProtocolo = new processoProtocolo($oProcesso->p58_codproc);
@@ -80,7 +99,6 @@ $oLicitacao = $oProcessoProtocolo->getLicitacao();
 $sCodigoLicitacao = "";
 $iCodigoSequencialLicitacao = 0;
 if ($oLicitacao) {
-
     $sCodigoLicitacao = "{$oLicitacao->getEdital()}/{$oLicitacao->getAno()}";
     $iCodigoSequencialLicitacao = $oLicitacao->getCodigo();
 }
@@ -111,24 +129,18 @@ if (pg_num_rows($pgObject) > 0) {
 
 $numeroAtendimento = "-";
 if (!empty($oProcesso->ov01_numero)) {
-    $numeroAtendimento = "{$oProcesso->ov01_numero}/{$oProcesso->ov01_anousu}";
+    $data = db_formatar($oProcesso->ov01_dataatend, 'd');
+    $numeroAtendimento = "{$oProcesso->ov01_numero}/{$oProcesso->ov01_anousu} - {$data}";
 }
 
 $numeroProcessopai = 0;
 if (!empty($oProcesso->p58_processopai)) {
-    $sqlProcessopai = $oDaoProcesso->sql_query_file($oProcesso->p58_processopai, 'p58_numero, p58_ano, p58_codproc,ov01_numero,ov01_anousu');
-    $postgresObject = db_query($sqlProcessopai);
-
-    if (pg_num_rows($postgresObject) > 0) {
-        $rsProcessopai = pg_fetch_assoc($postgresObject);
-        $numeroProcessopai = "{$rsProcessopai['p58_numero']}/{$rsProcessopai['p58_ano']}";
-        $codprocProcessopai = $rsProcessopai['p58_codproc'];
-        if (!empty($rsProcessopai['ov01_numero'])) {
-            $numeroAtendimento = "{$rsProcessopai['ov01_numero']}/{$rsProcessopai['ov01_anousu']}";
-        }
-
-    }
+    $processo = Processo::find($oProcesso->p58_processopai);
+    $numeroProcessopai = $processo->getNumero(). "/".$processo->getAno();
+    $codprocProcessopai = $processo->getCodigoProcesso();
 }
+
+$arquivado = (bool)$oProcesso->p68_codarquiv;
 ?>
 
 <html>
@@ -157,7 +169,6 @@ if (!empty($oProcesso->p58_processopai)) {
     <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/DatagridCollection.widget.js"></script>
     <script language="JavaScript" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/classes/patrimonio/AndamentoProcesso.js"></script>
     <script language="JavaScript" type="text/javascript" rel="script" type="text/javascript"
             src="scripts/classes/http/http.js"></script>
     <script type="text/javascript" src="scripts/socket.io.js"></script>
@@ -179,9 +190,11 @@ if (!empty($oProcesso->p58_processopai)) {
                 <?php echo "{$oProcesso->p58_numero}/{$oProcesso->p58_ano}" ?>
             </td>
             <td rowspan="8" id="tdObservacoes" width="800" valign="top">
-                <?php if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 228068) == 'true'): ?>
-                    <input id="andamentoProcesso" type="button" value="Andamento do processo"
-                           style="display: none; float: right; height: 30px !important;">
+                <?php if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 228068) == 'true') : ?>
+                    <?php if (($oProcessoProtocolo->getDepartamentoAtualProcesso() === (integer) db_getsession('DB_coddepto')) && $arquivado === false) : ?>
+                        <input id="andamentoProcesso" type="button" value="Andamento do processo"
+                               style="display: none; float: right; height: 30px !important;">
+                    <?php endif; ?>
                 <?php endif; ?>
             </td>
         </tr>
@@ -217,10 +230,10 @@ if (!empty($oProcesso->p58_processopai)) {
         </tr>
         <tr>
             <td class='negrito'>
-                Departamento:
+                Tipo de Documento:
             </td>
             <td class='dados'>
-                <?php echo "{$oProcesso->p58_coddepto} - $oProcesso->descrdepto"; ?>
+                <?php echo mb_strtoupper("{$oProcesso->p91_sigla} - $oProcesso->p91_descricao"); ?>
             </td>
             <td class='negrito'>
                 Atendimento:
@@ -229,6 +242,20 @@ if (!empty($oProcesso->p58_processopai)) {
                 <?= !empty($numeroAtendimento) ? $numeroAtendimento : " - "; ?>
             </td>
 
+        </tr>
+        <tr>
+            <td class='negrito'>
+                Departamento:
+            </td>
+            <td class='dados'>
+                <?php echo "{$oProcesso->p58_coddepto} - $oProcesso->descrdepto"; ?>
+            </td>
+            <td class='negrito'>
+                Arquivado:
+            </td>
+            <td class='dados'>
+                <?php echo $oProcesso->p68_codarquiv ? "Sim" : "Não"; ?>
+            </td>
         </tr>
         <tr>
             <td class='negrito'>
@@ -264,10 +291,10 @@ if (!empty($oProcesso->p58_processopai)) {
         </tr>
         <tr>
             <td class='negrito'>
-                Localização:
+                Localização Atual:
             </td>
             <td class='dados' colspan="3">
-                <?php echo "{$oProcesso->p58_instit} - $oProcesso->nomeinst" ?>
+                <?php echo "{$oProcesso->p61_coddepto} - $oProcesso->descrdepto_localizacao_atual" ?>
             </td>
         </tr>
         <tr>
@@ -309,8 +336,7 @@ if (!empty($oProcesso->p58_processopai)) {
                 Observações:
             </td>
             <td class='dados' colspan="3">
-                <textarea id="textAreaObs" rows="3" style="resize:none;overflow:auto; width: 100%; border: none;"
-                          readonly="readonly"><?php echo "{$oProcesso->p58_obs}" ?></textarea>
+                <div id="textAreaObs" style="background:#fff;height:250px;overflow-y:auto"><?php echo $oProcesso->p58_obs?></div>
             </td>
         </tr>
     </table>
@@ -319,10 +345,17 @@ if (!empty($oProcesso->p58_processopai)) {
     <legend class='negrito'>Detalhes do Processo</legend>
     <?php
     $oVerticalTab = new verticalTab('detalhesProcesso', 350);
-    $sGetUrl = "codigo_processo={$oProcesso->p58_codproc}&tipo_processo={$oProcesso->p58_tipoprocesso}";
+    if ($telaDocumento) {
+        $sGetUrl = "codigo_processo={$oProcesso->p58_codproc}&tipo_processo={$oProcesso->p58_tipoprocesso}&tela_documento={$telaDocumento}";
+    } else {
+        $sGetUrl = "codigo_processo={$oProcesso->p58_codproc}&tipo_processo={$oProcesso->p58_tipoprocesso}";
+    }
 
-    $oVerticalTab->add('dadosMovimentações', 'Movimentações',
-        "pro3_listamovimentacoesprocesso.php?{$sGetUrl}");
+    $oVerticalTab->add(
+        'dadosMovimentações',
+        'Movimentações',
+        "pro3_listamovimentacoesprocesso.php?{$sGetUrl}"
+    );
 
     if ($oProcesso->processo_principal == '') {
         $oVerticalTab->add(
@@ -344,14 +377,6 @@ if (!empty($oProcesso->p58_processopai)) {
         "pro3_imprimirconsultaprocesso.php?{$sGetUrl}&processo_principal={$oProcesso->processo_principal}&p58_numero={$oProcesso->p58_numero}&p58_ano={$oProcesso->p58_ano}"
     );
 
-    if ($oProcesso->p58_tipoprocesso == 2) {
-        $oVerticalTab->add(
-            'visualizarDocumentos',
-            'Visualizar Documentos',
-            "pro3_visualizardocumentos.php?{$sGetUrl}"
-        );
-    }
-
     if ($oProcesso->p58_processopai == 0) {
         $oVerticalTab->add(
             'volumes',
@@ -359,6 +384,31 @@ if (!empty($oProcesso->p58_processopai)) {
             "pro3_listavolumes.php?{$sGetUrl}"
         );
     }
+
+    if ($oProcesso->p58_tipoprocesso == 2 ) {
+        $oVerticalTab->add(
+            'visualizarDocumentos',
+            'Visualizar Documentos',
+            "pro3_visualizardocumentos.php?{$sGetUrl}"
+        );
+    }
+
+    if ($oProcesso->p58_tipoprocesso == 2 ) {
+        $oVerticalTab->add(
+            'visualizarMensagens',
+            'Visualizar Mensagens',
+            "",
+            true,
+            true
+        );
+    }
+
+    $oVerticalTab->add(
+        'dadosArquivamento',
+        'Dados do Arquivamento',
+        "pro3_dadosarquivamento.php?codigo_arquivamento={$oProcesso->p68_codarquiv}",
+        $oProcesso->p68_codarquiv ? true : false
+    );
 
     $oVerticalTab->show();
 
@@ -369,49 +419,21 @@ if (!empty($oProcesso->p58_processopai)) {
 
 <script>
 
-
     const btnAndamentoProcesso = document.getElementById('andamentoProcesso');
     if (btnAndamentoProcesso) {
-        var data = new FormData();
-        data.append('acao', 'info');
-        HttpClient.post('con4_ecidadeinfo.RPC.php', {body: data}).then(function (response) {
-            if (response.erro) {
-                alert(response.mensagem);
-                return;
-            }
-
-            const andamentoProcesso = new AndamentoProcesso();
-            andamentoProcesso.setApiUrl(response.url + 'v4/api/');
-            andamentoProcesso.setWindowAux(new windowAux('windowAux', 'Andamento do processo', 1150, 700));
-            andamentoProcesso.setWindowTransferencia(new windowAux('windowTransferencia', 'Transfêrencia', 500, 250));
-            andamentoProcesso.utilizaTelaAndamentoProcesso(false);
-            const numeroControleProcesso = document.getElementById('controle_processo').value;
-            var processo = null;
-
-            const buscaProcesso = () => {
-                const data = new FormData();
-
-                data.append('acao', 'buscarProcessos');
-                data.append('filtros', JSON.stringify(['p58_codproc = ' + numeroControleProcesso]));
-                data.append('filtraDepartamentosPorDataLimite', 1);
-
-                HttpClient.post('pro4_andamento_processo.RPC.php', {body: data}).then(response2 => {
-
-                    if (response2.erro) {
-                        alert(response2.mensagem);
-                        return;
-                    }
-
-                    if (response2.processos.length > 0) {
-                        processo = response2.processos.last();
-                        btnAndamentoProcesso.style.display = '';
-                        btnAndamentoProcesso.addEventListener('click', () => {
-                            andamentoProcesso.abreAndamentoProcesso(processo);
-                        });
-                    }
-                });
-            };
-            buscaProcesso();
+        const numeroControleProcesso = document.getElementById('controle_processo').value;
+        btnAndamentoProcesso.style.display = '';
+        btnAndamentoProcesso.addEventListener('click', () => {
+            var url = CurrentWindow.corpo.CurrentWindow.ECIDADE_REQUEST_PATH;
+            url = url.replace('//w', '/w');
+            url = `${url}web/patrimonial/protocolo/acoes-andamento/${numeroControleProcesso}`;
+            js_OpenJanelaIframe(
+                'CurrentWindow.corpo',
+                'db_acao_andamento',
+                url,
+                'Andamento Processo',
+                true
+            )
         });
     }
 
@@ -473,8 +495,23 @@ if (!empty($oProcesso->p58_processopai)) {
         parent.db_iframe_consultaprocesso.hide();
     }
 
+    function js_consultaProcesso(codigoProcesso) {
+        js_OpenJanelaIframe(
+            'CurrentWindow.corpo',
+            'db_iframe_processo',
+            "pro3_consultaprocesso002.php?codproc=" + codigoProcesso,
+            'Consulta de Processo',
+            true
+        );
+    }
+
     js_verificarResolucaoUsuario();
 
     $('td_abas').style.width = '17%';
+
+    function openIframeMensagem(codigoProcesso) {
+        const url = CurrentWindow.corpo.CurrentWindow.ECIDADE_REQUEST_PATH;
+        js_OpenJanelaIframe('CurrentWindow.corpo', 'visualizar_mensagens', `${url}web/patrimonial/protocolo/mensageria-protocolo/${codigoProcesso}`, 'Visualizador de Mensagens', true);
+    }
 
 </script>

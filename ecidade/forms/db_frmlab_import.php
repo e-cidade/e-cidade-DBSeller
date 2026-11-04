@@ -1,35 +1,35 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Vacinas
 $clrotulo = new rotulocampo;
 $clrotulo->label("la22_i_codigo");
 $clrotulo->label("z01_v_nome");
- 
+
 ?>
 
 <form name="form1" action="" method="POST" enctype="multipart/form-data" >
@@ -38,14 +38,14 @@ $clrotulo->label("z01_v_nome");
 <table border="0" width="100%">
   <tr>
     <td nowrap title="<?=@$Tla22_i_codigo?>">
-       <?db_ancora ('<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "");?>
+       <?php db_ancora ('<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "");?>
     </td>
-    <td> 
-      <?db_input ('la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"", 
+    <td>
+      <?php db_input ('la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"",
                    " onchange='js_pesquisala22_i_codigo(false);'")?>
-      <?db_input ('z01_v_nome', 30, @$Iz01_v_nome, true, 'text', 3, '')?>
+      <?php db_input ('z01_v_nome', 30, @$Iz01_v_nome, true, 'text', 3, '')?>
     </td>
-  </tr> 
+  </tr>
 </table>
 </fieldset>
 <br>
@@ -73,10 +73,10 @@ function js_valida(){
 
       alert(' Selecione um procedimento procedimento! ');
       return false;
-    
+
     }
 	}
-	$('sDados').value = aDados.join(',');    
+	$('sDados').value = aDados.join(',');
 	$('sCod').value   = aCod.join(',');
   return true;
 
@@ -85,7 +85,7 @@ function js_valida(){
 //GridExames
 function js_init() {
 
-  var arrHeader = new Array (" Código ",  
+  var arrHeader = new Array (" Código ",
                              " Exame ",
                              " Arquivo ",
                              " Procedimento ",
@@ -96,13 +96,13 @@ function js_init() {
   oGridExames.nameInstance = 'GridExames';
   oGridExames.setHeader( arrHeader );
   oGridExames.setHeight(80);
-  
-  oGridExames.show($('GridExames')); 
+
+  oGridExames.show($('GridExames'));
 
 }
 
 function js_CarregaItens() {
-  
+
   if ($F('la22_i_codigo') == '') {
 
     alert('Seleciona uma Requisição!');
@@ -124,15 +124,15 @@ function js_RetornoCarregaItens(oAjax) {
 
     oGridExames.clearAll(true);
     iTam = oRetorno.aItens.length;
-    
+
     for (iX = 0; iX < iTam; iX++) {
 
-    	 if (oRetorno.aItens[iX].conferencia != '' && 
+    	 if (oRetorno.aItens[iX].conferencia != '' &&
     	     oRetorno.aItens[iX].conferencia != null &&
-    	     oRetorno.aItens[iX].arqui != '' && 
+    	     oRetorno.aItens[iX].arqui != '' &&
            oRetorno.aItens[iX].arqui != null
     	     ) {
-        	 
+
     	   aConf   = oRetorno.aItens[iX].conferencia.split('__');
          sProc   = aConf[0];
          aValor  = aConf[1].split('.');
@@ -143,7 +143,7 @@ function js_RetornoCarregaItens(oAjax) {
         		 sValor  = aConf[1];
            }
          } else {
-        	 sValor  = aConf[1]+'.00';  
+        	 sValor  = aConf[1]+'.00';
          }
          sLogin  = aConf[2];
          aData   = aConf[3].split('-');
@@ -151,19 +151,19 @@ function js_RetornoCarregaItens(oAjax) {
          sHora   = aConf[4];
          sUsuCod = aConf[5];
          sProCod = aConf[6];
-         sArqui  = oRetorno.aItens[iX].arqui; 
-    	   
+         sArqui  = oRetorno.aItens[iX].arqui;
+
     	 } else {
 
     		 sProc   = '';
-    		 sProCod = ''; 
+    		 sProCod = '';
     		 sValor  = '';
          sLogin  = '';
          sData   = '';
          sHora   = '';
          sArqui  = '';
-         sUsuCod = ''; 
-           
+         sUsuCod = '';
+
   	   }
        alinha= new Array();
        alinha[0] = oRetorno.aItens[iX].codigo;
@@ -171,7 +171,7 @@ function js_RetornoCarregaItens(oAjax) {
        sDisabled = ' readonly style="background-color: rgb(222, 184, 135);" ';
        alinha[2] = '<input type="file" id="file'+iX+'" name="file'+iX+'" ';
        if (sUsuCod != '' && sUsuCod != <?=$iUsuario?>) {
-    	   alinha[2] += sDisabled+' disabled ';  
+    	   alinha[2] += sDisabled+' disabled ';
        }
        iNumproc  = sProCod;
        if (iNumproc == '') {
@@ -180,7 +180,7 @@ function js_RetornoCarregaItens(oAjax) {
        alinha[2]+= '  onchange="js_addIten('+iX+','+oRetorno.aItens[iX].codigo+','+iNumproc+',this.value)">';
        alinha[3] = '<input type="text" id="proc'+iX+'" name="proc'+iX+'" value="'+sProc+'" size="15" ';
        if (sUsuCod != '' && sUsuCod != <?=$iUsuario?>) {
-           alinha[3] += sDisabled;  
+           alinha[3] += sDisabled;
        }
        alinha[3]+= ' onchange="js_buscaProc(this.value,'+iX+')" > ';
        alinha[3]+= '<input type="hidden" id="iproc'+iX+'" name="iproc'+iX+'" value="'+sProCod+'" size="15">';
@@ -204,22 +204,22 @@ function js_RetornoCarregaItens(oAjax) {
 
 function js_addIten(iIndex,iCod,proc,valor) {
   if (valor != '') {
-	  
+
     iLarg = aCod.indexOf(iCod);
     if (iLarg == -1) {
-        
-      aCod[aCod.length] = iCod;  
+
+      aCod[aCod.length] = iCod;
     	iLarg             = aCod.length;
-    	
+
     }
 	  aDados[iLarg-1] = iIndex;
-	  
+
   } else {
-	  
+
 	  iLarg = aCod.indexOf(iCod);
 	  aCod.splice(iLarg,1);
 	  aDados.splice(iLarg,1);
-	  
+
   }
 
   if (aDados.length > 0) {
@@ -231,9 +231,9 @@ function js_addIten(iIndex,iCod,proc,valor) {
 
 function js_ajax( objParam,jsRetorno ) {
     var objAjax = new Ajax.Request(
-                           'lab4_agendar.RPC.php', 
+                           'lab4_agendar.RPC.php',
                            {
-                            method    : 'post', 
+                            method    : 'post',
                             parameters: 'json='+Object.toJSON(objParam),
                             onComplete: function(objAjax){
                                     var evlJS = jsRetorno+'( objAjax );';
@@ -255,50 +255,50 @@ function js_pesquisala22_i_codigo(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_lab_requisicao','func_lab_requisicao.php?autoriza=2&funcao_js=parent.js_mostrarequisicao1|la22_i_codigo|z01_v_nome','Pesquisa',true);
   }else{
-     if(document.form1.la22_i_codigo.value != ''){ 
+     if(document.form1.la22_i_codigo.value != ''){
         js_OpenJanelaIframe('','db_iframe_lab_requisicao','func_lab_requisicao.php?autoriza=2&pesquisa_chave='+document.form1.la22_i_codigo.value+'&funcao_js=parent.js_mostrarequisicao','Pesquisa',false);
      }else{
-    	 js_limpar(); 
+    	 js_limpar();
      }
   }
 }
 function js_mostrarequisicao(chave,erro){
-  document.form1.z01_v_nome.value = chave; 
-  if (erro == true) { 
-    document.form1.la22_i_codigo.focus(); 
-    js_limpar(); 
+  document.form1.z01_v_nome.value = chave;
+  if (erro == true) {
+    document.form1.la22_i_codigo.focus();
+    js_limpar();
   }
 }
 function js_mostrarequisicao1(chave1,chave2){
   document.form1.la22_i_codigo.value = chave1;
   document.form1.z01_v_nome.value = chave2;
-  db_iframe_lab_requisicao.hide();    
+  db_iframe_lab_requisicao.hide();
 }
 
 //lookup procedimentos
 function js_buscaProc (sProcedimento,iIndex) {
 	if (sProcedimento != '') {
-		
+
     var objParam                 = new Object();
     objParam.exec                = "getProcedimento";
     objParam.rh70_sequencial     = <?=$iResponsavelTecnico?>;
     objParam.sd63_c_procedimento = sProcedimento;
     objParam.iIndex              = iIndex;
     js_ajax( objParam, 'js_retornoProcedimento' );
-    
+
 	} else {
 
 		document.getElementById('iproc'+iIndex).value = '';
 		document.getElementById('valor'+iIndex).value = '';
 
   }
-	
+
 }
 function js_retornoProcedimento (oAjax) {
-	
+
 	oRetorno = JSON.parse(oAjax.responseText);
   if (oRetorno.status == 1) {
-	  
+
 	  document.getElementById('iproc'+oRetorno.iIndex).value = oRetorno.itens[0].sd63_i_codigo;
 	  sValor = parseFloat(oRetorno.itens[0].sd63_f_sa)+parseFloat(oRetorno.itens[0].sd63_f_sp);
 	  sValor = sValor.toString();
@@ -310,18 +310,18 @@ function js_retornoProcedimento (oAjax) {
         sValor  = sValor;
       }
     } else {
-      sValor  = sValor+'.00';  
+      sValor  = sValor+'.00';
     }
 	  document.getElementById('valor'+oRetorno.iIndex).value = 'R$ '+sValor;
-	  
+
   } else {
-	  
+
 	  document.getElementById('iproc'+oRetorno.iIndex).value = '';
 	  document.getElementById('proc'+oRetorno.iIndex).value  = '';
 	  document.getElementById('valor'+oRetorno.iIndex).value = '';
 	  alert(oRetorno.message.urlDecode());
-	  
+
   }
-  
+
 }
 </script>

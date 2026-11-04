@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -61,33 +61,33 @@ elseif($ordem == 'a'){
     $xordem = ' m60_descr desc ';
     $head5 = " ORDEM : ALFABÉTICA - DESCENDENTE";
   }
-} 
+}
 
 $info_listar_serv = "";
 
 if ($listar_serv == "M") {
-  
+
   $txt_where           .= " and (pc01_servico is false or pc01_servico is null)";
   $info_listar_serv    .= " LISTAR : SOMENTE MATERIAIS";
-  
+
 } else if ($listar_serv == "S") {
-  
+
   $txt_where           .= " and pc01_servico is true ";
   $info_listar_serv    .= " LISTAR : SOMENTE SERVIÇOS";
-  
+
 } else {
   $info_listar_serv = " LISTAR : TODOS";
 }
- 
+
 $head3 = "CADASTRO DE MATERIAIS ";
 $head6 = "$info_listar_serv";
 
 $campos = " distinct m60_codmater,trim(m60_descr) as m60_descr,m60_quantent,m60_ativo ";
 
 if($listar_serv == "T") {
-	$sql = $clmatmater->sql_query_file_pcmater(null, $campos, $xordem);
+	$sql = $clmatmater->sql_query_com_pcmater(null, $campos, $xordem);
 } else {
-	$sql = $clmatmater->sql_query_file_pcmater(null, $campos, $xordem, "$txt_where");
+	$sql = $clmatmater->sql_query_com_pcmater(null, $campos, $xordem, "$txt_where");
 }
 
 $result = $clmatmater->sql_record($sql);
@@ -98,9 +98,9 @@ $xxnum = pg_numrows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
 }
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
@@ -129,7 +129,7 @@ for($x = 0; $x < pg_numrows($result);$x++)
     } else{
     	$situ = "Inativo";
     }
-   $pdf->cell(13,$alt,$situ,0,1,"C",0);   
+   $pdf->cell(13,$alt,$situ,0,1,"C",0);
    //$pdf->cell(20,$alt,$m61_abrev,0,1,"L",0);
    $total ++;
 }

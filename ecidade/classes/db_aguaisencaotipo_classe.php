@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguaisencaotipo
-class cl_aguaisencaotipo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $x29_codisencaotipo = 0; 
-   var $x29_descr = null; 
-   var $x29_tipo = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_aguaisencaotipo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $x29_codisencaotipo = 0;
+   var $x29_descr = null;
+   var $x29_tipo = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 x29_codisencaotipo = int4 = Codigo 
-                 x29_descr = varchar(40) = Descricao 
-                 x29_tipo = int4 = Tipo 
+                 x29_codisencaotipo = int4 = Codigo
+                 x29_descr = varchar(40) = Descricao
+                 x29_tipo = int4 = Tipo
                  ";
-   //funcao construtor da classe 
-   function cl_aguaisencaotipo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("aguaisencaotipo"); 
+     $this->rotulo = new rotulo("aguaisencaotipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_aguaisencaotipo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->x29_codisencaotipo = ($this->x29_codisencaotipo == ""?@$GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"]:$this->x29_codisencaotipo);
        $this->x29_descr = ($this->x29_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["x29_descr"]:$this->x29_descr);
@@ -77,9 +77,9 @@ class cl_aguaisencaotipo {
      }
    }
    // funcao para inclusao
-   function incluir ($x29_codisencaotipo){ 
+   public function incluir ($x29_codisencaotipo){
       $this->atualizacampos();
-     if($this->x29_descr == null ){ 
+     if($this->x29_descr == null ){
        $this->erro_sql = " Campo Descricao nao Informado.";
        $this->erro_campo = "x29_descr";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_aguaisencaotipo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->x29_tipo == null ){ 
+     if($this->x29_tipo == null ){
        $this->erro_sql = " Campo Tipo nao Informado.";
        $this->erro_campo = "x29_tipo";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_aguaisencaotipo {
        return false;
      }
      if($x29_codisencaotipo == "" || $x29_codisencaotipo == null ){
-       $result = db_query("select nextval('aguaisencaotipo_x29_codisencaotipo_seq')"); 
+       $result = db_query("select nextval('aguaisencaotipo_x29_codisencaotipo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: aguaisencaotipo_x29_codisencaotipo_seq do campo: x29_codisencaotipo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: aguaisencaotipo_x29_codisencaotipo_seq do campo: x29_codisencaotipo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->x29_codisencaotipo = pg_result($result,0,0); 
+       $this->x29_codisencaotipo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from aguaisencaotipo_x29_codisencaotipo_seq");
        if(($result != false) && (pg_result($result,0,0) < $x29_codisencaotipo)){
@@ -118,10 +118,10 @@ class cl_aguaisencaotipo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->x29_codisencaotipo = $x29_codisencaotipo; 
+         $this->x29_codisencaotipo = $x29_codisencaotipo;
        }
      }
-     if(($this->x29_codisencaotipo == null) || ($this->x29_codisencaotipo == "") ){ 
+     if(($this->x29_codisencaotipo == null) || ($this->x29_codisencaotipo == "") ){
        $this->erro_sql = " Campo x29_codisencaotipo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_aguaisencaotipo {
        return false;
      }
      $sql = "insert into aguaisencaotipo(
-                                       x29_codisencaotipo 
-                                      ,x29_descr 
-                                      ,x29_tipo 
+                                       x29_codisencaotipo
+                                      ,x29_descr
+                                      ,x29_tipo
                        )
                 values (
-                                $this->x29_codisencaotipo 
-                               ,'$this->x29_descr' 
-                               ,$this->x29_tipo 
+                                $this->x29_codisencaotipo
+                               ,'$this->x29_descr'
+                               ,$this->x29_tipo
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Tipo de Isencao ($this->x29_codisencaotipo) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_aguaisencaotipo {
        $resac = db_query("insert into db_acount values($acount,1435,8448,'','".AddSlashes(pg_result($resaco,0,'x29_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($x29_codisencaotipo=null) { 
+   public function alterar ($x29_codisencaotipo=null) {
       $this->atualizacampos();
      $sql = " update aguaisencaotipo set ";
      $virgula = "";
-     if(trim($this->x29_codisencaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"])){ 
+     if(trim($this->x29_codisencaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"])){
        $sql  .= $virgula." x29_codisencaotipo = $this->x29_codisencaotipo ";
        $virgula = ",";
-       if(trim($this->x29_codisencaotipo) == null ){ 
+       if(trim($this->x29_codisencaotipo) == null ){
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "x29_codisencaotipo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_aguaisencaotipo {
          return false;
        }
      }
-     if(trim($this->x29_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_descr"])){ 
+     if(trim($this->x29_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_descr"])){
        $sql  .= $virgula." x29_descr = '$this->x29_descr' ";
        $virgula = ",";
-       if(trim($this->x29_descr) == null ){ 
+       if(trim($this->x29_descr) == null ){
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "x29_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_aguaisencaotipo {
          return false;
        }
      }
-     if(trim($this->x29_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_tipo"])){ 
+     if(trim($this->x29_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_tipo"])){
        $sql  .= $virgula." x29_tipo = $this->x29_tipo ";
        $virgula = ",";
-       if(trim($this->x29_tipo) == null ){ 
+       if(trim($this->x29_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "x29_tipo";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_aguaisencaotipo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Isencao nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->x29_codisencaotipo;
@@ -267,14 +267,14 @@ class cl_aguaisencaotipo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($x29_codisencaotipo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($x29_codisencaotipo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($x29_codisencaotipo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_aguaisencaotipo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Tipo de Isencao nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$x29_codisencaotipo;
@@ -330,11 +330,11 @@ class cl_aguaisencaotipo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,10 +356,10 @@ class cl_aguaisencaotipo {
       }
      return $result;
    }
-   function sql_query ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -372,15 +372,15 @@ class cl_aguaisencaotipo {
      $sql2 = "";
      if($dbwhere==""){
        if($x29_codisencaotipo!=null ){
-         $sql2 .= " where aguaisencaotipo.x29_codisencaotipo = $x29_codisencaotipo "; 
-       } 
+         $sql2 .= " where aguaisencaotipo.x29_codisencaotipo = $x29_codisencaotipo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,10 +389,10 @@ class cl_aguaisencaotipo {
      }
      return $sql;
   }
-   function sql_query_file ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,15 +405,15 @@ class cl_aguaisencaotipo {
      $sql2 = "";
      if($dbwhere==""){
        if($x29_codisencaotipo!=null ){
-         $sql2 .= " where aguaisencaotipo.x29_codisencaotipo = $x29_codisencaotipo "; 
-       } 
+         $sql2 .= " where aguaisencaotipo.x29_codisencaotipo = $x29_codisencaotipo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

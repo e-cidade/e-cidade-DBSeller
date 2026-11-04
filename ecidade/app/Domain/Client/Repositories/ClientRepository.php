@@ -2,7 +2,7 @@
 
 namespace App\Domain\Client\Repositories;
 
-use App\User;
+use App\Domain\Configuracao\Usuario\Models\Usuario;
 use ECidade\Lib\Session\DefaultSession;
 
 class ClientRepository
@@ -15,7 +15,7 @@ class ClientRepository
      */
     public function getUserEcidadeAuthByCpfCnpj($sCpfCnpj)
     {
-        $user = new User();
+        $user = new Usuario();
         $aUser = $user->getUserEcidadeByCpfCnpj($sCpfCnpj);
 
         if (!$aUser->count()) {
@@ -33,10 +33,10 @@ class ClientRepository
 
     /**
      * Gera um access token de usuário para autenticar as rotas privadas do e-cidade
-     * @param User $user
+     * @param Usuario $user
      * @return string
      */
-    public function getAccessTokenUser(User $user)
+    public function getAccessTokenUser(Usuario $user)
     {
         return $user->createToken('tokenId')->accessToken;
     }

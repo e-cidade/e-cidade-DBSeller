@@ -39,6 +39,8 @@ $clproctransfer = new cl_proctransfer;
 $clproctransand = new cl_proctransand;
 $clprotprocesso = new cl_protprocesso;
 $clarqandam     = new cl_arqandam;
+$clprocessosapensados = new cl_processosapensados;
+$aProcessosApensados = array();
 
 $db_opcao = 1;
 $db_botao = true;
@@ -61,23 +63,28 @@ if((isset($p58_codproc))){
   $erro = 0;
 
   $date = new DateTime;
-  $date->setTimestamp(db_getsession('DB_datausu'));     
+  $date->setTimestamp(db_getsession('DB_datausu'));
   $dataTransferencia = $date->format('Y-m-d');
   $lErro               = false;
   if(pg_num_rows($rs) > 0) {
 
     db_fieldsmemory($rs,0);
-    
 
-    if ( $p61_dtandam > $dataTransferencia || 
-      ( $p61_dtandam == $dataTransferencia 
-      && $p61_hora > db_hora() ) ) 
+    $sSqlProcessosApensados = $clprocessosapensados->sql_query_file(null, "*", null, "p30_procprincipal = {$p58_codproc}");
+    $rsProcessosApensados = $clprocessosapensados->sql_record($sSqlProcessosApensados);
+    for ($iProcesso = 0; $iProcesso < $clprocessosapensados->numrows; $iProcesso++) {
+        $aProcessosApensados[] = db_utils::fieldsmemory($rsProcessosApensados, $iProcesso)->p30_procapensado;
+    }
+
+    if ( $p61_dtandam > $dataTransferencia ||
+      ( $p61_dtandam == $dataTransferencia
+      && $p61_hora > db_hora() ) )
     {
 
       $lErro               = true;
       $sqlerro             = true;
     }
-    
+
     if( $lErro == false) {
     //inclui a transferencia
     $clproctransfer->p62_coddepto    = $p67_coddepto;
@@ -115,9 +122,9 @@ if((isset($p58_codproc))){
 
       $clprocandam->erro(true,false);
       $sqlerro = true;
-      break;
+      return false;
     }
-	
+
     //inclui  o andamento e o cod. do arquivamento e diz se é arquivamento ou desarquivamento na tabela arqandam
 		$clarqandam->p69_codarquiv = $p67_codarquiv;
 		$clarqandam->p69_codandam  = $clprocandam->p61_codandam;
@@ -130,7 +137,7 @@ if((isset($p58_codproc))){
 
       $clarqandam->erro(true,false);
       $sqlerro = true;
-      break;
+      return false;
     }
 
     //inclui  a transferencia. e o andamento do processo na tabela proctransand;
@@ -144,9 +151,9 @@ if((isset($p58_codproc))){
 
       $clproctransand->erro(true,false);
       $sqlerro = true;
-      break;
+      return false;
     }
- 
+
     //atualiza codandam da tabela protprocesso;
     $clprotprocesso->p58_codproc  = $p58_codproc;
     $clprotprocesso->p58_codandam = $clprocandam->p61_codandam;
@@ -159,13 +166,81 @@ if((isset($p58_codproc))){
 
       $clprotprocesso->erro(true,false);
       $sqlerro = true;
-      break;
+      return false;
     }
 
     if($sqlerro == false) {
       db_query("delete from arqproc where p68_codproc = $p58_codproc");
     }
     }
+
+      foreach($aProcessosApensados as $iProcessoApensado) {
+
+          $sql = "select distinct p67_codarquiv,p68_codproc,p67_coddepto
+                from arqproc
+               inner join procarquiv on p68_codarquiv = p67_codarquiv
+               where p68_codproc = $iProcessoApensado
+               order by p68_codproc";
+
+          $rssql     = db_query($sql);
+          if (pg_num_rows($rssql) == 0) {
+              continue;
+          }
+
+          $oProcesso = db_utils::fieldsmemory($rssql, 0);
+
+          $rsi =  pg_exec("insert into proctransferproc values($cod, $iProcessoApensado)");
+          if(!$rsi) {
+              $sqlerro = true;
+              break;
+          }
+
+          $clprocandam->p61_codproc = $iProcessoApensado;
+          $clprocandam->incluir(null);
+          if($clprocandam->erro_status == 0) {
+              $sqlerro = true;
+              $clprocandam->erro(true, false);
+              break;
+          }
+
+          $clarqandam->p69_codarquiv = $oProcesso->p67_codarquiv;
+          $clarqandam->p69_codandam  = $clprocandam->p61_codandam;
+          $clarqandam->p69_arquivado = 'false';
+          $clarqandam->incluir();
+          if ($clarqandam->erro_status == "1"){
+              $erro += 0;
+          }else{
+              $clarqandam->erro(true,false);
+              $sqlerro = true;
+              break;
+          }
+
+          $clproctransand->p64_codtran  = $clproctransfer->p62_codtran;
+          $clproctransand->p64_codandam = $clprocandam->p61_codandam;
+          $clproctransand->incluir();
+          if ($clproctransand->erro_status == "1"){
+              $erro += 0;
+          }else{
+              $clproctransand->erro(true,false);
+              $sqlerro = true;
+              break;
+          }
+
+          $clprotprocesso->p58_codproc  = $iProcessoApensado;
+          $clprotprocesso->p58_codandam = $clprocandam->p61_codandam;
+          $clprotprocesso->p58_despacho = " ";
+          $clprotprocesso->alterar($p58_codproc);
+          if ($clprotprocesso->erro_status == "1"){
+              $erro += 0;
+          }else{
+              $clprotprocesso->erro(true,false);
+              $sqlerro=true;
+              break;
+          }
+          if ($sqlerro==false){
+              pg_exec("delete from arqproc where p68_codproc = $iProcessoApensado");
+          }
+      }
 
     if($erro == 0 && $sqlerro==false && $lErro ==false) {
       echo "<script>alert('Processo Desarquivado com Sucesso!! ');</script>";
@@ -174,7 +249,7 @@ if((isset($p58_codproc))){
       $sMensagem = "Desarquivamento não Efetuado";
 
       if($lErro == true) {
-        
+
         $sMensagem = "A data para o arquivamento é maior que a data da última movimentação. Verifique a data da sessão!";
       }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clandpadrao->rotulo->label("p53_codigo");
               <?=$Lp53_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p53_codigo",3,$Ip53_codigo,true,"text",4,"","chave_p53_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clandpadrao->rotulo->label("p53_codigo");
               <?=$Lp53_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("p53_coddepto",5,$Ip53_coddepto,true,"text",4,"","chave_p53_coddepto");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clandpadrao->rotulo->label("p53_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         $campos = "andpadrao.p53_codigo,tipoproc.p51_descr,andpadrao.p53_coddepto,descrdepto";
         if(isset($chave_p53_codigo) && (trim($chave_p53_codigo)!="") ){
@@ -113,14 +113,14 @@ $clandpadrao->rotulo->label("p53_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p53_codigo.focus();
 document.form2.chave_p53_codigo.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

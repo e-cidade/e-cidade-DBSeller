@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,12 +71,12 @@ $clrotulo->label("fa06_i_matersaude");
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora(@$Lz01_i_cgsund,"js_pesquisaz01_i_cgsund(true);","");
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('z01_i_cgsund',10,@$Iz01_i_cgsund,true,'text',1," onchange='js_pesquisaz01_i_cgsund(false);'");
                   db_input('z01_v_nome',55,@$Iz01_v_nome,true,'text',3,"");
                   ?>
@@ -105,12 +105,12 @@ $clrotulo->label("fa06_i_matersaude");
             <table  border="0"  align="center" width='100%'>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php
                   db_ancora(@$Lfa06_i_matersaude,"js_pesquisafa01_i_medicamento(true);","");
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('fa01_i_codigo',10,@$Ifa01_i_codigo,true,'text',1," onchange='js_pesquisafa01_i_medicamento(false);'");
                   db_input('m60_descr',55,@$Im60_descr,true,'text',3,'');
                   ?>
@@ -135,7 +135,7 @@ $clrotulo->label("fa06_i_matersaude");
     </table>
   </center>
 <center>
-  <?
+  <?php
   echo '<b>Per&iacute;odo:</b> '; db_inputdata('data_inicio','','','',true,'text',1,""); echo '&nbsp;&nbsp;';
   echo ' <b>At&eacute;:</b> '; db_inputdata('data_fim','','','',true,'text',1,"");
   ?>
@@ -143,7 +143,7 @@ $clrotulo->label("fa06_i_matersaude");
   <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_mandadados();" >
 </center>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -83,7 +83,7 @@ table.form-container tr td {
             <legend><b>Forma de Localização Alvará</b></legend>
 
             <table border="0" width="300">
-                <? db_input('q167_sequencial',20,$Iq167_sequencial,true,"hidden",$db_opcao,""); ?>
+                <?php db_input('q167_sequencial',20,$Iq167_sequencial,true,"hidden",$db_opcao,""); ?>
                 <tr>
                     <td nowrap title="<?php echo $Tq167_descricao?>"><?= $Lq167_descricao?></td>
                     <td>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,45 +37,45 @@ $clrotulo->label("p54_codigo");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tp55_codproc?>">
-       <?
+       <?php
        db_ancora(@$Lp55_codproc,"js_pesquisap55_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p55_codproc',3,$Ip55_codproc,true,'text',$db_opcao," onchange='js_pesquisap55_codproc(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',3,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp55_codvar?>">
-       <?
+       <?php
        db_ancora(@$Lp55_codvar,"js_pesquisap55_codvar(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p55_codvar',3,$Ip55_codvar,true,'text',$db_opcao," onchange='js_pesquisap55_codvar(false);'")
 ?>
-       <?
+       <?php
 db_input('p54_codigo',3,$Ip54_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp55_codcam?>">
-       <?
+       <?php
        db_ancora(@$Lp55_codcam,"js_pesquisap55_codcam(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p55_codcam',5,$Ip55_codcam,true,'text',$db_opcao," onchange='js_pesquisap55_codcam(false);'")
 ?>
-       <?
+       <?php
 db_input('p54_codigo',3,$Ip54_codigo,true,'text',3,'')
        ?>
     </td>
@@ -85,7 +85,7 @@ db_input('p54_codigo',3,$Ip54_codigo,true,'text',3,'')
        <?=@$Lp55_conteúdo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('p55_conteúdo',5,23,$Ip55_conteúdo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -173,7 +173,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -75,12 +75,12 @@ $oRotuloConhist->label();
          <!-- Receita orçamento @tabela: orcreceita -->
           <tr>
              <td>
-              <?
+              <?php
               db_ancora("<b>Receita Orçamento:</b>", 'js_receitas(true)', 1);
               ?>
             </td>
             <td>
-              <?
+              <?php
               db_input('o70_codrec', 8, $Io70_codrec, true, 'text', 1, "onchange='js_receitas(false)'");
               db_input('o57_descr', 60, $Io57_descr, true, 'text', 3);
               ?>
@@ -92,7 +92,7 @@ $oRotuloConhist->label();
               <b>Conta Débito:</b>
             </td>
             <td>
-              <?
+              <?php
               db_input('o57_codfon_debito', 8, $Io70_codrec, true, 'text', 3);
               db_input('c57_descr_debito', 60, $Io70_codrec, true, 'text', 3);
               ?>
@@ -104,7 +104,7 @@ $oRotuloConhist->label();
               <strong>Conta Crédito:</strong>
             </td>
             <td>
-              <?
+              <?php
               //c60
               db_input('o57_codfon_credito', 8, $Io70_codrec, true, 'text', 3);
               db_input('c57_descr_credito', 60, $Io70_codrec, true, 'text', 3);
@@ -117,7 +117,7 @@ $oRotuloConhist->label();
               <strong>Histórico:</strong>
             </td>
             <td>
-              <?
+              <?php
               db_input('c50_codhist', 8, $Ic50_codhist, true, 'text', 3);
               db_input('c50_descr', 60, $Ic50_descr, true, 'text', 3);
               ?>
@@ -130,7 +130,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('o70_valor', 8, $Io70_valor, true, 'text', 3);
               ?>
             </td>
@@ -142,7 +142,7 @@ $oRotuloConhist->label();
             </td>
             
             <td>
-              <?
+              <?php
               db_input('valor_lancado', 8, $Io70_valor, true, 'text', 1);
               ?>
             </td>
@@ -168,7 +168,7 @@ $oRotuloConhist->label();
   
   </div>
   </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>  
   

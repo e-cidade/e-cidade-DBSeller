@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -52,30 +52,30 @@ if(isset($departamentodestino)){
 <table border="0">
   <tr>
     <td nowrap title="<?=(@$Tid_usuario)?>" align="right" >
-<?
+<?php
 db_ancora(@$Lid_usuario,"",3);
 ?>
     </td>
     <td align="left" nowrap>
-<?
+<?php
 db_input('id_usuario',10,@$Iid_usario,true,"text",3);
 ?>
-<?
+<?php
 db_input('nome',40,$Inome,true,"text",3);
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="Departamento de origem" align="right" >
-<?
+<?php
 db_ancora("<strong>Departamento de origem:</strong>","",3);
 ?>
     </td>
     <td align="left" nowrap>
-<?
+<?php
 db_input('coddepto',10,$Icoddepto,true,"text",3,"","departamentoorigem");
 ?>
-<?
+<?php
 db_input('descrdepto',40,$Idescrdepto,true,"text",3,"","descrdepartamentoorigem");
 ?>
     </td>
@@ -83,17 +83,17 @@ db_input('descrdepto',40,$Idescrdepto,true,"text",3,"","descrdepartamentoorigem"
   <tr>
     <td nowrap title="<?=@$Tcoddepto?>" align="right" ><b>Departamento destino:</b>
 
-<?
+<?php
 //db_ancora("<strong>Departamento destino:</strong>","js_pesquisacoddepto(true);",(isset($mostrapesquisa)?"3":"1"));
 ?>
     </td>
     <td align="left" nowrap>
-<?
+<?php
 $result = $cldb_almox->sql_record($cldb_almox->sql_query(null,"coddepto,descrdepto","descrdepto", " coddepto <> " . db_getsession("DB_coddepto")));
 db_selectrecord("coddepto",$result,true,(isset($mostrapesquisa)?"3":"1"),"","departamentodestino");
 //db_input('coddepto',10,$Icoddepto,true,"text",(isset($mostrapesquisa)?"3":"1"),"onchange='js_pesquisacoddepto(false);js_verificarcampos(true);'","departamentodestino");
 ?>
-<?
+<?php
 //db_input('descrdepto',40,$Idescrdepto,true,"text",3,"","descrdepartamentodestino");
 ?>
     </td>
@@ -101,7 +101,7 @@ db_selectrecord("coddepto",$result,true,(isset($mostrapesquisa)?"3":"1"),"","dep
 </table>
 </center>
 <input name="enviar" type="button" id="db_opcao" value="Enviar dados" <?=($db_botao==false?"disabled":"")?> onclick='js_verificarcampos(false);'>
-<?
+<?php
   if(isset($mostrapesquisa)){
     echo "<input name='pesquisar' type='button' id='pesquisar' value='Pesquisar' onclick='js_pesquisa();' >";
   }
@@ -200,7 +200,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoqueini.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("o02_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$To08_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lo08_codigo,"js_pesquisao08_codigo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o08_codigo',12,$Io08_codigo,true,'text',$db_opcao," onchange='js_pesquisao08_codigo(false);'")
 ?>
-       <?
+       <?php
 db_input('o02_descr',40,$Io02_descr,true,'text',3,'')
        ?>
     <td>
@@ -54,7 +54,7 @@ db_input('o02_descr',40,$Io02_descr,true,'text',3,'')
        <?=@$Lo08_reduz?>
     </td>
     <td> 
-<?
+<?php
 db_input('o08_reduz',5,$Io08_reduz,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -64,7 +64,7 @@ db_input('o08_reduz',5,$Io08_reduz,true,'text',$db_opcao,"")
        <?=@$Lo08_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('o08_valor',0,$Io08_valor,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -110,7 +110,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

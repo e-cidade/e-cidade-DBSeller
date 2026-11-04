@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,13 +61,13 @@ class cl_concilia {
                  k68_conciliastatus = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_concilia() { 
+   public function cl_concilia() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concilia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_concilia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k68_sequencial = ($this->k68_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k68_sequencial"]:$this->k68_sequencial);
        if($this->k68_data == ""){
@@ -96,7 +96,7 @@ class cl_concilia {
      }
    }
    // funcao para inclusao
-   function incluir ($k68_sequencial){ 
+   public function incluir ($k68_sequencial){ 
       $this->atualizacampos();
      if($this->k68_data == null ){ 
        $this->erro_sql = " Campo Data da conciliação nao Informado.";
@@ -231,7 +231,7 @@ class cl_concilia {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k68_sequencial=null) { 
+   public function alterar ($k68_sequencial=null) { 
       $this->atualizacampos();
      $sql = " update concilia set ";
      $virgula = "";
@@ -385,7 +385,7 @@ class cl_concilia {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k68_sequencial=null,$dbwhere=null) { 
+   public function excluir ($k68_sequencial=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k68_sequencial));
      }else{ 
@@ -451,7 +451,7 @@ class cl_concilia {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -462,7 +462,7 @@ class cl_concilia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:concilia";
@@ -474,10 +474,10 @@ class cl_concilia {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_concilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,12 +513,50 @@ class cl_concilia {
        }
      }
      return $sql;
-  }
+  } 
+
    // funcao do sql 
-   function sql_query_file ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_conta( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+    $sql = "select ";
+    if($campos != "*" ){
+      $campos_sql = explode("#",$campos);
+      $virgula = "";
+      for($i=0;$i<sizeof($campos_sql);$i++){
+        $sql .= $virgula.$campos_sql[$i];
+        $virgula = ",";
+      }
+    }else{
+      $sql .= $campos;
+    }
+    $sql .= " from concilia ";
+    $sql .= "      inner join conciliastatus  on  conciliastatus.k95_sequencial = concilia.k68_conciliastatus";
+    $sql .= "      inner join contabancaria  on  contabancaria.db83_sequencial = concilia.k68_contabancaria";
+    $sql .= "      inner join bancoagencia  on  bancoagencia.db89_sequencial = contabancaria.db83_bancoagencia";
+    $sql2 = "";
+    if($dbwhere==""){
+      if($k68_sequencial!=null ){
+        $sql2 .= " where concilia.k68_sequencial = $k68_sequencial "; 
+      } 
+    }else if($dbwhere != ""){
+      $sql2 = " where $dbwhere";
+    }
+    $sql .= $sql2;
+    if($ordem != null ){
+      $sql .= " order by ";
+      $campos_sql = explode("#",$ordem);
+      $virgula = "";
+      for($i=0;$i<sizeof($campos_sql);$i++){
+        $sql .= $virgula.$campos_sql[$i];
+        $virgula = ",";
+      }
+    }
+    return $sql;
+   }   
+   // funcao do sql 
+   public function sql_query_file ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +577,7 @@ class cl_concilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,7 +594,7 @@ class cl_concilia {
    * @param inteiro $conta código da conta bancaria;
    * @return string SQl
    */
-  function retornaUltimaDataComConciliacao($conta = null, $iSequencialConcilia = null) {
+  public function retornaUltimaDataComConciliacao($conta = null, $iSequencialConcilia = null) {
     
     $sqlData  = " select extract(year  from k68_data) as ano,";
     $sqlData .= "        lpad(extract(month from k68_data), 2, '0') as mes,";
@@ -584,7 +622,7 @@ class cl_concilia {
    * @param inteiro $conta código da conta bancaria;
    * @return string SQl
    */
-  function retornaTodasDatasComConciliacao($conta = null, $iSequencialConcilia = null) {
+  public function retornaTodasDatasComConciliacao($conta = null, $iSequencialConcilia = null) {
   
     $sqlData  = " select extract(year  from k68_data) as ano,";
     $sqlData .= "        lpad(extract(month from k68_data), 2, '0') as mes,";
@@ -609,7 +647,7 @@ class cl_concilia {
    * @param integer $conta
    * @param integer $iSequencialConcilia
    */
-  function retornaMesAnoComComciliacao($conta = null, $iSequencialConcilia = null) {
+  public function retornaMesAnoComComciliacao($conta = null, $iSequencialConcilia = null) {
   
     
     $sqlData  = " SELECT ano,                                                                     ";

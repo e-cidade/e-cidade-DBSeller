@@ -1,70 +1,70 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: Merenda
 //CLASSE DA ENTIDADE mer_modpreparo
-class cl_mer_modpreparo { 
-   // cria variaveis de erro 
-   var $rotulo          = null; 
-   var $query_sql       = null; 
-   var $numrows         = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status     = null; 
-   var $erro_sql        = null; 
-   var $erro_banco      = null;  
-   var $erro_msg        = null;  
-   var $erro_campo      = null;  
-   var $pagina_retorno  = null; 
-   // cria variaveis do arquivo 
-   var $me05_i_codigo        = 0; 
-   var $me05_f_porcao        = 0; 
-   var $me05_c_natureza        = null; 
-   var $me05_t_obs        = null; 
-   var $me05_i_cardapio        = 0; 
-   var $me05_i_alimento        = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_mer_modpreparo {
+   // cria variaveis de erro
+   var $rotulo          = null;
+   var $query_sql       = null;
+   var $numrows         = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status     = null;
+   var $erro_sql        = null;
+   var $erro_banco      = null;
+   var $erro_msg        = null;
+   var $erro_campo      = null;
+   var $pagina_retorno  = null;
+   // cria variaveis do arquivo
+   var $me05_i_codigo        = 0;
+   var $me05_f_porcao        = 0;
+   var $me05_c_natureza        = null;
+   var $me05_t_obs        = null;
+   var $me05_i_cardapio        = 0;
+   var $me05_i_alimento        = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 me05_i_codigo = int4 = Código 
-                 me05_f_porcao = float4 = Porção 
-                 me05_c_natureza = char(10) = Natureza 
-                 me05_t_obs = text = Descrição 
-                 me05_i_cardapio = int4 = Refeição 
-                 me05_i_alimento = int4 = Alimento 
+                 me05_i_codigo = int4 = Código
+                 me05_f_porcao = float4 = Porção
+                 me05_c_natureza = char(10) = Natureza
+                 me05_t_obs = text = Descrição
+                 me05_i_cardapio = int4 = Refeição
+                 me05_i_alimento = int4 = Alimento
                  ";
-   //funcao construtor da classe 
-   function cl_mer_modpreparo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("mer_modpreparo"); 
+     $this->rotulo = new rotulo("mer_modpreparo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_mer_modpreparo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->me05_i_codigo = ($this->me05_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["me05_i_codigo"]:$this->me05_i_codigo);
        $this->me05_f_porcao = ($this->me05_f_porcao == ""?@$GLOBALS["HTTP_POST_VARS"]["me05_f_porcao"]:$this->me05_f_porcao);
@@ -86,9 +86,9 @@ class cl_mer_modpreparo {
      }
    }
    // funcao para inclusao
-   function incluir ($me05_i_codigo){ 
+   public function incluir ($me05_i_codigo){
       $this->atualizacampos();
-     if($this->me05_f_porcao == null ){ 
+     if($this->me05_f_porcao == null ){
        $this->erro_sql = " Campo Porção nao Informado.";
        $this->erro_campo = "me05_f_porcao";
        $this->erro_banco = "";
@@ -97,7 +97,7 @@ class cl_mer_modpreparo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me05_c_natureza == null ){ 
+     if($this->me05_c_natureza == null ){
        $this->erro_sql = " Campo Natureza nao Informado.";
        $this->erro_campo = "me05_c_natureza";
        $this->erro_banco = "";
@@ -106,7 +106,7 @@ class cl_mer_modpreparo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me05_t_obs == null ){ 
+     if($this->me05_t_obs == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "me05_t_obs";
        $this->erro_banco = "";
@@ -115,7 +115,7 @@ class cl_mer_modpreparo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me05_i_cardapio == null ){ 
+     if($this->me05_i_cardapio == null ){
        $this->erro_sql = " Campo Refeição nao Informado.";
        $this->erro_campo = "me05_i_cardapio";
        $this->erro_banco = "";
@@ -124,7 +124,7 @@ class cl_mer_modpreparo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->me05_i_alimento == null ){ 
+     if($this->me05_i_alimento == null ){
        $this->erro_sql = " Campo Alimento nao Informado.";
        $this->erro_campo = "me05_i_alimento";
        $this->erro_banco = "";
@@ -134,16 +134,16 @@ class cl_mer_modpreparo {
        return false;
      }
      if($me05_i_codigo == "" || $me05_i_codigo == null ){
-       $result = db_query("select nextval('mermodpreparo_me05_codigo_seq')"); 
+       $result = db_query("select nextval('mermodpreparo_me05_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: mermodpreparo_me05_codigo_seq do campo: me05_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: mermodpreparo_me05_codigo_seq do campo: me05_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->me05_i_codigo = pg_result($result,0,0); 
+       $this->me05_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from mermodpreparo_me05_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $me05_i_codigo)){
@@ -154,10 +154,10 @@ class cl_mer_modpreparo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->me05_i_codigo = $me05_i_codigo; 
+         $this->me05_i_codigo = $me05_i_codigo;
        }
      }
-     if(($this->me05_i_codigo == null) || ($this->me05_i_codigo == "") ){ 
+     if(($this->me05_i_codigo == null) || ($this->me05_i_codigo == "") ){
        $this->erro_sql = " Campo me05_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,23 +166,23 @@ class cl_mer_modpreparo {
        return false;
      }
      $sql = "insert into mer_modpreparo(
-                                       me05_i_codigo 
-                                      ,me05_f_porcao 
-                                      ,me05_c_natureza 
-                                      ,me05_t_obs 
-                                      ,me05_i_cardapio 
-                                      ,me05_i_alimento 
+                                       me05_i_codigo
+                                      ,me05_f_porcao
+                                      ,me05_c_natureza
+                                      ,me05_t_obs
+                                      ,me05_i_cardapio
+                                      ,me05_i_alimento
                        )
                 values (
-                                $this->me05_i_codigo 
-                               ,$this->me05_f_porcao 
-                               ,'$this->me05_c_natureza' 
-                               ,'$this->me05_t_obs' 
-                               ,$this->me05_i_cardapio 
-                               ,$this->me05_i_alimento 
+                                $this->me05_i_codigo
+                               ,$this->me05_f_porcao
+                               ,'$this->me05_c_natureza'
+                               ,'$this->me05_t_obs'
+                               ,$this->me05_i_cardapio
+                               ,$this->me05_i_alimento
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "mer_modpreparo ($this->me05_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -219,16 +219,16 @@ class cl_mer_modpreparo {
        $resac = db_query("insert into db_acount values($acount,2237,17408,'','".AddSlashes(pg_result($resaco,0,'me05_i_alimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($me05_i_codigo=null) { 
+   public function alterar ($me05_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update mer_modpreparo set ";
      $virgula = "";
-     if(trim($this->me05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_codigo"])){ 
+     if(trim($this->me05_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_codigo"])){
        $sql  .= $virgula." me05_i_codigo = $this->me05_i_codigo ";
        $virgula = ",";
-       if(trim($this->me05_i_codigo) == null ){ 
+       if(trim($this->me05_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "me05_i_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_mer_modpreparo {
          return false;
        }
      }
-     if(trim($this->me05_f_porcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_f_porcao"])){ 
+     if(trim($this->me05_f_porcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_f_porcao"])){
        $sql  .= $virgula." me05_f_porcao = $this->me05_f_porcao ";
        $virgula = ",";
-       if(trim($this->me05_f_porcao) == null ){ 
+       if(trim($this->me05_f_porcao) == null ){
          $this->erro_sql = " Campo Porção nao Informado.";
          $this->erro_campo = "me05_f_porcao";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_mer_modpreparo {
          return false;
        }
      }
-     if(trim($this->me05_c_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_c_natureza"])){ 
+     if(trim($this->me05_c_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_c_natureza"])){
        $sql  .= $virgula." me05_c_natureza = '$this->me05_c_natureza' ";
        $virgula = ",";
-       if(trim($this->me05_c_natureza) == null ){ 
+       if(trim($this->me05_c_natureza) == null ){
          $this->erro_sql = " Campo Natureza nao Informado.";
          $this->erro_campo = "me05_c_natureza";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_mer_modpreparo {
          return false;
        }
      }
-     if(trim($this->me05_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_t_obs"])){ 
+     if(trim($this->me05_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_t_obs"])){
        $sql  .= $virgula." me05_t_obs = '$this->me05_t_obs' ";
        $virgula = ",";
-       if(trim($this->me05_t_obs) == null ){ 
+       if(trim($this->me05_t_obs) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "me05_t_obs";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_mer_modpreparo {
          return false;
        }
      }
-     if(trim($this->me05_i_cardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_cardapio"])){ 
+     if(trim($this->me05_i_cardapio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_cardapio"])){
        $sql  .= $virgula." me05_i_cardapio = $this->me05_i_cardapio ";
        $virgula = ",";
-       if(trim($this->me05_i_cardapio) == null ){ 
+       if(trim($this->me05_i_cardapio) == null ){
          $this->erro_sql = " Campo Refeição nao Informado.";
          $this->erro_campo = "me05_i_cardapio";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_mer_modpreparo {
          return false;
        }
      }
-     if(trim($this->me05_i_alimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_alimento"])){ 
+     if(trim($this->me05_i_alimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me05_i_alimento"])){
        $sql  .= $virgula." me05_i_alimento = $this->me05_i_alimento ";
        $virgula = ",";
-       if(trim($this->me05_i_alimento) == null ){ 
+       if(trim($this->me05_i_alimento) == null ){
          $this->erro_sql = " Campo Alimento nao Informado.";
          $this->erro_campo = "me05_i_alimento";
          $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_mer_modpreparo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "mer_modpreparo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->me05_i_codigo;
@@ -357,14 +357,14 @@ class cl_mer_modpreparo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($me05_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($me05_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($me05_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -395,7 +395,7 @@ class cl_mer_modpreparo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "mer_modpreparo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$me05_i_codigo;
@@ -423,11 +423,11 @@ class cl_mer_modpreparo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -449,11 +449,11 @@ class cl_mer_modpreparo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $me05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $me05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,19 +465,19 @@ class cl_mer_modpreparo {
      $sql .= " from mer_modpreparo ";
      $sql .= "      inner join mer_cardapio  on  mer_cardapio.me01_i_codigo = mer_modpreparo.me05_i_cardapio";
      $sql .= "      inner join mer_tipocardapio  on  mer_tipocardapio.me27_i_codigo = mer_cardapio.me01_i_tipocardapio";
-     $sql .= "      inner join mer_alimento  on  mer_alimento.me35_i_codigo = mer_modpreparo.me05_i_alimento";     
+     $sql .= "      inner join mer_alimento  on  mer_alimento.me35_i_codigo = mer_modpreparo.me05_i_alimento";
      $sql2 = "";
      if($dbwhere==""){
        if($me05_i_codigo!=null ){
-         $sql2 .= " where mer_modpreparo.me05_i_codigo = $me05_i_codigo "; 
-       } 
+         $sql2 .= " where mer_modpreparo.me05_i_codigo = $me05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,11 +486,11 @@ class cl_mer_modpreparo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $me05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $me05_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,15 +503,15 @@ class cl_mer_modpreparo {
      $sql2 = "";
      if($dbwhere==""){
        if($me05_i_codigo!=null ){
-         $sql2 .= " where mer_modpreparo.me05_i_codigo = $me05_i_codigo "; 
-       } 
+         $sql2 .= " where mer_modpreparo.me05_i_codigo = $me05_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

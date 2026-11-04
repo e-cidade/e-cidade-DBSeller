@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
        <?=@$Ldb92_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('db92_codigo',10,$Idb92_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb92_codrel?>">
-       <?
+       <?php
        db_ancora(@$Ldb92_codrel,"js_pesquisadb92_codrel(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db92_codrel',10,$Idb92_codrel,true,'text',$db_opcao," onchange='js_pesquisadb92_codrel(false);'")
 ?>
-       <?
+       <?php
 db_input('db91_descr',40,$Idb91_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb92_codarq?>">
-       <?
+       <?php
        db_ancora(@$Ldb92_codarq,"js_pesquisadb92_codarq(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db92_codarq',5,$Idb92_codarq,true,'text',$db_opcao," onchange='js_pesquisadb92_codarq(false);'")
 ?>
-       <?
+       <?php
 db_input('nomearq',40,$Inomearq,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('nomearq',40,$Inomearq,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("db92_codigo"=>@$db92_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relattabelas->sql_query_file($db92_codigo);

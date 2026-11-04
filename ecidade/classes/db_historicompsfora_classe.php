@@ -78,13 +78,13 @@ class cl_historicompsfora {
                  ed99_percentualfrequencia = float8 = Percentual de Frequência 
                  ";
    //funcao construtor da classe 
-   function cl_historicompsfora() { 
+   public function cl_historicompsfora() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("historicompsfora"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -93,7 +93,7 @@ class cl_historicompsfora {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed99_i_codigo = ($this->ed99_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed99_i_codigo"]:$this->ed99_i_codigo);
        $this->ed99_i_historico = ($this->ed99_i_historico == ""?@$GLOBALS["HTTP_POST_VARS"]["ed99_i_historico"]:$this->ed99_i_historico);
@@ -116,7 +116,7 @@ class cl_historicompsfora {
      }
    }
    // funcao para inclusao
-   function incluir ($ed99_i_codigo){ 
+   public function incluir ($ed99_i_codigo){
       $this->atualizacampos();
      if($this->ed99_i_historico == null ){ 
        $this->erro_sql = " Campo Hístórico não informado.";
@@ -543,11 +543,11 @@ class cl_historicompsfora {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($ed99_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed99_i_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -628,11 +628,11 @@ class cl_historicompsfora {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -654,8 +654,8 @@ class cl_historicompsfora {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($ed99_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($ed99_i_codigo = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from historicompsfora ";
@@ -701,12 +701,12 @@ class cl_historicompsfora {
      return $sql;
   }
 
-   function sql_query_certconclusao($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
+  public function sql_query_certconclusao($iCodigo = null, $sCampos = '*', $sOrdem = null, $sDbWhere = '') {
   
   	$sSql = 'select ';
   	if ($sCampos != '*') {
-  
-  		$sCamposSql = split('#', $sCampos);
+
+  		$sCamposSql = explode('#', $sCampos);
   		$sVirgula   = '';
   		for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
   
@@ -732,7 +732,7 @@ class cl_historicompsfora {
   	if ($sOrdem != null) {
   
   		$sSql      .= ' order by ';
-  		$sCamposSql = split('#', $sOrdem);
+  		$sCamposSql = explode('#', $sOrdem);
   		$sVirgula   = '';
   		for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
   

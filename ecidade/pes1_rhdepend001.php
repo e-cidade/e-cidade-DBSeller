@@ -69,8 +69,6 @@ try {
 
         $sqlerro = false;
 
-
-
         $clrhdepend->rh31_regist = $rh31_regist;
         $clrhdepend->rh31_nome = $rh31_nome;
         $clrhdepend->rh31_dtnasc = $rh31_dtnasc;
@@ -78,7 +76,11 @@ try {
         $clrhdepend->rh31_depend = $rh31_depend;
         $clrhdepend->rh31_irf = $rh31_irf;
         $clrhdepend->rh31_especi = $rh31_especi;
+        $clrhdepend->rh31_tipoparentesco = $rh31_tipoparentesco;
         $clrhdepend->rh31_fins_previdenciarios = $rh31_fins_previdenciarios == 't'?'t':'f';
+        $clrhdepend->rh31_descricaoparentesco = $rh31_descricaoparentesco;
+        $clrhdepend->rh31_irfcomplementar = $rh31_irfcomplementar == 't'?'t':'f';
+         
 
         (new S2405($rh31_regist))->salvarDataAlteracao();
 
@@ -123,7 +125,11 @@ try {
             $clrhdepend->rh31_depend = $rh31_depend;
             $clrhdepend->rh31_irf = $rh31_irf;
             $clrhdepend->rh31_especi = $rh31_especi;
+            $clrhdepend->rh31_tipoparentesco = $rh31_tipoparentesco;
             $clrhdepend->rh31_fins_previdenciarios = $rh31_fins_previdenciarios == 't'? 't':'f';
+            $clrhdepend->rh31_descricaoparentesco = $rh31_descricaoparentesco;
+            $clrhdepend->rh31_irfcomplementar = $rh31_irfcomplementar == 't'? 't':'f';
+            
 
             /**
              * Seta a dtAlteração para o S2405.
@@ -215,6 +221,7 @@ if ((isset($alterar) || isset($excluir) || isset($incluir)) && $sqlerro == false
     $processo = "";
     $dp01_cpf = "";
     $dp01_sexo = "";
+    $rh31_tipoparentesco="";
 }
 
 if (isset($opcao)) {

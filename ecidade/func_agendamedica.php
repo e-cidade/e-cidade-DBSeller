@@ -127,8 +127,8 @@ class calendario{
         //Verifica se unidade é da central
         $booMostradiv = false;
         if ($this->centralagenda == "S") {
-
-          $str_query            = cl_undmedhorario_ext::sql_calendario2($ano,
+          $daoUndMedHorario = new cl_undmedhorario_ext;
+          $str_query            = $daoUndMedHorario->sql_calendario2($ano,
                                                                         $mes,
                                                                         $s,
                                                                         $str_where,
@@ -280,6 +280,8 @@ class calendario{
           for ($xHora = 0; $xHora < $iTam; $xHora++) {
 
             $obj_undmedhorario   = db_utils::fieldsMemory($result_undmedhorario,$xHora);
+
+            $obj_undmedhorario->total_agendado = empty($obj_undmedhorario->total_agendado) ? 0 : (int)$obj_undmedhorario->total_agendado;
 
             if ($obj_undmedhorario->sd30_i_codigo != $iHorario) {
 
@@ -565,7 +567,7 @@ function janela(d,m,a,fechar,saldo){
      parent.document.form1.saldo.value=saldo;
   }
 
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = (d<10?'0'+d:d);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";
@@ -596,7 +598,7 @@ function janela(d,m,a,fechar,saldo){
 
 
 function janela_zera(){
-  <?
+  <?php
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = '';\n";

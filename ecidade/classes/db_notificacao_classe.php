@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,13 +59,13 @@ class cl_notificacao {
                  k50_instit = int4 = Cód. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_notificacao() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -74,7 +74,7 @@ class cl_notificacao {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k50_notifica = ($this->k50_notifica == ""?@$GLOBALS["HTTP_POST_VARS"]["k50_notifica"]:$this->k50_notifica);
        $this->k50_procede = ($this->k50_procede == ""?@$GLOBALS["HTTP_POST_VARS"]["k50_procede"]:$this->k50_procede);
@@ -93,7 +93,7 @@ class cl_notificacao {
      }
    }
    // funcao para inclusao
-   function incluir ($k50_notifica){ 
+   public function incluir ($k50_notifica){ 
       $this->atualizacampos();
      if($this->k50_procede == null ){ 
        $this->erro_sql = " Campo Procedência nao Informado.";
@@ -207,7 +207,7 @@ class cl_notificacao {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($k50_notifica=null) { 
+   public function alterar ($k50_notifica=null) { 
       $this->atualizacampos();
      $sql = " update notificacao set ";
      $virgula = "";
@@ -337,7 +337,7 @@ class cl_notificacao {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($k50_notifica=null,$dbwhere=null) { 
+   public function excluir ($k50_notifica=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k50_notifica));
      }else{ 
@@ -402,7 +402,7 @@ class cl_notificacao {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -426,7 +426,7 @@ class cl_notificacao {
    }
 
 
-   function sql_noticontribuicao ( $d08_contri=null,$d08_matric=null,$d08_notif=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_noticontribuicao ( $d08_contri=null,$d08_matric=null,$d08_notif=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -492,7 +492,7 @@ class cl_notificacao {
 
 
 
-   function sql_noticontri ( $d08_contri=null,$d08_matric=null,$d08_notif=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_noticontri ( $d08_contri=null,$d08_matric=null,$d08_notif=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -549,7 +549,7 @@ class cl_notificacao {
      }
      return $sql;
   }
-   function sql_query ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -595,7 +595,7 @@ class cl_notificacao {
      }
      return $sql;
   }
-   function sql_query_file ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -628,7 +628,7 @@ class cl_notificacao {
      }
      return $sql;
   }
-   function sql_query_nome( $k50_notifica=null,$dbwhere="",$ordem=null){
+   public function sql_query_nome( $k50_notifica=null,$dbwhere="",$ordem=null){
 
 $sql = "select k50_notifica,";
 $sql .= "           k50_procede, ";
@@ -682,7 +682,7 @@ $sql2 = "";
      }
      return $sql;
   }
-  function sql_query_usuario ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_usuario ( $k50_notifica=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -736,7 +736,7 @@ $sql2 = "";
    * @param string   $sCampos
    * @return string
    */
-  function sql_query_debitos_notificacao ($iCodigoNotificacao, $sCampos = "*") {
+  public function sql_query_debitos_notificacao ($iCodigoNotificacao, $sCampos = "*") {
      
     $sql = "select {$sCampos}                                                                    ";
     $sql.= "  from notidebitos                                                                   ";

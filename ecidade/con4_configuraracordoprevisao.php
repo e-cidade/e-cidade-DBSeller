@@ -43,7 +43,7 @@ unset($_SESSION["oAcordo"]);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js, DBHint.widget.js");
 db_app::load("widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js, widgets/dbtextField.widget.js");
 db_app::load("DBViewAcordoPrevisao.classe.js,widgets/dbtextFieldData.widget.js, classes/DBViewAcordoExecucao.classe.js");
@@ -216,6 +216,6 @@ function js_openPrevisao(iPosicao) {
 }
 js_main();
 </script>
-<? 
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

@@ -35,7 +35,7 @@ class BancoPixRequest extends FormRequest
                 "exists:db_bancos,db90_codban",
                 // Rule::unique("db_bancos_pix")->ignore($d90_codban_pix, "db90_codban_pix")
             ],
-            "db90_tipo_ambiente"  => ["integer", "required"],
+            "db90_tipo_ambiente"  => ["integer"],
             "db90_login"          => ["string", "max:255"],
             "db90_senha"          => ["string", "max:255"],
             "db90_chave_api"      => ["string", "max:255"],
@@ -65,8 +65,8 @@ class BancoPixRequest extends FormRequest
     {
         return [
             "integer" => (":attribute deve ser um inteiro."),
-            "boolean" => (":attribute deve ser sim ou nÃ£o."),
-            "required" => ("CÃ³digo :attribute deve ser informado."),
+            "boolean" => (":attribute deve ser sim ou não."),
+            "required" => ("Código :attribute deve ser informado."),
             "db90_cnpj.required_if" => ("O campo CNPJ deve ser informado."),
         ];
     }

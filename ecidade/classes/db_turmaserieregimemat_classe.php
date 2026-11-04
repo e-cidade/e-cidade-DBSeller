@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_turmaserieregimemat {
                  ed220_c_aprovauto = char(1) = Aprovação Automática 
                  ";
    //funcao construtor da classe 
-   function cl_turmaserieregimemat() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmaserieregimemat"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_turmaserieregimemat {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed220_i_codigo = ($this->ed220_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed220_i_codigo"]:$this->ed220_i_codigo);
        $this->ed220_i_turma = ($this->ed220_i_turma == ""?@$GLOBALS["HTTP_POST_VARS"]["ed220_i_turma"]:$this->ed220_i_turma);
@@ -86,7 +86,7 @@ class cl_turmaserieregimemat {
      }
    }
    // funcao para inclusao
-   function incluir ($ed220_i_codigo){ 
+   public function incluir ($ed220_i_codigo){ 
       $this->atualizacampos();
      if($this->ed220_i_turma == null ){ 
        $this->erro_sql = " Campo Turma nao Informado.";
@@ -221,7 +221,7 @@ class cl_turmaserieregimemat {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($ed220_i_codigo=null) { 
+   public function alterar ($ed220_i_codigo=null) { 
       $this->atualizacampos();
      $sql = " update turmaserieregimemat set ";
      $virgula = "";
@@ -361,7 +361,7 @@ class cl_turmaserieregimemat {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($ed220_i_codigo=null,$dbwhere=null) { 
+   public function excluir ($ed220_i_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed220_i_codigo));
      }else{ 
@@ -427,7 +427,7 @@ class cl_turmaserieregimemat {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -450,7 +450,7 @@ class cl_turmaserieregimemat {
      return $result;
    }
    // funcao do sql 
-   function sql_query ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -495,7 +495,7 @@ class cl_turmaserieregimemat {
      return $sql;
   }
    // funcao do sql 
-   function sql_query_file ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);
@@ -530,7 +530,7 @@ class cl_turmaserieregimemat {
   }
 
    // funcao do sql 
-   function sql_query_censo ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_censo ( $ed220_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
          $campos_sql = explode("#", $campos);

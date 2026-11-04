@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,7 +62,7 @@ if(isset($atualizar)){
   parent.location.href = "<?=$location?>";
   parent.db_iframe_ordenacao.hide();
  </script>
- <?
+ <?php
  exit;
 }
 ?>
@@ -85,11 +85,11 @@ if(isset($atualizar)){
  </tr>
  <tr>
   <td align="right" valign="top" >
-   <?
+   <?php
    $result = $clparecer->sql_record($clparecer->sql_query("","*","ed92_i_sequencial"," ed92_i_escola = ".db_getsession("DB_coddepto").""));
    ?>
    <select name="numparecer[]" id="numparecer" size="15" style="font-size:9px;width:50px;" multiple>
-    <?
+    <?php
     for($x=0;$x<$clparecer->numrows;$x++){
      db_fieldsmemory($result,$x);
      echo "<option value='".($x+1)."'>".($x+1)."</option>";
@@ -99,7 +99,7 @@ if(isset($atualizar)){
   </td>
   <td align="right" valign="top">
    <select name="pareceres[]" id="pareceres" size="15" style="font-size:9px;width:600px;" multiple>
-   <?
+   <?php
    for($x=0;$x<$clparecer->numrows;$x++){
     db_fieldsmemory($result,$x);
     echo "<option value='$ed92_i_codigo'>".($ed92_i_sequencial==""?"S/N":$ed92_i_sequencial)." - $ed92_c_descr</option>";

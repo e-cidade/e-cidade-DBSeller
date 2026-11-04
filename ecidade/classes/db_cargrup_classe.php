@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE cargrup
-class cl_cargrup { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $j32_grupo = 0; 
-   var $j32_descr = null; 
-   var $j32_tipo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_cargrup {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $j32_grupo = 0;
+   var $j32_descr = null;
+   var $j32_tipo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 j32_grupo = int4 = Código 
-                 j32_descr = varchar(40) = Descrição 
-                 j32_tipo = char(1) = Tipo 
+                 j32_grupo = int4 = Código
+                 j32_descr = varchar(40) = Descrição
+                 j32_tipo = char(1) = Tipo
                  ";
-   //funcao construtor da classe 
-   function cl_cargrup() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("cargrup"); 
+     $this->rotulo = new rotulo("cargrup");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_cargrup {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j32_grupo = ($this->j32_grupo == ""?@$GLOBALS["HTTP_POST_VARS"]["j32_grupo"]:$this->j32_grupo);
        $this->j32_descr = ($this->j32_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j32_descr"]:$this->j32_descr);
@@ -77,9 +77,9 @@ class cl_cargrup {
      }
    }
    // funcao para Inclusão
-   function incluir ($j32_grupo){ 
+   public function incluir ($j32_grupo){
       $this->atualizacampos();
-     if($this->j32_descr == null ){ 
+     if($this->j32_descr == null ){
        $this->erro_sql = " Campo Descrição não informado.";
        $this->erro_campo = "j32_descr";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_cargrup {
        $this->erro_status = "0";
        return false;
      }
-     if($this->j32_tipo == null ){ 
+     if($this->j32_tipo == null ){
        $this->erro_sql = " Campo Tipo não informado.";
        $this->erro_campo = "j32_tipo";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_cargrup {
        return false;
      }
      if($j32_grupo == "" || $j32_grupo == null ){
-       $result = db_query("select nextval('cargrup_j32_grupo_seq')"); 
+       $result = db_query("select nextval('cargrup_j32_grupo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: cargrup_j32_grupo_seq do campo: j32_grupo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: cargrup_j32_grupo_seq do campo: j32_grupo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->j32_grupo = pg_result($result,0,0); 
+       $this->j32_grupo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from cargrup_j32_grupo_seq");
        if(($result != false) && (pg_result($result,0,0) < $j32_grupo)){
@@ -118,10 +118,10 @@ class cl_cargrup {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->j32_grupo = $j32_grupo; 
+         $this->j32_grupo = $j32_grupo;
        }
      }
-     if(($this->j32_grupo == null) || ($this->j32_grupo == "") ){ 
+     if(($this->j32_grupo == null) || ($this->j32_grupo == "") ){
        $this->erro_sql = " Campo j32_grupo não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_cargrup {
        return false;
      }
      $sql = "insert into cargrup(
-                                       j32_grupo 
-                                      ,j32_descr 
-                                      ,j32_tipo 
+                                       j32_grupo
+                                      ,j32_descr
+                                      ,j32_tipo
                        )
                 values (
-                                $this->j32_grupo 
-                               ,'$this->j32_descr' 
-                               ,'$this->j32_tipo' 
+                                $this->j32_grupo
+                               ,'$this->j32_descr'
+                               ,'$this->j32_tipo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Grupo das Caracteristicas ($this->j32_grupo) não Incluído. Inclusão Abortada.";
@@ -174,19 +174,19 @@ class cl_cargrup {
        $resac = db_query("insert into db_acount values($acount,14,61,'','".AddSlashes(pg_result($resaco,0,'j32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($j32_grupo=null) { 
+   public function alterar ($j32_grupo=null) {
       $this->atualizacampos();
      $sql = " update cargrup set ";
      $virgula = "";
-     if(trim($this->j32_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_grupo"])){ 
-        if(trim($this->j32_grupo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j32_grupo"])){ 
-           $this->j32_grupo = "0" ; 
-        } 
+     if(trim($this->j32_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_grupo"])){
+        if(trim($this->j32_grupo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j32_grupo"])){
+           $this->j32_grupo = "0" ;
+        }
        $sql  .= $virgula." j32_grupo = $this->j32_grupo ";
        $virgula = ",";
-       if(trim($this->j32_grupo) == null ){ 
+       if(trim($this->j32_grupo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "j32_grupo";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_cargrup {
          return false;
        }
      }
-     if(trim($this->j32_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_descr"])){ 
+     if(trim($this->j32_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_descr"])){
        $sql  .= $virgula." j32_descr = '$this->j32_descr' ";
        $virgula = ",";
-       if(trim($this->j32_descr) == null ){ 
+       if(trim($this->j32_descr) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "j32_descr";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_cargrup {
          return false;
        }
      }
-     if(trim($this->j32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_tipo"])){ 
+     if(trim($this->j32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j32_tipo"])){
        $sql  .= $virgula." j32_tipo = '$this->j32_tipo' ";
        $virgula = ",";
-       if(trim($this->j32_tipo) == null ){ 
+       if(trim($this->j32_tipo) == null ){
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "j32_tipo";
          $this->erro_banco = "";
@@ -242,7 +242,7 @@ class cl_cargrup {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Grupo das Caracteristicas não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->j32_grupo;
@@ -270,14 +270,14 @@ class cl_cargrup {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($j32_grupo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($j32_grupo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j32_grupo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -305,7 +305,7 @@ class cl_cargrup {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Grupo das Caracteristicas não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$j32_grupo;
@@ -333,11 +333,11 @@ class cl_cargrup {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -359,10 +359,10 @@ class cl_cargrup {
       }
      return $result;
    }
-   function sql_query ( $j32_grupo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $j32_grupo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,15 +375,15 @@ class cl_cargrup {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($j32_grupo)) {
-         $sql2 .= " where cargrup.j32_grupo = $j32_grupo "; 
-       } 
+         $sql2 .= " where cargrup.j32_grupo = $j32_grupo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,10 +392,10 @@ class cl_cargrup {
      }
      return $sql;
   }
-   function sql_query_file ( $j32_grupo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $j32_grupo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,15 +408,15 @@ class cl_cargrup {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($j32_grupo)){
-         $sql2 .= " where cargrup.j32_grupo = $j32_grupo "; 
-       } 
+         $sql2 .= " where cargrup.j32_grupo = $j32_grupo ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

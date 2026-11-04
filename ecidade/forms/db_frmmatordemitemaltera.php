@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -79,27 +79,27 @@ $clrotulo->label("e62_descr");
        }
 </style>
 </head>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"> 
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table  border="0" cellspacing="0" cellpadding="0" width='100%'>
-  <tr> 
-    <td  align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td  align="left" valign="top" bgcolor="#CCCCCC">
     	<form name='form1'>
     		<center>
-  				<fieldset> 
+  				<fieldset>
 						<legend>
 							<b>Itens</b>
 						</legend>
-						<table style='border:2px inset white' width='100%' cellspacing='0'>   
+						<table style='border:2px inset white' width='100%' cellspacing='0'>
 							 <?
-								
+
 								if (isset ($m51_codordem) && $m51_codordem != "") {
 
 									$result = $clmatordemitem->sql_record($clmatordemitem->sql_query_servico(null, "*", "", "m52_codordem=$m51_codordem"));
 									$numrows = $clmatordemitem->numrows;
-									
+
 
 									if ($numrows > 0) {
-										
+
 										echo "   <tr class='bordas'>";
 										echo "     <td class='table_header' align='center'><small><b>$RLe60_codemp		 	</b></small></td>";
 										echo "     <td class='table_header' align='center'><small><b>$RLe60_numemp		 	</b></small></td>";
@@ -113,11 +113,11 @@ $clrotulo->label("e62_descr");
 										echo " <tbody id='dados' style='height:150;width:95%;overflow:scroll;overflow-x:hidden;background-color:white'>";
 
 									} else {
-										
+
 										echo " <tr>";
 										echo "	<b>Nenhum registro encontrado...</b>";
 										echo " </tr>";
-									
+
 									}
 
 									for ($i = 0; $i < $numrows; $i ++) {
@@ -126,10 +126,10 @@ $clrotulo->label("e62_descr");
 									                      "m73_codmatordemitem=$m52_codlanc and m73_cancelado is false");
 										$result2 = $clmatestoqueitemoc->sql_record($sSqlEntrada);
 										if ($clmatestoqueitemoc->numrows == 0) {
-											echo "<tr>	    
+											echo "<tr>
 															 <td	class='linhagrid' 			 align='center'											  ><small>$e60_codemp															 </small></td>
 															 <td	class='linhagrid' 			 align='center'												><small>$m52_numemp															 </small></td>
-															 <td	class='linhagrid' 			 align='center'												><small>$e62_item																 </small></td>		    
+															 <td	class='linhagrid' 			 align='center'												><small>$e62_item																 </small></td>
 															 <td	class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>
 															 <td	class='linhagrid' 			 align='center'												><small>$m52_sequen															 </small></td>
 															 <td	class='linhagrid' nowrap align='left' title='$e62_descr'			><small>".substr($e62_descr, 0, 20)."&nbsp;			 </small></td>";
@@ -137,23 +137,23 @@ $clrotulo->label("e62_descr");
                       /**
                        * Caso for um materail
                        * Caso for um serviço e este serviço ser controlado por quantidade
-                       * 
-                       * 
+                       *
+                       *
                        * Alterados todos inputs dentro do for dos itens
                        * que tratam valores para db_opcao = 3, não mais permitindo alterações
                        * de valores, dendo que para altera devera ser anulado na rotina de anulação
                        * e incluidos os itens novamente.
-                       * 
+                       *
                        */
 										  if ($pc01_servico == 'f' || ($pc01_servico == "t" && $e62_servicoquantidade == "t")) {
-												
+
 												$quant 			 = $m52_quant;
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
 												$$quantidade = $m52_quant;
 												$valor 			 = "valor_$i";
 												$$valor 		 = db_formatar($m52_valor, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
-												
+
 												echo " 	 <td class='linhagrid' align='center'>";
 												echo "		 <small>";
 																			 db_input("quant_$e60_numemp"."_"."$e62_sequen"."_"."$i", 6, 0, true, 'text', 3, "onchange='js_verifica($quant,this.value,this.name,$valoruni);'");
@@ -165,7 +165,7 @@ $clrotulo->label("e62_descr");
 												echo "		 </small>";
 												echo "	 </td>";
 												echo " </tr>";
-											
+
 
 											} else if ($pc01_servico == 't') {
 
@@ -174,7 +174,7 @@ $clrotulo->label("e62_descr");
 												$valor 			 = "valor_$i";
 												$$valor 		 = db_formatar($m52_valor, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
-												
+
 												echo "   <td class='linhagrid' align='center'>";
 												echo "		 <small>";
 																		 db_input("quant_$e60_numemp"."_"."$e62_sequen"."_"."$i", 6, 0, true, 'text', 3);
@@ -187,7 +187,7 @@ $clrotulo->label("e62_descr");
 												echo "	 </td>";
 												echo " </tr>";
 											}
-										
+
 										} else {
 												echo " <tr>";
 												echo " 	 <td class='linhagrid'				align='center'>												<small>$e60_codemp														  </small></td>";
@@ -196,7 +196,7 @@ $clrotulo->label("e62_descr");
 												echo "   <td class='linhagrid' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>";
 												echo "   <td class='linhagrid' 			  align='center'>												<small>$m52_sequen														  </small></td>";
 												echo "   <td class='linhagrid' nowrap align='left' title='$e62_descr'>			<small>".substr($e62_descr, 0, 20)."&nbsp;			</small></td>";
-											
+
                       /**
                        * Caso for um materail
                        * Caso for um serviço e este serviço ser controlado por quantidade
@@ -204,11 +204,11 @@ $clrotulo->label("e62_descr");
 											if ($pc01_servico == 'f' || ($pc01_servico == "t" && $e62_servicoquantidade == "t")) {
 
 												db_fieldsmemory($result2, 0);
-												$quant 			 = $m52_quant - $m71_quant;
+												$quant 			 = $m52_quant;
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant - $m71_quant;
+												$$quantidade = $m52_quant;
 												$valor 			 = "valor_$i";
-												$vlr 				 = $m52_valor - $m71_valor;
+												$vlr 				 = $m52_valor;
 												$$valor 		 = db_formatar($vlr, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 
@@ -223,14 +223,13 @@ $clrotulo->label("e62_descr");
 												echo "		 </small>";
 												echo "   </td>";
 												echo " </tr>";
-											
-											} else if ($pc01_servico == 't') {
 
+											} else if ($pc01_servico == 't') {
 											    db_fieldsmemory($result2, 0);
 												$quantidade  = "quant_$e60_numemp"."_"."$e62_sequen"."_"."$i";
-												$$quantidade = $m52_quant -@ $m71_quant;
+												$$quantidade = $m52_quant;
 												$valor 			 = "valor_$i";
-												$vlr 				 = $m52_valor - @$m71_valor;
+												$vlr 				 = $m52_valor;
 												$$valor 		 = db_formatar($vlr, 'f');
 												$valoruni 	 = $m52_valor / $m52_quant;
 
@@ -249,27 +248,27 @@ $clrotulo->label("e62_descr");
 										}
 									}
 								}
-							?> 
-                            <tr style='height:auto'><td>&nbsp;</td></tr>   
+							?>
+                            <tr style='height:auto'><td>&nbsp;</td></tr>
  							</table>
-  					</fieldset> 
-    			</form> 
+  					</fieldset>
+    			</form>
     		</center>
     	</td>
   	</tr>
  		<tr>
     	<td nowrap title="<?=@$Tm51_valortotal?>"><?=$Lm51_valortotal?>&nbsp;&nbsp;
-				<?  
-    	  	db_input("m51_valortotal",10,"",true,"text",3); 
+				<?
+    	  	db_input("m51_valortotal",10,"",true,"text",3);
 				?>
 			</td>
  		</tr>
 	</table>
 <script>
 function js_verifica(max,quan,nome,valoruni){
-   
+
    if (max<quan){
-   
+
    alert("Informe uma quantidade valida!!");
    eval("document.form1."+nome+".value='';");
    eval("document.form1."+nome+".focus();");
@@ -279,11 +278,11 @@ function js_verifica(max,quan,nome,valoruni){
    quant=new Number(quan);
    valor=new Number(valoruni);
    valortot=quant*valor;
-   
+
    eval("document.form1.valor_"+pos+".value=valortot.toFixed(2)");
-   
+
    }
- 
+
 
 
 }

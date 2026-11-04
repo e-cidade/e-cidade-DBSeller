@@ -43,11 +43,10 @@ echo "<script>\n";
 echo "  var iCodigoRelatorio = {$iCodigoRelatorio};\n";
 echo "  var aFiltros         = new Array();\n";
 if (isset($oGet->filtros) && $oGet->filtros != "") {
-
-  $aFiltros         = explode(",", $oGet->filtros);
-  foreach ($aFiltros as $iFiltro => $sFiltro) {
-    echo "aFiltros[$iFiltro] = '".trim($sFiltro)."';\n";
-  }
+    $aFiltros         = explode(",", $oGet->filtros);
+    foreach ($aFiltros as $iFiltro => $sFiltro) {
+        echo "aFiltros[$iFiltro] = '".trim($sFiltro)."';\n";
+    }
 }
 echo "</script>\n";
 ?>
@@ -56,10 +55,14 @@ echo "</script>\n";
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
-     db_app::load("scripts.js, prototype.js, windowAux.widget.js, filtroorcamento.widget.js, strings.js");
-     db_app::load("estilos.css, grid.style.css");
-    ?>
+    <script rel="script" type="text/javascript" src="scripts/scripts.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/prototype.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/strings.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/widgets/filtroorcamento.widget.js"></script>
+    <script rel="script" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <link rel="stylesheet" type="text/css" href="estilos.css"/>
+    <link rel="stylesheet" type="text/css" href="estilos/grid.style.css"/>
   </head>
   <body>
   <div id='filtros'>
@@ -67,11 +70,9 @@ echo "</script>\n";
   </body>
 </html>
 <script>
-
-
   sURlRPC = "con4_configuracaorelatorioRPC.php";
-  function js_saveFiltrosUsuarios() {
-
+  function js_saveFiltrosUsuarios() 
+  {
      var oParam = new Object();
      oParam.iRelatorio = iCodigoRelatorio;
      oParam.exec       = "salvarParametroRelatorioUsuario";
@@ -92,13 +93,10 @@ echo "</script>\n";
                                    onComplete:js_retornosaveParametro
                                   }
                                  );
-
-
   }
 
-  function js_retornosaveParametro(oAjax) {
-
-
+  function js_retornosaveParametro(oAjax) 
+  {
     $('btnSalvar').disabled = false;
     js_removeObj("msgBox");
     var oRetorno = JSON.parse(oAjax.responseText);
@@ -109,8 +107,8 @@ echo "</script>\n";
     }
   }
 
-  function js_getFiltrosUsuario() {
-
+  function js_getFiltrosUsuario() 
+  {
    var oParam = new Object();
    oParam.iRelatorio = iCodigoRelatorio;
    oParam.exec       = "getParametrosRelatorioUsuario";
@@ -123,8 +121,8 @@ echo "</script>\n";
                                );
  }
 
- function js_retornoGetFiltros(oAjax) {
-
+ function js_retornoGetFiltros(oAjax) 
+ {
    js_removeObj("msgBox");
    var oRetorno = JSON.parse(oAjax.responseText);
    filtro = new filtroOrcamento("filtroRelatorio"+iCodigoRelatorio);
@@ -132,7 +130,6 @@ echo "</script>\n";
    if (aFiltros.length > 0) {
     filtro.setFiltros(aFiltros);
    }
-   //filtro.setFiltroDefault("recurso");
    filtro.setData(oRetorno.filter);
    filtro.showSaveButton(true);
    filtro.setCallBackSave(js_saveFiltrosUsuarios);
@@ -148,8 +145,8 @@ echo "</script>\n";
    }
  }
 
- function getFiltros() {
-
+ function getFiltros() 
+ {
    oFilters = new Object();
    oFilters.orgao     = filtro.getOrgaos();
    oFilters.unidade   = filtro.getUnidades();

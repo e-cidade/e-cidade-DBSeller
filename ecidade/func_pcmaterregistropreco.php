@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,6 +52,7 @@ $clrotulo->label("o56_elemento");
 $clrotulo->label("o58_coddot");
 if (isset($o56_codele) and trim($o56_codele) != '') {
     $chave_pc07_codele = $o56_codele;
+
 }
 ?>
 <html>

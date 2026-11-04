@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@
       <?=@$Lj44_matric?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('j44_matric',10,$Ij44_matric,true,'text',3);
           db_input("z01_nome",60,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
         ?>
@@ -41,12 +41,12 @@
     </tr>
     <tr> 
       <td nowrap title="<?=@$Tj44_numcgm?>">
-        <?
+        <?php
           db_ancora($Lj44_numcgm,' js_cgm(true); ',1);
         ?>
       </td>
       <td> 
-        <?
+        <?php
           db_input('j44_numcgm',10,$Ij44_numcgm,true,'text',1,"onchange='js_cgm(false)'");
           db_input('z01_nome',60,$Iz01_nome,true,'text',3,"");
         ?>

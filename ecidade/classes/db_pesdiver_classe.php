@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_pesdiver {
                  r07_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_pesdiver() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pesdiver"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_pesdiver {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r07_anousu = ($this->r07_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r07_anousu"]:$this->r07_anousu);
        $this->r07_mesusu = ($this->r07_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r07_mesusu"]:$this->r07_mesusu);
@@ -89,7 +89,7 @@ class cl_pesdiver {
      }
    }
    // funcao para inclusao
-   function incluir ($r07_anousu,$r07_mesusu,$r07_codigo,$r07_instit){ 
+   public function incluir ($r07_anousu,$r07_mesusu,$r07_codigo,$r07_instit){ 
       $this->atualizacampos();
      if($this->r07_descr == null ){ 
        $this->erro_sql = " Campo Descrição nao Informado.";
@@ -204,7 +204,7 @@ class cl_pesdiver {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null) { 
+   public function alterar ($r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null) { 
       $this->atualizacampos();
      $sql = " update pesdiver set ";
      $virgula = "";
@@ -356,7 +356,7 @@ class cl_pesdiver {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$dbwhere=null) { 
+   public function excluir ($r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($r07_anousu,$r07_mesusu,$r07_codigo,$r07_instit));
      }else{ 
@@ -443,7 +443,7 @@ class cl_pesdiver {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -465,10 +465,10 @@ class cl_pesdiver {
       }
      return $result;
    }
-   function atualiza_incluir (){
+   public function atualiza_incluir (){
   	 $this->incluir($this->r07_anousu,$this->r07_mesusu,$this->r07_codigo);
    }
-   function sql_query ( $r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -527,7 +527,7 @@ class cl_pesdiver {
      }
      return $sql;
   }
-   function sql_query_file ( $r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $r07_anousu=null,$r07_mesusu=null,$r07_codigo=null,$r07_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

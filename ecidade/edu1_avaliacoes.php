@@ -124,7 +124,7 @@ $result_d = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_
         </tr>
         <tr>
           <td align="center">
-            <?AvalResult("ordenacao",$procedimento,8,"multiple","asc","","no","","");?>
+            <?php AvalResult("ordenacao",$procedimento,8,"multiple","asc","","no","","");?>
       <input name="ordenar" type="submit" id="btn_ordenar" value="Ordenar" onclick="js_selecionar()">
           </td>
           <td>
@@ -186,7 +186,7 @@ $result_d = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_
          <script>
           document.form1.ordenar.disabled = true;
          </script>
-         <?
+         <?php
         }
       ?>
     </td>

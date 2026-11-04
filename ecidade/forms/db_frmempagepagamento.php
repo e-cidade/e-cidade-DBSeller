@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -225,8 +225,8 @@ function js_padrao(obj){
 }
 </script>
 <form name="form1" method="post" action="">
-<? db_input('chaves',8,0,true,'hidden',1)?>
-<? db_input('tipo',8,0,true,'hidden',1)?>
+<?php db_input('chaves',8,0,true,'hidden',1)?>
+<?php db_input('tipo',8,0,true,'hidden',1)?>
 <center>
 <table border="1" width="100%" align="left" cellpadding='0' cellspacing='0'>
 <tr>
@@ -234,37 +234,37 @@ function js_padrao(obj){
 <table border='0'>
 <tr>
 <td nowrap title="<?=@$Te50_codord?>" align='right'>
-<? db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
+<?php db_ancora(@$Le50_codord,"js_pesquisae50_codord(true);",$db_opcao);  ?>
 </td>
 <td>
-<? db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
-<? db_ancora("<b>até</b>","js_pesquisae50_codord02(true);",$db_opcao);  ?>
-<? db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord02(false);'","e50_codord02")?>
+<?php db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord(false);'")  ?>
+<?php db_ancora("<b>até</b>","js_pesquisae50_codord02(true);",$db_opcao);  ?>
+<?php db_input('e50_codord',8,$Ie50_codord,true,'text',$db_opcao," onchange='js_pesquisae50_codord02(false);'","e50_codord02")?>
 </td>
 </tr>
 <tr>
 <td  align="right" nowrap title="<?=$Te60_numemp?>">
-<? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+<?php db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
 </td>
 
 <td  nowrap>
 
 <input name="e60_codempx" title='<?=$Te60_codemp?>' size="12" type='text'  onKeyPress="return js_mascara(event);" >
-<? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
-<? db_input('e60_numemp',12,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+<?php db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+<?php db_input('e60_numemp',12,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
 </td>
 </tr>
 <tr>
 <td nowrap title="<?=@$Tz01_numcgm?>" align='right'>
-<?
+<?php
 db_ancora("<b>Nome:</b>","js_pesquisaz01_numcgm(true);",$db_opcao);
 ?>
 </td>
 <td>
-<?
+<?php
 db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 ?>
-<?
+<?php
 db_input('z01_nome',25,$Iz01_nome,true,'text',3,'')
 ?>
 </td>
@@ -275,11 +275,11 @@ db_input('z01_nome',25,$Iz01_nome,true,'text',3,'')
 <table   border='0' >
 <tr>
 <td align='center'>
-<b> <? db_ancora("SLIP","js_slip(true);",1);  ?>:</b>
+<b> <?php db_ancora("SLIP","js_slip(true);",1);  ?>:</b>
 </td>
 <td nowrap>
 <?=db_input('k17_codigo',6,'',true,'text',1,"onchange='js_slip(false);'")?>
-<b> <? db_ancora("até","js_slip2(true);",1);  ?></b>
+<b> <?php db_ancora("até","js_slip2(true);",1);  ?></b>
 <?=db_input('k17_codigo',6,'',true,'text',1,"onchange='js_slip2(false);'","k17_codigo2")?>
 
 </td>
@@ -289,7 +289,7 @@ db_input('z01_nome',25,$Iz01_nome,true,'text',3,'')
 &nbsp;<b>Cheque:</b></b>
 </td>
 <td>
-<?
+<?php
 db_input('cheque',10,'',true,'text',1);
 ?>
 
@@ -297,13 +297,13 @@ db_input('cheque',10,'',true,'text',1);
 </tr>
 <tr>
 <td class='bordas' align='right'>
-<b> <? db_ancora("Agendas","js_empage(true);",$db_opcao);  ?></b>
+<b> <?php db_ancora("Agendas","js_empage(true);",$db_opcao);  ?></b>
 </td>
 <td><?=db_input('e80_codage',8,0,true,'text',1,"onchange='js_empage(false);'")?></td>
 </tr>
 <tr>
 <td class='bordas' align='right'>
-<b> <? db_ancora("Arquivos","js_empagearquivos(true);",$db_opcao);  ?></b>
+<b> <?php db_ancora("Arquivos","js_empagearquivos(true);",$db_opcao);  ?></b>
 </td>
 <td><?=db_input('e87_codgera',8,0,true,'text',1,"onchange='js_empagearquivos(false);'")?></td>
 </tr>
@@ -314,7 +314,7 @@ db_input('cheque',10,'',true,'text',1);
 <tr>
 <td valign='top' colspan='4' nowrap ><?=$Le83_codtipo?>
 
-<?
+<?php
 if(empty($atualizar)){
   $e83_codtipo ='0';
 }
@@ -327,7 +327,7 @@ db_select("e83_codtipo",$arr,true,1,"onchange='js_padrao(this.value)';");
 </td>
 <td colspan='3'>
 
-<?
+<?php
 if(empty($dtfi_dia)){
   $dtfi_dia = date("d",db_getsession("DB_datausu"));
   $dtfi_mes = date("m",db_getsession("DB_datausu"));
@@ -342,7 +342,7 @@ db_inputdata('dtfi',@$dtfi_dia,@$dtfi_mes,@$dtfi_ano,true,'text',1);
 <td ><b>Emissão empenho:</b>
 </td>
 <td colspan='3'>
-<?
+<?php
 db_inputdata('dtemp',@$dtemp_dia,@$dtemp_mes,@$dtemp_ano,true,'text',1);
 ?>
 </td>
@@ -383,12 +383,12 @@ db_inputdata('dtemp',@$dtemp_dia,@$dtemp_mes,@$dtemp_ano,true,'text',1);
 <tr>
 <td colspan='2' align='left'>
 <b>Total:</b>
-<?
+<?php
 $tot = '0.00';
 db_input('tot',14,'',true,'text',3);
 ?>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>Registros:</b>
-<?
+<?php
 $registros = '0';
 db_input('registros',4,'',true,'text',3);
 ?>

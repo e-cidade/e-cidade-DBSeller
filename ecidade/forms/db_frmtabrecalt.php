@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -60,7 +60,7 @@ $cltabrec->rotulo->label();
 	   <?=@$Lk02_codigo?>
 	</td>
 	<td> 
-         <?
+         <?php
             db_input('k02_codigo',8,$Ik02_codigo,true,'text',$db_opcao);
          ?>
 	</td>
@@ -70,8 +70,8 @@ $cltabrec->rotulo->label();
           <tr> 
             <td height="25" nowrap><strong>Tipo da receita:</strong></td>
             <td height="25" nowrap> <select name="k02_tipo" id="k02_tipo" onChange="this.form.k02_estrut.value='';this.form.k02_drecei.value=''">
-                <option value="O" <? echo isset($k02_tipo)?($k02_tipo=="O"?"selected":""):"" ?>>Or&ccedil;ament&aacute;ria</option>
-                <option value="E" <? echo isset($k02_tipo)?($k02_tipo=="E"?"selected":""):"" ?>>Extra-or&ccedil;ament&aacute;ria</option>
+                <option value="O" <?php echo isset($k02_tipo)?($k02_tipo=="O"?"selected":""):"" ?>>Or&ccedil;ament&aacute;ria</option>
+                <option value="E" <?php echo isset($k02_tipo)?($k02_tipo=="E"?"selected":""):"" ?>>Extra-or&ccedil;ament&aacute;ria</option>
               </select></td>
           </tr>
 

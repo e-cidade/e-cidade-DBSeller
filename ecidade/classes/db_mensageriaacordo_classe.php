@@ -1,38 +1,38 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE mensageriaacordo
-class cl_mensageriaacordo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ac51_sequencial = 0; 
-   var $ac51_assunto = null; 
-   var $ac51_mensagem = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_mensageriaacordo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ac51_sequencial = 0;
+   var $ac51_assunto = null;
+   var $ac51_mensagem = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ac51_sequencial = int4 = Sequencial 
-                 ac51_assunto = varchar(100) = Assunto 
-                 ac51_mensagem = text = Mensagem 
+                 ac51_sequencial = int4 = Sequencial
+                 ac51_assunto = varchar(100) = Assunto
+                 ac51_mensagem = text = Mensagem
                  ";
-   //funcao construtor da classe 
-   function cl_mensageriaacordo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("mensageriaacordo"); 
+     $this->rotulo = new rotulo("mensageriaacordo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -41,7 +41,7 @@ class cl_mensageriaacordo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ac51_sequencial = ($this->ac51_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ac51_sequencial"]:$this->ac51_sequencial);
        $this->ac51_assunto = ($this->ac51_assunto == ""?@$GLOBALS["HTTP_POST_VARS"]["ac51_assunto"]:$this->ac51_assunto);
@@ -51,9 +51,9 @@ class cl_mensageriaacordo {
      }
    }
    // funcao para inclusao
-   function incluir ($ac51_sequencial){ 
+   public function incluir ($ac51_sequencial){
       $this->atualizacampos();
-     if($this->ac51_assunto == null ){ 
+     if($this->ac51_assunto == null ){
        $this->erro_sql = " Campo Assunto não informado.";
        $this->erro_campo = "ac51_assunto";
        $this->erro_banco = "";
@@ -62,7 +62,7 @@ class cl_mensageriaacordo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ac51_mensagem == null ){ 
+     if($this->ac51_mensagem == null ){
        $this->erro_sql = " Campo Mensagem não informado.";
        $this->erro_campo = "ac51_mensagem";
        $this->erro_banco = "";
@@ -72,16 +72,16 @@ class cl_mensageriaacordo {
        return false;
      }
      if($ac51_sequencial == "" || $ac51_sequencial == null ){
-       $result = db_query("select nextval('mensageriaacordo_ac51_sequencial_seq')"); 
+       $result = db_query("select nextval('mensageriaacordo_ac51_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: mensageriaacordo_ac51_sequencial_seq do campo: ac51_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: mensageriaacordo_ac51_sequencial_seq do campo: ac51_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ac51_sequencial = pg_result($result,0,0); 
+       $this->ac51_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from mensageriaacordo_ac51_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ac51_sequencial)){
@@ -92,10 +92,10 @@ class cl_mensageriaacordo {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ac51_sequencial = $ac51_sequencial; 
+         $this->ac51_sequencial = $ac51_sequencial;
        }
      }
-     if(($this->ac51_sequencial == null) || ($this->ac51_sequencial == "") ){ 
+     if(($this->ac51_sequencial == null) || ($this->ac51_sequencial == "") ){
        $this->erro_sql = " Campo ac51_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -104,17 +104,17 @@ class cl_mensageriaacordo {
        return false;
      }
      $sql = "insert into mensageriaacordo(
-                                       ac51_sequencial 
-                                      ,ac51_assunto 
-                                      ,ac51_mensagem 
+                                       ac51_sequencial
+                                      ,ac51_assunto
+                                      ,ac51_mensagem
                        )
                 values (
-                                $this->ac51_sequencial 
-                               ,'$this->ac51_assunto' 
-                               ,'$this->ac51_mensagem' 
+                                $this->ac51_sequencial
+                               ,'$this->ac51_assunto'
+                               ,'$this->ac51_mensagem'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Mensageria acordo ($this->ac51_sequencial) nao Incluído. Inclusao Abortada.";
@@ -154,16 +154,16 @@ class cl_mensageriaacordo {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ac51_sequencial=null) { 
+   public function alterar ($ac51_sequencial=null) {
       $this->atualizacampos();
      $sql = " update mensageriaacordo set ";
      $virgula = "";
-     if(trim($this->ac51_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_sequencial"])){ 
+     if(trim($this->ac51_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_sequencial"])){
        $sql  .= $virgula." ac51_sequencial = $this->ac51_sequencial ";
        $virgula = ",";
-       if(trim($this->ac51_sequencial) == null ){ 
+       if(trim($this->ac51_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ac51_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_mensageriaacordo {
          return false;
        }
      }
-     if(trim($this->ac51_assunto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_assunto"])){ 
+     if(trim($this->ac51_assunto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_assunto"])){
        $sql  .= $virgula." ac51_assunto = '$this->ac51_assunto' ";
        $virgula = ",";
-       if(trim($this->ac51_assunto) == null ){ 
+       if(trim($this->ac51_assunto) == null ){
          $this->erro_sql = " Campo Assunto não informado.";
          $this->erro_campo = "ac51_assunto";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_mensageriaacordo {
          return false;
        }
      }
-     if(trim($this->ac51_mensagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_mensagem"])){ 
+     if(trim($this->ac51_mensagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac51_mensagem"])){
        $sql  .= $virgula." ac51_mensagem = '$this->ac51_mensagem' ";
        $virgula = ",";
-       if(trim($this->ac51_mensagem) == null ){ 
+       if(trim($this->ac51_mensagem) == null ){
          $this->erro_sql = " Campo Mensagem não informado.";
          $this->erro_campo = "ac51_mensagem";
          $this->erro_banco = "";
@@ -226,7 +226,7 @@ class cl_mensageriaacordo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Mensageria acordo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ac51_sequencial;
@@ -254,11 +254,11 @@ class cl_mensageriaacordo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ac51_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ac51_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -267,7 +267,7 @@ class cl_mensageriaacordo {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($ac51_sequencial));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -298,7 +298,7 @@ class cl_mensageriaacordo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Mensageria acordo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ac51_sequencial;
@@ -326,11 +326,11 @@ class cl_mensageriaacordo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -352,11 +352,11 @@ class cl_mensageriaacordo {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ac51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ac51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,15 +369,15 @@ class cl_mensageriaacordo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac51_sequencial!=null ){
-         $sql2 .= " where mensageriaacordo.ac51_sequencial = $ac51_sequencial "; 
-       } 
+         $sql2 .= " where mensageriaacordo.ac51_sequencial = $ac51_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,11 +386,11 @@ class cl_mensageriaacordo {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ac51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ac51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,15 +403,15 @@ class cl_mensageriaacordo {
      $sql2 = "";
      if($dbwhere==""){
        if($ac51_sequencial!=null ){
-         $sql2 .= " where mensageriaacordo.ac51_sequencial = $ac51_sequencial "; 
-       } 
+         $sql2 .= " where mensageriaacordo.ac51_sequencial = $ac51_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

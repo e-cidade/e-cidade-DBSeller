@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -49,6 +49,8 @@ require_once(modification("libs/db_liborcamento.php"));
 parse_str($_SERVER["QUERY_STRING"]);
 db_postmemory($_POST);
 
+$labelBotao = 'Incluir';
+
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacaocontr = new cl_orcdotacaocontr;
 $clorcelemento = new cl_orcelemento;
@@ -64,7 +66,7 @@ $db_opcao = 1;
 $db_botao = true;
 $anousu = db_getsession("DB_anousu");
 
-if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     try {
         if ($o58_orgao == "") {
             throw new Exception("Orgão não informado.");
@@ -93,29 +95,36 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
         if ($o58_concarpeculiar == "") {
             throw new Exception("Você deve selecionar uma C.Peculiar/Cod. de Aplicação antes de incluir a Dotação.");
         }
-        if ($esferaOrcamentaria == "" && FONTE_RECURSO_UNIAO) {
+        if ($o58_esferaorcamentaria === "0") {
             throw new Exception("Você deve selecionar uma Esfera Orçamentária antes de incluir a Dotação.");
         }
         if (!FONTE_RECURSO_UNIAO) {
-            $esferaOrcamentaria = "0";
+            $o58_esferaorcamentaria = "0";
         }
 
         db_inicio_transacao();
-        $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null, null, "*", "",
-            "o58_anousu = {$anousu} and
-                     o58_orgao                = $o58_orgao      and
-		        	 o58_unidade              = $o58_unidade    and
-					 o58_funcao               = $o58_funcao     and
-					 o58_subfuncao            = $o58_subfuncao  and
-					 o58_programa             = $o58_programa   and
-					 o58_projativ             = $o58_projativ   and
-					 orcelemento.o56_elemento = '$o56_elemento' and o58_codele = orcelemento.o56_codele and
-					 orcelemento.o56_anousu   = o58_anousu and
-					 o58_codigo               = $o58_codigo and
-					 o58_instit               = $o58_instit
-					 and o58_concarpeculiar   = '{$o58_concarpeculiar}'
-					 and o58_esferaorcamentaria = {$esferaOrcamentaria} "
-        ));
+        $result = $clorcdotacao->sql_record(
+            $clorcdotacao->sql_query(
+                null,
+                null,
+                "*",
+                "",
+                "o58_anousu = {$anousu}
+             and o58_orgao = $o58_orgao
+             and o58_unidade = $o58_unidade
+             and o58_funcao = $o58_funcao
+             and o58_subfuncao = $o58_subfuncao
+             and o58_programa = $o58_programa
+             and o58_projativ = $o58_projativ
+             and orcelemento.o56_elemento = '$o56_elemento'
+             and o58_codele = orcelemento.o56_codele
+             and orcelemento.o56_anousu = o58_anousu
+             and o58_codigo = $o58_codigo
+             and o58_instit = $o58_instit
+             and o58_concarpeculiar = '{$o58_concarpeculiar}'
+             and o58_esferaorcamentaria = {$o58_esferaorcamentaria} "
+            )
+        );
 
         if ($clorcdotacao->numrows > 0) {
             throw new Exception("Dotação já Cadastrada.");
@@ -127,7 +136,13 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 
         if ($o50_subelem == 'f') {
             $o56_elemento = substr($o56_elemento, 0, 7) . "000000";
-            $sSql = $clorcelemento->sql_query_file(null, null, 'o56_codele', 'o56_elemento', " o56_anousu = " . $anousu . " and o56_elemento = '$o56_elemento' ");
+            $sSql = $clorcelemento->sql_query_file(
+                null,
+                null,
+                'o56_codele',
+                'o56_elemento',
+                " o56_anousu = " . $anousu . " and o56_elemento = '$o56_elemento' "
+            );
         } else {
             $sSql = $clorcelemento->sql_query_file(
                 null,
@@ -142,12 +157,16 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
             db_fieldsmemory($result, 0);
             $clorcdotacao->o58_codele = $o56_codele;
 
-            $result = $clorcparametro->sql_record("update orcparametro set o50_coddot = o50_coddot + 1 where o50_anousu = " . $anousu);
-            $result = $clorcparametro->sql_record($clorcparametro->sql_query_file(db_getsession('DB_anousu'), 'o50_coddot as o58_coddot'));
+            $sqlUpdate = "update orcparametro set o50_coddot = o50_coddot + 1
+                           where o50_anousu = {$anousu}";
+            $result = $clorcparametro->sql_record($sqlUpdate);
+            $result = $clorcparametro->sql_record($clorcparametro->sql_query_file(
+                db_getsession('DB_anousu'),
+                'o50_coddot as o58_coddot'
+            ));
             if ($clorcparametro->numrows > 0) {
                 db_fieldsmemory($result, 0);
 
-                $clorcdotacao->o58_esferaorcamentaria = $esferaOrcamentaria;
                 $clorcdotacao->o58_localizadorgastos = $o58_localizadorgastos;
                 $clorcdotacao->o58_programa = $o58_programa;
                 $clorcdotacao->incluir($o58_anousu, $o58_coddot);
@@ -180,6 +199,7 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 }
 ?>
 <html>
+
 <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -190,17 +210,19 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     <script type="text/javascript" src="scripts/widgets/DBLookUp.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
+
 <body onLoad="document.form1.o50_estrutdespesa.focus();">
 
-<div class="container">
-    <?php
-    include(modification("forms/db_frmorcdotacao001.php"));
-    ?>
-</div>
+    <div class="container">
+        <?php
+        include(modification("forms/db_frmorcdotacao001.php"));
+        ?>
+    </div>
 </body>
+
 </html>
 <?php
-if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clorcdotacao->erro_status == "0") {
         $clorcdotacao->erro(true, false);
         $db_botao = true;

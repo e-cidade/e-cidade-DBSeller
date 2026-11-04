@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,7 +48,7 @@ $clrotulo->label("m45_obs");
               <b>Código do Atendimento: </b>
             </td>
             <td>
-              <?
+              <?php
               db_input('m42_codigo',10,$Im42_codigo,true,'text',3,"")
               ?>
             </td>
@@ -58,7 +58,7 @@ $clrotulo->label("m45_obs");
               <?=@$Lm42_data?>
             </td>
             <td>
-              <?
+              <?php
               db_inputdata('m42_data',@$m42_data_dia,@$m42_data_mes,@$m42_data_ano,true,'text',3,"")
               ?>
             </td>
@@ -68,7 +68,7 @@ $clrotulo->label("m45_obs");
               <?=@$Lm42_hora?>
             </td>
             <td>
-              <?
+              <?php
               db_input('m42_hora',5,$Im42_hora,true,'text',3,"")
               ?>
             </td>
@@ -78,7 +78,7 @@ $clrotulo->label("m45_obs");
               <?=@$Lm42_login?>
             </td>
             <td>
-              <?
+              <?php
               db_input('m42_login',10,$Im42_login,true,'text',3," ");
               db_input('nome',40,$Inome,true,'text',3,'');
               ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,15 +88,15 @@ function js_emite(){
   </tr>
   <tr>
     <td nowrap title="<?=@$To21_codleippa?>" align='right'>
-      <?
+      <?php
       db_ancora(@$Lo21_codleippa,"js_pesquisao21_codleippa(true);",1);
       ?>
     </td>
     <td align='left' colspan='1'> 
-      <?
+      <?php
       db_input('o21_codleippa',8,$Io21_codleippa,true,'text',1," onchange='js_pesquisao21_codleippa(false);'")
       ?>
-      <?
+      <?php
       db_input('o21_descr',40,$Io21_descr,true,'text',3,'')
       ?>
     </td>
@@ -104,7 +104,7 @@ function js_emite(){
   <tr>
     <td align="right" ><strong>Nível :</strong></td>
     <td>
-      <?
+      <?php
        $xy = array('1'=>'Órgão','2'=>'Unidade','3'=>'Função','4'=>'Subfunção','5'=>'Programa','6'=>'Ação','8'=>'Recurso');
        db_select('nivel',$xy,true,2,"");
       ?>
@@ -115,7 +115,7 @@ function js_emite(){
     <tr>
     <td align="right"><strong>Anos :<strong></td>
     <td>
-    <?
+    <?php
     $result_anosescolha = $clorcppalei->sql_record($clorcppalei->sql_query_file(@$o21_codleippa,"o21_anoini,o21_anofim"));
     $arr_indexdescr = Array();
 
@@ -135,7 +135,7 @@ function js_emite(){
   <tr>
     <td><b>Imprimir Valores Zerados:</b></td>
     <td>
-    <?
+    <?php
        $x = array("n"=>"NÃO","s"=>"SIM");
 
        db_select("impzero",$x,true,4);
@@ -154,7 +154,7 @@ function js_emite(){
   </tr>
 </form>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

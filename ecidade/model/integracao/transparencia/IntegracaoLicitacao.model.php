@@ -111,20 +111,21 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
 
     IntegracaoPortalTransparencia::escreverTitulo("IMPORTANDO ITENS DAS LICITAÇÕES");
     require_once modification(DB_CLASSES."classes/db_liclicitem_classe.php");
-    $sListaCampos  = "l21_codigo       as id,";
+    $sListaCampos  = "distinct on (l21_codigo) l21_codigo as id,";
     $sListaCampos .= "l21_codliclicita as licitacao_id,";
     $sListaCampos .= "pc01_descrmater  as material,";
     $sListaCampos .= "pc11_quant       as quantidade,";
     $sListaCampos .= "m61_descr        as unidade_medida,";
     $sListaCampos .= "pc11_resum       as resumo,";
     $sListaCampos .= "z01_nome         as fornecedor,";
-    $sListaCampos .= "(case when pc24_pontuacao = 1 then pc23_valor else round(pc11_quant * pc11_vlrun, 2)  end ) as valor";
+    $sListaCampos .= "(case when db110_db_cadattdinamicoatributos = 122 and db110_valor = 't' then 0
+    when pc24_pontuacao = 1 then pc23_valor else round(pc11_quant * pc11_vlrun, 2)  end ) as valor";
 
     $oDaoLIcilicitem = new cl_liclicitem();
     $sSqlLiclicitem  = $oDaoLIcilicitem->sql_query_portal_transparencia(null,
       $sListaCampos,
-      'l21_codliclicita, l21_ordem',
-      "l20_anousu >= {$this->iAnoInicioIntegracao}"
+      'l21_codigo, l21_codliclicita, l21_ordem',
+      "l20_anousu >= {$this->iAnoInicioIntegracao} group by l21_codigo, l21_codliclicita, pc01_descrmater, pc11_quant, m61_descr, pc11_resum, z01_nome, valor"
     );
 
     $rsItensLicitacao= db_query($this->rsConexaoOrigem, $sSqlLiclicitem);

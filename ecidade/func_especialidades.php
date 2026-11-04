@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clespecialidades->rotulo->label("sd05_c_descr");
               <?=$Lsd05_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd05_i_codigo",10,$Isd05_i_codigo,true,"text",4,"","chave_sd05_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clespecialidades->rotulo->label("sd05_c_descr");
               <?=$Lsd05_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sd05_c_descr",50,$Isd05_c_descr,true,"text",4,"","chave_sd05_c_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clespecialidades->rotulo->label("sd05_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_especialidades.php")==true){
@@ -122,12 +122,12 @@ $clespecialidades->rotulo->label("sd05_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

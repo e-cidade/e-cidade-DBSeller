@@ -27,66 +27,66 @@
 
 //MODULO: compras
 //CLASSE DA ENTIDADE pcorcamval
-class cl_pcorcamval { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $pc23_orcamforne = 0; 
-   var $pc23_orcamitem = 0; 
-   var $pc23_valor = 0; 
-   var $pc23_quant = 0; 
-   var $pc23_obs = null; 
-   var $pc23_vlrun = 0; 
-   var $pc23_validmin_dia = null; 
-   var $pc23_validmin_mes = null; 
-   var $pc23_validmin_ano = null; 
-   var $pc23_validmin = null; 
-   var $pc23_percentualdesconto = 0; 
-   var $pc23_bdi = 0; 
-   var $pc23_encargossociais = 0; 
-   var $pc23_data_dia = null; 
-   var $pc23_data_mes = null; 
-   var $pc23_data_ano = null; 
-   var $pc23_data = null; 
-   var $pc23_notatecnica = 0; 
-   var $pc23_taxaestimada = 0; 
-   var $pc23_taxahomologada = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_pcorcamval {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $pc23_orcamforne = 0;
+   var $pc23_orcamitem = 0;
+   var $pc23_valor = 0;
+   var $pc23_quant = 0;
+   var $pc23_obs = null;
+   var $pc23_vlrun = 0;
+   var $pc23_validmin_dia = null;
+   var $pc23_validmin_mes = null;
+   var $pc23_validmin_ano = null;
+   var $pc23_validmin = null;
+   var $pc23_percentualdesconto = 0;
+   var $pc23_bdi = 0;
+   var $pc23_encargossociais = 0;
+   var $pc23_data_dia = null;
+   var $pc23_data_mes = null;
+   var $pc23_data_ano = null;
+   var $pc23_data = null;
+   var $pc23_notatecnica = 0;
+   var $pc23_taxaestimada = 0;
+   var $pc23_taxahomologada = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 pc23_orcamforne = int8 = Código do orcamento deste fornecedor 
-                 pc23_orcamitem = int4 = Código sequencial do item no orçamento 
-                 pc23_valor = float8 = Valor orçado 
-                 pc23_quant = float8 = Quantidade orçada 
-                 pc23_obs = text = Obs 
-                 pc23_vlrun = float8 = Valor unitário 
-                 pc23_validmin = date = Validade Minima 
-                 pc23_percentualdesconto = float4 = Percentual do Desconto 
-                 pc23_bdi = float4 = BDI Estimado 
-                 pc23_encargossociais = float4 = Encargos Sociais Estimado 
-                 pc23_data = date = Data da Proposta 
-                 pc23_notatecnica = float4 = Nota Técnica 
-                 pc23_taxaestimada = float4 = Taxa Estimada 
-                 pc23_taxahomologada = float4 = Taxa Homologada 
+                 pc23_orcamforne = int8 = Código do orcamento deste fornecedor
+                 pc23_orcamitem = int4 = Código sequencial do item no orçamento
+                 pc23_valor = float8 = Valor orçado
+                 pc23_quant = float8 = Quantidade orçada
+                 pc23_obs = text = Obs
+                 pc23_vlrun = float8 = Valor unitário
+                 pc23_validmin = date = Validade Minima
+                 pc23_percentualdesconto = float4 = Percentual do Desconto
+                 pc23_bdi = float4 = BDI Estimado
+                 pc23_encargossociais = float4 = Encargos Sociais Estimado
+                 pc23_data = date = Data da Proposta
+                 pc23_notatecnica = float4 = Nota Técnica
+                 pc23_taxaestimada = float4 = Taxa Estimada
+                 pc23_taxahomologada = float4 = Taxa Homologada
                  ";
-   //funcao construtor da classe 
-   function cl_pcorcamval() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("pcorcamval"); 
+     $this->rotulo = new rotulo("pcorcamval");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -95,7 +95,7 @@ class cl_pcorcamval {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->pc23_orcamforne = ($this->pc23_orcamforne == ""?@$GLOBALS["HTTP_POST_VARS"]["pc23_orcamforne"]:$this->pc23_orcamforne);
        $this->pc23_orcamitem = ($this->pc23_orcamitem == ""?@$GLOBALS["HTTP_POST_VARS"]["pc23_orcamitem"]:$this->pc23_orcamitem);
@@ -131,9 +131,9 @@ class cl_pcorcamval {
      }
    }
    // funcao para Inclusão
-   function incluir ($pc23_orcamforne,$pc23_orcamitem){ 
+   public function incluir ($pc23_orcamforne,$pc23_orcamitem){
       $this->atualizacampos();
-     if($this->pc23_valor == null ){ 
+     if($this->pc23_valor == null ){
        $this->erro_sql = " Campo Valor orçado não informado.";
        $this->erro_campo = "pc23_valor";
        $this->erro_banco = "";
@@ -142,7 +142,7 @@ class cl_pcorcamval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc23_quant == null ){ 
+     if($this->pc23_quant == null ){
        $this->erro_sql = " Campo Quantidade orçada não informado.";
        $this->erro_campo = "pc23_quant";
        $this->erro_banco = "";
@@ -151,7 +151,7 @@ class cl_pcorcamval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc23_vlrun == null ){ 
+     if($this->pc23_vlrun == null ){
        $this->erro_sql = " Campo Valor unitário não informado.";
        $this->erro_campo = "pc23_vlrun";
        $this->erro_banco = "";
@@ -160,30 +160,30 @@ class cl_pcorcamval {
        $this->erro_status = "0";
        return false;
      }
-     if($this->pc23_validmin == null ){ 
+     if($this->pc23_validmin == null ){
        $this->pc23_validmin = "null";
      }
-     if($this->pc23_percentualdesconto == null ){ 
+     if($this->pc23_percentualdesconto == null ){
        $this->pc23_percentualdesconto = "0";
      }
-     if($this->pc23_bdi == null ){ 
+     if($this->pc23_bdi == null ){
        $this->pc23_bdi = "0";
      }
-     if($this->pc23_encargossociais == null ){ 
+     if($this->pc23_encargossociais == null ){
        $this->pc23_encargossociais = "0";
      }
-     if($this->pc23_notatecnica == null ){ 
+     if($this->pc23_notatecnica == null ){
        $this->pc23_notatecnica = "0";
      }
-     if($this->pc23_taxaestimada == null ){ 
+     if($this->pc23_taxaestimada == null ){
        $this->pc23_taxaestimada = "null";
      }
-     if($this->pc23_taxahomologada == null ){ 
+     if($this->pc23_taxahomologada == null ){
        $this->pc23_taxahomologada = "null";
      }
-       $this->pc23_orcamforne = $pc23_orcamforne; 
-       $this->pc23_orcamitem = $pc23_orcamitem; 
-     if(($this->pc23_orcamforne == null) || ($this->pc23_orcamforne == "") ){ 
+       $this->pc23_orcamforne = $pc23_orcamforne;
+       $this->pc23_orcamitem = $pc23_orcamitem;
+     if(($this->pc23_orcamforne == null) || ($this->pc23_orcamforne == "") ){
        $this->erro_sql = " Campo pc23_orcamforne não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -191,7 +191,7 @@ class cl_pcorcamval {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->pc23_orcamitem == null) || ($this->pc23_orcamitem == "") ){ 
+     if(($this->pc23_orcamitem == null) || ($this->pc23_orcamitem == "") ){
        $this->erro_sql = " Campo pc23_orcamitem não declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -200,39 +200,39 @@ class cl_pcorcamval {
        return false;
      }
      $sql = "insert into pcorcamval(
-                                       pc23_orcamforne 
-                                      ,pc23_orcamitem 
-                                      ,pc23_valor 
-                                      ,pc23_quant 
-                                      ,pc23_obs 
-                                      ,pc23_vlrun 
-                                      ,pc23_validmin 
-                                      ,pc23_percentualdesconto 
-                                      ,pc23_bdi 
-                                      ,pc23_encargossociais 
-                                      ,pc23_data 
-                                      ,pc23_notatecnica 
-                                      ,pc23_taxaestimada 
-                                      ,pc23_taxahomologada 
+                                       pc23_orcamforne
+                                      ,pc23_orcamitem
+                                      ,pc23_valor
+                                      ,pc23_quant
+                                      ,pc23_obs
+                                      ,pc23_vlrun
+                                      ,pc23_validmin
+                                      ,pc23_percentualdesconto
+                                      ,pc23_bdi
+                                      ,pc23_encargossociais
+                                      ,pc23_data
+                                      ,pc23_notatecnica
+                                      ,pc23_taxaestimada
+                                      ,pc23_taxahomologada
                        )
                 values (
-                                $this->pc23_orcamforne 
-                               ,$this->pc23_orcamitem 
-                               ,$this->pc23_valor 
-                               ,$this->pc23_quant 
-                               ,'$this->pc23_obs' 
-                               ,$this->pc23_vlrun 
-                               ,".($this->pc23_validmin == "null" || $this->pc23_validmin == ""?"null":"'".$this->pc23_validmin."'")." 
-                               ,$this->pc23_percentualdesconto 
-                               ,$this->pc23_bdi 
-                               ,$this->pc23_encargossociais 
-                               ,".($this->pc23_data == "null" || $this->pc23_data == ""?"null":"'".$this->pc23_data."'")." 
-                               ,$this->pc23_notatecnica 
-                               ,$this->pc23_taxaestimada 
-                               ,$this->pc23_taxahomologada 
+                                $this->pc23_orcamforne
+                               ,$this->pc23_orcamitem
+                               ,$this->pc23_valor
+                               ,$this->pc23_quant
+                               ,'$this->pc23_obs'
+                               ,$this->pc23_vlrun
+                               ,".($this->pc23_validmin == "null" || $this->pc23_validmin == ""?"null":"'".$this->pc23_validmin."'")."
+                               ,$this->pc23_percentualdesconto
+                               ,$this->pc23_bdi
+                               ,$this->pc23_encargossociais
+                               ,".($this->pc23_data == "null" || $this->pc23_data == ""?"null":"'".$this->pc23_data."'")."
+                               ,$this->pc23_notatecnica
+                               ,$this->pc23_taxaestimada
+                               ,$this->pc23_taxahomologada
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Valores dos itens do orçamento ($this->pc23_orcamforne."-".$this->pc23_orcamitem) não Incluído. Inclusão Abortada.";
@@ -284,16 +284,16 @@ class cl_pcorcamval {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($pc23_orcamforne=null,$pc23_orcamitem=null) { 
+   public function alterar ($pc23_orcamforne=null,$pc23_orcamitem=null) {
       $this->atualizacampos();
      $sql = " update pcorcamval set ";
      $virgula = "";
-     if(trim($this->pc23_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_orcamforne"])){ 
+     if(trim($this->pc23_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_orcamforne"])){
        $sql  .= $virgula." pc23_orcamforne = $this->pc23_orcamforne ";
        $virgula = ",";
-       if(trim($this->pc23_orcamforne) == null ){ 
+       if(trim($this->pc23_orcamforne) == null ){
          $this->erro_sql = " Campo Código do orcamento deste fornecedor não informado.";
          $this->erro_campo = "pc23_orcamforne";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_pcorcamval {
          return false;
        }
      }
-     if(trim($this->pc23_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_orcamitem"])){ 
+     if(trim($this->pc23_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_orcamitem"])){
        $sql  .= $virgula." pc23_orcamitem = $this->pc23_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc23_orcamitem) == null ){ 
+       if(trim($this->pc23_orcamitem) == null ){
          $this->erro_sql = " Campo Código sequencial do item no orçamento não informado.";
          $this->erro_campo = "pc23_orcamitem";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_pcorcamval {
          return false;
        }
      }
-     if(trim($this->pc23_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_valor"])){ 
+     if(trim($this->pc23_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_valor"])){
        $sql  .= $virgula." pc23_valor = $this->pc23_valor ";
        $virgula = ",";
-       if(trim($this->pc23_valor) == null ){ 
+       if(trim($this->pc23_valor) == null ){
          $this->erro_sql = " Campo Valor orçado não informado.";
          $this->erro_campo = "pc23_valor";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_pcorcamval {
          return false;
        }
      }
-     if(trim($this->pc23_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_quant"])){ 
+     if(trim($this->pc23_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_quant"])){
        $sql  .= $virgula." pc23_quant = $this->pc23_quant ";
        $virgula = ",";
-       if(trim($this->pc23_quant) == null ){ 
+       if(trim($this->pc23_quant) == null ){
          $this->erro_sql = " Campo Quantidade orçada não informado.";
          $this->erro_campo = "pc23_quant";
          $this->erro_banco = "";
@@ -342,14 +342,14 @@ class cl_pcorcamval {
          return false;
        }
      }
-     if(trim($this->pc23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_obs"])){ 
+     if(trim($this->pc23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_obs"])){
        $sql  .= $virgula." pc23_obs = '$this->pc23_obs' ";
        $virgula = ",";
      }
-     if(trim($this->pc23_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_vlrun"])){ 
+     if(trim($this->pc23_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_vlrun"])){
        $sql  .= $virgula." pc23_vlrun = $this->pc23_vlrun ";
        $virgula = ",";
-       if(trim($this->pc23_vlrun) == null ){ 
+       if(trim($this->pc23_vlrun) == null ){
          $this->erro_sql = " Campo Valor unitário não informado.";
          $this->erro_campo = "pc23_vlrun";
          $this->erro_banco = "";
@@ -359,63 +359,63 @@ class cl_pcorcamval {
          return false;
        }
      }
-     if(trim($this->pc23_validmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"] !="") ){ 
+     if(trim($this->pc23_validmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"] !="") ){
        $sql  .= $virgula." pc23_validmin = '$this->pc23_validmin' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc23_validmin_dia"])){
          $sql  .= $virgula." pc23_validmin = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->pc23_percentualdesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_percentualdesconto"])){ 
-        if(trim($this->pc23_percentualdesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_percentualdesconto"])){ 
-           $this->pc23_percentualdesconto = "0" ; 
-        } 
+     if(trim($this->pc23_percentualdesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_percentualdesconto"])){
+        if(trim($this->pc23_percentualdesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_percentualdesconto"])){
+           $this->pc23_percentualdesconto = "0" ;
+        }
        $sql  .= $virgula." pc23_percentualdesconto = $this->pc23_percentualdesconto ";
        $virgula = ",";
      }
-     if(trim($this->pc23_bdi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_bdi"])){ 
-        if(trim($this->pc23_bdi)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_bdi"])){ 
-           $this->pc23_bdi = "0" ; 
-        } 
+     if(trim($this->pc23_bdi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_bdi"])){
+        if(trim($this->pc23_bdi)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_bdi"])){
+           $this->pc23_bdi = "0" ;
+        }
        $sql  .= $virgula." pc23_bdi = $this->pc23_bdi ";
        $virgula = ",";
      }
-     if(trim($this->pc23_encargossociais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_encargossociais"])){ 
-        if(trim($this->pc23_encargossociais)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_encargossociais"])){ 
-           $this->pc23_encargossociais = "0" ; 
-        } 
+     if(trim($this->pc23_encargossociais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_encargossociais"])){
+        if(trim($this->pc23_encargossociais)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_encargossociais"])){
+           $this->pc23_encargossociais = "0" ;
+        }
        $sql  .= $virgula." pc23_encargossociais = $this->pc23_encargossociais ";
        $virgula = ",";
      }
-     if(trim($this->pc23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"] !="") ){ 
+     if(trim($this->pc23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"] !="") ){
        $sql  .= $virgula." pc23_data = '$this->pc23_data' ";
        $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["pc23_data_dia"])){
          $sql  .= $virgula." pc23_data = null ";
          $virgula = ",";
        }
      }
-     if(trim($this->pc23_notatecnica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_notatecnica"])){ 
-        if(trim($this->pc23_notatecnica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_notatecnica"])){ 
-           $this->pc23_notatecnica = "0" ; 
-        } 
+     if(trim($this->pc23_notatecnica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_notatecnica"])){
+        if(trim($this->pc23_notatecnica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_notatecnica"])){
+           $this->pc23_notatecnica = "0" ;
+        }
        $sql  .= $virgula." pc23_notatecnica = $this->pc23_notatecnica ";
        $virgula = ",";
      }
-     if(trim($this->pc23_taxaestimada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxaestimada"])){ 
-        if(trim($this->pc23_taxaestimada)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxaestimada"])){ 
-           $this->pc23_taxaestimada = "0" ; 
-        } 
+     if(trim($this->pc23_taxaestimada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxaestimada"])){
+        if(trim($this->pc23_taxaestimada)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxaestimada"])){
+           $this->pc23_taxaestimada = "0" ;
+        }
        $sql  .= $virgula." pc23_taxaestimada = $this->pc23_taxaestimada ";
        $virgula = ",";
      }
-     if(trim($this->pc23_taxahomologada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxahomologada"])){ 
-        if(trim($this->pc23_taxahomologada)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxahomologada"])){ 
-           $this->pc23_taxahomologada = "0" ; 
-        } 
+     if(trim($this->pc23_taxahomologada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxahomologada"])){
+        if(trim($this->pc23_taxahomologada)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc23_taxahomologada"])){
+           $this->pc23_taxahomologada = "0" ;
+        }
        $sql  .= $virgula." pc23_taxahomologada = $this->pc23_taxahomologada ";
        $virgula = ",";
      }
@@ -472,7 +472,7 @@ class cl_pcorcamval {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores dos itens do orçamento não Alterado. Alteração Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->pc23_orcamforne."-".$this->pc23_orcamitem;
@@ -500,11 +500,11 @@ class cl_pcorcamval {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($pc23_orcamforne=null,$pc23_orcamitem=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($pc23_orcamforne=null,$pc23_orcamitem=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -513,7 +513,7 @@ class cl_pcorcamval {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($pc23_orcamforne,$pc23_orcamitem));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -562,7 +562,7 @@ class cl_pcorcamval {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Valores dos itens do orçamento não Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$pc23_orcamforne."-".$pc23_orcamitem;
@@ -590,11 +590,11 @@ class cl_pcorcamval {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -616,8 +616,8 @@ class cl_pcorcamval {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($pc23_orcamforne = null,$pc23_orcamitem = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($pc23_orcamforne = null,$pc23_orcamitem = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from pcorcamval ";
@@ -629,16 +629,16 @@ class cl_pcorcamval {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc23_orcamforne)) {
-         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne ";
+       }
        if (!empty($pc23_orcamitem)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem "; 
-       } 
+         }
+         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -648,7 +648,7 @@ class cl_pcorcamval {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($pc23_orcamforne = null,$pc23_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -656,16 +656,16 @@ class cl_pcorcamval {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($pc23_orcamforne)){
-         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne ";
+       }
        if (!empty($pc23_orcamitem)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem "; 
-       } 
+         }
+         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -686,9 +686,9 @@ class cl_pcorcamval {
    * @param string $dbwhere
    * @return string
    */
-function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+public function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
-     
+
       if($campos != "*" ){
        $campos_sql = explode("#",$campos);
        $virgula = "";
@@ -706,20 +706,20 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
      $sql .= "      inner join pcorcam  on  pc20_codorc = pcorcamitem.pc22_codorc";
      $sql .= "      left join pcorcamjulg  on  pcorcamjulg.pc24_orcamitem = pcorcamval.pc23_orcamitem and pcorcamjulg.pc24_orcamforne=pcorcamval.pc23_orcamforne";
      $sql .= "      left  join pcorcamfornelic  on  pcorcamforne.pc21_orcamforne = pcorcamfornelic.pc31_orcamforne";
-     $sql .= "      left join liclicitatipoempresa on pc31_liclicitatipoempresa = l32_sequencial"; 
+     $sql .= "      left join liclicitatipoempresa on pc31_liclicitatipoempresa = l32_sequencial";
      $sql2 = "";
      if($dbwhere==""){
        if($pc23_orcamforne!=null ){
-         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne ";
+       }
        if($pc23_orcamitem!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem "; 
-       } 
+         }
+         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -735,7 +735,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
      }
      return $sql;
   }
-   function sql_query_importa ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_importa ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -779,7 +779,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
      }
      return $sql;
   }
-   function sql_query_julg ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_julg ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -800,16 +800,16 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
      $sql2 = "";
      if($dbwhere==""){
        if($pc23_orcamforne!=null ){
-         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne ";
+       }
        if($pc23_orcamitem!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem "; 
-       } 
+         }
+         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -829,7 +829,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
   /**
    * Traz os registros do julgamento agrupado por lote
    */
-  function sql_query_julg_lote( $pc23_orcamforne = null, $pc23_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function sql_query_julg_lote( $pc23_orcamforne = null, $pc23_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if($campos != "*" ){
       $campos_sql = explode("#",$campos);
@@ -889,7 +889,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
    * @param string $dbwhere
    * @return string
    */
-  function sql_query_valor_rp( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere="") { 
+  public function sql_query_valor_rp( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="*",$ordem=null,$dbwhere="") {
 
     $sql = "select ";
       if($campos != "*" ){
@@ -908,20 +908,20 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
      $sql .= "      inner join cgm  on  cgm.z01_numcgm = pcorcamforne.pc21_numcgm";
      $sql .= "      inner join pcorcam  on  pc20_codorc = pcorcamitem.pc22_codorc";
      $sql .= "      inner join pcorcamitemproc on pcorcamitem.pc22_orcamitem   = pcorcamitemproc.pc31_orcamitem";
-     $sql .= "      inner join pcprocitem      on pc31_pcprocitem = pc81_codprocitem"; 
+     $sql .= "      inner join pcprocitem      on pc31_pcprocitem = pc81_codprocitem";
      $sql2 = "";
      if($dbwhere==""){
        if($pc23_orcamforne!=null ){
-         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne "; 
-       } 
+         $sql2 .= " where pcorcamval.pc23_orcamforne = $pc23_orcamforne ";
+       }
        if($pc23_orcamitem!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem "; 
-       } 
+         }
+         $sql2 .= " pcorcamval.pc23_orcamitem = $pc23_orcamitem ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
@@ -954,7 +954,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
     $sSql .= "        inner join pcorcamforne   on pcorcamforne.pc21_orcamforne  = pcorcamval.pc23_orcamforne      ";
     $sSql .= "        inner join pcorcamitemsol on pcorcamitemsol.pc29_orcamitem = pcorcamitem.pc22_orcamitem      ";
     $sSql .= "  where pc29_solicitem = $iSolicitacao                                                               ";
-    $sSql .= "    and pc21_numcgm = $iFornecedor                                                                   ";
+    $sSql .= "    and pc21_numcgm = $iFornecedor limit 1                                                           ";
     $sSql .= " ) as solicitacao,                                                                                   ";
     $sSql .= " (select pc23_obs                                                                                    ";
     $sSql .= "   from pcorcamval                                                                                   ";
@@ -963,7 +963,7 @@ function sql_query_fornec ( $pc23_orcamforne=null,$pc23_orcamitem=null,$campos="
     $sSql .= "        inner join pcorcamitemproc on pc31_orcamitem               = pcorcamitem.pc22_orcamitem      ";
     $sSql .= "        inner join pcprocitem      on pcprocitem.pc81_codprocitem  = pcorcamitemproc.pc31_pcprocitem ";
     $sSql .= "  where pc81_solicitem = $iSolicitacao                                                               ";
-    $sSql .= "    and pc21_numcgm = $iFornecedor                                                                   ";
+    $sSql .= "    and pc21_numcgm = $iFornecedor limit 1                                                           ";
     $sSql .= " ) as registro_preco                                                                                 ";
 
     return $sSql;

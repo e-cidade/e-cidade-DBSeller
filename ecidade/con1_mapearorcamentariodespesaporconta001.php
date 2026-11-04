@@ -426,9 +426,6 @@ require_once modification("dbforms/db_funcoes.php");
             alert(msg);
         }
 
-        if (contasVinculadas.length === 0) {
-            return;
-        }
         PHPSession.appendFormData(formData);
 
         HttpClient.post(`${PHPSession.requestApi}/${routs.vincular}`, {body: formData}).then(response => {

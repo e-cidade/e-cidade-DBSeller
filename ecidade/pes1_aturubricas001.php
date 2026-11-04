@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -112,12 +112,12 @@ db_utils::postMemory($_POST);
 
              <tr>
               <td title="<?=$Trh27_rubric?>">
-                <?
+                <?php
                 db_ancora(@$Lrh27_rubric, "js_pesquisarrubric(true);", 1);
                 ?>
               </td>
               <td> <input type="hidden" name="rubrica" id="rubrica" value="" />
-                <?
+                <?php
                 db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 1, 'class="field-size2" onchange="js_pesquisarrubric(false);"');
                 db_input('rh27_descr', 30, $Irh27_descr,  true, 'text', 3, 'class="field-size7"');
                 ?>
@@ -128,7 +128,7 @@ db_utils::postMemory($_POST);
             <td ><strong>Operação:</strong>
             </td>
             <td>
-              <?
+              <?php
                 $aOpcaoOperacao = array(""=>"Selecione",
                                         "i"=>"Inclusão",
                                         "a"=>"Alteração",
@@ -146,7 +146,7 @@ db_utils::postMemory($_POST);
           <input  name="processar" id="processar" type="button" value="Processar" onclick="js_processar();" >
         </p>
       </form>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>

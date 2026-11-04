@@ -1,78 +1,78 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE gerfsal
-class cl_gerfsal { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $r14_anousu = 0; 
-   var $r14_mesusu = 0; 
-   var $r14_regist = 0; 
-   var $r14_rubric = null; 
-   var $r14_valor = 0; 
-   var $r14_pd = 0; 
-   var $r14_quant = 0; 
-   var $r14_lotac = null; 
-   var $r14_semest = 0; 
-   var $r14_instit = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_gerfsal {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $r14_anousu = 0;
+   var $r14_mesusu = 0;
+   var $r14_regist = 0;
+   var $r14_rubric = null;
+   var $r14_valor = 0;
+   var $r14_pd = 0;
+   var $r14_quant = 0;
+   var $r14_lotac = null;
+   var $r14_semest = 0;
+   var $r14_instit = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 r14_anousu = int4 = Ano do Exercicio 
-                 r14_mesusu = int4 = Mes do Exercicio 
-                 r14_regist = int4 = Codigo do Funcionario 
-                 r14_rubric = char(4) = Rubrica 
-                 r14_valor = float8 = Valor 
-                 r14_pd = int4 = Indicador 
-                 r14_quant = float8 = Quantidade 
-                 r14_lotac = char(4) = Lotação 
-                 r14_semest = int4 = Semestre 
-                 r14_instit = int4 = codigo da instituicao 
+                 r14_anousu = int4 = Ano do Exercicio
+                 r14_mesusu = int4 = Mes do Exercicio
+                 r14_regist = int4 = Codigo do Funcionario
+                 r14_rubric = char(4) = Rubrica
+                 r14_valor = float8 = Valor
+                 r14_pd = int4 = Indicador
+                 r14_quant = float8 = Quantidade
+                 r14_lotac = char(4) = Lotação
+                 r14_semest = int4 = Semestre
+                 r14_instit = int4 = codigo da instituicao
                  ";
-   //funcao construtor da classe 
-   function cl_gerfsal() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("gerfsal"); 
+     $this->rotulo = new rotulo("gerfsal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_gerfsal {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->r14_anousu = ($this->r14_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["r14_anousu"]:$this->r14_anousu);
        $this->r14_mesusu = ($this->r14_mesusu == ""?@$GLOBALS["HTTP_POST_VARS"]["r14_mesusu"]:$this->r14_mesusu);
@@ -101,9 +101,9 @@ class cl_gerfsal {
      }
    }
    // funcao para inclusao
-   function incluir ($r14_anousu,$r14_mesusu,$r14_regist,$r14_rubric){ 
+   public function incluir ($r14_anousu,$r14_mesusu,$r14_regist,$r14_rubric){
       $this->atualizacampos();
-     if($this->r14_valor == null ){ 
+     if($this->r14_valor == null ){
        $this->erro_sql = " Campo Valor não informado.";
        $this->erro_campo = "r14_valor";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r14_pd == null ){ 
+     if($this->r14_pd == null ){
        $this->erro_sql = " Campo Indicador não informado.";
        $this->erro_campo = "r14_pd";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r14_quant == null ){ 
+     if($this->r14_quant == null ){
        $this->erro_sql = " Campo Quantidade não informado.";
        $this->erro_campo = "r14_quant";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r14_lotac == null ){ 
+     if($this->r14_lotac == null ){
        $this->erro_sql = " Campo Lotação nao Informado.";
        $this->erro_campo = "r14_lotac";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r14_semest == null ){ 
+     if($this->r14_semest == null ){
        $this->erro_sql = " Campo Semestre não informado.";
        $this->erro_campo = "r14_semest";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if($this->r14_instit == null ){ 
+     if($this->r14_instit == null ){
        $this->erro_sql = " Campo codigo da instituicao não informado.";
        $this->erro_campo = "r14_instit";
        $this->erro_banco = "";
@@ -157,11 +157,11 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-       $this->r14_anousu = $r14_anousu; 
-       $this->r14_mesusu = $r14_mesusu; 
-       $this->r14_regist = $r14_regist; 
-       $this->r14_rubric = $r14_rubric; 
-     if(($this->r14_anousu == null) || ($this->r14_anousu == "") ){ 
+       $this->r14_anousu = $r14_anousu;
+       $this->r14_mesusu = $r14_mesusu;
+       $this->r14_regist = $r14_regist;
+       $this->r14_rubric = $r14_rubric;
+     if(($this->r14_anousu == null) || ($this->r14_anousu == "") ){
        $this->erro_sql = " Campo r14_anousu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r14_mesusu == null) || ($this->r14_mesusu == "") ){ 
+     if(($this->r14_mesusu == null) || ($this->r14_mesusu == "") ){
        $this->erro_sql = " Campo r14_mesusu nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r14_regist == null) || ($this->r14_regist == "") ){ 
+     if(($this->r14_regist == null) || ($this->r14_regist == "") ){
        $this->erro_sql = " Campo r14_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -185,7 +185,7 @@ class cl_gerfsal {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->r14_rubric == null) || ($this->r14_rubric == "") ){ 
+     if(($this->r14_rubric == null) || ($this->r14_rubric == "") ){
        $this->erro_sql = " Campo r14_rubric nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,31 +194,31 @@ class cl_gerfsal {
        return false;
      }
      $sql = "insert into gerfsal(
-                                       r14_anousu 
-                                      ,r14_mesusu 
-                                      ,r14_regist 
-                                      ,r14_rubric 
-                                      ,r14_valor 
-                                      ,r14_pd 
-                                      ,r14_quant 
-                                      ,r14_lotac 
-                                      ,r14_semest 
-                                      ,r14_instit 
+                                       r14_anousu
+                                      ,r14_mesusu
+                                      ,r14_regist
+                                      ,r14_rubric
+                                      ,r14_valor
+                                      ,r14_pd
+                                      ,r14_quant
+                                      ,r14_lotac
+                                      ,r14_semest
+                                      ,r14_instit
                        )
                 values (
-                                $this->r14_anousu 
-                               ,$this->r14_mesusu 
-                               ,$this->r14_regist 
-                               ,'$this->r14_rubric' 
-                               ,$this->r14_valor 
-                               ,$this->r14_pd 
-                               ,$this->r14_quant 
-                               ,'$this->r14_lotac' 
-                               ,$this->r14_semest 
-                               ,$this->r14_instit 
+                                $this->r14_anousu
+                               ,$this->r14_mesusu
+                               ,$this->r14_regist
+                               ,'$this->r14_rubric'
+                               ,$this->r14_valor
+                               ,$this->r14_pd
+                               ,$this->r14_quant
+                               ,'$this->r14_lotac'
+                               ,$this->r14_semest
+                               ,$this->r14_instit
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Calculo do Salario ($this->r14_anousu."-".$this->r14_mesusu."-".$this->r14_regist."-".$this->r14_rubric) nao Incluído. Inclusao Abortada.";
@@ -268,16 +268,16 @@ class cl_gerfsal {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   public function alterar ($r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null) { 
+   public function alterar ($r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null) {
       $this->atualizacampos();
      $sql = " update gerfsal set ";
      $virgula = "";
-     if(trim($this->r14_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_anousu"])){ 
+     if(trim($this->r14_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_anousu"])){
        $sql  .= $virgula." r14_anousu = $this->r14_anousu ";
        $virgula = ",";
-       if(trim($this->r14_anousu) == null ){ 
+       if(trim($this->r14_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio não informado.";
          $this->erro_campo = "r14_anousu";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_mesusu"])){ 
+     if(trim($this->r14_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_mesusu"])){
        $sql  .= $virgula." r14_mesusu = $this->r14_mesusu ";
        $virgula = ",";
-       if(trim($this->r14_mesusu) == null ){ 
+       if(trim($this->r14_mesusu) == null ){
          $this->erro_sql = " Campo Mes do Exercicio não informado.";
          $this->erro_campo = "r14_mesusu";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_regist"])){ 
+     if(trim($this->r14_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_regist"])){
        $sql  .= $virgula." r14_regist = $this->r14_regist ";
        $virgula = ",";
-       if(trim($this->r14_regist) == null ){ 
+       if(trim($this->r14_regist) == null ){
          $this->erro_sql = " Campo Codigo do Funcionario não informado.";
          $this->erro_campo = "r14_regist";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_rubric"])){ 
+     if(trim($this->r14_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_rubric"])){
        $sql  .= $virgula." r14_rubric = '$this->r14_rubric' ";
        $virgula = ",";
-       if(trim($this->r14_rubric) == null ){ 
+       if(trim($this->r14_rubric) == null ){
          $this->erro_sql = " Campo Rubrica não informado.";
          $this->erro_campo = "r14_rubric";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_valor"])){ 
+     if(trim($this->r14_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_valor"])){
        $sql  .= $virgula." r14_valor = $this->r14_valor ";
        $virgula = ",";
-       if(trim($this->r14_valor) == null ){ 
+       if(trim($this->r14_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "r14_valor";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_pd"])){ 
+     if(trim($this->r14_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_pd"])){
        $sql  .= $virgula." r14_pd = $this->r14_pd ";
        $virgula = ",";
-       if(trim($this->r14_pd) == null ){ 
+       if(trim($this->r14_pd) == null ){
          $this->erro_sql = " Campo Indicador não informado.";
          $this->erro_campo = "r14_pd";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_quant"])){ 
+     if(trim($this->r14_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_quant"])){
        $sql  .= $virgula." r14_quant = $this->r14_quant ";
        $virgula = ",";
-       if(trim($this->r14_quant) == null ){ 
+       if(trim($this->r14_quant) == null ){
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "r14_quant";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_lotac"])){ 
+     if(trim($this->r14_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_lotac"])){
        $sql  .= $virgula." r14_lotac = '$this->r14_lotac' ";
        $virgula = ",";
-       if(trim($this->r14_lotac) == null ){ 
+       if(trim($this->r14_lotac) == null ){
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "r14_lotac";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_semest"])){ 
+     if(trim($this->r14_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_semest"])){
        $sql  .= $virgula." r14_semest = $this->r14_semest ";
        $virgula = ",";
-       if(trim($this->r14_semest) == null ){ 
+       if(trim($this->r14_semest) == null ){
          $this->erro_sql = " Campo Semestre não informado.";
          $this->erro_campo = "r14_semest";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_gerfsal {
          return false;
        }
      }
-     if(trim($this->r14_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_instit"])){ 
+     if(trim($this->r14_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r14_instit"])){
        $sql  .= $virgula." r14_instit = $this->r14_instit ";
        $virgula = ",";
-       if(trim($this->r14_instit) == null ){ 
+       if(trim($this->r14_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao não informado.";
          $this->erro_campo = "r14_instit";
          $this->erro_banco = "";
@@ -457,7 +457,7 @@ class cl_gerfsal {
        }
      }
      $result = db_query($sql);
-     if (!$result) { 
+     if (!$result) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Calculo do Salario nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->r14_anousu."-".$this->r14_mesusu."-".$this->r14_regist."-".$this->r14_rubric;
@@ -485,11 +485,11 @@ class cl_gerfsal {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   public function excluir ($r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -498,7 +498,7 @@ class cl_gerfsal {
        if (empty($dbwhere)) {
 
          $resaco = $this->sql_record($this->sql_query_file($r14_anousu,$r14_mesusu,$r14_regist,$r14_rubric));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -557,7 +557,7 @@ class cl_gerfsal {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if ($result == false) { 
+     if ($result == false) {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Calculo do Salario nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$r14_anousu."-".$r14_mesusu."-".$r14_regist."-".$r14_rubric;
@@ -585,11 +585,11 @@ class cl_gerfsal {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   public function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if (!$result) {
        $this->numrows    = 0;
@@ -611,8 +611,8 @@ class cl_gerfsal {
       }
      return $result;
    }
-   // funcao do sql 
-   public function sql_query ($r14_anousu = null,$r14_mesusu = null,$r14_regist = null,$r14_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+   // funcao do sql
+   public function sql_query ($r14_anousu = null,$r14_mesusu = null,$r14_regist = null,$r14_rubric = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";
      $sql .= "  from gerfsal ";
@@ -632,32 +632,32 @@ class cl_gerfsal {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($r14_anousu)) {
-         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu "; 
-       } 
+         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu ";
+       }
        if (!empty($r14_mesusu)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu ";
+       }
        if (!empty($r14_regist)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_regist = $r14_regist "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_regist = $r14_regist ";
+       }
        if (!empty($r14_rubric)) {
          if (!empty($sql2)) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -667,7 +667,7 @@ class cl_gerfsal {
      }
      return $sql;
   }
-   // funcao do sql 
+   // funcao do sql
    public function sql_query_file ($r14_anousu = null,$r14_mesusu = null,$r14_regist = null,$r14_rubric = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";
@@ -675,32 +675,32 @@ class cl_gerfsal {
      $sql2 = "";
      if (empty($dbwhere)) {
        if (!empty($r14_anousu)){
-         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu "; 
-       } 
+         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu ";
+       }
        if (!empty($r14_mesusu)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu ";
+       }
        if (!empty($r14_regist)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_regist = $r14_regist "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_regist = $r14_regist ";
+       }
        if (!empty($r14_rubric)){
          if ( !empty($sql2) ) {
             $sql2 .= " and ";
          } else {
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' ";
+       }
      } else if (!empty($dbwhere)) {
        $sql2 = " where $dbwhere";
      }
@@ -711,10 +711,10 @@ class cl_gerfsal {
      return $sql;
   }
 
-   function sql_query_seleciona ( $r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_seleciona ( $r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -725,11 +725,11 @@ class cl_gerfsal {
      }
      $sql .= " from gerfsal ";
      $sql .= "      inner join rhpessoal   on  rhpessoal.rh01_regist = gerfsal.r14_regist ";
-     $sql .= "      inner join rhpessoalmov   on gerfsal.r14_regist  = rhpessoalmov.rh02_regist 
-		                                         and ".db_anofolha()." = rhpessoalmov.rh02_anousu 
-																						 and ".db_mesfolha()." = rhpessoalmov.rh02_mesusu 
+     $sql .= "      inner join rhpessoalmov   on gerfsal.r14_regist  = rhpessoalmov.rh02_regist
+		                                         and ".db_anofolha()." = rhpessoalmov.rh02_anousu
+																						 and ".db_mesfolha()." = rhpessoalmov.rh02_mesusu
 																						 and gerfsal.r14_instit = rhpessoalmov.rh02_instit ";
-     $sql .= "      inner join rhrubricas  on  rhrubricas.rh27_rubric = gerfsal.r14_rubric 
+     $sql .= "      inner join rhrubricas  on  rhrubricas.rh27_rubric = gerfsal.r14_rubric
 		                                      and  rhrubricas.rh27_instit = gerfsal.r14_instit ";
      $sql .= "      inner join rhlota      on  rhlota.r70_codigo = to_number(gerfsal.r14_lotac, '9999')::integer
 		                                      and  rhlota.r70_instit = gerfsal.r14_instit ";
@@ -737,39 +737,39 @@ class cl_gerfsal {
      $sql2 = "";
      if($dbwhere==""){
        if($r14_anousu!=null ){
-         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu "; 
-       } 
+         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu ";
+       }
        if($r14_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu ";
+       }
        if($r14_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_regist = $r14_regist "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_regist = $r14_regist ";
+       }
        if($r14_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -778,10 +778,10 @@ class cl_gerfsal {
      }
      return $sql;
   }
-   function sql_query_rhrubricas ( $r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_rhrubricas ( $r14_anousu=null,$r14_mesusu=null,$r14_regist=null,$r14_rubric=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -796,39 +796,39 @@ class cl_gerfsal {
      $sql2 = "";
      if($dbwhere==""){
        if($r14_anousu!=null ){
-         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu "; 
-       } 
+         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu ";
+       }
        if($r14_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu ";
+       }
        if($r14_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_regist = $r14_regist "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_regist = $r14_regist ";
+       }
        if($r14_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -837,10 +837,10 @@ class cl_gerfsal {
      }
      return $sql;
   }
-   function sql_query_servincsal($r14_anousu=null, $r14_mesusu=null, $r14_regist=null, $r14_rubric=null, $campos="*", $ordem=null, $dbwhere="") {
+   public function sql_query_servincsal($r14_anousu=null, $r14_mesusu=null, $r14_regist=null, $r14_rubric=null, $campos="*", $ordem=null, $dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -854,39 +854,39 @@ class cl_gerfsal {
      $sql2 = "";
      if($dbwhere==""){
        if($r14_anousu!=null ){
-         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu "; 
-       } 
+         $sql2 .= " where gerfsal.r14_anousu = $r14_anousu ";
+       }
        if($r14_mesusu!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_mesusu = $r14_mesusu ";
+       }
        if($r14_regist!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_regist = $r14_regist "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_regist = $r14_regist ";
+       }
        if($r14_rubric!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' "; 
-       } 
+         }
+         $sql2 .= " gerfsal.r14_rubric = '$r14_rubric' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -897,7 +897,7 @@ class cl_gerfsal {
   }
 
   /**
-   * Retorna dados que estao na rhhistoricocalculo e insere 
+   * Retorna dados que estao na rhhistoricocalculo e insere
    * novamente na gerfsal na competência informada.
    * @param  Integer $iAno
    * @param  Integer $iMes
@@ -954,18 +954,18 @@ class cl_gerfsal {
 
   public function migraGerfSal($iInstituicao) {
 
-    $sSql  = "    create table w_migracao_rhfolhapagamento_salario as                                                                                           ";                                         
-    $sSql .= "select distinct r14_anousu,                                                                                                                       ";           
-    $sSql .= "                r14_mesusu,                                                                                                                       ";           
-    $sSql .= "                r14_instit                                                                                                                        ";          
+    $sSql  = "    create table w_migracao_rhfolhapagamento_salario as                                                                                           ";
+    $sSql .= "select distinct r14_anousu,                                                                                                                       ";
+    $sSql .= "                r14_mesusu,                                                                                                                       ";
+    $sSql .= "                r14_instit                                                                                                                        ";
     $sSql .= "  from gerfsal                                                                                                                                    ";
-    $sSql .= " inner join pontofs  on r14_regist  = r10_regist                                                                                                  ";                                
+    $sSql .= " inner join pontofs  on r14_regist  = r10_regist                                                                                                  ";
     $sSql .= "                    and r14_anousu  = r10_anousu                                                                                                  ";
     $sSql .= "                    and r14_mesusu  = r10_mesusu                                                                                                  ";
     $sSql .= "                    and r10_instit  = {$iInstituicao}                                                                                             ";
     $sSql .= "order by r14_anousu asc,                                                                                                                          ";
     $sSql .= "         r14_mesusu asc;                                                                                                                          ";
-    
+
     $sSql .= "insert into rhfolhapagamento                                                                                                                      ";
     $sSql .= "select nextval('rhfolhapagamento_rh141_sequencial_seq'),                                                                                          ";
     $sSql .= "       0,                                                                                                                                         ";
@@ -975,12 +975,12 @@ class cl_gerfsal {
     $sSql .= "       r14_mesusu,                                                                                                                                ";
     $sSql .= "       r14_instit,                                                                                                                                ";
     $sSql .= "       1,                                                                                                                                         ";
-    $sSql .= "       false,                                                                                                                                     ";       
+    $sSql .= "       false,                                                                                                                                     ";
     $sSql .= "       'Folha Salário da competência: ' || r14_anousu || '/' || r14_mesusu || ' gerada automaticamente.'                                          ";
     $sSql .= "  from w_migracao_rhfolhapagamento_salario                                                                                                        ";
     $sSql .= "order by r14_anousu asc,                                                                                                                          ";
     $sSql .= "         r14_mesusu asc;                                                                                                                          ";
-    
+
     $sSql .= "create table w_ultimafolhadecadacompetencia_salario as                                                                                            ";
     $sSql .= "select 0 as ultimafolha,                                                                                                                          ";
     $sSql .= "       rh141_anousu,                                                                                                                              ";
@@ -1036,11 +1036,11 @@ class cl_gerfsal {
     $sSql .= "       ".db_mesfolha().",                                                                                                                         ";
     $sSql .= "       {$iInstituicao},                                                                                                                           ";
     $sSql .= "       1,                                                                                                                                         ";
-    $sSql .= "       false,                                                                                                                                     ";       
+    $sSql .= "       false,                                                                                                                                     ";
     $sSql .= "       'Folha Salário da competência: ' || ".db_anofolha()." || '/' || ".db_mesfolha()." || ' gerada automaticamente.';                           ";
 
     return $sSql;
-    
+
   }
 
 }

@@ -28,10 +28,10 @@
 /**
  * Classe para montar a estrutura do relatorio de histórico/certificado escolar
  *
- * @package educacao
+ * @package    educacao
  * @subpackage relatorio
- * @author andrio.costa <andrio.costa@dbseller.com.br>
- * @version $Revision: 1.44 $
+ * @author     andrio.costa <andrio.costa@dbseller.com.br>
+ * @version    $Revision: 1.44 $
  */
 
 class RelatorioHistoricoEscolar
@@ -47,72 +47,84 @@ class RelatorioHistoricoEscolar
      * A  => Etapas APROVADAS
      * AR => Etapas APROVADAS e REPROVADAS
      * U  => Listar Último Registro
+     *
      * @var string
      */
     protected $sTipoRegistro = 'A';
 
     /**
      * Estrutura com os dados necessarios para impressao do histórico
+     *
      * @var array
      */
     protected $aDadosOrganizados = array();
 
     /**
      * Indica que o aluno teve ao menos uma disciplina com aprovação parcial
+     *
      * @var boolean
      */
     protected $lAlunoTeveAprovacaoComProgressao = false;
 
     /**
      * Parâmetros de configuração do relatório
+     *
      * @var stdClass
      */
     protected $oParametros;
 
     /**
      * Armazena as observações do histórico do aluno, indexando o array pelo curso
+     *
      * @var array
      */
     protected $aObservacaoHistorico = array();
 
     /**
      * Instancia de Aluno
+     *
      * @var Aluno
      */
     protected $oAluno;
 
     /**
      * Instãncia de Escola
+     *
      * @var Escola
      */
     protected $oEscola;
 
     /**
      * Valida se etapas reclassificadas devem ser exibidas no relatório
+     *
      * @var boolean
      */
     protected $lExibirReclassificacao = true;
 
     /**
      * Controla se deve ser apresentados todos os cursos ou somente os concluídos
+     *
      * @var boolean
      */
     protected $lExibirSomenteCursosConcluidos = false;
 
     /**
      * Curso que será apresentado no relatório.
+     *
      * @var Curso
      */
     protected $oCurso = null;
 
     /**
      * Carrega informações sobre as etapas posteriores
+     *
      * @var array
      */
     protected $aEtapasPosterior = array();
 
     /**
      * Carrega se houver informacoes sobre as etapas anteriores
+     *
      * @var array
      */
     protected $aEtapasAnterior = array();
@@ -131,8 +143,8 @@ class RelatorioHistoricoEscolar
     /**
      * Construtor da classe
      *
-     * @param Aluno $oAluno
-     * @param Escola $oEscola
+     * @param Aluno   $oAluno
+     * @param Escola  $oEscola
      * @param integer $iTipoRelatorio
      * @param boolean $lExibirReclassificacao
      */
@@ -173,6 +185,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Retorna um estrutura organizada com todo o histórico acadêmico do aluno
+     *
      * @return stdClass[]:
      * @throws DBException|ParameterException|Exception
      */
@@ -188,29 +201,29 @@ class RelatorioHistoricoEscolar
         $iUltimoAnoCursado = $this->getUltimoAnoCursado();
 
         $aHistoricosAluno = HistoricoAlunoRepository::getHistoricosPorAluno($this->oAluno);
-        
+
         $aMatriculas = MatriculaRepository::getTodasMatriculasAluno($this->oAluno);
-        
+
         $oUltimaEtapaHistoricoCursada = null;
         $aCursosConcluidosImpressao = $this->getCursosConcluidos();
-        // dump($aCursosConcluidosImpressao);
-        
+
         $oHistoricoCurso = $aHistoricosAluno[0];
         $oPrimeiraEtapaHistorico = isset($oHistoricoCurso->getEtapas()[0])
         ? $oHistoricoCurso->getEtapas()[0]
         : null;
+
         if (!is_null($oPrimeiraEtapaHistorico)) {
-            $this->buscaEtapasAnteiores($oPrimeiraEtapaHistorico->getEtapa());
+            $this->buscaEtapasAnteriores($oPrimeiraEtapaHistorico->getEtapa());
         }
-        // dump(__FILE__ . ":" . __LINE__, $this->aEtapasAnterior);
-        
+
         foreach ($aHistoricosAluno as $oHistoricoCurso) {
             if (!empty($this->oCurso) && !$this->validaCursos($oHistoricoCurso->getCodigoCurso())) {
                 continue;
             }
 
             if ($this->lExibirSomenteCursosConcluidos && $oHistoricoCurso->getAnoConclusao() == ''
-                && !in_array($oHistoricoCurso->getCodigoCurso(), $aCursosConcluidosImpressao)) {
+                && !in_array($oHistoricoCurso->getCodigoCurso(), $aCursosConcluidosImpressao)
+            ) {
                 continue;
             }
 
@@ -225,30 +238,32 @@ class RelatorioHistoricoEscolar
                 if (!$this->lExibirReclassificacao && $oEtapaCursada->getSituacaoEtapa() == "RECLASSIFICADO") {
                     continue;
                 }
-                
+
                 if ($this->sTipoRegistro == "A" && $oEtapaCursada->getResultadoAno() == 'R') {
                     continue;
                 }
-                
+
                 /**
                  * A Etapa do ultimo ano cursado sempre deve ser mostrada.
                  */
-                if (($this->sTipoRegistro == "U") &&
-                ($oEtapaCursada->getAnoCurso() < $iUltimoAnoCursado) &&
-                ($oEtapaCursada->getResultadoAno() == 'R')) {
+                if (($this->sTipoRegistro == "U") 
+                    && ($oEtapaCursada->getAnoCurso() < $iUltimoAnoCursado) 
+                    && ($oEtapaCursada->getResultadoAno() == 'R')
+                ) {
                     continue;
                 }
-                
+
                 if (!empty($this->iAnoLimite) && $oEtapaCursada->getAnoCurso() > $this->iAnoLimite) {
                     continue;
                 }
-                
+
                 $oUltimaEtapaHistoricoCursada = $oEtapaCursada;
-                
+
                 $iEnsino = $oEtapaCursada->getEtapa()->getEnsino()->getCodigo();
-                
+                $ensinos[$iEnsino] = $oEtapaCursada->getEtapa()->getEnsino();
+
                 $aTermos = DBEducacaoTermo::getTermoEncerramentoDoEnsino($iEnsino, $oEtapaCursada->getAnoCurso());
-                
+
                 $oDadoEtapa = new stdClass();
                 $oDadoEtapa->ensino = $oEtapaCursada->getEtapa()->getEnsino();
                 $oDadoEtapa->iEtapa = $oEtapaCursada->getEtapa()->getCodigo();
@@ -257,7 +272,8 @@ class RelatorioHistoricoEscolar
                 $oDadoEtapa->iAno = $oEtapaCursada->getAnoCurso();
                 $oDadoEtapa->iDiasLetivos = $oEtapaCursada->getDiasLetivos();
                 $oDadoEtapa->iCargaHoraria = $oEtapaCursada->getCargaHoraria();
-                
+                $oDadoEtapa->resultadoEtapaAno = $oEtapaCursada->getResultadoAno();
+
                 $oDadoEtapa->sResultado = $this->termoResultadoFinalEtapa(
                     $oEtapaCursada->getResultadoAno(),
                     $oEtapaCursada->getSituacaoEtapa(),
@@ -265,7 +281,7 @@ class RelatorioHistoricoEscolar
                     $aTermos,
                     $oEtapaCursada instanceof HistoricoEtapaForaRede
                 );
-                
+
                 $oDadoEtapa->sTurma = $oEtapaCursada->getTurma();
                 $oDadoEtapa->periodo = $oEtapaCursada->getPeriodoReferencia();
                 $oDadoEtapa->iEscola = $oEtapaCursada->getEscola()->getCodigo();
@@ -275,10 +291,10 @@ class RelatorioHistoricoEscolar
                     $oDadoEtapa->sMunicipio .= $oEtapaCursada->getEscola()->getDistrito();
                 }
                 $oDadoEtapa->sUF = $oEtapaCursada->getEscola()->getUf();
-                
+
                 $oDadoEtapa->nPercentualFalta = "";
                 $oDadoEtapa->nPercentualFalta = $oEtapaCursada->getPercentualFrequencia();
-                
+
                 /**
                  * Quando a etapa que está sendo percorrida é igual há alguma etapa das matrículas do aluno:
                  * Verifica qual é a forma de calculo da frequência (Por Disciplina/ Carga Horária Total) e se existe
@@ -307,7 +323,7 @@ class RelatorioHistoricoEscolar
                 }
                 $oDadoEtapa->mMinimoAprovacao = $oEtapaCursada->getMininoParaAprovacao();
                 $oDadoEtapa->areasConhecimento = [];
-                $oDadoEtapa->aDisicplinasEtapa = [];
+                $oDadoEtapa->aDisciplinas = [];
 
                 if (count($oEtapaCursada->getAreasConhecimento()) != 0) {
                     foreach ($oEtapaCursada->getAreasConhecimento() as $areaHistorico) {
@@ -345,16 +361,17 @@ class RelatorioHistoricoEscolar
                         continue;
                     }
                     $oDisciplina = $this->criarDisciplinaVO($oDisciplinaCursada, $oEtapaCursada);
-                    $oDadoEtapa->aDisicplinasEtapa[$oDisciplina->iCadDisciplina] = $oDisciplina;
+                    $oDadoEtapa->aDisciplinas[$oDisciplina->iCadDisciplina] = $oDisciplina;
                 }
                 $sIndex = "{$oEtapaCursada->getAnoCurso()}#{$oEtapaCursada->getEtapa()->getOrdem()}";
                 $sIndex .= "#{$oEtapaCursada->getEtapa()->getCodigo()}";
-                
+
                 $this->aDadosOrganizados[$sIndex] = $oDadoEtapa;
             }
         }
         $this->buscaEtapasPosteriores($oUltimaEtapaHistoricoCursada);
-        
+
+
         if (count($this->aDadosOrganizados) === 0) {
             throw new Exception('No ano de emissão informado, o aluno não possui etapas aprovada.');
         }
@@ -365,7 +382,8 @@ class RelatorioHistoricoEscolar
     /**
      * Busca as etapas posteriores do aluno a partir do último registro no histórico ou da matrícula caso o aluno
      * possua matrícula válida (Ativa e Não Concluída) de acordo com a base do curso.
-     * @param HistoricoEtapa $oUltimaEtapaHistoricoCursada Última etapa cursada de acordo com o histórico
+     *
+     * @param  HistoricoEtapa $oUltimaEtapaHistoricoCursada Última etapa cursada de acordo com o histórico
      * @throws DBException
      */
     private function buscaEtapasPosteriores($oUltimaEtapaHistoricoCursada)
@@ -378,8 +396,9 @@ class RelatorioHistoricoEscolar
         }
 
         $oUltimaMatricula = MatriculaRepository::getUltimaMatriculaAluno($this->oAluno);
-        if (empty($oUltimaEtapa) && !empty($oUltimaMatricula) && $oUltimaMatricula->isAtiva() && !$oUltimaMatricula->isConcluida() &&
-            $oUltimaMatricula->getSituacao() == 'MATRICULADO') {
+        if (empty($oUltimaEtapa) && !empty($oUltimaMatricula) && $oUltimaMatricula->isAtiva() && !$oUltimaMatricula->isConcluida() 
+            && $oUltimaMatricula->getSituacao() == 'MATRICULADO'
+        ) {
             $oUltimaEtapa = $oUltimaMatricula->getEtapaDeOrigem();
         }
         if (empty($oUltimaEtapa)) {
@@ -393,11 +412,13 @@ class RelatorioHistoricoEscolar
         }
     }
 
+
     /**
      * Busca o termo a ser apresentado no Resultado final da etapa
-     * @param string $sResultadoFinal
-     * @param string $sSituacao
-     * @param string $sTermoFinalEtapa
+     *
+     * @param  string $sResultadoFinal
+     * @param  string $sSituacao
+     * @param  string $sTermoFinalEtapa
      * @return mixed|string|null
      */
     private function termoResultadoFinalEtapa($sResultadoFinal, $sSituacao = null, $sTermoFinalEtapa = null, $aTermos, $fora = false)
@@ -424,6 +445,7 @@ class RelatorioHistoricoEscolar
             'AVANÇADO' => 'AVAN',
             'CANCELADO' => 'CANC',
             'EVADIDO' => 'EVAD',
+            'ABANDONO ESCOLAR' => 'AE',
             'FALECIDO' => 'FALEC',
         );
 
@@ -436,9 +458,10 @@ class RelatorioHistoricoEscolar
 
     /**
      * Busca o termo a ser apresentado no Resultado final da disciplina
-     * @param string $sResultadoFinal
-     * @param string $sSituacao
-     * @param string $sTermoFinalDisciplina
+     *
+     * @param  string $sResultadoFinal
+     * @param  string $sSituacao
+     * @param  string $sTermoFinalDisciplina
      * @return string|null
      */
     private function termoResultadoFinalDisciplina($sResultadoFinal, $sSituacao = null, $sTermoFinalDisciplina = null)
@@ -452,8 +475,9 @@ class RelatorioHistoricoEscolar
 
         // Caso a situacao seja 'NÃO OPTANTE' ou 'AMPARADO', e nao exista um termo final, nao apresentamos o
         // resultado final (RF)
-        if (!empty($sSituacao) &&
-            (trim($sSituacao) == 'NÃO OPTANTE' || trim($sSituacao) == 'AMPARADO')) {
+        if (!empty($sSituacao) 
+            && (trim($sSituacao) == 'NÃO OPTANTE' || trim($sSituacao) == 'AMPARADO')
+        ) {
             $sTermoFinal = '';
         }
 
@@ -466,40 +490,41 @@ class RelatorioHistoricoEscolar
 
     /**
      * Retorna o termo final de acordo com o Resultado
-     * @param string $sResultadoFinal
+     *
+     * @param  string $sResultadoFinal
      * @return string
      */
     private function termoFinal($sResultadoFinal, $lDisciplina = false, $aTermos = null)
     {
         $sSituacaoFinal = '';
         switch (trim($sResultadoFinal)) {
-            case 'A':
-                $sSituacaoFinal = 'APR';
-                if (!empty($aTermos)) {
-                    $sSituacaoFinal = $this->getTermoByReferencia($aTermos, $sResultadoFinal);
-                }
-                break;
+        case 'A':
+            $sSituacaoFinal = 'APR';
+            if (!empty($aTermos)) {
+                $sSituacaoFinal = $this->getTermoByReferencia($aTermos, $sResultadoFinal);
+            }
+            break;
 
-            case 'D':
-                $sSituacaoFinal = 'AP/DP';
-                if ($lDisciplina) {
-                    $sSituacaoFinal = 'APR*';
-                    $this->lAlunoTeveAprovacaoComProgressao = true;
-                }
-                break;
+        case 'D':
+            $sSituacaoFinal = 'AP/DP';
+            if ($lDisciplina) {
+                $sSituacaoFinal = 'APR*';
+                $this->lAlunoTeveAprovacaoComProgressao = true;
+            }
+            break;
 
-            case 'R':
-                $sSituacaoFinal = 'REP';
-                if (!empty($aTermos)) {
-                    foreach ($aTermos as $oTermo) {
-                        if ($oTermo->sReferencia == 'R') {
-                            $sSituacaoFinal = $this->getTermoByReferencia($aTermos, $sResultadoFinal);
-                            ;
-                            break;
-                        }
+        case 'R':
+            $sSituacaoFinal = 'REP';
+            if (!empty($aTermos)) {
+                foreach ($aTermos as $oTermo) {
+                    if ($oTermo->sReferencia == 'R') {
+                        $sSituacaoFinal = $this->getTermoByReferencia($aTermos, $sResultadoFinal);
+                        ;
+                        break;
                     }
                 }
-                break;
+            }
+            break;
         }
 
         return $sSituacaoFinal;
@@ -516,6 +541,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Busca os parâmetros para relatório impresso
+     *
      * @param integer $iTipoRelatorio
      */
     private function parametrosRelatorio($iTipoRelatorio)
@@ -575,6 +601,7 @@ class RelatorioHistoricoEscolar
     /**
      * Retorna uma string contendo todas as observações lançadas para o aluno quando este foi aprovado por conselho de
      * classe.
+     *
      * @return string
      * @throws Exception
      */
@@ -622,46 +649,46 @@ class RelatorioHistoricoEscolar
                 /**
                  * Valida se a aprovação foi por conselho
                  */
-                case 1:
-                    $oDocumento = new libdocumento(5013);
-                    $oDocumento->disciplina = $oDadosAprovConselho->disciplina;
-                    $oDocumento->etapa = $oDadosAprovConselho->serie_conselho;
-                    $oDocumento->justificativa = $oDadosAprovConselho->ed253_t_obs;
-                    $oDocumento->nota = ArredondamentoNota::arredondar(
-                        $oDadosAprovConselho->ed253_avaliacaoconselho,
-                        $oDadosAprovConselho->ed52_i_ano
-                    );
-                    $oDocumento->anomatricula = $oDadosAprovConselho->ed52_i_ano;
+            case 1:
+                $oDocumento = new libdocumento(5013);
+                $oDocumento->disciplina = $oDadosAprovConselho->disciplina;
+                $oDocumento->etapa = $oDadosAprovConselho->serie_conselho;
+                $oDocumento->justificativa = $oDadosAprovConselho->ed253_t_obs;
+                $oDocumento->nota = ArredondamentoNota::arredondar(
+                    $oDadosAprovConselho->ed253_avaliacaoconselho,
+                    $oDadosAprovConselho->ed52_i_ano
+                );
+                $oDocumento->anomatricula = $oDadosAprovConselho->ed52_i_ano;
 
-                    $oObservacao = new stdClass();
-                    $oObservacao->aParagrafos = $oDocumento->getDocParagrafos();
+                $oObservacao = new stdClass();
+                $oObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                    if (trim($oObservacao->aParagrafos[1]->oParag->db02_texto)) {
-                        $aObservacao[] = "- " . $oObservacao->aParagrafos[1]->oParag->db02_texto;
-                    }
+                if (trim($oObservacao->aParagrafos[1]->oParag->db02_texto)) {
+                    $aObservacao[] = "- " . $oObservacao->aParagrafos[1]->oParag->db02_texto;
+                }
 
-                    break;
+                break;
 
                 /**
                  * Valida se a aprovação não foi por baixa frequencia
                  */
-                case 2:
-                    $sHashSerieAno = $oDadosAprovConselho->serie_conselho . $oDadosAprovConselho->ed52_i_ano;
-                    if (!isset($aAprovadoBaixaFrequencia[$sHashSerieAno])) {
-                        $aAprovadoBaixaFrequencia[$sHashSerieAno] = $oDadosAprovConselho;
-                    }
-                    break;
+            case 2:
+                $sHashSerieAno = $oDadosAprovConselho->serie_conselho . $oDadosAprovConselho->ed52_i_ano;
+                if (!isset($aAprovadoBaixaFrequencia[$sHashSerieAno])) {
+                    $aAprovadoBaixaFrequencia[$sHashSerieAno] = $oDadosAprovConselho;
+                }
+                break;
 
                 /**
                  * Valida se a aprovação foi por regimento escolar
                  */
-                case 3:
-                    $sTipoAprovacao = "foi aprovado pelo regimento escolar.";
-                    $sObservacao = "- Disciplina {$oDadosAprovConselho->disciplina} na etapa";
-                    $sObservacao .= " {$oDadosAprovConselho->serie_conselho} {$sTipoAprovacao}";
-                    $sObservacao .= "Justificativa: {$oDadosAprovConselho->ed253_t_obs}";
-                    $aObservacao[] = $sObservacao;
-                    break;
+            case 3:
+                $sTipoAprovacao = "foi aprovado pelo regimento escolar.";
+                $sObservacao = "- Disciplina {$oDadosAprovConselho->disciplina} na etapa";
+                $sObservacao .= " {$oDadosAprovConselho->serie_conselho} {$sTipoAprovacao}";
+                $sObservacao .= "Justificativa: {$oDadosAprovConselho->ed253_t_obs}";
+                $aObservacao[] = $sObservacao;
+                break;
             }
         }
 
@@ -682,6 +709,7 @@ class RelatorioHistoricoEscolar
     /**
      * Verifica se houve troca de série para o aluno
      * Se sim monta uma string, com os dados da troca
+     *
      * @return string
      * @throws DBException
      */
@@ -700,6 +728,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Busca os atos legais que aparecem no histórico do aluno
+     *
      * @return array
      */
     protected function getAtosLegais()
@@ -710,7 +739,6 @@ class RelatorioHistoricoEscolar
         /**
          * Primeiramente separamos os atos legais da escola e os que estão vinculados a algum curso da escola
          */
-        //dd($this->oEscola->getAtosLegais());
         foreach ($this->oEscola->getAtosLegais() as $oAtoLegal) {
             if ($oAtoLegal->existeCursoVinculado()) {
                 $aAtosLegaisCurso[] = $oAtoLegal;
@@ -804,25 +832,27 @@ class RelatorioHistoricoEscolar
 
     /**
      * Retorna o caminho do brasão, de acordo com o tipo enviado
-     * @param integer $iTipoBrasao
-     * @param Instituicao $oInstituicao
+     *
+     * @param  integer     $iTipoBrasao
+     * @param  Instituicao $oInstituicao
      * @return string Caminho do brasão
      */
     public static function getBrasao($iTipoBrasao, Instituicao $oInstituicao)
     {
         switch ($iTipoBrasao) {
-            case RelatorioHistoricoEscolar::TIPO_BRASAO_REPUBLICA:
-                return RelatorioHistoricoEscolar::CAMINHO_BRASAO_REPUBLICA;
+        case RelatorioHistoricoEscolar::TIPO_BRASAO_REPUBLICA:
+            return RelatorioHistoricoEscolar::CAMINHO_BRASAO_REPUBLICA;
                 break;
 
-            case RelatorioHistoricoEscolar::TIPO_BRASAO_MUNICIPIO:
-                return "imagens/files/" . $oInstituicao->getImagemLogo();
+        case RelatorioHistoricoEscolar::TIPO_BRASAO_MUNICIPIO:
+            return "imagens/files/" . $oInstituicao->getImagemLogo();
                 break;
         }
     }
 
     /**
      * Retorna as obervações lançadas para as etapas do histórico do aluno
+     *
      * @return array
      */
     protected function getObservacaoHistoricoEtapa()
@@ -838,7 +868,8 @@ class RelatorioHistoricoEscolar
                 }
                 $justificativa = '';
                 if ($oEtapaHistorico->getSituacaoEtapa() === 'AMPARADO'
-                    && !empty($oEtapaHistorico->getJustificativa())) {
+                    && !empty($oEtapaHistorico->getJustificativa())
+                ) {
                     $oJustificativa = new Justificativa($oEtapaHistorico->getJustificativa());
                     $justificativa = "Amparado com Justificativa: " . $oJustificativa->getDescricao() . "\n";
                 }
@@ -869,6 +900,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Define se deve ser exibido somente cursos concluídos
+     *
      * @param boolean $lExibirSomenteCursosConcluidos
      */
     protected function setExibirSomenteCursosEncerrados($lExibirSomenteCursosConcluidos)
@@ -878,6 +910,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Define um curso para ser apresentado na impressão do relatório
+     *
      * @param Curso $oCurso
      */
     public function setCurso(Curso $oCurso)
@@ -887,7 +920,8 @@ class RelatorioHistoricoEscolar
 
     /**
      * Verifica se o curso percorrido do histórico é igual ao curso informado pelo filtro ou suas equivalências.
-     * @param integer $iCurso Código do curso do histórico
+     *
+     * @param  integer $iCurso Código do curso do histórico
      * @return boolean
      * @throws DBException
      */
@@ -908,6 +942,7 @@ class RelatorioHistoricoEscolar
 
     /**
      * Retorna todos os códigos de cursos concluídos e suas equivalências de um aluno
+     *
      * @return array
      * @throws DBException
      */
@@ -958,13 +993,15 @@ class RelatorioHistoricoEscolar
 
     /**
      * Busca as etapas anteriores do aluno a partir do primeiro registro no histórico.
-     * @param Etapa $oPrimeiraEtapa Última etapa cursada de acordo com o histórico
+     *
+     * @param  Etapa $oPrimeiraEtapa Última etapa cursada de acordo com o histórico
      * @throws DBException
      */
-    protected function buscaEtapasAnteiores($oPrimeiraEtapa)
+    protected function buscaEtapasAnteriores($oPrimeiraEtapa)
     {
         $ordemPrimeiraEtapa = $oPrimeiraEtapa->getOrdem();
         $aEtapasEnsino = EtapaRepository::getEtapasEnsino($oPrimeiraEtapa->getEnsino());
+
         foreach ($aEtapasEnsino as $etapa) {
             $oDadoEtapa = $this->criarObjetoEtapa($etapa);
             if ($etapa->getOrdem() < $ordemPrimeiraEtapa) {
@@ -995,7 +1032,7 @@ class RelatorioHistoricoEscolar
     }
 
     /**
-     * @param HistoricoEtapa $etapa
+     * @param  HistoricoEtapa $etapa
      * @return boolean
      */
     private function temEtapaHistorico(HistoricoEtapa $etapa)

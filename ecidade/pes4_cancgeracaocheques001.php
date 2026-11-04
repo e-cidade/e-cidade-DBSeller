@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -144,12 +144,12 @@ if ( isset($oPost->cancelar) ) {
 				  <table><!--
 				    <tr>
 				      <td align="right">
-				        <?
+				        <?php
                   db_ancora("<b>Cód. Geração</b>","js_pesquisaGeracao(true);",$db_opcao);
 				        ?>
 				      </td>
 				      <td>
-				        <?
+				        <?php
                   db_input("r15_sequencial",10,$Ir15_sequencial,true,"text",$db_opcao,"onChange='js_pesquisaGeracao(false);'");
                   db_input("r15_descricao" ,40,$Ir15_descricao,true,"text",3);
 				        ?>
@@ -161,7 +161,7 @@ if ( isset($oPost->cancelar) ) {
                 <b>Tipo Filtro:</b>
               </td>
               <td>
-                <?
+                <?php
                 
                   $aTipoFiltro = array( "s"=>"Selecionado",
                                         "i"=>"Intervalo" ); 
@@ -170,7 +170,7 @@ if ( isset($oPost->cancelar) ) {
                 ?>  
               </td>
             </tr>
-            <?
+            <?php
                if (isset($oPost->tipoFiltro) && $oPost->tipoFiltro == "i") {
                	
 	               echo "<tr>";
@@ -226,7 +226,7 @@ if ( isset($oPost->cancelar) ) {
 	  </tr>
 	</table> 	  
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -280,7 +280,7 @@ function js_mostraGeracaoFin(chave1){
 
 </script>
 
-<?
+<?php
    
    if ( isset($oPost->cancelar) ) {
 

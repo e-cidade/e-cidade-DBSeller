@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,7 +35,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 <table border="0" width="90%">
   <tr>
     <td align="center">
-      <?
+      <?php
       if($ponto == "fx"){
       	$dponto = " Ponto Fixo";
       }else if($ponto == "fs"){

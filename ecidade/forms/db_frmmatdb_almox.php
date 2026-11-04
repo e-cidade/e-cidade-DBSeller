@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,15 +37,15 @@ $clrotulo->label("m91_depto");
   <br>
   <tr>
     <td nowrap title="<?=@$Tm91_depto?>">
-       <?
+       <?php
        db_ancora(@$Lm91_depto,"js_pesquisam91_depto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m91_depto',6,$Im91_depto,true,'text',$db_opcao," onchange='js_pesquisam91_depto(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
@@ -89,7 +89,7 @@ function js_preenchepesquisa(chave1,chave2){
   document.form1.m91_depto.value = chave1;
   document.form1.descrdepto.value = chave2;
   db_iframe_almox.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
   }

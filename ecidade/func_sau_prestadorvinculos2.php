@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("s111_procedimento");
               <?=$Ls111_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s111_i_codigo",10,$Is111_i_codigo,true,"text",4,"","chave_s111_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clrotulo->label("s111_procedimento");
               <?=$Ls111_procedimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s111_procedimento",10,$Is111_procedimento,true,"text",4,"","chave_s111_procedimento");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clrotulo->label("s111_procedimento");
               <?=$Ls111_i_prestador?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s111_i_prestador",10,$Is111_i_prestador,true,"text",4,"","chave_s111_i_prestador");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $clrotulo->label("s111_procedimento");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("z01_nome",49,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -104,7 +104,7 @@ $clrotulo->label("s111_procedimento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where = " s111_c_situacao = 'A' ";
       if( isset($chave_s111_procedimento) && (int)$chave_s111_procedimento != 0 ){
          $where .= "and s111_procedimento = $chave_s111_procedimento";  
@@ -154,12 +154,12 @@ $clrotulo->label("s111_procedimento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

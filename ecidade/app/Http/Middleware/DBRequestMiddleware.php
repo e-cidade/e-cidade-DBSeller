@@ -23,6 +23,7 @@ class DBRequestMiddleware
     public function handle($request, Closure $next)
     {
         unset($request['_path']);
+        $request->query->remove('_path');
 
         $dados = $request->all();
         self::decodeFromUtf8($dados);
@@ -34,18 +35,19 @@ class DBRequestMiddleware
     /**
      * Funcao que percorre a request decodificando
      *
-     * @param type &$request
-     * @return type
+     * @param array &$request
+     * @return void
      */
-    public static function decodeFromUtf8(&$request)
+    public static function decodeFromUtf8(array &$request)
     {
         foreach ($request as $key => $value) {
-            if ($key == "_path") {
+            if (is_bool($value) || is_numeric($value)) {
                 continue;
             }
 
             if (is_array($value)) {
                 self::decodeFromUtf8($value);
+                $request[$key] = $value;
                 continue;
             }
 

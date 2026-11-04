@@ -54,7 +54,7 @@ class cl_veictipoabast
                  ";
 
     //funcao construtor da classe
-    function cl_veictipoabast()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veictipoabast");
@@ -62,7 +62,7 @@ class cl_veictipoabast
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -73,7 +73,7 @@ class cl_veictipoabast
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve07_sequencial = ($this->ve07_sequencial == "" ? $_POST["ve07_sequencial"] : $this->ve07_sequencial);
@@ -85,7 +85,7 @@ class cl_veictipoabast
     }
 
     // funcao para inclusao
-    function incluir($ve07_sequencial)
+    public function incluir($ve07_sequencial)
     {
         $this->atualizacampos();
         if (trim($this->ve07_descr) == null) {
@@ -204,7 +204,7 @@ class cl_veictipoabast
     }
 
     // funcao para alteracao
-    function alterar($ve07_sequencial = null)
+    public function alterar($ve07_sequencial = null)
     {
         $this->atualizacampos();
         $sql = " update veictipoabast set ";
@@ -322,7 +322,7 @@ class cl_veictipoabast
     }
 
     // funcao para exclusao
-    function excluir($ve07_sequencial = null, $dbwhere = null)
+    public function excluir($ve07_sequencial = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ve07_sequencial));
@@ -399,7 +399,7 @@ class cl_veictipoabast
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -428,7 +428,7 @@ class cl_veictipoabast
         return $result;
     }
 
-    function sql_query($ve07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ve07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -466,7 +466,7 @@ class cl_veictipoabast
         return $sql;
     }
 
-    function sql_query_file($ve07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ve07_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

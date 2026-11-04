@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -144,10 +144,11 @@ $clrotulo->label("rh30_vinculo");
         </tr>
         <tr>
           <td>
-            <label>Tipo de Insturmento: </label>
+            <label>Tipo de Instrumento: </label>
           </td>
           <td>
               <select name="tipoInstrumento" id="idTipoInsturmento" style=" width : 250px;">
+              <option value="">Selecione...</option>
               <option value="A"> A - Acordo Coletivo de Trabalho</option>
               <option value="B"> B - Legislação federal, estadual, municipal ou distrital</option>
               <option value="C"> C - Convenção Coletiva de Trabalho</option>
@@ -156,6 +157,8 @@ $clrotulo->label("rh30_vinculo");
               <option value="F"> F - Outras verbas de natureza salarial ou não salarial devidas após o desligamento</option>
               <option value="G"> G - Antecipação de diferenças de acordo, convenção ou dissídio coletivo</option>
               <option value="H"> H - Recolhimento mensal de FGTS anterior ao início de obrigatoriedade dos eventos periódicos</option>
+              <option value="I"> I - Sentença judicial (exceto reclamatória trabalhista)</option>
+              <option value="J"> J - Parcelas complementares conhecidas após o fechamento da folha</option>
               </select>
           </td>
         </tr>
@@ -163,8 +166,9 @@ $clrotulo->label("rh30_vinculo");
           <tr colspan="2">
             <td colspan="5">
               <fieldset>
-                <legend><b>Descricao da alteração ou do instrumento que a gerou:</b></legend>
-                <textarea id="idDescricao" name="descricao" rows="4" cols="50"></textarea>
+                <legend><b>Descrição da alteração ou do instrumento que a gerou:</b></legend>
+                <textarea id="idDescricao" name="descricao" rows="4" cols="50" maxlength="255"></textarea><br>
+                <span id="TxtObservacoes">0/255</span>
               </fieldset>
           </td>
         </tr>
@@ -200,6 +204,11 @@ var oTiposFiltrosFolha = null;
   oTiposFiltrosFolha.aTipos = [0,2,3,5];
   oTiposFiltrosFolha.sInstancia = 'oTiposFiltrosFolha';
   oTiposFiltrosFolha.show($('containnerTipoFiltrosFolha'));
+
+
+$('idDescricao').addEventListener("input", function(){
+  $('TxtObservacoes').innerHTML = `${$(this).value.length}/225`; 
+});
 
   $('para').disable();
   js_comportamentoCampos();
@@ -297,11 +306,15 @@ function js_processar(){
     return false;
   }
 
-  /**
-   * Verifica se a data efeitos remuneratórios do reajuste foi preenchida
-   */
-  if ( $F('idDataEfeito') == ''  ) {
-    alert('Data efeitos remuneratórios do reajuste é obrigatória.');
+const instrumentoPermitido = ['A', 'B', 'C', 'D', 'E'];
+
+if (!$F('idTipoInsturmento') || !$F('idDataEfeito')) {
+  alert(!$F('idTipoInsturmento') ? 'Tipo de Instrumento é obrigatório.' : 'Data efeitos remuneratórios do reajuste é obrigatória.');
+  return false;
+}
+
+  if (!$F('idDescricao') && (instrumentoPermitido.includes($F('idTipoInsturmento')))) {
+    alert('Descrição da alteração é obrigatorio.');
     return false;
   }
 

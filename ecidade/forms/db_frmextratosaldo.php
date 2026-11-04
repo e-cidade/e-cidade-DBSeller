@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("db83_descricao");
        <?=@$Lk97_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_sequencial',10,$Ik97_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -49,37 +49,37 @@ db_input('k97_sequencial',10,$Ik97_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk97_dtsaldofinal?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('k97_dtsaldofinal',@$k97_dtsaldofinal_dia,@$k97_dtsaldofinal_mes,@$k97_dtsaldofinal_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk97_contabancaria?>">
-       <?
+       <?php
        db_ancora(@$Lk97_contabancaria,"js_pesquisak97_contabancaria(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_contabancaria',10,$Ik97_contabancaria,true,'text',$db_opcao," onchange='js_pesquisak97_contabancaria(false);'")
 ?>
-       <?
+       <?php
 db_input('db83_descricao',100,$Idb83_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk97_extrato?>">
-       <?
+       <?php
        db_ancora(@$Lk97_extrato,"js_pesquisak97_extrato(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_extrato',10,$Ik97_extrato,true,'text',$db_opcao," onchange='js_pesquisak97_extrato(false);'")
 ?>
-       <?
+       <?php
 db_input('k85_nomearq',255,$Ik85_nomearq,true,'text',3,'')
        ?>
     </td>
@@ -89,7 +89,7 @@ db_input('k85_nomearq',255,$Ik85_nomearq,true,'text',3,'')
        <?=@$Lk97_valorcredito?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_valorcredito',10,$Ik97_valorcredito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -99,7 +99,7 @@ db_input('k97_valorcredito',10,$Ik97_valorcredito,true,'text',$db_opcao,"")
        <?=@$Lk97_valordebito?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_valordebito',10,$Ik97_valordebito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -109,7 +109,7 @@ db_input('k97_valordebito',10,$Ik97_valordebito,true,'text',$db_opcao,"")
        <?=@$Lk97_qtdregistros?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_qtdregistros',10,$Ik97_qtdregistros,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -119,7 +119,7 @@ db_input('k97_qtdregistros',10,$Ik97_qtdregistros,true,'text',$db_opcao,"")
        <?=@$Lk97_posicao?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_posicao',1,$Ik97_posicao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -129,7 +129,7 @@ db_input('k97_posicao',1,$Ik97_posicao,true,'text',$db_opcao,"")
        <?=@$Lk97_situacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_situacao',1,$Ik97_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -139,7 +139,7 @@ db_input('k97_situacao',1,$Ik97_situacao,true,'text',$db_opcao,"")
        <?=@$Lk97_saldobloqueado?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_saldobloqueado',10,$Ik97_saldobloqueado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -149,7 +149,7 @@ db_input('k97_saldobloqueado',10,$Ik97_saldobloqueado,true,'text',$db_opcao,"")
        <?=@$Lk97_saldofinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_saldofinal',10,$Ik97_saldofinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -159,7 +159,7 @@ db_input('k97_saldofinal',10,$Ik97_saldofinal,true,'text',$db_opcao,"")
        <?=@$Lk97_limite?>
     </td>
     <td> 
-<?
+<?php
 db_input('k97_limite',10,$Ik97_limite,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -221,7 +221,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_extratosaldo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

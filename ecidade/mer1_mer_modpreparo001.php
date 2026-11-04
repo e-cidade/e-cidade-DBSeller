@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -38,27 +38,27 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $db_opcao                 = 1;
 $db_botao                 = true;
 if (isset($incluir)) {
-	
+
   db_inicio_transacao();
   $clmer_modpreparo->incluir($me05_i_codigo);
   db_fim_transacao();
-  
+
 }
 if (isset($alterar)) {
-	
+
   $db_opcao = 2;
   db_inicio_transacao();
   $clmer_modpreparo->alterar($me05_i_codigo);
   db_fim_transacao();
-  
+
 }
 if (isset($excluir)) {
-	 
+
   $db_opcao = 3;
   db_inicio_transacao();
   $clmer_modpreparo->excluir($me05_i_codigo);
   db_fim_transacao();
-  
+
 }
 ?>
 <html>
@@ -76,7 +76,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Modo Preparo</b></legend>
-    <?include(modification("forms/db_frmmer_modpreparo.php"));?>
+    <?php include(modification("forms/db_frmmer_modpreparo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -87,27 +87,27 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me05_i_item",true,1,"me05_i_item",true);
 </script>
-<?
+<?php
 if (isset($incluir)||isset($alterar)||isset($excluir)) {
-	
+
   if ($clmer_modpreparo->erro_status=="0") {
-  	
+
     $clmer_modpreparo->erro(true,false);
     $db_botao=true;
     echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-    
+
     if ($clmer_modpreparo->erro_campo!="") {
-    	
+
       echo "<script> document.form1.".$clmer_modpreparo->erro_campo.".style.backgroundColor='#99A9AE';</script>";
       echo "<script> document.form1.".$clmer_modpreparo->erro_campo.".focus();</script>";
-      
+
     }
   } else {
-  	
+
     $clmer_modpreparo->erro(true,false);
     db_redireciona("mer1_mer_modpreparo001.php?me05_i_cardapio=$me05_i_cardapio&me01_c_nome=$me01_c_nome&naopode=$naopode"
                   );
-    
-  }  
+
+  }
 }
 ?>

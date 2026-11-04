@@ -35,182 +35,193 @@ use DOMDocument;
  */
 class IncluiBoleto implements RequisicaoInterface
 {
-  const SISTEMA_ORIGEM = "SIGCB";
-  const VERSAO         = "1.5";
+    const SISTEMA_ORIGEM = "SIGCB";
+    const VERSAO         = "1.5";//Alterada a versão de 1.5 para 3.2 redmine -> 27317
 
-  private $oXml;
-  private $oRegistro;
-  private $sOperacao;
+    private $oXml;
+    private $oRegistro;
+    private $sOperacao;
 
   /**
    * Criamos o objeto da classe com as informações necessárias para a sua exitência
    *
    * @param stdClass $oRegistro
    */
-  public function __construct(\stdClass $oRegistro)
-  {
-    $this->oXml      = new DOMDocument("1.0", "utf-8");
-    $this->oRegistro = $oRegistro;
-    $this->sOperacao = "INCLUI_BOLETO";
-  }
+    public function __construct(\stdClass $oRegistro)
+    {
+        $this->oXml      = new DOMDocument("1.0", "utf-8");
+        $this->oRegistro = $oRegistro;
+        $this->sOperacao = "INCLUI_BOLETO";
+    }
 
   /**
    * Buscamos a operação que será executada no webservice
    *
    * @return string
    */
-  public function getOperacao()
-  {
-    return $this->sOperacao;
-  }
+    public function getOperacao()
+    {
+        return $this->sOperacao;
+    }
 
   /**
    * Retornamos a coleção com os registros
    *
    * @return stdClass
    */
-  public function getRegistro()
-  {
-    return $this->oRegistro;
-  }
+    public function getRegistro()
+    {
+        return $this->oRegistro;
+    }
 
   /**
    * Geramos o xml com os dados do boleto
    *
    * @return DOMDocument
    */
-  public function getRequestXml()
-  {
-    $oServicoEntrada = $this->oXml->createElementNS( 'http://caixa.gov.br/sibar/manutencao_cobranca_bancaria/boleto/externo',
-                                                     'manutencaocobrancabancaria:SERVICO_ENTRADA' );
+    public function getRequestXml($emitePix = false)
+    {
+        
+        $oServicoEntrada = $this->oXml->createElementNS(
+            'http://caixa.gov.br/sibar/manutencao_cobranca_bancaria/boleto/externo',
+            'manutencaocobrancabancaria:SERVICO_ENTRADA'
+        );
 
-    $oHeader = $this->getHeaderXml();
-    $oDados  = $this->getDadosXml();
+        $oHeader = $this->getHeaderXml($emitePix);
+        $oDados  = $this->getDadosXml($emitePix);
 
-    $oServicoEntrada->appendChild($oHeader);
-    $oServicoEntrada->appendChild($oDados);
+        $oServicoEntrada->appendChild($oHeader);
+        $oServicoEntrada->appendChild($oDados);
 
-    $this->oXml->appendChild($oServicoEntrada);
-
-    return $this->oXml;
-  }
+        $this->oXml->appendChild($oServicoEntrada);
+        return $this->oXml;
+    }
 
   /**
    * Criamos o Header do xml
    *
    * @return DOMElement
    */
-  protected function getHeaderXml()
-  {
-    $oHeader = $this->oXml->createElementNS( "http://caixa.gov.br/sibar", "sibar_base:HEADER" );
+    protected function getHeaderXml($emitePix = false)
+    {
+        $oHeader = $this->oXml->createElementNS("http://caixa.gov.br/sibar", "sibar_base:HEADER");
 
-    $oVersao         = $this->oXml->createElement("VERSAO", self::VERSAO);
-    $oAutenticacao   = $this->oXml->createElement("AUTENTICACAO", $this->oRegistro->autenticacao);
-    $oUsuarioServico = $this->oXml->createElement("USUARIO_SERVICO", $this->oRegistro->usuarioServico);
-    $oOperacao       = $this->oXml->createElement("OPERACAO", $this->sOperacao);
-    $oSistemaOriem   = $this->oXml->createElement("SISTEMA_ORIGEM", self::SISTEMA_ORIGEM);
-    $oDataHora       = $this->oXml->createElement("DATA_HORA", date('YmdHis'));
+        if ($emitePix) {
+            $oVersao = $this->oXml->createElement("VERSAO", "3.2");
+        } else {
+            $oVersao = $this->oXml->createElement("VERSAO", self::VERSAO);
+        }
+        $oAutenticacao   = $this->oXml->createElement("AUTENTICACAO", $this->oRegistro->autenticacao);
+        $oUsuarioServico = $this->oXml->createElement("USUARIO_SERVICO", $this->oRegistro->usuarioServico);
+        $oOperacao       = $this->oXml->createElement("OPERACAO", $this->sOperacao);
+        $oSistemaOriem   = $this->oXml->createElement("SISTEMA_ORIGEM", self::SISTEMA_ORIGEM);
+        $oDataHora       = $this->oXml->createElement("DATA_HORA", date('YmdHis'));
 
-    $oHeader->appendChild($oVersao);
-    $oHeader->appendChild($oAutenticacao);
-    $oHeader->appendChild($oUsuarioServico);
-    $oHeader->appendChild($oOperacao);
-    $oHeader->appendChild($oSistemaOriem);
-    $oHeader->appendChild($oDataHora);
+        $oHeader->appendChild($oVersao);
+        $oHeader->appendChild($oAutenticacao);
+        $oHeader->appendChild($oUsuarioServico);
+        $oHeader->appendChild($oOperacao);
+        $oHeader->appendChild($oSistemaOriem);
+        $oHeader->appendChild($oDataHora);
 
-    return $oHeader;
-  }
+        return $oHeader;
+    }
 
   /**
    * Criamos o elemento com os dados do recibo para o xml
    *
    * @return DOMElement
    */
-  protected function getDadosXml()
-  {
-    $oDados        = $this->oXml->createElement("DADOS");
-    $oIncluiBoleto = $this->oXml->createElement("INCLUI_BOLETO");
+    protected function getDadosXml($emitePix = false)
+    {
+        $oDados        = $this->oXml->createElement("DADOS");
+        $oIncluiBoleto = $this->oXml->createElement("INCLUI_BOLETO");
 
-    $oCodigoBeneficiario = $this->oXml->createElement("CODIGO_BENEFICIARIO", $this->oRegistro->codigoBeneficiario);
-    $oTitulo             = $this->oXml->createElement("TITULO");
+        $oCodigoBeneficiario = $this->oXml->createElement("CODIGO_BENEFICIARIO", $this->oRegistro->codigoBeneficiario);
+        $oTitulo             = $this->oXml->createElement("TITULO");
 
-    $oNossoNumero     = $this->oXml->createElement("NOSSO_NUMERO", $this->oRegistro->nossoNumero);
-    $oNumeroDocumento = $this->oXml->createElement("NUMERO_DOCUMENTO", $this->oRegistro->numeroDocumento);
-    $oDataVencimento  = $this->oXml->createElement("DATA_VENCIMENTO", $this->oRegistro->dataVencimento);
-    $oValor           = $this->oXml->createElement("VALOR", $this->oRegistro->valor);
-    $oTipoEspecie     = $this->oXml->createElement("TIPO_ESPECIE", $this->oRegistro->tipoEspecie);
-    $oFlagAceite      = $this->oXml->createElement("FLAG_ACEITE", $this->oRegistro->flagAceite);
-    $oJurosMora       = $this->oXml->createElement("JUROS_MORA");
+        $oNossoNumero     = $this->oXml->createElement("NOSSO_NUMERO", $this->oRegistro->nossoNumero);
+        if ($emitePix) {
+            $oTipoPix = $this->oXml->createElement("TIPO", "HIBRIDO");
+        }
+        $oNumeroDocumento = $this->oXml->createElement("NUMERO_DOCUMENTO", $this->oRegistro->numeroDocumento);
+        $oDataVencimento  = $this->oXml->createElement("DATA_VENCIMENTO", $this->oRegistro->dataVencimento);
+        $oValor           = $this->oXml->createElement("VALOR", $this->oRegistro->valor);
+        $oTipoEspecie     = $this->oXml->createElement("TIPO_ESPECIE", $this->oRegistro->tipoEspecie);
+        $oFlagAceite      = $this->oXml->createElement("FLAG_ACEITE", $this->oRegistro->flagAceite);
+        $oJurosMora       = $this->oXml->createElement("JUROS_MORA");
 
-    $oTipo       = $this->oXml->createElement("TIPO", $this->oRegistro->tipo);
-    $oData       = $this->oXml->createElement("DATA", $this->oRegistro->dataVencimento);
-    $oValorJuros = $this->oXml->createElement("VALOR", $this->oRegistro->valorJuros);
+        $oTipo       = $this->oXml->createElement("TIPO", $this->oRegistro->tipo);
+        $oData       = $this->oXml->createElement("DATA", $this->oRegistro->dataVencimento);
+        $oValorJuros = $this->oXml->createElement("VALOR", $this->oRegistro->valorJuros);
 
-    $oJurosMora->appendChild($oTipo);
-    $oJurosMora->appendChild($oData);
-    $oJurosMora->appendChild($oValorJuros);
+        $oJurosMora->appendChild($oTipo);
+        $oJurosMora->appendChild($oData);
+        $oJurosMora->appendChild($oValorJuros);
 
-    $oPosVencimento = $this->oXml->createElement("POS_VENCIMENTO");
+        $oPosVencimento = $this->oXml->createElement("POS_VENCIMENTO");
 
-    $oAcao       = $this->oXml->createElement("ACAO", $this->oRegistro->acao);
-    $oNumeroDias = $this->oXml->createElement("NUMERO_DIAS", $this->oRegistro->numeroDias);
+        $oAcao       = $this->oXml->createElement("ACAO", $this->oRegistro->acao);
+        $oNumeroDias = $this->oXml->createElement("NUMERO_DIAS", $this->oRegistro->numeroDias);
 
-    $oPosVencimento->appendChild($oAcao);
-    $oPosVencimento->appendChild($oNumeroDias);
+        $oPosVencimento->appendChild($oAcao);
+        $oPosVencimento->appendChild($oNumeroDias);
 
-    $oCodigoMoeda = $this->oXml->createElement("CODIGO_MOEDA", $this->oRegistro->codigoMoeda);
-    $oPagador     = $this->oXml->createElement("PAGADOR");
+        $oCodigoMoeda = $this->oXml->createElement("CODIGO_MOEDA", $this->oRegistro->codigoMoeda);
+        $oPagador     = $this->oXml->createElement("PAGADOR");
 
-    $oCpfCnpj = $this->oXml->createElement("CNPJ", $this->oRegistro->cpfcnpj);
-    $oNome    = $this->oXml->createElement("RAZAO_SOCIAL", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
+        $oCpfCnpj = $this->oXml->createElement("CNPJ", $this->oRegistro->cpfcnpj);
+        $oNome    = $this->oXml->createElement("RAZAO_SOCIAL", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
 
-    if ( strlen($this->oRegistro->cpfcnpj) == 11 ) {
-      $oCpfCnpj  = $this->oXml->createElement("CPF", $this->oRegistro->cpfcnpj);
-      $oNome     = $this->oXml->createElement("NOME", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
-    }
+        if (strlen($this->oRegistro->cpfcnpj) == 11) {
+            $oCpfCnpj  = $this->oXml->createElement("CPF", $this->oRegistro->cpfcnpj);
+            $oNome     = $this->oXml->createElement("NOME", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
+        }
 
-    $mensagemRecibo = \DBString::removerAcentuacao(\DBString::removerCaracteresEspeciais($this->oRegistro->mensagemRecibo));
+        $mensagemRecibo = \DBString::removerAcentuacao(\DBString::removerCaracteresEspeciais(
+            $this->oRegistro->mensagemRecibo
+        ));
     
-    if (!empty($mensagemRecibo)) {
-      
-      $oFichaCompensacao = $this->oXml->createElement("FICHA_COMPENSACAO");
-      $oMensagens = $this->oXml->createElement("MENSAGENS");
+        if (!empty($mensagemRecibo)) {
+            $oFichaCompensacao = $this->oXml->createElement("FICHA_COMPENSACAO");
+            $oMensagens = $this->oXml->createElement("MENSAGENS");
 
-      $oMensagem1 = $this->oXml->createElement("MENSAGEM", substr($mensagemRecibo, 0, 40));
-      $oMensagens->appendChild($oMensagem1);
+            $oMensagem1 = $this->oXml->createElement("MENSAGEM", substr($mensagemRecibo, 0, 40));
+            $oMensagens->appendChild($oMensagem1);
 
-      if (strlen($mensagemRecibo) > 40 ) {
+            if (strlen($mensagemRecibo) > 40) {
+                $oMensagem2 = $this->oXml->createElement("MENSAGEM", substr($mensagemRecibo, 40, 40));
+                $oMensagens->appendChild($oMensagem2);
+            }
 
-        $oMensagem2 = $this->oXml->createElement("MENSAGEM", substr($mensagemRecibo, 40, 40));
-        $oMensagens->appendChild($oMensagem2);
-      }
+            $oFichaCompensacao->appendChild($oMensagens);
+        }
 
-      $oFichaCompensacao->appendChild($oMensagens);
+        $oPagador->appendChild($oCpfCnpj);
+        $oPagador->appendChild($oNome);
+
+        $oTitulo->appendChild($oNossoNumero);
+        if (isset($oTipoPix)) {
+            $oTitulo->appendChild($oTipoPix);
+        }
+        $oTitulo->appendChild($oNumeroDocumento);
+        $oTitulo->appendChild($oDataVencimento);
+        $oTitulo->appendChild($oValor);
+        $oTitulo->appendChild($oTipoEspecie);
+        $oTitulo->appendChild($oFlagAceite);
+        $oTitulo->appendChild($oJurosMora);
+        $oTitulo->appendChild($oPosVencimento);
+        $oTitulo->appendChild($oCodigoMoeda);
+        $oTitulo->appendChild($oPagador);
+
+        if (!empty($mensagemRecibo)) {
+            $oTitulo->appendChild($oFichaCompensacao);
+        }
+
+        $oIncluiBoleto->appendChild($oCodigoBeneficiario);
+        $oIncluiBoleto->appendChild($oTitulo);
+
+        $oDados->appendChild($oIncluiBoleto);
+        return $oDados;
     }
-
-    $oPagador->appendChild($oCpfCnpj);
-    $oPagador->appendChild($oNome);
-
-    $oTitulo->appendChild($oNossoNumero);
-    $oTitulo->appendChild($oNumeroDocumento);
-    $oTitulo->appendChild($oDataVencimento);
-    $oTitulo->appendChild($oValor);
-    $oTitulo->appendChild($oTipoEspecie);
-    $oTitulo->appendChild($oFlagAceite);
-    $oTitulo->appendChild($oJurosMora);
-    $oTitulo->appendChild($oPosVencimento);
-    $oTitulo->appendChild($oCodigoMoeda);
-    $oTitulo->appendChild($oPagador);
-
-    if (!empty($mensagemRecibo)) {
-      $oTitulo->appendChild($oFichaCompensacao);
-    }
-
-    $oIncluiBoleto->appendChild($oCodigoBeneficiario);
-    $oIncluiBoleto->appendChild($oTitulo);
-
-    $oDados->appendChild($oIncluiBoleto);
-
-    return $oDados;
-  }
 }

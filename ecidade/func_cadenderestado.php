@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
               <?=$Ldb71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db71_sequencial",10,$Idb71_sequencial,true,"text",4,"","chave_db71_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
               <?=$Ldb71_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db71_descricao",40,$Idb71_descricao,true,"text",4,"","chave_db71_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderestado.php")==true){
@@ -122,12 +122,12 @@ $clcadenderestado->rotulo->label("db71_descricao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

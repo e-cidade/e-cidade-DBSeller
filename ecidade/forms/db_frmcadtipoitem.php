@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
     <td nowrap >
     </td>
     <td> 
-<?
+<?php
 db_input('k09_sequencial',10,$Ik09_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk09_cadtipo?>">
-       <?
+       <?php
        db_ancora(@$Lk09_cadtipo,"js_pesquisak09_cadtipo(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k09_cadtipo',3,$Ik09_cadtipo,true,'text',3," onchange='js_pesquisak09_cadtipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k03_tipo',3,$Ik03_tipo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk09_cadtipoitemgrupo?>">
-       <?
+       <?php
        db_ancora(@$Lk09_cadtipoitemgrupo,"js_pesquisak09_cadtipoitemgrupo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k09_cadtipoitemgrupo',10,$Ik09_cadtipoitemgrupo,true,'text',$db_opcao," onchange='js_pesquisak09_cadtipoitemgrupo(false);'")
 ?>
-       <?
+       <?php
 db_input('k37_descr',40,$Ik37_descr,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('k37_descr',40,$Ik37_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("k09_sequencial"=>@$k09_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcadtipoitem->sql_query_file(null,"*",null," k09_cadtipo = $k09_cadtipo ");

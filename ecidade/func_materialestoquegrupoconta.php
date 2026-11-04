@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
               <?=$Lm66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m66_sequencial",10,$Im66_sequencial,true,"text",4,"","chave_m66_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
               <?=$Lm66_materialestoquegrupo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m66_materialestoquegrupo",10,$Im66_materialestoquegrupo,true,"text",4,"","chave_m66_materialestoquegrupo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_materialestoquegrupoconta.php")==true){
@@ -122,12 +122,12 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

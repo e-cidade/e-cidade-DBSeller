@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clcalendf->rotulo->label();
        <?=@$Lr62_calend?>
     </td>
     <td> 
-<?
+<?php
 db_input('r62_calend',2,$Ir62_calend,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('r62_calend',2,$Ir62_calend,true,'text',3,"")
        <?=@$Lr62_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r62_data',@$r62_data_dia,@$r62_data_mes,@$r62_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_calendf.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

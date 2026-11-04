@@ -200,8 +200,13 @@ class AnexoXIV extends Layout
 
         if ($this->quadros[Simplificado::EMITIR_DESPESAS_SAUDE]) {
             $this->pdf->addPage();
-            $linhas = $this->relatorio->getDespesasAcoesServicosPublicosSaude();
-            $this->montarCabecalhoDespesasAcoesServicosPublicosSaude($linhas);
+            if (db_getsession("DB_itemmenu_acessado") == 8079) {
+                $linhas = $this->relatorio->getDespesasAcoesServicosPublicosSaude();
+                $this->montarCabecalhoDespesasAcoesServicosPublicosSaude($linhas);
+            } else {
+                $linhas = $this->relatorio->getDespesasAcoesServicosPublicosSaudeNovo();
+                $this->montarCabecalhoDespesasAcoesServicosPublicosSaude($linhas);
+            }
         }
 
         if ($this->quadros[Simplificado::EMITIR_PPP]) {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ $cl_vacinasaplicadas = new cl_vacinasaplicadas;
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<?
+<?php
 if(isset($Processar)){
  $result = $cl_vacinasaplicadas -> sql_record($cl_vacinasaplicadas->sql_query("","","","*",$ordem,"sd08_d_data BETWEEN '$data1' AND '$data2'"));
  if($cl_vacinasaplicadas->numrows<>0){
@@ -55,7 +55,7 @@ if(isset($Processar)){
   <td><b>Vacina</b></td>
   <td><b>Data</b></td>
  </tr>
- <?
+ <?php
  //for
  for($i=0;$i<$cl_vacinasaplicadas->numrows;$i++){
  db_fieldsmemory($result,$i);
@@ -66,7 +66,7 @@ if(isset($Processar)){
   <td><?=$sd08_c_vacina?> - <?=$sd07_c_nome?></td>
   <td><?=substr($sd08_d_data,8,2)."/".substr($sd08_d_data,5,2)."/".substr($sd08_d_data,0,4)?></td>
  </tr>
- <?
+ <?php
  }
  }else{
   echo "<center><br><br><font color='red'>Nenhum registro encontrado!</font></center>";

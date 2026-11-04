@@ -30,16 +30,16 @@ class Exportacao
     /**
      * @var DadosInterface
      */
-    private $oDadosEscola = null;
+    public $oDadosEscola = null;
     /**
      * @var DadosInterface[]
      */
-    private $aDadosAlunoAntes = array();
+    public $aDadosAlunoAntes = array();
 
     /**
      * @var DadosInterface[]
      */
-    private $aDadosAlunoDepois = array();
+    public $aDadosAlunoDepois = array();
 
     /**
      * @var Censo
@@ -66,6 +66,7 @@ class Exportacao
             case 2019:
             case 2020:
             case 2021:
+            case 2022:
                 $this->oLayout = new Layout2016();
                 break;
             default:
@@ -100,6 +101,7 @@ class Exportacao
         $this->buscarLayout();
 
         if (!$this->validar()) {
+            $this->escreverRegistros();
             return false;
         }
 
@@ -112,12 +114,20 @@ class Exportacao
      */
     private function escreverRegistros()
     {
-        $this->oLayout->escreverLinha($this->oDadosEscola->transformarStdClass(), 3, 89);
-        foreach ($this->aDadosAlunoAntes as $oDadosAluno) {
-            $this->oLayout->escreverLinha($oDadosAluno->transformarStdClass(), 3, 90);
+        if (empty($this->oDadosEscola->getErros())) {
+            $this->oLayout->escreverLinha($this->oDadosEscola->transformarStdClass(), 3, 89);
         }
+
+        foreach ($this->aDadosAlunoAntes as $oDadosAluno) {
+            if (empty($oDadosAluno->getErros())) {
+                $this->oLayout->escreverLinha($oDadosAluno->transformarStdClass(), 3, 90);
+            }
+        }
+
         foreach ($this->aDadosAlunoDepois as $oDadosAluno) {
-            $this->oLayout->escreverLinha($oDadosAluno->transformarStdClass(), 3, 91);
+            if (empty($oDadosAluno->getErros())) {
+                $this->oLayout->escreverLinha($oDadosAluno->transformarStdClass(), 3, 91);
+            }
         }
     }
 
@@ -136,7 +146,6 @@ class Exportacao
             $aValidacoes[] = $oDadosAluno->validar($this->oDadosEscola->getCodigoINEP());
             $this->registrarErros($oDadosAluno->getErros(), 90);
         }
-
         foreach ($this->aDadosAlunoDepois as $oDadosAluno) {
             $aValidacoes[] = $oDadosAluno->validar($this->oDadosEscola->getCodigoINEP());
             $this->registrarErros($oDadosAluno->getErros(), 91);

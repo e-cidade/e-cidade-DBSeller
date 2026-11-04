@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -70,22 +70,22 @@ if(isset($opcao)){
        <?=@$Lt63_codcor?>
     </td>
     <td> 
-<?
+<?php
 db_input('t63_codcor',8,$It63_codcor,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt63_codbem?>">
-       <?
+       <?php
        db_ancora(@$Lt63_codbem,"js_pesquisat63_codbem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t63_codbem',8,$It63_codbem,true,'text',$db_opcao," onchange='js_pesquisat63_codbem(false);'")
 ?>
-<?
+<?php
 db_input('t52_descr',40,$It52_descr,true,'text',3,"")
 ?>
     </td>
@@ -95,7 +95,7 @@ db_input('t52_descr',40,$It52_descr,true,'text',3,"")
        <?=@$Lt63_valcor?>
     </td>
     <td> 
-<?
+<?php
 db_input('t63_valcor',15,$It63_valcor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_input('t63_valcor',15,$It63_valcor,true,'text',$db_opcao,"")
        <?=@$Lt63_deprec?>
     </td>
     <td> 
-<?
+<?php
 db_input('t63_deprec',15,$It63_deprec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -120,7 +120,7 @@ db_input('t63_deprec',15,$It63_deprec,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("t63_codcor"=>@$t63_codcor,"t63_codbem"=>null);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clbenscorr->sql_query_file($t63_codcor,null);

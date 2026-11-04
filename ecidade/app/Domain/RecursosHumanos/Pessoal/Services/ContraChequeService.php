@@ -4,6 +4,7 @@ namespace App\Domain\RecursosHumanos\Pessoal\Services;
 
 use App\Domain\Configuracao\Helpers\StorageHelper;
 use App\Domain\Core\Services\QueueService;
+use App\Domain\RecursosHumanos\Pessoal\Model\ContrachequesBatches;
 use App\Domain\RecursosHumanos\Pessoal\Relatorios\ContraChequePdf;
 use App\Jobs\RecursosHumanos\Pessoal\EmissaoContraChequeJob;
 use DBPessoal;
@@ -34,6 +35,7 @@ class ContraChequeService
             throw new Exception('Não foi encontrados contra cheques para emitir no período informado.');
         }
 
+        $total = 0;
         $queueService = new QueueService(EmissaoContraChequeJob::class);
         while ($result = pg_fetch_object($rsRhPessoalMov)) {
             $contraChequePdf = new ContraChequePdf(
@@ -46,7 +48,16 @@ class ContraChequeService
             );
 
             dispatch(new EmissaoContraChequeJob($contraChequePdf, $queueService));
+            $total++;
         }
+
+        $loteContracheques = new ContrachequesBatches();
+        $loteContracheques->rh269_instit = $instituicao;
+        $loteContracheques->rh269_batch = $queueService->getBatch()->id;
+        $mes = str_pad($mes, 2, '0', STR_PAD_LEFT);
+        $loteContracheques->rh269_competencia = "{$mes}/{$ano}";
+        $loteContracheques->rh269_total = $total;
+        $loteContracheques->save();
     }
 
     /**
@@ -220,7 +231,7 @@ SQL;
             {$fromBase}
                 inner join pessoal.gerfres on r20_regist = rh01_regist
                     and r20_anousu = rh02_anousu and r20_mesusu = rh02_mesusu
-            {$whereBase} order by matricula;
+            {$whereBase} order by matricula
 SQL;
         return $sql;
     }
@@ -250,5 +261,33 @@ SELECT DISTINCT rh143_regist as matricula,
     AND rh141_anousu = {$ano}
     AND rh141_instit = {$instituicao}
 SQL;
+    }
+
+    public function buscarLotes($instit)
+    {
+        $lotesContracheques = ContrachequesBatches::query()->where('rh269_instit', $instit)
+                                                           ->orderBy('rh269_codigo', 'desc')
+                                                           ->get();
+
+        return $lotesContracheques->map(function (ContrachequesBatches $lote) {
+            $totalNaFila = $lote->batch->queuedJobs()->count();
+            $totalFalha = $lote->batch->queuedJobs()->whereNotNull('failed_at')->count();
+            $totalProcessados = $lote->rh269_total + $totalFalha - $totalNaFila;
+            $quantidade = sprintf(
+                "%s de %s",
+                $totalProcessados,
+                $lote->rh269_total
+            );
+
+            $percentual = floor(($totalProcessados / $lote->rh269_total) * 100);
+            return (object)[
+                'batch_id' => $lote->rh269_batch,
+                'competencia' => $lote->rh269_competencia,
+                'quantidade' => $quantidade,
+                'status' => $percentual,
+                'cancelado' => $lote->batch->cancelled,
+                'falhas' => $totalFalha
+            ];
+        });
     }
 }

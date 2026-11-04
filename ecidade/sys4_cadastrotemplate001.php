@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -133,13 +133,13 @@ $cldb_relatorio->rotulo->label();
 		      <tr>
 			    <td>
 			      <b>
-			        <?
+			        <?php
 			          db_ancora("Relatório :","js_pesquisaRelatorio(true)",1,"");
 			        ?>
 			      </b>
 			    </td>
 			    <td>
-			      <?
+			      <?php
 				    db_input("db63_sequencial",10,$Idb63_sequencial,true,"text",1,"onChange='js_pesquisaRelatorio(false);'");
 				    db_input("db63_nomerelatorio" ,40,"",true,"text",3,"");
 				    db_input("method",40,"",true,"hidden",3,"");
@@ -151,7 +151,7 @@ $cldb_relatorio->rotulo->label();
        			  <b> Arquivo :</b>
     			</td>
     		    <td>
-    			  <?
+    			  <?php
       				db_input('arquivo',43,'',true,'file',1,"");
     			  ?>
     		   </td>
@@ -168,7 +168,7 @@ $cldb_relatorio->rotulo->label();
 	</table>
   </form>
 </center>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -323,7 +323,7 @@ $cldb_relatorio->rotulo->label();
   }
 
 </script>
-<?
+<?php
 
   if (isset($oPost->method) && $oPost->method  == "incluir") {
 		if ($lErro) {

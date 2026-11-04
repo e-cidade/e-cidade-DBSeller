@@ -66,13 +66,13 @@ class cl_transfescolafora {
                  ed104_c_situacao = char(1) = Situação
                  ";
    //funcao construtor da classe
-   function cl_transfescolafora() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transfescolafora");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -81,7 +81,7 @@ class cl_transfescolafora {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed104_i_codigo = ($this->ed104_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed104_i_codigo"]:$this->ed104_i_codigo);
        $this->ed104_i_aluno = ($this->ed104_i_aluno == ""?@$GLOBALS["HTTP_POST_VARS"]["ed104_i_aluno"]:$this->ed104_i_aluno);
@@ -104,7 +104,7 @@ class cl_transfescolafora {
      }
    }
    // funcao para inclusao
-   function incluir ($ed104_i_codigo){
+   public function incluir ($ed104_i_codigo){
       $this->atualizacampos();
      if($this->ed104_i_aluno == null ){
        $this->erro_sql = " Campo Aluno não informado.";
@@ -588,6 +588,7 @@ class cl_transfescolafora {
      $sql .= "      left  join censomunic as censomunicend on  censomunicend.ed261_i_codigo = aluno.ed47_i_censomunicend";
      $sql .= "      left  join censoorgemissrg  on  censoorgemissrg.ed132_i_codigo = aluno.ed47_i_censoorgemissrg";
      $sql .= "      inner join matricula  on  matricula.ed60_i_codigo = transfescolafora.ed104_i_matricula";
+     $sql .= '      inner join turma on turma.ed57_i_codigo = matricula.ed60_i_turma ';
      $sql .= "      inner join escolaproc  on  escolaproc.ed82_i_codigo = transfescolafora.ed104_i_escoladestino";
      $sql .= "      inner join bairro  on  bairro.j13_codi = escola.ed18_i_bairro";
      $sql .= "      inner join ruas  on  ruas.j14_codigo = escola.ed18_i_rua";
@@ -631,7 +632,7 @@ class cl_transfescolafora {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -663,7 +664,7 @@ class cl_transfescolafora {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -682,7 +683,7 @@ class cl_transfescolafora {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -698,6 +699,8 @@ class cl_transfescolafora {
       $sSql  .= ' FROM transfescolafora ';
       $sSql  .= '      inner join escola  on  escola.ed18_i_codigo = transfescolafora.ed104_i_escolaorigem ';
       $sSql  .= '      inner join censouf  on  censouf.ed260_i_codigo = escola.ed18_i_censouf ';
+      $sSql  .= '      inner join matricula on matricula.ed60_i_codigo = transfescolafora.ed104_i_matricula ';
+      $sSql  .= '      inner join turma on turma.ed57_i_codigo = matricula.ed60_i_turma ';
       $sSql  .= '      inner join censomunic  on  censomunic.ed261_i_codigo = escola.ed18_i_censomunic ';
       $sSql  .= '      inner join aluno  on  aluno.ed47_i_codigo = transfescolafora.ed104_i_aluno ';
       $sSql  .= '      inner join escolaproc  on  escolaproc.ed82_i_codigo = transfescolafora.ed104_i_escoladestino ';
@@ -719,7 +722,7 @@ class cl_transfescolafora {
       if ($sOrdem != null) {
 
         $sSql      .= ' order by ';
-        $sCamposSql = split('#', $sOrdem);
+        $sCamposSql = explode('#', $sOrdem);
         $sVirgula   = '';
         for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -738,7 +741,7 @@ class cl_transfescolafora {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -769,7 +772,7 @@ class cl_transfescolafora {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

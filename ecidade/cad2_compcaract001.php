@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -208,15 +208,15 @@ function js_periodo(){
 
  <tr>
     <td nowrap title="<?=@$Tj37_setor?>">
-       <?
+       <?php
        db_ancora(@$Lj37_setor,"js_pesquisaj37_setor(true);",$db_opcao);
        ?>
     </td>
     <td>
-	  <?
+	  <?php
 	    db_input('j37_setor',4,$Ij37_setor,true,'text',$db_opcao," onchange='js_pesquisaj37_setor(false);'")
 	  ?>
-      <?
+      <?php
 	    db_input('j30_descr',40,$Ij30_descr,true,'text',3,'')
       ?>
     <td>
@@ -227,7 +227,7 @@ function js_periodo(){
        <?=@$Lj37_quadra?>
     </td>
     <td>
-	  <?
+	  <?php
 	  db_input('j37_quadra',4,$Ij37_quadra,true,'text',$db_opcao,"")
 	  ?>
     <td>
@@ -235,15 +235,15 @@ function js_periodo(){
 
   <tr>
     <td nowrap title="<?=@$Tj37_codigo?>">
-       <?
+       <?php
        db_ancora(@$Lj37_codigo,"js_pesquisaj37_codigo(true);",$db_opcao);
        ?>
     </td>
     <td>
-	  <?
+	  <?php
 	     db_input('j37_codigo',4,$Ij37_codigo,true,'text',$db_opcao," onchange='js_pesquisaj37_codigo(false);'")
 	  ?>
-      <?
+      <?php
          db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
       ?>
     <td>
@@ -253,7 +253,7 @@ function js_periodo(){
          <b>Grupo de caracteristicas do lote :</b>
         </td>
         <td nowrap>
-        <?
+        <?php
 		  $sqlGrupol  = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'L' order by j32_grupo";
           $rsGrupol   = db_query($sqlGrupol);
           $intNumrows =	pg_numrows($rsGrupol);
@@ -270,7 +270,7 @@ function js_periodo(){
          <b>Grupo de caracteristicas da face :</b>
         </td>
         <td nowrap> 
-     	<?
+     	<?php
 		  $sqlGrupof   = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'F' order by j32_grupo";
           $rsGrupof    = db_query($sqlGrupof);
           $intNumrowsf = pg_numrows($rsGrupof);
@@ -293,7 +293,7 @@ function js_periodo(){
 			  <b>Processar matriculas  : </b>
         </td>
         <td nowrap> 
-			  <?
+			  <?php
 			  $ll = array ("t" => "Todas", "n" => "Não baixadas", "s" => "Baixadas");
 			  db_select('baixadas', $ll, true, 2,"onchange='js_periodo();'" );
 			  ?>
@@ -307,7 +307,7 @@ function js_periodo(){
 				<b>Periodo de baixa :</b>
 			 </td>
 			 <td nowrap>  
-				<?
+				<?php
 				db_inputdata('baixai', "", "", "", true, 'text', 1, "");
 				echo " a ";
 				db_inputdata('baixaf', "", "", "", true, 'text', 1, "");
@@ -328,12 +328,12 @@ function js_periodo(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -29,6 +29,7 @@ return array(
     "infoFech" => array(
         "properties" => array(
             "evtRemun",
+            "evtPgtos",
             "evtComProd",
             "evtContratAvNP",
             "evtInfoComplPer",

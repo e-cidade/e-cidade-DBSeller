@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,13 +84,13 @@ class cl_estestado {
                  prodpriperc = float8 = % 
                  ";
    //funcao construtor da classe 
-   function cl_estestado() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("estestado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -99,7 +99,7 @@ class cl_estestado {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->anousu = ($this->anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["anousu"]:$this->anousu);
        $this->vlradi = ($this->vlradi == ""?@$GLOBALS["HTTP_POST_VARS"]["vlradi"]:$this->vlradi);
@@ -125,7 +125,7 @@ class cl_estestado {
      }
    }
    // funcao para inclusao
-   function incluir ($anousu){ 
+   public function incluir ($anousu){ 
       $this->atualizacampos();
      if($this->vlradi == null ){ 
        $this->erro_sql = " Campo Valor Adicionado nao Informado.";
@@ -393,7 +393,7 @@ class cl_estestado {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($anousu=null) { 
+   public function alterar ($anousu=null) { 
       $this->atualizacampos();
      $sql = " update estestado set ";
      $virgula = "";
@@ -728,7 +728,7 @@ class cl_estestado {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($anousu=null,$dbwhere=null) { 
+   public function excluir ($anousu=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($anousu));
      }else{ 
@@ -807,7 +807,7 @@ class cl_estestado {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

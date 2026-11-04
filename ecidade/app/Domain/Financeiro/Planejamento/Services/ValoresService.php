@@ -103,6 +103,9 @@ class ValoresService
                 ->where('pl10_origem', '=', $origem)
                 ->where('pl10_ano', '=', $ano)
                 ->first();
+            if (is_null($modal)) {
+                $modal = new Valor();
+            }
         }
 
         $modal->pl10_ano = $ano;

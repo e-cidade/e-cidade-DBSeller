@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,13 +77,13 @@ class cl_auto {
                  y50_instit = int4 = Cod. Instituição
                  ";
    //funcao construtor da classe
-   function cl_auto() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("auto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -92,7 +92,7 @@ class cl_auto {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->y50_codauto = ($this->y50_codauto == ""?@$GLOBALS["HTTP_POST_VARS"]["y50_codauto"]:$this->y50_codauto);
        if($this->y50_data == ""){
@@ -131,7 +131,7 @@ class cl_auto {
      }
    }
    // funcao para inclusao
-   function incluir ($y50_codauto){
+   public function incluir ($y50_codauto){
       $this->atualizacampos();
      if($this->y50_data == null ){
        $this->erro_sql = " Campo Data do Auto de Infração nao Informado.";
@@ -311,7 +311,7 @@ class cl_auto {
      return true;
    }
    // funcao para alteracao
-   function alterar ($y50_codauto=null) {
+   public function alterar ($y50_codauto=null) {
       $this->atualizacampos();
      $sql = " update auto set ";
      $virgula = "";
@@ -541,7 +541,7 @@ class cl_auto {
      }
    }
    // funcao para exclusao
-   function excluir ($y50_codauto=null,$dbwhere=null) {
+   public function excluir ($y50_codauto=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($y50_codauto));
      }else{
@@ -612,7 +612,7 @@ class cl_auto {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -634,14 +634,14 @@ class cl_auto {
       }
      return $result;
    }
-   function sql_calculo ( $y50_codauto=""){
+   public function sql_calculo ( $y50_codauto=""){
    $result =  db_query("select fc_autodeinfracao($y50_codauto)");
    return $result;
   }
-   function sql_query ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -666,7 +666,7 @@ class cl_auto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -675,7 +675,7 @@ class cl_auto {
      }
      return $sql;
   }
-   function sql_query_busca($y50_codauto=null,$dbwhere=""){
+   public function sql_query_busca($y50_codauto=null,$dbwhere=""){
  $sql = "select dl_Auto,dl_identificacao,dl_codigo,z01_nome,tipo,y50_instit,y50_numbloco  from
                         (select
 												   y50_numbloco,
@@ -739,7 +739,7 @@ class cl_auto {
 
      return $sql;
   }
-   function sql_query_busca2($y50_codauto=null,$dbwhere=""){
+   public function sql_query_busca2($y50_codauto=null,$dbwhere=""){
 
      $sql = "select dl_Auto,dl_identifica,dl_codigo,z01_nome,tipo,y50_setor from
                         (select
@@ -801,7 +801,7 @@ class cl_auto {
 
      return $sql;
   }
-   function sql_querycgm ($y50_codauto=null){
+   public function sql_querycgm ($y50_codauto=null){
      $sql = "select
                         case when q02_numcgm is not null then q02_numcgm else
                                 (case when j01_numcgm is not null then j01_numcgm else
@@ -831,7 +831,7 @@ class cl_auto {
      $sql .= $sql2;
      return $sql;
   }
-   function sql_query_cgm ($y50_codauto=null,$dbwhere=""){
+   public function sql_query_cgm ($y50_codauto=null,$dbwhere=""){
 
      $sql = "select * from (select
                         case when q02_numcgm is not null then q02_numcgm else
@@ -867,10 +867,10 @@ class cl_auto {
      $sql .= $sql2;
  return $sql;
   }
-   function sql_query_file ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -891,7 +891,7 @@ class cl_auto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -900,10 +900,10 @@ class cl_auto {
      }
      return $sql;
   }
-   function sql_query_info ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_info ( $y50_codauto=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -933,7 +933,7 @@ class cl_auto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
  $sql .= $virgula.$campos_sql[$i];
@@ -942,7 +942,7 @@ class cl_auto {
      }
      return $sql;
   }
-   function sql_query_infoautos($y50_codauto=null,$dbwhere=""){
+   public function sql_query_infoautos($y50_codauto=null,$dbwhere=""){
 
      $sql = "select auto,
                     identificacao,
@@ -1030,7 +1030,7 @@ class cl_auto {
      return $sql;
   }
 
-  function  sql_query_cgm_inscricao($y50_codauto = null) {
+  public function  sql_query_cgm_inscricao($y50_codauto = null) {
 
     $sSql  = "select   ";
     $sSql .= "    y52_inscr as q02_inscr, ";

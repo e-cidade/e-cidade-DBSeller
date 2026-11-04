@@ -108,7 +108,7 @@ class ColetaItem extends \BaseClassRepository
         $coletaItem->setHora($stdClass->la32_c_hora);
         $coletaItem->setAvisaPaciente($stdClass->la32_i_avisapaciente === 1);
         $coletaItem->setHoraEntrega($stdClass->la32_c_horaentrega);
-        $coletaItem->setDataEntrega(DBDate::create($stdClass->la32_d_entrega));
+        $coletaItem->setDataEntrega($stdClass->la32_d_entrega ? DBDate::create($stdClass->la32_d_entrega) : '');
 
         self::getInstance()->add($coletaItem);
 

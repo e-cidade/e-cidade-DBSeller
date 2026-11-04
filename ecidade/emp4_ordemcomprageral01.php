@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -83,9 +83,9 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
                 <table>
                     <form name="form1" method="post" action="emp4_ordemcomprageral022.php ">
                         <tr>
-                            <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+                            <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
                             <td align="left" nowrap>
-                                <? db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+                                <?php db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
                                 db_input("z01_nome",40,"$Iz01_nome",true,"text",3);
                                 ?></td>
                         </tr>
@@ -95,7 +95,7 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
                                 <b> Período :</b>
                             </td>
                             <td nowrap colspan=1>
-                                <?
+                                <?php
                                 $result_data=$clmatparam->sql_record($clmatparam->sql_query_file(null,"m90_dtimplan"));
                                 if ($clmatparam->numrows>0){
                                     db_fieldsmemory($result_data,0);
@@ -118,7 +118,7 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
                                 <b>Trazer apenas empenhos Liberados:</b>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 $emp_liberado = 'f';
                                 $x = array("f"=>"NAO","t"=>"SIM");
                                 db_select('emp_liberado',$x,true,"","");
@@ -145,7 +145,7 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
 
         </form>
     </table>
-    <?
+    <?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
     </body>
@@ -224,7 +224,7 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
       showSelect(<?=$lShowSelect?>);
     </script>
 
-<?
+<?php
 if(isset($ordem)){
     echo "<script>
        js_emite();

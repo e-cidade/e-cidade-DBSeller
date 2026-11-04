@@ -83,8 +83,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Disciplina não informado.";
             $this->erro_campo = "ed148_disciplina";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -92,8 +92,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Etapa não informado.";
             $this->erro_campo = "ed148_etapa";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -101,8 +101,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Código BNCC não informado.";
             $this->erro_campo = "ed148_codigo";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -110,8 +110,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Unidade Temática não informado.";
             $this->erro_campo = "ed148_unidade_tematica";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -119,8 +119,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Objeto de Conhecimento não informado.";
             $this->erro_campo = "ed148_objeto_conhecimento";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -128,8 +128,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Habilidade não informado.";
             $this->erro_campo = "ed148_habilidade";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -137,8 +137,8 @@ class cl_bnccensinofundamental
             $this->erro_sql = " Campo Ano não informado.";
             $this->erro_campo = "ed148_ano";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -147,8 +147,8 @@ class cl_bnccensinofundamental
             if ($result == false) {
                 $this->erro_banco = str_replace("\n", "", @pg_last_error());
                 $this->erro_sql = "Verifique o cadastro da sequencia: bnccensinofundamental_ed148_sequencial_seq do campo: ed148_sequencial";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
@@ -158,8 +158,8 @@ class cl_bnccensinofundamental
             if (($result != false) && (pg_result($result, 0, 0) < $ed148_sequencial)) {
                 $this->erro_sql = " Campo ed148_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             } else {
@@ -169,8 +169,8 @@ class cl_bnccensinofundamental
         if (($this->ed148_sequencial == null) || ($this->ed148_sequencial == "")) {
             $this->erro_sql = " Campo ed148_sequencial não declarado.";
             $this->erro_banco = "Chave Primaria zerada.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -199,23 +199,23 @@ class cl_bnccensinofundamental
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
                 $this->erro_sql = " ($this->ed148_sequencial) não Incluído. Inclusão Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
                 $this->erro_banco = " já Cadastrado";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             } else {
                 $this->erro_sql = " ($this->ed148_sequencial) não Incluído. Inclusão Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             }
             $this->erro_status = "0";
             $this->numrows_incluir = 0;
             return false;
         }
         $this->erro_banco = "";
-        $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
+        $this->erro_sql = "Inclusão efetuada com sucesso.\n";
         $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-        $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-        $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+        $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
         $this->erro_status = "1";
         $this->numrows_incluir = pg_affected_rows($result);
         $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
@@ -246,106 +246,106 @@ class cl_bnccensinofundamental
     {
         $sql = " update bnccensinofundamental set ";
         $virgula = "";
-        if (trim($this->ed148_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_sequencial"])) {
+        if (trim($this->ed148_sequencial) != "" || isset($_POST["ed148_sequencial"])) {
             $sql .= $virgula . " ed148_sequencial = $this->ed148_sequencial ";
             $virgula = ",";
             if (trim($this->ed148_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "ed148_sequencial";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_disciplina) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_disciplina"])) {
+        if (trim($this->ed148_disciplina) != "" || isset($_POST["ed148_disciplina"])) {
             $sql .= $virgula . " ed148_disciplina = '$this->ed148_disciplina' ";
             $virgula = ",";
             if (trim($this->ed148_disciplina) == null) {
                 $this->erro_sql = " Campo Disciplina não informado.";
                 $this->erro_campo = "ed148_disciplina";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_etapa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_etapa"])) {
+        if (trim($this->ed148_etapa) != "" || isset($_POST["ed148_etapa"])) {
             $sql .= $virgula . " ed148_etapa = '$this->ed148_etapa' ";
             $virgula = ",";
             if (trim($this->ed148_etapa) == null) {
                 $this->erro_sql = " Campo Etapa não informado.";
                 $this->erro_campo = "ed148_etapa";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_codigo"])) {
+        if (trim($this->ed148_codigo) != "" || isset($_POST["ed148_codigo"])) {
             $sql .= $virgula . " ed148_codigo = '$this->ed148_codigo' ";
             $virgula = ",";
             if (trim($this->ed148_codigo) == null) {
                 $this->erro_sql = " Campo Código BNCC não informado.";
                 $this->erro_campo = "ed148_codigo";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_unidade_tematica) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_unidade_tematica"])) {
+        if (trim($this->ed148_unidade_tematica) != "" || isset($_POST["ed148_unidade_tematica"])) {
             $sql .= $virgula . " ed148_unidade_tematica = '$this->ed148_unidade_tematica' ";
             $virgula = ",";
             if (trim($this->ed148_unidade_tematica) == null) {
                 $this->erro_sql = " Campo Unidade Temática não informado.";
                 $this->erro_campo = "ed148_unidade_tematica";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_objeto_conhecimento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_objeto_conhecimento"])) {
+        if (trim($this->ed148_objeto_conhecimento) != "" || isset($_POST["ed148_objeto_conhecimento"])) {
             $sql .= $virgula . " ed148_objeto_conhecimento = '$this->ed148_objeto_conhecimento' ";
             $virgula = ",";
             if (trim($this->ed148_objeto_conhecimento) == null) {
                 $this->erro_sql = " Campo Objeto de Conhecimento não informado.";
                 $this->erro_campo = "ed148_objeto_conhecimento";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_habilidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_habilidade"])) {
+        if (trim($this->ed148_habilidade) != "" || isset($_POST["ed148_habilidade"])) {
             $sql .= $virgula . " ed148_habilidade = '$this->ed148_habilidade' ";
             $virgula = ",";
             if (trim($this->ed148_habilidade) == null) {
                 $this->erro_sql = " Campo Habilidade não informado.";
                 $this->erro_campo = "ed148_habilidade";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
         }
-        if (trim($this->ed148_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed148_ano"])) {
+        if (trim($this->ed148_ano) != "" || isset($_POST["ed148_ano"])) {
             $sql .= $virgula . " ed148_ano = $this->ed148_ano ";
             $virgula = ",";
             if (trim($this->ed148_ano) == null) {
                 $this->erro_sql = " Campo Ano não informado.";
                 $this->erro_campo = "ed148_ano";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "0";
                 return false;
             }
@@ -367,21 +367,21 @@ class cl_bnccensinofundamental
                     $acount = pg_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010915,'$this->ed148_sequencial','A')");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_sequencial"]) || $this->ed148_sequencial != "")
+                    if (isset($_POST["ed148_sequencial"]) || $this->ed148_sequencial != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010915,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_sequencial')) . "','$this->ed148_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_disciplina"]) || $this->ed148_disciplina != "")
+                    if (isset($_POST["ed148_disciplina"]) || $this->ed148_disciplina != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010916,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_disciplina')) . "','$this->ed148_disciplina'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_etapa"]) || $this->ed148_etapa != "")
+                    if (isset($_POST["ed148_etapa"]) || $this->ed148_etapa != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010917,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_etapa')) . "','$this->ed148_etapa'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_codigo"]) || $this->ed148_codigo != "")
+                    if (isset($_POST["ed148_codigo"]) || $this->ed148_codigo != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010918,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_codigo')) . "','$this->ed148_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_unidade_tematica"]) || $this->ed148_unidade_tematica != "")
+                    if (isset($_POST["ed148_unidade_tematica"]) || $this->ed148_unidade_tematica != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010919,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_unidade_tematica')) . "','$this->ed148_unidade_tematica'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_objeto_conhecimento"]) || $this->ed148_objeto_conhecimento != "")
+                    if (isset($_POST["ed148_objeto_conhecimento"]) || $this->ed148_objeto_conhecimento != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010920,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_objeto_conhecimento')) . "','$this->ed148_objeto_conhecimento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_habilidade"]) || $this->ed148_habilidade != "")
+                    if (isset($_POST["ed148_habilidade"]) || $this->ed148_habilidade != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1010921,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_habilidade')) . "','$this->ed148_habilidade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    if (isset($GLOBALS["HTTP_POST_VARS"]["ed148_ano"]) || $this->ed148_ano != "")
+                    if (isset($_POST["ed148_ano"]) || $this->ed148_ano != "")
                         $resac = db_query("insert into db_acount values($acount,1010503,1011781,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed148_ano')) . "','$this->ed148_ano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
@@ -389,29 +389,29 @@ class cl_bnccensinofundamental
         $result = db_query($sql);
         if (!$result) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            $this->erro_sql = " não Alterado. Alteração Abortada.\\n";
+            $this->erro_sql = " não Alterado. Alteração Abortada.\n";
             $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             $this->numrows_alterar = 0;
             return false;
         } else {
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
-                $this->erro_sql = " não foi Alterado. Alteração Executada.\\n";
+                $this->erro_sql = " não foi Alterado. Alteração Executada.\n";
                 $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
-                $this->erro_sql = "Alteração efetuada com sucesso.\\n";
+                $this->erro_sql = "Alteração efetuada com sucesso.\n";
                 $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = pg_affected_rows($result);
                 return true;
@@ -478,29 +478,29 @@ class cl_bnccensinofundamental
         $result = db_query($sql);
         if (!$result) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            $this->erro_sql = " não Alterado. Alteração Abortada.\\n";
+            $this->erro_sql = " não Alterado. Alteração Abortada.\n";
             $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             $this->numrows_alterar = 0;
             return false;
         } else {
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
-                $this->erro_sql = " não foi Alterado. Alteração Executada.\\n";
+                $this->erro_sql = " não foi Alterado. Alteração Executada.\n";
                 $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
-                $this->erro_sql = "Alteração efetuada com sucesso.\\n";
+                $this->erro_sql = "Alteração efetuada com sucesso.\n";
                 $this->erro_sql .= "Valores : " . $this->ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = pg_affected_rows($result);
                 return true;
@@ -555,29 +555,29 @@ class cl_bnccensinofundamental
         $result = db_query($sql . $sql2);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            $this->erro_sql = " não Excluído. Exclusão Abortada.\\n";
+            $this->erro_sql = " não Excluído. Exclusão Abortada.\n";
             $this->erro_sql .= "Valores : " . $ed148_sequencial;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             $this->numrows_excluir = 0;
             return false;
         } else {
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
-                $this->erro_sql = " não Encontrado. Exclusão não Efetuada.\\n";
+                $this->erro_sql = " não Encontrado. Exclusão não Efetuada.\n";
                 $this->erro_sql .= "Valores : " . $ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
-                $this->erro_sql = "Exclusão efetuada com sucesso.\\n";
+                $this->erro_sql = "Exclusão efetuada com sucesso.\n";
                 $this->erro_sql .= "Valores : " . $ed148_sequencial;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+                $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+                $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = pg_affected_rows($result);
                 return true;
@@ -592,8 +592,8 @@ class cl_bnccensinofundamental
             $this->numrows = 0;
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Erro ao selecionar os registros.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }
@@ -601,8 +601,8 @@ class cl_bnccensinofundamental
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:bnccensinofundamental";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+            $this->erro_msg = "Usuário: \n\n " . $this->erro_sql . " \n\n";
+            $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \n\n " . $this->erro_banco . " \n"));
             $this->erro_status = "0";
             return false;
         }

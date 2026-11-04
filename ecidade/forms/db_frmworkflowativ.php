@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,12 +83,12 @@ db_input('db117_db_cadattdinamico',10,$Idb117_db_cadattdinamico,true,'hidden',3)
       <?=@$Ldb112_sequencial?>
     </td>
     <td width="10">
-			<?
+			<?php
 			  db_input('db112_sequencial',10,$Idb112_sequencial,true,'text',3);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('db112_descricao',60,$Idb112_descricao,true,'text',3);
       ?>
     </td>
@@ -98,12 +98,12 @@ db_input('db117_db_cadattdinamico',10,$Idb117_db_cadattdinamico,true,'hidden',3)
       <?=@$Lp51_codigo?>
     </td>
     <td width="10">
-      <?
+      <?php
         db_input('p51_codigo',10,$Ip51_codigo,true,'text',3);
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('p51_descr',60,$Ip51_descr,true,'text',3);
       ?>
     </td>
@@ -113,24 +113,24 @@ db_input('db117_db_cadattdinamico',10,$Idb117_db_cadattdinamico,true,'hidden',3)
       <?=@$Ldb114_descricao?>
     </td>
     <td width="10" colspan="2">
-      <?
+      <?php
         db_input('db114_descricao',80,$Idb114_descricao,true,'text',$db_opcao);
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp53_coddepto?>">
-      <?
+      <?php
         db_ancora('<b>Código do Departamento:</b>',"js_pesquisap53_coddepto(true);",$db_opcao);
       ?>
     </td>
     <td width="10">
-      <?
+      <?php
         db_input('p53_coddepto',10,$Ip53_coddepto,true,'text',$db_opcao," onchange='js_pesquisap53_coddepto(false);'");
       ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('descrdepto',50,$Idescrdepto,true,'text',3,'');
       ?>
     </td>
@@ -173,7 +173,7 @@ db_input('db117_db_cadattdinamico',10,$Idb117_db_cadattdinamico,true,'hidden',3)
 <table>
   <tr>
     <td valign="top"  align="center">
-	    <?
+	    <?php
 			  $sWhere                     = "workflowativ.db114_workflow = {$db112_sequencial}";
 			  $sOrderBy                   = "workflowativ.db114_ordem";
 			  $sSqlWorkflowAtivAndPadrao  = $clworkflowativandpadrao->sql_query(null, "*", $sOrderBy, $sWhere);

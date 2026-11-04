@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clitbinomecgm->rotulo->label("it21_numcgm");
               <?=$Lit21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it21_sequencial",10,$Iit21_sequencial,true,"text",4,"","chave_it21_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbinomecgm->rotulo->label("it21_numcgm");
               <?=$Lit21_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it21_numcgm",10,$Iit21_numcgm,true,"text",4,"","chave_it21_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbinomecgm->rotulo->label("it21_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbinomecgm.php")==true){
@@ -122,12 +122,12 @@ $clitbinomecgm->rotulo->label("it21_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

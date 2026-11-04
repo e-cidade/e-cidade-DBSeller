@@ -2,7 +2,9 @@
 
 namespace App\Domain\Configuracao\Instituicao\Model;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Configuracao\Departamento\Models\Departamento;
 
 /**
  * Class Atendimento
@@ -60,6 +62,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer db21_esfera_op
  * @property float db21_valor_teto_remuneratorio
  * @property boolean db21_ente_federativo_resp
+ * @method static Builder|DBConfig isPrefeitura()
  */
 
 class DBConfig extends Model
@@ -67,6 +70,11 @@ class DBConfig extends Model
     protected $table = 'configuracoes.db_config';
     protected $primaryKey = 'codigo';
     public $timestamps = false;
+
+    public function scopeIsPrefeitura(Builder $query)
+    {
+        return $query->where("prefeitura", true);
+    }
 
     /**
      * @param integer $codigo
@@ -984,5 +992,25 @@ class DBConfig extends Model
     public function getEnteFederativoResp()
     {
         return $this->db21_ente_federativo_resp;
+    }
+
+    public function scopeLikeNome($query, $nome = '')
+    {
+        return $query->where("nomeinst", "ilike", "%{$nome}%");
+    }
+
+    public function scopeInCodigo($query, array $codigo = [])
+    {
+        return $query->whereIn("codigo", $codigo);
+    }
+
+    public function scopeLikeCnpj($query, $cnpj)
+    {
+        return $query->where("cgc", "ilike", "%{$cnpj}%");
+    }
+
+    public function departamentos()
+    {
+        return $this->hasMany(Departamento::class, "instit");
     }
 }

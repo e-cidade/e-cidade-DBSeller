@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("y30_data");
        <?=@$Lq37_sequence?>
     </td>
     <td> 
-<?
+<?php
 db_input('q37_sequence',10,$Iq37_sequence,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq37_varfix?>">
-       <?
+       <?php
        db_ancora(@$Lq37_varfix,"js_pesquisaq37_varfix(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q37_varfix',8,$Iq37_varfix,true,'text',$db_opcao," onchange='js_pesquisaq37_varfix(false);'")
 ?>
-       <?
+       <?php
 db_input('q33_codigo',8,$Iq33_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq37_notifica?>">
-       <?
+       <?php
        db_ancora(@$Lq37_notifica,"js_pesquisaq37_notifica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q37_notifica',20,$Iq37_notifica,true,'text',$db_opcao," onchange='js_pesquisaq37_notifica(false);'")
 ?>
-       <?
+       <?php
 db_input('y30_data',10,$Iy30_data,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_varfixnotifica.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

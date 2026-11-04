@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -50,7 +50,7 @@ $clrotulo->label("presidente");
 </head>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?
+ <?php
   # Seleciona todos os calendários cadastrados
   $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
   $sql       .= "       FROM calendario ";
@@ -62,7 +62,7 @@ $clrotulo->label("presidente");
   $num        = pg_num_rows($sql_result);
   $conta      = "";
   while ($row=pg_fetch_array($sql_result)) {
-  	
+
     $conta       = $conta+1;
     $cod_curso   = $row["ed52_i_codigo"];
     echo "new Array(\n";
@@ -77,25 +77,25 @@ $clrotulo->label("presidente");
     $sub_sql    .= "           WHERE ed57_i_calendario = '$cod_curso' ";
     $sub_sql    .= "           AND ed57_i_escola = $iEscola ";
     $sub_sql    .= "           AND ed221_c_origem = 'S' ";
-    $sub_sql    .= "           ORDER BY ed57_c_descr,ed11_c_descr ";             
+    $sub_sql    .= "           ORDER BY ed57_c_descr,ed11_c_descr ";
     $sub_result  = db_query($sub_sql);
     $num_sub     = pg_num_rows($sub_result);
-    
+
     if ($num_sub >= 1) {
-    	
+
       # Se achar alguma base para o curso, marca a palavra Todas
       $conta_sub = "";
       while ($rowx = pg_fetch_array($sub_result)) {
-      	
+
         $codigo_base = $rowx["ed220_i_codigo"];
         $base_nome   = $rowx["ed57_c_descr"];
         $serie_nome  = $rowx["ed11_c_descr"];
         $conta_sub   = $conta_sub+1;
         if ($conta_sub == $num_sub) {
-        	
+
           echo "new Array(\"$base_nome - $serie_nome\", $codigo_base)\n";
           $conta_sub = "";
-          
+
         } else {
           echo "new Array(\"$base_nome - $serie_nome\", $codigo_base),\n";
         }
@@ -113,7 +113,7 @@ echo ");\n";
 ?>
 //Inicio da função JS
 function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
-	
+
   var i, j;
   var prompt;
   // empty existing items
@@ -140,12 +140,12 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     document.form1.subgrupo.disabled = false;
   }
   document.form1.pesquisar.disabled = true;
-  <?if (isset($base)) {?>
+  <?php if (isset($base)) {?>
       qtd = document.form1.alunosdiario.length;
       for (i = 0; i < qtd; i++) {
         document.form1.alunosdiario.options[0] = null;
       }
-  <?}?>
+  <?php }?>
 }
 //End -->
 </script>
@@ -166,10 +166,10 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     <tr>
     <td>
       <b>Selecione o Calendário:</b><br>
-      <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo,((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
+      <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo,((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));"
               style="font-size:9px;width:250px;height:18px;">
        <option></option>
-       <?
+       <?php
        #Seleciona todos os grupos para setar os valores no combo
        $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
        $sql       .= "       FROM calendario ";
@@ -179,13 +179,13 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
        $sql       .= "       ORDER BY ed52_i_ano DESC";
        $sql_result = db_query($sql);
        while ($row = pg_fetch_array($sql_result)) {
-       	
+
          $cod_curso  = $row["ed52_i_codigo"];
          $desc_curso = $row["ed52_c_descr"];
          ?>
          <option value="<?=$cod_curso;?>" <?=$cod_curso==@$curso?"selected":""?>><?=$desc_curso;?></option>
-         <?
-         
+         <?php
+
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -197,25 +197,25 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      <tr>
      <td>
       <b>Data da Votação:</b>
-      <?db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>      
+      <?php db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>
      </td>
     </tr>
     <tr>
     <td nowrap colspan='2'>
        <b>Secretário:</b>
-      <?db_input('secretario',70,@$Isecretario,true,'text',"","")?>
+      <?php db_input('secretario',70,@$Isecretario,true,'text',"","")?>
     </td>
   </tr>
   <tr>
     <td nowrap colspan='2'>
       <b>Presidente:</b>
-      <?db_input('presidente',70,@$Ipresidente,true,'text',"","")?>
+      <?php db_input('presidente',70,@$Ipresidente,true,'text',"","")?>
     </td>
   </tr>
   <tr>
     <td>
       <b>Selecione as Turmas:</b><br>
-      <select name="subgrupo" id="subgrupo" size="20"  multiple style="font-size:9px;width:250px;" disabled 
+      <select name="subgrupo" id="subgrupo" size="20"  multiple style="font-size:9px;width:250px;" disabled
               onchange="js_botao(this.value);">
       </select>
      </td>
@@ -226,81 +226,81 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       </fieldset>
      </td>
     </tr>
-    
+
     <tr>
     <td>
     <b>Modelo:</b>
    <select name="modelo" id="modelo" style="font-size:9px;" Onchange ="js_escolha();">
      <option value='5'>Alunos Votantes</option>
-     <option value='6'>Responsáveis Votantes</option>     
+     <option value='6'>Responsáveis Votantes</option>
    </select>
    </td>
     </tr>
    <tr id="tipo05">
      <td nowrap>
      <b>Tipo do Modelo:</b>
-      <?
+      <?php
       $sSqlDadosEduRelModel = $clEduRelatmodel->sql_query("",
                                                            "ed217_i_codigo,ed217_c_nome,ed217_i_relatorio",
                                                            "ed217_c_nome",
                                                            " ed217_i_relatorio = 5"
                                                           );
-      $rsDadosEduRelModel   = $clEduRelatmodel->sql_record($sSqlDadosEduRelModel); 
-           
+      $rsDadosEduRelModel   = $clEduRelatmodel->sql_record($sSqlDadosEduRelModel);
+
       ?>
       <select name="ed217_i_codigo" id= "ed217_i_codigo" style="font-size:9px;" >
       <option value=''></option>
-       <?if ($clEduRelatmodel->numrows == 0) {?>
+       <?php if ($clEduRelatmodel->numrows == 0) {?>
            <option value=''>Nenhum modelo cadastrado</option>
        <?} else {?>
-           <? 
+           <?php
            for ($x = 0; $x < $clEduRelatmodel->numrows; $x++) {
-            
+
              $oDadosRelatModel  = db_utils::fieldsMemory($rsDadosEduRelModel,$x);
              $iCodigo           = $oDadosRelatModel->ed217_i_codigo;
              $sNome             = $oDadosRelatModel->ed217_c_nome;
-             $iRelatorio        = $oDadosRelatModel->ed217_i_relatorio;                          
-             echo "<option value='$iCodigo'>$sNome</option>";               
+             $iRelatorio        = $oDadosRelatModel->ed217_i_relatorio;
+             echo "<option value='$iCodigo'>$sNome</option>";
            }
            ?>
-       <?}?>
+       <?php }?>
       </select>
      </td>
     </tr>
      <tr id="tipo06">
      <td nowrap>
      <b>Tipo do Modelo:</b>
-      <?
+      <?php
       $sSqlDadosEduRelModel = $clEduRelatmodel->sql_query("",
                                                            "ed217_i_codigo,ed217_c_nome,ed217_i_relatorio",
                                                            "ed217_c_nome",
                                                            "ed217_i_relatorio=6"
                                                           );
-      $rsDadosEduRelModel   = $clEduRelatmodel->sql_record($sSqlDadosEduRelModel); 
-           
+      $rsDadosEduRelModel   = $clEduRelatmodel->sql_record($sSqlDadosEduRelModel);
+
       ?>
       <select name="tipo6" id= "tipo6" style="font-size:9px;" >
       <option value=''></option>
-       <?if ($clEduRelatmodel->numrows == 0) {?>
+       <?php if ($clEduRelatmodel->numrows == 0) {?>
            <option value=''>Nenhum modelo cadastrado</option>
        <?} else {?>
-           <? 
+           <?php
            for ($x = 0; $x < $clEduRelatmodel->numrows; $x++) {
-            
+
              $oDadosRelatModel  = db_utils::fieldsMemory($rsDadosEduRelModel,$x);
              $iCodigo           = $oDadosRelatModel->ed217_i_codigo;
              $sNome             = $oDadosRelatModel->ed217_c_nome;
-             $iRelatorio        = $oDadosRelatModel->ed217_i_relatorio;                          
-             echo "<option value='$iCodigo'>$sNome</option>";               
+             $iRelatorio        = $oDadosRelatModel->ed217_i_relatorio;
+             echo "<option value='$iCodigo'>$sNome</option>";
            }
            ?>
-       <?}?>
+       <?php }?>
       </select>
      </td>
     </tr>
      <tr>
      <td>
-      <input name="pesquisar" type="button" id="pesquisar" value="Processar" 
+      <input name="pesquisar" type="button" id="pesquisar" value="Processar"
              onclick="js_pesquisa(document.form1.grupo.value);" disabled></td>
     </tr>
    </table>
@@ -309,7 +309,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -325,30 +325,30 @@ function js_pesquisa(curso) {
   turmas = "";
   sep = "";
   for (i = 0; i < document.form1.subgrupo.length; i++) {
-	  
+
 	if (document.form1.subgrupo.options[i].selected == true) {
-		
+
 	  turmas += sep+document.form1.subgrupo.options[i].value;
 	  sep = ",";
-	  
+
 	}
-	
+
   }
   if (document.form1.datavotacao.value == "") {
-		  
+
 	alert("Informe a data para votação!");
 	return false;
-		    
+
   }
-  
+
   sDataVotacao = document.form1.datavotacao.value;
   sSecretario  = document.form1.secretario.value;
   sPresidente  = document.form1.presidente.value;
-  if (document.form1.modelo.value == 5) {    
+  if (document.form1.modelo.value == 5) {
     var iTipoModelo = document.form1.ed217_i_codigo.value;
-    
+
   	if (iTipoModelo == "") {
-  		  
+
   	  alert("Informe o tipo de modelo!");
   	  return false;
     }
@@ -358,42 +358,42 @@ function js_pesquisa(curso) {
                       '','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 '
                      );
     jan.moveTo(0,0);
-    
-  } 
+
+  }
   if (document.form1.modelo.value == 6) {
 
     var iTipoModelo = document.form1.tipo6.value;
 
   	if (iTipoModelo == "") {
-  		  
+
   	  alert("Informe o tipo de modelo!");
   	  return false;
-  				    
+
   	}
-		  
+
     jan = window.open('edu2_alunovotante003.php?turmas='+turmas+'&iData='+sDataVotacao+
     	              '&sSecretario='+sSecretario+'&sPresidente='+sPresidente+'&iTipoModelo='+iTipoModelo,
                       '','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 '
                      );
     jan.moveTo(0,0);
   }
- 
+
 
 }
 
 function js_escolha() {
 
-  if (document.form1.modelo.value == 5) {    
+  if (document.form1.modelo.value == 5) {
     document.getElementById("tipo06").style.display= 'none';
     document.getElementById("tipo05").style.display= '';
-  }else{	  
+  }else{
 	  document.getElementById("tipo06").style.display= '';
 	  document.getElementById("tipo05").style.display= 'none';
   }
-	
+
 }
 function js_botao(valor) {
-	
+
   if (valor != "") {
     document.form1.pesquisar.disabled = false;
   } else {
@@ -401,10 +401,10 @@ function js_botao(valor) {
   }
 }
 
-<?if (!isset($turma) && pg_num_rows($sql_result) > 0) {?>
+<?php if (!isset($turma) && pg_num_rows($sql_result) > 0) {?>
 
     fillSelectFromArray(document.form1.subgrupo,team[0]);
     document.form1.grupo.options[1].selected = true;
-    
-<?}?>
+
+<?php }?>
 </script>

@@ -54,7 +54,12 @@ class DotacaoLicLicitaCon extends ArquivoLicitaCon {
 
     $aDotacoes = array();
 
-    $sCampos  = " distinct l20_codigo, o58_projativ, o58_codigo, o56_elemento ";
+    $sCampos  = " distinct l20_codigo, o58_projativ, o56_elemento,
+    (CASE WHEN o58_codigo IS NOT NULL THEN (
+        select o15_recurso from orctiporec
+        join fonterecurso on o15_codigo = orctiporec_id and exercicio = o58_anousu
+        where o15_codigo = o58_codigo)
+    END) AS cd_recurso_orcamentario";
     $aWhere   = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(), $this->oCabecalho->getDataGeracao());
     $aWhere[] = "l44_sigla not in ('LEI', 'MAI')";
 
@@ -80,7 +85,7 @@ class DotacaoLicLicitaCon extends ArquivoLicitaCon {
       $oDados->ANO_LICITACAO           = $oLicitacao->getAno();
       $oDados->CD_TIPO_MODALIDADE      = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
       $oDados->CD_PROJETO_ATIVIDADE    = $oDotacao->o58_projativ;
-      $oDados->CD_RECURSO_ORCAMENTARIO = $oDotacao->o58_codigo;
+      $oDados->CD_RECURSO_ORCAMENTARIO = $oDotacao->cd_recurso_orcamentario;
       $oDados->CD_NATUREZA_DESPESA     = substr($oDotacao->o56_elemento, 1, 6);
 
       $aDotacoes[] = $oDados;

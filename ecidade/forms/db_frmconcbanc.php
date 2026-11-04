@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -26,17 +26,14 @@
  */
 
 $lLiberado = true;
-
-/*
 $sSqlValidaDataConciliacao  = "select max(c99_data) ";
 $sSqlValidaDataConciliacao .= "  from condataconf ";
-$sSqlValidaDataConciliacao .= " where c99_instit = ".db_getsession("DB_instit");
+$sSqlValidaDataConciliacao .= " where 1 = 2 and c99_instit = ".db_getsession("DB_instit");
 $sSqlValidaDataConciliacao .= " having max(c99_data) >= '{$data}'";
 $rsValidaDataConciliacao   = db_query($sSqlValidaDataConciliacao);
 if (pg_num_rows($rsValidaDataConciliacao) > 0) {
   $lLiberado = false;
 }
-*/
 
 $lUltimaData = false;
 $sSqlValidaUltimaData  = "select max(k68_data) ";
@@ -79,54 +76,8 @@ if($rsDadosConta && pg_num_rows($rsDadosConta) > 0){
   db_fieldsmemory($rsDadosConta,0);
 }
 
-
-$sSqlReduz  = " select c61_reduz c61_reduz , 
-                       (select case 
-                                  when k97_situacao = 'D' 
-                                    then k97_saldofinal * -1 
-                                  else k97_saldofinal 
-                                end as k97_saldofinal 
-                           from extratosaldo 
-                          where k97_contabancaria = $conta 
-                            and k97_dtsaldofinal = '$data') as saldo_extrato";
-$sSqlReduz .= "   from contabancaria ";
-$sSqlReduz .= "     inner join conplanocontabancaria on c56_contabancaria = contabancaria.db83_sequencial ";
-$sSqlReduz .= "     inner join conplanoreduz         on conplanoreduz.c61_codcon = conplanocontabancaria.c56_codcon ";
-$sSqlReduz .= "                                     and conplanoreduz.c61_anousu = conplanocontabancaria.c56_anousu ";
-$sSqlReduz .= "                                     and conplanoreduz.c61_anousu = ".db_getsession('DB_anousu');
-$sSqlReduz .= "                                     and conplanoreduz.c61_instit = ".db_getsession('DB_instit');
-$sSqlReduz .= "  where contabancaria.db83_sequencial = {$conta} ";
-$rsReduz    = db_query($sSqlReduz);
-
-$sReduzidos = "Não Encontrado";
-$aReduzidos = array();
-if ( pg_numrows($rsReduz ) > 0) {
-
-
-    for( $i=0; $i < pg_numrows($rsReduz ); $i++ ){
-      
-      $oDados = db_utils::fieldsMemory($rsReduz, $i);
-      $aReduzidos[] = $oDados->c61_reduz;
-    }
-
-  $sReduzidos = implode(", ", $aReduzidos);
-
-
-
-
-}
-
-
 ?>
-<div id='disable' style='background-color: #000; 
-                         -moz-opacity: 0.6;
-                         opacity: 0.6; 
-                         filter:alpha(opacity=80); 
-                         position:absolute; 
-                         width: 0%;
-                         height: 0%; 
-                         top: 17; 
-                         left: 0; z-index: 9'>
+<div id='disable' style='background-color: #000; -moz-opacity: 0.6;opacity: 0.6; filter:alpha(opacity=80); position: absolute; width: 0%;height: 0%; top: 17; left: 0; z-index: 9'>
 </div>
 <form name="form1" enctype="multipart/form-data" method="post" action="">
 
@@ -142,7 +93,7 @@ if ( pg_numrows($rsReduz ) > 0) {
   <tr>
     <td align='left' width='50%'>
       <!-- dados do extrato bancario -->
-      <fieldset style="height: 105px;">
+      <fieldset>
       <Legend align="left"><b> Dados do Banco : </b></Legend>
         <table border=<?=$borda?> width='100%'>
           </tr>
@@ -151,14 +102,10 @@ if ( pg_numrows($rsReduz ) > 0) {
             <td nowrap> <b> Agencia : </b> <?=@$agencia?> </b> </td>
             <td nowrap> <b> Conta : </b>   <?=@$contabancaria?>     </b> </td>
           </tr>
-
           <tr >
             <td nowrap colspan=2 align=right>
-              <input name="esconderext" type="button" id="esconderext" value="Esconder"          
-                     onClick="js_hideFrame(document.getElementById('mostrarext'),this,'extrato',true);">
-
-              <input name="mostrarext"  type="button" id="mostrarext"  value="Mostrar" disabled  
-                     onClick="js_hideFrame(document.getElementById('esconderext'),this,'extrato',false);">
+              <input name="esconderext" type="button" id="esconderext" value="Esconder"          onClick="js_hideFrame(document.getElementById('mostrarext'),this,'extrato',true);">
+              <input name="mostrarext"  type="button" id="mostrarext"  value="Mostrar" disabled  onClick="js_hideFrame(document.getElementById('esconderext'),this,'extrato',false);">
             </td>
           </tr>
         </table>
@@ -167,25 +114,17 @@ if ( pg_numrows($rsReduz ) > 0) {
 
     <td align='left'>
     <!-- dados da autenticacao no sistema -->
-      <fieldset style="height: 105px;">
+      <fieldset>
       <Legend align="left"><b> Dados do Caixa : </b></Legend>
         <table border=<?=$borda?> width='100%' >
           <tr>
             <td nowrap><b>Descrição : </b> <?=@$descricao?> </td>
-            <td nowrap title="Reduzidos: (<?php echo $sReduzidos ?>)"><strong>Seq. Conta :  </strong> <?=@$reduzido?> </td>
+            <td nowrap><b>Seq. Conta :  </b> <?=@$reduzido?> </td>
           </tr>
-
-          <tr>
-            <td width="20%"></td>
-            <td ><strong>Reduzidos:</strong> <?php echo $sReduzidos ?></td>
-          </tr>
-
           <tr>
             <td nowrap colspan=2 align=right>
-              <input name="esconderaut" type="button" id="esconderaut" value="Esconder"          
-                     onClick="js_hideFrame(document.getElementById('mostraraut'),this,'autenticacoes',true);">
-              <input name="mostraraut"  type="button" id="mostraraut"  value="Mostrar"  disabled 
-                     onClick="js_hideFrame(document.getElementById('esconderaut'),this,'autenticacoes',false);">
+              <input name="esconderaut" type="button" id="esconderaut" value="Esconder"          onClick="js_hideFrame(document.getElementById('mostraraut'),this,'autenticacoes',true);">
+              <input name="mostraraut"  type="button" id="mostraraut"  value="Mostrar"  disabled onClick="js_hideFrame(document.getElementById('esconderaut'),this,'autenticacoes',false);">
             </td>
           </tr>
         </table>
@@ -207,8 +146,7 @@ if ( pg_numrows($rsReduz ) > 0) {
         </tr>
         <tr>
           <td>
-             <iframe name="iframeExtrato" id="iframeExtrato" 
-                     src="cai4_listaextrato.php?data=<?=$data?>&conta=<?=$conta?>" width='100%' height='300'></iframe>
+             <iframe name="iframeExtrato" id="iframeExtrato" src="cai4_listaextrato.php?data=<?=$data?>&conta=<?=$conta?>&datainicio=<?=$datainicio?>" width='100%' height='300'></iframe>
           </td>
         </tr>
       </table>
@@ -225,8 +163,7 @@ if ( pg_numrows($rsReduz ) > 0) {
         </tr>
         <tr>
           <td>
-            <iframe name="iframeAutent" id="iframeAutent" 
-            src="cai4_listaautenticacoes.php?data=<?=$data?>&conta=<?=$conta?>" width='100%' height='300' > </iframe>
+            <iframe name="iframeAutent" id="iframeAutent" src="cai4_listaautenticacoes.php?data=<?=$data?>&conta=<?=$conta?>&datainicio=<?=$datainicio?>" width='100%' height='300' > </iframe>
           </td>
         </tr>
       </table>
@@ -234,11 +171,7 @@ if ( pg_numrows($rsReduz ) > 0) {
     </td>
   </tr>
 </table>
-
-
-
-
-<! -- totalizadores -->
+<!-- totalizadores -->
 <table width=90% border=<?=$borda?>>
   <tr>
     <td align='right' width='50%'>
@@ -260,16 +193,60 @@ if ( pg_numrows($rsReduz ) > 0) {
               <Legend align="left"><b> Opções de visualização : </b></Legend>
               <table border=<?=$borda?> width='90%' >
                 <tr>
-                  <td align='center'> <b>Datas:</b>
                   <script>
                   function js_troca_data(data,codigo){
-                    document.location.href = 'cai4_concbanc001.php?conta=<?=$reduzido?>&data='+
-                            data.substr(6,4)+'-'+data.substr(3,2)+'-'+data.substr(0,2)+'&concilia='+codigo;
+                      document.location.href = 'cai4_concbanc001.php?conta=<?=$reduzido?>&data='+data.substr(6,4)+'-'+data.substr(3,2)+'-'+data.substr(0,2)+'&concilia='+codigo;
+                  }
+
+                  function js_calcular_datainicio(data){
+
+                      var url       = 'cai4_calculadatainicio.RPC.php';
+                      var oParam      = new Object();
+                      oParam.dataoriginal = data;
+                      oParam.reduzido = '<?php echo $reduzido; ?>';
+                      var oAjax       = new Ajax.Request(url,
+                                                    {method: 'post',
+                                                     parameters: 'json='+Object.toJSON(oParam),
+                                                     onComplete:js_atualizar_datainicio
+                                                    });
+                  }
+                  function js_atualizar_datainicio(oAjax){
+                      oRetorno = JSON.parse(oAjax.responseText);
+
+                      var retSeq = oRetorno.oSequencial;
+                      var sel = document.getElementById('datapi');
+                      var opts = sel.options;
+                      for(var opt, j = 0; opt = opts[j]; j++) {
+                          if(opt.value == retSeq) {
+                              sel.selectedIndex = j;
+                              break;
+                          }
+                      }
                   }
                   </script>
-                    <select name='data_conciliar' 
-                             onChange="js_troca_data(this.options[this.selectedIndex].text,this.value)">
-                  <?
+                   <td align='center'> <b>Datas inicial:</b>
+                    <select id='datapi' name='datapi'>
+                  <?php
+                  $sqlDadosContaDatas1 .= " select k68_sequencial as k68_sequencial1,
+                                                  k68_data as k68_data1
+                                             from concilia
+                                            where k68_contabancaria = {$reduzido}
+                                            and k68_data <= '$data' 
+                                            order by k68_data desc";
+
+                  $rsDadosContaDatas1   = db_query($sqlDadosContaDatas1);
+                  if($rsDadosContaDatas1 && pg_num_rows($rsDadosContaDatas1) > 0){
+                    for ($i=0;$i<pg_num_rows($rsDadosContaDatas1);$i++){
+                      db_fieldsmemory($rsDadosContaDatas1,$i);
+                      echo "<option value='$k68_sequencial1' ".($k68_sequencial1==$concilia?' selected ':'').">".db_formatar($k68_data1,'d')."</option>";
+                    }
+                  }
+                  ?>
+                  </select>
+                  </td>
+                  <td align='center'> <b>Datas:</b>
+                    <select name='data_conciliar' onChange="js_troca_data(this.options[this.selectedIndex].text,this.value)">
+                  <?php
                   $sqlDadosContaDatas .= " select k68_sequencial,
                                                   k68_data
                                              from concilia
@@ -280,71 +257,17 @@ if ( pg_numrows($rsReduz ) > 0) {
                     global $k68_data;
                     for ($i=0;$i<pg_num_rows($rsDadosContaDatas);$i++){
                       db_fieldsmemory($rsDadosContaDatas,$i);
-                      echo "<option value='$k68_sequencial' ".($k68_sequencial==$concilia?' selected ':'').">".
-                             db_formatar($k68_data,'d')."</option>";
+                      echo "<option value='$k68_sequencial' ".($k68_sequencial==$concilia?' selected ':'').">".db_formatar($k68_data,'d')."</option>";
                     }
                   }
                   ?>
                   </select>
                   </td>
-
-
-
-
-
-                  <td align='center'> 
-                    <strong>Arquivo:</strong>
-                      <?
-
-/*
-                      $sCampos = "distinct e75_codgera, 
-                                 'codret: ' || e75_codret || '-' || e75_arquivoret";
-
-                      $sWhere = "    c56_contabancaria = $conta 
-                                 and e76_dataefet <= '$data'::date 
-                                 and e80_instit = " . db_getsession("DB_instit");
-
-                      $sSql = $clempagedadosret->sql_query_retorna_arquivos( null,$sCampos, "e75_codgera", $sWhere);
-*/                      
-                      $sSql = $clempagedadosret->sql_query_retorna_arquivosFiltrados($conta, $data, $concilia)  ;   
-
-                      $rsArquivos = $clempagedadosret->sql_record($sSql);
-                      $db_passapar = "true";
-
-                      if($clempagedadosret->numrows == 0){
-                        $db_passapar = "false";
-                      }
-          
-                      db_selectrecord("e75_codgera",$rsArquivos,true,1,"","","","0-Nenhum");
-                      ?>
-          
-
-                    <input name="verobn" type="button" id="verobn" value="Marcar"onClick='js_verobn();' >
-
-   	              </td>
-
-                  
-
-                  <td align='center'> 
-                    <input name="chkConciliado"     type="checkbox" id="chkconciliado"     
-                           value="" checked onClick="js_escondeLinha(this,'conciliado');"> 
-                           <strong> Conciliados </strong> 
-                  </td>
-                  <td align='center'> 
-                    <input name="chkPendente"       type="checkbox" id="chkpendente"       
-                           value="" checked onClick="js_escondeLinha(this,'pendente');"> 
-                           <strong> Pendentes  </strong> 
-                  </td>
-                  <td align='center'> 
-                    <input name="chkPreselecionado" type="checkbox" id="chkpreselecionado" 
-                           value="" checked onClick="js_escondeLinha(this,'preselecionado');"> 
-                           <strong> Pre-selecionados</strong> 
-                  </td>
-                  <td align='center'> 
-                    <input name="chkNormal"         type="checkbox" id="chknormal"         
-                           value="" checked onClick="js_escondeLinha(this,'normal');" >
-                           <strong> Correntes   </strong> 
-                  </td>
+                  <td align='center'> <input name="chkConciliado"     type="checkbox" id="chkconciliado"     value="" checked onClick="js_escondeLinha(this,'conciliado');"     > <b> Conciliados      </b> </td>
+                  <!--<td align='center'> <input name="chkPendente"       type="checkbox" id="chkpendente"       value="" checked onClick="js_escondeLinha(this,'pendente');"       > <b> Pendentes        </b> </td>-->
+                  <td align='center'> <input name="chkPendente"       type="checkbox" id="chkpendente"       value="" onClick="carregarPendentes()"       > <b> Pendentes        </b> </td>
+                  <td align='center'> <input name="chkPreselecionado" type="checkbox" id="chkpreselecionado" value="" checked onClick="js_escondeLinha(this,'preselecionado');" > <b> Pre-selecionados </b> </td>
+                  <td align='center'> <input name="chkNormal"         type="checkbox" id="chknormal"         value="" checked onClick="js_escondeLinha(this,'normal');"         > <b> Correntes        </b> </td>
                 </tr>
               </table>
             </fieldset>
@@ -413,18 +336,10 @@ if ( pg_numrows($rsReduz ) > 0) {
               <input name="proximo"
                      type="button"
                      id="proximo"
-                     value="Próximo Dia"
+                     value="Proximo"
                      disabled="disabled"
-                     onClick='js_getProximaData("dia");'
-                     style='width:100px' >
-
-               <input name="proximomes"
-                     type="button"
-                     id="proximomes"
-                     value="Próximo Mês"
-                     disabled="disabled"
-                     onClick='js_getProximaData("mes");'
-                     style='width:100px' >                     
+                     onClick='js_getProximaData();'
+                     style='width:200px' >
             </td>
           </tr>
         </table>
@@ -471,14 +386,12 @@ function js_habilitaSalvar() {
   var lDesabilitaModoDesprocessar  = true;
   var lDesabilitaSalvar            = true;
   var lDesabilitarProximo          = true;
-  var lDesabilitarProximomes          = true;
 
   /**
    * Habilita botao proximo
    */
   if ( !lUltimaData ) {
     lDesabilitarProximo = false;
-    lDesabilitarProximomes = false;
   }
 
   /**
@@ -503,11 +416,9 @@ function js_habilitaSalvar() {
   $('desproc').disabled = lDesabilitaModoDesprocessar;
   $('salvar').disabled  = lDesabilitaSalvar;
   $("proximo").disabled = lDesabilitarProximo;
-  $("proximomes").disabled = lDesabilitarProximomes;
   if (!lBloqueProximo) {
 
     $("proximo").disabled = false;
-    $("proximomes").disabled = false;
     //lBloqueProximo = true;
   }
   return true;
@@ -563,9 +474,7 @@ function js_desprocessarItens(item,origem) {
 }
 
 function js_confirmaDesproc(){
-
-  var sMsg = ' Essa operacao implicara na geração de pendencias para os itens selecionados \n Confima operação ?';
-  var confirmacao = confirm(sMsg);
+  var confirmacao = confirm(' Essa operacao implicara na geração de pendencias para os itens selecionados \n Confima operação ?');
   if(!confirmacao){
     return false;
   }
@@ -604,8 +513,7 @@ function js_confirmaDesproc(){
     strJSONa = JSON.stringify(arrayObjAutent);
   }
   /*
-  //esse dois alertas deve retornar dois array de obj json, algo tipo "[object object],[object object],[object object]"
-   de acordo com a qtd marcada
+  // esse dois alertas deve retornar dois arrays de obj json, algo tipo "[object object],[object object],[object object]" de acordo com a qtd marcada
   eval('var objteste = '+strJSONa);
   alert(objteste);
 
@@ -724,15 +632,35 @@ function js_escondeLinha(obj,classe){
   }
 }
 
+function carregarPendentes() {
+
+  var oButtonSalvar = $('salvar');
+  oButtonSalvar.disabled  = true;
+  oButtonSalvar.removeClassName("bloqueado");
+
+   var data2 = document.getElementById('datapi');
+   var data3 = data2.options[data2.selectedIndex].text;
+   var datainicio = data3.substr(6,4)+'-'+data3.substr(3,2)+'-'+data3.substr(0,2);
+
+  var oDocumentExtrato      = iframeExtrato.document;
+  var oDocumentAutenticacao = iframeAutent.document;
+  oDocumentExtrato.getElementById('divloading_extrato').innerHTML = '<b>Aguarde, carregando...</b>';
+  oDocumentAutenticacao.getElementById('divloading_autenticacao').innerHTML = '<b>Aguarde, carregando...</b>';
+
+  iframeExtrato.js_processaRequest("<?=$data?>","<?=$conta?>", $('chkpendente').checked, datainicio);
+  iframeAutent.js_processaRequest("<?=$data?>","<?=$conta?>",  $('chkpendente').checked, datainicio);
+
+}
+
 function js_atualizar(){
 
   iframeExtrato.js_processaRequest("<?=$data?>","<?=$conta?>");
   iframeAutent.js_processaRequest("<?=$data?>","<?=$conta?>");
 
   $('chkconciliado').checked = true;
-  $('chkpendente').checked = true;
   $('chkpreselecionado').checked = true;
   $('chknormal').checked = true;
+  $('chkpendente').checked = false;
   lBloqueProximo = false;
 }
 
@@ -792,126 +720,6 @@ function js_selecao(){
 
 }
 
-
-
-function js_verobn() {
-
-var objIframeAutent  = iframeAutent.document;
-var objTableAutent   = objIframeAutent.getElementById('tabelaAutent');
-var strJSONa         = '';
-var arrayObjAutent   = new Array();
-
-if (objTableAutent != null && objTableAutent.rows != undefined ) {
-
-  for (i=0;i < objTableAutent.rows.length-1; i++ ) {
-
-    eval ('objTMP = '+objIframeAutent.getElementById("objJSON"+i).value);
-    marcado = objIframeAutent.getElementById('marcado'+i);
-    arquivo = objIframeAutent.getElementById('arquivo'+i);
-    autent = objIframeAutent.getElementById('autent'+i);
-
-    /*
-//      console.log('id: ' + i + ' - arquivo: ' + arquivo.innerHTML + 
-                    ' - autent: ' + autent.innerHTML + 
-                    ' - ' + marcado.checked + ' - ' + 
-                    objTMP.classe + ' - size: ' + 
-                    objTableAutent.rows.length + ' - codgera: ' + 
-                    document.form1.e75_codgera.value);
-
-//      console.log(arquivo.innerHTML);
-//      console.log(document.form1.e75_codgera.value);
-*/
-
-    if(objTMP.classe != 'conciliado' && arquivo.innerHTML.trim() == document.form1.e75_codgera.value.trim() ) {
-
-      if(marcado.checked == false ) {
-        eval ('arrayObjAutent['+i+'] = '+JSON.stringify(objTMP));
-            marcado.checked = true;
-        js_somaAutenticacoesobn(marcado,(i));
-      } else {
-         marcado.checked = false;
-        js_somaAutenticacoesobn(marcado,(i));
-      }
-    }
-
-
-  }
-  strJSONa = JSON.stringify(arrayObjAutent);
-}
-
-strJSONa = encodeURIComponent(strJSONa);
-
-}
-
-    function js_somaAutenticacoesobn(obj,id) {
-
-     // console.log("soma autent");
-
-      var objIframeAutent  = iframeAutent.document;
-      var objTableAutent   = objIframeAutent.getElementById('tabelaAutent');
-
-      var linha = objIframeAutent.getElementById('tablinha'+id);
-      var mostraMensagem = obj.checked;
-
-      var valordebito  = objIframeAutent.getElementById('valdeb'+id).innerHTML;
-      var valorcredito = objIframeAutent.getElementById('valcred'+id).innerHTML;
-
-      var valdeb = valordebito.replace(/\./gi,"");
-      valdeb = valdeb.replace(",",".");
-      valdeb2 = new Number( valdeb );
-
-      var valcred = valorcredito.replace(/\./gi,"");
-      valcred = valcred.replace(",",".");
-      valcred2 = new Number( valcred );
-
-//      console.log( document.form1.totalautent.value );
-
-      if (obj.checked) {
-
-        var classeatual  = 'selecionado';
-
-        js_somaobn( valdeb2,  document.form1.totalautent.value,'-' );
-        js_somaobn( valcred2, document.form1.totalautent.value,'+' );
-
-      } else {
-
-        eval('var objJSON = '+objIframeAutent.getElementById('objJSON'+id).value);
-        var classeatual = objJSON.classe;
-
-        js_somaobn( valdeb2,  document.form1.totalautent.value,'+' );
-        js_somaobn( valcred2, document.form1.totalautent.value,'-' );
-
-      }
-
-      objTableAutent.rows[(id+1)].className = classeatual;
-
-////      js_comparaValores(mostraMensagem);
-
-    }
-
-
-    function js_somaobn(val,obj,operador) {
-
-      if(typeof(obj.value) == 'string' && obj.value == '' ){
-        var valantes = new Number('0.00');
-      } else {
-        var valantes = new Number( obj );
-      }
-      
-      //      console.log('somando ' + valantes + ' com ' + val + ' - operador: ' + operador);
-      
-      if ( operador == '+' ) {
-        document.form1.totalautent.value = new String((valantes + val).toFixed(2));
-      } else {
-        document.form1.totalautent.value = new String((valantes - val).toFixed(2));
-      }
-
-//      eval ('obj.value = new String( ( valantes '+operador+' val ).toFixed(2) ) ');
-
-}
-
-
-
 /* funcao para salvar conciliacao ( pega os registro que nao estao conciliados e gera pendencia ) */
 function js_salvarConciliacao(){
 
@@ -920,11 +728,8 @@ function js_salvarConciliacao(){
   oButtonSalvar.addClassName("bloqueado");
 
   $('proximo').disabled = true;
-  $('proximomes').disabled = true;
 
-  var sMsg  = "Deseja realmente salvar essa conciliacao? \n ";
-      sMsg += "Essa operacao vai gerar pendencia \n para todos os registros nao conciliados";
-  var confirmacao = confirm(sMsg );
+  var confirmacao = confirm('Deseja realmente salvar essa conciliacao? \n Essa operacao vai gerar pendencia \n para todos os registros nao conciliados');
 
   if (!confirmacao) {
 
@@ -956,7 +761,7 @@ function js_salvarConciliacao(){
 //      eval ('objTMP = '+objIframeExtrato.getElementById("objJSON"+i).value);
       if(objTMP.classe != 'conciliado'){
         objTMP.historico = '';
-//        eval ('arrayObjExtrato['+ii+'] = '+JSON.stringify(objTMP));
+//        eval ('arrayObjExtrato['+ii+'] = '+objTMP.toSource());
         arrayObjExtrato[ii] = objTMP;
         ii++;
         marcado.disabled = true;
@@ -978,7 +783,7 @@ function js_salvarConciliacao(){
       objTMP.detalhe = tagString(objTMP.detalhe);
       if (objTMP.classe != 'conciliado'){
         objTMP.credor = '';
-//        eval ('arrayObjAutent['+ii+'] = '+JSON.stringify(objTMP));
+//        eval ('arrayObjAutent['+ii+'] = '+objTMP.toSource());
         arrayObjAutent[ii] = objTMP;
         ii++;
         marcado.disabled = true;
@@ -989,8 +794,8 @@ function js_salvarConciliacao(){
 
   }
 
-  strJSONa = encodeURIComponent(strJSONa);
-  strJSONe = encodeURIComponent(strJSONe);
+  strJSONa = strJSONa;
+  strJSONe = strJSONe;
 
   js_removeObj("msgBoxSalvarConciliacao");
 
@@ -1005,11 +810,7 @@ function js_processaConciliacao(strJSONExtrato,strJSONAutent,solicitacao,concili
   var pardata   = $('data').value;
   var parconta  = $('conta').value;
   var url       = 'cai4_processaconciliacao.php';
-  var parametro = 'strJSONExtrato='+strJSONExtrato.replace(/#/g,'')+'&strJSONAutent='+strJSONAutent.replace(/#/g,'')+
-                     '&solicitacao='+solicitacao+
-                     '&concilia='+concilia+
-                     '&data='+pardata+
-                     '&conta='+parconta;
+  var parametro = 'strJSONExtrato='+strJSONExtrato.replace(/#/g,'')+'&strJSONAutent='+strJSONAutent.replace(/#/g,'')+'&solicitacao='+solicitacao+'&concilia='+concilia+'&data='+pardata+'&conta='+parconta;
   var objAjax   = new Ajax.Request (url,{
                                           method:'post',
                                           parameters:parametro,
@@ -1038,29 +839,20 @@ function js_retornoConciliacao(resposta) {
 
 
   $('proximo').disabled = lBloqueProximo;
-  $('proximomes').disabled = lBloqueProximo;
   $('procconc').disabled = true;
   $('salvo').value       = true;
   $('salvar').disabled   = true;
-//  $('salvar').addClassName("bloqueado");
+  $('salvar').addClassName("bloqueado");
 }
 
-function js_getProximaData(acao){
+function js_getProximaData(){
 
-
-
-
-  //$("proximo").disabled = true;
-
-  $("proximo").disabled = false;
-  $("proximomes").disabled = false;
-
-
+  $("proximo").disabled = true;
   js_divCarregando("Aguarde, carregando informações...", "msgBoxDatas");
 
   var url       = 'cai4_carregadatascorrente.php';
   var sData      = document.getElementById('data').value;
-  var parametro = 'conta='+document.getElementById('conta').value+'&sData='+sData+'&acao='+acao;
+  var parametro = 'conta='+document.getElementById('conta').value+'&sData='+sData;
   var objAjax   = new Ajax.Request (url,{method:'post',parameters:parametro, onComplete:js_setProximadata});
 
 }
@@ -1077,7 +869,6 @@ function js_setProximadata(resposta){
     colunas = linhas[0].split(";");
     obj.value = colunas[0];
     if (colunas[1] != "") {
-
       var confirmacao = confirm('Deseja abrir proxima conciliacao para conta: '+conta+' e data: '+colunas[1]+' ?');
       if (confirmacao){
 

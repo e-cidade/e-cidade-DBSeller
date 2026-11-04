@@ -47,6 +47,31 @@ require_once modification('dbforms/db_funcoes.php');
     <script src="scripts/widgets/DBFileUpload.widget.js" rel="script" type="text/javascript"></script>
     <script src="scripts/AjaxRequest.js" rel="script" type="text/javascript"></script>
     <script src="scripts/classes/http/http.js" rel="script" type="text/javascript"></script>
+    <style>
+        #message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            margin-top: 10px;
+            padding: 20px;
+            font-size: 20px;
+
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            margin-top: 10px;
+            padding: 20px;
+            font-size: 20px;
+        }
+      
+    </style>
 </head>
 <body class="body-default">
 <div class="container">
@@ -117,12 +142,17 @@ require_once modification('dbforms/db_funcoes.php');
         </fieldset>
         <input type="button" id="processar" value="Processar" disabled/>
     </form>
-</div>
+
+    </div>
+<div id="message"></div>
 <?php
 db_menu();
 ?>
 <script rel="script" type="text/javascript">
     (() => {
+        message.classList.remove('alert-danger')
+        message.classList.remove('alert-success')
+        message.innerHTML = ''
         const EFD_REINF = '1';
         const ESOCIAL = '2';
         const urlParams = new URLSearchParams(window.location.search);
@@ -172,20 +202,6 @@ db_menu();
             labelButton: 'Arquivo'
         });
 
-        const validar = () => {
-            return new Promise((resolve, reject) => {
-                if (inputPassword.value === '') {
-                    return reject('O campo "Senha do Certificado" é obrigatório.');
-                }
-
-                if (inputUploadFile.value === '') {
-                    return reject('O campo "Arquivo" é obrigatório.');
-                }
-
-                resolve();
-            });
-        };
-
         const changeSelectEmpregador = () => {
             empregadorSelecionado = empregadores.get(selectEmpregador.value);
             inputDocumento.defaultValue = empregadorSelecionado.cnpj;
@@ -210,14 +226,25 @@ db_menu();
         };
 
         const clickButtonProcessar = () => {
-            validar().then(() => {
+
                 const formData = new FormData();
                 const parametros = {
                     exec: 'empregador',
                     senha: encodeURIComponent(tagString(inputPassword.value)),
                     sFile: fileUpload.file,
-                    sPath: fileUpload.filePath
+                    sPath: fileUpload.filePath,
+                    integracao: integracao
                 };
+
+                if (inputPassword.value === '') {
+                    alert('O campo "Senha do Certificado" é obrigatório.');
+                    return false
+                }
+
+                if (inputUploadFile.value === '') {
+                    alert('O campo "Arquivo" é obrigatório.');
+                    return false 
+                }
 
                 if (integracao === EFD_REINF) {
                     parametros.empregador = selectContribuinte.value;
@@ -230,7 +257,6 @@ db_menu();
                     parametros.documento = empregadorSelecionado.cnpj;
                     parametros.razao_social = empregadorSelecionado.nome;
                 }
-
                 var opcao = selectProcuracao.value;
                 if (opcao == 1) {
                     if (inputProcuracaoDocumento.value == '') {
@@ -248,7 +274,17 @@ db_menu();
                 HttpClient.post('eso4_esocialapi.RPC.php', {
                     body: formData
                 }).then(response => {
-                    alert(response.sMessage);
+                    if (response.Code === 422) {
+                        message.innerHTML = 'Certificado não instalado. Favor verificar Senha.'
+                        message.classList.add('alert-danger')
+                    } else {
+                        if (response.dataValidadeCertificado.dataValidadeCertificado != undefined) {
+                            let data = response.dataValidadeCertificado.dataValidadeCertificado.split('-')
+                            let dataFormatada = data[2]+'/'+data[1]+'/'+data[0]
+                            message.innerHTML = 'Certificado Instalado com Sucesso . Data do Certificado Digital atual possui validade até . '+dataFormatada
+                            message.classList.add('alert-success')
+                        }
+                    }
 
                     if (response.erro) {
                         inputPassword.value = '';
@@ -260,7 +296,7 @@ db_menu();
                     inputUploadFile.value = '';
                     resetaProcuracao();
                 });
-            }).catch(e => alert(e));
+            
         };
 
         const resetaProcuracao = () => {

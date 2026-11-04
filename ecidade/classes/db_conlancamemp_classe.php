@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ class cl_conlancamemp
                  ";
 
     //funcao construtor da classe
-    function cl_conlancamemp()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conlancamemp");
@@ -65,7 +65,7 @@ class cl_conlancamemp
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -76,7 +76,7 @@ class cl_conlancamemp
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->c75_codlan = ($this->c75_codlan == "" ? @$GLOBALS["HTTP_POST_VARS"]["c75_codlan"] : $this->c75_codlan);
@@ -95,7 +95,7 @@ class cl_conlancamemp
     }
 
     // funcao para inclusao
-    function incluir($c75_codlan)
+    public function incluir($c75_codlan)
     {
         $this->atualizacampos();
         if ($this->c75_numemp == null) {
@@ -173,7 +173,7 @@ class cl_conlancamemp
     }
 
     // funcao para alteracao
-    function alterar($c75_codlan = null)
+    public function alterar($c75_codlan = null)
     {
         $this->atualizacampos();
         $sql = " update conlancamemp set ";
@@ -284,7 +284,7 @@ class cl_conlancamemp
     }
 
     // funcao para exclusao
-    function excluir($c75_codlan = null, $dbwhere = null)
+    public function excluir($c75_codlan = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($c75_codlan));
@@ -349,7 +349,7 @@ class cl_conlancamemp
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -373,7 +373,7 @@ class cl_conlancamemp
         return $result;
     }
 
-    function sql_query($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -409,7 +409,7 @@ class cl_conlancamemp
         return $sql;
     }
 
-    function sql_query_file($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -449,7 +449,7 @@ class cl_conlancamemp
      * Retorna os Pagamento de Empenho para arquivo txt do TCE (Sigfis)
      * @return string
      */
-    function sql_query_pagamentoEmpenho($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pagamentoEmpenho($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -499,7 +499,7 @@ class cl_conlancamemp
         return $sql;
     }
 
-    function sql_query_pagamentoEmpenhoSemOP($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pagamentoEmpenhoSemOP($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -546,7 +546,7 @@ class cl_conlancamemp
         return $sql;
     }
 
-    function sql_query_empenho_contrato($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_empenho_contrato($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -589,7 +589,7 @@ class cl_conlancamemp
         return $sql;
     }
 
-    function sql_query_dadoslancamento($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_dadoslancamento($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -630,7 +630,7 @@ class cl_conlancamemp
     }
 
 
-    function sql_query_verificaBensBaixados($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_verificaBensBaixados($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select distinct ";
         if ($campos != "*") {
@@ -763,7 +763,7 @@ class cl_conlancamemp
      * @param null $anoResto
      * @return string
      */
-    public function sql_query_dados_empenho($campos, $where, $order, $group, $resto=false, $anoResto = null)
+    public function sql_query_dados_empenho($campos, $where, $order, $group, $resto = false, $anoResto = null)
     {
 
         $sql = "select {$campos} ";
@@ -833,7 +833,7 @@ class cl_conlancamemp
     {
 
         if (empty($where)) {
-           $where = "true";
+            $where = "true";
         }
         $sql  = "select ele.o56_descr as c60_descr, ";
         $sql .= "       ele.o56_elemento as c60_estrut, ";
@@ -920,7 +920,7 @@ class cl_conlancamemp
         return $sql;
     }
 
-    function sql_query_dados($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_dados($c75_codlan = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select {$campos}";
         $sql .= " from conlancamemp ";
@@ -944,6 +944,80 @@ class cl_conlancamemp
                 $virgula = ",";
             }
         }
+        return $sql;
+    }
+
+    public function getSsqlBuscaPagamentos($iAnoUso, $dtDataInicial, $dtDataFinal, $instituicaoSessao)
+    {
+
+
+        $sql = <<< SQL
+        select
+            empempenho.e60_codemp,
+            empempenho.e60_anousu,
+            conlancam.c70_data,
+            orcdotacao.o58_orgao,
+            array_to_string(array_accum(distinct c60_estrut || '-' || c60_codcon),
+            ',') as c60_estrut,
+            array_to_string(array_accum(distinct c60_codcon),
+            ',') as c60_codcon,
+            array_to_string(array_accum(distinct c61_reduz || '-' || c60_codcon),
+            ',') as c61_reduz,
+            array_to_string(array_accum(distinct c70_codlan),
+            ',') as c70_codlan,
+            array_to_string(array_accum(distinct pagordem.e50_codord),
+            ',') as codordem,
+            to_char(max(conlancam.c70_data),
+            'YYYYmm') as competencia,
+            orcdotacao.o58_unidade,
+            round(sum(case when c53_tipo = 30 and c53_coddoc not in (6002, 6003, 6004, 6005, 6008, 6009, 6010, 6011) then conlancam.c70_valor when c53_tipo = 31 and c53_coddoc not in (6002, 6003, 6004, 6005, 6008, 6009, 6010, 6011) then (conlancam.c70_valor * -1) else 0 end),
+            2) as valor_pago
+        from
+            conlancamemp
+        inner join conlancam on
+            conlancam.c70_codlan = conlancamemp.c75_codlan
+        inner join conlancamord on
+            conlancamord.c80_codlan = conlancam.c70_codlan
+        inner join pagordem on
+            pagordem.e50_codord = conlancamord.c80_codord
+        inner join empempenho on
+            empempenho.e60_numemp = conlancamemp.c75_numemp
+        inner join cgm on
+            cgm.z01_numcgm = empempenho.e60_numcgm
+        inner join conlancamdoc on
+            conlancamdoc.c71_codlan = conlancam.c70_codlan
+        inner join orcdotacao on
+            orcdotacao.o58_anousu = empempenho.e60_anousu
+            and orcdotacao.o58_coddot = empempenho.e60_coddot
+        inner join conhistdoc on
+            conhistdoc.c53_coddoc = conlancamdoc.c71_coddoc
+        inner join conlancampag on
+            conlancampag.c82_codlan = conlancam.c70_codlan
+        inner join conplanoreduz on
+            conplanoreduz.c61_reduz = conlancampag.c82_reduz
+            and conplanoreduz.c61_anousu = conlancampag.c82_anousu
+        inner join conplano on
+            conplano.c60_codcon = conplanoreduz.c61_codcon
+            and conplano.c60_anousu = conplanoreduz.c61_anousu
+        where
+            conlancam.c70_anousu = {$iAnoUso}
+            and empempenho.e60_instit = {$instituicaoSessao}
+            and empempenho.e60_anousu = {$iAnoUso}
+            and conhistdoc.c53_tipo in (30, 31)
+            and conlancam.c70_data between cast('{$dtDataInicial}' as date) and cast('{$dtDataFinal}' as date)
+        group by
+            empempenho.e60_codemp,
+            empempenho.e60_anousu,
+            c70_data,
+            orcdotacao.o58_orgao,
+            empempenho.e60_numemp,
+            orcdotacao.o58_unidade
+        order by
+            empempenho.e60_codemp,
+            conlancam.c70_data
+
+SQL;
+
         return $sql;
     }
 }

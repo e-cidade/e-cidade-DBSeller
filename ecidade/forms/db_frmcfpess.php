@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -33,7 +33,7 @@ $clrotulo->label("db77_descr");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php
 $r11_anousu = db_anofolha();
 $r11_mesusu = db_mesfolha();
 db_input('r11_anousu',4,$Ir11_anousu,true,'hidden',$db_opcao,"");
@@ -44,7 +44,7 @@ db_input('r11_mesusu',2,$Ir11_mesusu,true,'hidden',$db_opcao,"");
        <?=@$Lr11_codaec?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_codaec',5,$Ir11_codaec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('r11_codaec',5,$Ir11_codaec,true,'text',$db_opcao,"")
        <?=@$Lr11_natest?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_natest',4,$Ir11_natest,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('r11_natest',4,$Ir11_natest,true,'text',$db_opcao,"")
        <?=@$Lr11_cdfpas?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_cdfpas',4,$Ir11_cdfpas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('r11_cdfpas',4,$Ir11_cdfpas,true,'text',$db_opcao,"")
        <?=@$Lr11_cdactr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_cdactr',7,$Ir11_cdactr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('r11_cdactr',7,$Ir11_cdactr,true,'text',$db_opcao,"")
        <?=@$Lr11_peactr?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_peactr',15,$Ir11_peactr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('r11_peactr',15,$Ir11_peactr,true,'text',$db_opcao,"")
        <?=@$Lr11_pctemp?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_pctemp',15,$Ir11_pctemp,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('r11_pctemp',15,$Ir11_pctemp,true,'text',$db_opcao,"")
        <?=@$Lr11_pcterc?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_pcterc',15,$Ir11_pcterc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('r11_pcterc',15,$Ir11_pcterc,true,'text',$db_opcao,"")
        <?=@$Lr11_fgts12?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fgts12',1,$Ir11_fgts12,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_input('r11_fgts12',1,$Ir11_fgts12,true,'text',$db_opcao,"")
        <?=@$Lr11_cdcef?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_cdcef',5,$Ir11_cdcef,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -134,7 +134,7 @@ db_input('r11_cdcef',5,$Ir11_cdcef,true,'text',$db_opcao,"")
        <?=@$Lr11_cdfgts?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_cdfgts',8,$Ir11_cdfgts,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,7 +144,7 @@ db_input('r11_cdfgts',8,$Ir11_cdfgts,true,'text',$db_opcao,"")
        <?=@$Lr11_ultger?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r11_ultger',@$r11_ultger_dia,@$r11_ultger_mes,@$r11_ultger_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -154,7 +154,7 @@ db_inputdata('r11_ultger',@$r11_ultger_dia,@$r11_ultger_mes,@$r11_ultger_ano,tru
        <?=@$Lr11_ultfec?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r11_ultfec',@$r11_ultfec_dia,@$r11_ultfec_mes,@$r11_ultfec_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -164,7 +164,7 @@ db_inputdata('r11_ultfec',@$r11_ultfec_dia,@$r11_ultfec_mes,@$r11_ultfec_ano,tru
        <?=@$Lr11_arredn?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_arredn',1,$Ir11_arredn,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -174,7 +174,7 @@ db_input('r11_arredn',1,$Ir11_arredn,true,'text',$db_opcao,"")
        <?=@$Lr11_sald13?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_sald13',$x,true,$db_opcao,"");
 ?>
@@ -185,7 +185,7 @@ db_select('r11_sald13',$x,true,$db_opcao,"");
        <?=@$Lr11_datai?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r11_datai',@$r11_datai_dia,@$r11_datai_mes,@$r11_datai_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -195,7 +195,7 @@ db_inputdata('r11_datai',@$r11_datai_dia,@$r11_datai_mes,@$r11_datai_ano,true,'t
        <?=@$Lr11_dataf?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r11_dataf',@$r11_dataf_dia,@$r11_dataf_mes,@$r11_dataf_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -205,7 +205,7 @@ db_inputdata('r11_dataf',@$r11_dataf_dia,@$r11_dataf_mes,@$r11_dataf_ano,true,'t
        <?=@$Lr11_fecha?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fecha',12,$Ir11_fecha,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -215,7 +215,7 @@ db_input('r11_fecha',12,$Ir11_fecha,true,'text',$db_opcao,"")
        <?=@$Lr11_ultreg?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_ultreg',6,$Ir11_ultreg,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -225,7 +225,7 @@ db_input('r11_ultreg',6,$Ir11_ultreg,true,'text',$db_opcao,"")
        <?=@$Lr11_codipe?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_codipe',3,$Ir11_codipe,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -235,7 +235,7 @@ db_input('r11_codipe',3,$Ir11_codipe,true,'text',$db_opcao,"")
        <?=@$Lr11_mes13?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_mes13',2,$Ir11_mes13,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -245,7 +245,7 @@ db_input('r11_mes13',2,$Ir11_mes13,true,'text',$db_opcao,"")
        <?=@$Lr11_tbprev?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_tbprev',1,$Ir11_tbprev,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -255,7 +255,7 @@ db_input('r11_tbprev',1,$Ir11_tbprev,true,'text',$db_opcao,"")
        <?=@$Lr11_confer?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_confer',$x,true,$db_opcao,"");
 ?>
@@ -266,7 +266,7 @@ db_select('r11_confer',$x,true,$db_opcao,"");
        <?=@$Lr11_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_valor',15,$Ir11_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -276,7 +276,7 @@ db_input('r11_valor',15,$Ir11_valor,true,'text',$db_opcao,"")
        <?=@$Lr11_dtipe?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_dtipe',1,$Ir11_dtipe,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -286,7 +286,7 @@ db_input('r11_dtipe',1,$Ir11_dtipe,true,'text',$db_opcao,"")
        <?=@$Lr11_implan?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_implan',7,$Ir11_implan,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -296,7 +296,7 @@ db_input('r11_implan',7,$Ir11_implan,true,'text',$db_opcao,"")
        <?=@$Lr11_subpes?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_subpes',7,$Ir11_subpes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -306,7 +306,7 @@ db_input('r11_subpes',7,$Ir11_subpes,true,'text',$db_opcao,"")
        <?=@$Lr11_rubmat?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_rubmat',4,$Ir11_rubmat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -316,7 +316,7 @@ db_input('r11_rubmat',4,$Ir11_rubmat,true,'text',$db_opcao,"")
        <?=@$Lr11_eleina?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_eleina',12,$Ir11_eleina,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -326,7 +326,7 @@ db_input('r11_eleina',12,$Ir11_eleina,true,'text',$db_opcao,"")
        <?=@$Lr11_elepen?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_elepen',12,$Ir11_elepen,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -336,7 +336,7 @@ db_input('r11_elepen',12,$Ir11_elepen,true,'text',$db_opcao,"")
        <?=@$Lr11_rubnat?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_rubnat',4,$Ir11_rubnat,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -346,7 +346,7 @@ db_input('r11_rubnat',4,$Ir11_rubnat,true,'text',$db_opcao,"")
        <?=@$Lr11_rubdec?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_rubdec',4,$Ir11_rubdec,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -356,7 +356,7 @@ db_input('r11_rubdec',4,$Ir11_rubdec,true,'text',$db_opcao,"")
        <?=@$Lr11_qtdcal?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_qtdcal',3,$Ir11_qtdcal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -366,7 +366,7 @@ db_input('r11_qtdcal',3,$Ir11_qtdcal,true,'text',$db_opcao,"")
        <?=@$Lr11_palime?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_palime',4,$Ir11_palime,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -376,7 +376,7 @@ db_input('r11_palime',4,$Ir11_palime,true,'text',$db_opcao,"")
        <?=@$Lr11_altfer?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_altfer',7,$Ir11_altfer,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -386,7 +386,7 @@ db_input('r11_altfer',7,$Ir11_altfer,true,'text',$db_opcao,"")
        <?=@$Lr11_ferias?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_ferias',4,$Ir11_ferias,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -396,7 +396,7 @@ db_input('r11_ferias',4,$Ir11_ferias,true,'text',$db_opcao,"")
        <?=@$Lr11_fer13?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fer13',4,$Ir11_fer13,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -406,7 +406,7 @@ db_input('r11_fer13',4,$Ir11_fer13,true,'text',$db_opcao,"")
        <?=@$Lr11_ferant?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_ferant',4,$Ir11_ferant,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -416,7 +416,7 @@ db_input('r11_ferant',4,$Ir11_ferant,true,'text',$db_opcao,"")
        <?=@$Lr11_fer13o?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fer13o',4,$Ir11_fer13o,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -426,7 +426,7 @@ db_input('r11_fer13o',4,$Ir11_fer13o,true,'text',$db_opcao,"")
        <?=@$Lr11_fer13a?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fer13a',4,$Ir11_fer13a,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -436,7 +436,7 @@ db_input('r11_fer13a',4,$Ir11_fer13a,true,'text',$db_opcao,"")
        <?=@$Lr11_ferabo?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_ferabo',4,$Ir11_ferabo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -446,7 +446,7 @@ db_input('r11_ferabo',4,$Ir11_ferabo,true,'text',$db_opcao,"")
        <?=@$Lr11_feabot?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_feabot',4,$Ir11_feabot,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -456,7 +456,7 @@ db_input('r11_feabot',4,$Ir11_feabot,true,'text',$db_opcao,"")
        <?=@$Lr11_feradi?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_feradi',4,$Ir11_feradi,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -466,7 +466,7 @@ db_input('r11_feradi',4,$Ir11_feradi,true,'text',$db_opcao,"")
        <?=@$Lr11_fadiab?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fadiab',4,$Ir11_fadiab,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -476,7 +476,7 @@ db_input('r11_fadiab',4,$Ir11_fadiab,true,'text',$db_opcao,"")
        <?=@$Lr11_recalc?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_recalc',$x,true,$db_opcao,"");
 ?>
@@ -487,7 +487,7 @@ db_select('r11_recalc',$x,true,$db_opcao,"");
        <?=@$Lr11_pagaab?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_pagaab',$x,true,$db_opcao,"");
 ?>
@@ -498,7 +498,7 @@ db_select('r11_pagaab',$x,true,$db_opcao,"");
        <?=@$Lr11_fersal?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_fersal',1,$Ir11_fersal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -508,7 +508,7 @@ db_input('r11_fersal',1,$Ir11_fersal,true,'text',$db_opcao,"")
        <?=@$Lr11_vtprop?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_vtprop',$x,true,$db_opcao,"");
 ?>
@@ -519,7 +519,7 @@ db_select('r11_vtprop',$x,true,$db_opcao,"");
        <?=@$Lr11_desliq?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_desliq',20,$Ir11_desliq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -529,7 +529,7 @@ db_input('r11_desliq',20,$Ir11_desliq,true,'text',$db_opcao,"")
        <?=@$Lr11_propae?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_propae',$x,true,$db_opcao,"");
 ?>
@@ -540,7 +540,7 @@ db_select('r11_propae',$x,true,$db_opcao,"");
        <?=@$Lr11_propac?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_propac',$x,true,$db_opcao,"");
 ?>
@@ -548,15 +548,15 @@ db_select('r11_propac',$x,true,$db_opcao,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tr11_codestrut?>">
-       <?
+       <?php
        db_ancora(@$Lr11_codestrut,"js_pesquisar11_codestrut(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_codestrut',6,$Ir11_codestrut,true,'text',$db_opcao," onchange='js_pesquisar11_codestrut(false);'")
 ?>
-       <?
+       <?php
 db_input('db77_descr',40,$Idb77_descr,true,'text',3,'')
        ?>
     </td>
@@ -566,7 +566,7 @@ db_input('db77_descr',40,$Idb77_descr,true,'text',3,'')
        <?=@$Lr11_geracontipe?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_geracontipe',$x,true,$db_opcao,"");
 ?>
@@ -577,7 +577,7 @@ db_select('r11_geracontipe',$x,true,$db_opcao,"");
        <?=@$Lr11_13ferias?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_13ferias',$x,true,$db_opcao,"");
 ?>
@@ -588,7 +588,7 @@ db_select('r11_13ferias',$x,true,$db_opcao,"");
        <?=@$Lr11_pagarferias?>
     </td>
     <td> 
-<?
+<?php
 $x = array('S'=>'Salário','C'=>'Complementar');
 db_select('r11_pagarferias',$x,true,$db_opcao,"");
 ?>
@@ -599,7 +599,7 @@ db_select('r11_pagarferias',$x,true,$db_opcao,"");
        <?=@$Lr11_vtfer?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_vtfer',$x,true,$db_opcao,"");
 ?>
@@ -610,7 +610,7 @@ db_select('r11_vtfer',$x,true,$db_opcao,"");
        <?=@$Lr11_vtcons?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_vtcons',$x,true,$db_opcao,"");
 ?>
@@ -621,7 +621,7 @@ db_select('r11_vtcons',$x,true,$db_opcao,"");
        <?=@$Lr11_vtmpro?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('r11_vtmpro',$x,true,$db_opcao,"");
 ?>
@@ -632,7 +632,7 @@ db_select('r11_vtmpro',$x,true,$db_opcao,"");
        <?=@$Lr11_localtrab?>
     </td>
     <td> 
-<?
+<?php
 db_input('r11_localtrab',8,$Ir11_localtrab,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -642,7 +642,7 @@ db_input('r11_localtrab',8,$Ir11_localtrab,true,'text',$db_opcao,"")
        <?=@$Lr11_databaseatra?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('r11_databaseatra',@$r11_databaseatra_dia,@$r11_databaseatra_mes,@$r11_databaseatra_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -681,7 +681,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_cfpess.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

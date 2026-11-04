@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,13 +53,13 @@ db_postmemory($HTTP_POST_VARS);
 <style>
 </style>
 </head>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
         <form name="form1" method="post" action="" target="">
            <center>
@@ -71,23 +71,23 @@ db_postmemory($HTTP_POST_VARS);
 	       <tr>
                  <td align="left" colspan="3">
                    <table>
-                     <tr> <td><br><br><br> <b>Data de emiss&atilde;o  de:</b><?db_inputdata("data","","","","true","text",2)      ?>      </td>
-	               <td><br><br><br><b>Ate:</b>  <?db_inputdata("data1","","","","true","text",2)      ?> </td>
+                     <tr> <td><br><br><br> <b>Data de emiss&atilde;o  de:</b><?php db_inputdata("data","","","","true","text",2)      ?>      </td>
+	               <td><br><br><br><b>Ate:</b>  <?php db_inputdata("data1","","","","true","text",2)      ?> </td>
 	             </tr>
                      <tr>
-	                <td><b>Data do recebimento de:</b><?db_inputdata("data2","","","","true","text",2)      ?>      </td>
-	                <td><b>Ate:</b>  <?db_inputdata("data3","","","","true","text",2)      ?> </td>
+	                <td><b>Data do recebimento de:</b><?php db_inputdata("data2","","","","true","text",2)      ?>      </td>
+	                <td><b>Ate:</b>  <?php db_inputdata("data3","","","","true","text",2)      ?> </td>
 	             </tr>
 		     <tr>
                        <td align="left" nowrap >
                          <strong>Apartir do Empenho:</strong>
-	                 <?
-                           db_input('e69_numemp',8,$Ie69_numemp,true,'text',1,"onChange=\"js_testa('i',this.value,'e69_numempINI','e69_numempFIM')\"","e69_numempINI","");             
+	                 <?php
+                           db_input('e69_numemp',8,$Ie69_numemp,true,'text',1,"onChange=\"js_testa('i',this.value,'e69_numempINI','e69_numempFIM')\"","e69_numempINI","");
 	                 ?>
                          </td>
 	                 <td><strong>ate:</strong>
-	                   <?
-                              db_input('e69_numemp',8,$Ie69_numemp,true,'text',1,"onChange=\"js_testa('f',this.value,'e69_numempINI','e69_numempFIM')\"","e69_numempFIM","");             
+	                   <?php
+                              db_input('e69_numemp',8,$Ie69_numemp,true,'text',1,"onChange=\"js_testa('f',this.value,'e69_numempINI','e69_numempFIM')\"","e69_numempFIM","");
                            ?>
 	                 </td>
                       </tr>
@@ -99,7 +99,7 @@ db_postmemory($HTTP_POST_VARS);
 		   <table>
 		     <tr>
 		       <td align="center">
-			  <?
+			  <?php
 			  $aux = new cl_arquivo_auxiliar;
 			  $aux->cabecalho = "<strong>CGM</strong>";
 			  $aux->codigo = "z01_numcgm";
@@ -131,7 +131,7 @@ db_postmemory($HTTP_POST_VARS);
                <tr>
 	         <td align="right"> <strong>Opção de Seleção :<strong></td>
 		 <td align="left">&nbsp;&nbsp;&nbsp;
-		   <?
+		   <?php
 		   $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
 		   db_select('selecionados',$xxx,true,2);
 		   ?><br><br>
@@ -141,7 +141,7 @@ db_postmemory($HTTP_POST_VARS);
 	         <td colspan=2  align="center">
 	           <input  name="emite2" id="emite2" type="button" value="Emitir Relátorio" onclick="js_emite();" >
 	         </td>
-		 
+
 	       </tr>
              </table>
 	   </center>
@@ -183,13 +183,13 @@ function js_testa(campo,valor){
     document.form1.e69_numempINI.value = "";
     document.form1.e69_numempFIM.value = "";
     document.form1.e69_numempINI.focus();
-  }                 
+  }
 }
 function js_emite(){
     variavel = 1;
     vir="";
     listagem="";
-    for(i=0;i<document.form1.length;i++){      
+    for(i=0;i<document.form1.length;i++){
       if(document.form1.elements[i].name == "lista[]"){
 	for(x=0;x< document.form1.elements[i].length;x++){
 	  listagem+=vir+document.form1.elements[i].options[x].value;
@@ -197,7 +197,7 @@ function js_emite(){
 	}
       }
     }
-  
+
   jan = window.open('emp2_notas002.php?codigos='+listagem+'&ver='+document.form1.selecionados.value+'&data='+document.form1.data_ano.value+'-'+document.form1.data_mes.value+'-'+document.form1.data_dia.value+'&data1='+document.form1.data1_ano.value+'-'+document.form1.data1_mes.value+'-'+document.form1.data1_dia.value+'&data2='+document.form1.data2_ano.value+'-'+document.form1.data2_mes.value+'-'+document.form1.data2_dia.value+'&data3='+document.form1.data3_ano.value+'-'+document.form1.data3_mes.value+'-'+document.form1.data3_dia.value+'&numempini='+document.form1.e69_numempINI.value+'&numempfim='+document.form1.e69_numempFIM.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }

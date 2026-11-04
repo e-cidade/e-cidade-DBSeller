@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clareaconhecimento->rotulo->label("ed293_descr");
                   <?=$Led293_sequencial?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php
 		                db_input("ed293_sequencial", 10, $Ied293_sequencial, true, "text", 4, "", "chave_ed293_sequencial");
 		              ?>
                 </td>
@@ -69,7 +69,7 @@ $clareaconhecimento->rotulo->label("ed293_descr");
                   <?=$Led293_descr?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php
 		                db_input("ed293_descr", 50, $Ied293_descr, true, "text", 4, "", "chave_ed293_descr");
 		              ?>
                 </td>
@@ -88,7 +88,7 @@ $clareaconhecimento->rotulo->label("ed293_descr");
       </tr>
       <tr> 
         <td align="center" valign="top"> 
-          <?
+          <?php
             if (!isset($pesquisa_chave)) {
         
               if (isset($campos) == false) {
@@ -151,7 +151,7 @@ $clareaconhecimento->rotulo->label("ed293_descr");
   </body>
 </html>
 
-<?
+<?php
 
 if (!isset($pesquisa_chave)) {
 
@@ -159,7 +159,7 @@ if (!isset($pesquisa_chave)) {
   <script>
   </script>
 
-<?
+<?php
 
 }
 

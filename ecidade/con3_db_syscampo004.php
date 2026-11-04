@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ $cods = str_replace("XX",",",$secs);
   <tr> 
     <td height="380" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?
+<?php
     $result = $cldb_syscampo->sql_record($cldb_syscampo->sql_query_file($pri));
     db_fieldsmemory($result,0); 
 ?>    
@@ -84,11 +84,11 @@ $cods = str_replace("XX",",",$secs);
         <tr>
           <td nowrap title="<?=@$Tcodcam?>" colspan='6' align='center'>
            <?=@$Lcodcam?>
-            <?
+            <?php
                  db_input('codcam',7,$Icodcam,true,'text',3)
             ?>
            <?=@$Lnomecam?>
-            <?
+            <?php
                  db_input('nomecam',20,$Inomecam,true,'text',3)
             ?>
           </td>
@@ -96,36 +96,36 @@ $cods = str_replace("XX",",",$secs);
 	
         <tr>
           <td nowrap title="<?=@$Trotulo?>">
-            <?
+            <?php
                  db_input('autocompl',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulo?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('rotulo',30,$Irotulo,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tconteudo?>">
-            <?
+            <?php
                  db_input('ver_conteudo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lconteudo?>
           </td>
           <td> 
-            <?
+            <?php
                $x = array("varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data");
                db_select('conteudo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tautocompl?>">
-            <?
+            <?php
                  db_input('ver_autocompl',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lautocompl?>
           </td>
           <td align='left' width='13%'> 
-            <?
+            <?php
                  db_input('autocompl',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
           </td>
@@ -134,35 +134,35 @@ $cods = str_replace("XX",",",$secs);
 	
         <tr>
           <td nowrap title="<?=@$Trotulorel?>">
-            <?
+            <?php
                  db_input('ver_rotulorel',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulorel?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('rotulorel',30,$Irotulorel,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tvalorinicial?>">
-            <?
+            <?php
                  db_input('ver_valorinicial',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lvalorinicial?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('valorinicial',7,$Ivalorinicial,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tnulo?>">
-            <?
+            <?php
                  db_input('ver_nulo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lnulo?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('nulo',7,$Inulo,true,'checkbox',$db_opcao,"")
             ?>
           </td>
@@ -171,61 +171,61 @@ $cods = str_replace("XX",",",$secs);
         
 	<tr>
           <td nowrap title="<?=@$Taceitatipo?>">
-            <?
+            <?php
                  db_input('ver_aceitatipo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Laceitatipo?>
           </td>
           <td> 
-            <?
+            <?php
                $x = array("0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso");
                db_select('aceitatipo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Ttamanho?>">
-            <?
+            <?php
                  db_input('ver_tamanho',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltamanho?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('tamanho',7,$Itamanho,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tmaiusculo?>">
-            <?
+            <?php
                  db_input('ver_maisculo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lmaiusculo?>
           </td>
           <td> 
-            <?
+            <?php
                  db_input('maiusculo',7,$Imaiusculo,true,'checkbox',$db_opcao,"")
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Ttipoobj?>" valign='top' >
-            <?
+            <?php
                  db_input('ver_tipoobj',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltipoobj?>
           </td>
           <td valign='top'> 
-            <?
+            <?php
                $x = array("text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple");
                db_select('tipoobj',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tdescricao?>" valign='top'>
-            <?
+            <?php
                  db_input('ver_descricao',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ldescricao?>
           </td>
           <td colspan='5' valign='top'> 
-            <?
+            <?php
                  db_textarea('descricao',0,40,$Idescricao,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -237,7 +237,7 @@ $cods = str_replace("XX",",",$secs);
 	</tr>
 	<tr>
 	  <td colspan='6'>
-<?	  
+<?php   
 /*
       $cliframe_seleciona->legenda="CAMPOS";
       $cliframe_seleciona->sql= $cldb_syscampo->sql_query_file(null,"*","codcam","codcam in ($cods)");

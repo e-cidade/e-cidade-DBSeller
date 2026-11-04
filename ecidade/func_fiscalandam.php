@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -55,7 +55,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y49_codnoti",20,$Iy49_codnoti,true,"text",4,"","chave_y49_codnoti");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y49_codandam",20,$Iy49_codandam,true,"text",4,"","chave_y49_codandam");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y49_codandam",20,$Iy49_codandam,true,"text",4,"","chave_y49_codandam");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         $campos = "fiscalandam.*,y39_codandam";
         if(isset($chave_y49_codnoti) && (trim($chave_y49_codnoti)!="") ){
@@ -123,12 +123,12 @@ $clfiscalandam->rotulo->label("y49_codandam");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -24,11 +24,11 @@ $cltaxa->rotulo->label("ar36_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lar36_sequencial?></label></td>
-          <td><? db_input("ar36_sequencial",10,$Iar36_sequencial,true,"text",4,"","chave_ar36_sequencial"); ?></td>
+          <td><?php db_input("ar36_sequencial",10,$Iar36_sequencial,true,"text",4,"","chave_ar36_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lar36_descricao?></label></td>
-          <td><? db_input("ar36_descricao",10,$Iar36_descricao,true,"text",4,"","chave_ar36_descricao");?></td>
+          <td><?php db_input("ar36_descricao",10,$Iar36_descricao,true,"text",4,"","chave_ar36_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +36,7 @@ $cltaxa->rotulo->label("ar36_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_taxa.hide();">
   </form>
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_taxa.php")==true){
@@ -115,12 +115,12 @@ $cltaxa->rotulo->label("ar36_descricao");
       ?>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

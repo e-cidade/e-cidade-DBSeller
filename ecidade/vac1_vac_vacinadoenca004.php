@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,7 +115,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_vacinadoenca.php"));
 	?>
     </center>
@@ -128,7 +128,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "vc10_i_vacina", true, 1, "vc10_i_vacina", true);
 </script>
-<?
+<?php
 if ((isset($incluir)) || (isset($alterar)) || (isset($excluir))) {
 
   if ($clvac_vacinadoenca->erro_status == "0") {

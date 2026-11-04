@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ db_postmemory($_POST);
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 
-<?
+<?php
 	$sNovoFonte = "con2_anexoXIII_002_2011.php";
   $iAnoUsu    = db_getsession("DB_anousu");
 ?>
@@ -69,7 +69,7 @@ function js_emite(){
   var sInstituicao = document.form1.db_selinstit.value;
   var sel_periodo  = document.form1.o116_periodo.value;
 
-  <?
+  <?php
     if(!file_exists($sNovoFonte)) {
       echo "alert('Relatório não disponível para o exercício $iAnoUsu');";
       echo "return false;";
@@ -159,7 +159,7 @@ function js_naoconsolidado() {
          <table border='0' align="center">
             <tr>
               <td align="center" colspan="3">
-                <? db_selinstit('parent.js_naoconsolidado', 300, 100); ?>
+                <?php db_selinstit('parent.js_naoconsolidado', 300, 100); ?>
               </td>
             </tr>
             <tr>
@@ -167,7 +167,7 @@ function js_naoconsolidado() {
                 <b>Período:&nbsp;</b>
               </td>
               <td width="200">
-                <?
+                <?php
                   $aPeriodos         = $oRelatorio->getPeriodos();                  
                   $aListaPeriodos    = array();
                   $aListaPeriodos[0] = "Selecione";
@@ -185,7 +185,7 @@ function js_naoconsolidado() {
                 <b>Emite Consolidado:</b>
               </td>
               <td>
-                <?
+                <?php
                   $aConsolidado = array (2 => 'Não', 1 => 'Sim');
                   db_select('emiteconsolidado', $aConsolidado, true, 1, 'onchange=js_marcainstituicoes()' );
                 ?>

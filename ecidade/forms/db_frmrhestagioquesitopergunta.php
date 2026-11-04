@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -49,22 +49,22 @@ $clrotulo->label("h51_descr");
        <?=@$Lh53_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('h53_sequencial',10,$Ih53_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th53_rhestagioquesito?>">
-       <?
+       <?php
        db_ancora(@$Lh53_rhestagioquesito,"js_pesquisah53_rhestagioquesito(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
  db_input('h53_rhestagioquesito',10,$Ih53_rhestagioquesito,true,'text',$db_opcao," onchange='js_pesquisah53_rhestagioquesito(false);'")
 ?>
-       <?
+       <?php
 db_input('h51_descr',30,$Ih51_descr,true,'text',3,'')
        ?>
     </td>
@@ -74,7 +74,7 @@ db_input('h51_descr',30,$Ih51_descr,true,'text',3,'')
        <?=@$Lh53_descr?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('h53_descr',6,60,$Ih53_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -117,7 +117,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagioquesitopergunta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -388,6 +388,7 @@ if (!isset($pesquisa_chave)) {
         $campos[] = "z01_v_telcel";
         $campos[] = "z01_v_ident as DB_z01_v_ident";
         $campos[] = "z01_v_mae";
+        $campos[] = "z01_nome_social";
         //plugin ESF operation#0 - adicionando novo campo psf_nome_equipe ao select da query
         $campos[] = "sd34_v_descricao as dl_Microarea";
         $campos[] = "sd33_v_descricao as dl_Familia";
@@ -542,7 +543,11 @@ if (!isset($pesquisa_chave)) {
               echo "<script>{$funcao_js}('CGS Inativo', true);</script>";
               exit;
             }
-            echo "<script>{$funcao_js}('$z01_v_nome',false,'$z01_v_sexo','$z01_v_telcel', '$s115_c_cartaosus', '$z01_d_nasc');</script>";
+            if(isset($mostrarNomeSocial)){
+              echo "<script>{$funcao_js}('$z01_v_nome',false,'$z01_v_sexo','$z01_v_telcel', '$s115_c_cartaosus', '$z01_d_nasc','$z01_nome_social', '$z01_v_cgccpf');</script>";
+            } else {
+              echo "<script>{$funcao_js}('$z01_v_nome',false,'$z01_v_sexo','$z01_v_telcel', '$s115_c_cartaosus', '$z01_d_nasc', '$z01_v_cgccpf');</script>";
+            }
         } else {
             echo "<script>{$funcao_js}('Chave(" . $pesquisa_chave . ") não Encontrado',true);</script>";
         }

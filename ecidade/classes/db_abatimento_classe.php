@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE abatimento
 class cl_abatimento {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k125_sequencial = 0;
-   var $k125_tipoabatimento = 0;
-   var $k125_datalanc_dia = null;
-   var $k125_datalanc_mes = null;
-   var $k125_datalanc_ano = null;
-   var $k125_datalanc = null;
-   var $k125_hora = null;
-   var $k125_usuario = 0;
-   var $k125_instit = 0;
-   var $k125_valor = 0;
-   var $k125_perc = 0;
-   var $k125_valordisponivel = 0;
-   var $k125_abatimentosituacao = 0;
-   var $k125_observacao = null;
+   public $k125_sequencial = 0;
+   public $k125_tipoabatimento = 0;
+   public $k125_datalanc_dia = null;
+   public $k125_datalanc_mes = null;
+   public $k125_datalanc_ano = null;
+   public $k125_datalanc = null;
+   public $k125_hora = null;
+   public $k125_usuario = 0;
+   public $k125_instit = 0;
+   public $k125_valor = 0;
+   public $k125_perc = 0;
+   public $k125_valordisponivel = 0;
+   public $k125_abatimentosituacao = 0;
+   public $k125_observacao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k125_sequencial = int4 = Sequencial
                  k125_tipoabatimento = int4 = Tipo de Abatimento
                  k125_datalanc = date = Data de Lançamento
@@ -71,13 +71,13 @@ class cl_abatimento {
                  k125_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_abatimento() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimento");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename($_SERVER["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -86,32 +86,32 @@ class cl_abatimento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
-       $this->k125_sequencial = ($this->k125_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_sequencial"]:$this->k125_sequencial);
-       $this->k125_tipoabatimento = ($this->k125_tipoabatimento == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_tipoabatimento"]:$this->k125_tipoabatimento);
+       $this->k125_sequencial = ($this->k125_sequencial == ""?@$_POST["k125_sequencial"]:$this->k125_sequencial);
+       $this->k125_tipoabatimento = ($this->k125_tipoabatimento == ""?@$_POST["k125_tipoabatimento"]:$this->k125_tipoabatimento);
        if($this->k125_datalanc == ""){
-         $this->k125_datalanc_dia = ($this->k125_datalanc_dia == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_datalanc_dia"]:$this->k125_datalanc_dia);
-         $this->k125_datalanc_mes = ($this->k125_datalanc_mes == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_datalanc_mes"]:$this->k125_datalanc_mes);
-         $this->k125_datalanc_ano = ($this->k125_datalanc_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_datalanc_ano"]:$this->k125_datalanc_ano);
+         $this->k125_datalanc_dia = ($this->k125_datalanc_dia == ""?@$_POST["k125_datalanc_dia"]:$this->k125_datalanc_dia);
+         $this->k125_datalanc_mes = ($this->k125_datalanc_mes == ""?@$_POST["k125_datalanc_mes"]:$this->k125_datalanc_mes);
+         $this->k125_datalanc_ano = ($this->k125_datalanc_ano == ""?@$_POST["k125_datalanc_ano"]:$this->k125_datalanc_ano);
          if($this->k125_datalanc_dia != ""){
             $this->k125_datalanc = $this->k125_datalanc_ano."-".$this->k125_datalanc_mes."-".$this->k125_datalanc_dia;
          }
        }
-       $this->k125_hora = ($this->k125_hora == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_hora"]:$this->k125_hora);
-       $this->k125_usuario = ($this->k125_usuario == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_usuario"]:$this->k125_usuario);
-       $this->k125_instit = ($this->k125_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_instit"]:$this->k125_instit);
-       $this->k125_valor = ($this->k125_valor == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_valor"]:$this->k125_valor);
-       $this->k125_perc = ($this->k125_perc == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_perc"]:$this->k125_perc);
-       $this->k125_valordisponivel = ($this->k125_valordisponivel == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_valordisponivel"]:$this->k125_valordisponivel);
-       $this->k125_abatimentosituacao = ($this->k125_abatimentosituacao == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_abatimentosituacao"]:$this->k125_abatimentosituacao);
-       $this->k125_observacao = ($this->k125_observacao == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_observacao"]:$this->k125_observacao);
+       $this->k125_hora = ($this->k125_hora == ""?@$_POST["k125_hora"]:$this->k125_hora);
+       $this->k125_usuario = ($this->k125_usuario == ""?@$_POST["k125_usuario"]:$this->k125_usuario);
+       $this->k125_instit = ($this->k125_instit == ""?@$_POST["k125_instit"]:$this->k125_instit);
+       $this->k125_valor = ($this->k125_valor == ""?@$_POST["k125_valor"]:$this->k125_valor);
+       $this->k125_perc = ($this->k125_perc == ""?@$_POST["k125_perc"]:$this->k125_perc);
+       $this->k125_valordisponivel = ($this->k125_valordisponivel == ""?@$_POST["k125_valordisponivel"]:$this->k125_valordisponivel);
+       $this->k125_abatimentosituacao = ($this->k125_abatimentosituacao == ""?@$_POST["k125_abatimentosituacao"]:$this->k125_abatimentosituacao);
+       $this->k125_observacao = ($this->k125_observacao == ""?@$_POST["k125_observacao"]:$this->k125_observacao);
      }else{
-       $this->k125_sequencial = ($this->k125_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["k125_sequencial"]:$this->k125_sequencial);
+       $this->k125_sequencial = ($this->k125_sequencial == ""?@$_POST["k125_sequencial"]:$this->k125_sequencial);
      }
    }
    // funcao para inclusao
-   function incluir ($k125_sequencial){
+   public function incluir ($k125_sequencial=null){
       $this->atualizacampos();
      if($this->k125_tipoabatimento == null ){
        $this->erro_sql = " Campo Tipo de Abatimento nao Informado.";
@@ -294,11 +294,11 @@ class cl_abatimento {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k125_sequencial=null) {
+   public function alterar ($k125_sequencial=null) {
       $this->atualizacampos();
      $sql = " update abatimento set ";
      $virgula = "";
-     if(trim($this->k125_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_sequencial"])){
+     if(trim($this->k125_sequencial)!="" || isset($_POST["k125_sequencial"])){
        $sql  .= $virgula." k125_sequencial = $this->k125_sequencial ";
        $virgula = ",";
        if(trim($this->k125_sequencial) == null ){
@@ -311,7 +311,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_tipoabatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_tipoabatimento"])){
+     if(trim($this->k125_tipoabatimento)!="" || isset($_POST["k125_tipoabatimento"])){
        $sql  .= $virgula." k125_tipoabatimento = $this->k125_tipoabatimento ";
        $virgula = ",";
        if(trim($this->k125_tipoabatimento) == null ){
@@ -324,7 +324,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_datalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_datalanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k125_datalanc_dia"] !="") ){
+     if(trim($this->k125_datalanc)!="" || isset($_POST["k125_datalanc_dia"]) &&  ($_POST["k125_datalanc_dia"] !="") ){
        $sql  .= $virgula." k125_datalanc = '$this->k125_datalanc' ";
        $virgula = ",";
        if(trim($this->k125_datalanc) == null ){
@@ -337,7 +337,7 @@ class cl_abatimento {
          return false;
        }
      }     else{
-       if(isset($GLOBALS["HTTP_POST_VARS"]["k125_datalanc_dia"])){
+       if(isset($_POST["k125_datalanc_dia"])){
          $sql  .= $virgula." k125_datalanc = null ";
          $virgula = ",";
          if(trim($this->k125_datalanc) == null ){
@@ -351,7 +351,7 @@ class cl_abatimento {
          }
        }
      }
-     if(trim($this->k125_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_hora"])){
+     if(trim($this->k125_hora)!="" || isset($_POST["k125_hora"])){
        $sql  .= $virgula." k125_hora = '$this->k125_hora' ";
        $virgula = ",";
        if(trim($this->k125_hora) == null ){
@@ -364,7 +364,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_usuario"])){
+     if(trim($this->k125_usuario)!="" || isset($_POST["k125_usuario"])){
        $sql  .= $virgula." k125_usuario = $this->k125_usuario ";
        $virgula = ",";
        if(trim($this->k125_usuario) == null ){
@@ -377,7 +377,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_instit"])){
+     if(trim($this->k125_instit)!="" || isset($_POST["k125_instit"])){
        $sql  .= $virgula." k125_instit = $this->k125_instit ";
        $virgula = ",";
        if(trim($this->k125_instit) == null ){
@@ -390,7 +390,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_valor"])){
+     if(trim($this->k125_valor)!="" || isset($_POST["k125_valor"])){
        $sql  .= $virgula." k125_valor = $this->k125_valor ";
        $virgula = ",";
        if(trim($this->k125_valor) == null ){
@@ -403,7 +403,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_perc"])){
+     if(trim($this->k125_perc)!="" || isset($_POST["k125_perc"])){
        $sql  .= $virgula." k125_perc = $this->k125_perc ";
        $virgula = ",";
        if(trim($this->k125_perc) == null ){
@@ -416,11 +416,11 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_valordisponivel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_valordisponivel"])){
+     if(trim($this->k125_valordisponivel)!="" || isset($_POST["k125_valordisponivel"])){
        $sql  .= $virgula." k125_valordisponivel = $this->k125_valordisponivel ";
        $virgula = ",";
      }
-     if(trim($this->k125_abatimentosituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_abatimentosituacao"])){
+     if(trim($this->k125_abatimentosituacao)!="" || isset($_POST["k125_abatimentosituacao"])){
        $sql  .= $virgula." k125_abatimentosituacao = $this->k125_abatimentosituacao ";
        $virgula = ",";
        if(trim($this->k125_abatimentosituacao) == null ){
@@ -433,7 +433,7 @@ class cl_abatimento {
          return false;
        }
      }
-     if(trim($this->k125_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k125_observacao"])){
+     if(trim($this->k125_observacao)!="" || isset($_POST["k125_observacao"])){
        $sql  .= $virgula." k125_observacao = '$this->k125_observacao' ";
        $virgula = ",";
      }
@@ -454,27 +454,27 @@ class cl_abatimento {
            $acount = pg_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18062,'$this->k125_sequencial','A')");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_sequencial"]) || $this->k125_sequencial != "")
+           if(isset($_POST["k125_sequencial"]) || $this->k125_sequencial != "")
              $resac = db_query("insert into db_acount values($acount,3191,18062,'".AddSlashes(pg_result($resaco,$conresaco,'k125_sequencial'))."','$this->k125_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_tipoabatimento"]) || $this->k125_tipoabatimento != "")
+           if(isset($_POST["k125_tipoabatimento"]) || $this->k125_tipoabatimento != "")
              $resac = db_query("insert into db_acount values($acount,3191,18063,'".AddSlashes(pg_result($resaco,$conresaco,'k125_tipoabatimento'))."','$this->k125_tipoabatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_datalanc"]) || $this->k125_datalanc != "")
+           if(isset($_POST["k125_datalanc"]) || $this->k125_datalanc != "")
              $resac = db_query("insert into db_acount values($acount,3191,18064,'".AddSlashes(pg_result($resaco,$conresaco,'k125_datalanc'))."','$this->k125_datalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_hora"]) || $this->k125_hora != "")
+           if(isset($_POST["k125_hora"]) || $this->k125_hora != "")
              $resac = db_query("insert into db_acount values($acount,3191,18065,'".AddSlashes(pg_result($resaco,$conresaco,'k125_hora'))."','$this->k125_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_usuario"]) || $this->k125_usuario != "")
+           if(isset($_POST["k125_usuario"]) || $this->k125_usuario != "")
              $resac = db_query("insert into db_acount values($acount,3191,18066,'".AddSlashes(pg_result($resaco,$conresaco,'k125_usuario'))."','$this->k125_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_instit"]) || $this->k125_instit != "")
+           if(isset($_POST["k125_instit"]) || $this->k125_instit != "")
              $resac = db_query("insert into db_acount values($acount,3191,18067,'".AddSlashes(pg_result($resaco,$conresaco,'k125_instit'))."','$this->k125_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_valor"]) || $this->k125_valor != "")
+           if(isset($_POST["k125_valor"]) || $this->k125_valor != "")
              $resac = db_query("insert into db_acount values($acount,3191,18068,'".AddSlashes(pg_result($resaco,$conresaco,'k125_valor'))."','$this->k125_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_perc"]) || $this->k125_perc != "")
+           if(isset($_POST["k125_perc"]) || $this->k125_perc != "")
              $resac = db_query("insert into db_acount values($acount,3191,18069,'".AddSlashes(pg_result($resaco,$conresaco,'k125_perc'))."','$this->k125_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_valordisponivel"]) || $this->k125_valordisponivel != "")
+           if(isset($_POST["k125_valordisponivel"]) || $this->k125_valordisponivel != "")
              $resac = db_query("insert into db_acount values($acount,3191,19632,'".AddSlashes(pg_result($resaco,$conresaco,'k125_valordisponivel'))."','$this->k125_valordisponivel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_abatimentosituacao"]) || $this->k125_abatimentosituacao != "")
+           if(isset($_POST["k125_abatimentosituacao"]) || $this->k125_abatimentosituacao != "")
              $resac = db_query("insert into db_acount values($acount,3191,20136,'".AddSlashes(pg_result($resaco,$conresaco,'k125_abatimentosituacao'))."','$this->k125_abatimentosituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if(isset($GLOBALS["HTTP_POST_VARS"]["k125_observacao"]) || $this->k125_observacao != "")
+           if(isset($_POST["k125_observacao"]) || $this->k125_observacao != "")
              $resac = db_query("insert into db_acount values($acount,3191,20137,'".AddSlashes(pg_result($resaco,$conresaco,'k125_observacao'))."','$this->k125_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
@@ -512,7 +512,7 @@ class cl_abatimento {
      }
    }
    // funcao para exclusao
-   function excluir ($k125_sequencial=null,$dbwhere=null) {
+   public function excluir ($k125_sequencial=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -592,7 +592,7 @@ class cl_abatimento {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -639,8 +639,8 @@ class cl_abatimento {
     $sSql .= "      left join arrenumcgm on arrenumcgm.k00_numpre = k127_numprerecibo";
 
     if ($iSequencial) {
-      $sWhere .= " abatimento.k125_sequencial = {$iSequencial}" . (!empty($sWhere) ? " and " : ''); 
-      
+      $sWhere .= " abatimento.k125_sequencial = {$iSequencial}" . (!empty($sWhere) ? " and " : '');
+
     }
 
     if ($sWhere) {
@@ -912,25 +912,33 @@ class cl_abatimento {
    * @return string
    */
   public function sql_query_utilizacao($sCampos = '*', $sWhere = '', $sOrder = '', $sGroup = '') {
-    
-    $iAnoUsu      = db_getsession('DB_anousu');
 
-    $sSql  = "select {$sCampos}";
-    $sSql .= "  from abatimento";
-    $sSql .= "   inner join abatimentoutilizacao        on k157_abatimento   = k125_sequencial      ";
-    $sSql .= "   inner join abatimentorecibo            on k127_abatimento   = k125_sequencial      ";
-    $sSql .= "   inner join arrenumcgm                  on arrenumcgm.k00_numpre = k127_numprerecibo";
-    $sSql .= "   inner join recibo                      on recibo.k00_numpre = k127_numprerecibo    ";
-    $sSql .= "   inner join cgm                         on arrenumcgm.k00_numcgm = z01_numcgm       ";
-    $sSql .= "    left join abatimentoutilizacaodestino on k170_utilizacao   = k157_sequencial      ";
-    $sSql .= "    left join arretipo                    on k170_tipo         = arretipo.k00_tipo    ";
-    $sSql .= "    left join tabrec                      on k170_receit       = k02_codigo           ";
-    $sSql .= "    left join taborc                      on taborc.k02_codigo = k170_receit          ";
-    $sSql .= "                                         and taborc.k02_anousu = {$iAnoUsu}           ";
-    $sSql .= "    left join orcreceita                  on taborc.k02_anousu = o70_anousu           ";
-    $sSql .= "                                         and taborc.k02_codrec = o70_codrec           ";
-    $sSql .= "    left join orcfontes                   on o57_codfon        = o70_codfon           ";
-    $sSql .= "                                         and o57_anousu        = o70_anousu           ";
+    $iAnoUsu      = db_getsession('DB_anousu');
+    $iInstituicao = db_getsession("DB_instit");
+
+    $sSql  = "select {$sCampos}                                                                           ";
+    $sSql .= "  from abatimento                                                                           ";
+    $sSql .= "   inner join abatimentoutilizacao        on k157_abatimento   = k125_sequencial            ";
+    $sSql .= "   inner join abatimentorecibo            on k127_abatimento   = k125_sequencial            ";
+    $sSql .= "   inner join arrenumcgm                  on arrenumcgm.k00_numpre = k127_numprerecibo      ";
+    $sSql .= "   inner join recibo                      on recibo.k00_numpre = k127_numprerecibo          ";
+    $sSql .= "   inner join cgm                         on arrenumcgm.k00_numcgm = z01_numcgm             ";
+    $sSql .= "    left join abatimentoutilizacaodestino on k170_utilizacao   = k157_sequencial            ";
+    $sSql .= "    left join arretipo                    on k170_tipo         = arretipo.k00_tipo          ";
+    $sSql .= "    left join tabrec                      on k170_receit       = k02_codigo                 ";
+    $sSql .= "    left join taborc                      on taborc.k02_codigo = k170_receit                ";
+    $sSql .= "                                         and taborc.k02_anousu = {$iAnoUsu}                 ";
+    $sSql .= "    left join orcreceita                  on taborc.k02_anousu = o70_anousu                 ";
+    $sSql .= "                                         and taborc.k02_codrec = o70_codrec                 ";
+    $sSql .= "    left join orcfontes                   on o57_codfon        = o70_codfon                 ";
+    $sSql .= "                                         and o57_anousu        = o70_anousu                 ";
+    $sSql .= "    left join tabplan on tabplan.k02_codigo = tabrec.k02_codigo                             ";
+    $sSql .= "                                         and tabplan.k02_anousu = {$iAnoUsu}                ";
+    $sSql .= "    left join conplanoreduz on c61_reduz = k02_reduz                                        ";
+    $sSql .= "                                         and c61_instit = {$iInstituicao}                   ";
+    $sSql .= "                                         and c61_anousu = tabplan.k02_anousu                ";
+    $sSql .= "    left join conplano ON conplano.c60_codcon = conplanoreduz.c61_codcon                    ";
+    $sSql .= "                                         and conplano.c60_anousu = conplanoreduz.c61_anousu ";
 
 
     if (!empty($sWhere)) {
@@ -944,7 +952,42 @@ class cl_abatimento {
     if (!empty($sOrder)) {
       $sSql .= " order by " . $sOrder;
     }
-    
+
     return $sSql;
   }
+
+    public function sql_queryAbatimentoUtilizacao($iSequencial = null, $sCampos = "*", $sOrdem = null, $sWhere = null, $group = null) {
+
+        $sSql = "select {$sCampos} ";
+
+        $sSql .= " from abatimento ";
+        $sSql .= "      inner join db_config  on  db_config.codigo = abatimento.k125_instit";
+        $sSql .= "      inner join abatimentoutilizacao  on  k125_sequencial = k157_abatimento";
+        $sSql .= "      inner join db_usuarios  on  db_usuarios.id_usuario = abatimentoutilizacao.k157_usuario";
+        $sSql .= "      inner join tipoabatimento  on  tipoabatimento.k126_sequencial = abatimento.k125_tipoabatimento";
+        $sSql .= "      inner join abatimentosituacao  on  abatimentosituacao.k165_sequencial = abatimento.k125_abatimentosituacao";
+        $sSql .= "      inner join cgm  on  cgm.z01_numcgm = db_config.numcgm";
+        $sSql .= "      inner join db_tipoinstit  on  db_tipoinstit.db21_codtipo = db_config.db21_tipoinstit";
+        $sSql .= "      left join abatimentorecibo on k125_sequencial = k127_abatimento";
+        $sSql .= "      left join arrenumcgm on arrenumcgm.k00_numpre = k127_numprerecibo";
+
+        if ($iSequencial) {
+            $sWhere .= " abatimento.k125_sequencial = {$iSequencial}" . (!empty($sWhere) ? " and " : '');
+
+        }
+
+        if ($sWhere) {
+            $sSql .= " where {$sWhere} ";
+        }
+
+        if ($group) {
+            $sSql .= ' group by ' . $group;
+        }
+
+        if ($sOrdem) {
+            $sSql .= " order by {$sOrdem}";
+        }
+
+        return $sSql;
+    }
 }

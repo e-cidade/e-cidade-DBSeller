@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -25,12 +25,16 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Tributario\Arrecadacao\Repositories\GrupoTaxasRepository;
+use App\Domain\Tributario\Arrecadacao\Services\GrupoTaxasService;
+
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
+require_once(modification("dbforms/db_classesgenericas.php"));
 
 db_postmemory($_GET);
 
@@ -49,8 +53,16 @@ $clrotulo->label("ar44_procedencia");
 $clrotulo->label("ar44_receita");
 $clrotulo->label("ar44_emissaoweb");
 $clrotulo->label("ar44_recursoadm");
+$clrotulo->label("ar44_permitesubtaxas");
 $clrotulo->label("ar44_origem");
 
+$oDaoNumpref = new cl_numpref;
+$iInstit = db_getsession("DB_instit");
+$iAnoUsu = db_getsession("DB_anousu");
+$sSqlPermissaoUsoGrupoTaxas = $oDaoNumpref->sql_query_file($iAnoUsu,$iInstit,'k03_usagrupotaxa');
+$rsPermissaoUsoGrupoTaxas = db_query($sSqlPermissaoUsoGrupoTaxas);
+$permissaoUsoGrupoTaxas = db_utils::getCollectionByRecord($rsPermissaoUsoGrupoTaxas);
+$permissaoUsoGrupoTaxas = $permissaoUsoGrupoTaxas[0]->k03_usagrupotaxa == 't';
 ?>
 <html>
     <head>
@@ -90,7 +102,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_descricao ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_descricao", 50, @$Iar44_descricao, "ar44_descricao", "text", 1);
                                 ?>
                             </td>
@@ -100,7 +112,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_valorinflator ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_valorinflator", 5, @$Iar44_valorinflator, "ar44_valorinflator", "text", 1);
                                 ?>
                             </td>
@@ -112,7 +124,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_inflator", 5, @$Iar44_inflator, true, "text", 4, "onchange='js_pesquisaInflator(false);'");
                                 db_input("i01_descr", 40, false, true, "text");
                                 ?>
@@ -123,7 +135,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_diasvencimento ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_diasvencimento", 5, @$Iar44_diasvencimento, true, "text", 1);
                                 ?>
                             </td>
@@ -148,7 +160,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_receitaxaexpediente", 5, @$Iar44_receitaxaexpediente, true, "text", 4, "onchange='js_pesquisaReceita(false);'");
                                 db_input("k02_descr", 40, false, true, "text");
                                 ?>
@@ -159,7 +171,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_valortaxaexpediente ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_valortaxaexpediente", 5, @$Iar44_valortaxaexpediente, "ar44_valortaxaexpediente", "text", 1);
                                 ?>
                             </td>
@@ -169,7 +181,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_datavigencia ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_inputdata("ar44_datavigencia", "", "", "", true, 'text', 1)
                                 ?>
                             </td>
@@ -188,8 +200,8 @@ $clrotulo->label("ar44_origem");
                             </td>
                             <td>
                                 <select name="geraDebito" id="geraDebito" onchange="js_geraDebito(this.value);">
-                                    <option value="false">Não</option>
                                     <option value="true">Sim</option>
+                                    <option value="false">Não</option>
                                 </select>
                             </td>
                         </tr>
@@ -200,7 +212,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_procedencia", 5, @$Iar44_procedencia, true, "text", 4, "onchange='js_pesquisaProcedencia(false);'");
                                 db_input("dv09_descr", 40, false, true, "text");
                                 ?>
@@ -213,7 +225,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 db_input("ar44_receita", 5, @$Iar44_receita, true, "text", 4, "onchange='js_pesquisaReceita(false, 1);'");
                                 db_input("k02_descr1", 40, false, true, "text");
                                 ?>
@@ -261,7 +273,82 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                         </tr>
+                        <tr id="trPermiteSubtaxas">
+                            <td title="<?= $Tar44_permitesubtaxas ?>">
+                                <?= $Lar44_permitesubtaxas ?>
+                            </td>
+                            <td>
+                                <select <?= $permissaoUsoGrupoTaxas ? 'disabled' : '' ?> name="ar44_permitesubtaxas" id="ar44_permitesubtaxas" onchange="js_mostraIframeSubtaxas(this.value);">
+                                    <option value="f">Não</option>
+                                    <option value="t">Sim</option>
+                                </select>
+                            </td>
+                        </tr>
                     </table>
+
+                    <?php
+                    if (!$permissaoUsoGrupoTaxas) {
+                    ?>
+
+                    <div class="container" id="trIframeSubtaxas" >
+                        <?php
+                            $cliframe_custasliberadas  = new cl_iframe_seleciona;
+                            $oDaoTaxasLancadas         = new cl_taxaslancadas();
+                            $sSqlPesquisaTaxasLancadas = $oDaoTaxasLancadas->sql_query();
+                            
+                            if (isset($_GET['ar44_sequencial']) && !empty(isset($_GET['ar44_sequencial']))) {
+                                $sequencialTaxa = $_GET['ar44_sequencial'];
+                                $sSqlPesquisaTaxasLancadas = $sSqlPesquisaTaxasLancadas . " where ar44_sequencial <> $sequencialTaxa ";
+                            }
+
+                            $cliframe_custasliberadas->sql           = $sSqlPesquisaTaxasLancadas;
+                            $cliframe_custasliberadas->campos        = "ar44_sequencial,ar44_descricao,ar44_datavigencia";
+                            $cliframe_custasliberadas->legenda       = "Subtaxas";
+                            $cliframe_custasliberadas->iframe_height = "200";
+                            $cliframe_custasliberadas->iframe_width  = "400";
+                            $cliframe_custasliberadas->iframe_nome   = "listataxas";
+                            $cliframe_custasliberadas->chaves        = 'ar44_sequencial';
+                            $cliframe_custasliberadas->iframe_seleciona($db_opcao);
+				        ?>
+                    </div>
+
+                    <?php
+                    } else {
+                    ?>
+
+                    <div class="container" id="trIframeGrupoTaxastaxas" >
+                        <?php
+                            $cliframe_grupotaxas  = new cl_iframe_seleciona;
+                            $grupoTaxasRepository = new GrupoTaxasRepository();
+                            $oDaoGrupoTaxas       = new GrupoTaxasService($grupoTaxasRepository);
+                            $sSqlPesquisaGrupoTaxas = $oDaoGrupoTaxas->getSqlQueryGrupoTaxas();
+
+                            if (isset($_GET['ar55_sequencial']) && !empty(isset($_GET['ar55_sequencial']))) {
+                                $sequencialGrupoTaxas = $_GET['ar55_sequencial'];
+                                $sSqlPesquisaGrupoTaxas = $sSqlPesquisaGrupoTaxas . " where ar55_sequencial <> $sequencialGrupoTaxas ";
+                            }
+                            
+
+                            if (isset($_GET['ar44_sequencial']) && !empty(isset($_GET['ar44_sequencial']))) {
+                                $sequencialTaxa = $_GET['ar44_sequencial'];
+                                $cliframe_grupotaxas->sql_marca = $grupoTaxasRepository->sqlBuscaTaxasVinculadas($sequencialTaxa);
+                            }
+
+                            $cliframe_grupotaxas->sql           = $sSqlPesquisaGrupoTaxas;
+                            $cliframe_grupotaxas->campos        = "ar55_sequencial,ar55_descricao,ar55_datalimite";
+                            $cliframe_grupotaxas->legenda       = "Grupo de Taxas";
+                            $cliframe_grupotaxas->iframe_height = "200";
+                            $cliframe_grupotaxas->iframe_width  = "400";
+                            $cliframe_grupotaxas->iframe_nome   = "listagrupotaxas";
+                            $cliframe_grupotaxas->chaves        = 'ar55_sequencial';
+                            $cliframe_grupotaxas->dbscript      = "onClick='parent.js_desabilitaDataLimite()'";
+                            $cliframe_grupotaxas->iframe_seleciona($db_opcao);
+				        ?>
+                    </div>
+
+                    <?php
+                    }
+                    ?>
                 </fieldset>
                 <input name="salvar" id="salvar" type="button" onclick="js_salvar();" value="Salvar">
                 <input name="cancelar" id="cancelar" type="button" onclick="js_limpa();" value="Cancelar" style="display: none;">
@@ -273,16 +360,64 @@ $clrotulo->label("ar44_origem");
         <div class="container">
             <div id="ctnGridTaxas"></div>
         </div>
-        <? db_menu(); ?>
+        <?php db_menu(); ?>
     </body>
 </html>
 <script>
     var campoReceita = 0;
     var aCampos = [];
+    let gruposTaxa = [];
 
-    <?php if ($db_opcao == 2) : ?>
+    js_getGrupos();
+
+    function js_getGrupos() {
+        const requestBody = {
+            page: 1,
+            porPagina: 100
+        };
+        const rota = 'v4/api/tributario/arrecadacao/grupotaxas/buscar';
+        CurrentWindow.axios.post(rota, requestBody).then(response => {
+            gruposTaxa = response.data.data.data;
+        })
+    }
+
+    async function js_desabilitaDataLimite() {
+        const dataLimite = document.getElementById('ar44_datavigencia');
+        const botaoSelecionaData = document.getElementById('dtjs_ar44_datavigencia');
+        const grupoTaxasHabilitado = <?= $permissaoUsoGrupoTaxas ? 'true' : 'false' ?>;
+        let possuiGrupoComDataLimite = false;
+        
+        for (const sequencialGrupo of js_getGruposTaxasSelecionados()) {
+            const dadosGrupo = gruposTaxa.find(item => Number(item.ar55_sequencial) === Number(sequencialGrupo));
+            const grupoSelecionadoPossuiDataLimite = dadosGrupo.ar55_datalimite != null 
+                                                        && dadosGrupo.ar55_datalimite.trim() != '';
+
+            if (grupoSelecionadoPossuiDataLimite) {
+                possuiGrupoComDataLimite = true;
+                break;
+            }
+        }
+
+        if (possuiGrupoComDataLimite) {
+            dataLimite.value = '';
+            dataLimite.setAttribute('disabled', 'true') 
+            dataLimite.setAttribute('readonly', 'true') 
+            botaoSelecionaData.setAttribute('disabled', 'true') 
+            botaoSelecionaData.setAttribute('readonly', 'true') 
+        } else {
+            dataLimite.removeAttribute('disabled', 'true') 
+            dataLimite.removeAttribute('readonly', 'true') 
+            botaoSelecionaData.removeAttribute('disabled', 'true') 
+            botaoSelecionaData.removeAttribute('readonly', 'true') 
+        }
+    }
+
+    <?php if ($db_opcao == 2 && !isset($alterar)) {?>
         js_pesquisaTaxas();
-    <?php endif; ?>
+    <?php } else if (isset($_GET['ar44_sequencial'])) {?>
+        js_buscarTaxa(<?= $_GET['ar44_sequencial'] ?>);
+        db_iframe_taxaslancadas.hide();
+    <?php }; ?>
 
     function js_pesquisaTaxas()
     {
@@ -291,8 +426,16 @@ $clrotulo->label("ar44_origem");
 
     function js_mostraTaxaLancada(ar44_sequencial)
     {
-        js_buscarTaxa(ar44_sequencial);
-        db_iframe_taxaslancadas.hide();
+        <?php
+            if (!$_GET['ar44_sequencial']) {
+                echo "location.href = '" . basename($_SERVER["PHP_SELF"]) . '?' . $_SERVER["QUERY_STRING"] ."&alterar=true&ar44_sequencial=' + ar44_sequencial;";
+            } else {
+                echo "
+                    js_buscarTaxa(ar44_sequencial);
+                    db_iframe_taxaslancadas.hide();
+                ";
+            }
+        ?>
     }
 
     function js_pesquisaInflator(mostra)
@@ -323,27 +466,6 @@ $clrotulo->label("ar44_origem");
         document.form1.ar44_inflator.value = chave1;
         document.form1.i01_descr.value = chave2;
         db_iframe_inflan.hide();
-
-        // COMENTADO PARA APRESENTAÇÃO PVH
-        // var oParam = new Object();
-        // oParam.executa = "listarInflatores";
-        // oParam.inflator = chave1;
-
-        // new AjaxRequest("arr4_taxaslancadas.RPC.php", oParam, function(oRetorno){
-
-        //     if (!oRetorno.resultado) {
-        //         alert(oRetorno.mensagem);
-        //         if (oRetorno.erro) {
-        //             return;
-        //         }
-        //     }
-
-        //     else {
-        //         document.form1.ar44_inflator.value = chave1;
-        //         document.form1.i01_descr.value = chave2;
-        //     }
-
-        // }).execute();
     }
 
     function js_pesquisaReceita(mostra, campo = 0)
@@ -449,6 +571,7 @@ $clrotulo->label("ar44_origem");
         if (libera == "true") {
             document.getElementById("trReceitaDebito").hide();
             document.getElementById("trProcedenciaDebito").show();
+            document.getElementById("trPermiteSubtaxas").show();
 
             document.getElementById("ar44_procedencia").setAttribute("isMandatory", "true");
             document.getElementById("ar44_receita").removeAttribute("isMandatory");
@@ -456,6 +579,7 @@ $clrotulo->label("ar44_origem");
             document.form1.ar44_receita.value = "";
         } else {
             document.getElementById("trProcedenciaDebito").hide();
+            document.getElementById("trPermiteSubtaxas").hide();
             document.getElementById("trReceitaDebito").show();
 
             document.getElementById("ar44_receita").setAttribute("isMandatory", "true");
@@ -465,8 +589,17 @@ $clrotulo->label("ar44_origem");
         }
     }
 
-    js_geraDebito(false);
+    function js_mostraIframeSubtaxas(libera)
+    {
+        if (libera == 'true' || libera == 't') {
+            document.getElementById("trIframeSubtaxas").show();
+        } else {
+            document.getElementById("trIframeSubtaxas").hide();
+        }
+    }
 
+    js_geraDebito('true');
+    js_mostraIframeSubtaxas('false');
     const mensagem = "Preencha somente a procedência ou a receita.";
 
     function js_verificaProcedencia()
@@ -529,11 +662,39 @@ $clrotulo->label("ar44_origem");
         oParam.ar44_emissaoweb = obj.ar44_emissaoweb.value;
         oParam.ar44_recursoadm = obj.ar44_recursoadm.value;
         oParam.ar44_origem = obj.ar44_origem.value;
+        oParam.ar44_permitesubtaxas = obj.ar44_permitesubtaxas.value;
+        oParam.subTaxasSelecionadas = js_getSubTaxasSelecionadas();
+        oParam.gruposTaxasSelecionados = js_getGruposTaxasSelecionados();
         oParam.camposDonamicos = JSON.stringify(aCampos);
 
 		new AjaxRequest("arr4_taxaslancadas.RPC.php", oParam, js_getSalvar).execute();
 	}
 
+    function js_getSubTaxasSelecionadas() {
+        const checkboxes = document.getElementById('ativ').contentWindow.document.body.children.form1.querySelectorAll('input');
+        const sequencialSubtaxasSelecionadas = [];
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked && checkbox.value != '') {
+                sequencialSubtaxasSelecionadas.push(checkbox.value);
+            }
+        });
+
+        return sequencialSubtaxasSelecionadas;
+    }
+
+    function js_getGruposTaxasSelecionados() {
+        const checkboxes = document.getElementById('ativ').contentWindow.document.body.children.form1.querySelectorAll('input');
+        const sequencialSubtaxasSelecionadas = [];
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked && checkbox.value != '') {
+                sequencialSubtaxasSelecionadas.push(checkbox.value);
+            }
+        });
+
+        return sequencialSubtaxasSelecionadas;
+    }
 
     function js_getSalvar(oRetorno)
     {
@@ -590,11 +751,43 @@ $clrotulo->label("ar44_origem");
         obj.ar44_emissaoweb.value = oRetorno.oTaxa.ar44_emissaoweb;
         obj.ar44_recursoadm.value = oRetorno.oTaxa.ar44_recursoadm;
         obj.ar44_origem.value = oRetorno.oTaxa.ar44_origem;
+
+        <?php
+        if (!$permissaoUsoGrupoTaxas) {
+        ?>
+            obj.ar44_permitesubtaxas.value = oRetorno.oTaxa.ar44_permitesubtaxas;
+        <?php
+        }
+        ?>
         aCampos = oRetorno.oTaxa.camposDinamicos;
 
         document.getElementById("cancelar").show();
 
         js_carregaDescricoes();
+        js_mostraIframeSubtaxas(obj.ar44_permitesubtaxas.value);
+        js_setSubTaxasSelecionadas(oRetorno.oTaxa.subTaxas);
+        js_setGruposSelecionados(oRetorno.oTaxa.grupos);
+    }
+
+    function js_setSubTaxasSelecionadas(subTaxas) {
+        const subTaxasSelecionadas = subTaxas.map(subtaxa => subtaxa.ar44_sequencial);
+        const checkboxes = document.getElementById('ativ').contentWindow.document.body.children.form1.querySelectorAll('input');
+
+        checkboxes.forEach(checkbox => {
+            if (subTaxasSelecionadas.find(sequencialSubTaxa => sequencialSubTaxa.toString() === checkbox.value.toString())) {
+                checkbox.checked = true;
+            }
+        });
+    }
+
+    function js_setGruposSelecionados(grupos) {
+        const checkboxes = document.getElementById('ativ').contentWindow.document.body.children.form1.querySelectorAll('input');
+
+        checkboxes.forEach(checkbox => {
+            if (grupos.find(sequencialGrupo => sequencialGrupo.toString() === checkbox.value.toString())) {
+                checkbox.checked = true;
+            }
+        });
     }
 
     function js_carregaDescricoes()
@@ -677,4 +870,10 @@ $clrotulo->label("ar44_origem");
 
         return oCampos;
     }
+
+    <?php
+        if ($_GET['ar44_sequencial']) {
+            echo "js_mostraTaxaLancada(". $_GET['ar44_sequencial'] .");";
+        }
+    ?>
 </script>

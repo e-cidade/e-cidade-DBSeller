@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("j01_matric");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php
  db_app::load('estilos.css');
  db_app::load('scripts.js, prototype.js, strings.js, DBViewPesquisaSetorQuadraLote.js, dbcomboBox.widget.js');
 ?>
@@ -72,7 +72,7 @@ $clrotulo->label("j01_matric");
               <?=$Lit01_guia?>
             </td>
             <td> 
-              <?
+              <?php
 		        db_input("it01_guia",10,$Iit01_guia,true,"text",4,"","chave_it01_guia");
 		      ?>
             </td>
@@ -82,7 +82,7 @@ $clrotulo->label("j01_matric");
         	   <b>Solicitação:</b>
             </td>
             <td> 
-              <?
+              <?php
                 $aSolicitacao = array( "t"=>"Todos",
                 					   "i"=>"Interna",
                 					   "e"=>"Externa" );
@@ -96,7 +96,7 @@ $clrotulo->label("j01_matric");
         	   <b>Usuário:</b>
             </td>
             <td> 
-              <?
+              <?php
                 $sWhere  = "     it14_guia is null    "; 
         		$sWhere .= " and it16_guia is null 	  ";
         		$sWhere .= " and usuext = 1 		  ";
@@ -116,7 +116,7 @@ $clrotulo->label("j01_matric");
         	   <b>Tipo:</b>
             </td>
             <td> 
-              <?
+              <?php
                 $aTipo = array( "t"=>"Todos",
                 		 	    "u"=>"Urbana",
                 				"r"=>"Rural" );
@@ -130,23 +130,23 @@ $clrotulo->label("j01_matric");
         	   <b>Data da Solicitação:</b>
             </td>
             <td> 
-              <?
+              <?php
 				db_inputdata('datai', "", "", "", true, 'text', 1, "","chave_datai");
 			  ?>
 			   <b> até </b>
-			  <?				 
+			  <?php 			 
 				db_inputdata('dataf', "", "", "", true, 'text', 1, "","chave_dataf");
 		      ?>
             </td>
           </tr>  
                   <tr>   
           <td>
-            <?
+            <?php
               db_ancora("<b>Matrícula :</b>",' js_matri(true); ',1);
             ?>
           </td>
           <td> 
-            <?
+            <?php
             
 	            db_input('j01_matric',10,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
 	            db_input('z01_nome',35,0,true,'text',3,"","z01_nomematri");
@@ -173,7 +173,7 @@ $clrotulo->label("j01_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
 
       	$campos = "itbi.*";
@@ -323,7 +323,7 @@ function js_mostramatri1(chave,erro){
 var oPesquisa = new DBViewPesquisaSetorQuadraLote('pesquisa', 'oPesquisa');
     oPesquisa.show();
     oPesquisa.appendForm();
-<? 
+<?php 
 if (isset($setorCodigo)){
 	echo "oPesquisa.setValues('{$setorCodigo}','{$quadra}','{$lote}');"; 
 }

@@ -71,6 +71,8 @@ try {
             $where[] = "tf18_i_veiculo = {$parametros->idVeiculo}";
             $where[] = "tf18_i_destino = {$parametros->idDestino}";
             $where[] = "tf18_d_datasaida = '{$parametros->data}'";
+            $where[] = "not exists (select 1 from cancelamentoviagem where tf41_veiculodestino = tf18_i_codigo)";
+
             if (!empty($parametros->idMotorista)) {
                 $where[] = "tf18_i_motorista = {$parametros->idMotorista}";
             }

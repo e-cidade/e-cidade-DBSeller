@@ -194,14 +194,14 @@ db_fieldsmemory($result1, 0);
             ?>
             <td style="font-size:11px;background:#DBDBDB;" align="left">
                 <?php
-                //     if($professor=="" || $professor==$ed20_i_codigo || $linhas2==0){
+                     if($professor=="" || $professor==$ed20_i_codigo || $linhas2==0){
                 ?>
                 <b><?= $disci ?></b><br>
                 <font color="<?= $cor ?>"><?= $regente ?></font>
                 <?php
-                //     }else{
-                //      echo "&nbsp";
-                //     }
+                     }else{
+                      echo "&nbsp";
+                     }
                 ?>
             </td>
             <?php

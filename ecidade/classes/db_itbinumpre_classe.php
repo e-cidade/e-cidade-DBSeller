@@ -54,7 +54,7 @@ class cl_itbinumpre {
                  it15_ultimaguia = bool = Ultima Guia Emitida 
                  ";
    //funcao construtor da classe 
-   public function  cl_itbinumpre() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbinumpre"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

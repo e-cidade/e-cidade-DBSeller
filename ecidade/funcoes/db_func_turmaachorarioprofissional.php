@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "turmaachorarioprofissional.ed346_sequencial,turmaachorarioprofissional.ed346_turmaac,turmaachorarioprofissional.ed346_funcaoatividade,turmaachorarioprofissional.ed346_rechumano,turmaachorarioprofissional.ed346_diasemana,turmaachorarioprofissional.ed346_horainicial,turmaachorarioprofissional.ed346_horafinal";
 ?>

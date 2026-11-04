@@ -108,7 +108,7 @@ class Registro50Validator
                 $this->registro20->getNomeTurma()
             );
         }
-        
+
         $dado = "{$pessoa} {$turma}: {$dado}";
 
         $log = LogCensoRegistry::get(LogCensoRegistry::MATRICULA_INICIAL);
@@ -143,6 +143,16 @@ class Registro50Validator
         $this->validarCodigo13();
         $this->validarCodigo14();
         $this->validarCodigo15();
+        $this->validarCodigo16();
+        $this->validarCodigo17();
+        $this->validarCodigo18();
+        $this->validarCodigo19();
+        $this->validarCodigo20();
+        $this->validarCodigo21();
+        $this->validarCodigo22();
+        $this->validarCodigo23();
+        $this->validarCodigo24();
+        $this->validarCodigo25();
     }
 
     private function validarTipoRegistro()
@@ -242,7 +252,7 @@ class Registro50Validator
                 30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67 e 68.";
                 $this->log(sprintf($log, $campo));
         }
-    
+
         if (!$this->isPreenchido($dado)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
@@ -252,7 +262,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if (in_array($dado, array(1, 2, 3, 4, 7, 8)) && !in_array($mediacao, array(1, 2))) {
+        if (in_array($dado, array(1, 2, 3, 4, 7, 8)) && !in_array($mediacao, [1, 3])) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com "Docente", "Auxiliar/Assistente educacional", '.
                 '"Profissional/Monitor de atividade complementar", "Tradutor-Intérprete de LIBRAS", '.
@@ -773,6 +783,286 @@ class Registro50Validator
     private function validarCodigo15()
     {
         $dado = $this->registro->getCodigo15();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo16()
+    {
+        $dado = $this->registro->getCodigo16();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo17()
+    {
+        $dado = $this->registro->getCodigo17();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo18()
+    {
+        $dado = $this->registro->getCodigo18();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo19()
+    {
+        $dado = $this->registro->getCodigo19();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo20()
+    {
+        $dado = $this->registro->getCodigo20();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo21()
+    {
+        $dado = $this->registro->getCodigo21();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo22()
+    {
+        $dado = $this->registro->getCodigo22();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo23()
+    {
+        $dado = $this->registro->getCodigo23();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo24()
+    {
+        $dado = $this->registro->getCodigo24();
+        $funcao = $this->registro->getFuncaoExerce();
+        $escolarizacao = $this->registro20->getEscolarizacao();
+        $etapa = $this->registro20->getEtapaCenso();
+        $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
+
+        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && $escolarizacao != 1) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+            $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
+        }
+
+        if (!$this->isPreenchido($dado)) {
+            return;
+        }
+
+        /**
+         * @todo: Validar regra 5
+         */
+    }
+    private function validarCodigo25()
+    {
+        $dado = $this->registro->getCodigo24();
         $funcao = $this->registro->getFuncaoExerce();
         $escolarizacao = $this->registro20->getEscolarizacao();
         $etapa = $this->registro20->getEtapaCenso();

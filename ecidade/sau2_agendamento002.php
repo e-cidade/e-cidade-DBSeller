@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ a:active {
   font-size: 11;
   color: darkblue;
   background-color:#aacccc ;
-  border:1px solid $FFFFFF;
+  border:1px solid #FFFFFF;
   font-weight: bold;
 }
 .corpo {
@@ -71,7 +71,7 @@ a:active {
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
-<?
+<?php
 
 
 db_postmemory($HTTP_POST_VARS);
@@ -102,7 +102,7 @@ if(isset($gerar_faa) && $gerar_faa==true){
     sParam += "&sLado=de";
 
     location.href = sParam;
-    </script><?
+    </script><?php
 }else{
     //$clagendamentos->cria_table($sd27_i_codigo, $chave_diasemana,$sd23_d_consulta, $clagendamentos,$clundmedhorario, null );
     ?><script>
@@ -114,7 +114,7 @@ if(isset($gerar_faa) && $gerar_faa==true){
     sParam += "&sLado=";
 
     location.href = sParam;
-    </script><?
+    </script><?php
 	
 }
 

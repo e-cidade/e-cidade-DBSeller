@@ -83,6 +83,14 @@ class Integra
                 $pasta = $this->parametros->getPastaResultados();
                 break;
 
+            case ParametrosEnum::PEDIDOS_INIFINITY:
+                $pasta = $this->parametros->getPastaPedidosInfinity();
+                break;
+
+            case ParametrosEnum::RESULTADOS_INIFINITY:
+                $pasta = $this->parametros->getPastaResultadosInfinity();
+                break;
+
             default:
                 throw new Exception('Tipo de integração não encontrada.');
         }

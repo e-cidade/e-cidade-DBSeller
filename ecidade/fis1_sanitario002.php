@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
      }
      js_src();
     </script>
-   <?
+   <?php
   db_fim_transacao();
 }else if(isset($chavepesquisa)){
   echo "
@@ -123,7 +123,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   <tr> 
     <td height="430" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmsanitario.php"));
 	?>
     </center>
@@ -132,7 +132,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 </body>
 </html>
-<?
+<?php
 echo "<script>
         if(document.form1.y80_codsani.value!=\"\"){
           parent.document.formaba.observacoes.disabled = false;

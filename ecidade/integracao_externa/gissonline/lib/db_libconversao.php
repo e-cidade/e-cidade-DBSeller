@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -32,9 +32,9 @@ function db_endereco($endtrocar) {
   global $numero;
   global $ender;
   global $compl;
-  if(ereg($er,$texto,$matriz)) {
+  if(preg_match($er,$texto,$matriz)) {
     $numero = trim(substr($matriz[0],2,9));
-    $xender = split($matriz[0],$texto);
+    $xender = explode($matriz[0],$texto);
     $ender  = $xender[0];
     $compl  = trim(substr($xender[1],1,20));
   } else {
@@ -70,9 +70,9 @@ function db_testaduplo($nome,$endereco,$numero,$cidade,$uf,$cpf){
   }
 
   if ($_achou == false) {
-  
+
     // nome, endereco, numero, cidade, uf...
-   
+
     $sql6 = "select z01_numcgm from cgm where z01_nome = '$nome' and z01_ender = '$endereco' and z01_numero = $numero and z01_munic = '$cidade' and z01_uf = '$uf'";
     $result6 = db_query($sql6);
     if ($result6 == false) {
@@ -112,7 +112,7 @@ function db_busca_usuario( $conn1, $str_login ) {
 //         if ($str_login == "atender1")  $str_login = 'sac';
 //         if ($str_login == "drma")  	$str_login = 'sac';
 //         if ($str_login == "drmw")  	$str_login = 'sac';
-	 
+
          $str_sql = "select id_usuario from DB_USUARIOS
                       where login = '" . trim($str_login) . "'";
          $res_db_usuarios = db_query( $conn1, $str_sql ) or die ( "FALHA: $str_sql \n" );
@@ -121,10 +121,10 @@ function db_busca_usuario( $conn1, $str_login ) {
              $id_usuario = 1;
          else{
              $row = pg_fetch_row( $res_db_usuarios );
-	     $id_usuario = $row[0]; 
+	     $id_usuario = $row[0];
          }
   return $id_usuario;
-}  
+}
 
 
 // Funcao para dar Echo dos Logs - retorna o TimeStamp
@@ -160,7 +160,7 @@ function db_log($sLog="", $sArquivo="", $iTipo=0, $lLogDataHora=true, $lQuebraAn
   if($iTipo==0 or $iTipo==2) {
     if(!empty($sArquivo)) {
       $fd=fopen($sArquivo, "a+");
-      if($fd) { 
+      if($fd) {
         fwrite($fd, $sOutputLog);
         fclose($fd);
       }
@@ -173,14 +173,14 @@ function db_log($sLog="", $sArquivo="", $iTipo=0, $lLogDataHora=true, $lQuebraAn
 
 //
 // Funcao para executar uma query no PostgreSQL (com tratamento de erros e geracao de Log)
-// 
+//
 function db_query($pConexao, $sSql, $sArquivoLog="", $lErroDie=true,$lIgnoreAll=false) {
 
   if(!is_resource($pConexao)) {
     db_log("ERRO: db_query - Conexao Invalida", $sArquivoLog);
     if($lErroDie) {
       die();
-    } 
+    }
     return false;
   }
 
@@ -188,9 +188,9 @@ function db_query($pConexao, $sSql, $sArquivoLog="", $lErroDie=true,$lIgnoreAll=
     db_log("ERRO: db_query - Sql vazio", $sArquivoLog);
     if($lErroDie) {
       die();
-    } 
+    }
     return false;
-  } 
+  }
 
   $rsRetorno = @pg_query($pConexao, $sSql);
 
@@ -200,7 +200,7 @@ function db_query($pConexao, $sSql, $sArquivoLog="", $lErroDie=true,$lIgnoreAll=
     db_log("ERRO: PostgreSQL (last)   - ".pg_last_error($pConexao)."\n", $sArquivoLog);
     if($lErroDie) {
       die();
-    } 
+    }
   }
 
   return $rsRetorno;
@@ -227,7 +227,7 @@ function db_numrows($rsResultSet, $sArquivoLog="") {
 
 
 function db_numrows_table($pConexao, $sTabela, $sArquivoLog="") {
-  
+
   //db_query($pConexao, "ANALYZE {$sTabela};", $sArquivoLog);
   //$sSql = "select reltuples from pg_class where relname = '{$sTabela}' and relkind = 'r'";
 
@@ -296,7 +296,7 @@ function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sT
       $sNomeCampo  = pg_field_name($rsTabela, $iCont);
       $sTipoCampo  = pg_field_type($rsTabela, $iCont);
       $sValorCampo = stripslashes(pg_result($rsTabela, $iCont));
-     
+
       $sSqlInsert .= $sVirgula . "\"{$sNomeCampo}\"";
 
       if($sTipoCampo=="date" and empty($sValorCampo)) {
@@ -307,7 +307,7 @@ function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sT
 
       $sVirgula = ", ";
     }
-    
+
     if(!empty($sFuncaoCallBack)) {
       if(function_exists($sFuncaoCallBack)) {
         call_user_func($sFuncaoCallBack, $iOffSet, $iNumRowsTabela);
@@ -335,7 +335,7 @@ function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao, $sTipo="tab
   $aTiposRelacao["indice"]    = "i"; // relkind i = indice
   $aTiposRelacao["visao"]     = "v"; // relkind v = view
   $aTiposRelacao["sequencia"] = "S"; // relkind S = sequence
-  $aTiposRelacao["tipo"]      = "c"; // relkind c = composite type 
+  $aTiposRelacao["tipo"]      = "c"; // relkind c = composite type
   $aTiposRelacao["especial"]  = "s"; // relkind s = special
   $aTiposRelacao["toast"]     = "t"; // relkind t = toast table
   if(!is_resource($pConexao) or db_empty($sRelacao)) {
@@ -352,26 +352,26 @@ function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao, $sTipo="tab
 
   $rsRelacao = db_query($pConexao, $sSqlRelacao);
   return (db_numrows($rsRelacao)>0);
-} 
+}
 
 
 
 
 function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $aCamposChave, $sArquivoLog) {
- 
+
   if(!is_resource($pConexao) or db_empty($sTabela)) {
     return false;
   }
   $sTabelaWork = db_empty($sTabelaWork)?"work_{$sTabela}":$sTabelaWork;
   $sEsquema    = db_empty($sEsquema)?"public":$sEsquema;
-  
+
   if(db_existe_relacao($pConexao, $sEsquema, $sTabelaWork, "tabela")) {
     db_log("Ja tem a tabela {$sTabelaWork}", $sArquivoLog, 0, true, true);
     $sDrop = "DROP TABLE {$sTabelaWork}";
     db_query($pConexao, $sDrop);
     db_log($sDrop, $sArquivoLog, 0, true, true);
     //return false;
-  } 
+  }
 
   $sSqlCreateTable    = "CREATE TABLE \"{$sEsquema}\".\"{$sTabelaWork}\" (";
   $sSqlCreateIndexOri = "CREATE INDEX \"{$sTabelaWork}_ori_in\" ON \"{$sEsquema}\".\"{$sTabelaWork}\"(";
@@ -390,8 +390,8 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
     $oFieldType = db_utils::fieldsmemory($rsFieldType, 0);
 
     $sSqlCreateTable    .= $sVirgula."\"{$aCamposChave[$iCont]}_ori\" {$oFieldType->udt_name}";
-    $sSqlCreateIndexOri .= $sVirgula."\"{$aCamposChave[$iCont]}_ori\""; 
-    $sSqlCreateIndexDst .= $sVirgula."\"{$aCamposChave[$iCont]}_dst\""; 
+    $sSqlCreateIndexOri .= $sVirgula."\"{$aCamposChave[$iCont]}_ori\"";
+    $sSqlCreateIndexDst .= $sVirgula."\"{$aCamposChave[$iCont]}_dst\"";
     $sVirgula = ", ";
     $sSqlCreateTable .= $sVirgula."\"{$aCamposChave[$iCont]}_dst\" {$oFieldType->udt_name}";
   }
@@ -399,7 +399,7 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
   $sSqlCreateTable    .= ");";
   $sSqlCreateIndexOri .= ");";
   $sSqlCreateIndexDst .= ");";
-  
+
 
 
   db_log($sSqlCreateTable, $sArquivoLog, 0, true, true);
@@ -413,7 +413,7 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
 }
 
 function db_gera_work_conversao($pConexaoOri,$pConexaoDes, $sTabela, $sTabelaWork="", $aCamposChave, $iTipoforma=1,$iSomaOuSeq ,$iSeq) {
-  /* 
+  /*
   $pConexaoOri  - Conexão de Origem
   $pConexaoDes  - Conexão de destino
   $sTabela      - Nome da Tabela Envolvida
@@ -444,14 +444,14 @@ db_log("\n \n ", null, 1, false, false);
   for($iCont=0; $iCont<count($aCamposChave); $iCont++) {
     $sCampo .= $sVirgula.$aCamposChave[$iCont];
     $sVirgula = ", ";
-    
+
   }
- 
+
   $sSqlDados = "select $sCampo from $sTabela $sWhere1  ";
   //echo "\n{$sSqlDados}\n";
   //die();
   $rsDados = db_query($pConexaoOri, $sSqlDados, $sArquivoLog);
-  
+
   $iNumRowsDados = db_numrows($rsDados);
   if($iNumRowsDados>0){
     // pega nome dos campo da tabelaorigem para usar no insert
@@ -473,8 +473,8 @@ db_log("\n \n ", null, 1, false, false);
         //db_log("tipo =  {$iTipoforma}", null, 1, true, true);
         if($iTipoforma==1){
           // Tipo = 1 soma $iSomaOuSeq
-          $sDadoOrig     = $oDados->$sNomeCampoOri[$iCampo2] ;
-          $sDadoDest     = $oDados->$sNomeCampoOri[$iCampo2] + $iSomaOuSeq ;
+          $sDadoOrig     = $oDados->{$sNomeCampoOri[$iCampo2]} ;
+          $sDadoDest     = $oDados->{$sNomeCampoOri[$iCampo2]} + $iSomaOuSeq ;
           $sDadosInclui .=$sVirgula.$sDadoOrig."\t".$sDadoDest;
           $sVirgula = "\t";
         }elseif($iTipoforma==2){
@@ -489,21 +489,21 @@ db_log("\n \n ", null, 1, false, false);
           }else{
             $iSequencial++;
           }
-          $sDadoOrig       = $oDados->$sNomeCampoOri[$iCampo2] ;
+          $sDadoOrig       = $oDados->{$sNomeCampoOri[$iCampo2]} ;
           $sDadoDest       =  $iSequencial;
           $sDadosInclui .=$sVirgula.$sDadoOrig."\t".$sDadoDest;
           $sVirgula        = "\t";
-    
+
         }if($iTipoforma==3){
           //duplica
-          $sDadoOrig     = $oDados->$sNomeCampoOri[$iCampo2] ;
-          $sDadoDest     = $oDados->$sNomeCampoOri[$iCampo2] ;
+          $sDadoOrig     = $oDados->{$sNomeCampoOri[$iCampo2]} ;
+          $sDadoDest     = $oDados->{$sNomeCampoOri[$iCampo2]} ;
           $sDadosInclui .= $sVirgula.$sDadoOrig."\t".$sDadoDest;
           $sVirgula = "\t";
         }
         $sIncluiDados = $sDadosInclui."\n";
-      
-      
+
+
       }
      if(!pg_put_line($pConexaoOri, $sIncluiDados)) {
         db_log("erro linha {$iCont} copy =  {$sIncluiDados}", $sArquivoLog, 0, true, true);
@@ -511,8 +511,8 @@ db_log("\n \n ", null, 1, false, false);
       }
      // db_log("\n", null, 1, false, false);
       //db_log("linha inicio =  {$sIncluiDados} ", $sArquivoLog, 0, true, true);
-      
-      
+
+
     }
     pg_put_line($pConexaoOri, "\\.\n"); // Finaliza o Copy
     pg_end_copy($pConexaoOri);
@@ -534,12 +534,12 @@ db_log("\n \n ", null, 1, false, false);
 * Funcao para pesquisar e alterar o valor do campo
 *
 * @param  $pConexaoOrigem            resource Conexao de origem, onde serao buscados os para substituicao
-* @param  $sValorCampo               string   Valor do campo a ser modificado(valor passado por referencia 
+* @param  $sValorCampo               string   Valor do campo a ser modificado(valor passado por referencia
 * @param  $aCamposTrocar             mixed    Array associativo com os parametros do campo a ser pesquisado e alterado
 *
 * @return void                                Sem retorno a variavel $sValorCampo e passada por referencia para seu processamento
 *
-* @author Robson Inacio 
+* @author Robson Inacio
 *
 */
 
@@ -548,13 +548,13 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
   if (!is_resource($pConexaoOrigem)) {
     db_log( "ERRO : Conexao de Origem Invalida", $sArquivoErros);
     return false;
-  }              
+  }
 
   if ( !db_existe_relacao($pConexaoOrigem, "public", $aParametrosCampo[0] ) ){
     db_log( "ERRO : TABELA AUXILIAR : {$aParametrosCampo[0]} NAO ENCONTRADA NA BASE ORIGEM \n",$sArquivoErros );
     exit;
   }
-  
+
   if ( stripslashes( $sValorCampo ) == "''" ){
 
     db_log( "ERRO : VALOR DO CAMPO ORIGEM NAO ENCONTRADO : TABELA WORK - {$aParametrosCampo[0]} CAMPO - {$aParametrosCampo[1]} VALOR - {$sValorCampo} \n",$sArquivoErros );
@@ -567,16 +567,16 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
   $rsTrocaValores   = db_query($pConexaoOrigem, $sqlTrocaValores, null);
 
   if (pg_num_rows($rsTrocaValores) == 0 || $rsTrocaValores == false ) {
-    
+
     db_log("Problema com a tabela {$aParametrosCampo[0]} sql : {$sqlTrocaValores} ", $sArquivoInfos,2);
 //    exit;
     return false;
-  
+
   }
-  
+
   $oTrocaValores    = db_utils::fieldsmemory($rsTrocaValores, 0);
-     
-  $sValorCampo      = $oTrocaValores->$aParametrosCampo[2];
+
+  $sValorCampo      = $oTrocaValores->{$aParametrosCampo[2]};
 
   unset($rsTrocaValores);
 
@@ -587,14 +587,14 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
 *
 * @param  $pConexaoOrigem            resource Conexao de origem, onde serao buscados os dados para migracao
 * @param  $pConexaoDestino           resource Conexao de destino, onde serao inseridos os dados lidos
-* @param  $sTabela                   string   Tabela a ser convertida 
-* @param  $aCamposTrocar             mixed    Array associativo com os campos a serem pespquisados e substituidos 
-* @param  $sFuncaoCallBack           string   Funcao a ser executada para pesquisa e substituicao dos campos origem e destino 
-* @param  $sArquivoLog               string   Nome do arquivo para log 
+* @param  $sTabela                   string   Tabela a ser convertida
+* @param  $aCamposTrocar             mixed    Array associativo com os campos a serem pespquisados e substituidos
+* @param  $sFuncaoCallBack           string   Funcao a ser executada para pesquisa e substituicao dos campos origem e destino
+* @param  $sArquivoLog               string   Nome do arquivo para log
 *
 * @return $lTabelaProcessada         boolean  Se a tabela foi processada com sucesso
 *
-* @author Fabrizio Mello 
+* @author Fabrizio Mello
 *
 */
 
@@ -619,14 +619,14 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
   $iOffSet = 0;
   $iNumRowsTabela = db_numrows_table($pConexaoOrigem, $sTabela, $sArquivoInfos);
 
- // $iNumRowsTabela = 2000; 
+ // $iNumRowsTabela = 2000;
 
   db_log("\n",null,1,false,false );
 
 //  $sSql = " select * from {$sTabela} ";
 
   unset($rsTabela);
-   
+
   $rsTabela = dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos,$sArquivoErros);
 
   $iNumRowsTabela = db_numrows($rsTabela);
@@ -637,15 +637,15 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
   }
 
   if ( db_existe_relacao($pConexaoDestino, "public", $sTabela) ){
-  
-    db_query($pConexaoDestino,"DROP TABLE {$sTabela} " ); 
+
+    db_query($pConexaoDestino,"DROP TABLE {$sTabela} " );
 
   }
-    
+
   // Cria tabela na base aux
   db_ddl_tabela($pConexaoDestino, $sTabela,'public',$pConexaoOrigem);
-  
-  db_query($pConexaoDestino, "copy {$sTabela} from stdin");  
+
+  db_query($pConexaoDestino, "copy {$sTabela} from stdin");
 
   db_log("Inicio Processamento Tabela {$sTabela}...\n", $sArquivoInfos, true, true);
 
@@ -661,7 +661,7 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
     $sVirgula = "";
 
     $aLinha = pg_fetch_row($rsTabela, $iTabela);
-  
+
     for ($x=0; $x < count($aLinha); $x++) {
 
       $sTipo = pg_field_type($rsTabela, $x);
@@ -678,10 +678,10 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
       }
 
     }
-  
+
     $sLinha  = implode("\t", $aLinha);
     $sLinha .= "\n";
-  
+
     if (!pg_put_line($pConexaoDestino, $sLinha)) {
 
       db_log( "ERRO : linha {$iCont} - {$sLinha}" );
@@ -708,7 +708,7 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
   if ( $pConexaoPesquisa != null ){
 
     $pConexao = $pConexaoPesquisa;
-    
+
   }
 
   // Select para Listar Colunas de uma Tabela
@@ -729,7 +729,7 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
 
     switch ($oCampos->udt_name) {
       // Trata campos tipo numeric
-      case "numeric": 
+      case "numeric":
         if(!db_empty($oCampos->numeric_precision) and !db_empty($oCampos->numeric_scale)) {
           $sTipo = "NUMERIC({$oCampos->numeric_precision}, {$oCampos->numeric_scale})";
         } else {
@@ -753,7 +753,7 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
 
     $sVirgula = ", ";
   }
-  
+
   $sSqlCreateTable .= ");";
 
   db_query($pConexaoDestino,$sSqlCreateTable);
@@ -764,25 +764,25 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
 * Funcao para criar indices em cada campo de uma determinada tabela
 *
 * @param  $pConexao                  resource Conexao da base onde estao as tabelas para criacao dos indices
-* @param  $sTabela                   string   Tabela a ser criado os indices  
-* @param  $sArquivoLog               string   Nome do arquivo para log 
+* @param  $sTabela                   string   Tabela a ser criado os indices
+* @param  $sArquivoLog               string   Nome do arquivo para log
 *
 * @return $lTabelaProcessada         boolean  Se a tabela foi processada com sucesso
 *
-* @author Robson Inacio 
+* @author Robson Inacio
 *
 */
 
 function dbCriaIndicesWork($pConexao, $sTabela, $sArquivoLog) {
- 
+
   if(!is_resource($pConexao) or db_empty($sTabela)) {
     return false;
   }
-  
+
   if(!db_existe_relacao($pConexao, 'public', $sTabela, "tabela")) {
     db_log("ERRO : Tabela {$sTabela} nao encontrada na base de dados ", $sArquivoLog, 0, true, true);
     return false;
-  } 
+  }
 
   $sSql     = "select * from {$sTabela} limit 1";
   $rsTabela = db_query($pConexao, $sSql);
@@ -791,7 +791,7 @@ function dbCriaIndicesWork($pConexao, $sTabela, $sArquivoLog) {
 
   for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
-    $sSqlDropIndex = " DROP INDEX ".pg_field_name($rsTabela, $iCont)."_in ;"; 
+    $sSqlDropIndex = " DROP INDEX ".pg_field_name($rsTabela, $iCont)."_in ;";
 
     $sSqlCreateIndex  = " CREATE INDEX ".pg_field_name($rsTabela, $iCont)."_in ";
     $sSqlCreateIndex .= "     ON {$sTabela} (".pg_field_name($rsTabela, $iCont)."); ";
@@ -808,24 +808,24 @@ function dbCriaIndicesWork($pConexao, $sTabela, $sArquivoLog) {
 *
 * @param  $pConexao                  resource Conexao da base onde estao as tabelas para criacao dos indices
 * @param  $sTabela                   string   Tabela a ser criado a consulta
-* @param  $sArquivoLog               string   Nome do arquivo para log 
+* @param  $sArquivoLog               string   Nome do arquivo para log
 *
 * @return $lTabelaProcessada         boolean  Se a tabela foi processada com sucesso
 *
-* @author Robson Inacio 
+* @author Robson Inacio
 *
 */
 
 function dbPreparaConsulta($pConexao, $sTabelaWork, $sArquivoLog) {
- 
+
   if(!is_resource($pConexao) or db_empty($sTabelaWork)) {
     return false;
   }
-  
+
   if(!db_existe_relacao($pConexao, 'public', $sTabelaWork, "tabela")) {
     db_log("ERRO : Tabela {$sTabelaWork} nao encontrada na base de dados ", $sArquivoLog, 0, true, true);
     return false;
-  } 
+  }
 
   $sSql     = "select * from {$sTabelaWork} limit 1";
   $rsTabelaWork = db_query($pConexao, $sSql);
@@ -835,14 +835,14 @@ function dbPreparaConsulta($pConexao, $sTabelaWork, $sArquivoLog) {
   for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
     $sNomeCampo = trim(pg_field_name($rsTabelaWork, $iCont));
-    
+
     if ( substr($sNomeCampo,-4) == '_ori' ) {
 
       $sSqlDeallocate = "DEALLOCATE prepare select_{$sTabelaWork}"; // tira a consulta da memoria
 
       $sCampodst         = substr($sNomeCampo,0,(strlen($sNomeCampo)-4))."_dst";
       $sSqlCreatePrepare = "prepare select_{$sTabelaWork}(integer) as select {$sCampodst} from {$sTabelaWork} where {$sNomeCampo} = $1; ";
-      
+
     }
 
     db_query( $pConexao, $sSqlDeallocate, $sArquivoLog, false, true );
@@ -859,24 +859,24 @@ function dbPreparaConsulta($pConexao, $sTabelaWork, $sArquivoLog) {
 *
 * @param  $pConexao                  resource Conexao da base onde estao as tabela
 * @param  $sTabela                   string   Tabela a ser criado a consulta
-* @param  $sArquivoLog               string   Nome do arquivo para log 
+* @param  $sArquivoLog               string   Nome do arquivo para log
 *
 * @return $lTabelaProcessada         boolean  Se a tabela foi processada com sucesso
 *
-* @author Robson Inacio 
+* @author Robson Inacio
 *
 */
 
 function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoLog) {
- 
+
   if(!is_resource($pConexaoOrigem) or db_empty($sTabela)) {
     return false;
   }
-  
+
   if(!db_existe_relacao($pConexaoOrigem, 'public', $sTabela, "tabela")) {
     db_log("ERRO : Tabela {$sTabela} nao encontrada na base de dados ", $sArquivoLog, 0, true, true);
     return false;
-  } 
+  }
 
   $sSql     = "select * from {$sTabela} limit 1";
   $rsTabela = db_query($pConexaoOrigem, $sSql);
@@ -897,13 +897,13 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
     $sSqlFieldType .= "    AND column_name  = '".trim(pg_field_name($rsTabela, $iCont))."' ";
     $rsFieldType    = db_query($pConexaoOrigem, $sSqlFieldType, $sArquivoLog);
     $oFieldType     = db_utils::fieldsmemory($rsFieldType, 0);
-    
+
     array_push($aCampos,  $oFieldType->nome_campo);
     array_push($aTipos,   $oFieldType->tipo_campo);
     array_push($aValores, '$'.($iCont+1));
 
   }
-  
+
   $sTipos   = implode(",",$aTipos);
   $sValores = implode(",",$aValores);
   $sCampos  = implode(",",$aCampos);
@@ -912,7 +912,7 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
 
   $sSqlPrepareInsert  = " PREPARE insert_{$sTabela}({$sTipos}) as ";
   $sSqlPrepareInsert .= "         INSERT INTO {$sTabela}          ";
-  $sSqlPrepareInsert .= "                     ({$sCampos})        "; 
+  $sSqlPrepareInsert .= "                     ({$sCampos})        ";
   $sSqlPrepareInsert .= "              VALUES ({$sValores})       ";
 
   db_query( $pConexaoDestino, $sSqlDeallocate, $sArquivoLog, false, true );
@@ -926,11 +926,11 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
 *
 * @param  $pConexao                  resource Conexao da base onde estao as tabela
 * @param  $sTabela                   string   Tabela a ser criado a consulta
-* @param  $sArquivoLog               string   Nome do arquivo para log 
+* @param  $sArquivoLog               string   Nome do arquivo para log
 *
 * @return $lTabelaProcessada         boolean  Se a tabela foi processada com sucesso
 *
-* @author Robson Inacio 
+* @author Robson Inacio
 *
 */
 
@@ -939,8 +939,8 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
   if (!is_resource($pConexaoOrigem)) {
     db_log( "ERRO : Conexao de Origem Invalida", $sArquivoErros);
     return false;
-  }              
-  
+  }
+
   if ( stripslashes( $sValorCampo ) == "''" ){
 
     db_log( "ERRO : VALOR DO CAMPO ORIGEM NAO ENCONTRADO : TABELA WORK - {$aParametrosCampo[0]} CAMPO - {$aParametrosCampo[1]} VALOR - {$sValorCampo} \n",$sArquivoErros );
@@ -968,7 +968,7 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
     $sSqlFieldType .= "    AND column_name  = '".trim(pg_field_name($rsTabela, $iCont))."' ";
     $rsFieldType    = db_query($pConexaoOrigem, $sSqlFieldType, $sArquivoLog);
     $oFieldType     = db_utils::fieldsmemory($rsFieldType, 0);
-    
+
     $lTemWork       =  array_key_exists($oFieldType->nome_campo,$aCamposTrocar);
 
     if ($lTemWork){
@@ -979,13 +979,13 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
       $sJoins = " left join {$aParametrosCampo[0]} {$aParametrosCampo[0]}_$iCont on {$aParametrosCampo[0]}_$iCont.{$aParametrosCampo[1]} = {$sTabela}.{$oFieldType->nome_campo} ";
 
       array_push( $aJoins, $sJoins );
-      
-    }else{   
-      
+
+    }else{
+
       $sCampo = $oFieldType->nome_campo;
 
     }
-    
+
     array_push($aCampos,  $sCampo);
 
   }
@@ -999,18 +999,18 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
   $sSql     = " select $sCampos from {$sTabela} {$sJoins} ";
 
   //echo $sSql." \n ";
-  
+
   $rsTabela = db_query($pConexaoOrigem, $sSql, null);
 
   if (pg_num_rows($rsTabela) == 0 || $rsTabela == false ) {
-    
+
     db_log("Problema com a tabela {$aParametrosCampo[0]} sql : {$sqlTrocaValores} ", $sArquivoInfos,2);
     return false;
-  
+
   }
-  
+
   return $rsTabela;
-     
+
 
 }
 

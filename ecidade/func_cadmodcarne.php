@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadmodcarne->rotulo->label("k47_descr");
               <?=$Lk47_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k47_sequencial",10,$Ik47_sequencial,true,"text",4,"","chave_k47_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadmodcarne->rotulo->label("k47_descr");
               <?=$Lk47_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k47_descr",40,$Ik47_descr,true,"text",4,"","chave_k47_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadmodcarne->rotulo->label("k47_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadmodcarne.php")==true){
@@ -122,12 +122,12 @@ $clcadmodcarne->rotulo->label("k47_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

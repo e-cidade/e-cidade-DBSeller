@@ -25,13 +25,13 @@
  *                                licenca/licenca_pt.txt
  */
 
-require_once (modification("libs/db_stdlib.php"));
-require_once (modification("libs/db_stdlibwebseller.php"));
-require_once (modification("libs/db_conecta.php"));
-require_once (modification("libs/db_sessoes.php"));
-require_once (modification("libs/db_usuariosonline.php"));
-require_once (modification("classes/db_leitorcategoria_classe.php"));
-require_once (modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_stdlibwebseller.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("classes/db_leitorcategoria_classe.php"));
+require_once(modification("dbforms/db_funcoes.php"));
 db_postmemory($_POST);
 
 ?>
@@ -48,7 +48,7 @@ db_postmemory($_POST);
   </head>
   <body>
 
-  <?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto").""); ?>
+  <?php MsgAviso(db_getsession("DB_coddepto"), "biblioteca", "", " bi17_coddepto = ".db_getsession("DB_coddepto").""); ?>
 
   <div class=" container">
     <form name="form1" method="post" action="">
@@ -77,30 +77,69 @@ db_postmemory($_POST);
               </select>
             </td>
           </tr>
+          <tr>
+              <td><strong>Tipo de Saída:</strong></td>
+              <td>
+                  <select name="formatoImpressao" id="formatoImpressao">
+                      <option value="pdf">PDF</option>
+                      <option value="csv">CSV</option>
+                  </select>
+              </td>
+          </tr>
         </table>
 
       </fieldset>
-      <input  name="imprimir" id="btnImprimir" type="button" value="Imprimir" disabled="disabled" onclick="js_emite();" />
+      <input name="imprimir" id="btnImprimir" type="button" value="Imprimir" disabled="disabled" 
+      onclick="js_emite();" />
     </form>
   </div>
   <?php db_menu(); ?>
   </body>
 </html>
 <script>
-function js_emite() {
 
-  var categoria = "TODAS";
-  if ($F('categoria') != "") {
-    categoria = $('categoria').options[$('categoria').selectedIndex].text;
+const formatoImpressao = document.getElementById('formatoImpressao');
+const apiUrl = "edu4_biblioteca.RPC.php";
+
+function js_emite() 
+{
+  if (formatoImpressao.value === 'pdf') {
+    var categoria = "TODAS";
+    if ($F('categoria') != "") {
+      categoria = $('categoria').options[$('categoria').selectedIndex].text;
+    }
+
+    var sParametros = btoa('ordem='+$F('ordem')+'&categoria='+$F('categoria')+'&sCategoria='+categoria);
+    window.open('bib2_rleitores002.php?q='+sParametros,'','scrollbars=1,location=0 ');
+    return false;
   }
 
-  var sParametros = btoa('ordem='+$F('ordem')+'&categoria='+$F('categoria')+'&sCategoria='+categoria);
-  window.open('bib2_rleitores002.php?q='+sParametros,'','scrollbars=1,location=0 ');
+  var oParametros = new Object();
+  oParametros.exec = 'processarRelatorioDeLeitoresCSV';
+  oParametros.filtroOrdem = $F('ordem');
+  oParametros.filtroCategoria = $F('categoria');
+  const body = {
+    method:'post',
+    parameters: 'json='+Object.toJSON(oParametros),
+    onComplete: js_trataRetornoRelatorioCSV
+  }
+  js_divCarregando('Aguarde... Imprimindo o relatório','msgbox');
+  var oAjax = new Ajax.Request(apiUrl, body);
+}
+
+function js_trataRetornoRelatorioCSV(oAjax) 
+{
+    const retorno = JSON.parse(oAjax.responseText);
+    js_removeObj("msgbox");
+    if (retorno.iStatus != 0 && retorno.pathRelatorioCSV != "") {
+      jan = window.open(retorno.pathRelatorioCSV,'');
+    } else {
+      alert(retorno.sMessage.urlDecode());
+    } 
 }
 
 (function() {
-
-  new AjaxRequest('edu4_biblioteca.RPC.php', {exec: 'buscaCategoriaDeCarteira'}, function (oRetorno, lErro) {
+  new AjaxRequest(apiUrl, {exec: 'buscaCategoriaDeCarteira'}, function (oRetorno, lErro) {
 
     if ( lErro ) {
 
@@ -117,6 +156,5 @@ function js_emite() {
 
     $('btnImprimir').removeAttribute('disabled', 'disabled');
   }).execute();
-
 })()
 </script>

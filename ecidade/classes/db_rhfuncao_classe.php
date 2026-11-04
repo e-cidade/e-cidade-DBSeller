@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,43 +27,43 @@
 
 class cl_rhfuncao
 {
-   // cria variaveis de erro 
-    public $rotulo = null; 
-    public $query_sql = null; 
-    public $numrows = 0; 
-    public $numrows_incluir = 0; 
-    public $numrows_alterar = 0; 
-    public $numrows_excluir = 0; 
-    public $erro_status = null; 
-    public $erro_sql = null; 
-    public $erro_banco = null;  
-    public $erro_msg = null;  
-    public $erro_campo = null;  
-    public $pagina_retorno = null; 
-    /* Variáveis do Arquivo */
-    public $rh37_instit = 0; 
-    public $rh37_funcao = 0; 
-    public $rh37_descr = null; 
-    public $rh37_vagas = 0; 
-    public $rh37_cbo = null; 
-    public $rh37_lei = null; 
-    public $rh37_class = null; 
-    public $rh37_ativo = 'f'; 
-    public $rh37_funcaogrupo = 0; 
-    public $rh37_datainicial_dia = null; 
-    public $rh37_datainicial_mes = null; 
-    public $rh37_datainicial_ano = null; 
-    public $rh37_datainicial = null; 
-    public $rh37_datafinal_dia = null; 
-    public $rh37_datafinal_mes = null; 
-    public $rh37_datafinal_ano = null; 
-    public $rh37_datafinal = null; 
-    public $rh37_descricaocompleta = null; 
-    public $rh37_rhinstrucao = 0; 
-    public $rh37_descricaoatividades = null; 
-    public $rh37_acumcargo = null; 
-   // cria propriedade com as variaveis do arquivo 
-    public $campos = "
+  // cria variaveis de erro 
+  public $rotulo = null;
+  public $query_sql = null;
+  public $numrows = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status = null;
+  public $erro_sql = null;
+  public $erro_banco = null;
+  public $erro_msg = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
+  /* Variáveis do Arquivo */
+  public $rh37_instit = 0;
+  public $rh37_funcao = 0;
+  public $rh37_descr = null;
+  public $rh37_vagas = 0;
+  public $rh37_cbo = null;
+  public $rh37_lei = null;
+  public $rh37_class = null;
+  public $rh37_ativo = 'f';
+  public $rh37_funcaogrupo = 0;
+  public $rh37_datainicial_dia = null;
+  public $rh37_datainicial_mes = null;
+  public $rh37_datainicial_ano = null;
+  public $rh37_datainicial = null;
+  public $rh37_datafinal_dia = null;
+  public $rh37_datafinal_mes = null;
+  public $rh37_datafinal_ano = null;
+  public $rh37_datafinal = null;
+  public $rh37_descricaocompleta = null;
+  public $rh37_rhinstrucao = 0;
+  public $rh37_descricaoatividades = null;
+  public $rh37_acumcargo = null;
+  // cria propriedade com as variaveis do arquivo 
+  public $campos = "
                  rh37_instit = int4 = Código da Instituição 
                  rh37_funcao = int4 = Cargo 
                  rh37_descr = varchar(30) = Descrição 
@@ -81,118 +81,118 @@ class cl_rhfuncao
                  rh37_acumcargo = varchar(6) = Cargo acumulável 
                  ";
 
-    public function __construct()
-    {
-        $this->rotulo = new rotulo("rhfuncao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+  public function __construct()
+  {
+    $this->rotulo = new rotulo("rhfuncao");
+    $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+  }
+
+  public function erro($mostra, $retorna)
+  {
+    if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
+      echo "<script>alert(\"" . $this->erro_msg . "\")</script>";
+      if ($retorna == true) {
+        echo "<script>location.href='" . $this->pagina_retorno . "'</script>";
+      }
     }
+  }
 
-    public function erro($mostra, $retorna)
-    {
-     if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
-        echo "<script>alert(\"".$this->erro_msg."\")</script>";
-        if($retorna==true){
-           echo "<script>location.href='".$this->pagina_retorno."'</script>";
+  public function atualizacampos($exclusao = false)
+  {
+    if ($exclusao == false) {
+      $this->rh37_instit = ($this->rh37_instit == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_instit"] : $this->rh37_instit);
+      $this->rh37_funcao = ($this->rh37_funcao == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_funcao"] : $this->rh37_funcao);
+      $this->rh37_descr = ($this->rh37_descr == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_descr"] : $this->rh37_descr);
+      $this->rh37_vagas = ($this->rh37_vagas == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_vagas"] : $this->rh37_vagas);
+      $this->rh37_cbo = ($this->rh37_cbo == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_cbo"] : $this->rh37_cbo);
+      $this->rh37_lei = ($this->rh37_lei == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_lei"] : $this->rh37_lei);
+      $this->rh37_class = ($this->rh37_class == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_class"] : $this->rh37_class);
+      $this->rh37_ativo = ($this->rh37_ativo == "f" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_ativo"] : $this->rh37_ativo);
+      $this->rh37_funcaogrupo = ($this->rh37_funcaogrupo == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"] : $this->rh37_funcaogrupo);
+      if ($this->rh37_datainicial == "") {
+        $this->rh37_datainicial_dia = ($this->rh37_datainicial_dia == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"] : $this->rh37_datainicial_dia);
+        $this->rh37_datainicial_mes = ($this->rh37_datainicial_mes == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_mes"] : $this->rh37_datainicial_mes);
+        $this->rh37_datainicial_ano = ($this->rh37_datainicial_ano == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_ano"] : $this->rh37_datainicial_ano);
+        if ($this->rh37_datainicial_dia != "") {
+          $this->rh37_datainicial = $this->rh37_datainicial_ano . "-" . $this->rh37_datainicial_mes . "-" . $this->rh37_datainicial_dia;
         }
-     }
-   }
+      }
+      if ($this->rh37_datafinal == "") {
+        $this->rh37_datafinal_dia = ($this->rh37_datafinal_dia == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"] : $this->rh37_datafinal_dia);
+        $this->rh37_datafinal_mes = ($this->rh37_datafinal_mes == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_mes"] : $this->rh37_datafinal_mes);
+        $this->rh37_datafinal_ano = ($this->rh37_datafinal_ano == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_ano"] : $this->rh37_datafinal_ano);
+        if ($this->rh37_datafinal_dia != "") {
+          $this->rh37_datafinal = $this->rh37_datafinal_ano . "-" . $this->rh37_datafinal_mes . "-" . $this->rh37_datafinal_dia;
+        }
+      }
+      $this->rh37_descricaocompleta = ($this->rh37_descricaocompleta == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"] : $this->rh37_descricaocompleta);
+      $this->rh37_rhinstrucao = ($this->rh37_rhinstrucao == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"] : $this->rh37_rhinstrucao);
+      $this->rh37_descricaoatividades = ($this->rh37_descricaoatividades == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"] : $this->rh37_descricaoatividades);
+      $this->rh37_acumcargo = ($this->rh37_acumcargo == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"] : $this->rh37_acumcargo);
+    } else {
+      $this->rh37_instit = ($this->rh37_instit == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_instit"] : $this->rh37_instit);
+      $this->rh37_funcao = ($this->rh37_funcao == "" ? @$GLOBALS["HTTP_POST_VARS"]["rh37_funcao"] : $this->rh37_funcao);
+    }
+  }
 
-    public function atualizacampos($exclusao = false)
-    {
-     if($exclusao==false){
-       $this->rh37_instit = ($this->rh37_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_instit"]:$this->rh37_instit);
-       $this->rh37_funcao = ($this->rh37_funcao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_funcao"]:$this->rh37_funcao);
-       $this->rh37_descr = ($this->rh37_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_descr"]:$this->rh37_descr);
-       $this->rh37_vagas = ($this->rh37_vagas == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_vagas"]:$this->rh37_vagas);
-       $this->rh37_cbo = ($this->rh37_cbo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_cbo"]:$this->rh37_cbo);
-       $this->rh37_lei = ($this->rh37_lei == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_lei"]:$this->rh37_lei);
-       $this->rh37_class = ($this->rh37_class == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_class"]:$this->rh37_class);
-       $this->rh37_ativo = ($this->rh37_ativo == "f"?@$GLOBALS["HTTP_POST_VARS"]["rh37_ativo"]:$this->rh37_ativo);
-       $this->rh37_funcaogrupo = ($this->rh37_funcaogrupo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"]:$this->rh37_funcaogrupo);
-       if($this->rh37_datainicial == ""){
-         $this->rh37_datainicial_dia = ($this->rh37_datainicial_dia == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"]:$this->rh37_datainicial_dia);
-         $this->rh37_datainicial_mes = ($this->rh37_datainicial_mes == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_mes"]:$this->rh37_datainicial_mes);
-         $this->rh37_datainicial_ano = ($this->rh37_datainicial_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_ano"]:$this->rh37_datainicial_ano);
-         if($this->rh37_datainicial_dia != ""){
-            $this->rh37_datainicial = $this->rh37_datainicial_ano."-".$this->rh37_datainicial_mes."-".$this->rh37_datainicial_dia;
-         }
-       }
-       if($this->rh37_datafinal == ""){
-         $this->rh37_datafinal_dia = ($this->rh37_datafinal_dia == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"]:$this->rh37_datafinal_dia);
-         $this->rh37_datafinal_mes = ($this->rh37_datafinal_mes == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_mes"]:$this->rh37_datafinal_mes);
-         $this->rh37_datafinal_ano = ($this->rh37_datafinal_ano == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_ano"]:$this->rh37_datafinal_ano);
-         if($this->rh37_datafinal_dia != ""){
-            $this->rh37_datafinal = $this->rh37_datafinal_ano."-".$this->rh37_datafinal_mes."-".$this->rh37_datafinal_dia;
-         }
-       }
-       $this->rh37_descricaocompleta = ($this->rh37_descricaocompleta == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"]:$this->rh37_descricaocompleta);
-       $this->rh37_rhinstrucao = ($this->rh37_rhinstrucao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"]:$this->rh37_rhinstrucao);
-       $this->rh37_descricaoatividades = ($this->rh37_descricaoatividades == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"]:$this->rh37_descricaoatividades);
-       $this->rh37_acumcargo = ($this->rh37_acumcargo == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"]:$this->rh37_acumcargo);
-     }else{
-       $this->rh37_instit = ($this->rh37_instit == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_instit"]:$this->rh37_instit);
-       $this->rh37_funcao = ($this->rh37_funcao == ""?@$GLOBALS["HTTP_POST_VARS"]["rh37_funcao"]:$this->rh37_funcao);
-     }
-   }
-
-    public function incluir($rh37_funcao,$rh37_instit)
-    {
-      $this->atualizacampos();
-     if($this->rh37_descr == null ){ 
-       $this->erro_sql = " Campo Descrição não informado.";
-       $this->erro_campo = "rh37_descr";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->rh37_vagas == null ){ 
-       $this->rh37_vagas = "0";
-     }
-     if($this->rh37_ativo == null ){ 
-       $this->erro_sql = " Campo Ativo não informado.";
-       $this->erro_campo = "rh37_ativo";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->rh37_funcaogrupo == null ){ 
-       $this->erro_sql = " Campo Grupo não informado.";
-       $this->erro_campo = "rh37_funcaogrupo";
-       $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if($this->rh37_datainicial == null ){ 
-       $this->rh37_datainicial = "null";
-     }
-     if($this->rh37_datafinal == null ){ 
-       $this->rh37_datafinal = "null";
-     }
-       $this->rh37_funcao = $rh37_funcao; 
-       $this->rh37_instit = $rh37_instit; 
-     if(($this->rh37_funcao == null) || ($this->rh37_funcao == "") ){ 
-       $this->erro_sql = " Campo rh37_funcao não declarado.";
-       $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     if(($this->rh37_instit == null) || ($this->rh37_instit == "") ){ 
-       $this->erro_sql = " Campo rh37_instit não declarado.";
-       $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     $sql = "insert into rhfuncao(
+  public function incluir($rh37_funcao, $rh37_instit)
+  {
+    $this->atualizacampos();
+    if ($this->rh37_descr == null) {
+      $this->erro_sql = " Campo Descrição não informado.";
+      $this->erro_campo = "rh37_descr";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    if ($this->rh37_vagas == null) {
+      $this->rh37_vagas = "0";
+    }
+    if ($this->rh37_ativo == null) {
+      $this->erro_sql = " Campo Ativo não informado.";
+      $this->erro_campo = "rh37_ativo";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    if ($this->rh37_funcaogrupo == null) {
+      $this->erro_sql = " Campo Grupo não informado.";
+      $this->erro_campo = "rh37_funcaogrupo";
+      $this->erro_banco = "";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    if ($this->rh37_datainicial == null) {
+      $this->rh37_datainicial = "null";
+    }
+    if ($this->rh37_datafinal == null) {
+      $this->rh37_datafinal = "null";
+    }
+    $this->rh37_funcao = $rh37_funcao;
+    $this->rh37_instit = $rh37_instit;
+    if (($this->rh37_funcao == null) || ($this->rh37_funcao == "")) {
+      $this->erro_sql = " Campo rh37_funcao não declarado.";
+      $this->erro_banco = "Chave Primaria zerada.";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    if (($this->rh37_instit == null) || ($this->rh37_instit == "")) {
+      $this->erro_sql = " Campo rh37_instit não declarado.";
+      $this->erro_banco = "Chave Primaria zerada.";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    $sql = "insert into rhfuncao(
                                        rh37_instit 
                                       ,rh37_funcao 
                                       ,rh37_descr 
@@ -219,499 +219,503 @@ class cl_rhfuncao
                                ,'$this->rh37_class' 
                                ,'$this->rh37_ativo' 
                                ,$this->rh37_funcaogrupo 
-                               ,".($this->rh37_datainicial == "null" || $this->rh37_datainicial == ""?"null":"'".$this->rh37_datainicial."'")." 
-                               ,".($this->rh37_datafinal == "null" || $this->rh37_datafinal == ""?"null":"'".$this->rh37_datafinal."'")." 
+                               ," . ($this->rh37_datainicial == "null" || $this->rh37_datainicial == "" ? "null" : "'" . $this->rh37_datainicial . "'") . " 
+                               ," . ($this->rh37_datafinal == "null" || $this->rh37_datafinal == "" ? "null" : "'" . $this->rh37_datafinal . "'") . " 
                                ,'$this->rh37_descricaocompleta' 
                                ,$this->rh37_rhinstrucao 
                                ,'$this->rh37_descricaoatividades'
                                ,'$this->rh37_acumcargo' 
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Cadastro de funções ($this->rh37_funcao."-".$this->rh37_instit) não Incluído. Inclusão Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "Cadastro de funções já Cadastrado";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       }else{
-         $this->erro_sql   = "Cadastro de funções ($this->rh37_funcao."-".$this->rh37_instit) não Incluído. Inclusão Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       }
-       $this->erro_status = "0";
-       $this->numrows_incluir= 0;
-       return false;
-     }
-     $this->erro_banco = "";
-     $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
-         $this->erro_sql .= "Valores : ".$this->rh37_funcao."-".$this->rh37_instit;
-     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-     $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-     $this->erro_status = "1";
-     $this->numrows_incluir= pg_affected_rows($result);
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
+    $result = db_query($sql);
+    if ($result == false) {
+      $this->erro_banco = str_replace("\n", "", @pg_last_error());
+      if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+        $this->erro_sql   = "Cadastro de funções ($this->rh37_funcao." - ".$this->rh37_instit) não Incluído. Inclusão Abortada.";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_banco = "Cadastro de funções já Cadastrado";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      } else {
+        $this->erro_sql   = "Cadastro de funções ($this->rh37_funcao." - ".$this->rh37_instit) não Incluído. Inclusão Abortada.";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      }
+      $this->erro_status = "0";
+      $this->numrows_incluir = 0;
+      return false;
+    }
+    $this->erro_banco = "";
+    $this->erro_sql = "Inclusão efetuada com sucesso.\\n";
+    $this->erro_sql .= "Valores : " . $this->rh37_funcao . "-" . $this->rh37_instit;
+    $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+    $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+    $this->erro_status = "1";
+    $this->numrows_incluir = pg_affected_rows($result);
+    $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
+    if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
+      && ($lSessaoDesativarAccount === false))) {
 
-       $resaco = $this->sql_record($this->sql_query_file($this->rh37_funcao,$this->rh37_instit  ));
-       if(($resaco!=false)||($this->numrows!=0)){
+      $resaco = $this->sql_record($this->sql_query_file($this->rh37_funcao, $this->rh37_instit));
+      if (($resaco != false) || ($this->numrows != 0)) {
 
-         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey values($acount,7094,'$this->rh37_funcao','I')");
-         $resac = db_query("insert into db_acountkey values($acount,9906,'$this->rh37_instit','I')");
-         $resac = db_query("insert into db_acount values($acount,1174,9906,'','".AddSlashes(pg_result($resaco,0,'rh37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7094,'','".AddSlashes(pg_result($resaco,0,'rh37_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7095,'','".AddSlashes(pg_result($resaco,0,'rh37_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7096,'','".AddSlashes(pg_result($resaco,0,'rh37_vagas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7097,'','".AddSlashes(pg_result($resaco,0,'rh37_cbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7098,'','".AddSlashes(pg_result($resaco,0,'rh37_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,7099,'','".AddSlashes(pg_result($resaco,0,'rh37_class'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,15329,'','".AddSlashes(pg_result($resaco,0,'rh37_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,17909,'','".AddSlashes(pg_result($resaco,0,'rh37_funcaogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1009972,'','".AddSlashes(pg_result($resaco,0,'rh37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1009973,'','".AddSlashes(pg_result($resaco,0,'rh37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1010974,'','".AddSlashes(pg_result($resaco,0,'rh37_descricaocompleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1010975,'','".AddSlashes(pg_result($resaco,0,'rh37_rhinstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1013709,'','".AddSlashes(pg_result($resaco,0,'rh37_descricaoatividades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1174,1014661,'','".AddSlashes(pg_result($resaco,0,'rh37_acumcargo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       }
-     }
-     return true;
-   } 
+        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
+        $acount = pg_fetch_result($resac, 0, 0);
+        $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
+        $resac = db_query("insert into db_acountkey values($acount,7094,'$this->rh37_funcao','I')");
+        $resac = db_query("insert into db_acountkey values($acount,9906,'$this->rh37_instit','I')");
+        $resac = db_query("insert into db_acount values($acount,1174,9906,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7094,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_funcao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7095,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7096,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_vagas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7097,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_cbo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7098,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_lei')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,7099,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_class')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,15329,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,17909,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_funcaogrupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1009972,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_datainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1009973,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_datafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1010974,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_descricaocompleta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1010975,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_rhinstrucao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1013709,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_descricaoatividades')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,1174,1014661,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'rh37_acumcargo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+      }
+    }
+    return true;
+  }
 
-    public function alterar($rh37_funcao=null,$rh37_instit=null)
-    {
-      $this->atualizacampos();
-     $sql = " update rhfuncao set ";
-     $virgula = "";
-     if(trim($this->rh37_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_instit"])){ 
-       $sql  .= $virgula." rh37_instit = $this->rh37_instit ";
-       $virgula = ",";
-       if(trim($this->rh37_instit) == null ){ 
-         $this->erro_sql = " Campo Código da Instituição não informado.";
-         $this->erro_campo = "rh37_instit";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->rh37_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcao"])){ 
-       $sql  .= $virgula." rh37_funcao = $this->rh37_funcao ";
-       $virgula = ",";
-       if(trim($this->rh37_funcao) == null ){ 
-         $this->erro_sql = " Campo Cargo não informado.";
-         $this->erro_campo = "rh37_funcao";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->rh37_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descr"])){ 
-       $sql  .= $virgula." rh37_descr = '$this->rh37_descr' ";
-       $virgula = ",";
-       if(trim($this->rh37_descr) == null ){ 
-         $this->erro_sql = " Campo Descrição não informado.";
-         $this->erro_campo = "rh37_descr";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->rh37_vagas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"])){ 
-        if(trim($this->rh37_vagas)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"])){ 
-           $this->rh37_vagas = "0" ; 
-        } 
-       $sql  .= $virgula." rh37_vagas = $this->rh37_vagas ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_cbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_cbo"])){ 
-       $sql  .= $virgula." rh37_cbo = '$this->rh37_cbo' ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_lei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_lei"])){ 
-       $sql  .= $virgula." rh37_lei = '$this->rh37_lei' ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_class)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_class"])){ 
-       $sql  .= $virgula." rh37_class = '$this->rh37_class' ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_ativo"])){ 
-       $sql  .= $virgula." rh37_ativo = '$this->rh37_ativo' ";
-       $virgula = ",";
-       if(trim($this->rh37_ativo) == null ){ 
-         $this->erro_sql = " Campo Ativo não informado.";
-         $this->erro_campo = "rh37_ativo";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->rh37_funcaogrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"])){ 
-       $sql  .= $virgula." rh37_funcaogrupo = $this->rh37_funcaogrupo ";
-       $virgula = ",";
-       if(trim($this->rh37_funcaogrupo) == null ){ 
-         $this->erro_sql = " Campo Grupo não informado.";
-         $this->erro_campo = "rh37_funcaogrupo";
-         $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "0";
-         return false;
-       }
-     }
-     if(trim($this->rh37_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"] !="") ){ 
-       $sql  .= $virgula." rh37_datainicial = '$this->rh37_datainicial' ";
-       $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"])){ 
-         $sql  .= $virgula." rh37_datainicial = null ";
-         $virgula = ",";
-       }
-     }
-     if(trim($this->rh37_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"] !="") ){ 
-       $sql  .= $virgula." rh37_datafinal = '$this->rh37_datafinal' ";
-       $virgula = ",";
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"])){ 
-         $sql  .= $virgula." rh37_datafinal = null ";
-         $virgula = ",";
-       }
-     }
-     if(trim($this->rh37_descricaocompleta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"])){ 
-       $sql  .= $virgula." rh37_descricaocompleta = '$this->rh37_descricaocompleta' ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_rhinstrucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"])){ 
-        if(trim($this->rh37_rhinstrucao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"])){ 
-           $this->rh37_rhinstrucao = "0" ; 
-        } 
-       $sql  .= $virgula." rh37_rhinstrucao = $this->rh37_rhinstrucao ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_descricaoatividades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"])){ 
-       $sql  .= $virgula." rh37_descricaoatividades = '$this->rh37_descricaoatividades' ";
-       $virgula = ",";
-     }
-     if(trim($this->rh37_acumcargo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"])){ 
-       $sql  .= $virgula." rh37_acumcargo = '$this->rh37_acumcargo' ";
-       $virgula = ",";
-     }
-     $sql .= " where ";
-     if($rh37_funcao!=null){
-       $sql .= " rh37_funcao = $this->rh37_funcao";
-     }
-     if($rh37_instit!=null){
-       $sql .= " and  rh37_instit = $this->rh37_instit";
-     }
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
-
-       $resaco = $this->sql_record($this->sql_query_file($this->rh37_funcao,$this->rh37_instit));
-       if ($this->numrows > 0) {
-
-         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
-
-           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
-           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-           $resac = db_query("insert into db_acountkey values($acount,7094,'$this->rh37_funcao','A')");
-           $resac = db_query("insert into db_acountkey values($acount,9906,'$this->rh37_instit','A')");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_instit"]) || $this->rh37_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1174,9906,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_instit'))."','$this->rh37_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcao"]) || $this->rh37_funcao != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7094,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_funcao'))."','$this->rh37_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descr"]) || $this->rh37_descr != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7095,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_descr'))."','$this->rh37_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"]) || $this->rh37_vagas != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7096,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_vagas'))."','$this->rh37_vagas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_cbo"]) || $this->rh37_cbo != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7097,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_cbo'))."','$this->rh37_cbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_lei"]) || $this->rh37_lei != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7098,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_lei'))."','$this->rh37_lei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_class"]) || $this->rh37_class != "")
-             $resac = db_query("insert into db_acount values($acount,1174,7099,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_class'))."','$this->rh37_class',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_ativo"]) || $this->rh37_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,1174,15329,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_ativo'))."','$this->rh37_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"]) || $this->rh37_funcaogrupo != "")
-             $resac = db_query("insert into db_acount values($acount,1174,17909,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_funcaogrupo'))."','$this->rh37_funcaogrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial"]) || $this->rh37_datainicial != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1009972,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_datainicial'))."','$this->rh37_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal"]) || $this->rh37_datafinal != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1009973,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_datafinal'))."','$this->rh37_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"]) || $this->rh37_descricaocompleta != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1010974,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_descricaocompleta'))."','$this->rh37_descricaocompleta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"]) || $this->rh37_rhinstrucao != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1010975,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_rhinstrucao'))."','$this->rh37_rhinstrucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"]) || $this->rh37_descricaoatividades != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1013709,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_descricaoatividades'))."','$this->rh37_descricaoatividades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"]) || $this->rh37_acumcargo != "")
-             $resac = db_query("insert into db_acount values($acount,1174,1014661,'".AddSlashes(pg_result($resaco,$conresaco,'rh37_acumcargo'))."','$this->rh37_acumcargo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
-       }
-     }
-    
-     $result = db_query($sql);
-     if (!$result) { 
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Cadastro de funções não Alterado. Alteração Abortada.\\n";
-         $this->erro_sql .= "Valores : ".$this->rh37_funcao."-".$this->rh37_instit;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       $this->numrows_alterar = 0;
-       return false;
-     } else {
-       if (pg_affected_rows($result) == 0) {
-         $this->erro_banco = "";
-         $this->erro_sql = "Cadastro de funções não foi Alterado. Alteração Executada.\\n";
-         $this->erro_sql .= "Valores : ".$this->rh37_funcao."-".$this->rh37_instit;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_alterar = 0;
-         return true;
-       } else {
-         $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com sucesso.\\n";
-         $this->erro_sql .= "Valores : ".$this->rh37_funcao."-".$this->rh37_instit;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_alterar = pg_affected_rows($result);
-         return true;
-       } 
-     } 
-   } 
-
-    public function excluir($rh37_funcao=null,$rh37_instit=null, $dbwhere = null)
-    {
-     $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
-     if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
-       && ($lSessaoDesativarAccount === false))) {
-
-       if (empty($dbwhere)) {
-
-         $resaco = $this->sql_record($this->sql_query_file($rh37_funcao,$rh37_instit));
-       } else { 
-         $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
-       }
-       if (($resaco != false) || ($this->numrows!=0)) {
-
-         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
-
-           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
-           $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-           $resac  = db_query("insert into db_acountkey values($acount,7094,'$rh37_funcao','E')");
-           $resac  = db_query("insert into db_acountkey values($acount,9906,'$rh37_instit','E')");
-           $resac  = db_query("insert into db_acount values($acount,1174,9906,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7094,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7095,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7096,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_vagas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7097,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_cbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7098,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,7099,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_class'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,15329,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,17909,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_funcaogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1009972,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1009973,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1010974,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_descricaocompleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1010975,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_rhinstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1013709,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_descricaoatividades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1174,1014661,'','".AddSlashes(pg_result($resaco,$iresaco,'rh37_acumcargo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
-       }
-     }
-     $sql = " delete from rhfuncao
-                    where ";
-     $sql2 = "";
-     if (empty($dbwhere)) {
-        if (!empty($rh37_funcao)){
-          if (!empty($sql2)) {
-            $sql2 .= " and ";
-          }
-          $sql2 .= " rh37_funcao = $rh37_funcao ";
-        }
-        if (!empty($rh37_instit)){
-          if (!empty($sql2)) {
-            $sql2 .= " and ";
-          }
-          $sql2 .= " rh37_instit = $rh37_instit ";
-        }
-     } else {
-       $sql2 = $dbwhere;
-     }
-     $result = db_query($sql.$sql2);
-     if ($result == false) { 
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Cadastro de funções não Excluído. Exclusão Abortada.\\n";
-       $this->erro_sql .= "Valores : ".$rh37_funcao."-".$rh37_instit;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       $this->numrows_excluir = 0;
-       return false;
-     } else {
-       if (pg_affected_rows($result) == 0) {
-         $this->erro_banco = "";
-         $this->erro_sql = "Cadastro de funções não Encontrado. Exclusão não Efetuada.\\n";
-         $this->erro_sql .= "Valores : ".$rh37_funcao."-".$rh37_instit;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_excluir = 0;
-         return true;
-       } else {
-         $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com sucesso.\\n";
-         $this->erro_sql .= "Valores : ".$rh37_funcao."-".$rh37_instit;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-         $this->erro_status = "1";
-         $this->numrows_excluir = pg_affected_rows($result);
-         return true;
-       } 
-     } 
-   } 
-
-    public function sql_record($sql)
-    {
-     $result = db_query($sql);
-     if (!$result) {
-       $this->numrows    = 0;
-       $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-       $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
-       $this->erro_status = "0";
-       return false;
-     }
-     $this->numrows = pg_num_rows($result);
-      if ($this->numrows == 0) {
+  public function alterar($rh37_funcao = null, $rh37_instit = null)
+  {
+    $this->atualizacampos();
+    $sql = " update rhfuncao set ";
+    $virgula = "";
+    if (trim($this->rh37_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_instit"])) {
+      $sql  .= $virgula . " rh37_instit = $this->rh37_instit ";
+      $virgula = ",";
+      if (trim($this->rh37_instit) == null) {
+        $this->erro_sql = " Campo Código da Instituição não informado.";
+        $this->erro_campo = "rh37_instit";
         $this->erro_banco = "";
-        $this->erro_sql   = "Record Vazio na Tabela:rhfuncao";
-        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
         $this->erro_status = "0";
         return false;
       }
-     return $result;
-   }
+    }
+    if (trim($this->rh37_funcao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcao"])) {
+      $sql  .= $virgula . " rh37_funcao = $this->rh37_funcao ";
+      $virgula = ",";
+      if (trim($this->rh37_funcao) == null) {
+        $this->erro_sql = " Campo Cargo não informado.";
+        $this->erro_campo = "rh37_funcao";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+    if (trim($this->rh37_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descr"])) {
+      $sql  .= $virgula . " rh37_descr = '$this->rh37_descr' ";
+      $virgula = ",";
+      if (trim($this->rh37_descr) == null) {
+        $this->erro_sql = " Campo Descrição não informado.";
+        $this->erro_campo = "rh37_descr";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+    if (trim($this->rh37_vagas) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"])) {
+      if (trim($this->rh37_vagas) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"])) {
+        $this->rh37_vagas = "0";
+      }
+      $sql  .= $virgula . " rh37_vagas = $this->rh37_vagas ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_cbo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_cbo"])) {
+      $sql  .= $virgula . " rh37_cbo = '$this->rh37_cbo' ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_lei) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_lei"])) {
+      $sql  .= $virgula . " rh37_lei = '$this->rh37_lei' ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_class) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_class"])) {
+      $sql  .= $virgula . " rh37_class = '$this->rh37_class' ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_ativo"])) {
+      $sql  .= $virgula . " rh37_ativo = '$this->rh37_ativo' ";
+      $virgula = ",";
+      if (trim($this->rh37_ativo) == null) {
+        $this->erro_sql = " Campo Ativo não informado.";
+        $this->erro_campo = "rh37_ativo";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+    if (trim($this->rh37_funcaogrupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"])) {
+      $sql  .= $virgula . " rh37_funcaogrupo = $this->rh37_funcaogrupo ";
+      $virgula = ",";
+      if (trim($this->rh37_funcaogrupo) == null) {
+        $this->erro_sql = " Campo Grupo não informado.";
+        $this->erro_campo = "rh37_funcaogrupo";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
+    if (trim($this->rh37_datainicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"] != "")) {
+      $sql  .= $virgula . " rh37_datainicial = '$this->rh37_datainicial' ";
+      $virgula = ",";
+    } else {
+      if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial_dia"])) {
+        $sql  .= $virgula . " rh37_datainicial = null ";
+        $virgula = ",";
+      }
+    }
+    if (trim($this->rh37_datafinal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"] != "")) {
+      $sql  .= $virgula . " rh37_datafinal = '$this->rh37_datafinal' ";
+      $virgula = ",";
+    } else {
+      if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal_dia"])) {
+        $sql  .= $virgula . " rh37_datafinal = null ";
+        $virgula = ",";
+      }
+    }
+    if (trim($this->rh37_descricaocompleta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"])) {
+      $sql  .= $virgula . " rh37_descricaocompleta = '$this->rh37_descricaocompleta' ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_rhinstrucao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"])) {
+      if (trim($this->rh37_rhinstrucao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"])) {
+        $this->rh37_rhinstrucao = "0";
+      }
+      $sql  .= $virgula . " rh37_rhinstrucao = $this->rh37_rhinstrucao ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_descricaoatividades) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"])) {
+      $sql  .= $virgula . " rh37_descricaoatividades = '$this->rh37_descricaoatividades' ";
+      $virgula = ",";
+    }
+    if (trim($this->rh37_acumcargo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"])) {
+      $sql  .= $virgula . " rh37_acumcargo = '$this->rh37_acumcargo' ";
+      $virgula = ",";
+    }
+    $sql .= " where ";
+    if ($rh37_funcao != null) {
+      $sql .= " rh37_funcao = $this->rh37_funcao";
+    }
+    if ($rh37_instit != null) {
+      $sql .= " and  rh37_instit = $this->rh37_instit";
+    }
+    $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
+    if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
+      && ($lSessaoDesativarAccount === false))) {
 
-    public function sql_query($rh37_funcao = null,$rh37_instit = null,$campos = "*", $ordem = null, $dbwhere = "") { 
+      $resaco = $this->sql_record($this->sql_query_file($this->rh37_funcao, $this->rh37_instit));
+      if ($this->numrows > 0) {
 
-     $sql  = "select {$campos}";
-     $sql .= "  from rhfuncao ";
-     $sql .= "      inner join db_config  on  db_config.codigo = rhfuncao.rh37_instit";
-     $sql .= "      left  join rhinstrucao  on  rhinstrucao.rh21_instru = rhfuncao.rh37_rhinstrucao";
-     $sql .= "      inner join rhfuncaogrupo  on  rhfuncaogrupo.rh100_sequencial = rhfuncao.rh37_funcaogrupo";
-     $sql .= "      inner join cgm  on  cgm.z01_numcgm = db_config.numcgm";
-     $sql .= "      inner join db_tipoinstit  on  db_tipoinstit.db21_codtipo = db_config.db21_tipoinstit";
-     $sql2 = "";
-     if (empty($dbwhere)) {
-       if (!empty($rh37_funcao)) {
-         $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao "; 
-       } 
-       if (!empty($rh37_instit)) {
-         if (!empty($sql2)) {
-            $sql2 .= " and ";
-         } else {
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " rhfuncao.rh37_instit = $rh37_instit "; 
-       } 
-     } else if (!empty($dbwhere)) {
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if (!empty($ordem)) {
-       $sql .= " order by {$ordem}";
-     }
-     return $sql;
+        for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
+
+          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
+          $acount = pg_fetch_result($resac, 0, 0);
+          $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
+          $resac = db_query("insert into db_acountkey values($acount,7094,'$this->rh37_funcao','A')");
+          $resac = db_query("insert into db_acountkey values($acount,9906,'$this->rh37_instit','A')");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_instit"]) || $this->rh37_instit != "")
+            $resac = db_query("insert into db_acount values($acount,1174,9906,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_instit')) . "','$this->rh37_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcao"]) || $this->rh37_funcao != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7094,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_funcao')) . "','$this->rh37_funcao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descr"]) || $this->rh37_descr != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7095,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_descr')) . "','$this->rh37_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_vagas"]) || $this->rh37_vagas != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7096,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_vagas')) . "','$this->rh37_vagas'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_cbo"]) || $this->rh37_cbo != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7097,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_cbo')) . "','$this->rh37_cbo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_lei"]) || $this->rh37_lei != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7098,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_lei')) . "','$this->rh37_lei'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_class"]) || $this->rh37_class != "")
+            $resac = db_query("insert into db_acount values($acount,1174,7099,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_class')) . "','$this->rh37_class'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_ativo"]) || $this->rh37_ativo != "")
+            $resac = db_query("insert into db_acount values($acount,1174,15329,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_ativo')) . "','$this->rh37_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_funcaogrupo"]) || $this->rh37_funcaogrupo != "")
+            $resac = db_query("insert into db_acount values($acount,1174,17909,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_funcaogrupo')) . "','$this->rh37_funcaogrupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datainicial"]) || $this->rh37_datainicial != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1009972,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_datainicial')) . "','$this->rh37_datainicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_datafinal"]) || $this->rh37_datafinal != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1009973,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_datafinal')) . "','$this->rh37_datafinal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaocompleta"]) || $this->rh37_descricaocompleta != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1010974,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_descricaocompleta')) . "','$this->rh37_descricaocompleta'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_rhinstrucao"]) || $this->rh37_rhinstrucao != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1010975,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_rhinstrucao')) . "','$this->rh37_rhinstrucao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_descricaoatividades"]) || $this->rh37_descricaoatividades != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1013709,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_descricaoatividades')) . "','$this->rh37_descricaoatividades'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          if (isset($GLOBALS["HTTP_POST_VARS"]["rh37_acumcargo"]) || $this->rh37_acumcargo != "")
+            $resac = db_query("insert into db_acount values($acount,1174,1014661,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'rh37_acumcargo')) . "','$this->rh37_acumcargo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        }
+      }
+    }
+
+    $result = db_query($sql);
+    if (!$result) {
+      $this->erro_banco = str_replace("\n", "", @pg_last_error());
+      $this->erro_sql   = "Cadastro de funções não Alterado. Alteração Abortada.\\n";
+      $this->erro_sql .= "Valores : " . $this->rh37_funcao . "-" . $this->rh37_instit;
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      $this->numrows_alterar = 0;
+      return false;
+    } else {
+      if (pg_affected_rows($result) == 0) {
+        $this->erro_banco = "";
+        $this->erro_sql = "Cadastro de funções não foi Alterado. Alteração Executada.\\n";
+        $this->erro_sql .= "Valores : " . $this->rh37_funcao . "-" . $this->rh37_instit;
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "1";
+        $this->numrows_alterar = 0;
+        return true;
+      } else {
+        $this->erro_banco = "";
+        $this->erro_sql = "Alteração efetuada com sucesso.\\n";
+        $this->erro_sql .= "Valores : " . $this->rh37_funcao . "-" . $this->rh37_instit;
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "1";
+        $this->numrows_alterar = pg_affected_rows($result);
+        return true;
+      }
+    }
   }
 
-    public function sql_query_file($rh37_funcao = null,$rh37_instit = null, $campos = "*", $ordem = null, $dbwhere = "") {
+  public function excluir($rh37_funcao = null, $rh37_instit = null, $dbwhere = null)
+  {
+    $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
+    if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
+      && ($lSessaoDesativarAccount === false))) {
 
-     $sql  = "select {$campos} ";
-     $sql .= "  from rhfuncao ";
-     $sql2 = "";
-     if (empty($dbwhere)) {
-       if (!empty($rh37_funcao)){
-         $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao "; 
-       } 
-       if (!empty($rh37_instit)){
-         if ( !empty($sql2) ) {
-            $sql2 .= " and ";
-         } else {
-            $sql2 .= " where ";
-         } 
-         $sql2 .= " rhfuncao.rh37_instit = $rh37_instit "; 
-       } 
-     } else if (!empty($dbwhere)) {
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if (!empty($ordem)) {
-       $sql .= " order by {$ordem}";
-     }
-     return $sql;
+      if (empty($dbwhere)) {
+
+        $resaco = $this->sql_record($this->sql_query_file($rh37_funcao, $rh37_instit));
+      } else {
+        $resaco = $this->sql_record($this->sql_query_file(null, null, "*", null, $dbwhere));
+      }
+      if (($resaco != false) || ($this->numrows != 0)) {
+
+        for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
+
+          $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
+          $acount = pg_fetch_result($resac, 0, 0);
+          $resac  = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
+          $resac  = db_query("insert into db_acountkey values($acount,7094,'$rh37_funcao','E')");
+          $resac  = db_query("insert into db_acountkey values($acount,9906,'$rh37_instit','E')");
+          $resac  = db_query("insert into db_acount values($acount,1174,9906,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7094,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_funcao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7095,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7096,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_vagas')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7097,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_cbo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7098,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_lei')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,7099,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_class')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,15329,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,17909,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_funcaogrupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1009972,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_datainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1009973,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_datafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1010974,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_descricaocompleta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1010975,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_rhinstrucao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1013709,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_descricaoatividades')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,1174,1014661,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'rh37_acumcargo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        }
+      }
+    }
+    $sql = " delete from rhfuncao
+                    where ";
+    $sql2 = "";
+    if (empty($dbwhere)) {
+      if (!empty($rh37_funcao)) {
+        if (!empty($sql2)) {
+          $sql2 .= " and ";
+        }
+        $sql2 .= " rh37_funcao = $rh37_funcao ";
+      }
+      if (!empty($rh37_instit)) {
+        if (!empty($sql2)) {
+          $sql2 .= " and ";
+        }
+        $sql2 .= " rh37_instit = $rh37_instit ";
+      }
+    } else {
+      $sql2 = $dbwhere;
+    }
+    $result = db_query($sql . $sql2);
+    if ($result == false) {
+      $this->erro_banco = str_replace("\n", "", @pg_last_error());
+      $this->erro_sql   = "Cadastro de funções não Excluído. Exclusão Abortada.\\n";
+      $this->erro_sql .= "Valores : " . $rh37_funcao . "-" . $rh37_instit;
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      $this->numrows_excluir = 0;
+      return false;
+    } else {
+      if (pg_affected_rows($result) == 0) {
+        $this->erro_banco = "";
+        $this->erro_sql = "Cadastro de funções não Encontrado. Exclusão não Efetuada.\\n";
+        $this->erro_sql .= "Valores : " . $rh37_funcao . "-" . $rh37_instit;
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "1";
+        $this->numrows_excluir = 0;
+        return true;
+      } else {
+        $this->erro_banco = "";
+        $this->erro_sql = "Exclusão efetuada com sucesso.\\n";
+        $this->erro_sql .= "Valores : " . $rh37_funcao . "-" . $rh37_instit;
+        $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+        $this->erro_status = "1";
+        $this->numrows_excluir = pg_affected_rows($result);
+        return true;
+      }
+    }
   }
 
-   function sql_query_cgm ( $rh37_funcao=null,$campos="*",$ordem=null,$dbwhere=""){ 
-     $sql = "select ";
-     if($campos != "*" ){
-       $campos_sql = split("#",$campos);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }else{
-       $sql .= $campos;
-     }
-     $sql .= " from rhfuncao ";
-     $sql .= "      inner join rhpessoal     on rhpessoal.rh01_funcao = rhfuncao.rh37_funcao ";
-     $sql .= "      inner join rhpessoalmov  on rhpessoalmov.rh02_regist = rhpessoal.rh01_regist
-		                                        and rhpessoalmov.rh02_anousu = ".db_anofolha()."
-		                                        and rhpessoalmov.rh02_mesusu = ".db_mesfolha()."
-		                                        and rhpessoalmov.rh02_instit = ".db_getsession("DB_instit")." ";
-     $sql .= "      left  join rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes ";
-     $sql .= "      inner join rhregime  on rhregime.rh30_codreg  = rhpessoalmov.rh02_codreg
+  public function sql_record($sql)
+  {
+    $result = db_query($sql);
+    if (!$result) {
+      $this->numrows    = 0;
+      $this->erro_banco = str_replace("\n", "", @pg_last_error());
+      $this->erro_sql   = "Erro ao selecionar os registros.";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    $this->numrows = pg_num_rows($result);
+    if ($this->numrows == 0) {
+      $this->erro_banco = "";
+      $this->erro_sql   = "Record Vazio na Tabela:rhfuncao";
+      $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+      $this->erro_msg   .=  str_replace('"', "", str_replace("'", "",  "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
+      $this->erro_status = "0";
+      return false;
+    }
+    return $result;
+  }
+
+  public function sql_query($rh37_funcao = null, $rh37_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
+  {
+
+    $sql  = "select {$campos}";
+    $sql .= "  from rhfuncao ";
+    $sql .= "      inner join db_config  on  db_config.codigo = rhfuncao.rh37_instit";
+    $sql .= "      left  join rhinstrucao  on  rhinstrucao.rh21_instru = rhfuncao.rh37_rhinstrucao";
+    $sql .= "      inner join rhfuncaogrupo  on  rhfuncaogrupo.rh100_sequencial = rhfuncao.rh37_funcaogrupo";
+    $sql .= "      inner join cgm  on  cgm.z01_numcgm = db_config.numcgm";
+    $sql .= "      inner join db_tipoinstit  on  db_tipoinstit.db21_codtipo = db_config.db21_tipoinstit";
+    $sql2 = "";
+    if (empty($dbwhere)) {
+      if (!empty($rh37_funcao)) {
+        $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao ";
+      }
+      if (!empty($rh37_instit)) {
+        if (!empty($sql2)) {
+          $sql2 .= " and ";
+        } else {
+          $sql2 .= " where ";
+        }
+        $sql2 .= " rhfuncao.rh37_instit = $rh37_instit ";
+      }
+    } else if (!empty($dbwhere)) {
+      $sql2 = " where $dbwhere";
+    }
+    $sql .= $sql2;
+    if (!empty($ordem)) {
+      $sql .= " order by {$ordem}";
+    }
+    return $sql;
+  }
+
+  public function sql_query_file($rh37_funcao = null, $rh37_instit = null, $campos = "*", $ordem = null, $dbwhere = "")
+  {
+
+    $sql  = "select {$campos} ";
+    $sql .= "  from rhfuncao ";
+    $sql2 = "";
+    if (empty($dbwhere)) {
+      if (!empty($rh37_funcao)) {
+        $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao ";
+      }
+      if (!empty($rh37_instit)) {
+        if (!empty($sql2)) {
+          $sql2 .= " and ";
+        } else {
+          $sql2 .= " where ";
+        }
+        $sql2 .= " rhfuncao.rh37_instit = $rh37_instit ";
+      }
+    } else if (!empty($dbwhere)) {
+      $sql2 = " where $dbwhere";
+    }
+    $sql .= $sql2;
+    if (!empty($ordem)) {
+      $sql .= " order by {$ordem}";
+    }
+    return $sql;
+  }
+
+  function sql_query_cgm($rh37_funcao = null, $campos = "*", $ordem = null, $dbwhere = "")
+  {
+    $sql = "select ";
+    if ($campos != "*") {
+      $campos_sql = explode("#", $campos);
+      $virgula = "";
+      for ($i = 0; $i < sizeof($campos_sql); $i++) {
+        $sql .= $virgula . $campos_sql[$i];
+        $virgula = ",";
+      }
+    } else {
+      $sql .= $campos;
+    }
+    $sql .= " from rhfuncao ";
+    $sql .= "      inner join rhpessoal    on rhpessoal.rh01_funcao = rhfuncao.rh37_funcao
+                                             and rhpessoal.rh01_instit = rhfuncao.rh37_instit ";
+    $sql .= "      inner join rhpessoalmov on rhpessoalmov.rh02_regist = rhpessoal.rh01_regist
+		                                        and rhpessoalmov.rh02_anousu = " . \DBPessoal::getAnoFolha() . "
+		                                        and rhpessoalmov.rh02_mesusu = " . \DBPessoal::getMesFolha() . "
+		                                        and rhpessoalmov.rh02_instit = " . db_getsession("DB_instit") . " ";
+    $sql .= "      left  join rhpesrescisao on rhpesrescisao.rh05_seqpes = rhpessoalmov.rh02_seqpes ";
+    $sql .= "      inner join rhregime  on rhregime.rh30_codreg  = rhpessoalmov.rh02_codreg
 		                                    and rhregime.rh30_instit  = rhpessoalmov.rh02_instit ";
-     $sql .= "      inner join cgm       on cgm.z01_numcgm        = rhpessoal.rh01_numcgm ";
-     $sql .= "      inner join rhlota    on rhlota.r70_codigo     = rhpessoalmov.rh02_lota
+    $sql .= "      inner join cgm       on cgm.z01_numcgm        = rhpessoal.rh01_numcgm ";
+    $sql .= "      inner join rhlota    on rhlota.r70_codigo     = rhpessoalmov.rh02_lota
 		                                    and rhlota.r70_instit     = rhpessoalmov.rh02_instit ";
-     $sql2 = "";
-     if($dbwhere==""){
-       if($rh37_funcao!=null ){
-         $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao "; 
-       } 
-     }else if($dbwhere != ""){
-       $sql2 = " where $dbwhere";
-     }
-     $sql .= $sql2;
-     if($ordem != null ){
-       $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
-       $virgula = "";
-       for($i=0;$i<sizeof($campos_sql);$i++){
-         $sql .= $virgula.$campos_sql[$i];
-         $virgula = ",";
-       }
-     }
-     return $sql;
+    $sql2 = "";
+    if ($dbwhere == "") {
+      if ($rh37_funcao != null) {
+        $sql2 .= " where rhfuncao.rh37_funcao = $rh37_funcao ";
+      }
+    } else if ($dbwhere != "") {
+      $sql2 = " where $dbwhere";
+    }
+    $sql .= $sql2;
+    if ($ordem != null) {
+      $sql .= " order by ";
+      $campos_sql = explode("#", $ordem);
+      $virgula = "";
+      for ($i = 0; $i < sizeof($campos_sql); $i++) {
+        $sql .= $virgula . $campos_sql[$i];
+        $virgula = ",";
+      }
+    }
+    return $sql;
   }
 }

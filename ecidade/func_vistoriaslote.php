@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clvistoriaslote->rotulo->label("y06_usuario");
               <?=$Ly06_vistoriaslote?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y06_vistoriaslote",10,$Iy06_vistoriaslote,true,"text",4,"","chave_y06_vistoriaslote");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clvistoriaslote->rotulo->label("y06_usuario");
               <?=$Ly06_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("y06_usuario",10,$Iy06_usuario,true,"text",4,"","chave_y06_usuario");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clvistoriaslote->rotulo->label("y06_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistoriaslote.php")==true){
@@ -118,12 +118,12 @@ $clvistoriaslote->rotulo->label("y06_usuario");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

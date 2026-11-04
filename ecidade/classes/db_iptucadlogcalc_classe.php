@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_iptucadlogcalc {
                  j62_erro = bool = Erro 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadlogcalc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadlogcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_iptucadlogcalc {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->j62_codigo = ($this->j62_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["j62_codigo"]:$this->j62_codigo);
        $this->j62_descr = ($this->j62_descr == ""?@$GLOBALS["HTTP_POST_VARS"]["j62_descr"]:$this->j62_descr);
@@ -77,7 +77,7 @@ class cl_iptucadlogcalc {
      }
    }
    // funcao para inclusao
-   function incluir ($j62_codigo){ 
+   public function incluir ($j62_codigo){ 
       $this->atualizacampos();
      if($this->j62_descr == null ){ 
        $this->erro_sql = " Campo Descricao nao Informado.";
@@ -176,7 +176,7 @@ class cl_iptucadlogcalc {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($j62_codigo=null) { 
+   public function alterar ($j62_codigo=null) { 
       $this->atualizacampos();
      $sql = " update iptucadlogcalc set ";
      $virgula = "";
@@ -271,7 +271,7 @@ class cl_iptucadlogcalc {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($j62_codigo=null,$dbwhere=null) { 
+   public function excluir ($j62_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($j62_codigo));
      }else{ 
@@ -334,7 +334,7 @@ class cl_iptucadlogcalc {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

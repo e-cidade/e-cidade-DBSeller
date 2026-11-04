@@ -166,16 +166,16 @@ if (isset($alterar)) {
   </tr>
 </table>
     <center>
-	<?
+	<?php
 	require_once(modification("forms/db_frmmatmater.php"));
 	?>
     </center>
-<?
+<?php
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 if (isset($alterar)) {
 

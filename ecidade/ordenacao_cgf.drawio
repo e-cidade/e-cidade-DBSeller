@@ -1,0 +1,89 @@
+<mxfile host="65bd71144e">
+    <diagram id="HC6L8FfZVnoycyvw29rJ" name="Page-1">
+        <mxGraphModel dx="636" dy="281" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="32" value="" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#ffffff;fillColor=#008a00;strokeColor=#005700;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="10" width="389.5" height="375" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#ffffff;fillColor=#0050ef;strokeColor=#001DBC;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="30" width="370" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontColor=#FFFFFF;" parent="1" source="2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="85" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="Tela de configuração" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="55" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="ordenacaocgf" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1" collapsed="1">
+                    <mxGeometry x="480" y="70" width="120" height="30" as="geometry">
+                        <mxRectangle x="330" y="70" width="270" height="120" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="sequencial (serial)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="30" width="270" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="grupo (fk - k03_tipo - cadtipo)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="60" width="270" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="tipo (fk - sequencial -&amp;nbsp;&lt;span style=&quot;text-align: center;&quot;&gt;tipoordenacaocgf&lt;/span&gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
+                    <mxGeometry y="90" width="270" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontColor=#FFFFFF;" parent="1" source="10" target="6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="tipoordenacaocgf" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1" collapsed="1">
+                    <mxGeometry x="630" y="70" width="130" height="30" as="geometry">
+                        <mxRectangle x="630" y="70" width="450" height="300" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="11" value="sequencial" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="10" vertex="1">
+                    <mxGeometry y="30" width="450" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;font color=&quot;#ffffff&quot;&gt;descricao&lt;br&gt;&lt;strong style=&quot;background-color: transparent; font-size: medium;&quot;&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Numpar&lt;br&gt;&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/font&gt;&lt;strong style=&quot;background-color: transparent; font-size: medium;&quot;&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Receita&lt;br&gt;&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;strong style=&quot;background-color: transparent; font-size: medium;&quot;&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Data de Vencimento&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;strong style=&quot;background-color: transparent; font-size: medium;&quot;&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Data de Operação&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Origem (Deve verificar o item com a composição do tipo de origem)&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Inicial&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Data de Inicial&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- Processo do Foro&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;line-height: 1px; margin-bottom: 0cm; background: transparent; font-size: medium;&quot; align=&quot;left&quot;&gt;&lt;strong&gt;&lt;font face=&quot;Arial, sans-serif&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 10pt;&quot;&gt;&lt;i&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;-CDA&lt;/span&gt;&lt;/i&gt;&lt;/font&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;&lt;font color=&quot;#ffffff&quot;&gt;&amp;nbsp;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="10" vertex="1">
+                    <mxGeometry y="60" width="450" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Tabelas" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="30" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontColor=#FFFFFF;" parent="1" source="20" target="21" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Tela cgf" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="300" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="21" target="17" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="523" y="330"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" value="Cada iframe de tipo de débito" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="224" y="300" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="&lt;div style=&quot;color: rgb(169, 183, 198); background-color: rgb(43, 43, 43); font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #ffc66d;&quot;&gt;getGruposDebito&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="249" y="100" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;div style=&quot;color: rgb(169, 183, 198); background-color: rgb(43, 43, 43); font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #ffc66d;&quot;&gt;getTiposOrdenacao&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="249" y="130" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Post OrdenacaoCgf" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="233.5" y="160" width="121" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;div style=&quot;color: rgb(169, 183, 198); background-color: rgb(43, 43, 43); font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #ffc66d;&quot;&gt;GET getOrdenacoesPorGrupo&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="220" width="121" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Telas" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="10" width="60" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Delete OrdenacaoCgf" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="233.5" y="190" width="121" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -11,7 +11,7 @@
 class HandDigits {
     var $digits_thumb30x30 = array();
     var $iHeight=30, $iWidth=30;
-    function HandDigits() {
+    public function __construct() {
 //==========================================================
 // d6-small.jpg
 //==========================================================
@@ -159,7 +159,7 @@ class AntiSpam {
 	$this->iNumber = $aNumber;
     }
 
-    function Rand($aLen) {
+    public function Rand($aLen) {
 	$d='';
 	for($i=0; $i < $aLen; ++$i) {
 	    $d .= rand(1,9);
@@ -168,7 +168,7 @@ class AntiSpam {
 	return $d;
     }
 
-    function Stroke() {
+    public function Stroke() {
 
 	$n=strlen($this->iNumber);
 	for($i=0; $i < $n; ++$i ) {

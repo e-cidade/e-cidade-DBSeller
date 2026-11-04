@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcadtipoorigem->rotulo->label("k14_cadorigem");
               <?=$Lk14_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k14_sequencial",10,$Ik14_sequencial,true,"text",4,"","chave_k14_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clcadtipoorigem->rotulo->label("k14_cadorigem");
               <?=$Lk14_cadorigem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k14_cadorigem",10,$Ik14_cadorigem,true,"text",4,"","chave_k14_cadorigem");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clcadtipoorigem->rotulo->label("k14_cadorigem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipoorigem.php")==true){
@@ -122,12 +122,12 @@ $clcadtipoorigem->rotulo->label("k14_cadorigem");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("pc01_descrmater");
        <?=@$Lo89_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('o89_sequencial',10,$Io89_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To89_pactoitem?>">
-       <?
+       <?php
        db_ancora(@$Lo89_pactoitem,"js_pesquisao89_pactoitem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o89_pactoitem',10,$Io89_pactoitem,true,'text',$db_opcao," onchange='js_pesquisao89_pactoitem(false);'")
 ?>
-       <?
+       <?php
 db_input('o109_descricao',50,$Io109_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To89_pcmater?>">
-       <?
+       <?php
        db_ancora(@$Lo89_pcmater,"js_pesquisao89_pcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('o89_pcmater',10,$Io89_pcmater,true,'text',$db_opcao," onchange='js_pesquisao89_pcmater(false);'")
 ?>
-       <?
+       <?php
 db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactoitempcmater.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

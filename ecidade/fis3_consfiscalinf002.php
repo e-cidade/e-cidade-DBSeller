@@ -53,7 +53,7 @@ $num    = pg_numrows($result);
 </head>
 <body>
 
-<?
+<?php
   if ($num > 0) {  // verifica se a matricula passada como parametro encontrou registro no sql acima
     db_fieldsmemory($result,0,true);
 ?>
@@ -73,7 +73,7 @@ $num    = pg_numrows($result);
     <td width="165" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;<?=$y50_numbloco?>
       </strong></font></td>
   </tr>
-  <?
+  <?php
   $result_busca= $clauto->sql_record($clauto->sql_query_busca($codauto));
   if ($clauto->numrows>0){
     db_fieldsmemory($result_busca,0);
@@ -136,7 +136,7 @@ $num    = pg_numrows($result);
   <tr>
      <td align="center" nowrap bgcolor="#CCCCCC" colspan=4 ><b>Endereço Registrado:&nbsp;</b></td>
   </tr>
-  <?
+  <?php
   $result_local=$clautolocal->sql_record($clautolocal->sql_query($codauto));
   if ($clautolocal->numrows>0){
     db_fieldsmemory($result_local,0,true);
@@ -165,7 +165,7 @@ $num    = pg_numrows($result);
   <tr>
     <td align="center" nowrap bgcolor="#CCCCCC" colspan=4 ><b>Endereço Localizado:&nbsp;</b></td>
   </tr>
-  <?
+  <?php
   $result_exec=$clautoexec->sql_record($clautoexec->sql_query($codauto));
   if ($clautoexec->numrows>0){
     db_fieldsmemory($result_exec,0,true);
@@ -222,7 +222,7 @@ $num    = pg_numrows($result);
   </tr>
 </table>
 
-<?
+<?php
   } else {  // caso nao tenha retornado nenhum registro é mostrado uma tabela informando que a matricula nao foi localizada
 ?>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -235,7 +235,7 @@ $num    = pg_numrows($result);
       n&atilde;o retornou nenhum registro.</strong></td>
   </tr>
 </table>
-<?
+<?php
   } // fim da verificacao
 ?>
 </body>

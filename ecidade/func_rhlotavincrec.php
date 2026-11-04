@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhlotavincrec->rotulo->label("rh43_recurso");
               <?=$Lrh43_codlotavinc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh43_codlotavinc",6,$Irh43_codlotavinc,true,"text",4,"","chave_rh43_codlotavinc");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhlotavincrec->rotulo->label("rh43_recurso");
               <?=$Lrh43_codelenov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh43_codelenov",6,$Irh43_codelenov,true,"text",4,"","chave_rh43_codelenov");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clrhlotavincrec->rotulo->label("rh43_recurso");
               <?=$Lrh43_recurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("rh43_recurso",4,$Irh43_recurso,true,"text",4,"","chave_rh43_recurso");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clrhlotavincrec->rotulo->label("rh43_recurso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotavincrec.php")==true){
@@ -129,12 +129,12 @@ $clrhlotavincrec->rotulo->label("rh43_recurso");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

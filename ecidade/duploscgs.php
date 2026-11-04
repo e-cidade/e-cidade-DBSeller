@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -25,11 +25,25 @@
  *                                licenca/licenca_pt.txt 
  */
 
-require(modification("model/configuracao/TraceLog.model.php"));
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_conn.php"));
+require_once(modification("model/configuracao/TraceLog.model.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_conn.php"));
 
+
+if(empty($argv[2])){
+	db_logduplos("Necessário passar o parametro do codigo da unificacao");
+	exit;
+}
+
+if(empty($argv[3])){
+	db_logduplos("Necessário passar o parametro do login do processamento");
+	exit;
+}
+
+$codUnificacao = $argv[2];
+$loginProcessamento = $argv[3];
 // Funcao para dar Echo dos Logs - retorna o TimeStamp
+
 function db_logduplos($sLog = "") {
 	//
 	$aDataHora = getdate ();
@@ -66,21 +80,10 @@ $resultsessao = db_query ( $conn, $sqlsessao ) or die ( db_logduplos ( "sql: " .
 $sqlsessao = "select fc_putsession('DB_instit', cast((select codigo from db_config where prefeitura is true limit 1) as text));";
 $resultsessao = db_query ( $conn, $sqlsessao ) or die ( db_logduplos ( "sql: " . pg_ErrorMessage () ) );
 
-db_logduplos("Dividindo agendamentos múltiplos em agendamentos individuais...");
-$sqldivide  = "select fc_divide_agendamento_duploscgs(s127_i_codigo) ";
-$sqldivide .= "  from sau_cgscorreto ";
-$sqldivide .= "       join sau_cgserrado on s128_i_codigo = s127_i_codigo ";
-$sqldivide .= " where s127_b_proc is false ";
-$sqldivide .= " group by s127_i_codigo ";
-$sqldivide .= "having count(*) > 1 ";
-$resultdivide = db_query($conn, $sqldivide);
-
-
-
-
 $mostra = 0;
 
-$sql_correto = "select * from sau_cgscorreto where s127_b_proc is false order by s127_d_data, s127_c_hora, s127_i_codigo";
+$sql_correto = "select * from sau_cgscorreto where s127_b_proc is false and s127_i_codigo = $codUnificacao order by s127_d_data, s127_c_hora, s127_i_codigo";
+
 $result_correto = db_query ( $sql_correto ) or die ( db_logduplos ( "sql: " . pg_ErrorMessage () ) );
 
 for($record_correto = 0; $record_correto < pg_numrows ( $result_correto ); $record_correto ++) {
@@ -383,11 +386,10 @@ for($record_correto = 0; $record_correto < pg_numrows ( $result_correto ); $reco
                   from cgs_und
                   where z01_i_cgsund = $v_sau_cgserrado";
 		
-		$v_log .= $sqlcgsalt;
+		$v_log .= str_replace("'","",$sqlcgsalt);
 		$result = db_query ( $sqlcgsalt ) or die ( db_logduplos ( "sql: aqui11111111111111 $sqlcgsalt\n" . pg_ErrorMessage () ) );
 		//echo "**** incluiu $v_sau_cgserrado na cgsalt ****";
-		db_logduplos ( "**** incluiu $v_sau_cgserrado na cgsalt ****" );
-		//die("$sqlcgsalt");
+		db_logduplos ( "**** incluiu $v_sau_cgserrado na cgsalt ****" );		
 		//*********************************
 
 		$sqlProblemaPacienteCorreto = "
@@ -431,7 +433,7 @@ for($record_correto = 0; $record_correto < pg_numrows ( $result_correto ); $reco
 		$sqlAtualizaProblemaPaciente = "update problemaspaciente set s170_paciente = $v_cgscerto where s170_paciente = $v_sau_cgserrado";
 		db_logduplos ( "     12 - " . $sqlAtualizaProblemaPaciente );
 		db_query ( $sqlAtualizaProblemaPaciente ) or die ( db_logduplos ( "sql: $sqlAtualizaProblemaPaciente\n" . pg_ErrorMessage () ) );
-
+		
 		$sql6 = "delete from cgs_und where z01_i_cgsund = $v_sau_cgserrado";
 		$v_log .= $sql6;
 		$result = db_query ( $sql6 ) or die ( db_logduplos ( "sql: aquiiiiiiiiiiii $sql6\n" . pg_ErrorMessage () ) );
@@ -441,11 +443,14 @@ for($record_correto = 0; $record_correto < pg_numrows ( $result_correto ); $reco
 		$result = db_query ( $sql6 ) or die ( db_logduplos ( "sql: $sql6\n" . pg_ErrorMessage () ) );
 		
 		$v_lognew = addSlashes ( $v_log );
-		$sql7 = "insert into sau_cgserradolog values ($s127_i_codigo, $s128_i_numcgs, '$v_lognew');";
+		$sql7 = "insert into sau_cgserradolog values ($s127_i_codigo, $s128_i_numcgs, '$v_log');";		
 		$result = db_query ( $sql7 ) or die ( db_logduplos ( $sql7 . "---- sql: " . pg_ErrorMessage () ) );
-	
 	}
-	$sql8 = "update sau_cgscorreto set s127_b_proc = true where s127_i_codigo = $s127_i_codigo";
+ 
+	$dataProcessamento = strval(date("d/m/Y"));
+    $horaProcessamento = strval(date("H:i"));
+
+	$sql8 = "update sau_cgscorreto set s127_b_proc = true,s127_data_proc = '$dataProcessamento',s127_hora_proc = '$horaProcessamento',s127_login_proc=$loginProcessamento where s127_i_codigo = $s127_i_codigo";
 	$result = db_query ( $sql8 ) or die ( db_logduplos ( "sql: " . pg_ErrorMessage () ) );
 
 	$sSqlExistePsfInd = "SELECT 1 FROM   information_schema.tables WHERE  table_schema = 'plugins' AND table_name = 'psf_individual'";
@@ -478,9 +483,10 @@ exit(0);
 
 function db_fieldsmemory1($recordset, $indice, $formatar = "", $mostravar = false) {
 	$fm_numfields = pg_numfields ( $recordset );
+    $matriz = array();
+	global $matriz;
 	for($i = 0; $i < $fm_numfields; $i ++) {
 		$matriz [$i] = pg_fieldname ( $recordset, $i );
-		global $$matriz [$i];
 		$aux = trim ( pg_result ( $recordset, $indice, $matriz [$i] ) );
 		if (! empty ( $formatar )) {
 			switch (pg_fieldtype ( $recordset, $i )) {
@@ -494,7 +500,7 @@ function db_fieldsmemory1($recordset, $indice, $formatar = "", $mostravar = fals
 					break;
 				case "date" :
 					if ($aux != "") {
-						$data = split ( "-", $aux );
+						$data = explode ( "-", $aux );
 						$$matriz [$i] = $data [2] . "/" . $data [1] . "/" . $data [0];
 					} else {
 						$$matriz [$i] = "";
@@ -513,21 +519,21 @@ function db_fieldsmemory1($recordset, $indice, $formatar = "", $mostravar = fals
 		} else
 			switch (pg_fieldtype ( $recordset, $i )) {
 				case "date" :
-					$datav = split ( "-", $aux );
+					$datav = explode ( "-", $aux );
 					$split_data = $matriz [$i] . "_dia";
-					global $$split_data;
+					global ${$split_data};
 					$$split_data = @$datav [2];
 					if ($mostravar == true) {
 						echo $split_data . "->" . $$split_data . "<br";
 					}
 					$split_data = $matriz [$i] . "_mes";
-					global $$split_data;
+					global ${$split_data};
 					$$split_data = @$datav [1];
 					if ($mostravar == true) {
 						echo $split_data . "->" . $$split_data . "<br>";
 					}
 					$split_data = $matriz [$i] . "_ano";
-					global $$split_data;
+					global ${$split_data};
 					$$split_data = @$datav [0];
 					if ($mostravar == true) {
 						echo $split_data . "->" . $$split_data . "<br>";

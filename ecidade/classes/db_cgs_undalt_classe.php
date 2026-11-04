@@ -103,13 +103,13 @@ class cl_cgs_undalt {
                  z33_v_rotina = varchar(20) = Rotina 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_undalt() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_undalt"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -118,7 +118,7 @@ class cl_cgs_undalt {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->z33_i_seq = ($this->z33_i_seq == ""?@$GLOBALS["HTTP_POST_VARS"]["z33_i_seq"]:$this->z33_i_seq);
        $this->z33_i_cgsund = ($this->z33_i_cgsund == ""?@$GLOBALS["HTTP_POST_VARS"]["z33_i_cgsund"]:$this->z33_i_cgsund);
@@ -170,7 +170,7 @@ class cl_cgs_undalt {
      }
    }
    // funcao para inclusao
-   function incluir ($z33_i_seq){ 
+   public function incluir ($z33_i_seq){ 
       $this->atualizacampos();
      if($this->z33_i_cgsund == null ){ 
        $this->erro_sql = " Campo CGS nao Informado.";
@@ -521,7 +521,7 @@ class cl_cgs_undalt {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($z33_i_seq=null) { 
+   public function alterar ($z33_i_seq=null) { 
       $this->atualizacampos();
      $sql = " update cgs_undalt set ";
      $virgula = "";
@@ -973,7 +973,7 @@ class cl_cgs_undalt {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($z33_i_seq=null,$dbwhere=null) { 
+   public function excluir ($z33_i_seq=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($z33_i_seq));
      }else{ 
@@ -1057,7 +1057,7 @@ class cl_cgs_undalt {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

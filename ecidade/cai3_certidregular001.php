@@ -2,7 +2,7 @@
 
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -106,7 +106,7 @@ function buscoDadosArquivoPdf($sTipoCertidao, $titulo, $origem, $codproc, $tipo)
 
     if ($codproc != "") {
         if (strpos($codproc, "/") > 0) {
-            $codproc   = explode("\/", $codproc);
+            $codproc   =explode("/", $codproc);
             $exercicio = $codproc[1];
             $codproc   = $codproc[0];
         } else {
@@ -209,6 +209,16 @@ function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipoce
                 $campos[] = 'empresa.razao as inscricao_razao_social';
 		        $campos[] = "to_char(issbase.q02_dtbaix, 'DD/MM/YYYY') as inscricao_baixa_alvara";
                 $campos[] = "empresa.q02_inscmu as inscricao_anterior";
+                $campos[] = "(  select
+                                    string_agg(q03_descr, ', ')
+                                from
+                                    tabativ
+                                    join ativid ON ativid.q03_ativ = tabativ.q07_ativ
+                                where
+                                    q07_inscr = empresa.q02_inscr
+                                    and q07_datafi is null
+                                    and q07_databx is null
+                            ) as inscricao_atividades";
                 
                 $sFrom  = "empresa inner join cgm on cgm.z01_numcgm = empresa.q02_numcgm 
                            left join issbase on issbase.q02_inscr = empresa.q02_inscr";
@@ -338,7 +348,7 @@ function salvaCertidao($oParamsArq)
     //  PROCESSO
     if ($oParamsArq->codproc != "") {
         if (strpos($oParamsArq->codproc, "/") > 0) {
-            $codproc = split("\/", $oParamsArq->codproc);
+            $codproc =explode("/", $oParamsArq->codproc);
             $exercicio = $codproc[1];
             $codproc = $codproc[0];
         } else {

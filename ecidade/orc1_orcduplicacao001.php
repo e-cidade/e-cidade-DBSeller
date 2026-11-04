@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -335,7 +335,7 @@ if ($clconaberturaexe->numrows == 0){
     <fieldset><legend><b>Duplicação do Orcamento</b></legend>
 		<table>
 		<form name='form1' method="post">
-		<?
+		<?php
      if ($lNovo){
     ?>
              <tr>
@@ -343,7 +343,7 @@ if ($clconaberturaexe->numrows == 0){
                  <?=@$Lc91_anousuorigem?>
                 </td> 
                  <td> 
-                 <?
+                 <?php
                    $c91_anousuorigem = $oCon1->c91_anousuorigem;
                    db_input('c91_anousuorigem',5,$Ic91_anousuorigem,true,'text',3,"")
                  ?>
@@ -354,7 +354,7 @@ if ($clconaberturaexe->numrows == 0){
                  <?=@$Lc91_anousudestino?>
               </td> 
               <td> 
-                 <?
+                 <?php
                   $c91_anousudestino = $oCon1->c91_anousudestino;
                    db_input('c91_anousudestino',5,$Ic91_anousudestino,true,'text',3,"")
                  ?>
@@ -371,7 +371,7 @@ if ($clconaberturaexe->numrows == 0){
 						<b>Selecione o Mês:</b>
 						</td>
 						<td>
-        		<?
+        		<?php
 						$mesusu = (date("m")-1);
 						$result1=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
     		    db_select("mesusu",$result1,true,2,'',"","","","");
@@ -384,7 +384,7 @@ if ($clconaberturaexe->numrows == 0){
       onclick='return js_geraImp()' type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 			</td></tr>
 		
-	  <?
+	  <?php
 		 }elseif ($sErro == false){
       ?>
   
@@ -393,7 +393,7 @@ if ($clconaberturaexe->numrows == 0){
   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcduplicacao','orc4_orcduplicao005.php?o75_conaberturaexe=<?=$c91_seq?>','Pesquisa',true);
 				</script> 
 
-      <?      
+      <?php      
 		 }
 		?>
 		</form>
@@ -403,12 +403,12 @@ if ($clconaberturaexe->numrows == 0){
   </tr>
 </table>
     </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if ($sErro){
 
    db_msgbox($sErro);

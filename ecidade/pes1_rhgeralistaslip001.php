@@ -76,9 +76,11 @@ $oGet = db_utils::postMemory($_GET);
         height: 300
     });
 
-    gridSplips.addColumn('fonte_recurso', {label: "Recurso", width: '7%', align: 'center'});
+    gridSplips.addColumn('fonte_recurso', {label: "Recurso", width: '10%', align: 'center'}).transform((item, linha) => {
+        return `${linha.fonte_recurso} - ${linha.subrecurso}`;
+    })
     gridSplips.addColumn('descricao_recurso', {label: "Recurso", width: '20%', align: 'left'}).transform('decode');
-    gridSplips.addColumn('complemento', {label: "Complemento", width: '16%', align: 'left'}).transform('decode');
+    gridSplips.addColumn('complemento', {label: "Complemento", width: '13%', align: 'left'}).transform('decode');
     gridSplips.addColumn('conta_debito', {label: "Conta Débito", width: '22%', align: 'center'})
     .transform((item, linha) => {
         return  js_getSelect('contaDeb' + linha.recurso + linha.retencao + linha.folhaslip, linha.conta_debito);
@@ -87,11 +89,10 @@ $oGet = db_utils::postMemory($_GET);
     .transform((item, linha) => {
         return  js_getSelect('contaCred' + linha.recurso + linha.retencao + linha.folhaslip, linha.conta_credito);
     });
-    gridSplips.addColumn('valor', {label: "Valor", width: '13%', align: 'center'}).transform('dinheiro');
+    gridSplips.addColumn('valor', {label: "Valor", width: '13%', align: 'right'}).transform('dinheiro');
 
     gridSplips.getGrid().hasTotalizador = true;
     gridSplips.show($('listaSLIP2'));
-
 
     gridSplips.setEvent('onafterrenderrows', function(dados) {
 
@@ -227,7 +228,7 @@ $oGet = db_utils::postMemory($_GET);
             collection.add(slip);
             nTotal += Number(slip.valor);
         });
-        
+
         gridSplips.reload();
 
         $('TotalForCol5').innerHTML = js_formatar(nTotal, 'f');

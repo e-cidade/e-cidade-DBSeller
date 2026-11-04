@@ -25,8 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-//use ECidade\Tributario\Cadastro\Iptu\CalculoRetroativo\Repository\CalculoRetroativoIptuRepository;
-
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -38,6 +36,7 @@ require_once(modification("classes/db_iptuant_classe.php"));
 require_once(modification("classes/db_iptubaseregimovel_classe.php"));
 require_once(modification("classes/db_iptubasecondominio_classe.php"));
 require_once(modification("classes/db_iptubasepredio_classe.php"));
+require_once(modification("classes/db_cgm_classe.php"));
 
 $codProc = [];
 if (isset($_SESSION['PROCESSO_LOG'])) {
@@ -73,20 +72,10 @@ if (isset($_SESSION['PROCESSO_LOG'])) {
     }
 }
 
-//$calculoRetroativoIptuRepository = CalculoRetroativoIptuRepository::getInstance();
-
 $anousu = db_getsession("DB_anousu");
 $anoRetroativoMatricula = db_getsession("DB_anoRetroativoMatricula", false);
 
-/*
-$calculoRetroativoIptuRepository->setAnousu($anousu)
-                                ->setAnoRetroativoMatricula($anoRetroativoMatricula);
-*/
-
-//$liberaCalculoRetroativo = $calculoRetroativoIptuRepository->getLiberaCalculoRetroativo();
 $liberaCalculoRetroativo = false;
-
-//$calculoRetroativoIptuRepository->getAlteraSearchPath();
 
 if (!$liberaCalculoRetroativo || empty($anoRetroativoMatricula)) {
     $anoRetroativoMatricula = $anousu;
@@ -98,18 +87,18 @@ db_postmemory($_POST);
 /* Revisar a lógica abaixo e acima, está confusa */
 if (isset($_SESSION['PROCESSO_LOG']) && !isset($y60_proces)) {
     $y60_proces = db_getsession('PROCESSO_LOG');
-    db_query("select fc_putsession('PROCESSO_LOG', '".db_getsession('PROCESSO_LOG')."')");
+    db_query("select fc_putsession('PROCESSO_LOG', '" . db_getsession('PROCESSO_LOG') . "')");
 } else {
     if (isset($y60_proces)) {
         $_SESSION['PROCESSO_LOG'] = $y60_proces;
-        db_query("select fc_putsession('PROCESSO_LOG', '".db_getsession('PROCESSO_LOG')."')");
+        db_query("select fc_putsession('PROCESSO_LOG', '" . db_getsession('PROCESSO_LOG') . "')");
     } else {
         $_SESSION['PROCESSO_LOG'] = '0';
-        db_query("select fc_putsession('PROCESSO_LOG', '".db_getsession('PROCESSO_LOG')."')");
+        db_query("select fc_putsession('PROCESSO_LOG', '" . db_getsession('PROCESSO_LOG') . "')");
     }
 }
 
-if (isset($_SESSION['PROCESSO_LOG'])){
+if (isset($_SESSION['PROCESSO_LOG'])) {
     $y60_proces = db_getsession('PROCESSO_LOG');
 }
 
@@ -130,12 +119,13 @@ $clpercposserural      = new cl_percposserural;
 $clpromitente          = new cl_promitente;
 $clpropri              = new cl_propri;
 $clcfiptu              = new cl_cfiptu;
-//$cltipoproprietario    = new cl_tipoproprietario;
-//$cltipoproprietario->rotulo->label();
+$cltipoproprietario    = new cl_tipoproprietario;
+$cltipoproprietario->rotulo->label();
+
 
 $parametrosNumeroCadastral = new App\Domain\Tributario\Cadastro\Models\ParametrosNumeroCadastral();
-if($parametrosNumeroCadastral->existeParametro(db_getsession("DB_instit"))) {
-  $db_opcaorefant = 3;  
+if ($parametrosNumeroCadastral->existeParametro(db_getsession("DB_instit"))) {
+    $db_opcaorefant = 3;
 }
 
 $sql = $clcfiptu->sql_query_file(null, "*", null, "j18_anousu = {$anousu}");
@@ -162,8 +152,9 @@ $registroCartografico = filter_input(INPUT_POST, 'j40_registrocartografico');
 $sqlerro = false;
 $sErroMsg = "";
 
-function validaPercentual($percentual, $matricula, $cgm) {
-    
+function validaPercentual($percentual, $matricula, $cgm)
+{
+
     if (!empty($matricula) && !empty($cgm)) {
         $clpercposserural = new cl_percposserural;
         $where = "j166_matric = {$matricula} AND j166_numcgm <> {$cgm}";
@@ -183,8 +174,23 @@ function validaPercentual($percentual, $matricula, $cgm) {
 }
 
 if (isset($incluir)) {
+
+    $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j01_tipoproprietario";
+    $result_pessoa = db_query($sql_pessoa);
+    db_fieldsmemory($result_pessoa, 0);
+    $cgmInstance = \CgmFactory::getInstanceByCgm($j01_numcgm);
+    if ($cgmInstance instanceof CgmFisico && $j163_pesfisjur == 2) {
+        db_msgbox("CGM deve ser de Pessoa Jurídica.");
+        $sqlerro = true;
+    } elseif ($cgmInstance instanceof CgmJuridico && $j163_pesfisjur == 1) {
+        db_msgbox("CGM deve ser de Pessoa Física.");
+        $sqlerro = true;
+    }
+
+    db_inicio_transacao();
+
     if (isset($tipoImovel) && $tipoImovel == "2") {
-        
+
         db_inicio_transacao();
         if (!validaPercentual($j166_percentual, $j01_matric, $j01_numcgm)) {
             $sqlerro = true;
@@ -198,7 +204,7 @@ if (isset($incluir)) {
         $cliptubase->j01_codave = "1";
         $cliptubase->j01_fracao = 0;
         $cliptubase->j01_areaprivativa = 0;
-        
+
         $cliptubase->j01_tipoimovel = 2;
 
         $cliptubase->j01_distrito   = $j01_distrito;
@@ -222,7 +228,7 @@ if (isset($incluir)) {
         $clpercposserural->j166_percentual = !empty($j166_percentual) ? $j166_percentual : '0';
 
         if ($sqlerro == false) {
-            $clpercposserural->incluir($j166_sequencial);    
+            $clpercposserural->incluir($j166_sequencial);
             if ($clpercposserural->erro_status == 0) {
                 $sqlerro = true;
                 $sErroMsg = "Não foi possível cadastrar percentual da posse rural.";
@@ -233,69 +239,53 @@ if (isset($incluir)) {
         if ($sqlerro) {
             $cliptubase->erro_msg = $sErroMsg;
         }
+
         db_fim_transacao($sqlerro);
     } else {
 
-/*
-     trecho comentado, pois faz parte de melhoria para São Borja,
-     que posteriormente será nivelado com a master
-
-        $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j01_tipoproprietario";
-        $result_pessoa = db_query($sql_pessoa);
-        db_fieldsmemory($result_pessoa, 0);
-        $cgmInstance = \CgmFactory::getInstanceByCgm($j01_numcgm);
-        if ($cgmInstance instanceof CgmFisico && $j163_pesfisjur == 2) {
-            db_msgbox("CGM deve ser de Pessoa Jurídica.");
-            $sqlerro = true;
-        } elseif ($cgmInstance instanceof CgmJuridico && $j163_pesfisjur == 1) {
-            db_msgbox("CGM deve ser de Pessoa Física.");
-            $sqlerro = true;
-        }
-*/
-    
         if ($liberaCalculoRetroativo) {
             $sequencesIptubase = array();
             $sequencesIptubasepredio = array();
             $sequencesIptubaseregimovel = array();
             $sequencesIptubasecondominio = array();
-    
+
             for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $anousu; $anoMatricula++) {
-    
+
                 $schema = "";
                 if ($anoMatricula < $anousu) {
                     $schema = "_{$anoMatricula}";
                 }
-    
+
                 $resultIptubase = db_query("SELECT last_value AS sequence FROM cadastro{$schema}.iptubase_j01_matric_seq;");
                 $sequencesIptubase[$anoMatricula] = \db_utils::fieldsMemory($resultIptubase, 0)->sequence;
-    
+
                 $resultIptubasepredio = db_query("SELECT last_value AS sequence FROM cadastro{$schema}.iptubasepredio_j109_sequencial_seq;");
                 $sequencesIptubasepredio[$anoMatricula] = \db_utils::fieldsMemory($resultIptubasepredio, 0)->sequence;
-    
+
                 $resultIptubaseregimovel = db_query("SELECT last_value AS sequence FROM cadastro{$schema}.iptubaseregimovel_j04_sequencial_seq;");
                 $sequencesIptubaseregimovel[$anoMatricula] = \db_utils::fieldsMemory($resultIptubaseregimovel, 0)->sequence;
-    
+
                 $resultIptubasecondominio = db_query("SELECT last_value AS sequence FROM cadastro{$schema}.iptubasecondominio_j108_sequencial_seq;");
                 $sequencesIptubasecondominio[$anoMatricula] = \db_utils::fieldsMemory($resultIptubasecondominio, 0)->sequence;
             }
-    
+
             $sequenceIptubase = intval(max($sequencesIptubase)) + 1;
             $sequenceIptubasepredio = intval(max($sequencesIptubasepredio)) + 1;
             $sequenceIptubaseregimovel = intval(max($sequencesIptubaseregimovel)) + 1;
             $sequenceIptubasecondominio = intval(max($sequencesIptubasecondominio)) + 1;
         }
-    
+
         for ($anoMatricula = $anousu; $anoMatricula >= $anoRetroativoMatricula; $anoMatricula--) {
 
             db_inicio_transacao();
             if ($anoMatricula == $anousu) {
                 db_query("select fc_putsession('DB_anoretroativo', '{$anoRetroativoMatricula} - {$anousu}')");
             }
-    
+
             if ($liberaCalculoRetroativo) {
                 $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
                 $calculoRetroativoIptuRepository->getAlteraSearchPath();
-    
+
                 db_query("SELECT setval('iptubase_j01_matric_seq', {$sequenceIptubase}, FALSE);");
                 db_query("SELECT setval('iptubasepredio_j109_sequencial_seq', {$sequenceIptubasepredio}, FALSE);");
                 db_query("SELECT setval('iptubaseregimovel_j04_sequencial_seq', {$sequenceIptubaseregimovel}, FALSE);");
@@ -382,59 +372,59 @@ if (isset($incluir)) {
                     }
                 } else if (isset($j107_sequencial) && trim($j107_sequencial) != "") {
 
-                   $cliptubasecondominio->j108_condominio = $j107_sequencial;
-                   $cliptubasecondominio->j108_matric = $j01_matric;
-                   $cliptubasecondominio->incluir(null);
+                    $cliptubasecondominio->j108_condominio = $j107_sequencial;
+                    $cliptubasecondominio->j108_matric = $j01_matric;
+                    $cliptubasecondominio->incluir(null);
 
-                   if ($cliptubasecondominio->erro_status == 0) {
-                       $sqlerro = true;
-                       $sErroMsg = $cliptubasecondominio->erro_msg;
-                   }
+                    if ($cliptubasecondominio->erro_status == 0) {
+                        $sqlerro = true;
+                        $sErroMsg = $cliptubasecondominio->erro_msg;
+                    }
                 }
             }
 
             if ($sqlerro == false) {
 
-               $numeroCadastral = $parametrosNumeroCadastral->montaNumero(db_getsession("DB_instit"), $j01_matric);
-               if ($numeroCadastral) {
+                $numeroCadastral = $parametrosNumeroCadastral->montaNumero(db_getsession("DB_instit"), $j01_matric);
+                if ($numeroCadastral) {
 
-                  if (($j40_refant != "" || $registroCartografico != "") && $sqlerro == false) {
+                    if (($j40_refant != "" || $registroCartografico != "") && $sqlerro == false) {
 
-                     $cliptuant->j40_refant = $numeroCadastral;    
-                     $cliptuant->alterar($j01_matric);
-                     if ($cliptuant->erro_status == 0) {
-                         $sqlerro = true;
-                         $sErroMsg = $cliptuant->erro_msg;
-                     }
-                  } else {
+                        $cliptuant->j40_refant = $numeroCadastral;
+                        $cliptuant->alterar($j01_matric);
+                        if ($cliptuant->erro_status == 0) {
+                            $sqlerro = true;
+                            $sErroMsg = $cliptuant->erro_msg;
+                        }
+                    } else {
 
-                     $cliptuant->j40_matric               = $j01_matric;
-                     $cliptuant->j40_refant               = $numeroCadastral;
-                     $cliptuant->j40_registrocartografico = $registroCartografico;
+                        $cliptuant->j40_matric               = $j01_matric;
+                        $cliptuant->j40_refant               = $numeroCadastral;
+                        $cliptuant->j40_registrocartografico = $registroCartografico;
 
-                     $sqlVerificaDuplicados = $cliptuant->sql_query_file(null, 'j40_matric', null, "j40_refant = '{$numeroCadastral}'");
-                     $resultVerificaDuplicados = $cliptuant->sql_record($sqlVerificaDuplicados);
+                        $sqlVerificaDuplicados = $cliptuant->sql_query_file(null, 'j40_matric', null, "j40_refant = '{$numeroCadastral}'");
+                        $resultVerificaDuplicados = $cliptuant->sql_record($sqlVerificaDuplicados);
 
-                     $erro = false;
-                     if (isParaiba() && pg_num_rows($resultVerificaDuplicados) > 0) {
-                        $erro = true;
-                        $sqlerro = true;
-                        $cliptubase->erro_status = 0;
-                        $cliptubase->erro_msg = $cliptuant->erro_msg = "Unidade já cadastrada para essa inscrição imobiliária {$j40_refant}.";
-                     }
+                        $erro = false;
+                        if (isParaiba() && pg_num_rows($resultVerificaDuplicados) > 0) {
+                            $erro = true;
+                            $sqlerro = true;
+                            $cliptubase->erro_status = 0;
+                            $cliptubase->erro_msg = $cliptuant->erro_msg = "Unidade já cadastrada para essa inscrição imobiliária {$j40_refant}.";
+                        }
 
-                     if(!$erro) {
-                        $cliptuant->incluir($j01_matric);
-                     }
+                        if (!$erro) {
+                            $cliptuant->incluir($j01_matric);
+                        }
 
-                     if ($cliptuant->erro_status == 0) {
-                         $sqlerro = true;
-                         $sErroMsg = $cliptuant->erro_msg;
-                     } 
-                  }
+                        if ($cliptuant->erro_status == 0) {
+                            $sqlerro = true;
+                            $sErroMsg = $cliptuant->erro_msg;
+                        }
+                    }
                 }
             }
-            
+
             db_fim_transacao($sqlerro);
             if ($sqlerro) {
                 $cliptubase->erro_msg = $sErroMsg;
@@ -442,10 +432,9 @@ if (isset($incluir)) {
         }
     }
 } else if (isset($alterar)) {
-
     $tipoImovel = isset($tipoImovel) ? $tipoImovel : $j01_tipoimovel;
     if ($tipoImovel == "2" || $j01_tipoimovel == "2") {
-        
+
         db_inicio_transacao();
         if (!validaPercentual($j166_percentual, $j01_matric, $j01_numcgm)) {
             $sqlerro = true;
@@ -459,9 +448,9 @@ if (isset($incluir)) {
         $cliptubase->j01_codave = "1";
         $cliptubase->j01_fracao = 0;
         $cliptubase->j01_areaprivativa = 0;
-        
         $cliptubase->j01_tipoimovel = 2;
 
+        $cliptubase->j01_tipoproprietario = $j01_tipoproprietario;
         $cliptubase->j01_distrito   = $j01_distrito;
         $cliptubase->j01_hectare    = $j01_hectare;
         $cliptubase->j01_situcad    = $j01_situcad;
@@ -469,7 +458,6 @@ if (isset($incluir)) {
         $cliptubase->j01_processo   = $j01_processo;
         $cliptubase->j01_incra      = $j01_incra;
         $cliptubase->j01_descrlocal = $j01_descrlocal;
-
         if ($sqlerro == false) {
             $cliptubase->alterar($j01_matric);
             $sErroMsg = $cliptubase->erro_msg;
@@ -478,7 +466,6 @@ if (isset($incluir)) {
                 $sErroMsg = $cliptubase->erro_msg;
             }
         }
-
         $clpercposserural->j166_matric = $j01_matric;
         $clpercposserural->j166_numcgm = $j01_numcgm;
         $clpercposserural->j166_percentual = !empty($j166_percentual) ? $j166_percentual : '0';
@@ -490,11 +477,20 @@ if (isset($incluir)) {
                 $sErroMsg = "Não foi possível cadastrar percentual da posse rural.";
             }
         }
-
     } else {
-/*
-     trecho comentado, pois faz parte de melhoria para São Borja,
-     que posteriormente será nivelado com a master
+
+
+        $result = $cliptubase->sql_record($cliptubase->sql_query_file($j01_matric, "j01_unidade as j01_unidadeant"));
+        db_fieldsmemory($result, 0);
+
+        $cliptubase->j01_matric = $j01_matric;
+        $cliptubase->j01_numcgm = $j01_numcgm;
+        $cliptubase->j01_idbql = $j01_idbql;
+        $cliptubase->j01_codave = "1";
+        $cliptubase->j01_fracao = $j01_fracao;
+        $cliptubase->j01_tipoproprietario = $j01_tipoproprietario;
+        $cliptubase->j01_areaprivativa = $j01_areaprivativa;
+
 
         $sql_pessoa = "select * from tipoproprietario where j163_tipoproprietario = $j01_tipoproprietario";
         $result_pessoa = db_query($sql_pessoa);
@@ -505,9 +501,9 @@ if (isset($incluir)) {
             $sqlerro = true;
         } elseif ($cgmInstance instanceof CgmJuridico && $j163_pesfisjur == 1) {
             db_msgbox("CGM deve ser de Pessoa Física.");
+
             $sqlerro = true;
         }
-*/
 
         for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $anousu; $anoMatricula++) {
 
@@ -519,7 +515,7 @@ if (isset($incluir)) {
                 }
             }
 
-            if ($liberaCalculoRetroativo AND $replicaDadosAnos == 1 AND $anoMatricula <= $anoLimiteReplicaDados) {
+            if ($liberaCalculoRetroativo and $replicaDadosAnos == 1 and $anoMatricula <= $anoLimiteReplicaDados) {
                 $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
                 $calculoRetroativoIptuRepository->getAlteraSearchPath();
             }
@@ -577,17 +573,17 @@ if (isset($incluir)) {
                         $clmatricobs->incluir($j01_matric);
                     }
                 }
-    
+
                 if ($clmatricobs->erro_status === "0") {
                     $sqlerro = true;
                     $sErroMsg = $clmatricobs->erro_msg;
                 }
             }
-    
+
             if ($sqlerro == false) {
                 $cliptuant->sql_record($cliptuant->sql_query_file($j01_matric, 'j40_matric'));
                 $iRegistros = $cliptuant->numrows;
-    
+
                 $cliptuant->j40_refant = $j40_refant;
                 $cliptuant->j40_registrocartografico = $registroCartografico;
                 $cliptuant->j40_matric = $j01_matric;
@@ -601,72 +597,76 @@ if (isset($incluir)) {
                     $sqlerro = true;
                     $sErroMsg = "Unidade já cadastrada para essa inscrição imobiliária {$j40_refant}.";
                 } else if ($iRegistros > 0) {
-                      $cliptuant->alterar($j01_matric);
+                    $cliptuant->alterar($j01_matric);
+
+                    if (!$erro && $cliptuant->erro_status == 0) {
+                        $sqlerro = true;
+                        $sErroMsg = $cliptuant->erro_msg;
+                    }
                 } else {
                     if (($j40_refant != "" || $j40_registrocartografico != "") && $sqlerro == false) {
                         $cliptuant->incluir($j01_matric);
+
+                        if (!$erro && $cliptuant->erro_status == 0) {
+                            $sqlerro = true;
+                            $sErroMsg = $cliptuant->erro_msg;
+                        }
                     }
-                }
-    
-                if (!$erro && $cliptuant->erro_status == 0) {
-                    $sqlerro = true;
-                    $sErroMsg = $cliptuant->erro_msg;
                 }
             }
 
             // INCLUIR NA IPTUBASEREGIMOVEL ... SE TIVER REGISTROS
             if ($sqlerro == false) {
                 $rIptubaseRegimovel = $cliptubaseregimovel->sql_record($cliptubaseregimovel->sql_query_file(null, "j04_sequencial", null, "j04_matric = $j01_matric"));
-    
+
                 $cliptubaseregimovel->j04_setorregimovel = $j04_setorregimovel;
                 $cliptubaseregimovel->j04_matric = $j01_matric;
                 $cliptubaseregimovel->j04_matricregimo = $j04_matricregimo;
                 $cliptubaseregimovel->j04_quadraregimo = $j04_quadraregimo;
                 $cliptubaseregimovel->j04_loteregimo = $j04_loteregimo;
-    
+
                 if ($cliptubaseregimovel->numrows > 0) {
                     $oIptubaseRegimovel = db_utils::fieldsMemory($rIptubaseRegimovel, 0);
-                    $cliptubaseregimovel->j04_sequencial = $oIptubaseRegimovel->j04_sequencial;    
+                    $cliptubaseregimovel->j04_sequencial = $oIptubaseRegimovel->j04_sequencial;
                     $cliptubaseregimovel->alterar($oIptubaseRegimovel->j04_sequencial);
                 } else {
                     if ($j04_setorregimovel != "") {
                         $cliptubaseregimovel->incluir(null);
                     }
                 }
-    
+
                 if ($cliptubaseregimovel->erro_status === "0" && $j04_setorregimovel != "") {
                     $sqlerro = true;
                     $sErroMsg = $cliptubaseregimovel->erro_msg;
                 }
             }
-    
+
             //INCLUI NA IPTUBASEPREDIO OU IPTUBASECONDOMINIO
             if ($sqlerro == false) {
                 if (isset($j107_sequencial) && trim($j107_sequencial) != "" && isset($predios) && $predios != 0) {
                     $rIptubasePredio = db_query($cliptubasepredio->sql_query_file(null, "j109_sequencial", null, " j109_matric = {$j01_matric} "));
-    
+
                     $cliptubasepredio->j109_predio = $predios;
                     $cliptubasepredio->j109_matric = $j01_matric;
-    
+
                     if (pg_num_rows($rIptubasePredio) > 0) {
                         $oIptunasePredio = db_utils::fieldsMemory($rIptubasePredio, 0);
-        
+
                         $cliptubasepredio->alterar($oIptunasePredio->j109_sequencial);
                     } else {
                         $cliptubasepredio->incluir(null);
                     }
-    
+
                     if ($cliptubasepredio->erro_status == 0) {
                         $sqlerro = true;
                         $sErroMsg = $cliptubasepredio->erro_msg;
                     }
-    
                 } else if (isset($j107_sequencial) && trim($j107_sequencial) != "") {
                     $rIptubaseCondominio = $cliptubasecondominio->sql_record($cliptubasecondominio->sql_query_file(null, "j108_sequencial", null, " j108_matric = {$j01_matric} "));
-    
+
                     $cliptubasecondominio->j108_condominio = $j107_sequencial;
                     $cliptubasecondominio->j108_matric = $j01_matric;
-    
+
                     if ($cliptubasecondominio->numrows > 0) {
                         $oIptubaseCondominio = db_utils::fieldsMemory($rIptubaseCondominio, 0);
                         $cliptubasecondominio->j108_sequencial = $oIptubaseCondominio->j108_sequencial;
@@ -674,10 +674,27 @@ if (isset($incluir)) {
                     } else {
                         $cliptubasecondominio->incluir(null);
                     }
-    
+
                     if ($cliptubasecondominio->erro_status == 0) {
                         $sqlerro = true;
                         $sErroMsg = $cliptubasecondominio->erro_msg;
+                    }
+
+                    //Deleta o vinculo do imovel com o condominio caso o usuario delete o codigo do condominio
+                } else if (isset($j107_sequencial) && trim($j107_sequencial) == "") {
+                    $sSqlBuscaCondominiosVinculados = $cliptubasecondominio->sql_query_file(null, "j108_sequencial", null, " j108_matric = {$j01_matric} ");
+                    $rsBuscaCondominiosVinculados = $cliptubasecondominio->sql_record($sSqlBuscaCondominiosVinculados);
+                    $aCondominiosVinculados = db_utils::getCollectionByRecord($rsBuscaCondominiosVinculados);
+
+                    if (count($aCondominiosVinculados) > 0) {
+                        foreach ($aCondominiosVinculados as $condominio) {
+                            $cliptubasecondominio->excluir($condominio->j108_sequencial);
+                        }
+
+                        if ($cliptubasecondominio->erro_status == 0) {
+                            $sqlerro = true;
+                            $sErroMsg = $cliptubasecondominio->erro_msg;
+                        }
                     }
                 }
             }
@@ -686,11 +703,10 @@ if (isset($incluir)) {
             $cliptubase->erro_msg = $sErroMsg;
             $cancela = $sqlerro;
             $db_opcao = 2;
-    
-            $sqlCondominio = $cliptubasecondominio->sql_query_condominio(null, "*", null, "j108_matric = {$j01_matric}");
+
+            $sqlCondominio    = $cliptubasecondominio->sql_query_condominio(null, "*", null, "j108_matric = {$j01_matric}");
             $resultCondominio = $cliptubasecondominio->sql_record($sqlCondominio);
-            $linhasreg = $cliptubasecondominio->numrows;
-    
+            $linhasreg        = $cliptubasecondominio->numrows;
             if ($linhasreg > 0) {
                 db_fieldsmemory($resultCondominio, 0);
             }
@@ -713,25 +729,26 @@ if (isset($incluir)) {
         db_fieldsmemory($resultiptuant, 0);
     }
 
-    $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric, "j01_numcgm,j01_idbql,j01_codave,j01_fracao,j01_baixa,j01_unidade,z01_nome,j01_areaprivativa,j34_area", ""));
-    db_fieldsmemory($result, 0);
+    $camposIptubase = "j01_numcgm,j01_idbql,j01_codave,j01_fracao,j01_baixa,j01_unidade,z01_nome,j01_tipoproprietario,j01_areaprivativa,j34_area,ROUND(j01_fracaoproprietario, 4) as j01_fracaoproprietario";
+    $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric, $camposIptubase, ""));
+    @db_fieldsmemory($result, 0);
     $db_opcao = 2;
     $db_opcao_matric = 3;
 
-    $sqlPercPosseRural = $clpercposserural->sql_query_file("", "*" ,"", "j166_matric = ".$j01_matric." and j166_numcgm = ".$j01_numcgm);
+    $sqlPercPosseRural = $clpercposserural->sql_query_file("", "*", "", "j166_matric = " . $j01_matric . " and j166_numcgm = " . $j01_numcgm);
     $rsPercPosseRural = $clpercposserural->sql_record($sqlPercPosseRural);
     if ($rsPercPosseRural && pg_num_rows($rsPercPosseRural) > 0) {
         db_fieldsmemory($rsPercPosseRural, 0);
     }
 
-    $sqlreg = $cliptubaseregimovel->sql_query_file(null,"*",null,"j04_matric = {$j01_matric}");
+    $sqlreg = $cliptubaseregimovel->sql_query_file(null, "*", null, "j04_matric = {$j01_matric}");
     $resultreg = $cliptubaseregimovel->sql_record($sqlreg);
     $linhasreg = $cliptubaseregimovel->numrows;
     if ($linhasreg > 0) {
         db_fieldsmemory($resultreg, 0);
     }
 
-    $sqlCondominio = $cliptubasecondominio->sql_query_condominio(null,"*",null,"j108_matric = {$j01_matric}");
+    $sqlCondominio = $cliptubasecondominio->sql_query_condominio(null, "*", null, "j108_matric = {$j01_matric}");
     $resultCondominio = $cliptubasecondominio->sql_record($sqlCondominio);
     $linhasreg = $cliptubasecondominio->numrows;
 
@@ -749,9 +766,10 @@ if (isset($incluir)) {
         }
     }
 }
-
 ?>
+
 <html>
+
 <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -763,22 +781,30 @@ if (isset($incluir)) {
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style type="text/css"></style>
 </head>
+
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<form name="form1" method="post" onSubmit="return js_verifica_campos_digitados();" action="">
-    <table height="430" align="center" width="790" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td align="center" valign="top" bgcolor="#CCCCCC">
-                <center>
-                    <?php include(modification("forms/db_frmiptubasealt.php")); ?>
-                </center>
-            </td>
-        </tr>
-    </table>
-</form>
+
+    <form name="form1" method="post" onSubmit="return js_verifica_campos_digitados();" action="">
+        <table height="430" align="center" width="790" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center" valign="top" bgcolor="#CCCCCC">
+                    <center>
+                        <?php include(modification("forms/db_frmiptubasealt.php")); ?>
+                    </center>
+                </td>
+            </tr>
+        </table>
+    </form>
 </body>
+
+<script>
+    function recarregaPaginaMatricula(){
+        this.location.reload()
+    }
+</script>
+
 </html>
 <?php
-
 if (isset($incluir) || isset($alterar)) {
 
     if ($cliptubase->erro_status == 0 || $sqlerro == true) {
@@ -806,6 +832,20 @@ if (isset($incluir) || isset($alterar)) {
                 $tipoimovel = isset($tipoImovel) ? $tipoImovel : $j01_tipoimovel;
                 db_redireciona("cad1_iptubasealt.php?j01_matric=$cliptubase->j01_matric&tipoImovel=$tipoimovel");
             }
+        }
+
+        if (isset($alterar)) {
+            $j01_matric = $_GET['j01_matric'];
+            $tipoImovel = $_GET['j01_tipoimovel'];
+            $testaentra = $_GET['testaentra'];
+            $z01_nome = $_GET['z01_nome'];
+            $entrar = $_GET['entrar'];
+
+            echo "
+            <script>
+            parent.location.href='cad1_iptubase002.php?alteracao=true&tipoImovel={$tipoImovel}&testaentra={$testaentra}&j01_matric={$j01_matric}&z01_nome={$z01_nome}&entrar={$entrar}';
+            </script>
+            ";
         }
     }
 }

@@ -385,7 +385,16 @@ final class itemCompilacao extends itemSolicitacao
      */
     public function getSaldo()
     {
-        return $this->getQuantidade() - $this->getQuantidadeSolicitada();
+        $quantidade = $this->getQuantidade();
+        $quantidadeSolicitada = $this->getQuantidadeSolicitada();
+        $quantidadeSolicitadaAnulada = $this->getQuantidadeSolicitadaAnulada();
+
+        if ($quantidadeSolicitada === $quantidadeSolicitadaAnulada) {
+            return $quantidade - $quantidadeSolicitada;
+        }
+        return $quantidade
+            - $quantidadeSolicitada
+            + $quantidadeSolicitadaAnulada;
     }
 
     /**
@@ -457,7 +466,25 @@ final class itemCompilacao extends itemSolicitacao
 
         return false;
     }
+
+    public function getQuantidadeSolicitadaAnulada()
+    {
+        $cl_solicitem = new cl_solicitem();
+        $condicoes = " pc67_solicita is null and pc55_solicitempai = {$this->iCodigoItemSolicitacao}";
+        $sqlBuscaQuantidadesAnuladas = $cl_solicitem->sql_query_quantidade_solicitada_anulada(
+            null,
+            "floor(sum(e37_vlranu/e55_vlrun)) quantidade_anulada",
+            null,
+            $condicoes
+        );
+
+        $resultadoItem = db_query($sqlBuscaQuantidadesAnuladas);
+        if (!$resultadoItem) {
+            throw new DBException("Erro ao buscar quantidade anulada da solicitação filha.");
+        }
+
+        $item = \db_utils::fieldsMemory($resultadoItem, 0);
+        return $item->quantidade_anulada;
+    }
 }
-
-
 ?>

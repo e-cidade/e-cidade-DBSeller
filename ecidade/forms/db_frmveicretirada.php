@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -90,7 +90,7 @@ db_app::load("prototype.js");
                   <label for='ve60_codigo'><?=@$Lve60_codigo?></label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ve60_codigo',8,$Ive60_codigo,true,'text',3,"")
                   ?>
                 </td>
@@ -98,13 +98,13 @@ db_app::load("prototype.js");
               <tr>
                 <td nowrap title="<?=@$Tve60_veiculo?>">
                   <label for="ve60_veiculo">
-                    <?
+                    <?php
                     db_ancora(@$Lve60_veiculo,"js_pesquisaveiculo();",$db_opcao);
                     ?>
                   </label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ve60_veiculo',8,$Ive60_veiculo,true,'text',3," onchange='js_pesquisave60_veiculo(false);'");
                   db_input('ve01_placa',10,$Ive01_placa,true,'text',3,'')
                   ?>
@@ -113,13 +113,13 @@ db_app::load("prototype.js");
               <tr>
                 <td nowrap title="<?=@$Tve60_veicmotoristas?>">
                   <label for="ve60_veicmotoristas">
-                    <?
+                    <?php
                     db_ancora(@$Lve60_veicmotoristas,"js_pesquisave60_veicmotoristas(true);",$db_opcao);
                     ?>
                   </label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ve60_veicmotoristas',8,$Ive60_veicmotoristas,true,'text',$db_opcao,
                            " onchange='js_pesquisave60_veicmotoristas(false);'");
                   if (isset($ve50_integrapessoal) && trim(@$ve50_integrapessoal) != "") {
@@ -159,7 +159,7 @@ db_app::load("prototype.js");
                   <label for='ve60_datasaida'><?=@$Lve60_datasaida?></label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_inputdata('ve60_datasaida', @$ve60_datasaida_dia, @$ve60_datasaida_mes, @$ve60_datasaida_ano, true, 'text', $db_opcao,
                                "onchange='js_pesquisa_medida();'", "", "", "none", "", "", "js_pesquisa_medida();")
                   ?>
@@ -170,7 +170,7 @@ db_app::load("prototype.js");
                   <label for='ve60_horasaida'><?=@$Lve60_horasaida?></label>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ve60_horasaida', 5, $Ive60_horasaida, true, 'text', $db_opcao,
                            "onchange='js_verifica_hora(this.value,this.name);js_pesquisa_medida();' onkeypress='return js_mask(event, \"0-9|:|0-9\"); '  ");
                   ?>
@@ -179,7 +179,7 @@ db_app::load("prototype.js");
               <tr>
                 <td nowrap title="Última Medida"><label for='ultimamedida'><b>Última Medida:</b></label></td>
                 <td>
-                  <?
+                  <?php
                   /*
                    * caso nao seja setado a data e hora pelo usuario, o sistema buscava a data e hora da seção,
                   * o que ocorria problema, pois as vezes o veiculo estava devolvido ex:
@@ -211,7 +211,7 @@ db_app::load("prototype.js");
               <tr>
                 <td nowrap title="Medida de Saída"><label for='ve60_medidasaida'><b>Medida de Saída:</b></label></td>
                 <td>
-                  <?
+                  <?php
                   db_input('ve60_medidasaida',15,$Ive60_medidasaida,true,'text',$db_opcao,"");
                   if (isset($ve07_sigla) && trim($ve07_sigla) != ""){
                     echo " ".db_input("ve07_sigla",3,0,true,"text",3);
@@ -377,7 +377,7 @@ db_app::load("prototype.js");
   }
   function js_preenchepesquisa(chave){
     db_iframe_veicretirada.hide();
-    <?
+    <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
@@ -389,12 +389,12 @@ db_app::load("prototype.js");
   }
   function js_preencheveiculo(chave){
     db_iframe_veiculos.hide();
-    <?
+    <?php
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?veiculo='+chave";
     ?>
   }
 
-  <? if ($db_opcao != 3) { ?>
+  <?php if ($db_opcao != 3) { ?>
   function js_verificamedida(){
     var medidasaida = new Number(document.form1.ve60_medidasaida.value);
     var ultimasaida = new Number(document.form1.ultimamedida.value);
@@ -411,7 +411,7 @@ db_app::load("prototype.js");
     return true;
   }
 
-  <? } ?>
+  <?php } ?>
 
   function js_verifica_hora(valor,campo) {
     erro= 0;

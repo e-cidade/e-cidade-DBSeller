@@ -90,7 +90,7 @@ variavel = 1;
       </tr>
        <tr>
         <td align="left" colspan="2">
-          <b>Modelo :</b> <? 
+          <b>Modelo :</b> <?php 
                     $sList = array("ldo"=>"LDO",
                                    "loa"=>"LOA"
                                   );
@@ -100,7 +100,7 @@ variavel = 1;
       <tr>
         <td align="center">
           <input  name="emite" id="emite" type="button" value="Imprimir" onclick="js_emite(<?=$anousu?>);">
-          <?
+          <?php
           $o116_periodo = 1;
           db_input('o116_periodo',40,'',true,'hidden',3,'');
          ?>

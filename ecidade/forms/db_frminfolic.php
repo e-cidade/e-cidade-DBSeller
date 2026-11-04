@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -69,7 +69,7 @@ $clrotulo->label("pc23_obs");
     <form name='form1'>
     <center>
  <table width='100%' cellpading="0" cellspacing="0" style="border:2px inset white;">   
-<?
+<?php
   
   if (isset($l20_codigo) && $l20_codigo!= "") {
 

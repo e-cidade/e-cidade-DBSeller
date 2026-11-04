@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlibwebseller.php"));
@@ -59,7 +59,7 @@ if (isset($incluir)) {
   //base
   $rsBase = $clbase->sql_record($clbase->sql_query("", "base.*,ed218_c_divisao", "", " ed31_i_codigo = $ed31_i_codigo"));
   $oBase  = db_utils::fieldsmemory($rsBase, 0);
-  
+
   $cod_regime               = explode("|", $ed31_i_regimemat_new);
   $clbase->ed31_i_curso     = $oBase->ed31_i_curso;
   $clbase->ed31_c_descr     = $ed31_c_descr;
@@ -71,7 +71,7 @@ if (isset($incluir)) {
   $clbase->ed31_i_regimemat = $cod_regime[0];
   $clbase->ed31_c_ativo     = "S";
   $clbase->incluir(null);
-  
+
   if ($clbase->erro_status == "0") {
 
     db_msgbox($clbase->erro_msg);
@@ -81,7 +81,7 @@ if (isset($incluir)) {
   //basemps
   $rsBaseserie = $clbaseserie->sql_record($clbaseserie->sql_query_file("", "*", "", " ed87_i_codigo = {$oBase->ed31_i_codigo}"));
   $oBaseserie  = db_utils::fieldsmemory($rsBaseserie, 0);
-  
+
   $clbaseserie->ed87_i_serieinicial = $oBaseserie->ed87_i_serieinicial;
   $clbaseserie->ed87_i_seriefinal   = $oBaseserie->ed87_i_seriefinal;
   $clbaseserie->incluir($iNewCodBase);
@@ -90,7 +90,7 @@ if (isset($incluir)) {
     db_msgbox($clbaseserie->erro_msg);
     $erro_transacao = true;
   }
-  
+
   //escolabase
   $clescolabase->ed77_i_escola   = db_getsession("DB_coddepto");
   $clescolabase->ed77_i_base     = $iNewCodBase;
@@ -123,7 +123,7 @@ if (isset($incluir)) {
   for ($r = 0; $r < $iLinhasBasemps; $r++) {
 
     $oBasemps = db_utils::fieldsmemory($rsBasemps, $r);
-    
+
     $clbasemps->ed34_i_base                 = $iNewCodBase;
     $clbasemps->ed34_i_serie                = $oBasemps->ed34_i_serie;
     $clbasemps->ed34_i_disciplina           = $oBasemps->ed34_i_disciplina;
@@ -132,18 +132,20 @@ if (isset($incluir)) {
     $clbasemps->ed34_c_condicao             = $oBasemps->ed34_c_condicao;
     $clbasemps->ed34_i_ordenacao            = $oBasemps->ed34_i_ordenacao;
     $clbasemps->ed34_lancarhistorico        = $oBasemps->ed34_lancarhistorico        == 't' ? 'true' : 'false';
-    $clbasemps->ed34_disiciplinaglobalizada = $oBasemps->ed34_disiciplinaglobalizada == 't' ? 'true' : 'false'; 
-    $clbasemps->ed34_caracterreprobatorio   = $oBasemps->ed34_caracterreprobatorio   == 't' ? 'true' : 'false'; 
-    $clbasemps->ed34_basecomum              = $oBasemps->ed34_basecomum              == 't' ? 'true' : 'false'; 
-    
-    $clbasemps->incluir(null);
+    $clbasemps->ed34_disiciplinaglobalizada = $oBasemps->ed34_disiciplinaglobalizada == 't' ? 'true' : 'false';
+    $clbasemps->ed34_caracterreprobatorio   = $oBasemps->ed34_caracterreprobatorio   == 't' ? 'true' : 'false';
+    $clbasemps->ed34_basecomum              = $oBasemps->ed34_basecomum              == 't' ? 'true' : 'false';
+    $clbasemps->ed34_tipobase               = $oBasemps->ed34_tipobase;
+    $clbasemps->ed34_areaconhecimento       = $oBasemps->ed34_areaconhecimento;
+
+      $clbasemps->incluir(null);
     if ($clbasemps->erro_status == "0") {
 
       db_msgbox($clbasemps->erro_msg);
       $erro_transacao = true;
     }
   }
-  
+
   db_fim_transacao();
   db_fim_transacao();
   if ($erro_transacao == true) {
@@ -156,7 +158,7 @@ if (isset($incluir)) {
       parent.location.href = "edu1_base002.php?chavepesquisa=<?= $iNewCodBase ?>";
       parent.db_iframe_replicacao.hide();
     </script>
-    <?
+    <?php
   }
   exit;
 }
@@ -178,21 +180,21 @@ if (isset($incluir)) {
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <br>
             <fieldset style="width:95%"><legend><b>Replicação de Base Curricular</b></legend>
-<?
+<?php
 $rsBase = $clbase->sql_record($clbase->sql_query("", "*", "", " ed31_i_codigo = {$oGet->codbase}"));
 $oBase = db_utils::fieldsmemory($rsBase, 0);
 $ed31_i_codigo = $oBase->ed31_i_codigo;
 $ed31_c_descr_old = $oBase->ed31_c_descr;
 ?>
-<? db_input('ed31_i_codigo', 10, @$Ied31_i_codigo, true, 'text', 3, "") ?>
-<? db_input('ed31_c_descr_old', 40, @$Ied31_c_descr_old, true, 'text', 3, "") ?><br>
+<?php db_input('ed31_i_codigo', 10, @$Ied31_i_codigo, true, 'text', 3, "") ?>
+<?php db_input('ed31_c_descr_old', 40, @$Ied31_c_descr_old, true, 'text', 3, "") ?><br>
               <b>
                 Este procedimento irá replicar a base curricular <?= $oBase->ed31_i_codigo ?> - <?= $oBase->ed31_c_descr ?>,
                 alterando somente os dados modificados abaixo:<br><br>
                 <table>
                   <tr>
                     <td>
-                      <b>Regime de matrícula atual:</b>    
+                      <b>Regime de matrícula atual:</b>
                     </td>
                     <td>
               <?= $oBase->ed218_i_codigo ?> - <?= $oBase->ed218_c_nome ?>
@@ -203,12 +205,12 @@ $ed31_c_descr_old = $oBase->ed31_c_descr;
                       <b>Novo Regime de Matrícula</b>
                     </td>
                     <td>  
-<?
+<?php
 $rsRegimemat = $clregimemat->sql_record($clregimemat->sql_query("", "ed218_i_codigo,ed218_c_nome,ed218_c_divisao", "ed218_i_codigo", ""));
 ?>
                       <select name="ed31_i_regimemat_new" onchange="js_VerRegime(<?= $oBase->ed31_i_codigo ?>, this.value)">
                         <option value=""></option>
-                      <?
+                      <?php
                       for ($t = 0; $t < $clregimemat->numrows; $t++) {
 
                         $oRegimemat = db_utils::fieldsmemory($rsRegimemat, $t);
@@ -221,15 +223,15 @@ $rsRegimemat = $clregimemat->sql_record($clregimemat->sql_query("", "ed218_i_cod
                   <tbody id="div_divisao">
                   </tbody>
                   <tr>
-                    <td>    
+                    <td>
                       <b>Novo Nome da Base:</b>
                     </td>
                     <td>
-                        <? db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', $db_opcao, "") ?><br>    
+                        <?php db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', $db_opcao, "") ?><br>    
                     </td>  
                   </tr>
                   <tr>
-                    <td colspan="2">    
+                    <td colspan="2">
                       <br>
                       <input type="submit" name="incluir" id="incluir" value="Incluir" onclick="return js_valida();">
                     </td>

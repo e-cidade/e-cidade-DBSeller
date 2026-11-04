@@ -321,7 +321,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
 
     if (isset($this->iCodigoDiario) && !empty($this->iCodigoDiario)) {
 
-      $oDaoDiario                   = db_utils::getDao("diario");
+      $oDaoDiario                   = new cl_diario();
       $oDaoDiario->ed95_c_encerrado = $this->isEncerrado() ? 'S' : 'N';
       $oDaoDiario->ed95_i_codigo    = $this->getCodigoDiario();
       $oDaoDiario->alterar($oDaoDiario->ed95_i_codigo);
@@ -1058,7 +1058,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
       return '';
     }
 
-    $nNotaParcial       = '';
+    $nNotaParcial       = 0;
     $aElementosCalcular = array();
     foreach ($this->getAvaliacoes() as $oAvaliacaoAproveitamento) {
 
@@ -1095,7 +1095,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
          $aElementosCalcular[] = $oAvaliacaoAproveitamentoAtual;
       }
 
-      $oNotaParcial = $oElementoResultadoFinal->getResultado( $aElementosCalcular, true, $iAno );
+      $oNotaParcial = $oElementoResultadoFinal->getResultado($aElementosCalcular, true, $iAno);
 
       if ( is_null($oNotaParcial->getAproveitamentoReal() ) ) {
         $oNotaParcial->setAproveitamentoReal($oNotaParcial->getAproveitamento());

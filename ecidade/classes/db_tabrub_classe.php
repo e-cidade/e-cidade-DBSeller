@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,13 +50,13 @@ class cl_tabrub {
                  h21_codigo = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_tabrub() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabrub"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_tabrub {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->h21_rubric = ($this->h21_rubric == ""?@$GLOBALS["HTTP_POST_VARS"]["h21_rubric"]:$this->h21_rubric);
        $this->h21_codigo = ($this->h21_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["h21_codigo"]:$this->h21_codigo);
@@ -75,7 +75,7 @@ class cl_tabrub {
      }
    }
    // funcao para inclusao
-   function incluir ($h21_rubric,$h21_codigo){ 
+   public function incluir ($h21_rubric,$h21_codigo){ 
       $this->atualizacampos();
        $this->h21_rubric = $h21_rubric; 
        $this->h21_codigo = $h21_codigo; 
@@ -140,7 +140,7 @@ class cl_tabrub {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($h21_rubric=null,$h21_codigo=null) { 
+   public function alterar ($h21_rubric=null,$h21_codigo=null) { 
       $this->atualizacampos();
      $sql = " update tabrub set ";
      $virgula = "";
@@ -224,7 +224,7 @@ class cl_tabrub {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($h21_rubric=null,$h21_codigo=null,$dbwhere=null) { 
+   public function excluir ($h21_rubric=null,$h21_codigo=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($h21_rubric,$h21_codigo));
      }else{ 
@@ -293,7 +293,7 @@ class cl_tabrub {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

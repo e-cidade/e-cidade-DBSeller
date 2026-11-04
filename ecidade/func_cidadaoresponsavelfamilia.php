@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
               <?=$Las02_nis?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("as02_nis",10,$Ias02_nis,true,"text",4,"","chave_as02_nis");
 		       ?>
             </td>
@@ -71,7 +71,7 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $sWhere = ' as03_tipofamiliar = 0 ';
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +123,12 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -83,7 +83,7 @@
    <tr>
      <td><label for="dtarq">Data Arquivo:</label></td>
      <td colspan="4">
-       <?
+       <?php
          if ($oGet->opcao == 5) {
             $diaarq = $dia;
             $mesarq = $mes;
@@ -100,7 +100,7 @@
    <tr>
      <td><label for="dtpago">Data Pagamento:</label></td>
      <td colspan="4">
-      <?
+      <?php
         if ($oGet->opcao == 5 ) {
           $diapago = $dia;
           $mespago = $mes;
@@ -117,7 +117,7 @@
    <tr>
      <td><label for="dtcredito">Data Crédito:</label></td>
      <td colspan="4">
-      <?
+      <?php
         if ($oGet->opcao == 5 ) {
           $diacredito = $dia;
           $mescredito = $mes;
@@ -136,7 +136,7 @@
       <label for="classi">Classifica:</label>
     </td>
     <td colspan="4">
-      <?
+      <?php
        if ($oGet->opcao!=5) {
           if ($classi == 'f') {
              $aClassi = array("f"=>"Não","t"=>"Sim");
@@ -223,14 +223,14 @@
 		     	<label for="lProcessoSistema">Processo do Sistema:</label>
 		     </td>
 		     <td nowrap>
-		     	<?
+		     	<?php
 		     	  db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, 1, "onchange='js_processoSistema(this.value)' style='width: 95px'")
 		     	?>
 		     </td>
 	      </tr>
         <tr id="processoSistema">
 		     <td nowrap title="<?=@$Tk141_protprocesso?>">
-		     	<?
+		     	<?php
 		     		db_ancora(@$Lk141_protprocesso, 'js_pesquisaProcesso(true)', 1);
 		     	?>
 		     </td>
@@ -281,7 +281,7 @@
 	    	  		<legend>
 	    	  			<?=@$Lk142_observacao?>
 	    	  		</legend>
-	    	  		<?
+	    	  		<?php
 	    	  			db_textarea('k142_observacao', 3, 64, @$Ik142_observacao, true, 'text', 1);
 	    	  		?>
 	    	  	</fieldset>
@@ -293,7 +293,7 @@
 	 </tr>
   </table>
 </fieldset>
-  <?
+  <?php
     if ($oGet->opcao != 5 ) {
       echo "<input name=\"alterar\" type=\"submit\" id=\"alterar\" value=\"Confirma\">";
 

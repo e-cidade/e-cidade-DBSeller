@@ -55,7 +55,7 @@ $sSQL        = $oDaoPcproc->sql_query_proc_solicita_abertura(null,$sCampos, null
         <div style="display: table; float:left; margin-left:10%;">
           <fieldset>
             <legend><b>Registro de Preço - Compilação</b></legend>
-          <?
+          <?php
           
           
            db_lovrot($sSQL, 15, "()", "", "js_mostraSolicitacao|pc10_numero");

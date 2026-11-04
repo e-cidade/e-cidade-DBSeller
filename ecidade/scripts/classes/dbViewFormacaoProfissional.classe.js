@@ -1,6 +1,5 @@
 
 function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
-
     var iWidth           = document.body.getWidth()/1.4;
     this.iFormacao       = iFormacao;
     this.view            = '';
@@ -9,7 +8,6 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
         this.view = oNode;
     }
 
-    
     this.arquivoPosgraduacao = '';
     this.arquivo = '';
     this.windowAvaliacao = new windowAux('wndAvaliacao'+iFormacao,'Formação Profissional', iWidth);
@@ -81,7 +79,7 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
     sContent     += '</td>';
     sContent     += '<td>';
     sContent     += '<div style="display: flex; align-items: center; width:100%;">';
-    sContent     += '<iframe name="frame_imagemPosgraduacao" id="frame_imagemPosgraduacao" src="edu4_alunodocumentoposgraduacao.php" width="56" height="40" frameborder="1" scrolling="no"></iframe>';
+    sContent     += '<iframe name="frame_imagemPosgraduacao" id="frame_imagemPosgraduacao" src="edu4_alunodocumentoposgraduacao.php" width="56" height="50" frameborder="1" scrolling="no"></iframe>';
     sContent     += '<script> ';
     sContent     += 'frame_imagemPosgraduacao.location.href="edu4_alunodocumentoposgraduacao.php?imagem_gerada="'+this.arquivoPosgraduacao;
     sContent     += '</script>';
@@ -111,7 +109,7 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
     sContent     += ' </table>';
     sContent     += ' </fieldset>';
     sContent     += ' </div>';
-    sContent     += '</body>';     
+    sContent     += '</body>';
 
     if (this.view === "") {
         this.windowAvaliacao.setContent(sContent);
@@ -122,6 +120,7 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
     if (this.view == "") {
         this.windowAvaliacao.show();
     }
+    const btnClose = this.windowAvaliacao.linkWindow;
 
     this.tableProfisiionais = jQuery('#table-profissionais');
     this.gridFormacoes = jQuery('#grid-formacoes');
@@ -141,13 +140,13 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
 
     this.btnSalvar = document.querySelector('#salvar');
 
-    this.selectAreaFormacao = document.querySelector('#ed183_areaformacao');
     this.selecTipoFormacao = document.querySelector('#ed183_tipoformacao');
+    this.selectAreaFormacao = document.querySelector('#ed183_areaformacao');
 
     this.formulario = document.querySelector('#formFormacao');
     this.anexoPos = document.getElementById("anexopos");
     this.excluirImagem = document.getElementById("ExcluirImagem");
-    
+
     this.routs = {
         buscarAreasFormacao: `educacao/censo/tabelas-censo/areas-pos-graduacao/`,
         buscarTiposFormacao: `educacao/censo/tabelas-censo/tipos-pos-graduacao/`,
@@ -159,6 +158,15 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
         excluirDocumentoPosGraduacao: `educacao/escola/recursos-humanos/excluir-documento-pos-graducao`
     }
 
+    btnClose.addEventListener('click', function () {
+        window.location.reload();
+    });
+
+    this.windowAvaliacao.addEvent('keydown', e => {
+       if (e.key === 'Escape') {
+           window.location.reload();
+       }
+    });
 
     this.buscaFormacoesProfissional = async (cgm) => {
         const formData = new FormData();
@@ -226,6 +234,12 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
                         template = opt.text;
                     }
                 })
+            } else if (field == 'ed183_docpos_estorage'){
+                template = "Não";
+                if (value !== null) {
+                    template = "Sim";
+                }
+
             } else if (field == 'acoes') {
                 template =  `<a class="alterar" href="javascript:void(0)" title="Alterar">
                                 <i class="fa fa-edit"></i>
@@ -271,6 +285,14 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
             }
             ,
             {
+                title: 'Anexo da Pós graduação',
+                field: 'ed183_docpos_estorage',
+                halign: 'center',
+                align: 'right',
+                width: '100',
+                formatter: formataCampos,
+            },
+            {
                 title: 'Ações',
                 field: 'acoes',
                 halign: 'center',
@@ -308,14 +330,11 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
                 }
                 document.getElementById('oid_arquivoPosgraduacao').value = response.data.arquivo;
                 frame_imagemPosgraduacao.location.href="edu4_alunodocumentoposgraduacao.php?imagem_gerada="+response.data.arquivoPosgraduacao;
- 
-        })
-
+        });
     }
 
     this.salvarArquivoPosGraduacao = (ed183_id, arquivo_id) => {
         const formData = new FormData();
-        console.log('do', ed183_id, arquivo_id);
         formData.append('ed183_id', ed183_id);
         formData.append('arquivo_id', arquivo_id);
         HttpClient.post(`${PHPSession.requestApi}/${this.routs.salvarDocumentoPosGraduacao}`, {body: formData})
@@ -369,7 +388,6 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
     }
 
     this.carregaEventos = async () => {
-
         this.btnSalvar.addEventListener('click', event => {
             event.preventDefault();
             if (this.formulario.ed183_cgm.value == '') {
@@ -397,7 +415,7 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
                     return;
                 }
 
-                if (this.arquivoPos.value) {
+                if (this.arquivoPos.value != undefined && this.arquivoPos.value != 'size="30"') {
                     this.salvarArquivoPosGraduacao(response.data, this.arquivoPos.value);
                 }
 
@@ -422,7 +440,7 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
         });
     }
 
-    this.excluirImagem.addEventListener("click", 
+    this.excluirImagem.addEventListener("click",
         event => {
             event.preventDefault();
             this.excluirArquivoPosGraduacao();
@@ -437,5 +455,4 @@ function dbViewFormacaoProfissional(iFormacao, cgm, nome, oNode) {
     }
 
     this.listen();
-    
 }

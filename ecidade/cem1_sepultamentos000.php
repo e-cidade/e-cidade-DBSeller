@@ -45,7 +45,7 @@ $db_opcao   = 1;
 <body class="body-default abas">
    <?php
 
-     $clcriaabas->identifica = array("a1"=>"Dados do Falecido","a2"=>"Certidão de Óbito","a3"=>"Localização","a4"=>"Taxa de Serviço");
+$clcriaabas->identifica = array("a1"=>"Dados do Falecido","a2"=>"Certidão de débito e Taxa de Serviço","a3"=>"Localização");
      $clcriaabas->src        = array("a1"=>"cem1_sepultamentos001.php","a3"=>"cem1_sepultamentos003.php?");
      $clcriaabas->disabled   =  array("a2"=>"true","a3"=>"true","a4"=>"true");
      $clcriaabas->sizecampo  = array("a1"=>30,"a2"=>20,"a3"=>20,"a4"=>25);

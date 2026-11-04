@@ -140,12 +140,13 @@ class MetasVersusCotasService extends BaseRelatoriosCronograma
                     }
 
                     $recurso = $detalhamentoDespesa->recurso;
+                    $fonte = $recurso->fonteRecurso($this->planejamento->pl2_ano_inicial);
                     $instituicao = $detalhamentoDespesa->instituicao;
 
                     $data->recurso = (object)[
                         'recurso' => $recurso->o15_codigo,
-                        'fonte_recurso' => $recurso->o15_recurso,
-                        'descricao' => $recurso->o15_descr,
+                        'fonte_recurso' => $fonte->codigo_siconfi,
+                        'descricao' => $fonte->descricao,
                         'complemento' => (object)$recurso->complemento->toArray(),
                     ];
 
@@ -170,24 +171,25 @@ class MetasVersusCotasService extends BaseRelatoriosCronograma
 
         foreach ($cotas as $cota) {
             $recurso = $cota->recurso;
-            $agrupar = $recurso->{$agruparPor};
+            $agrupar = $recurso->fonte_recurso;
+            if ($this->agruparPor === 'recurso') {
+                $agrupar = sprintf('%s#%s', $recurso->fonte_recurso, $recurso->complemento->codigo);
+            }
 
             if (!array_key_exists($agrupar, $dadosAgrupados)) {
-                $codigo = $recurso->recurso;
                 $descricao = sprintf(
                     '%s - %s | %s - %s',
                     $recurso->fonte_recurso,
                     $recurso->descricao,
-                    $recurso->complemento->codigo,
+                    str_pad($recurso->complemento->codigo, 4, '0', STR_PAD_LEFT),
                     $recurso->complemento->descricao
                 );
 
                 if ($this->agruparPor === 'fonte_recurso') {
                     $descricao = sprintf('%s - %s', $recurso->fonte_recurso, $recurso->descricao);
-                    $codigo = $recurso->fonte_recurso;
                 }
                 $dadosAgrupados[$agrupar] = $this->criaObjeto();
-                $dadosAgrupados[$agrupar]->codigo = $codigo;
+                $dadosAgrupados[$agrupar]->codigo = $agrupar;
                 $dadosAgrupados[$agrupar]->descricao = $descricao;
             }
 
@@ -321,7 +323,7 @@ class MetasVersusCotasService extends BaseRelatoriosCronograma
             }
 
             $descricao = "{$metaReceita->fonte_recurso} - {$metaReceita->descricao_recurso}";
-            if ($propriedade === 'fonte_recurso') {
+            if ($propriedade === 'codigo_recurso') {
                 $descricao .= " | $metaReceita->complemento - {$metaReceita->descricao_complemento}";
             }
 

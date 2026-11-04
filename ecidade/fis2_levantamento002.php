@@ -84,7 +84,7 @@ if ($numrows>0) {
   if ($numrows>0) {
     db_fieldsmemory($result,0);
   }
-  $head1 = "Inscrição: $q02_inscr";
+  $head1 = "$RLq02_inscr: $q02_inscr";
   $head2 = "Nome: $z01_nome";
   $head3 = "Endereço: $z01_ender";
   $head4 = "Ativ. Princ: $q03_descr";
@@ -192,13 +192,13 @@ for ($x=0; $x<$numrows01; $x++) {
     if ($y32_tipodatavencimento == 2 && isset($y50_dtvenc)) {
         $dDataVencParam = $y50_dtvenc;
     }
-        
+
     if ( intval(str_replace('-', '', $y63_dtvenc)) < intval(str_replace('-', '', $dDataOperParam)) ) {
       $dDataVencParam = $dDataOperParam;
 
-    
+
     }
-    
+
     //dd($dDataOperParam, $dDataVencParam, $y63_dtvenc, $dDtOperData );
     //* talvez mudar para $dDataOperParam = $y63_dtvenc;
 
@@ -220,7 +220,7 @@ for ($x=0; $x<$numrows01; $x++) {
 
     $multa = round($correcao * $multa,2);
 
-    //dd($correcao, $multa, $juro, $tot_imposto, $numpre, $numpar, $k00_numpre, $k00_numpar);  
+    //dd($correcao, $multa, $juro, $tot_imposto, $numpre, $numpar, $k00_numpre, $k00_numpar);
 
     $total = round($correcao + $juro + $multa,2);
 
@@ -234,7 +234,7 @@ for ($x=0; $x<$numrows01; $x++) {
     $total     = '0.00';
     $y63_saldo = '0.00';
   }
-  
+
 
   $pdf->setfont('arial','',7);
   $pdf->cell(20,$alt,"","T",0,"C",0);

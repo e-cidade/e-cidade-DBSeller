@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $nomeescola = db_getsession("DB_nomedepto");
  <tr>
   <td align="center" valign="top">
    <b>Alunos transferidos para <?=$nomeescola?></b><br><br>
-   <?
+   <?php
    $where = " escoladestino.ed18_i_codigo = $escola AND ed103_c_situacao = 'A'";
    if(isset($campos)==false){
     if(file_exists("funcoes/db_func_transfescolarede.php")==true){

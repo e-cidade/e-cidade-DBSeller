@@ -54,445 +54,429 @@ $db_botao       = false;
 $_rollback      = false;
 $iOpcaoFiliacao = 2;
 $ed47_v_nomesocial = isset($ed47_v_nomesocial) ? $ed47_v_nomesocial : "";
-function TiraEspacoNome($nome) {
 
-  $sep   = "";
-  $str   = "";
-  $parte = explode(" ",$nome);
+$sqlParametros = "select ed290_habilitarcampostransescolar from secretariadeeducacao.sec_parametros";
+$resultHabilitarCamposTransescolar = pg_fetch_assoc(db_query($sqlParametros));
+$habilitarCamposTransescolar = $resultHabilitarCamposTransescolar['ed290_habilitarcampostransescolar']  == 't' ? 'S' : 'N';
 
-  for( $i = 0; $i < count($parte); $i++ ) {
+function TiraEspacoNome($nome)
+{
 
-    if ( trim($parte[$i]) != "" ) {
+    $sep   = "";
+    $str   = "";
+    $parte = explode(" ", $nome);
 
-      $str .= $sep.trim($parte[$i]);
-      $sep  = " ";
+    for ($i = 0; $i < count($parte); $i++) {
+        if (trim($parte[$i]) != "") {
+            $str .= $sep.trim($parte[$i]);
+            $sep  = " ";
+        }
     }
-  }
 
-  return $str;
+    return $str;
 }
 
-if ( isset( $alterar ) ) {
+if (isset($alterar)) {
+    $sBairro = pg_escape_string($ed47_v_bairro);
+    if ($ed47_v_nome != "") {
+        $erroconf        = false;
 
-  $sBairro = pg_escape_string($ed47_v_bairro);
-  if ($ed47_v_nome != "") {
+        if (isRioGrandeDoNorte()) {
+            $ed47_v_nome = TiraAcento($ed47_v_nome);
+            $ed47_v_mae = TiraAcento($ed47_v_mae);
+            $ed47_v_pai = TiraAcento($ed47_v_pai);
+            $ed47_c_nomeresp = TiraAcento($ed47_c_nomeresp);
+        }
 
-   $erroconf        = false;
-   $ed47_v_nome     = TiraEspacoNome($ed47_v_nome);
-   $ed47_v_mae      = TiraEspacoNome($ed47_v_mae);
-   $ed47_v_pai      = TiraEspacoNome($ed47_v_pai);
-   $ed47_c_nomeresp = TiraEspacoNome($ed47_c_nomeresp);
-   $sCampos         = "ed47_i_codigo as jatem, ed47_d_nasc as datatem, ed47_c_certidaonum as certidaonumexiste";
-   $sCampos        .= ", ed47_v_mae as maesim";
-   $result2         = $claluno->sql_record($claluno->sql_query("",$sCampos,""," ed47_v_nome = '$ed47_v_nome'"));
+        $ed47_v_nome     = TiraEspacoNome($ed47_v_nome);
+        $ed47_v_mae      = TiraEspacoNome($ed47_v_mae);
+        $ed47_v_pai      = TiraEspacoNome($ed47_v_pai);
+        $ed47_c_nomeresp = TiraEspacoNome($ed47_c_nomeresp);
+        $sCampos         = "ed47_i_codigo as jatem, ed47_d_nasc as datatem, ed47_c_certidaonum as certidaonumexiste";
+        $sCampos        .= ", ed47_v_mae as maesim";
+        $result2         = $claluno->sql_record($claluno->sql_query("", $sCampos, "", " ed47_v_nome = '$ed47_v_nome'"));
 
-   if ($claluno->numrows > 0) {
+        if ($claluno->numrows > 0) {
+            db_fieldsmemory($result2, 0);
+            $ed47_v_nomesocial = is_null($ed47_v_nomesocial) || $ed47_v_nomesocial == "null" ? "" : $ed47_v_nomesocial;
+            if ($jatem != $ed47_i_codigo) {
+                if ($ed47_d_nasc_ano."-".$ed47_d_nasc_mes."-".$ed47_d_nasc_dia == $datatem) {
+                    $erroconf   = true;
+                    $sMensagem  = "Este nome ($ed47_v_nome) já possui cadastro com a mesma data de nascimento digitada ($ed47_d_nasc)!";
+                    $sMensagem .= " Redirecionando para visualização...";
+                    db_msgbox($sMensagem);
+                    db_redireciona("edu1_alunodados002.php?chavepesquisa=$jatem");
+                    exit;
+                }
 
-     db_fieldsmemory($result2,0);
-     $ed47_v_nomesocial = is_null($ed47_v_nomesocial) || $ed47_v_nomesocial == "null" ? "" : $ed47_v_nomesocial;
-     if($jatem != $ed47_i_codigo) {
+                if (trim($ed47_v_mae) == trim($maesim)
+                && trim($ed47_v_mae) != ""
+                && trim($maesim)     != "") {
+                    $erroconf   = true;
+                    $sMensagem  = "Este nome ($ed47_v_nome) já possui cadastro com o mesmo nome da mae digitado ($maesim)!";
+                    $sMensagem .= " Redirecionando para visualização...";
+                    db_msgbox($sMensagem);
+                    db_redireciona("edu1_alunodados002.php?chavepesquisa=$jatem");
+                    exit;
+                }
+            }
+        }
 
-       if($ed47_d_nasc_ano."-".$ed47_d_nasc_mes."-".$ed47_d_nasc_dia == $datatem) {
+        if ($erroconf == false) {
+            $db_opcao    = 2;
+            $db_opcao1   = 3;
+            $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+            $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
 
-         $erroconf   = true;
-         $sMensagem  = "Este nome ($ed47_v_nome) já possui cadastro com a mesma data de nascimento digitada ($ed47_d_nasc)!";
-         $sMensagem .= " Redirecionando para visualização...";
-         db_msgbox( $sMensagem );
-         db_redireciona("edu1_alunodados002.php?chavepesquisa=$jatem");
-         exit;
-       }
+            if ($ed47_c_foto != "") {
+                db_query("begin");
+                $oid_imagem = pg_loimport($conn, $ed47_o_oid) or die("Erro(15) importando imagem");
+                db_query("end");
+                $ed47_o_oid = $oid_imagem;
+            } else {
+                $oid_imagem = "0";
+            }
 
-       if(    trim($ed47_v_mae) == trim($maesim)
-           && trim($ed47_v_mae) != ""
-           && trim($maesim)     != "") {
+            db_inicio_transacao();
 
-         $erroconf   = true;
-         $sMensagem  = "Este nome ($ed47_v_nome) já possui cadastro com o mesmo nome da mae digitado ($maesim)!";
-         $sMensagem .= " Redirecionando para visualização...";
-         db_msgbox( $sMensagem );
-         db_redireciona("edu1_alunodados002.php?chavepesquisa=$jatem");
-         exit;
-       }
-     }
-   }
+        /**
+         * Seta os dados do aluno que não estão no formulario para
+         * que não fiquem nulos
+         */
+            $sSqlAluno = $claluno->sql_query_file($ed47_i_codigo);
+            $rsAluno   = $claluno->sql_record($sSqlAluno);
+            $oAluno    = db_utils::fieldsMemory($rsAluno, 0);
 
-   if($erroconf == false){
+            if (isset($oAluno->ed47_c_certidaocart) && !empty($oAluno->ed47_c_certidaocart)) {
+                $claluno->ed47_c_certidaocart = $oAluno->ed47_c_certidaocart;
+            }
+            if (isset($oAluno->ed47_i_censomuniccert) && !empty($oAluno->ed47_i_censomuniccert)) {
+                $claluno->ed47_i_censomuniccert = $oAluno->ed47_i_censomuniccert;
+            }
+            if (isset($oAluno->ed47_i_censoufcert) && !empty($oAluno->ed47_i_censoufcert)) {
+                $claluno->ed47_i_censoufcert = $oAluno->ed47_i_censoufcert;
+            }
+            if (isset($oAluno->ed47_i_censoufident) && !empty($oAluno->ed47_i_censoufident)) {
+                $claluno->ed47_i_censoufident = $oAluno->ed47_i_censoufident;
+            }
+            if (isset($oAluno->ed47_i_censoorgemissrg) && !empty($oAluno->ed47_i_censoorgemissrg)) {
+                $claluno->ed47_i_censoorgemissrg = $oAluno->ed47_i_censoorgemissrg;
+            }
+            if (isset($oAluno->ed47_certidaomatricula) && !empty($oAluno->ed47_certidaomatricula)) {
+                $claluno->ed47_certidaomatricula = $oAluno->ed47_certidaomatricula;
+            }
 
-     $db_opcao    = 2;
-     $db_opcao1   = 3;
-     $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-     $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+            $claluno->ed47_c_foto             = $ed47_c_foto;
+            $claluno->ed47_o_oid              = $oid_imagem;
+            $claluno->ed47_v_nome             = $ed47_v_nome;
+            $claluno->ed47_v_mae              = $ed47_v_mae;
+            $claluno->ed47_v_pai              = $ed47_v_pai;
 
-     if($ed47_c_foto != "") {
+        /**
+         * Verifica se o campo ed47_celularresponsavel já possui DDD
+         */
+            if (strlen($ed47_celularresponsavel) <= 9) {
+                $ed47_celularresponsavel = "{$dddcelularresponsavel}{$ed47_celularresponsavel}";
+            }
 
-       db_query("begin");
-       $oid_imagem = pg_loimport($conn, $ed47_o_oid) or die("Erro(15) importando imagem");
-       db_query("end");
-       $ed47_o_oid = $oid_imagem;
-     } else {
-       $oid_imagem = "0";
-     }
+            $claluno->ed47_celularresponsavel = preg_replace("/[^0-9]/", "", $ed47_celularresponsavel);
+            $claluno->ed47_v_telef            = preg_replace("/[^0-9]/", "", $ed47_v_telef);
+            $claluno->ed47_v_telcel           = preg_replace("/[^0-9]/", "", $ed47_v_telcel);
+            $claluno->ed47_v_fax              = preg_replace("/[^0-9]/", "", $ed47_v_fax);
+            $claluno->ed47_c_nomeresp         = $ed47_c_nomeresp;
+            $claluno->ed47_d_ultalt           = date("Y-m-d");
+            $claluno->ed47_tiposanguineo      = !empty($ed47_tiposanguineo) ? $ed47_tiposanguineo   : 'null';
+            $claluno->ed47_i_censoufnat       = !empty($ed47_i_censoufnat)    ? $ed47_i_censoufnat    : 'null';
+            $claluno->ed47_i_censomunicnat    = !empty($ed47_i_censomunicnat) ? $ed47_i_censomunicnat : 'null';
+            $ed47_paisresidencia = trim($ed47_paisresidencia);
+            $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
+            $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
+            $claluno->ed47_censoregiao        = !empty($ed47_censoregiao) ? (int)$ed47_censoregiao : 'null';
+            $claluno->ed47_censoregiaonat        = !empty($ed47_censoregiaonat) ? (int)$ed47_censoregiaonat : 'null';
+            if ($habilitarCamposTransescolar == 'S') {
+                $claluno->ed47_v_codigo_energia = preg_replace('/[^0-9]/', '', $ed47_v_codigo_energia);
+                $claluno->ed47_v_sigla_concessionaria = $ed47_v_sigla_concessionaria;
+            }
 
-     db_inicio_transacao();
+            $clalunoaltera->logalterar($ed47_i_codigo, 1);
+            $claluno->alterar($ed47_i_codigo);
+            $iAluno = $claluno->ed47_i_codigo;
 
-     /**
-      * Seta os dados do aluno que não estão no formulario para
-      * que não fiquem nulos
-      */
-     $sSqlAluno = $claluno->sql_query_file( $ed47_i_codigo );
-     $rsAluno   = $claluno->sql_record( $sSqlAluno );
-     $oAluno    = db_utils::fieldsMemory($rsAluno, 0);
+            if ($claluno->erro_status == "0") {
+                $_rollback = true;
+            }
 
-     if ( isset( $oAluno->ed47_c_certidaocart ) && !empty( $oAluno->ed47_c_certidaocart ) ) {
-       $claluno->ed47_c_certidaocart = $oAluno->ed47_c_certidaocart;
-     }
-     if ( isset( $oAluno->ed47_i_censomuniccert ) && !empty( $oAluno->ed47_i_censomuniccert ) ) {
-       $claluno->ed47_i_censomuniccert = $oAluno->ed47_i_censomuniccert;
-     }
-     if ( isset( $oAluno->ed47_i_censoufcert ) && !empty( $oAluno->ed47_i_censoufcert ) ) {
-       $claluno->ed47_i_censoufcert = $oAluno->ed47_i_censoufcert;
-     }
-     if ( isset( $oAluno->ed47_i_censoufident ) && !empty( $oAluno->ed47_i_censoufident ) ) {
-       $claluno->ed47_i_censoufident = $oAluno->ed47_i_censoufident;
-     }
-     if ( isset( $oAluno->ed47_i_censoorgemissrg ) && !empty( $oAluno->ed47_i_censoorgemissrg ) ) {
-       $claluno->ed47_i_censoorgemissrg = $oAluno->ed47_i_censoorgemissrg;
-     }
-     if ( isset( $oAluno->ed47_certidaomatricula ) && !empty($oAluno->ed47_certidaomatricula) ) {
-       $claluno->ed47_certidaomatricula = $oAluno->ed47_certidaomatricula;
-     }
+            if ($j13_codi!="") {
+                $sSqlAlunoBairro = $clalunobairro->sql_query("", "ed225_i_codigo", "", "ed225_i_aluno = {$ed47_i_codigo}");
+                $result_bairro   = $clalunobairro->sql_record($sSqlAlunoBairro);
+                $clalunobairro->ed225_i_aluno  = $ed47_i_codigo;
+                $clalunobairro->ed225_i_bairro = $j13_codi;
+                if ($clalunobairro->numrows>0) {
+                    db_fieldsmemory($result_bairro, 0);
+                    $clalunobairro->ed225_i_codigo = $ed225_i_codigo;
+                    $clalunobairro->alterar($ed225_i_codigo);
+                } else {
+                    $clalunobairro->incluir(null);
+                }
+            }
 
-     $claluno->ed47_c_foto             = $ed47_c_foto;
-     $claluno->ed47_o_oid              = $oid_imagem;
-     $claluno->ed47_v_nome             = $ed47_v_nome;
-     $claluno->ed47_v_mae              = $ed47_v_mae;
-     $claluno->ed47_v_pai              = $ed47_v_pai;
+            $sSqlAlunoPrimat = $clalunoprimat->sql_query("", "ed76_i_codigo", "", "ed76_i_aluno = {$ed47_i_codigo}");
+            $result_pri      = $clalunoprimat->sql_record($sSqlAlunoPrimat);
+            $clalunoprimat->ed76_i_aluno = $ed47_i_codigo;
 
-     /**
-      * Verifica se o campo ed47_celularresponsavel já possui DDD
-      */
-     if ( strlen($ed47_celularresponsavel) <= 9 ) {
-      $ed47_celularresponsavel = "{$dddcelularresponsavel}{$ed47_celularresponsavel}";
-     }
-
-     $claluno->ed47_celularresponsavel = preg_replace("/[^0-9]/", "", $ed47_celularresponsavel);
-     $claluno->ed47_v_telef            = preg_replace("/[^0-9]/", "", $ed47_v_telef);
-     $claluno->ed47_v_telcel           = preg_replace("/[^0-9]/", "", $ed47_v_telcel);
-     $claluno->ed47_v_fax              = preg_replace("/[^0-9]/", "", $ed47_v_fax);
-     $claluno->ed47_c_nomeresp         = $ed47_c_nomeresp;
-     $claluno->ed47_d_ultalt           = date("Y-m-d");
-     $claluno->ed47_tiposanguineo      = !empty( $ed47_tiposanguineo ) ? $ed47_tiposanguineo   : 'null';
-     $claluno->ed47_i_censoufnat       = !empty($ed47_i_censoufnat)    ? $ed47_i_censoufnat    : 'null';
-     $claluno->ed47_i_censomunicnat    = !empty($ed47_i_censomunicnat) ? $ed47_i_censomunicnat : 'null';
-       $ed47_paisresidencia = trim($ed47_paisresidencia);
-       $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
-       $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
-       $claluno->ed47_censoregiao        = !empty($ed47_censoregiao) ? (int)$ed47_censoregiao : 'null';
-       $claluno->ed47_censoregiaonat        = !empty($ed47_censoregiaonat) ? (int)$ed47_censoregiaonat : 'null';
-
-     $clalunoaltera->logalterar($ed47_i_codigo,1);
-     $claluno->alterar($ed47_i_codigo);
-     $iAluno = $claluno->ed47_i_codigo;
-
-     if ($claluno->erro_status == "0") {
-       $_rollback = true;
-     }
-
-     if($j13_codi!=""){
-
-       $sSqlAlunoBairro = $clalunobairro->sql_query("", "ed225_i_codigo", "", "ed225_i_aluno = {$ed47_i_codigo}");
-       $result_bairro   = $clalunobairro->sql_record( $sSqlAlunoBairro );
-       $clalunobairro->ed225_i_aluno  = $ed47_i_codigo;
-       $clalunobairro->ed225_i_bairro = $j13_codi;
-       if($clalunobairro->numrows>0){
-
-         db_fieldsmemory($result_bairro,0);
-         $clalunobairro->ed225_i_codigo = $ed225_i_codigo;
-         $clalunobairro->alterar($ed225_i_codigo);
-       } else{
-         $clalunobairro->incluir(null);
-       }
-     }
-
-     $sSqlAlunoPrimat = $clalunoprimat->sql_query("", "ed76_i_codigo", "", "ed76_i_aluno = {$ed47_i_codigo}");
-     $result_pri      = $clalunoprimat->sql_record( $sSqlAlunoPrimat );
-     $clalunoprimat->ed76_i_aluno = $ed47_i_codigo;
-
-     if ($clalunoprimat->numrows > 0) {
-
-       if($ed76_i_escola!=""){
-
-         db_fieldsmemory($result_pri,0);
-         $clalunoprimat->alterar($ed76_i_codigo);
-       } else{
-         $clalunoprimat->excluir($ed76_i_codigo);
-       }
-     } else {
-
-      if($ed76_i_escola!=""){
-        $clalunoprimat->incluir(null);
-      }
-     }
+            if ($clalunoprimat->numrows > 0) {
+                if ($ed76_i_escola!="") {
+                    db_fieldsmemory($result_pri, 0);
+                    $clalunoprimat->alterar($ed76_i_codigo);
+                } else {
+                    $clalunoprimat->excluir($ed76_i_codigo);
+                }
+            } else {
+                if ($ed76_i_escola!="") {
+                      $clalunoprimat->incluir(null);
+                }
+            }
 
      /**
       * Verifica se o aluno já possui um cadastro de cidadão, buscando pelo nome, data de nascimento e nome da mãe.
       * Caso não exista, cria um novo cidadão
       */
-     $oDataNascimento     = new DBDate($ed47_d_nasc);
-     $aCidadao            = CidadaoRepository::getCidadaoPorNomeDataNascimento($ed47_v_nome, $oDataNascimento, $ed47_v_mae);
-     $oCidadao            = CidadaoRepository::getCidadaoPeloCodigoAluno($ed47_i_codigo);
-     $oCidadaoMae         = null;
-     $oCidadaoPai         = null;
-     $oCidadaoResponsavel = null;
+            $oDataNascimento     = new DBDate($ed47_d_nasc);
+            $aCidadao            = CidadaoRepository::getCidadaoPorNomeDataNascimento($ed47_v_nome, $oDataNascimento, $ed47_v_mae);
+            $oCidadao            = CidadaoRepository::getCidadaoPeloCodigoAluno($ed47_i_codigo);
+            $oCidadaoMae         = null;
+            $oCidadaoPai         = null;
+            $oCidadaoResponsavel = null;
 
-     if (empty($aCidadao) && empty($oCidadao)) {
+            if (empty($aCidadao) && empty($oCidadao)) {
+                $oCidadao = new Cidadao();
+                $oCidadao->setNome($ed47_v_nome);
+                   $oCidadao->setDataNascimento($oDataNascimento->getDate(DBDate::DATA_PTBR));
+                   $oCidadao->setSexo($ed47_v_sexo);
+                   $oCidadao->setAtivo(true);
+                   $oCidadao->setEndereco($ed47_v_ender);
 
-       $oCidadao = new Cidadao();
-       $oCidadao->setNome($ed47_v_nome);
-       $oCidadao->setDataNascimento($oDataNascimento->getDate(DBDate::DATA_PTBR));
-       $oCidadao->setSexo($ed47_v_sexo);
-       $oCidadao->setAtivo(true);
-       $oCidadao->setEndereco($ed47_v_ender);
+                if (!DBNumber::isInteger($ed47_c_numero)) {
+                    $ed47_v_compl .= " N: {$ed47_c_numero}";
+                    $ed47_c_numero = '';
+                }
 
-      if (!DBNumber::isInteger($ed47_c_numero)) {
+                $oCidadao->setComplemento($ed47_v_compl);
+                $oCidadao->setCEP($ed47_v_cep);
+                $oCidadao->setBairro($sBairro);
+                $oCidadao->setNumero($ed47_c_numero);
+                $oCidadao->setSituacaoCidadao(2);
 
-        $ed47_v_compl .= " N: {$ed47_c_numero}";
-        $ed47_c_numero = '';
-      }
+          /**
+           * Busca a descrição do município para setar no cidadão
+          */
+                $oDaoCensoMunicipio = new cl_censomunic();
+                $sSqlCensoMunicipio = $oDaoCensoMunicipio->sql_query_file($ed47_i_censomunicend, "ed261_c_nome");
+                $rsCensoMunicipio   = $oDaoCensoMunicipio->sql_record($sSqlCensoMunicipio);
 
-       $oCidadao->setComplemento($ed47_v_compl);
-       $oCidadao->setCEP($ed47_v_cep);
-       $oCidadao->setBairro($sBairro);
-       $oCidadao->setNumero($ed47_c_numero);
-       $oCidadao->setSituacaoCidadao(2);
-
-       /**
-        * Busca a descrição do município para setar no cidadão
-       */
-       $oDaoCensoMunicipio = new cl_censomunic();
-       $sSqlCensoMunicipio = $oDaoCensoMunicipio->sql_query_file($ed47_i_censomunicend, "ed261_c_nome");
-       $rsCensoMunicipio   = $oDaoCensoMunicipio->sql_record($sSqlCensoMunicipio);
-
-       if ($oDaoCensoMunicipio->numrows > 0) {
-         $oCidadao->setMunicipio(db_utils::fieldsMemory($rsCensoMunicipio, 0)->ed261_c_nome);
-       }
+                if ($oDaoCensoMunicipio->numrows > 0) {
+                    $oCidadao->setMunicipio(db_utils::fieldsMemory($rsCensoMunicipio, 0)->ed261_c_nome);
+                }
 
        /**
         * Busca a descrição do estado para setar no cidadão
         */
-       $oDaoCensoUF = new cl_censouf();
-       $sSqlCensoUF = $oDaoCensoUF->sql_query_file($ed47_i_censoufend, "ed260_c_sigla");
-       $rsCensoUF   = $oDaoCensoUF->sql_record($sSqlCensoUF);
+                $oDaoCensoUF = new cl_censouf();
+                $sSqlCensoUF = $oDaoCensoUF->sql_query_file($ed47_i_censoufend, "ed260_c_sigla");
+                $rsCensoUF   = $oDaoCensoUF->sql_record($sSqlCensoUF);
 
-       if ($oDaoCensoUF->numrows > 0) {
-         $oCidadao->setUF(db_utils::fieldsMemory($rsCensoUF, 0)->ed260_c_sigla);
-       }
-     } else if (empty($oCidadao)) {
+                if ($oDaoCensoUF->numrows > 0) {
+                    $oCidadao->setUF(db_utils::fieldsMemory($rsCensoUF, 0)->ed260_c_sigla);
+                }
+            } elseif (empty($oCidadao)) {
 
-       /**
-        * Caso retorne mais de um cidadão utiliza o de código menor
-        */
-       $iCidadaoMenor = null;
-       foreach ($aCidadao as $oCidadaoTemporario) {
-
-         if (empty($iCidadaoMenor) || $iCidadaoMenor > $oCidadaoTemporario->getCodigo()) {
-           $oCidadao = $oCidadaoTemporario;
-         }
-       }
-     }
+              /**
+               * Caso retorne mais de um cidadão utiliza o de código menor
+               */
+                $iCidadaoMenor = null;
+                foreach ($aCidadao as $oCidadaoTemporario) {
+                    if (empty($iCidadaoMenor) || $iCidadaoMenor > $oCidadaoTemporario->getCodigo()) {
+                            $oCidadao = $oCidadaoTemporario;
+                    }
+                }
+            }
 
      /**
       * Caso o código de cidadão da mãe e do pai seja diferente de vazio, setamos o pai e mãe do aluno como cidadão
       */
-     if (!empty($oInputCodigoMae)) {
-       $oCidadaoMae = CidadaoRepository::getCidadaoByCodigo($oInputCodigoMae);
-     }
+            if (!empty($oInputCodigoMae)) {
+                $oCidadaoMae = CidadaoRepository::getCidadaoByCodigo($oInputCodigoMae);
+            }
 
-     $oCidadao->setMae($oCidadaoMae);
+            $oCidadao->setMae($oCidadaoMae);
 
-     if (!empty($oInputCodigoPai)) {
-       $oCidadaoPai = CidadaoRepository::getCidadaoByCodigo($oInputCodigoPai);
-     }
+            if (!empty($oInputCodigoPai)) {
+                $oCidadaoPai = CidadaoRepository::getCidadaoByCodigo($oInputCodigoPai);
+            }
 
-     $oCidadao->setPai($oCidadaoPai);
-     $oCidadao->setBairro( pg_escape_string($oCidadao->getBairro()) );
-     $oCidadao->salvar();
+            $oCidadao->setPai($oCidadaoPai);
+            $oCidadao->setBairro(pg_escape_string($oCidadao->getBairro()));
+            $oCidadao->salvar();
 
-     $sWhere           = "ed330_cidadao = {$oCidadao->getCodigo()} and ed330_cidadao_seq = {$oCidadao->getSequencialInterno()}";
-     $oDaoAlunoCidadao = new cl_alunocidadao();
-     $sSqlAlunoCidadao = $oDaoAlunoCidadao->sql_query_file(null, 'ed330_sequencial', null, $sWhere);
-     $rsAlunoCidadao   = $oDaoAlunoCidadao->sql_record($sSqlAlunoCidadao);
+            $sWhere           = "ed330_cidadao = {$oCidadao->getCodigo()} and ed330_cidadao_seq = {$oCidadao->getSequencialInterno()}";
+            $oDaoAlunoCidadao = new cl_alunocidadao();
+            $sSqlAlunoCidadao = $oDaoAlunoCidadao->sql_query_file(null, 'ed330_sequencial', null, $sWhere);
+            $rsAlunoCidadao   = $oDaoAlunoCidadao->sql_record($sSqlAlunoCidadao);
 
-     if ($oDaoAlunoCidadao->numrows <= 0) {
+            if ($oDaoAlunoCidadao->numrows <= 0) {
+                $oDaoAlunoCidadao->ed330_aluno       = $iAluno;
+                $oDaoAlunoCidadao->ed330_cidadao     = $oCidadao->getCodigo();
+                $oDaoAlunoCidadao->ed330_cidadao_seq = $oCidadao->getSequencialInterno();
+                $oDaoAlunoCidadao->incluir(null);
 
-       $oDaoAlunoCidadao->ed330_aluno       = $iAluno;
-       $oDaoAlunoCidadao->ed330_cidadao     = $oCidadao->getCodigo();
-       $oDaoAlunoCidadao->ed330_cidadao_seq = $oCidadao->getSequencialInterno();
-       $oDaoAlunoCidadao->incluir(null);
-
-       if ($oDaoAlunoCidadao->erro_status == 0) {
-         throw new BusinessException($oDaoAlunoCidadao->erro_msg);
-       }
-     }
+                if ($oDaoAlunoCidadao->erro_status == 0) {
+                    throw new BusinessException($oDaoAlunoCidadao->erro_msg);
+                }
+            }
 
      /**
       * Salva o vinculo do alunoCidadao com o Responsavel
       */
-     $oDaoAlunoResponsavel = new cl_alunocidadaoresponsavel();
-     $oDaoAlunoResponsavel->excluir(null, "ed331_aluno = {$iAluno}");
+            $oDaoAlunoResponsavel = new cl_alunocidadaoresponsavel();
+            $oDaoAlunoResponsavel->excluir(null, "ed331_aluno = {$iAluno}");
 
-     if ($oDaoAlunoResponsavel->erro_status == 0) {
-       throw new BusinessException($oDaoAlunoResponsavel->erro_msg);
-     }
+            if ($oDaoAlunoResponsavel->erro_status == 0) {
+                throw new BusinessException($oDaoAlunoResponsavel->erro_msg);
+            }
 
-     if (!empty($oInputCodigoResponsavel)) {
+            if (!empty($oInputCodigoResponsavel)) {
+                $oCidadaoResponsavel                     = CidadaoRepository::getCidadaoByCodigo($oInputCodigoResponsavel);
+                $oDaoAlunoResponsavel->ed331_aluno       = $iAluno;
+                $oDaoAlunoResponsavel->ed331_cidadao     = $oCidadaoResponsavel->getCodigo();
+                $oDaoAlunoResponsavel->ed331_cidadao_seq = $oCidadaoResponsavel->getSequencialInterno();
+                $oDaoAlunoResponsavel->incluir(null);
 
-       $oCidadaoResponsavel                     = CidadaoRepository::getCidadaoByCodigo($oInputCodigoResponsavel);
-       $oDaoAlunoResponsavel->ed331_aluno       = $iAluno;
-       $oDaoAlunoResponsavel->ed331_cidadao     = $oCidadaoResponsavel->getCodigo();
-       $oDaoAlunoResponsavel->ed331_cidadao_seq = $oCidadaoResponsavel->getSequencialInterno();
-       $oDaoAlunoResponsavel->incluir(null);
-
-       if ($oDaoAlunoResponsavel->erro_status == 0) {
-         throw new BusinessException($oDaoAlunoResponsavel->erro_msg);
-       }
-     }
+                if ($oDaoAlunoResponsavel->erro_status == 0) {
+                    throw new BusinessException($oDaoAlunoResponsavel->erro_msg);
+                }
+            }
 
      /**
       * Verifica se algum contato foi selecionado, caso tenha sido verifica qual foi selecionado e se possui um cidadão.
       * Caso exista o cidadao salva o vínculo
       */
-     $oDaoAlunoContato = new cl_alunocidadaocontato();
-     $oDaoAlunoContato->excluir(null, "ed332_aluno = {$iAluno}");
+            $oDaoAlunoContato = new cl_alunocidadaocontato();
+            $oDaoAlunoContato->excluir(null, "ed332_aluno = {$iAluno}");
 
-     if ($oDaoAlunoContato->erro_status == 0) {
-       throw new BusinessException($oDaoAlunoContato->erro_msg);
-     }
+            if ($oDaoAlunoContato->erro_status == 0) {
+                throw new BusinessException($oDaoAlunoContato->erro_msg);
+            }
 
-     if (!empty($oSelectContato)) {
+            if (!empty($oSelectContato)) {
+                $oDaoAlunoContato->ed332_aluno = $iAluno;
 
-       $oDaoAlunoContato->ed332_aluno = $iAluno;
+                if ($oSelectContato == 1 && !empty($oCidadaoMae)) {
+                    $oDaoAlunoContato->ed332_cidadao     = $oCidadaoMae->getCodigo();
+                    $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoMae->getSequencialInterno();
+                }
 
-       if ($oSelectContato == 1 && !empty($oCidadaoMae)) {
+                if ($oSelectContato == 2 && !empty($oCidadaoPai)) {
+                    $oDaoAlunoContato->ed332_cidadao     = $oCidadaoPai->getCodigo();
+                    $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoPai->getSequencialInterno();
+                }
 
-         $oDaoAlunoContato->ed332_cidadao     = $oCidadaoMae->getCodigo();
-         $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoMae->getSequencialInterno();
-       }
+                if ($oSelectContato == 3 && !empty($oCidadaoResponsavel)) {
+                    $oDaoAlunoContato->ed332_cidadao     = $oCidadaoResponsavel->getCodigo();
+                    $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoResponsavel->getSequencialInterno();
+                }
 
-       if ($oSelectContato == 2 && !empty($oCidadaoPai)) {
+                if (!empty($oDaoAlunoContato->ed332_cidadao)) {
+                    $oDaoAlunoContato->incluir(null);
 
-         $oDaoAlunoContato->ed332_cidadao     = $oCidadaoPai->getCodigo();
-         $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoPai->getSequencialInterno();
-       }
+                    if ($oDaoAlunoContato->erro_status == 0) {
+                        throw new BusinessException($oDaoAlunoContato->erro_msg);
+                    }
+                }
+            }
 
-       if ($oSelectContato == 3 && !empty($oCidadaoResponsavel)) {
-
-         $oDaoAlunoContato->ed332_cidadao     = $oCidadaoResponsavel->getCodigo();
-         $oDaoAlunoContato->ed332_cidadao_seq = $oCidadaoResponsavel->getSequencialInterno();
-       }
-
-       if (!empty($oDaoAlunoContato->ed332_cidadao)) {
-
-         $oDaoAlunoContato->incluir(null);
-
-         if ($oDaoAlunoContato->erro_status == 0) {
-           throw new BusinessException($oDaoAlunoContato->erro_msg);
-         }
-       }
-     }
-
-     db_fim_transacao($_rollback);
-   }
- } else {
-
-  $db_opcao    = 2;
-  $db_opcao1   = 3;
-  $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-  $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-
-  if ( $ed47_c_foto != "" ) {
-
-    db_query("begin");
-    $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
-    db_query("end");
-    $ed47_o_oid = $oid_imagem;
-  } else {
-    $oid_imagem = "0";
-  }
-
-  db_inicio_transacao();
-  $claluno->ed47_c_foto   = $ed47_c_foto;
-  $claluno->ed47_o_oid    = $oid_imagem;
-  $claluno->ed47_d_ultalt = date("Y-m-d");
-  $claluno->ed47_i_login  = $iUsuarioLogado;
-  $clalunoaltera->logalterar($ed47_i_codigo,1);
-  $claluno->alterar($ed47_i_codigo);
-
-  if ( $claluno->erro_status == "0" ) {
-    $_rollback = true;
-  } else {
-    $_rollback = false;
-  }
-
-  if ( $j13_codi != "" ) {
-
-    $sSqlAlunoBairro = $clalunobairro->sql_query("", "ed225_i_codigo", "", "ed225_i_aluno = {$ed47_i_codigo}");
-    $result_bairro   = $clalunobairro->sql_record( $sSqlAlunoBairro );
-
-    $clalunobairro->ed225_i_aluno  = $ed47_i_codigo;
-    $clalunobairro->ed225_i_bairro = $j13_codi;
-
-    if ( $clalunobairro->numrows > 0 ) {
-
-      db_fieldsmemory($result_bairro,0);
-      $clalunobairro->ed225_i_codigo = $ed225_i_codigo;
-      $clalunobairro->alterar($ed225_i_codigo);
+            db_fim_transacao($_rollback);
+        }
     } else {
-      $clalunobairro->incluir(null);
+        $db_opcao    = 2;
+        $db_opcao1   = 3;
+        $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+        $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+
+        if ($ed47_c_foto != "") {
+            db_query("begin");
+            $oid_imagem = pg_loimport($conn, $ed47_o_oid) or die("Erro(15) importando imagem");
+            db_query("end");
+            $ed47_o_oid = $oid_imagem;
+        } else {
+            $oid_imagem = "0";
+        }
+
+        db_inicio_transacao();
+        $claluno->ed47_c_foto   = $ed47_c_foto;
+        $claluno->ed47_o_oid    = $oid_imagem;
+        $claluno->ed47_d_ultalt = date("Y-m-d");
+        $claluno->ed47_i_login  = $iUsuarioLogado;
+        $clalunoaltera->logalterar($ed47_i_codigo, 1);
+        $claluno->alterar($ed47_i_codigo);
+
+        if ($claluno->erro_status == "0") {
+            $_rollback = true;
+        } else {
+            $_rollback = false;
+        }
+
+        if ($j13_codi != "") {
+            $sSqlAlunoBairro = $clalunobairro->sql_query("", "ed225_i_codigo", "", "ed225_i_aluno = {$ed47_i_codigo}");
+            $result_bairro   = $clalunobairro->sql_record($sSqlAlunoBairro);
+
+            $clalunobairro->ed225_i_aluno  = $ed47_i_codigo;
+            $clalunobairro->ed225_i_bairro = $j13_codi;
+
+            if ($clalunobairro->numrows > 0) {
+                db_fieldsmemory($result_bairro, 0);
+                $clalunobairro->ed225_i_codigo = $ed225_i_codigo;
+                $clalunobairro->alterar($ed225_i_codigo);
+            } else {
+                $clalunobairro->incluir(null);
+            }
+        }
+
+        $sSqlAlunoPrimat = $clalunoprimat->sql_query("", "ed76_i_codigo", "", "ed76_i_aluno = {$ed47_i_codigo}");
+        $result_pri      = $clalunoprimat->sql_record($sSqlAlunoPrimat);
+
+        $clalunoprimat->ed76_i_aluno = $ed47_i_codigo;
+
+        if ($clalunoprimat->numrows > 0) {
+            if ($ed76_i_escola != "") {
+                db_fieldsmemory($result_pri, 0);
+                $clalunoprimat->alterar($ed76_i_codigo);
+            } else {
+                $clalunoprimat->excluir($ed76_i_codigo);
+            }
+        } else {
+            if ($ed76_i_escola != "") {
+                $clalunoprimat->incluir(null);
+            }
+        }
+
+        db_fim_transacao($_rollback);
     }
-  }
 
-  $sSqlAlunoPrimat = $clalunoprimat->sql_query("", "ed76_i_codigo", "", "ed76_i_aluno = {$ed47_i_codigo}");
-  $result_pri      = $clalunoprimat->sql_record( $sSqlAlunoPrimat );
+    $db_botao = true;
+} elseif (isset($chavepesquisa)) {
+    $db_opcao  = 2;
+    $db_opcao1 = 3;
+    $result    = $claluno->sql_record($claluno->sql_query($chavepesquisa));
 
-  $clalunoprimat->ed76_i_aluno = $ed47_i_codigo;
+    db_fieldsmemory($result, 0);
+    $result_bairro = $clalunobairro->sql_record($clalunobairro->sql_query("", "*", "", "ed225_i_aluno = {$chavepesquisa}"));
 
-  if ( $clalunoprimat->numrows > 0 ) {
-
-    if ( $ed76_i_escola != "" ) {
-
-      db_fieldsmemory($result_pri,0);
-      $clalunoprimat->alterar($ed76_i_codigo);
-    } else {
-      $clalunoprimat->excluir($ed76_i_codigo);
+    if ($clalunobairro->numrows > 0) {
+        db_fieldsmemory($result_bairro, 0);
+        $j13_codi = $ed225_i_bairro;
     }
-  } else {
 
-    if( $ed76_i_escola != "" ) {
-      $clalunoprimat->incluir(null);
-    }
-  }
-
-  db_fim_transacao($_rollback);
- }
-
- $db_botao = true;
-} else if( isset($chavepesquisa) ) {
-
-  $db_opcao  = 2;
-  $db_opcao1 = 3;
-  $result    = $claluno->sql_record($claluno->sql_query($chavepesquisa));
-
-  db_fieldsmemory($result,0);
-  $result_bairro = $clalunobairro->sql_record($clalunobairro->sql_query("", "*", "", "ed225_i_aluno = {$chavepesquisa}"));
-
-  if ( $clalunobairro->numrows > 0 ) {
-
-    db_fieldsmemory($result_bairro,0);
-    $j13_codi = $ed225_i_bairro;
-  }
-
-  $campos = "ed76_i_codigo,
+    $campos = "ed76_i_codigo,
              ed76_i_escola,
              ed76_d_data,
              ed76_c_tipo,
@@ -501,20 +485,20 @@ if ( isset( $alterar ) ) {
                   else ed82_c_nome
               end as nomeescola
            ";
-  $result1 = $clalunoprimat->sql_record($clalunoprimat->sql_query("", $campos, "", "ed76_i_aluno = {$chavepesquisa}"));
+    $result1 = $clalunoprimat->sql_record($clalunoprimat->sql_query("", $campos, "", "ed76_i_aluno = {$chavepesquisa}"));
 
-  if($clalunoprimat->numrows>0){
-    db_fieldsmemory($result1,0);
-  }
-  $ed47_v_nomesocial = is_null($ed47_v_nomesocial) || $ed47_v_nomesocial == "null" ? "" :  $ed47_v_nomesocial;
-  $db_botao = true;
-  $ed47_d_ultalt_dia = $ed47_d_ultalt_dia == "" ? date("d") : $ed47_d_ultalt_dia;
-  $ed47_d_ultalt_mes = $ed47_d_ultalt_mes == "" ? date("m") : $ed47_d_ultalt_mes;
-  $ed47_d_ultalt_ano = $ed47_d_ultalt_ano == "" ? date("Y") : $ed47_d_ultalt_ano;
-  $ed47_d_cadast_dia = $ed47_d_cadast_dia == "" ? date("d") : $ed47_d_cadast_dia;
-  $ed47_d_cadast_mes = $ed47_d_cadast_mes == "" ? date("m") : $ed47_d_cadast_mes;
-  $ed47_d_cadast_ano = $ed47_d_cadast_ano == "" ? date("Y") : $ed47_d_cadast_ano;
-?>
+    if ($clalunoprimat->numrows>0) {
+        db_fieldsmemory($result1, 0);
+    }
+    $ed47_v_nomesocial = is_null($ed47_v_nomesocial) || $ed47_v_nomesocial == "null" ? "" :  $ed47_v_nomesocial;
+    $db_botao = true;
+    $ed47_d_ultalt_dia = $ed47_d_ultalt_dia == "" ? date("d") : $ed47_d_ultalt_dia;
+    $ed47_d_ultalt_mes = $ed47_d_ultalt_mes == "" ? date("m") : $ed47_d_ultalt_mes;
+    $ed47_d_ultalt_ano = $ed47_d_ultalt_ano == "" ? date("Y") : $ed47_d_ultalt_ano;
+    $ed47_d_cadast_dia = $ed47_d_cadast_dia == "" ? date("d") : $ed47_d_cadast_dia;
+    $ed47_d_cadast_mes = $ed47_d_cadast_mes == "" ? date("m") : $ed47_d_cadast_mes;
+    $ed47_d_cadast_ano = $ed47_d_cadast_ano == "" ? date("Y") : $ed47_d_cadast_ano;
+    ?>
  <script>
   parent.document.formaba.a2.disabled    = false;
   parent.document.formaba.a2.style.color = "black";
@@ -543,23 +527,22 @@ if ( isset( $alterar ) ) {
   }
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = sUrlCurso;
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'edu1_docaluno001.php?ed49_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?=addslashes($ed47_v_nome) ?>';
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'edu1_alunonecessidade001.php?ed214_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome )?>';
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'edu1_alunonecessidade001.php?ed214_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome)?>';
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_alunomatcenso001.php?ed280_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome) ?>';
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href = 'edu1_alunotransporteutilizado.php?iAluno=<?=$ed47_i_codigo?>'
                                                                       +'&ed47_v_nome=<?= addslashes($ed47_v_nome) ?>'
                                                                       +'&iUtilizaTransporte=<?=$ed47_i_transpublico?>';
  </script>
- <?
+    <?php
 }
-if ( isset( $excluirfoto ) ) {
-
- $sql = "UPDATE aluno
+if (isset($excluirfoto)) {
+    $sql = "UPDATE aluno
             SET ed47_c_foto = '',
                 ed47_o_oid  = 0
           WHERE ed47_i_codigo = {$chavepesquisa}
         ";
- $result = db_query($sql);
- db_redireciona("edu1_alunodados002.php?chavepesquisa=$chavepesquisa");
+    $result = db_query($sql);
+    db_redireciona("edu1_alunodados002.php?chavepesquisa=$chavepesquisa");
 }
 ?>
 <html>
@@ -585,7 +568,7 @@ if ( isset( $excluirfoto ) ) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
                 <fieldset style="width:95%"><legend><b>Alteração de Aluno</b></legend>
-                    <?include(modification("forms/db_frmalunodados.php"));?>
+                    <?php include(modification("forms/db_frmalunodados.php"));?>
                 </fieldset>
    </center>
   </td>
@@ -593,35 +576,31 @@ if ( isset( $excluirfoto ) ) {
 </table>
 </body>
 </html>
-<?
-if ( isset($alterar) ) {
+<?php
+if (isset($alterar)) {
+    if ($claluno->erro_status == "0") {
+        $claluno->erro(true, false);
+        $db_botao = true;
+        echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
 
-  if ( $claluno->erro_status == "0" ) {
-
-    $claluno->erro(true,false);
-    $db_botao = true;
-    echo "<script> document.form1.db_opcao.disabled=false;</script>  ";
-
-    if ( $claluno->erro_campo != "" ) {
-
-      echo "<script> document.form1.".$claluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
-      echo "<script> document.form1.".$claluno->erro_campo.".focus();</script>";
-    };
-  } else {
-
-    $claluno->erro(true,false);
-    db_redireciona("edu1_alunodados002.php?chavepesquisa={$ed47_i_codigo}&lMensagemApresentada=true");
-  }
+        if ($claluno->erro_campo != "") {
+            echo "<script> document.form1.".$claluno->erro_campo.".style.backgroundColor='#99A9AE';</script>";
+            echo "<script> document.form1.".$claluno->erro_campo.".focus();</script>";
+        };
+    } else {
+        $claluno->erro(true, false);
+        db_redireciona("edu1_alunodados002.php?chavepesquisa={$ed47_i_codigo}&lMensagemApresentada=true");
+    }
 }
 
-if ( isset( $chavepesquisa ) ) {
-?>
+if (isset($chavepesquisa)) {
+    ?>
  <script>
    js_buscaCidadaoFiliacao();
  </script>
- <?php
+    <?php
 }
-if ( $db_opcao == 22 ) {
-  echo "<script>document.form1.pesquisar.click();</script>";
+if ($db_opcao == 22) {
+    echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>

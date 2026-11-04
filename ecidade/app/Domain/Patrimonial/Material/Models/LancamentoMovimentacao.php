@@ -20,6 +20,15 @@ class LancamentoMovimentacao extends Model
     protected $table = 'material.matestoqueini';
     protected $primaryKey = 'm80_codigo';
     public $timestamps = false;
+    protected $fillable = [
+        'm80_codigo',
+        'm80_login',
+        'm80_data',
+        'm80_hora',
+        'm80_obs',
+        'm80_codtipo',
+        'm80_coddepto'
+    ];
 
     public function movimentacoes()
     {

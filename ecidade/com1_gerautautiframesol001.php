@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -329,11 +329,11 @@ if (isset ($incluir)) {
 		$vir = "";
 		if ($sqlerro == false && isset ($pc22_codorc) && trim($pc22_codorc) != "") {
 
-			$arr_recebe = split(",", $valores);
+			$arr_recebe =explode(",", $valores);
 
 			for ($i = 0; $i < sizeof($arr_recebe); $i ++) {
 
-				$splitARR        = split("_", $arr_recebe[$i]);
+				$splitARR        =explode("_", $arr_recebe[$i]);
 				$contadorARR     = $splitARR[1];
 				$pc11_codigo     = $splitARR[2];
 				$pc13_coddot     = $splitARR[3];
@@ -529,7 +529,7 @@ if (isset ($incluir)) {
 				}
 			}
 
-			$arr_comitens = split(",", $aSeqDotacoes[$i +1]);
+			$arr_comitens =explode(",", $aSeqDotacoes[$i +1]);
 			if ($sqlerro == true) {
 				$arr_comitens = Array ();
 			}
@@ -757,7 +757,7 @@ if ($issetorc == false) {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php
 
 
 db_input('valores', 8, 0, true, 'hidden', 3);
@@ -776,7 +776,7 @@ if ($ninclui == true) {
 	db_input('e54_contat',20,$Ie54_contat,true,'hidden',3,"");
 	db_input('e54_telef',20,$Ie54_telef,true,'hidden',3,"");
 	db_input('pc10_numero', 8, $Ipc10_numero, true, 'hidden', 3);
-    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop($pc10_resumo)))?></textarea><?
+    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop($pc10_resumo)))?></textarea><?php
 	db_input('pc20_codorc', 8, $Ipc20_codorc, true, 'hidden', 3);
 	db_input('e54_codcom', 8, $Ie54_codcom, true, 'hidden', 3);
 	db_input('e54_codtipo', 8, $Ie54_codtipo, true, 'hidden', 3);
@@ -999,7 +999,7 @@ function js_relatorio(){
 </script>
 </body>
 </html>
-<?
+<?php
 
 
 if (isset ($incluir)) {

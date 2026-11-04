@@ -40,7 +40,7 @@ $chave_z01_nome = isset($chave_z01_nome) ? stripslashes($chave_z01_nome) : '';
 $db_opcao       = 1;
 
 if (!isset($sQuery)) {
-    $sQuery = null;
+  $sQuery = null;
 }
 
 if (isset($filtro_lotacao)) {
@@ -172,7 +172,7 @@ $styleDivSelecao = !empty($somenteAtivos) ? 'display: none;' : '';
           document.form2.submit();
         }
       </script>
-        <?
+        <?php
     }
     ?>
 </head>
@@ -402,10 +402,10 @@ if (!isset($pesquisa_chave)) {
     );
 
     if (count($_POST) > 0) {
-        $sWhere = implode(' and ', $aWhere);
-        $sql = $clrhpessoal->sql_query_func_rhpessoal(
-          "", $campos, "z01_nome", $sWhere, $sQuery);
-
+      $sWhere = implode(' and ', $aWhere);
+      $sql = $clrhpessoal->sql_query_func_rhpessoal(
+        "", $campos, "z01_nome", $sWhere, $sQuery);
+        
         if (isset($sql) && !empty($sql)) {
             echo "<div class='container'>";
             echo "  <fieldset>";
@@ -463,7 +463,6 @@ if (!isset($pesquisa_chave)) {
 if (!isset($pesquisa_chave)) {
     ?>
   <script>
-
     function js_valida(event) {
       document.getElementById('chave_z01_nome').onkeyup = event;
       document.getElementById('chave_rh01_regist').onkeyup = event;

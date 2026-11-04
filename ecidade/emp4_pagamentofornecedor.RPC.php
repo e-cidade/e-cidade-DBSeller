@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -53,27 +53,28 @@ switch ($oParam->exec) {
             $oProcessamentoTXT = new ProcessamentoPagamentoFornecedor($oParam->nomearquivo);
             $iCodigoRetorno = $oProcessamentoTXT->possuiRetornoProcessado();
 
-                $oArquivosGerados = $oProcessamentoTXT->processar();
+            $oArquivosGerados = $oProcessamentoTXT->processar();
 
-                $aMovimentosDescartados = $oProcessamentoTXT->getMovimentosDescartados();
-                $oRetorno->aArquivosGerados = $oArquivosGerados->aArquivos;
-                $oRetorno->iTotalInconsistencias = $oArquivosGerados->nInconsistencias;
-                $oRetorno->aMovimentosNaoProcessados = $oArquivosGerados->aMovimentosNaoProcessados;
-                $oRetorno->aMovimentosCancelados = $oArquivosGerados->aMovimentosCancelados;
+            $aMovimentosDescartados = $oProcessamentoTXT->getMovimentosDescartados();
+            $oRetorno->aArquivosGerados = $oArquivosGerados->aArquivos;
+            $oRetorno->iTotalInconsistencias = $oArquivosGerados->nInconsistencias;
+            $oRetorno->aMovimentosNaoProcessados = $oArquivosGerados->aMovimentosNaoProcessados;
+            $oRetorno->aMovimentosCancelados = $oArquivosGerados->aMovimentosCancelados;
 
-                $aRetornosDescartados = array();
-                if (count($aMovimentosDescartados) > 0) {
-                    foreach ($aMovimentosDescartados as $oDadoMovimento) {
-                        $aRetornosDescartados[] = sprintf(
-                            "%s/%s",
-                            $oDadoMovimento->iCodigoRetorno,
-                            $oDadoMovimento->codigo_movimento
-                        );
-                    }
+            $aRetornosDescartados = array();
+            if (count($aMovimentosDescartados) > 0) {
+                foreach ($aMovimentosDescartados as $oDadoMovimento) {
+                    $aRetornosDescartados[] = sprintf(
+                        "%s/%s",
+                        $oDadoMovimento->iCodigoRetorno,
+                        $oDadoMovimento->codigo_movimento
+                    );
                 }
-                $oRetorno->aMovimentosDescartados = $aRetornosDescartados;
-                $oRetorno->lArquivoProcessado = false;
+            }
+            $oRetorno->aMovimentosDescartados = $aRetornosDescartados;
+            $oRetorno->lArquivoProcessado = false;
 
+            
             db_fim_transacao(false);
         } catch (Exception $eErro) {
             $oRetorno->status = 2;

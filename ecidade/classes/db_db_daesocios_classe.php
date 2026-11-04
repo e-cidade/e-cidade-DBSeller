@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ class cl_db_daesocios {
                  w06_percent = int4 = Percentual de sociedade 
                  ";
    //funcao construtor da classe 
-   function cl_db_daesocios() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daesocios"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_db_daesocios {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->w06_codigo = ($this->w06_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["w06_codigo"]:$this->w06_codigo);
        $this->w06_socio = ($this->w06_socio == ""?@$GLOBALS["HTTP_POST_VARS"]["w06_socio"]:$this->w06_socio);
@@ -105,7 +105,7 @@ class cl_db_daesocios {
      }
    }
    // funcao para inclusao
-   function incluir ($w06_codigo,$w06_socio){ 
+   public function incluir ($w06_codigo,$w06_socio){ 
       $this->atualizacampos();
      if($this->w06_cgccpf == null ){ 
        $this->erro_sql = " Campo CGC-CNPJ nao Informado.";
@@ -290,7 +290,7 @@ class cl_db_daesocios {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($w06_codigo=null,$w06_socio=null) { 
+   public function alterar ($w06_codigo=null,$w06_socio=null) { 
       $this->atualizacampos();
      $sql = " update db_daesocios set ";
      $virgula = "";
@@ -524,7 +524,7 @@ class cl_db_daesocios {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($w06_codigo=null,$w06_socio=null,$dbwhere=null) { 
+   public function excluir ($w06_codigo=null,$w06_socio=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($w06_codigo,$w06_socio));
      }else{ 
@@ -603,7 +603,7 @@ class cl_db_daesocios {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

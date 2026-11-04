@@ -25,6 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
 use ECidade\Patrimonial\Material\Services\EntradaManualService;
 
 require_once(modification("libs/db_stdlib.php"));
@@ -66,12 +67,11 @@ db_app::import("Dotacao");
 
 db_app::import("contabilidade.contacorrente.*");
 
-
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
-$oGet  = db_utils::postMemory($_GET);
+$oGet = db_utils::postMemory($_GET);
 
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
@@ -79,6 +79,7 @@ $clmatestoqueini = new cl_matestoqueini;
 $clmatestoqueinil = new cl_matestoqueinil;
 $clmatestoqueinill = new cl_matestoqueinill;
 $clmatestoqueinimei = new cl_matestoqueinimei;
+$estoquemovimentacaoBnafar = new cl_estoquemovimentacaobnafar;
 $db_botao = false;
 $db_opcao = 33;
 
@@ -98,11 +99,10 @@ if (isset($excluir)) {
     $erro_msg = "Cancelamento da Entrada Manual efetuado com sucesso!";
     db_fim_transacao($sqlerro);
 } elseif (isset($chavepesquisa)) {
-   $db_opcao = 3;
-//   die($clmatestoqueini->sql_query_mater(null,"matestoqueini.m80_codigo,m70_codigo,m71_codlanc,m71_quantatend,m70_quant,m60_codmater,m60_descr,coddepto,descrdepto,m71_quant,m71_valor,(m71_valor/m71_quant) as m71_valorunit,matestoqueini.m80_obs","","matestoqueini.m80_codigo=$chavepesquisa and m71_quantatend=0"));
-   $result = $clmatestoqueini->sql_record($clmatestoqueini->sql_query_mater(
-                                          null,
-                                          "matestoqueini.m80_codigo,
+    $db_opcao = 3;
+    $result = $clmatestoqueini->sql_record($clmatestoqueini->sql_query_mater(
+        null,
+        "matestoqueini.m80_codigo,
                                           m70_codigo,
                                           m71_codlanc,
                                           m71_quantatend,
@@ -122,42 +122,54 @@ if (isset($excluir)) {
                                           m79_data,
                                           (m71_valor/m71_quant) as m71_valorunit,
                                           matestoqueini.m80_obs",
-                                          "",
-                                          "matestoqueini.m80_codigo={$chavepesquisa} and m71_quantatend=0"));
-   if($clmatestoqueini->numrows>0){
-     db_fieldsmemory($result,0);
-     if ($m77_dtvalidade != "") {
-        list($m77_dtvalidade_ano,$m77_dtvalidade_mes,$m77_dtvalidade_dia) = explode("-",$m77_dtvalidade);
-      }
-     $db_botao = true;
-   }else{
-     $msgalert = "Usuário:\\n\\nLançamento não encontrado ou já atendido.\\nExclusão cancelada.\\n\\nAdministrador:";
-     $db_opcao = 33;
-   }
+        "",
+        "matestoqueini.m80_codigo={$chavepesquisa} and m71_quantatend=0"
+    ));
+    if ($clmatestoqueini->numrows > 0) {
+        db_fieldsmemory($result, 0);
+        if ($m77_dtvalidade != "") {
+            list($m77_dtvalidade_ano, $m77_dtvalidade_mes, $m77_dtvalidade_dia) = explode("-", $m77_dtvalidade);
+        }
+
+        if (FarmaciaHelper::utilizaIntegracaoBnafar()) {
+            $campos = "fa69_tipomovimentacao as cod_tipo, fa69_cgm as cgm, ";
+            $campos .= " z01_nome as descr, fa69_unidade as unidade, descrdepto as unidadedescr";
+            $where = "fa69_matestoqueini = {$chavepesquisa}";
+            $sql = $estoquemovimentacaoBnafar->sql_query_estoquemovimentacoesbnafar(null, $campos, null, $where);
+            $rs = $estoquemovimentacaoBnafar->sql_record($sql);
+            if ($rs) {
+                db_fieldsmemory($rs, 0);
+            }
+        }
+        $db_botao = true;
+    } else {
+        $msgalert = "Usuário:\\n\\nLançamento não encontrado ou já atendido.\\nExclusão cancelada.\\n\\nAdministrador:";
+        $db_opcao = 33;
+    }
 }
 ?>
 <html>
 <head>
-<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Expires" CONTENT="0">
-<script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css">
+    <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Expires" CONTENT="0">
+    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
+    <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr>
-    <td width="360" height="18">&nbsp;</td>
-    <td width="263">&nbsp;</td>
-    <td width="25">&nbsp;</td>
-    <td width="140">&nbsp;</td>
-  </tr>
+    <tr>
+        <td width="360" height="18">&nbsp;</td>
+        <td width="263">&nbsp;</td>
+        <td width="25">&nbsp;</td>
+        <td width="140">&nbsp;</td>
+    </tr>
 </table>
-    <center>
-	<?
-	include(modification("forms/db_frmmatestoqueini.php"));
-	?>
-    </center>
+<center>
+    <?php
+    include(modification("forms/db_frmmatestoqueini.php"));
+    ?>
+</center>
 <?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>

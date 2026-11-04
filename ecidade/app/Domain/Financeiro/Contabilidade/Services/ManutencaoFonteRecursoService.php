@@ -3,8 +3,11 @@
 
 namespace App\Domain\Financeiro\Contabilidade\Services;
 
+use App\Domain\Financeiro\Orcamento\Models\Complemento;
+use App\Domain\Financeiro\Orcamento\Models\FonteRecurso;
 use App\Domain\Financeiro\Orcamento\Models\Recurso;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -25,13 +28,20 @@ abstract class ManutencaoFonteRecursoService
     protected $recursos = [];
 
     /**
-     * @param $recurso
-     * @return Recurso[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @param $fonteGestao
+     * @param $subrecurso
+     * @param $exercicio
+     * @return FonteRecurso|Collection
      */
-    protected function getRecurso($recurso)
+    protected function getRecurso($fonteGestao, $subrecurso, $exercicio)
     {
-        $this->recursos = Recurso::with('complemento')->where('o15_recurso', $recurso)
-            ->orderBy('o15_complemento')->get();
+        $this->recursos = FonteRecurso::fonteRecurso($fonteGestao, $exercicio, $subrecurso)
+            ->orderBy('o15_complemento')
+            ->get()
+            ->map(function (FonteRecurso $fonte) {
+                $fonte->complemento = Complemento::find($fonte->o15_complemento);
+                return $fonte;
+            });
         return $this->recursos;
     }
 
@@ -45,29 +55,35 @@ abstract class ManutencaoFonteRecursoService
             return $this->recursos;
         }
 
-        $recurso = $this->request->get('recurso');
+        $fonteGestao = $this->request->get('gestao');
+        $recurso = $this->request->get('subrecurso');
+        $ano = $this->request->get('DB_anousu');
         if (!empty($recurso)) {
-            return $this->getRecurso($recurso);
+            return $this->getRecurso($fonteGestao, $recurso, $ano);
         }
 
-        $ano = $this->request->get('DB_anousu');
         $idEmpenho = $this->request->get('idEmpenho');
         if (!empty($idEmpenho)) {
             $empenho = new \EmpenhoFinanceiro($idEmpenho);
 
             if ($empenho->isRP($ano)) {
                 $recurso = DB::table('empresto')
-                    ->select('o15_recurso')
+                    ->select(['gestao', 'o15_recurso'])
                     ->join('orctiporec', 'orctiporec.o15_codigo', '=', 'empresto.e91_recurso')
+                    ->join('fonterecurso', function ($join) use ($ano) {
+                        $join->on('orctiporec_id', '=', 'o15_codigo')
+                            ->where('exercicio', '=', $ano);
+                    })
                     ->where('e91_numemp', '=', $idEmpenho)
                     ->where('e91_anousu', '<=', $ano)
                     ->orderBy('e91_anousu', 'desc')
                     ->first();
 
-                return $this->getRecurso($recurso->o15_recurso);
+                return $this->getRecurso($recurso->gestao, $recurso->o15_recurso, $ano);
             }
-
-            return $this->getRecurso($empenho->getDotacao()->getDadosRecurso()->getRecurso());
+            $recurso = $empenho->getDotacao()->getDadosRecurso();
+            $fonte = $recurso->getFonteRecurso($ano);
+            return $this->getRecurso($fonte->gestao, $recurso->getFonteDeRecurso(), $ano);
         }
 
         $codigoReceita = $this->request->get('codigoReceita');
@@ -80,7 +96,11 @@ abstract class ManutencaoFonteRecursoService
                         ->on('orcreceita.o70_codrec', '=', 'conlancamrec.c74_codrec');
                 })
                 ->join('orctiporec', 'orctiporec.o15_codigo', '=', 'orcreceita.o70_codigo')
-                ->select('o15_recurso')
+                ->join('fonterecurso', function ($join) use ($ano) {
+                    $join->on('orctiporec_id', '=', 'o15_codigo')
+                        ->where('exercicio', '=', $ano);
+                })
+                ->select(['gestao', 'o15_recurso'])
                 ->where('o70_codrec', $codigoReceita)
                 ->where('o70_anousu', $ano)
                 ->first();
@@ -88,7 +108,7 @@ abstract class ManutencaoFonteRecursoService
             if (is_null($recurso)) {
                 throw new Exception("Não foi encontrado lançamentos para receita selecionada.");
             }
-            return $this->getRecurso($recurso->o15_recurso);
+            return $this->getRecurso($recurso->gestao, $recurso->o15_recurso, $ano);
         }
     }
 
@@ -104,6 +124,7 @@ abstract class ManutencaoFonteRecursoService
             return $recurso->getComplemento();
         });
     }
+
     /**
      * @param FormRequest $request
      */

@@ -1,62 +1,62 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhpesorigem
-class cl_rhpesorigem { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $rh21_regist = 0; 
-   var $rh21_regpri = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_rhpesorigem {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $rh21_regist = 0;
+   var $rh21_regpri = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 rh21_regist = int4 = Matrícula do Servidor 
-                 rh21_regpri = int4 = Origem 
+                 rh21_regist = int4 = Matrícula do Servidor
+                 rh21_regpri = int4 = Origem
                  ";
-   //funcao construtor da classe 
-   function cl_rhpesorigem() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("rhpesorigem"); 
+     $this->rotulo = new rotulo("rhpesorigem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -65,7 +65,7 @@ class cl_rhpesorigem {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->rh21_regist = ($this->rh21_regist == ""?@$GLOBALS["HTTP_POST_VARS"]["rh21_regist"]:$this->rh21_regist);
        $this->rh21_regpri = ($this->rh21_regpri == ""?@$GLOBALS["HTTP_POST_VARS"]["rh21_regpri"]:$this->rh21_regpri);
@@ -74,9 +74,9 @@ class cl_rhpesorigem {
      }
    }
    // funcao para inclusao
-   function incluir ($rh21_regist){ 
+   public function incluir ($rh21_regist){
       $this->atualizacampos();
-     if($this->rh21_regpri == null ){ 
+     if($this->rh21_regpri == null ){
        $this->erro_sql = " Campo Origem nao Informado.";
        $this->erro_campo = "rh21_regpri";
        $this->erro_banco = "";
@@ -85,8 +85,8 @@ class cl_rhpesorigem {
        $this->erro_status = "0";
        return false;
      }
-       $this->rh21_regist = $rh21_regist; 
-     if(($this->rh21_regist == null) || ($this->rh21_regist == "") ){ 
+       $this->rh21_regist = $rh21_regist;
+     if(($this->rh21_regist == null) || ($this->rh21_regist == "") ){
        $this->erro_sql = " Campo rh21_regist nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -95,15 +95,15 @@ class cl_rhpesorigem {
        return false;
      }
      $sql = "insert into rhpesorigem(
-                                       rh21_regist 
-                                      ,rh21_regpri 
+                                       rh21_regist
+                                      ,rh21_regpri
                        )
                 values (
-                                $this->rh21_regist 
-                               ,$this->rh21_regpri 
+                                $this->rh21_regist
+                               ,$this->rh21_regpri
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Origem da Matrícula ($this->rh21_regist) nao Incluído. Inclusao Abortada.";
@@ -136,16 +136,16 @@ class cl_rhpesorigem {
        $resac = db_query("insert into db_acount values($acount,1173,8971,'','".AddSlashes(pg_result($resaco,0,'rh21_regpri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($rh21_regist=null) { 
+   public function alterar ($rh21_regist=null) {
       $this->atualizacampos();
      $sql = " update rhpesorigem set ";
      $virgula = "";
-     if(trim($this->rh21_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh21_regist"])){ 
+     if(trim($this->rh21_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh21_regist"])){
        $sql  .= $virgula." rh21_regist = $this->rh21_regist ";
        $virgula = ",";
-       if(trim($this->rh21_regist) == null ){ 
+       if(trim($this->rh21_regist) == null ){
          $this->erro_sql = " Campo Matrícula do Servidor nao Informado.";
          $this->erro_campo = "rh21_regist";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_rhpesorigem {
          return false;
        }
      }
-     if(trim($this->rh21_regpri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh21_regpri"])){ 
+     if(trim($this->rh21_regpri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh21_regpri"])){
        $sql  .= $virgula." rh21_regpri = $this->rh21_regpri ";
        $virgula = ",";
-       if(trim($this->rh21_regpri) == null ){ 
+       if(trim($this->rh21_regpri) == null ){
          $this->erro_sql = " Campo Origem nao Informado.";
          $this->erro_campo = "rh21_regpri";
          $this->erro_banco = "";
@@ -186,7 +186,7 @@ class cl_rhpesorigem {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Origem da Matrícula nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->rh21_regist;
@@ -214,14 +214,14 @@ class cl_rhpesorigem {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($rh21_regist=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($rh21_regist=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($rh21_regist));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -248,7 +248,7 @@ class cl_rhpesorigem {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Origem da Matrícula nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$rh21_regist;
@@ -276,11 +276,11 @@ class cl_rhpesorigem {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -302,10 +302,10 @@ class cl_rhpesorigem {
       }
      return $result;
    }
-   function sql_query ( $rh21_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $rh21_regist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,15 +318,15 @@ class cl_rhpesorigem {
      $sql2 = "";
      if($dbwhere==""){
        if($rh21_regist!=null ){
-         $sql2 .= " where rhpesorigem.rh21_regist = $rh21_regist "; 
-       } 
+         $sql2 .= " where rhpesorigem.rh21_regist = $rh21_regist ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -335,10 +335,10 @@ class cl_rhpesorigem {
      }
      return $sql;
   }
-   function sql_query_file ( $rh21_regist=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $rh21_regist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,15 +351,15 @@ class cl_rhpesorigem {
      $sql2 = "";
      if($dbwhere==""){
        if($rh21_regist!=null ){
-         $sql2 .= " where rhpesorigem.rh21_regist = $rh21_regist "; 
-       } 
+         $sql2 .= " where rhpesorigem.rh21_regist = $rh21_regist ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,18 +368,18 @@ class cl_rhpesorigem {
      }
      return $sql;
   }
-  
+
   public function sql_queryServidorOrigem ($iMatricula) {
-  	
+
   	$sSql  = "select rhpessoalorigem.*                                                                               ";
 		$sSql .= "  from rhpesorigem                                                                                     ";
 		$sSql .= "       inner join rhpessoal                    on rhpessoal.rh01_regist       = rhpesorigem.rh21_regist";
 		$sSql .= "       inner join rhpessoal as rhpessoalorigem on rhpessoalorigem.rh01_regist = rhpesorigem.rh21_regpri";
 		$sSql .= " where rhpessoal.rh01_regist = {$iMatricula}                                                           ";
-  	
+
   	return $sSql;
-  	
+
   }
-  
+
 }
 ?>

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,12 +40,12 @@ $clrotulo->label("it28_avista");
       <table border="0">
         <tr>
     	  <td nowrap title="<?=@$Tit27_itbitipoformapag?>">
-            <?
+            <?php
        		  db_ancora(@$Lit27_itbitipoformapag,"js_pesquisait27_itbitipoformapag(true);",$db_opcao);
        	    ?> 
     	  </td>
     	  <td> 
-		    <?
+		    <?php
   		      db_input('it27_sequencial',10,$Iit27_sequencial,true,'hidden',$db_opcao,"");
 			  db_input('it27_itbitipoformapag',10,$Iit27_itbitipoformapag,true,'text',$db_opcao," onchange='js_pesquisait27_itbitipoformapag(false);'");
 			  db_input('it28_descricao',40,$Iit28_avista,true,'text',3,'');
@@ -57,7 +57,7 @@ $clrotulo->label("it28_avista");
             <?=@$Lit27_descricao?>
           </td>
           <td> 
-		    <?
+		    <?php
 			  db_input('it27_descricao',55,$Iit27_descricao,true,'text',$db_opcao,"");
 		    ?>
     	  </td>
@@ -67,7 +67,7 @@ $clrotulo->label("it28_avista");
        	    <?=@$Lit27_tipo?>
     	  </td>
     	  <td> 
-		    <?
+		    <?php
 		    
 			  $aTipo = array('1'=>'ITBI Urbano',
 			   		  		 '2'=>'ITBI Rural',
@@ -82,7 +82,7 @@ $clrotulo->label("it28_avista");
        	    <?=@$Lit27_aliquota?>
     	  </td>
     	  <td> 
- 		    <?
+ 		    <?php
 			  db_input('it27_aliquota',10,$Iit27_aliquota,true,'text',$db_opcao,"");
 		    ?>
     	  </td>
@@ -122,7 +122,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbiformapagamento.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

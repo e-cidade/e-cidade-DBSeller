@@ -89,6 +89,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     <script src="assets/jquery/jquery-3.5.1.min.js"></script>
     <script src="assets/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="assets/bootstrap-table/locale/bootstrap-table-pt-BR.min.js"></script>
+    <script src="scripts/classes/http/http.js"></script>
     <script src="scripts/session.js"></script>
 </body>
 

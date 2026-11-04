@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ include(modification("classes/db_numpref_classe.php"));
 $clnumpref = new cl_numpref;
 $resnumpref = $clnumpref->sql_record($clnumpref->sql_query_file(db_getsession("DB_anousu"),db_getsession("DB_instit"),"k03_certissvar"));
 if($resnumpref==false || $clnumpref->numrows==0){
-  db_msgbox("Tabela de parâmetro (numpref) não configurada! Verifique com administrador");	
+  throw new \ECidade\V3\Extension\Exceptions\ResponseException("Tabela de parâmetro (numpref) não configurada! Verifique com administrador");	
   db_redireciona("corpo.php");
   exit;
 }else{

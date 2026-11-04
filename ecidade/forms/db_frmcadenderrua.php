@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -86,22 +86,22 @@ if (isset($db74_sequencial)) {
        <?=@$Ldb74_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_sequencial',10,$Idb74_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb74_cadendermunicipio?>">
-       <?
+       <?php
        db_ancora(@$Ldb74_cadendermunicipio,"js_pesquisadb74_cadendermunicipio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_cadendermunicipio',10,$Idb74_cadendermunicipio,true,'text',$db_opcao," onchange='js_pesquisadb74_cadendermunicipio(false);'")
 ?>
-       <?
+       <?php
 db_input('db72_descricao',26,$Idb72_descricao,true,'text',3,'')
        ?>
     </td>
@@ -111,37 +111,37 @@ db_input('db72_descricao',26,$Idb72_descricao,true,'text',3,'')
        <?=@$Ldb74_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_descricao',40,$Idb74_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb74_bairroinicial?>">
-       <?
+       <?php
        db_ancora(@$Ldb74_bairroinicial,"js_pesquisadb74_cadenderbairroinicial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_bairroinicial',10,$Idb74_bairroinicial,true,'text',$db_opcao," onchange='js_pesquisadb74_cadenderbairroinicial(false);'")
 ?>
-       <?
+       <?php
 db_input('bi_descricao',26,$Idb72_descricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb74_bairrofinal?>">
-       <?
+       <?php
        db_ancora(@$Ldb74_bairrofinal,"js_pesquisadb74_cadenderbairrofinal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_bairrofinal',10,$Idb74_bairrofinal,true,'text',$db_opcao," onchange='js_pesquisadb74_cadenderbairrofinal(false);'")
 ?>
-       <?
+       <?php
 db_input('bf_descricao',26,$Idb72_descricao,true,'text',3,'')
        ?>
     </td>
@@ -151,7 +151,7 @@ db_input('bf_descricao',26,$Idb72_descricao,true,'text',3,'')
        <?=@$Ldb74_numinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_numinicial',10,$Idb74_numinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ db_input('db74_numinicial',10,$Idb74_numinicial,true,'text',$db_opcao,"")
        <?=@$Ldb74_numfinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_numfinal',10,$Idb74_numfinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ db_input('db74_numfinal',10,$Idb74_numfinal,true,'text',$db_opcao,"")
        <?=@$Ldb74_cep?>
     </td>
     <td> 
-<?
+<?php
 db_input('db74_cep',8,$Idb74_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -265,7 +265,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadenderrua.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

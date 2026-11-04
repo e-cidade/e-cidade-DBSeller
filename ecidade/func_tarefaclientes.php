@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltarefaclientes->rotulo->label("at70_tarefa");
               <?=$Lat70_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at70_sequencial",10,$Iat70_sequencial,true,"text",4,"","chave_at70_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltarefaclientes->rotulo->label("at70_tarefa");
               <?=$Lat70_tarefa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at70_tarefa",10,$Iat70_tarefa,true,"text",4,"","chave_at70_tarefa");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltarefaclientes->rotulo->label("at70_tarefa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefaclientes.php")==true){
@@ -118,12 +118,12 @@ $cltarefaclientes->rotulo->label("at70_tarefa");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

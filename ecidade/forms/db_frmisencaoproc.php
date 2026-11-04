@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("p58_codproc");
        <?=@$Lv17_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('v17_sequencial',10,$Iv17_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv17_protprocesso?>">
-       <?
+       <?php
        db_ancora(@$Lv17_protprocesso,"js_pesquisav17_protprocesso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v17_protprocesso',10,$Iv17_protprocesso,true,'text',$db_opcao," onchange='js_pesquisav17_protprocesso(false);'")
 ?>
-       <?
+       <?php
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv17_isencao?>">
-       <?
+       <?php
        db_ancora(@$Lv17_isencao,"js_pesquisav17_isencao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v17_isencao',10,$Iv17_isencao,true,'text',$db_opcao," onchange='js_pesquisav17_isencao(false);'")
 ?>
-       <?
+       <?php
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencaoproc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

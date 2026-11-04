@@ -54,7 +54,7 @@ class EventoLicitacao {
   const SIGLA_PUBLICACAO_MURAL_ENTIDADE         = 'M';
   const SIGLA_PUBLICACAO_DIARIO_MUNICIPIO       = 'O';
   const SIGLA_PUBLICACAO_DIARIO_MUNICIPIO_RS    = 'R';
-	const SIGLA_PUBLICACAO_DIARIO_UNIAO           = 'U';
+  const SIGLA_PUBLICACAO_DIARIO_UNIAO           = 'U';
   const SIGLA_PUBLICACAO_NAO_PUBLICADO          = 'N';
   const SIGLA_PUBLICACAO_SITE_OFICIAL           = 'S';
   const SIGLA_PUBLICACAO_CONTRATACOES_PUBLICAS  = 'P';
@@ -65,8 +65,11 @@ class EventoLicitacao {
   const TIPO_EVENTO_ENCERRAMENTO_FALTA_LICITANTES_HABILITADOS  = 5;
   const TIPO_EVENTO_ENCERRAMENTO_FALTA_INTERESSADOS            = 6;
   const TIPO_EVENTO_ENCERRAMENTO                               = 7;
+  const TIPO_EVENTO_PUBLICACAO                                 = 10;
+  const TIPO_EVENTO_PUBLICACAO_EDITAL                          = 11;
   const TIPO_EVENTO_REVOGACAO_OFICIO                           = 15;
 
+  const TIPO_PUBLICACAO_PUBLICACAO_CONTRATACOES_PUBLICAS       = 10;
   /**
    *
    * @var integer
@@ -534,7 +537,7 @@ class EventoLicitacao {
    * @return bool
    * @throws DBException|ParameterException
    */
-  public static function possuiFaseEvento(licitacao $oLicitacao, $iFase, $iEvento) {
+  public static function possuiFaseEvento(licitacao $oLicitacao, $iFase, $iEvento = null) {
 
     $iCodigoLicitacao = $oLicitacao->getCodigo();
     if (empty($iCodigoLicitacao)) {
@@ -545,15 +548,14 @@ class EventoLicitacao {
       throw new ParameterException("Parâmetro Fase é de preenchimento obrigatório.");
     }
 
-    if (empty($iEvento)) {
-      throw new ParameterException("Parâmetro Evento é de preenchimento obrigatório.");
-    }
-
     $aWhere = array(
       "l46_liclicita = {$iCodigoLicitacao}",
-      "l46_fase = {$iFase}",
-      "l46_liclicitatipoevento = {$iEvento}"
+      "l46_fase = {$iFase}"
     );
+
+    if (!empty($iEvento)) {
+        $aWhere[] = "l46_liclicitatipoevento = {$iEvento}";
+    }
 
     $oDaoEvento    = new cl_liclicitaevento();
     $oSqlEvento    = $oDaoEvento->sql_query_file(null, "1", null, implode(' and ', $aWhere));

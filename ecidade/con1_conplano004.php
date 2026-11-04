@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -1045,7 +1045,7 @@ function js_validaProcessamento() {
 <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 <form name="form1" method="post" action="">
 <center>
-<?
+<?php
 
 if ($c60_codsis == 7) {
 
@@ -1061,43 +1061,43 @@ if (isset ($c60_codcon)) {
     <tr>
     <td><table border=0 align=center>
          <tr>
-	   <td><? db_ancora($Lc60_codcon,'','3'); ?></td>
-	   <td><? db_input('c60_codcon',10,$Ic60_codcon,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lc60_codcon,'','3'); ?></td>
+	   <td><?php db_input('c60_codcon',10,$Ic60_codcon,true,'text',3,""); ?></td>
 	 </tr>
          <tr>
-	   <td><? db_ancora($Lc61_reduz,'','3'); ?></td>
-	   <td><? db_input('c61_reduz',10,$Ic61_reduz,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lc61_reduz,'','3'); ?></td>
+	   <td><?php db_input('c61_reduz',10,$Ic61_reduz,true,'text',3,""); ?></td>
 	 </tr>
          <tr>
-	   <td><? db_ancora($Lc61_instit,"js_pesquisa_instit(true);",(isset($opcao)&&$opcao=="alterar")?3:$db_opcao); ?></td>
-	   <td><? db_input('c61_instit',10,$Ic61_instit,true,'text',(isset($opcao)&&$opcao=="alterar")?3:$db_opcao,"onchange='js_pesquisa_instit(false);'"); ?>
-	       <? db_input('nomeinst',50,$Inomeinst,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lc61_instit,"js_pesquisa_instit(true);",(isset($opcao)&&$opcao=="alterar")?3:$db_opcao); ?></td>
+	   <td><?php db_input('c61_instit',10,$Ic61_instit,true,'text',(isset($opcao)&&$opcao=="alterar")?3:$db_opcao,"onchange='js_pesquisa_instit(false);'"); ?>
+	       <?php db_input('nomeinst',50,$Inomeinst,true,'text',3,""); ?></td>
 	 </tr>
          <tr>
-	   <td><? db_ancora($Lc61_codigo,"js_pesquisac61_codigo(true);",1); ?></td>
-	   <td><? db_input('c61_codigo',10,$Ic61_codigo,true,'text',$db_opcao,"onchange='js_pesquisac61_codigo(false);'"); ?>
-	       <? db_input('o15_descr',50,$Io15_descr,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lc61_codigo,"js_pesquisac61_codigo(true);",1); ?></td>
+	   <td><?php db_input('c61_codigo',10,$Ic61_codigo,true,'text',$db_opcao,"onchange='js_pesquisac61_codigo(false);'"); ?>
+	       <?php db_input('o15_descr',50,$Io15_descr,true,'text',3,""); ?></td>
 	 </tr>
    <tr>
      <td>
-        <? db_ancora($Lz01_nome,"js_pesquisaz01_numcgm(true);",1); ?>
+        <?php db_ancora($Lz01_nome,"js_pesquisaz01_numcgm(true);",1); ?>
      </td>
      <td>
-	   <?
+	   <?php
         db_input('c22_numcgm',10,$Ic22_numcgm,true,'text',$db_opcao,"onchange='js_pesquisaz01_numcgm(false);'");
 	      db_input('z01_nome',50,$Iz01_nome,true,'text',3,"");
      ?>
      </td>
    </tr>
-<?
+<?php
    if (isset($c60_estrut) && @substr($c60_estrut,0,1) == "3"){
 ?>
          <tr>
-	   <td><? db_ancora($Lc61_contrapartida,"js_pesquisac61_contrapartida(true);",1); ?></td>
-	   <td><? db_input('c61_contrapartida',10,$Ic61_contrapartida,true,'text',$db_opcao,"onchange='js_pesquisac61_contrapartida(false);'"); ?>
-	       <? db_input('c60_descr',45,$Ic60_descr,true,'text',3,""); ?></td>
+	   <td><?php db_ancora($Lc61_contrapartida,"js_pesquisac61_contrapartida(true);",1); ?></td>
+	   <td><?php db_input('c61_contrapartida',10,$Ic61_contrapartida,true,'text',$db_opcao,"onchange='js_pesquisac61_contrapartida(false);'"); ?>
+	       <?php db_input('c60_descr',45,$Ic60_descr,true,'text',3,""); ?></td>
 	 </tr>
-<?
+<?php
   }
    $sDisplayCamposTransacao = 'none';
   /**
@@ -1120,16 +1120,16 @@ if (isset ($c60_codcon)) {
   ?>
   <tr style='display: <?=$sDisplayCamposTransacao?>'>
      <td><b>Ano:</b></td>
-     <td><? db_input('anotransacao',10,$Ic60_anousu,true,'text',1,""); ?></td>
+     <td><?php db_input('anotransacao',10,$Ic60_anousu,true,'text',1,""); ?></td>
   </tr>
   <tr style='display: <?=$sDisplayCamposTransacao?>'>
      <td nowrap title="<?=@$Tc47_debito?>">
-         <?
+         <?php
          db_ancora("<b>Contrapartida na Liquidação de RP:</b>","js_pesquisac47_debito(true);",$db_opcao);
          ?>
       </td>
       <td>
-         <?
+         <?php
           db_input('contrapartidaliq',10,$Ic47_debito,true,'text',$db_opcao," onchange='js_pesquisac47_debito(false);'");
           db_input('c60_descr_liq',50,$Ic61_reduz,true,'text',3);
          ?>
@@ -1137,12 +1137,12 @@ if (isset ($c60_codcon)) {
     </tr>
     <tr style='display: <?=$sDisplayCamposTransacao?>'>
       <td nowrap title="<?=@$Tc47_credito?>">
-         <?
+         <?php
          db_ancora("<b>Contrapartida na Anulação de RP:</b>","js_pesquisac47_credito(true);",$db_opcao);
          ?>
       </td>
       <td>
-        <?
+        <?php
         db_input('contrapartidaanu',10,$Ic47_credito,true,'text',$db_opcao," onchange='js_pesquisac47_credito(false);'");
         db_input('c60_descr_anu',50,$Ic61_reduz,true,'text',3,'');
         ?>
@@ -1153,7 +1153,7 @@ if (isset ($c60_codcon)) {
       <?=@$Lc47_tiporesto?>
      </td>
      <td>
-      <?
+      <?php
         $result=$clemprestotipo->sql_record($clemprestotipo->sql_query_file(null,"e90_codigo,e90_descr"));
         db_selectrecord("c47_tiporesto",$result,true,$db_opcao,"","","","0");
       ?>
@@ -1161,7 +1161,7 @@ if (isset ($c60_codcon)) {
       </td>
   </tr>
    <tr>
-   <?
+   <?php
    $where_db_config = " case when ( select count(*) from db_usuarios where id_usuario = " . db_getsession("DB_id_usuario") . " and administrador = 1 ) = 1 then true else codigo in ( select id_instit from db_userinst where id_usuario = " . db_getsession("DB_id_usuario") . " ) end ";
    //$where_db_config .= " and codigo = $c61_instit ";
    $rs_db_config = $cldbconfig->sql_record($cldbconfig->sql_query(null,"*",null,$where_db_config));
@@ -1176,11 +1176,11 @@ if (isset ($c60_codcon)) {
 	     type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
 	      <?=($db_botao==false?"disabled":"") ?>  onclick="return js_validaProcessamento()">
 
-<?
+<?php
    if ($db_opcao != 1){
 ?>
       <input name="novo" id="novo" value="Novo" type="submit">
-<?
+<?php
    }
 ?>
 	   </td>
@@ -1190,7 +1190,7 @@ if (isset ($c60_codcon)) {
     </tr>
     </table>
 
-    <?
+    <?php
 
 	$db_opcao = 1;
 	$clconplanoreduz =  db_utils::getDao('conplanoreduz');
@@ -1209,7 +1209,7 @@ if (isset ($c60_codcon)) {
 }
 ?>
 </center>
-<?
+<?php
 
 ?>
 </form>

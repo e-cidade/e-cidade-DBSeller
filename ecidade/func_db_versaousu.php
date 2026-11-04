@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_versaousu->rotulo->label("db32_codver");
               <?=$Ldb32_codusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db32_codusu",6,$Idb32_codusu,true,"text",4,"","chave_db32_codusu");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_versaousu->rotulo->label("db32_codver");
               <?=$Ldb32_codver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("db32_codver",6,$Idb32_codver,true,"text",4,"","chave_db32_codver");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_versaousu->rotulo->label("db32_codver");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versaousu.php")==true){
@@ -118,12 +118,12 @@ $cldb_versaousu->rotulo->label("db32_codver");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -155,7 +155,7 @@ if(isset($processar)){
           <strong>Processar o Mês:</strong>
         </td>
         <td>
-          <?
+          <?php
           $mes12 = array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio",
                          "6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
           for($i=1;$i<13;$i++){
@@ -173,7 +173,7 @@ if(isset($processar)){
         <td align="right"><strong>Atividade:</strong>
         </td>
         <td>
-          <?
+          <?php
           $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null,"distinct o58_projativ,o55_descr","o58_projativ"," o58_anousu = ".db_getsession("DB_anousu")." and o58_instit = ".db_getsession("DB_instit")));
           //db_criatabela($result);exit;
           db_selectrecord("ativid",$result,true,2,"","","","0","");
@@ -191,12 +191,12 @@ if(isset($processar)){
       <tr>
     </table>
   </form>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>
   </html>
-<?
+<?php
 if(isset($processar))
   if($erro==false)
     db_msgbox("Processo concluído.");

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -143,7 +143,7 @@ function js_relatorio(){
 </table>
 
     <center>
-    <?	
+    <?php 
 	$mensagem_semdebitos = false;
 	$com_debitos = true;
 	if(isset($rubric) && trim($rubric) != "") {
@@ -265,23 +265,23 @@ function js_relatorio(){
                       <tr> 
                         <td nowrap class="tabcols">
                           <strong style=\"color:blue\>
-                            <?
+                            <?php
                             db_ancora("$Lrh27_rubric","","3");
                             ?>
                           </strong>
                         </td>
                         <td class="tabcols" nowrap> 
-                          <?
+                          <?php
                            db_input('rh27_rubric', 8, $Irh27_rubric, true, 'text', 3);
                           ?>
-                          <?
+                          <?php
                           db_input('rh27_descr', 30, $Irh27_descr, true, 'text', 3);
                           ?>
                         </td>
                         <td nowrap>
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <b>
-                          <?
+                          <?php
                           echo ($rh27_pd);
                           ?>
                           </b>
@@ -294,7 +294,7 @@ function js_relatorio(){
                     <table border="1" cellspacing="0" cellpadding="0">
 		              <tr class="links">
 		                <td valign="top" style="font-size:11px">
-                          <?
+                          <?php
                           $xopcao = '';
                           $erro   = 0;
                           if(@$temsalario == true ){
@@ -409,7 +409,7 @@ function js_relatorio(){
 	          <table width="100%" height="90%" border="0" cellspacing="0" cellpadding="0">
                 <tr> 
                   <td align="center">
-                    <?
+                    <?php
                     $qry = "";
                     if(isset($opcao) && trim($opcao)!=""){
                       $qry = "?opcao=$opcao&mes=$mes&ano=$ano&rubric=$rubric";
@@ -438,22 +438,22 @@ function js_relatorio(){
                 Período:
               </strong>
               &nbsp;&nbsp;
-       	      <?
+       	      <?php
     	      db_input("ano",4,'',true,'text',4)
 	          ?>
 	          &nbsp;/&nbsp;
-	          <?
+	          <?php
     	      db_input("mes",2,'',true,'text',4)
 	          ?>
             </td>   
            </tr>
         </table>
       </form>
-    <?
+    <?php
 	}
 	?>
   </center>
-<? 
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

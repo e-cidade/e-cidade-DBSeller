@@ -24,19 +24,19 @@ $total_qtddescontos = 0;
 $total_valdescontos = 0;
 
 for($i=0; $i<$linhasproventos; $i++){
-  $arr_rubproventos[$i] = pg_result($this->resultproventos,$i,"rh27_rubric");
-  $arr_desproventos[$i] = pg_result($this->resultproventos,$i,"rh27_descr");
-  $arr_qtdproventos[$i] = pg_result($this->resultproventos,$i,"r20_quant");
-  $arr_valproventos[$i] = pg_result($this->resultproventos,$i,"r20_valor");
+  $arr_rubproventos[$i] = pg_fetch_result($this->resultproventos,$i,"rh27_rubric");
+  $arr_desproventos[$i] = pg_fetch_result($this->resultproventos,$i,"rh27_descr");
+  $arr_qtdproventos[$i] = pg_fetch_result($this->resultproventos,$i,"r20_quant");
+  $arr_valproventos[$i] = pg_fetch_result($this->resultproventos,$i,"r20_valor");
 
   $total_qtdproventos += $arr_qtdproventos[$i];
   $total_valproventos += $arr_valproventos[$i];
 }
 for($i=0; $i<$linhasdescontos; $i++){
-  $arr_rubdescontos[$i] = pg_result($this->resultdescontos,$i,"rh27_rubric");
-  $arr_desdescontos[$i] = pg_result($this->resultdescontos,$i,"rh27_descr");
-  $arr_qtddescontos[$i] = pg_result($this->resultdescontos,$i,"r20_quant");
-  $arr_valdescontos[$i] = pg_result($this->resultdescontos,$i,"r20_valor");
+  $arr_rubdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"rh27_rubric");
+  $arr_desdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"rh27_descr");
+  $arr_qtddescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"r20_quant");
+  $arr_valdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"r20_valor");
 
   $total_qtddescontos += $arr_qtddescontos[$i];
   $total_valdescontos += $arr_valdescontos[$i];
@@ -50,12 +50,9 @@ if($totalpaginas < 1){
   $totalpaginas ++;
 }
 
-
 $iTotalRegistros = max($linhasproventos, $linhasdescontos);
 
 for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
-
-
 
   if($i==0 || $this->objpdf->GetY() > 184){
     $this->objpdf->AliasNbPages();
@@ -100,8 +97,6 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $this->objpdf->text($col+127,$lin+36,substr(db_formatar($this->cnae,"s","0",6,"e",0),0,5).'-'.substr(db_formatar($this->cnae,"s","0",6,"e",0),5,1));
     $this->objpdf->text($col+147,$lin+36,'');
 
-
-
     $this->objpdf->Setfont('Arial','',6);
     $this->objpdf->rect($col,$lin+41,10,36);
     $this->objpdf->rect($col+10,$lin+41,45,9);
@@ -141,8 +136,6 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $this->objpdf->text($col+57,$lin+74, db_formatar($this->nasc,'d'));
     $this->objpdf->text($col+92,$lin+74,$this->mae);
 
-
-
     $this->objpdf->Setfont('Arial','',6);
     $this->objpdf->rect($col,$lin+79,10,18);
     $this->objpdf->rect($col+10,$lin+79,40,9);
@@ -174,15 +167,11 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $this->objpdf->text($col+142,$lin+94,db_formatar($this->pensao,'f'));
     $this->objpdf->text($col+172,$lin+94,$this->categoria);
 
-
-
     $this->objpdf->Setfont('Arial','',10);
     $this->objpdf->rect($col,$lin+99,10,99);
     $this->objpdf->rect($col+10,$lin+99,196,99);
     $this->objpdf->text($col+40,$lin+104,'PROVENTOS');
     $this->objpdf->text($col+150,$lin+104,'DESCONTOS');
-
-
 
     $this->objpdf->Setfont('Arial','',6);
     $this->objpdf->rect($col,$lin+200,10,86);
@@ -199,12 +188,14 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
 
     $this->objpdf->Setfont('Arial','',8);
     $this->objpdf->rect($col+108,$lin+218,49,45);
+
     if($this->regime != 1){
       $this->objpdf->text($col+12,$lin+226,'Foi prestado, gratualmente, assistência ao trabalhador, nos termos do ');
       $this->objpdf->text($col+12,$lin+229,'art. 447 parag. 1° da Consolidação das Leis do Trabalho - CLT, sendo ');
       $this->objpdf->text($col+12,$lin+232,'comprovado, neste ato, efetivo pagamento das verbas rescisórias acima ');
       $this->objpdf->text($col+12,$lin+235,'especificadas.');
     }
+
     $this->objpdf->Setfont('Arial','',6);
     $this->objpdf->text($col+12,$lin+247,'__________________________________________________');
     $this->objpdf->text($col+12,$lin+250,'Local e data');
@@ -219,7 +210,6 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $this->objpdf->text($col+12,$lin+265,'63 - Identificação do Órgao Homologador');
     $this->objpdf->rect($col+108,$lin+263,98,23);
     $this->objpdf->text($col+110,$lin+265,'64 - Recepção Pelo Banco (Data e Carimbo');
-
 
     $this->objpdf->text($col,$lin+288,'Órgao   : '.$this->orgao.'-'.$this->descr_orgao);
     $this->objpdf->text($col+100,$lin+288,'Unidade : '.$this->unidade.'-'.$this->descr_unidade);
@@ -246,6 +236,7 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $arr_qtdproventos[$i] = "";
     $arr_valproventos[$i] = "";
   }
+
   if(!isset($arr_rubdescontos[$i])){
     $arr_rubdescontos[$i] = "";
     $arr_desdescontos[$i] = "";

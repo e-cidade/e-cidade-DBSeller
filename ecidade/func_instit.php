@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $cldbconfig = new cl_db_config;
     </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where_db_config=" case when ( select count(*) from db_usuarios where id_usuario = " . db_getsession("DB_id_usuario") . " and administrador = 1 ) = 1 then true else codigo in ( select id_instit from db_userinst where id_usuario = " . db_getsession("DB_id_usuario") . " ) end ";
       if(!isset($pesquisa_chave)){
         $campos = "codigo,nomeinst";        
@@ -86,12 +86,12 @@ $cldbconfig = new cl_db_config;
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

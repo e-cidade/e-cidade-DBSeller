@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -31,7 +31,7 @@ include(modification("libs/db_libcontabilidade.php"));
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -71,9 +71,9 @@ else
 
 $result = db_planocontassaldo_desp_rec(db_getsession("DB_anousu"),$perini,$perfin,false,$where,'',$encerramento);
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
 $alt            = 4;
@@ -89,25 +89,25 @@ for($x = 0; $x < pg_numrows($result);$x++){
 /*
    if( ( $tipo == "S" ) && ( $c61_reduz != 0 ) )
      continue;
-     
-   if(substr($estrutural,0,1) == '3' )  
-     continue;
-     
-   if(substr($estrutural,0,1) == '4' )  
+
+   if(substr($estrutural,0,1) == '3' )
      continue;
 
-   if(substr($estrutural,0,1) == '34' && $estrutural <> '340000000000000')  
+   if(substr($estrutural,0,1) == '4' )
      continue;
-     
-   if(substr($estrutural,0,1) == '41' && $estrutural <> '410000000000000')  
+
+   if(substr($estrutural,0,1) == '34' && $estrutural <> '340000000000000')
      continue;
-     
-   if(substr($estrutural,0,1) == '42' && $estrutural <> '420000000000000')  
+
+   if(substr($estrutural,0,1) == '41' && $estrutural <> '410000000000000')
+     continue;
+
+   if(substr($estrutural,0,1) == '42' && $estrutural <> '420000000000000')
      continue;
 */
    if( ( $movimento == "S" ) && ( ( $saldo_anterior + $saldo_anterior_debito + $saldo_anterior_credito) == 0 ) )
      continue;
-     
+
    if(($pdf->gety() > $pdf->h - 32) || $pagina == 1){
      $pagina = 0;
      $pdf->addpage('L');
@@ -124,7 +124,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $pdf->cell(22,$alt,'SALDO',"B",0,"R",0);
      $pdf->cell(2,$alt,'',"B",1,"R",0);
      $pdf->ln(3);
-   } 
+   }
    $espaco = '';
    $maislinha = 0;
    if(substr($estrutural,1,14)      == '00000000000000'){
@@ -134,12 +134,12 @@ for($x = 0; $x < pg_numrows($result);$x++){
            $total_anterior -= $saldo_anterior;
 	else
            $total_anterior += $saldo_anterior;
-	   
+
 	if($sinal_final == "C")
            $total_final -= $saldo_final;
 	else
            $total_final += $saldo_final;
-	  
+
         $total_debitos  += $saldo_anterior_debito;
         $total_creditos += $saldo_anterior_credito;
    }elseif(substr($estrutural,2,13) == '0000000000000'){
@@ -163,8 +163,8 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $pdf->ln(1);
    }
 
-   $resconta = db_query("select conplanoconta.* 
-                         from conplanoconta 
+   $resconta = db_query("select conplanoconta.*
+                         from conplanoconta
 			 where c63_codcon = $c61_codcon
 			 and c63_anousu = ".db_getsession("DB_anousu")."
 			 and c63_reduz  = {$c61_reduz} " );
@@ -176,24 +176,24 @@ for($x = 0; $x < pg_numrows($result);$x++){
    }else{
      $pdf->setfont('arial','B',7);
    }
-   $pdf->cell(28,$alt,db_formatar($estrutural,'receita'),0,0,"L",0,0); 
+   $pdf->cell(28,$alt,db_formatar($estrutural,'receita'),0,0,"L",0,0);
    if($numero_instit>1){
-     $pdf->cell(10,$alt,"",0,0,"C",0,0); 
+     $pdf->cell(10,$alt,"",0,0,"C",0,0);
    }else{
-     $pdf->cell(10,$alt,($c61_reduz == 0?'':$c61_reduz),0,0,"C",0,0); 
+     $pdf->cell(10,$alt,($c61_reduz == 0?'':$c61_reduz),0,0,"C",0,0);
    }
    /*if($conta == 'S'){
-     $pdf->cell(125,$alt,(pg_numrows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta.')'),0,0,"L",0,0,'.'); 
+     $pdf->cell(125,$alt,(pg_numrows($resconta) == 0?$espaco.$c60_descr:$espaco.$c60_descr.'   ( Bco: '.$c63_banco.'  Ag: '.$c63_agencia.'  Cta: '.$c63_conta.')'),0,0,"L",0,0,'.');
    }else{
-     $pdf->cell(125,$alt,$espaco.$c60_descr,0,0,"L",0,0,'.'); 
+     $pdf->cell(125,$alt,$espaco.$c60_descr,0,0,"L",0,0,'.');
    }*/
-   $pdf->cell(125,$alt,$espaco.$c60_descr,0,0,"L",0,0,'.'); 
+   $pdf->cell(125,$alt,$espaco.$c60_descr,0,0,"L",0,0,'.');
 
    $pdf->cell(20,$alt,($c61_reduz == 0?'':$c61_codigo),0,0,"C",0);
 
    if($c61_reduz != 0){
      $resconta = db_query("select c52_descrred
-                         from conplano 
+                         from conplano
 			      inner join consistema on c52_codsis = c60_codsis
 			 where c60_anousu = ".db_getsession("DB_anousu")." and c60_estrut = '$estrutural'");
      db_fieldsmemory($resconta,0);
@@ -214,5 +214,5 @@ if ( $pdf->gety() > ( $pdf->h - 40 ) )
     $pdf->addpage("L");
 
 $pdf->Output();
-   
+
 ?>

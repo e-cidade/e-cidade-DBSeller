@@ -26,12 +26,17 @@ class EmpenhoDocumentoService extends DocumentoAndamentoService
      */
     protected $descricao;
 
-    public function __construct(EmpenhoFinanceiro $empenho)
+    /**
+     * @throws Exception
+     */
+    public function __construct(EmpenhoFinanceiro $empenho, DocumentoAndamento $documento = null)
     {
         parent::__construct();
         $this->empenho = $empenho;
         $this->tipoProcesso = DocumentoAndamentoService::getTipoProcesso(6, $this->empenho->getNumero());
-        $documento = DocumentoAndamento::where('p116_codigo_origem', $this->empenho->getNumero())->first();
+        if (empty($documento)) {
+            $documento = DocumentoAndamento::where('p116_codigo_origem', $this->empenho->getNumero())->first();
+        }
         if (!is_null($documento)) {
             $this->setDocumento($documento);
         }
@@ -56,7 +61,7 @@ class EmpenhoDocumentoService extends DocumentoAndamentoService
      * @return void
      * @throws Exception
      */
-    protected function buscarUsuariosPermissoes()
+    public function buscarUsuariosPermissoes()
     {
         $dotacao = $this->empenho->getDotacao();
 
@@ -90,8 +95,6 @@ class EmpenhoDocumentoService extends DocumentoAndamentoService
      */
     public function montarObjetoTela()
     {
-        $this->documento->atividadeAtual;
-        $this->documento->proximaAtividade;
         $documento = $this->documento->toArray();
         $documento['consulta'] = (object)[
             'name' => 'db_iframe_pesquisaempenho',
@@ -120,5 +123,13 @@ class EmpenhoDocumentoService extends DocumentoAndamentoService
         $documento['detalhes'] = $linhas;
         $documento['isDevolvido'] = $this->isDevolvido();
         return (object)$documento;
+    }
+
+    /**
+     * @return DocumentoAndamento
+     */
+    public function getDocumentoAndamento()
+    {
+        return $this->documento;
     }
 }

@@ -1132,6 +1132,18 @@ abstract class Transferencia
             throw new Exception('Erro ao excluir vinculo do slip com retenção: ' . $oDaoSlipRetencaoReceita->erro_msg);
         }
 
+        $oDaoOperacaoExtra = new cl_slipoperacaoextra;
+        $oDaoOperacaoExtra->excluir(null, "k208_pagamento = {$this->getCodigoSlip()}");
+        if ($oDaoOperacaoExtra->erro_status == "0") {
+            throw new BusinessException("Erro ao remover vínculo de slip com a operação extra.");
+        }
+
+        $oDaoSlipPlacaixaRec = new cl_slipplacaixarec;
+        $oDaoSlipPlacaixaRec->excluir(null, "k207_slip = {$this->getCodigoSlip()}");
+        if ($oDaoSlipPlacaixaRec->erro_status == "0") {
+            throw new BusinessException("Erro ao remover vínculo de slip com a planilha.");
+        }
+
         $oDaoExcluirSlip = new cl_slip();
         $oDaoExcluirSlip->excluir($this->getCodigoSlip());
 

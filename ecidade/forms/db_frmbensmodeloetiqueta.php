@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clbensmodeloetiquetapadrao->rotulo->label();
 		      <?=@$Lt71_sequencial?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_input('t71_sequencial',8,$It71_sequencial,true,'text',3,"")
 					?>
 		    </td>
@@ -46,7 +46,7 @@ $clbensmodeloetiquetapadrao->rotulo->label();
 		  <tr> 
         <td title="modelo etiqueta">Modelo Etiqueta:</td>
         <td>
-          <?
+          <?php
             db_input("t72_sequencial",8,$It72_sequencial,true,"text",3,"onchange='js_pesquisa_modelo(false);'"); 
             db_input("t72_descr",40,$It72_descr,true,"text",3);  
           ?>
@@ -57,7 +57,7 @@ $clbensmodeloetiquetapadrao->rotulo->label();
 		       <?=@$Lt71_descr?>
 		    </td>
 		    <td> 
-					<?
+					<?php
 					  db_input('t71_descr',51,$It71_descr,true,'text',$db_opcao,"")
 					?>
 		    </td>
@@ -65,7 +65,7 @@ $clbensmodeloetiquetapadrao->rotulo->label();
 		  <tr>
         <td>Arquivo:</td>
         <td>
-          <?
+          <?php
             db_input('fileXml',40,0,true,'file',$db_opcao);
           ?>
         </td>
@@ -74,21 +74,21 @@ $clbensmodeloetiquetapadrao->rotulo->label();
   </fieldset>
   <input onclick="return js_incluir();"
   name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-  <? 
+  <?php 
     if($db_opcao > 1){
     ?>
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-    <?
+    <?php
     }
     if($db_opcao == 1){
     ?>
       <input value='Importar' type='button' id='importar' name='importar' onclick="js_pesquisa_modelo(true);" >
-    <?
+    <?php
     }
     if($db_opcao == 2){
     ?>
       <input value='Editar XML' type='button' id='editar' name='editar' onclick="js_janela();">
-    <?
+    <?php
     }
   ?>
 </form>
@@ -100,7 +100,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensmodeloetiqueta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

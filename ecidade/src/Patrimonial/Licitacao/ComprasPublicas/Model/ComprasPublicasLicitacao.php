@@ -37,11 +37,13 @@ class ComprasPublicasLicitacao
         $atributosLicitacao = new LicitacaoAtributosDinamicos();
         $atributosLicitacao->setCodigoLicitacao($licitacaoPregao->getCodigo());
         $this->dados->objeto                = utf8_encode($licitacaoPregao->getObjeto());
-        if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
+        if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE" ||
+            $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PCE") {
             $this->dados->tipoRealizacao    = 1;
         }
 
-        if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRP") {
+        if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRP" ||
+            $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PCP") {
             $this->dados->tipoRealizacao    = 2;
         }
 
@@ -97,22 +99,24 @@ class ComprasPublicasLicitacao
             : false;
         $this->dados->beneficioLocal        = false;
         $this->dados->casasDecimais         = $atributosLicitacao->getAtributo('casas_decimais') == null
-            ? "2"
+            ? "4"
             : $atributosLicitacao->getAtributo('casas_decimais');
         if ($atributosLicitacao->getAtributo('legislacao_aplicada') != null) {
             $this->dados->legislacaoAplicavel = $atributosLicitacao->getAtributo('legislacao_aplicada');
+        } else {
+            throw new \Exception('Selecione a legislação aplicada nas informações complementares.');
         }
-        $this->dados->aplicar10024          = false;
+
         if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
             $this->dados->aplicar10024      = true;
         }
-        
+
         if ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
             $this->dados->tratamentoFaseLance   = 1;
             $this->dados->tipoIntervaloLance    = 1;
             $this->dados->valorIntervaloLance   = 1;
         }
-        
+
         /*
           1 | Por item - lote é a ordem do item
           2 | Global   - Agrupa pela descrição(l04_descricao)
@@ -126,11 +130,13 @@ class ComprasPublicasLicitacao
           portal processar como item.
          */
         if ($licitacaoPregao->getTipoJulgamento() == 2 &&
-            $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
+            ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE" ||
+                $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PCE")) {
             $this->dados->separarPorLotes   = true;
         }
         if ($licitacaoPregao->getTipoJulgamento() == 3 &&
-            $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE") {
+            ($licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PRE" ||
+                $licitacaoPregao->getModalidade()->getSiglaTipoCompraTribunal() == "PCE")) {
             $this->dados->separarPorLotes   = true;
             $this->dados->operacaoLote      = 2;
         }
@@ -142,7 +148,7 @@ class ComprasPublicasLicitacao
         }
         $lote                = new ComprasPublicasLote($licitacaoPregao);
         $this->dados->lotes  = $lote->getLote($cotaReservada, $this->dados->exclusivoMPE, $configuracao);
-        
+
         return $this->dados;
     }
 }

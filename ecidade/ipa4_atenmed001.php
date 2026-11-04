@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -80,7 +80,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
 	$medico = db_query("select aa01_codig,aa01_nome,aa01_espec 
 	                   from medicos 
 					   where aa01_codlog = ".db_getsession("DB_id_usuario")."
@@ -109,7 +109,7 @@ input {
 		</td>
 		  <td width="80" align="right" nowrap><strong>Data:</strong>&nbsp;&nbsp;&nbsp;</td>
         <td nowrap>
-	    <?
+	    <?php
 		include(modification("dbforms/db_funcoes.php"));
 		db_data("data",@$data_dia,@$data_mes,@$data_ano);
 		?>&nbsp;
@@ -124,7 +124,7 @@ input {
       </tr>
     </table>
 	</form>
-	<?
+	<?php
 	if(isset($HTTP_POST_VARS["pesquisar"])) {
 	  $data = $HTTP_POST_VARS["data_ano"]."-".$HTTP_POST_VARS["data_mes"]."-".$HTTP_POST_VARS["data_dia"];
 	  if($data != date("Y-m-d",db_getsession("DB_datausu")))
@@ -161,25 +161,25 @@ input {
 	  <th nowrap>Data Atual</th>
 	  <th nowrap>Médico Resp ou Especialidade</th>
 	  </tr>
-	  <?
+	  <?php
 	  $cor1 = "#F7F4A2";
 	  $cor2 = "#F1ED58";
 	  $cor = "";
 	  for($i = 0;$i < $numrows;$i++) {
 	    ?> 
-		<tr bgcolor="<? echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="location.href='ipa4_atenmed002.php?<?=base64_encode("nome=".$aa01_nome."&codage=".pg_result($agenda,$i,"ag02_codage")."&descricao=".pg_result($agenda,$i,"ag02_descr")."&dataini=".pg_result($agenda,$i,"ag20_data")."&datastr=".pg_result($agenda,$i,"datastr") )?>'">
+		<tr bgcolor="<?php echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="location.href='ipa4_atenmed002.php?<?=base64_encode("nome=".$aa01_nome."&codage=".pg_result($agenda,$i,"ag02_codage")."&descricao=".pg_result($agenda,$i,"ag02_descr")."&dataini=".pg_result($agenda,$i,"ag20_data")."&datastr=".pg_result($agenda,$i,"datastr") )?>'">
 		  <td nowrap><?=pg_result($agenda,$i,"ag02_codage")?>&nbsp;</td>
 		  <td nowrap><?=pg_result($agenda,$i,"ag02_descr")?>&nbsp;</td>
 		  <td nowrap><?=pg_result($agenda,$i,"dataini")?>&nbsp;</td>
 		  <td nowrap><?=pg_result($agenda,$i,"datastr")?>&nbsp;</td>
 		  <td nowrap><?=pg_result($agenda,$i,"w12_descr")?>&nbsp;</td>		  		  		  		  
 		</tr>
-		<?
+		<?php
 	  }
 	  ?>
 	</table>
 	</center>	
-	<?
+	<?php
 	} // fim do else do if($numrows == 0)
   }//fim do else do if(pg_numrows($medico) == 0) {
   if(1==2 && !isset($HTTP_POST_VARS["pesquisar"])) {
@@ -201,12 +201,12 @@ input {
 	</td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>
 </html>
-<?
+<?php
 if(isset($DB_MSG)) {
   db_msgbox($DB_MSG);
 }

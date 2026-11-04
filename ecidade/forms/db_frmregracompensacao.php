@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,22 +58,22 @@ form fieldset select {
       <?=@$Lk155_sequencial?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k155_sequencial',10,$Ik155_sequencial,true,'text',3,"")
     ?>
     </td>
   </tr>
   <tr>
     <td title="<?=@$Tk155_tiporegracompensacao?>">
-    <?
+    <?php
       db_ancora(@$Lk155_tiporegracompensacao,"js_pesquisak155_tiporegracompensacao(true);",$db_opcao);
     ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k155_tiporegracompensacao',10,$Ik155_tiporegracompensacao,true,'text',$db_opcao," onchange='js_pesquisak155_tiporegracompensacao(false);'")
     ?> 
-    <?
+    <?php
       db_input('k154_descricao',46,$Ik154_descricao,true,'text',3,'')
     ?>
     </td>
@@ -84,7 +84,7 @@ form fieldset select {
 		  <?=@$Lk155_descricao?>
 		</td>
 		<td>
-		<?
+		<?php
       db_input('k155_descricao',60,$Ik155_descricao,true,'text',$db_opcao,"")
 		?>
 		</td>
@@ -95,7 +95,7 @@ form fieldset select {
        <strong>(%)</strong>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k155_percmaxuso',10,$Ik155_percmaxuso,true,'text',$db_opcao,"onblur='js_verificaPercentual(this)'")
     ?>
     </td>
@@ -105,7 +105,7 @@ form fieldset select {
        <?=@$Lk155_tempovalidade?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k155_tempovalidade',10,$Ik155_tempovalidade,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -115,7 +115,7 @@ form fieldset select {
        <?=@$Lk155_automatica?>
     </td>
     <td> 
-    <?
+    <?php
       $x = array("f"=>"NÃO","t"=>"SIM");
       db_select('k155_automatica',$x,true,$db_opcao,"");
     ?>
@@ -126,7 +126,7 @@ form fieldset select {
        <?=@$Lk155_permitetransferencia?>
     </td>
     <td> 
-    <?
+    <?php
       $x = array("f"=>"NÃO","t"=>"SIM");
       db_select('k155_permitetransferencia',$x,true,$db_opcao,"");
     ?>
@@ -140,15 +140,15 @@ form fieldset select {
   <table>
 		<tr>
 			<td nowrap title="<?=@$Tk155_arretipoorigem?>">
-			<?
+			<?php
 			  db_ancora(@$Lk155_arretipoorigem,"js_pesquisak155_arretipoorigem(true);",$db_opcao);
 			?>
 			</td>
 			<td>
-			<?
+			<?php
 			  db_input('k155_arretipoorigem',10,$Ik155_arretipoorigem,true,'text',$db_opcao," onchange='js_pesquisak155_arretipoorigem(false);'")
 			?> 
-			<?
+			<?php
 			  db_input('k00_descr',46,$Ik00_descr,true,'text',3,'','k00_descricaoorigem')
 			?>
 			</td>
@@ -162,12 +162,12 @@ form fieldset select {
   <table>
 		<tr>
     <td nowrap title="<?=@$Tk155_arretipodestino?>">
-       <?
+       <?php
          db_ancora(@$Lk155_arretipodestino, "js_pesquisak155_arretipodestino(true);", $db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('k155_arretipodestino',10,$Ik155_arretipodestino,true,'text',$db_opcao,"onchange='js_pesquisak155_arretipodestino(false)'");
        
         db_input('k00_descr',46,$Ik00_descr,true,'text',3,'','k00_descricaodestino');
@@ -283,7 +283,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_regracompensacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

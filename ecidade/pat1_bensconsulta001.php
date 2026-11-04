@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,7 +53,7 @@ $t52_bem = 5;
     $numrows = $clbens->numrows;
   if($numrows>0){
     db_fieldsmemory($result,0);
-   
+
     $clbensmater->sql_record($clbensmater->sql_query_file($t52_bem));
     if($clbensmater->numrows>0){
       $bemMIB = "BEM MATERIAL";
@@ -75,7 +75,7 @@ $t52_bem = 5;
     }
   }
   $r_apolitem = $clapolitem->sql_record($clapolitem->sql_query(null,$t52_bem));
-}		  
+}
 ?>
 
 <html>
@@ -102,81 +102,81 @@ $t52_bem = 5;
 <td ></td>
 <td ></td>
 </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_bem?>"> <? db_ancora(@$Lt52_bem,"",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tt52_bem?>"> <?php db_ancora(@$Lt52_bem,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("t52_bem",8,$t52_bem,true,"text",4,""); 
-         db_input("t52_descr",40,"$t52_descr",true,"text",3);  
+      <?php
+         db_input("t52_bem",8,$t52_bem,true,"text",4,"");
+         db_input("t52_descr",40,"$t52_descr",true,"text",3);
       ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_codcla?>"> <? db_ancora(@$Lt52_codcla,"",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tt52_codcla?>"> <?php db_ancora(@$Lt52_codcla,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("t52_codcla",8,$t52_codcla,true,"text",4,""); 
-         db_input("t64_descr",40,"$t64_descr",true,"text",3);  
+      <?php
+         db_input("t52_codcla",8,$t52_codcla,true,"text",4,"");
+         db_input("t64_descr",40,"$t64_descr",true,"text",3);
         ?>
     </td>
   </tr>
-  
- <?
+
+ <?php
    if($clbensmater->numrows > 0 || $clbensimoveis->numrows > 0){
  ?>
-  <tr> 
-    <td  align="left" nowrap title="<?=($bem=="M"?"Código do Material":"Código do Imóvel")?>"> <? db_ancora(@$Lt52_codmat,"",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="<?=($bem=="M"?"Código do Material":"Código do Imóvel")?>"> <?php db_ancora(@$Lt52_codmat,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
-        db_input("t52_codmat",8,$t52_codmat,true,"text",4,""); 
-        db_input("bemMIB",40,"$bemMIB",true,"text",3);  
+      <?php
+        db_input("t52_codmat",8,$t52_codmat,true,"text",4,"");
+        db_input("bemMIB",40,"$bemMIB",true,"text",3);
       ?>
     </td>
   </tr>
 
-<?
-  if($bem == "M"){  
+<?php
+  if($bem == "M"){
 ?>
-  <tr> 
-    <td  align="left" nowrap title="Nota Fiscal"> <? db_ancora("<b>Nota Fiscal:</b>","",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="Nota Fiscal"> <?php db_ancora("<b>Nota Fiscal:</b>","",3);?>  </td>
     <td align="left" nowrap>
-      <?
-        db_input("t53_ntfisc",40,$t53_ntfisc,true,"text",3,""); 
+      <?php
+        db_input("t53_ntfisc",40,$t53_ntfisc,true,"text",3,"");
       ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="N~umero do Empenho"> <? db_ancora("<b>Número:</b>","",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="N~umero do Empenho"> <?php db_ancora("<b>Número:</b>","",3);?>  </td>
     <td align="left" nowrap>
-      <?
-        db_input("t53_empen",8,$t53_ntfisc,true,"text",3,""); 
-        db_input("z01_nome",40,$z01_nome,true,"text",3,""); 
+      <?php
+        db_input("t53_empen",8,$t53_ntfisc,true,"text",3,"");
+        db_input("z01_nome",40,$z01_nome,true,"text",3,"");
       ?>
     </td>
   </tr>
-<?
-  }else if($bem == "I"){  
+<?php
+  }else if($bem == "I"){
 ?>
 
-<?
-  }  
+<?php
+  }
 ?>
 
 
 
-  
-  <?}?>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_numcgm?>"> <? db_ancora(@$Lt52_numcgm,"",3);?>  </td>
+
+  <?php }?>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tt52_numcgm?>"> <?php db_ancora(@$Lt52_numcgm,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("t52_numcgm",8,$t52_numcgm,true,"text",4,""); 
-         db_input("z01_nome",40,"$z01_nome",true,"text",3);  
+      <?php
+         db_input("t52_numcgm",8,$t52_numcgm,true,"text",4,"");
+         db_input("z01_nome",40,"$z01_nome",true,"text",3);
         ?>
     </td>
   </tr>
-  <?
-    $data = split("-",$t52_dtaqu);
+  <?php
+    $data =explode("-",$t52_dtaqu);
     $t52_dtaqu_dia = $data[2];
     $t52_dtaqu_mes = $data[1];
     $t52_dtaqu_ano = $data[0];
@@ -186,30 +186,30 @@ $t52_bem = 5;
       <?=@$Lt52_dtaqu?>
     </td>
     <td>
-    <?
+    <?php
       db_inputdata('data',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',4,"");
     ?>                                                                                                                                                                                                                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <?=@$Lt52_ident?>                                                                                                                                                                                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <?
+    <?php
     if($t52_ident == "f"){
       $x = "NÃO";
     }else{
       $x = "SIM";
     }
-    db_input("x",4,$It52_ident,true,"text",3,""); 
+    db_input("x",4,$It52_ident,true,"text",3,"");
     ?>
     </td>
   </tr>
-  <tr> 
-    <td  align="left" nowrap title="<?=$Tt52_depart?>"> <? db_ancora(@$Lt52_depart,"",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="<?=$Tt52_depart?>"> <?php db_ancora(@$Lt52_depart,"",3);?>  </td>
     <td align="left" nowrap>
-      <?
-         db_input("t52_depart",8,$It52_depart,true,"text",4,""); 
-         db_input("descrdepto",40,"$descrdepto",true,"text",3);  
+      <?php
+         db_input("t52_depart",8,$It52_depart,true,"text",4,"");
+         db_input("descrdepto",40,"$descrdepto",true,"text",3);
       ?>
     </td>
   </tr>
-<?
+<?php
   if($clapolitem->numrows > 0){
     $a = 4;
     db_fieldsmemory($r_apolitem,0);
@@ -221,22 +221,22 @@ $t52_bem = 5;
     $t81_codapo = "";
   }
 ?>
-  <tr> 
-    <td  align="left" nowrap title="Código da seguradora"> <? db_ancora("<b>Seguradora</b>:","",3);?>  </td>
+  <tr>
+    <td  align="left" nowrap title="Código da seguradora"> <?php db_ancora("<b>Seguradora</b>:","",3);?>  </td>
     <td align="left" nowrap>
-  <?
+  <?php
         db_input("t80_segura",8,$t80_segura,true,"text",$a,"");
-        db_input("t80_contato",40,$t80_contato,true,"text",3); 
+        db_input("t80_contato",40,$t80_contato,true,"text",3);
   ?>
     </td>
   </tr>
 
   <tr>
-    <td  align="left" nowrap title="Código da apólice"> <? db_ancora("<b>Apólice</b>:","",3);?>  </td>
+    <td  align="left" nowrap title="Código da apólice"> <?php db_ancora("<b>Apólice</b>:","",3);?>  </td>
     <td align="left" nowrap>
-  <?
+  <?php
         db_input("t81_codapo",8,$t81_codapo,true,"text",$a,"");
-        db_input("t81_apolice",40,$t81_apolice,true,"text",3); 
+        db_input("t81_apolice",40,$t81_apolice,true,"text",3);
   ?>
     </td>
   </tr>
@@ -251,9 +251,9 @@ $t52_bem = 5;
   </tr>
   </table>
   </form>
- 
+
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

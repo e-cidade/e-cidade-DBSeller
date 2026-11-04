@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ function js_atualiza(){
       }
     }
    } 
-<?   
+<?php   
 echo "parent.js_lotecontri2(document.form1.j34_idbql.value,document.form1.j34_setor.value,document.form1.j34_quadra.value,document.form1.j34_lote.value,document.form1.j34_zona.value,document.form1.dad.value,testadas,".$j36_testad.");";
 ?> 
 }
@@ -103,7 +103,7 @@ function js_label(liga,evt,descr,quant,vlr){
               <?=$Ld02_contri?>
             </td>
             <td width="66%" align="left" nowrap> 
-              <?
+              <?php
               db_input("d02_contri",8,$Id02_contri,true,"text",3,"");
 	      ?>
             </td>
@@ -113,7 +113,7 @@ function js_label(liga,evt,descr,quant,vlr){
               <?=$Lj34_idbql?>
             </td>
             <td width="66%" align="left" nowrap> 
-              <?
+              <?php
               db_input("j34_idbql",8,$Ij34_idbql,true,"text",3,"");
 	      ?>
             </td>
@@ -123,7 +123,7 @@ function js_label(liga,evt,descr,quant,vlr){
             <?=$Lj34_setor?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_setor",4,$Ij34_setor,true,'text',3)
 	    ?>
             </td>
@@ -133,7 +133,7 @@ function js_label(liga,evt,descr,quant,vlr){
             <?=$Lj34_quadra?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_quadra",4,$Ij34_quadra,true,'text',3)
 	    ?>
             </td>
@@ -143,7 +143,7 @@ function js_label(liga,evt,descr,quant,vlr){
             <?=$Lj34_lote?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_lote",4,$Ij34_lote,true,'text',3)
 	    ?>
             </td>
@@ -154,12 +154,12 @@ function js_label(liga,evt,descr,quant,vlr){
             <?=$Lj34_zona?>
             </td>
             <td width="66%" align="left" nowrap> 
-            <?
+            <?php
 	    db_input("j34_zona",4,$Ij34_zona,true,'text',3)
 	    ?>
             </td>
           </tr>
-        <?         
+        <?php         
 	  $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval,d04_mult from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$d02_contri");
           $numlinhas= pg_numrows($re);
 	    $dad="";

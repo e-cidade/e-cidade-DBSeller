@@ -34,14 +34,13 @@ use db_utils;
 use DBDate;
 use DBException;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Arquivo\Header;
-use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\IncluiBoleto as IncluiBoletoCEF;
-use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\Repository as RepositoryCEF;
-use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Manutencao as ManutencaoCEF;
-
-
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\IncluiBoleto as IncluiBoletoBB;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\Repository as RepositoryBB;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Manutencao as ManutencaoBB;
+use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\IncluiBoleto as IncluiBoletoCEF;
+use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\Repository as RepositoryCEF;
+use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Manutencao as ManutencaoCEF;
+use App\Domain\Tributario\Caixa\Models\Recibobarpix;
 use Exception;
 use Recibo;
 
@@ -309,7 +308,9 @@ class CobrancaRegistrada
         $iConvenio,
         $nValor,
         $lUsuarioExterno = false,
-        $aEmitirPor = array()
+        $aEmitirPor = array(),
+        $emitePix = false,
+        $numpar = null
     ) {
         $oDataSessao = new DateTime;
         $oDataSessao->setTimestamp(db_getsession('DB_datausu'));
@@ -347,7 +348,9 @@ class CobrancaRegistrada
                     $iConvenio,
                     $nValor,
                     $lUsuarioExterno,
-                    $aEmitirPor
+                    $aEmitirPor,
+                    $emitePix,
+                    $numpar
                 );
                 break;
 
@@ -378,7 +381,9 @@ class CobrancaRegistrada
         $iConvenio,
         $nValor,
         $lUsuarioExterno,
-        $aEmitirPor
+        $aEmitirPor,
+        $emitePix = false,
+        $numpar = null
     ) {
         $oRepository = new RepositoryCEF();
         $oRegistro   = $oRepository->getDadosIncluiBoleto($iNumpreRecibo, $iConvenio, $nValor, $aEmitirPor);
@@ -386,10 +391,35 @@ class CobrancaRegistrada
         $oIncluiBoleto = new IncluiBoletoCEF($oRegistro);
         $oManutencao   = new ManutencaoCEF($oIncluiBoleto);
 
-        $oManutencao->processarRequisicao();
-        $oResposta = $oManutencao->getResposta();
+        try {
+            $oManutencao->processarRequisicao($emitePix);
+            $oResposta = $oManutencao->getResposta();
+        } catch (\SoapFault $erroSoap) {
+            throw new BusinessException($erroSoap->getMessage());
+        }
 
         $iCodigoRetorno = $oResposta->getCodigoRetorno();
+        if ($emitePix) {
+            $txid = "N{$iNumpreRecibo}";
+            $txid .= "P{$numpar}";
+            $txid .= "R".substr(time(), -4);
+            $conciliacaosolicitante = str_pad($txid, 35, "0", STR_PAD_LEFT);
+            $oDadosQrCode = $oResposta->getDadosQrCode();
+            $estadosolicitacao = 'ATIVA';
+            $codban = '104'; //Código do banco CEF
+            $oReciboBarPix = new Recibobarpix();
+            $oReciboBarPix->k00_numpre = $iNumpreRecibo;
+            $oReciboBarPix->k00_numpar = $numpar;
+            $oReciboBarPix->k00_codbar = $oDadosQrCode['codBarras'];
+            $oReciboBarPix->k00_criacaosolicitacao = date('Y-m-d H:i:s');
+            $oReciboBarPix->k00_estadosolicitacao = $estadosolicitacao;
+            $oReciboBarPix->k00_conciliacaosolicitante = $conciliacaosolicitante;
+            $oReciboBarPix->k00_qrcode = $oDadosQrCode['qrCode'];
+            $oReciboBarPix->k00_linkqrcode = $oDadosQrCode['urlQrCode'];
+            $oReciboBarPix->k00_numeroversaosolicitacaopagamento = 0;
+            $oReciboBarPix->k00_codban = $codban;
+            $oReciboBarPix->save();
+        }
 
         if (!empty($iCodigoRetorno)) {
             throw new BusinessException($oResposta->getMensagemRetorno($lUsuarioExterno));

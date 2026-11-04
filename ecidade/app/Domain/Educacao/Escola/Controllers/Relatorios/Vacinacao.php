@@ -51,6 +51,10 @@ class Vacinacao extends Controller
                 when cgmcgm.z01_nome is null
                     then cgmrh.z01_nome
                 else cgmcgm.z01_nome end as nome,
+            case
+                when cgmfisico.z04_nomesocial is null
+                    then cgmfisicorh.z04_nomesocial
+                else cgmfisico.z04_nomesocial end as nomesocial,
             ed178_descricao as vacina,
             rechumano_vacinacao.ed181_data,
             doses.ed180_descricao as dose
@@ -62,16 +66,17 @@ class Vacinacao extends Controller
               left join doses ON doses.ed180_codigo = rechumano_vacinacao.ed181_dose
               left join rechumanocgm ON rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo
               left join protocolo.cgm as cgmcgm ON cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm
+              left join cgmfisico ON cgmfisico.z04_numcgm = cgmcgm.z01_numcgm
               left join rechumanopessoal ON rechumanopessoal.ed284_i_rechumano = rechumano.ed20_i_codigo
               left join pessoal.rhpessoal ON rhpessoal.rh01_regist = rechumanopessoal.ed284_i_rhpessoal
               left join protocolo.cgm as cgmrh ON cgmrh.z01_numcgm = rhpessoal.rh01_numcgm
+              left join cgmfisico cgmfisicorh ON cgmfisicorh.z04_numcgm = cgmrh.z01_numcgm
             where {$sWhere}
             order by ed18_i_codigo, nome, ed178_descricao, ed180_descricao;
         ";
 
         if ($request->get('exportacao') == 'csv') {
             $dados = DB::select($sql);
-
             $relatorio = new VacinasRelatorioCSV($dados);
             return new DBJsonResponse($relatorio->emitirCsv(), "Emitindo relatório em CSV");
         }
@@ -96,6 +101,7 @@ class Vacinacao extends Controller
             if (!empty($dado->ed181_data)) {
                 $dado->data_vacinacao = DBDate::create($dado->ed181_data)->getDate(DBDate::DATA_PTBR);
             }
+
             $dados[$dado->ed18_i_codigo]->profissionais[$uKey][] = $dado;
         });
 

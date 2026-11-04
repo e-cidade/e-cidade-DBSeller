@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -180,6 +180,7 @@
             collection.remove(linha.codigo);
             gridDisciplinas.reload();
         });
+        limpar();
     }, true, 'fa-trash-alt');
 
     gridDisciplinas.show($('ctnGridCadastrados'));
@@ -225,6 +226,9 @@
     const validarFormulario = () => {
 
         try {
+            if (empty(inputCodigoArea.value)) {
+                throw 'Informe a "Área de Conhecimento".';
+            }
             if (empty(inputNome.value)) {
                 throw 'Informe o "Nome" da disciplina".';
             }
@@ -252,6 +256,11 @@
         btnCancelar.removeAttribute('disabled');
         btnCancelar.click();
         btnCancelar.setAttribute('disabled', 'disabled');
+        inputCodigoArea.value = '';
+        inputDescricaoArea.value = '';
+        inputNome.value = '';
+        inputNomeCompleto.value = '';
+        inputSigla.value = '';
     };
 
     btnSalvar.addEventListener('click', () => {

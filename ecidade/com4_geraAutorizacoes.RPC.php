@@ -261,16 +261,26 @@ switch ($oParam->exec) {
     case "getItensParaAutorizacao":
         try {
 
+            $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
             $oProcessoCompra = new ProcessoCompras($oParam->iCodigo);
             $aItensAutorizacao = $oProcessoCompra->getItensParaAutorizacao();
             $oRetorno->aItens = array();
             $oRetorno->complementos = [];
             $oRetorno->listaMetaHistoricos = AutorizacaoEmpenho::getListaCompletaMetasHistoricos();
             foreach ($aItensAutorizacao as $item) {
-                $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($item->codigodotacao, DB_getsession('DB_anousu'));
+                $iAno = db_getsession('DB_anousu');
+                $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($item->codigodotacao, $iAno);
                 $recurso = $dotacao->getDadosRecurso();
+                $fonte = $recurso->getFonteRecurso($iAno);
                 $complementos = [];
-                foreach (RecursoRepository::getComplementos($recurso->getRecurso()) as &$complemento) {
+
+                $complementosRecurso = RecursoRepository::getComplementosByGestao(
+                    $fonte->gestao,
+                    $recurso->getRecurso(),
+                    $fonte->exercicio,
+                    $dataLimite
+                );
+                foreach ($complementosRecurso as &$complemento) {
                     $complemento->selecionado = $complemento->codigo == $recurso->getComplemento();
                     $complementos[] = $complemento;
                 }

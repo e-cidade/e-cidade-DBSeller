@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_imprime(){
   <td><strong>Atividade:</strong>
   </td>
   <td> 
-  <?
+  <?php
   $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null,"distinct o58_projativ,o55_descr","o58_projativ"," o58_anousu = ".db_getsession("DB_anousu")." and o58_instit = ".db_getsession("DB_instit")));
   //db_criatabela($result);exit;
   db_selectrecord("ativid",$result,true,2,"","","","0","");
@@ -105,7 +105,7 @@ function js_imprime(){
   </tr>
 </table>
 </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -135,7 +135,7 @@ function js_testaperc(){
 	}
 }
 </script>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($clorcreservager->erro_status=="0"){
     $clorcreservager->erro(true,false);

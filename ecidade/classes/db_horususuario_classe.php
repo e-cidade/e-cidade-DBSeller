@@ -53,13 +53,13 @@ class cl_horususuario {
                  fa66_senha = varchar(40) = Senha 
                  ";
    //funcao construtor da classe 
-   function cl_horususuario() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("horususuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -68,7 +68,7 @@ class cl_horususuario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->fa66_sequencial = ($this->fa66_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["fa66_sequencial"]:$this->fa66_sequencial);
        $this->fa66_unidade = ($this->fa66_unidade == ""?@$GLOBALS["HTTP_POST_VARS"]["fa66_unidade"]:$this->fa66_unidade);
@@ -79,7 +79,7 @@ class cl_horususuario {
      }
    }
    // funcao para Inclusão
-   function incluir ($fa66_sequencial){ 
+   public function incluir ($fa66_sequencial){ 
       $this->atualizacampos();
      if($this->fa66_unidade == null ){ 
        $this->erro_sql = " Campo Unidade não informado.";

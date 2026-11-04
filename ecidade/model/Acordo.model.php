@@ -28,7 +28,6 @@
 use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoRepository;
 use ECidade\Patrimonial\Acordo\AlteracaoContratado\Model\AlteracaoContratado;
 use ECidade\Patrimonial\Acordo\AlteracaoContratado\Repository\AlteracaoContratadoRepository;
-use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Services\AutorizacaoService;
 
 /**
  * controle de acordos/contratos
@@ -57,6 +56,7 @@ class Acordo
     const TIPO_INSTRUMENTO_CONTRATO_GESTAO = 7;
     const TIPO_INSTRUMENTO_ACORDO_COOPERACAO = 8;
     const TIPO_INSTRUMENTO_TERMO_PERMISSAO_USO = 9;
+    const TIPO_INSTRUMENTO_NOTA_EMPENHO = 10;
 
     /**
      * Caminho das mensagens do model
@@ -1187,8 +1187,8 @@ class Acordo
         $oDaoAcordo->ac16_lei = $this->getLei();
         $oDaoAcordo->ac16_numeroprocesso = $this->getProcesso();
         $oDaoAcordo->ac16_numero = $this->getNumero();
-        $oDaoAcordo->ac16_objeto = pg_escape_string($this->getObjeto());
-        $oDaoAcordo->ac16_resumoobjeto = pg_escape_string($this->getResumoObjeto());
+        $oDaoAcordo->ac16_objeto = $this->getObjeto();
+        $oDaoAcordo->ac16_resumoobjeto = $this->getResumoObjeto();
         $oDaoAcordo->ac16_acordocomissao = $this->getComissao()->getCodigo();
         $oDaoAcordo->ac16_origem = $this->getOrigem();
         $oDaoAcordo->ac16_qtdrenovacao = $this->getQuantidadeRenovacao();
@@ -1202,6 +1202,7 @@ class Acordo
         $oDaoAcordo->ac16_numeroacordo = $this->getNumeroAcordo();
         $oDaoAcordo->ac16_tipoinstrumento = $this->getTipoInstrumento();
         $oDaoAcordo->ac16_dependeordeminicio = $this->getDependeOrdemInicio() ? 't' : 'f';
+        $oDaoAcordo->ac16_anousu = $this->getAno();
         $iCodigoAcordo = $this->getCodigoAcordo();
 
         /**
@@ -1209,6 +1210,9 @@ class Acordo
          */
         if (!empty($iCodigoAcordo)) {
             $oDaoAcordo->ac16_sequencial = $this->getCodigoAcordo();
+            if ($this->verificaNumeroAcordo()) {
+                $oDaoAcordo->ac16_numeroacordo = $this->getNumeroAcordo();
+            }
             $oDaoAcordo->alterar($this->getCodigoAcordo());
             $oPosicao = $this->getUltimaPosicao();
             $oPosicao->setPosicaoPeriodo($this->getDataInicial(), $this->getDataFinal(), $this->getPeriodoComercial())->save();
@@ -1218,7 +1222,6 @@ class Acordo
             /**
              * Inclusao
              */
-            $oDaoAcordo->ac16_anousu = $this->getAno();
             /**
              * validamos a númeracao do acordo.
              * não podera ser um numero menor ou igual ao maior numero de contrato do grupo,
@@ -1239,7 +1242,7 @@ class Acordo
             if ($oDaoAcordo->numrows > 0) {
                 $sErroMensagem = "A númeração informada para esse contrato é inválida.\n";
                 $sErroMensagem .= "Já existem contratos com essa númeração.\n";
-                $sErroMensagem .= "Número sugerido para esse contrato: " . $this->getProximoNumeroContrato($this->getGrupo());
+                $sErroMensagem .= "Número sugerido para esse contrato: " . $this->getProximoNumeroContrato($this->getGrupo(), $this->getAno());
                 throw new Exception($sErroMensagem);
             }
 
@@ -1353,12 +1356,10 @@ class Acordo
      * @param integer $iGrupoContrato codigo do grupo
      * @return  integer - Codigo do contrato
      */
-    public static function getProximoNumeroContrato($iGrupoContrato)
+    public static function getProximoNumeroContrato($iGrupoContrato, $anoacordo)
     {
-
-
         $sWhere = " ac03_acordogrupo = {$iGrupoContrato}";
-        $sWhere .= " and ac03_anousu  = " . db_getsession("DB_anousu");
+        $sWhere .= " and ac03_anousu  = " . $anoacordo;
         $sWhere .= " and ac03_instit  = " . db_getsession("DB_instit");
         $oDaoGrupoContrato = db_utils::getDao("acordogruponumeracao");
         $iNumero = 0;
@@ -1428,6 +1429,31 @@ class Acordo
             $this->oUltimaPosicao = new AcordoPosicao($iCodigoPosicao);
         }
         return $this->oUltimaPosicao;
+    }
+
+    /**
+     * Retorna itens da ultima posição do acordo
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function getItemPosicao()
+    {
+        $oDaoPosicao = new cl_acordoposicao;
+        $sSqlitemPosicao = "select ac26_sequencial, ac20_ordem, ac26_acordoposicaotipo, ac26_tipooperacao, ";
+        $sSqlitemPosicao .= "ac20_quantidade, ac20_valorunitario, ac20_valortotal ";
+        $sSqlitemPosicao .= "from acordoposicao ";
+        $sSqlitemPosicao .= "inner join acordoitem on acordoitem.ac20_acordoposicao = acordoposicao.ac26_sequencial ";
+        $sSqlitemPosicao .= "where acordoposicao.ac26_acordo = {$this->getCodigoAcordo()} ";
+        $sSqlitemPosicao .= "and acordoitem.ac20_valortotal <> 0 ";
+        $sSqlitemPosicao .= "and acordoposicao.ac26_acordoposicaotipo <> ". AcordoPosicao::TIPO_INCLUSAO;
+
+        $rsItemPosicao = $oDaoPosicao->sql_record($sSqlitemPosicao);
+
+        for ($i = 0; $i < $oDaoPosicao->numrows; $i++) {
+            $oPos = db_utils::fieldsMemory($rsItemPosicao, $i);
+            $this->aPosicoes[] = $oPos;
+        }
+        return $this->aPosicoes;
     }
 
     /**
@@ -1512,6 +1538,7 @@ class Acordo
     {
         $aAutorizacoes = array();
         $anoSessao = db_getsession('DB_anousu');
+        $dataLimite = date('Y-m-d', db_getsession('DB_datausu'));
         foreach ($aItens as $oItem) {
             $oItemContrato = $this->getPosicaoByCodigo($oItem->posicao)->getItemByCodigo($oItem->codigo);
 
@@ -1523,7 +1550,14 @@ class Acordo
                     if ($oDotacaoItem->dotacao == $oDotacao->dotacao) {
                         $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($oDotacao->dotacao, $anoSessao);
                         $recurso = $dotacao->getDadosRecurso();
-                        $oDotacao->complementos = RecursoRepository::getComplementos($recurso->getRecurso());
+                        $fonte = $recurso->getFonteRecurso($anoSessao);
+
+                        $oDotacao->complementos = RecursoRepository::getComplementosByGestao(
+                            $fonte->gestao,
+                            $recurso->getRecurso(),
+                            $fonte->exercicio,
+                            $dataLimite
+                        );
                         if (!isset($oDotacao->complemento)) {
                             $oDotacao->complemento = $oDotacaoItem->complemento;
                         }
@@ -1706,7 +1740,7 @@ class Acordo
                     $clpcparam  = new cl_pcparam();
                     $rspcparam  = $clpcparam->sql_record($clpcparam->sql_query_file($iInstit, "pc30_bloqueiaautemp"));
                     $pcparam    = db_utils::fieldsMemory($rspcparam, 0);
-                    if(isParaiba() and $pcparam->pc30_bloqueiaautemp == 't' and !$numrows){
+                    if (isParaiba() and $pcparam->pc30_bloqueiaautemp == 't' and !$numrows) {
                         if (isset($oStdItemAutorizacao->iCodigoItemLicitacao)) {
                             $oItemLicitacao = new ItemLicitacao($oStdItemAutorizacao->iCodigoItemLicitacao);
                             $pccoddot = new itemSolicitacao($oItemLicitacao->getItemSolicitacao()->getCodigoItemSolicitacao());
@@ -2119,6 +2153,63 @@ class Acordo
     }
 
     /**
+     * Mostra os valores contrato quando for Registro de Preço
+     * @param $posicaoItem
+     * @return stdClass
+     */
+    public function getValoresAcordoItens($posicaoItem)
+    {
+        $oValores = new stdClass();
+        $oValores->valororiginal = $this->getValorContrato();
+        $oValores->valoratual = 0;
+        $oValores->valoraditado = 0;
+        $oValores->percentualaditado = 0;
+        $oValores->valorrenovacao = 0;
+        $oValores->valorsupressao = 0;
+        $oValores->valoracrescimo = 0;
+
+        $tiposOperacao = array(
+            AcordoPosicao::OPERACAO_ACRESCIMO_VALOR_AUMENTO_QUANTITATIVO,
+            AcordoPosicao::OPERACAO_ACRESCIMO_VALOR_INCLUSAO_ITENS
+        );
+
+        foreach ($posicaoItem as $item) {
+            if ($item->ac26_acordoposicaotipo == AcordoPosicao::TIPO_RENOVACAO) {
+                $oValores->valorrenovacao += $item->ac20_valortotal;
+            } elseif ($item->ac26_acordoposicaotipo == AcordoPosicao::TIPO_SUPRESSAO) {
+                $oValores->valorsupressao += $item->ac20_valortotal;
+            } elseif (in_array($item->ac26_tipooperacao, $tiposOperacao)) {
+                $oValores->valoracrescimo += $item->ac20_valortotal;
+            } else {
+                foreach ($this->getItensAcordo(1, $item) as $oItem) {
+                    $oValores->valoratual += $oItem->getValorTotal();
+                }
+            }
+        }
+
+        $oValores->valoraditado += $oValores->valoratual - $oValores->valoratual;
+
+        $oValores->valoratual = ($oValores->valororiginal - $oValores->valoratual) + $oValores->valoracrescimo;
+        /**
+         * caso tenha valor supressão, sempre será negativo
+         */
+        if ($oValores->valorsupressao != 0) {
+            $oValores->valoratual += $oValores->valorsupressao;
+        }
+        if ($oValores->valorrenovacao != 0) {
+            $oValores->valoratual += $oValores->valorrenovacao;
+        }
+        /**
+         * o valor aditado deve ser a diferenca do valor aditado do valor original
+         */
+        if ($oValores->valoraditado < 0) {
+            $oValores->valoraditado = 0;
+        }
+
+        return $oValores;
+    }
+
+    /**
      * Mostra os valores contrato de busca dos itens por tipo de inclusão
      * @return objeto com o total atual, e total original do contrato
      */
@@ -2359,8 +2450,7 @@ class Acordo
 
                 $oNovoItem->save($oNovoItem->getValorTotal() != 0);
 
-                if (
-                    $iTipoAditamento == AcordoPosicao::TIPO_SUPRESSAO
+                if ($iTipoAditamento == AcordoPosicao::TIPO_SUPRESSAO
                     && $iTipoOperacao != AcordoPosicao::OPERACAO_REDUCAO_VALOR_SUPRESSAO_ITENS
                     && $oNovoItem->getMaterial()->isServico()
                     && ($oNovoItem->getControlaQuantidade() == 'f' || $oNovoItem->getControlaQuantidade() == null)
@@ -2785,6 +2875,15 @@ class Acordo
         }
 
         /**
+         * Remove vinculos com acordoproc
+         */
+        $oDaoAcordoProc = new cl_acordoproc();
+        $oDaoAcordoProc->excluir(null, "ac62_acordo = {$this->getCodigoAcordo()}");
+        if ($oDaoAcordoProc->erro_status == 0) {
+            throw new BusinessException($oDaoAcordoProc->erro_msg);
+        }
+
+        /**
          * Remove o acordo
          */
         $oDaoAcordo = new cl_acordo();
@@ -3040,6 +3139,48 @@ class Acordo
     }
 
     /**
+     * Retorna os itens do Acordo, com a posicao Atualizada do item quando for Registro de Preço
+     * @param $tipoItem
+     * @param $posicaoItem
+     * @return AcordoItem[]
+     */
+    public function getItensAcordo($tipoItem = 1, $posicaoItem)
+    {
+        $sCampoCodigoItem = ' max(ac20_sequencial) ';
+        if ($tipoItem != 1) {
+            $sCampoCodigoItem = ' min(ac20_sequencial) ';
+        }
+        $aItens = array();
+        $oDaoAcordoitem = new cl_acordoitem;
+        $sCampos = "ac20_ordem, ac20_resumo, ac26_sequencial, sum(case when ac26_acordoposicaotipo <> " . AcordoPosicao::TIPO_REEQUILIBRIO . " then ac20_quantidade else 0 end) as quantidade, ";
+        $sCampos .= "sum(case when ac26_sequencial <> {$posicaoItem->ac26_sequencial} and ac20_ordem = {$posicaoItem->ac20_ordem} then (ac20_valorunitario - {$posicaoItem->ac20_valorunitario}) * {$posicaoItem->ac20_quantidade} else ac20_valorunitario end) as valortotal, ";
+        $sCampos .= "pc01_descrmater, pc01_codmater, {$sCampoCodigoItem} as codigo, max(ac20_acordoposicao) as posicao, ";
+        $sCampos .= "m61_codmatunid, m61_abrev, ac24_liclicitem";
+        $sWhere = "ac16_sequencial = {$this->getCodigo()} and ac26_sequencial < {$posicaoItem->ac26_sequencial} and ac20_ordem = {$posicaoItem->ac20_ordem} and ac20_valorunitario <> 0 ";
+        $sGroup = "group by ac20_ordem, ac20_resumo, ac26_sequencial, pc01_descrmater, pc01_codmater, m61_codmatunid, m61_abrev, ac24_liclicitem";
+        $sSqlItens = $oDaoAcordoitem->sql_query_transparencia($sCampos, "ac26_sequencial desc limit 1", $sWhere . $sGroup);
+        $rsItem = $oDaoAcordoitem->sql_record($sSqlItens);
+        $iTotalLinhas = $oDaoAcordoitem->numrows;
+        for ($iItem = 0; $iItem < $iTotalLinhas; $iItem++) {
+            $oDadosItem = db_utils::fieldsMemory($rsItem, $iItem);
+            $oItem = new AcordoItem();
+            $oItem->setCodigoPosicao($oDadosItem->posicao);
+            $oItem->setCodigo($oDadosItem->codigo);
+            $oItem->setMaterial(MaterialComprasRepository::getByCodigo($oDadosItem->pc01_codmater));
+            $oItem->setQuantidade($oDadosItem->quantidade);
+            $oItem->setResumo($oDadosItem->ac20_resumo);
+            $oItem->setValorTotal($oDadosItem->valortotal);
+            $oItem->setUnidade($oDadosItem->m61_codmatunid);
+            $oItem->setDescricaoUnidade($oDadosItem->m61_abrev);
+            $oItem->setOrdem($oDadosItem->ac20_ordem);
+            $oItem->setICodigoItemLicitacao($oDadosItem->ac24_liclicitem);
+
+            $aItens[] = $oItem;
+        }
+        return $aItens;
+    }
+
+    /**
      * Retorna os itens do Acordo do tipo inclusão, com a posicao Atualizada do item
      * @return AcordoItem[]
      */
@@ -3098,6 +3239,7 @@ class Acordo
             self::TIPO_INSTRUMENTO_CONTRATO_GESTAO => 'Contrato de Gestão',
             self::TIPO_INSTRUMENTO_ACORDO_COOPERACAO => 'Acordo de Cooperação',
             self::TIPO_INSTRUMENTO_TERMO_PERMISSAO_USO => 'Termo de Permissão de Uso',
+            self::TIPO_INSTRUMENTO_NOTA_EMPENHO => 'Nota de Empenho',
         );
     }
 
@@ -3200,5 +3342,131 @@ class Acordo
         }
 
         return pg_fetch_all($rs);
+    }
+
+
+    /**
+     * @return bool
+     * @throws Exception
+     * retorna se precisa alterar o numero do acordo
+     */
+    public function verificaNumeroAcordo()
+    {
+        if ($this->checaAnoAlterado()) {
+            $this->setNovoNumeroAcordo();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     * retorna se o ano do acordo foi alterado
+     */
+    private function checaAnoAlterado()
+    {
+        $oDaoAcordo = new cl_acordo;
+
+        //busca o ano do acordo pra verificar se o ano foi alterado
+        $rsAno = $oDaoAcordo->sql_record($oDaoAcordo->
+        sql_query_file($this->getCodigoAcordo(), "ac16_anousu"));
+        if (!$rsAno) {
+            throw new Exception("Erro ao buscar ano");
+        }
+        $anoAntigo = db_utils::fieldsMemory($rsAno, 0)->ac16_anousu;
+        return $this->getAno() != $anoAntigo;
+    }
+
+
+    private function setNovoNumeroAcordo()
+    {
+        $oDaoAcordo = new cl_acordo;
+        $rsNovoNumero = $oDaoAcordo->sql_record($oDaoAcordo->sql_query_file(
+            "",
+            "max(ac16_numeroacordo) + 1 as ac16_numeroacordo",
+            "",
+            "ac16_anousu = {$this->getAno()} and ac16_instit = {$this->getInstit()}"
+        ));
+
+        $novoNumero = db_utils::fieldsMemory($rsNovoNumero, 0)->ac16_numeroacordo;
+        $this->iNumeroAcordo = $novoNumero;
+    }
+
+    public function getLicitacaoCompartilhada($acordo)
+    {
+        $dao = new \cl_acordolicitacaocompartilhada();
+        $sql = $dao->sql_query_file('', '*', '', "ac63_acordo = {$acordo}");
+        $rs = $dao->sql_record($sql);
+
+        if (!$rs) {
+            throw new Exception('Erro ao buscar Licitação Compartilhada com o acordo ' . $acordo);
+        }
+        $resultado = db_utils::getCollectionByRecord($rs);
+
+        $dao = new \cl_cgm();
+        $sql = $dao->sql_query_file("{$resultado[0]->ac63_numcgm}", 'z01_nome');
+        $rs = $dao->sql_record($sql);
+        if (!$rs) {
+            throw new Exception('Cgm não encontrado.');
+        }
+        $cgm = db_utils::fieldsMemory($rs, 0)->z01_nome;
+        $resultado[0]->z01_nome = $cgm;
+
+        return $resultado;
+    }
+
+    public function getItensAcordoExecucao($iAcordo = null)
+    {
+        /*
+         * Se o código do acordo não foi informado, utilizamos o código setado na classe
+         * Se mesmo assim o código do acordo continuar nulo executa uma exception
+         */
+        if (empty($iAcordo)) {
+            $iAcordo = $this->getCodigoAcordo();
+        }
+
+        if (empty($iAcordo)) {
+            throw new Exception("Código do acordo não informado");
+        }
+
+        $sCampos  = "ac20_ordem, ";
+        $sCampos .= "ac20_resumo, ";
+        $sCampos .= "sum(case ";
+        $sCampos .= "      when ac26_acordoposicaotipo <> ".AcordoPosicao::TIPO_REEQUILIBRIO;
+        $sCampos .= "        then ac20_quantidade ";
+        $sCampos .= "      else 0 end) as quantidade, ";
+        $sCampos .= "sum(ac20_valortotal) as valortotal, ";
+        $sCampos .= "pc01_descrmater, ";
+        $sCampos .= "pc01_codmater, ";
+        $sCampos .= "max(ac20_sequencial) as codigo, ";
+        $sCampos .= "max(ac20_acordoposicao) as posicao, ";
+        $sCampos .= "m61_codmatunid, ";
+        $sCampos .= "m61_abrev, ";
+        $sCampos .= "ac29_sequencial, ";
+        $sCampos .= "ac29_quantidade, ";
+        $sCampos .= "ac29_valor, ";
+        $sCampos .= "ac29_notafiscal, ";
+        $sCampos .= "ac29_observacao, ";
+        $sCampos .= "ac29_datainicial, ";
+        $sCampos .= "ac29_datafinal";
+
+        $sSqlAutorizacoes  = " select $sCampos ";
+        $sSqlAutorizacoes .= "   from acordoposicao ";
+        $sSqlAutorizacoes .= "        inner join acordoitem on ac20_acordoposicao = ac26_sequencial ";
+        $sSqlAutorizacoes .= "        inner join acordoitemexecutado on ac20_sequencial = ac29_acordoitem ";
+        $sSqlAutorizacoes .= "        inner join pcmater on pc01_codmater = ac20_pcmater ";
+        $sSqlAutorizacoes .= "        inner join matunid on m61_codmatunid = ac20_matunid ";
+        $sSqlAutorizacoes .= "  where ac26_acordo = {$this->getCodigoAcordo()} ";
+        $sSqlAutorizacoes .= "  group by ac20_ordem, ac20_resumo, pc01_descrmater, pc01_codmater, m61_codmatunid, ";
+        $sSqlAutorizacoes .= "  m61_abrev, ac29_sequencial, ac29_quantidade, ac29_valor, ac29_quantidade, ";
+        $sSqlAutorizacoes .= "  ac29_valor, ac29_notafiscal, ac29_observacao, ac29_datainicial, ac29_datafinal";
+        $sSqlAutorizacoes .= "  order by ac29_acordoitem";
+
+        $rsAutorizacoes = db_query($sSqlAutorizacoes);
+        if (pg_num_rows($rsAutorizacoes) > 0) {
+            return db_utils::getCollectionByRecord($rsAutorizacoes);
+        }
+        return [];
     }
 }

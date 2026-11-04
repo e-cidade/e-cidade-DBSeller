@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,14 +24,17 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+
 $clsepultamentos->rotulo->label();
 $clrotulo = new rotulocampo;
+
 $clrotulo->label("z01_nome");
 $clrotulo->label("cm14_i_codigo");
 $clrotulo->label("nome");
 $clrotulo->label("sd03_c_nome");
 $clrotulo->label("cm04_c_descr");
 ?>
+
 <form name="form1" method="post" action="">
 <fieldset>
   <legend>Sepultamento</legend>
@@ -132,6 +135,7 @@ $clrotulo->label("cm04_c_descr");
 </fieldset>
   <?php if(!isset($sepultamento)) { ?>
      <center>
+     <input name="z01_cgccpf" type="hidden" id="z01_cgccpf" value="" />
      <input name="processar" type="button" id="db_opcao" value="Processar" <?=($db_botao==false?"disabled":"")?> onclick="js_valida();" />
      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?=($db_opcao==1?"disabled":"")?> />
      </center>
@@ -155,10 +159,10 @@ function js_pesquisacm01_i_cemiterio(mostra) {
 //busca cgm / falecido
 function js_pesquisacm01_i_codigo(mostra) {
   if(mostra == true) {
-    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'func_nome', 'func_cgmtipo.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome|z01_pai|z01_mae&tipo=fisico', 'Pesquisa', true);
+    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'func_nome', 'func_cgmtipo.php?funcao_js=parent.js_mostracgm1|z01_numcgm|z01_nome|z01_pai|z01_mae|z01_cgccpf&tipo=fisico', 'Pesquisa', true);
   } else {
     if(document.form1.cm01_i_codigo.value != '') {
-      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'func_nome', 'func_cgmtipo.php?familia=true&pesquisa_chave='+document.form1.cm01_i_codigo.value+'&funcao_js=parent.js_mostracgm&tipo=fisico', 'Pesquisa', false);
+      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'func_nome', 'func_cgm.php?cgccpf=true&familia=true&pesquisa_chave='+document.form1.cm01_i_codigo.value+'&funcao_js=parent.js_mostracgm&tipo=fisico', 'Pesquisa', false);
     } else {
       document.form1.z01_nome.value = '';
       document.form1.z01_mae.value = '';
@@ -166,8 +170,10 @@ function js_pesquisacm01_i_codigo(mostra) {
     }
   }
 }
-function js_mostracgm(erro, chave1, chave2, chave3) {
+function js_mostracgm(erro, chave1, chave2, chave3, chave4) {
   document.form1.z01_nome.value = chave1;
+  document.getElementById('z01_cgccpf').value = chave4;
+
   if(erro == true) {
     document.form1.cm01_i_codigo.focus();
     document.form1.cm01_i_codigo.value = '';
@@ -181,9 +187,11 @@ function js_mostracgm(erro, chave1, chave2, chave3) {
     document.form1.z01_pai.value = chave3;
   }
 }
-function js_mostracgm1(chave1, chave2, chave3, chave4) {
+function js_mostracgm1(chave1, chave2, chave3, chave4, chave5) {
   document.form1.cm01_i_codigo.value = chave1;
   document.form1.z01_nome.value = chave2;
+  document.getElementById('z01_cgccpf').value = chave5;
+
   if(chave3 != undefined) {
     document.form1.z01_pai.value = chave3;
   }
@@ -225,6 +233,11 @@ function js_valida() {
     document.form1.cm01_d_falecimento_dia.focus();
     return false;
   }
+  if(!validaCpfPessoaFisica(document.getElementById('z01_cgccpf').value)){
+    alert('Sepultado deve ser pessoa física.');
+    return false
+  }
+
   var campos  = 'cm01_i_cemiterio=' + document.form1.cm01_i_cemiterio.value;
       campos += '&cm01_i_codigo=' + document.form1.cm01_i_codigo.value;
       campos += '&cm01_c_conjuge=' + document.form1.cm01_c_conjuge.value;
@@ -235,21 +248,58 @@ function js_valida() {
   parent.document.formaba.a2.disabled = false;
   <?php if($db_opcao == 2){ ?>
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'cem1_sepultamentos006.php?chavepesquisa=<?php echo $cm01_i_codigo; ?>&'+campos;
+  js_alteraDadosFalecido();
   <?php } else { ?>
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'cem1_sepultamentos002.php?db_opcao='+<?php echo $db_opcao; ?>+'&'+campos;
-  <?php } ?>
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'cem1_sepultamentos007.php?db_opcao='+<?php echo $db_opcao; ?>+'&'+campos;
   parent.mo_camada('a2');
+  <?php } ?>
 }
+
+function validaCpfPessoaFisica(cpf) {
+  if (cpf && cpf.toString().trim().length !== 11) {
+    return false;
+  }
+
+  return true;
+}
+
 function js_pesquisa() {
-  js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'db_iframe_sepultamentos', 'func_sepultamentos.php?funcao_js=parent.js_preenchepesquisa|cm01_i_codigo', 'Pesquisa', true);
+    js_OpenJanelaIframe('CurrentWindow.corpo.iframe_a1', 'db_iframe_sepultamentos', 'func_sepultamentos.php?funcao_js=parent.js_preenchepesquisa|cm01_i_codigo', 'Pesquisa', true);
 }
+
 function js_preenchepesquisa(chave) {
   db_iframe_sepultamentos.hide();
-  parent.document.formaba.a2.disabled = true;
+  
   <?php
+    if(isset($_GET['chavepesquisa'])){
+      echo " parent.document.formaba.a2.disabled = false; ";
+    }
+
     if($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }
+
+function js_carregaAba() {
+  var campos  = 'cm01_i_cemiterio=' + document.form1.cm01_i_cemiterio.value;
+      campos += '&cm01_i_codigo=' + document.form1.cm01_i_codigo.value;
+      campos += '&cm01_c_conjuge=' + document.form1.cm01_c_conjuge.value;
+      campos += '&cm01_d_falecimento=' + document.form1.cm01_d_falecimento_ano.value+'-'+document.form1.cm01_d_falecimento_mes.value+'-'+document.form1.cm01_d_falecimento_dia.value;
+      campos += '&cm01_c_cor=' + document.form1.cm01_c_cor.value;
+      campos += '&cm01_observacoes=' + document.form1.cm01_observacoes.value.urlEncode();
+
+  parent.document.formaba.a2.disabled = false;
+  <?php if($db_opcao == 2){ ?>
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'cem1_sepultamentos006.php?chavepesquisa=<?php echo $cm01_i_codigo; ?>&'+campos;
+  <?php } ?>
+}
+
+js_carregaAba();
+
+function js_alteraDadosFalecido() {
+  js_carregaAba();
+  setTimeout(() => parent.CurrentWindow.corpo.iframe_a2.db_opcao.click(), 1000);
+}
+
 </script>

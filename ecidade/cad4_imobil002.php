@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -120,7 +120,7 @@ input {
         <?=@$Lj44_matric?>
         </td>
         <td> 
-<?
+<?php
   db_input('j44_matric',4,$Ij44_matric,true,'text',3," onchange='js_pesquisaj44_matric(false);'");
   db_input("z01_nome",45,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
 ?>
@@ -128,12 +128,12 @@ input {
       </tr>
       <tr> 
         <td nowrap title="<?=@$Tj44_numcgm?>">
-<?
+<?php
   db_ancora($Lj44_numcgm,' js_cgm(true); ',1);
 ?>
         </td>
         <td> 
-<?
+<?php
   db_input('j44_numcgm',4,$Ij44_numcgm,true,'text',$db_opcao,"onchange='js_cgm(false)'");
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"");
 ?>
@@ -148,7 +148,7 @@ input {
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -183,7 +183,7 @@ function js_mostra(chave,erro){
 }
 
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

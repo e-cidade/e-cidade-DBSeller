@@ -81,17 +81,35 @@ try {
 
  		  $GLOBALS["HTTP_POST_VARS"]["e45_acerta_dia"] = '';
 
-      $oDaoEmppresta = db_utils::getDao('emppresta');
-			$oDaoEmppresta->e45_acerta = null;
-      $oDaoEmppresta->e45_sequencial = $oParam->iSequencialEmpenho;
-			$oDaoEmppresta->alterar($oParam->iSequencialEmpenho);
+      $prestacoes = "
+      
+         select e45_sequencial 
+           from emppresta 
+           join empord on e45_codmov = e82_codmov
+           where e82_codord = {$oParam->op}
+      ";
+      $rsPrestacoes = db_query($prestacoes);
+      if (pg_num_rows($rsPrestacoes) > 0) {
 
-			if ( $oDaoEmppresta->erro_status == 0 ) {
+        for ($i = 0; $i < pg_num_rows($rsPrestacoes); $i++) {
 
-			  $sMsgErro  = 'Não foi possível reabrir a prestação de contas.\n';
-			  $sMsgErro .= $oDaoEmppresta->erro_msg;
-				throw new Exception($sMsgErro);
-			}
+          $prestacao = db_utils::fieldsMemory($rsPrestacoes, $i)->e45_sequencial;
+
+
+          $oDaoEmppresta = new cl_emppresta;
+          $oDaoEmppresta->e45_acerta = null;
+          $oDaoEmppresta->e45_sequencial = $prestacao;
+          $oDaoEmppresta->alterar($prestacao);
+    
+          if ( $oDaoEmppresta->erro_status == 0 ) {
+    
+            $sMsgErro  = 'Não foi possível reabrir a prestação de contas.\n';
+            $sMsgErro .= $oDaoEmppresta->erro_msg;
+            throw new Exception($sMsgErro);
+          }
+
+        }
+      }
 
       db_fim_transacao(false);
 
@@ -100,6 +118,7 @@ try {
 		  break;
 
 		case 'reaberturaConferencia' :
+
 
       db_inicio_transacao();
 
@@ -121,17 +140,53 @@ try {
  		  /**
  		   * Libera data de encerramento - e45_conferido
  		   */
-      $oDaoEmppresta = new cl_emppresta();
-			$oDaoEmppresta->e45_conferido = null;
-			$oDaoEmppresta->e45_sequencial = $oParam->iSequencialEmpenho;
-			$oDaoEmppresta->alterar($oParam->iSequencialEmpenho);
 
-			if ( $oDaoEmppresta->erro_status == 0 ) {
 
-			  $sMsgErro  = 'Não foi possível reabrir a Conferência.\n';
-			  $sMsgErro .= $oDaoEmppresta->erro_msg;
-				throw new Exception($sMsgErro);
-			}
+
+        $sqlMovimentos = "
+
+WITH ordem AS
+
+  (
+
+select e82_codord as ordem 
+  from emppresta 
+  join empord on e82_codmov = e45_codmov 
+  where e45_sequencial = {$oParam->iSequencialEmpenho}
+
+  ), movimentos as 
+
+  (
+
+     select e82_codmov ,
+            e45_sequencial
+       from  ordem 
+       join empord on ordem = e82_codord
+       join emppresta on e82_codmov = e45_codmov
+  )
+
+select * from movimentos;
+    ";
+
+    $rsMovimentos = db_query($sqlMovimentos);
+    if (pg_num_rows($rsMovimentos) > 0 ) {
+
+      for ($i=0; $i < pg_num_rows($rsMovimentos); $i++) {
+        
+        $sequencial = db_utils::fieldsMemory($rsMovimentos, $i)->e45_sequencial;
+
+        $oDaoEmppresta = new cl_emppresta();
+        $oDaoEmppresta->e45_conferido = null;
+        $oDaoEmppresta->e45_sequencial = $sequencial;
+        $oDaoEmppresta->alterar($sequencial);
+        if ( $oDaoEmppresta->erro_status == 0 ) {
+
+          $sMsgErro  = 'Não foi possível reabrir a Conferência.\n';
+          $sMsgErro .= $oDaoEmppresta->erro_msg;
+          throw new Exception($sMsgErro);
+        }
+      }
+    }
 
 			/**
 			 * Lancamento contabil
@@ -143,7 +198,6 @@ try {
         $sComplemento = db_stdClass::normalizeStringJson($oParam->sComplemento);
         $oPrestacaoConta->estornarLancamento($sComplemento);
       }
-
       db_fim_transacao(false);
 
 			$oRetorno->message = "Conferência de contas reaberta.";
@@ -173,6 +227,12 @@ try {
 
     case 'verificaDevolucaoAdiantamento':
 
+
+
+      $emppresta = "select * from emppresta where e45_codmov = {$oParam->iMovimento}";
+      $rs = db_query($emppresta);
+      $oRetorno->e45_sequencial = db_utils::fieldsMemory($rs, 0)->e45_sequencial;
+      
       $oDaoComlancamEmp = new cl_conlancamemp();
       $sSqlBuscaLancamentos = $oDaoComlancamEmp->sql_query_documentos(null, "c71_coddoc", 'c03_ordem desc', "c75_numemp = {$oParam->iCodigoEmpenho}");
       $rsBuscaLancamento    = db_query($sSqlBuscaLancamentos);
@@ -188,11 +248,11 @@ try {
        */
       $lPodeReabrir = true;
       if ($iUltimoLancamento == 411) {
-
+        
         $oRetorno->mensagem = urlencode("Foi executado a devolução de adiantamento para o empenho. Não é possível reabrir a prestação de contas.");
         $lPodeReabrir = false;
       }
-
+      
       $oRetorno->lPodeReabrir = $lPodeReabrir;
       break;
 

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -107,7 +107,7 @@ if (isset($confirmar)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
         <fieldset style='width: 75%;'> <legend><b>Fatrores de Risco</b></legend>
-          <?
+          <?php
           require_once(modification("forms/db_frmfar_fatorriscofaramb.php"));
           ?>
         </fieldset>
@@ -116,7 +116,7 @@ if (isset($confirmar)) {
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
         db_getsession("DB_anousu"), db_getsession("DB_instit")
        );
@@ -126,7 +126,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
 <script>
 js_tabulacaoforms("form1", "fa45_i_fatorriscoambulatorial", true, 1, "fa45_i_fatorriscoambulatorial", true);
 </script>
-<?
+<?php
 if (isset($confirmar)) {
 
   if ($oDaoFarFatorRiscoFarmaciaAmbulatorial->erro_status == '0') {

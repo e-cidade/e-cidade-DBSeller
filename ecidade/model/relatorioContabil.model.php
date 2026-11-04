@@ -296,7 +296,7 @@ class relatorioContabil {
    *
    * @deprecated Utilize o método notaExplicativa
    */
-  function getNotaExplicativa (FPDF &$oPdf, $iPeriodo,$iTam = 190) {
+  function getNotaExplicativa (&$oPdf, $iPeriodo,$iTam = 190) {
 
     /**
      * Tamanhos das fontes para as Notas Explicativas
@@ -332,8 +332,8 @@ class relatorioContabil {
 
     if (isset($oNotaPadrao->o42_notapadrao) && trim($oNotaPadrao->o42_notapadrao) != "") {
 
-       if ($oPdf->gety() > $oPdf->h-35) {
-         $oPdf->addpage($oPdf->CurOrientation);
+       if ($oPdf->gety() > $oPdf->getH()-35) {
+         $oPdf->addpage();
        }
 
        $oPdf->setfont('arial','',6);
@@ -406,7 +406,7 @@ class relatorioContabil {
     }
     if (isset($oNotas->o42_nota) && trim($oNotas->o42_nota) != ""){
 
-    	if ($oPdf->gety() > $oPdf->h-35) {
+    	if ($oPdf->gety() > $oPdf->getH()-35) {
         $oPdf->addpage($oPdf->CurOrientation);
       }
 

@@ -1,47 +1,36 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
-require_once(modification("fpdf151/pdf.php"));
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
-require_once(modification("classes/db_protprocesso_classe.php"));
-require_once(modification("classes/db_procandam_classe.php"));
-require_once(modification("classes/db_proctransfer_classe.php"));
-require_once(modification("classes/db_proctransferproc_classe.php"));
-require_once(modification("classes/db_procprocessodoc_classe.php"));
-require_once(modification("classes/db_proctransand_classe.php"));
-require_once(modification("classes/db_proctransferintand_classe.php"));
-require_once(modification("classes/db_proctransferint_classe.php"));
-require_once(modification("classes/db_procandamint_classe.php"));
-require_once(modification("classes/db_procandamintand_classe.php"));
-require_once(modification("classes/db_arqproc_classe.php"));
-require_once(modification("classes/db_arqandam_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $lMostrarMovimento = true;
@@ -57,6 +46,7 @@ if (isset($oGet->apensado) && empty($oGet->apensado))  {
 
 db_postmemory($HTTP_SERVER_VARS);
 db_postmemory($HTTP_POST_VARS);
+
 $clprotprocesso       = new cl_protprocesso;
 $clprotprocessodoc    = new cl_procprocessodoc;
 $clprocandam          = new cl_procandam;
@@ -81,7 +71,8 @@ $aTiposTextoDespachos   = array(
 
 $oDaoProcessosApensados = db_utils::getDao('processosapensados');
 $sCampos                = 'p58_dtproc as data_processo, p30_procapensado as codigo_processo, z01_nome as titular,';
-$sCampos               .= "p51_descr as tipo_processo";
+$sCampos               .= "p51_descr as tipo_processo,";
+$sCampos               .= "CONCAT(p58_numero, '/', p58_ano) AS numero_ano";
 $sWhere                 = "p30_procprincipal = {$oGet->codproc}";
 $sSqlProcessosApensados = $oDaoProcessosApensados->sql_query_processo_apensado(null, $sCampos, "p58_codproc", $sWhere);
 $rsProcessosApensados   = $oDaoProcessosApensados->sql_record($sSqlProcessosApensados);
@@ -95,7 +86,7 @@ if (isset ($codproc) && $codproc != "") {
   $sNumeroProcesso = $codproc;
 
   /**
-   * Busca numero e ano do processo pelo codigo processo 
+   * Busca numero e ano do processo pelo codigo processo
    */
   $sSqlNumeroProcesso = $clprotprocesso->sql_query_file($codproc, 'p58_numero, p58_ano');
   $rsNumeroProcesso   = $clprotprocesso->sql_record($sSqlNumeroProcesso);
@@ -105,12 +96,13 @@ if (isset ($codproc) && $codproc != "") {
     $oNumeroProcesso = db_utils::fieldsMemory($rsNumeroProcesso, 0);
     $sNumeroProcesso = $oNumeroProcesso->p58_numero . '/' . $oNumeroProcesso->p58_ano;
   }
-  
-	$head3 = "Consulta de Processo ";
-	$head4 = "Processo N° $sNumeroProcesso";
 
-	$pdf = new PDF();
-	$pdf->Open();
+	$pdf = new ECidade\Pdf\Pdf();
+	$pdf->init(false);
+
+	$pdf->addTitulo("Consulta de Processo");
+	$pdf->addTitulo("Processo N° $sNumeroProcesso");
+
 	$pdf->AliasNbPages();
 	$pdf->addpage('L');
 	$total = 0;
@@ -124,15 +116,16 @@ if (isset ($codproc) && $codproc != "") {
 
 	$result_protprocesso = $clprotprocesso->sql_record($clprotprocesso->sql_query($codproc));
 
-	$rsConsultaDoc = $clprotprocessodoc->sql_record($clprotprocessodoc->sql_query($codproc));    
-	$iLinhasDoc    = $clprotprocessodoc->numrows; 
+	$rsConsultaDoc = $clprotprocessodoc->sql_record($clprotprocessodoc->sql_query($codproc));
+	$iLinhasDoc    = $clprotprocessodoc->numrows;
 
 	$codproc = (isset($codproc)&&!empty($codproc))?$codproc:'null';
-	$sqlConsultaProcApen = "select	* 
-							from	processosapensados 
+	$sqlConsultaProcApen = "select	CONCAT(p58_numero, '/', p58_ano) AS numero_ano
+							from	processosapensados
+							join    protprocesso ON p58_codproc = p30_procapensado
 							where	p30_procprincipal = {$codproc} ";
 	$rsConsultaProcApen  = db_query($sqlConsultaProcApen);
-	$iLinhasProcApen     = pg_num_rows($rsConsultaProcApen);   
+	$iLinhasProcApen     = pg_num_rows($rsConsultaProcApen);
 
 	if ($clprotprocesso->numrows != 0) {
 		db_fieldsmemory($result_protprocesso, 0);
@@ -155,23 +148,23 @@ if (isset ($codproc) && $codproc != "") {
 		$pdf->cell(75, $alt, $p58_requer, 0, 0, "L", 0);
 
 		$pdf->cell(65, $alt, 'Instituicao :', 0, 0, "R", 0);
-		$pdf->cell(75, $alt, $nomeinst, 0, 1, "L", 0);		
-    
-    		
+		$pdf->cell(75, $alt, $nomeinst, 0, 1, "L", 0);
+
+
 	   if ( $iLinhasDoc > 0 ) {
-	   	       	
+
     $pdf->cell(75, $alt, '', 0, 1, "L", 0);
     $pdf->cell(25, $alt, 'Documentos :', 0, 0, "R", 0);
-    
+
       for ($i=0 ;$i < $iLinhasDoc; $i++) {
-         $oDocumento = db_utils::fieldsMemory($rsConsultaDoc,$i);  
-            
+         $oDocumento = db_utils::fieldsMemory($rsConsultaDoc,$i);
+
        if ($oDocumento->p81_doc == 't'){
          $vSelecionado = " Sim";
        } else if ($oDocumento->p81_doc == 'f'){
          $vSelecionado = " Não";
        }
-       
+
        if ($vEspaco == 0){
          $pdf->cell(75,  $alt, substr($oDocumento->p56_descr,0,90), 0, 0, "L", 0);
          $pdf->cell(100, $alt, 'Recebido :', 0, 0, "R", 0);
@@ -180,35 +173,41 @@ if (isset ($codproc) && $codproc != "") {
          $pdf->cell(25,  $alt, 0, 0, "R", 0);
          $pdf->cell(75,  $alt, substr($oDocumento->p56_descr,0,90), 0, 0, "L", 0);
          $pdf->cell(100, $alt, 'Recebido :', 0, 0, "R", 0);
-         $pdf->cell(75,  $alt, $vSelecionado, 0, 1, "L", 0);                	
+         $pdf->cell(75,  $alt, $vSelecionado, 0, 1, "L", 0);
        }
          $vEspaco++;
       }
-	   }	  
+	   }
 
      if ( $iLinhasProcApen > 0 ) {
-              
+
        $pdf->cell(75, $alt, '', 0, 1, "L", 0);
-       $pdf->cell(25, $alt, 'Apensados :', 0, 0, "R", 0);
-      
+       $pdf->cell(25, $alt, 'Apensado(s) :', 0, 0, "R", 0);
+
        for ($i=0 ;$i < $iLinhasProcApen; $i++) {
          $oConsultaProcApen = db_utils::fieldsMemory($rsConsultaProcApen,$i);
-         $aListaProc[] = $oConsultaProcApen->p30_procapensado;
+         $aListaProc[] = $oConsultaProcApen->numero_ano;
        }
 	     $pdf->multicell(200, $alt,implode(", ",$aListaProc), 0, "L", 0);
-     }  	   
-	   
-	  $pdf->cell(75, $alt, '', 0, 1, "L", 0);
+     }
+
+	  	$pdf->cell(75, $alt, '', 0, 1, "L", 0);
 		$pdf->cell(25, $alt, 'Observação :', 0, 0, "R", 0);
-		$pdf->multicell(175, $alt, $p58_obs, 0, "L", 0);	
+		$pdf->multicell(175, $alt, $p58_obs, 0, "L", 0);
 		if ($lMostrarMovimento) {
-		  
-  		$result_proctransferproc = $clproctransferproc->sql_record($clproctransferproc->sql_query_file(null, null, "distinct *", "p63_codtran", "p63_codproc = $codproc"));
-  		if ($clproctransferproc->numrows != 0) {			
+			$sqlQueryTransferencias = $clproctransferproc->sql_query(
+				null,
+				null,
+				"distinct proctransferproc.*, to_timestamp(p62_dttran ||' '||p62_hora, 'YYYY-MM-DD HH24:MI:SS')",
+				"to_timestamp(p62_dttran ||' '||p62_hora, 'YYYY-MM-DD HH24:MI:SS')",
+				"p63_codproc = $codproc"
+			);
+	  		$result_proctransferproc = $clproctransferproc->sql_record($sqlQueryTransferencias);
+  		if ($clproctransferproc->numrows != 0) {
   			$tramite = 0;
   			$exe = $clproctransferproc->numrows - 1;
-  			for ($y = 0; $y < $clproctransferproc->numrows; $y ++) {				
-  				if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
+  			for ($y = 0; $y < $clproctransferproc->numrows; $y ++) {
+  				if ($pdf->gety() > $pdf->getH()- 30 || $troca != 0) {
   					if ($troca == 0) {
   						$pdf->addpage('L');
   					}
@@ -231,10 +230,10 @@ if (isset ($codproc) && $codproc != "") {
   						$pdf->cell(65, $alt, '', 0, 1, "C", 0);
   					}
   					$troca = 0;
-  				}				
+  				}
   				$pdf->setfont('arial', '', 7);
   				db_fieldsmemory($result_proctransferproc, $y);
-  				
+
   				$sCamposProcTransf  = " atual.instit, ";
           $sCamposProcTransf .= " instiatual.nomeinstabrev, ";
           $sCamposProcTransf .= " p62_codtran, ";
@@ -244,19 +243,19 @@ if (isset ($codproc) && $codproc != "") {
           $sCamposProcTransf .= " p62_coddeptorec, ";
           $sCamposProcTransf .= " atual.descrdepto as deptoatual, ";
           $sCamposProcTransf .= " destino.descrdepto as deptodestino, ";
-          $sCamposProcTransf .= " destino.coddepto as coddeptodestino, "; 
+          $sCamposProcTransf .= " destino.coddepto as coddeptodestino, ";
           $sCamposProcTransf .= " usu_atual.nome as nome, ";
           $sCamposProcTransf .= " usu_destino.id_usuario as idusualteracao, ";
           $sCamposProcTransf .= " usu_destino.nome as nomeusualteracao ";
           $sWhereProcTransf   = "p62_codtran = {$p63_codtran}";
-          
+
           $sSqlProcTransf      = $clproctransfer->sql_query_deps(null, $sCamposProcTransf, null, $sWhereProcTransf);
           $result_proctransfer = $clproctransfer->sql_record($sSqlProcTransf);
-  
+
           if ($clproctransfer->numrows != 0) {
-  				  
+
   					db_fieldsmemory($result_proctransfer, 0);
-  
+
   					/*
   					 * Verifica se o Iddo Usuario é maior que 0 para mostrar as devidas configs no relatório.
   					 */
@@ -265,8 +264,8 @@ if (isset ($codproc) && $codproc != "") {
             } else {
               $sUsuarioDestino = " - (sem usuário especificado)";
             }
-               
-  					if ($tramite == 0) {						
+
+  					if ($tramite == 0) {
   						$pdf->cell(15, $alt, db_formatar($p62_dttran, 'd'), 0, 0, "C", 0);
   						$pdf->cell(10, $alt, $p62_hora, 0, 0, "C", 0);
   						$pdf->cell(40, $alt, substr($p62_coddepto.'-'.$deptoatual,0,25), 0, 0, "L", 0);
@@ -308,7 +307,7 @@ if (isset ($codproc) && $codproc != "") {
   							$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
   							$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
   							$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
-  
+
   							if ($arquiv == true) {
   								$result_arqandam = $clarqandam->sql_record($clarqandam->sql_query_file(null, "*", null, "p69_codandam = $p61_codandam"));
   								if ($clarqandam->numrows != 0) {
@@ -325,7 +324,7 @@ if (isset ($codproc) && $codproc != "") {
   							} else {
   								$pdf->cell(80, $alt, 'Recebeu Transferência - '.$p62_codtran, 0, 0, "L", 0);
   							}
-  							$pdf->multicell(65, $alt, $p61_despacho, 0, "L", 0);							      	    
+  							$pdf->multicell(65, $alt, $p61_despacho, 0, "L", 0);
 
                 $sSqlDespacho = $clprocandamint->sql_query_sim(null, "*,
                                                                      coalesce(p100_descricao,'Despacho') as tipo_despacho,
@@ -338,8 +337,8 @@ if (isset ($codproc) && $codproc != "") {
   									if ($p78_transint == 't') {
   										break;
   									} else {
-  										if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
-  
+  										if ($pdf->gety() > $pdf->getH()- 30 || $troca != 0) {
+
   											if ($troca == 0) {
   												$pdf->addpage('L');
   											}
@@ -351,11 +350,11 @@ if (isset ($codproc) && $codproc != "") {
   											$pdf->cell(45, $alt, 'Login', 1, 0, "C", 1);
   											$pdf->cell(80, $alt, 'Ocorrência', 1, 0, "C", 1);
   											$pdf->cell(65, $alt, 'Despacho', 1, 1, "C", 1);
-  
+
   											$troca = 0;
   											$pdf->setfont('arial', '', 8);
   										}
-  
+
   										$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   										$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   										$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
@@ -363,23 +362,48 @@ if (isset ($codproc) && $codproc != "") {
   										$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   										$pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
 
+                                        $p78_despacho = strip_tags($p78_despacho, '<br><p><span><ol><ul><li>');
+
+                                        $p78_despacho = str_replace('<br>', "\n", $p78_despacho);
+
+                                        $p78_despacho = preg_replace('/<p[^>]*>/', "\n", $p78_despacho);
+                                        $p78_despacho = str_replace('</p>', "", $p78_despacho);
+
+                                        $p78_despacho = preg_replace('/<span[^>]*>/', "", $p78_despacho);
+                                        $p78_despacho = str_replace('</span>', "", $p78_despacho);
+
+                                        $p78_despacho = preg_replace('/<ol[^>]*>/', "", $p78_despacho);
+                                        $p78_despacho = str_replace('</ol>', "", $p78_despacho);
+
+                                        $p78_despacho = preg_replace('/<ul[^>]*>/', "", $p78_despacho);
+                                        $p78_despacho = str_replace('</ul>', "", $p78_despacho);
+
+                                        $p78_despacho = preg_replace_callback('/<li[^>]*>/', function () {
+                                            static $counter = 1;
+                                            return "\t" . "\t" . $counter++ . '. ';
+                                        }, $p78_despacho);
+
+                                        $p78_despacho = str_replace('</li>', "\n", $p78_despacho);
+
+                                        $p78_despacho = trim($p78_despacho);
+
   										//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
   										if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
   										    $sDespacho = html_entity_decode($p78_despacho);
-                                                                                    $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
-                                                                               } else {
-                                                                                    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
-                                                                               }
+                                            $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
+                                        } else {
+                                            $pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
+                                        }
 
-                                                                               $cod_procandamint = $p78_sequencial;
+                                        $cod_procandamint = $p78_sequencial;
   									}
   								}
   							}
   							$result_proctransferintand = $clproctransferintand->sql_record($clproctransferintand->sql_query_file(null, "*", "p87_codtransferint", "p87_codandam = $p61_codandam"));
   							if ($clproctransferintand->numrows != 0) {
   								for ($yy = 0; $yy < $clproctransferintand->numrows; $yy ++) {
-  									if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
-  
+  									if ($pdf->gety() > $pdf->getH()- 30 || $troca != 0) {
+
   										if ($troca == 0) {
   											$pdf->addpage('L');
   										}
@@ -391,15 +415,15 @@ if (isset ($codproc) && $codproc != "") {
   										$pdf->cell(45, $alt, 'Login', 1, 0, "C", 1);
   										$pdf->cell(80, $alt, 'Ocorrência', 1, 0, "C", 1);
   										$pdf->cell(65, $alt, 'Despacho', 1, 1, "C", 1);
-  
+
   										$troca = 0;
   										$pdf->setfont('arial', '', 8);
   									}
   									db_fieldsmemory($result_proctransferintand, $yy);
   									$result_proctransferint = $clproctransferint->sql_record($clproctransferint->sql_query_andusu(null, "p88_codigo,p88_data,p88_hora,p88_despacho,p88_publico,atual.nome as usuatual,destino.nome as usudestino, destino.id_usuario as idusudestino", null, "p88_codigo=$p87_codtransferint"));
-  									
+
   									if ($clproctransferint->numrows != 0) {
-  
+
   							      db_fieldsmemory($result_proctransferint, 0);
   										$pdf->cell(15, $alt, db_formatar($p88_data, 'd'), 0, 0, "C", 0);
   										$pdf->cell(10, $alt, $p88_hora, 0, 0, "C", 0);
@@ -419,11 +443,11 @@ if (isset ($codproc) && $codproc != "") {
                                                                               "p78_sequencial > $cod_procandamint  and p78_codandam = $p86_codandam  "
                                                                              );
 
-  											$result_procandamint_trans = $clprocandamint->sql_record();
+  											$result_procandamint_trans = $clprocandamint->sql_record($sSqlAndamentoInterno);
   											if ($clprocandamint->numrows != 0) {
   												for ($xx = 0; $xx < $clprocandamint->numrows; $xx ++) {
-  													if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
-  
+  													if ($pdf->gety() > $pdf->getH()- 30 || $troca != 0) {
+
   														if ($troca == 0) {
   															$pdf->addpage('L');
   														}
@@ -435,7 +459,7 @@ if (isset ($codproc) && $codproc != "") {
   														$pdf->cell(45, $alt, 'Login', 1, 0, "C", 1);
   														$pdf->cell(80, $alt, 'Ocorrência', 1, 0, "C", 1);
   														$pdf->cell(65, $alt, 'Despacho', 1, 1, "C", 1);
-  
+
   														$troca = 0;
   														$pdf->setfont('arial', '', 8);
   													}
@@ -452,13 +476,13 @@ if (isset ($codproc) && $codproc != "") {
   														$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
   														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, 'Recebeu Transferência Interna', 0, 0, "L", 0);
-  														
+
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 														if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 														    $sDespacho = html_entity_decode($p78_despacho);
-														    $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+														    $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 														} else {
-														    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														    $pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 														}
 
   													} else {
@@ -471,9 +495,9 @@ if (isset ($codproc) && $codproc != "") {
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 														if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 														    $sDespacho = html_entity_decode($p78_despacho);
-														    $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+														    $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 														} else {
-														    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														    $pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 														}
   													}
   													$cod_usu = $p78_usuario;
@@ -497,7 +521,7 @@ if (isset ($codproc) && $codproc != "") {
   					$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   					$pdf->cell(80, $alt, 'Recebeu Processo', 0, 0, "L", 0);
   					$pdf->multicell(65, $alt, $p58_despacho, 0, "L", 0);
-  						
+
   					}
   				}
   			}
@@ -531,13 +555,13 @@ if (isset ($codproc) && $codproc != "") {
   								$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
   							  $pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   							  $pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
-			            
+
 							  //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 							  if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 							      $sDespacho = html_entity_decode($p78_despacho);
-							      $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+							      $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 							  } else {
-							    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+							    $pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 							  }
 
   								$cod_procandamint = $p78_sequencial;
@@ -558,13 +582,13 @@ if (isset ($codproc) && $codproc != "") {
   								$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
   								$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   								$pdf->cell(80, $alt, 'Despacho Interno', 0, 0, "L", 0);
-  								
+
 								  //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 								  if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 								      $sDespacho = html_entity_decode($p78_despacho);
-								      $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+								      $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 								  } else {
-								    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+								    $pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 								  }
 
   								$result_procandamintand = $clprocandamintand->sql_record($clprocandamintand->sql_query_file(null, "*", "p86_codtrans", "p86_codtrans=$p88_codigo and p86_codandam = $p87_codandam "));
@@ -590,20 +614,20 @@ if (isset ($codproc) && $codproc != "") {
   												}
   											}
   											if ($p78_transint == 't') {
-  												
+
   												$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   														$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   														$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
   														$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
   														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, 'Recebeu Transferência Interna', 0, 0, "L", 0);
-  														
+
 													      //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 													      if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 														  $sDespacho = html_entity_decode($p78_despacho);
-														  $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+														  $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 													      } else {
-														$pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														$pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 													      }
 
   													} else {
@@ -616,9 +640,9 @@ if (isset ($codproc) && $codproc != "") {
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 													      if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
 														  $sDespacho = html_entity_decode($p78_despacho);
-														  $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
+														  $pdf->multicell(65, $alt, $sDespacho, 0, "L", 0);
 													      } else {
-														$pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														$pdf->multicell(65, $alt, $p78_despacho, 0, "L", 0);
 													      }
   											}
   											$cod_usu = $p78_usuario;
@@ -647,7 +671,7 @@ if (isset ($codproc) && $codproc != "") {
   				$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
   				$pdf->cell(80, $alt, 'Processo Arquivado', 0, 0, "L", 0);
   				$pdf->multicell(65, $alt, html_entity_decode($p61_despacho), 0, "L", 0);
-  
+
   				if (isset ($p90_andatual) && $p90_andatual == "t") {
   					$pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   					$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
@@ -659,43 +683,41 @@ if (isset ($codproc) && $codproc != "") {
   				}
   			}
   		}
-  	}
+  		}
 	}
 
 	if ($lMostrarApensado && count($aProcessosApensados) > 0) {
-	  
-	  $pdf->ln();
-	  $pdf->SetFillColor(225);
-	  $pdf->setfont('arial', 'b', 8);
-	  $pdf->cell(40, $alt, 'Processo', 1, 0, "C", 1);
-    $pdf->cell(30, $alt, 'Data', 1, 0, "C", 1);
-    $pdf->cell(135, $alt, 'Titular', 1, 0, "C", 1);
-    $pdf->cell(75, $alt, 'Tipo', 1, 1, "C", 1);
-	  for ($iApensado = 0; $iApensado < count($aProcessosApensados); $iApensado++) {
-	    
-	    if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
-	      
-	      if ($troca == 0) {
-	        $pdf->addpage('L');
-	      }
-	      
-	      $pdf->setfont('arial', 'b', 8);
-	      $pdf->cell(40, $alt, 'Processo', 1, 0, "C", 1);
-	      $pdf->cell(30, $alt, 'Data', 1, 0, "C", 1);
-	      $pdf->cell(135, $alt, 'Titular', 1, 0, "C", 1);
-	      $pdf->cell(75, $alt, 'Tipo', 1, 1, "C", 1);
-	      $troca = 0;
-	    }
-	    
-	    $pdf->setfont('arial', '', 8);
-	    $pdf->cell(40, $alt, $aProcessosApensados[$iApensado]->codigo_processo, 0, 0, "C", 0);
-	    $pdf->cell(30, $alt, $aProcessosApensados[$iApensado]->data_processo, 0, 0, "C", 0);
-	    $pdf->cell(135, $alt, $aProcessosApensados[$iApensado]->titular, 0, 0, "L", 0);
-	    $pdf->cell(75, $alt, $aProcessosApensados[$iApensado]->tipo_processo, 0, 1, "L", 0);
-	    
-	  }
-	}
 
+		$pdf->ln();
+		$pdf->SetFillColor(225);
+		$pdf->setfont('arial', 'b', 8);
+		$pdf->cell(40, $alt, 'Apensado(s)', 1, 0, "C", 1);
+		$pdf->cell(30, $alt, 'Data', 1, 0, "C", 1);
+		$pdf->cell(135, $alt, 'Titular', 1, 0, "C", 1);
+		$pdf->cell(75, $alt, 'Tipo', 1, 1, "C", 1);
+		for ($iApensado = 0; $iApensado < count($aProcessosApensados); $iApensado++) {
+
+			if ($pdf->gety() > $pdf->getH()- 30 || $troca != 0) {
+
+				if ($troca == 0) {
+					$pdf->addpage('L');
+				}
+
+				$pdf->setfont('arial', 'b', 8);
+				$pdf->cell(40, $alt, 'Processo', 1, 0, "C", 1);
+				$pdf->cell(30, $alt, 'Data', 1, 0, "C", 1);
+				$pdf->cell(135, $alt, 'Titular', 1, 0, "C", 1);
+				$pdf->cell(75, $alt, 'Tipo', 1, 1, "C", 1);
+				$troca = 0;
+			}
+
+			$pdf->setfont('arial', '', 8);
+			$pdf->cell(40,  $alt, $aProcessosApensados[$iApensado]->numero_ano, 0, 0, "C", 0);
+			$pdf->cell(30,  $alt, $aProcessosApensados[$iApensado]->data_processo, 0, 0, "C", 0);
+			$pdf->cell(135, $alt, $aProcessosApensados[$iApensado]->titular, 0, 0, "L", 0);
+			$pdf->cell(75,  $alt, $aProcessosApensados[$iApensado]->tipo_processo, 0, 1, "L", 0);
+	  	}
+	}
 }
 
-$pdf->Output();
+$pdf->Output('I');

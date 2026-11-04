@@ -155,7 +155,7 @@ if (isset($opcao) && ($opcao=="alterar" || $opcao=="excluir")){
     <fieldset style='width: 650px'>
     <legend><b>Cadastro de Habite-se</b></legend>
     <br><br>
-	<?
+	<?php
 	include(modification("forms/db_frmiptuconstrhabite.php"));
 	?>
     </center>
@@ -168,7 +168,7 @@ if (isset($opcao) && ($opcao=="alterar" || $opcao=="excluir")){
 <script>
 js_tabulacaoforms("form1","j131_idcons",true,1,"j131_idcons",true);
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) || isset($excluir)){
     $cliptuconstrhabite->erro(true,false);
 

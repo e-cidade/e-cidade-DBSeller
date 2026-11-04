@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE conveniocobranca
 class cl_conveniocobranca {
@@ -44,13 +44,13 @@ class cl_conveniocobranca {
                  ar13_responsavelnossonumero = bool = Responsável pelo Nosso Número
                  ";
    //funcao construtor da classe
-   function cl_conveniocobranca() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conveniocobranca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -59,7 +59,7 @@ class cl_conveniocobranca {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ar13_sequencial = ($this->ar13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ar13_sequencial"]:$this->ar13_sequencial);
        $this->ar13_bancoagencia = ($this->ar13_bancoagencia == ""?@$GLOBALS["HTTP_POST_VARS"]["ar13_bancoagencia"]:$this->ar13_bancoagencia);
@@ -80,7 +80,7 @@ class cl_conveniocobranca {
      }
    }
    // funcao para Inclusão
-   function incluir ($ar13_sequencial){
+   public function incluir ($ar13_sequencial){
       $this->atualizacampos();
      if($this->ar13_bancoagencia == null ){
        $this->erro_sql = " Campo Agência do banco não informado.";

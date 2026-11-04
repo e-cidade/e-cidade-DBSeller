@@ -28,6 +28,8 @@
 namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Service;
 
 use AtributoValorReferenciaNumerico;
+use BusinessException;
+use DBLog;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\Parametros as ParametrosService;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Enum\Parametros as ParametrosEnum;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Builder\ImportacaoInconsistencia;
@@ -60,7 +62,8 @@ class Resultado
      */
     private $situacoesValidas = array(
       RequisicaoExame::COLETADO,
-      RequisicaoExame::LANCADO
+      RequisicaoExame::LANCADO,
+      RequisicaoExame::EM_PROCESSAMENTO
     );
 
     /**
@@ -79,7 +82,7 @@ class Resultado
      * @param ImportacaoInconsistencia $importacaoInconsistencia
      * @throws Exception
      */
-    public function __construct($xml, ImportacaoInconsistencia $importacaoInconsistencia)
+    public function __construct($xml, ImportacaoInconsistencia $importacaoInconsistencia, $arquivoInfinity = false)
     {
         if (empty($xml)) {
             throw new Exception('XML não informado.');
@@ -88,7 +91,22 @@ class Resultado
         $parametrosService = new ParametrosService(ParametrosEnum::JSON_CONFIGURACOES);
         $pastaResultados = $parametrosService->getParametros()->getPastaResultados();
 
+        if ($arquivoInfinity) {
+            $parametrosService = new ParametrosService(
+                ParametrosEnum::JSON_CONFIGURACOES,
+                ParametrosEnum::JSON_CONFIGURACOES_INFINITY
+            );
+
+            $pastaResultados = $parametrosService->getParametros()->getPastaResultadosInfinity();
+        }
+
         if (!$this->xml = simplexml_load_file($pastaResultados . '/' . $xml)) {
+            $mensagemErro = "{$xml} inválido";
+            $arquivoLog = "tmp/xml_resultado_invalido_" . time();
+            $oLog = new DBLog("TXT", $arquivoLog);
+
+            $oLog->escreverLog($mensagemErro, DBLog::LOG_ERROR);
+
             throw new Exception('XML inválido.');
         }
 
@@ -96,7 +114,7 @@ class Resultado
     }
 
     /**
-     * @throws \BusinessException
+     * @throws BusinessException
      * @throws Exception
      */
     public function salvar()
@@ -121,8 +139,8 @@ class Resultado
     }
 
     /**
-     * @throws \BusinessException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws Exception
      */
     private function percorreExamesXml()
     {
@@ -136,7 +154,7 @@ class Resultado
             $requisicaoExame = $this->getRequisicaoExameBySigla($siglaExame);
 
             if (!empty($requisicaoExame)) {
-                $atributosValores = $this->resultadosAtributosXml($exameAtual);
+                $atributosValores = $this->resultadosAtributosXml($exameAtual, $requisicaoExame);
 
                 $this->atualizarResultados($requisicaoExame, $atributosValores);
             }
@@ -160,7 +178,15 @@ class Resultado
         }
 
         if (empty($requisicaoExame)) {
-            throw new Exception("Nenhum exame encontrado para o resultado (Exame {$siglaExame})");
+            $mensagemErro = "Requisição: {$requisicao->getCodigoRequisicao()} - ";
+            $mensagemErro .= "A sigla de exame '{$siglaExame}' informada no resultado é inválida.";
+
+            $arquivoLog = "tmp/sigla_exame_" . time();
+
+            $oLog = new DBLog("TXT", $arquivoLog);
+            $oLog->escreverLog($mensagemErro, DBLog::LOG_ERROR);
+
+            throw new Exception($mensagemErro);
         }
 
         if (!$this->validaSituacaoExame($requisicaoExame)) {
@@ -186,14 +212,34 @@ class Resultado
      * @param $exameAtual
      * @return array
      */
-    private function resultadosAtributosXml($exameAtual)
+    private function resultadosAtributosXml($exameAtual, RequisicaoExame $requisicaoExame)
     {
         $totalResultados = count($exameAtual->Secao);
         $atributosValores = array();
+        $atributos = $requisicaoExame->getExame()->getAtributos();
+        $tipoReferencia = [];
+
+        foreach ($atributos as $key => $atributo) {
+            $tipoReferencia[$atributo->getSigla()] = (int)$atributo->getTipoReferencia();
+        }
 
         for ($contador = 0; $contador < $totalResultados; $contador++) {
             $secaoAtual = $exameAtual->Secao[$contador];
-            $valor = str_replace(',', '.', str_replace('.', '', (string)$secaoAtual->Valor));
+
+            $valor = (string)$secaoAtual->Valor;
+            // verifica se a string contém código unicode
+            if (strlen($valor) != strlen(mb_convert_encoding($valor, 'ISO-8859-1', 'UTF-8'))) {
+                $valor = mb_convert_encoding($valor, 'ISO-8859-1', 'UTF-8'); // remove unicode deixando somento utf-8
+            }
+
+            /***
+             * Irá fazer o replace apenas se o tipo de referência do atributo for numérico e se a sigla do mesmo
+             * estiver na lista $tipoReferencia
+             */
+            if (array_key_exists((string)$secaoAtual->Codigo, $tipoReferencia)
+                && $tipoReferencia["$secaoAtual->Codigo"] === 2) {
+                $valor = str_replace(',', '.', str_replace('.', '', $valor));
+            }
 
             $atributosValores[(string)$secaoAtual->Codigo] = $valor;
         }
@@ -204,7 +250,7 @@ class Resultado
     /**
      * @param RequisicaoExame $requisicaoExame
      * @param $atributosValores
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function atualizarResultados(RequisicaoExame $requisicaoExame, $atributosValores)
     {
@@ -223,12 +269,11 @@ class Resultado
             $atributoValorReferencia = $atributoExame->getValoresDeReferenciaParaExame($requisicaoExame);
             $siglaExame = $atributoExame->getSigla();
             $valor = isset($atributosValores[$siglaExame]) ? $atributosValores[$siglaExame] : '';
-            
+
             if ($atributoExame->getTipo() == 2) {
-                if (($valor == "" && $atributoExame->preenchimentoObrigatorio()) ||
-                str_replace('.', '', $valor) == "" ||
+                if ((str_replace('.', '', $valor) == "" ||
                 str_replace(',', '', $valor) == "" ||
-                str_replace('"', '', $valor) == "") {
+                str_replace('"', '', $valor) == "") && $atributoExame->preenchimentoObrigatorio()) {
                     $this->importacaoInconsistencia->addInconsistencia(
                         $this->requisicaoLaboratorial,
                         $requisicaoExame,
@@ -249,7 +294,7 @@ class Resultado
 
             $resultadoExameAtributo->setValorAbsoluto($valor);
 
-            if ($atributoValorReferencia instanceof \AtributoValorReferenciaNumerico
+            if ($atributoValorReferencia instanceof AtributoValorReferenciaNumerico
               && $atributoValorReferencia->getTipoCalculo() == 2) {
                 $resultadoExameAtributo->setValorPercentual($valor);
                 $resultadoExameAtributo->setValorAbsoluto('');
@@ -258,6 +303,13 @@ class Resultado
             if ($atributoValorReferencia !== null && $atributoValorReferencia->getCodigo() !== null) {
                 $resultadoExameAtributo->setFaixaUtilizada(
                     new AtributoValorReferenciaNumerico($atributoValorReferencia->getCodigo())
+                );
+            }
+
+            if (!empty($resultadoExameAtributo->getAtributo()->getOutrasInformacoes()) &&
+            !empty($this->getValorInformacao($resultadoExameAtributo, $requisicaoExame))) {
+                $resultadoExameAtributo->setValorAbsoluto(
+                    $this->getValorInformacao($resultadoExameAtributo, $requisicaoExame)
                 );
             }
 
@@ -289,5 +341,33 @@ class Resultado
     public function setArquivoComInconsistencias($inconsistenciasArquivo)
     {
         $this->importacaoInconsistenciaArquivo = $inconsistenciasArquivo;
+    }
+
+    /**
+     * @param ResultadoExameAtributo $resultadoExameAtributo
+     * @param  RequisicaoExame  $requisicaoExame
+     * @return int|float
+     */
+    public function getValorInformacao(
+        ResultadoExameAtributo $resultadoExameAtributo,
+        RequisicaoExame $requisicaoExame
+    ) {
+        $value = 0;
+
+        switch ($resultadoExameAtributo->getAtributo()->getOutrasInformacoes()) {
+            case 'la22_peso':
+                $value = $requisicaoExame->getPeso();
+                break;
+
+            case 'la22_altura':
+                $value = $requisicaoExame->getAltura();
+                break;
+
+            case 'la22_volumeamostra':
+                $value = $requisicaoExame->getVolumeAmostra();
+                break;
+        }
+
+        return $value;
     }
 }

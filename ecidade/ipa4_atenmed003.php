@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,27 +89,27 @@ input {
   <th nowrap>Nome do Funcionário</th>
   <th nowrap>Nome do Dependente</th>
 </tr>
-<?
+<?php
   $cor1 = "#7ADCF1";
   $cor2 = "#88BCE3";
   $cor = "";
   for($i = 0;$i < $numrows;$i++) {
     ?>
-	<tr bgcolor="<? echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="parent.location.href='ipa4_atenmed004.php?<?=base64_encode("codigo=".pg_result($result,$i,"ag30_codigo")."&regist=".pg_result($result,$i,"ag30_regist")."&codage=".pg_result($result,$i,"ag30_codage")."&dataini=".$dataini."&depend=".pg_result($result,$i,"ag30_depend"))?>'">
+	<tr bgcolor="<?php echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="parent.location.href='ipa4_atenmed004.php?<?=base64_encode("codigo=".pg_result($result,$i,"ag30_codigo")."&regist=".pg_result($result,$i,"ag30_regist")."&codage=".pg_result($result,$i,"ag30_codage")."&dataini=".$dataini."&depend=".pg_result($result,$i,"ag30_depend"))?>'">
 	  <td nowrap><?=pg_result($result,$i,"ag30_codigo")?>&nbsp;</td>
 	  <td nowrap><?=pg_result($result,$i,"ag30_hora")?>&nbsp;</td>
 	  <td nowrap><?=pg_result($result,$i,"situacao")?>&nbsp;</td>
 	  <td nowrap><?=pg_result($result,$i,"j01_nome")?>&nbsp;</td>
 	  <td nowrap><?=pg_result($result,$i,"w03_nome")?>&nbsp;</td>	  	  	  	  
 	</tr>
-	<?
+	<?php
   }
-  ?> </table></center> <?
+  ?> </table></center> <?php
   } // fim do else   if(pg_numrows($result) == 0) {
   ?>
   </body>
 </html>
-  <?
+  <?php
   if(isset($DB_MSG)) {
   ?>
   <script>
@@ -118,7 +118,7 @@ input {
 	if(volta != "")
 	  parent.location.href = 'ipa4_atenmed001.php';
   </script>
-  <?
+  <?php
   }
   
 ?>

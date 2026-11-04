@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -52,7 +52,7 @@ $clrotulo->label("m80_codigo");
                         <strong>Código do lançamento:</strong>
                     </td>
                     <td align="left" nowrap colspan='3'>
-                        <?
+                        <?php
 db_input('m80_codigo',10,$Im80_codigo,true,"text",3);
                         ?>
                     </td>
@@ -62,10 +62,10 @@ db_input('m80_codigo',10,$Im80_codigo,true,"text",3);
                         <strong>Departamento origem:</strong>
                     </td>
                     <td align="left" nowrap colspan='3'>
-                        <?
+                        <?php
 db_input('coddepto',10,$Idescrdepto,true,"text",3,"","departamentoorigem");
                         ?>
-                        <?
+                        <?php
 db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem");
                         ?>
                     </td>
@@ -75,10 +75,10 @@ db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem")
                         <strong>Departamento destino:</strong>
                     </td>
                     <td align="left" nowrap colspan='3'>
-                        <?
+                        <?php
 db_input('coddepto',10,$Idescrdepto,true,"text",3,"","departamentodestino");
                         ?>
-                        <?
+                        <?php
 db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentodestino");
                         ?>
                     </td>
@@ -88,7 +88,7 @@ db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentodestino"
                         <?=@$Lm80_obs?>
                     </td>
                     <td align="left" nowrap colspan='3'>
-                        <?
+                        <?php
 db_textarea('m80_obs',2,55,$Im80_obs,true,'text',3,"");
                         ?>
                     </td>
@@ -141,7 +141,7 @@ db_textarea('m80_obs',2,55,$Im80_obs,true,'text',3,"");
 }
 function js_preenchepesquisa(chave){
   db_iframe_matestoquetransf.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave".(isset($confirma)?"+'&confirma=$confirma'":"");
   }

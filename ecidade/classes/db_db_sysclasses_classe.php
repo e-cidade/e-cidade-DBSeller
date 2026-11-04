@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_sysclasses
-class cl_db_sysclasses { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $codarq = 0; 
-   var $nomclasse = null; 
-   var $descrclasse = null; 
-   var $codigoclass = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_db_sysclasses {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $codarq = 0;
+   var $nomclasse = null;
+   var $descrclasse = null;
+   var $codigoclass = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 codarq = int4 = Codigo Arquivo 
-                 nomclasse = varchar(20) = Nome Classe: 
-                 descrclasse = text = Descrição 
-                 codigoclass = text = Texto 
+                 codarq = int4 = Codigo Arquivo
+                 nomclasse = varchar(20) = Nome Classe:
+                 descrclasse = text = Descrição
+                 codigoclass = text = Texto
                  ";
-   //funcao construtor da classe 
-   function cl_db_sysclasses() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("db_sysclasses"); 
+     $this->rotulo = new rotulo("db_sysclasses");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_db_sysclasses {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->codarq = ($this->codarq == ""?@$GLOBALS["HTTP_POST_VARS"]["codarq"]:$this->codarq);
        $this->nomclasse = ($this->nomclasse == ""?@$GLOBALS["HTTP_POST_VARS"]["nomclasse"]:$this->nomclasse);
@@ -81,9 +81,9 @@ class cl_db_sysclasses {
      }
    }
    // funcao para inclusao
-   function incluir ($codarq,$nomclasse){ 
+   public function incluir ($codarq,$nomclasse){
       $this->atualizacampos();
-     if($this->descrclasse == null ){ 
+     if($this->descrclasse == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "descrclasse";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_db_sysclasses {
        $this->erro_status = "0";
        return false;
      }
-     if($this->codigoclass == null ){ 
+     if($this->codigoclass == null ){
        $this->erro_sql = " Campo Texto nao Informado.";
        $this->erro_campo = "codigoclass";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_db_sysclasses {
        $this->erro_status = "0";
        return false;
      }
-       $this->codarq = $codarq; 
-       $this->nomclasse = $nomclasse; 
-     if(($this->codarq == null) || ($this->codarq == "") ){ 
+       $this->codarq = $codarq;
+       $this->nomclasse = $nomclasse;
+     if(($this->codarq == null) || ($this->codarq == "") ){
        $this->erro_sql = " Campo codarq nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_db_sysclasses {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->nomclasse == null) || ($this->nomclasse == "") ){ 
+     if(($this->nomclasse == null) || ($this->nomclasse == "") ){
        $this->erro_sql = " Campo nomclasse nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_db_sysclasses {
        return false;
      }
      $sql = "insert into db_sysclasses(
-                                       codarq 
-                                      ,nomclasse 
-                                      ,descrclasse 
-                                      ,codigoclass 
+                                       codarq
+                                      ,nomclasse
+                                      ,descrclasse
+                                      ,codigoclass
                        )
                 values (
-                                $this->codarq 
-                               ,'$this->nomclasse' 
-                               ,'$this->descrclasse' 
-                               ,'$this->codigoclass' 
+                                $this->codarq
+                               ,'$this->nomclasse'
+                               ,'$this->descrclasse'
+                               ,'$this->codigoclass'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Classes Arquivos ($this->codarq."-".$this->nomclasse) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_db_sysclasses {
        $resac = db_query("insert into db_acount values($acount,340,2113,'','".AddSlashes(pg_result($resaco,0,'codigoclass'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($codarq=null,$nomclasse=null) { 
+   public function alterar ($codarq=null,$nomclasse=null) {
       $this->atualizacampos();
      $sql = " update db_sysclasses set ";
      $virgula = "";
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim($this->codarq) == null ){
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_db_sysclasses {
          return false;
        }
      }
-     if(trim($this->nomclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomclasse"])){ 
+     if(trim($this->nomclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomclasse"])){
        $sql  .= $virgula." nomclasse = '$this->nomclasse' ";
        $virgula = ",";
-       if(trim($this->nomclasse) == null ){ 
+       if(trim($this->nomclasse) == null ){
          $this->erro_sql = " Campo Nome Classe: nao Informado.";
          $this->erro_campo = "nomclasse";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_db_sysclasses {
          return false;
        }
      }
-     if(trim($this->descrclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrclasse"])){ 
+     if(trim($this->descrclasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrclasse"])){
        $sql  .= $virgula." descrclasse = '$this->descrclasse' ";
        $virgula = ",";
-       if(trim($this->descrclasse) == null ){ 
+       if(trim($this->descrclasse) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descrclasse";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_db_sysclasses {
          return false;
        }
      }
-     if(trim($this->codigoclass)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codigoclass"])){ 
+     if(trim($this->codigoclass)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codigoclass"])){
        $sql  .= $virgula." codigoclass = '$this->codigoclass' ";
        $virgula = ",";
-       if(trim($this->codigoclass) == null ){ 
+       if(trim($this->codigoclass) == null ){
          $this->erro_sql = " Campo Texto nao Informado.";
          $this->erro_campo = "codigoclass";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_db_sysclasses {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Classes Arquivos nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->codarq."-".$this->nomclasse;
@@ -280,14 +280,14 @@ class cl_db_sysclasses {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($codarq=null,$nomclasse=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($codarq=null,$nomclasse=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($codarq,$nomclasse));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_db_sysclasses {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Classes Arquivos nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$codarq."-".$nomclasse;
@@ -351,11 +351,11 @@ class cl_db_sysclasses {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,10 +377,10 @@ class cl_db_sysclasses {
       }
      return $result;
    }
-   function sql_query ( $codarq=null,$nomclasse=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $codarq=null,$nomclasse=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,23 +394,23 @@ class cl_db_sysclasses {
      $sql2 = "";
      if($dbwhere==""){
        if($codarq!=null ){
-         $sql2 .= " where db_sysclasses.codarq = $codarq "; 
-       } 
+         $sql2 .= " where db_sysclasses.codarq = $codarq ";
+       }
        if($nomclasse!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysclasses.nomclasse = '$nomclasse' "; 
-       } 
+         }
+         $sql2 .= " db_sysclasses.nomclasse = '$nomclasse' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,10 +419,10 @@ class cl_db_sysclasses {
      }
      return $sql;
   }
-   function sql_query_file ( $codarq=null,$nomclasse=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $codarq=null,$nomclasse=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,23 +435,23 @@ class cl_db_sysclasses {
      $sql2 = "";
      if($dbwhere==""){
        if($codarq!=null ){
-         $sql2 .= " where db_sysclasses.codarq = $codarq "; 
-       } 
+         $sql2 .= " where db_sysclasses.codarq = $codarq ";
+       }
        if($nomclasse!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " db_sysclasses.nomclasse = '$nomclasse' "; 
-       } 
+         }
+         $sql2 .= " db_sysclasses.nomclasse = '$nomclasse' ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

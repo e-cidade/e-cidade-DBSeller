@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -76,7 +76,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!="" && empty($d
        <?=@$Lq82_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('q82_codigo',10,$Iq82_codigo,true,'text',3);
 ?>
     </td>
@@ -86,7 +86,7 @@ db_input('q82_codigo',10,$Iq82_codigo,true,'text',3);
        <?=@$Lq82_parc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q82_parc',10,$Iq82_parc,true,'text',3)
 ?>
     </td>
@@ -96,7 +96,7 @@ db_input('q82_parc',10,$Iq82_parc,true,'text',3)
        <?=@$Lq82_venc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('q82_venc',@$q82_venc_dia,@$q82_venc_mes,@$q82_venc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,7 +106,7 @@ db_inputdata('q82_venc',@$q82_venc_dia,@$q82_venc_mes,@$q82_venc_ano,true,'text'
        <?=@$Lq82_desc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q82_desc',40,$Iq82_desc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,22 +116,22 @@ db_input('q82_desc',40,$Iq82_desc,true,'text',$db_opcao,"")
        <?=@$Lq82_perc?>
     </td>
     <td> 
-<?
+<?php
 db_input('q82_perc',10,$Iq82_perc,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq82_hist?>">
-       <?
+       <?php
        db_ancora(@$Lq82_hist,"js_pesquisaq82_hist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q82_hist',10,$Iq82_hist,true,'text',$db_opcao," onchange='js_pesquisaq82_hist(false);'")
 ?>
-       <?
+       <?php
 db_input('k01_descr',26,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
@@ -142,7 +142,7 @@ db_input('k01_descr',26,$Ik01_descr,true,'text',3,'')
        <?=$Lq82_calculaparcvenc?>
     </td>
     <td>
-      <?
+      <?php
         $xw = array(
                      't'=>"Sim",
                      'f'=>"Nao"
@@ -169,7 +169,7 @@ db_input('k01_descr',26,$Ik01_descr,true,'text',3,'')
 </tr>
 <tr>
   <td valign="top" colspan="2">  
-   <?
+   <?php
     $chavepri= array("q82_codigo"=>$q82_codigo,"q82_parc"=>@$q82_parc);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $clcadvenc->sql_query_file($q82_codigo,"","q82_codigo,q82_parc,q82_venc,q82_desc,q82_perc,q82_hist, case when q82_calculaparcvenc is true then 'Sim' else 'Nao' end as q82_calculaparcvenc","q82_parc");
@@ -216,7 +216,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_cadvenc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

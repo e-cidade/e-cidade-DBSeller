@@ -4,6 +4,7 @@ namespace ECidade\RecursosHumanos\ESocial\Repository;
 
 use BusinessException;
 use CgmFactory;
+use DateTime;
 use DBException;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvio;
@@ -11,6 +12,7 @@ use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvioStatus;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Error as FormatterError;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\V3\Extension\Registry;
+use Exception;
 use JSON;
 use ParameterException;
 
@@ -36,14 +38,6 @@ class ESocialEnvioRepository
      * @var integer
      */
     private $comprimentoParticao = 200;
-
-    /**
-     * Valor padrão para evitar sobrecarga na rede do eSocial
-     * @var integer
-     */
-    private $limiteSituacaoEnvios = 14000;
-
-    private $debug = false;
 
     /**
      * @param $id
@@ -125,8 +119,8 @@ class ESocialEnvioRepository
 
         $whereArray = array();
         // adicionada variavel de campos para ecomonizar recurso de memoria em grande quantidade de registros
-        $campos = "rh213_sequencial, rh213_evento, rh213_responsavelpreenchimento, rh213_data, rh214_sequencial, "
-            . "rh214_descricao, rh214_situacao";
+        $campos = "rh213_sequencial, rh213_evento, rh213_responsavelpreenchimento, rh213_data, rh213_situacao,"
+            . "rh214_sequencial, rh214_descricao, rh214_situacao, rh214_data";
 
         if (!empty($inscricaoEmpregador)) {
             $whereArray[] = "rh213_empregador = {$inscricaoEmpregador}";
@@ -212,10 +206,19 @@ class ESocialEnvioRepository
             $esocialSituacao->setResponsavelPreenchimento($esocialEnvio->rh213_responsavelpreenchimento);
             $esocialSituacao->setEmpregador($inscricaoEmpregador);
             $esocialSituacao->setData(new \DateTime($esocialEnvio->rh213_data));
+            $esocialSituacao->setSituacaoSalva($esocialEnvio->rh213_situacao);
+
 
             if (!empty($esocialEnvio->rh214_sequencial)) {
+                $eventoStatus = new ESocialEnvioStatus();
+                $eventoStatus->setSequencial($esocialEnvio->rh214_sequencial);
+                $eventoStatus->setData($esocialEnvio->rh214_data);
+                $eventoStatus->setDescricao($esocialEnvio->rh214_descricao);
+                $eventoStatus->setSituacao($esocialEnvio->rh214_situacao);
+                $eventoStatus->setEsocialenvio($esocialEnvio->rh213_sequencial);
+    
+                $esocialSituacao->setEnvioStatus($eventoStatus);
                 $esocialSituacao->setCodigo($esocialEnvio->rh214_sequencial);
-
                 $esocialSituacao->setCodigoEnvio($esocialEnvio->rh213_sequencial);
                 $esocialSituacao->setSituacao($esocialEnvio->rh214_descricao);
                 $esocialSituacao->setPermiteAtualizar(false);
@@ -269,18 +272,22 @@ class ESocialEnvioRepository
             $consulta->referencias = array_values($consulta->referencias);
             $consulta->idEventos = $consultaSituacao->idEventos[$i];
             $consulta->idEventos = array_values($consulta->idEventos);
-            $oESocial = new ESocial(Registry::get('app.config'), "/evento/situacao_eventos");
-
-            $oESocial->setDados($consulta);
-            $situacoes = $oESocial->request("GET");
+            $situacoes = null;
+            try {
+                $oESocial = new ESocial(Registry::get('app.config'), "/evento/situacao_eventos");
+                $oESocial->setDados($consulta);
+                $situacoes = $oESocial->request("GET");
+            } catch (Exception $e) {
+                $situacoes = null;
+            }
             if (!empty($situacoes)) {
                 foreach ($situacoes as $situacao) {
                     $layout = str_replace("S-", "", $situacao->layout);
-                    $dado = $dados[$layout][$situacao->referencia];
-                    $dado->situacaoApi = $situacao->status;
-                    if (empty($dado)) {
+                    if (empty($dados[$layout][$situacao->referencia])) {
                         continue;
                     }
+                    $dado = $dados[$layout][$situacao->referencia];
+                    $dado->situacaoApi = $situacao->status;
                     if ($layout == $dado->getEvento()
                         && $situacao->referencia == $dado->getResponsavelPreenchimento()
                         || ($consultaSituacao->incluiErrosLayout == true && !$dado->isProcessadoSucesso())
@@ -298,18 +305,40 @@ class ESocialEnvioRepository
                                 $ocorrencias = JSON::create()->parse($situacao->ocorrencias);
                                 foreach ($ocorrencias as $ocorrencia) {
                                     if ($ocorrencia->localizacao) {
-                                        $errorFormatter = new FormatterError($dado->getEvento());
-                                        $labels = $errorFormatter->extractLabels($ocorrencia->localizacao);
-                                        $ocorrencia->localizacao = str_replace(
-                                            array("<br />", "</b>", "<b>"),
-                                            array("\n", "", ""),
-                                            $errorFormatter->formatLabels($labels, "%s")
-                                        );
+                                        if ($dado->getEvento() != 'R-2055') {
+                                            $errorFormatter = new FormatterError($dado->getEvento());
+                                            $labels = $errorFormatter->extractLabels($ocorrencia->localizacao);
+                                            $ocorrencia->localizacao = str_replace(
+                                                array("<br />", "</b>", "<b>"),
+                                                array("\n", "", ""),
+                                                $errorFormatter->formatLabels($labels, "%s")
+                                            );
+                                        }
                                     }
                                 }
                                 $dado->setOcorrencias($ocorrencias);
                             }
                             $dado->setRecibos(JSON::create()->parse($situacao->recibos));
+                        }
+
+                        // Verifica a situação da dataRecibo com a EnvioStatus para que informe se já estar processado.
+                        if (isset($situacao->data_recibo_recente)
+                            && !empty($situacao->data_recibo_recente)
+                            && $dado->getSituacaoSalva() == 1
+                            ) {
+                            $dataRecibo = new DateTime($situacao->data_recibo_recente);
+                            if (!empty($dado->getEnvioStatus())) {
+                                if ($dataRecibo > $dado->getEnvioStatus()->getData()) {
+                                    $eventoStatus = $dado->getEnvioStatus();
+                                    $eventoStatus->updateEventStatus(
+                                        $dado->getCodigoEnvio(),
+                                        true,
+                                        'Enviado para a API'
+                                    );
+                                    $this->atualizarEvento($dado->getCodigoEnvio(), 2);
+                                    $dado->setProcessadoSucesso(true);
+                                }
+                            }
                         }
 
                         if ($dado->isProcessadoSucesso()) {
@@ -324,8 +353,8 @@ class ESocialEnvioRepository
         }
         // caso nao tenha sido enviado para api
         if ($statusErro || (!$statusRecibo && !$statusOcorrencia && !$statusAdvertencia)) {
-            foreach ($dados as &$layout) {
-                foreach ($layout as &$dado) {
+            foreach ($dados as $layout) {
+                foreach ($layout as $dado) {
                     $this->ajustaDados($dado);
                     $dadosFiltrados[] = $dado;
                     unset($dado);
@@ -437,8 +466,48 @@ class ESocialEnvioRepository
         $codigo = $dado->getCodigoEnvio();
         $esocialEnvioTemporario = self::find($codigo, ['rh213_dados', 'rh213_situacao']);
         $dado->setDados($esocialEnvioTemporario->getDados());
-        $dado->setSituacaosalva($esocialEnvioTemporario->getSituacaosalva());
+        $dado->setSituacaoSalva($esocialEnvioTemporario->getSituacaoSalva());
         $dado->adicionaDescricaoPadrao();
+
+        /**
+         * Situacoes mapeadas pelos codigos da api
+         * PROCESSADO_SUCESSO = 4
+         * PROCESSADO_ERRO = 5
+         * PROCESSADO_ADVERTENCIA = 12
+        */
+        if (!empty($dado->situacaoApi)) {
+            switch ($dado->situacaoApi) {
+                case 4:
+                    if (!$this->exportacaoArquivo) {
+                        $dado->setDescricao("<span style='color: green'>" . $dado->getDescricao() . "</span>");
+                        $texto = "<span style='color: green'>" . $dado->getData()->format('d/m/Y H:i:s') . "</span>";
+                        $dado->formataExibicaoData($texto);
+                    }
+                    break;
+                case 7:
+                case 5:
+                    if ($dado->getSituacaoSalva() != 1) {
+                        if (!$this->exportacaoArquivo) {
+                            $dado->setDescricao("<span style='color: red'>" . $dado->getDescricao() . "</span>");
+                            $texto = "<span style='color: red'>" . $dado->getData()->format('d/m/Y H:i:s') . "</span>";
+                            $dado->formataExibicaoData($texto);
+                            $this->atualizarEvento($codigo, 5, true);
+                        }
+                    } else {
+                        $dado->setDescricao($dado->getDescricao());
+                        $texto = $dado->getData()->format('d/m/Y H:i:s');
+                        $dado->formataExibicaoData($texto);
+                    }
+                    break;
+                case 12:
+                    if (!$this->exportacaoArquivo) {
+                        $dado->setDescricao("<span style='color: #8f8f0b'>" . $dado->getDescricao() . "</span>");
+                        $texto = "<span style='color: #8f8f0b'>" . $dado->getData()->format('d/m/Y H:i:s') . "</span>";
+                        $dado->formataExibicaoData($texto);
+                    }
+                    break;
+            }
+        }
         unset($esocialEnvioTemporario);
     }
 }

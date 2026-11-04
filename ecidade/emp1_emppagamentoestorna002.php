@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -170,10 +170,10 @@ if (isset($confirmar)) {
   }
   //array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
   $arr_codeleval = array();
-  $arr_dados = split("#", $dados);
+  $arr_dados =explode("#", $dados);
   $tam = count($arr_dados);
   for ($i = 0; $i < $tam; $i ++) {
-    $arr_ele = split("-", $arr_dados[$i]);
+    $arr_ele =explode("-", $arr_dados[$i]);
     //$arr_ele[0] é o codigo do elemento   $arr_ele[1] é o valor que será estornado  $arr_ele[2] é o valor que já foi anulado
 
     $elemento = $arr_ele[0];
@@ -637,7 +637,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
   $db_botao = true;
   //rotina que traz os dados de empempenho
   if (isset($e60_codemp) && $e60_codemp != '') {
-    $arr = split("/", $e60_codemp);
+    $arr =explode("/", $e60_codemp);
     if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
       $dbwhere_ano = " and e60_anousu = ".$arr[1];
     } else {
@@ -708,7 +708,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 
 
 if (isset ($confirmar) && $sqlerro == false) {
@@ -720,14 +720,14 @@ include(modification("forms/db_frmemppagamentoestorna.php"));
 	</td>
   </tr>
 </table>
-<?
+<?php
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 
 
 if ($db_opcao == 22) {

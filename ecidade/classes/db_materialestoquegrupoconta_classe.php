@@ -56,13 +56,13 @@ class cl_materialestoquegrupoconta {
                  m66_codconvpd = int4 = Conta VPD
                  ";
    //funcao construtor da classe
-   function cl_materialestoquegrupoconta() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialestoquegrupoconta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_materialestoquegrupoconta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->m66_sequencial = ($this->m66_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["m66_sequencial"]:$this->m66_sequencial);
        $this->m66_materialestoquegrupo = ($this->m66_materialestoquegrupo == ""?@$GLOBALS["HTTP_POST_VARS"]["m66_materialestoquegrupo"]:$this->m66_materialestoquegrupo);
@@ -83,7 +83,7 @@ class cl_materialestoquegrupoconta {
      }
    }
    // funcao para inclusao
-   function incluir ($m66_sequencial){
+   public function incluir ($m66_sequencial){
       $this->atualizacampos();
      if($this->m66_materialestoquegrupo == null ){
        $this->erro_sql = " Campo Código do Grupo nao Informado.";
@@ -195,7 +195,7 @@ class cl_materialestoquegrupoconta {
      return true;
    }
    // funcao para alteracao
-   function alterar ($m66_sequencial=null) {
+   public function alterar ($m66_sequencial=null) {
       $this->atualizacampos();
      $sql = " update materialestoquegrupoconta set ";
      $virgula = "";
@@ -302,7 +302,7 @@ class cl_materialestoquegrupoconta {
      }
    }
    // funcao para exclusao
-   function excluir ($m66_sequencial=null,$dbwhere=null) {
+   public function excluir ($m66_sequencial=null,$dbwhere=null) {
 
      $sql = " delete from materialestoquegrupoconta
                     where ";
@@ -350,7 +350,7 @@ class cl_materialestoquegrupoconta {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -373,10 +373,10 @@ class cl_materialestoquegrupoconta {
      return $result;
    }
    // funcao do sql
-   function sql_query ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_materialestoquegrupoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,10 +413,10 @@ class cl_materialestoquegrupoconta {
      return $sql;
   }
    // funcao do sql
-   function sql_query_file ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,15 +429,15 @@ class cl_materialestoquegrupoconta {
      $sql2 = "";
      if($dbwhere==""){
        if($m66_sequencial!=null ){
-         $sql2 .= " where materialestoquegrupoconta.m66_sequencial = $m66_sequencial ";
-       }
+         $sql2 .= " where materialestoquegrupoconta.m66_sequencial = $m66_sequencial "; 
+       } 
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

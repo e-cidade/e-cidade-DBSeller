@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpareceres->rotulo->label("ed25_t_atividades");
               <?=$Led25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed25_i_codigo",5,$Ied25_i_codigo,true,"text",4,"","chave_ed25_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clpareceres->rotulo->label("ed25_t_atividades");
               <?=$Led25_t_atividades?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
                        db_input("ed25_t_atividades",1,$Ied25_t_atividades,true,"text",4,"","chave_ed25_t_atividades");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clpareceres->rotulo->label("ed25_t_atividades");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pareceres.php")==true){
@@ -120,12 +120,12 @@ $clpareceres->rotulo->label("ed25_t_atividades");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

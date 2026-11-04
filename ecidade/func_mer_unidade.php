@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clmer_unidade->rotulo->label("m61_descr");
               <?=$Lme07_i_unidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("me07_i_unidade",5,$Ime07_i_unidade,true,"text",4,"","chave_me07_i_unidade");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clmer_unidade->rotulo->label("m61_descr");
               <?=$Lm61_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m61_descr",20,$Im61_descr,true,"text",4,"","chave_m61_descr");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clmer_unidade->rotulo->label("m61_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -133,13 +133,13 @@ $clmer_unidade->rotulo->label("m61_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php
   
 }
 ?>

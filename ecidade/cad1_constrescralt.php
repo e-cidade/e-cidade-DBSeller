@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,7 +77,7 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
      $j52_idcons = $j52_idcons + 1;
    }
    $clconstrescr->incluir($j52_matric,$j52_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz=explode("X",$caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j53_caract = $matriz[$i];
      if($j53_caract!=""){
@@ -103,7 +103,7 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
 
   $clconstrescr->alterar($j52_matric,$j52_idcons);
 
-  $matriz= split("X",$caracteristica);
+  $matriz=explode("X",$caracteristica);
   for($i=0;$i<sizeof($matriz);$i++){
     $j53_caract = $matriz[$i];
     if($j53_caract!=""){
@@ -167,7 +167,7 @@ input {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-      <?
+      <?php
         include(modification("forms/db_frmconstrescralt.php"));
         flush();
       ?>
@@ -187,7 +187,7 @@ js_colocaid2();
 </script>
 
 
-<?
+<?php
 if(isset($incluir)||(isset($alterar))){
   if($clconstrescr->erro_status=="0"){
     $clconstrescr->erro(true,false);

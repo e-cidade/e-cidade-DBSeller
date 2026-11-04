@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("o42_descrrel");
        <?=@$Lc83_codigo?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('c83_codigo',10,$Ic83_codigo,true,'text',3,"")
 		?>
     </td>
@@ -51,7 +51,7 @@ $clrotulo->label("o42_descrrel");
        <?=@$Lc83_codrel?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('c83_codrel',5,$Ic83_codrel,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -59,12 +59,12 @@ $clrotulo->label("o42_descrrel");
 	-->
 	<tr>
     <td nowrap title="<?=@$Tc83_codrel?>">
-       <?
+       <?php
        db_ancora(@$Lc83_codrel,"js_pesquisao69_codparamrel(true);",$db_opcao);
        ?>
     </td>
     <td nowrap> 
-			<?
+			<?php
 			  db_input('c83_codrel',10,null,true,'text',$db_opcao," onchange='js_pesquisao69_codparamrel(false);'");
 			  db_input('o42_descrrel',36,$Io42_descrrel,true,'text',3,'')
 			?>
@@ -79,7 +79,7 @@ $clrotulo->label("o42_descrrel");
        <?=@$Lc83_variavel?>
     </td>
     <td> 
-		<?
+		<?php
 		db_input('c83_variavel',50,$Ic83_variavel,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -89,7 +89,7 @@ $clrotulo->label("o42_descrrel");
        <?=@$Lc83_anousu?>
     </td>
     <td> 
-		<?
+		<?php
 		$c83_anousu = db_getsession('DB_anousu');
 		db_input('c83_anousu',4,$Ic83_anousu,true,'text',3,"")
 		?>
@@ -132,7 +132,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conrelinfo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

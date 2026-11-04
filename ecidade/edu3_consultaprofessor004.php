@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -66,7 +66,7 @@ $clrotulo = new rotulocampo;
        <b>Escola:</b>
       </td>
       <td>
-       <?
+       <?php
        $sql = "SELECT DISTINCT ed18_i_codigo,ed18_c_nome
                  FROM regenciahorario
                       inner join regencia on ed59_i_codigo = ed58_i_regencia
@@ -84,13 +84,13 @@ $clrotulo = new rotulocampo;
        <select name="escola"
                style="font-size:9px;width:300px;height:18px;"
                onchange="location.href='edu3_consultaprofessor004.php?chavepesquisa=<?=$chavepesquisa?>&escola='+document.form1.escola.value+'&ano='+document.form1.ano.value">
-       <?
+       <?php
        for( $x = 0; $x < $linhas; $x++ ) {
 
          db_fieldsmemory( $result, $x );
          ?>
          <option value="<?=$ed18_i_codigo?>" <?=@$ed18_i_codigo == @$escola ? "selected" : ""?>><?=$ed18_c_nome?></option>
-         <?
+         <?php
        }
        ?>
       </select>
@@ -102,7 +102,7 @@ $clrotulo = new rotulocampo;
       <select name="ano"
               style="font-size:9px;width:150px;height:18px;"
               onchange="location.href='edu3_consultaprofessor004.php?chavepesquisa=<?=$chavepesquisa?>&escola='+document.form1.escola.value+'&ano='+document.form1.ano.value">
-       <?
+       <?php
        $sql1 = "SELECT DISTINCT ed52_i_ano
                   FROM regenciahorario
                        inner join regencia         on ed59_i_codigo     = ed58_i_regencia
@@ -123,7 +123,7 @@ $clrotulo = new rotulocampo;
          db_fieldsmemory( $result1, $x );
          ?>
          <option value="<?=$ed52_i_ano?>" <?=@$ed52_i_ano == @$ano ? "selected" : ""?>><?=$ed52_i_ano?></option>
-         <?
+         <?php
        }
 
        if( $linhas == 0 || $linhas1 == 0 ) {
@@ -135,7 +135,7 @@ $clrotulo = new rotulocampo;
      </tr>
     </table>
     <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000" width="100%">
-      <?
+      <?php
       $turno   = "";
       $sql     = $clperiodoescola->sql_query( "", "*", "ed15_i_sequencia, ed08_i_sequencia", "ed17_i_escola = {$escola}");
       $result1 = $clperiodoescola->sql_record( $sql );
@@ -158,7 +158,7 @@ $clrotulo = new rotulocampo;
               <td width="40" align="center" style="font-weight: bold; color: #DEB887;">
                 <?=pg_result($result1,$z,"ed15_c_nome");?>
               </td>
-          <?
+          <?php
 
               $sWhereDiaSemana = "ed04_c_letivo = 'S' AND ed04_i_escola = {$escola}";
               $sSqlDiaSemana   = $cldiasemana->sql_query_rh( "", "*", "ed32_i_codigo", $sWhereDiaSemana );
@@ -172,7 +172,7 @@ $clrotulo = new rotulocampo;
                   </a>
                 </td>
               </tr>
-            <?
+            <?php
             }
             for( $x = 0; $x < $cldiasemana->numrows; $x++ ) {
 
@@ -188,7 +188,7 @@ $clrotulo = new rotulocampo;
                   </tr>
                 </table>
               </td>
-            <?}?>
+            <?php }?>
             </tr>
           <?php
           }
@@ -245,12 +245,12 @@ $clrotulo = new rotulocampo;
                 <?=$str_turma?><br>
                 <?=$str_serie?>
               </td>
-            <?
+            <?php
               $ed20_i_codigo = "";
             }
          ?>
          <tr>
-        <?
+        <?php
         }
       }
       ?>

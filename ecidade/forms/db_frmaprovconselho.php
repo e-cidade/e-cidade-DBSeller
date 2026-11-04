@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: educação
@@ -34,7 +34,7 @@ $clrotulo->label("nome");
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?
+<?php
 $sCampos = "ed74_i_diario,ed47_v_nome,ed74_c_resultadofreq, ed74_c_resultadoaprov ";
 $sWhere  = " ed95_i_regencia = $regencia AND ed74_c_resultadofinal = 'R' AND ed95_c_encerrado = 'N'";
 
@@ -44,7 +44,7 @@ $result3 = $cldiariofinal->sql_record($sSql);
 if($cldiariofinal->numrows>0){
  ?>
  <table border="0">
-  <?db_input('ed253_i_codigo',20,$Ied253_i_codigo,true,'hidden',$db_opcao,"")?>
+  <?php db_input('ed253_i_codigo',20,$Ied253_i_codigo,true,'hidden',$db_opcao,"")?>
   <tr>
    <td>
     <b>Alunos Reprovados:</b>
@@ -52,7 +52,7 @@ if($cldiariofinal->numrows>0){
    <td>
     <select id='ed253_i_diario' onchange='js_bloqueiaReeclassificacao()' name="ed253_i_diario">
      <option value=""></option>
-     <?
+     <?php
      for($t=0;$t<$cldiariofinal->numrows;$t++) {
 
        db_fieldsmemory($result3,$t);;
@@ -77,17 +77,17 @@ if($cldiariofinal->numrows>0){
     <?=@$Led253_t_obs?>
    </td>
    <td>
-    <?db_textarea('ed253_t_obs',3,60,$Ied253_t_obs,true,'text',$db_opcao,"")?>
+    <?php db_textarea('ed253_t_obs',3,60,$Ied253_t_obs,true,'text',$db_opcao,"")?>
    </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Ted253_i_rechumano?>">
-    <?db_ancora(@$Led253_i_rechumano,"js_pesquisaed253_i_rechumano(true);",$db_opcao);?>
+    <?php db_ancora(@$Led253_i_rechumano,"js_pesquisaed253_i_rechumano(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('ed253_i_rechumano',20,$Ied253_i_rechumano,true,'hidden',3,'')?>
-    <?db_input('identificacao',20,@$Iidentificacao,true,'text',3,'')?>
-    <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+    <?php db_input('ed253_i_rechumano',20,$Ied253_i_rechumano,true,'hidden',3,'')?>
+    <?php db_input('identificacao',20,@$Iidentificacao,true,'text',3,'')?>
+    <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
    </td>
   </tr>
   <?php
@@ -117,14 +117,14 @@ if($cldiariofinal->numrows>0){
         type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <?}else{?>
  <table border="0">
-  <?db_input('ed253_i_codigo',20,$Ied253_i_codigo,true,'hidden',$db_opcao,"")?>
+  <?php db_input('ed253_i_codigo',20,$Ied253_i_codigo,true,'hidden',$db_opcao,"")?>
   <tr>
    <td>
     <b>Nenhum aluno não encerrado tem a situação de Reprovado nesta disciplina.</b>
    </td>
   </tr>
  </table>
-<?}?>
+<?php }?>
 </center>
 </form>
 <script>

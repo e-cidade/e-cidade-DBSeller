@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ $clprocessoforo->rotulo->label();
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/windowAux.widget.js,messageboard.widget.js");
   db_app::load("estilos.css, grid.style.css,tab.style.css");
@@ -57,7 +57,7 @@ $clprocessoforo->rotulo->label();
 <center>
 <form name="form1" method="post">
 <table width="100%" style="margin-top: 20px;" align="center" border="1">
-<?
+<?php
 $sWhere           = " v70_sequencial = {$oGet->v70_sequencial}";
 $sSqlProcessoForo = $clprocessoforo->sql_query_cgm_nome(null, " distinct cgm.z01_numcgm, cgm.z01_nome, cgmr.z01_numcgm as numcgm, cgmr.z01_nome as nome", null, $sWhere,false);
 $rsProcessoForo   = $clprocessoforo->sql_record($sSqlProcessoForo);

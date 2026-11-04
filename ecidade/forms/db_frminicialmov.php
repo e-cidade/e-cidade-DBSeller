@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $clrotulo->label("nome");
        <?=@$Lat01_status?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('at01_status',$x,true,$db_opcao,"");
 ?>
@@ -51,7 +51,7 @@ db_select('at01_status',$x,true,$db_opcao,"");
        <?=@$Lv56_codmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_codmov',6,$Iv56_codmov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -61,37 +61,37 @@ db_input('v56_codmov',6,$Iv56_codmov,true,'text',$db_opcao,"")
        <?=@$Lat02_codatend?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_codatend',6,$Iat02_codatend,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_inicial?>">
-       <?
+       <?php
        db_ancora(@$Lv56_inicial,"js_pesquisav56_inicial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_inicial',8,$Iv56_inicial,true,'text',$db_opcao," onchange='js_pesquisav56_inicial(false);'")
 ?>
-       <?
+       <?php
 db_input('v50_data',8,$Iv50_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_codsit?>">
-       <?
+       <?php
        db_ancora(@$Lv56_codsit,"js_pesquisav56_codsit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_codsit',6,$Iv56_codsit,true,'text',$db_opcao," onchange='js_pesquisav56_codsit(false);'")
 ?>
-       <?
+       <?php
 db_input('v52_descr',40,$Iv52_descr,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('v52_descr',40,$Iv52_descr,true,'text',3,'')
        <?=@$Lv56_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('v56_obs',0,0,$Iv56_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,22 +111,22 @@ db_textarea('v56_obs',0,0,$Iv56_obs,true,'text',$db_opcao,"")
        <?=@$Lv56_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v56_data',@$v56_data_dia,@$v56_data_mes,@$v56_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_id_login?>">
-       <?
+       <?php
        db_ancora(@$Lv56_id_login,"js_pesquisav56_id_login(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_id_login',6,$Iv56_id_login,true,'text',$db_opcao," onchange='js_pesquisav56_id_login(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -214,7 +214,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -239,7 +239,7 @@ $clrotulo->label("nome");
        <?=@$Lat01_status?>
     </td>
     <td> 
-<?
+<?php
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('at01_status',$x,true,$db_opcao,"");
 ?>
@@ -250,7 +250,7 @@ db_select('at01_status',$x,true,$db_opcao,"");
        <?=@$Lv56_codmov?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_codmov',6,$Iv56_codmov,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -260,37 +260,37 @@ db_input('v56_codmov',6,$Iv56_codmov,true,'text',$db_opcao,"")
        <?=@$Lat02_codatend?>
     </td>
     <td> 
-<?
+<?php
 db_input('at02_codatend',6,$Iat02_codatend,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_inicial?>">
-       <?
+       <?php
        db_ancora(@$Lv56_inicial,"js_pesquisav56_inicial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_inicial',8,$Iv56_inicial,true,'text',$db_opcao," onchange='js_pesquisav56_inicial(false);'")
 ?>
-       <?
+       <?php
 db_input('v50_data',8,$Iv50_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_codsit?>">
-       <?
+       <?php
        db_ancora(@$Lv56_codsit,"js_pesquisav56_codsit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_codsit',6,$Iv56_codsit,true,'text',$db_opcao," onchange='js_pesquisav56_codsit(false);'")
 ?>
-       <?
+       <?php
 db_input('v52_descr',40,$Iv52_descr,true,'text',3,'')
        ?>
     </td>
@@ -300,7 +300,7 @@ db_input('v52_descr',40,$Iv52_descr,true,'text',3,'')
        <?=@$Lv56_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('v56_obs',0,0,$Iv56_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -310,22 +310,22 @@ db_textarea('v56_obs',0,0,$Iv56_obs,true,'text',$db_opcao,"")
        <?=@$Lv56_data?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('v56_data',@$v56_data_dia,@$v56_data_mes,@$v56_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv56_id_login?>">
-       <?
+       <?php
        db_ancora(@$Lv56_id_login,"js_pesquisav56_id_login(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('v56_id_login',6,$Iv56_id_login,true,'text',$db_opcao," onchange='js_pesquisav56_id_login(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',20,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -413,7 +413,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

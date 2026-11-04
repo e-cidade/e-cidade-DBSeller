@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,12 +97,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -110,13 +110,13 @@ function js_emite(){
       </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora("Líquido (B100)","js_pesquisabase01(true)",4);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('base01',4,@$base01,true,'text',@$db_opcao,"onchange='js_pesquisabase01(false)'");
               db_input("r08_descr",30,$Ir08_descr,true,"text",3,"","descr_base01");
               ?>
@@ -125,7 +125,7 @@ function js_emite(){
             <strong>Perc. :&nbsp;&nbsp;</strong>
             </td>
             <td>
-            <?
+            <?php
 	     @$perc1=50;
              db_input('perc1',3,$perc1,true,'text',2,'')
             ?>
@@ -133,13 +133,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora("SSPMO (B102)","js_pesquisabase02(true)",@$db_opcao);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('base02',4,@$base02,true,'text',@$db_opcao,"onchange='js_pesquisabase02(false)'");
               db_input("r08_descr",30,$Ir08_descr,true,"text",3,"","descr_base02");
               ?>
@@ -148,7 +148,7 @@ function js_emite(){
             <strong>Perc. :&nbsp;&nbsp;</strong>
             </td>
             <td>
-            <?
+            <?php
 	     @$perc2=15;
              db_input('perc2',3,$perc2,true,'text',2,'')
             ?>
@@ -156,13 +156,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora("AFMO (B103)","js_pesquisabase03(true)",@$db_opcao);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('base03',4,@$base03,true,'text',@$db_opcao,"onchange='js_pesquisabase03(false)'");
               db_input("r08_descr",30,$Ir08_descr,true,"text",3,"","descr_base03");
               ?>
@@ -171,7 +171,7 @@ function js_emite(){
             <strong>Perc. :&nbsp;&nbsp;</strong>
             </td>
             <td>
-            <?
+            <?php
 	     @$perc3=15;
              db_input('perc3',3,$perc3,true,'text',2,'')
             ?>
@@ -179,13 +179,13 @@ function js_emite(){
           </tr>
           <tr>
             <td nowrap align="right" title="" width="40%"><b>
-              <?
+              <?php
               db_ancora("CONSIGNAÇÕES (B104)","js_pesquisabase04(true)",@$db_opcao);
               ?>
 	      </b>
             </td>
             <td nowrap> 
-              <?
+              <?php
               db_input('base04',4,@$base04,true,'text',@$db_opcao,"onchange='js_pesquisabase04(false)'");
               db_input("r08_descr",30,$Ir08_descr,true,"text",3,"","descr_base04");
               ?>
@@ -194,7 +194,7 @@ function js_emite(){
             <strong>Perc. :&nbsp;&nbsp;</strong>
             </td>
             <td>
-            <?
+            <?php
 	     @$perc4=20;
              db_input('perc4',3,$perc4,true,'text',2,'')
             ?>
@@ -205,7 +205,7 @@ function js_emite(){
 	 <strong>Filtro :</strong>
 	 </td>
 	 <td  align="left">
-               <?
+               <?php
                  $x = array("c"=>"Com Diferença","t"=>"Todos");
                  db_select('filtro',$x,true,4,"");
                ?>
@@ -220,7 +220,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

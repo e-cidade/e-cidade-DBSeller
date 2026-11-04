@@ -50,6 +50,7 @@ class cl_issconfiguracaogruposervico {
    public $q136_localpagamento = 0;
    public $q136_deducao = 'f';
    public $q136_retencao = 'f';
+   public $q136_salaoparceiro = 'f';
    // cria propriedade com as variaveis do arquivo
    var $campos = "
                  q136_sequencial = int8 = Sequencial
@@ -60,6 +61,7 @@ class cl_issconfiguracaogruposervico {
                  q136_localpagamento = int4 = Local de pagamento
                  q136_deducao = bool = Deduz Valor Nota
                  q136_retencao = bool = Retenção p/ Prestação Fora do Município
+                 q136_salaoparceiro = boll = Salão Parceiro
                  ";
    //funcao construtor da classe
    public function cl_issconfiguracaogruposervico() {
@@ -107,6 +109,9 @@ class cl_issconfiguracaogruposervico {
        if ($this->q136_retencao == null) {
            $this->q136_retencao = "false";
        }
+       if ($this->q136_salaoparceiro == null) {
+        $this->q136_salaoparceiro = "false";
+    }
      if($this->q136_exercicio == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "q136_exercicio";
@@ -178,6 +183,7 @@ class cl_issconfiguracaogruposervico {
                                       ,q136_localpagamento
                                       ,q136_deducao
                                       ,q136_retencao
+                                      ,q136_salaoparceiro
                        )
                 values (
                                 $this->q136_sequencial
@@ -188,6 +194,7 @@ class cl_issconfiguracaogruposervico {
                                ,$this->q136_localpagamento
                                ,'$this->q136_deducao'
                                ,'$this->q136_retencao'
+                               ,'$this->q136_salaoparceiro'
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -227,6 +234,7 @@ class cl_issconfiguracaogruposervico {
        $resac = db_query("insert into db_acount values($acount,3430,19302,'','".AddSlashes(pg_result($resaco,0,'q136_localpagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,3430,1014493,'','".AddSlashes(pg_result($resaco,0,'q136_deducao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        $resac = db_query("insert into db_acount values($acount,3430,1014492,'','".AddSlashes(pg_result($resaco,0,'q136_retencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3430,1015668,'','".AddSlashes(pg_result($resaco,0,'q136_salaoparceiro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -315,6 +323,10 @@ class cl_issconfiguracaogruposervico {
            $sql .= $virgula . " q136_retencao = '$this->q136_retencao' ";
            $virgula = ",";
        }
+       if (trim($this->q136_salaoparceiro) != "" || isset($GLOBALS["HTTP_POST_VARS"]["q136_salaoparceiro"])) {
+           $sql .= $virgula . " q136_salaoparceiro = '$this->q136_salaoparceiro' ";
+           $virgula = ",";
+      }
      $sql .= " where ";
      if($q136_sequencial!=null){
        $sql .= " q136_sequencial = $this->q136_sequencial";
@@ -342,6 +354,8 @@ class cl_issconfiguracaogruposervico {
                $resac = db_query("insert into db_acount values($acount,3430,1014493,'".AddSlashes(pg_result($resaco,$conresaco,'q136_deducao'))."','$this->q136_deducao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q136_retencao"]) || $this->q136_retencao != "")
                $resac = db_query("insert into db_acount values($acount,3430,1014493,'".AddSlashes(pg_result($resaco,$conresaco,'q136_retencao'))."','$this->q136_retencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            if(isset($GLOBALS["HTTP_POST_VARS"]["q136_salaoparceiro"]) || $this->q136_salaoparceiro != "")
+            $resac = db_query("insert into db_acount values($acount,3430,1015668,'".AddSlashes(pg_result($resaco,$conresaco,'q136_salaoparceiro'))."','$this->q136_salaoparceiro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);

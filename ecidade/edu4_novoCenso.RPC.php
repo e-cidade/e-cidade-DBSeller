@@ -36,6 +36,7 @@ require_once modification('dbforms/db_funcoes.php');
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\Identificacao\Importar;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\ImportarFactory;
+use ECidade\Educacao\Escola\Censo\Registry\LogCensoRegistry;
 
 $retorno = new stdClass();
 $retorno->erro = false;
@@ -48,7 +49,6 @@ $moduloEscola = 1100747;
 
 db_inicio_transacao();
 try {
-
     switch ($parametros->acao) {
         case 'gerarCenso':
             if (empty($parametros->ano)) {
@@ -59,9 +59,27 @@ try {
             $censo->setEscola($escola);
             $retorno->arquivo_censo = '';
             $retorno->arquivo_log = '';
+            $retorno->erroCPF = '';
             if ($censo->exportarMatriculaInicial()) {
                 $retorno->arquivo_censo = $censo->getArquivoCenso();
             } else {
+                $logs = LogCensoRegistry::get(LogCensoRegistry::MATRICULA_INICIAL)->getLogs();
+                if (array_keys($logs) === [30]) {
+                    foreach ($logs[30] as $log) {
+                        if (str_contains($log, 'CPF ALUNO')) {
+                            $somenteCPF = true;
+                        }
+                    }
+                    foreach ($logs[30] as $log) {
+                        if (!str_contains($log, 'CPF ALUNO')) {
+                            $somenteCPF = false;
+                        }
+                    }
+                    if ($somenteCPF) {
+                        $retorno->erroCPF = $somenteCPF;
+                        $retorno->arquivo_censo = $censo->getArquivoCenso();
+                    }
+                }
                 $retorno->arquivo_log = $censo->getArquivoLog();
             }
             break;
@@ -92,7 +110,7 @@ try {
                 return EscolaRepository::getEscolaByCodigo($codigo);
             }, $parametros->escolas);
 
-            $retorno->arquivo_censo = $censo->exportarArquivoIdentificacao($escolas);
+            $retorno->arquivo_censo = $censo->exportarArquivoIdentificacao($escolas, $parametros->data_censo);
             break;
         case 'importarArquivoIdentificacao':
             $importar = new Importar();
@@ -100,7 +118,6 @@ try {
             $retorno->mensagem = "Importação realizada com sucesso.";
             break;
     }
-
 } catch (Exception $exception) {
     $retorno->erro = true;
     $retorno->mensagem = $exception->getMessage();
@@ -109,4 +126,3 @@ try {
 db_fim_transacao($retorno->erro);
 
 echo JSON::create()->stringify($retorno);
-

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,13 +53,13 @@ $tipo = $db_opcao==1?"Inclusão":($db_opcao==2||$db_opcao==22?"Alteração":"Exclus
        <?=@$Lfa05_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa05_i_codigo',10,$Ifa05_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   
-  <?
+  <?php
 
    if(isset($estrutura_altera) || isset($chavepesquisa) && isset($fa05_c_class)){
      if(empty($estrutura_altera)){
@@ -91,7 +91,7 @@ db_input('fa05_i_codigo',10,$Ifa05_i_codigo,true,'text',3,"")
        <?=@$Lfa05_c_tipo?>
     </td>
     <td>
-          <?
+          <?php
           $sex = array("S"=>"Sintético","A"=>"Analítico");
           db_select('fa05_c_tipo',$sex,true,$db_opcao);
           ?>
@@ -102,7 +102,7 @@ db_input('fa05_i_codigo',10,$Ifa05_i_codigo,true,'text',3,"")
        <?=@$Lfa05_c_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa05_c_descr',50,$Ifa05_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ db_input('fa05_c_descr',50,$Ifa05_c_descr,true,'text',$db_opcao,"")
        <?=@$Lfa05_t_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('fa05_t_obs',1,47,$Ifa05_t_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -140,7 +140,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_class.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -149,7 +149,7 @@ function js_preenchepesquisa(chave){
 
 
 </script>
-<?
+<?php
 if(isset($focar)){
     echo "<script>
     document.form1.fa05_c_descr.focus();

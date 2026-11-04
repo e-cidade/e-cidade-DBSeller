@@ -47,11 +47,13 @@ class cl_calendarioescola
     public $ed38_i_codigo = 0;
     public $ed38_i_escola = 0;
     public $ed38_i_calendario = 0;
+    public $ed38_calendariobase = 0;
    // cria propriedade com as variaveis do arquivo
     public $campos = "
                  ed38_i_codigo = int8 = Código
                  ed38_i_escola = int8 = Escola
                  ed38_i_calendario = int8 = Calendário
+                 ed38_calendariobase = int8 = Calendário Base
                  ";
 
     public function __construct()
@@ -76,6 +78,7 @@ class cl_calendarioescola
        $this->ed38_i_codigo = ($this->ed38_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed38_i_codigo"]:$this->ed38_i_codigo);
        $this->ed38_i_escola = ($this->ed38_i_escola == ""?@$GLOBALS["HTTP_POST_VARS"]["ed38_i_escola"]:$this->ed38_i_escola);
        $this->ed38_i_calendario = ($this->ed38_i_calendario == ""?@$GLOBALS["HTTP_POST_VARS"]["ed38_i_calendario"]:$this->ed38_i_calendario);
+       $this->ed38_calendariobase = ($this->ed38_calendariobase == ""?@$GLOBALS["HTTP_POST_VARS"]["ed38_calendariobase"]:$this->ed38_calendariobase);
      }else{
        $this->ed38_i_codigo = ($this->ed38_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed38_i_codigo"]:$this->ed38_i_codigo);
      }
@@ -83,7 +86,7 @@ class cl_calendarioescola
 
     public function incluir($ed38_i_codigo)
     {
-      $this->atualizacampos();
+        $this->atualizacampos();
      if($this->ed38_i_escola == null ){
        $this->erro_sql = " Campo Escola não informado.";
        $this->erro_campo = "ed38_i_escola";
@@ -102,6 +105,9 @@ class cl_calendarioescola
        $this->erro_status = "0";
        return false;
      }
+     if($this->ed38_calendariobase == null ){
+        $this->ed38_calendariobase = 'null';
+    }
      if($ed38_i_codigo == "" || $ed38_i_codigo == null ){
        $result = db_query("select nextval('calendarioescola_ed38_i_codigo_seq')");
        if($result==false){
@@ -138,11 +144,13 @@ class cl_calendarioescola
                                        ed38_i_codigo
                                       ,ed38_i_escola
                                       ,ed38_i_calendario
+                                      ,ed38_calendariobase
                        )
                 values (
                                 $this->ed38_i_codigo
                                ,$this->ed38_i_escola
                                ,$this->ed38_i_calendario
+                               ,$this->ed38_calendariobase
                       )";
      $result = db_query($sql);
      if($result==false){
@@ -182,6 +190,7 @@ class cl_calendarioescola
          $resac = db_query("insert into db_acount values($acount,1010104,1008579,'','".AddSlashes(pg_result($resaco,0,'ed38_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010104,1008580,'','".AddSlashes(pg_result($resaco,0,'ed38_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          $resac = db_query("insert into db_acount values($acount,1010104,1008581,'','".AddSlashes(pg_result($resaco,0,'ed38_i_calendario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010104,1008581,'','".AddSlashes(pg_result($resaco,0,'ed38_calendariobase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -231,6 +240,19 @@ class cl_calendarioescola
          return false;
        }
      }
+     if(trim($this->ed38_calendariobase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed38_calendariobase"])){
+      $sql  .= $virgula." ed38_calendariobase = $this->ed38_calendariobase ";
+      $virgula = ",";
+      if(trim($this->ed38_calendariobase) == null ){
+        $this->erro_sql = " Campo Calendário não informado.";
+        $this->erro_campo = "ed38_calendariobase";
+        $this->erro_banco = "";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
+        $this->erro_status = "0";
+        return false;
+      }
+    }
      $sql .= " where ";
      if($ed38_i_codigo!=null){
        $sql .= " ed38_i_codigo = $this->ed38_i_codigo";
@@ -254,7 +276,9 @@ class cl_calendarioescola
              $resac = db_query("insert into db_acount values($acount,1010104,1008580,'".AddSlashes(pg_result($resaco,$conresaco,'ed38_i_escola'))."','$this->ed38_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed38_i_calendario"]) || $this->ed38_i_calendario != "")
              $resac = db_query("insert into db_acount values($acount,1010104,1008581,'".AddSlashes(pg_result($resaco,$conresaco,'ed38_i_calendario'))."','$this->ed38_i_calendario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         }
+           if (isset($GLOBALS["HTTP_POST_VARS"]["ed38_calendariobase"]) || $this->ed38_calendariobase != "")
+             $resac = db_query("insert into db_acount values($acount,1010104,1008581,'".AddSlashes(pg_result($resaco,$conresaco,'ed38_calendariobase'))."','$this->ed38_calendariobase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          }
        }
      }
      $result = db_query($sql);
@@ -313,6 +337,7 @@ class cl_calendarioescola
            $resac  = db_query("insert into db_acount values($acount,1010104,1008579,'','".AddSlashes(pg_result($resaco,$iresaco,'ed38_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010104,1008580,'','".AddSlashes(pg_result($resaco,$iresaco,'ed38_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            $resac  = db_query("insert into db_acount values($acount,1010104,1008581,'','".AddSlashes(pg_result($resaco,$iresaco,'ed38_i_calendario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010104,1008581,'','".AddSlashes(pg_result($resaco,$iresaco,'ed38_calendariobase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

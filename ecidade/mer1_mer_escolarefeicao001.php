@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,15 +53,15 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
     <tr>
      <td>
       <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
-       <tr>        
+       <tr>
        </tr>
-       <?      
+       <?php
         $sSql  = "SELECT ed18_i_codigo,
                         ed18_c_nome,
                         me27_i_ano,
                         (select count(*) from turma
                           inner join turmaserieregimemat on ed220_i_turma = ed57_i_codigo
-                          inner join serieregimemat on ed223_i_codigo = ed220_i_serieregimemat                          
+                          inner join serieregimemat on ed223_i_codigo = ed220_i_serieregimemat
                           inner join calendario on ed52_i_codigo = ed57_i_calendario
                           inner join mer_tpcardapioturma on me28_i_cardapioescola = me32_i_codigo
                                                         and me28_i_serie = ed223_i_serie
@@ -70,7 +70,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
                         (select count(*) from matricula
                           inner join turma on ed57_i_codigo = ed60_i_turma
                           inner join matriculaserie on ed221_i_matricula = ed60_i_codigo
-                                                   and ed221_c_origem = 'S'  
+                                                   and ed221_c_origem = 'S'
                           inner join calendario on ed52_i_codigo = ed57_i_calendario
                           inner join mer_tpcardapioturma on me28_i_cardapioescola = me32_i_codigo
                                                         and me28_i_serie = ed221_i_serie
@@ -82,13 +82,13 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
                    inner join mer_cardapioescola on mer_cardapioescola.me32_i_tipocardapio = mer_tipocardapio.me27_i_codigo
                    inner join escola on escola.ed18_i_codigo = mer_cardapioescola.me32_i_escola
                   WHERE me01_i_codigo = $me06_i_cardapio
-                  ORDER BY ed18_c_nome 
-                 ";  
+                  ORDER BY ed18_c_nome
+                 ";
         $rsEscola = db_query($sSql);
         //db_criatabela($result);
         $iLinhas = pg_num_rows($rsEscola);
         if ($iLinhas>0) {
-        	
+
           $cor1 = "#dbdbdb";
           $cor2 = "#f3f3f3";
           ?>
@@ -103,9 +103,9 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
           <b>Alunos</b>
           </td>
           </tr>
-          <?
+          <?php
           for ($c=0;$c<$iLinhas;$c++) {
-          	
+
             $oEscola = db_utils::fieldsmemory($rsEscola,$c);
             ?>
             <tr bgcolor="<?=$cor2?>">
@@ -113,24 +113,23 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
               <?=$oEscola->ed18_c_nome?>
             </td>
              <td>
-              <a href="javascript:js_matriculas(<?=$me06_i_cardapio?>,<?=$oEscola->ed18_i_codigo?>,<?=$oEscola->me27_i_ano?>)"><?=$oEscola->qtdturma?></a>             
+              <a href="javascript:js_matriculas(<?=$me06_i_cardapio?>,<?=$oEscola->ed18_i_codigo?>,<?=$oEscola->me27_i_ano?>)"><?=$oEscola->qtdturma?></a>
             </td>
              <td>
-             <?=$oEscola->qtdaluno?>              
+             <?=$oEscola->qtdaluno?>
             </td>
             </tr>
-            <?           
+            <?php
           }
         } else {
-        	
+
           ?>
-          <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
+          <table border='1px' width="100%" bgcolor="#cccccc"  cellspacing="0px">
            <tr bgcolor="#EAEAEA">
             <td class='aluno'>NENHUMA TURMA NESTE CALENDÁRIO.</td>
            </tr>
           </table>
-          <?
-          
+          <?php
         }
          ?>
          </td>
@@ -138,7 +137,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
           </table>
          </td>
         </tr>
-        
+
 
    </table>
    </fieldset>
@@ -148,9 +147,9 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 </html>
 <script>
 function js_matriculas(refeicao,escola,ano){
-	  
+
   js_OpenJanelaIframe('','db_iframe_matriculas','func_mer_turmarefeicao.php?escola='+escola+'&ano='+ano+'&refeicao='+refeicao,'Turmas',true);
   location.href = "#topo";
-	  
+
 }
 </script>

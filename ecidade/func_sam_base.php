@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsam_base->rotulo->label("sm01_descr");
               <?=$Lsm01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sm01_sequencial",10,$Ism01_sequencial,true,"text",4,"","chave_sm01_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsam_base->rotulo->label("sm01_descr");
               <?=$Lsm01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("sm01_descr",10,$Ism01_descr,true,"text",4,"","chave_sm01_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsam_base->rotulo->label("sm01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sam_base.php")==true){
@@ -122,12 +122,12 @@ $clsam_base->rotulo->label("sm01_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

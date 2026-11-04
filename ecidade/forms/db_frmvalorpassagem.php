@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,22 +40,22 @@ $clrotulo->label("nome");
        <?=@$Led230_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed230_i_codigo',10,$Ied230_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted230_i_linha?>">
-       <?
+       <?php
        db_ancora(@$Led230_i_linha,"js_pesquisaed230_i_linha(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed230_i_linha',10,$Ied230_i_linha,true,'text',3," onchange='js_pesquisaed230_i_linha(false);'")
 ?>
-       <?
+       <?php
 db_input('ed217_c_origem',40,$Ied217_c_origem,true,'text',3,'')
        ?>
     </td>
@@ -65,7 +65,7 @@ db_input('ed217_c_origem',40,$Ied217_c_origem,true,'text',3,'')
        <?=@$Led230_f_valor?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed230_f_valor',10,$Ied230_f_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -75,7 +75,7 @@ db_input('ed230_f_valor',10,$Ied230_f_valor,true,'text',$db_opcao,"")
        <?=@$Led230_d_datacad?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('ed230_d_datacad',@$ed230_d_datacad_dia,@$ed230_d_datacad_mes,@$ed230_d_datacad_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_valorpassagem.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

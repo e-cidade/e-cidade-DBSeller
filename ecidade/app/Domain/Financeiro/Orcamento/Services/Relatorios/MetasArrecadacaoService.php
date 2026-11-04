@@ -5,6 +5,8 @@ namespace App\Domain\Financeiro\Orcamento\Services\Relatorios;
 use App\Domain\Financeiro\Orcamento\Relatorios\AcompanhamentoMetasArrecadacaoPdf;
 use App\Domain\Financeiro\Planejamento\Relatorios\MetasArrecadacaoCSV;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita;
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceitaFormatter;
+use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceitaPadrao;
 use ECidade\Financeiro\Orcamento\Repository\AcompanhamentoCronogramaReceitaRepository;
 use Illuminate\Support\Collection;
 
@@ -15,6 +17,21 @@ class MetasArrecadacaoService extends BaseCronograma
      */
     private $recursos = [];
 
+    protected $ementario = 'ecidade';
+
+    /**
+     * @param string $natureza
+     * @return EstruturalReceitaFormatter
+     */
+    protected function getFormatterReceita($natureza)
+    {
+        if ($this->ementario === 'ecidade') {
+            return new EstruturalReceita($natureza);
+        }
+
+        return new EstruturalReceitaPadrao($natureza);
+    }
+
     protected function processaFiltros(array $filtros)
     {
         $this->exercicio = (int)$filtros['DB_anousu'];
@@ -24,6 +41,11 @@ class MetasArrecadacaoService extends BaseCronograma
         if (!empty($filtros['recursos'])) {
             $this->recursos = $filtros['recursos'];
         }
+
+        if (!empty($filtros['ementario'])) {
+            $this->ementario = $filtros['ementario'];
+        }
+
         $this->organizaFiltrosEmissao();
         $this->inicializaTotalizadores();
     }
@@ -37,6 +59,7 @@ class MetasArrecadacaoService extends BaseCronograma
         $this->dados['filtros']['agruparPor'] = $this->agruparPor;
         $this->dados['filtros']['periodicidade'] = $this->periodicidade;
         $this->dados['filtros']['filtrouRecurso'] = !empty($this->recursos);
+        $this->dados['ementario'] = $this->ementario;
     }
 
     /**
@@ -94,10 +117,13 @@ class MetasArrecadacaoService extends BaseCronograma
         if (!empty($this->recursos)) {
             $repository->scopeRecursos($this->recursos);
         }
+        $repository->scopeInstituicoes($this->instituicoes)
+            ->scopeExercicio($this->exercicio);
+        if ($this->ementario === 'ecidade') {
+            return $repository->getDadosRelatorio();
+        }
 
-        return $repository->scopeInstituicoes($this->instituicoes)
-            ->scopeExercicio($this->exercicio)
-            ->getDadosRelatorio();
+        return $repository->getDadosRelatorioPlanoPadrao($this->ementario);
     }
 
     private function agruparPorReceita(Collection $estimativas)
@@ -150,12 +176,13 @@ class MetasArrecadacaoService extends BaseCronograma
     private function processaEstimativas(Collection $estimativas)
     {
         return $estimativas->map(function ($estimativa) {
-            $estrutural = new EstruturalReceita($estimativa->natureza);
+            $estrutural = $this->getFormatterReceita($estimativa->natureza);
+            $hash = "{$estimativa->fonte_recurso}#{$estimativa->complemento}";
             $dado = [
-                'estrutural' => $estimativa->natureza,
+                'estrutural' => $estrutural->getEstrutural(),
                 'estrutural_mascara' => $estrutural->getEstruturalComMascara(),
                 'natureza' => $estimativa->descricao,
-                'codigo_recurso' => $estimativa->codigo_recurso,
+                'codigo_recurso' => $hash,
                 'fonte_recurso' => $estimativa->fonte_recurso,
                 'descricao_recurso' => $estimativa->descricao_recurso,
                 'complemento' => $estimativa->complemento,

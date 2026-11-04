@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ if(isset($incluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Inclusão de Exames</b></legend>
-	<? include(modification("forms/db_frmsau_exames.php"));?>
+	<?php include(modification("forms/db_frmsau_exames.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -66,7 +66,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","s108_c_exame",true,1,"s108_c_exame",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clsau_exames->erro_status=="0"){
     $clsau_exames->erro(true,false);

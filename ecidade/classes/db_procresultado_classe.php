@@ -72,13 +72,13 @@ class cl_procresultado {
                ed43_proporcionalidade = bool = Proporcionalidade
                ";
   //funcao construtor da classe
-  function cl_procresultado() {
+  public function __construct() {
    //classes dos rotulos dos campos
    $this->rotulo = new rotulo("procresultado");
    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
-  function erro($mostra,$retorna) {
+  public function erro($mostra,$retorna) {
    if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
       echo "<script>alert(\"".$this->erro_msg."\");</script>";
       if($retorna==true){
@@ -87,7 +87,7 @@ class cl_procresultado {
    }
   }
   // funcao para atualizar campos
-  function atualizacampos($exclusao=false) {
+  public function atualizacampos($exclusao=false) {
    if($exclusao==false){
      $this->ed43_i_codigo = ($this->ed43_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed43_i_codigo"]:$this->ed43_i_codigo);
      $this->ed43_i_procedimento = ($this->ed43_i_procedimento == ""?@$GLOBALS["HTTP_POST_VARS"]["ed43_i_procedimento"]:$this->ed43_i_procedimento);
@@ -107,7 +107,7 @@ class cl_procresultado {
    }
   }
   // funcao para inclusao
-  function incluir ($ed43_i_codigo){
+  public function incluir ($ed43_i_codigo){
     $this->atualizacampos();
    if($this->ed43_i_procedimento == null ){
      $this->erro_sql = " Campo Procedimento de Avaliação não informado.";
@@ -716,7 +716,7 @@ class cl_procresultado {
     }
     return $sql;
   }
-  function sql_query_aval ( $ed43_i_codigo=null, $campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_aval ( $ed43_i_codigo=null, $campos="*",$ordem=null,$dbwhere=""){
 
     $sql  = "select {$campos} ";
     $sql .= " from procresultado ";
@@ -736,7 +736,7 @@ class cl_procresultado {
     if($ordem != null ){
 
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = explode("#",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -771,7 +771,7 @@ return $sql;
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = explode('#', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -800,7 +800,7 @@ return $sql;
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = explode('#', $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 
@@ -816,7 +816,7 @@ return $sql;
   * @param integer $sWhereResultado
   * @return string
   */
-  function sql_query_composicaoresultado($iCodigoProcesso) {
+  public function sql_query_composicaoresultado($iCodigoProcesso) {
 
     $sSql  = " select ed44_i_procavaliacao as elemento, ed44_i_peso as peso, ed44_c_minimoaprov as minimo, ";
     $sSql .= "        ed41_i_sequencia as sequencia, 'A' as tipo_elemento, ed44_c_obrigatorio as obrigatorio";

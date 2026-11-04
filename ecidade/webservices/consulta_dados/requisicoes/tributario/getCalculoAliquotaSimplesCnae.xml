@@ -93,7 +93,7 @@
     <juncoes>
         <join tipo="inner" tabela="cnaeanalitica"                          condicao="q72_cnae = q71_sequencial" />
         <join tipo="inner" tabela="isscnaeanexos"                          condicao="q178_cnae = q71_sequencial" />
-        <join tipo="inner" tabela="issgscadanexos"                         condicao="q157_sequencial = q178_issgscadanexos" />
+        <join tipo="inner" tabela="issgscadanexos"                         condicao="(case when (q178_issgscadanexos = 3 and $fatorR > 28 ) then 1 else q178_issgscadanexos end) = q157_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixas"                      condicao="q163_issgscadanexos = q157_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixasimpostosfaixas"        condicao="q164_issgsanexosfaixas = q163_sequencial" />
         <join tipo="inner" tabela="issgsanexosfaixasimpostosfaixaslimites" condicao="q166_issgsanexosfaixasimpostosfaixas = q164_sequencial" />
@@ -108,4 +108,4 @@
     </filtros>
     <agrupamento campos="" />
     <ordenacao   campos="" />
-</consulta>
+</consulta> 

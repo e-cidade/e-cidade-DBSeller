@@ -65,7 +65,7 @@ $c58_descr = "NAO SE APLICA";
 * se o campo db_config.db21_usasisagua for true, usamos a func_aguabase.
 * se for false, usamos a func_iptubase
 */
-$oDaoDBConfig = db_utils::getDao("db_config");
+$oDaoDBConfig = new cl_db_config();
 $rsInstit = $oDaoDBConfig->sql_record($oDaoDBConfig->sql_query_file(db_getsession("DB_instit")));
 $oInstit = db_utils::fieldsMemory($rsInstit, 0);
 $sFuncaoBusca = "js_pesquisaMatricula";
@@ -79,7 +79,7 @@ $utilizaFonteRecursoUniao = FONTE_RECURSO_UNIAO ? 'true' : 'false';
 $clconparametro  = new cl_conparametro();
 $rsconparametro  = $clconparametro->sql_record($clconparametro->sql_query_file(null, "c90_confirmadata"));
 $conparametro    = db_utils::fieldsMemory($rsconparametro, 0);
-if($conparametro->c90_confirmadata == 't'){
+if ($conparametro->c90_confirmadata == 't') {
     $data = date('d/m/y', db_getsession('DB_datausu'));
     echo "<db-alertaconfirmadatafinanceiro data=" . $data . "></db-alertaconfirmadatafinanceiro>";
 }
@@ -133,10 +133,10 @@ if($conparametro->c90_confirmadata == 't'){
     </style>
 
 </head>
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<center>
+<body >
+<div class = 'container'>
 
-    <form name="form1" method="post" action="<?= $db_action ?>">
+    <form name="form1" method="post" action="<?php echo $db_action ?>">
 
         <fieldset style="margin-top: 30px; width: 800px;">
             <legend><strong>Planilha de Arrecadação</strong></legend>
@@ -183,20 +183,20 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Receita -->
                     <tr>
-                        <td class='tamanho-primeira-col' nowrap><? db_ancora($Lk81_receita, "js_pesquisaReceita(true)",
+                        <td class='tamanho-primeira-col' nowrap><?php db_ancora($Lk81_receita, "js_pesquisaReceita(true)",
                                 $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_input('codigo_receitaplanilha', 10, null, true, 'text', 2, " style='display:none;'");
-                            db_input('k81_receita', 10, $Ik81_receita, true, 'text', 2,
+                            db_input('k81_receita', 5, $Ik81_receita, true, 'text', 2,
                                 " onchange='js_pesquisaReceita(false)'");
 
 
                             db_input('c61_codigo', 5, $Ic61_codigo, true, 'hidden', 3,
                                 " onfocus=\"document.getElementById('k81_conta').focus()\" ", 'id_recurso');
 
+                            db_input('gestao', 5, "", true, 'text', 3 );
                             db_input('o15_recurso', 5, "", true, 'text', 3 );
-
 
                             db_input('k02_drecei', 50, $Ik02_drecei, true, 'text', 3, "class='input-maior'");
                             db_input('estrutural', 20, null, true, 'hidden', 2, "");
@@ -217,15 +217,16 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Código Conta -->
                     <tr>
-                        <td class='tamanho-primeira-col' nowrap title="<?= @$Tk81_conta ?>">
-                            <?
+                        <td class='tamanho-primeira-col' nowrap title="<?php echo @$Tk81_conta ?>">
+                            <?php
                             db_ancora($Lk81_conta, "js_pesquisaConta(true);", $db_opcao);
                             ?>
                         </td>
                         <td colspan='3'>
-                            <?
-                            db_input('k81_conta', 10, $Ik81_conta, true, 'text', 2,
+                            <?php
+                            db_input('k81_conta', 5, $Ik81_conta, true, 'text', 2,
                                 "onchange='js_pesquisaConta(false);'");
+                            db_input('gestaoConta', 5, $Ic61_codigo, true, 'text', 3);
                             db_input('c61_codigo', 5, $Ic61_codigo, true, 'text', 3);
                             db_input('k13_descr', 50, $Ik13_descr, true, 'text', 3, "class='input-maior'");
                             ?>
@@ -241,9 +242,9 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Origem -->
                     <tr>
-                        <td class='tamanho-primeira-col' nowrap title="<?= @$Tk81_origem ?>"><?= $Lk81_origem ?></td>
+                        <td class='tamanho-primeira-col' nowrap title="<?php echo  @$Tk81_origem ?>"><?php echo $Lk81_origem ?></td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_select("k81_origem", getValoresPadroesCampo("k81_origem"), true, 1,
                                 "class='input-menor' onChange='toogleOrigem()'");
                             ?>
@@ -252,11 +253,11 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- CGM -->
                     <tr id='inputCgm' style=''>
-                        <td nowrap title="<?= @$Tk81_conta ?>">
-                            <? db_ancora(@$Lk81_numcgm, "js_pesquisaCgm(true);", $db_opcao); ?>
+                        <td nowrap title="<?php echo @$Tk81_conta ?>">
+                            <?php db_ancora(@$Lk81_numcgm, "js_pesquisaCgm(true);", $db_opcao); ?>
                         </td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_input('k81_numcgm', 10, $Ik81_numcgm, true, 'text', 2,
                                 "onchange='js_pesquisaCgm(false);'");
                             db_input('z01_nome', 63, $Iz01_nome, true, 'text', 3);
@@ -266,10 +267,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Inscricao -->
                     <tr id='inputInscr' style='display:none'>
-                        <td nowrap title="<?= @$Tq02_inscr ?>"><? db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);",
+                        <td nowrap title="<?php echo  @$Tq02_inscr ?>"><?php db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);",
                                 $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_input('q02_inscr', 10, $Iq02_inscr, true, 'text', 2,
                                 " onchange='js_pesquisaInscricao(false);'");
                             db_input('nomeinscr', 65, $Iz01_nome, true, 'text', 3, "class='input-maior'");
@@ -279,10 +280,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Matricula -->
                     <tr id='inputMatric' style='display:none'>
-                        <td class='tamanho-primeira-col' nowrap title="<?= @$Tj01_matric ?>"><? db_ancora(@$Lj01_matric,
+                        <td class='tamanho-primeira-col' nowrap title="<?php echo  @$Tj01_matric ?>"><?php db_ancora(@$Lj01_matric,
                                 "{$sFuncaoBusca}(true);", $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_input('j01_matric', 10, $Ij01_matric, true, 'text', 2,
                                 " onchange='{$sFuncaoBusca}(false);'");
                             db_input('nomematric', 63, $Iz01_nome, true, 'text', 3);
@@ -292,10 +293,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Característica Peculiar -->
                     <tr style=''>
-                        <td><b><? db_ancora("C.Peculiar / C.Aplicação :", "js_pesquisaPeculiar(true);",
+                        <td><b><?php db_ancora("C.Peculiar / C.Aplicação :", "js_pesquisaPeculiar(true);",
                                     $db_opcao); ?></b></td>
                         <td colspan='3'>
-                            <?
+                            <?php
                             db_input('c58_sequencial', 10, '', true, 'text', 2,
                                 "onchange='js_pesquisaPeculiar(false);'");
                             db_input('c58_descr', 63, '', true, 'text', 3);
@@ -304,8 +305,8 @@ if($conparametro->c90_confirmadata == 't'){
                     </tr>
 
                     <tr>
-                        <td nowrap title="<?= @$Tk81_datareceb ?>"><? echo $Lk81_datareceb ?></td>
-                        <td><?
+                        <td nowrap title="<?php echo @$Tk81_datareceb ?>"><?php echo $Lk81_datareceb ?></td>
+                        <td><?php
                             if ($db_opcao == 1) {
 
                                 $k81_datareceb_dia = date("d", db_getsession("DB_datausu"));
@@ -316,14 +317,14 @@ if($conparametro->c90_confirmadata == 't'){
                                 true, 'text', $db_opcao, "class='input-menor'")
                             ?>
                         </td>
-                        <td nowrap title="<?= @$Tk81_operbanco ?>" width="100px"><?= @$Lk81_operbanco ?></td>
-                        <td><? db_input('k81_operbanco', 10, $Ik81_operbanco, true, 'text', $db_opcao); ?></td>
+                        <td nowrap title="<?php echo  @$Tk81_operbanco ?>" width="100px"><?php echo  @$Lk81_operbanco ?></td>
+                        <td><?php db_input('k81_operbanco', 10, $Ik81_operbanco, true, 'text', $db_opcao); ?></td>
                     </tr>
 
                     <tr>
 
-                        <td nowrap title="<?= @$Tk81_valor ?>"><?= @$Lk81_valor ?></td>
-                        <td><? db_input('k81_valor', 10, $Ik81_valor, true, 'text', $db_opcao) ?></td>
+                        <td nowrap title="<?php echo  @$Tk81_valor ?>"><?php echo @$Lk81_valor ?></td>
+                        <td><?php db_input('k81_valor', 10, $Ik81_valor, true, 'text', $db_opcao) ?></td>
 
                     </tr>
 
@@ -332,7 +333,7 @@ if($conparametro->c90_confirmadata == 't'){
                         <td colspan='4'>
                             <fieldset>
                                 <legend><strong>Observação</strong></legend>
-                                <? db_textarea("k81_obs", 1, 40, $Ik81_obs, "true", "text", $db_opcao); ?>
+                                <?php db_textarea("k81_obs", 1, 40, $Ik81_obs, "true", "text", $db_opcao); ?>
                             </fieldset>
                         </td>
                     </tr>
@@ -351,9 +352,9 @@ if($conparametro->c90_confirmadata == 't'){
                onclick='js_salvarPlanilha()'/>
         <input type="button" value='Excluir Selecionados' id='excluir' style="margin-top: 10px;"
                onclick='js_excluiSelecionados();'/>
-        <input type="button" value='Nova Planilha' id='excluir' style="margin-top: 10px;" onclick='js_novaReceita()'/>
+        <input type="button" value='Nova Planilha' id='nova' style="margin-top: 10px;" onclick='js_novaReceita()'/>
     </form>
-</center>
+</div>
 
 <?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
@@ -391,7 +392,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 
         var sUrlRPC = "cai4_devolucaoadiantamento004.RPC.php";
         var iReceita = $F("k81_receita");
-        var oParametros = new Object();
+        var oParametros = {};
         var msgDiv = "Verificando grupo receita selecionado \n Aguarde ...";
 
         oParametros.exec = 'verificaGrupoReceita';
@@ -437,7 +438,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 
         AjaxRequest.create(
             'con4_complementoFonte001.RPC.php',
-            {'exec': 'getComplementosPorRecurso', 'codigo_recurso' : $F('o15_recurso') },
+            {'exec': 'getComplementosPorFonteRecurso', 'gestao' : $F('gestao'), 'subrecurso': $F('o15_recurso')},
             function (retorno, erro) {
                 combo.options.length = 0;
                 retorno.complementos.each(
@@ -617,8 +618,8 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             recurso = '0';
         }
 
-        var sFuncao = 'funcao_js=parent.js_mostraSaltes|k13_conta|k13_descr|o15_recurso';
-        var sPesquisa = 'func_saltesrecurso.php?recurso=' + recurso + '&' + sFuncao + '&data_limite=<?=date("Y-m-d",
+        var sFuncao = 'funcao_js=parent.js_mostraSaltes|k13_conta|k13_descr|o15_recurso|gestao';
+        var sPesquisa = 'func_saltesrecurso.php?recurso=' + recurso + '&' + sFuncao + '&data_limite=<?php echo date("Y-m-d",
             db_getsession("DB_datausu"))?>'
         if (!lMostra) {
 
@@ -627,20 +628,21 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
             } else {
 
                 sFuncao = 'funcao_js=parent.js_preencheSaltes';
-                sPesquisa = 'func_saltesrecurso.php?pesquisa_chave=' + $('k81_conta').value + '&' + sFuncao + '&data_limite=<?=date("Y-m-d",
+                sPesquisa = 'func_saltesrecurso.php?pesquisa_chave=' + $('k81_conta').value + '&' + sFuncao + '&data_limite=<?php echo date("Y-m-d",
                     db_getsession("DB_datausu"))?>'
             }
         }
-        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_saltes', sPesquisa + '&data_limite=<?=date("Y-m-d",
+        js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_saltes', sPesquisa + '&data_limite=<?php echo date("Y-m-d",
             db_getsession("DB_datausu"))?>', 'Pesquisa', lMostra);
     }
 
 
-    function js_preencheSaltes(iCodigoConta, sDescricao, iCodigoRecurso, lErro, $recurso) {
+    function js_preencheSaltes(iCodigoConta, sDescricao, iCodigoRecurso, lErro, $recurso, gestao) {
 
         $('k81_conta').value = iCodigoConta;
         $('k13_descr').value = sDescricao;
         $('c61_codigo').value = $recurso;
+        $('gestaoConta').value = gestao;
 
         if (iAlteracao != null) {
             return;
@@ -659,11 +661,12 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         js_mostrarNotificacaoConta();
     }
 
-    function js_mostraSaltes(iCodigoConta, sDescricao, iCodigoRecurso) {
+    function js_mostraSaltes(iCodigoConta, sDescricao, iCodigoRecurso, gestao) {
 
         $('k81_conta').value = iCodigoConta;
         $('k13_descr').value = sDescricao;
         $('c61_codigo').value = iCodigoRecurso;
+        $('gestaoConta').value = gestao;
 
         js_getCgmConta(iCodigoConta);
         db_iframe_saltes.hide();
@@ -691,7 +694,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
     function js_pesquisaReceita(lMostra) {
 
         var sPesquisa = 'func_tabrec_recursoespecificacaoloa.php?funcao_js=parent.js_mostratabrec1|';
-        sPesquisa += 'k02_codigo|k02_drecei|db_id_recurso|k02_estorc|k02_tipo|o15_recurso'
+        sPesquisa += 'k02_codigo|k02_drecei|db_id_recurso|k02_estorc|k02_tipo|o15_recurso|gestao'
         if (!lMostra) {
 
             if ($F('k81_receita') == '') {
@@ -705,7 +708,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_tabrec', sPesquisa, 'Pesquisa', lMostra);
     }
 
-    function js_mostratabrec(iReceita, sReceita, chave3, chave4, erro, chave5, o15_recurso) {
+    function js_mostratabrec(iReceita, sReceita, chave3, chave4, erro, chave5, o15_recurso, gestao) {
 
         $('k81_receita').value = iReceita;
         $('k02_drecei').value = sReceita;
@@ -713,6 +716,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         $('estrutural').value = chave4;
         $('k02_tipo').value = chave5;
         $('o15_recurso').value = o15_recurso;
+        $('gestao').value = gestao;
 
         if (erro) {
             $('k81_receita').focus();
@@ -722,7 +726,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         js_mostrarNotificacaoConta();
     }
 
-    function js_mostratabrec1(iReceita, sReceita, chave3, chave4, chave5, o15_recurso) {
+    function js_mostratabrec1(iReceita, sReceita, chave3, chave4, chave5, o15_recurso, gestao) {
 
         $('k81_receita').value = iReceita;
         $('k02_drecei').value = sReceita;
@@ -730,6 +734,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         $('estrutural').value = chave4;
         $('k02_tipo').value = chave5;
         $('o15_recurso').value = o15_recurso;
+        $('gestao').value = gestao;
 
         db_iframe_tabrec.hide();
         js_verificaReceita();
@@ -1111,7 +1116,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         oParametro.exec = 'salvarPlanilha';
         oParametro.k144_numeroprocesso = encodeURIComponent(tagString($F('k144_numeroprocesso')));
 
-        if (lMenuAlteracao) {
+        if (lMenuAlteracao || $F("k80_codpla") != "" ) {
             oParametro.exec = 'alterarPlanilha';
         }
 
@@ -1139,6 +1144,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
                 var sUrlOpen = "cai2_emiteplanilha002.php?codpla=" + oRetorno.iCodigoPlanilha;
                 var oJanelaRelatorio = window.open(sUrlOpen, '', 'width=' + (screen.availWidth - 5) + ',height=' + (screen.availHeight - 40) + ',scrollbars=1,location=0 ');
             }
+            $("k80_codpla").value = oRetorno.iCodigoPlanilha;
             //js_novaReceita();
         } else {
             alert(oRetorno.message.urlDecode());
@@ -1219,6 +1225,15 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
         js_removeObj('msgBox');
         var oRetorno = JSON.parse(oAjax.responseText);
 
+        if (oRetorno.status == 2) {
+            alert(oRetorno.message.urlDecode());
+            $("salvar").disabled = true;
+            $("excluir").disabled = true;
+            $("incluir").disabled = true;
+            $("importar").disabled = true;
+            $("limpar").disabled = true;
+            return;
+        }
         if (lMenuAlteracao && !lImportacao) {
 
             aReceitas = new Array();
@@ -1291,6 +1306,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
      */
     function js_mostrarNotificacaoConta() {
 
+        console.log('fonteRecursoUniao', fonteRecursoUniao)
         if (fonteRecursoUniao) {
             return;
         }

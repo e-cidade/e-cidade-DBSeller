@@ -71,6 +71,7 @@ class TipoServicoObraService
      */
     public function setCNO($cno)
     {
+        $cno = preg_replace('/\D/', '', $cno);
         $this->model->e154_cno = $cno;
     }
 

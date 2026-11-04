@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -50,44 +50,44 @@ $clrotulo->label("z01_v_nome");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td height="63" align="center" valign="top">
 	     <form name="form2" method="post" action="">
         <table width="35%" border="0" align="center" cellspacing="0">
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tsd23_i_codigo?>">
               <?=$Lsd23_i_codigo?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+              <?php
 		       db_input("sd23_i_codigo",5,$Isd23_i_codigo,true,"text",4,"","chave_sd23_i_codigo");
 		       ?>
             </td>
           </tr>
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tsd23_d_consulta?>">
               <?=$Lsd23_d_consulta?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?
+            <td width="96%" align="left" nowrap>
+              <?php
 		       db_input("sd23_d_consulta",10,$Isd23_d_consulta,true,"text",4,"","chave_sd23_d_consulta");
 		       ?>
             </td>
           </tr>
-          <tr> 
+          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tsd23_i_numcgs?>">
-              <?db_ancora(@$Lsd23_i_numcgs,"js_pesquisasd04_i_cbo(true,1);",4);?>
+              <?php db_ancora(@$Lsd23_i_numcgs,"js_pesquisasd04_i_cbo(true,1);",4);?>
             </td>
-            <td width="96%" align="left" nowrap> 
-              <?				
+            <td width="96%" align="left" nowrap>
+              <?php
 				db_input('sd23_i_numcgs',10,$Isd23_i_numcgs,true,'text',4,"");
 				db_input('z01_v_nome',46,$Iz01_v_nome,true,'text',3,"");
               ?>
             </td>
           </tr>
-          <tr> 
-            <td colspan="2" align="center"> 
-              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
+          <tr>
+            <td colspan="2" align="center">
+              <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_agendamentos.hide();">
              </td>
@@ -96,13 +96,13 @@ $clrotulo->label("z01_v_nome");
         </form>
       </td>
   </tr>
-  <tr> 
-    <td align="center" valign="top"> 
-      <?
+  <tr>
+    <td align="center" valign="top">
+      <?php
       $where = "";
       if( isset($chave_sd23_i_especmed) && (int)$chave_sd23_i_especmed != 0 ){
       	$where .= " sd27_i_codigo = $chave_sd23_i_especmed ";
-      	
+
       }
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -115,7 +115,7 @@ $clrotulo->label("z01_v_nome");
         if(isset($chave_sd23_i_codigo) && (trim($chave_sd23_i_codigo)!="") ){
 	         $sql = $clagendamentos->sql_query_ext($chave_sd23_i_codigo,$campos,"sd23_i_codigo", $where);
         }else if(isset($chave_sd23_d_consulta) && (trim($chave_sd23_d_consulta)!="") ){
-        	$consulta = substr($chave_sd23_d_consulta,6,4)."/".substr($chave_sd23_d_consulta,3,2)."/".substr($chave_sd23_d_consulta,0,2);   
+        	$consulta = substr($chave_sd23_d_consulta,6,4)."/".substr($chave_sd23_d_consulta,3,2)."/".substr($chave_sd23_d_consulta,0,2);
 	         $sql = $clagendamentos->sql_query_ext("",$campos,"sd23_d_consulta"," sd23_d_consulta = '$consulta' ".($where!=""?" and ".$where:"")   );
         }else{
            $sql = $clagendamentos->sql_query_ext("",$campos,"sd23_i_codigo","");
@@ -145,12 +145,12 @@ $clrotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

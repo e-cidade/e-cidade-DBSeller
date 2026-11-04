@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clpctipocontrato->rotulo->label();
        <?=@$Lp70_codtipo?>
     </td>
     <td> 
-<?
+<?php
 db_input('p70_codtipo',10,$Ip70_codtipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('p70_codtipo',10,$Ip70_codtipo,true,'text',$db_opcao,"")
        <?=@$Lp70_descr?>
     </td>
     <td> 
-<?
+<?php
 db_input('p70_descr',50,$Ip70_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('p70_descr',50,$Ip70_descr,true,'text',$db_opcao,"")
        <?=@$Lp70_tipo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('D'=>'Dependência','L'=>'Licitação','C'=>'Compra');
 db_select('p70_tipo',$x,true,$db_opcao,"");
 ?>
@@ -73,7 +73,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pctipocontrato.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,7 +42,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=@$Lfa17_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa17_i_codigo',10,$Ifa17_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -52,25 +52,25 @@ db_input('fa17_i_codigo',10,$Ifa17_i_codigo,true,'text',3,"")
       <?=@$Lfa16_c_livro?>
     </td>
     <td> 
-    <?
+    <?php
      db_input('fa17_i_modelolivro',10,@$Ifa17_i_modelolivro,true,'text',3,"")
     ?>
-    <?
+    <?php
      db_input('fa16_c_livro',40,@$Ifa16_c_livro,true,'text',3,'')
     ?>
     </td>
   </tr>  
   <tr>
     <td nowrap title="<?=@$Tfa17_i_listacontrolado?>">
-       <?
+       <?php
        db_ancora(@$Lfa17_i_listacontrolado,"js_pesquisafa17_i_listacontrolado(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('fa17_i_listacontrolado',10,$Ifa17_i_listacontrolado,true,'text',$db_opcao," onchange='js_pesquisafa17_i_listacontrolado(false);'")
 ?>
-       <?
+       <?php
 db_input('fa15_c_listacontrolado',40,@$Ifa15_c_listacontrolado,true,'text',3,'')
        ?>
     </td>
@@ -80,7 +80,7 @@ db_input('fa15_c_listacontrolado',40,@$Ifa15_c_listacontrolado,true,'text',3,'')
 <table>
 <tr>
 	<td>
-		<?
+		<?php
 		$chavepri= array("fa17_i_listacontrolado"=>@$fa17_i_listacontrolado,"fa17_i_codigo"=>@$fa17_i_codigo);
 		$cliframe_alterar_excluir->chavepri=$chavepri;
 		@$cliframe_alterar_excluir->sql = $clfar_listamodelo->sql_query(null,'*',null,"fa17_i_modelolivro=$fa17_i_modelolivro");
@@ -130,7 +130,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_listamodelo.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

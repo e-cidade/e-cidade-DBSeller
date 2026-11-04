@@ -9,6 +9,8 @@
     <campo campo="b.z01_nome"   label="contador"       />
     <campo campo="a.z01_email"  label="email"          />
     <campo campo="a.z01_telcel" label="telefone"       />
+    <campo campo="q02_dtinic"   label="data_inscricao"       />
+    <campo campo="q02_dtbaix"   label="data_inscricao_baixa" />
   </campos>
   <from tabela="issbase" />
   <juncoes>

@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -40,34 +40,34 @@ $clconrelinfo = new cl_conrelinfo;
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($HTTP_SERVER_VARS);
 
-// variaveis 
+// variaveis
 $anousu = db_getsession("DB_anousu");
 $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).") ";
 if ($bimestre == 1) {
  $dt_ini = "-01-01";
  $dt_fin = "-02-28";
 } elseif ($bimestre == 2) {
- $dt_ini = "-03-01";  
+ $dt_ini = "-03-01";
  $dt_fin = "-04-30";
 } elseif ($bimestre == 3) {
- $dt_ini = "-05-01";  
+ $dt_ini = "-05-01";
  $dt_fin = "-06-30";
 } elseif ($bimestre == 4) {
- $dt_ini = "-07-01";  
+ $dt_ini = "-07-01";
  $dt_fin = "-08-31";
 } elseif ($bimestre == 5) {
- $dt_ini = "-09-01";  
+ $dt_ini = "-09-01";
  $dt_fin = "-10-31";
 } elseif ($bimestre == 6) {
- $dt_ini = "-11-01";  
+ $dt_ini = "-11-01";
  $dt_fin = "-12-31";
 }
 $dataini = ($anousu - 1).''.$dt_ini;
-$datafin = $anousu.''.$dt_fin; 
+$datafin = $anousu.''.$dt_fin;
 $dt_ini = $dataini;
 $dt_fin = $datafin;
 // -------------------------------------dt_fin
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -92,16 +92,16 @@ $head3 = "DEMONSTRATIVO DA RECEITA CORRENTE LIQUIDA";
 $head4 = "ORÇAMENTO FICAL E DA SEGURIDADE SOCIAL ";
 $dt1d = array();
 $dt2d = array();
-$dtd1 = split('-',$dt_ini);
-$dtd2 = split('-',$dt_fin);
+$dtd1 =explode('-',$dt_ini);
+$dtd2 =explode('-',$dt_fin);
 $dt1 = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
 $dt2 = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  =explode("-",$dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  =explode("-",$dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head5 = "$txt";
 
@@ -186,7 +186,7 @@ for ($x=0;$x<18;$x++){
    $previd[$x] = 0;
    $igor[$x] =0;
  }
-} 
+}
 
 $w_instit = str_replace('-',', ',$db_selinstit);
 $res = $clconrelinfo->sql_record($clconrelinfo->sql_query_valores('5',$w_instit));
@@ -197,7 +197,7 @@ $c = 0;
 //print($contmes.'--'.$c83_codigo.'--'.$c83_variavel);
 if ($contmes < 215 and $dtd2[1] != 12) {
   db_fieldsmemory($res,$contmes);
-}  
+}
 for ($c=$contmes;$c<$clconrelinfo->numrows;$c++){
  for ($x=0;$x<18;$x++) {
   $valor_l[$x][$mes] = $c83_informacao;
@@ -206,23 +206,23 @@ for ($c=$contmes;$c<$clconrelinfo->numrows;$c++){
    db_fieldsmemory($res,$contmes);
   }elseif ($contmes > 216) {
     break;
-  }	
+  }
   $c++;
  }
 
- 
+
  $mes++;
  if ($mes == (12 - $dtd2[1])) {
    break;
- }  
- $c = $c - 1; 
+ }
+ $c = $c - 1;
 }
 
 //print_r($valor_l[2]);exit;
 $mes = $mes - 1;
 if ($dtd2[1] == 12){
   $mes = -1;
-}  
+}
 // gera matris com todos os estruturais selecionados nas configurações do relatorio
 $m_todos = $orcparamrel->sql_parametro('5');
 $virgula='';
@@ -230,9 +230,9 @@ $lista = '(';
 $tt = sizeof($m_todos);
 for ($x=0; $x <sizeof($m_todos);$x++){
   $lista .= $virgula."'".$m_todos[$x]."'";
-  if ($x == $tt-1)  	
+  if ($x == $tt-1)
   $virgula ='';
-  else $virgula =',';   	  
+  else $virgula =',';
 }
 
 $lista = $lista.')';
@@ -253,30 +253,30 @@ for ($p=0;$p<17;$p++) {
     $estrutural = $o57_fonte;
     $o70_valor = $o70_valor + $adicional;
     if (in_array($estrutural,$param[$p])){
-       
+
        $previd["$p"] += $o70_valor;
        $mes = $voltmes;
         if ($dtd2[1] >= 1) {
          $mes =  $mes + 1;
          $valor_l[$p][$mes] += $janeiro;
-        }	
-        if ($dtd2[1] >= 2) {	
+        }
+        if ($dtd2[1] >= 2) {
     	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $fevereiro;
         }
-        if  ($dtd2[1] >= 3) {	      	
+        if  ($dtd2[1] >= 3) {
       	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $marco;
-        }	
-        if  ($dtd2[1] >= 4) {	
+        }
+        if  ($dtd2[1] >= 4) {
   	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $abril;
         }
-        if  ($dtd2[1] >= 5) {	
+        if  ($dtd2[1] >= 5) {
   	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $maio;
         }
-        if  ($dtd2[1] >= 6) {	
+        if  ($dtd2[1] >= 6) {
 	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $junho;
         }
@@ -284,29 +284,29 @@ for ($p=0;$p<17;$p++) {
    	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $julho;
         }
-        if  ($dtd2[1] >= 8) {	
+        if  ($dtd2[1] >= 8) {
  	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $agosto;
         }
-        if  ($dtd2[1] >= 9) {	
+        if  ($dtd2[1] >= 9) {
   	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $setembro;
         }
-        if  ($dtd2[1] >= 10) {	
+        if  ($dtd2[1] >= 10) {
 	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $outubro;
         }
-        if  ($dtd2[1] >= 11) {	
+        if  ($dtd2[1] >= 11) {
   	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $novembro;
         }
-        if  ($dtd2[1] >= 12) {	
+        if  ($dtd2[1] >= 12) {
  	  $mes =  $mes + 1;
           $valor_l[$p][$mes] += $dezembro;
         }
-    }    
-  } 
-} 
+    }
+  }
+}
 //print_r($previd[5]);
 //print_r($param[5]);
 //db_criatabela($clreceita_saldo_mes->result);exit;
@@ -343,7 +343,7 @@ $mes_dresc[11] = 'Dezembro';
 $dtd2[1] = $dtd2[1] + 1;
 for ($x=0;$x<12;$x++) {
   if ($dtd2[1] == 1){
-    $mes_dresc[$x] = $desc_mes1; 
+    $mes_dresc[$x] = $desc_mes1;
   }elseif ($dtd2[1] == 2){
     $mes_dresc[$x] = $desc_mes2;
   }elseif ($dtd2[1] == 3){
@@ -362,21 +362,21 @@ for ($x=0;$x<12;$x++) {
     $mes_dresc[$x] = $desc_mes9;
   }elseif ($dtd2[1] == 10){
     $mes_dresc[$x] = $desc_mes10;
-  }elseif ($dtd2[1] == 11){ 
+  }elseif ($dtd2[1] == 11){
     $mes_dresc[$x] = $desc_mes11;
   }elseif ($dtd2[1] == 12){
     $mes_dresc[$x] = $desc_mes12;
     $dtd2[1] = 0;
-  }  
+  }
   $dtd2[1] = $dtd2[1] + 1;
-} 
+}
 //////////////////////////////////////////////////////  Valores Calculados ////////////////////////////////////////////////////
 for ($x=0;$x<21;$x++){
  for ($y=0;$y<12;$y++){
    $valor_rec[$x][$y] = 0;
    $valor_prev[$x] = 0;
  }
-} 
+}
 $k = 0;
 for ($x=1;$x<8;$x++){
  for ($y=0;$y<12;$y++){
@@ -384,14 +384,14 @@ for ($x=1;$x<8;$x++){
  }
  $valor_prev[$x] = $previd["$k"];
  $k = $k + 1;
-} 
+}
 
 for ($x=0;$x<8;$x++){
  for ($y=0;$y<12;$y++){
    $valor_rec[0][$y] += $valor_l[$x][$y];
  }
  $valor_prev[0] += $previd[$x];
-} 
+}
 $valor_prev['08'] = abs($previd[7]);
 $valor_prev[11] = abs($previd[9]);
 $valor_prev[10] = abs($previd[8]);
@@ -406,15 +406,15 @@ for ($y=0;$y<12;$y++){
  $valor_rec['02'][$y] = abs($valor_l['1'][$y]);
 }
 for ($y=0;$y<12;$y++){
- $valor_rec[10][$y] += abs($valor_l[8][$y]); 
+ $valor_rec[10][$y] += abs($valor_l[8][$y]);
 }
 
 for ($y=0;$y<12;$y++){
- $valor_rec[12][$y] += abs($valor_l[11][$y]); 
+ $valor_rec[12][$y] += abs($valor_l[11][$y]);
 }
 
 for ($y=0;$y<12;$y++){
- $valor_rec[13][$y] += abs($valor_l[11][$y]); 
+ $valor_rec[13][$y] += abs($valor_l[11][$y]);
 }
 
 for ($y=0;$y<12;$y++){
@@ -445,15 +445,15 @@ for ($y=0;$y<12;$y++){
 $valor_prev[16] += abs($previd[14]);
 
 for ($y=0;$y<12;$y++){
-  $valor_rec[9][$y] += abs($valor_l[8][$y]) + abs($valor_l[9][$y]) + 
-                       abs($valor_l[11][$y]) + abs($valor_l[12][$y]) + 
-		       abs($valor_l[13][$y]) + abs($valor_l[14][$y]) + 
+  $valor_rec[9][$y] += abs($valor_l[8][$y]) + abs($valor_l[9][$y]) +
+                       abs($valor_l[11][$y]) + abs($valor_l[12][$y]) +
+		       abs($valor_l[13][$y]) + abs($valor_l[14][$y]) +
 		       abs($valor_l[16][$y]) + abs($valor_l[17][$y]);
 }
 $valor_prev[9] += abs($previd[8]) + abs($previd[9]) +
                    abs($previd[11]) + abs($previd[12]) +
                    abs($previd[13]) + abs($previd[14]) +
-	           abs($previd[16]) + abs($previd[17]); 
+	           abs($previd[16]) + abs($previd[17]);
 
 for ($y=0;$y<12;$y++){
    $valor_rec[20][$y] +=  abs($valor_rec[0][$y]) - abs($valor_rec[9][$y]);
@@ -463,12 +463,12 @@ $valor_prev[20] = abs($valor_prev[0]) - abs($valor_prev[9]);
 
 for ($x=0;$x<21;$x++){
   $valor_tot[$x] = 0;
-}   
+}
 for ($x=0;$x<21;$x++){
  for ($y=0;$y<12;$y++){
    $valor_tot[$x] +=  abs($valor_rec[$x][$y]);
  }
-} 
+}
 
 for ($y=0;$y<12;$y++){
  $valor_rec['08'][$y] = abs($valor_l['7'][$y]);
@@ -480,9 +480,9 @@ for ($y=0;$y<12;$y++){
 
 $valor_prev['20'] = abs($valor_prev[0]) - abs($valor_prev[9]);
 //-------------------------------------------------------------------------------------------------
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','',6);
 $alt            = 4;
@@ -490,7 +490,7 @@ $pagina         = 1;
 $cl = 16;  //tamanho da celula
 $tp ='B'; // tipo do contorno
 $ta ='TBRL';
-   
+
 $pdf->addpage("L");
 $pdf->cell(60,$alt,"LRF, Art 53, inciso I, Anexo III","b",0,"L",0);
 $pdf->cell(($cl*14),$alt,"R$ Unidades","b",1,"R",0);
@@ -519,9 +519,9 @@ $pdf->ln();
 $pdf->setfont('arial','b',6);
 $pdf->cell(60,$alt,$rec[0],'R',0,"L",0);
 for($x=0;$x<=11;$x++){
-  $pdf->cell($cl,$alt,db_formatar($valor_rec[0][$x],'f'),'R',0,"R",0);	
+  $pdf->cell($cl,$alt,db_formatar($valor_rec[0][$x],'f'),'R',0,"R",0);
 }
-$pdf->cell($cl,$alt,db_formatar($valor_tot[0],'f'),'R',0,"R",0);	
+$pdf->cell($cl,$alt,db_formatar($valor_tot[0],'f'),'R',0,"R",0);
 $pdf->cell($cl,$alt,db_formatar($valor_prev[0],'f'),'',1,"R",0);
 $pdf->setfont('arial','',6);
 
@@ -529,29 +529,29 @@ for ($y=1;$y<=19;$y++){
  $pdf->cell(60,$alt,$rec[$y],'R',0,"L",0);
  if ($y == 8) {
   for($x=0;$x<=11;$x++){
-   $pdf->cell($cl,$alt,db_formatar($valor_rec['08'][$x],'f'),'R',0,"R",0);	
+   $pdf->cell($cl,$alt,db_formatar($valor_rec['08'][$x],'f'),'R',0,"R",0);
   }
   $pdf->cell($cl,$alt,db_formatar($valor_tot['08'],'f'),'R',0,"R",0);
   $pdf->cell($cl,$alt,db_formatar($valor_prev['08'],'f'),'',1,"R",0);
  }elseif ($y == 2) {
   for($x=0;$x<=11;$x++){
-   $pdf->cell($cl,$alt,db_formatar($valor_rec['02'][$x],'f'),'R',0,"R",0);	
+   $pdf->cell($cl,$alt,db_formatar($valor_rec['02'][$x],'f'),'R',0,"R",0);
   }
   $pdf->cell($cl,$alt,db_formatar($valor_tot[2],'f'),'R',0,"R",0);
   $pdf->cell($cl,$alt,db_formatar($valor_prev[2],'f'),'',1,"R",0);
- 
- }else{ 
+
+ }else{
   for($x=0;$x<=11;$x++){
-   $pdf->cell($cl,$alt,db_formatar($valor_rec["$y"]["$x"],'f'),'R',0,"R",0);	
+   $pdf->cell($cl,$alt,db_formatar($valor_rec["$y"]["$x"],'f'),'R',0,"R",0);
   }
   $pdf->cell($cl,$alt,db_formatar($valor_tot["$y"],'f'),'R',0,"R",0);
   $pdf->cell($cl,$alt,db_formatar($valor_prev["$y"],'f'),'',1,"R",0);
- } 
+ }
 }
 $pdf->setfont('arial','b',6);
 $pdf->cell(60,$alt,$rec[20],'TBR',0,"L",0);
 for($x=0;$x<=11;$x++){
-  $pdf->cell($cl,$alt,db_formatar($valor_rec[20][$x],'f'),'TBR',0,"R",0);	
+  $pdf->cell($cl,$alt,db_formatar($valor_rec[20][$x],'f'),'TBR',0,"R",0);
 }
 $pdf->cell($cl,$alt,db_formatar($valor_tot[20],'f'),'TBR',0,"R",0);
 $pdf->cell($cl,$alt,db_formatar($valor_prev['20'],'f'),'TB',1,"R",0);
@@ -591,5 +591,5 @@ $pdf->multicell($largura,2,$ass_controle,0,"C",0,0);
 
 
 $pdf->Output();
-   
+
 ?>

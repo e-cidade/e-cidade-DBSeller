@@ -101,7 +101,31 @@ class calculoRetencao {
         $this->oObjCalculo = new calculoRetencaoInssAutonomos($this->iCpfCnpj,7);
         break;
 
-      default:
+      case 8:
+
+        require_once(modification("model/calculoRetencaoPisPasep.model.php"));
+        $this->oObjCalculo = new calculoRetencaoPisPasep($this->iCpfCnpj,8);
+        break;
+
+      case 9:
+
+        require_once(modification("model/calculoRetencaoCsll.model.php"));
+        $this->oObjCalculo = new calculoRetencaoCsll($this->iCpfCnpj,9);
+        break;
+
+      case 10:
+
+        require_once(modification("model/calculoRetencaoCofins.model.php"));
+        $this->oObjCalculo = new calculoRetencaoCofins($this->iCpfCnpj,10);
+        break;
+
+      case 11:
+
+        require_once(modification("model/calculoRetencaoAgregados.model.php"));
+        $this->oObjCalculo = new calculoRetencaoAgregados($this->iCpfCnpj,11);
+        break;
+
+        default:
 
         throw new Exception("tipo de cálculo ({$this->iTipoCalculo}) inválido.\nVerifique configuraçoes da Retenção.");
         break;

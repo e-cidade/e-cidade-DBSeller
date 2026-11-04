@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -67,7 +67,7 @@
 
       db_msgbox("Já existe uma estrutura de Frequência configurada para o ano informado.");
       db_redireciona("edu4_avaliacaoestruturafrequencia001.php{$sParametros}");
-      break;
+      return;
     }
 
     db_inicio_transacao();
@@ -144,11 +144,11 @@
   </head>
   <body bgcolor=#CCCCCC style="margin-top: 25px" >
     <center>
-      <?
+      <?php
         require_once(modification("forms/db_frmavaliacaoestruturafrequencia.php"));
       ?>
     </center>
-    <?
+    <?php
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>
@@ -156,7 +156,7 @@
 <script>
   js_tabulacaoforms("form1","ed328_escola",true,1,"ed328_escola",true);
 </script>
-<?
+<?php
   if (isset($incluir)) {
     if ($oDaoAvaliacaoEstruturaFrequencia->erro_status == "0") {
 

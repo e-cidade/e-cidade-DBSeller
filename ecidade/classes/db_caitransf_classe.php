@@ -1,74 +1,74 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: caixa
 //CLASSE DA ENTIDADE caitransf
-class cl_caitransf { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $k91_transf = 0; 
-   var $k91_anousu = 0; 
-   var $k91_instit = 0; 
-   var $k91_descr = null; 
-   var $k91_finalidade = null; 
-   var $k91_debito = 0; 
-   var $k91_credito = 0; 
-   var $k91_tipo = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_caitransf {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $k91_transf = 0;
+   var $k91_anousu = 0;
+   var $k91_instit = 0;
+   var $k91_descr = null;
+   var $k91_finalidade = null;
+   var $k91_debito = 0;
+   var $k91_credito = 0;
+   var $k91_tipo = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 k91_transf = int4 = Trasferencia 
-                 k91_anousu = int4 = Exercício 
-                 k91_instit = int4 = Instituição 
-                 k91_descr = varchar(50) = Descrição 
-                 k91_finalidade = text = Finalidade 
-                 k91_debito = int4 = Debito 
-                 k91_credito = int4 = Credito 
-                 k91_tipo = char(1) = Tipo da Transferência 
+                 k91_transf = int4 = Trasferencia
+                 k91_anousu = int4 = Exercício
+                 k91_instit = int4 = Instituição
+                 k91_descr = varchar(50) = Descrição
+                 k91_finalidade = text = Finalidade
+                 k91_debito = int4 = Debito
+                 k91_credito = int4 = Credito
+                 k91_tipo = char(1) = Tipo da Transferência
                  ";
-   //funcao construtor da classe 
-   function cl_caitransf() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("caitransf"); 
+     $this->rotulo = new rotulo("caitransf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -77,7 +77,7 @@ class cl_caitransf {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k91_transf = ($this->k91_transf == ""?@$GLOBALS["HTTP_POST_VARS"]["k91_transf"]:$this->k91_transf);
        $this->k91_anousu = ($this->k91_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["k91_anousu"]:$this->k91_anousu);
@@ -92,9 +92,9 @@ class cl_caitransf {
      }
    }
    // funcao para inclusao
-   function incluir ($k91_transf){ 
+   public function incluir ($k91_transf){
       $this->atualizacampos();
-     if($this->k91_anousu == null ){ 
+     if($this->k91_anousu == null ){
        $this->erro_sql = " Campo Exercício nao Informado.";
        $this->erro_campo = "k91_anousu";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_instit == null ){ 
+     if($this->k91_instit == null ){
        $this->erro_sql = " Campo Instituição nao Informado.";
        $this->erro_campo = "k91_instit";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_descr == null ){ 
+     if($this->k91_descr == null ){
        $this->erro_sql = " Campo Descrição nao Informado.";
        $this->erro_campo = "k91_descr";
        $this->erro_banco = "";
@@ -121,7 +121,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_finalidade == null ){ 
+     if($this->k91_finalidade == null ){
        $this->erro_sql = " Campo Finalidade nao Informado.";
        $this->erro_campo = "k91_finalidade";
        $this->erro_banco = "";
@@ -130,7 +130,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_debito == null ){ 
+     if($this->k91_debito == null ){
        $this->erro_sql = " Campo Debito nao Informado.";
        $this->erro_campo = "k91_debito";
        $this->erro_banco = "";
@@ -139,7 +139,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_credito == null ){ 
+     if($this->k91_credito == null ){
        $this->erro_sql = " Campo Credito nao Informado.";
        $this->erro_campo = "k91_credito";
        $this->erro_banco = "";
@@ -148,7 +148,7 @@ class cl_caitransf {
        $this->erro_status = "0";
        return false;
      }
-     if($this->k91_tipo == null ){ 
+     if($this->k91_tipo == null ){
        $this->erro_sql = " Campo Tipo da Transferência nao Informado.";
        $this->erro_campo = "k91_tipo";
        $this->erro_banco = "";
@@ -158,16 +158,16 @@ class cl_caitransf {
        return false;
      }
      if($k91_transf == "" || $k91_transf == null ){
-       $result = db_query("select nextval('caitransf_k91_transf_seq')"); 
+       $result = db_query("select nextval('caitransf_k91_transf_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: caitransf_k91_transf_seq do campo: k91_transf"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: caitransf_k91_transf_seq do campo: k91_transf";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->k91_transf = pg_result($result,0,0); 
+       $this->k91_transf = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from caitransf_k91_transf_seq");
        if(($result != false) && (pg_result($result,0,0) < $k91_transf)){
@@ -178,10 +178,10 @@ class cl_caitransf {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->k91_transf = $k91_transf; 
+         $this->k91_transf = $k91_transf;
        }
      }
-     if(($this->k91_transf == null) || ($this->k91_transf == "") ){ 
+     if(($this->k91_transf == null) || ($this->k91_transf == "") ){
        $this->erro_sql = " Campo k91_transf nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,27 +190,27 @@ class cl_caitransf {
        return false;
      }
      $sql = "insert into caitransf(
-                                       k91_transf 
-                                      ,k91_anousu 
-                                      ,k91_instit 
-                                      ,k91_descr 
-                                      ,k91_finalidade 
-                                      ,k91_debito 
-                                      ,k91_credito 
-                                      ,k91_tipo 
+                                       k91_transf
+                                      ,k91_anousu
+                                      ,k91_instit
+                                      ,k91_descr
+                                      ,k91_finalidade
+                                      ,k91_debito
+                                      ,k91_credito
+                                      ,k91_tipo
                        )
                 values (
-                                $this->k91_transf 
-                               ,$this->k91_anousu 
-                               ,$this->k91_instit 
-                               ,'$this->k91_descr' 
-                               ,'$this->k91_finalidade' 
-                               ,$this->k91_debito 
-                               ,$this->k91_credito 
-                               ,'$this->k91_tipo' 
+                                $this->k91_transf
+                               ,$this->k91_anousu
+                               ,$this->k91_instit
+                               ,'$this->k91_descr'
+                               ,'$this->k91_finalidade'
+                               ,$this->k91_debito
+                               ,$this->k91_credito
+                               ,'$this->k91_tipo'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = " ($this->k91_transf) nao Incluído. Inclusao Abortada.";
@@ -249,16 +249,16 @@ class cl_caitransf {
        $resac = db_query("insert into db_acount values($acount,1404,8800,'','".AddSlashes(pg_result($resaco,0,'k91_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($k91_transf=null) { 
+   public function alterar ($k91_transf=null) {
       $this->atualizacampos();
      $sql = " update caitransf set ";
      $virgula = "";
-     if(trim($this->k91_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_transf"])){ 
+     if(trim($this->k91_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_transf"])){
        $sql  .= $virgula." k91_transf = $this->k91_transf ";
        $virgula = ",";
-       if(trim($this->k91_transf) == null ){ 
+       if(trim($this->k91_transf) == null ){
          $this->erro_sql = " Campo Trasferencia nao Informado.";
          $this->erro_campo = "k91_transf";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_anousu"])){ 
+     if(trim($this->k91_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_anousu"])){
        $sql  .= $virgula." k91_anousu = $this->k91_anousu ";
        $virgula = ",";
-       if(trim($this->k91_anousu) == null ){ 
+       if(trim($this->k91_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "k91_anousu";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_instit"])){ 
+     if(trim($this->k91_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_instit"])){
        $sql  .= $virgula." k91_instit = $this->k91_instit ";
        $virgula = ",";
-       if(trim($this->k91_instit) == null ){ 
+       if(trim($this->k91_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "k91_instit";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_descr"])){ 
+     if(trim($this->k91_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_descr"])){
        $sql  .= $virgula." k91_descr = '$this->k91_descr' ";
        $virgula = ",";
-       if(trim($this->k91_descr) == null ){ 
+       if(trim($this->k91_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k91_descr";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_finalidade"])){ 
+     if(trim($this->k91_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_finalidade"])){
        $sql  .= $virgula." k91_finalidade = '$this->k91_finalidade' ";
        $virgula = ",";
-       if(trim($this->k91_finalidade) == null ){ 
+       if(trim($this->k91_finalidade) == null ){
          $this->erro_sql = " Campo Finalidade nao Informado.";
          $this->erro_campo = "k91_finalidade";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_debito"])){ 
+     if(trim($this->k91_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_debito"])){
        $sql  .= $virgula." k91_debito = $this->k91_debito ";
        $virgula = ",";
-       if(trim($this->k91_debito) == null ){ 
+       if(trim($this->k91_debito) == null ){
          $this->erro_sql = " Campo Debito nao Informado.";
          $this->erro_campo = "k91_debito";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_credito"])){ 
+     if(trim($this->k91_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_credito"])){
        $sql  .= $virgula." k91_credito = $this->k91_credito ";
        $virgula = ",";
-       if(trim($this->k91_credito) == null ){ 
+       if(trim($this->k91_credito) == null ){
          $this->erro_sql = " Campo Credito nao Informado.";
          $this->erro_campo = "k91_credito";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_caitransf {
          return false;
        }
      }
-     if(trim($this->k91_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_tipo"])){ 
+     if(trim($this->k91_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k91_tipo"])){
        $sql  .= $virgula." k91_tipo = '$this->k91_tipo' ";
        $virgula = ",";
-       if(trim($this->k91_tipo) == null ){ 
+       if(trim($this->k91_tipo) == null ){
          $this->erro_sql = " Campo Tipo da Transferência nao Informado.";
          $this->erro_campo = "k91_tipo";
          $this->erro_banco = "";
@@ -389,7 +389,7 @@ class cl_caitransf {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->k91_transf;
@@ -417,14 +417,14 @@ class cl_caitransf {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($k91_transf=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($k91_transf=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k91_transf));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -457,7 +457,7 @@ class cl_caitransf {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = " nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$k91_transf;
@@ -485,11 +485,11 @@ class cl_caitransf {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -511,10 +511,10 @@ class cl_caitransf {
       }
      return $result;
    }
-   function sql_query ( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,15 +529,15 @@ class cl_caitransf {
      $sql2 = "";
      if($dbwhere==""){
        if($k91_transf!=null ){
-         $sql2 .= " where caitransf.k91_transf = $k91_transf "; 
-       } 
+         $sql2 .= " where caitransf.k91_transf = $k91_transf ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,10 +546,10 @@ class cl_caitransf {
      }
      return $sql;
   }
-   function sql_query_descr( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_descr( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,15 +571,15 @@ class cl_caitransf {
      $sql2 = "";
      if($dbwhere==""){
        if($k91_transf!=null ){
-         $sql2 .= " where caitransf.k91_transf = $k91_transf "; 
-       } 
+         $sql2 .= " where caitransf.k91_transf = $k91_transf ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -588,10 +588,10 @@ class cl_caitransf {
      }
      return $sql;
   }
-   function sql_query_file ( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $k91_transf=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,15 +604,15 @@ class cl_caitransf {
      $sql2 = "";
      if($dbwhere==""){
        if($k91_transf!=null ){
-         $sql2 .= " where caitransf.k91_transf = $k91_transf "; 
-       } 
+         $sql2 .= " where caitransf.k91_transf = $k91_transf ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clacertid->rotulo->label("v15_codigo");
               <?=$Lv15_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v15_codigo",10,$Iv15_codigo,true,"text",4,"","chave_v15_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clacertid->rotulo->label("v15_codigo");
               <?=$Lv15_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v15_codigo",10,$Iv15_codigo,true,"text",4,"","chave_v15_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clacertid->rotulo->label("v15_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_acertid.php")==true){
@@ -118,12 +118,12 @@ $clacertid->rotulo->label("v15_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,7 +43,7 @@ if((isset($incluir) || isset($alterar) || isset($excluir)) && isset($sqlerro) &&
        <?=@$Lrh53_calend?>
     </td>
     <td>
-<?
+<?php
 db_input('rh53_calend',10,$Irh53_calend,true,'text',3,"")
 ?>
     </td>
@@ -53,12 +53,12 @@ db_input('rh53_calend',10,$Irh53_calend,true,'text',3,"")
        <?=@$Lrh53_descr?>
     </td>
     <td>
-<?
+<?php
 db_input('rh53_descr',40,$Irh53_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-  <?
+  <?php
   if($db_opcao == 2){
   ?>
   <tr>
@@ -66,14 +66,14 @@ db_input('rh53_descr',40,$Irh53_descr,true,'text',$db_opcao,"")
        <?=@$Lr62_data?>
     </td>
     <td>
-<?
+<?php
 db_inputdata('r62_data',@$r62_data_dia,@$r62_data_mes,@$r62_data_ano,true,'text',$db_opcao);
 ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-      <?
+      <?php
       include(modification("dbforms/db_classesgenericas.php"));
       $dbwhere = " r62_calend = $rh53_calend ";
       if(isset($r62_data) && trim($r62_data) != ""){
@@ -92,7 +92,7 @@ db_inputdata('r62_data',@$r62_data_dia,@$r62_data_mes,@$r62_data_ano,true,'text'
       ?>
     </td>
   </tr>
-  <?
+  <?php
     $db_opcao = 1;
     if(isset($opcao)){
       $db_opcao = 2;
@@ -102,12 +102,12 @@ db_inputdata('r62_data',@$r62_data_dia,@$r62_data_mes,@$r62_data_ano,true,'text'
 </table>
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?if($db_opcao == 2){?>
+<?php if($db_opcao == 2){?>
 <input name="excluir" type="submit" id="db_opcao" value="Excluir data">
-<?if(isset($opcao)){?>
+<?php if(isset($opcao)){?>
 <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='pes1_rhcadcalend002.php?chavepesquisa=<?=$rh53_calend?>'" >
-<?}?>
-<?}?>
+<?php }?>
+<?php }?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>

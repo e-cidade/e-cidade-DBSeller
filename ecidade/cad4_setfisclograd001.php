@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -95,12 +95,12 @@ function js_fechar(){
   <br><br>
   <tr>   
     <td title="<?=$Tj14_nome?>" >
-    <?
+    <?php
      db_ancora($Lj14_codigo,' js_ruas(true); ',1);
     ?>
     </td>    
     <td title="<?=$Tj14_nome?>" colspan="4">
-    <?
+    <?php
      db_input('j14_codigo',5,$Ij14_codigo,true,'text',1,"onchange='js_ruas(false)'");
      db_input('j14_nome',50,$Ij14_nome,true,'text',3);
     ?>
@@ -149,7 +149,7 @@ function js_mostrarua1(chave,erro){
 	</td>
   </tr>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -132,7 +132,9 @@ windowAux = function(iIdWindow, sTitle, iWidth, iHeight) {
         this.divWindow.style.bottom = bottom === 0
             ? bottom.toString()
             : `${bottom}px`;
-        this.divWindow.style.left = left === 0 ? left.toString() : `${left}px`;
+            
+      CurrentWindow.fixSize.windowAux[this.divWindow.id] = this.divWindow;
+      this.divWindow.style.left = left === 0 ? left.toString() : `${left}px`;
         this.divWindow.style.right = right === 0
             ? right.toString()
             : `${right}px`;

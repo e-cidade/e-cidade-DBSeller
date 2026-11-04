@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -207,7 +207,7 @@ sajax_handle_client_request();
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
-<? sajax_show_javascript();   /* imprime a função do sajax */ ?>
+<?php sajax_show_javascript();   /* imprime a função do sajax */ ?>
 function js_atuOrcreceitaval(codrec,mes,valor){	 
     x_atuOrcreceitaval(codrec,mes,valor,mensagem);	 
 }
@@ -230,17 +230,17 @@ function mensagem(retorno){
   <tr> 
     <td height="500" align="center" valign="top" bgcolor="#CCCCCC">     
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmimplantareceita.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
-<?
+<?php
 
 /*
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){

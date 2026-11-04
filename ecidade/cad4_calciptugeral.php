@@ -224,7 +224,7 @@ if (isset($calcular)) {
                             echo "<script>alert('Erro ao gerar sequencia!');</script>";
                         } else {
                             db_fieldsmemory($resultnextval, 0);
-                            $insert = "insert into iptucalclog values ($j27_codigo,$anousu,'" . date('Y-m-d', db_getsession("DB_datausu")) . "','" . db_hora() . "'," . db_getsession('DB_id_usuario') . ",false," . $numrows . ")";
+                            $insert = "insert into iptucalclog values ($j27_codigo,$anousu,'" . date('Y-m-d', db_getsession("DB_datausu")) . "','" . db_hora() . "'," . db_getsession('DB_id_usuario') . ",false," . $numrows . ",''," . ($financeiro==0?"true":"false") . ")";
                             $resultinsert = db_query($insert) or die($insert);
                             if ($resultinsert == false) {
                                 echo "<script>alert('Erro do gerar lancamento na tabela iptucalclog!');</script>";
@@ -299,6 +299,7 @@ if (isset($calcular)) {
                                         if ($j18_permvenc == 0) {
                                             $j18_permvenc = 1;
                                         }
+                                        db_query("select fc_putsession('DB_Gerafinanc','$financeiro')");
                                         if ($j18_permvenc == 1) {
                                             $sql = "select fc_calculoiptu($j01_matric::integer,$anousu::integer," . ($financeiro==0?"true":"false") . "::boolean,false::boolean,false::boolean,false::boolean,false::boolean,array['0','0','0'])";
                                         } else {
@@ -314,7 +315,7 @@ if (isset($calcular)) {
                                             db_fieldsmemory($resultcalc, 0);
                                             preg_match('/[0-9]*/', trim($fc_calculoiptu), $aTipoLogCalc);
 
-                                            $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric," . $aTipoLogCalc[0] . ",'" . trim(preg_replace('/^[0-9]*/', '', trim($fc_calculoiptu))) . "')";
+                                            $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric," . $aTipoLogCalc[0] . ",'" . trim(preg_replace('/^[0-9]*/', '', trim($fc_calculoiptu))) . "',". ($financeiro==0?"true":"false") .")";
                                             $resultinsert = db_query($insert) or die($insert);
                                             if ($resultinsert == false) {
                                                 $erro = true;
@@ -330,7 +331,7 @@ if (isset($calcular)) {
                                         /**
                                          * Inserimos a mensagem de log oriunda da validação de recalculo de iptu quitado
                                          */
-                                        $sInsert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$iCodigoLog,'$sMensagemLog')";
+                                        $sInsert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,$iCodigoLog,'$sMensagemLog',". ($financeiro==0?"true":"false") .")";
                                         $rsInsert = db_query($sInsert);
 
                                         if (empty($rsInsert)) {

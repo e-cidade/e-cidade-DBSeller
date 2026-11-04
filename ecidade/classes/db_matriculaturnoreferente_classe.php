@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE matriculaturnoreferente
-class cl_matriculaturnoreferente { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed337_codigo = 0; 
-   var $ed337_matricula = 0; 
-   var $ed337_turmaturnoreferente = 0; 
-   // cria propriedade com as variaveis do arquivo 
-   var $campos = "
-                 ed337_codigo = int4 = Código 
-                 ed337_matricula = int4 = Matrícula 
-                 ed337_turmaturnoreferente = int4 = Turno referente 
+class cl_matriculaturnoreferente {
+   // cria variaveis de erro
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
+   // cria variaveis do arquivo
+   public $ed337_codigo = 0;
+   public $ed337_matricula = 0;
+   public $ed337_turmaturnoreferente = 0;
+   // cria propriedade com as variaveis do arquivo
+   public $campos = "
+                 ed337_codigo = int4 = Cï¿½digo
+                 ed337_matricula = int4 = Matrï¿½cula
+                 ed337_turmaturnoreferente = int4 = Turno referente
                  ";
-   //funcao construtor da classe 
-   function cl_matriculaturnoreferente() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("matriculaturnoreferente"); 
+     $this->rotulo = new rotulo("matriculaturnoreferente");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_matriculaturnoreferente {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed337_codigo = ($this->ed337_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed337_codigo"]:$this->ed337_codigo);
        $this->ed337_matricula = ($this->ed337_matricula == ""?@$GLOBALS["HTTP_POST_VARS"]["ed337_matricula"]:$this->ed337_matricula);
@@ -77,79 +77,79 @@ class cl_matriculaturnoreferente {
      }
    }
    // funcao para inclusao
-   function incluir ($ed337_codigo){ 
+   public function incluir ($ed337_codigo){
       $this->atualizacampos();
-     if($this->ed337_matricula == null ){ 
-       $this->erro_sql = " Campo Matrícula não informado.";
+     if($this->ed337_matricula == null ){
+       $this->erro_sql = " Campo Matrï¿½cula nï¿½o informado.";
        $this->erro_campo = "ed337_matricula";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed337_turmaturnoreferente == null ){ 
-       $this->erro_sql = " Campo Turno referente não informado.";
+     if($this->ed337_turmaturnoreferente == null ){
+       $this->erro_sql = " Campo Turno referente nï¿½o informado.";
        $this->erro_campo = "ed337_turmaturnoreferente";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($ed337_codigo == "" || $ed337_codigo == null ){
-       $result = db_query("select nextval('matriculaturnoreferente_ed337_codigo_seq')"); 
+       $result = db_query("select nextval('matriculaturnoreferente_ed337_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: matriculaturnoreferente_ed337_codigo_seq do campo: ed337_codigo"; 
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = "Verifique o cadastro da sequencia: matriculaturnoreferente_ed337_codigo_seq do campo: ed337_codigo";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed337_codigo = pg_result($result,0,0); 
+       $this->ed337_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from matriculaturnoreferente_ed337_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed337_codigo)){
-         $this->erro_sql = " Campo ed337_codigo maior que último número da sequencia.";
-         $this->erro_banco = "Sequencia menor que este número.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql = " Campo ed337_codigo maior que ï¿½ltimo nï¿½mero da sequencia.";
+         $this->erro_banco = "Sequencia menor que este nï¿½mero.";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed337_codigo = $ed337_codigo; 
+         $this->ed337_codigo = $ed337_codigo;
        }
      }
-     if(($this->ed337_codigo == null) || ($this->ed337_codigo == "") ){ 
+     if(($this->ed337_codigo == null) || ($this->ed337_codigo == "") ){
        $this->erro_sql = " Campo ed337_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      $sql = "insert into matriculaturnoreferente(
-                                       ed337_codigo 
-                                      ,ed337_matricula 
-                                      ,ed337_turmaturnoreferente 
+                                       ed337_codigo
+                                      ,ed337_matricula
+                                      ,ed337_turmaturnoreferente
                        )
                 values (
-                                $this->ed337_codigo 
-                               ,$this->ed337_matricula 
-                               ,$this->ed337_turmaturnoreferente 
+                                $this->ed337_codigo
+                               ,$this->ed337_matricula
+                               ,$this->ed337_turmaturnoreferente
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Matricula turno referente ($this->ed337_codigo) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "Matricula turno referente já Cadastrado";
+         $this->erro_sql   = "Matricula turno referente ($this->ed337_codigo) nao Incluï¿½do. Inclusao Abortada.";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_banco = "Matricula turno referente jï¿½ Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "Matricula turno referente ($this->ed337_codigo) nao Incluído. Inclusao Abortada.";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = "Matricula turno referente ($this->ed337_codigo) nao Incluï¿½do. Inclusao Abortada.";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
        $this->erro_status = "0";
@@ -159,7 +159,7 @@ class cl_matriculaturnoreferente {
      $this->erro_banco = "";
      $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->ed337_codigo;
-     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+     $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
@@ -180,46 +180,46 @@ class cl_matriculaturnoreferente {
        }
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed337_codigo=null) { 
+   public function alterar ($ed337_codigo=null) {
       $this->atualizacampos();
      $sql = " update matriculaturnoreferente set ";
      $virgula = "";
-     if(trim($this->ed337_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_codigo"])){ 
+     if(trim($this->ed337_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_codigo"])){
        $sql  .= $virgula." ed337_codigo = $this->ed337_codigo ";
        $virgula = ",";
-       if(trim($this->ed337_codigo) == null ){ 
-         $this->erro_sql = " Campo Código não informado.";
+       if(trim($this->ed337_codigo) == null ){
+         $this->erro_sql = " Campo Cï¿½digo nï¿½o informado.";
          $this->erro_campo = "ed337_codigo";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
        }
      }
-     if(trim($this->ed337_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_matricula"])){ 
+     if(trim($this->ed337_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_matricula"])){
        $sql  .= $virgula." ed337_matricula = $this->ed337_matricula ";
        $virgula = ",";
-       if(trim($this->ed337_matricula) == null ){ 
-         $this->erro_sql = " Campo Matrícula não informado.";
+       if(trim($this->ed337_matricula) == null ){
+         $this->erro_sql = " Campo Matrï¿½cula nï¿½o informado.";
          $this->erro_campo = "ed337_matricula";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
        }
      }
-     if(trim($this->ed337_turmaturnoreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_turmaturnoreferente"])){ 
+     if(trim($this->ed337_turmaturnoreferente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed337_turmaturnoreferente"])){
        $sql  .= $virgula." ed337_turmaturnoreferente = $this->ed337_turmaturnoreferente ";
        $virgula = ",";
-       if(trim($this->ed337_turmaturnoreferente) == null ){ 
-         $this->erro_sql = " Campo Turno referente não informado.";
+       if(trim($this->ed337_turmaturnoreferente) == null ){
+         $this->erro_sql = " Campo Turno referente nï¿½o informado.";
          $this->erro_campo = "ed337_turmaturnoreferente";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -251,12 +251,13 @@ class cl_matriculaturnoreferente {
          }
        }
      }
+
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Matricula turno referente nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed337_codigo;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_alterar = 0;
@@ -266,25 +267,25 @@ class cl_matriculaturnoreferente {
          $this->erro_banco = "";
          $this->erro_sql = "Matricula turno referente nao foi Alterado. Alteracao Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed337_codigo;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteraï¿½ï¿½o efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->ed337_codigo;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed337_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed337_codigo=null,$dbwhere=null) {
 
      $lSessaoDesativarAccount = db_getsession("DB_desativar_account", false);
      if (!isset($lSessaoDesativarAccount) || (isset($lSessaoDesativarAccount)
@@ -293,7 +294,7 @@ class cl_matriculaturnoreferente {
        if ($dbwhere==null || $dbwhere=="") {
 
          $resaco = $this->sql_record($this->sql_query_file($ed337_codigo));
-       } else { 
+       } else {
          $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
        }
        if (($resaco != false) || ($this->numrows!=0)) {
@@ -324,11 +325,11 @@ class cl_matriculaturnoreferente {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Matricula turno referente nao Excluído. Exclusão Abortada.\\n";
+       $this->erro_sql   = "Matricula turno referente nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed337_codigo;
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_excluir = 0;
@@ -336,33 +337,33 @@ class cl_matriculaturnoreferente {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Matricula turno referente nao Encontrado. Exclusão não Efetuada.\\n";
+         $this->erro_sql = "Matricula turno referente nao Encontrado. Exclusï¿½o nï¿½o Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$ed337_codigo;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusï¿½o efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$ed337_codigo;
-         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -371,15 +372,15 @@ class cl_matriculaturnoreferente {
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matriculaturnoreferente";
-        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "0";
         return false;
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed337_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed337_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -400,15 +401,15 @@ class cl_matriculaturnoreferente {
      $sql2 = "";
      if($dbwhere==""){
        if($ed337_codigo!=null ){
-         $sql2 .= " where matriculaturnoreferente.ed337_codigo = $ed337_codigo "; 
-       } 
+         $sql2 .= " where matriculaturnoreferente.ed337_codigo = $ed337_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,11 +418,11 @@ class cl_matriculaturnoreferente {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed337_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed337_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,15 +435,15 @@ class cl_matriculaturnoreferente {
      $sql2 = "";
      if($dbwhere==""){
        if($ed337_codigo!=null ){
-         $sql2 .= " where matriculaturnoreferente.ed337_codigo = $ed337_codigo "; 
-       } 
+         $sql2 .= " where matriculaturnoreferente.ed337_codigo = $ed337_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

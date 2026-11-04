@@ -1,68 +1,68 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: diversos
 //CLASSE DA ENTIDADE diverimportaold
-class cl_diverimportaold { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $dv13_sequencial = 0; 
-   var $dv13_diversos = 0; 
-   var $dv13_numpre = 0; 
-   var $dv13_numpar = 0; 
-   var $dv13_receita = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_diverimportaold {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $dv13_sequencial = 0;
+   var $dv13_diversos = 0;
+   var $dv13_numpre = 0;
+   var $dv13_numpar = 0;
+   var $dv13_receita = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 dv13_sequencial = int8 = Código 
-                 dv13_diversos = int4 = Código do diversos 
-                 dv13_numpre = int8 = Numpre 
-                 dv13_numpar = int8 = Numpar 
-                 dv13_receita = int4 = Receita 
+                 dv13_sequencial = int8 = Código
+                 dv13_diversos = int4 = Código do diversos
+                 dv13_numpre = int8 = Numpre
+                 dv13_numpar = int8 = Numpar
+                 dv13_receita = int4 = Receita
                  ";
-   //funcao construtor da classe 
-   function cl_diverimportaold() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("diverimportaold"); 
+     $this->rotulo = new rotulo("diverimportaold");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -71,7 +71,7 @@ class cl_diverimportaold {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->dv13_sequencial = ($this->dv13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"]:$this->dv13_sequencial);
        $this->dv13_diversos = ($this->dv13_diversos == ""?@$GLOBALS["HTTP_POST_VARS"]["dv13_diversos"]:$this->dv13_diversos);
@@ -83,9 +83,9 @@ class cl_diverimportaold {
      }
    }
    // funcao para inclusao
-   function incluir ($dv13_sequencial){ 
+   public function incluir ($dv13_sequencial){
       $this->atualizacampos();
-     if($this->dv13_diversos == null ){ 
+     if($this->dv13_diversos == null ){
        $this->erro_sql = " Campo Código do diversos nao Informado.";
        $this->erro_campo = "dv13_diversos";
        $this->erro_banco = "";
@@ -94,7 +94,7 @@ class cl_diverimportaold {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv13_numpre == null ){ 
+     if($this->dv13_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
        $this->erro_campo = "dv13_numpre";
        $this->erro_banco = "";
@@ -103,7 +103,7 @@ class cl_diverimportaold {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv13_numpar == null ){ 
+     if($this->dv13_numpar == null ){
        $this->erro_sql = " Campo Numpar nao Informado.";
        $this->erro_campo = "dv13_numpar";
        $this->erro_banco = "";
@@ -112,7 +112,7 @@ class cl_diverimportaold {
        $this->erro_status = "0";
        return false;
      }
-     if($this->dv13_receita == null ){ 
+     if($this->dv13_receita == null ){
        $this->erro_sql = " Campo Receita nao Informado.";
        $this->erro_campo = "dv13_receita";
        $this->erro_banco = "";
@@ -122,16 +122,16 @@ class cl_diverimportaold {
        return false;
      }
      if($dv13_sequencial == "" || $dv13_sequencial == null ){
-       $result = db_query("select nextval('diverimportaold_dv13_sequencial_seq')"); 
+       $result = db_query("select nextval('diverimportaold_dv13_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: diverimportaold_dv13_sequencial_seq do campo: dv13_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: diverimportaold_dv13_sequencial_seq do campo: dv13_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->dv13_sequencial = pg_result($result,0,0); 
+       $this->dv13_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from diverimportaold_dv13_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $dv13_sequencial)){
@@ -142,10 +142,10 @@ class cl_diverimportaold {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->dv13_sequencial = $dv13_sequencial; 
+         $this->dv13_sequencial = $dv13_sequencial;
        }
      }
-     if(($this->dv13_sequencial == null) || ($this->dv13_sequencial == "") ){ 
+     if(($this->dv13_sequencial == null) || ($this->dv13_sequencial == "") ){
        $this->erro_sql = " Campo dv13_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,21 +154,21 @@ class cl_diverimportaold {
        return false;
      }
      $sql = "insert into diverimportaold(
-                                       dv13_sequencial 
-                                      ,dv13_diversos 
-                                      ,dv13_numpre 
-                                      ,dv13_numpar 
-                                      ,dv13_receita 
+                                       dv13_sequencial
+                                      ,dv13_diversos
+                                      ,dv13_numpre
+                                      ,dv13_numpar
+                                      ,dv13_receita
                        )
                 values (
-                                $this->dv13_sequencial 
-                               ,$this->dv13_diversos 
-                               ,$this->dv13_numpre 
-                               ,$this->dv13_numpar 
-                               ,$this->dv13_receita 
+                                $this->dv13_sequencial
+                               ,$this->dv13_diversos
+                               ,$this->dv13_numpre
+                               ,$this->dv13_numpar
+                               ,$this->dv13_receita
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "diverimportaold ($this->dv13_sequencial) nao Incluído. Inclusao Abortada.";
@@ -204,16 +204,16 @@ class cl_diverimportaold {
        $resac = db_query("insert into db_acount values($acount,3295,18617,'','".AddSlashes(pg_result($resaco,0,'dv13_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($dv13_sequencial=null) { 
+   public function alterar ($dv13_sequencial=null) {
       $this->atualizacampos();
      $sql = " update diverimportaold set ";
      $virgula = "";
-     if(trim($this->dv13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"])){ 
+     if(trim($this->dv13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_sequencial"])){
        $sql  .= $virgula." dv13_sequencial = $this->dv13_sequencial ";
        $virgula = ",";
-       if(trim($this->dv13_sequencial) == null ){ 
+       if(trim($this->dv13_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "dv13_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_diversos"])){ 
+     if(trim($this->dv13_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_diversos"])){
        $sql  .= $virgula." dv13_diversos = $this->dv13_diversos ";
        $virgula = ",";
-       if(trim($this->dv13_diversos) == null ){ 
+       if(trim($this->dv13_diversos) == null ){
          $this->erro_sql = " Campo Código do diversos nao Informado.";
          $this->erro_campo = "dv13_diversos";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpre"])){ 
+     if(trim($this->dv13_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpre"])){
        $sql  .= $virgula." dv13_numpre = $this->dv13_numpre ";
        $virgula = ",";
-       if(trim($this->dv13_numpre) == null ){ 
+       if(trim($this->dv13_numpre) == null ){
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "dv13_numpre";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpar"])){ 
+     if(trim($this->dv13_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_numpar"])){
        $sql  .= $virgula." dv13_numpar = $this->dv13_numpar ";
        $virgula = ",";
-       if(trim($this->dv13_numpar) == null ){ 
+       if(trim($this->dv13_numpar) == null ){
          $this->erro_sql = " Campo Numpar nao Informado.";
          $this->erro_campo = "dv13_numpar";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_diverimportaold {
          return false;
        }
      }
-     if(trim($this->dv13_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_receita"])){ 
+     if(trim($this->dv13_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv13_receita"])){
        $sql  .= $virgula." dv13_receita = $this->dv13_receita ";
        $virgula = ",";
-       if(trim($this->dv13_receita) == null ){ 
+       if(trim($this->dv13_receita) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "dv13_receita";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_diverimportaold {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "diverimportaold nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->dv13_sequencial;
@@ -327,14 +327,14 @@ class cl_diverimportaold {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($dv13_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($dv13_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($dv13_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -364,7 +364,7 @@ class cl_diverimportaold {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "diverimportaold nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$dv13_sequencial;
@@ -392,11 +392,11 @@ class cl_diverimportaold {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -418,11 +418,11 @@ class cl_diverimportaold {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,15 +442,15 @@ class cl_diverimportaold {
      $sql2 = "";
      if($dbwhere==""){
        if($dv13_sequencial!=null ){
-         $sql2 .= " where diverimportaold.dv13_sequencial = $dv13_sequencial "; 
-       } 
+         $sql2 .= " where diverimportaold.dv13_sequencial = $dv13_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,11 +459,11 @@ class cl_diverimportaold {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $dv13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,15 +476,15 @@ class cl_diverimportaold {
      $sql2 = "";
      if($dbwhere==""){
        if($dv13_sequencial!=null ){
-         $sql2 .= " where diverimportaold.dv13_sequencial = $dv13_sequencial "; 
-       } 
+         $sql2 .= " where diverimportaold.dv13_sequencial = $dv13_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -55,13 +55,13 @@ class cl_regraencerramentonaturezaorcamentaria {
                  c117_contacredora = varchar(15) = Conta Credora
                  ";
    //funcao construtor da classe
-   function cl_regraencerramentonaturezaorcamentaria() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regraencerramentonaturezaorcamentaria");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -70,7 +70,7 @@ class cl_regraencerramentonaturezaorcamentaria {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->c117_sequencial = ($this->c117_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["c117_sequencial"]:$this->c117_sequencial);
        $this->c117_anousu = ($this->c117_anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["c117_anousu"]:$this->c117_anousu);
@@ -82,7 +82,7 @@ class cl_regraencerramentonaturezaorcamentaria {
      }
    }
    // funcao para inclusao
-   function incluir ($c117_sequencial){
+   public function incluir ($c117_sequencial){
       $this->atualizacampos();
      if($this->c117_anousu == null ){
        $this->erro_sql = " Campo Ano não informado.";

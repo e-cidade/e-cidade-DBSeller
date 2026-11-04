@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,7 +66,7 @@ if (isset($ordenacao)) {
   parent.db_iframe_ordenar.hide();
   parent.window.location.reload();
  </script>
-<?}?>
+<?php }?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -83,7 +83,7 @@ if (isset($ordenacao)) {
    <table border="0" cellspacing="0" cellpading="0" width="100%">
     <tr>
      <td align="center">
-      <? $sql = "SELECT ed34_i_codigo,
+      <?php $sql = "SELECT ed34_i_codigo,
                 ed34_i_ordenacao,ed232_c_descr
          FROM basemps
           inner join disciplina  on  disciplina.ed12_i_codigo = basemps.ed34_i_disciplina
@@ -100,7 +100,7 @@ if (isset($ordenacao)) {
    <td rowspan="0">
 
     <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:150px"  onclick="js_selectum('ordenar')" <?=(isset($disabled) && $disabled)!=""?"$disabled":""?>>
-     <?
+     <?php
         if($linhabranco=="yes"){
           echo "<option value=''></option>";
         }

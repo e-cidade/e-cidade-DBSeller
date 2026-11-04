@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -31,12 +31,13 @@
  * @revision $Author: dbjeferson.belmiro $
  * @version $Revision: 1.14 $
  */
-require(modification("libs/db_stdlib.php"));
-require(modification("libs/db_utils.php"));
-require(modification("libs/db_conecta.php"));
-include(modification("libs/db_sessoes.php"));
-include(modification("libs/db_usuariosonline.php"));
-include(modification("dbforms/db_funcoes.php"));
+require_once(modification("libs/db_stdlib.php"));
+require_once(modification("libs/db_utils.php"));
+require_once(modification("libs/db_conecta.php"));
+require_once(modification("libs/db_sessoes.php"));
+require_once(modification("libs/db_usuariosonline.php"));
+require_once(modification("dbforms/db_funcoes.php"));
+
 $periodo = array("1"  => " 1 - Janeiro          ",
                  "2"  => " 2 - Fevereiro (1 Bim)",
                  "3"  => " 3 - Março            ",
@@ -55,6 +56,7 @@ $clrotulo->label("o124_descricao");
 $clrotulo->label("o124_sequencial");
 $clrotulo->label("o15_descr");
 $clrotulo->label("o15_codigo");
+
 ?>
 <html>
   <head>
@@ -84,24 +86,27 @@ $clrotulo->label("o15_codigo");
                     <tr>
                       <td colspan="1">
                         <b>Arquivos do :</b>
-                        <?
-                          $periodopad = date("m",db_getsession("DB_datausu"))-1;
-                          if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){
-                            $periodopad = 12;
-                          } else {
-
-                            if($periodopad == 0)
-                              $periodopad = 1;
-                          }
-
-                          db_select("periodosigap",$periodo,true,2);
-                        ?>
+                          <?php
+                            $periodopad = date("m", db_getsession("DB_datausu"))-1;
+                            if (db_getsession("DB_anousu") != date("Y", db_getsession("DB_datausu"))) {
+                                $periodopad = 12;
+                            } else {
+                                if ($periodopad == 0) {
+                                    $periodopad = 1;
+                                }
+                            }
+                            db_select("periodosigap", $periodo, true, 2);
+                            ?>
                       </td>
-                      <td>
-                        <b>Código TCE:</b>
-                        <?
-                          db_input("codigotce", 4, 0, true, "text", 1);
-                        ?>
+                      <td title=
+"Digite    1 - Prefeitura/Semusa e Semed
+        0543 - Agncia
+        0134 - Funcultural
+        1822 - ARPV">
+                          <b>Código TCE:</b>
+                          <?php
+                            db_input("codigotce", 4, 0, true, "text", 1);
+                            ?>
                       </td>
                     </tr>
                     <tr>
@@ -344,45 +349,56 @@ $clrotulo->label("o15_codigo");
    <table>
      <tr>
        <td>
-         <?
-          db_ancora("<b>Perspectiva Cronograma:</b>","js_pesquisao125_cronogramaperspectiva(true);", 1);
-         ?>
+           <?php
+            db_ancora("<b>Perspectiva Cronograma:</b>", "js_pesquisao125_cronogramaperspectiva(true);", 1);
+            ?>
        </td>
        <td>
-         <?
-         db_input('o124_sequencial',10,$Io124_sequencial,true,'text',
-                 1," onchange='js_pesquisao125_cronogramaperspectiva(false);'");
-         db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'')
-         ?>
+           <?php
+            db_input(
+                'o124_sequencial',
+                10,
+                $Io124_sequencial,
+                true,
+                'text',
+                1,
+                " onchange='js_pesquisao125_cronogramaperspectiva(false);'"
+            );
+            db_input('o124_descricao', 40, $Io124_descricao, true, 'text', 3, '')
+            ?>
        </td>
      </tr>
      <tr>
-        <td>
-         <?
-          db_ancora("<b>Perspectiva PPA:</b>","js_pesquisa_ppa(true);", 1);
-         ?>
-       </td>
-       <td>
-         <?
-         db_input('o119_sequencial',10,$Io124_sequencial,true,'text',
-                 1," onchange='js_pesquisa_ppa(false);'");
-         db_input('o119_descricao',40,$Io124_descricao,true,'text',3,'')
-         ?>
-       </td>
-      </tr>
-      <tr>
-      <tr>
-        <td colspan="4" style='text-align: center'>
-          <input type="button" value='Fechar' onclick='js_fecharDadosPPa()'>
-        </td>
+         <td>
+             <?php
+             db_ancora("<b>Perspectiva PPA:</b>", "js_pesquisa_ppa(true);", 1);
+             ?>
+         </td>
+         <td>
+             <?php
+             db_input(
+                'o119_sequencial',
+                10,
+                $Io124_sequencial,
+                true,
+                'text',
+                1,
+                " onchange='js_pesquisa_ppa(false);'"
+             );
+             db_input('o119_descricao', 40, $Io124_descricao, true, 'text', 3, '')
+             ?>
+         </td>
+     </tr>
+     <tr>
+         <td colspan="4" style='text-align: center'>
+             <input type="button" value='Fechar' onclick='js_fecharDadosPPa()'>
+         </td>
      </tr>
    </table>
    </fieldset>
   </div>
 </html>
-<? db_menu(db_getsession("DB_id_usuario"),
-           db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
-
+<?php db_menu(); ?>
 <script>
 var sUrlRPC = 'con4_processarpad.RPC.php';
 function js_processar() {

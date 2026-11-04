@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,12 +53,12 @@ $rotulocampo->label('j34_lote');
 
 if(isset($incluir)){
   $cgmerrado=false;
-  $result_cgm=$clcgm->sql_record($clcgm->sql_query_file($z01_numcgm)); 
+  $result_cgm=$clcgm->sql_record($clcgm->sql_query_file($z01_numcgm));
   if ($clcgm->numrows!=0){
   db_inicio_transacao();
   $j55_codave="";
   $data = date("Y-m-d",db_getsession("DB_datausu"));
-  $dat = split("-",$data);
+  $dat =explode("-",$data);
   $claverba->j55_data=$data;
   $claverba->j55_data_dia=$dat[0];
   $claverba->j55_data_mes=$dat[1];
@@ -101,7 +101,7 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -114,22 +114,22 @@ if(isset($incluir)){
     <td align="left" valign="center" bgcolor="#CCCCCC">
       <center>
       <table border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj01_matric?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j01_matric',5,$Ij01_matric,true,'text',3,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>          
+        <tr>
+          <td>
            <?=$Lz01_nome?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   $z01_nome2=$z01_nome;
   $z01_numcgm2=$z01_numcgm;
   db_input('z01_nome',30,$Iz01_nome,true,'text',3,"","z01_nome2");
@@ -137,37 +137,37 @@ if(isset($incluir)){
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj14_nome?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j14_nome',45,$Ij14_nome,true,'text',3,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
-<?
+        <tr>
+          <td>
+<?php
   echo $Lj34_setor."/".$Lj34_quadra."/".$Lj34_lote
 ?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j34_setor',5,$Ij34_setor,true,'text',3,"");
-  echo "/"; 
+  echo "/";
   db_input('j34_quadra',5,$Ij34_quadra,true,'text',3,"");
-  echo "/"; 
+  echo "/";
   db_input('j34_lote',5,$Ij34_lote,true,'text',3,"");
 ?>
           </td>
         </tr>
         <tr>
           <td>
-<?
+<?php
   $result = $claverba->sql_record($claverba->sql_query($j01_matric,"max(j55_codave)","","j55_matric=$j01_matric"));
-  $ultimo=pg_result($result,0,0); 
+  $ultimo=pg_result($result,0,0);
   $result = $claverba->sql_record($claverba->sql_query($j01_matric,"cgm.z01_nome,j55_cidade,j55_data,j55_regimo,j55_numcgm","","j01_matric=$j01_matric and j55_codave=$ultimo"));
   if($claverba->numrows!=0){
     db_fieldsmemory($result,0);
@@ -182,52 +182,52 @@ if(isset($incluir)){
     $j55_numcgm="";
     $z01_nome="";
     $z01_numcgm="";
-    $matriz=split("-", $j55_data2); 
-    $ano=$matriz[2]; 
-    $mes=$matriz[1]; 
-    $dia=$matriz[0]; 
+    $matriz= explode("-", $j55_data2);
+    $ano=$matriz[2];
+    $mes=$matriz[1];
+    $dia=$matriz[0];
   }
-?>  
+?>
             <b>ÚLTIMA AVERBAÇÃO</b>
           </td>
         </tr>
-         <tr><td><?db_input('j01_numcgm',5,$Ij01_numcgm,true,'hidden',3,"")?></td></tr>  
-        <tr> 
-          <td>     
+         <tr><td><?php db_input('j01_numcgm',5,$Ij01_numcgm,true,'hidden',3,"")?></td></tr>
+        <tr>
+          <td>
            <?=$Lj55_data?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_inputdata('j55_data',@$j55_data_dia,@$j55_data_mes,@$j55_data_ano,true,'text',3,"","j55_data2");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj55_cidade?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j55_cidade',25,$Ij55_cidade,true,'text',3,"","j55_cidade2");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj55_regimo?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j55_regimo',25,$Ij55_regimo,true,'text',3,"","j55_regimo2");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
             <b>Vendedor</b>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j55_numcgm',5,$Ij55_numcgm,true,'text',3,"","j55_numcgm2");
   db_input('z01_nome',45,$Iz01_nome,true,'text',3,"","z01_nome3");
 ?>
@@ -237,38 +237,38 @@ if(isset($incluir)){
           <td>
              <b>AVERBAÇÃO ATUAL</b>
           </td>
-        </tr>  
-        <tr> 
-          <td>     
- <?
+        </tr>
+        <tr>
+          <td>
+ <?php
    $z01_nome="";
    $z01_numcgm="";
    db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
 ?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
   db_input('z01_nome',45,$Iz01_nome,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj55_cidade?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j55_cidade',25,$Ij55_cidade,true,'text',1,"");
 ?>
           </td>
         </tr>
-        <tr> 
-          <td>     
+        <tr>
+          <td>
            <?=$Lj55_regimo?>
           </td>
-          <td> 
-<?
+          <td>
+<?php
   db_input('j55_regimo',25,$Ij55_regimo,true,'text',1,"");
 ?>
           </td>
@@ -282,7 +282,7 @@ if(isset($incluir)){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -290,7 +290,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 function js_volta(){
   location.href="cad4_averba001.php";
-}  
+}
 function js_averba(){
     db_iframe.jan.location.href = 'func_averba.php?funcao_js=parent.js_mostrav';
     db_iframe.mostraMsg();
@@ -316,14 +316,14 @@ function js_mostra1(chave1,chave2){
   db_iframe.hide();
 }
 function js_mostra(erro,chave){
-  document.form1.z01_nome.value = chave; 
-  if(erro==true){ 
+  document.form1.z01_nome.value = chave;
+  if(erro==true){
     document.form1.z01_numcgm.value="";
     document.form1.z01_numcgm.focus();
   }
 }
 </script>
-<?
+<?php
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -76,7 +76,9 @@ class Banrisul extends PixInfo implements PixBanco
                     "headers" => [
                         "Content-Type" => "application/x-www-form-urlencoded",
                         "Accept" => "application/json",
-                        "Authorization" => "Basic ".base64_encode("{$this->getAppUsername()}:{$this->getAppPassword()}")
+                        "Authorization" => "Basic " . base64_encode(
+                            "{$this->getAppUsername()}:{$this->getAppPassword()}"
+                        )
                     ]
                 ]
             );
@@ -86,12 +88,13 @@ class Banrisul extends PixInfo implements PixBanco
             }
 
             $responseBody = $this->parseHttpResponseBody($httpResponse);
-
+            
             Banrisul::$accessToken = $responseBody->access_token;
         } catch (\Exception $exception) {
             $this->logger(true, "Não foi possível obter o token de acesso a API Pix do Banrisul.");
             $this->logger(true, $exception->getMessage());
             $this->logger(true, $exception->getTraceAsString());
+
             throw new \Exception("Não foi possível obter o token de acesso a API Pix do Banrisul.");
         }
     }
@@ -141,7 +144,6 @@ class Banrisul extends PixInfo implements PixBanco
             $this->logger(false, "Não foi possível gerar o Pix na API do Banrisul.");
             $this->logger(false, $exception->getMessage());
             $this->logger(false, $exception->getTraceAsString());
-            throw new \Exception("Não foi possível gerar o Pix na API do Banrisul.");
         }
     }
 
@@ -154,7 +156,7 @@ class Banrisul extends PixInfo implements PixBanco
         $body["chave"] = $this->getPixKey();
 
         $body["valor"] = [
-            "original" => $this->getValor()
+            "original" => round(floatval($this->getValor()), 2)
         ];
 
         $body["calendario"] = [
@@ -178,7 +180,7 @@ class Banrisul extends PixInfo implements PixBanco
             ],
             [
                 "nome" => "descricao",
-                "valor" => utf8_encode("Arrecadação Pix")
+                "valor" => utf8_encode("Arrecadaï¿½ï¿½o Pix")
             ]
         ];
 

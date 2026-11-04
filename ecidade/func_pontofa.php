@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $clpontofa->rotulo->label("r21_regist");
               <?=$Lr21_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r21_mesusu",2,$Ir21_mesusu,true,"text",4,"","chave_r21_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clpontofa->rotulo->label("r21_regist");
               <?=$Lr21_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r21_regist",6,$Ir21_regist,true,"text",4,"","chave_r21_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clpontofa->rotulo->label("r21_regist");
               <?=$Lr21_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r21_rubric",4,$Ir21_rubric,true,"text",4,"","chave_r21_rubric");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clpontofa->rotulo->label("r21_regist");
               <?=$Lr21_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r21_regist",6,$Ir21_regist,true,"text",4,"","chave_r21_regist");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clpontofa->rotulo->label("r21_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontofa.php")==true){
@@ -141,12 +141,12 @@ $clpontofa->rotulo->label("r21_regist");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

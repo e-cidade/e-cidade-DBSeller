@@ -60,17 +60,17 @@ $clrotulo->label('codret');
       <table>
         <tr>
           <td align="rigth" ><strong>Data Inicial :</strong>
-          <?db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
+          <?php db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
           </td>
           <td align="left" ><strong>Data Final :</strong>
-          <?
+          <?php
            $datausu = date("Y/m/d",db_getsession("DB_datausu"));
            $dataf_ano = substr($datausu,0,4);
            $dataf_mes = substr($datausu,5,2);
            $dataf_dia = substr($datausu,8,2);
 
           ?>
-          <?db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
+          <?php db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
           </td>
         </tr>
         <tr>
@@ -84,14 +84,14 @@ $clrotulo->label('codret');
               </select>
             </td>
           </tr>
-        <tr>   
+        <tr>
           <td>
-            <? 
-              db_ancora($Ld63_banco,' js_bancos(true); ',$db_opcao); 
+            <?php
+              db_ancora($Ld63_banco,' js_bancos(true); ',$db_opcao);
             ?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
               db_input('d63_banco',5,$Id63_banco,true,'text',1,"onchange='js_bancos(false)'");
               db_input('nome_banco',40,"",true,'text',3);
             ?>
@@ -101,8 +101,8 @@ $clrotulo->label('codret');
           <td nowrap title="<?=@$Tk15_codage?>">
           <?=@$Lk15_codage?>
           </td>
-          <td> 
-            <?
+          <td>
+            <?php
               db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -132,14 +132,14 @@ $clrotulo->label('codret');
   }
   function js_mostrabancos(chave1,chave2){
     document.form1.d63_banco.value = chave1;
-    document.form1.nome_banco.value = chave2;  
+    document.form1.nome_banco.value = chave2;
     db_iframe2.hide();
   }
   function js_mostrabancos1(chave,erro){
     document.form1.nome_banco.value = chave;
-    if(erro==true){ 
-      document.form1.d63_banco.focus(); 
-      document.form1.d63_banco.value = ''; 
+    if(erro==true){
+      document.form1.d63_banco.focus();
+      document.form1.d63_banco.value = '';
     }
   }
     function js_dataini(obj){
@@ -170,7 +170,7 @@ $clrotulo->label('codret');
         } else if(document.form1.dataf.value == ''){
            alert('Data Final e obrigatoria. Verifique !.');
            return false;
-        } 
+        }
         if(document.form1.d63_banco.value == '' && document.form1.k15_codage.value == '' && document.form1.codret.value == ''){
             alert('Informe os dados Bancarios ou do CodRet!.');
             return false;
@@ -180,7 +180,7 @@ $clrotulo->label('codret');
           if(document.form1.k15_codage.value == ''){
             alert('Agencia e obrigatoria. Verifique !.');
             return false;
-          } 
+          }
         }
 
         var oParametros = {
@@ -192,8 +192,8 @@ $clrotulo->label('codret');
           iDataf: document.form1.dataf_ano.value+'-'+document.form1.dataf_mes.value+'-'+document.form1.dataf_dia.value
         };
         new EmissaoRelatorio("arr2_reldebcontapagamento002.php", oParametros).open();
-        
-        
+
+
     }
   </script>
 </body>

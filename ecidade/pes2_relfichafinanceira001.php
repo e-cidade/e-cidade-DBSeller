@@ -46,10 +46,12 @@ $clrotulo->label('r44_descr');
 
 db_postmemory($_POST);
 
-if(!isset($anof)){
-  $anof = db_anofolha();
-  $mesf = db_mesfolha();
+if (!isset($anof)) {
+    $anof = DBPessoal::getAnoFolha();
+    $mesf = DBPessoal::getMesFolha();
 }
+
+$sUsuario = db_getsession('DB_login');
 ?>
 <html>
 <head>
@@ -58,7 +60,7 @@ if(!isset($anof)){
   <meta http-equiv="Expires" CONTENT="0">
   <?php
     db_app::load('scripts.js, arrays.js, strings.js, estilos.css, prototype.js');
-  ?>
+    ?>
 </head>
 
 <body bgcolor="#CCCCCC" onLoad="document.form1.anoi.focus();">
@@ -70,18 +72,18 @@ if(!isset($anof)){
   </legend>
 
   <table class="form-container" >
-    <?
+    <?php
 
-      if(isset($tfil) && ($tfil == "n" || $tfil == "i")){
-        if($filt=="m"){
-          $matriculas_selecionadas_text = "";
-        }else{
-          $rubricas_selecionadas_text = "";
+    if (isset($tfil) && ($tfil == "n" || $tfil == "i")) {
+        if ($filt=="m") {
+            $matriculas_selecionadas_text = "";
+        } else {
+            $rubricas_selecionadas_text = "";
         }
-      }
-      db_input('rubricas_selecionadas_text',20,0,true,'hidden',3);
+    }
+      db_input('rubricas_selecionadas_text', 20, 0, true, 'hidden', 3);
 
-      db_input('matriculas_selecionadas_text',20,0,true,'hidden',3);
+      db_input('matriculas_selecionadas_text', 20, 0, true, 'hidden', 3);
 
     ?>
 
@@ -90,12 +92,12 @@ if(!isset($anof)){
         <strong>Ano / Mês início:</strong>
       </td>
       <td>
-        <?
-          db_input('DBtxt23',4,$IDBtxt23,true,'text',2, "class='field-size1'",'anoi');
+        <?php
+          db_input('DBtxt23', 4, $IDBtxt23, true, 'text', 2, "class='field-size1'", 'anoi');
         ?>
         /
-        <?
-          db_input('DBtxt25',2,$IDBtxt25,true,'text',2, "class='field-size1'",'mesi');
+        <?php
+          db_input('DBtxt25', 2, $IDBtxt25, true, 'text', 2, "class='field-size1'", 'mesi');
         ?>
       </td>
     </tr>
@@ -105,12 +107,12 @@ if(!isset($anof)){
         <strong>Ano / Mês fim:</strong>
       </td>
       <td>
-        <?
-        db_input('DBtxt23',4,$IDBtxt23,true,'text',2, "class='field-size1'",'anof')
+        <?php
+        db_input('DBtxt23', 4, $IDBtxt23, true, 'text', 2, "class='field-size1'", 'anof')
         ?>
         /
-        <?
-        db_input('DBtxt25',2,$IDBtxt25,true,'text',2, "class='field-size1'",'mesf')
+        <?php
+        db_input('DBtxt25', 2, $IDBtxt25, true, 'text', 2, "class='field-size1'", 'mesf')
         ?>
       </td>
     </tr>
@@ -123,9 +125,17 @@ if(!isset($anof)){
       </td>
       <td>
         <?php
-          db_input('r44_selec', 10, $Ir44_selec, true, 'text', 1," onchange='js_pesquisaSelecao(false)' class='field-size2' ");
-          db_input('r44_descr', 40, $Ir44_descr, true, 'text', 3,"class='field-size7'");
-        ?>
+          db_input(
+              'r44_selec',
+              10,
+              $Ir44_selec,
+              true,
+              'text',
+              1,
+              " onchange='js_pesquisaSelecao(false)' class='field-size2' "
+          );
+          db_input('r44_descr', 40, $Ir44_descr, true, 'text', 3, "class='field-size7'");
+            ?>
       </td>
     </tr>
 
@@ -134,9 +144,9 @@ if(!isset($anof)){
         <strong>Ordem:</strong>
       </td>
       <td>
-        <?
-        if(!isset($orde)){
-          $orde = "a";
+        <?php
+        if (!isset($orde)) {
+            $orde = "a";
         }
         ?>
         <select name="orde">
@@ -151,9 +161,9 @@ if(!isset($anof)){
         <strong>Filtro:</strong>
       </td>
       <td>
-        <?
-        if(!isset($filt)){
-          $filt = "m";
+        <?php
+        if (!isset($filt)) {
+            $filt = "m";
         }
         ?>
         <select id="filt" name="filt" onchange="js_verifica_selecionadas()" >
@@ -163,15 +173,15 @@ if(!isset($anof)){
       </td>
     </tr>
 
-    <?
-      if(!isset($filt)){
+    <?php
+    if (!isset($filt)) {
         $filt = "m";
-      }
-      if(isset($filt)){
-        if(!isset($tfil)){
-          $tfil = "s";
+    }
+    if (isset($filt)) {
+        if (!isset($tfil)) {
+            $tfil = "s";
         }
-      ?>
+        ?>
         <tr>
           <td>
             <strong>Tipo de filtro:</strong>
@@ -202,106 +212,100 @@ if(!isset($anof)){
           <strong>Dados Cadastrais:</strong>
         </td>
         <td>
-          <?
-            $xcad = array("a"=>"Atual","p"=>"Período Inicial");
-            db_select('mes_dados',$xcad,true,4,"");
-          ?>
+        <?php
+          $xcad = array("a"=>"Atual","p"=>"Período Inicial");
+          db_select('mes_dados', $xcad, true, 4, "");
+        ?>
         </td>
       </tr>
 
-    <?
+        <?php
     }
     ?>
     </table>
     <table>
     <tr>
-      <?
-        if(isset($filt) && $filt=="r" && isset($tfil) && $tfil=="s"){
+      <?php
+        if (isset($filt) && $filt=="r" && isset($tfil) && $tfil=="s") {
+            echo '<td align="right" colspan = "2">';
+            $aux                                  = new cl_arquivo_auxiliar;
+            $aux->obrigarselecao                  = false;
+            $aux->cabecalho                       = "<strong>RUBRICAS SELECIONADAS</strong>";
+            $aux->codigo                          = "rh27_rubric";
+            $aux->descr                           = "rh27_descr";
+            $aux->nomeobjeto                      = 'rubricas_selecionadas';
+            $aux->funcao_js                       = 'js_mostra';
+            $aux->funcao_js_hide                  = 'js_mostra1';
+            $aux->func_arquivo                    = "func_rhrubricas.php";
+            $aux->nomeiframe                      = "db_iframe_rhrubricas";
+            $aux->executa_script_apos_incluir     = "document.form1.rh27_rubric.focus();";
+            $aux->mostrar_botao_lancar            = false;
+            $aux->executa_script_lost_focus_campo = "js_insSelectrubricas_selecionadas()";
+            $aux->completar_com_zeros_codigo      = true;
+            $aux->executa_script_change_focus     = "document.form1.rh27_rubric.focus();";
+            $aux->passar_query_string_para_func   = "&instit=".db_getsession("DB_instit");
+            $aux->localjan                        = "";
+            $aux->db_opcao                        = 2;
+            $aux->tipo                            = 2;
+            $aux->top                             = 20;
+            $aux->linhas                          = 10;
+            $aux->vwidth                          = "460";
+            $aux->funcao_gera_formulario();
+            echo "</td>";
+        } elseif (isset($filt) && $filt=="r" && isset($tfil) && $tfil=="i") {
+            echo '<td align="right"><strong>Intervalo de </strong></td>';
+            echo '<td align="left">';
+            db_input('rh27_rubric', 4, $Irh27_rubric, true, 'text', 2, '', 'rh27_rubric1');
+            echo ' <strong>à</strong> ';
+            db_input('rh27_rubric', 4, $Irh27_rubric, true, 'text', 2, '', 'rh27_rubric2');
+            echo "</td>";
+        } elseif (isset($filt) && $filt=="m" && isset($tfil) && $tfil=="s") {
+            echo '<td align="right" colspan = "2">';
+            $aux                                  = new cl_arquivo_auxiliar;
+            $aux->cabecalho                       = "<strong>MATRÍCULAS SELECIONADAS</strong>";
+            $aux->obrigarselecao                  = false;
+            $aux->codigo                          = "rh01_regist";
+            $aux->descr                           = "z01_nome";
+            $aux->nomeobjeto                      = 'matriculas_selecionadas';
+            $aux->funcao_js                       = 'js_mostra';
+            $aux->funcao_js_hide                  = 'js_mostra1';
+            $aux->func_arquivo                    = "func_rhpessoal.php";
+            $aux->nomeiframe                      = "db_iframe_rhpessoal";
+            $aux->executa_script_apos_incluir     = "document.form1.rh01_regist.focus();";
+            $aux->mostrar_botao_lancar            = false;
+            $aux->executa_script_lost_focus_campo = "js_insSelectmatriculas_selecionadas()";
+            $aux->executa_script_change_focus     = "document.form1.rh01_regist.focus();";
+            $aux->passar_query_string_para_func   = "&instit=".db_getsession("DB_instit");
+            $aux->localjan                        = "";
+            $aux->db_opcao                        = 2;
+            $aux->tipo                            = 2;
+            $aux->top                             = 20;
+            $aux->linhas                          = 10;
+            $aux->vwidth                          = "460";
+            $aux->funcao_gera_formulario();
+            echo "</td>";
+        } elseif (isset($filt) && $filt=="m" && isset($tfil) && $tfil=="i") {
+            echo '<td align="right"><strong>Intervalo de </strong></td>';
+            echo '<td align="left">';
 
-          echo '<td align="right" colspan = "2">';
-          $aux                                  = new cl_arquivo_auxiliar;
-          $aux->obrigarselecao                  = false;
-          $aux->cabecalho                       = "<strong>RUBRICAS SELECIONADAS</strong>";
-          $aux->codigo                          = "rh27_rubric";
-          $aux->descr                           = "rh27_descr";
-          $aux->nomeobjeto                      = 'rubricas_selecionadas';
-          $aux->funcao_js                       = 'js_mostra';
-          $aux->funcao_js_hide                  = 'js_mostra1';
-          $aux->func_arquivo                    = "func_rhrubricas.php";
-          $aux->nomeiframe                      = "db_iframe_rhrubricas";
-          $aux->executa_script_apos_incluir     = "document.form1.rh27_rubric.focus();";
-          $aux->mostrar_botao_lancar            = false;
-          $aux->executa_script_lost_focus_campo = "js_insSelectrubricas_selecionadas()";
-          $aux->completar_com_zeros_codigo      = true;
-          $aux->executa_script_change_focus     = "document.form1.rh27_rubric.focus();";
-          $aux->passar_query_string_para_func   = "&instit=".db_getsession("DB_instit");
-          $aux->localjan                        = "";
-          $aux->db_opcao                        = 2;
-          $aux->tipo                            = 2;
-          $aux->top                             = 20;
-          $aux->linhas                          = 10;
-          $aux->vwidth                          = "460";
-          $aux->funcao_gera_formulario();
-          echo "</td>";
+            db_input('rh01_regist', 6, $Irh01_regist, true, 'text', 2, '', 'rh01_regist1');
 
-        }else if(isset($filt) && $filt=="r" && isset($tfil) && $tfil=="i"){
+            echo ' <strong>ao</strong> ';
 
-          echo '<td align="right"><strong>Intervalo de </strong></td>';
-          echo '<td align="left">';
-          db_input('rh27_rubric',4,$Irh27_rubric,true,'text',2,'','rh27_rubric1');
-          echo ' <strong>à</strong> ';
-          db_input('rh27_rubric',4,$Irh27_rubric,true,'text',2,'','rh27_rubric2');
-          echo "</td>";
+            db_input('rh01_regist', 6, $Irh01_regist, true, 'text', 2, '', 'rh01_regist2');
 
-        }else if(isset($filt) && $filt=="m" && isset($tfil) && $tfil=="s"){
-
-          echo '<td align="right" colspan = "2">';
-          $aux                                  = new cl_arquivo_auxiliar;
-          $aux->cabecalho                       = "<strong>MATRÍCULAS SELECIONADAS</strong>";
-          $aux->obrigarselecao                  = false;
-          $aux->codigo                          = "rh01_regist";
-          $aux->descr                           = "z01_nome";
-          $aux->nomeobjeto                      = 'matriculas_selecionadas';
-          $aux->funcao_js                       = 'js_mostra';
-          $aux->funcao_js_hide                  = 'js_mostra1';
-          $aux->func_arquivo                    = "func_rhpessoal.php";
-          $aux->nomeiframe                      = "db_iframe_rhpessoal";
-          $aux->executa_script_apos_incluir     = "document.form1.rh01_regist.focus();";
-          $aux->mostrar_botao_lancar            = false;
-          $aux->executa_script_lost_focus_campo = "js_insSelectmatriculas_selecionadas()";
-          $aux->executa_script_change_focus     = "document.form1.rh01_regist.focus();";
-          $aux->passar_query_string_para_func   = "&instit=".db_getsession("DB_instit");
-          $aux->localjan                        = "";
-          $aux->db_opcao                        = 2;
-          $aux->tipo                            = 2;
-          $aux->top                             = 20;
-          $aux->linhas                          = 10;
-          $aux->vwidth                          = "460";
-          $aux->funcao_gera_formulario();
-          echo "</td>";
-        }else if(isset($filt) && $filt=="m" && isset($tfil) && $tfil=="i"){
-
-          echo '<td align="right"><strong>Intervalo de </strong></td>';
-          echo '<td align="left">';
-
-          db_input('rh01_regist',6,$Irh01_regist,true,'text',2,'','rh01_regist1');
-
-          echo ' <strong>ao</strong> ';
-
-          db_input('rh01_regist',6,$Irh01_regist,true,'text',2,'','rh01_regist2');
-
-          echo "</td>";
+            echo "</td>";
         }
 
-        if(isset($matriculas_selecionadas_text) && $matriculas_selecionadas_text != ''){
-          echo"<script>js_insere_matri()</script>";
+        if (isset($matriculas_selecionadas_text) && $matriculas_selecionadas_text != '') {
+            echo"<script>js_insere_matri()</script>";
         }
 
-        if(isset($rubricas_selecionadas_text) && $rubricas_selecionadas_text != ''){
-          echo"<script>js_insere_rubri()</script>";
+        if (isset($rubricas_selecionadas_text) && $rubricas_selecionadas_text != '') {
+            echo"<script>js_insere_rubri()</script>";
         }
 
-      ?>
+        ?>
     </tr>
   </table>
 
@@ -312,8 +316,8 @@ if(!isset($anof)){
 </div>
 
 </form>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 
 <script>
@@ -328,7 +332,8 @@ function js_pesquisaSelecao(lMostra) {
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_selecao', sUrl, 'Pesquisa', lMostra);
   }else{
 
-    sUrl = 'func_selecao.php?pesquisa_chave='+document.form1.r44_selec.value+'&funcao_js=parent.js_mostraSelecaoHidden&instit='+iCodigoInstituicao;
+    sUrl = 'func_selecao.php?pesquisa_chave='+document.form1.r44_selec.value+
+        '&funcao_js=parent.js_mostraSelecaoHidden&instit='+iCodigoInstituicao;
     js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_selecao', sUrl, 'Pesquisa', lMostra);
   }
 }
@@ -363,7 +368,8 @@ function js_insere_matri() {
 
       document.getElementById('rh01_regist').value = array[i];
       js_BuscaDadosArquivomatriculas_selecionadas(false);
-      document.getElementById('matriculas_selecionadas_text').value = (array.slice(i+1, array.length).implode(',')).trim();
+      document.getElementById('matriculas_selecionadas_text').value =
+          (array.slice(i+1, array.length).implode(',')).trim();
       var st = setTimeout(js_insere_matri, 500);
       break;
     }
@@ -384,7 +390,8 @@ function js_insere_rubri() {
 
       document.getElementById('rh27_rubric').value = array[i];
       js_BuscaDadosArquivorubricas_selecionadas(false);
-      document.getElementById('rubricas_selecionadas_text').value = (array.slice(i+1, array.length).implode(',')).trim();
+      document.getElementById('rubricas_selecionadas_text').value =
+          (array.slice(i+1, array.length).implode(',')).trim();
       var st = setTimeout(js_insere_rubri, 500);
      break;
     }
@@ -440,50 +447,66 @@ function js_emite(){
       document.form1.matriculas_selecionadas_text.value = js_campo_recebe_valores();
     }
 
-    if (erro == 0) {
+    if (erro === 0) {
 
-      if (document.form1.matriculas_selecionadas_text.value == "" && $F('r44_selec') == "" ) {
+        console.log('aqui');
+        console.log(document.form1.matriculas_selecionadas_text.value);
+        console.log(document.form1.rubricas_selecionadas_text.value);
+        console.log($F('r44_selec'));
 
-        if(!confirm("Nenhuma matrícula informada, isto poderá deixar esta rotina muito lenta. \nDeseja continuar geração de relatório?")){
-          erro = 1;
-        }
+        if (document.form1.matriculas_selecionadas_text.value === "" &&
+            document.form1.rubricas_selecionadas_text.value === "" && $F('r44_selec') === "" ) {
+            var sUsuario = '<?php echo $sUsuario ?>';
+            if (sUsuario !== 'dbseller') {
+                alert('Emissão Geral bloqueada. Se necessitar usá-la, contate o suporte.');
+                erro = 1 ;
+            }
+
+            if (erro === 0) {
+                var sMsg = 'Nenhuma matrícula ou rubrica informada, isto poderá deixar esta rotina muito lenta.';
+                sMsg = sMsg + '\nDeseja continuar geração de relatório?';
+                if (!confirm(sMsg)) {
+                    erro = 1;
+                }
+            }
       }
 
-      if (erro == 0) {
+      if (erro === 0) {
 
-    	  var frm = document.form1;
-    	  
-    	  var sQuery = "";
-    	  sQuery  = "r44_selec="+$F('r44_selec');
-    	  sQuery += "&rubricas_selecionadas_text="+$F("rubricas_selecionadas_text");
-    	  sQuery += "&matriculas_selecionadas_text="+$F("matriculas_selecionadas_text");
-    	  if ($('rh27_rubric1')) {
-    		  sQuery += "&rh27_rubric1="+$F('rh27_rubric1');  
-    	  }	   
-    	  if ($('rh27_rubric2')) {
-    		  sQuery += "&rh27_rubric2="+$F('rh27_rubric2');  
-    	  }
-    	  if ($('rh01_regist1')) {
-    		  sQuery += "&rh01_regist1="+$F('rh01_regist1');  
-    	  }	   
-    	  if ($('rh01_regist2')) {
-    		  sQuery += "&rh01_regist2="+$F('rh01_regist2');  
-    	  }
-    	  
-    	  sQuery += "&anoi="+$F("anoi");
-    		sQuery += "&mesi="+$F("mesi");
-    		sQuery += "&anof="+$F("anof");
-    		sQuery += "&mesf="+$F("mesf");
-    		sQuery += "&r44_selec="+$F("r44_selec");
-    		sQuery += "&orde="+frm.orde.value;
-    		sQuery += "&filt="+frm.filt.value;
-    		sQuery += "&tfil="+frm.tfil.value;
-    		sQuery += "&quebrapg="+frm.quebrapg.value;
-    		sQuery += "&mes_dados="+frm.mes_dados.value;
+          var frm = document.form1;
+          
+          var sQuery = "";
+          sQuery  = "r44_selec="+$F('r44_selec');
+          sQuery += "&rubricas_selecionadas_text="+$F("rubricas_selecionadas_text");
+          sQuery += "&matriculas_selecionadas_text="+$F("matriculas_selecionadas_text");
+          if ($('rh27_rubric1')) {
+              sQuery += "&rh27_rubric1="+$F('rh27_rubric1');  
+          }    
+          if ($('rh27_rubric2')) {
+              sQuery += "&rh27_rubric2="+$F('rh27_rubric2');  
+          }
+          if ($('rh01_regist1')) {
+              sQuery += "&rh01_regist1="+$F('rh01_regist1');  
+          }    
+          if ($('rh01_regist2')) {
+              sQuery += "&rh01_regist2="+$F('rh01_regist2');  
+          }
+          
+          sQuery += "&anoi="+$F("anoi");
+            sQuery += "&mesi="+$F("mesi");
+            sQuery += "&anof="+$F("anof");
+            sQuery += "&mesf="+$F("mesf");
+            sQuery += "&r44_selec="+$F("r44_selec");
+            sQuery += "&orde="+frm.orde.value;
+            sQuery += "&filt="+frm.filt.value;
+            sQuery += "&tfil="+frm.tfil.value;
+            sQuery += "&quebrapg="+frm.quebrapg.value;
+            sQuery += "&mes_dados="+frm.mes_dados.value;
 
-    		jan = window.open('pes2_relfichafinanceira002.php?'+sQuery,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
-    		jan.moveTo(0,0);  
-    	  return true;
+            jan = window.open('pes2_relfichafinanceira002.php?'+sQuery,
+                '','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+            jan.moveTo(0,0);  
+          return true;
 
       }
       

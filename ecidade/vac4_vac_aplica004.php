@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $rsResult      = $clvac_sala->sql_record($sSql);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br>
-<?if ($clvac_sala->numrows == 0) {
+<?php if ($clvac_sala->numrows == 0) {
     echo"<br><br><center><strong><b> Departamento não é um sala de vacinação! </b></strong></center>";
     exit;
   }?>
@@ -64,7 +64,7 @@ $rsResult      = $clvac_sala->sql_record($sSql);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmvac_aplica.php"));
 	?>
     </center>

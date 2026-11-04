@@ -51,7 +51,7 @@ unset($_SESSION["cronogramabasespages"]);
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php
   db_app::load("scripts.js, strings.js, arrays.js, prototype.js, widgets/windowAux.widget.js, widgets/messageboard.widget.js");
   db_app::load("datagrid.widget.js, estilos.css, grid.style.css");
   db_app::load("AjaxRequest.js, widgets/DBHint.widget.js");
@@ -70,12 +70,12 @@ unset($_SESSION["cronogramabasespages"]);
             <table>
               <tr>
                 <td>
-                  <?
+                  <?php
                   db_ancora("<b>Perspectiva:</b>","js_pesquisao125_cronogramaperspectiva(true);",$db_opcao);
                   ?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('o124_sequencial',10,$Io124_sequencial,true,'text',
                     $db_opcao," onchange='js_pesquisao125_cronogramaperspectiva(false);'");
                   db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'')
@@ -87,7 +87,7 @@ unset($_SESSION["cronogramabasespages"]);
                   <b>Ano:</b>
                 </td>
                 <td>
-                  <?
+                  <?php
                   db_input('ano',10,0,true,'text',3,'');
 
                   ?>
@@ -116,7 +116,7 @@ unset($_SESSION["cronogramabasespages"]);
           <b>Estrutural:</b>
         </td>
         <td>
-          <?
+          <?php
           db_input('fonte',15,"",true,'text',1);
           ?>
         </td>
@@ -174,7 +174,7 @@ unset($_SESSION["cronogramabasespages"]);
                 <td class='table_header' style="width: 17px" width="17px">&nbsp;</td>
               </tr>
               <tr>
-                <?
+                <?php
                 for ($i = 1; $i <=12; $i++) {
                   echo " <td class='table_header' style='width:50px'><b>%</b></td> ";
                   echo " <td class='table_header' style='width:200px'>Valor Reestimado</td> ";
@@ -218,7 +218,7 @@ unset($_SESSION["cronogramabasespages"]);
             display:none;' id='ajudaItem'>
 
 </div>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

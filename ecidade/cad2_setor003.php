@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ function js_validaOrdem(){
       <table border="0" align='center'>
         <tr>
           <td align="top" align='center' colspan="5">
-   <?
+   <?php
       $cliframe_seleciona->campos  = "j30_codi,j30_descr";
       $cliframe_seleciona->legenda="SETOR";
       $cliframe_seleciona->sql=$clsetor->sql_query(""," * ","j30_codi");      
@@ -140,7 +140,7 @@ function js_validaOrdem(){
    ?>
           </td>
         </tr> 
-   <?
+   <?php
       db_input('idbql',"",0,true,'hidden',3,"");
       db_input('j34_setor',"",0,true,'hidden',3,"");
       db_input('j34_quadra',"",0,true,'hidden',3,"");
@@ -152,7 +152,7 @@ function js_validaOrdem(){
 			  </td>
 		          
 			  <td colspan=3 align='left' >
-			    <?
+			    <?php
 			    $aOrdem= array("S"=>"Setor","Q"=>"Quadra","Z"=>"Zona");
 			     db_select("ordem",$aOrdem,true,2,"onchange = js_validaOrdem();"); 	      
 			    ?>
@@ -163,7 +163,7 @@ function js_validaOrdem(){
 		    	<strong>Tipo: </strong>
 		    </td>
 		    <td>
-		        <?
+		        <?php
 			    $aTipo= array("A"=>"Alfabética","N"=>"Numérica");
 			     db_select("tipo",$aTipo,true,2); 	      
 			    ?>

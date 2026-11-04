@@ -100,7 +100,7 @@ $clrotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)) {
 
         if(isset($campos)==false) {

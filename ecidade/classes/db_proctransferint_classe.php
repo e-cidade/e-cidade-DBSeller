@@ -63,7 +63,7 @@ class cl_proctransferint
                  ";
 
     //funcao construtor da classe
-    function cl_proctransferint()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("proctransferint");
@@ -71,7 +71,7 @@ class cl_proctransferint
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -82,7 +82,7 @@ class cl_proctransferint
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->p88_codigo = ($this->p88_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["p88_codigo"] : $this->p88_codigo);
@@ -104,7 +104,7 @@ class cl_proctransferint
     }
 
     // funcao para inclusao
-    function incluir($p88_codigo)
+    public function incluir($p88_codigo)
     {
         $this->atualizacampos();
         if ($this->p88_data == null) {
@@ -268,7 +268,7 @@ class cl_proctransferint
     }
 
     // funcao para alteracao
-    function alterar($p88_codigo = null)
+    public function alterar($p88_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update proctransferint set ";
@@ -462,7 +462,7 @@ class cl_proctransferint
     }
 
     // funcao para exclusao
-    function excluir($p88_codigo = null, $dbwhere = null)
+    public function excluir($p88_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($p88_codigo));
@@ -548,7 +548,7 @@ class cl_proctransferint
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -577,7 +577,7 @@ class cl_proctransferint
         return $result;
     }
 
-    function sql_query($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -616,7 +616,7 @@ class cl_proctransferint
         return $sql;
     }
 
-    function sql_query_andusu($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_andusu($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -659,7 +659,7 @@ class cl_proctransferint
         return $sql;
     }
 
-    function sql_query_file($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($p88_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

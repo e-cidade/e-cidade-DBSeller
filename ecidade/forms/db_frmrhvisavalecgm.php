@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,37 +58,37 @@ if(isset($db_opcaoal)){
        <?=@$Lrh47_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh47_codigo',10,$Irh47_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh48_instit?>">
-       <?
+       <?php
        db_ancora(@$Lrh48_instit,"js_pesquisarh48_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh48_instit',2,$Irh48_instit,true,'text',$db_opcao," onchange='js_pesquisarh48_instit(false);'")
 ?>
-       <?
+       <?php
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh48_numcgm?>">
-       <?
+       <?php
        db_ancora(@$Lrh48_numcgm,"js_pesquisarh48_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('rh48_numcgm',10,$Irh48_numcgm,true,'text',$db_opcao," onchange='js_pesquisarh48_numcgm(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("rh47_codigo"=>@$rh47_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhvisavalecgm->sql_query_file($rh47_codigo);

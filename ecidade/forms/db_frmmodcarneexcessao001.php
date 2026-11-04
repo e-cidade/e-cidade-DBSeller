@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,22 +57,22 @@ if(isset($db_opcaoal)){
        <?=@$Lk36_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k36_sequencial',10,$Ik36_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk36_modcarnepadraotipo?>">
-       <?
+       <?php
        db_ancora(@$Lk36_modcarnepadraotipo,"js_pesquisak36_modcarnepadraotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('k36_modcarnepadraotipo',10,$Ik36_modcarnepadraotipo,true,'text',$db_opcao," onchange='js_pesquisak36_modcarnepadraotipo(false);'")
 ?>
-       <?
+       <?php
 db_input('k49_cadmodcarne',10,$Ik49_cadmodcarne,true,'text',3,'')
        ?>
     </td>
@@ -82,7 +82,7 @@ db_input('k49_cadmodcarne',10,$Ik49_cadmodcarne,true,'text',3,'')
        <?=@$Lk36_ip?>
     </td>
     <td> 
-<?
+<?php
 db_input('k36_ip',15,$Ik36_ip,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('k36_ip',15,$Ik36_ip,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("k36_sequencial"=>@$k36_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clmodcarneexcessao->sql_query_file($k36_sequencial);

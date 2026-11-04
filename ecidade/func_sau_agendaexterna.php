@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
               <?=$Ls118_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("s118_i_codigo",10,$Is118_i_codigo,true,"text",4,"","chave_s118_i_codigo");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
               <?=$Ls118_d_marcada?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 				db_inputdata ( 's118_d_marcada', @$s118_d_marcada_dia, @$s118_d_marcada_mes, @$s118_d_marcada_ano, true, 'text', 4, "", "chave_s118_d_marcada" );
 		       ?>
             </td>
@@ -79,7 +79,7 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 				db_input("z01_v_nome",48,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		       ?>
             </td>
@@ -97,7 +97,7 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_agendaexterna.php")==true){
@@ -143,12 +143,12 @@ $clsau_agendaexterna->rotulo->label("s118_d_marcada");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

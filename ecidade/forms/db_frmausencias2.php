@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
@@ -63,38 +63,38 @@ if(isset($opcao) && $opcao=="alterar"){
     <td nowrap title="<?=@$Tsd06_i_codigo?>">
        <?=@$Lsd06_i_codigo?>
     </td>
-    <td> 
-<?
+    <td>
+<?php
 db_input('sd06_i_codigo',10,$Isd06_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd06_i_unidade?>">
-       <?
+       <?php
        db_ancora(@$Lsd06_i_unidade,"js_pesquisasd06_i_unidade(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd06_i_unidade',10,$Isd06_i_unidade,true,'text',3," onchange='js_pesquisasd06_i_unidade(false);'")
 ?>
-       <?
+       <?php
 db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tsd06_i_medico?>">
-       <?
+       <?php
        db_ancora(@$Lsd06_i_medico,"js_pesquisasd06_i_medico(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('sd06_i_medico',10,$Isd06_i_medico,true,'text',3," onchange='js_pesquisasd06_i_medico(false);'")
 ?>
-       <?
+       <?php
 db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -104,7 +104,7 @@ db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
        <?=@$Lsd06_d_data?>
     </td>
     <td>
-     <?db_inputdata('sd06_d_data',@$sd06_d_data_dia,@$sd06_d_data_mes,@$sd06_d_data_ano,true,'text',$db_opcao,"")?>
+     <?php db_inputdata('sd06_d_data',@$sd06_d_data_dia,@$sd06_d_data_mes,@$sd06_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -115,7 +115,7 @@ db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php
    $chavepri= array("sd06_i_codigo"=>@$sd06_i_codigo,"sd06_i_unidade"=>@$sd06_i_unidade,"descrdepto"=>@$descrdepto,"sd06_i_medico"=>@$sd06_i_medico,"z01_nome"=>@$z01_nome,"sd06_d_data"=>@$sd06_d_data);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clausencias->sql_query("","*","","sd06_i_unidade = $sd06_i_unidade and sd06_i_medico = $sd06_i_medico");
@@ -143,18 +143,18 @@ function js_pesquisasd06_i_unidade(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('','db_iframe_unidades','func_unidades.php?funcao_js=parent.js_mostraunidades1|sd04_i_codigo|sd04_i_medico','Pesquisa',true);
   }else{
-     if(document.form1.sd30_i_undmed.value != ''){ 
+     if(document.form1.sd30_i_undmed.value != ''){
         js_OpenJanelaIframe('','db_iframe_unidademedicos','func_unidademedicos.php?pesquisa_chave='+document.form1.sd30_i_undmed.value+'&funcao_js=parent.js_mostraunidademedicos','Pesquisa',false);
      }else{
-       document.form1.sd04_i_medico.value = ''; 
+       document.form1.sd04_i_medico.value = '';
      }
   }
 }
 function js_mostraunidademedicos(chave,erro){
-  document.form1.sd04_i_medico.value = chave; 
-  if(erro==true){ 
-    document.form1.sd30_i_undmed.focus(); 
-    document.form1.sd30_i_undmed.value = ''; 
+  document.form1.sd04_i_medico.value = chave;
+  if(erro==true){
+    document.form1.sd30_i_undmed.focus();
+    document.form1.sd30_i_undmed.value = '';
   }
 }
 function js_mostraunidademedicos1(chave1,chave2){
@@ -167,7 +167,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -75,13 +75,6 @@ abstract class AnexoI extends AnexoI2018
         $oLinha->informaMetodo("cabecalhoQuadroUmDetalhado");
         $this->aLinhasProcessadas[] = $oLinha;
 
-
-
-
-
-
-       // dd("2020" , $this->aLinhasConsistencia);
-
         foreach ($this->aLinhasConsistencia as $oLinhaRelatorio) {
             if ($oLinhaRelatorio->ordem <= $this->linhaFinalQuadroDespesa) {
                 $this->adicionaLinhaModeloDetalhado($oLinhaRelatorio);
@@ -111,13 +104,8 @@ abstract class AnexoI extends AnexoI2018
         $oLinha->informaMetodo("notaExplicativaPdf");
         $this->aLinhasProcessadas[] = $oLinha;
 
-
-
-
-        //dd("aLinhasProcessadas 2020",$this->aLinhasConsistencia, $this->aLinhasProcessadas);
         return $this->aLinhasProcessadas;
     }
-
 
     /**
      * Coloca os valores nas linhas do relatório legal na propriedade criada, chamada -> meses.
@@ -148,7 +136,6 @@ abstract class AnexoI extends AnexoI2018
                     if (in_array($linhaAnalitica, $this->linhasParaSubtrair)) {
                         $valor *= -1;
                     }
-
                     $this->aValoresDespesaPorLinhaMes[$sintetica][$competencia] += $valor;
                 }
             }
@@ -214,5 +201,11 @@ abstract class AnexoI extends AnexoI2018
                 }
             }
         }
+    }
+
+    public function getLinhas()
+    {
+        $this->processarDetalhamentoMensal();
+        return $this->aLinhasConsistencia;
     }
 }

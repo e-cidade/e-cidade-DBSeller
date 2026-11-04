@@ -146,6 +146,12 @@ if (isset($alterar)) {
           $clparissqn->q60_portepadraomei = $q60_portepadraomei;
         }
 
+        if ($q60_integracaoexterna == "") {
+          $clparissqn->q60_integracaoexterna = 'NULL';
+        } else {
+          $clparissqn->q60_integracaoexterna = $q60_integracaoexterna;
+        }
+
         $clparissqn->alterarParametro();
         $sMsgErro = $clparissqn->erro_msg;
       }
@@ -215,7 +221,7 @@ if (isset($alterar)) {
 } else {
 
   $db_opcao = 2;
-  $result   = $clparissqn->sql_record($clparissqn->sql_query());
+  $result   = $clparissqn->sql_record($clparissqn->sql_query(null,'*'));
   if ($result != false && $clparissqn->numrows > 0) {
       db_fieldsmemory($result, 0);
   }
@@ -299,7 +305,7 @@ $db_botao = true;
   ?>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
   if( $sql_erro ){
   	db_msgbox($sMsgErro);

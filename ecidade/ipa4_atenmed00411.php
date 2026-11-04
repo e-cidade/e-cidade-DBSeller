@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ input {
   </tr>
   <tr>
     <td height="330" align="center" valign="middle" bgcolor="#FFFF64"> <br>
-      <?
+      <?php
         $tam = strlen($codigo);
 	$x = ""; 
 	for($i=0;$i < $tam;$i++){
@@ -92,7 +92,7 @@ input {
 	  for($i = 0;$i < $numrows;$i++) {
 	    db_fieldsmemory($result,$i);
 	    ?>
-	    <table bgcolor="<? echo $i%2==0?"#FFBBBB":"#FF7171" ?>" width="100%" border="0" cellspacing="3" cellpadding="0">
+	    <table bgcolor="<?php echo $i%2==0?"#FFBBBB":"#FF7171" ?>" width="100%" border="0" cellspacing="3" cellpadding="0">
           <tr> 
             
           <td nowrap><strong>Data:</strong></td>
@@ -126,23 +126,23 @@ input {
           <td colspan="7" nowrap><strong>Diagnóstico:</strong></td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
-            <td colspan="8"><? echo str_replace("\n","<br>","$ag40_diag"); ?>&nbsp;</td>
+            <td colspan="8"><?php echo str_replace("\n","<br>","$ag40_diag"); ?>&nbsp;</td>
           </tr>		
           <tr> 
           <td colspan="7" nowrap><strong>Médico:</strong></td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
-            <td colspan="8"><? echo str_replace("\n","<br>","$aa01_nome"); ?>&nbsp;</td>
+            <td colspan="8"><?php echo str_replace("\n","<br>","$aa01_nome"); ?>&nbsp;</td>
           </tr>		
         </table><br>
-	    <?
+	    <?php
       }
 	}
 	?>	
 	</td>
   </tr>
 </table>
-<?
+<?php
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>

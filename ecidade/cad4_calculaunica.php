@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -166,7 +166,7 @@ function js_verifica_campos(){
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
    <form name="form1" action="" method="post" onsubmit="return js_verifica_campos();">
 	    <table width="292" border="0" cellpadding="0" cellspacing="0">
-          <?
+          <?php
 		  if(isset($calculaunica)){
           ?>
           <tr> 
@@ -175,13 +175,13 @@ function js_verifica_campos(){
               <?=@$quantos?>
             </td>
           </tr>
-          <?
+          <?php
 		  }
 		  ?>
           <tr> 
             <td width="131" height="25">Data vencimento:</td>
             <td width="161" height="25"> 
-              <?
+              <?php
 			db_inputdata('k00_dtvenc','','','',true,'text',4)
 			?>
             </td>
@@ -189,7 +189,7 @@ function js_verifica_campos(){
           <tr> 
             <td height="25">Data Lan&ccedil;amento:</td>
             <td height="25"> 
-              <?
+              <?php
 			db_inputdata('k00_dtoper',$k00_dtoper_dia,$k00_dtoper_mes,$k00_dtoper_ano,true,'text',4)
 			?>
             </td>
@@ -197,7 +197,7 @@ function js_verifica_campos(){
           <tr>
             <td height="25">Percentual Desconto:</td>
             <td height="25">
-              <?
+              <?php
 			db_input('k00_percdes','','','',true,'text',4)
 			?>
             </td>
@@ -210,21 +210,21 @@ function js_verifica_campos(){
             </td>
 	    
             <td height="25">
-              <?
+              <?php
 	      $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
 	      if(pg_numrows($result) > 0){
 		?>
 		<select name="anousu">
-		<?
+		<?php
   	        for($i=0;$i<pg_numrows($result);$i++){
 		db_fieldsmemory($result,$i);
 	        ?>
 	        <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
-	        <?
+	        <?php
 	        }
 		?>
 		</select>
-		<?
+		<?php
 	      }
 	        ?>
             </td>
@@ -251,12 +251,12 @@ function js_verifica_campos(){
      </td>
   </tr>
 </table>
-<? 
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($erro==true){
   echo "<script>alert('$descricao_erro');</script>";
 }

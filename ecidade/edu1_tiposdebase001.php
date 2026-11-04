@@ -26,7 +26,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     <form id="formTipoBase" name="">
         <fieldset>
             <legend>Tipos de Base</legend>
-            <table class="form-container" style="">
+            <table class="form-container">
                 <tr>
                     <td>
                         <label for="ed182_descricao">Descrição:</label>
@@ -51,7 +51,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <tr>
                     <td>
                         <fieldset>
-                            <legend>Tipo do Itinerario Formativo</legend>
+                            <legend>Tipo do Itinerário Formativo</legend>
                             <table style="margin: 0 auto;" id="tableTipoItinerario">
 
                             </table>
@@ -63,7 +63,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 <tr>
                     <td>
                         <fieldset>
-                            <legend>Composição do Itinerário Fromativo Integrado</legend>
+                            <legend>Composição do Itinerário Formativo Integrado</legend>
                             <table style="margin: 0 auto;" id="tableComposicoesItinerarioIntegrado">
 
                             </table>
@@ -71,7 +71,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     </td>
                 </tr>
             </table>
-            <table class="form-container" style="">
+            <table class="form-container">
                 <tr id="ctnTipoCursoItinerario" style="display: none">
                     <td>
                         <label for="ed182_tipo_curso_itinerario_tec_prof">Tipo do curso do itinerário </label><br>
@@ -144,7 +144,7 @@ require_once(modification("dbforms/db_funcoes.php"));
         getTiposBase: `educacao/secretaria/tipo-base/buscarTodos`,
         excluir: `educacao/secretaria/tipo-base/excluir`
     }
-    
+
     //select's
     const selectEstruturaCurricular = document.querySelector('#estruturaCurricular');
     const selectTipoCursoItinerario = document.querySelector('#tipoCursoItinerario');
@@ -152,7 +152,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     //tables dos checkox's
     const tableTipoItinerario = document.querySelector('#tableTipoItinerario');
     const tableComposicoesItinerarioIntegrado = document.querySelector('#tableComposicoesItinerarioIntegrado');
-    
+
     //elementos com visibilidade variavel
     const ctnItinerarioFormativo = document.querySelector('#ctnItinerarioFormativo');
     const ctnComposicaoItinerarioIntegrado = document.querySelector('#ctnComposicaoItinerarioIntegrado');
@@ -213,8 +213,8 @@ require_once(modification("dbforms/db_funcoes.php"));
                     }
                 })
 
-                tableTipoItinerario.appendChild(tr1);    
-                tableTipoItinerario.appendChild(tr2);  
+                tableTipoItinerario.appendChild(tr1);
+                tableTipoItinerario.appendChild(tr2);
         });
     }
 
@@ -246,8 +246,8 @@ require_once(modification("dbforms/db_funcoes.php"));
                     }
                 })
 
-                tableComposicoesItinerarioIntegrado.appendChild(tr1);    
-                tableComposicoesItinerarioIntegrado.appendChild(tr2);            
+                tableComposicoesItinerarioIntegrado.appendChild(tr1);
+                tableComposicoesItinerarioIntegrado.appendChild(tr2);
         });
     }
 
@@ -304,12 +304,12 @@ require_once(modification("dbforms/db_funcoes.php"));
 
                 if (tiposItinerario[key].checked) {
                     aTiposItinerario.push(tiposItinerario[key].value);
-                    
+
                 } else {
                     aTiposItinerario.splice(aTiposItinerario.indexOf(tiposItinerario[key].value), 1);
                 }
-                            
-                if (aTiposItinerario.length > 4) { 
+
+                if (aTiposItinerario.length > 4) {
                     alert("Você pode selecionar no máximo quatro opções!");
                     tiposItinerario[key].checked = false;
                     aTiposItinerario.splice(aTiposItinerario.indexOf(tiposItinerario[key].value));
@@ -332,13 +332,13 @@ require_once(modification("dbforms/db_funcoes.php"));
 
                 if (composicaoItineraioIntegrado[key].checked) {
                     aComposicoesItinerarios.push(composicaoItineraioIntegrado[key].value);
-        
+
                 } else {
                     aComposicoesItinerarios.splice(aComposicoesItinerarios.indexOf(composicaoItineraioIntegrado[key].value), 1);
-        
+
                 }
-                            
-                if (aComposicoesItinerarios.length > 4) { 
+
+                if (aComposicoesItinerarios.length > 4) {
                     alert("Você pode selecionar no máximo quatro opções!");
                     composicaoItineraioIntegrado[key].checked = false;
                     aComposicoesItinerarios.splice(aComposicoesItinerarios.indexOf(composicaoItineraioIntegrado[key].value));
@@ -371,7 +371,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     const carregaDataTable = async () => {
         const acoesEventos = {
             'click .alterar': (e, value, row, index) => {
-    
+
                 formulario.ed182_id.value = row.ed182_id;
                 formulario.ed182_descricao.value = row.ed182_descricao;
 
@@ -381,7 +381,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                         selectEstruturaCurricular.dispatchEvent(new Event('change'));
                     }
                 })
-                
+
                 if (row.ed182_estrutura_curricular.id == 1) {
                     checks = document.querySelectorAll('.tipoItinerario')
                     Object.keys(checks).map(index => {
@@ -393,7 +393,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                         })
                     })
                 }
-        
+
                 if (row.ed182_tipo_itinerario_informativo.length > 0) {
                     row.ed182_tipo_itinerario_informativo.map(tipo => {
                         if (tipo.id == 6) {
@@ -473,7 +473,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             }
 
             if (field == 'ed182_tipo_curso_itinerario_tec_prof'){
-                template =  row.ed182_tipo_curso_itinerario_tec_prof != null ? 
+                template =  row.ed182_tipo_curso_itinerario_tec_prof != null ?
                     row.ed182_tipo_curso_itinerario_tec_prof.descricao :
                     'Não se aplica'
             }
@@ -488,7 +488,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             }
 
             if (field == 'ed182_tipo_itinerario_informativo'){
-                if (row.ed182_tipo_itinerario_informativo == null) { 
+                if (row.ed182_tipo_itinerario_informativo == null) {
                     template = 'Não se aplica'
                 } else {
                     template = `<table class="table table-striped text-center">
@@ -594,7 +594,7 @@ require_once(modification("dbforms/db_funcoes.php"));
             cache: false,
             search: true,
             class: "table table-sm"
-        
+
         });
 
         await HttpClient.get(`${PHPSession.requestApi}/${routs.getTiposBase}`).then(async response => {
@@ -605,7 +605,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
             table.bootstrapTable('load', response.data);
         });
-    }    
+    }
 
     window.addEventListener('load', async () => {
         PHPSession.loadData().then( async () => {

@@ -59,11 +59,15 @@ try {
 
       $oRetorno->iOrcamento = null;
       foreach ($aFornecedores as $oDadoFornecedor) {
+        $oDaoPcOrcamForneLic = new cl_pcorcamfornelic();
+        $sql = $oDaoPcOrcamForneLic->sql_query($oDadoFornecedor->pc21_orcamforne);
+        $rs = $oDaoPcOrcamForneLic->sql_record($sql);
 
         $oFornecedor              = new stdClass();
         $oFornecedor->iCgm        = $oDadoFornecedor->z01_numcgm;
         $oFornecedor->sNome       = $oDadoFornecedor->z01_nome;
         $oFornecedor->iFornecedor = $oDadoFornecedor->pc21_orcamforne;
+        $oFornecedor->tipoEmpresa = \db_utils::fieldsMemory($rs, 0)->l32_descricao;
 
         $oFornecedor->aItens = licitacao::getItensPorFornecedor(array($oParam->iLicitacao), $oDadoFornecedor->z01_numcgm, false, false);
 
@@ -79,6 +83,8 @@ try {
 
         $oItem                  = new stdClass();
         $oItem->iLicLicitem     = $oItemLicitacao->getCodigo();
+        $oItem->ordem     = $oItemLicitacao->getOrdem();
+        $oItem->resumo     = $oItemLicitacao->getItemSolicitacao()->getResumo();
         $oItem->sItem           = urldecode( $oSolicitacao->getDescricaoMaterial() );
         $oItem->iQuantidadeItem = $oSolicitacao->getQuantidade();
         $oItem->nVlrUnitario    = $oSolicitacao->getValorUnitario();
@@ -91,7 +97,6 @@ try {
       break;
 
     case "adicionarFornecedor" :
-
       if ( empty($oParam->iLicitacao) ) {
         throw new ParameterException( _M(FONTE_MSG . "licitacao_nao_informado") );
       }
@@ -134,7 +139,7 @@ try {
         $oDaoPcOrcamForneLic->pc31_nomeretira           = '';
         $oDaoPcOrcamForneLic->pc31_dtretira             = 'null';
         $oDaoPcOrcamForneLic->pc31_horaretira           = 'null';
-        $oDaoPcOrcamForneLic->pc31_liclicitatipoempresa = 1;
+        $oDaoPcOrcamForneLic->pc31_liclicitatipoempresa = $oParam->tipoEmpresa;
         $oDaoPcOrcamForneLic->pc31_tipocondicao         = 1;
 
         $oDaoPcOrcamForneLic->incluir($oParam->iFornecedor);
@@ -151,6 +156,7 @@ try {
       $oRetorno->oFornecedor->iCgm        = $oParam->iCgm;
       $oRetorno->oFornecedor->sNome       = $oParam->sNome;
       $oRetorno->oFornecedor->iFornecedor = $oParam->iFornecedor;
+      $oRetorno->oFornecedor->tipoEmpresa = $oParam->descrTipoEmpresa;
       $oRetorno->oFornecedor->aItens      = licitacao::getItensPorFornecedor(array($oParam->iLicitacao), $oParam->iCgm, false, false);
       break;
 
@@ -169,16 +175,16 @@ try {
       $oDaoPcOrcamForneLic->excluir($oParam->oFornecedor->iFornecedor);
 
       if($oDaoPcOrcamForneLic->erro_status == 0){
-        throw new Exception(_M( FONTE_MSG . "erro_excluir_fornecedor" ));
+        throw new Exception(_M( FONTE_MSG . "erro_excluir_fornecedor_habilitado" ));
       }
 
       $oDaoPcOrcamForne = new cl_pcorcamforne();
       $oDaoPcOrcamForne->excluir($oParam->oFornecedor->iFornecedor);
-      
+
       if($oDaoPcOrcamForne->erro_status == 0){
         throw new Exception(_M( FONTE_MSG . "erro_excluir_fornecedor" ));
       }
-      
+
       $oRetorno->sMessage = _M(FONTE_MSG . "excluido_sucesso");
       break;
 

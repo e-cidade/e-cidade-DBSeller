@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -40,7 +40,7 @@ $oDaoSauParametrosAge->rotulo->label();
               <?=$Ls165_formatocomprovanteagend?>
             </td>
             <td> 
-              <?
+              <?php
                 db_input('s165_sequencial',10,$Is165_sequencial,true,'hidden',3,"");
                 $aOpcoes = array("1"=>"PDF","2"=>"TXT");
                 db_select('s165_formatocomprovanteagend',$aOpcoes,true,$db_opcao,"");

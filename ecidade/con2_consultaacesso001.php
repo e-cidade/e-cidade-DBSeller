@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -115,7 +115,7 @@ $sDBHintMetadata  = "db-action='hint' db-hint-text='O filtro de período deve est
 
           <TR>
             <td>
-             <? db_ancora ( $Lnome, "js_pesquisaUsuarios(true)", 1 )?>
+             <?php db_ancora ( $Lnome, "js_pesquisaUsuarios(true)", 1 )?>
             </td>
             <td colspan="2">
             <?php
@@ -135,7 +135,7 @@ $sDBHintMetadata  = "db-action='hint' db-hint-text='O filtro de período deve est
 
           <TR>
             <td>
-             <? db_ancora ("<b>Item de Menu:</b>", "js_pesquisaMenus(true)", 1 )?>
+             <?php db_ancora ("<b>Item de Menu:</b>", "js_pesquisaMenus(true)", 1 )?>
             </td>
             <td colspan="2">
             <?php
@@ -409,23 +409,23 @@ function js_imprimeAcessos() {
     alert("A data Final deve ser indicada");
     return;
   }
-  
+
   $('data_final').fire("data:change");
-  
+
   if ( $F('data_final') == "" ) {
     return;
   }
-  
+
   if ( $F('selectEsquemas') != 0 && $F('selectTabelas') == 0 ) {
     alert("Ao selecionar o campo Esquema, os campos Tabela e Campo devem ser preenchidos.");
     return;
   }
-  
+
   if ( $F('selectTabelas') != 0 && $F('selectCampos') == 0 ) {
     alert("Ao selecionar o campo Tabela, o campo Campo deve ser preenchido.");
     return;
   }
-  
+
   if ( $F('selectCampos') != 0 && $F('inputValor') == '' ) {
     alert("Ao selecionar o campo Campo, o campo Valor deve ser preenchido.");
     return;
@@ -434,18 +434,18 @@ function js_imprimeAcessos() {
   var dDataInicial = Date.convertFrom($F('data_inicial'), 'd/m/Y'),
       dDataFinal   = Date.convertFrom($F('data_final')  , 'd/m/Y'),
       lCienteMensagens = false;
-  
+
   if ( !confirm('Confirma a emissão do relatório de acessos ao sistema?') ) {
      return;
   }
 
   var sMensagemProcessamento  = "Pesquisando. Favor Aguarde ...";
-  
+
   var iIndexEsquema = oSelectEsquemas.selectedIndex;
   var iIndexTabela  = oSelectTabelas.selectedIndex;
   var iIndexCampo   = oSelectCampos.selectedIndex;
   iTabela           = oSelectTabelas.value;
-  
+
   var oParametros                  = new Object();
       oParametros.sExecucao        = 'imprimeAcessos';
       oParametros.sUsuario         = $F('login');
@@ -462,16 +462,16 @@ function js_imprimeAcessos() {
       oParametros.sCampo           = encodeURIComponent( tagString( oSelectCampos.options[iIndexCampo].getAttribute( "label" ) ) );
       oParametros.mValor           = encodeURIComponent( tagString( oInputValor.value ) );
       oParametros.lCienteMensagens = lCienteMensagens;
-  
+
   js_divCarregando(sMensagemProcessamento,'msgBox');
-  
+
   var oDadosRequisicao              = new Object();
       oDadosRequisicao.method       = "post";
       oDadosRequisicao.parameters   = 'json='+Object.toJSON(oParametros);
       oDadosRequisicao.onComplete   = js_retornoAcessos;
       oDadosRequisicao.asynchronous = false;
-  
-  
+
+
   new Ajax.Request(sPathRPC, oDadosRequisicao);
 }
 
@@ -1139,13 +1139,7 @@ $('valor').appendChild( oInputValor );
  * Limpa o select do elemento passado como parâmetro
  */
 function limpaSelect( oElemento ) {
-
-  var iTamanho = oElemento.options.length;
-
-  for ( var iContador = 0; iContador < iTamanho; iContador++ ) {
-    oElemento.options.remove( iContador );
-  }
-
+  oElemento.options.length = 0;
   oElemento.add( new Option( "Nenhuma opção", 0 ) );
   oElemento.options[0].setAttribute( "label", "" );
   $('inputValor').value = '';

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: patrimonio
 //CLASSE DA ENTIDADE levantamentopatrimonial
 class cl_levantamentopatrimonial { 
@@ -29,13 +29,13 @@ class cl_levantamentopatrimonial {
                  p13_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_levantamentopatrimonial() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levantamentopatrimonial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -44,7 +44,7 @@ class cl_levantamentopatrimonial {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->p13_sequencial = ($this->p13_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["p13_sequencial"]:$this->p13_sequencial);
        $this->p13_departamento = ($this->p13_departamento == ""?@$GLOBALS["HTTP_POST_VARS"]["p13_departamento"]:$this->p13_departamento);
@@ -61,7 +61,7 @@ class cl_levantamentopatrimonial {
      }
    }
    // funcao para Inclusão
-   function incluir ($p13_sequencial){ 
+   public function incluir ($p13_sequencial){ 
       $this->atualizacampos();
      if($this->p13_departamento == null ){ 
        $this->erro_sql = " Campo Departamento não informado.";

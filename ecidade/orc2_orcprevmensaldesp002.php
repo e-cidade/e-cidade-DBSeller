@@ -24,9 +24,12 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
-include_once(modification("libs/db_liborcamento.php"));
-
+require_once modification("libs/db_stdlib.php");
+require_once modification("libs/db_conecta.php");
+require_once modification("libs/db_sessoes.php");
+require_once modification("libs/db_usuariosonline.php");
+require_once modification("libs/db_liborcamento.php");
+require_once modification("libs/db_sql.php");
 $tipo_mesini = 1;
 $tipo_mesfim = 1;
 
@@ -51,8 +54,6 @@ $qorgao = 0;
 $qunidade = 0;
 
 
-include_once(modification("fpdf151/pdf.php"));
-include_once(modification("libs/db_sql.php"));
 
 db_postmemory($_POST);
 
@@ -114,9 +115,10 @@ if ($nivel == 1) {
     $grupo = ' o58_elemento, o56_descr ';
 } elseif ($nivel == 8) {
     $quebra = 'Recurso';
-    $sele = ' o15_recurso, o58_codigo as codigo, initcap(o15_descr) as descr';
-    $grupo = 'o15_recurso, o58_codigo, o15_descr ';
+    $sele = ' o15_recurso as codigo, initcap(o15_descr) as descr';
+    $grupo = 'o15_recurso,  o15_descr ';
 }
+
 //---------------------------------------------------------------
 $clselorcdotacao = new cl_selorcdotacao();
 $clselorcdotacao->setDados($filtra_despesa); // passa os parametros vindos da func_selorcdotacao_abas.php
@@ -132,7 +134,7 @@ $head5 = 'Quebra :  ' . $quebra;
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ($instits)");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinst;
     $xvirg = ', ';
@@ -223,7 +225,7 @@ $sql = "
           o56_descr,
           o58_coddot,
           o58_codigo,
-          prev_desp.o15_descr,
+          fonterecurso.descricao as o15_descr,
           case when o33_mes = 1  then o33_perc else 0 end as jan,
           case when o33_mes = 2  then o33_perc else 0 end as fev,
           case when o33_mes = 3  then o33_perc else 0 end as mar,
@@ -237,9 +239,10 @@ $sql = "
           case when o33_mes = 11 then o33_perc else 0 end as nov,
           case when o33_mes = 12 then o33_perc else 0 end as dez,
           atual,
-               orctiporec.o15_recurso
+          fonterecurso.gestao || ' - '|| lpad(o15_complemento, 4, '0') as o15_recurso
         from prev_desp
           join orctiporec on o15_codigo =  o58_codigo
+          join fonterecurso on orctiporec_id = o15_codigo and exercicio = $anousu
           left join orcreserprev on o33_projativ = o58_projativ
                                 and o33_codigo   = o58_codigo
                                 and o33_anousu   = $anousu
@@ -273,8 +276,17 @@ $sql = "
 
 $result = db_query($sql);
 
-$pdf = new PDF();
-$pdf->Open();
+$pdf = new \ECidade\Pdf\Pdf('L');
+$pdf->init(false);
+$pdf->addTitulo("PREVISÃO DA DESPESA");
+$pdf->addTitulo('');
+if ($tipoimp === 'M') {
+    $pdf->addTitulo('Mensal');
+} else {
+    $pdf->addTitulo($bim);
+}
+$pdf->addTitulo("Quebra : $quebra");
+
 $pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
@@ -296,28 +308,27 @@ $t12 = 0;
 
 $tt = 0;
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
 
     if ($nivel == 8) {
-        $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($codigo);
-        $complemento = $recurso->getComplementoRecursoVinculado();
-        $codigo = $recurso->getFonteDeRecurso();
-        $descr = sprintf(
-            "%s - %s - %s",
-            $recurso->getDescricao(),
-            $complemento->getCodigo(),
-            $complemento->getDescricao()
-        );
+
+//        $fonteRecurso = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::with('recurso')
+//            ->where('exercicio', $anousu)
+//            ->where('orctiporec_id', $campo)
+//            ->first();
+//        $complemento = str_pad($fonteRecurso->recurso->o15_complemento, 4, '0', STR_PAD_LEFT);
+//        $campo = "{$fonteRecurso->gestao} - {$complemento}";
+//        $descr = "{$fonteRecurso->descricao}";
     }
 
-    if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
+    if ($pdf->gety() > $pdf->getH() - 30 || $pagina == 1) {
         $pagina = 0;
         $pdf->addpage('L');
         $pdf->setfont('arial', 'b', 7);
         if ($tipoimp == "B") {
             $pdf->cell(25, $alt, "Código", 1, 0, "L", 1);
-            $pdf->cell(80, $alt, "Descrição", 1, 0, "C", 1);
+            $pdf->cell(127, $alt, "Descrição", 1, 0, "C", 1);
             $pdf->cell(18, $alt, "1o. Bimetre", 1, 0, "C", 1);
             $pdf->cell(18, $alt, "2o. Bimetre", 1, 0, "C", 1);
             $pdf->cell(18, $alt, "3o. Bimetre", 1, 0, "C", 1);
@@ -329,6 +340,9 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
             if ($nivel == 7) { //Elemento
                 $pdf->cell(20, $alt, "Código", 1, 0, "C", 1);
                 $pdf->cell(48, $alt, "Descrição", 1, 0, "C", 1);
+            } elseif ($nivel == 8) {
+                $pdf->cell(15, $alt, "Código", 1, 0, "R", 1);
+                $pdf->cell(53, $alt, "Descrição", 1, 0, "L", 1);
             } else {
                 $pdf->cell(7, $alt, "Cód", 1, 0, "C", 1);
                 $pdf->cell(61, $alt, "Descrição", 1, 0, "C", 1);
@@ -357,8 +371,9 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pre = 1;
     }
     if ($tipoimp == "B") {
+        $descr = substr($descr, 0, 105);
         $pdf->cell(25, $alt, $codigo, 0, 0, "L", $pre);
-        $pdf->cell(80, $alt, $descr, 0, 0, "L", $pre);
+        $pdf->cell(127, $alt, $descr, 0, 0, "L", $pre);
         $pdf->cell(18, $alt, db_formatar($jan + $fev, 'f'), 0, 0, "R", $pre);
         $pdf->cell(18, $alt, db_formatar($mar + $abr, 'f'), 0, 0, "R", $pre);
         $pdf->cell(18, $alt, db_formatar($mai + $jun, 'f'), 0, 0, "R", $pre);
@@ -378,6 +393,9 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         if ($nivel == 7) { //Elemento
             $pdf->cell(20, $alt, $codigo, 0, 0, "R", $pre);
             $pdf->cell(48, $alt, substr($descr, 0, 36), 0, 0, "L", $pre);
+        } elseif($nivel == 8) {
+            $pdf->cell(15, $alt, $codigo, 0, 0, "R", $pre);
+            $pdf->cell(53, $alt, substr($descr, 0, 40), 0, 0, "L", $pre);
         } else {
             $pdf->cell(7, $alt, $codigo, 0, 0, "R", $pre);
             $pdf->cell(61, $alt, substr($descr, 0, 47), 0, 0, "L", $pre);

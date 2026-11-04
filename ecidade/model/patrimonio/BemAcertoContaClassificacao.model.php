@@ -144,21 +144,23 @@ class BemAcertoContaClassificacao
         if ($iTipoDepreciacao != self::SEM_DEPRECIACAO) {
             $oDataAquisicaoBem = new DBDate($oBem->getDataAquisicao());
 
-            if ( $oBem->getQuantidadeMesesDepreciados() == 0 &&
+            if ($oBem->getQuantidadeMesesDepreciados() == 0 &&
                  $oDataCorrente->getMes() == $oDataAquisicaoBem->getMes() &&
-                 $oDataCorrente->getAno() == $oDataAquisicaoBem->getAno()     ) {
+                 $oDataCorrente->getAno() == $oDataAquisicaoBem->getAno()) {
                 return self::SEM_PENDENCIA;
             }
 
             $oDadosUltimaDepreciacao  = BemDepreciacao::getInstance($oBem);
-        
-            if (!empty($oDadosUltimaDepreciacao) && $oDadosUltimaDepreciacao instanceof BemDepreciacao) {
+
+            if (!empty($oDadosUltimaDepreciacao)
+                && $oDadosUltimaDepreciacao instanceof BemDepreciacao
+                && $oDadosUltimaDepreciacao->getTipoCalculo() != '2') {
                 /**
                  * Verifica se o bem foi depreciado até o mês anterior
                  */
                 $oDataUltimaDepreciacao = new DBDate("01/{$oDadosUltimaDepreciacao->getMes()}/{$oDadosUltimaDepreciacao->getAno()}");
                 $oDateInterval = DBDate::getIntervaloEntreDatas($oDataCorrente, $oDataUltimaDepreciacao);
-        
+
                 if ($oDateInterval->m > 1 && $oDadosUltimaDepreciacao->getValorSaldoDepreciar() > 0) {
                     $this->sMensagemPendencia = "Não é possível realizar a baixa pois não foi efetuada a depreciação no mês anterior.".$oDadosUltimaDepreciacao->getValorAtual();
                     $this->lFlagStatus        = self::STATUS_ERRO;
@@ -182,15 +184,15 @@ class BemAcertoContaClassificacao
         $nValorAquisicao = round($oBem->getValorAquisicao(), 2);
         $nValorAtual = round($oBem->getValorAtual(), 2);
 
-        if ($nValorAquisicao == $nValorAtual) {
-            return self::STATUS_OK;
-        }
-
         $oDadosReavaliacao = InventarioBem::buscaDadosDaReavaliacaoBem($oBem);
 
         if (!empty($oDadosReavaliacao)) {
             $nValorAquisicao = round($oDadosReavaliacao->getValorDepreciavel() + $oDadosReavaliacao->getValorResidual(),
               2);
+        }
+
+        if ($nValorAquisicao == $nValorAtual) {
+            return self::STATUS_OK;
         }
 
         $oDadosUltimaDepreciacao = BemDepreciacao::getInstance($oBem);

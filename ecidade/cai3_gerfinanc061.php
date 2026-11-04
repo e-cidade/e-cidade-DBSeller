@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_listadebitos(notifica){
 </head>
 <body> 
 <center>
-<?
+<?php
 
 $clnotificacao = new cl_notificacao;
 
@@ -110,7 +110,7 @@ if(!isset($notifica)){
 <input name="chave" value="<?=$chave?>" style="visibility:hidden">
 <input name="chave1" value="<?=$chave1?>" style="visibility:hidden">
 </form>
-<?
+<?php
 }else{
   $clnotidebitos = new cl_notidebitos;
   $sql = "select n.k53_numpre,n.k53_numpar,
@@ -138,7 +138,7 @@ if(!isset($notifica)){
     <tr>
        <td nowrap title="<?=@$Tk50_notifica?>"><?=$Lk50_notifica?></td>
        <td>
-       <?
+       <?php
        $k50_notifica = $notifica;
        db_input('k50_notifica',8,$Ik50_notifica,true,'text',3)
        ?>
@@ -148,7 +148,7 @@ if(!isset($notifica)){
     </table>
 
  </form>
-    <?
+    <?php
     $repassa = array("notifica"=>$notifica);
     db_lovrot($sql,50,"()","","","","NoMe",$repassa);
   }

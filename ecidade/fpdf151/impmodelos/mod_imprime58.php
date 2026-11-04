@@ -1,4 +1,4 @@
-<?
+<?php
 $this->objpdf->SetAutoPageBreak('on',0);
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();
@@ -25,21 +25,21 @@ $this->objpdf->rect($xcol-2,$xlin-18,206,292,2,'DF','1234');
 
 $this->objpdf->setfillcolor(255,255,255);
 $this->objpdf->Setfont('Arial','B',9);
-$this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12); 
+$this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12);
 $this->objpdf->text(130,$xlin-15,"ORÇAMENTO N".CHR(176));
-$this->objpdf->text(185,$xlin-15,db_formatar($this->orccodigo,'s','0',6,'e'));	
+$this->objpdf->text(185,$xlin-15,db_formatar($this->orccodigo,'s','0',6,'e'));
 $this->objpdf->text(130,$xlin-11,$this->labdados.CHR(176));
-$this->objpdf->text(185,$xlin-11,db_formatar($this->Snumero,'s','0',6,'e'));	
+$this->objpdf->text(185,$xlin-11,db_formatar($this->Snumero,'s','0',6,'e'));
 $this->objpdf->Setfont('Arial','',7);
 $this->objpdf->text(130,$xlin-8,"Departamento");
 $this->objpdf->text(130,$xlin-5,"Fone / Ramal");
 $this->objpdf->text(130,$xlin-2,"Fax");
 $this->objpdf->text(146,$xlin-8,":".$this->coddepto);
-$this->objpdf->text(151,$xlin-8,"-".$this->Sdepart);	
-$this->objpdf->text(146,$xlin-5,": ".$this->fonedepto." / ".$this->ramaldepto);	
-$this->objpdf->text(146,$xlin-2,": ".$this->faxdepto);	
+$this->objpdf->text(151,$xlin-8,"-".$this->Sdepart);
+$this->objpdf->text(146,$xlin-5,": ".$this->fonedepto." / ".$this->ramaldepto);
+$this->objpdf->text(146,$xlin-2,": ".$this->faxdepto);
 $this->objpdf->text(130,$xlin+1,$this->emaildepto);
-$this->objpdf->text(195,$xlin+1,"Página ".$pagina);	
+$this->objpdf->text(195,$xlin+1,"Página ".$pagina);
 $this->objpdf->Setfont('Arial','B',9);
 $this->objpdf->text(40,$xlin-15,$this->prefeitura);
 $this->objpdf->Setfont('Arial','',7);
@@ -49,7 +49,7 @@ $this->objpdf->text(40,$xlin- 5,$this->telefpref);
 $this->objpdf->text(40,$xlin- 2,$this->emailpref);
 $this->objpdf->text(40,$xlin+ 1,db_formatar($this->cgcpref,'cnpj'));
 
-// Caixa com dados do orçamento e solicitação 
+// Caixa com dados do orçamento e solicitação
 $this->objpdf->Setfont('Arial','',6);
 $this->objpdf->text($xcol+2,$xlin+5,'Dados do Orçamento/'.$this->labtitulo);
 $this->objpdf->Setfont('Arial','B',8);
@@ -88,7 +88,7 @@ $this->objpdf->cell(3,4,':  ',0,0,"L",0);
 $this->objpdf->setxy($xcol+24.5,$xlin+18);
 
 $Sresumo = trim($this->Sresumo);
-$vresumo = split("\n",$Sresumo);
+$vresumo =explode("\n",$Sresumo);
 
 if (count($vresumo) > 1){
   $Sresumo   = "";
@@ -170,26 +170,26 @@ if($this->linhasdosdepart>0){
   }
   $setaut = $xlin + $getdoy;
   $alturaini -= ($contadepart+15);
-  
+
   $this->objpdf->Setfont('Arial','B',8);
-  // Caixa de texto para labels 
+  // Caixa de texto para labels
   $this->objpdf->rect($xcol    ,$setaut,202,6,2,'DF','12');
   $this->objpdf->text($xcol+  4,$setaut+4,'DEPARTAMENTOS DAS SOLICITAÇÕES');
-  
+
   $this->objpdf->rect($xcol    ,$setaut+6,30,6,2,'DF','12');
   $this->objpdf->rect($xcol+30 ,$setaut+6,30,6,2,'DF','12');
   $this->objpdf->rect($xcol+60 ,$setaut+6,142,6,2,'DF','12');
-  
+
   $this->objpdf->rect($xcol    ,$setaut+12,30,$contadepart+1,2,'DF','34');
   $this->objpdf->rect($xcol+30 ,$setaut+12,30,$contadepart+1,2,'DF','34');
   $this->objpdf->rect($xcol+60 ,$setaut+12,142,$contadepart+1,2,'DF','34');
   $this->objpdf->sety($xlin+66);
-  
+
   // Label das colunas
   $this->objpdf->text($xcol+   6,$setaut+11,'SOLICITAÇÃO');
   $this->objpdf->text($xcol+  39,$setaut+11,'CÓDIGO');
   $this->objpdf->text($xcol+ 125,$setaut+11,'DESCRIÇÃO');
-  
+
   // Seta altura nova para impressão dos dados
   $this->objpdf->sety($setaut+13);
   $this->objpdf->setx($xcol);
@@ -236,7 +236,7 @@ $alturaini -= 18; // 18 é o tamanho da caixa com dados dos produtos.
 
 /*if ($this->linhasdositens <= 18){
      if (strlen(trim($this->declaracao)) > 0){
-          $alturaini = (137); 
+          $alturaini = (137);
      }
 }*/
 
@@ -247,7 +247,7 @@ $this->objpdf->rect($xcol,    $xlin+$getdoy+6,12,$alturaini,2,'DF','34');
 // Caixa da quantidade
 $this->objpdf->rect($xcol+ 12,$xlin+$getdoy+6,15,$alturaini,2,'DF','34');
 
-// Caixa da referencia	
+// Caixa da referencia
 $this->objpdf->rect($xcol+ 27,$xlin+$getdoy+6,18,$alturaini,2,'DF','34');
 
 // Caixa dos materiais ou serviços
@@ -265,7 +265,7 @@ $this->objpdf->rect($xcol+164,$xlin+$getdoy+6,19,$alturaini,2,'DF','34');
 // Caixa dos valores totais dos itens
 $this->objpdf->rect($xcol+183,$xlin+$getdoy+6,19,$alturaini,2,'DF','34');
 // Caixa dos validade minima
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $this->objpdf->sety($xlin+48);
 
 $alt = 4;
@@ -304,23 +304,23 @@ $volta_impressao = 0;
 
 for($ii = 0; $ii < $this->linhasdositens; $ii++){
      db_fieldsmemory($this->recorddositens,$ii);
-     
+
      $prazo  = "";
      $pgto   = "";
      $resumo = "";
 
      $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->descricaoitem));
-  
+
      if(trim(pg_result($this->recorddositens,$ii,$this->sprazo))!=""){
          $prazo = pg_result($this->recorddositens,$ii,$this->sprazo);
          $prazo = "PRAZO: ".trim(stripslashes($prazo));
      }
-     
+
      if(trim(pg_result($this->recorddositens,$ii,$this->spgto))!=""){
          $pgto = pg_result($this->recorddositens,$ii,$this->spgto);
          $pgto = "CONDIÇÃO: ".trim(stripslashes($pgto));
      }
-     
+
      if(trim(pg_result($this->recorddositens,$ii,$this->sresum)!="")){
          $resumo = "RESUMO: ".pg_result($this->recorddositens,$ii,$this->sresum);
          if($descricaoitem == "" || $descricaoitem == null){
@@ -328,13 +328,13 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
              $resumo="";
          }
      }
-  
+
      $unid			= pg_result($this->recorddositens,$ii,$this->sunidade);
      $codunid   = pg_result($this->recorddositens,$ii,$this->scodunid);
      $servico   = pg_result($this->recorddositens,$ii,$this->sservico);
-     $quantunid = pg_result($this->recorddositens,$ii,$this->squantunid);	  
+     $quantunid = pg_result($this->recorddositens,$ii,$this->squantunid);
      $susaquant = pg_result($this->recorddositens,$ii,$this->susaquant);
-  
+
      $dist = 4;
      if(trim($codunid)!=""){
          $unid = trim(substr($unid,0,10));
@@ -346,7 +346,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $unid = "SERVIÇO";
      }
 
-// Recria cabecalho do relatorio antes de imprimir restante de itens  
+// Recria cabecalho do relatorio antes de imprimir restante de itens
      if($this->objpdf->gety() > $this->objpdf->h - 50){
          $this->objpdf->AddPage();
          $this->objpdf->settopmargin(1);
@@ -378,20 +378,20 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 
          $this->objpdf->setfillcolor(255,255,255);
          $this->objpdf->Setfont('Arial','B',9);
-         $this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12); 
+         $this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12);
          $this->objpdf->text(130,$xlin-15,"ORÇAMENTO N".CHR(176));
-         $this->objpdf->text(185,$xlin-15,db_formatar($this->orccodigo,'s','0',6,'e'));	
+         $this->objpdf->text(185,$xlin-15,db_formatar($this->orccodigo,'s','0',6,'e'));
          $this->objpdf->text(130,$xlin-11,$this->labdados.CHR(176));
-         $this->objpdf->text(185,$xlin-11,db_formatar($this->Snumero,'s','0',6,'e'));	
+         $this->objpdf->text(185,$xlin-11,db_formatar($this->Snumero,'s','0',6,'e'));
          $this->objpdf->Setfont('Arial','',7);
          $this->objpdf->text(130,$xlin-8,"Departamento");
          $this->objpdf->text(130,$xlin-5,"Fone / Ramal");
          $this->objpdf->text(130,$xlin-2,"Fax");
-         $this->objpdf->text(151,$xlin-8,":".$this->Sdepart);	
-         $this->objpdf->text(146,$xlin-5,": ".$this->fonedepto." / ".$this->ramaldepto);	
-         $this->objpdf->text(146,$xlin-2,": ".$this->faxdepto);	
+         $this->objpdf->text(151,$xlin-8,":".$this->Sdepart);
+         $this->objpdf->text(146,$xlin-5,": ".$this->fonedepto." / ".$this->ramaldepto);
+         $this->objpdf->text(146,$xlin-2,": ".$this->faxdepto);
          $this->objpdf->text(130,$xlin+1,$this->emaildepto);
-         $this->objpdf->text(195,$xlin+1,"Página ".$pagina);	
+         $this->objpdf->text(195,$xlin+1,"Página ".$pagina);
          $this->objpdf->Setfont('Arial','B',9);
          $this->objpdf->text(40,$xlin-15,$this->prefeitura);
          $this->objpdf->Setfont('Arial','',7);
@@ -400,10 +400,10 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $this->objpdf->text(40,$xlin- 5,$this->telefpref);
          $this->objpdf->text(40,$xlin- 2,$this->emailpref);
          $this->objpdf->text(40,$xlin+ 1,db_formatar($this->cgcpref,'cnpj'));
-      
+
          $xlin = -30;
          $this->objpdf->Setfont('Arial','B',8);
-      
+
       // Caixas dos label's
          $this->objpdf->rect($xcol    ,$xlin+54,12,6,2,'DF','12');
          $this->objpdf->rect($xcol+ 12,$xlin+54,12,6,2,'DF','12');
@@ -413,7 +413,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $this->objpdf->rect($xcol+138,$xlin+54,26,6,2,'DF','12');
          $this->objpdf->rect($xcol+164,$xlin+54,19,6,2,'DF','12');
          $this->objpdf->rect($xcol+183,$xlin+54,19,6,2,'DF','12');
-      
+
          $this->objpdf->rect($xcol,    $xlin+54,12,($linha-25),2,'DF','34');
          $this->objpdf->rect($xcol+ 12,$xlin+54,12,($linha-25),2,'DF','34');
          $this->objpdf->rect($xcol+ 24,$xlin+54,18,($linha-25),2,'DF','34');
@@ -422,10 +422,10 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $this->objpdf->rect($xcol+138,$xlin+54,26,($linha-25),2,'DF','34');
          $this->objpdf->rect($xcol+164,$xlin+54,19,($linha-25),2,'DF','34');
          $this->objpdf->rect($xcol+183,$xlin+54,19,($linha-25),2,'DF','34');
-      
+
          $this->objpdf->sety($xlin+66);
-         $alt = 4;     
-      
+         $alt = 4;
+
       // Label das colunas
          $this->objpdf->text($xcol+   2,$xlin+58,'ITEM');
          $this->objpdf->text($xcol+  13,$xlin+58,'QUANT');
@@ -435,11 +435,11 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $this->objpdf->text($xcol+ 139,$xlin+58,'VALIDAD. MINIMA');
          $this->objpdf->text($xcol+ 167,$xlin+58,'VLR UNIT.');
          $this->objpdf->text($xcol+ 186,$xlin+58,'VLR TOT.');
-         
+
          $maiscol = 0;
          $xlin    = 20;
 
-         $muda_pagina = true;    
+         $muda_pagina = true;
      }
 
 // Separa cada item com uma linha
@@ -447,10 +447,10 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
          $linha = $this->objpdf->gety()+3;
          $this->objpdf->rect(4,$linha,202,0,1,'DF','1234');
          $this->objpdf->ln();
-     }	  
+     }
 
      $this->objpdf->Setfont('Arial','',7);
-  
+
      if($volta_impressao == 0){
          $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->item),
                                   pg_result($this->recorddositens,$ii,$this->quantitem),
@@ -470,7 +470,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      if((isset($resumo) && $resumo!="" && $volta_impressao == 0) || $volta_impressao == 1){
 			// echo "<pre>".$resumo."</pre>";
 			// exit;
-			//  $resumo = str_replace(".","\n",$resumo);    
+			//  $resumo = str_replace(".","\n",$resumo);
          $volta_impressao = 0;
          $resumo = $this->objpdf->Row_multicell(array('','','',stripslashes($resumo),'',''),
                                                 $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
@@ -491,7 +491,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
              $ii--;
          }
      }
-     
+
      if((isset($pgto) && $pgto!="" && $volta_impressao == 0) || $volta_impressao == 3){
          $volta_impressao = 0;
          $pgto = $this->objpdf->Row_multicell(array('','','',stripslashes($pgto),'',''),
@@ -502,7 +502,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
              $ii--;
          }
      }
-     
+
      if ($muda_pagina == true){
          $linha = $xlin+10;
          $this->objpdf->rect(4,$linha,202,0,1,'DF','1234');

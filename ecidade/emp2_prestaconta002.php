@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -43,99 +43,98 @@ $clrotulo->label('e45_conferido');
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
-$xinstit = explode("-",$db_selinstit);
-$resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
+$xinstit = explode("-", $db_selinstit);
+$resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
-  db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
-       $descr_inst .= $xvirg.$nomeinstabrev;
-       $flag_abrev  = true;
-  } else {
-       $descr_inst .= $xvirg.$nomeinst;
-  }
+for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+    db_fieldsmemory($resultinst, $xins);
+    if (strlen(trim($nomeinstabrev)) > 0) {
+        $descr_inst .= $xvirg . $nomeinstabrev;
+        $flag_abrev  = true;
+    } else {
+        $descr_inst .= $xvirg . $nomeinst;
+    }
 
-  $xvirg = ', ';
+    $xvirg = ', ';
 }
 
-if ($flag_abrev == false){
-     if (strlen($descr_inst) > 42){
-          $descr_inst = substr($descr_inst,0,100);
-     }
+if ($flag_abrev == false) {
+    if (strlen($descr_inst) > 42) {
+        $descr_inst = substr($descr_inst, 0, 100);
+    }
 }
 
-$info="Período Total";
+$info = "Período Total";
 
-$txt_where= "1=1 and e60_instit in (".str_replace("-",",",$db_selinstit).") ";
+$txt_where = "e60_instit in (" . str_replace("-", ",", $db_selinstit) . ") ";
 
-if (($data!="--")&&($data!="--")) {
-  $txt_where = $txt_where." and e45_data between '$data' and '$data1'  ";
-  $data=db_formatar($data,"d");
-  $data1=db_formatar($data1,"d");
-  $info="De $data até $data1.";
-} else if ($data!="--"){
-  $txt_where = $txt_where." and e45_data >= '$data'  ";
-  $data=db_formatar($data,"d");
-  $info="Apartir de $data.";
-} else if ($data1!="--"){
-  $txt_where = $txt_where." and   e45_data <= '$data1'   ";
-  $data1=db_formatar($data1,"d");
-  $info="Até $data1.";
+if (($data != "--") && ($data != "--")) {
+    $txt_where = $txt_where . " and e45_data between '$data' and '$data1'  ";
+    $data = db_formatar($data, "d");
+    $data1 = db_formatar($data1, "d");
+    $info = "De $data até $data1.";
+} else if ($data != "--") {
+    $txt_where = $txt_where . " and e45_data >= '$data'  ";
+    $data = db_formatar($data, "d");
+    $info = "Apartir de $data.";
+} else if ($data1 != "--") {
+    $txt_where = $txt_where . " and   e45_data <= '$data1'   ";
+    $data1 = db_formatar($data1, "d");
+    $info = "Até $data1.";
 }
 
-if (isset($e60_codemp)&&$e60_codemp!=""){
-  $txt_where .= " and e60_codemp='$e60_codemp' ";
-  if(isset($e60_anousu)&&$e60_anousu!=""){
-    $txt_where .= " and e60_anousu=$e60_anousu ";
-  } else {
-    $txt_where .= " and e60_anousu=".db_getsession("DB_anousu")." ";
-  }
+if (isset($e60_codemp) && $e60_codemp != "") {
+    $txt_where .= " and e60_codemp='$e60_codemp' ";
+    if (isset($e60_anousu) && $e60_anousu != "") {
+        $txt_where .= " and e60_anousu=$e60_anousu ";
+    } else {
+        $txt_where .= " and e60_anousu=" . db_getsession("DB_anousu") . " ";
+    }
 }
 
-if (isset($e60_numcgm)&&$e60_numcgm!=""){
-  $txt_where=$txt_where."and e60_numcgm=$e60_numcgm";
+if (isset($e60_numcgm) && $e60_numcgm != "") {
+    $txt_where = $txt_where . "and e60_numcgm=$e60_numcgm";
 }
 
 $tipoemissao = "Todos";
 
-if (($data_lanc!="--")&&($data_lanc1!="--")) {
-  $txt_where = $txt_where." and e45_conferido between '$data_lanc' and '$data_lanc1'  ";
-  $data_lanc=db_formatar($data_lanc,"d");
-  $data_lanc1=db_formatar($data_lanc1,"d");
-  $info="Movimentos de $data_lanc até $data_lanc1.";
-} else if ($data_lanc!="--"){
-  $txt_where = $txt_where." and e45_conferido >= '$data_lanc'  ";
-  $data_lanc=db_formatar($data_lanc,"d");
-  $info="Movimento Apartir de $data_lanc.";
-} else if ($data_lanc1!="--"){
-  $txt_where = $txt_where." and   e45_conferido <= '$data_lanc1'   ";
-  $data_lanc1=db_formatar($data_lanc1,"d");
-  $info="Até $data_lanc1.";
+if (($data_lanc != "--") && ($data_lanc1 != "--")) {
+    $txt_where = $txt_where . " and e45_conferido between '$data_lanc' and '$data_lanc1'  ";
+    $data_lanc = db_formatar($data_lanc, "d");
+    $data_lanc1 = db_formatar($data_lanc1, "d");
+    $info = "Movimentos de $data_lanc até $data_lanc1.";
+} else if ($data_lanc != "--") {
+    $txt_where = $txt_where . " and e45_conferido >= '$data_lanc'  ";
+    $data_lanc = db_formatar($data_lanc, "d");
+    $info = "Movimento Apartir de $data_lanc.";
+} else if ($data_lanc1 != "--") {
+    $txt_where = $txt_where . " and   e45_conferido <= '$data_lanc1'   ";
+    $data_lanc1 = db_formatar($data_lanc1, "d");
+    $info = "Até $data_lanc1.";
 }
 
 
-if ($ordem=='a'){ // todos
-}else if($ordem=='b'){
-  $txt_where.=" and e45_acerta is null"; // nao acertados
-  $tipoemissao = "Não acertados";
-
-}else if($ordem=='c') {
-  $txt_where.=" and e45_conferido is not null"; // conferidos
-  $tipoemissao = "Conferidos";
-}else if($ordem=='d'){
-  $txt_where.=" and e45_acerta is not null and e45_conferido is null"; // acertados e nao conferidos
-  $tipoemissao = "Acertados e Não Conferidos";
+if ($ordem == 'a') { // todos
+} else if ($ordem == 'b') {
+    $txt_where .= " and e45_acerta is null"; // nao acertados
+    $tipoemissao = "Não acertados";
+} else if ($ordem == 'c') {
+    $txt_where .= " and e45_conferido is not null"; // conferidos
+    $tipoemissao = "Conferidos";
+} else if ($ordem == 'd') {
+    $txt_where .= " and e45_acerta is not null and e45_conferido is null"; // acertados e nao conferidos
+    $tipoemissao = "Acertados e Não Conferidos";
 }
 
-if (isset($o40_orgao) and $o40_orgao != ""){
-  $txt_where.=" and o58_orgao = $o40_orgao ";
+if (isset($o40_orgao) and $o40_orgao != "") {
+    $txt_where .= " and o58_orgao = $o40_orgao ";
 }
 
 
 $head3 = "RELATÓRIO DE PRESTAÇÃO DE CONTAS";
-$head4 = "INSTITUIÇÕES : ".$descr_inst;
+$head4 = "INSTITUIÇÕES : " . $descr_inst;
 $head5 = "$info";
 $head6 = $tipoemissao;
 
@@ -143,27 +142,46 @@ $head6 = $tipoemissao;
  * Where para trazer somente os empenhos que não estão anulados e possuem
  * no minimo um item na prestação de contas
  */
-$txt_where .= " and e60_vlremp <> e60_vlranu ";
-$sCampos = "distinct e60_codemp, e60_anousu, e45_data, e45_acerta, e45_conferido, e60_vlremp, o58_orgao, o58_Anousu, e45_numemp,z01_nome,e60_resumo";
-$sSqlPrestacaoContas = $clemppresta->sql_query(null,$sCampos,"o58_orgao, e45_data","$txt_where");
+//$txt_where .= " and e60_vlremp <> e60_vlranu and e81_cancelado is null";
+$txt_where .= " and e60_vlremp <> e60_vlranu and e81_valor > 0";
+
+//$txt_where .= " and (e53_valor - e53_vlranu )  > 0 ";
+$sCampos = "distinct e60_codemp, 
+                e53_codord,
+                e70_valor  ,
+                e70_vlranu ,
+                e70_vlrliq ,
+                e53_vlrpag,
+                e60_anousu, 
+                nomeinstabrev,
+                e45_data, 
+                e45_acerta, 
+                e45_conferido, 
+                e60_vlremp, 
+                o58_orgao, 
+                o58_Anousu, 
+                e45_numemp,
+                z01_nome,
+                e60_resumo";
+$sSqlPrestacaoContas = $clemppresta->sql_query_prest_contas_conferidas(null,$sCampos,"o58_orgao, e45_data","$txt_where");
+//echo $sSqlPrestacaoContas; die();
 $result=$clemppresta->sql_record($sSqlPrestacaoContas);
 
 if ($clemppresta->numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
 
-//db_criatabela($result); exit;
-
+//echo $sSqlPrestacaoContas; die();
 $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
 $total = 0;
 $pdf->setfillcolor(235);
-$pdf->setfont('arial','b',8);
+$pdf->setfont('arial', 'b', 8);
 $troca = 1;
 $alt = 4;
 $total = 0;
-$p=0;
+$p = 0;
 
 $orgao = 0;
 
@@ -177,143 +195,158 @@ $totalgeraladiantamento = 0;
 $totalgeralprestacao = 0;
 $totalgeralanular = 0;
 
-for($x = 0; $x < $clemppresta->numrows;$x++) {
-   db_fieldsmemory($result,$x);
+$op = "";
+for ($x = 0; $x < $clemppresta->numrows; $x++) {
+    
+    db_fieldsmemory($result, $x);
 
-   if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
-      $pdf->addpage('L');
-      $pdf->setfont('arial','b',8);
-      $pdf->cell(25,$alt,'Empenho',1,0,"C",1);
-      $pdf->cell(65,$alt,'Nome do Servidor',1,0,"C",1);
-      $pdf->cell(20,$alt,'Dt Emissão',1,0,"C",1);
-      $pdf->cell(20,$alt,'Dt Acerto',1,0,"C",1);
-      $pdf->cell(20,$alt,'Dt Conferência',1,0,"C",1);
-      $pdf->cell(30,$alt,'Adiantamento',1,0,"C",1);
-      $pdf->cell(30,$alt,'Prestação',1,0,"C",1);
-      $pdf->cell(30,$alt,'Anular de Despesa',1,0,"C",1);
-      $pdf->cell(40,$alt,"Instituição",1,1,"C",1);
-      $p=0;
-      $troca = 0;
-  }
+    if ($op == $e53_codord) {
 
-   if ($x == $clemppresta->numrows or $orgao != $o58_orgao) {
+        continue;
+    }
+    if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
+        $pdf->addpage('L');
+        $pdf->setfont('arial', 'b', 8);
+        $pdf->cell(25, $alt, 'Empenho', 1, 0, "C", 1);
+        $pdf->cell(65, $alt, 'Nome do Servidor', 1, 0, "C", 1);
+        $pdf->cell(20, $alt, 'Dt Emissão', 1, 0, "C", 1);
+        $pdf->cell(20, $alt, 'Dt Acerto', 1, 0, "C", 1);
+        $pdf->cell(20, $alt, 'Dt Conferência', 1, 0, "C", 1);
+        $pdf->cell(30, $alt, 'Adiantamento', 1, 0, "C", 1);
+        $pdf->cell(30, $alt, 'Prestação', 1, 0, "C", 1);
+        $pdf->cell(30, $alt, 'Anular de Despesa', 1, 0, "C", 1);
+        $pdf->cell(40, $alt, "Instituição", 1, 1, "C", 1);
+        $p = 0;
+        $troca = 0;
+    }
 
-     $resultorgao=$clorcorgao->sql_record($clorcorgao->sql_query($o58_anousu,$o58_orgao,"o40_descr",""));
-     if ($clorcorgao->numrows > 0) {
-       db_fieldsmemory($resultorgao,0);
-     } else {
-       $o40_descr = "";
-     }
+    if ($x == $clemppresta->numrows or $orgao != $o58_orgao) {
 
-     if ($totalreg > 0) {
-       $pdf->cell(151,$alt,"TOTAL DE REGISTROS: $totalreg","T",0,"L",0);
-       $pdf->cell(035,$alt,db_formatar($totaladiantamento,'f'),"T",0,"R",0);
-       $pdf->cell(036,$alt,db_formatar($totalprestacao,'f'),"T",0,"R",0);
-       $pdf->cell(036,$alt,db_formatar($totalanular,'f'),"T",0,"R",0);
-       $pdf->cell(050,$alt,"","T",0,"R",0);
-       $pdf->ln();
-     }
+        $resultorgao = $clorcorgao->sql_record($clorcorgao->sql_query($o58_anousu, $o58_orgao, "o40_descr", ""));
+        if ($clorcorgao->numrows > 0) {
+            db_fieldsmemory($resultorgao, 0);
+        } else {
+            $o40_descr = "";
+        }
 
-     if ($quebrarpagorgao == "s" and $totalreg > 0) {
-      $pdf->addpage('L');
-      $pdf->setfont('arial','b',8);
-      $pdf->cell(25,$alt,'Empenho',1,0,"C",1);
-      $pdf->cell(65,$alt,'Nome do Servidor',1,0,"C",1);
-      $pdf->cell(20,$alt,$RLe45_data,1,0,"C",1);
-      $pdf->cell(20,$alt,$RLe45_acerta,1,0,"C",1);
-      $pdf->cell(20,$alt,$RLe45_conferido,1,0,"C",1);
-      $pdf->cell(30,$alt,'Adiantamento',1,0,"C",1);
-      $pdf->cell(30,$alt,'Prestação',1,0,"C",1);
-      $pdf->cell(30,$alt,'Anular de Despesa',1,0,"C",1);
-      $pdf->cell(40,$alt,"Instituição",1,1,"C",1);
-      $p=0;
-      $troca = 0;
-     }
+        if ($totalreg > 0) {
+            $pdf->cell(151, $alt, "TOTAL DE REGISTROS: $totalreg", "T", 0, "L", 0);
+            $pdf->cell(035, $alt, db_formatar($totaladiantamento, 'f'), "T", 0, "R", 0);
+            $pdf->cell(036, $alt, db_formatar($totalprestacao, 'f'), "T", 0, "R", 0);
+            $pdf->cell(036, $alt, db_formatar($totalanular, 'f'), "T", 0, "R", 0);
+            $pdf->cell(050, $alt, "", "T", 0, "R", 0);
+            $pdf->ln();
+        }
 
-     $pdf->setfont('arial','b',8);
-     $pdf->ln();
-     $pdf->cell(280,$alt,"ORGAO: $o58_orgao - $o40_descr","TB",0,"L",1);
-     $pdf->ln();
-     $orgao = $o58_orgao;
+        if ($quebrarpagorgao == "s" and $totalreg > 0) {
+            $pdf->addpage('L');
+            $pdf->setfont('arial', 'b', 8);
+            $pdf->cell(25, $alt, 'Empenho', 1, 0, "C", 1);
+            $pdf->cell(65, $alt, 'Nome do Servidor', 1, 0, "C", 1);
+            $pdf->cell(20, $alt, $RLe45_data, 1, 0, "C", 1);
+            $pdf->cell(20, $alt, $RLe45_acerta, 1, 0, "C", 1);
+            $pdf->cell(20, $alt, $RLe45_conferido, 1, 0, "C", 1);
+            $pdf->cell(30, $alt, 'Adiantamento', 1, 0, "C", 1);
+            $pdf->cell(30, $alt, 'Prestação', 1, 0, "C", 1);
+            $pdf->cell(30, $alt, 'Anular de Despesa', 1, 0, "C", 1);
+            $pdf->cell(40, $alt, "Instituição", 1, 1, "C", 1);
+            $p = 0;
+            $troca = 0;
+        }
 
-     $totalreg = 0;
-     $totaladiantamento = 0;
-     $totalprestacao = 0;
-     $totalanular = 0;
+        $pdf->setfont('arial', 'b', 8);
+        $pdf->ln();
+        $pdf->cell(280, $alt, "ORGAO: $o58_orgao - $o40_descr", "TB", 0, "L", 1);
+        $pdf->ln();
+        $orgao = $o58_orgao;
 
-   }
+        $totalreg = 0;
+        $totaladiantamento = 0;
+        $totalprestacao = 0;
+        $totalanular = 0;
+    }
 
-  $pdf->setfont('arial','',8);
-  $pdf->cell(25,$alt,trim($e60_codemp).'/'.$e60_anousu,0,0,"C",$p);
-  $pdf->cell(65,$alt,$z01_nome,0,0,"L",$p);
-  $pdf->cell(20,$alt,db_formatar($e45_data,'d'),0,0,"C",$p);
-  $pdf->cell(20,$alt,db_formatar($e45_acerta,'d'),0,0,"C",$p);
-  $pdf->cell(20,$alt,db_formatar($e45_conferido,'d'),0,0,"C",$p);
+    $pdf->setfont('arial', '', 8);
+    $pdf->cell(25, $alt, trim($e60_codemp) . '/' . $e60_anousu, 0, 0, "C", $p);
+    $pdf->cell(65, $alt, $z01_nome, 0, 0, "L", $p);
+    $pdf->cell(20, $alt, db_formatar($e45_data, 'd'), 0, 0, "C", $p);
+    $pdf->cell(20, $alt, db_formatar($e45_acerta, 'd'), 0, 0, "C", $p);
+    $pdf->cell(20, $alt, db_formatar($e45_conferido, 'd'), 0, 0, "C", $p);
 
-  $valor_gasto=0;
-  $result_valor=$clempprestaitem->sql_record($clempprestaitem->sql_query_file(null," e46_numemp, e46_valor",null,"e46_numemp=$e45_numemp"));
-  for($y=0;$y<$clempprestaitem->numrows;$y++){
-    db_fieldsmemory($result_valor,$y);
-    $valor_gasto=$valor_gasto+$e46_valor;
-  }
-  $pdf->cell(30,$alt,db_formatar($e60_vlremp,'f'),0,0,"R",$p);
-  $pdf->cell(30,$alt,db_formatar($valor_gasto,'f'),0,0,"R",$p);
-  if (isset($e54_acerta) && trim(@$e54_acerta) == "" && isset($e45_conferido) && trim(@$e45_conferido) ==""){
-      $anular_despesa=0;
-  } else {
-      $anular_despesa=$e60_vlremp-$valor_gasto;
-  }
+    $valor_gasto = 0;
 
-  $pdf->cell(30,$alt,db_formatar($anular_despesa,'f'),0,0,"R",$p);
-  $totaladiantamento      += $e60_vlremp;
-  $totalprestacao         += $valor_gasto;
-  $totalanular            += $anular_despesa;
-  $totalgeraladiantamento += $e60_vlremp;
-  $totalgeralprestacao    += $valor_gasto;
-  $totalgeralanular       += $anular_despesa;
+    $sql = "
+       select e46_valor 
+         from emppresta 
+         join empprestaitem on e45_sequencial = e46_emppresta
+         join empagemov on e45_codmov = e81_codmov 
+         join empord on e82_codmov = e81_codmov 
+         join pagordemele on e53_codord = e82_codord 
+        where e53_codord = $e53_codord
+          and e81_cancelado is null;
+    ";
 
-  if (isset($nomeinstabrev) && trim(@$nomeinstabrev)!=""){
-       $pdf->cell(40,$alt,$nomeinstabrev,0,1,"L",$p);
-  } else {
-       $pdf->cell(40,$alt,$codigo,0,1,"L",$p);
-  }
 
-  if($historico == "s"){
-    $pdf->multicell(0,$alt,"HISTÓRICO : ".$e60_resumo,"B","L",$p);
-    $pdf->ln(1);
+    $result_valor = $clempprestaitem->sql_record($sql);
+    for ($y = 0; $y < $clempprestaitem->numrows; $y++) {
+        db_fieldsmemory($result_valor, $y);
+        $valor_gasto = $valor_gasto + $e46_valor;
+    }
+    //echo "<br>$sql  |||  $valor_gasto  <br>";
+    $pdf->cell(30, $alt, db_formatar($e70_valor, 'f'), 0, 0, "R", $p);
+    $pdf->cell(30, $alt, db_formatar($valor_gasto, 'f'), 0, 0, "R", $p);
+    if (isset($e54_acerta) && trim(@$e54_acerta) == "" && isset($e45_conferido) && trim(@$e45_conferido) == "") {
+        $anular_despesa = 0;
+    } else {
+        $anular_despesa = $e70_valor - $valor_gasto;
+    }
 
-  }
+    $pdf->cell(30, $alt, db_formatar($anular_despesa, 'f'), 0, 0, "R", $p);
+    $totaladiantamento      += $e70_valor;
+    $totalprestacao         += $valor_gasto;
+    $totalanular            += $anular_despesa;
+    $totalgeraladiantamento += $e70_valor;
+    $totalgeralprestacao    += $valor_gasto;
+    $totalgeralanular       += $anular_despesa;
 
-  if ($p==0) {
-    $p=1;
-  } else {
-    $p=0;
-  }
+    if (isset($nomeinstabrev) && trim(@$nomeinstabrev) != "") {
+        $pdf->cell(40, $alt, $nomeinstabrev, 0, 1, "L", $p);
+    } else {
+        $pdf->cell(40, $alt, $codigo, 0, 1, "L", $p);
+    }
 
-  $total++;
-  $totalreg++;
+    if ($historico == "s") {
+        $pdf->multicell(0, $alt, "HISTÓRICO : " . $e60_resumo, "B", "L", $p);
+        $pdf->ln(1);
+    }
 
-   if ($x == $clemppresta->numrows - 1) {
+    if ($p == 0) {
+        $p = 1;
+    } else {
+        $p = 0;
+    }
 
-     $pdf->cell(151,$alt,"TOTAL DE REGISTROS: $totalreg","T",0,"L",0);
-     $pdf->cell(035,$alt,db_formatar($totaladiantamento,'f'),"T",0,"R",0);
-     $pdf->cell(036,$alt,db_formatar($totalprestacao,'f'),"T",0,"R",0);
-     $pdf->cell(036,$alt,db_formatar($totalanular,'f'),"T",0,"R",0);
-     $pdf->cell(050,$alt,"","T",0,"R",0);
-     $pdf->ln();
+    $total++;
+    $totalreg++;
 
-   }
+    if ($x == $clemppresta->numrows - 1) {
 
+        $pdf->cell(151, $alt, "TOTAL DE REGISTROS: $totalreg", "T", 0, "L", 0);
+        $pdf->cell(035, $alt, db_formatar($totaladiantamento, 'f'), "T", 0, "R", 0);
+        $pdf->cell(036, $alt, db_formatar($totalprestacao, 'f'), "T", 0, "R", 0);
+        $pdf->cell(036, $alt, db_formatar($totalanular, 'f'), "T", 0, "R", 0);
+        $pdf->cell(050, $alt, "", "T", 0, "R", 0);
+        $pdf->ln();
+    }
+    $op = $e53_codord;
 }
 
-$pdf->setfont('arial','b',8);
+$pdf->setfont('arial', 'b', 8);
 $pdf->ln(3);
-$pdf->cell(151,$alt,"TOTAL GERAL DE REGISTROS: $total","T",0,"L",0);
-$pdf->cell(035,$alt,db_formatar($totalgeraladiantamento,'f'),"T",0,"R",0);
-$pdf->cell(036,$alt,db_formatar($totalgeralprestacao,'f'),"T",0,"R",0);
-$pdf->cell(036,$alt,db_formatar($totalgeralanular,'f'),"T",0,"R",0);
-$pdf->cell(050,$alt,"","T",0,"R",0);
+$pdf->cell(151, $alt, "TOTAL GERAL DE REGISTROS: $total", "T", 0, "L", 0);
+$pdf->cell(035, $alt, db_formatar($totalgeraladiantamento, 'f'), "T", 0, "R", 0);
+$pdf->cell(036, $alt, db_formatar($totalgeralprestacao, 'f'), "T", 0, "R", 0);
+$pdf->cell(036, $alt, db_formatar($totalgeralanular, 'f'), "T", 0, "R", 0);
+$pdf->cell(050, $alt, "", "T", 0, "R", 0);
 
 $pdf->Output();
-
-?>

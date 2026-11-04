@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,12 +63,12 @@ function js_checa(){
 <table border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td title="<?=$Tz01_nome?>">     
-     <?
+     <?php
       db_ancora($Lz01_nome,' js_cgm(true); ',1);
      ?>
     </td>
     <td> 
-     <?
+     <?php
       db_input('q02_numcgm',5,$Iq02_numcgm,true,'text',1,"onchange='js_cgm(false)'");
       db_input('z01_nome',40,0,true,'text',3,"");
      ?>
@@ -82,7 +82,7 @@ function js_checa(){
   </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -109,7 +109,7 @@ function js_mostra1(erro,chave){
   }
 }
 </script>
-<?
+<?php
 if(isset($cgccpf)){
   db_msgbox('Atualize o CGCCPF do contribuinte no CGM');
 }

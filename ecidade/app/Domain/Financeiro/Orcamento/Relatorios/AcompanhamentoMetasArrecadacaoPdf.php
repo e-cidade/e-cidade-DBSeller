@@ -47,6 +47,8 @@ class AcompanhamentoMetasArrecadacaoPdf extends MetasArrecadacaoPdf
             $this->addTitulo("Filtrou recurso");
         }
 
+        $this->headerOrigemEmentario();
+
         $this->wValores = $this->wValor * 7;
         $this->wReceita = $this->wLinha - $this->wValores;
         $this->wDescricaoReceita = $this->wReceita - $this->wValor;

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("dhelp_resum");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tid_item?>">
-       <?
+       <?php
        db_ancora(@$Lid_item,"js_pesquisaid_item(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_item',5,$Iid_item,true,'text',$db_opcao," onchange='js_pesquisaid_item(false);'")
 ?>
-       <?
+       <?php
 db_input('descricao',40,$Idescricao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tid_help?>">
-       <?
+       <?php
        db_ancora(@$Lid_help,"js_pesquisaid_help(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('id_help',5,$Iid_help,true,'text',$db_opcao," onchange='js_pesquisaid_help(false);'")
 ?>
-       <?
+       <?php
 db_input('dhelp_resum',60,$Idhelp_resum,true,'text',3,'')
        ?>
     </td>
@@ -113,7 +113,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_db_itenshelp.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

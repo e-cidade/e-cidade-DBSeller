@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,22 +36,22 @@ $clextrato->rotulo->label();
        <?=@$Lk85_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_sequencial',10,$Ik85_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk85_codbco?>">
-		   <?
+		   <?php
        db_ancora(@$Lk85_codbco,"js_pesquisak05_codbco(true);",$db_opcao);
 			 ?>
     </td>
     <td> 
-    <?
+    <?php
       db_input('k85_codbco',10,$Ik85_codbco,true,'text',$db_opcao," onchange='js_pesquisak05_codbco(false);'")
     ?>
-    <?
+    <?php
       db_input('nomebco',50,'',true,'text',3,"")
     ?>
     </td>
@@ -61,7 +61,7 @@ db_input('k85_sequencial',10,$Ik85_sequencial,true,'text',3,"")
        <?=@$Lk85_convenio?>
     </td>
     <td> 
-<?
+<?php
 db_input('k85_convenio',10,$Ik85_convenio,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,7 +106,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_extrato.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

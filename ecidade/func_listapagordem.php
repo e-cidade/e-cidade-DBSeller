@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ $clrotulo->label("e60_numemp");
 	     <?=@$Le50_codord?>
 	  </td>
 	  <td> 
-           <?
+           <?php
               db_input('e50_codord',6,$Ie50_codord,true,'text',3)
            ?>
 	  </td>
@@ -83,7 +83,7 @@ $clrotulo->label("e60_numemp");
        <?=db_ancora($Le50_numemp,"js_JanelaAutomatica('empempenho','".@$e50_numemp."')",1)?>        
 	  </td>
 	  <td> 
-           <?
+           <?php
               db_input('e50_numemp',6,$Ie50_numemp,true,'text',3)
            ?>
 	  </td>
@@ -93,7 +93,7 @@ $clrotulo->label("e60_numemp");
 	       <?=@$Le50_data?>
 	    </td>
 	    <td> 
-	<?
+	<?php
 	if(empty($e50_data_dia)){
 	  $e50_data_dia =  date("d",db_getsession("DB_datausu"));
 	  $e50_data_mes =  date("m",db_getsession("DB_datausu"));
@@ -108,7 +108,7 @@ $clrotulo->label("e60_numemp");
 	       <?=@$Le50_obs?>
 	    </td>
 	    <td > 
-	  <?
+	  <?php
 	  db_textarea('e50_obs',0,30,$Ie50_obs,true,'text',3)
 	  ?>
 	    </td>
@@ -118,7 +118,7 @@ $clrotulo->label("e60_numemp");
 	       <?=@$Le53_valor?>
 	    </td>
 	    <td > 
-	  <?
+	  <?php
 	  $tot_valor = number_format($tot_valor,'2',".",",");
 	  db_input('tot_valor',9,$Ie53_valor,true,'text',3)
 	  ?>
@@ -129,7 +129,7 @@ $clrotulo->label("e60_numemp");
 	       <?=@$Le53_vlranu?>
 	    </td>
 	    <td > 
-	  <?
+	  <?php
 	  $tot_vlranu = number_format($tot_vlranu,'2',".",",");
 	  db_input('tot_vlranu',9,$Ie53_vlranu,true,'text',3)
 	  ?>
@@ -140,7 +140,7 @@ $clrotulo->label("e60_numemp");
 	       <?=@$Le53_vlrpag?>
 	    </td>
 	    <td > 
-	  <?
+	  <?php
 	  $tot_vlrpag = number_format($tot_vlrpag,'2',".",",");
 	  db_input('tot_vlrpag',9,$Ie53_vlrpag,true,'text',3)
 	  ?>

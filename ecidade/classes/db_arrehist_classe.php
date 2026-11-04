@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,13 +70,13 @@ class cl_arrehist {
                  k00_idhist = int4 = Sequencia 
                  ";
    //funcao construtor da classe
-   function cl_arrehist() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrehist");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -85,7 +85,7 @@ class cl_arrehist {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->k00_numpre = ($this->k00_numpre == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpre"]:$this->k00_numpre);
        $this->k00_numpar = ($this->k00_numpar == ""?@$GLOBALS["HTTP_POST_VARS"]["k00_numpar"]:$this->k00_numpar);
@@ -115,7 +115,7 @@ class cl_arrehist {
      }
    }
    // funcao para inclusao
-   function incluir ($k00_idhist){
+   public function incluir ($k00_idhist){
       $this->atualizacampos();
      if($this->k00_numpre == null ){
        $this->erro_sql = " Campo Numpre nao Informado.";
@@ -280,7 +280,7 @@ class cl_arrehist {
      return true;
    }
    // funcao para alteracao
-   function alterar ($k00_idhist=null) {
+   public function alterar ($k00_idhist=null) {
       $this->atualizacampos();
      $sql = " update arrehist set ";
      $virgula = "";
@@ -475,7 +475,7 @@ class cl_arrehist {
      }
    }
    // funcao para exclusao
-   function excluir ($k00_idhist=null,$dbwhere=null) {
+   public function excluir ($k00_idhist=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($k00_idhist));
      }else{
@@ -544,7 +544,7 @@ class cl_arrehist {
      }
    }
    // funcao do recordset
-   function sql_record($sql) {
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -566,7 +566,7 @@ class cl_arrehist {
       }
      return $result;
    }
-   function sql_query ( $k00_idhist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query ( $k00_idhist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);
@@ -601,7 +601,7 @@ class cl_arrehist {
      }
      return $sql;
   }
-   function sql_query_file ( $k00_idhist=null,$campos="*",$ordem=null,$dbwhere=""){
+   public function sql_query_file ( $k00_idhist=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
        $campos_sql = explode("#",$campos);

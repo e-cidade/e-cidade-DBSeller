@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE descartemedicamento
 class cl_descartemedicamento { 
@@ -43,13 +43,13 @@ class cl_descartemedicamento {
                  sd107_unidadesaida = int4 = Unidade de Saída 
                  ";
    //funcao construtor da classe 
-   function cl_descartemedicamento() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("descartemedicamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -58,7 +58,7 @@ class cl_descartemedicamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd107_sequencial = ($this->sd107_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["sd107_sequencial"]:$this->sd107_sequencial);
        $this->sd107_medicamento = ($this->sd107_medicamento == ""?@$GLOBALS["HTTP_POST_VARS"]["sd107_medicamento"]:$this->sd107_medicamento);
@@ -82,7 +82,7 @@ class cl_descartemedicamento {
      }
    }
    // funcao para Inclusão
-   function incluir ($sd107_sequencial){ 
+   public function incluir ($sd107_sequencial){ 
       $this->atualizacampos();
      if($this->sd107_medicamento == null ){ 
        $this->erro_sql = " Campo Medicamento não informado.";

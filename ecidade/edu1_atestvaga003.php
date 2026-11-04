@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -41,14 +41,14 @@ $db_opcao      = 33;
 $escola        = db_getsession("DB_coddepto");
 
 if (isset($excluir)) {
-	
+
   $db_opcao = 3;
   db_inicio_transacao();
   $oDaoAtestVaga->excluir($ed102_i_codigo);
   db_fim_transacao();
-  
+
 } elseif (isset($chavepesquisa)) {
-	
+
   $db_opcao      = 3;
   $sSqlAtestVaga = $oDaoAtestVaga->sql_query($chavepesquisa);
   $rsAtestvaga   = $oDaoAtestVaga->sql_record($sSqlAtestVaga);
@@ -59,23 +59,23 @@ if (isset($excluir)) {
   $sSql         .= "       FROM ( ";
   $sSql         .= "              SELECT distinct on (aluno.ed47_i_codigo) aluno.ed47_i_codigo,";
   $sSql         .= "                                  aluno.ed47_v_nome, ";
-  $sSql         .= "                                  alunocurso.ed56_c_situacao as situacao,"; 
+  $sSql         .= "                                  alunocurso.ed56_c_situacao as situacao,";
   $sSql         .= "                                  serie.ed11_i_codigo as codigoserie, ";
   $sSql         .= "                                  serie.ed11_c_descr as nomeserie, ";
   $sSql         .= "                                  case";
   $sSql         .= "                                    when alunocurso.ed56_i_codigo is not null";
   $sSql         .= "                                  then escola.ed18_i_codigo";
-  $sSql         .= "                                    else null end as codigoescola,"; 
+  $sSql         .= "                                    else null end as codigoescola,";
   $sSql         .= "                                  case";
   $sSql         .= "                                    when alunocurso.ed56_i_codigo is not null";
   $sSql         .= "                                  then escola.ed18_c_nome";
-  $sSql         .= "                                    else null end as nomeescola,"; 
-  $sSql         .= "                                  cursoedu.ed29_i_codigo as codigocurso,"; 
+  $sSql         .= "                                    else null end as nomeescola,";
+  $sSql         .= "                                  cursoedu.ed29_i_codigo as codigocurso,";
   $sSql         .= "                                  cursoedu.ed29_c_descr as nomecurso, ";
-  $sSql         .= "                                  calendario.ed52_c_descr as calendario,"; 
+  $sSql         .= "                                  calendario.ed52_c_descr as calendario,";
   $sSql         .= "                                  calendario.ed52_i_ano as anocal, ";
   $sSql         .= "                                  to_char((select ed60_d_datamatricula from matricula where ";
-  $sSql         .= "                                                  ed60_i_aluno = ed56_i_aluno "; 
+  $sSql         .= "                                                  ed60_i_aluno = ed56_i_aluno ";
   $sSql         .= "                                                  order by ed60_d_datamatricula desc limit 1), ";
   $sSql         .= "                                                  'DD/MM/YYYY') as datamatricula";
   $sSql         .= "                     FROM aluno";
@@ -94,13 +94,13 @@ if (isset($excluir)) {
   $sSql         .= "                           AND ed56_c_situacao != 'FALECIDO'";
   $sSql         .= "            )as x ORDER BY ed47_v_nome";
   $rsAluno       = db_query($sSql);
-  
+
   if (pg_num_rows($rsAluno) > 0) {
-    db_fieldsmemory($rsAluno, 0); 	
+    db_fieldsmemory($rsAluno, 0);
   }
-  
+
   $db_botao = true;
-  
+
 }
 ?>
 <html>
@@ -123,32 +123,32 @@ if (isset($excluir)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Exclusão de Atestado de Vaga</b></legend>
-       <?include(modification("forms/db_frmatestvaga.php"));?>
+       <?php include(modification("forms/db_frmatestvaga.php"));?>
       </fieldset>
      </center>
     </td>
    </tr>
   </table>
-   <?
-     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+   <?php
+     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
              db_getsession("DB_anousu"), db_getsession("DB_instit")
             );
    ?>
  </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
-	
+
   if ($oDaoAtestVaga->erro_status == "0") {
     $oDaoAtestVaga->erro(true, false);
   } else {
     $oDaoAtestVaga->erro(true, true);
   }
-  
+
 }
 
 if ($db_opcao == 33) {

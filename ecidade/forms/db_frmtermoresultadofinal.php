@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -37,13 +37,13 @@ $clrotulo->label("ed10_c_descr");
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ted110_ensino?>">
-           <?
+           <?php
              db_input('ed110_sequencial',10,$Ied110_sequencial,true,'hidden',$db_opcao,"");
              db_ancora(@$Led110_ensino,"js_pesquisaed110_ensino(true);",$db_opcao);
            ?>
         </td>
         <td>
-          <?
+          <?php
             db_input('ed110_ensino', 10,$Ied110_ensino, true, 'text',
                      $db_opcao," onchange='js_pesquisaed110_ensino(false);'");
             db_input('ed10_c_descr', 26,$Ied10_i_codigo, true, 'text', 3,'');
@@ -55,7 +55,7 @@ $clrotulo->label("ed10_c_descr");
            <?=@$Led110_descricao?>
         </td>
         <td>
-          <?
+          <?php
             db_input('ed110_descricao',40,$Ied110_descricao,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -65,7 +65,7 @@ $clrotulo->label("ed10_c_descr");
            <?=@$Led110_abreviatura?>
         </td>
         <td>
-          <?
+          <?php
             db_input('ed110_abreviatura', 10, $Ied110_abreviatura,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -75,7 +75,7 @@ $clrotulo->label("ed10_c_descr");
            <?=@$Led110_referencia?>
         </td>
         <td>
-          <?
+          <?php
             $x = array('A'=>'Progressão','P'=>'Parcialmente Aprovado','R'=>'Retenção');
             db_select('ed110_referencia',$x,true,$db_opcao, "style='width:100%;'");
           ?>
@@ -86,7 +86,7 @@ $clrotulo->label("ed10_c_descr");
            <?=@$Led110_ano?>
         </td>
         <td>
-          <?
+          <?php
             db_input('ed110_ano', 10, $Ied110_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -125,7 +125,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_termoresultadofinal.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

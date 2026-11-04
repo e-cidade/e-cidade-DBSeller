@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ $cleventos->rotulo->label("r26_evento");
               <?=$Lr26_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r26_mesusu",2,$Ir26_mesusu,true,"text",4,"","chave_r26_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cleventos->rotulo->label("r26_evento");
               <?=$Lr26_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r26_regist",6,$Ir26_regist,true,"text",4,"","chave_r26_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $cleventos->rotulo->label("r26_evento");
               <?=$Lr26_evento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r26_evento",4,$Ir26_evento,true,"text",4,"","chave_r26_evento");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $cleventos->rotulo->label("r26_evento");
               <?=$Lr26_evento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("r26_evento",4,$Ir26_evento,true,"text",4,"","chave_r26_evento");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $cleventos->rotulo->label("r26_evento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_eventos.php")==true){
@@ -141,12 +141,12 @@ $cleventos->rotulo->label("r26_evento");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

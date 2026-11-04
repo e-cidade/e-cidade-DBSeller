@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
 							<label id="label_iPessoa" for="iPessoa"><strong>Pessoa :</strong>	</label>
 						</td>
 						<td>
-							<?
+							<?php
 								$selPessoa = array("T"=>"Todos", "t"=>"F&iacute;sica","f"=>"Jur&iacute;dica");
 								db_select('iPessoa', $selPessoa, true, 1, '');
 							?>
@@ -66,7 +66,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
 							<label id="label_iProcesso" for="iProcesso"><strong>Processo:</stong></label>
 						</td>
 						<td>
-							<?
+							<?php
 								$selProcesso = array("T"=>"Todos", "C"=>"Com Processo","S"=>"Sem Processo");
 								db_select('iProcesso', $selProcesso, true, 1, '');
 							?>	
@@ -77,7 +77,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
               <label id="label_iSituacao" for="iSituacao"><strong>Inscrições:</stong></label>
             </td>
             <td>
-              <?
+              <?php
                 $selSituacao = array("T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas");
                 db_select('sSituacao', $selSituacao, true, 1, '');
               ?>  

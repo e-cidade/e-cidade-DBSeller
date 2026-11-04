@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -53,58 +53,58 @@ db_postmemory($HTTP_POST_VARS);
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
 
   <div class="container" style="width:690px !important;">
-  
+
 	<form name="form1" method="post" action="">
 
   <fieldset>
-  
+
     <Legend><strong>Servidores por Cargo/Lotação/Secretaria</strong></Legend>
-    
-	
+
+
 	<table class="form-container">
 	  <tr>
 	    <td nowrap colspan="2">
-			<?
+			<?php
 			  if(!isset($tipo)){
 			    $tipo = "l";
 			  }
 			  if(!isset($filtro)){
 			    $filtro = "i";
 			  }
-			  
+
 			  $gform->tipores = true;
  			  $gform->usalota = true;           		// PERMITIR SELEÇÃO DE LOTAÇÕES
  			  $gform->usaLotaFieldsetClass = true;  // PERMITIR SELEÇÃO DE LOTAÇÕES
  			  $gform->usaorga = true;               // PERMITIR SELEÇÃO DE ÓRGÃO
  			  $gform->usacarg = true;               // PERMITIR SELEÇÃO DE Cargo
-				//$gform->mostaln = true;             // Removido campo tipo de ordem e carregado manualmente 
-			                                        
- 			  $gform->masnome = "ordem";            
-		                                          
+				//$gform->mostaln = true;             // Removido campo tipo de ordem e carregado manualmente
+
+ 			  $gform->masnome = "ordem";
+
  			  $gform->ca1nome = "cargoi";           // NOME DO CAMPO DO CARGO INICIAL
  			  $gform->ca2nome = "cargof";           // NOME DO CAMPO DO CARGO FINAL
- 			  $gform->ca3nome = "selcargo";         
- 			  $gform->ca4nome = "Cargo";            
-		                                          
+ 			  $gform->ca3nome = "selcargo";
+ 			  $gform->ca4nome = "Cargo";
+
  			  $gform->lo1nome = "lotaci";           // NOME DO CAMPO DA LOTAÇÃO INICIAL
  			  $gform->lo2nome = "lotacf";           // NOME DO CAMPO DA LOTAÇÃO FINAL
- 			  $gform->lo3nome = "sellot";           
-		                                          
+ 			  $gform->lo3nome = "sellot";
+
  			  $gform->or1nome = "orgaoi";           // NOME DO CAMPO DO ÓRGÃO INICIAL
  			  $gform->or2nome = "orgaof";           // NOME DO CAMPO DO ÓRGÃO FINAL
  			  $gform->or3nome = "selorg";           // NOME DO CAMPO DE SELEÇÃO DE ÓRGÃOS
  			  $gform->or4nome = "Secretaria";       // NOME DO CAMPO DE SELEÇÃO DE ÓRGÃOS
-		                                          
+
  			  $gform->trenome = "tipo";             // NOME DO CAMPO TIPO DE RESUMO
  			  $gform->tfinome = "filtro";           // NOME DO CAMPO TIPO DE FILTRO
-		                                          
+
  			  $gform->resumopadrao = "l";           // TIPO DE RESUMO PADRÃO
- 			  $gform->filtropadrao = "i";           
+ 			  $gform->filtropadrao = "i";
  			  $gform->strngtipores = "loc";         // OPÇÕES PARA MOSTRAR NO TIPO DE RESUMO g - geral,
-		                                          
- 			  $gform->selecao = true;               
+
+ 			  $gform->selecao = true;
  			  $gform->onchpad = true;               // MUDAR AS OPÇÕES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
-		
+
  			  $gform->manomes = true;
 			  $gform->gera_form( db_anofolha(), db_mesfolha() );
 			  ?>
@@ -112,16 +112,16 @@ db_postmemory($HTTP_POST_VARS);
 			    <td colspan="2">&nbsp;</td>
 			  </tr>
 	</table>
-	
+
 	<fieldset class="separator">
-	
+
    <Legend><strong>Selecione os Vinculos</strong></Legend>
-   
+
 	  <table border="0" >
-	  
+
 	   <tr>
 	     <td>
-	  		      <?
+	  		      <?php
 	  		      db_input("valor", 3, 0, true, 'hidden', 3);
 	  		      db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
 	  		      db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -135,15 +135,15 @@ db_postmemory($HTTP_POST_VARS);
 	  		        $arr_colunas_final   = Array();
 	  		        $arr_colunas_inicial = Array();
 	  		        if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-	  		           $colunas_sselecionados = split(",",$colunas_sselecionados);
+	  		           $colunas_sselecionados =explode(",",$colunas_sselecionados);
 	  		           for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
-	  		              $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
+	  		              $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]];
 	  		           }
 	  		        }
 	  		        if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-	  		           $colunas_nselecionados = split(",",$colunas_nselecionados);
+	  		           $colunas_nselecionados =explode(",",$colunas_nselecionados);
 	  		           for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
-	  		              $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
+	  		              $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]];
 	  		           }
 	  		        }
 	  		        if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
@@ -156,18 +156,18 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
 	  </table>
   </fieldset>
-	
+
 	<fieldset class="separator">
-	
+
    <Legend><strong>Opções de Impressão</strong></Legend>
-   
+
     <table border="0" class="form-container">
-    
+
       <tr>
 	     <td style="width: 173px !important;"><strong>Listar Servidores :</strong>&nbsp;
        </td>
        <td>
-         <?
+         <?php
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('func',$x,true,4,"");
          ?>
@@ -177,7 +177,7 @@ db_postmemory($HTTP_POST_VARS);
 	     <td ><strong>Imprimir Endereço :</strong>&nbsp;
        </td>
        <td>
-         <?
+         <?php
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('endereco',$x,true,4,"");
          ?>
@@ -187,7 +187,7 @@ db_postmemory($HTTP_POST_VARS);
 	     <td ><strong>Imprimir Remuneração :</strong>&nbsp;
        </td>
        <td>
-         <?
+         <?php
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('padrao',$x,true,4,"");
          ?>
@@ -201,18 +201,18 @@ db_postmemory($HTTP_POST_VARS);
                <select name="ordem" id="ordem">
           <option style="background-color: rgb(215, 204, 6);" value="a">Alfabética</option>
             <option style="background-color: rgb(248, 236, 7);" value="d">Numérica</option>
-      	
+
     </select>
-    
+
               </td>
-      </tr>      
+      </tr>
       <tr >
         <td nowrap><strong>Quebrar :</strong>&nbsp;
         </td>
         <td>
-          <?
+          <?php
 			      $xxy = array(
-					            "n"=>"NÃO", 
+					            "n"=>"NÃO",
 				              "s"=>"SIM"
 					              );
 			  	  db_select('quebrar',$xxy,true,4,"");
@@ -221,15 +221,15 @@ db_postmemory($HTTP_POST_VARS);
       </tr>
     </table>
     </fieldset>
-    
+
   </fieldset>
-  
+
   </form>
-  
+
   <input  name="relatorio" id="relatorio" type="button" value="Relatório" onclick="js_emite();" >
-  
+
   </div>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -255,7 +255,7 @@ function js_complementar(opcao){
  }
 
 function js_emite(){
-	
+
   selecionados = "";
   virgula_ssel = "";
   for(var i=0; i<document.form1.sselecionados.length; i++){
@@ -273,7 +273,7 @@ function js_emite(){
   qry += "&tipo="		          + document.form1.tipo.value;
   qry += "&quebrar="          + document.form1.quebrar.value;
   qry += "&selecao="          + document.form1.selecao.value;
-    
+
   if(document.form1.selcargo){
     if(document.form1.selcargo.length > 0){
       faixacargo = js_campo_recebe_valores();
@@ -311,6 +311,6 @@ function js_emite(){
   jan = window.open('pes2_relfuncaolotacaoorgao002.php'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   jan.moveTo(0,0);
 }
-</script>  
+</script>
 </body>
 </html>

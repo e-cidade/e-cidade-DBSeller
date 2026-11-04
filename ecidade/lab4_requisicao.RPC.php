@@ -31,6 +31,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/JSON.php"));
+require_once(modification("libs/db_stdlibwebseller.php"));
+$oConfig = loadConfig("lab_parametros");
 
 $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
@@ -47,7 +49,26 @@ try {
     case "buscarExames":
 
       $sWhere  = "     la21_i_requisicao = {$oParam->iRequisicao} ";
-      $sWhere .= " and la21_c_situacao in ('30 - Coletado', '50 - Lancado') ";
+      
+      /**
+       * Se o parametro da triagem laboratorial tiver habilitado e houverem
+       * laboratorios/unidades dispensados deve - se verificar apenas a 
+       * situação da coleta. Além disso, se não houver unidades dispensadas,
+       * a situação de processamento, oriunda da triagem, deve ser considerada.
+       */
+
+       $unidadesDispensadasTriagem = $oConfig->la49_unidadesdispensadastriagem;
+      if($oConfig->la49_habilitartriagemlaboratorial == 'f'){
+        $sWhere .= " and la21_c_situacao in ('30 - Coletado', '50 - Lancado') ";
+      } elseif($oConfig->la49_habilitartriagemlaboratorial == 't' && !empty($unidadesDispensadasTriagem)) {
+        $sWhere .= " 
+          and case when la02_i_codigo in ($unidadesDispensadasTriagem) then
+                    la21_c_situacao in ('30 - Coletado', '50 - Lancado') 
+              else  la21_c_situacao in ('45 - Em processamento','50 - Lancado') end";
+      } elseif($oConfig->la49_habilitartriagemlaboratorial == 't'){
+        $sWhere .= " and la21_c_situacao in ('45 - Em processamento','50 - Lancado') ";
+      }
+
       $sCampos = " la23_i_codigo, la23_c_descr, la21_i_codigo, la08_i_codigo, la08_c_descr, la21_c_situacao, la02_i_codigo ";
 
       $oDaoRequisicao = new cl_lab_requisicao();

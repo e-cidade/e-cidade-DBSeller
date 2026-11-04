@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -115,8 +115,6 @@ if (isset($oPost->alterar)) {
     $sWhereValidaRegra .= " and k36_modcarnepadrao is null 		              ";  	
   }
   
-//  $rsValidaRegra = $clmodcarnepadrao->sql_record($clmodcarnepadrao->sql_query(null,"k48_sequencial",null,$sWhereValidaRegra));
-//   if ( $clmodcarnepadrao->numrows == 0 ) {
   $rsModCarnePadrao = $clmodcarnepadrao->sql_record($clmodcarnepadrao->sql_query_func($oPost->k48_sequencial,"*"));
   $oModCarnePadrao  = db_utils::fieldsMemory($rsModCarnePadrao,0);
   $clmodcarnepadraocadmodcarne->m01_sequencial     = $oModCarnePadrao->m01_sequencial;
@@ -178,12 +176,6 @@ if (isset($oPost->alterar)) {
     }
     $erro_msg = $clmodcarnepadrao->erro_msg;
   }
-    
-//   } else {
-//   	$oValidaRegra = db_utils::fieldsMemory($rsValidaRegra,0);
-//   	$lSqlErro = true;
-//   	$erro_msg = "Já existe regra no {$oValidaRegra->k48_sequencial} com os mesmo parámetros configurados! Verifique.";
-//   }
   
   db_fim_transacao($lSqlErro);
   
@@ -216,8 +208,8 @@ if (isset($oPost->alterar)) {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
-	include(modification("forms/db_frmmodcarnepadrao.php"));
+	<?php
+	require_once(modification("forms/db_frmmodcarnepadrao.php"));
 	?>
     </center>
 	</td>
@@ -225,7 +217,7 @@ if (isset($oPost->alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php
 if (isset($oPost->alterar) ) {
   if ($lSqlErro) {
     db_msgbox($erro_msg);
@@ -242,10 +234,10 @@ if (isset($oGet->chavepesquisa) ) {
   <script>
       function js_db_libera() {
          parent.document.formaba.modcarnepadraotipo.disabled = false;
-         parent.document.formaba.modcarneexcessao.disabled   = false;
-         parent.document.formaba.pix.disabled = false;
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_modcarnepadraotipo.location.href='cai1_modcarnepadraotipo001.php?k49_modcarnepadrao=".@$k48_sequencial."';
+         parent.document.formaba.modcarneexcessao.disabled   = false;
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_modcarneexcessao.location.href='cai1_modcarneexcessao001.php?k36_modcarnepadrao=".@$k48_sequencial."';
+         parent.document.formaba.pix.disabled = false;
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_pix.location.href='cai1_pix002.php?k36_modcarnepadrao=".@$k48_sequencial."';
 
      ";

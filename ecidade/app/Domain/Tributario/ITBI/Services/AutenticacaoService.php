@@ -26,9 +26,15 @@ final class AutenticacaoService extends Autenticacao
     {
         $this->buscarGuiaReciboMigrado();
 
-        $this->buscarDadosItbi();
+        $retorno = $this->buscarDadosItbi();
+
+        if ($retorno === false) {
+            return false;
+        }
 
         $this->gerarArquivoAutenticacao();
+
+        return true;
     }
 
     /**
@@ -73,6 +79,10 @@ final class AutenticacaoService extends Autenticacao
         $this->setDadosItbi("oGuia", $oItbi);
 
         $aPagamentos = $this->buscarPagamentoGuia();
+
+        if ($aPagamentos === false) {
+            return false;
+        }
 
         $this->setDadosItbi("aPagamentos", $aPagamentos);
 
@@ -119,6 +129,8 @@ final class AutenticacaoService extends Autenticacao
         $this->setDadosItbi("oIptuender", $oIptuender);
 
         $this->buscarCaracteristicasRural();
+
+        return true;
     }
 
     /**
@@ -137,9 +149,7 @@ final class AutenticacaoService extends Autenticacao
         );
 
         if (count($aPagamentos) == 0) {
-            throw new \Exception(
-                "Não existem pagamentos para a guia {$this->numeroGuia}"
-            );
+            return false;
         }
 
         if (!$this->migrado) {

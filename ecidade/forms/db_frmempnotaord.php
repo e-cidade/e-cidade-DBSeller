@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("e69_codnota");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tm72_codordem?>">
-       <?
+       <?php
        db_ancora(@$Lm72_codordem,"js_pesquisam72_codordem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m72_codordem',10,$Im72_codordem,true,'text',$db_opcao," onchange='js_pesquisam72_codordem(false);'")
 ?>
-       <?
+       <?php
 db_input('m51_data',10,$Im51_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm72_codnota?>">
-       <?
+       <?php
        db_ancora(@$Lm72_codnota,"js_pesquisam72_codnota(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('m72_codnota',6,$Im72_codnota,true,'text',$db_opcao," onchange='js_pesquisam72_codnota(false);'")
 ?>
-       <?
+       <?php
 db_input('e69_codnota',6,$Ie69_codnota,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_empnotaord.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

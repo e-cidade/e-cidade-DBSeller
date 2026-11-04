@@ -155,7 +155,6 @@ class dadosEmpenhoFolha
             $iInstit,
             $sWhereSuplementar);
 
-
         $rsGerador = db_query($sSqlGerador);
 
         if ($rsGerador) {
@@ -2720,16 +2719,9 @@ class dadosEmpenhoFolha
             $sWhereDotacao .= " and o58_programa = {$iPrograma}   ";
         }
 
+        $codigosRecursos = implode(",", $this->getRecursosCompativeis($iRecurso, $iAnoUsu));
 
-        $whereRecurso = "and o58_codigo   = {$iRecurso} ";
-        $recurso = RecursoRepository::getByCodigo($iRecurso);
-        if (!FONTE_RECURSO_UNIAO) {
-            $whereRecurso = "and o15_loaespecificacao = '{$recurso->getEspecificacaoLOA()}'";
-        }
-        $complemento = $recurso->getComplemento();
-        if (empty($complemento)) {
-            $complemento = 0;
-        }
+        $whereRecurso = "and o58_codigo in ({$codigosRecursos}) ";
         $sWhereDotacao .= $whereRecurso;
 
         $sWhereDotacao .= $sWhereParam;
@@ -2761,6 +2753,45 @@ class dadosEmpenhoFolha
 
     }
 
+    public function getRecursosCompativeis($codigo, $exercicio)
+    {
+        $sql = "
+        with base as 
+                (
+                SELECT 
+                    codigo_siconfi as base_siconfi,
+                    o15_recurso as base_recurso
+                FROM
+                    orctiporec
+                    JOIN fonterecurso ON orctiporec_id =o15_codigo
+                WHERE
+                    exercicio = {$exercicio}
+                    AND o15_codigo = {$codigo}
+            )
+            SELECT 
+                o15_codigo
+            FROM
+                base
+                join orctiporec on o15_recurso = base_recurso
+                JOIN fonterecurso ON orctiporec_id = o15_codigo 
+                    and codigo_siconfi = base_siconfi
+                    and exercicio = {$exercicio};
+        ";
+
+        $rs = db_query($sql);
+
+        if (!$rs) {
+            throw new DBException("Não foi localizado o recurso.");
+        }
+
+        $count = pg_num_rows($rs);
+        $dados = [];
+        for ($i = 0; $i < $count; $i++) {
+            $dados[] = db_utils::fieldsMemory($rs, $i)->o15_codigo;
+        }
+
+        return $dados;
+    }
 
     /**
      * Gera dados para empenhos da folha referente a FGTS ( rubricas = R991 )
@@ -4552,7 +4583,7 @@ class dadosEmpenhoFolha
                 $oDaoPlaCaixaRec->incluir(null);
 
                 if ($oDaoPlaCaixaRec->erro_status == '0') {
-                    throw new DBException($sMsgErro . "\n2. " . $oDaoPlaCaixaRec->erro_msg);
+                    throw new DBException($sMsgErro . "\n2. " . $oDaoPlaCaixaRec->erro_msg . " , Recurso Codigo: ".  $oDadosRubricas->recurso);
                 }
 
                 $recurso = new ECidade\Financeiro\Orcamento\Recurso\Recurso($oDadosRubricas->recurso);

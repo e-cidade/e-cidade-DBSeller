@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ $sWhereContrato = " and 1 = 1 ";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       $where_depart = '';
       $sDepartamento = "";

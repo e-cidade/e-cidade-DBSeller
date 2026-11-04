@@ -34,7 +34,7 @@ require_once(modification("classes/db_saltes_classe.php"));
 require_once(modification("classes/db_corrente_classe.php"));
 
 
-$clsaltes   = new cl_saltes;
+$clsaltes = new cl_saltes;
 $clcorrente = new cl_corrente;
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
@@ -59,38 +59,29 @@ $borda = 0;
     <link type="text/css" href="assets/bootstrap-table/css/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" href="assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
 </head>
-
-
-
-
 <form id="formulario" method="post">
+    <div class="subcontainer" style="width: 60%;">
 
-<div class="subcontainer" style="width: 60%;">
+        <fieldset>
+            <legend> Implantação de Conciliação por Lote</legend>
 
-  <fieldset>
-    <legend> Implantação de Conciliação por Lote </legend>
+            <table id="data-table"
+                   class="table table-sm"
+                   data-height="650"
+                   data-virtual-scroll="true"
+                   data-show-columns="true"
+            >
+            </table>
 
-    <table id="data-table"
-        class="table table-sm"
-        data-height="650"
-        data-virtual-scroll="true"
-        data-show-columns="true"
-      >
-    </table>
-
-  </fieldset>
-
-
-  <button type="button" id="btnProcessar" name="btnProcessar" class="btn btn-light" >
-    <i class="far fa-save"></i>
-    Processar
-  </button>
-</div>
-
-
+        </fieldset>
+        <button type="button" id="btnProcessar" name="btnProcessar" class="btn btn-light">
+            <i class="far fa-save"></i>
+            Processar
+        </button>
+    </div>
 </form>
 
 <?php
@@ -100,9 +91,9 @@ db_menu();
 </html>
 
 
-<script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/session.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/widgets/DBFileUpload.widget.js"></script>
+<script type="text/javascript" src="scripts/classes/http/http.js"></script>
+<script type="text/javascript" src="scripts/session.js"></script>
+<script type="text/javascript" src="scripts/widgets/DBFileUpload.widget.js"></script>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
 <!-- requires bootstrap table -->
 <script type="text/javascript" src="assets/jquery/jquery-3.5.1.min.js"></script>
@@ -115,20 +106,17 @@ db_menu();
 
 <script>
 
+    const routs = {
+        pendencias: "financeiro/tesouraria/contas-pendentes",
+        processar: "financeiro/tesouraria/processar-implantacao"
+    };
 
-const sApiUrl = "<?= ECIDADE_REQUEST_PATH ?>v4/api/financeiro/tesouraria/";
-const routs = {
+    const formData = new FormData();
 
-    pendencias : sApiUrl + "contas-pendentes",
-    processar : sApiUrl + "processar-implantacao"
-};
+    $.noConflict();
+    jQuery(document).ready(function ($) {
 
-const formData = new FormData();
-
-$.noConflict();
-jQuery(document).ready(function ($) {
-
-    const estiloLinha = (data) => {
+        const estiloLinha = (data) => {
 
             if (data.dataImplantar.length <= 0) {
                 return {
@@ -139,70 +127,65 @@ jQuery(document).ready(function ($) {
         }
 
 
-    const formatterSelectData = (v, data) => {
+        const formatterSelectData = (v, data) => {
 
-               let oCboDatas = document.createElement('select');
-               oCboDatas.setAttribute('name', 'data_' + data.conta);
-               oCboDatas.id = "data_"+ data.conta;
+            let oCboDatas = document.createElement('select');
+            oCboDatas.setAttribute('name', 'data_' + data.conta);
+            oCboDatas.id = "data_" + data.conta;
 
-               if (data.dataImplantar.length <= 0) {
-                    oCboDatas.add( new Option( "Indisponível", "" ));
-                }
+            if (data.dataImplantar.length <= 0) {
+                oCboDatas.add(new Option("Indisponível", ""));
+            }
 
-               data.dataImplantar.map( (oData) => {
-                  oCboDatas.add( new Option( oData, oData ));
-               });
+            data.dataImplantar.map((oData) => {
+                oCboDatas.add(new Option(oData, oData));
+            });
 
-               return oCboDatas.outerHTML;
-          }
-
-
-
-
-
-    const colunas = [
-
-        {
-             field: 'checkbox',
-             checkbox: true,
-             align: 'center',
-             valign: 'middle',
-             width: '25px;'
-        },
-        {
-            title: 'Conta',
-            field: 'conta',
-            halign: 'center',
-            align: 'right',
-            width: '70px;'
-        },
-        {
-            title: 'Reduzidos',
-            field: 'reduzido',
-            halign: 'center',
-            align: 'right',
-            width: '70px;'
-        },
-        {
-            title: 'Descricao',
-            field: 'descricao',
-            halign: 'center',
-            align: 'left',
-            width:'400px;'
-        },
-        {
-            title: 'Datas',
-            field: 'data',
-            halign: 'center',
-            align: 'center',
-            formatter: formatterSelectData,
-            width: '80px;'
+            return oCboDatas.outerHTML;
         }
-    ];
+
+        const colunas = [
+
+            {
+                field: 'checkbox',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle',
+                width: '25px;'
+            },
+            {
+                title: 'Conta',
+                field: 'conta',
+                halign: 'center',
+                align: 'right',
+                width: '70px;'
+            },
+            {
+                title: 'Reduzidos',
+                field: 'reduzido',
+                halign: 'center',
+                align: 'right',
+                width: '70px;'
+            },
+            {
+                title: 'Descricao',
+                field: 'descricao',
+                halign: 'center',
+                align: 'left',
+                width: '400px;'
+            },
+            {
+                title: 'Datas',
+                field: 'data',
+                halign: 'center',
+                align: 'center',
+                formatter: formatterSelectData,
+                width: '80px;'
+            }
+        ];
 
 
-
-    var table = $('#data-table');
+        var table = $('#data-table');
         table.bootstrapTable({
             columns: colunas,
             uniqueId: "id",
@@ -213,49 +196,36 @@ jQuery(document).ready(function ($) {
             pageList: [10, 25, 50, 100, 200, 'All'],
             search: true,
             class: "table table-sm",
-           // rowStyle: estiloLinha
+            // rowStyle: estiloLinha
         });
-       // table.bootstrapTable('removeAll');
+        // table.bootstrapTable('removeAll');
 
 
+        buscaRegistros = () => {
 
-       buscaRegistros = () => {
+            PHPSession.appendFormData(formData);
+            HttpClient.post(`${PHPSession.requestApi}/${routs.pendencias}`, {body: formData}).then(response => {
+                table.bootstrapTable('load', response.data);
+            });
+        }
 
-         //formData.append('teste', "testando");
-         PHPSession.appendFormData(formData);
-         HttpClient.post(`${routs.pendencias}`, {body: formData}).then(response => {
+        btnProcessar.addEventListener('click', () => {
 
-            table.bootstrapTable('load', response.data);
+            let aContas = [];
+            table.bootstrapTable('getSelections').each(selecao => {
 
-         });
+                data = document.getElementById("data_" + selecao.conta).value;
 
-      }
-
-
-
-       btnProcessar.addEventListener('click', () => {
-
-          let aContas = [];
-          table.bootstrapTable('getSelections').each(selecao => {
-
-                 data = document.getElementById("data_" + selecao.conta).value;
-
-                 if (data == "") {
-
+                if (data == "") {
                     alert("Deve ser selecionado uma data para a conta: " + selecao.conta + " " + selecao.descricao);
                     return false;
-                 }
+                }
 
-                 let oConta = {};
-                 oConta.conta = selecao.conta;
-                 oConta.data = data;
-                 //oConta.reduzido = selecao.reduzido;
-
-                 //formData.append('contas[]', JSON.stringify(oConta));
-                 aContas.push(oConta);
+                let oConta = {};
+                oConta.conta = selecao.conta;
+                oConta.data = data;
+                aContas.push(oConta);
             });
-
-            //console.log(aContas);
 
             if (aContas.length <= 0) {
 
@@ -268,24 +238,21 @@ jQuery(document).ready(function ($) {
                 return false;
             }
 
-            //JSON.stringify para poder mandar como array de objetos
             formData.append('linhasContas', JSON.stringify(aContas));
-
             PHPSession.appendFormData(formData);
+            HttpClient.post(`${PHPSession.requestApi}/${routs.processar}`, {body: formData}).then(response => {
 
-            HttpClient.post(`${routs.processar}`, {body: formData}).then(response => {
-
-              alert(response.message);
-              if (response.error) {
-                return;
-              }
-              buscaRegistros();
+                alert(response.message);
+                if (response.error) {
+                    return;
+                }
+                buscaRegistros();
             });
-
         });
 
-        buscaRegistros();
-
-});
+        PHPSession.loadData().then(() => {
+            buscaRegistros();
+        });
+    });
 
 </script>

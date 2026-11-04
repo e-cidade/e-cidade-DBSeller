@@ -48,6 +48,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     const MAXIMO_LINHAS_ATOS_LEGAIS = 4;
     const LARGURA_ASSINATURA = 93;
     const LARGURA_TOTAL = 203;
+    const NACIONALIDADE_NASCIDO_EXTERIOR_OU_NATURALIZADO = 2;
 
     private $sPrefixoTitulo = "HISTÓRICO ESCOLAR";
     private $sTituloRelatorio = "HISTÓRICO ESCOLAR";
@@ -99,6 +100,16 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     private $lExibirTodasEtapasCurso = false;
 
     /**
+     * Resultados de aprovação em uma etapa
+     */
+    private $resultadosAprovacao = ['A', 'P'];
+
+    /**
+     * Salva o estado original das etapas por ensino
+     */
+    private $estadoOriginalTodasEtapas = null;
+
+    /**
      * Construtor da classe
      * @param Pdf $oPdf
      * @param Aluno $oAluno
@@ -108,8 +119,6 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
      */
     public function __construct(Pdf $oPdf, Aluno $oAluno, Escola $oEscola, $iTipoRelatorio, $lExibirReclassificacao)
     {
-        $curso = CursoRepository::getCursoAtualAluno($oAluno);
-        $this->sTituloRelatorio .= " - {$curso->getNome()}";
         parent::__construct($oAluno, $oEscola, $iTipoRelatorio, $lExibirReclassificacao);
         $this->oPdf = $oPdf;
         $this->oPdf->AddPage();
@@ -133,6 +142,17 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     }
 
     /**
+     * @throws DBException
+     */
+    public function setEstadoOriginalEtapas($estadoOriginal)
+    {
+        $this->estadoOriginalTodasEtapas = $estadoOriginal;
+        foreach ($this->estadoOriginalTodasEtapas as &$listaEtapas) {
+            $this->ordenaEtapasPorEquivalenciaEOrdem($listaEtapas);
+        }
+    }
+
+    /**
      * Escreve o cabecalho do Relatório
      *
      * @return void
@@ -142,6 +162,13 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
      */
     public function escreveCabecalho()
     {
+        if (!is_null($this->oCurso)) {
+            $this->sTituloRelatorio = "{$this->sPrefixoTitulo} - {$this->oCurso->getNome()}";
+        } else {
+            $curso = CursoRepository::getCursoAtualAluno($this->oAluno);
+            $this->sTituloRelatorio .= " - {$curso->getNome()}";
+        }
+
         if (!empty($this->iAnoLimite)) {
             $curso = CursoRepository::getCursoAlunoHistorico($this->oAluno, $this->iAnoLimite);
             $this->sTituloRelatorio = "{$this->sPrefixoTitulo} - {$curso}";
@@ -212,16 +239,21 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $this->oPdf->cell(93, $iAlturaLinha, $sFiliacao, 0, 1, "L", 0);
 
         $this->oPdf->cell(20, $iAlturaLinha, "Nacionalidade:", 0, 0, "L", 0);
-        $this->oPdf->cell(25, $iAlturaLinha, $aNacionalidade[$this->oAluno->getNacionalidade()], 0, 0, "L", 0);
+        $larguraNacionalidade = 25;
+        if (
+            $this->oAluno->getNacionalidade() == self::NACIONALIDADE_NASCIDO_EXTERIOR_OU_NATURALIZADO
+        ) {
+            $larguraNacionalidade = 80;
+        }
+        $this->oPdf->cell($larguraNacionalidade, $iAlturaLinha, $aNacionalidade[$this->oAluno->getNacionalidade()], 0, 0, "L", 0);
 
         $this->oPdf->cell(20, $iAlturaLinha, "Nascido(a) em:", 0, 0, "L", 0);
         $this->oPdf->cell(80, $iAlturaLinha, $sLocalNascimento, 0, 1, "L", 0);
 
         $this->oPdf->cell(20, $iAlturaLinha, "Identidade: ", 0, 0, "L", 0);
-        $this->oPdf->cell(25, $iAlturaLinha, $this->oAluno->getIdentidade(), 0, 0, "L", 0);
+        $this->oPdf->cell(35, $iAlturaLinha, $this->oAluno->getIdentidade(), 0, 0, "L", 0);
 
         if ($this->oParametros->exibiridentidade) {
-
             $oDaoUF  = new cl_censouf();
             $sSqlUF  = $oDaoUF->sql_query($this->oAluno->getUFIdentidade(), "ed260_c_sigla");
             $rsUF    = $oDaoUF->sql_record($sSqlUF);
@@ -233,15 +265,15 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             $oOrgaoEmissorRG = new CensoOrgaoEmissorRG($this->oAluno->getOrgaoEmissorIdentidade());
 
             $this->oPdf->cell(5, $iAlturaLinha, "UF:", 0, 0, "L", 0);
-            $this->oPdf->cell(8, $iAlturaLinha, $siglaUF, 0, 0, "L", 0);
-            $this->oPdf->cell(23, $iAlturaLinha, "Data de Expedição: ", 0, 0, "L", 0);
+            $this->oPdf->cell(11, $iAlturaLinha, $siglaUF, 0, 0, "L", 0);
+            $this->oPdf->cell(26, $iAlturaLinha, "Data de Expedição: ", 0, 0, "L", 0);
 
             $dtExpedicaoRG = $this->oAluno->getDataExpedicaoIdentidade();
             $dtExpedicaoRG = !empty($dtExpedicaoRG) ? new DBDate($dtExpedicaoRG) : "";
             $dtExpedicaoRG = !empty($dtExpedicaoRG) ? $dtExpedicaoRG->convertTo(DBDate::DATA_PTBR) : "";
             $this->oPdf->cell(18, $iAlturaLinha, $dtExpedicaoRG, 0, 0, "R", 0);
-            $this->oPdf->cell(18, $iAlturaLinha, "Orgão Emissor: ", 0, 0, "L",       0);
-            $this->oPdf->cell(47, $iAlturaLinha, $oOrgaoEmissorRG->getNome(), 0, 1, "R", 0);
+            $this->oPdf->cell(18, $iAlturaLinha, "Orgão Emissor: ", 0, 0, "L", 0);
+            $this->oPdf->cell(65, $iAlturaLinha, $oOrgaoEmissorRG->getNome(), 0, 1, "R", 0);
         }
 
         $cpfAluno = '';
@@ -250,7 +282,6 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         }
         $this->oPdf->cell(8, $iAlturaLinha, "CPF: ", 0, 0, "L", 0);
         $this->oPdf->cell(88, $iAlturaLinha, $cpfAluno, 0, 0, "L", 0);
-
         $this->oPdf->cell(12, $iAlturaLinha, "ID INEP: ", 0, 0, "L", 0);
         $this->oPdf->cell(5, $iAlturaLinha, $this->oAluno->getCodigoInep(), 0, 1, "L", 0);
 
@@ -424,7 +455,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     private function possuiBaseDiversificada()
     {
         foreach ($this->aDadosOrganizados as $oEtapaCursada) {
-            foreach ($oEtapaCursada->aDisicplinasEtapa as $oDisciplina) {
+            foreach ($oEtapaCursada->aDisciplinas as $oDisciplina) {
                 if (!$oDisciplina->lBaseComum) {
                     return true;
                 }
@@ -462,7 +493,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             }
 
             $disciplinas = [];
-            foreach ($oEtapaCursada->aDisicplinasEtapa as $disciplinaEtapa) {
+            foreach ($oEtapaCursada->aDisciplinas as $disciplinaEtapa) {
                 $chave_etapa = $oEtapaCursada->iAno . "_" . $oEtapaCursada->iEtapa;
 
                 if (!array_key_exists(
@@ -473,6 +504,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                     $etapaPorBase->iEtapa = $oEtapaCursada->iEtapa;
                     $etapaPorBase->sEtapa = $oEtapaCursada->sEtapa;
                     $etapaPorBase->ordem =  $oEtapaCursada->ordem;
+                    $etapaPorBase->resultadoEtapaAno = $oEtapaCursada->resultadoEtapaAno;
                     $etapaPorBase->areasConhecimento = [];
                     $etapaPorBase->aDisciplinas = [];
                     $etapaPorBase->ensino = $oEtapaCursada->ensino;
@@ -484,7 +516,6 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                     foreach ($oEtapaCursada->areasConhecimento as $codigo => $areaConhecimento) {
                         $areaConhecimento->disciplinas = [];
                         foreach ($areaConhecimento->disciplinasArea as $oDisciplina) {
-
                             $etapaPorBase = $aGrade[$keyTipoEnsino]
                                 ->tiposBases[$disciplinaEtapa->lTipoBase][$chave_etapa];
                             if ($oEtapaCursada->iAno . "_" . $etapaPorBase->iEtapa == $chave_etapa) {
@@ -506,8 +537,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                         }
                     }
                 }
-                if (
-                    !isset($codigo)
+                if (!isset($codigo)
                     || !property_exists($etapaPorBase, 'areasConhecimento')
                     || !array_key_exists($codigo, $etapaPorBase->areasConhecimento)
                     || !property_exists($etapaPorBase->areasConhecimento[$codigo], 'disciplinas')
@@ -538,37 +568,17 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                     }
                 }
             }
-
-            foreach ($this->aEtapasPosterior as $chaveEtp => $oEtapaPosterior) {
-                foreach ($aGrade as $tipoEnsino) {
-                    foreach ($tipoEnsino->tiposBases as $key => $etapaPorBase) {
-                        $existeEtapaAdicionada = $this->verificarExisteEquivalenteAdicionada(
-                            $oEtapaPosterior,
-                            $tipoEnsino->tiposBases[$key]
-                        );
-                        if ($existeEtapaAdicionada) {
-                            continue;
-                        }
-                        if (
-                            end($tipoEnsino->tiposBases[$key])->ensino->getTipoEnsino()->value()
-                            == $oEtapaPosterior->ensino->getTipoEnsino()->value()
-                        ) {
-                            $tipoEnsino->tiposBases[$key][$oEtapaPosterior->iEtapa] = $oEtapaPosterior;
-                        }
-                    }
-                }
-            }
+            $ensinos = [];
             if (!empty($this->aEtapasAnterior)) {
                 foreach ($this->aEtapasAnterior as $oEtapaAnterior) {
                     foreach ($aGrade as $tipoEnsino) {
                         foreach ($tipoEnsino->tiposBases as $iTipoBase => $etapaPorBase) {
-                            if (
-                                end($tipoEnsino->tiposBases[$iTipoBase])->ensino->getTipoEnsino()->value()
+                            if (end($tipoEnsino->tiposBases[$iTipoBase])->ensino->getTipoEnsino()->value()
                                 == $oEtapaAnterior->ensino->getTipoEnsino()->value()
                             ) {
                                 $existeEtapaAdicionada = $this->verificarExisteEquivalenteAdicionada(
                                     $oEtapaAnterior,
-                                    $tipoEnsino->tiposBases[$iTipoBase]
+                                    $etapaPorBase
                                 );
                                 if (!$existeEtapaAdicionada) {
                                     $tipoEnsino->tiposBases[$iTipoBase][$oEtapaAnterior->iEtapa] = $oEtapaAnterior;
@@ -577,6 +587,46 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                         }
                     }
                 }
+            }
+
+            foreach ($this->aEtapasPosterior as $chaveEtp => $oEtapaPosterior) {
+                foreach ($aGrade as $tipoEnsino) {
+                    foreach ($tipoEnsino->tiposBases as $key => $etapaPorBase) {
+                        foreach ($etapaPorBase as $etapa) {
+                            $ensinos[$etapa->ensino->getCodigo()] = $etapa->ensino;
+                        }
+                        $existeEtapaAdicionada = $this->verificarExisteEquivalenteAdicionada(
+                            $oEtapaPosterior,
+                            $tipoEnsino->tiposBases[$key]
+                        );
+                        if ($existeEtapaAdicionada) {
+                            continue;
+                        }
+                        if (end($tipoEnsino->tiposBases[$key])->ensino->getTipoEnsino()->value()
+                            == $oEtapaPosterior->ensino->getTipoEnsino()->value()
+                        ) {
+                            $tipoEnsino->tiposBases[$key][$oEtapaPosterior->iEtapa] = $oEtapaPosterior;
+                        }
+                    }
+                }
+            }
+
+            $this->setEstadoOriginalEtapas($this->buscaEtapasPorEnsino($ensinos));
+
+            foreach ($aGrade as $tipoBaseKey => $tipoBase) {
+                foreach ($tipoBase->tiposBases as $etapaKey => $etapas) {
+                $todasEtapasPorEnsino = $this->estadoOriginalTodasEtapas;
+                    foreach ($etapas as $etapa) {
+                        if (isset($todasEtapasPorEnsino[$tipoBaseKey][$etapa->iEtapa])) {
+                            unset($todasEtapasPorEnsino[$tipoBaseKey][$etapa->iEtapa]);
+                        }
+                    }
+                    $tipoBase->tiposBases[$etapaKey] = array_merge(
+                        $todasEtapasPorEnsino[$tipoBaseKey],
+                        $etapas
+                    );
+                }
+                $aGrade[$tipoBaseKey]->tiposBases = $tipoBase->tiposBases;
             }
         }
         // corrige areas de conhecimento
@@ -594,33 +644,26 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             }
         }
 
-        // Ordenar etapas
-        foreach ($aGrade as $tipoEnsino) {
-            foreach ($tipoEnsino->tiposBases as $iTipoBase => $etapas) {
-                $etapasOrdenadas = $etapas;
-                usort($etapasOrdenadas, function ($a, $b) {
-                    $anoA = property_exists($a, 'aDisciplinas') && array_key_exists(0, array_keys($a->aDisciplinas)) ? 
-                            $a->aDisciplinas[array_keys($a->aDisciplinas)[0]]->iAno : "";
-                    $anoB = property_exists($b, 'aDisciplinas') && array_key_exists(0, array_keys($b->aDisciplinas)) ? 
-                            $b->aDisciplinas[array_keys($b->aDisciplinas)[0]]->iAno : "";
-                    $ordemA = $a->ordem;
-                    $ordemB = $b->ordem;
-                    $ordemEnsinoA = $a->ensino->getOrdem();
-                    $ordemEnsinoB = $b->ensino->getOrdem();
-                    return $this->sortArrayEtapasHelper($anoA, $anoB, $ordemA, $ordemB, $ordemEnsinoA, $ordemEnsinoB);
-                });
-                $tipoEnsino->tiposBases[$iTipoBase] = $etapasOrdenadas;
+        // Filtrando as etapas conforme o curso selecionado pelo usuário
+        if (!is_null($this->oCurso)) {
+            foreach ($aGrade as $tipoEnsino) {
+                foreach ($tipoEnsino->tiposBases as $iTipoBase => &$etapas) {
+                    $etapas = array_filter($etapas, function ($item) {
+                        return $item->ensino ===  $this->oCurso->getEnsino();
+                    });
+                }
             }
         }
-        $aGrade_Reordenada = [];
-        foreach ($aGrade as $key => $value) {
-            $aGrade_Reordenada[] = $value;
-        }
+
+        $aGrade = $this->sortArrayEtapasPorOrdem($aGrade);
+
         if ($this->lExibirTodasEtapasCurso) {
-            $aGrade_Reordenada = $this->reorganizaEJA($aGrade_Reordenada);
+            $aGrade = $this->organizaEJA($aGrade);
         }
 
-        return $aGrade_Reordenada;
+        $this->verificaBaseVazia($aGrade);
+
+        return $aGrade;
     }
 
     /**
@@ -641,6 +684,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
          * Reorganizamos as etapas em um array controlado por página
          */
         $aGrade = $this->reorganizaEstrutura();
+
 
         $iFonteGrade = $this->oParametros->fonte_grade_nota;
         $iAlturaLinha = RelatorioHistoricoEscolarRetrato::ALTURA_LINHA;
@@ -685,15 +729,37 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                 $disciplinasImpressas = [];
                 $areasConhecimentoImpressas = [];
                 $temAreaDeConhecimento = false;
+                $discByArea = [];
+                foreach ($aEtapa as $key => $etapa) {
+                    if (property_exists($etapa, 'areasConhecimento')) {
+                        if (!empty($etapa->areasConhecimento)) {
+                            foreach ($etapa->areasConhecimento as $key => $area) {
+                                $discByArea[$area->codigo] = $area->disciplinasArea;
+                            }
+                        }
+                    }
+                }
+
+                foreach ($aEtapa as $key => $etapa) {
+                    if (property_exists($etapa, 'areasConhecimento')) {
+                        if (!empty($etapa->areasConhecimento)) {
+                            foreach ($etapa->areasConhecimento as $key => $area) {
+                                if (array_key_exists($area->codigo, $discByArea)) {
+                                    $area->disciplinasArea = $discByArea[$area->codigo];
+                                    $area->disciplinas = $discByArea[$area->codigo];
+                                }
+                            }
+                        }
+                    }
+                }
                 foreach ($aEtapa as $etapa) {
                     if (property_exists($etapa, 'areasConhecimento')) {
                         foreach ($etapa->areasConhecimento as $areaConhecimento) {
-
                             $temAreaDeConhecimento = true;
                             if (array_key_exists($areaConhecimento->codigo, $areasConhecimentoImpressas)) {
                                 continue;
                             }
-                            $areasConhecimentoImpressas[$areaConhecimento->codigo] = $areaConhecimento->codigo;
+
                             $this->imprimeAreaEtapas(
                                 $areaConhecimento,
                                 $aEtapa,
@@ -702,16 +768,17 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                                 $iFonteGrade,
                                 $iNumeroEtapasPagina
                             );
-
+                            $areasConhecimentoImpressas[$areaConhecimento->codigo] = $areaConhecimento->codigo;
                             foreach ($areaConhecimento->disciplinas as $disciplina) {
-
                                 $disciplina->iDisciplina = $disciplina->iCadDisciplina;
                                 $ix = "{$disciplina->iCadDisciplina}#{$areaConhecimento->codigo}";
 
                                 if (array_key_exists($ix, $disciplinasImpressas)) {
                                     continue;
                                 }
+
                                 $disciplinasImpressas[$ix] = $ix;
+
                                 $this->imprimeDisciplinaEtapas(
                                     $disciplina,
                                     $aEtapa,
@@ -725,7 +792,6 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                         }
                     }
                 }
-
                 if ($temAreaDeConhecimento && count($aDisciplinasCursadas) > 0) {
                     $this->oPdf->SetFont("arial", "B", $iFonteGrade);
                     $this->oPdf->setFillColor(200);
@@ -759,7 +825,8 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     }
 
     /**
-     * Cria a tabela de ComponentesCurriculares
+     * Cria a tabela de ResumoEtapas
+     * @throws Exception
      */
     public function criarTabelaResumoEtapas()
     {
@@ -767,10 +834,16 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $aDadosRelatorio = $this->montarEstruturaDeDados();
         $iFonteGrade = $this->oParametros->fonte_grade_etapa;
 
+        /*
+         Retornamos o tamanho padrão das colunas pois estava sempre incrementando em novas paginas quando
+         exibirperiodo = true ou exibe_percentual_frequencia = true
+        */
+        RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['escola'] = 58;
+        RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['cidade'] = 36;
+
         if ($this->oParametros->exibirperiodo) {
             RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['escola'] = 50;
         }
-        RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['cidade'] = 36;
 
         if (!$this->oParametros->exibe_turma) {
             RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['escola'] += RelatorioHistoricoEscolarRetrato::$aLarguraColunaEtapa['turma'];
@@ -828,11 +901,27 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             }
         }
 
+        if (!is_null($this->oCurso)) {
+            $aDadosRelatorio = array_filter($aDadosRelatorio, function ($item) {
+                return $item->ensino === $this->oCurso->getEnsino();
+            });
+
+            $this->aEtapasAnterior = array_filter($this->aEtapasAnterior, function ($item) {
+                return $item->ensino === $this->oCurso->getEnsino();
+            });
+
+            $this->aEtapasPosterior = array_filter($this->aEtapasPosterior, function ($item) {
+                return $item->ensino === $this->oCurso->getEnsino();
+            });
+        }
+
         $etapasResumo = $this->reorganizarResumoEtapas(
             $aDadosRelatorio,
             $this->aEtapasAnterior,
             $this->aEtapasPosterior
         );
+
+        $this->ordenaEtapasPorEquivalenciaEOrdem($etapasResumo);
 
         foreach ($etapasResumo as $etapa) {
             $this->escreverResumoEtapas($etapa);
@@ -850,7 +939,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $aDisciplinas = array();
 
         foreach ($this->aDadosOrganizados as $oEtapaCursada) {
-            foreach ($oEtapaCursada->aDisicplinasEtapa as $oDisciplinaCursada) {
+            foreach ($oEtapaCursada->aDisciplinas as $oDisciplinaCursada) {
                 if (array_key_exists($oDisciplinaCursada->sDisciplina, $aDisciplinas)) {
                     continue;
                 }
@@ -932,7 +1021,9 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             $sObservacao[] = $sObsTrocaSerie;
         }
 
-        foreach ($this->getObservacaoHistoricoEtapa() as $observacaoEtapa) {
+        $aObservacaoHistoricoEtapa = $this->getObservacaoHistoricoEtapa();
+        sort($aObservacaoHistoricoEtapa);
+        foreach ($aObservacaoHistoricoEtapa as $observacaoEtapa) {
             $linhas = $this->oPdf->quebrarTextoEmLinhas(
                 $qtd_chr_por_linha,
                 $observacaoEtapa
@@ -1104,8 +1195,8 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $this->oPdf->setfont('arial', '', 6);
         $this->escreverDataPorExtenso();
         $this->oPdf->Ln(6);
-
-
+        $sSecretario = DBString::utf8_decode_all($sSecretario);
+        $sDiretor = DBString::utf8_decode_all($sDiretor);
         $this->escreverAssinatura($sSecretario, $this->oPdf->getLeftMargin(), 'SECRETÁRIO DE ESCOLA');
         $this->escreverAssinatura($sDiretor, 110, 'DIRETOR');
     }
@@ -1137,7 +1228,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             $this->oPdf->Cell($aLargura['periodo'], $iAlturaLinha, trim($oDadosEtapa->periodo), 0, 0, 'C');
         }
         $this->oPdf->Line($this->oPdf->GetX(), $iYInicial, $this->oPdf->GetX(), $iYInicial + $iAlturaLinha);
-        $this->oPdf->Cell($aLargura['dias'], $iAlturaLinha, trim($oDadosEtapa->iDiasLetivos), 0, 0, 'C');
+        $this->oPdf->Cell($aLargura['dias'], $iAlturaLinha, $this->trataValorParaNaoExibirZero($oDadosEtapa->iDiasLetivos), 0, 0, 'C');
         $this->oPdf->Line($this->oPdf->GetX(), $iYInicial, $this->oPdf->GetX(), $iYInicial + $iAlturaLinha);
 
         if ($this->oParametros->exibe_turma) {
@@ -1149,7 +1240,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             $this->oPdf->Line($this->oPdf->GetX(), $iYInicial, $this->oPdf->GetX(), $iYInicial + $iAlturaLinha);
         }
 
-        $this->oPdf->Cell($aLargura['carga_horaria'], $iAlturaLinha, trim($oDadosEtapa->iCargaHoraria), 0, 0, 'C');
+        $this->oPdf->Cell($aLargura['carga_horaria'], $iAlturaLinha, $this->trataValorParaNaoExibirZero($oDadosEtapa->iCargaHoraria), 0, 0, 'C');
         $this->oPdf->Line($this->oPdf->GetX(), $iYInicial, $this->oPdf->GetX(), $iYInicial + $iAlturaLinha);
 
         if ($this->oParametros->exibe_percentual_frequencia) {
@@ -1237,6 +1328,8 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
 
     private function imprimeDisciplinaEtapas(stdClass $oDisciplina, $aEtapa, $iLarguraDisciplina, $iAlturaLinha, $iFonteGrade, $iNumeroEtapasPagina, $porArea = false)
     {
+
+
         /**
          * Antes da impressao da Disciplina, validamos se o aluno tem avaliacoes em todas as etapas.
          * caso nao tenha nota em nenhuma etapa, a disciplina nao deverá ser impressa
@@ -1245,8 +1338,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $lPossuiAvaliacaoNaDisciplina = $porArea;
         foreach ($aEtapa as $oEtapa) {
             if (isset($oEtapa->aDisciplinas[$oDisciplina->iDisciplina])) {
-                if (
-                    $oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao != ""
+                if ($oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao != ""
                     || ($oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao == ""
                         && $oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->sSituacao == 'AMPARADO')
                 ) {
@@ -1268,21 +1360,15 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $iYInicio = $this->oPdf->GetY();
         $content = "{$oDisciplina->sDisciplina}   ";
         $tamanhoString = $this->oPdf->GetStringWidth($content);
-        if ($tamanhoString > $iLarguraDisciplina) {
-            $tamanhoFonte = $iFonteGrade * $iLarguraDisciplina / $tamanhoString;
-            $this->oPdf->SetFontSize($tamanhoFonte);
-        }
 
-        $this->oPdf->Cell($iLarguraDisciplina, $iAlturaLinha, $oDisciplina->sDisciplina, 1, 0, "L");
+        $this->oPdf->CellAdapt($iFonteGrade, $iLarguraDisciplina, $iAlturaAproveitamento, $oDisciplina->sDisciplina, 1, 0, "L");
         $this->oPdf->SetXY($this->oPdf->GetLeftMargin() + $iLarguraDisciplina, $iYInicio);
-
         $this->oPdf->SetFont("arial", "", $iFonteGrade);
 
         foreach ($aEtapa as $oEtapa) {
             $sAproveitamento = ' - ';
             if (isset($oEtapa->aDisciplinas[$oDisciplina->iDisciplina])) {
-                if (
-                    trim($oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao) != ''
+                if (trim($oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao) != ''
                     || (trim($oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->mAvaliacao) == ''
                         && $oEtapa->aDisciplinas[$oDisciplina->iDisciplina]->sSituacao == 'AMPARADO')
                 ) {
@@ -1339,7 +1425,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     {
         $disciplinasAbreviadas = [];
         foreach ($this->aDadosOrganizados as $etapa) {
-            foreach ($etapa->aDisicplinasEtapa as $disciplina) {
+            foreach ($etapa->aDisciplinas as $disciplina) {
                 if (strlen($disciplina->sNomeCompleto) >= 65) {
                     $disciplinasAbreviadas[$disciplina->iCadDisciplina] = sprintf(
                         '*%s: %s',
@@ -1387,126 +1473,296 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                     $etapas[$oEtapaPosterior->iEtapa] = $oEtapaPosterior;
                 }
             }
-        }
-        usort($etapas, function ($a, $b) {
-            $anoA = $a->iAno;
-            $anoB = $b->iAno;
-            $ordemA = $a->ordem;
-            $ordemB = $b->ordem;
-            $ordemEnsinoA = $a->ensino->getOrdem();
-            $ordemEnsinoB = $b->ensino->getOrdem();
-            $verificaEquivalencia = $this->verificarEquivalenciaEnsino($a, $b);
-            return $this->sortArrayEtapasHelper($anoA, $anoB, $ordemA, $ordemB, $ordemEnsinoA, $ordemEnsinoB, $verificaEquivalencia);
-        });
-        return $etapas;
-    }
 
-    private function reorganizaEJA($grade)
-    {
-        // A quem possa interessar: essa reorganização tenta mitigar um bug na base diversificada quando 
-        // a opção de Exibir todas as etapas do curso estiver marcada, o aluno tiver trocado para EJA ao longo da vida
-        // e tiver base diversificada em algum dos anos. Não é um código razoável nem competente, provavelmente vai 
-        // quebrar alguma coisa.
-        foreach ($grade as $ensinoChave => $ensino) {
-            if ($ensino->tipoEnsino == "Ensino Fundamental") {
-                foreach ($ensino->tiposBases as $tipoBase => $etapas) {
-                    for ($ix = 0; $ix <= key(array_slice($etapas, -1, 1, true)); $ix++) {
-                        if (!array_key_exists($ix, $etapas) || !property_exists($etapas[$ix], 'aDisciplinas') || count($etapas[$ix]->aDisciplinas) <= 0) {
-                            unset($etapas[$ix]);
-                        }
-                    }
-                    $primeira = array_slice($etapas, 0, 1, true)[key(array_slice($etapas, 0, 1, true))];
-                    $this->primeiraEtapa = $primeira;
-                    $ultima = array_slice($etapas, -1, 1, true)[key(array_slice($etapas, -1, 1, true))];
-                    $this->ultimaEtapa = $ultima;
-                    if (count($etapas) > 0) {
-                        $etapa_invalida = false;
-                        for ($ix = 0; $ix <= key(array_slice($etapas, -1, 1, true)); $ix++) {
-                            if (property_exists($etapas[$ix], 'sTurma') && $etapas[$ix]->sTurma === "-") {
-                                $etapa_invalida = $ix;
-                            }
-                            if ($etapa_invalida) {
-                                unset($etapas[$etapa_invalida]);
-                            }
-                        }
-                    }
+            $ensinos = [];
+            foreach ($etapas as $key => $etapa) {
+                $ensinos[$etapa->ensino->getTipoEnsino()->getValue()] = $etapa->ensino;
+            }
+            $todasEtapasPorEnsino = $this->buscaEtapasPorEnsino($ensinos);
 
-                    $etapas_ensino = $primeira->ensino ? EtapaRepository::getEtapasEnsino($primeira->ensino) : [];
-                    $etapas_ensino_fim = $ultima->ensino ? EtapaRepository::getEtapasEnsino($ultima->ensino) : [];
-                    $this->etapasTemp = $etapas;
-
-                    $this->parar = false;
-                    $etapas_faltando = array_filter($etapas_ensino, function ($etapa_ensino) {
-                        $apagar = false;
-                        foreach ($this->etapasTemp as $etapa) {
-                            if ($etapa->ordem === $etapa_ensino->getOrdem()) {
-                                $apagar = true;
-                            }
-                        }
-
-                        if ($etapa_ensino->getOrdem() === $this->ultimaEtapa->ordem) {
-                            $this->parar = true;
-                        }
-
-                        if ($this->parar) {
-                            return false;
-                        }
-
-                        if ($apagar) {
-                            return false;
-                        }
-
-                        return true;
-                    });
-
-                    $this->parar = false;
-                    $etapas_faltando_final = array_filter(array_reverse($etapas_ensino_fim), function ($etapa_ensino) {
-                        $apagar = false;
-                        foreach (array_reverse($this->etapasTemp) as $etapa) {
-                            if ($etapa->ordem === $etapa_ensino->getOrdem()) {
-                                $apagar = true;
-                            }
-                        }
-
-                        if ($etapa_ensino->getOrdem() === $this->ultimaEtapa->ordem) {
-                            $this->parar = true;
-                        }
-
-                        if ($this->parar) {
-                            return false;
-                        }
-                        if ($apagar) {
-                            return false;
-                        }
-
-                        return true;
-                    });
-                    unset($this->parar);
-                    unset($this->etapas_ensino_fim);
-
-                    foreach ($etapas_faltando as $e) {
-                        $etapas[] = $this->criarObjetoEtapa($e);
-                    }
-
-                    foreach ($etapas_faltando_final as $e) {
-                        $etapas[] = $this->criarObjetoEtapa($e);
-                    }
-                    usort($etapas, function ($a, $b) {
-                        $anoA = property_exists($a, 'aDisciplinas') && array_key_exists(0, array_keys($a->aDisciplinas)) ? 
-                                $a->aDisciplinas[array_keys($a->aDisciplinas)[0]]->iAno : "";
-                        $anoB = property_exists($b, 'aDisciplinas') && array_key_exists(0, array_keys($b->aDisciplinas)) ? 
-                                $b->aDisciplinas[array_keys($b->aDisciplinas)[0]]->iAno : "";
-                        $ordemA = $a->ordem;
-                        $ordemB = $b->ordem;
-                        $ordemEnsinoA = $a->ensino->getOrdem();
-                        $ordemEnsinoB = $b->ensino->getOrdem();
-                        return $this->sortArrayEtapasHelper($anoA, $anoB, $ordemA, $ordemB, $ordemEnsinoA, $ordemEnsinoB);
-                    });
-                    $grade[$ensinoChave]->tiposBases[$tipoBase] = $etapas;
+            foreach ($etapas as $key => $etapa) {
+                $ensino = $etapa->ensino->getTipoEnsino()->getValue();
+                if (array_key_exists($etapa->iEtapa, $todasEtapasPorEnsino[$ensino])) {
+                    unset($todasEtapasPorEnsino[$ensino][$etapa->iEtapa]);
                 }
             }
         }
+        return $etapas;
+    }
+
+    /**
+     * @throws DBException
+     */
+    private function organizaEJA($grade)
+    {
+        // Verifica se a grade tem uma ou duas bases
+        $bases = [];
+        foreach ($grade as $tiposBases) {
+            foreach ($tiposBases->tiposBases as $tipoBases) {
+                $bases[] = $tipoBases;
+            }
+        }
+        $numeroBases = count($bases);
+
+        if ($numeroBases == 1) {
+            foreach ($grade as $tiposBases) {
+                foreach ($tiposBases->tiposBases as &$tipoBases) {
+                    $tipoBases = $this->reorganizaEtapas($tipoBases);
+                }
+            }
+        } else if ($numeroBases > 1) {
+            // Primeiro verifico as etapas registradas em cada base
+            // e recupero o código das etapas de cada base
+            $etapasPorBase = [];
+            foreach ($grade as $tiposBases) {
+                foreach ($tiposBases->tiposBases as $keyBase => &$tipoBases) {
+                    $etapasRecuperadas = [];
+                    $this->filtrarEtapasRegistradas($tipoBases);
+                    foreach ($tipoBases as $etapa) {
+                        if (property_exists($etapa, 'iEtapa')) {
+                            $etapasRecuperadas[] = $etapa->iEtapa;
+                        }
+                    }
+                    $etapasPorBase[$keyBase] = $etapasRecuperadas;
+                }
+            }
+
+            // Verifica se as etapas entre as bases são as mesmas
+            $isBaseIguais = $this->comparaBases($etapasPorBase);
+
+            // Caso as bases não sejam iguais
+            if (!$isBaseIguais) {
+                foreach ($grade as $tiposBases) {
+                    $this->ajustarBases($tiposBases->tiposBases);
+                }
+            }
+
+            foreach ($grade as $tiposBases) {
+                foreach ($tiposBases->tiposBases as &$etapas) {
+                   $this->ordenaEtapasPorEquivalenciaEOrdem($etapas);
+
+                   $primeiraEtapa = reset($etapas);
+                   $isPrimeiraEtapa = $this->verificaPrimeiraEtapa($primeiraEtapa);
+
+                   if (!$isPrimeiraEtapa) {
+                       $this->preencheEtapasAnteriores($primeiraEtapa, $etapas);
+                   }
+
+                   /* Verifica se precisa preencher com etapas posteriores a última registrada */
+                    $ultimaEtapa = end($etapas);
+                    $isUltimaEtapa = $this->verificaUltimaEtapa($ultimaEtapa);
+
+                    if (!$isUltimaEtapa) {
+                        $this->preencheEtapasPosteriores($ultimaEtapa, $etapas);
+                    }
+
+                    $this->ordenaEtapasPorEquivalenciaEOrdem($etapas);
+                }
+            }
+
+            $this->verificaBaseVazia($grade);
+
+        }
         return $grade;
+    }
+
+    /**
+     * @throws DBException
+     */
+    private function reorganizaEtapas($etapas)
+    {
+        $this->filtrarEtapasRegistradas($etapas);
+
+        if (count($etapas) == 0) {
+            return $etapas;
+        }
+
+        /* Verifica se precisa preencher com etapas anteriores a primeira registrada */
+        $primeiraEtapa = reset($etapas);
+        $isPrimeiraEtapa = $this->verificaPrimeiraEtapa($primeiraEtapa);
+
+        if (!$isPrimeiraEtapa) {
+            $this->preencheEtapasAnteriores($primeiraEtapa, $etapas);
+        }
+
+        /* Verifica se precisa preencher com etapas posteriores a última registrada */
+        $ultimaEtapa = end($etapas);
+        $isUltimaEtapa = $this->verificaUltimaEtapa($ultimaEtapa);
+
+        if (!$isUltimaEtapa) {
+            $this->preencheEtapasPosteriores($ultimaEtapa, $etapas);
+        }
+
+        $this->ordenaEtapasPorEquivalenciaEOrdem($etapas);
+
+        return $etapas;
+    }
+
+    private function verificaPrimeiraEtapa($etapa)
+    {
+        if ($etapa->ordem == '1') {
+            return true;
+        }
+        return false;
+    }
+
+    private function verificaUltimaEtapa($ultimaEtapa)
+    {
+        $ordemUltima = null;
+        foreach ($this->estadoOriginalTodasEtapas as $todasEtapas) {
+            foreach ($todasEtapas as $etapa) {
+                if ($etapa->ordem > $ordemUltima) {
+                    $ordemUltima = $etapa->ordem;
+                }
+            }
+            if ($ultimaEtapa->ordem >= $ordemUltima) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* Função criada para preencher etapas antes da primeira registrada, caso a primeira
+    etapa registrada não tenha a ordem igual a 1.
+    REGRAS:
+    1 - As etapas anteriores devem pertencer ao mesmo ensino da primeira etapa registrada
+
+    Nota: No foreach da função eu faço a verificação se a etapa verificada pertence ao mesmo
+    ensino e possui ordem anterior a primieira etapa registrada. Além disso, faço a verificação
+    se a etapa já está na lista, evitando duplicação de etapas que não tenham registros de disciplinas.
+    */
+    /**
+     * @throws DBException
+     */
+    private function preencheEtapasAnteriores($primeiraEtapa, array &$etapas)
+    {
+        $codEnsinoPrimeiraEtapaReg = $primeiraEtapa->ensino->getCodigo();
+        $ordemPrimeiraEtapaReg = $primeiraEtapa->ordem;
+
+        foreach ($this->estadoOriginalTodasEtapas as $ensinos) {
+            foreach ($ensinos as $etapaOriginal) {
+                $codEnsinoEtapaOriginal = $etapaOriginal->ensino->getCodigo();
+                $ordemEtapaOriginal = $etapaOriginal->ordem;
+                $isMesmoEnsino = $codEnsinoPrimeiraEtapaReg == $codEnsinoEtapaOriginal;
+                $isEtapaAnterior = $ordemEtapaOriginal < $ordemPrimeiraEtapaReg;
+                if ($isMesmoEnsino && $isEtapaAnterior) {
+                    $etapas[] = $etapaOriginal;
+                }
+            }
+        }
+
+        $this->ordenaEtapasPorEquivalenciaEOrdem($etapas);
+    }
+
+    /**
+     * @throws DBException
+     */
+    private function preencheEtapasPosteriores($ultimaEtapa, array &$etapas)
+    {
+        $codEnsinoUltimaEtapaReg = $ultimaEtapa->ensino->getCodigo();
+        $ordemUltimaEtapaReg = $ultimaEtapa->ordem;
+
+        foreach ($this->estadoOriginalTodasEtapas as $todasEtapas) {
+            foreach ($todasEtapas as $etapaOriginal) {
+                $codEnsinoEtapaOriginal = $etapaOriginal->ensino->getCodigo();
+                $ordemEtapaOriginal = $etapaOriginal->ordem;
+                $isMesmoEnsino = $codEnsinoUltimaEtapaReg == $codEnsinoEtapaOriginal;
+                $isEtapaPosterior = $ordemEtapaOriginal > $ordemUltimaEtapaReg;
+                if ($isMesmoEnsino && $isEtapaPosterior) {
+                    $etapas[] = $etapaOriginal;
+                }
+            }
+        }
+
+    }
+
+    private function filtrarEtapasRegistradas(&$etapas)
+    {
+        $etapas = array_filter($etapas, function($etapa) {
+            return property_exists($etapa, 'aDisciplinas');
+        });
+    }
+
+    private function comparaBases(array $etapasPorBase)
+    {
+        $keyBases = array_keys($etapasPorBase);
+        $isBasesIguais = true;
+
+        for ($i = 0; $i < count($keyBases) - 1; $i++) {
+            for ($j = $i + 1; $j < count($keyBases); $j++) {
+                if (!$this->comparaEtapasBases($etapasPorBase[$keyBases[$i]], $etapasPorBase[$keyBases[$j]])) {
+                    $isBasesIguais = false;
+                    break 2; // Quebra os dois níveis do loop
+                }
+            }
+        }
+
+        return $isBasesIguais;
+    }
+
+    private function comparaEtapasBases($baseA, $baseB)
+    {
+        if (count($baseA) != count($baseB)) {
+            return false;
+        }
+        if (!empty(array_diff($baseA, $baseB)) || !empty(array_diff($baseB, $baseA))) {
+            return false;
+        }
+        return true;
+    }
+
+    private function ajustarBases(&$etapasGradePorBase)
+    {
+        $freqEtapasPorBase = [];
+        foreach ($etapasGradePorBase as $key => $baseGrade) {
+            $freqEtapasPorBase[$key] = $this->calcularFrequencia($baseGrade);
+        }
+
+        $frequenciasCombinadas = [];
+        foreach ($freqEtapasPorBase as $frequencias) {
+            foreach ($frequencias as $codigo => $freq) {
+                if (!isset($frequenciasCombinadas[$codigo])) {
+                    $frequenciasCombinadas[$codigo] = 0;
+                }
+                $frequenciasCombinadas[$codigo] = max($frequenciasCombinadas[$codigo], $freq);
+            }
+        }
+
+        // Ajustar as bases com base nas frequências combinadas
+        foreach ($etapasGradePorBase as &$base) {
+            // Calcular a frequência atual da base
+            $frequenciaBaseAtual = $this->calcularFrequencia($base);
+
+            foreach ($frequenciasCombinadas as $codigo => $frequenciaNecessaria) {
+                if (!isset($frequenciaBaseAtual[$codigo])) {
+                    $frequenciaBaseAtual[$codigo] = 0;
+                }
+
+                // Adicionar os códigos que estão faltando
+                while ($frequenciaBaseAtual[$codigo] < $frequenciaNecessaria) {
+                    foreach ($this->estadoOriginalTodasEtapas as $etapas) {
+                        foreach ($etapas as $etapa) {
+                            if ($etapa->iEtapa == $codigo) {
+                                $base[] = $etapa;
+                            }
+                        }
+                    }
+                    $frequenciaBaseAtual[$codigo]++;
+                }
+            }
+        }
+    }
+
+    private function calcularFrequencia($etapasGrade)
+    {
+        $frequencia = [];
+        foreach ($etapasGrade as $etapa) {
+            if (!isset($frequencia[$etapa->iEtapa])) {
+                $frequencia[$etapa->iEtapa] = 0;
+            }
+            $frequencia[$etapa->iEtapa]++;
+        }
+        return $frequencia;
     }
 
     private function verificarEquivalenciaEnsino($ensinoA, $ensinoB)
@@ -1531,6 +1787,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         $etapa = new Etapa($etapaVerificar->iEtapa);
         $etapasEquivalentes = $etapa->buscaEtapaEquivalente();
         $existeEtapaEquivalente = false;
+
         foreach ($etapasEquivalentes as $etapaEquivalente) {
             foreach ($etapas as $etapaAdicionada) {
                 if ($etapaEquivalente->getCodigo() === $etapaAdicionada->iEtapa) {
@@ -1547,6 +1804,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                 $existeEtapaEquivalente = true;
             }
         }
+
         return $existeEtapaEquivalente;
     }
 
@@ -1567,16 +1825,137 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
 
     private function sortArrayEtapasHelper($anoA, $anoB, $ordemA, $ordemB, $ordemEnsinoA, $ordemEnsinoB, $verificaEquivalencia = false)
     {
-        $anosComNumeros = preg_match("/^[0-9]+$/", $anoA) && preg_match("/^[0-9]+$/", $anoB);
-        if ($anosComNumeros || $verificaEquivalencia) {
-            if ($anoA == $anoB) {
-                return $ordemA > $ordemB;
+        if ($ordemEnsinoA == $ordemEnsinoB) {
+            $anosComNumeros = preg_match("/^[0-9]+$/", $anoA) && preg_match("/^[0-9]+$/", $anoB);
+            if ($anosComNumeros || $verificaEquivalencia) {
+                if ($anoA == $anoB) {
+                    return $ordemA > $ordemB;
+                }
+                return $anoA > $anoB;
             }
-            return $anoA > $anoB;
+                return $ordemA > $ordemB;
         }
-        if ($ordemA == $ordemB) {
-            return $ordemEnsinoA > $ordemEnsinoB;
+        return $ordemEnsinoA > $ordemEnsinoB;
+    }
+
+    private function buscaEtapasPorEnsino($ensinos)
+    {
+
+        $etapasPorEnsino = [];
+        foreach ($ensinos as $key => $ensino) {
+            $etapas = EtapaRepository::getEtapasEnsino($ensino);
+            foreach ($etapas as $etapa) {
+                $etapasPorEnsino[$key][$etapa->getCodigo()] = $etapa;
+            }
         }
-        return $ordemA > $ordemB;
+        $etapasPorTipoEnsino = [];
+        foreach ($etapasPorEnsino as $ensino) {
+            foreach ($ensino as $e) {
+                $etapasPorTipoEnsino[$e->getEnsino()->getTipoEnsino()->getValue()][$e->getCodigo()] = $this->criarObjetoEtapa($e);
+            }
+        }
+        return $etapasPorTipoEnsino;
+    }
+
+    /**
+     * @throws DBException
+     */
+    private function sortArrayEtapasPorOrdem($grade)
+    {
+        foreach ($grade as $tipoEnsino) {
+            foreach ($tipoEnsino->tiposBases as $codTipoBase => $etapas) {
+                $listaEtapas = [];
+                foreach ($etapas as $etapa) {
+                    $listaEtapas[] = $etapa;
+                }
+                $this->ordenaEtapasPorEquivalenciaEOrdem($listaEtapas);
+                $tipoEnsino->tiposBases[$codTipoBase] = $listaEtapas;
+            }
+        }
+        return $grade;
+    }
+    
+    // Ordena as etapas pelo atributo ordem e equivalência das etapas
+    /**
+     * @throws DBException
+     */
+    private function ordenaEtapasPorEquivalenciaEOrdem(&$listaEtapas)
+    {
+        // Esse loop serve para verificar as equivalências das etapas e pegar a ordem maior entre as etapas equivalentes
+        foreach ($listaEtapas as $etapa) {
+            $etapaVerificar = new Etapa($etapa->iEtapa);
+            $etapasEquivalentes = $etapaVerificar->buscaEtapaEquivalente();
+
+            if (count($etapasEquivalentes) > 0) {
+                foreach ($etapasEquivalentes as $etapaEquivalente) {
+                        if ($etapaEquivalente->getOrdem() > $etapa->ordem) {
+                            $etapa->ordem = $etapaEquivalente->getOrdem();
+                    }
+                }
+            }
+        }
+
+        usort($listaEtapas, function($a, $b) {
+            $tipoEnsinoA = $a->ensino->getTipoEnsino()->getValue();
+            $tipoEnsinoB = $b->ensino->getTipoEnsino()->getValue();
+
+            if ($tipoEnsinoA < $tipoEnsinoB) {
+                return -1;
+            } else if ($tipoEnsinoA > $tipoEnsinoB) {
+                return 1;
+            } else if ($tipoEnsinoA == $tipoEnsinoB) {
+                if ($a->ordem > $b->ordem) {
+                    return 1;
+                }
+                if ($a->ordem < $b->ordem) {
+                    return -1;
+                }
+                if ($a->ordem == $b->ordem) {
+                    if ((property_exists($a, "aDisciplinas")) && (property_exists($b, "aDisciplinas"))) {
+                        $disciplinaA = reset($a->aDisciplinas);
+                        $disciplinaB = reset($b->aDisciplinas);
+                        if ($disciplinaA->iAno > $disciplinaB->iAno) {
+                            return 1;
+                        } else if ($disciplinaA->iAno < $disciplinaB->iAno) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                    return 0;
+                }
+            }
+            return 0;
+        });
+    }
+
+    private function trataValorParaNaoExibirZero($valor)
+    {
+        $valorTemp = trim($valor);
+        if ($valorTemp <= 0) {return "";}
+        return $valorTemp;
+    }
+
+    private function verificaBaseVazia(&$grade)
+    {
+        foreach ($grade as &$tipoEnsino) {
+            $chavesParaRemover = [];
+
+            foreach ($tipoEnsino->tiposBases as $key => &$etapas) {
+                $isBaseVazia = true;
+                foreach ($etapas as $etapa) {
+                    if (property_exists($etapa, 'aDisciplinas')) {
+                        $isBaseVazia = false;
+                        break;
+                    }
+                }
+
+                if ($isBaseVazia) {
+                    $chavesParaRemover[] = $key;
+                }
+            }
+            foreach ($chavesParaRemover as $chave) {
+                unset($tipoEnsino->tiposBases[$chave]);
+            }
+        }
     }
 }

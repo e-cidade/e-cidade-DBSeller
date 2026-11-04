@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -58,7 +58,7 @@ if(isset($db_opcaoal)){
        <?=@$Ltr10_id?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr10_id',5,$Itr10_id,true,'text',3,"")
 ?>
     </td>
@@ -70,7 +70,7 @@ db_input('tr10_id',5,$Itr10_id,true,'text',3,"")
        <?=@$Ltr10_idacidente?>
     </td>
     <td>
-<?
+<?php
 db_input('tr10_idacidente',5,$Itr10_idacidente,true,'text',3,"")
 ?>
     </td>
@@ -79,15 +79,15 @@ db_input('tr10_idacidente',5,$Itr10_idacidente,true,'text',3,"")
   
    <tr>
     <td nowrap title="<?=@$Ttr10_idvitima?>">
-       <?
+       <?php
        db_ancora(@$Ltr10_idvitima,"js_pesquisatr10_idvitima(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr10_idvitima',5,$Itr10_idvitima,true,'text',$db_opcao," onchange='js_pesquisatr10_idvitima(false);'")
 ?>
-       <?
+       <?php
 db_input('tr06_descr',35,$Itr06_descr,true,'text',3,'')
        ?>
     </td>
@@ -97,7 +97,7 @@ db_input('tr06_descr',35,$Itr06_descr,true,'text',3,'')
        <?=@$Ltr10_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr10_nome',30,$Itr10_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('tr10_nome',30,$Itr10_nome,true,'text',$db_opcao,"")
        <?=@$Ltr10_sexo?>
     </td>
     <td> 
-<?
+<?php
 $x = array('1'=>'Feminino','2'=>'Masculino','NI'=>'NI');
 db_select('tr10_sexo',$x,true,$db_opcao,"");
 ?>
@@ -118,7 +118,7 @@ db_select('tr10_sexo',$x,true,$db_opcao,"");
        <?=@$Ltr10_idade?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr10_idade',5,$Itr10_idade,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_input('tr10_idade',5,$Itr10_idade,true,'text',$db_opcao,"")
        <?=@$Ltr10_situacao?>
     </td>
     <td> 
-<?
+<?php
 db_input('tr10_situacao',1,$Itr10_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -143,7 +143,7 @@ db_input('tr10_situacao',1,$Itr10_situacao,true,'text',$db_opcao,"")
   <table>
   <tr>
     <td valign="top"  align="center">
-       <? 
+       <?php 
          $sCampos = "tr06_descr,
                      tr10_id,
                      tr10_situacao,
@@ -219,7 +219,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_vitimas_acid.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprocjurjudicial->rotulo->label("v63_processoforo");
               <?=$Lv63_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v63_sequencial",10,$Iv63_sequencial,true,"text",4,"","chave_v63_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clprocjurjudicial->rotulo->label("v63_processoforo");
               <?=$Lv63_processoforo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("v63_processoforo",20,$Iv63_processoforo,true,"text",4,"","chave_v63_processoforo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clprocjurjudicial->rotulo->label("v63_processoforo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procjurjudicial.php")==true){
@@ -122,12 +122,12 @@ $clprocjurjudicial->rotulo->label("v63_processoforo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

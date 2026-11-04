@@ -46,7 +46,8 @@ final class CCE implements DeparaInterface
     public function __construct()
     {
         $this->aFundamentacoes = array(
-            'A28IINLL'
+            'A28IINLL',
+            '13303A63III'
         );
     }
 

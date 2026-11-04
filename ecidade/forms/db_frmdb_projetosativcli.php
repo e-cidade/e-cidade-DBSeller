@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -63,37 +63,37 @@ if(isset($db_opcaoal)){
        <?=@$Lat64_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at64_sequencial',10,$Iat64_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat64_codproj?>">
-       <?
+       <?php
        db_ancora(@$Lat64_codproj,"js_pesquisaat64_codproj(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at64_codproj',10,$Iat64_codproj,true,'text',3," onchange='js_pesquisaat64_codproj(false);'")
 ?>
-       <?
+       <?php
 db_input('at60_codcli',5,$Iat60_codcli,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat64_codativ?>">
-       <?
+       <?php
        db_ancora(@$Lat64_codativ,"js_pesquisaat64_codativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at64_codativ',4,$Iat64_codativ,true,'text',$db_opcao," onchange='js_pesquisaat64_codativ(false);'")
 ?>
-       <?
+       <?php
 db_input('at62_descr',40,$Iat62_descr,true,'text',3,'')
        ?>
     </td>
@@ -103,7 +103,7 @@ db_input('at62_descr',40,$Iat62_descr,true,'text',3,'')
        <?=@$Lat64_dtini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at64_dtini',@$at64_dtini_dia,@$at64_dtini_mes,@$at64_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -113,22 +113,22 @@ db_inputdata('at64_dtini',@$at64_dtini_dia,@$at64_dtini_mes,@$at64_dtini_ano,tru
        <?=@$Lat64_dtfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('at64_dtfim',@$at64_dtfim_dia,@$at64_dtfim_mes,@$at64_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat64_situacao?>">
-       <?
+       <?php
        db_ancora(@$Lat64_situacao,"js_pesquisaat64_situacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at64_situacao',10,$Iat64_situacao,true,'text',$db_opcao," onchange='js_pesquisaat64_situacao(false);'")
 ?>
-       <?
+       <?php
 db_input('at61_descr',40,$Iat61_descr,true,'text',3,'')
        ?>
     </td>
@@ -140,7 +140,7 @@ db_input('at61_descr',40,$Iat61_descr,true,'text',3,'')
        <?=@$Lat64_descricao?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('at64_descricao',5,60,$Iat64_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ db_textarea('at64_descricao',5,60,$Iat64_descricao,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("at64_sequencial"=>@$at64_sequencial,"at64_codproj"=>@$at64_codproj);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosativcli->sql_query_file(null,"*",null," at64_codproj = $at64_codproj");

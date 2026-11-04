@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -41,7 +41,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, estilos.css, prototype.js, arrays.js");
 ?>
 <script>
@@ -131,7 +131,7 @@ function js_emite(){
               <strong>Tipo Agrupa :&nbsp;&nbsp;</strong>
               </td>
               <td>
-      	  <?
+      	  <?php
       	  $tipo_ordem = array ("0" => "Classificação",
       	                       "1" => "Plano de Contas",
       	                       "2" => "Plano de Contas/Classificação",
@@ -150,7 +150,7 @@ function js_emite(){
                 <strong>Tipo de Bens</strong>
               </td>
               <td>
-                <?
+                <?php
                   $aBemTipo = array(''=>'TODOS', '1'=>'M&Oacute;VEIS', '2'=>'IM&Oacute;VEIS', '3'=>'SEMOVENTES');
                   db_select('tipo_bens', $aBemTipo, true, 1);
                 ?>
@@ -192,7 +192,7 @@ function js_emite(){
             <tr>
               <td><strong>Per&iacute;odo da Baixa</strong></td>
               <td>
-              <?
+              <?php
                 db_inputdata('t52_baixainicio',null, null, null, true,'text',1);
                 echo "&nbsp;<b>A&nbsp;</b>";
                 db_inputdata('t52_baixafim',null, null, null, true,'text',1);
@@ -202,7 +202,7 @@ function js_emite(){
             <tr>
                <td nowrap align="left" title="Bens a serem listados"><b>Listar:</b></td>
                <td nowrap title="">
-               <?
+               <?php
                  $matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados");
                  db_select("opcao_baixados",$matriz_baix,true,1);
                ?>
@@ -213,7 +213,7 @@ function js_emite(){
               <strong>Convênios :&nbsp;&nbsp;</strong>
               </td>
               <td>
-              <?
+              <?php
               $aConvenios = array (1 => "Ambos",
                                    2 => "Apenas vinculado a convênios",
                                    3 => "Apenas não vinculado a convênios"
@@ -225,7 +225,7 @@ function js_emite(){
             <tr id='listacedentes' style="display: none">
               <td  colspan='5' style='text-align: center'>
               <table >
-               <?
+               <?php
                  $oListaCedente = new cl_arquivo_auxiliar;
                  $oListaCedente->cabecalho = "<strong>Convênios</strong>";
                  $oListaCedente->codigo = "t04_sequencial"; //chave de retorno da func

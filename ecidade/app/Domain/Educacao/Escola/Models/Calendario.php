@@ -152,4 +152,27 @@ class Calendario extends Model
     {
         return $query->where('ed52_c_passivo', 'N');
     }
+
+    public function calendarioEscola()
+    {
+        return $this->belongsTo(CalendarioEscola::class, 'ed52_i_codigo', 'ed38_i_calendario');
+    }
+
+    public function turmas()
+    {
+        return $this
+            ->hasMany(Turma::class, 'ed57_i_calendario', 'ed52_i_codigo')
+            ->orderBy('ed57_c_descr');
+    }
+
+    public function periodosCalendario()
+    {
+        return $this->hasMany(PeriodoCalendario::class, 'ed53_i_calendario', 'ed52_i_codigo');
+    }
+
+    public function periodos()
+    {
+        return $this->hasMany(PeriodoCalendario::class, 'ed53_i_calendario', 'ed52_i_codigo')
+            ->with('periodoAvaliacao');
+    }
 }

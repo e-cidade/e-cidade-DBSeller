@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,7 +154,7 @@ function js_voltar(){
       <?=$Ld02_contri?>
       </td>
       <td> 
-  <?
+  <?php
   db_input('d02_contri',7,$Id02_contri,true,'text',3);
   db_input('j14_nome',50,$Ij14_nome,true,'text',3);
   ?>
@@ -165,7 +165,7 @@ function js_voltar(){
 <?=$Lj01_matric?>
           </td>
 	  <td>
-<?
+<?php
   db_input('j01_matric',7,0,true,'text',3);
   db_input('z01_nome',50,0,true,'text',3,"","z01_nome_matric");
 ?>
@@ -176,7 +176,7 @@ function js_voltar(){
       <b>Parcelas</b>
       </td>
       <td> 
-<?
+<?php
   if(isset($d02_contri) && !isset($confirmar)){
     $result01=$cleditalrua->sql_record($cleditalrua->sql_query_file($d02_contri,"d02_codedi","d02_contri limit 1"));
     db_fieldsmemory($result01,0);
@@ -194,7 +194,7 @@ function js_voltar(){
        <b>1° Vencimento</b>
       </td>  
       <td nowrap title="Data do primeiro vencimento">
-    <?
+    <?php
      db_inputdata('privenc',@$privenc_dia,@$privenc_mes,@$privenc_ano,true,'text',$db_opcao,"");
    ?>  
       </td>
@@ -204,7 +204,7 @@ function js_voltar(){
         <b>Dia vencimento</b>
       </td>  
       <td nowrap title="Dia dos próximos vencimentos">
-    <?
+    <?php
      db_input('provenc',4,0,'true','text',$db_opcao,"")
    ?>  
       </td>
@@ -220,7 +220,7 @@ function js_voltar(){
       <br>
       <b>Contribuições da rua <?=@$j14_nome?></b>
       <select name="contribs" size="" onchange="js_trocacontri(this)">
-       <?
+       <?php
          for($i=0; $i<$numrows; $i++){
 	   db_fieldsmemory($result,$i);
            echo "<option ".($contribs==$d07_contri?"selected":"")." value='$d07_contri'>$d07_contri</option>";
@@ -233,7 +233,7 @@ function js_voltar(){
       </select>
       <br>
 	<select name="matriculas" size="10"  onClick="js_troca(this)">
-       <?
+       <?php
          $resulta=$clcontrib->sql_record($clcontrib->sql_query("","","d07_matric,z01_nome","","d07_contri=$contribs"));
 	 $num=$clcontrib->numrows;
          for($x=0; $x<$num; $x++){
@@ -264,12 +264,12 @@ function js_voltar(){
  </tr>
 </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if(isset($confirmar)){
     db_msgbox($erro);
 }

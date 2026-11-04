@@ -1395,7 +1395,19 @@ class RelatoriosLegaisBase
         $aRecursosNaoConfiguradosRetorno = array();
         $iAnoAnterior = ($oRelatorio->getDataInicial()->getAno() - 1);
         $oDataInicialAnterior = new DBDate("01/01/{$iAnoAnterior}");
-        $oDataFinalAnterior = new DBDate("{$oRelatorio->getDataFinal()->getDia()}/{$oRelatorio->getDataFinal()->getMes()}/{$iAnoAnterior}");
+        
+        /**
+         * tratamento da data final para exercicio anterior
+         * ano atual é bissexto , o ultimo dia de fevereiro do ano anterior (que nao é bissexto) é 28
+         */
+        $diaDataFinal = $oRelatorio->getDataFinal()->getDia();
+        if ( !date('L', mktime(0, 0, 0, 1, 1, $iAnoAnterior)) ) {
+        
+            if ($oRelatorio->getDataFinal()->getMes() == 02 && $diaDataFinal == 29) {
+              $diaDataFinal = 28;
+            }
+        }
+        $oDataFinalAnterior = new DBDate("{$diaDataFinal}/{$oRelatorio->getDataFinal()->getMes()}/{$iAnoAnterior}");
 
         $sWhereReceita = "o70_instit in ({$oRelatorio->getInstituicoes()})";
         $rsBalanceteReceita = db_receitasaldo(
@@ -1508,7 +1520,7 @@ class RelatoriosLegaisBase
                 null,
                 "o15_codigo",
                 null,
-                "o15_codigo not in (" . implode(', ', $aRecursosConfiguradosNotIn) . ") and o15_tipo = 2"
+                "o15_codigo > 0 and o15_codigo not in (" . implode(', ', $aRecursosConfiguradosNotIn) . ") and o15_tipo = 2"
             );
             $rsTiporec = $oDaoTipoRec->sql_record($sSqlTiporec);
 
@@ -1520,27 +1532,15 @@ class RelatoriosLegaisBase
         }
 
         $aRecursosNaoConfigurados = array_diff($aRecursos, array_unique($aRecursosConfiguradosIn));
-        if (!empty($aRecursosNaoConfigurados)) {
-            $sSqlTiporec = $oDaoTipoRec->sql_query_file(
-                null,
-                "o15_codigo",
-                null,
-                "o15_codigo in (" . implode(', ', $aRecursosNaoConfigurados) . ") and o15_tipo = 2"
-            );
-            $rsTiporec = $oDaoTipoRec->sql_record($sSqlTiporec);
 
-            if ($rsTiporec && pg_num_rows($rsTiporec) > 0) {
-                for ($iRowTiporec = 0; $iRowTiporec < pg_num_rows($rsTiporec); $iRowTiporec++) {
-                    $oDadosTiporec = db_utils::fieldsMemory($rsTiporec, $iRowTiporec);
-
-                    $aRecursosNaoConfiguradosRetorno[] = new Recurso($oDadosTiporec->o15_codigo);
-                }
-            }
-        }
+        $recursosNaoConfigurados = \App\Domain\Financeiro\Orcamento\Models\FonteRecurso::query()
+            ->whereIn('orctiporec_id', $aRecursosNaoConfigurados)
+            ->where('exercicio', $oRelatorio->getAno())
+            ->get();
 
         db_query("DROP TABLE IF EXISTS work_dotacao");
         db_query("DROP TABLE IF EXISTS work_receita");
-        return $aRecursosNaoConfiguradosRetorno;
+        return $recursosNaoConfigurados;
     }
 
     /**

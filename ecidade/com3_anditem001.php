@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ $clrotulo->label("");
       <form name='form1'>
       <center>
          
-<? 
+<?php 
 if (isset($codigo) && $codigo!= "") {
 	$rec="";
 	$despacho="";	
@@ -98,7 +98,7 @@ if (isset($codigo) && $codigo!= "") {
       <br>
 	 <br>
       <table border='1' cellspacing="0" cellpadding="0">
-	    <?  echo "
+	    <?php  echo "
 	      <tr class='bordas'>
 	        <td class='bordas' align='center'><b><small>Cod. Transferência</small></b></td>
 			<td class='bordas' align='center'><b><small>Data</small></b></td>

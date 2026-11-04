@@ -50,12 +50,13 @@ $cllab_laboratorio = new cl_lab_laboratorio;
 $cllab_exame = new cl_lab_exame;
 $cllab_setorexame = new cl_lab_setorexame;
 $cllab_medico = new cl_lab_medico;
-$cllab_autoriza = db_utils::getdao('lab_autoriza');
+$cllab_autoriza = new cl_lab_autoriza;
+$cllabrequisicao_prioridadetipo = new cl_labrequisicao_prioridadetipo();
+
 $departamento = db_getsession("DB_coddepto");
 
 function somardata($data, $dias = 0, $meses = 0, $ano = 0)
 {
-
     $data = explode("/", $data);
     $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses, $data[0] + $dias, $data[2] + $ano));
     return $novadata;
@@ -71,12 +72,16 @@ $lAlterar = false;
  */
 function laboratorioLogado()
 {
-
     $iUsuario = db_getsession('DB_id_usuario');
     $iDepto = db_getsession('DB_coddepto');
-    $oLab_labusuario = db_utils::getdao('lab_labusuario');
-    $oLab_labdepart = db_utils::getdao('lab_labdepart');
-    $sql = $oLab_labusuario->sql_query(null, 'la02_i_codigo, la02_c_descr', "la02_i_codigo", " la05_i_usuario = $iUsuario");
+    $oLab_labusuario = new cl_lab_labusuario;
+    $oLab_labdepart = new cl_lab_labdepart;
+    $sql = $oLab_labusuario->sql_query(
+        null,
+        'la02_i_codigo, la02_c_descr',
+        "la02_i_codigo",
+        " la05_i_usuario = $iUsuario"
+    );
     $rResult = $oLab_labusuario->sql_record($sql);
 
     if ($oLab_labusuario->numrows == 0) {
@@ -98,11 +103,15 @@ $iLaboratorioLogado = laboratorioLogado();
 
 if (isset($excluir)) {
     db_inicio_transacao();
+
     //excluir tabelas filhas
     $iRequisicao = $la22_i_codigo;
     db_query(" delete from lab_requiitem where la21_i_requisicao = {$iRequisicao}");
     db_query(" delete from lab_medico where la38_i_requisicao = {$iRequisicao}");
+    $cllabrequisicao_prioridadetipo->excluir('', "la70_labrequisicao = {$iRequisicao}");
+
     $cllab_requisicao->excluir($iRequisicao);
+
     db_fim_transacao();
 } elseif (isset($confirma)) {
     db_inicio_transacao();
@@ -115,18 +124,83 @@ if (isset($excluir)) {
         $cllab_requisicao->la22_c_hora = date("H:i");
         $cllab_requisicao->la22_i_autoriza = 1;
         $cllab_requisicao->la22_c_medico = $z01_nome;
+
+        $_POST['la22_peso'] = str_replace(',', '.', $la22_peso);
+
         $cllab_requisicao->incluir(null);
         $iRequisicao = $cllab_requisicao->la22_i_codigo;
+
+        if ($oConfig->la49_identificaprioridade == 't') {
+            if (!empty($prioridadeGestante)) {
+                $cllabrequisicao_prioridadetipo->la70_prioridadetipo = $prioridadeGestante;
+            }
+
+            if ($idadeEmAnos >= 60) {
+                $cllabrequisicao_prioridadetipo->la70_prioridadetipo = 1;
+            }
+
+            $cllabrequisicao_prioridadetipo->la70_labrequisicao = $iRequisicao;
+
+            if (!empty($cllabrequisicao_prioridadetipo->la70_prioridadetipo)) {
+                $cllabrequisicao_prioridadetipo->incluir(null);
+            }
+        }
     } else {
+        $_POST['la22_peso'] = str_replace(',', '.', $la22_peso);
+
         $lAlterar = true;
         $cllab_requisicao->alterar($la22_i_codigo);
         $iRequisicao = $la22_i_codigo;
+        $requisicaoPossuiPrioridade = false;
+        $listaPrioridades = null;
+
+        $priodidadeRequisicao = $cllabrequisicao_prioridadetipo->sql_record(
+            $cllabrequisicao_prioridadetipo->sql_query_file(null, "*", null, "la70_labrequisicao = {$iRequisicao}")
+        );
+
+        if ($cllabrequisicao_prioridadetipo->numrows > 0) {
+            $requisicaoPossuiPrioridade = true;
+            $listaPrioridades = db_utils::getCollectionByRecord($priodidadeRequisicao);
+        }
+
+        if ($oConfig->la49_identificaprioridade == 't') {
+            if (!empty($prioridadeGestante)) {
+                $cllabrequisicao_prioridadetipo->la70_prioridadetipo = $prioridadeGestante;
+            }
+
+            if ($idadeEmAnos >= 60) {
+                $cllabrequisicao_prioridadetipo->la70_prioridadetipo = 1;
+            }
+
+            $cllabrequisicao_prioridadetipo->la70_labrequisicao = $iRequisicao;
+
+            if (!$requisicaoPossuiPrioridade && !empty($cllabrequisicao_prioridadetipo->la70_prioridadetipo)) {
+                $cllabrequisicao_prioridadetipo->incluir(null);
+
+            } elseif ($requisicaoPossuiPrioridade && $listaPrioridades[0]->la70_prioridadetipo == 2) {
+                if (empty($prioridadeGestante) && $cllabrequisicao_prioridadetipo->la70_prioridadetipo != 1) {
+                    $cllabrequisicao_prioridadetipo->excluir('', "la70_labrequisicao = {$iRequisicao}");
+
+                } else {
+                    $cllabrequisicao_prioridadetipo->la70_sequencial = $listaPrioridades[0]->la70_sequencial;
+                    $cllabrequisicao_prioridadetipo->alterar($listaPrioridades[0]->la70_sequencial);
+                }
+            }
+        }
+
+        if ($oConfig->la49_identificaprioridade == 'f' && $requisicaoPossuiPrioridade && $listaPrioridades[0]->la70_prioridadetipo == 2) {
+            if (empty($prioridadeGestante)) {
+                $cllabrequisicao_prioridadetipo->excluir('', "la70_labrequisicao = {$iRequisicao}");
+            }
+        }
     }
 
     //para alterar os agendamentos eles são re-incluidos
     if ($cllab_requisicao->erro_status != '0') {
         if ($lAlterar == true) {
-            db_query(" delete from lab_requiitem where la21_i_requisicao = {$iRequisicao} and (la21_c_situacao = '10 - Nao Digitado' or la21_c_situacao = '20 - Autorizado')");
+            db_query(
+                " delete from lab_requiitem where la21_i_requisicao = {$iRequisicao} and (la21_c_situacao = '10 - Nao Digitado' or la21_c_situacao = '20 - Autorizado')"
+            );
             db_query(" delete from lab_medico where la38_i_requisicao = {$iRequisicao} ");
         }
     }
@@ -138,8 +212,10 @@ if (isset($excluir)) {
 
         $aIdsSetorExame = array();
 
-        for ($x = 0; $x < count($aPartes); $x++) {
-            $codigoRequiItem = split("#", $aPartes[$x])[9];
+        $tamanhoPartes = count($aPartes);
+
+        for ($x = 0; $x < $tamanhoPartes; $x++) {
+            $codigoRequiItem = (!empty(explode("#", $aPartes[$x])[12]) ? explode("#", $aPartes[$x])[12] : false);
             if ($codigoRequiItem) {
                 $sql = $cllab_requiitem->sql_query_file(null, "*", null, "la21_i_codigo = {$codigoRequiItem}");
                 $rs = db_query($sql);
@@ -157,8 +233,8 @@ if (isset($excluir)) {
 
             $sSituacao = RequisicaoExame::NAO_DIGITADO;
 
-            if (!empty($aVet[8])) {
-                $sSituacao = urldecode($aVet[8]);
+            if (!empty($aVet[11])) {
+                $sSituacao = urldecode($aVet[11]);
             }
 
             $aIdsSetorExame[] = $aVet[0];
@@ -223,7 +299,8 @@ if (isset($excluir)) {
         //montar array com linhas do grid
         $aData = explode("-", $la21_d_data);
         $alinhasgrid[$x] = "$la21_i_setorexame#$la02_c_descr#$la08_c_descr#" . $aData[2] . "/" . $aData[1] . "/" . $aData[0];
-        $alinhasgrid[$x] .= "#$la21_c_hora#$la08_i_dias#$la21_i_emergencia#$la21_i_quantidade#$la21_c_situacao#$la21_i_codigo";
+        $alinhasgrid[$x] .= "#$la21_c_hora#$la08_i_dias#$la21_i_emergencia#$la21_i_quantidade";
+        $alinhasgrid[$x] .= "#$la08_obriga_peso#$la08_obriga_altura#$la08_obriga_volumeamostra#$la21_c_situacao#$la21_i_codigo";
     }
 
     $sCamposMedico = " la38_i_medico, (CASE when z01_numcgm is null then s154_c_nome else z01_nome END) as z01_nome,sd03_i_crm ";
@@ -233,6 +310,20 @@ if (isset($excluir)) {
 
     if ($cllab_medico->numrows > 0) {
         db_fieldsmemory($result, 0);
+    }
+
+    $sqlPrioridade = "
+        select * from lab_requisicao
+        inner join labrequisicao_prioridadetipo on la70_labrequisicao = la22_i_codigo
+        where la22_i_codigo = {$chavepesquisa}
+    ";
+
+    $rsSqlPrioridade = db_query($sqlPrioridade);
+
+    $prioridade = '';
+
+    if (pg_num_rows($rsSqlPrioridade) > 0) {
+        $prioridadeDaRequisicao = db_utils::getCollectionByRecord($rsSqlPrioridade)[0]->la70_prioridadetipo;
     }
 
     $db_botao = true;

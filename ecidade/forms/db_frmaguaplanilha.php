@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,7 +39,7 @@ $clrotulo->label("x01_numcgm");
        <?=@$Lx24_exerc?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_exerc',4,$Ix24_exerc,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -49,22 +49,22 @@ db_input('x24_exerc',4,$Ix24_exerc,true,'text',$db_opcao,"")
        <?=@$Lx24_mes?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_mes',2,$Ix24_mes,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx24_matric?>">
-       <?
+       <?php
        db_ancora(@$Lx24_matric,"js_pesquisax24_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_matric',10,$Ix24_matric,true,'text',$db_opcao," onchange='js_pesquisax24_matric(false);'")
 ?>
-       <?
+       <?php
 db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'')
        ?>
     </td>
@@ -74,7 +74,7 @@ db_input('x01_numcgm',10,$Ix01_numcgm,true,'text',3,'')
        <?=@$Lx24_nome?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_nome',40,$Ix24_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,7 +84,7 @@ db_input('x24_nome',40,$Ix24_nome,true,'text',$db_opcao,"")
        <?=@$Lx24_codrua?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_codrua',7,$Ix24_codrua,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_input('x24_codrua',7,$Ix24_codrua,true,'text',$db_opcao,"")
        <?=@$Lx24_nomerua?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_nomerua',40,$Ix24_nomerua,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_input('x24_nomerua',40,$Ix24_nomerua,true,'text',$db_opcao,"")
        <?=@$Lx24_numero?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_numero',5,$Ix24_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -114,7 +114,7 @@ db_input('x24_numero',5,$Ix24_numero,true,'text',$db_opcao,"")
        <?=@$Lx24_complemento?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_complemento',10,$Ix24_complemento,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,7 +124,7 @@ db_input('x24_complemento',10,$Ix24_complemento,true,'text',$db_opcao,"")
        <?=@$Lx24_zona?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_zona',5,$Ix24_zona,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -134,7 +134,7 @@ db_input('x24_zona',5,$Ix24_zona,true,'text',$db_opcao,"")
        <?=@$Lx24_rota?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_rota',4,$Ix24_rota,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,7 +144,7 @@ db_input('x24_rota',4,$Ix24_rota,true,'text',$db_opcao,"")
        <?=@$Lx24_pagina?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_pagina',8,$Ix24_pagina,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -154,7 +154,7 @@ db_input('x24_pagina',8,$Ix24_pagina,true,'text',$db_opcao,"")
        <?=@$Lx24_nrohidro?>
     </td>
     <td> 
-<?
+<?php
 db_input('x24_nrohidro',15,$Ix24_nrohidro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -193,7 +193,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguaplanilha.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

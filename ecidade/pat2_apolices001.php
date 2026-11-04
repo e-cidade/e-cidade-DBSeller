@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -66,10 +66,10 @@ function js_abre(botao){
     <table class="form-container">
       <tr> 
         <td title="<?=$Tt81_codapo?>">
-          <? db_ancora(@$Lt81_codapo,"js_pesquisa_apolice(true);",1);?>  
+          <?php db_ancora(@$Lt81_codapo,"js_pesquisa_apolice(true);",1);?>  
         </td>
         <td>
-          <?
+          <?php
              db_input("t81_codapo",8,$It81_codapo,true,"text",4,"onchange='js_pesquisa_apolice(false);'"); 
              db_input("t81_apolice",40,$It81_apolice,true,"text",3);  
           ?>
@@ -79,7 +79,7 @@ function js_abre(botao){
   </fieldset>
   <input name="relatorio" type="button" onclick='js_abre();'  value="Gerar relatório">
 </form>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_apolice(mostra){

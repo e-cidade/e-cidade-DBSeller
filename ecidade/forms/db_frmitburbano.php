@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,15 +36,15 @@ $clrotulo->label("it07_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tit05_guia?>">
-       <?
+       <?php
        db_ancora(@$Lit05_guia,"js_pesquisait05_guia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_guia',10,$Iit05_guia,true,'text',$db_opcao," onchange='js_pesquisait05_guia(false);'")
 ?>
-       <?
+       <?php
 db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        ?>
     </td>
@@ -54,7 +54,7 @@ db_input('it01_guia',10,$Iit01_guia,true,'text',3,'')
        <?=@$Lit05_frente?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_frente',51,$Iit05_frente,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -64,7 +64,7 @@ db_input('it05_frente',51,$Iit05_frente,true,'text',$db_opcao,"")
        <?=@$Lit05_fundos?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_fundos',15,$Iit05_fundos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -74,7 +74,7 @@ db_input('it05_fundos',15,$Iit05_fundos,true,'text',$db_opcao,"")
        <?=@$Lit05_direito?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_direito',15,$Iit05_direito,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -84,22 +84,22 @@ db_input('it05_direito',15,$Iit05_direito,true,'text',$db_opcao,"")
        <?=@$Lit05_esquerdo?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_esquerdo',15,$Iit05_esquerdo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tit05_itbisituacao?>">
-       <?
+       <?php
        db_ancora(@$Lit05_itbisituacao,"js_pesquisait05_itbisituacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('it05_itbisituacao',10,$Iit05_itbisituacao,true,'text',$db_opcao," onchange='js_pesquisait05_itbisituacao(false);'")
 ?>
-       <?
+       <?php
 db_input('it07_descr',40,$Iit07_descr,true,'text',3,'')
        ?>
     </td>
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itburbano.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

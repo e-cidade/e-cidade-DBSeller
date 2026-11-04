@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -51,15 +51,15 @@ $db_opcao = 1;
 $db_botao = true;
 $sqlerro=false;
 if(isset($incluir)){
-  db_inicio_transacao();  
-  $dados=split("#",$chaves);
+  db_inicio_transacao();
+  $dados= explode("#",$chaves);
   for($w=0;$w<count($dados);$w++){
   	  $result_proc=$clsolicitemprot->sql_record($clsolicitemprot->sql_query_file(null,"*",null," pc49_solicitem =".$dados[$w]));
   	  db_fieldsmemory($result_proc,0);
-  	  $p58_codproc=$pc49_protprocesso;  	
+  	  $p58_codproc=$pc49_protprocesso;
 	  $result=$clprotprocesso->sql_record($clprotprocesso->sql_query_file($p58_codproc,"p58_codandam"));
 	  db_fieldsmemory($result,0);
-	  $data= date("Y-m-d",db_getsession("DB_datausu"));  
+	  $data= date("Y-m-d",db_getsession("DB_datausu"));
 	  if ($sqlerro==false){
 	  	$clprocandamint->p78_codandam=$p58_codandam;
 	  	$clprocandamint->p78_data=$data;
@@ -71,7 +71,7 @@ if(isset($incluir)){
 	  	$erro_msg = $clprocandamint->erro_msg;
 	  	if ($clprocandamint->erro_status==0){
 	    	$sqlerro=true;
-	  	} 
+	  	}
 	  	$codprocandamint=$clprocandamint->p78_sequencial;
 	  	if ($sqlerro==false){
 	    	$db_botao = false;
@@ -91,7 +91,7 @@ if(isset($incluir)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -100,10 +100,10 @@ if(isset($incluir)){
 </table>
 <center>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmdespsol.php"));
 	?>
     </center>
@@ -112,11 +112,11 @@ if(isset($incluir)){
 </table>
 </center>
 </body>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>
-<?
+<?php
 if(isset($incluir)){
   db_msgbox($erro_msg);
   if($sqlerro==true){

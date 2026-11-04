@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -96,7 +96,7 @@ if ( isset($oPost->incluir) || isset($oPost->excluir ) ) {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php
         include(modification("forms/db_frmcflicitatemplateata.php"));
       ?>
     </center>
@@ -105,7 +105,7 @@ if ( isset($oPost->incluir) || isset($oPost->excluir ) ) {
 </table>
 </body>
 </html>
-<?
+<?php
 if( isset($oPost->incluir) || isset($oPost->excluir) ){
   db_msgbox($sErroMsg);
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,7 +59,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
               <?=$Lve60_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
 		       db_input("ve60_codigo",10,$Ive60_codigo,true,"text",4,"","chave_ve60_codigo");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $where="";
       if(isset($devol)){
       	if ($devol==false){
@@ -142,12 +142,12 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

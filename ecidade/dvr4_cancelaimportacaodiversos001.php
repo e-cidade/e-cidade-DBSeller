@@ -78,7 +78,7 @@ $clrotulo->label('z01_nome');
       <input type="button" name="processar" id="processar" value="Cancelar Importa&ccedil;&atilde;o" onclick="js_cancelarImportacao()" />
             
   </form>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

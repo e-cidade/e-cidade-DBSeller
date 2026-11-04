@@ -57,14 +57,14 @@ $displayRecursoPadrao = FONTE_RECURSO_UNIAO ? 'none' : '';
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/datagrid.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/dbmessageBoard.widget.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/datagrid.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBToogle.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/windowAux.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/dbmessageBoard.widget.js"></script>
+    <script type="text/javascript" src="scripts/widgets/DBLancador.widget.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 
     <style type="text/css">
@@ -120,7 +120,9 @@ $displayRecursoPadrao = FONTE_RECURSO_UNIAO ? 'none' : '';
                 <div id="lancadorCredor"></div>
                 <div id="lancadorRetencoes"></div>
                 <div id="lancadorConta"></div>
-                <div id="lancadorRecursos"></div>
+                <div id="lancadorRecursos">
+                    <?php  require_once modification('forms/db_frmfiltrorecursos.php')  ?>
+                </div>
             </fieldset>
             <fieldset class="separator">
                 <legend>
@@ -239,22 +241,10 @@ db_menu();
     lancadorConta.setParametrosPesquisa("func_saltes.php", ["k13_conta", "k13_descr"]);
     lancadorConta.show(cntLancadorConta);
 
-
-    const cntLancadorRecurso = document.getElementById('lancadorRecursos');
-    var lancadorRecurso = new DBLancador("lancadorRecurso");
-    lancadorRecurso.iGridHeight = 100;
-    lancadorRecurso.sTextoFieldset = 'Filtrar Fonte de Recurso(s)';
-    lancadorRecurso.setLabelAncora("Fonte de Recurso:");
-    lancadorRecurso.setNomeInstancia("lancadorRecurso");
-    lancadorRecurso.setHabilitado(true);
-    lancadorRecurso.selecionarAposPesquisar = true;
-    lancadorRecurso.setParametrosPesquisa("func_fonterecurso.php", ["o15_recurso", "o15_descr"], "db_instit=<?php echo db_getsession("DB_instit")?>");
-    lancadorRecurso.show(cntLancadorRecurso);
-
     oDBToogleCredor    = new DBToogle('flsdlancadorCredor', false);
     oDBToogleRetencoes = new DBToogle('flsdlancadorRetencoes', false);
     oDBToogleConta     = new DBToogle('flsdlancadorConta', false);
-    oDBToogleRecurso   = new DBToogle('flsdlancadorRecurso', false);
+    oDBToogleRecurso   = new DBToogle('fieldsetRecursos', false);
 
     function buscarOrgao(lMostrar) {
 
@@ -382,8 +372,8 @@ db_menu();
         });
 
         let recursos = [];
-        lancadorRecurso.getRegistros().map(recurso => {
-            recursos.push(recurso.sCodigo)
+        collectionRecurso.build().map(recurso => {
+            recursos.push(recurso.codigo)
         });
 
         parametro.contas = contas;

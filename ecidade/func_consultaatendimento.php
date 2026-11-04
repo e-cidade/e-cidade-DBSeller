@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ $clatendimento->rotulo->label("at02_codcli");
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       $where = "";
       if(isset($at02_codcli) && $at02_codcli != "" ){
         $where = " clientes.at01_codcli = $at02_codcli";

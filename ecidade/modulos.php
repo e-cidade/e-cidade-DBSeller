@@ -156,7 +156,7 @@ function js_atualizacao_versao(){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td valign="top">
-<?
+<?php
 if (db_getsession("DB_id_usuario") == 1) {
 
   $sSql  = "select id_usuario, anousu   ";
@@ -226,7 +226,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   <tr>
     <td>Exercício:</td>
     <td>
-      <?
+      <?php
       if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){
         echo "<span class='bold' style='font-size:15px;'>".db_getsession("DB_anousu")."</span>";
       }else{
@@ -241,7 +241,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
     <td>
       <select name="formAnousu" size="1" onChange="document.form1.submit()">
       <option value="">&nbsp;</option>
-      <?
+      <?php
       for($i = 0;$i < pg_numrows($result);$i++) {
         echo "<option value=\"".pg_result($result,$i,"anousu")."\">".pg_result($result,$i,"anousu")."</option>\n";
       }
@@ -252,7 +252,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 
   <tr>
     <td>
-<?
+<?php
 
   $mostra_menu = false;
 
@@ -369,7 +369,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   </td>
 
   <td width="390"valign="top">
-  <?
+  <?php
   if($mostra_menu==true){
     ?>
     <div id="acessosModulo">
@@ -377,7 +377,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
         <tr>
           <td colspan="3" class="text-center bold">Últimos acessos ao Módulo</td>
         </tr>
-      <?
+      <?php
       $sSql  = "select * from (                                                                          ";
       $sSql .= "                select descricao,                                                        ";
       $sSql .= "                       data,                                                             ";
@@ -424,7 +424,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
           ?>
           <tr>
             <td width="70%" title="<?=$help?>">
-              <?
+              <?php
               if($funcao==""){
                 echo "<a href=\"\" >$descricao</a>";
               }else{
@@ -447,7 +447,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
             <td align="center" width="10%"><?=$data?></td>
             <td align="center" width="20%"><?=$hora?></td>
           </tr>
-          <?
+          <?php
         }
       }
       echo "</table>";
@@ -459,7 +459,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   </table>
   </form>
 
-  <?
+  <?php
   if(isset($mostra_menu) && $mostra_menu == true){
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }
@@ -469,7 +469,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   <script type="text/javascript">
   (window.CurrentWindow || parent.CurrentWindow).bstatus.document.getElementById('dtatual').innerHTML = '<?=date("d/m/Y",db_getsession("DB_datausu"))?>' ;
   (window.CurrentWindow || parent.CurrentWindow).bstatus.document.getElementById('dtanousu').innerHTML = '<?=(db_getsession("DB_modulo")!=952?db_getsession("DB_anousu"):db_anofolha()."/".db_mesfolha())?>' ;
-  <?
+  <?php
   if(db_getsession("DB_anousu")!= date("Y",db_getsession("DB_datausu"))){
     echo "alert('Exercício diferente do exercício da data. Verifique!');";
   }

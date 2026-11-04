@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,15 +91,15 @@ function js_pesquisar(){
 	    <table cellspacing = 0>
 			  <tr>
 			    <td nowrap title="<?=@$Tp58_codproc?>">
-			       <?
+			       <?php
 			       db_ancora(@$Lp58_codproc,"js_pesquisap58_codproc(true);",$db_opcao);
 			       ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						db_input('p58_codproc',10,$Ip58_codproc,true,'text',$db_opcao," onchange='js_pesquisap58_codproc(false);'")
 						?>
-			      <?
+			      <?php
 						db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
 			      ?>
 			    </td>
@@ -118,7 +118,7 @@ function js_pesquisar(){
 </table>
 </form>
 
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

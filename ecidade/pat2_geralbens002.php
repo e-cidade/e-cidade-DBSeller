@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,34 +77,31 @@ if ($ordenar == "depart"){
     $info  .= "Bem";
 }else if ($ordenar == "classi"){
     $ordem = "t64_class";
-    $info  .= "Classificao";
-}else if ($ordenar == "data"){
-    if($tipoData == 1 ){
-        $ordem = "t52_dtaqu";
-    } else {
-        $ordem = "t52_dtinclusao";
-    }
-    $info  .= "Data de Aquisio";
-
-}else if ($ordenar == "orgao"){
+    $info  .= "Classificação";
+}else if ($ordenar === "dtAqui"){
+    $ordem = "t52_dtaqu";
+    $info  .= "Data de Aquisição";
+} else if ($ordenar === 'dtInc') {
+    $ordem = "t52_dtinclusao";
+    $info  .= "Data de Inclusão";
+} else if ($ordenar == "orgao"){
     $ordem  = "db01_orgao,db01_unidade,t52_depart, t52_ident";
-    $info  .= "rgo";
+    $info  .= "Orgão";
 }else if ($ordenar == "unidade"){
     $ordem  = "db01_orgao,db01_unidade,t52_depart, t52_ident";
     $info  .= "Unidade";
 }else if ($ordenar == "descricao"){
     $ordem  = "t52_descr";
-    $info  .= "Descrio do Bem";
+    $info  .= "Descrição do Bem";
 }
 
 if($bens_convenio == "T"){
     $head7 = "Bens: Todos";
 }else if ($bens_convenio == "N"){
-    $head7 = "Bens: Nenhum Convnio";
+    $head7 = "Bens: Nenhum Convênio";
 }else if ($bens_convenio == "S"){
-    $head7 = "Bens: Com Convnio";
+    $head7 = "Bens: Com Convênio";
 }
-
 
 if(isset($quebra_por) && $quebra_por != "" && $imp_classi == "S"){
 
@@ -121,10 +118,6 @@ if(isset($quebra_por) && $quebra_por != "" && $imp_classi == "S"){
 
 }
 
-//if($q_pagina == 'departamento'){
-//	$ordem .= ",db01_coddepto ";
-//}
-
 if (isset($coddepart) and $coddepart!=0 && $coddepart != ""){
     $where_instit.=" t52_depart=$coddepart ";
 }
@@ -138,7 +131,6 @@ if(isset($divisao) && trim($divisao) != "" && $divisao != 0){
 
 }
 
-//die($where_instit);
 $flag_datas = 0;
 if (isset($data_inicial) && trim(@$data_inicial) != "" && isset($data_final) && trim(@$data_final) != ""){
     $flag_datas = 1;
@@ -158,7 +150,7 @@ if ($flag_datas == 1){
     } else {
         $where_instit.= "t52_dtinclusao between '$data_inicial' and '$data_final'";
     }
-    $info        .= "\nPeriodo de ".db_formatar($data_inicial,"d")." a ".db_formatar($data_final,"d");
+    $info        .= "\nPeríodo de ".db_formatar($data_inicial,"d")." a ".db_formatar($data_final,"d");
 }
 
 if ($flag_datas == 2){
@@ -167,7 +159,7 @@ if ($flag_datas == 2){
     } else {
         $where_instit.= "t52_dtinclusao >= '$data_inicial'";
     }
-    $info        .= "\nAquisio a partir de ".db_formatar($data_inicial,"d");
+    $info        .= "\nAquisição a partir de ".db_formatar($data_inicial,"d");
 }
 
 if ($flag_datas == 3){
@@ -176,7 +168,7 @@ if ($flag_datas == 3){
     } else {
         $where_instit.= "t52_dtinclusao <= '$data_final'";
     }
-    $info        .= "\nAquisio at ".db_formatar($data_final,"d");
+    $info        .= "\nAquisição at ".db_formatar($data_final,"d");
 }
 
 
@@ -192,13 +184,13 @@ if ($imp_classi == "S"){
 }
 
 
-$head3  = "RELATRIO GERAL DE BENS";
+$head3  = "RELATÓRIO GERAL DE BENS";
 $head4  = $info;
 
 if($q_pagina == 'S'){
     $head5 = "";
 }elseif ($q_pagina == 'orgao'){
-    $head5 = "Quebra por rgo ";
+    $head5 = "Quebra por Orgão ";
 }else if ($q_pagina == 'unidade'){
     $head5 = "Quebra por Unidade ";
 }else if ($q_pagina == 'departamento'){
@@ -214,14 +206,14 @@ $where_instit .= "t52_instit = ".db_getsession("DB_instit");
 
 
 if($t07_confplaca==1 or $t07_confplaca==4) {
-    $campos = "t52_bem, t52_descr, round(t52_valaqu,2) as t52_valaqu," . ($tipoData == 1 ? " t52_dtaqu" : " t52_dtinclusao") . ", cast( regexp_replace( coalesce(nullif(trim(t52_ident),''), '0') , '[^0-9.,-]' , '', 'g') as numeric) as t52_ident,
+    $campos = "t52_bem, t52_descr, round(t52_valaqu,2) as t52_valaqu, t52_dtaqu, t52_dtinclusao, cast( regexp_replace( coalesce(nullif(trim(t52_ident),''), '0') , '[^0-9.,-]' , '', 'g') as numeric) as t52_ident,
   					 t52_depart, descrdepto, t52_numcgm, z01_nome, t52_obs, t64_class, t64_descr, t33_divisao, departdiv.t30_descr,
   					 (select count(*)
                      from bensplaca
                           inner join bensplacaimpressa on bensplacaimpressa.t73_bensplaca = bensplaca.t41_codigo
                     where t41_bem = t52_bem) as totaletiquetas";
 } else {
-    $campos = "t52_bem, t52_descr, round(t52_valaqu,2) as t52_valaqu," . ($tipoData == 1 ? " t52_dtaqu" : " t52_dtinclusao") . ", t52_ident, t52_depart, descrdepto, t52_numcgm, z01_nome, t52_obs,
+    $campos = "t52_bem, t52_descr, round(t52_valaqu,2) as t52_valaqu, t52_dtaqu, t52_dtinclusao, t52_ident, t52_depart, descrdepto, t52_numcgm, z01_nome, t52_obs,
   					 t64_class, t64_descr, t33_divisao, departdiv.t30_descr,
   					 (select count(*)
                      from bensplaca
@@ -251,7 +243,7 @@ if(isset($orgaos) && isset($unidades) && isset($departamentos)){
         if($clbenscadcedente->numrows > 0){
             db_fieldsmemory($rsConvenio,0);
         }
-        $head6 = "Convnio : $convenio";
+        $head6 = "Convênio : $convenio";
     }else if(isset($bens_convenio) && trim($bens_convenio) == "S"){
         $where_instit .= " and benscedente.t09_bem is not null ";
         $sqlrelatorio = $clbens->sql_query_left_convenio(null,"$campos",$ordem,"$where_instit");
@@ -272,13 +264,13 @@ if(isset($orgaos) && isset($unidades) && isset($departamentos)){
         if($clbenscadcedente->numrows > 0){
             db_fieldsmemory($rsConvenio,0);
         }
-        $head6 = "Convnio : $convenio" 	;
+        $head6 = "Convênio : $convenio" 	;
     }else if(isset($bens_convenio) && trim($bens_convenio) == "N"){
-        //Opo nehum convnio
+        //Opo nehum Convênio
         $where_instit .= " and benscedente.t09_bem is null ";
         $sqlrelatorio = $clbens->sql_query_left_convenio(null,"$campos",$ordem,"$where_instit");
     }else if(isset($bens_convenio) && trim($bens_convenio) == "S"){
-        //Opo nehum convnio
+        //Opo nehum Convênio
         $where_instit .= " and benscedente.t09_bem is not null ";
         $sqlrelatorio = $clbens->sql_query_left_convenio(null,"$campos",$ordem,"$where_instit");
     }else{
@@ -286,8 +278,6 @@ if(isset($orgaos) && isset($unidades) && isset($departamentos)){
         $sqlrelatorio = $clbens->sql_query(null,"$campos",$ordem,"$where_instit");
     }
 }
-
-//$sqlrelatorio = $clbens->sql_query(null,"$campos",$ordem,"$where_instit");
 
 $result = $clbens->sql_record($sqlrelatorio);
 
@@ -312,7 +302,7 @@ $total   = 0;
 $totalvalor = 0;
 $numrows = $clbens->numrows;
 
-//quebra de pgina
+//quebra de página
 $valortotal				= 0;
 $ident						= 0;
 $contaregistro		= 0;
@@ -362,7 +352,7 @@ for($x = 0; $x < $numrows; $x++){
             }
         }
 
-        //quebrar pgina
+        //quebrar página
         if ($q_pagina=="S"){
 
             //quebra por departamento
@@ -488,7 +478,7 @@ for($x = 0; $x < $numrows; $x++){
                 $ident=2;
             }//fim quebra por bem
 
-            //quebra por classificao
+            //quebra por Classificação
             if ($ordenar == "classi") {
 
                 if ($ident == 0) {
@@ -528,10 +518,10 @@ for($x = 0; $x < $numrows; $x++){
 
                 $identifica=$t64_class;
                 $ident=2;
-            }//fim quebra por classificao
+            }//fim quebra por Classificação
 
 
-            //quebra por data aquisio
+            //quebra por data Aquisição
             if ($ordenar=="data"){
 
                 if ($ident==0){
@@ -572,7 +562,7 @@ for($x = 0; $x < $numrows; $x++){
 
                 $identifica=$t52_dtaqu;
                 $ident=2;
-            }//fim quebra por data aquisio
+            }//fim quebra por data Aquisição
 
 
         }else if ($q_pagina == 'orgao'){
@@ -591,7 +581,7 @@ for($x = 0; $x < $numrows; $x++){
                     $pdf->cell(130,$alt,'TOTAL DE REGISTROS  :  '.$contaregistro,"T",1,"R",0);
                     $pdf->addpage("L");
                     $pdf->setfont('arial','b',10);
-                    $pdf->cell(20,$alt,"rgo",0,0,"L",0);
+                    $pdf->cell(20,$alt,"Orgão",0,0,"L",0);
                     $pdf->cell(30,$alt,$o40_orgao." - ".$o40_descr,0,1,"L",0);
 
                     $imprime_total_parcial=true;
@@ -718,7 +708,7 @@ for($x = 0; $x < $numrows; $x++){
 
                 if($iOrgao!=$o40_orgao){
                     $pdf->setfont('arial','b',10);
-                    $pdf->cell(30,$alt,"rgo",0,0,"L",0);
+                    $pdf->cell(30,$alt,"Orgão",0,0,"L",0);
                     $pdf->cell(30,$alt,$o40_orgao." - ".$o40_descr,0,1,"L",0);
                     if($q_pagina != "N"){
                         $pdf->cell(30,$alt,"Unidade",0,0,"L",0);
@@ -791,7 +781,7 @@ for($x = 0; $x < $numrows; $x++){
         $pdf->cell(30,$alt,$t52_ident										,0,0,"C",$p);
         $pdf->cell(60,$alt,$t52_depart."-".substr($descrdepto,0,36)	,0,0,"L",$p);
         $pdf->cell(48,$alt,$t33_divisao."-".substr($t30_descr,0,27)	,0,0,"L",$p);
-        $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "No";
+        $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "Não";
         $pdf->cell(15,$alt,$placaIdentificacao	,0,1,"C",$p);
 
         if ($flag_forn == true){
@@ -816,7 +806,6 @@ for($x = 0; $x < $numrows; $x++){
         $totalvalor += $t52_valaqu;
 
     }else if(($quebra_por == 2 || $quebra_por == 3) && $imp_classi == "S"){
-        //die('aqui');
         if(isset($orgaos) && isset($unidades) && isset($departamentos)){
             if($iOrgao!=$o40_orgao){
                 $iUnidade = 0;
@@ -824,14 +813,14 @@ for($x = 0; $x < $numrows; $x++){
                 if($quebra_por == 2 && $depto_anterior !=0){
                     $pdf->setfont('arial','b',8);
                     $pdf->Ln();
-                    $pdf->cell(65,$alt,"Total da Diviso:"																							,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																									,0,0,"R",1);
+                    $pdf->cell(65,$alt,"Total da Divisão:"																							,0,0,"L",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																									,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos[$divisao_anterior]["vlr_total"],'f'),0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																											,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDivisaoImpressos[$divisao_anterior]["qtd_total"]								,0,1,"C",1);
                     $pdf->ln();
                     $pdf->cell(65,$alt,"Total do Departamento:"																					,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																									,0,0,"R",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																									,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDeptosImpressos[$depto_anterior]["vlr_total"],'f')	,0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																											,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDeptosImpressos[$depto_anterior]["qtd_total"]									,0,1,"C",1);
@@ -843,8 +832,8 @@ for($x = 0; $x < $numrows; $x++){
                 }else if ($quebra_por == 3 && $class_anterior !=0 ){
                     $pdf->setfont('arial','b',8);
                     $pdf->Ln();
-                    $pdf->cell(65,$alt,"Total da Classificao:"																				,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																									,0,0,"R",1);
+                    $pdf->cell(65,$alt,"Total da Classificação:"																				,0,0,"L",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																									,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aClassiImpressos[$class_anterior]["vlr_total"],'f')	,0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																											,0,0,"R",1);
                     $pdf->cell(20,$alt,$aClassiImpressos[$class_anterior]["qtd_total"]									,0,1,"C",1);
@@ -857,7 +846,7 @@ for($x = 0; $x < $numrows; $x++){
                 $lCabecalho = true;
 
                 $pdf->setfont('arial','b',10);
-                $pdf->cell(30,$alt,"rgo",0,0,"L",0);
+                $pdf->cell(30,$alt,"Orgão",0,0,"L",0);
                 $pdf->cell(30,$alt,$o40_orgao." - ".$o40_descr,0,1,"L",0);
 
             }
@@ -867,14 +856,14 @@ for($x = 0; $x < $numrows; $x++){
                 if($quebra_por == 2 && $depto_anterior !=0 && $limprime_total_depto == true){
                     $pdf->setfont('arial','b',8);
                     $pdf->Ln();
-                    $pdf->cell(65,$alt,"Total da Diviso:"																									,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																											,0,0,"R",1);
+                    $pdf->cell(65,$alt,"Total da Divisão:"																									,0,0,"L",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																											,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos[$divisao_anterior]["vlr_total"],'f')	,0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																													,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDivisaoImpressos[$divisao_anterior]["qtd_total"]										,0,1,"C",1);
                     $pdf->ln();
                     $pdf->cell(65,$alt,"Total do Departamento:"																							,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																											,0,0,"R",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																											,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDeptosImpressos[$depto_anterior]["vlr_total"],'f')			,0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																													,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDeptosImpressos[$depto_anterior]["qtd_total"]											,0,1,"C",1);
@@ -886,8 +875,8 @@ for($x = 0; $x < $numrows; $x++){
                 }else if ($quebra_por == 3 && $class_anterior != 0){
                     $pdf->setfont('arial','b',8);
                     $pdf->Ln();
-                    $pdf->cell(65,$alt,"Total da Classificao:"											,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																,0,0,"R",1);
+                    $pdf->cell(65,$alt,"Total da Classificação:"											,0,0,"L",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aClassiImpressos[$class_anterior]["vlr_total"],'f'),0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																		,0,0,"R",1);
                     $pdf->cell(20,$alt,$aClassiImpressos[$class_anterior]["qtd_total"],0,1,"C",1);
@@ -916,14 +905,14 @@ for($x = 0; $x < $numrows; $x++){
                 if (!isset($orgaos) || $limprime_total_depto == true) {
                     $pdf->setfont('arial','b',8);
                     $pdf->Ln();
-                    $pdf->cell(65,$alt,"Total da Diviso:"																								,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																										,0,0,"R",1);
+                    $pdf->cell(65,$alt,"Total da Divisão:"																								,0,0,"L",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																										,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos[$divisao_anterior]["vlr_total"],'f'),0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																												,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDivisaoImpressos[$divisao_anterior]["qtd_total"]									,0,1,"C",1);
                     $pdf->ln();
                     $pdf->cell(65,$alt,"Total do Departamento:"																						,0,0,"L",1);
-                    $pdf->cell(30,$alt,"Vlr Aquisio "																										,0,0,"R",1);
+                    $pdf->cell(30,$alt,"Vlr Aquisição "																										,0,0,"R",1);
                     $pdf->cell(20,$alt,db_formatar($aDeptosImpressos[$depto_anterior]["vlr_total"],'f')		,0,0,"R",1);
                     $pdf->cell(25,$alt,"Quantidade"																												,0,0,"R",1);
                     $pdf->cell(20,$alt,$aDeptosImpressos[$depto_anterior]["qtd_total"]										,0,1,"C",1);
@@ -963,8 +952,8 @@ for($x = 0; $x < $numrows; $x++){
             if($divisao_anterior != $t33_divisao && $divisao_anterior != 0){
                 $pdf->setfont('arial','b',8);
                 $pdf->Ln();
-                $pdf->cell(65,$alt,"Total da Diviso:"																									,0,0,"L",1);
-                $pdf->cell(30,$alt,"Vlr Aquisio "																											,0,0,"R",1);
+                $pdf->cell(65,$alt,"Total da Divisão:"																									,0,0,"L",1);
+                $pdf->cell(30,$alt,"Vlr Aquisição "																											,0,0,"R",1);
                 $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos[$divisao_anterior]["vlr_total"],'f')	,0,0,"R",1);
                 $pdf->cell(25,$alt,"Quantidade"																													,0,0,"R",1);
                 $pdf->cell(20,$alt,$aDivisaoImpressos[$divisao_anterior]["qtd_total"]										,0,1,"C",1);
@@ -975,7 +964,7 @@ for($x = 0; $x < $numrows; $x++){
             $aDivisaoImpressos[$t33_divisao]["qtd_total"] = 1;
             $pdf->setfont('arial','b',8);
             $t33_divisao =  $divisao_null == true ? "" : $t33_divisao;
-            $pdf->cell(100,$alt,"Divisao:".$t33_divisao." - ".$t30_descr,0,1,"L",0);
+            $pdf->cell(100,$alt,"Divisão:".$t33_divisao." - ".$t30_descr,0,1,"L",0);
             $t33_divisao =  $divisao_null == true ? "semdivisao" : $t33_divisao;
             $lCabecalho = true;
         }
@@ -988,8 +977,8 @@ for($x = 0; $x < $numrows; $x++){
             if($class_anterior != $t64_class && $class_anterior != 0){
                 $pdf->setfont('arial','b',8);
                 $pdf->Ln();
-                $pdf->cell(65,$alt,"Total da Classificao:"																				,0,0,"L",1);
-                $pdf->cell(30,$alt,"Vlr Aquisio "																									,0,0,"R",1);
+                $pdf->cell(65,$alt,"Total da Classificação:"																				,0,0,"L",1);
+                $pdf->cell(30,$alt,"Vlr Aquisição "																									,0,0,"R",1);
                 $pdf->cell(20,$alt,db_formatar($aClassiImpressos[$class_anterior]["vlr_total"],'f')	,0,0,"R",1);
                 $pdf->cell(25,$alt,"Quantidade"																											,0,0,"R",1);
                 $pdf->cell(20,$alt,$aClassiImpressos[$class_anterior]["qtd_total"]									,0,1,"C",1);
@@ -1003,7 +992,7 @@ for($x = 0; $x < $numrows; $x++){
             $aClassiImpressos[$t64_class]["vlr_total"] = $t52_valaqu;
             $aClassiImpressos[$t64_class]["qtd_total"] = 1;
             $pdf->setfont('arial','b',8);
-            $pdf->cell(100,$alt,"Classificao: ".$t64_class." - ".$t64_descr,0,1,"L",0);
+            $pdf->cell(100,$alt,"Classificação: ".$t64_class." - ".$t64_descr,0,1,"L",0);
             $lCabecalho 	= true;
 
         }
@@ -1015,7 +1004,7 @@ for($x = 0; $x < $numrows; $x++){
             }
 
             $pdf->setfont('arial','b',8);
-            $pdf->cell(100,$alt,"Classificao: ".$t64_class." - ".$t64_descr,0,1,"L",0);
+            $pdf->cell(100,$alt,"Classificação: ".$t64_class." - ".$t64_descr,0,1,"L",0);
         }
 
         if ($lCabecalho == true ) {
@@ -1026,18 +1015,18 @@ for($x = 0; $x < $numrows; $x++){
 
             //Cabealho Inicio
             $pdf->setfont('arial','b',7);
-            $pdf->cell(15,$alt,"Cdigo"						,1,0,"C",1);
-            $pdf->cell(65,$alt,"Descrio do Bem"	,1,0,"C",1);
-            $pdf->cell(20,$alt,"Vlr Aquisio"		,1,0,"C",1);
-            $pdf->cell(25,$alt,($tipoData == 1 ? "Data Aquisio": "Data Incluso"),1,0,"C",1);
+            $pdf->cell(15,$alt,"Código"						,1,0,"C",1);
+            $pdf->cell(65,$alt,"Descrição do Bem"	,1,0,"C",1);
+            $pdf->cell(20,$alt,"Vlr Aquisição"		,1,0,"C",1);
+            $pdf->cell(25,$alt,($tipoData == 1 ? "Data Aquisição": "Data Inclusão"),1,0,"C",1);
             $pdf->cell(20,$alt,"Placa"						,1,0,"C",1);
             $pdf->cell(60,$alt,"Departamento"			,1,0,"C",1);
-            $pdf->cell(60,$alt,"Divisao"					,1,0,"C",1);
+            $pdf->cell(60,$alt,"Divisão"					,1,0,"C",1);
             $pdf->cell(15,$alt,"Pl. Ident "				,1,1,"C",1);
-            //Imprime classificao
+            //Imprime Classificação
             if($quebra_por == 2){
-                $pdf->cell(20,$alt,"Classificao"							,1,0,"C",1);
-                $pdf->cell(260,$alt,"Descrio da classificao",1,1,"C",1);
+                $pdf->cell(20,$alt,"Classificação"							,1,0,"C",1);
+                $pdf->cell(260,$alt,"Descrição da Classificação",1,1,"C",1);
             }
             //Imprime fornecedor
             if ($flag_forn == true){
@@ -1069,12 +1058,12 @@ for($x = 0; $x < $numrows; $x++){
         $pdf->cell(60,$alt,$t52_depart."-".substr($descrdepto,0,36)	,0,0,"L",$background);
         $t33_divisao =  $divisao_null == true ? "" : $t33_divisao;
         $pdf->cell(60,$alt,$t33_divisao."-".substr($t30_descr,0,28)	,0,0,"L",$background);
-        $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "No";
+        $placaIdentificacao = $totaletiquetas >= 1 ? "Sim" : "Não";
         $pdf->cell(15,$alt,$placaIdentificacao  ,0,1,"C",$p);
 
         $fSoma += $t52_valaqu;
         $iTotal += 1;
-        //Imprime classificao
+        //Imprime Classificação
         if($quebra_por == 2){
             $pdf->cell(20,$alt,$t64_class			,0,0,"R",$background);
             $pdf->cell(26,$alt,$t64_descr			,0,1,"L",$background);
@@ -1096,23 +1085,23 @@ for($x = 0; $x < $numrows; $x++){
             if(isset($aDivisaoImpressos["semdivisao"])){
                 $pdf->setfont('arial','b',8);
                 $pdf->Ln();
-                $pdf->cell(65,$alt,"Total da Diviso:",0,0,"L",1);
-                $pdf->cell(30,$alt,"Vlr Aquisio "		,0,0,"R",1);
+                $pdf->cell(65,$alt,"Total da Divisão:",0,0,"L",1);
+                $pdf->cell(30,$alt,"Vlr Aquisição "		,0,0,"R",1);
                 $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos["semdivisao"]["vlr_total"],'f'),0,0,"R",1);
                 $pdf->cell(25,$alt,"Quantidade"				,0,0,"R",1);
                 $pdf->cell(20,$alt,$aDivisaoImpressos["semdivisao"]["qtd_total"]								 ,0,1,"C",1);
             }else if (isset($aDivisaoImpressos[$divisao_anterior])){
                 $pdf->setfont('arial','b',8);
                 $pdf->Ln();
-                $pdf->cell(65,$alt,"Total da Diviso:",0,0,"L",1);
-                $pdf->cell(30,$alt,"Vlr Aquisio "		,0,0,"R",1);
+                $pdf->cell(65,$alt,"Total da Divisão:",0,0,"L",1);
+                $pdf->cell(30,$alt,"Vlr Aquisição "		,0,0,"R",1);
                 $pdf->cell(20,$alt,db_formatar($aDivisaoImpressos[$divisao_anterior]["vlr_total"],'f'),0,0,"R",1);
                 $pdf->cell(25,$alt,"Quantidade"				,0,0,"R",1);
                 $pdf->cell(20,$alt,$aDivisaoImpressos[$divisao_anterior]["qtd_total"]								 ,0,1,"C",1);
             }
             $pdf->ln();
             $pdf->cell(65,$alt,"Total do Departamento:",0,0,"L",1);
-            $pdf->cell(30,$alt,"Vlr Aquisio "		,0,0,"R",1);
+            $pdf->cell(30,$alt,"Vlr Aquisição "		,0,0,"R",1);
             $pdf->cell(20,$alt,db_formatar($aDeptosImpressos[$depto_anterior]["vlr_total"],'f'),0,0,"R",1);
             $pdf->cell(25,$alt,"Quantidade"				,0,0,"R",1);
             $pdf->cell(20,$alt,$aDeptosImpressos[$depto_anterior]["qtd_total"]								 ,0,1,"C",1);
@@ -1131,8 +1120,8 @@ for($x = 0; $x < $numrows; $x++){
 
             $pdf->setfont('arial','b',8);
             $pdf->Ln();
-            $pdf->cell(65,$alt,"Total da Classificao:",0,0,"L",1);
-            $pdf->cell(30,$alt,"Vlr Aquisio "		,0,0,"R",1);
+            $pdf->cell(65,$alt,"Total da Classificação:",0,0,"L",1);
+            $pdf->cell(30,$alt,"Vlr Aquisição "		,0,0,"R",1);
             $pdf->cell(20,$alt,db_formatar($aClassiImpressos[$class_anterior]["vlr_total"],'f'),0,0,"R",1);
             $pdf->cell(25,$alt,"Quantidade"				,0,0,"R",1);
             $pdf->cell(20,$alt,$aClassiImpressos[$class_anterior]["qtd_total"]								 ,0,1,"C",1);
@@ -1174,13 +1163,13 @@ function orgao_cabecalho($pdf,$RLt52_descr,$RLt52_ident,$RLt52_depart,$alt){
     global $tipoData;
 
     $pdf->setfont('arial','b',8);
-    $pdf->cell(15,$alt,"Cdigo"					,1,0,"C",1);
+    $pdf->cell(15,$alt,"Código"					,1,0,"C",1);
     $pdf->cell(65,$alt,$RLt52_descr			,1,0,"C",1);
-    $pdf->cell(20,$alt,"Vlr Aquisio"	,1,0,"C",1);
-    $pdf->cell(25,$alt,($tipoData == 1 ? "Data Aquisio" : "Data Incluso"),1,0,"C",1);
+    $pdf->cell(20,$alt,"Vlr Aquisição"	,1,0,"C",1);
+    $pdf->cell(25,$alt,($tipoData == 1 ? "Data Aquisição" : "Data Inclusão"),1,0,"C",1);
     $pdf->cell(30,$alt,$RLt52_ident			,1,0,"C",1);
     $pdf->cell(60,$alt,$RLt52_depart		,1,0,"C",1);
-    $pdf->cell(48,$alt,'Diviso'				,1,0,"C",1);
+    $pdf->cell(48,$alt,'Divisão'				,1,0,"C",1);
     $pdf->cell(15,$alt,"Pl. Ident "     ,1,1,"C",1);
 }
 ?>

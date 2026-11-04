@@ -38,19 +38,15 @@ $db_botao         = false;
 $db_opcao         = 33;
 
 if (isset($excluir)) {
-
-  $db_opcao = 3;
-  db_inicio_transacao();
-  $cledu_relatmodel->excluir($ed217_i_codigo);
-  db_fim_transacao();
-
-} else if(isset($chavepesquisa)) {
-
-  $db_opcao = 3;
-  $result = $cledu_relatmodel->sql_record($cledu_relatmodel->sql_query($chavepesquisa));
-  db_fieldsmemory($result,0);
-  $db_botao = true;
-
+    $db_opcao = 3;
+    db_inicio_transacao();
+    $cledu_relatmodel->excluir($ed217_i_codigo);
+    db_fim_transacao();
+} elseif (isset($chavepesquisa)) {
+    $db_opcao = 3;
+    $result = $cledu_relatmodel->sql_record($cledu_relatmodel->sql_query($chavepesquisa));
+    db_fieldsmemory($result, 0);
+    $db_botao = true;
 }
 ?>
 <html>
@@ -66,25 +62,24 @@ if (isset($excluir)) {
 <body class='body-default' >
 
   <div class='container'>
-    <?include(modification("forms/db_frmedu_relatmodel.php"));?>
+    <?php include(modification("forms/db_frmedu_relatmodel.php"));?>
   </div>
 <?php
-  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit") );
+  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if (isset($excluir)) {
-
-  if ($cledu_relatmodel->erro_status == "0") {
-    $cledu_relatmodel->erro(true,false);
-  } else {
-    $cledu_relatmodel->erro(true,true);
-  }
+    if ($cledu_relatmodel->erro_status == "0") {
+        $cledu_relatmodel->erro(true, false);
+    } else {
+        $cledu_relatmodel->erro(true, true);
+    }
 }
 
 if ($db_opcao == 33) {
-  echo "<script>document.form1.pesquisar.click();</script>";
+    echo "<script>document.form1.pesquisar.click();</script>";
 }
 ?>
 <script>

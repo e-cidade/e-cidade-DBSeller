@@ -40,7 +40,7 @@ class TurmaRepository
     private $aTurma = array();
     private static $oInstance;
 
-    private function __construct()
+    public function __construct()
     {
     }
 

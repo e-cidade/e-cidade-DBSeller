@@ -129,7 +129,7 @@ try {
         case 'getDisciplinasVinculadasEtapaBase':
             $sCampos  = " ed34_i_codigo, ed34_i_disciplina, ed232_c_descr, ed34_i_qtdperiodo, ed34_c_condicao, ed34_i_ordenacao, ";
             $sCampos .= " ed34_lancarhistorico, ed34_disiciplinaglobalizada, ed34_caracterreprobatorio, ed34_basecomum, ed34_tipobase, ";
-            $sCampos .= "ed34_areaconhecimento, ed293_descr ";
+            $sCampos .= "ed293_sequencial, ed293_descr ";
             $sOrdem   = " ed34_basecomum desc, ed34_i_ordenacao, ed232_c_descr ";
             $sWhere   = "     ed34_i_base  = {$oParam->iBase} ";
             $sWhere  .= " and ed34_i_serie = {$oParam->iEtapa} ";
@@ -168,10 +168,12 @@ try {
                 $oDisciplina->lGlobalizada = $oDados->ed34_disiciplinaglobalizada == 't';
                 $oDisciplina->lCaracterReprobatorio = $oDados->ed34_caracterreprobatorio   == 't';
                 $oDisciplina->lBaseComum = $oDados->ed34_basecomum              == 't';
-                $oDisciplina->codigoAreaConhecimento = $oDados->ed34_areaconhecimento;
+                $oDisciplina->codigoAreaConhecimento = $oDados->ed293_sequencial;
                 $oDisciplina->descricaoAreaConhecimento = urlencode($oDados->ed293_descr);
-                $tipoBase['ed182_descricao'] = urlencode($tipoBase['ed182_descricao']);
-                $oDisciplina->iTipoBase = isset($tipoBase) ? $tipoBase : ['ed182_descricao' => urlencode('Não Cadastrado')];
+                $oDisciplina->iTipoBase = isset($tipoBase) ? (object)[
+                    'ed182_descricao' => urlencode($tipoBase['ed182_descricao']),
+                    'ed182_id'=> urlencode($tipoBase['ed182_id'])
+                ] : (object)['ed182_descricao' => urlencode('Não Cadastrado')];
                 $oDisciplina->lEncerrada = false; //Variável para manter compatibilidade com os dados da regência
                 $oDisciplina->sTipoControleFrequencia = 'A';   //Variável para manter compatibilidade com os dados da regência
                 $aDisciplinas[] = $oDisciplina;
@@ -216,8 +218,10 @@ try {
                 $oDisciplina->sTipoControleFrequencia = $oRegencia->getFrequenciaGlobal();
                 $oDisciplina->lTemDisciplinaGlobalizada = $oDisciplina->lGlobalizada;
                 $oDisciplina->sProcedimentoAvalicao = urlencode($oRegencia->getProcedimentoAvaliacao()->getDescricao());
-                $tipoBase['ed182_descricao'] = urlencode($tipoBase['ed182_descricao']);
-                $oDisciplina->iTipoBase = isset($tipoBase) ? $tipoBase : ['ed182_descricao' => urlencode('Não Cadastrado')];
+                $oDisciplina->iTipoBase = isset($tipoBase) ? (object)[
+                    'ed182_descricao' => urlencode($tipoBase['ed182_descricao']),
+                    'ed182_id'=> urlencode($tipoBase['ed182_id'])
+                ] : (object)['ed182_descricao' => urlencode('Não Cadastrado')];
                 $areaConhecimento = $oRegencia->getAreaConhecimento();
 
                 $oDisciplina->codigoAreaConhecimento = '';
@@ -369,7 +373,7 @@ try {
             for ($i = 0; $i < $iLinhas; $i++) {
                 $aDisciplinasBase[]   = db_utils::fieldsMemory($rsBaseMps, $i);
                 $aCodigoDisciplinas[] = db_utils::fieldsMemory($rsBaseMps, $i)->ed34_i_disciplina;
-                $oRegencia;
+                $oRegencia = "";
             }
 
           /**
@@ -441,6 +445,7 @@ try {
                         $oRegencia->setCaracterReprobatorio($oDadosDisciplinaBase->ed34_caracterreprobatorio == 't');
                         $oRegencia->setBaseComum($oDadosDisciplinaBase->ed34_basecomum == 't');
                         $oRegencia->setTipoBase($oDadosDisciplinaBase->ed34_tipobase);
+                        $oRegencia->setUnidadeCurricular($oDadosDisciplinaBase->ed34_unidade_crurricular);
 
                         /**
                          * - Por default, assumimos que a base está configurada com controle de frequência individual, por isso
@@ -631,6 +636,17 @@ function salvarDisciplinaTurma($oParam)
     $oEtapa    = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
     $iOrdem    = RegenciaRepository::getMaiorOrdemRegencia($oTurma, $oEtapa);
 
+    $base = $oTurma->getBaseCurricular();
+    $disicpinasBase = $base->getDisciplina($oEtapa);
+
+    $unidadeCurricular = null;
+    foreach ($disicpinasBase as $disciplinaBase) {
+        if ($disciplinaBase->getCodigoDisciplina() === $oParam->iDisicplina) {
+            $unidadeCurricular = $disciplinaBase->unidadeCurricular;
+        }
+    }
+
+
     if ($oTurma->getTipoDaTurma() == 6 && empty($oParam->iCodigoVinculo) && count($oTurma->getDisciplinasPorEtapa($oEtapa)) > 0) {
         throw new BusinessException("Turmas de progressão parcial só podem ter uma disciplina.");
     }
@@ -655,6 +671,7 @@ function salvarDisciplinaTurma($oParam)
     $oRegencia->setTipoBase($oParam->lTipoBase);
     $oRegencia->setControleFrequencia($oParam->sTipoControleFrequencia);
     $oRegencia->setDataAtualizacao(new DBDate(date(DBDate::DATA_EN)));
+    $oRegencia->setUnidadeCurricular($unidadeCurricular);
 
     if (!empty($oParam->areaConhecimento)) {
         $oRegencia->setAreaConhecimento(AreaConhecimentoRegistry::get($oParam->areaConhecimento));

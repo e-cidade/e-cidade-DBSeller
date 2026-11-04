@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clitbitransacao->rotulo->label();
 	      <?=@$Lit04_codigo?>
 	    </td>
 	    <td> 
-	 	  <?
+	 	  <?php
 			db_input('it04_codigo',10,$Iit04_codigo,true,'text',3,"")
 		  ?>
 	    </td>
@@ -46,7 +46,7 @@ $clitbitransacao->rotulo->label();
 	      <?=@$Lit04_descr?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_input('it04_descr',53,$Iit04_descr,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -56,7 +56,7 @@ $clitbitransacao->rotulo->label();
 	      <?=@$Lit04_desconto?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_input('it04_desconto',10,$Iit04_desconto,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -66,7 +66,7 @@ $clitbitransacao->rotulo->label();
 	      <?=@$Lit04_datalimite?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_inputdata('it04_datalimite',@$it04_datalimite_dia,@$it04_datalimite_mes,@$it04_datalimite_ano,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -77,7 +77,7 @@ $clitbitransacao->rotulo->label();
 	      <?=@$Lit04_obs?>
 	    </td>
 	    <td> 
-		  <?
+		  <?php
 			db_textarea('it04_obs',5,50,$Iit04_obs,true,'text',$db_opcao,"")
 		  ?>
 	    </td>
@@ -85,9 +85,9 @@ $clitbitransacao->rotulo->label();
     </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
- <? if ($db_opcao != 1 ) {?>
+ <?php if ($db_opcao != 1 ) {?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
- <? } ?>
+ <?php } ?>
 </form>
 <script>
 function js_pesquisa(){
@@ -95,7 +95,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbitransacao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

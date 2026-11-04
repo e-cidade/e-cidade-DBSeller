@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,7 +112,7 @@ function js_relatorio(){
          	      <b>Data a filtrar : </b>
         	    </td>
          	    <td>
-							  <?	
+							  <?php 
 		  					$arrayDtfiltrar = array ("arq" => "Data do Arquivo", "pag" => "Data do Pagamento");
 	  						db_select('dtfiltrar', $arrayDtfiltrar, true, 1);
    						  ?>      
@@ -123,7 +123,7 @@ function js_relatorio(){
 							  <b>Data Inicial:</b>
 							</td>
               <td nowrap>
-							<?
+							<?php
 							  db_inputdata('datai',@$datai_dia,@$datai_mes,@$datai_ano,true,'text',1,"");
               ?>
               </td>
@@ -133,7 +133,7 @@ function js_relatorio(){
 							  <b>Data Final:</b>
 							</td>
               <td nowrap>
-                <?
+                <?php
 							  db_inputdata('dataf',@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1,"");								
 								?>
               </td>
@@ -143,7 +143,7 @@ function js_relatorio(){
          	      <b>Mostrar valores sem diferenca : </b>
         	    </td>
          	    <td>
-							  <?	
+							  <?php 
 		  					$xy = array ("sim" => "Sim", "nao" => "Nao");
 	  						db_select('imprimirsemdif', $xy, true, 1);
    						  ?>      
@@ -154,7 +154,7 @@ function js_relatorio(){
                 <b>Mostrar parcela unica: </b>
         	    </td>
          	    <td>
-           			<?
+           			<?php
 								$xy = array ("sim" => "Sim", "nao" => "Nao");
                 db_select('parcunica', $xy, true, 1);
                 ?>      
@@ -165,7 +165,7 @@ function js_relatorio(){
                 <b>Totalizar por banco/arquivo: </b>
         	    </td>
          	    <td>
-           			<?
+           			<?php
 								$xy = array ("sim" => "Sim", "nao" => "Nao");
                 db_select('totarquivo', $xy, true, 1);
                 ?>      
@@ -176,7 +176,7 @@ function js_relatorio(){
                 <b>Ordem: </b>
         	    </td>
          	    <td>
-           			<?
+           			<?php
 								$xy = array ("d" => "Diferença", "a" => "Nome", "n" => "Numpre/parcela");
                 db_select('ordem', $xy, true, 1);
                 ?>      
@@ -187,7 +187,7 @@ function js_relatorio(){
          	      <b>Quebra pagina entre movimento: </b>
         	    </td>
          	    <td>
-							  <?	
+							  <?php 
 		  					$xy = array ("nao" => "Nao", "sim" => "Sim");
 	  						db_select('quebrarpagina', $xy, true, 1);
    						  ?>      
@@ -198,7 +198,7 @@ function js_relatorio(){
               	<b>Considerar diferenca a partir de: </b>
         	    </td>
               <td>
-							  <?
+							  <?php
   							db_input('difapartir',10,"",true,'text',1,'');
   							?>
       	      </td>
@@ -208,7 +208,7 @@ function js_relatorio(){
 							  <?=$Lk15_codbco?>
 							</td>
               <td nowrap>
-                <?
+                <?php
 
           				$sCamposBanco = "distinct cadban.k15_codbco,cgm.z01_nome";
           				$sSqlBanco    = $clcadban->sql_query_disarq("",$sCamposBanco,"cadban.k15_codbco"," k15_instit= $iInstit");
@@ -218,7 +218,7 @@ function js_relatorio(){
          				?>
               </td>
             </tr>
-            <?
+            <?php
       				if ( isset($k15_codbco) && $k15_codbco != 0 ) {
             ?>
             <tr>
@@ -226,7 +226,7 @@ function js_relatorio(){
                 <?=$Lk15_conta?>
               </td>
               <td nowrap>
-                <?
+                <?php
                 
                   $sCamposConta = "distinct cadban.k15_conta,cadban.k15_conta ";
                   $sWhereConta  = "     cadban.k15_instit = {$iInstit}        ";
@@ -238,7 +238,7 @@ function js_relatorio(){
                 ?>
               </td>
             </tr>            
-            <?            
+            <?php            
           		}
           	?>			
             <tr>
@@ -246,7 +246,7 @@ function js_relatorio(){
                 <b>Numpre Origem:</b>
               </td>
               <td nowrap>
-                <?
+                <?php
                   $aNumpreOrigem = array("n"=>"Não",
                                          "s"=>"Sim");
       
@@ -268,7 +268,7 @@ function js_relatorio(){
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

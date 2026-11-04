@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ if (($o48_coddocsup > 0 ) &&  ($o48_coddocred > 0 )){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-     <?
+     <?php
       if (!isset($alteracao)){
 	if ($modelo == 1){
            $clcriaabas->identifica = array("reduz"=>"Reduções","suplem"=>"Suplementação");
@@ -137,7 +137,7 @@ if (($o48_coddocsup > 0 ) &&  ($o48_coddocred > 0 )){
 	</td>
   </tr>
 </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

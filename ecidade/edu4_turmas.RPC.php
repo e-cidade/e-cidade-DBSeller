@@ -81,8 +81,8 @@ try {
        * Buscamos as informacoes referentes a turma de origem do aluno
        */
       $oDaoMatricula    = db_utils::getDao("matricula");
-      $sCamposMatricula = "ed60_i_codigo, turma.ed57_i_codigo as ed57_i_codigo, ed221_i_serie";
-      $sWhereMatricula  = "ed60_matricula = {$oMatricula->getMatricula()} AND ed60_c_situacao = 'TROCA DE TURMA'";
+      $sCamposMatricula = "ed60_i_codigo, ed60_c_situacao, turma.ed57_i_codigo as ed57_i_codigo, ed221_i_serie";
+      $sWhereMatricula  = "ed60_matricula = {$oMatricula->getMatricula()} AND (ed60_c_situacao = 'TROCA DE TURMA' or ed60_c_situacao = 'TROCA DE MODALIDADE')";
       $sSqlMatricula    = $oDaoMatricula->sql_query(null, $sCamposMatricula, "ed60_i_codigo desc", $sWhereMatricula);
       $rsMatricula      = db_query( $sSqlMatricula );
 
@@ -108,7 +108,7 @@ try {
         $oRetorno->iMatriculaOrigem = $oMatriculaOrigem->getMatricula();
         $oRetorno->sTurmaOrigem     = urlencode($oTurmaOrigem->getDescricao());
         $oRetorno->sEtapaOrigem     = urlencode($oEtapaOrigem->getNome());
-        $oRetorno->sSituacaoOrigem  = 'TROCA DE TURMA';
+        $oRetorno->sSituacaoOrigem  = $oDadosMatricula->ed60_c_situacao;
         $oRetorno->sTurnoOrigem     = urlencode($oTurmaOrigem->getTurno()->getDescricao());
         unset($oDadosMatricula);
       }
@@ -326,7 +326,6 @@ try {
           $oRetorno->aRegencias[]   = $oDisciplina;
         }
       }
-
       break;
 
     case 'pesquisaAlunosTurma':
@@ -1122,7 +1121,25 @@ try {
         }
       }
 
+      /**
+       * Verificar se existe uma Etapa anterior equivalente
+       */
       if ( is_null($oEtapaDestino) ) {
+        $oEtapaAnterior = end(EtapaRepository::getEtapasAnteriores($oEtapaOrigem));
+
+        foreach ($oEtapaAnterior->buscaEtapaEquivalente() as $oEtapaEquivalente) {
+          if (in_array($oEtapaEquivalente->getCodigo(), $aEtapasDestino)) {
+            $oEtapaDestino = $oEtapaEquivalente;
+            break;
+          }
+        }
+        $oRetorno->lPossuiEtapaAnterior = true;
+      }
+
+      /**
+       * Se ainda não tiver uma Etapa equivalente
+       */
+      if (is_null($oEtapaDestino)) {
         $oRetorno->lPossuiMesmoProcedimentos = false;
       }
 

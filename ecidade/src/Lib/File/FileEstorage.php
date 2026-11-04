@@ -2,6 +2,8 @@
 
 namespace ECidade\Lib\File;
 
+use App\Domain\Configuracao\Helpers\LocalFileStorage;
+use App\Domain\Configuracao\Helpers\StorageHelper;
 use ECidade\Lib\Request\Curl;
 use ECidade\Lib\Request\Storage\Curl\Autenticacao;
 use ECidade\Lib\Request\Storage\Curl\Get;
@@ -14,9 +16,15 @@ class FileEstorage
 {
     private $path;
     private $autenticacao;
+    private $localMode = false;
 
     public function __construct()
     {
+        if (!StorageHelper::isConfigured()) {
+            $this->localMode = true;
+            return;
+        }
+
         $this->autenticacao = Autenticacao::getInstance();
         $this->autenticacao->execute();
     }
@@ -211,6 +219,9 @@ class FileEstorage
             case 'application/msword':
                 $extension = 'doc';
                 break;
+            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                $extension = 'docx';
+                break;
 
             default:
                 $extension = preg_replace('/\w+\/(\w+)$/', "$1", $infoRequest['content_type']);
@@ -222,18 +233,33 @@ class FileEstorage
         }
 
         $this->path .= $extension;
+        $this->pathRelative = "tmp/".basename($this->path);
         file_put_contents($this->path, $response);
     }
 
     public function getPath($idFile)
     {
+        if ($this->localMode) {
+            return (new LocalFileStorage())->getPath($idFile);
+        }
+
         $this->get($idFile);
 
         return $this->path;
     }
 
+    public function getPathRelative($idFile)
+    {
+        $this->get($idFile);
+        return $this->pathRelative;
+    }
+
     public function getBase64($idFile)
     {
+        if ($this->localMode) {
+            return (new LocalFileStorage())->getBase64($idFile);
+        }
+
         return $this->get($idFile, true);
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltesinter->rotulo->label("j39_idbql");
               <?=$Lj39_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j39_sequencial",10,$Ij39_sequencial,true,"text",4,"","chave_j39_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cltesinter->rotulo->label("j39_idbql");
               <?=$Lj39_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j39_idbql",4,$Ij39_idbql,true,"text",4,"","chave_j39_idbql");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cltesinter->rotulo->label("j39_idbql");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tesinter.php")==true){
@@ -122,12 +122,12 @@ $cltesinter->rotulo->label("j39_idbql");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

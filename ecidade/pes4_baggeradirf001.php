@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -104,7 +104,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Ano Base:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
           $sqlanomes = "select max(cast(r11_anousu as text)||lpad(cast(r11_mesusu as text),2,'0')) from cfpess";
           $resultanomes = db_query($sqlanomes);
           db_fieldsmemory($resultanomes,0);
@@ -118,7 +118,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Código Retencao:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             $codret = '0561';
             db_input('codret',4,'',true,'text',2,'')
 	  ?>
@@ -129,7 +129,7 @@ function js_detectaarquivo(arquivo,pdf){
           <strong>Tirar por:&nbsp;&nbsp;</strong>
 	</td>  
         <td align="left">
-          <?
+          <?php
           $arr_ = array('p'=>'Pref','f'=>'Funpas','t'=>'Todos');
           db_select("pref_fun", $arr_, true, 1);
           ?>                             
@@ -145,7 +145,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>Nome:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('nomeresp',40,'',true,'text',2,'')
 	  ?>
         </td>
@@ -153,7 +153,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>DDD:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('dddresp',4,'',true,'text',2,'')
 	  ?>
         </td>
@@ -161,7 +161,7 @@ function js_detectaarquivo(arquivo,pdf){
          <strong>Fone:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('foneresp',12,'',true,'text',2,'')
 	  ?>
         </td>
@@ -169,7 +169,7 @@ function js_detectaarquivo(arquivo,pdf){
         <strong>CPF:&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php
             db_input('cpfresp',14,'',true,'text',2,"  onBlur='js_verificaCGCCPF(this)' onKeyDown='return js_controla_tecla_enter(this,event);' onKeyUp='js_limpa(this)' ")
 	  ?>
         </td>
@@ -186,7 +186,7 @@ function js_detectaarquivo(arquivo,pdf){
       </tr>
   </form>
     </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,13 +54,13 @@ class cl_condicionante {
                  am10_vinculatodasatividades = bool = Vincula Todas Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_condicionante() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condicionante"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_condicionante {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->am10_sequencial = ($this->am10_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["am10_sequencial"]:$this->am10_sequencial);
        $this->am10_descricao = ($this->am10_descricao == ""?@$GLOBALS["HTTP_POST_VARS"]["am10_descricao"]:$this->am10_descricao);
@@ -80,7 +80,7 @@ class cl_condicionante {
      }
    }
    // funcao para Inclusão
-   function incluir ($am10_sequencial = null){
+   public function incluir ($am10_sequencial = null){
       $this->atualizacampos();
      if($this->am10_descricao == null ){ 
        $this->erro_sql = " Campo Desrição não informado.";

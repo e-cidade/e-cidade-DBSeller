@@ -1029,6 +1029,7 @@ class cl_rechumano
         //se rh vem direto do cgm
         $sql .= "      left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo";
         $sql .= "      left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
+        $sql .= "      left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm or cgmfisico.z04_numcgm = cgmcgm.z01_numcgm";
         $sql .= "      left join cgmdoc on  cgmdoc.z02_i_cgm = cgmcgm.z01_numcgm";
         $sql .= "      left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime";
         //demais ligações da rechumano
@@ -1115,11 +1116,97 @@ class cl_rechumano
         $sql .= "      left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
         $sql .= "      left join cgmdoc on  cgmdoc.z02_i_cgm = cgmcgm.z01_numcgm";
         $sql .= "      left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime";
+        $sql .= "      left join cgmfisico on cgmfisico.z04_numcgm = rhpessoal.rh01_numcgm and cgmfisico.z04_nomesocial <> ''";
+        //demais ligações da rechumano
+        $sql .= "      inner join rechumanoescola  on  rechumanoescola.ed75_i_rechumano = rechumano.ed20_i_codigo";
+        $sql .= "      inner join escola  on  escola.ed18_i_codigo = rechumanoescola.ed75_i_escola";
+        $sql .= "      left join relacaotrabalho  on  relacaotrabalho.ed23_i_rechumanoescola = rechumanoescola.ed75_i_codigo";
+        $sql .= "      left join tipohoratrabalho on  tipohoratrabalho.ed128_codigo = ed23_tipohoratrabalho";
+        $sql .= "      left join rechumanoativ  on  rechumanoativ.ed22_i_rechumanoescola = rechumanoescola.ed75_i_codigo";
+        $sql .= "      left join atividaderh  on  atividaderh.ed01_i_codigo = rechumanoativ.ed22_i_atividade";
+        $sql .= "      left join disciplina  on  disciplina.ed12_i_codigo = relacaotrabalho.ed23_i_disciplina";
+        $sql .= "      left join caddisciplina on ed232_i_codigo= ed12_i_caddisciplina";
+        $sql .= "      left join ensino  on  ensino.ed10_i_codigo = disciplina.ed12_i_ensino";
+        $sql .= "      inner join pais  on  pais.ed228_i_codigo = rechumano.ed20_i_pais";
+        $sql .= "      left  join censouf as censoufident on  censoufident.ed260_i_codigo = rechumano.ed20_i_censoufident";
+        $sql .= "      left  join censouf as censoufnat on  censoufnat.ed260_i_codigo = rechumano.ed20_i_censoufnat";
+        $sql .= "      left  join censouf as censoufcert on  censoufcert.ed260_i_codigo = rechumano.ed20_i_censoufcert";
+        $sql .= "      left  join censouf as censoufender on  censoufender.ed260_i_codigo = rechumano.ed20_i_censoufender";
+        $sql .= "      left  join censomunic as censomunicnat on  censomunicnat.ed261_i_codigo = rechumano.ed20_i_censomunicnat";
+        $sql .= "      left  join censomunic as censomunicender on  censomunicender.ed261_i_codigo = rechumano.ed20_i_censomunicender";
+        $sql .= "      left  join censoorgemissrg  on  censoorgemissrg.ed132_i_codigo = rechumano.ed20_i_censoorgemiss";
+        $sql .= "      left  join censocartorio  on  censocartorio.ed291_i_codigo = rechumano.ed20_i_censocartorio";
+        $sql .= "      left  join regimetrabalho on  regimetrabalho.ed24_i_codigo = relacaotrabalho.ed23_i_regimetrabalho";
+        $sql2 = "";
+        if ($dbwhere == "") {
+            if ($ed20_i_codigo != null) {
+                $sql2 .= " where rechumano.ed20_i_codigo = $ed20_i_codigo ";
+            }
+        } else if ($dbwhere != "") {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if ($ordem != null) {
+            $sql .= " order by ";
+            $campos_sql = explode("#", $ordem);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        }
+        return $sql;
+    }
+
+    public function sql_query_escola_rechumano($ed20_i_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    {
+        $sql = "select ";
+        if ($campos != "*") {
+            $campos_sql = explode("#", $campos);
+            $virgula = "";
+            for ($i = 0; $i < sizeof($campos_sql); $i++) {
+                $sql .= $virgula . $campos_sql[$i];
+                $virgula = ",";
+            }
+        } else {
+            $sql .= $campos;
+        }
+        $instit = db_getsession("DB_instit");
+        $ano = db_anofolha();
+        $mes = db_mesfolha();
+        $sql .= " from rechumano ";
+        //se rh vem da rhpessoal
+        $sql .= "      left join rechumanopessoal  on  rechumanopessoal.ed284_i_rechumano = rechumano.ed20_i_codigo";
+        $sql .= "      left join rhpessoal  on  rhpessoal.rh01_regist = rechumanopessoal.ed284_i_rhpessoal";
+        $sql .= "      left join cgm as cgmrh on  cgmrh.z01_numcgm = rhpessoal.rh01_numcgm";
+        $sql .= "      left join cgmfisico ON cgmfisico.z04_numcgm = cgmrh.z01_numcgm";
+        $sql .= "      left join db_config  on  db_config.codigo = rhpessoal.rh01_instit";
+        $sql .= "      left join rhpessoalmov on rhpessoalmov.rh02_anousu  = $ano
+                                          and rhpessoalmov.rh02_mesusu  = $mes
+                                          and rhpessoalmov.rh02_regist  = rhpessoal.rh01_regist
+                                          and rhpessoalmov.rh02_instit  = $instit";
+        $sql .= "      left join rhregime as regimerh on  regimerh.rh30_codreg = rhpessoalmov.rh02_codreg";
+        $sql .= "      left join rhlota  on  rhlota.r70_codigo = rhpessoal.rh01_lotac";
+        $sql .= "      left join rhpesdoc  on  rhpesdoc.rh16_regist = rhpessoal.rh01_regist";
+        $sql .= "      left join rhestcivil  on  rhestcivil.rh08_estciv = rhpessoal.rh01_estciv";
+        $sql .= "      left join rhraca  on  rhraca.rh18_raca = rhpessoal.rh01_raca";
+        $sql .= "      left join rhfuncao  on  rhfuncao.rh37_funcao = rhpessoal.rh01_funcao and rh37_instit  = rh02_instit";
+        $sql .= "      left join rhinstrucao  on  rhinstrucao.rh21_instru = rhpessoal.rh01_instru";
+        $sql .= "      left join rhnacionalidade  on  rhnacionalidade.rh06_nacionalidade = rhpessoal.rh01_nacion";
+        //se rh vem direto do cgm
+        $sql .= "      left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rechumano.ed20_i_codigo";
+        $sql .= "      left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
+        $sql .= "      left join cgmdoc on  cgmdoc.z02_i_cgm = cgmcgm.z01_numcgm";
+        $sql .= "      left join rhregime as regimecgm on  regimecgm.rh30_codreg = rechumano.ed20_i_rhregime";
         // $sql .= "      inner join rhregime on rhregime.rh30_codreg = rechumano.ed20_i_rhregime ";
         //demais ligações da rechumano
         $sql .= "      inner join rechumanoescola  on  rechumanoescola.ed75_i_rechumano = rechumano.ed20_i_codigo";
         $sql .= "      inner join escola  on  escola.ed18_i_codigo = rechumanoescola.ed75_i_escola";
         $sql .= "      left join relacaotrabalho  on  relacaotrabalho.ed23_i_rechumanoescola = rechumanoescola.ed75_i_codigo";
+
+        $sql .= "      left join regimetrabalho ON relacaotrabalho.ed23_i_regimetrabalho = regimetrabalho.ed24_i_codigo";
+        $sql .= "      left join tipohoratrabalho ON relacaotrabalho.ed23_tipohoratrabalho = tipohoratrabalho.ed128_codigo";
+
         $sql .= "      left join rechumanoativ  on  rechumanoativ.ed22_i_rechumanoescola = rechumanoescola.ed75_i_codigo";
         $sql .= "      left join atividaderh  on  atividaderh.ed01_i_codigo = rechumanoativ.ed22_i_atividade";
         $sql .= "      left join disciplina  on  disciplina.ed12_i_codigo = relacaotrabalho.ed23_i_disciplina";
@@ -1895,6 +1982,53 @@ class cl_rechumano
             $sql .= " where " . implode(' and ', $where);
         }
 
+        return $sql;
+    }
+
+    /**
+     * Retorna todas as formações acadêmicas a partir do número da matrícula
+     * com 'codigo', 'descricao', 'tipoensinomedio', 'nomecursofaculdade', 'nomepos'.
+     * 
+     * Esse campo é usado no plugin Efetividade Relatório, por favor não apagar.
+     * 
+     * @param int $matricula número da matricula do profissional.
+     * @return string sql
+     */
+    public function sql_query_formacao_professor_matricula($matricula)
+    {
+        $sql = "
+        select distinct
+            rh01_instru as codigo,
+            rh21_descr as descricao,
+            case
+                when (ed20_tipoensinomedio is null) then 0
+                else ed20_tipoensinomedio
+            end	as tipoensinomedio,
+            case
+                when (ed94_c_descr is null) then ''
+                else ed94_c_descr
+            end as nomecursofaculdade,
+            case 
+                when (ed183_nomecurso is null) then ''
+                else ed183_nomecurso
+            end as nomepos
+        from
+            pessoal.rhpessoal
+        join pessoal.rhinstrucao on 
+            rh01_instru = rh21_instru
+        left join escola.turmas_regentes on
+            pessoal.rhpessoal.rh01_numcgm = escola.turmas_regentes.cgm
+        left join escola.rechumano on
+            escola.turmas_regentes.codigo_rechumano = escola.rechumano.ed20_i_codigo
+        left join escola.formacao on
+            escola.turmas_regentes.codigo_rechumano = ed27_i_rechumano
+        left join escola.cursoformacao on
+            ed27_i_cursoformacao = ed94_i_codigo
+        left join escola.rhformacaosuperior on
+            pessoal.rhpessoal.rh01_numcgm = ed183_cgm
+        where
+            rh01_regist = {$matricula};
+        ";
         return $sql;
     }
 }

@@ -1,73 +1,73 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: patrim
 //CLASSE DA ENTIDADE histbensocorrencia
-class cl_histbensocorrencia { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $t69_sequencial = 0; 
-   var $t69_codbem = 0; 
-   var $t69_ocorrenciasbens = 0; 
-   var $t69_obs = null; 
-   var $t69_dthist_dia = null; 
-   var $t69_dthist_mes = null; 
-   var $t69_dthist_ano = null; 
-   var $t69_dthist = null; 
-   var $t69_hora = null; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_histbensocorrencia {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $t69_sequencial = 0;
+   var $t69_codbem = 0;
+   var $t69_ocorrenciasbens = 0;
+   var $t69_obs = null;
+   var $t69_dthist_dia = null;
+   var $t69_dthist_mes = null;
+   var $t69_dthist_ano = null;
+   var $t69_dthist = null;
+   var $t69_hora = null;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 t69_sequencial = int4 = Sequêncial 
-                 t69_codbem = int4 = Cód Bem 
-                 t69_ocorrenciasbens = int4 = Cód Ocorrência 
-                 t69_obs = varchar(50) = Observação 
-                 t69_dthist = date = Data do Histórico 
-                 t69_hora = char(5) = Hora da Ocorrência 
+                 t69_sequencial = int4 = Sequêncial
+                 t69_codbem = int4 = Cód Bem
+                 t69_ocorrenciasbens = int4 = Cód Ocorrência
+                 t69_obs = varchar(50) = Observação
+                 t69_dthist = date = Data do Histórico
+                 t69_hora = char(5) = Hora da Ocorrência
                  ";
-   //funcao construtor da classe 
-   function cl_histbensocorrencia() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("histbensocorrencia"); 
+     $this->rotulo = new rotulo("histbensocorrencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -76,7 +76,7 @@ class cl_histbensocorrencia {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->t69_sequencial = ($this->t69_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["t69_sequencial"]:$this->t69_sequencial);
        $this->t69_codbem = ($this->t69_codbem == ""?@$GLOBALS["HTTP_POST_VARS"]["t69_codbem"]:$this->t69_codbem);
@@ -96,9 +96,9 @@ class cl_histbensocorrencia {
      }
    }
    // funcao para inclusao
-   function incluir ($t69_sequencial){ 
+   public function incluir ($t69_sequencial){
       $this->atualizacampos();
-     if($this->t69_codbem == null ){ 
+     if($this->t69_codbem == null ){
        $this->erro_sql = " Campo Cód Bem nao Informado.";
        $this->erro_campo = "t69_codbem";
        $this->erro_banco = "";
@@ -107,7 +107,7 @@ class cl_histbensocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t69_ocorrenciasbens == null ){ 
+     if($this->t69_ocorrenciasbens == null ){
        $this->erro_sql = " Campo Cód Ocorrência nao Informado.";
        $this->erro_campo = "t69_ocorrenciasbens";
        $this->erro_banco = "";
@@ -116,7 +116,7 @@ class cl_histbensocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t69_obs == null ){ 
+     if($this->t69_obs == null ){
        $this->erro_sql = " Campo Observação nao Informado.";
        $this->erro_campo = "t69_obs";
        $this->erro_banco = "";
@@ -125,7 +125,7 @@ class cl_histbensocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t69_dthist == null ){ 
+     if($this->t69_dthist == null ){
        $this->erro_sql = " Campo Data do Histórico nao Informado.";
        $this->erro_campo = "t69_dthist_dia";
        $this->erro_banco = "";
@@ -134,7 +134,7 @@ class cl_histbensocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     if($this->t69_hora == null ){ 
+     if($this->t69_hora == null ){
        $this->erro_sql = " Campo Hora da Ocorrência nao Informado.";
        $this->erro_campo = "t69_hora";
        $this->erro_banco = "";
@@ -144,16 +144,16 @@ class cl_histbensocorrencia {
        return false;
      }
      if($t69_sequencial == "" || $t69_sequencial == null ){
-       $result = db_query("select nextval('histbensocorrencia_t69_sequencial_seq')"); 
+       $result = db_query("select nextval('histbensocorrencia_t69_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: histbensocorrencia_t69_sequencial_seq do campo: t69_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: histbensocorrencia_t69_sequencial_seq do campo: t69_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->t69_sequencial = pg_result($result,0,0); 
+       $this->t69_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from histbensocorrencia_t69_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $t69_sequencial)){
@@ -164,10 +164,10 @@ class cl_histbensocorrencia {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->t69_sequencial = $t69_sequencial; 
+         $this->t69_sequencial = $t69_sequencial;
        }
      }
-     if(($this->t69_sequencial == null) || ($this->t69_sequencial == "") ){ 
+     if(($this->t69_sequencial == null) || ($this->t69_sequencial == "") ){
        $this->erro_sql = " Campo t69_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,23 +176,23 @@ class cl_histbensocorrencia {
        return false;
      }
      $sql = "insert into histbensocorrencia(
-                                       t69_sequencial 
-                                      ,t69_codbem 
-                                      ,t69_ocorrenciasbens 
-                                      ,t69_obs 
-                                      ,t69_dthist 
-                                      ,t69_hora 
+                                       t69_sequencial
+                                      ,t69_codbem
+                                      ,t69_ocorrenciasbens
+                                      ,t69_obs
+                                      ,t69_dthist
+                                      ,t69_hora
                        )
                 values (
-                                $this->t69_sequencial 
-                               ,$this->t69_codbem 
-                               ,$this->t69_ocorrenciasbens 
-                               ,'$this->t69_obs' 
-                               ,".($this->t69_dthist == "null" || $this->t69_dthist == ""?"null":"'".$this->t69_dthist."'")." 
-                               ,'$this->t69_hora' 
+                                $this->t69_sequencial
+                               ,$this->t69_codbem
+                               ,$this->t69_ocorrenciasbens
+                               ,'$this->t69_obs'
+                               ,".($this->t69_dthist == "null" || $this->t69_dthist == ""?"null":"'".$this->t69_dthist."'")."
+                               ,'$this->t69_hora'
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Histórico de Ocorrências do Bem ($this->t69_sequencial) nao Incluído. Inclusao Abortada.";
@@ -229,16 +229,16 @@ class cl_histbensocorrencia {
        $resac = db_query("insert into db_acount values($acount,2424,13860,'','".AddSlashes(pg_result($resaco,0,'t69_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($t69_sequencial=null) { 
+   public function alterar ($t69_sequencial=null) {
       $this->atualizacampos();
      $sql = " update histbensocorrencia set ";
      $virgula = "";
-     if(trim($this->t69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_sequencial"])){ 
+     if(trim($this->t69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_sequencial"])){
        $sql  .= $virgula." t69_sequencial = $this->t69_sequencial ";
        $virgula = ",";
-       if(trim($this->t69_sequencial) == null ){ 
+       if(trim($this->t69_sequencial) == null ){
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "t69_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_codbem"])){ 
+     if(trim($this->t69_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_codbem"])){
        $sql  .= $virgula." t69_codbem = $this->t69_codbem ";
        $virgula = ",";
-       if(trim($this->t69_codbem) == null ){ 
+       if(trim($this->t69_codbem) == null ){
          $this->erro_sql = " Campo Cód Bem nao Informado.";
          $this->erro_campo = "t69_codbem";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_ocorrenciasbens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_ocorrenciasbens"])){ 
+     if(trim($this->t69_ocorrenciasbens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_ocorrenciasbens"])){
        $sql  .= $virgula." t69_ocorrenciasbens = $this->t69_ocorrenciasbens ";
        $virgula = ",";
-       if(trim($this->t69_ocorrenciasbens) == null ){ 
+       if(trim($this->t69_ocorrenciasbens) == null ){
          $this->erro_sql = " Campo Cód Ocorrência nao Informado.";
          $this->erro_campo = "t69_ocorrenciasbens";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_obs"])){ 
+     if(trim($this->t69_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_obs"])){
        $sql  .= $virgula." t69_obs = '$this->t69_obs' ";
        $virgula = ",";
-       if(trim($this->t69_obs) == null ){ 
+       if(trim($this->t69_obs) == null ){
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "t69_obs";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_dthist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"] !="") ){ 
+     if(trim($this->t69_dthist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"] !="") ){
        $sql  .= $virgula." t69_dthist = '$this->t69_dthist' ";
        $virgula = ",";
-       if(trim($this->t69_dthist) == null ){ 
+       if(trim($this->t69_dthist) == null ){
          $this->erro_sql = " Campo Data do Histórico nao Informado.";
          $this->erro_campo = "t69_dthist_dia";
          $this->erro_banco = "";
@@ -299,11 +299,11 @@ class cl_histbensocorrencia {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"])){
          $sql  .= $virgula." t69_dthist = null ";
          $virgula = ",";
-         if(trim($this->t69_dthist) == null ){ 
+         if(trim($this->t69_dthist) == null ){
            $this->erro_sql = " Campo Data do Histórico nao Informado.";
            $this->erro_campo = "t69_dthist_dia";
            $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_histbensocorrencia {
          }
        }
      }
-     if(trim($this->t69_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_hora"])){ 
+     if(trim($this->t69_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_hora"])){
        $sql  .= $virgula." t69_hora = '$this->t69_hora' ";
        $virgula = ",";
-       if(trim($this->t69_hora) == null ){ 
+       if(trim($this->t69_hora) == null ){
          $this->erro_sql = " Campo Hora da Ocorrência nao Informado.";
          $this->erro_campo = "t69_hora";
          $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_histbensocorrencia {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Histórico de Ocorrências do Bem nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->t69_sequencial;
@@ -381,14 +381,14 @@ class cl_histbensocorrencia {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($t69_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($t69_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($t69_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -419,7 +419,7 @@ class cl_histbensocorrencia {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Histórico de Ocorrências do Bem nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$t69_sequencial;
@@ -447,11 +447,11 @@ class cl_histbensocorrencia {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -473,11 +473,11 @@ class cl_histbensocorrencia {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,15 +499,15 @@ class cl_histbensocorrencia {
      $sql2 = "";
      if($dbwhere==""){
        if($t69_sequencial!=null ){
-         $sql2 .= " where histbensocorrencia.t69_sequencial = $t69_sequencial "; 
-       } 
+         $sql2 .= " where histbensocorrencia.t69_sequencial = $t69_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,11 +516,11 @@ class cl_histbensocorrencia {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,15 +533,15 @@ class cl_histbensocorrencia {
      $sql2 = "";
      if($dbwhere==""){
        if($t69_sequencial!=null ){
-         $sql2 .= " where histbensocorrencia.t69_sequencial = $t69_sequencial "; 
-       } 
+         $sql2 .= " where histbensocorrencia.t69_sequencial = $t69_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

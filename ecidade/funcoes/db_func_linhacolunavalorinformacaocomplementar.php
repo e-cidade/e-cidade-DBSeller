@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "linhacolunavalorinformacaocomplementar.o157_orcparamseqorcparamseqcoluna,linhacolunavalorinformacaocomplementar.o157_conplanoinfocomplementar,linhacolunavalorinformacaocomplementar.o157_valor,linhacolunavalorinformacaocomplementar.o157_sequencial";
 ?>

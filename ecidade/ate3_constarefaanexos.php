@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -100,7 +100,7 @@ if (isset($oid_arq)&&$oid_arq!=""){
       <tr >
       <td colspan="2" align = "center">
       <table>
-        	<?
+        	<?php
         	$result_anexos = $cltarefaanexos->sql_record($cltarefaanexos->sql_query(null,"*","at25_data desc,at25_hora desc","at25_tarefa = $at25_tarefa"));
         	//$xx = $cltarefaanexos->sql_query(null,"*",null,"at25_tarefa = $at25_tarefa");
         	//die($xx);
@@ -150,7 +150,7 @@ if (isset($oid_arq)&&$oid_arq!=""){
 
   </form>
     </table>
-<?
+<?php
   //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
 $sql = "select distinct on (at80_tarefa, at80_arquivos, at80_versaocvs, at80_data, at80_hora) * from tarefa_arquivos where  at80_tarefa = $at25_tarefa ";
@@ -184,7 +184,7 @@ if(pg_numrows($result)>0){
 ?>
 </body>
 </html>
-<?
+<?php
 // ....   incluir o anexo   ..... 
 //include(modification("ate1_tarefaanexos002.php"));
 ?>

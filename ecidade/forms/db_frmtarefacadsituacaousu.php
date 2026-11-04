@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("nome");
        <?=@$Lat17_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('at17_sequencial',10,$Iat17_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat17_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lat17_usuario,"js_pesquisaat17_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at17_usuario',10,$Iat17_usuario,true,'text',$db_opcao," onchange='js_pesquisaat17_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat17_tarefacadsituacao?>">
-       <?
+       <?php
        db_ancora(@$Lat17_tarefacadsituacao,"js_pesquisaat17_tarefacadsituacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('at17_tarefacadsituacao',10,$Iat17_tarefacadsituacao,true,'text',$db_opcao," onchange='js_pesquisaat17_tarefacadsituacao(false);'")
 ?>
-       <?
+       <?php
 db_input('at46_descr',40,$Iat46_descr,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefacadsituacaousu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

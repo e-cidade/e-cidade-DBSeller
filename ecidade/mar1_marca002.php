@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -57,7 +57,7 @@ if(isset($alterar)){
  $result = $clmarca->sql_record($clmarca->sql_query($chavepesquisa));
  db_fieldsmemory($result,0);
  $db_botao = true;?>
- <script>parent.document.formaba.local.disabled = true;</script><?
+ <script>parent.document.formaba.local.disabled = true;</script><?php
 }
 ?>
 <html>
@@ -73,7 +73,7 @@ if(isset($alterar)){
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
   <center>
-   <?
+   <?php
    include(modification("forms/db_frmmarca.php"));
    ?>
   </center>
@@ -82,7 +82,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php
 if(isset($alterar)){
  if($clmarca->erro_status=="0"){
   $clmarca->erro(true,false);
@@ -99,7 +99,7 @@ if(isset($alterar)){
    parent.document.formaba.local.disabled = false;
    parent.document.formaba.marca2.disabled = false;
   </script>
- <?
+ <?php
  };
 };
 if($db_opcao==22){

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -93,7 +93,7 @@ function js_relatorio() {
             <tr>
               <td height="25" nowrap title="<?=$Ti01_codigo?>"><?=$Li01_codigo?></td>
               <td height="25" nowrap>&nbsp; &nbsp;
-                <?
+                <?php
 		$result = $clinflan->sql_record($clinflan->sql_query("","i01_codigo#i01_descr#i01_dm","i01_codigo")); 
                 for($i=0;$i<$clinflan->numrows;$i++){
                    db_fieldsmemory($result,$i);
@@ -109,13 +109,13 @@ function js_relatorio() {
             </tr>
             <tr>
               <td height="35"><strong>De:&nbsp; &nbsp;</strong>
-                 <?
+                 <?php
                     $DBtxt12 = db_getsession("DB_anousu"); 
                     db_input('DBtxt12',4,$IDBtxt12,true,'text',2);
                  ?>
               </td>
               <td><strong>Até:&nbsp; &nbsp;</strong>
-                  <?
+                  <?php
                     $DBtxt13 = db_getsession("DB_anousu"); 
                     db_input('DBtxt13',4,$IDBtxt13,true,'text',2);
                   ?>
@@ -132,7 +132,7 @@ function js_relatorio() {
 	</td>
   </tr>
 </table>
-    <? 
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

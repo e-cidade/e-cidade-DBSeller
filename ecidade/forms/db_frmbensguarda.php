@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -46,7 +46,7 @@ if ($db_opcao == 1) {
        <?=@$Lt21_codigo ?>
     </td>
     <td> 
-      <?
+      <?php
         $t21_instit = db_getsession("DB_instit");
         db_input("t21_instit", 10, $It21_instit, true, "hidden", 3, "");
         db_input('t21_codigo', 10, $It21_codigo, true, 'text', 3, "");
@@ -55,12 +55,12 @@ if ($db_opcao == 1) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt21_numcgm ?>">
-       <?
+       <?php
        db_ancora(@$Lt21_numcgm, "js_pesquisat21_numcgm(true);", $db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('t21_numcgm', 10, $It21_numcgm, true, 'text', $db_opcao, " onchange='js_pesquisat21_numcgm(false);'");
         db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '');
       ?>
@@ -68,12 +68,12 @@ if ($db_opcao == 1) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt21_tipoguarda ?>">
-       <?
+       <?php
        db_ancora(@$Lt21_tipoguarda, "js_pesquisat21_tipoguarda(true);", $db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php
         db_input('t21_tipoguarda', 10, $It21_tipoguarda, true, 'text', $db_opcao,
                  " onchange='js_pesquisat21_tipoguarda(false);'");
         db_input('t20_descr', 40, $It20_descr, true, 'text', 3, '');
@@ -85,7 +85,7 @@ if ($db_opcao == 1) {
        <?=@$Lt21_data ?>
     </td>
     <td> 
-      <?
+      <?php
       db_inputdata('t21_data', @$t21_data_dia, @$t21_data_mes, @$t21_data_ano, true, 'text', $db_opcao, "")
       ?>
     </td>
@@ -95,7 +95,7 @@ if ($db_opcao == 1) {
        <?=@$Lt21_obs ?>
     </td>
     <td> 
-      <?
+      <?php
       db_textarea('t21_obs', 0, 50, $It21_obs, true, 'text', $db_opcao, "")
       ?>
     </td>
@@ -163,7 +163,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave) {
   
   db_iframe_bensguarda.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
   }

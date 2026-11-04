@@ -23,7 +23,7 @@ class ProntuarioEsf extends Model
     protected $primaryKey = 'sd30_i_prontuario';
 
     public $casts = [
-        'sd30_d_data_atendimento' => 'DateTime'
+        'sd30_d_data_atendimento' => 'datetime'
     ];
 
     public function ciap()

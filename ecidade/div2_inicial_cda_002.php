@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBseller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -405,6 +405,8 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $rsOrigemInicial  = db_query($sSqlOrigemInicial);
   $iNumRows = pg_num_rows($rsOrigemInicial);
 
+  $aOrigemInicial   = db_utils::getCollectionByRecord($rsOrigemInicial);
+  $arrayInscr = array();
   $aListaExercicio = array();
 
   for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
@@ -417,6 +419,80 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
     if (trim($iExercicio) != "") {
      $aListaExercicio[] = db_utils::fieldsMemory($rsOrigemInicial,$iInd)->v01_exerc;
+    }
+  }
+
+  foreach ($aOrigemInicial as $oOrigemInicial) {
+    if ( trim($oOrigemInicial->certdiv) != "" ) {
+      $sSqlDadosDivida = " select coalesce(k00_matric,0) as matric1,
+                                  coalesce(k00_inscr,0)  as inscr1,
+                                  coalesce(k00_contr,0)  as contr1,
+                                  divida.v01_exerc,
+                                  proced.v03_dcomp
+                             from certdiv
+                                  inner join divida     on divida.v01_coddiv     = certdiv.v14_coddiv
+                                  inner join proced     on proced.v03_codigo     = divida.v01_proced
+                                  left  join arrematric on arrematric.k00_numpre = divida.v01_numpre
+                                  left  join arreinscr  on arreinscr.k00_numpre  = divida.v01_numpre
+                                  left  join arrecontr  on arrecontr.k00_numpre  = divida.v01_numpre
+                            where certdiv.v14_certid = {$oOrigemInicial->certdiv}";
+      $rsDadosInicial = db_query($sSqlDadosDivida);
+  
+      if ( pg_num_rows($rsDadosInicial) > 0 ) {
+        db_fieldsmemory($rsDadosInicial, 0);
+      }
+
+    } else if ( trim($oOrigemInicial->certter) != "" ) {
+      $sSqlDadosTermo = " select coalesce(k00_matric,0) as matric2,
+                                 coalesce(k00_inscr,0)  as inscr2,
+                                 coalesce(k00_contr,0)  as contr2,
+                                 proced.v03_dcomp,
+                                 divida.v01_exerc
+                            from certter
+                                 inner join termo      on termo.v07_parcel      = certter.v14_parcel
+                                 inner join termodiv   on termodiv.parcel       = termo.v07_parcel
+                                 inner join divida     on divida.v01_coddiv     = termodiv.coddiv
+                                 inner join proced     on proced.v03_codigo     = divida.v01_proced
+                                 left  join arrematric on arrematric.k00_numpre = divida.v01_numpre
+                                 left  join arreinscr  on arreinscr.k00_numpre  = divida.v01_numpre
+                                 left  join arrecontr  on arrecontr.k00_numpre  = divida.v01_numpre
+                           where certter.v14_certid = {$oOrigemInicial->certter} ";
+      $rsDadosInicial = db_query($sSqlDadosTermo);
+
+      if ( pg_num_rows($rsDadosInicial) > 0 ) {
+        db_fieldsmemory($rsDadosInicial,0);
+      } else {
+        $sSqlReparc = " select coalesce(k00_matric,0) as matric2,
+                               coalesce(k00_inscr,0)  as inscr2,
+                               coalesce(k00_contr,0)  as contr2,
+                               proced.v03_dcomp,
+                               divida.v01_exerc
+                          from fc_origemparcelamento( ( select v07_numpre
+                                                          from termo
+                                                         where v07_parcel = {$oOrigemInicial->parcel} ) ) as x
+                               inner join termoreparc on termoreparc.v08_parcel = x.riparcel
+                               inner join termodiv    on termodiv.parcel        = termoreparc.v08_parcelorigem
+                               inner join divida      on divida.v01_coddiv      = termodiv.coddiv
+                               inner join proced      on proced.v03_codigo      = divida.v01_proced
+                               left  join arrematric  on arrematric.k00_numpre  = divida.v01_numpre
+                               left  join arreinscr   on arreinscr.k00_numpre   = divida.v01_numpre
+                               left  join arrecontr   on arrecontr.k00_numpre   = divida.v01_numpre
+                         order by riseq desc limit 1 ";
+        $rsDadosInicial = db_query($sSqlReparc);
+        if ( pg_num_rows($rsDadosInicial) > 0 ) {
+          db_fieldsmemory($rsDadosInicial,0);
+        }
+      }  
+    }
+
+    if($inscr1 != 0 && $inscr1 != '' ){
+      if(!in_array($inscr1 , $arrayInscr)){
+        array_push($arrayInscr, $inscr1);
+      }
+    }else if ($inscr2 != 0 && $inscr2 != ''){
+      if(!in_array($inscr2 , $arrayInscr)){
+        array_push($arrayInscr, $inscr2);
+      }
     }
   }
 
@@ -914,6 +990,14 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $cgc      = db_formatar($cgc, 'cnpj');
   $Valor    = db_formatar($ValorTotal, 'f');
   $Valorext = db_extenso($ValorTotal);
+  $inscr = '';
+  foreach ($arrayInscr as $key => $value) {
+    if($key == 0){
+      $inscr.= $value;
+    }else{
+      $inscr.= ', '.$value;
+    }
+  }
 
   $oLibDocumento->cgc           = $cgc;
   $oLibDocumento->uf            = $uf;
@@ -923,7 +1007,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
   $oLibDocumento->Valor         = trim($Valor);
   $oLibDocumento->Valorext      = trim($Valorext);
   $oLibDocumento->Certidao      = $Certidao;
-  $oLibDocumento->xinscr        = $xinscr;
+  $oLibDocumento->xinscr        = $inscr;
   $oLibDocumento->ximovel       = $ximovel;
   $oLibDocumento->xmatric       = $xmatric;
   $oLibDocumento->processoforo  = $oOrigemInicial->v70_codforo;

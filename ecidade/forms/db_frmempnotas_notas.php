@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -77,7 +77,7 @@ $clrotulo->label("e69_data");
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> 
     <form name='form1'>
-<?
+<?php
 if(isset($e60_numemp) && $e60_numemp!=""){
    //rotina que traz os dados do empenho
      $result = $clempempenho->sql_record($clempempenho->sql_query_file($e60_numemp)); 

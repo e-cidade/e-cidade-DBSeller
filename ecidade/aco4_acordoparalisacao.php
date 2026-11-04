@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -58,7 +58,7 @@ $clrotulo->label("ac10_obs");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -87,7 +87,7 @@ fieldset table td:first-child {
 	      <table align="center" border="0">
 	        <tr>
 	          <td title="<?=@$Tac16_sequencial?>" align="left">
-	            <?
+	            <?php
 
 	            if ($db_opcao == 2 || $db_opcao == 3) {
 	              db_ancora($Lac16_sequencial, "js_pesquisaParalisacao(true);", 1);
@@ -98,7 +98,7 @@ fieldset table td:first-child {
               ?>
 	          </td>
 	          <td align="left">
-	            <?
+	            <?php
 
 	            if ($db_opcao == 2 || $db_opcao == 3) {
 	              db_input('ac16_sequencial',10,$Iac16_sequencial,true,'text', 1," onchange='js_pesquisaParalisacao(false);'");
@@ -137,7 +137,7 @@ fieldset table td:first-child {
 		            <legend>
 		              <b>Observação</b>
 		            </legend>
-		              <?
+		              <?php
 		                db_textarea('ac10_obs',5,64,$Iac10_obs,true,'text',1,"");
 		              ?>
 		          </fieldset>

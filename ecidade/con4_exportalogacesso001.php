@@ -68,7 +68,7 @@ $oRotulo->label('ob16_codobrasenvio');
 		        <tr> 
 		          <td><b>Período:</b></td>
 		          <td> 
-		            <?
+		            <?php
 		             db_inputdata('data_inicial', "", "", "", true, 'text', 1);
 		             echo "Á";
 		             db_inputdata('data_final'  , "", "", "", true, 'text', 1);

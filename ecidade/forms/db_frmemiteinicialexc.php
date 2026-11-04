@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -35,22 +35,22 @@
 	 <table class="form-container">
 		 <tr> 
        <td  title="<?=@$Tv50_inicial?>">
-				 <?
+				 <?php
 					db_ancora("<b>Inicial</b>",' js_inicialini(true); ',$opcao);
 				 ?>
        </td>
        <td>
-				 <?
+				 <?php
 					db_input('v50_inicialini',10,$Iv50_inicial,true,'text',$opcao,"onchange='js_inicialini(false)'");
 				 ?>
        </td>
 			 <td  title="<?=@$Tv50_inicial?>">
-				 <?
+				 <?php
 					db_ancora("<b> à </b>",' js_inicialfim(true); ',$opcao);
 				 ?>
        </td>
        <td>
-				 <?
+				 <?php
 				  db_input('v50_inicialfim',10,$Iv50_inicial,true,'text',$opcao,"onchange='js_inicialfim(false)'");
 				 ?>
        </td>
@@ -58,11 +58,11 @@
     </table> 
   </fieldset> 
   
-<? if (isset($v50_inicialini)) {  ?>
+<?php if (isset($v50_inicialini)) {  ?>
 
   <fieldset class="separator">
    <legend><b>Certidões Emitidas</b></legend>
-		<?
+		<?php
 			$rsInicialCert      = $clinicialcert->sql_record($clinicialcert->sql_query_file("",
 			                                                                                "",
 			                                                                                "v51_certidao as certidao",
@@ -103,7 +103,7 @@
 		?>
   </fieldset>    
    
-<? } ?>
+<?php } ?>
 
    <fieldset id="fieldProcessamento" style="display: none;">
     <legend><b>Andamento do processamento</b></legend>
@@ -120,12 +120,12 @@
    
 <br>
       
-<? if (isset($v50_inicialini)) { ?> 
+<?php if (isset($v50_inicialini)) { ?> 
    <input name="excluir"  type="submit" id="db_opcao" value="Excluir" onclick="return js_mostraProcessamento();"  <?=($botao==3?'disabled':'')?>>
    <input name="retornar" type="button" id="retornar" value="Retornar" onclick="js_retorno();" >
-<? } else {?>
+<?php } else {?>
    <input name="processar" type="button" id="processar" value="Processar" onclick="js_processar();" >
-<? } ?>
+<?php } ?>
 </form>
 <script>
 function js_retorno(){

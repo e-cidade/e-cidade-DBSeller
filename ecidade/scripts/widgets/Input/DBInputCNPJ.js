@@ -30,7 +30,9 @@
       return this.inputElement.value.replace(/[^\d]*/g, '');
     }),
     'setValue' : DBInput.extend(function(value) {
-      value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5");
+      if(value && value !== null){
+        value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "$1.$2.$3/$4-$5");
+      }
       DBInput.prototype.setValue.apply(this, arguments);
     }),
   });

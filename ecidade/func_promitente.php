@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clpromitente->rotulo->label("j41_numcgm");
               <?=$Lj41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j41_matric",4,$Ij41_matric,true,"text",4,"","chave_j41_matric");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpromitente->rotulo->label("j41_numcgm");
               <?=$Lj41_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("j41_numcgm",4,$Ij41_numcgm,true,"text",4,"","chave_j41_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpromitente->rotulo->label("j41_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "promitente.*";
@@ -110,14 +110,14 @@ $clpromitente->rotulo->label("j41_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j41_matric.focus();
 document.form2.chave_j41_matric.select();
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

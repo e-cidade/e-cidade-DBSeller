@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clplacaixarec->rotulo->label("k81_valor");
               <?=$Lk81_seqpla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k81_seqpla",6,$Ik81_seqpla,true,"text",4,"","chave_k81_seqpla");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clplacaixarec->rotulo->label("k81_valor");
               <?=$Lk81_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("k81_valor",15,$Ik81_valor,true,"text",4,"","chave_k81_valor");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clplacaixarec->rotulo->label("k81_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_placaixarec.php")==true){
@@ -122,12 +122,12 @@ $clplacaixarec->rotulo->label("k81_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

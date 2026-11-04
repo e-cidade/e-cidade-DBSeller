@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,9 +76,9 @@ function js_abre(){
     <td ></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tpc20_codorc?>"> <? db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Tpc20_codorc?>"> <?php db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php
          db_input("pc20_codorc",8,$Ipc20_codorc,true,"text",4,"onchange='js_pesquisa_pcorcam(false);'"); 
 	 db_input('sol',6,0,true,'hidden',3);
       ?>
@@ -96,12 +96,12 @@ function js_abre(){
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_pcorcam(mostra){
   qry = "";
-  <?
+  <?php
   if(isset($sol) && $sol=='true'){
     echo "qry='&sol=true&sel=true';";
     echo "qry+='&departamento=".db_getsession("DB_coddepto")."';";

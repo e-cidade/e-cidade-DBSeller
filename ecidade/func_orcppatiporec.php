@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcppatiporec->rotulo->label("o26_codigo");
               <?=$Lo26_codseqppa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o26_codseqppa",8,$Io26_codseqppa,true,"text",4,"","chave_o26_codseqppa");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcppatiporec->rotulo->label("o26_codigo");
               <?=$Lo26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o26_codigo",4,$Io26_codigo,true,"text",4,"","chave_o26_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clorcppatiporec->rotulo->label("o26_codigo");
               <?=$Lo26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o26_codigo",4,$Io26_codigo,true,"text",4,"","chave_o26_codigo");
 		       ?>
             </td>
@@ -93,7 +93,7 @@ $clorcppatiporec->rotulo->label("o26_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcppatiporec.php")==true){
@@ -129,12 +129,12 @@ $clorcppatiporec->rotulo->label("o26_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

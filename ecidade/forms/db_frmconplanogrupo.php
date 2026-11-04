@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -32,10 +32,10 @@ $clcongrupo->rotulo->label();
 <table border="0" width="100%">
   <tr>
     <td nowrap width="20" height="50" title="<?=@$Tc20_descr?>"><b>
-       <? db_ancora("Grupo","js_pesquisac20_sequencial(true);",$db_opcao); ?>
+       <?php db_ancora("Grupo","js_pesquisac20_sequencial(true);",$db_opcao); ?>
     </b></td>
     <td> 
-<?
+<?php
 db_input("sequencial",    10,0,true,"hidden",3);
 db_input("c21_codcon",    10,0,true,"hidden",3);
 db_input("c21_anousu",     4,0,true,"hidden",3);
@@ -47,17 +47,17 @@ db_input('c20_descr',50,$Ic20_descr,true,'text',3,"")
   <tr>
     <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php
    if ($db_opcao != 1){
 ?>
       <input name="novo" id="novo" value="Novo" type="submit">
-<?
+<?php
    }
 ?>
     </td>
   </tr>
   </table>
-<?
+<?php
 	$chavepri = array ("c20_sequencial"=>@$c20_sequencial,"c21_sequencial"=>@$c21_sequencial,"c21_codcon"=>$c21_codcon,"c21_anousu"=>$c21_anousu);
 	$cliframe_alterar_excluir->chavepri      = $chavepri;
 	$cliframe_alterar_excluir->sql           = $clconplanogrupo->sql_query(null,"c21_sequencial,c20_sequencial,c20_descr,c21_codcon,c21_anousu","c20_descr","c21_codcon = $c21_codcon and c21_anousu = $c21_anousu");

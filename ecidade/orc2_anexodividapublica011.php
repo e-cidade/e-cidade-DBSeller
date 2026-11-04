@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $iPeriodo           = $oRelatorioContabil->getPeriodos();
           <fieldset>
             <legend><b>Filtro Padrão</b></legend>
             <table>
-              <?
+              <?php
                 db_selinstit('', 420,150);
               ?>
 							<tr>

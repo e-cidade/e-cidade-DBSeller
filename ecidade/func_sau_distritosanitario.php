@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_distritosanitario_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"]);
 
 $oDaoSauDistritoSanitario = new cl_sau_distritosanitario;
 $oDaoSauDistritoSanitario->rotulo->label("s153_c_codigo");
@@ -56,7 +56,7 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
               <?=$Ls153_c_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("s153_c_codigo",10,$Is153_c_codigo,true,"text",4,'',"chave_s153_c_codigo");
               ?>
             </td>
@@ -66,7 +66,7 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
               <?=$Ls153_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
               db_input("s153_c_descr",50,$Is153_c_descr,true,"text",4,'',"chave_s153_c_descr");
               ?>
             </td>
@@ -84,7 +84,7 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos)==false) {
@@ -117,8 +117,8 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
           
           $sSep    = '';
           $aFuncao = explode('|', $funcao_js);
-          $rs      = $oDaoSauDistritoSanitario->sql_record($sSql);
-           if($oDaoSauDistritoSanitario->numrows == 0) {
+          $rs      = db_query($sSql);
+           if(pg_num_rows($rs) == 0) {
 	           die('<script>'.$aFuncao[0]."('','Chave(".$chave_s153_c_codigo.") não Encontrada');</script>");
            } else {
             
@@ -146,8 +146,8 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
       } else {
         if ($pesquisa_chave != null && $pesquisa_chave != '') {
 
-          $result = $oDaoSauDistritoSanitario->sql_record($oDaoSauDistritoSanitario->sql_query($pesquisa_chave));
-          if ($oDaoSauDistritoSanitario->numrows != 0) {
+          $result = db_query($oDaoSauDistritoSanitario->sql_query($pesquisa_chave));
+          if (pg_num_rows($result) != 0) {
 
             db_fieldsmemory($result, 0);
             echo "<script>".$funcao_js."('$s153_c_codigo',false);</script>";
@@ -167,12 +167,12 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

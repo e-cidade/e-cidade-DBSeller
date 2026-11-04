@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -79,7 +79,7 @@ $sCampos      .= " case when ed20_i_tiposervidor = 1 ";
 $sCampos      .= "   then cgmrh.z01_numcgm ";
 $sCampos      .= "     else cgmcgm.z01_numcgm ";
 $sCampos      .= "   end as z01_numcgm, ";
-$sCampos      .= " ed20_i_tiposervidor,cgmcgm.z01_numcgm as rechumanocgm, "; 
+$sCampos      .= " ed20_i_tiposervidor,cgmcgm.z01_numcgm as rechumanocgm, ";
 $sCampos      .= " cgmrh.z01_numcgm as rhpessoalcgm ";
 $sWhere        = " (ed20_i_codigo = $ed20_i_codigo or ed284_i_rechumano = $ed20_i_codigo)";
 $result_cgm    = $clrechumano->sql_record($clrechumano->sql_query( "", $sCampos, "", $sWhere ) );
@@ -99,14 +99,14 @@ if ($clrechumano->numrows > 0) {
   }
 } else {
   $cgmprof = 0;
-}   
+}
 
 if (isset($identificacao)) {
-	
+
   $where   = " ed20_i_codigo = $ed20_i_codigo";
   $destino = "";
 } else {
-	
+
   $where   = " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end = $ed20_i_codigo";
   $destino = "";
 }
@@ -122,17 +122,17 @@ if (isset($identificacao)) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php
 if (!isset($larg_obj)) {
-	
+
   ?>
   <script>
     largura = document.body.clientWidth;
     location.href = "edu1_rechumanohorario001.php?ed20_i_codigo=<?=$ed20_i_codigo?>&larg_obj="+largura;
   </script>
-  <?
+  <?php
   exit;
-  
+
 }
 unset($_SESSION["sess_corhorario"]);
 $array_cores     = array("#FFCC99",
@@ -154,9 +154,9 @@ $result_cor      = $clregenciahorario->sql_record($clregenciahorario->sql_query(
                                                                                )
                                                  );
 if ($clregenciahorario->numrows > 0) {
-	
+
   for ($y = 0; $y < $clregenciahorario->numrows; $y++) {
-  	
+
     db_fieldsmemory($result_cor,$y);
     $sess_corhorario[$ed18_i_codigo] = $array_cores[$y];
   }
@@ -166,11 +166,11 @@ if ($clregenciahorario->numrows > 0) {
 ///////////////Matricula
 ?>
 &nbsp;&nbsp;
-<?db_input('ed20_i_codigo',15,@$Ied20_i_codigo,true,'hidden',3,"")?> 
+<?php db_input('ed20_i_codigo',15,@$Ied20_i_codigo,true,'hidden',3,"")?>
 <b><?=@$ed20_i_tiposervidor=='1'?'Matrícula:':'CGM:'?></b>
-<?db_input('identificacao',10,@$identificacao,true,'text',3,"")?>
-<?db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
-<?
+<?php db_input('identificacao',10,@$identificacao,true,'text',3,"")?>
+<?php db_input('z01_nome',50,@$Iz01_nome,true,'text',3,'')?>
+<?php
 ///////////////Ano
  $result_ano = " select distinct ed52_i_ano from regenciahorario";
  $result_ano .= " inner join periodoescola  on  periodoescola.ed17_i_codigo = regenciahorario.ed58_i_periodo";
@@ -184,7 +184,7 @@ if ($clregenciahorario->numrows > 0) {
  $result_ano .= " inner join caddisciplina on ed232_i_codigo= ed12_i_caddisciplina";
  $result_ano .= " inner join turma  on  turma.ed57_i_codigo = regencia.ed59_i_turma";
  $result_ano .= " inner join calendario  on  calendario.ed52_i_codigo = turma.ed57_i_calendario";
- $result_ano .= " where ed58_i_rechumano=$ed20_i_codigo and ed58_ativo is true  "; 
+ $result_ano .= " where ed58_i_rechumano=$ed20_i_codigo and ed58_ativo is true  ";
  $result_ano .= " union ";
  $result_ano .= " select distinct ed52_i_ano from turmaachorario ";
  $result_ano .= " inner join turmaac  on  turmaac.ed268_i_codigo = turmaachorario.ed270_i_turmaac";
@@ -200,16 +200,16 @@ if (!isset($calendario) && $linhas2 > 0) {
 ?>
 <b>Ano:</b>
 <select id="calendario" name="calendario" onchange="js_trocaAno(this.value);">
- <?
- for($x=0;$x<$linhas2;$x++){ 	
+ <?php
+ for($x=0;$x<$linhas2;$x++){
   $ed52_i_ano=pg_result($resultano,$x,'ed52_i_ano');
   ?>
   <option value="<?=$ed52_i_ano?>" <?=$ed52_i_ano==@$calendario?"selected":""?>><?=$ed52_i_ano?></option>
-  <? 	
+  <?php
  }
  ?>
 </select>
-<?
+<?php
 
 $sWhereRecHumanoHoraDisp = "ed75_i_escola = {$escola} AND ed75_i_rechumano = {$ed20_i_codigo} AND ed33_ativo is true";
 $sSqlRecHumanoHoraDisp   = $clrechumanohoradisp->sql_query( null, "ed75_i_codigo", null, $sWhereRecHumanoHoraDisp );
@@ -239,7 +239,7 @@ $lRecHumanoHoraDisp      = pg_num_rows( $rsRecHumanoHoraDisp ) > 0;
 <b>Escola:</b>
 <select id="esc_horario" style="width:300px;" name="esc_horario" onchange="js_trocaEscola(this.value);">
  <option value="">TODAS</option>
- <?
+ <?php
  if( $lRecHumanoHoraDisp ) {
 
    for($x=0;$x<$linhas3;$x++){
@@ -248,20 +248,20 @@ $lRecHumanoHoraDisp      = pg_num_rows( $rsRecHumanoHoraDisp ) > 0;
      $ed18_c_nome=pg_result($resultano1,$x,'ed18_c_nome');
      ?>
      <option value="<?=$ed18_i_codigo?>" <?=$ed18_i_codigo==@$esc_horario?"selected":""?>><?=$ed18_i_codigo?> - <?=$ed18_c_nome?></option>
-   <?
+   <?php
    }
  }
  ?>
 </select>
 <!--Tabela Dias da Semana-->
-<table id="id_dia" style="position:absolute;top:<?=$tabela1_top?>px;left:<?=$tabela1_left?>px;" 
+<table id="id_dia" style="position:absolute;top:<?=$tabela1_top?>px;left:<?=$tabela1_left?>px;"
        cellspacing="1" cellpadding="0">
  <tr height="20">
-  <td align="center" width="<?=$larg_coluna1?>" 
+  <td align="center" width="<?=$larg_coluna1?>"
       style="background:#444444;color:#DEB887"><a style="color:#DEB887;"><b>Horas</b></td>
-  <td align="center" width="<?=$larg_coluna2?>" 
+  <td align="center" width="<?=$larg_coluna2?>"
       style="background:#444444;color:#DEB887"><a style="color:#DEB887;">&nbsp;</td>
-  <?
+  <?php
   $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("",
                                                                 "ed32_i_codigo,ed32_c_abrev,ed32_c_descr",
                                                                 "ed32_i_codigo",
@@ -270,50 +270,50 @@ $lRecHumanoHoraDisp      = pg_num_rows( $rsRecHumanoHoraDisp ) > 0;
                                     );
   $larg_dia = floor(($larg_tabela-$larg_coluna1-$larg_coluna2)/$cldiasemana->numrows);
   for ($x = 0; $x < $cldiasemana->numrows; $x++) {
-  	
+
     db_fieldsmemory($result,$x)
     ?>
     <td align="center" width="<?=$larg_dia?>" style="background:#444444;color:#DEB887"><b><?=$ed32_c_descr?></b></td>
-    <?
-    
+    <?php
+
   }
   ?>
  </tr>
 </table>
 <!--Tabela de fundo-->
-<table id="id_fundo" style=";position:absolute;top:<?=$tabela1_top+25?>px;left:<?=$tabela1_left+$larg_coluna1?>px;" 
+<table id="id_fundo" style=";position:absolute;top:<?=$tabela1_top+25?>px;left:<?=$tabela1_left+$larg_coluna1?>px;"
        cellspacing="0" cellpadding="0">
- <?for ($x = 0; $x < $qtd_hora; $x++) {?>
- 
+ <?php for ($x = 0; $x < $qtd_hora; $x++) {?>
+
     <tr bgcolor="#f3f3f3">
-     <td align="center" width="<?=$larg_coluna2?>" height="<?=$alt_tab_hora/$qtd_hora?>" 
+     <td align="center" width="<?=$larg_coluna2?>" height="<?=$alt_tab_hora/$qtd_hora?>"
          style="border:1px solid #f3f3f3;">&nbsp;</td>
-     <td width="<?=$larg_dia*$cldiasemana->numrows?>" height="<?=$alt_tab_hora/$qtd_hora?>" 
+     <td width="<?=$larg_dia*$cldiasemana->numrows?>" height="<?=$alt_tab_hora/$qtd_hora?>"
          style="border:1px solid #f3f3f3;">&nbsp;</td>
     </tr>
-    
- <?}?>
+
+ <?php } ?>
 </table>
-<?
+<?php
 ////////Grade dos horários
-$top_ini = $tabela1_top+20; 
+$top_ini = $tabela1_top+20;
 $tt      = 0;
 for ($t = $horainicial; $t <= $horafinal; $t += 1) {
-	
+
   $hora         = strlen($t) == 3?"0".$t:$t;
   $hora         = substr($hora,0,2).":".substr($hora,2,2);
   $id_hora      = "H".$hora;
   $id_hora2     = "HH".$hora;
   $id_linhahora = "LH".$hora;
-  
+
   if ($t != 2400) {
-  	
+
     if (($t%100) == 0) {
       $visible = "visible";
     } else {
       $visible = "hidden";
     }
-    
+
     echo "<div id='$id_hora' style='visibility:$visible;position:absolute;top:".($top_ini).
                "px;left:".($larg_coluna1+$tabela1_left-38)."px;'><b>".$hora."</b></div>";
     echo "<div id='$id_hora2' style='color:#FF0000;visibility:hidden;position:absolute;top:".($top_ini).
@@ -321,31 +321,31 @@ for ($t = $horainicial; $t <= $horafinal; $t += 1) {
     echo "<div id='$id_linhahora' style='width:".($larg_dia*$cldiasemana->numrows+$larg_coluna2).
                "px;height:1px;background:#FF0000;visibility:hidden;position:absolute;top:".($top_ini+5).
                "px;left:".($larg_coluna1+$tabela1_left)."px;'></div>";
-    
+
   }
   $tt += 1;
   if ($tt == 60) {
-  	
+
     $t += 40;
     $tt = 0;
-    
+
   }
   $top_ini += 0.5;
 }
 ////////Linhas verticais
 $left_ini = $tabela1_left+$larg_coluna1+$larg_coluna2;
 for ($x = 0; $x < $cldiasemana->numrows+1; $x++) {
-	
+
   ?>
-  <table border="0" style=";position:absolute;top:<?=$tabela1_top+25?>px;left:<?=$left_ini?>px;" 
+  <table border="0" style=";position:absolute;top:<?=$tabela1_top+25?>px;left:<?=$left_ini?>px;"
          cellspacing="0" cellpadding="0">
     <tr>
      <td width="1" bgcolor="#000000" height="<?=$alt_tab_hora?>"></td>
     </tr>
   </table>
-  <?
+  <?php
   $left_ini+=$larg_dia;
-  
+
 }
 
 ////////Horário do Docente
@@ -354,7 +354,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
 ?>
   <table style="top:<?=isset( $ini_top ) ? $ini_top :  ""?>px;left:<?=isset( $ini_left ) ? $ini_left : ""?>px;"  cellspacing="0" cellpadding="0">
   <tbody id="disp_rechumano" style="position:absolute;z-index:1"><tr><td>
-  <?
+  <?php
 
   $result0  = $clrechumano->sql_record($clrechumano->sql_query_escola("",
                                                                       "ed75_i_escola as esc_regente",
@@ -480,7 +480,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
               style="background:<?=$_SESSION["sess_corhorario"][$ed57_i_escola]?>;border:1px outset #000000;
                      position:absolute;top:<?=$ini_top?>px;left:<?=$ini_left?>px;" cellspacing="0" cellpadding="0">
             <tr>
-            <?
+            <?php
             $conta   = $y;
             $proximo = true;
             $array   = array();
@@ -566,7 +566,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
                     Atende Simultâneo
                                 </td>
              </div>
-          <?} else {?>
+          <?php } else {?>
           <div id="teste11" style="position:absolute;border-width:2;border-color:black;border-style:solid; z-index:2">
               <td id="teste11" style="font-size:8px;" align="center"
                   onclick ="js_testesimultaneo('<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>','<?=$ed57_i_escola?>',
@@ -581,14 +581,14 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
                                         '<?=$identificacao?>','<?=$nomeprof?>')"
                   onmouseout="js_Mout('tab<?=$ed58_i_codigo?>','<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>')">
                   Escola: <?=$ed57_i_escola?> Turma: <?=substr($ed57_c_descr,0,10)?><br><?=substr($ed232_c_descr,0,20)?>
-          <?}
+          <?php }
              ?>
               </td>
              </div>
             </tr>
            </table>
 
-       <?
+       <?php
           }
         }
       }
@@ -619,7 +619,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
          </td>
         </tr>
        </table>
-       <?
+       <?php
           }
         }
       }
@@ -650,7 +650,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
                 </td>
               </tr>
             </table>
-         <?
+         <?php
           }
         }
       }
@@ -683,7 +683,7 @@ if( $lTemEscola && $lRecHumanoHoraDisp ) {
 <script>
 function js_testesimultaneo(horaini,horafim,escola,nomeescola,periodo,turno,turma,disciplina,serie,ensino,
 		                    matricula,identificacao,nomeprof,evt) {
-	
+
   if ( typeof(event) != "object" ) {
     PosMouseX = evt.layerX;
 	PosMouseY = evt.layerY;
@@ -698,7 +698,7 @@ function js_testesimultaneo(horaini,horafim,escola,nomeescola,periodo,turno,turm
   aTurma      = turma.split(',');
   aEtapa      = serie.split(',');
   aDisciplina = disciplina.split(',');
-  aEscola     = escola.split(','); 
+  aEscola     = escola.split(',');
   aNomeEscola = nomeescola.split(',');
   aTurno      = turno.split(',');
   aHoraFim    = horafim.split(',');
@@ -708,66 +708,66 @@ function js_testesimultaneo(horaini,horafim,escola,nomeescola,periodo,turno,turm
   $('teste11').style.left = PosMouseX;
   texto  = "<table bgcolor='#f3f3f3'><tr><td><b>Escola:</b>"+aEscola[0]+"-"+aNomeEscola[0];
   texto += "<br><b>Turno: </b>"+aTurno[0]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  texto += "&nbsp;<b>Período:</b>"+aPeriodo[0];	  
+  texto += "&nbsp;<b>Período:</b>"+aPeriodo[0];
   texto += "<br><b>Hora Inicial: </b>"+aHoraIni[0]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Hora Final:</b>"+aHoraFim[0];
   texto += "<br>______________________________________________________________";
   for (w = 0; w < aHoraIni.length; w++) {
-       
-    texto += "<br><b>Professor :</b>"+aIdenti[w]+"-"+aNomeProf[w];      
+
+    texto += "<br><b>Professor :</b>"+aIdenti[w]+"-"+aNomeProf[w];
 	texto += "<br><b>Turma:</b>"+aTurma[w]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	texto += "<b>Etapa:</b>"+aEtapa[w];
 	texto += "<br><b>Disciplina:</b>"+aDisciplina[w] ;
 	texto +="<br></b></td></tr><tr><td>";
   }
   texto += "<input type='button' name='fecharregistro' value='Fechar' ";
-  texto += "onclick=\"document.getElementById('teste11').innerHTML = '';\"></td></tr></table>";	  
-  $('teste11').innerHTML = texto;	 
+  texto += "onclick=\"document.getElementById('teste11').innerHTML = '';\"></td></tr></table>";
+  $('teste11').innerHTML = texto;
 }
 
 
 function js_Mover(quadro,horaini,horafim,escola,nomeescola,periodo,turno,
 		          turma,disciplina,serie,ensino,cor,matricula,evt) {
-    
+
   texto  = "<table bgcolor='#f3f3f3' style='border:2px solid #888888' cellpadding='3'>";
   texto += "<tr><td><b>Escola:</b>"+escola+"<br><b>Disciplina:</b>"+ disciplina ;
   texto += "<b>Turma:</b>"+turma+ "<br><br><b>Etapa/Ano:<br></b></td></tr><tr><td>";
   texto += "<input type='button' name='fecharregistro' value='Fechar' ";
   texto += "onclick='fechar(this.value);'></td></tr></table>";
-	
+
   document.getElementById("tab_descr").style.visibility = "visible";
   document.getElementById("tab_descr").style.background = cor;
   document.getElementById(quadro).style.border          = "1px inset";
   tt = 0;
-  
+
   for (t = <?=$horainicial?>; t <= <?=$horafinal?>; t += 1) {
-	  
+
     hora         = new String(t);
     hora         = hora.length==3?"0"+hora:hora;
     hora         = hora.substr(0,2)+":"+hora.substr(2,2);
     id_hora      = "HH"+hora;
     id_linhahora = "LH"+hora;
-    
+
     if (t != 2400) {
-        
+
       if (horaini == hora || horafim == hora) {
-          
+
         document.getElementById(id_hora).style.visibility = "visible";
         document.getElementById(id_hora).style.zIndex     = 10000;
-        
+
       }
       if (hora >= horaini && hora <= horafim) {
-          
+
         document.getElementById(id_linhahora).style.background = cor;
         document.getElementById(id_linhahora).style.visibility = "visible";
-        
+
       }
     }
     tt += 1;
     if (tt == 60) {
-        
+
       t += 40;
       tt = 0;
-      
+
     }
   }
 }
@@ -783,74 +783,74 @@ function js_Mover33(quadro,horaini,horafim,escola,nomeescola,periodo,turno,turma
   document.getElementById("tab_descr").innerHTML        = texto;
   document.getElementById(quadro).style.border          = "1px inset";
   tt = 0;
-  
+
   for (t = <?=$horainicial?>; t <= <?=$horafinal?>;t += 1) {
-	  
+
 	hora         = new String(t);
 	hora         = hora.length == 3?"0"+hora:hora;
 	hora         = hora.substr(0,2)+":"+hora.substr(2,2);
 	id_hora      = "HH"+hora;
 	id_linhahora = "LH"+hora;
-	
+
 	if (t != 2400) {
-		
+
 	  if (horaini == hora || horafim == hora) {
-		  
+
 	    document.getElementById(id_hora).style.visibility = "visible";
 	    document.getElementById(id_hora).style.zIndex     = 10000;
-	    
+
 	  }
 	  if (hora >= horaini && hora <= horafim) {
-		  
+
 	    document.getElementById(id_linhahora).style.background = cor;
 	    document.getElementById(id_linhahora).style.visibility = "visible";
-	    
+
 	  }
 	}
 	tt += 1;
 	if (tt == 60) {
-		
+
 	  t += 40;
 	  tt = 0;
-	  
+
 	}
   }
 }
 
 function js_Mout(quadro,horaini,horafim) {
-	
+
   document.getElementById("tab_descr").style.visibility = "hidden";
   document.getElementById("tab_descr").innerHTML        = "";
   document.getElementById(quadro).style.border          = "1px outset";
   tt                                                    = 0;
-  
+
   for (t = <?=$horainicial?>; t <= <?=$horafinal?>; t += 1) {
-	  
+
     hora         = new String(t);
     hora         = hora.length==3?"0"+hora:hora;
     hora         = hora.substr(0,2)+":"+hora.substr(2,2);
     id_hora      = "HH"+hora;
     id_linhahora = "LH"+hora;
-    
+
     if (t != 2400) {
-        
+
       if (horaini == hora || horafim == hora) {
-          
+
         document.getElementById(id_hora).style.visibility = "hidden";
         document.getElementById(id_hora).style.zIndex     = 1000;
-        
+
       }
     }
-    
+
     if (hora >= horaini && hora <= horafim) {
       document.getElementById(id_linhahora).style.visibility = "hidden";
     }
     tt += 1;
     if (tt == 60) {
-        
+
       t += 40;
       tt = 0;
-      
+
     }
   }
 }
@@ -865,47 +865,47 @@ function js_Mover2(quadro,horaini,horafim,escola,nomeescola,periodo,turno,cor,ma
   document.getElementById("tab_descr").innerHTML        = texto;
   document.getElementById(quadro).style.border          = "1px inset";
   tt                                                    = 0;
-  
+
   for (t = <?=$horainicial?>; t <= <?=$horafinal?>;t += 1) {
-	  
+
     hora         = new String(t);
     hora         = hora.length == 3?"0"+hora:hora;
     hora         = hora.substr(0,2)+":"+hora.substr(2,2);
     id_hora      = "HH"+hora;
     id_linhahora = "LH"+hora;
-    
+
     if (t != 2400) {
-        
+
       if (horaini == hora || horafim == hora) {
-          
+
         document.getElementById(id_hora).style.visibility = "visible";
         document.getElementById(id_hora).style.zIndex     = 10000;
-        
+
       }
       if(hora >= horaini && hora <= horafim) {
-          
+
         document.getElementById(id_linhahora).style.background = cor;
         document.getElementById(id_linhahora).style.visibility = "visible";
-        
+
       }
     }
     tt += 1;
     if (tt == 60) {
-        
+
       t += 40;
       tt = 0;
-      
+
     }
   }
 }
 
 function js_Mout2(quadro,horaini,horafim) {
-	
+
   document.getElementById("tab_descr").style.visibility = "hidden";
   document.getElementById("tab_descr").innerHTML        = "";
   document.getElementById(quadro).style.border          = "1px outset";
   tt                                                    = 0;
-  
+
   for (t = <?=$horainicial?>; t <= <?=$horafinal?>; t += 1) {
     hora         = new String(t);
     hora         = hora.length == 3?"0"+hora:hora;
@@ -923,16 +923,16 @@ function js_Mout2(quadro,horaini,horafim) {
     }
     tt += 1;
     if (tt == 60) {
-        
+
       t += 40;
       tt = 0;
-      
+
     }
   }
 }
 
 function js_trocaAno(ano) {
-	
+
   js_divCarregando("Aguarde, alterando ano","msgBox");
   var url     = 'edu3_rechumanohorario002.php';
   var sAction = 'MontaGrade';
@@ -946,7 +946,7 @@ function js_trocaAno(ano) {
                                     parameters: 'ano='+ano+'&<?=$destino?>&larg_obj=<?=$larg_obj?>&sAction='+sAction,
                                     onComplete: js_retornaEscola
                                    });
- 
+
 }
 
 function js_trocaEscola(escola) {
@@ -962,27 +962,27 @@ function js_trocaEscola(escola) {
                                                 '&cod_matricula=' + oGet.ed20_i_codigo + '&sAction='+sAction,
                                     onComplete: js_retornaGrade
                                    });
-  
+
 }
 
 function js_retornaGrade(oAjax) {
-	
+
   js_removeObj("msgBox");
   var oRetorno = JSON.parse(oAjax.responseText);
   $('disp_rechumano').innerHTML = "";
   $('disp_rechumano').innerHTML = oRetorno.urlDecode();
-  
+
 }
 
 function js_retornaEscola(oAjax) {
-	
+
   var oRetorno = JSON.parse(oAjax.responseText);
   F = document.getElementById("esc_horario");
   F.length = 0;
   F.options[F.length] = new Option("TODAS","");
-  
+
   for (var i = 0;i < oRetorno.length; i++) {
-	  
+
     with (oRetorno[i]) {
       F.options[F.length] = new Option(ed18_i_codigo.urlDecode()+" - "+ed18_c_nome.urlDecode(),ed18_i_codigo.urlDecode());
     }

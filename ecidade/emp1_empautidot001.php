@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -33,13 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_liborcamento.php"));
-require_once(modification("classes/db_empautidot_classe.php"));
-require_once(modification("classes/db_orcsuplemval_classe.php"));
-require_once(modification("classes/db_orcdotacao_classe.php"));
-require_once(modification("classes/db_orcreserva_classe.php"));
-require_once(modification("classes/db_orcreservaaut_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-require_once(modification("classes/db_empautitem_classe.php"));
 
 $clempautitem = new cl_empautitem;
 $e56_orctiporec = "null";
@@ -161,11 +155,7 @@ if (isset($confirmar)) {
                     if ($daoEmpAutAutorizada->erro_status == '0') {
                         throw new Exception($daoEmpAutAutorizada->erro_msg);
                     }
-
                 }
-
-
-
             }
         }
 
@@ -306,24 +296,18 @@ if (!empty($o156_orcdotacaoplanoorcamentario)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/strings.js"></script>
-    <script language="JavaScript" type="text/javascript" src="scripts/AjaxRequest.js"></script>
+    <script type="text/javascript" src="scripts/scripts.js"></script>
+    <script type="text/javascript" src="scripts/prototype.js"></script>
+    <script type="text/javascript" src="scripts/strings.js"></script>
+    <script type="text/javascript" src="scripts/AjaxRequest.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-            <center>
-                <?php
-                include(modification("forms/db_frmempautidot.php"));
-                ?>
-            </center>
-        </td>
-    </tr>
-</table>
+<div class="container">
+    <?php
+    include(modification("forms/db_frmempautidot.php"));
+    ?>
+</div>
 </body>
 </html>
 <?php

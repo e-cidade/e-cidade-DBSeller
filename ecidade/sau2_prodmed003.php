@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ if($clprontuarios->numrows == 0){
 $pdf = new PDF();
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
-$head2 = "RelatÃ³rio dos Produtividade Medica";
+$head2 = "Relatório de Produtividade Profissional";
 $head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 $pri = true;
 $T  = 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,13 +52,13 @@ class cl_db_caritbilan {
                  area = float8 = Área 
                  ";
    //funcao construtor da classe 
-   function cl_db_caritbilan() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_caritbilan"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_db_caritbilan {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->id_itbi = ($this->id_itbi == ""?@$GLOBALS["HTTP_POST_VARS"]["id_itbi"]:$this->id_itbi);
        $this->codcaritbi = ($this->codcaritbi == ""?@$GLOBALS["HTTP_POST_VARS"]["codcaritbi"]:$this->codcaritbi);
@@ -78,7 +78,7 @@ class cl_db_caritbilan {
      }
    }
    // funcao para inclusao
-   function incluir ($id_itbi,$codcaritbi){ 
+   public function incluir ($id_itbi,$codcaritbi){ 
       $this->atualizacampos();
      if($this->area == null ){ 
        $this->erro_sql = " Campo Área nao Informado.";
@@ -155,7 +155,7 @@ class cl_db_caritbilan {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($id_itbi=null,$codcaritbi=null) { 
+   public function alterar ($id_itbi=null,$codcaritbi=null) { 
       $this->atualizacampos();
      $sql = " update db_caritbilan set ";
      $virgula = "";
@@ -254,7 +254,7 @@ class cl_db_caritbilan {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($id_itbi=null,$codcaritbi=null,$dbwhere=null) { 
+   public function excluir ($id_itbi=null,$codcaritbi=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($id_itbi,$codcaritbi));
      }else{ 
@@ -324,7 +324,7 @@ class cl_db_caritbilan {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

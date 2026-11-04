@@ -872,6 +872,46 @@ class cl_orctiporecconvenio
      return $sql;
   }
 
+    public function sql_query_fonterecurso(
+        $o16_sequencial = null,
+        $campos = "*",
+        $ordem = null,
+        $dbwhere = "",
+        $exercicio = null
+    ) {
+
+        if (is_null($exercicio)) {
+            $exercicio = db_getsession("DB_anousu");
+        }
+
+        $sql  = "
+        select {$campos}
+          from orctiporecconvenio
+          join saltes on saltes.k13_conta = orctiporecconvenio.o16_saltes
+          join orctiporec on orctiporec.o15_codigo = orctiporecconvenio.o16_orctiporec
+          join fonterecurso on orctiporec.o15_codigo = fonterecurso.orctiporec_id
+                            and fonterecurso.exercicio = {$exercicio}
+          join complementofonterecurso on complementofonterecurso.o200_sequencial = orctiporec.o15_complemento
+          join tipopacto on tipopacto.o29_sequencial = orctiporecconvenio.o16_tipopacto
+          join orctiporecconveniosituacao on orctiporecconveniosituacao.o100_sequencial = orctiporecconvenio.o16_orctiporecconveniosituacao
+          join concedente on concedente.o108_sequencial = orctiporecconvenio.o16_concedente
+          join cgm on cgm.z01_numcgm = concedente.o108_numcgm
+          join tipoconcedente on tipoconcedente.o37_sequencial = concedente.o108_tipoconcedente";
+        $sql2 = "";
+        if (empty($dbwhere)) {
+            if (!empty($o16_sequencial)) {
+                $sql2 .= " where orctiporecconvenio.o16_sequencial = $o16_sequencial ";
+            }
+        } else if (!empty($dbwhere)) {
+            $sql2 = " where $dbwhere";
+        }
+        $sql .= $sql2;
+        if (!empty($ordem)) {
+            $sql .= " order by {$ordem}";
+        }
+        return $sql;
+    }
+
     public function sql_query_file($o16_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos} ";

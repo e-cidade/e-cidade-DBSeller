@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,7 +50,7 @@ $clrotulo->label("q51_obs");
 								<?=@$Lq51_dtemiss?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_inputdata('q51_dtemiss',@$q51_dtemiss_dia,@$q51_dtemiss_mes,@$q51_dtemiss_ano,true,'text',3);
 									db_input('q51_sequencial',10,$Iq51_sequencial,true,'hidden',3,'');
 								?>
@@ -58,15 +58,15 @@ $clrotulo->label("q51_obs");
 						</tr>
 						<tr>
 							<td nowrap title="<?=@$Tq51_inscr?>">
-								<?
+								<?php
 									db_ancora(@$Lq51_inscr,"js_pesquisaq51_inscr(true);",$db_opcao);
 								?>
 							</td>
 							<td> 
-								<?
+								<?php
 									db_input('q51_inscr',10,$Iq51_inscr,true,'text',$db_opcao," onchange='js_pesquisaq51_inscr(false);'")
 								?>
-								<?
+								<?php
 									db_input('z01_nome',35,$Iz01_nome,true,'text',3,'')
 								?>
 							</td>
@@ -79,7 +79,7 @@ $clrotulo->label("q51_obs");
 					<table>
 						<tr>
 							<td nowrap title="<?=@$Tq51_obs?>">  
-								<?
+								<?php
 									db_textarea('q51_obs',5,70,$Iq51_obs,true,'text',$db_opcao,"onkeyup='js_controlatextarea(this.name,200);'"); 
 								?>
 							</td> 
@@ -93,7 +93,7 @@ $clrotulo->label("q51_obs");
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input type="button" id="novaNota"  name="novaNota" value="Nova Nota" style="display:none;" onClick="js_novaNota();">
-<?
+<?php
 if (isset($altera)){
   echo '<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >';
 }
@@ -164,7 +164,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsa.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

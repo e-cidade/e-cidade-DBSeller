@@ -114,7 +114,8 @@ if(isset($cancelar)){
     $data=date('Y-m-d',db_getsession("DB_datausu"));
     $ano=db_getsession("DB_anousu");
     $instit=db_getsession('DB_instit');
-    $sql02 = "SELECT fc_issqn($q07_inscr,'".$data."',".$ano.",null,'true','false',".$instit.",'".$seqs."') AS RETORNO";
+    $idUsuario = db_getsession("DB_id_usuario");
+    $sql02 = "SELECT fc_issqn($idUsuario,$q07_inscr,'".$data."',".$ano.",null,'true','false',".$instit.",'".$seqs."') AS RETORNO";
     $result02=@db_query($sql02);
     @db_fieldsmemory($result02,0);
     if(isset($retorno) && (substr($retorno,0,2) == "01" or substr($retorno,0,2) == "24")){

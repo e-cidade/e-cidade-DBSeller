@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -119,7 +119,7 @@ if( isset( $iEtapa ) && !empty( $iEtapa ) ) {
                     if ( isset( $inicial ) ) {
                   ?>
                       <input name="inicial" type="hidden" value="<?=$inicial?>">
-                  <?}?>
+                  <?php }?>
                 </td>
               </tr>
             </table>

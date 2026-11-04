@@ -4,9 +4,9 @@ namespace App\Domain\Saude\ESF\Relatorios;
 
 use ECidade\Enum\Common\FaixaEtariaEnum;
 use ECidade\Enum\Saude\ESF\SituacaoPacienteVacinacaoEnum;
-use FpdfMultiCellBorder;
+use ECidade\Pdf\Pdf;
 
-class ControleVacinasPDF extends FpdfMultiCellBorder
+class ControleVacinasPDF extends Pdf
 {
     /**
      * @var array
@@ -19,19 +19,14 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
     private $totalVacinas = 0;
 
     /**
-     * @param array $dados
+     * @param  array  $dados
      */
     public function __construct(array $dados, \stdClass $request)
     {
         parent::__construct();
         $this->dados = $dados;
 
-        global $head2;
-        global $head4;
-        global $head5;
-        global $head6;
-
-        $head2 = 'Relatório de Controle de Vacinas Aplicadas';
+        $this->addTitulo('Relatório de Controle de Vacinas Aplicadas');
 
         $periodoInicial = db_formatar($request->periodoInicial, 'd');
         $periodoFinal = db_formatar($request->periodoFinal, 'd');
@@ -44,38 +39,38 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
             'TODAS' :
             (new FaixaEtariaEnum((int)$request->faixaEtaria))->name();
 
-        $head4 = "Período: {$periodoInicial} até {$periodoFinal}";
-        $head5 = "Situação/Condição: {$situacao}";
-        $head6 = "Faixa Etária: {$faixaEtaria}";
+        $this->addTitulo("Período: {$periodoInicial} até {$periodoFinal}");
+        $this->addTitulo("Situação/Condição: {$situacao}");
+        $this->addTitulo("Faixa Etária: {$faixaEtaria}");
     }
 
     public function emitir()
     {
         $this->initPdf();
-        $this->AddPage();
+        $this->addPage();
 
         foreach ($this->dados as $unidade) {
             if ($this->getAvailHeight() < 31) {
-                $this->AddPage();
+                $this->addPage();
             }
 
-            $this->SetFont('Arial', 'B', 8);
-            $this->Cell(195, 5, $unidade->descricao, 0, 1);
+            $this->setFont('Arial', 'B', 8);
+            $this->cell(195, 5, $unidade->descricao, 0, 1);
 
             $this->montaCabecalho();
-            $this->SetFont('Arial', '', 7);
+            $this->setFont('Arial', '', 7);
             foreach ($unidade->vacinas as $vacina) {
                 $this->montaLinha($vacina, $linha);
             }
-    
-            $this->Cell(1, 4, '', 0, 1);
+
+            $this->cell(1, 4, '', 0, 1);
         }
 
         if (count($this->dados) > 1) {
-            $this->SetFont('Arial', 'B', 7);
-            $this->Cell(150, 4, 'TOTAL GERAL:', 0, 0, 'R');
-            $this->SetFont('Arial', '', 7);
-            $this->Cell(45, 4, "{$this->totalVacinas} vacinas aplicadas", 0, 1, 'L');
+            $this->setFont('Arial', 'B', 7);
+            $this->cell(150, 4, 'TOTAL GERAL:', 0, 0, 'R');
+            $this->setFont('Arial', '', 7);
+            $this->cell(45, 4, "{$this->totalVacinas} vacinas aplicadas", 0, 1, 'L');
         }
 
         return $this->imprimir();
@@ -85,23 +80,22 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
     {
         $this->mostrarRodape(true);
         $this->mostrarTotalDePaginas(true);
-        $this->SetMargins(8, 8, 8);
-        $this->Open();
-        $this->SetAutoPageBreak(false, 10);
-        $this->AliasNbPages();
-        $this->SetFillColor(235);
-        $this->SetFont('Arial', 'B', 9);
+        $this->setMargins(8, 8, 8);
+        $this->setAutoPageBreak(false, 10);
+        $this->aliasNbPages();
+        $this->setFillColor(235);
+        $this->setFont('Arial', 'B', 9);
         $this->exibeHeader(true);
     }
 
     private function montaCabecalho()
     {
-        $this->SetFillColor(210);
-        $this->SetFont('Arial', 'B', 8);
-        $this->Cell(80, 5, 'Imunobiológico', 1, 0, 'C', 1);
-        $this->Cell(60, 5, 'Estratégia', 1, 0, 'C', 1);
-        $this->Cell(34, 5, 'Dose', 1, 0, 'C', 1);
-        $this->Cell(20, 5, 'Quantidade', 1, 1, 'C', 1);
+        $this->setFillColor(210);
+        $this->setFont('Arial', 'B', 8);
+        $this->cell(80, 5, 'Imunobiológico', 1, 0, 'C', 1);
+        $this->cell(60, 5, 'Estratégia', 1, 0, 'C', 1);
+        $this->cell(34, 5, 'Dose', 1, 0, 'C', 1);
+        $this->cell(20, 5, 'Quantidade', 1, 1, 'C', 1);
     }
 
     private function montaLinha($vacina, &$linha)
@@ -110,51 +104,166 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
         foreach ($vacina->estrategias as $estrategia) {
             foreach ($estrategia->doses as $dose) {
                 if ($this->getAvailHeight() < 21) {
-                    $this->AddPage();
+                    $this->addPage();
                     $this->montaCabecalho();
-                    $this->SetFont('Arial', '', 7);
+                    $this->setFont('Arial', '', 7);
                     $linha = 0;
                 }
-                
+
                 $linha++;
                 $color = !!($linha % 2);
 
-                $this->Cell(80, 5, $vacina->descricao, 0, 0, 'C', $color);
-                $this->Cell(60, 5, $estrategia->descricao, 0, 0, 'C', $color);
-                $this->Cell(34, 5, $dose->descricao, 0, 0, 'C', $color);
-                $this->Cell(20, 5, $dose->quantidade, 0, 1, 'C', $color);
+                $numeroLinhasOcupadas = 1;
+
+                $vacinaDescricaoPossuiMaisLinhas = false;
+                $estrategiaDescricaoPossuiMaisLinhas = false;
+                $doseDescricaoPossuiMaisLinhas = false;
+                $doseQuantidadePossuiMaisLinhas = false;
+
+                /**
+                 * Verifica o número de linhas utilizado por cada célula
+                 */
+                $nmrLinhasVacinaDescricao = $this->nbLines(80, $vacina->descricao);
+                $nmrLinhasEstrategiaDescricao = $this->nbLines(60, $estrategia->descricao);
+                $nmrLinhasDoseDescricao = $this->nbLines(34, $dose->descricao);
+                $nmrLinhasDoseQuantidade = $this->nbLines(20, $dose->quantidade);
+
+                /**
+                 * As seguintes estruturas IF verificam qual célula terá o maior número de linhas
+                 */
+                if ($nmrLinhasVacinaDescricao > $numeroLinhasOcupadas) {
+                    $numeroLinhasOcupadas = $nmrLinhasVacinaDescricao;
+                    $vacinaDescricaoPossuiMaisLinhas = true;
+                }
+
+                if ($nmrLinhasEstrategiaDescricao > $numeroLinhasOcupadas) {
+                    $numeroLinhasOcupadas = $nmrLinhasEstrategiaDescricao;
+                    $estrategiaDescricaoPossuiMaisLinhas = true;
+                }
+
+                if ($nmrLinhasDoseDescricao > $numeroLinhasOcupadas) {
+                    $numeroLinhasOcupadas = $nmrLinhasDoseDescricao;
+                    $doseDescricaoPossuiMaisLinhas = true;
+                }
+
+                if ($nmrLinhasDoseQuantidade > $numeroLinhasOcupadas) {
+                    $numeroLinhasOcupadas = $nmrLinhasDoseQuantidade;
+                    $doseQuantidadePossuiMaisLinhas = true;
+                }
+
+                /**
+                 * Altura máxima que será obtida nessa iteração levando em conta que todas as células envolvidas
+                 * tenham a mesma altura inicial.
+                 */
+                $linhaAlturaMaxima = $numeroLinhasOcupadas * 5;
+
+                $x1 = $this->getX();
+                $y1 = $this->getY();
+
+                /**
+                 * Os ternários a seguir irão levar a em conta o número de linhas utilizadas pela célula
+                 * E se a mesma é q que possui o maior número de linhas nesta iteração.
+                 */
+                $this->multiCell(
+                    80,
+                    ($vacinaDescricaoPossuiMaisLinhas ?
+                        5 :
+                        ($nmrLinhasVacinaDescricao > 1 ?
+                            $linhaAlturaMaxima / $nmrLinhasVacinaDescricao :
+                            5 * $numeroLinhasOcupadas
+                        )
+                    ),
+                    $vacina->descricao,
+                    0,
+                    'C',
+                    $color
+                );
+                $this->setXY($x1 + 80, $y1);
+
+                $x1 = $this->getX();
+                $y1 = $this->getY();
+                $this->multiCell(
+                    60,
+                    ($estrategiaDescricaoPossuiMaisLinhas ?
+                        5 :
+                        ($nmrLinhasEstrategiaDescricao > 1 ?
+                            $linhaAlturaMaxima / $nmrLinhasEstrategiaDescricao :
+                            5 * $numeroLinhasOcupadas
+                        )
+                    ),
+                    $estrategia->descricao,
+                    0,
+                    'C',
+                    $color
+                );
+                $this->setXY($x1 + 60, $y1);
+
+                $x1 = $this->getX();
+                $y1 = $this->getY();
+                $this->multiCell(
+                    34,
+                    ($doseDescricaoPossuiMaisLinhas ?
+                        5 :
+                        ($nmrLinhasDoseDescricao > 1 ?
+                            $linhaAlturaMaxima / $nmrLinhasDoseDescricao :
+                            5 * $numeroLinhasOcupadas
+                        )
+                    ),
+                    $dose->descricao,
+                    0,
+                    'C',
+                    $color
+                );
+                $this->setXY($x1 + 34, $y1);
+
+                $x1 = $this->getX();
+                $y1 = $this->getY();
+                $this->multiCell(
+                    20,
+                    ($doseQuantidadePossuiMaisLinhas ?
+                        5 :
+                        ($nmrLinhasDoseQuantidade > 1 ?
+                            $linhaAlturaMaxima / $nmrLinhasDoseQuantidade :
+                            5 * $numeroLinhasOcupadas
+                        )
+                    ),
+                    $dose->quantidade,
+                    0,
+                    'C',
+                    $color
+                );
             }
         }
 
-        $this->Cell(1, 1, '', 0, 1);
-        $this->Cell(150, 4, 'Total por Estratégia:', 0, 0, 'R');
+        $this->cell(1, 1, '', 0, 1);
+        $this->cell(150, 4, 'Total por Estratégia:', 0, 0, 'R');
         $x = $this->GetX();
         $total = 0;
         foreach ($vacina->estrategias as $estrategia) {
             $total += $estrategia->total;
             $this->SetX($x);
-            $this->Cell(45, 4, "{$estrategia->descricao} - {$estrategia->total}", 0, 1, 'L');
+            $this->multiCell(45, 4, "{$estrategia->descricao} - {$estrategia->total}", 0, 'L');
         }
 
-        $this->Cell(1, 1, '', 0, 1);
-        $this->SetFont('Arial', 'B', 7);
-        $this->Cell(150, 4, 'TOTAL:', 0, 0, 'R');
-        $this->SetFont('Arial', '', 7);
-        $this->Cell(45, 4, "{$total} vacinas aplicadas", 0, 1, 'L');
-        $this->Cell(1, 3, '', 0, 1);
+        $this->cell(1, 1, '', 0, 1);
+        $this->setFont('Arial', 'B', 7);
+        $this->cell(150, 4, 'TOTAL:', 0, 0, 'R');
+        $this->setFont('Arial', '', 7);
+        $this->cell(45, 4, "{$total} vacinas aplicadas", 0, 1, 'L');
+        $this->cell(1, 3, '', 0, 1);
 
         $this->totalVacinas += $total;
     }
 
     private function imprimir()
     {
-        $fileName = 'tmp/controle_vacinas_aplicadas' . time() . '.pdf';
-        $this->Output($fileName, false, true);
+        $fileName = 'tmp/controle_vacinas_aplicadas'.time().'.pdf';
+        $this->output('F', $fileName);
 
         return [
             "name" => "Relatório de Controle de Vacinas Aplicadas",
             "path" => $fileName,
-            'pathExterno' => ECIDADE_REQUEST_PATH . $fileName
+            'pathExterno' => ECIDADE_REQUEST_PATH.$fileName
         ];
     }
 }

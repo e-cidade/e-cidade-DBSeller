@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("fpdf151/scpdf.php"));
@@ -61,7 +61,7 @@ if($clempparametro->numrows>0){
 }
 
 $where_solicita = "";
-if(isset($ini) && trim($ini)!="") { 
+if(isset($ini) && trim($ini)!="") {
   $where_solicita = " pc10_numero >= $ini";
 }
 
@@ -95,7 +95,7 @@ $pdf1->Snumero_ant = "";
 $pdf1->casadec    = $e30_numdec;
 
 for($contador=0;$contador<$numrows_solicita;$contador++) {
-  
+
   db_fieldsmemory($result_pesq_solicita,$contador);
   $pdf1->prefeitura = $nomeinst;
   $pdf1->logo			  = $logo;
@@ -115,21 +115,22 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
   $pdf1->Sdata      = $pc10_data;
   $pdf1->Svalor     = 0; //$pc12_vlrap;
   $pdf1->Sresumo    = $pc10_resumo;
-  $pdf1->Stipcom    = ''; //$pc50_descr;  
+  $pdf1->Stipcom    = ''; //$pc50_descr;
   $pdf1->Sdepart    = $descrdepto;
   $pdf1->Srespdepart= $nomeresponsavel;
   $pdf1->Susuarioger= $nome;
 
-	$pdf1->StipoSolicitacao = $pc52_sequencial.$pc52_descricao;
-  
-  
+  $pdf1->StipoSolicitacao = $pc52_sequencial.$pc52_descricao;
+  $pdf1->processoAdministrativo = $pc90_numeroprocesso;
+
+
   $result_orgunid   = $cldb_departorg->sql_record($cldb_departorg->sql_query_orgunid($coddepto,db_getsession('DB_anousu'),"o40_descr,o41_descr"));
-  db_fieldsmemory($result_orgunid,0);  
+  db_fieldsmemory($result_orgunid,0);
   $pdf1->Sorgao     = $o40_descr;
   $pdf1->Sunidade   = $o41_descr;
 
 //  die($clsolicitem->sql_query_relmod2(null,"distinct fc_estruturaldotacao(pc13_anousu,pc13_coddot) as estrutural,o55_descr,o15_descr,b.o56_descr as descrestrutural,pc13_codigo,pc13_anousu,pc13_coddot,pc13_quant,pc13_valor,b.o56_elemento as do56_elemento,pc05_servico,pc11_seq,pc11_codigo,pc11_quant,pc11_vlrun,pc11_prazo,pc11_pgto,pc11_resum,pc11_just,m61_abrev,m61_descr,pc17_quant,pc01_codmater,pc01_descrmater,(pc13_valor/pc13_quant) as pc13_valtot,(pc11_vlrun*pc11_quant) as pc11_valtot,m61_usaquant,a.o56_elemento as so56_elemento,a.o56_descr as descrele",'pc13_coddot,pc13_codigo',"pc11_numero=$pc10_numero"));
-  
+
   $sSqlSolicitem = $clsolicitem->sql_query_relmod2(null,
                                                         "distinct '' as estrutural,
                                                                   '' as o55_projativ,
@@ -159,7 +160,10 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
                                                                   0 as pc13_valtot,
                                                                   0 as pc11_valtot,
                                                                   0 as m61_usaquant,
-                                                                  m61_descr,
+                                                                  CASE
+                                                                    WHEN pc17_quant IS NOT NULL THEN m61_descr || '(' || pc17_quant || ')'
+                                                                    ELSE m61_descr
+                                                                  END m61_descr,
                                                                   '' as so56_elemento,
                                                                   '' as descrele,
                                                                   '' as o41_descr",
@@ -167,7 +171,6 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
                                                                   pc13_codigo',
                                                                   "pc11_numero=$pc10_numero");
 
-//  die($sSqlSolicitem);
   $result_pesq_pcdotac   = $clsolicitem->sql_record($sSqlSolicitem);
   $numrows_pcdotac       = $clsolicitem->numrows;
   $pdf1->recorddasdotac  = $result_pesq_pcdotac;

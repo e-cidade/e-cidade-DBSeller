@@ -9,11 +9,13 @@ use \documentoTemplate;
 
 abstract class ProcessaDocumentoTemplate
 {
-  
+
     private $documentoTemplate;
     private $dadosVariaveis = [];
     private $nomeDocumento  = "DocTemplate";
     private $extensaoArquivo;
+    protected $validar = true;
+
     public function __construct(
         $iTipo = '',
         $iCodDocumento = null,
@@ -37,9 +39,8 @@ abstract class ProcessaDocumentoTemplate
         );
     }
 
-    public function processaTemplate()
+    public function processaTemplate($deletaTemplatePadrao = true)
     {
-    
         $this->nomeDocumento      = $this->nomeDocumento.time();
         $templateProcessor        = new TemplateProcessor($this->documentoTemplate->getArquivoTemplate());
         $caminhoDocumento         = Settings::getTempDir()."{$this->getNomeDocumento()}.{$this->extensaoArquivo}";
@@ -51,46 +52,62 @@ abstract class ProcessaDocumentoTemplate
         }
         foreach ($templateProcessor->getVariables() as $variavel) {
             if (!array_key_exists($variavel, $dadosVariaveisTemplate)) {
-                $templateProcessor->setValue($variavel, "");
-                $variaveisNaoConfiguradas[] = $variavel;
+                if ($this->validar) {
+                    $templateProcessor->setValue($variavel, "");
+                    $variaveisNaoConfiguradas[] = $variavel;
+                }
                 continue;
             }
 
             if (is_array($dadosVariaveisTemplate[$variavel])) {
                 $templateProcessor->cloneBlock($variavel, 0, true, false, $dadosVariaveisTemplate[$variavel]);
+                continue;
             }
 
-            $templateProcessor->setValue($variavel, $dadosVariaveisTemplate[$variavel]);
+            if (strpos($variavel, "qr_code") !== false) {
+                $templateProcessor = $this->buildQrCode(
+                    $templateProcessor,
+                    $variavel,
+                    $dadosVariaveisTemplate[$variavel]
+                );
+            } else {
+                $dadoVariavelTemplate = $this->scapeSpecialChar($dadosVariaveisTemplate[$variavel]);
+                $templateProcessor->setValue($variavel, $dadoVariavelTemplate);
+            }
         }
-    
-        $templateProcessor->saveAs($caminhoDocumento);
+
         if (count($variaveisNaoConfiguradas) > 0) {
             $configurarVariaveis = implode(", ", $variaveisNaoConfiguradas);
             $mensagem = "As variáveis {$configurarVariaveis} não foram configuradas";
             if (count($variaveisNaoConfiguradas) == 1) {
                 $mensagem = "A variável {$configurarVariaveis} não foi configurada";
             }
-      
+
             throw new \Exception($mensagem);
         }
-      // classe para converter o documento docx
-        $converter = new OfficeConverter($caminhoDocumento);
-        $converter->convertTo($caminhoPdf);
+
+        $templateProcessor->saveAs($caminhoDocumento);
+
+        convertToPdf($caminhoDocumento, Settings::getTempDir());
         if (!file_exists($caminhoPdf)) {
             throw new \Exception("Não foi possível emitir documento. Provável causa: template formato inválido");
         }
 
         unlink($caminhoDocumento);
-        unlink($this->documentoTemplate->getArquivoTemplate());
-      // caminho do PDF convertido
+
+        if ($deletaTemplatePadrao) {
+            unlink($this->documentoTemplate->getArquivoTemplate());
+        }
+
+        // caminho do PDF convertido
         return $caminhoPdf;
     }
-    
+
     /**
      * @return array
      */
     abstract public function configuraDadosVariaveis();
-  
+
     public function getNomeDocumento()
     {
         return $this->nomeDocumento;
@@ -99,5 +116,29 @@ abstract class ProcessaDocumentoTemplate
     public function setNomeDocumento($nomeDocumento)
     {
         $this->nomeDocumento = $nomeDocumento;
+    }
+
+    private function buildQrCode(TemplateProcessor $templateProcessor, $variableName, $url)
+    {
+        $filePath = Settings::getTempDir()."{$variableName}_{$this->getNomeDocumento()}.png";
+        \PHPQRCode\QRcode::png($url, $filePath, 'L', 5, 1);
+
+        $templateProcessor->setImageValue($variableName, $filePath);
+
+        unlink($filePath);
+
+        return $templateProcessor;
+    }
+
+    /**
+     * Filtra '&' das strings pois o php word entende
+     * como tag especial.
+     *
+     * @param string $value
+     * @return string
+     */
+    private function scapeSpecialChar($value)
+    {
+        return preg_replace('/&/', '&amp;', $value);
     }
 }

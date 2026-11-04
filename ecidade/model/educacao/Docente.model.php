@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 /**
@@ -169,7 +169,9 @@ class Docente {
       if ($iTotalLinhas > 0) {
 
         for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
+
           $oDadosListaAtividades = db_utils::fieldsMemory($rsListaAtividades, $iContador);
+
           $this->aListaAtividades[]       = $oDadosListaAtividades->ed20_i_codigo;
           $this->sNis                     = empty($this->sNis)        ? $oDadosListaAtividades->ed20_c_nis        : $this->sNis;
           $this->sPassaporte              = empty($this->sPassaporte) ? $oDadosListaAtividades->ed20_c_passaporte : $this->sPassaporte;
@@ -204,6 +206,15 @@ class Docente {
   public function getNome() {
     return $this->oCgm->getNome();
   }
+
+    /**
+   * Retorna o nome social do docente
+   * @return string
+   */
+  public function getNomeSocial() {
+    return $this->oCgm->getNomeSocial();
+  }
+
 
   /**
    * Retorna um array de disciplinas do docente
@@ -337,7 +348,7 @@ class Docente {
     }
     return false;
   }
-  
+
   /**
    * Retorna um array com as atividades do docente em uma escola
    * @param Escola $oEscola
@@ -348,22 +359,22 @@ class Docente {
     $aAtividades = array();
 
     if (count($this->aListaAtividades) > 0) {
-      
-      $aAtividades         = array(); 
+
+      $aAtividades         = array();
       $sListaRecursoHumano = implode(",", $this->aListaAtividades);
       $oDaoRecHumanoAtiv   = db_utils::getDao("rechumanoativ");
       $sWhereRecHumanoAtiv = "ed75_i_rechumano in ({$sListaRecursoHumano}) AND ed75_i_escola = {$oEscola->getCodigo()}";
       $sSqlRecHumanoAtiv   = $oDaoRecHumanoAtiv->sql_query(null, "ed22_i_codigo", null, $sWhereRecHumanoAtiv);
       $rsRecHumanoAtiv     = $oDaoRecHumanoAtiv->sql_record($sSqlRecHumanoAtiv);
       $iTotalRecHumanoAtiv = $oDaoRecHumanoAtiv->numrows;
-      
+
       if ($iTotalRecHumanoAtiv > 0) {
-        
+
         for ($iContador = 0; $iContador < $iTotalRecHumanoAtiv; $iContador++) {
-          
+
           $iRecHumanoAtiv    = db_utils::fieldsMemory($rsRecHumanoAtiv, $iContador)->ed22_i_codigo;
           $oDocenteAtividade = new DocenteAtividade($iRecHumanoAtiv);
-          $aAtividades[]     = $oDocenteAtividade; 
+          $aAtividades[]     = $oDocenteAtividade;
         }
       }
     }
@@ -487,7 +498,7 @@ class Docente {
    * @return string
    */
   public function getPisPasep() {
-    return $this->sPisPasep; 
+    return $this->sPisPasep;
   }
 
   /**

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -55,7 +55,7 @@ $clrotulo->label("y50_codauto");
         <legend>Auto de Infração</legend>
         <table>
          <tr>
-           <td nowrap title="<?=@$y50_codauto?>"><?db_ancora(@$Ly50_codauto,"js_codauto(true);",1);?></td>
+           <td nowrap title="<?=@$y50_codauto?>"><?php db_ancora(@$Ly50_codauto,"js_codauto(true);",1);?></td>
            <td>
             <?php
               db_input('y50_codauto',6,$Iy50_codauto,true,'text',1," onchange='js_codauto(false);'");

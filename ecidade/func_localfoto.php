@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ function js_testacampo(){
       <b>Local foto:</b>
     </td>
     <td> 
-			<?
+			<?php
    	  db_input("arquivofoto",30,0,true,"file",1);
 			?>
     </td>
@@ -93,7 +93,7 @@ function js_testacampo(){
 </body>
 </html>
 <script>
-<?
+<?php
 if(isset($arquivofoto)){
 	echo "js_enviar();";
 }

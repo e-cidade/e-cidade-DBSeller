@@ -1,72 +1,72 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: vacinas
 //CLASSE DA ENTIDADE vac_fechamento
-class cl_vac_fechamento { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $vc20_i_codigo = 0; 
-   var $vc20_d_dataini_dia = null; 
-   var $vc20_d_dataini_mes = null; 
-   var $vc20_d_dataini_ano = null; 
-   var $vc20_d_dataini = null; 
-   var $vc20_d_datafim_dia = null; 
-   var $vc20_d_datafim_mes = null; 
-   var $vc20_d_datafim_ano = null; 
-   var $vc20_d_datafim = null; 
-   var $vc20_i_usuario = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_vac_fechamento {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $vc20_i_codigo = 0;
+   var $vc20_d_dataini_dia = null;
+   var $vc20_d_dataini_mes = null;
+   var $vc20_d_dataini_ano = null;
+   var $vc20_d_dataini = null;
+   var $vc20_d_datafim_dia = null;
+   var $vc20_d_datafim_mes = null;
+   var $vc20_d_datafim_ano = null;
+   var $vc20_d_datafim = null;
+   var $vc20_i_usuario = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 vc20_i_codigo = int4 = Código 
-                 vc20_d_dataini = date = Inicio 
-                 vc20_d_datafim = date = Fim 
-                 vc20_i_usuario = int4 = Usuario 
+                 vc20_i_codigo = int4 = Código
+                 vc20_d_dataini = date = Inicio
+                 vc20_d_datafim = date = Fim
+                 vc20_i_usuario = int4 = Usuario
                  ";
-   //funcao construtor da classe 
-   function cl_vac_fechamento() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("vac_fechamento"); 
+     $this->rotulo = new rotulo("vac_fechamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -75,7 +75,7 @@ class cl_vac_fechamento {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->vc20_i_codigo = ($this->vc20_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"]:$this->vc20_i_codigo);
        if($this->vc20_d_dataini == ""){
@@ -100,9 +100,9 @@ class cl_vac_fechamento {
      }
    }
    // funcao para inclusao
-   function incluir ($vc20_i_codigo){ 
+   public function incluir ($vc20_i_codigo){
       $this->atualizacampos();
-     if($this->vc20_d_dataini == null ){ 
+     if($this->vc20_d_dataini == null ){
        $this->erro_sql = " Campo Inicio nao Informado.";
        $this->erro_campo = "vc20_d_dataini_dia";
        $this->erro_banco = "";
@@ -111,7 +111,7 @@ class cl_vac_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->vc20_d_datafim == null ){ 
+     if($this->vc20_d_datafim == null ){
        $this->erro_sql = " Campo Fim nao Informado.";
        $this->erro_campo = "vc20_d_datafim_dia";
        $this->erro_banco = "";
@@ -120,7 +120,7 @@ class cl_vac_fechamento {
        $this->erro_status = "0";
        return false;
      }
-     if($this->vc20_i_usuario == null ){ 
+     if($this->vc20_i_usuario == null ){
        $this->erro_sql = " Campo Usuario nao Informado.";
        $this->erro_campo = "vc20_i_usuario";
        $this->erro_banco = "";
@@ -130,16 +130,16 @@ class cl_vac_fechamento {
        return false;
      }
      if($vc20_i_codigo == "" || $vc20_i_codigo == null ){
-       $result = db_query("select nextval('vac_fechamento_vc20_i_codigo_seq')"); 
+       $result = db_query("select nextval('vac_fechamento_vc20_i_codigo_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: vac_fechamento_vc20_i_codigo_seq do campo: vc20_i_codigo"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: vac_fechamento_vc20_i_codigo_seq do campo: vc20_i_codigo";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->vc20_i_codigo = pg_result($result,0,0); 
+       $this->vc20_i_codigo = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from vac_fechamento_vc20_i_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $vc20_i_codigo)){
@@ -150,10 +150,10 @@ class cl_vac_fechamento {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->vc20_i_codigo = $vc20_i_codigo; 
+         $this->vc20_i_codigo = $vc20_i_codigo;
        }
      }
-     if(($this->vc20_i_codigo == null) || ($this->vc20_i_codigo == "") ){ 
+     if(($this->vc20_i_codigo == null) || ($this->vc20_i_codigo == "") ){
        $this->erro_sql = " Campo vc20_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -162,19 +162,19 @@ class cl_vac_fechamento {
        return false;
      }
      $sql = "insert into vac_fechamento(
-                                       vc20_i_codigo 
-                                      ,vc20_d_dataini 
-                                      ,vc20_d_datafim 
-                                      ,vc20_i_usuario 
+                                       vc20_i_codigo
+                                      ,vc20_d_dataini
+                                      ,vc20_d_datafim
+                                      ,vc20_i_usuario
                        )
                 values (
-                                $this->vc20_i_codigo 
-                               ,".($this->vc20_d_dataini == "null" || $this->vc20_d_dataini == ""?"null":"'".$this->vc20_d_dataini."'")." 
-                               ,".($this->vc20_d_datafim == "null" || $this->vc20_d_datafim == ""?"null":"'".$this->vc20_d_datafim."'")." 
-                               ,$this->vc20_i_usuario 
+                                $this->vc20_i_codigo
+                               ,".($this->vc20_d_dataini == "null" || $this->vc20_d_dataini == ""?"null":"'".$this->vc20_d_dataini."'")."
+                               ,".($this->vc20_d_datafim == "null" || $this->vc20_d_datafim == ""?"null":"'".$this->vc20_d_datafim."'")."
+                               ,$this->vc20_i_usuario
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "Fechamento ($this->vc20_i_codigo) nao Incluído. Inclusao Abortada.";
@@ -209,16 +209,16 @@ class cl_vac_fechamento {
        $resac = db_query("insert into db_acount values($acount,3093,17513,'','".AddSlashes(pg_result($resaco,0,'vc20_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($vc20_i_codigo=null) { 
+   public function alterar ($vc20_i_codigo=null) {
       $this->atualizacampos();
      $sql = " update vac_fechamento set ";
      $virgula = "";
-     if(trim($this->vc20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"])){ 
+     if(trim($this->vc20_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_codigo"])){
        $sql  .= $virgula." vc20_i_codigo = $this->vc20_i_codigo ";
        $virgula = ",";
-       if(trim($this->vc20_i_codigo) == null ){ 
+       if(trim($this->vc20_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "vc20_i_codigo";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_vac_fechamento {
          return false;
        }
      }
-     if(trim($this->vc20_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"] !="") ){ 
+     if(trim($this->vc20_d_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"] !="") ){
        $sql  .= $virgula." vc20_d_dataini = '$this->vc20_d_dataini' ";
        $virgula = ",";
-       if(trim($this->vc20_d_dataini) == null ){ 
+       if(trim($this->vc20_d_dataini) == null ){
          $this->erro_sql = " Campo Inicio nao Informado.";
          $this->erro_campo = "vc20_d_dataini_dia";
          $this->erro_banco = "";
@@ -240,11 +240,11 @@ class cl_vac_fechamento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_dataini_dia"])){
          $sql  .= $virgula." vc20_d_dataini = null ";
          $virgula = ",";
-         if(trim($this->vc20_d_dataini) == null ){ 
+         if(trim($this->vc20_d_dataini) == null ){
            $this->erro_sql = " Campo Inicio nao Informado.";
            $this->erro_campo = "vc20_d_dataini_dia";
            $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_vac_fechamento {
          }
        }
      }
-     if(trim($this->vc20_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"] !="") ){ 
+     if(trim($this->vc20_d_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"] !="") ){
        $sql  .= $virgula." vc20_d_datafim = '$this->vc20_d_datafim' ";
        $virgula = ",";
-       if(trim($this->vc20_d_datafim) == null ){ 
+       if(trim($this->vc20_d_datafim) == null ){
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "vc20_d_datafim_dia";
          $this->erro_banco = "";
@@ -267,11 +267,11 @@ class cl_vac_fechamento {
          $this->erro_status = "0";
          return false;
        }
-     }     else{ 
-       if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"])){ 
+     }     else{
+       if(isset($GLOBALS["HTTP_POST_VARS"]["vc20_d_datafim_dia"])){
          $sql  .= $virgula." vc20_d_datafim = null ";
          $virgula = ",";
-         if(trim($this->vc20_d_datafim) == null ){ 
+         if(trim($this->vc20_d_datafim) == null ){
            $this->erro_sql = " Campo Fim nao Informado.";
            $this->erro_campo = "vc20_d_datafim_dia";
            $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_vac_fechamento {
          }
        }
      }
-     if(trim($this->vc20_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_usuario"])){ 
+     if(trim($this->vc20_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["vc20_i_usuario"])){
        $sql  .= $virgula." vc20_i_usuario = $this->vc20_i_usuario ";
        $virgula = ",";
-       if(trim($this->vc20_i_usuario) == null ){ 
+       if(trim($this->vc20_i_usuario) == null ){
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "vc20_i_usuario";
          $this->erro_banco = "";
@@ -317,7 +317,7 @@ class cl_vac_fechamento {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->vc20_i_codigo;
@@ -345,14 +345,14 @@ class cl_vac_fechamento {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($vc20_i_codigo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($vc20_i_codigo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($vc20_i_codigo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -381,7 +381,7 @@ class cl_vac_fechamento {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Fechamento nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$vc20_i_codigo;
@@ -409,11 +409,11 @@ class cl_vac_fechamento {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -435,11 +435,11 @@ class cl_vac_fechamento {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,15 +453,15 @@ class cl_vac_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($vc20_i_codigo!=null ){
-         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo "; 
-       } 
+         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,10 +471,10 @@ class cl_vac_fechamento {
      return $sql;
   }
 // funcao do sql2
-   function sql_query2 ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere="",$iLote = ""){ 
+   public function sql_query2 ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere="",$iLote = ""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_vac_fechamento {
      }
      $sql .= "   left join matestoqueitemlote as b  on b.m77_sequencial  = vac_aplicalote.vc17_i_matetoqueitemlote";
      $sql .= "   left join matestoqueitem as b1     on b1.m71_codlanc    = b.m77_matestoqueitem ";
-     $sql .= "   left join vac_aplica               on vc16_i_codigo        = vac_aplicalote.vc17_i_aplica ";   
+     $sql .= "   left join vac_aplica               on vc16_i_codigo        = vac_aplicalote.vc17_i_aplica ";
      $sql .= "   left join vac_vacinadose           on vc07_i_codigo       = vac_aplica.vc16_i_dosevacina ";
      $sql .= "   left join matestoque as b2         on b2.m70_codigo       = b1.m71_codmatestoque ";
      $sql .= "   left join vac_vacinamaterial as b3 on b3.vc29_i_vacina   = vac_vacinadose.vc07_i_vacina ";
@@ -510,15 +510,15 @@ class cl_vac_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($vc20_i_codigo!=null ){
-         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo "; 
-       } 
+         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,12 +527,12 @@ class cl_vac_fechamento {
      }
      return $sql;
   }
-  
+
 // funcao do sql2
-   function sql_query_atendrequiitem ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_atendrequiitem ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,15 +555,15 @@ class cl_vac_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($vc20_i_codigo!=null ){
-         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo "; 
-       } 
+         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,11 +572,11 @@ class cl_vac_fechamento {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $vc20_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,15 +589,15 @@ class cl_vac_fechamento {
      $sql2 = "";
      if($dbwhere==""){
        if($vc20_i_codigo!=null ){
-         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo "; 
-       } 
+         $sql2 .= " where vac_fechamento.vc20_i_codigo = $vc20_i_codigo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -55,17 +55,17 @@ class cl_pcorcam
     var $pc20_cotacaoprevia = 0;
     // cria propriedade com as variaveis do arquivo
     var $campos = "
-                 pc20_codorc = int4 = Código do orçamento
-                 pc20_dtate = date = Prazo limite para entrega do orçamento
-                 pc20_hrate = char(5) = Hora limite para entrega do orçamento
-                 pc20_obs = text = Observação
+                 pc20_codorc = int4 = CÃ³digo do orÃ§amento
+                 pc20_dtate = date = Prazo limite para entrega do orÃ§amento
+                 pc20_hrate = char(5) = Hora limite para entrega do orÃ§amento
+                 pc20_obs = text = ObservaÃ§Ã£o
                  pc20_prazoentrega = int4 = Prazo de Entrega de Produto
                  pc20_validadeorcamento = int4 = Validade do Orcamento
-                 pc20_cotacaoprevia = int4 = Cotação Prévia
+                 pc20_cotacaoprevia = int4 = CotaÃ§Ã£o PrÃ©via
                  ";
 
     //funcao construtor da classe
-    function cl_pcorcam()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("pcorcam");
@@ -73,7 +73,7 @@ class cl_pcorcam
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -84,7 +84,7 @@ class cl_pcorcam
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->pc20_codorc = ($this->pc20_codorc == "" ? @$GLOBALS["HTTP_POST_VARS"]["pc20_codorc"] : $this->pc20_codorc);
@@ -107,23 +107,23 @@ class cl_pcorcam
     }
 
     // funcao para inclusao
-    function incluir($pc20_codorc)
+    public function incluir($pc20_codorc)
     {
         $this->atualizacampos();
         if ($this->pc20_dtate == null) {
-            $this->erro_sql = " Campo Prazo limite para entrega do orçamento nao Informado.";
+            $this->erro_sql = " Campo Prazo limite para entrega do orÃ§amento nao Informado.";
             $this->erro_campo = "pc20_dtate_dia";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             return false;
         }
         if ($this->pc20_hrate == null) {
-            $this->erro_sql = " Campo Hora limite para entrega do orçamento nao Informado.";
+            $this->erro_sql = " Campo Hora limite para entrega do orÃ§amento nao Informado.";
             $this->erro_campo = "pc20_hrate";
             $this->erro_banco = "";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             return false;
@@ -142,7 +142,7 @@ class cl_pcorcam
             if ($result == false) {
                 $this->erro_banco = str_replace("\n", "", @pg_last_error());
                 $this->erro_sql = "Verifique o cadastro da sequencia: pcorcam_pc20_codorc_seq do campo: pc20_codorc";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "0";
                 return false;
@@ -151,9 +151,9 @@ class cl_pcorcam
         } else {
             $result = db_query("select last_value from pcorcam_pc20_codorc_seq");
             if (($result != false) && (pg_result($result, 0, 0) < $pc20_codorc)) {
-                $this->erro_sql = " Campo pc20_codorc maior que último número da sequencia.";
-                $this->erro_banco = "Sequencia menor que este número.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_sql = " Campo pc20_codorc maior que Ãºltimo nÃºmero da sequencia.";
+                $this->erro_banco = "Sequencia menor que este nÃºmero.";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "0";
                 return false;
@@ -164,7 +164,7 @@ class cl_pcorcam
         if (($this->pc20_codorc == null) || ($this->pc20_codorc == "")) {
             $this->erro_sql = " Campo pc20_codorc nao declarado.";
             $this->erro_banco = "Chave Primaria zerada.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             return false;
@@ -191,13 +191,13 @@ class cl_pcorcam
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
-                $this->erro_sql = "Orçamentos de compras ($this->pc20_codorc) nao Incluído. Inclusao Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
-                $this->erro_banco = "Orçamentos de compras já Cadastrado";
+                $this->erro_sql = "OrÃ§amentos de compras ($this->pc20_codorc) nao IncluÃ­do. Inclusao Abortada.";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_banco = "OrÃ§amentos de compras jÃ¡ Cadastrado";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             } else {
-                $this->erro_sql = "Orçamentos de compras ($this->pc20_codorc) nao Incluído. Inclusao Abortada.";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_sql = "OrÃ§amentos de compras ($this->pc20_codorc) nao IncluÃ­do. Inclusao Abortada.";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             }
             $this->erro_status = "0";
@@ -207,7 +207,7 @@ class cl_pcorcam
         $this->erro_banco = "";
         $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
         $this->erro_sql .= "Valores : " . $this->pc20_codorc;
-        $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+        $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
         $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
         $this->erro_status = "1";
         $this->numrows_incluir = pg_affected_rows($result);
@@ -229,7 +229,7 @@ class cl_pcorcam
     }
 
     // funcao para alteracao
-    function alterar($pc20_codorc = null)
+    public function alterar($pc20_codorc = null)
     {
         $this->atualizacampos();
         $sql = " update pcorcam set ";
@@ -238,10 +238,10 @@ class cl_pcorcam
             $sql .= $virgula . " pc20_codorc = $this->pc20_codorc ";
             $virgula = ",";
             if (trim($this->pc20_codorc) == null) {
-                $this->erro_sql = " Campo Código do orçamento nao Informado.";
+                $this->erro_sql = " Campo CÃ³digo do orÃ§amento nao Informado.";
                 $this->erro_campo = "pc20_codorc";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "0";
                 return false;
@@ -251,10 +251,10 @@ class cl_pcorcam
             $sql .= $virgula . " pc20_dtate = '$this->pc20_dtate' ";
             $virgula = ",";
             if (trim($this->pc20_dtate) == null) {
-                $this->erro_sql = " Campo Prazo limite para entrega do orçamento nao Informado.";
+                $this->erro_sql = " Campo Prazo limite para entrega do orÃ§amento nao Informado.";
                 $this->erro_campo = "pc20_dtate_dia";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "0";
                 return false;
@@ -264,10 +264,10 @@ class cl_pcorcam
                 $sql .= $virgula . " pc20_dtate = null ";
                 $virgula = ",";
                 if (trim($this->pc20_dtate) == null) {
-                    $this->erro_sql = " Campo Prazo limite para entrega do orçamento nao Informado.";
+                    $this->erro_sql = " Campo Prazo limite para entrega do orÃ§amento nao Informado.";
                     $this->erro_campo = "pc20_dtate_dia";
                     $this->erro_banco = "";
-                    $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                    $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                     $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                     $this->erro_status = "0";
                     return false;
@@ -278,10 +278,10 @@ class cl_pcorcam
             $sql .= $virgula . " pc20_hrate = '$this->pc20_hrate' ";
             $virgula = ",";
             if (trim($this->pc20_hrate) == null) {
-                $this->erro_sql = " Campo Hora limite para entrega do orçamento nao Informado.";
+                $this->erro_sql = " Campo Hora limite para entrega do orÃ§amento nao Informado.";
                 $this->erro_campo = "pc20_hrate";
                 $this->erro_banco = "";
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "0";
                 return false;
@@ -342,9 +342,9 @@ class cl_pcorcam
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            $this->erro_sql = "Orçamentos de compras nao Alterado. Alteracao Abortada.\\n";
+            $this->erro_sql = "OrÃ§amentos de compras nao Alterado. Alteracao Abortada.\\n";
             $this->erro_sql .= "Valores : " . $this->pc20_codorc;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             $this->numrows_alterar = 0;
@@ -352,18 +352,18 @@ class cl_pcorcam
         } else {
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
-                $this->erro_sql = "Orçamentos de compras nao foi Alterado. Alteracao Executada.\\n";
+                $this->erro_sql = "OrÃ§amentos de compras nao foi Alterado. Alteracao Executada.\\n";
                 $this->erro_sql .= "Valores : " . $this->pc20_codorc;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
-                $this->erro_sql = "Alteração efetuada com Sucesso\\n";
+                $this->erro_sql = "AlteraÃ§Ã£o efetuada com Sucesso\\n";
                 $this->erro_sql .= "Valores : " . $this->pc20_codorc;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "1";
                 $this->numrows_alterar = pg_affected_rows($result);
@@ -373,7 +373,7 @@ class cl_pcorcam
     }
 
     // funcao para exclusao
-    function excluir($pc20_codorc = null, $dbwhere = null)
+    public function excluir($pc20_codorc = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($pc20_codorc));
@@ -411,9 +411,9 @@ class cl_pcorcam
         $result = db_query($sql . $sql2);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            $this->erro_sql = "Orçamentos de compras nao Excluído. Exclusão Abortada.\\n";
+            $this->erro_sql = "OrÃ§amentos de compras nao ExcluÃ­do. ExclusÃ£o Abortada.\\n";
             $this->erro_sql .= "Valores : " . $pc20_codorc;
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             $this->numrows_excluir = 0;
@@ -421,18 +421,18 @@ class cl_pcorcam
         } else {
             if (pg_affected_rows($result) == 0) {
                 $this->erro_banco = "";
-                $this->erro_sql = "Orçamentos de compras nao Encontrado. Exclusão não Efetuada.\\n";
+                $this->erro_sql = "OrÃ§amentos de compras nao Encontrado. ExclusÃ£o nÃ£o Efetuada.\\n";
                 $this->erro_sql .= "Valores : " . $pc20_codorc;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = 0;
                 return true;
             } else {
                 $this->erro_banco = "";
-                $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
+                $this->erro_sql = "ExclusÃ£o efetuada com Sucesso\\n";
                 $this->erro_sql .= "Valores : " . $pc20_codorc;
-                $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+                $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
                 $this->erro_status = "1";
                 $this->numrows_excluir = pg_affected_rows($result);
@@ -442,14 +442,14 @@ class cl_pcorcam
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
             $this->numrows = 0;
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
             $this->erro_sql = "Erro ao selecionar os registros.";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             return false;
@@ -458,7 +458,7 @@ class cl_pcorcam
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:pcorcam";
-            $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
+            $this->erro_msg = "UsuÃ¡rio: \\n\\n " . $this->erro_sql . " \\n\\n";
             $this->erro_msg .= str_replace('"', "", str_replace("'", "", "Administrador: \\n\\n " . $this->erro_banco . " \\n"));
             $this->erro_status = "0";
             return false;
@@ -466,7 +466,7 @@ class cl_pcorcam
         return $result;
     }
 
-    function sql_query($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -501,7 +501,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_file($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -536,7 +536,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_gercons($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_gercons($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -588,7 +588,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_gerconspc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_gerconspc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -608,7 +608,7 @@ class cl_pcorcam
         $sql .= "      inner join pcorcamitemproc on pcorcamitemproc.pc31_orcamitem = pcorcamitem.pc22_orcamitem ";
         $sql .= "      inner join pcprocitem on pcprocitem.pc81_codprocitem= pcorcamitemproc.pc31_pcprocitem ";
         $sql .= "      inner join solicitem on solicitem.pc11_codigo= pcprocitem.pc81_solicitem ";
-        $sql .= "      inner join pcdotac on pc13_codigo=solicitem.pc11_codigo ";
+        $sql .= "      left join pcdotac on pc13_codigo=solicitem.pc11_codigo ";
         $sql .= "      left  join solicitempcmater on solicitempcmater.pc16_solicitem= solicitem.pc11_codigo ";
         $sql .= "      left  join pcmater on pcmater.pc01_codmater = solicitempcmater.pc16_codmater ";
         $sql .= "      left  join pcsubgrupo  on  pcsubgrupo.pc04_codsubgrupo = pcmater.pc01_codsubgrupo";
@@ -640,7 +640,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_pcmaterproc($pc22_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pcmaterproc($pc22_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -681,7 +681,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_pcmatersol($pc22_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_pcmatersol($pc22_orcamitem = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -721,7 +721,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_prazo($pc80_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_prazo($pc80_codproc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -762,7 +762,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_soldepto($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_soldepto($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -803,7 +803,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_solproc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_solproc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -850,7 +850,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_vallancados($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_vallancados($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -892,7 +892,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_proc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_proc($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -933,7 +933,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_valitemjulglic($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_valitemjulglic($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -980,7 +980,7 @@ class cl_pcorcam
         return $sql;
     }
 
-    function sql_query_valitemjulgsol($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_valitemjulgsol($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1027,7 +1027,7 @@ class cl_pcorcam
     }
 
 
-    function sql_query_valor_item_julgado_processocompra($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_valor_item_julgado_processocompra($pc20_codorc = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -1097,7 +1097,7 @@ class cl_pcorcam
     public function buscaItensOrcamentoPorFornecedor($codigoOrcamento, $numeroCgm)
     {
         $sql = "
-            SELECT 
+            SELECT
                 pc11_seq,
                 pcorcam.pc20_codorc,
                 pc22_orcamitem,
@@ -1161,9 +1161,9 @@ class cl_pcorcam
         $filtros = implode(' AND ', $filtros);
 
         $sql = "
-            SELECT 
+            SELECT
                 {$campos}
-            FROM 
+            FROM
                 pcorcam
             LEFT JOIN pcorcamitem
                 ON pcorcamitem.pc22_codorc = pcorcam.pc20_codorc
@@ -1180,10 +1180,10 @@ class cl_pcorcam
                 OR pc11_codigo = pcprocitem.pc81_solicitem
             LEFT JOIN solicita
                 ON solicita.pc10_numero = solicitem.pc11_numero
-            WHERE 
+            WHERE
                 solicita.pc10_numero = {$idSolicitacao}
                 {$filtros}
-            ORDER BY 
+            ORDER BY
                 pc20_codorc DESC
         ";
 

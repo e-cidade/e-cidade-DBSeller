@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -24,9 +24,12 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
+require_once(modification("std/db_stdClass.php"));
 
 $uf = getEstadoInstituicao();
 $isPB = $uf === "PB" ;
+
+$sParametroSlipAuto = ParametroCaixa::getParametroMomentoSlipAutomatico(db_getsession("DB_instit"));
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("e80_data");
@@ -46,7 +49,7 @@ $clrotulo->label("o15_codigo");
 $clrotulo->label("o15_recurso");
 $clrotulo->label("cc31_classificacaocredores");
 $dados="ordem";
-require_once(modification("std/db_stdClass.php"));
+
 $iTipoControleRetencaoMesAnterior = 0;
 $lUsaData = true;
 $aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
@@ -55,6 +58,20 @@ if (count($aParametrosEmpenho) > 0) {
     $lUsaData = $aParametrosEmpenho[0]->e30_usadataagenda=="t"?true:false;
 }
 
+/**
+ * Verificamos se o parametro de geração de retencao automatica
+ * esta configurado para gerar no momento da atualização
+ * do movimento.
+ */
+$iTipoGeracaoSlipRetencaoAutomatico = 0;
+$aParametrosCaixa = db_stdClass::getParametro("caiparametro",array(db_getsession("DB_instit")), "k29_gerarslipautomaticoreceitaretencao");
+if (count($aParametrosCaixa) > 0) {
+    $iTipoGeracaoSlipRetencaoAutomatico = $aParametrosCaixa[0]->k29_gerarslipautomaticoreceitaretencao;
+}
+$acaoAtualizar = "js_configurar()";
+if ($iTipoGeracaoSlipRetencaoAutomatico == 2) {
+    $acaoAtualizar = "js_verificaLancamentoRetencoes()";
+}
 ?>
 <script>
   function js_mascara(evt){
@@ -76,6 +93,7 @@ if (count($aParametrosEmpenho) > 0) {
 <BR>
 <center>
     <form name="form1" method="post" action="">
+        <input type="hidden" name="dadosMovimentosRetencoesSlip" id="dadosMovimentosRetencoesSlip">
         <table border=0 style='width:90%'>
             <tr>
                 <td>
@@ -88,7 +106,7 @@ if (count($aParametrosEmpenho) > 0) {
                         </legend>
                         <table width="100%">
                             <tr>
-                                <td width="35%" valign="top">
+                                <td width="40%" valign="top">
                                     <fieldset class='filtros'>
                                         <legend>
                                             <b>Filtros</b>
@@ -165,18 +183,23 @@ if (count($aParametrosEmpenho) > 0) {
                                                     ?>
                                                 </td>
                                             </tr>
+
                                             <tr nowrap>
-                                                <td nowrap title="<?php echo  @$To15_codigo ?>">
-                                                    <a id='ancoraRecurso' href="#">Fonte de Recurso:</a>
-                                                </td>
-                                                <td colspan=3 nowrap>
+                                                <td>
                                                     <?php
-//                                                    db_input('o15_codigo', 10, $Io15_codigo, true, 'hidden', 1);
-                                                    db_input('o15_recurso', 10, $Io15_recurso, true, 'text', $db_opcao, " onchange='js_pesquisaRecurso(false);'");
-                                                    db_input('o15_descr', 40, $Io15_descr, true, 'text', 3, '');
+                                                    db_ancora("<b>Fonte de Recurso:</b>", "js_pesquisaRecurso(true)", 1);
+                                                    ?>
+                                                </td>
+                                                <td colspan="3">
+                                                    <?php
+                                                    db_input("o15_codigo", 8, null, false, "hidden", 3);
+                                                    db_input("gestao", 10, null, true, "text", 1, "onchange='js_pesquisaRecurso(false);'");
+                                                    db_input("o15_recurso", 8, null, true, "text", 3);
+                                                    db_input("descricao", 40, null, true, "text", 3);
                                                     ?>
                                                 </td>
                                             </tr>
+
                                             <?php if (FONTE_RECURSO_UNIAO) : ?>
                                                 <tr>
                                                     <td><b>Recurso Reduzido:</b></td>
@@ -198,9 +221,9 @@ if (count($aParametrosEmpenho) > 0) {
                                                     /* [Extensão] - Filtro da Despesa */
 
 
-                                                    $sSqlBuscaContaPagadora = $clempagetipo->sql_query(
+                                                    $sSqlBuscaContaPagadora = $clempagetipo->sql_query_reduz(
                                                         null,
-                                                        "e83_conta, e83_codtipo as codtipo, e83_descr, c61_codigo",
+                                                        "e83_conta, e83_codtipo as codtipo, e83_descr, gestao",
                                                         "e83_descr",
                                                         $sWhere
                                                     );
@@ -209,9 +232,8 @@ if (count($aParametrosEmpenho) > 0) {
                                                     $numrows05 = $clempagetipo->numrows;
                                                     $arr['0'] = "Nenhum";
                                                     for ($r = 0; $r < $numrows05; $r++) {
-                                                        db_fieldsmemory($result05, $r);
-                                                        $c61_codigo = getFonteReduzidaRecurso($c61_codigo);
-                                                        $arr[$codtipo] = "{$e83_conta} - {$e83_descr} - {$c61_codigo}";
+                                                        $dado = db_utils::fieldsMemory($result05, $r);
+                                                        $arr[$dado->codtipo] = "{$dado->e83_conta} - {$dado->e83_descr} - {$dado->gestao}";
                                                     }
                                                     $e83_codtipo = '0';
                                                     db_select("e83_codtipo", $arr, true, 1, "onchange='js_setContaPadrao(this.value);' style='width:26em'");
@@ -479,7 +501,7 @@ if (count($aParametrosEmpenho) > 0) {
                         <input name="pesquisar" id='pesquisar' type="button" value="Pesquisar"
                                onclick='js_pesquisarOrdens();'/>
                         <input name="atualizar" id='atualizar' type="button" value="Atualizar"
-                               onclick='js_configurar()'/>
+                               onclick='<?=$acaoAtualizar?>'/>
                         <input name="emitecheque" id='emitecheque' type="button"
                                value='Emitir Cheque' onclick='location.href="emp4_empageformache001.php"'/>
                         <input name="emitetxt" id='emitetxt' type="button"
@@ -593,6 +615,7 @@ if (count($aParametrosEmpenho) > 0) {
   <?php $uf = getEstadoInstituicao()?>
   var uf = '<?php echo  $uf ?>';
   var isPB = uf === "PB";
+  var sParametroSlipAuto = '<?php echo $sParametroSlipAuto?>'
 
 
 
@@ -920,10 +943,10 @@ if (count($aParametrosEmpenho) > 0) {
     js_liberaBotoes(false);
     js_reset();
     $('normais').checked = true;
+    $('TotalForCol16').innerHTML = js_formatar(0,'f');
+    $('TotalForCol15').innerHTML = js_formatar(0,'f');
     $('TotalForCol14').innerHTML = js_formatar(0,'f');
-    $('TotalForCol13').innerHTML = js_formatar(0,'f');
-    $('TotalForCol12').innerHTML = js_formatar(0,'f');
-    $('TotalForCol11').innerHTML  = js_formatar(0,'f');
+    $('TotalForCol13').innerHTML  = js_formatar(0,'f');
     //Criamos um objeto que tera a requisicao
 
     var oParam = {
@@ -1016,7 +1039,9 @@ if (count($aParametrosEmpenho) > 0) {
           aLinha[0]   = e81_codmov;
           aLinha[1]   = "<a onclick='js_JanelaAutomatica(\"empempenho\","+e60_numemp+");return false;' href='#'>";
           aLinha[1]  += e60_codemp+"/"+e60_anousu+"</a>";
-          aLinha[2]   = recurso;
+          aLinha[2]   = gestao;
+          aLinha[3]   = subrecurso;
+          aLinha[4]   = o15_complemento;
 
           /**
            * Cria a expressão regular para efetuar a alteração dos pontos por vazio.
@@ -1035,32 +1060,31 @@ if (count($aParametrosEmpenho) > 0) {
               if (e79_concarpeculiar == '') {
                 e79_concarpeculiar = 'Selecione';
               }
-              aLinha[3]  = "<a href='#' id='ccp_"+e81_codmov+"'";
-              aLinha[3] += "onclick='js_lookupConCarPeculiar("+e81_codmov+");' >"+e79_concarpeculiar+"</a>";
+              aLinha[5]  = "<a href='#' id='ccp_"+e81_codmov+"'";
+              aLinha[5] += "onclick='js_lookupConCarPeculiar("+e81_codmov+");' >"+e79_concarpeculiar+"</a>";
             } else {
-              aLinha[3] = e60_concarpeculiar;
+              aLinha[5] = e60_concarpeculiar;
             }
 
-            // aLinha[4]   = e50_codord+"&nbsp;<input type='button' value='H' onclick='alterarHistoricoPagamento("+e81_codmov+")' />";
-            aLinha[4]   = e50_codord;
-            aLinha[5]   = js_createComboContasPag(e81_codmov, aContasVinculadas, e85_codtipo, lDisabled);
-            aLinha[6]   = z01_nome.urlDecode().substring(0,20);
-            aLinha[7]   = js_createComboContasForne(aContasFornecedor, e98_contabanco, e81_codmov, z01_numcgm);
-            aLinha[8]   = js_createComboForma(e97_codforma,e81_codmov, lDisabled);
-            aLinha[9]   = js_formatar(e69_dtvencimento,'d');
+            aLinha[6]   = e50_codord;
+            aLinha[7]   = js_createComboContasPag(e81_codmov, aContasVinculadas, e85_codtipo, lDisabled);
+            aLinha[8]   = z01_nome.urlDecode().substring(0,20);
+            aLinha[9]   = js_createComboContasForne(aContasFornecedor, e98_contabanco, e81_codmov, z01_numcgm);
+            aLinha[10]   = js_createComboForma(e97_codforma,e81_codmov, lDisabled);
+            aLinha[11]   = js_formatar(e69_dtvencimento,'d');
             // aLinha[10]  = js_formatar( (e53_valor-e53_vlranu),"f"); o VALOR DA OP é o e53_valor pronto os descontos
             //de nota de liquidacao ja estao sendo aplicados no momento que se gera o movimento, ele ja cria e81_valor, com o valor do desconto
-            aLinha[10]  = js_formatar( (e53_valor-e53_vlranu),"f");
-            aLinha[11]  = "<span id='valoraut" + e81_codmov + "'>" + js_formatar(nValor, "f") + "</span>";
+            aLinha[12]  = js_formatar( (e53_valor-e53_vlranu),"f");
+            aLinha[13]  = "<span id='valoraut" + e81_codmov + "'>" + js_formatar(nValor, "f") + "</span>";
 
             if (lDisabled) {
-              aLinha[12] = "<a id='retencao" + e81_codmov + "'>" + js_formatar(valorretencao, "f") + "</a>";
+              aLinha[14] = "<a id='retencao" + e81_codmov + "'>" + js_formatar(valorretencao, "f") + "</a>";
             } else {
 
-              aLinha[12]  = "<a href='#'  id='retencao" + e81_codmov + "'";
-              aLinha[12] += " onclick='js_lancarRetencao(" + e71_codnota + "," + e50_codord + "," + e60_numemp + "," + e81_codmov + ");'>";
-              aLinha[12] += js_formatar(valorretencao, "f")+"</a>";
-              aLinha[12] += "<span style='display:none' id='validarretencao" + e81_codmov + "'>" + validaretencao + "</span>";
+              aLinha[14]  = "<a href='#'  id='retencao" + e81_codmov + "'";
+              aLinha[14] += " onclick='js_lancarRetencao(" + e71_codnota + "," + e50_codord + "," + e60_numemp + "," + e81_codmov + ");'>";
+              aLinha[14] += js_formatar(valorretencao, "f")+"</a>";
+              aLinha[14] += "<span style='display:none' id='validarretencao" + e81_codmov + "'>" + validaretencao + "</span>";
             }
             var sReadOnly = '';
             if (valorretencao > 0) {
@@ -1069,19 +1093,18 @@ if (count($aParametrosEmpenho) > 0) {
 
             //nValorTotal = (nValorTotal - e53_vlranu).toFixed(2);
             nValorTotal = (nValorTotal).toFixed(2);
-            aLinha[13]  = "<input type = 'text' id='valorrow" + e81_codmov + "' size='9' style='width:100%;height:100%;text-align:right;border:1px inset'";
-            aLinha[13] += " class='valores' onchange='js_calculaValor(this," + e81_codmov + ")'" + sReadOnly;
-            aLinha[13] += "                 onkeypress='return js_teclas(event,this)'";
-            aLinha[13] += "       value = '" + nValorTotal + "' id='valor" + e50_codord + "' " + sDisabled + ">";
+            aLinha[15]  = "<input type = 'text' id='valorrow" + e81_codmov + "' size='9' style='width:100%;height:100%;text-align:right;border:1px inset'";
+            aLinha[15] += " class='valores' onchange='js_calculaValor(this," + e81_codmov + ")'" + sReadOnly;
+            aLinha[15] += "                 onkeypress='return js_teclas(event,this)'";
+            aLinha[15] += "       value = '" + nValorTotal + "' id='valor" + e50_codord + "' " + sDisabled + ">";
 
-            aLinha[14] = "<input type='button' id='manutencao" + e81_codmov + "' value='Manutenção' onclick='manutencaoEmpenho(" + e60_numemp + ")'/>";
-          }
-          else{
+            aLinha[16] = "<input type='button' id='manutencao" + e81_codmov + "' value='Manutenção' onclick='manutencaoEmpenho(" + e60_numemp + ")'/>";
+          } else{
 
             // aLinha[4]   = e50_codord+"&nbsp;<input type='button' value='H' onclick='alterarHistoricoPagamento("+e81_codmov+")' />";
-            aLinha[3]   = e50_codord;
-            aLinha[4]   = js_createComboContasPag(e81_codmov, aContasVinculadas, e85_codtipo, lDisabled);
-            aLinha[5]   = z01_nome.urlDecode().substring(0,20);
+            aLinha[5]   = e50_codord;
+            aLinha[6]   = js_createComboContasPag(e81_codmov, aContasVinculadas, e85_codtipo, lDisabled);
+            aLinha[7]   = z01_nome.urlDecode().substring(0,20);
 
             // se a forma ja for debito , esconde a info do banco age para mostrar o input historico
             var displayColunaSeis = "";
@@ -1107,22 +1130,20 @@ if (count($aParametrosEmpenho) > 0) {
                 sColunaSeis += "<span  style='display:"+displayColunaSeis+"' id='ctnHistorico_" + e81_codmov + "'> <input placeholder='Digite o Histórico' style='width:160px;' type='text' id = 'txtHistorico_"+e81_codmov+"' /> </span>";
             }
 
-
-            aLinha[6]   = sColunaSeis;//js_createComboContasForne(aContasFornecedor, e98_contabanco, e81_codmov, z01_numcgm);
-            aLinha[7]   = js_createComboForma(e97_codforma,e81_codmov, lDisabled);
-
-            aLinha[8]   = js_formatar(e69_dtvencimento,'d');
-            aLinha[9]  = js_formatar( (e53_valor-e53_vlranu),"f");
-            aLinha[10]  = "<span id='valoraut" + e81_codmov + "'>" + js_formatar(nValor, "f") + "</span>";
+            aLinha[8]   = sColunaSeis;//js_createComboContasForne(aContasFornecedor, e98_contabanco, e81_codmov, z01_numcgm);
+            aLinha[9]   = js_createComboForma(e97_codforma,e81_codmov, lDisabled);
+            aLinha[10]   = js_formatar(e69_dtvencimento,'d');
+            aLinha[11]  = js_formatar( (e53_valor-e53_vlranu),"f");
+            aLinha[12]  = "<span id='valoraut" + e81_codmov + "'>" + js_formatar(nValor, "f") + "</span>";
 
             if (lDisabled) {
-              aLinha[11] = "<a id='retencao" + e81_codmov + "'>" + js_formatar(valorretencao, "f") + "</a>";
+              aLinha[13] = "<a id='retencao" + e81_codmov + "'>" + js_formatar(valorretencao, "f") + "</a>";
             } else {
 
-              aLinha[11]  = "<a href='#'  id='retencao" + e81_codmov + "'";
-              aLinha[11] += " onclick='js_lancarRetencao(" + e71_codnota + "," + e50_codord + "," + e60_numemp + "," + e81_codmov + ");'>";
-              aLinha[11] += js_formatar(valorretencao, "f")+"</a>";
-              aLinha[11] += "<span style='display:none' id='validarretencao" + e81_codmov + "'>" + validaretencao + "</span>";
+              aLinha[13]  = "<a href='#'  id='retencao" + e81_codmov + "'";
+              aLinha[13] += " onclick='js_lancarRetencao(" + e71_codnota + "," + e50_codord + "," + e60_numemp + "," + e81_codmov + ");'>";
+              aLinha[13] += js_formatar(valorretencao, "f")+"</a>";
+              aLinha[13] += "<span style='display:none' id='validarretencao" + e81_codmov + "'>" + validaretencao + "</span>";
             }
             var sReadOnly = '';
             if (valorretencao > 0) {
@@ -1132,12 +1153,12 @@ if (count($aParametrosEmpenho) > 0) {
             //nValorTotal = (nValorTotal - e53_vlranu).toFixed(2);
             nValorTotal = (nValorTotal).toFixed(2);
 
-            aLinha[12]  = "<input type = 'text' id='valorrow" + e81_codmov + "' size='9' style='width:100%;height:100%;text-align:right;border:1px inset'";
-            aLinha[12] += " class='valores' onchange='js_calculaValor(this," + e81_codmov + ")'" + sReadOnly;
-            aLinha[12] += "                 onkeypress='return js_teclas(event,this)'";
-            aLinha[12] += "       value = '" + nValorTotal + "' id='valor" + e50_codord + "' " + sDisabled + ">";
+            aLinha[14]  = "<input type = 'text' id='valorrow" + e81_codmov + "' size='9' style='width:100%;height:100%;text-align:right;border:1px inset'";
+            aLinha[14] += " class='valores' onchange='js_calculaValor(this," + e81_codmov + ")'" + sReadOnly;
+            aLinha[14] += "                 onkeypress='return js_teclas(event,this)'";
+            aLinha[14] += "       value = '" + nValorTotal + "' id='valor" + e50_codord + "' " + sDisabled + ">";
 
-            aLinha[13] = "<input type='button' id='manutencao" + e81_codmov + "' value='Manutenção' onclick='manutencaoEmpenho(" + e60_numemp + ")'/>";
+            aLinha[14] = "<input type='button' id='manutencao" + e81_codmov + "' value='Manutenção' onclick='manutencaoEmpenho(" + e60_numemp + ")'/>";
           }
           gridNotas.addRow(aLinha, false, lDisabled);
           gridNotas.aRows[iRowAtiva].sEvents = "ondblclick='alterarHistoricoPagamento("+e81_codmov+")'";
@@ -1166,8 +1187,8 @@ if (count($aParametrosEmpenho) > 0) {
           } else if ($F('e42_sequencialmanutencao') != "" && e42_sequencial == $F('e42_sequencialmanutencao')) {
             gridNotas.aRows[iRowAtiva].setClassName('naOPAuxiliar');
           }
-          gridNotas.aRows[iRowAtiva].aCells[7].sEvents  = "onmouseover='js_setAjuda(\""+z01_nome.urlDecode()+"\",true)'";
-          gridNotas.aRows[iRowAtiva].aCells[7].sEvents += "onmouseOut='js_setAjuda(null,false)'";
+          gridNotas.aRows[iRowAtiva].aCells[8].sEvents  = "onmouseover='js_setAjuda(\""+z01_nome.urlDecode()+"\",true)'";
+          gridNotas.aRows[iRowAtiva].aCells[8].sEvents += "onmouseOut='js_setAjuda(null,false)'";
           gridNotas.aRows[iRowAtiva].sValue  = e81_codmov;
           iRowAtiva++;
 
@@ -1244,10 +1265,10 @@ if (count($aParametrosEmpenho) > 0) {
         }
         if (lVerificaSaldo) {
 
-          $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
-          $('TotalForCol13').innerHTML = js_formatar(gridNotas.sum(13).toFixed(2),'f');
-          $('TotalForCol12').innerHTML = js_formatar(gridNotas.sum(12).toFixed(2),'f');
-          $('TotalForCol11').innerHTML  = js_formatar(gridNotas.sum(11).toFixed(2),'f');
+            $('TotalForCol13').innerHTML  = js_formatar(gridNotas.sum(13).toFixed(2),'f');
+            $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
+            $('TotalForCol15').innerHTML = js_formatar(gridNotas.sum(15).toFixed(2),'f');
+            $('TotalForCol16').innerHTML = js_formatar(gridNotas.sum(16).toFixed(2),'f');
 
         }
         $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)+1;
@@ -1257,10 +1278,10 @@ if (count($aParametrosEmpenho) > 0) {
         oRow.isSelected   = false;
         if (lVerificaSaldo) {
 
-          $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
-          $('TotalForCol13').innerHTML = js_formatar(gridNotas.sum(13).toFixed(2),'f');
-          $('TotalForCol12').innerHTML = js_formatar(gridNotas.sum(12).toFixed(2),'f');
-          $('TotalForCol11').innerHTML  = js_formatar(gridNotas.sum(11).toFixed(2),'f');
+            $('TotalForCol13').innerHTML  = js_formatar(gridNotas.sum(13).toFixed(2),'f');
+            $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
+            $('TotalForCol15').innerHTML = js_formatar(gridNotas.sum(15).toFixed(2),'f');
+            $('TotalForCol16').innerHTML = js_formatar(gridNotas.sum(16).toFixed(2),'f');
 
         }
         $('total_selecionados').innerHTML = new Number($('total_selecionados').innerHTML)-1;
@@ -1301,20 +1322,23 @@ if (count($aParametrosEmpenho) > 0) {
         }
       }
 
-      $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
-      $('TotalForCol13').innerHTML = js_formatar(gridNotas.sum(13).toFixed(2),'f');
-      $('TotalForCol12').innerHTML = js_formatar(gridNotas.sum(12).toFixed(2),'f');
-      $('TotalForCol11').innerHTML  = js_formatar(gridNotas.sum(11).toFixed(2),'f');
+        $('TotalForCol13').innerHTML  = js_formatar(gridNotas.sum(13).toFixed(2),'f');
+        $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
+        $('TotalForCol15').innerHTML = js_formatar(gridNotas.sum(15).toFixed(2),'f');
+        $('TotalForCol16').innerHTML = js_formatar(gridNotas.sum(16).toFixed(2),'f');
     }
     gridNotas.setCheckbox(0);
     gridNotas.hasTotalizador = true;
     gridNotas.allowSelectColumns(true);
     if(isPB){
-      gridNotas.setCellWidth(new Array("5%","7%", "5%","5%","13%","10%", "10%", "10%", "10%", "5%", "5%", "5%", "5%", "10%"));
-      gridNotas.setCellAlign(new Array("right","center", "center", "right", "left", "left", "center", "center", "center","right","right","right", "center", "center"));
-      gridNotas.setHeader(new Array("Mov.",
+      gridNotas.setCellWidth(["5%","6%", "6%", "5%", "4%","5%","10%","10%", "10%", "10%", "10%", "5%", "5%", "5%", "5%", "10%"]);
+      gridNotas.setCellAlign(["right","center", "center","center", "right", "left", "left", "center", "center", "center","right","right","right", "center", "center"]);
+      gridNotas.setHeader([
+        "Mov.",
         "Empenho",
         "Recurso",
+        "Subrecurso",
+        "Compl",
         "OP",
         "Cta. Pag",
         "Nome",
@@ -1326,33 +1350,35 @@ if (count($aParametrosEmpenho) > 0) {
         "Retenção",
         "Valor",
         "Lista de Classificação"
-        )
-      );
+      ]);
       gridNotas.aHeaders[1].lDisplayed = false;
-      gridNotas.aHeaders[14].lDisplayed = false;
+      gridNotas.aHeaders[15].lDisplayed = false;
     }
     else{
-      gridNotas.setCellWidth(new Array("5%","7%", "5%", "5%","5%","13%","10%", "10%", "10%", "10%", "5%", "5%", "5%", "5%", "10%"));
-      gridNotas.setCellAlign(new Array("right", "center","right", "center", "right", "left", "left", "center", "center", "center","right","right","right", "center", "center"));
-      gridNotas.setHeader(new Array("Mov.",
+      gridNotas.setCellWidth(["5%","7%", "5%", "5%", "4%", "4%","5%","9%","8%", "10%", "10%", "10%", "5%", "5%", "5%", "5%", "10%"]);
+      gridNotas.setCellAlign(["right", "center", "center", "center", "center", "right", "left", "left", "center", "center", "center","right","right","right", "center", "center"]);
+      gridNotas.setHeader([
+        "Mov.",
         "Empenho",
         "Recurso",
+        "Subrecurso",
+        "CO",
         "CP/CA",
         "OP",
         "Cta. Pag",
         "Nome",
         "Banco/Ag",
         "Forma Pgto",
-        "Data Vencimento",
+        "Data Venc",
         "Valor OP",
         "Vlr Aut",
         "Retenção",
         "Valor",
-        "Lista de Classificação"
-        )
+        "Lista de Classif"
+        ]
       );
       gridNotas.aHeaders[1].lDisplayed = false;
-      gridNotas.aHeaders[15].lDisplayed = false;
+      gridNotas.aHeaders[17].lDisplayed = false;
     }
     gridNotas.show(document.getElementById('gridNotas'));
     $('gridNotasstatus').innerHTML = "&nbsp;<span style='color:blue' id ='total_selecionados'>0</span> Selecionados";
@@ -1552,12 +1578,100 @@ if (count($aParametrosEmpenho) > 0) {
     }
   }
 
+  function js_verificaLancamentoRetencoes() {
+
+
+      var aMovimentos = gridNotas.getSelection();
+      var aMovimentosRetencoes =  new Array();
+
+
+      if (aMovimentos.length == 0) {
+
+          alert('Não há nenhum movimento selecionado.');
+          return false;
+
+      }
+
+      if ($F('e42_dtpagamento') == "") {
+
+        alert('Data de pagamento nao informado.');
+        return false;
+
+      }
+      if (js_comparadata(sDataDia,$F('e42_dtpagamento'),">")) {
+
+        alert("Data Informada Inválida.\nData menor que a data do sistema");
+        return false;
+
+      }
+
+      aMovimentos.each(function(aDados, iInd){
+
+          oMovimento                   = {};
+          oMovimento.iCodForma         = aDados[11];
+          oMovimento.iCodMov           = aDados[0];
+          oMovimento.nValor            = (js_strToFloat(aDados[16])).valueOf();;//(new Number(aDados[15])).valueOf();
+          oMovimento.iContaFornecedor  = aDados[10];
+          oMovimento.iContaPagadora    = js_getContaSaltes( $('ctapag'+aDados[0]) );;//aDados[11];
+          oMovimento.iContaSaltes      = js_getContaSaltes( $('ctapag'+aDados[0]) );
+          oMovimento.iCodNota          = aDados[7];
+          oMovimento.nValorRetencao    = (js_strToFloat(aDados[15])).valueOf();
+
+          if (oMovimento.nValorRetencao > 0 && (oMovimento.iCodForma == 3 || oMovimento.iCodForma == 4)) {
+               aMovimentosRetencoes.push(oMovimento);
+          }
+
+      });
+
+
+      if (aMovimentosRetencoes.length == 0) {
+
+          js_configurar();
+
+      } else {
+
+        oParam                     = new Object();
+        oParam.MovimentosRetencoes = aMovimentosRetencoes;
+        oMovimentosRetencoes = Object.toJSON(oParam);
+        js_configuraContasSlipRetencoes(oMovimentosRetencoes);
+
+      }
+
+  }
+
+  function js_configuraContasSlipRetencoes(oMovimentosRetencoes){
+
+       js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_slipretencao','emp4_configuraContaPagadoraRetencoesSlip001.php?json='+oMovimentosRetencoes,
+                  'Configurar Conta Pagadora Para Geração dos Slips De Retenções',
+                  false,
+                  32,
+                  18,
+                  document.body.clientWidth - 32,
+                  document.body.clientHeight - 20);
+
+  }
+
+  function js_emiteSlipGerados(sSlipsGeradoAutomatico) {
+
+      if (sSlipsGeradoAutomatico != "" && sParametroSlipAuto == '2' ) {
+        window.open('cai2_retencaoreceitaslip002.php?sSlips='+sSlipsGeradoAutomatico,
+                    '',
+                    'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
+      }
+      return true;
+
+  }
+
   function js_configurar() {
 
     var aMovimentos = gridNotas.getSelection();
     var lEfetuarPagamento = $('efetuarpagamento').checked;
     var lSemErro = true;
     var sAviso = '';
+    var aDadosRetencoes = new Array();
+    if ($F('dadosMovimentosRetencoesSlip') != "") {
+      aDadosRetencoes = JSON.parse($F('dadosMovimentosRetencoesSlip'));
+    }
 
     /*
      * Validamos o movimento configurado, conforme a forma de pagamento escolhido.
@@ -1625,29 +1739,24 @@ if (count($aParametrosEmpenho) > 0) {
     var lMostraMsgErroRetencao  = false;
     var sMsgRetencaoMesAnterior = "Atenção:\n";
     var sVirgula                = "";
-    for (var iMov = 0; iMov < aMovimentos.length; iMov++) {
 
-      var iForma               = isPB == true ? aMovimentos[iMov][8] : aMovimentos[iMov][9];
+
+    for (var iMov = 0; iMov < aMovimentos.length; iMov++) {
+      var iForma               = isPB == true ? aMovimentos[iMov][10] : aMovimentos[iMov][11];
       var iCodMov              = aMovimentos[iMov][0];
-      var nValor               = isPB == true ? new Number(aMovimentos[iMov][13]) : new Number(aMovimentos[iMov][14]);
-      var sConCarPeculiar      = isPB == true ? '0' : aMovimentos[iMov][4];
-      var iNota                = isPB == true ? aMovimentos[iMov][4] : aMovimentos[iMov][5];
-      var iContaFornecedor     = isPB == true ? aMovimentos[iMov][7] : aMovimentos[iMov][8];
-      var iContaPagadora       = isPB == true ? aMovimentos[iMov][5] : aMovimentos[iMov][6];
-      var dtVencimento         = isPB == true ? aMovimentos[iMov][9] : aMovimentos[iMov][10];
+      var nValor               = isPB == true ? new Number(aMovimentos[iMov][15]) : new Number(aMovimentos[iMov][16]);
+      var sConCarPeculiar      = isPB == true ? '0' : aMovimentos[iMov][6];
+      var iNota                = isPB == true ? aMovimentos[iMov][6] : aMovimentos[iMov][7];
+      var iContaFornecedor     = isPB == true ? aMovimentos[iMov][9] : aMovimentos[iMov][10];
+      var iContaPagadora       = isPB == true ? aMovimentos[iMov][7] : aMovimentos[iMov][8];
+      var dtVencimento         = isPB == true ? aMovimentos[iMov][11] : aMovimentos[iMov][12];
       var iContaSaltes         = js_getContaSaltes( $('ctapag'+aMovimentos[iMov][0]) );
       var dtAutoriza           = $F('e42_dtpagamento');
-      var nValorRetencao       = isPB == true ? js_strToFloat(aMovimentos[iMov][12]): js_strToFloat(aMovimentos[iMov][13]);
+      var nValorRetencao       = isPB == true ? js_strToFloat(aMovimentos[iMov][14]): js_strToFloat(aMovimentos[iMov][15]);
       var lRetencaoMesAnterior = $('validarretencao'+iCodMov).innerHTML;
 
       var iContaFornecedor     = $("ctapagfor" + iCodMov).value;
-      //var sHistorico = "";
-
       var sHistorico       = isPB == true ? encodeURIComponent(tagString($F("txtHistorico_" + iCodMov))) : "";
-      //var sHistorico = encodeURIComponent(tagString($F("txtHistorico_" + iCodMov)));
-
-
-      //console.log(iContaFornecedor);
 
       /*
        * Fazemos a verificacao para Cheque;
@@ -1700,7 +1809,18 @@ if (count($aParametrosEmpenho) > 0) {
         dtAutoriza = oEnvioMovimento.dtPagamento;
       }
       oMovimento.dtPagamento = dtAutoriza;
+
+      oMovimento.aRetencoes  = new Array();
+      for (iInd = 0; iInd < aDadosRetencoes.length; iInd++) {
+
+        if (aDadosRetencoes[iInd].iCodMov == iCodMov) {
+          oMovimento.aRetencoes = aDadosRetencoes[iInd].aRetencoes;
+        }
+
+      }
+
       oEnvioMovimento.aMovimentos.push(oMovimento);
+
     }
 
     /*
@@ -1820,7 +1940,7 @@ if (count($aParametrosEmpenho) > 0) {
       gridNotas.getSelection().each(
         function (dadosMovimento) {
 
-          if (dadosMovimento[9] === '3') {
+          if (dadosMovimento[10] === '3') {
             movimentosTransmissao.push(dadosMovimento[0]);
           }
         }
@@ -1832,6 +1952,12 @@ if (count($aParametrosEmpenho) > 0) {
         DBViewConfiguracaoEnvio.verificarMovimentos();
       } else {
         alert("Movimentos atualizados com sucesso!");
+      }
+
+      if (sParametroSlipAuto == "2") {
+
+          js_emiteSlipGerados(oRetorno.sSlipsGeradoAutomatico);
+          $("dadosMovimentosRetencoesSlip").value = "";
       }
 
     } else {
@@ -1953,8 +2079,8 @@ if (count($aParametrosEmpenho) > 0) {
       $('validarretencao'+iCodMov).innerHTML = lValidar;
     }
     db_iframe_retencao.hide();
+    $('TotalForCol15').innerHTML = js_formatar(gridNotas.sum(15).toFixed(2),'f');
     $('TotalForCol14').innerHTML = js_formatar(gridNotas.sum(14).toFixed(2),'f');
-    $('TotalForCol13').innerHTML = js_formatar(gridNotas.sum(13).toFixed(2),'f');
 
   }
 
@@ -2153,10 +2279,10 @@ if (count($aParametrosEmpenho) > 0) {
 
       var oMovimento      = new Object();
       var iMovimento      = aMovimentos[i].aCells[1].getValue();
-      var iOP             = aMovimentos[i].aCells[5].getValue();
-      var nValor          = aMovimentos[i].aCells[14].getValue();
-      var sConCarPeculiar = aMovimentos[i].aCells[4].getValue();
-      var nValorRetencao = js_strToFloat(aMovimentos[i].aCells[13].getValue()).valueOf();
+      var iOP             = aMovimentos[i].aCells[6].getValue();
+      var nValor          = aMovimentos[i].aCells[15].getValue();
+      var sConCarPeculiar = aMovimentos[i].aCells[5].getValue();
+      var nValorRetencao = js_strToFloat(aMovimentos[i].aCells[14].getValue()).valueOf();
       if (i > 0 && iOPAnterior !=  iOP ) {
 
         alert('Foram Selecionados Movimentos de OP diferentes!\nProcedimento Cancelado');
@@ -2302,9 +2428,34 @@ if (count($aParametrosEmpenho) > 0) {
         ViewHistoricoPagamento.abrir();
     }
 
-  const lookupRecurso = new DBLookUp($('ancoraRecurso'), $('o15_recurso'), $('o15_descr'), {
-      "sArquivo": "func_fonterecurso.php",
-      "sObjetoLookUp": "db_iframe_orctiporec",
-      "sLabel": "Pesquisar Recurso"
-  });
+
+  $('gestao').classList.add('field-size2')
+  $('descricao').classList.add('field-size6')
+  function js_pesquisaRecurso(lMostraWindow) {
+      if (!lMostraWindow && $('gestao').value == '') {
+          $("o15_codigo").value = '';
+          $("o15_recurso").value = '';
+          $('descricao').value = '';
+          return
+      }
+
+      let param = 'gestao='+ $('gestao').value;
+      pesquisaRecurso(param);
+  }
+
+  const pesquisaRecurso = (parametroAdicional) => {
+      let sUrl = 'func_fontesubrecurso.php?funcao_js=parent.js_preencheRecurso|gestao|o15_recurso|descricao|db_ids_recursos';
+      if (parametroAdicional) {
+          sUrl += `&${parametroAdicional}`;
+      }
+      js_OpenJanelaIframe('', 'db_iframe_recurso', sUrl, 'Pesquisa Fonte de Recurso', true);
+  };
+
+  function js_preencheRecurso(gestao, recurso, descricao, db_ids_recursos) {
+      $('gestao').value = gestao;
+      $('o15_recurso').value = recurso;
+      $('descricao').value = descricao;
+      $('o15_codigo').value = db_ids_recursos;
+      db_iframe_recurso.hide();
+  }
 </script>

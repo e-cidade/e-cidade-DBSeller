@@ -63,7 +63,7 @@ class cl_veicabastanu
                  ";
 
     //funcao construtor da classe
-    function cl_veicabastanu()
+    public function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicabastanu");
@@ -71,7 +71,7 @@ class cl_veicabastanu
     }
 
     //funcao erro
-    function erro($mostra, $retorna)
+    public function erro($mostra, $retorna)
     {
         if (($this->erro_status == "0") || ($mostra == true && $this->erro_status != null)) {
             echo "<script>alert(\"" . $this->erro_msg . "\");</script>";
@@ -82,7 +82,7 @@ class cl_veicabastanu
     }
 
     // funcao para atualizar campos
-    function atualizacampos($exclusao = false)
+    public function atualizacampos($exclusao = false)
     {
         if ($exclusao == false) {
             $this->ve74_codigo = ($this->ve74_codigo == "" ? @$GLOBALS["HTTP_POST_VARS"]["ve74_codigo"] : $this->ve74_codigo);
@@ -104,7 +104,7 @@ class cl_veicabastanu
     }
 
     // funcao para inclusao
-    function incluir($ve74_codigo)
+    public function incluir($ve74_codigo)
     {
         $this->atualizacampos();
         if ($this->ve74_veicabast == null) {
@@ -268,7 +268,7 @@ class cl_veicabastanu
     }
 
     // funcao para alteracao
-    function alterar($ve74_codigo = null)
+    public function alterar($ve74_codigo = null)
     {
         $this->atualizacampos();
         $sql = " update veicabastanu set ";
@@ -462,7 +462,7 @@ class cl_veicabastanu
     }
 
     // funcao para exclusao
-    function excluir($ve74_codigo = null, $dbwhere = null)
+    public function excluir($ve74_codigo = null, $dbwhere = null)
     {
         if ($dbwhere == null || $dbwhere == "") {
             $resaco = $this->sql_record($this->sql_query_file($ve74_codigo));
@@ -548,7 +548,7 @@ class cl_veicabastanu
     }
 
     // funcao do recordset
-    function sql_record($sql)
+    public function sql_record($sql)
     {
         $result = db_query($sql);
         if ($result == false) {
@@ -577,7 +577,7 @@ class cl_veicabastanu
         return $result;
     }
 
-    function sql_query($ve74_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query($ve74_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {
@@ -625,7 +625,7 @@ class cl_veicabastanu
         return $sql;
     }
 
-    function sql_query_file($ve74_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
+    public function sql_query_file($ve74_codigo = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
         $sql = "select ";
         if ($campos != "*") {

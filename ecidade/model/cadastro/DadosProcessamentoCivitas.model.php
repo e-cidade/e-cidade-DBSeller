@@ -44,7 +44,7 @@ class DadosProcessamentoCivitas
         if (empty($this->sMatricula)) {
             return;
         }
-
+        db_query("select fc_putsession('DB_Gerafinanc','0')");
         $sSqlCalculo = "select fc_calculoiptu({$this->sMatricula}::integer,{$this->anoAtual}::integer,
                             true::boolean,
                             false::boolean,

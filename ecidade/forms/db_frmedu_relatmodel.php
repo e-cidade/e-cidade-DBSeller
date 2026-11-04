@@ -40,7 +40,7 @@ $cledu_relatmodel->rotulo->label();
            <?= $Led217_i_codigo?>
         </td>
         <td  nowrap='nowrap' >
-          <?php db_input('ed217_i_codigo',10,$Ied217_i_codigo,true,'text',3,"")?>
+          <?php db_input('ed217_i_codigo', 10, $Ied217_i_codigo, true, 'text', 3, "")?>
         </td>
       </tr>
       <tr>
@@ -48,7 +48,7 @@ $cledu_relatmodel->rotulo->label();
           <?= $Led217_c_nome?>
         </td>
         <td  nowrap='nowrap'>
-          <?php db_input('ed217_c_nome',20,$Ied217_c_nome,true,'text',$db_opcao,"")?>
+          <?php db_input('ed217_c_nome', 20, $Ied217_c_nome, true, 'text', $db_opcao, "")?>
         </td>
       </tr>
       <tr>
@@ -63,10 +63,11 @@ $cledu_relatmodel->rotulo->label();
                        "3"=>"ATA DE RESULTADOS FINAIS",
                        "4"=>"QUADRO DE RESULTADOS FINAIS",
                        "5"=>"ALUNOS VOTANTES",
-                       "6"=>"RESPONSÁVEIS VOTANTES"
+                       "6"=>"RESPONSÁVEIS VOTANTES",
+                       "7"=>"ATA DE PROGRESSÃO"
                       );
-            db_select('ed217_i_relatorio',$x,true,$iDesabilitaQuandoAlteracao,"Onchange=js_remove();");
-          ?>
+            db_select('ed217_i_relatorio', $x, true, $iDesabilitaQuandoAlteracao, "Onchange=js_remove();");
+            ?>
         </td>
       </tr>
       <tr id="divTipoModelo" style="display:none">
@@ -77,38 +78,42 @@ $cledu_relatmodel->rotulo->label();
           <?php
             $aModelos = ["" => "SELECIONE", "1" => "Modelo 1", "2" => "Modelo 2"];
             db_select('ed217_i_tipomodelo', $aModelos, true, $db_opcao, "onChange='js_validaTipoModelo()'");
-          ?>
+            ?>
         </td>
       </tr>
     </table>
 
-    <div id="div_orientacao" style="visibility:hidden; position:relative;">
-      <table class="form-container">
-        <tr>
-          <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_orientacao?>">
+    <table class='form-container'>
+        <tr id="ctnOrientacao">
+            <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_orientacao?>">
             <?=@$Led217_orientacao?>
-          </td>
-          <td nowrap='nowrap'  >
+            </td>
+            <td nowrap='nowrap'  >
             <?php
-              $xy = array("0"=>"SELECIONE",
-                          "1"=>"PAISAGEM",
-                          "2"=>"RETRATO"
-               );
-              db_select('ed217_orientacao',$xy,true,$db_opcao,"Onchange=js_orientacao();");
-            ?>
-          </td>
+                $xy = array("0"=>"SELECIONE",
+                            "1"=>"PAISAGEM",
+                            "2"=>"RETRATO"
+                );
+                db_select('ed217_orientacao', $xy, true, $db_opcao, "Onchange=js_orientacao();");
+                ?>
+            </td>
         </tr>
         <tr id="tipoBrasao" style="display:none">
-          <td rel='ignore-css' nowrap='nowrap' class='field-size3'>
+            <td rel='ignore-css' nowrap='nowrap' class='field-size3'>
             <?= $Led217_brasao;?>
-          </td>
-          <td  nowrap='nowrap' >
+            </td>
+            <td  nowrap='nowrap' >
             <?php
-              $aTipoBrasao = array( 0 => "SELECIONE", 1 => "REPÚBLICA", 2 => "MUNICÍPIO" );
-              db_select( 'ed217_brasao', $aTipoBrasao, true, $db_opcao );
+                $aTipoBrasao = array( 0 => "SELECIONE", 1 => "REPÚBLICA", 2 => "MUNICÍPIO" );
+                db_select('ed217_brasao', $aTipoBrasao, true, $db_opcao);
             ?>
-          </td>
+            </td>
         </tr>
+    </table>
+
+    <div id="div_orientacao" style="visibility:hidden; position:relative;">
+      <table class="form-container">
+        
         <tr id="ctnExibirTurma" style="display: none;">
           <td rel='ignore-css' nowrap='nowrap'  class='field-size3' title="<?=@$Ted217_exibeturma?>">
            <?= $Led217_exibeturma?>
@@ -116,8 +121,8 @@ $cledu_relatmodel->rotulo->label();
           <td  nowrap='nowrap'>
            <?php
              $xy = array("f"=>"NÃO", "t"=>"SIM");
-             db_select('ed217_exibeturma',$xy,true,$db_opcao);
-           ?>
+             db_select('ed217_exibeturma', $xy, true, $db_opcao);
+            ?>
          </td>
        </tr>
 
@@ -128,7 +133,7 @@ $cledu_relatmodel->rotulo->label();
           <td nowrap='nowrap' >
             <?php
               $xy = array("f"=>"NÃO", "t"=>"SIM");
-              db_select('ed217_exibecargahoraria',$xy,true,$db_opcao);
+              db_select('ed217_exibecargahoraria', $xy, true, $db_opcao);
             ?>
           </td>
         </tr>
@@ -138,93 +143,216 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap' >
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibe_obs_diario',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibe_obs_diario', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibeMantenedora">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibirmantenedora?>">
                   <?=@$Led217_exibirmantenedora?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibirmantenedora',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibirmantenedora', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibeDistrito">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibirdistrito?>">
                   <?=@$Led217_exibirdistrito?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibirdistrito',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibirdistrito', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibePeriodo">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibirperiodo?>">
                   <?=@$Led217_exibirperiodo?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibirperiodo',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibirperiodo', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibeEtapaObs">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_etapa_obs?>">
                   <?=@$Led217_exibir_etapa_obs?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibir_etapa_obs',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibir_etapa_obs', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibeCertidao">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibircertidao?>">
                   <?=@$Led217_exibircertidao?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibircertidao',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibircertidao', $xy, true, $db_opcao);
+                    ?>
               </td>
           </tr>
-          <tr>
+          <tr id="ctnExibeIdentidade">
               <td rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibiridentidade?>">
                   <?=@$Led217_exibiridentidade?>
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
-                  db_select('ed217_exibiridentidade',$xy,true,$db_opcao);
-                  ?>
+                    $xy = array("f"=>"NÃO", "t"=>"SIM");
+                    db_select('ed217_exibiridentidade', $xy, true, $db_opcao);
+                    ?>
               </td>
-          </tr>                    
+          </tr>
+      </table>
+    </div>
+    <div id="div_orientacao2" style="visibility:hidden; position:relative;">
+        <table class="form-container">
+          <tr id="ctnExibeAssinaturaSecretario" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_assinatura_secretario?>">
+            <?=@$Led217_exibir_assinatura_secretario?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_assinatura_secretario', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnExibeAssinaturaAdicional" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_assinatura_adicional?>">
+            <?=@$Led217_exibir_assinatura_adicional?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_assinatura_adicional', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnExibeGradeAlunos" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_grade_alunos?>">
+            <?=@$Led217_exibir_grade_alunos?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_grade_alunos', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnExibeColunaDisciplinas" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_coluna_disciplinas?>">
+            <?=@$Led217_exibir_coluna_disciplinas?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_coluna_disciplinas', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnExibeColunaResultadoFinal" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_coluna_resultado_final?>">
+            <?=@$Led217_exibir_coluna_resultado_final?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_coluna_resultado_final', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnExibeBrasao" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_exibir_brasao?>">
+            <?=@$Led217_exibir_brasao?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("f"=>"NÃO", "t"=>"SIM");
+                db_select('ed217_exibir_brasao', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr> 
+          <tr id="ctnDisposicaoBrasao" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_disposicao_brasao?>">
+            <?=@$Led217_disposicao_brasao?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("ACIMA"=>"ACIMA DO TEXTO", "LADO"=>"AO LADO DO TEXTO");
+                db_select('ed217_disposicao_brasao', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>
+          <tr id="ctnDisposicaoCabecalho" style="display: none;">
+            <td  rel='ignore-css' nowrap='nowrap' class='field-size3' title="<?=@$Ted217_disposicao_cabecalho?>">
+            <?=@$Led217_disposicao_cabecalho?>
+            </td>
+            <td nowrap='nowrap' >
+                <?php
+                $xy = array("ESQUERDA"=>"ESQUERDA", "DIREITA"=>"DIREITA", "CENTRALIZADO" => "CENTRALIZADO");
+                db_select('ed217_disposicao_cabecalho', $xy, true, $db_opcao);
+                ?>
+            </td>
+          </tr>         
       </table>
     </div>
 
-    <fieldset class='separator'>
+    <fieldset class='separator' id="cabecalhoPadrao">
       <legend>Texto do Cabeçalho</legend>
       <label>(Máximo cinco linhas)</label></br>
       <?php
-        db_textarea('ed217_t_cabecalho', 5, 100, $Ied217_t_cabecalho, true, 'text', $db_opcao,
-                    "onkeypress='return limitTextArea(this, event)'", "", "", 200 );
-      ?>
+        db_textarea(
+            'ed217_t_cabecalho',
+            5,
+            100,
+            $Ied217_t_cabecalho,
+            true,
+            'text',
+            $db_opcao,
+            "onkeypress='return limitTextArea(this, event)'",
+            "",
+            "",
+            200
+        );
+        ?>
+    </fieldset>
+
+    <fieldset class='separator' id="cabecalhoAta">
+      <legend>Texto do Cabeçalho</legend>
+      <label>(Máximo cinco linhas)</label></br>
+      <?php
+        db_textarea(
+            'ed217_t_cabecalho',
+            5,
+            100,
+            $Ied217_t_cabecalho,
+            true,
+            'text',
+            $db_opcao,
+            "onkeypress='return limitTextArea(this, event)'",
+            "",
+            "",
+            400
+        );
+        ?>
     </fieldset>
 
 
     <fieldset class='separator'>
       <legend>Texto do Rodapé</legend>
-      <?php db_textarea('ed217_t_rodape',5,100,$Ied217_t_rodape,true,'text',$db_opcao,"","","",500); ?>
+      <?php db_textarea('ed217_t_rodape', 5, 100, $Ied217_t_rodape, true, 'text', $db_opcao, "", "", "", 500); ?>
     </fieldset>
 
     <fieldset class='separator'>
@@ -245,8 +373,8 @@ $cledu_relatmodel->rotulo->label();
             <td  nowrap='nowrap'>
               <?php
                 $x = array("0"=>"", "1"=>"6", "2"=>"8" );
-                db_select('ed217_gradenotas',$x,true,$db_opcao,"");
-              ?>
+                db_select('ed217_gradenotas', $x, true, $db_opcao, "");
+                ?>
             </td>
           </tr>
           <tr>
@@ -256,8 +384,8 @@ $cledu_relatmodel->rotulo->label();
             <td  nowrap='nowrap'>
               <?php
                 $x = array("0"=>"", "1"=>"6", "2"=>"8" );
-                db_select('ed217_gradeetapas',$x,true,$db_opcao,"");
-              ?>
+                db_select('ed217_gradeetapas', $x, true, $db_opcao, "");
+                ?>
             </td>
           </tr>
           <tr>
@@ -267,8 +395,8 @@ $cledu_relatmodel->rotulo->label();
             <td  nowrap='nowrap'>
               <?php
                 $x = array("0"=>"", "1"=>"6", "2"=>"8" );
-                db_select('ed217_observacao',$x,true,$db_opcao,"");
-              ?>
+                db_select('ed217_observacao', $x, true, $db_opcao, "");
+                ?>
             </td>
           </tr>
         </table>
@@ -297,6 +425,7 @@ $cledu_relatmodel->rotulo->label();
 <script  type="text/javascript">
 
 var MSG_MODELOS_RELATORIO = 'educacao.secretariaeducacao.db_frmedu_relatmodel.';
+const cabecalho_elemento = document.querySelector('#ed217_t_cabecalho');
 
 js_init();
 function js_init() {
@@ -306,20 +435,20 @@ function js_init() {
 }
 function js_pesquisa() {
   js_OpenJanelaIframe('CurrentWindow.corpo',
-		              'db_iframe_edu_relatmodel',
-		              'func_edu_relatmodel.php?funcao_js=parent.js_preenchepesquisa|ed217_i_codigo',
-		              'Pesquisa',
-		              true
-		             );
+                      'db_iframe_edu_relatmodel',
+                      'func_edu_relatmodel.php?funcao_js=parent.js_preenchepesquisa|ed217_i_codigo',
+                      'Pesquisa',
+                      true
+                     );
 }
 
 function js_preenchepesquisa(chave) {
   db_iframe_edu_relatmodel.hide();
-  <?
-  if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
-  }
-  ?>
+  <?php
+    if ($db_opcao != 1) {
+        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    }
+    ?>
 }
 function js_novo() {
   location.href="edu1_relatmodel001.php";
@@ -336,40 +465,116 @@ function js_remove() {
     document.form1.ed217_t_obs.disabled    = false;
   } else if (document.form1.ed217_i_relatorio.value == 4) {
 
-  	document.form1.ed217_t_rodape.disabled = true;
-  	document.form1.ed217_t_obs.disabled    = true;
-  	$('ed217_i_tipomodelo').value          = '';
+    document.form1.ed217_t_rodape.disabled = true;
+    document.form1.ed217_t_obs.disabled    = true;
+    $('ed217_i_tipomodelo').value          = '';
   } else {
 
-  	document.form1.ed217_t_rodape.disabled = false;
-  	document.form1.ed217_t_obs.disabled    = false;
-  	$('ed217_i_tipomodelo').value          = '';
+    document.form1.ed217_t_rodape.disabled = false;
+    document.form1.ed217_t_obs.disabled    = false;
+    $('ed217_i_tipomodelo').value          = '';
   }
+  document.getElementById("div_orientacao2").style.display = "none";
+    document.getElementById("div_orientacao2").style.position = "relative";
 
   if (document.form1.ed217_i_relatorio.value == 1 || document.form1.ed217_i_relatorio.value == 2) {
 
-  	document.getElementById("div_orientacao").style.visibility = "visible";
-  	document.getElementById("div_orientacao").style.position = "relative";
-  	$('ctnExibirTurma').style.display        = "table-row";
-  	$('ctnExibeCargaHoraria').style.display  = "table-row";
-      $('ctnExibeObsDiario').style.display  = "table-row";
+    ajusta_limite_caracteres_outros_modelos()
+    js_oculta_containers_ata();
+
+    document.getElementById("div_orientacao").style.visibility = "visible";
+    document.getElementById("div_orientacao").style.position = "relative";
+    $('ctnExibirTurma').style.display        = "table-row";
+    $('ctnExibeCargaHoraria').style.display  = "table-row";
+    $('ctnExibeObsDiario').style.display  = "table-row";
     $('tipoBrasao').style.display            = "table-row";
+
+    
+    $('ctnOrientacao').style.display = "table-row";
 
   } else if ($('ed217_i_relatorio').value == 3) {
 
     $('divTipoModelo').style.display  = 'table-row';
     document.getElementById("div_orientacao").style.visibility = "hidden";
-  	document.getElementById("div_orientacao").style.position = "absolute";
+    document.getElementById("div_orientacao").style.position = "absolute";
+
+    ajusta_limite_caracteres_outros_modelos();
+    js_oculta_containers_ata();
+    $('ctnOrientacao').style.display = "none";
+    $('tipoBrasao').style.display = "none";
+
+  } else if ($('ed217_i_relatorio').value == 7) {
+
+    document.getElementById("div_orientacao2").style.visibility = "visible";
+    document.getElementById("div_orientacao2").style.display = "block";
+    document.getElementById("div_orientacao2").style.position = "relative";
+
+    document.getElementById("div_orientacao").style.visibility = "hidden";
+    document.getElementById("div_orientacao").style.position = "absolute";
+    js_mostra_containers_ata();
+    $('ctnOrientacao').style.display = "none";
+    $('tipoBrasao').style.display = "contents";
+    ajusta_limite_caracteres_ata();
+
   } else {
 
-  	document.getElementById("div_orientacao").style.visibility = "hidden";
-  	document.getElementById("div_orientacao").style.position = "absolute";
+    document.getElementById("div_orientacao").style.visibility = "hidden";
+    document.getElementById("div_orientacao").style.position = "absolute";
     document.form1.ed217_orientacao.value = "0";
-
+    $('ctnOrientacao').style.display = "none";
+    $('tipoBrasao').style.display = "none";
+    ajusta_limite_caracteres_outros_modelos();
+    js_oculta_containers_ata();
   }
 
   js_orientacao();
   js_validaTipoModelo();
+}
+
+function js_oculta_containers_ata() 
+{
+    const containersOcultos = [
+        'ctnExibeAssinaturaSecretario', 'ctnExibeAssinaturaAdicional', 'ctnExibeGradeAlunos', 'ctnExibeColunaDisciplinas', 
+        'ctnExibeColunaResultadoFinal', 'ctnExibeBrasao', 'ctnDisposicaoBrasao', 'ctnDisposicaoCabecalho'
+    ];
+    
+  containersOcultos.map(function(elemento){
+    document.getElementById(`${elemento}`).style.display = "none";
+  });
+}
+
+function js_mostra_containers_ata() 
+{
+    const containersExibidos = [
+        'ctnExibeAssinaturaSecretario', 'ctnExibeAssinaturaAdicional', 'ctnExibeGradeAlunos', 'ctnExibeColunaDisciplinas', 
+        'ctnExibeColunaResultadoFinal', 'ctnExibeBrasao', 'ctnDisposicaoBrasao', 'ctnDisposicaoCabecalho'
+    ];
+    containersExibidos.map(function(elemento){
+        $(`${elemento}`).style.display  = "block";
+        $(`${elemento}`).style.display = "table-row";
+    });
+}
+
+function ajusta_limite_caracteres_ata()
+{
+  const textoCabecalhoPadrao = document.querySelector('#cabecalhoPadrao').children[3].value;
+  $('cabecalhoPadrao').style.display = "none";
+  $('cabecalhoAta').style.display = "table-row";
+  if (textoCabecalhoPadrao) {
+    document.querySelector('#cabecalhoAta').children[3].value = textoCabecalhoPadrao;
+  }
+  cabecalho_elemento.nextElementSibling.nextElementSibling.children[3].textContent = "- Limite 400";
+}
+
+function ajusta_limite_caracteres_outros_modelos()
+{
+  const textoCabecalhoAta = document.querySelector('#cabecalhoAta').children[3].value;
+  $('cabecalhoAta').style.display = "none";
+  $('cabecalhoPadrao').style.display = "table-row";
+  if (textoCabecalhoAta) {
+    document.querySelector('#cabecalhoPadrao').children[3].value = textoCabecalhoAta;
+  }
+  cabecalho_elemento.nextElementSibling.nextElementSibling.children[3].textContent = "- Limite 200";
 }
 
 function js_orientacao() {
@@ -398,9 +603,9 @@ function js_orientacao() {
 
   if (document.form1.ed217_orientacao.value == 2) {
 
-  	document.getElementById("div_tamfontes").style.visibility = "visible";
-  	document.getElementById("div_tamfontes").style.position   = "relative";
-  	document.form1.ed217_t_rodape.disabled = true;
+    document.getElementById("div_tamfontes").style.visibility = "visible";
+    document.getElementById("div_tamfontes").style.position   = "relative";
+    document.form1.ed217_t_rodape.disabled = true;
 
     if ( [1,2].in_array($F('ed217_i_relatorio')) ) {
       js_removeLimitacaoCaracter();

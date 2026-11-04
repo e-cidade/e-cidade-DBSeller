@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clorcreceitaval->rotulo->label("o71_valor");
               <?=$Lo71_codrec?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o71_codrec",6,$Io71_codrec,true,"text",4,"","chave_o71_codrec");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clorcreceitaval->rotulo->label("o71_valor");
               <?=$Lo71_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o71_coddoc",4,$Io71_coddoc,true,"text",4,"","chave_o71_coddoc");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clorcreceitaval->rotulo->label("o71_valor");
               <?=$Lo71_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o71_mes",2,$Io71_mes,true,"text",4,"","chave_o71_mes");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clorcreceitaval->rotulo->label("o71_valor");
               <?=$Lo71_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("o71_valor",15,$Io71_valor,true,"text",4,"","chave_o71_valor");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $clorcreceitaval->rotulo->label("o71_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcreceitaval.php")==true){
@@ -141,12 +141,12 @@ $clorcreceitaval->rotulo->label("o71_valor");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

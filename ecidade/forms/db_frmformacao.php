@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -27,6 +27,7 @@
 
 //MODULO: educação
 use App\Domain\Configuracao\Helpers\StorageHelper;
+
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clformacao->rotulo->label();
@@ -140,8 +141,8 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                             <td nowrap>
                             </td>
                             <td>
-                                <? db_input('ed27_i_codigo', 15, @$Ied27_i_codigo, true, 'hidden', 3, "") ?>
-                                <? db_input('ed27_i_rechumano', 15, @$Ied27_i_rechumano, true, 'hidden', 3, "") ?>
+                                <?php db_input('ed27_i_codigo', 15, @$Ied27_i_codigo, true, 'hidden', 3, "") ?>
+                                <?php db_input('ed27_i_rechumano', 15, @$Ied27_i_rechumano, true, 'hidden', 3, "") ?>
                             </td>
                         </tr>
                         <tr>
@@ -149,27 +150,27 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                                 <b><?= @$ed20_i_tiposervidor == '1' ? 'Matrícula:' : 'CGM:' ?></b>
                             </td>
                             <td>
-                                <? db_input('identificacao', 10, @$identificacao, true, 'text', 3, "") ?>
-                                <? db_input('z01_nome', 50, @$Iz01_nome, true, 'text', 3, '') ?>
+                                <?php db_input('identificacao', 10, @$identificacao, true, 'text', 3, "") ?>
+                                <?php db_input('z01_nome', 50, @$Iz01_nome, true, 'text', 3, '') ?>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap title="<?= @$Ted27_i_cursoformacao ?>">
-                                <? db_ancora(@$Led27_i_cursoformacao, "js_pesquisaed27_i_cursoformacao(true);", $db_opcao); ?>
+                                <?php db_ancora(@$Led27_i_cursoformacao, "js_pesquisaed27_i_cursoformacao(true);", $db_opcao); ?>
                             </td>
                             <td>
-                                <? db_input('ed27_i_cursoformacao', 10, $Ied27_i_cursoformacao, true, 'hidden', 3, "") ?>
-                                <? db_input('ed94_c_codigocenso', 10, @$Ied94_c_codigocenso, true, 'text', 3, "") ?>
-                                <? db_input('ed94_c_descr', 35, @$Ied94_c_descr, true, 'text', 3, '') ?>
+                                <?php db_input('ed27_i_cursoformacao', 10, $Ied27_i_cursoformacao, true, 'hidden', 3, "") ?>
+                                <?php db_input('ed94_c_codigocenso', 10, @$Ied94_c_codigocenso, true, 'text', 3, "") ?>
+                                <?php db_input('ed94_c_descr', 35, @$Ied94_c_descr, true, 'text', 3, '') ?>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap title="<?= @$Ted27_i_censoinstsuperior ?>">
-                                <? db_ancora(@$Led27_i_censoinstsuperior, "js_pesquisaed27_i_censoinstsuperior(true);", $db_opcao); ?>
+                                <?php db_ancora(@$Led27_i_censoinstsuperior, "js_pesquisaed27_i_censoinstsuperior(true);", $db_opcao); ?>
                             </td>
                             <td>
-                                <? db_input('ed27_i_censoinstsuperior', 10, $Ied27_i_censoinstsuperior, true, 'text', $db_opcao, " onchange='js_pesquisaed27_i_censoinstsuperior(false);'") ?>
-                                <? db_input('ed257_c_nome', 35, @$Ied257_c_nome, true, 'text', 3, '') ?>
+                                <?php db_input('ed27_i_censoinstsuperior', 10, $Ied27_i_censoinstsuperior, true, 'text', $db_opcao, " onchange='js_pesquisaed27_i_censoinstsuperior(false);'") ?>
+                                <?php db_input('ed257_c_nome', 35, @$Ied257_c_nome, true, 'text', 3, '') ?>
                             </td>
                         </tr>
                         <tr>
@@ -177,7 +178,7 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                                 <?= @$Led27_c_situacao ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 $x = array('CON' => 'CONCLUÍDO', 'CUR' => 'EM ANDAMENTO', 'INT' => 'INTERROMPIDO');
                                 db_select('ed27_c_situacao', $x, true, $db_opcao, "onchange = 'js_verificacao(this.value);'");
                                 ?>
@@ -188,7 +189,7 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                                 <?= @$Led27_i_formacaopedag ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 if (!empty($ed27_i_formacaopedag) && $ed27_i_formacaopedag === 'SIM') {
                                     $ed27_i_formacaopedag = 1;
                                 } else {
@@ -261,14 +262,14 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                                 <?= @$Led27_i_licenciatura ?>
                             </td>
                             <td>
-                                <?
+                                <?php
                                 $xx = array("0" => "NÃO", "1" => "SIM");
                                 db_select("ed27_i_licenciatura", $xx, true, $db_opcao, "");
                                 ?>
                                 <?= @$Led27_i_anoinicio ?>
-                                <? db_input('ed27_i_anoinicio', 4, $Ied27_i_anoinicio, true, 'text', $db_opcao, "") ?>
+                                <?php db_input('ed27_i_anoinicio', 4, $Ied27_i_anoinicio, true, 'text', $db_opcao, "") ?>
                                 <?= @$Led27_i_anoconclusao ?>
-                                <? db_input('ed27_i_anoconclusao', 4, $Ied27_i_anoconclusao, true, 'text', $db_opcao, "") ?>
+                                <?php db_input('ed27_i_anoconclusao', 4, $Ied27_i_anoconclusao, true, 'text', $db_opcao, "") ?>
                             </td>
                         </tr>
                         <tr>
@@ -285,15 +286,15 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
                                     <iframe name="frame_imagemFormacao" id="frame_imagemFormacao" src="edu4_alunodocumentoformacao.php" width="56" height="40" frameborder="1" scrolling="no"></iframe>
                                 <script>
                                     frame_imagemFormacao.location.href="edu4_alunodocumentoformacao.php?imagem_gerada=<?php echo $arquivoFormacao?>";
-                                </script>        
+                                </script>
                                 <div style="display: flex;margin-top: -5px;flex-direction: column;width:100%;">
                                     <iframe name="frame_formacao" id="frame_formacao" src="edu1_frameformacao.php" width="100%" height="31" frameborder="0" scrolling="no" style="margin-bottom: 0px;margin-top:2px;"></iframe>
                                     <input type="button" value="Excluir Imagem"
-                                        onclick="location.href='edu1_formacao001.php?excluirformacao&ed27_i_rechumano=<?php echo $ed27_i_rechumano; ?>&ed27_i_codigo=<?php echo $ed27_i_codigo;?>'"
+                                        onclick="location.href='edu1_formacao001.php?excluirformacao&ed27_i_rechumano=<?php echo $ed27_i_rechumano; ?>&ed27_i_codigo=<?php echo (isset($ed27_i_codigo)?$ed27_i_codigo:"");?>'"
                                         style="font-size: 9px;padding: 0px;margin-left: 3px;width:82px;">
-                                </div> 
+                                </div>
                                 <input name="oid_arquivoFormacao" type="hidden" id="oid_arquivoFormacao" value="<?php echo $arquivo?>" size="30">
-                            </div> 
+                            </div>
                         </tr>
                     </table>
                 </fieldset>
@@ -313,73 +314,94 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
         </tr>
     </table>
     <table width="100%">
-        <tr>
-            <td valign="top">
-                <?
-                $campos = "ed27_i_codigo,
-              ed27_i_rechumano,
-              ed27_i_cursoformacao,
-              ed94_c_descr,
-              ed94_c_codigocenso,
-              ed27_i_censoinstsuperior,
-						  ed27_i_anoinicio,
-              ed27_i_anoconclusao,
-                    case
-               when ed27_i_formacaopedag = '0'
-                then 'NÃO'
-               when ed27_i_formacaopedag = '1'
-                then 'SIM'
-              end as ed27_i_formacaopedag,
-              case
-               when ed27_c_situacao = 'CON'
-                then 'CONCLUÍDO'
-               when ed27_c_situacao = 'CUR'
-                then 'CURSANDO' else
-                'INTERROMPIDO'
-              end as ed27_c_situacao,
-              case
-               when ed27_i_licenciatura = 0
-                then 'NÃO'
-                else 'SIM'
-              end as ed27_i_licenciatura,
-              ed257_c_nome
-             ";
-                $chavepri = array("ed27_i_codigo" => @$ed27_i_codigo, "ed27_i_rechumano" => @$ed27_i_rechumano, "ed27_i_cursoformacao" => @$ed27_i_cursoformacao, "ed94_c_descr" => @$ed94_c_descr, "ed94_c_codigocenso" => @$ed94_c_codigocenso, "ed27_i_censoinstsuperior" => @$ed27_i_censoinstsuperior, "ed257_c_nome" => @$ed257_c_nome, "ed27_c_situacao" => @$ed27_c_situacao, "ed27_i_anoinicio" => @ed27_i_anoinicio, "ed27_i_anoconclusao" => @$ed27_i_anoconclusao, "ed27_i_licenciatura" => @$ed27_i_licenciatura, "ed27_i_formacaopedag" => !empty($ed27_i_formacaopedag) ? $ed27_i_formacaopedag: '');
-                $cliframe_alterar_excluir->chavepri = $chavepri;
-                $cliframe_alterar_excluir->sql = $clformacao->sql_query("", $campos, "", " ed27_i_rechumano = $ed27_i_rechumano");
-                $cliframe_alterar_excluir->campos = "ed27_i_codigo,ed94_c_codigocenso,ed94_c_descr,ed257_c_nome,ed27_i_licenciatura,ed27_i_anoinicio,ed27_i_anoconclusao,ed27_c_situacao,ed27_i_formacaopedag";
-                $cliframe_alterar_excluir->legenda = "Registros";
-                $cliframe_alterar_excluir->msg_vazio = "Não foi encontrado nenhum registro.";
-                $cliframe_alterar_excluir->textocabec = "#DEB887";
-                $cliframe_alterar_excluir->textocorpo = "#444444";
-                $cliframe_alterar_excluir->fundocabec = "#444444";
-                $cliframe_alterar_excluir->fundocorpo = "#eaeaea";
-                $cliframe_alterar_excluir->iframe_height = "200";
-                $cliframe_alterar_excluir->iframe_width = "100%";
-                $cliframe_alterar_excluir->tamfontecabec = 9;
-                $cliframe_alterar_excluir->tamfontecorpo = 9;
-                $cliframe_alterar_excluir->formulario = false;
-                $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
+      <tr>
+        <td>
+          <?php
+            $campos = "ed27_i_codigo,
+                       ed27_i_rechumano,
+                       ed27_i_cursoformacao,
+                       ed94_c_descr,
+                       ed94_c_codigocenso,
+                       ed27_i_censoinstsuperior,
+			  	       		  ed27_i_anoinicio,
+                       ed27_i_anoconclusao,
+                             case
+                        when ed27_i_formacaopedag = '0'
+                         then 'NÃO'
+                        when ed27_i_formacaopedag = '1'
+                         then 'SIM'
+                       end as ed27_i_formacaopedag,
+                       case
+                        when ed27_c_situacao = 'CON'
+                         then 'CONCLUÍDO'
+                        when ed27_c_situacao = 'CUR'
+                         then 'CURSANDO' else
+                         'INTERROMPIDO'
+                       end as ed27_c_situacao,
+                       case
+                        when ed27_i_licenciatura = 0
+                         then 'NÃO'
+                         else 'SIM'
+                       end as ed27_i_licenciatura,
+                       ed257_c_nome,
+                       case
+                         when ed27_i_docformacao_estorage is not null
+                           then 'Sim'
+                         else 'Não'
+                       end as possui_anexo_formacao";
 
-                if (isset($ed27_i_rechumano) && !empty($ed27_i_rechumano)) {
-                    $daoRecHumano = new cl_rechumano;
-                    $sqlCgm = $daoRecHumano->sql_query_rechumano_cgm(
-                        $ed27_i_rechumano, 
-                        "case when cgmrh.z01_nome is not null then  cgmrh.z01_nome else cgmcgm.z01_nome end as nome,".
-                        "case when cgmrh.z01_numcgm is not null then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as cgm"
-                        );
-                    $result = db_query($sqlCgm);
-                    if (!$result) {
-                        db_msgbox("Erro ao buscar CGM");
-                    }
-                    else {
-                        db_fieldsmemory($result,0);
-                    }
+            $campos_iframe  = "ed27_i_codigo,ed94_c_codigocenso,ed94_c_descr,ed257_c_nome,ed27_i_licenciatura,";
+            $campos_iframe .= "ed27_i_anoinicio,ed27_i_anoconclusao,ed27_c_situacao,ed27_i_formacaopedag,";
+            $campos_iframe .= "possui_anexo_formacao";
+
+            $chavepri = array();
+            $chavepri["ed27_i_codigo"] = (!empty($ed27_i_codigo) ? $ed27_i_codigo: '');
+            $chavepri["ed27_i_rechumano"] = (!empty($ed27_i_rechumano) ? $ed27_i_rechumano: '');
+            $chavepri["ed27_i_cursoformacao"] = (!empty($ed27_i_cursoformacao) ? $ed27_i_cursoformacao: '');
+            $chavepri["ed94_c_descr"] = (!empty($ed94_c_descr) ? $ed94_c_descr: '');
+            $chavepri["ed94_c_codigocenso"] = (!empty($ed94_c_codigocenso) ? $ed94_c_codigocenso: '');
+            $chavepri["ed27_i_censoinstsuperior"] = (!empty($ed27_i_censoinstsuperior) ? $ed27_i_censoinstsuperior: '');
+            $chavepri["ed257_c_nome"] = (!empty($ed257_c_nome) ? $ed257_c_nome: '');
+            $chavepri["ed27_c_situacao"] = (!empty($ed27_c_situacao) ? $ed27_c_situacao: '');
+            $chavepri["ed27_i_anoinicio"] = (!empty($ed27_i_anoinicio) ? $ed27_i_anoinicio: '');
+            $chavepri["ed27_i_anoconclusao"] = (!empty($ed27_i_anoconclusao) ? $ed27_i_anoconclusao: '');
+            $chavepri["ed27_i_licenciatura"] = (!empty($ed27_i_licenciatura) ? $ed27_i_licenciatura: '');
+            $chavepri["ed27_i_formacaopedag"] = (!empty($ed27_i_formacaopedag) ? $ed27_i_formacaopedag: '');
+            $cliframe_alterar_excluir->chavepri = $chavepri;
+            $cliframe_alterar_excluir->sql = $clformacao->sql_query("", $campos, "", " ed27_i_rechumano = $ed27_i_rechumano");
+            $cliframe_alterar_excluir->campos = $campos_iframe;
+            $cliframe_alterar_excluir->legenda = "Registros";
+            $cliframe_alterar_excluir->msg_vazio = "Não foi encontrado nenhum registro.";
+            $cliframe_alterar_excluir->textocabec = "#DEB887";
+            $cliframe_alterar_excluir->textocorpo = "#444444";
+            $cliframe_alterar_excluir->fundocabec = "#444444";
+            $cliframe_alterar_excluir->fundocorpo = "#eaeaea";
+            $cliframe_alterar_excluir->iframe_height = "200";
+            $cliframe_alterar_excluir->iframe_width = "100%";
+            $cliframe_alterar_excluir->tamfontecabec = 9;
+            $cliframe_alterar_excluir->tamfontecorpo = 9;
+            $cliframe_alterar_excluir->formulario = false;
+            $cliframe_alterar_excluir->iframe_alterar_excluir($db_opcao);
+
+            if (isset($ed27_i_rechumano) && !empty($ed27_i_rechumano)) {
+                $daoRecHumano = new cl_rechumano;
+                $sqlCgm = $daoRecHumano->sql_query_rechumano_cgm(
+                    $ed27_i_rechumano,
+                    "case when cgmrh.z01_nome is not null then  cgmrh.z01_nome else cgmcgm.z01_nome end as nome,".
+                    "case when cgmrh.z01_numcgm is not null then cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as cgm"
+                    );
+                $result = db_query($sqlCgm);
+                if (!$result) {
+                    db_msgbox("Erro ao buscar CGM");
                 }
+                else {
+                    db_fieldsmemory($result,0);
+                }
+            }
 
-                ?>
-            </td>
-        </tr>
+          ?>
+        </td>
+      </tr>
     </table>
 </form>
 
@@ -392,7 +414,7 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
 <script language="JavaScript" type="text/javascript" src="scripts/session.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
 
-<script language="JavaScript" type="text/javascript" 
+<script language="JavaScript" type="text/javascript"
     src="scripts/classes/dbViewFormacaoProfissional.classe.js"></script>
 
 <script>
@@ -547,9 +569,7 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
     });
 
     $('btnPosGraduacao').observe("click", function () {
-
         js_montarFormacao(<?= @$cgm ?>, "<?= @$nome ?>");
-
     });
 
     function js_montarAvaliacao(oResponse) {
@@ -569,10 +589,8 @@ if (isset($ed27_i_codigo) && !empty($ed27_i_codigo)) {
     }
 
      function js_montarFormacao(cgm, nome) {
-
         js_removeObj('msgBox');
         var iCodigoAvaliacao = '3000003';
         oFormacaoProfissional = new dbViewFormacaoProfissional(iCodigoAvaliacao, cgm, nome);
-
      }
 </script>

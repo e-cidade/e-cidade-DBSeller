@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -119,7 +119,7 @@ for($x=0; $x<$cont; $x++) {
 for($w=0; $w<3; $w++) {
 	$dbarq = $adbarq[$w];
 	$banco = $abanco[$w];
-	
+
 	$arquivo = fopen ("$dbarq", "r");
 	$cont=0;
 	$cont_sim=0;
@@ -131,12 +131,12 @@ for($w=0; $w<3; $w++) {
 	while (!feof($arquivo)) {
   	$linha = fgets($arquivo,4096);
     $cont++;
-		
+
 		if($linha==""||$cont==1){
     	continue;
     }
 
-    $colunas     = split (';', $linha);
+    $colunas     = explode(';', $linha);
     $matricula   = substr($colunas[0],0,6); // pega matricula sem digito
 		$debcontapedido = $colunas[0]; // pega matricula com digito
     $nome        = $colunas[1];
@@ -151,14 +151,14 @@ for($w=0; $w<3; $w++) {
 		} else {
 			$id_empresa = $debcontapedido;
 		}
-	
+
 		$dt_lanc = montaDataDaeb($colunas[7]);
 		$dt_canc = montaDataDaeb($colunas[8]);
 
 //		$sql_arrecad = "
 //		  select distinct arrecad.k00_numpre, arrecad.k00_numpar, aguabase.x01_numcgm
-//		  from  arrecad 
-//			inner join arrematric on arrematric.k00_numpre=arrecad.k00_numpre 
+//		  from  arrecad
+//			inner join arrematric on arrematric.k00_numpre=arrecad.k00_numpre
 //			left  join aguabase   on aguabase.x01_matric = arrematric.k00_matric
 //			where k00_tipo = 37 and k00_matric = $matricula ";
 
@@ -171,7 +171,7 @@ for($w=0; $w<3; $w++) {
 			inner join arrematric on arrematric.k00_matric = aguabase.x01_matric
 			inner join arrecad    on arrecad.k00_numpre    = arrematric.k00_numpre
 			where   aguabase.x01_matric = $matricula
-			and     arrecad.k00_tipo    = 37 
+			and     arrecad.k00_tipo    = 37
 			union
 			select  distinct
 			        arrecant.k00_numpre,
@@ -181,14 +181,14 @@ for($w=0; $w<3; $w++) {
 			inner join arrematric on arrematric.k00_matric = aguabase.x01_matric
 			inner join arrecant   on arrecant.k00_numpre   = arrematric.k00_numpre
 			where   aguabase.x01_matric = $matricula
-			and     arrecant.k00_tipo    = 37 		
+			and     arrecant.k00_tipo    = 37
 			;";
 
     $result_arrecad = db_query($sql_arrecad) or die("Linha: ".__LINE__."\nSQL: $sql\n");
-			
-    if(pg_numrows($result_arrecad)>0){    	    	
+
+    if(pg_numrows($result_arrecad)>0){
     	//$d63_codigo_seq = db_query("select nextval('debcontapedido_d63_codigo_seq')");
-    	//$d63_codigo = pg_result($d63_codigo_seq,0,0);  
+    	//$d63_codigo = pg_result($d63_codigo_seq,0,0);
 			$d63_codigo = $debcontapedido;
 
 			$sql = "insert into debcontapedido values ($d63_codigo,$instit,$banco,'$cod_agencia','$num_conta',$dt_lanc,'00:01',2,'$id_empresa')";
@@ -196,7 +196,7 @@ for($w=0; $w<3; $w++) {
 
 			$sql = "insert into debcontapedidomatric values ($d63_codigo,$matricula)";
 			$inclui_debcontapedidomatric = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
-			
+
 			$cgm = pg_result($result_arrecad, 0, 'x01_numcgm');
 
 			$sql = "insert into debcontapedidocgm    values ($d63_codigo,$cgm)";
@@ -204,20 +204,20 @@ for($w=0; $w<3; $w++) {
 
 			$sql = "select nextval('debcontapedidotipo_d66_sequencial_seq')";
     	$d66_sequencial_seq = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
-			
-    	$d66_sequencial = pg_result($d66_sequencial_seq,0,0);  
+
+    	$d66_sequencial = pg_result($d66_sequencial_seq,0,0);
 
 			$sql = "insert into debcontapedidotipo values ($d66_sequencial,$d63_codigo,37)";
     	$inclui_debcontapedidotipo = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
-			
+
 			for($x=0;$x<pg_numrows($result_arrecad);$x++){
     		$k00_numpre = pg_result($result_arrecad,$x,'k00_numpre');
     		$k00_numpar = pg_result($result_arrecad,$x,'k00_numpar');
-				
+
 				$sql = "select nextval('debcontapedidotiponumpre_d67_sequencial_seq')";
     		$d67_sequencial_seq = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
-    		
-				$d67_sequencial = pg_result($d67_sequencial_seq,0,0);  
+
+				$d67_sequencial = pg_result($d67_sequencial_seq,0,0);
 
 				$sql = "insert into debcontapedidotiponumpre values ($d67_sequencial,$d63_codigo,$k00_numpre,$k00_numpar)";
     		$inclui_debcontapedidotiponumpre = db_query($sql) or die("Linha: ".__LINE__."\nSQL: $sql\n");
@@ -228,7 +228,7 @@ for($w=0; $w<3; $w++) {
     	system("echo \"matricula nao cadastrada $matricula\">> /tmp/erros_$banco.txt");
     	echo "Matricula Nº $matricula sem debitos!!\n";
     	$cont_naum++;
-    }    
+    }
 	}
 	echo "Banco $banco\n";
 	echo "Foram incluidas $cont_sim\n";

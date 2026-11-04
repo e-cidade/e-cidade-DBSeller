@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -38,14 +38,14 @@ include(modification("classes/db_db_depart_classe.php"));
 include(modification("classes/db_departdiv_classe.php"));
 include(modification("libs/db_app.utils.php"));
 
-$clrotulo       = new rotulocampo;
-$cldb_depart    = new cl_db_depart;
-$clcfpatric     = new cl_cfpatri;
-$clbens         = new cl_bens;
-$cldepartdiv    = new cl_departdiv;
-$aux_orgao      = new cl_arquivo_auxiliar;
-$aux_unidade    = new cl_arquivo_auxiliar;
-$aux            = new cl_arquivo_auxiliar;
+$clrotulo = new rotulocampo;
+$cldb_depart = new cl_db_depart;
+$clcfpatric = new cl_cfpatri;
+$clbens = new cl_bens;
+$cldepartdiv = new cl_departdiv;
+$aux_orgao = new cl_arquivo_auxiliar;
+$aux_unidade = new cl_arquivo_auxiliar;
+$aux = new cl_arquivo_auxiliar;
 
 $clrotulo->label("t04_sequencial");
 $clbens->rotulo->label();
@@ -53,11 +53,11 @@ $cldb_depart->rotulo->label();
 
 db_postmemory($HTTP_POST_VARS);
 
-//Verifica se utiliza pesquisa por orgo sim ou no
+//Verifica se utiliza pesquisa por orgão sim ou não
 $t06_pesqorgao = "f";
-$resPesquisaOrgao = $clcfpatric->sql_record($clcfpatric->sql_query_file(null,'t06_pesqorgao'));
-if($clcfpatric->numrows > 0) {
-    db_fieldsmemory($resPesquisaOrgao,0);
+$resPesquisaOrgao = $clcfpatric->sql_record($clcfpatric->sql_query_file(null, 't06_pesqorgao'));
+if ($clcfpatric->numrows > 0) {
+    db_fieldsmemory($resPesquisaOrgao, 0);
 }
 ?>
 <html>
@@ -68,34 +68,37 @@ if($clcfpatric->numrows > 0) {
     <?php
     db_app::load('scripts.js');
     db_app::load('prototype.js');
+    db_app::load('strings.js');
     db_app::load('estilos.css');
     ?>
 </head>
 <body bgcolor=#CCCCCC>
 <form class="container" name="form1" method="post" action="">
     <fieldset>
-        <legend>Relatrios - Geral de Bens</legend>
+        <legend>Relatórios - Geral de Bens</legend>
         <table class="form-container">
             <?php
-            if($t06_pesqorgao == 't'){?>
+            if ($t06_pesqorgao == 't') {
+                ?>
                 <tr>
-                    <td colspan=2 >
+                    <td colspan=2>
                         <fieldset style="border: none;border-top:2px groove white;">
-                            <a  id='esconderorgao' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeOrgao('');">
-                                <legend>Filtrar Orgos
+                            <a id='esconderorgao' style="-moz-user-select: none;cursor: pointer"
+                               onClick="js_escondeOrgao('');">
+                                <legend>Filtrar Orgãos
                                     <img src='imagens/setabaixo.gif' id='toggleorgaos' border='0'>
                                 </legend>
                             </a>
                             <table id="tbOrgaos" style="display: none;">
-                                <?
+                                <?php
                                 // $aux = new cl_arquivo_auxiliar;
-                                $aux_orgao->cabecalho = "<strong>rgos</strong>";
+                                $aux_orgao->cabecalho = "<strong>Órgãos</strong>";
                                 $aux_orgao->codigo = "o40_orgao"; //chave de retorno da func
-                                $aux_orgao->descr  = "o40_descr";   //chave de retorno
+                                $aux_orgao->descr = "o40_descr";   //chave de retorno
                                 $aux_orgao->nomeobjeto = 'orgaos';
                                 $aux_orgao->funcao_js = 'js_mostra_org';
                                 $aux_orgao->funcao_js_hide = 'js_mostra_org1';
-                                $aux_orgao->sql_exec  = "";
+                                $aux_orgao->sql_exec = "";
                                 $aux_orgao->func_arquivo = "func_orcorgao.php";  //func a executar
                                 $aux_orgao->nomeiframe = "db_iframe_orcorgao";
                                 $aux_orgao->localjan = "";
@@ -113,23 +116,24 @@ if($clcfpatric->numrows > 0) {
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=2 >
+                    <td colspan=2>
                         <fieldset style="border: none;border-top:2px groove white;">
-                            <a  id='esconderunidades' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeUnidade('');">
+                            <a id='esconderunidades' style="-moz-user-select: none;cursor: pointer"
+                               onClick="js_escondeUnidade('');">
                                 <legend>Filtrar Unidades
                                     <img src='imagens/setabaixo.gif' id='toggleunidades' border='0'>
                                 </legend>
                             </a>
                             <table id="tbUnidades" style="display:none;">
-                                <?
+                                <?php
                                 // $aux = new cl_arquivo_auxiliar;
                                 $aux_unidade->cabecalho = "<strong>Unidades</strong>";
                                 $aux_unidade->codigo = "o41_unidade"; //chave de retorno da func
-                                $aux_unidade->descr  = "o41_descr";   //chave de retorno
+                                $aux_unidade->descr = "o41_descr";   //chave de retorno
                                 $aux_unidade->nomeobjeto = 'unidades';
                                 $aux_unidade->funcao_js = 'js_mostra_uni';
                                 $aux_unidade->funcao_js_hide = 'js_mostra_uni1';
-                                $aux_unidade->sql_exec  = "";
+                                $aux_unidade->sql_exec = "";
                                 $aux_unidade->func_arquivo = "func_orcunidade.php";  //func a executar
                                 $aux_unidade->nomeiframe = "db_iframe_orcunidade";
                                 $aux_unidade->localjan = "";
@@ -147,23 +151,24 @@ if($clcfpatric->numrows > 0) {
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=2 >
+                    <td colspan=2>
                         <fieldset style="border: none;border-top:2px groove white;">
-                            <a  id='esconderdepartamentos' style="-moz-user-select: none;cursor: pointer" onClick="js_escondeDepartamento('');">
+                            <a id='esconderdepartamentos' style="-moz-user-select: none;cursor: pointer"
+                               onClick="js_escondeDepartamento('');">
                                 <legend><b>Filtrar Departamentos</b>
                                     <img src='imagens/setabaixo.gif' id='toggledepartamentos' border='0'>
                                 </legend>
                             </a>
                             <table id="tbDepartamentos" style="display: none;">
-                                <?
+                                <?php
                                 // $aux = new cl_arquivo_auxiliar;
                                 $aux->cabecalho = "<strong>Departamentos</strong>";
                                 $aux->codigo = "coddepto"; //chave de retorno da func
-                                $aux->descr  = "descrdepto";   //chave de retorno
+                                $aux->descr = "descrdepto";   //chave de retorno
                                 $aux->nomeobjeto = 'departamentos';
                                 $aux->funcao_js = 'js_mostra';
                                 $aux->funcao_js_hide = 'js_mostra1';
-                                $aux->sql_exec  = "";
+                                $aux->sql_exec = "";
                                 $aux->func_arquivo = "func_db_depart.php";  //func a executar
                                 $aux->nomeiframe = "db_iframe_db_depart";
                                 $aux->localjan = "";
@@ -180,43 +185,44 @@ if($clcfpatric->numrows > 0) {
                         </fieldset>
                     </td>
                 </tr>
-            <?} else {?>
+            <? } else { ?>
                 <tr>
-                    <td align="right" nowrap title="<?=$Tcoddepto?>"> <? db_ancora(@$Lcoddepto,"js_pesquisa_depart(true);",1);?>  </td>
+                    <td align="right" nowrap
+                        title="<?= $Tcoddepto ?>"> <?php db_ancora(@$Lcoddepto, "js_pesquisa_depart(true);", 1); ?>  </td>
                     <td align="left" nowrap>
                         <?
-                        db_input("coddepto",10,$Icoddepto,true,"text",4,"onchange='js_pesquisa_depart(false);'");
+                        db_input("coddepto",10,$Icoddepto,true,"text",4,"onchange='js_pesquisa_depart(false);'", "", "", "", 10);
                         db_input("descrdepto",50,$Idescrdepto,true,"text",3);
                         ?>
                     </td>
                 </tr>
-            <?}?>
+            <? } ?>
 
-            <?
-            if (isset($coddepto)&&$coddepto!=""){
+            <?php
+            if (isset($coddepto) && $coddepto != "") {
                 ?>
                 <tr>
-                    <td nowrap align="right" title="Diviso do Depart.">
-                        <b> Diviso:</b>
+                    <td nowrap align="right" title="Divisão do Depart.">
+                        <b> Divisão:</b>
                     </td>
                     <td>
                         <select name="t33_divisao" id="t33_divisao">
                             <option value='0'>Todas</option>
-                            <?
-                            $result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_depto=$coddepto"));
-                            for($y=0;$y<$cldepartdiv->numrows;$y++){
-                                db_fieldsmemory($result,$y);
+                            <?php
+                            $result = $cldepartdiv->sql_record($cldepartdiv->sql_query_file(null, "t30_codigo,t30_descr", null, "t30_depto=$coddepto"));
+                            for ($y = 0; $y < $cldepartdiv->numrows; $y++) {
+                                db_fieldsmemory($result, $y);
                                 ?>
-                                <option value=<?=@$t30_codigo?>> <?=@$t30_descr?></option>
-                                <?
+                                <option value=<?= @$t30_codigo ?>> <?= @$t30_descr ?></option>
+                                <?php
                             }
                             ?>
                         </select>
                     </td>
                 </tr>
-                <?
-            }else{
-                db_input('t33_divisao',10,"",true,'hidden',3,'');
+                <?php
+            } else {
+                db_input('t33_divisao', 10, "", true, 'hidden', 3, '');
             }
             ?>
 
@@ -225,55 +231,55 @@ if($clcfpatric->numrows > 0) {
                 <td nowrap>
                     <?
                     if($t06_pesqorgao == 't'){
-                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
-                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","orgao"=>"rgo","unidade"=>"Unidade","descricao"=>"Descrio do Bem");
+                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificação",
+                            "dtAqui"=>"Data de aquisição","dtInc" =>"Data da Inclusão","orgao"=>"rgo","unidade"=>"Unidade","descricao"=>"Descrição do Bem");
                     }else{
-                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
-                            "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","descricao"=>"Descrio do Bem");
+                        $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificação",
+                            "dtAqui"=>"Data de aquisição","dtInc" =>"Data da Inclusão","descricao"=>"Descrição do Bem");
                     }
 
-                    db_select("ordenar",$matriz,true,1,"onChange='js_filtro_ordem(this.value);'");
+                    db_select("ordenar", $matriz, true, 1, "onChange='js_filtro_ordem(this.value);'");
                     ?>
                 </td>
             </tr>
             <tr id="datas">
-                <td nowrap><b>Imprimir Fornecedor/Observaes:</b></td>
+                <td nowrap><b>Imprimir Fornecedor/Observações:</b></td>
                 <td nowrap>
-                    <?
-                    $imp_forn = array("N"=>"No","S"=>"Sim");
-                    db_select("imp_forn",$imp_forn,true,1);
+                    <?php
+                    $imp_forn = array("N" => "Não", "S" => "Sim");
+                    db_select("imp_forn", $imp_forn, true, 1);
                     ?>
                 </td>
             </tr>
             <tr id="datas">
-                <td nowrap align="right"><b>Imprimir Classificao:</b></td>
+                <td nowrap align="right"><b>Imprimir Classificação:</b></td>
                 <td nowrap>
-                    <?
-                    $imp_classi = array("N"=>"No","S"=>"Sim");
-                    db_select("imp_classi",$imp_classi,true,1,'onchange=js_display_quebra_por(this.value)');
+                    <?php
+                    $imp_classi = array("N" => "Não", "S" => "Sim");
+                    db_select("imp_classi", $imp_classi, true, 1, 'onchange=js_display_quebra_por(this.value)');
                     ?>
                 </td>
             </tr>
             <tr id="quebrapor" style="display:none;">
                 <td nowrap align="right"><b>Quebrar por:</b></td>
                 <td nowrap>
-                    <?
-                    $quebra_por = array("1"=>"Nenhum","2"=>"Departamento/Diviso","3"=>"Classificao");
-                    db_select("quebra_por",$quebra_por,true,1);
+                    <?php
+                    $quebra_por = array("1" => "Nenhum", "2" => "Departamento/Divisão", "3" => "Classificação");
+                    db_select("quebra_por", $quebra_por, true, 1);
                     ?>
                 </td>
             </tr>
 
             <tr id="datas">
-                <td nowrap align="right"><b>Quebrar pgina:</b></td>
+                <td nowrap align="right"><b>Quebrar página:</b></td>
                 <td nowrap>
-                    <?
-                    if($t06_pesqorgao == 't'){
-                        $q_pagina = array("N"=>"No","orgao"=>"rgo","unidade"=>"Unidade","departamento"=>"Departamento");
-                    }else{
-                        $q_pagina = array("N"=>"No","S"=>"Sim");
+                    <?php
+                    if ($t06_pesqorgao == 't') {
+                        $q_pagina = array("N" => "Não", "orgao" => "Órgão", "unidade" => "Unidade", "departamento" => "Departamento");
+                    } else {
+                        $q_pagina = array("N" => "Não", "S" => "Sim");
                     }
-                    db_select("q_pagina",$q_pagina,true,1);
+                    db_select("q_pagina", $q_pagina, true, 1);
                     ?>
                 </td>
             </tr>
@@ -282,16 +288,16 @@ if($clcfpatric->numrows > 0) {
                 <td id="">
                     <?php
                     $aDatas = [
-                        0 => '',
-                        1 => 'Data da Aquisiao',
-                        2 => 'Data da Incluso no Sistema'
+                        0 => 'Selecione',
+                        1 => 'Data da Aquisição',
+                        2 => 'Data da Inclusão no Sistema'
                     ];
                     db_select("dataAquisicaoOuInclusao", $aDatas, true, 1, "onchange='js_mudaData()'");
                     ?>
                 </td>
             </tr>
             <tr id="dtAqui">
-                <td>Data da Aquisio:</td>
+                <td>Data da Aquisição:</td>
                 <td>
                     <?php
                     db_inputdata("dtAquisicaoInicial", "", "", "", true, "text", 1);
@@ -301,7 +307,7 @@ if($clcfpatric->numrows > 0) {
                 </td>
             </tr>
             <tr id="dtInc">
-                <td>Data da Incluso no Sistema:</td>
+                <td>Data da Inclusão no Sistema:</td>
                 <td>
                     <?php
                     db_inputdata("dtInclusaoInicial", "", "", "", true, "text", 1);
@@ -311,74 +317,80 @@ if($clcfpatric->numrows > 0) {
                 </td>
             </tr>
             <tr>
-            <tr >
-                <td nowrap align="right"><b>Bens de Convnio:</b></td>
+            <tr>
+                <td nowrap align="right"><b>Bens de Convênio:</b></td>
                 <td nowrap>
-                    <?
-                    $x = array("T"=>"Todos","N"=>"Nenhum Convnio","S"=>"Com Convnio");
-                    db_select("bens_convenio",$x,true,1,"onchange='js_selecionaConvenio()'");
+                    <?php
+                    $x = array("T" => "Todos", "N" => "Nenhum Convênio", "S" => "Com Convênio");
+                    db_select("bens_convenio", $x, true, 1, "onchange='js_selecionaConvenio()'");
                     ?>
                 </td>
             </tr>
             <tr id="convenio" style="display: none;">
-                <td nowrap title="<?="Convnio"?>" align="right">
-                    <?
-                    db_ancora("<b>Convnio:</b>","js_pesquisat04_sequencial(true);",1);
+                <td nowrap title="<?= "Convênio" ?>" align="right">
+                    <?php
+                    db_ancora("<b>Convênio:</b>", "js_pesquisat04_sequencial(true);", 1);
                     ?>
                 </td>
                 <td>
-                    <?
-                    db_input('t04_sequencial',8,$It04_sequencial,true,'text',1," onchange='js_pesquisat04_sequencial(false);'")
+                    <?php
+                    db_input('t04_sequencial', 8, $It04_sequencial, true, 'text', 1, " onchange='js_pesquisat04_sequencial(false);'")
                     ?>
-                    <?
-                    db_input('z01_nome_convenio',20,'',true,'text',3,'')
+                    <?php
+                    db_input('z01_nome_convenio', 20, '', true, 'text', 3, '')
                     ?>
                 </td>
             </tr>
         </table>
     </fieldset>
-    <input type="button" value="Emitir relatrio" onClick="js_emite();">
+    <input type="button" value="Emitir relatório" onClick="js_emite();">
 </form>
-<?
-db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+<?php
+db_menu();
 ?>
 </body>
 </html>
 <script>
-    function js_selecionaConvenio(){
-        if(document.getElementById('bens_convenio').value == "N" || document.getElementById('bens_convenio').value == "T"){
+    function js_selecionaConvenio() {
+        if (document.getElementById('bens_convenio').value == "N" || document.getElementById('bens_convenio').value == "T") {
             document.getElementById('convenio').style.display = "none";
-        }else{
+        } else {
             document.getElementById('convenio').style.display = "";
         }
     }
 
-    function js_filtro_ordem(opcao){
+    function js_filtro_ordem(opcao) {
         var obj = document.form1;
-        if (opcao == "classi"){
+        if (opcao == "classi") {
             obj.imp_classi.value = "S";
         }
 
-        if (opcao == "data"){
+        if (opcao == "data") {
             document.getElementById("datas").style.display = "";
         } else {
 //        document.getElementById("datas").style.display = "none";
         }
     }
+    $('dataAquisicaoOuInclusao').value = 0;
     $('dtInc').style.display = 'none';
     $('dtAqui').style.display = 'none'
 
-    function js_mudaData(){
-        if($F('dataAquisicaoOuInclusao') == 1){
+    function js_mudaData() {
+        if ($F('dataAquisicaoOuInclusao') == 1) {
             $('dtInclusaoInicial').value = '';
             $('dtInclusaoFinal').value = '';
             $('dtInc').style.display = 'none';
             $('dtAqui').style.display = '';
-        } else {
+        } else if($F('dataAquisicaoOuInclusao') == 2) {
             $('dtAquisicaoInicial').value = '';
             $('dtAquisicaoFinal').value = '';
             $('dtAqui').style.display = 'none'
             $('dtInc').style.display = '';
+        } else {
+            $('dtAquisicaoInicial').value = '';
+            $('dtAquisicaoFinal').value = '';
+            $('dtAqui').style.display = 'none'
+            $('dtInc').style.display = 'none';
         }
     }
     function js_emite(){
@@ -482,127 +494,131 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
         jan.moveTo(0,0);
     }
     //Reescrevendo a funo de busca do iframe lana unidades
-    function js_BuscaDadosArquivounidades(chave){
+    function js_BuscaDadosArquivounidades(chave) {
 
-        query="";
-        vir="";
-        listaorgaos="";
+        query = "";
+        vir = "";
+        listaorgaos = "";
 
-        for(x=0;x<document.form1.orgaos.length;x++){
-            listaorgaos+=vir+document.form1.orgaos.options[x].value;
-            vir=",";
+        for (x = 0; x < document.form1.orgaos.length; x++) {
+            listaorgaos += vir + document.form1.orgaos.options[x].value;
+            vir = ",";
         }
-        if(listaorgaos!=""){
-            query +='&orgaos=('+listaorgaos+')';
+        if (listaorgaos != "") {
+            query += '&orgaos=(' + listaorgaos + ')';
         }
 
         document.form1.db_lanca_unidade.onclick = '';
-        if(chave){
-            js_OpenJanelaIframe('','db_iframe_orcunidade','func_orcunidade.php?funcao_js=parent.js_mostra_uni|o41_unidade|o41_descr'+query,'Pesquisa',true);
-        }else{
+        if (chave) {
+            js_OpenJanelaIframe('', 'db_iframe_orcunidade', 'func_orcunidade.php?funcao_js=parent.js_mostra_uni|o41_unidade|o41_descr' + query, 'Pesquisa', true);
+        } else {
 
-            js_OpenJanelaIframe('','db_iframe_orcunidade','func_orcunidade.php?pesquisa_chave='+document.form1.o41_unidade.value+'&funcao_js=parent.js_mostra_uni1'+query,'Pesquisa',false);
+            js_OpenJanelaIframe('', 'db_iframe_orcunidade', 'func_orcunidade.php?pesquisa_chave=' + document.form1.o41_unidade.value + '&funcao_js=parent.js_mostra_uni1' + query, 'Pesquisa', false);
         }
     }
+
     //Reescrevendo a funo de busca do iframe lana departamentos
-    function js_BuscaDadosArquivodepartamentos(chave){
+    function js_BuscaDadosArquivodepartamentos(chave) {
 
-        query="";
-        vir="";
-        listaunidades="";
+        query = "";
+        vir = "";
+        listaunidades = "";
 
-        for(x=0;x<document.form1.unidades.length;x++){
-            listaunidades+=vir+document.form1.unidades.options[x].value;
-            vir=",";
+        for (x = 0; x < document.form1.unidades.length; x++) {
+            listaunidades += vir + document.form1.unidades.options[x].value;
+            vir = ",";
         }
 
-        vir= "";
+        vir = "";
         listaorgaos = "";
-        for(x=0;x<document.form1.orgaos.length;x++){
-            listaorgaos+=vir+document.form1.orgaos.options[x].value;
-            vir=",";
+        for (x = 0; x < document.form1.orgaos.length; x++) {
+            listaorgaos += vir + document.form1.orgaos.options[x].value;
+            vir = ",";
         }
-        if (listaunidades.length > 0){
-            query += '&unidades=('+listaunidades+')';
+        if (listaunidades.length > 0) {
+            query += '&unidades=(' + listaunidades + ')';
         }
         if (listaorgaos.length > 0) {
-            query +='&orgao='+listaorgaos;
+            query += '&orgao=' + listaorgaos;
         }
 
         document.form1.db_lanca_departamento.onclick = '';
-        if(chave){
-            js_OpenJanelaIframe('','db_iframe_db_depart','func_db_depart.php?funcao_js=parent.js_mostra|coddepto|descrdepto'+query,'Pesquisa',true);
-        }else{
-            js_OpenJanelaIframe('','db_iframe_db_depart','func_db_depart.php?pesquisa_chave='+document.form1.coddepto.value+'&funcao_js=parent.js_mostra1'+query,'Pesquisa',false);
+        if (chave) {
+            js_OpenJanelaIframe('', 'db_iframe_db_depart', 'func_db_depart.php?funcao_js=parent.js_mostra|coddepto|descrdepto' + query, 'Pesquisa', true);
+        } else {
+            js_OpenJanelaIframe('', 'db_iframe_db_depart', 'func_db_depart.php?pesquisa_chave=' + document.form1.coddepto.value + '&funcao_js=parent.js_mostra1' + query, 'Pesquisa', false);
         }
     }
 
-    function js_pesquisat04_sequencial(mostra){
-        if(mostra==true){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benscadcedente','func_benscadcedente.php?funcao_js=parent.js_mostraconvenio1|t04_sequencial|z01_nome','Pesquisa',true);
-        }else{
-            if(document.form1.t04_sequencial.value != ''){
-                js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_benscadcedente','func_benscadcedente.php?pesquisa_chave='+document.form1.t04_sequencial.value+'&funcao_js=parent.js_mostraconvenio','Pesquisa',false);
-            }else{
+    function js_pesquisat04_sequencial(mostra) {
+        if (mostra == true) {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_benscadcedente', 'func_benscadcedente.php?funcao_js=parent.js_mostraconvenio1|t04_sequencial|z01_nome', 'Pesquisa', true);
+        } else {
+            if (document.form1.t04_sequencial.value != '') {
+                js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_benscadcedente', 'func_benscadcedente.php?pesquisa_chave=' + document.form1.t04_sequencial.value + '&funcao_js=parent.js_mostraconvenio', 'Pesquisa', false);
+            } else {
                 document.form1.z01_nome_convenio.value = '';
             }
         }
     }
 
-    function js_mostraconvenio(chave,erro){
+    function js_mostraconvenio(chave, erro) {
         //alert(chave);
         //document.getElementById('z01_nome').value = 'teste';
         document.form1.z01_nome_convenio.value = chave;
-        if(erro==true){
+        if (erro == true) {
             document.form1.t04_sequencial.focus();
             document.form1.t04_sequencial.value = '';
         }
     }
 
-    function js_mostraconvenio1(chave1,chave2){
+    function js_mostraconvenio1(chave1, chave2) {
         document.form1.t04_sequencial.value = chave1;
         document.form1.z01_nome_convenio.value = chave2;
         db_iframe_benscadcedente.hide();
     }
-    function js_pesquisa_depart(mostra){
-        if(mostra==true){
-            js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_depart','func_db_depart.php?funcao_js=parent.js_mostradepart1|coddepto|descrdepto','Pesquisa',true);
-        }else{
-            if(document.form1.coddepto.value != ''){
-                js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_db_depart','func_db_depart.php?pesquisa_chave='+document.form1.coddepto.value+'&funcao_js=parent.js_mostradepart','Pesquisa',false);
-            }else{
+
+    function js_pesquisa_depart(mostra) {
+        if (mostra == true) {
+            js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_db_depart', 'func_db_depart.php?funcao_js=parent.js_mostradepart1|coddepto|descrdepto', 'Pesquisa', true);
+        } else {
+            if (document.form1.coddepto.value != '') {
+                js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_db_depart', 'func_db_depart.php?pesquisa_chave=' + document.form1.coddepto.value + '&funcao_js=parent.js_mostradepart', 'Pesquisa', false);
+            } else {
                 document.form1.descrdepto.value = '';
                 document.form1.submit();
             }
         }
     }
-    function js_mostradepart(chave,erro){
+
+    function js_mostradepart(chave, erro) {
         document.form1.descrdepto.value = chave;
-        if(erro==true){
+        if (erro == true) {
             document.form1.coddepto.focus();
             document.form1.coddepto.value = '';
-        }else{
+        } else {
             document.form1.submit();
         }
     }
-    function js_mostradepart1(chave1,chave2){
+
+    function js_mostradepart1(chave1, chave2) {
         document.form1.coddepto.value = chave1;
         document.form1.descrdepto.value = chave2;
         db_iframe_db_depart.hide();
         document.form1.submit();
     }
 
-    function js_display_quebra_por(valor){
+    function js_display_quebra_por(valor) {
         var valor = valor;
 
-        if(valor == 'N'){
+        if (valor == 'N') {
             document.getElementById('quebrapor').style.display = 'none';
-        }else{
+        } else {
             document.getElementById('quebrapor').style.display = '';
         }
     }
 
-    function js_escondeOrgao(){
+    function js_escondeOrgao() {
 
         if ($('tbOrgaos').style.display == 'none') {
 
@@ -617,7 +633,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
         }
     }
 
-    function js_escondeUnidade(){
+    function js_escondeUnidade() {
 
         if ($('tbUnidades').style.display == 'none') {
 
@@ -632,7 +648,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
         }
     }
 
-    function js_escondeDepartamento(){
+    function js_escondeDepartamento() {
 
         if ($('tbDepartamentos').style.display == 'none') {
 
@@ -646,24 +662,4 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 
         }
     }
-</script>
-<script>
-
-    $("o40_orgao").addClassName("field-size2");
-    $("o40_descr").addClassName("field-size7");
-    $("orgaos").style.width = "100%";
-
-    $("o41_unidade").addClassName("field-size2");
-    $("o41_descr").addClassName("field-size7");
-    $("unidades").style.width = "100%";
-
-    $("coddepto").addClassName("field-size2");
-    $("descrdepto").addClassName("field-size7");
-    $("departamentos").style.width = "100%";
-
-    $("t04_sequencial").addClassName("field-size2");
-    $("z01_nome_convenio").addClassName("field-size7");
-    $("data_inicial").addClassName("field-size2");
-    $("data_final").addClassName("field-size2");
-
 </script>

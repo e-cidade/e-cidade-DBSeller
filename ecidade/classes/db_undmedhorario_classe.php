@@ -75,13 +75,13 @@ class cl_undmedhorario {
                  sd30_d_valfinal = date = Fim
                  ";
    //funcao construtor da classe
-   function cl_undmedhorario() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("undmedhorario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
-   function erro($mostra,$retorna) {
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -90,7 +90,7 @@ class cl_undmedhorario {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd30_i_codigo = ($this->sd30_i_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd30_i_codigo"]:$this->sd30_i_codigo);
        $this->sd30_i_undmed = ($this->sd30_i_undmed == ""?@$GLOBALS["HTTP_POST_VARS"]["sd30_i_undmed"]:$this->sd30_i_undmed);
@@ -123,7 +123,7 @@ class cl_undmedhorario {
      }
    }
    // funcao para Inclusao
-   function incluir ($sd30_i_codigo){
+   public function incluir ($sd30_i_codigo){
       $this->atualizacampos();
      if($this->sd30_i_undmed == null ){
        $this->erro_sql = " Campo Vínculo não informado.";
@@ -705,10 +705,10 @@ class cl_undmedhorario {
   Função SQL utilizado para gerar o relatorio com as grades de horário dos profissionais e seus agendamentos
   (Agendamento -> Relatórios -> Agendamento)
   */
-  function sql_query_grade_relatorio ( $sd30_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
+  public function sql_query_grade_relatorio ( $sd30_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -738,7 +738,7 @@ class cl_undmedhorario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -75,12 +75,12 @@ db_postmemory($HTTP_POST_VARS);
   ?>
   <tr>
      <td nowrap title="<?=@$Ty50_codauto?>">
-       <?
+       <?php
        db_ancora(@$Ly50_codauto,"js_pesquisay50_codauto(true);",3);
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y50_codauto',10,$Iy50_codauto,true,'text',3," onchange='js_pesquisay50_codauto(false);'");
         db_input('y50_nome',40,$Iy50_nome,true,'text',3,'');
       ?>
@@ -88,12 +88,12 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
   <tr>
      <td nowrap title="<?=@$Ty60_codlev?>">
-       <?
+       <?php
        db_ancora(@$Ly60_codlev,"js_lev(true);",1);
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y60_codlev',10,$Iy60_codlev,true,'text',$db_opcao," onchange='js_lev(false);'");
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
         if ($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33) {

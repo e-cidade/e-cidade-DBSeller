@@ -19,6 +19,7 @@ require_once(modification('fpdf151/PDFDocument.php'));
 
 try {
     $get = (object)filter_input_array(INPUT_GET);
+
     $codigoPeriodo = $get->periodo;
     $ano = db_getsession('DB_anousu');
 
@@ -59,6 +60,7 @@ try {
     $relatorio->setExibirExercicioAnterior($exibirExercicioAnterior);
     $relatorio->setInstituicoes(str_replace('-', ',', $get->db_selinstit));
     $relatorio->setExibirQuadros($quadros);
+    $relatorio->fonteRecursoApresentar($get->apresentarRecurso);
     $relatorio->emitir();
 } catch (Exception $e) {
     db_redireciona("db_erros.php?db_erro={$e->getMessage()}");

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2013  DBselller Servicos de Informatica
@@ -87,7 +87,7 @@ $sNomeEscola    = db_getsession("DB_nomedepto");
       </fieldset>
     <input type="button" name="imprimir" id="imprimir" value="Imprimir" onclick="js_imprime()" disabled='disabled' />
   </form>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
  </body>

@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,12 +67,12 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty59_codauto?>">
-       <?
+       <?php
        db_ancora(@$Ly59_codauto,"js_pesquisay59_codauto(true);",3);
        ?>
     </td>
     <td>
-      <?
+      <?php
         db_input('y59_codauto',10,$Iy59_codauto,true,'text',3," onchange='js_pesquisay59_codauto(false);'");
         db_input('y50_codauto',10,$Iy50_codauto,true,'hidden',3,"");
         db_input('y45_percentual',10,$Iy50_codauto,true,'hidden',3,"");
@@ -83,17 +83,17 @@ if(isset($opcao) && $opcao == "excluir"){
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty59_codtipo?>">
-       <?
+       <?php
        db_ancora(@$Ly59_codtipo,"js_pesquisay59_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php
 db_input('y59_codtipo',10,$Iy59_codtipo,true,'text',$db_opcao," onchange='js_pesquisay59_codtipo(false);'");
 db_input('y59_codtipo',10,$Iy59_codtipo,true,'hidden',$db_opcao,"","y59_codtipo_old");
 echo "<script>document.form1.y59_codtipo_old.value='".@$y59_codtipo."'</script>";
 ?>
-       <?
+       <?php
 db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
        ?>
     </td>
@@ -137,7 +137,7 @@ db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
     <?=@$Ly59_tipo?>
    </td>
    <td>
-    <?
+    <?php
       $x = array('0'=>'Nenhum','1'=>'Acrescimo','2'=>'Redução');
       db_select('y59_tipo',$x,true,$db_opcao,"");
      ?>
@@ -148,7 +148,7 @@ db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
      <?=@$Ly59_fator?>
    </td>
     <td>
-  <?
+  <?php
   db_input('y59_fator',8,@$Iy59_fator,true,'text',$db_opcao,"")
   ?>
   </td>
@@ -166,19 +166,19 @@ db_input('y29_descr',40,$Iy29_descr,true,'text',3,'')
           $sValorBotao = $db_opcao;
         }
       ?>
-      <input <?($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?php echo $sValorBotao;?>" <?=($db_botao==false?"disabled":"")?> <?=($db_opcao==1||$db_opcao==2||$db_opcao==22?"onclick='return js_validaFormulario();'":"")?> />
-      <?
+      <input <?php ($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?php echo $sValorBotao;?>" <?=($db_botao==false?"disabled":"")?> <?=($db_opcao==1||$db_opcao==2||$db_opcao==22?"onclick='return js_validaFormulario();'":"")?> />
+      <?php
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_autotipo001.php?y59_codauto=<?=$y59_codauto?>'">
-      <?
+      <?php
       }
       ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-    <?
+    <?php
     $chavepri= array("y59_codauto"=>@$y59_codauto,"y59_codtipo"=>@$y59_codtipo);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y59_codtipo,y29_descr,y29_descr_obs,y59_valor,y87_dtbaixa,y114_processo";
@@ -461,7 +461,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_autotipo.hide();
-  <?
+  <?php
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_autotipo002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){

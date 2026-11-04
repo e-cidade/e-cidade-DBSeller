@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ if(isset($data_inicio)){
    parent.document.form1.ed53_d_inicio_ano.style.backgroundColor='#99A9AE';
    parent.document.form1.ed53_d_inicio_dia.focus();
   </script>
-  <?
+  <?php
  }else{
   $sql3 = $clperiodoavaliacao->sql_query("","*",""," ed09_i_codigo = $periodo ");
   $result3 = $clperiodoavaliacao->sql_record($sql3);
@@ -60,7 +60,7 @@ if(isset($data_inicio)){
     parent.document.form1.ed53_i_diasletivos.value = 0;
     parent.document.form1.ed53_i_semletivas.value = 0;
    </script>
-   <?
+   <?php
   }else{
    $data_in = mktime(0,0,0,substr($data_inicio,5,2),substr($data_inicio,8,2),substr($data_inicio,0,4));
    $data_out = mktime(0,0,0,substr($data_fim,5,2),substr($data_fim,8,2),substr($data_fim,0,4));
@@ -267,7 +267,7 @@ if(isset($data_inicio)){
     parent.document.form1.dias.value = <?=$total_dias?>;
     parent.document.form1.semanas.value = <?=$total_semanas?>;
    </script>
-   <?
+   <?php
   }
  }
 }

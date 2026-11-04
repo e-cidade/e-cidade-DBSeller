@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clitbitipoformapag->rotulo->label("it28_avista");
               <?=$Lit28_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it28_sequencial",10,$Iit28_sequencial,true,"text",4,"","chave_it28_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clitbitipoformapag->rotulo->label("it28_avista");
               <?=$Lit28_avista?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("it28_avista",1,$Iit28_avista,true,"text",4,"","chave_it28_avista");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clitbitipoformapag->rotulo->label("it28_avista");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbitipoformapag.php")==true){
@@ -122,12 +122,12 @@ $clitbitipoformapag->rotulo->label("it28_avista");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

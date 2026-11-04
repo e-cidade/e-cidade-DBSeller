@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@
               <img src="imagens/consultor_o.gif" width="199" height="104">
             </td> 
           </tr> 
-          <?
+          <?php
             if (isset($DB_CONEXAO)){
           ?>
           
@@ -81,13 +81,13 @@
             <td>Servidor:<br>
               <select name='serv' id="serv" style="width:337">
                 <option name='condicaoservidor' value=''>Selecione um servidor</option>");
-                <?
+                <?php
                   for( $iInd = 0; $iInd < count( $DB_CONEXAO ); $iInd++){
                 ?>
                     <option name='condicaoservidor' value='<?=$iInd?>'>
                       <?=$DB_CONEXAO[$iInd]["SERVIDOR"].":".$DB_CONEXAO[$iInd]["PORTA"] ?>
                     </option>");
-                <?
+                <?php
                   }
                 ?>
               </select>
@@ -101,7 +101,7 @@
               <input type="hidden" name="idbasename" id="idbasename">
             </td>
           </tr> 
-          <?
+          <?php
             }
           ?>
           <tr>  

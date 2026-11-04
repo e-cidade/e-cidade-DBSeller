@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -53,21 +53,21 @@ if ($clbiblioteca->numrows != 0) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php
 if (isset($valor)) {
-  
+
   if ($data_ini != "--" && $data_fim != "--") {
-    
+
     $where  = " bi18_retirada between '$data_ini' and '$data_fim' and ";
     $titulo = " - Período: ".db_formatar($data_ini,'d')." até ".db_formatar($data_fim,'d');
   } else {
-    
+
     $where  = "";
     $titulo = " - Período: Não Informado";
   }
   $sql = "SELECT bi16_codigo, ov02_sequencial, ov02_nome, ov02_cnpjcpf, bi07_nome, count(*)
             FROM leitor
-                 left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo                   
+                 left  join leitorcidadao    on leitorcidadao.bi28_leitor = leitor.bi10_codigo
                  left  join cidadao          on cidadao.ov02_sequencial   = leitorcidadao.bi28_cidadao_sequencial
                                             and cidadao.ov02_seq          = leitorcidadao.bi28_cidadao_seq
                  inner join carteira         on bi16_leitor               = bi10_codigo
@@ -88,11 +88,15 @@ if (isset($valor)) {
           <b>Consulta de Empréstimos por Leitor <?=$titulo?></b>
         </td>
         <td colspan="3" align="right">
-         <?if ($todos == "false" && $linhas != 0) {?>
+         <?php if ($todos == "false" && $linhas != 0) {?>
              <input type="checkbox" name="todos" value="true" onclick="js_vertodos()">Ver todos empréstimos
-         <?} else if ($todos == "true" && $linhas != 0) {?>
+         <?php } else if ($todos == "true" && $linhas != 0) {?>
              <input type="checkbox" name="todos" value="false" checked onclick="js_vertodos()">Ocultar empréstimos
-         <?}?>
+<<<<<<< HEAD
+         <?php }?>
+=======
+         <?php } ?>
+>>>>>>> 4ca8d93245197ee7de7c85ffb74eb365c87dd359
         </td>
       </tr>
       <tr bgcolor="#999999">
@@ -102,15 +106,15 @@ if (isset($valor)) {
         <td align="center"><b>Categoria</b></td>
         <td align="center"><b>Empréstimos</b></td>
       </tr>
-      <?
+      <?php
         $cor1 = "#ababab";
         $cor2 = "#f3f3f3";
         $cor  = $cor1;
-        
+
         if ($linhas != 0) {
 
           for ($i = 0 ; $i < $linhas; $i++) {
-          
+
             db_fieldsmemory($result,$i);
             if ($cor == $cor1) {
               $cor = $cor2;
@@ -125,8 +129,8 @@ if (isset($valor)) {
               <td align="center"><?=$bi07_nome?></td>
               <td align="center"><?=$count?></td>
             </tr>
-            <?if ($todos == "true") {
-              
+            <?php if ($todos == "true") {
+
                 if ($data_ini != "--" && $data_fim != "--") {
                   $where2 = " and bi18_retirada between '$data_ini' and '$data_fim' ";
                 } else {
@@ -156,11 +160,11 @@ if (isset($valor)) {
                     <td align="center"><b>Devolvido em:</b></td>
                   </tr>
                   <tr><td colspan="5" height="1" bgcolor="#CCCCCC"></td></tr>
-                  <?
+                  <?php
                   $cor3  = "#DEB887";
                   $cor4  = "#FFE0C1";
                   $cor_e = $cor3;
-                  
+
                   for ($t = 0; $t < $linhas_emp; $t++) {
 
                     db_fieldsmemory($result_emp, $t);
@@ -177,33 +181,33 @@ if (isset($valor)) {
                       <td align="center"><?=db_formatar($bi18_devolucao,'d')?></td>
                       <td align="center">
                         <b>
-                        <?if ($bi21_entrega == "") {?>
+                        <?php if ($bi21_entrega == "") {?>
                             <!-- No Location a variavel bi18_leitor foi trocada por bi18_carteira por que o codigo utilizado na rotina de devolucao é o codigo da carteira guilherme 19/06-->
-                            <a title="Devolver Empréstimo" 
+                            <a title="Devolver Empréstimo"
                                href="javascript:parent.location.href='bib1_devolucao001.php?bi18_carteira=<?=$bi16_codigo?>
                                                                                            &z01_nome=<?=$z01_nome?>'">
                               <font color='red'>Não devolvido</font>
                             </a>
-                        <?} else {?>
+                        <?php } else {?>
                             <font color='green'><?=db_formatar($bi21_entrega,'d')?></font>
-                        <?}?>
+                        <?php } ?>
                         </b>
                       </td>
                     </tr>
-                  <?}?>
+                  <?php } ?>
                 </table>
               </td>
             </tr>
-        <?}?>
-      <?}?>
+        <?php } ?>
+      <?php } ?>
     <table>
   </form>
-  <?} else {?>
+  <?php } else {?>
     <tr>
       <td colspan="6" align="center">Nenhum empréstimo para este período ou para este leitor.</td>
     </tr>
     </table>
-   <?}
+   <?php }
   } else {
     echo "<div align='center'><br>Digite o período, escolha o leitor e clique em pesquisar</div>";
   }
@@ -211,8 +215,8 @@ if (isset($valor)) {
 <br><br>
 <script>
 function js_vertodos() {
-  
-  <?$pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor."&data_ini=".@$data_ini."&data_fim=".@$data_fim;?>
+
+  <?php $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor."&data_ini=".@$data_ini."&data_fim=".@$data_fim;?>
   location.href = "<?=$pagina?>&todos="+document.form2.todos.value;
 }
 </script>

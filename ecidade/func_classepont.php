@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
               <?=$Lq25_classe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q25_classe",10,$Iq25_classe,true,"text",4,"","chave_q25_classe");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
               <?=$Lq25_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q25_pontuacao",15,$Iq25_pontuacao,true,"text",4,"","chave_q25_pontuacao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classepont.php")==true){
@@ -122,12 +122,12 @@ $clclassepont->rotulo->label("q25_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

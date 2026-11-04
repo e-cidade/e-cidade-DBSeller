@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require(modification("libs/db_stdlib.php"));
@@ -39,15 +39,15 @@ $rotulo->label("p58_codproc");
 $rotulo->label("p58_despacho");
 $rotulo->label("p58_publico");
 if (isset($btnincluir)){
-  
+
    $clprotprocesso->alterar($p58_codproc);
   // $sql = "update protprocesso set p58_pr
    $clprotprocesso->pagina_retorno = "pro4_mandespacho001.php";
    $clprotprocesso->erro(true,true);
 }
 $sql2 = "select p58_despacho,z01_nome,p51_descr,p61_coddepto
-         from   protprocesso inner join cgm on 
-                p58_numcgm = z01_numcgm 
+         from   protprocesso inner join cgm on
+                p58_numcgm = z01_numcgm
                 inner join tipoproc on p58_codigo = p51_codigo
 		inner join procandam on p58_codandam = p61_codandam
          where  p58_codproc = ".$p58_codproc;
@@ -79,7 +79,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-  <tr> 
+  <tr>
     <td width="360" height="18">&nbsp;</td>
     <td width="263">&nbsp;</td>
     <td width="25">&nbsp;</td>
@@ -87,8 +87,8 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
   </tr>
 </table>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <table>
     <form method="post" name="form2" action="pro4_mandespacho002.php">
@@ -97,7 +97,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
            <?=$Lp58_codproc;?>
        </td>
        <td>
-          <?db_input("p58_codproc",15,$Ip58_codproc,true,"text",3,"");?>
+          <?php db_input("p58_codproc",15,$Ip58_codproc,true,"text",3,"");?>
        </td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
           <?=$Lp58_despacho;?>
       </td>
       <td>
-        <?db_textarea('p58_despacho',10,60,$Ip58_despacho,true,'text',$db_opcao,"");?>
+        <?php db_textarea('p58_despacho',10,60,$Ip58_despacho,true,'text',$db_opcao,"");?>
 
       </td>
      </tr>
@@ -122,33 +122,33 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
        <?=$Lp58_publico?>
     </td>
     <td>
-	       <?
+	       <?php
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('p58_publico',$x,true,1,"");
-	       
+
                ?>
     </td>
   </tr>
      <tr>
          <td  align="center" colspan="2">
             <input type="submit" value="Atualizar" name="btnincluir" <?=($p61_coddepto != db_getsession("DB_coddepto")?" disabled ":"")?>>
-         </td>   
+         </td>
      </tr>
 </table>
  </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php
 if($p61_coddepto != db_getsession("DB_coddepto")){
 //  echo $p61_coddepto;
   if($p61_coddepto==0){
     db_msgbox("Processo não encontrado.");
   }else{
     db_msgbox("Processo não esta neste setor.");
-  } 
+  }
   db_redireciona("pro4_mandespacho001.php");
 }
 ?>

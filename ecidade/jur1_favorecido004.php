@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if ( isset($oGet->chavepesquisa) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js");
   db_app::load("prototype.js"); 
   db_app::load("strings.js");
@@ -90,10 +90,10 @@ if ( isset($oGet->chavepesquisa) ) {
     <table class="form-container">
        <tr>
           <td>
-            <? db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
+            <?php db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
           </td>
           <td>
-            <? 
+            <?php 
               db_input ( "z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, " onchange='js_pesquisacgm(false);' " );
               db_input ( "z01_nome", 41, $Iz01_nome, true, "text", 3 );
             ?>
@@ -114,7 +114,7 @@ if ( isset($oGet->chavepesquisa) ) {
         Conta Interna Contábil:                     
       </td>
       <td>
-        <? db_input('v86_containterna',55,$Iv86_containterna,true,'text',$db_opcao,''); ?>
+        <?php db_input('v86_containterna',55,$Iv86_containterna,true,'text',$db_opcao,''); ?>
       </td>    
     </tr>
     </table>
@@ -129,7 +129,7 @@ if ( isset($oGet->chavepesquisa) ) {
 <script>
 
   function js_pesquisa(){
-    var sUrl = 'func_favorecido.php?funcao_js=parent.js_mostrafavorecido|z01_nome|z01_numcgm';
+    var sUrl = 'func_favorecido.php?funcao_js=parent.js_mostrafavorecido|z01_nome|z01_numcgm|db83_conta';
     js_OpenJanelaIframe('',
 								        'db_iframe_favorecido',
 								        sUrl,
@@ -140,12 +140,13 @@ if ( isset($oGet->chavepesquisa) ) {
 								        screen.availWidth/2,600);
   }
 
-  function js_mostrafavorecido(chave1, chave2) {
+  function js_mostrafavorecido(chave1, chave2,chave3) {
     
     $('z01_nome').value   = chave1;
     $('z01_numcgm').value = chave2;
+    $('inputNumeroConta').value = chave3;
     db_iframe_favorecido.hide();
-    js_getDadosFavorecido(chave2);
+    js_getDadosFavorecido(chave2, chave3);
   }
   var oContaBancaria = new DBViewContaBancaria(null, 'oContaBancaria',false);
 //    oContaBancaria.readOnly(true);
@@ -189,6 +190,7 @@ if ( isset($oGet->chavepesquisa) ) {
     oParam.exec                    = 'excluir';
     oParam.oDados              	   = $('form1').serialize(true);
     oParam.oDados.iCgmFavorecido   = $F('z01_numcgm');
+    oParam.oDados.v86_contabancaria   = $F('inputNumeroConta');
     if(confirm("Deseja excluir o favorecido selecionado?")){
       js_divCarregando('Excluindo Favorecido...', 'msgBox');
       var oAjax = new Ajax.Request("jur1_favorecido.RPC.php",
@@ -240,7 +242,7 @@ if ( isset($oGet->chavepesquisa) ) {
       document.form1.z01_numcgm.value = ''; 
     } else {
       document.form1.z01_nome.value = chave; 
-      js_getDadosFavorecido($F('z01_numcgm'));
+      //js_getDadosFavorecido($F('z01_numcgm'));
     }
 
   }
@@ -250,7 +252,7 @@ if ( isset($oGet->chavepesquisa) ) {
     $('z01_nome').value   = chave1;
     $('z01_numcgm').value = chave2;
     db_iframe_cgm.hide();
-    js_getDadosFavorecido(chave2);
+    //js_getDadosFavorecido(chave2);
   }
 
   function js_novoCgm() {
@@ -285,11 +287,12 @@ if ( isset($oGet->chavepesquisa) ) {
   }
   js_tabulacaoforms("form1","z01_numcgm",true,1,"z01_numcgm",true);
 
-  function js_getDadosFavorecido(iCgm){
+  function js_getDadosFavorecido(iCgm, conta = null){
     
     var oParam = new Object();
     oParam.exec = 'getDadosFavorecido';
     oParam.iCgm = iCgm;
+    oParam.conta = conta;
     
     js_divCarregando('Verificando dados do favorecido.', 'msgBox');
     var oAjax = new Ajax.Request(

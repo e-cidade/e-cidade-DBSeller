@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -38,7 +38,7 @@ $clrotulo->label("k71_recdest");
 
   <tr>
     <td> 
-		<?
+		<?php
 			db_input('k70_codigo',10,$Ik70_codigo,true,'hidden',$db_opcao,"")
 		?>
     </td>
@@ -47,12 +47,12 @@ $clrotulo->label("k71_recdest");
 		<!-- Receita Origem -->
   	<tr>
     <td nowrap title="Receita de Origem">
-       <?
+       <?php
           db_ancora("Receita de Origem:","js_pesquisak70_recori(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('k70_recori',10,$Ik70_recori,true,'text',$db_opcao,"onchange='js_pesquisak70_recori(false)'");
 				db_input('k02_descrori',40,$Ik02_descr,true,'text',3,'')
       ?>
@@ -62,12 +62,12 @@ $clrotulo->label("k71_recdest");
   	<!-- Receita Destino -->
 	  <tr>
     <td nowrap title="Receita de Destino">
-       <?
+       <?php
        db_ancora("Receita de Destino:","js_pesquisak71_recdest(true);",$db_opcao);
        ?>
     </td>
     <td> 
-			<?
+			<?php
 				db_input('k71_recdest',10,$Ik71_recdest,true,'text',$db_opcao,"onchange='js_pesquisak71_recdest(false);'");
 				db_input('k02_descrdest',40,$Ik02_descr,true,'text',3,'')
       ?>
@@ -80,7 +80,7 @@ $clrotulo->label("k71_recdest");
        <b> Parcela Inicial: </b>
     </td>
     <td> 
-      <?
+      <?php
         db_input('k70_vezesini',10,$Ik70_vezesini,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -92,7 +92,7 @@ $clrotulo->label("k71_recdest");
        <b> Parcela Final: </b>
     </td>
     <td> 
-		<?
+		<?php
 			db_input('k70_vezesfim',10,$Ik70_vezesfim,true,'text',$db_opcao,"onchange='js_valorParcela();'")
 		?>
     </td>
@@ -192,7 +192,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_recreparcori.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

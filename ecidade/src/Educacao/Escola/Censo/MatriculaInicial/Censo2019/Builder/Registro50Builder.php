@@ -27,7 +27,6 @@
 
 namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Builder;
 
-
 use ECidade\Educacao\Escola\Censo\Helpers\Pessoa;
 use ECidade\Educacao\Escola\Censo\Helpers\Turma;
 use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model\Registro50;
@@ -135,7 +134,6 @@ class Registro50Builder
 
         $dependenciaAdministrativa = Registro00Service::getRegistroProcessado()->getDependenciaAdministrativa();
         if (in_array($this->funcao, array(1, 5, 6)) && in_array($dependenciaAdministrativa, array(1, 2, 3))) {
-
             $regime = $this->profissional->getRegimeContratacao();
 
             if (!empty($regime)) {
@@ -203,6 +201,36 @@ class Registro50Builder
                     break;
                 case 14:
                     $this->registro->setCodigo15($disciplina->getCodigo());
+                    break;
+                case 15:
+                    $this->registro->setCodigo16($disciplina->getCodigo());
+                    break;
+                case 16:
+                    $this->registro->setCodigo17($disciplina->getCodigo());
+                    break;
+                case 17:
+                    $this->registro->setCodigo18($disciplina->getCodigo());
+                    break;
+                case 18:
+                    $this->registro->setCodigo19($disciplina->getCodigo());
+                    break;
+                case 19:
+                    $this->registro->setCodigo20($disciplina->getCodigo());
+                    break;
+                case 20:
+                    $this->registro->setCodigo21($disciplina->getCodigo());
+                    break;
+                case 21:
+                    $this->registro->setCodigo22($disciplina->getCodigo());
+                    break;
+                case 22:
+                    $this->registro->setCodigo23($disciplina->getCodigo());
+                    break;
+                case 23:
+                    $this->registro->setCodigo24($disciplina->getCodigo());
+                    break;
+                case 24:
+                    $this->registro->setCodigo25($disciplina->getCodigo());
                     break;
             }
         }

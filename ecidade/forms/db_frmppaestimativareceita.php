@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -50,26 +50,26 @@ $clrotulo->label("o05_valor");
        <?=@$Lo06_sequencial?>
     </td>
     <td> 
-    <?
+    <?php
     db_input('o06_sequencial',10,$Io06_sequencial,true,'text',3,"")
    ?>
     </td>
   </tr>
-  <?
+  <?php
     if ($db_opcao == 1) {
     	
     ?>
     <tr>
               <td nowrap title="<?=@$To05_ppalei?>">
-                <?
+                <?php
                 db_ancora("<b>Lei do PPA</b>","js_pesquisao05_ppalei(true);",$db_opcao);
                 ?>
               </td>
               <td nowrap> 
-                <?
+                <?php
                 db_input('o05_ppalei',10,$Io01_sequencial,true,'text',$db_opcao," onchange='js_pesquisao05_ppalei(false);'")
                 ?>
-                <?
+                <?php
                 db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'');
                 ?>
               </td>
@@ -82,12 +82,12 @@ $clrotulo->label("o05_valor");
                 
               </td>
             </tr>
-    <?
+    <?php
     } else {
    ?>
    <tr>
      <td nowrap title="<?=@$To05_ppaversao?>">
-      <?
+      <?php
        $db_opcaoversao  = $db_opcao; 
        if ($db_opcao == 2 || $db_opcao == 22) {
         $db_opcaoversao  = 3;   
@@ -96,43 +96,43 @@ $clrotulo->label("o05_valor");
        ?>
        </td>
        <td> 
-       <?
+       <?php
        
        db_input('o05_ppaversao',10,$Io05_ppaversao,true,'text',$db_opcaoversao," onchange='js_pesquisao05_ppalei(false);'")
        ?>
-       <?
+       <?php
        db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'')
        ?>
       </td>
    </tr>
-   <?
+   <?php
     }
    ?>
   <tr>
     <td nowrap title="<?=@$To06_codrec?>">
-       <?
+       <?php
        db_ancora(@$Lo06_codrec,"js_pesquisao06_codrec(true);",$db_opcao);
        ?>
     </td>
     <td> 
-   <?
+   <?php
     db_input('o06_codrec',10,$Io06_codrec,true,'text',$db_opcao," onchange='js_pesquisao06_codrec(false);'");
     db_input('o57_descr',40,$Io57_codfon,true,'text',3,'');
     ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Te06_concarpeculiar?>"><?
+    <td nowrap title="<?=@$Te06_concarpeculiar?>"><?php
        db_ancora(@$Lo06_concarpeculiar,"js_pesquisae54_concarpeculiar(true);",$db_opcao);
     ?></td>
     <td>
-    <?
+    <?php
       db_input("o06_concarpeculiar",10,$Io06_concarpeculiar,true,"text",$db_opcao,"onChange='js_pesquisae54_concarpeculiar(false);'");
       db_input("c58_descr",50,0,true,"text",3);
     ?>
     </td>
   </tr>
-  <?
+  <?php
    if (isset($oLei) && $db_opcao == 1 ) {
      echo "<tr><td colspan='3'> <fieldset>";
      echo " <legend><b>Valores</b></legend>";
@@ -172,7 +172,7 @@ $clrotulo->label("o05_valor");
   </fieldset>
   </table>
   </center>
-  <?
+  <?php
   if ($db_opcao == 1) {
     echo "<input name='pesquisar' type='button' id='btncadastrar' value='Cadastrar' onclick='js_cadastrarReceita();'>";
   } else {
@@ -180,7 +180,7 @@ $clrotulo->label("o05_valor");
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
        type="submit" id="db_opcao" 
        value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
- <?
+ <?php
   }
  ?>      
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
@@ -218,7 +218,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ppaestimativareceita.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -457,7 +457,7 @@ function js_mostraParametros() {
   
 }
   js_drawSelectVersaoPPA($('verppa')); 
-<?
+<?php
 if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "" && $db_opcao == 1) {
   echo "js_getVersoesPPA({$oPost->o05_ppalei}, 2);\n";
   

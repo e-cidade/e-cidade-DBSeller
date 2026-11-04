@@ -1,7 +1,7 @@
 <?php
 /**
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -294,6 +294,7 @@ if ($k03_tipo == 19) {
                 $ordena
                 $limit";
 }
+
 
 $rsNumpres = db_query($sql) or die($sql);
 
@@ -690,9 +691,10 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                         try {
                             $valorConvenio = !empty($valorTaxaExpediente) ? $k00_valor + $valorTaxaExpediente : $k00_valor;
-
+                            
                             $oConvenio = new convenio($oRegraEmissao->getConvenio(), $oDadosPgtoUnica->k00_numnov, 0,
                               $valorConvenio, $vlrbar, $dtvencunic, $iTercDig);
+                              
                             $codigo_barras = $oConvenio->getCodigoBarra();
                             $linha_digitavel = $oConvenio->getLinhaDigitavel();
                         } catch (Exception $eExeption) {
@@ -1307,10 +1309,11 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 $vlrbar = "00000000000";
 
             }
-
-            $dtvenc = substr($k00_dtvenc, 6, 4) . substr($k00_dtvenc, 3, 2) . substr($k00_dtvenc, 0, 2);
-            $datavencimento = $dtvenc;
-
+            
+            
+            $dtvenc = substr($k00_dtvenc, 6, 4) ."-". substr($k00_dtvenc, 3, 2) ."-". substr($k00_dtvenc, 0, 2);
+            $datavencimento = substr($k00_dtvenc, 6, 4) . substr($k00_dtvenc, 3, 2) . substr($k00_dtvenc, 0, 2);
+            
             $tmpdt = substr($db_datausu, 0, 4) . substr($db_datausu, 5, 2) . substr($db_datausu, 8, 2);
 
             if ($tmpdt > $datavencimento && $k00_valor > 0) {
@@ -1358,7 +1361,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 $iParcela = $tipo_debito == "3" ? $k00_numpar : 0;
                 $valorConvenio = !empty($valorTaxaExpediente) ? $k00_valor + $valorTaxaExpediente : $k00_valor;
                 $oConvenio = new convenio($oRegraEmissao->getConvenio(), $k00_numnov, $iParcela, $valorConvenio, $vlrbar,
-                  $datavencimento, $iTercDig);
+                $dtvenc, $iTercDig);
             } catch (Exception $eExeption) {
 
                 db_redireciona("db_erros.php?fechar=true&db_erro={$eExeption->getMessage()}");
@@ -1986,7 +1989,10 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 }
             }
 
-            $pdf1->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+            $sql = 'select nome from db_usuarios where login = \''.db_getsession('DB_login').'\'';
+            $rSql = db_query($sql);
+            $pdf1->texto = pg_fetch_all($rSql)[0]['nome'] . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
+            
             $pdf1->linha_digitavel = $linha_digitavel;
             $pdf1->codigo_barras = $codigo_barras;
             $pdf1->enderpref = $ender;

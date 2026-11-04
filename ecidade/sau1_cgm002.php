@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -136,11 +136,11 @@
 	   alert('CNPJ/CPF já existe no cadastro do CGM \\n CGM número: $z01_numcgm \\n Nome: $z01_nome');
 	 </script>";
          if(isset($testanome)){
-	   $camp = split("\|",$valores);
+	   $camp = explode("|",$valores);
 	   $vals = "";
 	   $vir = "";
 	   for($f=1;$f<count($camp);$f++){
-	     $vals .= $vir.$$camp[$f];
+	     $vals .= $vir.${$camp[$f]};
 	     $vir = ",";
 	   }
 	   db_redireciona("func_nome.php?z01_numcgm=$z01_numcgm_old&funcao_js=$funcao_js&testanome=true");
@@ -210,11 +210,11 @@
        }
      }
      if(isset($testanome)){
-       $camp = split("\|",@$valores);
+       $camp = explode("|",@$valores);
        $vals = "";
        $vir = "";
        for($f=1;$f<count($camp);$f++){
-         $vals .= $vir.$$camp[$f];
+         $vals .= $vir.${$camp[$f]};
 	 $vir = ",";
        }
        $clcgm->erro(true,false);
@@ -247,7 +247,7 @@
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php
     include(modification("forms/db_frmcgm.php"));
 	?>
 	</td>
@@ -255,7 +255,7 @@
 </table>
 </body>
 </html>
-<?
+<?php
 if($clcgm->erro_status=="0"){
   $db_botao=true;
   echo "<script> document.form1.db_opcao.disabled=false;</script>  ";

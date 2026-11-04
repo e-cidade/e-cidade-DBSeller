@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,13 +58,13 @@ class cl_guiabv {
                  valor = float8 = valor 
                  ";
    //funcao construtor da classe 
-   function cl_guiabv() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("guiabv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -73,7 +73,7 @@ class cl_guiabv {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->anousu = ($this->anousu == ""?@$GLOBALS["HTTP_POST_VARS"]["anousu"]:$this->anousu);
        $this->tr = ($this->tr == ""?@$GLOBALS["HTTP_POST_VARS"]["tr"]:$this->tr);
@@ -90,7 +90,7 @@ class cl_guiabv {
      }
    }
    // funcao para inclusao
-   function incluir ($anousu,$tr,$cgcter,$cgcte,$ref){ 
+   public function incluir ($anousu,$tr,$cgcter,$cgcte,$ref){ 
       $this->atualizacampos();
      if($this->valor == null ){ 
        $this->erro_sql = " Campo valor nao Informado.";
@@ -206,7 +206,7 @@ class cl_guiabv {
      return true;
    } 
    // funcao para alteracao
-   function alterar ($anousu=null,$tr=null,$cgcter=null,$cgcte=null,$ref=null) { 
+   public function alterar ($anousu=null,$tr=null,$cgcter=null,$cgcte=null,$ref=null) { 
       $this->atualizacampos();
      $sql = " update guiabv set ";
      $virgula = "";
@@ -362,7 +362,7 @@ class cl_guiabv {
      } 
    } 
    // funcao para exclusao 
-   function excluir ($anousu=null,$tr=null,$cgcter=null,$cgcte=null,$ref=null,$dbwhere=null) { 
+   public function excluir ($anousu=null,$tr=null,$cgcter=null,$cgcte=null,$ref=null,$dbwhere=null) { 
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($anousu,$tr,$cgcter,$cgcte,$ref));
      }else{ 
@@ -456,7 +456,7 @@ class cl_guiabv {
      } 
    } 
    // funcao do recordset 
-   function sql_record($sql) { 
+   public function sql_record($sql) { 
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;

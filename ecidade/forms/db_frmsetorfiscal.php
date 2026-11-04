@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -48,7 +48,7 @@ if($db_opcao==1){
             </label>
           </td>
           <td>
-            <?
+            <?php
             db_input('j90_codigo',10,$Ij90_codigo,true,'text',3,"")
             ?>
           </td>
@@ -60,7 +60,7 @@ if($db_opcao==1){
             </label>
           </td>
           <td>
-            <?
+            <?php
             db_input('j90_descr',40,$Ij90_descr,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -78,7 +78,7 @@ if($db_opcao==1){
   }
   function js_preenchepesquisa(chave){
     db_iframe_setorfiscal.hide();
-    <?
+    <?php
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

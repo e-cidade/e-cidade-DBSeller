@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBseller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -67,7 +67,7 @@ $iModulo           = db_getsession('DB_modulo');
         <legend>Expansão de Matrícula</legend>
        <table border="0">
         <tr>
-         <?
+         <?php
            if ($iModulo == 7159) {
 
              echo '<td align="left">';
@@ -455,14 +455,14 @@ function js_retornoPesquisaAssinatura(oRetorno) {
 
 }
 </script>
-<?
+<?php
 if ($iModulo != 7159) {
 ?>
   <script>
     js_escola(<?=$iEscola?>);
   </script>
 
-<?
+<?php
 
 }
 ?>

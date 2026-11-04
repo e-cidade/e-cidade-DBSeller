@@ -1,66 +1,66 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: saude
 //CLASSE DA ENTIDADE sau_tpmodvinculo
-class cl_sau_tpmodvinculo { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $sd53_i_vinculacao = 0; 
-   var $sd53_i_tpvinculo = 0; 
-   var $sd53_v_descrvinculo = null; 
-   var $sd53_i_tpesfadm = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_sau_tpmodvinculo {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $sd53_i_vinculacao = 0;
+   var $sd53_i_tpvinculo = 0;
+   var $sd53_v_descrvinculo = null;
+   var $sd53_i_tpesfadm = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 sd53_i_vinculacao = int4 = Vinculação 
-                 sd53_i_tpvinculo = int4 = Tipo Vínculo 
-                 sd53_v_descrvinculo = varchar(60) = Descrição do Vínculo 
-                 sd53_i_tpesfadm = int4 = Tipo Esfera Administrativa 
+                 sd53_i_vinculacao = int4 = Vinculação
+                 sd53_i_tpvinculo = int4 = Tipo Vínculo
+                 sd53_v_descrvinculo = varchar(60) = Descrição do Vínculo
+                 sd53_i_tpesfadm = int4 = Tipo Esfera Administrativa
                  ";
-   //funcao construtor da classe 
-   function cl_sau_tpmodvinculo() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("sau_tpmodvinculo"); 
+     $this->rotulo = new rotulo("sau_tpmodvinculo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -69,7 +69,7 @@ class cl_sau_tpmodvinculo {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->sd53_i_vinculacao = ($this->sd53_i_vinculacao == ""?@$GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"]:$this->sd53_i_vinculacao);
        $this->sd53_i_tpvinculo = ($this->sd53_i_tpvinculo == ""?@$GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"]:$this->sd53_i_tpvinculo);
@@ -81,9 +81,9 @@ class cl_sau_tpmodvinculo {
      }
    }
    // funcao para inclusao
-   function incluir ($sd53_i_vinculacao,$sd53_i_tpvinculo){ 
+   public function incluir ($sd53_i_vinculacao,$sd53_i_tpvinculo){
       $this->atualizacampos();
-     if($this->sd53_v_descrvinculo == null ){ 
+     if($this->sd53_v_descrvinculo == null ){
        $this->erro_sql = " Campo Descrição do Vínculo nao Informado.";
        $this->erro_campo = "sd53_v_descrvinculo";
        $this->erro_banco = "";
@@ -92,7 +92,7 @@ class cl_sau_tpmodvinculo {
        $this->erro_status = "0";
        return false;
      }
-     if($this->sd53_i_tpesfadm == null ){ 
+     if($this->sd53_i_tpesfadm == null ){
        $this->erro_sql = " Campo Tipo Esfera Administrativa nao Informado.";
        $this->erro_campo = "sd53_i_tpesfadm";
        $this->erro_banco = "";
@@ -101,9 +101,9 @@ class cl_sau_tpmodvinculo {
        $this->erro_status = "0";
        return false;
      }
-       $this->sd53_i_vinculacao = $sd53_i_vinculacao; 
-       $this->sd53_i_tpvinculo = $sd53_i_tpvinculo; 
-     if(($this->sd53_i_vinculacao == null) || ($this->sd53_i_vinculacao == "") ){ 
+       $this->sd53_i_vinculacao = $sd53_i_vinculacao;
+       $this->sd53_i_tpvinculo = $sd53_i_tpvinculo;
+     if(($this->sd53_i_vinculacao == null) || ($this->sd53_i_vinculacao == "") ){
        $this->erro_sql = " Campo sd53_i_vinculacao nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_sau_tpmodvinculo {
        $this->erro_status = "0";
        return false;
      }
-     if(($this->sd53_i_tpvinculo == null) || ($this->sd53_i_tpvinculo == "") ){ 
+     if(($this->sd53_i_tpvinculo == null) || ($this->sd53_i_tpvinculo == "") ){
        $this->erro_sql = " Campo sd53_i_tpvinculo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -120,19 +120,19 @@ class cl_sau_tpmodvinculo {
        return false;
      }
      $sql = "insert into sau_tpmodvinculo(
-                                       sd53_i_vinculacao 
-                                      ,sd53_i_tpvinculo 
-                                      ,sd53_v_descrvinculo 
-                                      ,sd53_i_tpesfadm 
+                                       sd53_i_vinculacao
+                                      ,sd53_i_tpvinculo
+                                      ,sd53_v_descrvinculo
+                                      ,sd53_i_tpesfadm
                        )
                 values (
-                                $this->sd53_i_vinculacao 
-                               ,$this->sd53_i_tpvinculo 
-                               ,'$this->sd53_v_descrvinculo' 
-                               ,$this->sd53_i_tpesfadm 
+                                $this->sd53_i_vinculacao
+                               ,$this->sd53_i_tpvinculo
+                               ,'$this->sd53_v_descrvinculo'
+                               ,$this->sd53_i_tpesfadm
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "tpmodvinculo ($this->sd53_i_vinculacao."-".$this->sd53_i_tpvinculo) nao Incluído. Inclusao Abortada.";
@@ -168,16 +168,16 @@ class cl_sau_tpmodvinculo {
        $resac = db_query("insert into db_acount values($acount,1971,11464,'','".AddSlashes(pg_result($resaco,0,'sd53_i_tpesfadm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($sd53_i_vinculacao=null,$sd53_i_tpvinculo=null) { 
+   public function alterar ($sd53_i_vinculacao=null,$sd53_i_tpvinculo=null) {
       $this->atualizacampos();
      $sql = " update sau_tpmodvinculo set ";
      $virgula = "";
-     if(trim($this->sd53_i_vinculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"])){ 
+     if(trim($this->sd53_i_vinculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"])){
        $sql  .= $virgula." sd53_i_vinculacao = $this->sd53_i_vinculacao ";
        $virgula = ",";
-       if(trim($this->sd53_i_vinculacao) == null ){ 
+       if(trim($this->sd53_i_vinculacao) == null ){
          $this->erro_sql = " Campo Vinculação nao Informado.";
          $this->erro_campo = "sd53_i_vinculacao";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_i_tpvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"])){ 
+     if(trim($this->sd53_i_tpvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"])){
        $sql  .= $virgula." sd53_i_tpvinculo = $this->sd53_i_tpvinculo ";
        $virgula = ",";
-       if(trim($this->sd53_i_tpvinculo) == null ){ 
+       if(trim($this->sd53_i_tpvinculo) == null ){
          $this->erro_sql = " Campo Tipo Vínculo nao Informado.";
          $this->erro_campo = "sd53_i_tpvinculo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_v_descrvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_v_descrvinculo"])){ 
+     if(trim($this->sd53_v_descrvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_v_descrvinculo"])){
        $sql  .= $virgula." sd53_v_descrvinculo = '$this->sd53_v_descrvinculo' ";
        $virgula = ",";
-       if(trim($this->sd53_v_descrvinculo) == null ){ 
+       if(trim($this->sd53_v_descrvinculo) == null ){
          $this->erro_sql = " Campo Descrição do Vínculo nao Informado.";
          $this->erro_campo = "sd53_v_descrvinculo";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_i_tpesfadm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpesfadm"])){ 
+     if(trim($this->sd53_i_tpesfadm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpesfadm"])){
        $sql  .= $virgula." sd53_i_tpesfadm = $this->sd53_i_tpesfadm ";
        $virgula = ",";
-       if(trim($this->sd53_i_tpesfadm) == null ){ 
+       if(trim($this->sd53_i_tpesfadm) == null ){
          $this->erro_sql = " Campo Tipo Esfera Administrativa nao Informado.";
          $this->erro_campo = "sd53_i_tpesfadm";
          $this->erro_banco = "";
@@ -252,7 +252,7 @@ class cl_sau_tpmodvinculo {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tpmodvinculo nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->sd53_i_vinculacao."-".$this->sd53_i_tpvinculo;
@@ -280,14 +280,14 @@ class cl_sau_tpmodvinculo {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd53_i_vinculacao,$sd53_i_tpvinculo));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -323,7 +323,7 @@ class cl_sau_tpmodvinculo {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "tpmodvinculo nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$sd53_i_vinculacao."-".$sd53_i_tpvinculo;
@@ -351,11 +351,11 @@ class cl_sau_tpmodvinculo {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -377,10 +377,10 @@ class cl_sau_tpmodvinculo {
       }
      return $result;
    }
-   function sql_query ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,23 +394,23 @@ class cl_sau_tpmodvinculo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd53_i_vinculacao!=null ){
-         $sql2 .= " where sau_tpmodvinculo.sd53_i_vinculacao = $sd53_i_vinculacao "; 
-       } 
+         $sql2 .= " where sau_tpmodvinculo.sd53_i_vinculacao = $sd53_i_vinculacao ";
+       }
        if($sd53_i_tpvinculo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " sau_tpmodvinculo.sd53_i_tpvinculo = $sd53_i_tpvinculo "; 
-       } 
+         }
+         $sql2 .= " sau_tpmodvinculo.sd53_i_tpvinculo = $sd53_i_tpvinculo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,10 +419,10 @@ class cl_sau_tpmodvinculo {
      }
      return $sql;
   }
-   function sql_query_file ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   public function sql_query_file ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,23 +435,23 @@ class cl_sau_tpmodvinculo {
      $sql2 = "";
      if($dbwhere==""){
        if($sd53_i_vinculacao!=null ){
-         $sql2 .= " where sau_tpmodvinculo.sd53_i_vinculacao = $sd53_i_vinculacao "; 
-       } 
+         $sql2 .= " where sau_tpmodvinculo.sd53_i_vinculacao = $sd53_i_vinculacao ";
+       }
        if($sd53_i_tpvinculo!=null ){
          if($sql2!=""){
             $sql2 .= " and ";
          }else{
             $sql2 .= " where ";
-         } 
-         $sql2 .= " sau_tpmodvinculo.sd53_i_tpvinculo = $sd53_i_tpvinculo "; 
-       } 
+         }
+         $sql2 .= " sau_tpmodvinculo.sd53_i_tpvinculo = $sd53_i_tpvinculo ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

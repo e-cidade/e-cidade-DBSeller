@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Proprietários</strong>";
                  $aux->codigo = "z01_numcgm"; //chave de retorno da func
@@ -113,7 +113,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Ordenar por:&nbsp;&nbsp;</strong>
                </td>
                <td>
-	       <? 
+	       <?php 
 	       $tipo_ordem = array("pr"=>"Proprietário","ps"=>"Possuidor","m"=>"Matrícula","s"=>"Setor/Quadra/Lote");
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
@@ -123,7 +123,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Listar Matrículas:&nbsp;&nbsp;</strong>
                </td>
                <td>
-	       <? 
+	       <?php 
 	       $tipo_b = array("t"=>"Todas","b"=>"Baixadas","n"=>"Não Baixadas");
 	       db_select("tipo1",$tipo_b,true,2); ?>
             </td>
@@ -133,7 +133,7 @@ $aux = new cl_arquivo_auxiliar;
                <strong>Listar tipo de Imóveis:&nbsp;&nbsp;</strong>
                </td>
                <td>
-           <? 
+           <?php 
            $tipo_t = array("t"=>"Todos","pr"=>"Prediais","tr"=>"Territoriais");
            db_select("tipo2",$tipo_t,true,2); ?>
             </td>

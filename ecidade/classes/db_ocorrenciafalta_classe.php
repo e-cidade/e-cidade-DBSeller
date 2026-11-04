@@ -1,64 +1,64 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 //MODULO: escola
 //CLASSE DA ENTIDADE ocorrenciafalta
-class cl_ocorrenciafalta { 
-   // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
-   // cria variaveis do arquivo 
-   var $ed104_sequencial = 0; 
-   var $ed104_diarioclassealunofalta = 0; 
-   var $ed104_ocorrencia = 0; 
-   // cria propriedade com as variaveis do arquivo 
+class cl_ocorrenciafalta {
+   // cria variaveis de erro
+   var $rotulo     = null;
+   var $query_sql  = null;
+   var $numrows    = 0;
+   var $numrows_incluir = 0;
+   var $numrows_alterar = 0;
+   var $numrows_excluir = 0;
+   var $erro_status= null;
+   var $erro_sql   = null;
+   var $erro_banco = null;
+   var $erro_msg   = null;
+   var $erro_campo = null;
+   var $pagina_retorno = null;
+   // cria variaveis do arquivo
+   var $ed104_sequencial = 0;
+   var $ed104_diarioclassealunofalta = 0;
+   var $ed104_ocorrencia = 0;
+   // cria propriedade com as variaveis do arquivo
    var $campos = "
-                 ed104_sequencial = int4 = Código Ocorrência Falta 
-                 ed104_diarioclassealunofalta = int4 = Diário Classe Aluno Falta 
-                 ed104_ocorrencia = int4 = Ocorrência 
+                 ed104_sequencial = int4 = Código Ocorrência Falta
+                 ed104_diarioclassealunofalta = int4 = Diário Classe Aluno Falta
+                 ed104_ocorrencia = int4 = Ocorrência
                  ";
-   //funcao construtor da classe 
-   function cl_ocorrenciafalta() { 
+   //funcao construtor da classe
+   public function __construct() {
      //classes dos rotulos dos campos
-     $this->rotulo = new rotulo("ocorrenciafalta"); 
+     $this->rotulo = new rotulo("ocorrenciafalta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
-   //funcao erro 
-   function erro($mostra,$retorna) { 
+   //funcao erro
+   public function erro($mostra,$retorna) {
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -67,7 +67,7 @@ class cl_ocorrenciafalta {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed104_sequencial = ($this->ed104_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["ed104_sequencial"]:$this->ed104_sequencial);
        $this->ed104_diarioclassealunofalta = ($this->ed104_diarioclassealunofalta == ""?@$GLOBALS["HTTP_POST_VARS"]["ed104_diarioclassealunofalta"]:$this->ed104_diarioclassealunofalta);
@@ -77,9 +77,9 @@ class cl_ocorrenciafalta {
      }
    }
    // funcao para inclusao
-   function incluir ($ed104_sequencial){ 
+   public function incluir ($ed104_sequencial){
       $this->atualizacampos();
-     if($this->ed104_diarioclassealunofalta == null ){ 
+     if($this->ed104_diarioclassealunofalta == null ){
        $this->erro_sql = " Campo Diário Classe Aluno Falta nao Informado.";
        $this->erro_campo = "ed104_diarioclassealunofalta";
        $this->erro_banco = "";
@@ -88,7 +88,7 @@ class cl_ocorrenciafalta {
        $this->erro_status = "0";
        return false;
      }
-     if($this->ed104_ocorrencia == null ){ 
+     if($this->ed104_ocorrencia == null ){
        $this->erro_sql = " Campo Ocorrência nao Informado.";
        $this->erro_campo = "ed104_ocorrencia";
        $this->erro_banco = "";
@@ -98,16 +98,16 @@ class cl_ocorrenciafalta {
        return false;
      }
      if($ed104_sequencial == "" || $ed104_sequencial == null ){
-       $result = db_query("select nextval('ocorrenciafalta_ed104_sequencial_seq')"); 
+       $result = db_query("select nextval('ocorrenciafalta_ed104_sequencial_seq')");
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
-         $this->erro_sql   = "Verifique o cadastro da sequencia: ocorrenciafalta_ed104_sequencial_seq do campo: ed104_sequencial"; 
+         $this->erro_sql   = "Verifique o cadastro da sequencia: ocorrenciafalta_ed104_sequencial_seq do campo: ed104_sequencial";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
-         return false; 
+         return false;
        }
-       $this->ed104_sequencial = pg_result($result,0,0); 
+       $this->ed104_sequencial = pg_result($result,0,0);
      }else{
        $result = db_query("select last_value from ocorrenciafalta_ed104_sequencial_seq");
        if(($result != false) && (pg_result($result,0,0) < $ed104_sequencial)){
@@ -118,10 +118,10 @@ class cl_ocorrenciafalta {
          $this->erro_status = "0";
          return false;
        }else{
-         $this->ed104_sequencial = $ed104_sequencial; 
+         $this->ed104_sequencial = $ed104_sequencial;
        }
      }
-     if(($this->ed104_sequencial == null) || ($this->ed104_sequencial == "") ){ 
+     if(($this->ed104_sequencial == null) || ($this->ed104_sequencial == "") ){
        $this->erro_sql = " Campo ed104_sequencial nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,17 +130,17 @@ class cl_ocorrenciafalta {
        return false;
      }
      $sql = "insert into ocorrenciafalta(
-                                       ed104_sequencial 
-                                      ,ed104_diarioclassealunofalta 
-                                      ,ed104_ocorrencia 
+                                       ed104_sequencial
+                                      ,ed104_diarioclassealunofalta
+                                      ,ed104_ocorrencia
                        )
                 values (
-                                $this->ed104_sequencial 
-                               ,$this->ed104_diarioclassealunofalta 
-                               ,$this->ed104_ocorrencia 
+                                $this->ed104_sequencial
+                               ,$this->ed104_diarioclassealunofalta
+                               ,$this->ed104_ocorrencia
                       )";
-     $result = db_query($sql); 
-     if($result==false){ 
+     $result = db_query($sql);
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
          $this->erro_sql   = "ocorrenciafalta ($this->ed104_sequencial) nao Incluído. Inclusao Abortada.";
@@ -174,16 +174,16 @@ class cl_ocorrenciafalta {
        $resac = db_query("insert into db_acount values($acount,3421,19253,'','".AddSlashes(pg_result($resaco,0,'ed104_ocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
-   } 
+   }
    // funcao para alteracao
-   function alterar ($ed104_sequencial=null) { 
+   public function alterar ($ed104_sequencial=null) {
       $this->atualizacampos();
      $sql = " update ocorrenciafalta set ";
      $virgula = "";
-     if(trim($this->ed104_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_sequencial"])){ 
+     if(trim($this->ed104_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_sequencial"])){
        $sql  .= $virgula." ed104_sequencial = $this->ed104_sequencial ";
        $virgula = ",";
-       if(trim($this->ed104_sequencial) == null ){ 
+       if(trim($this->ed104_sequencial) == null ){
          $this->erro_sql = " Campo Código Ocorrência Falta nao Informado.";
          $this->erro_campo = "ed104_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_ocorrenciafalta {
          return false;
        }
      }
-     if(trim($this->ed104_diarioclassealunofalta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_diarioclassealunofalta"])){ 
+     if(trim($this->ed104_diarioclassealunofalta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_diarioclassealunofalta"])){
        $sql  .= $virgula." ed104_diarioclassealunofalta = $this->ed104_diarioclassealunofalta ";
        $virgula = ",";
-       if(trim($this->ed104_diarioclassealunofalta) == null ){ 
+       if(trim($this->ed104_diarioclassealunofalta) == null ){
          $this->erro_sql = " Campo Diário Classe Aluno Falta nao Informado.";
          $this->erro_campo = "ed104_diarioclassealunofalta";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_ocorrenciafalta {
          return false;
        }
      }
-     if(trim($this->ed104_ocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_ocorrencia"])){ 
+     if(trim($this->ed104_ocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed104_ocorrencia"])){
        $sql  .= $virgula." ed104_ocorrencia = $this->ed104_ocorrencia ";
        $virgula = ",";
-       if(trim($this->ed104_ocorrencia) == null ){ 
+       if(trim($this->ed104_ocorrencia) == null ){
          $this->erro_sql = " Campo Ocorrência nao Informado.";
          $this->erro_campo = "ed104_ocorrencia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_ocorrenciafalta {
        }
      }
      $result = db_query($sql);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "ocorrenciafalta nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->ed104_sequencial;
@@ -267,14 +267,14 @@ class cl_ocorrenciafalta {
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao para exclusao 
-   function excluir ($ed104_sequencial=null,$dbwhere=null) { 
+       }
+     }
+   }
+   // funcao para exclusao
+   public function excluir ($ed104_sequencial=null,$dbwhere=null) {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($ed104_sequencial));
-     }else{ 
+     }else{
        $resaco = $this->sql_record($this->sql_query_file(null,"*",null,$dbwhere));
      }
      if(($resaco!=false)||($this->numrows!=0)){
@@ -302,7 +302,7 @@ class cl_ocorrenciafalta {
        $sql2 = $dbwhere;
      }
      $result = db_query($sql.$sql2);
-     if($result==false){ 
+     if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "ocorrenciafalta nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$ed104_sequencial;
@@ -330,11 +330,11 @@ class cl_ocorrenciafalta {
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
          return true;
-       } 
-     } 
-   } 
-   // funcao do recordset 
-   function sql_record($sql) { 
+       }
+     }
+   }
+   // funcao do recordset
+   public function sql_record($sql) {
      $result = db_query($sql);
      if($result==false){
        $this->numrows    = 0;
@@ -356,11 +356,11 @@ class cl_ocorrenciafalta {
       }
      return $result;
    }
-   // funcao do sql 
-   function sql_query ( $ed104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query ( $ed104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,15 +379,15 @@ class cl_ocorrenciafalta {
      $sql2 = "";
      if($dbwhere==""){
        if($ed104_sequencial!=null ){
-         $sql2 .= " where ocorrenciafalta.ed104_sequencial = $ed104_sequencial "; 
-       } 
+         $sql2 .= " where ocorrenciafalta.ed104_sequencial = $ed104_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,11 +396,11 @@ class cl_ocorrenciafalta {
      }
      return $sql;
   }
-   // funcao do sql 
-   function sql_query_file ( $ed104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
+   // funcao do sql
+   public function sql_query_file ( $ed104_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = explode("#",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,15 +413,15 @@ class cl_ocorrenciafalta {
      $sql2 = "";
      if($dbwhere==""){
        if($ed104_sequencial!=null ){
-         $sql2 .= " where ocorrenciafalta.ed104_sequencial = $ed104_sequencial "; 
-       } 
+         $sql2 .= " where ocorrenciafalta.ed104_sequencial = $ed104_sequencial ";
+       }
      }else if($dbwhere != ""){
        $sql2 = " where $dbwhere";
      }
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = explode("#",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

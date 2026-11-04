@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlibwebseller.php"));
@@ -45,6 +45,10 @@ require_once(modification("dbforms/db_funcoes.php"));
   db_app::load("classes/educacao/escola/ListaEscola.classe.js");
   db_app::load("classes/educacao/escola/ListaCalendario.classe.js");
   db_app::load("classes/educacao/escola/ListaEtapa.classe.js");
+  db_app::load("scripts.js, prototype.js, strings.js, arrays.js, windowAux.widget.js, datagrid.widget.js,
+                dbtextField.widget.js, dbcomboBox.widget.js");
+  db_app::load("estilos.css, grid.style.css,dbVisualizadorImpressaoTexto.style.css");
+  
   ?>
   <script type="text/javascript" ></script>
 </head>
@@ -60,7 +64,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   <div class='container'>
     <form id='formPadrao' action="">
       <fieldset>
-        <legend>Relatório de Alunos com Auxílio Brasil</legend>
+        <legend>Relatório de Alunos com Bolsa Família</legend>
         <table class="form-container">
           <tr>
             <td nowrap="nowrap" class='bold'>Escola:</td>
@@ -69,6 +73,13 @@ require_once(modification("dbforms/db_funcoes.php"));
           <tr>
             <td nowrap="nowrap" class='bold'>Ano Letivo:</td>
             <td nowrap="nowrap" id='listaCalendario'></td>
+          </tr>
+          <tr>
+            <td  nowrap="nowrap" title="" >
+              <b>Período: </b>
+            </td>
+            <td nowrap="nowrap" id="ctnCboPeriodo">
+            </td>
           </tr>
           <tr>
             <td nowrap="nowrap" class='bold'>Etapas:</td>
@@ -89,12 +100,57 @@ require_once(modification("dbforms/db_funcoes.php"));
     </form>
   </div>
 </body>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 
 var oEscola     = new DBViewFormularioEducacao.ListaEscola();
 var oCalendario = new DBViewFormularioEducacao.ListaCalendario();
 var oEtapas     = new DBViewFormularioEducacao.ListaEtapa();
+var oCboPeriodo            = new DBComboBox("cboPeriodo", "oCboPeriodo", null, "100%");
+oCboPeriodo.addItem("", "Selecione um Período");
+oCboPeriodo.show($('ctnCboPeriodo'));
+
+function js_pesquisarPeriodos() {
+
+var escolaSelecionada = oEscola.getSelecionados();
+var calendarios = oCalendario.getSelecionados();
+
+if(calendarios[0].iCalendario == '') {
+  oCboPeriodo.clearItens();
+  oCboPeriodo.clearItens();
+  return false;
+}
+
+var oParametro         = new Object();
+oParametro.exec        = 'buscaPeriodosAvaliacaoEscola';
+oParametro.iEscola     = escolaSelecionada.codigo_escola;
+oParametro.iCalendario = calendarios[0].iCalendario;
+
+js_divCarregando('Aguarde, carregando os períodos.', 'msgBox');
+var oAjax = new Ajax.Request('edu_educacaobase.RPC.php',
+                             {
+                               method:     'post',
+                               parameters: 'json='+Object.toJSON(oParametro),
+                               onComplete: js_retornaPesquisarPeriodos
+                             }
+                            );
+}
+
+function js_retornaPesquisarPeriodos(oAjax) {
+var oRetorno = JSON.parse(oAjax.responseText);
+js_removeObj('msgBox');
+oCboPeriodo.clearItens();
+oCboPeriodo.addItem("", "Selecione");
+
+oRetorno.dados.each(function(oPeriodo, iSeq) {
+   oCboPeriodo.addItem(oPeriodo.codigo_periodo, oPeriodo.descricao_periodo.urlDecode());
+});
+
+if( oRetorno.dados.length == 1 ) {
+
+  oCboPeriodo.setValue( oRetorno.dados[0].codigo_periodo );
+}
+}
 
 var fFuncaoLoadEscola = function() {
 
@@ -103,7 +159,7 @@ var fFuncaoLoadEscola = function() {
   }
 
   var oEscolaSelecionada = oEscola.getSelecionados();
-  
+
   if (oEscolaSelecionada.codigo_escola != '') {
 
     oCalendario.setEscola(oEscolaSelecionada.codigo_escola);
@@ -134,6 +190,9 @@ var fFunctionLoadCalendario = function() {
 
   if( oCalendario.aCalendarios.length == 1 ) {
 
+    oCboPeriodo.clearItens();
+    oCboPeriodo.addItem("", "Selecione");
+    js_pesquisarPeriodos();
     oEtapas.limpar();
     oEtapas.pesquisaEtapas();
   }
@@ -149,6 +208,8 @@ var fFunctionChangeCalendario = function() {
 
     if (mCalendarioSelecionado.length == 0) {
 
+      oCboPeriodo.clearItens();
+      oCboPeriodo.addItem("", "Selecione");
       oEtapas.limpar();
       $('imprimir').setAttribute("disabled", "disabled");
       return false;
@@ -161,6 +222,8 @@ var fFunctionChangeCalendario = function() {
 
     if (mCalendarioSelecionado.iCalendario == '') {
 
+      oCboPeriodo.clearItens();
+      oCboPeriodo.addItem("", "Selecione");
       oEtapas.limpar();
       return false;
     }
@@ -171,6 +234,7 @@ var fFunctionChangeCalendario = function() {
   oEtapas.setEscola(oEscolaSelecionada.codigo_escola);
   oEtapas.setCalendario(aListaCalendarios.implode(", "));
   oEtapas.pesquisaEtapas();
+  js_pesquisarPeriodos();
 
 };
 
@@ -232,13 +296,20 @@ $('imprimir').observe("click", function () {
     aCalendarios.push(oCalendario.iCalendario);
   });
 
+  if(oCboPeriodo.getValue() == null || oCboPeriodo.getValue() == '') {
+    alert('Nenhum período selecionado');
+    return false;
+  }
+
   var sUrl  = "edu2_alunobolsa002.php";
       sUrl += "?iEscola="+oEscolaSelecionada.codigo_escola;
       sUrl += "&aCalendarios="+aCalendarios;
       sUrl += "&iAno="+iAno;
+      sUrl += "&iPeriodo="+oCboPeriodo.getValue();
+      sUrl += "&oPeriodo="+oCboPeriodo.getDescricao();
       sUrl += "&iEtapa="+oEtapaSelecionada.codigo_etapa;
       sUrl += "&lFrequencia="+$('lFrequencia').checked;
-      
+
   jan = window.open(sUrl,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
   jan.moveTo(0,0);
 });

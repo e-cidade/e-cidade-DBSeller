@@ -109,7 +109,7 @@ $sWhereContrato = " and 1 = 1 ";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
 
       $where_depart = '';
       $sDepartamento = "";
@@ -205,7 +205,27 @@ $sWhereContrato = " and 1 = 1 ";
         $where_depart .= " and pc10_solicitacaotipo in ({$oGet->tiposolicitacao}) ";
       }
 
+      if (!empty($oGet->validaVeiculo)) {
+        $condicoesVeiculo = [];
+        $condicoesVeiculo[] = 'pc14_solicitem = pc11_codigo';
 
+        if (!empty($placa)) {
+            $condicoesVeiculo[] = "ve01_placa = '{$placa}'";
+        }
+
+        $condicoesVeiculo = implode(' AND ', $condicoesVeiculo);
+        $where_depart .= " AND EXISTS
+        (
+            SELECT 1 FROM solicitemveic
+                JOIN veiculos ON pc14_veiculos = ve01_codigo
+            WHERE $condicoesVeiculo
+        )";
+
+      }
+
+      if (!empty($oGet->possuiEmpenho)) {
+        $where_depart .= " AND e55_autori IS NOT NULL ";
+      }
 
       if (!isset($pesquisa_chave)) {
 
@@ -242,13 +262,6 @@ $sWhereContrato = " and 1 = 1 ";
           $sql = $clsolicita->sql_query("",$campos,"pc10_numero desc "," 1=1 $where_depart {$sFiltrarDepartamento}  $sWhereContrato");
         }
 
-        // $rs = db_query($sql);
-
-        // if (pg_num_rows($rs) == 1) {
-        //   $aux = explode('|', $funcao_js);
-        //   echo "<script>".$aux[0]."('$chave_pc10_numero',false);</script>";
-        // }
-
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",array(),false);
 
       } else {
@@ -276,12 +289,12 @@ $sWhereContrato = " and 1 = 1 ";
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

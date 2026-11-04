@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -79,14 +79,14 @@ function js_geracalendario(){
   <form name="form1" method="post">
     <tr>
       <td colspan="2" align="center">
-		<?
+		<?php
 			db_selinstit('parent.js_limpa',300,100);
 		?>
 	  </td>
     </tr>
     <tr><td width="140" colspan="2">&nbsp;</td></tr>
-    <tr><td width="80"><b> Data inicial</b> </td><td><? db_inputdata("DBtxt21",@$dia,@$mes,@$ano,false,'text','1'); ?></td></tr>
-    <tr><td><b> Data final </b></td><td><? db_inputdata("DBtxt22",@$dia,@$mes,@$ano,false,'text','1'); ?></td></tr>
+    <tr><td width="80"><b> Data inicial</b> </td><td><?php db_inputdata("DBtxt21",@$dia,@$mes,@$ano,false,'text','1'); ?></td></tr>
+    <tr><td><b> Data final </b></td><td><?php db_inputdata("DBtxt22",@$dia,@$mes,@$ano,false,'text','1'); ?></td></tr>
 
     <tr> 
       <td >&nbsp;</td>
@@ -97,7 +97,7 @@ function js_geracalendario(){
     </tr>
   </form>
 </table>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

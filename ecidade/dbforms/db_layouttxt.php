@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -130,7 +130,7 @@ class db_layouttxt
      */
     private $lQuebraAutomatica = true;
 
-    function db_layouttxt($layout = 0, $arquivo = "", $usartipo = "", $formatoArquivo = 1, $lUsaChar = false)
+    public function __construct($layout = 0, $arquivo = "", $usartipo = "", $formatoArquivo = 1, $lUsaChar = false)
     {
 
         $this->_lUsaChar = $lUsaChar;
@@ -182,58 +182,58 @@ class db_layouttxt
         $this->iPosicionamentoQuebraAutomatica = $iPosicionamento;
     }
 
-    function setLayout($layout)
+    public function setLayout($layout)
     {
         $this->_layout = $layout;
     }
 
-    function getLayout()
+    public function getLayout()
     {
         return $this->_layout;
     }
 
-    function setUsarTipo($usartipo)
+    public function setUsarTipo($usartipo)
     {
         $this->_usartipo = $usartipo;
     }
 
-    function getUsarTipo()
+    public function getUsarTipo()
     {
         return $this->_usartipo;
     }
 
-    function setArrCamposNome($_arr_campos_nome)
+    public function setArrCamposNome($_arr_campos_nome)
     {
         $this->_arr_campos_nome = $_arr_campos_nome;
     }
 
-    function setArrCamposNomeIn($_index, $_campo)
+    public function setArrCamposNomeIn($_index, $_campo)
     {
         $this->_arr_campos_nome [$_index] = $_campo;
     }
 
-    function getArrCamposNome()
+    public function getArrCamposNome()
     {
         return $this->_arr_campos_nome;
     }
 
-    function setArrCamposVal($_arr_campos_val)
+    public function setArrCamposVal($_arr_campos_val)
     {
         $this->_arr_campos_val = $_arr_campos_val;
     }
 
-    function setArrCamposValIn($_campo, $_valor)
+    public function setArrCamposValIn($_campo, $_valor)
     {
 
         $this->_arr_campos_val [$this->arrIndexaCampos [$_campo]] = "$_valor";
     }
 
-    function getArrCamposVal()
+    public function getArrCamposVal()
     {
         return $this->_arr_campos_val;
     }
 
-    function getArrCamposValIn($_index)
+    public function getArrCamposValIn($_index)
     {
         if (isset($this->_arr_campos_val [$_index])) {
             return $this->_arr_campos_val [$_index];
@@ -242,22 +242,22 @@ class db_layouttxt
         }
     }
 
-    function setCampoTipoLinha($_campo_tipolinha)
+    public function setCampoTipoLinha($_campo_tipolinha)
     {
         $this->_campo_tipolinha = $_campo_tipolinha;
     }
 
-    function getCampoTipoLinha()
+    public function getCampoTipoLinha()
     {
         return $this->_campo_tipolinha;
     }
 
-    function setCampoIdentLinha($_campo_identlinha)
+    public function setCampoIdentLinha($_campo_identlinha)
     {
         $this->_campo_identlinha = $_campo_identlinha;
     }
 
-    function getSeparador()
+    public function getSeparador()
     {
         if ($this->_lUsaChar) {
             eval('$sSeparador = '.$this->_separador.';');
@@ -267,22 +267,22 @@ class db_layouttxt
         return $sSeparador;
     }
 
-    function getCompactaLinha()
+    public function getCompactaLinha()
     {
         return $this->_compactaLinha;
     }
 
-    function getCampoIdentLinha()
+    public function getCampoIdentLinha()
     {
         return $this->_campo_identlinha;
     }
 
-    function abreArquivo($arquivo)
+    public function abreArquivo($arquivo)
     {
         $this->_arquivo = fopen($arquivo, "w");
     }
 
-    function fechaArquivo()
+    public function fechaArquivo()
     {
 
         if ($this->lOutputMemory) {
@@ -292,7 +292,7 @@ class db_layouttxt
         fclose($this->_arquivo);
     }
 
-    function adicionaLinha($valor)
+    public function adicionaLinha($valor)
     {
         fputs($this->_arquivo, $valor);
     }
@@ -304,7 +304,7 @@ class db_layouttxt
         return str_repeat($quebra, $iQuantidade);
     }
 
-    function quebraLinha($quebras = 1)
+    public function quebraLinha($quebras = 1)
     {
         $quebra = $this->getFormatoArquivo() == 0 ? "\r" : "\r\n";
         for ($i = 0; $i < $quebras; $i ++) {
@@ -312,7 +312,7 @@ class db_layouttxt
         }
     }
 
-    function setFormatoArquivo($formato)
+    public function setFormatoArquivo($formato)
     {
         $arrFormatos = array (0, 1 );
         if (! in_array($formato, $arrFormatos)) {
@@ -322,13 +322,13 @@ class db_layouttxt
         }
     }
 
-    function getFormatoArquivo()
+    public function getFormatoArquivo()
     {
         return $this->_formatoArquivo;
     }
 
     var $_layoutMemoria;
-    function carregaLayoutMemoria()
+    public function carregaLayoutMemoria()
     {
 
         // Busca Layout
@@ -345,7 +345,7 @@ class db_layouttxt
         $this->_quantLinhasLay = pg_result($this->_layoutMemoria, 0, "db50_quantlinhas");
     }
 
-    function liberaLinhas()
+    public function liberaLinhas()
     {
         unset($this->_codigoLinha);
         unset($this->_tipoLinha);
@@ -356,7 +356,7 @@ class db_layouttxt
         unset($this->_compactaLinha);
     }
 
-    function liberaCampos()
+    public function liberaCampos()
     {
         unset($this->_codigoCampo);
         unset($this->_nomeCampo);
@@ -375,7 +375,7 @@ class db_layouttxt
         unset($this->_arr_campos_val);
     }
 
-    function limpaCampos()
+    public function limpaCampos()
     {
         $this->setArrCamposVal(array ());
     }
@@ -383,7 +383,7 @@ class db_layouttxt
     var $_linhasMemoria;
     var $_arrLinhasMemoria;
     var $_arrDadosLinhasMemoria;
-    function carregaLinhasMemoria()
+    public function carregaLinhasMemoria()
     {
 
         // Busca Linhas
@@ -441,7 +441,7 @@ class db_layouttxt
     private $aCamposIndex;
     private $aValresPadrao;
 
-    function carregaCamposMemoria()
+    public function carregaCamposMemoria()
     {
 
         $this->aDadosCampos = array();
@@ -481,7 +481,7 @@ class db_layouttxt
     }
 
     var $arrIndexaCampos;
-    function carregaCamposRetorno($_codigoLinha)
+    public function carregaCamposRetorno($_codigoLinha)
     {
         $tipolinha = $this->getCampoTipoLinha();
         $identlinha = $this->getCampoIdentLinha();
@@ -499,7 +499,7 @@ class db_layouttxt
         $this->setArrCamposNome($varRetornoNomesArray);
     }
 
-    function setCampo($campo, $valor)
+    public function setCampo($campo, $valor)
     {
         $retornoLinhas = $this->retornaDadosLinha();
         if ($retornoLinhas == true) {
@@ -509,7 +509,7 @@ class db_layouttxt
     }
 
     var $_linhasPorTipoMemoria;
-    function carregaLinhasPorTipo()
+    public function carregaLinhasPorTipo()
     {
 
         foreach ($this->_arrLinhasMemoria as $indexCampos => $valorCampos) {
@@ -557,7 +557,7 @@ class db_layouttxt
         }
     }
 
-    function carregaLayout()
+    public function carregaLayout()
     {
 
         $this->carregaLayoutMemoria();
@@ -569,7 +569,7 @@ class db_layouttxt
         return true;
     }
 
-    function retornaArrayNomeCampos()
+    public function retornaArrayNomeCampos()
     {
 
         $varRetornoCamposArray = array ();
@@ -586,19 +586,19 @@ class db_layouttxt
         return true;
     }
 
-    function retornaArrayVariaveisCampos()
+    public function retornaArrayVariaveisCampos()
     {
         return true;
     }
 
-    function retornaValorCampo($nomecampo, $linha)
+    public function retornaValorCampo($nomecampo, $linha)
     {
         // Ler txt
         // Pesquisar Identificador do Campo
         $idcampo = '';
     }
 
-    function comparaLinhas($linhaatual)
+    public function comparaLinhas($linhaatual)
     {
         if (! isset($this->_compara_linha) || (isset($this->_compara_linha) && $this->_compara_linha != $linhaatual)) {
             $this->_compara_linha = $linhaatual;
@@ -608,7 +608,7 @@ class db_layouttxt
         }
     }
 
-    function retornaDadosLinha()
+    public function retornaDadosLinha()
     {
 
         $tipolinha  = $this->getCampoTipoLinha();
@@ -637,7 +637,7 @@ class db_layouttxt
         return false;
     }
 
-    function retornaDadosCampo($campo)
+    public function retornaDadosCampo($campo)
     {
 
         $linha = $this->_codigoLinha;
@@ -666,7 +666,7 @@ class db_layouttxt
         return false;
     }
 
-    function formatarCampo($tipoFormat, $valor, $tamanho, $mascara)
+    public function formatarCampo($tipoFormat, $valor, $tamanho, $mascara)
     {
         // Implementar máscara
         switch ($tipoFormat) {
@@ -754,7 +754,7 @@ class db_layouttxt
         return $valor;
     }
 
-    function geraDadosLinha()
+    public function geraDadosLinha()
     {
 
         $tipoLinha = $this->getCampoTipoLinha();
@@ -814,7 +814,7 @@ class db_layouttxt
         return true;
     }
 
-    function carregaTxt($arquivo)
+    public function carregaTxt($arquivo)
     {
         // Colocar mais testes (tipo se o arquivo existe...)
         if (file_exists($arquivo) == true) {
@@ -822,7 +822,7 @@ class db_layouttxt
         }
     }
 
-    function setByLineOfDBUtils($oDBUtils, $tipolinha, $identlinha = "")
+    public function setByLineOfDBUtils($oDBUtils, $tipolinha, $identlinha = "")
     {
 
         $this->setCampoTipoLinha($tipolinha);
@@ -930,7 +930,7 @@ class db_layouttxt
         return true;
     }
 
-    function setByRecord($rsRecord, $tipolinha, $identlinha = "")
+    public function setByRecord($rsRecord, $tipolinha, $identlinha = "")
     {
 
         $this->setCampoTipoLinha($tipolinha);
@@ -958,7 +958,7 @@ class db_layouttxt
         }
     }
 
-    function gerarArquivoLeiaute($sNomeArquivo, $iCodLinha, $iCodLayout = 12)
+    public function gerarArquivoLeiaute($sNomeArquivo, $iCodLinha, $iCodLayout = 12)
     {
 
         $cldb_layouttxt = new db_layouttxt($iCodLayout, $sNomeArquivo, "");

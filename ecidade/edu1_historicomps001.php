@@ -11,7 +11,7 @@
  *  Licenca como (a seu criterio) qualquer versao mais nova.
  *
  *  Este programa e distribuido na expectativa de ser util, mas SEM
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita deedu1_histmps
  *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
  *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
  *  detalhes.
@@ -160,7 +160,7 @@ if (isset($incluir) && $erro == false) {
      location.href               = "edu1_histmpsdisc001.php?ed65_i_historicomps=<?=$ultimo?>&ed62_c_situacao="+document.getElementById('ed62_c_situacao').value;
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php
   }
 }
 ?>

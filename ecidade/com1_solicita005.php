@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -483,7 +483,7 @@ if ( empty($iTipoSolicitacao) && !empty($pc10_solicitacaotipo) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, estilos.css");
 ?>
 </head>
@@ -493,7 +493,7 @@ if ( empty($iTipoSolicitacao) && !empty($pc10_solicitacaotipo) ) {
     </div>
 </body>
 </html>
-<?
+<?php
 if(isset($chavepesquisa) || isset($pc10_numero)){
   if(isset($chavepesquisa)){
     $codigoteste = $chavepesquisa;

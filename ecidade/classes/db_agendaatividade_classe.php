@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE agendaatividade
 class cl_agendaatividade { 
@@ -34,13 +34,13 @@ class cl_agendaatividade {
                  ed129_horafim = varchar(5) = Hora Final 
                  ";
    //funcao construtor da classe 
-   function cl_agendaatividade() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendaatividade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
-   function erro($mostra,$retorna) { 
+   public function erro($mostra,$retorna) { 
      if(($this->erro_status == "0") || ($mostra == true && $this->erro_status != null )){
         echo "<script>alert(\"".$this->erro_msg."\");</script>";
         if($retorna==true){
@@ -49,7 +49,7 @@ class cl_agendaatividade {
      }
    }
    // funcao para atualizar campos
-   function atualizacampos($exclusao=false) {
+   public function atualizacampos($exclusao=false) {
      if($exclusao==false){
        $this->ed129_codigo = ($this->ed129_codigo == ""?@$GLOBALS["HTTP_POST_VARS"]["ed129_codigo"]:$this->ed129_codigo);
        $this->ed129_tipohoratrabalho = ($this->ed129_tipohoratrabalho == ""?@$GLOBALS["HTTP_POST_VARS"]["ed129_tipohoratrabalho"]:$this->ed129_tipohoratrabalho);
@@ -63,7 +63,7 @@ class cl_agendaatividade {
      }
    }
    // funcao para inclusao
-   function incluir ($ed129_codigo){ 
+   public function incluir ($ed129_codigo){ 
       $this->atualizacampos();
      if($this->ed129_tipohoratrabalho == null ){ 
        $this->erro_sql = " Campo Tipo de Hora de Trabalho não informado.";

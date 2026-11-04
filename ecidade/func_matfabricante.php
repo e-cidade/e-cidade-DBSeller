@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,17 +25,22 @@
  *                                licenca/licenca_pt.txt 
  */
 
+use App\Domain\Saude\Farmacia\Helpers\FarmaciaHelper;
+
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matfabricante_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clmatfabricante = new cl_matfabricante;
 $clmatfabricante->rotulo->label("m76_sequencial");
 $clmatfabricante->rotulo->label("m76_numcgm");
+$clrotulo = new rotulocampo;
+$clrotulo->label("z01_nome");
+$clrotulo->label("z01_cgccpf");
 ?>
 <html>
 <head>
@@ -54,7 +59,7 @@ $clmatfabricante->rotulo->label("m76_numcgm");
               <?=$Lm76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m76_sequencial",10,$Im76_sequencial,true,"text",4,"","chave_m76_sequencial");
 		       ?>
             </td>
@@ -64,11 +69,33 @@ $clmatfabricante->rotulo->label("m76_numcgm");
               <?=$Lm76_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("m76_numcgm",10,$Im76_numcgm,true,"text",4,"","chave_m76_numcgm");
 		       ?>
             </td>
           </tr>
+        <?php if (FarmaciaHelper::utilizaIntegracaoBnafar()): ?>
+          <tr>
+            <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>">
+              <?=$Lz01_nome?>
+            </td>
+            <td width="96%" align="left" nowrap>
+              <?php
+              db_input("z01_nome",60,$Iz01_nome,true,"text",4,"","chave_z01_nome");
+              ?>
+            </td>
+          </tr>
+          <tr>
+            <td width="4%" align="right" nowrap title="<?=$Tz01_cgccpf?>">
+              <?=$Lz01_cgccpf?>
+            </td>
+            <td width="96%" align="left" nowrap>
+              <?php
+              db_input("z01_cgccpf",20,$Iz01_cgccpf,true,"text",4,"","chave_z01_cgccpf");
+              ?>
+            </td>
+          </tr>
+        <?php endif; ?>
           <tr> 
             <td colspan="2" align="center"> 
               <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
@@ -82,7 +109,7 @@ $clmatfabricante->rotulo->label("m76_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matfabricante.php")==true){
@@ -98,6 +125,14 @@ $clmatfabricante->rotulo->label("m76_numcgm");
         }else{
            $sql = $clmatfabricante->sql_query_cgm("",$campos,"m76_sequencial","");
         }
+
+        if (isset($chave_z01_nome) && trim($chave_z01_nome) != "") {
+          $sql = $clmatfabricante->sql_query_cgm("",$campos,"z01_nome"," z01_nome like '{$chave_z01_nome}%' ");
+        }
+        if (isset($chave_z01_cgccpf) && trim($chave_z01_cgccpf) != "") {
+          $sql = $clmatfabricante->sql_query_cgm("",$campos,"z01_cgccpf"," z01_cgccpf like '{$chave_z01_cgccpf}%' ");  
+        }
+
         $repassa = array();
         if(isset($chave_m76_numcgm)){
           $repassa = array("chave_m76_sequencial"=>$chave_m76_sequencial,"chave_m76_numcgm"=>$chave_m76_numcgm);
@@ -122,12 +157,12 @@ $clmatfabricante->rotulo->label("m76_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

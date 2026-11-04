@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -47,7 +47,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_codconsumo ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_codconsumo', 5, $Ix19_codconsumo, true, 'text', 3, "")
                     ?>
                 </td>
@@ -57,7 +57,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_exerc ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_exerc', 4, $Ix19_exerc, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -67,7 +67,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_areaini ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_areaini', 8, $Ix19_areaini, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -77,7 +77,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_areafim ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_areafim', 8, $Ix19_areafim, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -87,7 +87,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_caract ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_caract', 5, $Ix19_caract, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -97,7 +97,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_conspadrao ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_conspadrao', 10, $Ix19_conspadrao, true, 'text', $db_opcao, "")
                     ?>
                 </td>
@@ -107,17 +107,17 @@ if ($db_opcao == 1) {
                     <?=@$Lx19_descr?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_descr',40,$Ix19_descr,true,'text',$db_opcao,"")
                     ?>
                 </td>
             </tr>
             <tr>
                 <td nowrap title="<?= @$Tx19_zona ?>">
-                    <? db_ancora(@$Lx19_zona, "js_pesquisax19_zona(true);", $db_opcao); ?>
+                    <?php db_ancora(@$Lx19_zona, "js_pesquisax19_zona(true);", $db_opcao); ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     db_input('x19_zona', 10, $Ix01_zona, true, 'text', $db_opcao,
                       " onchange='js_pesquisax19_zona(false);'");
                     db_input('j50_descr', 50, $Ij50_descr, true, 'text', 3, '');
@@ -129,7 +129,7 @@ if ($db_opcao == 1) {
                     <?= @$Lx19_ativo ?>
                 </td>
                 <td>
-                    <?
+                    <?php
                     $x = array("f" => "NAO", "t" => "SIM");
                     db_select('x19_ativo', $x, true, $db_opcao, "");
                     ?>
@@ -180,7 +180,7 @@ if ($db_opcao == 1) {
 
 	function js_preenchepesquisa(chave) {
 		db_iframe_aguaconsumo.hide();
-        <?
+        <?php
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

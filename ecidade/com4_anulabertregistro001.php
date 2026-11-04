@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -44,7 +44,7 @@ $clrotulo->label("pc67_motivo");
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -77,12 +77,12 @@ db_app::load("widgets/windowAux.widget.js");
             <table>
             <tr>
               <td nowrap title="Abertura" width="70">
-                 <?
+                 <?php
                   db_ancora("<b>Abertura:</b>","js_pesquisar();",1);
                  ?>
               </td>
               <td>
-                <?
+                <?php
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -91,9 +91,9 @@ db_app::load("widgets/windowAux.widget.js");
               <td colspan="2">
               <fieldset>
                 <legend><b>Motivo</b></legend>
-                <?
+                <?php
                 $pc67_motivo = "";
-                db_textarea("pc67_motivo",10,50,"",true,"text",1,"","","","");
+                db_textarea("pc67_motivo",10,50,"",true,"text",1,"","","#fff","");
                 ?>
               </fieldset>
               </td>
@@ -187,7 +187,7 @@ db_app::load("widgets/windowAux.widget.js");
                          'db_iframe_solicitaregistropreco',
                          'func_solicitaregistropreco.php?funcao_js=parent.js_mostraPesquisa|pc54_solicita&departamento=true'+
                          '&estimativas=1&anuladas=1&formacontrole='+sFormaControle,
-                         'Pesquisa de Abertura de Registro de Preço',
+                         'Abertura de Registro de Preço',
                          true );
   }
 

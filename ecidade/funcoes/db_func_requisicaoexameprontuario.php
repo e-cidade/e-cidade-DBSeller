@@ -1,3 +1,3 @@
-<?
+<?php
 $campos = "requisicaoexameprontuario.sd103_codigo,requisicaoexameprontuario.sd103_prontuarios,requisicaoexameprontuario.sd103_medicos,requisicaoexameprontuario.sd103_data,requisicaoexameprontuario.sd103_hora,requisicaoexameprontuario.sd103_observacao";
 ?>

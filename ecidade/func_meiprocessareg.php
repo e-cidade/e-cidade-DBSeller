@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
               <?=$Lq112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q112_sequencial",10,$Iq112_sequencial,true,"text",4,"","chave_q112_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
               <?=$Lq112_meiimportameireg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("q112_meiimportameireg",10,$Iq112_meiimportameireg,true,"text",4,"","chave_q112_meiimportameireg");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiprocessareg.php")==true){
@@ -122,12 +122,12 @@ $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

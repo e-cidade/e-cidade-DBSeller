@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ function js_emite(){
            <?=db_ancora(@$Lo62_codimpger,"js_codimpger(true);",1); ?>           
          </td>
          <td>
-         <?
+         <?php
             db_input("o62_codimpger",4,$Io62_codimpger,true,'text',1,"onchange='js_codimpger(false);'");
          ?>
          </td>
@@ -87,7 +87,7 @@ function js_emite(){
            <?=db_ancora(@$Lo15_codigo,"js_codigo(true);",1); ?>           
          </td>
          <td>
-         <?
+         <?php
             db_input("o15_codigo",4,$Io15_codigo,true,'text',1,"onchange='js_codigo(false);'");
             db_input("o15_descr",40,$Io15_descr,true,'text',3);
          ?>
@@ -101,7 +101,7 @@ function js_emite(){
 
   </form>
   </table>
-<?
+<?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

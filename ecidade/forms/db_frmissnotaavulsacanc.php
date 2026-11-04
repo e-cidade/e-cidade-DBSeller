@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,23 +44,23 @@ $clrotulo->label("q51_numnota");
        <?=@$Lq63_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('q63_sequencial',10,$Iq63_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq63_issnotaavulsa?>">
-       <?
+       <?php
        db_ancora(@$Lq63_issnotaavulsa,"js_pesquisaq63_issnotaavulsa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('q63_issnotaavulsa',10,$Iq63_issnotaavulsa,true,'hidden',$db_opcao," onchange='js_pesquisaq63_issnotaavulsa(false);'");
 db_input('q51_numnota',10,$Iq51_numnota,true,'text',$db_opcao," onchange='js_pesquisaq63_issnotaavulsa(false);'");
 ?>
-       <?
+       <?php
 db_input('z01_nome',40,'',true,'text',3,'')
        ?>
     </td>
@@ -70,7 +70,7 @@ db_input('z01_nome',40,'',true,'text',3,'')
        <?=@$Lq63_motivo?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('q63_motivo',6,50,$Iq63_motivo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_issnotaavulsacanc.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

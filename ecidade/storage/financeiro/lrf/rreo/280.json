@@ -1,0 +1,2794 @@
+[
+    {
+        "ordem": 1,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [4,5,6,8,9,10,11,13,14,15,16,17,18,19,20,21,23,24,25,26,27,29,30,31,32,33,34,35,37,38,39,40,41,44,45,47,48,49,50,52,53,54,55,56,57,58,60,61,62,63],
+        "descricao": "RECEITAS (EXCETO INTRA-ORÇAMENTÁRIAS) (I)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 2,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [4,5,6,8,9,10,11,13,14,15,16,17,18,19,20,21,23,24,25,26,27,29,30,31,32,33,34,35,37,38,39,40,41],
+        "descricao": "RECEITAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 3,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [4,5,6],
+        "descricao": "IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 4,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Impostos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 5,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Taxas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 6,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuição de Melhoria",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 7,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [8,9,10,11],
+        "descricao": "CONTRIBUIÇÕES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 8,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições Sociais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 9,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições Econômicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 10,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições para Entidades Privadas de Serviço Social e de Formação Profissional",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 11,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuição para o Custeio do Serviço de Iluminação Pública",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 12,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [13,14,15,16,17,18,19],
+        "descricao": "RECEITA PATRIMONIAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 13,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração do Patrimônio Imobiliário do Estado",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 14,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Valores Mobiliários",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 15,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Delegação de Serviços Públicos Mediante Concessão, Permissão, Autorização ou Licença",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 16,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração de Recursos Naturais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 17,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração do Patrimônio Intangível",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 18,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Cessão de Direitos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 19,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas Patrimoniais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 20,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RECEITA AGROPECUÁRIA",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 21,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RECEITA INDUSTRIAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 22,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [23,24,25,26,27],
+        "descricao": "RECEITA DE SERVIÇOS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 23,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços Administrativos e Comerciais Gerais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 24,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades Referentes à Navegação e ao Transporte",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 25,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades referentes à Saúde",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 26,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades Financeiras",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 27,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Outros Serviços",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 28,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [29,30,31,32,33,34,35],
+        "descricao": "TRANSFERÊNCIAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 29,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências da União e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 30,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Estados e do Distrito Federal e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 31,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Municípios e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 32,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Instituições Privadas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 33,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Outras Instituições Públicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 34,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências do Exterior",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 35,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Transferências Correntes",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 36,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [37,38,39,40,41],
+        "descricao": "OUTRAS RECEITAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 37,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Multas Administrativas, Contratuais e Judiciais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 38,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Indenizações, Restituições e Ressarcimentos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 39,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Bens, Direitos e Valores Incorporados ao Patrimônio Público",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 40,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Multas e Juros de Mora das Receitas de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 41,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas Correntes",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 42,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [44,45,47,48,49,50,52,53,54,55,56,57,58,60,61,62,63],
+        "descricao": "RECEITAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 43,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [44, 45],
+        "descricao": "OPERAÇÕES DE CRÉDITO",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 44,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Operações de Crédito - Mercado Interno",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 45,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Operações de Crédito - Mercado Externo",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 46,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [47,48,49],
+        "descricao": "ALIENAÇÃO DE BENS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 47,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Móveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 48,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Imóveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 49,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Intangíveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 50,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "AMORTIZAÇÕES DE EMPRÉSTIMOS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 51,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [52,53,54,55,56,57,58],
+        "descricao": "TRANSFERÊNCIAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 52,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências da União e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 53,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Estados e do Distrito Federal e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 54,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Municípios e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 55,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Instituições Privadas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 56,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Outras Instituições Públicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 57,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências do Exterior",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 58,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Tranferências de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 59,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [60,61,62,63],
+        "descricao": "OUTRAS RECEITAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 60,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Integralização do Capital Social",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 61,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Remuneração das Disponibilidades do Tesouro",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 62,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Resgate de Títulos do Tesouro",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 63,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 64,
+        "totalizadora": true,
+        "valorManual": false,
+        "descricao": "RECEITAS (INTRA-ORÇAMENTÁRIAS) (II)",
+        "somar": [107,108,109,111,112,113,114,116,117,118,119,120,121,122,123,124,126,127,128,129,130,132,133,134,135,136,137,138,140,141,142,143,144,147,148,150,151,152,153,155,156,157,158,159,160,161,163,164,165,166],
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 65,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [1, 64],
+        "descricao": "SUBTOTAL DAS RECEITAS (III) = (I + II)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 66,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [68, 69, 71, 72],
+        "descricao": "OPERAÇÕES DE CRÉDITO / REFINANCIAMENTO  (IV)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 67,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [68, 69],
+        "descricao": "Operações de Crédito - Mercado Interno",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 68,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Mobiliária",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 69,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contratual",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 70,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [71,72],
+        "descricao": "Operações de Crédito - Mercado Externo",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 71,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Mobiliária",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 72,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contratual",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 73,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [65,66],
+        "descricao": "TOTAL DAS RECEITAS (V) = (III + IV)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 74,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "DÉFICIT (VI)¹",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 75,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [],
+        "descricao": "TOTAL COM DÉFICIT (VII) = (V + VI)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 76,
+        "totalizadora": true,
+        "valorManual": false,
+        "descricao": "SALDOS DE EXERCÍCIOS ANTERIORES",
+        "somar": [77, 78],
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 77,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Recursos Arrecadados em Exercícios Anteriores - RPPS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 78,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Superávit Financeiro Utilizado para Créditos Adicionais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "D"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 79,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [81,82,84,85,87,88,89,90],
+        "descricao": "DESPESAS (EXCETO INTRA-ORÇAMENTÁRIAS) (VIII)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 80,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [81,82,84,85],
+        "descricao": "DESPESAS CORRENTES",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 81,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "PESSOAL E ENCARGOS SOCIAIS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 82,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "JUROS E ENCARGOS DA DÍVIDA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 83,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [84,85],
+        "descricao": "OUTRAS DESPESAS CORRENTES",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 84,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências a Municípios²",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 85,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Despesas Correntes²",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 86,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [87,88,89],
+        "descricao": "DESPESAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 87,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "INVESTIMENTOS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 88,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "INVERSÕES FINANCEIRAS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 89,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "AMORTIZAÇÃO DA DÍVIDA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 90,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RESERVA DE CONTINGÊNCIA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 91,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [169,170,171,173,174,175,176],
+        "descricao": "DESPESAS (INTRA-ORÇAMENTÁRIAS) (IX)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 92,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [79,91],
+        "descricao": "SUBTOTAL DAS DESPESAS (X) = (VIII + IX)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 93,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [95,96,98,99],
+        "descricao": "AMORTIZAÇÃO DA DÍV. / REFINANCIAMENTO (XI)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 94,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [95,96],
+        "descricao": "Amortização da Dívida Interna",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 95,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Dívida Mobiliária",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 96,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Dívida Contratual",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 97,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [98,99],
+        "descricao": "Amortização da Dívida Externa",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 98,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Dívida Mobiliária",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 99,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Dívida Contratual",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 100,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [92, 93],
+        "descricao": "TOTAL DAS DESPESAS (XII) = (X + XI)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 101,
+        "totalizadora": true,
+        "valorManual": false,
+        "descricao": "SUPERÁVIT (XIII)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 102,
+        "totalizadora": true,
+        "valorManual": false,
+        "descricao": "TOTAL COM SUPERÁVIT (XIV) = (XII + XIII)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 103,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RESERVA DO RPPS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 104,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [107,108,109,111,112,113,114,116,117,118,119,120,121,122,123,124,126,127,128,129,130,132,133,134,135,136,137,138,140,141,142,143,144,147,148,150,151,152,153,155,156,157,158,159,160,161,163,164,165,166],
+        "descricao": "RECEITAS (INTRA-ORÇAMENTÁRIAS) (II)",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 105,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [107,108,109,111,112,113,114,116,117,118,119,120,121,122,123,124,126,127,128,129,130,132,133,134,135,136,137,138,140,141,142,143,144],
+        "descricao": "RECEITAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 106,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [107,108,109],
+        "descricao": "IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 107,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Impostos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 108,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Taxas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 109,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuição de Melhoria",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 110,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [111,112,113,114],
+        "descricao": "CONTRIBUIÇÕES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 111,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições Sociais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 112,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições Econômicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 113,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuições para Entidades Privadas de Serviço Social e de Formação Profissional",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 114,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Contribuição para o Custeio do Serviço de Iluminação Pública",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 115,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [116,117,118,119,120,121,122],
+        "descricao": "RECEITA PATRIMONIAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 116,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração do Patrimônio Imobiliário do Estado",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 117,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Valores Mobiliários",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 118,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Delegação de Serviços Públicos Mediante Concessão, Permissão, Autorização ou Licença",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 119,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração de Recursos Naturais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 120,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Exploração do Patrimônio Intangível",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 121,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Cessão de Direitos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 122,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas Patrimoniais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 123,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RECEITA AGROPECUÁRIA",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 124,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RECEITA INDUSTRIAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 125,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [126,127,128,129,130],
+        "descricao": "RECEITA DE SERVIÇOS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 126,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços Administrativos e Comerciais Gerais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 127,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades Referentes à Navegação e ao Transporte",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 128,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades referentes à Saúde",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 129,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Serviços e Atividades Financeiras",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 130,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Outros Serviços",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 131,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [132,133,134,135,136,137,138],
+        "descricao": "TRANSFERÊNCIAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 132,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências da União e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 133,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Estados e do Distrito Federal e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 134,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Municípios e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 135,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Instituições Privadas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 136,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Outras Instituições Públicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 137,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências do Exterior",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 138,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Tranferências Correntes",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 139,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar": [140,141,142,143,144],
+        "descricao": "OUTRAS RECEITAS CORRENTES",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 140,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Multas Administrativas, Contratuais e Judiciais",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 141,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Indenizações, Restituições e Ressarcimentos",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 142,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Bens, Direitos e Valores Incorporados ao Patrimônio Público",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 143,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Multas e Juros de Mora das Receitas de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 144,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas Correntes",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 145,
+        "totalizadora": true,
+        "somar": [147,148,150,151,152,153,155,156,157,158,159,160,161,163,164,165,166],
+        "valorManual": true,
+        "descricao": "RECEITAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 146,
+        "totalizadora": true,
+        "somar": [147,148],
+        "valorManual": true,
+        "descricao": "OPERAÇÕES DE CRÉDITO",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 147,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Operações de Crédito - Mercado Interno",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 148,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Operações de Crédito - Mercado Externo",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 149,
+        "totalizadora": true,
+        "somar": [150,151,152],
+        "valorManual": true,
+        "descricao": "ALIENAÇÃO DE BENS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 150,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Móveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 151,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Imóveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 152,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Alienação de Bens Intangíveis",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 153,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "AMORTIZAÇÕES DE EMPRÉSTIMOS",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 154,
+        "totalizadora": true,
+        "somar": [155,156,157,158,159,160,161],
+        "valorManual": true,
+        "descricao": "TRANSFERÊNCIAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 155,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências da União e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 156,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Estados e do Distrito Federal e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 157,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências dos Municípios e de suas Entidades",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 158,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Instituições Privadas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 159,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências de Outras Instituições Públicas",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 160,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Transferências do Exterior",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 161,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Tranferências de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 162,
+        "totalizadora": true,
+        "somar": [163,164,165,166],
+        "valorManual": true,
+        "descricao": "OUTRAS RECEITAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 163,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Integralização do Capital Social",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 164,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Remuneração das Disponibilidades do Tesouro",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 165,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Resgate de Títulos do Tesouro",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 166,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "Demais Receitas de Capital",
+        "colunas": [
+            {"descricao": "Previsão Inicial", "permiteEdicaoManual":true, "coluna": "valor_inicial", "natureza": "D"},
+            {"descricao": "Previsão Atualizada", "permiteEdicaoManual":true, "coluna": "previsao_atualizada", "natureza": "D"},
+            {"descricao": "No Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_periodo", "natureza": "C"},
+            {"descricao": "%(b/a)", "permiteEdicaoManual":false, "coluna": "percentual_no_bimestre"},
+            {"descricao": "Até Bimestre", "permiteEdicaoManual":true, "coluna": "arrecadado_acumulado", "natureza": "C"},
+            {"descricao": "%(c/a)", "permiteEdicaoManual":false, "coluna": "percentual_acumulado"},
+            {"descricao": "Saldo (a-c)", "permiteEdicaoManual":false, "coluna": "saldo"}
+        ]
+    },
+    {
+        "ordem": 167,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar" : [169,170,171,173,174,175,176],
+        "descricao": "DESPESAS (INTRA-ORÇAMENTÁRIAS) (IX)",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 168,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar" : [169,170,171],
+        "descricao": "DESPESAS CORRENTES",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 169,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "PESSOAL E ENCARGOS SOCIAIS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 170,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "JUROS E ENCARGOS DA DÍVIDA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 171,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "OUTRAS DESPESAS CORRENTES",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 172,
+        "totalizadora": true,
+        "valorManual": false,
+        "somar" : [173,174,175],
+        "descricao": "DESPESAS DE CAPITAL",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 173,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "INVESTIMENTOS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 174,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "INVERSÕES FINANCEIRAS",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 175,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "AMORTIZAÇÃO DA DÍVIDA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    },
+    {
+        "ordem": 176,
+        "totalizadora": false,
+        "valorManual": true,
+        "descricao": "RESERVA DE CONTINGÊNCIA",
+        "colunas": [
+            {"descricao": "Dotação Inicial", "coluna": "saldo_inicial", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Dotação Atualizada", "coluna": "total_creditos", "permiteEdicaoManual": true, "natureza": "D"},
+            {"descricao": "Despesas Empenhadas No Bimestre", "coluna": "empenhado_liquido", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Empenhadas Até o Bimestre", "coluna": "empenhado_liquido_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (g) = (e-f)", "coluna": "saldo_empenhado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Liquidadas No Bimestre", "coluna": "liquidado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Despesas Liquidadas Até o Bimestre", "coluna": "liquidado_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Saldo (i) = (e-h)", "coluna": "saldo_liquidado", "permiteEdicaoManual": false},
+            {"descricao": "Despesas Pagas até o Bimestre", "coluna": "pago_acumulado", "permiteEdicaoManual": true, "natureza": "C"},
+            {"descricao": "Inscritas em Restos a Pagar não Processados", "coluna": "a_liquidar", "permiteEdicaoManual": true, "natureza": "C"}
+        ]
+    }
+]

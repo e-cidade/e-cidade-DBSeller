@@ -181,7 +181,7 @@ function js_retorna(){
 	parent.mo_camada('a1');
 }
 
-<?
+<?php
 if(isset($chavepesquisacgs)&&(int)$chavepesquisacgs != 0){
 	echo "<script>
 		focoInclusao   = $('sd70_c_cid');
@@ -194,7 +194,7 @@ if(isset($chavepesquisacgs)&&(int)$chavepesquisacgs != 0){
 	js_tabulacaoforms("form1","sd24_i_unidade",false,1,"sd24_t_diagnostico",true);
 	var evlTmp = "document.form1.<?=$campoFocado?>.focus();";
 	eval( evlTmp );
-	<?
+	<?php
 }else{
 	?>
 	js_tabulacaoforms("form1","sd24_i_unidade",false,1,"sd24_t_diagnostico",true);
@@ -207,11 +207,11 @@ if(isset($chavepesquisacgs)&&(int)$chavepesquisacgs != 0){
 		$('sd24_i_unidade').focus();
 		$('sd24_i_unidade').select();
 	}
-	<?
+	<?php
 }
 ?>
 </script>
-<?
+<?php
 if(isset($incluir) || isset($alterar) ){
 	if($clprontuarios->erro_status=="0"){
 		$clprontuarios->erro(true,false);

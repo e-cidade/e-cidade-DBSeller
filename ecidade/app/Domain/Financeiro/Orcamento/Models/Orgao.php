@@ -38,7 +38,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $o40_descr
  * @property $o40_instit
  * @property $o40_finali
-
  */
 class Orgao extends Model
 {

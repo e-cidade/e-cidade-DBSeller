@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2014  DBSeller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -53,13 +53,13 @@ $cliptubase->rotulo->tlabel();
       <table class="form-container">
         <tr>
           <td>
-              <?
+              <?php
               db_ancora($Lj01_matric, ' js_matri(true); ', 1);
               ?>
           </td>
 
           <td>
-              <?
+              <?php
               db_input('j01_matric', 10, 0, true, 'text', 1, "onchange='js_matri(false)'");
               db_input('z01_nome', 50, 0, true, 'text', 3, "");
               ?>
@@ -71,7 +71,7 @@ $cliptubase->rotulo->tlabel();
   </form>
 </div>
 
-<?
+<?php
 db_menu();
 ?>
 </body>

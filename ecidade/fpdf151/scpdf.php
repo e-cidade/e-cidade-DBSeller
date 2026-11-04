@@ -1,7 +1,4 @@
 <?php
-set_time_limit(0);
-session_cache_limiter('none');
-
 global $HTTP_POST_VARS;
 global $HTTP_SERVER_VARS;
 
@@ -13,8 +10,9 @@ if(!defined('DB_BIBLIOT')){
   require_once(modification("libs/db_stdlib.php"));
     require_once(modification("libs/db_conecta.php"));
     require_once(modification("libs/db_sessoes.php"));
-    require_once(modification("libs/db_usuariosonline.php"));
-
+    if (!db_getsession("DB_processamento_automatico", false)) {
+        require_once(modification("libs/db_usuariosonline.php"));
+    }
     db_postmemory($HTTP_POST_VARS);
   db_postmemory($HTTP_SERVER_VARS);
 

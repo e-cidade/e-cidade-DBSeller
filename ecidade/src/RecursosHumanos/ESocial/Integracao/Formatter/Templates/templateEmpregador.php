@@ -40,6 +40,16 @@ return array(
                 'type' => 'int'
             ),
             'cnpjEFR' => 'cnpjEFR',
+            'dtTrans11096' => array(
+                'required' => false,
+                'label' => 'Data da transformação em sociedade de fins lucrativos - Lei 11.096/2005',
+                'type' => 'string'
+            ),
+            'indTribFolhaPisPasep' => array(
+                'required' => false,
+                'label' => 'Indicador de tributação sobre a folha de pagamento - PIS e COFINS',
+                'type' => 'string'
+            ),
             'iniValid1000',
             'fimValid1000'
         )

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -25,5 +25,5 @@
  *                                licenca/licenca_pt.txt 
  */
 
-$campos = "rhteutri.rh67_sequencial,rhteutri.rh67_regist,rhteutri.rh67_rhtipovale,rhteutri.rh67_cartao,rhteutri.rh67_grupo,rhteutri.rh67_dias,rhteutri.rh67_vales,rhteutri.rh67_ativo,rhteutri.rh67_db_usuarios,rhteutri.rh67_data";
+$campos = "rhteutri.rh67_sequencial,rhteutri.rh67_regist,rhteutri.rh67_rhtipovale,rhteutri.rh67_dias,rhteutri.rh67_ativo,rhteutri.rh67_db_usuarios,rhteutri.rh67_data";
 ?>

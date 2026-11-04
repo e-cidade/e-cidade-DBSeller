@@ -88,9 +88,10 @@ $fundamentacao = $result->db18_valor;
 
 if ($result->db110_valor == "OUTD" || $result->db110_valor == "OUT" || $result->db110_valor == "OUTC" || $result->db110_valor == "OUTI" ) {
     $sql = "select db110_valor, db110_db_cadattdinamicoatributos from db_cadattdinamicoatributosvalor
+            inner join db_cadattdinamicoatributos on db110_db_cadattdinamicoatributos = db_cadattdinamicoatributos.db109_sequencial
              where db110_cadattdinamicovalorgrupo in
                    (select l16_cadattdinamicovalorgrupo from liclicitacadattdinamicovalorgrupo where l16_liclicita = {$l20_codigo})
-                    and db110_db_cadattdinamicoatributos in (46, 47, 48) order by db110_db_cadattdinamicoatributos asc " ;
+                    and db109_nome in ('numeroartigo', 'inciso', 'lei') order by db110_db_cadattdinamicoatributos asc " ;
     $rs = db_query($sql);
 
     $cont = 0;
@@ -113,7 +114,7 @@ if ($result->db110_valor == "OUTD" || $result->db110_valor == "OUT" || $result->
 db_fieldsmemory($rsLicitacao, 0);
 
 $head3 = "HOMOLOGAÇÃO DO PROCESSO ";
-$head4 = "LICITAÇÃO : $l20_numero/" . substr($l20_datacria, 0, 4);
+$head4 = "LICITAÇÃO : $l20_numero/$l20_anousu";
 $head5 = "SEQUENCIAL: $l20_codigo";
 $oPDF->addpage();
 $oPDF->setfont('arial', 'b', 14);
@@ -129,7 +130,7 @@ $olicitacao = db_utils::fieldsMemory($rsLicitacao, 0);
 $oLibDocumento->l20_numero = $olicitacao->l20_numero;
 $oLibDocumento->l03_descr = $olicitacao->l03_descr;
 $oLibDocumento->l20_procadmin = $olicitacao->l20_procadmin ? $olicitacao->l20_procadmin : $olicitacao->p58_numero;
-$oLibDocumento->l20_datacria = substr($olicitacao->l20_datacria, 0, 4);
+$oLibDocumento->l20_datacria = $olicitacao->l20_anousu;
 $oLibDocumento->l20_codigo = $olicitacao->l20_codigo;
 $oLibDocumento->l30_portaria = $olicitacao->l30_portaria;
 $oLibDocumento->l20_objeto = htmlspecialchars_decode($olicitacao->l20_objeto);

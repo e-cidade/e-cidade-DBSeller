@@ -55,6 +55,12 @@ class RelatorioSinteticoArrecadar {
   private $iNumpre;
 
   /* @var integer */
+  private $iCpf;
+
+  /* @var integer */
+  private $iCnpj;
+
+  /* @var integer */
   private $iExercicioInicial;
 
   /* @var integer */
@@ -86,6 +92,9 @@ class RelatorioSinteticoArrecadar {
 
   /*@var numeric*/
   private $nValorTotal = 0;
+
+  /*@var numeric*/
+  private $sChavePesquisa;
   /**
    * @param DBDate $oDataInicial
    */
@@ -212,6 +221,63 @@ class RelatorioSinteticoArrecadar {
     return $this->iNumpre;
   }
 
+  /**
+   * @param Integer $iCpf
+   */
+  public function setCpf($iCpf) {
+    $this->iCpf = $iCpf;
+  }
+
+  /**
+   * @return Integer
+   */
+  public function getCpf() {
+    return $this->iCpf;
+  }
+
+  /**
+   * @param Integer $iCnpj
+   */
+  public function setCnpj($iCnpj) {
+    $this->iCnpj = $iCnpj;
+  }
+
+  /**
+   * @return Integer
+   */
+  public function getCnpj() {
+    return $this->iCnpj;
+  }
+
+  /**
+   * @param Integer $iCpfCnpj
+   */
+  public function setCpfCnpj($iCpfCnpj) {
+    $tamanhoDoValor = strlen(strval($iCpfCnpj));
+    if ($tamanhoDoValor <= 11) {
+      $this->setCpf($iCpfCnpj);
+    } else {
+      $this->setCnpj($iCpfCnpj);
+    }
+    return;
+  }
+
+  /**
+   * @return Array
+   */
+  public function getCpfCnpj() {
+    $dado = [];
+    if ($this->getCpf() != null) {
+      $dado[] = "CPF";
+      $dado[] = $this->getCpf();
+    }
+    if ($this->getCnpj() != null) {
+      $dado[] = "CNPJ";
+      $dado[] = $this->getCnpj();
+    }
+    return $dado;
+  }
+
   private function processarDados(stdClass $oTipoDebito) {
     
     $oDataSessao  = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
@@ -333,7 +399,7 @@ class RelatorioSinteticoArrecadar {
               $daoTermo = db_utils::getDao("termo");
 
               $rsTermo  = $daoTermo->sql_record(
-                          $daoTermo->sql_query_file(null, "v07_parcel, v07_dtlanc, v07_datpri", null, "v07_numpre={$oDebitos->k00_numpre}"));
+                          $daoTermo->sql_query_file(null, "v07_parcel, v07_dtlanc, (select min(k00_dtvenc) from arrecad where k00_numpre = v07_numpre) as v07_datpri", null, "v07_numpre={$oDebitos->k00_numpre}"));
     
               if ($daoTermo->numrows != 1) {
                 
@@ -383,13 +449,14 @@ class RelatorioSinteticoArrecadar {
               }
     
               $oInicial  = db_utils::fieldsMemory($rsInicial, 0);
-              $indice  = $oTipoDebito->k00_tipo."-".$oInicial->v59_inicial."-".$oInicial->v13_certid."-".$iExercicio;
+              $indice  = $oDebitos->k00_origem.'-'.$oTipoDebito->k00_tipo."-".$oInicial->v59_inicial."-".$oInicial->v13_certid."-".$iExercicio;
               if ( isset($oDadosRelatorio->aDebitos[$indice]) ) {
                 $oValorBase = $oDadosRelatorio->aDebitos[$indice];
               } 
               $oDebitosRelatorio                          = new stdClass();
               $oDebitosRelatorio->indice                  = $indice; 
               $oDebitosRelatorio->iTipoDebito             = $oTipoDebito->k00_tipo;
+              $oDebitosRelatorio->origem                  = $oDebitos->k00_origem;
               $oDebitosRelatorio->inicial                 = $oInicial->v59_inicial;
               $oDebitosRelatorio->certidao                = $oInicial->v13_certid;
               $oDebitosRelatorio->iExercicio              = $iExercicio != null?$iExercicio:$oInicial->exercicio;
@@ -401,7 +468,7 @@ class RelatorioSinteticoArrecadar {
               $oDebitosRelatorio->nValorDesconto          = $oValorBase->nValorDesconto   + $oDebitos->vlrdesconto;
               $oDebitosRelatorio->nValorTotal             = $oValorBase->nValorTotal      + $oDebitos->total;
               $oDebitosRelatorio->agrupador = ['espaco'     => '',
-                                               'espaco1'    => '',
+                                               'origem'    => 'Origem',
                                                'inicial'    => 'Inicial', 
                                                'certidao'   => 'Certidão',
                                                'iExercicio' => 'Exercício'
@@ -493,6 +560,33 @@ class RelatorioSinteticoArrecadar {
             break;
                
             default:
+              if($oTipoDebito->k03_tipo == 1 || $oTipoDebito->k03_tipo == 2 || $oTipoDebito->k03_tipo == 7 && $oDebitos->k00_origem){
+                $oDebitosRelatorio                          = new stdClass();
+                $indice                                     = $oDebitos->k00_origem.'-'.$oTipoDebito->k00_tipo."-".$iExercicio;
+                if ( isset($oDadosRelatorio->aDebitos[$indice]) ) {
+                  $oValorBase = $oDadosRelatorio->aDebitos[$indice];
+                }                                                
+                $oDebitosRelatorio->indice                  = $indice; 
+                $oDebitosRelatorio->iTipoDebito             = $oTipoDebito->k00_tipo; 
+                $oDebitosRelatorio->origem                  = $oDebitos->k00_origem;
+                $oDebitosRelatorio->iExercicio              = $iExercicio;
+                $oDebitosRelatorio->dtlanc                  = db_formatar($oDebitos->k00_dtoper, 'd');
+                $oDebitosRelatorio->sDescricaoTipoDebito    = $oTipoDebito->k00_descr;
+                $oDebitosRelatorio->nValorHistorico         = $oValorBase->nValorHistorico  + $oDebitos->vlrhis;
+                $oDebitosRelatorio->nValorCorrigido         = $oValorBase->nValorCorrigido  + $oDebitos->vlrcor;
+                $oDebitosRelatorio->nValorJuros             = $oValorBase->nValorJuros      + $oDebitos->vlrjuros;
+                $oDebitosRelatorio->nValorMulta             = $oValorBase->nValorMulta      + $oDebitos->vlrmulta;
+                $oDebitosRelatorio->nValorDesconto          = $oValorBase->nValorDesconto   + $oDebitos->vlrdesconto;
+                $oDebitosRelatorio->nValorTotal             = $oValorBase->nValorTotal      + $oDebitos->total;
+                $oDebitosRelatorio->agrupador = ['espaco'     => '',
+                                                'espaco1'     => '',
+                                                'origem'     => 'Origem',
+                                                'iExercicio' => 'Exercício',
+                                                'dtlanc' => 'Dt. Lanç.',
+                                                ];
+                $oDadosRelatorio->aDebitos[$indice] = $oDebitosRelatorio;
+                break;
+              }
             
               $oDebitosRelatorio                          = new stdClass();
               $indice                                     = $oTipoDebito->k00_tipo."-".$iExercicio;
@@ -614,13 +708,13 @@ class RelatorioSinteticoArrecadar {
       $this->oPdf->Cell(18, $this->iAlturaLinha, db_formatar($aTotalDebito["nValorDesconto"]  , 'f'), 1, 0, "R", 0);
       $this->oPdf->Cell(18, $this->iAlturaLinha, db_formatar($aTotalDebito["nValorTotal"]     , 'f'), 1, 1, "R", 0);
       if(count($oOrigem) > 0) {
-        
-        $sOrigens = implode(", ", $oOrigem);
-        $this->oPdf->Cell(7,  $this->iAlturaLinha, "", 0, 0, "L", 0);
-        $this->oPdf->Cell(20,  $this->iAlturaLinha, "Origem", 1, 0, "L", 0);
-        $this->oPdf->SetFont('Arial', '', 7);
-        $this->oPdf->MultiCell(156, $this->iAlturaLinha, $sOrigens,1,"L",0);
-        
+        if($oTipoDebito->k03_tipo != 1 && $oTipoDebito->k03_tipo != 2 && $oTipoDebito->k03_tipo != 7 &&  $oTipoDebito->k03_tipo != 18){
+          $sOrigens = implode(", ", $oOrigem);
+          $this->oPdf->Cell(7,  $this->iAlturaLinha, "", 0, 0, "L", 0);
+          $this->oPdf->Cell(20,  $this->iAlturaLinha, "Origem", 1, 0, "L", 0);
+          $this->oPdf->SetFont('Arial', '', 7);
+          $this->oPdf->MultiCell(156, $this->iAlturaLinha, $sOrigens,1,"L",0);
+        }        
       }
       $this->oPdf->SetFont('Arial', '', 8);
       $this->oPdf->Ln();
@@ -688,12 +782,30 @@ class RelatorioSinteticoArrecadar {
         $this->sChavePesquisa        = $this->getMatricula();
         $sSqlDadosProprietario = "select * from proprietario where j01_matric = $this->sChavePesquisa limit 1";
         $rsDadosProprietario   = db_query($sSqlDadosProprietario);
-  
-        $sSqlEnvolvido         = "select * ";
-        $sSqlEnvolvido        .= "  from fc_busca_envolvidos(false, {$oDadoConfigTributario->db21_regracgmiptu}, 'M', $this->sChavePesquisa)";
-  
-        $rsEnvolvidoRegra      = db_query($sSqlEnvolvido);
-        $oEnvolvidoRegra       = CgmFactory::getInstanceByCgm(db_utils::fieldsMemory($rsEnvolvidoRegra, 0)->rinumcgm);
+
+        $sSqlPromitente  = "select promitente.j41_numcgm as rinumcgm, cgm.z01_cgccpf from promitente ";
+        $sSqlPromitente .= "  join proprietario on proprietario.j41_numcgm = promitente.j41_numcgm ";
+        $sSqlPromitente .= "  join cgm on cgm.z01_numcgm = promitente.j41_numcgm ";
+        $sSqlPromitente .= "where j41_matric = $this->sChavePesquisa ";
+        $rsPromitente = db_query($sSqlPromitente);
+        $existePromitente = pg_num_rows($rsPromitente) > 0;
+
+        if ($existePromitente) {
+          $rsEnvolvidoRegra = $rsPromitente;
+        } else {
+          $sSqlEnvolvido  = "select * from fc_busca_envolvidos(false, {$oDadoConfigTributario->db21_regracgmiptu}, 'M', $this->sChavePesquisa) ";
+          $sSqlEnvolvido .= "  join cgm on cgm.z01_numcgm = rinumcgm";
+          $rsEnvolvido = db_query($sSqlEnvolvido);
+          $rsEnvolvidoRegra = $rsEnvolvido;
+        }
+        $dadosEnvolvido = db_utils::fieldsMemory($rsEnvolvidoRegra, 0);
+        $this->setCpfCnpj($dadosEnvolvido->z01_cgccpf);
+        $oEnvolvidoRegra = CgmFactory::getInstanceByCgm($dadosEnvolvido->rinumcgm);
+
+        $oDaoIptubase = new cl_iptubase();
+        $sSqlTipoEnvolvido = $oDaoIptubase->sql_query_envolvidos_matricula($this->sChavePesquisa, $dadosEnvolvido->rinumcgm);
+        $rsTipoEnvolvido = db_query($sSqlTipoEnvolvido);
+        $oTipoEnvolvido = db_utils::getCollectionByRecord($rsTipoEnvolvido)[0];
   
         if ( !$rsDadosProprietario ) {
           throw new DBException("Erro ao Processar Pesquisa do Proprietário:".pg_last_error());
@@ -705,7 +817,7 @@ class RelatorioSinteticoArrecadar {
   
         $oDadosPesquisa = db_utils::fieldsMemory($rsDadosProprietario, 0);
   
-        $sNome          = $oEnvolvidoRegra->getNome();
+        $sNome          = $oTipoEnvolvido->nomecomabreviatura;
         $sEndereco      = $oDadosPesquisa->tipopri    . ' '  .
                           $oDadosPesquisa->nomepri    . ', ' .
                           $oDadosPesquisa->j39_numero . ' '  .  
@@ -821,6 +933,15 @@ class RelatorioSinteticoArrecadar {
     $this->oPdf->Cell(30, $this->iAlturaLinha, "NOME"                                     ,  0, 0, "L", 0);
     $this->oPdf->SetFont('Arial', 'I', 8);
     $this->oPdf->Cell(80, $this->iAlturaLinha, ': ' . $sNome                              ,  0, 1, "L", 0);
+
+    if (count($this->getCpfCnpj()) > 0) {
+      $dados = $this->getCpfCnpj();
+      $this->oPdf->SetFont('Arial', 'B', 8);
+      $this->oPdf->Cell(30, $this->iAlturaLinha,        $dados[0] , 0, 0, "L", 0);
+      $this->oPdf->SetFont('Arial', 'I', 8);
+      $this->oPdf->Cell(80, $this->iAlturaLinha, ': ' . $dados[1] , 0, 1, "L", 0);
+    }
+
     $this->oPdf->SetFont('Arial', 'B', 8);
     $this->oPdf->Cell(30, $this->iAlturaLinha, "ENDEREÇO"                                 ,  0, 0, "L", 0);
     $this->oPdf->SetFont('Arial', 'I', 8);

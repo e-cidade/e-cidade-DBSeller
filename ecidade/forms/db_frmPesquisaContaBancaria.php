@@ -8,7 +8,7 @@
           <?=$Ldb83_sequencial?>
         </td>
         <td> 
-        <?
+        <?php
           db_input("db83_sequencial",10,$Idb83_sequencial,true,"text",4,"","chave_db83_sequencial");
         ?>
         </td>
@@ -18,7 +18,7 @@
         <?=$Ldb83_descricao?>
         </td>
         <td> 
-        <?
+        <?php
           db_input("db83_descricao",40,$Idb83_descricao,true,"text",4,"","chave_db83_descricao");
         ?>
         </td>
@@ -28,7 +28,7 @@
         <?=$Ldb83_conta?>
         </td>
         <td> 
-        <?
+        <?php
           db_input("db83_conta",10,$Idb83_conta,true,"text",4,"","chave_db83_conta");
         ?>
         </td>

@@ -294,7 +294,7 @@ foreach ($aMatricula as $iMatricula) {
 
     $iTotalFaltaPeriodo = 0;
     foreach ($aFaltas as $iFalta) {
-      $iTotalFaltaPeriodo += $iFalta;
+      $iTotalFaltaPeriodo += intval($iFalta);
     }
     $iSomatorioFaltaPeriodos += $iTotalFaltaPeriodo;
     $oPdf->Cell($iTamanhoColunaPeriodo, 4, $iTotalFaltaPeriodo, 1, 0, "C");

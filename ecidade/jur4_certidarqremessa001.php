@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 set_time_limit(0);
@@ -80,20 +80,20 @@ db_app::load("strings.js");
       <table class="form-container">
         <tr>
           <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-            <?db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
+            <?php db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
           </td>
           <td align="left">
-            <?
+            <?php
               db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
               db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
             ?>
           </td>
         </tr>
       </table>
-    </fieldset> 
+    </fieldset>
     <input type="button" id="processar"  value="Procesar" onclick="js_processar();">
   </form>
-<? 
+<?php
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
@@ -107,38 +107,38 @@ function js_processar(){
 
   var iLista                             = $F('k60_codigo');
   var oParametros                        = new Object();
-  oParametros.exec                       = 'processar';  
-  oParametros.iLista                     = iLista;   
+  oParametros.exec                       = 'processar';
+  oParametros.iLista                     = iLista;
   js_divCarregando(_M('tributario.juridico.jur4_certidarqremessa001.processando_arquivo'),'msgBox');
-   
+
    var oAjaxLista  = new Ajax.Request(sUrlRPC,
                                              {method: "post",
                                               parameters:'json='+Object.toJSON(oParametros),
                                               onComplete: js_retornoProcessar
-                                             }); 
+                                             });
 
 }
 function js_retornoProcessar(oAjax){
 
     js_removeObj('msgBox');
     var oRetorno = JSON.parse(oAjax.responseText);
-    
+
     if (oRetorno.status == 1) {
-      
+
       if ( oRetorno.dados.length == 0 ) {
-      
+
         //alert('Nenhum Programa encontrado!');
         return false;
-      } 
-      
+      }
+
      var listagem  = oRetorno.dados+"# Download do Arquivo - "+ oRetorno.dados;
-         js_montarlista(listagem,'form1');      
-          
+         js_montarlista(listagem,'form1');
+
     } else {
-    
+
       alert(oRetorno.message.urlDecode());
       location.href = "jur4_certidarqremessa001.php";
-    
+
     }
 
 }

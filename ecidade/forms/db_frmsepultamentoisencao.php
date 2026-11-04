@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -44,19 +44,19 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_sequencial?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 					    db_input('cm33_sequencial',10,$Icm33_sequencial,true,'text',3,"")
 						?>
 			    </td>
 			  </tr>
 			  <tr>
 			    <td nowrap title="<?=@$Tcm33_processo?>">
-			      <?
+			      <?php
 			        db_ancora(@$Lcm33_processo,"js_pesquisacm33_processo(true);",$db_opcao);
 			      ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 			  			db_input('cm33_processo',10,$Icm33_processo,true,'text',$db_opcao," onchange='js_pesquisacm33_processo(false);'");
 			        db_input('z01_nome_prot',40,'',true,'text',3,'');
 			      ?>
@@ -64,12 +64,12 @@ $clrotulo->label("cm34_descricao");
 			  </tr>
 			  <tr>
 			    <td nowrap title="<?=@$Tcm33_sepultamento?>">
-			      <?
+			      <?php
 			        db_ancora(@$Lcm33_sepultamento,"js_pesquisacm33_sepultamento(true);",$db_opcao);
 			      ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 			  			db_input('cm33_sepultamento',10,$Icm33_sepultamento,true,'text',$db_opcao," onchange='js_pesquisacm33_sepultamento(false);'");
 			        db_input('z01_nome',40,'',true,'text',3,'');
 			      ?>
@@ -77,12 +77,12 @@ $clrotulo->label("cm34_descricao");
 			  </tr>
 			  <tr>
 			    <td nowrap title="<?=@$Tcm33_isencao?>">
-			      <?
+			      <?php
 			        db_ancora(@$Lcm33_isencao,"js_pesquisacm33_isencao(true);",$db_opcao);
 			      ?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 			  			db_input('cm33_isencao',10,$Icm33_isencao,true,'text',$db_opcao," onchange='js_pesquisacm33_isencao(false);'");
 			        db_input('cm34_descricao',40,$Icm34_descricao,true,'text',3,'');
 			        db_input('cm34_tipo',10,'',true,'hidden',3,'');
@@ -94,7 +94,7 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_datalanc?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_inputdata('cm33_datalanc',@$cm33_datalanc_dia,@$cm33_datalanc_mes,@$cm33_datalanc_ano,true,'text',$db_opcao,"");
 						?>
 			    </td>
@@ -104,7 +104,7 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_datainicio?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 			  			db_inputdata('cm33_datainicio',@$cm33_datainicio_dia,@$cm33_datainicio_mes,@$cm33_datainicio_ano,true,'text',$db_opcao,"");
 						?>
 			    </td>
@@ -114,7 +114,7 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_datafim?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 			 		    db_inputdata('cm33_datafim',@$cm33_datafim_dia,@$cm33_datafim_mes,@$cm33_datafim_ano,true,'text',$db_opcao,"");
 						?>
 			    </td>
@@ -124,7 +124,7 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_percentual?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_input('cm33_percentual',10,$Icm33_percentual,true,'text',$db_opcao,"");
 						?>
 			    </td>
@@ -134,7 +134,7 @@ $clrotulo->label("cm34_descricao");
 			      <?=@$Lcm33_obs?>
 			    </td>
 			    <td> 
-						<?
+						<?php
 						  db_textarea('cm33_obs',3,50,$Icm33_obs,true,'text',$db_opcao,"");
 						?>
 			    </td>
@@ -143,9 +143,9 @@ $clrotulo->label("cm34_descricao");
     </fieldset>  
   </center>
 	<input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onClick="return js_validaPost();">
-	<? if ( $db_opcao != 1 ) { ?>
+	<?php if ( $db_opcao != 1 ) { ?>
 	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-	<? } ?>
+	<?php } ?>
 	</form>
 <script>
 function js_pesquisacm33_processo(mostra){
@@ -224,7 +224,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sepultamentoisencao.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -275,7 +275,7 @@ function js_validaPost(){
 </script>
 
 
-<?
+<?php
   if ( isset($cm34_tipo) && trim($cm34_tipo) != '' ){
   	echo "<script>js_validaTela({$cm34_tipo})</script>";
   }

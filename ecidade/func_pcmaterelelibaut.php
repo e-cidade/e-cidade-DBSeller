@@ -87,15 +87,15 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
               <?=$Lpc07_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <? db_input("pc07_codmater",6,$Ipc07_codmater,true,"text",4,"","chave_pc07_codmater"); ?>
+              <?php db_input("pc07_codmater",6,$Ipc07_codmater,true,"text",4,"","chave_pc07_codmater"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$To56_elemento?>">
               <?=$Lo56_elemento?>
             </td>
-            <td width="96%" align="left" nowrap>
-              <?  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");	 ?>
+            <td width="96%" align="left" nowrap> 
+              <?php  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");	 ?>
             </td>
           </tr>
           <tr>
@@ -103,13 +103,13 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
               <?=$Lpc01_descrmater?>
             </td>
 
-             <td width="96%" align="left" nowrap><? db_input("pc01_descrmater",80,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
+             <td width="96%" align="left" nowrap><?php db_input("pc01_descrmater",80,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
 
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="Selecionar todos, ativos ou inativos"><b>Seleção por:</b></td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php
               if(!isset($opcao)){
 	            $opcao = "f";
               }
@@ -137,7 +137,7 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php
       $where_libaut = "1=1";
       $result_pcparam=$clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_itenslibaut"));
       if ($clpcparam->numrows>0) {
@@ -240,10 +240,10 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
 </script>
 </html>
 
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
-  <?
+  <?php
 }
 ?>
 <script type="text/javascript">

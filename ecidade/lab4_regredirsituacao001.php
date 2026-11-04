@@ -1,7 +1,7 @@
 <?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2014  DBSeller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -54,12 +54,19 @@ $requisicaoExame = new RequisicaoExame();
 <body class="body-default">
 <div class="container">
     <form name="form1">
+
+        <input type="hidden" id="cgsId">
+
         <fieldset class="container" style="border: 2px groove #FFF">
             <legend>Regredir Situação do Exame</legend>
             <table class="form-container">
                 <tr>
-                    <td title="<?=$Tla22_i_codigo?>">
-                        <label id="ancora" for="codigo">Requisição:</label>    
+                    <td colspan="5" id="linhaIdade" style="text-align: end; line-height: 0">
+                    </td>
+                </tr>
+                <tr>
+                    <td title="<?= (!empty($Tla22_i_codigo) ? $Tla22_i_codigo : null) ?>">
+                        <label id="ancora" for="codigo">Requisição:</label>
                     </td>
                     <td id="inputCodigoRequisicao">
                         <input type="text" name="codigo" id="la22_i_codigo">
@@ -98,8 +105,9 @@ $requisicaoExame = new RequisicaoExame();
             'sArquivo': 'func_lab_requisicao.php',
             'sLabel': 'Pesquisar Requisição',
             'sObjetoLookUp': "db_iframe_requisicao",
-            'fCallBack': (codigo, descricao, algoamais) => {
-                buscarExames();
+            'aCamposAdicionais': ['z01_i_cgsund'],
+            'fCallBack': (codigo, descricao, cgs = null) => {
+                buscarExames(cgs);
             }
         });
 
@@ -107,8 +115,9 @@ $requisicaoExame = new RequisicaoExame();
             inputCodigo.value = "";
             inputDescricao.value = "";
             table.bootstrapTable('load', []);
+            apagaIdadeCompleta();
         });
-        
+
         const salvar = () => {
             const formData = new FormData
             formData.append('acao', 'regredirSituacao')
@@ -139,9 +148,9 @@ $requisicaoExame = new RequisicaoExame();
         const formatterSelect = (value, row) => {
             let cboSituacoes = document.createElement('select');
             cboSituacoes.setAttribute('name', 'selectSituacao');
-            cboSituacoes.id = row.exame.split(' - ')[0];
+            cboSituacoes.id = row.codigoitemrequisicao;
             situacoes.map((situacao) => {
-                if(situacao.codigo != "10 - Nao Digitado"){
+                if (situacao.codigo != "10 - Nao Digitado") {
                     cboSituacoes.add(new Option(situacao.descricao, situacao.codigo));
                 }
             })
@@ -167,17 +176,16 @@ $requisicaoExame = new RequisicaoExame();
                 }
             ],
             onPostBody: (data) => {
-                let selectSituacao = document.getElementsByName('selectSituacao');
-
+                let selectSituacao = document.getElementsByName('selectSituacao');                
                 selectSituacao.forEach((selectSituacao) => {
                     data.map((exame) => {
-                        if (exame.exame.split(' - ')[0] == selectSituacao.getAttribute('id')) {
+                        if (exame.codigoitemrequisicao == selectSituacao.getAttribute('id')) {
                             selectSituacao.value = exame.situacao;
                         }
                     })
 
                     selectSituacao.childNodes.forEach((elemento) => {
-                        if(elemento.value > elemento.parentElement.value){
+                        if (elemento.value > elemento.parentElement.value) {
                             elemento.setAttribute("disabled", "");
                         }
                     })
@@ -185,8 +193,7 @@ $requisicaoExame = new RequisicaoExame();
             }
         })
 
-
-        const buscarExames = () => {
+        const buscarExames = (cgs = false) => {
             const formData = new FormData();
             formData.append('requisicao', inputCodigo.value);
             formData.append('acao', 'buscarExamesPorRequisicao');
@@ -197,9 +204,56 @@ $requisicaoExame = new RequisicaoExame();
                 }
                 table.bootstrapTable('load', response.exames);
             });
+
+            if (cgs) {
+                document.getElementById('cgsId').value = cgs;
+                existeCgsUnd();
+            }
+        }
+    });
+
+    function existeCgsUnd() {
+        let cgsUnd = document.getElementById('cgsId').value;
+
+        if (cgsUnd !== '') {
+            let parametros = {
+                'sExecucao': 'buscarDadosCgs',
+                'iCgs': cgsUnd
+            };
+
+            let dadosRequisicao = {};
+            dadosRequisicao.method = 'post';
+            dadosRequisicao.parameters = 'json=' + Object.toJSON(parametros);
+            dadosRequisicao.onComplete = function (resposta) {
+
+                let retorno = JSON.parse(resposta.responseText);
+
+                retornaIdadePaciente(retorno);
+            };
+
+            const rpc = 'sau4_cgs.RPC.php';
+            new Ajax.Request(rpc, dadosRequisicao);
+            return;
         }
 
-    });
+        return;
+    }
+
+    function retornaIdadePaciente(retorno) {
+        let idadeCompleta = retorno.oCgs.sIdadeCompleta.urlDecode();
+
+        $('linhaIdade').innerHTML = `<p id="idadeCompleta" style="font-weight: normal;" >Idade: <span style="color: red;">${idadeCompleta}</span></p>`;
+
+        return;
+    }
+
+    function apagaIdadeCompleta() {
+        let tagIdadeCompleta = document.querySelector("#idadeCompleta");
+
+        if (tagIdadeCompleta) {
+            tagIdadeCompleta.remove();
+        }
+    }
 </script>
 </body>
 </html>

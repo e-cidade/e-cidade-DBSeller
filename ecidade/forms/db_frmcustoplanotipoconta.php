@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -39,37 +39,37 @@ $clrotulo->label("cc02_descricao");
        <?=@$Lcc03_sequencial?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc03_sequencial',10,$Icc03_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc03_custoplanoanalitica?>">
-       <?
+       <?php
        db_ancora(@$Lcc03_custoplanoanalitica,"js_pesquisacc03_custoplanoanalitica(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc03_custoplanoanalitica',10,$Icc03_custoplanoanalitica,true,'text',$db_opcao," onchange='js_pesquisacc03_custoplanoanalitica(false);'")
 ?>
-       <?
+       <?php
 db_input('cc04_custoplano',10,$Icc04_custoplano,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcc03_custotipoconta?>">
-       <?
+       <?php
        db_ancora(@$Lcc03_custotipoconta,"js_pesquisacc03_custotipoconta(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('cc03_custotipoconta',10,$Icc03_custotipoconta,true,'text',$db_opcao," onchange='js_pesquisacc03_custotipoconta(false);'")
 ?>
-       <?
+       <?php
 db_input('cc02_descricao',50,$Icc02_descricao,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_custoplanotipoconta.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

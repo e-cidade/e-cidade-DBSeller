@@ -115,7 +115,7 @@ switch( $db_opcao ) {
           </td>
         </tr>
         <tr>
-          <td nowrap title="<?=@Ted31_i_regimemat?>">
+          <td nowrap title="<?=@$Ted31_i_regimemat?>">
             <label for="ed31_i_regimemat">
               <?php
               db_ancora( $Led31_i_regimemat, "js_pesquisaed31_i_regimemat(true);", ( $db_opcao == 1 ? $db_opcao : 3 ) );

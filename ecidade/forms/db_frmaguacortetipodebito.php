@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -81,7 +81,7 @@ if(isset($db_opcaoal)){
        ?>
     </td>
     <td> 
-<?
+<?php
 //db_input('x45_codcorte',10,$Ix45_codcorte,true,'text',$db_opcao," onchange='js_pesquisax45_codcorte(false);'")
 db_input('x45_codcortetipodebito',10,$Ix45_codcortetipodebito,true,'text',3,"")
 ?>
@@ -95,11 +95,11 @@ db_input('x45_codcortetipodebito',10,$Ix45_codcortetipodebito,true,'text',3,"")
        ?>
     </td>
     <td> 
-<?
+<?php
 //db_input('x45_codcorte',10,$Ix45_codcorte,true,'text',$db_opcao," onchange='js_pesquisax45_codcorte(false);'")
 db_input('x45_codcorte',10,$Ix45_codcorte,true,'text',3," onchange='js_pesquisax45_codcorte(false);'")
 ?>
-       <?
+       <?php
 $data = strtotime($x40_dtinc);
 $x40_dtinc_dia = date("d", $data);
 $x40_dtinc_mes = date("m", $data);
@@ -111,12 +111,12 @@ db_inputdata('x40_dtinc',@$x40_dtinc_dia,@$x40_dtinc_mes,@$x40_dtinc_ano,true,'t
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx45_tipo?>">
-       <?
+       <?php
        db_ancora(@$Lx45_tipo,"js_pesquisax45_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('x45_tipo',5,$Ix45_tipo,true,'text',$db_opcao," onchange='js_pesquisax45_tipo(false);'");
 
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'');
@@ -131,7 +131,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',3,'');
        <?=@$Lx45_parcelas?>
     </td>
     <td> 
-<?
+<?php
 db_input('x45_parcelas',4,$Ix45_parcelas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ db_input('x45_parcelas',4,$Ix45_parcelas,true,'text',$db_opcao,"")
        <?=@$Lx45_dtvenc?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x45_dtvenc',@$x45_dtvenc_dia,@$x45_dtvenc_mes,@$x45_dtvenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,7 +152,7 @@ db_inputdata('x45_dtvenc',@$x45_dtvenc_dia,@$x45_dtvenc_mes,@$x45_dtvenc_ano,tru
        <?=@$Lx45_dtopini?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x45_dtopini',@$x45_dtopini_dia,@$x45_dtopini_mes,@$x45_dtopini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_inputdata('x45_dtopini',@$x45_dtopini_dia,@$x45_dtopini_mes,@$x45_dtopini_ano
        <?=@$Lx45_dtopfim?>
     </td>
     <td> 
-<?
+<?php
 db_inputdata('x45_dtopfim',@$x45_dtopfim_dia,@$x45_dtopfim_mes,@$x45_dtopfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -175,7 +175,7 @@ db_inputdata('x45_dtopfim',@$x45_dtopfim_dia,@$x45_dtopfim_mes,@$x45_dtopfim_ano
        <?=@$Lx45_vlrminimo?>
     </td>
     <td> 
-<?
+<?php
 db_input('x45_vlrminimo',15,$Ix45_vlrminimo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -190,7 +190,7 @@ db_input('x45_vlrminimo',15,$Ix45_vlrminimo,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php
 	 $chavepri= array("x45_codcortetipodebito"=>@$x45_codcortetipodebito);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguacortetipodebito->sql_query(null,"*",null,"x45_codcorte=$x45_codcorte");

@@ -65,7 +65,7 @@ $sWhere = implode(" and ", $aWhereBancos);
                 <?=$Ldb89_sequencial?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
              db_input("db89_sequencial",10,$Idb89_sequencial,true,"text",4,"","chave_db89_sequencial");
              ?>
               </td>
@@ -75,7 +75,7 @@ $sWhere = implode(" and ", $aWhereBancos);
                 <?=$Ldb89_codagencia?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php
              db_input("db89_codagencia",10,$Idb89_codagencia,true,"text",4,"","chave_db89_codagencia");
              ?>
               </td>
@@ -154,12 +154,12 @@ $sWhere = implode(" and ", $aWhereBancos);
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

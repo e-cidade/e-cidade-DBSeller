@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -54,7 +54,7 @@ $clhistbemdiv->rotulo->label("t32_codigo");
               <?=$Lt32_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t32_codigo",8,$It32_codigo,true,"text",4,"","chave_t32_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clhistbemdiv->rotulo->label("t32_codigo");
               <?=$Lt32_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("t32_codigo",8,$It32_codigo,true,"text",4,"","chave_t32_codigo");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clhistbemdiv->rotulo->label("t32_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_histbemdiv.php")==true){
@@ -122,12 +122,12 @@ $clhistbemdiv->rotulo->label("t32_codigo");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

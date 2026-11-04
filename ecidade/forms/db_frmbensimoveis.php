@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -42,19 +42,19 @@ $clrotulo = new rotulocampo;
 	 <?=@$Lt54_codbem?>
     </td>
     <td> 
-<?
+<?php
 db_input('t54_codbem',8,$It54_codbem,true,'text',3,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt54_idbql?>">
-       <?
+       <?php
        db_ancora(@$Lt54_idbql,"js_pesquisat54_idbql(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('t54_idbql',8,$It54_idbql,true,'text',$db_opcao," onchange='js_pesquisat54_idbql(false);'")
 ?>
       </td>
@@ -64,7 +64,7 @@ db_input('t54_idbql',8,$It54_idbql,true,'text',$db_opcao," onchange='js_pesquisa
        <?=@$Lt54_obs?>
     </td>
     <td> 
-<?
+<?php
 db_textarea('t54_obs',3,30,$It54_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ function js_mostralote1(chave1){
   document.form1.t54_idbql.value = chave1;
   db_iframe_lote.hide();
 }
-<?
+<?php
 if(isset($incluir) ||isset($excluir)){
   $clbensimoveis->sql_record($clbensimoveis->sql_query_file($t54_codbem));
   if($clbensimoveis->numrows > 0){

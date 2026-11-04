@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clatendimentocadsituacao->rotulo->label("at15_descr");
               <?=$Lat15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at15_sequencial",10,$Iat15_sequencial,true,"text",4,"","chave_at15_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clatendimentocadsituacao->rotulo->label("at15_descr");
               <?=$Lat15_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php
 		       db_input("at15_descr",40,$Iat15_descr,true,"text",4,"","chave_at15_descr");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clatendimentocadsituacao->rotulo->label("at15_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendimentocadsituacao.php")==true){
@@ -122,12 +122,12 @@ $clatendimentocadsituacao->rotulo->label("at15_descr");
 </table>
 </body>
 </html>
-<?
+<?php
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php
 }
 ?>
 <script>

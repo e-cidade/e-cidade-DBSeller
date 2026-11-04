@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
@@ -59,8 +59,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     $clitbirural->it18_guia = $it01_guia;
     $clitbirural->alterar($it01_guia);
     if(isset($codigo) && isset($valor) && $codigo != "" && $valor != ""){
-      $cod = split(",",$codigo);
-      $val = split(",",$valor);
+      $cod =explode(",",$codigo);
+      $val =explode(",",$valor);
       for($i=0;$i<sizeof($cod);$i++){
         $clitbiruralcaract->it19_guia = $clitbi->it01_guia;
         $clitbiruralcaract->it19_codigo = $cod[$i];
@@ -72,18 +72,18 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   db_fim_transacao();
 }else if(isset($chavepesquisa)){
    $db_opcao = 2;
-   $result = $clitbi->sql_record($clitbi->sql_query($chavepesquisa)); 
+   $result = $clitbi->sql_record($clitbi->sql_query($chavepesquisa));
    db_fieldsmemory($result,0);
-   $result = $clitburbano->sql_record($clitburbano->sql_query($chavepesquisa)); 
+   $result = $clitburbano->sql_record($clitburbano->sql_query($chavepesquisa));
    if($clitburbano->numrows > 0){
      db_fieldsmemory($result,0);
      $tipo = "urbano";
    }
-   $result = $clitbirural->sql_record($clitbirural->sql_query($chavepesquisa)); 
+   $result = $clitbirural->sql_record($clitbirural->sql_query($chavepesquisa));
    if($clitbirural->numrows > 0){
      db_fieldsmemory($result,0);
      $tipo = "rural";
-     $result = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query($chavepesquisa,"","it19_codigo,it19_valor","j31_codigo")); 
+     $result = $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query($chavepesquisa,"","it19_codigo,it19_valor","j31_codigo"));
      $codigo = "";
      $valor = "";
      $vir = "";
@@ -98,23 +98,23 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
    }
    $db_botao = true;
     echo "<script>
-           // parent.iframe_comp.location.href = 'itb1_itbicgm001.php?it02_guia=".$chavepesquisa."'; 
-           // parent.document.formaba.comp.disabled = false; 
+           // parent.iframe_comp.location.href = 'itb1_itbicgm001.php?it02_guia=".$chavepesquisa."';
+           // parent.document.formaba.comp.disabled = false;
 
-            parent.iframe_dados.location.href = 'itb1_itbidadosimovel001.php?it22_itbi=".$chavepesquisa."'; 
-            parent.document.formaba.dados.disabled = false; 
+            parent.iframe_dados.location.href = 'itb1_itbidadosimovel001.php?it22_itbi=".$chavepesquisa."';
+            parent.document.formaba.dados.disabled = false;
 
-            parent.iframe_transm.location.href = 'itb1_itbinome001.php?tiponome=t&it03_guia=".$chavepesquisa."'; 
-            parent.document.formaba.transm.disabled = false; 
-	    
-            parent.iframe_compnome.location.href = 'itb1_itbinomecomp001.php?tiponome=c&it03_guia=".$chavepesquisa."'; 
-            parent.document.formaba.compnome.disabled = false; 
-			
-            parent.iframe_constr.location.href = 'itb1_itbiconstr001.php?it08_guia=".$chavepesquisa."'; 
-            parent.document.formaba.constr.disabled = false; 
-			
-            parent.iframe_old.location.href = 'itb1_itbipropriold001.php?it20_guia=".$chavepesquisa."'; 
-            parent.document.formaba.old.disabled = false; 
+            parent.iframe_transm.location.href = 'itb1_itbinome001.php?tiponome=t&it03_guia=".$chavepesquisa."';
+            parent.document.formaba.transm.disabled = false;
+
+            parent.iframe_compnome.location.href = 'itb1_itbinomecomp001.php?tiponome=c&it03_guia=".$chavepesquisa."';
+            parent.document.formaba.compnome.disabled = false;
+
+            parent.iframe_constr.location.href = 'itb1_itbiconstr001.php?it08_guia=".$chavepesquisa."';
+            parent.document.formaba.constr.disabled = false;
+
+            parent.iframe_old.location.href = 'itb1_itbipropriold001.php?it20_guia=".$chavepesquisa."';
+            parent.document.formaba.old.disabled = false;
           </script>";
 }
 ?>
@@ -128,10 +128,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
+  <tr>
+    <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php
 	include(modification("forms/db_frmitbi.php"));
 	?>
     </center>
@@ -140,7 +140,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 </body>
 </html>
-<?
+<?php
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
   if($clitbi->erro_status=="0"){
     $clitbi->erro(true,false);
@@ -153,11 +153,11 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   }else{
     $clitbi->erro(true,false);
     echo "<script>
-            parent.iframe_itbi.location.href = 'itb1_itbi002.php?chavepesquisa=".$it01_guia."&abas=1'; 
-            parent.document.formaba.comp.disabled = false; 
-            parent.document.formaba.compnome.disabled = false; 
-            parent.document.formaba.old.disabled = false; 
-            parent.mo_camada('comp'); 
+            parent.iframe_itbi.location.href = 'itb1_itbi002.php?chavepesquisa=".$it01_guia."&abas=1';
+            parent.document.formaba.comp.disabled = false;
+            parent.document.formaba.compnome.disabled = false;
+            parent.document.formaba.old.disabled = false;
+            parent.mo_camada('comp');
           </script>";
   };
 };

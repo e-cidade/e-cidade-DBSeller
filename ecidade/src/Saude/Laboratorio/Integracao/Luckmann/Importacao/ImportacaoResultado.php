@@ -27,6 +27,8 @@
 
 namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Importacao;
 
+use BusinessException;
+use cl_lab_importacaorequisicaoinconsistencia;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Builder\ImportacaoInconsistencia;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\IntegraResultados;
 use ECidade\Saude\Laboratorio\Integracao\Luckmann\Service\Resultado;
@@ -82,7 +84,7 @@ class ImportacaoResultado
         $this->importacaoInconsistencia = $importacaoInconsistencia;
         $this->json = $json;
         $this->service = new ImportacaoRequisicaoInconsistenciaService(
-            new ImportacaoRequisicaoInconsistenciaRepository(new \cl_lab_importacaorequisicaoinconsistencia())
+            new ImportacaoRequisicaoInconsistenciaRepository(new cl_lab_importacaorequisicaoinconsistencia())
         );
     }
 
@@ -96,15 +98,19 @@ class ImportacaoResultado
     }
 
     /**
-     * @throws \BusinessException
+     * @throws BusinessException
      * @throws Exception
      */
-    public function executar()
+    public function executar($arquivoInfinity = false)
     {
         $arquivos = $this->getArquivosResultado();
 
+        if ($arquivos === false) {
+            return false;
+        }
+
         foreach ($arquivos as $arquivo) {
-            $resultado = new Resultado($arquivo, $this->importacaoInconsistencia);
+            $resultado = new Resultado($arquivo, $this->importacaoInconsistencia, $arquivoInfinity);
             $resultado->salvar();
             if ($resultado->getArquivoComInconsistencias()) {
                 $this->copiarArquivoByName($arquivo);

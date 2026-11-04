@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $iDatafim_ano  = $iDataini_ano;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0"> 
-    <?
+    <?php
     db_app::load("prototype.js, datagrid.widget.js, strings.js, webseller.js");
     db_app::load("scripts.js, grid.style.css, estilos.css"); 
     ?>
@@ -74,13 +74,13 @@ $iDatafim_ano  = $iDataini_ano;
                           <b>Período:</b>
                         </td>
                         <td nowrap >
-                          <? 
+                          <?php 
                           db_inputdata('dDataini', @$iDataini_dia, @$iDataini_mes, @$iDataini_ano, 
                                        true, 'text', $db_opcao
                                       );
                           ?>
                           Á
-                          <? 
+                          <?php 
                           db_inputdata('dDatafim', @$iDatafim_dia, @$iDatafim_mes, @$iDatafim_ano, 
                                        true, 'text', $db_opcao
                                       );
@@ -92,7 +92,7 @@ $iDatafim_ano  = $iDataini_ano;
                           <b>Vacina:</b>
                         </td>
                         <td>
-                          <?
+                          <?php
                           $aX      = array();
                           $sSql    = $oDaoVacina->sql_query_file(null, "vc06_i_codigo,vc06_c_descr");
                           $rsDados = $oDaoVacina->sql_record($sSql);
@@ -122,7 +122,7 @@ $iDatafim_ano  = $iDataini_ano;
       </table>
     </center>
   </body>
-  <?
+  <?php
   db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),

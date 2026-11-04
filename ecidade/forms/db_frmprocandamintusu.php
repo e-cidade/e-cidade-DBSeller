@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,30 +36,30 @@ $clrotulo->label("nome");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tp79_codandamint?>">
-       <?
+       <?php
        db_ancora(@$Lp79_codandamint,"js_pesquisap79_codandamint(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p79_codandamint',10,$Ip79_codandamint,true,'text',$db_opcao," onchange='js_pesquisap79_codandamint(false);'")
 ?>
-       <?
+       <?php
 db_input('p78_sequencial',10,$Ip78_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp79_usuario?>">
-       <?
+       <?php
        db_ancora(@$Lp79_usuario,"js_pesquisap79_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php
 db_input('p79_usuario',10,$Ip79_usuario,true,'text',$db_opcao," onchange='js_pesquisap79_usuario(false);'")
 ?>
-       <?
+       <?php
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procandamintusu.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

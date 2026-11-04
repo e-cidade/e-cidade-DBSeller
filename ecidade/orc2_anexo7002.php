@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
+ *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 
@@ -37,7 +37,7 @@ db_postmemory($HTTP_POST_VARS);
 
 $classinatura = new cl_assinatura;
 
-$xinstit = split("-", $db_selinstit);
+$xinstit =explode("-", $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -62,7 +62,7 @@ $head3 = "PROGRAMA DE TRABALHO DO GOVERNO ";
 $head4 = "ANEXO (7) EXERCÍCIO: ".db_getsession("DB_anousu")." - ".$xtipo;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$xcampos = split("-", $orgaos);
+$xcampos =explode("-", $orgaos);
 
 if (substr($nivel, 0, 1) == '1') {
 	$xwhere1 = " trim(to_char(o58_orgao,'99')) in (";
@@ -83,7 +83,7 @@ elseif (substr($nivel, 0, 1) == '5') {
 $virgula1 = ' ';
 
 for ($i = 0; $i < sizeof($xcampos); $i ++) {
-	$xxcampos = split("_", $xcampos[$i]);
+	$xxcampos =explode("_", $xcampos[$i]);
 	$virgula = '';
 	$where = "'";
 	$where1 = "'";
@@ -125,7 +125,7 @@ elseif ($tipo_agrupa == 3) {
 $tipo_balanco = 2; // empenhado
 if ($origem == "O"){
   $tipo_balanco = 1;
-}  
+}
 
 $teste = db_dotacaosaldo(5, 1, 3, true, $xwhere1, $anousu, $dataini, $datafin, $inicial, 3, true,$tipo_balanco);
 $result = db_query($teste);

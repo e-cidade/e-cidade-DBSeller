@@ -56,7 +56,7 @@ try {
         if (!empty($oUnidadeMedida)) {
 
           $oDadosAtributo->codigo_unidade    = $oUnidadeMedida->getCodigo();
-          $oDadosAtributo->descricao_unidade = url_encode($oUnidadeMedida->getNome());
+          $oDadosAtributo->descricao_unidade = urlencode($oUnidadeMedida->getNome());
         }
         $oRetorno->atributo= $oDadosAtributo;
       }

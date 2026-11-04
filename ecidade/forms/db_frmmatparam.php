@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
- *  Copyright (C) 2009  DBselller Servicos de Informatica
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
  *                         e-cidade@dbseller.com.br
  *
@@ -48,7 +48,7 @@ $clrotulo->label("db77_descr");
           <?=@$Lm90_tipocontrol?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('D' => 'Por departamento', 'S' => 'Por secretaria', 'G' => 'Por almoxarifado/departamento',
                       'F' => 'Por almoxarifado/deposito');
           db_select('m90_tipocontrol', $aX, true, $db_opcao, "style='width:250px;'");
@@ -60,7 +60,7 @@ $clrotulo->label("db77_descr");
           <?=@$Lm90_modrelsaidamat?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('18' => 'Modelo 18 - Observação Resumida', '181' => 'Modelo 181-  Observação Completa');
           db_select('m90_modrelsaidamat', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -71,7 +71,7 @@ $clrotulo->label("db77_descr");
           <?=@$Lm90_almoxordemcompra?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('1' => 'Departamento(s) do(s) Usuário(s)', '2' => 'Departamento(s) de Origem');
           db_select('m90_almoxordemcompra', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -82,7 +82,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_reqsemest?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array("f" => "Sim", "t" => "Não");
           db_select('m90_reqsemest', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -93,7 +93,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_versaldoitemreq?>
         </td>
         <td>
-          <?
+          <?php
           $aVerSaldoItem = array("f" => "Não", "t" => "Sim");
           db_select('m90_versaldoitemreq', $aVerSaldoItem, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -104,7 +104,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_deptalmox?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('t' => 'Sim', 'f' => 'Não');
           db_select('m90_deptalmox', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -115,7 +115,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_liqentoc?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('f' => 'Não', 't' => 'Sim');
           db_select('m90_liqentoc', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -126,7 +126,7 @@ $clrotulo->label("db77_descr");
           <?=@$Lm90_entratrans?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array('t' => 'Sim', 'f' => 'Não');
           db_select('m90_entratrans', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -137,7 +137,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_dtimplan?>
         </td>
         <td>
-          <?
+          <?php
           db_inputdata('m90_dtimplan', @$m90_dtimplan_dia, @$m90_dtimplan_mes, @$m90_dtimplan_ano,
                        true, 'text', $db_opcao, ""
                       );
@@ -149,7 +149,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_prazovenc?>
         </td>
         <td>
-          <?
+          <?php
           db_input('m90_prazovenc', 10, @$Im90_prazovenc, true, 'text', $db_opcao, "");
           ?>
         </td>
@@ -159,7 +159,7 @@ $clrotulo->label("db77_descr");
            <?=@$Lm90_corfundorequisicao?>
         </td>
         <td>
-          <?
+          <?php
           $aX = array("1" => "Cinza", "2" => "Branco");
           db_select('m90_corfundorequisicao', $aX, true, $db_opcao, "style='width:250px;'");
           ?>
@@ -167,12 +167,12 @@ $clrotulo->label("db77_descr");
       </tr>
       <tr>
         <td nowrap title="<?=@$Tm90_db_estrutura?>">
-         <?
+         <?php
            db_ancora(@$Lm90_db_estrutura,"js_pesquisam90_db_estrutura(true);",$db_opcao);
          ?>
         </td>
         <td>
-           <?
+           <?php
              db_input('m90_db_estrutura',10,$Im90_db_estrutura,true,'text',$db_opcao,
               " onchange='js_pesquisam90_db_estrutura(false);'");
              db_input('db77_descr',30,$Idb77_descr,true,'text',3,'');
@@ -195,7 +195,7 @@ $clrotulo->label("db77_descr");
                   <?=@$Lm90_mostrarsaldosolictransf?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   $aX = array('1' => 'Sim', '2' => 'Não');
                   db_select('m90_mostrarsaldosolictransf', $aX, true, $db_opcao, "style='width:250px;'");
                   ?>
@@ -206,7 +206,7 @@ $clrotulo->label("db77_descr");
                   <?=@$Lm90_validarsaldosolictransf?>
                 </td>
                 <td>
-                  <?
+                  <?php
                   $aX = array('1' => 'Sim', '2' => 'Não');
                   db_select('m90_validarsaldosolictransf', $aX, true, $db_opcao, "style='width:250px;'");
                   ?>
@@ -235,7 +235,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_matparam.hide();
-  <?
+  <?php
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

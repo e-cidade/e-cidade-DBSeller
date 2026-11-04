@@ -1,28 +1,28 @@
-<?
+<?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 include(modification("fpdf151/pdf.php"));
@@ -35,7 +35,7 @@ include(modification("libs/db_liborcamento.php"));
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit =explode("-",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -52,7 +52,7 @@ $head5 = "INSTITUIÇÕES : ".$descr_inst;
 $head6 = "ANEXO 15 - PERÍODO : ".strtoupper(db_mes($mesini))." A ".strtoupper(db_mes($mesfin));
 
 
-  
+
 
 $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).") ";
 
@@ -61,13 +61,13 @@ $anousu = db_getsession("DB_anousu");
 //$dataini = db_getsession("DB_anousu").'-'.$mes.'-'.'01';
 $dataini = db_getsession("DB_anousu").'-'.$mesini.'-01';
 $datafin = db_getsession("DB_anousu").'-'.$mesfin.'-'.date('t',mktime(0,0,0,$mesfin,'01',db_getsession("DB_anousu")));
-  
 
-$result = db_receitasaldo(3,1,2,true,'',$anousu,$dataini,$datafin);  
+
+$result = db_receitasaldo(3,1,2,true,'',$anousu,$dataini,$datafin);
 
 //db_criatabela($result);exit;
 
-$result1 = db_dotacaosaldo(3,3,2,true,'',$anousu,$dataini,$datafin);  
+$result1 = db_dotacaosaldo(3,3,2,true,'',$anousu,$dataini,$datafin);
 
 //db_criatabela($result1);exit;
 
@@ -80,9 +80,9 @@ else
 //db_criatabela($result2);exit;
 
 
-$pdf = new PDF(); 
-$pdf->Open(); 
-$pdf->AliasNbPages(); 
+$pdf = new PDF();
+$pdf->Open();
+$pdf->AliasNbPages();
 $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',7);
 $alt            = 4.2;
@@ -187,7 +187,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
       $intp_vlr[$d]   = $saldo_final;
       $d += 1;
    }
-												
+
 }
 $numreg = (sizeof($rec_descr)>sizeof($fun_descr)?sizeof($rec_descr):sizeof($fun_descr));
 $pdf->setfont('arial','b',8);
@@ -204,13 +204,13 @@ for($i=0;$i<$numreg;$i++){
     $pdf->setfont('arial','',7);
     $alt = 4;
   }
-  if(isset($rec_vlr[$i]) ){ 
+  if(isset($rec_vlr[$i]) ){
     $pdf->cell(70,$alt,$rec_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($rec_vlr[$i]+0,'f'),0,0,"R",0);
   }else{
     $pdf->cell(95,$alt,"",0,0,"L",0);
   }
-  if(isset($fun_vlr[$i]) ){ 
+  if(isset($fun_vlr[$i]) ){
     $totaldesp  += $fun_vlr[$i];
     $pdf->cell(70,$alt,$fun_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($fun_vlr[$i]+0,'f'),0,0,"R",0);
@@ -230,13 +230,13 @@ for($i=0;$i<$numreg2;$i++){
     $pdf->setfont('arial','',7);
     $alt = 4;
   }
-  if(isset($inta_vlr[$i]) ){ 
+  if(isset($inta_vlr[$i]) ){
     $pdf->cell(70,$alt,$inta_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($inta_vlr[$i]+0,'f'),0,0,"R",0);
   }else{
     $pdf->cell(95,$alt,"",0,0,"L",0);
   }
-  if(isset($intp_vlr[$i]) ){ 
+  if(isset($intp_vlr[$i]) ){
     $pdf->cell(70,$alt,$intp_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($intp_vlr[$i]+0,'f'),0,0,"R",0);
   }
@@ -261,10 +261,10 @@ for($i=0;$i<pg_numrows($result2);$i++){
    if (substr($estrutural,0,3) != "313" && substr($estrutural,0,3) != "413")
       continue;
    $nivel = db_le_mae_sistema($estrutural,true);
-   
+
  if($nivel > 5)
    continue;
-   
+
  if($nivel == 3)
    $espaco = '';
  elseif($nivel == 4)
@@ -281,7 +281,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
       $mutp_vlr[$f]   = $saldo_final;
       $f += 1;
    }
-												
+
 }
 $numreg3 = (sizeof($muta_descr)>sizeof($mutp_descr)?sizeof($muta_descr):sizeof($mutp_descr));
 for($i=0;$i<$numreg3;$i++){
@@ -295,13 +295,13 @@ for($i=0;$i<$numreg3;$i++){
     $pdf->setfont('arial','',7);
     $alt = 4;
   }
-  if(isset($muta_vlr[$i]) ){ 
+  if(isset($muta_vlr[$i]) ){
     $pdf->cell(70,$alt,$muta_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($muta_vlr[$i]+0,'f'),0,0,"R",0);
   }else{
     $pdf->cell(95,$alt,"",0,0,"L",0);
   }
-  if(isset($mutp_vlr[$i]) ){ 
+  if(isset($mutp_vlr[$i]) ){
     $pdf->cell(70,$alt,$mutp_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($mutp_vlr[$i]+0,'f'),0,0,"R",0);
   }
@@ -319,10 +319,10 @@ for($i=0;$i<pg_numrows($result2);$i++){
    if (substr($estrutural,0,3) != "321" && substr($estrutural,0,3) != "421")
       continue;
    $nivel = db_le_mae_sistema($estrutural,true);
-   
+
  if($nivel > 5)
    continue;
-   
+
  if($nivel == 3)
    $espaco = '';
  elseif($nivel == 4)
@@ -339,7 +339,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
       $varp_vlr[$h]   = $saldo_final;
       $h += 1;
    }
-												
+
 }
 $numreg5 = (sizeof($vara_descr)>sizeof($varp_descr)?sizeof($vara_descr):sizeof($varp_descr));
 for($i=0;$i<$numreg5;$i++){
@@ -353,13 +353,13 @@ for($i=0;$i<$numreg5;$i++){
     $pdf->setfont('arial','',7);
     $alt = 4;
   }
-  if(isset($vara_vlr[$i]) ){ 
+  if(isset($vara_vlr[$i]) ){
     $pdf->cell(70,$alt,$vara_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($vara_vlr[$i]+0,'f'),0,0,"R",0);
   }else{
     $pdf->cell(95,$alt,"",0,0,"L",0);
   }
-  if(isset($varp_vlr[$i]) ){ 
+  if(isset($varp_vlr[$i]) ){
     $pdf->cell(70,$alt,$varp_descr[$i],0,0,"L",0,'','.');
     $pdf->cell(25,$alt,db_formatar($varp_vlr[$i]+0,'f'),0,0,"R",0);
   }
@@ -387,7 +387,7 @@ if($totalreceitas > $totaldespesas){
    $superavit = 0;
 
 }
-  
+
 $pdf->ln(3);
 $pdf->setfont('arial','B',7);
 $pdf->cell(70,$alt,'T O T A L   G E R A L',0,0,"L",0,'','.');
@@ -400,11 +400,11 @@ $pdf->cell(25,$alt,db_formatar($totaldespesas + $superavit,'f'),0,1,"R",0);
 
 $pdf->Ln(15);
 
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 
 
 
 $pdf->Output();
-   
+
 ?>

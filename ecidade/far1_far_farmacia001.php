@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,13 +70,13 @@ if($clfar_farmacia->numrows==0){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Dados da Farmácia</b></legend>
-	<? include(modification("forms/db_frmfar_farmacia.php"));?>
+	<?php include(modification("forms/db_frmfar_farmacia.php"));?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -84,7 +84,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","descrdepto",true,1,"descrdepto",true);
 </script>
-<?
+<?php
 if(isset($incluir)){
   if($clfar_farmacia->erro_status=="0"){
     $clfar_farmacia->erro(true,false);

@@ -1,7 +1,7 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBselller Servicos de Informatica             
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica             
  *                            www.dbseller.com.br                     
  *                         e-cidade@dbseller.com.br                   
  *                                                                    
@@ -36,7 +36,7 @@ $clconceitos->rotulo->label();
        <?=@$Led30_i_codigo?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed30_i_codigo',5,$Ied30_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ed30_i_codigo',5,$Ied30_i_codigo,true,'text',3,"")
        <?=@$Led30_c_letra?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed30_c_letra',1,$Ied30_c_letra,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('ed30_c_letra',1,$Ied30_c_letra,true,'text',$db_opcao,"")
        <?=@$Led30_f_valorinicial?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed30_f_valorinicial',5,$Ied30_f_valorinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -66,7 +66,7 @@ db_input('ed30_f_valorinicial',5,$Ied30_f_valorinicial,true,'text',$db_opcao,"")
        <?=@$Led30_f_valorfinal?>
     </td>
     <td> 
-<?
+<?php
 db_input('ed30_f_valorfinal',5,$Ied30_f_valorfinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conceitos.hide();
-  <?
+  <?php
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

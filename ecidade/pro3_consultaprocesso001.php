@@ -1,28 +1,28 @@
 <?php
 /*
- *     E-cidade Software Publico para Gestao Municipal                
- *  Copyright (C) 2009  DBSeller Servicos de Informatica             
- *                            www.dbseller.com.br                     
- *                         e-cidade@dbseller.com.br                   
- *                                                                    
- *  Este programa e software livre; voce pode redistribui-lo e/ou     
- *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme  
- *  publicada pela Free Software Foundation; tanto a versao 2 da      
- *  Licenca como (a seu criterio) qualquer versao mais nova.          
- *                                                                    
- *  Este programa e distribuido na expectativa de ser util, mas SEM   
- *  QUALQUER GARANTIA; sem mesmo a garantia implicita de              
- *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM           
- *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais  
- *  detalhes.                                                         
- *                                                                    
- *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU     
- *  junto com este programa; se nao, escreva para a Free Software     
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA          
- *  02111-1307, USA.                                                  
- *  
- *  Copia da licenca no diretorio licenca/licenca_en.txt 
- *                                licenca/licenca_pt.txt 
+ *     E-cidade Software Publico para Gestao Municipal
+ *  Copyright (C) 2009  DBSeller Servicos de Informatica
+ *                            www.dbseller.com.br
+ *                         e-cidade@dbseller.com.br
+ *
+ *  Este programa e software livre; voce pode redistribui-lo e/ou
+ *  modifica-lo sob os termos da Licenca Publica Geral GNU, conforme
+ *  publicada pela Free Software Foundation; tanto a versao 2 da
+ *  Licenca como (a seu criterio) qualquer versao mais nova.
+ *
+ *  Este programa e distribuido na expectativa de ser util, mas SEM
+ *  QUALQUER GARANTIA; sem mesmo a garantia implicita de
+ *  COMERCIALIZACAO ou de ADEQUACAO A QUALQUER PROPOSITO EM
+ *  PARTICULAR. Consulte a Licenca Publica Geral GNU para obter mais
+ *  detalhes.
+ *
+ *  Voce deve ter recebido uma copia da Licenca Publica Geral GNU
+ *  junto com este programa; se nao, escreva para a Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Copia da licenca no diretorio licenca/licenca_en.txt
+ *                                licenca/licenca_pt.txt
  */
 
 require_once(modification("libs/db_stdlib.php"));
@@ -75,17 +75,17 @@ $rotulo->label("numeroProcesso");
       <b>Consulta de Processos</b>
     </legend>
     <table>
-    
+
 		  <tr>
 		    <td nowrap title="<?=@$Tp58_numero?>">
-		       <?
+		       <?php
 		         db_ancora(@$Lp58_numero,"js_pesquisap58_codproc(true);",$db_opcao);
 		       ?>
 		    </td>
-		    <td> 
+		    <td>
 					<?php
             db_input('p58_codproc',5,$Ip58_numero,true,'hidden', $db_opcao);
-					  db_input('p58_numero',10,$Ip58_numero,true,'text', $db_opcao," onchange='js_pesquisap58_codproc(false);'");
+					  db_input('p58_numero',10,$Ip58_numero,true,'text', $db_opcao," placeholder='Número/Ano' onchange='js_pesquisap58_codproc(false);'", "", "", "text-transform: capitalize;");
 					  db_input('p58_requer',40,$Ip58_requer,true,'text',3,'');
 					?>
 		    </td>
@@ -94,17 +94,17 @@ $rotulo->label("numeroProcesso");
 			<?php if ($grupo == 1) : ?>
         <tr>
           <td title="<?=$Tp58_numcgm;?>">
-            <?
+            <?php
               db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",1);
             ?>
           </td>
           <td>
-            <?
+            <?php
               db_input("p58_numcgm",10,"",true,"text", $db_opcao, "onchange='js_pesquisap58_numcgm(false);'");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
             ?>
-          </td>      
-        </tr>  
+          </td>
+        </tr>
       <?php endif; ?>
 
       </table>
@@ -127,7 +127,7 @@ function js_consultaProcesso() {
   var iNumeroCgm = $F('p58_numcgm');
   var iCodProc = $F('p58_codproc');
   var sUrl = 'pro3_consultaprocesso003.php?p58_codproc='+ iCodProc +
-                                           '&numeroprocesso=' + iNumeroProcesso + 
+                                           '&numeroprocesso=' + iNumeroProcesso +
                                            '&cgm=' + iNumeroCgm;
 
   if (iNumeroProcesso == "" && iNumeroCgm == "") {
@@ -135,9 +135,9 @@ function js_consultaProcesso() {
     alert("Preencha um dos campos.");
     return false;
   }
-      
+
   js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe', sUrl, 'Pesquisa de Processos', true);
-} 
+}
 
 var sGrupo = <?=$grupo?>;
 
@@ -156,14 +156,14 @@ function js_validarNumero(sNumero) {
   var iQuantidadeBarras  = iPosicaoBarra > 0 ? sNumero.match(/\//g).length : 0;
 
   /**
-   * Contem caracter difernete de 0-9 e / 
+   * Contem caracter difernete de 0-9 e /
    */
   if ( !lCaracteresValidos ) {
     return false;
   }
 
   /**
-   * Informou primeiro caracter / 
+   * Informou primeiro caracter /
    */
   if ( iPosicaoBarra == 0 ) {
     return false;
@@ -189,26 +189,27 @@ function js_validarNumero(sNumero) {
 function js_pesquisap58_codproc(mostra) {
 
   var sUrl = 'func_protprocesso_protocolo.php?todas_instituicoes=1&grupo='+sGrupo + ',2';
-  
+
   if(mostra) {
 
-    sUrl += '&funcao_js=parent.js_mostraprotprocesso1|dl_codigo_do_processo|p58_numero|dl_nome_ou_razão_social';
+    sUrl += '&funcao_js=parent.js_mostraprotprocesso1|dl_codigo_do_processo|p58_numero|dl_titular';
+    sUrl += '&alerta_filtro_ano=true';
     js_OpenJanelaIframe('', 'db_iframe_cgm', sUrl, 'Pesquisa de Processos', true);
 
   } else {
 
     /**
-     * Valida formatacao do campo numero processo 
+     * Valida formatacao do campo numero processo
      */
     if ( !empty($('p58_numero').value) && !js_validarNumero($('p58_numero').value) ) {
 
       var sMensagemErro  = "Formatação do campo inválida\n";
-          sMensagemErro += "Informe número do processo / ano"; 
+          sMensagemErro += "Informe número do processo / ano";
 
       alert(sMensagemErro);
       $('p58_numero').value = '';
       return false;
-    } 
+    }
 
     sUrl += '&pesquisa_chave='+$F('p58_numero')+'&funcao_js=parent.js_mostraprotprocesso';
     js_OpenJanelaIframe('','db_iframe_cgm', sUrl, 'Pesquisa', false);
@@ -216,18 +217,18 @@ function js_pesquisap58_codproc(mostra) {
 }
 
 function js_mostraprotprocesso(chave, chave1, erro) {
-  
-  document.form1.p58_requer.value = chave1; 
+
+  document.form1.p58_requer.value = chave1;
   document.form1.p58_numero.value = chave;
   document.getElementById('p58_codproc').value = "";
-  if (erro) { 
-    document.form1.p58_numero.focus(); 
-    document.form1.p58_numero.value = ''; 
+  if (erro) {
+    document.form1.p58_numero.focus();
+    document.form1.p58_numero.value = '';
   }
 }
 
 function js_mostraprotprocesso1(p58_codproc,sNumero, sNome) {
-  
+
   //alert("ss:" + p58_codproc);
   document.getElementById('p58_codproc').value = p58_codproc;
   document.getElementById('p58_numero').value = sNumero;
@@ -236,7 +237,7 @@ function js_mostraprotprocesso1(p58_codproc,sNumero, sNome) {
 }
 
 function js_pesquisa() {
-  
+
   db_iframe.jan.location.href = 'func_procarquiv.php?funcao_js=parent.js_preenchepesquisa|0';
   db_iframe.mostraMsg();
   db_iframe.show();
@@ -244,18 +245,18 @@ function js_pesquisa() {
 }
 
 function js_preenchepesquisa(chave) {
-  
+
   db_iframe.hide();
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisap58_numcgm(mostra) {
 
-  var sUrl = 'func_nome.php?';  
+  var sUrl = 'func_nome.php?';
   document.getElementById('p58_codproc').value = "";
   if (mostra) {
 
-    sUrl += 'funcao_js=parent.js_mostracgm1|0|1'; 
+    sUrl += 'funcao_js=parent.js_mostracgm1|0|1';
     js_OpenJanelaIframe('','db_iframe_c',sUrl,'Pesquisa',true);
   } else {
     if ($F('p58_numcgm') != "") {
@@ -269,17 +270,17 @@ function js_pesquisap58_numcgm(mostra) {
 }
 
 function js_mostracgm(erro, chave) {
-  
-  document.form1.z01_nome.value = chave; 
+
+  document.form1.z01_nome.value = chave;
   if (erro) {
-     
-    document.form1.p58_numcgm.focus(); 
-    document.form1.p58_numcgm.value = ''; 
+
+    document.form1.p58_numcgm.focus();
+    document.form1.p58_numcgm.value = '';
   }
 }
 
 function js_mostracgm1(chave1, chave2) {
-  
+
   document.form1.p58_numcgm.value = chave1;
   document.form1.z01_nome.value = chave2;
   db_iframe_c.hide();

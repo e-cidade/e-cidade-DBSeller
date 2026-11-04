@@ -59,7 +59,7 @@ $iNumRowsArquivo = pg_num_rows($rsQueryArquivo);
   <form name='form1'>
   <div align="center" >
     <b>Reemitindo arquivo PIT</b>
-      <?
+      <?php
        $i = 0;
        $lArquivoGerado = false;
        if($iNumRowsArquivo > 0){
@@ -81,7 +81,7 @@ $iNumRowsArquivo = pg_num_rows($rsQueryArquivo);
   </body>
 </html>
 <script>
-<?
+<?php
  if ($lArquivoGerado) {
   
    echo "var sLista = '{$sArquivoPit}#Arquivo pit'\n";

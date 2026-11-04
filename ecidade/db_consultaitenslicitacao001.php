@@ -36,36 +36,45 @@ require_once(modification("model/licitacao/SituacaoLicitacao.model.php"));
 </html>
 
 <script>
-  
-  var aHeaders = ["C&oacute;digo"
-                  ,"Qtd. Solicitada"
-                  ,"Vlr. Unitário"
-                  ,"Unidade"
-                  ,"Material"
-                  ,"Lote"
-                  ,"Fornecedor"
-                  ,"Resumo do Item"
-                  ,"Observa&ccedil;&otilde;es"];
 
-  var aCellAlign = ["center"
-                   ,"center"
-                   ,"right"
-                   ,"center"
-                   ,"left"
-                   ,"left"
-                   ,"left"
-                   ,"left"
-                   ,"left"];
+  let aHeaders = [
+      "Ordem",
+      "Qtd. Solicitada",
+      "Vlr. Unitário",
+      "Vlr. Total",
+      "Unidade",
+      "Material",
+      "Lote",
+      "ME/EPP",
+      "Fornecedor",
+      "Observa&ccedil;&otilde;es"
+  ];
 
-  var aCellWidth = ["5%"
-                   ,"8%"
-                   ,"8%"
-                   ,"8%"
-                   ,"23%"
-                   ,"8%"
-                   ,"20%"
-                   ,"10%"
-                   ,"10%"];
+  let aCellAlign = [
+      "center",
+      "center",
+      "right",
+      "right",
+      "left",
+      "left",
+      "left",
+      "left",
+      "left",
+      "left"
+  ];
+
+  let aCellWidth = [
+      "5%",
+      "8%",
+      "8%",
+      "10%",
+      "11%",
+      "21%",
+      "11%",
+      "5%",
+      "10%",
+      "8%"
+  ];
 
   var oGridItens = new DBGrid("oGridItens");
   oGridItens.sNameInstance = "oGridItens";
@@ -81,53 +90,64 @@ require_once(modification("model/licitacao/SituacaoLicitacao.model.php"));
 
   js_divCarregando("Aguarde, carregando itens da licitação", "msgBox");
   new Ajax.Request("lic4_licitacao.RPC.php",
-                   {method: 'post',
-                    asynchronous: false,
-                    parameters: 'json='+Object.toJSON(oParametro),
-                    onComplete: completarGrid
+                   {
+                        method: 'post',
+                        asynchronous: false,
+                        parameters: 'json=' + Object.toJSON(oParametro),
+                        onComplete: completarGrid
                    });
 
   function completarGrid(oAjax) {
-
-    js_removeObj("msgBox");
-    var oRetorno = JSON.parse(oAjax.responseText);
-    oGridItens.clearAll(true);
-    if (oRetorno.aItens.length == 0) {
-      alert("Nenhum item encontrado para a licitação "+oGet.l20_codigo+".");
-    }
-
-    /**
-     * Adicionamos os itens na grid
-     */
-    oRetorno.aItens.each(function (oItem, iIndice) {
-
-      var aLinha = [oItem.iCodigo,
-                    oItem.iQuantidade,
-                    oItem.nValorUnitario,
-                    oItem.sUnidadeDeMedida.urlDecode(),
-                    oItem.sDescricaoMaterial.urlDecode().substr(0, 35),
-                    oItem.sLote.urlDecode(),
-                    oItem.sFornecedor.urlDecode().substr(0, 35),
-                    oItem.sResumo.urlDecode().substr(0, 35),
-                    oItem.sObservacao.urlDecode().substr(0, 35)];
-      oGridItens.addRow(aLinha);
-    });
-    oGridItens.renderRows();
-
-    /**
-     * Adicionamos o texto completo quando o usuário passar o mouse por cima da linha
-     */
-    oRetorno.aItens.each(function (oItem, iIndice) {
-
-      oGridItens.setHint(iIndice, 4, oItem.sDescricaoMaterial.urlDecode());
-      oGridItens.setHint(iIndice, 6, oItem.sFornecedor.urlDecode());
-      if (oItem.sResumo.trim() != "") {
-        oGridItens.setHint(iIndice, 7, oItem.sResumo.urlDecode());
-      }
-      if (oItem.sObservacao.trim() != "") {
-        oGridItens.setHint(iIndice, 8, oItem.sObservacao.urlDecode());
+      js_removeObj("msgBox");
+      const oRetorno = JSON.parse(oAjax.responseText);
+      oGridItens.clearAll(true);
+      if (oRetorno.aItens.length === 0) {
+          return alert(`Nenhum item encontrado para a licitação ${oGet.l20_codigo}.`);
       }
 
-    });
+      oRetorno.aItens.each(function (oItem, iIndice) {
+          let aLinha = [
+              oItem.iOrdem,
+              oItem.iQuantidade,
+              oItem.nValorUnitario,
+              oItem.nValorTotal,
+              oItem.sUnidadeDeMedida.urlDecode(),
+              oItem.sDescricaoMaterial.urlDecode().substring(0, 35),
+              oItem.sLote.urlDecode(),
+              oItem.reservado ? 'Sim' : 'Não',
+              oItem.sFornecedor.urlDecode().substring(0, 35),
+              oItem.sObservacao.urlDecode().substring(0, 35)
+          ];
+          oGridItens.addRow(aLinha);
+      });
+      oGridItens.renderRows();
+
+      /**
+       * Adicionamos o texto completo quando o usuário passar o mouse por cima da linha
+       */
+      oRetorno.aItens.each(function (oItem, iIndice) {
+          if (oItem.sFornecedor.trim() !== '') {
+              let descricaoFornecedor = oItem.sFornecedor.urlDecode();
+              descricaoFornecedor += oItem.tipoEmpresa ? "<br/>Tipo de Empresa: " + oItem.tipoEmpresa.urlDecode() : '';
+              descricaoFornecedor += oItem.cgccpf ? "<br/>Documento: " + oItem.cgccpf.urlDecode() : '';
+
+              oGridItens.setHint(iIndice, 8, descricaoFornecedor);
+          }
+
+          if (oItem.sLote.trim() !== '') {
+              oGridItens.setHint(iIndice, 6, oItem.sLote.urlDecode());
+          }
+
+          if (oItem.sResumo.trim() !== '') {
+              oGridItens.setHint(iIndice, 5, oItem.sResumo.urlDecode());
+          } else if (oItem.sDescricaoMaterial.trim() !== '') {
+              oGridItens.setHint(iIndice, 5, oItem.sDescricaoMaterial.urlDecode());
+          }
+
+          if (oItem.sObservacao.trim() !== '') {
+              oGridItens.setHint(iIndice, 9, oItem.sObservacao.urlDecode());
+          }
+
+      });
   }
 </script>
